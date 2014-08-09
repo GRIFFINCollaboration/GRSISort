@@ -1,0 +1,244 @@
+
+
+#include "TGRSIint.h"
+#include "TGRSILoop.h"
+#include "TGRSIOptions.h"
+#include "TDataParser.h"
+
+#include "Globals.h"
+
+ClassImp(TGRSIint)
+
+
+TGRSIint *TGRSIint::fTGRSIint = NULL;
+
+//std::vector<std::string> *TGRSIint::fInputRootFile  = new std::vector<std::string>;
+//std::vector<std::string> *TGRSIint::fInputMidasFile = new std::vector<std::string>;
+//std::vector<std::string> *TGRSIint::fInputCalFile   = new std::vector<std::string>;
+//std::vector<std::string> *TGRSIint::fInputOdbFile   = new std::vector<std::string>;
+
+
+
+TGRSIint *TGRSIint::instance(int argc,char** argv, void *options, int numOptions, bool noLogo, const char *appClassName) {
+   if(!fTGRSIint)
+      fTGRSIint = new TGRSIint(argc,argv,options,numOptions,true,appClassName);
+   return fTGRSIint;
+}
+
+TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t noLogo,const char *appClassName)
+      :TRint(appClassName, &argc, argv, options, numOptions,noLogo) {
+   
+      InitFlags();
+      GetOptions(&argc,argv);
+      PrintLogo(fPrintLogo);
+      SetPrompt( DYELLOW "GRSI [%d] " RESET_COLOR);
+      PrintHelp(fPrintHelp);
+      ApplyOptions();
+}
+
+void TGRSIint::InitFlags() {
+   fAutoSort = false;
+}
+
+void TGRSIint::ApplyOptions() {
+  if(fAutoSort)
+   TGRSILoop::Get()->SortMidas();
+
+}
+
+
+TGRSIint::~TGRSIint()   {
+// SafeDelete();
+}
+
+bool TGRSIint::HandleTermInput() {
+   return TRint::HandleTermInput();
+}
+
+int TGRSIint::TabCompletionHook(char* buf, int* pLoc, ostream& out) {
+   return TRint::TabCompletionHook(buf,pLoc,out);
+}
+
+
+void TGRSIint::PrintLogo(bool print) {
+
+   if(print)   {
+     #if PLATFORM == Linux
+      const std::string &ref = ProgramName();
+     #else
+      const std::string &ref = "Nuclear Data";
+     #endif
+
+     const unsigned int reflength = ref.length() - 78;
+     const unsigned int width = reflength + (reflength % 2);
+     printf("\t*%s*\n", std::string(width,'*').c_str());   
+     printf("\t*%*s%*s*\n",width/2+5,"GRSI SPOON", width/2-5, "");
+     printf("\t*%*s%*s*\n",width/2+reflength/2, ref.c_str(), width/2-reflength/2, "");
+     printf("\t*%*s%*s*\n",width/2+14,"A lean, mean sorting machine", width/2-14, "");
+     printf("\t*%*s%*s*\n",width/2+5, "version 2.0", width/2-5, "");
+     printf("\t*%s*\n", std::string(width,'*').c_str());   
+   }
+}
+
+void TGRSIint::GetOptions(int *argc, char **argv) {
+
+   static char null[1] = { "" };
+
+   fPrintLogo = true;
+   fPrintHelp = false;
+
+   if(!argc)
+      return;
+
+   std::string pwd ="";
+
+   for (int i = 1; i < *argc; i++) {        //HELP!
+      std::string sargv = argv[i];
+      if (!strcmp(argv[i],"-?") || !strncmp(argv[i], "--help", 6)) {
+         fPrintHelp = true;
+      } else if (!strcmp(argv[i], "-l")) {  //option to print the 'title' screen.
+         fPrintLogo = false;       
+         argv[i] = null;
+      } else if (sargv[0] == '-') {
+         if(sargv.length() == 1) {
+            printf(DBLUE "   found option flag '-' followed by no option." RESET_COLOR "\n");
+            break;
+         }
+         std::string temp = sargv.substr(1);
+         if(temp.length()==1) { 
+            char key = temp[0];
+            switch(toupper(key)) {
+               case 'S':
+                  printf(DBLUE "SORT!!" RESET_COLOR "\n");
+                  break;
+               case 'H':
+                  if(sargv.length()==2) {
+                     i++; 
+                     if(i >= *argc) {
+                        printf(DBLUE "   -h flag given with no host name!" RESET_COLOR "\n");
+                        break;
+                     }
+                     sargv.assign(argv[i]);
+                     if(sargv[0] == '-' || sargv[0] == '+') {
+                        i--;
+                        printf(DRED "     invalid host name: %s; ignoring." RESET_COLOR  "\n",sargv.c_str());
+                        break;
+                     } 
+                  } else {
+                     sargv = sargv.substr(2);
+                  }  
+                  TGRSIOptions::Get()->SetHostName(sargv);      
+                  printf(DYELLOW "host: %s" RESET_COLOR "\n",sargv.c_str());
+                  break;
+               case 'E':
+                  if(sargv.length()==2) {
+                     i++; 
+                     if(i >= *argc) {
+                        printf(DBLUE "   -e flag given with no expt name!" RESET_COLOR "\n");
+                        break;
+                     }
+                     sargv.assign(argv[i]);
+                     if(sargv[0] == '-' || sargv[0] == '+') {
+                        i--;
+                        printf(DRED "     invalid host expt: %s; ignoring." RESET_COLOR  "\n",sargv.c_str());
+                        break;
+                     } 
+                  } else {
+                     sargv = sargv.substr(2);
+                  }
+                  TGRSIOptions::Get()->SetExptName(sargv);      
+                  printf(DYELLOW "experiment: %s" RESET_COLOR "\n",sargv.c_str());
+                  break;
+               default:
+                  break;
+            };
+         } else {
+            if(temp.compare("no_waveforms")==0) {
+               printf(DBLUE  "    no waveform option set, no waveforms will be in the output tree." RESET_COLOR "\n"); 
+               TDataParser::SetNoWaveForms(true);
+            } else if(temp.compare("record_stats")==0) { 
+               printf(DBLUE "     recording run stats to log file." RESET_COLOR "\n");
+               TDataParser::SetRecordStats(true);
+            } else if(temp.compare("help")==0) {
+               fPrintHelp = true;
+            } else {
+               printf(DBLUE  "    option: " DYELLOW "%s " DBLUE "passed but not understood." RESET_COLOR "\n",temp.c_str());
+            }
+         }
+
+    } else if (sargv[0] != '-' && sargv[0] != '+') { //files and directories!
+         long size;
+         long id, flags, modtime;
+         char *dir = gSystem->ExpandPathName(argv[i]);
+         if (!gSystem->GetPathInfo(dir, &id, &size, &flags, &modtime)) {   
+            if ((flags & 2)) {                                                      
+               //I am not sur what to do with directorys right now.                           
+               //if (pwd == "") {
+                  pwd = argv[i]; 
+                  argv[i]= null;
+               //} 
+                 printf("\tOption %s is a directory, ignoing for now.\n",pwd.c_str()); 
+            } else if (size > 0) {
+               // if file add to list of files to be processed
+               FileAutoDetect(argv[i],size);
+               argv[i] = null;
+            } else {
+               printf("file %s has size 0, skipping\n", dir);
+            }
+         } else {
+            //file does not exsist... assuming output file.
+            FileAutoDetect(argv[i],-1);
+            argv[i] = null;
+         }   
+      }
+   }
+}
+
+
+void TGRSIint::PrintHelp(bool print) {
+   if(print) {
+      printf( DRED BG_WHITE "     Send Help!!     " RESET_COLOR  "\n");
+   }
+   return;
+}
+
+bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
+   //first search for extensions.
+   std::string ext = filename.substr(filename.find_last_of('.')+1);
+   printf("\text = %s\n",ext.c_str());
+   if(ext.compare("root")==0) {
+      //printf("\tFound root file: %s\n",filename.c_str());
+      //fInputRootFile->push_back(filename);
+      TGRSIOptions::Get()->AddInputRootFile(filename);
+      return true;
+   } else if(ext.compare("mid")==0) {
+      //printf("\tFound midas file: %s\n",filename.c_str());
+      //fInputMidasFile->push_back(filename);
+      TGRSIOptions::Get()->AddInputMidasFile(filename);
+      fAutoSort = true;
+      return true;
+   } else if(ext.compare("cal")==0) { 
+      //printf("\tFound custom calibration file: %s\n",filename.c_str());
+      //fInputCalFile->push_back(filename);
+      TGRSIOptions::Get()->AddInputCalFile(filename);
+      return true;
+   } else if(ext.compare("xml")==0) { 
+      //fInputOdbFile->push_back(filename);
+      TGRSIOptions::Get()->AddInputOdbFile(filename);
+      //printf("\tFound xml odb file: %s\n",filename.c_str());
+      return true;
+   } else if(ext.compare("odb")==0) { 
+      //printf("\tFound c-like odb file: %s\n",filename.c_str());
+      printf("c-like odb structures can't be read yet.\n");
+      return false;
+   } else {
+      printf("\tDiscarding unknown file: %s\n",filename.c_str());
+      return false;
+   }
+   return false;
+}
+
+
+
+
+
