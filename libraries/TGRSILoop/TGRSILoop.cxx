@@ -7,6 +7,7 @@
 
 #include "TFragmentQueue.h"
 #include "TGRSIRootIO.h"
+#include "TGRSIStats.h"
 
 ClassImp(TGRSILoop)
 
@@ -179,6 +180,10 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
          printf("Processing event %i have processed %.2fMB/%.2fMB                \r",currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
       }
    }
+   if(TGRSIStats::GetSize() > 0) {
+	CreateStatsLog(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
+   }
+
    Finalize();
    return;
 }
@@ -413,6 +418,23 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent)  
 	}
 }
 
+
+
+void TGRSILoop::CreateStatsLog(int runnumber, int subrunnumber) {
+   std::map<int,TGRSIStats*>::iterator iter;
+   ofstream statsout;
+   statsout.open(Form("stats%05i_%03i.log",runnumber,subrunnumber));
+   statsout << "\nRun time to the nearest second = " << TGRSIStats::GetRunTime()  << std::endl << std::endl;
+   for(iter = TGRSIStats::GetMap()->begin();iter!=TGRSIStats::GetMap()->end();iter++) {
+	TChannel *chan = TChannel::GetChannel(iter->second->GetAddress());
+	TGRSIStats *stat = iter->second;
+	statsout << "0x"<< std::hex <<  stat->GetAddress() << std::dec  << "\t" <<  chan->GetChannelName() << "\tDeadtime: " << ((float)(stat->GetDeadTime()))*(1E-9) << " seconds." << std::endl;
+   }
+  TGRSIStats::GetMap()->clear();
+  statsout <<  std::endl;
+  statsout.close();
+  return;
+}
 
 
 void TGRSILoop::Print(Option_t *opt) {   }

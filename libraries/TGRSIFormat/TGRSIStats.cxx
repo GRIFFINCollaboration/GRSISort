@@ -20,7 +20,10 @@ TGRSIStats *TGRSIStats::GetStats(int temp_add) {
 
 
 
-TGRSIStats::TGRSIStats(int temp_add) { fStatAddress = temp_add;}
+TGRSIStats::TGRSIStats(int temp_add) { 
+   fStatAddress = temp_add;
+   Clear();
+}
 
 TGRSIStats::~TGRSIStats() { }
 
@@ -29,8 +32,8 @@ void TGRSIStats::Print(Option_t *opt) {
 }
 
 void TGRSIStats::Clear(Option_t *opt) {
-     fDeadTime = -1;;
-     fLostEvents = -1;
+     fDeadTime = 0;;
+     fLostEvents = 0;
      fLastChannelIdSeen = -1;
 }
 

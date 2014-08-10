@@ -40,7 +40,7 @@ public:
 	/// Added to combine Grif Fragment  ////
 
    uint32_t PPG;                //->
-   uint16_t DeadTime;			  //->
+   uint16_t DeadTime;	        //->
    uint16_t NumberOfFilters;    //->
    uint16_t NumberOfPileups;    //->
    uint16_t DataType;           //->

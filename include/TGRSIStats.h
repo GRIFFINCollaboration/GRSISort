@@ -13,7 +13,6 @@ class TGRSIStats : public TObject {
       static TGRSIStats *GetStats(int temp_address); 
       static int GetNumberOfStats() { return fStatsMap->size(); }  
 
-
    private:
      static std::map<int,TGRSIStats*> *fStatsMap;
      static time_t fLowestMidasTimeStamp;
@@ -21,16 +20,17 @@ class TGRSIStats : public TObject {
 
      int fStatAddress;
 
-     int fDeadTime;
+     unsigned long fDeadTime;
      int fLostEvents;
      int fLastChannelIdSeen;
 
    public:
       ~TGRSIStats();
-
+      static std::map<int,TGRSIStats*> *GetMap() { return fStatsMap;}
+      static int GetSize() { if(fStatsMap) return fStatsMap->size(); else return 0; }
 
       int GetAddress() { return fStatAddress; }
-      int GetDeadTime() {return fDeadTime*10;}
+      unsigned long GetDeadTime() {return fDeadTime*10;}
       void IncDeadTime(int dtime) { fDeadTime += dtime; }
       void IncLostEvent(int lnum = 1) { fLostEvents+=lnum; }
 

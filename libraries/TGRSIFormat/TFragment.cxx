@@ -33,8 +33,6 @@ void TFragment::Clear(Option_t *opt){
    TimeStampHigh = 0;
 
 
-
-
    PPG                = 0; 
    DeadTime           = 0; 
    NumberOfFilters    = 0; 

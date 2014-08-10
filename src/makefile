@@ -26,9 +26,9 @@ LFLAGS = -W1,--no-as-needed
 endif
 
 LIBS  = -lTGRSIint
-LIBS += -lMidasFormat
 LIBS += -lDataParser
 LIBS += -lGRSILoop
+LIBS += -lMidasFormat
 LIBS += -lGRSIFormat
 LIBS += -lGRSIRootIO
 
