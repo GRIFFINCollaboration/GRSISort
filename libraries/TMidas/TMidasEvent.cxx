@@ -307,9 +307,9 @@ void TMidasEvent::Print(const char *option) const
 	      case 6: // TID_DWORD
 		for (int j = 0; j < bankLength; j++) {
 		  if(j==highlight)
-			  printf(ALERTTEXT "0x%08x" RESET_COLOR "%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
+			  printf(ALERTTEXT "0x%08x" RESET_COLOR "%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
 		   else
-			  printf("0x%08x%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
+			  printf("0x%08x%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
 		}
 		printf("\n");
 		break;

@@ -9,7 +9,7 @@ std::map<int,TGRSIStats*> *TGRSIStats::fStatsMap = new std::map<int,TGRSIStats*>
 
 TGRSIStats *TGRSIStats::GetStats(int temp_add) {
   if(fStatsMap->count(temp_add) == 0)
-  	fStatsMap->at(temp_add) = new TGRSIStats(temp_add);
+  	fStatsMap->insert( std::pair<int,TGRSIStats*>(temp_add,new TGRSIStats(temp_add)));
   return fStatsMap->at(temp_add);
 }
 

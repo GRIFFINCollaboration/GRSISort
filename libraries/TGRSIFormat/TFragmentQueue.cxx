@@ -185,8 +185,6 @@ TFragment *TFragmentQueue::Get()	{
 }*/
 
 void TFragmentQueue::Pop()	{	
-    //deletes a fragment from the front of the queue.
-    //should not be used to try to get fragments from the queue!
 
 	while(!TFragmentQueue::Sorted.try_lock())	{ 
 		//do nothing
@@ -198,7 +196,7 @@ void TFragmentQueue::Pop()	{
 	fragments_out++;
 	//fTotalFragsOut++;
 	TFragmentQueue::Sorted.unlock();
-	delete frag;
+	//delete frag;
 }
 
 TFragment *TFragmentQueue::PopFragment()
@@ -208,17 +206,21 @@ TFragment *TFragmentQueue::PopFragment()
 	while(!TFragmentQueue::Sorted.try_lock())	{
 		//do nothing
 	}
-	
-	TFragment *frag = fFragmentQueue.front();
-	if(frag)	{
-		fFragmentQueue.pop();
-		fFragsInQueue--;
-		fragments_out++;
-		fTotalFragsOut++;
+	if(Size()>0) {	
+		TFragment *frag = fFragmentQueue.front();
+		if(frag)	{
+			fFragmentQueue.pop();
+			fFragsInQueue--;
+			fragments_out++;
+			fTotalFragsOut++;
+		}
+	       TFragmentQueue::Sorted.unlock();
+		return frag;
+	} else {
+	       TFragmentQueue::Sorted.unlock();
+		return 0;
 	}
-    TFragmentQueue::Sorted.unlock();
-	return frag;
-}
+}	
 
 int TFragmentQueue::Size()	{
 	return fFragsInQueue;

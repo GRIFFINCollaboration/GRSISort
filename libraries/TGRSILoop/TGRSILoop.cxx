@@ -104,7 +104,8 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
    TFragment *frag = 0;
    while(TFragmentQueue::GetQueue()->FragsInQueue() !=0 || fMidasThreadRunning)
    {
-      if(frag = TFragmentQueue::GetQueue()->PopFragment()) {
+      frag = TFragmentQueue::GetQueue()->PopFragment();
+      if(frag) {
          TGRSIRootIO::Get()->FillFragmentTree(frag);
  	    delete frag;
          fFragsSentToTree++;
@@ -116,6 +117,10 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
                 TFragmentQueue::GetQueue()->FragsInQueue(),fFragsSentToTree);
       }
    }
+
+
+
+
    printf("\n");
    //printf(" \n\n quiting fill tree thread \n\n");
    return;
