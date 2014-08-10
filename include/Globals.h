@@ -28,6 +28,8 @@
 #define BG_MAGENTA "\e[45m"
 #define BG_CYAN    "\e[46m"
 
+#define ALERTTEXT "\e[47m\e[0;31m"
+
 #define NUM_SIS_CHAN 8
 
 #define MAXSAMPLESIZE 8192 

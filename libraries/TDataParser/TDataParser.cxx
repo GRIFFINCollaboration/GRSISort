@@ -370,9 +370,9 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 		uint32_t value  = dword & 0x0fffffff; 
 		switch(packet) {
 			case 0xc0000000:
-            if(!no_waveforms)
-					SetGRIFWaveForm(value,EventFrag);
-				break;
+		            if(!no_waveforms)
+		 		SetGRIFWaveForm(value,EventFrag);
+		     		break;
 			case 0xb0000000:
 				SetGRIFDeadTime(value,EventFrag);
 				break;
@@ -384,7 +384,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);				
 					return NumFragsFound;
 				} else 
-					return -7;
+					return -(x+1);
 	    		break;
  		   default:				
 	      	if((packet & 0x80000000) == 0x00000000) {
@@ -397,7 +397,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
    	       break;
 		};
 	}
-	return -8;
+	return -(0x0fffffff);
 }
 
 
@@ -409,10 +409,10 @@ bool TDataParser::SetGRIFHeader(uint32_t value,TFragment *frag) {
 		return false;
 	}
 	frag->NumberOfFilters =  (value &0x0f000000)>> 24;
-   frag->DataType        =  (value &0x00e00000)>> 21;
-   frag->NumberOfPileups =  (value &0x001c0000)>> 18;
+        frag->DataType        =  (value &0x00e00000)>> 21;
+        frag->NumberOfPileups =  (value &0x001c0000)>> 18;
 	frag->ChannelAddress  =  (value &0x0003fff0)>> 4;
-   frag->DetectorType    =  (value &0x0000000f);
+        frag->DetectorType    =  (value &0x0000000f);
 	return true;
 };
 

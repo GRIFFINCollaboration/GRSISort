@@ -185,8 +185,9 @@ TFragment *TFragmentQueue::Get()	{
 }*/
 
 void TFragmentQueue::Pop()	{	
-    //std::unique_lock<std::mutex> sorted(Sorted,std::defer_lock);
-    //sorted.lock();
+    //deletes a fragment from the front of the queue.
+    //should not be used to try to get fragments from the queue!
+
 	while(!TFragmentQueue::Sorted.try_lock())	{ 
 		//do nothing
 	}	

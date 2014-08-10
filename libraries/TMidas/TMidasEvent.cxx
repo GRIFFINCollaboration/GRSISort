@@ -285,32 +285,59 @@ void TMidasEvent::Print(const char *option) const
 		 fBankList[i], fBankList[i+1], fBankList[i+2], fBankList[i+3],
 		 bankLength, bankType);
 
+	  int highlight = -1;
+	  if(strlen(option)>1) {
+		highlight = atoi(option+1);
+		//printf("highlight = %i\n",highlight);
+	  }	
+
+
 	  if (option[0] == 'a' && found)
 	    switch (bankType)
 	      {
 	      case 4: // TID_WORD
-		for (int j = 0; j < bankLength; j++)
-		  printf("0x%04x%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
+		for (int j = 0; j < bankLength; j++) {
+		  if(j==highlight)
+			  printf(ALERTTEXT "0x%04x" RESET_COLOR "%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
+		   else
+			  printf("0x%04x%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
+		}
 		printf("\n");
 		break;
 	      case 6: // TID_DWORD
-		for (int j = 0; j < bankLength; j++)
-		  printf("0x%08x%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
+		for (int j = 0; j < bankLength; j++) {
+		  if(j==highlight)
+			  printf(ALERTTEXT "0x%08x" RESET_COLOR "%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
+		   else
+			  printf("0x%08x%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
+		}
 		printf("\n");
 		break;
 	      case 7: // TID_nd280 (like a DWORD?)
-		for (int j = 0; j < bankLength; j++)
-		  printf("0x%08x%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
+		for (int j = 0; j < bankLength; j++) {
+		  if(j==highlight)
+			  printf(ALERTTEXT "0x%08x" RESET_COLOR "%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
+		   else
+			  printf("0x%08x%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
+		}
 		printf("\n");
 		break;
 	      case 9: // TID_FLOAT
-		for (int j = 0; j < bankLength; j++)
-		  printf("%.8g%c", ((float*)pdata)[j], (j%10==9)?'\n':' ');
+		for (int j = 0; j < bankLength; j++) {
+		  if(j==highlight)
+			  printf(ALERTTEXT "%.8g" RESET_COLOR "%c", ((float*)pdata)[j], (j%10==9)?'\n':' ');
+		   else
+			  printf("%.8g%c", ((float*)pdata)[j], (j%10==9)?'\n':' ');
+		}
 		printf("\n");
 		break;
 	      case 10: // TID_DOUBLE
-		for (int j = 0; j < bankLength; j++)
-		  printf("%.16g%c", ((double*)pdata)[j], (j%10==9)?'\n':' ');
+		for (int j = 0; j < bankLength; j++) {
+		  if(j==highlight)
+			  printf(ALERTTEXT "%.16g" RESET_COLOR "%c", ((double*)pdata)[j], (j%10==9)?'\n':' ');
+		   else
+			  printf("%.16g%c", ((double*)pdata)[j], (j%10==9)?'\n':' ');
+		}
 		printf("\n");
 		break;
 	      default:

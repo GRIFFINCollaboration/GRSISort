@@ -12,6 +12,8 @@ ClassImp(TGRSILoop)
 
 TGRSILoop *TGRSILoop::fTGRSILoop = 0;
 
+bool TGRSILoop::suppress_error = false;
+
 TGRSILoop *TGRSILoop::Get() {
    if(!fTGRSILoop)
       fTGRSILoop = new TGRSILoop();
@@ -104,10 +106,10 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
    {
       if(frag = TFragmentQueue::GetQueue()->PopFragment()) {
          TGRSIRootIO::Get()->FillFragmentTree(frag);
-			delete frag;
+ 	    delete frag;
          fFragsSentToTree++;
       }
-      if(TFragmentQueue::GetQueue()->FragsInQueue()%5000==0 && !fMidasThreadRunning) {
+      if(!fMidasThreadRunning && TFragmentQueue::GetQueue()->FragsInQueue()%5000==0) {
          printf(DYELLOW "\t%i" RESET_COLOR "/"
                 DBLUE   "%i"   RESET_COLOR
                 "     frags left to write to tree/frags written to tree.         \r",
@@ -334,10 +336,6 @@ void TGRSILoop::SetTIGOdb()  {
    return;
 }
 
-
-
-
-
 bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent)   {
    if(!mevent)
       return false;
@@ -347,20 +345,15 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent)   {
       switch(mevent->GetEventId())  {
          case 1:
             if((banksize = mevent->LocateBank(NULL,"WFDN",&ptr))>0) {
-               //std::vector<TFragment*> frags = TDataParser::TigressDataToFragment((uint32_t*)ptr, banksize,
-               int frags = TDataParser::TigressDataToFragment((uint32_t*)ptr, banksize,
-                                                              (unsigned int)(mevent->GetSerialNumber()),
-                                                              (unsigned int)(mevent->GetTimeStamp()));
+	       if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mevent)) { }
+                              //(unsigned int)(mevent->GetSerialNumber()),
+                              //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
             else if((banksize = mevent->LocateBank(NULL,"GRF1",&ptr))>0) {
-               int frags = TDataParser::GriffinDataToFragment((uint32_t*)ptr,banksize,
-																				  (unsigned int)(mevent->GetSerialNumber()),
-																				  (unsigned int)(mevent->GetTimeStamp()));
-   				if(frags == -1) {
-						printf(DRED "\nBad things are happening. Failed with  %i" RESET_COLOR "\n", frags );
-						mevent->Print("a");
-					}
-	         }
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize, mevent)) { }
+			      //(unsigned int)(mevent->GetSerialNumber()),
+			      //(unsigned int)(mevent->GetTimeStamp()))) { }
+            }
       };
    }
    catch(const std::bad_alloc&) {   }
@@ -386,12 +379,33 @@ bool TGRSILoop::ProcessEPICS() { //TMidasEvent *mevent)   {
 }
 
 
-bool TGRSILoop::ProcessTIGRESS(int *ptr, int &dsize, unsigned int mserial, unsigned int mtime)   {
-   return true;
+bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent)   {
+	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
+	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
+	int frags = TDataParser::TigressDataToFragment(ptr,dsize,mserial,mtime);
+	if(frags>-1)
+	   return true;
+	else	{
+	   if(!suppress_error && mevent)  mevent->Print(Form("a%i",(-1*frags)-1));
+	   return false;
+	}
 }
 
-bool TGRSILoop::ProcessGRIFFIN(int *ptr, int &dsize, unsigned int mserial, unsigned int mtime)   {
-   return true;
+bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent)   {
+	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
+	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
+	int frags = TDataParser::GriffinDataToFragment(ptr,dsize,mserial,mtime);
+	if(frags>-1)	{
+	   return true;
+	} else {	       
+	   if(!suppress_error) {
+		   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+		   printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", (-1*frags)-1);
+	    	   if(mevent)  mevent->Print(Form("a%i",(-1*frags)-1));
+		   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+	   }
+	   return false;
+	}
 }
 
 

@@ -33,12 +33,14 @@ TGRSIRootIO::~TGRSIRootIO() {  }
 
 
 void TGRSIRootIO::SetUpFragmentTree() {
+
    if(foutfile)
       foutfile->cd();
    fTimesFillCalled = 0;
    fFragmentTree = new TTree("FragmentTree","FragmentTree");
    fBufferFrag = 0;
    fFragmentTree->Branch("TFragment","TFragment",&fBufferFrag,100000,99);
+
 }
 
 //void TGRSIRootIO::FillChannelTree(TChannel *chan) {

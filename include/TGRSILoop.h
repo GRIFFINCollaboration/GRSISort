@@ -27,6 +27,7 @@ class TGRSILoop : public TObject {
 
    private:
       static TGRSILoop *fTGRSILoop;
+      static bool suppress_error;
       TGRSILoop();
 
    public:
@@ -52,7 +53,7 @@ class TGRSILoop : public TObject {
       bool fMidasThreadRunning;
       bool fFillTreeThreadRunning;
       
-   
+      void SetSuppressError(bool temp = true) { suppress_error = temp; } 
       bool IsOnline()   { return !fOffline;  }
       bool IsOffline()  { return fOffline;   }
 
@@ -60,8 +61,8 @@ class TGRSILoop : public TObject {
       void ProcessMidasFile(TMidasFile*);
       void FillFragmentTree(TMidasFile*);
       bool ProcessMidasEvent(TMidasEvent*);
-      bool ProcessTIGRESS(int *ptr,int &dsizei,unsigned int mserial=0,unsigned int mtime=0);
-      bool ProcessGRIFFIN(int *ptr,int &dsize,unsigned int mserial=0,unsigned int mtime=0);
+      bool ProcessTIGRESS(uint32_t *ptr,int &dsize,TMidasEvent *mevent=0); 
+      bool ProcessGRIFFIN(uint32_t *ptr,int &dsize,TMidasEvent *mevent=0); 
       bool ProcessEPICS();
 
       void SetFileOdb(char *data,int size);
