@@ -7,6 +7,11 @@ ClassImp(TGRSIStats)
 
 std::map<int,TGRSIStats*> *TGRSIStats::fStatsMap = new std::map<int,TGRSIStats*>;
 
+time_t TGRSIStats::fLowestMidasTimeStamp = 0;
+time_t TGRSIStats::fHighestMidasTimeStamp = 0;
+
+
+
 TGRSIStats *TGRSIStats::GetStats(int temp_add) {
   if(fStatsMap->count(temp_add) == 0)
   	fStatsMap->insert( std::pair<int,TGRSIStats*>(temp_add,new TGRSIStats(temp_add)));
@@ -20,16 +25,15 @@ TGRSIStats::TGRSIStats(int temp_add) { fStatAddress = temp_add;}
 TGRSIStats::~TGRSIStats() { }
 
 void TGRSIStats::Print(Option_t *opt) {
-	printf( "Channel %i|%s deatdtime = %i ns\n",TChannel::GetChannel(GetAddress())->GetNumber(),TChannel::GetChannel(GetAddress())->GetChannelName(),GetDeadTime()   );
-
+	printf( "Channel %i|%s deatdtime = %i seconds\n",TChannel::GetChannel(GetAddress())->GetNumber(),TChannel::GetChannel(GetAddress())->GetChannelName(),GetDeadTime()*10*10E-9   );
 }
 
 void TGRSIStats::Clear(Option_t *opt) {
      fDeadTime = -1;;
      fLostEvents = -1;
      fLastChannelIdSeen = -1;
-
 }
+
 
 
 

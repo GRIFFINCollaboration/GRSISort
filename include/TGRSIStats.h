@@ -13,8 +13,11 @@ class TGRSIStats : public TObject {
       static TGRSIStats *GetStats(int temp_address); 
       static int GetNumberOfStats() { return fStatsMap->size(); }  
 
+
    private:
      static std::map<int,TGRSIStats*> *fStatsMap;
+     static time_t fLowestMidasTimeStamp;
+     static time_t fHighestMidasTimeStamp;
 
      int fStatAddress;
 
@@ -32,6 +35,13 @@ class TGRSIStats : public TObject {
       void IncLostEvent(int lnum = 1) { fLostEvents+=lnum; }
 
       void SetLastChannelId(int last) { fLastChannelIdSeen = last;  }
+
+      static inline void SetLowestMidasTimeStamp(time_t low) { fLowestMidasTimeStamp = low; }
+      static inline void SetHighestMidasTimeStamp(time_t high) { fHighestMidasTimeStamp = high; }
+      static inline time_t GetLowestMidasTimeStamp()  { return fLowestMidasTimeStamp; }
+      static inline time_t GetHighestMidasTimeStamp() { return fHighestMidasTimeStamp; }
+      
+      static int GetRunTime() {return fHighestMidasTimeStamp - fLowestMidasTimeStamp; }
 
 
       virtual void Print(Option_t *opt = "");

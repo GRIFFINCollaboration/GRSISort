@@ -30,13 +30,13 @@ export ERROR_STRING="[ERROR]"
 export WARN_STRING="[WARNING]"
 export COMP_STRING="Now Compiling "
 
-export COM_COLOR=\e[0;34m
-export OBJ_COLOR=\e[0;36m
-export DICT_COLOR=\e[0;36m
-export OK_COLOR=\e[0;32m
-export ERROR_COLOR=\e[0;31m
-export WARN_COLOR=\e[0;33m
-export NO_COLOR=\e[m
+export COM_COLOR=\033[0;34m
+export OBJ_COLOR=\033[0;36m
+export DICT_COLOR=\033[0;36m
+export OK_COLOR=\033[0;32m
+export ERROR_COLOR=\033[0;31m
+export WARN_COLOR=\033[0;33m
+export NO_COLOR=\033[m
 
 MAKE=make --no-print-directory 
 

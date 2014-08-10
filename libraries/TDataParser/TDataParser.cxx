@@ -495,9 +495,15 @@ bool TDataParser::SetGRIFDeadTime(uint32_t value, TFragment *frag) {
 
 void TDataParser::FillStats(TFragment *frag) {
 	TGRSIStats *stat = TGRSIStats::GetStats(frag->ChannelAddress);
-
-//	printf("Filling stats: 0x%08x\n",stat);
+	//printf("Filling stats: 0x%08x\n",stat);
 	stat->IncDeadTime(frag->DeadTime);
+        if( (frag->MidasTimeStamp < TGRSIStats::GetLowestMidasTimeStamp()) ||
+	    (TGRSIStats::GetLowestMidasTimeStamp() == 0)) {
+		TGRSIStats::SetLowestMidasTimeStamp(frag->MidasTimeStamp);
+	} else if (frag->MidasTimeStamp > TGRSIStats::GetHighestMidasTimeStamp()) {
+		TGRSIStats::SetHighestMidasTimeStamp(frag->MidasTimeStamp);
+	}
+	return;
 }
 
 
