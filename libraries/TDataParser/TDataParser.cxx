@@ -53,7 +53,7 @@ int TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int mid
 
    if(!SetTIGTriggerID(dword,EventFrag)) {
       delete EventFrag;
-      printf(RED "Setting TriggerId (0x%008x) falied on midas event: " DYELLOW "%i" RESET_COLOR "\n",dword,midasserialnumber);
+      printf(RED "Setting TriggerId (0x%08x) falied on midas event: " DYELLOW "%i" RESET_COLOR "\n",dword,midasserialnumber);
       return NumFragsFound;  
    }
    x+=1;
@@ -228,7 +228,7 @@ bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment *currentfrag) {
    if ( value < fgMaxTriggerId / 10 ) {  // the trigger id has wrapped around	
       if ( LastTriggerIdLoBits > fgMaxTriggerId * 9 / 10 ) {
          currentfrag->TriggerId = (uint64_t)(LastTriggerIdHiBits + value + fgMaxTriggerId);
-         printf(DBLUE "We are looping new trigger id = %d, last trigger hi bits = %d," 
+         printf(DBLUE "We are looping new trigger id = %lu, last trigger hi bits = %d," 
                       " last trigger lo bits = %d, value = %d, 				midas = %d" 
                        RESET_COLOR "\n", currentfrag->TriggerId, LastTriggerIdHiBits, 
                        LastTriggerIdLoBits, value, 0);//	midasserialnumber);				
@@ -240,7 +240,7 @@ bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment *currentfrag) {
    } else {
       if ( LastTriggerIdLoBits < fgMaxTriggerId / 10 ) {
          currentfrag->TriggerId = (uint64_t)(LastTriggerIdHiBits + value - fgMaxTriggerId);
-         printf(DRED "We are backwards looping new trigger id = %d, last trigger hi bits = %d,"
+         printf(DRED "We are backwards looping new trigger id = %lu, last trigger hi bits = %d,"
                      " last trigger lo bits = %d, value = %d, midas = %d" 
                       RESET_COLOR "\n", currentfrag->TriggerId, LastTriggerIdHiBits, 
                       LastTriggerIdLoBits, value, 0);//midasserialnumber);
