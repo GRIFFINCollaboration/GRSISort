@@ -31,7 +31,7 @@ class TChannel : public TNamed	{
       TChannel();
       static void CopyChannel(TChannel*,TChannel*);
 
-	private:
+  private:
       TChannel(const char *address);
       static TChannel *fTChannel;
 
@@ -57,17 +57,17 @@ class TChannel : public TNamed	{
       void SetChannel(int taddress, 
 		                int tnumber = 0, 
 		                std::string tname = "");
-	public:
-	   inline void SetAddress(int &tmpadd) 			   {address = tmpadd;};
-	   inline void SetChannelName(const char *tmpname)	{channelname.assign(tmpname);} 
-	   inline void SetNumber(int &tmpnum)				   {number = tmpnum;}
-	   inline void SetStream(int &tmpstream)			   {stream = tmpstream;}
-      inline void SetUserInfoNumber(int &tempinfo)    {userinfonumber = tempinfo;}
-      inline void SetDigitizerType(std::string &tmpstr) {digitizertype = tmpstr;}
-      inline void SetTypeName(std::string &tmpstr)    {type_name = tmpstr;}
+  public:
+     inline void SetAddress(int &tmpadd) 			   {address = tmpadd;};
+     inline void SetChannelName(const char *tmpname)	{channelname.assign(tmpname);} 
+     inline void SetNumber(int &tmpnum)				   {number = tmpnum;}
+     inline void SetStream(int &tmpstream)			   {stream = tmpstream;}
+     inline void SetUserInfoNumber(int &tempinfo)    {userinfonumber = tempinfo;}
+     inline void SetDigitizerType(std::string &tmpstr) {digitizertype = tmpstr;}
+     inline void SetTypeName(std::string &tmpstr)    {type_name = tmpstr;}
 
-		int	GetNumber()		 	         { return number;  }
-		int	GetAddress() 			      { return address; }
+     int	GetNumber()		 	         { return number;  }
+     int	GetAddress() 			      { return address; }
       int   GetIntegration()           { return integration;   }
       int   GetStream()                { return stream;  }
       int   GetUserInfoNumber()        { return userinfonumber;}

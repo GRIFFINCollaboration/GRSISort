@@ -1,0 +1,19 @@
+
+
+
+{
+
+	TH1D *hist = (TH1D*)(GetOutputList()->FindObject(Form("Charge_0x%04x",fragment->ChannelAddress)));
+	if(hist) hist->Fill(fragment->Charge.at(0)/512.0);
+
+
+	TH2D *mat = (TH2D*)(GetOutputList()->FindObject("hp_charge"));
+	if(mat) mat->Fill(channel->GetNumber(),fragment->Charge.at(0)/512.0);
+
+
+
+	hist = (TH1D*)(GetOutputList()->FindObject("test"));
+	if(hist) hist->Fill(channel->GetNumber());
+
+
+}

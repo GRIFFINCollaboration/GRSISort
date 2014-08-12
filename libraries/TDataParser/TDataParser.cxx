@@ -330,41 +330,43 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 
    EventFrag->MidasTimeStamp = midastime;
 	EventFrag->MidasId = midasserialnumber;	 
-   
-	if(!SetGRIFHeader(data[0],EventFrag)) {
+
+	int x = 0;  
+ 
+	if(!SetGRIFHeader(data[x++],EventFrag)) {
 		printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n",data[0]);
 		delete EventFrag;
 		return -1;	
 	}
 
-	if(!SetGRIFPPG(data[1],EventFrag)) {
+	if(!SetGRIFPPG(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -2;;
 	}
 
-	if(!SetGRIFMasterFilterId(data[2],EventFrag)) {
+	if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -3;
 	}
 
-	if(!SetGRIFMasterFilterPattern(data[3],EventFrag)) {
+	if(!SetGRIFMasterFilterPattern(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -4;
 	}
 
 
-	if(!SetGRIFChannelTriggerId(data[4],EventFrag)) {
+	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -5;
 	}
 
-	if(!SetGRIFTimeStampLow(data[5],EventFrag)) {
+	if(!SetGRIFTimeStampLow(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -6;
 	}
 
 	int  kwordcounter = 0;
-	for(int x=6;x<size;x++) {
+	for(;x<size;x++) {
    	uint32_t dword  = *(data+x);
 		uint32_t packet = dword & 0xf0000000;
 		uint32_t value  = dword & 0x0fffffff; 

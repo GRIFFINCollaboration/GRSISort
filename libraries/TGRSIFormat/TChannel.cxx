@@ -38,16 +38,16 @@ TChannel::TChannel() {  };
 TChannel::~TChannel()	{	}
 
 void TChannel::Clear(Option_t *opt){  
-	address				=	0xffffffff;
-	integration			=	0;
-	number				=	0;
+   address				=	0xffffffff;
+   integration			=	0;
+   number				=	0;
    stream            =  0;
    userinfonumber    =  0xffffffff;
 
-	ENGCoefficients.clear();
-	CFDCoefficients.clear();
-	LEDCoefficients.clear();
-	TIMECoefficients.clear();
+   ENGCoefficients.clear();
+   CFDCoefficients.clear();
+   LEDCoefficients.clear();
+   TIMECoefficients.clear();
 }
 
 TChannel *TChannel::GetChannel(int temp_address) {
