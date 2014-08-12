@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 
 	//proof->AddIncludePath("/home/grifuser/packages/GRSISort/include");
 
-	proof->Exec("gSystem->Load(\"/home/grifuser/packages/GRSISort/libraries/libGRSIFormat.so\")");
+	proof->Exec("gSystem->Load(\"$(GRSISYS)/libraries/libGRSIFormat.so\")");
 
 	
 
