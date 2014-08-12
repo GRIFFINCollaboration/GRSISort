@@ -1,5 +1,5 @@
-//g++ main.cxx TFragmentSelector.cxx TFragmentSelectorDict.cxx -I ../GRSISort/include -L ../libraries `root-config --cflags --glibs` -lProof -lGRSIFormat
 //rootcint TFragmentSelectorDict.cxx -c TFragmentSelector.h
+//g++ main.cxx TFragmentSelector.cxx TFragmentSelectorDict.cxx -I ../GRSISort/include -L ../libraries `root-config --cflags --glibs` -lProof -lGRSIFormat -o runme.exe
 
 #include <cstdio>
 #include <vector>
@@ -34,6 +34,8 @@ int main(int argc, char **argv) {
 
 	chain->SetProof();
 	TFragmentSelector *fragSelc = new TFragmentSelector;
+
+//	proof->SetBit(TProof::kUsingSessionGui);
 
 	chain->Process("TFragmentSelector.cxx+");   //fragSelc);
 	//gProof->Process("TFragmentSelector.cxx+");   //fragSelc);
