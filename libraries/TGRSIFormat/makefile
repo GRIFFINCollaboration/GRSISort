@@ -12,7 +12,17 @@ CAT=cat
 
 all: libGRSIFormat.so
 
-libGRSIFormat.so: $(OBJECTS)
+INCLUDES = UserInitObj.h UserFillObj.h
+
+UserInitObj.h:
+	@printf " ${COM_COLOR}Now Linking   ${OBJ_COLOR}UserInitObj${NO_COLOR}\n" 
+	@ln -s $(GRSISYS)/users/UserInitObj.h
+
+UserFillObj.h:
+	@printf " ${COM_COLOR}Now Linking   ${OBJ_COLOR}UserFillObj${NO_COLOR}\n" 
+	@ln -s $(GRSISYS)/users/UserFillObj.h
+
+libGRSIFormat.so: $(INCLUDES) $(OBJECTS)
 	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"
 	@$(COMPILESHARED)$@ $(CFLAGS) -o$@ $(OBJECTS) 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
@@ -58,7 +68,7 @@ libGRSIFormat.so: $(OBJECTS)
 	@$(RM) -f temp.errors temp.log
 
 clean:
-	$(RM) $(OBJECTS) *~ *Dict* *so 
+	$(RM) $(OBJECTS) *~ *Dict* *so *.h 
 
 
 

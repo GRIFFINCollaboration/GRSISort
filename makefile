@@ -7,6 +7,8 @@ export PLATFORM:= $(PLATFORM)
 
 export CFLAGS = -std=c++0x -O2 -I$(PWD)/include `root-config --cflags`
 
+#export GRSISYS:= $(GRSISYS)
+
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__ = 1
 export CFLAGS += -DOS_DARWIN -std=c++11 -DHAVE_ZLIB -lz
