@@ -50,7 +50,8 @@ class TGRSIint : public TRint {
       bool fPrintHelp;
       
       bool fAutoSort;
-
+      bool fFragmentSort;
+      bool fMakeAnalysisTree;
 
       //TList *fInputRootFiles;
       //TList *fInputMidasFiles;

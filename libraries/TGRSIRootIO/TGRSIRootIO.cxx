@@ -2,7 +2,11 @@
 #include "TGRSIRootIO.h"
 #include "TFragmentQueue.h"
 
+#include "TGRSIOptions.h"
+
 ClassImp(TGRSIRootIO)
+
+
 
 TGRSIRootIO *TGRSIRootIO::fTGRSIRootIO = 0;
 
@@ -116,6 +120,48 @@ void TGRSIRootIO::CloseRootOutFile()   {
 
 
 };
+
+
+void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
+
+   //printf("here1\n");
+
+   TChain *chain = new TChain("FragmentTree");
+
+   for(int x=0;x<TGRSIOptions::Get()->GetInputRoot().size();x++) {
+      TFile f(TGRSIOptions::Get()->GetInputRoot().at(x).c_str(),"read");
+      //printf("%s  f.FindObject(\"FragmentTree\") =0x%08x\n",f.GetName(),     f.FindObject("FragmentTree"));
+      //if(f.FindObject("FragmentTree")) {
+	//printf("here 4 \n");
+	chain->Add(TGRSIOptions::Get()->GetInputRoot().at(x).c_str());
+      //}
+      f.Close();
+   }
+
+   //printf("here2\n");
+   if(chain->GetNtrees()==0)
+	return;
+   
+   //printf("here3\n");
+
+   TProofLite *proof = (TProofLite*)TProofLite::Open("");
+   proof->ClearCache();
+   proof->Exec("gSystem->Load(\"$(GRSISYS)/libraries/libGRSIFormat.so\")");
+
+   int runnumber =0;
+   int subrunnumber=0;
+ 
+ 
+   chain->SetProof();
+   TFragmentSelector *fragSelc = new TFragmentSelector(runnumber,subrunnumber);
+   chain->Process(fragSelc); 
+
+   chain->Delete();
+
+   return;
+}
+
+
 
 
 

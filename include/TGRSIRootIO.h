@@ -4,10 +4,15 @@
 #include <cstdio>
 
 #include <TTree.h>
+#include <TChain.h>
 #include <TFile.h>
+#include <TProofLite.h>
+
+#include "TFragmentSelector.h"
 
 #include "Globals.h"
 #include "TChannel.h"
+
 
 class TGRSIRootIO : public TObject {
 
@@ -45,6 +50,10 @@ class TGRSIRootIO : public TObject {
       TTree *GetFragmentTree()  { return fFragmentTree;  }
       void FillFragmentTree(TFragment*);
       void FinalizeFragmentTree();
+
+
+      void MakeUserHistsFromFragmentTree();
+
 
    ClassDef(TGRSIRootIO,0)
 

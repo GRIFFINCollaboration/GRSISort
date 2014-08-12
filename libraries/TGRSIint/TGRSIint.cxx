@@ -3,6 +3,7 @@
 #include "TGRSIint.h"
 #include "TGRSILoop.h"
 #include "TGRSIOptions.h"
+#include "TGRSIRootIO.h"
 #include "TDataParser.h"
 
 #include "Globals.h"
@@ -38,11 +39,15 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
 
 void TGRSIint::InitFlags() {
    fAutoSort = false;
+   fFragmentSort = false;
+   fMakeAnalysisTree = false;
 }
 
 void TGRSIint::ApplyOptions() {
   if(fAutoSort)
-   TGRSILoop::Get()->SortMidas();
+    TGRSILoop::Get()->SortMidas();
+  if(fFragmentSort & TGRSIOptions::Get()->GetInputRoot().size()!=0)
+    TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
 
 }
 
@@ -110,6 +115,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
             switch(toupper(key)) {
                case 'S':
                   printf(DBLUE "SORT!!" RESET_COLOR "\n");
+                  fFragmentSort = true;
                   break;
                case 'H':
                   if(sargv.length()==2) {
