@@ -24,7 +24,6 @@ export BASE:= $(CURDIR)
 
 export CAT=cat
 
-export ECHO=echo -e
 export OK_STRING="[OK]"
 export ERROR_STRING="[ERROR]"
 export WARN_STRING="[WARNING]"
@@ -56,7 +55,7 @@ $(ALLDIRS):
 
 grsisort: src
 	@mv $</$@ bin/$@
-	@echo -e " \033[0;33m Compliation Success. woohoo! \033[m"
+	@echo " \033[0;33m Compliation Success. woohoo! \033[m"
 
 bin:
 	@mkdir $@
