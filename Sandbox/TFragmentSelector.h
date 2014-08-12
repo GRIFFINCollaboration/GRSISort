@@ -20,8 +20,8 @@
 
 
 // Header file for the classes stored in the TTree if any.
-#include "/home/grifuser/packages/GRSISort/include/TFragment.h"
-#include "/home/grifuser/packages/GRSISort/include/TChannel.h"
+#include "../include/TFragment.h"
+#include "../include/TChannel.h"
 
 
 

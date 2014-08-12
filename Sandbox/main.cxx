@@ -1,5 +1,5 @@
+//g++ main.cxx TFragmentSelector.cxx TFragmentSelectorDict.cxx -I ../GRSISort/include -L ../libraries `root-config --cflags --glibs` -lProof -lGRSIFormat
 //rootcint TFragmentSelectorDict.cxx -c TFragmentSelector.h
-//g++ main.cxx TFragmentSelector.cxx TFragmentSelectorDict.cxx -I ../GRSISort/include -L ../GRSISort/libraries -lGRSIFormat `root-config --cflags --glibs` -lProof
 
 #include <cstdio>
 #include <vector>
