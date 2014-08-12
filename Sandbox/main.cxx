@@ -1,5 +1,5 @@
 //rootcint TFragmentSelectorDict.cxx -c TFragmentSelector.h
-//g++ main.cxx TFragmentSelector.cxx TFragmentSelectorDict.cxx -I ../GRSISort/include -L ../GRSISort/libraries -lGRSIFormat `root-config --cflags --glibs` -lProof
+//g++ main.cxx TFragmentSelector.cxx TFragmentSelectorDict.cxx -I ../GRSISort/include -L ../libraries `root-config --cflags --glibs` -lProof -lGRSIFormat -o runme.exe
 
 #include <cstdio>
 #include <vector>
@@ -28,12 +28,14 @@ int main(int argc, char **argv) {
 
 	//proof->AddIncludePath("/home/grifuser/packages/GRSISort/include");
 
-	proof->Exec("gSystem->Load(\"/home/grifuser/packages/GRSISort/libraries/libGRSIFormat.so\")");
+	proof->Exec("gSystem->Load(\"$(GRSISYS)/libraries/libGRSIFormat.so\")");
 
 	
 
 	chain->SetProof();
 	TFragmentSelector *fragSelc = new TFragmentSelector;
+
+//	proof->SetBit(TProof::kUsingSessionGui);
 
 	chain->Process("TFragmentSelector.cxx+");   //fragSelc);
 	//gProof->Process("TFragmentSelector.cxx+");   //fragSelc);
