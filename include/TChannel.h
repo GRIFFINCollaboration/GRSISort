@@ -107,6 +107,7 @@ class TChannel : public TNamed	{
 		void DestroyTIMECal();
 
 		virtual void Print(Option_t *opt = "");
+                using TNamed::Print;
 		virtual void Clear(Option_t *opt = "");
       static  void PrintAll(Option_t *opt = "");      
 

@@ -54,7 +54,9 @@ public:
    std::vector<int16_t>  wavebuffer;	//->
   
    virtual void	Clear(Option_t *opt = ""); //!
-   virtual void 	Print(Option_t *opt = ""); //!
+   
+   using TObject::Print; 
+   virtual void Print(Option_t *opt = ""); //!
     
    ClassDef(TFragment,3);  // TFragment structure
 };
