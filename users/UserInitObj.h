@@ -36,6 +36,9 @@
    GetOutputList()->Add(new TH1D("Charge_0x100e","Charge_0x100e",4000,0,4000));
    GetOutputList()->Add(new TH1D("Charge_0x100f","Charge_0x100f",4000,0,4000));
 
+   GetOutputList()->Add(new TH1D("Energy_Charge_0x0002","Charge_0x0002",4000,0,4000));
+
+
    GetOutputList()->Add(new TH1D("Cfd_0x100f","Timestamp_0x100f",4000,0,4000));
 
 	
