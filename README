@@ -1,0 +1,17 @@
+GRSISort
+========
+
+A lean, mean, sorting machine. 
+
+To compile for a .sh shell put the following in your ~/.bashrc
+
+export GRSISYS=/path/to/dir/of/GRSISort
+export PATH=$GRSISYS/bin:$PATH
+export LD_LIBRARY_PATH=$GRSISYS/libraries:$LD_LIBRARY_PATH
+
+To compile using a .crsh or .tcsh shell put the following in your ~/.cshrc or ~/.tcshrc 
+setenv GRSISYS /path/to/dir/of/GRSISort
+set path = ($path $GRSISYS/bin)
+setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:$GRSISYS/libraries
+
+
