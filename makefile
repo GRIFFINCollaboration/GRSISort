@@ -43,10 +43,10 @@ MAKE=make --no-print-directory
 
 .PHONY: all subdirs $(ALLDIRS) clean
 
-all: print subdirs grsisort
+all: print subdirs bin grsisort
 
 print:
-	echo $(PLATFORM)
+	@echo "Compiling on $(PLATFORM)"
 
 subdirs: $(SUBDIRS)
 
@@ -57,10 +57,12 @@ $(ALLDIRS):
 
 grsisort: src
 	@mv $</$@ bin/$@
-	@echo -e " \033[0;33m Compliation Success. woohoo! \033[m"
+	@echo " \033[0;33m Compliation Success. woohoo! \033[m"
 
 bin:
-	@mkdir $@
+ifeq ($(wildcard ./bin),) 
+	@mkdir bin	 
+endif
 
 clean:
 	@$(RM) *~
