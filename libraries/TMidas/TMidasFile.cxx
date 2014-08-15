@@ -408,27 +408,35 @@ void TMidasFile::OutClose()
 }
 
 
-int	TMidasFile::GetRunNumber()	{
-	if(fFilename.length()==0) {
-		return 0;
-	}
-	std::size_t found = fFilename.rfind(".mid");
-	if(found == std::string::npos) {
-		return 0;
-	}
-	std::size_t found2 = fFilename.rfind("-");
+int TMidasFile::GetRunNumber() {
+   if(fFilename.length()==0) {
+      return 0;
+   }
+   std::size_t found = fFilename.rfind(".mid");
+   if(found == std::string::npos) {
+      return 0;
+   }
+   std::size_t found2 = fFilename.rfind("-");
    //printf("found 2 = %i\n",found2);
    if(found2 == std::string::npos)
       found2 = fFilename.rfind("_");
-	std::string temp;
-	if(found2 == std::string::npos || fFilename.compare(found2+3,4,".mid") !=0 ) 
-		temp = fFilename.substr(found-5,5);
-	else {
-		temp = fFilename.substr(found-9,5);
-	}
-	//printf(" %s \t %i \n",temp.c_str(),atoi(temp.c_str()));
-	return atoi(temp.c_str());
+      std::string temp;
+      if(found2 == std::string::npos || fFilename.compare(found2+3,4,".mid") !=0 ) 
+         temp = fFilename.substr(found-5,5);
+      else {
+         temp = fFilename.substr(found-9,5);
+   }
+   //printf(" %s \t %i \n",temp.c_str(),atoi(temp.c_str()));
+   return atoi(temp.c_str());
 };
+
+
+
+
+
+
+
+
 
 int	TMidasFile::GetSubRunNumber()	{
 	if(fFilename.length()==0)

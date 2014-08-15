@@ -57,7 +57,7 @@ $(ALLDIRS):
 
 grsisort: src
 	@mv $</$@ bin/$@
-	@echo " \033[0;33m Compliation Success. woohoo! \033[m"
+	@echo -e " \033[0;33m Compliation Success. woohoo! \033[m"
 
 bin:
 ifeq ($(wildcard ./bin),) 

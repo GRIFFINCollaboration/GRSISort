@@ -99,7 +99,6 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
 
    if(!TGRSIRootIO::Get()->GetRootOutFile())
       TGRSIRootIO::Get()->SetUpRootOutFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
-
    
    fFragsSentToTree = 0;
    TFragment *frag = 0;
