@@ -1,0 +1,22 @@
+
+
+1.  Either create or edit the .root.mimes file in your home directory and
+add the following lines to the bottom:
+
+[root/file]
+pattern = *.spe
+icon = hdb_s.xpm hdb_t.xpm
+action = .x Browser_spe.C("%s")
+
+
+2.  put the attached files, hdb_s.xpm and hdb_t.xpm in the $ROOTSYS/icons
+directory.
+
+3. put the attached files, Browser_spe.C and load_spe.C, in the
+$ROOTSYS/macros directory.
+
+4. start root, open a tbrowser navigate to an spe file and click away.
+
+
+
+

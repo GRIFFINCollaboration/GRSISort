@@ -17,16 +17,30 @@
 */ 
 
 #include <TServerSocket.h>
+#include <TMonitor.h>
+#include <TSocket.h>
+#include <TMessage.h>
+
 
 class TGRSIServer : public TServerSocket {
 
    public:
       static TGRSIServer *instance(int port=9099);
       virtual ~TGRSIServer();
+      
+      void StopServer() { if(fRunning) fRunning = false; }
+
 
    private:
       static TGRSIServer *fGRSIServer;
       TGRSIServer(int port);
+      bool fRunning;
+
+
+      TMonitor *fMonitor;
+
+      void AcceptConnectionThread();      
+      void MonitorConnectionsThread();    
 
    ClassDef(TGRSIServer,0)
 
