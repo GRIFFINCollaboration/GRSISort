@@ -91,7 +91,7 @@ class TChannel : public TNamed	{
 		inline void SetIntegration(int &tmpint)			{integration = tmpint;}
       inline void SetStream(int &tmpstream)			   {stream = tmpstream;}
       inline void SetUserInfoNumber(int &tempinfo)    {userinfonumber = tempinfo;}
-      inline void SetDigitizerType(std::string &tmpstr) {digitizertype = tmpstr;}
+      inline void SetDigitizerType(const char *tmpstr) {digitizertype.assign(tmpstr);}
       inline void SetTypeName(std::string &tmpstr)    {type_name = tmpstr;}
    
 
@@ -144,8 +144,8 @@ class TChannel : public TNamed	{
 		void DestroyLEDCal();
 		void DestroyTIMECal();
 
-		void ReadCalFile(std::string infilename = "");
-		void WriteCalFile(std::string outfilename = "");
+		static void ReadCalFile(std::string infilename = "");
+		static void WriteCalFile(std::string outfilename = "");
 
 
 		virtual void Print(Option_t *opt = "");

@@ -36,6 +36,7 @@ void TChannel::CopyChannel(TChannel *copyto,TChannel *source) {
    copyto->stream         = source->GetStream();
    copyto->userinfonumber = source->GetUserInfoNumber();
    copyto->channelname    = source->GetChannelName();
+	copyto->SetDigitizerType(source->GetDigitizerType());
    copyto->SetName(source->GetName());
    
    copyto->ENGCoefficients  = source->GetENGCoeff();
@@ -85,13 +86,15 @@ TChannel *TChannel::GetChannel(int temp_address) {
    //   return fChannelMap->at(temp_address);
    //} else {
 		// printf("making a new tchannel for: 0x%08x\n",temp_address);
-      TChannel *chan;
-		chan->SetName(Form("0x%08x",temp_address));
-      chan->address = temp_address;
-      fChannelMap->insert(std::make_pair(temp_address,chan));
-      return chan;
+	if(fChannelMap->count(temp_address)==0)
+		fChannelMap->insert(std::make_pair(temp_address,new TChannel));
+   TChannel *chan = fChannelMap->at(temp_address);
+	chan->SetName(Form("0x%08x",temp_address));
+   chan->address = temp_address;
+   fChannelMap->insert(std::make_pair(temp_address,chan));
+   return chan;
    //}
-   return 0; //chan;
+   //return 0; //chan;
 
 /*   std::map<int,TChannel*>::const_iterator found;
    if(temp_address == 0xffffffff) {
@@ -256,14 +259,17 @@ double TChannel::CalibrateTIME(double time)	{
 
 
 void TChannel::Print(Option_t *opt)	{
-   printf( DBLUE "%s\t" DYELLOW "0x%08x" RESET_COLOR "\n",this->GetChannelName(),this->GetAddress());
-	printf( "Channel: %i\t\t" DBLUE "%s" RESET_COLOR "\n",number,channelname.c_str());
-	printf( "Address: " DMAGENTA "0x%08x" RESET_COLOR "\n", address);
-	printf( "Energy Coefficients:\t"  );
+   //printf( DBLUE "%s\t" DYELLOW "0x%08x" RESET_COLOR "\n",this->GetChannelName(),this->GetAddress());
+	printf( "Name:      %s\n",channelname.c_str());
+	printf( "Number:    %i\n",number);
+	printf( "Address:   0x%08x\n", address);
+	printf( "Digitizer: %s\n",digitizertype.c_str()); 
+	printf( "EngCoeff:  "  );
 	for(int x=0;x<ENGCoefficients.size();x++)
-		printf( DRED "E[%i]: %f  " RESET_COLOR, x, ENGCoefficients[x] );
-	printf( "ENGChi2:  %.02f\n");
-	printf( "\n//====================================\n");
+		printf( "%.02f\t", ENGCoefficients.at(x) );
+	printf("\n");
+	printf( "ENGChi2:   %.02f\n",ENGChi2);
+	printf( "\n//====================================//\n");
 };
 
 //void TChannel::PrintAll(Option_t *opt) {
@@ -386,7 +392,7 @@ void TChannel::ReadCalFile(std::string infilename) {
 					int tempstream; ss>>tempstream;
 					channel->SetStream(tempstream);
 				} else if(type.compare("DIGITZER")==0) {
-					channel->SetDigitizerType(line);
+					channel->SetDigitizerType(line.c_str());
 				} else if(type.compare("ENGCHI2")==0) {
 					double tempdbl; ss>>tempdbl;
 					channel->SetENGChi2(tempdbl);

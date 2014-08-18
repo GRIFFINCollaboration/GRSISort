@@ -334,7 +334,7 @@ void TGRSILoop::SetTIGOdb()  {
       //printf("temp chan(%s) number set to: %i\n",tempchan->GetChannelName(),tempchan->GetNumber());
       if(type.at(x) != 0) {
          tempchan->SetTypeName(typemap[type.at(x)].first);
-         tempchan->SetDigitizerType(typemap[type.at(x)].second);
+         tempchan->SetDigitizerType(typemap[type.at(x)].second.c_str());
       }
       
       tempchan->SetUserInfoNumber(x);
