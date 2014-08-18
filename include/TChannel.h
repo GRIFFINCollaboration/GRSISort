@@ -16,16 +16,15 @@
 
 class TChannel : public TNamed	{
 
-  public:
+   public:
       //static TChannel *NewChannel(int temp_adress, 
       //                            int temp_number=0, 
       //                            char *temp_name = "");
       static TChannel *GetChannel(int temp_address); 
-//      static TChannel *GetChannel(const char *temp_name = "");
+      //static TChannel *GetChannel(const char *temp_name = "");
       virtual ~TChannel(); 
 
       static int GetNumberOfChannels() { return fChannelList->GetSize(); }
-
       static TIter *GetChannelIter() { TIter *iter = new TIter(fChannelList); return iter;}
 
       TChannel();
@@ -42,14 +41,12 @@ class TChannel : public TNamed	{
 		std::string    digitizertype;
       int 			   number;
 		int				stream;
-      //int            digtype;
-
       int            userinfonumber;
 
-		std::vector<double> ENGCoefficients;
-		std::vector<double> CFDCoefficients;
-		std::vector<double> LEDCoefficients;
-		std::vector<double> TIMECoefficients;
+		std::vector<double> ENGCoefficients;  double ENGChi2;
+      std::vector<double> CFDCoefficients;  double CFDChi2;
+		std::vector<double> LEDCoefficients;  double LEDChi2;
+		std::vector<double> TIMECoefficients; double TIMEChi2;
 
       static TList *fChannelList;
       static std::map<int,TChannel*> *fChannelMap;
@@ -58,16 +55,17 @@ class TChannel : public TNamed	{
 		                int tnumber = 0, 
 		                std::string tname = "");
   public:
-     inline void SetAddress(int &tmpadd) 			   {address = tmpadd;};
-     inline void SetChannelName(const char *tmpname)	{channelname.assign(tmpname);} 
-     inline void SetNumber(int &tmpnum)				   {number = tmpnum;}
-     inline void SetStream(int &tmpstream)			   {stream = tmpstream;}
-     inline void SetUserInfoNumber(int &tempinfo)    {userinfonumber = tempinfo;}
-     inline void SetDigitizerType(std::string &tmpstr) {digitizertype = tmpstr;}
-     inline void SetTypeName(std::string &tmpstr)    {type_name = tmpstr;}
+      inline void SetAddress(int &tmpadd) 			   {address = tmpadd;};
+      inline void SetChannelName(const char *tmpname)	{channelname.assign(tmpname);} 
+      inline void SetNumber(int &tmpnum)				   {number = tmpnum;}
+      inline void SetStream(int &tmpstream)			   {stream = tmpstream;}
+      inline void SetUserInfoNumber(int &tempinfo)    {userinfonumber = tempinfo;}
+      inline void SetDigitizerType(std::string &tmpstr) {digitizertype = tmpstr;}
+      inline void SetTypeName(std::string &tmpstr)    {type_name = tmpstr;}
+   
 
-     int	GetNumber()		 	         { return number;  }
-     int	GetAddress() 			      { return address; }
+      int	GetNumber()		 	         { return number;  }
+      int	GetAddress() 			      { return address; }
       int   GetIntegration()           { return integration;   }
       int   GetStream()                { return stream;  }
       int   GetUserInfoNumber()        { return userinfonumber;}
@@ -75,6 +73,10 @@ class TChannel : public TNamed	{
       const char *GetDigitizerType()   { return digitizertype.c_str(); }
 		//write the rest of the gettters/setters...
 
+	   double GetENGChi2()  { return ENGChi2; }
+	   double GetCFDChi2()  { return CFDChi2; }
+	   double GetLEDChi2()  { return LEDChi2; }
+ 	   double GetTIMEChi2() { return TIMEChi2; }
 
 		std::vector<double> GetENGCoeff()  { return ENGCoefficients;}
 		std::vector<double> GetCFDCoeff()  { return CFDCoefficients;}
@@ -86,7 +88,12 @@ class TChannel : public TNamed	{
 	   inline void AddCFDCoefficient(double temp)  { CFDCoefficients.push_back(temp);}
 	   inline void AddLEDCoefficient(double temp)  { LEDCoefficients.push_back(temp);}
  	   inline void AddTIMECoefficient(double temp) { TIMECoefficients.push_back(temp);}
-	  
+
+	   inline void SetENGChi2(double temp)  { ENGChi2 = temp; }
+	   inline void SetCFDChi2(double temp)  { CFDChi2 = temp; }
+	   inline void SetLEDChi2(double temp)  { LEDChi2 = temp; }
+ 	   inline void SetTIMEChi2(double temp) { TIMEChi2 = temp; }
+
 		//void CalibrateFragment(TFragment*);
 
 		double CalibrateENG(double);
