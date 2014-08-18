@@ -1,6 +1,31 @@
 #ifndef TCHANNEL_H
 #define TCHANNEL_H
 
+/*
+ * Author:  P.C. Bender, <pcbend@gmail.com>
+ * 
+ * Please indicate changes with your initials.
+ * 
+ *
+ */
+
+
+/* 
+ * The TChannel is designed to hold all non-essential 
+ * information of a TFragment (name, energy coeff, etc..)
+ * that would otherwise clog up the FragmentTree.  The TChannel class
+ * contains a static map to every channel make retrieval fairly 
+ * easy.  The TChannel class also contains the ability to 
+ * read and write a custom calibration file to set or 
+ * save the TChannel information.
+ *
+ */
+
+
+
+
+
+
 #include<string>
 #include<cmath>
 #include<utility>
@@ -24,11 +49,13 @@ class TChannel : public TNamed	{
       //static TChannel *GetChannel(const char *temp_name = "");
       virtual ~TChannel(); 
 
-      static int GetNumberOfChannels() { return fChannelList->GetSize(); }
-      static TIter *GetChannelIter() { TIter *iter = new TIter(fChannelList); return iter;}
+      static int GetNumberOfChannels() { return fChannelMap->size(); }
+      //static TIter *GetChannelIter() { TIter *iter = new TIter(fChannelList); return iter;}
 
       TChannel();
+		static void AddChannel(TChannel*);
       static void CopyChannel(TChannel*,TChannel*);
+		static std::map<int,TChannel*> *GetChannelMap() { return fChannelMap; }
 
   private:
       TChannel(const char *address);
@@ -48,16 +75,20 @@ class TChannel : public TNamed	{
 		std::vector<double> LEDCoefficients;  double LEDChi2;
 		std::vector<double> TIMECoefficients; double TIMEChi2;
 
-      static TList *fChannelList;
+      //static TList *fChannelList;
       static std::map<int,TChannel*> *fChannelMap;
 
       void SetChannel(int taddress, 
 		                int tnumber = 0, 
 		                std::string tname = "");
+
+		static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
+
   public:
       inline void SetAddress(int &tmpadd) 			   {address = tmpadd;};
       inline void SetChannelName(const char *tmpname)	{channelname.assign(tmpname);} 
       inline void SetNumber(int &tmpnum)				   {number = tmpnum;}
+		inline void SetIntegration(int &tmpint)			{integration = tmpint;}
       inline void SetStream(int &tmpstream)			   {stream = tmpstream;}
       inline void SetUserInfoNumber(int &tempinfo)    {userinfonumber = tempinfo;}
       inline void SetDigitizerType(std::string &tmpstr) {digitizertype = tmpstr;}
@@ -113,10 +144,13 @@ class TChannel : public TNamed	{
 		void DestroyLEDCal();
 		void DestroyTIMECal();
 
+		void ReadCalFile(std::string infilename = "");
+		void WriteCalFile(std::string outfilename = "");
+
+
 		virtual void Print(Option_t *opt = "");
-                using TNamed::Print;
 		virtual void Clear(Option_t *opt = "");
-      static  void PrintAll(Option_t *opt = "");      
+      //static  void PrintAll(Option_t *opt = "");      
 
 
 	  ClassDef(TChannel,2)
