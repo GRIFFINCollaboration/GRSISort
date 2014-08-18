@@ -4,9 +4,10 @@
 #include "Globals.h"
 
 #include<vector>
-#include<stdint.h>
+//#include<stdint.h>
 #include<time.h>
 
+#include<Rtypes.h>
 #include<TObject.h>
 
 //#ifndef __CINT__
@@ -21,37 +22,37 @@ public:
    ~TFragment(); 
 
    time_t   MidasTimeStamp;       //->
-   uint32_t MidasId;              //->
-   uint64_t TriggerId;            //->          MasterFilterID in Griffin   
-   uint32_t FragmentId;           //->
-   int32_t  TriggerBitPattern;	 //->          MasterFilterPattern in Griffin
+   Int_t	   MidasId;              //->
+   Long_t   TriggerId;            //->          MasterFilterID in Griffin   
+   Int_t    FragmentId;           //->
+   Int_t    TriggerBitPattern;	 //->          MasterFilterPattern in Griffin
 
-   int32_t ChannelNumber;         //->
-   int32_t ChannelAddress;        //->
-   std::vector<int32_t> Cfd;      //->
-   std::vector<int32_t> Led;      //->
-   std::vector<int32_t> Charge;	  //->
+   Short_t ChannelNumber;         //->
+   Int_t ChannelAddress;        //->
+   std::vector<Int_t> Cfd;      //->
+   std::vector<Int_t> Led;      //->
+   std::vector<Int_t> Charge;	  //->
 
    //unsigned long TimeStamp;     //->
-   int32_t TimeStampLow;          //->
-   int32_t TimeStampHigh;         //->
-   int32_t TimeToTrig;            //->
+   Int_t TimeStampLow;          //->
+   Int_t TimeStampHigh;         //->
+   Int_t TimeToTrig;            //->
 
 	/// Added to combine Grif Fragment  ////
 
-   uint32_t PPG;                //->
-   uint16_t DeadTime;	        //->
-   uint16_t NumberOfFilters;    //->
-   uint16_t NumberOfPileups;    //->
-   uint16_t DataType;           //->
-   uint16_t DetectorType;       //->
-   uint32_t ChannelId;          //->
+   UInt_t PPG;                //->
+   UShort_t DeadTime;	        //->
+   UShort_t NumberOfFilters;    //->
+   UShort_t NumberOfPileups;    //->
+   UShort_t DataType;           //->
+   UShort_t DetectorType;       //->
+   UInt_t ChannelId;          //->
 
-   std::vector<uint16_t>  KValue;    //->
+   std::vector<UShort_t>  KValue;    //->
 
    /// *****************************  ////
 
-   std::vector<int16_t>  wavebuffer;	//->
+   std::vector<Short_t>  wavebuffer;	//->
   
    virtual void	Clear(Option_t *opt = ""); //!
    

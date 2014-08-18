@@ -7,6 +7,7 @@
 #include "TFragmentQueue.h"
 #include "TGRSIStats.h"
 
+#include "Rtypes.h"
 
 TDataParser *TDataParser::fDataParser = 0;
 bool TDataParser::no_waveforms = false;

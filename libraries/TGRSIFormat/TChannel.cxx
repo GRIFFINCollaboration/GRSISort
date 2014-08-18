@@ -260,6 +260,7 @@ double TChannel::CalibrateTIME(double time)	{
 
 void TChannel::Print(Option_t *opt)	{
    //printf( DBLUE "%s\t" DYELLOW "0x%08x" RESET_COLOR "\n",this->GetChannelName(),this->GetAddress());
+	printf( "%s\t{\n",channelname.c_str());
 	printf( "Name:      %s\n",channelname.c_str());
 	printf( "Number:    %i\n",number);
 	printf( "Address:   0x%08x\n", address);
@@ -269,7 +270,8 @@ void TChannel::Print(Option_t *opt)	{
 		printf( "%.02f\t", ENGCoefficients.at(x) );
 	printf("\n");
 	printf( "ENGChi2:   %.02f\n",ENGChi2);
-	printf( "\n//====================================//\n");
+	printf("\n}\n");
+	printf( "//====================================//\n");
 };
 
 //void TChannel::PrintAll(Option_t *opt) {
