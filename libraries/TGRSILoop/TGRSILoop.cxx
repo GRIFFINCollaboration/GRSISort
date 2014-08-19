@@ -167,7 +167,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
             SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
             break;
          case 0x8001:
-            printf("Processing event %i have processed %.2fMB/%.2fMB\n",currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
+            printf(" Processing event %i have processed %.2fMB/%.2fMB\n",currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
             printf( DRED );
             fMidasEvent.Print();
             printf( RESET_COLOR );
