@@ -52,21 +52,37 @@ typedef char int8_t;
 #endif
 #endif
 
-struct FSPC	{
-	unsigned char type;
-	int			integration;
-	int 		number;
-	int 		nbins;
-	int 		nsamp;
-	int 		MaxCharge;
-	float 	maxE;
-	float		gain;
-	float		offset;
-	std::string name;
-	std::string	type_title;
-	std::string type_name;
-	std::string type_units;
+#include <string>
+#include <cstdlib>
+#include <stdint.h>
+struct MNEMONIC {
+  uint16_t arrayposition;
+  uint16_t segment;
+  std::string system;
+  std::string subsystem;
+  std::string arraysubposition;
+  std::string collectedcharge;
+  std::string outputsensor;
 };
+
+
+static void ParseMNEMONIC(std::string *name,MNEMONIC *mnemonic) {
+	if(!name || name->length()<9)
+		return;
+   std::string buf;
+   mnemonic->system.assign(*name,0,2);
+   mnemonic->subsystem.assign(*name,2,1);
+   buf.clear(); buf.assign(*name,3,2);
+   mnemonic->arrayposition = (uint16_t)atoi(buf.c_str());
+   mnemonic->arraysubposition.assign(*name,5,1);
+   mnemonic->collectedcharge.assign(*name,6,1);
+   buf.clear(); buf.assign(*name,7,2);
+   mnemonic->segment = (uint16_t)atoi(buf.c_str());
+   mnemonic->outputsensor.assign(*name,9,1);
+   return;
+}
+
+
 
 const std::string &ProgramName(void);
 

@@ -67,37 +67,37 @@ void TSharcData::ClearData()
 void TSharcData::Print() 
 {
   // Energy
-  cout << "Sharc_StripFront_Mult = " << fSharc_StripFront_DetectorNbr.size() << endl;
+  std::cout << "Sharc_StripFront_Mult = " << fSharc_StripFront_DetectorNbr.size() << std::endl;
   
   // Front
   for (UShort_t i = 0; i < fSharc_StripFront_DetectorNbr.size(); i++){
-    cout << "DetNbr: " << fSharc_StripFront_DetectorNbr[i]
+    std::cout << "DetNbr: " << fSharc_StripFront_DetectorNbr[i]
          << " Strip: " << fSharc_StripFront_StripNbr[i]
          << " Energy: " << fSharc_StripFront_Energy[i]
          << " Time CFD: " << fSharc_StripFront_TimeCFD[i]
          << " Time LED: " << fSharc_StripFront_TimeLED[i]
-         << " Time    : " << fSharc_StripFront_Time[i] << endl;
+         << " Time    : " << fSharc_StripFront_Time[i] << std::endl;
 
   }
   
   // Back
   for (UShort_t i = 0; i < fSharc_StripFront_DetectorNbr.size(); i++){
-    cout << "DetNbr: " << fSharc_StripFront_DetectorNbr[i]
+    std::cout << "DetNbr: " << fSharc_StripFront_DetectorNbr[i]
     << " Strip: " << fSharc_StripFront_StripNbr[i]
     << " Energy: " << fSharc_StripFront_Energy[i]
     << " Time CFD: " << fSharc_StripBack_TimeCFD[i]
     << " Time LED: " << fSharc_StripBack_TimeLED[i]
-    << " Time    : " << fSharc_StripBack_Time[i] << endl;
+    << " Time    : " << fSharc_StripBack_Time[i] << std::endl;
 
   }
   
   // PAD
   for (UShort_t i = 0; i < fSharc_PAD_DetectorNbr.size(); i++){
-    cout << "DetNbr: " << fSharc_PAD_DetectorNbr[i]
+    std::cout << "DetNbr: " << fSharc_PAD_DetectorNbr[i]
     << " Energy: " << fSharc_PAD_Energy[i]
     << " Time CFD: " << fSharc_PAD_TimeCFD[i]
     << " Time LED: " << fSharc_PAD_TimeLED[i]
-    << " Time    : " << fSharc_PAD_Time[i] << endl;
+    << " Time    : " << fSharc_PAD_Time[i] << std::endl;
   }
 }
 

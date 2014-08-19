@@ -10,50 +10,49 @@
  *                                                                           
  *****************************************************************************/
 
-// STL
+#include "Globals.h"
+
 #include <cstdlib>
 #include <vector>
-//#include <map>
-using namespace std ;
 
-// ROOT
 #include "TObject.h"
 #include "TFragment.h"
+#include "TChannel.h"
 
 class TSharcData : public TObject  {
 private:
   // Sharc
   // Energy
-  vector<UShort_t>   fSharc_StripFront_DetectorNbr;	//!
-  vector<UShort_t>   fSharc_StripFront_ChannelId;		//!
-  vector<UShort_t>   fSharc_StripFront_StripNbr;		//!
-  vector<Double_t>   fSharc_StripFront_Energy;			//!
-  vector<Double_t>   fSharc_StripFront_EngChi2;			//!
-  vector<UInt_t>	   fSharc_StripFront_Charge;			//!
-  vector<Double_t>   fSharc_StripFront_TimeCFD;			//!
-  vector<Double_t>   fSharc_StripFront_TimeLED;			//!
-  vector<Double_t>   fSharc_StripFront_Time;			//!
-  vector<vector<Int_t> > fSharc_StripFront_Wave;			//!  
+  std::vector<UShort_t>   fSharc_StripFront_DetectorNbr;	//!
+  std::vector<UShort_t>   fSharc_StripFront_ChannelId;		//!
+  std::vector<UShort_t>   fSharc_StripFront_StripNbr;		//!
+  std::vector<Double_t>   fSharc_StripFront_Energy;			//!
+  std::vector<Double_t>   fSharc_StripFront_EngChi2;			//!
+  std::vector<UInt_t>	   fSharc_StripFront_Charge;			//!
+  std::vector<Double_t>   fSharc_StripFront_TimeCFD;			//!
+  std::vector<Double_t>   fSharc_StripFront_TimeLED;			//!
+  std::vector<Double_t>   fSharc_StripFront_Time;			//!
+  std::vector<std::vector<Int_t> > fSharc_StripFront_Wave;			//!  
 
 
-  vector<UShort_t>   fSharc_StripBack_DetectorNbr;		//!
-  vector<UShort_t>   fSharc_StripBack_ChannelId;
-  vector<UShort_t>   fSharc_StripBack_StripNbr;			//!
-  vector<Double_t>   fSharc_StripBack_Energy;			//!
-  vector<Double_t>   fSharc_StripBack_EngChi2;			//!
-  vector<UInt_t>	   fSharc_StripBack_Charge;			//!
-  vector<Double_t>   fSharc_StripBack_TimeCFD;			//!
-  vector<Double_t>   fSharc_StripBack_TimeLED;			//!
-  vector<Double_t>   fSharc_StripBack_Time;				//!
-  vector<vector<Int_t> > fSharc_StripBack_Wave;			//!	
+  std::vector<UShort_t>   fSharc_StripBack_DetectorNbr;		//!
+  std::vector<UShort_t>   fSharc_StripBack_ChannelId;
+  std::vector<UShort_t>   fSharc_StripBack_StripNbr;			//!
+  std::vector<Double_t>   fSharc_StripBack_Energy;			//!
+  std::vector<Double_t>   fSharc_StripBack_EngChi2;			//!
+  std::vector<UInt_t>	   fSharc_StripBack_Charge;			//!
+  std::vector<Double_t>   fSharc_StripBack_TimeCFD;			//!
+  std::vector<Double_t>   fSharc_StripBack_TimeLED;			//!
+  std::vector<Double_t>   fSharc_StripBack_Time;				//!
+  std::vector<std::vector<Int_t> > fSharc_StripBack_Wave;			//!	
 
-  vector<UShort_t>   fSharc_PAD_DetectorNbr;			//!
-  vector<Double_t>   fSharc_PAD_Energy;					//!
-  vector<Int_t>	   fSharc_PAD_Charge;					//!
-  vector<Double_t>   fSharc_PAD_TimeCFD;				//!
-  vector<Double_t>   fSharc_PAD_TimeLED;				//!
-  vector<Double_t>   fSharc_PAD_Time;					//!
-  vector<vector<Int_t> > fSharc_PAD_Wave;				//!
+  std::vector<UShort_t>   fSharc_PAD_DetectorNbr;			//!
+  std::vector<Double_t>   fSharc_PAD_Energy;					//!
+  std::vector<Int_t>	   fSharc_PAD_Charge;					//!
+  std::vector<Double_t>   fSharc_PAD_TimeCFD;				//!
+  std::vector<Double_t>   fSharc_PAD_TimeLED;				//!
+  std::vector<Double_t>   fSharc_PAD_Time;					//!
+  std::vector<std::vector<Int_t> > fSharc_PAD_Wave;				//!
 
 public:
   TSharcData();															//!
@@ -74,7 +73,7 @@ public:
   inline void SetFront_TimeLED(const Double_t &TimeLED){fSharc_StripFront_TimeLED.push_back(TimeLED);}			//!
   inline void SetFront_Time(const Double_t &Time){fSharc_StripFront_Time.push_back(Time);}						//!
 
-  inline void SetFront_Wave(const vector<Int_t> &Wave){fSharc_StripFront_Wave.push_back(Wave);}						//!
+  inline void SetFront_Wave(const std::vector<Int_t> &Wave){fSharc_StripFront_Wave.push_back(Wave);}						//!
 
 
   inline void SetBack_DetectorNbr(const UShort_t &DetNbr){fSharc_StripBack_DetectorNbr.push_back(DetNbr);}		//!
@@ -87,7 +86,7 @@ public:
   inline void SetBack_TimeLED(const Double_t &TimeLED){fSharc_StripBack_TimeLED.push_back(TimeLED);}			//!
   inline void SetBack_Time(const Double_t &Time){fSharc_StripBack_Time.push_back(Time);}						//!
 
-  inline void SetBack_Wave(const vector<Int_t> &Wave){fSharc_StripBack_Wave.push_back(Wave);}							//!
+  inline void SetBack_Wave(const std::vector<Int_t> &Wave){fSharc_StripBack_Wave.push_back(Wave);}							//!
 
 
   inline void SetPAD_DetectorNbr(const UShort_t &DetNbr){fSharc_PAD_DetectorNbr.push_back(DetNbr);}				//!
@@ -97,7 +96,7 @@ public:
   inline void SetPAD_TimeLED(const Double_t &TimeLED){fSharc_PAD_TimeLED.push_back(TimeLED);}					//!
   inline void SetPAD_Time(const Double_t &Time){fSharc_PAD_Time.push_back(Time);}								//!
 
-  inline void SetPAD_Wave(const vector<Int_t> &Wave){fSharc_PAD_Wave.push_back(Wave);}							//!
+  inline void SetPAD_Wave(const std::vector<Int_t> &Wave){fSharc_PAD_Wave.push_back(Wave);}							//!
 
 
 	inline void SetFront(const UShort_t &DetNbr,const UShort_t &StripNbr,const Double_t &Energy ,const Double_t &TimeCFD,const Double_t &TimeLED,const UShort_t &ChanId, const Double_t &Time = 0, const UInt_t &Charge = 0,const Double_t &ENGChi2 = -1.0)	{
@@ -111,16 +110,19 @@ public:
  		SetFront_Charge(Charge);
 		SetFront_EngChi2(ENGChi2);
 	};	//! sets the front using explicit inputs
-	//inline void SetFront(TTigFragment *frag,const UShort_t &DetNbr,const UShort_t &StripNbr )	{
-		//SetFront_DetectorNbr(DetNbr);
-		//SetFront_ChannelId(frag->ChannelNumber);
-		//SetFront_StripNbr(StripNbr);
-		//SetFront_Energy(frag->ChargeCal);
-		//SetFront_TimeCFD(frag->Cfd);
-		//SetFront_TimeLED(frag->Led);
-		//SetFront_Time(frag->TimeToTrig);
- 		//SetFront_Charge(frag->Charge);
-	//};	//! overload function that sets the front using fragment (updated by sjc)
+
+	inline void SetFront(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
+		if(!frag || !channel || !mnemonic) return;
+		SetFront_DetectorNbr(mnemonic->arrayposition);
+		SetFront_StripNbr(mnemonic->segment);
+		SetFront_ChannelId(frag->ChannelNumber);
+		SetFront_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+		SetFront_TimeCFD(frag->Cfd.at(0));
+		SetFront_TimeLED(frag->Led.at(0));
+		SetFront_Time(frag->TimeToTrig);
+ 		SetFront_Charge(frag->Charge.at(0));
+		SetFront_EngChi2(channel->GetENGChi2());
+	}
 	
 	inline void SetBack(const UShort_t &DetNbr,const UShort_t &StripNbr,const Double_t &Energy,const Double_t &TimeCFD,const Double_t &TimeLED,const UShort_t &ChanId,const Double_t &Time = 0, const UInt_t &Charge = 0, const Double_t &ENGChi2 = -1.0)	{
 		SetBack_DetectorNbr(DetNbr);
@@ -172,7 +174,7 @@ public:
   inline Double_t GetFront_TimeLED(const unsigned int &i)     const {return fSharc_StripFront_TimeLED[i];}		//!
   inline Double_t GetFront_Time(const unsigned int &i)     const {return fSharc_StripFront_Time[i];}			//!
 
-  inline vector<Int_t> GetFront_Wave(const unsigned int &i)	const {return fSharc_StripFront_Wave.at(i);}		//!
+  inline std::vector<Int_t> GetFront_Wave(const unsigned int &i)	const {return fSharc_StripFront_Wave.at(i);}		//!
 
   inline UShort_t GetBack_DetectorNbr(const unsigned int &i) const {return fSharc_StripBack_DetectorNbr[i];}	//!
   inline UShort_t GetBack_ChannelId(const unsigned int &i)    const {return fSharc_StripBack_ChannelId[i];}		//!
@@ -184,7 +186,7 @@ public:
   inline Double_t GetBack_TimeLED(const unsigned int &i)     const {return fSharc_StripBack_TimeLED[i];}		//!
   inline Double_t GetBack_Time(const unsigned int &i)     const {return fSharc_StripBack_Time[i];}				//!
 
-  inline vector<Int_t> GetBack_Wave(const unsigned int &i)	const {return fSharc_StripBack_Wave.at(i);}			//!
+  inline std::vector<Int_t> GetBack_Wave(const unsigned int &i)	const {return fSharc_StripBack_Wave.at(i);}			//!
 
   inline UShort_t GetPAD_DetectorNbr(const unsigned int &i) const {return fSharc_PAD_DetectorNbr[i];}			//!
   inline Double_t GetPAD_Energy(const unsigned int &i)      const {return fSharc_PAD_Energy[i];}				//!
@@ -193,7 +195,7 @@ public:
   inline Double_t GetPAD_TimeLED(const unsigned int &i)     const {return fSharc_PAD_TimeLED[i];}				//!
   inline Double_t GetPAD_Time(const unsigned int &i)    	  const {return fSharc_PAD_Time[i];}				//!
 
-  inline vector<Int_t> GetPAD_Wave(const unsigned int &i)	const {return fSharc_PAD_Wave.at(i);}				//!
+  inline std::vector<Int_t> GetPAD_Wave(const unsigned int &i)	const {return fSharc_PAD_Wave.at(i);}				//!
 
   inline unsigned int GetMultiplicityFront() const {return fSharc_StripFront_DetectorNbr.size();}				//!
   inline unsigned int GetMultiplicityBack()  const {return fSharc_StripBack_DetectorNbr.size();}				//!

@@ -226,9 +226,9 @@ void TChannel::Print(Option_t *opt)	{
 	printf( "Digitizer: %s\n",digitizertype.c_str()); 
 	printf( "EngCoeff:  "  );
 	for(int x=0;x<ENGCoefficients.size();x++)
-		printf( "%.02f\t", ENGCoefficients.at(x) );
+		printf( "%f\t", ENGCoefficients.at(x) );
 	printf("\n");
-	printf( "ENGChi2:   %.02f\n",ENGChi2);
+	printf( "ENGChi2:   %f\n",ENGChi2);
 	printf("\n}\n");
 	printf( "//====================================//\n");
 };
