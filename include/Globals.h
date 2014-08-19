@@ -28,6 +28,9 @@
 #define BG_MAGENTA "\e[45m"
 #define BG_CYAN    "\e[46m"
 
+#define HIDE_CURSOR "\e[?25l"
+#define SHOW_CURSOR "\e[?25h"
+
 #define ALERTTEXT "\e[47m\e[0;31m"
 
 #define NUM_SIS_CHAN 8

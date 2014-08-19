@@ -46,6 +46,7 @@ class TChannel : public TNamed	{
       //                            int temp_number=0, 
       //                            char *temp_name = "");
       static TChannel *GetChannel(int temp_address); 
+		static TChannel *FindChannel(int temp_address);
       //static TChannel *GetChannel(const char *temp_name = "");
       virtual ~TChannel(); 
 
@@ -144,7 +145,7 @@ class TChannel : public TNamed	{
 		void DestroyLEDCal();
 		void DestroyTIMECal();
 
-		static void ReadCalFile(std::string infilename = "");
+		static void ReadCalFile(const char *filename = "");
 		static void WriteCalFile(std::string outfilename = "");
 
 

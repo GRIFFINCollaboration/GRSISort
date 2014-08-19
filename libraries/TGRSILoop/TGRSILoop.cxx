@@ -91,6 +91,9 @@ bool TGRSILoop::SortMidas() {
       delete mfile;
    }
    TGRSIOptions::Get()->GetInputMidas().clear();
+	//
+
+
    return true;
 }
 
@@ -111,9 +114,9 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
          fFragsSentToTree++;
       }
       if(!fMidasThreadRunning && TFragmentQueue::GetQueue()->FragsInQueue()%5000==0) {
-         printf(DYELLOW "\t%i" RESET_COLOR "/"
+         printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
                 DBLUE   "%i"   RESET_COLOR
-                "     frags left to write to tree/frags written to tree.         \r",
+                "     frags left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
                 TFragmentQueue::GetQueue()->FragsInQueue(),fFragsSentToTree);
       }
    }
@@ -176,7 +179,8 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
             break;
       };
       if((currenteventnumber%5000)== 0) {
-         printf("Processing event %i have processed %.2fMB/%.2fMB                \r",currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
+         printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB               " SHOW_CURSOR "\r",
+					 currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
       }
    }
    if(TGRSIStats::GetSize() > 0) {

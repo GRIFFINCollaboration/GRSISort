@@ -48,6 +48,8 @@ void TGRSIint::ApplyOptions() {
     TGRSILoop::Get()->SortMidas();
   if(fFragmentSort & TGRSIOptions::Get()->GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
+  if(fAutoSort && TGRSIOptions::CloseAfterSort())
+  	 gApplication->Terminate();
 
 }
 
@@ -116,6 +118,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                case 'S':
                   printf(DBLUE "SORT!!" RESET_COLOR "\n");
                   fFragmentSort = true;
+						TGRSIOptions::SetCloseAfterSort();
                   break;
                case 'H':
                   if(sargv.length()==2) {

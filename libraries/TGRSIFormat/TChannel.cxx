@@ -86,66 +86,25 @@ TChannel *TChannel::GetChannel(int temp_address) {
    //   return fChannelMap->at(temp_address);
    //} else {
 		// printf("making a new tchannel for: 0x%08x\n",temp_address);
-	if(fChannelMap->count(temp_address)==0)
+	TChannel *chan = 0;
+	if(fChannelMap->count(temp_address)==0) {
 		fChannelMap->insert(std::make_pair(temp_address,new TChannel));
-   TChannel *chan = fChannelMap->at(temp_address);
-	chan->SetName(Form("0x%08x",temp_address));
-   chan->address = temp_address;
-   fChannelMap->insert(std::make_pair(temp_address,chan));
+   	chan = fChannelMap->at(temp_address);
+		chan->SetName(Form("0x%08x",temp_address));
+   	chan->address = temp_address;
+	   fChannelMap->insert(std::make_pair(temp_address,chan));
+	} else {
+		chan = fChannelMap->at(temp_address);	
+	}
    return chan;
-   //}
-   //return 0; //chan;
-
-/*   std::map<int,TChannel*>::const_iterator found;
-   if(temp_address == 0xffffffff) {
-      if(fTChannel==0)  {
-         fTChannel = new TChannel("temp");
-      } else {
-         fTChannel->Clear();
-         fTChannel->SetName("temp");
-      }
-      return fTChannel;
-   } else if( (found=fChannelMap->find(temp_address)) == fChannelMap->end()) { //does not yet exist.
-      fChannelMap->at(temp_address) = new TChannel("chan_temp");
-      return fChannelMap->at(temp_address);
-   } else {  // already exists.
-      return found->second;
-
-      //if(strcmp(found->second->GetName(),"chan_temp")==0) {
-      //   return found->second;
-      //} else if((TChannel *ptr = fChannelList->FindObject(found->second->GetName())) != 0) {
-      //   if( ptr == found->second) {
-      //      return fChannelMap[temp_address];
-      //   } else {
-      //      printf(RED "Warning: found two addresses for the smae TChannel!\t%08x\t%08x%\t%s" RESET_COLOR "\n",
-      //      ptr,found->second,found->second->GetName());
-      //      return ptr;
-      //   }
-      //}  
-   }*/
 }
 
 
-/*
-TChannel *TChannel::GetChannel(const char *temp_name) {
-   TChannel *temp = 0;
-   if(strcmp(temp_name,"")==0) {     
-      if(fTChannel==0)  {
-         fTChannel = new TChannel("temp");
-      } else {
-         fTChannel->Clear();
-         fTChannel->SetName("temp");
-      }
-      return fTChannel;
-   } else if(!(temp=(TChannel*)(fChannelList->FindObject(temp_name)))) {
-      temp = new TChannel(temp_name);
-      fChannelList->Add(temp);
-   }
-   return temp;
-}*/
-
-
-
+TChannel *TChannel::FindChannel(int temp_address) {
+	if(fChannelMap->count(temp_address)==0)
+		return 0;    //not found.
+	return fChannelMap->at(temp_address);
+}
 
 
 void TChannel::SetChannel(int taddress,int tnumber,std::string tname)	{
@@ -191,9 +150,9 @@ double TChannel::CalibrateENG(double charge)	{
 	if(ENGCoefficients.size()==0)
 		return charge;
 	
-	double temp_int = 125.0;
+	double temp_int = 25.0;
 	if(integration != 0)
-		temp_int = integration/4;  //the 4 is the dis. 
+		temp_int = integration;  //the 4 is the dis. 
 	
 	double cal_chg = 0.0;
 	for(int i=0;i<ENGCoefficients.size();i++){
@@ -306,8 +265,10 @@ void TChannel::WriteCalFile(std::string outfilename) {
 }
 
 
-void TChannel::ReadCalFile(std::string infilename) {
+void TChannel::ReadCalFile(const char *filename) {
 	//does magic, make tchannels from a cal file.
+	std::string infilename;
+	infilename.append(filename);
 
 	if(infilename.length()==0)
 		return;
@@ -346,8 +307,10 @@ void TChannel::ReadCalFile(std::string infilename) {
 
 		//*************************************//
 		if (closebrace != std::string::npos) {
+			//printf("brace closed.\n");
+			//channel->Print();
          brace_open = false;
-         if (channel && (channel->GetAddress()!=0) ) {         //(name.length() > 0)) {  //&& pixel.first && pixel.second )
+         if (channel && (channel->GetAddress()!=0) ) {       
             AddChannel(channel);
             newchannels++;
          } else
@@ -367,7 +330,7 @@ void TChannel::ReadCalFile(std::string infilename) {
 
 
       if (brace_open) {
-	      int ntype = line.find(":");
+		   int ntype = line.find(":");
          if (ntype != std::string::npos) {
 				std::string type = line.substr(0, ntype);
             line = line.substr(ntype + 1, line.length());
@@ -379,10 +342,16 @@ void TChannel::ReadCalFile(std::string infilename) {
 					c = toupper(c);
 					type[j++] = c;
 				}
+				//printf("type = %s\n",type.c_str());
 				if(type.compare("NAME")==0) {
 					channel->SetChannelName(line.c_str());
 				} else if(type.compare("ADDRESS")==0) {
-					int tempadd; ss>>tempadd;
+					int tempadd =0; ss>>tempadd;
+					if(tempadd == 0) { //maybe it is in hex...
+						std::stringstream newss;
+						newss << std::hex << line;
+						newss >> tempadd;
+					}
 					channel->SetAddress(tempadd);
 				} else if(type.compare("INTEGRATION")==0) {
 					int tempint; ss>>tempint;
@@ -430,7 +399,7 @@ void TChannel::ReadCalFile(std::string infilename) {
 		}
 
 	}
-
+	printf("parsed %i lines.\n",linenumber);
 
 	return;
 }
