@@ -49,7 +49,7 @@ void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
       }
    }
 
-   for(int k=0;k<GetMultiplicityPAD();k++)	{	
+   for(int k=0;k<data->GetMultiplicityPAD();k++)	{	
       for(int l=0;l<sharc_hits.size();l++)	{
          if(data->GetPAD_DetectorNbr(k) != sharc_hits.at(l).GetDetectorNumber())
 		      continue;
@@ -147,6 +147,35 @@ void TSharc::Print(Option_t *option)	{
   return;
 }
 
+double TSharc::Xdim        = +72.0; // total X dimension of all boxes
+double TSharc::Ydim        = +72.0; // total Y dimension of all boxes
+double TSharc::Zdim        = +48.0; // total Z dimension of all boxes
+double TSharc::Rdim        = +32.0; // Rmax-Rmin for all QQQs 
+double TSharc::Pdim        = +81.6; // QQQ quadrant angular range (degrees)
+double TSharc::XposUB      = +42.5;
+double TSharc::YminUB      = -36.0;
+double TSharc::ZminUB      = -5.00;
+double TSharc::XposDB      = +40.5;
+double TSharc::YminDB      = -36.0;
+double TSharc::ZminDB      = +9.00;
+double TSharc::ZposUQ      = -66.5;
+double TSharc::RminUQ      = +9.00;
+double TSharc::PminUQ      = +2.00; // degrees
+double TSharc::ZposDQ      = +74.5;
+double TSharc::RminDQ      = +9.00;
+double TSharc::PminDQ      = +6.40; // degrees
+
+//const int TSharc::frontstripslist[16]     = {16,16,16,16,	24,24,24,24,	24,24,24,24,	16,16,16,16};
+//const int TSharc::backstripslist[16]      = {24,24,24,24,	48,48,48,48,	48,48,48,48,	24,24,24,24};		
+
+//const double TSharc::frontpitchlist[16]   = {2.0,2.0,2.0,2.0,	3.0,3.0,3.0,3.0,	3.0,3.0,3.0,3.0,	2.0,2.0,2.0,2.0};
+//const double TSharc::backpitchlist[16]    = {PI/48,PI/48,PI/48,PI/48,	1.0,1.0,1.0,1.0,	1.0,1.0,1.0,1.0,	PI/48,PI/48,PI/48,PI/48}; 
+// QQQ back pitches are angles
+//
+double TSharc::stripFpitch          = TSharc::Ydim / 24.0;  //TSharc::frontstripslist[5]; // 72.0/24 = 3.0 mm
+double TSharc::ringpitch            = TSharc::Rdim / 16.0;  //TSharc::frontstripslist[1]; // 32.0/16 = 2.0 mm
+double TSharc::stripBpitch          = TSharc::Zdim / 48.0;  //TSharc::backstripslist[5] ; // 48.0/48 = 1.0 mm
+double TSharc::segmentpitch         = TSharc::Pdim / 24.0;  //TSharc::backstripslist[1] ; // 81.6/24 = 3.4 degrees (angular pitch)
 
 // The dimensions are described for a single detector of each type UQ,UB,DB,DQ, and all other detectors can be calculated by rotating this
 TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double X, double Y, double Z)	{
@@ -164,7 +193,7 @@ TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double
   position_offset.SetXYZ(X,Y,Z);
 
   if(FrontDet>=5 && FrontDet<=8){ //forward box
-    nrots = FrontDet-4;                                                              // edited to make box 5 on the ceiling.  assuming rotaing ccw around the +z axis!!
+    nrots = FrontDet-4;                                // edited to make box 5 on the ceiling.  assuming rotaing ccw around the +z axis!!
     x = XposDB;                                                                      // ?? x stays the same. first detector is aways defined in the y-z plane.
     y = - (YminDB + (FrontStr+0.5)*stripFpitch);       // [(-36.0) - (+36.0)]        // ?? add minus sign, reversve the order of the strips on the ds section.
     z = ZminDB + (BackStr+0.5)*stripBpitch;            // [(+9.0) - (+57.0)]    

@@ -32,7 +32,7 @@ private:
   vector<UInt_t>	   fSharc_StripFront_Charge;			//!
   vector<Double_t>   fSharc_StripFront_TimeCFD;			//!
   vector<Double_t>   fSharc_StripFront_TimeLED;			//!
-  vector<Double_t>   ifSharc_StripFront_Time;			//!
+  vector<Double_t>   fSharc_StripFront_Time;			//!
   vector<vector<Int_t> > fSharc_StripFront_Wave;			//!  
 
 
@@ -122,7 +122,7 @@ public:
  		//SetFront_Charge(frag->Charge);
 	//};	//! overload function that sets the front using fragment (updated by sjc)
 	
-	inline void SetBack(const UShort_t &DetNbr,const UShort_t &StripNbr,const Double_t &Energy,const Double_t &TimeCFD,const Double_t &TimeLED,const UShort_t &ChanId,const Double_t &Time = 0, const UInt_t &Charge = 0, const Double &ENGChi2 = -1.0)	{
+	inline void SetBack(const UShort_t &DetNbr,const UShort_t &StripNbr,const Double_t &Energy,const Double_t &TimeCFD,const Double_t &TimeLED,const UShort_t &ChanId,const Double_t &Time = 0, const UInt_t &Charge = 0, const Double_t &ENGChi2 = -1.0)	{
 		SetBack_DetectorNbr(DetNbr);
 		SetBack_ChannelId(ChanId);
 		SetBack_StripNbr(StripNbr);
