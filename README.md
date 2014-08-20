@@ -28,10 +28,13 @@ Running
 grsisort will open up a root session in the grsi environment
 Commands:
 
-grsisort NAMEOFMIDASFILE.mid -> Converts the midas file into a fragment tree
-Adding the flag -suppress_error suppresses errors in the data stream if there are any
+**grsisort NAMEOFMIDASFILE.mid**  -> Converts the midas file into a fragment tree
+Currently accepted flags for the midas sort:
+  * -suppress_error |  suppresses errors caused from failed data parsing appearing in stdout if there are any
+  * -no_waveforms   |  does not add the wave form stored for each event in the mid file to the fragment tree
+  * -s              |  quits the program after it finishs turing the input midas files into trees.
 
-grsisort -s NAME_OF_FRAGMENT_TREE.root -> Starts sorting the fragment tree and creates the histograms defined in users/UserInitObj.h file.
+**grsisort -s NAME_OF_FRAGMENT_TREE.root**   -> Starts sorting the fragment tree and creates the histograms defined in users/UserInitObj.h file.
 
 
 More to follow.....
