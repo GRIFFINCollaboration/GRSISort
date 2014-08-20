@@ -144,14 +144,14 @@ void WriteMat(TH2 *mat, fstream *outfile) {
    
 
    for(int y=0;y<4096;y++ ) {
-      int16_t buffer[4096] = {0};
+      uint16_t buffer[4096] = {0};
       for(int x=0;x<4096;x++ ) {
          if(x<xbins && y<ybins)
-            buffer[x] = (int16_t)(mat->GetBinContent(x,y));
+            buffer[x] = (uint16_t)(mat->GetBinContent(x,y));
          else
             buffer[x] = 0;
       }
-   	outfile->write((char*)(&buffer),8192);	
+   	outfile->write((char*)(&buffer),sizeof buffer);	
    }
    
 }
