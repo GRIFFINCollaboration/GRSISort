@@ -1,5 +1,6 @@
 #include "TH1.h"
 #include "TF1.h"
+#include "TList.h"
 #include "TRandom.h"
 #include "TSpectrum.h"
 #include "TVirtualFitter.h"
@@ -27,7 +28,7 @@
 
 gSystem->Load("libMathCore"); //Might be able to include this through linking libraries etc.
 
-
+//This is a good example for how to fit nearby peaks together/multiple peaks
 Int_t npeaks = 30;
 Double_t fpeaks(Double_t *x, Double_t *par) {
    Double_t result = par[0] + par[1]*x[0];
@@ -40,95 +41,140 @@ Double_t fpeaks(Double_t *x, Double_t *par) {
    return result;
 }
 
-Double_t photo_peak(Double_t *dim, Double_t *a){
+// Quadratic background function
+Double_t background(Double_t *x, Double_t *par) {
+   return par[0] + par[1]*(x[0]-par[3]) + par[2]*(x[0]-par[3])*(x[0]-par[3]);
+}
+
+Double_t photo_peak(Double_t *dim, Double_t *par){
    
-   Double_t x        = dim[0];
-   Double_t constant = a[0]; 
-   Double_t c        = a[1]; //Peak Centroid
-   Double_t beta     = a[2]; //"skewedness" of the skewed gaussian
-   Double_t sigma    = a[3]; //standard deviation  of gaussian
+   //Define the parameters for easy use.
+   Double_t x        = dim[0]; //channel number used for fitting 
+   Double_t constant = par[0]; //Size of gaussian
+   Double_t c        = par[1]; //Peak Centroid of non skew gaus
+   Double_t sigma    = par[2]; //standard deviation  of gaussian
+   Double_t beta     = par[3]; //"skewedness" of the skewed gaussian
+   Double_t R        = par[4]; //relative height of skewed gaussian
+   Double_t step     = par[5]; //Relative size of the step function
 
-   Double_t fitval = constant*TMath::Exp((x-c)/beta)*(ROOT::Math::erfc((x-c)/TMath::Sqrt(2.0)*sigma) + sigma/(TMath::Sqrt(2.0)*beta));
+   //The gaussian part is //const*Exp(-((x-c)^2)/(2*sigma^2)))
 
-   return fitval;
+   Double_t gaussian    = constant*TMath::Gaus(x,c,sigma);
+   Double_t skewed_gaus = R*(TMath::Exp((x-c)/beta))*(ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta));
+   Double_t step_func   = 100.0*step*ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma));
+
+   return gaussian + skewed_gaus + step_func;
 }
 
-Double_t background(Double_t *dim, Double_t *a){
+Double_t fitFunction(Double_t *dim, Double_t *par){
 
-   Double_t x        = dim[0];
-   Double_t constant = a[0];
-   Double_t c        = a[1];
-   Double_t beta     = a[2]; //Not really used here but put in here to make things more consistent later
-   Double_t sigma    = a[3];   
-
-   Double_t fitval = constant*ROOT::Math::erfc((x-c)/(TMath::Sqrt(2)*sigma));
-
-   return fitval;
+   return photo_peak(dim, par) + background(dim,&par[6]);
 }
 
-Double_t fitFunction(Double_t *dim, Double_t *a){
-   return photo_peak(dim, a) + background(dim,a);
+TF1* PeakFitFuncs(Double_t *par, TH1F *h){
+
+   Int_t xp = par[1];
+
+   TF1 *pp = new TF1("pp",fitFunction,xp - 30,xp+30,10);
+
+   pp->SetParName(0,"Height");
+   pp->SetParName(1,"centroid");
+   pp->SetParName(2,"sigma");
+   pp->SetParName(3,"beta");
+   pp->SetParName(4,"R");
+   pp->SetParName(5,"step");
+   pp->SetParName(6,"A");
+   pp->SetParName(7,"B(x-off)");
+   pp->SetParName(8,"C(x-off)^2");
+   pp->SetParName(9,"bg off");
+
+   pp->SetParLimits(1,0,1000000);
+   pp->SetParLimits(3,0,1000000);
+   pp->SetParLimits(4,0,1000000);
+   pp->SetParLimits(5,0,1000000);
+
+   //we may have more than the default 25 parameters
+   TVirtualFitter::Fitter(h,10);
+   pp->SetParameters(par);
+
+
+   pp->SetParLimits(1,xp-20,xp+20);//c
+ //  pp->FixParameter(3,2.7);
+  // pp->SetParLimits(3,2,10);//beta
+
+   pp->SetNpx(1000);
+   h->Fit("pp","RF");
+   pp->Draw("same");      
+
+   TF1 *fitresult = h->GetFunction("pp");
+   std::cout << "FWHM = " << 2.35482*fitresult->GetParameter(2) <<"(" << fitresult->GetParError(2) << ")" << std::endl;
+  std::cout << "CHI2: "<< fitresult->GetChisquare() << std::endl;
+   std::cout << "NDF: " << fitresult->GetNDF() << std::endl;
+   std::cout << "X sq./v = " << fitresult->GetChisquare()/fitresult->GetNDF() << std::endl;
+
+
+   return pp;
+
 }
+
+
+
+
+
 
 int autoeffic(Int_t np = 2){
-   npeaks = TMath::Abs(np);
-   TH1F *h = new TH1F("h", "test", 500,0,1000);
-   //Generate n peaks at random 
-   //This will be replaced by real data.
-   Double_t par[3000];
-   par[0] = 0.8;
-   par[1] = -0.6/1000;
-   Int_t p;
-   for (p=0;p<npeaks;p++) {
-      par[3*p+2] = 1;
-      par[3*p+3] = 10+gRandom->Rndm()*980;
-      par[3*p+4] = 3+2*gRandom->Rndm();
-   }
 
-   TF1 *f = new TF1("f",fpeaks,0,1000,2+3*npeaks);
-   f->SetNpx(1000);
-   f->SetParameters(par);
+   //Run this once per spectrum. 
+   //Might make a "super script" to run over all hists
+   npeaks = TMath::Abs(np);
+
+   Double_t par[3000];
+
+//Instead of generating peaks read in a histogram
+  TFile *file = new TFile("hists00000_000.root"); 
+
+  file.ls(); 
+  
+  TH1F * h1 = (TH1F*)file->Get("Charge_0x0004"); 
+
    TCanvas *c1 = new TCanvas("c1","c1",10,10,1000,900);
    c1->Divide(1,2);
    c1->cd(1);
-   h->FillRandom("f",200000);
-   h->Draw();
-   TH1F *h2 = (TH1F*)h->Clone("h2");
-   //Use TSpectrum to find the peak candidates
-   TSpectrum *s = new TSpectrum(2*npeaks);
-   Int_t nfound = s->Search(h,2,"",0.10);
-   printf("Found %d candidate peaks to fit\n",nfound);
-   //Estimate backgroundfit using TSpectrum::Background
-   TH1 *hb = s->Background(h,20,"same");
-   if (hb) c1->Update();
-   if (np <0) return;
+   h1->Draw();
+   TH1F *h2 = (TH1F*)h1->Clone("h2");
 
-   //estimate linear background using a fitting method
+   //make a TList to store functions for fitting.
+//   TList *fitFunctions = new TList;
+
    c1->cd(2);
-   TF1 *fline = new TF1("fline","pol1",0,1000);
-   h->Fit("fline","qn");
-   //Loop on all found peaks. Eliminate peaks at the background level
-   par[0] = fline->GetParameter(0);
-   par[1] = fline->GetParameter(1);
-   npeaks = 0;
+   //Use TSpectrum to find the peak candidates
+   TSpectrum *s = new TSpectrum(npeaks, 100);
+   Int_t nfound = s->Search(h1,2,"",0.75);
+   printf("Found %d candidate peaks to fit\n",nfound);
+   printf("Now fitting: Be patient\n");
    Float_t *xpeaks = s->GetPositionX();
    for (p=0;p<nfound;p++) {
       Float_t xp = xpeaks[p];
-      Int_t bin = h->GetXaxis()->FindBin(xp);
-      Float_t yp = h->GetBinContent(bin);
-      if (yp-TMath::Sqrt(yp) < fline->Eval(xp)) continue;
-      par[3*npeaks+2] = yp;
-      par[3*npeaks+3] = xp;
-      par[3*npeaks+4] = 3;
+      Int_t bin = h1->GetXaxis()->FindBin(xp);
+      Float_t yp = h1->GetBinContent(bin);
+      par[0] = yp;
+      par[1] = xp;
+      par[2] = 2;
+      par[3] = 5;
+      par[4] = 0.1;
+      par[5] = 0.01;
+      par[6] = 100;
+      par[7] = 0;
+      par[8] = 0;
+    //  fitFunctions->Add(PeakFitFuncs(par));
+      PeakFitFuncs(par,h2);
       npeaks++;
    }
-   printf("Found %d useful peaks to fit\n",npeaks);
-   printf("Now fitting: Be patient\n");
-   TF1 *fit = new TF1("fit",fpeaks,0,1000,2+3*npeaks);
-   //we may have more than the default 25 parameters
-   TVirtualFitter::Fitter(h2,10+3*npeaks);
-   fit->SetParameters(par);
-   fit->SetNpx(1000);
-   h2->Fit("fit");             
+
+
+   
+
+   //c1->cd(2)
+     
 }
   

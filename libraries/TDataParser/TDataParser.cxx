@@ -339,21 +339,21 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 		return -1;	
 	}
 
-/*	if(!SetGRIFPPG(data[x++],EventFrag)) {
+	if(!SetGRIFPPG(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -2;;
 	}
-*/
+
 	if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -3;
 	}
 
-/*	if(!SetGRIFMasterFilterPattern(data[x++],EventFrag)) {
+	if(!SetGRIFMasterFilterPattern(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -4;
 	}
-*/
+
 
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
