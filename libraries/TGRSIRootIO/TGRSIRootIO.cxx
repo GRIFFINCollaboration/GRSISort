@@ -80,11 +80,16 @@ void TGRSIRootIO::FillFragmentTree(TFragment *frag) {
 void TGRSIRootIO::FinalizeFragmentTree() {
    if(!fFragmentTree || !foutfile)
       return;
-   TIter *iter = TChannel::GetChannelIter();   
+   //TIter *iter = TChannel::GetChannelIter();   
    TList *list = fFragmentTree->GetUserInfo();
-   while(TChannel *chan = (TChannel*)iter->Next()) {
-      list->Add(chan);
-   }
+   //while(TChannel *chan = (TChannel*)iter->Next()) {
+   //   list->Add(chan);
+   //}
+   std::map < int, TChannel * >::iterator iter;
+	for(iter=TChannel::GetChannelMap()->begin();iter!=TChannel::GetChannelMap()->end();iter++) {
+		list->Add(iter->second);
+	}
+
    foutfile->cd();
    fFragmentTree->Write();
    return;

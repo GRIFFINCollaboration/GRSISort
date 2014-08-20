@@ -1,4 +1,4 @@
-SUBDIRS = TGRSIint TMidas TGRSIServer TDataParser TGRSILoop TGRSIFormat TGRSIRootIO TGRSIAnalysis
+SUBDIRS = TSharc
 ALLDIRS = $(SUBDIRS)
 
 .PHONY: subdirs $(ALLDIRS) clean

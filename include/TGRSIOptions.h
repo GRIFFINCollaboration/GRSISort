@@ -26,6 +26,8 @@ class TGRSIOptions : public TObject {
       std::vector<std::string> fInputCalFile;
       std::vector<std::string> fInputOdbFile;
 
+		static bool fCloseAfterSort;
+
    public:
       void SetHostName(std::string &host) {fhostname.assign(host);}
       void SetExptName(std::string &expt) {fexptname.assign(expt);}
@@ -42,9 +44,11 @@ class TGRSIOptions : public TObject {
       std::vector<std::string> GetInputMidas() {  return fInputMidasFile; }
       std::vector<std::string> GetInputCal()   {  return fInputCalFile;   }
       std::vector<std::string> GetInputOdb()   {  return fInputOdbFile;   }
-  
 
-      void Print(Option_t *opt = "");
+		static void SetCloseAfterSort() { fCloseAfterSort = true; }
+		static bool CloseAfterSort()    { return fCloseAfterSort; }
+
+	   void Print(Option_t *opt = "");
       void Clear(Option_t *opt = "");
 
 
