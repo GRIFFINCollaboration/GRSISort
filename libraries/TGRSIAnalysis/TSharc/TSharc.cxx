@@ -41,6 +41,7 @@ void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
   //
   //int fCfdBuildDiff = 5; // largest acceptable time difference between events (clock ticks)  (50 ns)
 
+	printf("Building Hits!. options = %s\n",opt);
 
    for(int i=0;i<data->GetMultiplicityFront();i++)	{	
       for(int j=0;j<data->GetMultiplicityBack();j++)	{	
