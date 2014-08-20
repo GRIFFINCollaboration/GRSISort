@@ -142,18 +142,24 @@ void WriteMat(TH2 *mat, fstream *outfile) {
    int xbins = mat->GetXaxis()->GetNbins();
    int ybins = mat->GetYaxis()->GetNbins();
    
+	TH1D *empty = new TH1D("empty","empty",4096,0,4096);
 
-   for(int y=0;y<4096;y++ ) {
+   for(int y=1;y<=4096;y++ ) {
       uint16_t buffer[4096] = {0};
-      for(int x=0;x<4096;x++ ) {
-         if(x<xbins && y<ybins)
-            buffer[x] = (uint16_t)(mat->GetBinContent(x,y));
+		TH1D *proj;
+		if(y<=ybins)
+			proj = mat->ProjectionX("proj",y,y);
+		else
+			proj = empty;
+      for(int x=1;x<=4096;x++ ) {
+         if(x<=xbins)
+            buffer[x-1] = (uint16_t)(proj->GetBinContent(x));//    mat->GetBinContent(x,y));
          else
-            buffer[x] = 0;
+            buffer[x-1] = 0;
       }
-   	outfile->write((char*)(&buffer),sizeof buffer);	
+   	outfile->write((char*)(&buffer),sizeof(buffer));	
    }
-   
+   delete empty;
 }
 
 
