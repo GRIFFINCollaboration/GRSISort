@@ -29,6 +29,7 @@ grsisort will open up a root session in the grsi environment
 Commands:
 
 **grsisort NAMEOFMIDASFILE.mid**  -> Converts the midas file into a fragment tree
+
 Currently accepted flags for the midas sort:
   * -suppress_error,   suppresses errors from failed data parsing appearing in stdout
   * -no_waveforms,     does not add the wave form stored for each event in the mid file to the fragment tree
