@@ -34,9 +34,10 @@ Currently accepted flags for the midas sort:
   * -no_waveforms   |  does not add the wave form stored for each event in the mid file to the fragment tree
   * -s              |  quits the program after it finishs turing the input midas files into trees.
 
-**grsisort -s NAME_OF_FRAGMENT_TREE.root**   -> Starts sorting the fragment tree and creates the histograms defined in users/UserInitObj.h file.
+**grsisort -s NAME_OF_FRAGMENT_TREE.root**   -> Starts sorting the fragment tree into user defined hists.
+  * Histograms are defined in **users/UserInitObj.h**
+  * How to fill the histogram is defined in **usrer/UserFillObj.h** 
 
 
 More to follow.....
 
-or better yet, switch to a bash shell :)
