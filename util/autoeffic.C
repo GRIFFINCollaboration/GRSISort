@@ -133,7 +133,7 @@ int autoeffic(Int_t np = 2){
 //Instead of generating peaks read in a histogram
   TFile *file = new TFile("hists00000_000.root"); 
 
-  file.ls(); 
+//  file.ls(); 
   
   TH1F * h1 = (TH1F*)file->Get("Charge_0x0004"); 
 
