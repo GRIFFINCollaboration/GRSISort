@@ -38,10 +38,11 @@ void TChannel::CopyChannel(TChannel *copyto,TChannel *source) {
 
 	//copyto->Print(); source->Print();
 
-   //copyto->address        = source->GetAddress();
+	if(copyto->address ==0 )
+	   copyto->address        = source->GetAddress();
 	if(source->GetIntegration())
 	   copyto->integration    = source->GetIntegration();
-	if(source->GetNumber())
+	if(copyto->number==0) // source->GetNumber())
 	   copyto->number         = source->GetNumber();
 	if(source->GetStream())
 	   copyto->stream         = source->GetStream();
@@ -56,12 +57,16 @@ void TChannel::CopyChannel(TChannel *copyto,TChannel *source) {
    //copyto->SetName(source->GetName());
    
 	if(source->GetENGCoeff().size()>0)
-	   copyto->ENGCoefficients  = source->GetENGCoeff();
+		//copyto->DestroyENGCal();
+		copyto->ENGCoefficients = source->GetENGCoeff();
 	if(source->GetCFDCoeff().size()>0)
+		//copyto->DestroyCFDCal();
 	   copyto->CFDCoefficients  = source->GetCFDCoeff();
 	if(source->GetLEDCoeff().size()>0)
+		//copyto->DestroyLEDCal();
    	copyto->LEDCoefficients  = source->GetLEDCoeff();
 	if(source->GetTIMECoeff().size()>0)
+		//copyto->DestroyTIMECal();
 	   copyto->TIMECoefficients = source->GetTIMECoeff();
 
 	if(source->GetENGChi2())
@@ -187,19 +192,19 @@ void TChannel::SetChannel(int taddress,int tnumber,std::string tname)	{
 
 
 void TChannel::DestroyENGCal()	{
-	ENGCoefficients.clear();
+	ENGCoefficients.erase(ENGCoefficients.begin(),ENGCoefficients.end());
 }
 
 void TChannel::DestroyCFDCal()	{
-	CFDCoefficients.clear();
+	CFDCoefficients.erase(CFDCoefficients.begin(),CFDCoefficients.end());
 }
 
 void TChannel::DestroyLEDCal()	{
-	LEDCoefficients.clear();
+	LEDCoefficients.erase(LEDCoefficients.begin(),LEDCoefficients.end());
 }
 
 void TChannel::DestroyTIMECal()	{
-	LEDCoefficients.clear();
+	LEDCoefficients.erase(TIMECoefficients.begin(),TIMECoefficients.end());
 }
 
 
@@ -380,7 +385,7 @@ void TChannel::ReadCalFile(const char *filename) {
 			//channel->Print();
          brace_open = false;
          if (channel && (channel->GetAddress()!=0) ) {       
-				//channel->Print();
+				channel->Print();
             AddChannel(channel);
             newchannels++;
          } else
