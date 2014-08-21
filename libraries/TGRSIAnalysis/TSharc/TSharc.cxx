@@ -51,7 +51,8 @@ void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
 			printf("Front[%i]:%.02f  - Back[%i]:%.02f  = %.02f\n",
 					data->GetFront_StripNbr(i),data->GetFront_Energy(i),
 					data->GetBack_StripNbr(j),data->GetBack_Energy(j),
-					abs(data->GetFront_Energy(i) - data->GetBack_Energy(i)));
+					data->GetFront_Energy(i) - data->GetBack_Energy(j) );
+
 		}
 		printf("---------------------\n");
    }
