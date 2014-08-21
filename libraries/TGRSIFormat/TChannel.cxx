@@ -19,6 +19,7 @@ ClassImp(TChannel)
 TChannel *TChannel::fTChannel = 0;
 
 std::map<int,TChannel*> *TChannel::fChannelMap = new std::map<int,TChannel*>;
+std::map<int,TChannel*> *TChannel::fChannelNumberMap = new std::map<int,TChannel*>;
 
 TChannel::TChannel(const char *temp_name)	{
    Clear();
@@ -29,33 +30,76 @@ TChannel::TChannel(const char *temp_name)	{
 void TChannel::CopyChannel(TChannel *copyto,TChannel *source) {
    if(!copyto || !source)
       return;
+	//printf("in copy\n");
    //TChannel *found       = GetChannel(temp_chan->GetAddress());
-   copyto->address        = source->GetAddress();
-   copyto->integration    = source->GetIntegration();
-   copyto->number         = source->GetNumber();
-   copyto->stream         = source->GetStream();
-   copyto->userinfonumber = source->GetUserInfoNumber();
-   copyto->channelname    = source->GetChannelName();
-	copyto->SetDigitizerType(source->GetDigitizerType());
-   copyto->SetName(source->GetName());
-   
-   copyto->ENGCoefficients  = source->GetENGCoeff();
-   copyto->CFDCoefficients  = source->GetCFDCoeff();
-   copyto->LEDCoefficients  = source->GetLEDCoeff();
-   copyto->TIMECoefficients = source->GetTIMECoeff();
+	//printf("*****************************\n");
+	//printf("*********BEFORE**************\n");
+	//printf("*****************************\n");
 
-	copyto->ENGChi2 = source->GetENGChi2();
-	copyto->LEDChi2 = source->GetLEDChi2();
-	copyto->CFDChi2 = source->GetCFDChi2();
-	copyto->TIMEChi2 = source->GetTIMEChi2();
+	//copyto->Print(); source->Print();
+
+   //copyto->address        = source->GetAddress();
+	if(source->GetIntegration())
+	   copyto->integration    = source->GetIntegration();
+	if(source->GetNumber())
+	   copyto->number         = source->GetNumber();
+	if(source->GetStream())
+	   copyto->stream         = source->GetStream();
+	if(source->GetUserInfoNumber())
+	   copyto->userinfonumber = source->GetUserInfoNumber();
+	if(strlen(source->GetChannelName())>0) {
+		//printf("copying channel name: %s\n",source->GetChannelName());
+	   copyto->channelname    = source->GetChannelName();
+	}
+	if(strlen(source->GetDigitizerType())>0)
+		copyto->SetDigitizerType(source->GetDigitizerType());
+   //copyto->SetName(source->GetName());
+   
+	if(source->GetENGCoeff().size()>0)
+	   copyto->ENGCoefficients  = source->GetENGCoeff();
+	if(source->GetCFDCoeff().size()>0)
+	   copyto->CFDCoefficients  = source->GetCFDCoeff();
+	if(source->GetLEDCoeff().size()>0)
+   	copyto->LEDCoefficients  = source->GetLEDCoeff();
+	if(source->GetTIMECoeff().size()>0)
+	   copyto->TIMECoefficients = source->GetTIMECoeff();
+
+	if(source->GetENGChi2())
+		copyto->ENGChi2 = source->GetENGChi2();
+	if(source->GetLEDChi2())
+		copyto->LEDChi2 = source->GetLEDChi2();
+	if(source->GetCFDChi2())
+		copyto->CFDChi2 = source->GetCFDChi2();
+	if(source->GetTIMEChi2())
+		copyto->TIMEChi2 = source->GetTIMEChi2();
+
+
+	//printf("*****************************\n");
+	//printf("*********AFTER***************\n");
+	//printf("*****************************\n");
+
+	//copyto->Print(); source->Print();
+
+	//printf("-----------------------------\n");
+	//printf("-----------------------------\n");
+	//printf("-----------------------------\n\n\n");
+	//printf("-----------------------------\n");
 
 }
 
 void TChannel::AddChannel(TChannel *toadd) {
-	TChannel *chan;
-	chan = GetChannel(toadd->GetAddress());
-	CopyChannel(chan,toadd);
-	delete toadd;
+	TChannel *chan = 0;
+	if(fChannelMap->count(toadd->GetAddress())==0) {
+		if(!(chan = FindChannelByNumber(toadd->GetNumber()))) 	
+			chan = GetChannel(toadd->GetAddress());
+		CopyChannel(chan,toadd);
+		delete toadd;
+	} else {
+		chan = GetChannel(toadd->GetAddress());
+		CopyChannel(chan,toadd);
+		delete toadd;
+	}	
+	return;
 }
 
 TChannel::TChannel() {  };
@@ -95,15 +139,40 @@ TChannel *TChannel::GetChannel(int temp_address) {
 	   fChannelMap->insert(std::make_pair(temp_address,chan));
 	} else {
 		chan = fChannelMap->at(temp_address);	
+		if(chan->GetNumber() != 0)
+			fChannelNumberMap->insert(std::make_pair(chan->GetNumber(),chan));
+
 	}
    return chan;
 }
+
+void TChannel::UpdateChannelNumberMap() {
+   std::map < int, TChannel * >::iterator iter1;
+	for(iter1 = fChannelMap->begin(); iter1 != fChannelMap->end(); iter1++) {
+		if(fChannelNumberMap->count(iter1->second->GetNumber())==0) {
+			fChannelNumberMap->insert(std::make_pair(iter1->second->GetNumber(),iter1->second));
+		}
+	}
+
+}
+
 
 
 TChannel *TChannel::FindChannel(int temp_address) {
 	if(fChannelMap->count(temp_address)==0)
 		return 0;    //not found.
 	return fChannelMap->at(temp_address);
+}
+
+
+TChannel *TChannel::FindChannelByNumber(int temp_number) {
+	if(fChannelMap->size() != fChannelNumberMap->size()) {
+		//printf("fChannelMap->size():%i fChannelNumberMap->size():%i \n",fChannelMap->size(),fChannelNumberMap->size());
+		UpdateChannelNumberMap();
+	}
+	if(fChannelNumberMap->count(temp_number)==0)
+		return 0;    //not found.
+	return fChannelNumberMap->at(temp_number);
 }
 
 
@@ -311,6 +380,7 @@ void TChannel::ReadCalFile(const char *filename) {
 			//channel->Print();
          brace_open = false;
          if (channel && (channel->GetAddress()!=0) ) {       
+				//channel->Print();
             AddChannel(channel);
             newchannels++;
          } else
@@ -352,6 +422,7 @@ void TChannel::ReadCalFile(const char *filename) {
 						newss << std::hex << line;
 						newss >> tempadd;
 					}
+					tempadd = tempadd &0x00ffffff; //front end number is not included in the odb...
 					channel->SetAddress(tempadd);
 				} else if(type.compare("INTEGRATION")==0) {
 					int tempint; ss>>tempint;

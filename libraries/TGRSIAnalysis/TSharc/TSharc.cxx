@@ -47,8 +47,15 @@ void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
       for(int j=0;j<data->GetMultiplicityBack();j++)	{	
          if(data->GetFront_DetectorNbr(i) != data->GetBack_DetectorNbr(j))
 				continue;
-      }
+			
+			printf("Front[%i]:%.02f  - Back[%i]:%.02f  = %.02f\n",
+					data->GetFront_StripNbr(i),data->GetFront_Energy(i),
+					data->GetBack_StripNbr(j),data->GetBack_Energy(j),
+					abs(data->GetFront_Energy(i) - data->GetBack_Energy(i)));
+		}
+		printf("---------------------\n");
    }
+	printf("\n\n");
 
    for(int k=0;k<data->GetMultiplicityPAD();k++)	{	
       for(int l=0;l<sharc_hits.size();l++)	{

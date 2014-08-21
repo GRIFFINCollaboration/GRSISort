@@ -47,6 +47,7 @@ class TChannel : public TNamed	{
       //                            char *temp_name = "");
       static TChannel *GetChannel(int temp_address); 
 		static TChannel *FindChannel(int temp_address);
+		static TChannel *FindChannelByNumber(int temp_numebr);
       //static TChannel *GetChannel(const char *temp_name = "");
       virtual ~TChannel(); 
 
@@ -78,6 +79,8 @@ class TChannel : public TNamed	{
 
       //static TList *fChannelList;
       static std::map<int,TChannel*> *fChannelMap;
+      static std::map<int,TChannel*> *fChannelNumberMap;
+		static void UpdateChannelNumberMap();
 
       void SetChannel(int taddress, 
 		                int tnumber = 0, 

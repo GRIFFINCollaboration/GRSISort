@@ -57,7 +57,7 @@ $(ALLDIRS):
 
 grsisort: src
 	@mv $</$@ bin/$@
-	@printf " ${WARN_COLOR}Compliation Success. woohoo!${NO_COLOR}"
+	@printf " ${WARN_COLOR}Compliation Success. woohoo!${NO_COLOR}\n\n"
 
 bin:
 ifeq ($(wildcard ./bin),) 
