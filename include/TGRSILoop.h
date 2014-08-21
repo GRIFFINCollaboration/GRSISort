@@ -60,9 +60,9 @@ class TGRSILoop : public TObject {
       bool SortMidas();
       void ProcessMidasFile(TMidasFile*);
       void FillFragmentTree(TMidasFile*);
-      bool ProcessMidasEvent(TMidasEvent*);
-      bool ProcessTIGRESS(uint32_t *ptr,int &dsize,TMidasEvent *mevent=0); 
-      bool ProcessGRIFFIN(uint32_t *ptr,int &dsize,TMidasEvent *mevent=0); 
+      bool ProcessMidasEvent(TMidasEvent*,TMidasFile *mfile=0);
+      bool ProcessTIGRESS(uint32_t *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0); 
+      bool ProcessGRIFFIN(uint32_t *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0); 
       bool ProcessEPICS();
 
       void SetFileOdb(char *data,int size);

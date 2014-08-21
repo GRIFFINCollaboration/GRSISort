@@ -175,7 +175,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
             break;
          default:
             fMidasEvent.SetBankList();
-            ProcessMidasEvent(&fMidasEvent);
+            ProcessMidasEvent(&fMidasEvent,midasfile);
             break;
       };
       if((currenteventnumber%5000)== 0) {
@@ -349,7 +349,7 @@ void TGRSILoop::SetTIGOdb()  {
    return;
 }
 
-bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent)   {
+bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
    if(!mevent)
       return false;
    int banksize;
@@ -358,12 +358,12 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent)   {
       switch(mevent->GetEventId())  {
          case 1:
             if((banksize = mevent->LocateBank(NULL,"WFDN",&ptr))>0) {
-	       if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mevent)) { }
+	       if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mevent, mfile)) { }
                               //(unsigned int)(mevent->GetSerialNumber()),
                               //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
             else if((banksize = mevent->LocateBank(NULL,"GRF1",&ptr))>0) {
-               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize, mevent)) { }
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize, mevent, mfile)) { }
 			      //(unsigned int)(mevent->GetSerialNumber()),
 			      //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
@@ -392,7 +392,7 @@ bool TGRSILoop::ProcessEPICS() { //TMidasEvent *mevent)   {
 }
 
 
-bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent)   {
+bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile)   {
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
 	int frags = TDataParser::TigressDataToFragment(ptr,dsize,mserial,mtime);
@@ -404,21 +404,36 @@ bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent)  
 	}
 }
 
-bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent)   {
+bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile)   {
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
 	int frags = TDataParser::GriffinDataToFragment(ptr,dsize,mserial,mtime);
 	if(frags>-1)	{
 	   return true;
 	} else {	       
-	   if(!suppress_error) {
-		   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
-		   printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", (-1*frags)-1);
-	    	   if(mevent)  mevent->Print(Form("a%i",(-1*frags)-1));
-		   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
-	   }
-	   return false;
+		if(!suppress_error) {
+			if(!TGRSIOptions::LogErrors()) {
+			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+			   printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", (-1*frags)-1);
+	    		   if(mevent)  mevent->Print(Form("a%i",(-1*frags)-1));
+			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+		   } else {
+				std::string errfilename; 
+				if(mfile) 
+					errfilename.append(Form("error%05i_%03i.log",mfile->GetRunNumber(),mfile->GetSubRunNumber()));
+				else
+					errfilename.append("error_log.log");
+            FILE *errfileptr = freopen(errfilename.c_str(),"a",stdout);
+			   printf("\n//**********************************************//\n");
+				if(mevent) mevent->Print("a");
+			   printf("\n//**********************************************//\n");
+			   fclose(errfileptr);
+		      int fd = open("/dev/tty", O_WRONLY);
+	     		stdout = fdopen(fd, "w");
+			}
+		}
 	}
+   return false;
 }
 
 

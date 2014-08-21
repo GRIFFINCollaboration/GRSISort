@@ -32,6 +32,7 @@ Commands:
 
 Currently accepted flags for the midas sort:
   * __-suppress_error__,   suppresses errors from failed data parsing appearing in stdout
+  * __-log_error__, sends errors from failed data parsing to file, will not send errors if supress error option is also used!
   * __-no_waveforms__,     does not add the wave form stored for each event in the mid file to the fragment tree
   * __-s__,                quits the program after it finishs turing the input midas files into trees.
 

@@ -385,7 +385,7 @@ void TChannel::ReadCalFile(const char *filename) {
 			//channel->Print();
          brace_open = false;
          if (channel && (channel->GetAddress()!=0) ) {       
-				channel->Print();
+				//channel->Print();
             AddChannel(channel);
             newchannels++;
          } else
@@ -432,7 +432,7 @@ void TChannel::ReadCalFile(const char *filename) {
 				} else if(type.compare("INTEGRATION")==0) {
 					int tempint; ss>>tempint;
 					channel->SetIntegration(tempint);
-				} else if(type.compare("NUMEBR")==0) {
+				} else if(type.compare("NUMBER")==0) {
 					int tempnum; ss>>tempnum;
 					channel->SetNumber(tempnum);
 				} else if(type.compare("STREAM")==0) {

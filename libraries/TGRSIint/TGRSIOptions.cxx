@@ -5,7 +5,9 @@
 ClassImp(TGRSIOptions)
 
 TGRSIOptions *TGRSIOptions::fTGRSIOptions = 0;
+
 bool TGRSIOptions::fCloseAfterSort = false;
+bool TGRSIOptions::fLogErrors      = false;
 
 
 TGRSIOptions *TGRSIOptions::Get()   {
