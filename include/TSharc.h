@@ -40,6 +40,8 @@ class TSharc : public TObject	{
 
 		void BuildHits(TSharcData*,Option_t * = "");			   //!
 
+		int GetMultiplicity() { return sharc_hits.size(); } //!
+
 		virtual void Clear(Option_t * = "");		//!
 		virtual void Print(Option_t * = "");		//!
 

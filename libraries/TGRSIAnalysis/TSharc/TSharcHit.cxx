@@ -19,13 +19,16 @@ void TSharcHit::Clear(Option_t *options)	{
 
 	pad_charge		=	0;	//
 
-	d_energy			=	0;	//      
-	d_time			=	0;	//      
+	d_energy_front =	0;	//      
+	d_time_front	=	0;	//      
+	d_energy_back	=	0;	//      
+	d_time_back 	=	0;	//      
 	//d_cfd				=	0;	//      
 
 	p_energy			=	0;	//          pad only;
 	p_time			=	0;	//          pad only;
 	//p_cfd				=	0;	//
+	p_channelId    =  0;
 
 	front_channelId = 0;
 	back_channelId  = 0;
@@ -38,8 +41,8 @@ void TSharcHit::Clear(Option_t *options)	{
 void TSharcHit::Print(Option_t *options)	{
 			printf(DGREEN "[D/F/B] = %02i\t/%02i\t/%02i " RESET_COLOR "\n",GetDetectorNumber(),GetFrontStrip(),GetBackStrip());
 			printf("Sharc hit charge: %f\t0x%08x\n",(double)front_charge/125.0,front_charge);
-			printf("Sharc hit energy: %f\n",d_energy);
-			printf("Sharc hit time:   %f\n",d_time);
+			printf("Sharc hit energy: %f\n",d_energy_front);
+			printf("Sharc hit time:   %f\n",d_time_front);
 			printf( DGREEN "=	=	=	=	=	=	=	" RESET_COLOR "\n");
 }
 
