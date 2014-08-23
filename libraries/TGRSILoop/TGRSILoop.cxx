@@ -419,9 +419,13 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, T
 			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
 		   } else {
 				std::string errfilename; 
-				if(mfile) 
-					errfilename.append(Form("error%05i_%03i.log",mfile->GetRunNumber(),mfile->GetSubRunNumber()));
-				else
+				if(mfile) {
+               if(mfile->GetSubRunNumber() != -1)
+                  errfilename.append(Form("error%05i_%03i.log",mfile->GetRunNumber(),mfile->GetSubRunNumber()));
+               else    
+                  errfilename.append(Form("error%05i.log",mfile->GetRunNumber()));
+            }
+            else
 					errfilename.append("error_log.log");
             FILE *errfileptr = freopen(errfilename.c_str(),"a",stdout);
 			   printf("\n//**********************************************//\n");
