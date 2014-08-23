@@ -59,6 +59,7 @@ class TChannel : public TNamed	{
       static void CopyChannel(TChannel*,TChannel*);
 		static std::map<int,TChannel*> *GetChannelMap() { return fChannelMap; }
 
+		static void DeleteAllChannels();
   private:
       TChannel(const char *address);
       static TChannel *fTChannel;

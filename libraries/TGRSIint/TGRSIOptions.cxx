@@ -8,7 +8,7 @@ TGRSIOptions *TGRSIOptions::fTGRSIOptions = 0;
 
 bool TGRSIOptions::fCloseAfterSort = false;
 bool TGRSIOptions::fLogErrors      = false;
-
+bool TGRSIOptions::fUseFileOdb     = true;
 
 TGRSIOptions *TGRSIOptions::Get()   {
    if(!fTGRSIOptions)
@@ -20,6 +20,13 @@ TGRSIOptions::TGRSIOptions() {
 }
 
 TGRSIOptions::~TGRSIOptions() {  }
+
+
+void TGRSIOptions::SetOdb(int runnumber, int subrunnumber) {
+
+
+	return;
+}
 
 
 void TGRSIOptions::Print(Option_t *opt) {   }

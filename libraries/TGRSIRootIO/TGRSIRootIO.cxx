@@ -44,6 +44,7 @@ void TGRSIRootIO::SetUpFragmentTree() {
    fFragmentTree = new TTree("FragmentTree","FragmentTree");
    fBufferFrag = 0;
    fFragmentTree->Branch("TFragment","TFragment",&fBufferFrag,100000,99);
+	printf("FragmentTree set up.\n");
 
 }
 
@@ -87,11 +88,14 @@ void TGRSIRootIO::FinalizeFragmentTree() {
    //}
    std::map < int, TChannel * >::iterator iter;
 	for(iter=TChannel::GetChannelMap()->begin();iter!=TChannel::GetChannelMap()->end();iter++) {
-		list->Add(iter->second);
+		TChannel *chan = new TChannel;
+		TChannel::CopyChannel(chan,iter->second);
+		list->Add(chan);//(iter->second);
 	}
 
    foutfile->cd();
-   fFragmentTree->Write();
+   fFragmentTree->AutoSave(); //Write();
+	
    return;
 }
 
@@ -102,6 +106,7 @@ void TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
       sprintf(filename,"fragment%05i_%03i.root",runnumber,subrunnumber); 
    else
       sprintf(filename,"fragment%05i.root",runnumber);
+	printf("Creating root outfile: %s\n",filename);
    foutfile = new TFile(filename,"recreate");
    
    SetUpFragmentTree();
@@ -117,12 +122,11 @@ void TGRSIRootIO::CloseRootOutFile()   {
    foutfile->cd();
    printf(DMAGENTA "\n Fill tree called " DYELLOW "%i " DMAGENTA "times.\n" RESET_COLOR, fTimesFillCalled);
    
-
    FinalizeFragmentTree();   
-
-
    foutfile->Close();
-
+	delete foutfile;	
+	foutfile = 0;
+	return;
 
 };
 

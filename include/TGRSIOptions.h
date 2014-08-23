@@ -28,6 +28,7 @@ class TGRSIOptions : public TObject {
 
 		static bool fCloseAfterSort;
 		static bool fLogErrors;
+		static bool fUseFileOdb;
 
    public:
       void SetHostName(std::string &host) {fhostname.assign(host);}
@@ -51,6 +52,10 @@ class TGRSIOptions : public TObject {
 
 		static void SetLogErrors(bool flag=true)      { fLogErrors=flag;   }
 		static bool LogErrors()								 { return fLogErrors; }
+
+		static void SetUseFileObd(bool flag=true)     { fUseFileOdb=flag;  }
+		static bool UseFileOdb()                      { return fUseFileOdb;}
+		static void SetOdb(int runnumber=0,int subrunnumber=0);
 
 	   void Print(Option_t *opt = "");
       void Clear(Option_t *opt = "");

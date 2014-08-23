@@ -86,9 +86,9 @@ bool TGRSILoop::SortMidas() {
             delete fMidasThread; fMidasThread = 0;
    
           }
+	     	mfile->Close();
       }
-      mfile->Close();
-      delete mfile;
+	   delete mfile;
    }
    TGRSIOptions::Get()->GetInputMidas().clear();
 	//
@@ -120,9 +120,6 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
                 TFragmentQueue::GetQueue()->FragsInQueue(),fFragsSentToTree);
       }
    }
-
-
-
 
    printf("\n");
    //printf(" \n\n quiting fill tree thread \n\n");
@@ -164,8 +161,11 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
             fMidasEvent.Print();
             printf( RESET_COLOR );
             BeginRun(0,0,0);
-            SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
-            break;
+				if(TGRSIOptions::UseFileOdb()) 
+	            SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
+				else    
+					TGRSIOptions::SetOdb(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
+	         break;
          case 0x8001:
             printf(" Processing event %i have processed %.2fMB/%.2fMB\n",currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
             printf( DRED );
@@ -184,7 +184,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
       }
    }
    if(TGRSIStats::GetSize() > 0) {
-	CreateStatsLog(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
+		CreateStatsLog(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
    }
 
    Finalize();
@@ -195,8 +195,12 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 void TGRSILoop::SetFileOdb(char *data, int size) {
    //chaeck if we have already set the tchannels....
    //
-   if(!fOdb) 
-      fOdb = new TXMLOdb(data,size);
+   if(fOdb) 
+   	delete fOdb;
+	 
+	fOdb = new TXMLOdb(data,size);
+
+	TChannel::DeleteAllChannels();
 
    TXMLNode *node = fOdb->FindPath("/Experiment");
    if(!node->HasChildren())

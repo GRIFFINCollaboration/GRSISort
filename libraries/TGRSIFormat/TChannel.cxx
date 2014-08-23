@@ -27,6 +27,18 @@ TChannel::TChannel(const char *temp_name)	{
    this->channelname = temp_name;
 }
 
+void TChannel::DeleteAllChannels() {
+
+   std::map < int, TChannel * >::iterator iter;
+   for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
+      delete iter->second;
+		iter->second = 0;
+   }
+	fChannelMap->clear();
+	fChannelNumberMap->clear();
+	return;
+}
+
 void TChannel::CopyChannel(TChannel *copyto,TChannel *source) {
    if(!copyto || !source)
       return;

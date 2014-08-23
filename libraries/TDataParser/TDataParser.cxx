@@ -155,7 +155,7 @@ void TDataParser::SetTIGWave(uint32_t value,TFragment *currentfrag) {
 void TDataParser::SetTIGCfd(uint32_t value,TFragment *currentfrag) {
    //currentfragment->SlowRiseTime = value & 0x08000000;
    currentfrag->Cfd.push_back( int32_t(value & 0x07ffffff));
-   //std::string dig_type = "Tig64";
+   //std::string dig_type = "";//"Tig64";
    std::string dig_type = (TChannel::GetChannel(currentfrag->ChannelAddress))->GetDigitizerType();
 
    // remove vernier for now and calculate the time to the trigger
@@ -171,6 +171,8 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment *currentfrag) {
       // cfdBits	= (eventfragment->Cfd >> 5);
       // tsBits  = eventfragment->TimeStampLow & 0x003fffff;
    } else {
+      cfdBits = (currentfrag->Cfd.back() >> 4);
+      tsBits  = currentfrag->TimeStampLow & 0x007fffff;
       //printf(DYELLOW "Address: 0x%08x | " RESET_COLOR); (TChannel::GetChannel(currentfrag->ChannelAddress))->Print();
       //printf("CFD obtained without knowing digitizer type with midas Id = %d!\n",currentfrag->MidasId );
    }
