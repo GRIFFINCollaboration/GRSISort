@@ -12,6 +12,8 @@ ClassImp(TFragmentQueue);
 
 TFragmentQueue *TFragmentQueue::fFragmentQueueClassPointer = NULL;
 std::map<std::string,TFragmentQueue*> *TFragmentQueue::fFragmentMap = new std::map<std::string,TFragmentQueue*>;
+std::map<int,int> TFragmentQueue::fragment_id_map;
+
 
 
 TFragmentQueue *TFragmentQueue::GetQueue(std::string quename)	{
@@ -117,9 +119,9 @@ void TFragmentQueue::Add(TFragment *frag)	{
     //when we move to multithreaded parsing, these three lines will 
     //need to move inside the lock.  pcb.
 //	CalibrationManager::instance()->CalibrateFragment(frag);
-	fragment_id_map[frag->TriggerId]++;
-	frag->FragmentId = fragment_id_map[frag->TriggerId];
-
+		fragment_id_map[frag->TriggerId]++;
+		frag->FragmentId = fragment_id_map[frag->TriggerId];
+		
 	
 		
 		while(!TFragmentQueue::Sorted.try_lock())	{
@@ -134,7 +136,6 @@ void TFragmentQueue::Add(TFragment *frag)	{
 		//sorted.unlock();
 	
 		TFragmentQueue::Sorted.unlock();
-
 
 	return;
 	//printf("Adding frag:\t%i\tNumber in Q = %i\n",frag->MidasId,fFragsInQueue);

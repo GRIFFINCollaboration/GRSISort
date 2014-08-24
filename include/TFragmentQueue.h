@@ -47,7 +47,7 @@ class TFragmentQueue : public TObject {
 		unsigned int fTotalFragsIn;
 		unsigned int fTotalFragsOut;	
 
-		std::map<int,int> fragment_id_map;	
+		static std::map<int,int> fragment_id_map;	
 
 
 #ifndef __CINT__
