@@ -8,7 +8,13 @@ TGRSIOptions *TGRSIOptions::fTGRSIOptions = 0;
 
 bool TGRSIOptions::fCloseAfterSort = false;
 bool TGRSIOptions::fLogErrors      = false;
-bool TGRSIOptions::fUseFileOdb     = true;
+bool TGRSIOptions::fUseMidFileOdb  = true;
+
+std::vector<std::string> TGRSIOptions::fInputRootFile;
+std::vector<std::string> TGRSIOptions::fInputMidasFile;
+std::vector<std::string> TGRSIOptions::fInputOdbFile;
+std::vector<std::string> TGRSIOptions::fInputCalFile;
+
 
 TGRSIOptions *TGRSIOptions::Get()   {
    if(!fTGRSIOptions)
@@ -22,12 +28,17 @@ TGRSIOptions::TGRSIOptions() {
 TGRSIOptions::~TGRSIOptions() {  }
 
 
-void TGRSIOptions::SetOdb(int runnumber, int subrunnumber) {
-
-
-	return;
+const char *TGRSIOptions::GetXMLODBFile(int runnumber, int subrunnumber) {
+	if(!fInputOdbFile.empty())
+		return fInputOdbFile.at(0).c_str();
+	return "";
 }
 
+const char *TGRSIOptions::GetCalFile(int runnumber, int subrunnumber) {
+	if(!fInputCalFile.empty())
+		return fInputCalFile.at(0).c_str();
+	return "";
+}
 
 void TGRSIOptions::Print(Option_t *opt) {   }
 

@@ -44,13 +44,14 @@ void TGRSIint::InitFlags() {
 }
 
 void TGRSIint::ApplyOptions() {
+  	
+
   if(fAutoSort)
     TGRSILoop::Get()->SortMidas();
   if(fFragmentSort & TGRSIOptions::Get()->GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
   if(fAutoSort && TGRSIOptions::CloseAfterSort())
   	 gApplication->Terminate();
-
 }
 
 

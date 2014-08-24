@@ -21,24 +21,16 @@ class TGRSIOptions : public TObject {
       std::string fhostname;
       std::string fexptname;
    
-      std::vector<std::string> fInputRootFile;
-      std::vector<std::string> fInputMidasFile;
-      std::vector<std::string> fInputCalFile;
-      std::vector<std::string> fInputOdbFile;
+      static std::vector<std::string> fInputRootFile;
+      static std::vector<std::string> fInputMidasFile;
+      static std::vector<std::string> fInputCalFile;
+      static std::vector<std::string> fInputOdbFile;
 
 		static bool fCloseAfterSort;
 		static bool fLogErrors;
-		static bool fUseFileOdb;
+		static bool fUseMidFileOdb;
 
    public:
-      void SetHostName(std::string &host) {fhostname.assign(host);}
-      void SetExptName(std::string &expt) {fexptname.assign(expt);}
-
-      void AddInputRootFile(std::string &input)  {  fInputRootFile.push_back(input);    }
-      void AddInputMidasFile(std::string &input) {  fInputMidasFile.push_back(input);   }
-      void AddInputCalFile(std::string &input)   {  fInputCalFile.push_back(input);     }
-      void AddInputOdbFile(std::string &input)   {  fInputOdbFile.push_back(input);     }
-
       std::string GetHostName()  {  return fhostname;  }
       std::string GetExptName()  {  return fexptname;  }
      
@@ -47,15 +39,28 @@ class TGRSIOptions : public TObject {
       std::vector<std::string> GetInputCal()   {  return fInputCalFile;   }
       std::vector<std::string> GetInputOdb()   {  return fInputOdbFile;   }
 
+		static const char *GetXMLODBFile(int runnumber=0,int subrunnumber=-1);
+		static const char *GetCalFile(int runnumber=0,int subrunnumber=-1);
+
+
 		static void SetCloseAfterSort(bool flag=true) { fCloseAfterSort=flag; }
 		static bool CloseAfterSort()                  { return fCloseAfterSort; }
 
 		static void SetLogErrors(bool flag=true)      { fLogErrors=flag;   }
 		static bool LogErrors()								 { return fLogErrors; }
+		
+		static void SetUseMidFileOdb(bool flag=true)     { fUseMidFileOdb=flag;  }
+		static bool UseMidFileOdb()                      { return fUseMidFileOdb;}
 
-		static void SetUseFileObd(bool flag=true)     { fUseFileOdb=flag;  }
-		static bool UseFileOdb()                      { return fUseFileOdb;}
-		static void SetOdb(int runnumber=0,int subrunnumber=0);
+
+      void SetHostName(std::string &host) {fhostname.assign(host);}
+      void SetExptName(std::string &expt) {fexptname.assign(expt);}
+
+      void AddInputRootFile(std::string &input)  {  fInputRootFile.push_back(input);    }
+      void AddInputMidasFile(std::string &input) {  fInputMidasFile.push_back(input);   }
+      void AddInputCalFile(std::string &input)   {  SetUseMidFileOdb(false);  fInputCalFile.push_back(input);     }
+      void AddInputOdbFile(std::string &input)   {  SetUseMidFileOdb(false); fInputOdbFile.push_back(input);     }
+
 
 	   void Print(Option_t *opt = "");
       void Clear(Option_t *opt = "");

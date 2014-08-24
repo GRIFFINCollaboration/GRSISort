@@ -161,10 +161,24 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
             fMidasEvent.Print();
             printf( RESET_COLOR );
             BeginRun(0,0,0);
-				if(TGRSIOptions::UseFileOdb()) 
+				if(TGRSIOptions::UseMidFileOdb()) { 
 	            SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
-				else    
-					TGRSIOptions::SetOdb(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
+				} else {    
+					std::string filename;
+					filename.assign(TGRSIOptions::GetXMLODBFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()));
+					if(filename.length()>0) {
+						printf("using xml file: %s\n",filename.c_str());
+						std::ifstream inputxml; inputxml.open(filename.c_str()); inputxml.seekg(0,std::ios::end);
+						int length = inputxml.tellg(); inputxml.seekg(0,std::ios::beg);
+						char buffer[length]; inputxml.read(buffer,length);
+
+						SetFileOdb(buffer,length);
+					}
+					filename.assign(TGRSIOptions::GetCalFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()));
+					if(filename.length()>0) {
+						TChannel::ReadCalFile(filename.c_str());
+					}
+				}
 	         break;
          case 0x8001:
             printf(" Processing event %i have processed %.2fMB/%.2fMB\n",currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
@@ -304,6 +318,9 @@ void TGRSILoop::SetTIGOdb()  {
    }
    
    std::string path = "/Analyzer/Shared Parameters/Config";
+	TXMLNode *test = fOdb->FindPath(path.c_str());
+	if(!test)
+		path.assign("/Analyzer/Parameters/Cathode/Config");  //the old path to the useful odb info.
    printf("Using TIGRESS path to analyzer info: %s...\n",path.c_str());
 
    std::string temp = path; temp.append("/FSCP");
@@ -326,7 +343,6 @@ void TGRSILoop::SetTIGOdb()  {
    node = fOdb->FindPath(temp.c_str());
    std::vector<double> offsets = fOdb->ReadDoubleArray(node);
 
-
    if( (address.size() == names.size()) && (names.size() == gains.size()) && (gains.size() == offsets.size()) && offsets.size() == type.size() ) {
       //all good.
    }  else {
@@ -337,9 +353,10 @@ void TGRSILoop::SetTIGOdb()  {
    for(int x=0;x<address.size();x++) {
       TChannel *tempchan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
       tempchan->SetChannelName(names.at(x).c_str());
+		//printf("address: 0x%08x\n",address.at(x));
       tempchan->SetAddress(address.at(x));
       tempchan->SetNumber(x);
-      //printf("temp chan(%s) number set to: %i\n",tempchan->GetChannelName(),tempchan->GetNumber());
+      //printf("temp chan(%s) 0x%08x  number set to: %i\n",tempchan->GetChannelName(),tempchan->GetAddress(),tempchan->GetNumber());
       if(type.at(x) != 0) {
          tempchan->SetTypeName(typemap[type.at(x)].first);
          tempchan->SetDigitizerType(typemap[type.at(x)].second.c_str());

@@ -1,7 +1,7 @@
 
 {
-  // gSystem->Load("/opt/root/lib/libXMLIO.so");
-  // gSystem->Load("/opt/root/lib/libXMLParser.so");
+   gSystem->Load("/opt/root/lib/libXMLIO.so");
+   gSystem->Load("/opt/root/lib/libXMLParser.so");
 
    gSystem->Load("libTreePlayer");
    gSystem->Load("libraries/libMidasFormat.so");

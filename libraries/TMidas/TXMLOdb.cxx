@@ -155,8 +155,8 @@ std::vector<int> TXMLOdb::ReadIntArray(TXMLNode *node) {
 //   printf("size = %i\n",size);
    temp.assign(size,0);
    TXMLNode *child = node->GetChildren();
+	int counter = 0;
    while(true) {
-//      printf("here\n");
       if(TList *index = child->GetAttributes()){
          //printf("index = %i\n",atoi(((TXMLAttr*)(index->At(0)))->GetValue()));
          //printf("value = %s\t%i\n",child->GetText(),atoi(child->GetText()));
@@ -164,7 +164,11 @@ std::vector<int> TXMLOdb::ReadIntArray(TXMLNode *node) {
          int value = atoi(child->GetText());
 //         printf("indexnum %i : value 0x%08x\n",indexnum,value);
          temp.at(indexnum) = value;
-      }
+      } else if( child->GetText() ) {
+			int indexnum = counter++;
+			//printf("%i/%i\n",counter,size);
+			temp.at(indexnum) = atoi(child->GetText());
+		}
       child = child->GetNextNode();
       if(!child)
          break;
@@ -191,8 +195,9 @@ std::vector<std::string> TXMLOdb::ReadStringArray(TXMLNode *node) {
 //   printf("size = %i\n",size);
    temp.assign(size,"");
    TXMLNode *child = node->GetChildren();
+	int counter = 0;
    while(true) {
-//      printf("here\n");
+//     printf("here\n");
       if(TList *index = child->GetAttributes()){
          //printf("index = %i\n",atoi(((TXMLAttr*)(index->At(0)))->GetValue()));
          //printf("value = %s\t%i\n",child->GetText(),atoi(child->GetText()));
@@ -200,7 +205,11 @@ std::vector<std::string> TXMLOdb::ReadStringArray(TXMLNode *node) {
          std::string value = child->GetText();
 //         printf("indexnum %i : value 0x%08x\n",indexnum,value);
          temp.at(indexnum) = value;
-      }
+      } else if(child->GetText()) {
+			int indexnum = counter++;
+			//printf("%i/%i\n",counter,size);
+			temp.at(indexnum).assign(child->GetText());
+		}
       child = child->GetNextNode();
       if(!child)
          break;
@@ -227,6 +236,7 @@ std::vector<double> TXMLOdb::ReadDoubleArray(TXMLNode *node) {
 //   printf("size = %i\n",size);
    temp.assign(size,0.0);
    TXMLNode *child = node->GetChildren();
+	int counter = 0;
    while(true) {
 //      printf("here\n");
       if(TList *index = child->GetAttributes()){
@@ -236,7 +246,10 @@ std::vector<double> TXMLOdb::ReadDoubleArray(TXMLNode *node) {
          double value = atof(child->GetText());
 //         printf("indexnum %i : value 0x%08x\n",indexnum,value);
          temp.at(indexnum) = value;
-      }
+      } else if(child->GetText()) {
+			int indexnum = counter++;
+			temp.at(indexnum) = atof(child->GetText());
+		}
       child = child->GetNextNode();
       if(!child)
          break;
