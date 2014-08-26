@@ -168,6 +168,7 @@ std::vector<int> TXMLOdb::ReadIntArray(TXMLNode *node) {
 			int indexnum = counter++;
 			//printf("%i/%i\n",counter,size);
 			temp.at(indexnum) = atoi(child->GetText());
+			//printf("text: %s   int: %i\n",child->GetText(),temp.at(indexnum));
 		}
       child = child->GetNextNode();
       if(!child)

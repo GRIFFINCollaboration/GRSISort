@@ -53,6 +53,7 @@ typedef char int8_t;
 #endif
 
 #include <string>
+#include <cstdio>
 #include <cstdlib>
 #include <stdint.h>
 struct MNEMONIC {
@@ -82,7 +83,20 @@ static void ParseMNEMONIC(std::string *name,MNEMONIC *mnemonic) {
    return;
 }
 
-
+static void PrintMNEMONIC(MNEMONIC *mnemonic) {
+	if(!mnemonic)
+		return;
+	printf("======MNEMONIC 0x%08x======\n");
+	printf("arrayposition    = %i\n", mnemonic->arrayposition);
+	printf("segment          = %i\n", mnemonic->segment);
+	printf("system           = %s\n", mnemonic->system.c_str());
+	printf("subsystem        = %s\n", mnemonic->subsystem.c_str());
+	printf("arraysubposition = %s\n", mnemonic->arraysubposition.c_str());
+	printf("collectedcharge  = %s\n", mnemonic->collectedcharge.c_str());
+	printf("outputsensor     = %s\n", mnemonic->outputsensor.c_str());
+	printf("===============================\n");
+	return;
+}
 
 const std::string &ProgramName(void);
 

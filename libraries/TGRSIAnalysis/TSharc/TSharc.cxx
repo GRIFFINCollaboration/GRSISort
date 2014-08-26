@@ -51,12 +51,10 @@ void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
       for(int j=0;j<data->GetMultiplicityBack();j++)	{	
          if(data->GetFront_DetectorNbr(i) != data->GetBack_DetectorNbr(j))
 				continue;
-		
-				
 			if(abs(data->GetFront_Energy(i) - data->GetBack_Energy(j)) > 500)
 				continue;
 
-			/*
+		/*	
 			printf("pair(%i,%i) Detector Number: %i\n",i,j,data->GetFront_DetectorNbr(i));
 			printf("Front[%i]:%.02f  - Back[%i]:%.02f  = %.02f\n",
 					data->GetFront_StripNbr(i),data->GetFront_Energy(i),
@@ -67,26 +65,29 @@ void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
 					data->GetBack_StripNbr(j),data->GetBack_EngChi2(j) );
 			TVector3 position = TSharc::GetPosition(data->GetFront_DetectorNbr(i),data->GetFront_StripNbr(i),data->GetBack_StripNbr(j));
 			printf("X: %.02f   Y: %.02f   Z: %.02f\n",position.X(),position.Y(),position.Z());
-`			*/
-//			TSharcHit hit; 
+		*/	
+			TSharcHit hit; 
 
-//         hit.SetDetector(data->GetFront_DetectorNbr(i));				
+         hit.SetDetector(data->GetFront_DetectorNbr(i));				
 
-//         hit.SetDeltaFrontE(data->GetFront_Energy(i));
-//         hit.SetDeltaFrontT(data->GetFront_Time(i));
-//         hit.SetFrontCharge(data->GetFront_Charge(i));
-//         hit.SetFrontChanId(data->GetFront_ChannelId(i));
+         hit.SetDeltaFrontE(data->GetFront_Energy(i));
+         hit.SetDeltaFrontT(data->GetFront_Time(i));
+         hit.SetFrontCharge(data->GetFront_Charge(i));
+         hit.SetFrontChanId(data->GetFront_ChannelId(i));
 
-//         hit.SetDeltaBackE(data->GetBack_Energy(j));
-//         hit.SetDeltaBackT(data->GetBack_Time(j));
-//         hit.SetBackCharge(data->GetBack_Charge(j));
-//         hit.SetBackChanId(data->GetBack_ChannelId(j));
+         hit.SetDeltaBackE(data->GetBack_Energy(j));
+         hit.SetDeltaBackT(data->GetBack_Time(j));
+         hit.SetBackCharge(data->GetBack_Charge(j));
+         hit.SetBackChanId(data->GetBack_ChannelId(j));
 
-//         hit.SetPosition(TSharc::GetPosition(hit.GetDetectorNumber(),
-//                                             hit.GetFrontStrip(),
-//                                             hit.GetBackStrip()));
+			hit.SetFrontStrip(data->GetFront_StripNbr(i));
+			hit.SetBackStrip(data->GetBack_StripNbr(j));
+
+         hit.SetPosition(TSharc::GetPosition(hit.GetDetectorNumber(),
+                                             hit.GetFrontStrip(),
+                                             hit.GetBackStrip()));
          
-//        	this->sharc_hits.push_back(hit);
+        	this->sharc_hits.push_back(hit);
 
          //inline void SetPadE(const Double_t &tenergy)		{	p_energy = tenergy;	}	//!
          //inline void SetPadT(const Double_t &ttime)		{	p_time = ttime;	}		//!
@@ -97,15 +98,15 @@ void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
    }
 	//printf("\n\n");
 
-//   for(int k=0;k<data->GetMultiplicityPAD();k++)	{	
-//      for(int l=0;l<sharc_hits.size();l++)	{
-//         if(data->GetPAD_DetectorNbr(k) != sharc_hits.at(l).GetDetectorNumber())
-//		      continue;
-//			sharc_hits.at(l).SetPadE(data->GetPAD_Energy(k)); 
-//			sharc_hits.at(l).SetPadT(data->GetPAD_Time(k)); 
-//			sharc_hits.at(l).SetPadCharge(data->GetPAD_Charge(k)); 
-//     }
-//   }
+   for(int k=0;k<data->GetMultiplicityPAD();k++)	{	
+      for(int l=0;l<sharc_hits.size();l++)	{
+         if(data->GetPAD_DetectorNbr(k) != sharc_hits.at(l).GetDetectorNumber())
+		      continue;
+			sharc_hits.at(l).SetPadE(data->GetPAD_Energy(k)); 
+			sharc_hits.at(l).SetPadT(data->GetPAD_Time(k)); 
+			sharc_hits.at(l).SetPadCharge(data->GetPAD_Charge(k)); 
+     }
+   }
 
 }
 

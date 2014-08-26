@@ -54,7 +54,8 @@ void TChannel::CopyChannel(TChannel *copyto,TChannel *source) {
 	   copyto->address        = source->GetAddress();
 	if(source->GetIntegration())
 	   copyto->integration    = source->GetIntegration();
-	if(copyto->number==0) // source->GetNumber())
+	//if(copyto->number != 0) // source->GetNumber())
+	if(source->GetNumber())
 	   copyto->number         = source->GetNumber();
 	if(source->GetStream())
 	   copyto->stream         = source->GetStream();
@@ -104,17 +105,19 @@ void TChannel::CopyChannel(TChannel *copyto,TChannel *source) {
 
 }
 
-void TChannel::AddChannel(TChannel *toadd) {
+void TChannel::AddChannel(TChannel *toadd,Option_t *opt) {
 	TChannel *chan = 0;
 	if(fChannelMap->count(toadd->GetAddress())==0) {
 		if(!(chan = FindChannelByNumber(toadd->GetNumber()))) 	
 			chan = GetChannel(toadd->GetAddress());
 		CopyChannel(chan,toadd);
-		delete toadd;
+		if(strcmp(opt,"save")!=0)
+			delete toadd;
 	} else {
 		chan = GetChannel(toadd->GetAddress());
 		CopyChannel(chan,toadd);
-		delete toadd;
+		if(strcmp(opt,"save")!=0)
+			delete toadd;
 	}	
 	return;
 }
@@ -236,14 +239,15 @@ double TChannel::CalibrateENG(double charge)	{
 	if(ENGCoefficients.size()==0)
 		return charge;
 	
-	double temp_int = 25.0;
+	double temp_int = 125.0;
 	if(integration != 0)
-		temp_int = integration;  //the 4 is the dis. 
+		temp_int = (double)integration;  //the 4 is the dis. 
 	
 	double cal_chg = 0.0;
 	for(int i=0;i<ENGCoefficients.size();i++){
 		cal_chg += ENGCoefficients[i] * pow((charge/temp_int),i);
 	}
+	//printf("(%.02f/%0.2f) *%.02f + %.02f = %.02f\n",charge,temp_int,ENGCoefficients[1],ENGCoefficients[0], cal_chg);
 	return cal_chg;
 };
 
@@ -314,6 +318,7 @@ void TChannel::Print(Option_t *opt)	{
 	for(int x=0;x<ENGCoefficients.size();x++)
 		printf( "%f\t", ENGCoefficients.at(x) );
 	printf("\n");
+	printf("Integration: %i\n",integration);
 	printf( "ENGChi2:   %f\n",ENGChi2);
 	printf("\n}\n");
 	printf( "//====================================//\n");

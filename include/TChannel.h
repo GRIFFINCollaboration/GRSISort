@@ -55,7 +55,7 @@ class TChannel : public TNamed	{
       //static TIter *GetChannelIter() { TIter *iter = new TIter(fChannelList); return iter;}
 
       TChannel();
-		static void AddChannel(TChannel*);
+		static void AddChannel(TChannel*,Option_t *opt="");
       static void CopyChannel(TChannel*,TChannel*);
 		static std::map<int,TChannel*> *GetChannelMap() { return fChannelMap; }
 

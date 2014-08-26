@@ -121,6 +121,9 @@ class TSharcHit : public TObject 	{
 		inline void SetFrontChanId(const UShort_t &chan)	{	front_channelId = chan;	} //!
 		inline void SetBackChanId(const UShort_t &chan)		{	back_channelId = chan;		} //!
 
+		inline void SetFrontStrip(const UShort_t &strip)	{	front_strip = strip; } //!
+		inline void SetBackStrip(const UShort_t &strip)		{	back_strip = strip; } //!
+
 		//void SetFrontWave(std::vector<int> &wave)	{ front_strip_wave = wave;	} 
 		//void SetBackWave(std::vector<int> &wave)	{ back_strip_wave = wave;	} 
 		//void SetPadWave(std::vector<int> &wave)	{ pad_wave = wave;	} 
