@@ -1,4 +1,4 @@
-SUBDIRS = TSharc
+SUBDIRS = TSharc TNucleus TKinematics
 ALLDIRS = $(SUBDIRS)
 
 .PHONY: subdirs $(ALLDIRS) clean
