@@ -89,11 +89,11 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
    pp->SetParName(9,"bg off");
 
    pp->SetParLimits(1,0,1000000);
-   pp->SetParLimits(3,1,4);
-//   pp->SetParLimits(4,0,1000000);
+   pp->SetParLimits(3,0,30);
+   pp->SetParLimits(4,0,10);
    pp->SetParLimits(5,0,1000000);
 
-   pp->FixParameter(4,0);
+ //  pp->FixParameter(4,0);
 
    //we may have more than the default 25 parameters
    TVirtualFitter::Fitter(h,10);
@@ -137,7 +137,7 @@ int autoeffic(const char *histfile,Int_t np = 2){
 
 //  file.ls(); 
   
-   TH1F * h1 = (TH1F*)file->Get("Charge_0x0004"); 
+   TH1F * h1 = (TH1F*)file->Get("Charge_0x0007"); 
 
    TCanvas *c1 = new TCanvas("c1","c1",10,10,1000,900);
    c1->Divide(1,2);
