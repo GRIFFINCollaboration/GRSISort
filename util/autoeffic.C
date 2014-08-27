@@ -89,9 +89,11 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
    pp->SetParName(9,"bg off");
 
    pp->SetParLimits(1,0,1000000);
-   pp->SetParLimits(3,0,1000000);
-   pp->SetParLimits(4,0,1000000);
+   pp->SetParLimits(3,1,4);
+//   pp->SetParLimits(4,0,1000000);
    pp->SetParLimits(5,0,1000000);
+
+   pp->FixParameter(4,0);
 
    //we may have more than the default 25 parameters
    TVirtualFitter::Fitter(h,10);
@@ -131,11 +133,11 @@ int autoeffic(const char *histfile,Int_t np = 2){
    Double_t par[3000];
 
 //Instead of generating peaks read in a histogram
-  TFile *file = new TFile(histfile,"READ"); 
+   TFile *file = new TFile(histfile,"READ"); 
 
 //  file.ls(); 
   
-  TH1F * h1 = (TH1F*)file->Get("Charge_0x0004"); 
+   TH1F * h1 = (TH1F*)file->Get("Charge_0x0004"); 
 
    TCanvas *c1 = new TCanvas("c1","c1",10,10,1000,900);
    c1->Divide(1,2);
@@ -157,15 +159,16 @@ int autoeffic(const char *histfile,Int_t np = 2){
       Float_t xp = xpeaks[p];
       Int_t bin = h1->GetXaxis()->FindBin(xp);
       Float_t yp = h1->GetBinContent(bin);
-      par[0] = yp;
-      par[1] = xp;
-      par[2] = 2;
-      par[3] = 5;
-      par[4] = 0.1;
-      par[5] = 0.01;
-      par[6] = 100;
-      par[7] = 0;
-      par[8] = 0;
+      par[0] = yp;  //height
+      par[1] = xp;  //centroid
+      par[2] = 1;   //sigma
+      par[3] = 5;   //beta
+      par[4] = 0;   //R
+      par[5] = 0.01;//stp
+      par[6] = 50;  //A
+      par[7] = -0.2;//B
+      par[8] = 0;   //C
+      par[9] = xp;  //bg offset
     //  fitFunctions->Add(PeakFitFuncs(par));
       PeakFitFuncs(par,h2);
       npeaks++;
