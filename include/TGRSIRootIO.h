@@ -36,7 +36,9 @@ class TGRSIRootIO : public TObject {
 
    public:
       void SetUpRootOutFile(int,int);
-      void CloseRootOutFile();
+      void CloseRootOutFile(); 
+      int GetRunNumber(std::string);
+      int GetSubRunNumber(std::string);
 
 
       TFile *GetRootOutFile()  { return foutfile;   }  
