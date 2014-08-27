@@ -113,8 +113,8 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
   std::cout << "CHI2: "<< fitresult->GetChisquare() << std::endl;
    std::cout << "NDF: " << fitresult->GetNDF() << std::endl;
    std::cout << "X sq./v = " << fitresult->GetChisquare()/fitresult->GetNDF() << std::endl;
-
-
+   std::cout << "Area = " << fitresult->GetParameter(0)*fitresult->GetParameter(2)*TMath::Sqrt(TMath::TwoPi()) << std::endl;
+   std::cout << "Number of Bins" << h->GetSize() - 2 << std::endl;
    return pp;
 
 }
@@ -158,7 +158,7 @@ int autoeffic(const char *histfile,Int_t np = 2){
       Float_t yp = h1->GetBinContent(bin);
       par[0] = yp;  //height
       par[1] = xp;  //centroid
-      par[2] = 1;   //sigma
+      par[2] = 2;   //sigma
       par[3] = 5;   //beta
       par[4] = 0;   //R
       par[5] = 0.01;//stp
