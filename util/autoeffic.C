@@ -71,11 +71,11 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
    return photo_peak(dim, par) + background(dim,&par[6]);
 }
 
-TF1* PeakFitFuncs(Double_t *par, TH1F *h){
+TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
 
    Int_t xp = par[1];
 
-   TF1 *pp = new TF1("pp",fitFunction,xp - 30,xp+30,10);
+   TF1 *pp = new TF1("pp",fitFunction,xp-rw,xp+rw,10);
 
    pp->SetParName(0,"Height");
    pp->SetParName(1,"centroid");
@@ -119,16 +119,13 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
 
 }
 
-
-
-
-
-
 int autoeffic(const char *histfile,Int_t np = 2){
 
    //Run this once per spectrum. 
    //Might make a "super script" to run over all hists
    npeaks = TMath::Abs(np);
+
+   Int_t region_width = 60;
 
    Double_t par[3000];
 
@@ -170,13 +167,9 @@ int autoeffic(const char *histfile,Int_t np = 2){
       par[8] = 0;   //C
       par[9] = xp;  //bg offset
     //  fitFunctions->Add(PeakFitFuncs(par));
-      PeakFitFuncs(par,h2);
+      PeakFitFuncs(par,h2,region_width/2);
       npeaks++;
    }
-
-
-   
-
    //c1->cd(2)
      
 }
