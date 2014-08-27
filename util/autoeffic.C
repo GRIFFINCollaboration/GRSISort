@@ -122,7 +122,7 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
 
 
 
-int autoeffic(Int_t np = 2){
+int autoeffic(const char *histfile,Int_t np = 2){
 
    //Run this once per spectrum. 
    //Might make a "super script" to run over all hists
@@ -131,7 +131,7 @@ int autoeffic(Int_t np = 2){
    Double_t par[3000];
 
 //Instead of generating peaks read in a histogram
-  TFile *file = new TFile("hists00000_000.root"); 
+  TFile *file = new TFile(histfile,"READ"); 
 
 //  file.ls(); 
   

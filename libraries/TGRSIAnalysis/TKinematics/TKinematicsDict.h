@@ -31,7 +31,7 @@ extern void G__set_cpp_environmentTKinematicsDict();
 
 #include "TObject.h"
 #include "TMemberInspector.h"
-#include "/home/tiguser/packages/GRSISort/include/TKinematics.h"
+#include "/home/rdunlop/Programs/GRSISort/include/TKinematics.h"
 #include <algorithm>
 namespace std { }
 using namespace std;
