@@ -135,6 +135,9 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
 
    //printf("here1\n");
 
+   int runnumber =0; //This is where hists run number problem is happening
+   int subrunnumber=0; //Might have to make these vectors?
+ 
    TChain *chain = new TChain("FragmentTree");
 
    for(int x=0;x<TGRSIOptions::Get()->GetInputRoot().size();x++) {
@@ -147,6 +150,10 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
       f.Close();
    }
 
+   const char *firstfilename = TGRSIOptions::Get()->GetInputRoot().at(0).c_str();
+   runnumber    = GetRunNumber(firstfilename);
+   subrunnumber = GetSubRunNumber(firstfilename);
+
    //printf("here2\n");
    if(chain->GetNtrees()==0)
 	return;
@@ -157,9 +164,8 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
    proof->ClearCache();
    proof->Exec("gSystem->Load(\"$(GRSISYS)/libraries/libGRSIFormat.so\")");
 
-   int runnumber =0;
-   int subrunnumber=0;
- 
+   //Going to get run number from file name. This will allow us to chain->chop off the subrun numbers
+
  
    chain->SetProof();
    TFragmentSelector *fragSelc = new TFragmentSelector(runnumber,subrunnumber);
@@ -169,6 +175,57 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
 
    return;
 }
+
+
+int TGRSIRootIO::GetRunNumber(std::string filename) {
+   if(filename.length()==0) {
+      return 0;
+   }
+   std::size_t found = filename.rfind(".root");
+   if(found == std::string::npos) {
+      return 0;
+   }
+   std::size_t found2 = filename.rfind('-');
+   //printf("found 2 = %i\n",found2);
+   if(found2 == std::string::npos)
+      found2 = filename.rfind('_');
+
+   std::string temp;
+   if(found2 == std::string::npos || filename.compare(found2+4,5,".root") !=0 ) {
+      temp = filename.substr(found-5,5);
+   }
+   else {
+      temp = filename.substr(found-9,5);
+   }
+   //printf(" %s \t %i \n",temp.c_str(),atoi(temp.c_str()));
+   return atoi(temp.c_str());
+};
+
+
+int TGRSIRootIO::GetSubRunNumber(std::string filename)	{
+   if(filename.length()==0)
+      return -1;
+
+   std::size_t found = filename.rfind("-");
+   if(found != std::string::npos) {
+      std::string temp = filename.substr(found+1,3);
+      //printf("%i \n",atoi(temp.c_str()));
+      return atoi(temp.c_str());
+   }
+   found = filename.rfind("_");
+   if(found != std::string::npos) {
+      std::string temp = filename.substr(found+1,3);
+      //printf("%i \n",atoi(temp.c_str()));
+      return atoi(temp.c_str());
+   }
+   return -1;
+};
+
+
+
+
+
+
 
 
 

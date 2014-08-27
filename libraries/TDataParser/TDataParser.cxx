@@ -339,33 +339,37 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 	if(!SetGRIFHeader(data[x++],EventFrag)) {
 		printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n",data[0]);
 		delete EventFrag;
-		return -1;	
+		return -(x+1);	
 	}
 
-	if(!SetGRIFPPG(data[x++],EventFrag)) {
+/*	if(!SetGRIFPPG(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -2;;
 	}
-
+*/
 	if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
-		delete EventFrag;
-		return -3;
+		x--;
+                EventFrag->TriggerId = -1;
+                EventFrag->TriggerBitPattern = -1;
+		//delete EventFrag;
+		//return -3;
 	}
 
+/*
 	if(!SetGRIFMasterFilterPattern(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -4;
 	}
 
-
+*/
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
-		return -5;
+		return -(x+1);
 	}
 
 	if(!SetGRIFTimeStampLow(data[x++],EventFrag)) {
 		delete EventFrag;
-		return -6;
+		return -(x+1);
 	}
 
 	int  kwordcounter = 0;
@@ -382,7 +386,6 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 				SetGRIFDeadTime(value,EventFrag);
 				break;
 			case 0xe0000000:
-				//if(value == EventFrag->TimeStampLow) {
 				if(value == EventFrag->ChannelId) {
 					if(record_stats)
 						FillStats(EventFrag);
@@ -402,7 +405,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
    	       break;
 		};
 	}
-	return -(0x0fffffff);
+	return -(x+1);
 }
 
 
@@ -434,7 +437,10 @@ bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment *frag) {
 	if( (value &0x80000000) != 0x00000000) {
 		return false;
 	}
-	frag->TriggerId = value & 0x7fffffff;
+
+//	frag->TriggerId = value & 0x7fffffff;  //REAL
+        frag->TriggerId = value & 0x7fffff00;  //Testing
+        frag->TriggerBitPattern = value & 0x000000ff; //Testing
 	return true;
 }
 
