@@ -6,9 +6,10 @@ ClassImp(TGRSIOptions)
 
 TGRSIOptions *TGRSIOptions::fTGRSIOptions = 0;
 
-bool TGRSIOptions::fCloseAfterSort = false;
-bool TGRSIOptions::fLogErrors      = false;
-bool TGRSIOptions::fUseMidFileOdb  = true;
+bool TGRSIOptions::fCloseAfterSort   = false;
+bool TGRSIOptions::fLogErrors        = false;
+bool TGRSIOptions::fUseMidFileOdb    = true;
+bool TGRSIOptions::fMakeAnalysisTree = false;
 
 std::vector<std::string> TGRSIOptions::fInputRootFile;
 std::vector<std::string> TGRSIOptions::fInputMidasFile;

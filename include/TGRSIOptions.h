@@ -29,6 +29,8 @@ class TGRSIOptions : public TObject {
 		static bool fCloseAfterSort;
 		static bool fLogErrors;
 		static bool fUseMidFileOdb;
+		static bool fMakeAnalysisTree;
+
 
    public:
       std::string GetHostName()  {  return fhostname;  }
@@ -52,6 +54,8 @@ class TGRSIOptions : public TObject {
 		static void SetUseMidFileOdb(bool flag=true)     { fUseMidFileOdb=flag;  }
 		static bool UseMidFileOdb()                      { return fUseMidFileOdb;}
 
+		static void SetMakeAnalysisTree(bool flag=true)  { fMakeAnalysisTree=flag;  }
+		static bool MakeAnalysisTree()                   { return fMakeAnalysisTree;}
 
       void SetHostName(std::string &host) {fhostname.assign(host);}
       void SetExptName(std::string &expt) {fexptname.assign(expt);}

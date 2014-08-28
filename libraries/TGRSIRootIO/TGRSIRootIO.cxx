@@ -58,8 +58,7 @@ void TGRSIRootIO::SetUpFragmentTree() {
 void TGRSIRootIO::FillFragmentTree(TFragment *frag) {
   // if(!fFragmentTree)
   //    return;
-   fBufferFrag = frag;
-
+   *fBufferFrag = *frag;
    int bytes =  fFragmentTree->Fill();
    if(bytes < 1)
       printf("\n fill failed with bytes = %i\n",bytes);

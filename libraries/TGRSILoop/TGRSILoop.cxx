@@ -110,7 +110,7 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
       frag = TFragmentQueue::GetQueue()->PopFragment();
       if(frag) {
          TGRSIRootIO::Get()->FillFragmentTree(frag);
- 	    delete frag;
+ 	      delete frag;
          fFragsSentToTree++;
       }
       if(!fMidasThreadRunning && TFragmentQueue::GetQueue()->FragsInQueue()%5000==0) {

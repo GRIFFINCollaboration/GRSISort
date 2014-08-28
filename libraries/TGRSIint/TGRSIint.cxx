@@ -116,6 +116,10 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
          if(temp.length()==1) { 
             char key = temp[0];
             switch(toupper(key)) {
+					case 'A':
+						printf(DBLUE "Atempting to make analysis trees." RESET_COLOR "\n");
+						TGRSIOptions::SetMakeAnalysisTree();
+						break;
                case 'S':
                   printf(DBLUE "SORT!!" RESET_COLOR "\n");
                   fFragmentSort = true;
