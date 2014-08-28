@@ -55,20 +55,27 @@ Double_t photo_peak(Double_t *dim, Double_t *par){
    Double_t sigma    = par[2]; //standard deviation  of gaussian
    Double_t beta     = par[3]; //"skewedness" of the skewed gaussian
    Double_t R        = par[4]; //relative height of skewed gaussian
-   Double_t step     = par[5]; //Relative size of the step function
-
-   //The gaussian part is //const*Exp(-((x-c)^2)/(2*sigma^2)))
 
    Double_t gaussian    = constant*TMath::Gaus(x,c,sigma);
    Double_t skewed_gaus = R*(TMath::Exp((x-c)/beta))*(ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta));
-   Double_t step_func   = 100.0*step*ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma));
 
-   return gaussian + skewed_gaus + step_func;
+   return gaussian + skewed_gaus;
 }
+
+Double_t step_function(Double_t *dim, Double_t *par){
+
+   Double_t x       = dim[0];
+   Double_t c       = par[1];
+   Double_t sigma   = par[2];
+   Double_t step    = par[5];
+
+   return 100.0*step*ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma));
+}
+
 
 Double_t fitFunction(Double_t *dim, Double_t *par){
 
-   return photo_peak(dim, par) + background(dim,&par[6]);
+   return photo_peak(dim, par) + step_function(dim,par) + background(dim,&par[6]);
 }
 
 TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
@@ -108,13 +115,28 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
    h->Fit("pp","RF");
    pp->Draw("same");      
 
-   TF1 *fitresult = h->GetFunction("pp");
-   std::cout << "FWHM = " << 2.35482*fitresult->GetParameter(2) <<"(" << fitresult->GetParError(2) << ")" << std::endl;
+   Double_t binWidth = h->GetXaxis().GetBinWidth(0);
+   TF1 *fitresult = h->GetFunction("pp");  
+
+   
+
+   Double_t integral = fitresult->Integral(xp-20,xp+20)/binWidth;
+
+   //Get the functions defining the photopeak
+
+
+   std::cout << "Integral: " << integral << std::endl;
+   std::cout << "Integral: " << par[1] << std::endl;
+
+
+
+   std::cout << "FWHM = " << 2.35482*fitresult->GetParameter(2)/binWidth <<"(" << fitresult->GetParError(2)/binWidth << ")" << std::endl;
   std::cout << "CHI2: "<< fitresult->GetChisquare() << std::endl;
    std::cout << "NDF: " << fitresult->GetNDF() << std::endl;
    std::cout << "X sq./v = " << fitresult->GetChisquare()/fitresult->GetNDF() << std::endl;
-   std::cout << "Area = " << fitresult->GetParameter(0)*fitresult->GetParameter(2)*TMath::Sqrt(TMath::TwoPi()) << std::endl;
-   std::cout << "Number of Bins" << h->GetSize() - 2 << std::endl;
+   std::cout << "Area = " << fitresult->GetParameter(0)*fitresult->GetParameter(2)/binWidth*TMath::Sqrt(TMath::TwoPi()) << std::endl;
+   std::cout << "Number of Bins " << h->GetSize() - 2 << std::endl;
+   std::cout << "Bin Width " << binWidth << std::endl;
    return pp;
 
 }
