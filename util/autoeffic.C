@@ -100,7 +100,7 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
    pp->SetParLimits(4,0,10);
    pp->SetParLimits(5,0,1000000);
 
- //  pp->FixParameter(4,0);
+//   pp->FixParameter(4,0);
 
    //we may have more than the default 25 parameters
    TVirtualFitter::Fitter(h,10);
@@ -115,20 +115,19 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
    h->Fit("pp","RF");
    pp->Draw("same");      
 
-   Double_t binWidth = h->GetXaxis().GetBinWidth(0);
-   TF1 *fitresult = h->GetFunction("pp");  
+   Double_t binWidth = h->GetXaxis()->GetBinWidth(0);
+   TF1 *fitresult = h->GetFunction("pp"); 
+   pp->GetParameters(&par[0]); 
+   TF1 *photopeak = new TF1("photopeak",photo_peak,xp-rw,xp+rw,10);
+   photopeak->SetParameters(par);
+   std::cout << "Height in integral: " <<photopeak->GetParameter(0) << std::endl;  
 
-   
-
-   Double_t integral = fitresult->Integral(xp-20,xp+20)/binWidth;
+   Double_t integral = photopeak->Integral(xp-rw,xp+rw)/binWidth;
 
    //Get the functions defining the photopeak
 
 
    std::cout << "Integral: " << integral << std::endl;
-   std::cout << "Integral: " << par[1] << std::endl;
-
-
 
    std::cout << "FWHM = " << 2.35482*fitresult->GetParameter(2)/binWidth <<"(" << fitresult->GetParError(2)/binWidth << ")" << std::endl;
   std::cout << "CHI2: "<< fitresult->GetChisquare() << std::endl;
