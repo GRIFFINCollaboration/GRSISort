@@ -28,8 +28,25 @@
 
 gSystem->Load("libMathCore"); //Might be able to include this through linking libraries etc.
 
+struct gamma_ray{
+
+   Double_t energy; //in keV.
+   Double_t intensity; //in %.
+
+} ;
+
+
+struct source{
+
+   std::string name;
+   vector<gamma_ray> transition;
+
+}
+
 //This is a good example for how to fit nearby peaks together/multiple peaks
 Int_t npeaks = 30;
+
+
 Double_t fpeaks(Double_t *x, Double_t *par) {
    Double_t result = par[0] + par[1]*x[0];
    for (Int_t p=0;p<npeaks;p++) {
@@ -73,7 +90,6 @@ Double_t step_function(Double_t *dim, Double_t *par){
    return TMath::Abs(step)*height/100.0*ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma));
 }
 
-
 Double_t fitFunction(Double_t *dim, Double_t *par){
 
    return photo_peak(dim, par) + step_function(dim,par) + background(dim,&par[6]);
@@ -81,11 +97,7 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 
 TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
 
-
    TVirtualFitter::SetMaxIterations(4999);
-
-
-
    Int_t xp = par[1];
 
    TF1 *pp = new TF1("pp",fitFunction,xp-rw,xp+rw,10);
@@ -111,12 +123,9 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
 //   pp->FixParameter(4,0);
  //  pp->FixParameter(5,0);
 
-
    pp->SetParLimits(1,xp-20,xp+20);//c
- //  pp->FixParameter(3,2.7);
-  // pp->SetParLimits(3,2,10);//beta
 
-   pp->FixParameter(9,par[1]);
+   pp->SetParLimits(9,xp-3,xp+3);
 
    pp->SetNpx(1000);
    h->Fit("pp","RF");
