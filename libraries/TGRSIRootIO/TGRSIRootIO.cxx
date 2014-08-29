@@ -173,4 +173,17 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
 
 
 
+void TGRSIRootIO::StartMakeAnalysisTree() { 
+	//std::vector<char**> args;
+	//for(int x=0;x<TGRSIOptions::Get()->GetInputRoot().size();x++) {
+	//	args.push_back(TGRSIOptions::Get()->GetInputRoot().at(x).c_str());
+	//}
+	//MakeAnalysisTree(args.size(),args.data());
+	MakeAnalysisTree(TGRSIOptions::Get()->GetInputRoot());
+}
+
+
+void TGRSIRootIO::MakeAnalysisTree(std::vector<std::string>){ }
+
+
 

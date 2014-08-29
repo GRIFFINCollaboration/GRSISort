@@ -48,8 +48,11 @@ void TGRSIint::ApplyOptions() {
 
   if(fAutoSort)
     TGRSILoop::Get()->SortMidas();
-  if(fFragmentSort & TGRSIOptions::Get()->GetInputRoot().size()!=0)
+
+  if(fFragmentSort && TGRSIOptions::Get()->GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
+  if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::Get()->GetInputRoot().size()!=0)  
+    TGRSIRootIO::Get()->StartMakeAnalysisTree();
   if(fAutoSort && TGRSIOptions::CloseAfterSort())
   	 gApplication->Terminate();
 }
@@ -257,6 +260,22 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
    }
    return false;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
