@@ -9,6 +9,7 @@
 #include "TMath.h"
 #include "TCanvas.h"
 #include <map>
+#include <vector>
 #include <stdint>
 
 //This fitting function is based on the fitting function used in gf3 written by D.C. Radford
@@ -82,7 +83,10 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
    return photo_peak(dim, par) + step_function(dim,par) + background(dim,&par[6]);
 }
 
-TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
+TF1* PeakFitFuncs(Double_t *par, TH1F *h){
+
+   Double_t binWidth = h->GetXaxis()->GetBinWidth(0);//Need to find the bin widths so that the integral makes sense
+   Int_t rw = binWidth*60;  //This number may change depending on the source used   
    //Set the number of iterations. The code is pretty quick, so having a lot isn't an issue	
    TVirtualFitter::SetMaxIterations(4999);
    Int_t xp = par[1];
@@ -103,7 +107,7 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
    pp->SetParName(9,"bg offset");
 
    //Set some physical limits for parameters
-   pp->SetParLimits(1,xp-20,xp+20);
+   pp->SetParLimits(1,xp-rw,xp+rw);
    pp->SetParLimits(3,0,30);
    pp->SetParLimits(4,0,10);
    pp->SetParLimits(5,0.000,1000000);
@@ -119,12 +123,11 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
    TFitResultPtr fitres = h->Fit("pp","RFS");
    pp->Draw("same");      
 
-   Double_t binWidth = h->GetXaxis()->GetBinWidth(0);//Need to find the bin widths so that the integral makes sense
    pp->GetParameters(&par[0]); 
    TF1 *photopeak = new TF1("photopeak",photo_peak,xp-rw,xp+rw,10);
    photopeak->SetParameters(par);
 
-   Double_t integral = photopeak->Integral(xp-rw,xp+rw)/binWidth;a
+   Double_t integral = photopeak->Integral(xp-rw,xp+rw)/binWidth;
 
 
    std::cout << "FIT RESULT CHI2 " << fitres->Chi2() << std::endl;
@@ -143,6 +146,9 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
 
    std::cout << "Integral = " << integral << " +/- " << sigma_integral << std::endl;
 
+   myFitResult.fIntegral = integral;
+
+
    return pp;
 
 }
@@ -157,8 +163,6 @@ int autoeffic(const char *histfile,const char *sourcename = "60Co"){
    std::vector<Double_t> intensity(99.85,99.9826);
 
    peaks = TMath::Abs(np);
-
-   Int_t region_width = 60;
 
    Double_t par[3000];
 
@@ -180,6 +184,7 @@ int autoeffic(const char *histfile,const char *sourcename = "60Co"){
 
    c1->cd(2);
    //Use TSpectrum to find the peak candidates
+   //This should be done once per histogram
    TSpectrum *s = new TSpectrum(npeaks, 100);
    Int_t nfound = s->Search(h1,2,"",0.75);
    printf("Found %d candidate peaks to fit\n",nfound);
@@ -200,7 +205,7 @@ int autoeffic(const char *histfile,const char *sourcename = "60Co"){
       par[8] = 0;   //C
       par[9] = xp;  //bg offset
     //  fitFunctions->Add(PeakFitFuncs(par));
-      f = PeakFitFuncs(par,h2,region_width/2);
+      f = PeakFitFuncs(par,h2);
       fitlist->Add(f);
       npeaks++;
    }
