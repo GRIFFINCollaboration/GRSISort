@@ -28,21 +28,6 @@
 
 gSystem->Load("libMathCore"); //Might be able to include this through linking libraries etc.
 
-struct gamma_ray{
-
-   Double_t energy; //in keV.
-   Double_t intensity; //in %.
-
-} ;
-
-
-struct source{
-
-   std::string name;
-   vector<gamma_ray> transition;
-
-}
-
 //This is a good example for how to fit nearby peaks together/multiple peaks
 Int_t npeaks = 30;
 
@@ -159,11 +144,13 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
 
 }
 
-int autoeffic(const char *histfile,Int_t np = 2){
+int autoeffic(const char *histfile,const char * sourcename = "60Co",Int_t np = 2){
 
    //Run this once per spectrum. 
    //Might make a "super script" to run over all hists
    npeaks = TMath::Abs(np);
+
+   std::vector<Double_t> energy(0,20);
 
    Int_t region_width = 60;
 
