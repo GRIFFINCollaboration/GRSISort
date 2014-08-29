@@ -20,7 +20,7 @@ set path = ($path $GRSISYS/bin)
 setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:$GRSISYS/libraries
 ```
 
-once complete type make in the GRSISort directory
+once complete type `make` in the GRSISort directory
 
 -----------------------------------------
 Running
