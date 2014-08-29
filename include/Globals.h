@@ -86,7 +86,7 @@ static void ParseMNEMONIC(std::string *name,MNEMONIC *mnemonic) {
 static void PrintMNEMONIC(MNEMONIC *mnemonic) {
 	if(!mnemonic)
 		return;
-	printf("======MNEMONIC 0x%08x======\n");
+	printf("======MNEMONIC 0x%08x======\n",mnemonic);
 	printf("arrayposition    = %i\n", mnemonic->arrayposition);
 	printf("segment          = %i\n", mnemonic->segment);
 	printf("system           = %s\n", mnemonic->system.c_str());
