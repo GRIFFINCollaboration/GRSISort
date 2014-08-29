@@ -105,7 +105,22 @@ void TFragmentSelector::Terminate()
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
-   TFile f(Form("hists%05i_%03i.root",frunnumber,fsubrunnumber),"recreate");
+
+   char* histsname;
+   if(fsubrunnumber == -1)
+      histsname = Form("hists%05i.root",frunnumber);
+   else
+      histsname = Form("hists%05i_%03i.root",frunnumber,fsubrunnumber);
+
+   TFile f(histsname,"recreate");
+
+/*
+   if(fsubrunnumber == -1){
+      TFile f(Form("hists%05i.root",frunnumber),"recreate");
+   }
+   else{
+      TFile f(Form("hists%05i_%03i.root",frunnumber,fsubrunnumber),"recreate");
+   }*/
    TIter iter(this->GetOutputList());
    while(TObject *obj =iter.Next()) {
 	if(obj->InheritsFrom("TH1"))

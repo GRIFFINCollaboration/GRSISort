@@ -30,6 +30,8 @@ gSystem->Load("libMathCore"); //Might be able to include this through linking li
 
 //This is a good example for how to fit nearby peaks together/multiple peaks
 Int_t npeaks = 30;
+
+
 Double_t fpeaks(Double_t *x, Double_t *par) {
    Double_t result = par[0] + par[1]*x[0];
    for (Int_t p=0;p<npeaks;p++) {
@@ -50,32 +52,40 @@ Double_t photo_peak(Double_t *dim, Double_t *par){
    
    //Define the parameters for easy use.
    Double_t x        = dim[0]; //channel number used for fitting 
-   Double_t constant = par[0]; //Size of gaussian
+   Double_t height   = par[0]; //height of photopeak
    Double_t c        = par[1]; //Peak Centroid of non skew gaus
    Double_t sigma    = par[2]; //standard deviation  of gaussian
    Double_t beta     = par[3]; //"skewedness" of the skewed gaussian
    Double_t R        = par[4]; //relative height of skewed gaussian
-   Double_t step     = par[5]; //Relative size of the step function
 
-   //The gaussian part is //const*Exp(-((x-c)^2)/(2*sigma^2)))
+   Double_t gaussian    = height*(1.0-R/100.0)*TMath::Gaus(x,c,sigma);
+   Double_t skewed_gaus = R*height/100.0*(TMath::Exp((x-c)/beta))*(ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta));
 
-   Double_t gaussian    = constant*TMath::Gaus(x,c,sigma);
-   Double_t skewed_gaus = R*(TMath::Exp((x-c)/beta))*(ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta));
-   Double_t step_func   = 100.0*step*ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma));
+   return gaussian + skewed_gaus;
+}
 
-   return gaussian + skewed_gaus + step_func;
+Double_t step_function(Double_t *dim, Double_t *par){
+
+   Double_t x       = dim[0];
+   Double_t height  = par[0];
+   Double_t c       = par[1];
+   Double_t sigma   = par[2];
+   Double_t step    = par[5];
+
+   return TMath::Abs(step)*height/100.0*ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma));
 }
 
 Double_t fitFunction(Double_t *dim, Double_t *par){
 
-   return photo_peak(dim, par) + background(dim,&par[6]);
+   return photo_peak(dim, par) + step_function(dim,par) + background(dim,&par[6]);
 }
 
-TF1* PeakFitFuncs(Double_t *par, TH1F *h){
+TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
 
+   TVirtualFitter::SetMaxIterations(4999);
    Int_t xp = par[1];
 
-   TF1 *pp = new TF1("pp",fitFunction,xp - 30,xp+30,10);
+   TF1 *pp = new TF1("pp",fitFunction,xp-rw,xp+rw,10);
 
    pp->SetParName(0,"Height");
    pp->SetParName(1,"centroid");
@@ -89,53 +99,69 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
    pp->SetParName(9,"bg off");
 
    pp->SetParLimits(1,0,1000000);
-   pp->SetParLimits(3,0,1000000);
-   pp->SetParLimits(4,0,1000000);
-   pp->SetParLimits(5,0,1000000);
+   pp->SetParLimits(3,0,30);
+   pp->SetParLimits(4,0,10);
+   pp->SetParLimits(5,0.000,1000000);
 
-   //we may have more than the default 25 parameters
-   TVirtualFitter::Fitter(h,10);
    pp->SetParameters(par);
 
+//   pp->FixParameter(4,0);
+ //  pp->FixParameter(5,0);
 
    pp->SetParLimits(1,xp-20,xp+20);//c
- //  pp->FixParameter(3,2.7);
-  // pp->SetParLimits(3,2,10);//beta
+
+   pp->SetParLimits(9,xp-3,xp+3);
 
    pp->SetNpx(1000);
    h->Fit("pp","RF");
    pp->Draw("same");      
 
-   TF1 *fitresult = h->GetFunction("pp");
-   std::cout << "FWHM = " << 2.35482*fitresult->GetParameter(2) <<"(" << fitresult->GetParError(2) << ")" << std::endl;
-  std::cout << "CHI2: "<< fitresult->GetChisquare() << std::endl;
+   Double_t binWidth = h->GetXaxis()->GetBinWidth(0);
+   TF1 *fitresult = h->GetFunction("pp"); 
+   pp->GetParameters(&par[0]); 
+   TF1 *photopeak = new TF1("photopeak",photo_peak,xp-rw,xp+rw,10);
+   photopeak->SetParameters(par);
+
+   Double_t integral = photopeak->Integral(xp-rw,xp+rw)/binWidth;
+
+   //Get the functions defining the photopeak
+
+   std::cout << "FWHM = " << 2.35482*fitresult->GetParameter(2)/binWidth <<"(" << fitresult->GetParError(2)/binWidth << ")" << std::endl;
+   std::cout << "CHI2: "<< fitresult->GetChisquare() << std::endl;
    std::cout << "NDF: " << fitresult->GetNDF() << std::endl;
    std::cout << "X sq./v = " << fitresult->GetChisquare()/fitresult->GetNDF() << std::endl;
 
+   TVirtualFitter *fitter = TVirtualFitter::GetFitter();
+
+   assert(fitter != 0);
+   Double_t * covMatrix = fitter->GetCovarianceMatrix();
+
+   Double_t sigma_integral = photopeak->IntegralError(xp-rw,xp+rw)/binWidth;
+
+   std::cout << "Integral = " << integral << " +/- " << sigma_integral << std::endl;
 
    return pp;
 
 }
 
-
-
-
-
-
-int autoeffic(Int_t np = 2){
+int autoeffic(const char *histfile,const char * sourcename = "60Co",Int_t np = 2){
 
    //Run this once per spectrum. 
    //Might make a "super script" to run over all hists
    npeaks = TMath::Abs(np);
 
+   std::vector<Double_t> energy(0,20);
+
+   Int_t region_width = 60;
+
    Double_t par[3000];
 
 //Instead of generating peaks read in a histogram
-  TFile *file = new TFile("hists00000_000.root"); 
+   TFile *file = new TFile(histfile,"READ"); 
 
 //  file.ls(); 
   
-  TH1F * h1 = (TH1F*)file->Get("Charge_0x0004"); 
+   TH1F * h1 = (TH1F*)file->Get("Charge_0x0007"); 
 
    TCanvas *c1 = new TCanvas("c1","c1",10,10,1000,900);
    c1->Divide(1,2);
@@ -153,27 +179,24 @@ int autoeffic(Int_t np = 2){
    printf("Found %d candidate peaks to fit\n",nfound);
    printf("Now fitting: Be patient\n");
    Float_t *xpeaks = s->GetPositionX();
-   for (p=0;p<nfound;p++) {
+   for (int p=0;p<nfound;p++) {
       Float_t xp = xpeaks[p];
       Int_t bin = h1->GetXaxis()->FindBin(xp);
       Float_t yp = h1->GetBinContent(bin);
-      par[0] = yp;
-      par[1] = xp;
-      par[2] = 2;
-      par[3] = 5;
-      par[4] = 0.1;
-      par[5] = 0.01;
-      par[6] = 100;
-      par[7] = 0;
-      par[8] = 0;
+      par[0] = yp;  //height
+      par[1] = xp;  //centroid
+      par[2] = 2;   //sigma
+      par[3] = 5;   //beta
+      par[4] = 0;   //R
+      par[5] = 1.0;//stp
+      par[6] = 50;  //A
+      par[7] = -0.2;//B
+      par[8] = 0;   //C
+      par[9] = xp;  //bg offset
     //  fitFunctions->Add(PeakFitFuncs(par));
-      PeakFitFuncs(par,h2);
+      PeakFitFuncs(par,h2,region_width/2);
       npeaks++;
    }
-
-
-   
-
    //c1->cd(2)
      
 }
