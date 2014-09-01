@@ -175,22 +175,25 @@ int autoeffic(const char *histfile,           //File with all of the histograms 
   
    Int_t counter = 0;
 
-   char name[20];
+   TCanvas *c1 = new TCanvas("c1", "c1", 10,10,1000,900);
+   c1->DivideSquare(64);
+   char detname[20];
 
    for(Int_t j = 0; j < 16*16*16*16; j++){
-      sprintf(name, "Charge_0x%04x", j);
-      TH1F * h2 = (TH1F*)file->Get(name);
-      if(h2){
-         std::cout << counter++ << std::endl;
-      } 
+      sprintf(detname, "Charge_0x%04x", j);
+      TH1F * h1 = (TH1F*)file->Get(detname);
 
-   }
+      if(h1){
+         std::cout << counter++ << std::endl;
+       
+
+         c1->cd(counter); 
    
 
-   TH1F * h1 = (TH1F*)file->Get("Charge_0x0007"); 
+   //TH1F * h1 = (TH1F*)file->Get("Charge_0x0007"); 
 
-   TCanvas *c1 = new TCanvas("c1","c1",10,10,1000,900);
-   c1->DivideSquare(64);
+ //  TCanvas *c1 = new TCanvas("c1","c1",10,10,1000,900);
+ //  c1->DivideSquare(64);
  //  c1->cd(1);
  //  h1->Draw();
    //TH1F *h2 = (TH1F*)h1->Clone("h2");
@@ -198,37 +201,39 @@ int autoeffic(const char *histfile,           //File with all of the histograms 
    //make a TList to store functions for fitting.
 //   TList *fitFunctions = new TList;
 
- //  c1->cd(2);
-   //Use TSpectrum to find the peak candidates
-   //This should be done once per histogram
+    //  c1->cd(2);
+      //Use TSpectrum to find the peak candidates
+      //This should be done once per histogram
 
 
-   TSpectrum *s = new TSpectrum(npeaks, 100);
-   Int_t nfound = s->Search(h1,2,"",0.75); //This will be dependent on the source used.
-   printf("Found %d candidate peaks to fit\n",nfound);
-   printf("Now fitting: Be patient\n");
-   Float_t *xpeaks = s->GetPositionX();
-   for (int p=0;p<nfound;p++) {
-      Float_t xp = xpeaks[p];
-      Int_t bin = h1->GetXaxis()->FindBin(xp);
-      Float_t yp = h1->GetBinContent(bin);
-      par[0] = yp;  //height
-      par[1] = xp;  //centroid
-      par[2] = 2;   //sigma
-      par[3] = 5;   //beta
-      par[4] = 0;   //R
-      par[5] = 1.0;//stp
-      par[6] = 50;  //A
-      par[7] = -0.2;//B
-      par[8] = 0;   //C
-      par[9] = xp;  //bg offset
+      TSpectrum *s = new TSpectrum(npeaks, 100);
+      Int_t nfound = s->Search(h1,2,"",0.75); //This will be dependent on the source used.
+      printf("Found %d candidate peaks to fit\n",nfound);
+      printf("Now fitting: Be patient\n");
+      Float_t *xpeaks = s->GetPositionX();
+      for (int p=0;p<nfound;p++) {
+         Float_t xp = xpeaks[p];
+         Int_t bin = h1->GetXaxis()->FindBin(xp);
+         Float_t yp = h1->GetBinContent(bin);
+         par[0] = yp;  //height
+         par[1] = xp;  //centroid
+         par[2] = 2;   //sigma
+         par[3] = 5;   //beta
+         par[4] = 0;   //R
+         par[5] = 1.0;//stp
+         par[6] = 50;  //A
+         par[7] = -0.2;//B
+         par[8] = 0;   //C
+         par[9] = xp;  //bg offset
     //  fitFunctions->Add(PeakFitFuncs(par));
-      f = PeakFitFuncs(par,h1);
-      fitlist->Add(f);
-      npeaks++;
-   }
+         f = PeakFitFuncs(par,h1);
+         fitlist->Add(f);
+         npeaks++;
+       }
+     delete s;
+     }
    //c1->cd(2)
-     
+   }  
 }
 
 
