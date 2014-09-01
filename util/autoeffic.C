@@ -35,6 +35,9 @@ gSystem->Load("libMathCore"); //Might be able to include this through linking li
 Int_t npeaks = 30;
 
 
+////////////////////////     This is where the fits are defined     /////////////////////////////////////
+
+
 Double_t fpeaks(Double_t *x, Double_t *par) {
    Double_t result = par[0] + par[1]*x[0];
    for (Int_t p=0;p<npeaks;p++) {
@@ -82,6 +85,11 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 
    return photo_peak(dim, par) + step_function(dim,par) + background(dim,&par[6]);
 }
+
+
+
+/////////////////////////    This is there the fitting takes place    //////////////////////////////
+
 
 TF1* PeakFitFuncs(Double_t *par, TH1F *h){
 
@@ -153,6 +161,11 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
 
 }
 
+
+
+
+/////////////////////     This is the loop that finds the peaks and sends them to the fitter    ////////////////////////////
+
 int autoeffic(const char *histfile,           //File with all of the histograms to be fit
               const char *sourcename = "60Co",//Name of the source being used. Not used at this time
               Double_t activity = 0.0,        //This will be dependent on the source used. //Activity of the source in uCi
@@ -176,10 +189,7 @@ int autoeffic(const char *histfile,           //File with all of the histograms 
   
    Int_t counter = 0;
    Int_t plotcounter = 0;
-  // if(kvis){
-  //    TCanvas *c1 = new TCanvas("c1", "c1", 10,10,1000,900);
-  //    c1->DivideSquare(16);
-  // }
+
    char detname[20];
    char canvname[10];
 
@@ -192,29 +202,14 @@ int autoeffic(const char *histfile,           //File with all of the histograms 
       if(kvis && counter%16 == 0){
          sprintf(canvname, "c%d",plotcounter);
          TCanvas *c1 = new TCanvas(canvname,canvname,10,10,1000,900);
-         c1->cd();
          c1->DivideSquare(16);
          plotcounter++;   
       }
       
       std::cout << counter++ << std::endl;
-       
 
       c1->cd(counter%16+1); 
-   
 
-   //TH1F * h1 = (TH1F*)file->Get("Charge_0x0007"); 
-
- //  TCanvas *c1 = new TCanvas("c1","c1",10,10,1000,900);
- //  c1->DivideSquare(64);
- //  c1->cd(1);
- //  h1->Draw();
-   //TH1F *h2 = (TH1F*)h1->Clone("h2");
-
-   //make a TList to store functions for fitting.
-//   TList *fitFunctions = new TList;
-
-    //  c1->cd(2);
       //Use TSpectrum to find the peak candidates
       //This should be done once per histogram
 
@@ -238,14 +233,12 @@ int autoeffic(const char *histfile,           //File with all of the histograms 
          par[7] = -0.2;//B
          par[8] = 0;   //C
          par[9] = xp;  //bg offset
-    //  fitFunctions->Add(PeakFitFuncs(par));
          f = PeakFitFuncs(par,h1);
          fitlist->Add(f);
          npeaks++;
        }
      delete s;
      }
-   //c1->cd(2)
    }  
 }
 
