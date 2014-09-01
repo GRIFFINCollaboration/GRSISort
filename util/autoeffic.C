@@ -92,7 +92,7 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
    Int_t xp = par[1];
 
    //Define the fit function and the range of the fit
-   TF1 *pp = new TF1("pp",fitFunction,xp-rw,xp+rw,10);
+   TF1 *pp = new TF1("photopeak",fitFunction,xp-rw,xp+rw,10);
 
    //Name the parameters so it is easy to see what the code is doing
    pp->SetParName(0,"Height");
@@ -120,7 +120,7 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
  //  pp->FixParameter(5,0);
 
    pp->SetNpx(1000); //Draws a nice smooth function on the graph
-   TFitResultPtr fitres = h->Fit("pp","RFS");
+   TFitResultPtr fitres = h->Fit("photopeak","RFS");
    pp->Draw("same");      
 
    pp->GetParameters(&par[0]); 
@@ -153,40 +153,58 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
 
 }
 
-int autoeffic(const char *histfile,const char *sourcename = "60Co"){
-
+int autoeffic(const char *histfile,           //File with all of the histograms to be fit
+              const char *sourcename = "60Co",//Name of the source being used. Not used at this time
+              Double_t activity = 0.0) {//This will be dependent on the source used. )         //Activity of the source in uCi 
+                                   
    TList *fitlist = new TList;
 
    //This defines the 60Co source
    Int_t np = 2;
+   npeaks = TMath::Abs(np);
    std::vector<Double_t> energy(1173.228,1332.492);
    std::vector<Double_t> intensity(99.85,99.9826);
 
-   peaks = TMath::Abs(np);
+   TH2F * eff = new TH2F("efficiency","efficiency",64,0,64,npeaks,0,npeaks);
 
    Double_t par[3000];
 
-//Instead of generating peaks read in a histogram
    TFile *file = new TFile(histfile,"READ"); 
 
 //  file.ls(); 
   
+   Int_t counter = 0;
+
+   char name[20];
+
+   for(Int_t j = 0; j < 16*16*16*16; j++){
+      sprintf(name, "Charge_0x%04x", j);
+      TH1F * h2 = (TH1F*)file->Get(name);
+      if(h2){
+         std::cout << counter++ << std::endl;
+      } 
+
+   }
+   
+
    TH1F * h1 = (TH1F*)file->Get("Charge_0x0007"); 
 
    TCanvas *c1 = new TCanvas("c1","c1",10,10,1000,900);
-   c1->Divide(1,2);
-   c1->cd(1);
-   h1->Draw();
-   TH1F *h2 = (TH1F*)h1->Clone("h2");
+   c1->DivideSquare(64);
+ //  c1->cd(1);
+ //  h1->Draw();
+   //TH1F *h2 = (TH1F*)h1->Clone("h2");
 
    //make a TList to store functions for fitting.
 //   TList *fitFunctions = new TList;
 
-   c1->cd(2);
+ //  c1->cd(2);
    //Use TSpectrum to find the peak candidates
    //This should be done once per histogram
+
+
    TSpectrum *s = new TSpectrum(npeaks, 100);
-   Int_t nfound = s->Search(h1,2,"",0.75);
+   Int_t nfound = s->Search(h1,2,"",0.75); //This will be dependent on the source used.
    printf("Found %d candidate peaks to fit\n",nfound);
    printf("Now fitting: Be patient\n");
    Float_t *xpeaks = s->GetPositionX();
@@ -205,11 +223,14 @@ int autoeffic(const char *histfile,const char *sourcename = "60Co"){
       par[8] = 0;   //C
       par[9] = xp;  //bg offset
     //  fitFunctions->Add(PeakFitFuncs(par));
-      f = PeakFitFuncs(par,h2);
+      f = PeakFitFuncs(par,h1);
       fitlist->Add(f);
       npeaks++;
    }
    //c1->cd(2)
      
 }
+
+
+
   
