@@ -155,7 +155,8 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
 
 int autoeffic(const char *histfile,           //File with all of the histograms to be fit
               const char *sourcename = "60Co",//Name of the source being used. Not used at this time
-              Double_t activity = 0.0) {//This will be dependent on the source used. )         //Activity of the source in uCi 
+              Double_t activity = 0.0,        //This will be dependent on the source used. //Activity of the source in uCi
+              bool kvis = true        ) {     //Display The fits on a TPad  
                                    
    TList *fitlist = new TList;
 
@@ -174,20 +175,32 @@ int autoeffic(const char *histfile,           //File with all of the histograms 
 //  file.ls(); 
   
    Int_t counter = 0;
-
-   TCanvas *c1 = new TCanvas("c1", "c1", 10,10,1000,900);
-   c1->DivideSquare(64);
+   Int_t plotcounter = 0;
+  // if(kvis){
+  //    TCanvas *c1 = new TCanvas("c1", "c1", 10,10,1000,900);
+  //    c1->DivideSquare(16);
+  // }
    char detname[20];
+   char canvname[10];
 
    for(Int_t j = 0; j < 16*16*16*16; j++){
       sprintf(detname, "Charge_0x%04x", j);
       TH1F * h1 = (TH1F*)file->Get(detname);
+ 
+   if(h1){
 
-      if(h1){
-         std::cout << counter++ << std::endl;
+      if(kvis && counter%16 == 0){
+         sprintf(canvname, "c%d",plotcounter);
+         TCanvas *c1 = new TCanvas(canvname,canvname,10,10,1000,900);
+         c1->cd();
+         c1->DivideSquare(16);
+         plotcounter++;   
+      }
+      
+      std::cout << counter++ << std::endl;
        
 
-         c1->cd(counter); 
+      c1->cd(counter%16+1); 
    
 
    //TH1F * h1 = (TH1F*)file->Get("Charge_0x0007"); 
