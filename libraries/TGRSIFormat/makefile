@@ -1,5 +1,5 @@
 
-OBJECTS = TFragment.o TFragmentDict.o TChannel.o TChannelDict.o TFragmentQueue.o TFragmentQueueDict.o TGRSIStats.o TGRSIStatsDict.o TFragmentSelector.o TFragmentSelectorDict.o 
+OBJECTS = TFragment.o TFragmentDict.o TChannel.o TChannelDict.o TFragmentQueue.o TFragmentQueueDict.o TGRSIStats.o TGRSIStatsDict.o TFragmentSelector.o TFragmentSelectorDict.o TGRSIRunInfo.o TGRSIRunInfoDict.o 
 
 CFLAGS += -fPIC
 
