@@ -1,12 +1,15 @@
 #include "TH1.h"
 #include "TF1.h"
 #include "TList.h"
+#include "TFitResult.h"
+#include "TFitResultPtr.h"
 #include "TRandom.h"
 #include "TSpectrum.h"
 #include "TVirtualFitter.h"
 #include "TMath.h"
 #include "TCanvas.h"
 #include <map>
+#include <vector>
 #include <stdint>
 
 //This fitting function is based on the fitting function used in gf3 written by D.C. Radford
@@ -30,6 +33,9 @@ gSystem->Load("libMathCore"); //Might be able to include this through linking li
 
 //This is a good example for how to fit nearby peaks together/multiple peaks
 Int_t npeaks = 30;
+
+
+////////////////////////     This is where the fits are defined     /////////////////////////////////////
 
 
 Double_t fpeaks(Double_t *x, Double_t *par) {
@@ -80,13 +86,23 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
    return photo_peak(dim, par) + step_function(dim,par) + background(dim,&par[6]);
 }
 
-TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
 
+
+/////////////////////////    This is there the fitting takes place    //////////////////////////////
+
+
+TF1* PeakFitFuncs(Double_t *par, TH1F *h){
+
+   Double_t binWidth = h->GetXaxis()->GetBinWidth(0);//Need to find the bin widths so that the integral makes sense
+   Int_t rw = binWidth*60;  //This number may change depending on the source used   
+   //Set the number of iterations. The code is pretty quick, so having a lot isn't an issue	
    TVirtualFitter::SetMaxIterations(4999);
    Int_t xp = par[1];
 
-   TF1 *pp = new TF1("pp",fitFunction,xp-rw,xp+rw,10);
+   //Define the fit function and the range of the fit
+   TF1 *pp = new TF1("photopeak",fitFunction,xp-rw,xp+rw,10);
 
+   //Name the parameters so it is easy to see what the code is doing
    pp->SetParName(0,"Height");
    pp->SetParName(1,"centroid");
    pp->SetParName(2,"sigma");
@@ -94,110 +110,138 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h, Int_t rw){
    pp->SetParName(4,"R");
    pp->SetParName(5,"step");
    pp->SetParName(6,"A");
-   pp->SetParName(7,"B(x-off)");
-   pp->SetParName(8,"C(x-off)^2");
-   pp->SetParName(9,"bg off");
+   pp->SetParName(7,"B");
+   pp->SetParName(8,"C");
+   pp->SetParName(9,"bg offset");
 
-   pp->SetParLimits(1,0,1000000);
+   //Set some physical limits for parameters
+   pp->SetParLimits(1,xp-rw,xp+rw);
    pp->SetParLimits(3,0,30);
    pp->SetParLimits(4,0,10);
    pp->SetParLimits(5,0.000,1000000);
+   pp->SetParLimits(9,xp-3,xp+3);
 
+   //Actually set the parameters in the photopeak function
    pp->SetParameters(par);
 
 //   pp->FixParameter(4,0);
  //  pp->FixParameter(5,0);
 
-   pp->SetParLimits(1,xp-20,xp+20);//c
-
-   pp->SetParLimits(9,xp-3,xp+3);
-
-   pp->SetNpx(1000);
-   h->Fit("pp","RF");
+   pp->SetNpx(1000); //Draws a nice smooth function on the graph
+   TFitResultPtr fitres = h->Fit("photopeak","RFS");
    pp->Draw("same");      
 
-   Double_t binWidth = h->GetXaxis()->GetBinWidth(0);
-   TF1 *fitresult = h->GetFunction("pp"); 
    pp->GetParameters(&par[0]); 
    TF1 *photopeak = new TF1("photopeak",photo_peak,xp-rw,xp+rw,10);
    photopeak->SetParameters(par);
 
    Double_t integral = photopeak->Integral(xp-rw,xp+rw)/binWidth;
 
-   //Get the functions defining the photopeak
 
-   std::cout << "FWHM = " << 2.35482*fitresult->GetParameter(2)/binWidth <<"(" << fitresult->GetParError(2)/binWidth << ")" << std::endl;
-   std::cout << "CHI2: "<< fitresult->GetChisquare() << std::endl;
-   std::cout << "NDF: " << fitresult->GetNDF() << std::endl;
-   std::cout << "X sq./v = " << fitresult->GetChisquare()/fitresult->GetNDF() << std::endl;
+   std::cout << "FIT RESULT CHI2 " << fitres->Chi2() << std::endl;
+
+
+   std::cout << "FWHM = " << 2.35482*fitres->Parameter(2)/binWidth <<"(" << fitres->ParError(2)/binWidth << ")" << std::endl;
+   std::cout << "NDF: " << fitres->Ndf() << std::endl;
+   std::cout << "X sq./v = " << fitres->Chi2()/fitres->Ndf() << std::endl;
 
    TVirtualFitter *fitter = TVirtualFitter::GetFitter();
 
-   assert(fitter != 0);
-   Double_t * covMatrix = fitter->GetCovarianceMatrix();
+   assert(fitter != 0); //make sure something was actually fit
+   Double_t * covMatrix = fitres->GetCovarianceMatrix(); //This allows us to find the uncertainty in the integral
 
    Double_t sigma_integral = photopeak->IntegralError(xp-rw,xp+rw)/binWidth;
 
    std::cout << "Integral = " << integral << " +/- " << sigma_integral << std::endl;
 
+   myFitResult.fIntegral = integral;
+
+
    return pp;
 
 }
 
-int autoeffic(const char *histfile,const char * sourcename = "60Co",Int_t np = 2){
 
-   //Run this once per spectrum. 
-   //Might make a "super script" to run over all hists
+
+
+/////////////////////     This is the loop that finds the peaks and sends them to the fitter    ////////////////////////////
+
+int autoeffic(const char *histfile,           //File with all of the histograms to be fit
+              const char *sourcename = "60Co",//Name of the source being used. Not used at this time
+              Double_t activity = 0.0,        //This will be dependent on the source used. //Activity of the source in uCi
+              bool kvis = true        ) {     //Display The fits on a TPad  
+                                   
+   TList *fitlist = new TList;
+
+   //This defines the 60Co source
+   Int_t np = 2;
    npeaks = TMath::Abs(np);
+   std::vector<Double_t> energy(1173.228,1332.492);
+   std::vector<Double_t> intensity(99.85,99.9826);
 
-   std::vector<Double_t> energy(0,20);
-
-   Int_t region_width = 60;
+   TH2F * eff = new TH2F("efficiency","efficiency",64,0,64,npeaks,0,npeaks);
 
    Double_t par[3000];
 
-//Instead of generating peaks read in a histogram
    TFile *file = new TFile(histfile,"READ"); 
 
 //  file.ls(); 
   
-   TH1F * h1 = (TH1F*)file->Get("Charge_0x0007"); 
+   Int_t counter = 0;
+   Int_t plotcounter = 0;
 
-   TCanvas *c1 = new TCanvas("c1","c1",10,10,1000,900);
-   c1->Divide(1,2);
-   c1->cd(1);
-   h1->Draw();
-   TH1F *h2 = (TH1F*)h1->Clone("h2");
+   char detname[20];
+   char canvname[10];
 
-   //make a TList to store functions for fitting.
-//   TList *fitFunctions = new TList;
+   for(Int_t j = 0; j < 16*16*16*16; j++){
+      sprintf(detname, "Charge_0x%04x", j);
+      TH1F * h1 = (TH1F*)file->Get(detname);
+ 
+   if(h1){
 
-   c1->cd(2);
-   //Use TSpectrum to find the peak candidates
-   TSpectrum *s = new TSpectrum(npeaks, 100);
-   Int_t nfound = s->Search(h1,2,"",0.75);
-   printf("Found %d candidate peaks to fit\n",nfound);
-   printf("Now fitting: Be patient\n");
-   Float_t *xpeaks = s->GetPositionX();
-   for (int p=0;p<nfound;p++) {
-      Float_t xp = xpeaks[p];
-      Int_t bin = h1->GetXaxis()->FindBin(xp);
-      Float_t yp = h1->GetBinContent(bin);
-      par[0] = yp;  //height
-      par[1] = xp;  //centroid
-      par[2] = 2;   //sigma
-      par[3] = 5;   //beta
-      par[4] = 0;   //R
-      par[5] = 1.0;//stp
-      par[6] = 50;  //A
-      par[7] = -0.2;//B
-      par[8] = 0;   //C
-      par[9] = xp;  //bg offset
-    //  fitFunctions->Add(PeakFitFuncs(par));
-      PeakFitFuncs(par,h2,region_width/2);
-      npeaks++;
-   }
-   //c1->cd(2)
-     
+      if(kvis && counter%16 == 0){
+         sprintf(canvname, "c%d",plotcounter);
+         TCanvas *c1 = new TCanvas(canvname,canvname,10,10,1000,900);
+         c1->DivideSquare(16);
+         plotcounter++;   
+      }
+      
+      std::cout << counter++ << std::endl;
+
+      c1->cd(counter%16+1); 
+
+      //Use TSpectrum to find the peak candidates
+      //This should be done once per histogram
+
+
+      TSpectrum *s = new TSpectrum(npeaks, 100);
+      Int_t nfound = s->Search(h1,2,"",0.75); //This will be dependent on the source used.
+      printf("Found %d candidate peaks to fit\n",nfound);
+      printf("Now fitting: Be patient\n");
+      Float_t *xpeaks = s->GetPositionX();
+      for (int p=0;p<nfound;p++) {
+         Float_t xp = xpeaks[p];
+         Int_t bin = h1->GetXaxis()->FindBin(xp);
+         Float_t yp = h1->GetBinContent(bin);
+         par[0] = yp;  //height
+         par[1] = xp;  //centroid
+         par[2] = 2;   //sigma
+         par[3] = 5;   //beta
+         par[4] = 0;   //R
+         par[5] = 1.0;//stp
+         par[6] = 50;  //A
+         par[7] = -0.2;//B
+         par[8] = 0;   //C
+         par[9] = xp;  //bg offset
+         f = PeakFitFuncs(par,h1);
+         fitlist->Add(f);
+         npeaks++;
+       }
+     delete s;
+     }
+   }  
 }
+
+
+
   
