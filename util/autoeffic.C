@@ -10,7 +10,7 @@
 #include "TCanvas.h"
 #include <map>
 #include <vector>
-#include <stdint>
+#include "TROOT.h"
 
 //This fitting function is based on the fitting function used in gf3 written by D.C. Radford
 //Each peak is composed of three components:
@@ -29,7 +29,7 @@
 
 //Might have to include namespace?
 
-gSystem->Load("libMathCore"); //Might be able to include this through linking libraries etc.
+//gSystem->Load("libMathCore"); //Might be able to include this through linking libraries etc.
 
 //This is a good example for how to fit nearby peaks together/multiple peaks
 Int_t npeaks = 30;
