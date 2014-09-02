@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@cern.ch)         -->
+<!--                                             -->
+<!--   Date: Tue Sep  2 19:10:07 2014            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>TMidasEvent - source file</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers, cern" />
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis." />
+<link rel="stylesheet" type="text/css" href="../ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="../ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="root_header"><img src="http://root.cern.ch/drupal/sites/default/files/rootdrawing-logo.png" alt="ROOT logo"/></div>
+<div id="codeAndLineNumbers"><pre class="listing">
+<span class="comment">//</span>
+<span class="comment">// <a href="../TMidasEvent.html">TMidasEvent</a>.h</span>
+<span class="comment">//</span>
+
+<span class="cpp">#ifndef TMIDASEVENT_H</span>
+<span class="cpp">#define TMIDASEVENT_H</span>
+
+<span class="cpp">#include "Globals.h"</span>
+<span class="cpp">#include &lt;stdint.h&gt;</span>
+<span class="comment">//#include <span class="string">"TMidasStructs.h"</span></span>
+<span class="cpp">#include "TMidasEventHeader.h"</span>
+
+<span class="cpp">#include "TObject.h"</span>
+
+
+
+<span class="comment">///</span>
+<span class="comment">/// C++ class representing one midas event.</span>
+<span class="comment">///</span>
+<span class="comment">/// Objects of this class are created by reading</span>
+<span class="comment">/// midas events from a file, by reading</span>
+<span class="comment">/// them from a midas shared memory buffer or by</span>
+<span class="comment">/// receiving them through the mserver</span>
+<span class="comment">///</span>
+
+<span class="comment">/// MIDAS event</span>
+
+<span class="keyword">class</span> <a href="../TMidasEvent.html">TMidasEvent</a> : <span class="keyword">public</span> <a href="../#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>
+{
+ <span class="keyword">public</span>:
+	<span class="cpp">#include "TMidasBanks.h"</span>
+
+ <span class="keyword">public</span>:
+
+  <span class="comment">// houskeeping functions</span>
+
+<a name="ResGuC"></a>  <a href="../TMidasEvent.html">TMidasEvent</a>(); <span class="comment">///&lt; default constructor</span>
+<a name="fpJxc"></a>  <a href="../TMidasEvent.html">TMidasEvent</a>(<span class="keyword">const</span> <a href="../TMidasEvent.html">TMidasEvent</a> &amp;); <span class="comment">///&lt; copy constructor</span>
+<a name="SdAeaB"></a>  <a href="../TMidasEvent.html#TMidasEvent:_TMidasEvent" title="void TMidasEvent::~TMidasEvent()">~TMidasEvent</a>(); <span class="comment">///&lt; destructor</span>
+<a name="A7zAe"></a>  <a href="../TMidasEvent.html">TMidasEvent</a>&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> <a href="../TMidasEvent.html">TMidasEvent</a> &amp;); <span class="comment">///&lt; assignement operator</span>
+<a name="ReMbuB"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:Clear" title="void TMidasEvent::Clear()">Clear</a>(); <span class="comment">///&lt; clear event for reuse</span>
+<a name="ueZXQC"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:Copy" title="void TMidasEvent::Copy(const TMidasEvent&amp; )">Copy</a>(<span class="keyword">const</span> <a href="../TMidasEvent.html">TMidasEvent</a> &amp;); <span class="comment">///&lt; copy helper</span>
+<a name="nSsfkC"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:Print" title="void TMidasEvent::Print(const char* option=&quot;&quot;)">Print</a>(<span class="keyword">const</span> <span class="keyword">char</span>* option = <span class="string">""</span>) <span class="keyword">const</span>; <span class="comment">///&lt; show all event information</span>
+
+  <span class="comment">// get event information</span>
+
+<a name="xlonXC"></a>  <a href="../ListOfTypes.html#uint16_t">uint16_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetEventId" title="uint16_t TMidasEvent::GetEventId()">GetEventId</a>() <span class="keyword">const</span>;      <span class="comment">///&lt; return the event id</span>
+<a name="VEaCd"></a>  <a href="../ListOfTypes.html#uint16_t">uint16_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetTriggerMask" title="uint16_t TMidasEvent::GetTriggerMask()">GetTriggerMask</a>() <span class="keyword">const</span>;     <span class="comment">///&lt; return the triger mask</span>
+<a name="HEnlND"></a>  <a href="../ListOfTypes.html#uint32_t">uint32_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetSerialNumber" title="uint32_t TMidasEvent::GetSerialNumber()">GetSerialNumber</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return the serial number</span>
+<a name="gZZPc"></a>  <a href="../ListOfTypes.html#uint32_t">uint32_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetTimeStamp" title="uint32_t TMidasEvent::GetTimeStamp()">GetTimeStamp</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return the time stamp (unix time in seconds)</span>
+<a name="FZ7AFB"></a>  <a href="../ListOfTypes.html#uint32_t">uint32_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetDataSize" title="uint32_t TMidasEvent::GetDataSize()">GetDataSize</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return the event size</span>
+
+  <span class="comment">// get data banks</span>
+
+<a name="pVVmjE"></a>  <span class="keyword">const</span> <span class="keyword">char</span>* <a href="../TMidasEvent.html#TMidasEvent:GetBankList" title="const char* TMidasEvent::GetBankList()">GetBankList</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return a list of data banks</span>
+<a name="MxcayC"></a>  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:FindBank" title="int TMidasEvent::FindBank(const char* bankName,int* bankLength,int* bankType,void** bankPtr)">FindBank</a>(<span class="keyword">const</span> <span class="keyword">char</span>* bankName, <span class="keyword">int</span>* bankLength, <span class="keyword">int</span>* bankType, <span class="keyword">void</span> **bankPtr) <span class="keyword">const</span>;
+<a name="mMxEVB"></a>  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:LocateBank" title="int TMidasEvent::LocateBank(const void* unused,const char* bankName,void** bankPtr)">LocateBank</a>(<span class="keyword">const</span> <span class="keyword">void</span> *unused, <span class="keyword">const</span> <span class="keyword">char</span>* bankName, <span class="keyword">void</span> **bankPtr) <span class="keyword">const</span>;
+
+<a name="rhjTHE"></a>  <span class="keyword">bool</span> <a href="../TMidasEvent.html#TMidasEvent:IsBank32" title="bool TMidasEvent::IsBank32()">IsBank32</a>() <span class="keyword">const</span>; <span class="comment">///&lt; returns <span class="string">"true"</span> if event uses 32-bit banks</span>
+<a name="qy3jh"></a>  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:IterateBank" title="int TMidasEvent::IterateBank(TMidasEvent::TMidas_BANK** ,char** pdata)">IterateBank</a>(TMidas_BANK **, <span class="keyword">char</span> **pdata) <span class="keyword">const</span>; <span class="comment">///&lt; iterate through 16-bit data banks</span>
+<a name="MxILdC"></a>  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:IterateBank32" title="int TMidasEvent::IterateBank32(TMidasEvent::TMidas_BANK32** ,char** pdata)">IterateBank32</a>(TMidas_BANK32 **, <span class="keyword">char</span> **pdata) <span class="keyword">const</span>; <span class="comment">///&lt; iterate through 32-bit data banks</span>
+
+  <span class="comment">// helpers for event creation</span>
+
+<a name="rAMogD"></a>  TMidas_EVENT_HEADER* <a href="../TMidasEvent.html#TMidasEvent:GetEventHeader" title="TMidas_EVENT_HEADER* TMidasEvent::GetEventHeader()">GetEventHeader</a>(); <span class="comment">///&lt; return pointer to the event header</span>
+<a name="rJQCX"></a>  <span class="keyword">char</span>* <a href="../TMidasEvent.html#TMidasEvent:GetData" title="char* TMidasEvent::GetData()">GetData</a>(); <span class="comment">///&lt; return pointer to the data buffer</span>
+
+<a name="LGVFEC"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:AllocateData" title="void TMidasEvent::AllocateData()">AllocateData</a>(); <span class="comment">///&lt; allocate data buffer using the existing event header</span>
+<a name="tj1_ZD"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:SetData" title="void TMidasEvent::SetData(uint32_t dataSize,char* dataBuffer)">SetData</a>(<a href="../ListOfTypes.html#uint32_t">uint32_t</a> dataSize, <span class="keyword">char</span>* dataBuffer); <span class="comment">///&lt; set an externally allocated data buffer</span>
+
+<a name="Hg8_rE"></a>  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:SetBankList" title="int TMidasEvent::SetBankList()">SetBankList</a>(); <span class="comment">///&lt; create the list of data banks, return number of banks</span>
+<a name="JZaWJB"></a>  <span class="keyword">bool</span> <a href="../TMidasEvent.html#TMidasEvent:IsGoodSize" title="bool TMidasEvent::IsGoodSize()">IsGoodSize</a>() <span class="keyword">const</span>; <span class="comment">///&lt; validate the event length</span>
+
+<a name="nWLC6C"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:SwapBytesEventHeader" title="void TMidasEvent::SwapBytesEventHeader()">SwapBytesEventHeader</a>(); <span class="comment">///&lt; convert event header between little-endian (Linux-x86) and big endian (MacOS-PPC) </span>
+<a name="toa3YD"></a>  <span class="keyword">int</span>  <a href="../TMidasEvent.html#TMidasEvent:SwapBytes" title="int TMidasEvent::SwapBytes(bool )">SwapBytes</a>(<span class="keyword">bool</span>); <span class="comment">///&lt; convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC) </span>
+
+<span class="keyword">protected</span>:
+
+  TMidas_EVENT_HEADER <a href="../TMidasEvent.html#TMidasEvent:fEventHeader" title="TMidas_EVENT_HEADER TMidasEvent::fEventHeader">fEventHeader</a>; <span class="comment">///&lt; event header</span>
+  <span class="keyword">char</span>* <a href="../TMidasEvent.html#TMidasEvent:fData" title="char* TMidasEvent::fData">fData</a>;     <span class="comment">///&lt; event data buffer</span>
+  <span class="keyword">int</span>  <a href="../TMidasEvent.html#TMidasEvent:fBanksN" title="int TMidasEvent::fBanksN">fBanksN</a>;    <span class="comment">///&lt; number of banks in this event</span>
+  <span class="keyword">char</span>* <a href="../TMidasEvent.html#TMidasEvent:fBankList" title="char* TMidasEvent::fBankList">fBankList</a>; <span class="comment">///&lt; list of bank names in this event</span>
+  <span class="keyword">bool</span> <a href="../TMidasEvent.html#TMidasEvent:fAllocatedByUs" title="bool TMidasEvent::fAllocatedByUs">fAllocatedByUs</a>; <span class="comment">///&lt; <span class="string">"true"</span> if we own the data buffer</span>
+
+	
+	ClassDef(<a href="../TMidasEvent.html">TMidasEvent</a>,0)
+};
+
+<span class="cpp">#endif // TMidasEvent.h</span>
+</pre>
+<div id="linenums"><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="1" href="#1" class="ln">1</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="2" href="#2" class="ln">2</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="3" href="#3" class="ln">3</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="4" href="#4" class="ln">4</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="5" href="#5" class="ln">5</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="6" href="#6" class="ln">6</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="7" href="#7" class="ln">7</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="8" href="#8" class="ln">8</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="9" href="#9" class="ln">9</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="10" href="#10" class="ln">10</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="11" href="#11" class="ln">11</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="12" href="#12" class="ln">12</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="13" href="#13" class="ln">13</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="14" href="#14" class="ln">14</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="15" href="#15" class="ln">15</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="16" href="#16" class="ln">16</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="17" href="#17" class="ln">17</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="18" href="#18" class="ln">18</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="19" href="#19" class="ln">19</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="20" href="#20" class="ln">20</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="21" href="#21" class="ln">21</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="22" href="#22" class="ln">22</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="23" href="#23" class="ln">23</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="24" href="#24" class="ln">24</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="25" href="#25" class="ln">25</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="26" href="#26" class="ln">26</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="27" href="#27" class="ln">27</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="28" href="#28" class="ln">28</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="29" href="#29" class="ln">29</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="30" href="#30" class="ln">30</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="31" href="#31" class="ln">31</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="32" href="#32" class="ln">32</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="33" href="#33" class="ln">33</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="34" href="#34" class="ln">34</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="35" href="#35" class="ln">35</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="36" href="#36" class="ln">36</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="37" href="#37" class="ln">37</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="38" href="#38" class="ln">38</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="39" href="#39" class="ln">39</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="40" href="#40" class="ln">40</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="41" href="#41" class="ln">41</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="42" href="#42" class="ln">42</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="43" href="#43" class="ln">43</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="44" href="#44" class="ln">44</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="45" href="#45" class="ln">45</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="46" href="#46" class="ln">46</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="47" href="#47" class="ln">47</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="48" href="#48" class="ln">48</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="49" href="#49" class="ln">49</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="50" href="#50" class="ln">50</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="51" href="#51" class="ln">51</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="52" href="#52" class="ln">52</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="53" href="#53" class="ln">53</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="54" href="#54" class="ln">54</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="55" href="#55" class="ln">55</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="56" href="#56" class="ln">56</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="57" href="#57" class="ln">57</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="58" href="#58" class="ln">58</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="59" href="#59" class="ln">59</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="60" href="#60" class="ln">60</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="61" href="#61" class="ln">61</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="62" href="#62" class="ln">62</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="63" href="#63" class="ln">63</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="64" href="#64" class="ln">64</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="65" href="#65" class="ln">65</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="66" href="#66" class="ln">66</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="67" href="#67" class="ln">67</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="68" href="#68" class="ln">68</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="69" href="#69" class="ln">69</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="70" href="#70" class="ln">70</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="71" href="#71" class="ln">71</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="72" href="#72" class="ln">72</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="73" href="#73" class="ln">73</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="74" href="#74" class="ln">74</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="75" href="#75" class="ln">75</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="76" href="#76" class="ln">76</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="77" href="#77" class="ln">77</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="78" href="#78" class="ln">78</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="79" href="#79" class="ln">79</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="80" href="#80" class="ln">80</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="81" href="#81" class="ln">81</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="82" href="#82" class="ln">82</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="83" href="#83" class="ln">83</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="84" href="#84" class="ln">84</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="85" href="#85" class="ln">85</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="86" href="#86" class="ln">86</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="87" href="#87" class="ln">87</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="88" href="#88" class="ln">88</a></div><div class="ln">&nbsp;<span class="lnfile">TMidasEvent.h:</span><a name="89" href="#89" class="ln">89</a></div></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: 2014-09-02 19:10 </em><em>&raquo; Last generated: 2014-09-02 19:10</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>
