@@ -168,7 +168,7 @@ void FitSpectrum(Int_t npeaks, TH1F* h1){
       //Use TSpectrum to find the peak candidates
       //This should be done once per histogram
 
-Double_t par[15];
+      Double_t par[15];
 
       TSpectrum *s = new TSpectrum(npeaks, 100);
       Int_t nfound = s->Search(h1,2,"",0.75); //This will be dependent on the source used.
@@ -198,13 +198,6 @@ Double_t par[15];
 
 
 }
-
-
-
-
-
-
-
 
 /////////////////////     This is the loop that finds the peaks and sends them to the fitter    ////////////////////////////
 
@@ -244,13 +237,12 @@ int autoeffic(const char *histfile,           //File with all of the histograms 
          c1->DivideSquare(16);
          plotcounter++;   
       }
-
-
-      FitSpectrum(npeaks,h1);
       
       std::cout << counter++ << std::endl;
 
       c1->cd(counter%16+1); 
+
+      FitSpectrum(npeaks,h1);
 
      }
    }  
