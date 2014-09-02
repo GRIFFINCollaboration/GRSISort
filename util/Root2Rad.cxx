@@ -19,7 +19,7 @@
 //to compile:
 //   g++ Root2Rad.cxx -oRoot2Rad `root-config --cflags --libs`
 //
-//ro run:
+//to run:
 //   ./Root2Rad rootfile.root
 //
 
