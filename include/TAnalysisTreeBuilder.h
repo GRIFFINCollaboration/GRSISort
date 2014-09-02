@@ -5,7 +5,13 @@
 
 #include <cstdio>
 #include <vector>
+#include <string>
 #include <queue>
+
+#include <TFile.h>
+#include <TTree.h>
+#include <TChain.h>
+#include <TList.h>
 
 #include <TFragment.h>
 #include <TChannel.h>
@@ -29,6 +35,35 @@ class TEventQueue {
 };
 
 
+
+class TAnalysisTreeBuilder {
+
+   public:
+      virtual ~TAnalysisTreeBuilder();
+
+      void ProcessEvent(std::vector<TFragment>*) { };
+
+      void SetUpFragmentChain(TChain *chain) { };
+      void SetUpFragmentChain(std::vector<std::string>) { };
+
+      void SortFragmentChain() { };
+      void SortFragmentTree() { };
+
+      void InitChannels() { };
+
+      void SetupOutFile() { };
+      void SetupAnalysisTree() { };
+      void FillAnalysisTree() { };
+      void CloseOutFile() { };
+
+      void ProcessEvent() { };
+
+   private:
+      TAnalysisTreeBuilder(); 
+
+      static TChain *fFragmentChain;
+
+};
 
 
 
