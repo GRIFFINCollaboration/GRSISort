@@ -10,7 +10,7 @@
 #include "TCanvas.h"
 #include <map>
 #include <vector>
-#include <stdint>
+#include "TROOT.h"
 
 //This fitting function is based on the fitting function used in gf3 written by D.C. Radford
 //Each peak is composed of three components:
@@ -29,7 +29,7 @@
 
 //Might have to include namespace?
 
-gSystem->Load("libMathCore"); //Might be able to include this through linking libraries etc.
+//gSystem->Load("libMathCore"); //Might be able to include this through linking libraries etc.
 
 //This is a good example for how to fit nearby peaks together/multiple peaks
 Int_t npeaks = 30;
@@ -91,7 +91,7 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 /////////////////////////    This is there the fitting takes place    //////////////////////////////
 
 
-TF1* PeakFitFuncs(Double_t *par, TH1F *h){
+TF1* FitPeak(Double_t *par, TH1F *h){
 
    Double_t binWidth = h->GetXaxis()->GetBinWidth(0);//Need to find the bin widths so that the integral makes sense
    Int_t rw = binWidth*60;  //This number may change depending on the source used   
@@ -163,56 +163,12 @@ TF1* PeakFitFuncs(Double_t *par, TH1F *h){
 
 
 
-
-/////////////////////     This is the loop that finds the peaks and sends them to the fitter    ////////////////////////////
-
-int autoeffic(const char *histfile,           //File with all of the histograms to be fit
-              const char *sourcename = "60Co",//Name of the source being used. Not used at this time
-              Double_t activity = 0.0,        //This will be dependent on the source used. //Activity of the source in uCi
-              bool kvis = true        ) {     //Display The fits on a TPad  
-                                   
-   TList *fitlist = new TList;
-
-   //This defines the 60Co source
-   Int_t np = 2;
-   npeaks = TMath::Abs(np);
-   std::vector<Double_t> energy(1173.228,1332.492);
-   std::vector<Double_t> intensity(99.85,99.9826);
-
-   TH2F * eff = new TH2F("efficiency","efficiency",64,0,64,npeaks,0,npeaks);
-
-   Double_t par[3000];
-
-   TFile *file = new TFile(histfile,"READ"); 
-
-//  file.ls(); 
-  
-   Int_t counter = 0;
-   Int_t plotcounter = 0;
-
-   char detname[20];
-   char canvname[10];
-
-   for(Int_t j = 0; j < 16*16*16*16; j++){
-      sprintf(detname, "Charge_0x%04x", j);
-      TH1F * h1 = (TH1F*)file->Get(detname);
- 
-   if(h1){
-
-      if(kvis && counter%16 == 0){
-         sprintf(canvname, "c%d",plotcounter);
-         TCanvas *c1 = new TCanvas(canvname,canvname,10,10,1000,900);
-         c1->DivideSquare(16);
-         plotcounter++;   
-      }
-      
-      std::cout << counter++ << std::endl;
-
-      c1->cd(counter%16+1); 
+void FitSpectrum(Int_t npeaks, TH1F* h1){
 
       //Use TSpectrum to find the peak candidates
       //This should be done once per histogram
 
+      Double_t par[15];
 
       TSpectrum *s = new TSpectrum(npeaks, 100);
       Int_t nfound = s->Search(h1,2,"",0.75); //This will be dependent on the source used.
@@ -233,11 +189,61 @@ int autoeffic(const char *histfile,           //File with all of the histograms 
          par[7] = -0.2;//B
          par[8] = 0;   //C
          par[9] = xp;  //bg offset
-         f = PeakFitFuncs(par,h1);
-         fitlist->Add(f);
+         f = FitPeak(par,h1);
+      //   fitlist->Add(f);
          npeaks++;
        }
      delete s;
+
+
+
+}
+
+/////////////////////     This is the loop that finds the peaks and sends them to the fitter    ////////////////////////////
+
+int autoeffic(const char *histfile,           //File with all of the histograms to be fit
+              const char *sourcename = "60Co",//Name of the source being used. Not used at this time
+              Double_t activity = 0.0,        //This will be dependent on the source used. //Activity of the source in uCi
+              bool kvis = true        ) {     //Display The fits on a TPad  
+                                   
+   TList *fitlist = new TList;
+
+   //This defines the 60Co source
+   Int_t np = 2;
+   npeaks = TMath::Abs(np);
+   std::vector<Double_t> energy(1173.228,1332.492);
+   std::vector<Double_t> intensity(99.85,99.9826);
+
+   TH2F * eff = new TH2F("efficiency","efficiency",64,0,64,npeaks,0,npeaks);
+
+   TFile *file = new TFile(histfile,"READ"); 
+
+//  file.ls(); 
+  
+   Int_t counter = 0;
+   Int_t plotcounter = 0;
+   char detname[20];
+   char canvname[10];
+
+   for(Int_t j = 0; j < 16*16*16*16; j++){
+      sprintf(detname, "Charge_0x%04x", j);
+      TH1F * h1 = (TH1F*)file->Get(detname);
+ 
+   if(h1){
+
+      if(kvis && counter%16 == 0){
+         sprintf(canvname, "c%d",plotcounter);
+         TCanvas *c1 = new TCanvas(canvname,canvname,10,10,1000,900);
+         c1->DivideSquare(16);
+         plotcounter++;   
+      }
+      
+      std::cout << counter++ << std::endl;
+
+      c1->cd(counter%16+1); 
+
+      FitSpectrum(npeaks,h1);
+
      }
    }  
 }
