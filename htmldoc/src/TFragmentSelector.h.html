@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 09:09:44 2014            -->
+<!--   Date: Wed Sep  3 09:31:57 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -112,18 +112,18 @@
    }
 <a name="JtfaS"></a>   <span class="keyword">virtual</span> <a href="../TFragmentSelector.html#TFragmentSelector:_TFragmentSelector" title="void TFragmentSelector::~TFragmentSelector()">~TFragmentSelector</a>() { }
 <a name="qBwhx"></a>   <span class="keyword">virtual</span> <a href="../ListOfTypes.html#Int_t">Int_t</a>   <a href="../TFragmentSelector.html#TFragmentSelector:Version" title="Int_t TFragmentSelector::Version()">Version</a>() <span class="keyword">const</span> { <span class="keyword">return</span> 2; }
-<a name="ymz5EE"></a>   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:Begin" title="void TFragmentSelector::Begin(TTree* tree)">Begin</a>(TTree *tree);
-<a name="ralzyB"></a>   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:SlaveBegin" title="void TFragmentSelector::SlaveBegin(TTree* tree)">SlaveBegin</a>(TTree *tree);
+   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:Begin" title="void TFragmentSelector::Begin(TTree* tree)">Begin</a>(TTree *tree);
+   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:SlaveBegin" title="void TFragmentSelector::SlaveBegin(TTree* tree)">SlaveBegin</a>(TTree *tree);
    <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:Init" title="void TFragmentSelector::Init(TTree* tree)">Init</a>(TTree *tree);
    <span class="keyword">virtual</span> <a href="../ListOfTypes.html#Bool_t">Bool_t</a>  <a href="../TFragmentSelector.html#TFragmentSelector:Notify" title="Bool_t TFragmentSelector::Notify()">Notify</a>();
-<a name="z8_qVE"></a>   <span class="keyword">virtual</span> <a href="../ListOfTypes.html#Bool_t">Bool_t</a>  <a href="../TFragmentSelector.html#TFragmentSelector:Process" title="Bool_t TFragmentSelector::Process(Long64_t entry)">Process</a>(<a href="../ListOfTypes.html#Long64_t">Long64_t</a> entry);
+   <span class="keyword">virtual</span> <a href="../ListOfTypes.html#Bool_t">Bool_t</a>  <a href="../TFragmentSelector.html#TFragmentSelector:Process" title="Bool_t TFragmentSelector::Process(Long64_t entry)">Process</a>(<a href="../ListOfTypes.html#Long64_t">Long64_t</a> entry);
 <a name="pWScwB"></a>   <span class="keyword">virtual</span> <a href="../ListOfTypes.html#Int_t">Int_t</a>   <a href="../TFragmentSelector.html#TFragmentSelector:GetEntry" title="Int_t TFragmentSelector::GetEntry(Long64_t entry,Int_t getall=0)">GetEntry</a>(<a href="../ListOfTypes.html#Long64_t">Long64_t</a> entry, <a href="../ListOfTypes.html#Int_t">Int_t</a> getall = 0) { <span class="keyword">return</span> <a href="../TFragmentSelector.html#TFragmentSelector:fChain" title="TTree* TFragmentSelector::fChain">fChain</a> ? <a href="../TFragmentSelector.html#TFragmentSelector:fChain" title="TTree* TFragmentSelector::fChain">fChain</a>-&gt;GetTree()-&gt;<a href="../TFragmentSelector.html#TFragmentSelector:GetEntry" title="Int_t TFragmentSelector::GetEntry(Long64_t entry,Int_t getall=0)">GetEntry</a>(entry, getall) : 0; }
 <a name="fvwm2B"></a>   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:SetOption" title="void TFragmentSelector::SetOption(const char* option)">SetOption</a>(<span class="keyword">const</span> <span class="keyword">char</span> *option) { fOption = option; }
 <a name="uVnBRD"></a>   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:SetObject" title="void TFragmentSelector::SetObject(TObject* obj)">SetObject</a>(<a href="../#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a> *obj) { fObject = obj; }
 <a name="HBoyaC"></a>   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:SetInputList" title="void TFragmentSelector::SetInputList(TList* input)">SetInputList</a>(TList *input) { fInput = input; }
 <a name="ZwUbjB"></a>   <span class="keyword">virtual</span> TList  *<a href="../TFragmentSelector.html#TFragmentSelector:GetOutputList" title="TList* TFragmentSelector::GetOutputList()">GetOutputList</a>() <span class="keyword">const</span> { <span class="keyword">return</span> fOutput; }
-<a name="HudMxB"></a>   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:SlaveTerminate" title="void TFragmentSelector::SlaveTerminate()">SlaveTerminate</a>();
-<a name="Xsz0lE"></a>   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:Terminate" title="void TFragmentSelector::Terminate()">Terminate</a>();
+   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:SlaveTerminate" title="void TFragmentSelector::SlaveTerminate()">SlaveTerminate</a>();
+   <span class="keyword">virtual</span> <span class="keyword">void</span>    <a href="../TFragmentSelector.html#TFragmentSelector:Terminate" title="void TFragmentSelector::Terminate()">Terminate</a>();
 
    <span class="keyword">private</span>:
      <span class="keyword">int</span> <a href="../TFragmentSelector.html#TFragmentSelector:frunnumber" title="int TFragmentSelector::frunnumber">frunnumber</a>;
@@ -212,7 +212,7 @@
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2014-09-03 09:09 </em><em>&raquo; Last generated: 2014-09-03 09:09</em><br />
+<em>&raquo; Last changed: 2014-09-03 09:31 </em><em>&raquo; Last generated: 2014-09-03 09:31</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

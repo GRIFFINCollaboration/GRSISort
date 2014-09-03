@@ -3,7 +3,7 @@
 void html_generator(){
 
    gSystem->Load("libTreePlayer");
-   gSystem->Load("$GRSISYS/libraries/libMidasFormat.so");
+/*   gSystem->Load("$GRSISYS/libraries/libMidasFormat.so");
    gSystem->Load("$GRSISYS/libraries/libGRSIFormat.so");
  //  gSystem->Load("$GRSISYS/libraries/libBuilder.so");
  //  gSystem->Load("$GRSISYS/libraries/libGRSILoop.so");
@@ -13,11 +13,13 @@ void html_generator(){
    gSystem->Load("$GRSISYS/libraries/libNucleus.so");
    gSystem->Load("$GRSISYS/libraries/libKinematics.so");
    gSystem->Load("$GRSISYS/libraries/libSharc.so");
+*/
 
-
-   THtml h;
-   h.SetInputDir("$(GRSISYS)");
-   h.SetOutputDir("$(GRSISYS)/htmldoc");
-   h.MakeClass("TNucleus");
-   h.MakeAll();
+   THtml html;
+   html.SetProductName("GRSISort");
+   html.SetInputDir("$(GRSISYS)");
+   html.SetOutputDir("$(GRSISYS)/htmldoc");
+   html.SetSourceDir("$(GRSISYS)/libraries/TGRSIFormat/:$(GRSISYS)/libraries/TDataParser/:$(GRSISYS)/libraries/TGint/:TGRSILoop:$(GRSISYS)/libraries/TGRSIAnalysis/:$(GRSISYS)/include/");
+ //  html.MakeClass("TNucleus");
+   html.MakeAll();
 }

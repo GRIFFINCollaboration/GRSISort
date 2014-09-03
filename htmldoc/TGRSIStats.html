@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 09:09:45 2014            -->
+<!--   Date: Wed Sep  3 09:25:20 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -19,7 +19,7 @@
 <body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
 <div id="root_header"><img src="http://root.cern.ch/drupal/sites/default/files/rootdrawing-logo.png" alt="ROOT logo"/></div>
 <a name="TopOfPage"></a>
-<script type="text/javascript">WriteFollowPageBox('class TGRSIStats','','/home/rdunlop/Programs/GRSISort/include/TGRSIStats.h');</script>
+<script type="text/javascript">WriteFollowPageBox('class TGRSIStats','','TGRSIStats.h');</script>
 <div id="toplinks">
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Quick Links:</span>
@@ -40,8 +40,8 @@ return false;}
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Source:</span>
 <a class="descrheadentry" href="src/TGRSIStats.h.html">header file</a>
-<a class="descrheadentry"> </a>
-<a class="descrheadentry" href="http://root.cern.ch/viewcvs/trunk//home/rdunlop/Programs/GRSISort/include/TGRSIStats.h?view=log">viewVC header</a> <a class="descrheadentry"> </a> 
+<a class="descrheadentry" href="src/TGRSIStats.cxx.html">source file</a>
+<a class="descrheadentry" href="http://root.cern.ch/viewcvs/trunk/TGRSIStats.h?view=log">viewVC header</a> <a class="descrheadentry" href="http://root.cern.ch/viewcvs/trunk/TGRSIStats.cxx?view=log">viewVC source</a> 
 </div></div>
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Sections:</span>
@@ -224,16 +224,25 @@ return false;}
 </div><div class="classcharts"><div class="classchartswidth"></div>
 <img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTGRSIStats_Inh" src="inh/TGRSIStats_Inh.png"/></div>
 <h2>Function documentation</h2>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGRSIStats:TGRSIStats" href="src/TGRSIStats.h.html#jXankE">TGRSIStats</a>(<span class="keyword">int</span> )</span><br />
+<div class="funcdoc"><span class="funcname"><a href="./TGRSIStats.html">TGRSIStats</a> * <a class="funcname" name="TGRSIStats:GetStats" href="src/TGRSIStats.cxx.html#yda4LC">GetStats</a>(<span class="keyword">int</span> temp_address)</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"><a href="./TGRSIStats.html">TGRSIStats</a> * <a class="funcname" name="TGRSIStats:GetStats" href="src/TGRSIStats.h.html#A_HHmB">GetStats</a>(<span class="keyword">int</span> temp_address)</span><br />
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGRSIStats:TGRSIStats" href="src/TGRSIStats.cxx.html#VuD6rC">TGRSIStats</a>(<span class="keyword">int</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGRSIStats:_TGRSIStats" href="src/TGRSIStats.cxx.html#yA42N">~TGRSIStats</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIStats:Print" href="src/TGRSIStats.cxx.html#PH_QkB">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIStats:Clear" href="src/TGRSIStats.cxx.html#RfpE9">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGRSIStats:TGRSIStats" href="src/TGRSIStats.h.html#jXankE">TGRSIStats</a>(<span class="keyword">int</span> )</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TGRSIStats:GetNumberOfStats" href="src/TGRSIStats.h.html#jZ.t0E">GetNumberOfStats</a>()</span><br />
 
 <div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGRSIStats.html#TGRSIStats:fStatsMap" title="map&lt;int,TGRSIStats*&gt;* TGRSIStats::fStatsMap">fStatsMap</a>-&gt;size(); }</code></div>
 <div style="clear:both;"></div>
-</div>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGRSIStats:_TGRSIStats" href="src/TGRSIStats.h.html#YJAffE">~TGRSIStats</a>()</span><br />
 </div>
 <div class="funcdoc"><span class="funcname">std::map&lt;<span class="keyword">int</span>,<a href="./TGRSIStats.html">TGRSIStats</a>*&gt; * <a class="funcname" name="TGRSIStats:GetMap" href="src/TGRSIStats.h.html#X4htAC">GetMap</a>()</span><br />
 
@@ -295,16 +304,12 @@ return false;}
 <div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./TGRSIStats.html#TGRSIStats:fHighestMidasTimeStamp" title="time_t TGRSIStats::fHighestMidasTimeStamp">fHighestMidasTimeStamp</a> - <a href="./TGRSIStats.html#TGRSIStats:fLowestMidasTimeStamp" title="time_t TGRSIStats::fLowestMidasTimeStamp">fLowestMidasTimeStamp</a>; }</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIStats:Print" href="src/TGRSIStats.h.html#Cr2Az">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIStats:Clear" href="src/TGRSIStats.h.html#GHFkAB">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
-</div>
 
 <br />
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Wed Sep  3 09:09:45 2014 </em><em>&raquo; Last generated: 2014-09-03 09:09</em><br />
+<em>&raquo; Last changed: Wed Sep  3 09:25:21 2014 </em><em>&raquo; Last generated: 2014-09-03 09:25</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>
