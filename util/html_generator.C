@@ -11,6 +11,6 @@ void html_generator(){
 
    THtml h;
    h.SetInputDir("$(GRSISYS)");
-   h.SetOutputDir("$(GRSISYS)");
+   h.SetOutputDir("$(GRSISYS)/htmldoc");
    h.MakeAll();
 }
