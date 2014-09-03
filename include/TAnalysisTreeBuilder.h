@@ -15,6 +15,7 @@
 
 #include <TFragment.h>
 #include <TChannel.h>
+#include <TGRSIRunInfo.h>
 
 class TEventQueue {
    public:
@@ -34,8 +35,6 @@ class TEventQueue {
 
 };
 
-
-
 class TAnalysisTreeBuilder {
 
    public:
@@ -43,26 +42,31 @@ class TAnalysisTreeBuilder {
 
       void ProcessEvent(std::vector<TFragment>*) { };
 
-      void SetUpFragmentChain(TChain *chain) { };
-      void SetUpFragmentChain(std::vector<std::string>) { };
+      static void SetUpFragmentChain(TChain *chain);
+      static void SetUpFragmentChain(std::vector<std::string>);
+      static void SetupFragmentTree();
 
-      void SortFragmentChain() { };
-      void SortFragmentTree() { };
+      static void SortFragmentChain();
+      static void SortFragmentTree() { };
 
-      void InitChannels() { };
+      static void InitChannels();
 
-      void SetupOutFile() { };
-      void SetupAnalysisTree() { };
-      void FillAnalysisTree() { };
-      void CloseOutFile() { };
+      static void SetupOutFile() { };
+      static void SetupAnalysisTree() { };
+      static void FillAnalysisTree() { };
+      static void CloseOutFile() { };
 
       void ProcessEvent() { };
+
+      static void StartMakeAnalysisTree(int argc=1, char **argv=0);
 
    private:
       TAnalysisTreeBuilder(); 
 
       static TChain *fFragmentChain;
-
+      static TTree  *fCurrentFragTree;
+      static TFile  *fCurrentFragFile;
+      static TGRSIRunInfo *fCurrentRunInfo;
 };
 
 

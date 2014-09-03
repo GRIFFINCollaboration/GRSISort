@@ -31,6 +31,7 @@ LIBS += -lGRSILoop
 LIBS += -lMidasFormat
 LIBS += -lGRSIFormat
 LIBS += -lGRSIRootIO
+LIBS += -lAnalysisTreeBuilder
 LIBS += -lProof
 
 #SYSLIBS = -lxml2

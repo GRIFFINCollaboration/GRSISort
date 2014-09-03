@@ -10,7 +10,7 @@ CAT=cat
 
 .PHONY: all clean gone
 
-all: libBuilder.so
+all: libAnalysisTreeBuilder.so
 
 %.so: $(OBJECTS)
 	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"
