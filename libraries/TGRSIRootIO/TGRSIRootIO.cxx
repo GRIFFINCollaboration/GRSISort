@@ -3,6 +3,7 @@
 #include "TFragmentQueue.h"
 
 #include "TGRSIOptions.h"
+#include "TGRSIRunInfo.h"
 
 ClassImp(TGRSIRootIO)
 
@@ -121,7 +122,13 @@ void TGRSIRootIO::CloseRootOutFile()   {
    foutfile->cd();
    printf(DMAGENTA "\n Fill tree called " DYELLOW "%i " DMAGENTA "times.\n" RESET_COLOR, fTimesFillCalled);
    
-   FinalizeFragmentTree();   
+   FinalizeFragmentTree();  
+
+   if(TGRSIRunInfo::GetNumberOfSystems()>0) {
+      printf(DMAGENTA " Writing RunInfo with " DYELLOW "%i " DMAGENTA " systems to file." RESET_COLOR "\n",TGRSIRunInfo::GetNumberOfSystems());
+      TGRSIRunInfo::Get()->Write();
+   }
+
    foutfile->Close();
 	delete foutfile;	
 	foutfile = 0;

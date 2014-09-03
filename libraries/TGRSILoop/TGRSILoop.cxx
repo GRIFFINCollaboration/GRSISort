@@ -8,6 +8,7 @@
 #include "TFragmentQueue.h"
 #include "TGRSIRootIO.h"
 #include "TGRSIStats.h"
+#include "TGRSIRunInfo.h"
 
 ClassImp(TGRSILoop)
 
@@ -179,6 +180,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 						TChannel::ReadCalFile(filename.c_str());
 					}
 				}
+            TGRSIRunInfo::SetRunInfo(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
 	         break;
          case 0x8001:
             printf(" Processing event %i have processed %.2fMB/%.2fMB\n",currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
