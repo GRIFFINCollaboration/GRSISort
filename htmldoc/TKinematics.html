@@ -1,0 +1,460 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@cern.ch)         -->
+<!--                                             -->
+<!--   Date: Wed Sep  3 16:59:02 2014            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>TKinematics</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers, cern" />
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis." />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="root_header"><img src="http://root.cern.ch/drupal/sites/default/files/rootdrawing-logo.png" alt="ROOT logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class TKinematics','','TKinematics.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/TKinematics.h.html">header file</a>
+<a class="descrheadentry" href="src/TKinematics.cxx.html">source file</a>
+
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#TKinematics:description">class description</a> 
+<a class="descrheadentry" href="#TKinematics:Function_Members">function members</a>
+<a class="descrheadentry" href="#TKinematics:Data_Members">data members</a>
+<a class="descrheadentry" href="#TKinematics:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">GRSISort</a>
+ &#187; <a class="locationlevel" href="./INCLUDE_Index.html">INCLUDE</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">TKinematics</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="TKinematics:description"></a>class TKinematics: public TNamed</h1>
+<div class="classdescr">
+</div>
+</div></div>
+
+<div id="functions">
+<h2><a id="TKinematics:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#TKinematics:TKinematics@3">TKinematics</a>(<span class="keyword">const</span> <a href="./TKinematics.html">TKinematics</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#TKinematics:TKinematics">TKinematics</a>(<a href="./TNucleus.html">TNucleus</a>* projectile, <a href="./TNucleus.html">TNucleus</a>* target, <span class="keyword">double</span> ebeam, <span class="keyword">const</span> <span class="keyword">char</span>* name = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#TKinematics:TKinematics@1">TKinematics</a>(<a href="./TNucleus.html">TNucleus</a>* projectile, <a href="./TNucleus.html">TNucleus</a>* target, <a href="./TNucleus.html">TNucleus</a>* recoil, <a href="./TNucleus.html">TNucleus</a>* ejectile, <span class="keyword">double</span> ebeam, <span class="keyword">const</span> <span class="keyword">char</span>* name = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#TKinematics:TKinematics@2">TKinematics</a>(<a href="./TNucleus.html">TNucleus</a>* projectile, <a href="./TNucleus.html">TNucleus</a>* target, <a href="./TNucleus.html">TNucleus</a>* recoil, <a href="./TNucleus.html">TNucleus</a>* ejectile, <span class="keyword">double</span> ebeam, <span class="keyword">double</span> ex3, <span class="keyword">const</span> <span class="keyword">char</span>* name = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#TKinematics:_TKinematics">~TKinematics</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AbstractMethod"><span class="baseclass">TObject::</span>AbstractMethod</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Angle_cm2lab">Angle_cm2lab</a>(<span class="keyword">double</span> vcm, <span class="keyword">double</span> angle_cm)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Angle_lab2cm">Angle_lab2cm</a>(<span class="keyword">double</span> vcm, <span class="keyword">double</span> angle_lab)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Angle_lab2cminverse">Angle_lab2cminverse</a>(<span class="keyword">double</span> vcm, <span class="keyword">double</span> angle_lab, <span class="keyword">bool</span> upper)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:AngleErr_lab2cm">AngleErr_lab2cm</a>(<span class="keyword">double</span> angle, <span class="keyword">double</span>&amp; err)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AppendPad"><span class="baseclass">TObject::</span>AppendPad</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#TKinematics:CheckMaxAngle">CheckMaxAngle</a>(<span class="keyword">double</span> angle, <span class="keyword">int</span> part)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#TKinematics:Class">Class</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:ClassName"><span class="baseclass">TObject::</span>ClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Clear">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TNamed:Clone"><span class="baseclass">TNamed::</span>Clone</a>(<span class="keyword">const</span> <span class="keyword">char</span>* newname = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TSpline3*</td><td class="funcname"><a class="funcname" href="#TKinematics:cmvslab">cmvslab</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size, <span class="keyword">int</span> part = 2)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TNamed:Compare"><span class="baseclass">TNamed::</span>Compare</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TNamed:Copy"><span class="baseclass">TNamed::</span>Copy</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>&amp; named) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Delete"><span class="baseclass">TObject::</span>Delete</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:DistancetoPrimitive"><span class="baseclass">TObject::</span>DistancetoPrimitive</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Draw"><span class="baseclass">TObject::</span>Draw</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DrawClass"><span class="baseclass">TObject::</span>DrawClass</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:DrawClone"><span class="baseclass">TObject::</span>DrawClone</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Dump"><span class="baseclass">TObject::</span>Dump</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:ELab">ELab</a>(<span class="keyword">double</span> angle_lab, <span class="keyword">int</span> part)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Error"><span class="baseclass">TObject::</span>Error</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TSpline3*</td><td class="funcname"><a class="funcname" href="#TKinematics:Evscm">Evscm</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size, <span class="keyword">int</span> part = 2)</td></tr>
+<tr class="func"><td class="funcret">TSpline3*</td><td class="funcname"><a class="funcname" href="#TKinematics:Evslab">Evslab</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size, <span class="keyword">int</span> part = 2)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute"><span class="baseclass">TObject::</span>Execute</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute@1"><span class="baseclass">TObject::</span>Execute</a>(TMethod* method, TObjArray* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ExecuteEvent"><span class="baseclass">TObject::</span>ExecuteEvent</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> event, <a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Fatal"><span class="baseclass">TObject::</span>Fatal</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TNamed:FillBuffer"><span class="baseclass">TNamed::</span>FillBuffer</a>(<span class="keyword">char</span>*&amp; buffer)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Final">Final</a>(<span class="keyword">double</span> angle, <span class="keyword">int</span> part)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:FinalCm">FinalCm</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject@1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetBeamEnergy">GetBeamEnergy</a>(<span class="keyword">double</span> LabAngle, <span class="keyword">double</span> LabEnergy)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetBetacm">GetBetacm</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetBetacm@1">GetBetacm</a>(<span class="keyword">int</span> i)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetCmEnergy@1">GetCmEnergy</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetCmEnergy">GetCmEnergy</a>(<span class="keyword">double</span> ebeam)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetEcm">GetEcm</a>(<span class="keyword">int</span> i)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetElab">GetElab</a>(<span class="keyword">int</span> i)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetExcEnergy">GetExcEnergy</a>(TLorentzVector recoil)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetExcEnergy@1">GetExcEnergy</a>(TVector3 position, <span class="keyword">double</span> KinE)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetGammacm">GetGammacm</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetIconName"><span class="baseclass">TObject::</span>GetIconName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetM">GetM</a>(<span class="keyword">int</span> i)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetMaxAngle">GetMaxAngle</a>(<span class="keyword">double</span> vcm)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetMaxAngle@1">GetMaxAngle</a>(<span class="keyword">int</span> part)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TNamed:GetName"><span class="baseclass">TNamed::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetObjectInfo"><span class="baseclass">TObject::</span>GetObjectInfo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetObjectStat"><span class="baseclass">TObject::</span>GetObjectStat</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetOption"><span class="baseclass">TObject::</span>GetOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetQValue">GetQValue</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetTcm">GetTcm</a>(<span class="keyword">int</span> i)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetThetacm">GetThetacm</a>(<span class="keyword">int</span> i)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetThetalab">GetThetalab</a>(<span class="keyword">int</span> i)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TNamed:GetTitle"><span class="baseclass">TNamed::</span>GetTitle</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetTlab">GetTlab</a>(<span class="keyword">int</span> i)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetUniqueID"><span class="baseclass">TObject::</span>GetUniqueID</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetV">GetV</a>(<span class="keyword">int</span> i)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:GetVcm">GetVcm</a>(<span class="keyword">int</span> i)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:HandleTimer"><span class="baseclass">TObject::</span>HandleTimer</a>(TTimer* timer)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#ULong_t">ULong_t</a></td><td class="funcname"><a class="funcname" href="#TNamed:Hash"><span class="baseclass">TNamed::</span>Hash</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Info"><span class="baseclass">TObject::</span>Info</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> <span class="keyword">char</span>* classname) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom@1"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> TClass* cl) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Initial">Initial</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Inspect"><span class="baseclass">TObject::</span>Inspect</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:InvertBit"><span class="baseclass">TObject::</span>InvertBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#TKinematics:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsEqual"><span class="baseclass">TObject::</span>IsEqual</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsFolder"><span class="baseclass">TObject::</span>IsFolder</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsOnHeap"><span class="baseclass">TObject::</span>IsOnHeap</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TNamed:IsSortable"><span class="baseclass">TNamed::</span>IsSortable</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsZombie"><span class="baseclass">TObject::</span>IsZombie</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TSpline3*</td><td class="funcname"><a class="funcname" href="#TKinematics:labvscm">labvscm</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size, <span class="keyword">int</span> part = 2)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TNamed:ls"><span class="baseclass">TNamed::</span>ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MayNotUse"><span class="baseclass">TObject::</span>MayNotUse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:NormalkinEnergy">NormalkinEnergy</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Notify"><span class="baseclass">TObject::</span>Notify</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Obsolete"><span class="baseclass">TObject::</span>Obsolete</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* asOfVers, <span class="keyword">const</span> <span class="keyword">char</span>* removedFromVers) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete@1"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]@1"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new@1"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]@1"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="func"><td class="funcret"><a href="./TKinematics.html">TKinematics</a>&amp;</td><td class="funcname"><a class="funcname" href="#TKinematics:operator_">operator=</a>(<span class="keyword">const</span> <a href="./TKinematics.html">TKinematics</a>&amp;)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Paint"><span class="baseclass">TObject::</span>Paint</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Pop"><span class="baseclass">TObject::</span>Pop</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Print">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Read"><span class="baseclass">TObject::</span>Read</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:RecursiveRemove"><span class="baseclass">TObject::</span>RecursiveRemove</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ResetBit"><span class="baseclass">TObject::</span>ResetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Rutherford">Rutherford</a>(<span class="keyword">double</span> angle_cm)</td></tr>
+<tr class="func"><td class="funcret">TSpline3*</td><td class="funcname"><a class="funcname" href="#TKinematics:Ruthvscm">Ruthvscm</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size)</td></tr>
+<tr class="func"><td class="funcret">TSpline3*</td><td class="funcname"><a class="funcname" href="#TKinematics:Ruthvslab">Ruthvslab</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size, <span class="keyword">int</span> part)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SaveAs"><span class="baseclass">TObject::</span>SaveAs</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SavePrimitive"><span class="baseclass">TObject::</span>SavePrimitive</a>(<a href="./ListOfTypes.html#ostream">ostream</a>&amp; out, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:SetAngles">SetAngles</a>(<span class="keyword">double</span> angle, <span class="keyword">int</span> part, <span class="keyword">bool</span> upper = <span class="keyword">false</span>)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit@1"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> set)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDrawOption"><span class="baseclass">TObject::</span>SetDrawOption</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDtorOnly"><span class="baseclass">TObject::</span>SetDtorOnly</a>(<span class="keyword">void</span>* obj)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TNamed:SetName"><span class="baseclass">TNamed::</span>SetName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TNamed:SetNameTitle"><span class="baseclass">TNamed::</span>SetNameTitle</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name, <span class="keyword">const</span> <span class="keyword">char</span>* title)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetObjectStat"><span class="baseclass">TObject::</span>SetObjectStat</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> stat)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TNamed:SetTitle"><span class="baseclass">TNamed::</span>SetTitle</a>(<span class="keyword">const</span> <span class="keyword">char</span>* title = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetUniqueID"><span class="baseclass">TObject::</span>SetUniqueID</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> uid)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Sigma_cm2lab">Sigma_cm2lab</a>(<span class="keyword">double</span> angle_cm, <span class="keyword">double</span> sigma_cm)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Sigma_lab2cm">Sigma_lab2cm</a>(<span class="keyword">double</span> angle_cm, <span class="keyword">double</span> sigma_lab)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:SigmaErr_lab2cm">SigmaErr_lab2cm</a>(<span class="keyword">double</span> angle, <span class="keyword">double</span> err, <span class="keyword">double</span>&amp; sigma, <span class="keyword">double</span>&amp; errsigma)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TNamed:Sizeof"><span class="baseclass">TNamed::</span>Sizeof</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SysError"><span class="baseclass">TObject::</span>SysError</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBit"><span class="baseclass">TObject::</span>TestBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBits"><span class="baseclass">TObject::</span>TestBits</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Transform2cm">Transform2cm</a>(<span class="keyword">double</span>&amp; angle, <span class="keyword">double</span>&amp; sigma)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Transform2cm@1">Transform2cm</a>(<span class="keyword">double</span>&amp; angle, <span class="keyword">double</span>&amp; errangle, <span class="keyword">double</span>&amp; sigma, <span class="keyword">double</span>&amp; errsigma)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:UseCurrentStyle"><span class="baseclass">TObject::</span>UseCurrentStyle</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Warning"><span class="baseclass">TObject::</span>Warning</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write@1"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0) <span class="keyword">const</span></td></tr>
+
+</table></div>
+<div class="access" id="funcprot"><b>protected:</b>
+<table class="func" id="tabfuncprot" cellspacing="0">
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DoError"><span class="baseclass">TObject::</span>DoError</a>(<span class="keyword">int</span> level, <span class="keyword">const</span> <span class="keyword">char</span>* location, <span class="keyword">const</span> <span class="keyword">char</span>* fmt, va_list va) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MakeZombie"><span class="baseclass">TObject::</span>MakeZombie</a>()</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:betacm_tm">betacm_tm</a>(<span class="keyword">double</span>, <span class="keyword">double</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:E_final">E_final</a>(<span class="keyword">int</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:E_tm">E_tm</a>(<span class="keyword">double</span>, <span class="keyword">double</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:P_tm">P_tm</a>(<span class="keyword">double</span>, <span class="keyword">double</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:Pcm_em">Pcm_em</a>(<span class="keyword">double</span>, <span class="keyword">double</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:T_em">T_em</a>(<span class="keyword">double</span>, <span class="keyword">double</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:T_final">T_final</a>(<span class="keyword">int</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#TKinematics:V_pe">V_pe</a>(<span class="keyword">double</span>, <span class="keyword">double</span>)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="TKinematics:Data_Members"></a>Data Members</h2>
+<div class="access" id="enumpubl"><b>public:</b>
+<table class="data" id="tabenumpubl" cellspacing="0">
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span>EStatusBits { </td><td class="dataname"><a href="#TObject:kCanDelete">kCanDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kMustCleanup">kMustCleanup</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kObjInCanvas">kObjInCanvas</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kIsReferenced">kIsReferenced</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kHasUUID">kHasUUID</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kCannotPick">kCannotPick</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNoContextMenu">kNoContextMenu</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kInvalidObject">kInvalidObject</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span><i>[unnamed]</i> { </td><td class="dataname"><a href="#TObject:kIsOnHeap">kIsOnHeap</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNotDeleted">kNotDeleted</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kZombie">kZombie</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kBitMask">kBitMask</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kSingleKey">kSingleKey</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kOverwrite">kOverwrite</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kWriteDelete">kWriteDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+
+</table></div>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="datainh"><td class="datatype">TString</td><td class="dataname"><a href="#TNamed:fName"><span class="baseclass">TNamed::</span>fName</a></td><td class="datadesc">object identifier</td></tr>
+<tr class="datainh"><td class="datatype">TString</td><td class="dataname"><a href="#TNamed:fTitle"><span class="baseclass">TNamed::</span>fTitle</a></td><td class="datadesc">object title</td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fBeta_cm"></a>fBeta_cm</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fBetacm"></a>fBetacm[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fE"></a>fE[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fEBeam"></a>fEBeam</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fEcm"></a>fEcm[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fGamma_cm"></a>fGamma_cm</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fM"></a>fM[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fP"></a>fP[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./TNucleus.html">TNucleus</a>*</td><td class="dataname"><a name="TKinematics:fParticle"></a>fParticle[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fPcm"></a>fPcm[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fQValue"></a>fQValue</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fT"></a>fT[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fTCm_f"></a>fTCm_f</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fTCm_i"></a>fTCm_i</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fTcm"></a>fTcm[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fTheta"></a>fTheta[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fThetacm"></a>fThetacm[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fV"></a>fV[4]</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="TKinematics:fVcm"></a>fVcm[4]</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="TKinematics:Class_Charts"></a>Class Charts</h2>
+<map name="MapTKinematics_Lib" id="MapTKinematics_Lib">
+<area shape="rect" id="node1" href="LibraryDependencies.html" title="All Libraries" alt="" coords="125,237,240,285"/>
+</map>
+<div class="tabs">
+<a id="imgTKinematics_Inh" class="tabsel" href="inh/TKinematics_Inh.png" onclick="javascript:return SetImg('Charts','inh/TKinematics_Inh.png');">Inheritance</a>
+<a id="imgTKinematics_InhMem" class="tab" href="inhmem/TKinematics_InhMem.png" onclick="javascript:return SetImg('Charts','inhmem/TKinematics_InhMem.png');">Inherited Members</a>
+<a id="imgTKinematics_Incl" class="tab" href="incl/TKinematics_Incl.png" onclick="javascript:return SetImg('Charts','incl/TKinematics_Incl.png');">Includes</a>
+<a id="imgTKinematics_Lib" class="tab" href="lib/TKinematics_Lib.png" onclick="javascript:return SetImg('Charts','lib/TKinematics_Lib.png');">Libraries</a><br/>
+</div><div class="classcharts"><div class="classchartswidth"></div>
+<img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTKinematics_Inh" src="inh/TKinematics_Inh.png"/></div>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TKinematics:TKinematics" href="src/TKinematics.cxx.html#dfkBhB">TKinematics</a>(<a href="./TNucleus.html">TNucleus</a>* projectile, <a href="./TNucleus.html">TNucleus</a>* target, <span class="keyword">double</span> ebeam, <span class="keyword">const</span> <span class="keyword">char</span>* name = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TKinematics:TKinematics@1" href="src/TKinematics.cxx.html#Xz.5YB">TKinematics</a>(<a href="./TNucleus.html">TNucleus</a>* projectile, <a href="./TNucleus.html">TNucleus</a>* target, <a href="./TNucleus.html">TNucleus</a>* recoil, <a href="./TNucleus.html">TNucleus</a>* ejectile, <span class="keyword">double</span> ebeam, <span class="keyword">const</span> <span class="keyword">char</span>* name = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TKinematics:TKinematics@2" href="src/TKinematics.cxx.html#BTabED">TKinematics</a>(<a href="./TNucleus.html">TNucleus</a>* projectile, <a href="./TNucleus.html">TNucleus</a>* target, <a href="./TNucleus.html">TNucleus</a>* recoil, <a href="./TNucleus.html">TNucleus</a>* ejectile, <span class="keyword">double</span> ebeam, <span class="keyword">double</span> ex3, <span class="keyword">const</span> <span class="keyword">char</span>* name = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TSpline3* <a class="funcname" name="TKinematics:Evslab" href="src/TKinematics.cxx.html#AwRYCE">Evslab</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size, <span class="keyword">int</span> part = 2)</span><br />
+<div class="funccomm"><pre><a href="./ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"maximum scattering angle: "</span> &lt;&lt; <a href="./TKinematics.html#TKinematics:GetMaxAngle" title="double TKinematics::GetMaxAngle(double vcm) or overloads">GetMaxAngle</a>(<a href="./TKinematics.html#TKinematics:fVcm" title="double TKinematics::fVcm">fVcm</a>[part])*180./PI  &lt;&lt; endl;
+<a href="./ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"max "</span> &lt;&lt; thmax &lt;&lt; <span class="string">" min "</span> &lt;&lt; thmin &lt;&lt; <span class="string">" steps "</span> &lt;&lt; (<a href="./ListOfTypes.html#int">int</a>)((thmax-thmin)/size)+1 &lt;&lt; endl;
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">TSpline3* <a class="funcname" name="TKinematics:Evscm" href="src/TKinematics.cxx.html#ha67j">Evscm</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size, <span class="keyword">int</span> part = 2)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetExcEnergy" href="src/TKinematics.cxx.html#KMMlzD">GetExcEnergy</a>(TLorentzVector recoil)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetExcEnergy@1" href="src/TKinematics.cxx.html#qrd5mD">GetExcEnergy</a>(TVector3 position, <span class="keyword">double</span> KinE)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetBeamEnergy" href="src/TKinematics.cxx.html#WCqs6">GetBeamEnergy</a>(<span class="keyword">double</span> LabAngle, <span class="keyword">double</span> LabEnergy)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TKinematics:Initial" href="src/TKinematics.cxx.html#rYNcaB">Initial</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TKinematics:FinalCm" href="src/TKinematics.cxx.html#L4gwTE">FinalCm</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TKinematics:Final" href="src/TKinematics.cxx.html#SHKDWD">Final</a>(<span class="keyword">double</span> angle, <span class="keyword">int</span> part)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:ELab" href="src/TKinematics.cxx.html#SQP.ED">ELab</a>(<span class="keyword">double</span> angle_lab, <span class="keyword">int</span> part)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TKinematics:SetAngles" href="src/TKinematics.cxx.html#U2bPFD">SetAngles</a>(<span class="keyword">double</span> angle, <span class="keyword">int</span> part, <span class="keyword">bool</span> upper = <span class="keyword">false</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetCmEnergy" href="src/TKinematics.cxx.html#xsvA0">GetCmEnergy</a>(<span class="keyword">double</span> ebeam)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetCmEnergy@1" href="src/TKinematics.cxx.html#eK3p8B">GetCmEnergy</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:NormalkinEnergy" href="src/TKinematics.cxx.html#s_LV_D">NormalkinEnergy</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetMaxAngle" href="src/TKinematics.cxx.html#kiLi7C">GetMaxAngle</a>(<span class="keyword">double</span> vcm)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetMaxAngle@1" href="src/TKinematics.cxx.html#kWgZWD">GetMaxAngle</a>(<span class="keyword">int</span> part)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TKinematics:CheckMaxAngle" href="src/TKinematics.cxx.html#z508s">CheckMaxAngle</a>(<span class="keyword">double</span> angle, <span class="keyword">int</span> part)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:Angle_lab2cm" href="src/TKinematics.cxx.html#ZV0_EE">Angle_lab2cm</a>(<span class="keyword">double</span> vcm, <span class="keyword">double</span> angle_lab)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:Angle_lab2cminverse" href="src/TKinematics.cxx.html#Km.RkD">Angle_lab2cminverse</a>(<span class="keyword">double</span> vcm, <span class="keyword">double</span> angle_lab, <span class="keyword">bool</span> upper)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TKinematics:AngleErr_lab2cm" href="src/TKinematics.cxx.html#QPfatD">AngleErr_lab2cm</a>(<span class="keyword">double</span> angle, <span class="keyword">double</span>&amp; err)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:Angle_cm2lab" href="src/TKinematics.cxx.html#qSOPiD">Angle_cm2lab</a>(<span class="keyword">double</span> vcm, <span class="keyword">double</span> angle_cm)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TSpline3* <a class="funcname" name="TKinematics:labvscm" href="src/TKinematics.cxx.html#cjFzyD">labvscm</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size, <span class="keyword">int</span> part = 2)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TSpline3* <a class="funcname" name="TKinematics:cmvslab" href="src/TKinematics.cxx.html#joB8E">cmvslab</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size, <span class="keyword">int</span> part = 2)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:Sigma_cm2lab" href="src/TKinematics.cxx.html#Qulkw">Sigma_cm2lab</a>(<span class="keyword">double</span> angle_cm, <span class="keyword">double</span> sigma_cm)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:Sigma_lab2cm" href="src/TKinematics.cxx.html#jvjHwE">Sigma_lab2cm</a>(<span class="keyword">double</span> angle_cm, <span class="keyword">double</span> sigma_lab)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TKinematics:SigmaErr_lab2cm" href="src/TKinematics.cxx.html#jVCZrD">SigmaErr_lab2cm</a>(<span class="keyword">double</span> angle, <span class="keyword">double</span> err, <span class="keyword">double</span>&amp; sigma, <span class="keyword">double</span>&amp; errsigma)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TKinematics:Transform2cm" href="src/TKinematics.cxx.html#AiRIqC">Transform2cm</a>(<span class="keyword">double</span>&amp; angle, <span class="keyword">double</span>&amp; sigma)</span><br />
+<div class="funccomm"><pre><a href="./ListOfTypes.html#double">double</a> angle_lab = angle;
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TKinematics:Transform2cm@1" href="src/TKinematics.cxx.html#B7T_9C">Transform2cm</a>(<span class="keyword">double</span>&amp; angle, <span class="keyword">double</span>&amp; errangle, <span class="keyword">double</span>&amp; sigma, <span class="keyword">double</span>&amp; errsigma)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:Rutherford" href="src/TKinematics.cxx.html#KJgcLC">Rutherford</a>(<span class="keyword">double</span> angle_cm)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TSpline3* <a class="funcname" name="TKinematics:Ruthvscm" href="src/TKinematics.cxx.html#VYpwGD">Ruthvscm</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TSpline3* <a class="funcname" name="TKinematics:Ruthvslab" href="src/TKinematics.cxx.html#BIVu0E">Ruthvslab</a>(<span class="keyword">double</span> thmin, <span class="keyword">double</span> thmax, <span class="keyword">double</span> size, <span class="keyword">int</span> part)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:Pcm_em" href="src/TKinematics.cxx.html#snUma">Pcm_em</a>(<span class="keyword">double</span> , <span class="keyword">double</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:P_tm" href="src/TKinematics.cxx.html#Y163FD">P_tm</a>(<span class="keyword">double</span> , <span class="keyword">double</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:E_tm" href="src/TKinematics.cxx.html#hmJpUE">E_tm</a>(<span class="keyword">double</span> , <span class="keyword">double</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:T_em" href="src/TKinematics.cxx.html#hrE5FD">T_em</a>(<span class="keyword">double</span> , <span class="keyword">double</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:betacm_tm" href="src/TKinematics.cxx.html#FhwUiC">betacm_tm</a>(<span class="keyword">double</span> , <span class="keyword">double</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:V_pe" href="src/TKinematics.cxx.html#hrECs">V_pe</a>(<span class="keyword">double</span> , <span class="keyword">double</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:E_final" href="src/TKinematics.cxx.html#qkLKLC">E_final</a>(<span class="keyword">int</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:T_final" href="src/TKinematics.cxx.html#W9yMLC">T_final</a>(<span class="keyword">int</span> )</span><br />
+<div class="funccomm"><pre><a href="./ListOfTypes.html#ostream">cout</a> &lt;&lt;(<a href="./TKinematics.html#TKinematics:fGamma_cm" title="double TKinematics::fGamma_cm">fGamma_cm</a>-1)*<a href="./TKinematics.html#TKinematics:fM" title="double TKinematics::fM">fM</a>[i]&lt;&lt;<span class="string">" + "</span>&lt;&lt;<a href="./TKinematics.html#TKinematics:fGamma_cm" title="double TKinematics::fGamma_cm">fGamma_cm</a>*<a href="./TKinematics.html#TKinematics:fTcm" title="double TKinematics::fTcm">fTcm</a>[i]&lt;&lt;<span class="string">" + "</span>&lt;&lt;<a href="./TKinematics.html#TKinematics:fGamma_cm" title="double TKinematics::fGamma_cm">fGamma_cm</a>*<a href="./TKinematics.html#TKinematics:fBeta_cm" title="double TKinematics::fBeta_cm">fBeta_cm</a>*<a href="./TKinematics.html#TKinematics:fPcm" title="double TKinematics::fPcm">fPcm</a>[i]*cos(<a href="./TKinematics.html#TKinematics:fThetacm" title="double TKinematics::fThetacm">fThetacm</a>[i])&lt;&lt;endl;
+<a href="./ListOfTypes.html#ostream">cout</a> &lt;&lt;<a href="./TKinematics.html#TKinematics:fGamma_cm" title="double TKinematics::fGamma_cm">fGamma_cm</a>&lt;&lt;<span class="string">"*"</span>&lt;&lt;<a href="./TKinematics.html#TKinematics:fBeta_cm" title="double TKinematics::fBeta_cm">fBeta_cm</a>&lt;&lt;<span class="string">"*"</span>&lt;&lt;<a href="./TKinematics.html#TKinematics:fPcm" title="double TKinematics::fPcm">fPcm</a>[i]&lt;&lt;<span class="string">"*"</span>&lt;&lt;cos(<a href="./TKinematics.html#TKinematics:fThetacm" title="double TKinematics::fThetacm">fThetacm</a>[i])
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TKinematics:TKinematics" href="src/TKinematics.h.html#c6iGeE">TKinematics</a>(<a href="./TNucleus.html">TNucleus</a>* projectile, <a href="./TNucleus.html">TNucleus</a>* target, <span class="keyword">double</span> ebeam, <span class="keyword">const</span> <span class="keyword">char</span>* name = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetQValue" href="src/TKinematics.h.html#QZy00D">GetQValue</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fQValue" title="double TKinematics::fQValue">fQValue</a>;   }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetElab" href="src/TKinematics.h.html#HWKDBB">GetElab</a>(<span class="keyword">int</span> i)</span><br />
+
+<div class="code"><code class="inlinecode">{  <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fE" title="double TKinematics::fE">fE</a>[i];    }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetM" href="src/TKinematics.h.html#M3_M5C">GetM</a>(<span class="keyword">int</span> i)</span><br />
+
+<div class="code"><code class="inlinecode">{  <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fM" title="double TKinematics::fM">fM</a>[i];    }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetTlab" href="src/TKinematics.h.html#nuxb4B">GetTlab</a>(<span class="keyword">int</span> i)</span><br />
+
+<div class="code"><code class="inlinecode">{  <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fT" title="double TKinematics::fT">fT</a>[i];    }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetEcm" href="src/TKinematics.h.html#C4YZv">GetEcm</a>(<span class="keyword">int</span> i)</span><br />
+
+<div class="code"><code class="inlinecode">{  <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fEcm" title="double TKinematics::fEcm">fEcm</a>[i];  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetTcm" href="src/TKinematics.h.html#OpnKOC">GetTcm</a>(<span class="keyword">int</span> i)</span><br />
+
+<div class="code"><code class="inlinecode">{  <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fTcm" title="double TKinematics::fTcm">fTcm</a>[i];  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetThetalab" href="src/TKinematics.h.html#ilK2kD">GetThetalab</a>(<span class="keyword">int</span> i)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetThetacm" href="src/TKinematics.h.html#Tu37fD">GetThetacm</a>(<span class="keyword">int</span> i)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetBetacm" href="src/TKinematics.h.html#i3pX.B">GetBetacm</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fBeta_cm" title="double TKinematics::fBeta_cm">fBeta_cm</a>;   }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetGammacm" href="src/TKinematics.h.html#DUqcED">GetGammacm</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fGamma_cm" title="double TKinematics::fGamma_cm">fGamma_cm</a>;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetBetacm@1" href="src/TKinematics.h.html#XjcAJC">GetBetacm</a>(<span class="keyword">int</span> i)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fBetacm" title="double TKinematics::fBetacm">fBetacm</a>[i]; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetVcm" href="src/TKinematics.h.html#PC_FeB">GetVcm</a>(<span class="keyword">int</span> i)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fVcm" title="double TKinematics::fVcm">fVcm</a>[i];    }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TKinematics:GetV" href="src/TKinematics.h.html#dLXOE">GetV</a>(<span class="keyword">int</span> i)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TKinematics.html#TKinematics:fV" title="double TKinematics::fV">fV</a>[i];      }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TKinematics:Print" href="src/TKinematics.h.html#KIX7a">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TKinematics:Clear" href="src/TKinematics.h.html#KzW9K">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ }</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Wed Sep  3 16:59:03 2014 </em><em>&raquo; Last generated: 2014-09-03 16:59</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>
