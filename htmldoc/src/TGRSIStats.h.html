@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 09:25:21 2014            -->
+<!--   Date: Wed Sep  3 10:09:13 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -31,7 +31,7 @@
 <a name="jXankE"></a>      <a href="../TGRSIStats.html">TGRSIStats</a>(<span class="keyword">int</span>);
 
    <span class="keyword">public</span>:
-      <span class="keyword">static</span> <a href="../TGRSIStats.html">TGRSIStats</a> *<a href="../TGRSIStats.html#TGRSIStats:GetStats" title="TGRSIStats* TGRSIStats::GetStats(int temp_address)">GetStats</a>(<span class="keyword">int</span> temp_address); 
+<a name="A_HHmB"></a>      <span class="keyword">static</span> <a href="../TGRSIStats.html">TGRSIStats</a> *<a href="../TGRSIStats.html#TGRSIStats:GetStats" title="TGRSIStats* TGRSIStats::GetStats(int temp_address)">GetStats</a>(<span class="keyword">int</span> temp_address); 
 <a name="jZ.t0E"></a>      <span class="keyword">static</span> <span class="keyword">int</span> <a href="../TGRSIStats.html#TGRSIStats:GetNumberOfStats" title="int TGRSIStats::GetNumberOfStats()">GetNumberOfStats</a>() { <span class="keyword">return</span> <a href="../TGRSIStats.html#TGRSIStats:fStatsMap" title="map&lt;int,TGRSIStats*&gt;* TGRSIStats::fStatsMap">fStatsMap</a>-&gt;size(); }  
 
    <span class="keyword">private</span>:
@@ -46,7 +46,7 @@
      <span class="keyword">int</span> <a href="../TGRSIStats.html#TGRSIStats:fLastChannelIdSeen" title="int TGRSIStats::fLastChannelIdSeen">fLastChannelIdSeen</a>;
 
    <span class="keyword">public</span>:
-      <a href="../TGRSIStats.html#TGRSIStats:_TGRSIStats" title="void TGRSIStats::~TGRSIStats()">~TGRSIStats</a>();
+<a name="YJAffE"></a>      <a href="../TGRSIStats.html#TGRSIStats:_TGRSIStats" title="void TGRSIStats::~TGRSIStats()">~TGRSIStats</a>();
 <a name="X4htAC"></a>      <span class="keyword">static</span> std::map&lt;<span class="keyword">int</span>,<a href="../TGRSIStats.html">TGRSIStats</a>*&gt; *<a href="../TGRSIStats.html#TGRSIStats:GetMap" title="map&lt;int,TGRSIStats*&gt;* TGRSIStats::GetMap()">GetMap</a>() { <span class="keyword">return</span> <a href="../TGRSIStats.html#TGRSIStats:fStatsMap" title="map&lt;int,TGRSIStats*&gt;* TGRSIStats::fStatsMap">fStatsMap</a>;}
 <a name="o9RbvD"></a>      <span class="keyword">static</span> <span class="keyword">int</span> <a href="../TGRSIStats.html#TGRSIStats:GetSize" title="int TGRSIStats::GetSize()">GetSize</a>() { <span class="keyword">if</span>(<a href="../TGRSIStats.html#TGRSIStats:fStatsMap" title="map&lt;int,TGRSIStats*&gt;* TGRSIStats::fStatsMap">fStatsMap</a>) <span class="keyword">return</span> <a href="../TGRSIStats.html#TGRSIStats:fStatsMap" title="map&lt;int,TGRSIStats*&gt;* TGRSIStats::fStatsMap">fStatsMap</a>-&gt;size(); <span class="keyword">else</span> <span class="keyword">return</span> 0; }
 
@@ -65,8 +65,8 @@
 <a name="zbgMSE"></a>      <span class="keyword">static</span> <span class="keyword">int</span> <a href="../TGRSIStats.html#TGRSIStats:GetRunTime" title="int TGRSIStats::GetRunTime()">GetRunTime</a>() {<span class="keyword">return</span> <a href="../TGRSIStats.html#TGRSIStats:fHighestMidasTimeStamp" title="time_t TGRSIStats::fHighestMidasTimeStamp">fHighestMidasTimeStamp</a> - <a href="../TGRSIStats.html#TGRSIStats:fLowestMidasTimeStamp" title="time_t TGRSIStats::fLowestMidasTimeStamp">fLowestMidasTimeStamp</a>; }
 
 
-      <span class="keyword">virtual</span> <span class="keyword">void</span> <a href="../TGRSIStats.html#TGRSIStats:Print" title="void TGRSIStats::Print(Option_t* opt=&quot;&quot;)">Print</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
-      <span class="keyword">virtual</span> <span class="keyword">void</span> <a href="../TGRSIStats.html#TGRSIStats:Clear" title="void TGRSIStats::Clear(Option_t* opt=&quot;&quot;)">Clear</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
+<a name="Cr2Az"></a>      <span class="keyword">virtual</span> <span class="keyword">void</span> <a href="../TGRSIStats.html#TGRSIStats:Print" title="void TGRSIStats::Print(Option_t* opt=&quot;&quot;)">Print</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
+<a name="GHFkAB"></a>      <span class="keyword">virtual</span> <span class="keyword">void</span> <a href="../TGRSIStats.html#TGRSIStats:Clear" title="void TGRSIStats::Clear(Option_t* opt=&quot;&quot;)">Clear</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
 
 
 
@@ -83,7 +83,7 @@
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2014-09-03 09:25 </em><em>&raquo; Last generated: 2014-09-03 09:25</em><br />
+<em>&raquo; Last changed: 2014-09-03 10:09 </em><em>&raquo; Last generated: 2014-09-03 10:09</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>
