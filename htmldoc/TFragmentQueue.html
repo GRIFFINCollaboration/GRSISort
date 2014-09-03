@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 10:09:12 2014            -->
+<!--   Date: Wed Sep  3 16:16:13 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -19,7 +19,7 @@
 <body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
 <div id="root_header"><img src="http://root.cern.ch/drupal/sites/default/files/rootdrawing-logo.png" alt="ROOT logo"/></div>
 <a name="TopOfPage"></a>
-<script type="text/javascript">WriteFollowPageBox('class TFragmentQueue','','TFragmentQueue.h');</script>
+<script type="text/javascript">WriteFollowPageBox('class TFragmentQueue','','/home/rdunlop/Programs/GRSISort/include/TFragmentQueue.h');</script>
 <div id="toplinks">
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Quick Links:</span>
@@ -40,7 +40,7 @@ return false;}
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Source:</span>
 <a class="descrheadentry" href="src/TFragmentQueue.h.html">header file</a>
-<a class="descrheadentry"> </a>
+<a class="descrheadentry" href="src/TFragmentQueue.cxx.html">source file</a>
 
 </div></div>
 <div class="descrhead"><div class="descrheadcontent">
@@ -53,7 +53,7 @@ return false;}
 </div>
 <div class="location">
 <a class="locationlevel" href="index.html">GRSISort</a>
- &#187; <a class="locationlevel" href="./INCLUDE_Index.html">INCLUDE</a>
+ &#187; <a class="locationlevel" href="./(UNKNOWN)_Index.html">(UNKNOWN)</a>
  &#187; <a class="locationlevel" href="#TopOfPage">TFragmentQueue</a>
 </div>
 <div class="dropshadow"><div class="withshadow"><h1><a name="TFragmentQueue:description"></a>class TFragmentQueue: public TObject</h1>
@@ -229,9 +229,47 @@ return false;}
 </div><div class="classcharts"><div class="classchartswidth"></div>
 <img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTFragmentQueue_Inh" src="inh/TFragmentQueue_Inh.png"/></div>
 <h2>Function documentation</h2>
-<div class="funcdoc"><span class="funcname"><a href="./TFragmentQueue.html">TFragmentQueue</a> * <a class="funcname" name="TFragmentQueue:GetQueue" href="src/TFragmentQueue.h.html#NlB4xD">GetQueue</a>(string quename = <span class="string">"GOOD"</span>)</span><br />
+<div class="funcdoc"><span class="funcname"><a href="./TFragmentQueue.html">TFragmentQueue</a> * <a class="funcname" name="TFragmentQueue:GetQueue" href="src/TFragmentQueue.cxx.html#qQSUpE">GetQueue</a>(string quename = <span class="string">"GOOD"</span>)</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">virtual</span> <a class="funcname" name="TFragmentQueue:_TFragmentQueue" href="src/TFragmentQueue.h.html#T1WL5D">~TFragmentQueue</a>()</span><br />
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TFragmentQueue:TFragmentQueue" href="src/TFragmentQueue.cxx.html#cRecCE">TFragmentQueue</a>()</span><br />
+<div class="funccomm"><pre>printf(DRED <span class="string">"\n\tFragment Queue Created."</span> RESET_COLOR <span class="string">"\n"</span>);
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TFragmentQueue:_TFragmentQueue" href="src/TFragmentQueue.cxx.html#dW0QvD">~TFragmentQueue</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{	}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:Print" href="src/TFragmentQueue.cxx.html#FguELB">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:Clear" href="src/TFragmentQueue.cxx.html#T07VxB">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:StartStatusUpdate" href="src/TFragmentQueue.cxx.html#SYqnHE">StartStatusUpdate</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:StopStatusUpdate" href="src/TFragmentQueue.cxx.html#Pdf6cD">StopStatusUpdate</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:Add" href="src/TFragmentQueue.cxx.html#AnMUE">Add</a>(<a href="./TFragment.html">TFragment</a>* )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:Pop" href="src/TFragmentQueue.cxx.html#oL74vE">Pop</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./TFragment.html">TFragment</a> * <a class="funcname" name="TFragmentQueue:PopFragment" href="src/TFragmentQueue.cxx.html#U9DCg">PopFragment</a>()</span><br />
+<div class="funccomm"><pre>std::unique_lock&lt;std::mutex&gt; sorted(Sorted,std::defer_lock);
+sorted.lock();
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TFragmentQueue:Size" href="src/TFragmentQueue.cxx.html#KXYjJD">Size</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:CheckStatus" href="src/TFragmentQueue.cxx.html#ba35jB">CheckStatus</a>()</span><br />
+<div class="funccomm"><pre>std::unique_lock&lt;std::mutex&gt; all(All,std::defer_lock);
+all.lock();
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:StatusUpdate" href="src/TFragmentQueue.cxx.html#u1_SNB">StatusUpdate</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:ResetRateCounter" href="src/TFragmentQueue.cxx.html#fUrwCD">ResetRateCounter</a>()</span><br />
+<div class="funccomm"><pre>std::unique_lock&lt;std::mutex&gt; all(All,std::defer_lock);
+all.lock();
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TFragmentQueue:FragsInQueue" href="src/TFragmentQueue.h.html#T6BTuD">FragsInQueue</a>()</span><br />
 
@@ -239,28 +277,6 @@ return false;}
 <div style="clear:both;"></div>
 </div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TFragmentQueue:TFragmentQueue" href="src/TFragmentQueue.h.html#Bj4IC">TFragmentQueue</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:StatusUpdate" href="src/TFragmentQueue.h.html#isYfsC">StatusUpdate</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:ResetRateCounter" href="src/TFragmentQueue.h.html#fy95FC">ResetRateCounter</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:Add" href="src/TFragmentQueue.h.html#P6C_E">Add</a>(<a href="./TFragment.html">TFragment</a>* )</span><br />
-<div class="funccomm"><pre><a href="./ListOfTypes.html#void">void</a> <a href="./TFragmentQueue.html#TFragmentQueue:Add" title="void TFragmentQueue::Add(TFragment* )">Add</a>(TGrifFragment*);
-</pre></div>
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:Pop" href="src/TFragmentQueue.h.html#AN6WPD">Pop</a>()</span><br />
-<div class="funccomm"><pre><a href="./TFragment.html">TFragment</a> *<a href="./TFragmentQueue.html#TFragmentQueue:GetQueue" title="TFragmentQueue* TFragmentQueue::GetQueue(string quename=&quot;GOOD&quot;)">GetQueue</a>();
-</pre></div>
-</div>
-<div class="funcdoc"><span class="funcname"><a href="./TFragment.html">TFragment</a> * <a class="funcname" name="TFragmentQueue:PopFragment" href="src/TFragmentQueue.h.html#J9MZVC">PopFragment</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TFragmentQueue:Size" href="src/TFragmentQueue.h.html#qXvHcC">Size</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:StartStatusUpdate" href="src/TFragmentQueue.h.html#hdmPxC">StartStatusUpdate</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:StopStatusUpdate" href="src/TFragmentQueue.h.html#ZAqVuC">StopStatusUpdate</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:CheckStatus" href="src/TFragmentQueue.h.html#i1awEE">CheckStatus</a>()</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">unsigned</span> <span class="keyword">int</span> <a class="funcname" name="TFragmentQueue:GetTotalFragsIn" href="src/TFragmentQueue.h.html#OnhEQB">GetTotalFragsIn</a>()</span><br />
 
@@ -282,16 +298,12 @@ return false;}
 <div class="code"><code class="inlinecode">{ <a href="./TFragmentQueue.html#TFragmentQueue:fStop" title="bool TFragmentQueue::fStop">fStop</a> = <span class="keyword">true</span>;}</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:Print" href="src/TFragmentQueue.h.html#Y2znK">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentQueue:Clear" href="src/TFragmentQueue.h.html#ohgpa">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
-</div>
 
 <br />
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Wed Sep  3 10:09:12 2014 </em><em>&raquo; Last generated: 2014-09-03 10:09</em><br />
+<em>&raquo; Last changed: Wed Sep  3 16:16:13 2014 </em><em>&raquo; Last generated: 2014-09-03 16:16</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

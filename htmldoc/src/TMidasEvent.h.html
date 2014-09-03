@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 10:09:14 2014            -->
+<!--   Date: Wed Sep  3 16:16:14 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -26,10 +26,10 @@
 <span class="cpp">#ifndef TMIDASEVENT_H</span>
 <span class="cpp">#define TMIDASEVENT_H</span>
 
-<span class="cpp">#include "<a href="../Globals.h">Globals.h</a>"</span>
+<span class="cpp">#include "Globals.h"</span>
 <span class="cpp">#include &lt;stdint.h&gt;</span>
 <span class="comment">//#include <span class="string">"TMidasStructs.h"</span></span>
-<span class="cpp">#include "<a href="../TMidasEventHeader.h">TMidasEventHeader.h</a>"</span>
+<span class="cpp">#include "TMidasEventHeader.h"</span>
 
 <span class="cpp">#include "TObject.h"</span>
 
@@ -49,51 +49,51 @@
 <span class="keyword">class</span> <a href="../TMidasEvent.html">TMidasEvent</a> : <span class="keyword">public</span> <a href="../#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>
 {
  <span class="keyword">public</span>:
-	<span class="cpp">#include "<a href="../TMidasBanks.h">TMidasBanks.h</a>"</span>
+	<span class="cpp">#include "TMidasBanks.h"</span>
 
  <span class="keyword">public</span>:
 
   <span class="comment">// houskeeping functions</span>
 
-<a name="ResGuC"></a>  <a href="../TMidasEvent.html">TMidasEvent</a>(); <span class="comment">///&lt; default constructor</span>
-<a name="fpJxc"></a>  <a href="../TMidasEvent.html">TMidasEvent</a>(<span class="keyword">const</span> <a href="../TMidasEvent.html">TMidasEvent</a> &amp;); <span class="comment">///&lt; copy constructor</span>
-<a name="SdAeaB"></a>  <a href="../TMidasEvent.html#TMidasEvent:_TMidasEvent" title="void TMidasEvent::~TMidasEvent()">~TMidasEvent</a>(); <span class="comment">///&lt; destructor</span>
-<a name="A7zAe"></a>  <a href="../TMidasEvent.html">TMidasEvent</a>&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> <a href="../TMidasEvent.html">TMidasEvent</a> &amp;); <span class="comment">///&lt; assignement operator</span>
-<a name="ReMbuB"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:Clear" title="void TMidasEvent::Clear()">Clear</a>(); <span class="comment">///&lt; clear event for reuse</span>
-<a name="ueZXQC"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:Copy" title="void TMidasEvent::Copy(const TMidasEvent&amp; )">Copy</a>(<span class="keyword">const</span> <a href="../TMidasEvent.html">TMidasEvent</a> &amp;); <span class="comment">///&lt; copy helper</span>
-<a name="nSsfkC"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:Print" title="void TMidasEvent::Print(const char* option=&quot;&quot;)">Print</a>(<span class="keyword">const</span> <span class="keyword">char</span>* option = <span class="string">""</span>) <span class="keyword">const</span>; <span class="comment">///&lt; show all event information</span>
+  <a href="../TMidasEvent.html">TMidasEvent</a>(); <span class="comment">///&lt; default constructor</span>
+  <a href="../TMidasEvent.html">TMidasEvent</a>(<span class="keyword">const</span> <a href="../TMidasEvent.html">TMidasEvent</a> &amp;); <span class="comment">///&lt; copy constructor</span>
+  <a href="../TMidasEvent.html#TMidasEvent:_TMidasEvent" title="void TMidasEvent::~TMidasEvent()">~TMidasEvent</a>(); <span class="comment">///&lt; destructor</span>
+  <a href="../TMidasEvent.html">TMidasEvent</a>&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> <a href="../TMidasEvent.html">TMidasEvent</a> &amp;); <span class="comment">///&lt; assignement operator</span>
+  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:Clear" title="void TMidasEvent::Clear()">Clear</a>(); <span class="comment">///&lt; clear event for reuse</span>
+  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:Copy" title="void TMidasEvent::Copy(const TMidasEvent&amp; )">Copy</a>(<span class="keyword">const</span> <a href="../TMidasEvent.html">TMidasEvent</a> &amp;); <span class="comment">///&lt; copy helper</span>
+  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:Print" title="void TMidasEvent::Print(const char* option=&quot;&quot;)">Print</a>(<span class="keyword">const</span> <span class="keyword">char</span>* option = <span class="string">""</span>) <span class="keyword">const</span>; <span class="comment">///&lt; show all event information</span>
 
   <span class="comment">// get event information</span>
 
-<a name="xlonXC"></a>  <a href="../ListOfTypes.html#uint16_t">uint16_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetEventId" title="uint16_t TMidasEvent::GetEventId()">GetEventId</a>() <span class="keyword">const</span>;      <span class="comment">///&lt; return the event id</span>
-<a name="VEaCd"></a>  <a href="../ListOfTypes.html#uint16_t">uint16_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetTriggerMask" title="uint16_t TMidasEvent::GetTriggerMask()">GetTriggerMask</a>() <span class="keyword">const</span>;     <span class="comment">///&lt; return the triger mask</span>
-<a name="HEnlND"></a>  <a href="../ListOfTypes.html#uint32_t">uint32_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetSerialNumber" title="uint32_t TMidasEvent::GetSerialNumber()">GetSerialNumber</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return the serial number</span>
-<a name="gZZPc"></a>  <a href="../ListOfTypes.html#uint32_t">uint32_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetTimeStamp" title="uint32_t TMidasEvent::GetTimeStamp()">GetTimeStamp</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return the time stamp (unix time in seconds)</span>
-<a name="FZ7AFB"></a>  <a href="../ListOfTypes.html#uint32_t">uint32_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetDataSize" title="uint32_t TMidasEvent::GetDataSize()">GetDataSize</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return the event size</span>
+  <a href="../ListOfTypes.html#uint16_t">uint16_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetEventId" title="uint16_t TMidasEvent::GetEventId()">GetEventId</a>() <span class="keyword">const</span>;      <span class="comment">///&lt; return the event id</span>
+  <a href="../ListOfTypes.html#uint16_t">uint16_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetTriggerMask" title="uint16_t TMidasEvent::GetTriggerMask()">GetTriggerMask</a>() <span class="keyword">const</span>;     <span class="comment">///&lt; return the triger mask</span>
+  <a href="../ListOfTypes.html#uint32_t">uint32_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetSerialNumber" title="uint32_t TMidasEvent::GetSerialNumber()">GetSerialNumber</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return the serial number</span>
+  <a href="../ListOfTypes.html#uint32_t">uint32_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetTimeStamp" title="uint32_t TMidasEvent::GetTimeStamp()">GetTimeStamp</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return the time stamp (unix time in seconds)</span>
+  <a href="../ListOfTypes.html#uint32_t">uint32_t</a> <a href="../TMidasEvent.html#TMidasEvent:GetDataSize" title="uint32_t TMidasEvent::GetDataSize()">GetDataSize</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return the event size</span>
 
   <span class="comment">// get data banks</span>
 
-<a name="pVVmjE"></a>  <span class="keyword">const</span> <span class="keyword">char</span>* <a href="../TMidasEvent.html#TMidasEvent:GetBankList" title="const char* TMidasEvent::GetBankList()">GetBankList</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return a list of data banks</span>
-<a name="MxcayC"></a>  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:FindBank" title="int TMidasEvent::FindBank(const char* bankName,int* bankLength,int* bankType,void** bankPtr)">FindBank</a>(<span class="keyword">const</span> <span class="keyword">char</span>* bankName, <span class="keyword">int</span>* bankLength, <span class="keyword">int</span>* bankType, <span class="keyword">void</span> **bankPtr) <span class="keyword">const</span>;
-<a name="mMxEVB"></a>  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:LocateBank" title="int TMidasEvent::LocateBank(const void* unused,const char* bankName,void** bankPtr)">LocateBank</a>(<span class="keyword">const</span> <span class="keyword">void</span> *unused, <span class="keyword">const</span> <span class="keyword">char</span>* bankName, <span class="keyword">void</span> **bankPtr) <span class="keyword">const</span>;
+  <span class="keyword">const</span> <span class="keyword">char</span>* <a href="../TMidasEvent.html#TMidasEvent:GetBankList" title="const char* TMidasEvent::GetBankList()">GetBankList</a>() <span class="keyword">const</span>; <span class="comment">///&lt; return a list of data banks</span>
+  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:FindBank" title="int TMidasEvent::FindBank(const char* bankName,int* bankLength,int* bankType,void** bankPtr)">FindBank</a>(<span class="keyword">const</span> <span class="keyword">char</span>* bankName, <span class="keyword">int</span>* bankLength, <span class="keyword">int</span>* bankType, <span class="keyword">void</span> **bankPtr) <span class="keyword">const</span>;
+  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:LocateBank" title="int TMidasEvent::LocateBank(const void* unused,const char* bankName,void** bankPtr)">LocateBank</a>(<span class="keyword">const</span> <span class="keyword">void</span> *unused, <span class="keyword">const</span> <span class="keyword">char</span>* bankName, <span class="keyword">void</span> **bankPtr) <span class="keyword">const</span>;
 
-<a name="rhjTHE"></a>  <span class="keyword">bool</span> <a href="../TMidasEvent.html#TMidasEvent:IsBank32" title="bool TMidasEvent::IsBank32()">IsBank32</a>() <span class="keyword">const</span>; <span class="comment">///&lt; returns <span class="string">"true"</span> if event uses 32-bit banks</span>
-<a name="qy3jh"></a>  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:IterateBank" title="int TMidasEvent::IterateBank(TMidasEvent::TMidas_BANK** ,char** pdata)">IterateBank</a>(TMidas_BANK **, <span class="keyword">char</span> **pdata) <span class="keyword">const</span>; <span class="comment">///&lt; iterate through 16-bit data banks</span>
-<a name="MxILdC"></a>  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:IterateBank32" title="int TMidasEvent::IterateBank32(TMidasEvent::TMidas_BANK32** ,char** pdata)">IterateBank32</a>(TMidas_BANK32 **, <span class="keyword">char</span> **pdata) <span class="keyword">const</span>; <span class="comment">///&lt; iterate through 32-bit data banks</span>
+  <span class="keyword">bool</span> <a href="../TMidasEvent.html#TMidasEvent:IsBank32" title="bool TMidasEvent::IsBank32()">IsBank32</a>() <span class="keyword">const</span>; <span class="comment">///&lt; returns <span class="string">"true"</span> if event uses 32-bit banks</span>
+  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:IterateBank" title="int TMidasEvent::IterateBank(TMidasEvent::TMidas_BANK** ,char** pdata)">IterateBank</a>(TMidas_BANK **, <span class="keyword">char</span> **pdata) <span class="keyword">const</span>; <span class="comment">///&lt; iterate through 16-bit data banks</span>
+  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:IterateBank32" title="int TMidasEvent::IterateBank32(TMidasEvent::TMidas_BANK32** ,char** pdata)">IterateBank32</a>(TMidas_BANK32 **, <span class="keyword">char</span> **pdata) <span class="keyword">const</span>; <span class="comment">///&lt; iterate through 32-bit data banks</span>
 
   <span class="comment">// helpers for event creation</span>
 
-<a name="rAMogD"></a>  TMidas_EVENT_HEADER* <a href="../TMidasEvent.html#TMidasEvent:GetEventHeader" title="TMidas_EVENT_HEADER* TMidasEvent::GetEventHeader()">GetEventHeader</a>(); <span class="comment">///&lt; return pointer to the event header</span>
-<a name="rJQCX"></a>  <span class="keyword">char</span>* <a href="../TMidasEvent.html#TMidasEvent:GetData" title="char* TMidasEvent::GetData()">GetData</a>(); <span class="comment">///&lt; return pointer to the data buffer</span>
+  TMidas_EVENT_HEADER* <a href="../TMidasEvent.html#TMidasEvent:GetEventHeader" title="TMidas_EVENT_HEADER* TMidasEvent::GetEventHeader()">GetEventHeader</a>(); <span class="comment">///&lt; return pointer to the event header</span>
+  <span class="keyword">char</span>* <a href="../TMidasEvent.html#TMidasEvent:GetData" title="char* TMidasEvent::GetData()">GetData</a>(); <span class="comment">///&lt; return pointer to the data buffer</span>
 
-<a name="LGVFEC"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:AllocateData" title="void TMidasEvent::AllocateData()">AllocateData</a>(); <span class="comment">///&lt; allocate data buffer using the existing event header</span>
-<a name="tj1_ZD"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:SetData" title="void TMidasEvent::SetData(uint32_t dataSize,char* dataBuffer)">SetData</a>(<a href="../ListOfTypes.html#uint32_t">uint32_t</a> dataSize, <span class="keyword">char</span>* dataBuffer); <span class="comment">///&lt; set an externally allocated data buffer</span>
+  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:AllocateData" title="void TMidasEvent::AllocateData()">AllocateData</a>(); <span class="comment">///&lt; allocate data buffer using the existing event header</span>
+  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:SetData" title="void TMidasEvent::SetData(uint32_t dataSize,char* dataBuffer)">SetData</a>(<a href="../ListOfTypes.html#uint32_t">uint32_t</a> dataSize, <span class="keyword">char</span>* dataBuffer); <span class="comment">///&lt; set an externally allocated data buffer</span>
 
-<a name="Hg8_rE"></a>  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:SetBankList" title="int TMidasEvent::SetBankList()">SetBankList</a>(); <span class="comment">///&lt; create the list of data banks, return number of banks</span>
-<a name="JZaWJB"></a>  <span class="keyword">bool</span> <a href="../TMidasEvent.html#TMidasEvent:IsGoodSize" title="bool TMidasEvent::IsGoodSize()">IsGoodSize</a>() <span class="keyword">const</span>; <span class="comment">///&lt; validate the event length</span>
+  <span class="keyword">int</span> <a href="../TMidasEvent.html#TMidasEvent:SetBankList" title="int TMidasEvent::SetBankList()">SetBankList</a>(); <span class="comment">///&lt; create the list of data banks, return number of banks</span>
+  <span class="keyword">bool</span> <a href="../TMidasEvent.html#TMidasEvent:IsGoodSize" title="bool TMidasEvent::IsGoodSize()">IsGoodSize</a>() <span class="keyword">const</span>; <span class="comment">///&lt; validate the event length</span>
 
-<a name="nWLC6C"></a>  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:SwapBytesEventHeader" title="void TMidasEvent::SwapBytesEventHeader()">SwapBytesEventHeader</a>(); <span class="comment">///&lt; convert event header between little-endian (Linux-x86) and big endian (MacOS-PPC) </span>
-<a name="toa3YD"></a>  <span class="keyword">int</span>  <a href="../TMidasEvent.html#TMidasEvent:SwapBytes" title="int TMidasEvent::SwapBytes(bool )">SwapBytes</a>(<span class="keyword">bool</span>); <span class="comment">///&lt; convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC) </span>
+  <span class="keyword">void</span> <a href="../TMidasEvent.html#TMidasEvent:SwapBytesEventHeader" title="void TMidasEvent::SwapBytesEventHeader()">SwapBytesEventHeader</a>(); <span class="comment">///&lt; convert event header between little-endian (Linux-x86) and big endian (MacOS-PPC) </span>
+  <span class="keyword">int</span>  <a href="../TMidasEvent.html#TMidasEvent:SwapBytes" title="int TMidasEvent::SwapBytes(bool )">SwapBytes</a>(<span class="keyword">bool</span>); <span class="comment">///&lt; convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC) </span>
 
 <span class="keyword">protected</span>:
 
@@ -116,7 +116,7 @@
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2014-09-03 10:09 </em><em>&raquo; Last generated: 2014-09-03 10:09</em><br />
+<em>&raquo; Last changed: 2014-09-03 16:16 </em><em>&raquo; Last generated: 2014-09-03 16:16</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

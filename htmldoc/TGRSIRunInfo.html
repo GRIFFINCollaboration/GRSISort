@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 10:09:13 2014            -->
+<!--   Date: Wed Sep  3 16:16:13 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -19,7 +19,7 @@
 <body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
 <div id="root_header"><img src="http://root.cern.ch/drupal/sites/default/files/rootdrawing-logo.png" alt="ROOT logo"/></div>
 <a name="TopOfPage"></a>
-<script type="text/javascript">WriteFollowPageBox('class TGRSIRunInfo','','TGRSIRunInfo.h');</script>
+<script type="text/javascript">WriteFollowPageBox('class TGRSIRunInfo','','/home/rdunlop/Programs/GRSISort/include/TGRSIRunInfo.h');</script>
 <div id="toplinks">
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Quick Links:</span>
@@ -40,7 +40,7 @@ return false;}
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Source:</span>
 <a class="descrheadentry" href="src/TGRSIRunInfo.h.html">header file</a>
-<a class="descrheadentry"> </a>
+<a class="descrheadentry" href="src/TGRSIRunInfo.cxx.html">source file</a>
 
 </div></div>
 <div class="descrhead"><div class="descrheadcontent">
@@ -53,7 +53,7 @@ return false;}
 </div>
 <div class="location">
 <a class="locationlevel" href="index.html">GRSISort</a>
- &#187; <a class="locationlevel" href="./INCLUDE_Index.html">INCLUDE</a>
+ &#187; <a class="locationlevel" href="./(UNKNOWN)_Index.html">(UNKNOWN)</a>
  &#187; <a class="locationlevel" href="#TopOfPage">TGRSIRunInfo</a>
 </div>
 <div class="dropshadow"><div class="withshadow"><h1><a name="TGRSIRunInfo:description"></a>class TGRSIRunInfo: public TObject</h1>
@@ -256,9 +256,28 @@ return false;}
 </div><div class="classcharts"><div class="classchartswidth"></div>
 <img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTGRSIRunInfo_Inh" src="inh/TGRSIRunInfo_Inh.png"/></div>
 <h2>Function documentation</h2>
-<div class="funcdoc"><span class="funcname"><a href="./TGRSIRunInfo.html">TGRSIRunInfo</a> * <a class="funcname" name="TGRSIRunInfo:Get" href="src/TGRSIRunInfo.h.html#wVk8n">Get</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><a href="./TGRSIRunInfo.html">TGRSIRunInfo</a> * <a class="funcname" name="TGRSIRunInfo:Get" href="src/TGRSIRunInfo.cxx.html#psB01B">Get</a>()</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGRSIRunInfo:_TGRSIRunInfo" href="src/TGRSIRunInfo.h.html#ZLb0Z">~TGRSIRunInfo</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:SetInfoFromFile" href="src/TGRSIRunInfo.cxx.html#O4iBMC">SetInfoFromFile</a>(<a href="./TGRSIRunInfo.html">TGRSIRunInfo</a>* temp)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGRSIRunInfo:TGRSIRunInfo" href="src/TGRSIRunInfo.cxx.html#AvwCuB">TGRSIRunInfo</a>()</span><br />
+<div class="funccomm"><pre>if(<a href="./TGRSIRunInfo.html#TGRSIRunInfo:fNumberOfTrueSystems" title="int TGRSIRunInfo::fNumberOfTrueSystems">fNumberOfTrueSystems</a>&gt;0)
+   <a href="./TGRSIRunInfo.html">TGRSIRunInfo</a>::<a href="./TGRSIRunInfo.html#TGRSIRunInfo:Get" title="TGRSIRunInfo* TGRSIRunInfo::Get()">Get</a>() = this;
+else
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGRSIRunInfo:_TGRSIRunInfo" href="src/TGRSIRunInfo.cxx.html#wpZRID">~TGRSIRunInfo</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:Print" href="src/TGRSIRunInfo.cxx.html#CE_5WC">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:Clear" href="src/TGRSIRunInfo.cxx.html#C6hnRB">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:SetRunInfo" href="src/TGRSIRunInfo.cxx.html#ySAn6">SetRunInfo</a>(<span class="keyword">int</span> runnum = 0, <span class="keyword">int</span> subrunnum = -1)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:SetAnalysisTreeBranches" href="src/TGRSIRunInfo.cxx.html#O6SA6D">SetAnalysisTreeBranches</a>(TTree* )</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGRSIRunInfo:TGRSIRunInfo" href="src/TGRSIRunInfo.h.html#i4SijD">TGRSIRunInfo</a>()</span><br />
 <div class="funccomm"><pre> root forces me have this here instead
@@ -266,12 +285,6 @@ return false;}
  order to write this class to a tree.
  pcb.
 </pre></div>
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:SetInfoFromFile" href="src/TGRSIRunInfo.h.html#x_qZkE">SetInfoFromFile</a>(<a href="./TGRSIRunInfo.html">TGRSIRunInfo</a>* temp)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:SetRunInfo" href="src/TGRSIRunInfo.h.html#eIvWS">SetRunInfo</a>(<span class="keyword">int</span> runnum = 0, <span class="keyword">int</span> subrunnum = -1)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:SetAnalysisTreeBranches" href="src/TGRSIRunInfo.h.html#vXLjYE">SetAnalysisTreeBranches</a>(TTree* )</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:SetRunNumber" href="src/TGRSIRunInfo.h.html#s3GQXB">SetRunNumber</a>(<span class="keyword">int</span> tmp)</span><br />
 
@@ -438,16 +451,12 @@ return false;}
 <div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGRSIRunInfo.html#TGRSIRunInfo:fGRSIRunInfo" title="TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo">fGRSIRunInfo</a>-><a href="./TGRSIRunInfo.html#TGRSIRunInfo:fDescant" title="bool TGRSIRunInfo::fDescant">fDescant</a>; }</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:Print" href="src/TGRSIRunInfo.h.html#Y2znK">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:Clear" href="src/TGRSIRunInfo.h.html#ohgpa">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
-</div>
 
 <br />
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Wed Sep  3 10:09:13 2014 </em><em>&raquo; Last generated: 2014-09-03 10:09</em><br />
+<em>&raquo; Last changed: Wed Sep  3 16:16:13 2014 </em><em>&raquo; Last generated: 2014-09-03 16:16</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

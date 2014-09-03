@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 10:09:12 2014            -->
+<!--   Date: Wed Sep  3 16:16:13 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -40,8 +40,8 @@
 <span class="keyword">class</span> <a href="../TFragmentQueue.html">TFragmentQueue</a> : <span class="keyword">public</span> <a href="../#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a> {
 	
 	<span class="keyword">public</span>:
-<a name="NlB4xD"></a>		<span class="keyword">static</span> <a href="../TFragmentQueue.html">TFragmentQueue</a> *<a href="../TFragmentQueue.html#TFragmentQueue:GetQueue" title="TFragmentQueue* TFragmentQueue::GetQueue(string quename=&quot;GOOD&quot;)">GetQueue</a>(std::string quename = <span class="string">"GOOD"</span>);
-<a name="T1WL5D"></a>		<span class="keyword">virtual</span> <a href="../TFragmentQueue.html#TFragmentQueue:_TFragmentQueue" title="void TFragmentQueue::~TFragmentQueue()">~TFragmentQueue</a>();
+		<span class="keyword">static</span> <a href="../TFragmentQueue.html">TFragmentQueue</a> *<a href="../TFragmentQueue.html#TFragmentQueue:GetQueue" title="TFragmentQueue* TFragmentQueue::GetQueue(string quename=&quot;GOOD&quot;)">GetQueue</a>(std::string quename = <span class="string">"GOOD"</span>);
+		<span class="keyword">virtual</span> <a href="../TFragmentQueue.html#TFragmentQueue:_TFragmentQueue" title="void TFragmentQueue::~TFragmentQueue()">~TFragmentQueue</a>();
 
 <a name="T6BTuD"></a>      <span class="keyword">int</span> <a href="../TFragmentQueue.html#TFragmentQueue:FragsInQueue" title="int TFragmentQueue::FragsInQueue()">FragsInQueue</a>() { <span class="keyword">return</span> <a href="../TFragmentQueue.html#TFragmentQueue:fFragsInQueue" title="int TFragmentQueue::fFragsInQueue">fFragsInQueue</a>;   }
 
@@ -54,7 +54,7 @@
 		std::queue&lt;<a href="../TFragment.html">TFragment</a>*&gt; <a href="../TFragmentQueue.html#TFragmentQueue:fFragmentQueue" title="queue&lt;TFragment*&gt; TFragmentQueue::fFragmentQueue">fFragmentQueue</a>;
 		<span class="keyword">int</span> <a href="../TFragmentQueue.html#TFragmentQueue:fFragsInQueue" title="int TFragmentQueue::fFragsInQueue">fFragsInQueue</a>;
 
-<a name="isYfsC"></a>		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:StatusUpdate" title="void TFragmentQueue::StatusUpdate()">StatusUpdate</a>();
+		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:StatusUpdate" title="void TFragmentQueue::StatusUpdate()">StatusUpdate</a>();
 		<span class="keyword">bool</span> <a href="../TFragmentQueue.html#TFragmentQueue:fStatusUpdateOn" title="bool TFragmentQueue::fStatusUpdateOn">fStatusUpdateOn</a>;
 
 		<span class="keyword">bool</span> <a href="../TFragmentQueue.html#TFragmentQueue:fStop" title="bool TFragmentQueue::fStop">fStop</a>;
@@ -63,7 +63,7 @@
 		<span class="keyword">int</span> <a href="../TFragmentQueue.html#TFragmentQueue:fragments_out" title="int TFragmentQueue::fragments_out">fragments_out</a>;
 
 		TStopwatch *<a href="../TFragmentQueue.html#TFragmentQueue:sw" title="TStopwatch* TFragmentQueue::sw">sw</a>;
-<a name="fy95FC"></a>		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:ResetRateCounter" title="void TFragmentQueue::ResetRateCounter()">ResetRateCounter</a>();
+		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:ResetRateCounter" title="void TFragmentQueue::ResetRateCounter()">ResetRateCounter</a>();
 
 		<span class="keyword">unsigned</span> <span class="keyword">int</span> <a href="../TFragmentQueue.html#TFragmentQueue:fTotalFragsIn" title="unsigned int TFragmentQueue::fTotalFragsIn">fTotalFragsIn</a>;
 		<span class="keyword">unsigned</span> <span class="keyword">int</span> <a href="../TFragmentQueue.html#TFragmentQueue:fTotalFragsOut" title="unsigned int TFragmentQueue::fTotalFragsOut">fTotalFragsOut</a>;	
@@ -80,20 +80,20 @@
 <span class="cpp">#endif</span>
 
 	<span class="keyword">public</span>:
-<a name="P6C_E"></a>		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:Add" title="void TFragmentQueue::Add(TFragment* )">Add</a>(<a href="../TFragment.html">TFragment</a>*);
+		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:Add" title="void TFragmentQueue::Add(TFragment* )">Add</a>(<a href="../TFragment.html">TFragment</a>*);
 		<span class="comment">//<a href="../ListOfTypes.html#void">void</a> <a href="../TFragmentQueue.html#TFragmentQueue:Add" title="void TFragmentQueue::Add(TFragment* )">Add</a>(TGrifFragment*);</span>
 
 
 		<span class="comment">//<a href="../TFragment.html">TFragment</a> *<a href="../TFragmentQueue.html#TFragmentQueue:GetQueue" title="TFragmentQueue* TFragmentQueue::GetQueue(string quename=&quot;GOOD&quot;)">GetQueue</a>();	</span>
 	
-<a name="AN6WPD"></a>		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:Pop" title="void TFragmentQueue::Pop()">Pop</a>();
-<a name="J9MZVC"></a>		<a href="../TFragment.html">TFragment</a> *<a href="../TFragmentQueue.html#TFragmentQueue:PopFragment" title="TFragment* TFragmentQueue::PopFragment()">PopFragment</a>();
+		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:Pop" title="void TFragmentQueue::Pop()">Pop</a>();
+		<a href="../TFragment.html">TFragment</a> *<a href="../TFragmentQueue.html#TFragmentQueue:PopFragment" title="TFragment* TFragmentQueue::PopFragment()">PopFragment</a>();
 
-<a name="qXvHcC"></a>		<span class="keyword">int</span> <a href="../TFragmentQueue.html#TFragmentQueue:Size" title="int TFragmentQueue::Size()">Size</a>();
+		<span class="keyword">int</span> <a href="../TFragmentQueue.html#TFragmentQueue:Size" title="int TFragmentQueue::Size()">Size</a>();
 
-<a name="hdmPxC"></a>		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:StartStatusUpdate" title="void TFragmentQueue::StartStatusUpdate()">StartStatusUpdate</a>();
-<a name="ZAqVuC"></a>		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:StopStatusUpdate" title="void TFragmentQueue::StopStatusUpdate()">StopStatusUpdate</a>();
-<a name="i1awEE"></a>		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:CheckStatus" title="void TFragmentQueue::CheckStatus()">CheckStatus</a>();
+		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:StartStatusUpdate" title="void TFragmentQueue::StartStatusUpdate()">StartStatusUpdate</a>();
+		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:StopStatusUpdate" title="void TFragmentQueue::StopStatusUpdate()">StopStatusUpdate</a>();
+		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:CheckStatus" title="void TFragmentQueue::CheckStatus()">CheckStatus</a>();
 
 <a name="OnhEQB"></a>		<span class="keyword">unsigned</span> <span class="keyword">int</span> <a href="../TFragmentQueue.html#TFragmentQueue:GetTotalFragsIn" title="unsigned int TFragmentQueue::GetTotalFragsIn()">GetTotalFragsIn</a>() { <span class="keyword">return</span> <a href="../TFragmentQueue.html#TFragmentQueue:fTotalFragsIn" title="unsigned int TFragmentQueue::fTotalFragsIn">fTotalFragsIn</a>;}
 <a name="wn4X3B"></a>		<span class="keyword">unsigned</span> <span class="keyword">int</span> <a href="../TFragmentQueue.html#TFragmentQueue:GetTotalFragsOut" title="unsigned int TFragmentQueue::GetTotalFragsOut()">GetTotalFragsOut</a>()	{	<span class="keyword">return</span> <a href="../TFragmentQueue.html#TFragmentQueue:fTotalFragsOut" title="unsigned int TFragmentQueue::fTotalFragsOut">fTotalFragsOut</a>;}
@@ -101,8 +101,8 @@
 <a name="h_rstD"></a>		<span class="keyword">bool</span> <a href="../TFragmentQueue.html#TFragmentQueue:Running" title="bool TFragmentQueue::Running()">Running</a>() { <span class="keyword">return</span> !<a href="../TFragmentQueue.html#TFragmentQueue:fStop" title="bool TFragmentQueue::fStop">fStop</a>;}
 <a name="Y6bloD"></a>		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:Stop" title="void TFragmentQueue::Stop()">Stop</a>() { <a href="../TFragmentQueue.html#TFragmentQueue:fStop" title="bool TFragmentQueue::fStop">fStop</a> = <span class="keyword">true</span>;}
 
-<a name="Y2znK"></a>      <span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:Print" title="void TFragmentQueue::Print(Option_t* opt=&quot;&quot;)">Print</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
-<a name="ohgpa"></a>		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:Clear" title="void TFragmentQueue::Clear(Option_t* opt=&quot;&quot;)">Clear</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
+      <span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:Print" title="void TFragmentQueue::Print(Option_t* opt=&quot;&quot;)">Print</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
+		<span class="keyword">void</span> <a href="../TFragmentQueue.html#TFragmentQueue:Clear" title="void TFragmentQueue::Clear(Option_t* opt=&quot;&quot;)">Clear</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
 		
 		ClassDef(<a href="../TFragmentQueue.html">TFragmentQueue</a>,0);
 };
@@ -121,7 +121,7 @@
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2014-09-03 10:09 </em><em>&raquo; Last generated: 2014-09-03 10:09</em><br />
+<em>&raquo; Last changed: 2014-09-03 16:16 </em><em>&raquo; Last generated: 2014-09-03 16:16</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

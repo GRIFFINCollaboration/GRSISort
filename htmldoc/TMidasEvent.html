@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 10:09:13 2014            -->
+<!--   Date: Wed Sep  3 16:16:14 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -19,7 +19,7 @@
 <body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
 <div id="root_header"><img src="http://root.cern.ch/drupal/sites/default/files/rootdrawing-logo.png" alt="ROOT logo"/></div>
 <a name="TopOfPage"></a>
-<script type="text/javascript">WriteFollowPageBox('class TMidasEvent','','TMidasEvent.h');</script>
+<script type="text/javascript">WriteFollowPageBox('class TMidasEvent','','/home/rdunlop/Programs/GRSISort/include/TMidasEvent.h');</script>
 <div id="toplinks">
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Quick Links:</span>
@@ -40,7 +40,7 @@ return false;}
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Source:</span>
 <a class="descrheadentry" href="src/TMidasEvent.h.html">header file</a>
-<a class="descrheadentry"> </a>
+<a class="descrheadentry" href="src/TMidasEvent.cxx.html">source file</a>
 
 </div></div>
 <div class="descrhead"><div class="descrheadcontent">
@@ -53,7 +53,7 @@ return false;}
 </div>
 <div class="location">
 <a class="locationlevel" href="index.html">GRSISort</a>
- &#187; <a class="locationlevel" href="./INCLUDE_Index.html">INCLUDE</a>
+ &#187; <a class="locationlevel" href="./(UNKNOWN)_Index.html">(UNKNOWN)</a>
  &#187; <a class="locationlevel" href="#TopOfPage">TMidasEvent</a>
 </div>
 <div class="dropshadow"><div class="withshadow"><h1><a name="TMidasEvent:description"></a>class TMidasEvent: public TObject</h1>
@@ -223,72 +223,89 @@ return false;}
 </div><div class="classcharts"><div class="classchartswidth"></div>
 <img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTMidasEvent_Inh" src="inh/TMidasEvent_Inh.png"/></div>
 <h2>Function documentation</h2>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TMidasEvent:TMidasEvent" href="src/TMidasEvent.h.html#ResGuC">TMidasEvent</a>()</span><br />
-<div class="funccomm"><pre> houskeeping functions
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TMidasEvent:TMidasEvent" href="src/TMidasEvent.cxx.html#dppxJE">TMidasEvent</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:Copy" href="src/TMidasEvent.cxx.html#ULMLoE">Copy</a>(<span class="keyword">const</span> <a href="./TMidasEvent.html">TMidasEvent</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TMidasEvent:TMidasEvent@1" href="src/TMidasEvent.cxx.html#QSvCI">TMidasEvent</a>(<span class="keyword">const</span> <a href="./TMidasEvent.html">TMidasEvent</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TMidasEvent:_TMidasEvent" href="src/TMidasEvent.cxx.html#K1fedB">~TMidasEvent</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./TMidasEvent.html">TMidasEvent</a>&amp; <a class="funcname" name="TMidasEvent:operator_" href="src/TMidasEvent.cxx.html#t26CuB">operator=</a>(<span class="keyword">const</span> <a href="./TMidasEvent.html">TMidasEvent</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:Clear" href="src/TMidasEvent.cxx.html#pugj6E">Clear</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:SetData" href="src/TMidasEvent.cxx.html#yXxJpD">SetData</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> dataSize, <span class="keyword">char</span>* dataBuffer)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#uint16_t">uint16_t</a> <a class="funcname" name="TMidasEvent:GetEventId" href="src/TMidasEvent.cxx.html#n3vhzC">GetEventId</a>() const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#uint16_t">uint16_t</a> <a class="funcname" name="TMidasEvent:GetTriggerMask" href="src/TMidasEvent.cxx.html#hCfIrE">GetTriggerMask</a>() const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#uint32_t">uint32_t</a> <a class="funcname" name="TMidasEvent:GetSerialNumber" href="src/TMidasEvent.cxx.html#cBQ4OB">GetSerialNumber</a>() const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#uint32_t">uint32_t</a> <a class="funcname" name="TMidasEvent:GetTimeStamp" href="src/TMidasEvent.cxx.html#CIZ8NE">GetTimeStamp</a>() const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#uint32_t">uint32_t</a> <a class="funcname" name="TMidasEvent:GetDataSize" href="src/TMidasEvent.cxx.html#qwTk6E">GetDataSize</a>() const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">char</span>* <a class="funcname" name="TMidasEvent:GetData" href="src/TMidasEvent.cxx.html#wyZMBD">GetData</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TMidas_EVENT_HEADER * <a class="funcname" name="TMidasEvent:GetEventHeader" href="src/TMidasEvent.cxx.html#L_80SB">GetEventHeader</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TMidasEvent:IsGoodSize" href="src/TMidasEvent.cxx.html#ybKtBB">IsGoodSize</a>() const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TMidasEvent:IsBank32" href="src/TMidasEvent.cxx.html#hdzfv">IsBank32</a>() const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:LocateBank" href="src/TMidasEvent.cxx.html#VWiGCD">LocateBank</a>(<span class="keyword">const</span> <span class="keyword">void</span>* unused, <span class="keyword">const</span> <span class="keyword">char</span>* bankName, <span class="keyword">void</span>** bankPtr) const</span><br />
+<div class="funccomm"><pre> See <a href="./TMidasEvent.html#TMidasEvent:FindBank" title="int TMidasEvent::FindBank(const char* bankName,int* bankLength,int* bankType,void** bankPtr)">FindBank</a>()
 </pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TMidasEvent:TMidasEvent@1" href="src/TMidasEvent.h.html#fpJxc">TMidasEvent</a>(<span class="keyword">const</span> <a href="./TMidasEvent.html">TMidasEvent</a>&amp; )</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TMidasEvent:_TMidasEvent" href="src/TMidasEvent.h.html#SdAeaB">~TMidasEvent</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><a href="./TMidasEvent.html">TMidasEvent</a>&amp; <a class="funcname" name="TMidasEvent:operator_" href="src/TMidasEvent.h.html#A7zAe">operator=</a>(<span class="keyword">const</span> <a href="./TMidasEvent.html">TMidasEvent</a>&amp; )</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:Clear" href="src/TMidasEvent.h.html#ReMbuB">Clear</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:Copy" href="src/TMidasEvent.h.html#ueZXQC">Copy</a>(<span class="keyword">const</span> <a href="./TMidasEvent.html">TMidasEvent</a>&amp; )</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:Print" href="src/TMidasEvent.h.html#nSsfkC">Print</a>(<span class="keyword">const</span> <span class="keyword">char</span>* option = <span class="string">""</span>) const</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#uint16_t">uint16_t</a> <a class="funcname" name="TMidasEvent:GetEventId" href="src/TMidasEvent.h.html#xlonXC">GetEventId</a>() const</span><br />
-<div class="funccomm"><pre> get event information
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:FindBank" href="src/TMidasEvent.cxx.html#sQRDlC">FindBank</a>(<span class="keyword">const</span> <span class="keyword">char</span>* bankName, <span class="keyword">int</span>* bankLength, <span class="keyword">int</span>* bankType, <span class="keyword">void</span>** bankPtr) const</span><br />
+<div class="funccomm"><pre> Find a data bank.
+ \param [in] name Name of the data bank to look for.
+ \param [out] bklen Number of array elements in this bank.
+ \param [out] bktype Bank data type (MIDAS TID_xxx).
+ \param [out] pdata Pointer to bank data, Returns NULL if bank not found.
+ \returns 1 if bank found, 0 otherwise.
+
 </pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#uint16_t">uint16_t</a> <a class="funcname" name="TMidasEvent:GetTriggerMask" href="src/TMidasEvent.h.html#VEaCd">GetTriggerMask</a>() const</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#uint32_t">uint32_t</a> <a class="funcname" name="TMidasEvent:GetSerialNumber" href="src/TMidasEvent.h.html#HEnlND">GetSerialNumber</a>() const</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#uint32_t">uint32_t</a> <a class="funcname" name="TMidasEvent:GetTimeStamp" href="src/TMidasEvent.h.html#gZZPc">GetTimeStamp</a>() const</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#uint32_t">uint32_t</a> <a class="funcname" name="TMidasEvent:GetDataSize" href="src/TMidasEvent.h.html#FZ7AFB">GetDataSize</a>() const</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="TMidasEvent:GetBankList" href="src/TMidasEvent.h.html#pVVmjE">GetBankList</a>() const</span><br />
-<div class="funccomm"><pre> get data banks
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:Print" href="src/TMidasEvent.cxx.html#nJYO_D">Print</a>(<span class="keyword">const</span> <span class="keyword">char</span>* option = <span class="string">""</span>) const</span><br />
+<div class="funccomm"><pre> <a href="./TMidasEvent.html#TMidasEvent:Print" title="void TMidasEvent::Print(const char* option=&quot;&quot;)">Print</a> data held in this class.
+ \param [in] option If <span class="string">'a'</span> (for <span class="string">"all"</span>) then the raw data will be
+ printed out too.
+
 </pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:FindBank" href="src/TMidasEvent.h.html#MxcayC">FindBank</a>(<span class="keyword">const</span> <span class="keyword">char</span>* bankName, <span class="keyword">int</span>* bankLength, <span class="keyword">int</span>* bankType, <span class="keyword">void</span>** bankPtr) const</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:AllocateData" href="src/TMidasEvent.cxx.html#y0MZiD">AllocateData</a>()</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:LocateBank" href="src/TMidasEvent.h.html#mMxEVB">LocateBank</a>(<span class="keyword">const</span> <span class="keyword">void</span>* unused, <span class="keyword">const</span> <span class="keyword">char</span>* bankName, <span class="keyword">void</span>** bankPtr) const</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="TMidasEvent:GetBankList" href="src/TMidasEvent.cxx.html#z8Sc.D">GetBankList</a>() const</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TMidasEvent:IsBank32" href="src/TMidasEvent.h.html#rhjTHE">IsBank32</a>() const</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:SetBankList" href="src/TMidasEvent.cxx.html#YHgeFD">SetBankList</a>()</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:IterateBank" href="src/TMidasEvent.h.html#qy3jh">IterateBank</a>(<a href="./TMidasEvent.html">TMidasEvent</a>::TMidas_BANK** , <span class="keyword">char</span>** pdata) const</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:IterateBank32" href="src/TMidasEvent.h.html#MxILdC">IterateBank32</a>(<a href="./TMidasEvent.html">TMidasEvent</a>::TMidas_BANK32** , <span class="keyword">char</span>** pdata) const</span><br />
-</div>
-<div class="funcdoc"><span class="funcname">TMidas_EVENT_HEADER* <a class="funcname" name="TMidasEvent:GetEventHeader" href="src/TMidasEvent.h.html#rAMogD">GetEventHeader</a>()</span><br />
-<div class="funccomm"><pre> helpers for event creation
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:IterateBank" href="src/TMidasEvent.cxx.html#fokTND">IterateBank</a>(<a href="./TMidasEvent.html">TMidasEvent</a>::TMidas_BANK** , <span class="keyword">char</span>** pdata) const</span><br />
+<div class="funccomm"><pre> Iterates through banks inside an event. The function can be used
+ to enumerate all banks of an event.
+ \param [in] pbk Pointer to the bank header, must be NULL for the
+ first call to this function. Returns NULL if no more banks
+ \param [in] pdata Pointer to data area of bank. Returns NULL if no more banks
+ \returns Size of bank in bytes or 0 if no more banks.
+
 </pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">char</span>* <a class="funcname" name="TMidasEvent:GetData" href="src/TMidasEvent.h.html#rJQCX">GetData</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:IterateBank32" href="src/TMidasEvent.cxx.html#PC5CnC">IterateBank32</a>(<a href="./TMidasEvent.html">TMidasEvent</a>::TMidas_BANK32** , <span class="keyword">char</span>** pdata) const</span><br />
+<div class="funccomm"><pre> See <a href="./TMidasEvent.html#TMidasEvent:IterateBank" title="int TMidasEvent::IterateBank(TMidasEvent::TMidas_BANK** ,char** pdata)">IterateBank</a>()
+</pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:AllocateData" href="src/TMidasEvent.h.html#LGVFEC">AllocateData</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:SwapBytesEventHeader" href="src/TMidasEvent.cxx.html#Vh_pM">SwapBytesEventHeader</a>()</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:SetData" href="src/TMidasEvent.h.html#tj1_ZD">SetData</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> dataSize, <span class="keyword">char</span>* dataBuffer)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:SetBankList" href="src/TMidasEvent.h.html#Hg8_rE">SetBankList</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TMidasEvent:IsGoodSize" href="src/TMidasEvent.h.html#JZaWJB">IsGoodSize</a>() const</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasEvent:SwapBytesEventHeader" href="src/TMidasEvent.h.html#nWLC6C">SwapBytesEventHeader</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:SwapBytes" href="src/TMidasEvent.h.html#toa3YD">SwapBytes</a>(<span class="keyword">bool</span> )</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasEvent:SwapBytes" href="src/TMidasEvent.cxx.html#OX9HVD">SwapBytes</a>(<span class="keyword">bool</span> )</span><br />
 </div>
 
 <br />
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Wed Sep  3 10:09:14 2014 </em><em>&raquo; Last generated: 2014-09-03 10:09</em><br />
+<em>&raquo; Last changed: Wed Sep  3 16:16:14 2014 </em><em>&raquo; Last generated: 2014-09-03 16:16</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

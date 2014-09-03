@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 10:09:11 2014            -->
+<!--   Date: Wed Sep  3 16:16:12 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -19,7 +19,7 @@
 <body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
 <div id="root_header"><img src="http://root.cern.ch/drupal/sites/default/files/rootdrawing-logo.png" alt="ROOT logo"/></div>
 <a name="TopOfPage"></a>
-<script type="text/javascript">WriteFollowPageBox('class TChannel','','TChannel.h');</script>
+<script type="text/javascript">WriteFollowPageBox('class TChannel','','/home/rdunlop/Programs/GRSISort/include/TChannel.h');</script>
 <div id="toplinks">
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Quick Links:</span>
@@ -40,7 +40,7 @@ return false;}
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Source:</span>
 <a class="descrheadentry" href="src/TChannel.h.html">header file</a>
-<a class="descrheadentry"> </a>
+<a class="descrheadentry" href="src/TChannel.cxx.html">source file</a>
 
 </div></div>
 <div class="descrhead"><div class="descrheadcontent">
@@ -53,7 +53,7 @@ return false;}
 </div>
 <div class="location">
 <a class="locationlevel" href="index.html">GRSISort</a>
- &#187; <a class="locationlevel" href="./INCLUDE_Index.html">INCLUDE</a>
+ &#187; <a class="locationlevel" href="./(UNKNOWN)_Index.html">(UNKNOWN)</a>
  &#187; <a class="locationlevel" href="#TopOfPage">TChannel</a>
 </div>
 <div class="dropshadow"><div class="withshadow"><h1><a name="TChannel:description"></a>class TChannel: public TNamed</h1>
@@ -291,19 +291,79 @@ return false;}
 </div><div class="classcharts"><div class="classchartswidth"></div>
 <img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTChannel_Inh" src="inh/TChannel_Inh.png"/></div>
 <h2>Function documentation</h2>
-<div class="funcdoc"><span class="funcname"><a href="./TChannel.html">TChannel</a> * <a class="funcname" name="TChannel:GetChannel" href="src/TChannel.h.html#cX9Yg">GetChannel</a>(<span class="keyword">int</span> temp_address)</span><br />
-<div class="funccomm"><pre>static <a href="./TChannel.html">TChannel</a> *NewChannel(<a href="./ListOfTypes.html#int">int</a> temp_adress,
-                            <a href="./ListOfTypes.html#int">int</a> temp_number=0,
-                            <a href="./ListOfTypes.html#char">char</a> *temp_name = <span class="string">""</span>);
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:TChannel@1" href="src/TChannel.cxx.html#h0LWvB">TChannel</a>(<span class="keyword">const</span> <span class="keyword">char</span>* <a href="./TChannel.html#TChannel:address" title="unsigned int TChannel::address">address</a>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DeleteAllChannels" href="src/TChannel.cxx.html#wli0SE">DeleteAllChannels</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:CopyChannel" href="src/TChannel.cxx.html#kZZGF">CopyChannel</a>(<a href="./TChannel.html">TChannel</a>* , <a href="./TChannel.html">TChannel</a>* )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:AddChannel" href="src/TChannel.cxx.html#e_PTlE">AddChannel</a>(<a href="./TChannel.html">TChannel</a>* , <a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:TChannel" href="src/TChannel.cxx.html#K3yDqE">TChannel</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:_TChannel" href="src/TChannel.cxx.html#Ld67fB">~TChannel</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{	}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:Clear" href="src/TChannel.cxx.html#dKdY2E">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./TChannel.html">TChannel</a> * <a class="funcname" name="TChannel:GetChannel" href="src/TChannel.cxx.html#ZGkd0">GetChannel</a>(<span class="keyword">int</span> temp_address)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:UpdateChannelNumberMap" href="src/TChannel.cxx.html#CSoLrD">UpdateChannelNumberMap</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./TChannel.html">TChannel</a> * <a class="funcname" name="TChannel:FindChannel" href="src/TChannel.cxx.html#CbayFD">FindChannel</a>(<span class="keyword">int</span> temp_address)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./TChannel.html">TChannel</a> * <a class="funcname" name="TChannel:FindChannelByNumber" href="src/TChannel.cxx.html#VH4rP">FindChannelByNumber</a>(<span class="keyword">int</span> temp_numebr)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:SetChannel" href="src/TChannel.cxx.html#DaktPD">SetChannel</a>(<span class="keyword">int</span> taddress, <span class="keyword">int</span> tnumber = 0, string tname = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyENGCal" href="src/TChannel.cxx.html#Wn8FlC">DestroyENGCal</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyCFDCal" href="src/TChannel.cxx.html#GLaoCD">DestroyCFDCal</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyLEDCal" href="src/TChannel.cxx.html#WGfjHD">DestroyLEDCal</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyTIMECal" href="src/TChannel.cxx.html#h247nC">DestroyTIMECal</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyCalibrations" href="src/TChannel.cxx.html#abwjnD">DestroyCalibrations</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateENG@1" href="src/TChannel.cxx.html#I6BwnD">CalibrateENG</a>(<span class="keyword">int</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateENG" href="src/TChannel.cxx.html#OAAhGC">CalibrateENG</a>(<span class="keyword">double</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateCFD@1" href="src/TChannel.cxx.html#iCn2hC">CalibrateCFD</a>(<span class="keyword">int</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateCFD" href="src/TChannel.cxx.html#m7IHp">CalibrateCFD</a>(<span class="keyword">double</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateLED@1" href="src/TChannel.cxx.html#FKYF5B">CalibrateLED</a>(<span class="keyword">int</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateLED" href="src/TChannel.cxx.html#mXgpo">CalibrateLED</a>(<span class="keyword">double</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateTIME@1" href="src/TChannel.cxx.html#MPgtmC">CalibrateTIME</a>(<span class="keyword">int</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateTIME" href="src/TChannel.cxx.html#n9Au5E">CalibrateTIME</a>(<span class="keyword">double</span> )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:Print" href="src/TChannel.cxx.html#O1wk3E">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>printf( DBLUE <span class="string">"%s\t"</span> DYELLOW <span class="string">"0x%08x"</span> RESET_COLOR <span class="string">"\n"</span>,this-&gt;<a href="./TChannel.html#TChannel:GetChannelName" title="const char* TChannel::GetChannelName()">GetChannelName</a>(),this-&gt;<a href="./TChannel.html#TChannel:GetAddress" title="int TChannel::GetAddress()">GetAddress</a>());
 </pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"><a href="./TChannel.html">TChannel</a> * <a class="funcname" name="TChannel:FindChannel" href="src/TChannel.h.html#XT9NOC">FindChannel</a>(<span class="keyword">int</span> temp_address)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><a href="./TChannel.html">TChannel</a> * <a class="funcname" name="TChannel:FindChannelByNumber" href="src/TChannel.h.html#yO_FKC">FindChannelByNumber</a>(<span class="keyword">int</span> temp_numebr)</span><br />
-<div class="funccomm"><pre>static <a href="./TChannel.html">TChannel</a> *<a href="./TChannel.html#TChannel:GetChannel" title="TChannel* TChannel::GetChannel(int temp_address)">GetChannel</a>(const <a href="./ListOfTypes.html#char">char</a> *temp_name = <span class="string">""</span>);
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:WriteCalFile" href="src/TChannel.cxx.html#xEjBDC">WriteCalFile</a>(string outfilename = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>prints the context of addresschannelmap formatted correctly to stdout if
+no file name is passed to the function.  If a file name is passed to the function
+prints the context of addresschannelmap formatted correctly to a file with the given
+name.  This will earse and rewrite the file if the file already exisits!
+
 </pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">virtual</span> <a class="funcname" name="TChannel:_TChannel" href="src/TChannel.h.html#ZOoHZ">~TChannel</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:ReadCalFile" href="src/TChannel.cxx.html#Ab4C2E">ReadCalFile</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>does magic, make tchannels from a cal file.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:trim" href="src/TChannel.cxx.html#JFYMYE">trim</a>(string* , <span class="keyword">const</span> string&amp; trimChars = <span class="string">" \f\n\r\t\v"</span>)</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TChannel:GetNumberOfChannels" href="src/TChannel.h.html#NR12dE">GetNumberOfChannels</a>()</span><br />
 <div class="funccomm"><pre>static TIter *GetChannelIter() { TIter *iter = new TIter(fChannelList); return iter;}
@@ -314,22 +374,10 @@ return false;}
 </div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:TChannel" href="src/TChannel.h.html#HHEE4">TChannel</a>()</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:AddChannel" href="src/TChannel.h.html#re.CZB">AddChannel</a>(<a href="./TChannel.html">TChannel</a>* , <a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:CopyChannel" href="src/TChannel.h.html#BkjtKD">CopyChannel</a>(<a href="./TChannel.html">TChannel</a>* , <a href="./TChannel.html">TChannel</a>* )</span><br />
-</div>
 <div class="funcdoc"><span class="funcname">std::map&lt;<span class="keyword">int</span>,<a href="./TChannel.html">TChannel</a>*&gt; * <a class="funcname" name="TChannel:GetChannelMap" href="src/TChannel.h.html#iBVtPD">GetChannelMap</a>()</span><br />
 
 <div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TChannel.html#TChannel:fChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelMap">fChannelMap</a>; }</code></div>
 <div style="clear:both;"></div>
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DeleteAllChannels" href="src/TChannel.h.html#e8H4AE">DeleteAllChannels</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:TChannel@1" href="src/TChannel.h.html#IjewZB">TChannel</a>(<span class="keyword">const</span> <span class="keyword">char</span>* <a href="./TChannel.html#TChannel:address" title="unsigned int TChannel::address">address</a>)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:UpdateChannelNumberMap" href="src/TChannel.h.html#LoXMU">UpdateChannelNumberMap</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:SetChannel" href="src/TChannel.h.html#EI4nv">SetChannel</a>(<span class="keyword">int</span> taddress, <span class="keyword">int</span> tnumber = 0, string tname = <span class="string">""</span>)</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:SetAddress" href="src/TChannel.h.html#HjAwaD">SetAddress</a>(<span class="keyword">int</span>&amp; tmpadd)</span><br />
 
@@ -488,50 +536,12 @@ return false;}
 <div class="code"><code class="inlinecode">{ <a href="./TChannel.html#TChannel:TIMEChi2" title="double TChannel::TIMEChi2">TIMEChi2</a> = temp; }</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateENG" href="src/TChannel.h.html#uMQvzB">CalibrateENG</a>(<span class="keyword">double</span> )</span><br />
-<div class="funccomm"><pre><a href="./ListOfTypes.html#void">void</a> CalibrateFragment(<a href="./TFragment.html">TFragment</a>*);
-</pre></div>
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateENG@1" href="src/TChannel.h.html#ooGKG">CalibrateENG</a>(<span class="keyword">int</span> )</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateCFD" href="src/TChannel.h.html#G_2HlB">CalibrateCFD</a>(<span class="keyword">double</span> )</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateCFD@1" href="src/TChannel.h.html#QGBPL">CalibrateCFD</a>(<span class="keyword">int</span> )</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateLED" href="src/TChannel.h.html#alrGlB">CalibrateLED</a>(<span class="keyword">double</span> )</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateLED@1" href="src/TChannel.h.html#MLwSL">CalibrateLED</a>(<span class="keyword">int</span> )</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateTIME" href="src/TChannel.h.html#DirfXE">CalibrateTIME</a>(<span class="keyword">double</span> )</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateTIME@1" href="src/TChannel.h.html#L1oNvC">CalibrateTIME</a>(<span class="keyword">int</span> )</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyCalibrations" href="src/TChannel.h.html#YsJCv">DestroyCalibrations</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyENGCal" href="src/TChannel.h.html#fP2iJC">DestroyENGCal</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyCFDCal" href="src/TChannel.h.html#Tef76B">DestroyCFDCal</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyLEDCal" href="src/TChannel.h.html#HtM.6B">DestroyLEDCal</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyTIMECal" href="src/TChannel.h.html#jkF1XD">DestroyTIMECal</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:ReadCalFile" href="src/TChannel.h.html#puyqqE">ReadCalFile</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:WriteCalFile" href="src/TChannel.h.html#VyzSx">WriteCalFile</a>(string outfilename = <span class="string">""</span>)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:Print" href="src/TChannel.h.html#Cr2Az">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:Clear" href="src/TChannel.h.html#GHFkAB">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
-<div class="funccomm"><pre>static  <a href="./ListOfTypes.html#void">void</a> PrintAll(<a href="./ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
-</pre></div>
-</div>
 
 <br />
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Wed Sep  3 10:09:12 2014 </em><em>&raquo; Last generated: 2014-09-03 10:09</em><br />
+<em>&raquo; Last changed: Wed Sep  3 16:16:12 2014 </em><em>&raquo; Last generated: 2014-09-03 16:16</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>
