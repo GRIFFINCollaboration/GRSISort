@@ -68,6 +68,6 @@ public:
    using TObject::Print; 
    virtual void Print(Option_t *opt = ""); //!
     
-   ClassDef(TFragment,0);  // Event Fragments
+   ClassDef(TFragment,3);  // Event Fragments
 };
 #endif // TFRAGMENT_H

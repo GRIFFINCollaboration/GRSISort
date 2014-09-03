@@ -4,7 +4,6 @@
 #include <TList.h>
 #include <TXMLAttr.h>
 
-
 TXMLOdb::TXMLOdb(char *buffer,int size)   {
    fOdb = 0;
    fDoc = 0;

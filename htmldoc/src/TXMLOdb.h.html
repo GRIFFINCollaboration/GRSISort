@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 16:23:56 2014            -->
+<!--   Date: Wed Sep  3 16:39:09 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -31,7 +31,7 @@
 <span class="comment">//  </span>
 <span class="comment">// </span>
 
-<span class="cpp">#include "Globals.h"</span>
+<span class="cpp">#include "<a href="../Globals.h">Globals.h</a>"</span>
 <span class="cpp">#include&lt;cstdlib&gt;</span>
 <span class="cpp">#include&lt;cstdio&gt;</span>
 <span class="cpp">#include&lt;stdint.h&gt;</span>
@@ -51,25 +51,25 @@
 
    <span class="keyword">public</span>:
 <a name="jf.fSB"></a>      <a href="../TXMLOdb.html">TXMLOdb</a>(<span class="keyword">char</span> *buffer,<span class="keyword">int</span> size=0);
-<a name="iMc6TD"></a>      <span class="keyword">virtual</span> <a href="../TXMLOdb.html#TXMLOdb:_TXMLOdb" title="void TXMLOdb::~TXMLOdb()">~TXMLOdb</a>();
+      <span class="keyword">virtual</span> <a href="../TXMLOdb.html#TXMLOdb:_TXMLOdb" title="void TXMLOdb::~TXMLOdb()">~TXMLOdb</a>();
    
       TXMLDocument *<a href="../TXMLOdb.html#TXMLOdb:fDoc" title="TXMLDocument* TXMLOdb::fDoc">fDoc</a>;
       TDOMParser *<a href="../TXMLOdb.html#TXMLOdb:fParser" title="TDOMParser* TXMLOdb::fParser">fParser</a>;
       TXMLNode *<a href="../TXMLOdb.html#TXMLOdb:fOdb" title="TXMLNode* TXMLOdb::fOdb">fOdb</a>;
 
-<a name="YKpoeC"></a>      <span class="keyword">const</span> <span class="keyword">char</span> *<a href="../TXMLOdb.html#TXMLOdb:GetNodeName" title="const char* TXMLOdb::GetNodeName(TXMLNode* )">GetNodeName</a>(TXMLNode*);
-<a name="LXjrCB"></a>      TXMLNode* <a href="../TXMLOdb.html#TXMLOdb:FindNode" title="TXMLNode* TXMLOdb::FindNode(const char* name,TXMLNode* node=0)">FindNode</a>(<span class="keyword">const</span> <span class="keyword">char</span> *name, TXMLNode *node=0);
+      <span class="keyword">const</span> <span class="keyword">char</span> *<a href="../TXMLOdb.html#TXMLOdb:GetNodeName" title="const char* TXMLOdb::GetNodeName(TXMLNode* )">GetNodeName</a>(TXMLNode*);
+      TXMLNode* <a href="../TXMLOdb.html#TXMLOdb:FindNode" title="TXMLNode* TXMLOdb::FindNode(const char* name,TXMLNode* node=0)">FindNode</a>(<span class="keyword">const</span> <span class="keyword">char</span> *name, TXMLNode *node=0);
 <span class="comment">//      <a href="../ListOfTypes.html#void">void</a> DumpTree(TXMLNode*node = NULL, <a href="../ListOfTypes.html#int">int</a> level = 0);</span>
 <span class="comment">//      <a href="../ListOfTypes.html#void">void</a> DumpDirTree(TXMLNode*node = NULL, <a href="../ListOfTypes.html#int">int</a> level = 0);</span>
 <span class="comment">//      const <a href="../ListOfTypes.html#char">char</a>* GetAttrValue(TXMLNode*node,const <a href="../ListOfTypes.html#char">char</a>*attrName);</span>
-<a name="reowxE"></a>      TXMLNode* <a href="../TXMLOdb.html#TXMLOdb:FindPath" title="TXMLNode* TXMLOdb::FindPath(const char* path,TXMLNode* node=0)">FindPath</a>(<span class="keyword">const</span> <span class="keyword">char</span>* path,TXMLNode*node=0);
+      TXMLNode* <a href="../TXMLOdb.html#TXMLOdb:FindPath" title="TXMLNode* TXMLOdb::FindPath(const char* path,TXMLNode* node=0)">FindPath</a>(<span class="keyword">const</span> <span class="keyword">char</span>* path,TXMLNode*node=0);
 
 <span class="comment">//      TXMLNode* FindArrayPath(TXMLNode*node,const <a href="../ListOfTypes.html#char">char</a>* path,const <a href="../ListOfTypes.html#char">char</a>* type,<a href="../ListOfTypes.html#int">int</a> index);</span>
 
-<a name="akF3RE"></a>      <span class="keyword">int</span> <a href="../TXMLOdb.html#TXMLOdb:ReadInt" title="int TXMLOdb::ReadInt(const char* path,int index=0,int defaultValue=0xffffffff)">ReadInt</a>(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">int</span> index=0, <span class="keyword">int</span> defaultValue=0xffffffff);
-<a name="BeyNo"></a>      std::vector&lt;<span class="keyword">int</span>&gt; <a href="../TXMLOdb.html#TXMLOdb:ReadIntArray" title="vector&lt;int&gt; TXMLOdb::ReadIntArray(TXMLNode* node)">ReadIntArray</a>(TXMLNode *node); 
-<a name="jJhQn"></a>      std::vector&lt;<span class="keyword">double</span>&gt; <a href="../TXMLOdb.html#TXMLOdb:ReadDoubleArray" title="vector&lt;double&gt; TXMLOdb::ReadDoubleArray(TXMLNode* node)">ReadDoubleArray</a>(TXMLNode *node); 
-<a name="WHWmw"></a>      std::vector&lt;std::string&gt; <a href="../TXMLOdb.html#TXMLOdb:ReadStringArray" title="vector&lt;std::string&gt; TXMLOdb::ReadStringArray(TXMLNode* node)">ReadStringArray</a>(TXMLNode *node); 
+      <span class="keyword">int</span> <a href="../TXMLOdb.html#TXMLOdb:ReadInt" title="int TXMLOdb::ReadInt(const char* path,int index=0,int defaultValue=0xffffffff)">ReadInt</a>(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">int</span> index=0, <span class="keyword">int</span> defaultValue=0xffffffff);
+      std::vector&lt;<span class="keyword">int</span>&gt; <a href="../TXMLOdb.html#TXMLOdb:ReadIntArray" title="vector&lt;int&gt; TXMLOdb::ReadIntArray(TXMLNode* node)">ReadIntArray</a>(TXMLNode *node); 
+      std::vector&lt;<span class="keyword">double</span>&gt; <a href="../TXMLOdb.html#TXMLOdb:ReadDoubleArray" title="vector&lt;double&gt; TXMLOdb::ReadDoubleArray(TXMLNode* node)">ReadDoubleArray</a>(TXMLNode *node); 
+      std::vector&lt;std::string&gt; <a href="../TXMLOdb.html#TXMLOdb:ReadStringArray" title="vector&lt;std::string&gt; TXMLOdb::ReadStringArray(TXMLNode* node)">ReadStringArray</a>(TXMLNode *node); 
 
 <span class="comment">//      <a href="../ListOfTypes.html#int">int</a>      odbReadAny(   const <a href="../ListOfTypes.html#char">char</a>*name, <a href="../ListOfTypes.html#int">int</a> index, <a href="../ListOfTypes.html#int">int</a> tid,<a href="../ListOfTypes.html#void">void</a>* buf, <a href="../ListOfTypes.html#int">int</a> bufsize=0 );</span>
 <span class="comment">//      <a href="../ListOfTypes.html#uint32_t">uint32_t</a> odbReadUint32(const <a href="../ListOfTypes.html#char">char</a>*name, <a href="../ListOfTypes.html#int">int</a> index, <a href="../ListOfTypes.html#uint32_t">uint32_t</a> defaultValue );</span>
@@ -93,7 +93,7 @@
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2014-09-03 16:23 </em><em>&raquo; Last generated: 2014-09-03 16:23</em><br />
+<em>&raquo; Last changed: 2014-09-03 16:39 </em><em>&raquo; Last generated: 2014-09-03 16:39</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 16:23:52 2014            -->
+<!--   Date: Wed Sep  3 16:39:06 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -19,7 +19,7 @@
 <body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
 <div id="root_header"><img src="http://root.cern.ch/drupal/sites/default/files/rootdrawing-logo.png" alt="ROOT logo"/></div>
 <a name="TopOfPage"></a>
-<script type="text/javascript">WriteFollowPageBox('class TFragmentSelector','','/home/rdunlop/Programs/GRSISort/include/TFragmentSelector.h');</script>
+<script type="text/javascript">WriteFollowPageBox('class TFragmentSelector','','TFragmentSelector.h');</script>
 <div id="toplinks">
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Quick Links:</span>
@@ -40,7 +40,7 @@ return false;}
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Source:</span>
 <a class="descrheadentry" href="src/TFragmentSelector.h.html">header file</a>
-<a class="descrheadentry"> </a>
+<a class="descrheadentry" href="src/TFragmentSelector.cxx.html">source file</a>
 
 </div></div>
 <div class="descrhead"><div class="descrheadcontent">
@@ -58,13 +58,7 @@ return false;}
 </div>
 <div class="dropshadow"><div class="withshadow"><h1><a name="TFragmentSelector:description"></a>class TFragmentSelector: public TSelector</h1>
 <div class="classdescr">
-<pre>
- This class has been automatically generated on
- Mon Aug 11 14:56:50 2014 by ROOT version 5.34/14
- from TTree FragmentTree/FragmentTree
- found on file: fragment00008_000.root
-
-</pre></div>
+</div>
 </div></div>
 
 <div id="functions">
@@ -248,6 +242,50 @@ return false;}
 </div><div class="classcharts"><div class="classchartswidth"></div>
 <img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTFragmentSelector_Inh" src="inh/TFragmentSelector_Inh.png"/></div>
 <h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentSelector:Begin" href="src/TFragmentSelector.cxx.html#XZpty">Begin</a>(TTree* tree)</span><br />
+<div class="funccomm"><pre> The <a href="./TFragmentSelector.html#TFragmentSelector:Begin" title="void TFragmentSelector::Begin(TTree* tree)">Begin</a>() function is called at the start of the query.
+ When running with PROOF <a href="./TFragmentSelector.html#TFragmentSelector:Begin" title="void TFragmentSelector::Begin(TTree* tree)">Begin</a>() is only called on the client.
+ The tree argument is deprecated (on PROOF 0 is passed).
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentSelector:SlaveBegin" href="src/TFragmentSelector.cxx.html#WgzxUC">SlaveBegin</a>(TTree* tree)</span><br />
+<div class="funccomm"><pre> The <a href="./TFragmentSelector.html#TFragmentSelector:SlaveBegin" title="void TFragmentSelector::SlaveBegin(TTree* tree)">SlaveBegin</a>() function is called after the <a href="./TFragmentSelector.html#TFragmentSelector:Begin" title="void TFragmentSelector::Begin(TTree* tree)">Begin</a>() function.
+ When running with PROOF <a href="./TFragmentSelector.html#TFragmentSelector:SlaveBegin" title="void TFragmentSelector::SlaveBegin(TTree* tree)">SlaveBegin</a>() is called on each slave server.
+ The tree argument is deprecated (on PROOF 0 is passed).
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="TFragmentSelector:Process" href="src/TFragmentSelector.cxx.html#djYDSD">Process</a>(<a href="./ListOfTypes.html#Long64_t">Long64_t</a> entry)</span><br />
+<div class="funccomm"><pre> The <a href="./TFragmentSelector.html#TFragmentSelector:Process" title="Bool_t TFragmentSelector::Process(Long64_t entry)">Process</a>() function is called for each entry in the tree (or possibly
+ keyed object in the case of PROOF) to be processed. The entry argument
+ specifies which entry in the currently loaded tree is to be processed.
+ It can be passed to either <a href="./TFragmentSelector.html">TFragmentSelector</a>::<a href="./TFragmentSelector.html#TFragmentSelector:GetEntry" title="Int_t TFragmentSelector::GetEntry(Long64_t entry,Int_t getall=0)">GetEntry</a>() or TBranch::<a href="./TFragmentSelector.html#TFragmentSelector:GetEntry" title="Int_t TFragmentSelector::GetEntry(Long64_t entry,Int_t getall=0)">GetEntry</a>()
+ to read either all or the required parts of the data. When processing
+ keyed objects with PROOF, the object is already loaded and is available
+ via the fObject pointer.
+
+ This function should contain the <span class="string">"body"</span> of the analysis. It can contain
+ simple or elaborate selection criteria, run algorithms on the data
+ of the event and typically fill histograms.
+
+ The processing can be stopped by calling <a href="./#TSelector:Abort" title="void TSelector::Abort(const char* why,TSelector::EAbort what=kAbortProcess)">Abort</a>().
+
+ Use fStatus to set the return value of TTree::<a href="./TFragmentSelector.html#TFragmentSelector:Process" title="Bool_t TFragmentSelector::Process(Long64_t entry)">Process</a>().
+
+ The return value is currently not used.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentSelector:SlaveTerminate" href="src/TFragmentSelector.cxx.html#flKy">SlaveTerminate</a>()</span><br />
+<div class="funccomm"><pre> The <a href="./TFragmentSelector.html#TFragmentSelector:SlaveTerminate" title="void TFragmentSelector::SlaveTerminate()">SlaveTerminate</a>() function is called after all entries or objects
+ have been processed. When running with PROOF <a href="./TFragmentSelector.html#TFragmentSelector:SlaveTerminate" title="void TFragmentSelector::SlaveTerminate()">SlaveTerminate</a>() is called
+ on each slave server.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentSelector:Terminate" href="src/TFragmentSelector.cxx.html#C.HfoB">Terminate</a>()</span><br />
+<div class="funccomm"><pre> The <a href="./TFragmentSelector.html#TFragmentSelector:Terminate" title="void TFragmentSelector::Terminate()">Terminate</a>() function is the last function to be called during
+ a query. It always runs on the client, it can be used to present
+ the results graphically or save the results to file.
+</pre></div>
+</div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentSelector:Init" href="src/TFragmentSelector.h.html#hJkGG">Init</a>(TTree* tree)</span><br />
 <div class="funccomm"><pre> The <a href="./TFragmentSelector.html#TFragmentSelector:Init" title="void TFragmentSelector::Init(TTree* tree)">Init</a>() function is called when the selector needs to initialize
  a new tree or chain. Typically here the branch addresses and branch
@@ -327,12 +365,6 @@ return false;}
 <div class="code"><code class="inlinecode">{ <span class="keyword">return</span> 2; }</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentSelector:Begin" href="src/TFragmentSelector.h.html#ymz5EE">Begin</a>(TTree* tree)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentSelector:SlaveBegin" href="src/TFragmentSelector.h.html#ralzyB">SlaveBegin</a>(TTree* tree)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="TFragmentSelector:Process" href="src/TFragmentSelector.h.html#z8_qVE">Process</a>(<a href="./ListOfTypes.html#Long64_t">Long64_t</a> entry)</span><br />
-</div>
 <div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="TFragmentSelector:GetEntry" href="src/TFragmentSelector.h.html#pWScwB">GetEntry</a>(<a href="./ListOfTypes.html#Long64_t">Long64_t</a> entry, <a href="./ListOfTypes.html#Int_t">Int_t</a> getall = 0)</span><br />
 
 <div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TFragmentSelector.html#TFragmentSelector:fChain" title="TTree* TFragmentSelector::fChain">fChain</a> ? <a href="./TFragmentSelector.html#TFragmentSelector:fChain" title="TTree* TFragmentSelector::fChain">fChain</a>-&gt;GetTree()-&gt;<a href="./TFragmentSelector.html#TFragmentSelector:GetEntry" title="Int_t TFragmentSelector::GetEntry(Long64_t entry,Int_t getall=0)">GetEntry</a>(entry, getall) : 0; }</code></div>
@@ -358,16 +390,12 @@ return false;}
 <div class="code"><code class="inlinecode">{ <span class="keyword">return</span> fOutput; }</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentSelector:SlaveTerminate" href="src/TFragmentSelector.h.html#HudMxB">SlaveTerminate</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TFragmentSelector:Terminate" href="src/TFragmentSelector.h.html#Xsz0lE">Terminate</a>()</span><br />
-</div>
 
 <br />
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Wed Sep  3 16:23:53 2014 </em><em>&raquo; Last generated: 2014-09-03 16:23</em><br />
+<em>&raquo; Last changed: Wed Sep  3 16:39:07 2014 </em><em>&raquo; Last generated: 2014-09-03 16:39</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

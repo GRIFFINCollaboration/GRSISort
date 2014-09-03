@@ -61,7 +61,7 @@ public:
       // too - you will end up with a copy of ROOT's class reference.
       // The documentation will end up in the subdirectory htmldoc/.
 
-      std::string inclpath = "$(GRSISYS)";
+      std::string inclpath = "$(GRSISYS)/include";
       std::stringstream totpath;
       totpath << inclpath << fpath.str();
       std::string incldirs = totpath.str(); 
