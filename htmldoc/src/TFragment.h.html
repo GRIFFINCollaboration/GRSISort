@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Tue Sep  2 21:47:01 2014            -->
+<!--   Date: Wed Sep  3 09:09:44 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -48,41 +48,41 @@
 
 <span class="keyword">class</span> <a href="../TFragment.html">TFragment</a> : <span class="keyword">public</span> <a href="../#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>	{
 <span class="keyword">public</span>:
-<a name="cApDNB"></a>   <a href="../TFragment.html">TFragment</a>();
+<a name="cApDNB"></a>   <a href="../TFragment.html">TFragment</a>(); 
 <a name="sjShlD"></a>   <a href="../TFragment.html#TFragment:_TFragment" title="void TFragment::~TFragment()">~TFragment</a>(); 
 
-   <a href="../ListOfTypes.html#time_t">time_t</a>   <a href="../TFragment.html#TFragment:MidasTimeStamp" title="time_t TFragment::MidasTimeStamp">MidasTimeStamp</a>;       <span class="comment">//-&gt; Timestamp of the MIDAS event  </span>
-   <a href="../ListOfTypes.html#Int_t">Int_t</a>	   <a href="../TFragment.html#TFragment:MidasId" title="Int_t TFragment::MidasId">MidasId</a>;              <span class="comment">//-&gt; MIDAS ID</span>
-   <a href="../ListOfTypes.html#Long_t">Long_t</a>   <a href="../TFragment.html#TFragment:TriggerId" title="Long_t TFragment::TriggerId">TriggerId</a>;            <span class="comment">//-&gt;          MasterFilterID in Griffin   </span>
+   <a href="../ListOfTypes.html#time_t">time_t</a>   <a href="../TFragment.html#TFragment:MidasTimeStamp" title="time_t TFragment::MidasTimeStamp">MidasTimeStamp</a>;       <span class="comment">//-&gt;  Timestamp of the MIDAS event  </span>
+   <a href="../ListOfTypes.html#Int_t">Int_t</a>    <a href="../TFragment.html#TFragment:MidasId" title="Int_t TFragment::MidasId">MidasId</a>;              <span class="comment">//-&gt;  MIDAS ID</span>
+   <a href="../ListOfTypes.html#Long_t">Long_t</a>   <a href="../TFragment.html#TFragment:TriggerId" title="Long_t TFragment::TriggerId">TriggerId</a>;            <span class="comment">//-&gt;  MasterFilterID in Griffin DAQ  </span>
    <a href="../ListOfTypes.html#Int_t">Int_t</a>    <a href="../TFragment.html#TFragment:FragmentId" title="Int_t TFragment::FragmentId">FragmentId</a>;           <span class="comment">//-&gt;  Channel Trigger ID</span>
-   <a href="../ListOfTypes.html#Int_t">Int_t</a>    <a href="../TFragment.html#TFragment:TriggerBitPattern" title="Int_t TFragment::TriggerBitPattern">TriggerBitPattern</a>;	 <span class="comment">//-&gt;          MasterFilterPattern in Griffin</span>
+   <a href="../ListOfTypes.html#Int_t">Int_t</a>    <a href="../TFragment.html#TFragment:TriggerBitPattern" title="Int_t TFragment::TriggerBitPattern">TriggerBitPattern</a>;	  <span class="comment">//-&gt;  MasterFilterPattern in Griffin DAQ</span>
 
    <a href="../ListOfTypes.html#Short_t">Short_t</a> <a href="../TFragment.html#TFragment:ChannelNumber" title="Short_t TFragment::ChannelNumber">ChannelNumber</a>;         <span class="comment">//-&gt;</span>
-   <a href="../ListOfTypes.html#Int_t">Int_t</a> <a href="../TFragment.html#TFragment:ChannelAddress" title="Int_t TFragment::ChannelAddress">ChannelAddress</a>;        <span class="comment">//-&gt;</span>
-   std::vector&lt;<a href="../ListOfTypes.html#Int_t">Int_t</a>&gt; <a href="../TFragment.html#TFragment:Cfd" title="vector&lt;Int_t&gt; TFragment::Cfd">Cfd</a>;      <span class="comment">//-&gt; </span>
-   std::vector&lt;<a href="../ListOfTypes.html#Int_t">Int_t</a>&gt; <a href="../TFragment.html#TFragment:Led" title="vector&lt;Int_t&gt; TFragment::Led">Led</a>;      <span class="comment">//-&gt;</span>
-   std::vector&lt;<a href="../ListOfTypes.html#Int_t">Int_t</a>&gt; <a href="../TFragment.html#TFragment:Charge" title="vector&lt;Int_t&gt; TFragment::Charge">Charge</a>;	  <span class="comment">//-&gt; The Integrated <a href="../TFragment.html#TFragment:Charge" title="vector&lt;Int_t&gt; TFragment::Charge">Charge</a> </span>
+   <a href="../ListOfTypes.html#Int_t">Int_t</a> <a href="../TFragment.html#TFragment:ChannelAddress" title="Int_t TFragment::ChannelAddress">ChannelAddress</a>;          <span class="comment">//-&gt;</span>
+   std::vector&lt;<a href="../ListOfTypes.html#Int_t">Int_t</a>&gt; <a href="../TFragment.html#TFragment:Cfd" title="vector&lt;Int_t&gt; TFragment::Cfd">Cfd</a>;        <span class="comment">//-&gt; </span>
+   std::vector&lt;<a href="../ListOfTypes.html#Int_t">Int_t</a>&gt; <a href="../TFragment.html#TFragment:Led" title="vector&lt;Int_t&gt; TFragment::Led">Led</a>;        <span class="comment">//-&gt;</span>
+   std::vector&lt;<a href="../ListOfTypes.html#Int_t">Int_t</a>&gt; <a href="../TFragment.html#TFragment:Charge" title="vector&lt;Int_t&gt; TFragment::Charge">Charge</a>;	  <span class="comment">//-&gt;  The Integrated <a href="../TFragment.html#TFragment:Charge" title="vector&lt;Int_t&gt; TFragment::Charge">Charge</a> </span>
 
    <span class="comment">//<a href="../ListOfTypes.html#unsigned">unsigned</a> <a href="../ListOfTypes.html#long">long</a> TimeStamp;     //-&gt;</span>
-   <a href="../ListOfTypes.html#Int_t">Int_t</a> <a href="../TFragment.html#TFragment:TimeStampLow" title="Int_t TFragment::TimeStampLow">TimeStampLow</a>;          <span class="comment">//-&gt; Timestamp low bits</span>
-   <a href="../ListOfTypes.html#Int_t">Int_t</a> <a href="../TFragment.html#TFragment:TimeStampHigh" title="Int_t TFragment::TimeStampHigh">TimeStampHigh</a>;         <span class="comment">//-&gt; Timestamp high bits</span>
-   <a href="../ListOfTypes.html#Int_t">Int_t</a> <a href="../TFragment.html#TFragment:TimeToTrig" title="Int_t TFragment::TimeToTrig">TimeToTrig</a>;            <span class="comment">//-&gt;</span>
+   <a href="../ListOfTypes.html#Int_t">Int_t</a> <a href="../TFragment.html#TFragment:TimeStampLow" title="Int_t TFragment::TimeStampLow">TimeStampLow</a>;            <span class="comment">//-&gt;  Timestamp low bits</span>
+   <a href="../ListOfTypes.html#Int_t">Int_t</a> <a href="../TFragment.html#TFragment:TimeStampHigh" title="Int_t TFragment::TimeStampHigh">TimeStampHigh</a>;           <span class="comment">//-&gt;  Timestamp high bits</span>
+   <a href="../ListOfTypes.html#Int_t">Int_t</a> <a href="../TFragment.html#TFragment:TimeToTrig" title="Int_t TFragment::TimeToTrig">TimeToTrig</a>;              <span class="comment">//-&gt;</span>
 
 	<span class="comment">/// Added to combine Grif Fragment  ////</span>
 
-   <a href="../ListOfTypes.html#UInt_t">UInt_t</a> <a href="../TFragment.html#TFragment:PPG" title="UInt_t TFragment::PPG">PPG</a>;                <span class="comment">//-&gt; Programmable pattern generator value</span>
-   <a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href="../TFragment.html#TFragment:DeadTime" title="UShort_t TFragment::DeadTime">DeadTime</a>;	        <span class="comment">//-&gt; Deadtime from trigger</span>
-   <a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href="../TFragment.html#TFragment:NumberOfFilters" title="UShort_t TFragment::NumberOfFilters">NumberOfFilters</a>;    <span class="comment">//-&gt; Number of filter patterns passed</span>
-   <a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href="../TFragment.html#TFragment:NumberOfPileups" title="UShort_t TFragment::NumberOfPileups">NumberOfPileups</a>;    <span class="comment">//-&gt; Number of piled up hits 1-3</span>
-   <a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href="../TFragment.html#TFragment:DataType" title="UShort_t TFragment::DataType">DataType</a>;           <span class="comment">//-&gt; </span>
-   <a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href="../TFragment.html#TFragment:DetectorType" title="UShort_t TFragment::DetectorType">DetectorType</a>;       <span class="comment">//-&gt;</span>
-   <a href="../ListOfTypes.html#UInt_t">UInt_t</a> <a href="../TFragment.html#TFragment:ChannelId" title="UInt_t TFragment::ChannelId">ChannelId</a>;          <span class="comment">//-&gt;</span>
+   <a href="../ListOfTypes.html#UInt_t">UInt_t</a> <a href="../TFragment.html#TFragment:PPG" title="UInt_t TFragment::PPG">PPG</a>;                    <span class="comment">//-&gt; Programmable pattern generator value</span>
+   <a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href="../TFragment.html#TFragment:DeadTime" title="UShort_t TFragment::DeadTime">DeadTime</a>;	          <span class="comment">//-&gt; Deadtime from trigger</span>
+   <a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href="../TFragment.html#TFragment:NumberOfFilters" title="UShort_t TFragment::NumberOfFilters">NumberOfFilters</a>;      <span class="comment">//-&gt; Number of filter patterns passed</span>
+   <a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href="../TFragment.html#TFragment:NumberOfPileups" title="UShort_t TFragment::NumberOfPileups">NumberOfPileups</a>;      <span class="comment">//-&gt; Number of piled up hits 1-3</span>
+   <a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href="../TFragment.html#TFragment:DataType" title="UShort_t TFragment::DataType">DataType</a>;             <span class="comment">//-&gt; </span>
+   <a href="../ListOfTypes.html#UShort_t">UShort_t</a> <a href="../TFragment.html#TFragment:DetectorType" title="UShort_t TFragment::DetectorType">DetectorType</a>;         <span class="comment">//-&gt;</span>
+   <a href="../ListOfTypes.html#UInt_t">UInt_t</a> <a href="../TFragment.html#TFragment:ChannelId" title="UInt_t TFragment::ChannelId">ChannelId</a>;              <span class="comment">//-&gt;</span>
 
-   std::vector&lt;<a href="../ListOfTypes.html#UShort_t">UShort_t</a>&gt;  <a href="../TFragment.html#TFragment:KValue" title="vector&lt;UShort_t&gt; TFragment::KValue">KValue</a>;    <span class="comment">//-&gt;</span>
+   std::vector&lt;<a href="../ListOfTypes.html#UShort_t">UShort_t</a>&gt;  <a href="../TFragment.html#TFragment:KValue" title="vector&lt;UShort_t&gt; TFragment::KValue">KValue</a>; <span class="comment">//-&gt;</span>
 
    <span class="comment">/// *****************************  ////</span>
 
-   std::vector&lt;<a href="../ListOfTypes.html#Short_t">Short_t</a>&gt;  <a href="../TFragment.html#TFragment:wavebuffer" title="vector&lt;Short_t&gt; TFragment::wavebuffer">wavebuffer</a>;	<span class="comment">//-&gt; waveform words</span>
+   std::vector&lt;<a href="../ListOfTypes.html#Short_t">Short_t</a>&gt;  <a href="../TFragment.html#TFragment:wavebuffer" title="vector&lt;Short_t&gt; TFragment::wavebuffer">wavebuffer</a>;<span class="comment">//-&gt; waveform words</span>
   
 <a name="vTb4rC"></a>   <span class="keyword">virtual</span> <span class="keyword">void</span>	<a href="../TFragment.html#TFragment:Clear" title="void TFragment::Clear(Option_t* opt=&quot;&quot;)">Clear</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>); <span class="comment">//!</span>
    
@@ -100,7 +100,7 @@
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2014-09-02 21:47 </em><em>&raquo; Last generated: 2014-09-02 21:47</em><br />
+<em>&raquo; Last changed: 2014-09-03 09:09 </em><em>&raquo; Last generated: 2014-09-03 09:09</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>
