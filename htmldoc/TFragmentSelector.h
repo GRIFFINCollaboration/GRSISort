@@ -20,8 +20,8 @@
 
 
 // Header file for the classes stored in the TTree if any.
-#include "../include/TFragment.h"
-#include "../include/TChannel.h"
+#include "TFragment.h"
+#include "TChannel.h"
 
 
 
