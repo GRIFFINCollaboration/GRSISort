@@ -20,8 +20,6 @@ TGRSIint *TGRSIint::fTGRSIint = NULL;
 //std::vector<std::string> *TGRSIint::fInputCalFile   = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputOdbFile   = new std::vector<std::string>;
 
-
-
 TGRSIint *TGRSIint::instance(int argc,char** argv, void *options, int numOptions, bool noLogo, const char *appClassName) {
    if(!fTGRSIint)
       fTGRSIint = new TGRSIint(argc,argv,options,numOptions,true,appClassName);

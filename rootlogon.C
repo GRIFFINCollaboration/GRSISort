@@ -7,4 +7,9 @@
    gSystem->Load("libraries/libMidasFormat.so");
    gSystem->Load("libraries/libGRSIFormat.so");
 
+
+   //gSystem->Load("libraries/libTigree.so");
+   gSystem->Load("libraries/libSharc.so");
+
+
 }

@@ -132,6 +132,7 @@ void TChannel::Clear(Option_t *opt){
    integration			=	0;
    number				=	0;
    stream            =  0;
+   ENGChi2           =  0.0;
    userinfonumber    =  0xffffffff;
 
    ENGCoefficients.clear();
