@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Tue Sep  2 21:47:01 2014            -->
+<!--   Date: Wed Sep  3 16:23:54 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -38,23 +38,23 @@
 {
 <span class="keyword">public</span>:
 <a name="cbQCXD"></a>  <a href="../TMidasFile.html">TMidasFile</a>(); <span class="comment">///&lt; default constructor</span>
-<a name="SMHlGC"></a>  <a href="../TMidasFile.html#TMidasFile:_TMidasFile" title="void TMidasFile::~TMidasFile()">~TMidasFile</a>(); <span class="comment">///&lt; destructor</span>
+  <a href="../TMidasFile.html#TMidasFile:_TMidasFile" title="void TMidasFile::~TMidasFile()">~TMidasFile</a>(); <span class="comment">///&lt; destructor</span>
 
-<a name="T_OaI"></a>  <span class="keyword">bool</span> <a href="../TMidasFile.html#TMidasFile:Open" title="bool TMidasFile::Open(const char* filename)">Open</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Open" title="bool TMidasFile::Open(const char* filename)">Open</a> input file</span>
-<a name="zmVzq"></a>  <span class="keyword">bool</span> <a href="../TMidasFile.html#TMidasFile:OutOpen" title="bool TMidasFile::OutOpen(const char* filename)">OutOpen</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Open" title="bool TMidasFile::Open(const char* filename)">Open</a> output file</span>
+  <span class="keyword">bool</span> <a href="../TMidasFile.html#TMidasFile:Open" title="bool TMidasFile::Open(const char* filename)">Open</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Open" title="bool TMidasFile::Open(const char* filename)">Open</a> input file</span>
+  <span class="keyword">bool</span> <a href="../TMidasFile.html#TMidasFile:OutOpen" title="bool TMidasFile::OutOpen(const char* filename)">OutOpen</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Open" title="bool TMidasFile::Open(const char* filename)">Open</a> output file</span>
 
-<a name="NrvDND"></a>  <span class="keyword">void</span> <a href="../TMidasFile.html#TMidasFile:Close" title="void TMidasFile::Close()">Close</a>(); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Close" title="void TMidasFile::Close()">Close</a> input file</span>
-<a name="plys4B"></a>  <span class="keyword">void</span> <a href="../TMidasFile.html#TMidasFile:OutClose" title="void TMidasFile::OutClose()">OutClose</a>(); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Close" title="void TMidasFile::Close()">Close</a> output file</span>
+  <span class="keyword">void</span> <a href="../TMidasFile.html#TMidasFile:Close" title="void TMidasFile::Close()">Close</a>(); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Close" title="void TMidasFile::Close()">Close</a> input file</span>
+  <span class="keyword">void</span> <a href="../TMidasFile.html#TMidasFile:OutClose" title="void TMidasFile::OutClose()">OutClose</a>(); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Close" title="void TMidasFile::Close()">Close</a> output file</span>
 
-<a name="y0DfFE"></a>  <span class="keyword">int</span>  <a href="../TMidasFile.html#TMidasFile:Read" title="int TMidasFile::Read(TMidasEvent* event)">Read</a>(<a href="../TMidasEvent.html">TMidasEvent</a> *event); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Read" title="int TMidasFile::Read(TMidasEvent* event)">Read</a> one event from the file</span>
-<a name="vpKTXC"></a>  <span class="keyword">bool</span> <a href="../TMidasFile.html#TMidasFile:Write" title="bool TMidasFile::Write(TMidasEvent* event)">Write</a>(<a href="../TMidasEvent.html">TMidasEvent</a> *event); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Write" title="bool TMidasFile::Write(TMidasEvent* event)">Write</a> one event to the output file</span>
+  <span class="keyword">int</span>  <a href="../TMidasFile.html#TMidasFile:Read" title="int TMidasFile::Read(TMidasEvent* event)">Read</a>(<a href="../TMidasEvent.html">TMidasEvent</a> *event); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Read" title="int TMidasFile::Read(TMidasEvent* event)">Read</a> one event from the file</span>
+  <span class="keyword">bool</span> <a href="../TMidasFile.html#TMidasFile:Write" title="bool TMidasFile::Write(TMidasEvent* event)">Write</a>(<a href="../TMidasEvent.html">TMidasEvent</a> *event); <span class="comment">///&lt; <a href="../TMidasFile.html#TMidasFile:Write" title="bool TMidasFile::Write(TMidasEvent* event)">Write</a> one event to the output file</span>
 
 <a name="dWGaFE"></a>  <span class="keyword">const</span> <span class="keyword">char</span>* <a href="../TMidasFile.html#TMidasFile:GetFilename" title="const char* TMidasFile::GetFilename()">GetFilename</a>()  <span class="keyword">const</span> { <span class="keyword">return</span> <a href="../TMidasFile.html#TMidasFile:fFilename" title="string TMidasFile::fFilename">fFilename</a>.c_str();  } <span class="comment">///&lt; Get the name of this file</span>
 <a name="gQ._dD"></a>  <span class="keyword">int</span>         <a href="../TMidasFile.html#TMidasFile:GetLastErrno" title="int TMidasFile::GetLastErrno()">GetLastErrno</a>() <span class="keyword">const</span> { <span class="keyword">return</span> <a href="../TMidasFile.html#TMidasFile:fLastErrno" title="int TMidasFile::fLastErrno">fLastErrno</a>; }         <span class="comment">///&lt; Get error value for the last file error</span>
 <a name="qBOeKC"></a>  <span class="keyword">const</span> <span class="keyword">char</span>* <a href="../TMidasFile.html#TMidasFile:GetLastError" title="const char* TMidasFile::GetLastError()">GetLastError</a>() <span class="keyword">const</span> { <span class="keyword">return</span> <a href="../TMidasFile.html#TMidasFile:fLastError" title="string TMidasFile::fLastError">fLastError</a>.c_str(); } <span class="comment">///&lt; Get error text for the last file error</span>
 
-<a name="Q3UOmC"></a>  <span class="keyword">int</span>	<a href="../TMidasFile.html#TMidasFile:GetRunNumber" title="int TMidasFile::GetRunNumber()">GetRunNumber</a>();
-<a name="tE9piE"></a>  <span class="keyword">int</span>	<a href="../TMidasFile.html#TMidasFile:GetSubRunNumber" title="int TMidasFile::GetSubRunNumber()">GetSubRunNumber</a>();
+  <span class="keyword">int</span>	<a href="../TMidasFile.html#TMidasFile:GetRunNumber" title="int TMidasFile::GetRunNumber()">GetRunNumber</a>();
+  <span class="keyword">int</span>	<a href="../TMidasFile.html#TMidasFile:GetSubRunNumber" title="int TMidasFile::GetSubRunNumber()">GetSubRunNumber</a>();
 
 <span class="keyword">protected</span>:
 
@@ -84,7 +84,7 @@
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2014-09-02 21:47 </em><em>&raquo; Last generated: 2014-09-02 21:47</em><br />
+<em>&raquo; Last changed: 2014-09-03 16:23 </em><em>&raquo; Last generated: 2014-09-03 16:23</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

@@ -7,15 +7,19 @@ ClassImp(TFragment)
 
 
 TFragment::TFragment(){
+   // Default Constructor
    Class()->IgnoreTObjectStreamer(true);
    Clear();
 }
 
 TFragment::~TFragment(){
-	//Clear();
+  // Default destructor does nothing right now
+
+  //Clear();
 }
 
 void TFragment::Clear(Option_t *opt){  
+   // Clears all fields of the TFragment
    MidasTimeStamp    = 0;
    MidasId           = 0;
 
@@ -52,6 +56,7 @@ void TFragment::Clear(Option_t *opt){
 }
 
 void TFragment::Print(Option_t *opt)	{
+   //Prints out all fields of the TFragment
 	printf("not written yet.\n");
 
    TChannel *chan = TChannel::GetChannel(this->ChannelAddress);

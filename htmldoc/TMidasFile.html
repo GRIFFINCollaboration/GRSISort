@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Tue Sep  2 21:47:01 2014            -->
+<!--   Date: Wed Sep  3 16:23:54 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -40,8 +40,8 @@ return false;}
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Source:</span>
 <a class="descrheadentry" href="src/TMidasFile.h.html">header file</a>
-<a class="descrheadentry"> </a>
-<a class="descrheadentry" href="TMidasFile_Tree.pdf">inheritance tree (.pdf)</a> <a class="descrheadentry" href="http://root.cern.ch/viewcvs/trunk//home/rdunlop/Programs/GRSISort/include/TMidasFile.h?view=log">viewVC header</a> <a class="descrheadentry"> </a> 
+<a class="descrheadentry" href="src/TMidasFile.cxx.html">source file</a>
+
 </div></div>
 <div class="descrhead"><div class="descrheadcontent">
 <span class="descrtitle">Sections:</span>
@@ -52,8 +52,8 @@ return false;}
 </div></div>
 </div>
 <div class="location">
-<a class="locationlevel" href="index.html">(UNKNOWN PRODUCT)</a>
- &#187; <a class="locationlevel" href="./INCLUDE_Index.html">INCLUDE</a>
+<a class="locationlevel" href="index.html">GRSISort</a>
+ &#187; <a class="locationlevel" href="./(UNKNOWN)_Index.html">(UNKNOWN)</a>
  &#187; <a class="locationlevel" href="#TopOfPage">TMidasFile</a>
 </div>
 <div class="dropshadow"><div class="withshadow"><h1><a name="TMidasFile:description"></a>class TMidasFile: public TObject</h1>
@@ -206,37 +206,66 @@ return false;}
 </table></div>
 </div>
 <h2><a id="TMidasFile:Class_Charts"></a>Class Charts</h2>
-<!--INHERITANCE TREE-->
-<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
-<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
-<td><table><tr>
-<td bgcolor="#f7f7f7" align="right">
-<tt>TObject</tt></td>
-</tr></table></td>
-<td>&larr;</td><td>
-<center><big><b><tt><a name="TMidasFile" href="./TMidasFile.html">TMidasFile</a></tt></b></big></center>
-</td>
-<td><table><tr>
-<td></td>
-</tr></table></td>
-</tr></table>
-</td></tr></table></td></tr></table>
+<map name="MapTMidasFile_Lib" id="MapTMidasFile_Lib">
+<area shape="rect" id="node1" href="LibraryDependencies.html" title="All Libraries" alt="" coords="125,237,240,285"/>
+</map>
+<div class="tabs">
+<a id="imgTMidasFile_Inh" class="tabsel" href="inh/TMidasFile_Inh.png" onclick="javascript:return SetImg('Charts','inh/TMidasFile_Inh.png');">Inheritance</a>
+<a id="imgTMidasFile_InhMem" class="tab" href="inhmem/TMidasFile_InhMem.png" onclick="javascript:return SetImg('Charts','inhmem/TMidasFile_InhMem.png');">Inherited Members</a>
+<a id="imgTMidasFile_Incl" class="tab" href="incl/TMidasFile_Incl.png" onclick="javascript:return SetImg('Charts','incl/TMidasFile_Incl.png');">Includes</a>
+<a id="imgTMidasFile_Lib" class="tab" href="lib/TMidasFile_Lib.png" onclick="javascript:return SetImg('Charts','lib/TMidasFile_Lib.png');">Libraries</a><br/>
+</div><div class="classcharts"><div class="classchartswidth"></div>
+<img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTMidasFile_Inh" src="inh/TMidasFile_Inh.png"/></div>
 <h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TMidasFile:TMidasFile" href="src/TMidasFile.cxx.html#ajsvK">TMidasFile</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TMidasFile:_TMidasFile" href="src/TMidasFile.cxx.html#K9oNbE">~TMidasFile</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TMidasFile:Open" href="src/TMidasFile.cxx.html#S4GxAE">Open</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename)</span><br />
+<div class="funccomm"><pre> <a href="./TMidasFile.html#TMidasFile:Open" title="bool TMidasFile::Open(const char* filename)">Open</a> a midas .mid file with given file name.
+
+ Remote files can be accessed using these special file names:
+ - pipein://command - read data produced by given command, see examples below
+ - ssh://username\@hostname/path/file.mid - read remote file through an ssh pipe
+ - ssh://username\@hostname/path/file.mid.gz and file.mid.bz2 - same for compressed files
+ - dccp://path/file.mid (also file.mid.gz and file.mid.bz2) - read data from dcache, requires dccp in the PATH
+
+ Examples:
+ - ./event_dump.exe /ladd/data9/t2km11/data/run02696.mid.gz - read normal compressed file
+ - ./event_dump.exe ssh://ladd09//ladd/data9/t2km11/data/run02696.mid.gz - read compressed file through ssh to ladd09 (note <a href="./ListOfTypes.html#double">double</a> <span class="string">"/"</span>)
+ - ./event_dump.exe pipein://<span class="string">"cat /ladd/data9/t2km11/data/run02696.mid.gz | gzip -dc"</span> - read data piped from a command or script (note quotes)
+ - ./event_dump.exe pipein://<span class="string">"gzip -dc /ladd/data9/t2km11/data/run02696.mid.gz"</span> - another way to read compressed files
+ - ./event_dump.exe dccp:///pnfs/triumf.ca/data/t2km11/aug2008/run02837.mid.gz - read file directly from a dcache pool (note triple <span class="string">"/"</span>)
+
+ \param [in] filename The file to open.
+ \returns <span class="string">"true"</span> for succes, <span class="string">"false"</span> for error, use <a href="./TMidasFile.html#TMidasFile:GetLastError" title="const char* TMidasFile::GetLastError()">GetLastError</a>() to see why
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TMidasFile:OutOpen" href="src/TMidasFile.cxx.html#BW_6zB">OutOpen</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename)</span><br />
+<div class="funccomm"><pre> <a href="./TMidasFile.html#TMidasFile:Open" title="bool TMidasFile::Open(const char* filename)">Open</a> a midas .mid file for OUTPUT with given file name.
+
+ Remote files not yet implemented
+
+ \param [in] filename The file to open.
+ \returns <span class="string">"true"</span> for succes, <span class="string">"false"</span> for error, use <a href="./TMidasFile.html#TMidasFile:GetLastError" title="const char* TMidasFile::GetLastError()">GetLastError</a>() to see why
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasFile:Read" href="src/TMidasFile.cxx.html#rkTBqB">Read</a>(<a href="./TMidasEvent.html">TMidasEvent</a>* event)</span><br />
+<div class="funccomm"><pre> \param [in] midasEvent Pointer to an empty <a href="./TMidasEvent.html">TMidasEvent</a>
+ \returns <span class="string">"true"</span> for success, <span class="string">"false"</span> for failure, see <a href="./TMidasFile.html#TMidasFile:GetLastError" title="const char* TMidasFile::GetLastError()">GetLastError</a>() to see why
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TMidasFile:Write" href="src/TMidasFile.cxx.html#wHJnvC">Write</a>(<a href="./TMidasEvent.html">TMidasEvent</a>* event)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasFile:Close" href="src/TMidasFile.cxx.html#jwiwhB">Close</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasFile:OutClose" href="src/TMidasFile.cxx.html#foSmtD">OutClose</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasFile:GetRunNumber" href="src/TMidasFile.cxx.html#pPEYbD">GetRunNumber</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasFile:GetSubRunNumber" href="src/TMidasFile.cxx.html#p.GzDC">GetSubRunNumber</a>()</span><br />
+</div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TMidasFile:TMidasFile" href="src/TMidasFile.h.html#cbQCXD">TMidasFile</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TMidasFile:_TMidasFile" href="src/TMidasFile.h.html#SMHlGC">~TMidasFile</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TMidasFile:Open" href="src/TMidasFile.h.html#T_OaI">Open</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TMidasFile:OutOpen" href="src/TMidasFile.h.html#zmVzq">OutOpen</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasFile:Close" href="src/TMidasFile.h.html#NrvDND">Close</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TMidasFile:OutClose" href="src/TMidasFile.h.html#plys4B">OutClose</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasFile:Read" href="src/TMidasFile.h.html#y0DfFE">Read</a>(<a href="./TMidasEvent.html">TMidasEvent</a>* event)</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TMidasFile:Write" href="src/TMidasFile.h.html#vpKTXC">Write</a>(<a href="./TMidasEvent.html">TMidasEvent</a>* event)</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="TMidasFile:GetFilename" href="src/TMidasFile.h.html#dWGaFE">GetFilename</a>() const</span><br />
 
@@ -253,16 +282,12 @@ return false;}
 <div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TMidasFile.html#TMidasFile:fLastError" title="string TMidasFile::fLastError">fLastError</a>.c_str(); }</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasFile:GetRunNumber" href="src/TMidasFile.h.html#Q3UOmC">GetRunNumber</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TMidasFile:GetSubRunNumber" href="src/TMidasFile.h.html#tE9piE">GetSubRunNumber</a>()</span><br />
-</div>
 
 <br />
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Tue Sep  2 21:47:01 2014 </em><em>&raquo; Last generated: 2014-09-02 21:47</em><br />
+<em>&raquo; Last changed: Wed Sep  3 16:23:54 2014 </em><em>&raquo; Last generated: 2014-09-03 16:23</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

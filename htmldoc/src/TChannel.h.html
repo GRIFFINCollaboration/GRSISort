@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Tue Sep  2 21:47:01 2014            -->
+<!--   Date: Wed Sep  3 16:23:52 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -66,23 +66,23 @@
       <span class="comment">//static <a href="../TChannel.html">TChannel</a> *NewChannel(<a href="../ListOfTypes.html#int">int</a> temp_adress, </span>
       <span class="comment">//                            <a href="../ListOfTypes.html#int">int</a> temp_number=0, </span>
       <span class="comment">//                            <a href="../ListOfTypes.html#char">char</a> *temp_name = <span class="string">""</span>);</span>
-<a name="cX9Yg"></a>      <span class="keyword">static</span> <a href="../TChannel.html">TChannel</a> *<a href="../TChannel.html#TChannel:GetChannel" title="TChannel* TChannel::GetChannel(int temp_address)">GetChannel</a>(<span class="keyword">int</span> temp_address); 
-<a name="XT9NOC"></a>		<span class="keyword">static</span> <a href="../TChannel.html">TChannel</a> *<a href="../TChannel.html#TChannel:FindChannel" title="TChannel* TChannel::FindChannel(int temp_address)">FindChannel</a>(<span class="keyword">int</span> temp_address);
-<a name="yO_FKC"></a>		<span class="keyword">static</span> <a href="../TChannel.html">TChannel</a> *<a href="../TChannel.html#TChannel:FindChannelByNumber" title="TChannel* TChannel::FindChannelByNumber(int temp_numebr)">FindChannelByNumber</a>(<span class="keyword">int</span> temp_numebr);
+      <span class="keyword">static</span> <a href="../TChannel.html">TChannel</a> *<a href="../TChannel.html#TChannel:GetChannel" title="TChannel* TChannel::GetChannel(int temp_address)">GetChannel</a>(<span class="keyword">int</span> temp_address); 
+		<span class="keyword">static</span> <a href="../TChannel.html">TChannel</a> *<a href="../TChannel.html#TChannel:FindChannel" title="TChannel* TChannel::FindChannel(int temp_address)">FindChannel</a>(<span class="keyword">int</span> temp_address);
+		<span class="keyword">static</span> <a href="../TChannel.html">TChannel</a> *<a href="../TChannel.html#TChannel:FindChannelByNumber" title="TChannel* TChannel::FindChannelByNumber(int temp_numebr)">FindChannelByNumber</a>(<span class="keyword">int</span> temp_numebr);
       <span class="comment">//static <a href="../TChannel.html">TChannel</a> *<a href="../TChannel.html#TChannel:GetChannel" title="TChannel* TChannel::GetChannel(int temp_address)">GetChannel</a>(const <a href="../ListOfTypes.html#char">char</a> *temp_name = <span class="string">""</span>);</span>
-<a name="ZOoHZ"></a>      <span class="keyword">virtual</span> <a href="../TChannel.html#TChannel:_TChannel" title="void TChannel::~TChannel()">~TChannel</a>(); 
+      <span class="keyword">virtual</span> <a href="../TChannel.html#TChannel:_TChannel" title="void TChannel::~TChannel()">~TChannel</a>(); 
 
 <a name="NR12dE"></a>      <span class="keyword">static</span> <span class="keyword">int</span> <a href="../TChannel.html#TChannel:GetNumberOfChannels" title="int TChannel::GetNumberOfChannels()">GetNumberOfChannels</a>() { <span class="keyword">return</span> <a href="../TChannel.html#TChannel:fChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelMap">fChannelMap</a>-&gt;size(); }
       <span class="comment">//static TIter *GetChannelIter() { TIter *iter = new TIter(fChannelList); return iter;}</span>
 
 <a name="HHEE4"></a>      <a href="../TChannel.html">TChannel</a>();
-<a name="re.CZB"></a>		<span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:AddChannel" title="void TChannel::AddChannel(TChannel* ,Option_t* opt=&quot;&quot;)">AddChannel</a>(<a href="../TChannel.html">TChannel</a>*,<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt=<span class="string">""</span>);
-<a name="BkjtKD"></a>      <span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:CopyChannel" title="void TChannel::CopyChannel(TChannel* ,TChannel* )">CopyChannel</a>(<a href="../TChannel.html">TChannel</a>*,<a href="../TChannel.html">TChannel</a>*);
+		<span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:AddChannel" title="void TChannel::AddChannel(TChannel* ,Option_t* opt=&quot;&quot;)">AddChannel</a>(<a href="../TChannel.html">TChannel</a>*,<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt=<span class="string">""</span>);
+      <span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:CopyChannel" title="void TChannel::CopyChannel(TChannel* ,TChannel* )">CopyChannel</a>(<a href="../TChannel.html">TChannel</a>*,<a href="../TChannel.html">TChannel</a>*);
 <a name="iBVtPD"></a>		<span class="keyword">static</span> std::map&lt;<span class="keyword">int</span>,<a href="../TChannel.html">TChannel</a>*&gt; *<a href="../TChannel.html#TChannel:GetChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::GetChannelMap()">GetChannelMap</a>() { <span class="keyword">return</span> <a href="../TChannel.html#TChannel:fChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelMap">fChannelMap</a>; }
 
-<a name="e8H4AE"></a>		<span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:DeleteAllChannels" title="void TChannel::DeleteAllChannels()">DeleteAllChannels</a>();
+		<span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:DeleteAllChannels" title="void TChannel::DeleteAllChannels()">DeleteAllChannels</a>();
   <span class="keyword">private</span>:
-<a name="IjewZB"></a>      <a href="../TChannel.html">TChannel</a>(<span class="keyword">const</span> <span class="keyword">char</span> *<a href="../TChannel.html#TChannel:address" title="unsigned int TChannel::address">address</a>);
+      <a href="../TChannel.html">TChannel</a>(<span class="keyword">const</span> <span class="keyword">char</span> *<a href="../TChannel.html#TChannel:address" title="unsigned int TChannel::address">address</a>);
       <span class="keyword">static</span> <a href="../TChannel.html">TChannel</a> *<a href="../TChannel.html#TChannel:fTChannel" title="TChannel* TChannel::fTChannel">fTChannel</a>;
 
       <span class="keyword">unsigned</span> <span class="keyword">int</span>	<a href="../TChannel.html#TChannel:address" title="unsigned int TChannel::address">address</a>;
@@ -102,9 +102,9 @@
       <span class="comment">//static TList *fChannelList;</span>
       <span class="keyword">static</span> std::map&lt;<span class="keyword">int</span>,<a href="../TChannel.html">TChannel</a>*&gt; *<a href="../TChannel.html#TChannel:fChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelMap">fChannelMap</a>;
       <span class="keyword">static</span> std::map&lt;<span class="keyword">int</span>,<a href="../TChannel.html">TChannel</a>*&gt; *<a href="../TChannel.html#TChannel:fChannelNumberMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelNumberMap">fChannelNumberMap</a>;
-<a name="LoXMU"></a>		<span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:UpdateChannelNumberMap" title="void TChannel::UpdateChannelNumberMap()">UpdateChannelNumberMap</a>();
+		<span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:UpdateChannelNumberMap" title="void TChannel::UpdateChannelNumberMap()">UpdateChannelNumberMap</a>();
 
-<a name="EI4nv"></a>      <span class="keyword">void</span> <a href="../TChannel.html#TChannel:SetChannel" title="void TChannel::SetChannel(int taddress,int tnumber=0,string tname=&quot;&quot;)">SetChannel</a>(<span class="keyword">int</span> taddress, 
+      <span class="keyword">void</span> <a href="../TChannel.html#TChannel:SetChannel" title="void TChannel::SetChannel(int taddress,int tnumber=0,string tname=&quot;&quot;)">SetChannel</a>(<span class="keyword">int</span> taddress, 
 		                <span class="keyword">int</span> tnumber = 0, 
 		                std::string tname = <span class="string">""</span>);
 
@@ -153,29 +153,29 @@
 
 		<span class="comment">//<a href="../ListOfTypes.html#void">void</a> CalibrateFragment(<a href="../TFragment.html">TFragment</a>*);</span>
 
-<a name="uMQvzB"></a>		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateENG" title="double TChannel::CalibrateENG(double ) or overloads">CalibrateENG</a>(<span class="keyword">double</span>);
-<a name="ooGKG"></a>		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateENG" title="double TChannel::CalibrateENG(double ) or overloads">CalibrateENG</a>(<span class="keyword">int</span>);
-<a name="G_2HlB"></a>		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateCFD" title="double TChannel::CalibrateCFD(double ) or overloads">CalibrateCFD</a>(<span class="keyword">double</span>);
-<a name="QGBPL"></a>		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateCFD" title="double TChannel::CalibrateCFD(double ) or overloads">CalibrateCFD</a>(<span class="keyword">int</span>);
-<a name="alrGlB"></a>		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateLED" title="double TChannel::CalibrateLED(double ) or overloads">CalibrateLED</a>(<span class="keyword">double</span>);
-<a name="MLwSL"></a>		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateLED" title="double TChannel::CalibrateLED(double ) or overloads">CalibrateLED</a>(<span class="keyword">int</span>);
-<a name="DirfXE"></a>		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateTIME" title="double TChannel::CalibrateTIME(double ) or overloads">CalibrateTIME</a>(<span class="keyword">double</span>);
-<a name="L1oNvC"></a>		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateTIME" title="double TChannel::CalibrateTIME(double ) or overloads">CalibrateTIME</a>(<span class="keyword">int</span>);
+		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateENG" title="double TChannel::CalibrateENG(double ) or overloads">CalibrateENG</a>(<span class="keyword">double</span>);
+		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateENG" title="double TChannel::CalibrateENG(double ) or overloads">CalibrateENG</a>(<span class="keyword">int</span>);
+		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateCFD" title="double TChannel::CalibrateCFD(double ) or overloads">CalibrateCFD</a>(<span class="keyword">double</span>);
+		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateCFD" title="double TChannel::CalibrateCFD(double ) or overloads">CalibrateCFD</a>(<span class="keyword">int</span>);
+		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateLED" title="double TChannel::CalibrateLED(double ) or overloads">CalibrateLED</a>(<span class="keyword">double</span>);
+		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateLED" title="double TChannel::CalibrateLED(double ) or overloads">CalibrateLED</a>(<span class="keyword">int</span>);
+		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateTIME" title="double TChannel::CalibrateTIME(double ) or overloads">CalibrateTIME</a>(<span class="keyword">double</span>);
+		<span class="keyword">double</span> <a href="../TChannel.html#TChannel:CalibrateTIME" title="double TChannel::CalibrateTIME(double ) or overloads">CalibrateTIME</a>(<span class="keyword">int</span>);
 
 
-<a name="YsJCv"></a>		<span class="keyword">void</span> <a href="../TChannel.html#TChannel:DestroyCalibrations" title="void TChannel::DestroyCalibrations()">DestroyCalibrations</a>();
+		<span class="keyword">void</span> <a href="../TChannel.html#TChannel:DestroyCalibrations" title="void TChannel::DestroyCalibrations()">DestroyCalibrations</a>();
 
-<a name="fP2iJC"></a>		<span class="keyword">void</span> <a href="../TChannel.html#TChannel:DestroyENGCal" title="void TChannel::DestroyENGCal()">DestroyENGCal</a>();
-<a name="Tef76B"></a>		<span class="keyword">void</span> <a href="../TChannel.html#TChannel:DestroyCFDCal" title="void TChannel::DestroyCFDCal()">DestroyCFDCal</a>();
-<a name="HtM.6B"></a>		<span class="keyword">void</span> <a href="../TChannel.html#TChannel:DestroyLEDCal" title="void TChannel::DestroyLEDCal()">DestroyLEDCal</a>();
-<a name="jkF1XD"></a>		<span class="keyword">void</span> <a href="../TChannel.html#TChannel:DestroyTIMECal" title="void TChannel::DestroyTIMECal()">DestroyTIMECal</a>();
+		<span class="keyword">void</span> <a href="../TChannel.html#TChannel:DestroyENGCal" title="void TChannel::DestroyENGCal()">DestroyENGCal</a>();
+		<span class="keyword">void</span> <a href="../TChannel.html#TChannel:DestroyCFDCal" title="void TChannel::DestroyCFDCal()">DestroyCFDCal</a>();
+		<span class="keyword">void</span> <a href="../TChannel.html#TChannel:DestroyLEDCal" title="void TChannel::DestroyLEDCal()">DestroyLEDCal</a>();
+		<span class="keyword">void</span> <a href="../TChannel.html#TChannel:DestroyTIMECal" title="void TChannel::DestroyTIMECal()">DestroyTIMECal</a>();
 
-<a name="puyqqE"></a>		<span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:ReadCalFile" title="void TChannel::ReadCalFile(const char* filename=&quot;&quot;)">ReadCalFile</a>(<span class="keyword">const</span> <span class="keyword">char</span> *filename = <span class="string">""</span>);
-<a name="VyzSx"></a>		<span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:WriteCalFile" title="void TChannel::WriteCalFile(string outfilename=&quot;&quot;)">WriteCalFile</a>(std::string outfilename = <span class="string">""</span>);
+		<span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:ReadCalFile" title="void TChannel::ReadCalFile(const char* filename=&quot;&quot;)">ReadCalFile</a>(<span class="keyword">const</span> <span class="keyword">char</span> *filename = <span class="string">""</span>);
+		<span class="keyword">static</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:WriteCalFile" title="void TChannel::WriteCalFile(string outfilename=&quot;&quot;)">WriteCalFile</a>(std::string outfilename = <span class="string">""</span>);
 
 
-<a name="Cr2Az"></a>		<span class="keyword">virtual</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:Print" title="void TChannel::Print(Option_t* opt=&quot;&quot;)">Print</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
-<a name="GHFkAB"></a>		<span class="keyword">virtual</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:Clear" title="void TChannel::Clear(Option_t* opt=&quot;&quot;)">Clear</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
+		<span class="keyword">virtual</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:Print" title="void TChannel::Print(Option_t* opt=&quot;&quot;)">Print</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
+		<span class="keyword">virtual</span> <span class="keyword">void</span> <a href="../TChannel.html#TChannel:Clear" title="void TChannel::Clear(Option_t* opt=&quot;&quot;)">Clear</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);
       <span class="comment">//static  <a href="../ListOfTypes.html#void">void</a> PrintAll(<a href="../ListOfTypes.html#Option_t">Option_t</a> *opt = <span class="string">""</span>);      </span>
 
 
@@ -196,7 +196,7 @@
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2014-09-02 21:47 </em><em>&raquo; Last generated: 2014-09-02 21:47</em><br />
+<em>&raquo; Last changed: 2014-09-03 16:23 </em><em>&raquo; Last generated: 2014-09-03 16:23</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>
