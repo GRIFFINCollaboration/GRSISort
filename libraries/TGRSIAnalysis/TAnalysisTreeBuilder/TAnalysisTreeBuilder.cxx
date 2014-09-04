@@ -1,6 +1,12 @@
 
+#include "Globals.h"
+
+#include <TVirtualIndex.h>
+
 #include "TAnalysisTreeBuilder.h"
 #include "TGRSIOptions.h"
+
+#include <TStopwatch.h>
 
 bool TEventQueue::lock = false;
 std::queue<std::vector<TFragment>*> TEventQueue::fEventQueue;
@@ -52,6 +58,7 @@ int TEventQueue::Size() {
 ///************************************************///
 ///************************************************///
 
+const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)2048; // 2 GB //20000000000
 
 TChain *TAnalysisTreeBuilder::fFragmentChain = 0;
 TTree  *TAnalysisTreeBuilder::fCurrentFragTree = 0;
@@ -60,7 +67,7 @@ TTree  *TAnalysisTreeBuilder::fCurrentAnalysisTree = 0;
 TFile  *TAnalysisTreeBuilder::fCurrentAnalysisFile = 0;
 TGRSIRunInfo *TAnalysisTreeBuilder::fCurrentRunInfo = 0;
 
-TFragment *TAnalysisTreeBuilder::fragment = 0;
+TFragment *TAnalysisTreeBuilder::fCurrentFragPtr = 0;
 
 //TTigress    *TAnalysisTreeBuilder::tigress = 0;
 TSharc      *TAnalysisTreeBuilder::sharc   = 0;  
@@ -111,7 +118,7 @@ void TAnalysisTreeBuilder::InitChannels() {
       int number = chan->GetUserInfoNumber(); // I should need to do this.. 
       chan->SetNumber(number);
       TChannel::AddChannel(chan,"save");
-      //chan->Print();
+      chan->Print();
    }
    if(!TGRSIOptions::GetInputCal().empty()) {
       TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(0).c_str());
@@ -176,9 +183,28 @@ void TAnalysisTreeBuilder::SortFragmentChain() {
 
 void TAnalysisTreeBuilder::SortFragmentTree() {
 
+   long major_min = (long) fCurrentFragTree->GetMinimum(fCurrentFragTree->GetTreeIndex()->GetMajorName());
+   if(major_min<0)
+      major_min = 0;
+   long major_max = (long) fCurrentFragTree->GetMaximum(fCurrentFragTree->GetTreeIndex()->GetMajorName());
 
-
-
+   for(int j=major_min;j<=major_max;j++) {
+      std::vector<TFragment> *event = new std::vector<TFragment>;
+      int fragno = 1;
+      while(fCurrentFragTree->GetEntryWithIndex(j,fragno++) != -1) {
+         event->push_back(*fCurrentFragPtr);
+      }
+      if(event->empty()) {
+         delete event;
+      } else {
+         TEventQueue::Get()->Add(event);
+      }
+      if((j%10000)==0 || j==major_max) {
+         printf("\tprocessing event " CYAN "%i " RESET_COLOR "/" DBLUE " %i" RESET_COLOR "         \r",j,major_max);
+      }
+   }
+   printf("\n");
+   fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
    return;
 }
 
@@ -209,8 +235,10 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
       printf(DBLUE " done!" RESET_COLOR "\n");
    }
 
-
-
+   TBranch *branch = fCurrentFragTree->GetBranch("TFragment");
+   branch->SetAddress(&fCurrentFragPtr);
+   fCurrentFragTree->LoadBaskets(MEM_SIZE);   
+   printf(DRED "\t MEM_SIZE = %zd" RESET_COLOR  "\n", MEM_SIZE);
    return;
 }
 
@@ -241,7 +269,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    //if(info->TriFoil())   { tree->Branch("TTriFoil","TTriFoil",&trifoil); } 
    //if(info->Rf())        { tree->Branch("TRf","TRf",&rf); } 
    //if(info->CSM())       { tree->Branch("TCSM","TCSM",&csm); } 
-   //if(info->Spice())     { tree->Branch("TSpice","TSpice",&csm); tree->SetBranch("TS3","TS3",&s3); } 
+   //if(info->Spice())     { tree->Branch("TSpice","TSpice",&spice); tree->SetBranch("TS3","TS3",&s3); } 
    //if(info->Tip())       { tree->Branch("TTip","TTip",&tip); } 
 
    //if(info->Griffin())   { tree->Branch("TGriffin","TGriffin",&griffin); } 
@@ -253,12 +281,65 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    return;  
 }
 
+void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
 
+   if(!fCurrentAnalysisFile || !fCurrentRunInfo)
+      return;
+   TGRSIRunInfo *info = fCurrentRunInfo;
+   TTree *tree = fCurrentAnalysisTree;
 
+   //if(info->Tigress())   { tigress->Clear(); } 
+   if(info->Sharc())     { sharc->Clear(); } 
+   //if(info->TriFoil())   { trifoil->Clear(; } 
+   //if(info->Rf())        { rf->Clear(); } 
+   //if(info->CSM())       { csm->Clear(); } 
+   //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
+   //if(info->Tip())       { tip->Clear(); } 
+
+   //if(info->Griffin())   { griffin->Clear(); } 
+   //if(info->Sceptar())   { sceptar->Clear(); } 
+   //if(info->Paces())     { paces->Clear(); } 
+   //if(info->Dante())     { dante->Clear(); } 
+   //if(info->ZeroDegree()){ zerodegree->Clear(); } 
+   //if(info->Descant())   { descant->Clear();
+}
+
+void TAnalysisTreeBuilder::FillAnalysisTree() {
+   if(!fCurrentAnalysisTree)
+      return;
+   fCurrentAnalysisTree->Fill();
+   ClearActiveAnalysisTreeBranches();
+   return;
+}
 
 void TAnalysisTreeBuilder::CloseAnalysisFile() {
    if(!fCurrentAnalysisFile)
       return;
+
+   ///******************************////
+   ///******************************////
+   // this will be removed and put into a seperate thread later.
+
+   printf("Event Queue has %i events waiting to be processed.\n", TEventQueue::Size());
+   int totalsize = TEventQueue::Size();
+   TStopwatch w;
+   while(TEventQueue::Size()) {
+      w.Start();
+      std::vector<TFragment> *event = TEventQueue::Pop();
+
+      ProcessEvent(event);
+
+      if(TEventQueue::Size()%1500==0 || TEventQueue::Size()==0) {
+         printf("\t\ton event %d/%d\t\t%f seconds.\n",TEventQueue::Size(),totalsize,w.RealTime());
+         w.Reset(); w.Start();
+      }
+      if(TEventQueue::Size() == 0) 
+         break;
+   }
+   
+
+   ///******************************////
+   ///******************************////
 
    fCurrentAnalysisFile->cd();
    if(fCurrentAnalysisTree)
@@ -269,6 +350,36 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
    fCurrentAnalysisFile = 0;
    return;
 }
+
+
+void TAnalysisTreeBuilder::ProcessEvent(std::vector<TFragment> *event) {
+   if(!event)
+      return;
+
+   MNEMONIC mnemonic;
+   for(int i=0;i<event->size();i++) {
+      printf("ChannelNumber =0x%08x\t",event->at(i).ChannelAddress);
+      TChannel *channel = TChannel::GetChannel(event->at(i).ChannelAddress);
+      printf("name: %s \n",channel->GetChannelName());
+      
+
+   //   if(!channel)
+   //      continue;
+   //   ClearMNEMONIC(&mnemonic);
+   //   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+   }
+
+
+   delete event;
+   
+}
+
+
+
+
+
+
+
 
 
 

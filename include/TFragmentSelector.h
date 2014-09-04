@@ -134,9 +134,13 @@ void TFragmentSelector::Init(TTree *tree)
   if(TChannel::GetNumberOfChannels()==0) {
      TList *chanlist = fChain->GetUserInfo();
      TIter iter(chanlist);
-     while(TChannel *chan = (TChannel*)iter.Next()) {
-        TChannel *newchan = TChannel::GetChannel(chan->GetAddress());
-        TChannel::CopyChannel(newchan,chan);
+		 while(TObject *obj = iter.Next()) {
+     //while(TChannel *chan = (TChannel*)iter.Next()) {
+				if(!obj->InheritsFrom("TChannel"))
+					continue;
+				TChannel *newchan = new TChannel((TChannel*)obj);//->GetAddress());
+				TChannel::UpdateChannel(newchan);
+        //TChannel::CopyChannel(newchan,chan);
      }
    }
 

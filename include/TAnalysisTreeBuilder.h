@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <queue>
+#include <stdint.h>
 
 #include <TFile.h>
 #include <TTree.h>
@@ -57,7 +58,7 @@ class TAnalysisTreeBuilder {
    public:
       virtual ~TAnalysisTreeBuilder();
 
-      void ProcessEvent(std::vector<TFragment>*) { };
+      static void ProcessEvent(std::vector<TFragment>*); 
 
       static void SetUpFragmentChain(TChain *chain);
       static void SetUpFragmentChain(std::vector<std::string>);
@@ -70,15 +71,18 @@ class TAnalysisTreeBuilder {
 
       static void SetupOutFile();
       static void SetupAnalysisTree();
-      static void FillAnalysisTree() { };
-      static void CloseAnalysisFile();
 
-      void ProcessEvent() { };
+      static void FillAnalysisTree();
+      static void CloseAnalysisFile();
 
       static void StartMakeAnalysisTree(int argc=1, char **argv=0);
 
+      static void ClearActiveAnalysisTreeBranches();
+
    private:
       TAnalysisTreeBuilder(); 
+
+      static const size_t MEM_SIZE;
 
       static TChain *fFragmentChain;
       static TTree  *fCurrentFragTree;
@@ -89,7 +93,7 @@ class TAnalysisTreeBuilder {
 
    private:
      
-      static TFragment *fragment;
+      static TFragment *fCurrentFragPtr;
 
       //static TTigress    *tigress;
         static TSharc      *sharc;  
