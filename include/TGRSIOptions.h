@@ -36,10 +36,10 @@ class TGRSIOptions : public TObject {
       std::string GetHostName()  {  return fhostname;  }
       std::string GetExptName()  {  return fexptname;  }
      
-      std::vector<std::string> GetInputRoot()  {  return fInputRootFile;  }
-      std::vector<std::string> GetInputMidas() {  return fInputMidasFile; }
-      std::vector<std::string> GetInputCal()   {  return fInputCalFile;   }
-      std::vector<std::string> GetInputOdb()   {  return fInputOdbFile;   }
+      static std::vector<std::string> GetInputRoot()  {  return fInputRootFile;  }
+      static std::vector<std::string> GetInputMidas() {  return fInputMidasFile; }
+      static std::vector<std::string> GetInputCal()   {  return fInputCalFile;   }
+      static std::vector<std::string> GetInputOdb()   {  return fInputOdbFile;   }
 
 		static const char *GetXMLODBFile(int runnumber=0,int subrunnumber=-1);
 		static const char *GetCalFile(int runnumber=0,int subrunnumber=-1);

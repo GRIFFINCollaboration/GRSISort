@@ -5,8 +5,10 @@
 #include "TGRSIOptions.h"
 #include "TGRSIRootIO.h"
 #include "TDataParser.h"
+#include "TAnalysisTreeBuilder.h"
 
 #include "Globals.h"
+
 
 ClassImp(TGRSIint)
 
@@ -17,8 +19,6 @@ TGRSIint *TGRSIint::fTGRSIint = NULL;
 //std::vector<std::string> *TGRSIint::fInputMidasFile = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputCalFile   = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputOdbFile   = new std::vector<std::string>;
-
-
 
 TGRSIint *TGRSIint::instance(int argc,char** argv, void *options, int numOptions, bool noLogo, const char *appClassName) {
    if(!fTGRSIint)
@@ -52,7 +52,7 @@ void TGRSIint::ApplyOptions() {
   if(fFragmentSort && TGRSIOptions::Get()->GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
   if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::Get()->GetInputRoot().size()!=0)  
-    TGRSIRootIO::Get()->StartMakeAnalysisTree();
+    TAnalysisTreeBuilder::StartMakeAnalysisTree();
   if(fAutoSort && TGRSIOptions::CloseAfterSort())
   	 gApplication->Terminate();
 }

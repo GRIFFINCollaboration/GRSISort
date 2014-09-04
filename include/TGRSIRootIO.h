@@ -55,8 +55,8 @@ class TGRSIRootIO : public TObject {
 
       void MakeUserHistsFromFragmentTree();
 
-		void StartMakeAnalysisTree();
-		void MakeAnalysisTree(std::vector<std::string>);//int argc, char **argv);
+		//void StartMakeAnalysisTree();
+		//void MakeAnalysisTree(std::vector<std::string>);//int argc, char **argv);
 
    ClassDef(TGRSIRootIO,0)
 

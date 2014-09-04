@@ -359,11 +359,16 @@ void TGRSILoop::SetTIGOdb()  {
       tempchan->SetAddress(address.at(x));
       tempchan->SetNumber(x);
       //printf("temp chan(%s) 0x%08x  number set to: %i\n",tempchan->GetChannelName(),tempchan->GetAddress(),tempchan->GetNumber());
+      int temp_integration = 0;
       if(type.at(x) != 0) {
          tempchan->SetTypeName(typemap[type.at(x)].first);
          tempchan->SetDigitizerType(typemap[type.at(x)].second.c_str());
+         if(strcmp(tempchan->GetDigitizerType(),"Tig64")==0)
+            temp_integration = 25;
+         else if(strcmp(tempchan->GetDigitizerType(),"Tig10")==0)
+            temp_integration = 125;
       }
-      
+      tempchan->SetIntegration(temp_integration);      
       tempchan->SetUserInfoNumber(x);
       tempchan->AddENGCoefficient(offsets.at(x));
       tempchan->AddENGCoefficient(gains.at(x));

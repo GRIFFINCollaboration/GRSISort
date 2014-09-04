@@ -31,7 +31,25 @@ LIBS += -lGRSILoop
 LIBS += -lMidasFormat
 LIBS += -lGRSIFormat
 LIBS += -lGRSIRootIO
+LIBS += -lAnalysisTreeBuilder
 LIBS += -lProof
+
+#DETLIBS = -lTigress
+DETLIBS = -lSharc
+#DETLIBS += -lTriFoil
+#DETLIBS += -lRf
+#DETLIBS += -lCSM
+#DETLIBS += -lSpice
+#DETLIBS += -lS3
+#DETLIBS += -lTip
+
+#DETLIBS += -lGriffin
+#DETLIBS += -lSceptar
+#DETLIBS += -lPaces
+#DETLIBS += -lDante
+#DETLIBS += -lZeroDegree
+#DETLIBS += -lDescant
+
 
 #SYSLIBS = -lxml2
 
@@ -39,7 +57,7 @@ LIBS += -lProof
 
 grsisort: $(OBJECTS) $(LIBRARIES)
 	@printf " ${COM_COLOR}%s ${OBJ_COLOR}grsisort ${NO_COLOR}" $(COMP_STRING)
-	@$(CXX) $^ $(CFLAGS) $(CPPFLAGS) $(INC) $(LIBDIR) $(LFALGS) $(LIBS) $(LDROOT) $(SYSLIBS) -o $@  2> temp.log || touch temp.errors
+	@$(CXX) $^ $(CFLAGS) $(CPPFLAGS) $(INC) $(LIBDIR) $(LFALGS) $(LIBS) $(DETLIBS) $(LDROOT) $(SYSLIBS) -o $@  2> temp.log || touch temp.errors
 	@if test -e temp.errors; then  \
 	 printf "\r ${COM_COLOR}%s ${OBJ_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
 	 && $(CAT) temp.log  \
