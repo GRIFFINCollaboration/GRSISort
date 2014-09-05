@@ -17,6 +17,8 @@
 
 ClassImp(TSharcData)
 
+bool TSharcData::fIsSet = false;
+
 /////////////////////////
 TSharcData::TSharcData()	{	}
 

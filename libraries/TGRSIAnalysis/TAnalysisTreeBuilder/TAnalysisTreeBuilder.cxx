@@ -8,6 +8,13 @@
 
 #include <TStopwatch.h>
 
+
+#include "TSharcData.h"
+
+
+
+
+
 bool TEventQueue::lock = false;
 std::queue<std::vector<TFragment>*> TEventQueue::fEventQueue;
 TEventQueue *TEventQueue::fPtrToQue = 0;
@@ -69,8 +76,8 @@ TGRSIRunInfo *TAnalysisTreeBuilder::fCurrentRunInfo = 0;
 
 TFragment *TAnalysisTreeBuilder::fCurrentFragPtr = 0;
 
-//TTigress    *TAnalysisTreeBuilder::tigress = 0;
-TSharc      *TAnalysisTreeBuilder::sharc   = 0;  
+//TTigress    *TAnalysisTreeBuilder::tigress = 0;    TTigressData   *TAnalysisTreeBuilder::tigress_data  = 0;
+TSharc      *TAnalysisTreeBuilder::sharc   = 0;    TSharcData     *TAnalysisTreeBuilder::sharc_data    = 0;
 //TTriFoil    *TAnalysisTreeBuilder::triFoil = 0;
 //TRf         *TAnalysisTreeBuilder::rf      = 0;     
 //TCSM        *TAnalysisTreeBuilder::csm     = 0;    
@@ -118,7 +125,7 @@ void TAnalysisTreeBuilder::InitChannels() {
       int number = chan->GetUserInfoNumber(); // I should need to do this.. 
       chan->SetNumber(number);
       TChannel::AddChannel(chan,"save");
-      chan->Print();
+      //chan->Print();
    }
    if(!TGRSIOptions::GetInputCal().empty()) {
       TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(0).c_str());
@@ -330,13 +337,13 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
       ProcessEvent(event);
 
       if(TEventQueue::Size()%1500==0 || TEventQueue::Size()==0) {
-         printf("\t\ton event %d/%d\t\t%f seconds.\n",TEventQueue::Size(),totalsize,w.RealTime());
-         w.Reset(); w.Start();
+         printf("\t\ton event %d/%d\t\t%f seconds.\r",TEventQueue::Size(),totalsize,w.RealTime());
+         w.Continue(); 
       }
       if(TEventQueue::Size() == 0) 
          break;
    }
-   
+   printf("\n");
 
    ///******************************////
    ///******************************////
@@ -358,21 +365,89 @@ void TAnalysisTreeBuilder::ProcessEvent(std::vector<TFragment> *event) {
 
    MNEMONIC mnemonic;
    for(int i=0;i<event->size();i++) {
-      printf("ChannelNumber =0x%08x\t",event->at(i).ChannelAddress);
+      //printf("ChannelNumber =0x%08x\t",event->at(i).ChannelAddress);
       TChannel *channel = TChannel::GetChannel(event->at(i).ChannelAddress);
-      printf("name: %s \n",channel->GetChannelName());
+      //printf("name: %s \n",channel->GetChannelName());
       
+      if(!channel)
+         continue;
+      ClearMNEMONIC(&mnemonic);
+      ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
 
-   //   if(!channel)
-   //      continue;
-   //   ClearMNEMONIC(&mnemonic);
-   //   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+			if(mnemonic.system.compare("TI")==0) {
+			//	FillTigressData(&(event->at(i)),&mnemonic);
+			} else if(mnemonic.system.compare("SH")==0) {
+				FillSharcData(&(event->at(i)),channel,&mnemonic);
+			}//} else if(mnemonic.system.compare("TR")==0) {	
+			//	FillTriFoilData(&(event->at(i)),&mnemonic);
+			//} else if(mnemonic.system.compare("RF")==0) {	
+			//	FillRfData(&(event->at(i)),&mnemonic);
+			//} else if(mnemonic.system.compare("CS")==0) {	
+			//	FillCSMData(&(event->at(i)),&mnemonic);
+			//} else if(mnemonic.system.compare("SP")==0) {	
+			//	FillSpiceData(&(event->at(i)),&mnemonic);
+			//} else if(mnemonic.system.compare("GR")==0) {	
+			//	FillGriffinData(&(event->at(i)),&mnemonic);
+			//} else if(mnemonic.system.compare("SC")==0) {	
+			//	FillSceptarData(&(event->at(i)),&mnemonic);
+			//} else if(mnemonic.system.compare("PA")==0) {	
+			//	FillPacesData(&(event->at(i)),&mnemonic);
+			//} else if(mnemonic.system.compare("DA")==0) {	
+			//	FillDanteData(&(event->at(i)),&mnemonic);
+			//} else if(mnemonic.system.compare("ZD")==0) {	
+			//	FillZeroDegreeData(&(event->at(i)),&mnemonic);
+			//} else if(mnemonic.system.compare("DE")==0) {	
+			//	FillDescantData(&(event->at(i)),&mnemonic);
+			//}
+
+//if(info->TriFoil())   { trifoil->Clear(; } 
+   //if(info->Rf())        { rf->Clear(); } 
+   //if(info->CSM())       { csm->Clear(); } 
+   //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
+   //if(info->Tip())       { tip->Clear(); } 
+
+   //if(info->Griffin())   { griffin->Clear(); } 
+   //if(info->Sceptar())   { sceptar->Clear(); } 
+   //if(info->Paces())     { paces->Clear(); } 
+   //if(info->Dante())     { dante->Clear(); } 
+   //if(info->ZeroDegree()){ zerodegree->Clear(); } 
+   //if(info->Descant())   { descant->Clear();
+
+
+
+
+
+
    }
 
 
    delete event;
    
 }
+
+
+void TAnalysisTreeBuilder::FillTigressData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) { }
+
+void TAnalysisTreeBuilder::FillSharcData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) { 
+	if(!sharc_data)
+		sharc_data = new TSharcData();
+	if(mnemonic->arraysubposition.compare(0,1,"E")==0) {//PAD
+		sharc_data->SetPAD(frag,channel,mnemonic);
+	} else if(mnemonic->arraysubposition.compare(0,1,"D")==0) {//not a PAD
+		if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front
+			sharc_data->SetFront(frag,channel,mnemonic);
+		} else {  //back
+			sharc_data->SetBack(frag,channel,mnemonic);
+		}
+	}
+	TSharcData::Set();
+}
+
+
+
+
+
+
 
 
 
