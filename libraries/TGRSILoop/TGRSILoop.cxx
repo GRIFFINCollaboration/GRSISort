@@ -281,6 +281,7 @@ void TGRSILoop::SetGRIFFOdb() {
       tempchan->SetUserInfoNumber(x);
       tempchan->AddENGCoefficient(offsets.at(x));
       tempchan->AddENGCoefficient(gains.at(x));
+			TChannel::AddChannel(tempchan);
    } 
    printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
 
@@ -372,6 +373,10 @@ void TGRSILoop::SetTIGOdb()  {
       tempchan->SetUserInfoNumber(x);
       tempchan->AddENGCoefficient(offsets.at(x));
       tempchan->AddENGCoefficient(gains.at(x));
+			TChannel::AddChannel(tempchan);
+      //TChannel *temp2 = TChannel::GetChannel(address.at(x));
+      //temp2->Print();
+			//printf("NumberofChannels: %i\n",TChannel::GetNumberOfChannels());
    } 
    printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
    return;
@@ -471,15 +476,16 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, T
 
 
 void TGRSILoop::CreateStatsLog(int runnumber, int subrunnumber) {
-   std::map<int,TGRSIStats*>::iterator iter;
-   ofstream statsout;
-   statsout.open(Form("stats%05i_%03i.log",runnumber,subrunnumber));
-   statsout << "\nRun time to the nearest second = " << TGRSIStats::GetRunTime()  << std::endl << std::endl;
-   for(iter = TGRSIStats::GetMap()->begin();iter!=TGRSIStats::GetMap()->end();iter++) {
-	TChannel *chan = TChannel::GetChannel(iter->second->GetAddress());
-	TGRSIStats *stat = iter->second;
-	statsout << "0x"<< std::hex <<  stat->GetAddress() << std::dec  << "\t" <<  chan->GetChannelName() << "\tDeadtime: " << ((float)(stat->GetDeadTime()))*(1E-9) << " seconds." << std::endl;
-   }
+  std::map<int,TGRSIStats*>::iterator iter;
+  ofstream statsout;
+  statsout.open(Form("stats%05i_%03i.log",runnumber,subrunnumber));
+  statsout << "\nRun time to the nearest second = " << TGRSIStats::GetRunTime()  << std::endl << std::endl;
+  for(iter = TGRSIStats::GetMap()->begin();iter!=TGRSIStats::GetMap()->end();iter++) {
+		int tmp_add = iter->second->GetAddress();
+		TChannel *chan = TChannel::GetChannel(tmp_add);
+		TGRSIStats *stat = iter->second;
+		statsout << "0x"<< std::hex <<  stat->GetAddress() << std::dec  << "\t" <<  chan->GetChannelName() << "\tDeadtime: " << ((float)(stat->GetDeadTime()))*(1E-9) << " seconds." << std::endl;
+  }
   TGRSIStats::GetMap()->clear();
   statsout <<  std::endl;
   statsout.close();

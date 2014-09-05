@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <queue>
+#include <stdint.h>
 
 #include <TFile.h>
 #include <TTree.h>
@@ -57,7 +58,7 @@ class TAnalysisTreeBuilder {
    public:
       virtual ~TAnalysisTreeBuilder();
 
-      void ProcessEvent(std::vector<TFragment>*) { };
+      static void ProcessEvent(std::vector<TFragment>*); 
 
       static void SetUpFragmentChain(TChain *chain);
       static void SetUpFragmentChain(std::vector<std::string>);
@@ -70,15 +71,18 @@ class TAnalysisTreeBuilder {
 
       static void SetupOutFile();
       static void SetupAnalysisTree();
-      static void FillAnalysisTree() { };
-      static void CloseAnalysisFile();
 
-      void ProcessEvent() { };
+      static void FillAnalysisTree();
+      static void CloseAnalysisFile();
 
       static void StartMakeAnalysisTree(int argc=1, char **argv=0);
 
+      static void ClearActiveAnalysisTreeBranches();
+
    private:
       TAnalysisTreeBuilder(); 
+
+      static const size_t MEM_SIZE;
 
       static TChain *fFragmentChain;
       static TTree  *fCurrentFragTree;
@@ -87,12 +91,16 @@ class TAnalysisTreeBuilder {
       static TFile  *fCurrentAnalysisFile;
       static TGRSIRunInfo *fCurrentRunInfo;
 
+
+			static void FillTigressData(TFragment*,TChannel*,MNEMONIC*);
+			static void FillSharcData(TFragment*,TChannel*,MNEMONIC*);
+
    private:
      
-      static TFragment *fragment;
+      static TFragment *fCurrentFragPtr;
 
-      //static TTigress    *tigress;
-        static TSharc      *sharc;  
+      //static TTigress    *tigress;  static TTigressData *tigress_data;
+        static TSharc      *sharc;    static TSharcData   *sharc_data;
       //static TTriFoil    *triFoil;
       //static TRf         *rf;     
       //static TCSM        *csm;    
