@@ -26,7 +26,7 @@ TSharcData::TSharcData()	{	}
 TSharcData::~TSharcData()	{	}
 
 /////////////////////////
-void TSharcData::ClearData()
+void TSharcData::Clear(Option_t *opt)
 {
   fSharc_StripFront_DetectorNbr.clear();
   fSharc_StripFront_ChannelId.clear();
@@ -66,7 +66,7 @@ void TSharcData::ClearData()
 }
 
 /////////////////////////
-void TSharcData::Print() 
+void TSharcData::Print(Option_t *opt) 
 {
   // Energy
   std::cout << "Sharc_StripFront_Mult = " << fSharc_StripFront_DetectorNbr.size() << std::endl;

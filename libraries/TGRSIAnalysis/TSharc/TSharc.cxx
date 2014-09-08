@@ -25,12 +25,34 @@ ClassImp(TSharc)
 //==========================================================================//
 //==========================================================================//
 
-TSharc::TSharc()	{	}
+TSharc::TSharc() : data(0)	{	}
 
-TSharc::~TSharc()	{	}
+TSharc::~TSharc()	{
+	if(data) delete data;
+}
 
 
-void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
+void TSharc::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
+	 if(!data)
+			data = new TSharcData();
+   if(mnemonic->arraysubposition.compare(0,1,"E")==0) {//PAD
+      data->SetPAD(frag,channel,mnemonic);
+   } else if(mnemonic->arraysubposition.compare(0,1,"D")==0) {//not a PAD
+		if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front
+			data->SetFront(frag,channel,mnemonic);
+		} else {  //back
+			data->SetBack(frag,channel,mnemonic);
+		}
+	}
+	TSharcData::Set();
+}
+
+void	TSharc::BuildHits(TSharcData *sdata,Option_t *opt)	{
+	if(sdata==0)
+     sdata = (this->data); 
+
+
+
   //  after the data has been taken from the fragement tree, the data
   //  is stored/correlated breifly in by the tsharcdata class - these 
   //  function takes the data out of tsharcdata, and puts it into the 
@@ -44,14 +66,17 @@ void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
 	//printf("Building Hits!. options = %s\n",opt);
 
 
-	if((data->GetMultiplicityFront()!=1) && (data->GetMultiplicityBack()!=1) )
+	//printf("frontsize = %i   |  backsize = %i  \n",sdata->GetMultiplicityFront(),sdata->GetMultiplicityBack());
+	if((sdata->GetMultiplicityFront()!=1) && (sdata->GetMultiplicityBack()!=1) )   ///need to remove this soon!!! pcb. and add better building condition.
 		return;
 
-   for(int i=0;i<data->GetMultiplicityFront();i++)	{	
-      for(int j=0;j<data->GetMultiplicityBack();j++)	{	
-         if(data->GetFront_DetectorNbr(i) != data->GetBack_DetectorNbr(j))
+	//printf("Building sharc hits.\n");
+
+   for(int i=0;i<sdata->GetMultiplicityFront();i++)	{	
+      for(int j=0;j<sdata->GetMultiplicityBack();j++)	{	
+         if(sdata->GetFront_DetectorNbr(i) != sdata->GetBack_DetectorNbr(j))
 				continue;
-			if(abs(data->GetFront_Energy(i) - data->GetBack_Energy(j)) > 500)
+			if(abs(sdata->GetFront_Energy(i) - sdata->GetBack_Energy(j)) > 500)
 				continue;
 
 		/*	
@@ -68,20 +93,20 @@ void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
 		*/	
 			TSharcHit hit; 
 
-         hit.SetDetector(data->GetFront_DetectorNbr(i));				
+         hit.SetDetector(sdata->GetFront_DetectorNbr(i));				
 
-         hit.SetDeltaFrontE(data->GetFront_Energy(i));
-         hit.SetDeltaFrontT(data->GetFront_Time(i));
-         hit.SetFrontCharge(data->GetFront_Charge(i));
-         hit.SetFrontChanId(data->GetFront_ChannelId(i));
+         hit.SetDeltaFrontE(sdata->GetFront_Energy(i));
+         hit.SetDeltaFrontT(sdata->GetFront_Time(i));
+         hit.SetFrontCharge(sdata->GetFront_Charge(i));
+         hit.SetFrontChanId(sdata->GetFront_ChannelId(i));
 
-         hit.SetDeltaBackE(data->GetBack_Energy(j));
-         hit.SetDeltaBackT(data->GetBack_Time(j));
-         hit.SetBackCharge(data->GetBack_Charge(j));
-         hit.SetBackChanId(data->GetBack_ChannelId(j));
+         hit.SetDeltaBackE(sdata->GetBack_Energy(j));
+         hit.SetDeltaBackT(sdata->GetBack_Time(j));
+         hit.SetBackCharge(sdata->GetBack_Charge(j));
+         hit.SetBackChanId(sdata->GetBack_ChannelId(j));
 
-			hit.SetFrontStrip(data->GetFront_StripNbr(i));
-			hit.SetBackStrip(data->GetBack_StripNbr(j));
+			hit.SetFrontStrip(sdata->GetFront_StripNbr(i));
+			hit.SetBackStrip(sdata->GetBack_StripNbr(j));
 
          hit.SetPosition(TSharc::GetPosition(hit.GetDetectorNumber(),
                                              hit.GetFrontStrip(),
@@ -98,13 +123,13 @@ void	TSharc::BuildHits(TSharcData *data,Option_t *opt)	{
    }
 	//printf("\n\n");
 
-   for(int k=0;k<data->GetMultiplicityPAD();k++)	{	
+   for(int k=0;k<sdata->GetMultiplicityPAD();k++)	{	
       for(int l=0;l<sharc_hits.size();l++)	{
-         if(data->GetPAD_DetectorNbr(k) != sharc_hits.at(l).GetDetectorNumber())
+         if(sdata->GetPAD_DetectorNbr(k) != sharc_hits.at(l).GetDetectorNumber())
 		      continue;
-			sharc_hits.at(l).SetPadE(data->GetPAD_Energy(k)); 
-			sharc_hits.at(l).SetPadT(data->GetPAD_Time(k)); 
-			sharc_hits.at(l).SetPadCharge(data->GetPAD_Charge(k)); 
+			sharc_hits.at(l).SetPadE(sdata->GetPAD_Energy(k)); 
+			sharc_hits.at(l).SetPadT(sdata->GetPAD_Time(k)); 
+			sharc_hits.at(l).SetPadCharge(sdata->GetPAD_Charge(k)); 
      }
    }
 
@@ -189,7 +214,7 @@ void TSharc::RemoveHits(std::vector<TSharcHit> *hits,std::set<int> *to_remove)	{
 }
 
 void TSharc::Clear(Option_t *option)	{
-  //ClearData();
+  if(data) data->Clear();
   sharc_hits.clear();
   return;
 }

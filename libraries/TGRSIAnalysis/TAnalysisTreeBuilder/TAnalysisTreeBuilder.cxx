@@ -77,7 +77,7 @@ TGRSIRunInfo *TAnalysisTreeBuilder::fCurrentRunInfo = 0;
 TFragment *TAnalysisTreeBuilder::fCurrentFragPtr = 0;
 
 //TTigress    *TAnalysisTreeBuilder::tigress = 0;    TTigressData   *TAnalysisTreeBuilder::tigress_data  = 0;
-TSharc      *TAnalysisTreeBuilder::sharc   = 0;    TSharcData     *TAnalysisTreeBuilder::sharc_data    = 0;
+TSharc      *TAnalysisTreeBuilder::sharc   = 0;    //TSharcData     *TAnalysisTreeBuilder::sharc_data    = 0;
 //TTriFoil    *TAnalysisTreeBuilder::triFoil = 0;
 //TRf         *TAnalysisTreeBuilder::rf      = 0;     
 //TCSM        *TAnalysisTreeBuilder::csm     = 0;    
@@ -311,11 +311,34 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    //if(info->Descant())   { descant->Clear();
 }
 
+void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches() {
+
+   if(!fCurrentAnalysisFile || !fCurrentRunInfo)
+      return;
+   TGRSIRunInfo *info = fCurrentRunInfo;
+   TTree *tree = fCurrentAnalysisTree;
+
+   //if(info->Tigress())   { tigress->Clear(); } 
+   if(info->Sharc())     { sharc->BuildHits(); } 
+   //if(info->TriFoil())   { trifoil->Clear(; } 
+   //if(info->Rf())        { rf->Clear(); } 
+   //if(info->CSM())       { csm->Clear(); } 
+   //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
+   //if(info->Tip())       { tip->Clear(); } 
+
+   //if(info->Griffin())   { griffin->Clear(); } 
+   //if(info->Sceptar())   { sceptar->Clear(); } 
+   //if(info->Paces())     { paces->Clear(); } 
+   //if(info->Dante())     { dante->Clear(); } 
+   //if(info->ZeroDegree()){ zerodegree->Clear(); } 
+   //if(info->Descant())   { descant->Clear();
+}
+
 void TAnalysisTreeBuilder::FillAnalysisTree() {
    if(!fCurrentAnalysisTree)
       return;
    fCurrentAnalysisTree->Fill();
-   ClearActiveAnalysisTreeBranches();
+  
    return;
 }
 
@@ -333,6 +356,7 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
    while(TEventQueue::Size()) {
       w.Start();
       std::vector<TFragment> *event = TEventQueue::Pop();
+			//printf("event = 0x%08x\n",event);
 
       ProcessEvent(event);
 
@@ -365,19 +389,24 @@ void TAnalysisTreeBuilder::ProcessEvent(std::vector<TFragment> *event) {
 
    MNEMONIC mnemonic;
    for(int i=0;i<event->size();i++) {
-      //printf("ChannelNumber =0x%08x\t",event->at(i).ChannelAddress);
+      //printf("ChannelAddress =0x%08x\t",event->at(i).ChannelAddress);
+
       TChannel *channel = TChannel::GetChannel(event->at(i).ChannelAddress);
       //printf("name: %s \n",channel->GetChannelName());
-      
+
+     
       if(!channel)
          continue;
       ClearMNEMONIC(&mnemonic);
       ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+		
+			//printf("ChannelName = %s\n",channel->GetChannelName());
 
 			if(mnemonic.system.compare("TI")==0) {
-			//	FillTigressData(&(event->at(i)),&mnemonic);
+			//	tigress->FillData(&(event->at(i)),channel,&mnemonic);
 			} else if(mnemonic.system.compare("SH")==0) {
-				FillSharcData(&(event->at(i)),channel,&mnemonic);
+				//printf("I am here.\n");
+				sharc->FillData(&(event->at(i)),channel,&mnemonic);
 			}//} else if(mnemonic.system.compare("TR")==0) {	
 			//	FillTriFoilData(&(event->at(i)),&mnemonic);
 			//} else if(mnemonic.system.compare("RF")==0) {	
@@ -400,48 +429,17 @@ void TAnalysisTreeBuilder::ProcessEvent(std::vector<TFragment> *event) {
 			//	FillDescantData(&(event->at(i)),&mnemonic);
 			//}
 
-//if(info->TriFoil())   { trifoil->Clear(; } 
-   //if(info->Rf())        { rf->Clear(); } 
-   //if(info->CSM())       { csm->Clear(); } 
-   //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
-   //if(info->Tip())       { tip->Clear(); } 
 
-   //if(info->Griffin())   { griffin->Clear(); } 
-   //if(info->Sceptar())   { sceptar->Clear(); } 
-   //if(info->Paces())     { paces->Clear(); } 
-   //if(info->Dante())     { dante->Clear(); } 
-   //if(info->ZeroDegree()){ zerodegree->Clear(); } 
-   //if(info->Descant())   { descant->Clear();
+	}		
+	
+	BuildActiveAnalysisTreeBranches();
+	FillAnalysisTree();
+	ClearActiveAnalysisTreeBranches();	
 
-
-
-
-
-
-   }
-
-
-   delete event;
+  delete event;
    
 }
 
-
-void TAnalysisTreeBuilder::FillTigressData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) { }
-
-void TAnalysisTreeBuilder::FillSharcData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) { 
-	if(!sharc_data)
-		sharc_data = new TSharcData();
-	if(mnemonic->arraysubposition.compare(0,1,"E")==0) {//PAD
-		sharc_data->SetPAD(frag,channel,mnemonic);
-	} else if(mnemonic->arraysubposition.compare(0,1,"D")==0) {//not a PAD
-		if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front
-			sharc_data->SetFront(frag,channel,mnemonic);
-		} else {  //back
-			sharc_data->SetBack(frag,channel,mnemonic);
-		}
-	}
-	TSharcData::Set();
-}
 
 
 

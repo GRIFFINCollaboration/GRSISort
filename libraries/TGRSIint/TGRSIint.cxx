@@ -55,6 +55,9 @@ void TGRSIint::ApplyOptions() {
     TAnalysisTreeBuilder::StartMakeAnalysisTree();
   if(fAutoSort && TGRSIOptions::CloseAfterSort())
   	 gApplication->Terminate();
+	if(TGRSIOptions::MakeAnalysisTree())
+  	 gApplication->Terminate();
+		
 }
 
 

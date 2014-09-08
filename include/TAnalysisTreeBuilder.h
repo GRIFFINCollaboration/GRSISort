@@ -78,6 +78,8 @@ class TAnalysisTreeBuilder {
       static void StartMakeAnalysisTree(int argc=1, char **argv=0);
 
       static void ClearActiveAnalysisTreeBranches();
+			static void BuildActiveAnalysisTreeBranches();
+
 
    private:
       TAnalysisTreeBuilder(); 
@@ -92,15 +94,12 @@ class TAnalysisTreeBuilder {
       static TGRSIRunInfo *fCurrentRunInfo;
 
 
-			static void FillTigressData(TFragment*,TChannel*,MNEMONIC*);
-			static void FillSharcData(TFragment*,TChannel*,MNEMONIC*);
-
    private:
      
       static TFragment *fCurrentFragPtr;
 
-      //static TTigress    *tigress;  static TTigressData *tigress_data;
-        static TSharc      *sharc;    static TSharcData   *sharc_data;
+      //static TTigress    *tigress;  
+        static TSharc      *sharc;   
       //static TTriFoil    *triFoil;
       //static TRf         *rf;     
       //static TCSM        *csm;    
