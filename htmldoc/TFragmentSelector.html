@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 16:59:02 2014            -->
+<!--   Date: Mon Sep  8 14:58:14 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -58,7 +58,17 @@ return false;}
 </div>
 <div class="dropshadow"><div class="withshadow"><h1><a name="TFragmentSelector:description"></a>class TFragmentSelector: public TSelector</h1>
 <div class="classdescr">
-</div>
+<pre>
+
+ <a href="./TFragmentSelector.html">TFragmentSelector</a>
+
+ <a href="./TFragmentSelector.html">TFragmentSelector</a> uses PROOF to process TFragments into user defined
+ histograms (as well as a TAnalysisTree?). The User defined histograms are
+ intialized in users/UserInitObj.h and filled in users/UserFillObj.h
+ PROOF allows for parrallel processing of TFragments.
+
+
+</pre></div>
 </div></div>
 
 <div id="functions">
@@ -210,7 +220,7 @@ return false;}
 <div class="access" id="datapubl"><b>public:</b>
 <table class="data" id="tabdatapubl" cellspacing="0">
 <tr class="data"><td class="datatype">TTree*</td><td class="dataname"><a name="TFragmentSelector:fChain"></a>fChain</td><td class="datadesc">!pointer to the analyzed TTree or TChain</td></tr>
-<tr class="data"><td class="datatype"><a href="./TFragment.html">TFragment</a>*</td><td class="dataname"><a name="TFragmentSelector:fragment"></a>fragment</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./TFragment.html">TFragment</a>*</td><td class="dataname"><a name="TFragmentSelector:fragment"></a>fragment</td><td class="datadesc">The Current fragment being sent to the fragment selector</td></tr>
 
 </table></div>
 <div class="access" id="dataprot"><b>protected:</b>
@@ -225,8 +235,8 @@ return false;}
 </table></div>
 <div class="access" id="datapriv"><b>private:</b>
 <table class="data" id="tabdatapriv" cellspacing="0">
-<tr class="data"><td class="datatype"><span class="keyword">int</span></td><td class="dataname"><a name="TFragmentSelector:frunnumber"></a>frunnumber</td><td></td></tr>
-<tr class="data"><td class="datatype"><span class="keyword">int</span></td><td class="dataname"><a name="TFragmentSelector:fsubrunnumber"></a>fsubrunnumber</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">int</span></td><td class="dataname"><a name="TFragmentSelector:frunnumber"></a>frunnumber</td><td class="datadesc">The current run number</td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">int</span></td><td class="dataname"><a name="TFragmentSelector:fsubrunnumber"></a>fsubrunnumber</td><td class="datadesc">The current subrun number</td></tr>
 
 </table></div>
 </div>
@@ -395,7 +405,7 @@ return false;}
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Wed Sep  3 16:59:02 2014 </em><em>&raquo; Last generated: 2014-09-03 16:59</em><br />
+<em>&raquo; Last changed: Mon Sep  8 14:58:15 2014 </em><em>&raquo; Last generated: 2014-09-08 14:58</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

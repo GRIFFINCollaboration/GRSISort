@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 16:59:02 2014            -->
+<!--   Date: Mon Sep  8 14:58:15 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -119,7 +119,9 @@ return false;}
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsSortable"><span class="baseclass">TObject::</span>IsSortable</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsZombie"><span class="baseclass">TObject::</span>IsZombie</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ls"><span class="baseclass">TObject::</span>ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">static string</td><td class="funcname"><a class="funcname" href="#TGRSIRunInfo:MajorIndex">MajorIndex</a>()</td></tr>
 <tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MayNotUse"><span class="baseclass">TObject::</span>MayNotUse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">static string</td><td class="funcname"><a class="funcname" href="#TGRSIRunInfo:MinorIndex">MinorIndex</a>()</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Notify"><span class="baseclass">TObject::</span>Notify</a>()</td></tr>
 <tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Obsolete"><span class="baseclass">TObject::</span>Obsolete</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* asOfVers, <span class="keyword">const</span> <span class="keyword">char</span>* removedFromVers) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr)</td></tr>
@@ -154,6 +156,8 @@ return false;}
 <tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDtorOnly"><span class="baseclass">TObject::</span>SetDtorOnly</a>(<span class="keyword">void</span>* obj)</td></tr>
 <tr class="func"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TGRSIRunInfo:SetGriffin">SetGriffin</a>(<span class="keyword">bool</span> flag = <span class="keyword">true</span>)</td></tr>
 <tr class="func"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TGRSIRunInfo:SetInfoFromFile">SetInfoFromFile</a>(<a href="./TGRSIRunInfo.html">TGRSIRunInfo</a>* temp)</td></tr>
+<tr class="func"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TGRSIRunInfo:SetMajorIndex">SetMajorIndex</a>(<span class="keyword">const</span> <span class="keyword">char</span>* tmpstr)</td></tr>
+<tr class="func"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TGRSIRunInfo:SetMinorIndex">SetMinorIndex</a>(<span class="keyword">const</span> <span class="keyword">char</span>* tmpstr)</td></tr>
 <tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetObjectStat"><span class="baseclass">TObject::</span>SetObjectStat</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> stat)</td></tr>
 <tr class="func"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TGRSIRunInfo:SetPaces">SetPaces</a>(<span class="keyword">bool</span> flag = <span class="keyword">true</span>)</td></tr>
 <tr class="func"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TGRSIRunInfo:SetRf">SetRf</a>(<span class="keyword">bool</span> flag = <span class="keyword">true</span>)</td></tr>
@@ -306,6 +310,26 @@ else
 <div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGRSIRunInfo.html#TGRSIRunInfo:fGRSIRunInfo" title="TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo">fGRSIRunInfo</a>-><a href="./TGRSIRunInfo.html#TGRSIRunInfo:fSubRunNumber" title="int TGRSIRunInfo::fSubRunNumber">fSubRunNumber</a>; }</code></div>
 <div style="clear:both;"></div>
 </div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:SetMajorIndex" href="src/TGRSIRunInfo.h.html#zUyX5">SetMajorIndex</a>(<span class="keyword">const</span> <span class="keyword">char</span>* tmpstr)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./TGRSIRunInfo.html#TGRSIRunInfo:fGRSIRunInfo" title="TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo">fGRSIRunInfo</a>-><a href="./TGRSIRunInfo.html#TGRSIRunInfo:fMajorIndex" title="string TGRSIRunInfo::fMajorIndex">fMajorIndex</a>.assign(tmpstr); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:SetMinorIndex" href="src/TGRSIRunInfo.h.html#W3P6WC">SetMinorIndex</a>(<span class="keyword">const</span> <span class="keyword">char</span>* tmpstr)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./TGRSIRunInfo.html#TGRSIRunInfo:fGRSIRunInfo" title="TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo">fGRSIRunInfo</a>-><a href="./TGRSIRunInfo.html#TGRSIRunInfo:fMinorIndex" title="string TGRSIRunInfo::fMinorIndex">fMinorIndex</a>.assign(tmpstr); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">std::string <a class="funcname" name="TGRSIRunInfo:MajorIndex" href="src/TGRSIRunInfo.h.html#JdmcdE">MajorIndex</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGRSIRunInfo.html#TGRSIRunInfo:fGRSIRunInfo" title="TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo">fGRSIRunInfo</a>-><a href="./TGRSIRunInfo.html#TGRSIRunInfo:fMajorIndex" title="string TGRSIRunInfo::fMajorIndex">fMajorIndex</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">std::string <a class="funcname" name="TGRSIRunInfo:MinorIndex" href="src/TGRSIRunInfo.h.html#h.jcaE">MinorIndex</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGRSIRunInfo.html#TGRSIRunInfo:fGRSIRunInfo" title="TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo">fGRSIRunInfo</a>-><a href="./TGRSIRunInfo.html#TGRSIRunInfo:fMinorIndex" title="string TGRSIRunInfo::fMinorIndex">fMinorIndex</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGRSIRunInfo:SetTigress" href="src/TGRSIRunInfo.h.html#tVvzC">SetTigress</a>(<span class="keyword">bool</span> flag = <span class="keyword">true</span>)</span><br />
 
 <div class="code"><code class="inlinecode">{ <a href="./TGRSIRunInfo.html#TGRSIRunInfo:fGRSIRunInfo" title="TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo">fGRSIRunInfo</a>-><a href="./TGRSIRunInfo.html#TGRSIRunInfo:fTigress" title="bool TGRSIRunInfo::fTigress">fTigress</a> = flag; }</code></div>
@@ -456,7 +480,7 @@ else
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Wed Sep  3 16:59:02 2014 </em><em>&raquo; Last generated: 2014-09-03 16:59</em><br />
+<em>&raquo; Last changed: Mon Sep  8 14:58:15 2014 </em><em>&raquo; Last generated: 2014-09-08 14:58</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

@@ -1,5 +1,3 @@
-
-
 #include "TDataParser.h"
 #include "TChannel.h"
 #include "Globals.h"
@@ -9,43 +7,55 @@
 
 #include "Rtypes.h"
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TDataParser                                                //
+//                                                            //
+// The TDataParser is the DAQ dependent part of GRSISort.     //
+// It takes a "DAQ-dependent"-flavoured MIDAS file and        //
+// converts it into a generic TFragment that the rest of      //
+// GRSISort can deal with. This is where event word masks     //
+// are applied, and any changes to the event format must      //
+// be implemented.                                            //
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 TDataParser *TDataParser::fDataParser = 0;
 bool TDataParser::no_waveforms = false;
 bool TDataParser::record_stats = false;
 
 const unsigned long TDataParser::fgMaxTriggerId = 1024 * 1024 * 16; // 24 bits internally
-unsigned long TDataParser::fgLastMidasId	=	0;
+unsigned long TDataParser::fgLastMidasId = 0;
 
-unsigned long TDataParser::fgLastTriggerId	=	0;
+unsigned long TDataParser::fgLastTriggerId = 0;
 
 
 ClassImp(TDataParser)
 
-TDataParser *TDataParser::instance()	{
-	if(!fDataParser)
-		fDataParser = new TDataParser();
-	return fDataParser;
+TDataParser *TDataParser::instance() {
+//Get the global instance of the TDataParser Class
+    if(!fDataParser)
+	fDataParser = new TDataParser();
+    return fDataParser;
 }
 
-TDataParser::TDataParser()	{
+TDataParser::TDataParser() {}
 
-}
-
-TDataParser::~TDataParser()	{	}
+TDataParser::~TDataParser() {}
 
 
 //std::vector<TFragment*> TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber, time_t midastime) {
 int TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber, time_t midastime) {
-
+//Converts A MIDAS File from the Tigress DAQ into a TFragment.
    std::vector<TFragment*> FragsFound;
    int NumFragsFound = 0;
    TFragment *EventFrag = new TFragment();
   //FragsFound.push_back(EventFrag);
    //EventFrag->Clear();	
-	bool badtimestamp = false;
-	bool needtodeletelast = false;
+   bool badtimestamp = false;
+   bool needtodeletelast = false;
    EventFrag->MidasTimeStamp = midastime;
-	EventFrag->MidasId = midasserialnumber;	 
+   EventFrag->MidasId = midasserialnumber;	 
    
    int x = 0;
    uint32_t dword = *(data+x);
@@ -125,11 +135,14 @@ int TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int mid
 }
 
 void TDataParser::SetTIGAddress(uint32_t value,TFragment *currentfrag) {
+//Sets the digitizer address of the 'currentfrag' TFragment
 	currentfrag->ChannelAddress = (int32_t)(0x00ffffff&value);   ///the front end number is not in the tig odb!
    return;
 }
 
 void TDataParser::SetTIGWave(uint32_t value,TFragment *currentfrag) {
+//Sets the waveform for a Tigress event.
+
    //if(!currentfrag->wavebuffer)
    //   currentfrag->wavebuffer = new std::vector<short>;
    if(currentfrag->wavebuffer.size() > (100000) ) {printf("number of wave samples found is to great\n"); return;}       
@@ -153,6 +166,8 @@ void TDataParser::SetTIGWave(uint32_t value,TFragment *currentfrag) {
 }
 
 void TDataParser::SetTIGCfd(uint32_t value,TFragment *currentfrag) {
+//Sets the CFD of a Tigress Event.
+
    //currentfragment->SlowRiseTime = value & 0x08000000;
    currentfrag->Cfd.push_back( int32_t(value & 0x07ffffff));
    //std::string dig_type = "";//"Tig64";
@@ -180,11 +195,13 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment *currentfrag) {
 }
 
 void TDataParser::SetTIGLed(uint32_t value, TFragment *currentfrag) {
+//Sets the LED of a Tigress event.
    currentfrag->Led.push_back( int32_t(value & 0x07ffffff) );
    return;
 }
 
 void TDataParser::SetTIGCharge(uint32_t value, TFragment *currentfragment) {
+//Sets the integrated charge of a Tigress event.
    TChannel *chan = TChannel::GetChannel(currentfragment->ChannelAddress);
    std::string dig_type = chan->GetDigitizerType();
    currentfragment->ChannelNumber = chan->GetNumber();
@@ -222,6 +239,7 @@ void TDataParser::SetTIGCharge(uint32_t value, TFragment *currentfragment) {
 }
 
 bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment *currentfrag) {
+//Sets the Trigger ID of a Tigress event.
    if( (value&0xf0000000) != 0x80000000) {
       return false;         
    }
@@ -259,7 +277,7 @@ bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment *currentfrag) {
 
 
 bool TDataParser::SetTIGTimeStamp(uint32_t *data,TFragment *currentfrag ) {
-
+//Sets the Timestamp of a Tigress Event
    for(int x=0;x<10;x++) {
       data = data + 1;
       //printf(DBLUE "data for x = %i  |  0x%08x  |  0x%08x  |  0x%08x" RESET_COLOR "\n",x,*data,(*data)>>28,0xa);
@@ -327,7 +345,7 @@ bool TDataParser::SetTIGTimeStamp(uint32_t *data,TFragment *currentfrag ) {
 /////////////***************************************************************/////////////
 
 int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int midasserialnumber, time_t midastime)	{
-
+//Converts a Griffin flavoured MIDAS file into a TFragment
    int NumFragsFound = 1;
    TFragment *EventFrag = new TFragment();
 
@@ -413,6 +431,12 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 
 
 bool TDataParser::SetGRIFHeader(uint32_t value,TFragment *frag) {
+//Sets: 
+//     The number of filters
+//     The Data Type
+//     Number of Pileups
+//     Channel Address
+//     Detector Type
 	if( (value&0xf0000000) != 0x80000000) {
 		return false;
 	}
@@ -426,6 +450,7 @@ bool TDataParser::SetGRIFHeader(uint32_t value,TFragment *frag) {
 
 
 bool TDataParser::SetGRIFPPG(uint32_t value,TFragment *frag) {
+//Sets the Programmable Pattern Generator words
 	if( (value & 0xc0000000) != 0x00000000) {
 		return false;
 	}
@@ -434,6 +459,7 @@ bool TDataParser::SetGRIFPPG(uint32_t value,TFragment *frag) {
 };
 
 bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment *frag) {
+//Sets the Griffin master filter ID
 	if( (value &0x80000000) != 0x00000000) {
 		return false;
 	}
@@ -446,6 +472,7 @@ bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment *frag) {
 
 
 bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment *frag) {
+//Sets the Griffin Master Filter Pattern
 	if( (value &0xc0000000) != 0x00000000) {
 		return false;
 	}
@@ -455,6 +482,7 @@ bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment *frag) {
 
 
 bool TDataParser::SetGRIFChannelTriggerId(uint32_t value, TFragment *frag) {
+//Sets the Griffin Channel Trigger ID
 	if( (value &0xf0000000) != 0x90000000) {
 		return false;
 	}
@@ -464,6 +492,7 @@ bool TDataParser::SetGRIFChannelTriggerId(uint32_t value, TFragment *frag) {
 
 
 bool TDataParser::SetGRIFTimeStampLow(uint32_t value, TFragment *frag) {
+//Sets the lower 28 bits of the griffin time stamp 
 	if( (value &0xf0000000) != 0xa0000000) {
 		return false;
 	}
@@ -473,7 +502,7 @@ bool TDataParser::SetGRIFTimeStampLow(uint32_t value, TFragment *frag) {
 
 
 bool TDataParser::SetGRIFWaveForm(uint32_t value,TFragment *currentfrag) {
-
+//Sets the Griffin waveform if record_waveform is set to true
    if(currentfrag->wavebuffer.size() > (100000) ) {printf("number of wave samples found is to great\n"); return false;}       
    if (value & 0x00002000) {
       int temp =  value & 0x00003fff;
@@ -491,12 +520,13 @@ bool TDataParser::SetGRIFWaveForm(uint32_t value,TFragment *currentfrag) {
    } else {
       currentfrag->wavebuffer.push_back((int16_t)((value >> 14) & 0x00001fff) );	//eventfragment->SamplesFound++;
    }
-   return true;;
+   return true;
 }
 
 
 
 bool TDataParser::SetGRIFDeadTime(uint32_t value, TFragment *frag) {
+//Sets the Griffin deadtime and the upper 14 bits of the timestamp
 	frag->DeadTime      = (value & 0x0fffc000) >> 14;
 	frag->TimeStampHigh = (value &  0x00003fff);
 	return true;
@@ -505,6 +535,12 @@ bool TDataParser::SetGRIFDeadTime(uint32_t value, TFragment *frag) {
 
 
 void TDataParser::FillStats(TFragment *frag) {
+//Takes a TFragment and records statistics for it's channel address.
+//The statistics recorded currently include:
+//          The total deadtime for the channel
+//          The lowest MIDAS Time stamp
+//          The highest MIDAS Time stamp
+
 	TGRSIStats *stat = TGRSIStats::GetStats(frag->ChannelAddress);
 	//printf("Filling stats: 0x%08x\n",stat);
 	stat->IncDeadTime(frag->DeadTime);
