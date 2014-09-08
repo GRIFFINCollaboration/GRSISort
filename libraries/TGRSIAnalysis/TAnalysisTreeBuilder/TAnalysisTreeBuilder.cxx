@@ -207,7 +207,7 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
          TEventQueue::Get()->Add(event);
       }
       if((j%10000)==0 || j==major_max) {
-         printf("\tprocessing event " CYAN "%i " RESET_COLOR "/" DBLUE " %i" RESET_COLOR "         \r",j,major_max);
+         printf("\tprocessing event " CYAN "%i " RESET_COLOR "/" DBLUE " %li" RESET_COLOR "         \r",j,major_max);
       }
    }
    printf("\n");
