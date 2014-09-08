@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Mon Sep  8 14:15:49 2014            -->
+<!--   Date: Mon Sep  8 14:47:04 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -58,7 +58,19 @@ return false;}
 </div>
 <div class="dropshadow"><div class="withshadow"><h1><a name="TDataParser:description"></a>class TDataParser</h1>
 <div class="classdescr">
-</div>
+<pre>
+
+<a href="./TDataParser.html">TDataParser</a>
+
+The <a href="./TDataParser.html">TDataParser</a> is the DAQ dependent part of GRSISort.
+It takes a <span class="string">"DAQ-dependent"</span>-flavoured MIDAS file and
+converts it into a generic <a href="./TFragment.html">TFragment</a> that the rest of
+GRSISort can deal with. This is where event word masks
+are applied, and any changes to the event format must
+be implemented.
+
+
+</pre></div>
 </div></div>
 
 <div id="functions">
@@ -67,11 +79,16 @@ return false;}
 <table class="func" id="tabfuncpubl" cellspacing="0">
 <tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#TDataParser:TDataParser@1">TDataParser</a>(<span class="keyword">const</span> <a href="./TDataParser.html">TDataParser</a>&amp;)</td></tr>
 <tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#TDataParser:_TDataParser">~TDataParser</a>()</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#TDataParser:Class">Class</a>()</td></tr>
 <tr class="func"><td class="funcret">static <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#TDataParser:GriffinDataToFragment">GriffinDataToFragment</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a>* data, <span class="keyword">int</span> size, <span class="keyword">unsigned</span> <span class="keyword">int</span> midasserialnumber = 0, <a href="./ListOfTypes.html#time_t">time_t</a> midastime = 0)</td></tr>
 <tr class="func"><td class="funcret">static <a href="./TDataParser.html">TDataParser</a>*</td><td class="funcname"><a class="funcname" href="#TDataParser:instance">instance</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#TDataParser:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
 <tr class="func"><td class="funcret"><a href="./TDataParser.html">TDataParser</a>&amp;</td><td class="funcname"><a class="funcname" href="#TDataParser:operator_">operator=</a>(<span class="keyword">const</span> <a href="./TDataParser.html">TDataParser</a>&amp;)</td></tr>
 <tr class="func"><td class="funcret">static <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#TDataParser:SetNoWaveForms">SetNoWaveForms</a>(<span class="keyword">bool</span> temp = <span class="keyword">true</span>)</td></tr>
 <tr class="func"><td class="funcret">static <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#TDataParser:SetRecordStats">SetRecordStats</a>(<span class="keyword">bool</span> temp = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TDataParser:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TDataParser:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TDataParser:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
 <tr class="func"><td class="funcret">static <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#TDataParser:TigressDataToFragment">TigressDataToFragment</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a>* data, <span class="keyword">int</span> size, <span class="keyword">unsigned</span> <span class="keyword">int</span> midasserialnumber = 0, <a href="./ListOfTypes.html#time_t">time_t</a> midastime = 0)</td></tr>
 
 </table></div>
@@ -102,13 +119,13 @@ return false;}
 <h2><a name="TDataParser:Data_Members"></a>Data Members</h2>
 <div class="access" id="datapriv"><b>private:</b>
 <table class="data" id="tabdatapriv" cellspacing="0">
-<tr class="data"><td class="datatype">static <a href="./TDataParser.html">TDataParser</a>*</td><td class="dataname"><a name="TDataParser:fDataParser"></a>fDataParser</td><td></td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">unsigned</span> <span class="keyword">long</span></td><td class="dataname"><a name="TDataParser:fgLastMidasId"></a>fgLastMidasId</td><td></td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">unsigned</span> <span class="keyword">long</span></td><td class="dataname"><a name="TDataParser:fgLastTriggerId"></a>fgLastTriggerId</td><td></td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">long</span></td><td class="dataname"><a name="TDataParser:fgMaxTriggerId"></a>fgMaxTriggerId</td><td></td></tr>
+<tr class="data"><td class="datatype">static <a href="./TDataParser.html">TDataParser</a>*</td><td class="dataname"><a name="TDataParser:fDataParser"></a>fDataParser</td><td class="datadesc">A pointer to the global DataParser Class</td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">unsigned</span> <span class="keyword">long</span></td><td class="dataname"><a name="TDataParser:fgLastMidasId"></a>fgLastMidasId</td><td class="datadesc">The last MIDAS ID in the midas file</td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">unsigned</span> <span class="keyword">long</span></td><td class="dataname"><a name="TDataParser:fgLastTriggerId"></a>fgLastTriggerId</td><td class="datadesc">The last Trigged ID in the MIDAS File</td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">long</span></td><td class="dataname"><a name="TDataParser:fgMaxTriggerId"></a>fgMaxTriggerId</td><td class="datadesc">The last trigger ID Called</td></tr>
 <tr class="data"><td class="datatype">static map&lt;<span class="keyword">int</span>,<span class="keyword">int</span>,less&lt;<span class="keyword">int</span>&gt;,allocator&lt;pair&lt;<span class="keyword">const</span> <span class="keyword">int</span>,<span class="keyword">int</span>&gt; &gt; &gt;</td><td class="dataname"><a name="TDataParser:fragment_id_map"></a>fragment_id_map</td><td></td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TDataParser:no_waveforms"></a>no_waveforms</td><td></td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TDataParser:record_stats"></a>record_stats</td><td></td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TDataParser:no_waveforms"></a>no_waveforms</td><td class="datadesc">The flag to turn wave_forms on or off</td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TDataParser:record_stats"></a>record_stats</td><td class="datadesc">The flag to turn on stats recording</td></tr>
 
 </table></div>
 </div>
@@ -124,55 +141,100 @@ return false;}
 </div><div class="classcharts"><div class="classchartswidth"></div>
 <img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTDataParser_Inh" src="inh/TDataParser_Inh.png"/></div>
 <h2>Function documentation</h2>
-<div class="funcdoc"><span class="funcname"><a href="./TDataParser.html">TDataParser</a> * <a class="funcname" name="TDataParser:instance" href="src/TDataParser.cxx.html#H9s37">instance</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><a href="./TDataParser.html">TDataParser</a> * <a class="funcname" name="TDataParser:instance" href="src/TDataParser.cxx.html#L4u37">instance</a>()</span><br />
+<div class="funccomm"><pre>Get the global <a href="./TDataParser.html#TDataParser:instance" title="TDataParser* TDataParser::instance()">instance</a> of the <a href="./TDataParser.html">TDataParser</a> <a href="./TDataParser.html#TDataParser:Class" title="TClass* TDataParser::Class()">Class</a>
+</pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TDataParser:TDataParser" href="src/TDataParser.cxx.html#iUGFGE">TDataParser</a>()</span><br />
-</div>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TDataParser:_TDataParser" href="src/TDataParser.cxx.html#jv93PD">~TDataParser</a>()</span><br />
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TDataParser:TDataParser" href="src/TDataParser.cxx.html#v2sA.C">TDataParser</a>()</span><br />
 
-<div class="code"><code class="inlinecode">{	}</code></div>
+<div class="code"><code class="inlinecode">{}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TDataParser:_TDataParser" href="src/TDataParser.cxx.html#S_ZJoC">~TDataParser</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{}</code></div>
 <div style="clear:both;"></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TDataParser:TigressDataToFragment" href="src/TDataParser.cxx.html#cy7pVD">TigressDataToFragment</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a>* data, <span class="keyword">int</span> size, <span class="keyword">unsigned</span> <span class="keyword">int</span> midasserialnumber = 0, <a href="./ListOfTypes.html#time_t">time_t</a> midastime = 0)</span><br />
+<div class="funccomm"><pre>Converts A MIDAS File from the Tigress DAQ into a <a href="./TFragment.html">TFragment</a>.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TDataParser:SetTIGAddress" href="src/TDataParser.cxx.html#wVAV3D">SetTIGAddress</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the digitizer address of the 'currentfrag' <a href="./TFragment.html">TFragment</a>
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TDataParser:SetTIGWave" href="src/TDataParser.cxx.html#wf0w4B">SetTIGWave</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
-<div class="funccomm"><pre>if(!currentfrag-&gt;wavebuffer)
-   currentfrag-&gt;wavebuffer = new std::vector&lt;<a href="./ListOfTypes.html#short">short</a>&gt;;
+<div class="funccomm"><pre>Sets the waveform for a Tigress event.
 </pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TDataParser:SetTIGCfd" href="src/TDataParser.cxx.html#xU36NE">SetTIGCfd</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
-<div class="funccomm"><pre>currentfragment-&gt;SlowRiseTime = value &amp; 0x08000000;
+<div class="funccomm"><pre>Sets the CFD of a Tigress Event.
 </pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TDataParser:SetTIGLed" href="src/TDataParser.cxx.html#eXOD7D">SetTIGLed</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the LED of a Tigress event.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TDataParser:SetTIGCharge" href="src/TDataParser.cxx.html#ich5xC">SetTIGCharge</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the integrated charge of a Tigress event.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TDataParser:SetTIGTriggerID" href="src/TDataParser.cxx.html#jChLOE">SetTIGTriggerID</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the Trigger ID of a Tigress event.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TDataParser:SetTIGTimeStamp" href="src/TDataParser.cxx.html#pozxeE">SetTIGTimeStamp</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a>* , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the Timestamp of a Tigress Event
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TDataParser:GriffinDataToFragment" href="src/TDataParser.cxx.html#XA7ykC">GriffinDataToFragment</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a>* data, <span class="keyword">int</span> size, <span class="keyword">unsigned</span> <span class="keyword">int</span> midasserialnumber = 0, <a href="./ListOfTypes.html#time_t">time_t</a> midastime = 0)</span><br />
+<div class="funccomm"><pre>Converts a Griffin flavoured MIDAS file into a <a href="./TFragment.html">TFragment</a>
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TDataParser:SetGRIFHeader" href="src/TDataParser.cxx.html#B_KK_">SetGRIFHeader</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets:
+     The number of filters
+     The Data Type
+     Number of Pileups
+     Channel Address
+     Detector Type
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TDataParser:SetGRIFPPG" href="src/TDataParser.cxx.html#NFPGvD">SetGRIFPPG</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the Programmable Pattern Generator words
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TDataParser:SetGRIFMasterFilterId" href="src/TDataParser.cxx.html#VH97lB">SetGRIFMasterFilterId</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the Griffin master filter ID
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TDataParser:SetGRIFMasterFilterPattern" href="src/TDataParser.cxx.html#piuDLC">SetGRIFMasterFilterPattern</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the Griffin Master Filter Pattern
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TDataParser:SetGRIFChannelTriggerId" href="src/TDataParser.cxx.html#v2._7C">SetGRIFChannelTriggerId</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the Griffin Channel Trigger ID
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TDataParser:SetGRIFTimeStampLow" href="src/TDataParser.cxx.html#bKp1p">SetGRIFTimeStampLow</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the lower 28 bits of the griffin time stamp
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TDataParser:SetGRIFWaveForm" href="src/TDataParser.cxx.html#oDprhB">SetGRIFWaveForm</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the Griffin waveform if record_waveform is set to <a href="./ListOfTypes.html#bool">true</a>
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TDataParser:SetGRIFDeadTime" href="src/TDataParser.cxx.html#hvfXm">SetGRIFDeadTime</a>(<a href="./ListOfTypes.html#uint32_t">uint32_t</a> , <a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Sets the Griffin deadtime and the upper 14 bits of the timestamp
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TDataParser:FillStats" href="src/TDataParser.cxx.html#I9Q8ED">FillStats</a>(<a href="./TFragment.html">TFragment</a>* )</span><br />
+<div class="funccomm"><pre>Takes a <a href="./TFragment.html">TFragment</a> and records statistics for it's channel address.
+The statistics recorded currently include:
+          The total deadtime for the channel
+          The lowest MIDAS Time stamp
+          The highest MIDAS Time stamp
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TDataParser:TDataParser" href="src/TDataParser.h.html#jl1az">TDataParser</a>()</span><br />
 </div>
@@ -191,7 +253,7 @@ return false;}
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Mon Sep  8 14:15:49 2014 </em><em>&raquo; Last generated: 2014-09-08 14:15</em><br />
+<em>&raquo; Last changed: Mon Sep  8 14:47:04 2014 </em><em>&raquo; Last generated: 2014-09-08 14:47</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>
