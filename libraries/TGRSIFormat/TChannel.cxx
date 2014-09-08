@@ -15,6 +15,16 @@
  *
  */
 
+//////////////////////////////////////////////////////////////
+//                                                          //
+// TChannel                                                 //
+//                                                          //
+// A TChannel contains the information about the digitizers //
+// used in the current data set. Most of the information is //
+// read out of the ODB information in the MIDAS file.       //
+//                                                          //
+//////////////////////////////////////////////////////////////
+
 ClassImp(TChannel)
 
 TChannel *TChannel::gChannel = new TChannel;
@@ -35,6 +45,7 @@ TChannel::TChannel(const char *temp_name) {
 TChannel::TChannel(TChannel *chan) {
 	if(!chan)
 		chan = gChannel;	
+
 	this->SetAddress(chan->GetAddress());
 	this->SetIntegration(chan->GetIntegration());
 	this->SetNumber(chan->GetNumber());

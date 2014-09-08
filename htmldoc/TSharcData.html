@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Wed Sep  3 16:59:04 2014            -->
+<!--   Date: Mon Sep  8 13:16:41 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -143,6 +143,7 @@ return false;}
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsEqual"><span class="baseclass">TObject::</span>IsEqual</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsFolder"><span class="baseclass">TObject::</span>IsFolder</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsOnHeap"><span class="baseclass">TObject::</span>IsOnHeap</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">static <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#TSharcData:IsSet">IsSet</a>()</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsSortable"><span class="baseclass">TObject::</span>IsSortable</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsZombie"><span class="baseclass">TObject::</span>IsZombie</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ls"><span class="baseclass">TObject::</span>ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
@@ -166,6 +167,7 @@ return false;}
 <tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ResetBit"><span class="baseclass">TObject::</span>ResetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SaveAs"><span class="baseclass">TObject::</span>SaveAs</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SavePrimitive"><span class="baseclass">TObject::</span>SavePrimitive</a>(<a href="./ListOfTypes.html#ostream">ostream</a>&amp; out, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharcData:Set">Set</a>(<span class="keyword">bool</span> flag = <span class="keyword">true</span>)</td></tr>
 <tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharcData:SetBack@1">SetBack</a>(<a href="./TFragment.html">TFragment</a>* frag, <a href="./TChannel.html">TChannel</a>* channel, MNEMONIC* mnemonic)</td></tr>
 <tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharcData:SetBack">SetBack</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#UShort_t">UShort_t</a>&amp; DetNbr, <span class="keyword">const</span> <a href="./ListOfTypes.html#UShort_t">UShort_t</a>&amp; StripNbr, <span class="keyword">const</span> <a href="./ListOfTypes.html#Double_t">Double_t</a>&amp; Energy, <span class="keyword">const</span> <a href="./ListOfTypes.html#Double_t">Double_t</a>&amp; TimeCFD, <span class="keyword">const</span> <a href="./ListOfTypes.html#Double_t">Double_t</a>&amp; TimeLED, <span class="keyword">const</span> <a href="./ListOfTypes.html#UShort_t">UShort_t</a>&amp; ChanId, <span class="keyword">const</span> <a href="./ListOfTypes.html#Double_t">Double_t</a>&amp; Time = 0, <span class="keyword">const</span> <a href="./ListOfTypes.html#UInt_t">UInt_t</a>&amp; Charge = 0, <span class="keyword">const</span> <a href="./ListOfTypes.html#Double_t">Double_t</a>&amp; ENGChi2 = -1.0)</td></tr>
 <tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharcData:SetBack_ChannelId">SetBack_ChannelId</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#UShort_t">UShort_t</a>&amp; ChanId)</td></tr>
@@ -252,6 +254,7 @@ return false;}
 </table></div>
 <div class="access" id="datapriv"><b>private:</b>
 <table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TSharcData:fIsSet"></a>fIsSet</td><td class="datadesc">!</td></tr>
 <tr class="data"><td class="datatype">vector&lt;<a href="./ListOfTypes.html#UShort_t">UShort_t</a>&gt;</td><td class="dataname"><a name="TSharcData:fSharc_PAD_ChannelId"></a>fSharc_PAD_ChannelId</td><td class="datadesc">!</td></tr>
 <tr class="data"><td class="datatype">vector&lt;<a href="./ListOfTypes.html#Int_t">Int_t</a>&gt;</td><td class="dataname"><a name="TSharcData:fSharc_PAD_Charge"></a>fSharc_PAD_Charge</td><td class="datadesc">!</td></tr>
 <tr class="data"><td class="datatype">vector&lt;<a href="./ListOfTypes.html#UShort_t">UShort_t</a>&gt;</td><td class="dataname"><a name="TSharcData:fSharc_PAD_DetectorNbr"></a>fSharc_PAD_DetectorNbr</td><td class="datadesc">!</td></tr>
@@ -313,6 +316,16 @@ return false;}
 </pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TSharcData:TSharcData" href="src/TSharcData.h.html#BvSsBC">TSharcData</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharcData:Set" href="src/TSharcData.h.html#nQER5B">Set</a>(<span class="keyword">bool</span> flag = <span class="keyword">true</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./TSharcData.html#TSharcData:fIsSet" title="bool TSharcData::fIsSet">fIsSet</a>=flag; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TSharcData:IsSet" href="src/TSharcData.h.html#lWCD2D">IsSet</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TSharcData.html#TSharcData:fIsSet" title="bool TSharcData::fIsSet">fIsSet</a>; }</code></div>
+<div style="clear:both;"></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharcData:SetFront_DetectorNbr" href="src/TSharcData.h.html#hcy7D">SetFront_DetectorNbr</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#UShort_t">UShort_t</a>&amp; DetNbr)</span><br />
 <div class="funccomm"><pre>           SETTERS           
@@ -640,7 +653,7 @@ return false;}
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Wed Sep  3 16:59:04 2014 </em><em>&raquo; Last generated: 2014-09-03 16:59</em><br />
+<em>&raquo; Last changed: Mon Sep  8 13:16:41 2014 </em><em>&raquo; Last generated: 2014-09-08 13:16</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>
