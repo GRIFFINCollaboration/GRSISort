@@ -61,7 +61,7 @@ class TChannel : public TNamed	{
     static void DeleteAllChannels();
 
   private:
-    static TChannel *gChannel;                             
+    static TChannel *gChannel;                            //The Global Channel address. Holds the last channel read. 
 
     int	         address;                                 //The address of the digitizer
     int		 integration;                             //The charge integration setting

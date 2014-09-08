@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Mon Sep  8 13:16:39 2014            -->
+<!--   Date: Mon Sep  8 14:15:49 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -283,7 +283,7 @@ read out of the ODB information in the MIDAS file.
 <tr class="data"><td class="datatype">string</td><td class="dataname"><a name="TChannel:digitizertype"></a>digitizertype</td><td></td></tr>
 <tr class="data"><td class="datatype">static map&lt;<span class="keyword">int</span>,<a href="./TChannel.html">TChannel</a>*&gt;*</td><td class="dataname"><a name="TChannel:fChannelMap"></a>fChannelMap</td><td class="datadesc">A map to all of the channels based on address</td></tr>
 <tr class="data"><td class="datatype">static map&lt;<span class="keyword">int</span>,<a href="./TChannel.html">TChannel</a>*&gt;*</td><td class="dataname"><a name="TChannel:fChannelNumberMap"></a>fChannelNumberMap</td><td></td></tr>
-<tr class="data"><td class="datatype">static <a href="./TChannel.html">TChannel</a>*</td><td class="dataname"><a name="TChannel:gChannel"></a>gChannel</td><td></td></tr>
+<tr class="data"><td class="datatype">static <a href="./TChannel.html">TChannel</a>*</td><td class="dataname"><a name="TChannel:gChannel"></a>gChannel</td><td class="datadesc">The Global Channel address. Holds the last channel read. </td></tr>
 <tr class="data"><td class="datatype"><span class="keyword">int</span></td><td class="dataname"><a name="TChannel:integration"></a>integration</td><td class="datadesc">The charge integration setting</td></tr>
 <tr class="data"><td class="datatype"><span class="keyword">int</span></td><td class="dataname"><a name="TChannel:number"></a>number</td><td></td></tr>
 <tr class="data"><td class="datatype"><span class="keyword">int</span></td><td class="dataname"><a name="TChannel:stream"></a>stream</td><td></td></tr>
@@ -304,43 +304,74 @@ read out of the ODB information in the MIDAS file.
 </div><div class="classcharts"><div class="classchartswidth"></div>
 <img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTChannel_Inh" src="inh/TChannel_Inh.png"/></div>
 <h2>Function documentation</h2>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:TChannel" href="src/TChannel.cxx.html#jSdhLC">TChannel</a>()</span><br />
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:TChannel" href="src/TChannel.cxx.html#JdwgxE">TChannel</a>()</span><br />
 
-<div class="code"><code class="inlinecode">{  }</code></div>
+<div class="code"><code class="inlinecode">{}</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:_TChannel" href="src/TChannel.cxx.html#oDTHi">~TChannel</a>()</span><br />
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:_TChannel" href="src/TChannel.cxx.html#PT0hh">~TChannel</a>()</span><br />
 
-<div class="code"><code class="inlinecode">{  }</code></div>
+<div class="code"><code class="inlinecode">{}</code></div>
 <div style="clear:both;"></div>
 </div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:TChannel@1" href="src/TChannel.cxx.html#tlNWvB">TChannel</a>(<span class="keyword">const</span> <span class="keyword">char</span>* )</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:TChannel@2" href="src/TChannel.cxx.html#zemCSE">TChannel</a>(<a href="./TChannel.html">TChannel</a>* )</span><br />
+<div class="funccomm"><pre>Makes a copy of a the <a href="./TChannel.html">TChannel</a>.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DeleteAllChannels" href="src/TChannel.cxx.html#wli0SE">DeleteAllChannels</a>()</span><br />
+<div class="funccomm"><pre>Safely deletes <a href="./TChannel.html#TChannel:fChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelMap">fChannelMap</a>
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:AddChannel" href="src/TChannel.cxx.html#HBKLQC">AddChannel</a>(<a href="./TChannel.html">TChannel</a>* , <a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>Add a <a href="./TChannel.html">TChannel</a> to <a href="./TChannel.html#TChannel:fChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelMap">fChannelMap</a>. If the <a href="./TChannel.html">TChannel</a> doesn't exist, create a new <a href="./TChannel.html">TChannel</a> and add that the <a href="./TChannel.html#TChannel:fChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelMap">fChannelMap</a>.
+Options:
+        <span class="string">"overwrite"</span> -  The <a href="./TChannel.html">TChannel</a> in the <a href="./TChannel.html#TChannel:fChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelMap">fChannelMap</a> at the same <a href="./TChannel.html#TChannel:address" title="int TChannel::address">address</a> is overwritten.
+                       If this option is not specified, an <a href="./#TObject:Error" title="void TObject::Error(const char* method,const char* msgfmt)">Error</a> is returned if the <a href="./TChannel.html">TChannel</a> already
+                       exists in the <a href="./TChannel.html#TChannel:fChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelMap">fChannelMap</a>.
+        <span class="string">"save"</span>      -  The temporary channel is not deleted after being placed in the map.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="TChannel:UpdateChannel" href="src/TChannel.cxx.html#gd3B.">UpdateChannel</a>(<a href="./TChannel.html">TChannel</a>* , <a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>If there is information in the chan, the current <a href="./TChannel.html">TChannel</a> with the same <a href="./TChannel.html#TChannel:address" title="int TChannel::address">address</a> is updated with that information.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:Clear" href="src/TChannel.cxx.html#dKdY2E">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>Clears all fields of a <a href="./TChannel.html">TChannel</a>. There are currently no options to be specified.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><a href="./TChannel.html">TChannel</a> * <a class="funcname" name="TChannel:GetChannel" href="src/TChannel.cxx.html#ZGkd0">GetChannel</a>(<span class="keyword">int</span> temp_address)</span><br />
+<div class="funccomm"><pre>Returns the <a href="./TChannel.html">TChannel</a> at the specified <a href="./TChannel.html#TChannel:address" title="int TChannel::address">address</a>. If the <a href="./TChannel.html#TChannel:address" title="int TChannel::address">address</a> doesn't exist, returns an empty <a href="./TChannel.html#TChannel:gChannel" title="TChannel* TChannel::gChannel">gChannel</a>.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><a href="./TChannel.html">TChannel</a> * <a class="funcname" name="TChannel:GetChannelByNumber" href="src/TChannel.cxx.html#SMae4D">GetChannelByNumber</a>(<span class="keyword">int</span> temp_numebr)</span><br />
+<div class="funccomm"><pre>Returns the <a href="./TChannel.html">TChannel</a> based on the channel <a href="./TChannel.html#TChannel:number" title="int TChannel::number">number</a> and not the channel <a href="./TChannel.html#TChannel:address" title="int TChannel::address">address</a>.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:UpdateChannelNumberMap" href="src/TChannel.cxx.html#CSoLrD">UpdateChannelNumberMap</a>()</span><br />
+<div class="funccomm"><pre>Updates the <a href="./TChannel.html#TChannel:fChannelNumberMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelNumberMap">fChannelNumberMap</a> based on the entries in the <a href="./TChannel.html#TChannel:fChannelMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelMap">fChannelMap</a>. This should be called before using the <a href="./TChannel.html#TChannel:fChannelNumberMap" title="map&lt;int,TChannel*&gt;* TChannel::fChannelNumberMap">fChannelNumberMap</a>.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyENGCal" href="src/TChannel.cxx.html#Ao4gGD">DestroyENGCal</a>()</span><br />
+<div class="funccomm"><pre>Erases the <a href="./TChannel.html#TChannel:ENGCoefficients" title="vector&lt;double&gt; TChannel::ENGCoefficients">ENGCoefficients</a> vector
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyCFDCal" href="src/TChannel.cxx.html#XP5gGD">DestroyCFDCal</a>()</span><br />
+<div class="funccomm"><pre>Erases the <a href="./TChannel.html#TChannel:CFDCoefficients" title="vector&lt;double&gt; TChannel::CFDCoefficients">CFDCoefficients</a> vector
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyLEDCal" href="src/TChannel.cxx.html#U0b_o">DestroyLEDCal</a>()</span><br />
+<div class="funccomm"><pre>Erases the <a href="./TChannel.html#TChannel:LEDCoefficients" title="vector&lt;double&gt; TChannel::LEDCoefficients">LEDCoefficients</a> vector
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyTIMECal" href="src/TChannel.cxx.html#UKlUPD">DestroyTIMECal</a>()</span><br />
+<div class="funccomm"><pre>Erases the TimeCal vector
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:DestroyCalibrations" href="src/TChannel.cxx.html#RrkN1D">DestroyCalibrations</a>()</span><br />
+<div class="funccomm"><pre>Erases all Cal vectors
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateENG@1" href="src/TChannel.cxx.html#M1DwnD">CalibrateENG</a>(<span class="keyword">int</span> )</span><br />
 </div>
@@ -359,7 +390,7 @@ read out of the ODB information in the MIDAS file.
 <div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="TChannel:CalibrateTIME" href="src/TChannel.cxx.html#CvvBmE">CalibrateTIME</a>(<span class="keyword">double</span> )</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:Print" href="src/TChannel.cxx.html#ncJMQE">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
-<div class="funccomm"><pre>printf( DBLUE <span class="string">"%s\t"</span> DYELLOW <span class="string">"0x%08x"</span> RESET_COLOR <span class="string">"\n"</span>,this-&gt;<a href="./TChannel.html#TChannel:GetChannelName" title="const char* TChannel::GetChannelName()">GetChannelName</a>(),this-&gt;<a href="./TChannel.html#TChannel:GetAddress" title="int TChannel::GetAddress()">GetAddress</a>());
+<div class="funccomm"><pre>Prints out the current <a href="./TChannel.html">TChannel</a>.
 </pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:WriteCalFile" href="src/TChannel.cxx.html#xEjBDC">WriteCalFile</a>(string outfilename = <span class="string">""</span>)</span><br />
@@ -367,16 +398,19 @@ read out of the ODB information in the MIDAS file.
 no file name is passed to the function.  If a file name is passed to the function
 prints the context of addresschannelmap formatted correctly to a file with the given
 name.  This will earse and rewrite the file if the file already exisits!
-
 </pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:ReadCalFromTree" href="src/TChannel.cxx.html#xz_uJC">ReadCalFromTree</a>(TTree* )</span><br />
+<div class="funccomm"><pre>Reads the <a href="./TChannel.html">TChannel</a> information for a Tree if it has already been written to a Tree.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:ReadCalFile" href="src/TChannel.cxx.html#Ab4C2E">ReadCalFile</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>)</span><br />
-<div class="funccomm"><pre>does magic, make tchannels from a cal file.
+<div class="funccomm"><pre>Makes TChannels from a cal file.
 </pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TChannel:trim" href="src/TChannel.cxx.html#JFYMYE">trim</a>(string* , <span class="keyword">const</span> string&amp; trimChars = <span class="string">" \f\n\r\t\v"</span>)</span><br />
+<div class="funccomm"><pre>Removes the the string <span class="string">"trimCars"</span> from  the string 'line'
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TChannel:TChannel" href="src/TChannel.h.html#HHEE4">TChannel</a>()</span><br />
 </div>
@@ -572,7 +606,7 @@ name.  This will earse and rewrite the file if the file already exisits!
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Mon Sep  8 13:16:39 2014 </em><em>&raquo; Last generated: 2014-09-08 13:16</em><br />
+<em>&raquo; Last changed: Mon Sep  8 14:15:49 2014 </em><em>&raquo; Last generated: 2014-09-08 14:15</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>
