@@ -56,10 +56,15 @@ private:
   std::vector<Double_t>   fSharc_PAD_Time;					//!
   std::vector<std::vector<Int_t> > fSharc_PAD_Wave;		//!
 
+	static bool fIsSet; //!
+
 public:
   TSharcData();															//!
   virtual ~TSharcData(); //!
   
+	static void Set(bool flag=true) { fIsSet=flag; } //!
+	static bool IsSet() { return fIsSet; }           //!
+
   void ClearData(); //!
   //void Clear(const Option_t*) {};
   void Print(); //!

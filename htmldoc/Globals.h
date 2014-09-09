@@ -57,8 +57,8 @@ typedef char int8_t;
 #include <cstdlib>
 #include <stdint.h>
 struct MNEMONIC {
-  uint16_t arrayposition;
-  uint16_t segment;
+  int16_t arrayposition;
+  int16_t segment;
   std::string system;
   std::string subsystem;
   std::string arraysubposition;
@@ -83,6 +83,16 @@ static void ParseMNEMONIC(std::string *name,MNEMONIC *mnemonic) {
    return;
 }
 
+
+static void ParseMNEMONIC(const char *name,MNEMONIC *mnemonic) {
+   std::string sname = name;
+   ParseMNEMONIC(&sname,mnemonic);
+   return;
+}
+
+
+
+
 static void PrintMNEMONIC(MNEMONIC *mnemonic) {
 	if(!mnemonic)
 		return;
@@ -97,6 +107,20 @@ static void PrintMNEMONIC(MNEMONIC *mnemonic) {
 	printf("===============================\n");
 	return;
 }
+
+static void ClearMNEMONIC(MNEMONIC *mnemonic) {
+   if(!mnemonic)
+      return;
+
+   mnemonic->arrayposition = -1;
+   mnemonic->segment       = -1;
+   mnemonic->system.clear();
+   mnemonic->subsystem.clear();
+   mnemonic->arraysubposition.clear();
+   mnemonic->collectedcharge.clear();
+   mnemonic->outputsensor.clear();
+}
+
 
 const std::string &ProgramName(void);
 
