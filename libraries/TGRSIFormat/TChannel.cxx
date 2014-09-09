@@ -15,6 +15,16 @@
  *
  */
 
+//////////////////////////////////////////////////////////////
+//                                                          //
+// TChannel                                                 //
+//                                                          //
+// A TChannel contains the information about the digitizers //
+// used in the current data set. Most of the information is //
+// read out of the ODB information in the MIDAS file.       //
+//                                                          //
+//////////////////////////////////////////////////////////////
+
 ClassImp(TChannel)
 
 TChannel *TChannel::gChannel = new TChannel;
@@ -22,9 +32,9 @@ TChannel *TChannel::gChannel = new TChannel;
 std::map<int,TChannel*> *TChannel::fChannelMap = new std::map<int,TChannel*>;
 std::map<int,TChannel*> *TChannel::fChannelNumberMap = new std::map<int,TChannel*>;
 
-TChannel::TChannel() {  }  //default constructor need to write to root file.
+TChannel::TChannel() {}  //default constructor need to write to root file.
 
-TChannel::~TChannel()   {  }
+TChannel::~TChannel(){}
 
 TChannel::TChannel(const char *temp_name) {
    Clear();
@@ -33,29 +43,31 @@ TChannel::TChannel(const char *temp_name) {
 }
 
 TChannel::TChannel(TChannel *chan) {
-	if(!chan)
-		chan = gChannel;	
-	this->SetAddress(chan->GetAddress());
-	this->SetIntegration(chan->GetIntegration());
-	this->SetNumber(chan->GetNumber());
-	this->SetStream(chan->GetStream());
-	this->SetUserInfoNumber(chan->GetUserInfoNumber());
-	this->SetChannelName(chan->GetChannelName());
-	this->SetDigitizerType(chan->GetDigitizerType());
+//Makes a copy of a the TChannel. 
+    if(!chan)
+	chan = gChannel;	
 
-	this->SetENGCoefficients(chan->GetENGCoeff());
-	this->SetCFDCoefficients(chan->GetCFDCoeff());
-	this->SetLEDCoefficients(chan->GetLEDCoeff());
-	this->SetTIMECoefficients(chan->GetTIMECoeff());
+    this->SetAddress(chan->GetAddress());
+    this->SetIntegration(chan->GetIntegration());
+    this->SetNumber(chan->GetNumber());
+    this->SetStream(chan->GetStream());
+    this->SetUserInfoNumber(chan->GetUserInfoNumber());
+    this->SetChannelName(chan->GetChannelName());
+    this->SetDigitizerType(chan->GetDigitizerType());
 
-	this->SetENGChi2(chan->GetENGChi2());
-	this->SetCFDChi2(chan->GetCFDChi2());
-	this->SetLEDChi2(chan->GetLEDChi2());
-	this->SetTIMEChi2(chan->GetTIMEChi2());
+    this->SetENGCoefficients(chan->GetENGCoeff());
+    this->SetCFDCoefficients(chan->GetCFDCoeff());
+    this->SetLEDCoefficients(chan->GetLEDCoeff());
+    this->SetTIMECoefficients(chan->GetTIMECoeff());
+
+    this->SetENGChi2(chan->GetENGChi2());
+    this->SetCFDChi2(chan->GetCFDChi2());
+    this->SetLEDChi2(chan->GetLEDChi2());
+    this->SetTIMEChi2(chan->GetTIMEChi2());
 }
 
 void TChannel::DeleteAllChannels() {
-
+//Safely deletes fChannelMap
    std::map < int, TChannel * >::iterator iter;
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
       delete iter->second;
@@ -67,70 +79,80 @@ void TChannel::DeleteAllChannels() {
 }
 
 void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
-	if(!chan)
-		return;
-	if(fChannelMap->count(chan->GetAddress())==1) {
-		if(strcmp(opt,"overwrite")==0) {
-			delete fChannelMap->at(chan->GetAddress());
-			fChannelMap->at(chan->GetAddress()) = new TChannel(*chan);	
-		} else {
-			printf("Trying to add a channel that already exists!\n");
-		}	
-	} else {
-		TChannel *newchan = new TChannel(*chan);
-		fChannelMap->insert(std::make_pair(newchan->GetAddress(),newchan));
-		if(newchan->GetNumber() != 0 && fChannelNumberMap->count(newchan->GetNumber())==0)
-			fChannelNumberMap->insert(std::make_pair(newchan->GetNumber(),newchan));
-	}
-	// chan should now be deleted.
-	if(strcmp(opt,"save") !=0 && chan != gChannel)
-		delete chan;
-	return;
+//Add a TChannel to fChannelMap. If the TChannel doesn't exist, create a new TChannel and add that the fChannelMap.
+//Options:
+//        "overwrite" -  The TChannel in the fChannelMap at the same address is overwritten. 
+//                       If this option is not specified, an Error is returned if the TChannel already 
+//                       exists in the fChannelMap.
+//        "save"      -  The temporary channel is not deleted after being placed in the map. 
+    if(!chan)
+        return;
+    if(fChannelMap->count(chan->GetAddress())==1) {
+	if(strcmp(opt,"overwrite")==0) {
+	    delete fChannelMap->at(chan->GetAddress());
+	    fChannelMap->at(chan->GetAddress()) = new TChannel(*chan);	
+	} 
+        else {
+	    printf("Trying to add a channel that already exists!\n");
+	}	
+    } 
+    else {
+        TChannel *newchan = new TChannel(*chan);
+	fChannelMap->insert(std::make_pair(newchan->GetAddress(),newchan));
+	if(newchan->GetNumber() != 0 && fChannelNumberMap->count(newchan->GetNumber())==0)
+	    fChannelNumberMap->insert(std::make_pair(newchan->GetNumber(),newchan));
+    }
+    // chan should now be deleted.
+    if(strcmp(opt,"save") !=0 && chan != gChannel)
+	delete chan;
+
+    return;
 }
 
 int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
-	if(!chan)
-		return 0;
-	TChannel *oldchan = GetChannel(chan->GetAddress());
-	if(!oldchan) {
-		AddChannel(chan,opt);
-		return 1;
-	}
+    //If there is information in the chan, the current TChannel with the same address is updated with that information.
+    if(!chan)
+	return 0;
+    TChannel *oldchan = GetChannel(chan->GetAddress());
+    if(!oldchan) {
+	AddChannel(chan,opt);
+	return 1;
+    }
 
-	if(chan->GetIntegration()!=0)
-		oldchan->SetIntegration(chan->GetIntegration());
-	if(chan->GetNumber()!=0)
-		oldchan->SetNumber(chan->GetNumber());
-	if(chan->GetStream()!=0)
-		oldchan->SetStream(chan->GetStream());
-	if(chan->GetUserInfoNumber()!=0 && chan->GetUserInfoNumber()!=0xffffffff)
-		oldchan->SetUserInfoNumber(chan->GetUserInfoNumber());
-	if(strlen(chan->GetChannelName())>0)
-		oldchan->SetChannelName(chan->GetChannelName());
-	if(strlen(chan->GetDigitizerType())>0)
-		oldchan->SetDigitizerType(chan->GetDigitizerType());
+    if(chan->GetIntegration()!=0)
+	oldchan->SetIntegration(chan->GetIntegration());
+    if(chan->GetNumber()!=0)
+	oldchan->SetNumber(chan->GetNumber());
+    if(chan->GetStream()!=0)
+	oldchan->SetStream(chan->GetStream());
+    if(chan->GetUserInfoNumber()!=0 && chan->GetUserInfoNumber()!=0xffffffff)
+	oldchan->SetUserInfoNumber(chan->GetUserInfoNumber());
+    if(strlen(chan->GetChannelName())>0)
+	oldchan->SetChannelName(chan->GetChannelName());
+    if(strlen(chan->GetDigitizerType())>0)
+	oldchan->SetDigitizerType(chan->GetDigitizerType());
 
-	if(chan->GetENGCoeff().size()>0)
-		oldchan->SetENGCoefficients(chan->GetENGCoeff());
-	if(chan->GetCFDCoeff().size()>0)
-		oldchan->SetCFDCoefficients(chan->GetCFDCoeff());
-	if(chan->GetLEDCoeff().size()>0)
-		oldchan->SetLEDCoefficients(chan->GetLEDCoeff());
-	if(chan->GetTIMECoeff().size()>0)
-		oldchan->SetTIMECoefficients(chan->GetTIMECoeff());
+    if(chan->GetENGCoeff().size()>0)
+	oldchan->SetENGCoefficients(chan->GetENGCoeff());
+    if(chan->GetCFDCoeff().size()>0)
+	oldchan->SetCFDCoefficients(chan->GetCFDCoeff());
+    if(chan->GetLEDCoeff().size()>0)
+	oldchan->SetLEDCoefficients(chan->GetLEDCoeff());
+    if(chan->GetTIMECoeff().size()>0)
+	oldchan->SetTIMECoefficients(chan->GetTIMECoeff());
 
-	if(chan->GetENGChi2() != 0.0)
-		oldchan->SetENGChi2(chan->GetENGChi2());
-	if(chan->GetCFDChi2() != 0.0)
-		oldchan->SetCFDChi2(chan->GetCFDChi2());
-	if(chan->GetLEDChi2() != 0.0)
-		oldchan->SetLEDChi2(chan->GetLEDChi2());
-	if(chan->GetTIMEChi2() != 0.0)
-		oldchan->SetTIMEChi2(chan->GetTIMEChi2());
+    if(chan->GetENGChi2() != 0.0)
+	oldchan->SetENGChi2(chan->GetENGChi2());
+    if(chan->GetCFDChi2() != 0.0)
+	oldchan->SetCFDChi2(chan->GetCFDChi2());
+    if(chan->GetLEDChi2() != 0.0)
+	oldchan->SetLEDChi2(chan->GetLEDChi2());
+    if(chan->GetTIMEChi2() != 0.0)
+	oldchan->SetTIMEChi2(chan->GetTIMEChi2());
 
 
-	if(!strcmp(opt,"save") && chan!=gChannel)
-		delete chan;
+    if(!strcmp(opt,"save") && chan!=gChannel)
+	delete chan;
 
 	return 0;
 }
@@ -138,80 +160,92 @@ int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
 
 
 void TChannel::Clear(Option_t *opt){
-   address           =  0xffffffff;
-   integration       =  0;
-   number            =  0;
-   stream            =  0;
-   ENGChi2           =  0.0;
-   userinfonumber    =  0xffffffff;
+//Clears all fields of a TChannel. There are currently no options to be specified.
+    address           =  0xffffffff;
+    integration       =  0;
+    number            =  0;
+    stream            =  0;
+    ENGChi2           =  0.0;
+    userinfonumber    =  0xffffffff;
 
-   ENGCoefficients.clear();
-   CFDCoefficients.clear();
-   LEDCoefficients.clear();
-   TIMECoefficients.clear();
+    ENGCoefficients.clear();
+    CFDCoefficients.clear();
+    LEDCoefficients.clear();
+    TIMECoefficients.clear();
 }
 
 //TChannel *TChannel::GetChannel(int temp_add) {int x = temp_add; return GetChannel(x);}
 
 TChannel *TChannel::GetChannel(int temp_address) {
-	if(temp_address == 0 || temp_address == 0xffffffff) {
-		gChannel->Clear();
-		return gChannel;
-	}
-	TChannel *chan = 0;
-	try {
-		chan = fChannelMap->at(temp_address);
-	} catch(const std::out_of_range& oor) {
-		gChannel->Clear();
-		return gChannel;
-	}
-	return chan;
+//Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
+    if(temp_address == 0 || temp_address == 0xffffffff) {
+	gChannel->Clear();
+	return gChannel;
+    }
+    TChannel *chan = 0;
+    try {
+	chan = fChannelMap->at(temp_address);
+    } 
+    catch(const std::out_of_range& oor) {
+        gChannel->Clear();
+	return gChannel;
+    }
+    return chan;
+
 }
 
 //TChannel *TChannel::GetChannelByNumber(int temp_num) {int x = temp_num; return GetChannel(x);}
 
 TChannel *TChannel::GetChannelByNumber(int temp_num) {
-	if(fChannelMap->size() != fChannelNumberMap->size()) {
-		UpdateChannelNumberMap();
-	}
-	TChannel *chan  = 0;
-	try {
-		chan = fChannelNumberMap->at(temp_num);
-	} catch(const std::out_of_range& oor) {
-		return 0;
-	}
-	return chan;
+//Returns the TChannel based on the channel number and not the channel address.
+    if(fChannelMap->size() != fChannelNumberMap->size()) {
+	UpdateChannelNumberMap();
+    }
+    TChannel *chan  = 0;
+    try {
+	chan = fChannelNumberMap->at(temp_num);
+    } 
+    catch(const std::out_of_range& oor) {
+	return 0;
+    }
+    return chan;
 }
 
 
 
 void TChannel::UpdateChannelNumberMap() {
-	std::map < int, TChannel * >::iterator iter1;
-	for(iter1 = fChannelMap->begin(); iter1 != fChannelMap->end(); iter1++) {
-		if(fChannelNumberMap->count(iter1->second->GetNumber())==0) {
-    	fChannelNumberMap->insert(std::make_pair(iter1->second->GetNumber(),iter1->second));
-  	}
-  }
+//Updates the fChannelNumberMap based on the entries in the fChannelMap. This should be called before using the fChannelNumberMap.
+    std::map < int, TChannel * >::iterator iter1;
+    for(iter1 = fChannelMap->begin(); iter1 != fChannelMap->end(); iter1++) {
+	if(fChannelNumberMap->count(iter1->second->GetNumber())==0) {
+            fChannelNumberMap->insert(std::make_pair(iter1->second->GetNumber(),iter1->second));
+        }
+    }
 }
 
 
 void TChannel::DestroyENGCal()   {
+//Erases the ENGCoefficients vector
    ENGCoefficients.erase(ENGCoefficients.begin(),ENGCoefficients.end());
 }
 
 void TChannel::DestroyCFDCal()   {
+//Erases the CFDCoefficients vector
    CFDCoefficients.erase(CFDCoefficients.begin(),CFDCoefficients.end());
 }
 
 void TChannel::DestroyLEDCal()   {
+//Erases the LEDCoefficients vector
    LEDCoefficients.erase(LEDCoefficients.begin(),LEDCoefficients.end());
 }
 
 void TChannel::DestroyTIMECal()  {
+//Erases the TimeCal vector
    LEDCoefficients.erase(TIMECoefficients.begin(),TIMECoefficients.end());
 }
 
 void TChannel::DestroyCalibrations()   {
+//Erases all Cal vectors
    DestroyENGCal();
    DestroyCFDCal();
    DestroyLEDCal();
@@ -285,6 +319,8 @@ double TChannel::CalibrateTIME(double time)  {
 }
 
 void TChannel::Print(Option_t *opt) {
+   //Prints out the current TChannel.
+
    //printf( DBLUE "%s\t" DYELLOW "0x%08x" RESET_COLOR "\n",this->GetChannelName(),this->GetAddress());
    printf( "%s\t{\n",channelname.c_str());
    printf( "Name:      %s\n",channelname.c_str());
@@ -307,7 +343,6 @@ void TChannel::WriteCalFile(std::string outfilename) {
    //no file name is passed to the function.  If a file name is passed to the function
    //prints the context of addresschannelmap formatted correctly to a file with the given
    //name.  This will earse and rewrite the file if the file already exisits!
-   //
 
    std::map < int, TChannel * >::iterator iter;
    FILE *c_outputfile;
@@ -327,26 +362,25 @@ void TChannel::WriteCalFile(std::string outfilename) {
 
 
 void TChannel::ReadCalFromTree(TTree *tree) {
-	if(!tree)
-		return;
-	TList *list = tree->GetUserInfo();	
-	TIter iter(list);
-	int channelsfound = 0;
-	while(TObject *obj = iter.Next()) {
-		if(!obj->InheritsFrom("TChannel"))
-			continue;
-		TChannel *chan = (TChannel*)obj;
-		channelsfound += UpdateChannel(chan,"save");
-	}
-	//printf("found %i channels in tree\n",cahnnelsfound);
+//Reads the TChannel information for a Tree if it has already been written to a Tree.
+    if(!tree)
 	return;
+    TList *list = tree->GetUserInfo();	
+    TIter iter(list);
+    int channelsfound = 0;
+    while(TObject *obj = iter.Next()) {
+	if(!obj->InheritsFrom("TChannel"))
+            continue;
+	TChannel *chan = (TChannel*)obj;
+	channelsfound += UpdateChannel(chan,"save");
+    }
+    //printf("found %i channels in tree\n",cahnnelsfound);
+    return;
 }
 
 
-
-
 void TChannel::ReadCalFile(const char *filename) {
-   //does magic, make tchannels from a cal file.
+   //Makes TChannels from a cal file.
    std::string infilename;
    infilename.append(filename);
 
@@ -484,9 +518,8 @@ void TChannel::ReadCalFile(const char *filename) {
    return;
 }
 
-
-
 void TChannel::trim(std::string * line, const std::string & trimChars) {
+//Removes the the string "trimCars" from  the string 'line'
    if (line->length() == 0)
       return;
    std::size_t found = line->find_first_not_of(trimChars);

@@ -15,9 +15,7 @@
 
 #include <TSystem.h>
 
-
 //class TChannel;
-
 
 // Header file for the classes stored in the TTree if any.
 #include "TFragment.h"
@@ -34,7 +32,7 @@ public :
    // Declaration of leaf types
  //TFragment       *TFragment;
 
-   TFragment *fragment;
+   TFragment *fragment;      //The Current fragment being sent to the fragment selector
    
 /*
    Long_t          MidasTimeStamp;
@@ -105,10 +103,10 @@ public :
    virtual void    Terminate();
 
    private:
-     int frunnumber;
-     int fsubrunnumber;
+     int frunnumber;     //The current run number
+     int fsubrunnumber;  //The current subrun number
 
-   ClassDef(TFragmentSelector,0);
+   ClassDef(TFragmentSelector,0); //Filters TFragments and creates User Defined histograms
 };
 
 #endif

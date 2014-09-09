@@ -23,12 +23,29 @@
 // Root > T->Process("TFragmentSelector.C+")
 //
 
+
+///////////////////////////////////////////////////////////////////
+//
+// TFragmentSelector
+//
+// TFragmentSelector uses PROOF to process TFragments into user defined
+// histograms (as well as a TAnalysisTree?). The User defined histograms are
+// intialized in users/UserInitObj.h and filled in users/UserFillObj.h
+// PROOF allows for parrallel processing of TFragments.
+//
+/////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
 #include "TFragmentSelector.h"
 #include <TH2.h>
 #include <TStyle.h>
 
 #include <TProof.h>
-
 
 void TFragmentSelector::Begin(TTree * /*tree*/)
 {
