@@ -1,5 +1,5 @@
 
-OBJECTS = TSharc.o TSharcDict.o TSharcData.o TSharcDataDict.o TSharcHit.o TSharcHitDict.o
+OBJECTS = TTigress.o TTigressDict.o TTigressData.o TTigressDataDict.o TTigressHit.o TTigressHitDict.o TBGOData.o TBGODataDict.o TCrystalHit.o TCrystalHitDict.o
 
 CFLAGS += -fPIC
 
@@ -10,9 +10,9 @@ CAT=cat
 
 .PHONY: all clean gone
 
-all: libSharc.so
+all: libTigress.so
 
-libSharc.so: $(OBJECTS)
+%.so: $(OBJECTS)
 	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"
 	@$(COMPILESHARED)$@ $(CFLAGS) -o$@ $(OBJECTS) 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \

@@ -61,7 +61,7 @@ all: libNucleus.so
 
 
 clean:
-	$(RM) $(OBJECTS) *~ *Dict* *so 
+	$(RM) $(OBJECTS) *~ *Dict* *so *LinkDef*
 
 
 

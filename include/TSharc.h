@@ -36,7 +36,7 @@ class TSharc : public TObject	{
 	public: 
 		inline Short_t    GetNumberOfHits()   	{return sharc_hits.size();}	//->
 		inline TSharcHit *GetHit(int i)		   {return &sharc_hits.at(i);}	//->
-      static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);	//! 
+    static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);	//! 
 
 		void BuildHits(TSharcData *sd=0,Option_t * = "");			   //!
 
@@ -78,8 +78,8 @@ class TSharc : public TObject	{
     //pitches
 		static  double stripFpitch;
 		static  double stripBpitch;
-      static  double ringpitch;
-      static  double segmentpitch; // angular pitch, degrees
+    static  double ringpitch;
+    static  double segmentpitch; // angular pitch, degrees
 
    ClassDef(TSharc,5)  
 };

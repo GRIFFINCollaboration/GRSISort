@@ -61,7 +61,7 @@ libGRSIRootIO.so: $(OBJECTS)
 
 
 clean:
-	$(RM) $(OBJECTS) *~ *Dict* *so 
+	$(RM) $(OBJECTS) *~ *Dict* *so *LinkDef*
 
 
 

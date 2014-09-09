@@ -50,7 +50,8 @@ void TSharc::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
 void	TSharc::BuildHits(TSharcData *sdata,Option_t *opt)	{
 	if(sdata==0)
      sdata = (this->data); 
-
+	if(!sdata)
+		return;
 
 
   //  after the data has been taken from the fragement tree, the data

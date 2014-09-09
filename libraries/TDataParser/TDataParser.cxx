@@ -189,36 +189,23 @@ void TDataParser::SetTIGCharge(uint32_t value, TFragment *currentfragment) {
    std::string dig_type = chan->GetDigitizerType();
    currentfragment->ChannelNumber = chan->GetNumber();
 
-   //chan->Print();
-   //printf("Channel NUmber = %i!!!!!!!!!!!\n",chan->GetNumber());
-//   printf("Channel Address = 0x%08x\n",currentfragment->ChannelAddress);
-//   chan->Print();
-   //std::string dig_type = "Tig64";`
-
-   //if( strncmp(eventfragment->DigitizerType.c_str(),"tig10",5) == 0)	{
    if( dig_type.compare(0,5,"Tig10") == 0)	{
-      //currentfragment->PileUp = (value &  0x04000000);
-      //currentcurrentfragment->Charge	= (value &	0x03ffffff);
-      if(value & 0x02000000)	{
+     currentfragment->Charge.push_back(value &  0x03ffffff);
+     if(value & 0x02000000)	{
          currentfragment->Charge.push_back( -( (~((int32_t)value & 0x01ffffff)) & 0x01ffffff)+1);
-		}
-	}
-	else if( dig_type.compare(0,5,"Tig64") == 0) {
-		currentfragment->Charge.push_back((value &	0x003fffff));
-		if(value & 0x00200000)	{
-			currentfragment->Charge.push_back( -( (~((int32_t)value & 0x001fffff)) & 0x001fffff)+1);
-		}
-	}
-	else{ //printf("%i  problem extracting charge, digitizer not set(?)\n", error++); IsBad = true;}
-		//printf("%i  problem extracting charge, digitizer not set(?)\n", error++);  // IsBad = true;
-		//eventfragment->DigitizerType = "unknown";
-		currentfragment->Charge.push_back( ((int32_t)value &	0x03ffffff));
-		if(value & 0x02000000)	{
-			currentfragment->Charge.push_back( -( (~((int32_t)value & 0x01ffffff)) & 0x01ffffff)+1);
-		}
-
-	}
-
+		 }
+	 } else if( dig_type.compare(0,5,"Tig64") == 0) {
+	   currentfragment->Charge.push_back((value &	0x003fffff));
+		 if(value & 0x00200000)	{
+		    currentfragment->Charge.push_back( -( (~((int32_t)value & 0x001fffff)) & 0x001fffff)+1);
+		 }
+	 }
+	 else{
+	    currentfragment->Charge.push_back( ((int32_t)value &	0x03ffffff));
+		  if(value & 0x02000000)	{
+			   currentfragment->Charge.push_back( -( (~((int32_t)value & 0x01ffffff)) & 0x01ffffff)+1);
+		  }
+	 }
 }
 
 bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment *currentfrag) {

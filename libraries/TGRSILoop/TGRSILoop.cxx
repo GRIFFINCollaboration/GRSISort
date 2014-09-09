@@ -157,31 +157,32 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
       bytesread += bytes;
       int eventId = fMidasEvent.GetEventId();
       switch(eventId)   {
-         case 0x8000:
-            printf( DGREEN );
-            fMidasEvent.Print();
-            printf( RESET_COLOR );
-            BeginRun(0,0,0);
-				if(TGRSIOptions::UseMidFileOdb()) { 
+         case 0x8000: {
+               printf( DGREEN );
+               fMidasEvent.Print();
+               printf( RESET_COLOR );
+               BeginRun(0,0,0);
 	            SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
-				} else {    
-					std::string filename;
-					filename.assign(TGRSIOptions::GetXMLODBFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()));
-					if(filename.length()>0) {
-						printf("using xml file: %s\n",filename.c_str());
-						std::ifstream inputxml; inputxml.open(filename.c_str()); inputxml.seekg(0,std::ios::end);
+               std::string incalfile;
+               incalfile.assign(TGRSIOptions::GetXMLODBFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()));
+               if(incalfile.length()>0) {
+						printf("using xml file: %s\n",incalfile.c_str());
+						std::ifstream inputxml; inputxml.open(incalfile.c_str()); inputxml.seekg(0,std::ios::end);
 						int length = inputxml.tellg(); inputxml.seekg(0,std::ios::beg);
 						char buffer[length]; inputxml.read(buffer,length);
-
 						SetFileOdb(buffer,length);
+               }
+               incalfile.clear();
+					incalfile.assign(TGRSIOptions::GetCalFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()));
+					if(incalfile.length()>0) {
+						TChannel::ReadCalFile(incalfile.c_str());
 					}
-					filename.assign(TGRSIOptions::GetCalFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()));
-					if(filename.length()>0) {
-						TChannel::ReadCalFile(filename.c_str());
-					}
-				}
-            TGRSIRunInfo::SetRunInfo(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
-	         break;
+               
+
+
+              TGRSIRunInfo::SetRunInfo(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
+            }
+            break;
          case 0x8001:
             printf(" Processing event %i have processed %.2fMB/%.2fMB\n",currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
             printf( DRED );

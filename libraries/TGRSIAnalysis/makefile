@@ -1,4 +1,4 @@
-SUBDIRS = TSharc TNucleus TKinematics TAnalysisTreeBuilder
+SUBDIRS = TTigress TSharc TNucleus TKinematics TAnalysisTreeBuilder
 ALLDIRS = $(SUBDIRS)
 
 .PHONY: subdirs $(ALLDIRS) clean

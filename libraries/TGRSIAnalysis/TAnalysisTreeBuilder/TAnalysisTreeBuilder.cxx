@@ -76,8 +76,8 @@ TGRSIRunInfo *TAnalysisTreeBuilder::fCurrentRunInfo = 0;
 
 TFragment *TAnalysisTreeBuilder::fCurrentFragPtr = 0;
 
-//TTigress    *TAnalysisTreeBuilder::tigress = 0;    TTigressData   *TAnalysisTreeBuilder::tigress_data  = 0;
-TSharc      *TAnalysisTreeBuilder::sharc   = 0;    //TSharcData     *TAnalysisTreeBuilder::sharc_data    = 0;
+TTigress    *TAnalysisTreeBuilder::tigress = 0;    
+TSharc      *TAnalysisTreeBuilder::sharc   = 0;    
 //TTriFoil    *TAnalysisTreeBuilder::triFoil = 0;
 //TRf         *TAnalysisTreeBuilder::rf      = 0;     
 //TCSM        *TAnalysisTreeBuilder::csm     = 0;    
@@ -271,7 +271,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    TGRSIRunInfo *info = fCurrentRunInfo;
    TTree *tree = fCurrentAnalysisTree;
 
-   //if(info->Tigress())   { tree->Branch("TTigress","TTigress",&tigress); } 
+   if(info->Tigress())   { tree->Branch("TTigress","TTigress",&tigress); } 
    if(info->Sharc())     { tree->Branch("TSharc","TSharc",&sharc); } 
    //if(info->TriFoil())   { tree->Branch("TTriFoil","TTriFoil",&trifoil); } 
    //if(info->Rf())        { tree->Branch("TRf","TRf",&rf); } 
@@ -295,7 +295,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    TGRSIRunInfo *info = fCurrentRunInfo;
    TTree *tree = fCurrentAnalysisTree;
 
-   //if(info->Tigress())   { tigress->Clear(); } 
+   if(info->Tigress())   { tigress->Clear(); } 
    if(info->Sharc())     { sharc->Clear(); } 
    //if(info->TriFoil())   { trifoil->Clear(; } 
    //if(info->Rf())        { rf->Clear(); } 
@@ -318,7 +318,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches() {
    TGRSIRunInfo *info = fCurrentRunInfo;
    TTree *tree = fCurrentAnalysisTree;
 
-   //if(info->Tigress())   { tigress->Clear(); } 
+   if(info->Tigress())   { tigress->BuildHits(); } 
    if(info->Sharc())     { sharc->BuildHits(); } 
    //if(info->TriFoil())   { trifoil->Clear(; } 
    //if(info->Rf())        { rf->Clear(); } 
@@ -403,9 +403,8 @@ void TAnalysisTreeBuilder::ProcessEvent(std::vector<TFragment> *event) {
 			//printf("ChannelName = %s\n",channel->GetChannelName());
 
 			if(mnemonic.system.compare("TI")==0) {
-			//	tigress->FillData(&(event->at(i)),channel,&mnemonic);
+				tigress->FillData(&(event->at(i)),channel,&mnemonic);
 			} else if(mnemonic.system.compare("SH")==0) {
-				//printf("I am here.\n");
 				sharc->FillData(&(event->at(i)),channel,&mnemonic);
 			}//} else if(mnemonic.system.compare("TR")==0) {	
 			//	FillTriFoilData(&(event->at(i)),&mnemonic);

@@ -28,6 +28,8 @@ TSharcData::~TSharcData()	{	}
 /////////////////////////
 void TSharcData::Clear(Option_t *opt)
 {
+ 	fIsSet = false;
+
   fSharc_StripFront_DetectorNbr.clear();
   fSharc_StripFront_ChannelId.clear();
   fSharc_StripFront_StripNbr.clear();

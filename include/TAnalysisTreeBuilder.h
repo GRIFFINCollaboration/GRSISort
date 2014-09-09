@@ -18,7 +18,7 @@
 #include <TChannel.h>
 #include <TGRSIRunInfo.h>
 
-//#include <TTigress.h> 
+#include <TTigress.h> 
 #include <TSharc.h>     
 //#include <TTriFoil.h>   
 //#include <TRf.h>        
@@ -98,8 +98,8 @@ class TAnalysisTreeBuilder {
      
       static TFragment *fCurrentFragPtr;
 
-      //static TTigress    *tigress;  
-        static TSharc      *sharc;   
+      static TTigress    *tigress;  
+      static TSharc      *sharc;   
       //static TTriFoil    *triFoil;
       //static TRf         *rf;     
       //static TCSM        *csm;    

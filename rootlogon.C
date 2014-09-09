@@ -8,7 +8,7 @@
    gSystem->Load("libraries/libGRSIFormat.so");
 
 
-   //gSystem->Load("libraries/libTigree.so");
+   gSystem->Load("libraries/libTigress.so");
    gSystem->Load("libraries/libSharc.so");
 
 
