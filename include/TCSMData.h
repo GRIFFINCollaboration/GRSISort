@@ -18,7 +18,8 @@ using namespace std ;
 
 // ROOT
 #include "TObject.h"
-#include "TTigFragment.h"
+#include "TFragment.h"
+#include "TChannel.h"
 
 class TCSMData : public TObject  {
 private:
@@ -45,15 +46,15 @@ private:
   vector<Double_t>   fCSM_StripVertical_Time;				//!
   vector<vector<Short_t> > fCSM_StripVertical_Wave;			//!	
 
-  static vool fIsSet; //!
+  static bool fIsSet; //!
 
 public:
   TCSMData();															//!
   virtual ~TCSMData(); //!
   
-  void ClearData(); //!
+  void Clear(Option_t *opt = ""); //!
   //void Clear(const Option_t*) {};
-  void Print(); //!
+  void Print(Option_t *opt = ""); //!
   
   static void Set(bool flag=true) { fIsSet=flag; } //!
   static bool IsSet() { return fIsSet; }           //!
@@ -84,7 +85,7 @@ public:
 
   inline void SetHorizontal(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
     SetHorizontal_DetectorNbr(mnemonic->arrayposition);
-	 SetHorizontal_DetectorPos(mnemonic->arraysubposition);
+	 SetHorizontal_DetectorPos(mnemonic->arraysubposition.c_str()[0]);
 	 SetHorizontal_StripNbr(mnemonic->segment);
 	 SetHorizontal_Energy(channel->CalibrateENG(frag->Charge.at(0)));
 	 SetHorizontal_TimeCFD(frag->Cfd.at(0));
@@ -95,7 +96,7 @@ public:
 	
   inline void SetVertical(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 		SetVertical_DetectorNbr(mnemonic->arrayposition);
-		SetVertical_DetectorPos(mnemonic->arraysubposition);
+		SetVertical_DetectorPos(mnemonic->arraysubposition.c_str()[0]);
 		SetVertical_StripNbr(mnemonic->segment);
 		SetVertical_Energy(channel->CalibrateENG(frag->Charge.at(0)));
 		SetVertical_TimeCFD(frag->Cfd.at(0));
