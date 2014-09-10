@@ -13,10 +13,11 @@
 
 #include <TMath.h>
 #include <TVector3.h>
-#include <TObject.h>
+
+#include <TGRSIDetectorHit.h>
 
 
-class TTigressHit : public TObject	{
+class TTigressHit : public TGRSIDetectorHit {
 	public:
 		TTigressHit();
 		~TTigressHit();

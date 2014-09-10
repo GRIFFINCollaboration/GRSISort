@@ -80,7 +80,7 @@ TTigress    *TAnalysisTreeBuilder::tigress = 0;
 TSharc      *TAnalysisTreeBuilder::sharc   = 0;    
 //TTriFoil    *TAnalysisTreeBuilder::triFoil = 0;
 //TRf         *TAnalysisTreeBuilder::rf      = 0;     
-//TCSM        *TAnalysisTreeBuilder::csm     = 0;    
+TCSM        *TAnalysisTreeBuilder::csm     = 0;    
 //TSpice      *TAnalysisTreeBuilder::spice   = 0;  
 //TS3         *TAnalysisTreeBuilder::s3      = 0;
 //TTip        *TAnalysisTreeBuilder::tip     = 0;    
@@ -275,7 +275,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    if(info->Sharc())     { tree->Branch("TSharc","TSharc",&sharc); } 
    //if(info->TriFoil())   { tree->Branch("TTriFoil","TTriFoil",&trifoil); } 
    //if(info->Rf())        { tree->Branch("TRf","TRf",&rf); } 
-   //if(info->CSM())       { tree->Branch("TCSM","TCSM",&csm); } 
+   if(info->CSM())       { tree->Branch("TCSM","TCSM",&csm); } 
    //if(info->Spice())     { tree->Branch("TSpice","TSpice",&spice); tree->SetBranch("TS3","TS3",&s3); } 
    //if(info->Tip())       { tree->Branch("TTip","TTip",&tip); } 
 
@@ -299,7 +299,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    if(info->Sharc())     { sharc->Clear(); } 
    //if(info->TriFoil())   { trifoil->Clear(; } 
    //if(info->Rf())        { rf->Clear(); } 
-   //if(info->CSM())       { csm->Clear(); } 
+   if(info->CSM())       { csm->Clear(); } 
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
    //if(info->Tip())       { tip->Clear(); } 
 
@@ -322,7 +322,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches() {
    if(info->Sharc())     { sharc->BuildHits(); } 
    //if(info->TriFoil())   { trifoil->Clear(; } 
    //if(info->Rf())        { rf->Clear(); } 
-   //if(info->CSM())       { csm->Clear(); } 
+   if(info->CSM())       { csm->BuildHits(); } 
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
    //if(info->Tip())       { tip->Clear(); } 
 
@@ -406,26 +406,26 @@ void TAnalysisTreeBuilder::ProcessEvent(std::vector<TFragment> *event) {
 				tigress->FillData(&(event->at(i)),channel,&mnemonic);
 			} else if(mnemonic.system.compare("SH")==0) {
 				sharc->FillData(&(event->at(i)),channel,&mnemonic);
-			}//} else if(mnemonic.system.compare("TR")==0) {	
-			//	FillTriFoilData(&(event->at(i)),&mnemonic);
+			//} else if(mnemonic.system.compare("TR")==0) {	
+			//	FillData(&(event->at(i)),&mnemonic);
 			//} else if(mnemonic.system.compare("RF")==0) {	
-			//	FillRfData(&(event->at(i)),&mnemonic);
-			//} else if(mnemonic.system.compare("CS")==0) {	
-			//	FillCSMData(&(event->at(i)),&mnemonic);
-			//} else if(mnemonic.system.compare("SP")==0) {	
-			//	FillSpiceData(&(event->at(i)),&mnemonic);
+			//	FillData(&(event->at(i)),&mnemonic);
+			} else if(mnemonic.system.compare("CS")==0) {	
+				csm->FillData(&(event->at(i)),channel,&mnemonic);
+			} //else if(mnemonic.system.compare("SP")==0) {	
+			//	FillData(&(event->at(i)),&mnemonic);
 			//} else if(mnemonic.system.compare("GR")==0) {	
-			//	FillGriffinData(&(event->at(i)),&mnemonic);
+			//	FillData(&(event->at(i)),&mnemonic);
 			//} else if(mnemonic.system.compare("SC")==0) {	
-			//	FillSceptarData(&(event->at(i)),&mnemonic);
+			//	FillData(&(event->at(i)),&mnemonic);
 			//} else if(mnemonic.system.compare("PA")==0) {	
-			//	FillPacesData(&(event->at(i)),&mnemonic);
+			//	FillData(&(event->at(i)),&mnemonic);
 			//} else if(mnemonic.system.compare("DA")==0) {	
-			//	FillDanteData(&(event->at(i)),&mnemonic);
+			//	FillData(&(event->at(i)),&mnemonic);
 			//} else if(mnemonic.system.compare("ZD")==0) {	
-			//	FillZeroDegreeData(&(event->at(i)),&mnemonic);
+			//	FillData(&(event->at(i)),&mnemonic);
 			//} else if(mnemonic.system.compare("DE")==0) {	
-			//	FillDescantData(&(event->at(i)),&mnemonic);
+			//	FillData(&(event->at(i)),&mnemonic);
 			//}
 
 

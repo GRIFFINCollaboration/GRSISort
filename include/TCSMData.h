@@ -17,11 +17,12 @@
 using namespace std ;
 
 // ROOT
-#include "TObject.h"
 #include "TFragment.h"
 #include "TChannel.h"
 
-class TCSMData : public TObject  {
+#include <TGRSIDetectorData.h>
+
+class TCSMData : public TGRSIDetectorData  {
 private:
   // CSM
   // Energy

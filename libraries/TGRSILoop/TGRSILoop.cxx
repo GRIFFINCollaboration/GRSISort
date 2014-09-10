@@ -242,7 +242,7 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
 
 void TGRSILoop::SetGRIFFOdb() {
    std::string path = "/DAQ/MSC"; 
-   printf("Using GRIFFIN path to analyzer info: %s...\n",path.c_str());
+   printf("using griffIN path to analyzer info: %s...\n",path.c_str());
    
    std::string temp = path; temp.append("/MSC");
    TXMLNode *node = fOdb->FindPath(temp.c_str());
@@ -282,9 +282,9 @@ void TGRSILoop::SetGRIFFOdb() {
       tempchan->SetUserInfoNumber(x);
       tempchan->AddENGCoefficient(offsets.at(x));
       tempchan->AddENGCoefficient(gains.at(x));
-			TChannel::AddChannel(tempchan);
+      TChannel::UpdateChannel(tempchan);
    } 
-   printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
+   printf("\t%i tchannels created.\n",TChannel::GetNumberOfChannels());
 
    return;
 }
@@ -324,8 +324,8 @@ void TGRSILoop::SetTIGOdb()  {
    std::string path = "/Analyzer/Shared Parameters/Config";
 	TXMLNode *test = fOdb->FindPath(path.c_str());
 	if(!test)
-		path.assign("/Analyzer/Parameters/Cathode/Config");  //the old path to the useful odb info.
-   printf("Using TIGRESS path to analyzer info: %s...\n",path.c_str());
+		path.assign("/analyzer/Parameters/Cathode/Config");  //the old path to the useful odb info.
+   printf("using TIGRESS path to analyzer info: %s...\n",path.c_str());
 
    std::string temp = path; temp.append("/FSCP");
    TXMLNode *node = fOdb->FindPath(temp.c_str());
@@ -347,16 +347,22 @@ void TGRSILoop::SetTIGOdb()  {
    node = fOdb->FindPath(temp.c_str());
    std::vector<double> offsets = fOdb->ReadDoubleArray(node);
 
-   if( (address.size() == names.size()) && (names.size() == gains.size()) && (gains.size() == offsets.size()) && offsets.size() == type.size() ) {
+//   if( (address.size() == names.size()) && (names.size() == gains.size()) && (gains.size() == offsets.size()) && offsets.size() == type.size() ) {
+   if( (address.size() == gains.size()) && (gains.size() == offsets.size()) && offsets.size() == type.size() ) {
       //all good.
    }  else {
       printf(BG_WHITE DRED "problem parsing odb data, arrays are different sizes, channels not set." RESET_COLOR "\n");
+      printf(DRED "\taddress.size() = %i" RESET_COLOR "\n",address.size());
+      printf(DRED "\tnames.size()   = %i" RESET_COLOR "\n",names.size());
+      printf(DRED "\tgains.size()   = %i" RESET_COLOR "\n",gains.size());
+      printf(DRED "\toffsets.size() = %i" RESET_COLOR "\n",offsets.size());
+      printf(DRED "\ttype.size()    = %i" RESET_COLOR "\n",type.size());
       return;
    }
 
    for(int x=0;x<address.size();x++) {
       TChannel *tempchan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
-      tempchan->SetChannelName(names.at(x).c_str());
+      if(x<names.size()) { tempchan->SetChannelName(names.at(x).c_str()); }
 		//printf("address: 0x%08x\n",address.at(x));
       tempchan->SetAddress(address.at(x));
       tempchan->SetNumber(x);
@@ -374,7 +380,7 @@ void TGRSILoop::SetTIGOdb()  {
       tempchan->SetUserInfoNumber(x);
       tempchan->AddENGCoefficient(offsets.at(x));
       tempchan->AddENGCoefficient(gains.at(x));
-			TChannel::AddChannel(tempchan);
+      TChannel::UpdateChannel(tempchan);
       //TChannel *temp2 = TChannel::GetChannel(address.at(x));
       //temp2->Print();
 			//printf("NumberofChannels: %i\n",TChannel::GetNumberOfChannels());

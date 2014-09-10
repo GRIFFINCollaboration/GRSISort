@@ -10,9 +10,9 @@
 #include "TFragment.h"
 #include "TChannel.h"
 
-#include <TObject.h>
+#include <TGRSIDetectorData.h>
 
-class TTigressData : public TObject {
+class TTigressData : public TGRSIDetectorData {
 
 	private:
 		std::set<UShort_t>    fCoreSet;				//!

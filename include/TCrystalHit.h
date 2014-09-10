@@ -4,10 +4,10 @@
 #include <cstdio>
 #include <vector>
 
-#include <TObject.h>
+#include <TGRSIDetectorHit.h>
 
 
-class TCrystalHit : public TObject	{
+class TCrystalHit : public TGRSIDetectorHit	{
 
 	public:
 		TCrystalHit();

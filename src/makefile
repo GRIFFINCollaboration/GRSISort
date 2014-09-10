@@ -34,11 +34,12 @@ LIBS += -lGRSIRootIO
 LIBS += -lAnalysisTreeBuilder
 LIBS += -lProof
 
-DETLIBS =  -lTigress
+DETLIBS = -lGRSIDetector
+DETLIBS +=  -lTigress
 DETLIBS += -lSharc
 #DETLIBS += -lTriFoil
 #DETLIBS += -lRf
-#DETLIBS += -lCSM
+DETLIBS += -lCSM
 #DETLIBS += -lSpice
 #DETLIBS += -lS3
 #DETLIBS += -lTip

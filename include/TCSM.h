@@ -1,5 +1,5 @@
-#ifndef TSHARC_H
-#define TSHARC_H
+#ifndef TCSM_H
+#define TCSM_H
 
 #include "Globals.h"
 
@@ -23,15 +23,15 @@
 
 #include <TMath.h>
 #include <TVector3.h>
-#include <TObject.h>
 
+#include <TGRSIDetector.h>
 
 #ifndef PI
 #define PI                       (TMath::Pi())
 #endif
 
 
-class TCSM :  public TObject 	{
+class TCSM :  public TGRSIDetector 	{
 	public:
 		TCSM();
 		~TCSM();
@@ -39,7 +39,7 @@ class TCSM :  public TObject 	{
 	public: 
 		virtual void Clear(Option_t * = "");		//!
 		virtual void Print(Option_t * = "");		//!
-		void BuildHits(TCSMData *cd = 0,  Option_t * = "");			//!
+		void BuildHits(TGRSIDetectorData *cd = 0,  Option_t * = "");			//!
 
 		TCSMHit *GetHit(int i)		{return &csm_hits.at(i);}	//->
 		Short_t GetMultiplicity()	{return csm_hits.size();}	//->
@@ -58,7 +58,7 @@ class TCSM :  public TObject 	{
 		static int fCfdBuildDiff; //!   // largest acceptable time difference between events (clock ticks)  (50 ns)
 
         
-   ClassDef(TCSM,2)  // CSM Analysis structure
+   ClassDef(TCSM,3)  // CSM Analysis structure
 };
 
 

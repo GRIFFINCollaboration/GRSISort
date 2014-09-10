@@ -15,16 +15,19 @@
 #include <TVector3.h> 
 #include <TObject.h>
 
+#include <TGRSIDetector.h> 
+
 using namespace std;
 
-class TTigress : public TObject {
+class TTigress : public TGRSIDetector {
 
 	public:
 		TTigress();
 		~TTigress();
 
 	public: 
-		void BuildHits(TTigressData *tdata = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
+      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
+		//void BuildHits(TTigressData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
 		void BuildAddBack(Option_t *opt="");	//!
 
 		TTigressHit *GetTigressHit(int i)	{	return &tigress_hits[i];	}	//!

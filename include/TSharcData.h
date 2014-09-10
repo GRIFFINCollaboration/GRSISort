@@ -15,11 +15,12 @@
 #include <cstdlib>
 #include <vector>
 
-#include "TObject.h"
 #include "TFragment.h"
 #include "TChannel.h"
 
-class TSharcData : public TObject  {
+#include <TGRSIDetectorData.h>
+
+class TSharcData : public TGRSIDetectorData  {
 private:
   // Sharc
   // Energy

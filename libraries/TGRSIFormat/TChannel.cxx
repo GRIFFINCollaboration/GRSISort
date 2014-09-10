@@ -45,7 +45,7 @@ TChannel::TChannel(const char *temp_name) {
 TChannel::TChannel(TChannel *chan) {
 //Makes a copy of a the TChannel. 
     if(!chan)
-	chan = gChannel;	
+	   chan = gChannel;	
 
     this->SetAddress(chan->GetAddress());
     this->SetIntegration(chan->GetIntegration());
@@ -97,27 +97,30 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
 	}	
     } 
     else {
-        TChannel *newchan = new TChannel(*chan);
+   TChannel *newchan = new TChannel(*chan);
 	fChannelMap->insert(std::make_pair(newchan->GetAddress(),newchan));
 	if(newchan->GetNumber() != 0 && fChannelNumberMap->count(newchan->GetNumber())==0)
 	    fChannelNumberMap->insert(std::make_pair(newchan->GetNumber(),newchan));
     }
     // chan should now be deleted.
     if(strcmp(opt,"save") !=0 && chan != gChannel)
-	delete chan;
+	 delete chan;
 
     return;
 }
 
 int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
     //If there is information in the chan, the current TChannel with the same address is updated with that information.
-    if(!chan)
-	return 0;
-    TChannel *oldchan = GetChannel(chan->GetAddress());
-    if(!oldchan) {
-	AddChannel(chan,opt);
-	return 1;
-    }
+   if(!chan)
+   	return 0;
+//   printf("temp_address = 0x%08x\n",chan->GetAddress());
+   TChannel *oldchan = GetChannel(chan->GetAddress());
+//   if(!oldchan) {  //this is currently not doing anything!
+//	   AddChannel(chan,opt);
+//  	return 1;
+//    }
+//   oldchan->Print();
+
 
     if(chan->GetIntegration()!=0)
 	oldchan->SetIntegration(chan->GetIntegration());
@@ -178,17 +181,20 @@ void TChannel::Clear(Option_t *opt){
 
 TChannel *TChannel::GetChannel(int temp_address) {
 //Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
+
     if(temp_address == 0 || temp_address == 0xffffffff) {
-	gChannel->Clear();
-	return gChannel;
+	      gChannel->Clear();
+	      return gChannel;
     }
     TChannel *chan = 0;
     try {
-	chan = fChannelMap->at(temp_address);
-    } 
-    catch(const std::out_of_range& oor) {
-        gChannel->Clear();
-	return gChannel;
+	   chan = fChannelMap->at(temp_address);
+    } catch(const std::out_of_range& oor) {
+       chan = new TChannel;  
+       chan->SetAddress(temp_address);
+       AddChannel(chan);
+       //gChannel->Clear();
+	    //return gChannel;
     }
     return chan;
 

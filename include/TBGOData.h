@@ -11,10 +11,10 @@
 #include "TChannel.h"
 
 
-#include <TObject.h>
+#include <TGRSIDetectorData.h>
 
 
-class TBGOData : public TObject	{
+class TBGOData : public TGRSIDetectorData	{
 
 	private:
 

@@ -22,7 +22,7 @@
 #include <TSharc.h>     
 //#include <TTriFoil.h>   
 //#include <TRf.h>        
-//#include <TCSM.h>       
+#include <TCSM.h>       
 //#include <TSpice.h>     
 //#include <TS3.h>        
 //#include <TTip.h>       
@@ -78,7 +78,7 @@ class TAnalysisTreeBuilder {
       static void StartMakeAnalysisTree(int argc=1, char **argv=0);
 
       static void ClearActiveAnalysisTreeBranches();
-			static void BuildActiveAnalysisTreeBranches();
+		static void BuildActiveAnalysisTreeBranches();
 
 
    private:
@@ -102,7 +102,7 @@ class TAnalysisTreeBuilder {
       static TSharc      *sharc;   
       //static TTriFoil    *triFoil;
       //static TRf         *rf;     
-      //static TCSM        *csm;    
+      static TCSM        *csm;    
       //static TSpice      *spice;  
       //static TS3         *s3;
       //static TTip        *tip;    

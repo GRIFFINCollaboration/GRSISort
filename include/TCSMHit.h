@@ -1,16 +1,17 @@
-#ifndef TSHARCHIT_H
-#define TSHARCHIT_H
+#ifndef TCSMHIT_H
+#define TCSMHIT_H
+
+#include "Globals.h"
 
 #include <stdio.h>
 #include <utility>
 
 #include "TChannel.h"
 #include "TVector3.h" 
-#include "TObject.h" 
 
-#include "Globals.h"
+#include <TGRSIDetectorHit.h>
 
-class TCSMHit : public TObject 	{
+class TCSMHit : public TGRSIDetectorHit 	{
 	public:
 		TCSMHit();
 		~TCSMHit();

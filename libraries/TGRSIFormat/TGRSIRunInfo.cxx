@@ -57,6 +57,7 @@ void TGRSIRunInfo::Print(Option_t *opt) {
    printf("\t\tSubRunNumber: %03i\n",TGRSIRunInfo::Get()->fSubRunNumber);
    printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
    printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
+   printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
    printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
    printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
    printf("\t=====================\n");
@@ -103,7 +104,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
       std::string channelname = iter->second->GetChannelName();
       MNEMONIC mnemonic;
       ParseMNEMONIC(&channelname,&mnemonic);
-      //printf("\t%-04i:\t%s\n",counter++,channelname.c_str());
+     //printf("\t%-04i:\t%s\n",counter++,channelname.c_str());
 
       //  detector system type.
       //  for more info, see: https://www.triumf.info/wiki/tigwiki/index.php/Detector_Nomenclature
