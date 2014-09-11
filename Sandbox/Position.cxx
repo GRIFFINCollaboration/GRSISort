@@ -5,6 +5,8 @@
 
 Detector::Detector(){}
 
+Detector::~Detector(){}
+
 void Detector::SetThetaPhi(Double_t theta, Double_t phi){
 
   Double_t cp = 5.0; //Crystal Center Point Might have adepth eventually
@@ -17,14 +19,14 @@ void Detector::SetThetaPhi(Double_t theta, Double_t phi){
   fShift[kWhite].SetXYZ(-cp,-cp,0);
 
 //This sets the Theta and Phi for a detector by setting the central angle and transforming the shitft vectors
-   if(fCrystalPosition[kCenter].Mag() < 0.001){ //I need to set the magnitude to some value (Unity?) if it is currently 0.
-      fCrystalPosition[kCenter].SetMag(1.00);
+   if(fPosition.Mag() < 0.001){ //I need to set the magnitude to some value (Unity?) if it is currently 0.
+      fPosition.SetZ(1.00);
    }
 
-   fCrystalPosition[kCenter].SetTheta(theta);
-   fCrystalPosition[kCenter].SetPhi(phi);
+   fPosition.SetTheta(theta);
+   fPosition.SetPhi(phi);
 
-  for(int i=0;i < 5; i++){
+  for(int i=0;i <4; i++){
      fShift[i].RotateY(theta);
      fShift[i].RotateZ(phi);
   } 
@@ -72,18 +74,38 @@ Position::Position(){
 
 
 
-TVector3 Position::SetPosition(UShort_t det, UShort_t crystal = Detector::kCenter, Double_t dist = 110.0){
+TVector3 Position::SetPosition(UShort_t det, UShort_t crystal, Double_t dist = 110.0){
 //If crystal = 4 take the center of the detector?
 
-   detector[det].fCrystalPosition[crystal].SetMag(dist);   
-
-   return detector[det].fCrystalPosition[Detector::kCenter] + detector[det].fShift[crystal]; 
+   detector[det].fPosition.SetMag(dist); //SetMag doesn't work as expected (it actually multiplies by (ma) factor)  
+   return detector[det].fPosition + detector[det].fShift[crystal]; 
 
 }
 
 
 
+int main(){
 
+   Position grifposition;
+   double differences[64][64] = {0}; 
+ 
+   for(int i = 0; i < 16; i++){//Loop over first detector
+      for(int u = 0; u < 4; u++){//Loop over crystals
+         for(int j=0;j<16;j++){//Loop over second detector 
+            for(int v=0;v<4;v++){//Loop over second crystal
+               differences[j*4+v][i*4+u] = (grifposition.SetPosition(j,v)).Angle(grifposition.SetPosition(i,u)); 
+            }       
+   
+         }
+      }
+
+
+   }
+   
+   //Work on outputting this matrix tomorrow to file to compare against GEANT
+
+
+}
 
 
 
