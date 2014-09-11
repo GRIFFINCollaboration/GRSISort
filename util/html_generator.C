@@ -111,8 +111,12 @@ void html_generator() {
    gSystem->Load("libTreePlayer");
    gSystem->Load("$GRSISYS/libraries/libMidasFormat.so");
    gSystem->Load("$GRSISYS/libraries/libGRSIFormat.so");
- //  gSystem->Load("$GRSISYS/libraries/libBuilder.so");
+ //  gSystem->Load("$GRSISYS/libraries/libAnalysisTreeBuilder.so");
  //  gSystem->Load("$GRSISYS/libraries/libGRSIRootIO.so");
+   gSystem->Load("$GRSISYS/libraries/libGriffin.so");
+   gSystem->Load("$GRSISYS/libraries/libCSM.so");
+   gSystem->Load("$GRSISYS/libraries/libGRSIDetector.so");
+   gSystem->Load("$GRSISYS/libraries/libTigress.so");
    gSystem->Load("$GRSISYS/libraries/libDataParser.so");
    gSystem->Load("$GRSISYS/libraries/libNucleus.so");
    gSystem->Load("$GRSISYS/libraries/libKinematics.so");
@@ -137,6 +141,10 @@ void html_generator() {
    html.AddSourcePath("TGRSIAnalysis/TKinematics");
    html.AddSourcePath("TGRSIAnalysis/TNucleus");
    html.AddSourcePath("TGRSIAnalysis/TSharc");
+   html.AddSourcePath("TGRSIAnalysis/TCSM");
+   html.AddSourcePath("TGRSIAnalysis/TGriffin");
+   html.AddSourcePath("TGRSIAnalysis/TGRSIDetector");
+   html.AddSourcePath("TGRSIAnalysis/TTigress");
 
    html.RunAll();
 }

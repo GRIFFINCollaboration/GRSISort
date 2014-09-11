@@ -13,8 +13,8 @@
 
 #include <TMath.h>
 #include <TVector3.h>
-#include <TObject.h>
-#include <TNamed.h>
+
+#include <TGRSIDetector.h>
 
 #include "TSharcData.h"
 #include "TSharcHit.h"
@@ -23,7 +23,7 @@
 #define PI                       (TMath::Pi())
 #endif
 
-class TSharc : public TObject	{
+class TSharc : public TGRSIDetector	{
 	public:
 		TSharc();
 		~TSharc();
@@ -38,22 +38,26 @@ class TSharc : public TObject	{
 		inline TSharcHit *GetHit(int i)		   {return &sharc_hits.at(i);}	//->
       static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);	//! 
 
-		void BuildHits(TSharcData*,Option_t * = "");			   //!
+		void BuildHits(TGRSIDetectorData *sd=0,Option_t * = "");			   //!
 
 		int GetMultiplicity() { return sharc_hits.size(); } //!
 
 		virtual void Clear(Option_t * = "");		//!
 		virtual void Print(Option_t * = "");		//!
 
+    //TSharcData *GetData() { return &data; }  //!
+		void FillData(TFragment*,TChannel*,MNEMONIC*); //!
 
 	private: 
 
+    TSharcData *data;    //!
+
 		// various sharc dimensions set in mm, taken from IOP SHARC white paper
 		static double Xdim; // total X dimension of all boxes
-	   static double Ydim; // total Y dimension of all boxes
-	   static double Zdim; // total Z dimension of all boxes
-	   static double Rdim; // Rmax-Rmin for all QQQs 
-	   static double Pdim; // QQQ quadrant angular range (degrees)
+	  static double Ydim; // total Y dimension of all boxes
+	  static double Zdim; // total Z dimension of all boxes
+	  static double Rdim; // Rmax-Rmin for all QQQs 
+	  static double Pdim; // QQQ quadrant angular range (degrees)
     // BOX dimensions
 		static double XposUB;
 		static double YminUB; 
@@ -74,8 +78,8 @@ class TSharc : public TObject	{
     //pitches
 		static  double stripFpitch;
 		static  double stripBpitch;
-      static  double ringpitch;
-      static  double segmentpitch; // angular pitch, degrees
+    static  double ringpitch;
+    static  double segmentpitch; // angular pitch, degrees
 
    ClassDef(TSharc,5)  
 };

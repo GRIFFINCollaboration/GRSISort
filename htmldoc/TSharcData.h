@@ -15,11 +15,12 @@
 #include <cstdlib>
 #include <vector>
 
-#include "TObject.h"
 #include "TFragment.h"
 #include "TChannel.h"
 
-class TSharcData : public TObject  {
+#include <TGRSIDetectorData.h>
+
+class TSharcData : public TGRSIDetectorData  {
 private:
   // Sharc
   // Energy
@@ -65,9 +66,9 @@ public:
 	static void Set(bool flag=true) { fIsSet=flag; } //!
 	static bool IsSet() { return fIsSet; }           //!
 
-  void ClearData(); //!
+  void Clear(Option_t *opt=""); //!
   //void Clear(const Option_t*) {};
-  void Print(); //!
+  void Print(Option_t *opt=""); //!
   
   /////////////////////           SETTERS           ////////////////////////
   inline void SetFront_DetectorNbr(const UShort_t &DetNbr){fSharc_StripFront_DetectorNbr.push_back(DetNbr);}	//!

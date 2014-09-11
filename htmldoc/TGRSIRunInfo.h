@@ -84,7 +84,6 @@ class TGRSIRunInfo : public TObject {
       static inline int  RunNumber() { return fGRSIRunInfo->fRunNumber; }
       static inline int  SubRunNumber() { return fGRSIRunInfo->fSubRunNumber; }
 
-      
       static inline void SetMajorIndex(const char *tmpstr) { fGRSIRunInfo->fMajorIndex.assign(tmpstr); }
       static inline void SetMinorIndex(const char *tmpstr) { fGRSIRunInfo->fMinorIndex.assign(tmpstr); }
 

@@ -1,6 +1,9 @@
 #ifndef TSHARCHIT_H
 #define TSHARCHIT_H
 
+
+#include "Globals.h"
+
 #include <cstdio>
 #include <utility>
 
@@ -10,9 +13,10 @@
 #include <TRandom.h>
 #include <Rtypes.h>
 
-#include "Globals.h"
+#include <TGRSIDetectorHit.h>
 
-class TSharcHit : public TObject 	{
+
+class TSharcHit : public TGRSIDetectorHit 	{
 	public:
 		TSharcHit();
 		~TSharcHit();
