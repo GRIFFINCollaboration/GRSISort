@@ -2,13 +2,16 @@
 #define POSITION_H
 
 #include "TVector3.h"
+#include <iostream>
+#include "TMath.h"
+
 
 class Detector{
   public:
    Detector();
    ~Detector();
    
-   TVector3 fCrystalPosition[5];
+   TVector3 fPosition;
    TVector3 fShift[5];                //The difference between the crystal center and detector center 
  
    void SetThetaPhi(Double_t, Double_t); 
@@ -28,7 +31,7 @@ class Detector{
 class Position {
   public:
     Position();
-    ~Position();
+    ~Position(){};
 
    Detector detector[16];
 
