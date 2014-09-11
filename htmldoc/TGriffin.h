@@ -15,20 +15,6 @@
 #include <TGriffinHit.h>
 #include <TGRSIDetector.h> 
 
-////////////////////////////////////////////////////////////
-//                    
-// TGriffin
-//
-// The TGriffin class defines the observables and algorithms used
-// when analyzing GRIFFIN data. It includes detector positions,
-// add-back methods, etc. 
-//
-////////////////////////////////////////////////////////////
-
-
-
-
-
 class TGriffin : public TGRSIDetector {
 
   public:
