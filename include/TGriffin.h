@@ -17,56 +17,53 @@
 
 class TGriffin : public TGRSIDetector {
 
-	public:
-		TGriffin();
-		~TGriffin();
+  public:
+     TGriffin();
+     ~TGriffin();
 
-	public: 
-      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
-		//void BuildHits(TGriffinData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
-		void BuildAddBack(Option_t *opt="");	//!
+  public: 
+     void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
+     //void BuildHits(TGriffinData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
+     void BuildAddBack(Option_t *opt="");	//!
 
-		TGriffinHit *GetGriffinHit(int i)	{	return &griffin_hits[i];	   }	//!
-		Short_t GetMultiplicity()		      {	return griffin_hits.size();	}	//!
+     TGriffinHit *GetGriffinHit(int i)        {	return &griffin_hits[i];   }	//!
+     Short_t GetMultiplicity() const	      {	return griffin_hits.size();}	//!
 
-		TGriffinHit *GetAddBackHit(int i)	{	return &addback_hits[i];	   }	//!
-		Short_t GetAddBackMultiplicity()	   {	return addback_hits.size();	}	//!
+     TGriffinHit *GetAddBackHit(int i)        {	return &addback_hits[i];   }	//!
+     Short_t GetAddBackMultiplicity() const   {	return addback_hits.size();}	//!
 
 		//TVector3 GetPosition(TGriffinHit *,int distance=0);						//!
 
-		static TVector3 GetPosition(int DetNbr ,int CryNbr, double distance = 110.0);		//!
+     static TVector3 GetPosition(int DetNbr ,int CryNbr, double distance = 110.0);		//!
 
-		void FillData(TFragment*,TChannel*,MNEMONIC*); //!
-		void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
+     void FillData(TFragment*,TChannel*,MNEMONIC*); //!
+     void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
 
-	private: 
-		TGriffinData *grifdata;
-		TBGOData     *bgodata;
+   private: 
+     TGriffinData *grifdata;
+     TBGOData     *bgodata;
 
-		std::vector <TGriffinHit> griffin_hits;
-		std::vector <TGriffinHit> addback_hits;		
+     std::vector <TGriffinHit> griffin_hits;
+     std::vector <TGriffinHit> addback_hits;		
 
-		static bool fSetBGOHits;					 //!
+     static bool fSetBGOHits;					 //!
 		
-		static bool fSetCoreWave;					//!
-		static bool fSetBGOWave;					//!
+     static bool fSetCoreWave;					//!
+     static bool fSetBGOWave;					//!
 
-	public:
-		static bool SetBGOHits()     	 { return fSetBGOHits;	    }	//!
-                static bool SetCoreWave()      { return fSetCoreWave;	    }	//!
-		static bool SetBGOWave()	    { return fSetBGOWave;		 } //!
+   public:
+     static bool SetBGOHits()       { return fSetBGOHits;   }	//!
+     static bool SetCoreWave()      { return fSetCoreWave;  }	//!
+     static bool SetBGOWave()	    { return fSetBGOWave;   } //!
 
    private:
-		static bool     gCloverPositionSet;
-                static TVector3 gCloverPosition[17]; 
-		static void     InitCloverPositions();
+     static bool     gCloverPositionSet;
+     static TVector3 gCloverPosition[17]; 
+     static void     InitCloverPositions();
 
-
-
-
-	public:         
-		virtual void Clear(Option_t *opt = "");		//!
-		virtual void Print(Option_t *opt = "");		//!
+   public:         
+     virtual void Clear(Option_t *opt = "");		//!
+     virtual void Print(Option_t *opt = "");		//!
 
    ClassDef(TGriffin,1)  // Griffin Physics structure
 
