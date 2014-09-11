@@ -44,7 +44,7 @@ DETLIBS += -lCSM
 #DETLIBS += -lS3
 #DETLIBS += -lTip
 
-#DETLIBS += -lGriffin
+DETLIBS += -lGriffin
 #DETLIBS += -lSceptar
 #DETLIBS += -lPaces
 #DETLIBS += -lDante
