@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Mon Sep  8 15:15:07 2014            -->
+<!--   Date: Thu Sep 11 17:22:15 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -56,7 +56,7 @@ return false;}
  &#187; <a class="locationlevel" href="./INCLUDE_Index.html">INCLUDE</a>
  &#187; <a class="locationlevel" href="#TopOfPage">TSharcData</a>
 </div>
-<div class="dropshadow"><div class="withshadow"><h1><a name="TSharcData:description"></a>class TSharcData: public TObject</h1>
+<div class="dropshadow"><div class="withshadow"><h1><a name="TSharcData:description"></a>class TSharcData: public <a href="./TGRSIDetectorData.html">TGRSIDetectorData</a></h1>
 <div class="classdescr">
 </div>
 </div></div>
@@ -73,8 +73,7 @@ return false;}
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
 <tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#TSharcData:Class">Class</a>()</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:ClassName"><span class="baseclass">TObject::</span>ClassName</a>() <span class="keyword">const</span></td></tr>
-<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Clear"><span class="baseclass">TObject::</span>Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* = <span class="string">""</span>)</td></tr>
-<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharcData:ClearData">ClearData</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharcData:Clear">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:Clone"><span class="baseclass">TObject::</span>Clone</a>(<span class="keyword">const</span> <span class="keyword">char</span>* newname = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Compare"><span class="baseclass">TObject::</span>Compare</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Copy"><span class="baseclass">TObject::</span>Copy</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>&amp; object) <span class="keyword">const</span></td></tr>
@@ -161,7 +160,7 @@ return false;}
 <tr class="func"><td class="funcret"><a href="./TSharcData.html">TSharcData</a>&amp;</td><td class="funcname"><a class="funcname" href="#TSharcData:operator_">operator=</a>(<span class="keyword">const</span> <a href="./TSharcData.html">TSharcData</a>&amp;)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Paint"><span class="baseclass">TObject::</span>Paint</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Pop"><span class="baseclass">TObject::</span>Pop</a>()</td></tr>
-<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharcData:Print">Print</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharcData:Print">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Read"><span class="baseclass">TObject::</span>Read</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:RecursiveRemove"><span class="baseclass">TObject::</span>RecursiveRemove</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj)</td></tr>
 <tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ResetBit"><span class="baseclass">TObject::</span>ResetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
@@ -288,6 +287,16 @@ return false;}
 </table></div>
 </div>
 <h2><a id="TSharcData:Class_Charts"></a>Class Charts</h2>
+<map name="MapTSharcData_Inh" id="MapTSharcData_Inh">
+<area shape="rect" id="node2" href="./TGRSIDetectorData.html" title="TGRSIDetectorData" alt="" coords="272,8,490,42"/>
+</map>
+<map name="MapTSharcData_InhMem" id="MapTSharcData_InhMem">
+<area shape="rect" id="clust12" href="./TGRSIDetectorData.html" alt="" coords="403,48,469,128"/>
+<area shape="rect" id="clust11" href="./TGRSIDetectorData.html" alt="" coords="280,144,392,161"/>
+<area shape="rect" id="clust13" href="./TGRSIDetectorData.html" alt="" coords="325,48,392,141"/>
+<area shape="rect" id="clust14" href="./TGRSIDetectorData.html" alt="" coords="248,48,315,141"/>
+<area shape="rect" id="clust10" href="./TGRSIDetectorData.html" title="TGRSIDetectorData" alt="" coords="248,16,469,161"/>
+</map>
 <map name="MapTSharcData_Lib" id="MapTSharcData_Lib">
 <area shape="rect" id="node1" href="LibraryDependencies.html" title="All Libraries" alt="" coords="125,237,240,285"/>
 </map>
@@ -309,9 +318,9 @@ return false;}
 <div class="code"><code class="inlinecode">{	}</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharcData:ClearData" href="src/TSharcData.cxx.html#rBq3tE">ClearData</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharcData:Clear" href="src/TSharcData.cxx.html#wRbIKD">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharcData:Print" href="src/TSharcData.cxx.html#e2Tw3C">Print</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharcData:Print" href="src/TSharcData.cxx.html#ykzPyD">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
 <div class="funccomm"><pre> Energy
 </pre></div>
 </div>
@@ -653,7 +662,7 @@ return false;}
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Mon Sep  8 15:15:07 2014 </em><em>&raquo; Last generated: 2014-09-08 15:15</em><br />
+<em>&raquo; Last changed: Thu Sep 11 17:22:15 2014 </em><em>&raquo; Last generated: 2014-09-11 17:22</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Mon Sep  8 15:15:07 2014            -->
+<!--   Date: Thu Sep 11 17:22:15 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -56,7 +56,7 @@ return false;}
  &#187; <a class="locationlevel" href="./INCLUDE_Index.html">INCLUDE</a>
  &#187; <a class="locationlevel" href="#TopOfPage">TSharc</a>
 </div>
-<div class="dropshadow"><div class="withshadow"><h1><a name="TSharc:description"></a>class TSharc: public TObject</h1>
+<div class="dropshadow"><div class="withshadow"><h1><a name="TSharc:description"></a>class TSharc: public <a href="./TGRSIDetector.html">TGRSIDetector</a></h1>
 <div class="classdescr">
 </div>
 </div></div>
@@ -71,7 +71,7 @@ return false;}
 <tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AbstractMethod"><span class="baseclass">TObject::</span>AbstractMethod</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AppendPad"><span class="baseclass">TObject::</span>AppendPad</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
-<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharc:BuildHits">BuildHits</a>(<a href="./TSharcData.html">TSharcData</a>*, <a href="./ListOfTypes.html#Option_t">Option_t</a>* = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharc:BuildHits">BuildHits</a>(<a href="./TGRSIDetectorData.html">TGRSIDetectorData</a>* sd = 0, <a href="./ListOfTypes.html#Option_t">Option_t</a>* = <span class="string">""</span>)</td></tr>
 <tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#TSharc:Class">Class</a>()</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:ClassName"><span class="baseclass">TObject::</span>ClassName</a>() <span class="keyword">const</span></td></tr>
 <tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharc:Clear">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* = <span class="string">""</span>)</td></tr>
@@ -89,8 +89,10 @@ return false;}
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute@1"><span class="baseclass">TObject::</span>Execute</a>(TMethod* method, TObjArray* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ExecuteEvent"><span class="baseclass">TObject::</span>ExecuteEvent</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> event, <a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Fatal"><span class="baseclass">TObject::</span>Fatal</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TSharc:FillData">FillData</a>(<a href="./TFragment.html">TFragment</a>*, <a href="./TChannel.html">TChannel</a>*, MNEMONIC*)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject@1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./TGRSIDetectorData.html">TGRSIDetectorData</a>*</td><td class="funcname"><a class="funcname" href="./TGRSIDetector.html#TGRSIDetector:GetData"><span class="baseclass">TGRSIDetector::</span>GetData</a>()</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
 <tr class="func"><td class="funcret"><a href="./TSharcHit.html">TSharcHit</a>*</td><td class="funcname"><a class="funcname" href="#TSharc:GetHit">GetHit</a>(<span class="keyword">int</span> i)</td></tr>
@@ -212,6 +214,7 @@ return false;}
 <tr class="data"><td class="datatype">static <span class="keyword">double</span></td><td class="dataname"><a name="TSharc:ZminUB"></a>ZminUB</td><td></td></tr>
 <tr class="data"><td class="datatype">static <span class="keyword">double</span></td><td class="dataname"><a name="TSharc:ZposDQ"></a>ZposDQ</td><td></td></tr>
 <tr class="data"><td class="datatype">static <span class="keyword">double</span></td><td class="dataname"><a name="TSharc:ZposUQ"></a>ZposUQ</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./TSharcData.html">TSharcData</a>*</td><td class="dataname"><a name="TSharc:data"></a>data</td><td class="datadesc">!</td></tr>
 <tr class="data"><td class="datatype">static <span class="keyword">double</span></td><td class="dataname"><a name="TSharc:ringpitch"></a>ringpitch</td><td></td></tr>
 <tr class="data"><td class="datatype">static <span class="keyword">double</span></td><td class="dataname"><a name="TSharc:segmentpitch"></a>segmentpitch</td><td class="datadesc">angular pitch, degrees</td></tr>
 <tr class="data"><td class="datatype">vector&lt;<a href="./TSharcHit.html">TSharcHit</a>&gt;</td><td class="dataname"><a name="TSharc:sharc_hits"></a>sharc_hits</td><td></td></tr>
@@ -221,6 +224,16 @@ return false;}
 </table></div>
 </div>
 <h2><a id="TSharc:Class_Charts"></a>Class Charts</h2>
+<map name="MapTSharc_Inh" id="MapTSharc_Inh">
+<area shape="rect" id="node2" href="./TGRSIDetector.html" title="TGRSIDetector" alt="" coords="289,9,479,44"/>
+</map>
+<map name="MapTSharc_InhMem" id="MapTSharc_InhMem">
+<area shape="rect" id="clust12" href="./TGRSIDetector.html" alt="" coords="403,48,469,128"/>
+<area shape="rect" id="clust11" href="./TGRSIDetector.html" alt="" coords="248,160,392,177"/>
+<area shape="rect" id="clust13" href="./TGRSIDetector.html" alt="" coords="325,48,392,157"/>
+<area shape="rect" id="clust14" href="./TGRSIDetector.html" alt="" coords="248,48,315,157"/>
+<area shape="rect" id="clust10" href="./TGRSIDetector.html" title="TGRSIDetector" alt="" coords="248,16,469,177"/>
+</map>
 <map name="MapTSharc_Lib" id="MapTSharc_Lib">
 <area shape="rect" id="node1" href="LibraryDependencies.html" title="All Libraries" alt="" coords="125,237,240,285"/>
 </map>
@@ -232,33 +245,20 @@ return false;}
 </div><div class="classcharts"><div class="classchartswidth"></div>
 <img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTSharc_Inh" src="inh/TSharc_Inh.png"/></div>
 <h2>Function documentation</h2>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TSharc:TSharc" href="src/TSharc.cxx.html#h8PCHE">TSharc</a>()</span><br />
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TSharc:TSharc" href="src/TSharc.cxx.html#sMZWYE">TSharc</a>()</span><br />
 
 <div class="code"><code class="inlinecode">{	}</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TSharc:_TSharc" href="src/TSharc.cxx.html#BE_LJE">~TSharc</a>()</span><br />
-
-<div class="code"><code class="inlinecode">{	}</code></div>
-<div style="clear:both;"></div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="TSharc:_TSharc" href="src/TSharc.cxx.html#nQE_6B">~TSharc</a>()</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharc:BuildHits" href="src/TSharc.cxx.html#IMXpmD">BuildHits</a>(<a href="./TSharcData.html">TSharcData</a>* , <a href="./ListOfTypes.html#Option_t">Option_t</a>*  = <span class="string">""</span>)</span><br />
-<div class="funccomm"><pre>  after the data has been taken from the fragement tree, the data
-  is stored/correlated breifly in by the tsharcdata class - these
-  function takes the data out of tsharcdata, and puts it into the
-  the tsharchits class.  These tsharchit objects are how we access
-  the data stored in the tsharc branch in the analysis tree.
-
-  pcb.
-
-<a href="./ListOfTypes.html#int">int</a> fCfdBuildDiff = 5; // largest acceptable time difference between events (clock ticks)  (50 ns)
-</pre></div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharc:FillData" href="src/TSharc.cxx.html#I63UfB">FillData</a>(<a href="./TFragment.html">TFragment</a>* , <a href="./TChannel.html">TChannel</a>* , MNEMONIC* )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharc:BuildHits" href="src/TSharc.cxx.html#YVZlIE">BuildHits</a>(<a href="./TGRSIDetectorData.html">TGRSIDetectorData</a>* sd = 0, <a href="./ListOfTypes.html#Option_t">Option_t</a>*  = <span class="string">""</span>)</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharc:RemoveHits" href="src/TSharc.cxx.html#cCapRC">RemoveHits</a>(vector&lt;<a href="./TSharcHit.html">TSharcHit</a>&gt;* , set&lt;<span class="keyword">int</span>,less&lt;<span class="keyword">int</span>&gt;,allocator&lt;<span class="keyword">int</span>&gt; &gt;* )</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharc:Clear" href="src/TSharc.cxx.html#ITVmMC">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>*  = <span class="string">""</span>)</span><br />
-<div class="funccomm"><pre>ClearData();
-</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TSharc:Print" href="src/TSharc.cxx.html#Etj5IC">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>*  = <span class="string">""</span>)</span><br />
 </div>
@@ -288,7 +288,7 @@ return false;}
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Mon Sep  8 15:15:07 2014 </em><em>&raquo; Last generated: 2014-09-08 15:15</em><br />
+<em>&raquo; Last changed: Thu Sep 11 17:22:15 2014 </em><em>&raquo; Last generated: 2014-09-11 17:22</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

@@ -12,14 +12,15 @@ void Detector::SetThetaPhi(Double_t theta, Double_t phi){
   theta*=TMath::Pi()/180.0;
   phi*=TMath::Pi()/180.0;
 
-  Double_t cp = 2.0; //Crystal Center Point Might have adepth eventually
+  Double_t cp = 1.9; //Crystal Center Point Might have adepth eventually
+  Double_t id = 4.5; //Interaction depth in crystal
 //Set Theta's of the center of each DETECTOR face
 //Define one Detector position
 
-  fShift[kBlue].SetXYZ(-cp,cp,0);
-  fShift[kGreen].SetXYZ(cp,cp,0);
-  fShift[kRed].SetXYZ(cp,-cp,0);
-  fShift[kWhite].SetXYZ(-cp,-cp,0);
+  fShift[kBlue].SetXYZ(-cp,cp,id);
+  fShift[kGreen].SetXYZ(cp,cp,id);
+  fShift[kRed].SetXYZ(cp,-cp,id);
+  fShift[kWhite].SetXYZ(-cp,-cp,id);
 
 //This sets the Theta and Phi for a detector by setting the central angle and transforming the shitft vectors
    if(fPosition.Mag() < 0.001){ //I need to set the magnitude to some value (Unity?) if it is currently 0.
@@ -34,13 +35,6 @@ void Detector::SetThetaPhi(Double_t theta, Double_t phi){
      fShift[i].RotateZ(phi);
   } 
 }
-/*
-void Detector::SetTheta(Double_t theta){
-  for(int i=0,i<5,i++){
-     fPosition[i].Rotate
-
-*/
-
 
 Position::Position(){
 
@@ -109,9 +103,13 @@ int main(){
 
    }
 
+    grifposition.SetPosition(12,Detector::kRed).Print();
+
+
+
 //  grifposition.detector[4].fPosition.Print();
 //  grifposition.detector[8].fPosition.Print();
-
+/*
       std::cout << "\t";
    for(int i = 0; i<64;i++)
       std::cout << i<<"\t";   
@@ -125,7 +123,7 @@ int main(){
       }
     std::cout << std::endl;
    }
-  
+  */
 
    //Work on outputting this matrix tomorrow to file to compare against GEANT
 
