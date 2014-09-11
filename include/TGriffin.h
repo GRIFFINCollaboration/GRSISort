@@ -15,6 +15,20 @@
 #include <TGriffinHit.h>
 #include <TGRSIDetector.h> 
 
+////////////////////////////////////////////////////////////
+//                    
+// TGriffin
+//
+// The TGriffin class defines the observables and algorithms used
+// when analyzing GRIFFIN data. It includes detector positions,
+// add-back methods, etc. 
+//
+////////////////////////////////////////////////////////////
+
+
+
+
+
 class TGriffin : public TGRSIDetector {
 
   public:
@@ -40,16 +54,16 @@ class TGriffin : public TGRSIDetector {
      void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
 
    private: 
-     TGriffinData *grifdata;
-     TBGOData     *bgodata;
+     TGriffinData *grifdata;                 //Used to build GRIFFIN Hits
+     TBGOData     *bgodata;                  //Used to build BGO Hits
 
-     std::vector <TGriffinHit> griffin_hits;
-     std::vector <TGriffinHit> addback_hits;		
+     std::vector <TGriffinHit> griffin_hits; //The set of crystal hits
+     std::vector <TGriffinHit> addback_hits; //The set of add-back hits		
 
-     static bool fSetBGOHits;					 //!
+     static bool fSetBGOHits;		     //! Flag that determines if BGOHits are being measured			 
 		
-     static bool fSetCoreWave;					//!
-     static bool fSetBGOWave;					//!
+     static bool fSetCoreWave;		     //! Flag for Waveforms ON/OFF
+     static bool fSetBGOWave;		     //! Flag for BGO Waveforms ON/OFF
 
    public:
      static bool SetBGOHits()       { return fSetBGOHits;   }	//!
@@ -57,8 +71,8 @@ class TGriffin : public TGRSIDetector {
      static bool SetBGOWave()	    { return fSetBGOWave;   } //!
 
    private:
-     static bool     gCloverPositionSet;
-     static TVector3 gCloverPosition[17]; 
+     static bool     gCloverPositionSet;      //Flag for if the clover positions have been set
+     static TVector3 gCloverPosition[17];     //Position of each HPGe Clover
      static void     InitCloverPositions();
 
    public:         
