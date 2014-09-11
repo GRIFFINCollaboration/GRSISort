@@ -77,10 +77,13 @@ Position::Position(){
 
 
 
-TVector3 Position::SetPosition(UShort_t det, UShort_t crystal, Double_t dist = 11.0){
-//If crystal = 4 take the center of the detector?
+TVector3 Position::SetPosition(UShort_t det, UShort_t crystal = Detector::kCenter, Double_t dist = 11.0){
 
-   detector[det].fPosition.SetMag(dist); //SetMag doesn't work as expected (it actually multiplies by (ma) factor)  
+   detector[det].fPosition.SetMag(dist);
+
+   if(crystal == Detector::kCenter)
+      return detector[det].fPosition;
+
    return detector[det].fPosition + detector[det].fShift[crystal]; 
 
 }
