@@ -83,7 +83,14 @@ class TGRSIRunInfo : public TObject {
 
       static inline int  RunNumber() { return fGRSIRunInfo->fRunNumber; }
       static inline int  SubRunNumber() { return fGRSIRunInfo->fSubRunNumber; }
+
       
+      static inline void SetMajorIndex(const char *tmpstr) { fGRSIRunInfo->fMajorIndex.assign(tmpstr); }
+      static inline void SetMinorIndex(const char *tmpstr) { fGRSIRunInfo->fMinorIndex.assign(tmpstr); }
+
+      static inline std::string MajorIndex() { return fGRSIRunInfo->fMajorIndex; }
+      static inline std::string MinorIndex() { return fGRSIRunInfo->fMinorIndex; }
+
       static inline void SetTigress(bool flag = true)     { fGRSIRunInfo->fTigress = flag; }
       static inline void SetSharc(bool flag = true)       { fGRSIRunInfo->fSharc = flag; }
       static inline void SetTriFoil(bool flag = true)     { fGRSIRunInfo->fTriFoil = flag; }

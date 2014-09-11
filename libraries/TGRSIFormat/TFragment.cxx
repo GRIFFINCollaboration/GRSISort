@@ -68,9 +68,9 @@ void TFragment::Print(Option_t *opt)	{
 	   //printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetChannelName().c_str());
 	   printf("\tChannel Address: 0x%08x\n", ChannelAddress);
 	   printf("\tChannel Num:      %i\n", chan->GetNumber());
-	   printf("\tCharge[%i]	  ",Charge.size());   for(int x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");
-	   printf("\tCFD[%i]		  ",Cfd.size());      for(int x=0;x<Cfd.size();x++)   {printf( "     0x%08x", Cfd.at(x));} printf("\n");
-	   printf("\tLED[%i]		  ",Led.size());      for(int x=0;x<Led.size();x++)   {printf( "     0x%08x", Led.at(x));} printf("\n");
+	   printf("\tCharge[%lu]	  ",Charge.size());   for(int x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");
+	   printf("\tCFD[%lu]		  ",Cfd.size());      for(int x=0;x<Cfd.size();x++)   {printf( "     0x%08x", Cfd.at(x));} printf("\n");
+	   printf("\tLED[%lu]		  ",Led.size());      for(int x=0;x<Led.size();x++)   {printf( "     0x%08x", Led.at(x));} printf("\n");
 	   printf("\tTimeStamp High: 0x%08x\n", TimeStampHigh);
 	   printf("\tTimeStamp Low:    0x%08x\n", TimeStampLow);
 	   printf("\tTimeToTrig:  %i\n", TimeToTrig);
