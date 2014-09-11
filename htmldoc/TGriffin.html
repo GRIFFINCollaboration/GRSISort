@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Thu Sep 11 16:24:19 2014            -->
+<!--   Date: Thu Sep 11 17:19:33 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -95,13 +95,13 @@ return false;}
 <tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject@1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
 <tr class="func"><td class="funcret"><a href="./TGriffinHit.html">TGriffinHit</a>*</td><td class="funcname"><a class="funcname" href="#TGriffin:GetAddBackHit">GetAddBackHit</a>(<span class="keyword">int</span> i)</td></tr>
-<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Short_t">Short_t</a></td><td class="funcname"><a class="funcname" href="#TGriffin:GetAddBackMultiplicity">GetAddBackMultiplicity</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Short_t">Short_t</a></td><td class="funcname"><a class="funcname" href="#TGriffin:GetAddBackMultiplicity">GetAddBackMultiplicity</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret"><a href="./TGRSIDetectorData.html">TGRSIDetectorData</a>*</td><td class="funcname"><a class="funcname" href="./TGRSIDetector.html#TGRSIDetector:GetData"><span class="baseclass">TGRSIDetector::</span>GetData</a>()</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
 <tr class="func"><td class="funcret"><a href="./TGriffinHit.html">TGriffinHit</a>*</td><td class="funcname"><a class="funcname" href="#TGriffin:GetGriffinHit">GetGriffinHit</a>(<span class="keyword">int</span> i)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetIconName"><span class="baseclass">TObject::</span>GetIconName</a>() <span class="keyword">const</span></td></tr>
-<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Short_t">Short_t</a></td><td class="funcname"><a class="funcname" href="#TGriffin:GetMultiplicity">GetMultiplicity</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Short_t">Short_t</a></td><td class="funcname"><a class="funcname" href="#TGriffin:GetMultiplicity">GetMultiplicity</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetName"><span class="baseclass">TObject::</span>GetName</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetObjectInfo"><span class="baseclass">TObject::</span>GetObjectInfo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetObjectStat"><span class="baseclass">TObject::</span>GetObjectStat</a>()</td></tr>
@@ -202,15 +202,15 @@ return false;}
 </table></div>
 <div class="access" id="datapriv"><b>private:</b>
 <table class="data" id="tabdatapriv" cellspacing="0">
-<tr class="data"><td class="datatype">vector&lt;<a href="./TGriffinHit.html">TGriffinHit</a>&gt;</td><td class="dataname"><a name="TGriffin:addback_hits"></a>addback_hits</td><td></td></tr>
-<tr class="data"><td class="datatype"><a href="./TBGOData.html">TBGOData</a>*</td><td class="dataname"><a name="TGriffin:bgodata"></a>bgodata</td><td></td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetBGOHits"></a>fSetBGOHits</td><td class="datadesc">!</td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetBGOWave"></a>fSetBGOWave</td><td class="datadesc">!</td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetCoreWave"></a>fSetCoreWave</td><td class="datadesc">!</td></tr>
-<tr class="data"><td class="datatype">static TVector3</td><td class="dataname"><a name="TGriffin:gCloverPosition"></a>gCloverPosition[17]</td><td></td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:gCloverPositionSet"></a>gCloverPositionSet</td><td></td></tr>
-<tr class="data"><td class="datatype"><a href="./TGriffinData.html">TGriffinData</a>*</td><td class="dataname"><a name="TGriffin:grifdata"></a>grifdata</td><td></td></tr>
-<tr class="data"><td class="datatype">vector&lt;<a href="./TGriffinHit.html">TGriffinHit</a>&gt;</td><td class="dataname"><a name="TGriffin:griffin_hits"></a>griffin_hits</td><td></td></tr>
+<tr class="data"><td class="datatype">vector&lt;<a href="./TGriffinHit.html">TGriffinHit</a>&gt;</td><td class="dataname"><a name="TGriffin:addback_hits"></a>addback_hits</td><td class="datadesc">The set of add-back hits		</td></tr>
+<tr class="data"><td class="datatype"><a href="./TBGOData.html">TBGOData</a>*</td><td class="dataname"><a name="TGriffin:bgodata"></a>bgodata</td><td class="datadesc">Used to build BGO Hits</td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetBGOHits"></a>fSetBGOHits</td><td class="datadesc">! Flag that determines if BGOHits are being measured			 </td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetBGOWave"></a>fSetBGOWave</td><td class="datadesc">! Flag for BGO Waveforms ON/OFF</td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetCoreWave"></a>fSetCoreWave</td><td class="datadesc">! Flag for Waveforms ON/OFF</td></tr>
+<tr class="data"><td class="datatype">static TVector3</td><td class="dataname"><a name="TGriffin:gCloverPosition"></a>gCloverPosition[17]</td><td class="datadesc">Position of each HPGe Clover</td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:gCloverPositionSet"></a>gCloverPositionSet</td><td class="datadesc">Flag for if the clover positions have been set</td></tr>
+<tr class="data"><td class="datatype"><a href="./TGriffinData.html">TGriffinData</a>*</td><td class="dataname"><a name="TGriffin:grifdata"></a>grifdata</td><td class="datadesc">Used to build GRIFFIN Hits</td></tr>
+<tr class="data"><td class="datatype">vector&lt;<a href="./TGriffinHit.html">TGriffinHit</a>&gt;</td><td class="dataname"><a name="TGriffin:griffin_hits"></a>griffin_hits</td><td class="datadesc">The set of crystal hits</td></tr>
 
 </table></div>
 </div>
@@ -237,60 +237,83 @@ return false;}
 <img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapTGriffin_Inh" src="inh/TGriffin_Inh.png"/></div>
 <h2>Function documentation</h2>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGriffin:TGriffin" href="src/TGriffin.cxx.html#blSx5E">TGriffin</a>()</span><br />
+<div class="funccomm"><pre>Default Constructor
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGriffin:_TGriffin" href="src/TGriffin.cxx.html#RxeymD">~TGriffin</a>()</span><br />
+<div class="funccomm"><pre>Default Destructor
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGriffin:InitCloverPositions" href="src/TGriffin.cxx.html#rF2CbD">InitCloverPositions</a>()</span><br />
+<div class="funccomm"><pre>Initiallizes the HPGe Clover positions as per the wiki &lt;https://www.triumf.info/wiki/tigwiki/index.php/HPGe_Coordinate_Table&gt;
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGriffin:Clear" href="src/TGriffin.cxx.html#A0Ccp">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>Clears all of the hits and data
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGriffin:Print" href="src/TGriffin.cxx.html#El.Qf">Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>Prints out <a href="./TGriffin.html">TGriffin</a> members, currently does nothing.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGriffin:FillData" href="src/TGriffin.cxx.html#ngcdjB">FillData</a>(<a href="./TFragment.html">TFragment</a>* , <a href="./TChannel.html">TChannel</a>* , MNEMONIC* )</span><br />
+<div class="funccomm"><pre>Fills the <span class="string">"Data"</span> structure for a specific channel with <a href="./TFragment.html">TFragment</a> frag.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGriffin:FillBGOData" href="src/TGriffin.cxx.html#BqzNwE">FillBGOData</a>(<a href="./TFragment.html">TFragment</a>* , <a href="./TChannel.html">TChannel</a>* , MNEMONIC* )</span><br />
+<div class="funccomm"><pre>Fills the BGO <span class="string">"Data"</span> Structure for a specific channel with the <a href="./TFragment.html">TFragment</a> frag.
+</pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGriffin:BuildHits" href="src/TGriffin.cxx.html#Kl16YB">BuildHits</a>(<a href="./TGRSIDetectorData.html">TGRSIDetectorData</a>* data = 0, <a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGriffin:BuildHits" href="src/TGriffin.cxx.html#eMm6YB">BuildHits</a>(<a href="./TGRSIDetectorData.html">TGRSIDetectorData</a>* data = 0, <a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>Builds the GRIFFIN Hits from the <span class="string">"data"</span> structure. Basically, loops through the data for and event and sets observables.
+This is done for both GRIFFIN and it's suppressors.
+</pre></div>
 </div>
-<div class="funcdoc"><span class="funcname">TVector3 <a class="funcname" name="TGriffin:GetPosition" href="src/TGriffin.cxx.html#mn0GVE">GetPosition</a>(<span class="keyword">int</span> DetNbr, <span class="keyword">int</span> CryNbr, <span class="keyword">double</span> distance = 110.0)</span><br />
+<div class="funcdoc"><span class="funcname">TVector3 <a class="funcname" name="TGriffin:GetPosition" href="src/TGriffin.cxx.html#JZDc_C">GetPosition</a>(<span class="keyword">int</span> DetNbr, <span class="keyword">int</span> CryNbr, <span class="keyword">double</span> distance = 110.0)</span><br />
+<div class="funccomm"><pre>Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
+This is calculated to the most likely interaction point within the crystal.
+</pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGriffin:BuildAddBack" href="src/TGriffin.cxx.html#Ew8odE">BuildAddBack</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="TGriffin:BuildAddBack" href="src/TGriffin.cxx.html#Ew80dE">BuildAddBack</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>Builds the addback for the GRIFFIN Event. This is based on a resolution set within the function. This will have to be
+tuned in order to make add-back the most efficient.
+</pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"> <a class="funcname" name="TGriffin:TGriffin" href="src/TGriffin.h.html#PVwDF">TGriffin</a>()</span><br />
 </div>
-<div class="funcdoc"><span class="funcname"><a href="./TGriffinHit.html">TGriffinHit</a> * <a class="funcname" name="TGriffin:GetGriffinHit" href="src/TGriffin.h.html#N9caf">GetGriffinHit</a>(<span class="keyword">int</span> i)</span><br />
+<div class="funcdoc"><span class="funcname"><a href="./TGriffinHit.html">TGriffinHit</a> * <a class="funcname" name="TGriffin:GetGriffinHit" href="src/TGriffin.h.html#JaK9J">GetGriffinHit</a>(<span class="keyword">int</span> i)</span><br />
 
-<div class="code"><code class="inlinecode">{	<span class="keyword">return</span> &amp;<a href="./TGriffin.html#TGriffin:griffin_hits" title="vector&lt;TGriffinHit&gt; TGriffin::griffin_hits">griffin_hits</a>[i];	   }</code></div>
+<div class="code"><code class="inlinecode">{	<span class="keyword">return</span> &amp;<a href="./TGriffin.html#TGriffin:griffin_hits" title="vector&lt;TGriffinHit&gt; TGriffin::griffin_hits">griffin_hits</a>[i];   }</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Short_t">Short_t</a> <a class="funcname" name="TGriffin:GetMultiplicity" href="src/TGriffin.h.html#riX6kB">GetMultiplicity</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Short_t">Short_t</a> <a class="funcname" name="TGriffin:GetMultiplicity" href="src/TGriffin.h.html#aS96AD">GetMultiplicity</a>() const</span><br />
 
-<div class="code"><code class="inlinecode">{	<span class="keyword">return</span> <a href="./TGriffin.html#TGriffin:griffin_hits" title="vector&lt;TGriffinHit&gt; TGriffin::griffin_hits">griffin_hits</a>.size();	}</code></div>
+<div class="code"><code class="inlinecode">{	<span class="keyword">return</span> <a href="./TGriffin.html#TGriffin:griffin_hits" title="vector&lt;TGriffinHit&gt; TGriffin::griffin_hits">griffin_hits</a>.size();}</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><a href="./TGriffinHit.html">TGriffinHit</a> * <a class="funcname" name="TGriffin:GetAddBackHit" href="src/TGriffin.h.html#gyF6WD">GetAddBackHit</a>(<span class="keyword">int</span> i)</span><br />
+<div class="funcdoc"><span class="funcname"><a href="./TGriffinHit.html">TGriffinHit</a> * <a class="funcname" name="TGriffin:GetAddBackHit" href="src/TGriffin.h.html#UmfzRC">GetAddBackHit</a>(<span class="keyword">int</span> i)</span><br />
 
-<div class="code"><code class="inlinecode">{	<span class="keyword">return</span> &amp;<a href="./TGriffin.html#TGriffin:addback_hits" title="vector&lt;TGriffinHit&gt; TGriffin::addback_hits">addback_hits</a>[i];	   }</code></div>
+<div class="code"><code class="inlinecode">{	<span class="keyword">return</span> &amp;<a href="./TGriffin.html#TGriffin:addback_hits" title="vector&lt;TGriffinHit&gt; TGriffin::addback_hits">addback_hits</a>[i];   }</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Short_t">Short_t</a> <a class="funcname" name="TGriffin:GetAddBackMultiplicity" href="src/TGriffin.h.html#ZlH7dC">GetAddBackMultiplicity</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Short_t">Short_t</a> <a class="funcname" name="TGriffin:GetAddBackMultiplicity" href="src/TGriffin.h.html#GfQsMD">GetAddBackMultiplicity</a>() const</span><br />
 
-<div class="code"><code class="inlinecode">{	<span class="keyword">return</span> <a href="./TGriffin.html#TGriffin:addback_hits" title="vector&lt;TGriffinHit&gt; TGriffin::addback_hits">addback_hits</a>.size();	}</code></div>
+<div class="code"><code class="inlinecode">{	<span class="keyword">return</span> <a href="./TGriffin.html#TGriffin:addback_hits" title="vector&lt;TGriffinHit&gt; TGriffin::addback_hits">addback_hits</a>.size();}</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TGriffin:SetBGOHits" href="src/TGriffin.h.html#UVoyBB">SetBGOHits</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TGriffin:SetBGOHits" href="src/TGriffin.h.html#lxgc.B">SetBGOHits</a>()</span><br />
 
-<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGriffin.html#TGriffin:fSetBGOHits" title="bool TGriffin::fSetBGOHits">fSetBGOHits</a>;	    }</code></div>
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGriffin.html#TGriffin:fSetBGOHits" title="bool TGriffin::fSetBGOHits">fSetBGOHits</a>;   }</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TGriffin:SetCoreWave" href="src/TGriffin.h.html#GovvLC">SetCoreWave</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TGriffin:SetCoreWave" href="src/TGriffin.h.html#CAzWdD">SetCoreWave</a>()</span><br />
 
-<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGriffin.html#TGriffin:fSetCoreWave" title="bool TGriffin::fSetCoreWave">fSetCoreWave</a>;	    }</code></div>
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGriffin.html#TGriffin:fSetCoreWave" title="bool TGriffin::fSetCoreWave">fSetCoreWave</a>;  }</code></div>
 <div style="clear:both;"></div>
 </div>
-<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TGriffin:SetBGOWave" href="src/TGriffin.h.html#S.HPRD">SetBGOWave</a>()</span><br />
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="TGriffin:SetBGOWave" href="src/TGriffin.h.html#W9HPR">SetBGOWave</a>()</span><br />
 
-<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGriffin.html#TGriffin:fSetBGOWave" title="bool TGriffin::fSetBGOWave">fSetBGOWave</a>;		 }</code></div>
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./TGriffin.html#TGriffin:fSetBGOWave" title="bool TGriffin::fSetBGOWave">fSetBGOWave</a>;   }</code></div>
 <div style="clear:both;"></div>
 </div>
 
@@ -298,7 +321,7 @@ return false;}
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Thu Sep 11 16:24:19 2014 </em><em>&raquo; Last generated: 2014-09-11 16:24</em><br />
+<em>&raquo; Last changed: Thu Sep 11 17:19:33 2014 </em><em>&raquo; Last generated: 2014-09-11 17:19</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>
