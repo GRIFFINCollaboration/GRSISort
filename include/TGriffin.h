@@ -53,13 +53,13 @@ class TGriffin : public TGRSIDetector {
 
 	public:
 		static bool SetBGOHits()     	 { return fSetBGOHits;	    }	//!
-      static bool SetCoreWave()      { return fSetCoreWave;	    }	//!
+                static bool SetCoreWave()      { return fSetCoreWave;	    }	//!
 		static bool SetBGOWave()	    { return fSetBGOWave;		 } //!
 
    private:
-			static bool     gCloverPositionSet;
-      static TVector3 gCloverPosition[17]; 
-			static void     InitCloverPositions();
+		static bool     gCloverPositionSet;
+                static TVector3 gCloverPosition[17]; 
+		static void     InitCloverPositions();
 
 
 
