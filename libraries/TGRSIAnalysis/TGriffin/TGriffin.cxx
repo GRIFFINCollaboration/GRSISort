@@ -162,22 +162,24 @@ TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist)	{
 
    TVector3 temp_pos(gCloverPosition[DetNbr]);
 
-   Double_t cp = 20.0; //Crystal Center Point Might have adepth eventually//  cm ??  now mm.
+   //Interaction points may eventually be set externally. May make these members of each crystal, or pass from waveforms.
+   Double_t cp = 20.0; //Crystal Center Point  mm.
+   Double_t id = 0.0;  //Crystal interaction depth mm.
    //Set Theta's of the center of each DETECTOR face
    ////Define one Detector position
    TVector3 shift;
    switch(CryNbr) {
       case 0:
-         shift.SetXYZ(-cp,cp,0);
+         shift.SetXYZ(-cp,cp,id);
          break;
       case 1:
-         shift.SetXYZ(cp,cp,0);
+         shift.SetXYZ(cp,cp,id);
          break;
       case 2:
-         shift.SetXYZ(cp,-cp,0);
+         shift.SetXYZ(cp,-cp,id);
          break;
       case 3:
-         shift.SetXYZ(-cp,-cp,0);
+         shift.SetXYZ(-cp,-cp,id);
          break;
       default:
          shift.SetXYZ(0,0,1);
@@ -197,7 +199,7 @@ void TGriffin::BuildAddBack(Option_t *opt)	{
 
 	if(this->griffin_hits.size() == 0)
     	return;
-
+ //We may have angular correlation add-back algorithms eventaully too.
 	addback_hits.clear();
 	addback_hits.push_back(*(this->GetGriffinHit(0)));
    //	addback_hits.at(0).Add(&(addback_hits.at(0)));
