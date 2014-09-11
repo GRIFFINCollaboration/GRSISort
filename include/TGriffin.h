@@ -34,7 +34,7 @@ class TGriffin : public TGRSIDetector {
 
 		//TVector3 GetPosition(TGriffinHit *,int distance=0);						//!
 
-     static TVector3 GetPosition(int DetNbr ,int CryNbr, double distance = 110.0);		//!
+     static TVector3 GetPosition(int DetNbr ,int CryNbr = 5, double distance = 110.0);		//!
 
      void FillData(TFragment*,TChannel*,MNEMONIC*); //!
      void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!

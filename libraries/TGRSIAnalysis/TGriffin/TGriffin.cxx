@@ -24,7 +24,7 @@ bool TGriffin::fSetBGOHits  = false;
 bool TGriffin::fSetBGOWave  = false;
 
 bool     TGriffin::gCloverPositionSet = false;
-TVector3 TGriffin::gCloverPosition[17];
+TVector3 TGriffin::gCloverPosition[17];//This seems unnecessary, and why 17?
 
 TGriffin::TGriffin() : grifdata(0), bgodata(0)	{
    //Default Constructor
@@ -174,7 +174,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 }
 
 
-TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr = 5, double dist = 110.0 ){
+TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ){
 //Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
 //This is calculated to the most likely interaction point within the crystal.
    if(DetNbr>16)
