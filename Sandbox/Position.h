@@ -3,6 +3,8 @@
 
 #include "TVector3.h"
 #include <iostream>
+#include "TMath.h"
+
 
 class Detector{
   public:

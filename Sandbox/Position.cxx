@@ -9,7 +9,10 @@ Detector::~Detector(){}
 
 void Detector::SetThetaPhi(Double_t theta, Double_t phi){
 
-  Double_t cp = 5.0; //Crystal Center Point Might have adepth eventually
+  theta*=TMath::Pi()/180.0;
+  phi*=TMath::Pi()/180.0;
+
+  Double_t cp = 2.0; //Crystal Center Point Might have adepth eventually
 //Set Theta's of the center of each DETECTOR face
 //Define one Detector position
 
@@ -74,7 +77,7 @@ Position::Position(){
 
 
 
-TVector3 Position::SetPosition(UShort_t det, UShort_t crystal, Double_t dist = 110.0){
+TVector3 Position::SetPosition(UShort_t det, UShort_t crystal, Double_t dist = 11.0){
 //If crystal = 4 take the center of the detector?
 
    detector[det].fPosition.SetMag(dist); //SetMag doesn't work as expected (it actually multiplies by (ma) factor)  
@@ -89,11 +92,12 @@ int main(){
    Position grifposition;
    double differences[64][64] = {0}; 
  
+
    for(int i = 0; i < 16; i++){//Loop over first detector
       for(int u = 0; u < 4; u++){//Loop over crystals
          for(int j=0;j<16;j++){//Loop over second detector 
             for(int v=0;v<4;v++){//Loop over second crystal
-               differences[j*4+v][i*4+u] = (grifposition.SetPosition(j,v)).Angle(grifposition.SetPosition(i,u)); 
+               differences[j*4+v][i*4+u] = (grifposition.SetPosition(j,v)).Angle(grifposition.SetPosition(i,u))*180.0/TMath::Pi(); 
             }       
    
          }
@@ -101,7 +105,25 @@ int main(){
 
 
    }
-   
+
+//  grifposition.detector[4].fPosition.Print();
+//  grifposition.detector[8].fPosition.Print();
+
+      std::cout << "\t";
+   for(int i = 0; i<64;i++)
+      std::cout << i<<"\t";   
+
+   std::cout << std::endl;
+
+   for(int j = 0; j <64;j++){
+      std::cout << j <<"\t";
+      for(int i = 0; i<64;i++){
+         std::cout << differences[j][i]<<"\t";
+      }
+    std::cout << std::endl;
+   }
+  
+
    //Work on outputting this matrix tomorrow to file to compare against GEANT
 
 
