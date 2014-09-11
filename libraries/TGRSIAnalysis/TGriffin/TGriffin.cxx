@@ -174,7 +174,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 }
 
 
-TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist){
+TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist = 110.0 ){
 //Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
 //This is calculated to the most likely interaction point within the crystal.
    if(DetNbr>16)

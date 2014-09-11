@@ -70,13 +70,6 @@ class TGriffin : public TGRSIDetector {
 
 };
 
-
-
-
-
-
-
-
 #endif
 
 
