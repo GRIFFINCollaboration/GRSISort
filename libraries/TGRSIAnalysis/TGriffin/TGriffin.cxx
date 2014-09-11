@@ -32,11 +32,13 @@ TGriffin::~TGriffin()	{
 void TGriffin::InitCloverPositions() {
    gCloverPosition[0].SetMagThetaPhi(1.0,TMath::DegToRad()*(0.0),TMath::DegToRad()*(0.0));
 
+   //Downstream lampshade
    gCloverPosition[1].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(67.5));
    gCloverPosition[2].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(157.5));
    gCloverPosition[3].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(247.5));
    gCloverPosition[4].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(337.5));
 
+   //Corona
    gCloverPosition[5].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(22.5));
    gCloverPosition[6].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(67.5));
    gCloverPosition[7].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(112.5));
@@ -46,7 +48,7 @@ void TGriffin::InitCloverPositions() {
    gCloverPosition[11].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(292.5));
    gCloverPosition[12].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(337.5));
 
-
+   //Upstream lampshade
    gCloverPosition[13].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(67.5));
    gCloverPosition[14].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(157.5));
    gCloverPosition[15].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(247.5));

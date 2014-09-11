@@ -8,7 +8,7 @@
 #ifndef __CINT__
 #endif
 
-#include <TObject.h>
+#include "TObject.h"
 
 #include <TGRSIDetectorData.h>
 #include <TFragment.h>
