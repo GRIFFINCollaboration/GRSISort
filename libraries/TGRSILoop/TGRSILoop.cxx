@@ -352,11 +352,11 @@ void TGRSILoop::SetTIGOdb()  {
       //all good.
    }  else {
       printf(BG_WHITE DRED "problem parsing odb data, arrays are different sizes, channels not set." RESET_COLOR "\n");
-      printf(DRED "\taddress.size() = %i" RESET_COLOR "\n",address.size());
-      printf(DRED "\tnames.size()   = %i" RESET_COLOR "\n",names.size());
-      printf(DRED "\tgains.size()   = %i" RESET_COLOR "\n",gains.size());
-      printf(DRED "\toffsets.size() = %i" RESET_COLOR "\n",offsets.size());
-      printf(DRED "\ttype.size()    = %i" RESET_COLOR "\n",type.size());
+      printf(DRED "\taddress.size() = %lu" RESET_COLOR "\n",address.size());
+      printf(DRED "\tnames.size()   = %lu" RESET_COLOR "\n",names.size());
+      printf(DRED "\tgains.size()   = %lu" RESET_COLOR "\n",gains.size());
+      printf(DRED "\toffsets.size() = %lu" RESET_COLOR "\n",offsets.size());
+      printf(DRED "\ttype.size()    = %lu" RESET_COLOR "\n",type.size());
       return;
    }
 
