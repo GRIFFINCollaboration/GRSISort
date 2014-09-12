@@ -24,7 +24,13 @@ bool TGriffin::fSetBGOHits  = false;
 bool TGriffin::fSetBGOWave  = false;
 
 bool     TGriffin::gCloverPositionSet = false;
-TVector3 TGriffin::gCloverPosition[17];//This seems unnecessary, and why 17?
+TVector3 TGriffin::gCloverPosition[17];//This seems unnecessary, and why 17?;//  they are static members, and need
+                                                                             //  to be defined outside the header
+                                                                             //  17 is to have the detectors go from 1-16 
+                                                                             //  plus we can use position zero 
+                                                                             //  when the detector winds up back in 
+                                                                             //  one of the stands like Alex used in the
+                                                                             //  gps run. pcb.
 
 TGriffin::TGriffin() : grifdata(0), bgodata(0)	{
    //Default Constructor
@@ -175,8 +181,8 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
 
 TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ){
-//Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
-//This is calculated to the most likely interaction point within the crystal.
+   //Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
+   //This is calculated to the most likely interaction point within the crystal.
    if(DetNbr>16)
       return TVector3(0,0,1);
 
@@ -216,8 +222,8 @@ TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ){
 
 
 void TGriffin::BuildAddBack(Option_t *opt) { 
-//Builds the addback for the GRIFFIN Event. This is based on a resolution set within the function. This will have to be
-//tuned in order to make add-back the most efficient. 
+   //Builds the addback for the GRIFFIN Event. This is based on a resolution set within the function. This will have to be
+   //tuned in order to make add-back the most efficient. 
    if(this->griffin_hits.size() == 0)
       return;
    //We may have angular correlation add-back algorithms eventaully too.
