@@ -40,16 +40,16 @@ class TGriffin : public TGRSIDetector {
      void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
 
    private: 
-     TGriffinData *grifdata;                 //Used to build GRIFFIN Hits
-     TBGOData     *bgodata;                  //Used to build BGO Hits
+     TGriffinData *grifdata;                 //!  Used to build GRIFFIN Hits
+     TBGOData     *bgodata;                  //!  Used to build BGO Hits
 
-     std::vector <TGriffinHit> griffin_hits; //The set of crystal hits
-     std::vector <TGriffinHit> addback_hits; //The set of add-back hits		
+     std::vector <TGriffinHit> griffin_hits; //   The set of crystal hits
+     std::vector <TGriffinHit> addback_hits; //   The set of add-back hits		
 
-     static bool fSetBGOHits;		     //! Flag that determines if BGOHits are being measured			 
+     static bool fSetBGOHits;		            //!  Flag that determines if BGOHits are being measured			 
 		
-     static bool fSetCoreWave;		     //! Flag for Waveforms ON/OFF
-     static bool fSetBGOWave;		     //! Flag for BGO Waveforms ON/OFF
+     static bool fSetCoreWave;		         //!  Flag for Waveforms ON/OFF
+     static bool fSetBGOWave;		            //!  Flag for BGO Waveforms ON/OFF
 
    public:
      static bool SetBGOHits()       { return fSetBGOHits;   }	//!

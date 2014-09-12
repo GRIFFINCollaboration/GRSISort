@@ -12,7 +12,7 @@ TGriffinHit::~TGriffinHit()	{	}
 
 
 bool TGriffinHit::InFilter(Int_t wantedfilter) {
- // check if wanted filter is in the desired filter;
+ // check if the desired filter is in wanted filter;
  // return the answer;
  return true;
 }

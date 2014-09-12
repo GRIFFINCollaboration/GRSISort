@@ -34,8 +34,7 @@ LIBS += -lGRSIRootIO
 LIBS += -lAnalysisTreeBuilder
 LIBS += -lProof
 
-DETLIBS = -lGRSIDetector
-DETLIBS +=  -lTigress
+DETLIBS =  -lTigress
 DETLIBS += -lSharc
 #DETLIBS += -lTriFoil
 #DETLIBS += -lRf
@@ -50,7 +49,7 @@ DETLIBS += -lGriffin
 #DETLIBS += -lDante
 #DETLIBS += -lZeroDegree
 #DETLIBS += -lDescant
-
+DETLIBS += -lGRSIDetector
 
 #SYSLIBS = -lxml2
 
