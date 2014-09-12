@@ -15,7 +15,7 @@
 #include <TVector3.h> 
 #include <TObject.h>
 
-#include <TGRSIDetector.h> 
+#include "TGRSIDetector.h" 
 
 using namespace std;
 

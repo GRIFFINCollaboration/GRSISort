@@ -35,7 +35,7 @@ LIBS += -lAnalysisTreeBuilder
 LIBS += -lProof
 
 DETLIBS = -lGRSIDetector
-DETLIBS +=  -lTigress
+DETLIBS += -lTigress
 DETLIBS += -lSharc
 #DETLIBS += -lTriFoil
 #DETLIBS += -lRf
