@@ -17,5 +17,15 @@ Double_t TGRSIFunctions::polybg(Double_t *x, Double_t *par,Int_t order) {
    return result;
 }
 
+Double_t TGRSIFunctions::step_function(Double_t *dim, Double_t *par){
+
+   Double_t x       = dim[0];
+   Double_t height  = par[0];
+   Double_t c       = par[1];
+   Double_t sigma   = par[2];
+   Double_t step    = par[5];
+
+   return TMath::Abs(step)*height/100.0*TMath::Erfc((x-c)/(TMath::Sqrt(2.0)*sigma));
+}
 
 
