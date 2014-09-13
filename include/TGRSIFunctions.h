@@ -9,7 +9,7 @@
 
 namespace TGRSIFunctions {
 
-
+   Double_t polybg(Double_t *, Double_t *,Int_t);
 
 
 
