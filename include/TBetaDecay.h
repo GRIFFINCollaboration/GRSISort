@@ -21,6 +21,7 @@ public:
 
 private:
 
+  Bool_t fparent_allocated = false;
   TNucleus *fparent = NULL; //The parent nucleus beta decaying
  
 

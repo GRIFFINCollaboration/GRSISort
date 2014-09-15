@@ -28,7 +28,8 @@ Double_t TGRSIFunctions::PolyBg(Double_t *x, Double_t *par,Int_t order) {
 }
 
 Double_t TGRSIFunctions::StepFunction(Double_t *dim, Double_t *par){
-//This function uses the same parameters as the photopeak and gaussian. This is because in the photopeak, the shapes are correlated.
+//This function uses the same parameters as the photopeak and gaussian. This is because in the photopeak,
+//the shapes are correlated.
 //Requires the following parameters:
 //   - dim[0]:  channels being fit
 //   - par[0]:  height of photopeak
@@ -51,8 +52,9 @@ Double_t TGRSIFunctions::PhotoPeak(Double_t *dim, Double_t *par){
 }
 
 Double_t TGRSIFunctions::Gaus(Double_t *dim, Double_t *par){
-//This is a gaussian that has been scaled to match up with Radware photopeak results. It contains a scaling factor for the relative
-//height of the skewed gaussian to the normal gaussian. Requires the following parameters:
+//This is a gaussian that has been scaled to match up with Radware photopeak results. 
+//It contains a scaling factor for the relative height of the skewed gaussian to the 
+//normal gaussian. Requires the following parameters:
 //   - dim[0]:  channels being fit
 //   - par[0]:  height of photopeak
 //   - par[1]:  centroid of gaussian
@@ -70,7 +72,8 @@ Double_t TGRSIFunctions::Gaus(Double_t *dim, Double_t *par){
 }
 
 Double_t TGRSIFunctions::SkewedGaus(Double_t *dim, Double_t *par){
-//This function uses the same parameters as the photopeak and gaussian. This is because in the photopeak, the shapes are correlated.
+//This function uses the same parameters as the photopeak and gaussian. This is because in the photopeak, 
+//the shapes are correlated.
 //Requires the following parameters:
 //   - dim[0]:  channels being fit
 //   - par[0]:  height of photopeak
