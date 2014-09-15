@@ -2,7 +2,6 @@
 #include <iostream>
 
 #include "TGriffin.h"
-
 #include <TRandom.h>
 #include <TMath.h>
 
