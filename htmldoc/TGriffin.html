@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Thu Sep 11 17:22:14 2014            -->
+<!--   Date: Mon Sep 15 12:38:02 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -115,7 +115,7 @@ return false;}
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetObjectInfo"><span class="baseclass">TObject::</span>GetObjectInfo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetObjectStat"><span class="baseclass">TObject::</span>GetObjectStat</a>()</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetOption"><span class="baseclass">TObject::</span>GetOption</a>() <span class="keyword">const</span></td></tr>
-<tr class="func"><td class="funcret">static TVector3</td><td class="funcname"><a class="funcname" href="#TGriffin:GetPosition">GetPosition</a>(<span class="keyword">int</span> DetNbr, <span class="keyword">int</span> CryNbr, <span class="keyword">double</span> distance = 110.0)</td></tr>
+<tr class="func"><td class="funcret">static TVector3</td><td class="funcname"><a class="funcname" href="#TGriffin:GetPosition">GetPosition</a>(<span class="keyword">int</span> DetNbr, <span class="keyword">int</span> CryNbr = 5, <span class="keyword">double</span> distance = 110.0)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetTitle"><span class="baseclass">TObject::</span>GetTitle</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetUniqueID"><span class="baseclass">TObject::</span>GetUniqueID</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:HandleTimer"><span class="baseclass">TObject::</span>HandleTimer</a>(TTimer* timer)</td></tr>
@@ -212,13 +212,13 @@ return false;}
 <div class="access" id="datapriv"><b>private:</b>
 <table class="data" id="tabdatapriv" cellspacing="0">
 <tr class="data"><td class="datatype">vector&lt;<a href="./TGriffinHit.html">TGriffinHit</a>&gt;</td><td class="dataname"><a name="TGriffin:addback_hits"></a>addback_hits</td><td class="datadesc">The set of add-back hits		</td></tr>
-<tr class="data"><td class="datatype"><a href="./TBGOData.html">TBGOData</a>*</td><td class="dataname"><a name="TGriffin:bgodata"></a>bgodata</td><td class="datadesc">Used to build BGO Hits</td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetBGOHits"></a>fSetBGOHits</td><td class="datadesc">! Flag that determines if BGOHits are being measured			 </td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetBGOWave"></a>fSetBGOWave</td><td class="datadesc">! Flag for BGO Waveforms ON/OFF</td></tr>
-<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetCoreWave"></a>fSetCoreWave</td><td class="datadesc">! Flag for Waveforms ON/OFF</td></tr>
+<tr class="data"><td class="datatype"><a href="./TBGOData.html">TBGOData</a>*</td><td class="dataname"><a name="TGriffin:bgodata"></a>bgodata</td><td class="datadesc">!  Used to build BGO Hits</td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetBGOHits"></a>fSetBGOHits</td><td class="datadesc">!  Flag that determines if BGOHits are being measured			 </td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetBGOWave"></a>fSetBGOWave</td><td class="datadesc">!  Flag for BGO Waveforms ON/OFF</td></tr>
+<tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:fSetCoreWave"></a>fSetCoreWave</td><td class="datadesc">!  Flag for Waveforms ON/OFF</td></tr>
 <tr class="data"><td class="datatype">static TVector3</td><td class="dataname"><a name="TGriffin:gCloverPosition"></a>gCloverPosition[17]</td><td class="datadesc">Position of each HPGe Clover</td></tr>
 <tr class="data"><td class="datatype">static <span class="keyword">bool</span></td><td class="dataname"><a name="TGriffin:gCloverPositionSet"></a>gCloverPositionSet</td><td class="datadesc">Flag for if the clover positions have been set</td></tr>
-<tr class="data"><td class="datatype"><a href="./TGriffinData.html">TGriffinData</a>*</td><td class="dataname"><a name="TGriffin:grifdata"></a>grifdata</td><td class="datadesc">Used to build GRIFFIN Hits</td></tr>
+<tr class="data"><td class="datatype"><a href="./TGriffinData.html">TGriffinData</a>*</td><td class="dataname"><a name="TGriffin:grifdata"></a>grifdata</td><td class="datadesc">!  Used to build GRIFFIN Hits</td></tr>
 <tr class="data"><td class="datatype">vector&lt;<a href="./TGriffinHit.html">TGriffinHit</a>&gt;</td><td class="dataname"><a name="TGriffin:griffin_hits"></a>griffin_hits</td><td class="datadesc">The set of crystal hits</td></tr>
 
 </table></div>
@@ -278,7 +278,7 @@ return false;}
 This is done for both GRIFFIN and it's suppressors.
 </pre></div>
 </div>
-<div class="funcdoc"><span class="funcname">TVector3 <a class="funcname" name="TGriffin:GetPosition" href="src/TGriffin.cxx.html#JZDc_C">GetPosition</a>(<span class="keyword">int</span> DetNbr, <span class="keyword">int</span> CryNbr, <span class="keyword">double</span> distance = 110.0)</span><br />
+<div class="funcdoc"><span class="funcname">TVector3 <a class="funcname" name="TGriffin:GetPosition" href="src/TGriffin.cxx.html#W798UE">GetPosition</a>(<span class="keyword">int</span> DetNbr, <span class="keyword">int</span> CryNbr = 5, <span class="keyword">double</span> distance = 110.0)</span><br />
 <div class="funccomm"><pre>Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
 This is calculated to the most likely interaction point within the crystal.
 </pre></div>
@@ -330,7 +330,7 @@ tuned in order to make add-back the most efficient.
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Thu Sep 11 17:22:14 2014 </em><em>&raquo; Last generated: 2014-09-11 17:22</em><br />
+<em>&raquo; Last changed: Mon Sep 15 12:38:02 2014 </em><em>&raquo; Last generated: 2014-09-15 12:38</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@cern.ch)         -->
 <!--                                             -->
-<!--   Date: Thu Sep 11 17:22:14 2014            -->
+<!--   Date: Mon Sep 15 12:38:03 2014            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -33,7 +33,7 @@ ClassImp(<a href="../TGriffinHit.html">TGriffinHit</a>)
 
 
 <a name="jRWwKE"></a><span class="keyword">bool</span> <a href="../TGriffinHit.html">TGriffinHit</a>::<a href="../TGriffinHit.html#TGriffinHit:InFilter" title="bool TGriffinHit::InFilter(Int_t )">InFilter</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> wantedfilter) {
- <span class="comment">// check if wanted <a href="../TGriffinHit.html#TGriffinHit:filter" title="Int_t TGriffinHit::filter">filter</a> is in the desired <a href="../TGriffinHit.html#TGriffinHit:filter" title="Int_t TGriffinHit::filter">filter</a>;</span>
+ <span class="comment">// check if the desired <a href="../TGriffinHit.html#TGriffinHit:filter" title="Int_t TGriffinHit::filter">filter</a> is in wanted <a href="../TGriffinHit.html#TGriffinHit:filter" title="Int_t TGriffinHit::filter">filter</a>;</span>
  <span class="comment">// return the answer;</span>
  <span class="keyword">return</span> <span class="keyword">true</span>;
 }
@@ -58,7 +58,7 @@ ClassImp(<a href="../TGriffinHit.html">TGriffinHit</a>)
 }
 
 <a name="PFHHB"></a><span class="keyword">void</span> <a href="../TGriffinHit.html">TGriffinHit</a>::<a href="../TGriffinHit.html#TGriffinHit:SetPosition" title="void TGriffinHit::SetPosition(double dist=110)">SetPosition</a>(<span class="keyword">double</span> dist) {
-	<a href="../TGriffinHit.html#TGriffinHit:position" title="TVector3 TGriffinHit::position">position</a> = <a href="../TGriffin.html">TGriffin</a>::<a href="../TGriffin.html#TGriffin:GetPosition" title="TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr,double distance=110.0)">GetPosition</a>(<a href="../TGriffinHit.html#TGriffinHit:detector" title="UShort_t TGriffinHit::detector">detector</a>,<a href="../TGriffinHit.html#TGriffinHit:crystal" title="UShort_t TGriffinHit::crystal">crystal</a>,dist);
+	<a href="../TGriffinHit.html#TGriffinHit:position" title="TVector3 TGriffinHit::position">position</a> = <a href="../TGriffin.html">TGriffin</a>::<a href="../TGriffin.html#TGriffin:GetPosition" title="TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr=5,double distance=110.0)">GetPosition</a>(<a href="../TGriffinHit.html#TGriffinHit:detector" title="UShort_t TGriffinHit::detector">detector</a>,<a href="../TGriffinHit.html#TGriffinHit:crystal" title="UShort_t TGriffinHit::crystal">crystal</a>,dist);
 }
 
 
@@ -96,7 +96,7 @@ ClassImp(<a href="../TGriffinHit.html">TGriffinHit</a>)
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2014-09-11 17:22 </em><em>&raquo; Last generated: 2014-09-11 17:22</em><br />
+<em>&raquo; Last changed: 2014-09-15 12:38 </em><em>&raquo; Last generated: 2014-09-15 12:38</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@cern.ch">ROOT support</a>.</em>
 </div>
 </div>

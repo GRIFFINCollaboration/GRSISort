@@ -10,8 +10,16 @@
 
 class TBetaDecay : public TNamed {
 public:
+  TBetaDecay();
   TBetaDecay(TNucleus*);
-  ~TBetaDecay(); 
+  ~TBetaDecay(){};
+
+  TNucleus *GetParent() const {return parent;}
+
+private:
+
+  TNucleus *parent; //The parent nucleus beta decaying
+ 
 
 
   ClassDef(TBetaDecay,1);

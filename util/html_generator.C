@@ -122,6 +122,8 @@ void html_generator() {
    gSystem->Load("$GRSISYS/libraries/libKinematics.so");
    gSystem->Load("$GRSISYS/libraries/libSharc.so");
    gSystem->Load("$GRSISYS/libraries/libGRSIint.so");
+   gSystem->Load("$GRSISYS/libraries/libGRSIFunctions.so");
+   gSystem->Load("$GRSISYS/libraries/libBetaDecay.so");
    gSystem->Load("libProof");
 
    gSystem->ListLibraries();
@@ -145,6 +147,8 @@ void html_generator() {
    html.AddSourcePath("TGRSIAnalysis/TGriffin");
    html.AddSourcePath("TGRSIAnalysis/TGRSIDetector");
    html.AddSourcePath("TGRSIAnalysis/TTigress");
+   html.AddSourcePath("TGRSIAnalysis/TGRSIFunctions");
+   html.AddSourcePath("TGRSIAnalysis/TBetaDecay");
 
    html.RunAll();
 }

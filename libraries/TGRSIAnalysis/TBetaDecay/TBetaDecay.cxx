@@ -2,5 +2,11 @@
 
 ClassImp(TBetaDecay);
 
-TBetaDecay::TBetaDecay(TNucleus *parent){}
+
+TBetaDecay::TBetaDecay(){}
+
+TBetaDecay::TBetaDecay(TNucleus *par):parent(par){
+
+
+}
 

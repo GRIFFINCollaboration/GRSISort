@@ -10,9 +10,9 @@
 
 #include "TObject.h"
 
-#include <TGRSIDetectorData.h>
-#include <TFragment.h>
-#include <TChannel.h>
+#include "TGRSIDetectorData.h"
+#include "TFragment.h"
+#include "TChannel.h"
 
 
 
