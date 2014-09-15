@@ -3,6 +3,15 @@
 //Without this macro the THtml doc for TGRSIFunctions can't be generated
 NamespaceImp(TGRSIFunctions);
 
+//////////////////////////////////////////////////////////////////////
+//
+// TGRSIFunctions
+//
+// This namespace is where we store all of our commonly used functions.
+// This makes it easier to create fits etc.
+//
+///////////////////////////////////////////////////////////////////////
+
 Double_t TGRSIFunctions::PolyBg(Double_t *x, Double_t *par,Int_t order) {
 //Polynomial function of the form SUM(par[i]*(x - shift)^i). The shift is done to match parameters with Radware output. 
 
@@ -82,7 +91,7 @@ Double_t TGRSIFunctions::SkewedGaus(Double_t *dim, Double_t *par){
 }
 
 
-Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nDaughters, Double_t SecondsPerBin){
+Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nChain, Double_t SecondsPerBin){
 //****NOT TESTED****The Bateman equation is the general closed form for a decay chain of nuclei. This functions returns
 //the total activity from a given chain of nuclei.
 //Requires the following parameters:
@@ -93,7 +102,7 @@ Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nDaughters,
 // NOTE: The lowest paramters correspond to the most 'senior' nuclei
 
 
-  if(sizeof(par)/sizeof(par[0]) < (nDaughters*3)){
+  if(sizeof(par)/sizeof(par[0]) < (nChain*3)){
      std::cout << "not enough parameters passed to function" << std::endl;
      return 0;
   }
@@ -102,7 +111,7 @@ Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nDaughters,
 
 //LOOP OVER ALL NUCLEI
 
-   for(Int_t n=0; n<nDaughters;n++){
+   for(Int_t n=0; n<nChain;n++){
       //Calculate this equation for the nth nucleus.
       Double_t firstterm = 1.0;
       //Compute the first multiplication
@@ -127,4 +136,19 @@ Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nDaughters,
    return totalActivity;
 }
 
- 
+Double_t DeadTimeCorrect(Double_t *dim, Double_t deadtime,Double_t binWidth){
+//This function deadtime corrects data. Not to be confused with dead time affecting of fit functions
+//Dead time is in us.
+//binWidth is in s/bin.
+
+   return dim[0]/(1.0-dim[0]*deadtime/(binWidth*1000000.0));
+} 
+
+Double_t DeadTimeAffect(Double_t function, Double_t deadtime, Double_t binWidth){
+//This function deadtime affects fitting functions. This is useful for counting the number of decays.
+//Dead time is in us.
+//binWidth is in s/bin.
+
+   return function/(1.0+function*deadtime/(binWidth*1000000.0));
+
+}
