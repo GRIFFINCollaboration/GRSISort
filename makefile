@@ -12,9 +12,9 @@ export CFLAGS = -std=c++0x -O2 -I$(PWD)/include `root-config --cflags`
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__ = 1
 export CFLAGS += -DOS_DARWIN -std=c++11 -DHAVE_ZLIB #-lz
-export LFLAGS = -dynamiclib -single_module -undefined dynamic_lookup 
+export LFLAGS = -bundle -single_module -undefined dynamic_lookup 
 export SHAREDSWITCH = -install_name # ENDING SPACE
-export CPP = xcrun clang++ -bundle
+export CPP = xcrun clang++ 
 else
 export __LINUX__ = 1	
 export SHAREDSWITCH = -shared -Wl,-soname,#NO ENDING SPACE
