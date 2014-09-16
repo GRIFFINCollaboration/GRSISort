@@ -30,6 +30,7 @@ export OK_STRING="[OK]"
 export ERROR_STRING="[ERROR]"
 export WARN_STRING="[WARNING]"
 export COMP_STRING="Now Compiling "
+export FIN_STRING="Finished Compiling "
 
 export COM_COLOR=\033[0;34m
 export OBJ_COLOR=\033[0;36m
@@ -38,6 +39,8 @@ export OK_COLOR=\033[0;32m
 export ERROR_COLOR=\033[0;31m
 export WARN_COLOR=\033[0;33m
 export NO_COLOR=\033[m
+export FIN_COLOR=\033[3;34m
+export FIN_OBJ_COLOR=\033[3;32m
 
 MAKE=make --no-print-directory 
 
