@@ -1,0 +1,24 @@
+# 171W  (2.38 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:25 2006 
+#
+P       0.0000   1.4280e+02
+                          MshellEC       0.0000   2.4230e-02
+                          BetaPlus       0.0000   3.9000e-01
+                          KshellEC       0.0000   5.0820e-01
+                          LshellEC       0.0000   7.7530e-02
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-357.47 keV
+                          MshellEC       0.0000   1.1370e+00    4300.0000
+                          MshellEC     530.8000   1.2870e+00    3769.2000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-357.47 keV
+                          BetaPlus       0.0000   2.3000e+01    4300.0000
+                          BetaPlus     530.8000   1.6000e+01    3769.2000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-357.47 keV
+                          KshellEC       0.0000   2.3250e+01    4300.0000
+                          KshellEC     530.8000   2.7580e+01    3769.2000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-357.47 keV
+                          LshellEC       0.0000   3.6160e+00    4300.0000
+                          LshellEC     530.8000   4.1360e+00    3769.2000

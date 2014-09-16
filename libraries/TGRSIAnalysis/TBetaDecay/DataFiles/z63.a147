@@ -1,0 +1,33 @@
+# 147EU (24.1 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:22 2006 
+#
+P       0.0000   2.0820e+06
+W [VU repair system] Deleted zero-probability event: MshellEC
+                          BetaPlus       0.0000   3.5940e-03
+                          KshellEC       0.0000   9.9640e-01
+W [VU repair system] Deleted zero-probability event: LshellEC
+                             Alpha       0.0000   2.2000e-05
+                          BetaPlus       0.0000   1.3000e-01    1730.0000
+                          BetaPlus     121.2120   1.4000e-01    1608.7880
+                          BetaPlus     197.2840   9.0000e-02    1532.7160
+                          KshellEC       0.0000   1.0000e+01    1730.0000
+                          KshellEC     121.2120   2.2000e+01    1608.7880
+                          KshellEC     197.2840   2.4000e+01    1532.7160
+                          KshellEC     798.7310   2.3000e+01     931.2690
+                          KshellEC     809.3590   4.6000e-02     920.6410
+                          KshellEC    1043.5290   1.0000e-01     686.4710
+                          KshellEC    1054.2170   6.9000e+00     675.7830
+                          KshellEC    1063.3880   3.4000e-01     666.6120
+                          KshellEC    1077.0490   1.0400e+01     652.9510
+                          KshellEC    1180.2450   2.4000e-01     549.7550
+                          KshellEC    1317.8590   5.7000e-01     412.1410
+                          KshellEC    1449.1130   2.5000e-01     280.8870
+                          KshellEC    1453.2220   1.3000e+00     276.7780
+                          KshellEC    1471.8810   1.6000e-01     258.1190
+                          KshellEC    1548.6350   4.8000e-01     181.3650
+                          KshellEC    1655.6000   3.0000e-02      74.4000
+                             Alpha       0.0000   2.2000e-03    2990.0000

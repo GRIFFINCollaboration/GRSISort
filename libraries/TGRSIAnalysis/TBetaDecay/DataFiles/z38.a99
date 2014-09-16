@@ -1,0 +1,61 @@
+#  99SR (0.269 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  99SR (0.269 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:20 2006 
+#
+P       0.0000   2.6900e-01
+                         BetaMinus       0.0000   1.0000e+00
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-60.03 keV
+                         BetaMinus       0.0000   3.0000e+01    8030.0000
+                         BetaMinus     125.1240   1.2000e+00    7904.8760
+                         BetaMinus     283.7200   5.0000e-01    7746.2800    uniqueSecondForbidden
+                         BetaMinus     487.2800   5.0000e-01    7542.7200
+                         BetaMinus     536.1900   2.0000e+00    7493.8100
+                         BetaMinus     599.9900   1.7000e+00    7430.0100
+                         BetaMinus     624.3800   1.2700e+00    7405.6200    uniqueFirstForbidden
+                         BetaMinus     656.8700   1.1000e+00    7373.1300
+                         BetaMinus     817.6000   9.0000e-01    7212.4000    uniqueFirstForbidden
+                         BetaMinus    1009.0000   1.6000e+00    7021.0000
+                         BetaMinus    1011.7600   1.0600e+00    7018.2400
+                         BetaMinus    1119.6000   1.4000e+00    6910.4000
+                         BetaMinus    1191.6300   1.6000e+00    6838.3700
+                         BetaMinus    1197.9400   4.2000e+00    6832.0600
+                         BetaMinus    1402.0900   2.2000e+00    6627.9100
+                         BetaMinus    1411.6900   2.2000e+00    6618.3100
+                         BetaMinus    1930.7300   3.7000e+00    6099.2700
+                         BetaMinus    2205.9000   1.0000e+01    5824.1000
+                         BetaMinus    2239.3900   1.0000e+01    5790.6100
+                         BetaMinus    2245.3200   5.3000e+00    5784.6800
+                         BetaMinus    2276.1100   4.6000e+00    5753.8900
+                         BetaMinus    2279.7100   1.0700e+01    5750.2900
+                         BetaMinus    2314.9300   1.7000e+00    5715.0700
+P       0.0000   2.6900e-01
+                         BetaMinus       0.0000   1.0000e+00
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-60.03 keV
+                         BetaMinus       0.0000   3.0000e+01    8030.0000
+                         BetaMinus     125.1240   1.2000e+00    7904.8760
+                         BetaMinus     283.7200   5.0000e-01    7746.2800
+                         BetaMinus     487.2800   5.0000e-01    7542.7200
+                         BetaMinus     536.1900   2.0000e+00    7493.8100
+                         BetaMinus     599.9900   1.7000e+00    7430.0100
+                         BetaMinus     624.3800   1.2700e+00    7405.6200
+                         BetaMinus     656.8700   1.1000e+00    7373.1300
+                         BetaMinus     817.6000   9.0000e-01    7212.4000
+                         BetaMinus    1009.0000   1.6000e+00    7021.0000
+                         BetaMinus    1011.7600   1.0600e+00    7018.2400
+                         BetaMinus    1119.6000   1.4000e+00    6910.4000
+                         BetaMinus    1191.6300   1.6000e+00    6838.3700
+                         BetaMinus    1197.9400   4.2000e+00    6832.0600
+                         BetaMinus    1402.0900   2.2000e+00    6627.9100
+                         BetaMinus    1411.6900   2.2000e+00    6618.3100
+                         BetaMinus    1930.7300   3.7000e+00    6099.2700
+                         BetaMinus    2205.9000   1.0000e+01    5824.1000
+                         BetaMinus    2239.3900   1.0000e+01    5790.6100
+                         BetaMinus    2245.3200   5.3000e+00    5784.6800
+                         BetaMinus    2276.1100   4.6000e+00    5753.8900
+                         BetaMinus    2279.7100   1.0700e+01    5750.2900
+                         BetaMinus    2314.9300   1.7000e+00    5715.0700

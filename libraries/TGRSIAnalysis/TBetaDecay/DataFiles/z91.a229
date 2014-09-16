@@ -1,0 +1,48 @@
+# 229PA (1.50 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   1.2960e+05
+                          MshellEC       0.0000   1.0180e-01
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   6.2550e-01
+                          LshellEC       0.0000   2.6780e-01
+                             Alpha       0.0000   4.8000e-03
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-15.12 keV
+                          MshellEC       0.0000   9.3930e+00     296.0000
+                          MshellEC      29.2100   7.0850e-02     266.7900
+                          MshellEC      42.4680   6.9540e-01     253.5320
+                          MshellEC     146.3700   4.5760e-02     149.6300
+                          MshellEC     148.1800   4.5980e-02     147.8200
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-15.12 keV
+                          KshellEC       0.0000   5.8870e+01     296.0000
+                          KshellEC      29.2100   3.9320e-01     266.7900
+                          KshellEC      42.4680   3.5930e+00     253.5320
+                          KshellEC     146.3700   5.4080e-02     149.6300
+                          KshellEC     148.1800   5.2250e-02     147.8200
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-15.12 keV
+                          LshellEC       0.0000   2.4740e+01     296.0000
+                          LshellEC      29.2100   1.8590e-01     266.7900
+                          LshellEC      42.4680   1.8120e+00     253.5320
+                          LshellEC     146.3700   1.0820e-01     149.6300
+                          LshellEC     148.1800   1.1080e-01     147.8200
+                             Alpha       0.0000   2.4000e-03    5836.0000
+                             Alpha      29.9400   9.6000e-04    5806.0600
+                             Alpha      40.0900   9.6000e-04    5795.9100
+                             Alpha      64.7000   8.8800e-02    5771.3000
+                             Alpha      77.1200   9.6000e-04    5758.8800
+                             Alpha     105.0600   4.6560e-02    5730.9400
+                             Alpha     120.8000   6.3840e-02    5715.2000
+                             Alpha     144.9500   2.2080e-02    5691.0500
+                             Alpha     155.6500   1.7280e-01    5680.3500
+                             Alpha     170.7900   1.8720e-02    5665.2100
+                             Alpha     199.8500   4.0800e-02    5636.1500
+                             Alpha     221.0000   2.8800e-03    5615.0000
+                             Alpha     235.5000   3.3600e-03    5600.5000
+                             Alpha     257.0400   8.1600e-03    5578.9600
+                             Alpha     318.0000   3.3600e-04    5518.0000
+                             Alpha     327.0000   4.8000e-04    5509.0000
+                             Alpha     421.0000   2.4000e-04    5415.0000

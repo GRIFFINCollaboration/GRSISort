@@ -1,0 +1,40 @@
+# 145DY (10 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+# 145DY (13.6 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:23 2006 
+#
+P       0.0000   1.0000e+01
+                          BetaPlus       0.0000   1.0000e+00
+W [VU repair system] Q filled in from theory
+                          BetaPlus       0.0000   1.0000e+02    7517.1569
+P     118.2000   1.3600e+01
+                          MshellEC       0.0000   3.3400e-03
+                          BetaPlus       0.0000   9.0730e-01
+                          KshellEC       0.0000   7.7930e-02
+                          LshellEC       0.0000   1.1460e-02
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-217.16 keV
+                          MshellEC       0.0000   1.9450e-01    7418.2000
+                          MshellEC     578.2000   4.9720e-02    6840.0000
+                          MshellEC     639.6000   4.7450e-02    6778.6000
+                          MshellEC     804.3000   4.3400e-02    6613.9000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-217.16 keV
+                          BetaPlus       0.0000   5.9000e+01    7418.2000
+                          BetaPlus     578.2000   1.2000e+01    6840.0000
+                          BetaPlus     639.6000   1.1000e+01    6778.6000
+                          BetaPlus     804.3000   9.0000e+00    6613.9000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-217.16 keV
+                          KshellEC       0.0000   4.5380e+00    7418.2000
+                          KshellEC     578.2000   1.1780e+00    6840.0000
+                          KshellEC     639.6000   1.0910e+00    6778.6000
+                          KshellEC     804.3000   1.0090e+00    6613.9000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-217.16 keV
+                          LshellEC       0.0000   6.6770e-01    7418.2000
+                          LshellEC     578.2000   1.7270e-01    6840.0000
+                          LshellEC     639.6000   1.6130e-01    6778.6000
+                          LshellEC     804.3000   1.4740e-01    6613.9000

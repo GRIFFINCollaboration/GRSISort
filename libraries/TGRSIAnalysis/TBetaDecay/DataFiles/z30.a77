@@ -1,0 +1,51 @@
+#  77ZN (2.08 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  77ZN (1.05 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:19 2006 
+#
+P       0.0000   2.0800e+00
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   5.0000e+00    7270.0000    uniqueFirstForbidden
+                         BetaMinus     160.9200   3.3000e+00    7109.0800    uniqueFirstForbidden
+                         BetaMinus     189.4900   6.4000e+00    7080.5100
+                         BetaMinus     474.0550   3.0000e+00    6795.9450
+                         BetaMinus     626.4100   8.1000e+00    6643.5900
+                         BetaMinus     873.3600   2.1000e+00    6396.6400
+                         BetaMinus    1116.3400   2.3000e+00    6153.6600
+                         BetaMinus    1233.9800   1.7000e+00    6036.0200
+                         BetaMinus    1282.3200   1.6000e+00    5987.6800
+                         BetaMinus    1403.1700   1.6900e+00    5866.8300
+                         BetaMinus    1477.3300   7.0000e-01    5792.6700    uniqueFirstForbidden
+                         BetaMinus    1515.8800   1.3200e+00    5754.1200
+                         BetaMinus    1797.1100   9.6000e-01    5472.8900
+                         BetaMinus    1831.9800   9.5000e+00    5438.0200
+                         BetaMinus    1857.7200   1.8000e+00    5412.2800
+                         BetaMinus    1872.5600   2.2200e+00    5397.4400
+                         BetaMinus    1970.0300   1.4000e+00    5299.9700    uniqueFirstForbidden
+                         BetaMinus    2028.3500   5.3000e+00    5241.6500
+                         BetaMinus    2028.8100   2.8000e+00    5241.1900
+                         BetaMinus    2138.0400   1.2200e+01    5131.9600
+                         BetaMinus    2149.2600   1.4600e+00    5120.7400
+                         BetaMinus    2327.5000   5.9000e-01    4942.5000
+                         BetaMinus    2348.5300   3.4000e+00    4921.4700
+                         BetaMinus    2357.1600   2.9200e+00    4912.8400
+                         BetaMinus    2384.9800   2.6400e+00    4885.0200
+                         BetaMinus    2425.7000   5.3000e-01    4844.3000
+                         BetaMinus    2698.7800   8.9000e+00    4571.2200
+                         BetaMinus    2805.7400   6.5000e+00    4464.2600
+                         BetaMinus    2828.6600   3.9000e-01    4441.3400
+                         BetaMinus    2861.8000   2.2000e-01    4408.2000
+                         BetaMinus    3242.8300   7.9000e-01    4027.1700
+                         BetaMinus    3267.7400   3.8000e+00    4002.2600
+                         BetaMinus    3529.9200   1.2400e+00    3740.0800
+P     772.3900   1.0500e+00
+                         BetaMinus       0.0000   5.0000e-01
+                                IT       0.0000   5.0000e-01
+W [VU repair system] Q filled in from theory
+                         BetaMinus       0.0000   1.0000e+02    8047.3585

@@ -1,0 +1,45 @@
+# 186PT (2.0 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   7.2000e+03
+                          MshellEC       0.0000   5.0510e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   7.9290e-01
+                          LshellEC       0.0000   1.5660e-01
+                             Alpha       0.0000   1.4000e-06
+                          MshellEC     120.4900   6.0750e-02    1259.5100
+                          MshellEC     237.3200   4.3920e-02    1142.6800
+                          MshellEC     264.5100   2.7470e-01    1115.4900
+                          MshellEC     331.2100   1.9080e-02    1048.7900
+                          MshellEC     334.5000   4.9640e-02    1045.5000
+                          MshellEC     444.7700   1.5490e-01     935.2300
+                          MshellEC     570.6700   2.3760e-02     809.3300
+                          MshellEC     689.4400   4.3780e+00     690.5600
+                          MshellEC     714.2100   1.8470e-01     665.7900
+                          MshellEC     772.2000   7.3180e-03     607.8000
+                          KshellEC     120.4900   1.0490e+00    1259.5100
+                          KshellEC     237.3200   7.4840e-01    1142.6800
+                          KshellEC     264.5100   4.6650e+00    1115.4900
+                          KshellEC     331.2100   3.2120e-01    1048.7900
+                          KshellEC     334.5000   8.3510e-01    1045.5000
+                          KshellEC     444.7700   2.5620e+00     935.2300
+                          KshellEC     570.6700   3.8240e-01     809.3300
+                          KshellEC     689.4400   6.8070e+01     690.5600
+                          KshellEC     714.2100   2.8440e+00     665.7900
+                          KshellEC     772.2000   1.1010e-01     607.8000
+                          LshellEC     120.4900   1.9070e-01    1259.5100
+                          LshellEC     237.3200   1.3760e-01    1142.6800
+                          LshellEC     264.5100   8.6020e-01    1115.4900
+                          LshellEC     331.2100   5.9680e-02    1048.7900
+                          LshellEC     334.5000   1.5530e-01    1045.5000
+                          LshellEC     444.7700   4.8360e-01     935.2300
+                          LshellEC     570.6700   7.3870e-02     809.3300
+                          LshellEC     689.4400   1.3550e+01     690.5600
+                          LshellEC     714.2100   5.7100e-01     665.7900
+                          LshellEC     772.2000   2.2560e-02     607.8000
+W [VU repair system] Q filled in from theory
+                             Alpha       0.0000   1.0000e+02    4322.7463

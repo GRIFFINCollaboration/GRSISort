@@ -1,0 +1,39 @@
+# 233NP (36.2 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   2.1720e+03
+                          MshellEC       0.0000   6.3720e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   7.5620e-01
+                          LshellEC       0.0000   1.8010e-01
+                             Alpha       0.0000   1.0000e-05
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=63.49 keV
+                          MshellEC       0.0000   6.1550e+00    1090.0000
+                          MshellEC     298.8500   4.0750e-02     791.1500
+                          MshellEC     311.9500   4.0930e-02     778.0500
+                          MshellEC     320.7000   1.3680e-02     769.3000
+                          MshellEC     340.5000   2.7550e-02     749.5000
+                          MshellEC     546.6000   8.4030e-02     543.4000
+                          MshellEC     597.2000   1.5900e-02     492.8000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=63.49 keV
+                          KshellEC       0.0000   7.3430e+01    1090.0000
+                          KshellEC     298.8500   4.4530e-01     791.1500
+                          KshellEC     311.9500   4.4470e-01     778.0500
+                          KshellEC     320.7000   1.4810e-01     769.3000
+                          KshellEC     340.5000   2.9560e-01     749.5000
+                          KshellEC     546.6000   7.8550e-01     543.4000
+                          KshellEC     597.2000   1.4080e-01     492.8000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=63.49 keV
+                          LshellEC       0.0000   1.7410e+01    1090.0000
+                          LshellEC     298.8500   1.1390e-01     791.1500
+                          LshellEC     311.9500   1.1440e-01     778.0500
+                          LshellEC     320.7000   3.8200e-02     769.3000
+                          LshellEC     340.5000   7.6840e-02     749.5000
+                          LshellEC     546.6000   2.3050e-01     543.4000
+                          LshellEC     597.2000   4.3320e-02     492.8000
+W [VU repair system] Q filled in from theory
+                             Alpha       0.0000   1.0000e+02    5624.0435

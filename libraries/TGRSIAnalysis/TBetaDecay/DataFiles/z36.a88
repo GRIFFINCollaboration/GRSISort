@@ -1,0 +1,32 @@
+#  88KR (2.84 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:19 2006 
+#
+P       0.0000   1.0220e+04
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   1.4000e+01    2913.0000    uniqueFirstForbidden
+                         BetaMinus     196.2930   2.1000e+00    2716.7070
+                         BetaMinus     268.2400   2.0000e-03    2644.7600
+                         BetaMinus     362.2400   9.0000e-02    2550.7600
+                         BetaMinus     390.5470   2.6000e-01    2522.4530    uniqueFirstForbidden
+                         BetaMinus     862.3490   1.3000e+00    2050.6510    uniqueFirstForbidden
+                         BetaMinus    1141.3610   1.0000e-01    1771.6390
+                         BetaMinus    1182.0900   1.0200e+00    1730.9100    uniqueFirstForbidden
+                         BetaMinus    1212.5780   3.0000e-02    1700.4220
+                         BetaMinus    1245.3200   6.6000e-02    1667.6800
+                         BetaMinus    1352.4940   3.0000e-02    1560.5060
+                         BetaMinus    1441.5100   2.2000e-01    1471.4900
+                         BetaMinus    1603.8300   9.0000e-02    1309.1700
+                         BetaMinus    1661.1500   2.3000e-01    1251.8500
+                         BetaMinus    1714.7150   1.9500e+00    1198.2850
+                         BetaMinus    1793.3000   3.5000e-02    1119.7000
+                         BetaMinus    1915.5200   2.0400e-01     997.4800    uniqueFirstForbidden
+                         BetaMinus    2089.0700   1.4000e-01     823.9300
+                         BetaMinus    2231.7610   9.1000e+00     681.2390
+                         BetaMinus    2392.1470   6.7000e+01     520.8530
+                         BetaMinus    2455.8000   6.6000e-02     457.2000
+                         BetaMinus    2548.4210   2.6500e+00     364.5790
+                         BetaMinus    2771.1100   3.5300e-01     141.8900

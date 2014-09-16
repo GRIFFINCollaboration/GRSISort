@@ -1,0 +1,35 @@
+# 129TE (69.6 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 129TE (33.6 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:21 2006 
+#
+P       0.0000   4.1760e+03
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus      27.8000   8.9000e+01    1470.1000
+                         BetaMinus     278.3800   5.6000e-01    1219.5200
+                         BetaMinus     487.3500   9.3000e+00    1010.5500
+                         BetaMinus     559.6200   2.5200e-01     938.2800
+                         BetaMinus     729.5700   7.0000e-04     768.3300
+                         BetaMinus     829.9200   2.1300e-01     667.9800
+                         BetaMinus    1047.3500   9.1000e-03     450.5500
+                         BetaMinus    1111.6500   8.8000e-01     386.2500
+                         BetaMinus    1196.6500   6.6000e-04     301.2500
+                         BetaMinus    1209.8000   5.5000e-04     288.1000
+                         BetaMinus    1260.6600   3.9000e-02     237.2400
+                         BetaMinus    1291.9400   3.3000e-02     205.9600
+P     105.5000   2.9030e+06
+                         BetaMinus       0.0000   3.7000e-01
+                                IT       0.0000   6.3000e-01
+                         BetaMinus       0.0000   8.5910e+01    1603.4000    uniqueFirstForbidden
+                         BetaMinus     695.8900   8.0920e+00     907.5100
+                         BetaMinus     729.5700   1.8980e+00     873.8300
+                         BetaMinus     768.7600   7.7920e-02     834.6400    uniqueFirstForbidden
+                         BetaMinus     844.8200   2.3980e-02     758.5800    uniqueFirstForbidden
+                         BetaMinus    1050.2100   9.9900e-02     553.1900    uniqueFirstForbidden
+                         BetaMinus    1203.6100   1.6980e-03     399.7900    uniqueFirstForbidden
+                         BetaMinus    1281.9900   5.8940e-03     321.4100    uniqueFirstForbidden
+                         BetaMinus    1401.4300   4.0960e-01     201.9700

@@ -1,0 +1,15 @@
+# 217PA (4.9 ms)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 217PA (1.6 ms)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   4.9000e-03
+                             Alpha       0.0000   1.0000e+00
+                             Alpha       0.0000   1.0000e+02    8490.0000
+P    1854.0000   1.6000e-03
+                             Alpha       0.0000   1.0000e+00
+                             Alpha       0.0000   1.0000e+02   10344.0000

@@ -1,0 +1,23 @@
+# 221FR (4.9 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   2.9400e+02
+                             Alpha       0.0000   1.0000e+00
+                             Alpha       0.0000   8.3400e+01    6457.6000
+                             Alpha      99.5000   1.3400e+00    6358.1000
+                             Alpha     218.1900   1.5100e+01    6239.4100
+                             Alpha     270.8000   1.5000e-01    6186.8000
+                             Alpha     310.3000   3.0000e-03    6147.3000
+                             Alpha     367.6000   4.9000e-01    6090.0000
+                             Alpha     381.8000   8.0000e-02    6075.8000
+                             Alpha     410.7000   1.7000e-01    6046.9000
+                             Alpha     423.6000   3.0000e-02    6034.0000
+                             Alpha     537.0000   4.0000e-03    5920.6000
+                             Alpha     568.0000   5.0000e-03    5889.6000
+                             Alpha     577.0000   6.0000e-02    5880.6000
+                             Alpha     655.0000   1.0000e-03    5802.6000
+                             Alpha     663.0000   2.0000e-03    5794.6000

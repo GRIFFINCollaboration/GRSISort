@@ -1,0 +1,13 @@
+# 176W  (2.5 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:25 2006 
+#
+P       0.0000   9.0000e+03
+                          BetaPlus       0.0000   1.0000e+00
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=28.23 keV
+                          BetaPlus       0.0000   1.0000e+02     820.0000

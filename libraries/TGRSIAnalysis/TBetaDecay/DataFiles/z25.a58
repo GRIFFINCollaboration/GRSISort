@@ -1,0 +1,31 @@
+#  58MN (3.0 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  58MN (65.3 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:18 2006 
+#
+P       0.0000   3.0000e+00
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   9.7000e+01    6250.0000
+                         BetaMinus    2876.4000   5.0000e-01    3373.6000
+                         BetaMinus    3243.8700   1.2000e+00    3006.1300
+                         BetaMinus    4530.1700   1.2000e+00    1719.8300
+P      72.0000   6.5300e+01
+                         BetaMinus       0.0000   1.0000e+00
+W [VU repair system] Deleted zero-probability event: IT
+                         BetaMinus    2076.5200   3.8000e+00    4245.2600
+                         BetaMinus    2133.8900   7.6000e+01    4187.8900
+                         BetaMinus    2600.3900   8.0000e+00    3721.3900
+                         BetaMinus    2876.4000   1.5800e-01    3445.3800
+                         BetaMinus    3233.2600   3.2400e+00    3088.5200
+                         BetaMinus    3629.5700   9.2000e-01    2692.2100
+                         BetaMinus    3901.6100   4.2500e+00    2420.1700
+                         BetaMinus    4088.4700   2.4000e-01    2233.3100
+                         BetaMinus    4312.9100   2.2400e+00    2008.8700
+                         BetaMinus    4493.1000   9.2000e-01    1828.6800
+                         BetaMinus    4530.1700   1.9000e-01    1791.6100
+                         BetaMinus    4590.0000   2.0000e-01    1731.7800
+                         BetaMinus    4833.9000   1.0600e-01    1487.8800

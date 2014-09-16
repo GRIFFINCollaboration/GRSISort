@@ -1,0 +1,32 @@
+# 145HO (2.4 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:23 2006 
+#
+P       0.0000   2.4000e+00
+                          MshellEC       0.0000   2.1490e-03
+                          BetaPlus       0.0000   9.3940e-01
+                          KshellEC       0.0000   5.0980e-02
+                          LshellEC       0.0000   7.4260e-03
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-499.74 keV
+                          MshellEC     118.2000   7.0180e-02    8631.8000
+                          MshellEC     431.1000   1.5870e-02    8318.9000
+                          MshellEC     818.7000   1.6220e-02    7931.3000
+                          MshellEC    1142.0000   3.6140e-02    7608.0000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-499.74 keV
+                          BetaPlus     118.2000   3.8000e+01    8631.8000
+                          BetaPlus     431.1000   7.7000e+00    8318.9000
+                          BetaPlus     818.7000   4.8000e+00    7931.3000
+                          BetaPlus    1142.0000   1.0000e+01    7608.0000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-499.74 keV
+                          KshellEC     118.2000   1.6840e+00    8631.8000
+                          KshellEC     431.1000   4.2060e-01    8318.9000
+                          KshellEC     818.7000   3.3510e-01    7931.3000
+                          KshellEC    1142.0000   8.4340e-01    7608.0000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-499.74 keV
+                          LshellEC     118.2000   2.4560e-01    8631.8000
+                          LshellEC     431.1000   6.3490e-02    8318.9000
+                          LshellEC     818.7000   4.8650e-02    7931.3000
+                          LshellEC    1142.0000   1.2050e-01    7608.0000

@@ -1,0 +1,40 @@
+#  77SR (9.0 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:20 2006 
+#
+P       0.0000   9.0000e+00
+                          MshellEC       0.0000   1.9670e-04
+                          BetaPlus       0.0000   9.9080e-01
+                          KshellEC       0.0000   8.0720e-03
+                          LshellEC       0.0000   9.3400e-04
+                          MshellEC       0.0000   1.0750e-03    6850.0000
+                          MshellEC     144.8300   1.2070e-03    6705.1700
+                          MshellEC     146.9380   1.4700e-02    6703.0620
+                          MshellEC     307.0300   1.7240e-03    6542.9700
+                          MshellEC     788.0000   3.8530e-04    6062.0000
+                          MshellEC    1249.0000   4.6890e-04    5601.0000
+                          MshellEC    1541.2000   1.0610e-03    5308.8000
+                          BetaPlus       0.0000   6.0000e+00    6850.0000
+                          BetaPlus     144.8300   6.4000e+00    6705.1700
+                          BetaPlus     146.9380   7.8000e+01    6703.0620
+                          BetaPlus     307.0300   8.4000e+00    6542.9700
+                          BetaPlus     788.0000   1.4000e+00    6062.0000
+                          BetaPlus    1249.0000   1.3000e+00    5601.0000
+                          BetaPlus    1541.2000   2.4000e+00    5308.8000
+                          KshellEC       0.0000   4.3860e-02    6850.0000
+                          KshellEC     144.8300   4.9050e-02    6705.1700
+                          KshellEC     146.9380   6.0530e-01    6703.0620
+                          KshellEC     307.0300   7.0160e-02    6542.9700
+                          KshellEC     788.0000   1.5790e-02    6062.0000
+                          KshellEC    1249.0000   1.9290e-02    5601.0000
+                          KshellEC    1541.2000   4.2950e-02    5308.8000
+                          LshellEC       0.0000   5.0650e-03    6850.0000
+                          LshellEC     144.8300   5.7440e-03    6705.1700
+                          LshellEC     146.9380   6.9970e-02    6703.0620
+                          LshellEC     307.0300   8.1150e-03    6542.9700
+                          LshellEC     788.0000   1.8250e-03    6062.0000
+                          LshellEC    1249.0000   2.2380e-03    5601.0000
+                          LshellEC    1541.2000   4.9860e-03    5308.8000

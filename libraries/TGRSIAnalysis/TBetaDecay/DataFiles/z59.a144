@@ -1,0 +1,27 @@
+# 144PR (17.28 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 144PR (7.2 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:22 2006 
+#
+P       0.0000   1.0370e+03
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   9.7900e+01    2997.5000
+                         BetaMinus     696.5100   1.0400e+00    2300.9900    uniqueFirstForbidden
+                         BetaMinus    1560.9600   1.4000e-03    1436.5400    uniqueFirstForbidden
+                         BetaMinus    2072.8100   6.2000e-04     924.6900    uniqueFirstForbidden
+                         BetaMinus    2084.5400   6.7000e-03     912.9600
+                         BetaMinus    2185.6700   1.0500e+00     811.8300
+                         BetaMinus    2368.3000   5.4000e-05     629.2000
+                         BetaMinus    2654.9300   1.5000e-04     342.5700
+                         BetaMinus    2675.3400   8.7000e-04     322.1600
+                         BetaMinus    2742.8700   3.0000e-04     254.6300
+P      59.0300   4.3200e+02
+                         BetaMinus       0.0000   7.0000e-04
+                                IT       0.0000   9.9930e-01
+                         BetaMinus    1510.6000   2.6000e-02    1545.9300
+                         BetaMinus    2581.8000   1.1000e-02     474.7300
+                         BetaMinus    2945.7000   3.3000e-02     110.8300

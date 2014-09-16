@@ -1,0 +1,34 @@
+#  95Y  (10.3 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  95Y  (5.62E-05 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:20 2006 
+#
+P       0.0000   6.1800e+02
+                         BetaMinus       0.0000   1.0000e+00
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-33.75 keV
+                         BetaMinus       0.0000   6.4000e+01    4420.0000    uniqueFirstForbidden
+                         BetaMinus     953.8900   1.9000e+00    3466.1100
+                         BetaMinus    1323.7300   9.0000e-01    3096.2700
+                         BetaMinus    1618.1700   9.6000e-01    2801.8300
+                         BetaMinus    1721.6400   4.0000e-02    2698.3600
+                         BetaMinus    1892.6400   5.0000e-02    2527.3600
+                         BetaMinus    1903.9000   1.8000e-01    2516.1000
+                         BetaMinus    1940.2300   4.8000e-01    2479.7700
+                         BetaMinus    1955.8800   6.0000e-02    2464.1200
+                         BetaMinus    2253.6000   4.7000e-01    2166.4000
+                         BetaMinus    2372.2000   3.7900e+00    2047.8000
+                         BetaMinus    3129.4800   9.7000e+00    1290.5200
+                         BetaMinus    3249.1400   3.5400e+00    1170.8600
+                         BetaMinus    3451.0500   9.7000e-01     968.9500
+                         BetaMinus    3575.8100   7.4000e+00     844.1900
+                         BetaMinus    3586.2100   5.3000e+00     833.7900
+                         BetaMinus    3684.8300   6.2000e-01     735.1700
+                         BetaMinus    3887.0000   2.2000e-02     533.0000
+                         BetaMinus    3926.1000   1.6000e-02     493.9000
+                         BetaMinus    4070.4000   2.0000e-01     349.6000
+P    1087.5000   5.6200e-05
+                                IT       0.0000   1.0000e+00

@@ -1,0 +1,49 @@
+# 110AG (24.6 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 110AG (249.79 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:21 2006 
+#
+P       0.0000   2.4600e+01
+                         BetaMinus       0.0000   9.9700e-01
+                          MshellEC       0.0000   8.1460e-05
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   2.5840e-03
+                          LshellEC       0.0000   3.3460e-04
+                         BetaMinus       0.0000   9.4910e+01    2892.2000
+                         BetaMinus     657.5200   4.4070e+00    2234.6800
+                         BetaMinus    1473.0300   3.8090e-02    1419.1700
+                         BetaMinus    1475.7400   9.8700e-03    1416.4600
+                         BetaMinus    1731.5300   8.9730e-04    1160.6700
+                         BetaMinus    1783.3500   1.2060e-02    1108.8500
+                         BetaMinus    2078.6500   7.5770e-03     813.5500
+                         BetaMinus    2078.9300   2.1930e-03     813.2700
+                         BetaMinus    2287.4400   2.1930e-03     604.7600
+                         BetaMinus    2331.8400   7.1780e-03     560.3600
+                         BetaMinus    2662.0000   6.2810e-03     230.2000
+                          MshellEC       0.0000   8.1270e-03     892.0000
+                          MshellEC     373.8000   5.6180e-04     518.2000
+                          KshellEC       0.0000   2.5850e-01     892.0000
+                          KshellEC     373.8000   1.7140e-02     518.2000
+                          LshellEC       0.0000   3.3390e-02     892.0000
+                          LshellEC     373.8000   2.2960e-03     518.2000
+P     117.5900   2.1580e+07
+                         BetaMinus       0.0000   9.8640e-01
+                                IT       0.0000   1.3600e-02
+                         BetaMinus    1542.4440   5.9730e-01    1467.3460
+                         BetaMinus    2078.7600   2.4890e-02     931.0300
+                         BetaMinus    2162.7998   9.9550e-02     846.9902
+                         BetaMinus    2220.0671   2.3890e-01     789.7229
+                         BetaMinus    2250.5600   6.2710e-02     759.2300
+                         BetaMinus    2287.7700   3.6830e-03     722.0200
+                         BetaMinus    2479.9330   3.0160e+01     529.8570
+                         BetaMinus    2539.6240   6.5700e-02     470.1660
+                         BetaMinus    2561.3300   1.3940e-02     448.4600
+                         BetaMinus    2659.9400   3.0860e-02     349.8500
+                         BetaMinus    2705.7400   2.0900e-02     304.0500
+                         BetaMinus    2842.5590   2.4890e-02     167.2310
+                         BetaMinus    2876.7800   3.9020e-01     133.0100
+                         BetaMinus    2926.7454   6.6990e+01      83.0446

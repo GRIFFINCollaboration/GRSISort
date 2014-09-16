@@ -1,0 +1,38 @@
+#  38K  (7.636 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  38K  (923.9 ms)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  38K  (2.20E-05 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:18 2006 
+#
+P       0.0000   4.5820e+02
+                          MshellEC       0.0000   2.3500e-06
+                          BetaPlus       0.0000   9.9470e-01
+                          KshellEC       0.0000   4.8490e-03
+                          LshellEC       0.0000   4.6870e-04
+                          MshellEC    3810.2240   1.0220e-05    2102.8760
+                          MshellEC    3936.6500   2.2620e-04    1976.4500
+                          BetaPlus       0.0000   6.0000e-01    5913.1000    uniqueSecondForbidden
+                          BetaPlus    2167.4720   9.9330e+01    3745.6280
+                          BetaPlus    3810.2240   9.0000e-03    2102.8760
+                          BetaPlus    3936.6500   1.3300e-01    1976.4500
+                          KshellEC       0.0000   5.0000e-04    5913.1000
+                          KshellEC    2167.4720   4.7080e-01    3745.6280
+                          KshellEC    3810.2240   7.2000e-04    2102.8760
+                          KshellEC    3936.6500   1.5930e-02    1976.4500
+                          LshellEC    2167.4720   4.5550e-02    3745.6280
+                          LshellEC    3810.2240   6.9750e-05    2102.8760
+                          LshellEC    3936.6500   1.5430e-03    1976.4500
+P     130.4000   9.2390e-01
+W [VU repair system] Deleted zero-probability event: MshellEC
+                          BetaPlus       0.0000   9.9920e-01
+                          KshellEC       0.0000   7.9940e-04
+W [VU repair system] Deleted zero-probability event: LshellEC
+                          BetaPlus       0.0000   1.0000e+02    6043.5000
+                          KshellEC       0.0000   8.0000e-02    6043.5000
+P    3458.0000   2.2000e-05
+                                IT       0.0000   1.0000e+00

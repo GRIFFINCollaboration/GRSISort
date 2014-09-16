@@ -1,0 +1,13 @@
+#  95ZR (64.02 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:20 2006 
+#
+P       0.0000   5.5310e+06
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   1.0300e-01    1124.8000
+                         BetaMinus     235.6900   1.0800e+00     889.1100    uniqueFirstForbidden
+                         BetaMinus     724.1950   4.4340e+01     400.6050
+                         BetaMinus     756.7280   5.4460e+01     368.0720

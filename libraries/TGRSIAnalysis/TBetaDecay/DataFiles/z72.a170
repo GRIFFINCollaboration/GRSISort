@@ -1,0 +1,60 @@
+# 170HF (16.01 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:24 2006 
+#
+P       0.0000   5.7640e+04
+                          MshellEC       0.0000   4.9050e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   8.0000e-01
+                          LshellEC       0.0000   1.5090e-01
+                          MshellEC       0.0000   1.7030e+00    1100.0000
+                          MshellEC      98.4900   1.1180e-01    1001.5100
+                          MshellEC     114.8700   3.4480e-02     985.1300
+                          MshellEC     116.0000   1.8100e-01     984.0000
+                          MshellEC     164.7100   1.9910e-01     935.2900
+                          MshellEC     198.3700   6.5280e-01     901.6300
+                          MshellEC     212.5000   1.6120e-01     887.5000
+                          MshellEC     244.8100   6.5710e-02     855.1900
+                          MshellEC     349.0000   5.3540e-02     751.0000
+                          MshellEC     407.4700   2.8350e-01     692.5300
+                          MshellEC     436.9000   3.9600e-04     663.1000
+                          MshellEC     470.2400   1.2880e-01     629.7600
+                          MshellEC     785.4600   2.5800e+00     314.5400
+                          MshellEC     801.7000   3.4620e-02     298.3000
+                          MshellEC     814.6000   1.5280e-02     285.4000
+                          MshellEC     923.2000   9.0660e-03     176.8000
+                          KshellEC       0.0000   3.2740e+01    1100.0000
+                          KshellEC      98.4900   2.1240e+00    1001.5100
+                          KshellEC     114.8700   6.5350e-01     985.1300
+                          KshellEC     116.0000   3.4310e+00     984.0000
+                          KshellEC     164.7100   3.7520e+00     935.2900
+                          KshellEC     198.3700   1.2230e+01     901.6300
+                          KshellEC     212.5000   3.0140e+00     887.5000
+                          KshellEC     244.8100   1.2210e+00     855.1900
+                          KshellEC     349.0000   9.7360e-01     751.0000
+                          KshellEC     407.4700   5.0970e+00     692.5300
+                          KshellEC     436.9000   7.1100e-03     663.1000
+                          KshellEC     470.2400   2.2570e+00     629.7600
+                          KshellEC     785.4600   3.3110e+01     314.5400
+                          KshellEC     801.7000   4.6150e-01     298.3000
+                          KshellEC     814.6000   2.0380e-01     285.4000
+                          KshellEC     923.2000   8.3500e-02     176.8000
+                          LshellEC       0.0000   5.5570e+00    1100.0000
+                          LshellEC      98.4900   3.6400e-01    1001.5100
+                          LshellEC     114.8700   1.1200e-01     985.1300
+                          LshellEC     116.0000   5.8790e-01     984.0000
+                          LshellEC     164.7100   6.4840e-01     935.2900
+                          LshellEC     198.3700   2.1160e+00     901.6300
+                          LshellEC     212.5000   5.2510e-01     887.5000
+                          LshellEC     244.8100   2.1300e-01     855.1900
+                          LshellEC     349.0000   1.7290e-01     751.0000
+                          LshellEC     407.4700   9.1980e-01     692.5300
+                          LshellEC     436.9000   1.2940e-03     663.1000
+                          LshellEC     470.2400   4.1440e-01     629.7600
+                          LshellEC     785.4600   7.3100e+00     314.5400
+                          LshellEC     801.7000   1.0380e-01     298.3000
+                          LshellEC     814.6000   5.0940e-02     285.4000
+                          LshellEC     923.2000   2.7440e-02     176.8000

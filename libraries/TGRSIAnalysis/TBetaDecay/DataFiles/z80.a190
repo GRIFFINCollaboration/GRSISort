@@ -1,0 +1,30 @@
+# 190HG (20.0 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   1.2000e+03
+W [VU repair system] Deleted zero-probability event: MshellEC
+                          BetaPlus       0.0000   1.0000e+00
+W [VU repair system] Deleted zero-probability event: KshellEC
+W [VU repair system] Deleted zero-probability event: LshellEC
+                             Alpha       0.0000   5.0000e-07
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=127.31 keV
+                          BetaPlus       0.0000   1.0000e+01    1600.0000
+                          BetaPlus     122.0000   1.0000e+00    1478.0000
+                          BetaPlus     129.6000   3.0000e+00    1470.4000
+                          BetaPlus     165.4000   2.0000e+00    1434.6000
+                          BetaPlus     171.6000   8.5000e+01    1428.4000
+                          BetaPlus     284.5000   2.0000e+00    1315.5000
+                          BetaPlus     347.7000   6.0000e-01    1252.3000
+                          BetaPlus     414.0000   3.0000e+00    1186.0000
+                          BetaPlus     417.9000   1.0000e+00    1182.1000
+                          BetaPlus     419.9000   2.0000e+00    1180.1000
+                          BetaPlus     421.8000   2.0000e+00    1178.2000
+                          BetaPlus     431.0000   1.0000e+00    1169.0000
+                          BetaPlus     545.4000   6.0000e-01    1054.6000
+                             Alpha       0.0000   1.0000e+02    3950.0000

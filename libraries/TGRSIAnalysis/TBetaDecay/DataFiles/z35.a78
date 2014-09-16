@@ -1,0 +1,70 @@
+#  78BR (6.46 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  78BR (1.19E-04 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:19 2006 
+#
+P       0.0000   3.8760e+02
+                         BetaMinus       0.0000   1.0000e-04
+                          MshellEC       0.0000   1.4760e-03
+                          BetaPlus       0.0000   9.2460e-01
+                          KshellEC       0.0000   6.6340e-02
+                          LshellEC       0.0000   7.5520e-03
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-10.94 keV
+                         BetaMinus     455.0000   1.0000e-02     242.0000
+                          MshellEC       0.0000   1.0740e-01    3574.0000
+                          MshellEC     613.7100   3.5500e-02    2960.2900
+                          MshellEC    1308.4800   5.8940e-04    2265.5200
+                          MshellEC    1498.4100   7.0230e-04    2075.5900
+                          MshellEC    1758.3100   2.5800e-04    1815.6900
+                          MshellEC    1996.0800   1.4010e-04    1577.9200
+                          MshellEC    2329.4000   3.1700e-05    1244.6000
+                          MshellEC    2334.4300   9.1140e-04    1239.5700
+                          MshellEC    2537.1800   1.2530e-03    1036.8200
+                          MshellEC    2647.3900   2.3330e-04     926.6100
+                          MshellEC    2898.1400   9.8590e-05     675.8600
+                          MshellEC    3005.7000   8.1000e-05     568.3000
+                          MshellEC    3090.2000   3.6090e-04     483.8000
+                          MshellEC    3255.1000   5.6460e-05     318.9000
+                          MshellEC    3383.6000   1.3420e-05     190.4000
+                          BetaPlus       0.0000   8.0900e+01    3574.0000
+                          BetaPlus     613.7100   1.1500e+01    2960.2900
+                          BetaPlus    1308.4800   4.7000e-02    2265.5200
+                          BetaPlus    1498.4100   3.2300e-02    2075.5900
+                          BetaPlus    1758.3100   4.6000e-03    1815.6900
+                          BetaPlus    1996.0800   7.1000e-04    1577.9200
+                          KshellEC       0.0000   4.8330e+00    3574.0000
+                          KshellEC     613.7100   1.5930e+00    2960.2900
+                          KshellEC    1308.4800   2.6400e-02    2265.5200
+                          KshellEC    1498.4100   3.1410e-02    2075.5900
+                          KshellEC    1758.3100   1.1520e-02    1815.6900
+                          KshellEC    1996.0800   6.2440e-03    1577.9200
+                          KshellEC    2329.4000   1.4070e-03    1244.6000
+                          KshellEC    2334.4300   4.0430e-02    1239.5700
+                          KshellEC    2537.1800   5.5350e-02    1036.8200
+                          KshellEC    2647.3900   1.0280e-02     926.6100
+                          KshellEC    2898.1400   4.2990e-03     675.8600
+                          KshellEC    3005.7000   3.5070e-03     568.3000
+                          KshellEC    3090.2000   1.5500e-02     483.8000
+                          KshellEC    3255.1000   2.3570e-03     318.9000
+                          KshellEC    3383.6000   5.2890e-04     190.4000
+                          LshellEC       0.0000   5.4970e-01    3574.0000
+                          LshellEC     613.7100   1.8150e-01    2960.2900
+                          LshellEC    1308.4800   3.0120e-03    2265.5200
+                          LshellEC    1498.4100   3.5900e-03    2075.5900
+                          LshellEC    1758.3100   1.3180e-03    1815.6900
+                          LshellEC    1996.0800   7.1580e-04    1577.9200
+                          LshellEC    2329.4000   1.6180e-04    1244.6000
+                          LshellEC    2334.4300   4.6540e-03    1239.5700
+                          LshellEC    2537.1800   6.3950e-03    1036.8200
+                          LshellEC    2647.3900   1.1900e-03     926.6100
+                          LshellEC    2898.1400   5.0220e-04     675.8600
+                          LshellEC    3005.7000   4.1240e-04     568.3000
+                          LshellEC    3090.2000   1.8360e-03     483.8000
+                          LshellEC    3255.1000   2.8620e-04     318.9000
+                          LshellEC    3383.6000   6.7640e-05     190.4000
+P     180.8200   1.1900e-04
+                                IT       0.0000   1.0000e+00

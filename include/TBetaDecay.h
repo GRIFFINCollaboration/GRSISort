@@ -18,15 +18,15 @@ public:
 
 public:
   TNucleus *GetParent() const {return fparent;}
-
+  
 private:
 
-  Bool_t fparent_allocated = false;
+  Bool_t fparent_allocated = false;//!
   TNucleus *fparent = NULL; //The parent nucleus beta decaying
- 
+  
 
 
-  ClassDef(TBetaDecay,1);
+  ClassDef(TBetaDecay,1); //Information about beta decays
  
 };
 #endif

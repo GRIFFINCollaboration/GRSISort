@@ -1,0 +1,24 @@
+#  85KR (10.756 y)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  85KR (4.480 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  85KR (1.20E-06 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:19 2006 
+#
+P       0.0000   3.3940e+08
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   9.9560e+01     687.4000    uniqueFirstForbidden
+                         BetaMinus     280.9900   4.7000e-07     406.4100    uniqueThirdForbidden
+                         BetaMinus     513.9990   4.3400e-01     173.4010
+P     304.8710   1.6130e+04
+                         BetaMinus       0.0000   7.8600e-01
+                                IT       0.0000   2.1400e-01
+                         BetaMinus     151.1950   7.8300e+01     841.0650
+                         BetaMinus     281.0030   3.0000e-01     711.2570
+                         BetaMinus     731.8800   1.9000e-02     260.3800
+P    1991.8000   1.2000e-06
+                                IT       0.0000   1.0000e+00

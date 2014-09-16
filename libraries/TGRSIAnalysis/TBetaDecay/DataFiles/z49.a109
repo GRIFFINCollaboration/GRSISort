@@ -1,0 +1,66 @@
+# 109IN (4.2 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 109IN (1.34 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 109IN (0.209 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:21 2006 
+#
+P       0.0000   1.5120e+04
+                          MshellEC       0.0000   2.6970e-02
+                          BetaPlus       0.0000   4.5610e-02
+                          KshellEC       0.0000   8.1980e-01
+                          LshellEC       0.0000   1.0760e-01
+                          MshellEC     203.3000   1.7250e+00    1816.7000
+                          MshellEC     461.0000   1.3950e-03    1559.0000
+                          MshellEC     623.8000   1.4280e-01    1396.2000
+                          MshellEC     997.3000   1.0560e-01    1022.7000
+                          MshellEC    1066.1000   6.9730e-03     953.9000
+                          MshellEC    1106.0000   1.0900e-02     914.0000
+                          MshellEC    1133.6000   7.2780e-03     886.4000
+                          MshellEC    1352.0000   2.2220e-01     668.0000
+                          MshellEC    1388.3000   2.8600e-03     631.7000
+                          MshellEC    1429.8000   1.7260e-03     590.2000
+                          MshellEC    1475.7000   1.3320e-01     544.3000
+                          MshellEC    1539.3000   5.5660e-03     480.7000
+                          MshellEC    1622.4000   2.4240e-01     397.6000
+                          MshellEC    1772.6000   3.5540e-02     247.4000
+                          MshellEC    1859.8000   5.3410e-02     160.2000
+                          BetaPlus     203.3000   4.5600e+00    1816.7000
+                          KshellEC     203.3000   5.3850e+01    1816.7000
+                          KshellEC     461.0000   4.3360e-02    1559.0000
+                          KshellEC     623.8000   4.4190e+00    1396.2000
+                          KshellEC     997.3000   3.2230e+00    1022.7000
+                          KshellEC    1066.1000   2.1200e-01     953.9000
+                          KshellEC    1106.0000   3.3050e-01     914.0000
+                          KshellEC    1133.6000   2.2030e-01     886.4000
+                          KshellEC    1352.0000   6.5930e+00     668.0000
+                          KshellEC    1388.3000   8.4470e-02     631.7000
+                          KshellEC    1429.8000   5.0640e-02     590.2000
+                          KshellEC    1475.7000   3.8780e+00     544.3000
+                          KshellEC    1539.3000   1.5990e-01     480.7000
+                          KshellEC    1622.4000   6.7950e+00     397.6000
+                          KshellEC    1772.6000   9.1110e-01     247.4000
+                          KshellEC    1859.8000   1.1920e+00     160.2000
+                          LshellEC     203.3000   6.9040e+00    1816.7000
+                          LshellEC     461.0000   5.5830e-03    1559.0000
+                          LshellEC     623.8000   5.7110e-01    1396.2000
+                          LshellEC     997.3000   4.2160e-01    1022.7000
+                          LshellEC    1066.1000   2.7810e-02     953.9000
+                          LshellEC    1106.0000   4.3500e-02     914.0000
+                          LshellEC    1133.6000   2.9020e-02     886.4000
+                          LshellEC    1352.0000   8.8380e-01     668.0000
+                          LshellEC    1388.3000   1.1370e-02     631.7000
+                          LshellEC    1429.8000   6.8570e-03     590.2000
+                          LshellEC    1475.7000   5.2870e-01     544.3000
+                          LshellEC    1539.3000   2.2060e-02     480.7000
+                          LshellEC    1622.4000   9.5770e-01     397.6000
+                          LshellEC    1772.6000   1.3910e-01     247.4000
+                          LshellEC    1859.8000   2.0580e-01     160.2000
+P     650.1000   8.0400e+01
+                                IT       0.0000   1.0000e+00
+P    2101.8000   2.0900e-01
+                                IT       0.0000   1.0000e+00

@@ -1,0 +1,33 @@
+# 222AC (5.0 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+# 222AC (63 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   5.0000e+00
+                             Alpha       0.0000   9.9000e-01
+                          BetaPlus       0.0000   1.0000e-02
+                             Alpha       0.0000   9.3060e+01    7137.2000
+                             Alpha      46.0000   5.9400e+00    7091.2000
+W [VU repair system] Q filled in from theory
+                          BetaPlus       0.0000   1.0000e+02    2297.9958
+P       0.0000   6.3000e+01
+                             Alpha       0.0000   8.8000e-01
+                          BetaPlus       0.0000   2.0000e-02
+                             Alpha       0.0000   1.4100e+01    7137.2000
+                             Alpha      31.0000   7.5200e+00    7106.2000
+                             Alpha     112.0000   1.4100e+01    7025.2000
+                             Alpha     163.0000   9.4000e+00    6974.2000
+                             Alpha     193.0000   2.5380e+01    6944.2000
+                             Alpha     255.0000   1.4100e+01    6882.2000
+                             Alpha     295.0000   7.5200e+00    6842.2000
+                             Alpha     550.0000   1.8800e+00    6587.2000
+W [VU repair system] Q filled in from theory
+                          BetaPlus       0.0000   1.0000e+02    2297.9958

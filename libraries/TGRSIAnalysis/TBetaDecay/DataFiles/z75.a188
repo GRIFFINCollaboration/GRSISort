@@ -1,0 +1,37 @@
+# 188RE (16.98 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 188RE (18.6 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:25 2006 
+#
+P       0.0000   6.1130e+04
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   7.1100e+01    2120.4000
+                         BetaMinus     155.0400   2.5600e+01    1965.3600
+                         BetaMinus     633.0240   1.6500e+00    1487.3760
+                         BetaMinus    1086.3820   6.3000e-01    1034.0180
+                         BetaMinus    1304.8500   2.4100e-02     815.5500
+                         BetaMinus    1413.8000   2.4000e-03     706.6000
+                         BetaMinus    1443.5200   9.2000e-04     676.8800
+                         BetaMinus    1457.5500   4.2000e-02     662.8500
+                         BetaMinus    1462.5000   4.4000e-01     657.9000
+                         BetaMinus    1478.0900   1.8000e-02     642.3100
+                         BetaMinus    1685.5000   5.5000e-04     434.9000
+                         BetaMinus    1704.3200   2.3000e-03     416.0800
+                         BetaMinus    1729.6800   1.2800e-03     390.7200
+                         BetaMinus    1765.3530   1.8100e-01     355.0470
+                         BetaMinus    1807.6000   3.8000e-02     312.8000
+                         BetaMinus    1824.9400   2.3600e-02     295.4600
+                         BetaMinus    1842.8600   2.9900e-03     277.5400
+                         BetaMinus    1936.9000   2.1400e-04     183.5000
+                         BetaMinus    1941.0300   1.0200e-01     179.3700
+                         BetaMinus    1948.5900   7.9000e-02     171.8100
+                         BetaMinus    1957.0800   5.1000e-02     163.3200
+                         BetaMinus    1964.9600   2.1000e-03     155.4400
+                         BetaMinus    2020.1800   5.9000e-03     100.2200
+                         BetaMinus    2022.4400   1.9800e-03      97.9600
+P     172.0690   1.1160e+03
+                                IT       0.0000   1.0000e+00

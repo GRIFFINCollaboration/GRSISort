@@ -1,0 +1,53 @@
+# 111PD (23.4 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 111PD (5.5 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:20 2006 
+#
+P       0.0000   1.4040e+03
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus      59.8500   9.5300e+01    2128.1500
+                         BetaMinus     376.6800   1.8000e-01    1811.3200
+                         BetaMinus     391.2000   2.7000e-02    1796.8000
+                         BetaMinus     545.8000   8.0000e-02    1642.2000
+                         BetaMinus     568.5000   5.0000e-02    1619.5000
+                         BetaMinus     568.8000   1.0000e-01    1619.2000
+                         BetaMinus     606.9000   3.9000e-01    1581.1000
+                         BetaMinus     710.3000   1.3600e+00    1477.7000
+                         BetaMinus     808.9000   1.8000e-02    1379.1000
+                         BetaMinus     876.4000   2.2000e-02    1311.6000
+                         BetaMinus    1062.2000   1.6000e-01    1125.8000
+                         BetaMinus    1085.7000   7.0000e-02    1102.3000
+                         BetaMinus    1086.5000   1.6000e-01    1101.5000
+                         BetaMinus    1120.1000   1.0000e-01    1067.9000
+                         BetaMinus    1170.3000   3.4000e-02    1017.7000
+                         BetaMinus    1180.3000   1.7000e-01    1007.7000
+                         BetaMinus    1210.4000   1.0000e-01     977.6000
+                         BetaMinus    1518.8000   1.4000e+00     669.2000
+                         BetaMinus    1602.7000   2.9000e-02     585.3000
+                         BetaMinus    1621.8000   1.3000e-02     566.2000
+                         BetaMinus    1674.3000   2.1000e-02     513.7000
+                         BetaMinus    1704.8000   6.0000e-02     483.2000
+P     172.1800   1.9800e+04
+                         BetaMinus       0.0000   2.7000e-01
+                                IT       0.0000   7.3000e-01
+                         BetaMinus     130.3000   7.3930e+00    2229.9000
+                         BetaMinus     545.6900   9.9900e-01    1814.5100
+                         BetaMinus     705.3600   3.9960e-01    1654.8400
+                         BetaMinus     824.4800   1.1990e+00    1535.7200
+                         BetaMinus     959.0000   1.5980e+00    1401.2000
+                         BetaMinus    1023.8400   4.9950e-01    1336.3600
+                         BetaMinus    1159.8200   2.1980e-01    1200.3800
+                         BetaMinus    1542.4000   2.9970e-01     817.8000
+                         BetaMinus    1549.4700   2.0980e+00     810.7300
+                         BetaMinus    1705.9200   8.8910e-01     654.2800
+                         BetaMinus    1781.6500   1.1990e+00     578.5500
+                         BetaMinus    1821.4800   6.3940e+00     538.7200
+                         BetaMinus    1905.7800   1.1990e+00     454.4200
+                         BetaMinus    1964.4000   3.8960e-01     395.8000
+                         BetaMinus    1987.8700   1.4990e+00     372.3300
+                         BetaMinus    2069.3000   3.4960e-01     290.9000
+                         BetaMinus    2101.1000   7.9920e-01     259.1000

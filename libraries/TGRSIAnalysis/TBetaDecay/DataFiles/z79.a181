@@ -1,0 +1,21 @@
+# 181AU (11.4 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   1.1400e+01
+                             Alpha       0.0000   1.3000e-02
+                          BetaPlus       0.0000   9.8700e-01
+                             Alpha       0.0000   5.5900e-01    5753.0000
+                             Alpha      46.0000   2.9900e-02    5707.0000
+                             Alpha      83.0000   3.3800e-02    5670.0000
+                             Alpha     148.4000   5.8500e-01    5604.6000
+                             Alpha     224.0000   3.2500e-02    5529.0000
+                             Alpha     268.0000   5.3300e-02    5485.0000
+                             Alpha     332.0000   3.9000e-03    5421.0000
+                             Alpha     438.0000   1.3000e-03    5315.0000
+                             Alpha     493.0000   6.5000e-04    5260.0000
+W [VU repair system] Q filled in from theory
+                          BetaPlus       0.0000   1.0000e+02    6306.2147

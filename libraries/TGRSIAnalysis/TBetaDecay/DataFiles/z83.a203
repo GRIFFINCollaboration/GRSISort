@@ -1,0 +1,58 @@
+# 203BI (11.76 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+# 203BI (303 ms)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   4.2340e+04
+W [VU repair system] Deleted zero-probability event: MshellEC
+                          BetaPlus       0.0000   2.0990e-03
+                          KshellEC       0.0000   9.9790e-01
+W [VU repair system] Deleted zero-probability event: LshellEC
+                             Alpha       0.0000   1.0000e-07
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-63.71 keV
+                          BetaPlus     820.3000   8.0000e-02    2369.7000
+                          BetaPlus     825.2000   3.9000e-02    2364.8000    uniqueFirstForbidden
+                          BetaPlus     896.9000   6.0000e-02    2293.1000
+                          BetaPlus    1198.6000   6.0000e-03    1991.4000
+                          BetaPlus    1536.4000   1.3000e-02    1653.6000
+                          BetaPlus    1547.6000   6.0000e-03    1642.4000
+                          BetaPlus    1592.9000   1.4000e-03    1597.1000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-63.71 keV
+                          KshellEC       0.0000   1.0000e-02    3190.0000
+                          KshellEC     820.3000   3.2000e+00    2369.7000
+                          KshellEC     825.2000   6.2000e+00    2364.8000
+                          KshellEC     896.9000   3.0000e+00    2293.1000
+                          KshellEC    1198.6000   7.0000e-01    1991.4000
+                          KshellEC    1536.4000   7.7000e+00    1653.6000
+                          KshellEC    1547.6000   4.0000e+00    1642.4000
+                          KshellEC    1592.9000   1.2000e+00    1597.1000
+                          KshellEC    1641.4000   1.6000e+00    1548.6000
+                          KshellEC    1682.7000   5.0000e-01    1507.3000
+                          KshellEC    1895.0000   7.0000e-01    1295.0000
+                          KshellEC    2048.7000   9.0000e-01    1141.3000
+                          KshellEC    2078.9000   1.2000e+00    1111.1000
+                          KshellEC    2387.9000   7.0000e-01     802.1000
+                          KshellEC    2472.2000   4.0000e-01     717.8000
+                          KshellEC    2568.8000   3.5000e+00     621.2000
+                          KshellEC    2620.1000   1.4000e+00     569.9000
+                          KshellEC    2667.8000   2.0000e+01     522.2000
+                          KshellEC    2713.4000   2.1000e+01     476.6000
+                          KshellEC    2748.7000   1.1000e+00     441.3000
+                          KshellEC    2753.5000   8.0000e+00     436.5000
+                          KshellEC    2774.8000   1.2000e+00     415.2000
+                          KshellEC    2794.1000   1.5000e+00     395.9000
+                          KshellEC    2821.1000   1.2000e+00     368.9000
+                          KshellEC    2870.5000   1.7000e+00     319.5000
+                          KshellEC    2964.4000   2.3000e-01     225.6000
+                          KshellEC    3006.7000   1.0000e+00     183.3000
+                          KshellEC    3016.9000   1.4000e+00     173.1000
+                          KshellEC    3045.2000   2.4000e+00     144.8000
+                             Alpha       0.0000   1.0000e+02    4150.0000
+P    1098.1400   3.0300e-01
+                                IT       0.0000   1.0000e+00

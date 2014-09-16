@@ -1,0 +1,36 @@
+# 250BK (3.217 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 250BK (2.90E-05 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 250BK (2.13E-04 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   1.1580e+04
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   4.9000e+00    1780.0000    uniqueFirstForbidden
+                         BetaMinus      42.7210   4.9000e+00    1737.2790
+                         BetaMinus     141.8750   3.5000e-01    1638.1250    uniqueFirstForbidden
+                         BetaMinus     871.5700   6.0000e-02     908.4300
+                         BetaMinus    1031.8520   8.3400e+01     748.1480
+                         BetaMinus    1071.3700   6.2300e+00     708.6300
+                         BetaMinus    1154.2400   1.5000e-03     625.7600    uniqueFirstForbidden
+                         BetaMinus    1175.5200   5.9000e-02     604.4800
+                         BetaMinus    1189.3900   1.6100e-02     590.6100
+                         BetaMinus    1209.9700   2.7000e-02     570.0300
+                         BetaMinus    1218.2000   6.7000e-03     561.8000
+                         BetaMinus    1244.5000   6.5000e-03     535.5000
+                         BetaMinus    1266.6000   8.0000e-03     513.4000    uniqueFirstForbidden
+                         BetaMinus    1296.6000   2.1000e-02     483.4000
+                         BetaMinus    1385.5000   3.9000e-03     394.5000
+                         BetaMinus    1411.3300   3.4000e-03     368.6700
+                         BetaMinus    1426.8600   7.6000e-03     353.1400
+                         BetaMinus    1658.0000   1.1700e-01     122.0000
+                         BetaMinus    1695.1500   1.5000e-03      84.8500
+P      35.5900   2.9000e-05
+                                IT       0.0000   1.0000e+00
+P      86.0000   2.1300e-04
+                                IT       0.0000   1.0000e+00

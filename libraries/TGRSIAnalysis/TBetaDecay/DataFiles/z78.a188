@@ -1,0 +1,35 @@
+# 188PT (10.2 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   8.8130e+05
+                          MshellEC       0.0000   9.4560e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   6.5840e-01
+                          LshellEC       0.0000   2.4710e-01
+                             Alpha       0.0000   2.6000e-07
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=11.27 keV
+                          MshellEC      54.8000   1.1100e-01     463.2000
+                          MshellEC      96.7100   2.8550e-02     421.2900
+                          MshellEC     187.6200   2.4880e+00     330.3800
+                          MshellEC     195.0900   2.9470e+00     322.9100
+                          MshellEC     280.3700   2.9100e-02     237.6300
+                          MshellEC     478.1700   4.2210e+00      39.8300
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=11.27 keV
+                          KshellEC      54.8000   1.5500e+00     463.2000
+                          KshellEC      96.7100   3.8460e-01     421.2900
+                          KshellEC     187.6200   3.0040e+01     330.3800
+                          KshellEC     195.0900   3.5210e+01     322.9100
+                          KshellEC     280.3700   2.8540e-01     237.6300
+                          KshellEC     478.1700   9.3330e-01      39.8300
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=11.27 keV
+                          LshellEC      54.8000   3.3920e-01     463.2000
+                          LshellEC      96.7100   8.6800e-02     421.2900
+                          LshellEC     187.6200   7.4680e+00     330.3800
+                          LshellEC     195.0900   8.8460e+00     322.9100
+                          LshellEC     280.3700   8.5530e-02     237.6300
+                          LshellEC     478.1700   8.8460e+00      39.8300
+                             Alpha       0.0000   2.9000e-05    4007.0000

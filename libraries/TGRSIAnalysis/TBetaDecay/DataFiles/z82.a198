@@ -1,0 +1,43 @@
+# 198PB (2.40 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 198PB (4.19E-06 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   8.6400e+03
+                          MshellEC       0.0000   5.3410e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   7.8510e-01
+                          LshellEC       0.0000   1.6150e-01
+                          MshellEC     173.4000   1.1590e+00    1236.6000
+                          MshellEC     259.4900   1.6870e-01    1150.5100
+                          MshellEC     290.3100   1.3770e+00    1119.6900
+                          MshellEC     382.1000   3.2500e-01    1027.9000
+                          MshellEC     397.6700   9.3090e-02    1012.3300
+                          MshellEC     648.9100   1.8420e-01     761.0900
+                          MshellEC     655.7100   1.3030e+00     754.2900
+                          MshellEC     865.3200   5.9000e-01     544.6800
+                          MshellEC    1140.7000   1.6800e-01     269.3000
+                          KshellEC     173.4000   1.8300e+01    1236.6000
+                          KshellEC     259.4900   2.2300e+00    1150.5100
+                          KshellEC     290.3100   2.1430e+01    1119.6900
+                          KshellEC     382.1000   4.9880e+00    1027.9000
+                          KshellEC     397.6700   1.4240e+00    1012.3300
+                          KshellEC     648.9100   2.6580e+00     761.0900
+                          KshellEC     655.7100   1.8760e+01     754.2900
+                          KshellEC     865.3200   7.6600e+00     544.6800
+                          KshellEC    1140.7000   1.4490e+00     269.3000
+                          LshellEC     173.4000   3.5370e+00    1236.6000
+                          LshellEC     259.4900   5.0160e-01    1150.5100
+                          LshellEC     290.3100   4.1920e+00    1119.6900
+                          LshellEC     382.1000   9.8740e-01    1027.9000
+                          LshellEC     397.6700   2.8270e-01    1012.3300
+                          LshellEC     648.9100   5.5750e-01     761.0900
+                          LshellEC     655.7100   3.9350e+00     754.2900
+                          LshellEC     865.3200   1.7500e+00     544.6800
+                          LshellEC    1140.7000   4.8300e-01     269.3000
+P    2141.4000   4.1900e-06
+                                IT       0.0000   1.0000e+00

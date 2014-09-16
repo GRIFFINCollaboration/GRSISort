@@ -1,0 +1,29 @@
+#  68CU (31.1 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  68CU (3.75 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:19 2006 
+#
+P       0.0000   3.1100e+01
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   3.3000e+01    4460.0000
+                         BetaMinus    1077.7000   4.3000e+01    3382.3000
+                         BetaMinus    1655.9000   1.7000e+00    2804.1000
+                         BetaMinus    1884.3000   3.7000e+00    2575.7000
+                         BetaMinus    2339.5000   1.3800e+01    2120.5000
+                         BetaMinus    2821.4000   1.7000e+00    1638.6000
+P     721.6000   2.2500e+02
+                         BetaMinus       0.0000   1.6000e-01
+                                IT       0.0000   8.4000e-01
+                         BetaMinus    2339.5000   2.2000e+00    2842.1000
+                         BetaMinus    2418.2000   2.0000e+00    2763.4000
+                         BetaMinus    2956.2000   4.4000e-01    2225.4000
+                         BetaMinus    3186.7000   1.9000e+00    1994.9000
+                         BetaMinus    3425.1000   6.0000e-01    1756.5000
+                         BetaMinus    3459.2000   3.2000e+00    1722.4000
+                         BetaMinus    3490.3000   8.0000e-01    1691.3000
+                         BetaMinus    3610.8000   4.5000e+00    1570.8000
+                         BetaMinus    3725.3000   2.7000e-01    1456.3000

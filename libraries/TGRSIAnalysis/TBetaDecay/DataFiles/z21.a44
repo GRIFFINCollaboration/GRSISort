@@ -1,0 +1,40 @@
+#  44SC (3.927 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  44SC (58.6 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  44SC (5.04E-05 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:18 2006 
+#
+P       0.0000   1.4140e+04
+                          MshellEC       0.0000   7.5280e-04
+                          BetaPlus       0.0000   9.4270e-01
+                          KshellEC       0.0000   5.1360e-02
+                          LshellEC       0.0000   5.1400e-03
+                          MshellEC    1157.0390   6.1740e-02    2496.2610
+                          MshellEC    2656.5300   1.3470e-02     996.7700
+                          MshellEC    3301.4600   5.8530e-05     351.8400
+                          MshellEC    3307.9000   1.4630e-05     345.4000
+                          BetaPlus    1157.0390   9.4270e+01    2496.2610
+                          KshellEC    1157.0390   4.2170e+00    2496.2610
+                          KshellEC    2656.5300   9.1470e-01     996.7700
+                          KshellEC    3301.4600   3.9410e-03     351.8400
+                          KshellEC    3307.9000   9.8510e-04     345.4000
+                          LshellEC    1157.0390   4.2170e-01    2496.2610
+                          LshellEC    2656.5300   9.1820e-02     996.7700
+                          LshellEC    3301.4600   4.0090e-04     351.8400
+                          LshellEC    3307.9000   1.0020e-04     345.4000
+P     271.1300   2.1100e+05
+                          MshellEC       0.0000   1.8070e-04
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   1.0740e-02
+                          LshellEC       0.0000   1.0740e-03
+                                IT       0.0000   9.8800e-01
+                          MshellEC    3285.0000   1.8070e-02     639.4300
+                          KshellEC    3285.0000   1.0740e+00     639.4300
+                          LshellEC    3285.0000   1.0740e-01     639.4300
+P     146.2240   5.0400e-05
+                                IT       0.0000   1.0000e+00

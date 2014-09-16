@@ -1,0 +1,16 @@
+# 206HG (8.15 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 206HG (2.15E-06 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   4.8900e+02
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   5.4000e+01    1307.0000
+                         BetaMinus     304.8000   4.2000e+01    1002.2000
+                         BetaMinus     649.3000   3.5000e+00     657.7000
+P    2102.6000   2.1500e-06
+                                IT       0.0000   1.0000e+00

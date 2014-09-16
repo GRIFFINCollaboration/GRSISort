@@ -1,0 +1,45 @@
+# 241CM (32.8 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   2.8340e+06
+                          MshellEC       0.0000   2.7290e-01
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   1.4270e-01
+                          LshellEC       0.0000   5.7440e-01
+                             Alpha       0.0000   1.0000e-02
+                          MshellEC     471.8100   2.5270e+00     295.6900
+                          MshellEC     504.4480   7.6490e-01     263.0520
+                          MshellEC     623.1000   1.8360e-01     144.4000
+                          MshellEC     636.8610   1.4810e+01     130.6390
+                          MshellEC     652.0890   9.3010e+00     115.4110
+                          MshellEC     653.2300   2.5910e-02     114.2700
+                          MshellEC     670.2400   9.6870e-02      97.2600
+                          KshellEC     471.8100   1.2090e+01     295.6900
+                          KshellEC     504.4480   6.0890e-01     263.0520
+                          KshellEC     623.1000   3.7350e-02     144.4000
+                          KshellEC     636.8610   1.3800e-01     130.6390
+                          KshellEC     652.0890   9.6650e-01     115.4110
+                          KshellEC     653.2300   2.4240e-01     114.2700
+                          KshellEC     670.2400   4.0470e-01      97.2600
+                          LshellEC     471.8100   6.3810e+00     295.6900
+                          LshellEC     504.4480   1.6260e+00     263.0520
+                          LshellEC     623.1000   3.9900e-01     144.4000
+                          LshellEC     636.8610   3.1050e+01     130.6390
+                          LshellEC     652.0890   1.8630e+01     115.4110
+                          LshellEC     653.2300   5.1660e-02     114.2700
+                          LshellEC     670.2400   1.7830e-01      97.2600
+                             Alpha       0.0000   1.5000e-03    6185.0000
+                             Alpha      47.7100   1.2000e-03    6137.2900
+                             Alpha     106.0000   2.8000e-03    6079.0000
+                             Alpha     145.5440   6.8900e-01    6039.4560
+                             Alpha     155.4500   1.8100e-01    6029.5500
+                             Alpha     175.0000   1.2000e-03    6010.0000
+                             Alpha     201.1800   1.1800e-01    5983.8200
+                             Alpha     224.2500   1.4000e-03    5960.7500
+                             Alpha     304.0000   7.0000e-04    5881.0000
+                             Alpha     370.4000   8.0000e-04    5814.6000
+                             Alpha     404.1900   2.2000e-03    5780.8100

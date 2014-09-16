@@ -1,0 +1,52 @@
+# 212FR (20.0 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 212FR (3.19E-05 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 212FR (2.36E-05 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   1.2000e+03
+                          MshellEC       0.0000   2.7110e-02
+                          BetaPlus       0.0000   4.3890e-02
+                          KshellEC       0.0000   4.1830e-01
+                          LshellEC       0.0000   8.0650e-02
+                             Alpha       0.0000   4.3000e-01
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-58.81 keV
+                          MshellEC    1502.5000   6.6070e-01    3567.5000
+                          MshellEC    1640.8000   8.0330e-01    3429.2000
+                          MshellEC    2304.3000   1.6790e-01    2765.7000
+                          MshellEC    2688.0000   1.0790e+00    2382.0000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-58.81 keV
+                          BetaPlus    1502.5000   1.8810e+00    3567.5000
+                          BetaPlus    1640.8000   1.9380e+00    3429.2000
+                          BetaPlus    2304.3000   1.7100e-01    2765.7000
+                          BetaPlus    2688.0000   3.9900e-01    2382.0000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-58.81 keV
+                          KshellEC    1502.5000   1.0310e+01    3567.5000
+                          KshellEC    1640.8000   1.2530e+01    3429.2000
+                          KshellEC    2304.3000   2.5820e+00    2765.7000
+                          KshellEC    2688.0000   1.6410e+01    2382.0000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-58.81 keV
+                          LshellEC    1502.5000   1.9670e+00    3567.5000
+                          LshellEC    1640.8000   2.3940e+00    3429.2000
+                          LshellEC    2304.3000   4.9930e-01    2765.7000
+                          LshellEC    2688.0000   3.2040e+00    2382.0000
+                             Alpha       0.0000   9.4600e+00    6529.5000
+                             Alpha      23.5300   1.0320e+01    6505.9700
+                             Alpha      63.7000   1.3330e+00    6465.8000
+                             Alpha      71.7000   4.3860e+00    6457.8000
+                             Alpha     147.7800   1.6120e+01    6381.7200
+                             Alpha     227.0000   5.5900e-01    6302.5000
+                             Alpha     237.2200   4.7300e-01    6292.2800
+                             Alpha     284.0000   4.9020e-01    6245.5000
+                             Alpha     336.0000   1.8490e-01    6193.5000
+                             Alpha     431.0000   3.0100e-02    6098.5000
+                             Alpha     588.0000   2.1500e-02    5941.5000
+P    1551.4000   3.1900e-05
+                                IT       0.0000   1.0000e+00
+P    8533.4000   2.3600e-05
+                                IT       0.0000   1.0000e+00

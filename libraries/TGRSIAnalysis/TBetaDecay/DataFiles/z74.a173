@@ -1,0 +1,20 @@
+# 173W  (7.6 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:25 2006 
+#
+P       0.0000   4.5600e+02
+                          MshellEC       0.0000   3.3880e-02
+                          BetaPlus       0.0000   1.9030e-01
+                          KshellEC       0.0000   6.6680e-01
+                          LshellEC       0.0000   1.0900e-01
+                          MshellEC     324.5300   3.3530e-01    3675.4700
+                          MshellEC     623.6000   3.0120e+00    3376.4000
+                          BetaPlus     324.5300   2.8000e+00    3675.4700
+                          BetaPlus     623.6000   1.6000e+01    3376.4000
+                          KshellEC     324.5300   6.5900e+00    3675.4700
+                          KshellEC     623.6000   5.9290e+01    3376.4000
+                          LshellEC     324.5300   1.0750e+00    3675.4700
+                          LshellEC     623.6000   9.6940e+00    3376.4000

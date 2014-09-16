@@ -1,0 +1,69 @@
+# 237AM (73.0 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   4.3800e+03
+                          MshellEC       0.0000   6.3910e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   7.5650e-01
+                          LshellEC       0.0000   1.7930e-01
+                             Alpha       0.0000   2.5000e-04
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=271.09 keV
+                          MshellEC       0.0000   3.0920e-01    1730.0000
+                          MshellEC     145.5440   1.6660e-01    1584.4560
+                          MshellEC     155.4500   6.2540e-01    1574.5500
+                          MshellEC     201.1800   3.7660e-02    1528.8200
+                          MshellEC     224.2500   1.8870e-02    1505.7500
+                          MshellEC     280.2200   3.1420e+00    1449.7800
+                          MshellEC     320.9700   3.5550e-01    1409.0300
+                          MshellEC     370.4000   1.2120e-01    1359.6000
+                          MshellEC     404.1900   3.2660e-01    1325.8100
+                          MshellEC     407.8300   3.2030e-01    1322.1700
+                          MshellEC     438.4100   6.1720e-01    1291.5900
+                          MshellEC     453.2000   6.4420e-02    1276.8000
+                          MshellEC     473.5000   4.1970e-01    1256.5000
+                          MshellEC     655.3000   9.9540e-02    1074.7000
+                          MshellEC     696.2000   3.5440e-02    1033.8000
+                          MshellEC     908.9000   2.8730e-01     821.1000
+                          MshellEC    1000.6000   3.1260e-02     729.4000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=271.09 keV
+                          KshellEC       0.0000   3.8170e+00    1730.0000
+                          KshellEC     145.5440   1.7240e+00    1584.4560
+                          KshellEC     155.4500   7.6110e+00    1574.5500
+                          KshellEC     201.1800   4.5620e-01    1528.8200
+                          KshellEC     224.2500   2.2800e-01    1505.7500
+                          KshellEC     280.2200   3.7710e+01    1449.7800
+                          KshellEC     320.9700   4.2450e+00    1409.0300
+                          KshellEC     370.4000   1.4380e+00    1359.6000
+                          KshellEC     404.1900   3.8560e+00    1325.8100
+                          KshellEC     407.8300   3.7800e+00    1322.1700
+                          KshellEC     438.4100   7.2500e+00    1291.5900
+                          KshellEC     453.2000   7.5480e-01    1276.8000
+                          KshellEC     473.5000   4.9030e+00    1256.5000
+                          KshellEC     655.3000   1.1230e+00    1074.7000
+                          KshellEC     696.2000   3.9580e-01    1033.8000
+                          KshellEC     908.9000   2.9990e+00     821.1000
+                          KshellEC    1000.6000   3.1280e-01     729.4000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=271.09 keV
+                          LshellEC       0.0000   8.7260e-01    1730.0000
+                          LshellEC     145.5440   4.5840e-01    1584.4560
+                          LshellEC     155.4500   1.7610e+00    1574.5500
+                          LshellEC     201.1800   1.0600e-01    1528.8200
+                          LshellEC     224.2500   5.3090e-02    1505.7500
+                          LshellEC     280.2200   8.8330e+00    1449.7800
+                          LshellEC     320.9700   9.9860e-01    1409.0300
+                          LshellEC     370.4000   3.4020e-01    1359.6000
+                          LshellEC     404.1900   9.1620e-01    1325.8100
+                          LshellEC     407.8300   8.9840e-01    1322.1700
+                          LshellEC     438.4100   1.7300e+00    1291.5900
+                          LshellEC     453.2000   1.8050e-01    1276.8000
+                          LshellEC     473.5000   1.1760e+00    1256.5000
+                          LshellEC     655.3000   2.7750e-01    1074.7000
+                          LshellEC     696.2000   9.8650e-02    1033.8000
+                          LshellEC     908.9000   7.9270e-01     821.1000
+                          LshellEC    1000.6000   8.5800e-02     729.4000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=17.99 keV
+                             Alpha      50.0000   2.5000e-02    6150.0000

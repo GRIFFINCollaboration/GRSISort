@@ -1,0 +1,35 @@
+#  90MO (5.67 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  90MO (1.12E-06 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:20 2006 
+#
+P       0.0000   2.0410e+04
+                          MshellEC       0.0000   1.8060e-02
+                          BetaPlus       0.0000   2.5530e-01
+                          KshellEC       0.0000   6.4730e-01
+                          LshellEC       0.0000   7.9260e-02
+                          MshellEC     382.0000   1.3380e+00    2107.0000
+                          MshellEC    1344.1000   1.7680e-02    1144.9000
+                          MshellEC    1769.1000   1.9710e-01     719.9000
+                          MshellEC    1844.8000   4.1880e-02     644.2000
+                          MshellEC    2125.6000   1.0590e-01     363.4000
+                          MshellEC    2309.0000   5.9910e-02     180.0000
+                          BetaPlus     382.0000   2.4900e+01    2107.0000
+                          KshellEC     382.0000   4.8770e+01    2107.0000
+                          KshellEC    1344.1000   6.3470e-01    1144.9000
+                          KshellEC    1769.1000   6.9400e+00     719.9000
+                          KshellEC    1844.8000   1.4650e+00     644.2000
+                          KshellEC    2125.6000   3.5330e+00     363.4000
+                          KshellEC    2309.0000   1.7830e+00     180.0000
+                          LshellEC     382.0000   5.8880e+00    2107.0000
+                          LshellEC    1344.1000   7.7610e-02    1144.9000
+                          LshellEC    1769.1000   8.6330e-01     719.9000
+                          LshellEC    1844.8000   1.8320e-01     644.2000
+                          LshellEC    2125.6000   4.6080e-01     363.4000
+                          LshellEC    2309.0000   2.5750e-01     180.0000
+P    2874.7300   1.1200e-06
+                                IT       0.0000   1.0000e+00

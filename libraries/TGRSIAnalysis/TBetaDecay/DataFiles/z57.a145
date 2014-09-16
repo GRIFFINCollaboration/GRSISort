@@ -1,0 +1,40 @@
+# 145LA (24.8 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:22 2006 
+#
+P       0.0000   2.4800e+01
+                         BetaMinus       0.0000   1.0000e+00
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=12.11 keV
+                         BetaMinus       0.0000   1.5000e+01    4120.0000
+                         BetaMinus      64.3000   2.6000e+00    4055.7000
+                         BetaMinus      70.0000   1.9000e+01    4050.0000
+                         BetaMinus     118.2000   1.5000e+01    4001.8000
+                         BetaMinus     355.9000   4.6000e+00    3764.1000
+                         BetaMinus     447.2000   4.5000e+00    3672.8000
+                         BetaMinus     505.7000   4.1000e+00    3614.3000
+                         BetaMinus     522.2000   1.6000e+00    3597.8000
+                         BetaMinus     632.6000   1.2000e+00    3487.4000
+                         BetaMinus     664.3000   1.9000e+00    3455.7000
+                         BetaMinus     671.8000   1.8000e+00    3448.2000
+                         BetaMinus     708.7000   1.2000e+00    3411.3000
+                         BetaMinus     840.5000   2.5000e+00    3279.5000
+                         BetaMinus     959.5000   2.3000e+00    3160.5000
+                         BetaMinus    1001.9000   8.0000e-02    3118.1000
+                         BetaMinus    1021.5000   2.6000e+00    3098.5000
+                         BetaMinus    1155.2000   1.1000e+00    2964.8000
+                         BetaMinus    1166.1000   2.8000e+00    2953.9000
+                         BetaMinus    1284.9000   1.5000e+00    2835.1000
+                         BetaMinus    1510.8000   2.3000e-01    2609.2000
+                         BetaMinus    1596.5000   6.0000e-01    2523.5000
+                         BetaMinus    1690.0000   2.2000e+00    2430.0000
+                         BetaMinus    1889.5000   3.1000e+00    2230.5000
+                         BetaMinus    1946.1000   1.8000e+00    2173.9000
+                         BetaMinus    2156.0000   1.6000e+00    1964.0000
+                         BetaMinus    2205.6000   1.7000e+00    1914.4000
+                         BetaMinus    2359.8000   2.8000e+00    1760.2000
+                         BetaMinus    2377.1000   1.5000e+00    1742.9000
+                         BetaMinus    2543.9000   1.3000e+00    1576.1000
+                         BetaMinus    2606.9000   7.3000e-01    1513.1000

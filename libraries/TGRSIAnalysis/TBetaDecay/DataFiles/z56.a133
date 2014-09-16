@@ -1,0 +1,35 @@
+# 133BA (10.51 y)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 133BA (38.9 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:22 2006 
+#
+P       0.0000   3.3170e+08
+                          MshellEC       0.0000   7.0520e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   7.0040e-01
+                          LshellEC       0.0000   2.2910e-01
+                          MshellEC      80.9972   1.0770e-01     436.4028
+                          MshellEC     160.6113   1.1130e-02     356.7887
+                          MshellEC     383.8487   7.1570e-01     133.5513
+                          MshellEC     437.0111   6.4500e+00      80.3889
+                          KshellEC      80.9972   2.5090e+00     436.4028
+                          KshellEC     160.6113   2.4940e-01     356.7887
+                          KshellEC     383.8487   1.0850e+01     133.5513
+                          KshellEC     437.0111   5.8740e+01      80.3889
+                          LshellEC      80.9972   3.8340e-01     436.4028
+                          LshellEC     160.6113   3.9440e-02     356.7887
+                          LshellEC     383.8487   2.4300e+00     133.5513
+                          LshellEC     437.0111   2.0810e+01      80.3889
+P     288.2470   1.4000e+05
+                          MshellEC       0.0000   4.3750e-06
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   7.6540e-05
+                          LshellEC       0.0000   1.5080e-05
+                                IT       0.0000   9.9990e-01
+                          MshellEC     632.5000   4.3750e-04     173.1150
+                          KshellEC     632.5000   7.6540e-03     173.1150
+                          LshellEC     632.5000   1.5080e-03     173.1150

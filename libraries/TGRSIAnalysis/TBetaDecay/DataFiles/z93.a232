@@ -1,0 +1,39 @@
+# 232NP (14.7 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   8.8200e+02
+                          MshellEC       0.0000   6.0140e-02
+                          BetaPlus       0.0000   6.8610e-04
+                          KshellEC       0.0000   7.6760e-01
+                          LshellEC       0.0000   1.7150e-01
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-61.35 keV
+                          MshellEC     156.6000   5.6330e-02    2533.4000
+                          MshellEC     971.5000   1.0120e-01    1718.5000
+                          MshellEC    1098.2000   9.6080e-02    1591.8000
+                          MshellEC    1133.0000   1.1440e-01    1557.0000
+                          MshellEC    1172.6000   9.0600e-02    1517.4000
+                          MshellEC    1193.9000   5.4450e+00    1496.1000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-61.35 keV
+                          BetaPlus       0.0000   2.4700e-02    2690.0000
+                          BetaPlus      47.6000   2.2600e-02    2642.4000
+                          BetaPlus     156.6000   1.8100e-02    2533.4000
+                          BetaPlus     971.5000   1.9500e-03    1718.5000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-61.35 keV
+                          KshellEC     156.6000   7.6160e-01    2533.4000
+                          KshellEC     971.5000   1.3090e+00    1718.5000
+                          KshellEC    1098.2000   1.2300e+00    1591.8000
+                          KshellEC    1133.0000   1.4590e+00    1557.0000
+                          KshellEC    1172.6000   1.1510e+00    1517.4000
+                          KshellEC    1193.9000   6.9030e+01    1496.1000
+                          KshellEC    1983.6000   4.2000e-01     706.4000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-61.35 keV
+                          LshellEC     156.6000   1.6210e-01    2533.4000
+                          LshellEC     971.5000   2.8940e-01    1718.5000
+                          LshellEC    1098.2000   2.7430e-01    1591.8000
+                          LshellEC    1133.0000   3.2640e-01    1557.0000
+                          LshellEC    1172.6000   2.5840e-01    1517.4000
+                          LshellEC    1193.9000   1.5530e+01    1496.1000

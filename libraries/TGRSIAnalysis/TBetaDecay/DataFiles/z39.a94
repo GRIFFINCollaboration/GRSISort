@@ -1,0 +1,33 @@
+#  94Y  (18.7 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:20 2006 
+#
+P       0.0000   1.1220e+03
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus       0.0000   4.1000e+01    4920.0000    uniqueFirstForbidden
+                         BetaMinus     918.7500   3.9600e+01    4001.2500
+                         BetaMinus    1300.1200   1.8300e+00    3619.8800    uniqueFirstForbidden
+                         BetaMinus    1469.6400   4.1000e+00    3450.3600    uniqueFirstForbidden
+                         BetaMinus    1671.3900   3.3000e+00    3248.6100
+                         BetaMinus    2057.6400   5.3000e+00    2862.3600
+                         BetaMinus    2151.3600   3.3000e-01    2768.6400
+                         BetaMinus    2331.6000   3.0000e-02    2588.4000
+                         BetaMinus    2366.1800   5.6000e-01    2553.8200
+                         BetaMinus    2846.3000   4.1000e-01    2073.7000
+                         BetaMinus    2908.0300   2.1000e-01    2011.9700
+                         BetaMinus    2945.1000   7.8000e-02    1974.9000    uniqueSecondForbidden
+                         BetaMinus    3059.4000   1.0100e+00    1860.6000
+                         BetaMinus    3219.4200   9.5000e-01    1700.5800
+                         BetaMinus    3361.1700   5.7000e-01    1558.8300
+                         BetaMinus    3724.9000   6.7000e-02    1195.1000
+                         BetaMinus    3961.8000   2.7000e-01     958.2000
+                         BetaMinus    4002.2000   1.1000e-02     917.8000
+                         BetaMinus    4052.4000   6.0000e-03     867.6000
+                         BetaMinus    4098.5000   2.2000e-02     821.5000
+                         BetaMinus    4198.8000   3.0000e-01     721.2000
+                         BetaMinus    4237.6000   1.1200e-01     682.4000
+                         BetaMinus    4637.9000   2.0000e-02     282.1000
+                         BetaMinus    4669.8000   2.8000e-02     250.2000

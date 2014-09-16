@@ -1,0 +1,65 @@
+# 190IR (11.78 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+# 190IR (1.2 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 190IR (3.25 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   1.0180e+06
+                         BetaMinus       0.0000   2.0000e-05
+                          MshellEC       0.0000   6.0950e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   7.5030e-01
+                          LshellEC       0.0000   1.8880e-01
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=1465.21 keV
+                         BetaMinus       0.0000   1.0000e+02    2080.0000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=81.95 keV
+                          MshellEC     955.2400   2.1980e-01    1124.7600
+                          MshellEC    1163.1100   1.2540e+00     916.8900
+                          MshellEC    1386.9100   9.1800e-02     693.0900
+                          MshellEC    1446.0200   6.2150e-02     633.9800
+                          MshellEC    1583.8200   5.8310e-01     496.1800
+                          MshellEC    1681.6000   3.0950e+00     398.4000
+                          MshellEC    1708.3000   1.3710e-02     371.7000
+                          MshellEC    1872.1000   5.2000e-01     207.9000
+                          MshellEC    1903.3000   1.0620e-01     176.7000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=81.95 keV
+                          KshellEC     955.2400   3.7850e+00    1124.7600
+                          KshellEC    1163.1100   2.0820e+01     916.8900
+                          KshellEC    1386.9100   1.4220e+00     693.0900
+                          KshellEC    1446.0200   9.4420e-01     633.9800
+                          KshellEC    1583.8200   7.8780e+00     496.1800
+                          KshellEC    1681.6000   3.6110e+01     398.4000
+                          KshellEC    1708.3000   1.3710e-01     371.7000
+                          KshellEC    1872.1000   2.0000e+00     207.9000
+                          KshellEC    1903.3000   1.0110e-01     176.7000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=81.95 keV
+                          LshellEC     955.2400   6.9500e-01    1124.7600
+                          LshellEC    1163.1100   3.9290e+00     916.8900
+                          LshellEC    1386.9100   2.8620e-01     693.0900
+                          LshellEC    1446.0200   1.9360e-01     633.9800
+                          LshellEC    1583.8200   1.7390e+00     496.1800
+                          LshellEC    1681.6000   9.8000e+00     398.4000
+                          LshellEC    1708.3000   3.9180e-02     371.7000
+                          LshellEC    1872.1000   1.4800e+00     207.9000
+                          LshellEC    1903.3000   2.5270e-01     176.7000
+P      26.3000   4.3200e+03
+                                IT       0.0000   1.0000e+00
+P     175.0000   1.1700e+04
+                          MshellEC       0.0000   5.1660e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   7.3270e-01
+                          LshellEC       0.0000   1.5970e-01
+                                IT       0.0000   5.6000e-02
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=81.95 keV
+                          MshellEC    1705.8000   5.1690e+00     549.2000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=81.95 keV
+                          KshellEC    1705.8000   7.3310e+01     549.2000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=81.95 keV
+                          LshellEC    1705.8000   1.5980e+01     549.2000

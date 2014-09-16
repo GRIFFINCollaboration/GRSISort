@@ -1,0 +1,31 @@
+# 125CD (0.65 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 125CD (0.57 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:21 2006 
+#
+P       0.0000   6.5000e-01
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus     360.1200   6.0000e+00    6759.8800
+                         BetaMinus     796.4600   4.0000e+00    6323.5400
+                         BetaMinus    1099.4900   1.6900e+01    6020.5100
+                         BetaMinus    1219.7300   3.1000e+00    5900.2700
+                         BetaMinus    2147.1800   2.0600e+01    4972.8200
+                         BetaMinus    2290.2500   4.0000e+00    4829.7500
+                         BetaMinus    2349.4500   6.4000e+00    4770.5500
+                         BetaMinus    2370.9000   2.4000e+00    4749.1000
+                         BetaMinus    2381.2800   9.8000e+00    4738.7200
+                         BetaMinus    2459.8600   2.9000e+00    4660.1400
+                         BetaMinus    2497.4500   1.4900e+01    4622.5500
+                         BetaMinus    2507.6000   1.0000e+00    4612.4000
+                         BetaMinus    2585.0400   9.1000e+00    4534.9600
+                         BetaMinus    2641.2200   3.0000e+00    4478.7800
+P      49.0000   5.7000e-01
+                         BetaMinus       0.0000   1.0000e+00
+W [VU repair system] Q filled in from theory
+                         BetaMinus       0.0000   1.0000e+02    7174.9294

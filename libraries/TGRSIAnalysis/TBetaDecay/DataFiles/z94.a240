@@ -1,0 +1,16 @@
+# 240PU (6563 y)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   2.0710e+11
+                             Alpha       0.0000   1.0000e+00
+                             Alpha       0.0000   7.2800e+01    5255.8200
+                             Alpha      45.2400   2.7100e+01    5210.5800
+                             Alpha     149.4800   8.5200e-02    5106.3400
+                             Alpha     309.7900   1.0800e-03    4946.0300
+                             Alpha     522.2400   4.7000e-05    4733.5800
+                             Alpha     687.6100   2.0000e-05    4568.2100
+                             Alpha     919.1600   6.3000e-07    4336.6600

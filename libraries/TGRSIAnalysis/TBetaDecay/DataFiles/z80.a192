@@ -1,0 +1,35 @@
+# 192HG (4.85 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   1.7460e+04
+                          MshellEC       0.0000   5.7230e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   7.5880e-01
+                          LshellEC       0.0000   1.8400e-01
+                             Alpha       0.0000   4.0000e-08
+                          MshellEC     157.3000   1.1020e+00     542.7000
+                          MshellEC     167.5000   1.2370e-01     532.5000
+                          MshellEC     245.4000   4.9200e-01     454.6000
+                          MshellEC     262.6000   3.7800e-01     437.4000
+                          MshellEC     306.5000   3.6230e+00     393.5000
+                          MshellEC     436.6000   9.8760e-02     263.4000
+                          KshellEC     157.3000   1.5150e+01     542.7000
+                          KshellEC     167.5000   1.7010e+00     532.5000
+                          KshellEC     245.4000   6.2320e+00     454.6000
+                          KshellEC     262.6000   4.7880e+00     437.4000
+                          KshellEC     306.5000   4.8300e+01     393.5000
+                          KshellEC     436.6000   9.4760e-01     263.4000
+                          LshellEC     157.3000   3.3450e+00     542.7000
+                          LshellEC     167.5000   3.7550e-01     532.5000
+                          LshellEC     245.4000   1.4760e+00     454.6000
+                          LshellEC     262.6000   1.1340e+00     437.4000
+                          LshellEC     306.5000   1.2080e+01     393.5000
+                          LshellEC     436.6000   2.9360e-01     263.4000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-26.05 keV
+                             Alpha       0.0000   1.0000e+02    3300.0000

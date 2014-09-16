@@ -1,0 +1,38 @@
+# 189AU (28.7 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+# 189AU (4.59 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   1.7220e+03
+                             Alpha       0.0000   3.0000e-07
+                          BetaPlus       0.0000   1.0000e+00
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=25.09 keV
+                             Alpha       0.0000   1.0000e+02    4400.0000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-148.51 keV
+                          BetaPlus       0.0000   1.0000e+02    2700.0000
+P     247.2300   2.7540e+02
+                          MshellEC       0.0000   4.0220e-02
+                          BetaPlus       0.0000   7.0840e-02
+                          KshellEC       0.0000   7.6350e-01
+                          LshellEC       0.0000   1.2550e-01
+W [VU repair system] Deleted zero-probability event: IT
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-148.44 keV
+                          MshellEC     172.7000   3.7160e+00    2774.6000
+                          MshellEC     493.8000   6.5620e-01    2453.5000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-148.44 keV
+                          BetaPlus     172.7000   7.0000e+00    2774.6000
+                          BetaPlus     493.8000   7.0000e-01    2453.5000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-148.44 keV
+                          KshellEC     172.7000   7.0780e+01    2774.6000
+                          KshellEC     493.8000   1.2210e+01    2453.5000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-148.44 keV
+                          LshellEC     172.7000   1.1500e+01    2774.6000
+                          LshellEC     493.8000   2.1360e+00    2453.5000

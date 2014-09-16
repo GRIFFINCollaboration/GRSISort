@@ -1,0 +1,34 @@
+#  83RB (86.2 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  83RB (3.00E-04 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:20 2006 
+#
+P       0.0000   7.4480e+06
+                          MshellEC       0.0000   2.2260e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   8.7020e-01
+                          LshellEC       0.0000   1.0750e-01
+                          MshellEC       0.0000   1.1070e-01     909.0000
+                          MshellEC       9.4051   1.3630e-01     899.5949
+                          MshellEC     561.9575   1.3590e+00     347.0425
+                          MshellEC     571.1519   6.6960e-01     337.8481
+                          MshellEC     690.5400   3.1900e-03     218.4600
+                          MshellEC     799.4920   2.3670e-02     109.5080
+                          KshellEC       0.0000   4.3550e+00     909.0000
+                          KshellEC       9.4051   5.6020e+00     899.5949
+                          KshellEC     561.9575   5.3080e+01     347.0425
+                          KshellEC     571.1519   2.6100e+01     337.8481
+                          KshellEC     690.5400   1.1850e-01     218.4600
+                          KshellEC     799.4920   7.6410e-01     109.5080
+                          LshellEC       0.0000   5.3450e-01     909.0000
+                          LshellEC       9.4051   6.6180e-01     899.5949
+                          LshellEC     561.9575   6.5640e+00     347.0425
+                          LshellEC     571.1519   3.2340e+00     337.8481
+                          LshellEC     690.5400   1.5330e-02     218.4600
+                          LshellEC     799.4920   1.1220e-01     109.5080
+P      42.1100   3.0000e-04
+                                IT       0.0000   1.0000e+00

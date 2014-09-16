@@ -1,0 +1,17 @@
+# 212PO (0.299 Us)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 212PO (45.1 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   2.9900e-07
+                             Alpha       0.0000   1.0000e+00
+                             Alpha       0.0000   1.0000e+02    8954.1300
+P    2922.0000   4.5100e+01
+                             Alpha       0.0000   9.9930e-01
+                                IT       0.0000   7.0000e-04
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-2922.00 keV
+                             Alpha       0.0000   1.0000e+02    8954.1300

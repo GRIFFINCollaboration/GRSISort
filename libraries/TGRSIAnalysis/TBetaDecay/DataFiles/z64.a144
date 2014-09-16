@@ -1,0 +1,36 @@
+# 144GD (4.5 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:23 2006 
+#
+P       0.0000   2.7000e+02
+W [VU repair system] Deleted zero-probability event: MshellEC
+                          BetaPlus       0.0000   1.0000e+00
+W [VU repair system] Deleted zero-probability event: KshellEC
+W [VU repair system] Deleted zero-probability event: LshellEC
+                          BetaPlus       0.0000   8.0000e+01    3740.0000
+                          BetaPlus     333.3000   1.6000e+00    3406.7000
+                          BetaPlus     580.4000   1.9000e-01    3159.6000
+                          BetaPlus     604.4000   1.5000e-01    3135.6000
+                          BetaPlus     621.5000   6.0000e-01    3118.5000
+                          BetaPlus     629.5000   5.4000e-01    3110.5000
+                          BetaPlus     784.0000   1.9000e-01    2956.0000
+                          BetaPlus     907.9000   3.6000e-01    2832.1000
+                          BetaPlus     974.8000   4.0000e-02    2765.2000
+                          BetaPlus    1074.2000   2.0000e-02    2665.8000
+                          BetaPlus    1145.6000   1.1000e-01    2594.4000
+                          BetaPlus    1201.4000   4.2000e-01    2538.6000
+                          BetaPlus    1293.5100   4.1000e-01    2446.4900
+                          BetaPlus    1304.0100   7.0000e-02    2435.9900
+                          BetaPlus    1402.2100   3.0000e-02    2337.7900
+                          BetaPlus    1559.9100   2.8000e-01    2180.0900
+                          BetaPlus    1804.7100   1.7000e-01    1935.2900
+                          BetaPlus    1930.2000   2.8000e-01    1809.8000
+                          BetaPlus    2362.1200   1.1000e+00    1377.8800
+                          BetaPlus    2432.6100   9.2000e+00    1307.3900
+                          BetaPlus    2692.7200   9.3000e-01    1047.2800
+                          BetaPlus    2709.6000   6.3000e-01    1030.4000
+                          BetaPlus    2804.6200   2.5000e+00     935.3800
+                          BetaPlus    2827.9200   6.8000e-01     912.0800

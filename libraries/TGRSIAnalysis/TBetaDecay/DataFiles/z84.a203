@@ -1,0 +1,63 @@
+# 203PO (36.7 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 203PO (45 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   2.2020e+03
+                          MshellEC       0.0000   2.0500e-03
+                          BetaPlus       0.0000   7.1620e-02
+                          KshellEC       0.0000   9.1900e-01
+                          LshellEC       0.0000   6.2020e-03
+                             Alpha       0.0000   1.1000e-03
+                          MshellEC    1123.9000   7.3020e-02    3116.1000
+                          MshellEC    1277.1000   2.7830e-02    2962.9000
+                          MshellEC    2689.4000   1.0240e-01    1550.6000
+                          BetaPlus     893.5000   3.5960e-01    3346.5000
+                          BetaPlus     908.6000   3.4960e+00    3331.4000
+                          BetaPlus    1090.9000   1.6980e+00    3149.1000
+                          BetaPlus    1098.1000   1.8980e-01    3141.9000    uniqueFirstForbidden
+                          BetaPlus    1123.9000   1.4980e-01    3116.1000
+                          BetaPlus    1277.1000   4.9940e-02    2962.9000
+                          BetaPlus    1312.8000   4.1950e-01    2927.2000
+                          BetaPlus    1352.8000   1.9980e-01    2887.2000
+                          BetaPlus    1488.1000   3.0970e-01    2751.9000
+                          BetaPlus    1798.9000   6.1930e-02    2441.1000
+                          BetaPlus    2135.8000   1.0990e-01    2104.2000
+                          BetaPlus    2231.1100   4.0950e-02    2008.8900
+                          BetaPlus    2286.9000   8.9900e-03    1953.1000
+                          BetaPlus    2566.6000   2.7970e-03    1673.4000
+                          BetaPlus    2689.4000   1.4980e-03    1550.6000
+                          KshellEC       0.0000   1.9980e-03    4240.0000
+                          KshellEC     893.5000   2.5970e+00    3346.5000
+                          KshellEC     908.6000   2.5970e+01    3331.4000
+                          KshellEC    1090.9000   1.6280e+01    3149.1000
+                          KshellEC    1098.1000   5.9930e+00    3141.9000
+                          KshellEC    1123.9000   1.2030e+00    3116.1000
+                          KshellEC    1277.1000   4.5700e-01    2962.9000
+                          KshellEC    1312.8000   5.5940e+00    2927.2000
+                          KshellEC    1352.8000   2.7970e+00    2887.2000
+                          KshellEC    1488.1000   5.6940e+00    2751.9000
+                          KshellEC    1798.9000   2.1380e+00    2441.1000
+                          KshellEC    2135.8000   9.8890e+00    2104.2000
+                          KshellEC    2231.1100   4.9940e+00    2008.8900
+                          KshellEC    2286.9000   1.2890e+00    1953.1000
+                          KshellEC    2566.6000   1.5980e+00    1673.4000
+                          KshellEC    2689.4000   1.5870e+00    1550.6000
+                          KshellEC    2752.0000   9.9890e-01    1488.0000
+                          KshellEC    3130.4000   1.9980e+00    1109.6000
+                          LshellEC    1123.9000   2.2200e-01    3116.1000
+                          LshellEC    1277.1000   8.4520e-02    2962.9000
+                          LshellEC    2689.4000   3.0810e-01    1550.6000
+                             Alpha       0.0000   1.1000e-03    5496.0000
+                             Alpha       0.0000   1.1000e-01    5496.0000
+P     641.4900   4.5000e+01
+                             Alpha       0.0000   4.0000e-04
+                                IT       0.0000   1.0000e+00
+W [VU repair system] Q filled in from theory
+                             Alpha       0.0000   1.0000e+02    6134.1929

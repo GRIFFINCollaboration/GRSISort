@@ -1,0 +1,33 @@
+#  48V  (15.9735 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:18 2006 
+#
+P       0.0000   1.3800e+06
+                          MshellEC       0.0000   7.8170e-03
+                          BetaPlus       0.0000   5.0230e-01
+                          KshellEC       0.0000   4.4460e-01
+                          LshellEC       0.0000   4.5320e-02
+                          MshellEC     983.5310   3.1590e-04    3028.7690
+                          MshellEC    2295.6460   6.1330e-01    1716.6540
+                          MshellEC    2420.8400   7.8370e-05    1591.4600
+                          MshellEC    3223.9820   5.2520e-02     788.3180
+                          MshellEC    3239.7870   1.2250e-01     772.5130
+                          MshellEC    3359.5200   2.5300e-04     652.7800
+                          BetaPlus     983.5310   7.9000e-01    3028.7690
+                          BetaPlus    2295.6460   4.9900e+01    1716.6540
+                          BetaPlus    2420.8400   3.0000e-03    1591.4600
+                          KshellEC     983.5310   1.7870e-02    3028.7690
+                          KshellEC    2295.6460   3.4930e+01    1716.6540
+                          KshellEC    2420.8400   4.4670e-03    1591.4600
+                          KshellEC    3223.9820   2.9730e+00     788.3180
+                          KshellEC    3239.7870   6.9270e+00     772.5130
+                          KshellEC    3359.5200   1.4280e-02     652.7800
+                          LshellEC     983.5310   1.8160e-03    3028.7690
+                          LshellEC    2295.6460   3.5550e+00    1716.6540
+                          LshellEC    2420.8400   4.5490e-04    1591.4600
+                          LshellEC    3223.9820   3.0470e-01     788.3180
+                          LshellEC    3239.7870   7.1020e-01     772.5130
+                          LshellEC    3359.5200   1.4670e-03     652.7800

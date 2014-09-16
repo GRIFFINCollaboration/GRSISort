@@ -1,0 +1,22 @@
+# 227PA (38.3 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+W No information available on excitation state of daughter.
+W Decay directly to the ground state has been assumed.
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   2.2980e+03
+                             Alpha       0.0000   8.5000e-01
+                          BetaPlus       0.0000   1.5000e-01
+                             Alpha       0.0000   4.2670e+01    6580.0000
+                             Alpha      42.4000   9.9450e+00    6537.6000
+                             Alpha      50.7000   1.2830e+01    6529.3000
+                             Alpha      64.6200   7.9900e+00    6515.3800
+                             Alpha      90.7000   2.2100e+00    6489.3000
+                             Alpha     110.0600   6.7150e+00    6469.9400
+                             Alpha     130.7000   5.9500e-01    6449.3000
+                             Alpha     141.0000   3.4000e-01    6439.0000
+                             Alpha     167.5000   6.8000e-01    6412.5000
+                          BetaPlus       0.0000   1.0000e+02    1019.0000

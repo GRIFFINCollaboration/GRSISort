@@ -1,0 +1,58 @@
+# 126IN (1.60 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 126IN (1.64 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:21 2006 
+#
+P       0.0000   1.6000e+00
+                         BetaMinus       0.0000   1.0000e+00
+                         BetaMinus    1141.1500   1.8000e+01    7065.8500
+                         BetaMinus    2049.7300   4.0000e+00    6157.2700
+                         BetaMinus    2110.7900   1.6400e+01    6096.2100
+                         BetaMinus    2130.0800   2.7000e-01    6076.9200
+                         BetaMinus    2194.2100   5.0000e-01    6012.7900
+                         BetaMinus    2256.5100   2.5000e-01    5950.4900
+                         BetaMinus    2370.4600   2.1000e+00    5836.5400
+                         BetaMinus    2471.9300   3.2000e-01    5735.0700
+                         BetaMinus    2631.0300   4.3000e-01    5575.9700
+                         BetaMinus    2636.6400   1.6200e+00    5570.3600
+                         BetaMinus    2712.0600   5.9000e-01    5494.9400
+                         BetaMinus    2742.5700   2.7900e+00    5464.4300
+                         BetaMinus    2886.4100   4.2000e-01    5320.5900
+                         BetaMinus    3246.5500   5.4000e+00    4960.4500
+                         BetaMinus    3300.3000   3.1000e-01    4906.7000
+                         BetaMinus    3344.8300   2.4200e+01    4862.1700
+                         BetaMinus    3504.5000   4.9000e-01    4702.5000
+                         BetaMinus    3818.0000   3.5000e-01    4389.0000
+                         BetaMinus    3860.3000   6.3000e-01    4346.7000
+                         BetaMinus    3886.5400   6.0000e+00    4320.4600
+                         BetaMinus    3917.3000   3.8000e-01    4289.7000
+                         BetaMinus    3964.1900   9.3000e+00    4242.8100
+                         BetaMinus    4013.9700   3.7000e-01    4193.0300
+                         BetaMinus    4241.0000   1.5000e+00    3966.0000
+                         BetaMinus    4257.1000   3.3000e-01    3949.9000
+                         BetaMinus    4303.2700   2.5000e+00    3903.7300
+                         BetaMinus    4330.9000   1.3000e-01    3876.1000
+                         BetaMinus    4656.5000   2.1000e-01    3550.5000
+                         BetaMinus    4699.5000   1.0000e-01    3507.5000
+                         BetaMinus    4797.1000   1.3000e-01    3409.9000
+P     102.0000   1.6400e+00
+                         BetaMinus       0.0000   1.0000e+00
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=106.26 keV
+                         BetaMinus    2488.2100   3.8000e+00    5922.7900
+                         BetaMinus    2662.9500   2.0000e-01    5748.0500
+                         BetaMinus    2840.2100   2.5500e+00    5570.7900
+                         BetaMinus    3067.2600   2.8000e+00    5343.7400
+                         BetaMinus    3454.8500   6.6000e+00    4956.1500
+                         BetaMinus    3625.7700   5.5000e+00    4785.2300
+                         BetaMinus    3783.3800   2.3000e+00    4627.6200
+                         BetaMinus    3809.1800   1.6000e+00    4601.8200
+                         BetaMinus    3830.7200   5.6000e+00    4580.2800
+                         BetaMinus    3855.5200   7.1000e+01    4555.4800
+                         BetaMinus    3950.3000   1.6900e+00    4460.7000
+                         BetaMinus    3977.3700   6.6000e+00    4433.6300
+                         BetaMinus    4779.1400   5.7000e+00    3631.8600
+                         BetaMinus    4990.1000   4.9000e+00    3420.9000

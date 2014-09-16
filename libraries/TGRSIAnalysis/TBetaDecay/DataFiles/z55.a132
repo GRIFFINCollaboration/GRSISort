@@ -1,0 +1,33 @@
+# 132CS (6.479 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:22 2006 
+#
+P       0.0000   5.5980e+05
+                         BetaMinus       0.0000   1.8700e-02
+                          MshellEC       0.0000   3.1110e-02
+                          BetaPlus       0.0000   4.3030e-03
+                          KshellEC       0.0000   8.3180e-01
+                          LshellEC       0.0000   1.1410e-01
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=14.13 keV
+                         BetaMinus     464.4970   1.5100e+00     829.5030
+                         BetaMinus    1031.6610   3.6000e-01     262.3390
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=10.39 keV
+                          MshellEC     667.7200   3.0250e+00    1462.2800
+                          MshellEC    1297.9160   8.8290e-03     832.0840
+                          MshellEC    1803.7140   4.7010e-02     326.2860
+                          MshellEC    1985.6540   3.1300e-02     144.3460
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=10.39 keV
+                          BetaPlus     667.7200   4.3040e-01    1462.2800
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=10.39 keV
+                          KshellEC     667.7200   8.1380e+01    1462.2800
+                          KshellEC    1297.9160   2.2920e-01     832.0840
+                          KshellEC    1803.7140   1.0650e+00     326.2860
+                          KshellEC    1985.6540   5.1860e-01     144.3460
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=10.39 keV
+                          LshellEC     667.7200   1.1100e+01    1462.2800
+                          LshellEC    1297.9160   3.2240e-02     832.0840
+                          LshellEC    1803.7140   1.6880e-01     326.2860
+                          LshellEC    1985.6540   1.0870e-01     144.3460

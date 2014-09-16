@@ -1,0 +1,39 @@
+# 175HF (70 d)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 175HF (5.37E-05 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 175HF (1.10E-06 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 175HF (1.21E-06 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:24 2006 
+#
+P       0.0000   6.0480e+06
+                          MshellEC       0.0000   5.4110e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   7.7540e-01
+                          LshellEC       0.0000   1.7050e-01
+                          MshellEC       0.0000   3.1630e-01     686.3000
+                          MshellEC     343.4100   4.2780e+00     342.8900
+                          MshellEC     353.3000   1.0280e-02     333.0000
+                          MshellEC     432.8000   1.0320e+00     253.5000
+                          MshellEC     514.6000   3.8960e-03     171.7000
+                          KshellEC       0.0000   5.6620e+00     686.3000
+                          KshellEC     343.4100   6.2210e+01     342.8900
+                          KshellEC     353.3000   1.4740e-01     333.0000
+                          KshellEC     432.8000   1.2770e+01     253.5000
+                          KshellEC     514.6000   3.4470e-02     171.7000
+                          LshellEC       0.0000   1.0220e+00     686.3000
+                          LshellEC     343.4100   1.3510e+01     342.8900
+                          LshellEC     353.3000   3.2300e-02     333.0000
+                          LshellEC     432.8000   3.1970e+00     253.5000
+                          LshellEC     514.6000   1.1640e-02     171.7000
+P     125.9300   5.3700e-05
+                                IT       0.0000   1.0000e+00
+P    1433.5000   1.1000e-06
+                                IT       0.0000   1.0000e+00
+P    3015.8000   1.2100e-06
+                                IT       0.0000   1.0000e+00

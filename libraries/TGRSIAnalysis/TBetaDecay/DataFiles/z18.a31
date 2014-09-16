@@ -1,0 +1,37 @@
+#  31AR (15.1 ms)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:18 2006 
+#
+P       0.0000   1.5100e-02
+W [VU repair system] Deleted zero-probability event: MshellEC
+                          BetaPlus       0.0000   1.0000e+00
+W [VU repair system] Deleted zero-probability event: KshellEC
+W [VU repair system] Deleted zero-probability event: LshellEC
+                          BetaPlus       0.0000   2.3000e+01   18360.0000
+                          BetaPlus     747.0000   1.3000e-01   17613.0000
+                          BetaPlus    1292.0000   3.7000e-01   17068.0000
+                          BetaPlus    1456.0000   5.2000e-01   16904.0000
+                          BetaPlus    1749.0000   9.8000e+00   16611.0000
+                          BetaPlus    2436.0000   2.6000e+01   15924.0000
+                          BetaPlus    2626.0000   1.3900e+00   15734.0000
+                          BetaPlus    3265.0000   1.2500e+00   15095.0000
+                          BetaPlus    3824.0000   6.1000e-01   14536.0000
+                          BetaPlus    4039.0000   4.2400e+00   14321.0000
+                          BetaPlus    4192.0000   8.0000e-01   14168.0000
+                          BetaPlus    4319.0000   9.3000e-01   14041.0000
+                          BetaPlus    4613.0000   6.8000e-01   13747.0000
+                          BetaPlus    4818.0000   3.1000e-01   13542.0000
+                          BetaPlus    4901.0000   1.8000e-01   13459.0000
+                          BetaPlus    5064.0000   1.8000e-01   13296.0000
+                          BetaPlus    5750.0000   8.2000e+00   12610.0000
+                          BetaPlus    6162.0000   8.0000e-02   12198.0000
+                          BetaPlus    6663.0000   2.5900e+00   11697.0000
+                          BetaPlus    7050.0000   8.6000e-01   11310.0000
+                          BetaPlus    7478.0000   3.6000e-01   10882.0000
+                          BetaPlus    7617.0000   8.1000e-01   10743.0000
+                          BetaPlus    8868.0000   1.1800e+00    9492.0000
+                          BetaPlus    9978.0000   9.0000e-02    8382.0000
+                          BetaPlus   12313.0000   3.0000e+00    6047.0000

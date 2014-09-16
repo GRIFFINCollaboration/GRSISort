@@ -1,0 +1,46 @@
+# 242AM (16.02 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 242AM (141 y)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 242AM (14.0 ms)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:27 2006 
+#
+P       0.0000   5.7670e+04
+                         BetaMinus       0.0000   8.2700e-01
+                          MshellEC       0.0000   1.2620e-02
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   1.2580e-01
+                          LshellEC       0.0000   3.4620e-02
+                         BetaMinus       0.0000   3.0600e+01     662.5000
+                         BetaMinus      42.1300   3.8040e+01     620.3700
+                          MshellEC       0.0000   4.8340e-01     749.3000
+                          MshellEC      44.5400   7.7860e-01     704.7600
+                          KshellEC       0.0000   4.8870e+00     749.3000
+                          KshellEC      44.5400   7.6870e+00     704.7600
+                          LshellEC       0.0000   1.3290e+00     749.3000
+                          LshellEC      44.5400   2.1330e+00     704.7600
+P      48.6300   4.4500e+09
+                             Alpha       0.0000   4.5900e-03
+                                IT       0.0000   9.9540e-01
+                             Alpha      26.4000   2.7540e-05    5608.9300
+                             Alpha      86.6800   6.4260e-04    5548.6500
+                             Alpha     136.0500   4.7740e-03    5499.2800
+                             Alpha     179.1500   5.3700e-03    5456.1800
+                             Alpha     232.8000   3.1670e-03    5402.5300
+                             Alpha     275.5000   3.9470e-03    5359.8300
+                             Alpha     298.3000   1.8360e-04    5337.0300
+                             Alpha     300.7000   5.0490e-04    5334.6300
+                             Alpha     334.3000   1.3770e-04    5301.0300
+                             Alpha     342.4000   4.1240e-01    5292.9300
+                             Alpha     396.6000   9.1800e-05    5238.7300
+                             Alpha     408.5000   2.6710e-02    5226.8300
+                             Alpha     462.6000   8.7210e-04    5172.7300
+                             Alpha     468.6000   1.3770e-04    5166.7300
+                             Alpha     487.2000   1.0100e-03    5148.1300
+                             Alpha     524.9000   9.1800e-05    5110.4300
+                             Alpha     578.0000   9.1800e-06    5057.3300
+P    2200.0000   1.4000e-02

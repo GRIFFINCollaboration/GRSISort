@@ -1,0 +1,21 @@
+# 207HG (2.9 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   1.7400e+02
+                         BetaMinus       0.0000   1.0000e+00
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-47.69 keV
+                         BetaMinus    1348.1000   2.0000e+00    3421.9000
+                         BetaMinus    1682.7000   3.0000e+00    3087.3000
+                         BetaMinus    2675.2000   2.0000e-01    2094.8000
+                         BetaMinus    2911.9000   1.4000e+01    1858.1000
+                         BetaMinus    2985.3000   3.2000e+01    1784.7000
+                         BetaMinus    3104.4000   1.6000e+01    1665.6000
+                         BetaMinus    3143.0000   7.0000e+00    1627.0000
+                         BetaMinus    3272.7000   3.0000e+00    1497.3000
+                         BetaMinus    3295.6000   5.0000e+00    1474.4000
+                         BetaMinus    3335.6000   5.0000e+00    1434.4000
+                         BetaMinus    3358.2000   4.0000e+00    1411.8000

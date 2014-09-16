@@ -1,0 +1,35 @@
+# 140SM (14.82 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:22 2006 
+#
+P       0.0000   8.8920e+02
+                          MshellEC       0.0000   2.4620e-02
+                          BetaPlus       0.0000   2.6240e-01
+                          KshellEC       0.0000   6.2720e-01
+                          LshellEC       0.0000   8.5790e-02
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=27.60 keV
+                          MshellEC       0.0000   1.7660e+00    3000.0000
+                          MshellEC     415.2000   5.9820e-02    2584.8000
+                          MshellEC    1619.4000   2.3200e-01    1380.6000
+                          MshellEC    1670.1000   2.2170e-01    1329.9000
+                          MshellEC    2017.4000   7.3020e-03     982.6000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=27.60 keV
+                          BetaPlus       0.0000   2.4000e+01    3000.0000
+                          BetaPlus     415.2000   3.8000e-01    2584.8000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=27.60 keV
+                          KshellEC       0.0000   4.3070e+01    3000.0000
+                          KshellEC     415.2000   1.4520e+00    2584.8000
+                          KshellEC    1618.2000   1.1000e+00    1381.8000
+                          KshellEC    1619.4000   5.4630e+00    1380.6000
+                          KshellEC    1623.0000   1.8000e+00    1377.0000
+                          KshellEC    1670.1000   5.2080e+00    1329.9000
+                          KshellEC    2017.4000   1.6740e-01     982.6000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=27.60 keV
+                          LshellEC       0.0000   6.1610e+00    3000.0000
+                          LshellEC     415.2000   2.0850e-01    2584.8000
+                          LshellEC    1619.4000   8.0550e-01    1380.6000
+                          LshellEC    1670.1000   7.6980e-01    1329.9000
+                          LshellEC    2017.4000   2.5260e-02     982.6000

@@ -1,0 +1,64 @@
+#  28P  (270.3 ms)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:18 2006 
+#
+P       0.0000   2.7030e-01
+W [VU repair system] Deleted zero-probability event: MshellEC
+                          BetaPlus       0.0000   9.9980e-01
+                          KshellEC       0.0000   1.6060e-04
+W [VU repair system] Deleted zero-probability event: LshellEC
+                          BetaPlus    1778.9800   6.9100e+01   12553.0200
+                          BetaPlus    4617.8000   1.2900e+00    9714.2000
+                          BetaPlus    6276.5000   7.6000e+00    8055.5000
+                          BetaPlus    7416.2000   1.9000e-01    6915.8000
+                          BetaPlus    7798.8000   2.4400e+00    6533.2000
+                          BetaPlus    7933.4000   2.8400e+00    6398.6000
+                          BetaPlus    8259.4000   5.3700e-01    6072.6000
+                          BetaPlus    8588.9000   3.6400e+00    5743.1000
+                          BetaPlus    9316.1000   1.1300e+01    5015.9000
+                          BetaPlus    9381.2000   5.9000e-01    4950.8000
+                          BetaPlus    9480.4000   6.5000e-02    4851.6000
+                          BetaPlus    9795.9500   5.3000e-02    4536.0500
+                          BetaPlus   10209.0100   2.9000e-02    4122.9900
+                          BetaPlus   10668.0000   2.9900e-01    3664.0000
+                          BetaPlus   11515.3000   7.6000e-05    2816.7000
+                          BetaPlus   11656.6000   2.4000e-04    2675.4000
+                          BetaPlus   11931.0000   8.8000e-04    2401.0000
+                          BetaPlus   12071.3000   8.7000e-05    2260.7000
+                          BetaPlus   12289.5000   6.8000e-04    2042.5000
+                          BetaPlus   12440.3000   1.1000e-03    1891.7000
+                          BetaPlus   12550.3000   6.4000e-05    1781.7000
+                          BetaPlus   12572.9000   3.4000e-04    1759.1000
+                          BetaPlus   12714.2000   2.1000e-05    1617.8000
+                          BetaPlus   12725.3000   1.5000e-04    1606.7000
+                          BetaPlus   12899.4000   8.0000e-05    1432.6000
+                          BetaPlus   13093.1000   2.4000e-06    1238.9000
+                          KshellEC    1778.9800   2.1100e-03   12553.0200
+                          KshellEC    4617.8000   9.1000e-05    9714.2000
+                          KshellEC    6276.5000   1.0100e-03    8055.5000
+                          KshellEC    7416.2000   4.2000e-05    6915.8000
+                          KshellEC    7798.8000   6.6600e-04    6533.2000
+                          KshellEC    7933.4000   8.3000e-04    6398.6000
+                          KshellEC    8259.4000   9.0000e-05    6072.6000
+                          KshellEC    8588.9000   1.5700e-03    5743.1000
+                          KshellEC    9316.1000   8.0000e-03    5015.9000
+                          KshellEC    9381.2000   4.3900e-04    4950.8000
+                          KshellEC    9480.4000   5.2000e-05    4851.6000
+                          KshellEC    9795.9500   5.5000e-05    4536.0500
+                          KshellEC   10209.0100   4.4000e-05    4122.9900
+                          KshellEC   10668.0000   7.2900e-04    3664.0000
+                          KshellEC   11515.3000   6.0000e-07    2816.7000
+                          KshellEC   11656.6000   2.4000e-06    2675.4000
+                          KshellEC   11931.0000   1.6000e-05    2401.0000
+                          KshellEC   12071.3000   2.1000e-06    2260.7000
+                          KshellEC   12289.5000   3.1000e-05    2042.5000
+                          KshellEC   12440.3000   8.4000e-05    1891.7000
+                          KshellEC   12550.3000   7.4000e-06    1781.7000
+                          KshellEC   12572.9000   4.3000e-05    1759.1000
+                          KshellEC   12714.2000   5.5000e-06    1617.8000
+                          KshellEC   12725.3000   4.1000e-05    1606.7000
+                          KshellEC   12899.4000   7.6000e-05    1432.6000
+                          KshellEC   13093.1000   2.1000e-05    1238.9000

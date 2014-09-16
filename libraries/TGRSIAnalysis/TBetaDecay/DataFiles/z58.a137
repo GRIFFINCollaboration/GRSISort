@@ -1,0 +1,57 @@
+# 137CE (9.0 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+# 137CE (34.4 h)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:22 2006 
+#
+P       0.0000   3.2400e+04
+                          MshellEC       0.0000   3.3950e-02
+                          BetaPlus       0.0000   8.5410e-05
+                          KshellEC       0.0000   8.4560e-01
+                          LshellEC       0.0000   1.2030e-01
+                          MshellEC      10.5600   3.2970e+00    1211.5400
+                          MshellEC     447.1500   7.2260e-02     774.9500
+                          MshellEC     493.0300   9.8510e-05     729.0700
+                          MshellEC     641.9400   5.0090e-04     580.1600
+                          MshellEC     709.3000   1.0250e-03     512.8000
+                          MshellEC     781.5500   3.4070e-04     440.5500
+                          MshellEC     926.3500   6.2410e-03     295.7500
+                          MshellEC    1171.4000   6.4430e-04      50.7000
+                          BetaPlus      10.5600   8.5000e-03    1211.5400
+                          KshellEC      10.5600   8.2240e+01    1211.5400
+                          KshellEC     447.1500   1.7380e+00     774.9500
+                          KshellEC     493.0300   2.3540e-03     729.0700
+                          KshellEC     641.9400   1.1640e-02     580.1600
+                          KshellEC     709.3000   2.3380e-02     512.8000
+                          KshellEC     781.5500   7.5690e-03     440.5500
+                          KshellEC     926.3500   1.2620e-01     295.7500
+                          KshellEC    1171.4000   9.7510e-04      50.7000
+                          LshellEC      10.5600   1.1690e+01    1211.5400
+                          LshellEC     447.1500   2.5480e-01     774.9500
+                          LshellEC     493.0300   3.4720e-04     729.0700
+                          LshellEC     641.9400   1.7600e-03     580.1600
+                          LshellEC     709.3000   3.5920e-03     512.8000
+                          LshellEC     781.5500   1.1900e-03     440.5500
+                          LshellEC     926.3500   2.1560e-02     295.7500
+                          LshellEC    1171.4000   1.8810e-03      50.7000
+P     254.2900   1.2380e+05
+                          MshellEC       0.0000   2.8410e-04
+W [VU repair system] Deleted zero-probability event: BetaPlus
+                          KshellEC       0.0000   6.5190e-03
+                          LshellEC       0.0000   9.9650e-04
+                                IT       0.0000   9.9220e-01
+                          MshellEC     762.3000   5.3070e-05     714.0900
+                          MshellEC     835.3000   2.5020e-05     641.0900
+                          MshellEC     917.4200   1.0170e-06     558.9700
+                          MshellEC    1004.4400   1.4160e-04     471.9500
+                          KshellEC     762.3000   1.2650e-03     714.0900
+                          KshellEC     835.3000   5.8900e-04     641.0900
+                          KshellEC     917.4200   2.3490e-05     558.9700
+                          KshellEC    1004.4400   3.1850e-03     471.9500
+                          LshellEC     762.3000   1.8700e-04     714.0900
+                          LshellEC     835.3000   8.8030e-05     641.0900
+                          LshellEC     917.4200   3.5690e-06     558.9700
+                          LshellEC    1004.4400   4.9530e-04     471.9500

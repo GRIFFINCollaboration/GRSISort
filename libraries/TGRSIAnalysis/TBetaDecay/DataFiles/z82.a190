@@ -1,0 +1,40 @@
+# 190PB (1.2 m)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:26 2006 
+#
+P       0.0000   7.2000e+01
+W [VU repair system] Deleted zero-probability event: MshellEC
+                          BetaPlus       0.0000   1.8990e-01
+                          KshellEC       0.0000   8.0110e-01
+W [VU repair system] Deleted zero-probability event: LshellEC
+                             Alpha       0.0000   9.0000e-03
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=180.74 keV
+                          BetaPlus       0.0000   1.0010e-01    4270.0000
+                          BetaPlus     158.1500   7.0060e-01    4111.8500
+                          BetaPlus     210.5500   6.0050e+00    4059.4500
+                          BetaPlus     372.7500   4.0040e-01    3897.2500
+                          BetaPlus     376.2600   1.3010e+00    3893.7400
+                          BetaPlus     495.0700   5.0050e+00    3774.9300
+                          BetaPlus     539.8100   4.0040e-01    3730.1900
+                          BetaPlus     738.9900   1.9020e+00    3531.0100
+                          BetaPlus     890.7200   6.0050e-01    3379.2800
+                          BetaPlus     942.2100   6.0050e+00    3327.7900
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=180.74 keV
+                          KshellEC       0.0000   9.0080e-01    4270.0000
+                          KshellEC     158.1500   1.9020e+00    4111.8500
+                          KshellEC     210.5500   1.5010e+01    4059.4500
+                          KshellEC     372.7500   1.2010e+00    3897.2500
+                          KshellEC     376.2600   4.1040e+00    3893.7400
+                          KshellEC     495.0700   1.7020e+01    3774.9300
+                          KshellEC     539.8100   1.6010e+00    3730.1900
+                          KshellEC     738.9900   9.1080e+00    3531.0100
+                          KshellEC     890.7200   3.5030e+00    3379.2800
+                          KshellEC     942.2100   3.5030e+01    3327.7900
+                          KshellEC    1235.5000   4.5040e+00    3034.5000
+                          KshellEC    1854.5000   7.0060e-01    2415.5000
+                             Alpha       0.0000   3.9960e-01    5698.0000
+                             Alpha     409.0000   3.3600e-04    5289.0000
+                             Alpha     532.0000   5.6000e-05    5166.0000

@@ -1,0 +1,18 @@
+# 175IR (9 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:25 2006 
+#
+P       0.0000   9.0000e+00
+W [VU repair system] Deleted zero-probability event: MshellEC
+                          BetaPlus       0.0000   9.9150e-01
+W [VU repair system] Deleted zero-probability event: KshellEC
+W [VU repair system] Deleted zero-probability event: LshellEC
+                             Alpha       0.0000   8.5000e-03
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-26.76 keV
+                          BetaPlus     105.4000   6.9350e+01    6574.6000
+                          BetaPlus     504.2000   2.0900e+01    6175.8000
+W [VU repair system] Huge Q discrepancy, Qfile-Qtheor=-187.95 keV
+                             Alpha       0.0000   8.5000e-01    5519.0000

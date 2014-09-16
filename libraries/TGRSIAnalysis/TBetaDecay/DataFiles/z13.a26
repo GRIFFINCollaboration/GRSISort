@@ -1,0 +1,28 @@
+#  26AL (7.4E+5 y)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#  26AL (6.3452 s)
+#  Excitation   Halflife Mode       Daughter Ex  Intensity           Q
+#
+# File sanitized by Vanderbilt Decay-o-matic
+# $Id: repair_decay_files.py,v 1.20 2006/04/24 14:53:36 marcus Exp $ 
+# Fri Oct  6 15:26:18 2006 
+#
+P       0.0000   2.3350e+13
+                          MshellEC       0.0000   9.3930e-04
+                          BetaPlus       0.0000   8.1750e-01
+                          KshellEC       0.0000   1.6700e-01
+                          LshellEC       0.0000   1.4590e-02
+                          MshellEC    1808.7200   7.9780e-02    2195.4200
+                          MshellEC    2938.4100   1.4140e-02    1065.7300
+                          BetaPlus    1808.7200   8.1730e+01    2195.4200    uniqueSecondForbidden
+                          KshellEC    1808.7200   1.4190e+01    2195.4200
+                          KshellEC    2938.4100   2.5060e+00    1065.7300
+                          LshellEC    1808.7200   1.2390e+00    2195.4200
+                          LshellEC    2938.4100   2.2000e-01    1065.7300
+P     228.3050   6.3450e+00
+W [VU repair system] Deleted zero-probability event: MshellEC
+                          BetaPlus       0.0000   9.9920e-01
+                          KshellEC       0.0000   7.9940e-04
+W [VU repair system] Deleted zero-probability event: LshellEC
+                          BetaPlus       0.0000   1.0000e+02    4232.4450
+                          KshellEC       0.0000   8.0000e-02    4232.4450
