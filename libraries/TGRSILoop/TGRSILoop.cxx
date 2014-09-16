@@ -324,7 +324,7 @@ void TGRSILoop::SetTIGOdb()  {
    std::string path = "/Analyzer/Shared Parameters/Config";
 	TXMLNode *test = fOdb->FindPath(path.c_str());
 	if(!test)
-		path.assign("/analyzer/Parameters/Cathode/Config");  //the old path to the useful odb info.
+		path.assign("/Analyzer/Parameters/Cathode/Config");  //the old path to the useful odb info.
    printf("using TIGRESS path to analyzer info: %s...\n",path.c_str());
 
    std::string temp = path; temp.append("/FSCP");
@@ -380,6 +380,7 @@ void TGRSILoop::SetTIGOdb()  {
       tempchan->SetUserInfoNumber(x);
       tempchan->AddENGCoefficient(offsets.at(x));
       tempchan->AddENGCoefficient(gains.at(x));
+      //tempchan->Print();
       TChannel::UpdateChannel(tempchan);
       //TChannel *temp2 = TChannel::GetChannel(address.at(x));
       //temp2->Print();
