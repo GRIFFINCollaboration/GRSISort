@@ -5,6 +5,7 @@
 
 #include <TRandom.h>
 #include <TMath.h>
+#include <TClass.h>
 
 ClassImp(TTigress)
 
@@ -19,7 +20,8 @@ bool TTigress::fSetBGOWave = false;
 
 
 TTigress::TTigress() : tigdata(0), bgodata(0)	{
-	Clear();
+   Class()->IgnoreTObjectStreamer(true);
+   Clear();
 }
 
 TTigress::~TTigress()	{

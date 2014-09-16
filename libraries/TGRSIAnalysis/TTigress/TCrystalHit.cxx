@@ -1,12 +1,14 @@
 
 
 #include "TCrystalHit.h"
+#include <TClass.h>
 
 
 ClassImp(TCrystalHit)
 
 
 TCrystalHit::TCrystalHit()	{
+   Class()->IgnoreTObjectStreamer(true);
 	Clear();
 }
 

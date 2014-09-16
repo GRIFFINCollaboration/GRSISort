@@ -48,8 +48,8 @@ class TGriffin : public TGRSIDetector {
 
      static bool fSetBGOHits;		            //!  Flag that determines if BGOHits are being measured			 
 		
-     static bool fSetCoreWave;		         //!  Flag for Waveforms ON/OFF
-     static bool fSetBGOWave;		            //!  Flag for BGO Waveforms ON/OFF
+     static bool fSetCoreWave;		         //  Flag for Waveforms ON/OFF
+     static bool fSetBGOWave;		            //  Flag for BGO Waveforms ON/OFF
 
    public:
      static bool SetBGOHits()       { return fSetBGOHits;   }	//!

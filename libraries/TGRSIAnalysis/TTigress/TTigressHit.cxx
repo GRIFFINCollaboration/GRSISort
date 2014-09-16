@@ -1,9 +1,11 @@
 
 #include "TTigressHit.h"
+#include <TClass.h>
 
 ClassImp(TTigressHit)
 
 TTigressHit::TTigressHit()	{	
+   Class()->IgnoreTObjectStreamer(true);
 	Clear();
 }
 

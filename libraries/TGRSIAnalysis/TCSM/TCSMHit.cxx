@@ -4,6 +4,7 @@
 ClassImp(TCSMHit)
 
 TCSMHit::TCSMHit()	{	
+   Class()->IgnoreTObjectStreamer(true);
    Clear();
 }
 

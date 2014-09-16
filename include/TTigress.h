@@ -47,8 +47,8 @@ class TTigress : public TGRSIDetector {
 		void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
 
 	private: 
-		TTigressData *tigdata;
-		TBGOData     *bgodata;
+		TTigressData *tigdata;        //!
+		TBGOData     *bgodata;        //!
 
 		std::vector <TTigressHit> tigress_hits;
 		std::vector <TTigressHit> addback_hits;		

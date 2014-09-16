@@ -1,11 +1,12 @@
 
 
 #include "TGRSIDetector.h"
-
+#include <TClass.h>
 
 ClassImp(TGRSIDetector)
 
 TGRSIDetector::TGRSIDetector() : data(0) {
+   Class()->IgnoreTObjectStreamer(true);
 
 }
 

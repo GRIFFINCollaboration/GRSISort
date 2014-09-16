@@ -1,9 +1,12 @@
 
 #include "TGRSIDetectorHit.h"
+#include <TClass.h>
 
 ClassImp(TGRSIDetectorHit)
 
-TGRSIDetectorHit::TGRSIDetectorHit()	{  }
+TGRSIDetectorHit::TGRSIDetectorHit()	{ 
+   Class()->IgnoreTObjectStreamer(true);
+}
 
 TGRSIDetectorHit::~TGRSIDetectorHit()	{	}
 

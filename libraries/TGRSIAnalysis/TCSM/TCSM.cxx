@@ -25,6 +25,7 @@ ClassImp(TCSM)
 int TCSM::fCfdBuildDiff = 5;
 
 TCSM::TCSM() : data(0)	{
+   Class()->IgnoreTObjectStreamer(true);
   //InitializeSRIMInputs();	
 }
 

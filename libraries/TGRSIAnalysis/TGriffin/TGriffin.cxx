@@ -33,6 +33,7 @@ TVector3 TGriffin::gCloverPosition[17];//This seems unnecessary, and why 17?;// 
 
 TGriffin::TGriffin() : grifdata(0), bgodata(0)	{
    //Default Constructor
+   Class()->IgnoreTObjectStreamer(true);
    if(!gCloverPositionSet) {
       gCloverPositionSet = true;
       InitCloverPositions();

@@ -2,6 +2,7 @@
 #include <TMath.h>
 
 #include "TSharc.h"
+#include <TClass.h>
 
 
 ClassImp(TSharc)
@@ -25,7 +26,9 @@ ClassImp(TSharc)
 //==========================================================================//
 //==========================================================================//
 
-TSharc::TSharc() : data(0)	{	}
+TSharc::TSharc() : data(0)	{
+   Class()->IgnoreTObjectStreamer(true);
+}
 
 TSharc::~TSharc()	{
 	if(data) delete data;

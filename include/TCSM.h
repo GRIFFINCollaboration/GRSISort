@@ -49,7 +49,7 @@ class TCSM :  public TGRSIDetector 	{
       void FillData(TFragment*,TChannel*,MNEMONIC*);
 
 	private: 
-		TCSMData *data;
+		TCSMData *data;                             //!
 		std::vector <TCSMHit> csm_hits;
 
 		//int CombineHits(TCSMHit*,TCSMHit*,int,int);				//!

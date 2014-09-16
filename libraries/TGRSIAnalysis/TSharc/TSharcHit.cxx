@@ -1,9 +1,11 @@
 
 #include "TSharcHit.h"
+#include <TClass.h>
 
 ClassImp(TSharcHit)
 
 TSharcHit::TSharcHit()	{	
+   Class()->IgnoreTObjectStreamer(true);
 	Clear();
 }
 
