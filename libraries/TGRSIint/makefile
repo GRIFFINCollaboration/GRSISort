@@ -4,6 +4,10 @@ OBJECTS = TGRSIint.o TGRSIintDict.o TGRSIOptions.o TGRSIOptionsDict.o
 CFLAGS += -fPIC
 
 
+ifeq ($(PLATFORM),Darwin)
+export __APPLE__ = 1
+endif
+
 #COMP_STRING="Now Compling "
 DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
 
