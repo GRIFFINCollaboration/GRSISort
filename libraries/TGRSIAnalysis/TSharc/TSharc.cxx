@@ -100,12 +100,12 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
          hit.SetDeltaFrontE(sdata->GetFront_Energy(i));
          hit.SetDeltaFrontT(sdata->GetFront_Time(i));
          hit.SetFrontCharge(sdata->GetFront_Charge(i));
-         hit.SetFrontChanId(sdata->GetFront_ChannelId(i));
+         hit.SetFrontAddress(sdata->GetFront_ChannelAddress(i));
 
          hit.SetDeltaBackE(sdata->GetBack_Energy(j));
          hit.SetDeltaBackT(sdata->GetBack_Time(j));
          hit.SetBackCharge(sdata->GetBack_Charge(j));
-         hit.SetBackChanId(sdata->GetBack_ChannelId(j));
+         hit.SetBackAddress(sdata->GetBack_ChannelAddress(j));
 
 			hit.SetFrontStrip(sdata->GetFront_StripNbr(i));
 			hit.SetBackStrip(sdata->GetBack_StripNbr(j));
@@ -129,6 +129,7 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
       for(int l=0;l<sharc_hits.size();l++)	{
          if(sdata->GetPAD_DetectorNbr(k) != sharc_hits.at(l).GetDetectorNumber())
 		      continue;
+			sharc_hits.at(l).SetPadAddress(sdata->GetPAD_ChannelAddress(k)); 
 			sharc_hits.at(l).SetPadE(sdata->GetPAD_Energy(k)); 
 			sharc_hits.at(l).SetPadT(sdata->GetPAD_Time(k)); 
 			sharc_hits.at(l).SetPadCharge(sdata->GetPAD_Charge(k)); 

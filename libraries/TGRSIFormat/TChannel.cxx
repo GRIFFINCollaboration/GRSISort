@@ -32,7 +32,7 @@ TChannel *TChannel::gChannel = new TChannel;
 std::map<int,TChannel*> *TChannel::fChannelMap = new std::map<int,TChannel*>;
 std::map<int,TChannel*> *TChannel::fChannelNumberMap = new std::map<int,TChannel*>;
 
-TChannel::TChannel() {}  //default constructor need to write to root file.
+TChannel::TChannel() { Clear(); }  //default constructor need to write to root file.
 
 TChannel::~TChannel(){}
 
@@ -259,14 +259,14 @@ void TChannel::DestroyCalibrations()   {
 };
 
 double TChannel::CalibrateENG(int charge) {
-   return CalibrateENG((double)charge + gRandom->Uniform());
+   return CalibrateENG((double)charge) + gRandom->Uniform();
 };
 
 double TChannel::CalibrateENG(double charge) {
    if(ENGCoefficients.size()==0)
       return charge;
 
-   double temp_int = 125.0;
+   double temp_int = 1.0; //125.0;
    if(integration != 0)
       temp_int = (double)integration;  //the 4 is the dis. 
 

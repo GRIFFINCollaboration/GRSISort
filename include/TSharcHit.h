@@ -24,12 +24,12 @@ class TSharcHit : public TGRSIDetectorHit 	{
 	private:
 
 		UShort_t		front_strip;	  //
-		UShort_t		front_channelId; //   Should be Address.
+		Int_t	    	front_address; //   Should be Address.
 		Int_t			front_charge;	  //	
 		//double 	front_cfd;		  //	
 		
 		UShort_t		back_strip;		  //
-		UShort_t		back_channelId;  //   Should be Address.
+		Int_t	   	back_address;  //   Should be Address.
 		Int_t			back_charge;	  //
 		//double			back_cfd;	  // 		
 
@@ -44,7 +44,7 @@ class TSharcHit : public TGRSIDetectorHit 	{
 
   		Double_t		p_energy;	//			pad only;
  		Double_t		p_time;		//			pad only;
-		UShort_t    p_channelId;
+		Int_t       p_address;  //
  		//Double_t		p_cfd;		//
 
 		//Double_t		energy;		//
@@ -68,10 +68,12 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		inline Double_t GetDeltaBackE()	{	return d_energy_back;	};	//!
 		inline Double_t GetDeltaBackT()	{	return d_time_back;		};	//!
 
+      inline Int_t GetFrontAddress()   {  return front_address; } //!
+      inline Int_t GetBackAddress()   {  return back_address; } //!
+      inline Int_t GetPadAddress()   {  return p_address; } //!
+
 		inline Double_t GetPadE()		{	return p_energy;	};	//!
 		inline Double_t GetPadT()		{	return p_time;		};	//!
-
-		inline UShort_t GetPadId()		{	return p_channelId;} //!
 
 		inline Int_t GetDetectorNumber()	{ return detectornumber;	} //!
 		//std::pair<int,int>	GetPixel()	{ return std::make_pair(front_strip,back_strip);	}	//!
@@ -85,9 +87,6 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		inline UShort_t GetFrontStrip()	{	return	front_strip;	}	//!
 		inline UShort_t GetBackStrip()	{	return	back_strip;		}	//!
 
-		inline UShort_t GetFrontChanId()	{	return	front_channelId;	}	//!
-		inline UShort_t GetBackChanId()	{	return	back_channelId;	}	//!
-		
 		inline Double_t GetEnergy() {	return (p_energy>0) ? (p_energy + d_energy_front) : d_energy_front ;}
 		inline Double_t GetTime()	 {	return d_time_front; }
 			
@@ -105,8 +104,6 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		inline void SetPadE(const Double_t &tenergy)		{	p_energy = tenergy;	}	//!
 		inline void SetPadT(const Double_t &ttime)		{	p_time = ttime;	}		//!
 
-		inline void SetPadId(const UShort_t &id)			{  p_channelId = id; }     //!
-
 		//void SetFrontCFD(const double &cfd)		{	front_cfd = cfd;	} //!
 		//void SetBackCFD(const double &cfd)		{	back_cfd = cfd;		} //!
 
@@ -119,11 +116,14 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		inline void SetBackCharge(const Int_t &charge)	{ back_charge = charge;}	//!
 		inline void SetPadCharge(const Int_t &charge)	{ pad_charge = charge;}		//!
 
+
+      inline void SetFrontAddress(const Int_t &tmp) {front_address = tmp; } //!
+      inline void SetBackAddress(const Int_t &tmp)  {back_address  = tmp; } //!
+      inline void SetPadAddress(const Int_t &tmp)   {p_address     = tmp; } //!
+
+
 		//inline void SetEnergy(const Double_t &tenergy)	{	energy = tenergy; }
 		//inline void SetTime(const Double_t &ttime)	{	time = ttime; }
-
-		inline void SetFrontChanId(const UShort_t &chan)	{	front_channelId = chan;	} //!
-		inline void SetBackChanId(const UShort_t &chan)		{	back_channelId = chan;		} //!
 
 		inline void SetFrontStrip(const UShort_t &strip)	{	front_strip = strip; } //!
 		inline void SetBackStrip(const UShort_t &strip)		{	back_strip = strip; } //!
@@ -132,7 +132,7 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		//void SetBackWave(std::vector<int> &wave)	{ back_strip_wave = wave;	} 
 		//void SetPadWave(std::vector<int> &wave)	{ pad_wave = wave;	} 
 		
-	ClassDef(TSharcHit,3)
+	ClassDef(TSharcHit,4)
 };
 
 
