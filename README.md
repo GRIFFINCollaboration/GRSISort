@@ -60,5 +60,5 @@ Utilities, such as analysis scripts, asre kept in the **util** directory. Below 
   * **auto_eff.C**, Reads in a root file and calculates the efficiency of each HPGe Crystal based on a specfic source and activity
 
 
-More to follow.....
+More to follow....
 
