@@ -1,4 +1,4 @@
-SUBDIRS = src libraries
+SUBDIRS = src libraries 
 ALLDIRS = $(SUBDIRS)
 
 PLATFORM = $(shell uname)
@@ -32,7 +32,7 @@ export OK_STRING="[OK]"
 export ERROR_STRING="[ERROR]"
 export WARN_STRING="[WARNING]"
 export COMP_STRING="Now Compiling "
-export FIN_STRING="Finished Compiling "
+export FIN_STRING="Finished Building "
 
 export COM_COLOR=\033[0;34m
 export OBJ_COLOR=\033[0;36m

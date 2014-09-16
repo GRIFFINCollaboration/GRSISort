@@ -2,11 +2,20 @@
 
 ClassImp(TBetaDecay);
 
+/////////////////////////////////////////////////////////////////
+//
+// TBetaDecay
+//
+// This class contains information about beta decays to be used
+// in analyses.
+//
+//////////////////////////////////////////////////////////////////
+
 
 TBetaDecay::TBetaDecay(){}
 
 TBetaDecay::TBetaDecay(TNucleus *parent):fparent(parent){
-
+   fparent_allocated = false;
 
 }
 

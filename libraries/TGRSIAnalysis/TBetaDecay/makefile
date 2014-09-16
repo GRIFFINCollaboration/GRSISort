@@ -1,5 +1,5 @@
 
-OBJECTS = TBetaDecay.o TBetaDecayDict.o 
+OBJECTS = TBetaDecay.o TBetaDecayDict.o TEnergyLevel.o TEnergyLevelDict.o TTransition.o TTransitionDict.o
 
 CFLAGS += -fPIC
 

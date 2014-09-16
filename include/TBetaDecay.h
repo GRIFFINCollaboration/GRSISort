@@ -21,10 +21,10 @@ public:
 
 private:
 
-  Bool_t fparent_allocated; //= false;
-  TNucleus *fparent; //       = NULL; //The parent nucleus beta decaying
+  Bool_t fparent_allocated; //true if TNucleus was instantiated in TBetaDecay
+  TNucleus *fparent;        //The parent nucleus beta decaying
 
-  ClassDef(TBetaDecay,1); //Information about beta decays
+  ClassDef(TBetaDecay,1);   //Information about beta decays
  
 };
 #endif
