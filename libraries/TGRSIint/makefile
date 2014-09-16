@@ -19,7 +19,7 @@ all: libTGRSIint.so
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
 
 
-#ifndef __APPLE__
+#ifdef __LINUX__
 WORDS = words.o
 #endif
 
