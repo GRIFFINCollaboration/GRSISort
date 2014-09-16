@@ -13,7 +13,7 @@ ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 export CFLAGS += -DOS_DARWIN -std=c++11 -DHAVE_ZLIB #-lz
 export CFLAGS += -m64 -I$(ROOTSYS)/include
-export LFLAGS = -dynamiclib -single_module -undefined dynamic_lookup 
+export LFLAGS = -dynamiclib # -single_module -undefined dynamic_lookup 
 export SHAREDSWITCH = -install_name # ENDING SPACE
 export CPP = xcrun clang++ 
 else
