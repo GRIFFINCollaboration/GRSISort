@@ -21,7 +21,7 @@ TBetaDecay::TBetaDecay(Int_t Z, Int_t N){
   
    fparent_allocated = true;
    TNucleus *fparent = new TNucleus(Z,N);
-
+ 
 }
 
 TBetaDecay::~TBetaDecay(){

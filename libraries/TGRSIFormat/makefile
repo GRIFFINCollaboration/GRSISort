@@ -11,6 +11,8 @@ CAT=cat
 .PHONY: all clean gone
 
 all: libGRSIFormat.so
+	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
+
 
 INCLUDES = UserInitObj.h UserFillObj.h
 
