@@ -21,8 +21,8 @@ class TDataParser { //: public TObject {
   public:
     ~TDataParser();
     static TDataParser *instance();
-    static bool SetNoWaveForms(bool temp = true) {no_waveforms = temp;}
-    static bool SetRecordStats(bool temp = true) {record_stats = temp;}      
+    static void SetNoWaveForms(bool temp = true) {no_waveforms = temp;}
+    static void SetRecordStats(bool temp = true) {record_stats = temp;}      
 
   private:
     static const unsigned long fgMaxTriggerId; //The last trigger ID Called
