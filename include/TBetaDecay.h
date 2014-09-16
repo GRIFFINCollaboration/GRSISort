@@ -17,12 +17,12 @@ public:
   ~TBetaDecay();
 
 public:
-  TNucleus *GetParent() const {return fparent;}
+  TNucleus *GetParent() const {return fparent;} 
 
 private:
 
-  Bool_t fparent_allocated = false;
-  TNucleus *fparent = NULL; //The parent nucleus beta decaying
+  Bool_t fparent_allocated; //= false;
+  TNucleus *fparent; //       = NULL; //The parent nucleus beta decaying
  
 
 

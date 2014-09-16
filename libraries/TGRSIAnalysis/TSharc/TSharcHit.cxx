@@ -28,10 +28,10 @@ void TSharcHit::Clear(Option_t *options)	{
 	p_energy			=	0;	//          pad only;
 	p_time			=	0;	//          pad only;
 	//p_cfd				=	0;	//
-	p_channelId    =  0;
+	p_address      = 0xffffffff;
 
-	front_channelId = 0;
-	back_channelId  = 0;
+	front_address  = 0xffffffff;
+	back_address   = 0xffffffff;
 
 	detectornumber	=	0;	//
 	position.SetXYZ(0,0,1); // 

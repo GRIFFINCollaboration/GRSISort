@@ -31,7 +31,7 @@ void TSharcData::Clear(Option_t *opt)
  	fIsSet = false;
 
   fSharc_StripFront_DetectorNbr.clear();
-  fSharc_StripFront_ChannelId.clear();
+  fSharc_StripFront_ChannelAddress.clear();
   fSharc_StripFront_StripNbr.clear();
   fSharc_StripFront_Energy.clear();
   fSharc_StripFront_EngChi2.clear();
@@ -44,7 +44,7 @@ void TSharcData::Clear(Option_t *opt)
 
 
   fSharc_StripBack_DetectorNbr.clear();
-  fSharc_StripBack_ChannelId.clear();
+  fSharc_StripBack_ChannelAddress.clear();
   fSharc_StripBack_StripNbr.clear();
   fSharc_StripBack_Energy.clear();
   fSharc_StripBack_EngChi2.clear();
@@ -55,7 +55,7 @@ void TSharcData::Clear(Option_t *opt)
 
   fSharc_StripBack_Wave.clear();
 
-
+  fSharc_PAD_ChannelAddress.clear();
   fSharc_PAD_DetectorNbr.clear();
   fSharc_PAD_Energy.clear();
   fSharc_PAD_Charge.clear();
