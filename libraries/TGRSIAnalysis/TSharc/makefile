@@ -10,6 +10,8 @@ CAT=cat
 
 .PHONY: all clean gone
 
+
+
 all: libSharc.so
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
 
@@ -28,6 +30,7 @@ libSharc.so: $(OBJECTS)
 		fi;
 	@$(RM) -f temp.errors temp.log
 	@cp $@ ../..
+
 
 %.o: %.cxx
 	@printf " ${COM_COLOR}%s ${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@ 

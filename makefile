@@ -1,22 +1,24 @@
-SUBDIRS = src libraries
+SUBDIRS = src libraries 
 ALLDIRS = $(SUBDIRS)
 
 PLATFORM = $(shell uname)
 
 export PLATFORM:= $(PLATFORM)
 
-export CFLAGS = -std=c++0x -O2 -I$(PWD)/include `root-config --cflags`
+export CFLAGS = -std=c++0x -O2 -I$(PWD)/include  
 
 #export GRSISYS:= $(GRSISYS)
 
 ifeq ($(PLATFORM),Darwin)
-export __APPLE__ = 1
-export CFLAGS += -DOS_DARWIN -std=c++11 -DHAVE_ZLIB -lz
-export LFLAGS = -dynamiclib -single_module -undefined dynamic_lookup 
+export __APPLE__:= 1
+export CFLAGS += -DOS_DARWIN -std=c++11 -DHAVE_ZLIB #-lz
+export CFLAGS += -m64 -I$(ROOTSYS)/include
+export LFLAGS = -dynamiclib -undefined dynamic_lookup -single_module # 
 export SHAREDSWITCH = -install_name # ENDING SPACE
-export CPP = xcrun clang++
+export CPP = xcrun clang++ 
 else
-export __LINUX__ = 1	
+export __LINUX__:= 1	
+export CFLAGS += `root-config --cflags`
 export SHAREDSWITCH = -shared -Wl,-soname,#NO ENDING SPACE
 export CPP = g++
 endif
@@ -30,7 +32,7 @@ export OK_STRING="[OK]"
 export ERROR_STRING="[ERROR]"
 export WARN_STRING="[WARNING]"
 export COMP_STRING="Now Compiling "
-export FIN_STRING="Finished Compiling "
+export FIN_STRING="Finished Building "
 
 export COM_COLOR=\033[0;34m
 export OBJ_COLOR=\033[0;36m

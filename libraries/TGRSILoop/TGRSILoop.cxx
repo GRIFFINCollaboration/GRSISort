@@ -162,7 +162,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
                fMidasEvent.Print();
                printf( RESET_COLOR );
                BeginRun(0,0,0);
-	            SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
+
                std::string incalfile;
                incalfile.assign(TGRSIOptions::GetXMLODBFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()));
                if(incalfile.length()>0) {
@@ -171,9 +171,15 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 						int length = inputxml.tellg(); inputxml.seekg(0,std::ios::beg);
 						char buffer[length]; inputxml.read(buffer,length);
 						SetFileOdb(buffer,length);
+<<<<<<< HEAD
                   TGRSIRunInfo::SetXMLODBFileName(incalfile.c_str());
                   TGRSIRunInfo::SetXMLODBFileData(buffer);
                }
+=======
+               } else {
+	            	SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
+					}
+>>>>>>> 29d379556f6cdae839f7d7e39bc893ecfd92bec7
                incalfile.clear();
 					incalfile.assign(TGRSIOptions::GetCalFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()));
 					if(incalfile.length()>0) {
@@ -384,7 +390,7 @@ void TGRSILoop::SetTIGOdb()  {
       tempchan->SetUserInfoNumber(x);
       tempchan->AddENGCoefficient(offsets.at(x));
       tempchan->AddENGCoefficient(gains.at(x));
-      //tempchan->Print();
+
       TChannel::UpdateChannel(tempchan);
       //TChannel *temp2 = TChannel::GetChannel(address.at(x));
       //temp2->Print();

@@ -70,7 +70,8 @@ void TChannel::DeleteAllChannels() {
 //Safely deletes fChannelMap
    std::map < int, TChannel * >::iterator iter;
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
-      delete iter->second;
+		if(iter->second && (iter->second!=gChannel))
+	      delete iter->second;
       iter->second = 0;
    }
    fChannelMap->clear();
@@ -87,7 +88,7 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
 //        "save"      -  The temporary channel is not deleted after being placed in the map. 
     if(!chan)
         return;
-    if(fChannelMap->count(chan->GetAddress())==1) {
+   if(fChannelMap->count(chan->GetAddress())==1) {
 	if(strcmp(opt,"overwrite")==0) {
 	    delete fChannelMap->at(chan->GetAddress());
 	    fChannelMap->at(chan->GetAddress()) = new TChannel(*chan);	

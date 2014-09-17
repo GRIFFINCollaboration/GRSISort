@@ -139,19 +139,19 @@ Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nChain, Dou
    return totalActivity;
 }
 
-Double_t DeadTimeCorrect(Double_t *dim, Double_t deadtime,Double_t binWidth){
+Double_t TGRSIFunctions::DeadTimeCorrect(Double_t *dim, Double_t deadtime, Double_t binWidth){
 //This function deadtime corrects data. Not to be confused with dead time affecting of fit functions
 //Dead time is in us.
 //binWidth is in s/bin.
 
-   return dim[0]/(1.0-dim[0]*deadtime/(binWidth*1000000.0));
+   return dim[0]/(1.0 - dim[0]*deadtime/(binWidth*1000000.0));
 } 
 
-Double_t DeadTimeAffect(Double_t function, Double_t deadtime, Double_t binWidth){
+Double_t TGRSIFunctions::DeadTimeAffect(Double_t function, Double_t deadtime, Double_t binWidth){
 //This function deadtime affects fitting functions. This is useful for counting the number of decays.
 //Dead time is in us.
 //binWidth is in s/bin.
 
-   return function/(1.0+function*deadtime/(binWidth*1000000.0));
+   return function/( 1.0 + function*deadtime/(binWidth*1000000.0));
 
 }
