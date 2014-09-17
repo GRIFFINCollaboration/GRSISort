@@ -74,7 +74,6 @@ class TGRSIRunInfo : public TObject {
       
       static void SetInfoFromFile(TGRSIRunInfo *temp);
 
-
       static void SetRunInfo(int runnum=0,int subrunnum=-1);
       static void SetAnalysisTreeBranches(TTree*);
 
@@ -105,6 +104,20 @@ class TGRSIRunInfo : public TObject {
       static inline void SetDante(bool flag = true)       { fGRSIRunInfo->fDante = flag; }
       static inline void SetZeroDegree(bool flag = true)  { fGRSIRunInfo->fZeroDegree = flag; }
       static inline void SetDescant(bool flag = true)     { fGRSIRunInfo->fDescant = flag; }
+
+      static inline void SetCalFileName(const char *name) { fGRSIRunInfo->fCalFileName.assign(name); }
+      static inline void SetCalFileData(const char *data) { fGRSIRunInfo->fCalFile.assign(data); }
+
+      static inline void SetXMLODBFileName(const char *name) { fGRSIRunInfo->fXMLODBFileName.assign(name); }
+      static inline void SetXMLODBFileData(const char *data) { fGRSIRunInfo->fXMLODBFile.assign(data); }
+
+      static const char* GetCalFileName() { return fGRSIRunInfo->fCalFileName.c_str(); } 
+      static const char* GetCalFileData() { return fGRSIRunInfo->fCalFile.c_str(); }
+
+      static const char* GetXMLODBFileName() { return fGRSIRunInfo->fXMLODBFileName.c_str(); }
+      static const char* GetXMLODBFileData() { return fGRSIRunInfo->fXMLODBFile.c_str(); }
+
+
 
       static inline int  GetNumberOfSystems() { return fGRSIRunInfo->fNumberOfTrueSystems; }
 
@@ -167,6 +180,12 @@ class TGRSIRunInfo : public TObject {
       bool fZeroDegree;
       bool fDescant;
 
+      std::string fCalFileName;
+      std::string fCalFile;
+
+      std::string fXMLODBFileName;
+      std::string fXMLODBFile;
+
       std::string fMajorIndex;  
       std::string fMinorIndex;  
 
@@ -174,7 +193,7 @@ class TGRSIRunInfo : public TObject {
       void Print(Option_t *opt = "");
       void Clear(Option_t *opt = "");
 
-   ClassDef(TGRSIRunInfo,1);
+   ClassDef(TGRSIRunInfo,2);
 };
 
 #endif
