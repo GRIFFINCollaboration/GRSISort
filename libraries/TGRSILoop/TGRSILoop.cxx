@@ -171,16 +171,20 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 						int length = inputxml.tellg(); inputxml.seekg(0,std::ios::beg);
 						char buffer[length]; inputxml.read(buffer,length);
 						SetFileOdb(buffer,length);
+                  TGRSIRunInfo::SetXMLODBFileName(incalfile.c_str());
+                  TGRSIRunInfo::SetXMLODBFileData(buffer);
                }
                incalfile.clear();
 					incalfile.assign(TGRSIOptions::GetCalFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()));
 					if(incalfile.length()>0) {
 						TChannel::ReadCalFile(incalfile.c_str());
-					}
-               
-
-
-              TGRSIRunInfo::SetRunInfo(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
+                  TGRSIRunInfo::SetXMLODBFileName(incalfile.c_str());
+						std::ifstream inputcal; inputcal.open(incalfile.c_str()); inputcal.seekg(0,std::ios::end);
+						int length = inputcal.tellg(); inputcal.seekg(0,std::ios::beg);
+						char buffer[length]; inputcal.read(buffer,length);
+                  TGRSIRunInfo::SetXMLODBFileData(buffer);
+               }
+               TGRSIRunInfo::SetRunInfo(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
             }
             break;
          case 0x8001:
