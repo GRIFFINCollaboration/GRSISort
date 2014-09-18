@@ -89,13 +89,13 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
     if(!chan)
         return;
    if(fChannelMap->count(chan->GetAddress())==1) {
-	if(strcmp(opt,"overwrite")==0) {
-	    delete fChannelMap->at(chan->GetAddress());
-	    fChannelMap->at(chan->GetAddress()) = new TChannel(*chan);	
-	} 
-        else {
-	    printf("Trying to add a channel that already exists!\n");
-	}	
+	   if(strcmp(opt,"overwrite")==0) {
+	      delete fChannelMap->at(chan->GetAddress());
+	      fChannelMap->at(chan->GetAddress()) = new TChannel(*chan);	
+	   } 
+      else {
+	      printf("Trying to add a channel that already exists!\n");
+	   }	
     } 
     else {
    TChannel *newchan = new TChannel(chan);
@@ -156,8 +156,8 @@ int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
 	oldchan->SetTIMEChi2(chan->GetTIMEChi2());
 
 	//oldchan->Print();
-	AddChannel(oldchan,"overwrite");  //this breaks things badly if the "updated"
-												 //channel lalready exists.  logic flaw; fix me.  pcb.
+	AddChannel(oldchan,"overwrite");  //  I think this works now...
+												 // pcb.
 
     if(!strcmp(opt,"save") && chan!=gChannel)
 		delete chan;
@@ -435,7 +435,7 @@ void TChannel::ReadCalFile(const char *filename) {
 			closebrace == std::string::npos &&
 			semicolon  == std::string::npos)
 			continue;
-		printf("line : %s\n",line.c_str());
+		//printf("line : %s\n",line.c_str());
 
       //*************************************//
       if (closebrace != std::string::npos) {
