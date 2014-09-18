@@ -102,7 +102,7 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
         return;
    if(fChannelMap->count(chan->GetAddress())==1) {
 	   if(strcmp(opt,"overwrite")==0) {
-	      delete fChannelMap->at(chan->GetAddress());
+//	      delete fChannelMap->at(chan->GetAddress());
 	      fChannelMap->at(chan->GetAddress()) = new TChannel(*chan);	
 	   } 
       else {
