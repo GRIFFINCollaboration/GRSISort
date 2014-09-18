@@ -5,8 +5,9 @@
 #include<fcntl.h>
 #include<unistd.h>
 
+#include <vector>
 #include <sstream>
-
+#include <algorithm>
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
  * 
@@ -26,6 +27,7 @@
 //////////////////////////////////////////////////////////////
 
 ClassImp(TChannel)
+
 
 TChannel *TChannel::gChannel = new TChannel;
 
@@ -64,6 +66,13 @@ TChannel::TChannel(TChannel *chan) {
     this->SetCFDChi2(chan->GetCFDChi2());
     this->SetLEDChi2(chan->GetLEDChi2());
     this->SetTIMEChi2(chan->GetTIMEChi2());
+}
+
+
+bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
+   std::string namea; namea.assign(((TChannel)chana).GetChannelName());
+   if(namea.compare(0,10,((TChannel)chanb).GetChannelName()) <= 0) return true;
+   else return false;
 }
 
 void TChannel::DeleteAllChannels() {
@@ -356,12 +365,19 @@ void TChannel::WriteCalFile(std::string outfilename) {
    //name.  This will earse and rewrite the file if the file already exisits!
 
    std::map < int, TChannel * >::iterator iter;
+   std::vector<TChannel> chanVec;
+   std::vector<TChannel>::iterator iter_vec;
+   for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
+      chanVec.push_back(*iter->second);
+   }
+   std::sort(chanVec.begin(),chanVec.end(),TChannel::Compare);
+
    FILE *c_outputfile;
    if(outfilename.length()>0) {
       c_outputfile = freopen (outfilename.c_str(),"w",stdout);
    }
-   for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
-      iter->second->Print();
+   for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+      iter_vec->Print();
    }
    if(outfilename.length()>0) {
       fclose(c_outputfile);

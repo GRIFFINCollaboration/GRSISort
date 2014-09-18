@@ -60,6 +60,8 @@ class TChannel : public TNamed	{
     static std::map<int,TChannel*> *GetChannelMap() { return fChannelMap; }
     static void DeleteAllChannels();
 
+    static bool Compare(const TChannel&,const TChannel&);
+
   private:
     static TChannel *gChannel;                            //The Global Channel address. Holds the last channel read. 
 
