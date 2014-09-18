@@ -98,7 +98,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
       SetSubRunNumber(subrunnum);
 
    int counter = 0;
-   std::map<int,TChannel*>::iterator iter; 
+   std::map<unsigned int,TChannel*>::iterator iter; 
    
    for(iter = TChannel::GetChannelMap()->begin();iter != TChannel::GetChannelMap()->end(); iter++) {
       std::string channelname = iter->second->GetChannelName();

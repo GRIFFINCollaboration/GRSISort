@@ -86,7 +86,7 @@ void TGRSIRootIO::FinalizeFragmentTree() {
    //while(TChannel *chan = (TChannel*)iter->Next()) {
    //   list->Add(chan);
    //}
-   std::map < int, TChannel * >::iterator iter;
+   std::map < unsigned int, TChannel * >::iterator iter;
 	for(iter=TChannel::GetChannelMap()->begin();iter!=TChannel::GetChannelMap()->end();iter++) {
 		TChannel *chan = new TChannel(iter->second);
 		//TChannel::CopyChannel(chan,iter->second);

@@ -116,7 +116,7 @@ void TAnalysisTreeBuilder::InitChannels() {
       return;
 
    TChannel::DeleteAllChannels(); 
-   TList *list = fCurrentFragTree->GetUserInfo();
+   /*TList *list = fCurrentFragTree->GetUserInfo();
    TIter iter(list);
    while(TObject *obj = iter.Next()) {
       if(!obj->InheritsFrom("TChannel"))
@@ -126,7 +126,9 @@ void TAnalysisTreeBuilder::InitChannels() {
       chan->SetNumber(number);
       TChannel::AddChannel(chan,"save");
       //chan->Print();
-   }
+   }*/
+	TChannel::ReadCalFromTree(fCurrentFragTree);
+
    if(!TGRSIOptions::GetInputCal().empty()) {
       TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(0).c_str());
    }
@@ -218,13 +220,14 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
 
 void TAnalysisTreeBuilder::SetupFragmentTree() {
 
-   InitChannels();
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
    if(fCurrentRunInfo) {
       TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
       fCurrentRunInfo->Print();
    }
+
+   InitChannels();
 
    if(!fCurrentFragTree->GetTreeIndex()) {
       if(fCurrentRunInfo->MajorIndex().length()>0) {

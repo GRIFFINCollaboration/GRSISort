@@ -23,9 +23,6 @@
 
 
 
-
-
-
 #include<string>
 #include<cmath>
 #include<utility>
@@ -43,7 +40,7 @@ class TChannel : public TNamed	{
 
   public:
     //static TChannel *GetChannel(int temp_address);   
-    static TChannel *GetChannel(int temp_address); 
+    static TChannel *GetChannel(unsigned int temp_address); 
     // static TChannel *GetChannelByNumber(int temp_numebr);
     static TChannel *GetChannelByNumber(int temp_numebr);
 
@@ -57,15 +54,13 @@ class TChannel : public TNamed	{
     static void AddChannel(TChannel*,Option_t *opt="");
     static int  UpdateChannel(TChannel*,Option_t *opt="");
 
-    static std::map<int,TChannel*> *GetChannelMap() { return fChannelMap; }
+    static std::map<unsigned int,TChannel*> *GetChannelMap() { return fChannelMap; }
     static void DeleteAllChannels();
 
     static bool Compare(const TChannel&,const TChannel&);
 
   private:
-    static TChannel *gChannel;                            //The Global Channel address. Holds the last channel read. 
-
-    int	         address;                                 //The address of the digitizer
+    unsigned int	   address;                                 //The address of the digitizer
     int		 integration;                             //The charge integration setting
     std::string  channelname;                             
     std::string  type_name;
@@ -80,30 +75,32 @@ class TChannel : public TNamed	{
     std::vector<double> TIMECoefficients; double TIMEChi2;
 
     //static TList *fChannelList;
-    static std::map<int,TChannel*> *fChannelMap;          //A map to all of the channels based on address
+    static std::map<unsigned int,TChannel*> *fChannelMap;          //A map to all of the channels based on address
     static std::map<int,TChannel*> *fChannelNumberMap;
     static void UpdateChannelNumberMap();
+	 void OverWriteChannel(TChannel*);
+	 void AppendChannel(TChannel*);
 
     void SetENGCoefficients(std::vector<double> tmp) { ENGCoefficients = tmp; }
     void SetCFDCoefficients(std::vector<double> tmp) { CFDCoefficients = tmp; }
     void SetLEDCoefficients(std::vector<double> tmp) { LEDCoefficients = tmp; }
     void SetTIMECoefficients(std::vector<double> tmp){ TIMECoefficients = tmp; }
-
+	
 		static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 
   public:
-    inline void SetAddress(int tmpadd) 		     {address = tmpadd;}
+    inline void SetAddress(unsigned int tmpadd) 	  {address = tmpadd;}
     inline void SetChannelName(const char *tmpname)  {channelname.assign(tmpname);} 
-    inline void SetNumber(int tmpnum)	             {number = tmpnum;}
-    inline void SetIntegration(int tmpint)	     {integration = tmpint;}
-    inline void SetStream(int tmpstream)	     {stream = tmpstream;}
+    inline void SetNumber(int tmpnum)	              {number = tmpnum;}
+    inline void SetIntegration(int tmpint)	        {integration = tmpint;}
+    inline void SetStream(int tmpstream)	           {stream = tmpstream;}
     inline void SetUserInfoNumber(int tempinfo)      {userinfonumber = tempinfo;}
     inline void SetDigitizerType(const char *tmpstr) {digitizertype.assign(tmpstr);}
     inline void SetTypeName(std::string tmpstr)      {type_name = tmpstr;}
    
 
-    int	GetNumber()		   { return number;  }
-    int	GetAddress()               { return address; }
+    int	GetNumber()		           { return number;  }
+    unsigned int	GetAddress()     { return address; }
     int GetIntegration()           { return integration; }
     int GetStream()                { return stream; }
     int GetUserInfoNumber()        { return userinfonumber;}
@@ -151,7 +148,7 @@ class TChannel : public TNamed	{
     void DestroyLEDCal();
     void DestroyTIMECal();
 
-    static void ReadCalFromTree(TTree*);
+    static void ReadCalFromTree(TTree*,Option_t *opt="overwrite");
     static void ReadCalFile(const char *filename = "");
     static void WriteCalFile(std::string outfilename = "");
 

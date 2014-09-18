@@ -12,7 +12,7 @@
 #include <TObject.h> 
 #include <TRandom.h>
 #include <Rtypes.h>
-
+#include <TMath.h>
 #include <TGRSIDetectorHit.h>
 
 
@@ -94,6 +94,8 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		//inline Double_t GetBackCFD()		{	return back_cfd;	}	//!
 
 		TVector3 GetPosition()	{	return position;	}	//!
+		inline Double_t GetThetaDeg() {return position.Theta()*TMath::RadToDeg(); } //!
+		inline Double_t GetThetaRad() {return position.Theta(); } //!
 
 		inline void SetDeltaFrontE(const Double_t &tenergy)	{	d_energy_front = tenergy;	}	//!
 		inline void SetDeltaFrontT(const Double_t &ttime)		{	d_time_front   = ttime;	}		//!
