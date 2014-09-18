@@ -70,8 +70,11 @@ TChannel::TChannel(TChannel *chan) {
 
 
 bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
+	//printf("here 1.1\n");
    std::string namea; namea.assign(((TChannel)chana).GetChannelName());
-   if(namea.compare(0,10,((TChannel)chanb).GetChannelName()) <= 0) return true;
+	//printf("here 1.2\n");
+	
+   if(namea.compare(((TChannel)chanb).GetChannelName()) <= 0) return true;
    else return false;
 }
 
@@ -99,7 +102,7 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
         return;
    if(fChannelMap->count(chan->GetAddress())==1) {
 	   if(strcmp(opt,"overwrite")==0) {
-	      delete fChannelMap->at(chan->GetAddress());
+//	      delete fChannelMap->at(chan->GetAddress());
 	      fChannelMap->at(chan->GetAddress()) = new TChannel(*chan);	
 	   } 
       else {
@@ -168,6 +171,7 @@ int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
 	AddChannel(oldchan,"overwrite");  //  I think this works now...
 												 // pcb.
 
+	
     if(!strcmp(opt,"save") && chan!=gChannel)
 		delete chan;
 
@@ -368,9 +372,13 @@ void TChannel::WriteCalFile(std::string outfilename) {
    std::vector<TChannel> chanVec;
    std::vector<TChannel>::iterator iter_vec;
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
-      chanVec.push_back(*iter->second);
+		if(iter->second)
+	      chanVec.push_back(*iter->second);
    }
+
+//printf("here 1\n");
    std::sort(chanVec.begin(),chanVec.end(),TChannel::Compare);
+//printf("here 2\n");
 
    FILE *c_outputfile;
    if(outfilename.length()>0) {
