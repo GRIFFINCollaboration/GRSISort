@@ -128,7 +128,9 @@ void TAnalysisTreeBuilder::InitChannels() {
       //chan->Print();
    }
    if(!TGRSIOptions::GetInputCal().empty()) {
-      TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(0).c_str());
+      for(int x = 0;x<TGRSIOptions::GetInputCal().size();x++) {
+         TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(x).c_str());
+      }
    }
    printf("AnalysisTreeBuilder:  read in %i TChannels.\n", TChannel::GetNumberOfChannels());
 }  
