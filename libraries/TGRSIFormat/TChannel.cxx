@@ -98,14 +98,14 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
 	}	
     } 
     else {
-   TChannel *newchan = new TChannel(*chan);
+   TChannel *newchan = new TChannel(chan);
 	fChannelMap->insert(std::make_pair(newchan->GetAddress(),newchan));
 	if(newchan->GetNumber() != 0 && fChannelNumberMap->count(newchan->GetNumber())==0)
 	    fChannelNumberMap->insert(std::make_pair(newchan->GetNumber(),newchan));
     }
     // chan should now be deleted.
     if(strcmp(opt,"save") !=0 && chan != gChannel)
-	 delete chan;
+	 	delete chan;
 
     return;
 }
@@ -122,9 +122,10 @@ int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
 //    }
 //   oldchan->Print();
 
+	//chan->Print();
 
-    if(chan->GetIntegration()!=0)
-	oldchan->SetIntegration(chan->GetIntegration());
+    if(chan->GetIntegration()!=0) 
+		oldchan->SetIntegration(chan->GetIntegration()); 
     if(chan->GetNumber()!=0)
 	oldchan->SetNumber(chan->GetNumber());
     if(chan->GetStream()!=0)
@@ -154,9 +155,11 @@ int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
     if(chan->GetTIMEChi2() != 0.0)
 	oldchan->SetTIMEChi2(chan->GetTIMEChi2());
 
+	//oldchan->Print();
+	AddChannel(oldchan,"overwrite");
 
     if(!strcmp(opt,"save") && chan!=gChannel)
-	delete chan;
+		delete chan;
 
 	return 0;
 }
@@ -193,7 +196,7 @@ TChannel *TChannel::GetChannel(int temp_address) {
     } catch(const std::out_of_range& oor) {
        chan = new TChannel;  
        chan->SetAddress(temp_address);
-       AddChannel(chan);
+       AddChannel(chan,"save");
        //gChannel->Clear();
 	    //return gChannel;
     }
