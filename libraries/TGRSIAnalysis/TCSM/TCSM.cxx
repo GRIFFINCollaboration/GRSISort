@@ -495,7 +495,6 @@ void TCSM::Print(Option_t *option)	{
 }
 
 
-// The dimensions are described for a single detector of each type UQ,UB,DB,DQ, and all other detectors can be calculated by rotating this
 TVector3 TCSM::GetPosition(int detector,char pos, int horizontalstrip, int verticalstrip, double X, double Y, double Z)	{
 
 
