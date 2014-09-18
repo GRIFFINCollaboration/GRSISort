@@ -156,7 +156,8 @@ int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
 	oldchan->SetTIMEChi2(chan->GetTIMEChi2());
 
 	//oldchan->Print();
-	AddChannel(oldchan,"overwrite");
+	AddChannel(oldchan,"overwrite");  //this breaks things badly if the "updated"
+												 //channel lalready exists.  logic flaw; fix me.  pcb.
 
     if(!strcmp(opt,"save") && chan!=gChannel)
 		delete chan;
@@ -428,6 +429,13 @@ void TChannel::ReadCalFile(const char *filename) {
          continue;
       int openbrace = line.find("{");
       int closebrace = line.find("}");
+		int semicolon = line.find(":");
+
+		if(openbrace  == std::string::npos &&
+			closebrace == std::string::npos &&
+			semicolon  == std::string::npos)
+			continue;
+		printf("line : %s\n",line.c_str());
 
       //*************************************//
       if (closebrace != std::string::npos) {
