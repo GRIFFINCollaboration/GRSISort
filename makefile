@@ -1,4 +1,4 @@
-SUBDIRS = src libraries 
+SUBDIRS = src libraries
 ALLDIRS = $(SUBDIRS)
 
 PLATFORM = $(shell uname)
@@ -48,7 +48,7 @@ MAKE=make --no-print-directory
 
 .PHONY: all subdirs $(ALLDIRS) clean
 
-all: print subdirs bin grsisort
+all: print subdirs bin html grsisort
 
 print:
 	@echo "Compiling on $(PLATFORM)"
@@ -69,12 +69,18 @@ ifeq ($(wildcard ./bin),)
 	@mkdir bin	 
 endif
 
+html:   
+	@printf " ${COM_COLOR}Building html documentation ${NO_COLOR}\n"
+	@root -b -q util/html_generator.C > testfile.dat
+
 clean:
 	@$(RM) *~
 	$(RM) ./bin/grsisort
+	$(RM) -r ./htmldoc
 	@for dir in $(ALLDIRS); do \
 		$(MAKE) -C $$dir $@; \
 	done
+
 
 
 

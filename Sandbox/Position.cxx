@@ -12,7 +12,7 @@ void Detector::SetThetaPhi(Double_t theta, Double_t phi){
   theta*=TMath::Pi()/180.0;
   phi*=TMath::Pi()/180.0;
 
-  Double_t cp = 1.9; //Crystal Center Point Might have adepth eventually
+  Double_t cp = 2.6; //Crystal Center Point Might have adepth eventually
   Double_t id = 4.5; //Interaction depth in crystal
 //Set Theta's of the center of each DETECTOR face
 //Define one Detector position
@@ -103,13 +103,13 @@ int main(){
 
    }
 
-    grifposition.SetPosition(12,Detector::kRed).Print();
-
+    grifposition.SetPosition(11,Detector::kRed).Print();
+    grifposition.SetPosition(11,Detector::kGreen).Print();
 
 
 //  grifposition.detector[4].fPosition.Print();
 //  grifposition.detector[8].fPosition.Print();
-/*
+
       std::cout << "\t";
    for(int i = 0; i<64;i++)
       std::cout << i<<"\t";   
@@ -123,7 +123,7 @@ int main(){
       }
     std::cout << std::endl;
    }
-  */
+  
 
    //Work on outputting this matrix tomorrow to file to compare against GEANT
 
