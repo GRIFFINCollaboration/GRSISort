@@ -211,9 +211,9 @@ TChannel *TChannel::GetChannel(unsigned int temp_address) {
 //Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
 
     TChannel *chan = 0;
-    if(temp_address == 0 || temp_address == 0xffffffff) {//default (NULL) address, return 0;
-	      return chan;
-    }
+//    if(temp_address == 0 || temp_address == 0xffffffff) {//default (NULL) address, return 0;
+//	      return chan;
+//    }
 	if(fChannelMap->count(temp_address)==1){// found channel
 		chan = fChannelMap->at(temp_address);
 	}
