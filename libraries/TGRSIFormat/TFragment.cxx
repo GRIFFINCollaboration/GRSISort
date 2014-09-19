@@ -56,7 +56,6 @@ void TFragment::Clear(Option_t *opt){
 
 void TFragment::Print(Option_t *opt)	{
    //Prints out all fields of the TFragment
-	printf("not written yet.\n");
 
    TChannel *chan = TChannel::GetChannel(this->ChannelAddress);
    if(chan) {

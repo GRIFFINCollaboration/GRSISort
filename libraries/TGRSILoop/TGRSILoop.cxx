@@ -280,6 +280,9 @@ void TGRSILoop::SetGRIFFOdb() {
 
    for(int x=0;x<address.size();x++) {
       TChannel *tempchan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
+		if(!tempchan) {
+			tempchan = new TChannel();		
+		}		
       tempchan->SetChannelName(names.at(x).c_str());
       tempchan->SetAddress(address.at(x));
       tempchan->SetNumber(x);
@@ -288,7 +291,8 @@ void TGRSILoop::SetGRIFFOdb() {
       tempchan->SetUserInfoNumber(x);
       tempchan->AddENGCoefficient(offsets.at(x));
       tempchan->AddENGCoefficient(gains.at(x));
-      TChannel::UpdateChannel(tempchan);
+      //TChannel::UpdateChannel(tempchan);
+      TChannel::AddChannel(tempchan,"overwrite");
    } 
    printf("\t%i tchannels created.\n",TChannel::GetNumberOfChannels());
 
@@ -368,6 +372,8 @@ void TGRSILoop::SetTIGOdb()  {
 
    for(int x=0;x<address.size();x++) {
       TChannel *tempchan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
+		if(!tempchan)
+			tempchan = new TChannel();		
       if(x<names.size()) { tempchan->SetChannelName(names.at(x).c_str()); }
 		//printf("address: 0x%08x\n",address.at(x));
       tempchan->SetAddress(address.at(x));
@@ -387,7 +393,7 @@ void TGRSILoop::SetTIGOdb()  {
       tempchan->AddENGCoefficient(offsets.at(x));
       tempchan->AddENGCoefficient(gains.at(x));
 
-      TChannel::UpdateChannel(tempchan);
+      TChannel::AddChannel(tempchan,"overwrite");
       //TChannel *temp2 = TChannel::GetChannel(address.at(x));
       //temp2->Print();
 			//printf("NumberofChannels: %i\n",TChannel::GetNumberOfChannels());
@@ -497,6 +503,8 @@ void TGRSILoop::CreateStatsLog(int runnumber, int subrunnumber) {
   for(iter = TGRSIStats::GetMap()->begin();iter!=TGRSIStats::GetMap()->end();iter++) {
 		int tmp_add = iter->second->GetAddress();
 		TChannel *chan = TChannel::GetChannel(tmp_add);
+		if(!chan)
+			continue;
 		TGRSIStats *stat = iter->second;
 		statsout << "0x"<< std::hex <<  stat->GetAddress() << std::dec  << "\t" <<  chan->GetChannelName() << "\tDeadtime: " << ((float)(stat->GetDeadTime()))*(1E-9) << " seconds." << std::endl;
   }
