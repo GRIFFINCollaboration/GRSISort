@@ -70,7 +70,7 @@ public:
     //  GetHtml()->SetIncludePath("$(GRSISYS)/include");
      // GetHtml()->SetSourceDir("$GRSISYS/libraries");
       GetHtml()->SetOutputDir("$GRSISYS/htmldoc");
-      GetHtml()->MakeAll(kTRUE);
+      GetHtml()->MakeAll();
    }
 
    void RunAll() {
@@ -88,7 +88,6 @@ public:
    void AddSourcePath(std::string newpath)
    {   
        fpath << ":$(GRSISYS)/libraries/" << newpath;
-       std::cout << "THE PATH IS CURRENTLY " << fpath.str();
    }
 
 protected:
@@ -107,6 +106,8 @@ private:
 
 void html_generator() {
 
+   gErrorIgnoreLevel=kError;
+
    //Order matters!!!!
    gSystem->Load("libTreePlayer");
    gSystem->Load("$GRSISYS/libraries/libMidasFormat.so");
@@ -121,7 +122,7 @@ void html_generator() {
    gSystem->Load("$GRSISYS/libraries/libNucleus.so");
    gSystem->Load("$GRSISYS/libraries/libKinematics.so");
    gSystem->Load("$GRSISYS/libraries/libSharc.so");
-   gSystem->Load("$GRSISYS/libraries/libGRSIint.so");
+//   gSystem->Load("$GRSISYS/libraries/libTGRSIint.so");
    gSystem->Load("$GRSISYS/libraries/libGRSIFunctions.so");
    gSystem->Load("$GRSISYS/libraries/libBetaDecay.so");
    gSystem->Load("libProof");

@@ -56,7 +56,7 @@ DETLIBS += -lGRSIDetector
 #COMP_STRING="Now Compiling"
 
 grsisort: $(OBJECTS) $(LIBRARIES)
-	@printf " ${COM_COLOR}%s ${OBJ_COLOR}grsisort ${NO_COLOR}" $(COMP_STRING)
+	@printf " ${COM_COLOR}%s ${OBJ_COLOR}\t grsisort ${NO_COLOR}" $(COMP_STRING)
 	@$(CXX) $^ $(CFLAGS) $(CPPFLAGS) $(INC) $(LIBDIR) $(LFALGS) $(LIBS) $(DETLIBS) $(LDROOT) $(SYSLIBS) -o $@  2> temp.log || touch temp.errors
 	@if test -e temp.errors; then  \
 	 printf "\r ${COM_COLOR}%s ${OBJ_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
