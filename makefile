@@ -79,12 +79,11 @@ end: html
 clean:
 	@$(RM) *~
 	$(RM) ./bin/grsisort
-	$(RM) -r ./htmldoc
 	@for dir in $(ALLDIRS); do \
 		$(MAKE) -C $$dir $@; \
 	done
 
-
-
+veryclean: clean
+	$(RM) -r ./htmldoc
 
 

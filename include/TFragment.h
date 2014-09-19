@@ -37,7 +37,7 @@ public:
    Int_t    TriggerBitPattern;	  //->  MasterFilterPattern in Griffin DAQ
 
    Short_t ChannelNumber;         //->
-   Int_t ChannelAddress;          //->
+   UInt_t ChannelAddress;          //->
    std::vector<Int_t> Cfd;        //-> 
    std::vector<Int_t> Led;        //->
    std::vector<Int_t> Charge;	  //->  The Integrated Charge 
