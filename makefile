@@ -69,8 +69,8 @@ ifeq ($(wildcard ./bin),)
 endif
 
 html: grsisort  
-	@printf " ${COM_COLOR}Building html documentation ${NO_COLOR}\n"
-	@root -b -q util/html_generator.C > tempfile.out
+	@printf " ${COM_COLOR}Building      ${OBJ_COLOR} HTML Documentation ${NO_COLOR}\n"
+	@root -b -q util/html_generator.C >/dev/null
 	@$(RM) tempfile.out
 
 end: html
