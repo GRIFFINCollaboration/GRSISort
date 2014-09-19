@@ -346,26 +346,21 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 		delete EventFrag;
 		return -(x+1);	
 	}
-//Comment out for testing
-	if(!SetGRIFPPG(data[x++],EventFrag)) {
+/*	if(!SetGRIFPPG(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -2;;
 	}
-
-	if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
+*/	if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
 		x--;
                 EventFrag->TriggerId = -1;
                 EventFrag->TriggerBitPattern = -1;
 		delete EventFrag;
 		return -3;
 	}
-
-//comment out for testing
 	if(!SetGRIFMasterFilterPattern(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -4;
 	}
-
 
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
@@ -463,7 +458,8 @@ bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment *frag) {
 	if( (value &0xc0000000) != 0x00000000) {
 		return false;
 	}
-	frag->TriggerBitPattern = value & 0x3fffffff;
+	frag->TriggerBitPattern = value & 0x3fff0000;
+        frag->PPG = value & 0x0000ffff;//This is due to new GRIFFIN data format
 	return true;
 }
 
