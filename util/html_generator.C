@@ -70,7 +70,7 @@ public:
     //  GetHtml()->SetIncludePath("$(GRSISYS)/include");
      // GetHtml()->SetSourceDir("$GRSISYS/libraries");
       GetHtml()->SetOutputDir("$GRSISYS/htmldoc");
-      GetHtml()->MakeAll(kTRUE);
+      GetHtml()->MakeAll();
    }
 
    void RunAll() {
@@ -88,7 +88,6 @@ public:
    void AddSourcePath(std::string newpath)
    {   
        fpath << ":$(GRSISYS)/libraries/" << newpath;
-       std::cout << "THE PATH IS CURRENTLY " << fpath.str();
    }
 
 protected:
