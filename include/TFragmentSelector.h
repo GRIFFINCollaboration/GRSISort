@@ -138,6 +138,7 @@ void TFragmentSelector::Init(TTree *tree)
 					continue;
 				TChannel *newchan = new TChannel((TChannel*)obj);//->GetAddress());
 				TChannel::UpdateChannel(newchan);
+				TChannel::AddChannel(newchan);
         //TChannel::CopyChannel(newchan,chan);
      }
    }
