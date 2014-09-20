@@ -179,7 +179,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
             } else if(temp.compare("record_stats")==0) { 
                printf(DBLUE "     recording run stats to log file." RESET_COLOR "\n");
                TDataParser::SetRecordStats(true);
-            } else if(temp.compare("suppress_error")==0) {
+            } else if((temp.compare("suppress_error")==0) ||  (temp.compare("suppress_errors")==0)){
                printf(DBLUE "     suppressing loop error statements." RESET_COLOR "\n");
                TGRSILoop::Get()->SetSuppressError(true);
 				} else if(temp.compare("log_errors")==0) {
