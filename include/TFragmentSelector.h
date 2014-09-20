@@ -41,7 +41,7 @@ public :
    UInt_t          FragmentId;
    Int_t           TriggerBitPattern;
    Int_t           ChannelNumber;
-   Int_t           ChannelAddress;
+   UInt_t           ChannelAddress;
    std::vector<int32_t> Cfd;
    std::vector<int32_t> Led;
    std::vector<int32_t> Charge;

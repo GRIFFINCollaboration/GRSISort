@@ -171,15 +171,7 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment *currentfrag) {
    //currentfragment->SlowRiseTime = value & 0x08000000;
    currentfrag->Cfd.push_back( int32_t(value & 0x07ffffff));
    //std::string dig_type = "";//"Tig64";
-
-	TChannel *chan = TChannel::GetChannel(currentfrag->ChannelAddress);
-	if(!chan) {
-		chan = new TChannel();
-		chan->SetAddress(currentfrag->ChannelAddress);
-		TChannel::AddChannel(chan);	
-	}
-
-   std::string dig_type = chan->GetDigitizerType();
+   std::string dig_type = (TChannel::GetChannel(currentfrag->ChannelAddress))->GetDigitizerType();
 
    // remove vernier for now and calculate the time to the trigger
    int32_t tsBits;
@@ -209,14 +201,8 @@ void TDataParser::SetTIGLed(uint32_t value, TFragment *currentfrag) {
 }
 
 void TDataParser::SetTIGCharge(uint32_t value, TFragment *currentfragment) {
-	//Sets the integrated charge of a Tigress event.
+//Sets the integrated charge of a Tigress event.
    TChannel *chan = TChannel::GetChannel(currentfragment->ChannelAddress);
-	if(!chan) {
-		chan = new TChannel();
-		chan->SetAddress(currentfragment->ChannelAddress);
-		TChannel::AddChannel(chan);	
-	}
-
    std::string dig_type = chan->GetDigitizerType();
    currentfragment->ChannelNumber = chan->GetNumber();
 
@@ -360,26 +346,21 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 		delete EventFrag;
 		return -(x+1);	
 	}
-//Comment out for testing
-	if(!SetGRIFPPG(data[x++],EventFrag)) {
+/*	if(!SetGRIFPPG(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -2;;
 	}
-
-	if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
+*/	if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
 		x--;
                 EventFrag->TriggerId = -1;
                 EventFrag->TriggerBitPattern = -1;
 		delete EventFrag;
 		return -3;
 	}
-
-//comment out for testing
 	if(!SetGRIFMasterFilterPattern(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -4;
 	}
-
 
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
@@ -460,12 +441,13 @@ bool TDataParser::SetGRIFPPG(uint32_t value,TFragment *frag) {
 };
 
 bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment *frag) {
-//Sets the Griffin master filter ID
+//Sets the Griffin master filter ID and PPG
 	if( (value &0x80000000) != 0x00000000) {
 		return false;
 	}
-
-	frag->TriggerId = value & 0x7fffffff;  //REAL
+ 
+	frag->TriggerId = value & 0x3fff0000;  //REAL
+        frag->PPG = value & 0x0000ffff;
 //        frag->TriggerId = value & 0x7fffff00;  //Testing
 //        frag->TriggerBitPattern = value & 0x000000ff; //Testing
 	return true;
@@ -477,7 +459,8 @@ bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment *frag) {
 	if( (value &0xc0000000) != 0x00000000) {
 		return false;
 	}
-	frag->TriggerBitPattern = value & 0x3fffffff;
+	frag->TriggerBitPattern = value & 0x3fff0000;
+        frag->PPG = value & 0x0000ffff;//This is due to new GRIFFIN data format
 	return true;
 }
 

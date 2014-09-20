@@ -312,11 +312,12 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
       return 0;
     }
 
-  if (fDoByteSwap)
+  if (fDoByteSwap){
+    printf("Swapping bytes\n");
     midasEvent->SwapBytesEventHeader();
-
+}
   if (!midasEvent->IsGoodSize())
-    {
+    { 
       fLastErrno = -1;
       fLastError = "Invalid event size";
       return 0;
