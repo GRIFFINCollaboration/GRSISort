@@ -98,13 +98,18 @@ Bool_t TFragmentSelector::Process(Long64_t entry)
 
    fChain->GetEntry(entry);
    TChannel *channel = TChannel::GetChannel(fragment->ChannelAddress);
+   if(!channel){
+     channel = new TChannel();
+     channel->SetAddress(fragment->ChannelAddress);
+     TChannel::AddChannel(channel);
+
+   }
+   
 
 
-
-
-   //if(TChannel::GetNumberOfChannels() != 0 ) 
+  // if(TChannel::GetNumberOfChannels() != 0 ) 
 	   #include "UserFillObj.h"
-         //gSystem->CompileMacro("UserFillObj.h");
+ //        gSystem->CompileMacro("UserFillObj.h");
 
    return kTRUE;
 }
