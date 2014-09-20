@@ -104,7 +104,7 @@ Bool_t TFragmentSelector::Process(Long64_t entry)
 
    //if(TChannel::GetNumberOfChannels() != 0 ) 
 	   #include "UserFillObj.h"
-
+         //gSystem->CompileMacro("UserFillObj.h");
 
    return kTRUE;
 }
