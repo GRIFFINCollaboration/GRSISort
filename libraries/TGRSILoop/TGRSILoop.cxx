@@ -152,6 +152,8 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
       currenteventnumber++;
       if(bytes == 0){
          printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",midasfile->GetFilename(),midasfile->GetLastError());
+			if(midasfile->GetLastErrno()==-1)  //try to read some more...
+				continue;
          break;
       }
       bytesread += bytes;
