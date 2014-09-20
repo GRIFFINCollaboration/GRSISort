@@ -99,7 +99,7 @@ Bool_t TFragmentSelector::Process(Long64_t entry)
    fChain->GetEntry(entry);
    TChannel *channel = TChannel::GetChannel(fragment->ChannelAddress);
    if(!channel){
-      return false;   // I think if we don't have a channel at this point (i.e. the channel
+      return true;   // I think if we don't have a channel at this point (i.e. the channel
                   // was not defined a name/address/odb; we should drop the fragment.  
                   // The TSelector by design is made to crunch lots of data, worrying about 
                   // whether we are dropping good events should have already happen by this stage.  pdb.
