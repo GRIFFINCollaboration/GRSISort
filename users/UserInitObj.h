@@ -1,5 +1,4 @@
 
-{
    GetOutputList()->Add(new TH1D("Charge_0x0000","Charge_0x0000",8000,0,4000));
    GetOutputList()->Add(new TH1D("Charge_0x0001","Charge_0x0001",8000,0,4000));
    GetOutputList()->Add(new TH1D("Charge_0x0002","Charge_0x0002",8000,0,4000));
@@ -47,4 +46,4 @@
    
    GetOutputList()->Add(new TH1D("test","test",128,-64,64));
 
-}
+

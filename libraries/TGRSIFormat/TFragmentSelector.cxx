@@ -35,17 +35,9 @@
 //
 /////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
 #include "TFragmentSelector.h"
 #include <TH2.h>
 #include <TStyle.h>
-
-#include <TProof.h>
 
 void TFragmentSelector::Begin(TTree * /*tree*/)
 {
@@ -53,12 +45,7 @@ void TFragmentSelector::Begin(TTree * /*tree*/)
    // When running with PROOF Begin() is only called on the client.
    // The tree argument is deprecated (on PROOF 0 is passed).
 
-
-
-
-
    TString option = GetOption();
-
 }
 
 void TFragmentSelector::SlaveBegin(TTree * /*tree*/)
@@ -66,12 +53,8 @@ void TFragmentSelector::SlaveBegin(TTree * /*tree*/)
    // The SlaveBegin() function is called after the Begin() function.
    // When running with PROOF SlaveBegin() is called on each slave server.
    // The tree argument is deprecated (on PROOF 0 is passed).
-  
-
-
 
    #include "UserInitObj.h"
-
    TString option = GetOption();
 
 }
@@ -101,7 +84,7 @@ Bool_t TFragmentSelector::Process(Long64_t entry)
 
   // if(TChannel::GetNumberOfChannels() != 0 ) 
 	   #include "UserFillObj.h"
- //        gSystem->CompileMacro("UserFillObj.h");
+       //  gSystem->CompileMacro("UserFillObj.h");
 
    return kTRUE;
 }

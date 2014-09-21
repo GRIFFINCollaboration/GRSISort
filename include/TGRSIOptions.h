@@ -30,7 +30,7 @@ class TGRSIOptions : public TObject {
 		static bool fLogErrors;
 		static bool fUseMidFileOdb;
 		static bool fMakeAnalysisTree;
-
+                static bool fProgressDialog;
 
    public:
       std::string GetHostName()  {  return fhostname;  }
@@ -50,7 +50,10 @@ class TGRSIOptions : public TObject {
 
 		static void SetLogErrors(bool flag=true)      { fLogErrors=flag;   }
 		static bool LogErrors()								 { return fLogErrors; }
-		
+	
+                static void SetProgressDialog(bool flag=true) { fProgressDialog=flag; }
+                static bool ProgressDialog()                  { return fProgressDialog;}
+	
 		static void SetUseMidFileOdb(bool flag=true)     { fUseMidFileOdb=flag;  }
 		static bool UseMidFileOdb()                      { return fUseMidFileOdb;}
 

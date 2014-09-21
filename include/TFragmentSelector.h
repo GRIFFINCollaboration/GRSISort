@@ -12,7 +12,7 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <TSelector.h>
-
+#include <TProof.h>
 #include <TSystem.h>
 
 //class TChannel;
