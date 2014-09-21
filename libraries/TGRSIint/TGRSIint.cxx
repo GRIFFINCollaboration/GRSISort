@@ -6,6 +6,7 @@
 #include "TGRSIRootIO.h"
 #include "TDataParser.h"
 #include "TAnalysisTreeBuilder.h"
+#include "Getline.h"
 
 #include "Globals.h"
 
@@ -14,6 +15,8 @@ ClassImp(TGRSIint)
 
 
 TGRSIint *TGRSIint::fTGRSIint = NULL;
+
+TEnv *TGRSIint::fGRSIEnv = NULL;
 
 //std::vector<std::string> *TGRSIint::fInputRootFile  = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputMidasFile = new std::vector<std::string>;
@@ -26,9 +29,12 @@ TGRSIint *TGRSIint::instance(int argc,char** argv, void *options, int numOptions
    return fTGRSIint;
 }
 
-TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t noLogo,const char *appClassName)
+TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t noLogo,const char *appClassName) 
       :TRint(appClassName, &argc, argv, options, numOptions,noLogo) {
-   
+
+      fGRSIEnv = gEnv;
+      //TRint::TRint(appClassName, &argc, argv, options, numOptions,noLogo)
+
       InitFlags();
       GetOptions(&argc,argv);
       PrintLogo(fPrintLogo);
@@ -37,10 +43,13 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
       ApplyOptions();
 }
 
+
 void TGRSIint::InitFlags() {
    fAutoSort = false;
    fFragmentSort = false;
    fMakeAnalysisTree = false;
+
+//   if(fGRSIEnv) fGRSIEnv->Delete();
 }
 
 void TGRSIint::ApplyOptions() {

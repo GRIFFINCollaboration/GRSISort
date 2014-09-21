@@ -13,7 +13,6 @@ TFragment::TFragment(){
 
 TFragment::~TFragment(){
   // Default destructor does nothing right now
-
   //Clear();
 }
 

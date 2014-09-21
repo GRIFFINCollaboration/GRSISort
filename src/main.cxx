@@ -1,10 +1,28 @@
 
 #include <cstdio>
+#include <string>
 
+#include "TEnv.h"
 #include "TGRSIint.h"
+
+void SetGRSIEnv() {
+   //if(fGRSIEnv) //env already set.
+   //   return;
+   std::string grsi_path = getenv("GRSISYS");
+   if(grsi_path.length()>0) {
+      grsi_path += "/";
+   }
+   grsi_path +=  ".grsirc";
+   //fGRSIEnv = gEnv; //new TEnv(grsi_path.c_str());
+   gEnv->ReadFile(grsi_path.c_str(),kEnvChange);
+  // printf("\n\nfGRSIEnv->GetValue(\"Rint.History\",\"\")) = %s\n\n",fGRSIEnv->GetValue("Rint.History",""));
+   //Gl_histinit(fGRSIEnv->GetValue("Rint.History",""));
+}
+
 
 int main(int argc, char **argv) {
 
+   SetGRSIEnv();
    TGRSIint *input = 0;
 
    input = TGRSIint::instance(argc,argv);
