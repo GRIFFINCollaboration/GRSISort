@@ -57,7 +57,9 @@ void TGRSIint::ApplyOptions() {
   	 gApplication->Terminate();
 	if(TGRSIOptions::MakeAnalysisTree())
   	 gApplication->Terminate();
-		
+
+  if(TGRSIOptions::CloseAfterSort())
+     gApplication->Terminate();
 }
 
 
@@ -122,14 +124,18 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
          if(temp.length()==1) { 
             char key = temp[0];
             switch(toupper(key)) {
-					case 'A':
-						printf(DBLUE "Atempting to make analysis trees." RESET_COLOR "\n");
-						TGRSIOptions::SetMakeAnalysisTree();
-						break;
+	       case 'A':
+		  printf(DBLUE "Atempting to make analysis trees." RESET_COLOR "\n");
+         	  TGRSIOptions::SetMakeAnalysisTree();
+		  break;
+               case 'Q':
+                  printf(DBLUE "Closing after Sort." RESET_COLOR "\n");
+                  TGRSIOptions::SetCloseAfterSort();
+                  break;
                case 'S':
                   printf(DBLUE "SORT!!" RESET_COLOR "\n");
                   fFragmentSort = true;
-						TGRSIOptions::SetCloseAfterSort();
+		  TGRSIOptions::SetCloseAfterSort();
                   break;
                case 'H':
                   if(sargv.length()==2) {
