@@ -11,7 +11,7 @@ Rint.History $(GRSISYS)/.grsi_history
 
 #default root variables form the grsi enviorment
 Canvas.MoveOpaque: true
-
-
+Canvas.ShowEventStatus: true
+Canvas.ShowToolBar: true
 
 
