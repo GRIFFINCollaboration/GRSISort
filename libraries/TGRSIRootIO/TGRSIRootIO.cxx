@@ -146,17 +146,17 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
  
    TChain *chain = new TChain("FragmentTree");
 
-   for(int x=0;x<TGRSIOptions::Get()->GetInputRoot().size();x++) {
-      TFile f(TGRSIOptions::Get()->GetInputRoot().at(x).c_str(),"read");
+   for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
+      TFile f(TGRSIOptions::GetInputRoot().at(x).c_str(),"read");
       //printf("%s  f.FindObject(\"FragmentTree\") =0x%08x\n",f.GetName(),     f.FindObject("FragmentTree"));
       //if(f.FindObject("FragmentTree")) {
 	//printf("here 4 \n");
-	chain->Add(TGRSIOptions::Get()->GetInputRoot().at(x).c_str());
+	chain->Add(TGRSIOptions::GetInputRoot().at(x).c_str());
       //}
       f.Close();
    }
 
-   const char *firstfilename = TGRSIOptions::Get()->GetInputRoot().at(0).c_str();
+   const char *firstfilename = TGRSIOptions::GetInputRoot().at(0).c_str();
    runnumber    = GetRunNumber(firstfilename);
    subrunnumber = GetSubRunNumber(firstfilename);
 

@@ -6,75 +6,68 @@
 
 #include <TObject.h>
 
-class TGRSIOptions : public TObject {
+namespace TGRSIOptions {
 
-   private:
-      static TGRSIOptions *fTGRSIOptions;
-      TGRSIOptions();
+      //TGRSIOptions();
    
-   public:
-      static TGRSIOptions *Get();
-      virtual ~TGRSIOptions();
+     // virtual ~TGRSIOptions();
 
-
-   private:
-      std::string fhostname;
-      std::string fexptname;
+      extern std::string fhostname;
+      extern std::string fexptname;
    
-      static std::vector<std::string> fInputRootFile;
-      static std::vector<std::string> fInputMidasFile;
-      static std::vector<std::string> fInputCalFile;
-      static std::vector<std::string> fInputOdbFile;
+      extern std::vector<std::string> fInputRootFile;
+      extern std::vector<std::string> fInputMidasFile;
+      extern std::vector<std::string> fInputCalFile;
+      extern std::vector<std::string> fInputOdbFile;
 
-		static bool fCloseAfterSort;
-		static bool fLogErrors;
-		static bool fUseMidFileOdb;
-		static bool fMakeAnalysisTree;
-                static bool fProgressDialog;
-
-   public:
-      std::string GetHostName()  {  return fhostname;  }
-      std::string GetExptName()  {  return fexptname;  }
+		extern bool fCloseAfterSort;
+	        extern bool fLogErrors;
+		extern bool fUseMidFileOdb;
+		extern bool fMakeAnalysisTree;
+                extern bool fProgressDialog;
+      std::string GetHostName();
+      std::string GetExptName();
      
-      static std::vector<std::string> GetInputRoot()  {  return fInputRootFile;  }
-      static std::vector<std::string> GetInputMidas() {  return fInputMidasFile; }
-      static std::vector<std::string> GetInputCal()   {  return fInputCalFile;   }
-      static std::vector<std::string> GetInputOdb()   {  return fInputOdbFile;   }
+      std::vector<std::string> GetInputRoot();  
+      std::vector<std::string> GetInputMidas(); 
+      std::vector<std::string> GetInputCal();   
+      std::vector<std::string> GetInputOdb();   
 
-		static const char *GetXMLODBFile(int runnumber=0,int subrunnumber=-1);
-		static const char *GetCalFile(int runnumber=0,int subrunnumber=-1);
+		const char *GetXMLODBFile(int runnumber=0,int subrunnumber=-1);
+		 const char *GetCalFile(int runnumber=0,int subrunnumber=-1);
 
 
-		static void SetCloseAfterSort(bool flag=true) { fCloseAfterSort=flag; }
-		static bool CloseAfterSort()                  { return fCloseAfterSort; }
+		 void SetCloseAfterSort(bool flag=true); 
+		 bool CloseAfterSort();                  
 
-		static void SetLogErrors(bool flag=true)      { fLogErrors=flag;   }
-		static bool LogErrors()								 { return fLogErrors; }
+		 void SetLogErrors(bool flag=true);      
+		 bool LogErrors();			
 	
-                static void SetProgressDialog(bool flag=true) { fProgressDialog=flag; }
-                static bool ProgressDialog()                  { return fProgressDialog;}
+                 void SetProgressDialog(bool flag=true); 
+                 bool ProgressDialog();                  
 	
-		static void SetUseMidFileOdb(bool flag=true)     { fUseMidFileOdb=flag;  }
-		static bool UseMidFileOdb()                      { return fUseMidFileOdb;}
+		 void SetUseMidFileOdb(bool flag=true);  
+		 bool UseMidFileOdb();                   
 
-		static void SetMakeAnalysisTree(bool flag=true)  { fMakeAnalysisTree=flag;  }
-		static bool MakeAnalysisTree()                   { return fMakeAnalysisTree;}
+		 void SetMakeAnalysisTree(bool flag=true);
+		 bool MakeAnalysisTree();                
 
-      void SetHostName(std::string &host) {fhostname.assign(host);}
-      void SetExptName(std::string &expt) {fexptname.assign(expt);}
+       void SetHostName(std::string &host);
+       void SetExptName(std::string &expt); 
 
-      void AddInputRootFile(std::string &input)  {  fInputRootFile.push_back(input);    }
-      void AddInputMidasFile(std::string &input) {  fInputMidasFile.push_back(input);   }
-      void AddInputCalFile(std::string &input)   {  SetUseMidFileOdb(false);  fInputCalFile.push_back(input);     }
-      void AddInputOdbFile(std::string &input)   {  SetUseMidFileOdb(false); fInputOdbFile.push_back(input);     }
-
-
-	   void Print(Option_t *opt = "");
-      void Clear(Option_t *opt = "");
+       void AddInputRootFile(std::string &input);  
+       void AddInputMidasFile(std::string &input); 
+       void AddInputCalFile(std::string &input);   
+       void AddInputOdbFile(std::string &input);   
 
 
-   ClassDef(TGRSIOptions,0)
-};
+       void Print(Option_t *opt = "");
+       void Clear(Option_t *opt = "");
+
+ 
+
+
+}
 
 #endif
 
