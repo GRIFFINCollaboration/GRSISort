@@ -1,23 +1,24 @@
 #ifndef TGRSIINT_H
 #define TGRSIINT_H
 
+
+#include "Globals.h"
+
 #include <cstdio>
 #include <string>
-
 
 #include <TSystem.h>
 #include <TRint.h>
 #include <TList.h>
-
-#include "Globals.h"
-
-//#include <TEventLoop.h>
+#include <TEnv.h>
 
 class TGRSIint : public TRint {
 
    private:
       TGRSIint(int argc, char **argv,void *options = 0, 
             int numOptions = 0, bool noLogo = false, const char *appClassName = "grsisort") ;
+
+      static TEnv *fGRSIEnv;
 
    public:
       static TGRSIint *fTGRSIint;
@@ -34,16 +35,13 @@ class TGRSIint : public TRint {
 
       //bool Sort() {return TEventLoop::Get()->SortMidas();}
 
+      static TEnv *GetEnv() { return fGRSIEnv; }
+
    private:
       bool FileAutoDetect(std::string filename, long filesize);
       void InitFlags();
       void ApplyOptions();
-
-   public:
-      //static std::vector<std::string> *GetInputRoot()  {  return fInputRootFile;  }
-      //static std::vector<std::string> *GetInputMidas() {  return fInputMidasFile; }
-      //static std::vector<std::string> *GetInputCal()   {  return fInputCalFile;   }
-      //static std::vector<std::string> *GetInputOdb()   {  return fInputOdbFile;   }
+      //void SetEnv();
 
    private: 
       bool fPrintLogo;
@@ -52,15 +50,6 @@ class TGRSIint : public TRint {
       bool fAutoSort;
       bool fFragmentSort;
       bool fMakeAnalysisTree;
-
-      //TList *fInputRootFiles;
-      //TList *fInputMidasFiles;
-      //static std::vector<std::string> *fInputRootFile;
-      //static std::vector<std::string> *fInputMidasFile;
-      //static std::vector<std::string> *fInputCalFile;
-      //static std::vector<std::string> *fInputOdbFile;
-
-
 
 
    ClassDef(TGRSIint,0);

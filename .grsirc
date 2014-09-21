@@ -1,0 +1,17 @@
+
+
+
+
+
+
+
+#files to load at log in:
+Rint.Logon: $(GRSISYS)/.grsi_logon
+Rint.History $(GRSISYS)/.grsi_history
+
+#default root variables form the grsi enviorment
+Canvas.MoveOpaque: true
+
+
+
+
