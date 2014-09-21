@@ -53,10 +53,6 @@ void TGRSIint::ApplyOptions() {
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
   if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::Get()->GetInputRoot().size()!=0)  
     TAnalysisTreeBuilder::StartMakeAnalysisTree();
-  if(fAutoSort && TGRSIOptions::CloseAfterSort())
-  	 gApplication->Terminate();
-	if(TGRSIOptions::MakeAnalysisTree())
-  	 gApplication->Terminate();
 
   if(TGRSIOptions::CloseAfterSort())
      gApplication->Terminate();
