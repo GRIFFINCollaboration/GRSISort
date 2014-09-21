@@ -13,8 +13,6 @@
 ClassImp(TGRSIint)
 
 
-TGRSIint *TGRSIint::fTGRSIint = NULL;
-
 //std::vector<std::string> *TGRSIint::fInputRootFile  = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputMidasFile = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputCalFile   = new std::vector<std::string>;
@@ -49,9 +47,9 @@ void TGRSIint::ApplyOptions() {
   if(fAutoSort)
     TGRSILoop::Get()->SortMidas();
 
-  if(fFragmentSort && TGRSIOptions::Get()->GetInputRoot().size()!=0)
+  if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
-  if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::Get()->GetInputRoot().size()!=0)  
+  if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0)  
     TAnalysisTreeBuilder::StartMakeAnalysisTree();
 
   if(TGRSIOptions::CloseAfterSort())
@@ -149,7 +147,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                   } else {
                      sargv = sargv.substr(2);
                   }  
-                  TGRSIOptions::Get()->SetHostName(sargv);      
+                  TGRSIOptions::SetHostName(sargv);      
                   printf(DYELLOW "host: %s" RESET_COLOR "\n",sargv.c_str());
                   break;
                case 'E':
@@ -168,7 +166,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                   } else {
                      sargv = sargv.substr(2);
                   }
-                  TGRSIOptions::Get()->SetExptName(sargv);      
+                  TGRSIOptions::SetExptName(sargv);      
                   printf(DYELLOW "experiment: %s" RESET_COLOR "\n",sargv.c_str());
                   break;
                default:
@@ -240,22 +238,22 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
    if(ext.compare("root")==0) {
       //printf("\tFound root file: %s\n",filename.c_str());
       //fInputRootFile->push_back(filename);
-      TGRSIOptions::Get()->AddInputRootFile(filename);
+      TGRSIOptions::AddInputRootFile(filename);
       return true;
    } else if(ext.compare("mid")==0) {
       //printf("\tFound midas file: %s\n",filename.c_str());
       //fInputMidasFile->push_back(filename);
-      TGRSIOptions::Get()->AddInputMidasFile(filename);
+      TGRSIOptions::AddInputMidasFile(filename);
       fAutoSort = true;
       return true;
    } else if(ext.compare("cal")==0) { 
       //printf("\tFound custom calibration file: %s\n",filename.c_str());
       //fInputCalFile->push_back(filename);
-      TGRSIOptions::Get()->AddInputCalFile(filename);
+      TGRSIOptions::AddInputCalFile(filename);
       return true;
    } else if(ext.compare("xml")==0) { 
       //fInputOdbFile->push_back(filename);
-      TGRSIOptions::Get()->AddInputOdbFile(filename);
+      TGRSIOptions::AddInputOdbFile(filename);
       //printf("\tFound xml odb file: %s\n",filename.c_str());
       return true;
    } else if(ext.compare("odb")==0) { 
