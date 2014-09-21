@@ -12,7 +12,7 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <TSelector.h>
-
+#include <TProof.h>
 #include <TSystem.h>
 
 //class TChannel;
@@ -138,6 +138,7 @@ void TFragmentSelector::Init(TTree *tree)
 					continue;
 				TChannel *newchan = new TChannel((TChannel*)obj);//->GetAddress());
 				TChannel::UpdateChannel(newchan);
+				TChannel::AddChannel(newchan);
         //TChannel::CopyChannel(newchan,chan);
      }
    }
