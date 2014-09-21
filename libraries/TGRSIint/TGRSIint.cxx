@@ -66,7 +66,9 @@ void TGRSIint::ApplyOptions() {
   	 gApplication->Terminate();
 	if(TGRSIOptions::MakeAnalysisTree())
   	 gApplication->Terminate();
-		
+
+  if(TGRSIOptions::CloseAfterSort())
+     gApplication->Terminate();
 }
 
 
@@ -131,14 +133,18 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
          if(temp.length()==1) { 
             char key = temp[0];
             switch(toupper(key)) {
-					case 'A':
-						printf(DBLUE "Atempting to make analysis trees." RESET_COLOR "\n");
-						TGRSIOptions::SetMakeAnalysisTree();
-						break;
+	       case 'A':
+		  printf(DBLUE "Atempting to make analysis trees." RESET_COLOR "\n");
+         	  TGRSIOptions::SetMakeAnalysisTree();
+		  break;
+               case 'Q':
+                  printf(DBLUE "Closing after Sort." RESET_COLOR "\n");
+                  TGRSIOptions::SetCloseAfterSort();
+                  break;
                case 'S':
                   printf(DBLUE "SORT!!" RESET_COLOR "\n");
                   fFragmentSort = true;
-						TGRSIOptions::SetCloseAfterSort();
+		  TGRSIOptions::SetCloseAfterSort();
                   break;
                case 'H':
                   if(sargv.length()==2) {
@@ -191,9 +197,12 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
             } else if((temp.compare("suppress_error")==0) ||  (temp.compare("suppress_errors")==0)){
                printf(DBLUE "     suppressing loop error statements." RESET_COLOR "\n");
                TGRSILoop::Get()->SetSuppressError(true);
-				} else if(temp.compare("log_errors")==0) {
+	    } else if(temp.compare("log_errors")==0) {
                printf(DBLUE "     sending parsing errors to file." RESET_COLOR "\n");
                TGRSIOptions::SetLogErrors(true);
+            } else if(temp.compare("no_speed")==0) {
+                printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
+                TGRSIOptions::SetProgressDialog(false);
             } else if(temp.compare("help")==0) {
                fPrintHelp = true;
             } else {

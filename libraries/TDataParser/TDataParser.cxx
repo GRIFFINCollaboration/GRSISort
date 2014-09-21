@@ -346,14 +346,11 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 		delete EventFrag;
 		return -(x+1);	
 	}
-	if(!SetGRIFPPG(data[x++],EventFrag)) {
+/*	if(!SetGRIFPPG(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -(x+1);
-	}
+	}*/
 	if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
-                x--;
-                EventFrag->TriggerId = -1;
-                EventFrag->TriggerBitPattern = -1;
 		delete EventFrag;
 		return -(x+1);
 	}
@@ -446,8 +443,7 @@ bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment *frag) {
 		return false;
 	}
  
-	frag->TriggerId = value & 0x3fff0000;  //REAL
-//        frag->PPG = value & 0x0000ffff;
+	frag->TriggerId = value & 0x7FFFFFFF;  //REAL
 //        frag->TriggerId = value & 0x7fffff00;  //Testing
 //        frag->TriggerBitPattern = value & 0x000000ff; //Testing
 	return true;
