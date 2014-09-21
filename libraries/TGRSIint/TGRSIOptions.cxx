@@ -7,14 +7,14 @@ NamespaceImp(TGRSIOptions)
 //TGRSIOptions::TGRSIOptions() { 
 //}
 
-//TGRSIOptions::~TGRSIOptions() {  }
+//TGRSIOptions::~TGRSIOptions() { 
+   TGRSIOptions::fLogErrors = false;
+   TGRSIOptions::fUseMidFileOdb = true;
+   TGRSIOptions::fMakeAnalysisTree = false;
+   TGRSIOptions::fProgressDialog = true;
 
- namespace TGRSIOptions {
-   bool fLogErrors = false;
-   bool fUseMidFileOdb = true;
-   bool fMakeAnalysisTree = false;
-   bool fProgressDialog = true;
-}
+
+using namespace TGRSIOptions;
 
 std::string TGRSIOptions::GetHostName(){
   return fhostname;
