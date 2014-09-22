@@ -8,6 +8,7 @@
 #include <string>
 
 #include <TSystem.h>
+#include <TSysEvtHandler.h>
 #include <TRint.h>
 #include <TList.h>
 #include <TEnv.h>
@@ -54,5 +55,14 @@ class TGRSIint : public TRint {
 
    ClassDef(TGRSIint,0);
 };
+
+
+class TGRSIInterruptHandler : public TSignalHandler {
+   public:
+      TGRSIInterruptHandler():TSignalHandler(kSigInterrupt,false) { }
+      bool Notify();
+};
+
+
 
 #endif
