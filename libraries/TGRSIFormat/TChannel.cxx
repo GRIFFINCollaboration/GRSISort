@@ -498,7 +498,7 @@ void TChannel::ReadCalFile(const char *filename) {
 					AddChannel(channel);// consider using a default option here
 					newchannels++;
 				} else {
-					 currentchan->Print();
+	//				 currentchan->Print();
 					 currentchan->UpdateChannel(channel);
 					 delete channel;
 					 newchannels++;

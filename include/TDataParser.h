@@ -7,7 +7,8 @@
 #include <vector>
 #include <map>
 
-#include "TFragment.h"
+#include <TChannel.h>
+#include <TFragment.h>
 //#include <TObject.h>
 
 class TDataParser { //: public TObject { 
@@ -16,6 +17,7 @@ class TDataParser { //: public TObject {
     static TDataParser *fDataParser;  //A pointer to the global DataParser Class
     static bool no_waveforms;         //The flag to turn wave_forms on or off
     static bool record_stats;         //The flag to turn on stats recording
+	 static TChannel *gChannel;
     TDataParser();
 	
   public:
