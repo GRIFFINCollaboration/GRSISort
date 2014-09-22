@@ -16,12 +16,15 @@ class TGriffinData : public TGRSIDetectorData {
 	private:
 		std::vector<UShort_t> fClover_Nbr;		//!
 		std::vector<UShort_t> fCore_Nbr;		//!
-		std::vector<Double_t> fCore_Eng;		//!
+		std::vector<UInt_t>   fCore_Address;		//!
+      std::vector<Bool_t>   fCore_IsHighGain; //!
+      std::vector<Double_t> fCore_Eng;		//!
 		std::vector<Int_t>    fCore_Chg;		//!
 		std::vector<Double_t> fCore_TimeCFD;		//!
 		std::vector<Double_t> fCore_TimeLED;		//!
 		std::vector<Double_t> fCore_Time;		//!
 		std::vector<std::vector<UShort_t> >fCore_Wave;	//!
+
 
 		static bool fIsSet; //!
 
@@ -37,18 +40,25 @@ class TGriffinData : public TGRSIDetectorData {
 
 		inline void SetCloverNumber(const UShort_t &CloverNumber) {fClover_Nbr.push_back(CloverNumber);  }//!
 		inline void SetCoreNumber(const UShort_t  &CoreNumber)	  {fCore_Nbr.push_back(CoreNumber);      }	//!
-		inline void SetCoreEnergy(const Double_t  &CoreEnergy)	  {fCore_Eng.push_back(CoreEnergy);      }	//!
+		inline void SetCoreAddress(const UInt_t  &CoreAddress)	  {fCore_Address.push_back(CoreAddress);      }	//!
+      inline void SetCoreEnergy(const Double_t  &CoreEnergy)	  {fCore_Eng.push_back(CoreEnergy);      }	//!
 		inline void SetCoreCharge(const Int_t &CoreCharge)	      {fCore_Chg.push_back(CoreCharge);      }	//!
 		inline void SetCoreCFD(const Double_t &CoreTimeCFD)	      {fCore_TimeCFD.push_back(CoreTimeCFD); }	//!	
 		inline void SetCoreLED(const Double_t &CoreTimeLED)	      {fCore_TimeLED.push_back(CoreTimeLED); }	//!	
 		inline void SetCoreTime(const Double_t    &CoreTime)	    {fCore_Time.push_back(CoreTime);       }	//!
-		
+		inline void SetIsHighGain(const Bool_t &IsHighGain)    {fCore_IsHighGain.push_back(IsHighGain); } //!
+
 		inline void SetCoreWave(const std::vector<UShort_t> &CoreWave)	{fCore_Wave.push_back(CoreWave);} //!
 	
 		inline void SetCore(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 				if(!frag || !channel || !mnemonic) return;
 
-				if(mnemonic->outputsensor.compare(0,1,"b")==0) {	return; }  //make this smarter.
+				if(mnemonic->outputsensor.compare(0,1,"b")==0)     //{	return; }  //make this smarter.
+               SetIsHighGain(true);
+            else
+               SetIsHighGain(false);
+
+            SetCoreAddress(frag->ChannelAddress);
 
 				UShort_t CoreNbr=5;
 				if(mnemonic->arraysubposition.compare(0,1,"B")==0)
@@ -64,7 +74,7 @@ class TGriffinData : public TGRSIDetectorData {
          		SetCloverNumber(mnemonic->arrayposition);
 	   			SetCoreNumber(CoreNbr);
                SetCoreEnergy(channel->CalibrateENG(frag->Charge.at(x)));		
-			   	SetCoreCharge(frag->Charge.at(x));
+               SetCoreCharge(frag->Charge.at(x));
 				   SetCoreCFD(frag->Cfd.at(x));		
    				SetCoreLED(frag->Led.at(x));		
 	   			SetCoreTime(frag->TimeToTrig);		
@@ -74,11 +84,15 @@ class TGriffinData : public TGRSIDetectorData {
 
 		inline UShort_t GetCloverNumber(const unsigned int &i)	{return fClover_Nbr.at(i);}	//!
 		inline UShort_t GetCoreNumber(const unsigned int &i)	   {return fCore_Nbr.at(i);}	//!
-		inline Double_t GetCoreEnergy(const unsigned int &i)	   {return fCore_Eng.at(i);}	//!
+		inline UInt_t   GetCoreAddress(const unsigned int &i)	   {return fCore_Address.at(i);}	//!
+
+      inline Double_t GetCoreEnergy(const unsigned int &i)	   {return fCore_Eng.at(i);}	//!
 		inline Int_t    GetCoreCharge(const unsigned int &i)	   {return fCore_Chg.at(i);}	//!
 		inline Double_t GetCoreCFD(const unsigned int &i)	      {return fCore_TimeCFD.at(i);}	//!
 		inline Double_t GetCoreLED(const unsigned int &i)	      {return fCore_TimeLED.at(i);}	//!	
 		inline Double_t GetCoreTime(const unsigned int &i)	      {return fCore_Time.at(i);}	//!
+
+      inline Bool_t GetIsHighGain(const unsigned int &i)       {return fCore_IsHighGain.at(i);} //!
 
 		inline std::vector<UShort_t> GetCoreWave(const unsigned int &i)	{return fCore_Wave.at(i);}	//!
 

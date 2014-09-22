@@ -22,12 +22,16 @@ class TGriffinHit : public TGRSIDetectorHit {
 	private:
 		UShort_t detector;
 		UShort_t crystal;
-      
+
+      UInt_t address;
+
       Int_t filter;
 
-      Int_t charge;
+      Int_t charge_lowgain;
+      Int_t charge_highgain;
       Int_t cfd;
-      Double_t energy;
+      Double_t energy_lowgain;
+      Double_t energy_highgain;
       Double_t time;
 
 		TVector3 position;
@@ -46,10 +50,16 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       inline void SetFilerPattern(const int &x)    { filter = x;   }   //! 
 
-      inline void SetCharge(const int &x)          { charge = x;   }   //!
+      inline void SetChargeLow(const int &x)       { charge_lowgain  = x;   }   //!
+      inline void SetChargeHigh(const int &x)      { charge_highgain = x;   }   //!
+
       inline void SetCfd(const int &x)             { cfd    = x;   }   //!
-      inline void SetEnergy(const Double_t &x)     { energy = x;   }   //!
+      inline void SetEnergyHigh(const Double_t &x)     { energy_highgain = x;   }   //!
+      inline void SetEnergyLow(const Double_t &x)     { energy_lowgain = x;   }   //!
+
       inline void SetTime(const Double_t &x)       { time   = x;   }   //!
+
+      inline void SetAddress(const UInt_t &x)      { address = x; } //!
 
       inline void SetWaveform(std::vector<UShort_t> x) { waveform = x; } //!
 
@@ -60,11 +70,15 @@ class TGriffinHit : public TGRSIDetectorHit {
 		inline UShort_t GetDetectorNumber()	     {	return detector; }  //!
 		inline UShort_t GetCrystalNumber()	     {	return crystal;  }  //!
 	
-		inline Int_t    GetCharge()			     {	return energy;	  }  //!
+		inline Int_t    GetChargeLow()			  {	return charge_lowgain;	  }  //!
+		inline Int_t    GetChargeHigh()			  {	return charge_highgain;	  }  //!
       inline Int_t    GetCfd()                 {   return cfd;      }  //!
-      inline Double_t GetEnergy()		        {	return energy;   }  //!
+      inline Double_t GetEnergyLow()		     {	return energy_lowgain;   }  //!
+      inline Double_t GetEnergyHigh()		     {	return energy_highgain;   }  //!
 		inline Double_t GetTime()			        {	return time;     }  //!
 		inline TVector3 GetPosition()	           {	return position; }  //!
+
+      inline UInt_t   GetAddress()             {   return address; } //!
 
       inline Int_t    GetFiterPatter()         {   return filter;   }  //!
 

@@ -134,11 +134,23 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
+   std::vector<TGriffinHit> temp_hits;
+   std::map<std::pair<int,int>,std::pair<int,int> > address_gain_map;  // < <det,core>, <high gain , low gain> >
+
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
       TGriffinHit corehit;
 
-      corehit.SetCharge(gdata->GetCoreCharge(i));
-      corehit.SetEnergy(gdata->GetCoreEnergy(i));
+      corehit.SetAddress(gdata->GetCoreAddress(i));
+      
+      if(gdata->GetIsHighGain(i)) {
+         corehit.SetEnergyHigh(gdata->GetCoreEnergy(i));
+         corehit.SetChargeHigh(gdata->GetCoreCharge(i));
+      }
+      else {
+         corehit.SetEnergyLow(gdata->GetCoreEnergy(i));
+         corehit.SetChargeLow(gdata->GetCoreCharge(i));
+      }
+
       corehit.SetTime(gdata->GetCoreTime(i));
       corehit.SetCfd(gdata->GetCoreCFD(i));
 
@@ -151,9 +163,30 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    
       corehit.SetPosition();
 
-      griffin_hits.push_back(corehit);
+      temp_hits.push_back(corehit);
+
+      std::pair<int,int> det_cry = std::make_pair(corehit.GetDetectorNumber(),corehit.GetCrystalNumber());
+
+      if(address_gain_map.count(det_cry)==0) {
+         if(gdata->GetIsHighGain(i)) 
+            address_gain_map.insert(std::make_pair(det_cry,std::make_pair(temp_hits.size()-1,0)));
+         else
+            address_gain_map.insert(std::make_pair(det_cry,std::make_pair(0,temp_hits.size()-1)));
+      } else {
+         if(gdata->GetIsHighGain(i)) 
+            address_gain_map.at(det_cry).first = temp_hits.size()-1;
+         else
+            address_gain_map.at(det_cry).second = temp_hits.size()-1;
+      }
    }
 
+   std::map<std::pair<int,int>,std::pair<int,int> >::iterator iter;
+   for(iter = address_gain_map.begin(); iter != address_gain_map.end(); iter++) {
+     temp_hits.at(iter->second.first).SetChargeLow(temp_hits.at(iter->second.second).GetChargeLow());
+     temp_hits.at(iter->second.first).SetEnergyLow(temp_hits.at(iter->second.second).GetEnergyLow());
+     griffin_hits.push_back(temp_hits.at(iter->second.first));
+   }
+ 
    if(TGriffin::SetBGOHits() && bdata)  {
       TCrystalHit temp_crystal; temp_crystal.Clear();
       for(int i=0;i<griffin_hits.size();i++)	{
