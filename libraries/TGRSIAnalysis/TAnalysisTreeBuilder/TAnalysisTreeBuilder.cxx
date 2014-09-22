@@ -12,9 +12,6 @@
 #include "TSharcData.h"
 
 
-
-
-
 bool TEventQueue::lock = false;
 std::queue<std::vector<TFragment>*> TEventQueue::fEventQueue;
 TEventQueue *TEventQueue::fPtrToQue = 0;
