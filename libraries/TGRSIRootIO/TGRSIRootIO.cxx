@@ -107,6 +107,10 @@ void TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
    else
       sprintf(filename,"fragment%05i.root",runnumber);
 	printf("Creating root outfile: %s\n",filename);
+   //Add the filename to the possible root files so that it can be auto sorted. 
+   //If there are no -s or -a flags these extra names do not matter
+   std::string tempname(filename);
+   TGRSIOptions::AddInputRootFile(tempname);
    foutfile = new TFile(filename,"recreate");
    
    SetUpFragmentTree();
