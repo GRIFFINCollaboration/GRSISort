@@ -1,5 +1,5 @@
 
-OBJECTS = TAnalysisTreeBuilder.o 
+OBJECTS = TAnalysisTreeBuilder.o TAnalysisTreeBuilderDict.o 
 
 CFLAGS += -fPIC
 

@@ -8,6 +8,7 @@ all:grsisort
 LDROOT =  $(shell root-config --glibs)  #`root-config --glibs`
 LDROOT += -lXMLParser
 LDROOT += -lXMLIO
+LDROOT += -lProof
 
 INC = -I$(BASE)/include
 INC += -I$(MIDASSYS)/include
@@ -32,7 +33,6 @@ LIBS += -lMidasFormat
 LIBS += -lGRSIFormat
 LIBS += -lGRSIRootIO
 LIBS += -lAnalysisTreeBuilder
-LIBS += -lProof
 
 DETLIBS =  -lTigress
 DETLIBS += -lSharc

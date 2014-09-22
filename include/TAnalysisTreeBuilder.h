@@ -9,6 +9,7 @@
 #include <queue>
 #include <stdint.h>
 
+#include <TObject.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <TChain.h>
@@ -53,7 +54,7 @@ class TEventQueue {
 
 };
 
-class TAnalysisTreeBuilder {
+class TAnalysisTreeBuilder : public TObject {
 
    public:
       virtual ~TAnalysisTreeBuilder();
@@ -113,6 +114,8 @@ class TAnalysisTreeBuilder {
       //static TDante      *Dante;  
       //static TZeroDegree *ZeroDegree;
       //static TDescant    *Descant;
+
+	ClassDef(TAnalysisTreeBuilder,0)
 
 };
 
