@@ -38,7 +38,8 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
 
       //TSignalHandler sig_handi;
       GetSignalHandler()->Remove();
-      SetSignalHandler(new TGRSIInterruptHandler());
+      TGRSIInterruptHandler *ih = new TGRSIInterruptHandler();
+      ih->Add();
 
       InitFlags();
       GetOptions(&argc,argv);
@@ -285,7 +286,8 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
 
 
 bool TGRSIInterruptHandler::Notify() {
-   printf("Contol-c was pressed.\n");
+   printf("\n" DRED BG_WHITE  "   Control-c was pressed.   " RESET_COLOR "\n");
+   gApplication->Terminate();
    return true;
 }
 

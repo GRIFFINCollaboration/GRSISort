@@ -1,6 +1,8 @@
 
 #include <stdint.h>
 
+#include <TSystem.h>
+
 #include "TGRSILoop.h"
 #include "TGRSIOptions.h"
 #include "TDataParser.h"
@@ -204,6 +206,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
             break;
       };
       if((currenteventnumber%5000)== 0) {
+         gSystem->ProcessEvents();
          printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB               " SHOW_CURSOR "\r",
 					 currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
       }
