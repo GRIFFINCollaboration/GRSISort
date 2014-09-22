@@ -48,9 +48,9 @@ MAKE=make --no-print-directory
 
 .PHONY: all subdirs $(ALLDIRS) clean
 
-all: print subdirs bin grsihist grsisort html end
+all: print subdirs bin grsihist grsisort end
 
-simple: print subdirs bin grsihist grsisort end
+docs: print subdirs bin grsihist grsisort html end
 
 print:
 	@echo "Compiling on $(PLATFORM)"
