@@ -48,7 +48,7 @@ MAKE=make --no-print-directory
 
 .PHONY: all subdirs $(ALLDIRS) clean
 
-all: print subdirs bin grsisort html end
+all: print subdirs bin grsihist grsisort html end
 
 print:
 	@echo "Compiling on $(PLATFORM)"
@@ -66,6 +66,11 @@ grsisort: src
 bin:
 ifeq ($(wildcard ./bin),) 
 	@mkdir bin	 
+endif
+
+grsihist:
+ifeq ($(wildcard ./.grsi_history),)
+	@touch .grsi_history
 endif
 
 html: grsisort  
