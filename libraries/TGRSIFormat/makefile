@@ -2,6 +2,7 @@
 OBJECTS = TFragment.o TFragmentDict.o TChannel.o TChannelDict.o TFragmentQueue.o TFragmentQueueDict.o TGRSIStats.o TGRSIStatsDict.o TFragmentSelector.o TFragmentSelectorDict.o TGRSIRunInfo.o TGRSIRunInfoDict.o 
 
 CFLAGS += -fPIC
+CFLAGS += -I $(GRSISYS)/users
 
 #COMP_STRING="Now Compling "
 DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
@@ -13,18 +14,11 @@ CAT=cat
 all: libGRSIFormat.so
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
 
+USERDEPS = $(GRSISYS)/users/UserInitObj.h $(GRSISYS)/users/UserFillObj.h
 
 INCLUDES = UserInitObj.h UserFillObj.h
 
-UserInitObj.h:
-	@printf " ${COM_COLOR}Now Linking   ${OBJ_COLOR}UserInitObj${NO_COLOR}\n" 
-	@ln -s $(GRSISYS)/users/UserInitObj.h
-
-UserFillObj.h:
-	@printf " ${COM_COLOR}Now Linking   ${OBJ_COLOR}UserFillObj${NO_COLOR}\n" 
-	@ln -s $(GRSISYS)/users/UserFillObj.h
-
-libGRSIFormat.so: $(INCLUDES) $(OBJECTS)
+libGRSIFormat.so: $(OBJECTS)
 	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"
 	@$(COMPILESHARED)$@ $(CFLAGS) -o$@ $(OBJECTS) 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
