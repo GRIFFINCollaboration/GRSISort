@@ -237,7 +237,28 @@ TChannel *TChannel::GetChannelByNumber(int temp_num) {
     return chan;
 }
 
+TChannel *TChannel::FindChannelByName(const char *cc_name){
 
+  TChannel *chan = NULL;
+  if(!cc_name)
+    return chan;
+  
+  std::string name = cc_name;
+  if(name.length()==0)
+    return chan;
+    
+  std::map < unsigned int, TChannel * >::iterator iter;    
+  for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++) {
+    chan = iter->second;
+    std::string channel_name = chan->GetChannelName();
+    if(channel_name.compare(0,name.length(),name)==0)
+      break;
+    chan = NULL;
+  }
+  // either comes out normally as null or breaks out with some TChannel [SC]
+  
+  return chan;
+}
 
 void TChannel::UpdateChannelNumberMap() {
 //Updates the fChannelNumberMap based on the entries in the fChannelMap. This should be called before using the fChannelNumberMap.
