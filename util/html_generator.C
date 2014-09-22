@@ -109,15 +109,16 @@ void html_generator() {
    gErrorIgnoreLevel=kError;
 
    //Order matters!!!!
+   gSystem->Load("libPhysics");
    gSystem->Load("libTreePlayer");
    gSystem->Load("$GRSISYS/libraries/libMidasFormat.so");
    gSystem->Load("$GRSISYS/libraries/libGRSIFormat.so");
+   gSystem->Load("$GRSISYS/libraries/libGRSIDetector.so");
  //  gSystem->Load("$GRSISYS/libraries/libAnalysisTreeBuilder.so");
  //  gSystem->Load("$GRSISYS/libraries/libGRSIRootIO.so");
+   gSystem->Load("$GRSISYS/libraries/libTigress.so");
    gSystem->Load("$GRSISYS/libraries/libGriffin.so");
    gSystem->Load("$GRSISYS/libraries/libCSM.so");
-   gSystem->Load("$GRSISYS/libraries/libGRSIDetector.so");
-   gSystem->Load("$GRSISYS/libraries/libTigress.so");
    gSystem->Load("$GRSISYS/libraries/libDataParser.so");
    gSystem->Load("$GRSISYS/libraries/libNucleus.so");
    gSystem->Load("$GRSISYS/libraries/libKinematics.so");
