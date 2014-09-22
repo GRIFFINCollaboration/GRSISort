@@ -57,7 +57,7 @@ print:
 
 subdirs: $(SUBDIRS)
 
-src: libraries
+src: print libraries
 
 $(ALLDIRS):
 	@$(MAKE) -C $@
