@@ -32,11 +32,7 @@ LIBS += -lGRSILoop
 LIBS += -lMidasFormat
 LIBS += -lGRSIRootIO
 LIBS += -lAnalysisTreeBuilder
-<<<<<<< HEAD
-=======
-LIBS += -lProof
 LIBS += -lGRSIFormat
->>>>>>> 9282eb2449659ba8263cb13049e03d231bc7b6f8
 
 DETLIBS =  -lTigress
 DETLIBS += -lSharc
