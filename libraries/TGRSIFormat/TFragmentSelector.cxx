@@ -1,4 +1,7 @@
 #define TFragmentSelector_cxx
+
+#include "TGRSIOptions.h"
+
 // The class definition in TFragmentSelector.h has been generated automatically
 // by the ROOT utility TTree::MakeSelector(). This class is derived
 // from the ROOT class TSelector. For more information on the TSelector
@@ -119,7 +122,8 @@ void TFragmentSelector::Terminate()
       histsname = Form("hists%05i_%03i.root",frunnumber,fsubrunnumber);
 
    TFile f(histsname,"recreate");
-
+   std::string rootfilename = f.GetName();
+   TGRSIOptions::AddInputRootFile(rootfilename);
 /*
    if(fsubrunnumber == -1){
       TFile f(Form("hists%05i.root",frunnumber),"recreate");
