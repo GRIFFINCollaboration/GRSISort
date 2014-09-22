@@ -1,6 +1,8 @@
 
 #include <stdint.h>
 
+#include <TSystem.h>
+
 #include "TGRSILoop.h"
 #include "TGRSIOptions.h"
 #include "TDataParser.h"
@@ -71,10 +73,10 @@ bool TGRSILoop::SortMidas() {
    if(fMidasThread) //already sorting.
       return true;
     
-    if(TGRSIOptions::Get()->GetInputMidas().size()>0)  { //we have offline midas files to sort.
+    if(TGRSIOptions::GetInputMidas().size()>0)  { //we have offline midas files to sort.
       TMidasFile *mfile = new TMidasFile;
-      for(int x=0;x<TGRSIOptions::Get()->GetInputMidas().size();x++) {
-         if(mfile->Open(TGRSIOptions::Get()->GetInputMidas().at(x).c_str()))  {
+      for(int x=0;x<TGRSIOptions::GetInputMidas().size();x++) {
+         if(mfile->Open(TGRSIOptions::GetInputMidas().at(x).c_str()))  {
             //std::sting filename = mfile->GetName();
             fMidasThread = new std::thread(&TGRSILoop::ProcessMidasFile,this,mfile);
             fMidasThreadRunning = true;
@@ -91,7 +93,7 @@ bool TGRSILoop::SortMidas() {
       }
 	   delete mfile;
    }
-   TGRSIOptions::Get()->GetInputMidas().clear();
+   TGRSIOptions::GetInputMidas().clear();
 	//
 
 
@@ -204,6 +206,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
             break;
       };
       if((currenteventnumber%5000)== 0) {
+         gSystem->ProcessEvents();
          printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB               " SHOW_CURSOR "\r",
 					 currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
       }

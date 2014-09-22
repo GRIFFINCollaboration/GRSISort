@@ -48,7 +48,9 @@ MAKE=make --no-print-directory
 
 .PHONY: all subdirs $(ALLDIRS) clean
 
-all: print subdirs bin grsisort html end
+all: print subdirs bin grsihist grsisort html end
+
+simple: print subdirs bin grsihist grsisort end
 
 print:
 	@echo "Compiling on $(PLATFORM)"
@@ -68,12 +70,17 @@ ifeq ($(wildcard ./bin),)
 	@mkdir bin	 
 endif
 
-html: grsisort  
+grsihist:
+ifeq ($(wildcard ./.grsi_history),)
+	@touch .grsi_history
+endif
+
+html: libraries grsisort
 	@printf " ${COM_COLOR}Building      ${OBJ_COLOR} HTML Documentation ${NO_COLOR}\n"
 	@root -b -q util/html_generator.C >/dev/null
 	@$(RM) tempfile.out
 
-end: html
+end: grsisort
 	@printf " ${WARN_COLOR}Compilation Success. woohoo!${NO_COLOR}\n\n"
 
 clean:

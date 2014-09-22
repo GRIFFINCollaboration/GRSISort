@@ -1,5 +1,6 @@
 #GRSISort
 
+
 A lean, mean, sorting machine. 
 
 To compile for a .sh shell execute `source SOURCEME.sh` in your terminal from the GRSISort Directory

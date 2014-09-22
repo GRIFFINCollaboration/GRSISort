@@ -26,13 +26,17 @@ ifndef __APPLE__
 LFLAGS = -W1,--no-as-needed
 endif
 
-LIBS  = -lTGRSIint
+LIBS = -lTGRSIint
 LIBS += -lDataParser
 LIBS += -lGRSILoop
 LIBS += -lMidasFormat
-LIBS += -lGRSIFormat
 LIBS += -lGRSIRootIO
 LIBS += -lAnalysisTreeBuilder
+<<<<<<< HEAD
+=======
+LIBS += -lProof
+LIBS += -lGRSIFormat
+>>>>>>> 9282eb2449659ba8263cb13049e03d231bc7b6f8
 
 DETLIBS =  -lTigress
 DETLIBS += -lSharc
@@ -51,7 +55,7 @@ DETLIBS += -lGriffin
 #DETLIBS += -lDescant
 DETLIBS += -lGRSIDetector
 
-#SYSLIBS = -lxml2
+SYSLIBS = #-ldl -lxml2
 
 #COMP_STRING="Now Compiling"
 

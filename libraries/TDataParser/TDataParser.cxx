@@ -346,18 +346,20 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 		delete EventFrag;
 		return -(x+1);	
 	}
-/*	if(!SetGRIFPPG(data[x++],EventFrag)) {
+
+/*   if(!SetGRIFPPG(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -(x+1);
-	}*/
-	if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
+	}
+   
+   if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -(x+1);
 	}
 	if(!SetGRIFMasterFilterPattern(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -(x+1);
-	}
+	} */
 
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
@@ -420,11 +422,17 @@ bool TDataParser::SetGRIFHeader(uint32_t value,TFragment *frag) {
 		return false;
 	}
 	frag->NumberOfFilters =  (value &0x0f000000)>> 24;
-        frag->DataType        =  (value &0x00e00000)>> 21;
-        frag->NumberOfPileups =  (value &0x001c0000)>> 18;
-	frag->ChannelAddress  =  (value &0x0003fff0)>> 4;
-        frag->DetectorType    =  (value &0x0000000f);
-	return true;
+   frag->DataType        =  (value &0x00e00000)>> 21;
+   frag->NumberOfPileups =  (value &0x001c0000)>> 18;
+   frag->ChannelAddress  =  (value &0x0003fff0)>> 4;
+   frag->DetectorType    =  (value &0x0000000f);
+   
+   TChannel *chan = TChannel::GetChannel(frag->ChannelAddress);
+   if(chan) {
+      frag->ChannelNumber = chan->GetNumber();
+   }
+   
+   return true;
 };
 
 

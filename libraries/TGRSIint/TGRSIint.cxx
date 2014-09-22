@@ -2,10 +2,13 @@
 
 #include "TGRSIint.h"
 #include "TGRSILoop.h"
+
 #include "TGRSIOptions.h"
+
 #include "TGRSIRootIO.h"
 #include "TDataParser.h"
 #include "TAnalysisTreeBuilder.h"
+#include "Getline.h"
 
 #include "Globals.h"
 
@@ -15,6 +18,7 @@ ClassImp(TGRSIint)
 
 TGRSIint *TGRSIint::fTGRSIint = NULL;
 
+TEnv *TGRSIint::fGRSIEnv = NULL;
 //std::vector<std::string> *TGRSIint::fInputRootFile  = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputMidasFile = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputCalFile   = new std::vector<std::string>;
@@ -26,9 +30,17 @@ TGRSIint *TGRSIint::instance(int argc,char** argv, void *options, int numOptions
    return fTGRSIint;
 }
 
-TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t noLogo,const char *appClassName)
+TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t noLogo,const char *appClassName) 
       :TRint(appClassName, &argc, argv, options, numOptions,noLogo) {
-   
+
+      fGRSIEnv = gEnv;
+      //TRint::TRint(appClassName, &argc, argv, options, numOptions,noLogo)
+
+      //TSignalHandler sig_handi;
+      GetSignalHandler()->Remove();
+      TGRSIInterruptHandler *ih = new TGRSIInterruptHandler();
+      ih->Add();
+
       InitFlags();
       GetOptions(&argc,argv);
       PrintLogo(fPrintLogo);
@@ -37,26 +49,27 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
       ApplyOptions();
 }
 
+
 void TGRSIint::InitFlags() {
    fAutoSort = false;
    fFragmentSort = false;
    fMakeAnalysisTree = false;
+
+//   if(fGRSIEnv) fGRSIEnv->Delete();
 }
 
 void TGRSIint::ApplyOptions() {
   	
 
-  if(fAutoSort)
+  if(fAutoSort){
     TGRSILoop::Get()->SortMidas();
+  }
 
-  if(fFragmentSort && TGRSIOptions::Get()->GetInputRoot().size()!=0)
+  std::cout << TGRSIOptions::GetInputRoot().size() << std::endl;
+  if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
-  if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::Get()->GetInputRoot().size()!=0)  
+  if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0)  
     TAnalysisTreeBuilder::StartMakeAnalysisTree();
-  if(fAutoSort && TGRSIOptions::CloseAfterSort())
-  	 gApplication->Terminate();
-	if(TGRSIOptions::MakeAnalysisTree())
-  	 gApplication->Terminate();
 
   if(TGRSIOptions::CloseAfterSort())
      gApplication->Terminate();
@@ -153,7 +166,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                   } else {
                      sargv = sargv.substr(2);
                   }  
-                  TGRSIOptions::Get()->SetHostName(sargv);      
+                  TGRSIOptions::SetHostName(sargv);      
                   printf(DYELLOW "host: %s" RESET_COLOR "\n",sargv.c_str());
                   break;
                case 'E':
@@ -172,7 +185,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                   } else {
                      sargv = sargv.substr(2);
                   }
-                  TGRSIOptions::Get()->SetExptName(sargv);      
+                  TGRSIOptions::SetExptName(sargv);      
                   printf(DYELLOW "experiment: %s" RESET_COLOR "\n",sargv.c_str());
                   break;
                default:
@@ -244,22 +257,22 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
    if(ext.compare("root")==0) {
       //printf("\tFound root file: %s\n",filename.c_str());
       //fInputRootFile->push_back(filename);
-      TGRSIOptions::Get()->AddInputRootFile(filename);
+      TGRSIOptions::AddInputRootFile(filename);
       return true;
    } else if(ext.compare("mid")==0) {
       //printf("\tFound midas file: %s\n",filename.c_str());
       //fInputMidasFile->push_back(filename);
-      TGRSIOptions::Get()->AddInputMidasFile(filename);
+      TGRSIOptions::AddInputMidasFile(filename);
       fAutoSort = true;
       return true;
    } else if(ext.compare("cal")==0) { 
       //printf("\tFound custom calibration file: %s\n",filename.c_str());
       //fInputCalFile->push_back(filename);
-      TGRSIOptions::Get()->AddInputCalFile(filename);
+      TGRSIOptions::AddInputCalFile(filename);
       return true;
    } else if(ext.compare("xml")==0) { 
       //fInputOdbFile->push_back(filename);
-      TGRSIOptions::Get()->AddInputOdbFile(filename);
+      TGRSIOptions::AddInputOdbFile(filename);
       //printf("\tFound xml odb file: %s\n",filename.c_str());
       return true;
    } else if(ext.compare("odb")==0) { 
@@ -274,10 +287,11 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
 }
 
 
-
-
-
-
+bool TGRSIInterruptHandler::Notify() {
+   printf("\n" DRED BG_WHITE  "   Control-c was pressed.   " RESET_COLOR "\n");
+   gApplication->Terminate();
+   return true;
+}
 
 
 

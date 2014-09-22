@@ -10,6 +10,16 @@ using namespace std;
 
 ClassImp(TNucleus);
 
+/////////////////////////////////////////////////////////////////
+//
+// TNucleus
+//
+// This class interprets the nucleus in question and provides
+// basic information (mass, Z, symbol, radius, etc.) about said
+// nucleus.
+//
+/////////////////////////////////////////////////////////////////
+
 //const char *TNucleus::massfile = "/home/tiguser/packages/GRSISort/libraries/TAnalysis/TNucleus/mass.dat";
 const char *TNucleus::massfile = "mass.dat";
 
@@ -263,7 +273,7 @@ int TNucleus::GetZfromSymbol(char* symbol){
   //cout << symbol << "   " << length << endl;
   char* search = new char[length+1];
   for(int i=0;i<length;i++){
-    search[i] = toupper(symbol[i]); // make sure symbol ist in uppercase
+    search[i] = toupper(symbol[i]); // make sure symbol is in uppercase
     }
   search[length] = '\0';
   for(int i=0;i<105;i++){
@@ -280,5 +290,6 @@ int TNucleus::GetZfromSymbol(char* symbol){
 }
 
 double TNucleus::GetRadius(){
+// The radius is calculated using 1.12*A^1/3 - 0.94*A^-1/3
   return 1.12*pow(this->GetA(),1./3.) - 0.94*pow(this->GetA(),-1./3.);
 }

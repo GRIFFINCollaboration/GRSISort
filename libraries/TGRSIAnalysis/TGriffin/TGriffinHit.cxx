@@ -22,11 +22,16 @@ bool TGriffinHit::InFilter(Int_t wantedfilter) {
 void TGriffinHit::Clear(Option_t *opt)	{
 
 	detector = 0;
-	crystal  = 5;
+   address = 0xffffffff;
+   
+   crystal  = 5;
 
-   charge = -1;
+   charge_lowgain = -1;
+   charge_highgain = -1;
+
    cfd    = -1;
-   energy = 0.0;
+   energy_lowgain = 0.0;
+   energy_highgain = 0.0;
    time   = 0.0;
 
    position.SetXYZ(0,0,1);
@@ -43,14 +48,14 @@ void TGriffinHit::SetPosition(double dist) {
 
 
 void TGriffinHit::Print(Option_t *opt)	{
-	printf("Griffin hit energy: %.2f\n",GetEnergy());
+	printf("Griffin hit energy: %.2f\n",GetEnergyHigh());
 	printf("Griffin hit time:   %.2f\n",GetTime());
 	//printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
 }
 
 
 bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
-		return(lhs->GetEnergy()) > rhs->GetEnergy();
+		return(lhs->GetEnergyLow()) > rhs->GetEnergyLow();
 }
 
 
@@ -58,10 +63,13 @@ void TGriffinHit::Add(TGriffinHit *hit)	{
    if(!CompareEnergy(this,hit)) {
       this->cfd    = hit->GetCfd();    
       this->time   = hit->GetTime();
-      this->charge = hit->GetCharge();
       this->position = hit->GetPosition();
    }
-   this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+   this->SetChargeLow(0);
+   this->SetChargeHigh(0);
+
+   this->SetEnergyHigh(this->GetEnergyHigh() + hit->GetEnergyHigh());
+   this->SetEnergyLow(this->GetEnergyLow() + hit->GetEnergyLow());
 }
 
 
