@@ -61,9 +61,11 @@ void TGRSIint::InitFlags() {
 void TGRSIint::ApplyOptions() {
   	
 
-  if(fAutoSort)
+  if(fAutoSort){
     TGRSILoop::Get()->SortMidas();
+  }
 
+  std::cout << TGRSIOptions::GetInputRoot().size() << std::endl;
   if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
   if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0)  

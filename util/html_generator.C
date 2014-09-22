@@ -109,24 +109,27 @@ void html_generator() {
    gErrorIgnoreLevel=kError;
 
    //Order matters!!!!
+   gSystem->Load("libRint");
+   gSystem->Load("libCint");
    gSystem->Load("libPhysics");
    gSystem->Load("libTreePlayer");
-   gSystem->Load("$GRSISYS/libraries/libMidasFormat.so");
-   gSystem->Load("$GRSISYS/libraries/libGRSIFormat.so");
-   gSystem->Load("$GRSISYS/libraries/libGRSIDetector.so");
- //  gSystem->Load("$GRSISYS/libraries/libAnalysisTreeBuilder.so");
- //  gSystem->Load("$GRSISYS/libraries/libGRSIRootIO.so");
-   gSystem->Load("$GRSISYS/libraries/libTigress.so");
-   gSystem->Load("$GRSISYS/libraries/libGriffin.so");
-   gSystem->Load("$GRSISYS/libraries/libCSM.so");
-   gSystem->Load("$GRSISYS/libraries/libDataParser.so");
-   gSystem->Load("$GRSISYS/libraries/libNucleus.so");
-   gSystem->Load("$GRSISYS/libraries/libKinematics.so");
-   gSystem->Load("$GRSISYS/libraries/libSharc.so");
-//   gSystem->Load("$GRSISYS/libraries/libTGRSIint.so");
-   gSystem->Load("$GRSISYS/libraries/libGRSIFunctions.so");
-   gSystem->Load("$GRSISYS/libraries/libBetaDecay.so");
+   gSystem->Load("libMidasFormat");
+   gSystem->Load("libGRSIFormat");
+   gSystem->Load("libGRSIDetector");
+   gSystem->Load("libGRSIRootIO");
+   gSystem->Load("libTigress");
+   gSystem->Load("libGriffin");
+   gSystem->Load("libCSM");
+   gSystem->Load("libDataParser");
+   gSystem->Load("libNucleus");
+   gSystem->Load("libKinematics");
+   gSystem->Load("libSharc");
+   gSystem->Load("libAnalysisTreeBuilder");
+   gSystem->Load("libGRSIFunctions");
+   gSystem->Load("libBetaDecay");
    gSystem->Load("libProof");
+   gSystem->Load("libGRSILoop");
+   gSystem->Load("libTGRSIint");
 
    gSystem->ListLibraries();
 
