@@ -33,6 +33,8 @@ LIBS += -lMidasFormat
 LIBS += -lGRSIRootIO
 LIBS += -lAnalysisTreeBuilder
 LIBS += -lGRSIFormat
+LIBS += -lNucleus
+LIBS += -lKinematics
 
 DETLIBS =  -lTigress
 DETLIBS += -lSharc

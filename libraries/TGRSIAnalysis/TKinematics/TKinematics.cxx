@@ -5,6 +5,23 @@ using namespace std;
 
 ClassImp(TKinematics);
 
+TKinematics::TKinematics(double beame, const char *beam, const char *targ, const char *ejec, const char *reco, const char *name){
+
+	TNucleus *b,*t,*e,*r;
+
+	b = new TNucleus(beam);
+	t = new TNucleus(targ);
+	name = Form("%s(%s,%s)%s",targ,beam,ejec,reco);
+	
+	if((strcmp(ejec,"NULL")==0)  || (strcmp(reco,"NULL")==0 )) {
+		TKinematics(b,t,beame,name);
+	} else { 
+		e = new TNucleus(ejec);
+		r = new TNucleus(reco);
+		 TKinematics(b,t,e,r,beame,name);
+	}
+}
+
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char *name){ // by not defining the outgoing particle it defaults to elastic scattering!
   fParticle[0] = projectile;
   fParticle[1] = target;

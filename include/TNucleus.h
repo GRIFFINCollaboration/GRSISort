@@ -19,11 +19,11 @@ class TNucleus : public TNamed{
   static const char *massfile;
 
  public:
-  TNucleus(char*);					// Creates a nucleus based on symbol and sets all parameters from mass.dat
+  TNucleus(const char*);					// Creates a nucleus based on symbol and sets all parameters from mass.dat
   TNucleus(int, int, double, const char*);		// Creates a nucleus with Z, N, mass, and symbol
   TNucleus(int Z, int N, const char* MassFile = massfile); // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
 	
-  static void SetMassFile(const char *tmp) {massfile = tmp;} //Sets the mass file to be used
+  static void SetMassFile(const char *tmp = NULL);// {massfile = tmp;} //Sets the mass file to be used
 
   void SetZ(int);					// Sets the Z (# of protons) of the nucleus
   void SetN(int);					// Sets the N (# of neutrons) of the nucleus
