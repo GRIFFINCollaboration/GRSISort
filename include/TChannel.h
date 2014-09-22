@@ -22,7 +22,6 @@
  */
 
 
-
 #include<string>
 #include<cmath>
 #include<utility>
@@ -43,6 +42,7 @@ class TChannel : public TNamed	{
     static TChannel *GetChannel(unsigned int temp_address); 
     // static TChannel *GetChannelByNumber(int temp_numebr);
     static TChannel *GetChannelByNumber(int temp_numebr);
+    static TChannel *FindChannelByName(const char *name);
 
     TChannel();
     TChannel(const char*);

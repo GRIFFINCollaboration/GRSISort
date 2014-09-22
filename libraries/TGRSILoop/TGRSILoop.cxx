@@ -253,7 +253,7 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
 
 void TGRSILoop::SetGRIFFOdb() {
    std::string path = "/DAQ/MSC"; 
-   printf("using griffIN path to analyzer info: %s...\n",path.c_str());
+   printf("using GRIFFIN path to analyzer info: %s...\n",path.c_str());
    
    std::string temp = path; temp.append("/MSC");
    TXMLNode *node = fOdb->FindPath(temp.c_str());

@@ -29,6 +29,7 @@ unsigned long TDataParser::fgLastMidasId = 0;
 
 unsigned long TDataParser::fgLastTriggerId = 0;
 
+TChannel *TDataParser::gChannel = new TChannel;
 
 ClassImp(TDataParser)
 
@@ -171,7 +172,10 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment *currentfrag) {
    //currentfragment->SlowRiseTime = value & 0x08000000;
    currentfrag->Cfd.push_back( int32_t(value & 0x07ffffff));
    //std::string dig_type = "";//"Tig64";
-   std::string dig_type = (TChannel::GetChannel(currentfrag->ChannelAddress))->GetDigitizerType();
+   TChannel *chan = TChannel::GetChannel(currentfrag->ChannelAddress);
+	if(!chan)
+		chan = gChannel;
+   std::string dig_type = (chan)->GetDigitizerType();
 
    // remove vernier for now and calculate the time to the trigger
    int32_t tsBits;
@@ -203,7 +207,9 @@ void TDataParser::SetTIGLed(uint32_t value, TFragment *currentfrag) {
 void TDataParser::SetTIGCharge(uint32_t value, TFragment *currentfragment) {
 //Sets the integrated charge of a Tigress event.
    TChannel *chan = TChannel::GetChannel(currentfragment->ChannelAddress);
-   std::string dig_type = chan->GetDigitizerType();
+	if(!chan)
+		chan = gChannel;
+	std::string dig_type = chan->GetDigitizerType();
    currentfragment->ChannelNumber = chan->GetNumber();
 
    if( dig_type.compare(0,5,"Tig10") == 0)	{

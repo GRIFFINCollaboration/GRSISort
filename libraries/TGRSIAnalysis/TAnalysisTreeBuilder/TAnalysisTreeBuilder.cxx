@@ -62,6 +62,10 @@ int TEventQueue::Size() {
 ///************************************************///
 ///************************************************///
 
+
+ClassImp(TAnalysisTreeBuilder)
+
+
 const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)2048; // 2 GB //20000000000
 
 TChain *TAnalysisTreeBuilder::fFragmentChain = 0;
