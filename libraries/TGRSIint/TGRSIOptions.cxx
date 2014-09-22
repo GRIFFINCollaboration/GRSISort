@@ -2,13 +2,6 @@
 
 NamespaceImp(TGRSIOptions)
 
-//TGRSIOptions *fTGRSIOptions = 0;
-
-//TGRSIOptions() { 
-//}
-
-//~TGRSIOptions() {  }
-
 namespace TGRSIOptions {
 
   bool fLogErrors = false;
@@ -25,11 +18,6 @@ namespace TGRSIOptions {
   std::vector<std::string> fInputRootFile;
   std::vector<std::string> fInputOdbFile;
   std::vector<std::string> fInputCalFile;
-
-
-
-
-
 
 std::string GetHostName(){
   return fhostname;
