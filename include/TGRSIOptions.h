@@ -12,6 +12,7 @@ namespace TGRSIOptions {
    
      // virtual ~TGRSIOptions();
 
+    namespace priv{
       extern std::string fhostname;
       extern std::string fexptname;
       
@@ -19,13 +20,13 @@ namespace TGRSIOptions {
       extern std::vector<std::string> fInputMidasFile;
       extern std::vector<std::string> fInputCalFile;
       extern std::vector<std::string> fInputOdbFile;
-	
+    	
       extern bool fCloseAfterSort;
-	   extern bool fLogErrors;
-		extern bool fUseMidFileOdb;
-		extern bool fMakeAnalysisTree;
+      extern bool fLogErrors;
+      extern bool fUseMidFileOdb;
+      extern bool fMakeAnalysisTree;
       extern bool fProgressDialog;
-
+     }
       std::string GetHostName();
       std::string GetExptName();
      

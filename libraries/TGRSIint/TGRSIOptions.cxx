@@ -2,6 +2,8 @@
 
 NamespaceImp(TGRSIOptions)
 
+using namespace TGRSIOptions::priv;
+
 namespace TGRSIOptions {
 
   bool fLogErrors = false;
