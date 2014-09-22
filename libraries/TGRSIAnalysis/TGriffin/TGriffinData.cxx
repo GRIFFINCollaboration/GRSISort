@@ -20,7 +20,9 @@ void TGriffinData::Clear(Option_t *opt)	{
 
 	fClover_Nbr.clear();
 	fCore_Nbr.clear();
-	fCore_Eng.clear();
+   fCore_Address.clear();
+   fCore_IsHighGain.clear();
+   fCore_Eng.clear();
 	fCore_Chg.clear();
 	fCore_TimeCFD.clear();
 	fCore_TimeLED.clear();
