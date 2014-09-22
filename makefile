@@ -46,11 +46,14 @@ export FIN_OBJ_COLOR=\033[3;32m
 
 MAKE=make --no-print-directory 
 
-.PHONY: all subdirs $(ALLDIRS) clean
+.PHONY: all subdirs $(ALLDIRS) clean util
 
 all: print subdirs bin grsihist grsisort end
 
 docs: print subdirs bin grsihist grsisort html end
+
+util:
+	@$(MAKE) -C $@
 
 print:
 	@echo "Compiling on $(PLATFORM)"
