@@ -1,5 +1,5 @@
 
-OBJECTS = TGRSIint.o TGRSIintDict.o TGRSIOptions.o TGRSIOptionsDict.o 
+OBJECTS = TGRSIOptions.o TGRSIOptionsDict.o TGRSIint.o TGRSIintDict.o 
 
 CFLAGS += -fPIC
 
