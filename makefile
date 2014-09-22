@@ -1,3 +1,4 @@
+SHELL = /bin/bash
 SUBDIRS = src libraries
 ALLDIRS = $(SUBDIRS)
 
@@ -51,7 +52,7 @@ MAKE=make --no-print-directory
 all: print subdirs bin grsihist grsisort html end
 
 print:
-	@echo "Compiling on $(PLATFORM)"
+	@echo "Compiling on $(PLATFORM) using $(SHELL)"
 
 subdirs: $(SUBDIRS)
 
