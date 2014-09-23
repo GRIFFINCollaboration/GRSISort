@@ -8,6 +8,7 @@
 
 #include <TStopwatch.h>
 
+#include <TGRSIOptions.h>
 
 #include "TSharcData.h"
 
@@ -259,6 +260,7 @@ void TAnalysisTreeBuilder::SetupOutFile() {
    if(!fCurrentRunInfo)
       return;
    std::string outfilename = Form("analysis%05i_%03i.root",fCurrentRunInfo->RunNumber(),fCurrentRunInfo->SubRunNumber());
+   TGRSIOptions::AddInputRootFile(outfilename);
    if(fCurrentAnalysisFile)
       delete fCurrentAnalysisFile;
    fCurrentAnalysisFile = new TFile(outfilename.c_str(),"recreate");

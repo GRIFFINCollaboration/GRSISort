@@ -65,12 +65,19 @@ void TGRSIint::ApplyOptions() {
     TGRSILoop::Get()->SortMidas();
   }
 
-  std::cout << TGRSIOptions::GetInputRoot().size() << std::endl;
   if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
   if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0)  
     TAnalysisTreeBuilder::StartMakeAnalysisTree();
-
+  if(!TGRSIOptions::CloseAfterSort() && TGRSIOptions::GetInputRoot().size()!=0) { 
+    for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
+        //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
+        ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
+        TFile *file = (TFile*)gROOT->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
+        printf("\tfile %s opened as _file%i\n",file->GetName(),x);
+        TGRSIRootIO::Get()->LoadRootFile(file);
+   }
+  }
   if(TGRSIOptions::CloseAfterSort())
      gApplication->Terminate();
 }
@@ -148,7 +155,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                case 'S':
                   printf(DBLUE "SORT!!" RESET_COLOR "\n");
                   fFragmentSort = true;
-		  TGRSIOptions::SetCloseAfterSort();
+         		   //TGRSIOptions::SetCloseAfterSort();
                   break;
                case 'H':
                   if(sargv.length()==2) {
@@ -253,7 +260,7 @@ void TGRSIint::PrintHelp(bool print) {
 bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
    //first search for extensions.
    std::string ext = filename.substr(filename.find_last_of('.')+1);
-   printf("\text = %s\n",ext.c_str());
+   //printf("\text = %s\n",ext.c_str());
    if(ext.compare("root")==0) {
       //printf("\tFound root file: %s\n",filename.c_str());
       //fInputRootFile->push_back(filename);

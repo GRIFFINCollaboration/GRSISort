@@ -21,6 +21,7 @@ using namespace std;
 
 class TKinematics : public TNamed {
 public:
+  TKinematics(double beame, const char* projectile, const char* target,const char* ejectile = "NULL", const char* recoil = "NULL", const char *name = "");
   TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char *name = "");
   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, const char *name = "");
   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, double ex3, const char *name = "");

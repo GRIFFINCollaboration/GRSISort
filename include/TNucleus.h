@@ -19,18 +19,18 @@ class TNucleus : public TNamed{
   static const char *massfile; //The massfile to be used, which includes Z, N, atomic symbol, and mass excess
 
  public:
-  TNucleus(char* symbol);
-  TNucleus(int Z, int N, double mass, const char* symbol);
-  TNucleus(int Z, int N, const char* MassFile = massfile);
+  TNucleus(const char* symbol);					// Creates a nucleus based on symbol and sets all parameters from mass.dat
+  TNucleus(int Z, int N, double mass, const char* symbol);		// Creates a nucleus with Z, N, mass, and symbol
+  TNucleus(int Z, int N, const char* MassFile = massfile); // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
 	
-  static void SetMassFile(const char *tmp) {massfile = tmp;} //Sets the mass file to be used. Default is mass.dat (see source code)
+  static void SetMassFile(const char *tmp = NULL);// {massfile = tmp;} //Sets the mass file to be used
 
-  void SetZ(int);					
-  void SetN(int);					
-  void SetMassExcess(double);  				
-  void SetMass(double);  				
-  void SetMass();  					
-  void SetSymbol(const char*);  			
+  void SetZ(int);					// Sets the Z (# of protons) of the nucleus
+  void SetN(int);					// Sets the N (# of neutrons) of the nucleus
+  void SetMassExcess(double);  				// Sets the mass excess of the nucleus (in MeV)
+  void SetMass(double);  				// Sets the mass manually (in MeV)
+  void SetMass();  					// Sets the mass based on the A and mass excess of nucleus (in MeV)
+  void SetSymbol(const char*);  			// Sets the atomic symbol for the nucleus
   int GetZ()              {return fZ;}  		// Gets the Z (# of protons) of the nucleus
   int GetN()              {return fN;}			// Gets the N (# of neutrons) of the nucleus
   int GetA()              {return fN+fZ;}		// Gets the A (Z + N) of the nucleus

@@ -20,14 +20,28 @@ ClassImp(TNucleus);
 /////////////////////////////////////////////////////////////////
 
 //const char *TNucleus::massfile = "/home/tiguser/packages/GRSISort/libraries/TAnalysis/TNucleus/mass.dat";
-const char *TNucleus::massfile = "mass.dat";
+const char *TNucleus::massfile = 0;
 
 static double amu = 931.494043;
 //static double MeV2Kg = 1.77777778e-30;
 
-TNucleus::TNucleus(char *name){
+void TNucleus::SetMassFile(const char* path){
+
+	if(!path){ // if path not specified and no massfile name exists look in default location
+		path = getenv("GRSISYS");
+		std::string s_path = path;
+		s_path +=  "/libraries/TGRSIAnalysis/TNucleus/mass.dat";
+		TNucleus::massfile = s_path.c_str();
+	} else 
+		TNucleus::massfile = path;
+
+	return;
+}
+
+TNucleus::TNucleus(const char *name){
 // Creates a nucleus based on symbol (ex. 26Na OR Na26) and sets all parameters from mass.dat
 	std::string Name = name;
+	SetMassFile();
 	int Number = 0;
 	std::string symbol;
 	std::string element;
@@ -194,8 +208,13 @@ TNucleus::TNucleus(char* elementsymbol){
 }
 */
 TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol){
+<<<<<<< HEAD
 // Creates a nucleus with Z, N, mass, and symbol
   fZ = charge;  
+=======
+	SetMassFile();
+	fZ = charge;  
+>>>>>>> 72e6fbd744dd6b41be29569d47df5250c1e66c06
   fN = neutrons;
   fSymbol = symbol;
   fMass = mass;
@@ -203,7 +222,11 @@ TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol){
 }
 
 TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
+<<<<<<< HEAD
 // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
+=======
+	SetMassFile();
+>>>>>>> 72e6fbd744dd6b41be29569d47df5250c1e66c06
   fZ = charge;  
   fN = neutrons;
   int i = 0,n,z;

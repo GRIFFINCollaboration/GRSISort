@@ -48,6 +48,15 @@ void TSharcHit::Print(Option_t *options)	{
 			printf( DGREEN "=	=	=	=	=	=	=	" RESET_COLOR "\n");
 }
 
+
+
+Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
+	TVector3 posoff; 
+	posoff.SetXYZ(Xoff,Yoff,Zoff);
+   return (position+posoff).Theta();
+}
+
+
 //bool TSharcHit::Compare(TSharcHit *lhs, TSharcHit *rhs)	{
 //	if(lhs->GetDetectorNumber() < rhs->GetDetectorNumber())	{
 //		if(lhs->GetFrontStrip() < rhs->GetFrontStrip())	{

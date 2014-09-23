@@ -5,6 +5,8 @@
 #include "TGRSIOptions.h"
 #include "TGRSIRunInfo.h"
 
+#include "TGRSIint.h"
+
 ClassImp(TGRSIRootIO)
 
 
@@ -18,7 +20,7 @@ TGRSIRootIO *TGRSIRootIO::Get()  {
 }
 
 TGRSIRootIO::TGRSIRootIO() { 
-   printf("TGRSIRootIO has been created.\n");
+   //printf("TGRSIRootIO has been created.\n");
 
 
   foutfile = 0; //new TFile("test_out.root","recreate");
@@ -36,6 +38,11 @@ TGRSIRootIO::~TGRSIRootIO() {  }
 //   fTChannelTree->Branch("TChannel","TChannel",&fBufferChannel,1000,99);
 //}
 
+void TGRSIRootIO::LoadRootFile(TFile *file) {
+   if(file)
+      finfiles.push_back(file);
+   return;
+}
 
 void TGRSIRootIO::SetUpFragmentTree() {
 

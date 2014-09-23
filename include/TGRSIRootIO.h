@@ -12,7 +12,8 @@
 
 #include "Globals.h"
 #include "TChannel.h"
-
+#include "TNucleus.h"
+#include "TKinematics.h"
 
 class TGRSIRootIO : public TObject {
 
@@ -30,6 +31,7 @@ class TGRSIRootIO : public TObject {
       TFile *foutfile;
       int fTimesFillCalled;
 
+      std::vector<TFile*> finfiles;
 
       TFragment *fBufferFrag;
       TChannel *fBufferChannel;
@@ -40,6 +42,8 @@ class TGRSIRootIO : public TObject {
       int GetRunNumber(std::string);
       int GetSubRunNumber(std::string);
 
+      void LoadRootFile(TFile*);
+      
 
       TFile *GetRootOutFile()  { return foutfile;   }  
 
