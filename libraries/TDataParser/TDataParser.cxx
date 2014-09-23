@@ -346,19 +346,20 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 	EventFrag->MidasId = midasserialnumber;	 
 
 	int x = 0;  
- 
+   //int x = 6;
+
 	if(!SetGRIFHeader(data[x++],EventFrag)) {
 		printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n",data[0]);
 		delete EventFrag;
 		return -(x+1);	
 	}
 
-/*        if(!SetGRIFPPG(data[x++],EventFrag)) {
-		delete EventFrag;
-		return -(x+1);
-	}
-  */ 
-        if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
+//   if(!SetGRIFPPG(data[x++],EventFrag)) {
+//		delete EventFrag;
+//		return -(x+1);
+//	}
+   
+       if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -(x+1);
 	}
@@ -383,10 +384,13 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 		uint32_t packet = dword & 0xf0000000;
 		uint32_t value  = dword & 0x0fffffff; 
 		switch(packet) {
-			case 0xc0000000:
-		            if(!no_waveforms)
-		 		SetGRIFWaveForm(value,EventFrag);
-		     		break;
+         case 0x80000000:
+               //if this happens, we have "accidentially" found another event.
+               break;
+         case 0xc0000000:
+		         if(!no_waveforms) 
+                  SetGRIFWaveForm(value,EventFrag);
+            break;
 			case 0xb0000000:
 				SetGRIFDeadTime(value,EventFrag);
 				break;
@@ -395,10 +399,13 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 					if(record_stats)
 						FillStats(EventFrag);
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);				
-					return NumFragsFound;
-				} else 
+               if(x != size-1)
+                  printf( DBLUE "x | size: " DRED "%i | %i" RESET_COLOR "\n",x,size); //once this happens we need to recursively call GriffinDataToFragment with the remaining datums.
+               return NumFragsFound;
+				} else  {
 					return -(x+1);
-	    		break;
+            }
+            break;
  		   default:				
 	      	if((packet & 0x80000000) == 0x00000000) {
 					EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 21 );

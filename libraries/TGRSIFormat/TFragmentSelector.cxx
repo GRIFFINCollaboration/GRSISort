@@ -123,7 +123,7 @@ void TFragmentSelector::Terminate()
 
    TFile f(histsname,"recreate");
    std::string rootfilename = f.GetName();
-   TGRSIOptions::AddInputRootFile(rootfilename);
+//   TGRSIOptions::AddInputRootFile(rootfilename);   this real messess up so library loading... pcb.
 /*
    if(fsubrunnumber == -1){
       TFile f(Form("hists%05i.root",frunnumber),"recreate");

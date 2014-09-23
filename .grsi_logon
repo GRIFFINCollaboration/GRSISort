@@ -1,4 +1,7 @@
 {
 
+	gSystem->Load("/home/tiguser/packages/SharcAnalysis/libSharcAnalysis.so");
+
+   gROOT->LoadMacro("/home/grifuser/packages/GRSISort/util/scripts.cxx");
 
 }

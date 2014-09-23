@@ -12,7 +12,8 @@
 
 #include "Globals.h"
 #include "TChannel.h"
-
+#include "TNucleus.h"
+#include "TKinematics.h"
 
 class TGRSIRootIO : public TObject {
 

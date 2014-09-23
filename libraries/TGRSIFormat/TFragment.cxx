@@ -53,6 +53,14 @@ void TFragment::Clear(Option_t *opt){
 
 }
 
+const char *TFragment::GetName() {
+   TChannel *chan = TChannel::GetChannel(ChannelAddress);
+   if(!chan)
+      return "";
+   return chan->GetChannelName();
+}
+
+
 void TFragment::Print(Option_t *opt)	{
    //Prints out all fields of the TFragment
 

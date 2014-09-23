@@ -114,7 +114,10 @@ public:
 		SetFront_DetectorNbr(mnemonic->arrayposition);
 		SetFront_StripNbr(mnemonic->segment);
 		SetFront_ChannelAddress(frag->ChannelAddress);
-		SetFront_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+		if(channel->GetENGChi2() < 10000 && channel->GetENGChi2()!=0.00) /// Tell SJC to make this a variable, he loves calibrating sharc.
+			SetFront_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+		else 
+			SetFront_Energy(0.0);
 		SetFront_TimeCFD(frag->Cfd.at(0));
 		SetFront_TimeLED(frag->Led.at(0));
 		SetFront_Time(frag->TimeToTrig);
@@ -128,7 +131,12 @@ public:
 		SetBack_DetectorNbr(mnemonic->arrayposition);
 		SetBack_StripNbr(mnemonic->segment);
 		SetBack_ChannelAddress(frag->ChannelAddress);
-		SetBack_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+
+		if(channel->GetENGChi2() < 10000 && channel->GetENGChi2()!=0.00)
+			SetBack_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+		else
+			SetBack_Energy(0.0);
+
 		SetBack_TimeCFD(frag->Cfd.at(0));
 		SetBack_TimeLED(frag->Led.at(0));
 		SetBack_Time(frag->TimeToTrig);
@@ -141,7 +149,13 @@ public:
 		if(!frag || !channel || !mnemonic) return;
 		SetPAD_DetectorNbr(mnemonic->arrayposition);
 		SetPAD_ChannelAddress(frag->ChannelAddress);
-		SetPAD_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+
+		if(channel->GetENGChi2() < 10000 && channel->GetENGChi2()!=0.00)
+			SetPAD_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+		else
+			SetPAD_Energy(0.0);
+
+
 		SetPAD_TimeCFD(frag->Cfd.at(0));
 		SetPAD_TimeLED(frag->Led.at(0));
 		SetPAD_Time(frag->TimeToTrig);
