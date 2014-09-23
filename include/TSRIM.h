@@ -33,7 +33,7 @@ class TSRIM	{
 		std::vector<double> E; // units of keV
 		std::vector<double> X; // units of um
     double Emin, Emax, Xmin, Xmax;
-		static const double dx = 1.0; // um [sets accuracy of energy loss E vs X functions]
+		static const double dx; // um [sets accuracy of energy loss E vs X functions]
 		
 		std::map<std::pair<double,double>,double> AdjustedEnergyMap;
 
