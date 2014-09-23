@@ -31,7 +31,7 @@ void TNucleus::SetMassFile(const char* path){
 	if(!path){ // if path not specified and no massfile name exists look in default location
 		path = getenv("GRSISYS");
 		std::string s_path = path;
-		s_path +=  "/libraries/TGRSIAnalysis/TNucleus/mass.dat";
+		s_path +=  "/libraries/TGRSIAnalysis/TNucleus/SourceData/mass.dat";
 		TNucleus::massfile = s_path.c_str();
 	} else 
 		TNucleus::massfile = path;
