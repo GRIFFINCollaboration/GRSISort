@@ -94,8 +94,9 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		//inline Double_t GetBackCFD()		{	return back_cfd;	}	//!
 
 		TVector3 GetPosition()	{	return position;	}	//!
-		inline Double_t GetThetaDeg() {return position.Theta()*TMath::RadToDeg(); } //!
-		inline Double_t GetThetaRad() {return position.Theta(); } //!
+
+		Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0) { return GetTheta(Xoff,Yoff,Zoff)*TMath::RadToDeg(); } ; //! 
+		Double_t GetTheta(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0); //! 
 
 		inline void SetDeltaFrontE(const Double_t &tenergy)	{	d_energy_front = tenergy;	}	//!
 		inline void SetDeltaFrontT(const Double_t &ttime)		{	d_time_front   = ttime;	}		//!

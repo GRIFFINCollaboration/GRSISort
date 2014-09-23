@@ -114,7 +114,7 @@ public:
 		SetFront_DetectorNbr(mnemonic->arrayposition);
 		SetFront_StripNbr(mnemonic->segment);
 		SetFront_ChannelAddress(frag->ChannelAddress);
-		if(channel->GetENGChi2() < 10000) /// Tell SJC to make this a variable, he loves calibrating sharc.
+		if(channel->GetENGChi2() < 10000 && channel->GetENGChi2()!=0.00) /// Tell SJC to make this a variable, he loves calibrating sharc.
 			SetFront_Energy(channel->CalibrateENG(frag->Charge.at(0)));
 		else 
 			SetFront_Energy(0.0);
@@ -132,7 +132,7 @@ public:
 		SetBack_StripNbr(mnemonic->segment);
 		SetBack_ChannelAddress(frag->ChannelAddress);
 
-		if(channel->GetENGChi2() < 10000)
+		if(channel->GetENGChi2() < 10000 && channel->GetENGChi2()!=0.00)
 			SetBack_Energy(channel->CalibrateENG(frag->Charge.at(0)));
 		else
 			SetBack_Energy(0.0);
@@ -150,7 +150,7 @@ public:
 		SetPAD_DetectorNbr(mnemonic->arrayposition);
 		SetPAD_ChannelAddress(frag->ChannelAddress);
 
-		if(channel->GetENGChi2() < 10000)
+		if(channel->GetENGChi2() < 10000 && channel->GetENGChi2()!=0.00)
 			SetPAD_Energy(channel->CalibrateENG(frag->Charge.at(0)));
 		else
 			SetPAD_Energy(0.0);

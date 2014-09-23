@@ -1,4 +1,5 @@
 {
 
+	gSystem->Load("/home/tiguser/packages/SharcAnalysis/libSharcAnalysis.so");
 
 }
