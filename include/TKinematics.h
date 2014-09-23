@@ -127,7 +127,7 @@ private:
   double E_final(int);
   double T_final(int);
  
-  ClassDef(TKinematics,1);
+  ClassDef(TKinematics,1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments
  
 };
 #endif

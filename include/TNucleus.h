@@ -16,11 +16,11 @@ using namespace std;
 class TNucleus : public TNamed{
 
  private:
-  static const char *massfile;
+  static const char *massfile; //The massfile to be used, which includes Z, N, atomic symbol, and mass excess
 
  public:
-  TNucleus(const char*);					// Creates a nucleus based on symbol and sets all parameters from mass.dat
-  TNucleus(int, int, double, const char*);		// Creates a nucleus with Z, N, mass, and symbol
+  TNucleus(const char* symbol);					// Creates a nucleus based on symbol and sets all parameters from mass.dat
+  TNucleus(int Z, int N, double mass, const char* symbol);		// Creates a nucleus with Z, N, mass, and symbol
   TNucleus(int Z, int N, const char* MassFile = massfile); // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
 	
   static void SetMassFile(const char *tmp = NULL);// {massfile = tmp;} //Sets the mass file to be used
@@ -37,13 +37,16 @@ class TNucleus : public TNamed{
   double GetMassExcess()  {return fMassExcess;}		// Gets the mass excess of the nucleus (in MeV)
   double GetMass()        {return fMass;}		// Gets the mass of the nucleus (in MeV)
   const char* GetSymbol() {return fSymbol.c_str();}	// Gets the atomic symbol of the nucleus
-  double GetRadius();					// Gets the radius of the nucleus (in fm)
-  int GetZfromSymbol(char*);				// Figures out the Z of the nucleus based on the atomic symbol
+  double GetRadius();					
+  int GetZfromSymbol(char*);				
  private:
-  int fA, fZ, fN;
-  double fMass, fMassExcess;
-  string fSymbol;
+  int fA; 						// Number of nucleons (Z + N) 
+  int fN;						// Number of neutrons (N)
+  int fZ;						// Number of protons (Z)
+  double fMass;						// Mass (in MeV)
+  double fMassExcess;					// Mass excess (in MeV)
+  string fSymbol;					// Atomic symbol (ex. Ba, C, O, N)
 
-	ClassDef(TNucleus,1);
+	ClassDef(TNucleus,1);				// Creates a nucleus with corresponding nuclear information
 };
 #endif
