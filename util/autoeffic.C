@@ -250,4 +250,61 @@ int autoeffic(const char *histfile,           //File with all of the histograms 
 
 
 
+
+
+
+
+
+int autoeffic(TH1 *hist,                      //File with all of the histograms to be fit
+              const char *sourcename = "60Co",//Name of the source being used. Not used at this time
+              Double_t activity = 0.0,        //This will be dependent on the source used. //Activity of the source in uCi
+              bool kvis = true        ) {     //Display The fits on a TPad  
+
+   if(!hist)
+      return;
+
+
+   //TList *fitlist = new TList;
+
+   //This defines the 60Co source
+   Int_t np = 2;
+   npeaks = TMath::Abs(np);
+   std::vector<Double_t> energy(1173.228,1332.492);
+   std::vector<Double_t> intensity(99.85,99.9826);
+
+   TH2F * eff = new TH2F("efficiency","efficiency",64,0,64,npeaks,0,npeaks);
+
+
+   //file.ls(); 
   
+   Int_t counter = 0;
+   Int_t plotcounter = 0;
+   char detname[20];
+   char canvname[10];
+
+
+   if(kvis && counter%16 == 0){
+      sprintf(canvname, "c%d",plotcounter);
+      TCanvas *c1 = new TCanvas(canvname,canvname,10,10,1000,900);
+      c1->DivideSquare(16);
+      plotcounter++;   
+   }
+      
+   std::cout << counter++ << std::endl;
+
+   c1->cd(counter%16+1); 
+
+   FitSpectrum(npeaks,h1);
+
+     
+}
+
+
+
+
+
+
+
+
+
+
