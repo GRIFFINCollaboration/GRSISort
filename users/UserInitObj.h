@@ -40,7 +40,11 @@
 
    GetOutputList()->Add(new TH1D("Cfd_0x100f","Timestamp_0x100f",4000,0,4000));
 
-	
+   GetOutputList()->Add(new TH1D("PPG","PPG",10000,0,10000));
+   GetOutputList()->Add(new TH1D("FragmentId","FragmentId",1000000,0,1000000));
+   GetOutputList()->Add(new TH1D("MidasId","MidasId",1000000,0,1000000));
+   GetOutputList()->Add(new TH1D("MidasTimeStamp","MidasTimeStamp",1000000,0,1000000));	
+   GetOutputList()->Add(new TH1D("TriggerId","TriggerId",1000000,0,1000000));
 
    GetOutputList()->Add(new TH2D("hp_charge","Channel vs Charge",64,0,64,4000,0,4000));
    
