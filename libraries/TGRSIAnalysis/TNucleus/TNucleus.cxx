@@ -208,13 +208,9 @@ TNucleus::TNucleus(char* elementsymbol){
 }
 */
 TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol){
-<<<<<<< HEAD
 // Creates a nucleus with Z, N, mass, and symbol
+  SetMassFile();
   fZ = charge;  
-=======
-	SetMassFile();
-	fZ = charge;  
->>>>>>> 72e6fbd744dd6b41be29569d47df5250c1e66c06
   fN = neutrons;
   fSymbol = symbol;
   fMass = mass;
@@ -222,11 +218,8 @@ TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol){
 }
 
 TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
-<<<<<<< HEAD
 // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
-=======
-	SetMassFile();
->>>>>>> 72e6fbd744dd6b41be29569d47df5250c1e66c06
+  SetMassFile();
   fZ = charge;  
   fN = neutrons;
   int i = 0,n,z;
