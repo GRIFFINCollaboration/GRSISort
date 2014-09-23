@@ -99,13 +99,14 @@ int TGRSIint::TabCompletionHook(char* buf, int* pLoc, ostream& out) {
 void TGRSIint::PrintLogo(bool print) {
 
    if(print)   {
-     #if PLATFORM == Linux
+     #ifdef LINUX
       const std::string &ref = ProgramName();
+      const unsigned int reflength = ref.length() - 78;
      #else
-      const std::string &ref = "Nuclear Data";
+      const std::string &ref = "Sorting Program for Online and Offline Nuclear Data";
+      const unsigned int reflength = 53;
      #endif
 
-     const unsigned int reflength = ref.length() - 78;
      const unsigned int width = reflength + (reflength % 2);
      printf("\t*%s*\n", std::string(width,'*').c_str());   
      printf("\t*%*s%*s*\n",width/2+5,"GRSI SPOON", width/2-5, "");
