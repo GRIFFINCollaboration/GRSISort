@@ -72,8 +72,11 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
 
 
 	//printf("frontsize = %i   |  backsize = %i  \n",sdata->GetMultiplicityFront(),sdata->GetMultiplicityBack());
-	if((sdata->GetMultiplicityFront()!=1) && (sdata->GetMultiplicityBack()!=1) )   ///need to remove this soon!!! pcb. and add better building condition.
-		return;
+
+
+	if((sdata->GetMultiplicityFront()!=1) && (sdata->GetMultiplicityBack()!=1) )   ///need to remove this soon and replaces with time gates in the loops below
+		return;																							 //// !!! pcb. and add better building condition.
+		
 
 	//printf("Building sharc hits.\n");
 
@@ -81,7 +84,7 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
       for(int j=0;j<sdata->GetMultiplicityBack();j++)	{	
          if(sdata->GetFront_DetectorNbr(i) != sdata->GetBack_DetectorNbr(j))
 				continue;
-			if(abs(sdata->GetFront_Energy(i) - sdata->GetBack_Energy(j)) > 500)
+			if(abs(sdata->GetFront_Charge(i) - sdata->GetBack_Charge(j)) > 15000)//naive charge cut keeps >99.9% of data.
 				continue;
 
 		/*	
