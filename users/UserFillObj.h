@@ -21,8 +21,8 @@
 	hist = (TH1D*)(GetOutputList()->FindObject("PPG"));
 	if(hist) hist->Fill(fragment->PPG);
         
-	hist = (TH1D*)(GetOutputList()->FindObject("FragmentId"));
-	if(hist) hist->Fill(fragment->FragmentId);
+	hist = (TH1D*)(GetOutputList()->FindObject("ChannelId"));
+	if(hist) hist->Fill(fragment->ChannelId);
 
 	hist = (TH1D*)(GetOutputList()->FindObject("MidasId"));
 	if(hist) hist->Fill(fragment->MidasId);
