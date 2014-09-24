@@ -11,6 +11,7 @@
 #include <map>
 #include <vector>
 #include "TROOT.h"
+//#include "../include/TNucleus.h"
 
 #include "../include/TGRSITransition.h"
 
@@ -93,10 +94,10 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 /////////////////////////    This is there the fitting takes place    //////////////////////////////
 
 
-TF1* FitPeak(Double_t *par, TH1F *h){
+bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
 
-   Double_t binWidth = h->GetXaxis()->GetBinWidth(0);//Need to find the bin widths so that the integral makes sense
-   Int_t rw = binWidth*60;  //This number may change depending on the source used   
+   Double_t binWidth = h->GetXaxis()->GetBinWidth(1000);//Need to find the bin widths so that the integral makes sense
+   Int_t rw = binWidth*20;  //This number may change depending on the source used   
    //Set the number of iterations. The code is pretty quick, so having a lot isn't an issue	
    TVirtualFitter::SetMaxIterations(4999);
    Int_t xp = par[1];
@@ -121,7 +122,7 @@ TF1* FitPeak(Double_t *par, TH1F *h){
    pp->SetParLimits(3,0,30);
    pp->SetParLimits(4,0,10);
    pp->SetParLimits(5,0.000,1000000);
-   pp->SetParLimits(9,xp-3,xp+3);
+   pp->SetParLimits(9,xp-20,xp+20);
 
    //Actually set the parameters in the photopeak function
    pp->SetParameters(par);
@@ -139,9 +140,7 @@ TF1* FitPeak(Double_t *par, TH1F *h){
 
    Double_t integral = photopeak->Integral(xp-rw,xp+rw)/binWidth;
 
-
    std::cout << "FIT RESULT CHI2 " << fitres->Chi2() << std::endl;
-
 
    std::cout << "FWHM = " << 2.35482*fitres->Parameter(2)/binWidth <<"(" << fitres->ParError(2)/binWidth << ")" << std::endl;
    std::cout << "NDF: " << fitres->Ndf() << std::endl;
@@ -156,15 +155,23 @@ TF1* FitPeak(Double_t *par, TH1F *h){
 
    std::cout << "Integral = " << integral << " +/- " << sigma_integral << std::endl;
 
-   myFitResult.fIntegral = integral;
+   area = integral;
+   darea = sigma_integral;
+
+   if(fitres->Chi2()/fitres->Ndf() > 5.0)
+      return false;
+
+   return true;
+
+//   myFitResult.fIntegral = integral;
 
 
-   return pp;
+ //  return photopeak;
 
 }
 
 
-
+/*
 void FitSpectrum(Int_t npeaks, TH1F* h1){
 
       //Use TSpectrum to find the peak candidates
@@ -203,7 +210,7 @@ void FitSpectrum(Int_t npeaks, TH1F* h1){
 
 /////////////////////     This is the loop that finds the peaks and sends them to the fitter    ////////////////////////////
 
-int autoeffic(const char *histfile,           //File with all of the histograms to be fit
+int autoefficGARBAGE(const char *histfile,           //File with all of the histograms to be fit
               const char *sourcename = "60Co",//Name of the source being used. Not used at this time
               Double_t activity = 0.0,        //This will be dependent on the source used. //Activity of the source in uCi
               bool kvis = true        ) {     //Display The fits on a TPad  
@@ -250,7 +257,7 @@ int autoeffic(const char *histfile,           //File with all of the histograms 
    }  
 }
 
-
+*/
 
 
 TH1D *GetProjectionY(TH2 *mat,double first,double last =0.0) {
@@ -386,6 +393,91 @@ void DoFit(TH2 *hist) {
 
 }
 
+int autoefficiency(TH1 *hist,const char *name) {
+  gSystem->Load("libNucleus");
+  TNucleus nuc(name);
+  TGraph *graph;
+  graph = autoefficiency(hist,&nuc);
+  return 1;
+}
 
+TGraph* autoefficiency(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPad  
 
+   if(!hist || !nuc)
+      return 0;
+
+   Double_t par[40];
+
+   nuc->SetSourceData();
+
+ //  if(nuc->GetA() == 152) {
+ //     return autogain152(hist);
+ //  }
+
+// Search
+   hist->GetXaxis()->SetRangeUser(0,16000);
+
+   nuc->TransitionList.Sort();
+
+   std::vector<float> engvec;
+   TIter iter(&(nuc->TransitionList));
+   TObject* obj;
+   while(obj = iter.Next()) {
+      if(!obj->InheritsFrom("TGRSITransition"))
+         continue;
+      TGRSITransition *tran = (TGRSITransition*)obj;
+
+      engvec.push_back(static_cast<float>(tran->energy));
+   }
+
+ 
+
+   std::vector<Float_t> areavec;
+   std::vector<Float_t> area_uncertainty;
+   std::vector<Float_t> goodenergy;
+
+   Float_t integral, sigma; 
+   Double_t binWidth = hist->GetXaxis()->GetBinWidth(10000);
+
+   std::cout << "bin width is " << binWidth << std::endl;
+  for (int p=0;p<engvec.size();p++) {
+     Float_t xp = engvec.at(p)/binWidth;
+     std::cout << "Trying to fit " << xp << " keV" <<std::endl; 
+
+     Int_t bin = hist->GetXaxis()->FindBin(xp);
+     Float_t yp = hist->GetBinContent(bin);
+     par[0] = yp;  //height
+     par[1] = xp;  //centroid
+     par[2] = 2;   //sigma
+     par[3] = 5;   //beta
+     par[4] = 0;   //R
+     par[5] = 1.0;//stp
+     par[6] = hist->GetBinContent(bin+30);  //A
+     par[7] = -0.2;//B
+     par[8] = 0;   //C
+     par[9] = xp;  //bg offset
+     bool goodfit = FitPeak(par,hist,integral, sigma);
+     if(goodfit){
+     	areavec.push_back(integral);
+     	area_uncertainty.push_back(sigma);
+        goodenergy.push_back(engvec.at(p));
+     }
+  //   fitlist->Add(f);
+   }
+
+   std::cout << "or made it here" << std::endl;
+
+   Float_t *area = &(areavec[0]);
+   Float_t *energies = &(engvec[0]);
+   Float_t *goodenergy = &(goodenergy[0]);
+
+   TGraph *slopefit = new TGraph(engvec.size(),area,energies ); 
+
+   printf("Now fitting: Be patient\n");
+ //  slopefit->Fit("pol1");
+   slopefit->Draw("AC*");
+
+   return slopefit;
+
+}
 
