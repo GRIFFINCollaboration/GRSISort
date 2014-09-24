@@ -9,9 +9,16 @@
 #include <fstream>
 #include <string>
 
+#include <TGRSITransition.h>
+
+#include "TObject.h"
 #include "TNamed.h"
+#include "TList.h"
 
 using namespace std;
+
+
+
 
 class TNucleus : public TNamed{
 
@@ -39,11 +46,23 @@ class TNucleus : public TNamed{
   const char* GetSymbol() {return fSymbol.c_str();}	// Gets the atomic symbol of the nucleus
   double GetRadius();					// Gets the radius of the nucleus (in fm)
   int GetZfromSymbol(char*);				// Figures out the Z of the nucleus based on the atomic symbol
- private:
+
+
+
+
+  TList TransitionList;
+  bool SetSourceData();
+
+
+private:
   int fA, fZ, fN;
   double fMass, fMassExcess;
   string fSymbol;
 
 	ClassDef(TNucleus,1);
 };
+
+
+
 #endif
+

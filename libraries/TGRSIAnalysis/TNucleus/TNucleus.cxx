@@ -1,12 +1,23 @@
 //g++ -c -fPIC Nucleus.cc -I./ `root-config --cflags`
+
+#include "Globals.h"
+
 #include "TNucleus.h"
 #include <algorithm>
 #include <cstring>
 #include <sstream>
 
+#include <TClass.h>
+
 using namespace std;
 
 //#define debug
+
+
+
+
+
+
 
 ClassImp(TNucleus);
 
@@ -20,6 +31,10 @@ ClassImp(TNucleus);
 //
 /////////////////////////////////////////////////////////////////
 
+
+
+
+
 //const char *TNucleus::massfile = "/home/tiguser/packages/GRSISort/libraries/TAnalysis/TNucleus/mass.dat";
 const char *TNucleus::massfile = 0;
 
@@ -28,13 +43,13 @@ static double amu = 931.494043;
 
 void TNucleus::SetMassFile(const char* path){
 
-	if(!path){ // if path not specified and no massfile name exists look in default location
+//	if(!path ){ // if path not specified and no massfile name exists look in default location
 		path = getenv("GRSISYS");
 		std::string s_path = path;
 		s_path +=  "/libraries/TGRSIAnalysis/TNucleus/SourceData/mass.dat";
 		TNucleus::massfile = s_path.c_str();
-	} else 
-		TNucleus::massfile = path;
+//	} else 
+//		TNucleus::massfile = path;
 
 	return;
 }
@@ -111,102 +126,8 @@ TNucleus::TNucleus(const char *name){
 	SetSymbol(symbol.c_str());
   SetName(element.c_str());
 
-	//printf("element = %s\tfirst_digit = %i\tfirst_letter = %i\n",element.c_str(),first_digit,first_letter);
-
-
-
-/*
-  int length = strlen(name);
-  if(length == 0){
-      cerr<<"error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30"<<endl;
-      exit(1);
-    }
-  int A=0;
-  std::string  buffer; //[4] = "";
-  for(int i=0; i<length; i++){
-      if(isdigit(name[i]))
-        A = 10*A+name[i];
-      else if(isalpha(name[i])){
-        if(buffer.size()==0)
-          name[i] = toupper(name[i]);
-        buffer.append(name+i,1);
-      }
-        //sprintf(buffer,"%s%s",buffer,name[i]);
-  }
-
-  std::string element = std::to_string((long long)A);
-  element.append(buffer);
-
-  ifstream infile;
-  infile.open(massfile);
-
-  int N,Z;
-  std::string isotope;
-  double mass;
-
-  while(infile.good()){
-    infile >> Z >> N >> isotope >> mass;
-    if(isotope.compare(element))
-      break;
-  }
-  SetZ(Z);
-  SetN(N);
-  SetMass(mass);
-  SetName(element.c_str());
-*/
 }
 /*
-TNucleus::TNucleus(char* elementsymbol){
-  int length = strlen(elementsymbol);
-  if(length == 0){
-      cerr<<"error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30"<<endl;
-      exit(1);
-    }
-  int first_digit = length;
-  int first_letter = length;
-
-  if(isdigit(elementsymbol[0])){
-      first_digit = 0;
-    }
-  else if(isalpha(elementsymbol[0])){
-      first_letter = 0;
-    }
-  else{
-      cerr<< "error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30"<<endl;
-      exit(1);
-    }
-  int symbol_length = 0;
-  int i;
-  for(i=0;i<length;i++){
-    if(isdigit(elementsymbol[i]) && first_letter == 0){
-      first_digit = i;
-      symbol_length = i;
-      break;
-    }
-    if(isalpha(elementsymbol[i]) && first_digit == 0){
-      first_letter = i;
-      symbol_length = length - i;
-      break;
-    }
-  }
-  symbol_length +=1; //char one digit more
-  if(i==length){
-    if(first_digit == 0 || first_letter == 0)
-      cerr<< "error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30"<<endl;
-      exit(1);  
-  }
-  SetSymbol((const char*)(elementsymbol+first_letter));
-  if(first_letter<first_digit) {
-    std::string e = elementsymbol;
-    e = e.substr(first_letter,first_digit-first_letter);
-    GetZfromSymbol((char*)e.c_str());
-  } else {
-    GetZfromSymbol(elementsymbol+first_letter);
-  }
-  SetN(atoi(elementsymbol+first_digit)-GetZ());
-  SetMass(atof(elementsymbol+first_digit)*amu);
-  SetName(elementsymbol);
-}
 */
 TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol){
 	SetMassFile();
@@ -310,3 +231,53 @@ double TNucleus::GetRadius(){
 // The radius is calculated using 1.12*A^1/3 - 0.94*A^-1/3
   return 1.12*pow(this->GetA(),1./3.) - 0.94*pow(this->GetA(),-1./3.);
 }
+
+
+
+bool TNucleus::SetSourceData() {
+
+   std::string name = GetSymbol();
+   if(name.length()==0)
+      return false;
+  
+   if(name[0]<='Z' && name[0]>='A')
+      name[0] = name[0]-'A'+'a'; 
+   name = name + Form("%i",GetA()) + ".sou";
+   std::string path = getenv("GRSISYS");
+	path +=  "/libraries/TGRSIAnalysis/TNucleus/SourceData/";
+   path +=  name;
+
+   ifstream sourcefile;
+   sourcefile.open(path.c_str());
+   if(!sourcefile.is_open()) {
+      printf("unable to set source data for %s.\n",GetName());
+      return false;
+   }
+   printf("path = %s\n",path.c_str());
+
+   TransitionList.Clear();
+
+   std::string line;
+   int linenumber = 0;
+   while(getline(sourcefile,line)) {
+      linenumber++;
+      int comment = line.find("//");
+      if (comment != std::string::npos) 
+         line = line.substr(0, comment);
+      if(line.length()==0)
+         continue;
+      TGRSITransition *tran = new TGRSITransition; 
+      std::stringstream ss(line);
+      ss >> tran->energy;
+      ss >> tran->energy_uncertainity;
+      ss >> tran->intensity;
+      ss >> tran->intensity_uncertainity;
+      TransitionList.Add(tran);
+      printf("eng: %.02f\tinten: %.02f\n",((TGRSITransition*)TransitionList.Last())->energy,((TGRSITransition*)TransitionList.Last())->intensity);
+   }                                                                                                         
+
+   return true;
+
+
+};
+

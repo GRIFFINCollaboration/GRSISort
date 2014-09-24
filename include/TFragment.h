@@ -64,6 +64,7 @@ public:
    std::vector<Short_t>  wavebuffer;//-> waveform words
   
    const char *GetName(); //!
+   double GetEnergy(); //!
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 
    virtual void Print(Option_t *opt = ""); //!

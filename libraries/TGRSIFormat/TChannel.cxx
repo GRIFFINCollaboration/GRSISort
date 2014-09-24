@@ -492,7 +492,7 @@ void TChannel::ReadCalFile(const char *filename) {
          //printf("brace closed.\n");
          //channel->Print();
          brace_open = false;
-         if (channel && (channel->GetAddress()!=0) ) {
+         if (channel) {// && (channel->GetAddress()!=0) ) {
 				TChannel *currentchan = GetChannel(channel->GetAddress());      
             if(!currentchan){
 					AddChannel(channel);// consider using a default option here

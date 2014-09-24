@@ -61,6 +61,17 @@ const char *TFragment::GetName() {
 }
 
 
+double TFragment::GetEnergy() {
+   TChannel *chan = TChannel::GetChannel(ChannelAddress);
+   if(!chan || Charge.size()<1)
+      return 0.00;
+   return chan->CalibrateENG(Charge.at(0));
+}
+
+
+
+
+
 void TFragment::Print(Option_t *opt)	{
    //Prints out all fields of the TFragment
 

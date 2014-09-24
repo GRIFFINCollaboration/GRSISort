@@ -1,0 +1,704 @@
+GRG01BN00A	{
+Name:      GRG01BN00A
+Number:    1
+Address:   0x00000000
+Digitizer: 
+EngCoeff:  -1.151245	0.292132	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG01GN00A	{
+Name:      GRG01GN00A
+Number:    2
+Address:   0x00000001
+Digitizer: 
+EngCoeff:  -0.470098	0.265190	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG01RN00A	{
+Name:      GRG01RN00A
+Number:    3
+Address:   0x00000002
+Digitizer: 
+EngCoeff:  0.241290	0.292695	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG01WN00A	{
+Name:      GRG01WN00A
+Number:    4
+Address:   0x00000003
+Digitizer: 
+EngCoeff:  -0.503636	0.261419	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG02BN00A	{
+Name:      GRG02BN00A
+Number:    5
+Address:   0x00000004
+Digitizer: 
+EngCoeff:  -0.308136	0.273590	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG02GN00A	{
+Name:      GRG02GN00A
+Number:    6
+Address:   0x00000005
+Digitizer: 
+EngCoeff:  -0.572491	0.270959	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG02RN00A	{
+Name:      GRG02RN00A
+Number:    7
+Address:   0x00000006
+Digitizer: 
+EngCoeff:  -0.225589	0.288037	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG02WN00A	{
+Name:      GRG02WN00A
+Number:    8
+Address:   0x00000007
+Digitizer: 
+EngCoeff:  -0.313175	0.256127	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG03BN00A	{
+Name:      GRG03BN00A
+Number:    9
+Address:   0x00000008
+Digitizer: 
+EngCoeff:  0.279845	0.287013	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG03GN00A	{
+Name:      GRG03GN00A
+Number:    10
+Address:   0x00000009
+Digitizer: 
+EngCoeff:  -1.019603	0.268512	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG03RN00A	{
+Name:      GRG03RN00A
+Number:    11
+Address:   0x0000000a
+Digitizer: 
+EngCoeff:  -0.136300	0.289421	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG03WN00A	{
+Name:      GRG03WN00A
+Number:    12
+Address:   0x0000000b
+Digitizer: 
+EngCoeff:  -0.256523	0.262705	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG04BN00A	{
+Name:      GRG04BN00A
+Number:    13
+Address:   0x0000000c
+Digitizer: 
+EngCoeff:  0.183328	0.277608	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG04GN00A	{
+Name:      GRG04GN00A
+Number:    14
+Address:   0x0000000d
+Digitizer: 
+EngCoeff:  -0.349788	0.265742	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG04RN00A	{
+Name:      GRG04RN00A
+Number:    15
+Address:   0x0000000e
+Digitizer: 
+EngCoeff:  -0.165958	0.280685	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG04WN00A	{
+Name:      GRG04WN00A
+Number:    16
+Address:   0x0000000f
+Digitizer: 
+EngCoeff:  -327.586174	0.249777	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG05BN00A	{
+Name:      GRG05BN00A
+Number:    17
+Address:   0x00000100
+Digitizer: 
+EngCoeff:  -0.221442	0.279653	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG05GN00A	{
+Name:      GRG05GN00A
+Number:    18
+Address:   0x00000101
+Digitizer: 
+EngCoeff:  -0.384737	0.260929	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG05RN00A	{
+Name:      GRG05RN00A
+Number:    19
+Address:   0x00000102
+Digitizer: 
+EngCoeff:  -0.142655	0.290316	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG05WN00A	{
+Name:      GRG05WN00A
+Number:    20
+Address:   0x00000103
+Digitizer: 
+EngCoeff:  -0.251062	0.252306	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG06BN00A	{
+Name:      GRG06BN00A
+Number:    21
+Address:   0x00000104
+Digitizer: 
+EngCoeff:  -0.034060	0.277738	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG06GN00A	{
+Name:      GRG06GN00A
+Number:    22
+Address:   0x00000105
+Digitizer: 
+EngCoeff:  0.057939	0.242584	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG06RN00A	{
+Name:      GRG06RN00A
+Number:    23
+Address:   0x00000106
+Digitizer: 
+EngCoeff:  -0.221934	0.262995	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG06WN00A	{
+Name:      GRG06WN00A
+Number:    24
+Address:   0x00000107
+Digitizer: 
+EngCoeff:  -0.377718	0.243727	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG07BN00A	{
+Name:      GRG07BN00A
+Number:    25
+Address:   0x00000108
+Digitizer: 
+EngCoeff:  0.071049	0.279546	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG07GN00A	{
+Name:      GRG07GN00A
+Number:    26
+Address:   0x00000109
+Digitizer: 
+EngCoeff:  -0.522891	0.266107	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG07RN00A	{
+Name:      GRG07RN00A
+Number:    27
+Address:   0x0000010a
+Digitizer: 
+EngCoeff:  -0.275880	0.277447	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG07WN00A	{
+Name:      GRG07WN00A
+Number:    28
+Address:   0x0000010b
+Digitizer: 
+EngCoeff:  -0.656178	0.247819	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG08BN00A	{
+Name:      GRG08BN00A
+Number:    29
+Address:   0x0000010c
+Digitizer: 
+EngCoeff:  0.072202	0.262321	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG08GN00A	{
+Name:      GRG08GN00A
+Number:    30
+Address:   0x0000010d
+Digitizer: 
+EngCoeff:  -0.812070	0.254252	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG08RN00A	{
+Name:      GRG08RN00A
+Number:    31
+Address:   0x0000010e
+Digitizer: 
+EngCoeff:  -0.950128	0.273205	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG08WN00A	{
+Name:      GRG08WN00A
+Number:    32
+Address:   0x0000010f
+Digitizer: 
+EngCoeff:  -0.445113	0.247897	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG09BN00A	{
+Name:      GRG09BN00A
+Number:    33
+Address:   0x00001000
+Digitizer: 
+EngCoeff:  -0.146962	0.263036	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG09GN00A	{
+Name:      GRG09GN00A
+Number:    34
+Address:   0x00001001
+Digitizer: 
+EngCoeff:  -0.399650	0.240206	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG09RN00A	{
+Name:      GRG09RN00A
+Number:    35
+Address:   0x00001002
+Digitizer: 
+EngCoeff:  -0.281681	0.275255	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG09WN00A	{
+Name:      GRG09WN00A
+Number:    36
+Address:   0x00001003
+Digitizer: 
+EngCoeff:  -0.483518	0.250694	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG10BN00A	{
+Name:      GRG10BN00A
+Number:    37
+Address:   0x00001004
+Digitizer: 
+EngCoeff:  -0.493067	0.298298	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG10GN00A	{
+Name:      GRG10GN00A
+Number:    38
+Address:   0x00001005
+Digitizer: 
+EngCoeff:  -0.248010	0.277575	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG10RN00A	{
+Name:      GRG10RN00A
+Number:    39
+Address:   0x00001006
+Digitizer: 
+EngCoeff:  -0.233697	0.292777	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG10WN00A	{
+Name:      GRG10WN00A
+Number:    40
+Address:   0x00001007
+Digitizer: 
+EngCoeff:  -0.340217	0.265386	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG11BN00A	{
+Name:      GRG11BN00A
+Number:    41
+Address:   0x00001008
+Digitizer: 
+EngCoeff:  -0.391110	0.260457	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG11GN00A	{
+Name:      GRG11GN00A
+Number:    42
+Address:   0x00001009
+Digitizer: 
+EngCoeff:  -0.704330	0.235303	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG11RN00A	{
+Name:      GRG11RN00A
+Number:    43
+Address:   0x0000100a
+Digitizer: 
+EngCoeff:  -0.249273	0.259682	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG11WN00A	{
+Name:      GRG11WN00A
+Number:    44
+Address:   0x0000100b
+Digitizer: 
+EngCoeff:  0.154171	0.229923	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG12BN00A	{
+Name:      GRG12BN00A
+Number:    45
+Address:   0x0000100c
+Digitizer: 
+EngCoeff:  0.133116	0.262528	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG12GN00A	{
+Name:      GRG12GN00A
+Number:    46
+Address:   0x0000100d
+Digitizer: 
+EngCoeff:  -0.726586	0.255141	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG12RN00A	{
+Name:      GRG12RN00A
+Number:    47
+Address:   0x0000100e
+Digitizer: 
+EngCoeff:  0.272123	0.268683	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG12WN00A	{
+Name:      GRG12WN00A
+Number:    48
+Address:   0x0000100f
+Digitizer: 
+EngCoeff:  -0.561340	0.230632	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG13BN00A	{
+Name:      GRG13BN00A
+Number:    49
+Address:   0x00001100
+Digitizer: 
+EngCoeff:  -0.337708	0.278956	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG13GN00A	{
+Name:      GRG13GN00A
+Number:    50
+Address:   0x00001101
+Digitizer: 
+EngCoeff:  0.000000	0.000000	
+Integration: 0
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG13RN00A	{
+Name:      GRG13RN00A
+Number:    51
+Address:   0x00001102
+Digitizer: 
+EngCoeff:  -0.206176	0.257398	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG13WN00A	{
+Name:      GRG13WN00A
+Number:    52
+Address:   0x00001103
+Digitizer: 
+EngCoeff:  -0.532294	0.242289	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG14BN00A	{
+Name:      GRG14BN00A
+Number:    53
+Address:   0x00001104
+Digitizer: 
+EngCoeff:  0.091210	0.278710	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG14GN00A	{
+Name:      GRG14GN00A
+Number:    54
+Address:   0x00001105
+Digitizer: 
+EngCoeff:  -0.010803	0.260901	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG14RN00A	{
+Name:      GRG14RN00A
+Number:    55
+Address:   0x00001106
+Digitizer: 
+EngCoeff:  -0.321691	0.283098	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG14WN00A	{
+Name:      GRG14WN00A
+Number:    56
+Address:   0x00001107
+Digitizer: 
+EngCoeff:  -0.434431	0.260510	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG15BN00A	{
+Name:      GRG15BN00A
+Number:    57
+Address:   0x00001108
+Digitizer: 
+EngCoeff:  -0.335152	0.287122	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG15GN00A	{
+Name:      GRG15GN00A
+Number:    58
+Address:   0x00001109
+Digitizer: 
+EngCoeff:  -0.382494	0.269312	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG15RN00A	{
+Name:      GRG15RN00A
+Number:    59
+Address:   0x0000110a
+Digitizer: 
+EngCoeff:  -0.267486	0.293460	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG15WN00A	{
+Name:      GRG15WN00A
+Number:    60
+Address:   0x0000110b
+Digitizer: 
+EngCoeff:  -0.433173	0.260914	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG16BN00A	{
+Name:      GRG16BN00A
+Number:    61
+Address:   0x0000110c
+Digitizer: 
+EngCoeff:  -0.287643	0.294028	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG16GN00A	{
+Name:      GRG16GN00A
+Number:    62
+Address:   0x0000110d
+Digitizer: 
+EngCoeff:  -0.699566	0.263890	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG16RN00A	{
+Name:      GRG16RN00A
+Number:    63
+Address:   0x0000110e
+Digitizer: 
+EngCoeff:  -0.101614	0.289146	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
+GRG16WN00A	{
+Name:      GRG16WN00A
+Number:    64
+Address:   0x0000110f
+Digitizer: 
+EngCoeff:  0.038693	0.261588	
+Integration: 125
+ENGChi2:   0.000000
+
+}
+//====================================//
