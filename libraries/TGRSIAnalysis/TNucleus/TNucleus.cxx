@@ -25,9 +25,8 @@ ClassImp(TNucleus);
 //
 // TNucleus
 //
-// This class interprets the nucleus in question and provides
-// basic information (mass, Z, symbol, radius, etc.) about said
-// nucleus.
+// This class builds a nucleus and sets all the basic information
+// (mass, Z, symbol, radius, etc.)
 //
 /////////////////////////////////////////////////////////////////
 
@@ -55,7 +54,7 @@ void TNucleus::SetMassFile(const char* path){
 }
 
 TNucleus::TNucleus(const char *name){
-
+// Creates a nucleus based on symbol (ex. 26Na OR Na26) and sets all parameters from mass.dat
 	std::string Name = name;
 	SetMassFile();
 	int Number = 0;
@@ -130,8 +129,9 @@ TNucleus::TNucleus(const char *name){
 /*
 */
 TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol){
-	SetMassFile();
-	fZ = charge;  
+// Creates a nucleus with Z, N, mass, and symbol
+  SetMassFile();
+  fZ = charge;  
   fN = neutrons;
   fSymbol = symbol;
   fMass = mass;
@@ -139,7 +139,8 @@ TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol){
 }
 
 TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
-	SetMassFile();
+// Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
+  SetMassFile();
   fZ = charge;  
   fN = neutrons;
   int i = 0,n,z;
@@ -181,21 +182,26 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
 //}
 
 void TNucleus::SetZ(int charge){
+// Sets the Z (# of protons) of the nucleus
   fZ = charge;
 }
 void TNucleus::SetN(int neutrons){
+// Sets the N (# of neutrons) of the nucleus
   fN = neutrons;
 }
 void TNucleus::SetMassExcess(double mass_ex){
+// Sets the mass excess of the nucleus (in MeV)
   fMassExcess = mass_ex;
 }
 
 
 void TNucleus::SetMass(double mass){
+// Sets the mass manually (in MeV)
   fMass = mass;
  }
 
 void TNucleus::SetMass(){
+// Sets the mass based on the A and mass excess of nucleus (in MeV)
   fMass = amu*GetA()+GetMassExcess();
 }
 
@@ -203,9 +209,11 @@ void TNucleus::SetMass(){
 
 
 void TNucleus::SetSymbol(const char* symbol){
+// Sets the atomic symbol for the nucleus
   fSymbol = symbol;
 }
 int TNucleus::GetZfromSymbol(char* symbol){
+// Figures out the Z of the nucleus based on the atomic symbol
   char symbols[105][3] = {"H","HE","LI","BE","B","C","N","O","F","NE","NA","MG","AL","SI","P","S","CL","AR","K","CA","SC","TI","V","CR","MN","FE","CO","NI","CU","ZN","GA","GE","AS","SE","BR","KR","RB","SR","Y","ZR","NB","MO","TC","RU","RH","PD","AG","CD","IN","SN","SB","TE","F","XE","CS","BA","LA","CE","PR","ND","PM","SM","EU","GD","TB","DY","HO","ER","TM","YB","LU","HF","TA","W","RE","OS","IR","PT","AU","HG","TI","PB","BI","PO","AT","RN","FR","RA","AC","TH","PA","U","NP","PU","AM","CM","BK","CF","ES","FM","MD","NO","LR","RF","HA"};
   int length = strlen(symbol);
   //cout << symbol << "   " << length << endl;
@@ -228,6 +236,7 @@ int TNucleus::GetZfromSymbol(char* symbol){
 }
 
 double TNucleus::GetRadius(){
+// Gets the radius of the nucleus (in fm).
 // The radius is calculated using 1.12*A^1/3 - 0.94*A^-1/3
   return 1.12*pow(this->GetA(),1./3.) - 0.94*pow(this->GetA(),-1./3.);
 }

@@ -2,7 +2,7 @@
 OBJECTS = TFragment.o TFragmentDict.o TChannel.o TChannelDict.o TFragmentQueue.o TFragmentQueueDict.o TGRSIStats.o TGRSIStatsDict.o TFragmentSelector.o TFragmentSelectorDict.o TGRSIRunInfo.o TGRSIRunInfoDict.o 
 
 CFLAGS += -fPIC
-CFLAGS += -I $(GRSISYS)/users
+CFLAGS += -I $(BASE)/users
 
 #COMP_STRING="Now Compling "
 DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
@@ -14,7 +14,7 @@ CAT=cat
 all: libGRSIFormat.so
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
 
-USERDEPS = $(GRSISYS)/users/UserInitObj.h $(GRSISYS)/users/UserFillObj.h
+USERDEPS = $(BASE)/users/UserInitObj.h $(BASE)/users/UserFillObj.h
 
 INCLUDES = UserInitObj.h UserFillObj.h
 
