@@ -18,6 +18,10 @@ void TGriffinData::Clear(Option_t *opt)	{
 
 	fIsSet = false;
 
+   fCore_MidasId.clear();
+   fCore_NbrHits.clear(); 
+
+
 	fClover_Nbr.clear();
 	fCore_Nbr.clear();
    fCore_Address.clear();
@@ -27,6 +31,8 @@ void TGriffinData::Clear(Option_t *opt)	{
 	fCore_TimeCFD.clear();
 	fCore_TimeLED.clear();
 	fCore_Time.clear();
+
+
 
 	for(int x=0;x<fCore_Wave.size();x++)	{
 		fCore_Wave[x].clear();
