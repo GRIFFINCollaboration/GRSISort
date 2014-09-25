@@ -60,6 +60,7 @@ void TTriFoil::Clear(Option_t *opt)	{
 	tf_wave.clear();
 }
 
+void TTriFoil::Print(Option_t *opt) { } 
 
 
 

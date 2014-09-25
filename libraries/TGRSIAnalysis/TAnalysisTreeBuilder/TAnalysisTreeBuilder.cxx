@@ -340,7 +340,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
 
    if(info->Tigress())   { tree->Branch("TTigress","TTigress",&tigress); } 
    if(info->Sharc())     { tree->Branch("TSharc","TSharc",&sharc); } 
-   if(info->TriFoil())   { tree->Branch("TTriFoil","TTriFoil",&trifoil); } 
+   if(info->TriFoil())   { tree->Branch("TTriFoil","TTriFoil",&triFoil); } 
    //if(info->Rf())        { tree->Branch("TRf","TRf",&rf); } 
    if(info->CSM())       { tree->Branch("TCSM","TCSM",&csm); } 
    //if(info->Spice())     { tree->Branch("TSpice","TSpice",&spice); tree->SetBranch("TS3","TS3",&s3); } 
@@ -364,7 +364,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
 
    if(info->Tigress())   { tigress->Clear(); } 
    if(info->Sharc())     { sharc->Clear(); } 
-   if(info->TriFoil())   { trifoil->Clear(); } 
+   if(info->TriFoil())   { triFoil->Clear(); } 
    //if(info->Rf())        { rf->Clear(); } 
    if(info->CSM())       { csm->Clear(); } 
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
@@ -387,7 +387,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches() {
 
    if(info->Tigress())   { tigress->BuildHits(); } 
    if(info->Sharc())     { sharc->BuildHits(); } 
-   if(info->TriFoil())   { trifoil->BuildHits(); } 
+   if(info->TriFoil())   { triFoil->BuildHits(); } 
    //if(info->Rf())        { rf->Clear(); } 
    if(info->CSM())       { csm->BuildHits(); } 
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
