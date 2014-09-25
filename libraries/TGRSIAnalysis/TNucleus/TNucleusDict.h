@@ -31,7 +31,11 @@ extern void G__set_cpp_environmentTNucleusDict();
 
 #include "TObject.h"
 #include "TMemberInspector.h"
+<<<<<<< HEAD
 #include "/home/grifuser/packages/GRSISort/include/TNucleus.h"
+=======
+#include "/home/tiguser/packages/GRSISort/include/TNucleus.h"
+>>>>>>> 4a316a9dd7ac23b728aa0d427aecf68b93bd0085
 #include <algorithm>
 namespace std { }
 using namespace std;
