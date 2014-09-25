@@ -253,10 +253,10 @@ TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ){
       return TVector3(0,0,1);
 
    TVector3 temp_pos(gCloverPosition[DetNbr]);
-
+   
    //Interaction points may eventually be set externally. May make these members of each crystal, or pass from waveforms.
    Double_t cp = 26.0; //Crystal Center Point  mm.
-   Double_t id = 0.0;//45.0;  //Crystal interaction depth mm.
+   Double_t id = 45.0;//45.0;  //Crystal interaction depth mm.
    //Set Theta's of the center of each DETECTOR face
    ////Define one Detector position
    TVector3 shift;
@@ -280,7 +280,8 @@ TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ){
    shift.RotateY(temp_pos.Theta());
    shift.RotateZ(temp_pos.Phi());
 
-
+   temp_pos.SetMag(dist);
+   
    return (temp_pos + shift);
 
 }

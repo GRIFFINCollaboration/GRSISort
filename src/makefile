@@ -23,7 +23,7 @@ endif
 endif
 
 ifndef __APPLE__
-LFLAGS = -W1,--no-as-needed
+LFLAGS = -Wl,--no-as-needed
 endif
 
 LIBS = -lTGRSIint

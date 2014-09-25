@@ -417,16 +417,17 @@ TGraph* autoefficiency(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPa
 // Search
    hist->GetXaxis()->SetRangeUser(0,16000);
 
-   nuc->TransitionList.Sort();
+//   nuc->TransitionList.Sort();
 
    std::vector<float> engvec;
+   std::vector<float> intensvec;
    TIter iter(&(nuc->TransitionList));
    TObject* obj;
    while(obj = iter.Next()) {
       if(!obj->InheritsFrom("TGRSITransition"))
          continue;
       TGRSITransition *tran = (TGRSITransition*)obj;
-
+      intensvec.push_back(static_cast<float>(tran->intensity));
       engvec.push_back(static_cast<float>(tran->energy));
    }
 
@@ -434,7 +435,8 @@ TGraph* autoefficiency(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPa
 
    std::vector<Float_t> areavec;
    std::vector<Float_t> area_uncertainty;
-   std::vector<Float_t> goodenergy;
+   std::vector<Float_t> goodenergyvec;
+   std::vector<Float_t> goodintensvec;
 
    Float_t integral, sigma; 
    Double_t binWidth = hist->GetXaxis()->GetBinWidth(10000);
@@ -452,15 +454,17 @@ TGraph* autoefficiency(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPa
      par[3] = 5;   //beta
      par[4] = 0;   //R
      par[5] = 1.0;//stp
-     par[6] = hist->GetBinContent(bin+30);  //A
+     par[6] = hist->GetBinContent(bin+25);  //A
      par[7] = -0.2;//B
      par[8] = 0;   //C
      par[9] = xp;  //bg offset
      bool goodfit = FitPeak(par,hist,integral, sigma);
      if(goodfit){
-     	areavec.push_back(integral);
+     	areavec.push_back(integral/intensvec.at(p));
      	area_uncertainty.push_back(sigma);
-        goodenergy.push_back(engvec.at(p));
+        goodenergyvec.push_back(engvec.at(p));
+  //      goodintensvec.push_back(intensvec.at(p));
+
      }
   //   fitlist->Add(f);
    }
@@ -468,14 +472,17 @@ TGraph* autoefficiency(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPa
    std::cout << "or made it here" << std::endl;
 
    Float_t *area = &(areavec[0]);
-   Float_t *energies = &(engvec[0]);
-   Float_t *goodenergy = &(goodenergy[0]);
+ //  Float_t *energies = &(engvec[0]);
+   Float_t *goodenergy = &(goodenergyvec[0]);
 
-   TGraph *slopefit = new TGraph(engvec.size(),area,energies ); 
+   TGraph *slopefit = new TGraph(areavec.size(),goodenergy,area ); 
 
    printf("Now fitting: Be patient\n");
  //  slopefit->Fit("pol1");
-   slopefit->Draw("AC*");
+   slopefit->Draw("PA*");
+   for(int x=0;x<areavec.size();x++) {
+      printf("areavec[%i] = %f\t\tgoodenergyvec[%i] = %f\n",x,areavec[x],x,goodenergyvec[x]);
+   }
 
    return slopefit;
 
