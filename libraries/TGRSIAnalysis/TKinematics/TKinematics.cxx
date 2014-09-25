@@ -147,29 +147,16 @@ double TKinematics::GetExcEnergy(TVector3 position,double KinE){
 
   return GetExcEnergy(recoil);
 }
-/*
-  recoil.Boost(0,0,-GetBetacm()); //boost to cm system
- // printf( "ejectile_cm = [%.05f,\t %.05f %.05f %.05f\t\t] magnitude = %.05f \n",recoil[3],recoil[0],recoil[1],recoil[2],recoil.Mag()); 
 
-  TLorentzVector ejectile;
-  
-  ejectile.SetVect( -recoil.Vect() ); //pr = -pe
-  
-  ejectile.SetE(GetCmEnergy() - recoil.E()); //Ee=Ecm-Er_cm   *** CM energies !!
-//  printf( "recoil_cm = [%.05f,\t %.05f %.05f %.05f]\t\t magnitude = %.05f \n",recoil[3],recoil[0],recoil[1],recoil[2],ejectile.Mag()); 
-  
-  ejectile.Boost(0,0,GetBetacm()); //boost to lab system
-//  printf( "recoil_lab = [%.05f,\t %.05f %.05f %.05f]\t\t magnitude = %.05f \n",recoil[3],recoil[0],recoil[1],recoil[2],ejectile.Mag()); 
- 	
- 	
-// 	printf( "fParticle[2]->GetMass()+KinE = %.05f + %.05f \t",fParticle[2]->GetMass(), KinE);
- // printf(" >>  >> ejectile.E = GetCmEnergy()- recoil.E() = %.05f - %.05f\t",GetCmEnergy(), recoil.E());
- //	printf(">>  >> \tqval = ejectile.Mag() - fM[3] = %.05f - %.05f\n\n",ejectile.Mag(), fM[3]);
-  double qval = ejectile.Mag() - fM[3] ;
-  return qval;
-						    
-};
-*/
+double TKinematics::GetExcEnergy(double theta, double KinE){
+
+double val1 = (fM[0]+fM[1])*(fM[0]+fM[1])+fM[2]*fM[2]+2*fM[1]*fT[0];
+double val2 = 2*fGamma_cm*sqrt((fM[0]+fM[1])*(fM[0]+fM[1])+2*fM[1]*fT[0]);
+double val3 = fM[2] + KinE - fBeta_cm*sqrt(KinE*KinE+2*fM[2]*KinE)*TMath::Cos(theta);
+
+  return sqrt(val1-val2*val3)-fM[3];  
+}
+
 
 double TKinematics::GetBeamEnergy(double LabAngle, double LabEnergy){
   double ProjectileMass=fM[0];

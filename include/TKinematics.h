@@ -47,6 +47,7 @@ public:
   bool   CheckMaxAngle(double angle, int part);
   double GetExcEnergy(TLorentzVector recoil);
   double GetExcEnergy(TVector3 position, double KinE);
+  double GetExcEnergy(double theta, double KinE);
   double ELab(double angle_lab, int part);
 
   double GetQValue()     { return fQValue;   }
