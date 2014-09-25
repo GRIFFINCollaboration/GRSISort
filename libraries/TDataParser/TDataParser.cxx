@@ -111,7 +111,7 @@ int TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int mid
          case 0x5: // raw charge evaluation.
             //SetTIGCharge(value,EventFrag);
 				{
-   				TChannel *chan = TChannel::GetChannel(currentfrag->ChannelAddress);
+   				TChannel *chan = TChannel::GetChannel(EventFrag->ChannelAddress);
 					if(!chan) {
 						temp_charge = (value &  0x03ffffff);
                   if(value & 0x02000000)  
