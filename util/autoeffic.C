@@ -417,7 +417,7 @@ TGraph* autoefficiency(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPa
 // Search
    hist->GetXaxis()->SetRangeUser(0,16000);
 
-   nuc->TransitionList.Sort();
+//   nuc->TransitionList.Sort();
 
    std::vector<float> engvec;
    std::vector<float> intensvec;
@@ -479,7 +479,7 @@ TGraph* autoefficiency(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPa
 
    printf("Now fitting: Be patient\n");
  //  slopefit->Fit("pol1");
-   slopefit->Draw("AC*");
+   slopefit->Draw("PA*");
    for(int x=0;x<areavec.size();x++) {
       printf("areavec[%i] = %f\t\tgoodenergyvec[%i] = %f\n",x,areavec[x],x,goodenergyvec[x]);
    }

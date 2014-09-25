@@ -261,7 +261,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       }
       *frag2 = *frag1;
       if((x%10000)==0 ) {
-         printf("\tprocessing event " CYAN "%i " RESET_COLOR "/" DBLUE " %li" RESET_COLOR "         \r",x,major_max);
+         printf("\tprocessing event " CYAN "%i " RESET_COLOR "/" DBLUE " %d" RESET_COLOR "         \r",x,major_max);
        }
    }
    printf("\n");
