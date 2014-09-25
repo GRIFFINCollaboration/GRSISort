@@ -69,8 +69,6 @@ class TGRSILoop : public TObject {
       void SetTIGOdb();
       void SetGRIFFOdb();
 
-
-      void CreateStatsLog(int,int);
       void Clear(Option_t *opt="");
       void Print(Option_t *opt="");
 

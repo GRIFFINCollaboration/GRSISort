@@ -256,7 +256,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
          continue;
       }
       if(indexvalues[x] == indexvalues[x-1]) {
-         printf(DRED "REAL FIRE!!! x = %i, indexvalues[x] = %lu, indexvalues[x-1] = %lu" RESET_COLOR  "\n", x, indexvalues[x], indexvalues[x-1]);
+         printf(DRED "REAL FIRE!!! x = %i, indexvalues[x] = %lld, indexvalues[x-1] = %lld" RESET_COLOR  "\n", x, indexvalues[x], indexvalues[x-1]);
          printf("currentFrag->MidasId = %i   oldFrag->MidasId = %i\n",currentFrag->MidasId, oldFrag->MidasId);
          continue;
       } 
