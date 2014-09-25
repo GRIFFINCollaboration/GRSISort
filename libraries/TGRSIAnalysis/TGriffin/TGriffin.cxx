@@ -100,7 +100,11 @@ void TGriffin::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
    if(!grifdata)   
       grifdata = new TGriffinData();
 
-   if(mnemonic->subsystem.compare(0,1,"F")==0) { 
+   //frag->Print();
+   //channel->Print();
+   //PrintMNEMONIC(mnemonic);
+
+   if(mnemonic->subsystem.compare(0,1,"G")==0) { 
       grifdata->SetCore(frag,channel,mnemonic);
    }   
    else if(mnemonic->subsystem.compare(0,1,"S")==0) {
@@ -133,8 +137,13 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
+
    std::vector<TGriffinHit> temp_hits;
    std::map<std::pair<int,int>,std::pair<int,int> > address_gain_map;  // < <det,core>, <high gain , low gain> >
+
+   //printf("=========================================================\n");
+   //printf("=========================================================\n");
+   //printf("gdata->GetMultiplicity() = %i\n",gdata->GetMultiplicity());
 
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
       TGriffinHit corehit;
@@ -164,6 +173,11 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
       temp_hits.push_back(corehit);
 
+      //printf("corehit.GetDetectorNumber() = %i\n", corehit.GetDetectorNumber());
+      //printf("corehit.GetCrystalNumber()  = %i\n", corehit.GetCrystalNumber());
+      //printf("corehit.GetEnergyHigh()     = %.02f\n", corehit.GetEnergyHigh());
+      
+
       std::pair<int,int> det_cry = std::make_pair(corehit.GetDetectorNumber(),corehit.GetCrystalNumber());
 
       if(address_gain_map.count(det_cry)==0) {
@@ -184,6 +198,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
      temp_hits.at(iter->second.first).SetChargeLow(temp_hits.at(iter->second.second).GetChargeLow());
      temp_hits.at(iter->second.first).SetEnergyLow(temp_hits.at(iter->second.second).GetEnergyLow());
      griffin_hits.push_back(temp_hits.at(iter->second.first));
+
    }
  
    if(TGriffin::SetBGOHits() && bdata)  {
@@ -222,7 +237,7 @@ TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ){
 
    //Interaction points may eventually be set externally. May make these members of each crystal, or pass from waveforms.
    Double_t cp = 26.0; //Crystal Center Point  mm.
-   Double_t id = 45.0;  //Crystal interaction depth mm.
+   Double_t id = 0.0;//45.0;  //Crystal interaction depth mm.
    //Set Theta's of the center of each DETECTOR face
    ////Define one Detector position
    TVector3 shift;
