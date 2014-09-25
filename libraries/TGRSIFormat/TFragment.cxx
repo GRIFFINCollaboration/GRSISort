@@ -53,8 +53,36 @@ void TFragment::Clear(Option_t *opt){
 
 }
 
+long TFragment::GetTimeStamp() {
+   long time = TimeStampHigh;
+   time  = time << 28;
+   time |= TimeStampLow & 0x0fffffff;
+   return time;
+}
+
+
+const char *TFragment::GetName() {
+   TChannel *chan = TChannel::GetChannel(ChannelAddress);
+   if(!chan)
+      return "";
+   return chan->GetChannelName();
+}
+
+
+double TFragment::GetEnergy() {
+   TChannel *chan = TChannel::GetChannel(ChannelAddress);
+   if(!chan || Charge.size()<1)
+      return 0.00;
+   return chan->CalibrateENG(Charge.at(0));
+}
+
+
+
+
+
 void TFragment::Print(Option_t *opt)	{
    //Prints out all fields of the TFragment
+
 
    TChannel *chan = TChannel::GetChannel(this->ChannelAddress);
    if(chan) {

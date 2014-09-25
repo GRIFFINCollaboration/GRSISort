@@ -6,6 +6,9 @@ CFLAGS += -fPIC
 
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__ = 1
+else
+CFLAGS += -DLINUX
+WORDS = words.o
 endif
 
 #COMP_STRING="Now Compling "
@@ -18,10 +21,6 @@ CAT=cat
 all: libTGRSIint.so
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
 
-
-#ifdef __LINUX__
-WORDS = words.o
-#endif
 
 libTGRSIint.so: $(OBJECTS)
 	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"

@@ -1,5 +1,5 @@
 
-OBJECTS = TNucleus.o TNucleusDict.o 
+OBJECTS = TNucleus.o TNucleusDict.o TGRSITransition.o TGRSITransitionDict.o
 
 CFLAGS += -fPIC
 

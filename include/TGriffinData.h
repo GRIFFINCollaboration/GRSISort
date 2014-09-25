@@ -76,7 +76,7 @@ class TGriffinData : public TGRSIDetectorData {
                SetCoreEnergy(channel->CalibrateENG(frag->Charge.at(x)));		
                SetCoreCharge(frag->Charge.at(x));
 				   SetCoreCFD(frag->Cfd.at(x));		
-   				SetCoreLED(frag->Led.at(x));		
+   				//SetCoreLED(frag->Led.at(x));		
 	   			SetCoreTime(frag->TimeToTrig);		
             }
 

@@ -12,6 +12,8 @@
 
 ClassImp(TSRIM)
 
+const double TSRIM::dx = 1.0; // um [sets accuracy of energy loss E vs X functions]
+
 TSRIM::TSRIM()	{
 	fEnergyLoss = 0;
 }
@@ -174,7 +176,7 @@ void TSRIM::ReadEnergyLossFile(const char *filename, double emax, double emin, b
 	}
 
   if(printfile){
-  	printf("\n\t%s file read in, %i entries found.\n",fname.c_str(),dEdX.size());
+  	printf("\n\t%s file read in, %lu entries found.\n",fname.c_str(),dEdX.size());
     printf("[Energy loss range = %.03f - %.03f keV & total range = %.03f - %.03f um ]\n",Emax,Emin,Xmin,Xmax);	
   }
 }
@@ -186,8 +188,8 @@ double TSRIM::GetEnergy(double energy,double dist)	{
 
   if( energy > Emax || xbegin+dist < Xmin ){
     printf("\n {TSRIM} WARNING: data is out of range. Results may be unpredictable.\n"
-              ""DRED"\t\tenergy = %.03f keV \txbegin = %.02f um\t dist = %.02f um\t xend = %.02f um\n"
-              ""DYELLOW"\t\tErange = [%.03f , %.03f] keV \t\t Xrange = [0 , %.1f] um\n"RESET_COLOR"",energy,xbegin,dist,xbegin+dist,Emin,Emax,Xmax);
+              DRED "\t\tenergy = %.03f keV \txbegin = %.02f um\t dist = %.02f um\t xend = %.02f um\n"
+              DYELLOW "\t\tErange = [%.03f , %.03f] keV \t\t Xrange = [0 , %.1f] um\n" RESET_COLOR ,energy,xbegin,dist,xbegin+dist,Emin,Emax,Xmax);
   }  
   else if (xbegin > Xmax || xbegin+dist > Xmax)
     return 0.0;

@@ -5,6 +5,15 @@ using namespace std;
 
 ClassImp(TKinematics);
 
+//////////////////////////////////////////////////////////////////
+//
+// TKinematics
+//
+// This class calculates 2 body kinematics from a beam, target,
+// recoil, ejectile, and beam energy
+//
+//////////////////////////////////////////////////////////////////
+
 TKinematics::TKinematics(double beame, const char *beam, const char *targ, const char *ejec, const char *reco, const char *name){
 
 	TNucleus *b,*t,*e,*r;
@@ -22,7 +31,8 @@ TKinematics::TKinematics(double beame, const char *beam, const char *targ, const
 	}
 }
 
-TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char *name){ // by not defining the outgoing particle it defaults to elastic scattering!
+TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char *name){
+// By not providing the ejectile (only prociding projectile, target, and beam energy) elestic scattering is assumed
   fParticle[0] = projectile;
   fParticle[1] = target;
   fParticle[2] = NULL;
@@ -37,6 +47,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, c
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, const char *name){
+// Kinematics using the provided projectile, target, recoil, and ejectile, as well as beam energy
   fParticle[0] = projectile;
   fParticle[1] = target;
   fParticle[2] = recoil;
@@ -53,6 +64,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, double ex3, const char *name){
+// Kinematics using the provided projectile, target, recoil, ejectile, beam energy, and excited state of the recoil
   fParticle[0] = projectile;
   fParticle[1] = target;
   fParticle[2] = recoil;
@@ -114,6 +126,7 @@ TSpline3* TKinematics::Evscm(double thmin, double thmax, double size, int part){
 }
 
 double TKinematics::GetExcEnergy(TLorentzVector recoil){
+//Gets the excitation energy of the recoil in the CM frame using a 4-vector
   TLorentzVector ejectile;
   //cout << "-GetBetacm() " << -GetBetacm() << endl;
   recoil.Boost(0,0,-GetBetacm()); //boost to cm system
@@ -132,7 +145,7 @@ double TKinematics::GetExcEnergy(TLorentzVector recoil){
 };
 
 double TKinematics::GetExcEnergy(TVector3 position,double KinE){
-
+//Gets the excitation energy of the recoil in the CM frame using a vector & energy
 	TLorentzVector recoil;
 
 //	double TotalEnergy = fParticle[2]->GetMass()+KinE;
@@ -159,6 +172,7 @@ double val3 = fM[2] + KinE - fBeta_cm*sqrt(KinE*KinE+2*fM[2]*KinE)*TMath::Cos(th
 
 
 double TKinematics::GetBeamEnergy(double LabAngle, double LabEnergy){
+// Returns the beam energy given the lab angle and energy of the ejectile
   double ProjectileMass=fM[0];
   double TargetMass=fM[1];
 
@@ -183,14 +197,16 @@ double TKinematics::GetBeamEnergy(double LabAngle, double LabEnergy){
 
 
 void TKinematics::Initial(){
+// An initializing function that sets the energies and momenta of the beam and target in the lab and CM frame,
+// as well as a few basic calculations.
   fT[0]=fEBeam; // KE of beam in lab
-  fT[1]=0; // KE of targte in lab
+  fT[1]=0; // KE of target in lab
   fE[0]=E_tm(fT[0],fM[0]); // total E of beam in lab
   fE[1]=E_tm(fT[1],fM[1]); // total E of target in lab
   fP[0]=sqrt(fT[0]*fT[0]+2*fT[0]*fM[0]); // momentum of beam in lab
-  fP[1]=0; 																// "                  "
+  fP[1]=0;			// momentum of target in lab
   fV[0]=V_pe(fP[0],fE[0]); // velocity of beam in lab 
-  fV[1]=V_pe(fP[1],fE[1]); // "                       "
+  fV[1]=V_pe(fP[1],fE[1]); // velocity of target in lab
 
   fEcm[0]=GetCmEnergy(fEBeam)/2+(fM[0]*fM[0]-fM[1]*fM[1])/(2*GetCmEnergy(fEBeam));
   fEcm[1]=GetCmEnergy(fEBeam)/2-(fM[0]*fM[0]-fM[1]*fM[1])/(2*GetCmEnergy(fEBeam));
@@ -211,7 +227,10 @@ void TKinematics::Initial(){
  // printf("fT[0] = %.05f	\tfT[1] = %.05f	\tfE[0] = %.05f	\tfE[1] = %.05f	\tfP[0] = %.05f	\tfP[1] = %.05f	\nfV[0] = %.05f	\tfV[1] = %.05f	\tfEcm[0] = %.05f	\tfEcm[1] = %.05f	\tfECM = %.05f	\tfBeta_cm = %.04f	\tfGamma_cm = %.04f \n\n\n",	fT[0],fT[1],fE[0],fE[1],fP[0],fP[1],fV[0],fV[1],fEcm[0],fEcm[1],GetCmEnergy(fEBeam),fBeta_cm,fGamma_cm);
 
 }
-void TKinematics::FinalCm(){//angle of proton in cm system
+void TKinematics::FinalCm(){
+// Calculates the recoil and ejectile energies and momenta in the CM frame
+
+//angle of proton in cm system
   if(fParticle[2]==NULL && fParticle[3]==NULL){
     // cout << "warning: outgoing particles not defined! Assuming elastic scattering" << endl;
     // cout << "recoil = target" << endl;
@@ -242,7 +261,10 @@ void TKinematics::FinalCm(){//angle of proton in cm system
   cout << "fBeta_cm = " << fBeta_cm<<endl;
   */
 }
-void TKinematics::Final(double angle, int part){//angle of proton in lab system
+void TKinematics::Final(double angle, int part){
+// Calculates the recoil and ejectile energies and momenta in the lab frame
+
+//angle of proton in lab system
   if(angle>GetMaxAngle(fVcm[part]))
     SetAngles(0, part);
   else
@@ -266,11 +288,13 @@ void TKinematics::Final(double angle, int part){//angle of proton in lab system
 }
 
 double TKinematics::ELab(double angle_lab, int part){
+// Calculates the energy of a particle "part" in the lab given the ejectile lab angle 
   Final(angle_lab, part);
   return GetTlab(part); 
 }
 
 void TKinematics::SetAngles(double angle, int part, bool upper){
+// Set the angle for a particle "part"
   int given;
   int other;
   if(part==2){
@@ -308,20 +332,24 @@ void TKinematics::SetAngles(double angle, int part, bool upper){
 }
 
 
-double TKinematics::GetCmEnergy(double ebeam){ // total energy of center of mass system
+double TKinematics::GetCmEnergy(double ebeam){
+// Returns the total energy of the CM system, given the beam energy
   double ecm;
   ecm = sqrt(fM[0]*fM[0]+fM[1]*fM[1]+2.*fM[1]*(fM[0]+ebeam));
   return ecm;
 }
 double TKinematics::GetCmEnergy(){
+// Returns the total energy of the CM system
   return GetCmEnergy(fEBeam);
 }
 double TKinematics::NormalkinEnergy(){
+// Returns the total kinetic energy of the system, assuming normal kinematics
   double ENorm = (GetCmEnergy(fEBeam)*GetCmEnergy(fEBeam)-fM[0]*fM[0]-fM[1]*fM[1])/(2*fM[0])-fM[1];
   return ENorm;
 }
 
 double TKinematics::GetMaxAngle(double vcm){
+// Returns the maximum angle of the ejectile in the CM frame
   double x;
   x = fBeta_cm/vcm;
   if(x*x<1)
@@ -330,12 +358,15 @@ double TKinematics::GetMaxAngle(double vcm){
     return atan2(sqrt(1/(x*x-1)),fGamma_cm);
 }
 double TKinematics::GetMaxAngle(int part){
+// Returns the maximum angle of a given particle "part"
   return GetMaxAngle(fVcm[part]);
 }
 bool TKinematics::CheckMaxAngle(double angle, int part){
+// A check to ensure the angle for a given particle is allowed (i.e. less than the max angle)
   return angle <= GetMaxAngle(fVcm[part]);
 }
 double TKinematics::Angle_lab2cm(double vcm, double angle_lab){
+// Converts the lab angle to the CM angle given the velocity in the CM frame
   double tan_lab, gtan,x;
   tan_lab = tan(angle_lab);
   gtan = tan_lab*tan_lab*fGamma_cm*fGamma_cm;
@@ -351,6 +382,7 @@ double TKinematics::Angle_lab2cm(double vcm, double angle_lab){
   }
 }
 double TKinematics::Angle_lab2cminverse(double vcm, double angle_lab, bool upper){
+// Converts the lab angle to the CM angle given the velocity in the CM frame under inverse kinematics
   double tan_lab, gtan,x;
   tan_lab = tan(angle_lab);
   gtan = tan_lab*tan_lab*fGamma_cm*fGamma_cm;
@@ -365,6 +397,7 @@ double TKinematics::Angle_lab2cminverse(double vcm, double angle_lab, bool upper
   }
 }
 void TKinematics::AngleErr_lab2cm(double angle, double &err){
+// Calculates the uncertainty associated with converting the angle from the lab to CM frame
   double angle_lab = angle;
   angle = Angle_lab2cm(fVcm[2], angle_lab);
   err =  fabs(Angle_lab2cm(fVcm[2], angle_lab+err)-Angle_lab2cm(fVcm[2], angle_lab-err))/2.;
@@ -389,6 +422,7 @@ void TKinematics::AngleErr_lab2cm(double angle, double &err){
   */
 }
 double TKinematics::Angle_cm2lab(double vcm, double angle_cm){
+// Converts the CM angle to the lab angle given the velocity in the CM frame
   double x;
   x = fBeta_cm/vcm;
   return atan2(sin(angle_cm),fGamma_cm*(cos(angle_cm)+x));
@@ -503,6 +537,7 @@ void TKinematics::Transform2cm(double &angle, double &errangle, double &sigma, d
   return;
 }
 double TKinematics::Rutherford(double angle_cm){
+// Returns the Rutherford scattering impact parameter, b, given the angle of the ejectile in the CM frame
   double a = 0.5*1.43997649*fParticle[0]->GetZ()*fParticle[1]->GetZ()/fTCm_i;
   double b = sin(angle_cm/2.)*sin(angle_cm/2.);
   b=b*b;
