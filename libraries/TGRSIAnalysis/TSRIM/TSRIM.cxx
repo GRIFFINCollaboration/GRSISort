@@ -28,17 +28,24 @@ TSRIM::TSRIM(const char *infilename, double emax, double emin, bool printfile)	{
 TSRIM::~TSRIM()	{	}
 
 void TSRIM::ReadEnergyLossFile(const char *filename, double emax, double emin, bool printfile)	{
-// if Steffen makes a TRIM file that this thing can't read it's beacuse of mac encoding. 
+// if Steffen makes a TSRIM file that this thing can't read it's beacuse of mac encoding. 
 //		use dos2unix -c mac d_in_Si.txt in terminal
 	std::ifstream infile;
 
 	std::string fname = filename;
 	if(fname.find(".txt")==string::npos)
   	fname.append(".txt");
-	
-	infile.open(fname.c_str());
-  if(!infile.good())
-    infile.open(Form("/home/tiguser/packages/GRSISpoon/libraries/TAnalysis/TSharc/srim_data_S1389/%s",fname.c_str()));
+
+	char buf[256];
+	std::string grsipath = getenv("GRSISYS");
+	sprintf(buf,"%s/libraries/TGRSIAnalysis/TSRIM/data/%s",grsipath.c_str(),fname.c_str());
+	if(printfile) printf("\nSearching for %s..\n",buf);
+
+	infile.open(buf);
+ 	if(!infile.good()){
+		printf("Couldn't find the file..\n");
+		return;
+	}
 	std::string line;
 	std::string word;
 	double density_scale,temp;

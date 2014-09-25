@@ -34,29 +34,19 @@ ClassImp(TNucleus);
 
 
 
-//const char *TNucleus::massfile = "/home/tiguser/packages/GRSISort/libraries/TAnalysis/TNucleus/mass.dat";
-const char *TNucleus::massfile = 0;
+//const char *TNucleus::massfile = "/home/tiguser/packages/GRSISort/libraries/TGRSIAnalysis/TNucleus/SourceData/mass.dat";
 
 static double amu = 931.494043;
 //static double MeV2Kg = 1.77777778e-30;
 
-void TNucleus::SetMassFile(const char* path){
+const char *TNucleus::massfile = "/libraries/TGRSIAnalysis/TNucleus/SourceData/mass.dat";
 
-//	if(!path ){ // if path not specified and no massfile name exists look in default location
-		path = getenv("GRSISYS");
-		std::string s_path = path;
-		s_path +=  "/libraries/TGRSIAnalysis/TNucleus/SourceData/mass.dat";
-		TNucleus::massfile = s_path.c_str();
-//	} else 
-//		TNucleus::massfile = path;
-
-	return;
-}
 
 TNucleus::TNucleus(const char *name){
-// Creates a nucleus based on symbol (ex. 26Na OR Na26) and sets all parameters from mass.dat
+	//Creates a nucleus based on symbol (ex. 26Na OR Na26) and sets all parameters from mass.dat
 	std::string Name = name;
-	SetMassFile();
+	//SetMassFile();
+	printf("Using massfile = %s/%s and name = %s\n",getenv("GRSISYS"),massfile,Name.c_str());
 	int Number = 0;
 	std::string symbol;
 	std::string element;
@@ -98,7 +88,9 @@ TNucleus::TNucleus(const char *name){
 	element.append(std::to_string((long long)Number)); element.append(symbol);
 	std::string line;
 	std::ifstream infile;
-	infile.open(massfile);
+	std::string MassFile = getenv("GRSISYS");
+   MassFile.append(massfile);
+	infile.open(MassFile.c_str());
 	int z,n;
 	std::string sym_name;
 	double mass;	
@@ -115,22 +107,23 @@ TNucleus::TNucleus(const char *name){
 		}
 	}
 	if(!found) {
-		printf("Warning: Element %s not found in the mass table %s.\n Nucleus not Set!\n",element.c_str(),massfile);
+		printf("Warning: Element %s not found in the mass table %s/%s.\n Nucleus not Set!\n",element.c_str(),getenv("GRSISYS"),massfile);
 		return;
 	}
+	infile.close();
 	SetZ(z);
 	SetN(n);
   SetMassExcess(mass/1000.0);
   SetMass();
 	SetSymbol(symbol.c_str());
   SetName(element.c_str());
-
+	printf("MADE!\n\n");
 }
 /*
 */
 TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol){
 // Creates a nucleus with Z, N, mass, and symbol
-  SetMassFile();
+  //SetMassFile();
   fZ = charge;  
   fN = neutrons;
   fSymbol = symbol;
@@ -140,7 +133,12 @@ TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol){
 
 TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
 // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
-  SetMassFile();
+  //SetMassFile();
+  if(!MassFile) {
+	  std::string SMassFile = getenv("GRSISYS");
+	  SMassFile.append(massfile);
+	  MassFile = SMassFile.c_str();
+	}
   fZ = charge;  
   fN = neutrons;
   int i = 0,n,z;

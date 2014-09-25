@@ -117,7 +117,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
          //printf("this is working,found sharc.\n");
          if(!Sharc()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
          SetSharc();
-      } else if(system.compare("TR")==0) {
+      } else if(system.compare("Tr")==0) {
          if(!TriFoil()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
          SetTriFoil();
       } else if(system.compare("RF")==0) {

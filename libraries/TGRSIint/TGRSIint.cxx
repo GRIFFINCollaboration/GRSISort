@@ -72,8 +72,9 @@ void TGRSIint::ApplyOptions() {
   if(!TGRSIOptions::CloseAfterSort() && TGRSIOptions::GetInputRoot().size()!=0) { 
     for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
         //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
-        ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
-        TFile *file = (TFile*)gROOT->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
+	     long error = ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
+		  if(error <=0) continue;
+	     TFile *file = (TFile*)gROOT->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
         printf("\tfile %s opened as _file%i\n",file->GetName(),x);
         TGRSIRootIO::Get()->LoadRootFile(file);
    }

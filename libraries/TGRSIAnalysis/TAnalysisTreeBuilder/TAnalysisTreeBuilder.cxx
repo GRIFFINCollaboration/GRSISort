@@ -495,9 +495,9 @@ void TAnalysisTreeBuilder::ProcessEvent(std::vector<TFragment> *event) {
 				tigress->FillData(&(event->at(i)),channel,&mnemonic);
 			} else if(mnemonic.system.compare("SH")==0) {
 				sharc->FillData(&(event->at(i)),channel,&mnemonic);
-			//} else if(mnemonic.system.compare("TR")==0) {	
-			//	FillData(&(event->at(i)),&mnemonic);
-			//} else if(mnemonic.system.compare("RF")==0) {	
+			} else if(mnemonic.system.compare("Tr")==0) {	
+				triFoil->FillData(&(event->at(i)),channel,&mnemonic);
+			 //else if(mnemonic.system.compare("RF")==0) {	
 			//	FillData(&(event->at(i)),&mnemonic);
 			} else if(mnemonic.system.compare("CS")==0) {	
 				csm->FillData(&(event->at(i)),channel,&mnemonic);

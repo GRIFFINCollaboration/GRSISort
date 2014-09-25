@@ -85,6 +85,11 @@ int TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int mid
          case 0x0: // raw wave forms.
             if(!no_waveforms)
                SetTIGWave(value,EventFrag);
+			   if(strncmp("Tr",TChannel::GetChannel(EventFrag->ChannelAddress)->GetChannelName(),2)==0) { 
+               SetTIGWave(value,EventFrag);
+				} else if(strncmp("RF",TChannel::GetChannel(EventFrag->ChannelAddress)->GetChannelName(),2)==0) { 
+               SetTIGWave(value,EventFrag);
+				}
             break;
          case 0x1: // trapizodal wave forms.
             break;
