@@ -110,7 +110,31 @@ int TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int mid
             break;
          case 0x5: // raw charge evaluation.
             //SetTIGCharge(value,EventFrag);
-            temp_charge = value;
+				{
+   				TChannel *chan = TChannel::GetChannel(EventFrag->ChannelAddress);
+					if(!chan) {
+						temp_charge = (value &  0x03ffffff);
+                  if(value & 0x02000000)  
+                     temp_charge = -( (~(value & 0x01ffffff)) & 0x01ffffff)+1;
+					} else if(strncmp(chan->GetChannelName(),"Tig10",5) == 0) {
+                  //eventfragment->PileUp = (value &  0x04000000);
+                  temp_charge   = (value &  0x03ffffff);
+                  if(value & 0x02000000)  {
+                     temp_charge = -( (~(value & 0x01ffffff)) & 0x01ffffff)+1;
+                  }
+					} else if(strncmp(chan->GetChannelName(),"Tig64",5) == 0) {
+                  //eventfragment->PileUp = (value &  0x04000000);
+                  temp_charge   = (value &  0x003fffff);
+                  if(value & 0x00200000)  {
+                     temp_charge = -( (~(value & 0x001fffff)) & 0x001fffff)+1;
+                  }
+               } else {
+						temp_charge = (value &  0x03ffffff);
+                  if(value & 0x02000000)  
+                     temp_charge = -( (~(value & 0x01ffffff)) & 0x01ffffff)+1;
+					}
+				}
+            //temp_charge = value;
             break;
          case 0x6:
             //SetTIGLed(value,EventFrag);

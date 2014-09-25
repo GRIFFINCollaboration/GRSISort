@@ -21,7 +21,7 @@
 
 #include <TTigress.h> 
 #include <TSharc.h>     
-//#include <TTriFoil.h>   
+#include <TTriFoil.h>   
 //#include <TRf.h>        
 #include <TCSM.h>       
 //#include <TSpice.h>     
@@ -102,7 +102,7 @@ class TAnalysisTreeBuilder : public TObject {
 
       static TTigress    *tigress;  
       static TSharc      *sharc;   
-      //static TTriFoil    *triFoil;
+      static TTriFoil    *triFoil;
       //static TRf         *rf;     
       static TCSM        *csm;    
       //static TSpice      *spice;  

@@ -69,7 +69,7 @@ int TEventQueue::Size() {
 ClassImp(TAnalysisTreeBuilder)
 
 
-const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)2048; // 2 GB //20000000000
+const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)4; // 4 GB //20000000000
 
 TChain *TAnalysisTreeBuilder::fFragmentChain = 0;
 TTree  *TAnalysisTreeBuilder::fCurrentFragTree = 0;
@@ -82,7 +82,7 @@ TFragment *TAnalysisTreeBuilder::fCurrentFragPtr = 0;
 
 TTigress    *TAnalysisTreeBuilder::tigress = 0;    
 TSharc      *TAnalysisTreeBuilder::sharc   = 0;    
-//TTriFoil    *TAnalysisTreeBuilder::triFoil = 0;
+TTriFoil    *TAnalysisTreeBuilder::triFoil = 0;
 //TRf         *TAnalysisTreeBuilder::rf      = 0;     
 TCSM        *TAnalysisTreeBuilder::csm     = 0;    
 //TSpice      *TAnalysisTreeBuilder::spice   = 0;  
@@ -233,35 +233,57 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
 
 void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 
-   TFragment *frag1 = 0;
-   TFragment *frag2 = new TFragment;
+   TFragment *currentFrag = 0;
+   TFragment *oldFrag = new TFragment;
 
-   fCurrentFragTree->SetBranchAddress("TFragment",&frag1);
+   fCurrentFragTree->SetBranchAddress("TFragment",&currentFrag);
 
    TTreeIndex *index = (TTreeIndex*)fCurrentFragTree->GetTreeIndex();
 
    long entries = index->GetN();
-   Long64_t *indexvalues = index->GetIndexValues();
+   Long64_t *indexvalues = index->GetIndex();
    int major_max = fCurrentFragTree->GetMaximum("TimeStampHigh");
 
    std::vector<TFragment> *event = new std::vector<TFragment>;
 
-   for(int x=0;x<entries;x++) {
-      int major = indexvalues[x] << 31;
-      int minor = indexvalues[x] & 0x7fffffff;
-      fCurrentFragTree->GetEntryWithIndex(major,minor);
-      if(abs(frag2->GetTimeStamp()-frag1->GetTimeStamp()) < 200) {  // 2 micro-sec.
-         event->push_back(*frag1);
-      } else {
-         if(event->size()==0) {
-            event->push_back(*frag1);
-         }
+   fCurrentFragTree->GetEntry(indexvalues[0]);
+   *oldFrag = *currentFrag;
+
+   
+   for(int x=1;x<entries;x++) {
+      if(fCurrentFragTree->GetEntry(indexvalues[x]) == -1 ) {  //major,minor) == -1) {
+         printf(DRED "FIRE!!!" RESET_COLOR  "\n");
+         continue;
+      }
+      if(indexvalues[x] == indexvalues[x-1]) {
+         printf(DRED "REAL FIRE!!! x = %i, indexvalues[x] = %lu, indexvalues[x-1] = %lu" RESET_COLOR  "\n", x, indexvalues[x], indexvalues[x-1]);
+         printf("currentFrag->MidasId = %i   oldFrag->MidasId = %i\n",currentFrag->MidasId, oldFrag->MidasId);
+         continue;
+      } 
+      event->push_back(*oldFrag);
+      //printf("major = %d, minor = %d\n", major, minor);
+      //oldFrag->Print();
+      //currentFrag->Print();
+      //printf("================================================================================\n");
+         //printf("coincident event: event->size() = %lu\n",event->size());
+         //printf("non-coincident event: event->size() = %lu\n",event->size());
+         //if(event->size()==0) {
+            //event->push_back(*currentFrag);
+         //}
+         //if(event->size() > 1) {
+            //printf("================================================================================\n");
+            //for(size_t i = 0; i < event->size(); ++i) {
+               //event->at(i).Print();
+            //}
+         //}
+         
+      if(abs(oldFrag->GetTimeStamp()-currentFrag->GetTimeStamp()) > 200) {  // 2 micro-sec.
          TEventQueue::Get()->Add(event);
          event = new std::vector<TFragment>;
       }
-      *frag2 = *frag1;
+      *oldFrag = *currentFrag;
       if((x%10000)==0 ) {
-         printf("\tprocessing event " CYAN "%i " RESET_COLOR "/" DBLUE " %d" RESET_COLOR "         \r",x,major_max);
+         printf("\tprocessing fragment " CYAN "%i " RESET_COLOR "/" DBLUE " %li" RESET_COLOR "         \r",x,entries);
        }
    }
    printf("\n");
@@ -340,7 +362,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
 
    if(info->Tigress())   { tree->Branch("TTigress","TTigress",&tigress); } 
    if(info->Sharc())     { tree->Branch("TSharc","TSharc",&sharc); } 
-   //if(info->TriFoil())   { tree->Branch("TTriFoil","TTriFoil",&trifoil); } 
+   if(info->TriFoil())   { tree->Branch("TTriFoil","TTriFoil",&triFoil); } 
    //if(info->Rf())        { tree->Branch("TRf","TRf",&rf); } 
    if(info->CSM())       { tree->Branch("TCSM","TCSM",&csm); } 
    //if(info->Spice())     { tree->Branch("TSpice","TSpice",&spice); tree->SetBranch("TS3","TS3",&s3); } 
@@ -364,7 +386,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
 
    if(info->Tigress())   { tigress->Clear(); } 
    if(info->Sharc())     { sharc->Clear(); } 
-   //if(info->TriFoil())   { trifoil->Clear(; } 
+   if(info->TriFoil())   { triFoil->Clear(); } 
    //if(info->Rf())        { rf->Clear(); } 
    if(info->CSM())       { csm->Clear(); } 
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
@@ -387,7 +409,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches() {
 
    if(info->Tigress())   { tigress->BuildHits(); } 
    if(info->Sharc())     { sharc->BuildHits(); } 
-   //if(info->TriFoil())   { trifoil->Clear(; } 
+   if(info->TriFoil())   { triFoil->BuildHits(); } 
    //if(info->Rf())        { rf->Clear(); } 
    if(info->CSM())       { csm->BuildHits(); } 
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 

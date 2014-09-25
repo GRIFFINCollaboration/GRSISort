@@ -10,10 +10,12 @@
 #include <TChannel.h>
 
 #include <TGRSIDetectorData.h>
+//#include <TGriffinCoreData.h>
 
 class TGriffinData : public TGRSIDetectorData {
 
 	private:
+      //std::vector<TGriffinCoreData> fCore; //!
 		std::vector<UShort_t> fClover_Nbr;		//!
 		std::vector<UShort_t> fCore_Nbr;		//!
 		std::vector<UInt_t>   fCore_Address;		//!
@@ -24,6 +26,10 @@ class TGriffinData : public TGRSIDetectorData {
 		std::vector<Double_t> fCore_TimeLED;		//!
 		std::vector<Double_t> fCore_Time;		//!
 		std::vector<std::vector<UShort_t> >fCore_Wave;	//!
+
+
+      std::vector<Int_t>        fCore_NbrHits; //!
+      std::vector<Int_t>        fCore_MidasId; //!
 
 
 		static bool fIsSet; //!
@@ -48,16 +54,40 @@ class TGriffinData : public TGRSIDetectorData {
 		inline void SetCoreTime(const Double_t    &CoreTime)	    {fCore_Time.push_back(CoreTime);       }	//!
 		inline void SetIsHighGain(const Bool_t &IsHighGain)    {fCore_IsHighGain.push_back(IsHighGain); } //!
 
+		inline void SetCoreMidasId(const Int_t &mid)	      {fCore_MidasId.push_back(mid);      }	//!
+		inline void SetCoreNbrHits(const Int_t &nbr)	      {fCore_NbrHits.push_back(nbr);      }	//!
+
 		inline void SetCoreWave(const std::vector<UShort_t> &CoreWave)	{fCore_Wave.push_back(CoreWave);} //!
 	
 		inline void SetCore(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 				if(!frag || !channel || !mnemonic) return;
 
-				if(mnemonic->outputsensor.compare(0,1,"b")==0)     //{	return; }  //make this smarter.
-               SetIsHighGain(true);
-            else
-               SetIsHighGain(false);
+            //printf(DBLUE "+++++++++++++++++++++++++++++++++++++++++++++++" RESET_COLOR "\n");
+            //printf(DBLUE "+++++++++++++++++++++++++++++++++++++++++++++++" RESET_COLOR "\n");
+            //printf(DBLUE "+++++++++++++++++++++++++++++++++++++++++++++++" RESET_COLOR "\n");
+            //frag->Print();
+            //channel->Print();
+            //PrintMNEMONIC(mnemonic);
 
+            //TGriffinCoreData core;
+
+            //core.fCore_MidasId = frag->MidasId;
+            //core.fCore_NbrHits = frag->Charge.size();
+
+            SetCoreMidasId(frag->MidasId);
+            SetCoreNbrHits(frag->Charge.size());
+
+   			if(mnemonic->outputsensor.compare(0,1,"B")==0) { return; }  //make this smarter.
+
+            //core.fCore_IsHighGain = false;
+            SetIsHighGain(false);
+
+//printf("IsHigGain = %i\n", (int)fCore_IsHighGain.back());
+//printf(MAGENTA "-----------------------------------------------------------------------------" RESET_COLOR "\n");
+//printf(MAGENTA "-----------------------------------------------------------------------------" RESET_COLOR "\n");
+//printf(MAGENTA "-----------------------------------------------------------------------------" RESET_COLOR "\n");
+
+            //core.fCore_Address = frag->ChannelAddress;
             SetCoreAddress(frag->ChannelAddress);
 
 				UShort_t CoreNbr=5;
@@ -77,10 +107,14 @@ class TGriffinData : public TGRSIDetectorData {
                SetCoreCharge(frag->Charge.at(x));
 				   SetCoreCFD(frag->Cfd.at(x));		
    				//SetCoreLED(frag->Led.at(x));		
-	   			SetCoreTime(frag->TimeToTrig);		
+	   			//SetCoreTime(frag->TimeToTrig);		
+	   			SetCoreTime(frag->GetTimeStamp());		
             }
 
       }; //! 
+
+      inline Int_t    GetCoreMidasId(const unsigned int &i)    {return fCore_MidasId.at(i); }
+      inline Int_t    GetCoreNbrHits(const unsigned int &i)    {return fCore_NbrHits.at(i); }
 
 		inline UShort_t GetCloverNumber(const unsigned int &i)	{return fClover_Nbr.at(i);}	//!
 		inline UShort_t GetCoreNumber(const unsigned int &i)	   {return fCore_Nbr.at(i);}	//!

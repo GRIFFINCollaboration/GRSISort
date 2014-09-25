@@ -40,6 +40,8 @@ void TGriffinHit::Clear(Option_t *opt)	{
 		bgo[x].Clear();
 	}
 	bgo.clear();
+
+   waveform.clear();
 }
 
 void TGriffinHit::SetPosition(double dist) {
@@ -48,9 +50,14 @@ void TGriffinHit::SetPosition(double dist) {
 
 
 void TGriffinHit::Print(Option_t *opt)	{
-	printf("Griffin hit energy: %.2f\n",GetEnergyHigh());
+
+   printf("Griffin Detector: %i\n",detector);
+	printf("Griffin Crystal:  %i\n",crystal);
+	printf("Griffin hit energy: %.2f\n",GetEnergyLow());
 	printf("Griffin hit time:   %.2f\n",GetTime());
-	//printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
+
+
+   //printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
 }
 
 

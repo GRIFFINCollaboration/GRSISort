@@ -137,9 +137,11 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
+   griffin_hits.clear();
 
-   std::vector<TGriffinHit> temp_hits;
-   std::map<std::pair<int,int>,std::pair<int,int> > address_gain_map;  // < <det,core>, <high gain , low gain> >
+
+  // std::vector<TGriffinHit> temp_hits;
+  // std::map<std::pair<int,int>,std::pair<int,int> > address_gain_map;  // < <det,core>, <high gain , low gain> >
 
    //printf("=========================================================\n");
    //printf("=========================================================\n");
@@ -171,15 +173,19 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    
       corehit.SetPosition();
 
-      temp_hits.push_back(corehit);
+      //temp_hits.push_back(corehit);  
+      griffin_hits.push_back(corehit);
 
+      //printf(RED "gdata->GetCoreNbrHitsMidasId(%i)    = %i" RESET_COLOR "\n",i, gdata->GetCoreNbrHits(i)); 
+      //printf("gdata->GetCoreMidasId(%i)    = %i\n",i, gdata->GetCoreMidasId(i));
+      //printf("gdata->GetIsHighGain(%i)    = %s\n",i, gdata->GetIsHighGain(i) ? "true":"false");
       //printf("corehit.GetDetectorNumber() = %i\n", corehit.GetDetectorNumber());
       //printf("corehit.GetCrystalNumber()  = %i\n", corehit.GetCrystalNumber());
-      //printf("corehit.GetEnergyHigh()     = %.02f\n", corehit.GetEnergyHigh());
+      //printf("corehit.GetEnergyLow()     = %.02f | %.02f\n", corehit.GetEnergyLow() , corehit.GetTime());
       
 
-      std::pair<int,int> det_cry = std::make_pair(corehit.GetDetectorNumber(),corehit.GetCrystalNumber());
-
+//      std::pair<int,int> det_cry = std::make_pair(corehit.GetDetectorNumber(),corehit.GetCrystalNumber());
+/*
       if(address_gain_map.count(det_cry)==0) {
          if(gdata->GetIsHighGain(i)) 
             address_gain_map.insert(std::make_pair(det_cry,std::make_pair(temp_hits.size()-1,0)));
@@ -191,8 +197,12 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
          else
             address_gain_map.at(det_cry).second = temp_hits.size()-1;
       }
+  */    
+
    }
 
+
+/*
    std::map<std::pair<int,int>,std::pair<int,int> >::iterator iter;
    for(iter = address_gain_map.begin(); iter != address_gain_map.end(); iter++) {
      temp_hits.at(iter->second.first).SetChargeLow(temp_hits.at(iter->second.second).GetChargeLow());
@@ -200,7 +210,9 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
      griffin_hits.push_back(temp_hits.at(iter->second.first));
 
    }
- 
+*/ 
+
+/*
    if(TGriffin::SetBGOHits() && bdata)  {
       TCrystalHit temp_crystal; temp_crystal.Clear();
       for(int i=0;i<griffin_hits.size();i++)	{
@@ -220,9 +232,16 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
          }
       }
    }
+*/
 
-   if(griffin_hits.size()>1)
-      BuildAddBack();
+
+   //for(int z=0;z<griffin_hits.size();z++)
+      //griffin_hits.at(z).Print();
+
+   //printf(DGREEN "|||||||||||||||||||||||||||||||||||||||||||||||||||||" RESET_COLOR "\n");
+
+   //if(griffin_hits.size()>1)
+   //   BuildAddBack();
 
 }
 

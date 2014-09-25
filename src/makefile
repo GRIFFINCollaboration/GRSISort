@@ -39,7 +39,7 @@ LIBS += -lSRIM
 
 DETLIBS =  -lTigress
 DETLIBS += -lSharc
-#DETLIBS += -lTriFoil
+DETLIBS += -lTriFoil
 #DETLIBS += -lRf
 DETLIBS += -lCSM
 #DETLIBS += -lSpice
