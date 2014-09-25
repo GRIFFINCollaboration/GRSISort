@@ -46,7 +46,6 @@ TNucleus::TNucleus(const char *name){
 	//Creates a nucleus based on symbol (ex. 26Na OR Na26) and sets all parameters from mass.dat
 	std::string Name = name;
 	//SetMassFile();
-	printf("Using massfile = %s/%s and name = %s\n",getenv("GRSISYS"),massfile,Name.c_str());
 	int Number = 0;
 	std::string symbol;
 	std::string element;
@@ -117,7 +116,6 @@ TNucleus::TNucleus(const char *name){
   SetMass();
 	SetSymbol(symbol.c_str());
   SetName(element.c_str());
-	printf("MADE!\n\n");
 }
 /*
 */
