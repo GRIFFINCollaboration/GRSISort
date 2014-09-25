@@ -4,7 +4,7 @@
 
 #include "TGRSIOptions.h"
 #include "TGRSIRunInfo.h"
-
+#include "TGRSIStats.h"
 #include "TGRSIint.h"
 
 ClassImp(TGRSIRootIO)
@@ -140,6 +140,10 @@ void TGRSIRootIO::CloseRootOutFile()   {
       TGRSIRunInfo::Get()->Write();
    }
 
+   if(TGRSIStats::GetSize() > 0) {
+       TGRSIRootIO::Get()->WriteRunStats();
+   }
+
    foutfile->Close();
 	delete foutfile;	
 	foutfile = 0;
@@ -238,9 +242,34 @@ int TGRSIRootIO::GetSubRunNumber(std::string filename)	{
    return -1;
 };
 
+void TGRSIRootIO::WriteRunStats(){
+  printf("entering writing\n");
+  if(!foutfile)
+    return;
+  printf("actually writing\n");
+   TGRSIStats *stats = 0;
+   TTree *fStatsTree = new TTree("StatsTree","StatsTree");
+   fStatsTree->Bronch("TGRSIStats","TGRSIStats",&stats);
 
-
-
+  std::map<int,TGRSIStats*>::iterator iter;
+  ofstream statsout;
+  statsout.open(Form("stats%05i_%03i.log",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
+  statsout << "\nRun time to the nearest second = " << TGRSIStats::GetRunTime()  << std::endl << std::endl;
+  for(iter = TGRSIStats::GetMap()->begin();iter!=TGRSIStats::GetMap()->end();iter++) {
+		int tmp_add = iter->second->GetAddress();
+		TChannel *chan = TChannel::GetChannel(tmp_add);
+		if(!chan)
+			continue;
+		stats = iter->second;
+                fStatsTree->Fill();
+		statsout << "0x"<< std::hex <<  stats->GetAddress() << std::dec  << "\t" <<  chan->GetChannelName() << "\tDeadtime: " << ((float)(stats->GetDeadTime()))*(1E-9) << " seconds." << std::endl;
+  }
+  TGRSIStats::GetMap()->clear();
+  statsout <<  std::endl;
+  statsout.close();
+  fStatsTree->Write();
+  return;
+}
 
 
 

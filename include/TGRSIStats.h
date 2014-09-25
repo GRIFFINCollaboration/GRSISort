@@ -5,16 +5,17 @@
 
 
 class TGRSIStats : public TObject {
+   public:
+      TGRSIStats(){};//For ROOT only. Do not call this.
 
    private:
       TGRSIStats(int);
-
    public:
       static TGRSIStats *GetStats(int temp_address); 
       static int GetNumberOfStats() { return fStatsMap->size(); }  
 
    private:
-     static std::map<int,TGRSIStats*> *fStatsMap;
+     static std::map<int,TGRSIStats*> *fStatsMap; 
      static time_t fLowestMidasTimeStamp;
      static time_t fHighestMidasTimeStamp;
 
@@ -30,7 +31,7 @@ class TGRSIStats : public TObject {
       static int GetSize() { if(fStatsMap) return fStatsMap->size(); else return 0; }
 
       int GetAddress() { return fStatAddress; }
-      unsigned long GetDeadTime() {return fDeadTime*10;}
+      unsigned long GetDeadTime() {return fDeadTime;}
       void IncDeadTime(int dtime) { fDeadTime += dtime; }
       void IncLostEvent(int lnum = 1) { fLostEvents+=lnum; }
 
