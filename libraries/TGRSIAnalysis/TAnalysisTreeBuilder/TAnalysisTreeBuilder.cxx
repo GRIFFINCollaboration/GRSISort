@@ -2,6 +2,7 @@
 #include "Globals.h"
 
 #include <TVirtualIndex.h>
+#include <TTreeIndex.h>
 
 #include "TAnalysisTreeBuilder.h"
 #include "TGRSIOptions.h"
@@ -10,7 +11,8 @@
 
 #include <TGRSIOptions.h>
 
-#include "TSharcData.h"
+
+//#include "TSharcData.h"
 
 
 bool TEventQueue::lock = false;
@@ -87,7 +89,7 @@ TCSM        *TAnalysisTreeBuilder::csm     = 0;
 //TS3         *TAnalysisTreeBuilder::s3      = 0;
 //TTip        *TAnalysisTreeBuilder::tip     = 0;    
 
-//TGriffin    *TAnalysisTreeBuilder::Griffin = 0;
+TGriffin    *TAnalysisTreeBuilder::griffin = 0;
 //TSceptar    *TAnalysisTreeBuilder::Sceptar = 0;
 //TPaces      *TAnalysisTreeBuilder::Paces   = 0;  
 //TDante      *TAnalysisTreeBuilder::Dante   = 0;  
@@ -185,7 +187,14 @@ void TAnalysisTreeBuilder::SortFragmentChain() {
       SetupFragmentTree();
       SetupOutFile();
       SetupAnalysisTree();
-      SortFragmentTree();
+
+      //if(fCurrentRunInfo->MajorIndex().length()>0 && fCurrentRunInfo->MajorIndex().compare("TimeStampHigh")==0) 
+      if(fCurrentRunInfo->Griffin())
+         SortFragmentTreeByTimeStamp();
+      else
+         SortFragmentTree();
+      
+
       CloseAnalysisFile();
       printf("\n");
       i+=(nentries-10);
@@ -222,6 +231,50 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
 }
 
 
+void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
+
+   TFragment *frag1 = 0;
+   TFragment *frag2 = new TFragment;
+
+   fCurrentFragTree->SetBranchAddress("TFragment",&frag1);
+
+   TTreeIndex *index = (TTreeIndex*)fCurrentFragTree->GetTreeIndex();
+
+   long entries = index->GetN();
+   Long64_t *indexvalues = index->GetIndexValues();
+   int major_max = fCurrentFragTree->GetMaximum("TimeStampHigh");
+
+   std::vector<TFragment> *event = new std::vector<TFragment>;
+
+   for(int x=0;x<entries;x++) {
+      int major = indexvalues[x] << 31;
+      int minor = indexvalues[x] & 0x7fffffff;
+      fCurrentFragTree->GetEntryWithIndex(major,minor);
+      if(abs(frag2->GetTimeStamp()-frag1->GetTimeStamp()) < 200) {  // 2 micro-sec.
+         event->push_back(*frag1);
+      } else {
+         if(event->size()==0) {
+            event->push_back(*frag1);
+         }
+         TEventQueue::Get()->Add(event);
+         event = new std::vector<TFragment>;
+      }
+      *frag2 = *frag1;
+      if((x%10000)==0 ) {
+         printf("\tprocessing event " CYAN "%i " RESET_COLOR "/" DBLUE " %li" RESET_COLOR "         \r",x,major_max);
+       }
+   }
+   printf("\n");
+   fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
+   return;                                                                                                                                                                            return;
+}
+
+
+
+
+
+
+
 void TAnalysisTreeBuilder::SetupFragmentTree() {
 
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
@@ -232,6 +285,12 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    }
 
    InitChannels();
+
+   if(fCurrentRunInfo->Griffin()) {
+      fCurrentRunInfo->SetMajorIndex("TimeStampHigh");
+      fCurrentRunInfo->SetMinorIndex("TimeStampLow");
+   }
+
 
    if(!fCurrentFragTree->GetTreeIndex()) {
       if(fCurrentRunInfo->MajorIndex().length()>0) {
@@ -287,7 +346,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    //if(info->Spice())     { tree->Branch("TSpice","TSpice",&spice); tree->SetBranch("TS3","TS3",&s3); } 
    //if(info->Tip())       { tree->Branch("TTip","TTip",&tip); } 
 
-   //if(info->Griffin())   { tree->Branch("TGriffin","TGriffin",&griffin); } 
+   if(info->Griffin())   { tree->Branch("TGriffin","TGriffin",&griffin); } 
    //if(info->Sceptar())   { tree->Branch("TSceptar","TSceptar",&sceptar); } 
    //if(info->Paces())     { tree->Branch("TPaces","TPaces",&paces); } 
    //if(info->Dante())     { tree->Branch("TDante","TDante",&dante); } 
@@ -311,7 +370,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
    //if(info->Tip())       { tip->Clear(); } 
 
-   //if(info->Griffin())   { griffin->Clear(); } 
+   if(info->Griffin())   { griffin->Clear(); } 
    //if(info->Sceptar())   { sceptar->Clear(); } 
    //if(info->Paces())     { paces->Clear(); } 
    //if(info->Dante())     { dante->Clear(); } 
@@ -334,7 +393,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches() {
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
    //if(info->Tip())       { tip->Clear(); } 
 
-   //if(info->Griffin())   { griffin->Clear(); } 
+   if(info->Griffin())   { griffin->BuildHits(); } 
    //if(info->Sceptar())   { sceptar->Clear(); } 
    //if(info->Paces())     { paces->Clear(); } 
    //if(info->Dante())     { dante->Clear(); } 
@@ -420,11 +479,11 @@ void TAnalysisTreeBuilder::ProcessEvent(std::vector<TFragment> *event) {
 			//	FillData(&(event->at(i)),&mnemonic);
 			} else if(mnemonic.system.compare("CS")==0) {	
 				csm->FillData(&(event->at(i)),channel,&mnemonic);
-			} //else if(mnemonic.system.compare("SP")==0) {	
+			//} else if(mnemonic.system.compare("SP")==0) {	
 			//	FillData(&(event->at(i)),&mnemonic);
-			//} else if(mnemonic.system.compare("GR")==0) {	
-			//	FillData(&(event->at(i)),&mnemonic);
-			//} else if(mnemonic.system.compare("SC")==0) {	
+			} else if(mnemonic.system.compare("GR")==0) {	
+				griffin->FillData(&(event->at(i)),channel,&mnemonic);
+			} //else if(mnemonic.system.compare("SC")==0) {	
 			//	FillData(&(event->at(i)),&mnemonic);
 			//} else if(mnemonic.system.compare("PA")==0) {	
 			//	FillData(&(event->at(i)),&mnemonic);

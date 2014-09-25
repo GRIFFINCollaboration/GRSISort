@@ -53,6 +53,14 @@ void TFragment::Clear(Option_t *opt){
 
 }
 
+long TFragment::GetTimeStamp() {
+   long time = TimeStampHigh;
+   time  = time << 28;
+   time |= TimeStampLow & 0x0fffffff;
+   return time;
+}
+
+
 const char *TFragment::GetName() {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan)
@@ -74,6 +82,7 @@ double TFragment::GetEnergy() {
 
 void TFragment::Print(Option_t *opt)	{
    //Prints out all fields of the TFragment
+
 
    TChannel *chan = TChannel::GetChannel(this->ChannelAddress);
    if(chan) {

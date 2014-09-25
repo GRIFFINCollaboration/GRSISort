@@ -28,7 +28,7 @@
 //#include <TS3.h>        
 //#include <TTip.h>       
    
-//#include <TGriffin.h>   
+#include <TGriffin.h>   
 //#include <TSceptar.h>   
 //#include <TPaces.h>     
 //#include <TDante.h>     
@@ -67,6 +67,7 @@ class TAnalysisTreeBuilder : public TObject {
 
       static void SortFragmentChain();
       static void SortFragmentTree();
+      static void SortFragmentTreeByTimeStamp();
 
       static void InitChannels();
 
@@ -108,7 +109,7 @@ class TAnalysisTreeBuilder : public TObject {
       //static TS3         *s3;
       //static TTip        *tip;    
        
-      //static TGriffin    *Griffin;
+      static TGriffin    *griffin;
       //static TSceptar    *Sceptar;
       //static TPaces      *Paces;  
       //static TDante      *Dante;  
