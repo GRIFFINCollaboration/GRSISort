@@ -57,9 +57,9 @@ class TGriffin : public TGRSIDetector {
      static bool SetBGOWave()	    { return fSetBGOWave;   } //!
 
    private:
-     static bool     gCloverPositionSet;      //Flag for if the clover positions have been set
+     //static bool     gCloverPositionSet;      //Flag for if the clover positions have been set
      static TVector3 gCloverPosition[17];     //Position of each HPGe Clover
-     static void     InitCloverPositions();
+     //static void     InitCloverPositions();
 
    public:         
      virtual void Clear(Option_t *opt = "");		//!
