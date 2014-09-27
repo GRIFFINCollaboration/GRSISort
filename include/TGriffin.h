@@ -60,21 +60,19 @@ class TGriffin : public TGRSIDetector {
      static bool SetCoreWave()      { return fSetCoreWave;  }	//!
      static bool SetBGOWave()	    { return fSetBGOWave;   } //!
 
-     void SetTapeMove()     { ftapemove = kTRUE; }
-     void SetBackground()   { fbackground = kTRUE;}
-     void SetBeamOn()       { fbeamon = kTRUE;}
-     void SetDecay()        { fdecay = kTRUE;}
+     void SetTapeMove()     { ftapemove = kTRUE; }//!
+     void SetBackground()   { fbackground = kTRUE;}//!
+     void SetBeamOn()       { fbeamon = kTRUE;}//!
+     void SetDecay()        { fdecay = kTRUE;}//!
 
-     bool GetTapeMove()   const { return ftapemove;  }
-     bool GetBackground() const { return fbackground;}
-     bool GetBeamOn()     const { return fbeamon;    }
-     bool GetDecay()      const { return fdecay;     }
-
-    // bool GetTapeMove()     { fcyclestatus
+     bool GetTapeMove()   const { return ftapemove;  }//!
+     bool GetBackground() const { return fbackground;}//!
+     bool GetBeamOn()     const { return fbeamon;    }//!
+     bool GetDecay()      const { return fdecay;     }//!
 
    private:
      static TVector3 gCloverPosition[17];     //Position of each HPGe Clover
-     void ClearStatus() { ftapemove = kFALSE; fbackground = kFALSE; fbeamon = kFALSE; fdecay = kFALSE;}     
+     void ClearStatus() { ftapemove = kFALSE; fbackground = kFALSE; fbeamon = kFALSE; fdecay = kFALSE;}//!     
 
    public:         
      virtual void Clear(Option_t *opt = "");		      //!
