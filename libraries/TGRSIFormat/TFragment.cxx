@@ -87,8 +87,13 @@ void TFragment::Print(Option_t *opt)	{
    TChannel *chan = TChannel::GetChannel(this->ChannelAddress);
    if(chan) {
 	   //printf("%s Event at	%i:\n", chan->GetDigitizerType().c_str(), MidasId);
+      char buff[20];
+      time(&MidasTimeStamp);
+      struct tm * timeinfo = localtime(&MidasTimeStamp);
+      strftime(buff,20,"%b %d %H:%M:%S",timeinfo);
+      printf("MidasTimeStamp: %s\n",buff);
 	   printf("MidasId    	%i\n", MidasId);
-	   printf("TriggerId: 	%lu\n", TriggerId);
+      printf("TriggerId: 	%lu\n", TriggerId);
 	   printf("FragmentId:   %i\n", FragmentId);
 	   printf("TriggerBit:	0x%08x\n", TriggerBitPattern);
 	   //printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetChannelName().c_str());
