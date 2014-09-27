@@ -66,10 +66,10 @@ class TGriffin : public TGRSIDetector {
      void SetBeamOn()       { fbeamon = kTRUE;}
      void SetDecay()        { fdecay = kTRUE;}a
 
-     bool GetTapeMove()   const { return ftapemove;}
+     bool GetTapeMove()   const { return ftapemove;  }
      bool GetBackground() const { return fbackground;}
-     bool GetBeamOn()     const { return fbeamon;}
-     bool GetDecay()      const { return fdecay;}
+     bool GetBeamOn()     const { return fbeamon;    }
+     bool GetDecay()      const { return fdecay;     }
 
     // bool GetTapeMove()     { fcyclestatus
 
