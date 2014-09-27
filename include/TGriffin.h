@@ -73,7 +73,7 @@ class TGriffin : public TGRSIDetector {
     // bool GetTapeMove()     { fcyclestatus
 
    private:
-     static TVector3 gCloverPosition[17];     //Position of each HPGe Clover
+     static TVector3 gCloverPosition[17];     //!   Position of each HPGe Clover
      void ClearStatus() { ftapemove = kFALSE; fbackground = kFALSE; fbeamon = kFALSE; fdecay = kFALSE;}     
 
    public:         

@@ -29,7 +29,7 @@
 //#include <TTip.h>       
    
 #include <TGriffin.h>   
-//#include <TSceptar.h>   
+#include <TSceptar.h>   
 //#include <TPaces.h>     
 //#include <TDante.h>     
 //#include <TZeroDegree.h>
@@ -110,11 +110,11 @@ class TAnalysisTreeBuilder : public TObject {
       //static TTip        *tip;    
        
       static TGriffin    *griffin;
-      //static TSceptar    *Sceptar;
-      //static TPaces      *Paces;  
-      //static TDante      *Dante;  
-      //static TZeroDegree *ZeroDegree;
-      //static TDescant    *Descant;
+      static TSceptar    *sceptar;
+      //static TPaces      *paces;  
+      //static TDante      *dante;  
+      //static TZeroDegree *zeroDegree;
+      //static TDescant    *descant;
 
 	ClassDef(TAnalysisTreeBuilder,0)
 

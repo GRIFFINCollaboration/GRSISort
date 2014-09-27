@@ -21,51 +21,28 @@ class TSceptar : public TGRSIDetector {
      ~TSceptar();
 
   public: 
-     void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
-     //void BuildHits(TSceptarData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
-     void BuildAddBack(Option_t *opt="");	//!
-
      TSceptarHit *GetSceptarHit(int i)        {	return &sceptar_hits[i];   }	//!
-     Short_t GetMultiplicity() const	      {	return sceptar_hits.size();}	//!
+     Short_t GetMultiplicity() const	       {	return sceptar_hits.size();}	//!
 
-      //Need to fix this stuff
-     static TVector3 GetPosition(int DetNbr ,int CryNbr = 5, double distance = 110.0);		//!
+     static TVector3 GetPosition(int DetNbr)  { return gPaddlePosition[DetNbr];}	//!
 
-     void FillData(TFragment*,TChannel*,MNEMONIC*); //!
-     void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
+     void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = "");           //!
+     void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
 
    private: 
-     TSceptarData *sceptardata;                 //!  Used to build GRIFFIN Hits
-     std::vector <TSceptarHit> sceptar_hits; //   The set of crystal hits
-     std::vector <TSceptarHit> addback_hits; //   The set of add-back hits		
+     TSceptarData *sceptardata;                                               //!  Used to build GRIFFIN Hits
+     std::vector <TSceptarHit> sceptar_hits;                                  //   The set of crystal hits
 
-     static bool fSetCoreWave;		         //  Flag for Waveforms ON/OFF
+     static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
 
-     bool ftapemove;
-     bool fbackground;
-     bool fbeamon;
-     bool fdecay;       
+     bool beta;                                                               //   Is there a sceptar hit?
 
    public:
-     static bool SetBGOHits()       { return fSetBGOHits;   }	//!
-     static bool SetCoreWave()      { return fSetCoreWave;  }	//!
-     static bool SetBGOWave()	    { return fSetBGOWave;   } //!
-
-     void SetTapeMove()     { ftapemove = kTRUE; }
-     void SetBackground()   { fbackground = kTRUE;}
-     void SetBeamOn()       { fbeamon = kTRUE;}
-     void SetDecay()        { fdecay = kTRUE;}
-
-     bool GetTapeMove()   const { return ftapemove;  }
-     bool GetBackground() const { return fbackground;}
-     bool GetBeamOn()     const { return fbeamon;    }
-     bool GetDecay()      const { return fdecay;     }
-
-    // bool GetTapeMove()     { fcyclestatus
+     static bool SetWave()      { return fSetWave;  }	                        //!
+     bool Beta()                {return beta;}                                //!  
 
    private:
-     static TVector3 gPaddlePosition[17];     //Position of each Paddle
-     void ClearStatus() { ftapemove = kFALSE; fbackground = kFALSE; fbeamon = kFALSE; fdecay = kFALSE;}     
+     static TVector3 gPaddlePosition[21];                                     //!  Position of each Paddle
 
    public:         
      virtual void Clear(Option_t *opt = "");		//!
