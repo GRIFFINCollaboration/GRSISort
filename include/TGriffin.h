@@ -64,7 +64,7 @@ class TGriffin : public TGRSIDetector {
      void SetTapeMove()     { ftapemove = kTRUE; }
      void SetBackground()   { fbackground = kTRUE;}
      void SetBeamOn()       { fbeamon = kTRUE;}
-     void SetDecay()        { fdecay = kTRUE;}a
+     void SetDecay()        { fdecay = kTRUE;}
 
      bool GetTapeMove()   const { return ftapemove;  }
      bool GetBackground() const { return fbackground;}
@@ -75,7 +75,7 @@ class TGriffin : public TGRSIDetector {
 
    private:
      static TVector3 gCloverPosition[17];     //Position of each HPGe Clover
-     void ClearStatus() { ftapemove = kFALSE; fbackground = kFALSE; fbeamon = kFALSE; fdecay = ;}     
+     void ClearStatus() { ftapemove = kFALSE; fbackground = kFALSE; fbeamon = kFALSE; fdecay = kFALSE;}     
 
    public:         
      virtual void Clear(Option_t *opt = "");		//!
