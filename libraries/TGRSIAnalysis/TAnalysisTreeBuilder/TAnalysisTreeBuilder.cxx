@@ -261,21 +261,6 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
          continue;
       } 
       event->push_back(*oldFrag);
-      //printf("major = %d, minor = %d\n", major, minor);
-      //oldFrag->Print();
-      //currentFrag->Print();
-      //printf("================================================================================\n");
-         //printf("coincident event: event->size() = %lu\n",event->size());
-         //printf("non-coincident event: event->size() = %lu\n",event->size());
-         //if(event->size()==0) {
-            //event->push_back(*currentFrag);
-         //}
-         //if(event->size() > 1) {
-            //printf("================================================================================\n");
-            //for(size_t i = 0; i < event->size(); ++i) {
-               //event->at(i).Print();
-            //}
-         //}
          
       if(abs(oldFrag->GetTimeStamp()-currentFrag->GetTimeStamp()) > 200) {  // 2 micro-sec.
          TEventQueue::Get()->Add(event);
