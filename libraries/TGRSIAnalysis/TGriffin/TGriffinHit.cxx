@@ -32,7 +32,7 @@ void TGriffinHit::Clear(Option_t *opt)	{
    cfd    = -1;
    energy_lowgain = 0.0;
    energy_highgain = 0.0;
-   time   = 0.0;
+   time   = 0;
 
    position.SetXYZ(0,0,1);
 
@@ -49,12 +49,12 @@ void TGriffinHit::SetPosition(double dist) {
 }
 
 
-void TGriffinHit::Print(Option_t *opt)	{
+void TGriffinHit::Print(Option_t *opt) const	{
 
    printf("Griffin Detector: %i\n",detector);
 	printf("Griffin Crystal:  %i\n",crystal);
 	printf("Griffin hit energy: %.2f\n",GetEnergyLow());
-	printf("Griffin hit time:   %.2f\n",GetTime());
+	printf("Griffin hit time:   %lld\n",GetTime());
 
 
    //printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
