@@ -47,6 +47,7 @@ class TSceptarData : public TGRSIDetectorData {
    public:
 		inline void SetDet(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 		   if(!frag || !channel || !mnemonic) return;
+         
          for(int x=0;x<frag->Charge.size();x++) {
      		   SetDetNumber(frag->ChannelNumber);
 	   	   SetDetAddress(frag->ChannelAddress);

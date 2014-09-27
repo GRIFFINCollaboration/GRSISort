@@ -95,7 +95,8 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       return;
 
    sceptar_hits.clear();
-
+   TSceptar::SetBeta(false);
+   
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
       TSceptarHit dethit;
 
@@ -116,5 +117,6 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
 
       sceptar_hits.push_back(dethit);
+      TSceptar::SetBeta();
    }
 }

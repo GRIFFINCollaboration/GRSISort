@@ -23,7 +23,7 @@ class TGriffinData : public TGRSIDetectorData {
     std::vector<Double_t> fCore_Eng;		//!
     std::vector<Int_t>    fCore_Chg;		//!
     std::vector<Long_t>   fCore_TimeCFD;	//!
-    std::vector<Long64_t>   fCore_Time;		//!
+    std::vector<Long_t>   fCore_Time;		//!
     std::vector<std::vector<Short_t>>fCore_Wave;	//!
 
     std::vector<Int_t>        fCore_NbrHits; //!
@@ -107,7 +107,7 @@ class TGriffinData : public TGRSIDetectorData {
       inline Double_t GetCoreEnergy(const unsigned int &i) const     {return fCore_Eng.at(i);}	//!
       inline Int_t  GetCoreCharge(const unsigned int &i) const       {return fCore_Chg.at(i);}	//!
       inline Long_t GetCoreCFD(const unsigned int &i) const          {return fCore_TimeCFD.at(i);}	//!
-      inline Long64_t GetCoreTime(const unsigned int &i) const       {return fCore_Time.at(i);}	//!
+      inline Long_t GetCoreTime(const unsigned int &i) const       {return fCore_Time.at(i);}	//!
 
       inline Bool_t GetIsHighGain(const unsigned int &i) const       {return fCore_IsHighGain.at(i);} //!
 

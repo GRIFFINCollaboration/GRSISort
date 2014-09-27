@@ -401,7 +401,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches() {
    //if(info->Tip())       { tip->Clear(); } 
 
    if(info->Griffin())   { griffin->BuildHits(); } 
-   if(info->Sceptar())   { sceptar->Clear(); } 
+   if(info->Sceptar())   { sceptar->BuildHits(); } 
    //if(info->Paces())     { paces->Clear(); } 
    //if(info->Dante())     { dante->Clear(); } 
    //if(info->ZeroDegree()){ zerodegree->Clear(); } 
@@ -434,7 +434,7 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
 
       ProcessEvent(event);
 
-      if(TEventQueue::Size()%1500==0 || TEventQueue::Size()==0) {
+      if(TEventQueue::Size()%5000==0 || TEventQueue::Size()==0) {
          printf("\t\ton event %d/%d\t\t%f seconds.\r",TEventQueue::Size(),totalsize,w.RealTime());
          w.Continue(); 
       }
@@ -474,6 +474,8 @@ void TAnalysisTreeBuilder::ProcessEvent(std::vector<TFragment> *event) {
       ClearMNEMONIC(&mnemonic);
       ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
 		
+      //PrintMNEMONIC(&mnemonic);
+      //channel->Print();
 			//printf("ChannelName = %s\n",channel->GetChannelName());
 
 			if(mnemonic.system.compare("TI")==0) {

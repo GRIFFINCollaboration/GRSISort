@@ -39,6 +39,7 @@ class TSceptar : public TGRSIDetector {
 
    public:
      static bool SetWave()      { return fSetWave;  }	                        //!
+     bool SetBeta(bool flag = true) { beta = flag; }                          //!
      bool Beta()                {return beta;}                                //!  
 
    private:

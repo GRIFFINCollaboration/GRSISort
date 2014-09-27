@@ -78,7 +78,7 @@ class TGriffin : public TGRSIDetector {
 
    public:         
      virtual void Clear(Option_t *opt = "");		      //!
-     virtual void Print(Option_t *opt = "") const;		//!
+     virtual void Print(Option_t *opt = "");		//!
 
    ClassDef(TGriffin,1)  // Griffin Physics structure
 
