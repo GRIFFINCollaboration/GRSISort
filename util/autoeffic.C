@@ -97,7 +97,7 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
 
    Double_t binWidth = h->GetXaxis()->GetBinWidth(1000);//Need to find the bin widths so that the integral makes sense
-   Int_t rw = binWidth*20;  //This number may change depending on the source used   
+   Int_t rw = binWidth*40;  //This number may change depending on the source used   
    //Set the number of iterations. The code is pretty quick, so having a lot isn't an issue	
    TVirtualFitter::SetMaxIterations(4999);
    Int_t xp = par[1];
@@ -122,7 +122,7 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
    pp->SetParLimits(3,0,30);
    pp->SetParLimits(4,0,10);
    pp->SetParLimits(5,0.000,1000000);
-   pp->SetParLimits(9,xp-20,xp+20);
+   pp->SetParLimits(9,xp-40,xp+40);
 
    //Actually set the parameters in the photopeak function
    pp->SetParameters(par);
@@ -158,7 +158,7 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
    area = integral;
    darea = sigma_integral;
 
-   if(fitres->Chi2()/fitres->Ndf() > 5.0)
+   if(fitres->Chi2()/fitres->Ndf() > 30.0)
       return false;
 
    return true;
@@ -393,15 +393,15 @@ void DoFit(TH2 *hist) {
 
 }
 
-int autoefficiency(TH1 *hist,const char *name) {
+int autoefficiency(TH1 *hist,const char *name,Double_t runlengthsecs, Double_t activitykBq=1.0) {
   gSystem->Load("libNucleus");
   TNucleus nuc(name);
   TGraph *graph;
-  graph = autoefficiency(hist,&nuc);
+  graph = autoefficiency(hist,&nuc, runlengthsecs,activitykBq);
   return 1;
 }
 
-TGraph* autoefficiency(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPad  
+TGraph* autoefficiency(TH1 *hist,TNucleus *nuc,Double_t runlengthsecs,  Double_t activitykBq) {    //Activity in uCi
 
    if(!hist || !nuc)
       return 0;
@@ -453,14 +453,14 @@ TGraph* autoefficiency(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPa
      par[2] = 2;   //sigma
      par[3] = 5;   //beta
      par[4] = 0;   //R
-     par[5] = 1.0;//stp
+     par[5] = 5.0;//stp
      par[6] = hist->GetBinContent(bin+25);  //A
-     par[7] = -0.2;//B
-     par[8] = 0;   //C
+     par[7] = -1.0;//B
+     par[8] = -0.5;   //C
      par[9] = xp;  //bg offset
      bool goodfit = FitPeak(par,hist,integral, sigma);
      if(goodfit){
-     	areavec.push_back(integral/intensvec.at(p));
+     	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
      	area_uncertainty.push_back(sigma);
         goodenergyvec.push_back(engvec.at(p));
   //      goodintensvec.push_back(intensvec.at(p));
