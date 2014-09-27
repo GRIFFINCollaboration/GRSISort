@@ -9,7 +9,6 @@
 #include <TGriffinHit.h>
 #include <TGriffinData.h>
 #include <TBGOData.h>
-#include <TBits.h>
 #include <TVector3.h> 
 
 #include <TGriffinHit.h>
