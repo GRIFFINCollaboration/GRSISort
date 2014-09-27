@@ -32,13 +32,13 @@ class TGriffinHit : public TGRSIDetectorHit {
       Int_t cfd;
       Double_t energy_lowgain;
       Double_t energy_highgain;
-      Double_t time;
+      Long64_t time;
 
 		TVector3 position;
 
 		std::vector<TCrystalHit> bgo;
 
-      std::vector<UShort_t> waveform;
+      std::vector<Short_t> waveform;
    
 	public:
 
@@ -48,7 +48,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 		inline void SetDetectorNumber(const int &x)  { detector = x; }   //!
 		inline void SetCrystalNumber(const int &x)   { crystal = x;  }   //!
 
-      inline void SetFilerPattern(const int &x)    { filter = x;   }   //! 
+      inline void SetFilterPattern(const int &x)    { filter = x;   }   //! 
 
       inline void SetChargeLow(const int &x)       { charge_lowgain  = x;   }   //!
       inline void SetChargeHigh(const int &x)      { charge_highgain = x;   }   //!
@@ -57,33 +57,33 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline void SetEnergyHigh(const Double_t &x)     { energy_highgain = x;   }   //!
       inline void SetEnergyLow(const Double_t &x)     { energy_lowgain = x;   }   //!
 
-      inline void SetTime(const Double_t &x)       { time   = x;   }   //!
+      inline void SetTime(const Long64_t &x)       { time   = x;   }   //!
 
       inline void SetAddress(const UInt_t &x)      { address = x; } //!
 
-      inline void SetWaveform(std::vector<UShort_t> x) { waveform = x; } //!
+      inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
 
 		void SetPosition(double dist =110);                                				  //!
 
 		
 		/////////////////////////		/////////////////////////////////////
-		inline UShort_t GetDetectorNumber()	     {	return detector; }  //!
-		inline UShort_t GetCrystalNumber()	     {	return crystal;  }  //!
+		inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
+		inline UShort_t GetCrystalNumber() const	     {	return crystal;  }  //!
 	
-		inline Int_t    GetChargeLow()			  {	return charge_lowgain;	  }  //!
-		inline Int_t    GetChargeHigh()			  {	return charge_highgain;	  }  //!
-      inline Int_t    GetCfd()                 {   return cfd;      }  //!
-      inline Double_t GetEnergyLow()		     {	return energy_lowgain;   }  //!
-      inline Double_t GetEnergyHigh()		     {	return energy_highgain;   }  //!
-		inline Double_t GetTime()			        {	return time;     }  //!
-		inline TVector3 GetPosition()	           {	return position; }  //!
+		inline Int_t    GetChargeLow() const			  {	return charge_lowgain;	  }  //!
+		inline Int_t    GetChargeHigh() const			  {	return charge_highgain;	  }  //!
+      inline Int_t    GetCfd() const                 {   return cfd;      }  //!
+      inline Double_t GetEnergyLow() const		     {	return energy_lowgain;   }  //!
+      inline Double_t GetEnergyHigh() const		     {	return energy_highgain;   }  //!
+		inline Long64_t   GetTime() const 			        {	return time;     }  //!
+		inline TVector3 GetPosition() const	           {	return position; }  //!
 
-      inline UInt_t   GetAddress()             {   return address; } //!
+      inline UInt_t   GetAddress() const             {   return address; } //!
 
-      inline Int_t    GetFiterPatter()         {   return filter;   }  //!
-
-		inline int GetBGOMultiplicity()			   {	return bgo.size();	}		      //!
-		inline TCrystalHit *GetBGO(const int &i)	{	return &bgo.at(i);	}	        //!
+      inline Int_t    GetFiterPatter() const         {   return filter;   }  //!
+      inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
+		inline int GetBGOMultiplicity() const  		  {	return bgo.size();	}		      //!
+		inline TCrystalHit *GetBGO(const int &i)       {	return &bgo.at(i);	}	        //!
 
       bool   InFilter(Int_t);  //!
 
@@ -92,9 +92,9 @@ class TGriffinHit : public TGRSIDetectorHit {
 
 	public:
 		virtual void Clear(Option_t *opt = "");		                   //!
-		virtual void Print(Option_t *opt = "");		                   //!
+		virtual void Print(Option_t *opt = "") const; 	                   //!
 
-	ClassDef(TGriffinHit,1)
+	ClassDef(TGriffinHit,2)
 };
 
 

@@ -29,7 +29,6 @@ void TGriffinData::Clear(Option_t *opt)	{
    fCore_Eng.clear();
 	fCore_Chg.clear();
 	fCore_TimeCFD.clear();
-	fCore_TimeLED.clear();
 	fCore_Time.clear();
 
 
@@ -41,7 +40,7 @@ void TGriffinData::Clear(Option_t *opt)	{
 
 }
 
-void TGriffinData::Print(Option_t *opt)	{
+void TGriffinData::Print(Option_t *opt) const	{
 	// not yet written.
 	printf("not yet written.\n");
 }
