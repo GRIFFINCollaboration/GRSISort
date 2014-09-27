@@ -110,7 +110,7 @@ void TGriffin::Clear(Option_t *opt)	{
 }
 
 
-void TGriffin::Print(Option_t *opt) const	{
+void TGriffin::Print(Option_t *opt)	{
   //Prints out TGriffin members, currently does nothing.
   printf("not yet written...\n");
   return;
