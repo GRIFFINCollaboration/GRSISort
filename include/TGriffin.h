@@ -77,8 +77,8 @@ class TGriffin : public TGRSIDetector {
      void ClearStatus() { ftapemove = kFALSE; fbackground = kFALSE; fbeamon = kFALSE; fdecay = kFALSE;}     
 
    public:         
-     virtual void Clear(Option_t *opt = "");		//!
-     virtual void Print(Option_t *opt = "");		//!
+     virtual void Clear(Option_t *opt = "");		      //!
+     virtual void Print(Option_t *opt = "") const;		//!
 
    ClassDef(TGriffin,1)  // Griffin Physics structure
 
