@@ -25,8 +25,8 @@ class TGRSIDetector : public TObject	{
 		virtual void BuildHits(TGRSIDetectorData *data=0,Option_t * = "") = 0;			   //!
 		virtual void FillData(TFragment*,TChannel*,MNEMONIC*) = 0; //!
 
-      virtual void Clear(Option_t *opt = "") = 0;		//!
-		virtual void Print(Option_t *opt = "") = 0;		//!
+      virtual void Clear(Option_t *opt = "");		//!
+		virtual void Print(Option_t *opt = "");		//!
 
       TGRSIDetectorData *GetData() { return data;}
 
