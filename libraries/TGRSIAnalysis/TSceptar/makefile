@@ -1,5 +1,5 @@
 
-OBJECTS = TBetaDecay.o TBetaDecayDict.o
+OBJECTS = TSceptar.o TSceptarDict.o TSceptarData.o TSceptarDataDict.o TSceptarHit.o TSceptarHitDict.o 
 
 CFLAGS += -fPIC
 
@@ -10,10 +10,11 @@ CAT=cat
 
 .PHONY: all clean gone
 
-all: libBetaDecay.so
+all: libSceptar.so
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
 
-libBetaDecay.so: $(OBJECTS)
+
+%.so: $(OBJECTS)
 	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"
 	@$(COMPILESHARED)$@ $(CFLAGS) -o$@ $(OBJECTS) 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \

@@ -13,6 +13,7 @@ time_t TGRSIStats::fHighestMidasTimeStamp = 0;
 
 
 TGRSIStats *TGRSIStats::GetStats(int temp_add) {
+   Class()->IgnoreTObjectStreamer(true);
   if(fStatsMap->count(temp_add) == 0)
   	fStatsMap->insert( std::pair<int,TGRSIStats*>(temp_add,new TGRSIStats(temp_add)));
   return fStatsMap->at(temp_add);

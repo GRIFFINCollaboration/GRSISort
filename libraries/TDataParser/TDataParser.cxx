@@ -380,31 +380,32 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 	if(!SetGRIFHeader(data[x++],EventFrag)) {
 		printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n",data[0]);
 		delete EventFrag;
-		return -(x+1);	
+		return -x;
 	}
 
 //   if(!SetGRIFPPG(data[x++],EventFrag)) {
 //		delete EventFrag;
-//		return -(x+1);
+//		return -x;
 //	}
    
 	if(!SetGRIFMasterFilterPattern(data[x++],EventFrag)) {
 		delete EventFrag;
-		return -(x+1);
+		return -x;
 	} 
-       if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
+
+   if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
 		delete EventFrag;
-		return -(x+1);
+		return -x;
 	}
 
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
-		return -(x+1);
+		return -x;
 	}
 
 	if(!SetGRIFTimeStampLow(data[x++],EventFrag)) {
 		delete EventFrag;
-		return -(x+1);
+		return -x;
 	}
 
 	int  kwordcounter = 0;
@@ -424,7 +425,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 				SetGRIFDeadTime(value,EventFrag);
 				break;
 			case 0xe0000000:
-				if(value == EventFrag->ChannelId) {
+				if(true) { //value == EventFrag->ChannelId) { //header has to equal the trailer
 					if(record_stats)
 						FillStats(EventFrag);
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);				
@@ -432,7 +433,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
                   printf( DBLUE "x | size: " DRED "%i | %i" RESET_COLOR "\n",x,size); //once this happens we need to recursively call GriffinDataToFragment with the remaining datums.
                return NumFragsFound;
 				} else  {
-					return -(x+1);
+					return -x;
             }
             break;
  		   default:				
@@ -446,7 +447,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
    	       break;
 		};
 	}
-	return -(x+1);
+	return -x;
 }
 
 
@@ -468,7 +469,10 @@ bool TDataParser::SetGRIFHeader(uint32_t value,TFragment *frag) {
    frag->NumberOfPileups =  (value &0x001c0000)>> 18;
    frag->ChannelAddress  =  (value &0x0003fff0)>> 4;
    frag->DetectorType    =  (value &0x0000000f);
-   
+  
+   if(frag->DetectorType==2)
+      frag->ChannelAddress += 0x8000;
+
    TChannel *chan = TChannel::GetChannel(frag->ChannelAddress);
    if(chan) {
       frag->ChannelNumber = chan->GetNumber();
@@ -506,7 +510,7 @@ bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment *frag) {
 		return false;
 	}
 	frag->TriggerBitPattern = value & 0x3fff0000;
-        frag->PPG = value & 0x0000ffff;//This is due to new GRIFFIN data format
+   frag->PPG = value & 0x0000ffff;//This is due to new GRIFFIN data format
 	return true;
 }
 

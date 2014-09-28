@@ -211,9 +211,6 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 					 currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
       }
    }
-   if(TGRSIStats::GetSize() > 0) {
-		CreateStatsLog(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
-   }
 
    Finalize();
    return;
@@ -472,7 +469,7 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, T
 		if(!suppress_error) {
 			if(!TGRSIOptions::LogErrors()) {
 			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
-			   printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", (-1*frags)-1);
+			   printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", (-1*frags));
 	    		   if(mevent)  mevent->Print(Form("a%i",(-1*frags)-1));
 			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
 		   } else {
@@ -499,25 +496,6 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, T
 }
 
 
-
-void TGRSILoop::CreateStatsLog(int runnumber, int subrunnumber) {
-  std::map<int,TGRSIStats*>::iterator iter;
-  ofstream statsout;
-  statsout.open(Form("stats%05i_%03i.log",runnumber,subrunnumber));
-  statsout << "\nRun time to the nearest second = " << TGRSIStats::GetRunTime()  << std::endl << std::endl;
-  for(iter = TGRSIStats::GetMap()->begin();iter!=TGRSIStats::GetMap()->end();iter++) {
-		int tmp_add = iter->second->GetAddress();
-		TChannel *chan = TChannel::GetChannel(tmp_add);
-		if(!chan)
-			continue;
-		TGRSIStats *stat = iter->second;
-		statsout << "0x"<< std::hex <<  stat->GetAddress() << std::dec  << "\t" <<  chan->GetChannelName() << "\tDeadtime: " << ((float)(stat->GetDeadTime()))*(1E-9) << " seconds." << std::endl;
-  }
-  TGRSIStats::GetMap()->clear();
-  statsout <<  std::endl;
-  statsout.close();
-  return;
-}
 
 
 void TGRSILoop::Print(Option_t *opt) {   }
