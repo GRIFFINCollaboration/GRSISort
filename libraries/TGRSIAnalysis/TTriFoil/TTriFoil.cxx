@@ -7,7 +7,7 @@
 ClassImp(TTriFoil)
 
 
-TTriFoil::TTriFoil() 	{
+TTriFoil::TTriFoil():data(0) 	{
 	Clear();
 }
 
@@ -48,7 +48,8 @@ void TTriFoil::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
 }
 
 void TTriFoil::Clear(Option_t *opt)	{
-  if(data) data->Clear();
+  if(data) data->Clear(); //!
+		
 
   tf_wave.clear();
   timestamp =0;
@@ -56,8 +57,6 @@ void TTriFoil::Clear(Option_t *opt)	{
   tbeam = 0;
 
 
-	TTriFoilData *data;		//!
-	tf_wave.clear();
 }
 
 void TTriFoil::Print(Option_t *opt) { } 

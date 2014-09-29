@@ -20,6 +20,7 @@ TTriFoilData::TTriFoilData()	{	}
 TTriFoilData::~TTriFoilData()	{	}
 
 /////////////////////////
+
 void TTriFoilData::Clear(Option_t *opt)
 {
  	fIsSet = false;
