@@ -376,14 +376,13 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 
 	int x = 0;  
    //int x = 6;
-
 	if(!SetGRIFHeader(data[x++],EventFrag)) {
 		printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n",data[0]);
 		delete EventFrag;
 		return -x;
 	}
 
-//   if(!SetGRIFPPG(data[x++],EventFrag)) {
+//   if(!SetGRIFPPG(data[x++],EventFrag)) {            //THIS FUNCTION SHOULD NOT BE USED
 //		delete EventFrag;
 //		return -x;
 //	}
@@ -402,6 +401,10 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 		delete EventFrag;
 		return -x;
 	}
+
+   if(SetGRIFNetworkPacket(data[x],EventFrag)) {
+      x++;
+   }
 
 	if(!SetGRIFTimeStampLow(data[x++],EventFrag)) {
 		delete EventFrag;
@@ -524,6 +527,15 @@ bool TDataParser::SetGRIFChannelTriggerId(uint32_t value, TFragment *frag) {
 	return true;
 }
 
+
+bool TDataParser::SetGRIFNetworkPacket(uint32_t value, TFragment *frag) {
+//Ignores the network packet number (for now)
+	if( (value &0xf0000000) != 0xd0000000) {
+		return false;
+	}
+   frag->NetworkPacketNumber = value & 0x0fffffff;
+   return true;
+}
 
 bool TDataParser::SetGRIFTimeStampLow(uint32_t value, TFragment *frag) {
 //Sets the lower 28 bits of the griffin time stamp 
