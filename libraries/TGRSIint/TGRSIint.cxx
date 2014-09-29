@@ -65,6 +65,8 @@ void TGRSIint::ApplyOptions() {
     TGRSILoop::Get()->SortMidas();
   }
 
+
+  bool foundCal = false;
   if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
   if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0)  
@@ -78,6 +80,14 @@ void TGRSIint::ApplyOptions() {
         printf("\tfile %s opened as _file%i\n",file->GetName(),x);
         TGRSIRootIO::Get()->LoadRootFile(file);
    }
+   if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
+      ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
+      printf("Reading Calibration from from _file0 FragmentTree if it exists\n"); //Will put real file name in here but it's bed time
+    }   
+    if(TGRSIOptions::GetInputRoot().at(0).find("analysis") != std::string::npos){ 
+      ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
+      printf("Reading Calibration from _file0 AnalysisTree if it exists\n ");
+    }
   }
   if(TGRSIOptions::CloseAfterSort())
      gApplication->Terminate();
