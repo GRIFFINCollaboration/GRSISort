@@ -54,6 +54,7 @@ class TDataParser { //: public TObject {
     static bool SetGRIFMasterFilterPattern(uint32_t,TFragment*);
     static bool SetGRIFChannelTriggerId(uint32_t,TFragment*);  
     static bool SetGRIFTimeStampLow(uint32_t,TFragment*);
+    static bool SetGRIFNetworkPacket(uint32_t,TFragment*);
 
     static bool SetGRIFWaveForm(uint32_t,TFragment*);
     static bool SetGRIFDeadTime(uint32_t,TFragment*);
