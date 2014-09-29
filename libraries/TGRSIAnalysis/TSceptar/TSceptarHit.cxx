@@ -33,7 +33,7 @@ void TSceptarHit::Clear(Option_t *opt)	{
 void TSceptarHit::Print(Option_t *opt)	{
    printf("Sceptar Detector: %i\n",detector);
 	printf("Sceptar hit energy: %.2f\n",GetEnergy());
-	printf("Sceptar hit time:   %.lld\n",GetTime());
+	printf("Sceptar hit time:   %.ld\n",GetTime());
 }
 
 

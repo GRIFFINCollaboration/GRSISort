@@ -54,7 +54,7 @@ void TGriffinHit::Print(Option_t *opt) const	{
    printf("Griffin Detector: %i\n",detector);
 	printf("Griffin Crystal:  %i\n",crystal);
 	printf("Griffin hit energy: %.2f\n",GetEnergyLow());
-	printf("Griffin hit time:   %lld\n",GetTime());
+	printf("Griffin hit time:   %ld\n",GetTime());
 
 
    //printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
