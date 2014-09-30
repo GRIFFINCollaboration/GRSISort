@@ -32,7 +32,7 @@ class TGriffinHit : public TGRSIDetectorHit {
       Int_t cfd;
       Double_t energy_lowgain;
       Double_t energy_highgain;
-      Long64_t time;
+      Long_t time;
 
 		TVector3 position;  
 
@@ -57,7 +57,7 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline void SetEnergyHigh(const Double_t &x)     { energy_highgain = x;   }   //!
       inline void SetEnergyLow(const Double_t &x)     { energy_lowgain = x;   }   //!
 
-      inline void SetTime(const Long64_t &x)       { time   = x;   }   //!
+      inline void SetTime(const Long_t &x)       { time   = x;   }   //!
 
       inline void SetAddress(const UInt_t &x)      { address = x; } //!
 
@@ -75,12 +75,12 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline Int_t    GetCfd() const                 {   return cfd;      }  //!
       inline Double_t GetEnergyLow() const		     {	return energy_lowgain;   }  //!
       inline Double_t GetEnergyHigh() const		     {	return energy_highgain;   }  //!
-		inline Long64_t   GetTime() const 			        {	return time;     }  //!
+		inline Long_t   GetTime() const 			        {	return time;     }  //!
 		inline TVector3 GetPosition() const	           {	return position; }  //!
 
       inline UInt_t   GetAddress() const             {   return address; } //!
 
-      inline Int_t    GetFiterPatter() const         {   return filter;   }  //!
+      inline Int_t    GetFilterPatter() const         {   return filter;   }  //!
       inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
 		inline int GetBGOMultiplicity() const  		  {	return bgo.size();	}		      //!
 		inline TCrystalHit *GetBGO(const int &i)       {	return &bgo.at(i);	}	        //!
