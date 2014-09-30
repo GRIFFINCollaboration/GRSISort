@@ -19,7 +19,8 @@ class TGriffin : public TGRSIDetector {
 
   public:
      TGriffin();
-     ~TGriffin();
+     TGriffin(const TGriffin&);
+     virtual ~TGriffin();
 
   public: 
      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
@@ -39,6 +40,8 @@ class TGriffin : public TGRSIDetector {
      void FillData(TFragment*,TChannel*,MNEMONIC*); //!
      void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
 
+     TGriffin& operator=(const TGriffin&);  // 
+
    private: 
      TGriffinData *grifdata;                 //!  Used to build GRIFFIN Hits
      TBGOData     *bgodata;                  //!  Used to build BGO Hits
@@ -47,13 +50,13 @@ class TGriffin : public TGRSIDetector {
 
      static bool fSetBGOHits;		            //!  Flag that determines if BGOHits are being measured			 
 		
-     static bool fSetCoreWave;		         //  Flag for Waveforms ON/OFF
-     static bool fSetBGOWave;		            //  Flag for BGO Waveforms ON/OFF
+     static bool fSetCoreWave;		         //!  Flag for Waveforms ON/OFF
+     static bool fSetBGOWave;		            //!  Flag for BGO Waveforms ON/OFF
 
-     bool ftapemove;
-     bool fbackground;
-     bool fbeamon;
-     bool fdecay;       
+     bool ftapemove;                         //
+     bool fbackground;                       //
+     bool fbeamon;                           // 
+     bool fdecay;                            // 
 
    public:
      static bool SetBGOHits()       { return fSetBGOHits;   }	//!
@@ -71,7 +74,7 @@ class TGriffin : public TGRSIDetector {
      bool GetDecay()      const { return fdecay;     }//!
 
    private:
-     static TVector3 gCloverPosition[17];     //Position of each HPGe Clover
+     static TVector3 gCloverPosition[17];          //!  Position of each HPGe Clover
      void ClearStatus() { ftapemove = kFALSE; fbackground = kFALSE; fbeamon = kFALSE; fdecay = kFALSE;}//!     
 
    public:         

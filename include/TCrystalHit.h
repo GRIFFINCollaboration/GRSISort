@@ -11,7 +11,7 @@ class TCrystalHit : public TGRSIDetectorHit	{
 
 	public:
 		TCrystalHit();
-		~TCrystalHit();
+		virtual ~TCrystalHit();
 
 	private: 
 		int segment;		//

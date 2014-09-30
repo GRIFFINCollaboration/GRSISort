@@ -28,11 +28,11 @@ class TGRSIDetector : public TObject	{
       virtual void Clear(Option_t *opt = "");		//!
 		virtual void Print(Option_t *opt = "");		//!
 
-      TGRSIDetectorData *GetData() { return data;}
+      //virtual TGRSIDetectorData *GetData() //{ //return data;}
 
 	private: 
 
-      TGRSIDetectorData *data;    //!
+      //TGRSIDetectorData *data;    //!
 
    ClassDef(TGRSIDetector,0)  
 };

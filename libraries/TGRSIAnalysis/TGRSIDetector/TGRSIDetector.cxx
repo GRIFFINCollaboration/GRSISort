@@ -5,14 +5,13 @@
 
 ClassImp(TGRSIDetector)
 
-TGRSIDetector::TGRSIDetector() : data(0) {
-   Class()->IgnoreTObjectStreamer(true);
+TGRSIDetector::TGRSIDetector() {
+//   Class()->IgnoreTObjectStreamer(true);
 
 }
 
 
 TGRSIDetector::~TGRSIDetector()	{
-	if(data) delete data;
 }
 
 

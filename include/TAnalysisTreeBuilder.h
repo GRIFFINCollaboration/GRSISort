@@ -8,9 +8,16 @@
 #include <string>
 #include <queue>
 #include <stdint.h>
+#ifndef __CINT__
+#define _GLIBCXX_USE_NANOSLEEP 1
+   #include <thread>
+   #include <mutex>
+   #include <chrono>
+#endif
 
 #include <TObject.h>
 #include <TFile.h>
+#include <TMemFile.h>
 #include <TTree.h>
 #include <TChain.h>
 #include <TList.h>
@@ -48,9 +55,33 @@ class TEventQueue {
       TEventQueue();
       static TEventQueue *fPtrToQue;
       static std::queue<std::vector<TFragment>*> fEventQueue;
-      static bool lock;
-      static void SetLock() {lock = true;}
-      static void UnsetLock() {lock = false;}
+      #ifndef __CINT__
+      static std::mutex m_event;
+      #endif 
+      static bool elock;
+      static void SetLock() {  printf(BLUE "settting event lock" RESET_COLOR  "\n");  elock = true;}
+      static void UnsetLock() {  printf(RED "unsettting event lock" RESET_COLOR  "\n");  elock = false;}
+
+};
+
+class TWriteQueue {
+   public:
+      static TWriteQueue *Get();
+      static void Add(std::map<const char*, TGRSIDetector*> *event); 
+      static std::map<const char*, TGRSIDetector*> *Pop();
+      static int Size();
+      virtual ~TWriteQueue();
+
+   private:
+      TWriteQueue();
+      static TWriteQueue *fPtrToQue;
+      static std::queue<std::map<const char*, TGRSIDetector*>*> fWriteQueue;
+      #ifndef __CINT__
+      static std::mutex m_write;
+      #endif
+      static bool wlock;         
+      static void SetLock()   {  wlock = true; }  // printf(BLUE "settting write lock" RESET_COLOR  "\n");    }
+      static void UnsetLock() {  wlock = false;}  // printf(RED "unsettting write lock" RESET_COLOR  "\n");   }
 
 };
 
@@ -59,62 +90,85 @@ class TAnalysisTreeBuilder : public TObject {
    public:
       virtual ~TAnalysisTreeBuilder();
 
-      static void ProcessEvent(std::vector<TFragment>*); 
 
-      static void SetUpFragmentChain(TChain *chain);
-      static void SetUpFragmentChain(std::vector<std::string>);
-      static void SetupFragmentTree();
+      static TAnalysisTreeBuilder* Get();
+      void ProcessEvent();
 
-      static void SortFragmentChain();
-      static void SortFragmentTree();
-      static void SortFragmentTreeByTimeStamp();
+      void SetUpFragmentChain(TChain *chain);
+      void SetUpFragmentChain(std::vector<std::string>);
+      void SetupFragmentTree();
 
-      static void InitChannels();
+      void SortFragmentChain();
+      void SortFragmentTree();
+      void SortFragmentTreeByTimeStamp();
 
-      static void SetupOutFile();
-      static void SetupAnalysisTree();
+      void InitChannels();
 
-      static void FillAnalysisTree();
-      static void CloseAnalysisFile();
+      void SetupOutFile();
+      void SetupAnalysisTree();
 
-      static void StartMakeAnalysisTree(int argc=1, char **argv=0);
+      void FillWriteQueue(std::map<const char*, TGRSIDetector*>*);
 
-      static void ClearActiveAnalysisTreeBranches();
-		static void BuildActiveAnalysisTreeBranches();
+      void FillAnalysisTree(std::map<const char*, TGRSIDetector*>*);
+      void WriteAnalysisTree();
+      void CloseAnalysisFile();
 
+      void StartMakeAnalysisTree(int argc=1, char **argv=0);
+
+      void ClearActiveAnalysisTreeBranches();
+		void BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*>*);
+
+      void Print(Option_t *opt ="");
+
+      void Status();
 
    private:
       TAnalysisTreeBuilder(); 
 
       static const size_t MEM_SIZE;
 
-      static TChain *fFragmentChain;
-      static TTree  *fCurrentFragTree;
-      static TFile  *fCurrentFragFile;
-      static TTree  *fCurrentAnalysisTree;
-      static TFile  *fCurrentAnalysisFile;
-      static TGRSIRunInfo *fCurrentRunInfo;
+      static TAnalysisTreeBuilder* fAnalysisTreeBuilder;
 
+      TChain *fFragmentChain;
+      TTree  *fCurrentFragTree;
+      TFile  *fCurrentFragFile;
+      TTree  *fCurrentAnalysisTree;
+      TFile  *fCurrentAnalysisFile;
+      TGRSIRunInfo *fCurrentRunInfo;
+
+      static long fEntries;
+      static int fFragmentsIn;
+      static int fAnalysisIn;
+      static int fAnalysisOut;
+
+#ifndef __CINT__
+      bool fSortFragmentDone;
+      bool fPrintStatus;
+      std::thread *fReadThread;
+      std::thread *fProcessThread;
+      std::thread *fWriteThread;
+      std::thread *fStatusThread;
+#endif
 
    private:
      
-      static TFragment *fCurrentFragPtr;
+      TFragment *fCurrentFragPtr;
 
-      static TTigress    *tigress;  
-      static TSharc      *sharc;   
-      static TTriFoil    *triFoil;
-      //static TRf         *rf;     
-      static TCSM        *csm;    
-      //static TSpice      *spice;  
-      //static TS3         *s3;
-      //static TTip        *tip;    
+      TTigress    *tigress;  
+      TSharc      *sharc;   
+      TTriFoil    *triFoil;
+      //TRf         *rf;     
+      TCSM        *csm;    
+      //TSpice      *spice;  
+      //TS3         *s3;
+      //TTip        *tip;    
        
-      static TGriffin    *griffin;
-      static TSceptar    *sceptar;
-      //static TPaces      *paces;  
-      //static TDante      *dante;  
-      //static TZeroDegree *zeroDegree;
-      //static TDescant    *descant;
+      TGriffin    *griffin;
+      TSceptar    *sceptar;
+      //TPaces      *paces;  
+      //TDante      *dante;  
+      //TZeroDegree *zeroDegree;
+      //TDescant    *descant;
 
 	ClassDef(TAnalysisTreeBuilder,0)
 

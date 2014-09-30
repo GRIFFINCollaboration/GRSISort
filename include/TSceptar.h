@@ -18,7 +18,7 @@ class TSceptar : public TGRSIDetector {
 
   public:
      TSceptar();
-     ~TSceptar();
+     virtual ~TSceptar();
 
   public: 
      TSceptarHit *GetSceptarHit(int i)        {	return &sceptar_hits[i];   }	//!
@@ -28,6 +28,8 @@ class TSceptar : public TGRSIDetector {
 
      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = "");           //!
      void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
+
+     TSceptar& operator=(const TSceptar&);  // 
 
    private: 
      TSceptarData *sceptardata;                                               //!  Used to build GRIFFIN Hits

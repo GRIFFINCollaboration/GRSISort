@@ -25,6 +25,8 @@ void TFragment::Clear(Option_t *opt){
    FragmentId        = 0;
    TriggerBitPattern = 0;
 
+   NetworkPacketNumber = 0;
+
    ChannelAddress    = -1;
    Cfd.clear();//              = -1;
    Led.clear();//               = -1;
@@ -85,34 +87,33 @@ void TFragment::Print(Option_t *opt)	{
 
 
    TChannel *chan = TChannel::GetChannel(this->ChannelAddress);
-   if(chan) {
-	   //printf("%s Event at	%i:\n", chan->GetDigitizerType().c_str(), MidasId);
-      char buff[20];
-      time(&MidasTimeStamp);
-      struct tm * timeinfo = localtime(&MidasTimeStamp);
-      strftime(buff,20,"%b %d %H:%M:%S",timeinfo);
-      printf("MidasTimeStamp: %s\n",buff);
-	   printf("MidasId    	%i\n", MidasId);
-      printf("TriggerId: 	%lu\n", TriggerId);
-	   printf("FragmentId:   %i\n", FragmentId);
-	   printf("TriggerBit:	0x%08x\n", TriggerBitPattern);
-	   //printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetChannelName().c_str());
-	   printf("\tChannel Address: 0x%08x\n", ChannelAddress);
-	   printf("\tChannel Num:      %i\n", chan->GetNumber());
-	   printf("\tCharge[%lu]	  ",Charge.size());   for(int x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");
-	   printf("\tCFD[%lu]		  ",Cfd.size());      for(int x=0;x<Cfd.size();x++)   {printf( "     0x%08x", Cfd.at(x));} printf("\n");
-	   printf("\tLED[%lu]		  ",Led.size());      for(int x=0;x<Led.size();x++)   {printf( "     0x%08x", Led.at(x));} printf("\n");
-	   printf("\tTimeStamp High: 0x%08x\n", TimeStampHigh);
-	   printf("\tTimeStamp Low:    0x%08x\n", TimeStampLow);
-	   printf("\tTimeToTrig:  %i\n", TimeToTrig);
-	   //unsigned short temptime = (TimeStampLow & 0x0000ffff) - ((Cfd >> 4) & 0x0000ffff);   //TimeStampLow&0x0000ffff; 
-	   //printf("\ttime from timestamp(to the nearest 10ns):    0x%04x\t%ins\n", temptime, temptime * 10);
-	   if (!wavebuffer.empty())
-	      printf("Has a wave form stored.\n");
-	   else
-	      printf("Does Not have a wave form stored.\n");
-	}
-
+   //printf("%s Event at	%i:\n", chan->GetDigitizerType().c_str(), MidasId);
+   char buff[20];
+   time(&MidasTimeStamp);
+   struct tm * timeinfo = localtime(&MidasTimeStamp);
+   strftime(buff,20,"%b %d %H:%M:%S",timeinfo);
+   printf("MidasTimeStamp: %s\n",buff);
+   printf("MidasId    	%i\n", MidasId);
+   printf("TriggerId: 	%lu\n", TriggerId);
+   printf("FragmentId:   %i\n", FragmentId);
+   printf("TriggerBit:	0x%08x\n", TriggerBitPattern);
+   printf("NetworkPacketNumber: %i\n", NetworkPacketNumber);
+   if(chan)
+	   printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetChannelName());
+   printf("\tChannel Address: 0x%08x\n", ChannelAddress);
+   printf("\tChannel Num:      %i\n", ChannelNumber);
+   printf("\tCharge[%lu]	  ",Charge.size());   for(int x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");
+   printf("\tCFD[%lu]		  ",Cfd.size());      for(int x=0;x<Cfd.size();x++)   {printf( "     0x%08x", Cfd.at(x));} printf("\n");
+   printf("\tLED[%lu]		  ",Led.size());      for(int x=0;x<Led.size();x++)   {printf( "     0x%08x", Led.at(x));} printf("\n");
+   printf("\tTimeStamp High: 0x%08x\n", TimeStampHigh);
+   printf("\tTimeStamp Low:    0x%08x\n", TimeStampLow);
+   printf("\tTimeToTrig:  %i\n", TimeToTrig);
+   //unsigned short temptime = (TimeStampLow & 0x0000ffff) - ((Cfd >> 4) & 0x0000ffff);   //TimeStampLow&0x0000ffff; 
+   //printf("\ttime from timestamp(to the nearest 10ns):    0x%04x\t%ins\n", temptime, temptime * 10);
+   if (!wavebuffer.empty())
+      printf("Has a wave form stored.\n");
+   else
+      printf("Does Not have a wave form stored.\n");
 
 }
 

@@ -4,7 +4,7 @@
 ClassImp(TSceptarHit)
 
 TSceptarHit::TSceptarHit()	{	
-   Class()->IgnoreTObjectStreamer(true);
+   //Class()->IgnoreTObjectStreamer(true);
 	Clear();
 }
 

@@ -68,7 +68,7 @@ void TGRSIint::ApplyOptions() {
   if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
   if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0)  
-    TAnalysisTreeBuilder::StartMakeAnalysisTree();
+    TAnalysisTreeBuilder::Get()->StartMakeAnalysisTree();
   if(!TGRSIOptions::CloseAfterSort() && TGRSIOptions::GetInputRoot().size()!=0) { 
     for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
         //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());

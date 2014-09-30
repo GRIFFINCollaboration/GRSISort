@@ -57,12 +57,26 @@ TVector3 TGriffin::gCloverPosition[17] = {
 
 TGriffin::TGriffin() : grifdata(0), bgodata(0)	{
    //Default Constructor
-   Class()->IgnoreTObjectStreamer(true);
+   //Class()->IgnoreTObjectStreamer(true);
    //if(!gCloverPositionSet) {
       //gCloverPositionSet = true;
       //InitCloverPositions();
    //}
    Clear();
+}
+
+TGriffin::TGriffin(const TGriffin& rhs) {
+     grifdata     = 0;
+     bgodata      = 0;
+     griffin_hits = rhs.griffin_hits;
+     addback_hits = rhs.addback_hits;
+     fSetBGOHits  = rhs.fSetBGOHits;
+     fSetCoreWave = rhs.fSetCoreWave;
+     fSetBGOWave  = rhs.fSetBGOWave;
+     ftapemove    = rhs.ftapemove;
+     fbackground  = rhs.fbackground;
+     fbeamon      = rhs.fbeamon;
+     fdecay       = rhs.fdecay;
 }
 
 TGriffin::~TGriffin()	{
@@ -112,10 +126,30 @@ void TGriffin::Clear(Option_t *opt)	{
 
 void TGriffin::Print(Option_t *opt) {
   //Prints out TGriffin members, currently does nothing.
-  printf("not yet written...\n");
+  printf("grifdata = 0x%08x\n",grifdata);
+  if(grifdata) grifdata->Print();
+  printf("bgodata  = 0x%08x\n",bgodata);
+  if(bgodata) bgodata->Print();
+  printf("%lu griffin_hits\n",griffin_hits.size());
+  printf("%lu addback_hits\n",addback_hits.size());
   return;
 }
 
+TGriffin& TGriffin::operator=(const TGriffin& rhs) {
+     grifdata     = 0;
+     bgodata      = 0;
+     griffin_hits = rhs.griffin_hits;
+     addback_hits = rhs.addback_hits;
+     fSetBGOHits  = rhs.fSetBGOHits;
+     fSetCoreWave = rhs.fSetCoreWave;
+     fSetBGOWave  = rhs.fSetBGOWave;
+     ftapemove    = rhs.ftapemove;
+     fbackground  = rhs.fbackground;
+     fbeamon      = rhs.fbeamon;
+     fdecay       = rhs.fdecay;
+
+     return *this;
+}
 
 void TGriffin::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
 //Fills the "Data" structure for a specific channel with TFragment frag.
@@ -225,6 +259,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
   */    
 
    }
+   //printf("created %ld hits\n",griffin_hits.size());
 
 
 /*

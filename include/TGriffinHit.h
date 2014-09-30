@@ -17,7 +17,7 @@
 class TGriffinHit : public TGRSIDetectorHit {
 	public:
 		TGriffinHit();
-		~TGriffinHit();
+		virtual ~TGriffinHit();
 
 	private:
 		UShort_t detector;
@@ -34,7 +34,7 @@ class TGriffinHit : public TGRSIDetectorHit {
       Double_t energy_highgain;
       Long64_t time;
 
-		TVector3 position;
+		TVector3 position;  
 
 		std::vector<TCrystalHit> bgo;
 

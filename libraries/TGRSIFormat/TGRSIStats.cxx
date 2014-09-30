@@ -29,7 +29,7 @@ TGRSIStats::TGRSIStats(int temp_add) {
 TGRSIStats::~TGRSIStats() { }
 
 void TGRSIStats::Print(Option_t *opt) {
-	printf( "Channel %i|%s deatdtime = %f seconds\n",TChannel::GetChannel(GetAddress())->GetNumber(),TChannel::GetChannel(GetAddress())->GetChannelName(),GetDeadTime()*10*10E-9   );
+	printf( "Channel %i|%s deadtime = %f seconds\n",TChannel::GetChannel(GetAddress())->GetNumber(),TChannel::GetChannel(GetAddress())->GetChannelName(),GetDeadTime()*10*10E-9   );
 }
 
 void TGRSIStats::Clear(Option_t *opt) {

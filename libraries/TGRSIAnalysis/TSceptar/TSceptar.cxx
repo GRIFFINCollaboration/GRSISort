@@ -47,7 +47,7 @@ TVector3 TSceptar::gPaddlePosition[21] = {
 
 TSceptar::TSceptar() : sceptardata(0)	{
    //Default Constructor
-   Class()->IgnoreTObjectStreamer(true);
+   //Class()->IgnoreTObjectStreamer(true);
    Clear();
 }
 
@@ -61,6 +61,16 @@ void TSceptar::Clear(Option_t *opt)	{
 	if(sceptardata) sceptardata->Clear();
 
 	sceptar_hits.clear();
+}
+
+
+
+TSceptar& TSceptar::operator=(const TSceptar& rhs) {
+     sceptardata     = 0;
+     sceptar_hits = rhs.sceptar_hits;
+     fSetWave = rhs.fSetWave;
+
+     return *this;
 }
 
 

@@ -7,7 +7,7 @@ ClassImp(TGRSIDetectorData)
 
 /////////////////////////
 TGRSIDetectorData::TGRSIDetectorData()	{
-   Class()->IgnoreTObjectStreamer(true);
+//   Class()->IgnoreTObjectStreamer(true);
 }
 
 /////////////////////////

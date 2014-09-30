@@ -5,7 +5,7 @@
 ClassImp(TGRSIDetectorHit)
 
 TGRSIDetectorHit::TGRSIDetectorHit()	{ 
-   Class()->IgnoreTObjectStreamer(true);
+  // Class()->IgnoreTObjectStreamer(true);
 }
 
 TGRSIDetectorHit::~TGRSIDetectorHit()	{	}
