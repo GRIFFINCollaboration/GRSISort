@@ -40,7 +40,9 @@ class TGriffin : public TGRSIDetector {
      void FillData(TFragment*,TChannel*,MNEMONIC*); //!
      void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
 
-     TGriffin& operator=(const TGriffin&);  // 
+     TGriffin& operator=(const TGriffin&);  //! 
+
+     //void AddHit(TGriffinHit *hit) { griffin_hits.push_back(*hit); }
 
    private: 
      TGriffinData *grifdata;                 //!  Used to build GRIFFIN Hits

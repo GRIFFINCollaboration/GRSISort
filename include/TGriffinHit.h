@@ -36,8 +36,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 
 		TVector3 position;  
 
-		std::vector<TCrystalHit> bgo;
-
+		std::vector<TCrystalHit> bgo;  //!
       std::vector<Short_t> waveform;
    
 	public:
@@ -87,8 +86,8 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       bool   InFilter(Int_t);  //!
 
-      static bool CompareEnergy(TGriffinHit*,TGriffinHit*);
-      void Add(TGriffinHit*);     
+      static bool CompareEnergy(TGriffinHit*,TGriffinHit*);  //!
+      void Add(TGriffinHit*);    //! 
 
 	public:
 		virtual void Clear(Option_t *opt = "");		                   //!

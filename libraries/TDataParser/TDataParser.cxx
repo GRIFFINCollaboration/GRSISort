@@ -473,8 +473,8 @@ bool TDataParser::SetGRIFHeader(uint32_t value,TFragment *frag) {
    frag->ChannelAddress  =  (value &0x0003fff0)>> 4;
    frag->DetectorType    =  (value &0x0000000f);
   
-   if(frag->DetectorType==2)
-      frag->ChannelAddress += 0x8000;
+  // if(frag-DetectorType==2)
+  //    frag->ChannelAddress += 0x8000;
 
    TChannel *chan = TChannel::GetChannel(frag->ChannelAddress);
    if(chan) {
@@ -573,7 +573,10 @@ bool TDataParser::SetGRIFWaveForm(uint32_t value,TFragment *currentfrag) {
 
 bool TDataParser::SetGRIFDeadTime(uint32_t value, TFragment *frag) {
 //Sets the Griffin deadtime and the upper 14 bits of the timestamp
-	frag->DeadTime      = (value & 0x0fffc000) >> 14;
+   if(value & 0xf0000000 != 0xb0000000){
+      return false;
+   }
+   frag->DeadTime      = (value & 0x0fffc000) >> 14;
 	frag->TimeStampHigh = (value &  0x00003fff);
 	return true;
 }

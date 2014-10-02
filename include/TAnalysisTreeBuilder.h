@@ -43,11 +43,11 @@
 //#include <TDescant.h>   
 
 
-class TEventQueue {
+class TEventQueue : public TObject {
    public:
       static TEventQueue *Get();
       static void Add(std::vector<TFragment> *event); 
-      static std::vector<TFragment> *Pop();
+      static std::vector<TFragment> *PopEntry();
       static int Size();
       virtual ~TEventQueue();
 
@@ -62,13 +62,15 @@ class TEventQueue {
       static void SetLock() {  printf(BLUE "settting event lock" RESET_COLOR  "\n");  elock = true;}
       static void UnsetLock() {  printf(RED "unsettting event lock" RESET_COLOR  "\n");  elock = false;}
 
+   //ClassDef(TEventQueue,0)
+
 };
 
-class TWriteQueue {
+class TWriteQueue : public TObject {
    public:
       static TWriteQueue *Get();
       static void Add(std::map<const char*, TGRSIDetector*> *event); 
-      static std::map<const char*, TGRSIDetector*> *Pop();
+      static std::map<const char*, TGRSIDetector*> *PopEntry();
       static int Size();
       virtual ~TWriteQueue();
 
@@ -82,6 +84,8 @@ class TWriteQueue {
       static bool wlock;         
       static void SetLock()   {  wlock = true; }  // printf(BLUE "settting write lock" RESET_COLOR  "\n");    }
       static void UnsetLock() {  wlock = false;}  // printf(RED "unsettting write lock" RESET_COLOR  "\n");   }
+
+	//ClassDef(TWriteQueue,0)
 
 };
 

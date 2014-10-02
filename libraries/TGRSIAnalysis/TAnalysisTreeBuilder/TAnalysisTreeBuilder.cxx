@@ -42,7 +42,7 @@ void TEventQueue::Add(std::vector<TFragment> *event) {
    return;
 }
 
-std::vector<TFragment> *TEventQueue::Pop() {
+std::vector<TFragment> *TEventQueue::PopEntry() {
    std::vector<TFragment> *temp;
    //while(elock) { }
    //SetLock();
@@ -89,7 +89,7 @@ void TWriteQueue::Add(std::map<const char*, TGRSIDetector*> *event) {
    return;
 }
 
-std::map<const char*, TGRSIDetector*> *TWriteQueue::Pop() {
+std::map<const char*, TGRSIDetector*> *TWriteQueue::PopEntry() {
    std::map<const char*, TGRSIDetector*> *temp;
    //while(wlock) { }
    //SetLock();
@@ -125,7 +125,7 @@ int TWriteQueue::Size() {
 ClassImp(TAnalysisTreeBuilder)
 
 
-const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 4 GB //20000000000
+const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
 TAnalysisTreeBuilder* TAnalysisTreeBuilder::fAnalysisTreeBuilder = 0;
 
@@ -277,7 +277,7 @@ void TAnalysisTreeBuilder::SortFragmentChain() {
       fProcessThread->join();
       fWriteThread->join();
       fPrintStatus = false;
-      fStatusThread->join();
+      //fStatusThread->join();
       
       CloseAnalysisFile();
       printf("\n");
@@ -307,9 +307,9 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
       } else {
          TEventQueue::Get()->Add(event);
       }
-      if((j%10000)==0 || j==major_max) {
-         printf("\tprocessing event " CYAN "%i " RESET_COLOR "/" DBLUE " %li" RESET_COLOR "         \r",j,major_max);
-      }
+      //if((j%10000)==0 || j==major_max) {
+         //printf("\tprocessing event " CYAN "%i " RESET_COLOR "/" DBLUE " %li" RESET_COLOR "         \r",j,major_max);
+      //}
    }
    printf("\n");
    fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
@@ -335,8 +335,9 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 
    fCurrentFragTree->GetEntry(indexvalues[0]);
    *oldFrag = *currentFrag;
-
+   fFragmentsIn++;
    
+   std::set<int> channelSeen;
    for(int x=1;x<fEntries;x++) {
       if(fCurrentFragTree->GetEntry(indexvalues[x]) == -1 ) {  //major,minor) == -1) {
          printf(DRED "FIRE!!!" RESET_COLOR  "\n");
@@ -348,7 +349,16 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
          continue;
       }
       fFragmentsIn++;
+      //if we've already seen this channel we add the event to the queue
+      if(channelSeen.count(oldFrag->ChannelNumber) == 1) {
+         //we might want to create an error statement here!!!
+         TEventQueue::Get()->Add(event);
+         event = new std::vector<TFragment>;
+         channelSeen.clear();
+      }
       event->push_back(*oldFrag);
+      channelSeen.insert(oldFrag->ChannelNumber);
+      //printf("\ntime diff = %ld\n",abs(oldFrag->GetTimeStamp()-currentFrag->GetTimeStamp()));
       if(abs(oldFrag->GetTimeStamp()-currentFrag->GetTimeStamp()) > 200) {  // 2 micro-sec.
          //printf("Adding %ld fragments to queue\n",event->size());
          //if(event->size() > 1) {
@@ -358,6 +368,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
          //}
          TEventQueue::Get()->Add(event);
          event = new std::vector<TFragment>;
+         channelSeen.clear();
       }
       *oldFrag = *currentFrag;
       //if((x%10000)==0 ) {
@@ -366,7 +377,11 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       //}
       //Print();
    }
-   printf("\n");
+   //in case we have fragments left, we add them to the queue now
+   if(event->size() > 0) {
+      TEventQueue::Get()->Add(event);
+   }
+   
    fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
    fCurrentFragTree->SetCacheSize(0);
    return;
@@ -442,29 +457,29 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    TGRSIRunInfo *info = fCurrentRunInfo;
    TTree *tree = fCurrentAnalysisTree;
 
-   int basketSize = 128000; //128000; //128000; //128000; //128000; //128000; //128000; //128000; //128000; //128000; //128000; //128000; //32*1024*1024;//32 MBytes
-   if(info->Tigress())   { tree->Bronch("TTigress","TTigress",&tigress, basketSize, 1); } 
-   if(info->Sharc())     { tree->Bronch("TSharc","TSharc",&sharc, basketSize, 1); } 
-   if(info->TriFoil())   { tree->Bronch("TTriFoil","TTriFoil",&triFoil, basketSize, 1); } 
-   //if(info->Rf())        { tree->Bronch("TRf","TRf",&rf, basketSize, 1); } 
-   if(info->CSM())       { tree->Bronch("TCSM","TCSM",&csm, basketSize, 1); } 
-   //if(info->Spice())     { tree->Bronch("TSpice","TSpice",&spice, basketSize); tree->SetBronch("TS3","TS3",&s3, basketSize); } 
-   //if(info->Tip())       { tree->Bronch("TTip","TTip",&tip, basketSize); } 
+   int basketSize = 128000; //128000;
+   if(info->Tigress())   { tree->Bronch("TTigress","TTigress",&tigress); }//, basketSize); } 
+   if(info->Sharc())     { tree->Bronch("TSharc","TSharc",&sharc); }//, basketSize); } 
+   if(info->TriFoil())   { tree->Bronch("TTriFoil","TTriFoil",&triFoil); }//, basketSize); } 
+   //if(info->Rf())        { tree->Bronch("TRf","TRf",&rf); }//, basketSize); } 
+   if(info->CSM())       { tree->Bronch("TCSM","TCSM",&csm); }//, basketSize); } 
+   //if(info->Spice())     { tree->Bronch("TSpice","TSpice",&spice); }//, basketSize); tree->SetBronch("TS3","TS3",&s3); }//, basketSize); } 
+   //if(info->Tip())       { tree->Bronch("TTip","TTip",&tip); }//, basketSize); } 
 
-   if(info->Griffin())   { tree->Bronch("TGriffin","TGriffin",&griffin, basketSize, 99); } 
-   if(info->Sceptar())   { tree->Bronch("TSceptar","TSceptar",&sceptar, basketSize, 99); } 
-   //if(info->Paces())     { tree->Bronch("TPaces","TPaces",&paces, basketSize); } 
-   //if(info->Dante())     { tree->Bronch("TDante","TDante",&dante, basketSize); } 
-   //if(info->ZeroDegree()){ tree->Bronch("TZeroDegree","TZeroDegree",&zerodegree, basketSize); } 
-   //if(info->Descant())   { tree->Bronch("TDescant","TDescant",&descant, basketSize);
+   if(info->Griffin())   { TBranch *branch = tree->Bronch("TGriffin","TGriffin",&griffin, basketSize, 99);}// branch->SetAddress(0);} 
+   if(info->Sceptar())   { TBranch *branch = tree->Bronch("TSceptar","TSceptar",&sceptar, basketSize, 99);}// branch->SetAddress(0);} 
+   //if(info->Paces())     { tree->Bronch("TPaces","TPaces",&paces); }//, basketSize); } 
+   //if(info->Dante())     { tree->Bronch("TDante","TDante",&dante); }//, basketSize); } 
+   //if(info->ZeroDegree()){ tree->Bronch("TZeroDegree","TZeroDegree",&zerodegree); }//, basketSize); } 
+   //if(info->Descant())   { tree->Bronch("TDescant","TDescant",&descant); }//, basketSize);
 
    //tree->SetAutoFlush(-300000000);
    //tree->SetCacheSizeAux(true);
 
-   tree->SetAutoFlush(-500000000);
-   tree->SetCacheSize();
-   tree->AddBranchToCache("*",true);
-   //tree->SetAutoSave(0);
+   //tree->SetAutoFlush(-500000000);
+   //tree->SetCacheSize();
+   //tree->AddBranchToCache("*",true);
+   //tree->SetAutoSave(10000000);
    return;  
 }
 
@@ -520,13 +535,13 @@ void TAnalysisTreeBuilder::WriteAnalysisTree() {
          //printf("WriteAnalysisTree: no events in write queue or so %i\n",counter++);
          continue;
       }
-      std::map<const char*, TGRSIDetector*> *detectors = TWriteQueue::Pop();
+      std::map<const char*, TGRSIDetector*> *detectors = TWriteQueue::PopEntry();
       fAnalysisOut++;
-      if(fAnalysisOut==1000) {
-         printf("\n\n");
-         fCurrentAnalysisTree->OptimizeBaskets((Long64_t)1000000000,1.1);//,"d");
-         printf("\n\n");
-      }   
+      //if(fAnalysisOut==1000) {
+         //printf("\n\n");
+         //fCurrentAnalysisTree->OptimizeBaskets((Long64_t)1000000000,1.1);//,"d");
+         //printf("\n\n");
+      //}   
       FillAnalysisTree(detectors);
       //if(fSortFragmentDone && TEventQueue::Size() == 0 && TWriteQueue::Size()%10000==0) {
          //printf(DYELLOW HIDE_CURSOR " \t%12i " RESET_COLOR "/"
@@ -545,9 +560,16 @@ void TAnalysisTreeBuilder::WriteAnalysisTree() {
 }
 
 void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*> *detectors) {
-   if(!fCurrentAnalysisTree || !detectors)
+   if(!fCurrentAnalysisTree || !detectors) {
+      printf("returned from fill without filling (%p %p)!\n",fCurrentAnalysisTree, detectors);   
       return;
+   }   
 //printf("filling analysis tree with %lu detectors\n",detectors->size());
+   //TStopwatch w1;
+   //w1.Start();
+   //float time1 = 0;
+   //float time2 = 0;
+   //int counter = 0;
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
       if(strcmp(det->second->IsA()->GetName(),"TTigress") == 0) {
          *tigress = *((TTigress*) det->second);
@@ -565,19 +587,29 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
          //*tip = *((TTip*) det->second);
       } else if(strcmp(det->second->IsA()->GetName(),"TGriffin") == 0) {
          *griffin = *((TGriffin*) det->second);
+         //printf(CYAN "Got GRIFFIN detector: %ld hits" RESET_COLOR "\n",griffin->GetMultiplicity());
       } else if(strcmp(det->second->IsA()->GetName(),"TSceptar") == 0) {
-         *sceptar = *((TSceptar*) det->second);
+         sceptar = ((TSceptar*) det->second);
       //} else if(strcmp(det->second->IsA()->GetName(),"TPaces") == 0) {
          //paces = *((TPaces*) det->second);
       } 
    }
+   //time1 += w1.RealTime();
+   //w1.Reset();
+   //w1.Start();
    fCurrentAnalysisTree->Fill();
-
+   //time2 += w1.RealTime();
+   //counter++;
+   
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
       delete det->second;
    }
    delete detectors;
-  
+   //if(counter>10000) {
+   //   printf("\n\ntime1 = %.04f    |  time2 = %.04f\n\n",time1,time2);
+   //   fflush(stdout);
+   //   time1 = 0.0; time2 = 0.0; counter = 0;
+   //}
    return;
 }
 
@@ -615,11 +647,13 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //printf("ProcessEvent: no events in event queue %i\n",counter++);
          continue; 
       }
-      std::vector<TFragment> *event = TEventQueue::Pop();
-      //printf("\n======================================== %ld\n",event->size());
+      std::vector<TFragment> *event = TEventQueue::PopEntry();
+      //printf(DYELLOW "\n======================================== %ld" RESET_COLOR "\n",event->size());
       MNEMONIC mnemonic;
       std::map<const char*, TGRSIDetector*> *detectors = new std::map<const char*, TGRSIDetector*>;
       //std::vector<TGRSIDetector*> *detectors = new std::vector<TGRSIDetector*>;
+      //TStopwatch w;
+      //w.Start();
       for(int i=0;i<event->size();i++) {
          //printf("ChannelAddress =0x%08x\t",event->at(i).ChannelAddress);
       
@@ -665,6 +699,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //} else if(mnemonic.system.compare("SP")==0) {	
          //	FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("GR")==0) {	
+            //printf("Found a GRIFFIN detector\n");
             //detectors->push_back(new TGriffin);
             if(detectors->find("GR") == detectors->end()) {
                (*detectors)["GR"] = new TGriffin;
@@ -696,7 +731,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          ClearActiveAnalysisTreeBranches();	
          //printf(DYELLOW "\t DONE " RESET_COLOR "\n");
       }
-      //printf("\n----------------------------------------\n");
+      //printf(DRED "\n----------------------------------------" RESET_COLOR "\n");
 
       delete event;
    
@@ -730,10 +765,21 @@ void TAnalysisTreeBuilder::Print(Option_t *opt) {
 void TAnalysisTreeBuilder::Status() {
    TStopwatch w;
    w.Start();
+   bool fragmentsDone = false;
+   bool sortingDone = false;
    while(fPrintStatus) {
       printf(DYELLOW HIDE_CURSOR "%12i / %12i " RESET_COLOR "/" DBLUE " %12i " RESET_COLOR "/" DCYAN " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR "/" DGREEN " %12i " RESET_COLOR
              "    processed fragments / # of fragments/ # of events / event queue size / write queue size / events written.\t%f seconds." SHOW_CURSOR "\r",
              fFragmentsIn, fEntries, fAnalysisIn, TEventQueue::Size(), TWriteQueue::Size(), fAnalysisOut, w.RealTime());
+      //we insert a newline (thus preserving the last status), if we just finished getting all fragment, or finished removing fragments from the event queue
+      if(!fragmentsDone && fFragmentsIn == fEntries && fEntries != 0) {
+         printf("\n");
+         fragmentsDone = true;
+      }
+      if(fragmentsDone && !sortingDone && TEventQueue::Size() == 0) {
+         printf("\n");
+         sortingDone = true;
+      }
       w.Continue(); 
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
    }

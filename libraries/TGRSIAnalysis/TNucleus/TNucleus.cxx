@@ -252,13 +252,13 @@ bool TNucleus::SetSourceData() {
 	path +=  "/libraries/TGRSIAnalysis/TNucleus/SourceData/";
    path +=  name;
 
+   printf("path = %s\n",path.c_str());
    ifstream sourcefile;
    sourcefile.open(path.c_str());
    if(!sourcefile.is_open()) {
       printf("unable to set source data for %s.\n",GetName());
       return false;
    }
-   printf("path = %s\n",path.c_str());
 
    TransitionList.Clear();
 
