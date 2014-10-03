@@ -30,7 +30,7 @@ class TSceptarHit : public TGRSIDetectorHit {
    
     TVector3 position;
 
-    std::vector<Short_t> waveform;
+    std::vector<Short_t> waveform; //!
    
   public:
 		/////////////////////////		/////////////////////////////////////

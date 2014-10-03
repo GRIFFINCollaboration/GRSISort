@@ -37,7 +37,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 		TVector3 position;  
 
 		std::vector<TCrystalHit> bgo;  //!
-      std::vector<Short_t> waveform;
+      std::vector<Short_t> waveform;  //!
    
 	public:
 

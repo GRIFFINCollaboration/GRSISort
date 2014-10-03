@@ -21,7 +21,7 @@ class TCrystalHit : public TGRSIDetectorHit	{
 		double time;		//
 		double cfd;		  //
 
-		std::vector<int> wave;	//
+		std::vector<int> wave;	//!
 
 	public:
 		
