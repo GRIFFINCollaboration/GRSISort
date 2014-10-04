@@ -278,7 +278,7 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
       //fInputRootFile->push_back(filename);
       TGRSIOptions::AddInputRootFile(filename);
       return true;
-   } else if(ext.compare("mid")==0) {
+   } else if(ext.compare("mid")==0 || ext.compare("bz2")==0) {
       //printf("\tFound midas file: %s\n",filename.c_str());
       //fInputMidasFile->push_back(filename);
       TGRSIOptions::AddInputMidasFile(filename);

@@ -321,7 +321,7 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
 void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 
    TFragment *currentFrag = 0;
-   TFragment *oldFrag = new TFragment;
+   //TFragment *oldFrag = new TFragment;
 
    fCurrentFragTree->SetBranchAddress("TFragment",&currentFrag);
 
@@ -331,13 +331,15 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    Long64_t *indexvalues = index->GetIndex();
    int major_max = fCurrentFragTree->GetMaximum("TimeStampHigh");
 
-   std::vector<TFragment> *event = new std::vector<TFragment>;
-
    fCurrentFragTree->GetEntry(indexvalues[0]);
-   *oldFrag = *currentFrag;
+   //*oldFrag = *currentFrag;
+   long firstTimeStamp = currentFrag->GetTimeStamp();
+   std::vector<TFragment> *event = new std::vector<TFragment>;//(1,*currentFrag);
+   event->push_back(*currentFrag);
+
    fFragmentsIn++;
    
-   std::set<int> channelSeen;
+   //std::set<int> channelSeen;
    for(int x=1;x<fEntries;x++) {
       if(fCurrentFragTree->GetEntry(indexvalues[x]) == -1 ) {  //major,minor) == -1) {
          printf(DRED "FIRE!!!" RESET_COLOR  "\n");
@@ -345,21 +347,21 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       }
       if(indexvalues[x] == indexvalues[x-1]) {
          printf(DRED "REAL FIRE!!! x = %i, indexvalues[x] = %lld, indexvalues[x-1] = %lld" RESET_COLOR  "\n", x, indexvalues[x], indexvalues[x-1]);
-         printf("currentFrag->MidasId = %i   oldFrag->MidasId = %i\n",currentFrag->MidasId, oldFrag->MidasId);
+         //printf("currentFrag->MidasId = %i   oldFrag->MidasId = %i\n",currentFrag->MidasId, oldFrag->MidasId);
          continue;
       }
       fFragmentsIn++;
       //if we've already seen this channel we add the event to the queue
-      if(channelSeen.count(oldFrag->ChannelNumber) == 1) {
+      //if(channelSeen.count(oldFrag->ChannelNumber) == 1) {
          //we might want to create an error statement here!!!
-         TEventQueue::Get()->Add(event);
-         event = new std::vector<TFragment>;
-         channelSeen.clear();
-      }
-      event->push_back(*oldFrag);
-      channelSeen.insert(oldFrag->ChannelNumber);
+         //TEventQueue::Get()->Add(event);
+         //event = new std::vector<TFragment>;
+         //channelSeen.clear();
+      //}
+      //event->push_back(*oldFrag);
+      //channelSeen.insert(oldFrag->ChannelNumber);
       //printf("\ntime diff = %ld\n",abs(oldFrag->GetTimeStamp()-currentFrag->GetTimeStamp()));
-      if(abs(oldFrag->GetTimeStamp()-currentFrag->GetTimeStamp()) > 200) {  // 2 micro-sec.
+      if(abs(currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
          //printf("Adding %ld fragments to queue\n",event->size());
          //if(event->size() > 1) {
             //for(int i = 0; i < event->size(); ++i) {
@@ -367,10 +369,14 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
             //}
          //}
          TEventQueue::Get()->Add(event);
-         event = new std::vector<TFragment>;
-         channelSeen.clear();
+         event = new std::vector<TFragment>;//(1,*currentFrag);
+         event->push_back(*currentFrag);
+         //channelSeen.clear();
+         firstTimeStamp = currentFrag->GetTimeStamp();
+      } else {
+         event->push_back(*currentFrag);
       }
-      *oldFrag = *currentFrag;
+      //*oldFrag = *currentFrag;
       //if((x%10000)==0 ) {
          //printf("Reading %lld bytes in %d transactions\n",fCurrentFragFile->GetBytesRead(),  fCurrentFragFile->GetReadCalls());
          //printf("\tprocessing fragment " CYAN "%i " RESET_COLOR "/" DBLUE " %li" RESET_COLOR "         \r",x,fEntries);
@@ -442,7 +448,7 @@ void TAnalysisTreeBuilder::SetupOutFile() {
       delete fCurrentAnalysisFile;
    fCurrentAnalysisFile = new TFile(outfilename.c_str(),"recreate");
    fCurrentAnalysisFile->SetCompressionSettings(1);
-   printf("created ouput file: %s\n",fCurrentAnalysisFile->GetName());
+   printf("created output file: %s\n",fCurrentAnalysisFile->GetName());
    return;
 }
 
@@ -571,25 +577,31 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
    //float time2 = 0;
    //int counter = 0;
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
-      if(strcmp(det->second->IsA()->GetName(),"TTigress") == 0) {
+      if(strcmp(det->first,"TI") == 0) {
+      //if(strcmp(det->second->IsA()->GetName(),"TTigress") == 0) {
          *tigress = *((TTigress*) det->second);
-      } else if(strcmp(det->second->IsA()->GetName(),"TSharc") == 0) {
+      } else if(strcmp(det->first,"SH") == 0) {
+      //} else if(strcmp(det->second->IsA()->GetName(),"TSharc") == 0) {
          *sharc = *((TSharc*) det->second);
-      } else if(strcmp(det->second->IsA()->GetName(),"TTriFoil") == 0) {
+      } else if(strcmp(det->first,"TR") == 0) {
+      //} else if(strcmp(det->second->IsA()->GetName(),"TTriFoil") == 0) {
          *triFoil = *((TTriFoil*) det->second);
       //} else if(strcmp(det->second->IsA()->GetName(),"TRf") == 0) {
          //*rf = *((TRf*) det->second);
-      } else if(strcmp(det->second->IsA()->GetName(),"TCSM") == 0) {
+      } else if(strcmp(det->first,"CS") == 0) {
+      //} else if(strcmp(det->second->IsA()->GetName(),"TCSM") == 0) {
          *csm = *((TCSM*) det->second);
       //} else if(strcmp(det->second->IsA()->GetName(),"TSpice") == 0) {
          //*spice = *((TSpice*) det->second);
       //} else if(strcmp(det->second->IsA()->GetName(),"TTip") == 0) {
          //*tip = *((TTip*) det->second);
-      } else if(strcmp(det->second->IsA()->GetName(),"TGriffin") == 0) {
+      } else if(strcmp(det->first,"GR") == 0) {
+      //} else if(strcmp(det->second->IsA()->GetName(),"TGriffin") == 0) {
          *griffin = *((TGriffin*) det->second);
          //printf(CYAN "Got GRIFFIN detector: %ld hits" RESET_COLOR "\n",griffin->GetMultiplicity());
-      } else if(strcmp(det->second->IsA()->GetName(),"TSceptar") == 0) {
-         sceptar = ((TSceptar*) det->second);
+      } else if(strcmp(det->first,"SE") == 0) {
+      //} else if(strcmp(det->second->IsA()->GetName(),"TSceptar") == 0) {
+         *sceptar = *((TSceptar*) det->second);
       //} else if(strcmp(det->second->IsA()->GetName(),"TPaces") == 0) {
          //paces = *((TPaces*) det->second);
       } 
@@ -603,8 +615,10 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
    
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
       delete det->second;
+      det->second = 0;
    }
    delete detectors;
+   detectors = 0;
    //if(counter>10000) {
    //   printf("\n\ntime1 = %.04f    |  time2 = %.04f\n\n",time1,time2);
    //   fflush(stdout);
@@ -682,12 +696,12 @@ void TAnalysisTreeBuilder::ProcessEvent() {
                (*detectors)["SH"] = new TSharc;
             }
             (*detectors)["SH"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("Tr")==0) {	
+         } else if(mnemonic.system.compare("TR")==0) {	
             //detectors->push_back(new TTriFoil);
-            if(detectors->find("Tr") == detectors->end()) {
-               (*detectors)["Tr"] = new TTriFoil;
+            if(detectors->find("TR") == detectors->end()) {
+               (*detectors)["TR"] = new TTriFoil;
             }
-            (*detectors)["Tr"]->FillData(&(event->at(i)),channel,&mnemonic);
+            (*detectors)["TR"]->FillData(&(event->at(i)),channel,&mnemonic);
           //else if(mnemonic.system.compare("RF")==0) {	
          //	FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("CS")==0) {	
@@ -746,7 +760,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
    //printf(DYELLOW HIDE_CURSOR " \t%12i " RESET_COLOR "/"
           //DBLUE " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR
           //"     event queue size / # of events / events written.\t\t%f seconds." SHOW_CURSOR "\n",
-          //TEventQueue::Size(),fAnalysisIn,fAnalysisOut,w.RealTime());
+          //TEventQueue::Size(),fAnalysisIn,fAnalysisOut,w.RealT  ime());
   //printf(RED "\t\t\t\t  PROCESS QUE STOPPED." RESET_COLOR  "\n" );
 }
 

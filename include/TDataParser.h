@@ -30,6 +30,8 @@ class TDataParser { //: public TObject {
     static const unsigned long fgMaxTriggerId; //The last trigger ID Called
     static unsigned long fgLastMidasId;        //The last MIDAS ID in the midas file
     static unsigned long fgLastTriggerId;      //The last Trigged ID in the MIDAS File
+    static unsigned long fgLastNetworkPacket;
+
     static std::map<int,int> fragment_id_map;
 
 

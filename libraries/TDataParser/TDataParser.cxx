@@ -25,9 +25,10 @@ bool TDataParser::no_waveforms = false;
 bool TDataParser::record_stats = false;
 
 const unsigned long TDataParser::fgMaxTriggerId = 1024 * 1024 * 16; // 24 bits internally
-unsigned long TDataParser::fgLastMidasId = 0;
 
+unsigned long TDataParser::fgLastMidasId = 0;
 unsigned long TDataParser::fgLastTriggerId = 0;
+unsigned long TDataParser::fgLastNetworkPacket = 0;
 
 TChannel *TDataParser::gChannel = new TChannel;
 
@@ -589,16 +590,24 @@ void TDataParser::FillStats(TFragment *frag) {
 //          The total deadtime for the channel
 //          The lowest MIDAS Time stamp
 //          The highest MIDAS Time stamp
-
 	TGRSIStats *stat = TGRSIStats::GetStats(frag->ChannelAddress);
 	//printf("Filling stats: 0x%08x\n",stat);
 	stat->IncDeadTime(frag->DeadTime);
+
+   TGRSIStats::IncGoodEvents();
 	if( (frag->MidasTimeStamp < TGRSIStats::GetLowestMidasTimeStamp()) ||
 	    (TGRSIStats::GetLowestMidasTimeStamp() == 0)) {
 		TGRSIStats::SetLowestMidasTimeStamp(frag->MidasTimeStamp);
 	} else if (frag->MidasTimeStamp > TGRSIStats::GetHighestMidasTimeStamp()) {
 		TGRSIStats::SetHighestMidasTimeStamp(frag->MidasTimeStamp);
 	}
+	if( (frag->NetworkPacketNumber < TGRSIStats::GetLowestNetworkPacket()) ||
+	    (TGRSIStats::GetLowestNetworkPacket() == 0)) {
+		TGRSIStats::SetLowestNetworkPacket(frag->NetworkPacketNumber);
+	} else if (frag->NetworkPacketNumber > TGRSIStats::GetHighestNetworkPacket()) {
+		TGRSIStats::SetHighestNetworkPacket(frag->NetworkPacketNumber);
+	}
+
 	return;
 }
 

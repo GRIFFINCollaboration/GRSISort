@@ -10,7 +10,10 @@ std::map<int,TGRSIStats*> *TGRSIStats::fStatsMap = new std::map<int,TGRSIStats*>
 time_t TGRSIStats::fLowestMidasTimeStamp = 0;
 time_t TGRSIStats::fHighestMidasTimeStamp = 0;
 
+Int_t TGRSIStats::fLowestNetworkPacket = 0;
+Int_t TGRSIStats::fHighestNetworkPacket = 0;
 
+Long_t TGRSIStats::fGoodEvents = 0;
 
 TGRSIStats *TGRSIStats::GetStats(int temp_add) {
    Class()->IgnoreTObjectStreamer(true);

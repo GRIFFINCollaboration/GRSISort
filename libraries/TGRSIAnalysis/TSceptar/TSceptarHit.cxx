@@ -5,7 +5,8 @@ ClassImp(TSceptarHit)
 
 TSceptarHit::TSceptarHit()	{	
    //Class()->IgnoreTObjectStreamer(true);
-	Clear();
+   //Class()->AddRule("TSceptarHit waveform attributes=NotOwner");
+   Clear();
 }
 
 TSceptarHit::~TSceptarHit()	{	}
@@ -27,7 +28,7 @@ void TSceptarHit::Clear(Option_t *opt)	{
 
    position.SetXYZ(0,0,1);
 
-   waveform.clear();
+  // waveform.clear();
 }
 
 void TSceptarHit::Print(Option_t *opt)	{

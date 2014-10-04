@@ -344,8 +344,8 @@ TGraph* autogain152(TH1 *hist) {
    TSpectrum *s = new TSpectrum();
    Int_t nfound = s->Search(hist,6,"",0.08); //This will be dependent on the source used.
    printf("Found %d candidate peaks to fit\n",nfound);
-   if(nfound > 6)
-      nfound = 6;
+   if(nfound > 3)
+      nfound = 3;
 
    std::vector<float> vec;
    for(int x=0;x<nfound;x++)
@@ -353,7 +353,8 @@ TGraph* autogain152(TH1 *hist) {
 
    std::sort(vec.begin(),vec.end());
 
-   Float_t energies[] = {121.7830, 244.6920, 344.276, 778.903, 964.131, 1408.011};
+  // Float_t energies[] = {121.7830, 244.6920, 344.276, 778.903, 964.131, 1408.011};
+   Float_t energies[]={778.903,964.131,1408.011};
    TGraph* slopefit = new TGraph(nfound, &(vec[0]), energies);
 
    printf("Now fitting: Be patient\n");

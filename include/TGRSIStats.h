@@ -19,11 +19,16 @@ class TGRSIStats : public TObject {
      static time_t fLowestMidasTimeStamp;
      static time_t fHighestMidasTimeStamp;
 
+     static Int_t fLowestNetworkPacket;
+     static Int_t fHighestNetworkPacket;
+
      int fStatAddress;
 
      unsigned long fDeadTime;
      int fLostEvents;
      int fLastChannelIdSeen;
+
+     static Long_t fGoodEvents;
 
    public:
       ~TGRSIStats();
@@ -33,15 +38,23 @@ class TGRSIStats : public TObject {
       int GetAddress() { return fStatAddress; }
       unsigned long GetDeadTime() {return fDeadTime;}
       void IncDeadTime(int dtime) { fDeadTime += dtime; }
-      void IncLostEvent(int lnum = 1) { fLostEvents+=lnum; }
+      void IncLostEvent(int lnum = 1) { fLostEvents+=lnum; } 
 
       void SetLastChannelId(int last) { fLastChannelIdSeen = last;  }
+
+      static void IncGoodEvents(){ fGoodEvents++;}
 
       static inline void SetLowestMidasTimeStamp(time_t low) { fLowestMidasTimeStamp = low; }
       static inline void SetHighestMidasTimeStamp(time_t high) { fHighestMidasTimeStamp = high; }
       static inline time_t GetLowestMidasTimeStamp()  { return fLowestMidasTimeStamp; }
       static inline time_t GetHighestMidasTimeStamp() { return fHighestMidasTimeStamp; }
       
+      static inline void SetLowestNetworkPacket(Int_t low) { fLowestNetworkPacket = low; }
+      static inline void SetHighestNetworkPacket(Int_t high) {fHighestNetworkPacket = high; }
+      static inline Int_t GetLowestNetworkPacket()  { return fLowestNetworkPacket; }
+      static inline Int_t GetHighestNetworkPacket() { return fHighestNetworkPacket; }
+      static inline Double_t GetMissingNetworkPackets() { return (fHighestNetworkPacket - fLowestNetworkPacket)/fGoodEvents;}
+
       static int GetRunTime() {return fHighestMidasTimeStamp - fLowestMidasTimeStamp; }
 
 

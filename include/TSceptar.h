@@ -35,12 +35,12 @@ class TSceptar : public TGRSIDetector {
      TSceptarData *sceptardata;                                               //!  Used to build GRIFFIN Hits
      std::vector <TSceptarHit> sceptar_hits;                                  //   The set of crystal hits
 
-     static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
+//     static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
 
      bool beta;                                                               //   Is there a sceptar hit?
 
    public:
-     static bool SetWave()      { return fSetWave;  }	                        //!
+//     static bool SetWave()      { return fSetWave;  }	                        //!
      bool SetBeta(bool flag = true) { beta = flag; }                          //!
      bool Beta()                {return beta;}                                //!  
 
@@ -48,8 +48,8 @@ class TSceptar : public TGRSIDetector {
      static TVector3 gPaddlePosition[21];                                     //!  Position of each Paddle
 
    public:         
-     virtual void Clear(Option_t *opt = "");		//!
-     virtual void Print(Option_t *opt = "");		//!
+     void Clear(Option_t *opt = "");		//!
+     void Print(Option_t *opt = "");		//!
 
    ClassDef(TSceptar,1)  // Sceptar Physics structure
 

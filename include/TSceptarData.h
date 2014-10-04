@@ -31,8 +31,8 @@ class TSceptarData : public TGRSIDetectorData {
 		static void Set(bool flag=true) { fIsSet=flag; } //!
 		static bool IsSet() { return fIsSet; }           //!
 
-		virtual void Clear(Option_t *opt = "");		//!
-		virtual void Print(Option_t *opt = "");		//!
+		void Clear(Option_t *opt = "");		//!
+		void Print(Option_t *opt = "");		//!
 
 	private:
 		inline void SetDetNumber(const UShort_t  &DetNumber)	   {fDet_Nbr.push_back(DetNumber);      }	//!

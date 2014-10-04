@@ -17,7 +17,7 @@
 ClassImp(TSceptar)
 
 
-bool TSceptar::fSetWave = false;
+//bool TSceptar::fSetWave = false;
 
 TVector3 TSceptar::gPaddlePosition[21] = { 
    //Sceptar positions from Evan; Thanks Evan.
@@ -48,6 +48,8 @@ TVector3 TSceptar::gPaddlePosition[21] = {
 TSceptar::TSceptar() : sceptardata(0)	{
    //Default Constructor
    //Class()->IgnoreTObjectStreamer(true);
+   Class()->AddRule("TSceptar sceptar_hits attributes=NotOwner");
+   Class()->AddRule("TSceptar sceptardata attributes=NotOwner");
    Clear();
 }
 
@@ -58,7 +60,7 @@ TSceptar::~TSceptar()	{
 
 void TSceptar::Clear(Option_t *opt)	{
 //Clears all of the hits and data
-	if(sceptardata) sceptardata->Clear();
+   if(sceptardata) sceptardata->Clear();
 
 	sceptar_hits.clear();
 }
@@ -68,7 +70,7 @@ void TSceptar::Clear(Option_t *opt)	{
 TSceptar& TSceptar::operator=(const TSceptar& rhs) {
      sceptardata     = 0;
      sceptar_hits = rhs.sceptar_hits;
-     fSetWave = rhs.fSetWave;
+//     fSetWave = rhs.fSetWave;
 
      return *this;
 }
@@ -118,9 +120,9 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       dethit.SetTime(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
 
-      if(TSceptar::SetWave()){
-         dethit.SetWaveform(gdata->GetDetWave(i));
-      }
+//      if(TSceptar::SetWave()){
+//         dethit.SetWaveform(gdata->GetDetWave(i));
+//      }
 		
       dethit.SetDetectorNumber(gdata->GetDetNumber(i));
    
