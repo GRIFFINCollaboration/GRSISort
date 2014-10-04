@@ -21,6 +21,9 @@ bool TGriffin::fSetCoreWave = false;
 bool TGriffin::fSetBGOHits  = false;
 bool TGriffin::fSetBGOWave  = false;
 
+long TGriffin::fCycleStart  = 0;
+long TGriffin::fLastPPG     = 0;
+
 //bool     TGriffin::gCloverPositionSet = false;
 //This seems unnecessary, and why 17?;//  they are static members, and need
                                                                              //  to be defined outside the header
@@ -231,6 +234,13 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       corehit.SetCrystalNumber(gdata->GetCoreNumber(i));
    
       corehit.SetPosition();
+      
+      corehit.SetPPG(gdata->GetPPG(i));
+
+      if(gdata->GetPPG(i) == 0xd000 && gdata->GetPPG(i) != fLastPPG) { //this is a background event
+         fCycleStart = corehit.GetTime();
+      }
+      fLastPPG = gdata->GetPPG(i);
 
       //temp_hits.push_back(corehit);  
       griffin_hits.push_back(corehit);

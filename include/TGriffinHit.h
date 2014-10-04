@@ -27,6 +27,8 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       Int_t filter;
 
+      Int_t ppg;
+
       Int_t charge_lowgain;
       Int_t charge_highgain;
       Int_t cfd;
@@ -47,7 +49,9 @@ class TGriffinHit : public TGRSIDetectorHit {
 		inline void SetDetectorNumber(const int &x)  { detector = x; }   //!
 		inline void SetCrystalNumber(const int &x)   { crystal = x;  }   //!
 
-      inline void SetFilterPattern(const int &x)    { filter = x;   }   //! 
+      inline void SetFilterPattern(const int &x)   { filter = x;   }   //! 
+
+      inline void SetPPG(const int &x)             { ppg = x;   }      //! 
 
       inline void SetChargeLow(const int &x)       { charge_lowgain  = x;   }   //!
       inline void SetChargeHigh(const int &x)      { charge_highgain = x;   }   //!
@@ -80,6 +84,7 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline UInt_t   GetAddress() const             {   return address; } //!
 
       inline Int_t    GetFilterPatter() const         {   return filter;   }  //!
+      inline Int_t    GetPPG() const                  {   return ppg;   }  //!
       inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
 		inline int GetBGOMultiplicity() const  		  {	return bgo.size();	}		      //!
 		inline TCrystalHit *GetBGO(const int &i)       {	return &bgo.at(i);	}	        //!

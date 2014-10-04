@@ -29,6 +29,9 @@ void TGriffinHit::Clear(Option_t *opt)	{
    charge_lowgain = -1;
    charge_highgain = -1;
 
+   filter = 0;
+   ppg = 0;
+
    cfd    = -1;
    energy_lowgain = 0.0;
    energy_highgain = 0.0;

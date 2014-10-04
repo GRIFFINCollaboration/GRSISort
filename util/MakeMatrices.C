@@ -1,16 +1,24 @@
-void MakeMatrices(TFile* file, int gammaMult = 2, int betaMult = 0, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000.) {
-   TH1F* time = new TH1F("time","time difference;time[10 ns]",200,0.,200.);
-   TH1F* timeEGate = new TH1F("timeEGate","time difference energy gate on 1808 and 1130;time[10 ns]",200,0.,200.);
-   TH1F* timeModuleOne = new TH1F("timeModuleOne","time difference for 1. grif-16;time[10 ns]",200,0.,200.);
-   TH2F* matrix = new TH2F("matrix",Form("#gamma-#gamma matrix with #gamma multiplicity >= %d and #beta multiplicity >= %d",gammaMult,betaMult),nofBins, low, high,nofBins, low, high);
-   TH2F* matrix_coinc = new TH2F("matrix_coinc",Form("#gamma-#gamma matrix with #gamma multiplicity >= %d and #beta multiplicity >= %d, coincident within %d - %d",gammaMult, betaMult, coincLow, coincHigh),nofBins, low, high,nofBins, low, high);
-   TH2F* matrix_bg = new TH2F("matrix_bg",Form("#gamma-#gamma matrix with #gamma multiplicity >= %d and #beta multiplicity >= %d, background within %d - %d",gammaMult, betaMult, coincLow, coincHigh),nofBins, low, high,nofBins, low, high);
 
-   TH1F* cfdDiff = new TH1F("cfdDiff","cfd difference",2000,-1000.,1000.);
-   TH1F* cfdDiffEGate = new TH1F("cfdDiffEGate","cfd difference energy gate on 1808 and 1130",2000,-1000.,1000.);
-   TH1F* cfdDiffModuleOne = new TH1F("cfdDiffModuleOne","cfd difference for 1. grif-16",2000,-1000.,1000.);
+
+
+
+
+TList *MakeMatrices(TChain* tree, int gammaMult = 2, int betaMult = 0, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000.) {
+  list = new TList;
+
+   TH1F* time = new TH1F("time","time difference;time[10 ns]",200,0.,200.); list->Add(time);
+   TH1F* timeEGate = new TH1F("timeEGate","time difference energy gate on 1808 and 1130;time[10 ns]",200,0.,200.);  list->Add(timeEGate);
+   TH1F* timeModuleOne = new TH1F("timeModuleOne","time difference for 1. grif-16;time[10 ns]",200,0.,200.); list->Add(timeModuleOne);
+   TH2F* matrix = new TH2F("matrix",Form("#gamma-#gamma matrix with #gamma multiplicity >= %d and #beta multiplicity >= %d",gammaMult,betaMult),nofBins, low, high,nofBins, low, high); list->Add(matrix);
+   TH2F* matrix_coinc = new TH2F("matrix_coinc",Form("#gamma-#gamma matrix with #gamma multiplicity >= %d and #beta multiplicity >= %d, coincident within %d - %d",gammaMult, betaMult, coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(matrix_coinc);
+   TH2F* matrix_bg = new TH2F("matrix_bg",Form("#gamma-#gamma matrix with #gamma multiplicity >= %d and #beta multiplicity >= %d, background within %d - %d",gammaMult, betaMult, bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(matrix_bg);
+
+   TH1F* cfdDiff = new TH1F("cfdDiff","cfd difference",2000,-1000.,1000.); list->Add(cfdDiff);
+   TH1F* cfdDiffEGate = new TH1F("cfdDiffEGate","cfd difference energy gate on 1808 and 1130",2000,-1000.,1000.); list->Add(cfdDiffEGate);
+   TH1F* cfdDiffModuleOne = new TH1F("cfdDiffModuleOne","cfd difference for 1. grif-16",2000,-1000.,1000.); list->Add(cfdDiffModuleOne);
    
-   TTree* tree = (TTree*) file->Get("AnalysisTree");
+   //TTree* tree = (TTree*) file->Get("AnalysisTree");
+ 
    TGriffin* grif = 0;
    TSceptar* scep = 0;
    tree->SetBranchAddress("TGriffin", &grif);
@@ -84,8 +92,9 @@ void MakeMatrices(TFile* file, int gammaMult = 2, int betaMult = 0, int coincLow
 
    std::cout<<"skipped "<<skipped<<" entries, didn't skip "<<notSkipped<<" entries: got "<<coincident<<" coincident and "<<background<<" background events"<<std::endl;
 
-   TH2F* matrix_bgcorr = matrix_coinc->Clone("matrix_bgcorr");
-   matrix_bgcorr->SetTitle(Form("#gamma-#gamma matrix with #gamma multiplicity >= %d and #beta multiplicity >= %di, background corrected",gammaMult,betaMult));
+   TH2F* matrix_bgcorr = matrix_coinc->Clone("matrix_bgcorr"); list->Add(matrix_bgcorr);
+   matrix_bgcorr->SetTitle(Form("#gamma-#gamma matrix with #gamma multiplicity >= %d and #beta multiplicity >= %d, background corrected",gammaMult,betaMult));
+   matrix_bgcorr->Add(matrix_bg,-1.);
 
    TCanvas* c = new TCanvas;
    c->Divide(2,2);
@@ -111,4 +120,7 @@ void MakeMatrices(TFile* file, int gammaMult = 2, int betaMult = 0, int coincLow
    cfdDiffEGate->Draw("same");
    cfdDiffModuleOne->SetLineColor(4);
    cfdDiffModuleOne->Draw("same");
+
+   list->Sort();
+   return list;
 }
