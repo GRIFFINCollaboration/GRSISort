@@ -55,9 +55,10 @@ class TGriffin : public TGRSIDetector {
      static bool fSetCoreWave;		         //!  Flag for Waveforms ON/OFF
      static bool fSetBGOWave;		            //!  Flag for BGO Waveforms ON/OFF
 
-     static long fCycleStart;                //   The start of the cycle
+     static long fCycleStart;                //!  The start of the cycle
      static long fLastPPG;                   //!  value of the last ppg
 
+     long fCycleStartTime;                   //   The start of the cycle as it's saved to the tree
      bool ftapemove;                         //
      bool fbackground;                       //
      bool fbeamon;                           // 
@@ -78,7 +79,7 @@ class TGriffin : public TGRSIDetector {
      bool GetBeamOn()     const { return fbeamon;    }//!
      bool GetDecay()      const { return fdecay;     }//!
 
-     int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
+     static int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
 
    private:
      static TVector3 gCloverPosition[17];          //!  Position of each HPGe Clover

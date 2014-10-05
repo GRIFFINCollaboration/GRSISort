@@ -24,7 +24,7 @@ class TGriffinData : public TGRSIDetectorData {
     std::vector<Int_t>    fCore_Chg;		//!
     std::vector<Long_t>   fCore_TimeCFD;	//!
     std::vector<Long_t>   fCore_Time;		//!
-    std::vector<std::vector<Short_t>>fCore_Wave;	//!
+    std::vector<std::vector<Short_t> >fCore_Wave;	//!
 
     std::vector<Int_t>        fCore_NbrHits; //!
     std::vector<Int_t>        fCore_MidasId; //!
