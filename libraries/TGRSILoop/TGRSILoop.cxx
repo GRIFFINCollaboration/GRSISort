@@ -462,6 +462,7 @@ bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent, T
 bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile)   {
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
+
 	int frags = TDataParser::GriffinDataToFragment(ptr,dsize,mserial,mtime);
 	if(frags>-1)	{
 	   return true;

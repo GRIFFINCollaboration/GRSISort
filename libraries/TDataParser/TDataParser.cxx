@@ -417,6 +417,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
    	uint32_t dword  = *(data+x);
 		uint32_t packet = dword & 0xf0000000;
 		uint32_t value  = dword & 0x0fffffff; 
+
 		switch(packet) {
          case 0x80000000:
                //if this happens, we have "accidentially" found another event.
@@ -574,9 +575,6 @@ bool TDataParser::SetGRIFWaveForm(uint32_t value,TFragment *currentfrag) {
 
 bool TDataParser::SetGRIFDeadTime(uint32_t value, TFragment *frag) {
 //Sets the Griffin deadtime and the upper 14 bits of the timestamp
-   if(value & 0xf0000000 != 0xb0000000){
-      return false;
-   }
    frag->DeadTime      = (value & 0x0fffc000) >> 14;
 	frag->TimeStampHigh = (value &  0x00003fff);
 	return true;

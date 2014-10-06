@@ -65,14 +65,14 @@ TList* MakeCycleHist(TChain *chain,
       chain->GetEntry(x);
       for(size_t g = 0; g < grif->GetMultiplicity(); ++g) {
          timestamp = grif->GetGriffinHit(g)->GetTime();
-         timestamp = ((timestamp >> 1) & 0xffff0000000) | (timestamp & 0xfffffff);//combine lower 28bits of low timestamp with the high timestamp shifted by one bit, effectively dividing the high timestamp by two 
+//         timestamp = ((timestamp >> 1) & 0xffff0000000) | (timestamp & 0xfffffff);//combine lower 28bits of low timestamp with the high timestamp shifted by one bit, effectively dividing the high timestamp by two 
          gammaVsCycleTime->Fill(grif->GetCycleTimeInMilliSeconds(timestamp), grif->GetGriffinHit(g)->GetEnergyLow()); 
          gammaVsTime->Fill(timestamp/1e5, grif->GetGriffinHit(g)->GetEnergyLow()); 
       }
       if(scep != 0) {
          for(size_t b = 0; b < scep->GetMultiplicity(); ++b) {
             timestamp = scep->GetSceptarHit(b)->GetTime();
-            timestamp = ((timestamp >> 1) & 0xffff0000000) | (timestamp & 0xfffffff);//combine lower 28bits of low timestamp with the high timestamp shifted by one bit, effectively dividing the high timestamp by two 
+//            timestamp = ((timestamp >> 1) & 0xffff0000000) | (timestamp & 0xfffffff);//combine lower 28bits of low timestamp with the high timestamp shifted by one bit, effectively dividing the high timestamp by two 
             gammaVsCycleTime->Fill(grif->GetCycleTimeInMilliSeconds(timestamp), scep->GetSceptarHit(b)->GetEnergy()); 
             gammaVsTime->Fill(timestamp/1e5, scep->GetSceptarHit(b)->GetEnergy()); 
          }
