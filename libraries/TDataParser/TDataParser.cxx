@@ -430,8 +430,9 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 				SetGRIFDeadTime(value,EventFrag);
 				break;
 			case 0xe0000000:
-				if(true) { //value == EventFrag->ChannelId) { //header has to equal the trailer
-					if(record_stats)
+//				if(true) { //value == EventFrag->ChannelId) { //header has to equal the trailer
+            if(value == EventFrag->ChannelId){
+               if(record_stats)
 						FillStats(EventFrag);
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);				
                if(x != size-1)
