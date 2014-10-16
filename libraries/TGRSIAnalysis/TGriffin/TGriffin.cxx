@@ -237,10 +237,11 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       
       corehit.SetPPG(gdata->GetPPG(i));
 
-      if(gdata->GetPPG(i) == 0xd000 && gdata->GetPPG(i) != fLastPPG) { //this is a background event
+      if((gdata->GetPPG(i) == 0xd000 && gdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
          fCycleStart = corehit.GetTime();
       }
       fLastPPG = gdata->GetPPG(i);
+      fCycleStartTime = fCycleStart;
 
       //temp_hits.push_back(corehit);  
       griffin_hits.push_back(corehit);
