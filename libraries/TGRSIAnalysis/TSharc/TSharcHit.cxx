@@ -1,5 +1,6 @@
 
 #include "TSharcHit.h"
+#include "TChannel.h"
 #include <TClass.h>
 
 ClassImp(TSharcHit)
@@ -55,6 +56,26 @@ Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
 	posoff.SetXYZ(Xoff,Yoff,Zoff);
    return (position+posoff).Theta();
 }
+
+Double_t TSharcHit::PadEnergyCal() {
+  TChannel *chan = TChannel::GetChannel(p_address);
+  if(!chan)
+    return 0.0;
+  return chan->CalibrateENG(pad_charge);
+
+}
+
+Double_t TSharcHit::FrontEnergyCal() { //!
+  TChannel *chan = TChannel::GetChannel(front_address);
+  if(!chan)
+    chan = TChannel::GetChannelByNumber(front_address);
+  if(!chan)
+    return 0.0;
+    
+  return chan->CalibrateENG(front_charge);
+
+}
+
 
 
 //bool TSharcHit::Compare(TSharcHit *lhs, TSharcHit *rhs)	{

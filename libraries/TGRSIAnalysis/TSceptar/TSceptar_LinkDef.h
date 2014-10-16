@@ -5,6 +5,6 @@
 //#pragma link C++ nestedclasses;
 #pragma link C++ class TSceptar+;
 #pragma link C++ class std::vector<TSceptarHit>+;
-#pragma link C++ class std::vector<std::vector<Short_t> >+;
+//#pragma link C++ class std::vector<std::vector<Short_t> >+;
 //#pragma read sourceClass="TSceptar" target="sceptar_hits" attributes="Owner";
 #endif

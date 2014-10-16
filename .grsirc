@@ -1,5 +1,5 @@
 Unix.*.Root.MacroPath: .:$(GRSISYS)/util:$(ROOTSYS)/macros
-
+#Unix.*.Root.DynamicPath:  .:~/rootlibs:$(ROOTSYS)/lib:$/home/tiguser/packages/SharcAnalysis
 
 
 

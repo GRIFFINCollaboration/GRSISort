@@ -93,6 +93,10 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		//inline Double_t GetFrontCFD()		{	return front_cfd;	}	//!
 		//inline Double_t GetBackCFD()		{	return back_cfd;	}	//!
 
+    Double_t PadEnergyCal(); //!
+    Double_t FrontEnergyCal(); //!
+
+
 		TVector3 GetPosition()	{	return position;	}	//!
 
 		Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0) { return GetTheta(Xoff,Yoff,Zoff)*TMath::RadToDeg(); } ; //! 
