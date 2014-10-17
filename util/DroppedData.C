@@ -1,4 +1,5 @@
 void DroppedData(TFile *file) {
+   //Finds the number of dropped Midas events as well as the number of lost events over the network.
    TTree* tree = (TTree*) file->Get("FragmentTree");
 
    long entries = tree->GetEntries();
