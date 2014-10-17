@@ -82,11 +82,11 @@ void TGRSIint::ApplyOptions() {
    }
    if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
       ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
-      printf(Form("Reading Calibration from from %s FragmentTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str())); //Will put real file name in here but it's bed time
+      printf("Reading Calibration from from \"%s\" FragmentTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str()); //Will put real file name in here but it's bed time
     }   
     if(TGRSIOptions::GetInputRoot().at(0).find("analysis") != std::string::npos){ 
       ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
-       printf(Form("Reading Calibration from from %s AnalysisTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str()));
+       printf("Reading Calibration from from \"%s\" AnalysisTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str());
     }
   }
   if(TGRSIOptions::CloseAfterSort())

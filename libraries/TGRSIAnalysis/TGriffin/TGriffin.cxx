@@ -129,9 +129,9 @@ void TGriffin::Clear(Option_t *opt)	{
 
 void TGriffin::Print(Option_t *opt) {
   //Prints out TGriffin members, currently does nothing.
-  printf("grifdata = 0x%08x\n",grifdata);
+  printf("grifdata = 0x%p\n",grifdata);
   if(grifdata) grifdata->Print();
-  printf("bgodata  = 0x%08x\n",bgodata);
+  printf("bgodata  = 0x%p\n",bgodata);
   if(bgodata) bgodata->Print();
   printf("%lu griffin_hits\n",griffin_hits.size());
   printf("%lu addback_hits\n",addback_hits.size());

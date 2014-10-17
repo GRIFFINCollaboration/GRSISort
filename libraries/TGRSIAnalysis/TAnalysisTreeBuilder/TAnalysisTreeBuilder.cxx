@@ -771,7 +771,7 @@ void TAnalysisTreeBuilder::Print(Option_t *opt) {
    printf(DYELLOW  " TEventQueue::Size()       = %i" RESET_COLOR "\n",TEventQueue::Size());
    printf(DBLUE    " TWriteQueue::Size()       = %i" RESET_COLOR "\n",TWriteQueue::Size());
    printf(DGREEN   " fFragmentsIn/fAnalysisOut = %i / %i" RESET_COLOR "\n",fFragmentsIn,fAnalysisOut);  
-   printf(GREEN    " std::thread::hardware_concurrency = %i" RESET_COLOR "\n",std::thread::hardware_concurrency);
+   printf(GREEN    " std::thread::hardware_concurrency = %u" RESET_COLOR "\n",std::thread::hardware_concurrency());
    printf(DMAGENTA " ==========================================" RESET_COLOR "\n");
    return;
 }
@@ -782,7 +782,7 @@ void TAnalysisTreeBuilder::Status() {
    bool fragmentsDone = false;
    bool sortingDone = false;
    while(fPrintStatus) {
-      printf(DYELLOW HIDE_CURSOR "%12i / %12i " RESET_COLOR "/" DBLUE " %12i " RESET_COLOR "/" DCYAN " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR "/" DGREEN " %12i " RESET_COLOR
+      printf(DYELLOW HIDE_CURSOR "%12i / %12ld " RESET_COLOR "/" DBLUE " %12i " RESET_COLOR "/" DCYAN " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR "/" DGREEN " %12i " RESET_COLOR
              "    processed fragments / # of fragments/ # of events / event queue size / write queue size / events written.\t%f seconds." SHOW_CURSOR "\r",
              fFragmentsIn, fEntries, fAnalysisIn, TEventQueue::Size(), TWriteQueue::Size(), fAnalysisOut, w.RealTime());
       //we insert a newline (thus preserving the last status), if we just finished getting all fragment, or finished removing fragments from the event queue
@@ -797,7 +797,7 @@ void TAnalysisTreeBuilder::Status() {
       w.Continue(); 
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
    }
-   printf(DYELLOW HIDE_CURSOR "%12i / %12i " RESET_COLOR "/" DBLUE " %12i " RESET_COLOR "/" DCYAN " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR "/" DGREEN " %12i " RESET_COLOR
+   printf(DYELLOW HIDE_CURSOR "%12i / %12ld " RESET_COLOR "/" DBLUE " %12i " RESET_COLOR "/" DCYAN " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR "/" DGREEN " %12i " RESET_COLOR
           "    processed fragments / # of fragments/ # of events / event queue size / write queue size / events written.\t%f seconds." SHOW_CURSOR "\n",
           fFragmentsIn, fEntries, fAnalysisIn, TEventQueue::Size(), TWriteQueue::Size(), fAnalysisOut, w.RealTime());
 
