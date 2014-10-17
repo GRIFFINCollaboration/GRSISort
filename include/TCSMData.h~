@@ -63,7 +63,7 @@ public:
   /////////////////////           SETTERS           ////////////////////////
   inline void SetHorizontal_DetectorNbr(const UShort_t &DetNbr){fCSM_StripHorizontal_DetectorNbr.push_back(DetNbr);}	//!
   inline void SetHorizontal_DetectorPos(const UShort_t &DetPos){fCSM_StripHorizontal_DetectorPos.push_back(DetPos);}	//!
-  inline void SetHorizontal_StripNbr(const Short_t &StripNbr) {fCSM_StripHorizontal_StripNbr.push_back(StripNbr);}		//!
+  inline void SetHorizontal_StripNbr(const UShort_t &StripNbr) {fCSM_StripHorizontal_StripNbr.push_back(StripNbr);}		//!
   inline void SetHorizontal_Energy(const Double_t &Energy)     {fCSM_StripHorizontal_Energy.push_back(Energy);}				//!
   inline void SetHorizontal_Charge(const Int_t &Charge)       {fCSM_StripHorizontal_Charge.push_back(Charge);}				//!
   inline void SetHorizontal_TimeCFD(const Int_t &TimeCFD)   {fCSM_StripHorizontal_TimeCFD.push_back(TimeCFD);}			//!
@@ -75,7 +75,7 @@ public:
 
   inline void SetVertical_DetectorNbr(const UShort_t &DetNbr){fCSM_StripVertical_DetectorNbr.push_back(DetNbr);}		//!
   inline void SetVertical_DetectorPos(const UShort_t &DetPos){fCSM_StripVertical_DetectorPos.push_back(DetPos);}		//!
-  inline void SetVertical_StripNbr(const Short_t &StripNbr) {fCSM_StripVertical_StripNbr.push_back(StripNbr);}		//!
+  inline void SetVertical_StripNbr(const UShort_t &StripNbr) {fCSM_StripVertical_StripNbr.push_back(StripNbr);}		//!
   inline void SetVertical_Energy(const Double_t &Energy)     {fCSM_StripVertical_Energy.push_back(Energy);}				//!
   inline void SetVertical_Charge(const Int_t &Charge)       {fCSM_StripVertical_Charge.push_back(Charge);}					//!
   inline void SetVertical_TimeCFD(const Int_t &TimeCFD)   {fCSM_StripVertical_TimeCFD.push_back(TimeCFD);}			//!
