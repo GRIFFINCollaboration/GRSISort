@@ -83,6 +83,9 @@ void DrawNext(void)
 
   //printf("wavebuffer.size() = %i\n",wavebuffer.size()); 
   TH1 *his = makeHisto(frag->wavebuffer);
+  TChannel *chan = TChannel::GetChannel(frag->ChannelAddress);
+  if(chan)
+  	 his->SetTitle(chan->GetChannelName());
   his->Draw();
 }
 

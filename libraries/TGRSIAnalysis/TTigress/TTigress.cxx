@@ -67,9 +67,9 @@ void TTigress::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 	  	if((mnemonic->segment==0) || (mnemonic->segment==9 ))	{
  				tigdata->SetCore(frag,channel,mnemonic);
 			} else {                         
-				if(SetSegmentHits()) {
+				//if(SetSegmentHits()) {
  					tigdata->SetSegment(frag,channel,mnemonic);
-				}
+				//}
 			}
   } else if(mnemonic->subsystem.compare(0,1,"S")==0) {
       FillBGOData(frag,channel,mnemonic);
@@ -129,6 +129,10 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 	   for(int j=0;j<tdata->GetSegmentMultiplicity();j++)	{
 	      if((tigress_hits[i].GetDetectorNumber() == tdata->GetSegCloverNumber(j))  && (tigress_hits[i].GetCrystalNumber() == tdata->GetSegCoreNumber(j))) {
 	         tigress_hits[i].CheckFirstHit(tdata->GetSegmentCharge(j),tdata->GetSegmentNumber(j));
+
+				if(!SetSegmentHits()) 
+					continue;
+			
            temp_crystal.Clear();
            temp_crystal.SetSegmentNumber(tdata->GetSegmentNumber(j));
            temp_crystal.SetCharge(tdata->GetSegmentCharge(j));

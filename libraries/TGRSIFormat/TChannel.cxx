@@ -300,6 +300,8 @@ void TChannel::DestroyCalibrations()   {
 };
 
 double TChannel::CalibrateENG(int charge) {
+    if(charge==0) 
+      return 0.0000;
    return CalibrateENG((double)charge) + gRandom->Uniform();
 };
 
@@ -606,30 +608,5 @@ void TChannel::trim(std::string * line, const std::string & trimChars) {
       *line = line->substr(0, found + 1);
    return;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

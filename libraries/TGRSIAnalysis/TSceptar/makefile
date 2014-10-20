@@ -44,7 +44,7 @@ all: libSceptar.so
 	@$(RM) -f temp.errors temp.log
 
 
-%Dict.cxx: $(BASE)/include/%.h %_LinkDef.h
+%Dict.cxx: $(BASE)/include/%.h 
 	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
 	@rootcint -f $@ -c -I${BASE}/include -p $^ 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \

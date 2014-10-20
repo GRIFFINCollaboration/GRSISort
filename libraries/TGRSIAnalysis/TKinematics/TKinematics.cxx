@@ -22,13 +22,26 @@ TKinematics::TKinematics(double beame, const char *beam, const char *targ, const
 	t = new TNucleus(targ);
 	name = Form("%s(%s,%s)%s",targ,beam,ejec,reco);
 	
-	if((strcmp(ejec,"NULL")==0)  || (strcmp(reco,"NULL")==0 )) {
-		TKinematics(b,t,beame,name);
+	if(!ejec  || !reco) {
+		//TKinematics(b,t,beame,name);
 	} else { 
 		e = new TNucleus(ejec);
 		r = new TNucleus(reco);
-		 TKinematics(b,t,e,r,beame,name);
 	}
+
+  fParticle[0] = b;
+  fParticle[1] = t;
+  fParticle[2] = e;
+  fParticle[3] = r;
+  for(int i=0;i<4;i++)
+    fM[i]=fParticle[i]->GetMass();
+    
+  fEBeam = beame;
+  fQValue = (fM[0]+fM[1])-(fM[2]+fM[3]);
+  Initial();
+  FinalCm();
+  SetName(name);
+  Cm2LabSpline = 0;
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char *name){
@@ -44,6 +57,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, c
   Initial();
   FinalCm();
   SetName(name);
+  Cm2LabSpline = 0;
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, const char *name){
@@ -60,6 +74,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
   Initial();
   FinalCm();
   SetName(name);
+  Cm2LabSpline = 0;
 //  printf("\e[1;31m" "M[0] = %.01f \tM[1] = %.01f \tM[2] = %.01f \tM[3] = %.01f \t\n\n\n " "\e[m",fM[0],fM[1],fM[2],fM[3]);
 }
 
@@ -77,6 +92,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
   Initial();
   FinalCm();
   SetName(name);
+  Cm2LabSpline = 0;
 }
 
 TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part){
@@ -396,6 +412,28 @@ double TKinematics::Angle_lab2cminverse(double vcm, double angle_lab, bool upper
     return acos( (-x*gtan-sqrt( 1+gtan*(1-x*x) ))/(1+gtan) );
   }
 }
+
+double TKinematics::Steffen_cm2labinverse(double theta_cm, int part){
+  //Final(theta_lab,part);
+  //FinalCm();  
+  double v_in_cm = fVcm[part];
+  double beta_of_cm = fBeta_cm;
+  double gamma_of_cm = fGamma_cm;
+
+  double theta_lab = PI-TMath::ATan2(sin(theta_cm),gamma_of_cm*(cos(theta_cm)-beta_of_cm/v_in_cm));
+
+  return theta_lab;
+}
+
+double TKinematics::Steffen_lab2cminverse(double theta_lab){ // assumes part = 2;
+
+  if(!Cm2LabSpline)
+    Cm2LabSpline = Steffen_labvscminverse(0.01,179.9,1.0,2);
+
+  return Cm2LabSpline->Eval(theta_lab);
+}
+
+
 void TKinematics::AngleErr_lab2cm(double angle, double &err){
 // Calculates the uncertainty associated with converting the angle from the lab to CM frame
   double angle_lab = angle;
@@ -462,6 +500,7 @@ TSpline3* TKinematics::labvscm(double thmin, double thmax, double size, int part
   delete[] cm;
   return spline;
 }
+
 TSpline3* TKinematics::cmvslab(double thmin, double thmax, double size, int part){
   double* cm = new double[(int)((thmax-thmin)/size)+1];
   double* lab = new double[(int)((thmax-thmin)/size)+1];
@@ -474,6 +513,24 @@ TSpline3* TKinematics::cmvslab(double thmin, double thmax, double size, int part
   }
   TGraph* graph = new TGraph(nr, lab, cm);
   TSpline3* spline = new TSpline3("Th_cmvslab",graph);
+  delete graph;
+  delete[] lab;
+  delete[] cm;
+  return spline;
+}
+
+TSpline3* TKinematics::Steffen_labvscminverse(double thmin, double thmax, double size, int part){
+  double* cm = new double[(int)((thmax-thmin)/size)+1];
+  double* lab = new double[(int)((thmax-thmin)/size)+1];
+  int nr =0;
+  for(int i=((thmax-thmin)/size);i>0;i--){
+    cm[nr] = i;
+    lab[nr] = Steffen_cm2labinverse(cm[nr]*PI/180.,part)*180./PI;
+    if(lab[nr]>0.01 && lab[nr]<179.99)
+      nr++;
+  }
+  TGraph* graph = new TGraph(nr, lab, cm);
+  TSpline3* spline = new TSpline3("Th_cmvslabinverse",graph);
   delete graph;
   delete[] lab;
   delete[] cm;
