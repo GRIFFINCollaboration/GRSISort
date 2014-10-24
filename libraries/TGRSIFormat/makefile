@@ -1,11 +1,15 @@
 
-OBJECTS = TFragment.o TFragmentDict.o TChannel.o TChannelDict.o TFragmentQueue.o TFragmentQueueDict.o TGRSIStats.o TGRSIStatsDict.o TFragmentSelector.o TFragmentSelectorDict.o TGRSIRunInfo.o TGRSIRunInfoDict.o 
+#OBJECTS = TFragment.o TFragmentDict.o TChannel.o TChannelDict.o TFragmentQueue.o TFragmentQueueDict.o TGRSIStats.o TGRSIStatsDict.o TFragmentSelector.o TFragmentSelectorDict.o TGRSIRunInfo.o TGRSIRunInfoDict.o 
+
+OBJECTS = TFragment.o TChannel.o TFragmentQueue.o TGRSIStats.o TFragmentSelector.o TGRSIRunInfo.o TGRSIFormatDict.o 
 
 CFLAGS += -fPIC
 CFLAGS += -I $(BASE)/users
 
 #COMP_STRING="Now Compling "
 DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
+
+INCDIR = $(BASE)/include
 
 CAT=cat
 
@@ -49,10 +53,10 @@ libGRSIFormat.so: $(OBJECTS)
 
 
 
-%Dict.cxx: $(BASE)/include/%.h
-	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
-	@rootcint -f $@ -c $^ 2> temp.log || touch temp.errors
-	@if test -e temp.errors; then \
+#%Dict.cxx: $(BASE)/include/%.h
+#	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
+#	@rootcint -f $@ -c $^ 2> temp.log || touch temp.errors
+#	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
 		&& $(CAT) temp.log && \
 		printf "${ERROR_COLOR}%s\n${NO_COLOR}" ${PWD};  \
@@ -61,10 +65,26 @@ libGRSIFormat.so: $(OBJECTS)
 		&& $(CAT) temp.log; \
 		else printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10  $(OK_STRING); \
 		fi;
-	@$(RM) -f temp.errors temp.log
+#	@$(RM) -f temp.errors temp.log
+
+TGRSIFormatDict.cxx: $(INCDIR)/TFragment.h $(INCDIR)/TChannel.h $(INCDIR)/TFragmentQueue.h $(INCDIR)/TFragmentSelector.h $(INCDIR)/TGRSIRunInfo.h $(INCDIR)/TGRSIStats.h 
+	rootcint -f $@ -c `root-config --cflags` -p $(INCDIR)/TFragment.h $(INCDIR)/TChannel.h $(INCDIR)/TFragmentQueue.h $(INCDIR)/TFragmentSelector.h $(INCDIR)/TGRSIRunInfo.h $(INCDIR)/TGRSIStats.h TGRSIFormatLinkDef.h 
+
+
+#TGRSIFormatDict.o:  TGRSIFormatDict.cxx
+#	$(CXX) -c $^ $(CFLAGS) $(CPPFLAGS) 
+
 
 clean:
-	$(RM) $(OBJECTS) *~ *Dict* *so *.h 
+	$(RM) $(OBJECTS) *~ *Dict* *so  
+
+
+
+
+
+
+
+
 
 
 
