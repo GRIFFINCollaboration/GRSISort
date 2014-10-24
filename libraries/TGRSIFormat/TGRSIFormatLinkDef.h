@@ -7,8 +7,8 @@
 #pragma link C++ nestedclasses;
 
 #pragma link C++ class std::vector<Int_t>+;
-#pragma link C++ class std::vector<Short_t>+;
-#pragma link C++ class std::vector<UShort_t>+;
+//#pragma link C++ class std::vector<Short_t>+;
+//#pragma link C++ class std::vector<UShort_t>+;
 
 #pragma link C++ class TFragment+;
 #pragma link C++ class TChannel+;
