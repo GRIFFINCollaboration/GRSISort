@@ -68,7 +68,7 @@ Double_t photo_peak(Double_t *dim, Double_t *par){
    Double_t R        = par[4]; //relative height of skewed gaussian
 
    Double_t gaussian    = height*(1.0-R/100.0)*TMath::Gaus(x,c,sigma);
-   Double_t skewed_gaus = R*height/100.0*(TMath::Exp((x-c)/beta))*(ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta));
+   Double_t skewed_gaus = R*height/100.0*(TMath::Exp((x-c)/beta))*(ROOT::Math::erfc(((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta)));
 
    return gaussian + skewed_gaus;
 }
@@ -81,7 +81,7 @@ Double_t step_function(Double_t *dim, Double_t *par){
    Double_t sigma   = par[2];
    Double_t step    = par[5];
 
-   return TMath::Abs(step)*height/100.0*ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma));
+  return TMath::Abs(step)*height/100.0*ROOT::Math::erfc((x-c)/(TMath::Sqrt(2.0)*sigma));
 }
 
 Double_t fitFunction(Double_t *dim, Double_t *par){
@@ -97,11 +97,12 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
 
    Double_t binWidth = h->GetXaxis()->GetBinWidth(1000);//Need to find the bin widths so that the integral makes sense
-   Int_t rw = binWidth*40;  //This number may change depending on the source used   
+   Int_t rw = binWidth*120;  //This number may change depending on the source used   
    //Set the number of iterations. The code is pretty quick, so having a lot isn't an issue	
-   TVirtualFitter::SetMaxIterations(4999);
+   TVirtualFitter::SetMaxIterations(10000);
    Int_t xp = par[1];
-
+   Int_t yp = par[0];
+   Int_t A = par[6];
    //Define the fit function and the range of the fit
    TF1 *pp = new TF1("photopeak",fitFunction,xp-rw,xp+rw,10);
 
@@ -118,20 +119,25 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
    pp->SetParName(9,"bg offset");
 
    //Set some physical limits for parameters
+   pp->SetParLimits(0,0.5*yp, 2*yp);
    pp->SetParLimits(1,xp-rw,xp+rw);
-   pp->SetParLimits(3,0,30);
+ //  pp->SetParLimits(2,4,12);
+   pp->SetParLimits(3,0,10);
    pp->SetParLimits(4,0,10);
-   pp->SetParLimits(5,0.000,1000000);
+   pp->SetParLimits(6,0,A*1.4);
+   pp->SetParLimits(5,0,1000000);
    pp->SetParLimits(9,xp-40,xp+40);
-
    //Actually set the parameters in the photopeak function
    pp->SetParameters(par);
-
+  //Fixing has to come after setting
+  pp->FixParameter(8,0);
+  // pp->FixParameter(4,0);
+ //  pp->FixParameter(7,0);
 //   pp->FixParameter(4,0);
- //  pp->FixParameter(5,0);
+  // pp->FixParameter(5,1);
 
    pp->SetNpx(1000); //Draws a nice smooth function on the graph
-   TFitResultPtr fitres = h->Fit("photopeak","RFS");
+   TFitResultPtr fitres = h->Fit("photopeak","RFSM+"); //I might mean I have to get rid of bin width
    pp->Draw("same");      
 
    pp->GetParameters(&par[0]); 
@@ -337,6 +343,104 @@ TGraph* autogain(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPad
    return slopefit;
 
 }
+
+TGraph* autogain60(TH1 *hist){
+
+//   TNucleus nuc("60Co"); 
+//   TNucleus *nucptr = &nuc;
+   std::vector<float> engvec;
+//   std::vector<float> intensvec;
+//   TIter iter(&(nucptr->TransitionList));
+//   TObject* obj;
+//   while(obj = iter.Next()) {
+//      std::cout << "Making a nucleus" << std::endl;
+//      if(!obj->InheritsFrom("TGRSITransition"))
+//         continue;
+//      TGRSITransition *tran = (TGRSITransition*)obj;
+//      intensvec.push_back(static_cast<float>(tran->intensity));
+//      engvec.push_back(static_cast<float>(tran->energy));
+//   }
+   
+
+   engvec.push_back(1173.228);
+   engvec.push_back(1332.492);
+ 
+
+  // std::vector<Float_t> areavec;
+ //  std::vector<Float_t> area_uncertainty;
+   std::vector<Float_t> goodenergyvec;
+ //  std::vector<Float_t> goodintensvec;
+
+
+   hist->GetXaxis()->SetRangeUser(200.,16000.);
+   TSpectrum *s = new TSpectrum();
+   Int_t nfound = s->Search(hist,2,"",0.08); //This will be dependent on the source used.
+   
+   printf("Found %d candidate peaks to fit\n",nfound);
+   if(nfound > 2)
+      nfound = 2;
+
+   std::vector<float> foundchan;
+   for(int x=0;x<nfound;x++)
+      foundchan.push_back(s->GetPositionX()[x]);
+
+      std::cout << "Found at position" << s->GetPositionX()[0] << std::endl;
+
+  // std::sort(foundchan.begin(),foundchan.end());
+
+  // Float_t energies[]={1173.228,1332.492}; //These will change
+ 
+   Double_t par[40];  
+   Float_t integral, sigma; 
+
+  for (int p=0;p<engvec.size();p++) {
+     Float_t xp = foundchan[p];
+  //   std::cout << "Trying to fit channel " << foundchan << " and match it to " << engvec[p]  <<std::endl; 
+     std::cout << "Do I make it here??" << std::endl;
+     Int_t bin = xp;// hist->GetXaxis()->FindBin(xp);
+     cout << "bin is" << bin << std::endl;
+     Float_t yp = hist->GetBinContent(bin);
+     par[0] = yp;  //height
+     par[1] = xp;  //centroid
+     par[2] = 5;   //sigma
+     par[3] = 2;   //beta
+     par[4] = 2;   //R
+     par[5] = 1.0; //stp
+     par[6] = hist->GetBinContent(bin-50);  //A
+     par[7] = (hist->GetBinContent(bin-50) - hist->GetBinContent(bin+50))/100.;//B
+     par[8] = -0.5;   //C
+     par[9] = xp;  //bg offset
+     bool goodfit = FitPeak(par,hist,integral, sigma);
+   //  if(goodfit){ //DO STUFF HERE
+  //   	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
+  //   	area_uncertainty.push_back(sigma);
+        goodenergyvec.push_back(par[1]);
+  //      goodintensvec.push_back(intensvec.at(p));
+   //  }
+  //   fitlist->Add(f);
+   }
+
+  // std::cout << "or made it here" << std::endl;
+
+  // Float_t *area = &(areavec[0]);
+   Float_t *energies = &(engvec[0]);
+   Float_t *goodenergy = &(goodenergyvec[0]);
+
+   TGraph* slopefit = new TGraph(nfound, goodenergy, energies);
+
+   printf("Now fitting: Be patient\n");
+   slopefit->Fit("pol1");
+//   if(slopefit->GetFunction("pol1")->GetChisquare() > 10.) {
+//      slopefit->RemovePoint(slopefit->GetN()-1);
+//      slopefit->Fit("pol1");
+//   }
+   TChannel *chan = 0;
+   slopefit->Draw("AC*");
+
+
+   return slopefit;
+} 
+
 
 TGraph* autogain152(TH1 *hist) {
 
