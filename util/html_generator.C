@@ -35,7 +35,7 @@ class THtmlCreator: public TObject {
 public:
    THtmlCreator(): fHtml(0)
    { 
-      printf("This class is for demonstration purposes only!\n"); 
+      printf("This class generates HTML documentation\n"); 
    }
    ~THtmlCreator() { if (fHtml) delete fHtml; }
 
@@ -51,6 +51,7 @@ public:
 
       GetHtml()->SetSourceDir("$(GRSISYS)/util");
       GetHtml()->Convert("html_generator.C", "Generates HTML Documentation", "./htmldoc/", "./");
+      GetHtml()->Convert("DroppedData.C","Calculates Dropped Events","./htmldoc/","./");
    }
 
    void MakeDocForAllClasses() 
