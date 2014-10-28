@@ -18,15 +18,15 @@ class TCSMHit : public TGRSIDetectorHit 	{
 
 	private:
 
-		UShort_t			hor_d_strip;	//
+		Short_t			hor_d_strip;	//
 		Int_t      	   hor_d_charge;	//	
 		Int_t 			hor_d_cfd;		//	
 
-		UShort_t			ver_d_strip;		//
+		Short_t			ver_d_strip;		//
 		Int_t      	   ver_d_charge;	//
 		Int_t  			ver_d_cfd;		// 		
 
-		UShort_t			hor_e_strip;	//
+		Short_t			hor_e_strip;	//
 		Int_t         	hor_e_charge;	//	
 		Int_t 			hor_e_cfd;		//	
 

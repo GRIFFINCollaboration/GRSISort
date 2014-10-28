@@ -28,7 +28,7 @@ private:
   // Energy
   vector<UShort_t>   fCSM_StripHorizontal_DetectorNbr;		//!
   vector<Char_t>   fCSM_StripHorizontal_DetectorPos;		//!
-  vector<UShort_t>   fCSM_StripHorizontal_StripNbr;		//!
+  vector<Short_t>   fCSM_StripHorizontal_StripNbr;		//!
   vector<Double_t>   fCSM_StripHorizontal_Energy;			//!
   vector<Int_t>	   fCSM_StripHorizontal_Charge;			//!
   vector<Int_t>      fCSM_StripHorizontal_TimeCFD;			//!
@@ -39,7 +39,7 @@ private:
 
   vector<UShort_t>   fCSM_StripVertical_DetectorNbr;		//!
   vector<Char_t>   fCSM_StripVertical_DetectorPos;		//!
-  vector<UShort_t>   fCSM_StripVertical_StripNbr;			//!
+  vector<Short_t>   fCSM_StripVertical_StripNbr;			//!
   vector<Double_t>   fCSM_StripVertical_Energy;			//!
   vector<Int_t>	   fCSM_StripVertical_Charge;			//!
   vector<Int_t>   fCSM_StripVertical_TimeCFD;			//!
@@ -63,7 +63,7 @@ public:
   /////////////////////           SETTERS           ////////////////////////
   inline void SetHorizontal_DetectorNbr(const UShort_t &DetNbr){fCSM_StripHorizontal_DetectorNbr.push_back(DetNbr);}	//!
   inline void SetHorizontal_DetectorPos(const UShort_t &DetPos){fCSM_StripHorizontal_DetectorPos.push_back(DetPos);}	//!
-  inline void SetHorizontal_StripNbr(const UShort_t &StripNbr) {fCSM_StripHorizontal_StripNbr.push_back(StripNbr);}		//!
+  inline void SetHorizontal_StripNbr(const Short_t &StripNbr) {fCSM_StripHorizontal_StripNbr.push_back(StripNbr);}		//!
   inline void SetHorizontal_Energy(const Double_t &Energy)     {fCSM_StripHorizontal_Energy.push_back(Energy);}				//!
   inline void SetHorizontal_Charge(const Int_t &Charge)       {fCSM_StripHorizontal_Charge.push_back(Charge);}				//!
   inline void SetHorizontal_TimeCFD(const Int_t &TimeCFD)   {fCSM_StripHorizontal_TimeCFD.push_back(TimeCFD);}			//!
@@ -75,7 +75,7 @@ public:
 
   inline void SetVertical_DetectorNbr(const UShort_t &DetNbr){fCSM_StripVertical_DetectorNbr.push_back(DetNbr);}		//!
   inline void SetVertical_DetectorPos(const UShort_t &DetPos){fCSM_StripVertical_DetectorPos.push_back(DetPos);}		//!
-  inline void SetVertical_StripNbr(const UShort_t &StripNbr) {fCSM_StripVertical_StripNbr.push_back(StripNbr);}		//!
+  inline void SetVertical_StripNbr(const Short_t &StripNbr) {fCSM_StripVertical_StripNbr.push_back(StripNbr);}		//!
   inline void SetVertical_Energy(const Double_t &Energy)     {fCSM_StripVertical_Energy.push_back(Energy);}				//!
   inline void SetVertical_Charge(const Int_t &Charge)       {fCSM_StripVertical_Charge.push_back(Charge);}					//!
   inline void SetVertical_TimeCFD(const Int_t &TimeCFD)   {fCSM_StripVertical_TimeCFD.push_back(TimeCFD);}			//!
@@ -109,7 +109,7 @@ public:
   /////////////////////           GETTERS           ////////////////////////
   inline UShort_t GetHorizontal_DetectorNbr(const unsigned int &i) const {return fCSM_StripHorizontal_DetectorNbr[i];}	//!
   inline UShort_t GetHorizontal_DetectorPos(const unsigned int &i) const {return fCSM_StripHorizontal_DetectorPos[i];}	//!
-  inline UShort_t GetHorizontal_StripNbr(const unsigned int &i)    const {return fCSM_StripHorizontal_StripNbr[i];}		//!
+  inline UShort_t GetHorizontal_StripNbr(const int &i)    const {return fCSM_StripHorizontal_StripNbr[i];}		//!
   inline Double_t GetHorizontal_Energy(const unsigned int &i)      const {return fCSM_StripHorizontal_Energy[i];}		//!
   inline Int_t 	GetHorizontal_Charge(const unsigned int &i)      const {return fCSM_StripHorizontal_Charge[i];}		//!
   inline Int_t    GetHorizontal_TimeCFD(const unsigned int &i)     const {return fCSM_StripHorizontal_TimeCFD[i];}		//!
@@ -121,7 +121,7 @@ public:
 
   inline UShort_t GetVertical_DetectorNbr(const unsigned int &i) const {return fCSM_StripVertical_DetectorNbr[i];}	//!
   inline UShort_t GetVertical_DetectorPos(const unsigned int &i) const {return fCSM_StripVertical_DetectorPos[i];}	//!
-  inline UShort_t GetVertical_StripNbr(const unsigned int &i)    const {return fCSM_StripVertical_StripNbr[i];}		//!
+  inline UShort_t GetVertical_StripNbr(const int &i)    const {return fCSM_StripVertical_StripNbr[i];}		//!
   inline Double_t GetVertical_Energy(const unsigned int &i)      const {return fCSM_StripVertical_Energy[i];}			//!
   inline Int_t		GetVertical_Charge(const unsigned int &i)      const {return fCSM_StripVertical_Charge[i];}		//!
   inline Int_t    GetVertical_TimeCFD(const unsigned int &i)     const {return fCSM_StripVertical_TimeCFD[i];}		//!
