@@ -344,7 +344,7 @@ TGraph* autogain(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPad
 
 }
 
-TGraph* autogain60(TH1 *hist){
+TGraph* autogain60(TH1 *hist, int channum = 7){
 
 //   TNucleus nuc("60Co"); 
 //   TNucleus *nucptr = &nuc;
@@ -429,13 +429,23 @@ TGraph* autogain60(TH1 *hist){
    TGraph* slopefit = new TGraph(nfound, goodenergy, energies);
 
    printf("Now fitting: Be patient\n");
-   slopefit->Fit("pol1");
+   TFitResultPtr fitres = slopefit->Fit("pol1","S");
 //   if(slopefit->GetFunction("pol1")->GetChisquare() > 10.) {
 //      slopefit->RemovePoint(slopefit->GetN()-1);
 //      slopefit->Fit("pol1");
 //   }
    TChannel *chan = 0;
    slopefit->Draw("AC*");
+   
+   TChannel::ReadCalFile("NewGrifCal.cal");
+   std::cout << "Number of channels is " << TChannel::GetNumberOfChannels() << std::endl;
+
+   chan = TChannel::GetChannelByNumber(channum);
+   chan->DestroyENGCal();
+   chan->AddENGCoefficient(fitres->Parameter(0));
+   chan->AddENGCoefficient(fitres->Parameter(1));
+
+   std::cout << "Gain is: " << fitres->Parameter(1) << " Offset is: " << fitres->Parameter(0) << std::endl;
 
 
    return slopefit;
