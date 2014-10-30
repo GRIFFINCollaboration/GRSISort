@@ -413,14 +413,17 @@ int TMidasFile::GetRunNumber() {
    if(fFilename.length()==0) {
       return 0;
    }
+   std::size_t foundslash = fFilename.rfind('/');
    std::size_t found = fFilename.rfind(".mid");
    if(found == std::string::npos) {
       return 0;
    }
    std::size_t found2 = fFilename.rfind('-');
-   //printf("found 2 = %i\n",found2);
-   if(found2 == std::string::npos)
+   if((found2 < foundslash && foundslash != std::string::npos) || found2 == std::string::npos)
       found2 = fFilename.rfind('_');
+//   printf("found 2 = %i\n",found2);
+   if(found2 < foundslash && foundslash != std::string::npos)
+      found2 = std::string::npos;
    std::string temp;
    if(found2 == std::string::npos || fFilename.compare(found2+4,4,".mid") !=0 ) {
       temp = fFilename.substr(found-5,5);
@@ -436,18 +439,17 @@ int TMidasFile::GetRunNumber() {
 int TMidasFile::GetSubRunNumber()	{
    if(fFilename.length()==0)
       return -1;
+   std::size_t foundslash = fFilename.rfind('/');
    std::size_t found = fFilename.rfind("-");
+   if((found < foundslash && foundslash != std::string::npos) || found == std::string::npos)
+      found = fFilename.rfind('_');
+   if(found < foundslash && foundslash != std::string::npos)
+      found = std::string::npos;
    if(found != std::string::npos) {
       std::string temp = fFilename.substr(found+1,3);
       //printf("%i \n",atoi(temp.c_str()));
       return atoi(temp.c_str());
-      }
-      found = fFilename.rfind("_");
-   if(found != std::string::npos) {
-      std::string temp = fFilename.substr(found+1,3);
-      //printf("%i \n",atoi(temp.c_str()));
-      return atoi(temp.c_str());
-      }
+   }
    return -1;
 };
 

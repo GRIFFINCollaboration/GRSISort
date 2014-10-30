@@ -202,15 +202,20 @@ int TGRSIRootIO::GetRunNumber(std::string filename) {
    if(filename.length()==0) {
       return 0;
    }
+/*   std::size_t foundslash = filename.rfind('/');
+   std::cout << "foundslash is: " << foundslash << std::endl;
+   if(foundslash != std::string::npos){
+      filename = filename.substr(foundslash,std::string::npos);
+   }*/
    std::size_t found = filename.rfind(".root");
    if(found == std::string::npos) {
       return 0;
    }
    std::size_t found2 = filename.rfind('-');
    //printf("found 2 = %i\n",found2);
+
    if(found2 == std::string::npos)
       found2 = filename.rfind('_');
-
    std::string temp;
    if(found2 == std::string::npos || filename.compare(found2+4,5,".root") !=0 ) {
       temp = filename.substr(found-5,5);
