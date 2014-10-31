@@ -123,7 +123,7 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
    pp->SetParLimits(1,xp-rw,xp+rw);
  //  pp->SetParLimits(2,4,12);
    pp->SetParLimits(3,0,10);
-   pp->SetParLimits(4,0,10);
+   pp->SetParLimits(4,0,500);
    pp->SetParLimits(6,0,A*1.4);
    pp->SetParLimits(5,0,1000000);
    pp->SetParLimits(9,xp-40,xp+40);
@@ -137,7 +137,7 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
   // pp->FixParameter(5,1);
 
    pp->SetNpx(1000); //Draws a nice smooth function on the graph
-   TFitResultPtr fitres = h->Fit("photopeak","RFSM+"); //I might mean I have to get rid of bin width
+   TFitResultPtr fitres = h->Fit("photopeak","RFSM0+"); 
 //   pp->Draw("same");      
 
    pp->GetParameters(&par[0]); 
@@ -166,8 +166,10 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
 
 	delete photopeak;
 	delete pp;
-   if(fitres->Chi2()/fitres->Ndf() > 30.0)
+   if(fitres->Chi2()/fitres->Ndf() > 5.0){
+      std::cout << "THIS FIT WAS NOT GOOD (Reduced Chi2 = " << fitres->Chi2()/fitres->Ndf() << " )" << std::endl;
       return false;
+   }
 
    return true;
 
@@ -357,7 +359,6 @@ void autogain60(const char *f, int channum){
 
 
 void autogain60(TH2D *mat, int channum){
-
 	TH1D* h1 = new TH1D;
 	if(channum == 0){
 		for(int i=0; i<64;i++){
@@ -380,6 +381,7 @@ void autogain60(TH2D *mat, int channum){
 
 TGraph* autogain60(TH1D *hist, int channum){
 
+   static bool cal_flag = false;
 //   TNucleus nuc("60Co"); 
 //   TNucleus *nucptr = &nuc;
    std::vector<float> engvec;
@@ -408,17 +410,22 @@ TGraph* autogain60(TH1D *hist, int channum){
 
    hist->GetXaxis()->SetRangeUser(200.,16000.);
    TSpectrum *s = new TSpectrum();
-   Int_t nfound = s->Search(hist,2,"",0.08); //This will be dependent on the source used.
+   Int_t nfound = s->Search(hist,2,"goff",0.08); //This will be dependent on the source used.
    
    printf("Found %d candidate peaks to fit\n",nfound);
    if(nfound > 2)
       nfound = 2;
 
+   if(nfound <2){
+      std::cout << "Did not find enough peaks" << std::endl;
+      exit(1);
+   }
+
    std::vector<float> foundchan;
    for(int x=0;x<nfound;x++)
       foundchan.push_back(s->GetPositionX()[x]);
 
-      std::cout << "Found at position" << s->GetPositionX()[0] << std::endl;
+      std::cout << "Found at position " << s->GetPositionX()[0] << std::endl;
 
     //std::sort(foundchan.begin(),foundchan.end());
 
@@ -426,13 +433,12 @@ TGraph* autogain60(TH1D *hist, int channum){
  
    Double_t par[40];  
    Float_t integral, sigma; 
+	bool goodfit = true;
 
   for (int p=0;p<engvec.size();p++) {
      Float_t xp = foundchan[p];
   //   std::cout << "Trying to fit channel " << foundchan << " and match it to " << engvec[p]  <<std::endl; 
-     std::cout << "Do I make it here??" << std::endl;
      Int_t bin = xp;// hist->GetXaxis()->FindBin(xp);
-     cout << "bin is" << bin << std::endl;
      Float_t yp = hist->GetBinContent(bin);
      par[0] = yp;  //height
      par[1] = xp;  //centroid
@@ -444,7 +450,7 @@ TGraph* autogain60(TH1D *hist, int channum){
      par[7] = (hist->GetBinContent(bin-50) - hist->GetBinContent(bin+50))/100.;//B
      par[8] = -0.5;   //C
      par[9] = xp;  //bg offset
-     bool goodfit = FitPeak(par,hist,integral, sigma);
+     goodfit = goodfit & FitPeak(par,hist,integral, sigma);
    //  if(goodfit){ //DO STUFF HERE
   //   	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
   //   	area_uncertainty.push_back(sigma);
@@ -462,24 +468,33 @@ TGraph* autogain60(TH1D *hist, int channum){
 
    TGraph* slopefit = new TGraph(nfound, goodenergy, energies);
 
-   printf("Now fitting: Be patient\n");
-   TFitResultPtr fitres = slopefit->Fit("pol1","S");
+   TFitResultPtr fitres = slopefit->Fit("pol1","S0");
 //   if(slopefit->GetFunction("pol1")->GetChisquare() > 10.) {
 //      slopefit->RemovePoint(slopefit->GetN()-1);
 //      slopefit->Fit("pol1");
 //   }
    TChannel *chan = 0;
    //slopefit->Draw("AC*");
-   
-   TChannel::ReadCalFile("NewGrifCal.cal");
-   std::cout << "Number of channels is " << TChannel::GetNumberOfChannels() << std::endl;
+  
+
+   std::cout << "Cal flag is " << cal_flag << std::endl;
+   if(cal_flag == false){
+      TChannel::ReadCalFile("NewGrifCal.cal");
+      cal_flag = true;
+   }
 
    chan = TChannel::GetChannelByNumber(channum);
    chan->DestroyENGCal();
    chan->AddENGCoefficient(fitres->Parameter(0));
    chan->AddENGCoefficient(fitres->Parameter(1));
+	//chan->SetENGChi2(0);
+	if(!goodfit)
+	{
+		chan->SetENGChi2(9999999);
+	}
 
    std::cout << "Gain is: " << fitres->Parameter(1) << " Offset is: " << fitres->Parameter(0) << std::endl;
+	//std::cout << "Chi2 is: " << fitres->Chi2()/fitres->Ndf() << std::endl;
 
 	//hist->Draw();
 
