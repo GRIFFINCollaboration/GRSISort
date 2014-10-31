@@ -344,7 +344,31 @@ TGraph* autogain(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPad
 
 }
 
-TGraph* autogain60(TH1 *hist, int channum = 7){
+void autogain60(const char *f){
+
+   TFile *file = new TFile(f,"READ"); 
+
+//  file.ls(); 
+
+	TH2D * matrix = (TH2D*)file->Get("hp_charge");
+	autogain60(matrix);
+
+}
+
+
+void autogain60(TH2D *mat){
+
+	TH1D* h1 = new TH1D;
+	int i = 50;
+
+	TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i,i);
+
+	autogain60(h1,i);
+}
+
+
+
+TGraph* autogain60(TH1 *hist, int channum){
 
 //   TNucleus nuc("60Co"); 
 //   TNucleus *nucptr = &nuc;
@@ -435,7 +459,7 @@ TGraph* autogain60(TH1 *hist, int channum = 7){
 //      slopefit->Fit("pol1");
 //   }
    TChannel *chan = 0;
-   slopefit->Draw("AC*");
+   //slopefit->Draw("AC*");
    
    TChannel::ReadCalFile("NewGrifCal.cal");
    std::cout << "Number of channels is " << TChannel::GetNumberOfChannels() << std::endl;
@@ -447,6 +471,7 @@ TGraph* autogain60(TH1 *hist, int channum = 7){
 
    std::cout << "Gain is: " << fitres->Parameter(1) << " Offset is: " << fitres->Parameter(0) << std::endl;
 
+	hist->Draw();
 
    return slopefit;
 } 
