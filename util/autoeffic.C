@@ -138,7 +138,7 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
 
    pp->SetNpx(1000); //Draws a nice smooth function on the graph
    TFitResultPtr fitres = h->Fit("photopeak","RFSM+"); //I might mean I have to get rid of bin width
-   pp->Draw("same");      
+//   pp->Draw("same");      
 
    pp->GetParameters(&par[0]); 
    TF1 *photopeak = new TF1("photopeak",photo_peak,xp-rw,xp+rw,10);
@@ -164,6 +164,8 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
    area = integral;
    darea = sigma_integral;
 
+	delete photopeak;
+	delete pp;
    if(fitres->Chi2()/fitres->Ndf() > 30.0)
       return false;
 
@@ -344,31 +346,39 @@ TGraph* autogain(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPad
 
 }
 
-void autogain60(const char *f){
+void autogain60(const char *f, int channum){
 
    TFile *file = new TFile(f,"READ"); 
 
-//  file.ls(); 
-
 	TH2D * matrix = (TH2D*)file->Get("hp_charge");
-	autogain60(matrix);
-
+	std::cout << "Channum is: " << channum << std::endl;
+	autogain60(matrix, channum);
 }
 
 
-void autogain60(TH2D *mat){
+void autogain60(TH2D *mat, int channum){
 
 	TH1D* h1 = new TH1D;
-	int i = 50;
-
-	TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i,i);
-
-	autogain60(h1,i);
+	if(channum == 0){
+		for(int i=0; i<64;i++){
+			TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
+			if(h1->Integral() < 1)
+				continue;
+			autogain60(h1,i);
+		}
+	}
+	else{
+		int i = channum;
+		TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
+		if(h1->Integral() < 1)
+			std::cout << "There are no counts in Channel " << channum << std::endl;
+		else
+			autogain60(h1,i);
+	}
+	//std::cout << "IN THE SECOND FUNCTION" << std::endl;
 }
 
-
-
-TGraph* autogain60(TH1 *hist, int channum){
+TGraph* autogain60(TH1D *hist, int channum){
 
 //   TNucleus nuc("60Co"); 
 //   TNucleus *nucptr = &nuc;
@@ -410,7 +420,7 @@ TGraph* autogain60(TH1 *hist, int channum){
 
       std::cout << "Found at position" << s->GetPositionX()[0] << std::endl;
 
-  // std::sort(foundchan.begin(),foundchan.end());
+    //std::sort(foundchan.begin(),foundchan.end());
 
   // Float_t energies[]={1173.228,1332.492}; //These will change
  
@@ -471,7 +481,7 @@ TGraph* autogain60(TH1 *hist, int channum){
 
    std::cout << "Gain is: " << fitres->Parameter(1) << " Offset is: " << fitres->Parameter(0) << std::endl;
 
-	hist->Draw();
+	//hist->Draw();
 
    return slopefit;
 } 
