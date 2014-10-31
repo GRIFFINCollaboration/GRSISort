@@ -94,7 +94,7 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 /////////////////////////    This is there the fitting takes place    //////////////////////////////
 
 
-bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
+bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, bool verbosity = false){
 
    Double_t binWidth = h->GetXaxis()->GetBinWidth(1000);//Need to find the bin widths so that the integral makes sense
    Int_t rw = binWidth*120;  //This number may change depending on the source used   
@@ -122,8 +122,8 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
    pp->SetParLimits(0,0.5*yp, 2*yp);
    pp->SetParLimits(1,xp-rw,xp+rw);
  //  pp->SetParLimits(2,4,12);
-   pp->SetParLimits(3,0,10);
-   pp->SetParLimits(4,0,10);
+   pp->SetParLimits(3,0.000,10);
+   pp->SetParLimits(4,0,500);
    pp->SetParLimits(6,0,A*1.4);
    pp->SetParLimits(5,0,1000000);
    pp->SetParLimits(9,xp-40,xp+40);
@@ -136,9 +136,30 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
 //   pp->FixParameter(4,0);
   // pp->FixParameter(5,1);
 
+   if(verbosity)
+      const char * options = "RFSM0+";
+   else
+      const char * options = "RFSM0Q+";
+
    pp->SetNpx(1000); //Draws a nice smooth function on the graph
-   TFitResultPtr fitres = h->Fit("photopeak","RFSM+"); //I might mean I have to get rid of bin width
-   pp->Draw("same");      
+   TFitResultPtr fitres = h->Fit("photopeak",options); 
+//   pp->Draw("same");      
+   
+   if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
+      if(fitres->Parameter(3) < 0.5){
+         pp->FixParameter(4,0);
+         pp->FixParameter(3,1);
+         std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
+         fitres = h->Fit("photopeak",options);
+         pp->ReleaseParameter(4);
+         pp->SetParLimits(4,0,500);
+         fitres = h->Fit("photopeak",options);
+         pp->ReleaseParameter(3);
+         pp->SetParLimits(3,0.000,10);
+         fitres = h->Fit("photopeak",options);
+      }
+   }
+   
 
    pp->GetParameters(&par[0]); 
    TF1 *photopeak = new TF1("photopeak",photo_peak,xp-rw,xp+rw,10);
@@ -146,10 +167,11 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
 
    Double_t integral = photopeak->Integral(xp-rw,xp+rw)/binWidth;
 
-   std::cout << "FIT RESULT CHI2 " << fitres->Chi2() << std::endl;
-
-   std::cout << "FWHM = " << 2.35482*fitres->Parameter(2)/binWidth <<"(" << fitres->ParError(2)/binWidth << ")" << std::endl;
-   std::cout << "NDF: " << fitres->Ndf() << std::endl;
+   if(verbosity){
+      std::cout << "FIT RESULT CHI2 " << fitres->Chi2() << std::endl;
+      std::cout << "FWHM = " << 2.35482*fitres->Parameter(2)/binWidth <<"(" << fitres->ParError(2)/binWidth << ")" << std::endl;
+      std::cout << "NDF: " << fitres->Ndf() << std::endl;
+   }
    std::cout << "X sq./v = " << fitres->Chi2()/fitres->Ndf() << std::endl;
 
    TVirtualFitter *fitter = TVirtualFitter::GetFitter();
@@ -164,8 +186,12 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea){
    area = integral;
    darea = sigma_integral;
 
-   if(fitres->Chi2()/fitres->Ndf() > 30.0)
+	delete photopeak;
+	delete pp;
+   if(fitres->Chi2()/fitres->Ndf() > 5.0){
+      std::cout << "THIS FIT WAS NOT GOOD (Reduced Chi2 = " << fitres->Chi2()/fitres->Ndf() << " )" << std::endl;
       return false;
+   }
 
    return true;
 
@@ -344,8 +370,40 @@ TGraph* autogain(TH1 *hist,TNucleus *nuc) {    //Display The fits on a TPad
 
 }
 
-TGraph* autogain60(TH1 *hist){
+void autogain60(const char *f, int channum = -1, bool verbosity = false){
 
+   TFile *file = new TFile(f,"READ"); 
+
+	TH2D * matrix = (TH2D*)file->Get("hp_charge");
+	std::cout << "Channum is: " << channum << std::endl;
+	autogain60(matrix, channum, verbosity);
+}
+
+
+void autogain60(TH2D *mat, int channum = -1, bool verbosity = false){
+	TH1D* h1 = new TH1D;
+	if(channum == -1){
+		for(int i=0; i<64;i++){
+			TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
+			if(h1->Integral() < 1)
+				continue;
+			autogain60(h1,i,verbosity);
+		}
+	}
+	else{
+		int i = channum;
+		TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
+		if(h1->Integral() < 1)
+			std::cout << "There are no counts in Channel " << channum << std::endl;
+		else
+			autogain60(h1,i,verbosity);
+	}
+	//std::cout << "IN THE SECOND FUNCTION" << std::endl;
+}
+
+TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
+
+   static bool cal_flag = false;
 //   TNucleus nuc("60Co"); 
 //   TNucleus *nucptr = &nuc;
    std::vector<float> engvec;
@@ -374,31 +432,36 @@ TGraph* autogain60(TH1 *hist){
 
    hist->GetXaxis()->SetRangeUser(200.,16000.);
    TSpectrum *s = new TSpectrum();
-   Int_t nfound = s->Search(hist,2,"",0.08); //This will be dependent on the source used.
+   Int_t nfound = s->Search(hist,2,"goff",0.08); //This will be dependent on the source used.
    
    printf("Found %d candidate peaks to fit\n",nfound);
    if(nfound > 2)
       nfound = 2;
 
+   if(nfound <2){
+      std::cout << "Did not find enough peaks" << std::endl;
+      exit(1);
+   }
+
    std::vector<float> foundchan;
    for(int x=0;x<nfound;x++)
       foundchan.push_back(s->GetPositionX()[x]);
 
-      std::cout << "Found at position" << s->GetPositionX()[0] << std::endl;
+   if(verbosity)
+      std::cout << "Found at position " << s->GetPositionX()[0] << std::endl;
 
-  // std::sort(foundchan.begin(),foundchan.end());
+    //std::sort(foundchan.begin(),foundchan.end());
 
   // Float_t energies[]={1173.228,1332.492}; //These will change
  
    Double_t par[40];  
    Float_t integral, sigma; 
+	bool goodfit = true;
 
   for (int p=0;p<engvec.size();p++) {
      Float_t xp = foundchan[p];
   //   std::cout << "Trying to fit channel " << foundchan << " and match it to " << engvec[p]  <<std::endl; 
-     std::cout << "Do I make it here??" << std::endl;
      Int_t bin = xp;// hist->GetXaxis()->FindBin(xp);
-     cout << "bin is" << bin << std::endl;
      Float_t yp = hist->GetBinContent(bin);
      par[0] = yp;  //height
      par[1] = xp;  //centroid
@@ -410,7 +473,7 @@ TGraph* autogain60(TH1 *hist){
      par[7] = (hist->GetBinContent(bin-50) - hist->GetBinContent(bin+50))/100.;//B
      par[8] = -0.5;   //C
      par[9] = xp;  //bg offset
-     bool goodfit = FitPeak(par,hist,integral, sigma);
+     goodfit = goodfit & FitPeak(par,hist,integral, sigma,verbosity);
    //  if(goodfit){ //DO STUFF HERE
   //   	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
   //   	area_uncertainty.push_back(sigma);
@@ -428,15 +491,29 @@ TGraph* autogain60(TH1 *hist){
 
    TGraph* slopefit = new TGraph(nfound, goodenergy, energies);
 
-   printf("Now fitting: Be patient\n");
-   slopefit->Fit("pol1");
+   TFitResultPtr fitres = slopefit->Fit("pol1","S0");
 //   if(slopefit->GetFunction("pol1")->GetChisquare() > 10.) {
 //      slopefit->RemovePoint(slopefit->GetN()-1);
 //      slopefit->Fit("pol1");
 //   }
    TChannel *chan = 0;
-   slopefit->Draw("AC*");
+   //slopefit->Draw("AC*");
+  
 
+   if(cal_flag == false){
+      TChannel::ReadCalFile("NewGrifCal.cal");
+      cal_flag = true;
+   }
+
+   chan = TChannel::GetChannelByNumber(channum);
+   chan->DestroyENGCal();
+   chan->AddENGCoefficient(fitres->Parameter(0));
+   chan->AddENGCoefficient(fitres->Parameter(1));
+	//chan->SetENGChi2(0);
+	if(!goodfit)
+	{
+		chan->SetENGChi2(9999999);
+	}
 
    return slopefit;
 } 
