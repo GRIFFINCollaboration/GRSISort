@@ -94,7 +94,7 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 /////////////////////////    This is there the fitting takes place    //////////////////////////////
 
 
-bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, bool verbosity = false){
+bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, bool verbosity = false){
 
    Double_t binWidth = h->GetXaxis()->GetBinWidth(1000);//Need to find the bin widths so that the integral makes sense
    Int_t rw = binWidth*120;  //This number may change depending on the source used   
@@ -146,7 +146,7 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, bool verbosit
 //   pp->Draw("same");      
    
    if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
-      if(fitres->Parameter(3) < 0.5){
+      if(fitres->Parameter(3) < 1){
          pp->FixParameter(4,0);
          pp->FixParameter(3,1);
          std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
@@ -185,6 +185,7 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, bool verbosit
 
    area = integral;
    darea = sigma_integral;
+   *energy = fitres->Parameter(1);
 
 	delete photopeak;
 	delete pp;
@@ -383,7 +384,7 @@ void autogain60(const char *f, int channum = -1, bool verbosity = false){
 void autogain60(TH2D *mat, int channum = -1, bool verbosity = false){
 	TH1D* h1 = new TH1D;
 	if(channum == -1){
-		for(int i=0; i<64;i++){
+		for(int i=1; i<=64;i++){
 			TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
 			if(h1->Integral() < 1)
 				continue;
@@ -402,11 +403,11 @@ void autogain60(TH2D *mat, int channum = -1, bool verbosity = false){
 }
 
 TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
-
+   std::cout << "Now fitting channel "<<channum<<std::endl;
    static bool cal_flag = false;
 //   TNucleus nuc("60Co"); 
 //   TNucleus *nucptr = &nuc;
-   std::vector<float> engvec;
+   std::vector<Double_t> engvec;
 //   std::vector<float> intensvec;
 //   TIter iter(&(nucptr->TransitionList));
 //   TObject* obj;
@@ -426,7 +427,7 @@ TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
 
   // std::vector<Float_t> areavec;
  //  std::vector<Float_t> area_uncertainty;
-   std::vector<Float_t> goodenergyvec;
+   std::vector<Double_t> goodenergyvec;
  //  std::vector<Float_t> goodintensvec;
 
 
@@ -443,7 +444,7 @@ TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
       exit(1);
    }
 
-   std::vector<float> foundchan;
+   std::vector<Double_t> foundchan;
    for(int x=0;x<nfound;x++)
       foundchan.push_back(s->GetPositionX()[x]);
 
@@ -455,11 +456,12 @@ TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
   // Float_t energies[]={1173.228,1332.492}; //These will change
  
    Double_t par[40];  
-   Float_t integral, sigma; 
+   Float_t integral, sigma;
 	bool goodfit = true;
+   Double_t *centroid = new Double_t;
 
   for (int p=0;p<engvec.size();p++) {
-     Float_t xp = foundchan[p];
+     Double_t xp = foundchan[p];
   //   std::cout << "Trying to fit channel " << foundchan << " and match it to " << engvec[p]  <<std::endl; 
      Int_t bin = xp;// hist->GetXaxis()->FindBin(xp);
      Float_t yp = hist->GetBinContent(bin);
@@ -473,11 +475,12 @@ TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
      par[7] = (hist->GetBinContent(bin-50) - hist->GetBinContent(bin+50))/100.;//B
      par[8] = -0.5;   //C
      par[9] = xp;  //bg offset
-     goodfit = goodfit & FitPeak(par,hist,integral, sigma,verbosity);
+     goodfit = goodfit & FitPeak(par,hist,integral,sigma,centroid,verbosity);
    //  if(goodfit){ //DO STUFF HERE
   //   	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
   //   	area_uncertainty.push_back(sigma);
-        goodenergyvec.push_back(par[1]);
+         std::cout << "centroid is " << *centroid << std::endl;
+        goodenergyvec.push_back(*centroid);
   //      goodintensvec.push_back(intensvec.at(p));
    //  }
   //   fitlist->Add(f);
@@ -486,12 +489,12 @@ TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
   // std::cout << "or made it here" << std::endl;
 
   // Float_t *area = &(areavec[0]);
-   Float_t *energies = &(engvec[0]);
-   Float_t *goodenergy = &(goodenergyvec[0]);
+   Double_t *energies = &(engvec[0]);
+   Double_t *goodenergy = &(goodenergyvec[0]);
 
    TGraph* slopefit = new TGraph(nfound, goodenergy, energies);
 
-   TFitResultPtr fitres = slopefit->Fit("pol1","S0");
+   TFitResultPtr fitres = slopefit->Fit("pol1","SC0");
 //   if(slopefit->GetFunction("pol1")->GetChisquare() > 10.) {
 //      slopefit->RemovePoint(slopefit->GetN()-1);
 //      slopefit->Fit("pol1");
@@ -501,7 +504,7 @@ TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
   
 
    if(cal_flag == false){
-      TChannel::ReadCalFile("NewGrifCal.cal");
+      //TChannel::ReadCalFile("NewGrifCal.cal"); //This can be made better
       cal_flag = true;
    }
 
@@ -514,7 +517,7 @@ TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
 	{
 		chan->SetENGChi2(9999999);
 	}
-
+   delete centroid;
    return slopefit;
 } 
 
