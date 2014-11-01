@@ -504,7 +504,7 @@ TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
   
 
    if(cal_flag == false){
-      //TChannel::ReadCalFile("NewGrifCal.cal"); //This can be made better
+      TChannel::ReadCalFile("NewGrifCal.cal"); //This can be made better
       cal_flag = true;
    }
 
