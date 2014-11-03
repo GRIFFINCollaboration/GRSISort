@@ -299,26 +299,23 @@ void TChannel::DestroyCalibrations()   {
    DestroyTIMECal();
 };
 
-double TChannel::CalibrateENG(int charge, bool random_flag = true) {
+double TChannel::CalibrateENG(int charge) {
     if(charge==0) 
       return 0.0000;
-   if(random_flag) 
-      return CalibrateENG((double)charge) + gRandom->Uniform();
-   else
-      return CalibrateENG((double)charge);
+
+   int temp_int = 1; //125.0;
+   if(integration != 0)
+      temp_int = (int)integration;  //the 4 is the dis. 
+   
+   return CalibrateENG((double)(charge/temp_int)) + gRandom->Uniform();
 };
 
 double TChannel::CalibrateENG(double charge) {
    if(ENGCoefficients.size()==0)
       return charge;
-
-   double temp_int = 1.0; //125.0;
-   if(integration != 0)
-      temp_int = (double)integration;  //the 4 is the dis. 
-
    double cal_chg = 0.0;
    for(int i=0;i<ENGCoefficients.size();i++){
-      cal_chg += ENGCoefficients[i] * pow((charge/temp_int),i);
+      cal_chg += ENGCoefficients[i] * pow((charge),i);
    }
   // printf("(%.02f/%0.2f) *%.05f + %.05f = %.05f\n",charge,temp_int,ENGCoefficients[1],ENGCoefficients[0], cal_chg);
 	//Print();
