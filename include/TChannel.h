@@ -61,18 +61,19 @@ class TChannel : public TNamed	{
 
   private:
     unsigned int	   address;                                 //The address of the digitizer
-    int		 integration;                             //The charge integration setting
-    std::string  channelname;                             
-    std::string  type_name;
-    std::string  digitizertype;
-    int 	 number;
-    int		 stream;
-    int          userinfonumber;
+    int		         integration;                             //The charge integration setting
+    std::string      channelname;                             
+    std::string      type_name;
+    std::string      digitizertype;
+    int 	            number;
+    int		         stream;
+    int              userinfonumber;
 
     std::vector<double> ENGCoefficients;  double ENGChi2;
     std::vector<double> CFDCoefficients;  double CFDChi2;
     std::vector<double> LEDCoefficients;  double LEDChi2;
     std::vector<double> TIMECoefficients; double TIMEChi2;
+    std::vector<double> EFFCoefficients;  double EFFChi2;
 
     //static TList *fChannelList;
     static std::map<unsigned int,TChannel*> *fChannelMap;          //A map to all of the channels based on address
@@ -85,8 +86,9 @@ class TChannel : public TNamed	{
     void SetCFDCoefficients(std::vector<double> tmp) { CFDCoefficients = tmp; }
     void SetLEDCoefficients(std::vector<double> tmp) { LEDCoefficients = tmp; }
     void SetTIMECoefficients(std::vector<double> tmp){ TIMECoefficients = tmp; }
+    void SetEFFCoefficients(std::vector<double> tmp) { EFFCoefficients = tmp;}
 	
-		static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
+	 static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 
   public:
     inline void SetAddress(unsigned int tmpadd) 	  {address = tmpadd;}
@@ -112,22 +114,25 @@ class TChannel : public TNamed	{
     double GetCFDChi2()  { return CFDChi2; }
     double GetLEDChi2()  { return LEDChi2; }
     double GetTIMEChi2() { return TIMEChi2; }
+    double GetEFFChi2()  { return EFFChi2;} 
 
     std::vector<double> GetENGCoeff()  { return ENGCoefficients;}
     std::vector<double> GetCFDCoeff()  { return CFDCoefficients;}
     std::vector<double> GetLEDCoeff()  { return LEDCoefficients;}
     std::vector<double> GetTIMECoeff() { return TIMECoefficients;}
-
+    std::vector<double> GetEFFCoeff()  { return EFFCoefficients;}
 
     inline void AddENGCoefficient(double temp)  { ENGCoefficients.push_back(temp);}
     inline void AddCFDCoefficient(double temp)  { CFDCoefficients.push_back(temp);}
     inline void AddLEDCoefficient(double temp)  { LEDCoefficients.push_back(temp);}
     inline void AddTIMECoefficient(double temp) { TIMECoefficients.push_back(temp);}
+    inline void AddEFFCoefficient(double temp)  { EFFCoefficients.push_back(temp);}
 
     inline void SetENGChi2(double temp)  { ENGChi2 = temp; }
     inline void SetCFDChi2(double temp)  { CFDChi2 = temp; }
     inline void SetLEDChi2(double temp)  { LEDChi2 = temp; }
     inline void SetTIMEChi2(double temp) { TIMEChi2 = temp; }
+    inline void SetEFFChi2(double temp)  { EFFChi2 = temp; } 
 
     //void CalibrateFragment(TFragment*);
 
@@ -139,6 +144,7 @@ class TChannel : public TNamed	{
     double CalibrateLED(int); 
     double CalibrateTIME(double);
     double CalibrateTIME(int);
+    double CalibrateEFF(double);
 
 
     void DestroyCalibrations();
@@ -147,6 +153,7 @@ class TChannel : public TNamed	{
     void DestroyCFDCal();
     void DestroyLEDCal();
     void DestroyTIMECal();
+    void DestroyEFFCal();
 
     static void ReadCalFromTree(TTree*,Option_t *opt="overwrite");
     static void ReadCalFile(const char *filename = "");
@@ -161,4 +168,3 @@ class TChannel : public TNamed	{
     ClassDef(TChannel,3) //Contains the Digitizer Information
 };
 #endif
-
