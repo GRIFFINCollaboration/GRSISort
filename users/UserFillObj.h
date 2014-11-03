@@ -13,7 +13,7 @@
         if(histcfd) histcfd->Fill(fragment->Cfd.at(0));
 
 	TH2D *mat = (TH2D*)(GetOutputList()->FindObject("hp_charge"));
-	if(mat) mat->Fill(channel->GetNumber(),fragment->Charge.at(0)/125.0+gRandom->Uniform());
+	if(mat) mat->Fill(channel->GetNumber(),fragment->Charge.at(0)/125.0);
 
 	hist = (TH1D*)(GetOutputList()->FindObject("test"));
 	if(hist) hist->Fill(channel->GetNumber());

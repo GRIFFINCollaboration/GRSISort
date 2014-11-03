@@ -299,10 +299,13 @@ void TChannel::DestroyCalibrations()   {
    DestroyTIMECal();
 };
 
-double TChannel::CalibrateENG(int charge) {
+double TChannel::CalibrateENG(int charge, bool random_flag = true) {
     if(charge==0) 
       return 0.0000;
-   return CalibrateENG((double)charge) + gRandom->Uniform();
+   if(random_flag) 
+      return CalibrateENG((double)charge) + gRandom->Uniform();
+   else
+      return CalibrateENG((double)charge);
 };
 
 double TChannel::CalibrateENG(double charge) {
