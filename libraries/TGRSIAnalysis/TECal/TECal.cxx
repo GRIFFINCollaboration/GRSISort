@@ -3,14 +3,14 @@
 ClassImp(TECal)
 
 TECal::TECal(){
-   printf("Opening file: GriffEfficiency.root\n");
-   TFile *effFile = new TFile("GriffEfficiency.root","UPDATE");
 }
 
 
 TECal::TECal(const char * filename){
-   printf("Opening file: %s\n",filename);
-   TFile *effFile = new TFile(filename,"UPDATE");
+   if(!(effFile->IsOpen())){
+      printf("Opening file: %s\n",filename);
+      TFile *effFile = new TFile(filename,"UPDATE");
+   }
 }
 
 TECal::~TECal(){
@@ -19,6 +19,14 @@ TECal::~TECal(){
 
 }
 
+void TECal::AddEnergyGraph(Int_t channum,TGraphErrors *graph){
+   
+}
+
+void TECal::AddEnergyGraph(TGraphErrors *graph, Int_t channum){
+   //This function exists because who can remember the order of these things?
+   AddEnergyGraph(channum,graph);
+}
 
 void TECal::CalibrateEnergy(){
 
