@@ -31,3 +31,9 @@ void TECal::CalibrateEfficiency(){
 
 }
 
+Bool_t TECal::FitEnergyCal(){
+
+
+   return true;
+}
+

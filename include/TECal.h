@@ -13,10 +13,11 @@
 #include <vector>
 #include "TROOT.h"
 #include "TFile.h"
+#include "TChannel.h"
+#include "TMultiGraph.h"
 //#include "../include/TNucleus.h"
 
 #include "../include/TGRSITransition.h"
-
 
 
 class TECal : public TObject {
@@ -28,9 +29,13 @@ class TECal : public TObject {
  public:
    void CalibrateEfficiency();
    void CalibrateEnergy();
+   Bool_t FitEnergyCal();
 
  private:
    TFile *effFile;
+
+   std::map<Int_t,TMultiGraph*> fmgenergy;         //Map of channel number to energy multigraph
+   std::map<Int_t,TMultiGraph*> fmgefficiency;     //Map of channel number to efficiency multigraph
 
   ClassDef(TECal,1);
 

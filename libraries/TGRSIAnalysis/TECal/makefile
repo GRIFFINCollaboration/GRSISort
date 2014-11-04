@@ -1,5 +1,5 @@
 
-OBJECTS = TECal.o TECalDict.o
+OBJECTS = TECal.o TECalDict.o TGRSIMultiGraph.o TGRSIMultiGraphDict.o
 
 CFLAGS += -fPIC
 
