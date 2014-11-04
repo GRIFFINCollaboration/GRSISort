@@ -384,9 +384,9 @@ double TChannel::CalibrateTIME(double time)  {
    return cal_time;
 }
 
-double TChannel::CalibrateEFF(double channel) {
+double TChannel::CalibrateEFF(double energy) {
    //This needs to be added
-   return channel;
+   return 1.0;
 }
 
 void TChannel::Print(Option_t *opt) {
@@ -510,7 +510,7 @@ void TChannel::ReadCalFile(const char *filename) {
 
 		if(openbrace  == std::string::npos &&
 			closebrace == std::string::npos &&
-			colon  == std::string::npos)
+			colon  == std::string::npos )
 			continue;
 		//printf("line : %s\n",line.c_str());
 

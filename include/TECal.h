@@ -12,6 +12,7 @@
 #include <map>
 #include <vector>
 #include "TROOT.h"
+#include "TFile.h"
 //#include "../include/TNucleus.h"
 
 #include "../include/TGRSITransition.h"
@@ -20,11 +21,16 @@
 
 class TECal : public TObject {
  public: 
-   TECal(){};
-   ~TECal(){}; 
+   TECal();
+   TECal(const char *);
+   ~TECal(); 
 
-  
+ public:
+   void CalibrateEfficiency();
+   void CalibrateEnergy();
 
+ private:
+   TFile *effFile;
 
   ClassDef(TECal,1);
 
