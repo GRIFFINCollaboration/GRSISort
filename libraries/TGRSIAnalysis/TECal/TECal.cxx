@@ -3,7 +3,7 @@
 ClassImp(TECal)
 
 TECal::TECal(){
-   printf("Opening file: GriffEfficiency.root");
+   printf("Opening file: GriffEfficiency.root\n");
    TFile *effFile = new TFile("GriffEfficiency.root","UPDATE");
 }
 
