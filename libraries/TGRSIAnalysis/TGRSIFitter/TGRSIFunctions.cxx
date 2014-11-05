@@ -47,7 +47,7 @@ Double_t TGRSIFunctions::StepFunction(Double_t *dim, Double_t *par){
 }
 
 Double_t TGRSIFunctions::PhotoPeak(Double_t *dim, Double_t *par){
-//Returns the combination of a TGRSIFunctions::Gaus + a TGRSIFunctions::SkewedGaus.  
+//Returns the combination of a TGRSIFunctions::Gaus + a TGRSIFunctions::SkewedGaus  
    return Gaus(dim,par) + SkewedGaus(dim,par);
 }
 
