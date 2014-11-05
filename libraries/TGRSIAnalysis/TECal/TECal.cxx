@@ -19,20 +19,25 @@ TECal::~TECal(){
 
 }
 
-void TECal::AddEnergyGraph(Int_t channum,TGraphErrors *graph){
-   
+void TECal::AddEnergyGraph(Int_t channum,const char * nucname,TGraphErrors *graph){
+   std::string name = TNucleus::SortName(nucname);
+
 }
 
-void TECal::AddEnergyGraph(TGraphErrors *graph, Int_t channum){
+void TECal::AutoFitSource(){
+
+}
+
+
+void TECal::AddEnergyGraph(TGraphErrors *graph, Int_t channum,const char* nucname){
    //This function exists because who can remember the order of these things?
-   AddEnergyGraph(channum,graph);
+   AddEnergyGraph(channum,nucname,graph);
 }
 
 void TECal::CalibrateEnergy(){
 
 
 }
-
 
 void TECal::CalibrateEfficiency(){
 

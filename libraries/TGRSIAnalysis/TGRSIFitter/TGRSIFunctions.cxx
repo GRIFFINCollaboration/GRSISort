@@ -89,7 +89,7 @@ Double_t TGRSIFunctions::SkewedGaus(Double_t *dim, Double_t *par){
    Double_t beta     = par[3]; //"skewedness" of the skewed gaussian
    Double_t R        = par[4]; //relative height of skewed gaussian
 
-   return R*height/100.0*(TMath::Exp((x-c)/beta))*(TMath::Erfc((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta));
+   return R*height/100.0*(TMath::Exp((x-c)/beta))*(TMath::Erfc(((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta)));
 
 }
 

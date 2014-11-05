@@ -11,11 +11,13 @@
 #include "TCanvas.h"
 #include <map>
 #include <vector>
+#include <utility>
 #include "TROOT.h"
 #include "TFile.h"
 #include "TChannel.h"
 #include "TMultiGraph.h"
 #include "TGraphErrors.h"
+#include "TNucleus.h"
 //#include "../include/TNucleus.h"
 
 #include "../include/TGRSITransition.h"
@@ -31,14 +33,15 @@ class TECal : public TObject {
    void CalibrateEfficiency();
    void CalibrateEnergy();
    Bool_t FitEnergyCal();
-   void AddEnergyGraph(TGraphErrors *graph, Int_t channum);
-   void AddEnergyGraph(Int_t channum, TGraphErrors *graph);
+   void AddEnergyGraph(TGraphErrors *graph, Int_t channum, const char *nucname);
+   void AddEnergyGraph(Int_t channum, const char *nucname, TGraphErrors *graph);
+   void AutoFitSource();
 
  private:
    TFile *effFile;
 
-   static std::map<Int_t,TGraphErrors*> fmgenergy;         //Map of channel number to energy multigraph
-   static std::map<Int_t,TGraphErrors*> fmgefficiency;     //Map of channel number to efficiency multigraph
+   static std::map<Int_t,std::map<std::string,TGraphErrors*>> *fenergyMap;
+   static std::map<Int_t,std::map<std::string,TGraphErrors*>> *fefficiencyMap;
 
   ClassDef(TECal,1);
 
