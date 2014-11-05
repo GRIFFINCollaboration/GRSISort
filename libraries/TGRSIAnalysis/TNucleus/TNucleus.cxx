@@ -177,6 +177,56 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
 //  fA = aval;
 //}
 
+const char* TNucleus::SortName(const char* name){
+//Names a nucleus based on symbol (ex. 26Na OR Na26). This is to get a nice naming convention.
+	std::string Name = name;
+	//SetMassFile();
+	int Number = 0;
+	std::string symbol;
+	std::string element;
+	Name.erase(std::remove_if(Name.begin(), Name.end(), (int(*)(int))std::isspace), Name.end());
+
+	if(Name.length()<2) {
+    switch(Name[0]){
+      case 'p':
+        Name.clear();
+        Name.assign("h1");
+        break;
+      case 'd':
+        Name.clear();
+        Name.assign("h2");
+        break;
+      case 't':   
+        Name.clear();   
+        Name.assign("h3");
+        break;
+      case 'a':   
+        Name.clear();   
+        Name.assign("he4");
+        break;
+      default:
+       printf("error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30\n");
+       return NULL;
+    };
+  }
+	int first_digit  = Name.find_first_of("0123456789 \t\n\r");
+	int first_letter = Name.find_first_not_of("0123456789 \t\n\r");
+	if(first_digit>first_letter) {
+		Number = atoi(Name.substr(first_digit).c_str());
+		symbol.append(Name.substr(first_letter,first_digit-first_letter));
+   } else {
+		Number = atoi(Name.substr(first_digit,first_letter-first_digit).c_str());
+		symbol.append(Name.substr(first_letter));
+	}
+   std::cout << symbol <<std::endl;
+   std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::tolower);
+   symbol[0] = toupper(symbol[0]);
+	element.append(std::to_string((long long)Number)); element.append(symbol);
+
+   return element.c_str();
+   
+}
+
 void TNucleus::SetZ(int charge){
 // Sets the Z (# of protons) of the nucleus
   fZ = charge;

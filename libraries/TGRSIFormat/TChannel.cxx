@@ -56,11 +56,13 @@ TChannel::TChannel(TChannel *chan) {
     this->SetCFDCoefficients(chan->GetCFDCoeff());
     this->SetLEDCoefficients(chan->GetLEDCoeff());
     this->SetTIMECoefficients(chan->GetTIMECoeff());
+    this->SetEFFCoefficients(chan->GetEFFCoeff());
 
     this->SetENGChi2(chan->GetENGChi2());
     this->SetCFDChi2(chan->GetCFDChi2());
     this->SetLEDChi2(chan->GetLEDChi2());
     this->SetTIMEChi2(chan->GetTIMEChi2());
+    this->SetEFFChi2(chan->GetEFFChi2());
 }
 
 
@@ -127,11 +129,13 @@ void TChannel::OverWriteChannel(TChannel *chan){
     this->SetCFDCoefficients(chan->GetCFDCoeff());
     this->SetLEDCoefficients(chan->GetLEDCoeff());
     this->SetTIMECoefficients(chan->GetTIMECoeff());
+    this->SetEFFCoefficients(chan->GetEFFCoeff());
 
     this->SetENGChi2(chan->GetENGChi2());
     this->SetCFDChi2(chan->GetCFDChi2());
     this->SetLEDChi2(chan->GetLEDChi2());
     this->SetTIMEChi2(chan->GetTIMEChi2());
+    this->SetEFFChi2(chan->GetEFFChi2());
 
 	return;
 }
@@ -159,6 +163,8 @@ void TChannel::AppendChannel(TChannel *chan){
 		this->SetLEDCoefficients(chan->GetLEDCoeff());
     if(chan->GetTIMECoeff().size()>0)
 		this->SetTIMECoefficients(chan->GetTIMECoeff());
+    if(chan->GetEFFCoeff().size()>0)
+		this->SetEFFCoefficients(chan->GetEFFCoeff());
 
     if(chan->GetENGChi2() != 0.0)
 		this->SetENGChi2(chan->GetENGChi2());
@@ -168,6 +174,8 @@ void TChannel::AppendChannel(TChannel *chan){
 		this->SetLEDChi2(chan->GetLEDChi2());
     if(chan->GetTIMEChi2() != 0.0)
 		this->SetTIMEChi2(chan->GetTIMEChi2());
+    if(chan->GetEFFChi2() != 0.0)
+		this->SetEFFChi2(chan->GetEFFChi2());
 
 	return;
 }
@@ -197,12 +205,14 @@ void TChannel::Clear(Option_t *opt){
     number            =  0;
     stream            =  0;
     ENGChi2           =  0.0;
+    EFFChi2           =  0.0;
     userinfonumber    =  0xffffffff;
 
     ENGCoefficients.clear();
     CFDCoefficients.clear();
     LEDCoefficients.clear();
     TIMECoefficients.clear();
+    EFFCoefficients.clear();
 }
 
 //TChannel *TChannel::GetChannel(int temp_add) {int x = temp_add; return GetChannel(x);}
@@ -288,37 +298,39 @@ void TChannel::DestroyLEDCal()   {
 
 void TChannel::DestroyTIMECal()  {
 //Erases the TimeCal vector
-   LEDCoefficients.erase(TIMECoefficients.begin(),TIMECoefficients.end());
+   TIMECoefficients.erase(TIMECoefficients.begin(),TIMECoefficients.end());
 }
 
+void TChannel::DestroyEFFCal()  {
+//Erases the EffCal vector
+   EFFCoefficients.erase(EFFCoefficients.begin(),EFFCoefficients.end());
+}
 void TChannel::DestroyCalibrations()   {
 //Erases all Cal vectors
    DestroyENGCal();
    DestroyCFDCal();
    DestroyLEDCal();
    DestroyTIMECal();
+   DestroyEFFCal();
 };
 
-double TChannel::CalibrateENG(int charge, bool random_flag = true) {
+double TChannel::CalibrateENG(int charge) {
     if(charge==0) 
       return 0.0000;
-   if(random_flag) 
-      return CalibrateENG((double)charge) + gRandom->Uniform();
-   else
-      return CalibrateENG((double)charge);
+
+   int temp_int = 1; //125.0;
+   if(integration != 0)
+      temp_int = (int)integration;  //the 4 is the dis. 
+   
+   return CalibrateENG((double)(charge/temp_int)) + gRandom->Uniform();
 };
 
 double TChannel::CalibrateENG(double charge) {
    if(ENGCoefficients.size()==0)
       return charge;
-
-   double temp_int = 1.0; //125.0;
-   if(integration != 0)
-      temp_int = (double)integration;  //the 4 is the dis. 
-
    double cal_chg = 0.0;
    for(int i=0;i<ENGCoefficients.size();i++){
-      cal_chg += ENGCoefficients[i] * pow((charge/temp_int),i);
+      cal_chg += ENGCoefficients[i] * pow((charge),i);
    }
   // printf("(%.02f/%0.2f) *%.05f + %.05f = %.05f\n",charge,temp_int,ENGCoefficients[1],ENGCoefficients[0], cal_chg);
 	//Print();
@@ -372,6 +384,11 @@ double TChannel::CalibrateTIME(double time)  {
    return cal_time;
 }
 
+double TChannel::CalibrateEFF(double energy) {
+   //This needs to be added
+   return 1.0;
+}
+
 void TChannel::Print(Option_t *opt) {
    //Prints out the current TChannel.
 
@@ -387,6 +404,11 @@ void TChannel::Print(Option_t *opt) {
    printf("\n");
    printf("Integration: %i\n",integration);
    printf( "ENGChi2:   %f\n",ENGChi2);
+   printf( "EffCoeff:  "  );
+   for(int x=0;x<EFFCoefficients.at(x);x++ )
+      printf( "%f\t", EFFCoefficients.at(x) );
+   printf("\n");
+   printf( "EFFChi2:   %f\n",EFFChi2);
    printf("\n}\n");
    printf( "//====================================//\n");
 };
@@ -488,7 +510,7 @@ void TChannel::ReadCalFile(const char *filename) {
 
 		if(openbrace  == std::string::npos &&
 			closebrace == std::string::npos &&
-			colon  == std::string::npos)
+			colon  == std::string::npos )
 			continue;
 		//printf("line : %s\n",line.c_str());
 
@@ -571,6 +593,9 @@ void TChannel::ReadCalFile(const char *filename) {
             } else if(type.compare("TIMECHI2")==0) {
                double tempdbl; ss>>tempdbl;
                channel->SetTIMEChi2(tempdbl);
+            } else if(type.compare("EFFCHI2")==0) {
+               double tempdbl; ss>>tempdbl;
+               channel->SetEFFChi2(tempdbl);
             } else if(type.compare("ENGCOEFF")==0) {
                channel->DestroyENGCal();
                double value;
@@ -586,7 +611,11 @@ void TChannel::ReadCalFile(const char *filename) {
             } else if(type.compare("TIMECOEFF")==0) {
                channel->DestroyTIMECal();
                double value;
-               while (ss >> value) {   channel->AddTIMECoefficient(value); }
+               while (ss >> value) {   channel->AddTIMECoefficient(value); } 
+            } else if(type.compare("EFFCOEFF")==0) {
+               channel->DestroyEFFCal();
+               double value;
+               while (ss >> value) {   channel->AddEFFCoefficient(value); }
             } else  {
 
             }

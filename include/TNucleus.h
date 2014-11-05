@@ -34,6 +34,7 @@ class TNucleus : public TNamed{
 	
   //static void SetMassFile(const char *tmp = NULL);// {massfile = tmp;} //Sets the mass file to be used
 
+  static const char* SortName(const char *name);
   void SetZ(int);					// Sets the Z (# of protons) of the nucleus
   void SetN(int);					// Sets the N (# of neutrons) of the nucleus
   void SetMassExcess(double);  				// Sets the mass excess of the nucleus (in MeV)

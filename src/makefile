@@ -36,6 +36,8 @@ LIBS += -lGRSIFormat
 LIBS += -lNucleus
 LIBS += -lKinematics
 LIBS += -lSRIM
+LIBS += -lTECal
+LIBS += -lTGRSIFitter
 
 DETLIBS =  -lTigress
 DETLIBS += -lSharc
