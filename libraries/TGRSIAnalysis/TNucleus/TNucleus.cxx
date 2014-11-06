@@ -218,7 +218,6 @@ const char* TNucleus::SortName(const char* name){
 		Number = atoi(Name.substr(first_digit,first_letter-first_digit).c_str());
 		symbol.append(Name.substr(first_letter));
 	}
-   std::cout << symbol <<std::endl;
    std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::tolower);
    symbol[0] = toupper(symbol[0]);
 	element.append(std::to_string((long long)Number)); element.append(symbol);

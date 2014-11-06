@@ -39,6 +39,8 @@ class TECal : public TObject {
    void AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph);
    void AutoFitSource();
 
+   Bool_t Write();
+
  private:
    TFile *effFile = NULL;
    std::map<Int_t,std::map<std::string,TGraphErrors*>> fenergyMap;

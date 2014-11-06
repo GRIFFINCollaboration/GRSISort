@@ -40,11 +40,6 @@ void TECal::AddEnergyGraph(Int_t channum,const char * nucname,TGraphErrors *grap
  //  graph->SetTitle(nucname);
    graph->SetName(Form("ener_%d_%s",channum,name.c_str()));
    fenergyMap[channum][name] = graph;
-   if(effFile->IsOpen()){
-      effFile->cd(); 
-      effFile->WriteObject(&fenergyMap,"fenergyMap"); 
-      effFile->Write(); 
-   }
 }
 
 void TECal::AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph){
@@ -78,4 +73,12 @@ Bool_t TECal::FitEnergyCal(){
 
    return true;
 }
-
+Bool_t TECal::Write(){
+   if(effFile->IsOpen()){
+      effFile->cd(); 
+      effFile->WriteObject(&fenergyMap,"fenergyMap"); 
+      effFile->WriteObject(&fefficiencyMap,"fefficiencyMap");
+      effFile->Write(); 
+   }
+   return true;
+}
