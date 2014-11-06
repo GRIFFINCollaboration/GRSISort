@@ -15,6 +15,7 @@
 #include <vector>
 #include "TROOT.h"
 #include <utility>
+#include "TPeak.h"
 
 using namespace TGRSIFunctions;
 
@@ -32,8 +33,6 @@ class TGRSIFitter : public TObject {
 
  private:   
    static Double_t fitFunction(Double_t *dim, Double_t *par);
-   std::vector<std::pair<Double_t,Double_t>> centroid;
-   std::pair<Double_t,Double_t> area;
 
 //TEMPLATES
  public:
@@ -42,7 +41,7 @@ class TGRSIFitter : public TObject {
    template<int, int, typename First, typename... Rest>
       int FitPeak(const int& limit1, const int& limit2, const First& firstcent, const Rest&... rest)
       {
-         centroid.push_back(std::make_pair(firstcent,0));
+ //        centroid.push_back(std::make_pair(firstcent,0));
          FitPeak(limit1,limit2,rest...); // note: arg1 does not appear here!
       }
 

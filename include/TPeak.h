@@ -2,7 +2,19 @@
 #include "TObject.h"
 #include "TF1.h"
 
+#include <string>
+
 using namespace TGRSIFunctions;
+
+
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TPeak                                                      //
+//                                                            //
+// This Class is used to represent fitted data that is        //
+// Gaussian like in nature (ie centroid and area).            //
+//                                                            //
+////////////////////////////////////////////////////////////////
 
 class TPeak : public TObject {
    friend class TGRSIFitter;
@@ -10,11 +22,12 @@ class TPeak : public TObject {
    TPeak(){};
    ~TPeak(){};
 
-   TPeak(Double_t cent) : centroid(cent){}
+   TPeak(Double_t cent,Option_t* type = "gsc") : centroid(cent){}
 
  public:   
    //This is public as it may be used for initial guesses
    void SetCentroid(Double_t cent)  { centroid = cent; }
+   void SetType(Option_t *);
 
    Double_t GetCentroid() const     { return centroid; }
    Double_t GetCentroidErr() const  { return d_centroid; }
