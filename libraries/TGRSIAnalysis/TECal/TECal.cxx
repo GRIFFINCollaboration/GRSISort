@@ -75,7 +75,7 @@ Bool_t TECal::FitEnergyCal(){
 }
 Bool_t TECal::Write(){
    if(effFile->IsOpen()){
-      effFile->cd(); 
+      effFile->cd(); //I'm going to change this stuff and just write the TGRAPHERRORS directly with unique names
       effFile->WriteObject(&fenergyMap,"fenergyMap"); 
       effFile->WriteObject(&fefficiencyMap,"fefficiencyMap");
       effFile->Write(); 
