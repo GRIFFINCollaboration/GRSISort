@@ -1,51 +1,44 @@
 #include "TGRSIFunctions.h"
 #include "TObject.h"
-#include "TH1.h"
 #include "TF1.h"
-#include "TList.h"
-#include "TFitResult.h"
-#include "TFitResultPtr.h"
-#include "TRandom.h"
-#include "TSpectrum.h"
-#include "TVirtualFitter.h"
-#include "TMatrixTSym.h"
-#include "TMath.h"
-#include "TCanvas.h"
-#include <map>
-#include <vector>
-#include "TROOT.h"
-#include <utility>
 
 using namespace TGRSIFunctions;
 
-//typedef std::tuple <int, double, double> CPIs;
-
 class TPeak : public TObject {
+   friend class TGRSIFitter;
  public: 
    TPeak(){};
    ~TPeak(){};
 
+   TPeak(Double_t cent) : centroid(cent){}
+
  public:   
-   Bool_t FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity = false); 
- //  void FitPeak(Int_t limit1, Int_t limit2, std::initializer_list<double> centroid);
-   //void FitPeak(Int_t limit1, Int_t limit2, ...);
+   //This is public as it may be used for initial guesses
+   void SetCentroid(Double_t cent)  { centroid = cent; }
+
+   Double_t GetCentroid() const     { return centroid; }
+   Double_t GetCentroidErr() const  { return d_centroid; }
+   Double_t GetArea() const         { return area; }
+   Double_t GetAreaErr() const      { return d_area; }
+
+   TF1* GetFit()                    { return peakfit; } 
+
+ private:
+   void SetCentroidErr(Double_t centerr){d_centroid = centerr;}
+   void SetCentroid(Double_t cent, Double_t d_cent) { SetCentroid(cent); SetCentroidErr(d_cent);}
+
+   void SetArea(Double_t a){area = a;}
+   void SetAreaErr(Double_t d_a){d_area = d_a;}
+   void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
+
 
  private:   
-   static Double_t fitFunction(Double_t *dim, Double_t *par);
-   std::vector<std::pair<Double_t,Double_t>> centroid;
-   std::pair<Double_t,Double_t> area;
-
-//TEMPLATES
- public:
-   int FitPeak(Int_t limit1, Int_t limit2, Int_t cent){FitPeak(limit1,limit2,(double)(cent));}
-   int FitPeak(Int_t limit1, Int_t limit2, Double_t cent); // termination version
-   template<int, int, typename First, typename... Rest>
-      int FitPeak(const int& limit1, const int& limit2, const First& firstcent, const Rest&... rest)
-      {
-         centroid.push_back(std::make_pair(firstcent,0));
-         FitPeak(limit1,limit2,rest...); // note: arg1 does not appear here!
-      }
-
+   Double_t centroid;
+   Double_t d_centroid;
+   Double_t area;
+   Double_t d_area;
+   
+   TF1* peakfit;
 
   ClassDef(TPeak,1);
 
