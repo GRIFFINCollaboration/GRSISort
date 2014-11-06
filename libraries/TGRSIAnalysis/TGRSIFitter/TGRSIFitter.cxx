@@ -1,9 +1,9 @@
-#include "TGRSIFit.h"
+#include "TGRSIFitter.h"
 
-ClassImp(TGRSIFit)
+ClassImp(TGRSIFitter)
 
 //This will be changed
-Double_t TGRSIFit::fitFunction(Double_t *dim, Double_t *par){
+Double_t TGRSIFitter::fitFunction(Double_t *dim, Double_t *par){
    return PhotoPeak(dim, par) + StepFunction(dim,par) + PolyBg(dim,&par[6],3);  
 }
 
@@ -12,7 +12,7 @@ Double_t TGRSIFit::fitFunction(Double_t *dim, Double_t *par){
 
 //}
 
-int TGRSIFit::FitPeak(Int_t limit1, Int_t limit2, Double_t centroid) {} // termination version
+int TGRSIFitter::FitPeak(Int_t limit1, Int_t limit2, Double_t centroid) {} // termination version
 
 /*
 void TGRSIFitter::FitNPeaks(Int_t limit1, Int_t limit2, Int_t npeaks, ...){
@@ -26,7 +26,7 @@ void TGRSIFitter::FitNPeaks(Int_t limit1, Int_t limit2, Int_t npeaks, ...){
 // return first + sum(...);
 }
 */
-Bool_t TGRSIFit::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity){
+Bool_t TGRSIFitter::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity){
 
 
    Double_t binWidth = h->GetXaxis()->GetBinWidth(1000);//Need to find the bin widths so that the integral makes sense
