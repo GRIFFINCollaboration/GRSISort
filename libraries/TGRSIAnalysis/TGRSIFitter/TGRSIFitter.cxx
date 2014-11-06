@@ -7,6 +7,27 @@ Double_t TGRSIFitter::fitFunction(Double_t *dim, Double_t *par){
    return PhotoPeak(dim, par) + StepFunction(dim,par) + PolyBg(dim,&par[6],3);  
 }
 
+Double_t TGRSIFitter::multifitFunction(Double_t *dim, Double_t *par,Int_t npeaks){
+   Double_t result = PolyBg(dim,par,3);
+   for(Int_t p=0;p<npeaks;p++){
+      result += PhotoPeak(dim,&par[6*p+4]) + StepFunction(dim,&par[6*p+4]);
+   }
+   return result;
+}
+
+
+/*
+Double_t fpeaks(Double_t *x, Double_t *par) {
+   Double_t result = par[0] + par[1]*x[0];
+   for (Int_t p=0;p<npeaks;p++) {
+      Double_t norm  = par[3*p+2];
+      Double_t mean  = par[3*p+3];
+      Double_t sigma = par[3*p+4];
+      result += norm*TMath::Gaus(x[0],mean,sigma);
+   }
+   return result;
+}
+*/
 
 //void TGRSIFitter::FitPeak(Int_t limit1, Int_t limit2, std::initializer_list<double> centroid){
 
@@ -26,9 +47,11 @@ void TGRSIFitter::FitNPeaks(Int_t limit1, Int_t limit2, Int_t npeaks, ...){
 // return first + sum(...);
 }
 */
+
+//This function is used to perform the actual fit
 Bool_t TGRSIFitter::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity){
 
-
+   //Change the bin width to the bin containing the centroid
    Double_t binWidth = h->GetXaxis()->GetBinWidth(1000);//Need to find the bin widths so that the integral makes sense
    Int_t rw = binWidth*120;  //This number may change depending on the source used   
    //Set the number of iterations. The code is pretty quick, so having a lot isn't an issue	

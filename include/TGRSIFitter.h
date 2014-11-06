@@ -33,7 +33,7 @@ class TGRSIFitter : public TObject {
 
  private:   
    static Double_t fitFunction(Double_t *dim, Double_t *par);
-
+   static Double_t multifitFunction(Double_t *dim, Double_t *par,Int_t npeaks);
 //TEMPLATES
  public:
    int FitPeak(Int_t limit1, Int_t limit2, Int_t cent){FitPeak(limit1,limit2,(double)(cent));}
