@@ -8,6 +8,23 @@ Double_t TGRSIFitter::fitFunction(Double_t *dim, Double_t *par){
 }
 
 
+//void TGRSIFitter::FitPeak(Int_t limit1, Int_t limit2, std::initializer_list<double> centroid){
+
+//}
+
+
+/*
+void TGRSIFitter::FitNPeaks(Int_t limit1, Int_t limit2, Int_t npeaks, ...){
+//This fits a GRIFFIN photopeak. This apparantly may not be portable to OSX. Need to test.
+   va_list centroids;
+   va_start(centroids, npeaks+2);
+   while (npeaks-- > 2)
+             va_arg(centroids, Double_t));
+            va_end(args);
+
+// return first + sum(...);
+}
+*/
 Bool_t TGRSIFitter::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity){
 
 
