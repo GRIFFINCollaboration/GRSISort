@@ -3,8 +3,7 @@
 ClassImp(TECal)
 
 TECal::TECal(){
-   //This is never called as the version with const char * filename has a default string.
-   //This is here because ROOT complains if there is not default constructor
+   this->OpenFile("GRSICal.root");
 }
 
 
@@ -41,11 +40,11 @@ void TECal::AddEnergyGraph(Int_t channum,const char * nucname,TGraphErrors *grap
  //  graph->SetTitle(nucname);
    graph->SetName(Form("ener_%d_%s",channum,name.c_str()));
    fenergyMap[channum][name] = graph;
-  /* if(effFile->IsOpen()){
+   if(effFile->IsOpen()){
       effFile->cd(); 
       effFile->WriteObject(&fenergyMap,"fenergyMap"); 
       effFile->Write(); 
-   }*/
+   }
 }
 
 void TECal::AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph){
