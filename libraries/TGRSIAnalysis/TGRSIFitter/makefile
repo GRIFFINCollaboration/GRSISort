@@ -1,5 +1,5 @@
 
-OBJECTS = TGRSIFunctions.o TGRSIFunctionsDict.o TGRSIFitter.o TGRSIFitterDict.o 
+OBJECTS = TGRSIFunctions.o TGRSIFunctionsDict.o TGRSIFitter.o TGRSIFitterDict.o TPeak.o TPeakDict.o 
 
 CFLAGS += -fPIC
 
