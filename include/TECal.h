@@ -26,22 +26,23 @@
 class TECal : public TObject {
  public: 
    TECal();
-   TECal(const char *);
+   TECal(const char *filename);
    ~TECal(); 
 
+   void OpenFile(const char * filename);
  public:
    void CalibrateEfficiency();
    void CalibrateEnergy();
    Bool_t FitEnergyCal();
    void AddEnergyGraph(TGraphErrors *graph, Int_t channum, const char *nucname);
    void AddEnergyGraph(Int_t channum, const char *nucname, TGraphErrors *graph);
+   void AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph);
    void AutoFitSource();
 
  private:
-   TFile *effFile;
-
-   static std::map<Int_t,std::map<std::string,TGraphErrors*>> *fenergyMap;
-   static std::map<Int_t,std::map<std::string,TGraphErrors*>> *fefficiencyMap;
+   TFile *effFile = NULL;
+   std::map<Int_t,std::map<std::string,TGraphErrors*>> fenergyMap;
+   std::map<Int_t,std::map<std::string,TGraphErrors*>> fefficiencyMap;
 
   ClassDef(TECal,1);
 

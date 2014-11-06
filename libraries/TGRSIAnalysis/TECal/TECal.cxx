@@ -3,14 +3,13 @@
 ClassImp(TECal)
 
 TECal::TECal(){
+   //This is never called as the version with const char * filename has a default string.
+   //This is here because ROOT complains if there is not default constructor
 }
 
 
 TECal::TECal(const char * filename){
-   if(!(effFile->IsOpen())){
-      printf("Opening file: %s\n",filename);
-      TFile *effFile = new TFile(filename,"UPDATE");
-   }
+   this->OpenFile(filename);
 }
 
 TECal::~TECal(){
@@ -19,9 +18,40 @@ TECal::~TECal(){
 
 }
 
+void TECal::OpenFile(const char * filename){
+   if(!effFile){
+      printf("Opening file: %s\n",filename);
+      effFile = new TFile(filename,"UPDATE");
+   }
+   else{ 
+      if(effFile->IsOpen()){
+         printf("Closing file: %s\n",effFile->GetName());
+         effFile->Close();
+      }
+      printf("Opening file: %s\n",filename);
+      effFile->Open(filename,"UPDATE");
+   }
+
+
+      
+}
+
 void TECal::AddEnergyGraph(Int_t channum,const char * nucname,TGraphErrors *graph){
    std::string name = TNucleus::SortName(nucname);
+ //  graph->SetTitle(nucname);
+   graph->SetName(Form("ener_%d_%s",channum,name.c_str()));
+   fenergyMap[channum][name] = graph;
+  /* if(effFile->IsOpen()){
+      effFile->cd(); 
+      effFile->WriteObject(&fenergyMap,"fenergyMap"); 
+      effFile->Write(); 
+   }*/
+}
 
+void TECal::AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph){
+   std::string name = TNucleus::SortName(nucname);
+   graph->SetName(Form("eff_%d_%s",channum,name.c_str()));
+   fefficiencyMap[channum][name] = graph;
 }
 
 void TECal::AutoFitSource(){
