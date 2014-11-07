@@ -7,7 +7,7 @@ TECal::TECal(){
 }
 
 
-TECal::TECal(const char * filename){
+TECal::TECal(const char * filename) : effFile(0){
    this->OpenFile(filename);
 }
 

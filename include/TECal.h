@@ -42,7 +42,7 @@ class TECal : public TObject {
    Bool_t Write();
 
  private:
-   TFile *effFile = NULL;
+   TFile *effFile; //= NULL;
    std::map<Int_t,std::map<std::string,TGraphErrors*>> fenergyMap;
    std::map<Int_t,std::map<std::string,TGraphErrors*>> fefficiencyMap;
 
