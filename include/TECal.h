@@ -34,9 +34,9 @@ class TECal : public TObject {
    void CalibrateEfficiency();
    void CalibrateEnergy();
    Bool_t FitEnergyCal();
-   void AddEnergyGraph(TGraphErrors *graph, Int_t channum, const char *nucname);
-   void AddEnergyGraph(Int_t channum, const char *nucname, TGraphErrors *graph);
-   void AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph);
+   void AddEnergyGraph(TGraphErrors *graph, Int_t channum, const char *nucname, const char* directory = "");
+   void AddEnergyGraph(Int_t channum, const char *nucname, TGraphErrors *graph, const char* directory = "");
+   void AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph,const char* directory = "");
    void AutoFitSource();
 
    Bool_t Write();
