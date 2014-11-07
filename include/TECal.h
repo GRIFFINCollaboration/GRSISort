@@ -18,6 +18,7 @@
 #include "TMultiGraph.h"
 #include "TGraphErrors.h"
 #include "TNucleus.h"
+#include "TKey.h"
 //#include "../include/TNucleus.h"
 
 #include "../include/TGRSITransition.h"
@@ -39,12 +40,15 @@ class TECal : public TObject {
    void AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph,const char* directory = "");
    void AutoFitSource();
 
-   Bool_t Write();
+
+   void ColorGraphsBySource(Bool_t colflag = kTRUE, TDirectory* source = NULL);
 
  private:
    TFile *effFile = NULL;
    std::map<Int_t,std::map<std::string,TGraphErrors*>> fenergyMap;
    std::map<Int_t,std::map<std::string,TGraphErrors*>> fefficiencyMap;
+
+   void AddGraph(Int_t channum, const char *nucname, TGraphErrors *graph, const char* directory = "");
 
   ClassDef(TECal,1);
 
