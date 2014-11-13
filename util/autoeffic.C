@@ -11,6 +11,7 @@
 #include <map>
 #include <vector>
 #include "TROOT.h"
+#include "TMultiGraph.h"
 //#include "../include/TNucleus.h"
 
 #include "../include/TGRSITransition.h"
@@ -96,12 +97,14 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 
 bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, bool verbosity = false){
 
-   Double_t binWidth = h->GetXaxis()->GetBinWidth(1000);//Need to find the bin widths so that the integral makes sense
-   Int_t rw = binWidth*120;  //This number may change depending on the source used   
+   Double_t binWidth = h->GetXaxis()->GetBinWidth(par[1]);//Need to find the bin widths so that the integral makes sense
+   Int_t rw = binWidth*100;  //This number may change depending on the source used   
    //Set the number of iterations. The code is pretty quick, so having a lot isn't an issue	
    TVirtualFitter::SetMaxIterations(10000);
    Int_t xp = par[1];
    Int_t yp = par[0];
+   std::cout << "Now yp is: "<<yp << std::endl;
+   std::cout << "A is: " << par[6] <<std::endl;
    Int_t A = par[6];
    //Define the fit function and the range of the fit
    TF1 *pp = new TF1("photopeak",fitFunction,xp-rw,xp+rw,10);
@@ -121,29 +124,28 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *ene
    //Set some physical limits for parameters
    pp->SetParLimits(0,0.5*yp, 2*yp);
    pp->SetParLimits(1,xp-rw,xp+rw);
- //  pp->SetParLimits(2,4,12);
+   pp->SetParLimits(2,1,12);
    pp->SetParLimits(3,0.000,10);
    pp->SetParLimits(4,0,500);
    pp->SetParLimits(6,0,A*1.4);
    pp->SetParLimits(5,0,1000000);
-   pp->SetParLimits(9,xp-40,xp+40);
+   pp->SetParLimits(9,xp-20,xp+20);
    //Actually set the parameters in the photopeak function
    pp->SetParameters(par);
   //Fixing has to come after setting
   pp->FixParameter(8,0);
-  // pp->FixParameter(4,0);
+ // pp->FixParameter(3,0);
  //  pp->FixParameter(7,0);
-//   pp->FixParameter(4,0);
+ //  pp->FixParameter(4,0);
   // pp->FixParameter(5,1);
 
    if(verbosity)
-      const char * options = "RFSM0+";
+      const char * options = "R0FSM+";
    else
-      const char * options = "RFSM0Q+";
+      const char * options = "R0FSMQ+";
 
    pp->SetNpx(1000); //Draws a nice smooth function on the graph
    TFitResultPtr fitres = h->Fit("photopeak",options); 
-//   pp->Draw("same");      
    
    if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
       if(fitres->Parameter(3) < 1){
@@ -162,6 +164,11 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *ene
    
 
    pp->GetParameters(&par[0]); 
+   
+  // pp->DrawCopy("same");   
+  // h->Draw();
+  // fitres->DrawClone("same");
+ //Will probably have to change this to not include skewed gaussian? CHECK
    TF1 *photopeak = new TF1("photopeak",photo_peak,xp-rw,xp+rw,10);
    photopeak->SetParameters(par);
 
@@ -189,7 +196,7 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *ene
 
 	delete photopeak;
 	delete pp;
-   if(fitres->Chi2()/fitres->Ndf() > 5.0){
+   if(fitres->Chi2()/fitres->Ndf() > 17.0){
       std::cout << "THIS FIT WAS NOT GOOD (Reduced Chi2 = " << fitres->Chi2()/fitres->Ndf() << " )" << std::endl;
       return false;
    }
@@ -635,12 +642,12 @@ TGraph* autoefficiency(TH1 *hist,TNucleus *nuc,Double_t runlengthsecs,  Double_t
      Float_t yp = hist->GetBinContent(bin);
      par[0] = yp;  //height
      par[1] = xp;  //centroid
-     par[2] = 2;   //sigma
-     par[3] = 5;   //beta
-     par[4] = 0;   //R
-     par[5] = 5.0;//stp
-     par[6] = hist->GetBinContent(bin+25);  //A
-     par[7] = -1.0;//B
+     par[2] = 5./4.;   //sigma
+     par[3] = 0.5;   //beta
+     par[4] = 2;   //R
+     par[5] = 1.0; //stp
+     par[6] = hist->GetBinContent(bin-25);  //A
+     par[7] = (hist->GetBinContent(bin-25) - hist->GetBinContent(bin+25))/100.;//B
      par[8] = -0.5;   //C
      par[9] = xp;  //bg offset
      bool goodfit = FitPeak(par,hist,integral, sigma);
@@ -672,4 +679,153 @@ TGraph* autoefficiency(TH1 *hist,TNucleus *nuc,Double_t runlengthsecs,  Double_t
    return slopefit;
 
 }
+
+int autoefficiency60(TH2D *mat,const char *name,Double_t runlengthsecs, Double_t activitykBq=1.0,bool verbosity = false) {
+  gSystem->Load("libNucleus");
+  TNucleus nuc(name);
+  nuc.SetSourceData();
+  TMultiGraph *mg = new TMultiGraph("Efficiencies","Efficiencies");
+  TGraphErrors *graph = new TGraphErrors;
+   TH1D* h1 = new TH1D;
+	for(int i=1; i<=64;i++){
+      printf("\nNow fitting channel: %d",i);
+		TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
+		if(h1->Integral() < 1)
+			continue;
+      mg->Add(autoefficiency60(h1,i,&nuc, runlengthsecs,activitykBq,verbosity));
+   //   mg->Add(graph);
+	}
+   mg->Draw("PA0");
+  return 1;
+}
+
+int autoefficiency60(TH1D *hist,const char *name,Double_t runlengthsecs, Double_t activitykBq=1.0,bool verbosity = false) {
+  gSystem->Load("libNucleus");
+  TNucleus nuc(name);
+  nuc.SetSourceData();
+  TMultiGraph *mg = new TMultiGraph("Efficiencies","Efficiencies");
+  TGraphErrors *graph = new TGraphErrors;
+     mg->Add(autoefficiency60(hist,0,&nuc, runlengthsecs,activitykBq,verbosity));
+   //   mg->Add(graph);
+  // mg->Draw("PA0");
+  return 1;
+}
+
+
+TMultiGraph* autoefficiency60(TH1D *hist,int channum,TNucleus *nuc,Double_t runlengthsecs,  Double_t activitykBq,bool verbosity) {    //Activity in uCi
+
+   if(!hist || !nuc)
+      return 0;
+
+   Double_t par[40];
+
+
+ //  if(nuc->GetA() == 152) {
+ //     return autogain152(hist);
+ //  }
+
+// Search
+   hist->GetXaxis()->SetRangeUser(250,4000*4);
+
+//   nuc->TransitionList.Sort();
+
+   std::vector<float> engvec;
+   std::vector<float> intensvec;
+   TIter iter(&(nuc->TransitionList));
+   TObject* obj;
+   while(obj = iter.Next()) {
+      if(!obj->InheritsFrom("TGRSITransition"))
+         continue;
+      TGRSITransition *tran = (TGRSITransition*)obj;
+      intensvec.push_back(static_cast<float>(tran->intensity));
+      engvec.push_back(static_cast<float>(tran->energy));
+   }
+
+ 
+
+   std::vector<Float_t> areavec;
+   std::vector<Float_t> area_uncertainty;
+   std::vector<Float_t> goodenergyvec;
+   std::vector<Float_t> goodintensvec;
+   std::vector<Float_t> channumvec;
+
+   Float_t integral, sigma; 
+   Double_t binWidth = hist->GetXaxis()->GetBinWidth(1000);
+   Double_t dummyarray[4];
+
+   std::cout << "bin width is " << binWidth << std::endl;
+  for (int p=0;p<engvec.size();p++) {
+     Float_t xp = engvec.at(p);
+     std::cout << "Trying to fit " << xp << " keV" <<std::endl; 
+
+     Int_t bin = hist->GetXaxis()->FindBin(xp);
+     std::cout << "Bin is: " << bin << "xp is " << xp << std::endl;
+     Float_t yp = hist->GetBinContent(bin);
+     std::cout << "yp is: "<<yp << std::endl;
+     par[0] = yp;  //height
+     par[1] = xp;  //centroid
+     par[2] = 1.0;   //sigma
+     par[3] = 1.0;   //beta
+     par[4] = 40.0;   //R
+     par[5] = 1.0; //stp
+     par[6] = hist->GetBinContent(xp-15);  //A
+     par[7] = (hist->GetBinContent(xp-15) - hist->GetBinContent(xp+15))/100.*binWidth;//B
+     par[8] = -0.5;   //C
+     par[9] = xp;  //bg offset
+     bool goodfit = FitPeak(par,hist,integral, sigma,dummyarray,verbosity);
+     if(goodfit){
+     	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
+     	//area_uncertainty.push_back(sigma);
+      area_uncertainty.push_back(0.01*integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
+      std::cout<< "Eff = " << areavec.back() << "+/-" << area_uncertainty.back()<< std::endl;
+      channumvec.push_back((Float_t)(channum));
+      
+   //     goodenergyvec.push_back(engvec.at(p));
+  //      goodintensvec.push_back(intensvec.at(p));
+
+     }
+  //   fitlist->Add(f);
+   }
+
+   std::cout << "or made it here" << std::endl;
+   static Float_t eff1;
+   static Float_t eff2;
+   Float_t *area = &(areavec[0]);
+ //  Float_t *energies = &(engvec[0]);
+ //  float *goodenergy = &(goodenergyvec[0])
+   Float_t *darea = &(area_uncertainty[0]);
+   Float_t *chan = &(channumvec[0]);
+  // hist->DrawCopy();
+ //  TGraph *slopefit = new TGraph(areavec.size(),goodenergy,area ); 
+   TGraphErrors *effic = new TGraphErrors(1,&chan[0],&area[0],0,&darea[0]);
+   eff1 += area[0];
+   eff2 += area[1];
+   effic->SetMarkerStyle(21);
+   effic->SetMarkerColor(kRed);
+   effic->SetLineColor(kRed);
+   TGraphErrors *effic2 = new TGraphErrors(1,&chan[1],&area[1],0,&darea[1]);
+   effic2->SetMarkerStyle(20);
+   effic2->SetMarkerColor(kBlue);
+   effic2->SetLineColor(kBlue);
+   TMultiGraph * efficmg = new TMultiGraph;
+  // effic->Draw("PA0*");
+   efficmg->Add(effic);
+   efficmg->Add(effic2);
+
+   std::cout << "Sum of eff so far: " <<eff1 << std::endl;
+   std::cout << "Sum of eff2 so far: " << eff2 << std::endl;
+   
+  // printf("Now fitting: Be patient\n");
+ //  slopefit->Fit("pol1");
+  // slopefit->Draw("PA*");
+ //  for(int x=0;x<areavec.size();x++) {
+  //    printf("areavec[%i] = %f\t\tgoodenergyvec[%i] = %f\n",x,areavec[x],x,goodenergyvec[x]);
+  // }
+
+   //return slopefit;
+   //delete dummyarray;
+   return efficmg;
+
+}
+
 

@@ -53,17 +53,19 @@ void TECal::AddGraph(Int_t channum,const char * nucname,TGraphErrors *graph,cons
       gDirectory->cd(Form("%s",directory));
    }
    std::string name = TNucleus::SortName(nucname);
-   graph->SetName(Form("%s",name.c_str()));
+   graph->SetName(Form("raw%s",name.c_str()));
    graph->Write(graph->GetName(),kOverwrite);
 }
 
 void TECal::AddEnergyGraph(Int_t channum,const char * nucname,TGraphErrors *graph,const char* directory){
+   effFile->cd();
    effFile->cd("energy");
    AddGraph(channum,nucname,graph,directory);
    effFile->cd();
 }
 
 void TECal::AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph,const char* directory){
+   effFile->cd();
    effFile->cd("efficiency");
    AddGraph(channum,nucname,graph,directory);
    effFile->cd();
@@ -77,7 +79,14 @@ void TECal::AutoFitSource(){
 //This does not make me happy. I will make a directory loop file and return keys maybe?
 void TECal::ColorGraphsBySource(Bool_t colflag, TDirectory *source){
    //Might want to have a descend into directories function, that takes function pointers?
+   Bool_t toplevel_flag = false;
    TDirectory *savdir = gDirectory;
+   if(!source){
+      effFile->cd("/");
+      source = gDirectory;
+      toplevel_flag = true;
+   }
+  //source->ls();
    TIter next(gDirectory->GetListOfKeys());
    TKey *key;
    while((key = (TKey*)next())){
@@ -91,7 +100,36 @@ void TECal::ColorGraphsBySource(Bool_t colflag, TDirectory *source){
          //Might have to do something else ehre
       } 
       else if (cl->InheritsFrom(TGraphErrors::Class())) {
-         //Do stuff here
+         TGraphErrors *graph = (TGraphErrors*)key->ReadObj();
+         std::cout << graph->GetName() << std::endl;        
+         if(colflag){
+            if(!strcmp(graph->GetName(),"raw152Eu"))
+            { std::cout << "coloring "<< graph->GetName() << " Blue" << std::endl;
+               graph->SetLineColor(kBlue);
+            }
+            else if(!strcmp(graph->GetName(),"raw133Ba"))
+            { std::cout << "coloring "<< graph->GetName() << " Red" << std::endl;
+               graph->SetLineColor(kRed);
+            }
+            else if(!strcmp(graph->GetName(),"raw56Co")){
+               std::cout << "coloring "<< graph->GetName() << " Green" << std::endl;
+               graph->SetLineColor(kGreen);
+            }
+            else if(!strcmp(graph->GetName(),"raw66Ga")){
+               std::cout << "coloring "<< graph->GetName() << " Magenta" << std::endl;
+               graph->SetLineColor(kMagenta);
+            }
+            else{
+               std::cout << "coloring "<< graph->GetName() << " Black" << std::endl;
+               graph->SetLineColor(kBlack);
+            }
+         }
+         else{
+            std::cout << "coloring "<< graph->GetName() << " Black" << std::endl;
+            graph->SetLineColor(kBlack);
+         }
+         graph->Write(graph->GetName(),kWriteDelete);
+        // graph->Write();
       }
       else {
          //Do nothing stuff
@@ -99,7 +137,14 @@ void TECal::ColorGraphsBySource(Bool_t colflag, TDirectory *source){
 
 
    }
-   
+  // adir->SaveSelf(kTRUE);
+   savdir->cd();
+   effFile->Flush();
+ /*  if(toplevel_flag ==true){
+      effFile->Write();
+      gDirectory->cd(savdir);
+   }
+*/
    
    
    

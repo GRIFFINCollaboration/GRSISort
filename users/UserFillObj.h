@@ -15,12 +15,18 @@
 	TH2D *mat = (TH2D*)(GetOutputList()->FindObject("hp_charge"));
 	if(mat) mat->Fill(channel->GetNumber(),fragment->Charge.at(0)/125.0);
 
-	hist = (TH1D*)(GetOutputList()->FindObject("test"));
+	mat = (TH2D*)(GetOutputList()->FindObject("hp_energy"));
+	if(mat) mat->Fill(channel->GetNumber(),fragment->GetEnergy());
+
+   hist = (TH1D*)(GetOutputList()->FindObject("test"));
 	if(hist) hist->Fill(channel->GetNumber());
 
 	hist = (TH1D*)(GetOutputList()->FindObject("PPG"));
 	if(hist) hist->Fill(fragment->PPG);
-        
+   
+   hist = (TH1D*)(GetOutputList()->FindObject("EnergySum"));
+   if(hist) hist->Fill(fragment->GetEnergy());
+
 	hist = (TH1D*)(GetOutputList()->FindObject("ChannelId"));
 	if(hist) hist->Fill(fragment->ChannelId);
 
