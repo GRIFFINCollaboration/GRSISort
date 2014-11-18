@@ -1,4 +1,4 @@
-//g++ MakeTimeDiffSpec.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat `root-config --cflags --libs` -lTreePlayer -o runfaster
+//g++ MakeTimeDiffSpec.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat`root-config --cflags --libs` -lTreePlayer -o runfaster
 
 
 

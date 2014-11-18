@@ -31,21 +31,44 @@ void TECal::OpenFile(const char * filename){
       effFile->Open(filename,"UPDATE");
    }
 
-
+   //Make these directories if they don't already exist
+   if(!effFile->GetDirectory("energy"))
+      effFile->mkdir("energy");
+   if(!effFile->GetDirectory("efficiency"))
+      effFile->mkdir("efficiency");
+   effFile->cd();
       
 }
 
-void TECal::AddEnergyGraph(Int_t channum,const char * nucname,TGraphErrors *graph){
+
+void TECal::AddGraph(Int_t channum,const char * nucname,TGraphErrors *graph,const char* directory){
+   if(!strcmp(directory,"")){
+      if(!gDirectory->GetDirectory(Form("Channel_%d",channum)))
+         gDirectory->mkdir(Form("Channel_%d",channum));
+      gDirectory->cd(Form("Channel_%d",channum));
+   }
+   else{
+      if(!gDirectory->GetDirectory(Form("%s",directory)))
+         gDirectory->mkdir(Form("%s",directory));
+      gDirectory->cd(Form("%s",directory));
+   }
    std::string name = TNucleus::SortName(nucname);
- //  graph->SetTitle(nucname);
-   graph->SetName(Form("ener_%d_%s",channum,name.c_str()));
-   fenergyMap[channum][name] = graph;
+   graph->SetName(Form("raw%s",name.c_str()));
+   graph->Write(graph->GetName(),kOverwrite);
 }
 
-void TECal::AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph){
-   std::string name = TNucleus::SortName(nucname);
-   graph->SetName(Form("eff_%d_%s",channum,name.c_str()));
-   fefficiencyMap[channum][name] = graph;
+void TECal::AddEnergyGraph(Int_t channum,const char * nucname,TGraphErrors *graph,const char* directory){
+   effFile->cd();
+   effFile->cd("energy");
+   AddGraph(channum,nucname,graph,directory);
+   effFile->cd();
+}
+
+void TECal::AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph,const char* directory){
+   effFile->cd();
+   effFile->cd("efficiency");
+   AddGraph(channum,nucname,graph,directory);
+   effFile->cd();
 }
 
 void TECal::AutoFitSource(){
@@ -53,9 +76,119 @@ void TECal::AutoFitSource(){
 }
 
 
-void TECal::AddEnergyGraph(TGraphErrors *graph, Int_t channum,const char* nucname){
+//This does not make me happy. I will make a directory loop file and return keys maybe?
+void TECal::ColorGraphsBySource(Bool_t colflag, TDirectory *source){
+   //Might want to have a descend into directories function, that takes function pointers?
+   Bool_t toplevel_flag = false;
+   TDirectory *savdir = gDirectory;
+   if(!source){
+      effFile->cd("/");
+      source = gDirectory;
+      toplevel_flag = true;
+   }
+  //source->ls();
+   TIter next(gDirectory->GetListOfKeys());
+   TKey *key;
+   while((key = (TKey*)next())){
+      const char *classname = key->GetClassName();
+      TClass *cl = gROOT->GetClass(classname);
+      if(!cl) continue;
+      if(cl->InheritsFrom(TDirectory::Class())){
+         source->cd(key->GetName());
+         TDirectory *subdir = gDirectory;
+         ColorGraphsBySource(colflag,subdir);
+         //Might have to do something else ehre
+      } 
+      else if (cl->InheritsFrom(TGraphErrors::Class())) {
+         TGraphErrors *graph = (TGraphErrors*)key->ReadObj();
+         std::cout << graph->GetName() << std::endl;        
+         if(colflag){
+            if(!strcmp(graph->GetName(),"raw152Eu"))
+            { std::cout << "coloring "<< graph->GetName() << " Blue" << std::endl;
+               graph->SetLineColor(kBlue);
+            }
+            else if(!strcmp(graph->GetName(),"raw133Ba"))
+            { std::cout << "coloring "<< graph->GetName() << " Red" << std::endl;
+               graph->SetLineColor(kRed);
+            }
+            else if(!strcmp(graph->GetName(),"raw56Co")){
+               std::cout << "coloring "<< graph->GetName() << " Green" << std::endl;
+               graph->SetLineColor(kGreen);
+            }
+            else if(!strcmp(graph->GetName(),"raw66Ga")){
+               std::cout << "coloring "<< graph->GetName() << " Magenta" << std::endl;
+               graph->SetLineColor(kMagenta);
+            }
+            else{
+               std::cout << "coloring "<< graph->GetName() << " Black" << std::endl;
+               graph->SetLineColor(kBlack);
+            }
+         }
+         else{
+            std::cout << "coloring "<< graph->GetName() << " Black" << std::endl;
+            graph->SetLineColor(kBlack);
+         }
+         graph->Write(graph->GetName(),kWriteDelete);
+        // graph->Write();
+      }
+      else {
+         //Do nothing stuff
+      }
+
+
+   }
+  // adir->SaveSelf(kTRUE);
+   savdir->cd();
+   effFile->Flush();
+ /*  if(toplevel_flag ==true){
+      effFile->Write();
+      gDirectory->cd(savdir);
+   }
+*/
+   
+   
+   
+   /*
+   
+   TDirectory *dir;
+   while ((key = (TKey*)next())) {
+      if (key->IsFolder()) {
+         key->Print();
+         dir = (TDirectory*)key->ReadObj();
+         dir->cd(dir->GetName());
+         dir->Print();
+       //  ColorGraphsBySource(colflag);
+      }
+      else {
+         TClass *cl = gROOT->GetClass(key->GetClassName());
+         if (cl->InheritsFrom("TGraphErrors")){
+            TGraphErrors *graph = (TGraphErrors*)key->ReadObj();
+            std::cout << graph->GetName() << std::endl;
+            if(colflag){
+               if(!strcmp(graph->GetName(),"115Eu"))
+                  graph->SetLineColor(kBlue);
+               if(!strcmp(graph->GetName(),"133Ba"))
+                  graph->SetLineColor(kRed);
+               if(!strcmp(graph->GetName(),"56Co"))
+                  graph->SetLineColor(kGreen);
+               if(!strcmp(graph->GetName(),"66Ga"))
+                  graph->SetLineColor(kMagenta);
+               else
+                  graph->SetLineColor(kBlack);
+            }
+            else
+               graph->SetLineColor(kBlack);
+         }
+      }
+   }*/
+
+   //Might eventually have a ColorSource(color) type function
+}
+
+
+void TECal::AddEnergyGraph(TGraphErrors *graph, Int_t channum,const char* nucname,const char* directory){
    //This function exists because who can remember the order of these things?
-   AddEnergyGraph(channum,nucname,graph);
+   AddEnergyGraph(channum,nucname,graph,directory);
 }
 
 void TECal::CalibrateEnergy(){
@@ -71,14 +204,5 @@ void TECal::CalibrateEfficiency(){
 Bool_t TECal::FitEnergyCal(){
 
 
-   return true;
-}
-Bool_t TECal::Write(){
-   if(effFile->IsOpen()){
-      effFile->cd(); //I'm going to change this stuff and just write the TGRAPHERRORS directly with unique names
-      effFile->WriteObject(&fenergyMap,"fenergyMap"); 
-      effFile->WriteObject(&fefficiencyMap,"fefficiencyMap");
-      effFile->Write(); 
-   }
    return true;
 }
