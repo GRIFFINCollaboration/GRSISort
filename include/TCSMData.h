@@ -88,7 +88,7 @@ public:
     SetHorizontal_DetectorNbr(mnemonic->arrayposition);
 	 SetHorizontal_DetectorPos(mnemonic->arraysubposition.c_str()[0]);
 	 SetHorizontal_StripNbr(mnemonic->segment);
-	 SetHorizontal_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+	 SetHorizontal_Energy(channel->CalibrateENG(double(frag->Charge.at(0))));
 	 SetHorizontal_TimeCFD(frag->Cfd.at(0));
 	 SetHorizontal_TimeLED(frag->Led.at(0));
 	 SetHorizontal_Time(frag->TimeToTrig);
@@ -99,7 +99,7 @@ public:
 		SetVertical_DetectorNbr(mnemonic->arrayposition);
 		SetVertical_DetectorPos(mnemonic->arraysubposition.c_str()[0]);
 		SetVertical_StripNbr(mnemonic->segment);
-		SetVertical_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+		SetVertical_Energy(channel->CalibrateENG(double(frag->Charge.at(0))));
 		SetVertical_TimeCFD(frag->Cfd.at(0));
 		SetVertical_TimeLED(frag->Led.at(0));
 		SetVertical_Time(frag->TimeToTrig);

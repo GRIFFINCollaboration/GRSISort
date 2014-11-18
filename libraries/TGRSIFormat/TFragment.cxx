@@ -75,7 +75,7 @@ double TFragment::GetEnergy() {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || Charge.size()<1)
       return 0.00;
-   return chan->CalibrateENG((int)(Charge.at(0)));
+   return chan->CalibrateENG((double)(Charge.at(0)));
 }
 
 
