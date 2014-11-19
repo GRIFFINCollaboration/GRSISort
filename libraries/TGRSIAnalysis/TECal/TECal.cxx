@@ -86,7 +86,7 @@ void TECal::ColorGraphsBySource(Bool_t colflag, TDirectory *source){
       source = gDirectory;
       toplevel_flag = true;
    }
-  //source->ls();
+  source->ls();
    TIter next(gDirectory->GetListOfKeys());
    TKey *key;
    while((key = (TKey*)next())){
@@ -128,7 +128,7 @@ void TECal::ColorGraphsBySource(Bool_t colflag, TDirectory *source){
             std::cout << "coloring "<< graph->GetName() << " Black" << std::endl;
             graph->SetLineColor(kBlack);
          }
-         graph->Write(graph->GetName(),kWriteDelete);
+        // graph->Write("",kOverwrite);
         // graph->Write();
       }
       else {
@@ -137,9 +137,13 @@ void TECal::ColorGraphsBySource(Bool_t colflag, TDirectory *source){
 
 
    }
+   if(toplevel_flag ==true){
+      savdir->cd();
+      effFile->Write();
+   }
   // adir->SaveSelf(kTRUE);
-   savdir->cd();
-   effFile->Flush();
+  // savdir->cd();
+  // effFile->Flush();
  /*  if(toplevel_flag ==true){
       effFile->Write();
       gDirectory->cd(savdir);
