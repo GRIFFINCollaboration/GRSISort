@@ -44,7 +44,7 @@ class TECal : public TObject {
    void ColorGraphsBySource(Bool_t colflag = kTRUE, TDirectory* source = NULL);
 
  private:
-   TFile *effFile = NULL;
+   TFile *effFile; //= NULL;
    std::map<Int_t,std::map<std::string,TGraphErrors*>> fenergyMap;
    std::map<Int_t,std::map<std::string,TGraphErrors*>> fefficiencyMap;
 
