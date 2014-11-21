@@ -13,7 +13,6 @@
 #include "TROOT.h"
 #include "TMultiGraph.h"
 //#include "../include/TNucleus.h"
-
 #include "../include/TGRSITransition.h"
 
 //This fitting function is based on the fitting function used in gf3 written by D.C. Radford
@@ -95,7 +94,7 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 /////////////////////////    This is there the fitting takes place    //////////////////////////////
 
 
-bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, bool verbosity = false){
+TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, bool verbosity = false){
 
    Double_t binWidth = h->GetXaxis()->GetBinWidth(par[1]);//Need to find the bin widths so that the integral makes sense
    Int_t rw = binWidth*100;  //This number may change depending on the source used   
@@ -176,7 +175,7 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *ene
 
    if(verbosity){
       std::cout << "FIT RESULT CHI2 " << fitres->Chi2() << std::endl;
-      std::cout << "FWHM = " << 2.35482*fitres->Parameter(2)/binWidth <<"(" << fitres->ParError(2)/binWidth << ")" << std::endl;
+      std::cout << "FWHM = " << 2.35482*fitres->Parameter(2) <<"(" << fitres->ParError(2) << ")" << std::endl;
       std::cout << "NDF: " << fitres->Ndf() << std::endl;
    }
    std::cout << "X sq./v = " << fitres->Chi2()/fitres->Ndf() << std::endl;
@@ -201,7 +200,7 @@ bool FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *ene
       return false;
    }
 
-   return true;
+   return fitres;
 
 //   myFitResult.fIntegral = integral;
 
@@ -681,21 +680,33 @@ TGraph* autoefficiency(TH1 *hist,TNucleus *nuc,Double_t runlengthsecs,  Double_t
 }
 
 int autoefficiency60(TH2D *mat,const char *name,Double_t runlengthsecs, Double_t activitykBq=1.0,bool verbosity = false) {
-  gSystem->Load("libNucleus");
-  TNucleus nuc(name);
-  nuc.SetSourceData();
-  TMultiGraph *mg = new TMultiGraph("Efficiencies","Efficiencies");
-  TGraphErrors *graph = new TGraphErrors;
+   TFile outfile("Calibration.root","RECREATE");
+   TTree *tree = new TTree("CalibrationTree","Calibration Tree");
+   TPeak *peak = 0;
+   tree->Bronch("TPeak","TPeak", &peak);
+     std::cout << &peak << std::endl;
+
+   gSystem->Load("libNucleus");
+   TNucleus nuc(name);
+   nuc.SetSourceData();
+   TMultiGraph *mg = new TMultiGraph("Efficiencies","Efficiencies");
+   TGraphErrors *graph = new TGraphErrors;
+
    TH1D* h1 = new TH1D;
 	for(int i=1; i<=64;i++){
       printf("\nNow fitting channel: %d",i);
 		TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
 		if(h1->Integral() < 1)
 			continue;
-      mg->Add(autoefficiency60(h1,i,&nuc, runlengthsecs,activitykBq,verbosity));
+      peak = new TPeak;
+      mg->Add(autoefficiency60(tree,peak,h1,i,&nuc, runlengthsecs,activitykBq,verbosity));
+      delete peak;
    //   mg->Add(graph);
 	}
    mg->Draw("PA0");
+   tree->Write();
+ 
+   outfile.Close();
   return 1;
 }
 
@@ -703,8 +714,17 @@ int autoefficiency60(TH1D *hist,const char *name,Double_t runlengthsecs, Double_
   gSystem->Load("libNucleus");
   TNucleus nuc(name);
   nuc.SetSourceData();
-  TMultiGraph *mg = new TMultiGraph("Efficiencies","Efficiencies");
-  TGraphErrors *graph = new TGraphErrors;
+  TList *graphlist = new TList;
+  TMultiGraph *mg_eff = new TMultiGraph("Efficiencies","Efficiencies");
+ 
+ /* 
+  TGraphErrors *eff_1173 = new TGraphErrors("Eff_1173","Eff_1173"); graphlist->Add(eff_1173);
+  TGraphErrors *eff_1332 = new TGraphErrors("Eff_1332","Eff_1332"); graphlist->Add(eff_1332);
+  TGraphErrors *fwhm_1173 = new TGraphErrors("FWHM_1173","FWHM_1173"); graphlist->Add(fwhm_1173);
+  TGraphErrors *fwhm_1332 = new TGraphErrors("FWHM_1332","FWHM_1332"); graphlist->Add(fwhm_1332);
+*/
+
+
      mg->Add(autoefficiency60(hist,0,&nuc, runlengthsecs,activitykBq,verbosity));
    //   mg->Add(graph);
   // mg->Draw("PA0");
@@ -712,12 +732,13 @@ int autoefficiency60(TH1D *hist,const char *name,Double_t runlengthsecs, Double_
 }
 
 
-TMultiGraph* autoefficiency60(TH1D *hist,int channum,TNucleus *nuc,Double_t runlengthsecs,  Double_t activitykBq,bool verbosity) {    //Activity in uCi
+TMultiGraph* autoefficiency60(TTree *tree, TPeak *peak, TH1D *hist,int channum,TNucleus *nuc,Double_t runlengthsecs,  Double_t activitykBq,bool verbosity) {    //Activity in uCi
 
    if(!hist || !nuc)
       return 0;
 
    Double_t par[40];
+
 
 
  //  if(nuc->GetA() == 152) {
@@ -749,6 +770,8 @@ TMultiGraph* autoefficiency60(TH1D *hist,int channum,TNucleus *nuc,Double_t runl
    std::vector<Float_t> goodintensvec;
    std::vector<Float_t> channumvec;
 
+
+
    Float_t integral, sigma; 
    Double_t binWidth = hist->GetXaxis()->GetBinWidth(1000);
    Double_t dummyarray[4];
@@ -772,8 +795,17 @@ TMultiGraph* autoefficiency60(TH1D *hist,int channum,TNucleus *nuc,Double_t runl
      par[7] = (hist->GetBinContent(xp-15) - hist->GetBinContent(xp+15))/100.*binWidth;//B
      par[8] = -0.5;   //C
      par[9] = xp;  //bg offset
-     bool goodfit = FitPeak(par,hist,integral, sigma,dummyarray,verbosity);
-     if(goodfit){
+     TFitResultPtr fitresult = FitPeak(par,hist,integral, sigma,dummyarray,verbosity);
+     //peak = new TPeak;
+     peak->Clear();
+     std::cout << peak << std::endl;
+     peak->SetCentroid(fitresult->Parameter(1), fitresult->ParError(1));
+     peak->SetArea(integral,sigma);
+     peak->Print();
+     tree->Fill();
+     //delete peak;
+     //  fitresultlist->Add(&(*fitresult)); //This is unbelievably hacky....
+  //   if(goodfit){
      	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
      	//area_uncertainty.push_back(sigma);
       area_uncertainty.push_back(0.01*integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
@@ -783,10 +815,12 @@ TMultiGraph* autoefficiency60(TH1D *hist,int channum,TNucleus *nuc,Double_t runl
    //     goodenergyvec.push_back(engvec.at(p));
   //      goodintensvec.push_back(intensvec.at(p));
 
-     }
+ //    }
   //   fitlist->Add(f);
    }
 
+  std::cout << "IM PRINTING!!!" << std::endl;
+  std::cout << "Chi2 = " << fitresult->Chi2() << std::endl;
    std::cout << "or made it here" << std::endl;
    static Float_t eff1;
    static Float_t eff2;
