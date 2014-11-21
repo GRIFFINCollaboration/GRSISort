@@ -322,7 +322,7 @@ double TChannel::CalibrateENG(int charge) {
    if(integration != 0)
       temp_int = (int)integration;  //the 4 is the dis. 
    
-   return CalibrateENG((double)(charge/temp_int)) + gRandom->Uniform();
+   CalibrateENG(((double)charge+gRandom->Uniform()) / (double)temp_int);
 };
 
 double TChannel::CalibrateENG(double charge) {
