@@ -50,7 +50,7 @@ DETLIBS += -lCSM
 
 DETLIBS += -lGriffin
 DETLIBS += -lSceptar
-#DETLIBS += -lPaces
+DETLIBS += -lPaces
 #DETLIBS += -lDante
 #DETLIBS += -lZeroDegree
 #DETLIBS += -lDescant

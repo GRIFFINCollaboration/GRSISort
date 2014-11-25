@@ -1,7 +1,8 @@
 #include "TGRSIFunctions.h"
 #include "TF1.h"
 #include "TNamed.h"
-
+#include "TFitResultPtr.h"
+#include "TFitResult.h"
 #include <string>
 
 using namespace TGRSIFunctions;
@@ -44,16 +45,19 @@ class TPeak : public TNamed {
    void SetAreaErr(Double_t d_a){fd_area = d_a;}
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
 
+   void SetFitResult(TFitResultPtr fitres){ ffitres = *fitres; }
+
  public:
    virtual void Print();
    virtual void Clear();
 
- public:   
+ private:   
    Double_t fcentroid; //->
    Double_t fd_centroid; //->
    Double_t farea; //->
    Double_t fd_area; //->
 
+   TFitResult ffitres;//->
    TF1* ffitfunc = 0;
 
   ClassDef(TPeak,1);

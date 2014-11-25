@@ -801,22 +801,16 @@ TMultiGraph* autoefficiency60(TTree *tree, TPeak *peak, TH1D *hist,int channum,T
      std::cout << peak << std::endl;
      peak->SetCentroid(fitresult->Parameter(1), fitresult->ParError(1));
      peak->SetArea(integral,sigma);
+     peak->SetFitResult(fitresult);
      peak->Print();
      tree->Fill();
-     //delete peak;
-     //  fitresultlist->Add(&(*fitresult)); //This is unbelievably hacky....
-  //   if(goodfit){
      	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
      	//area_uncertainty.push_back(sigma);
       area_uncertainty.push_back(0.01*integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
       std::cout<< "Eff = " << areavec.back() << "+/-" << area_uncertainty.back()<< std::endl;
       channumvec.push_back((Float_t)(channum));
-      
-   //     goodenergyvec.push_back(engvec.at(p));
-  //      goodintensvec.push_back(intensvec.at(p));
 
  //    }
-  //   fitlist->Add(f);
    }
 
   std::cout << "IM PRINTING!!!" << std::endl;
