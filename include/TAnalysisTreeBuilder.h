@@ -37,10 +37,10 @@
    
 #include <TGriffin.h>   
 #include <TSceptar.h>   
-#include <TPaces.h>     
+#include <TPaces.h>   
 //#include <TDante.h>     
 //#include <TZeroDegree.h>
-//#include <TDescant.h>   
+#include <TDescant.h>   
 
 
 class TEventQueue : public TObject {
@@ -172,7 +172,7 @@ class TAnalysisTreeBuilder : public TObject {
       TPaces      *paces;  
       //TDante      *dante;  
       //TZeroDegree *zeroDegree;
-      //TDescant    *descant;
+      TDescant    *descant;
 
 	ClassDef(TAnalysisTreeBuilder,0)
 
