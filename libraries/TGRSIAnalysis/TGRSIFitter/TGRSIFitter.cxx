@@ -49,7 +49,9 @@ void TGRSIFitter::FitNPeaks(Int_t limit1, Int_t limit2, Int_t npeaks, ...){
 */
 
 //This function is used to perform the actual fit
-Bool_t TGRSIFitter::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity){
+TFitResultPtr TGRSIFitter::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity){
+
+   //I should come up with something smarter to return from this function. If I return a smart pointer to the fitresult it should be good enough (I think).
 
    //Change the bin width to the bin containing the centroid
    Double_t binWidth = h->GetXaxis()->GetBinWidth(1000);//Need to find the bin widths so that the integral makes sense
@@ -154,7 +156,7 @@ Bool_t TGRSIFitter::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &
       return false;
    }
 
-   return true;
+   return fitres;
 
 //   myFitResult.fIntegral = integral;
 

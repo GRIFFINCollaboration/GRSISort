@@ -86,7 +86,7 @@ void TECal::ColorGraphsBySource(Bool_t colflag, TDirectory *source){
       source = gDirectory;
       toplevel_flag = true;
    }
-  //source->ls();
+  source->ls();
    TIter next(gDirectory->GetListOfKeys());
    TKey *key;
    while((key = (TKey*)next())){
@@ -128,7 +128,7 @@ void TECal::ColorGraphsBySource(Bool_t colflag, TDirectory *source){
             std::cout << "coloring "<< graph->GetName() << " Black" << std::endl;
             graph->SetLineColor(kBlack);
          }
-         graph->Write(graph->GetName(),kWriteDelete);
+        // graph->Write("",kOverwrite);
         // graph->Write();
       }
       else {
@@ -137,54 +137,11 @@ void TECal::ColorGraphsBySource(Bool_t colflag, TDirectory *source){
 
 
    }
-  // adir->SaveSelf(kTRUE);
-   savdir->cd();
-   effFile->Flush();
- /*  if(toplevel_flag ==true){
+   if(toplevel_flag ==true){
+      savdir->cd();
       effFile->Write();
-      gDirectory->cd(savdir);
    }
-*/
-   
-   
-   
-   /*
-   
-   TDirectory *dir;
-   while ((key = (TKey*)next())) {
-      if (key->IsFolder()) {
-         key->Print();
-         dir = (TDirectory*)key->ReadObj();
-         dir->cd(dir->GetName());
-         dir->Print();
-       //  ColorGraphsBySource(colflag);
-      }
-      else {
-         TClass *cl = gROOT->GetClass(key->GetClassName());
-         if (cl->InheritsFrom("TGraphErrors")){
-            TGraphErrors *graph = (TGraphErrors*)key->ReadObj();
-            std::cout << graph->GetName() << std::endl;
-            if(colflag){
-               if(!strcmp(graph->GetName(),"115Eu"))
-                  graph->SetLineColor(kBlue);
-               if(!strcmp(graph->GetName(),"133Ba"))
-                  graph->SetLineColor(kRed);
-               if(!strcmp(graph->GetName(),"56Co"))
-                  graph->SetLineColor(kGreen);
-               if(!strcmp(graph->GetName(),"66Ga"))
-                  graph->SetLineColor(kMagenta);
-               else
-                  graph->SetLineColor(kBlack);
-            }
-            else
-               graph->SetLineColor(kBlack);
-         }
-      }
-   }*/
-
-   //Might eventually have a ColorSource(color) type function
 }
-
 
 void TECal::AddEnergyGraph(TGraphErrors *graph, Int_t channum,const char* nucname,const char* directory){
    //This function exists because who can remember the order of these things?

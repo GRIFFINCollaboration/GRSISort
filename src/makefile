@@ -50,10 +50,10 @@ DETLIBS += -lCSM
 
 DETLIBS += -lGriffin
 DETLIBS += -lSceptar
-#DETLIBS += -lPaces
+DETLIBS += -lPaces
 #DETLIBS += -lDante
 #DETLIBS += -lZeroDegree
-#DETLIBS += -lDescant
+DETLIBS += -lDescant
 DETLIBS += -lGRSIDetector
 
 SYSLIBS = #-ldl -lxml2
