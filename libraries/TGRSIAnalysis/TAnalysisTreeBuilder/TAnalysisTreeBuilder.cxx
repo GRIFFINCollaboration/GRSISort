@@ -474,7 +474,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
 
    if(info->Griffin())   { TBranch *branch = tree->Bronch("TGriffin","TGriffin",&griffin, basketSize, 99);}// branch->SetAddress(0);} 
    if(info->Sceptar())   { TBranch *branch = tree->Bronch("TSceptar","TSceptar",&sceptar, basketSize, 99);}// branch->SetAddress(0);} 
-   //if(info->Paces())     { tree->Bronch("TPaces","TPaces",&paces); }//, basketSize); } 
+   if(info->Paces())     { tree->Bronch("TPaces","TPaces",&paces, basketSize,99); }//, basketSize); } 
    //if(info->Dante())     { tree->Bronch("TDante","TDante",&dante); }//, basketSize); } 
    //if(info->ZeroDegree()){ tree->Bronch("TZeroDegree","TZeroDegree",&zerodegree); }//, basketSize); } 
    //if(info->Descant())   { tree->Bronch("TDescant","TDescant",&descant); }//, basketSize);
@@ -507,7 +507,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
 //griffin->Print();
    if(info->Griffin())   { griffin->Clear(); }
    if(info->Sceptar())   { sceptar->Clear(); }
-   //if(info->Paces())     { paces->Clear(); } 
+   if(info->Paces())     { paces->Clear(); } 
    //if(info->Dante())     { dante->Clear(); } 
    //if(info->ZeroDegree()){ zerodegree->Clear(); } 
    //if(info->Descant())   { descant->Clear();
@@ -602,8 +602,9 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
       } else if(strcmp(det->first,"SE") == 0) {
       //} else if(strcmp(det->second->IsA()->GetName(),"TSceptar") == 0) {
          *sceptar = *((TSceptar*) det->second);
-      //} else if(strcmp(det->second->IsA()->GetName(),"TPaces") == 0) {
-         //paces = *((TPaces*) det->second);
+     // } else if(strcmp(det->second->IsA()->GetName(),"TPaces") == 0) {
+      } else if(strcmp(det->first,"PA") == 0) {
+         *paces = *((TPaces*) det->second);
       } 
    }
    //time1 += w1.RealTime();
@@ -725,6 +726,12 @@ void TAnalysisTreeBuilder::ProcessEvent() {
                (*detectors)["SE"] = new TSceptar;
             }
             (*detectors)["SE"]->FillData(&(event->at(i)),channel,&mnemonic);
+         } else if(mnemonic.system.compare("PA")==0) {	
+            //detectors->push_back(new TPaces);
+            if(detectors->find("PA") == detectors->end()) {
+               (*detectors)["PA"] = new TPaces;
+            }
+            (*detectors)["PA"]->FillData(&(event->at(i)),channel,&mnemonic);
          //else if(mnemonic.system.compare("PA")==0) {	
          //	FillData(&(event->at(i)),channel,&mnemonic);
          //} else if(mnemonic.system.compare("DA")==0) {	
