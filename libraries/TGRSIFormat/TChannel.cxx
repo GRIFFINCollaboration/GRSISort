@@ -405,7 +405,7 @@ void TChannel::Print(Option_t *opt) {
    printf("Integration: %i\n",integration);
    printf( "ENGChi2:   %f\n",ENGChi2);
    printf( "EffCoeff:  "  );
-   for(int x=0;x<EFFCoefficients.at(x);x++ )
+   for(int x=0;x<EFFCoefficients.size();x++ )
       printf( "%f\t", EFFCoefficients.at(x) );
    printf("\n");
    printf( "EFFChi2:   %f\n",EFFChi2);
