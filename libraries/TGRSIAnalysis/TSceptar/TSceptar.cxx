@@ -45,11 +45,11 @@ TVector3 TSceptar::gPaddlePosition[21] = {
 };
 
 
-TSceptar::TSceptar() : sceptardata(0)	{
+TSceptar::TSceptar() : sceptardata(0), sceptar_hits("TSceptarHit")	{
    //Default Constructor
    //Class()->IgnoreTObjectStreamer(true);
-   Class()->AddRule("TSceptar sceptar_hits attributes=NotOwner");
-   Class()->AddRule("TSceptar sceptardata attributes=NotOwner");
+  // Class()->AddRule("TSceptar sceptar_hits attributes=NotOwner");
+  // Class()->AddRule("TSceptar sceptardata attributes=NotOwner");
    Clear();
 }
 
@@ -62,7 +62,7 @@ void TSceptar::Clear(Option_t *opt)	{
 //Clears all of the hits and data
    if(sceptardata) sceptardata->Clear();
 
-	sceptar_hits.clear();
+	sceptar_hits.Clear("C");
 }
 
 
@@ -106,11 +106,11 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
-   sceptar_hits.clear();
+   sceptar_hits.Clear("C");
    TSceptar::SetBeta(false);
    
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
-      TSceptarHit dethit;
+      TSceptarHit *dethit = (TSceptarHit*)((sc->sceptar_hits.ConstructedAt(sc->sceptar_hits.GetEntries())));
 
       dethit.SetAddress(gdata->GetDetAddress(i));
       
@@ -120,6 +120,7 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       dethit.SetTime(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
 
+
 //      if(TSceptar::SetWave()){
 //         dethit.SetWaveform(gdata->GetDetWave(i));
 //      }
@@ -128,7 +129,7 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    
       dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
 
-      sceptar_hits.push_back(dethit);
+     // sceptar_hits.push_back(dethit);
       TSceptar::SetBeta();
    }
 }
