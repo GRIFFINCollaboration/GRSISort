@@ -58,7 +58,7 @@ class TPeak : public TNamed {
    Double_t fd_area; //->
 
    TFitResult ffitres;//->
-   TF1* ffitfunc = 0;
+   TF1* ffitfunc;
 
   ClassDef(TPeak,1);
 
