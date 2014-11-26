@@ -110,7 +110,8 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    TSceptar::SetBeta(false);
    
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
-      TSceptarHit *dethit = (TSceptarHit*)((sc->sceptar_hits.ConstructedAt(sc->sceptar_hits.GetEntries())));
+      //First we construct a pointer to the hit at the last point in the TClonesArray
+      TSceptarHit *dethit = (TSceptarHit*)((sceptar_hits.ConstructedAt(sceptar_hits.GetEntries()))); 
 
       dethit.SetAddress(gdata->GetDetAddress(i));
       
@@ -129,7 +130,6 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    
       dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
 
-     // sceptar_hits.push_back(dethit);
       TSceptar::SetBeta();
    }
 }

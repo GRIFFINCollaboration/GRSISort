@@ -9,6 +9,7 @@
 #include <TPacesHit.h>
 #include <TPacesData.h>
 #include <TVector3.h> 
+#include <TClonesArray.h>
 
 #include <TGRSIDetector.h> 
 
@@ -23,8 +24,8 @@ class TPaces : public TGRSIDetector {
   public: 
      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
 
-     TPacesHit *GetPacesHit(int i)           {	return &paces_hits[i];   }	//!
-     Short_t GetMultiplicity() const	      {	return paces_hits.size();}	//!
+     TPacesHit *GetPacesHit(int i)           {	return (TPacesHit*)((paces_hits)[i]);   }	//!
+     Short_t GetMultiplicity() const	      {	return paces_hits.GetEntries();}	//!
 
      void FillData(TFragment*,TChannel*,MNEMONIC*); //!
 
@@ -32,7 +33,7 @@ class TPaces : public TGRSIDetector {
 
    private: 
      TPacesData *pacesdata;                 //!  Used to build PACES Hits
-     std::vector <TPacesHit> paces_hits; //   The set of crystal hits
+     TClonesArray paces_hits;                //   The set of crystal hits
 	
      static bool fSetCoreWave;		         //!  Flag for Waveforms ON/OFF
  
