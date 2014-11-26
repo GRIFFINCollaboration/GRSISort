@@ -85,6 +85,7 @@ void TPaces::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
    //PrintMNEMONIC(mnemonic);
 
    if(mnemonic->subsystem.compare(0,1,"C")==0) { 
+      //frag->Print();
       pacesdata->SetCore(frag,channel,mnemonic);
    }   
    TPacesData::Set();
@@ -102,20 +103,20 @@ void TPaces::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
    paces_hits.clear();
 
-
    for(int i=0;i<pdata->GetMultiplicity();i++)	{
       TPacesHit corehit;
 
       corehit.SetAddress(pdata->GetCoreAddress(i));
       
-      if(pdata->GetIsHighGain(i)) {
-         corehit.SetEnergyHigh(pdata->GetCoreEnergy(i));
-         corehit.SetChargeHigh(pdata->GetCoreCharge(i));
-      }
-      else {
-         corehit.SetEnergyLow(pdata->GetCoreEnergy(i));
-         corehit.SetChargeLow(pdata->GetCoreCharge(i));
-      }
+//      if(pdata->GetIsHighGain(i)) {
+         //corehit.SetEnergyHigh(pdata->GetCoreEnergy(i));
+
+      corehit.SetChargeHigh(pdata->GetCoreCharge(i));
+//      }
+//      else {
+//         corehit.SetEnergyLow(pdata->GetCoreEnergy(i));
+//         corehit.SetChargeLow(pdata->GetCoreCharge(i));
+//      }
 
       corehit.SetTime(pdata->GetCoreTime(i));
       corehit.SetCfd(pdata->GetCoreCFD(i));
@@ -123,15 +124,14 @@ void TPaces::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       if(TPaces::SetCoreWave()){
          corehit.SetWaveform(pdata->GetCoreWave(i));
       }
-		
       corehit.SetCrystalNumber(pdata->GetCoreNumber(i));
    
-      corehit.SetPPG(pdata->GetPPG(i));
+      //corehit.SetPPG(pdata->GetPPG(i));
 
-      if((pdata->GetPPG(i) == 0xd000 && pdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
-         fCycleStart = corehit.GetTime();
-      }
-      fLastPPG = pdata->GetPPG(i);
+//      if((pdata->GetPPG(i) == 0xd000 && pdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
+//         fCycleStart = corehit.GetTime();
+//      }
+//      fLastPPG = pdata->GetPPG(i);
       fCycleStartTime = fCycleStart;
 
       paces_hits.push_back(corehit);
