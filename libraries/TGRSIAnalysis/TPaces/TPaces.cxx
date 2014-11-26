@@ -22,7 +22,7 @@ bool TPaces::fSetCoreWave = false;
 long TPaces::fCycleStart  = 0;
 long TPaces::fLastPPG     = 0;
 
-TPaces::TPaces() : pacesdata(0)	{
+TPaces::TPaces() : pacesdata(0), paces_hits("TPacesHit")	{
    //Default Constructor
    //Class()->IgnoreTObjectStreamer(true);
    Clear();
@@ -47,7 +47,7 @@ void TPaces::Clear(Option_t *opt)	{
 //Clears all of the hits and data
 	if(pacesdata) pacesdata->Clear();
 
-	paces_hits.clear();
+	paces_hits.Clear("C");
 
 }
 
@@ -56,7 +56,7 @@ void TPaces::Print(Option_t *opt) {
   //Prints out TPaces members, currently does nothing.
   printf("pacesdata = 0x%p\n",pacesdata);
   if(pacesdata) pacesdata->Print();
-  printf("%lu paces_hits\n",paces_hits.size());
+  printf("%lu paces_hits\n",paces_hits.GetEntries());
   return;
 }
 
@@ -100,41 +100,39 @@ void TPaces::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!pdata)
       return;
 
-   paces_hits.clear();
+   paces_hits.Clear("C");
 
 
    for(int i=0;i<pdata->GetMultiplicity();i++)	{
-      TPacesHit corehit;
+      TPacesHit *dethit = (TPacesHit*)((paces_hits.ConstructedAt(paces_hits.GetEntries()))); 
 
-      corehit.SetAddress(pdata->GetCoreAddress(i));
+      dethit->SetAddress(pdata->GetCoreAddress(i));
       
       if(pdata->GetIsHighGain(i)) {
-         corehit.SetEnergyHigh(pdata->GetCoreEnergy(i));
-         corehit.SetChargeHigh(pdata->GetCoreCharge(i));
+         dethit->SetEnergyHigh(pdata->GetCoreEnergy(i));
+         dethit->SetChargeHigh(pdata->GetCoreCharge(i));
       }
       else {
-         corehit.SetEnergyLow(pdata->GetCoreEnergy(i));
-         corehit.SetChargeLow(pdata->GetCoreCharge(i));
+         dethit->SetEnergyLow(pdata->GetCoreEnergy(i));
+         dethit->SetChargeLow(pdata->GetCoreCharge(i));
       }
 
-      corehit.SetTime(pdata->GetCoreTime(i));
-      corehit.SetCfd(pdata->GetCoreCFD(i));
+      dethit->SetTime(pdata->GetCoreTime(i));
+      dethit->SetCfd(pdata->GetCoreCFD(i));
 
       if(TPaces::SetCoreWave()){
-         corehit.SetWaveform(pdata->GetCoreWave(i));
+         dethit->SetWaveform(pdata->GetCoreWave(i));
       }
 		
-      corehit.SetCrystalNumber(pdata->GetCoreNumber(i));
+      dethit->SetCrystalNumber(pdata->GetCoreNumber(i));
    
-      corehit.SetPPG(pdata->GetPPG(i));
+      dethit->SetPPG(pdata->GetPPG(i));
 
       if((pdata->GetPPG(i) == 0xd000 && pdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
-         fCycleStart = corehit.GetTime();
+         fCycleStart = dethit->GetTime();
       }
       fLastPPG = pdata->GetPPG(i);
       fCycleStartTime = fCycleStart;
-
-      paces_hits.push_back(corehit);
 
       //printf(RED "pdata->GetCoreNbrHitsMidasId(%i)    = %i" RESET_COLOR "\n",i, pdata->GetCoreNbrHits(i)); 
       //printf("pdata->GetCoreMidasId(%i)    = %i\n",i, pdata->GetCoreMidasId(i));

@@ -3,12 +3,12 @@
 
 #include "Globals.h"
 
-#include <vector>
 #include <cstdio>
 
 #include <TDescantHit.h>
 #include <TDescantData.h>
 #include <TVector3.h> 
+#include <TClonesArray.h>
 
 #include <TGRSIDetector.h> 
 
@@ -20,8 +20,8 @@ class TDescant : public TGRSIDetector {
      virtual ~TDescant();
 
   public: 
-     TDescantHit *GetDescantHit(int i)        {	return &descant_hits[i];   }	//!
-     Short_t GetMultiplicity() const	       {	return descant_hits.size();}	//!
+     TDescantHit *GetDescantHit(int i)        {	return (TDescantHit*)((descant_hits)[i]);  }	//!
+     Short_t GetMultiplicity() const	       {	return descant_hits.GetEntries();}	//!
 
      static TVector3 GetPosition(int DetNbr)  { return gPosition[DetNbr];}	//!
 
@@ -32,7 +32,7 @@ class TDescant : public TGRSIDetector {
 
    private: 
      TDescantData *descantdata;                                               //!  Used to build DESCANT Hits
-     std::vector <TDescantHit> descant_hits;                                  //   The set of crystal hits
+     TClonesArray descant_hits;                                                //   The set of crystal hits
 
 //     static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
 

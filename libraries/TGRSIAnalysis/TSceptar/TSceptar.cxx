@@ -110,26 +110,26 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    TSceptar::SetBeta(false);
    
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
-      TSceptarHit *dethit = (TSceptarHit*)((sc->sceptar_hits.ConstructedAt(sc->sceptar_hits.GetEntries())));
+      //First we construct a pointer to the hit at the last point in the TClonesArray
+      TSceptarHit *dethit = (TSceptarHit*)((sceptar_hits.ConstructedAt(sceptar_hits.GetEntries()))); 
 
-      dethit.SetAddress(gdata->GetDetAddress(i));
+      dethit->SetAddress(gdata->GetDetAddress(i));
       
-      dethit.SetEnergy(gdata->GetDetEnergy(i));
-      dethit.SetCharge(gdata->GetDetCharge(i));
+      dethit->SetEnergy(gdata->GetDetEnergy(i));
+      dethit->SetCharge(gdata->GetDetCharge(i));
 
-      dethit.SetTime(gdata->GetDetTime(i));
-      dethit.SetCfd(gdata->GetDetCFD(i));
+      dethit->SetTime(gdata->GetDetTime(i));
+      dethit->SetCfd(gdata->GetDetCFD(i));
 
 
 //      if(TSceptar::SetWave()){
 //         dethit.SetWaveform(gdata->GetDetWave(i));
 //      }
 		
-      dethit.SetDetectorNumber(gdata->GetDetNumber(i));
+      dethit->SetDetectorNumber(gdata->GetDetNumber(i));
    
-      dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
+      dethit->SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
 
-     // sceptar_hits.push_back(dethit);
       TSceptar::SetBeta();
    }
 }
