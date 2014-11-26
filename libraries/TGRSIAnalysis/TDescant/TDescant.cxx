@@ -42,7 +42,7 @@ TVector3 TDescant::gPosition[21] = {
 };
 
 
-TDescant::TDescant() : descantdata(0)	{
+TDescant::TDescant() : descantdata(0), descant_hits("TDescantHit")	{
    //Default Constructor
    //Class()->IgnoreTObjectStreamer(true);
    Class()->AddRule("TDescant descant_hits attributes=NotOwner");
@@ -59,7 +59,7 @@ void TDescant::Clear(Option_t *opt)	{
 //Clears all of the hits and data
    if(descantdata) descantdata->Clear();
 
-	descant_hits.clear();
+	descant_hits.Clear("C");
 }
 
 
@@ -103,29 +103,28 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
-   descant_hits.clear();
+   descant_hits.Clear("C");
    TDescant::SetHit(false);
    
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
-      TDescantHit dethit;
+      TDescantHit *dethit = (TDescantHit*)((descant_hits.ConstructedAt(descant_hits.GetEntries()))); 
 
-      dethit.SetAddress(gdata->GetDetAddress(i));
+      dethit->SetAddress(gdata->GetDetAddress(i));
       
-      dethit.SetEnergy(gdata->GetDetEnergy(i));
-      dethit.SetCharge(gdata->GetDetCharge(i));
+      dethit->SetEnergy(gdata->GetDetEnergy(i));
+      dethit->SetCharge(gdata->GetDetCharge(i));
 
-      dethit.SetTime(gdata->GetDetTime(i));
-      dethit.SetCfd(gdata->GetDetCFD(i));
+      dethit->SetTime(gdata->GetDetTime(i));
+      dethit->SetCfd(gdata->GetDetCFD(i));
 
 //      if(TSceptar::SetWave()){
 //         dethit.SetWaveform(gdata->GetDetWave(i));
 //      }
 		
-      dethit.SetDetectorNumber(gdata->GetDetNumber(i));
+      dethit->SetDetectorNumber(gdata->GetDetNumber(i));
    
-      dethit.SetPosition(TDescant::GetPosition(gdata->GetDetNumber(i)));
+      dethit->SetPosition(TDescant::GetPosition(gdata->GetDetNumber(i)));
 
-      descant_hits.push_back(dethit);
       TDescant::SetHit();
    }
 }
