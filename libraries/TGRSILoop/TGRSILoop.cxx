@@ -201,7 +201,6 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
             EndRun(0,0,0);
             break;
          default:
-            fMidasEvent.SetBankList();
             ProcessMidasEvent(&fMidasEvent,midasfile);
             break;
       };
@@ -412,13 +411,14 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
    try {
       switch(mevent->GetEventId())  {
          case 1:
+            mevent->SetBankList();
             if((banksize = mevent->LocateBank(NULL,"WFDN",&ptr))>0) {
 	       if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mevent, mfile)) { }
                               //(unsigned int)(mevent->GetSerialNumber()),
                               //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
             else if((banksize = mevent->LocateBank(NULL,"GRF1",&ptr))>0) {
-               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize, mevent, mfile)) { }
+            if(!ProcessGRIFFIN((uint32_t*)ptr,banksize, mevent, mfile)) { }
 			      //(unsigned int)(mevent->GetSerialNumber()),
 			      //(unsigned int)(mevent->GetTimeStamp()))) { }
             }

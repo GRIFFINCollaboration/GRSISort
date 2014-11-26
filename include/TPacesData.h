@@ -62,6 +62,7 @@ class TPacesData : public TGRSIDetectorData {
           SetCoreNbrHits(frag->Charge.size());
 
    	    if(mnemonic->outputsensor.compare(0,1,"B")==0) { return; }  //make this smarter.
+	       SetCoreNumber(mnemonic->arrayposition);
 
           //core.fCore_IsHighGain = false;
           SetIsHighGain(false);
@@ -71,8 +72,6 @@ class TPacesData : public TGRSIDetectorData {
           SetCoreAddress(frag->ChannelAddress);
 
           for(int x=0;x<frag->Charge.size();x++) {
-	   //    	SetCoreNumber(CoreNbr);
-            SetCoreEnergy(channel->CalibrateENG(frag->Charge.at(x)));		
             SetCoreCharge(frag->Charge.at(x));
 		      SetCoreCFD(frag->Cfd.at(x));		
 	        //SetCoreTime(frag->TimeToTrig);		
@@ -98,7 +97,7 @@ class TPacesData : public TGRSIDetectorData {
 
       inline std::vector<Short_t> GetCoreWave(const unsigned int &i) const {return fCore_Wave.at(i);}	//!
 
-      inline unsigned int GetMultiplicity() const	           {return fCore_Nbr.size();}	//!
+      inline unsigned int GetMultiplicity() const	           {return fCore_Address.size();}	//!
 		
       ClassDef(TPacesData,0) //! // TPacesData structure
 };

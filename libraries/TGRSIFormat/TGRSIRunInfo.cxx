@@ -61,6 +61,8 @@ void TGRSIRunInfo::Print(Option_t *opt) {
    printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
    printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
    printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
+   printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
+   printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
    printf("\t=====================\n");
 }
 
