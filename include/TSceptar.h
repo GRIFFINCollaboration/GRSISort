@@ -9,7 +9,7 @@
 #include <TSceptarHit.h>
 #include <TSceptarData.h>
 #include <TVector3.h> 
-
+#include <TClonesArray.h>
 #include <TSceptarHit.h>
 #include <TGRSIDetector.h> 
 
@@ -21,8 +21,8 @@ class TSceptar : public TGRSIDetector {
      virtual ~TSceptar();
 
   public: 
-     TSceptarHit *GetSceptarHit(int i)        {	return &sceptar_hits[i];   }	//!
-     Short_t GetMultiplicity() const	       {	return sceptar_hits.size();}	//!
+     TSceptarHit *GetSceptarHit(int i)        {	return (TSceptarHit*)((sceptar_hits)[i]);   }	//!
+     Short_t GetMultiplicity() const	       {	return sceptar_hits.GetEntries();}	//!
 
      static TVector3 GetPosition(int DetNbr)  { return gPaddlePosition[DetNbr];}	//!
 
@@ -32,9 +32,10 @@ class TSceptar : public TGRSIDetector {
      TSceptar& operator=(const TSceptar&);  // 
 
    private: 
-     TSceptarData *sceptardata;                                               //!  Used to build GRIFFIN Hits
-     std::vector <TSceptarHit> sceptar_hits;                                  //   The set of crystal hits
+     TSceptarData *sceptardata;                                   //!  Used to build GRIFFIN Hits
 
+   public:
+     TClonesArray sceptar_hits;                                  //   The set of crystal hits  
 //     static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
 
      bool beta;                                                               //   Is there a sceptar hit?
