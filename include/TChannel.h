@@ -69,11 +69,11 @@ class TChannel : public TNamed	{
     int		         stream;
     int              userinfonumber;
 
-    std::vector<double> ENGCoefficients;  double ENGChi2;
-    std::vector<double> CFDCoefficients;  double CFDChi2;
-    std::vector<double> LEDCoefficients;  double LEDChi2;
-    std::vector<double> TIMECoefficients; double TIMEChi2;
-    std::vector<double> EFFCoefficients;  double EFFChi2;
+    std::vector<Double_t> ENGCoefficients;  double ENGChi2;
+    std::vector<Double_t> CFDCoefficients;  double CFDChi2;
+    std::vector<Double_t> LEDCoefficients;  double LEDChi2;
+    std::vector<Double_t> TIMECoefficients; double TIMEChi2;
+    std::vector<Double_t> EFFCoefficients;  double EFFChi2;
 
     //static TList *fChannelList;
     static std::map<unsigned int,TChannel*> *fChannelMap;          //A map to all of the channels based on address
@@ -82,11 +82,11 @@ class TChannel : public TNamed	{
 	 void OverWriteChannel(TChannel*);
 	 void AppendChannel(TChannel*);
 
-    void SetENGCoefficients(std::vector<double> tmp) { ENGCoefficients = tmp; }
-    void SetCFDCoefficients(std::vector<double> tmp) { CFDCoefficients = tmp; }
-    void SetLEDCoefficients(std::vector<double> tmp) { LEDCoefficients = tmp; }
-    void SetTIMECoefficients(std::vector<double> tmp){ TIMECoefficients = tmp; }
-    void SetEFFCoefficients(std::vector<double> tmp) { EFFCoefficients = tmp;}
+    void SetENGCoefficients(std::vector<Double_t> tmp) { ENGCoefficients = tmp; }
+    void SetCFDCoefficients(std::vector<Double_t> tmp) { CFDCoefficients = tmp; }
+    void SetLEDCoefficients(std::vector<Double_t> tmp) { LEDCoefficients = tmp; }
+    void SetTIMECoefficients(std::vector<Double_t> tmp){ TIMECoefficients = tmp; }
+    void SetEFFCoefficients(std::vector<Double_t> tmp) { EFFCoefficients = tmp;}
 	
 	 static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 

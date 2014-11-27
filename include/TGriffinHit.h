@@ -40,7 +40,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 		TVector3 position;  
 
 		//std::vector<TCrystalHit> bgo;  //!
-      std::vector<Short_t> waveform;  //!
+      //std::vector<Short_t> waveform;  //!
    
 	public:
 
@@ -65,7 +65,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       inline void SetAddress(const UInt_t &x)      { address = x; } //!
 
-      inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
+      //inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
 
 		void SetPosition(double dist =110);                                				  //!
 
@@ -86,7 +86,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       inline Int_t    GetFilterPatter() const         {   return filter;   }  //!
       inline Int_t    GetPPG() const                  {   return ppg;   }  //!
-      inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
+      //inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
 	//	inline int GetBGOMultiplicity() const  		  {	return bgo.size();	}		      //!
 	//	inline TCrystalHit *GetBGO(const int &i)       {	return &bgo.at(i);	}	        //!
 

@@ -227,7 +227,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       corehit->SetCfd(gdata->GetCoreCFD(i));
 
       if(TGriffin::SetCoreWave()){
-         corehit->SetWaveform(gdata->GetCoreWave(i));
+ //        corehit->SetWaveform(gdata->GetCoreWave(i));
       }
 		
       corehit->SetDetectorNumber(gdata->GetCloverNumber(i));

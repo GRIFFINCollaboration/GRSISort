@@ -52,8 +52,10 @@ class TGriffin : public TGRSIDetector {
    private: 
      TGriffinData *grifdata;                 //!  Used to build GRIFFIN Hits
      TBGOData     *bgodata;                  //!  Used to build BGO Hits
+   public:
      TClonesArray griffin_hits;              //   The set of crystal hits
-     TClonesArray addback_hits; //   The set of add-back hits		
+   private:
+     TClonesArray addback_hits;              //   The set of add-back hits		
 
      static bool fSetBGOHits;		            //!  Flag that determines if BGOHits are being measured			 
 		

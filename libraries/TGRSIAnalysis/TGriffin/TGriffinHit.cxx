@@ -44,7 +44,7 @@ void TGriffinHit::Clear(Option_t *opt)	{
 	}
 	bgo.clear();
 */
-   waveform.clear();
+   //waveform.clear();
 }
 
 void TGriffinHit::SetPosition(double dist) {
