@@ -571,11 +571,10 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
       return;
    }   
 //printf("filling analysis tree with %lu detectors\n",detectors->size());
-   //TStopwatch w1;
-   //w1.Start();
-   //float time1 = 0;
-   //float time2 = 0;
-   //int counter = 0;
+   
+   // clear branches
+   ClearActiveAnalysisTreeBranches();	
+
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
       if(strcmp(det->first,"TI") == 0) {
       //if(strcmp(det->second->IsA()->GetName(),"TTigress") == 0) {
@@ -756,7 +755,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //printf(DYELLOW "\t WRITING " RESET_COLOR "\n");
          FillWriteQueue(detectors);
          //printf(DYELLOW "\t CLEARING " RESET_COLOR "\n");
-         ClearActiveAnalysisTreeBranches();	
+         //ClearActiveAnalysisTreeBranches();	
          //printf(DYELLOW "\t DONE " RESET_COLOR "\n");
       }
       //printf(DRED "\n----------------------------------------" RESET_COLOR "\n");
