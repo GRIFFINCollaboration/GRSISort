@@ -3,7 +3,6 @@
 
 #include "Globals.h"
 
-#include <vector>
 #include <cstdio>
 
 #include <TGriffinHit.h>
@@ -15,6 +14,7 @@ class TGriffinData;
 class TBGOData;
 #endif
 #include <TVector3.h> 
+#include <TClonesArray.h>
 
 #include <TGriffinHit.h>
 #include <TGRSIDetector.h> 
@@ -32,11 +32,11 @@ class TGriffin : public TGRSIDetector {
      //void BuildHits(TGriffinData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
      void BuildAddBack(Option_t *opt="");	//!
 
-     TGriffinHit *GetGriffinHit(int i)        {	return &griffin_hits[i];   }	//!
-     Short_t GetMultiplicity() const	      {	return griffin_hits.size();}	//!
+     TGriffinHit *GetGriffinHit(int i)        {	return (TGriffinHit*)(griffin_hits[i]);   }	//!
+     Short_t GetMultiplicity() const	      {	return griffin_hits.GetEntries();}	//!
 
-     TGriffinHit *GetAddBackHit(int i)        {	return &addback_hits[i];   }	//!
-     Short_t GetAddBackMultiplicity() const   {	return addback_hits.size();}	//!
+     TGriffinHit *GetAddBackHit(int i)        {	return (TGriffinHit*)(addback_hits[i]);   }	//!
+     Short_t GetAddBackMultiplicity() const   {	return addback_hits.GetEntries();}	//!
 
 		//TVector3 GetPosition(TGriffinHit *,int distance=0);						//!
 
@@ -52,8 +52,8 @@ class TGriffin : public TGRSIDetector {
    private: 
      TGriffinData *grifdata;                 //!  Used to build GRIFFIN Hits
      TBGOData     *bgodata;                  //!  Used to build BGO Hits
-     std::vector <TGriffinHit> griffin_hits; //   The set of crystal hits
-     std::vector <TGriffinHit> addback_hits; //   The set of add-back hits		
+     TClonesArray griffin_hits;              //   The set of crystal hits
+     TClonesArray addback_hits; //   The set of add-back hits		
 
      static bool fSetBGOHits;		            //!  Flag that determines if BGOHits are being measured			 
 		

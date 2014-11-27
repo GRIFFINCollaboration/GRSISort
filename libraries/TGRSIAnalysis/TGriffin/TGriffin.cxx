@@ -58,7 +58,7 @@ TVector3 TGriffin::gCloverPosition[17] = {
 };
 
 
-TGriffin::TGriffin() : grifdata(0), bgodata(0)	{
+TGriffin::TGriffin() : grifdata(0), bgodata(0), griffin_hits("TGriffinHit"), addback_hits("TGriffinHit")	{
    //Default Constructor
    //Class()->IgnoreTObjectStreamer(true);
    //if(!gCloverPositionSet) {
@@ -121,8 +121,8 @@ void TGriffin::Clear(Option_t *opt)	{
 	if(grifdata) grifdata->Clear();
 	if(bgodata)  bgodata->Clear();
 
-	griffin_hits.clear();
-	addback_hits.clear();
+	griffin_hits.Clear("C");
+	addback_hits.Clear("C");
 
 }
 
@@ -133,8 +133,8 @@ void TGriffin::Print(Option_t *opt) {
   if(grifdata) grifdata->Print();
   printf("bgodata  = 0x%p\n",bgodata);
   if(bgodata) bgodata->Print();
-  printf("%lu griffin_hits\n",griffin_hits.size());
-  printf("%lu addback_hits\n",addback_hits.size());
+  printf("%lu griffin_hits\n",griffin_hits.GetEntries());
+  printf("%lu addback_hits\n",addback_hits.GetEntries());
   return;
 }
 
@@ -199,7 +199,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
-   griffin_hits.clear();
+   griffin_hits.Clear("C");
 
 
   // std::vector<TGriffinHit> temp_hits;
@@ -210,41 +210,40 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    //printf("gdata->GetMultiplicity() = %i\n",gdata->GetMultiplicity());
 
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
-      TGriffinHit corehit;
+      TGriffinHit *corehit = (TGriffinHit*)((griffin_hits.ConstructedAt(griffin_hits.GetEntries()))); 
 
-      corehit.SetAddress(gdata->GetCoreAddress(i));
+      corehit->SetAddress(gdata->GetCoreAddress(i));
       
       if(gdata->GetIsHighGain(i)) {
-         corehit.SetEnergyHigh(gdata->GetCoreEnergy(i));
-         corehit.SetChargeHigh(gdata->GetCoreCharge(i));
+         corehit->SetEnergyHigh(gdata->GetCoreEnergy(i));
+         corehit->SetChargeHigh(gdata->GetCoreCharge(i));
       }
       else {
-         corehit.SetEnergyLow(gdata->GetCoreEnergy(i));
-         corehit.SetChargeLow(gdata->GetCoreCharge(i));
+         corehit->SetEnergyLow(gdata->GetCoreEnergy(i));
+         corehit->SetChargeLow(gdata->GetCoreCharge(i));
       }
 
-      corehit.SetTime(gdata->GetCoreTime(i));
-      corehit.SetCfd(gdata->GetCoreCFD(i));
+      corehit->SetTime(gdata->GetCoreTime(i));
+      corehit->SetCfd(gdata->GetCoreCFD(i));
 
       if(TGriffin::SetCoreWave()){
-         corehit.SetWaveform(gdata->GetCoreWave(i));
+         corehit->SetWaveform(gdata->GetCoreWave(i));
       }
 		
-      corehit.SetDetectorNumber(gdata->GetCloverNumber(i));
-      corehit.SetCrystalNumber(gdata->GetCoreNumber(i));
+      corehit->SetDetectorNumber(gdata->GetCloverNumber(i));
+      corehit->SetCrystalNumber(gdata->GetCoreNumber(i));
    
-      corehit.SetPosition();
+      corehit->SetPosition();
       
-      corehit.SetPPG(gdata->GetPPG(i));
+      corehit->SetPPG(gdata->GetPPG(i));
 
       if((gdata->GetPPG(i) == 0xd000 && gdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
-         fCycleStart = corehit.GetTime();
+         fCycleStart = corehit->GetTime();
       }
       fLastPPG = gdata->GetPPG(i);
       fCycleStartTime = fCycleStart;
 
       //temp_hits.push_back(corehit);  
-      griffin_hits.push_back(corehit);
 
       //printf(RED "gdata->GetCoreNbrHitsMidasId(%i)    = %i" RESET_COLOR "\n",i, gdata->GetCoreNbrHits(i)); 
       //printf("gdata->GetCoreMidasId(%i)    = %i\n",i, gdata->GetCoreMidasId(i));
@@ -361,28 +360,30 @@ TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ){
 void TGriffin::BuildAddBack(Option_t *opt) { 
    //Builds the addback for the GRIFFIN Event. This is based on a resolution set within the function. This will have to be
    //tuned in order to make add-back the most efficient. 
-   if(this->griffin_hits.size() == 0)
+   if(this->griffin_hits.GetEntries() == 0)
       return;
    //We may have angular correlation add-back algorithms eventaully too.
-   addback_hits.clear();
-   addback_hits.push_back(*(this->GetGriffinHit(0)));
+   addback_hits.Clear("C");
+   TGriffinHit *add_hit = (TGriffinHit*)(addback_hits.ConstructedAt(addback_hits.GetEntries())); 
+   *add_hit = *this->GetGriffinHit(0);         
    //	addback_hits.at(0).Add(&(addback_hits.at(0)));
 
    for(int i = 1; i<this->GetMultiplicity(); i++) {
       bool used = false;
-      for(int j =0; j<addback_hits.size();j++) {
-         TVector3 res = addback_hits.at(j).GetPosition() - this->GetGriffinHit(i)->GetPosition();
+      for(int j =0; j<addback_hits.GetEntries();j++) {
+         TVector3 res = ((TGriffinHit*)(addback_hits.At(j)))->GetPosition() - this->GetGriffinHit(i)->GetPosition();
 
-         int d_time = abs(addback_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
+         int d_time = abs(((TGriffinHit*)(addback_hits.At(j)))->GetTime() - this->GetGriffinHit(i)->GetTime());
 
          if( (res.Mag() < 105) && (d_time < 11) )    {    ///Still need to tune these values!! pcb.
             used = true;
-            addback_hits.at(j).Add(this->GetGriffinHit(i));
+            ((TGriffinHit*)(addback_hits.At(j)))->Add(this->GetGriffinHit(i));
             break;
 	 }
       }
       if(!used) {
-         addback_hits.push_back(*(this->GetGriffinHit(i)));
+         add_hit = (TGriffinHit*)(addback_hits.ConstructedAt(addback_hits.GetEntries())); 
+         *add_hit = *this->GetGriffinHit(i); 
         	//addback_hits.back().Add(&(addback_hits.back()));
       }
    }

@@ -25,7 +25,7 @@ class TSceptar : public TGRSIDetector {
      virtual ~TSceptar();
 
   public: 
-     TSceptarHit *GetSceptarHit(int i)        {	return (TSceptarHit*)((sceptar_hits)[i]);   }	//!
+     TSceptarHit *GetSceptarHit(int i)        {	return (TSceptarHit*)(sceptar_hits[i]);   }	//!
      Short_t GetMultiplicity() const	       {	return sceptar_hits.GetEntries();}	//!
 
      static TVector3 GetPosition(int DetNbr)  { return gPaddlePosition[DetNbr];}	//!

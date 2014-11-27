@@ -38,12 +38,12 @@ void TGriffinHit::Clear(Option_t *opt)	{
    time   = 0;
 
    position.SetXYZ(0,0,1);
-
+/*
 	for(int x=0;x<bgo.size();x++)	{
 		bgo[x].Clear();
 	}
 	bgo.clear();
-
+*/
    waveform.clear();
 }
 

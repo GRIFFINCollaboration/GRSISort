@@ -29,7 +29,7 @@ class TPaces : public TGRSIDetector {
   public: 
      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
 
-     TPacesHit *GetPacesHit(int i)           {	return (TPacesHit*)((paces_hits)[i]);   }	//!
+     TPacesHit *GetPacesHit(int i)           {	return (TPacesHit*)(paces_hits[i]);   }	//!
      Short_t GetMultiplicity() const	      {	return paces_hits.GetEntries();}	//!
 
      void FillData(TFragment*,TChannel*,MNEMONIC*); //!
