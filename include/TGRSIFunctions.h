@@ -16,7 +16,20 @@ namespace TGRSIFunctions {
    Double_t PhotoPeak(Double_t *dim, Double_t *par);
    Double_t Gaus(Double_t *dim, Double_t *par);
    Double_t SkewedGaus(Double_t *dim, Double_t *par);
+   Double_t MultiSkewedGausWithBG(Double_t *dim, Double_t *par);
    Double_t Bateman(Double_t *dim, Double_t *par, Int_t nChain = 1, Double_t SecondsPerBin = 1.0);
+
+// STEFFEN ADDED THESE
+   Double_t LanGausHighRes(Double_t *x,Double_t *pars);
+   Double_t LanGaus(Double_t *x,Double_t *pars);
+   Double_t MultiGausWithBG(Double_t *x,Double_t *pars);
+   Double_t SkewedGaus2(Double_t *dim, Double_t *par);
+   Double_t MultiSkewedGausWithBG2(Double_t *dim, Double_t *par);
+
+
+	 static int  npeaks = 0;
+	 static int  GetNumberOfPeaks() { return npeaks;}
+	 static void SetNumberOfPeaks(int tmp) { npeaks = tmp;}
 
 //Common corrections
    Double_t DeadTimeCorrect(Double_t *dim, Double_t deadtime, Double_t binWidth = 1.0);
