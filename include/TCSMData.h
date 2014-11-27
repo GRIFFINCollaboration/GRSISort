@@ -133,7 +133,7 @@ public:
   inline unsigned int GetMultiplicityHorizontal() const {return fCSM_StripHorizontal_DetectorNbr.size();}				//!
   inline unsigned int GetMultiplicityVertical()  const {return fCSM_StripVertical_DetectorNbr.size();}				//!
  
-  ClassDef(TCSMData,0)  //!  // CSMData structure 
+  //ClassDef(TCSMData,0)  //!  // CSMData structure 
 };
 
 #endif

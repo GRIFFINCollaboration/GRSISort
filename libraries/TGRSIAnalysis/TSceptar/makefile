@@ -1,5 +1,8 @@
 
-OBJECTS = TSceptar.o TSceptarDict.o TSceptarData.o TSceptarDataDict.o TSceptarHit.o TSceptarHitDict.o 
+OBJECTS = TSceptar.o TSceptarData.o TSceptarHit.o TSceptarDict.o 
+INCDIR = $(BASE)/include
+DICTOBJ = $(INCDIR)/TSceptarHit.h $(INCDIR)/TSceptar.h 
+DICTNAM = TSceptar
 
 CFLAGS += -fPIC
 
@@ -44,9 +47,9 @@ all: libSceptar.so
 	@$(RM) -f temp.errors temp.log
 
 
-%Dict.cxx: $(BASE)/include/%.h 
+$(DICTNAM)Dict.cxx: $(DICTOBJ)
 	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
-	@rootcint -f $@ -c -I${BASE}/include -p $^ 2> temp.log || touch temp.errors
+	@rootcint -f $@ -c -I$(INCDIR) -p $(DICTOBJ) $(DICTNAM)LinkDef.h 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
 		&& $(CAT) temp.log && \
@@ -57,10 +60,6 @@ all: libSceptar.so
 		else printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10  $(OK_STRING); \
 		fi;
 	@$(RM) -f temp.errors temp.log
-
-
-
-
 
 clean:
 	$(RM) $(OBJECTS) *~ *Dict* *so

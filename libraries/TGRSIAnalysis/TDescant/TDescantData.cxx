@@ -1,6 +1,6 @@
 #include "TDescantData.h"
 
-ClassImp(TDescantData)
+//ClassImp(TDescantData)
 
 bool TDescantData::fIsSet   = false;
 bool TDescantData::fSetWave = false;

@@ -18,7 +18,11 @@
 #include "TFragment.h"
 #include "TChannel.h"
 
+#ifndef __CINT__
 #include "TCSMData.h"
+#else
+class TCSMData;
+#endif
 #include "TCSMHit.h"
 
 #include <TMath.h>

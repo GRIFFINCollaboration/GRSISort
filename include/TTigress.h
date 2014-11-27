@@ -8,8 +8,13 @@
 #include <stdio.h>
 
 #include "TTigressHit.h"
+#ifndef __CINT__
 #include "TTigressData.h"
 #include "TBGOData.h"
+#else
+class TTigressData;
+class TBGOData;
+#endif
 
 #include <TMath.h>
 #include <TVector3.h> 

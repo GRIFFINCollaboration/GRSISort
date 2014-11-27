@@ -209,7 +209,7 @@ public:
   inline unsigned int GetMultiplicityBack()  const {return fSharc_StripBack_DetectorNbr.size();}				//!
   inline unsigned int GetMultiplicityPAD()   const {return fSharc_PAD_DetectorNbr.size();}						//!
  
-  ClassDef(TSharcData,0)  //!  // SharcData structure 
+  //ClassDef(TSharcData,0)  //!  // SharcData structure 
 };
 
 #endif

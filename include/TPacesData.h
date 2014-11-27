@@ -99,7 +99,7 @@ class TPacesData : public TGRSIDetectorData {
 
       inline unsigned int GetMultiplicity() const	           {return fCore_Address.size();}	//!
 		
-      ClassDef(TPacesData,0) //! // TPacesData structure
+      //ClassDef(TPacesData,0) //! // TPacesData structure
 };
 
 

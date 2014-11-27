@@ -182,7 +182,7 @@ class TTigressData : public TGRSIDetectorData {
 		inline unsigned int GetCoreMultiplicity()		{return fCore_Nbr.size();}	//!
 		inline unsigned int GetSegmentMultiplicity()		{return fSegment_Nbr.size();}	//!
 		
-		ClassDef(TTigressData,0) //! // TCloverData structure
+		//ClassDef(TTigressData,0) //! // TCloverData structure
 };
 
 

@@ -99,7 +99,7 @@ class TBGOData : public TGRSIDetectorData	{
 
 		inline unsigned int GetBGOMultiplicity()  {return fBGO_PmNbr.size();}			//!
 
-  ClassDef(TBGOData,0) //!  // TBgoData structure
+  //ClassDef(TBGOData,0) //!  // TBgoData structure
 };
 
 

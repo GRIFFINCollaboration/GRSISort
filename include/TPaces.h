@@ -7,7 +7,11 @@
 #include <cstdio>
 
 #include <TPacesHit.h>
+#ifndef __CINT__
 #include <TPacesData.h>
+#else
+class TPacesData;
+#endif
 #include <TVector3.h> 
 
 #include <TGRSIDetector.h> 

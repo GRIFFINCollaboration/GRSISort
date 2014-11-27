@@ -9,8 +9,12 @@
 #endif
 
 #include "TObject.h"
-
+#ifndef __CINT__
 #include "TGRSIDetectorData.h"
+#else
+class TGRSIDetectorData;
+#endif
+
 #include "TFragment.h"
 #include "TChannel.h"
 

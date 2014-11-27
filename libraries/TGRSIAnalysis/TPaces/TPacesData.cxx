@@ -3,7 +3,7 @@
 #include "TPacesData.h"
 
 
-ClassImp(TPacesData)
+//ClassImp(TPacesData)
 
 bool TPacesData::fIsSet = false;
 

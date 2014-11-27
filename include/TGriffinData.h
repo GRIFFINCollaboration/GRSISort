@@ -121,7 +121,7 @@ class TGriffinData : public TGRSIDetectorData {
 
       inline unsigned int GetMultiplicity() const	           {return fCore_Nbr.size();}	//!
 		
-      ClassDef(TGriffinData,0) //! // TGriffinData structure
+      //ClassDef(TGriffinData,0) //! // TGriffinData structure
 };
 
 

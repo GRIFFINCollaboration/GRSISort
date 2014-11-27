@@ -2,7 +2,7 @@
 #include "TGRSIDetectorData.h"
 #include <TClass.h>
 
-ClassImp(TGRSIDetectorData)
+//ClassImp(TGRSIDetectorData)
 
 
 /////////////////////////
