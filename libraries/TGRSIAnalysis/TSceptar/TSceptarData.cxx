@@ -1,7 +1,5 @@
 #include "TSceptarData.h"
 
-ClassImp(TSceptarData)
-
 bool TSceptarData::fIsSet   = false;
 bool TSceptarData::fSetWave = false;
 

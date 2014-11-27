@@ -2,9 +2,6 @@
 
 #include "TPacesData.h"
 
-
-ClassImp(TPacesData)
-
 bool TPacesData::fIsSet = false;
 
 TPacesData::TPacesData()	{	

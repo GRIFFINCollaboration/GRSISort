@@ -2,9 +2,6 @@
 
 #include "TTigressData.h"
 
-
-ClassImp(TTigressData)
-
 bool TTigressData::fIsSet = false;
 
 TTigressData::TTigressData()	{	

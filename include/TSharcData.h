@@ -1,14 +1,5 @@
 #ifndef __SharcDATA__
 #define __SharcDATA__
-/*****************************************************************************
- *
- *  The current layout of the 'data;' is inspired by and should be compatable
- *  with the NPTOOLS analysis kit maintained by our friends at the univeristy 
- *  of Surrey.   These class however are unique to the triumf sort code.
- *
- *  pcb
- *                                                                           
- *****************************************************************************/
 
 #include "Globals.h"
 
@@ -209,7 +200,7 @@ public:
   inline unsigned int GetMultiplicityBack()  const {return fSharc_StripBack_DetectorNbr.size();}				//!
   inline unsigned int GetMultiplicityPAD()   const {return fSharc_PAD_DetectorNbr.size();}						//!
  
-  ClassDef(TSharcData,0)  //!  // SharcData structure 
+  //ClassDef(TSharcData,0)  //!  // SharcData structure 
 };
 
 #endif

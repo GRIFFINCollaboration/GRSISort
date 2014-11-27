@@ -9,6 +9,9 @@
 #include <set>
 
 #ifndef __CINT__
+#include "TSharcData.h"
+#else
+class TSharcData;
 #endif
 
 #include <TMath.h>
@@ -16,7 +19,6 @@
 
 #include <TGRSIDetector.h>
 
-#include "TSharcData.h"
 #include "TSharcHit.h"
 
 #ifndef PI

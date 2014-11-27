@@ -27,7 +27,7 @@ class TBGOData : public TGRSIDetectorData	{
 		std::vector<Double_t> fBGO_TimeLED;		//!
 		std::vector<Double_t> fBGO_Time;		//!
 
-		std::vector<std::vector<int> > fBGO_Wave;	//!
+		std::vector<std::vector<Short_t> > fBGO_Wave;	//!
 
 		static bool fIsSet; //!
 
@@ -51,7 +51,7 @@ class TBGOData : public TGRSIDetectorData	{
 		inline void SetBGOLED(const Double_t &BGOTimeLED)		{fBGO_TimeLED.push_back(BGOTimeLED);}	//!
 		inline void SetBGOTime(const Double_t &BGOTime)			{fBGO_Time.push_back(BGOTime);}		//!
 
-		inline void SetBGOWave(const std::vector<int> &BGOWave)		{fBGO_Wave.push_back(BGOWave);}		//!
+		inline void SetBGOWave(const std::vector<Short_t> &BGOWave)		{fBGO_Wave.push_back(BGOWave);}		//!
 
 		inline void SetBGO(const UShort_t &BGOCloverNbr, const UShort_t &BGOCrystalNbr, const UShort_t &BGOPmNbr, const Int_t &BGOCharge, const Double_t &BGOEnergy, const Double_t &BGOTimeCFD, const Double_t &BGOTimeLED, const Double_t &BGOTime = 0)	{
 			SetBGOCloverNbr(BGOCloverNbr);
@@ -95,11 +95,11 @@ class TBGOData : public TGRSIDetectorData	{
 		inline Double_t GetBGOLED(const unsigned int &i)     {return fBGO_TimeLED.at(i);}	//!
 		inline Double_t GetBGOTime(const unsigned int &i)    	 {return fBGO_Time.at(i);}	//!
 
-		inline std::vector<int> GetBGOWave(const unsigned int &i) {return fBGO_Wave.at(i);}	//!
+		inline std::vector<Short_t> GetBGOWave(const unsigned int &i) {return fBGO_Wave.at(i);}	//!
 
 		inline unsigned int GetBGOMultiplicity()  {return fBGO_PmNbr.size();}			//!
 
-  ClassDef(TBGOData,0) //!  // TBgoData structure
+  //ClassDef(TBGOData,0) //!  // TBgoData structure
 };
 
 

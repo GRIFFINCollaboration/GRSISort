@@ -56,8 +56,10 @@ public:
 	inline Int_t GetTimeToTrig()		{ return TriFoil_Time; }          //!
 
 	inline std::vector<Short_t> GetWaveBuffer() { return TriFoil_WaveBuffer; }  //!
- 
-  ClassDef(TTriFoilData,0)  //!  // TriFoilData structure 
+
+   int GetMultiplicity() { 1; } 
+
+  //ClassDef(TTriFoilData,0)  //!  // TriFoilData structure 
 };
 
 #endif

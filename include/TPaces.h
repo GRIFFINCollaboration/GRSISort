@@ -6,8 +6,13 @@
 #include <vector>
 #include <cstdio>
 
-#include <TPacesHit.h>
+#ifndef __CINT__
 #include <TPacesData.h>
+#else
+class TPacesData;
+#endif
+
+#include <TPacesHit.h>
 #include <TVector3.h> 
 #include <TClonesArray.h>
 

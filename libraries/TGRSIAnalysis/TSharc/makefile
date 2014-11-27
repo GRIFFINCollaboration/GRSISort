@@ -1,5 +1,8 @@
 
-OBJECTS = TSharc.o TSharcDict.o TSharcData.o TSharcDataDict.o TSharcHit.o TSharcHitDict.o
+OBJECTS = TSharc.o TSharcData.o TSharcHit.o TSharcDict.o 
+INCDIR = $(BASE)/include
+DICTOBJ = $(INCDIR)/TSharcHit.h $(INCDIR)/TSharc.h
+DICTNAM = TSharc
 
 CFLAGS += -fPIC
 
@@ -61,12 +64,28 @@ libSharc.so: $(OBJECTS)
 		fi;
 	@$(RM) -f temp.errors temp.log
 
+$(DICTNAM)Dict.cxx: $(DICTOBJ)
+	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
+	@rootcint -f $@ -c `root-config --cflags` -I$(INCDIR) -p $(DICTOBJ) $(DICTNAM)LinkDef.h 2> temp.log || touch temp.errors
+	@if test -e temp.errors; then \
+		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
+		&& $(CAT) temp.log && \
+		printf "${ERROR_COLOR}%s\n${NO_COLOR}" ${PWD};  \
+		elif test -s temp.log; then \
+		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${WARN_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(WARN_STRING) \
+		&& $(CAT) temp.log; \
+		else printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10  $(OK_STRING); \
+		fi;
+	@$(RM) -f temp.errors temp.log
+
+
+
 
 
 
 
 clean:
-	$(RM) $(OBJECTS) *~ *Dict* *so *LinkDef*
+	$(RM) $(OBJECTS) *~ *Dict* *so 
 
 
 

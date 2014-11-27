@@ -19,8 +19,6 @@ using namespace std;
 
 #include "TCSMData.h"
 
-ClassImp(TCSMData)
-
 bool TCSMData::fIsSet = false;
 
 /////////////////////////

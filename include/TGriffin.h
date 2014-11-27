@@ -7,8 +7,13 @@
 #include <cstdio>
 
 #include <TGriffinHit.h>
+#ifndef __CINT__
 #include <TGriffinData.h>
 #include <TBGOData.h>
+#else
+class TGriffinData;
+class TBGOData;
+#endif
 #include <TVector3.h> 
 
 #include <TGriffinHit.h>

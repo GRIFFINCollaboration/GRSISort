@@ -1,7 +1,5 @@
 #include "TDescantData.h"
 
-ClassImp(TDescantData)
-
 bool TDescantData::fIsSet   = false;
 bool TDescantData::fSetWave = false;
 

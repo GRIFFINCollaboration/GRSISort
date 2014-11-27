@@ -1,5 +1,8 @@
 
-OBJECTS = TTriFoil.o TTriFoilDict.o TTriFoilData.o TTriFoilDataDict.o 
+OBJECTS = TTriFoil.o TTriFoilData.o TTriFoilDict.o 
+INCDIR = $(BASE)/include
+DICTOBJ = $(INCDIR)/TTriFoil.h 
+DICTNAM = TTriFoil
 
 CFLAGS += -fPIC
 
@@ -46,10 +49,9 @@ libTriFoil.so: $(OBJECTS)
 		fi;
 	@$(RM) -f temp.errors temp.log
 
-
-%Dict.cxx: $(BASE)/include/%.h
+$(DICTNAM)Dict.cxx: $(DICTOBJ)
 	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
-	@rootcint -f $@ -c $^ 2> temp.log || touch temp.errors
+	@rootcint -f $@ -c `root-config --cflags` -I$(INCDIR) -p $(DICTOBJ) $(DICTNAM)LinkDef.h 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
 		&& $(CAT) temp.log && \
@@ -61,12 +63,8 @@ libTriFoil.so: $(OBJECTS)
 		fi;
 	@$(RM) -f temp.errors temp.log
 
-
-
-
-
 clean:
-	$(RM) $(OBJECTS) *~ *Dict* *so *LinkDef*
+	$(RM) $(OBJECTS) *~ *Dict* *so 
 
 
 

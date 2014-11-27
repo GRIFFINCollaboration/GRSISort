@@ -3,8 +3,6 @@
 #include "TGriffinData.h"
 
 
-ClassImp(TGriffinData)
-
 bool TGriffinData::fIsSet = false;
 
 TGriffinData::TGriffinData()	{	

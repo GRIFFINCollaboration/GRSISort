@@ -1,33 +1,37 @@
 #ifndef TTIGRESS_H
 #define TTIGRESS_H
 
+#include "Globals.h"
 
 #include <vector>
-#include <iostream>
 #include <set>
-#include <stdio.h>
+#include <cstdio>
 
 #include "TTigressHit.h"
+#ifndef __CINT__
 #include "TTigressData.h"
 #include "TBGOData.h"
+#else 
+class TTigressData;
+class TBGOData;
+#endif
+#include "TGRSIDetector.h" 
 
 #include <TMath.h>
 #include <TVector3.h> 
 #include <TObject.h>
 
-#include "TGRSIDetector.h" 
 
-using namespace std;
 
 class TTigress : public TGRSIDetector {
 
 	public:
 		TTigress();
-		~TTigress();
+      TTigress(const TTigress&);
+		virtual ~TTigress();
 
 	public: 
       void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
-		//void BuildHits(TTigressData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
 		void BuildAddBack(Option_t *opt="");	//!
 
 		TTigressHit *GetTigressHit(int i)	{	return &tigress_hits[i];	}	//!
@@ -43,17 +47,18 @@ class TTigress : public TGRSIDetector {
 
 		static TVector3 GetPosition(int DetNbr ,int CryNbr, int SegNbr, int distance = 0);		//!
 
-		void FillData(TFragment*,TChannel*,MNEMONIC*); //!
+      void FillData(TFragment*,TChannel*,MNEMONIC*);    //!
 		void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
 
+      TTigress& operator=(const TTigress&);             //!
+
 	private: 
-		TTigressData *tigdata;        //!
-		TBGOData     *bgodata;        //!
+      TTigressData tigdata;        //!
+		TBGOData     bgodata;        //!
+		std::vector <TTigressHit> tigress_hits;  //||
+		std::vector <TTigressHit> addback_hits;  //||		
 
-		std::vector <TTigressHit> tigress_hits;
-		std::vector <TTigressHit> addback_hits;		
-
-		static double beta;
+		//static double beta;
 
 		static bool fSetSegmentHits;			//!
 		static bool fSetBGOHits;					 //!
@@ -79,7 +84,7 @@ class TTigress : public TGRSIDetector {
 		virtual void Clear(Option_t *opt = "");		//!
 		virtual void Print(Option_t *opt = "");		//!
 
-   ClassDef(TTigress,1)  // Tigress Physics structure
+   ClassDef(TTigress,2)  // Tigress Physics structure
 
 
 };
