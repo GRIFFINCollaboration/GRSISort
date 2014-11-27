@@ -51,6 +51,39 @@ void TSharcHit::Print(Option_t *options)	{
 
 
 
+Double_t  TSharcHit::GetFrontChgHeight() {
+  TChannel *chan = TChannel::GetChannel(front_address);
+  if(!chan) {
+    printf("AHHHH, can't find sharc channel with address 0x%p in TChannel\n",front_address);
+    return front_charge;
+  }
+  return ((double)(front_charge)+gRandom->Uniform())/((double)chan->GetIntegration());
+}
+
+Double_t  TSharcHit::GetBackChgHeight() {
+  TChannel *chan = TChannel::GetChannel(back_address);
+  if(!chan) {
+    printf("AHHHH, can't find sharc channel with address 0x%p in TChannel\n",back_address);
+    return back_charge;
+  }
+  return ((double)(front_charge)+gRandom->Uniform())/((double)chan->GetIntegration());
+}
+
+
+Double_t  TSharcHit::GetPadChgHeight() {
+  if(!p_address)
+     return 0.0;
+  TChannel *chan = TChannel::GetChannel(p_address);
+  if(!chan) {
+    printf("AHHHH, can't find sharc channel with address 0x%p in TChannel\n",p_address);
+    return pad_charge;
+  }
+  return ((double)(front_charge)+gRandom->Uniform())/((double)chan->GetIntegration());
+}
+
+
+
+
 Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
 	TVector3 posoff; 
 	posoff.SetXYZ(Xoff,Yoff,Zoff);

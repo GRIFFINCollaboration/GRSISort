@@ -12,6 +12,10 @@ NamespaceImp(TGRSIFunctions);
 //
 ///////////////////////////////////////////////////////////////////////
 
+
+#define PI 3.14159265
+//TGRSIFunctions::SetNumberOfPeaks(0);
+
 Double_t TGRSIFunctions::PolyBg(Double_t *x, Double_t *par,Int_t order) {
 //Polynomial function of the form SUM(par[i]*(x - shift)^i). The shift is done to match parameters with Radware output. 
 
@@ -92,6 +96,117 @@ Double_t TGRSIFunctions::SkewedGaus(Double_t *dim, Double_t *par){
    return R*height/100.0*(TMath::Exp((x-c)/beta))*(TMath::Erfc(((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta)));
 
 }
+Double_t TGRSIFunctions::MultiSkewedGausWithBG(Double_t *dim, Double_t *par) {
+  // STATIC VARIABLE  (npeaks) must be set before using!!!
+  // TGRSIFunctions::Set(int num);
+  //
+  // Limits need to be impossed or error states may occour.
+  //
+	double result = par[1] + dim[0]*par[2]; // background.
+	for(int i=0;i<par[0];i++){// par[0] is number of peaks
+		Double_t tmp_par[5];
+  	tmp_par[0]   = par[5*i+3]; //height of photopeak
+  	tmp_par[1]   = par[5*i+4]; //Peak Centroid of non skew gaus
+  	tmp_par[2]   = par[5*i+5]; //standard deviation  of gaussian
+  	tmp_par[3]   = par[5*i+6]; //"skewedness" of the skewed gaussian
+  	tmp_par[4]   = par[5*i+7]; //relative height of skewed gaussian
+		result += SkewedGaus(dim,tmp_par);
+	}
+	return result;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Double_t TGRSIFunctions::SkewedGaus2(Double_t *x, Double_t *par){
+//This function is derived from the convolution of a gaussian with an exponential
+//Requires the following parameters:
+//   - par[0]:  height of photopeak
+//   - par[1]:  centroid of gaussian
+//   - par[2]:  standard deviation of gaussian 
+//   - par[3]:  "skewedness" of the skewed gaussin
+
+  return par[0]*(TMath::Exp((x[0]-par[1])/par[3]))*(TMath::Erfc(((x[0]-par[1])/(TMath::Sqrt(2.0)*par[2]))+par[2]/(TMath::Sqrt(2.0)*par[3])));
+}
+
+Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t *dim, Double_t *par) {
+  // STATIC VARIABLE  (npeaks) must be set before using!!!
+  // TGRSIFunctions::Set(int num);
+  //
+  // Limits need to be impossed or error states may occour.
+  //
+	double result = par[1] + dim[0]*par[2]; // background.
+	for(int i=0;i<abs(par[0]);i++){// par[0] is number of peaks
+		Double_t tmp_par[4];
+  	tmp_par[0]   = par[4*i+3]; //height of photopeak
+  	tmp_par[1]   = par[4*i+4]; //Peak Centroid of non skew gaus
+  	tmp_par[2]   = par[4*i+5]; //standard deviation  of gaussian
+  	tmp_par[3]   = par[4*i+6]; //"skewedness" of the skewed gaussian // &$^@(T&U@(FUJIQ#HF@Q#YG)*!*$()#%*$@)%(*#$%()*#)(*%#$()*%(@$)#%*)#%*$$#
+    result += SkewedGaus2(dim,tmp_par);
+	}
+	return result;
+}
+
+
+Double_t TGRSIFunctions::LanGaus(Double_t *x, Double_t *pars){
+   // pars = {npeaks, bg_offs, bg_slope, detector_sigma, peak1_ampl, peak1_mean, peak1_width, .... peaki_width}; 
+   double dy, y, conv, spec, gaus;
+   conv = 0;
+
+   for(int i=0; i<10; i++){
+    dy = 5*pars[3]/10.0; // truncate the convolution by decreasing number of evaluation points and decreasing range [2.5 sigma still covers 98.8% of gaussian]
+    y = x[0]-2.5*pars[3]+dy*i;
+
+    spec = pars[1]+pars[2]*y; // define background SHOULD THIS BE CONVOLUTED ????? *************************************
+    for( int n=0; n<abs(pars[0]); n++) // the implementation of landau function should be done using the landau function
+      spec +=pars[3*n+4]*TMath::Landau(-y,-pars[3*n+5],pars[3*n+6])/TMath::Landau(0,0,100); // add peaks, dividing by max height of landau
+
+    gaus = TMath::Gaus(-x[0],-y,pars[3])/sqrt(2*PI*pars[3]*pars[3]); // gaus must be normalisd so there is no sigma weighting
+    conv += gaus*spec*dy; // now convolve this [integrate the product] with a gaussian centered at x;
+  } 
+
+  return conv; 
+}   
+
+
+Double_t TGRSIFunctions::LanGausHighRes(Double_t *x, Double_t *pars){ // 5x more convolution points with 1.6x larger range
+  double dy, y, conv, spec, gaus;
+  conv = 0;
+
+  for(int i=0; i<50; i++){
+    dy = 8*pars[3]/50.0; // 4 sigma covers 99.99% of gaussian
+    y = x[0]-4*pars[3]+dy*i;
+
+    spec = pars[1]+pars[2]*y;
+    for( int n=0; n<abs(pars[0]); n++)
+      spec +=pars[3*n+4]*TMath::Landau(-y,-pars[3*n+5],pars[3*n+6])/TMath::Landau(0,0,100);
+
+    gaus = TMath::Gaus(-x[0],-y,pars[3])/sqrt(2*PI*pars[3]*pars[3]);
+    conv += gaus*spec*dy;
+  }
+  return conv;
+}
+
+Double_t TGRSIFunctions::MultiGausWithBG(Double_t *dim, Double_t *par) {
+  // STATIC VARIABLE  (npeaks) must be set before using!!!
+  // TGRSIFunctions::Set(int num);
+  //
+  // Limits need to be impossed or error states may occour.
+  //
+  double amp,mean,sigma;
+	double result = par[1] + dim[0]*par[2]; // background.
+	for(int i=0;i<abs(par[0]);i++) {
+    amp = par[3*i+3];
+    mean = par[3*i+4];
+    sigma = par[3*i+5];
+    result += amp*TMath::Gaus(dim[0],mean,sigma);
+	}
+	return result;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nChain, Double_t SecondsPerBin){
