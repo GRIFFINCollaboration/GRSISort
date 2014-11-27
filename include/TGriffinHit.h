@@ -7,6 +7,7 @@
 #include <TFragment.h>
 #include <TChannel.h>
 #include <TCrystalHit.h>
+#include <TClonesArray.h>
 
 #include <TVector3.h>
 
@@ -38,13 +39,13 @@ class TGriffinHit : public TGRSIDetectorHit {
 
 		TVector3 position;  
 
-		std::vector<TCrystalHit> bgo;  //!
+		//std::vector<TCrystalHit> bgo;  //!
       std::vector<Short_t> waveform;  //!
    
 	public:
 
 		/////////////////////////		/////////////////////////////////////
-		void SetBGO(TCrystalHit &temp)		 { bgo.push_back(temp);	}    //!
+		//void SetBGO(TCrystalHit &temp)		 { bgo.push_back(temp);	}    //!
 
 		inline void SetDetectorNumber(const int &x)  { detector = x; }   //!
 		inline void SetCrystalNumber(const int &x)   { crystal = x;  }   //!
@@ -86,8 +87,8 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline Int_t    GetFilterPatter() const         {   return filter;   }  //!
       inline Int_t    GetPPG() const                  {   return ppg;   }  //!
       inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
-		inline int GetBGOMultiplicity() const  		  {	return bgo.size();	}		      //!
-		inline TCrystalHit *GetBGO(const int &i)       {	return &bgo.at(i);	}	        //!
+	//	inline int GetBGOMultiplicity() const  		  {	return bgo.size();	}		      //!
+	//	inline TCrystalHit *GetBGO(const int &i)       {	return &bgo.at(i);	}	        //!
 
       bool   InFilter(Int_t);  //!
 
