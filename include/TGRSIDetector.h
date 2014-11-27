@@ -6,11 +6,13 @@
 #include <cstdio>
 
 #ifndef __CINT__
+#include "TGRSIDetectorData.h"
+#else
+class TGRSIDetectorData;
 #endif
 
 #include "TObject.h"
 
-#include "TGRSIDetectorData.h"
 #include "TFragment.h"
 #include "TChannel.h"
 

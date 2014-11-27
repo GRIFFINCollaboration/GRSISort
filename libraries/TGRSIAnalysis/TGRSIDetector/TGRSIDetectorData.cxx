@@ -2,8 +2,6 @@
 #include "TGRSIDetectorData.h"
 #include <TClass.h>
 
-ClassImp(TGRSIDetectorData)
-
 
 /////////////////////////
 TGRSIDetectorData::TGRSIDetectorData()	{

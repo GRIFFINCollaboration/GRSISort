@@ -5,8 +5,13 @@
 
 #include <cstdio>
 
-#include <TDescantHit.h>
+#ifndef __CINT__
 #include <TDescantData.h>
+#else
+class TDescantData;
+#endif
+
+#include <TDescantHit.h>
 #include <TVector3.h> 
 #include <TClonesArray.h>
 

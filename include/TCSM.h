@@ -6,11 +6,16 @@
 #include <vector>
 #include <cstdio>
 #include <map>
+
 #ifndef __CINT__
 #include <tuple>
 #include <iterator>
 #include <algorithm>
+#include "TCSMData.h"
+#else
+class TCSMData;
 #endif
+
 #include <utility>
 #include <set>
 
@@ -18,7 +23,6 @@
 #include "TFragment.h"
 #include "TChannel.h"
 
-#include "TCSMData.h"
 #include "TCSMHit.h"
 
 #include <TMath.h>

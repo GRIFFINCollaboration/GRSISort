@@ -71,7 +71,6 @@ class TDescantData : public TGRSIDetectorData {
 
 		inline unsigned int GetMultiplicity()		{return fDet_Nbr.size();}	//!
 		
-		ClassDef(TDescantData,0) //! // TSceptarData structure
 };
 
 

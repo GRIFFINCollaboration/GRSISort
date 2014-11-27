@@ -14,14 +14,14 @@ class TCrystalHit : public TGRSIDetectorHit	{
 		virtual ~TCrystalHit();
 
 	private: 
-		int segment;		//
-		int charge;		  //
+		int segment;		         //
+		int charge;		            //
 
-		double energy;	//
-		double time;		//
-		double cfd;		  //
+		double energy;	            //
+		double time;		         //
+		double cfd;		            //
 
-		std::vector<int> wave;	//!
+		std::vector<Short_t> wave;	//
 
 	public:
 		
@@ -40,11 +40,11 @@ class TCrystalHit : public TGRSIDetectorHit	{
 		inline void SetTime(const double &t)	{	time = t;	}	//!
 		inline void SetCfd(const double &c)	{	cfd = c;	}	//!
 
-		inline void SetWave(const std::vector<int> &w)	{	wave = w;	} //!
-		inline std::vector<int> *GetWave()	{	return &wave;	}	  //!
+		inline void SetWave(const std::vector<Short_t> &w)	{	wave = w;	} //!
+		inline std::vector<Short_t> *GetWave()	{	return &wave;	}	  //!
 
 
-	ClassDef(TCrystalHit,1)
+	ClassDef(TCrystalHit,2)
 };
 
 #endif

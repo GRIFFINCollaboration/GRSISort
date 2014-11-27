@@ -2,8 +2,6 @@
 
 #include "TBGOData.h"
 
-ClassImp(TBGOData)
-
 bool TBGOData::fIsSet = false;
 
 TBGOData::TBGOData()	{	

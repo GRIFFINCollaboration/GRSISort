@@ -5,7 +5,6 @@
 
 #include <TRandom.h>
 #include <TMath.h>
-#include <TClass.h>
 
 ClassImp(TTigress)
 
@@ -19,23 +18,61 @@ bool TTigress::fSetSegmentWave = false;
 bool TTigress::fSetBGOWave = false;
 
 
-TTigress::TTigress() : tigdata(0), bgodata(0)	{
-   Class()->IgnoreTObjectStreamer(true);
+TTigress::TTigress() { //: tigdata(0), bgodata(0)	{
    Clear();
 }
 
+TTigress::TTigress(const TTigress& rhs) {
+
+   //tigdata         = rhs.tigdata;
+   //bgodata         = rhs.bgodata;
+   tigress_hits    = rhs.tigress_hits;
+   addback_hits    = rhs.addback_hits;
+
+   fSetSegmentHits = rhs.fSetSegmentHits;
+   fSetBGOHits     = rhs.fSetBGOHits;     
+                     
+   fSetCoreWave    = rhs.fSetCoreWave;    
+   fSetSegmentWave = rhs.fSetSegmentWave; 
+   fSetBGOWave     = rhs.fSetBGOWave;     
+
+}
+
 TTigress::~TTigress()	{
-  	if(tigdata) delete tigdata;
-   if(bgodata) delete bgodata;
+  	//if(tigdata) delete tigdata;
+   //if(bgodata) delete bgodata;
+}
+
+TTigress& TTigress::operator=(const TTigress &rhs) {
+
+   //tigdata         = rhs.tigdata;
+   //bgodata         = rhs.bgodata;
+   tigress_hits    = rhs.tigress_hits;
+   addback_hits    = rhs.addback_hits;
+
+   fSetSegmentHits = rhs.fSetSegmentHits;
+   fSetBGOHits     = rhs.fSetBGOHits;     
+                     
+   fSetCoreWave    = rhs.fSetCoreWave;    
+   fSetSegmentWave = rhs.fSetSegmentWave; 
+   fSetBGOWave     = rhs.fSetBGOWave;     
+
+   return *this;
 }
 
 void TTigress::Clear(Option_t *opt)	{
 
-	if(tigdata) tigdata->Clear();
-	if(bgodata) bgodata->Clear();
+   //printf("here 1\t0x%08x\n",&tigdata);
+	if(tigdata.GetCoreMultiplicity()>0) tigdata.Clear();
+   //printf("here 2\t0x%08x\n",&bgodata);
+	if(bgodata.GetBGOMultiplicity()>0) bgodata.Clear();
+   //printf("here 3\n");
 
+   //printf("here 4\n");
 	tigress_hits.clear();
+   //printf("here 5\n");
 	addback_hits.clear();
+   //printf("here 6\n");
 
 }
 
@@ -51,8 +88,8 @@ void TTigress::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 	 if(!frag || !channel || !mnemonic)
 	   return;
 
-   if(!tigdata)   
-      tigdata = new TTigressData();
+   //if(!tigdata)   
+   //   tigdata = new TTigressData();
    UShort_t color =5;   
    if(mnemonic->arraysubposition.compare(0,1,"B")==0) {
 	    color = 0;      
@@ -65,10 +102,10 @@ void TTigress::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
    } 
    if(mnemonic->subsystem.compare(0,1,"G")==0) { 
 	  	if((mnemonic->segment==0) || (mnemonic->segment==9 ))	{
- 				tigdata->SetCore(frag,channel,mnemonic);
+ 				tigdata.SetCore(frag,channel,mnemonic);
 			} else {                         
 				//if(SetSegmentHits()) {
- 					tigdata->SetSegment(frag,channel,mnemonic);
+ 					tigdata.SetSegment(frag,channel,mnemonic);
 				//}
 			}
   } else if(mnemonic->subsystem.compare(0,1,"S")==0) {
@@ -80,9 +117,9 @@ void TTigress::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 
 void TTigress::FillBGOData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
    if(SetBGOHits()) {
-	   if(!bgodata)
-  			bgodata = new TBGOData();
-      bgodata->SetBGO(frag,channel,mnemonic);
+	   //if(!bgodata)
+  		//	bgodata = new TBGOData();
+      bgodata.SetBGO(frag,channel,mnemonic);
    }
 	TBGOData::Set();   
 }
@@ -93,9 +130,9 @@ void TTigress::FillBGOData(TFragment *frag, TChannel *channel, MNEMONIC *mnemoni
 void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    TTigressData *tdata = (TTigressData*)data;
    if(tdata==0)
-      tdata = (this->tigdata);
+      tdata = &(this->tigdata);
 //   if(bdata==0)
-   TBGOData *bdata = (this->bgodata);
+   TBGOData *bdata = &(this->bgodata);
 
    if(!tdata)
       return;
@@ -109,9 +146,9 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 		temp_crystal.Clear();
 
 		temp_crystal.SetCharge(tdata->GetCoreCharge(i));
-    temp_crystal.SetEnergy(tdata->GetCoreEnergy(i));
-    temp_crystal.SetTime(tdata->GetCoreTime(i));
-    temp_crystal.SetCfd(tdata->GetCoreCFD(i));
+      temp_crystal.SetEnergy(tdata->GetCoreEnergy(i));
+      temp_crystal.SetTime(tdata->GetCoreTime(i));
+      temp_crystal.SetCfd(tdata->GetCoreCFD(i));
 
 		if(TTigress::SetCoreWave())	{
         	temp_crystal.SetWave(tdata->GetCoreWave(i));

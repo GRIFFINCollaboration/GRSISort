@@ -9,7 +9,12 @@
 #include "TGRSIDetector.h"
 
 #include "TFragment.h"
+#ifndef __CINT__
 #include <TTriFoilData.h>
+#else
+class TTriFoilData;
+#endif
+
 
 using namespace std;
 

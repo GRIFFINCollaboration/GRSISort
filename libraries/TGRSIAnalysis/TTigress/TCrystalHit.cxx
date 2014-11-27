@@ -1,14 +1,13 @@
 
 
 #include "TCrystalHit.h"
-#include <TClass.h>
+//#include <TClass.h>
 
 
 ClassImp(TCrystalHit)
 
-
 TCrystalHit::TCrystalHit()	{
-   Class()->IgnoreTObjectStreamer(true);
+   //Class()->IgnoreTObjectStreamer(true);
 	Clear();
 }
 
@@ -17,11 +16,9 @@ TCrystalHit::~TCrystalHit()	{	}
 void TCrystalHit::Clear(Option_t *opt)	{
 	segment = -1;
 	charge  = 0xffffffff;
-	
 	energy = 0.0;
 	time = 0.0;
 	cfd = 0.0;
-
 	wave.clear();
 }
 

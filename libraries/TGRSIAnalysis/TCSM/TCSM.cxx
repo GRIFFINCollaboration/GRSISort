@@ -1,7 +1,6 @@
 #include <TMath.h>
 #include "TCSM.h"
 
-
 ClassImp(TCSM)
 
 // various csm dimensions in mm
