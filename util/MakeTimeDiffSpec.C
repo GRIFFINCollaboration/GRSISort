@@ -105,24 +105,23 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    FragsIn++;
 
    for(long x=1;x<fEntries;x++) {
-      if(tree->GetEntry(indexvalues[x]) == -1 ) {
+      if(tree->GetEntry(indexvalues[x]) == -1 ) { //move current frag to the next (x'th) entry in the tree
          printf( "FIRE!!!" "\n");
          continue;
       } 
    
-      //make a standing gate
-      Int_t window = 5000;
-
-      TFragment myFrag  = *currentFrag;
-      long time = currentFrag->GetTimeStamp();   
-      long timelow  = time - window;
-      long timehigh = time + window;
+      TFragment myFrag  = *currentFrag;         //Set myfrag to be the x'th fragment before incrementing it.
+      long time = currentFrag->GetTimeStamp();  //Get the timestamp of the x'th fragment 
+      long timelow  = time + 120;
+      long timehigh = time + 140;
    
       int time_low  = (int) (timelow & 0x0fffffff);
       int time_high = (int) (timelow >> 28); 
 
 
       //long start = indexvalues[index->FindValues(time_high,time_low)];////tree->GetEntryNumberWithBestIndex(time_high,time_low);
+      
+      //find the entry where the low part of the gate fits.
       long start = index->FindValues(time_high,time_low);////tree->GetEntryNumberWithBestIndex(time_high,time_low);
 
      
@@ -130,14 +129,19 @@ TList *MakeTimeDiffSpec(TTree *tree) {
       time_high = (int) (timehigh >> 28); 
     
       //long stop = indexvalues[index->FindValues(time_high,time_low)];////tree->GetEntryNumberWithBestIndex(time_high,time_low);
+      
+      //Find the entry where the high part of the gate fits
       long stop = index->FindValues(time_high,time_low);////tree->GetEntryNumberWithBestIndex(time_high,time_low);
 
       //printf("\nlooping over y = %ld - %ld\n",start,stop);
-      for(long y=start;y<=stop;y++) {
+      //
+      //printf("Multiplicity = %d\n",stop-start)
+      for(long y=start;y<stop;y++) {
+         //If the index of the comapred fragment equals the index of the first fragment, do nothing
          if(y == x) {
             continue;
          }
-         if(tree->GetEntry(indexvalues[y]) == -1 ) {
+         if(tree->GetEntry(indexvalues[y]) == -1 ) { //move currentfrag to the next fragment
             printf( "FIRE!!!" "\n");
             continue;
          } 
