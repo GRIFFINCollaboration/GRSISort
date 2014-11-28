@@ -7,7 +7,11 @@
 #include <cstdio>
 
 #include <TSceptarHit.h>
+#ifndef __CINT__
 #include <TSceptarData.h>
+#else
+class TSceptarData;
+#endif
 #include <TVector3.h> 
 
 #include <TSceptarHit.h>

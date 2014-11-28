@@ -7,7 +7,11 @@
 #include <cstdio>
 
 #include <TDescantHit.h>
+#ifndef __CINT__
 #include <TDescantData.h>
+#else
+class TDescantData;
+#endif
 #include <TVector3.h> 
 
 #include <TGRSIDetector.h> 

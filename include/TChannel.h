@@ -146,7 +146,6 @@ class TChannel : public TNamed	{
     double CalibrateTIME(int);
     double CalibrateEFF(double);
 
-
     void DestroyCalibrations();
 
     void DestroyENGCal();
@@ -159,11 +158,9 @@ class TChannel : public TNamed	{
     static void ReadCalFile(const char *filename = "");
     static void WriteCalFile(std::string outfilename = "");
 
-
     virtual void Print(Option_t *opt = "");
     virtual void Clear(Option_t *opt = "");
     //static  void PrintAll(Option_t *opt = "");      
-
 
     ClassDef(TChannel,3) //Contains the Digitizer Information
 };

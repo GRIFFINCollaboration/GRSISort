@@ -9,7 +9,7 @@
 
 #include "TTriFoilData.h"
 
-ClassImp(TTriFoilData)
+//ClassImp(TTriFoilData)
 
 bool TTriFoilData::fIsSet = false;
 

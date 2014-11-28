@@ -10,7 +10,7 @@
 
 #include <TObject.h>
 
-class TGRSIDetectorData : public TObject  {
+class TGRSIDetectorData {//: public TObject  {
 
 
    public:
@@ -21,7 +21,7 @@ class TGRSIDetectorData : public TObject  {
       virtual void Print(Option_t *opt=""); //!
   
 
-  ClassDef(TGRSIDetectorData,0)  //!  // SharcData structure 
+  //ClassDef(TGRSIDetectorData,0)  //!  // SharcData structure 
 };
 
 #endif

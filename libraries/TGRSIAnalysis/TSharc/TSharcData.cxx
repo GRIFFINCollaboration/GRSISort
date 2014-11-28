@@ -15,7 +15,7 @@
 
 #include "TSharcData.h"
 
-ClassImp(TSharcData)
+//ClassImp(TSharcData)
 
 bool TSharcData::fIsSet = false;
 

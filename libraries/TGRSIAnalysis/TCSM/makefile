@@ -1,5 +1,8 @@
 
-OBJECTS = TCSM.o TCSMDict.o TCSMData.o TCSMDataDict.o TCSMHit.o TCSMHitDict.o
+OBJECTS = TCSM.o TCSMData.o TCSMHit.o TCSMDict.o
+INCDIR = $(BASE)/include
+DICTOBJ = $(INCDIR)/TCSMHit.h $(INCDIR)/TCSM.h 
+DICTNAM = TCSM
 
 CFLAGS += -fPIC
 
@@ -44,26 +47,22 @@ all: libCSM.so
 	@$(RM) -f temp.errors temp.log
 
 
-%Dict.cxx: $(BASE)/include/%.h
+$(DICTNAM)Dict.cxx: $(DICTOBJ)
 	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
-	@rootcint -f $@ -c $^ 2> temp.log || touch temp.errors
+	@rootcint -f $@ -c -I$(INCDIR) -p $(DICTOBJ) $(DICTNAM)LinkDef.h 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
-		&& $(CAT) temp.log && \
-		printf "${ERROR_COLOR}%s\n${NO_COLOR}" ${PWD};  \
-		elif test -s temp.log; then \
-		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${WARN_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(WARN_STRING) \
-		&& $(CAT) temp.log; \
-		else printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10  $(OK_STRING); \
-		fi;
+	   && $(CAT) temp.log && \
+	   printf "${ERROR_COLOR}%s\n${NO_COLOR}" ${PWD};  \
+	   elif test -s temp.log; then \
+	   printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${WARN_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(WARN_STRING) \
+	   && $(CAT) temp.log; \
+	   else printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10  $(OK_STRING); \
+	   fi;
 	@$(RM) -f temp.errors temp.log
 
-
-
-
-
 clean:
-	$(RM) $(OBJECTS) *~ *Dict* *so *LinkDef*
+	$(RM) $(OBJECTS) *~ *Dict* *so 
 
 
 

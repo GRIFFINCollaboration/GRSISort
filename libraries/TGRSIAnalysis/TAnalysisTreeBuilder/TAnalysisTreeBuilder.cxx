@@ -152,18 +152,18 @@ TAnalysisTreeBuilder::TAnalysisTreeBuilder() {
 
    fCurrentFragPtr = 0;
 
-   tigress = new TTigress;
-   sharc = new TSharc;
-   triFoil = new TTriFoil;
+   tigress = 0;//new TTigress;
+   sharc = 0;//new TSharc;
+   triFoil = 0;//new TTriFoil;
    //rf->Clear();
-   csm = new TCSM;
+   csm = 0;//new TCSM;
    //spice->Clear(); s3->Clear();
    //tip->Clear();
 
-   griffin = new TGriffin;
-   sceptar = new TSceptar;
-   paces   = new TPaces;
-   descant = new TDescant;
+   griffin = 0;//new TGriffin;
+   sceptar = 0;//new TSceptar;
+   paces   = 0;//new TPaces;
+   descant = 0;//new TDescant;
    //dante->Clear();
    //zerodegree->Clear();
 
@@ -496,21 +496,21 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    TGRSIRunInfo *info = fCurrentRunInfo;
    TTree *tree = fCurrentAnalysisTree;
 
-   if(info->Tigress())   { tigress->Clear(); }
-   if(info->Sharc())     { sharc->Clear(); }
-   if(info->TriFoil())   { triFoil->Clear(); }
+   if(info->Tigress())   { tigress = 0; }//->Clear(); }
+   if(info->Sharc())     { sharc = 0; }//->Clear(); }
+   if(info->TriFoil())   { triFoil = 0; }//->Clear(); }
    //if(info->Rf())        { rf->Clear(); } 
-   if(info->CSM())       { csm->Clear(); }
+   if(info->CSM())       { csm = 0; }//->Clear(); }
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
    //if(info->Tip())       { tip->Clear(); } 
 //printf("clearing griffin 0x08%x\n",griffin);
 //griffin->Print();
-   if(info->Griffin())   { griffin->Clear(); }
-   if(info->Sceptar())   { sceptar->Clear(); }
-   if(info->Paces())     { paces->Clear(); } 
+   if(info->Griffin())   { griffin = 0; }//->Clear(); }
+   if(info->Sceptar())   { sceptar = 0; }//->Clear(); }
+   if(info->Paces())     { paces = 0; }//->Clear(); } 
    //if(info->Dante())     { dante->Clear(); } 
    //if(info->ZeroDegree()){ zerodegree->Clear(); } 
-   if(info->Descant())   { descant->Clear();}
+   if(info->Descant())   { descant = 0; }//->Clear();}
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
 
@@ -571,42 +571,41 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
       return;
    }   
 //printf("filling analysis tree with %lu detectors\n",detectors->size());
-   //TStopwatch w1;
-   //w1.Start();
-   //float time1 = 0;
-   //float time2 = 0;
-   //int counter = 0;
+   
+   // clear branches
+   ClearActiveAnalysisTreeBranches();	
+
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
       if(strcmp(det->first,"TI") == 0) {
       //if(strcmp(det->second->IsA()->GetName(),"TTigress") == 0) {
-         *tigress = *((TTigress*) det->second);
+         tigress = (TTigress*) det->second;
       } else if(strcmp(det->first,"SH") == 0) {
       //} else if(strcmp(det->second->IsA()->GetName(),"TSharc") == 0) {
-         *sharc = *((TSharc*) det->second);
+         sharc = (TSharc*) det->second;
       } else if(strcmp(det->first,"TR") == 0) {
       //} else if(strcmp(det->second->IsA()->GetName(),"TTriFoil") == 0) {
-         *triFoil = *((TTriFoil*) det->second);
+         triFoil = (TTriFoil*) det->second;
       //} else if(strcmp(det->second->IsA()->GetName(),"TRf") == 0) {
          //*rf = *((TRf*) det->second);
       } else if(strcmp(det->first,"CS") == 0) {
       //} else if(strcmp(det->second->IsA()->GetName(),"TCSM") == 0) {
-         *csm = *((TCSM*) det->second);
+         csm = (TCSM*) det->second;
       //} else if(strcmp(det->second->IsA()->GetName(),"TSpice") == 0) {
          //*spice = *((TSpice*) det->second);
       //} else if(strcmp(det->second->IsA()->GetName(),"TTip") == 0) {
          //*tip = *((TTip*) det->second);
       } else if(strcmp(det->first,"GR") == 0) {
       //} else if(strcmp(det->second->IsA()->GetName(),"TGriffin") == 0) {
-         *griffin = *((TGriffin*) det->second);
+         griffin = (TGriffin*) det->second;
          //printf(CYAN "Got GRIFFIN detector: %ld hits" RESET_COLOR "\n",griffin->GetMultiplicity());
       } else if(strcmp(det->first,"SE") == 0) {
       //} else if(strcmp(det->second->IsA()->GetName(),"TSceptar") == 0) {
-         *sceptar = *((TSceptar*) det->second);
+         sceptar = (TSceptar*) det->second;
       } else if(strcmp(det->first,"DS") == 0) {
-         *descant = *((TDescant*) det->second);
+         descant = (TDescant*) det->second;
      // } else if(strcmp(det->second->IsA()->GetName(),"TPaces") == 0) {
       } else if(strcmp(det->first,"PA") == 0) {
-         *paces = *((TPaces*) det->second);
+         paces = (TPaces*) det->second;
       } 
    }
    //time1 += w1.RealTime();
@@ -756,7 +755,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //printf(DYELLOW "\t WRITING " RESET_COLOR "\n");
          FillWriteQueue(detectors);
          //printf(DYELLOW "\t CLEARING " RESET_COLOR "\n");
-         ClearActiveAnalysisTreeBranches();	
+         //ClearActiveAnalysisTreeBranches();	
          //printf(DYELLOW "\t DONE " RESET_COLOR "\n");
       }
       //printf(DRED "\n----------------------------------------" RESET_COLOR "\n");

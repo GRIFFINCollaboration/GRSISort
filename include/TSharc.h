@@ -16,7 +16,11 @@
 
 #include <TGRSIDetector.h>
 
+#ifndef __CINT__
 #include "TSharcData.h"
+#else
+class TSharcData;
+#endif
 #include "TSharcHit.h"
 
 #ifndef PI

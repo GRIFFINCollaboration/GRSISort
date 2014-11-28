@@ -57,7 +57,7 @@ public:
 
 	inline std::vector<Short_t> GetWaveBuffer() { return TriFoil_WaveBuffer; }  //!
  
-  ClassDef(TTriFoilData,0)  //!  // TriFoilData structure 
+  //ClassDef(TTriFoilData,0)  //!  // TriFoilData structure 
 };
 
 #endif

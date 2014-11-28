@@ -3,7 +3,7 @@
 #include "TTigressData.h"
 
 
-ClassImp(TTigressData)
+//ClassImp(TTigressData)
 
 bool TTigressData::fIsSet = false;
 
