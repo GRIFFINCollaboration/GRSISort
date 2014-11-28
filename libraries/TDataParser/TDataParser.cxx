@@ -390,17 +390,15 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 //		delete EventFrag;
 //		return -x;
 //	}
-  /* 
-	if(!SetGRIFMasterFilterPattern(data[x++],EventFrag)) {
-		delete EventFrag;
-		return -x;
+   
+	if(SetGRIFMasterFilterPattern(data[x],EventFrag)) {
+      x++;
 	} 
 
-   if(!SetGRIFMasterFilterId(data[x++],EventFrag)) {
-		delete EventFrag;
-		return -x;
+   if(SetGRIFMasterFilterId(data[x],EventFrag)) {
+      x++;
 	}
-*/
+
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -x;

@@ -30,7 +30,7 @@ class TSceptarHit : public TGRSIDetectorHit {
    
     TVector3 position;
 
-    //std::vector<Short_t> waveform; //!
+    std::vector<Short_t> waveform; //!
    
   public:
 		/////////////////////////		/////////////////////////////////////
@@ -43,7 +43,7 @@ class TSceptarHit : public TGRSIDetectorHit {
       inline void SetTime(const Long_t &x)         { time     = x; }   //!
       inline void SetPosition(TVector3 x)          { position = x; }   //!
 
-//      inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
+      inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
 
 		/////////////////////////		/////////////////////////////////////
 		inline UShort_t GetDetectorNumber()	     {	return detector; }  //!
@@ -55,7 +55,7 @@ class TSceptarHit : public TGRSIDetectorHit {
 		inline Long_t   GetTime()			        {	return time;     }  //!
 		inline TVector3 GetPosition()	           {	return position; }  //!
 
-//      inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
+      inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 
       bool   InFilter(Int_t);                                          //!
 
