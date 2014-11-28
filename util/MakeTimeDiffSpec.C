@@ -111,7 +111,11 @@ TList *MakeTimeDiffSpec(TTree *tree) {
       } 
    
       //make a standing gate
+<<<<<<< .merge_file_EpL15l
       Int_t window = 200;
+=======
+      Int_t window = 5000;
+>>>>>>> .merge_file_AQ7YMi
 
       TFragment myFrag  = *currentFrag;
       long time = currentFrag->GetTimeStamp();   

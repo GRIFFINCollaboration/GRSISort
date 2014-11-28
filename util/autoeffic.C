@@ -543,8 +543,8 @@ TGraph* autogain152(TH1 *hist) {
 
    std::sort(vec.begin(),vec.end());
 
-  // Float_t energies[] = {121.7830, 244.6920, 344.276, 778.903, 964.131, 1408.011};
-   Float_t energies[]={778.903,964.131,1408.011};
+   Float_t energies[] = {121.7830, 244.6920, 344.276, 778.903, 964.131, 1408.011};
+  // Float_t energies[]={778.908,964.131,1408.011};
    TGraph* slopefit = new TGraph(nfound, &(vec[0]), energies);
 
    printf("Now fitting: Be patient\n");
@@ -717,17 +717,17 @@ int autoefficiency60(TH1D *hist,const char *name,Double_t runlengthsecs, Double_
   TList *graphlist = new TList;
   TMultiGraph *mg_eff = new TMultiGraph("Efficiencies","Efficiencies");
  
- /* 
+  
   TGraphErrors *eff_1173 = new TGraphErrors("Eff_1173","Eff_1173"); graphlist->Add(eff_1173);
   TGraphErrors *eff_1332 = new TGraphErrors("Eff_1332","Eff_1332"); graphlist->Add(eff_1332);
   TGraphErrors *fwhm_1173 = new TGraphErrors("FWHM_1173","FWHM_1173"); graphlist->Add(fwhm_1173);
   TGraphErrors *fwhm_1332 = new TGraphErrors("FWHM_1332","FWHM_1332"); graphlist->Add(fwhm_1332);
-*/
+
 
 
      mg->Add(autoefficiency60(hist,0,&nuc, runlengthsecs,activitykBq,verbosity));
-   //   mg->Add(graph);
-  // mg->Draw("PA0");
+      mg->Add(graph);
+   mg->Draw("PA0");
   return 1;
 }
 
@@ -853,6 +853,165 @@ TMultiGraph* autoefficiency60(TTree *tree, TPeak *peak, TH1D *hist,int channum,T
    //return slopefit;
    //delete dummyarray;
    return efficmg;
+
+}
+
+void gainwalk(){
+   //This code is VERY SPECIFIC. It was hacked together as a test during the 32Na experiment and will hopefully
+   //never ever ever ever ever ever be used again.
+
+   //Loop over files first hists01596_000.root
+   //
+   Int_t highchan = 0;
+   Double_t centroids[21][64];
+   Double_t subrunarr[21];
+
+   for(Int_t subrun = 0; subrun <= 0; subrun++){
+      TFile *f = new TFile(Form("hists01596_0%02i.root",subrun));
+
+      subrunarr[subrun] = subrun;
+      //then loop over channels
+      TString hname="hp_charge"; // From list of keys
+      TH2D *mat = (TH2D*)f->Get(hname);
+
+      TH1D* h1 = new TH1D;
+      for(Int_t i = 0; i<highchan; i++)
+      {  
+         printf("\nNow fitting channel: %d",i);
+		   TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i+1),i+1,i+1);
+         centroids[subrun][i] = gainwalk(h1);
+      }
+      f->Close();
+      delete f;
+      delete h1;
+   }
+
+   TFile* gainfile = new TFile("gainwalking.root","RECREATE");
+   for(Int_t sub = 0; sub <= 0; sub++){
+      for(Int_t chan = 0; chan < highchan; chan++){
+         TGraph *g = new TGraph(21,subrunarr, centroids[sub]);
+         g->SetName(Form("centroid_chan_%d",chan));
+         g->SetTitle(Form("centroid_chan_%d",chan));
+         g->Write();
+         delete g;
+      }
+
+   }
+   gainfile->Close();
+   delete gainfile;
+}
+
+
+Double_t gainwalk(TH1* hist){
+      
+   Double_t par[40];
+
+   hist->GetXaxis()->SetRangeUser(1000,1600);
+
+   TSpectrum *s = new TSpectrum();
+   Int_t nfound = s->Search(hist,3,"goff",0.5); //This will be dependent on the source used.
+   
+ //  printf("Found %d candidate peaks to fit\n",nfound);
+ //  if(nfound > 1)
+ //     nfound = 1;
+
+   if(nfound <1){
+      std::cout << "Did not find enough peaks" << std::endl;
+      exit(1);
+   }
+
+   std::vector<Double_t> foundchan;
+   printf("Found Candidate peaks at: ");
+   for(int x=0;x<nfound;x++){
+      Double_t tmppos = s->GetPositionX()[x];
+      printf("%d ", tmppos);
+      foundchan.push_back(tmppos);
+   }
+
+   std::vector<Float_t> areavec;
+   std::vector<Float_t> area_uncertainty;
+   std::vector<Float_t> goodenergyvec;
+   std::vector<Float_t> goodintensvec;
+   std::vector<Float_t> channumvec;
+
+   Float_t integral, sigma; 
+   Double_t binWidth = hist->GetXaxis()->GetBinWidth(1000);
+   Double_t dummyarray[4];
+
+   std::cout << "bin width is " << binWidth << std::endl;
+   Float_t xp = s->GetPositionX()[0];
+   std::cout << "Trying to fit " << xp << " Channel" <<std::endl; 
+
+   Int_t bin = hist->GetXaxis()->FindBin(xp);
+   std::cout << "Bin is: " << bin << "xp is " << xp << std::endl;
+   Float_t yp = hist->GetBinContent(bin);
+   std::cout << "yp is: "<<yp << std::endl;
+   par[0] = yp;  //height
+   par[1] = xp;  //centroid
+   par[2] = 1.0;   //sigma
+   par[3] = 1.0;   //beta
+   par[4] = 40.0;   //R
+   par[5] = 1.0; //stp
+   par[6] = hist->GetBinContent(xp-15);  //A
+   par[7] = (hist->GetBinContent(xp-15) - hist->GetBinContent(xp+15))/100.*binWidth;//B
+   par[8] = -0.5;   //C
+   par[9] = xp;  //bg offset
+   TFitResultPtr fitresult = FitPeak(par,hist,integral, sigma,dummyarray,verbosity);
+   //peak = new TPeak;
+ //  peak->Clear();
+ //  std::cout << peak << std::endl;
+ //  peak->SetCentroid(fitresult->Parameter(1), fitresult->ParError(1));
+ //  peak->SetArea(integral,sigma);
+ //  peak->SetFitResult(fitresult);
+ //  peak->Print();
+ //  tree->Fill();
+ //  areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
+   //area_uncertainty.push_back(sigma);
+ //  area_uncertainty.push_back(0.01*integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
+ //  std::cout<< "Eff = " << areavec.back() << "+/-" << area_uncertainty.back()<< std::endl;
+ //  channumvec.push_back((Float_t)(channum));
+
+ //    }
+
+  std::cout << "IM PRINTING!!!" << std::endl;
+  std::cout << "Chi2 = " << fitresult->Chi2() << std::endl;
+//   static Float_t eff1;
+//   static Float_t eff2;
+//   Float_t *area = &(areavec[0]);
+ //  Float_t *energies = &(engvec[0]);
+ //  float *goodenergy = &(goodenergyvec[0])
+//   Float_t *darea = &(area_uncertainty[0]);
+//   Float_t *chan = &(channumvec[0]);
+  // hist->DrawCopy();
+ //  TGraph *slopefit = new TGraph(areavec.size(),goodenergy,area ); 
+/*   TGraphErrors *effic = new TGraphErrors(1,&chan[0],&area[0],0,&darea[0]);
+   eff1 += area[0];
+   eff2 += area[1];
+   effic->SetMarkerStyle(21);
+   effic->SetMarkerColor(kRed);
+   effic->SetLineColor(kRed);
+   TGraphErrors *effic2 = new TGraphErrors(1,&chan[1],&area[1],0,&darea[1]);
+   effic2->SetMarkerStyle(20);
+   effic2->SetMarkerColor(kBlue);
+   effic2->SetLineColor(kBlue);
+   TMultiGraph * efficmg = new TMultiGraph;
+  // effic->Draw("PA0*");
+   efficmg->Add(effic);
+   efficmg->Add(effic2);
+*/
+ //  std::cout << "Sum of eff so far: " <<eff1 << std::endl;
+ //  std::cout << "Sum of eff2 so far: " << eff2 << std::endl;
+   
+  // printf("Now fitting: Be patient\n");
+ //  slopefit->Fit("pol1");
+  // slopefit->Draw("PA*");
+ //  for(int x=0;x<areavec.size();x++) {
+  //    printf("areavec[%i] = %f\t\tgoodenergyvec[%i] = %f\n",x,areavec[x],x,goodenergyvec[x]);
+  // }
+
+   //return slopefit;
+   //delete dummyarray;
+   return fitresult->Parameter(1);
 
 }
 
