@@ -1,4 +1,4 @@
-
+#ifndef __CINT__
 
 #include "TGriffinData.h"
 
@@ -46,4 +46,4 @@ void TGriffinData::Print(Option_t *opt) const	{
 	printf("not yet written.\n");
 }
 
-
+#endif

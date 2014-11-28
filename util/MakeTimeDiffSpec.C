@@ -1,4 +1,4 @@
-//g++ MakeTimeDiffSpec.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat`root-config --cflags --libs` -lTreePlayer -o runfaster
+//g++ MakeTimeDiffSpec.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat `root-config --cflags --libs` -lTreePlayer -o runfaster
 
 
 
@@ -19,6 +19,8 @@
 #include "TH1F.h"
 #include "TH2F.h"
 
+#include "TChannel.h"
+
 #include "TFragment.h"
 
 TList *MakeTimeDiffSpec(TTree *tree) {
@@ -35,6 +37,8 @@ TList *MakeTimeDiffSpec(TTree *tree) {
 
    bool last_beta_filled = false;
    bool last_gamma_filled = false;
+
+   TChannel::ReadCalFromTree(tree);
 
    //tree->SetBranchAddress("TFragment",&currentFrag);
    TBranch *branch = tree->GetBranch("TFragment");
@@ -106,10 +110,13 @@ TList *MakeTimeDiffSpec(TTree *tree) {
          continue;
       } 
    
+      //make a standing gate
+      Int_t window = 200;
+
       TFragment myFrag  = *currentFrag;
       long time = currentFrag->GetTimeStamp();   
-      long timelow  = time - 5000;
-      long timehigh = time + 5000;
+      long timelow  = time - window;
+      long timehigh = time + window;
    
       int time_low  = (int) (timelow & 0x0fffffff);
       int time_high = (int) (timelow >> 28); 
@@ -140,24 +147,26 @@ TList *MakeTimeDiffSpec(TTree *tree) {
                gg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
             } else if(currentFrag->DetectorType == 2) {
                gb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+               bg_coinc_gE->Fill(myFrag.GetEnergy());
             } else {
-               printf("Unknown detector type\n");
+               //printf("Unknown detector type\n");
             }
          } else if(myFrag.DetectorType == 2) {
             if(currentFrag->DetectorType == 1) {
                bg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+               bg_coinc_gE->Fill(currentFrag->GetEnergy());
             } else if(currentFrag->DetectorType == 2) {
                bb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
             } else {
-               printf("Unknown detector type\n");
+               //printf("Unknown detector type\n");
             }
          }
       }
 
       if(x%1500==0)
          printf("\tOn fragment %i/%i               \r",x,fEntries);
-      if(x>1000000)
-         break;
+  //    if(x>1000000)
+  //       break;
    }
    printf("\n\n");
   
@@ -179,7 +188,9 @@ int main(int argc, char **argv) {
 
    TList *list = MakeTimeDiffSpec(tree);
 
-   TFile *outfile = new TFile("junk.root","recreate");
+   const char* name = f->GetName();
+
+   TFile *outfile = new TFile(Form("mats_%s",name),"recreate");
    list->Write();
 
    return 0;

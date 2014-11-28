@@ -1,4 +1,6 @@
 
+#ifndef __CINT__
+
 #include "TGRSIDetectorData.h"
 #include <TClass.h>
 
@@ -22,3 +24,5 @@ void TGRSIDetectorData::Print(Option_t *opt) { }
 
 void TGRSIDetectorData::Clear(Option_t *opt) { }
 
+
+#endif

@@ -1,6 +1,8 @@
 #ifndef TSCEPTARDATA_H
 #define TSCEPTARDATA_H
 
+#ifndef __CINT__
+
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
@@ -74,6 +76,7 @@ class TSceptarData : public TGRSIDetectorData {
 		//ClassDef(TSceptarData,0) //! // TSceptarData structure
 };
 
+#endif
 
 #endif
 

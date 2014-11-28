@@ -405,6 +405,8 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
    if(fCurrentRunInfo) {
       TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
+      //TGRSIRunInfo::SetPaces(false);
+      //TGRSIRunInfo::SetDescant(false);
       fCurrentRunInfo->Print();
    }
 
