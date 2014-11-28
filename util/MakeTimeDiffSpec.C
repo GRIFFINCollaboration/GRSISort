@@ -1,4 +1,4 @@
-//g++ MakeTimeDiffSpec.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat`root-config --cflags --libs` -lTreePlayer -o runfaster
+//g++ MakeTimeDiffSpec.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat `root-config --cflags --libs` -lTreePlayer -o runfaster
 
 
 
@@ -106,10 +106,13 @@ TList *MakeTimeDiffSpec(TTree *tree) {
          continue;
       } 
    
+      //make a standing gate
+      Int_t window = 5000;
+
       TFragment myFrag  = *currentFrag;
       long time = currentFrag->GetTimeStamp();   
-      long timelow  = time - 5000;
-      long timehigh = time + 5000;
+      long timelow  = time - window;
+      long timehigh = time + window;
    
       int time_low  = (int) (timelow & 0x0fffffff);
       int time_high = (int) (timelow >> 28); 
@@ -179,7 +182,9 @@ int main(int argc, char **argv) {
 
    TList *list = MakeTimeDiffSpec(tree);
 
-   TFile *outfile = new TFile("junk.root","recreate");
+   const char* name = f->GetName();
+
+   TFile *outfile = new TFile(Form("mats_%s",name),"recreate");
    list->Write();
 
    return 0;
