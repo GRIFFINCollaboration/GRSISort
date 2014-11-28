@@ -376,7 +376,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
    TFragment *EventFrag = new TFragment();
 
    EventFrag->MidasTimeStamp = midastime;
-	EventFrag->MidasId = midasserialnumber;	 
+   EventFrag->MidasId = midasserialnumber;	 
 
 	int x = 0;  
    //int x = 6;
@@ -395,7 +395,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
       x++;
 	} 
 
-   if(SetGRIFMasterFilterId(data[x],EventFrag)) {
+  if(SetGRIFMasterFilterId(data[x],EventFrag)) {
       x++;
 	}
 

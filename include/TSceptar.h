@@ -14,7 +14,6 @@ class TSceptarData;
 #endif
 #include <TVector3.h> 
 
-#include <TSceptarHit.h>
 #include <TGRSIDetector.h> 
 
 
@@ -33,7 +32,7 @@ class TSceptar : public TGRSIDetector {
      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = "");           //!
      void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
 
-     TSceptar& operator=(const TSceptar&);  // 
+     TSceptar& operator=(const TSceptar&);  //!
 
    private: 
      TSceptarData *sceptardata;                                               //!  Used to build GRIFFIN Hits
