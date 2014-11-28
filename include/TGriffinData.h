@@ -64,22 +64,7 @@ class TGriffinData : public TGRSIDetectorData {
     inline void SetCore(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 	      if(!frag || !channel || !mnemonic) return;
 
-         //TGriffinCoreData core;
-
-          //core.fCore_MidasId = frag->MidasId;
-          //core.fCore_NbrHits = frag->Charge.size();
-
-          SetCoreMidasId(frag->MidasId);
-          SetCoreNbrHits(frag->Charge.size());
-
    	    if(mnemonic->outputsensor.compare(0,1,"B")==0) { return; }  //make this smarter.
-
-          //core.fCore_IsHighGain = false;
-          SetIsHighGain(false);
-
-         SetPPG(frag->PPG);
-          //core.fCore_Address = frag->ChannelAddress;
-          SetCoreAddress(frag->ChannelAddress);
 
 	       UShort_t CoreNbr=5;
 	       if(mnemonic->arraysubposition.compare(0,1,"B")==0)
@@ -92,6 +77,12 @@ class TGriffinData : public TGRSIDetectorData {
 	  	       CoreNbr=3;
 
           for(int x=0;x<frag->Charge.size();x++) {
+          SetCoreMidasId(frag->MidasId);
+          SetCoreNbrHits(frag->Charge.size());
+          SetIsHighGain(false);
+          SetPPG(frag->PPG);
+          SetCoreAddress(frag->ChannelAddress);
+
          	SetCloverNumber(mnemonic->arrayposition);
 	       	SetCoreNumber(CoreNbr);
             SetCoreEnergy(channel->CalibrateENG(frag->Charge.at(x)));		
