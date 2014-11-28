@@ -19,6 +19,8 @@
 #include "TH1F.h"
 #include "TH2F.h"
 
+#include "TChannel.h"
+
 #include "TFragment.h"
 
 TList *MakeTimeDiffSpec(TTree *tree) {
@@ -35,6 +37,8 @@ TList *MakeTimeDiffSpec(TTree *tree) {
 
    bool last_beta_filled = false;
    bool last_gamma_filled = false;
+
+   TChannel::ReadCalFromTree(tree);
 
    //tree->SetBranchAddress("TFragment",&currentFrag);
    TBranch *branch = tree->GetBranch("TFragment");
@@ -143,8 +147,9 @@ TList *MakeTimeDiffSpec(TTree *tree) {
                gg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
             } else if(currentFrag->DetectorType == 2) {
                gb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+               bg_coinc_gE->Fill(myFrag.GetEnergy());
             } else {
-               printf("Unknown detector type\n");
+               //printf("Unknown detector type\n");
             }
          } else if(myFrag.DetectorType == 2) {
             if(currentFrag->DetectorType == 1) {
@@ -152,15 +157,15 @@ TList *MakeTimeDiffSpec(TTree *tree) {
             } else if(currentFrag->DetectorType == 2) {
                bb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
             } else {
-               printf("Unknown detector type\n");
+               //printf("Unknown detector type\n");
             }
          }
       }
 
       if(x%1500==0)
          printf("\tOn fragment %i/%i               \r",x,fEntries);
-      if(x>1000000)
-         break;
+  //    if(x>1000000)
+  //       break;
    }
    printf("\n\n");
   
