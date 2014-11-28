@@ -38,12 +38,12 @@ class TDescant : public TGRSIDetector {
      TDescantData *descantdata;                                               //!  Used to build DESCANT Hits
      std::vector <TDescantHit> descant_hits;                                  //   The set of crystal hits
 
-//     static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
+     static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
 
      bool hit_flag;                                                               //   Is there a Descant hit?
 
    public:
-//     static bool SetWave()      { return fSetWave;  }	                        //!
+     static bool SetWave()      { return fSetWave;  }	                        //!
      bool SetHit(bool flag = true) { hit_flag = flag; }                          //!
      bool Hit()                {return hit_flag;}                                //!  
 

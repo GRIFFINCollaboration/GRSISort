@@ -16,6 +16,9 @@
 
 ClassImp(TDescant)
 
+
+bool TDescant::fSetWave = true;
+
 TVector3 TDescant::gPosition[21] = { 
    //Sceptar positions from Evan; Thanks Evan.
    TVector3(0,0,1),
@@ -45,8 +48,8 @@ TVector3 TDescant::gPosition[21] = {
 TDescant::TDescant() : descantdata(0)	{
    //Default Constructor
    //Class()->IgnoreTObjectStreamer(true);
-   Class()->AddRule("TDescant descant_hits attributes=NotOwner");
-   Class()->AddRule("TDescant descantdata attributes=NotOwner");
+   //Class()->AddRule("TDescant descant_hits attributes=NotOwner");
+   //Class()->AddRule("TDescant descantdata attributes=NotOwner");
    Clear();
 }
 
@@ -67,7 +70,7 @@ void TDescant::Clear(Option_t *opt)	{
 TDescant& TDescant::operator=(const TDescant& rhs) {
      descantdata     = 0;
      descant_hits = rhs.descant_hits;
-//     fSetWave = rhs.fSetWave;
+     fSetWave = rhs.fSetWave;
 
      return *this;
 }
@@ -109,6 +112,8 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
       TDescantHit dethit;
 
+      dethit.SetDetectorNumber(gdata->GetDetNumber(i));
+   
       dethit.SetAddress(gdata->GetDetAddress(i));
       
       dethit.SetEnergy(gdata->GetDetEnergy(i));
@@ -117,12 +122,10 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       dethit.SetTime(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
 
-//      if(TSceptar::SetWave()){
-//         dethit.SetWaveform(gdata->GetDetWave(i));
-//      }
+      if(TDescant::SetWave()){
+         dethit.SetWaveform(gdata->GetDetWave(i));
+      }
 		
-      dethit.SetDetectorNumber(gdata->GetDetNumber(i));
-   
       dethit.SetPosition(TDescant::GetPosition(gdata->GetDetNumber(i)));
 
       descant_hits.push_back(dethit);

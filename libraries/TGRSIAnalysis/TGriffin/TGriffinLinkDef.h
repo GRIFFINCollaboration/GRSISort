@@ -4,7 +4,7 @@
 #pragma link off all globals;
 #pragma link off all classes;
 #pragma link off all functions;
-#pragma link C++ nestedclasses;
+#pragma link off nestedclasses;
 
 //#pragma link C++ class std::vector<Short_t>+;
 
@@ -12,6 +12,7 @@
 //handled before griffin is linked!  
 //#pragma link C++ class TCrystalHit+;
 //#pragma link C++ class std::vector<TCrystalHit>+;
+
 #pragma link C++ class TGriffinHit+;
 #pragma link C++ class std::vector<TGriffinHit>+;
 #pragma link C++ class TGriffin+;

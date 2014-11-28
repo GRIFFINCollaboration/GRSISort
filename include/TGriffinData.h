@@ -1,6 +1,8 @@
 #ifndef TGRIFFINDATA_H
 #define TGRIFFINDATA_H
 
+#ifndef __CINT__
+
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
@@ -127,7 +129,7 @@ class TGriffinData : public TGRSIDetectorData {
 
 #endif
 
-
+#endif
 
 
 

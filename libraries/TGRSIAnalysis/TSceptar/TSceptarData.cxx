@@ -1,3 +1,5 @@
+#ifndef __CINT__
+
 #include "TSceptarData.h"
 
 //ClassImp(TSceptarData)
@@ -29,3 +31,5 @@ void TSceptarData::Print(Option_t *opt)	{
 	// not yet written.
 	printf("not yet written.\n");
 }
+
+#endif

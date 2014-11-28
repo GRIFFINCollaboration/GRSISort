@@ -1,5 +1,8 @@
 #ifndef __GRSIDetectorDATA__
 #define __GRSIDetectorDATA__
+
+#ifndef __CINT__
+
 /*****************************************************************************
  *
  *****************************************************************************/
@@ -23,5 +26,7 @@ class TGRSIDetectorData {//: public TObject  {
 
   //ClassDef(TGRSIDetectorData,0)  //!  // SharcData structure 
 };
+
+#endif
 
 #endif

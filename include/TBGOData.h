@@ -10,8 +10,11 @@
 #include "TFragment.h"
 #include "TChannel.h"
 
-
+#ifndef __CINT__
 #include <TGRSIDetectorData.h>
+#else
+class TGRSIDetectorData;
+#endif
 
 
 class TBGOData : public TGRSIDetectorData	{
