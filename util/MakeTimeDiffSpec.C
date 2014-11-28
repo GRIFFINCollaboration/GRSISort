@@ -154,6 +154,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
          } else if(myFrag.DetectorType == 2) {
             if(currentFrag->DetectorType == 1) {
                bg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+               bg_coinc_gE->Fill(currentFrag->GetEnergy());
             } else if(currentFrag->DetectorType == 2) {
                bb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
             } else {
