@@ -474,7 +474,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    //if(info->Spice())     { tree->Bronch("TSpice","TSpice",&spice); }//, basketSize); tree->SetBronch("TS3","TS3",&s3); }//, basketSize); } 
    //if(info->Tip())       { tree->Bronch("TTip","TTip",&tip); }//, basketSize); } 
 
-   //if(info->Griffin())   { TBranch *branch = tree->Bronch("TGriffin","TGriffin",&griffin, basketSize, 99);}// branch->SetAddress(0);} 
+   if(info->Griffin())   { TBranch *branch = tree->Bronch("TGriffin","TGriffin",&griffin, basketSize, 99);}// branch->SetAddress(0);} 
    if(info->Sceptar())   { TBranch *branch = tree->Bronch("TSceptar","TSceptar",&sceptar, basketSize, 99);}// branch->SetAddress(0);} 
    if(info->Paces())     { tree->Bronch("TPaces","TPaces",&paces, basketSize,99); }//, basketSize); } 
    //if(info->Dante())     { tree->Bronch("TDante","TDante",&dante); }//, basketSize); } 
