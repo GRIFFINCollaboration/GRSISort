@@ -42,6 +42,7 @@ class TGRSILoop : public TObject {
 
       TXMLOdb *fOdb;
 
+      int fFragsReadFromMidas;
       int fFragsSentToTree;
 
    #ifndef __CINT__
@@ -68,6 +69,9 @@ class TGRSILoop : public TObject {
       void SetFileOdb(char *data,int size);
       void SetTIGOdb();
       void SetGRIFFOdb();
+
+      int GetFragsSentToTree()    { return fFragsSentToTree; }
+      int GetFragsReadFromMidas() { return fFragsReadFromMidas; }
 
       void Clear(Option_t *opt="");
       void Print(Option_t *opt="");

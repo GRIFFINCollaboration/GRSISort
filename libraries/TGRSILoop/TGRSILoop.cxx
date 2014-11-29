@@ -34,6 +34,7 @@ TGRSILoop::TGRSILoop()   {
    fFillTreeThreadRunning = false;
 
    fFragsSentToTree = 0;
+   fFragsReadFromMidas = 0;
 
    fMidasThread = 0;
    fFillTreeThread = 0;
@@ -433,6 +434,9 @@ void TGRSILoop::Initialize() {   }
 
 void TGRSILoop::Finalize() { 
    printf("in finalization phase.\n");   
+   printf(DMAGENTA "successfully sorted " DBLUE "%0d" DMAGENTA "/" 
+          DCYAN "%0d" DMAGENTA "  ---> " DYELLOW " %.2f" DMAGENTA " percent passed." 
+          RESET_COLOR "\n",fFragsSentToTree,fFragsReadFromMidas,((double)fFragsSentToTree/(double)fFragsReadFromMidas)*100.);
 //   TIter *iter = TChannel::GetChannelIter();   
 //   while(TChannel *chan = (TChannel*)iter->Next()) {
 //      TGRSIRootIO::Get()->FillChannelTree(chan);
@@ -451,9 +455,11 @@ bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent, T
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
 	int frags = TDataParser::TigressDataToFragment(ptr,dsize,mserial,mtime);
-	if(frags>-1)
+	if(frags>-1) {
+      fFragsReadFromMidas += frags;
 	   return true;
-	else	{
+	} else	{
+      fFragsReadFromMidas += 1;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
 	   if(!suppress_error && mevent)  mevent->Print(Form("a%i",(-1*frags)-1));
 	   return false;
 	}
@@ -465,8 +471,10 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, T
 
 	int frags = TDataParser::GriffinDataToFragment(ptr,dsize,mserial,mtime);
 	if(frags>-1)	{
-	   return true;
+      fFragsReadFromMidas += frags;
+      return true;
 	} else {	       
+      fFragsReadFromMidas += 1;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
 		if(!suppress_error) {
 			if(!TGRSIOptions::LogErrors()) {
 			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");

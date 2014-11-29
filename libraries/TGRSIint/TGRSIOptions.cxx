@@ -10,6 +10,7 @@ namespace TGRSIOptions {
   bool fUseMidFileOdb = true;
   bool fMakeAnalysisTree = false;
   bool fProgressDialog = true;
+  bool fWorkHarder = false;
 
   bool fCloseAfterSort = false;
 
@@ -40,6 +41,9 @@ const char *GetCalFile(int runnumber,int subrunnumber);
 void SetCloseAfterSort(bool flag) { fCloseAfterSort=flag; }
 bool CloseAfterSort()                  { return fCloseAfterSort; }
 
+void SetWorkHarder(bool flag) { fWorkHarder=flag; }
+bool WorkHarder()             { return fWorkHarder; }
+
 void SetLogErrors(bool flag)      { fLogErrors=flag;   }
 bool LogErrors()			 { return fLogErrors; }
 
@@ -59,10 +63,6 @@ void AddInputRootFile(std::string &input)  {  fInputRootFile.push_back(input);  
 void AddInputMidasFile(std::string &input) {  fInputMidasFile.push_back(input);   }
 void AddInputCalFile(std::string &input)   {  SetUseMidFileOdb(false);  fInputCalFile.push_back(input);     }
 void AddInputOdbFile(std::string &input)   {  SetUseMidFileOdb(false); fInputOdbFile.push_back(input);     }
-
-
-
-
 
 const char *GetXMLODBFile(int runnumber, int subrunnumber) {
 	if(!fInputOdbFile.empty())

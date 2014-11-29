@@ -26,7 +26,8 @@ namespace TGRSIOptions {
       extern bool fUseMidFileOdb;
       extern bool fMakeAnalysisTree;
       extern bool fProgressDialog;
-     }
+      extern bool fWorkHarder;
+      }
       std::string GetHostName();
       std::string GetExptName();
      
@@ -53,7 +54,10 @@ namespace TGRSIOptions {
       
       void SetMakeAnalysisTree(bool flag=true);
       bool MakeAnalysisTree();                
-      
+
+      void SetWorkHarder(bool flag=true);
+      bool WorkHarder();      
+
       void SetHostName(std::string &host);
       void SetExptName(std::string &expt); 
       

@@ -25,6 +25,7 @@ class TDescantHit : public TGRSIDetectorHit {
     Int_t    filter;
     Int_t    charge;
     Int_t    cfd;
+    Int_t    psd;
     Double_t energy;
     Long_t   time;
    
@@ -39,6 +40,7 @@ class TDescantHit : public TGRSIDetectorHit {
       inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
       inline void SetCharge(const int &x)          { charge   = x; }   //!
       inline void SetCfd(const int &x)             { cfd      = x; }   //!
+      inline void SetPsd(const int &x)             { psd      = x; }   //!
       inline void SetEnergy(const Double_t &x)     { energy   = x; }   //!
       inline void SetTime(const Long_t &x)         { time     = x; }   //!
       inline void SetPosition(TVector3 x)          { position = x; }   //!
@@ -51,6 +53,7 @@ class TDescantHit : public TGRSIDetectorHit {
       inline Int_t    GetFiterPatter()         {   return filter;   }  //!
 		inline Int_t    GetCharge()			     {	return charge;	  }  //!
       inline Int_t    GetCfd()                 {   return cfd;      }  //!
+      inline Int_t    GetPsd()                 {   return psd;      }  //!
       inline Double_t GetEnergy()	   	     {	return energy;   }  //!
 		inline Long_t   GetTime()			        {	return time;     }  //!
 		inline TVector3 GetPosition()	           {	return position; }  //!
@@ -61,6 +64,8 @@ class TDescantHit : public TGRSIDetectorHit {
 
       static bool CompareEnergy(TDescantHit*,TDescantHit*);            //!
       void Add(TDescantHit*);                                          //!
+
+      bool AnalyzeWaveform();                                          //!
 
 	public:
 		void Clear(Option_t *opt = "");		                    //!
