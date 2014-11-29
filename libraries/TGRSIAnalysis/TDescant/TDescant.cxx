@@ -124,6 +124,9 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
       if(TDescant::SetWave()){
          dethit.SetWaveform(gdata->GetDetWave(i));
+         //printf("Analyzing waveform, current cfd = %d, psd = %d\n",dethit.GetCfd(),dethit.GetPsd());
+         //bool analyzed = dethit.AnalyzeWaveform();
+         //printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd(),dethit.GetPsd());
       }
 		
       dethit.SetPosition(TDescant::GetPosition(gdata->GetDetNumber(i)));

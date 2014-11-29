@@ -30,6 +30,7 @@ class TGriffin : public TGRSIDetector {
      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
      //void BuildHits(TGriffinData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
      void BuildAddBack(Option_t *opt="");	//!
+     void BuildAddBack2(Option_t *opt=""); //!
 
      TGriffinHit *GetGriffinHit(int i)        {	return &griffin_hits[i];   }	//!
      Short_t GetMultiplicity() const	      {	return griffin_hits.size();}	//!

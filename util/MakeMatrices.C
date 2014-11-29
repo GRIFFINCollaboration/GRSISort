@@ -1,4 +1,4 @@
-//g++ MakeMatrices.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat -lAnalysisTreeBuilder -lGriffin -lSceptar -lGRSIDetector -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lMidasFormat -lXMLParser -lXMLIO -lProof `root-config --cflags --libs` -lTreePlayer -o MakeMatrices
+//g++ MakeMatrices.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lMidasFormat -lXMLParser -lXMLIO -lProof `root-config --cflags --libs` -lTreePlayer -o MakeMatrices
 
 #include <iostream>
 #include <utility>
@@ -155,7 +155,7 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
             }
          }
       }
-      if(gotSceptar && scep->GetMultiplicity() > 1) {
+      if(gotSceptar && scep->GetMultiplicity() >= 1) {
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
                if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime()) > coincHigh) {
@@ -254,7 +254,7 @@ int main(int argc, char **argv) {
    }
 
    //coinc window = 0-20, bg window 40-60
-   TList *list = MakeMatrices(chain, 0., 20., 40.);
+   TList *list = MakeMatrices(chain, 0., 20., 80.);
 
    TFile *outfile = new TFile(argv[argc-1],"create");
    list->Write();

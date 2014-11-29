@@ -112,9 +112,10 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    
       TFragment myFrag  = *currentFrag;         //Set myfrag to be the x'th fragment before incrementing it.
       long time = currentFrag->GetTimeStamp();  //Get the timestamp of the x'th fragment 
-      long timelow  = time + 120;
-      long timehigh = time + 140;
-   
+//      long timelow  = time + 120;
+//      long timehigh  = time + 140; 
+        long timelow = time + 0;
+        long timehigh = time + 10000;   
       int time_low  = (int) (timelow & 0x0fffffff);
       int time_high = (int) (timelow >> 28); 
 
