@@ -389,3 +389,34 @@ void TGriffin::BuildAddBack(Option_t *opt) {
 }
 
 
+void TGriffin::BuildAddBack2(Option_t *opt) { 
+   //Builds the addback for the GRIFFIN Event. This is based on a resolution set within the function. This will have to be
+   //tuned in order to make add-back the most efficient. 
+   if(this->griffin_hits.size() == 0)
+      return;
+   //We may have angular correlation add-back algorithms eventaully too.
+   addback_hits.clear();
+   addback_hits.push_back(*(this->GetGriffinHit(0)));
+   //	addback_hits.at(0).Add(&(addback_hits.at(0)));
+
+   for(int i = 1; i<this->GetMultiplicity(); i++) {
+      bool used = false;
+      for(int j =0; j<addback_hits.size();j++) {
+         TVector3 res = addback_hits.at(j).GetPosition() - this->GetGriffinHit(i)->GetPosition();
+
+         int d_time = abs(addback_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
+
+         if( (res.Mag() < 105) && (d_time < 11) )    {    ///Still need to tune these values!! pcb.
+            used = true;
+            addback_hits.at(j).Add(this->GetGriffinHit(i));
+            break;
+	 }
+      }
+      if(!used) {
+         addback_hits.push_back(*(this->GetGriffinHit(i)));
+        	//addback_hits.back().Add(&(addback_hits.back()));
+      }
+   }
+}
+
+

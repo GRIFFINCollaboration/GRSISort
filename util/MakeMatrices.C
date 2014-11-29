@@ -105,19 +105,41 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
                break;
             }
          }
-         if(two < grif->GetMultiplicity()) {
-               ++coincBetaMult;
+         if(two < scep->GetMultiplicity()) {
+            ++coincBetaMult;
          }
       }
       scepMultCut->Fill(coincBetaMult);
+      if(gotSceptar && scep->GetMultiplicity() >= 1) {
+         grifMultB->Fill(grif->GetMultiplicity());
+         int coincGammaMult = 0;
+         for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
+            for(two = one+1; two < (int) grif->GetMultiplicity(); ++two) {
+               if(coincLow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < coincHigh) {
+                  break;
+               }
+            }
+            if(two < grif->GetMultiplicity()) {
+               ++coincGammaMult;
+            }
+         }
+         grifMultCutB->Fill(coincGammaMult);
+         scepMultB->Fill(scep->GetMultiplicity());
+         int coincBetaMult = 0;
+         for(one = 0; one < (int) scep->GetMultiplicity(); ++one) {
+            for(two = one+1; two < (int) scep->GetMultiplicity(); ++two) {
+               if(coincLow <= TMath::Abs(scep->GetSceptarHit(two)->GetTime()-scep->GetSceptarHit(one)->GetTime()) && TMath::Abs(scep->GetSceptarHit(two)->GetTime()-scep->GetSceptarHit(one)->GetTime()) < coincHigh) {
+                  break;
+               }
+            }
+            if(two < scep->GetMultiplicity()) {
+               ++coincBetaMult;
+            }
+         }
+         scepMultCutB->Fill(scep->GetMultiplicity());
+      }
+
       if(grif->GetMultiplicity() < 2) {
-         //if(entry < 80) {
-            //cout<<entry<<": skipping  gamma mult. = "<<grif->GetMultiplicity();
-            //if(gotSceptar) {
-               //cout<<", and beta mult. = "<<scep->GetMultiplicity();
-            //}
-            //cout<<endl;
-         //}
          ++skipped;
          continue;
       }

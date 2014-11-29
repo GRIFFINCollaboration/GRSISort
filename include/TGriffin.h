@@ -38,6 +38,9 @@ class TGriffin : public TGRSIDetector {
      TGriffinHit *GetAddBackHit(int i)        {	return &addback_hits[i];   }	//!
      Short_t GetAddBackMultiplicity() const   {	return addback_hits.size();}	//!
 
+     TGriffinHit *GetAddBack2Hit(int i)       { return &addback2_hits[i]; }   //!
+     Short_t GetAddBack2Multiplicity() const  { return addback2_hits.size();} //!
+
 		//TVector3 GetPosition(TGriffinHit *,int distance=0);						//!
 
      static TVector3 GetPosition(int DetNbr ,int CryNbr = 5, double distance = 110.0);		//!
@@ -54,6 +57,7 @@ class TGriffin : public TGRSIDetector {
      TBGOData     *bgodata;                  //!  Used to build BGO Hits
      std::vector <TGriffinHit> griffin_hits; //   The set of crystal hits
      std::vector <TGriffinHit> addback_hits; //   The set of add-back hits		
+     std::vector <TGriffinHit> addback2_hits; //  The set of add-back2 hits
 
      static bool fSetBGOHits;		            //!  Flag that determines if BGOHits are being measured			 
 		
