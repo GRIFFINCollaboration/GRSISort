@@ -331,7 +331,7 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
       //printf("\tFound c-like odb file: %s\n",filename.c_str());
       printf("c-like odb structures can't be read yet.\n");
       return false;
-   } else if((ext.compare("c")==0) || (ext.compare("C")==0)) {
+   } else if((ext.compare("c")==0) || (ext.compare("C")==0) || (ext.compare("c+")==0) || (ext.compare("C+")==0)) {
       TGRSIOptions::AddMacroFile(filename);
       return true;
    } else {

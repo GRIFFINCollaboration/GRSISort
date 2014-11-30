@@ -1,10 +1,12 @@
 //g++ MakeMatrices.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `root-config --cflags --libs` -lTreePlayer -o MakeMatrices
 
 #include <iostream>
+#include <iomanip>
 #include <utility>
 #include <vector>
 #include <cstdio>
 
+#include "TROOT.h"
 #include "TTree.h"
 #include "TTreeIndex.h"
 #include "TVirtualIndex.h"
@@ -14,54 +16,103 @@
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TCanvas.h"
+#include "TStopwatch.h"
 
+#ifndef __CINT__ 
 #include "TGriffin.h"
 #include "TSceptar.h"
+#include "TPaces.h"
+#include "TDescant.h"
+#endif
 
+#ifdef __CINT__ 
+void MakeMatrices() {
+   if(!AnalysisTree) {
+      printf("No analysis tree found!\n");
+      return;
+   }
 
-TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000.) {
+   //coinc window = 0-20, bg window 40-60, 6000 bins from 0. to 6000. (default is 4000)
+   TList *list = MakeMatrices(AnalysisTree, 0., 20., 80., 6000, 0., 6000.);
+
+   std::string fileName = gFile->GetName();
+   if(fileName.find_last_of("/") != std::string::npos) {
+      file.insert(fileName.find_last_of("/")+1,"matrices_");
+   } else {
+      file.insert(0,"matrices_");
+   }
+   TFile *outfile = new TFile(file.c_str(),"create");
+   list->Write();
+}
+#endif
+
+TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000.) {
+   TStopwatch w;
+   w.Start();
+
    TList* list = new TList;
 
    const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
-   TH1F* timeDiff = new TH1F("timeDiff","time difference;time[10 ns]",200,0.,200.); list->Add(timeDiff);
-   TH1F* timeEGate = new TH1F("timeEGate","time difference energy gate on 1808 and 1130;time[10 ns]",200,0.,200.);  list->Add(timeEGate);
-   TH1F* timeModuleOne = new TH1F("timeModuleOne","time difference for 1. grif-16;time[10 ns]",200,0.,200.); list->Add(timeModuleOne);
-   TH2F* matrix = new TH2F("matrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(matrix);
-   TH2F* matrix_coinc = new TH2F("matrix_coinc",Form("#gamma-#gamma matrix, coincident within %d - %d [10 ns]", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(matrix_coinc);
-   TH2F* matrix_bg = new TH2F("matrix_bg",Form("#gamma-#gamma matrix, background within %d - %d [ 10 ns]", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(matrix_bg);
+   //time spectra
+   TH1F* timeDiff = new TH1F("timeDiff","#gamma-#gamma time difference;time[10 ns]",200,0.,200.); list->Add(timeDiff);
+   TH1F* timeEGate = new TH1F("timeEGate","#gamma-#gamma time difference energy gate on 1808 and 1130;time[10 ns]",200,0.,200.);  list->Add(timeEGate);
+   TH1F* timeModuleOne = new TH1F("timeModuleOne","#gamma-#gamma time difference for 1. grif-16;time[10 ns]",200,0.,200.); list->Add(timeModuleOne);
 
    TH1F* cfdDiff = new TH1F("cfdDiff","cfd difference",2000,-1000.,1000.); list->Add(cfdDiff);
    TH1F* cfdDiffEGate = new TH1F("cfdDiffEGate","cfd difference energy gate on 1808 and 1130",2000,-1000.,1000.); list->Add(cfdDiffEGate);
    TH1F* cfdDiffModuleOne = new TH1F("cfdDiffModuleOne","cfd difference for 1. grif-16",2000,-1000.,1000.); list->Add(cfdDiffModuleOne);
 
-   TH1F* grifMult    = new TH1F("grifMult",        "Griffin multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(grifMult);
-   TH1F* grifMultCut = new TH1F("grifMultCut",Form("Griffin multiplicity in built event with #Delta t = %d - %d, and coincident beta",coincLow,coincHigh),65,0.,65.); list->Add(grifMultCut);
-   
-   TH1F* scepMult    = new TH1F("scepMult",        "Sceptar multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(scepMult);
-   TH1F* scepMultCut = new TH1F("scepMultCut",Form("Sceptar multiplicity in built event with #Delta t = %d - %d, and coincident beta",coincLow,coincHigh),65,0.,65.); list->Add(scepMultCut);
- 
    TH1F* timeB = new TH1F("timeB","time difference with coincident beta;time[10 ns]",200,0.,200.); list->Add(timeB);
    TH1F* timeEGateB = new TH1F("timeEGateB","time difference energy gate on 1808 and 1130, and coincident beta;time[10 ns]",200,0.,200.);  list->Add(timeEGateB);
    TH1F* timeModuleOneB = new TH1F("timeModuleOneB","time difference for 1. grif-16 with coincident beta;time[10 ns]",200,0.,200.); list->Add(timeModuleOneB);
-   TH2F* matrixB = new TH2F("matrixB","#gamma-#gamma matrix with coincident beta",nofBins, low, high,nofBins, low, high); list->Add(matrixB);
-   TH2F* matrix_coincB = new TH2F("matrix_coincB",Form("#gamma-#gamma matrix, coincident within %d - %d [10 ns], and coincident beta", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(matrix_coincB);
-   TH2F* matrix_bgB = new TH2F("matrix_bgB",Form("#gamma-#gamma matrix, background within %d - %d [ 10 ns], and coincident beta", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(matrix_bgB);
 
    TH1F* cfdDiffB = new TH1F("cfdDiffB","cfd difference with coincident beta",2000,-1000.,1000.); list->Add(cfdDiffB);
    TH1F* cfdDiffEGateB = new TH1F("cfdDiffEGateB","cfd difference energy gate on 1808 and 1130, and coincident beta",2000,-1000.,1000.); list->Add(cfdDiffEGateB);
    TH1F* cfdDiffModuleOneB = new TH1F("cfdDiffModuleOneB","cfd difference for 1. grif-16 with coincident beta",2000,-1000.,1000.); list->Add(cfdDiffModuleOneB);
 
-   TH1F* grifMultB    = new TH1F("grifMultB",        "Griffin multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(grifMultB);
-   TH1F* grifMultCutB = new TH1F("grifMultCutB",Form("Griffin multiplicity in built event with #Delta t = %d - %d, and coincident beta",coincLow,coincHigh),65,0.,65.); list->Add(grifMultCutB);
-   
-   TH1F* scepMultB    = new TH1F("scepMultB",        "Sceptar multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(scepMultB);
-   TH1F* scepMultCutB = new TH1F("scepMultCutB",Form("Sceptar multiplicity in built event with #Delta t = %d - %d, and coincident beta",coincLow,coincHigh),65,0.,65.); list->Add(scepMultCutB);
- 
    TH1F* addbackTimeDiff = new TH1F("addbackTimeDiff","time difference;time[10 ns]",200,0.,200.); list->Add(addbackTimeDiff);
    TH1F* addbackCfdDiff = new TH1F("addbackCfdDiff","cfd difference",2000,-1000.,1000.); list->Add(addbackCfdDiff);
+
    TH1F* addbackTimeB = new TH1F("addbackTimeB","time difference with coincident beta;time[10 ns]",200,0.,200.); list->Add(addbackTimeB);
    TH1F* addbackCfdDiffB = new TH1F("addbackCfdDiffB","cfd difference with coincident beta",2000,-1000.,1000.); list->Add(addbackCfdDiffB);
+
+   TH1F* griffinSceptarTime = new TH1F("griffinSceptarTime","griffin-sceptar time difference;time[10 ns]",400,-200.,200.); list->Add(griffinSceptarTime);
+   TH1F* pacesSceptarTime = new TH1F("pacesSceptarTime","paces-sceptar time difference;time[10 ns]",400,-200.,200.); list->Add(pacesSceptarTime);
+   TH1F* descantSceptarTime = new TH1F("descantSceptarTime","descant-sceptar time difference;time[10 ns]",400,-200.,200.); list->Add(descantSceptarTime);
+
+   TH1F* griffinSceptarCfd = new TH1F("griffinSceptarCfd","griffin-sceptar cfd difference;time[10 ns]",400,-200.,200.); list->Add(griffinSceptarCfd);
+   TH1F* pacesSceptarCfd = new TH1F("pacesSceptarCfd","paces-sceptar cfd difference;time[10 ns]",400,-200.,200.); list->Add(pacesSceptarCfd);
+   TH1F* descantSceptarCfd = new TH1F("descantSceptarCfd","descant-sceptar cfd difference;time[10 ns]",400,-200.,200.); list->Add(descantSceptarCfd);
+
+   //energy vs time spectra
+   TH2F* griffinSceptarEnergyVsTime = new TH2F("griffinSceptarEnergyVsTime","griffin energy vs. griffin-sceptar time difference;time[10 ns];energy[keV]",400,-200.,200.,nofBins, low, high); list->Add(griffinSceptarEnergyVsTime);
+
+   TH2F* griffinSceptarEnergyVsCfd = new TH2F("griffinSceptarEnergyVsCfd","griffin energy vs. griffin-sceptar cfd time difference;time[10 ns];energy[keV]",2000,-1000.,1000.,nofBins, low, high); list->Add(griffinSceptarEnergyVsCfd);
+
+   //gamma singles
+   TH1F* gammaSingles = new TH1F("gammaSingles","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaSingles);
+   TH1F* gammaSinglesB = new TH1F("gammaSinglesB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
+
+   TH2F* singlesVsDetNum = new TH2F("singlesVsDetNum","#gamma energy vs. detector number;detector number;energy[keV]", 16, 0.5, 16.5, nofBins, low, high); list->Add(singlesVsDetNum);
+
+   TH1F* addbackSingles = new TH1F("addbackSingles","#gamma addback singles;energy[keV]",nofBins, low, high); list->Add(addbackSingles);
+   TH1F* addbackSinglesB = new TH1F("addbackSinglesB","#beta #gamma addback;energy[keV]",nofBins, low, high); list->Add(addbackSinglesB);
+
+   TH1F* addbackCloverSingles = new TH1F("addbackCloverSingles","#gamma clover addback singles;energy[keV]",nofBins, low, high); list->Add(addbackCloverSingles);
+   TH1F* addbackCloverSinglesB = new TH1F("addbackCloverSinglesB","#beta #gamma clover addback;energy[keV]",nofBins, low, high); list->Add(addbackCloverSinglesB);
+
+   TH2F* addbackVsDetNum = new TH2F("addbackVsDetNum","addback energy vs. detector number;detector number;energy[keV]", 16, 0.5, 16.5, nofBins, low, high); list->Add(addbackVsDetNum);
+   TH2F* addbackCloverVsDetNum = new TH2F("addbackCloverVsDetNum","clover addback energy vs. detector number;detector number;energy[keV]", 16, 0.5, 16.5, nofBins, low, high); list->Add(addbackCloverVsDetNum);
+
+   //gamma-gamma matrices
+   TH2F* matrix = new TH2F("matrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(matrix);
+   TH2F* matrix_coinc = new TH2F("matrix_coinc",Form("#gamma-#gamma matrix, coincident within %d - %d [10 ns]", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(matrix_coinc);
+   TH2F* matrix_bg = new TH2F("matrix_bg",Form("#gamma-#gamma matrix, background within %d - %d [ 10 ns]", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(matrix_bg);
+
+   TH2F* matrixB = new TH2F("matrixB","#gamma-#gamma matrix with coincident beta",nofBins, low, high,nofBins, low, high); list->Add(matrixB);
+   TH2F* matrix_coincB = new TH2F("matrix_coincB",Form("#gamma-#gamma matrix, coincident within %d - %d [10 ns], and coincident beta", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(matrix_coincB);
+   TH2F* matrix_bgB = new TH2F("matrix_bgB",Form("#gamma-#gamma matrix, background within %d - %d [ 10 ns], and coincident beta", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(matrix_bgB);
 
    TH2F* addbackMatrix = new TH2F("addbackMatrix","#gamma-#gamma matrix, addback",nofBins, low, high,nofBins, low, high); list->Add(addbackMatrix);
    TH2F* addbackMatrix_coinc = new TH2F("addbackMatrix_coinc",Form("#gamma-#gamma matrix, addback, coincident within %d - %d [10 ns]", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(addbackMatrix_coinc);
@@ -71,10 +122,33 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
    TH2F* addbackMatrix_coincB = new TH2F("addbackMatrix_coincB",Form("#gamma-#gamma matrix, addback, coincident within %d - %d [10 ns], and coincident #beta", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(addbackMatrix_coincB);
    TH2F* addbackMatrix_bgB = new TH2F("addbackMatrix_bgB",Form("#gamma-#gamma matrix, addback, background within %d - %d [ 10 ns], and coincident #beta", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(addbackMatrix_bgB);
 
+   TH2F* addbackCloverMatrix = new TH2F("addbackCloverMatrix","#gamma-#gamma matrix, clover addback",nofBins, low, high,nofBins, low, high); list->Add(addbackCloverMatrix);
+   TH2F* addbackCloverMatrix_coinc = new TH2F("addbackCloverMatrix_coinc",Form("#gamma-#gamma matrix, clover addback, coincident within %d - %d [10 ns]", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(addbackCloverMatrix_coinc);
+   TH2F* addbackCloverMatrix_bg = new TH2F("addbackCloverMatrix_bg",Form("#gamma-#gamma matrix, clover addback, background within %d - %d [ 10 ns]", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(addbackCloverMatrix_bg);
+
+   TH2F* addbackCloverMatrixB = new TH2F("addbackCloverMatrixB","#gamma-#gamma matrix, clover addback, and coincident #beta",nofBins, low, high,nofBins, low, high); list->Add(addbackCloverMatrixB);
+   TH2F* addbackCloverMatrix_coincB = new TH2F("addbackCloverMatrix_coincB",Form("#gamma-#gamma matrix, clover addback, coincident within %d - %d [10 ns], and coincident #beta", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(addbackCloverMatrix_coincB);
+   TH2F* addbackCloverMatrix_bgB = new TH2F("addbackCloverMatrix_bgB",Form("#gamma-#gamma matrix, clover addback, background within %d - %d [ 10 ns], and coincident #beta", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(addbackCloverMatrix_bgB);
+
+   //multiplicities
+   TH1F* grifMult    = new TH1F("grifMult",        "Griffin multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(grifMult);
+   TH1F* grifMultCut = new TH1F("grifMultCut",Form("Griffin multiplicity in built event with #Delta t = %d - %d, and coincident beta",coincLow,coincHigh),65,0.,65.); list->Add(grifMultCut);
+   
+   TH1F* scepMult    = new TH1F("scepMult",        "Sceptar multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(scepMult);
+   TH1F* scepMultCut = new TH1F("scepMultCut",Form("Sceptar multiplicity in built event with #Delta t = %d - %d, and coincident beta",coincLow,coincHigh),65,0.,65.); list->Add(scepMultCut);
+ 
+   TH1F* grifMultB    = new TH1F("grifMultB",        "Griffin multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(grifMultB);
+   TH1F* grifMultCutB = new TH1F("grifMultCutB",Form("Griffin multiplicity in built event with #Delta t = %d - %d, and coincident beta",coincLow,coincHigh),65,0.,65.); list->Add(grifMultCutB);
+   
+   TH1F* scepMultB    = new TH1F("scepMultB",        "Sceptar multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(scepMultB);
+   TH1F* scepMultCutB = new TH1F("scepMultCutB",Form("Sceptar multiplicity in built event with #Delta t = %d - %d, and coincident beta",coincLow,coincHigh),65,0.,65.); list->Add(scepMultCutB);
+ 
 
 
    TGriffin* grif = 0;
    TSceptar* scep = 0;
+   TPaces*   pace = 0;
+   TDescant* desc = 0;
    tree->SetBranchAddress("TGriffin", &grif);
 
    bool gotSceptar;
@@ -85,20 +159,35 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
       gotSceptar = true;
    }
 
+   bool gotPaces;
+   if(tree->FindBranch("TPaces") == 0) {
+      gotPaces = false;
+   } else {
+      tree->SetBranchAddress("TPaces", &pace);
+      gotPaces = true;
+   }
+
+   bool gotDescant;
+   if(tree->FindBranch("TDescant") == 0) {
+      gotDescant = false;
+   } else {
+      tree->SetBranchAddress("TDescant", &desc);
+      gotDescant = true;
+   }
+
 
    //tree->LoadBaskets(MEM_SIZE);   
 
-   int skipped = 0;
-   int notSkipped = 0;
-   int coincident = 0;
-   int background = 0;
    long entries = tree->GetEntries();
 
    int one;
    int two;
 
-   for(int entry = 0; entry < tree->GetEntries(); ++entry) {
+   std::cout<<std::fixed<<std::setprecision(1);
+   int entry;
+   for(entry = 0; entry < tree->GetEntries(); ++entry) {
       tree->GetEntry(entry);
+      //griffin multiplicites
       grifMult->Fill(grif->GetMultiplicity());
       int coincGammaMult = 0;
       for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
@@ -112,6 +201,7 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
          }
       }
       grifMultCut->Fill(coincGammaMult);
+      //sceptar multiplicities
       scepMult->Fill(scep->GetMultiplicity());
       int coincBetaMult = 0;
       for(one = 0; one < (int) scep->GetMultiplicity(); ++one) {
@@ -125,6 +215,7 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
          }
       }
       scepMultCut->Fill(coincBetaMult);
+      //sceptar coincident multiplicities
       if(gotSceptar && scep->GetMultiplicity() >= 1) {
          grifMultB->Fill(grif->GetMultiplicity());
          int coincGammaMult = 0;
@@ -154,15 +245,11 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
          scepMultCutB->Fill(scep->GetMultiplicity());
       }
 
-      if(grif->GetMultiplicity() < 2) {
-         ++skipped;
-         continue;
-      }
-      ++notSkipped;
-      //std::cout<<"got multiplicity "<<grif->GetMultiplicity()<<", time 0 = "<<grif->GetGriffinHit(0)->GetTime()<<", time 1 = "<<grif->GetGriffinHit(1)->GetTime()<<std::endl;
-
       //loop over all gamma's in two loops
       for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
+         gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergyLow());
+         singlesVsDetNum->Fill(grif->GetGriffinHit(one)->GetDetectorNumber(),grif->GetGriffinHit(one)->GetEnergyLow());
+         //gamma-gamma spectra
          for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
             if(two == one) {
                continue;
@@ -186,19 +273,25 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
             matrix->Fill(grif->GetGriffinHit(one)->GetEnergyLow(), grif->GetGriffinHit(two)->GetEnergyLow());
             if(coincLow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < coincHigh) {
                matrix_coinc->Fill(grif->GetGriffinHit(one)->GetEnergyLow(), grif->GetGriffinHit(two)->GetEnergyLow());
-               ++coincident;
             } else if((bg+coincLow) <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < (bg+coincHigh)) {
                matrix_bg->Fill(grif->GetGriffinHit(one)->GetEnergyLow(), grif->GetGriffinHit(two)->GetEnergyLow());
-               ++background;
             }
          }
       }
+
+      //all beta coincident spectra
       if(gotSceptar && scep->GetMultiplicity() >= 1) {
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
                //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime()) > coincHigh) {
                   //continue;
                //}
+               griffinSceptarTime->Fill(grif->GetGriffinHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime());
+               griffinSceptarCfd->Fill(grif->GetGriffinHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime());
+               griffinSceptarEnergyVsTime->Fill(grif->GetGriffinHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime(),grif->GetGriffinHit(one)->GetEnergyLow());
+               griffinSceptarEnergyVsCfd->Fill(grif->GetGriffinHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime(),grif->GetGriffinHit(one)->GetEnergyLow());
+               //beta-gamma
+               gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergyLow());
                for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
                   if(two == one) {
                      continue;
@@ -230,10 +323,23 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
                   }
                }
             }
+            for(one = 0; one < (int) pace->GetMultiplicity(); ++one) {
+               pacesSceptarTime->Fill(pace->GetPacesHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime());
+            }
+            for(one = 0; one < (int) desc->GetMultiplicity(); ++one) {
+               descantSceptarTime->Fill(desc->GetDescantHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime());
+            }
          }
       }
 
+      //addback spectra
+      //addback timing spectra
+      //gamma-gamma spectra
       for(one = 0; one < (int) grif->GetAddBackMultiplicity(); ++one) {
+         addbackSingles->Fill(grif->GetAddBackHit(one)->GetEnergyLow());
+         addbackCloverSingles->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow());
+         addbackVsDetNum->Fill(grif->GetAddBackHit(one)->GetDetectorNumber(),grif->GetAddBackHit(one)->GetEnergyLow());
+         addbackCloverVsDetNum->Fill(grif->GetAddBackCloverHit(one)->GetDetectorNumber(),grif->GetAddBackCloverHit(one)->GetEnergyLow());
          for(two = 0; two < (int) grif->GetAddBackMultiplicity(); ++two) {
             if(two == one) {
                continue;
@@ -246,19 +352,25 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
                continue;
             }
             addbackMatrix->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+            addbackCloverMatrix->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
             if(coincLow <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < coincHigh) {
                addbackMatrix_coinc->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+               addbackCloverMatrix_coinc->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
             } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < (bg+coincHigh)) {
                addbackMatrix_bg->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+               addbackCloverMatrix_bg->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
             }
          }
       }
+      //addback coincident with beta
       if(gotSceptar && scep->GetMultiplicity() >= 1) {
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
                //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(one)->GetTime()) > coincHigh) {
                   //continue;
                //}
+               addbackSinglesB->Fill(grif->GetAddBackHit(one)->GetEnergyLow());
+               addbackCloverSinglesB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow());
                for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
                   if(two == one) {
                      continue;
@@ -274,10 +386,13 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
                      continue;
                   }
                   addbackMatrixB->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+                  addbackCloverMatrixB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
                   if(coincLow <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < coincHigh) {
                      addbackMatrix_coincB->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+                     addbackCloverMatrix_coincB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
                   } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < (bg+coincHigh)) {
                      addbackMatrix_bgB->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+                     addbackCloverMatrix_bgB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
                   }
                }
             }
@@ -285,13 +400,15 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
       }
 
 
-
-      if(entry%25000 == 0)
-         std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%" << "\r" << std::flush;
+      if(entry%25000 == 0) {
+         std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w.RealTime() << " seconds" << "\r" << std::flush;
+         w.Continue();
+      }
    }
+   std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w.RealTime() << " seconds" << std::endl;
+   w.Continue();
 
-   std::cout<<"skipped "<<skipped<<" entries, didn't skip "<<notSkipped<<" entries: got "<<coincident<<" coincident and "<<background<<" background events"<<std::endl;
-
+   //create all background corrected matrices
    TH2F* matrix_bgcorr = (TH2F*) matrix_coinc->Clone("matrix_bgcorr"); list->Add(matrix_bgcorr);
    matrix_bgcorr->SetTitle(Form("#gamma-#gamma matrix, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
    matrix_bgcorr->Add(matrix_bg,-1.);
@@ -301,12 +418,20 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
    matrix_bgcorrB->Add(matrix_bgB,-1.);
 
    TH2F* addbackMatrix_bgcorr = (TH2F*) addbackMatrix_coinc->Clone("addbackMatrix_bgcorr"); list->Add(addbackMatrix_bgcorr);
-   addbackMatrix_bgcorr->SetTitle(Form("#gamma-#gamma matrix, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
+   addbackMatrix_bgcorr->SetTitle(Form("#gamma-#gamma matrix, addback, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
    addbackMatrix_bgcorr->Add(addbackMatrix_bg,-1.);
 
    TH2F* addbackMatrix_bgcorrB = (TH2F*) addbackMatrix_coincB->Clone("addbackMatrix_bgcorrB"); list->Add(addbackMatrix_bgcorrB);
-   addbackMatrix_bgcorrB->SetTitle(Form("#gamma-#gamma matrix with coincident beta, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
+   addbackMatrix_bgcorrB->SetTitle(Form("#gamma-#gamma matrix with coincident beta, addback, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
    addbackMatrix_bgcorrB->Add(addbackMatrix_bgB,-1.);
+
+   TH2F* addbackCloverMatrix_bgcorr = (TH2F*) addbackCloverMatrix_coinc->Clone("addbackCloverMatrix_bgcorr"); list->Add(addbackCloverMatrix_bgcorr);
+   addbackCloverMatrix_bgcorr->SetTitle(Form("#gamma-#gamma matrix, clover addback, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
+   addbackCloverMatrix_bgcorr->Add(addbackCloverMatrix_bg,-1.);
+
+   TH2F* addbackCloverMatrix_bgcorrB = (TH2F*) addbackCloverMatrix_coincB->Clone("addbackCloverMatrix_bgcorrB"); list->Add(addbackCloverMatrix_bgcorrB);
+   addbackCloverMatrix_bgcorrB->SetTitle(Form("#gamma-#gamma matrix with coincident beta, clover addback, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
+   addbackCloverMatrix_bgcorrB->Add(addbackCloverMatrix_bgB,-1.);
 
 #ifdef __CINT__ 
    TCanvas* c = new TCanvas;
@@ -334,6 +459,7 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
 #endif
 
    list->Sort();
+   std::cout << "done after " << w.RealTime() << " seconds" << std::endl;
    return list;
 }
 
@@ -341,20 +467,32 @@ TList *MakeMatrices(TChain* tree, int coincLow = 0, int coincHigh = 10, int bg =
 #ifndef __CINT__ 
 
 int main(int argc, char **argv) {
-   if(argc < 3)  {                     //This could reasonably <2. A tree can be a chain and we may not want to look at more than one sub run at a time
-      printf("try again.\n");
+   if(argc != 3) {
+      printf("try again (usage: %s <analysis tree file> <output file>).\n",argv[0]);
       return 0;
    }
-   TChain* chain = new TChain("AnalysisTree");
-   
-   for(int arg = 1; arg < argc-1; ++arg) {
-      chain->Add(argv[arg]);
+  
+   TFile* file = new TFile(argv[1]);
+   if(file == NULL) {
+      printf("Failed to open file '%s'!\n",argv[1]);
+      return 1;
+   }
+   if(!file->IsOpen()) {
+      printf("Failed to open file '%s'!\n",argv[1]);
+      return 1;
    }
 
-   //coinc window = 0-20, bg window 40-60
-   TList *list = MakeMatrices(chain, 0., 20., 80.);
+   TTree* tree = (TTree*) file->Get("AnalysisTree");
 
-   TFile *outfile = new TFile(argv[argc-1],"create");
+   if(tree == NULL) {
+      printf("Failed to find analysis tree in file '%s'!\n",argv[1]);
+      return 1;
+   }
+   
+   //coinc window = 0-20, bg window 40-60, 6000 bins from 0. to 6000. (default is 4000)
+   TList *list = MakeMatrices(tree, 0., 20., 80., 6000, 0., 6000.);
+
+   TFile *outfile = new TFile(argv[2],"create");
    list->Write();
 
    return 0;
