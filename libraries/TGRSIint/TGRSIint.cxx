@@ -77,9 +77,8 @@ void TGRSIint::ApplyOptions() {
   bool foundCal = false;
   if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
-  if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0)  
+  if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0){  
     TAnalysisTreeBuilder::Get()->StartMakeAnalysisTree();
-  if(!TGRSIOptions::CloseAfterSort() && TGRSIOptions::GetInputRoot().size()!=0) { 
     for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
         //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
 	     long error = ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
@@ -100,6 +99,7 @@ void TGRSIint::ApplyOptions() {
   if(TGRSIOptions::WorkHarder()) {
       for(int x=0;x<TGRSIOptions::GetMacroFile().size();x++) {
          gROOT->Macro(TGRSIOptions::GetMacroFile().at(x).c_str());  
+       // gROOT->ProcessLineSync(Form(".x %s",TGRSIOptions::GetMacroFile().at(x).c_str()));
       }
    }
 
@@ -193,7 +193,6 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                case 'S':
                   printf(DBLUE "SORT!!" RESET_COLOR "\n");
                   fFragmentSort = true;
-         		   //TGRSIOptions::SetCloseAfterSort();
                   break;
                case 'H':
                   if(sargv.length()==2) {
