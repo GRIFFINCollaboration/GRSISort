@@ -228,7 +228,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                printf(DBLUE "     sending parsing errors to file." RESET_COLOR "\n");
                TGRSIOptions::SetLogErrors(true);
             } else if(temp.compare("work_harder")==0) {
-               printf(DBLUE "     hope you used -a with a mid file here.");
+               printf(DBLUE "     running the 885 check. I hope you used -a with a mid file here.");
                TGRSIOptions::SetWorkHarder(true);
             } else if(temp.compare("no_speed")==0) {
                 printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
