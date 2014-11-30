@@ -817,7 +817,7 @@ void TAnalysisTreeBuilder::Status() {
    //printf(DYELLOW HIDE_CURSOR "%12i / %12ld " RESET_COLOR "/" DBLUE " %12i " RESET_COLOR "/" DCYAN " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR "/" DGREEN " %12i " RESET_COLOR
    //       "    processed fragments / # of fragments/ # of events / event queue size / write queue size / events written.\t%.1f seconds." SHOW_CURSOR "\n",
    //       fFragmentsIn, fEntries, fAnalysisIn, TEventQueue::Size(), TWriteQueue::Size(), fAnalysisOut, w.RealTime());
-   printf(DYELLOW HIDE_CURSOR "Fragments: %.1f \%," DBLUE "\t %12i built events," DRED "\t written: %12i = %.1f \%," DGREEN "\t write speed: %12i built events/second." RESET_COLOR "\t%.1f seconds." SHOW_CURSOR "\r",
+   printf(DYELLOW HIDE_CURSOR "Fragments: %.1f \%," DBLUE "\t %12i built events," DRED "\t written: %12i = %.1f \%," DGREEN "\t write speed: %12.1f built events/second." RESET_COLOR "\t%.1f seconds." SHOW_CURSOR "\r",
           (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime());
 
    return;
