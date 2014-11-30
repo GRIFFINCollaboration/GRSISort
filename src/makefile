@@ -9,6 +9,7 @@ LDROOT =  $(shell root-config --glibs)  #`root-config --glibs`
 LDROOT += -lXMLParser
 LDROOT += -lXMLIO
 LDROOT += -lProof
+LDROOT += -lGuiHtml
 
 INC = -I$(BASE)/include
 INC += -I$(MIDASSYS)/include

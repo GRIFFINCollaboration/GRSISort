@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+</head>
+<body>
+<h1 id="grsisort">GRSISort</h1>
+<p>A lean, mean, sorting machine.</p>
+<p>To compile for a .sh shell execute <code>source SOURCEME.sh</code> in your terminal from the GRSISort Directory</p>
+<p>To avoid running this script every session, add the following to your <strong>~/.bashrc</strong> <code>export GRSISYS=/path/to/dir/of/GRSISort export PATH=$GRSISYS/bin:$PATH export LD_LIBRARY_PATH=$GRSISYS/libraries:$LD_LIBRARY_PATH</code></p>
+<p>To compile using a .crsh or .tcsh shell execute <code>source SOURCEME.csh</code> in your terminal from the GRSISort Directory</p>
+<p>To avoid running this script every session, add the following in your <strong>~/.cshrc</strong> or <strong>~/.tcshrc</strong> <code>setenv GRSISYS /path/to/dir/of/GRSISort set path = ($path $GRSISYS/bin) setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:$GRSISYS/libraries</code> Warning: compiling in csh has been known to be an issue. Use sh if possible.</p>
+<p>once complete type <code>make</code> in the GRSISort directory</p>
+<table>
+<col width="56%" />
+<thead>
+<tr class="header">
+<th align="left">Running</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">grsisort will open up a root session in the grsi environment Commands:</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>grsisort NAMEOFMIDASFILE.mid</strong> -&gt; Converts the midas file into a fragment tree</td>
+</tr>
+<tr class="odd">
+<td align="left">Currently accepted flags for the midas sort: * <strong>-suppress_error</strong>, suppresses errors from failed data parsing appearing in stdout * <strong>-log_error</strong>, sends errors from failed data parsing to file, will not send errors if supress error option is also used! * <strong>-no_waveforms</strong>, does not add the wave form stored for each event in the mid file to the fragment tree * <strong>-s</strong>, quits the program after it finishs turing the input midas files into trees.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>grsisort -s NAME_OF_FRAGMENT_TREE.root</strong> -&gt; Starts sorting the fragment tree into user defined hists. * Histograms are defined in <strong>users/UserInitObj.h</strong> * How to fill the histogram is defined in <strong>usrer/UserFillObj.h</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="utilities">Utilities</h2>
+<p>Utilities, such as analysis scripts, asre kept in the <strong>util</strong> directory. Below are a list of useful utilities and how to use them. * <strong>Root2Rad</strong>, Converts the 1D and 2D histograms in a root file to Radware .spe and .mat formats To compile: <code>g++ Root2Rad.cxx -oRoot2Rad `root-config --cflags --libs`</code> To Run: <code>./Root2Rad NAME_OF_ROOT_FILE.root</code></p>
+<p><strong>Scripts</strong> * <strong>auto_eff.C</strong>, Reads in a root file and calculates the efficiency of each HPGe Crystal based on a specfic source and activity</p>
+<p>More to follow...</p>
+</body>
+</html>
