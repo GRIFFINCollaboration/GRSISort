@@ -12,9 +12,9 @@
 
 #include "Globals.h"
 
+#include "TGHtmlBrowser.h"
 
 ClassImp(TGRSIint)
-
 
 TGRSIint *TGRSIint::fTGRSIint = NULL;
 
@@ -23,6 +23,8 @@ TEnv *TGRSIint::fGRSIEnv = NULL;
 //std::vector<std::string> *TGRSIint::fInputMidasFile = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputCalFile   = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputOdbFile   = new std::vector<std::string>;
+
+void ReadTheNews(void);
 
 TGRSIint *TGRSIint::instance(int argc,char** argv, void *options, int numOptions, bool noLogo, const char *appClassName) {
    if(!fTGRSIint)
@@ -60,6 +62,10 @@ void TGRSIint::InitFlags() {
 
 void TGRSIint::ApplyOptions() {
   	
+  if(TGRSIOptions::ReadingMaterial()) {
+     ReadTheNews();
+  }
+
 
   if(fAutoSort){
     TGRSILoop::Get()->SortMidas();
@@ -90,8 +96,11 @@ void TGRSIint::ApplyOptions() {
     }
   }
   if(TGRSIOptions::WorkHarder()) {
-      gROOT->ProcessLine(".x check885.C");  
-  }
+      for(int x=0;x<TGRSIOptions::GetMacroFile().size();x++) {
+         gROOT->Macro(TGRSIOptions::GetMacroFile().at(x).c_str());  
+      }
+   }
+
 
   if(TGRSIOptions::CloseAfterSort())
      gApplication->Terminate();
@@ -110,6 +119,11 @@ int TGRSIint::TabCompletionHook(char* buf, int* pLoc, ostream& out) {
    return TRint::TabCompletionHook(buf,pLoc,out);
 }
 
+void ReadTheNews(void) {
+   gROOT->ProcessLine(".! wget -p http://en.wikipedia.org/wiki/Special:Random -q -Otemp.html");
+   new TGHtmlBrowser("temp.html");
+   return;
+}
 
 void TGRSIint::PrintLogo(bool print) {
 
@@ -161,9 +175,9 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
             char key = temp[0];
             switch(toupper(key)) {
 	       case 'A':
-		  printf(DBLUE "Atempting to make analysis trees." RESET_COLOR "\n");
+      		  printf(DBLUE "Atempting to make analysis trees." RESET_COLOR "\n");
          	  TGRSIOptions::SetMakeAnalysisTree();
-		  break;
+		        break;
                case 'Q':
                   printf(DBLUE "Closing after Sort." RESET_COLOR "\n");
                   TGRSIOptions::SetCloseAfterSort();
@@ -228,8 +242,11 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                printf(DBLUE "     sending parsing errors to file." RESET_COLOR "\n");
                TGRSIOptions::SetLogErrors(true);
             } else if(temp.compare("work_harder")==0) {
-               printf(DBLUE "     hope you used -a with a mid file here.");
+               printf(DBLUE "     running a macro with .x after making fragment/analysistree." RESET_COLOR "\n");
                TGRSIOptions::SetWorkHarder(true);
+            } else if(temp.compare("reading_material")==0) {
+               printf(DBLUE"      now providing reading material while you wait." RESET_COLOR "\n");
+               TGRSIOptions::SetReadingMaterial(true);
             } else if(temp.compare("no_speed")==0) {
                 printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
                 TGRSIOptions::SetProgressDialog(false);
@@ -271,7 +288,8 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
 
 void TGRSIint::PrintHelp(bool print) {
    if(print) {
-      printf( DRED BG_WHITE "     Send Help!!     " RESET_COLOR  "\n");
+      printf( DRED BG_WHITE "     Sending Help!!     " RESET_COLOR  "\n");
+      new TGHtmlBrowser(gSystem->ExpandPathName("${GRSISYS}/README.html"));
    }
    return;
 }
@@ -305,6 +323,9 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
       //printf("\tFound c-like odb file: %s\n",filename.c_str());
       printf("c-like odb structures can't be read yet.\n");
       return false;
+   } else if((ext.compare("c")==0) || (ext.compare("C")==0)) {
+      TGRSIOptions::AddMacroFile(filename);
+      return true;
    } else {
       printf("\tDiscarding unknown file: %s\n",filename.c_str());
       return false;

@@ -73,6 +73,7 @@ TGriffin::TGriffin(const TGriffin& rhs) {
      bgodata      = 0;
      griffin_hits = rhs.griffin_hits;
      addback_hits = rhs.addback_hits;
+     addback_clover_hits = rhs.addback_clover_hits;
      fSetBGOHits  = rhs.fSetBGOHits;
      fSetCoreWave = rhs.fSetCoreWave;
      fSetBGOWave  = rhs.fSetBGOWave;
@@ -123,6 +124,7 @@ void TGriffin::Clear(Option_t *opt)	{
 
 	griffin_hits.clear();
 	addback_hits.clear();
+	addback_clover_hits.clear();
 
 }
 
@@ -135,6 +137,7 @@ void TGriffin::Print(Option_t *opt) {
   if(bgodata) bgodata->Print();
   printf("%lu griffin_hits\n",griffin_hits.size());
   printf("%lu addback_hits\n",addback_hits.size());
+  printf("%lu addback_clover_hits\n",addback_clover_hits.size());
   return;
 }
 
@@ -143,6 +146,7 @@ TGriffin& TGriffin::operator=(const TGriffin& rhs) {
      bgodata      = 0;
      griffin_hits = rhs.griffin_hits;
      addback_hits = rhs.addback_hits;
+     addback_clover_hits = rhs.addback_clover_hits;
      fSetBGOHits  = rhs.fSetBGOHits;
      fSetCoreWave = rhs.fSetCoreWave;
      fSetBGOWave  = rhs.fSetBGOWave;
@@ -312,7 +316,8 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    //printf(DGREEN "|||||||||||||||||||||||||||||||||||||||||||||||||||||" RESET_COLOR "\n");
 
    //if(griffin_hits.size()>1)
-      //BuildAddBack();
+   BuildAddBack();
+   BuildAddBackClover();
 }
 
 
@@ -379,7 +384,7 @@ void TGriffin::BuildAddBack(Option_t *opt) {
             used = true;
             addback_hits.at(j).Add(this->GetGriffinHit(i));
             break;
-	 }
+	      }
       }
       if(!used) {
          addback_hits.push_back(*(this->GetGriffinHit(i)));
@@ -389,32 +394,31 @@ void TGriffin::BuildAddBack(Option_t *opt) {
 }
 
 
-void TGriffin::BuildAddBack2(Option_t *opt) { 
+void TGriffin::BuildAddBackClover(Option_t *opt) { 
    //Builds the addback for the GRIFFIN Event. This is based on a resolution set within the function. This will have to be
    //tuned in order to make add-back the most efficient. 
    if(this->griffin_hits.size() == 0)
       return;
    //We may have angular correlation add-back algorithms eventaully too.
-   addback_hits.clear();
-   addback_hits.push_back(*(this->GetGriffinHit(0)));
-   //	addback_hits.at(0).Add(&(addback_hits.at(0)));
+   addback_clover_hits.clear();
+   addback_clover_hits.push_back(*(this->GetGriffinHit(0)));
 
    for(int i = 1; i<this->GetMultiplicity(); i++) {
       bool used = false;
-      for(int j =0; j<addback_hits.size();j++) {
-         TVector3 res = addback_hits.at(j).GetPosition() - this->GetGriffinHit(i)->GetPosition();
+      for(int j =0; j<addback_clover_hits.size();j++) {
+//         TVector3 res = addback_hits.at(j).GetPosition() - this->GetGriffinHit(i)->GetPosition();
+         if(addback_clover_hits.at(j).GetDetectorNumber() != griffin_hits.at(i).GetDetectorNumber())
+            continue;
+         int d_time = abs(addback_clover_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
 
-         int d_time = abs(addback_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
-
-         if( (res.Mag() < 105) && (d_time < 11) )    {    ///Still need to tune these values!! pcb.
+         if(  (d_time < 11)  )    {    ///Still need to tune these values!! pcb.
             used = true;
-            addback_hits.at(j).Add(this->GetGriffinHit(i));
+            addback_clover_hits.at(j).Add(this->GetGriffinHit(i));
             break;
-	 }
+	      }
       }
       if(!used) {
-         addback_hits.push_back(*(this->GetGriffinHit(i)));
-        	//addback_hits.back().Add(&(addback_hits.back()));
+         addback_clover_hits.push_back(*(this->GetGriffinHit(i)));
       }
    }
 }
