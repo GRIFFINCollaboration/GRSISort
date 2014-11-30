@@ -13,6 +13,7 @@
 #include "Globals.h"
 
 #include "TGHtmlBrowser.h"
+//#include <pstream.h>
 
 ClassImp(TGRSIint)
 
@@ -63,7 +64,8 @@ void TGRSIint::InitFlags() {
 void TGRSIint::ApplyOptions() {
   	
   if(TGRSIOptions::ReadingMaterial()) {
-     ReadTheNews();
+     std::thread fnews = std::thread(ReadTheNews);
+     fnews.detach();
   }
 
 
@@ -120,8 +122,10 @@ int TGRSIint::TabCompletionHook(char* buf, int* pLoc, ostream& out) {
 }
 
 void ReadTheNews(void) {
-   gROOT->ProcessLine(".! wget -p http://en.wikipedia.org/wiki/Special:Random -q -Otemp.html");
-   new TGHtmlBrowser("temp.html");
+   //gROOT->ProcessLine(".! wget -q -l1 - http://en.wikipedia.org/wiki/Special:Random -Otemp.html");
+   //new TGHtmlBrowser("temp.html");
+   //std::ipstream wrandom("xdg-open http://en.wikipedia.org/wiki/Special:Random");
+   gROOT->ProcessLine(".! xdg-open http://en.wikipedia.org/wiki/Special:Random > /dev/null 2>&1");
    return;
 }
 
