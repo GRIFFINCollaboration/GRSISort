@@ -79,13 +79,14 @@ void TGRSIint::ApplyOptions() {
     TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
   if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0){  
     TAnalysisTreeBuilder::Get()->StartMakeAnalysisTree();
-    for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
-        //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
-	     long error = ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
-		  if(error <=0) continue;
-	     TFile *file = (TFile*)gROOT->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
-        printf("\tfile %s opened as _file%i\n",file->GetName(),x);
-        TGRSIRootIO::Get()->LoadRootFile(file);
+  }
+  for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
+      //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
+      long error = ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
+      if(error <=0) continue;
+      TFile *file = (TFile*)gROOT->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
+      printf("\tfile %s opened as _file%i\n",file->GetName(),x);
+      TGRSIRootIO::Get()->LoadRootFile(file);
    }
    if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
       ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
@@ -95,7 +96,7 @@ void TGRSIint::ApplyOptions() {
       ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
        printf("Reading Calibration from from \"%s\" AnalysisTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str());
     }
-  }
+  
   if(TGRSIOptions::WorkHarder()) {
       for(int x=0;x<TGRSIOptions::GetMacroFile().size();x++) {
          gROOT->Macro(TGRSIOptions::GetMacroFile().at(x).c_str());  
