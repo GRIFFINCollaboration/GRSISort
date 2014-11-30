@@ -125,7 +125,11 @@ void ReadTheNews(void) {
    //gROOT->ProcessLine(".! wget -q -l1 - http://en.wikipedia.org/wiki/Special:Random -Otemp.html");
    //new TGHtmlBrowser("temp.html");
    //std::ipstream wrandom("xdg-open http://en.wikipedia.org/wiki/Special:Random");
+   #ifdef __APPLE__
+   gROOT->ProcessLine(".! open http://en.wikipedia.org/wiki/Special:Random > /dev/null 2>&1");
+   #else
    gROOT->ProcessLine(".! xdg-open http://en.wikipedia.org/wiki/Special:Random > /dev/null 2>&1");
+   #endif
    return;
 }
 
