@@ -123,7 +123,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
    //Set some physical limits for parameters
    pp->SetParLimits(0,0.5*yp, 2*yp);
    pp->SetParLimits(1,xp-rw,xp+rw);
-   pp->SetParLimits(2,1,12);
+   pp->SetParLimits(2,0.5,12);
    pp->SetParLimits(3,0.000,10);
    pp->SetParLimits(4,0,500);
    pp->SetParLimits(6,0,A*1.4);
@@ -139,7 +139,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
   // pp->FixParameter(5,1);
 
    if(verbosity)
-      const char * options = "R0FSM+";
+      const char * options = "RFSM+";
    else
       const char * options = "R0FSMQ+";
 
@@ -172,7 +172,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
    photopeak->SetParameters(par);
 
    Double_t integral = photopeak->Integral(xp-rw,xp+rw)/binWidth;
-
+   
    if(verbosity){
       std::cout << "FIT RESULT CHI2 " << fitres->Chi2() << std::endl;
       std::cout << "FWHM = " << 2.35482*fitres->Parameter(2) <<"(" << fitres->ParError(2) << ")" << std::endl;
@@ -683,7 +683,7 @@ int autoefficiency60(TH2D *mat,const char *name,Double_t runlengthsecs, Double_t
    TFile outfile("Calibration.root","RECREATE");
    TTree *tree = new TTree("CalibrationTree","Calibration Tree");
    TPeak *peak = 0;
-   tree->Bronch("TPeak","TPeak", &peak);
+   tree->Branch("TPeak","TPeak", &peak);
      std::cout << &peak << std::endl;
 
    gSystem->Load("libNucleus");
@@ -693,7 +693,7 @@ int autoefficiency60(TH2D *mat,const char *name,Double_t runlengthsecs, Double_t
    TGraphErrors *graph = new TGraphErrors;
 
    TH1D* h1 = new TH1D;
-	for(int i=1; i<=64;i++){
+	for(int i=0; i<=64;i++){
       printf("\nNow fitting channel: %d",i);
 		TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
 		if(h1->Integral() < 1)
@@ -705,6 +705,12 @@ int autoefficiency60(TH2D *mat,const char *name,Double_t runlengthsecs, Double_t
 	}
    mg->Draw("PA0");
    tree->Write();
+
+   TFile* graphfile = new TFile("efficgraph.root", "RECREATE");
+   mg->Write();
+   graphfile->Close();
+
+   delete graphfile;
  
    outfile.Close();
   return 1;
@@ -715,7 +721,7 @@ int autoefficiency60(TH1D *hist,const char *name,Double_t runlengthsecs, Double_
   TNucleus nuc(name);
   nuc.SetSourceData();
   TList *graphlist = new TList;
-  TMultiGraph *mg_eff = new TMultiGraph("Efficiencies","Efficiencies");
+  TMultiGraph *mg = new TMultiGraph("Efficiencies","Efficiencies");
  
   
   TGraphErrors *eff_1173 = new TGraphErrors("Eff_1173","Eff_1173"); graphlist->Add(eff_1173);
@@ -803,7 +809,7 @@ TMultiGraph* autoefficiency60(TTree *tree, TPeak *peak, TH1D *hist,int channum,T
      peak->SetArea(integral,sigma);
      peak->SetFitResult(fitresult);
      peak->Print();
-     tree->Fill();
+    // tree->Fill();
      	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
      	//area_uncertainty.push_back(sigma);
       area_uncertainty.push_back(0.01*integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
