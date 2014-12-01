@@ -360,7 +360,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       //}
       //event->push_back(*oldFrag);
       //channelSeen.insert(oldFrag->ChannelNumber);
-      //printf("\ntime diff = %ld\n",abs(oldFrag->GetTimeStamp()-currentFrag->GetTimeStamp()));
+      //printf("\ntime diff = %ld\n",currentFrag->GetTimeStamp() - firstTimeStamp);
       if(abs(currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
          //printf("Adding %ld fragments to queue\n",event->size());
          //if(event->size() > 1) {
@@ -530,6 +530,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*,
 
 void TAnalysisTreeBuilder::FillWriteQueue(std::map<const char*, TGRSIDetector*> *detectors) {
    fAnalysisIn++;
+   //printf("incremented fAnalysisIn to %d, %d fragments in this event\n",fAnalysisIn, detectors->size());
    TWriteQueue::Get()->Add(detectors);
 }
 
