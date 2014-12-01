@@ -275,14 +275,6 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
          scepMultCutB->Fill(scep->GetMultiplicity());
       }
 
-   TH2F* griffinHits = new TH2F("griffinHits","#gamma-#gamma hitpattern",70,0,70,70,0,70); list->Add(griffinHits);
-   TH2F* griffinHitsB = new TH2F("griffinHitsB","#gamma-#gamma hitpattern, coincident #beta",70,0,70,70,0,70); list->Add(griffinHitsB);
-
-   TH2F* addbackHits = new TH2F("addbackHits","#gamma-#gamma hitpattern, addback",70,0,70,70,0,70); list->Add(addbackHits);
-   TH2F* addbackHitsB = new TH2F("addbackHitsB","#gamma-#gamma hitpattern, addback, coincident #beta",70,0,70,70,0,70); list->Add(addbackHitsB);
-
-   TH2F* addbackCloverHits = new TH2F("addbackCloverHits","#gamma-#gamma hitpattern, clover addback",70,0,70,70,0,70); list->Add(addbackCloverHits);
-   TH2F* addbackCloverHitsB = new TH2F("addbackCloverHitsB","#gamma-#gamma hitpattern, clover addback, coincident #beta",70,0,70,70,0,70); list->Add(addbackCloverHitsB);
       //loop over all gamma's in two loops
       for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
          gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergyLow());

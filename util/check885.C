@@ -22,7 +22,7 @@ void check885() {
    }
    
    if(TGRSIRunInfo::Get()) {
-      printf("\tRun %05i_%03i:\t%i counts in %.2f seconds.\t%.4f cnts/min\n",
+      printf("\n\tRun %05i_%03i:\t%i counts in %.2f seconds.\t%.4f cnts/min\n",
       TGRSIRunInfo::Get()->RunNumber(),TGRSIRunInfo::Get()->SubRunNumber(),
       (int)sum,time,sum/(time/60.0));
    }
