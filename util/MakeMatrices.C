@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 #include <cstdio>
+#include <sys/stat.h>
 
 #include "TROOT.h"
 #include "TTree.h"
@@ -17,6 +18,7 @@
 #include "TH2F.h"
 #include "TCanvas.h"
 #include "TStopwatch.h"
+#include "TMath.h"
 
 #ifndef __CINT__ 
 #include "TGriffin.h"
@@ -37,9 +39,9 @@ void MakeMatrices() {
 
    std::string fileName = gFile->GetName();
    if(fileName.find_last_of("/") != std::string::npos) {
-      file.insert(fileName.find_last_of("/")+1,"matrices_");
+      fileName.insert(fileName.find_last_of("/")+1,"matrices_");
    } else {
-      file.insert(0,"matrices_");
+      fileName.insert(0,"matrices_");
    }
    TFile *outfile = new TFile(file.c_str(),"create");
    list->Write();
@@ -129,6 +131,22 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    TH2F* addbackCloverMatrixB = new TH2F("addbackCloverMatrixB","#gamma-#gamma matrix, clover addback, and coincident #beta",nofBins, low, high,nofBins, low, high); list->Add(addbackCloverMatrixB);
    TH2F* addbackCloverMatrix_coincB = new TH2F("addbackCloverMatrix_coincB",Form("#gamma-#gamma matrix, clover addback, coincident within %d - %d [10 ns], and coincident #beta", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(addbackCloverMatrix_coincB);
    TH2F* addbackCloverMatrix_bgB = new TH2F("addbackCloverMatrix_bgB",Form("#gamma-#gamma matrix, clover addback, background within %d - %d [ 10 ns], and coincident #beta", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(addbackCloverMatrix_bgB);
+
+   TH2F* addbackMatrixClose = new TH2F("addbackMatrixClose","#gamma-#gamma matrix, addback, angle between detectors < 90^{o}",nofBins, low, high,nofBins, low, high); list->Add(addbackMatrixClose);
+   TH2F* addbackMatrixClose_coinc = new TH2F("addbackMatrixClose_coinc",Form("#gamma-#gamma matrix, addback, angle between detectors < 90^{o}, coincident within %d - %d [10 ns]", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(addbackMatrixClose_coinc);
+   TH2F* addbackMatrixClose_bg = new TH2F("addbackMatrixClose_bg",Form("#gamma-#gamma matrix, addback, angle between detectors < 90^{o}, background within %d - %d [ 10 ns]", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(addbackMatrixClose_bg);
+
+   TH2F* addbackMatrixCloseB = new TH2F("addbackMatrixCloseB","#gamma-#gamma matrix, addback, angle between detectors < 90^{o}, and coincident #beta",nofBins, low, high,nofBins, low, high); list->Add(addbackMatrixCloseB);
+   TH2F* addbackMatrixClose_coincB = new TH2F("addbackMatrixClose_coincB",Form("#gamma-#gamma matrix, addback, angle between detectors < 90^{o}, coincident within %d - %d [10 ns], and coincident #beta", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(addbackMatrixClose_coincB);
+   TH2F* addbackMatrixClose_bgB = new TH2F("addbackMatrixClose_bgB",Form("#gamma-#gamma matrix, addback, angle between detectors < 90^{o}, background within %d - %d [ 10 ns], and coincident #beta", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(addbackMatrixClose_bgB);
+
+   TH2F* addbackCloverMatrixClose = new TH2F("addbackCloverMatrixClose","#gamma-#gamma matrix, clover addback, angle between detectors < 90^{o}",nofBins, low, high,nofBins, low, high); list->Add(addbackCloverMatrixClose);
+   TH2F* addbackCloverMatrixClose_coinc = new TH2F("addbackCloverMatrixClose_coinc",Form("#gamma-#gamma matrix, clover addback, angle between detectors < 90^{o}, coincident within %d - %d [10 ns]", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(addbackCloverMatrixClose_coinc);
+   TH2F* addbackCloverMatrixClose_bg = new TH2F("addbackCloverMatrixClose_bg",Form("#gamma-#gamma matrix, clover addback, angle between detectors < 90^{o}, background within %d - %d [ 10 ns]", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(addbackCloverMatrixClose_bg);
+
+   TH2F* addbackCloverMatrixCloseB = new TH2F("addbackCloverMatrixCloseB","#gamma-#gamma matrix, clover addback, angle between detectors < 90^{o}, and coincident #beta",nofBins, low, high,nofBins, low, high); list->Add(addbackCloverMatrixCloseB);
+   TH2F* addbackCloverMatrixClose_coincB = new TH2F("addbackCloverMatrixClose_coincB",Form("#gamma-#gamma matrix, clover addback, angle between detectors < 90^{o}, coincident within %d - %d [10 ns], and coincident #beta", coincLow, coincHigh),nofBins, low, high,nofBins, low, high);  list->Add(addbackCloverMatrixClose_coincB);
+   TH2F* addbackCloverMatrixClose_bgB = new TH2F("addbackCloverMatrixClose_bgB",Form("#gamma-#gamma matrix, clover addback, angle between detectors < 90^{o}, background within %d - %d [ 10 ns], and coincident #beta", bg+coincLow, bg+coincHigh),nofBins, low, high,nofBins, low, high); list->Add(addbackCloverMatrixClose_bgB);
 
    //multiplicities
    TH1F* grifMult    = new TH1F("grifMult",        "Griffin multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(grifMult);
@@ -360,6 +378,17 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                addbackMatrix_bg->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
                addbackCloverMatrix_bg->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
             }
+            if(grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition()) < TMath::Pi()/2.) {
+               addbackMatrixClose->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+               addbackCloverMatrixClose->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
+               if(coincLow <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < coincHigh) {
+                  addbackMatrixClose_coinc->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+                  addbackCloverMatrixClose_coinc->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
+               } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < (bg+coincHigh)) {
+                  addbackMatrixClose_bg->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+                  addbackCloverMatrixClose_bg->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
+               }
+            }
          }
       }
       //addback coincident with beta
@@ -393,6 +422,17 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                   } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < (bg+coincHigh)) {
                      addbackMatrix_bgB->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
                      addbackCloverMatrix_bgB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
+                  }
+                  if(grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition()) < TMath::Pi()/2.) {
+                     addbackMatrixCloseB->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+                     addbackCloverMatrixCloseB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
+                     if(coincLow <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < coincHigh) {
+                        addbackMatrixClose_coincB->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+                        addbackCloverMatrixClose_coincB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
+                     } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < (bg+coincHigh)) {
+                        addbackMatrixClose_bgB->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+                        addbackCloverMatrixClose_bgB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
+                     }
                   }
                }
             }
@@ -433,6 +473,22 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    addbackCloverMatrix_bgcorrB->SetTitle(Form("#gamma-#gamma matrix with coincident beta, clover addback, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
    addbackCloverMatrix_bgcorrB->Add(addbackCloverMatrix_bgB,-1.);
 
+   TH2F* addbackMatrixClose_bgcorr = (TH2F*) addbackMatrixClose_coinc->Clone("addbackMatrixClose_bgcorr"); list->Add(addbackMatrixClose_bgcorr);
+   addbackMatrixClose_bgcorr->SetTitle(Form("#gamma-#gamma matrix, addback, angle between detectors < 90^{o}, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
+   addbackMatrixClose_bgcorr->Add(addbackMatrixClose_bg,-1.);
+
+   TH2F* addbackMatrixClose_bgcorrB = (TH2F*) addbackMatrixClose_coincB->Clone("addbackMatrixClose_bgcorrB"); list->Add(addbackMatrixClose_bgcorrB);
+   addbackMatrixClose_bgcorrB->SetTitle(Form("#gamma-#gamma matrix with coincident beta, addback, angle between detectors < 90^{o}, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
+   addbackMatrixClose_bgcorrB->Add(addbackMatrixClose_bgB,-1.);
+
+   TH2F* addbackCloverMatrixClose_bgcorr = (TH2F*) addbackCloverMatrixClose_coinc->Clone("addbackCloverMatrixClose_bgcorr"); list->Add(addbackCloverMatrixClose_bgcorr);
+   addbackCloverMatrixClose_bgcorr->SetTitle(Form("#gamma-#gamma matrix, clover addback, angle between detectors < 90^{o}, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
+   addbackCloverMatrixClose_bgcorr->Add(addbackCloverMatrixClose_bg,-1.);
+
+   TH2F* addbackCloverMatrixClose_bgcorrB = (TH2F*) addbackCloverMatrixClose_coincB->Clone("addbackCloverMatrixClose_bgcorrB"); list->Add(addbackCloverMatrixClose_bgcorrB);
+   addbackCloverMatrixClose_bgcorrB->SetTitle(Form("#gamma-#gamma matrix with coincident beta, clover addback, angle between detectors < 90^{o}, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
+   addbackCloverMatrixClose_bgcorrB->Add(addbackCloverMatrixClose_bgB,-1.);
+
 #ifdef __CINT__ 
    TCanvas* c = new TCanvas;
    c->Divide(2,2);
@@ -467,9 +523,27 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 #ifndef __CINT__ 
 
 int main(int argc, char **argv) {
-   if(argc != 3) {
-      printf("try again (usage: %s <analysis tree file> <output file>).\n",argv[0]);
+   if(argc != 3 && argc != 2) {
+      printf("try again (usage: %s <analysis tree file> <optional: output file>).\n",argv[0]);
       return 0;
+   }
+
+   std::string fileName;
+   if(argc == 2) {
+      fileName = argv[1];
+      if(fileName.find_last_of("/") != std::string::npos) {
+         fileName.insert(fileName.find_last_of("/")+1,"matrices_");
+      } else {
+         fileName.insert(0,"matrices_");
+      }
+   } else {
+      fileName = argv[2];
+   }
+
+   struct stat fileInfo; 
+   if(stat(fileName.c_str(),&fileInfo) == 0) {
+      printf("File '%s' already exists, please remove it before re-running %s!\n",fileName.c_str(),argv[0]);
+      return 1;
    }
   
    TFile* file = new TFile(argv[1]);
@@ -492,7 +566,7 @@ int main(int argc, char **argv) {
    //coinc window = 0-20, bg window 40-60, 6000 bins from 0. to 6000. (default is 4000)
    TList *list = MakeMatrices(tree, 0., 20., 80., 6000, 0., 6000.);
 
-   TFile *outfile = new TFile(argv[2],"create");
+   TFile *outfile = new TFile(fileName.c_str(),"create");
    list->Write();
 
    return 0;

@@ -62,7 +62,7 @@ bool TDescantHit::AnalyzeWaveform() {
    // baseline algorithm: average of the first <n> samples
    size_t baseline_length = 10;
    double baseline = 0;
-   //printf("here\n");
+   //printf("here %d\n",waveform.size());
    if(waveform.size() < baseline_length) {
       error = true;
    } else {
@@ -71,7 +71,7 @@ bool TDescantHit::AnalyzeWaveform() {
       }
       baseline /= ((double)baseline_length);
    }
-   //printf("now here\n");
+   //printf("now here %d\n",error);
 
    // all timing algorithms use interpolation with this many steps between two samples (all times are stored as integers)
    int interpolation_steps = 256;
@@ -105,7 +105,7 @@ bool TDescantHit::AnalyzeWaveform() {
          monitor[0] = attenuation*(waveform[i] - baseline) - (waveform[i-delay] - baseline);
       }
    }
-   //printf("now here2\n");
+   //printf("now here2 %d\n",error);
 
    // PSD
    // time to zero-crossing algorithm: time when sum reaches n% of the total sum minus the cfd time

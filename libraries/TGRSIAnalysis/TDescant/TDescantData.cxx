@@ -3,7 +3,7 @@
 //ClassImp(TDescantData)
 
 bool TDescantData::fIsSet   = false;
-bool TDescantData::fSetWave = false;
+bool TDescantData::fSetWave = true;
 
 TDescantData::TDescantData()	{	
 	Clear();

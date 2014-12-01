@@ -63,24 +63,24 @@ void TGRSIint::InitFlags() {
 
 void TGRSIint::ApplyOptions() {
   	
-  if(TGRSIOptions::ReadingMaterial()) {
-     std::thread fnews = std::thread(ReadTheNews);
-     fnews.detach();
-  }
+   if(TGRSIOptions::ReadingMaterial()) {
+      std::thread fnews = std::thread(ReadTheNews);
+      fnews.detach();
+   }
 
 
-  if(fAutoSort){
-    TGRSILoop::Get()->SortMidas();
-  }
-
-
-  bool foundCal = false;
-  if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
-    TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
-  if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0){  
-    TAnalysisTreeBuilder::Get()->StartMakeAnalysisTree();
-  }
-  for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
+   if(fAutoSort){
+     TGRSILoop::Get()->SortMidas();
+   }
+   
+   
+   bool foundCal = false;
+   if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
+      TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
+   if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0) { 
+      TAnalysisTreeBuilder::Get()->StartMakeAnalysisTree();
+   }
+   for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
       //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
       long error = ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
       if(error <=0) continue;
@@ -88,14 +88,16 @@ void TGRSIint::ApplyOptions() {
       printf("\tfile %s opened as _file%i\n",file->GetName(),x);
       TGRSIRootIO::Get()->LoadRootFile(file);
    }
-   if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
-      ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
-      printf("Reading Calibration from from \"%s\" FragmentTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str()); //Will put real file name in here but it's bed time
-    }   
-    if(TGRSIOptions::GetInputRoot().at(0).find("analysis") != std::string::npos){ 
-      ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
-       printf("Reading Calibration from from \"%s\" AnalysisTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str());
-    }
+   if(TGRSIOptions::GetInputRoot().size() > 0) {
+      if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
+         ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
+         printf("Reading Calibration from from \"%s\" FragmentTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str()); //Will put real file name in here but it's bed time
+      }   
+      if(TGRSIOptions::GetInputRoot().at(0).find("analysis") != std::string::npos){ 
+         ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
+         printf("Reading Calibration from from \"%s\" AnalysisTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str());
+      }
+   }
   
   if(TGRSIOptions::WorkHarder()) {
       for(int x=0;x<TGRSIOptions::GetMacroFile().size();x++) {
