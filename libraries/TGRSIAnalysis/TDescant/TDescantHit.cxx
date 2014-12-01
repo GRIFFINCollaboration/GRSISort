@@ -97,7 +97,7 @@ bool TDescantHit::AnalyzeWaveform() {
             break;
          }
          if(i == waveform.size() -1) {
-            printf("failed to get zero-crossing of cfd monitor signal\n");
+            //printf("failed to get zero-crossing of cfd monitor signal\n");
             error = true;
          }
          monitor[2] = monitor[1];
@@ -124,7 +124,7 @@ bool TDescantHit::AnalyzeWaveform() {
          break;
       }
       if(i == waveform.size() -1) {
-         printf("failed to get psd\n");
+         //printf("failed to get psd\n");
          error = true;
       }
    }
