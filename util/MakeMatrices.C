@@ -95,6 +95,9 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    //gamma singles
    TH1F* gammaSingles = new TH1F("gammaSingles","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaSingles);
    TH1F* gammaSinglesB = new TH1F("gammaSinglesB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
+   TH1F* gammaSinglesSup = new TH1F("gammaSinglesSup","#brem sup gamma singles; energy[keV]",nofBins,low,high);list->Add(gammaSinglesSup);
+
+   TH1F* bremB = new TH1F("bremB","#brem in coinc with sceptar; energy[keV]",nofBins,low,high); list->Add(bremB);list->Add(bremB);
 
    TH2F* singlesVsDetNum = new TH2F("singlesVsDetNum","#gamma energy vs. detector number;detector number;energy[keV]", 16, 0.5, 16.5, nofBins, low, high); list->Add(singlesVsDetNum);
 
@@ -326,6 +329,9 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                griffinSceptarEnergyVsCfd->Fill(grif->GetGriffinHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime(),grif->GetGriffinHit(one)->GetEnergyLow());
                //beta-gamma
                gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergyLow());
+               
+
+
                for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
                   if(two == one) {
                      continue;

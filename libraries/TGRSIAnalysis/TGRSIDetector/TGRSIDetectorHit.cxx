@@ -10,6 +10,10 @@ TGRSIDetectorHit::TGRSIDetectorHit()	{
 
 TGRSIDetectorHit::~TGRSIDetectorHit()	{	}
 
+Bool_t TGRSIDetectorHit::BremSuppressed(TGRSIDetectorHit *bremorigin){
+   
+   return false;
+}
 
 void TGRSIDetectorHit::Print(Option_t *opt) { }
 

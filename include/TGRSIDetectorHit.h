@@ -6,6 +6,7 @@
 
 #include <cstdio>
 #include <utility>
+#include <vector>
 
 //#include "TChannel.h"
 #include <TVector3.h> 
@@ -27,6 +28,12 @@ class TGRSIDetectorHit : public TObject 	{
 
 		//virtual TVector3 GetPosition() = 0;	//!
 		//virtual void SetPosition(TGRSIDetectorHit &) = 0;	//!
+      virtual TVector3 GetPosition() const {return position;}
+
+      virtual Bool_t BremSuppressed(TGRSIDetectorHit*);
+
+   protected:
+      TVector3 position;
 
 	ClassDef(TGRSIDetectorHit,1)
 };

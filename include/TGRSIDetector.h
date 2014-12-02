@@ -4,6 +4,8 @@
 #include "Globals.h"
 
 #include <cstdio>
+#include <vector>
+#include "TVector3.h"
 
 #ifndef __CINT__
 #endif
@@ -33,8 +35,6 @@ class TGRSIDetector : public TObject	{
 		virtual void Print(Option_t *opt = "");		//!
 
       //virtual TGRSIDetectorData *GetData() //{ //return data;}
-
-	private: 
 
       //TGRSIDetectorData *data;    //!
 

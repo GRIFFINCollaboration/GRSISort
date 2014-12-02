@@ -29,8 +29,6 @@ class TDescantHit : public TGRSIDetectorHit {
     Double_t energy;
     Long_t   time;
   
-    TVector3 position;
-
     std::vector<Short_t> waveform; //
    
   public:
@@ -81,7 +79,6 @@ class TDescantHit : public TGRSIDetectorHit {
       inline Int_t    GetPsd()                 {   return psd;      }  //!
       inline Double_t GetEnergy()	   	     {	return energy;   }  //!
 		inline Long_t   GetTime()			        {	return time;     }  //!
-		inline TVector3 GetPosition()	           {	return position; }  //!
 
       inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 

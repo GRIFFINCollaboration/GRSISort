@@ -36,8 +36,6 @@ class TGriffinHit : public TGRSIDetectorHit {
       Double_t energy_highgain;
       Long_t time;
 
-		TVector3 position;  
-
 		std::vector<TCrystalHit> bgo;  //!
       std::vector<Short_t> waveform;  //!
    
@@ -79,7 +77,6 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline Double_t GetEnergyLow() const		     {	return energy_lowgain;   }  //!
       inline Double_t GetEnergyHigh() const		     {	return energy_highgain;   }  //!
 		inline Long_t   GetTime() const 			        {	return time;     }  //!
-		inline TVector3 GetPosition() const	           {	return position; }  //!
 
       inline UInt_t   GetAddress() const             {   return address; } //!
 
