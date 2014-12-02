@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstdio>
 #include <map>
+#include <iostream>
 #ifndef __CINT__
 #include <tuple>
 #include <iterator>
