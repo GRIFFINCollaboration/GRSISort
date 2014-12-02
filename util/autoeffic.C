@@ -97,7 +97,7 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, bool verbosity = false){
 
    Double_t binWidth = h->GetXaxis()->GetBinWidth(par[1]);//Need to find the bin widths so that the integral makes sense
-   Int_t rw = binWidth*100;  //This number may change depending on the source used   
+   Int_t rw = binWidth*15;  //This number may change depending on the source used   
    //Set the number of iterations. The code is pretty quick, so having a lot isn't an issue	
    TVirtualFitter::SetMaxIterations(10000);
    Int_t xp = par[1];
@@ -136,12 +136,12 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
  // pp->FixParameter(3,0);
  //  pp->FixParameter(7,0);
  //  pp->FixParameter(4,0);
-  // pp->FixParameter(5,1);
+   pp->FixParameter(5,0);
 
    if(verbosity)
       const char * options = "RFSM+";
    else
-      const char * options = "R0FSMQ+";
+      const char * options = "RFSMQ+";
 
    pp->SetNpx(1000); //Draws a nice smooth function on the graph
    TFitResultPtr fitres = h->Fit("photopeak",options); 
@@ -197,7 +197,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
 	delete pp;
    if(fitres->Chi2()/fitres->Ndf() > 17.0){
       std::cout << "THIS FIT WAS NOT GOOD (Reduced Chi2 = " << fitres->Chi2()/fitres->Ndf() << " )" << std::endl;
-      return false;
+  //    return false;
    }
 
    return fitres;
@@ -1022,3 +1022,307 @@ Double_t gainwalk(TH1* hist){
 }
 
 
+int autoresolution60(TH2D *mat,const char *name,Double_t runlengthsecs, Double_t activitykBq=1.0,bool verbosity = false) {
+   //TFile outfile("Calibration.root","RECREATE");
+   TTree *tree = new TTree("CalibrationTree","Calibration Tree");
+   TPeak *peak = 0;
+   tree->Branch("TPeak","TPeak", &peak);
+     std::cout << &peak << std::endl;
+
+   gSystem->Load("libNucleus");
+   TNucleus nuc(name);
+   nuc.SetSourceData();
+   TMultiGraph *mg = new TMultiGraph("Resolutions","Resolutions");
+   TGraphErrors *graph = new TGraphErrors;
+   TFile* graphfile = new TFile("resolutiongraph.root", "RECREATE");
+
+	for(int i=1; i<=64;i++){
+      printf("\nNow fitting channel: %d",i);
+		TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
+		if(h1->Integral() < 1)
+			continue;
+      peak = new TPeak;
+      mg->Add(autoresolution60(tree,peak,h1,i,&nuc, runlengthsecs,activitykBq,verbosity));
+      h1->Write();
+      delete peak;
+   //   mg->Add(graph);
+	}
+   mg->Draw("PA0");
+   tree->Write();
+
+   mg->Write("Resolutions",TObject::kOverwrite);
+   graphfile->Write();
+   graphfile->Close();
+
+   delete graphfile;
+ 
+  // outfile.Close();
+  return 1;
+}
+
+
+TMultiGraph* autoresolution60(TTree *tree, TPeak *peak, TH1D *hist,int channum,TNucleus *nuc,Double_t runlengthsecs,  Double_t activitykBq,bool verbosity) {    //Activity in uCi
+
+   if(!hist || !nuc)
+      return 0;
+
+   Double_t par[40];
+
+
+
+ //  if(nuc->GetA() == 152) {
+ //     return autogain152(hist);
+ //  }
+
+// Search
+   hist->GetXaxis()->SetRangeUser(250,4000*4);
+
+//   nuc->TransitionList.Sort();
+
+   std::vector<float> engvec;
+   std::vector<float> intensvec;
+   TIter iter(&(nuc->TransitionList));
+   TObject* obj;
+   while(obj = iter.Next()) {
+      if(!obj->InheritsFrom("TGRSITransition"))
+         continue;
+      TGRSITransition *tran = (TGRSITransition*)obj;
+      intensvec.push_back(static_cast<float>(tran->intensity));
+      engvec.push_back(static_cast<float>(tran->energy));
+   }
+
+ 
+
+   std::vector<Float_t> sigmavec;
+   std::vector<Float_t> sigma_uncertainty;
+   std::vector<Float_t> goodenergyvec;
+   std::vector<Float_t> goodintensvec;
+   std::vector<Float_t> channumvec;
+   std::vector<Float_t> areavec;
+   std::vector<Float_t> area_uncertainty;
+
+   Double_t dummyarray[4];
+
+   Float_t integral, sigma; 
+   Double_t binWidth = hist->GetXaxis()->GetBinWidth(1000);
+
+   std::cout << "bin width is " << binWidth << std::endl;
+  for (int p=0;p<engvec.size();p++) {
+     Float_t xp = engvec.at(p);
+     std::cout << "Trying to fit " << xp << " keV" <<std::endl; 
+
+     Int_t bin = hist->GetXaxis()->FindBin(xp);
+     std::cout << "Bin is: " << bin << "xp is " << xp << std::endl;
+     Float_t yp = hist->GetBinContent(bin);
+     std::cout << "yp is: "<<yp << std::endl;
+     par[0] = yp;  //height
+     par[1] = xp;  //centroid
+     par[2] = 1.0;   //sigma
+     par[3] = 1.0;   //beta
+     par[4] = 40.0;   //R
+     par[5] = 1.0; //stp
+     par[6] = hist->GetBinContent(xp-15);  //A
+     par[7] = (hist->GetBinContent(xp-15) - hist->GetBinContent(xp+15))/100.*binWidth;//B
+     par[8] = -0.5;   //C
+     par[9] = xp;  //bg offset
+     TFitResultPtr fitresult = FitPeak(par,hist,integral, sigma,dummyarray,verbosity);
+     //peak = new TPeak;
+     peak->Clear();
+     std::cout << peak << std::endl;
+     peak->SetCentroid(fitresult->Parameter(1), fitresult->ParError(1));
+     peak->SetArea(integral,sigma);
+     peak->SetFitResult(fitresult);
+     peak->Print();
+    // tree->Fill();
+      
+     	sigmavec.push_back(fitresult->Parameter(2)*2.35482);
+     	//area_uncertainty.push_back(sigma);
+      sigma_uncertainty.push_back(fitresult->ParError(2)*2.35482);
+      channumvec.push_back((Float_t)(channum));
+     	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
+     	//area_uncertainty.push_back(sigma);
+      area_uncertainty.push_back(0.01*integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
+
+ //    }
+   }
+  std::cout << "IM PRINTING!!!" << std::endl;
+  std::cout << "Chi2 = " << fitresult->Chi2() << std::endl;
+   std::cout << "or made it here" << std::endl;
+   Float_t *sigmaarr = &(sigmavec[0]);
+   Float_t *area = &(areavec[0]);
+   Float_t *darea = &(area_uncertainty[0]);
+ //  Float_t *energies = &(engvec[0]);
+ //  float *goodenergy = &(goodenergyvec[0])
+   Float_t *dsigma = &(sigma_uncertainty[0]);
+   Float_t *chan = &(channumvec[0]);
+  // hist->DrawCopy();
+ //  TGraph *slopefit = new TGraph(areavec.size(),goodenergy,area ); 
+   TGraphErrors *res = new TGraphErrors(1,&area[0],&sigmaarr[0],&darea[0],&dsigma[0]);
+   res->SetMarkerStyle(21);
+   res->SetMarkerColor(kRed);
+   res->SetLineColor(kRed);
+   TGraphErrors *res2 = new TGraphErrors(1,&area[1],&sigmaarr[1],&darea[0],&dsigma[1]);
+   res2->SetMarkerStyle(20);
+   res2->SetMarkerColor(kBlue);
+   res2->SetLineColor(kBlue);
+   TMultiGraph * resmg = new TMultiGraph;
+  // effic->Draw("PA0*");
+   resmg->Add(res);
+   resmg->Add(res2);
+
+  // printf("Now fitting: Be patient\n");
+ //  slopefit->Fit("pol1");
+  // slopefit->Draw("PA*");
+ //  for(int x=0;x<areavec.size();x++) {
+  //    printf("areavec[%i] = %f\t\tgoodenergyvec[%i] = %f\n",x,areavec[x],x,goodenergyvec[x]);
+  // }
+
+   //return slopefit;
+   //delete dummyarray;
+   return resmg;
+
+}
+
+TGraphErrors* autoeffic152(TH1 *hist,Double_t runlengthsecs, Double_t activitykBq, bool verbosity) {    //Activity in uCi
+
+   TFile* outfile = new TFile("effic152.root","UPDATE");
+
+   if(!hist)
+      return 0;
+
+   hist->SetName("effic152");
+
+   Float_t nucEnergy[16] ={  121.7830,
+                             244.6920,
+                             295.9390,
+                             344.2760,
+                             367.7890,
+                             411.1150,
+                             443.9760,
+                             488.6610,
+                             586.2940,
+                             778.9030,
+                             867.3880,
+                             964.1310,
+                            1005.2790,
+                            1212.9500,
+                            1299.1240,
+                            1408.0110};
+
+   Float_t dnucEnergy[16] =  {.0020,
+                             .0020,
+                             .0080,
+                             .0040,
+                             .0050,
+                             .0050,
+                             .0050,
+                             .0390,
+                             .0060,
+                             .0060,
+                             .0080,
+                             .0090,
+                             .0170,
+                             .0120,
+                             .0120,
+                             .0140};
+
+   Float_t nucIntensity[16] = { 13620.,
+                                 3590.,
+                                  211.,
+                                12750.,
+                                  405.,
+                                 1070.,
+                                 1480.,
+                                  195.,
+                                  220.,
+                                 6190.,
+                                 1990.,
+                                 6920.,
+                                  310.,
+                                  670.,
+                                  780.,
+                                10000.};
+
+
+   Float_t dnucIntensity[16] = { 160.,
+                                  60.,
+                                   5.,
+                                  90.,
+                                   8.,
+                                  10.,
+                                  20.,
+                                   2.,
+                                   5.,
+                                  80.,
+                                  40.,
+                                  90.,
+                                   7.,
+                                   8.,
+                                  10.,
+                                  30.};
+
+   Double_t par[40];
+// Search
+   hist->GetXaxis()->SetRangeUser(100,4000*4);
+
+   std::vector<Float_t> areavec;
+   std::vector<Float_t> area_uncertainty;
+
+   Double_t dummyarray[4];
+
+   Float_t integral, sigma; 
+   Double_t binWidth = hist->GetXaxis()->GetBinWidth(1000);
+
+   std::cout << "bin width is " << binWidth << std::endl;
+  for (int p=0;p<16;p++) {
+     Float_t xp = nucEnergy[p];
+     std::cout << "Trying to fit " << xp << " keV" <<std::endl; 
+
+     Int_t bin = hist->GetXaxis()->FindBin(xp);
+     std::cout << "Bin is: " << bin << "xp is " << xp << std::endl;
+     Float_t yp = hist->GetBinContent(bin);
+     std::cout << "yp is: "<<yp << std::endl;
+     par[0] = yp;  //height
+     par[1] = xp;  //centroid
+     par[2] = 1.0;   //sigma
+     par[3] = 1.0;   //beta
+     par[4] = 40.0;   //R
+     par[5] = 1.0; //stp
+     par[6] = hist->GetBinContent(xp-15);  //A
+     par[7] = (hist->GetBinContent(xp-15) - hist->GetBinContent(xp+15))/100.*binWidth;//B
+     par[8] = -0.5;   //C
+     par[9] = xp;  //bg offset
+     TFitResultPtr fitresult = FitPeak(par,hist,integral, sigma,dummyarray,verbosity);
+     peak = new TPeak;
+     peak->Clear();
+     std::cout << peak << std::endl;
+     peak->SetCentroid(fitresult->Parameter(1), fitresult->ParError(1));
+     peak->SetArea(integral,sigma);
+     peak->SetFitResult(fitresult);
+     peak->Print();
+      
+     	areavec.push_back(integral/nucIntensity[p]);
+     	//area_uncertainty.push_back(sigma);
+      area_uncertainty.push_back(integral/nucIntensity[p]*TMath::Sqrt((sigma/integral)*(sigma/integral) + (dnucIntensity[p]/nucIntensity[p]*dnucIntensity[p]/nucIntensity[p])) );
+   //   delete peak;
+
+   }
+  std::cout << "IM PRINTING!!!" << std::endl;
+  std::cout << "Chi2 = " << fitresult->Chi2() << std::endl;
+   std::cout << "or made it here" << std::endl;
+   Float_t *area = &(areavec[0]);
+   Float_t *darea = &(area_uncertainty[0]);
+   TGraphErrors *res = new TGraphErrors(16,&nucEnergy[0],&area[0],&dnucEnergy[0],&darea[0]);
+   res->SetMarkerStyle(21);
+   res->SetMarkerColor(kRed);
+   res->SetLineColor(kRed);
+   res->Draw("PA0");
+   res->Write("relefficab",TObject::kOverwrite);
+   hist->Write();
+
+   outfile->Close();
+   
+
+   return res;
+
+}
