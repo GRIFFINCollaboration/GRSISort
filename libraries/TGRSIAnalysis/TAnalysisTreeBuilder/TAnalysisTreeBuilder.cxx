@@ -295,6 +295,9 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
       major_min = 0;
    long major_max = (long) fCurrentFragTree->GetMaximum(fCurrentFragTree->GetTreeIndex()->GetMajorName());
 
+   TTreeIndex *index = (TTreeIndex*)fCurrentFragTree->GetTreeIndex();
+   fEntries = index->GetN();
+
    for(int j=major_min;j<=major_max;j++) {
       std::vector<TFragment> *event = new std::vector<TFragment>;
       int fragno = 1;
@@ -360,7 +363,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       //}
       //event->push_back(*oldFrag);
       //channelSeen.insert(oldFrag->ChannelNumber);
-      //printf("\ntime diff = %ld\n",abs(oldFrag->GetTimeStamp()-currentFrag->GetTimeStamp()));
+      //printf("\ntime diff = %ld\n",currentFrag->GetTimeStamp() - firstTimeStamp);
       if(abs(currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
          //printf("Adding %ld fragments to queue\n",event->size());
          //if(event->size() > 1) {
@@ -392,9 +395,6 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    fCurrentFragTree->SetCacheSize(0);
    return;
 }
-
-
-
 
 
 
@@ -530,6 +530,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*,
 
 void TAnalysisTreeBuilder::FillWriteQueue(std::map<const char*, TGRSIDetector*> *detectors) {
    fAnalysisIn++;
+   //printf("incremented fAnalysisIn to %d, %d fragments in this event\n",fAnalysisIn, detectors->size());
    TWriteQueue::Get()->Add(detectors);
 }
 
@@ -710,10 +711,10 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //	FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("CS")==0) {	
             //detectors->push_back(new TCSM);
-            if(detectors->find("RF") == detectors->end()) {
-               (*detectors)["RF"] = new TCSM;
+            if(detectors->find("CS") == detectors->end()) {
+               (*detectors)["CS"] = new TCSM;
             }
-            (*detectors)["RF"]->FillData(&(event->at(i)),channel,&mnemonic);
+            (*detectors)["CS"]->FillData(&(event->at(i)),channel,&mnemonic);
          //} else if(mnemonic.system.compare("SP")==0) {	
          //	FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("GR")==0) {	
@@ -797,9 +798,9 @@ void TAnalysisTreeBuilder::Status() {
    bool fragmentsDone = false;
    bool sortingDone = false;
    while(fPrintStatus) {
-      //printf(DYELLOW HIDE_CURSOR "%12i / %12ld " RESET_COLOR "/" DBLUE " %12i " RESET_COLOR "/" DCYAN " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR "/" DGREEN " %12i " RESET_COLOR
-      //       "    processed fragments / # of fragments/ # of events / event queue size / write queue size / events written.\t%.1f seconds." SHOW_CURSOR "\r",
-      //       fFragmentsIn, fEntries, fAnalysisIn, TEventQueue::Size(), TWriteQueue::Size(), fAnalysisOut, w.RealTime());
+//      printf(DYELLOW HIDE_CURSOR "%12i / %12ld " RESET_COLOR "/" DBLUE " %12i " RESET_COLOR "/" DCYAN " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR "/" DGREEN " %12i " RESET_COLOR
+//             "    processed fragments / # of fragments/ # of events / event queue size / write queue size / events written.\t%.1f seconds." SHOW_CURSOR "\r",
+//             fFragmentsIn, fEntries, fAnalysisIn, TEventQueue::Size(), TWriteQueue::Size(), fAnalysisOut, w.RealTime());
       if(!sortingDone) {
          printf(DYELLOW HIDE_CURSOR "Fragments: %.1f \%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f \%," 
                 DGREEN "   write speed: %9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
@@ -827,9 +828,9 @@ void TAnalysisTreeBuilder::Status() {
       w.Continue(); 
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
    }
-   //printf(DYELLOW HIDE_CURSOR "%12i / %12ld " RESET_COLOR "/" DBLUE " %12i " RESET_COLOR "/" DCYAN " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR "/" DGREEN " %12i " RESET_COLOR
-   //       "    processed fragments / # of fragments/ # of events / event queue size / write queue size / events written.\t%.1f seconds." SHOW_CURSOR "\n",
-   //       fFragmentsIn, fEntries, fAnalysisIn, TEventQueue::Size(), TWriteQueue::Size(), fAnalysisOut, w.RealTime());
+//   printf(DYELLOW HIDE_CURSOR "%12i / %12ld " RESET_COLOR "/" DBLUE " %12i " RESET_COLOR "/" DCYAN " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR "/" DGREEN " %12i " RESET_COLOR
+//          "    processed fragments / # of fragments/ # of events / event queue size / write queue size / events written.\t%.1f seconds." SHOW_CURSOR "\n",
+//          fFragmentsIn, fEntries, fAnalysisIn, TEventQueue::Size(), TWriteQueue::Size(), fAnalysisOut, w.RealTime());
    if(fAnalysisOut > 0) {
       printf(DYELLOW HIDE_CURSOR "Fragments: %.1f \%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f \%," 
              DGREEN "   write speed: %9.1f built events/second." RESET_COLOR "  %.1f seconds, %.1f seconds remaining." SHOW_CURSOR "\r",

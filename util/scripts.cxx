@@ -1,5 +1,6 @@
 // put the includes here, even though this probably won't quite work properly when compiled
 #include <vector>
+#include <iostream>
 
 #include <TFile.h>
 #include <TGraph.h>
@@ -64,6 +65,34 @@ TH1* makeHisto(const vector<short> &v, const char *hisName = "vectorHis")
   return makeHistoCommon<short,TH1S>(v, hisName);
 }
 
+// specific function for short vectors
+TH1* makeDescantHisto(const vector<short> &v, const char *hisName = "vectorHis")
+{
+  TObject *obj = gROOT->FindObjectAny(hisName);
+  if (obj) {
+    obj->Delete();
+  }
+  TH1 *his = new TH1S(hisName, hisName, v.size()-8, 0, v.size()-8);
+  
+  for (Int_t i=0; i < v.size(); i++) {
+     // reorder so that samples 0-7 are: 7,6,1,0,3,2,5,4
+     //                                  0,1,2,3,4,5,6,7
+     // pairwise swap: 0->1,1->0 => i+1 (1,2) => i+1-(2*i%2) (1,0)
+     // 67,01,32,45: shift all by +2, except for the last pair which need to be shifted by -6
+     Int_t reordered = i-2;
+     reordered = reordered+1-2*(reordered%2);
+     if(reordered%8 < 6) {
+         //std::cout<<i<<" => "<<reordered+2<<std::endl;
+        his->SetBinContent(reordered+3, v.at(i));
+     } else {
+         //std::cout<<i<<" => "<<reordered-6<<std::endl;
+        his->SetBinContent(reordered-5, v.at(i));
+     }
+  }
+
+  return his;
+}
+
 // draw the next waveform that we find associated with an event
 void DrawNext(void)
 {
@@ -83,6 +112,34 @@ void DrawNext(void)
 
   //printf("wavebuffer.size() = %i\n",wavebuffer.size()); 
   TH1 *his = makeHisto(frag->wavebuffer);
+  TChannel *chan = TChannel::GetChannel(frag->ChannelAddress);
+
+  // if(chan && (strncmp(chan->GetChannelName(),"DSC",3)==0))
+  //    TH1 *his = makeDescantHisto(frag->wavebuffer);
+  if(chan)
+  	 his->SetTitle(chan->GetChannelName());
+  his->Draw();
+}
+
+// draw the next waveform that we find associated with an event
+void DrawNextDescant(void)
+{
+  static Int_t evno=0;
+
+  if (tree == NULL) {
+    tree = (TTree*)gROOT->FindObject("FragmentTree");
+  }
+  tree->SetBranchAddress("TFragment", &frag);
+  
+  do {
+    tree->GetEntry(evno++);
+  } while (frag->wavebuffer.empty());
+  
+  cout << "Event number " << evno << endl;
+  frag->Print();
+
+  //printf("wavebuffer.size() = %i\n",wavebuffer.size()); 
+  TH1 *his = makeDescantHisto(frag->wavebuffer);
   TChannel *chan = TChannel::GetChannel(frag->ChannelAddress);
   if(chan)
   	 his->SetTitle(chan->GetChannelName());
