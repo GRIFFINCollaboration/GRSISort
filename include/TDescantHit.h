@@ -96,7 +96,7 @@ class TDescantHit : public TGRSIDetectorHit {
 		void Clear(Option_t *opt = "");		                    //!
 		void Print(Option_t *opt = "");		                    //!
 
-	ClassDef(TDescantHit,2)
+	ClassDef(TDescantHit,3)
 };
 
 

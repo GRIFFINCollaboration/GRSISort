@@ -1,4 +1,4 @@
-//g++ MakeMatrices.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `root-config --cflags --libs` -lTreePlayer -o MakeMatrices
+//g++ MakeMatrices.C -std=c++0x -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `root-config --cflags --libs` -lTreePlayer -o MakeMatrices
 
 #include <iostream>
 #include <iomanip>
@@ -16,6 +16,7 @@
 #include "TList.h"
 #include "TH1F.h"
 #include "TH2F.h"
+#include "TH3F.h"
 #include "TCanvas.h"
 #include "TStopwatch.h"
 #include "TMath.h"
@@ -48,6 +49,62 @@ void MakeMatrices() {
 }
 #endif
 
+std::vector<std::pair<double,int> > AngleCombinations(double binWidth = 2., double distance = 110.) {
+   std::vector<std::pair<double,int> > result;
+
+   std::vector<double> angle;
+   for(int firstDet = 1; firstDet <= 16; ++firstDet) {
+      for(int firstCry = 0; firstCry < 4; ++firstCry) {
+         for(int secondDet = 1; secondDet <= 16; ++secondDet) {
+            for(int secondCry = 0; secondCry < 4; ++secondCry) {
+               if(firstDet == secondDet && firstCry == secondCry) {
+                  continue;
+               }
+               angle.push_back(TGriffin::GetPosition(firstDet, firstCry, distance).Angle(TGriffin::GetPosition(secondDet, secondCry, distance))*180./TMath::Pi());
+               if(angle.back() > 90.) {
+                  angle.back() = 180. - angle.back();
+               }
+               //std::cout<<firstDet<<", "<<firstCry<<" - "<<secondDet<<", "<<secondCry<<": "<<angle.back()<<std::endl;
+            }
+         }
+      }
+   }
+
+   //std::cout<<"sorting "<<angle.size()<<" angles"<<std::endl;
+
+   //sort angles
+   std::sort(angle.begin(),angle.end());
+
+   //std::cout<<"done sorting "<<angle.size()<<" angles"<<std::endl;
+
+   //add all angles within binWidth of each other into the same result
+   size_t r;
+   for(size_t a = 0; a < angle.size(); ++a) {
+      //std::cout<<angle[a]<<" \t"<<result.size()<<std::endl;
+      for(r = 0; r < result.size(); ++r) {
+         if(TMath::Abs(angle[a] - result[r].first/result[r].second) < binWidth) {
+            //std::cout<<"found another angle close to "<<result[r].first/result[r].second<<": "<<angle[a]<<std::endl;
+            result[r].first += angle[a];
+            (result[r].second)++;
+            break;
+         }
+      }
+      if(result.size() == 0 || r == result.size()) {
+         //std::cout<<"found new angle "<<angle[a]<<" ("<<r<<"/"<<result.size()<<")"<<std::endl;
+         result.push_back(std::make_pair(angle[a],1));
+      }
+   }
+
+   //the angle is right now the sum of all angles, so we need to average it
+   for(auto res = result.begin(); res != result.end(); res++) {
+      (*res).first /= (*res).second;
+   }
+   
+   //std::cout<<"found "<<result.size()<<" angles"<<std::endl;
+
+   return result;
+}
+   
 TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000.) {
    TStopwatch w;
    w.Start();
@@ -175,6 +232,38 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    TH2F* addbackCloverHits = new TH2F("addbackCloverHits","#gamma-#gamma hitpattern, clover addback",70,0,70,70,0,70); list->Add(addbackCloverHits);
    TH2F* addbackCloverHitsB = new TH2F("addbackCloverHitsB","#gamma-#gamma hitpattern, clover addback, coincident #beta",70,0,70,70,0,70); list->Add(addbackCloverHitsB);
 
+   //descant waveform - not added to list, this only happens if we find any waveforms
+   TH2F* rawWaveform = new TH2F("rawWaveform","raw DESCANT waveforms;time [ns];pulse height [ADC channels]",120,0.,120.,4096,0,4096);
+   TH2F* intNormWaveform = new TH2F("intNormWaveform","DESCANT waveforms normalized by integral;time [ns];pulse height [ADC channels]",120,0.,120.,1200,-0.1,1.1);
+   TH2F* peakNormWaveform = new TH2F("peakNormWaveform","DESCANT waveforms normalized by peak height;time [ns];pulse height [ADC channels]",120,0.,120.,1200,-0.1,1.1);
+
+   TH2F* rawWaveformCfd = new TH2F("rawWaveformCfd","raw DESCANT waveforms, shifted by cfd time;time [ns];pulse height [ADC channels]",120,-20.,100.,4096,0,4096);
+   TH2F* intNormWaveformCfd = new TH2F("intNormWaveformCfd","DESCANT waveforms normalized by integral, shifted by cfd time;time [ns];pulse height [ADC channels]",120,-20.,100.,1200,-0.1,1.1);
+   TH2F* peakNormWaveformCfd = new TH2F("peakNormWaveformCfd","DESCANT waveforms normalized by peak height, shifted by cfd time;time [ns];pulse height [ADC channels]",120,-20.,100.,1200,-0.1,1.1);
+
+   TH2F* rawWaveformPsd = new TH2F("rawWaveformPsd","raw DESCANT waveforms, shifted by psd time;time [ns];pulse height [ADC channels]",120,-40.,80.,4096,0,4096);
+   TH2F* intNormWaveformPsd = new TH2F("intNormWaveformPsd","DESCANT waveforms normalized by integral, shifted by psd time;time [ns];pulse height [ADC channels]",120,-40.,80.,1200,-0.1,1.1);
+   TH2F* peakNormWaveformPsd = new TH2F("peakNormWaveformPsd","DESCANT waveforms normalized by peak height, shifted by psd time;time [ns];pulse height [ADC channels]",120,-40.,80.,1200,-0.1,1.1);
+
+   
+   //angular correlation cube
+   double angleWidth = 1.;
+   TH3F* angCorr = new TH3F("angCorr","angular correlation cube;energy [keV];energy [keV];angle [^{o}]", nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorr);
+   TH3F* angCorrAddback = new TH3F("angCorrAddback","angular correlation cube;energy [keV];energy [keV];angle [^{o}]", nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorrAddback);
+
+   TH3F* angCorr_coinc = new TH3F("angCorr_coinc",Form("angular correlation cube, within %d - %d [10 ns];energy [keV];energy [keV];angle [^{o}]", coincLow, coincHigh), nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorr_coinc);
+   TH3F* angCorrAddback_coinc = new TH3F("angCorrAddback_coinc",Form("angular correlation cube, within %d - %d [10 ns];energy [keV];energy [keV];angle [^{o}]", coincLow, coincHigh), nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorrAddback_coinc);
+
+   TH3F* angCorr_bg = new TH3F("angCorr_bg",Form("angular correlation cube, background within %d - %d [ 10 ns];energy [keV];energy [keV];angle [^{o}]", bg+coincLow, bg+coincHigh), nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorr_bg);
+   TH3F* angCorrAddback_bg = new TH3F("angCorrAddback_bg",Form("angular correlation cube, background within %d - %d [ 10 ns];energy [keV];energy [keV];angle [^{o}]", bg+coincLow, bg+coincHigh), nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorrAddback_bg);
+
+   std::vector<std::pair<double,int> > angleCombinations = AngleCombinations(angleWidth, 110.);
+   std::cout<<"got "<<angleCombinations.size()<<" angles"<<std::endl;
+   for(auto ang = angleCombinations.begin(); ang != angleCombinations.end(); ang++) {
+      std::cout<<(*ang).first<<" degree: "<<(*ang).second<<" combinations"<<std::endl;
+   }
+
+   //set up branches
    TGriffin* grif = 0;
    TSceptar* scep = 0;
    TPaces*   pace = 0;
@@ -215,8 +304,20 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 
    std::cout<<std::fixed<<std::setprecision(1);
    int entry;
+   size_t angIndex;
    for(entry = 0; entry < tree->GetEntries(); ++entry) {
       tree->GetEntry(entry);
+      //std::cout<<entry<<": got "<<grif->GetMultiplicity()<<" griffin detectors"<<std::flush;
+      //if(gotSceptar) {
+      //   std::cout<<", "<<scep->GetMultiplicity()<<" sceptar detectors"<<std::flush;
+      //}
+      //if(gotPaces) {
+      //   std::cout<<", "<<pace->GetMultiplicity()<<" paces detectors"<<std::flush;
+      //}
+      //if(gotDescant) {
+      //   std::cout<<", "<<desc->GetMultiplicity()<<" descant detectors"<<std::flush;
+      //}
+      //std::cout<<std::endl;
       //griffin multiplicites
       grifMult->Fill(grif->GetMultiplicity());
       int coincGammaMult = 0;
@@ -232,19 +333,21 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
       }
       grifMultCut->Fill(coincGammaMult);
       //sceptar multiplicities
-      scepMult->Fill(scep->GetMultiplicity());
-      int coincBetaMult = 0;
-      for(one = 0; one < (int) scep->GetMultiplicity(); ++one) {
-         for(two = one+1; two < (int) scep->GetMultiplicity(); ++two) {
-            if(coincLow <= TMath::Abs(scep->GetSceptarHit(two)->GetTime()-scep->GetSceptarHit(one)->GetTime()) && TMath::Abs(scep->GetSceptarHit(two)->GetTime()-scep->GetSceptarHit(one)->GetTime()) < coincHigh) {
-               break;
+      if(gotSceptar) {
+         scepMult->Fill(scep->GetMultiplicity());
+         int coincBetaMult = 0;
+         for(one = 0; one < (int) scep->GetMultiplicity(); ++one) {
+            for(two = one+1; two < (int) scep->GetMultiplicity(); ++two) {
+               if(coincLow <= TMath::Abs(scep->GetSceptarHit(two)->GetTime()-scep->GetSceptarHit(one)->GetTime()) && TMath::Abs(scep->GetSceptarHit(two)->GetTime()-scep->GetSceptarHit(one)->GetTime()) < coincHigh) {
+                  break;
+               }
+            }
+            if(two < scep->GetMultiplicity()) {
+               ++coincBetaMult;
             }
          }
-         if(two < scep->GetMultiplicity()) {
-            ++coincBetaMult;
-         }
+         scepMultCut->Fill(coincBetaMult);
       }
-      scepMultCut->Fill(coincBetaMult);
       //sceptar coincident multiplicities
       if(gotSceptar && scep->GetMultiplicity() >= 1) {
          grifMultB->Fill(grif->GetMultiplicity());
@@ -288,6 +391,21 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                eVsTimeNeighbours->Fill(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime(),grif->GetGriffinHit(one)->GetEnergyLow());
             }
             griffinHits->Fill(4*grif->GetGriffinHit(one)->GetDetectorNumber()+grif->GetGriffinHit(one)->GetCrystalNumber(),4*grif->GetGriffinHit(two)->GetDetectorNumber()+grif->GetGriffinHit(two)->GetCrystalNumber());
+            double ang = grif->GetGriffinHit(one)->GetPosition().Angle(grif->GetGriffinHit(two)->GetPosition())*180./TMath::Pi();
+            if(ang > 90.) {
+               ang = 180. - ang;
+            }
+            for(angIndex = 0; angIndex < angleCombinations.size(); ++angIndex) {
+               if(TMath::Abs(ang - angleCombinations[angIndex].first) < angleWidth) {
+                  break;
+               }
+            }
+            if(angIndex < angleCombinations.size()) {
+               //std::cout<<ang<<" = "<<angleCombinations[angIndex].first<<" => "<<angleCombinations[angIndex].second<<std::endl;
+               angCorr->Fill(grif->GetGriffinHit(one)->GetEnergyLow(),grif->GetGriffinHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+            } else {
+               std::cout<<"Error, didn't find any matching angle for "<<ang<<std::endl;
+            }
             if(two > one) {
                timeDiff->Fill(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime());
                cfdDiff->Fill(grif->GetGriffinHit(two)->GetCfd()-grif->GetGriffinHit(one)->GetCfd());
@@ -307,8 +425,14 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             matrix->Fill(grif->GetGriffinHit(one)->GetEnergyLow(), grif->GetGriffinHit(two)->GetEnergyLow());
             if(coincLow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < coincHigh) {
                matrix_coinc->Fill(grif->GetGriffinHit(one)->GetEnergyLow(), grif->GetGriffinHit(two)->GetEnergyLow());
+               if(angIndex < angleCombinations.size()) {
+                  angCorr_coinc->Fill(grif->GetGriffinHit(one)->GetEnergyLow(),grif->GetGriffinHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+               }
             } else if((bg+coincLow) <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < (bg+coincHigh)) {
                matrix_bg->Fill(grif->GetGriffinHit(one)->GetEnergyLow(), grif->GetGriffinHit(two)->GetEnergyLow());
+               if(angIndex < angleCombinations.size()) {
+                  angCorr_bg->Fill(grif->GetGriffinHit(one)->GetEnergyLow(),grif->GetGriffinHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+               }
             }
          }
       }
@@ -358,12 +482,47 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                   }
                }
             }
-            for(one = 0; one < (int) pace->GetMultiplicity(); ++one) {
+            for(one = 0; gotPaces && one < (int) pace->GetMultiplicity(); ++one) {
                pacesSceptarTime->Fill(pace->GetPacesHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime());
             }
-            for(one = 0; one < (int) desc->GetMultiplicity(); ++one) {
+            for(one = 0; gotDescant && one < (int) desc->GetMultiplicity(); ++one) {
                descantSceptarTime->Fill(desc->GetDescantHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime());
             }
+         }
+      }
+
+      //descant spectra
+      if(gotDescant && desc->GetMultiplicity() >= 1) {
+         for(int d = 0; d < desc->GetMultiplicity(); ++d) {
+            //std::cout<<std::endl<<entry<<": trying to get descant waveform "<<d<<std::endl;
+            if(desc->GetDescantHit(d)->GetWaveform().size() == 0) {
+               continue;
+            }
+            //std::cout<<"size of descant waveform "<<desc->GetDescantHit(d)->GetWaveform().size()<<std::endl;
+            std::vector<Short_t> waveform = desc->GetDescantHit(d)->GetWaveform();
+            double offset = 0.;
+            double max = 0.;
+            for(size_t i = 0; i < waveform.size(); ++i) {
+               if(i < 10)
+                  offset += waveform[i];
+               if(max < waveform[i]) {
+                  max = waveform[i];
+               }
+            }
+            offset /= 10.;
+            max -= offset;
+            for(size_t i = 0; i < waveform.size(); ++i) {
+               rawWaveform->Fill(i,waveform[i]);
+               intNormWaveform->Fill(i,(waveform[i]-offset)/desc->GetDescantHit(d)->GetCharge());
+               peakNormWaveform->Fill(i,(waveform[i]-offset)/max);
+               rawWaveformCfd->Fill(i - desc->GetDescantHit(d)->GetCfd()/256.,waveform[i]);
+               intNormWaveformCfd->Fill(i - desc->GetDescantHit(d)->GetCfd()/256.,(waveform[i]-offset)/desc->GetDescantHit(d)->GetCharge());
+               peakNormWaveformCfd->Fill(i - desc->GetDescantHit(d)->GetCfd()/256.,(waveform[i]-offset)/max);
+               rawWaveformPsd->Fill(i - desc->GetDescantHit(d)->GetPsd()/256.,waveform[i]);
+               intNormWaveformPsd->Fill(i - desc->GetDescantHit(d)->GetPsd()/256.,(waveform[i]-offset)/desc->GetDescantHit(d)->GetCharge());
+               peakNormWaveformPsd->Fill(i - desc->GetDescantHit(d)->GetPsd()/256.,(waveform[i]-offset)/max);
+            }
+            //std::cout<<"done with descant waveform "<<d<<" of size "<<waveform.size()<<std::endl;
          }
       }
 
@@ -381,6 +540,20 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                eVsAngle1460->Fill(grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition())*180./TMath::Pi(), grif->GetAddBackHit(one)->GetEnergyLow());
             }
             addbackHits->Fill(4*grif->GetAddBackHit(one)->GetDetectorNumber()+grif->GetAddBackHit(one)->GetCrystalNumber(),4*grif->GetAddBackHit(two)->GetDetectorNumber()+grif->GetAddBackHit(two)->GetCrystalNumber());
+            double ang = grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition())*180./TMath::Pi();
+            if(ang > 90.) {
+               ang = 180. - ang;
+            }
+            for(angIndex = 0; angIndex < angleCombinations.size(); ++angIndex) {
+               if(TMath::Abs(ang - angleCombinations[angIndex].first) < angleWidth) {
+                  break;
+               }
+            }
+            if(angIndex < angleCombinations.size()) {
+               angCorrAddback->Fill(grif->GetGriffinHit(one)->GetEnergyLow(),grif->GetGriffinHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+            } else {
+               std::cout<<"Error, didn't find any matching angle for "<<ang<<std::endl;
+            }
             if(two > one) {
                addbackTimeDiff->Fill(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime());
                addbackCfdDiff->Fill(grif->GetAddBackHit(two)->GetCfd()-grif->GetAddBackHit(one)->GetCfd());
@@ -391,8 +564,14 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             addbackMatrix->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
             if(coincLow <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < coincHigh) {
                addbackMatrix_coinc->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+               if(angIndex < angleCombinations.size()) {
+                  angCorrAddback_coinc->Fill(grif->GetGriffinHit(one)->GetEnergyLow(),grif->GetGriffinHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+               }
             } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < (bg+coincHigh)) {
                addbackMatrix_bg->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
+               if(angIndex < angleCombinations.size()) {
+                  angCorrAddback_bg->Fill(grif->GetGriffinHit(one)->GetEnergyLow(),grif->GetGriffinHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+               }
             }
             if(grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition()) < TMath::Pi()/2.) {
                addbackMatrixClose->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
@@ -557,6 +736,27 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    TH2F* addbackCloverMatrixClose_bgcorrB = (TH2F*) addbackCloverMatrixClose_coincB->Clone("addbackCloverMatrixClose_bgcorrB"); list->Add(addbackCloverMatrixClose_bgcorrB);
    addbackCloverMatrixClose_bgcorrB->SetTitle(Form("#gamma-#gamma matrix with coincident beta, clover addback, angle between detectors < 90^{o}, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
    addbackCloverMatrixClose_bgcorrB->Add(addbackCloverMatrixClose_bgB,-1.);
+
+   TH2F* angCorr_bgcorr = (TH2F*) angCorr_coinc->Clone("angCorr_bgcorr"); list->Add(angCorr_bgcorr);
+   angCorr_bgcorr->SetTitle(Form("angular correlation cube, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
+   angCorr_bgcorr->Add(angCorr_bg,-1.);
+
+   TH2F* angCorrAddback_bgcorr = (TH2F*) angCorrAddback_coinc->Clone("angCorrAddback_bgcorr"); list->Add(angCorrAddback_bgcorr);
+   angCorrAddback_bgcorr->SetTitle(Form("angular correlation cube, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
+   angCorrAddback_bgcorr->Add(angCorrAddback_bg,-1.);
+
+   //if we have waveforms, add the spectra to the list
+   if(rawWaveform->GetEntries() > 0) {
+      list->Add(rawWaveform);
+      list->Add(intNormWaveform);
+      list->Add(peakNormWaveform);
+      list->Add(rawWaveformCfd);
+      list->Add(intNormWaveformCfd);
+      list->Add(peakNormWaveformCfd);
+      list->Add(rawWaveformPsd);
+      list->Add(intNormWaveformPsd);
+      list->Add(peakNormWaveformPsd);
+   }
 
 #ifdef __CINT__ 
    TCanvas* c = new TCanvas;
