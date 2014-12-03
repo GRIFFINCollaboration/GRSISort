@@ -10,6 +10,7 @@
 
 #include <TVector3.h>
 
+#include <TSceptarHit.h>
 
 #include <TGRSIDetectorHit.h>
 
@@ -39,8 +40,10 @@ class TGriffinHit : public TGRSIDetectorHit {
 		std::vector<TCrystalHit> bgo;  //!
       std::vector<Short_t> waveform;  //!
    
+
 	public:
 
+    //  static unsigned int GriffinSceptarSuppressors_det[16][4];
 		/////////////////////////		/////////////////////////////////////
 		void SetBGO(TCrystalHit &temp)		 { bgo.push_back(temp);	}    //!
 
@@ -90,6 +93,9 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       static bool CompareEnergy(TGriffinHit*,TGriffinHit*);  //!
       void Add(TGriffinHit*);    //! 
+
+      Bool_t BremSuppressed(TSceptarHit*);
+
 
 	public:
 		virtual void Clear(Option_t *opt = "");		                   //!
