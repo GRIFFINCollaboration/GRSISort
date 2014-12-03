@@ -97,8 +97,8 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)	{
       total_ver_hits++;
       if(cdata->GetHorizontal_DetectorNbr(i) == cdata->GetVertical_DetectorNbr(j))	{ //check if same detector
 			if(cdata->GetHorizontal_DetectorPos(i) == cdata->GetVertical_DetectorPos(j)) { //check the are from the same position!		
-	  			if(abs(cdata->GetHorizontal_Energy(i)-cdata->GetVertical_Energy(j))>.200 ) // && ((total_hor_hits+total_ver_hits)==3) ) {
-	    			continue;
+	  			//if(abs(cdata->GetHorizontal_Energy(i)-cdata->GetVertical_Energy(j))>.200 ) // && ((total_hor_hits+total_ver_hits)==3) ) {
+	    			//continue;
 
 			  //if(abs(GetHorizontal_TimeCFD(i)-GetVertical_TimeCFD(j)) > fCfdBuildDiff) {
 	  			//	continue; // ensure there is front-back time correlation to protect against noise/false coinc.
@@ -139,7 +139,9 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)	{
 	    			csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(i));		//!
 							
 	    			csmhit.SetEHorizontalCharge(cdata->GetHorizontal_Charge(i)); 				//! 
+	    			//cout<<"  E horiz charge: "<< cdata->GetHorizontal_Charge(i)<<endl;
 	    			csmhit.SetEVerticalCharge(cdata->GetVertical_Charge(j));    			//!
+						//cout<<"  E vertical charge: "<< cdata->GetVertical_Charge(i)<<endl;
 						
 	    			csmhit.SetEHorizontalStrip(cdata->GetHorizontal_StripNbr(i)); 			//!
 	    			csmhit.SetEVerticalStrip(cdata->GetVertical_StripNbr(j));   			//!
@@ -151,14 +153,16 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)	{
 	    			csmhit.SetEVerticalTime(cdata->GetVertical_Time(j));     //!
 
 	    			csmhit.SetEHorizontalEnergy(cdata->GetHorizontal_Energy(i));				//!
+	    			//cout<<"E Horiz Energy: "<<cdata->GetHorizontal_Energy(i)<<endl;
 	    			csmhit.SetEVerticalEnergy(cdata->GetVertical_Energy(j));				//!
-
+	    			//cout<<"E Verti Energy: "<<cdata->GetVertical_Energy(i)<<endl;
+	    			
 	    			csmhit.SetEPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(i),
                                                      cdata->GetHorizontal_DetectorPos(i),
                                                      cdata->GetHorizontal_StripNbr(i),
                                                      cdata->GetVertical_StripNbr(j)));
-  	    			VerUsed.at(j) = true;
-  	    			HorUsed.at(i) = true;
+  	    		VerUsed.at(j) = true;
+  	    		HorUsed.at(i) = true;
 	    			E_Hits.push_back(csmhit);
 			  }
 			}
@@ -180,24 +184,46 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)	{
   		VerStrpFree.push_back(j);
   }
 
-/*  
-  if((HorStrpFree.size() + VerStrpFree.size())==3) {	   	  
-		printf(RED "three unused hits!" RESET_COLOR "\n");
-		for(int i=0;i<HorStrpFree.size();i++) {
-			printf(DGREEN "\thor: %i Strp %i Pos %i : %.02f" RESET_COLOR "\n",
-			GetHorizontal_DetectorNbr(HorStrpFree.at(i)),GetHorizontal_StripNbr(HorStrpFree.at(i)),
-      GetHorizontal_DetectorPos(HorStrpFree.at(i)),GetHorizontal_Energy(HorStrpFree.at(i)) );
-		}
-		for(int j=0;j<VerStrpFree.size();j++) {
-			printf(DYELLOW "\tver: %i Strp %i Pos %i : %.02f" RESET_COLOR "\n",
-			GetVertical_DetectorNbr(VerStrpFree.at(j)),GetVertical_StripNbr(VerStrpFree.at(j)),
-      GetVertical_DetectorPos(VerStrpFree.at(j)),GetVertical_Energy(VerStrpFree.at(j)) );
-		}
-		printf("==================================\n");
-		printf("==================================\n");
-  }
-*/
 
+  if(HorStrpFree.size()+VerStrpFree.size()==1)
+  {
+    if(VerStrpFree.size()>0)
+    {
+    int addr = VerStrpFree.at(0);
+    //cout<<"addr: "<<addr<<endl;
+    if(cdata->GetVertical_DetectorNbr(addr)==1 && cdata->GetVertical_DetectorPos(addr)=='D')
+    {
+            //cout<<"Here1"<<endl;
+    		   	csmhit.SetDetectorNumber(cdata->GetVertical_DetectorNbr(addr));		//!
+
+				    csmhit.SetDHorizontalCharge(cdata->GetVertical_Charge(addr)); 				//! 
+			      csmhit.SetDVerticalCharge(cdata->GetVertical_Charge(addr));    			//!
+						
+			      csmhit.SetDHorizontalStrip(6); 			//!
+			      csmhit.SetDVerticalStrip(cdata->GetVertical_StripNbr(addr));   			//!
+						
+			      csmhit.SetDHorizontalCFD(cdata->GetVertical_TimeCFD(addr));					//!
+			      csmhit.SetDVerticalCFD(cdata->GetVertical_TimeCFD(addr));					//!
+					
+			      csmhit.SetDHorizontalTime(cdata->GetVertical_Time(addr));	//!
+			      csmhit.SetDVerticalTime(cdata->GetVertical_Time(addr));		//!
+			
+			      csmhit.SetDHorizontalEnergy(cdata->GetVertical_Energy(addr));				//!
+			      csmhit.SetDVerticalEnergy(cdata->GetVertical_Energy(addr));				//!
+			            //cout<<"Here2"<<endl;
+			      csmhit.SetDPosition(TCSM::GetPosition(cdata->GetVertical_DetectorNbr(addr),
+                                                     cdata->GetVertical_DetectorPos(addr),
+                                                     6,
+                                                     cdata->GetVertical_StripNbr(addr)));
+                                                                 //cout<<"Here3"<<endl;
+	            D_Hits.push_back(csmhit);
+	                        //cout<<"Here4"<<endl;
+	  }
+	  }
+  }
+  //if(HorStrpFree.size()+VerStrpFree.size()>0)
+    //cout<<" HorStrpFree: "<<HorStrpFree.size()<<" VerStrpFree: "<<VerStrpFree.size()<<endl;
+/*
   if(HorStrpFree.size() == 2 && VerStrpFree.size() == 1) { 
 	  int i1 = HorStrpFree.at(0);
 	  int i2 = HorStrpFree.at(1);
@@ -443,39 +469,51 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)	{
 
 	 	
   }
-
+*/
   //now we will try to match front and back detectors.
   std::vector<bool> usedpixel(E_Hits.size(), false);
 
   for(int i=0; i<D_Hits.size();i++) {
+    //D_Hits.at(i).Print(); 
     for(int j=0;j<E_Hits.size();j++) {
-      if(usedpixel.at(j))
-			continue; 
+      //E_Hits.at(j).Print(); 
+      if(usedpixel.at(j)) {
+        printf(" I AM HERE 1\n");
+        continue; 
+      }
       if(D_Hits.at(i).GetDetectorNumber() == E_Hits.at(j).GetDetectorNumber()) {
-			if((D_Hits.at(i).GetDPosition() - E_Hits.at(j).GetEPosition()).Mag()>10.0) 
-	  			continue;
-			usedpixel.at(j) = true;
-
-			D_Hits.at(i).SetEHorizontalCharge(E_Hits.at(j).GetEHorizontalCharge()); 
-			D_Hits.at(i).SetEVerticalCharge(E_Hits.at(j).GetEVerticalCharge());
-
-			D_Hits.at(i).SetEHorizontalStrip(E_Hits.at(j).GetEHorizontalStrip()); 
-			D_Hits.at(i).SetEVerticalStrip(E_Hits.at(j).GetEVerticalStrip()); 
-
-			D_Hits.at(i).SetEHorizontalCFD(E_Hits.at(j).GetEHorizontalCFD());
-			D_Hits.at(i).SetEVerticalCFD(E_Hits.at(j).GetEVerticalCFD());
-
-			D_Hits.at(i).SetEHorizontalEnergy(E_Hits.at(j).GetEHorizontalEnergy());
-			D_Hits.at(i).SetEVerticalEnergy(E_Hits.at(j).GetEVerticalEnergy());
-
-			D_Hits.at(i).SetEHorizontalTime(E_Hits.at(j).GetEHorizontalTime());
-			D_Hits.at(i).SetEVerticalTime(E_Hits.at(j).GetEVerticalTime());                  
-			D_Hits.at(i).SetEPosition(E_Hits.at(j).GetEPosition());
+    		if((D_Hits.at(i).GetDPosition() - E_Hits.at(j).GetEPosition()).Mag()>10.0) {
+          printf(" I AM HERE 2\n");
+      		continue;
+        }
+    		usedpixel.at(j) = true;
+    
+    		D_Hits.at(i).SetEHorizontalCharge(E_Hits.at(j).GetEHorizontalCharge()); 
+    		D_Hits.at(i).SetEVerticalCharge(E_Hits.at(j).GetEVerticalCharge());
+    
+    		D_Hits.at(i).SetEHorizontalStrip(E_Hits.at(j).GetEHorizontalStrip()); 
+    		D_Hits.at(i).SetEVerticalStrip(E_Hits.at(j).GetEVerticalStrip()); 
+    
+    		D_Hits.at(i).SetEHorizontalCFD(E_Hits.at(j).GetEHorizontalCFD());
+    		D_Hits.at(i).SetEVerticalCFD(E_Hits.at(j).GetEVerticalCFD());
+    
+    		D_Hits.at(i).SetEHorizontalEnergy(E_Hits.at(j).GetEHorizontalEnergy());
+    		D_Hits.at(i).SetEVerticalEnergy(E_Hits.at(j).GetEVerticalEnergy());
+    
+    		D_Hits.at(i).SetEHorizontalTime(E_Hits.at(j).GetEHorizontalTime());
+    		D_Hits.at(i).SetEVerticalTime(E_Hits.at(j).GetEVerticalTime());                  
+    		D_Hits.at(i).SetEPosition(E_Hits.at(j).GetEPosition());
+    
+        //D_Hits.at(i).Print(); 
       } // comparison of detector numbers
     } // loop over e hits
     csm_hits.push_back(D_Hits.at(i));
   }
-  
+  for(int k=0;k<usedpixel.size();k++) { 
+    if(!usedpixel.at(k)) {
+      csm_hits.push_back(E_Hits.at(k));
+    }
+  }
 }
 
 

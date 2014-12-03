@@ -40,14 +40,20 @@ void TCSMHit::Clear(Option_t *options)	{
    hor_e_time   = 0.0;
    ver_e_time   = 0.0;
    e_position.SetXYZ(0,0,1);
+
+   detectornumber = 0;	//
 }
 
 void TCSMHit::Print(Option_t *options)	{
-   //printf(DGREEN "[D/F/B] = %02i\t/%02i\t/%02i " RESET_COLOR "\n",GetDetectorNumber(),GetHorizontalStrip(),GetVerticalStrip());
-   //printf("CSM hit charge: %f\t0x%08x\n",(double)hor_charge/125.0,hor_charge);
+   printf(DGREEN "D: [D/F/B] = %02i\t/%02i\t/%02i " RESET_COLOR "\n",detectornumber,hor_d_strip,ver_d_strip);
+   printf(DGREEN "E: [D/F/B] = %02i\t/%02i\t/%02i " RESET_COLOR "\n",detectornumber,hor_e_strip,ver_e_strip);
+   //GetDetectorNumber(),GetHorizontalStrip(),GetVerticalStrip());
+   printf("D: CSM hit charge: %f\t0x%08x\n",(double)hor_d_charge/125.0,hor_d_charge);
+   printf("E: CSM hit charge: %f\t0x%08x\n",(double)hor_e_charge/125.0,hor_e_charge);
+
    //printf("CSM hit energy: %f\n",d_energy);
    //printf("CSM hit time:   %f\n",d_time);
-   //printf( DGREEN "=	=	=	=	=	=	=	" RESET_COLOR "\n");
+   printf( DGREEN "=	=	=	=	=	=	=	" RESET_COLOR "\n");
 }
 
 /*
