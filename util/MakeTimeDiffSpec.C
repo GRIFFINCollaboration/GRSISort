@@ -95,6 +95,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    TH1F *bb_diff = new TH1F("bb_diff","bb_diff",12000,-6000,6000); list->Add(bb_diff);
 
    TH1F* bg_coinc_gE = new TH1F("bg_coinc_gE","bg_coinc_gE",16000,0,16000); list->Add(bg_coinc_gE);
+ //  TH2F* gg_coinc_gE = new TH1F("gg_coinc","gg_coinc", 8000,0,8000,8000,0,8000); list->Add(gg_coinc);
 
    //TH2F *gg_diff_E1 = new TH2F("gg_diff_E1","gg time difference of card 3&1 vs energy of card 1",4000,0.,4000.,600,0.,600.); list->Add(gg_diff_E1);
    //TH2F *gg_diff_E3 = new TH2F("gg_diff_E3","gg time difference of card 3&1 vs energy of card 3",4000,0.,4000.,600,0.,600.); list->Add(gg_diff_E3);
@@ -112,10 +113,10 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    
       TFragment myFrag  = *currentFrag;         //Set myfrag to be the x'th fragment before incrementing it.
       long time = currentFrag->GetTimeStamp();  //Get the timestamp of the x'th fragment 
-//      long timelow  = time + 120;
-//      long timehigh  = time + 140; 
-        long timelow = time + 0;
-        long timehigh = time + 10000;   
+      long timelow  = time + 120;
+      long timehigh  = time + 140; 
+//        long timelow = time + 0;
+//        long timehigh = time + 10000;   
       int time_low  = (int) (timelow & 0x0fffffff);
       int time_high = (int) (timelow >> 28); 
 

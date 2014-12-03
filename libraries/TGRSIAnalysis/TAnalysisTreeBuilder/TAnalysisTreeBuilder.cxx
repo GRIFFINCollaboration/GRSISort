@@ -337,6 +337,8 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    fCurrentFragTree->GetEntry(indexvalues[0]);
    //*oldFrag = *currentFrag;
    long firstTimeStamp = currentFrag->GetTimeStamp();
+   int  firstDetectorType = currentFrag->DetectorType;
+   bool buildevent = false;
    std::vector<TFragment> *event = new std::vector<TFragment>;//(1,*currentFrag);
    event->push_back(*currentFrag);
 
@@ -364,7 +366,39 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       //event->push_back(*oldFrag);
       //channelSeen.insert(oldFrag->ChannelNumber);
       //printf("\ntime diff = %ld\n",currentFrag->GetTimeStamp() - firstTimeStamp);
-      if(abs(currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
+      
+
+      long timediff = currentFrag->GetTimeStamp() - firstTimeStamp;
+      int currentDetectorType = currentFrag->DetectorType;
+      if((firstDetectorType == 1 && currentDetectorType == 2) || (firstDetectorType == 2 && currentDetectorType == 1) ) {
+         if(timediff < 100 || timediff > 200)
+            buildevent =true;
+      } else if((firstDetectorType == 1 && currentDetectorType == 5) || (firstDetectorType == 5 && currentDetectorType == 1)) {
+         if(timediff < 0 || timediff > 100)
+            buildevent =true;
+      } else if((firstDetectorType == 1 && currentDetectorType == 6) || (firstDetectorType == 6 && currentDetectorType == 1)) {
+         if(timediff < 0 || timediff > 200)
+            buildevent =true;
+      } else if((firstDetectorType == 2 && currentDetectorType == 5) || (firstDetectorType == 5 && currentDetectorType == 2)) {
+         if(timediff < 100 || timediff > 200)
+            buildevent =true;
+      } else if((firstDetectorType == 2 && currentDetectorType == 6) || (firstDetectorType == 6 && currentDetectorType == 2)) {
+         if(timediff < 0 || timediff > 100)
+            buildevent =true;
+      } else if((firstDetectorType == 5 && currentDetectorType == 6) || (firstDetectorType == 6 && currentDetectorType == 5)) {
+         if(timediff < 0 || timediff > 200)
+            buildevent =true;
+      } else if((firstDetectorType == currentDetectorType)) {
+         if(timediff < 0 || timediff > 100)
+            buildevent =true;
+      } else   {
+         if(timediff < 0 || timediff > 200)
+            buildevent =true;
+      }
+
+      if(buildevent) {
+//      if(abs(currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
+//      if((currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
          //printf("Adding %ld fragments to queue\n",event->size());
          //if(event->size() > 1) {
             //for(int i = 0; i < event->size(); ++i) {
@@ -375,7 +409,10 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
          event = new std::vector<TFragment>;//(1,*currentFrag);
          event->push_back(*currentFrag);
          //channelSeen.clear();
+         
+         firstDetectorType = currentFrag->DetectorType;
          firstTimeStamp = currentFrag->GetTimeStamp();
+         buildevent = false;
       } else {
          event->push_back(*currentFrag);
       }

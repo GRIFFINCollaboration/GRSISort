@@ -30,7 +30,7 @@ class TDescantHit : public TGRSIDetectorHit {
     Long_t   time;
   
     std::vector<Short_t> waveform; //
-   
+  
   public:
 		/////////////////////////		/////////////////////////////////////
       inline void SetDetectorNumber(const int &x)  { detector = x; }   //!
@@ -93,7 +93,7 @@ class TDescantHit : public TGRSIDetectorHit {
 		void Clear(Option_t *opt = "");		                    //!
 		void Print(Option_t *opt = "");		                    //!
 
-	ClassDef(TDescantHit,2)
+	ClassDef(TDescantHit,3)
 };
 
 

@@ -963,60 +963,9 @@ Double_t gainwalk(TH1* hist){
    par[8] = -0.5;   //C
    par[9] = xp;  //bg offset
    TFitResultPtr fitresult = FitPeak(par,hist,integral, sigma,dummyarray,verbosity);
-   //peak = new TPeak;
- //  peak->Clear();
- //  std::cout << peak << std::endl;
- //  peak->SetCentroid(fitresult->Parameter(1), fitresult->ParError(1));
- //  peak->SetArea(integral,sigma);
- //  peak->SetFitResult(fitresult);
- //  peak->Print();
- //  tree->Fill();
- //  areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
-   //area_uncertainty.push_back(sigma);
- //  area_uncertainty.push_back(0.01*integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
- //  std::cout<< "Eff = " << areavec.back() << "+/-" << area_uncertainty.back()<< std::endl;
- //  channumvec.push_back((Float_t)(channum));
-
- //    }
 
   std::cout << "IM PRINTING!!!" << std::endl;
   std::cout << "Chi2 = " << fitresult->Chi2() << std::endl;
-//   static Float_t eff1;
-//   static Float_t eff2;
-//   Float_t *area = &(areavec[0]);
- //  Float_t *energies = &(engvec[0]);
- //  float *goodenergy = &(goodenergyvec[0])
-//   Float_t *darea = &(area_uncertainty[0]);
-//   Float_t *chan = &(channumvec[0]);
-  // hist->DrawCopy();
- //  TGraph *slopefit = new TGraph(areavec.size(),goodenergy,area ); 
-/*   TGraphErrors *effic = new TGraphErrors(1,&chan[0],&area[0],0,&darea[0]);
-   eff1 += area[0];
-   eff2 += area[1];
-   effic->SetMarkerStyle(21);
-   effic->SetMarkerColor(kRed);
-   effic->SetLineColor(kRed);
-   TGraphErrors *effic2 = new TGraphErrors(1,&chan[1],&area[1],0,&darea[1]);
-   effic2->SetMarkerStyle(20);
-   effic2->SetMarkerColor(kBlue);
-   effic2->SetLineColor(kBlue);
-   TMultiGraph * efficmg = new TMultiGraph;
-  // effic->Draw("PA0*");
-   efficmg->Add(effic);
-   efficmg->Add(effic2);
-*/
- //  std::cout << "Sum of eff so far: " <<eff1 << std::endl;
- //  std::cout << "Sum of eff2 so far: " << eff2 << std::endl;
-   
-  // printf("Now fitting: Be patient\n");
- //  slopefit->Fit("pol1");
-  // slopefit->Draw("PA*");
- //  for(int x=0;x<areavec.size();x++) {
-  //    printf("areavec[%i] = %f\t\tgoodenergyvec[%i] = %f\n",x,areavec[x],x,goodenergyvec[x]);
-  // }
-
-   //return slopefit;
-   //delete dummyarray;
    return fitresult->Parameter(1);
 
 }
