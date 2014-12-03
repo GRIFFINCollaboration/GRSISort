@@ -72,8 +72,11 @@ class TGriffinHit : public TGRSIDetectorHit {
 		/////////////////////////		/////////////////////////////////////
 		inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
 		inline UShort_t GetCrystalNumber() const	     {	return crystal;  }  //!
-	
-		inline Int_t    GetChargeLow() const			  {	return charge_lowgain;	  }  //!
+
+      inline UShort_t GetArrayNumber() { return( 4*(GetDetectorNumber()-1)+(GetCrystalNumber()+1)); } //!
+      // returns a number 1-64 ( 1 = Detector 1 blue;  64 =  Detector 16 white; ) 
+
+      inline Int_t    GetChargeLow() const			  {	return charge_lowgain;	  }  //!
 		inline Int_t    GetChargeHigh() const			  {	return charge_highgain;	  }  //!
       inline Int_t    GetCfd() const                 {   return cfd;      }  //!
       inline Double_t GetEnergyLow() const		     {	return energy_lowgain;   }  //!
