@@ -1315,7 +1315,7 @@ TGraph* autogain56(TH1D *hist, int channum, bool verbosity = false){
 
    static bool cal_flag = false;
    if(cal_flag == false){
-      TChannel::ReadCalFile("new60Co.cal"); //This can be made better
+      TChannel::ReadCalFile("new46K.cal"); //This can be made better
       cal_flag = true;
    }
 
@@ -1343,7 +1343,8 @@ TGraph* autogain56(TH1D *hist, int channum, bool verbosity = false){
    Double_t *centroid = new Double_t;
 
   for (int p=0;p<engvec.size();p++) {
-     Double_t xp = engvec.at(p)/engcoeffs.at(1);
+   if(p==0)  Double_t xp = engvec.at(p)/engcoeffs.at(1);
+   else  Double_t xp = 1377.0/engcoeffs.at(1);
      std::cout << "Fitting the " << engvec.at(p) << " keV line at channel " << xp << std::endl;
   //   std::cout << "Trying to fit channel " << foundchan << " and match it to " << engvec[p]  <<std::endl; 
      Int_t bin = xp;// hist->GetXaxis()->FindBin(xp);
