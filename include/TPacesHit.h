@@ -69,7 +69,6 @@ class TPacesHit : public TGRSIDetectorHit {
       inline Double_t GetEnergyLow() const		     {	return energy_lowgain;   }  //!
       inline Double_t GetEnergyHigh() const		     {	return energy_highgain;   }  //!
 		inline Long_t   GetTime() const 			        {	return time;     }  //!
-//    inline TVector3 GetPosition() const	           {	return position; }  //!
 
       inline UInt_t   GetAddress() const             {   return address; } //!
 

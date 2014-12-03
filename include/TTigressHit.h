@@ -28,14 +28,11 @@ class TTigressHit : public TGRSIDetectorHit {
 		UShort_t first_segment;
 		Int_t    first_segment_charge;
 
-		TVector3 position;
-
 		TCrystalHit core;
 		std::vector<TCrystalHit> segment;
 		std::vector<TCrystalHit> bgo;
 
 		//double doppler;
-		
 	
 		//need to do sudo tracking to build addback.
 		TVector3 lasthit;  //!
@@ -66,7 +63,6 @@ class TTigressHit : public TGRSIDetectorHit {
 		inline double GetEnergy()		         {	return core.GetEnergy();	}		//!
 		inline double GetTime()			         {	return core.GetTime();		}		//!
     inline double GetTimeCFD()           {  return core.GetCfd(); } //!
-		inline TVector3 GetPosition()	       {	return position;			}		//!
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
 		inline double GetDoppler(double beta,TVector3 *vec=0) { 

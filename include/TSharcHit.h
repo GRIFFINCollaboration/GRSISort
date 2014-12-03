@@ -50,8 +50,6 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		//Double_t		energy;		//
 		//Double_t		time;			//
 
-		TVector3 	position;  	//
-
 	public:
 
 		virtual void Clear(Option_t* = "");	//!
@@ -98,9 +96,6 @@ class TSharcHit : public TGRSIDetectorHit 	{
 
     Double_t PadEnergyCal(); //!
     Double_t FrontEnergyCal(); //!
-
-
-		TVector3 GetPosition()	{	return position;	}	//!
 
 		Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0) { return GetTheta(Xoff,Yoff,Zoff)*TMath::RadToDeg(); } ; //! 
 		Double_t GetTheta(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0); //! 

@@ -12,8 +12,9 @@ TGRSIDetector::TGRSIDetector() {
 
 
 TGRSIDetector::~TGRSIDetector()	{
-}
 
+
+}
 
 void TGRSIDetector::Print(Option_t *opt) { }
 
