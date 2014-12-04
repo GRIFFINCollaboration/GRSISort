@@ -1,5 +1,5 @@
-SUBDIRS = src libraries util
-ALLDIRS = $(SUBDIRS)
+SUBDIRS = src libraries
+ALLDIRS = $(SUBDIRS) util
 
 PLATFORM = $(shell uname)
 
@@ -62,7 +62,7 @@ subdirs: $(SUBDIRS)
 
 src: print libraries
 
-$(ALLDIRS):
+$(SUBDIRS):
 	@$(MAKE) -C $@
 
 grsisort: src
