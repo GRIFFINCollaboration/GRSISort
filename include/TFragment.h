@@ -14,8 +14,6 @@
 //#include "Globals.h"
 //#endif
 
-//using namespace std;
-
 ////////////////////////////////////////////////////////////////
 //                                                            //
 // TFragment                                                  //

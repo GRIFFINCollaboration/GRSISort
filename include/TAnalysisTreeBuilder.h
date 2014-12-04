@@ -42,6 +42,16 @@
 //#include <TZeroDegree.h>
 #include <TDescant.h>   
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TAnalysisTreeBuilder                                       //
+//                                                            //
+// This Class builds events out of TGRSIDetectorHits. These   //
+// events then get written out to the analysis tree for post  //
+// processing. When a new detector class is added to the code //
+// it must also be added here for coincidence building        //
+//                                                            //
+////////////////////////////////////////////////////////////////
 
 class TEventQueue : public TObject {
    public:
@@ -129,9 +139,9 @@ class TAnalysisTreeBuilder : public TObject {
    private:
       TAnalysisTreeBuilder(); 
 
-      static const size_t MEM_SIZE;
+      static const size_t MEM_SIZE;                      //Sets the minimum amount of memory used to hold the frament tree
 
-      static TAnalysisTreeBuilder* fAnalysisTreeBuilder;
+      static TAnalysisTreeBuilder* fAnalysisTreeBuilder; //Pointer to the AnalysisTreeBuilder
 
       TChain *fFragmentChain;
       TTree  *fCurrentFragTree;
@@ -148,37 +158,39 @@ class TAnalysisTreeBuilder : public TObject {
 #ifndef __CINT__
       bool fSortFragmentDone;
       bool fPrintStatus;
-      std::thread *fReadThread;
-      std::thread *fProcessThread;
-      std::thread *fWriteThread;
-      std::thread *fStatusThread;
+      std::thread *fReadThread;                             //The thread used to read fragments out of the fragment tree
+      std::thread *fProcessThread;                          //The thread used to process and build events
+      std::thread *fWriteThread;                            //The thread used to process the write Queue
+      std::thread *fStatusThread;                           //The thread used to display the status during sorting
 #endif
 
    private:
      
       TFragment *fCurrentFragPtr;
 
-      TTigress    *tigress;  
-      TSharc      *sharc;   
-      TTriFoil    *triFoil;
-      //TRf         *rf;     
-      TCSM        *csm;    
+      //TigAux detectors
+      TTigress    *tigress;                                 //A pointer to the Tigress Mother Class
+      TSharc      *sharc;                                   //A pointer to the Sharc Mother Class
+      TTriFoil    *triFoil;                                 //A pointer to the TriFoil Mother Class
+      //TRf         *rf;      
+      TCSM        *csm;                                     //A pointer to the CSM Mother Class
       //TSpice      *spice;  
       //TS3         *s3;
       //TTip        *tip;    
        
-      TGriffin    *griffin;
-      TSceptar    *sceptar;
-      TPaces      *paces;  
+      //GrifAux detectors
+      TGriffin    *griffin;                                 //A pointer to the Griffin Mother Class
+      TSceptar    *sceptar;                                 //A pointer to the Sceptar Mother Class
+      TPaces      *paces;                                   //A pointer to the Paces Mother Class
       //TDante      *dante;  
       //TZeroDegree *zeroDegree;
-      TDescant    *descant;
+      
+      //Aux Detectors
+      TDescant    *descant;                                 //A pointer to the Descant Mother Class
 
 	ClassDef(TAnalysisTreeBuilder,0)
 
 };
-
-
 
 #endif
 

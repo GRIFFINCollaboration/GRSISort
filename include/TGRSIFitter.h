@@ -26,7 +26,8 @@ class TGRSIFitter : public TObject {
    TGRSIFitter(){};
    ~TGRSIFitter(){};
 
- public:   
+ public: 
+   //Maybe make this function return a TPeak?
    TFitResultPtr FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity = false); 
  //  void FitPeak(Int_t limit1, Int_t limit2, std::initializer_list<double> centroid);
    //void FitPeak(Int_t limit1, Int_t limit2, ...);

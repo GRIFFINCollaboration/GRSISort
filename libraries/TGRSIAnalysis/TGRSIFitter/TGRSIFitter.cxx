@@ -49,6 +49,7 @@ void TGRSIFitter::FitNPeaks(Int_t limit1, Int_t limit2, Int_t npeaks, ...){
 */
 
 //This function is used to perform the actual fit
+//This needs to change as it can be done with a TPeak or a TFitReultPtr
 TFitResultPtr TGRSIFitter::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity){
 
    //I should come up with something smarter to return from this function. If I return a smart pointer to the fitresult it should be good enough (I think).
