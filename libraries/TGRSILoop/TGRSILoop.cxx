@@ -2,6 +2,7 @@
 #include <stdint.h>
 
 #include <TSystem.h>
+#include <TStopwatch.h>
 
 #include "TGRSILoop.h"
 #include "TGRSIOptions.h"
@@ -150,6 +151,9 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
    long long bytesread = 0;
    int currenteventnumber = 0;
 
+   TStopwatch w;
+   w.Start();
+
    while(true) {
       bytes = midasfile->Read(&fMidasEvent);
       currenteventnumber++;
@@ -195,7 +199,8 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
             }
             break;
          case 0x8001:
-            printf(" Processing event %i have processed %.2fMB/%.2fMB\n",currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
+            printf(" Processing event %i have processed %.2fMB/%.2fMB => %.1f MB/s\n",currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0),(bytesread/1000000.0)/w.RealTime());
+            w.Continue();
             printf( DRED );
             fMidasEvent.Print();
             printf( RESET_COLOR );
@@ -207,8 +212,9 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
       };
       if((currenteventnumber%5000)== 0) {
          gSystem->ProcessEvents();
-         printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB               " SHOW_CURSOR "\r",
-					 currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0));
+         printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r",
+					 currenteventnumber,(bytesread/1000000.0),(filesize/1000000.0),(bytesread/1000000.0)/w.RealTime());
+         w.Continue();
       }
    }
 

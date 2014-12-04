@@ -256,6 +256,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    TH2F* intNormWaveformPsd = new TH2F("intNormWaveformPsd","DESCANT waveforms normalized by integral, shifted by psd time;time [ns];pulse height [ADC channels]",120,-40.,80.,1200,-0.1,1.1);
    TH2F* peakNormWaveformPsd = new TH2F("peakNormWaveformPsd","DESCANT waveforms normalized by peak height, shifted by psd time;time [ns];pulse height [ADC channels]",120,-40.,80.,1200,-0.1,1.1);
 
+   TH2F* timevsenergy = new TH2F("timevsenergy","time vs #gamma-ray energy",4000,0,4000,6000,0,6000); list->Add(timevsenergy); 
    
    //angular correlation cube
    double angleWidth = 1.;
@@ -395,6 +396,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
       //loop over all gamma's in two loops
       for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
          gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergyLow());
+         timevsenergy->Fill(grif->GetGriffinHit(one)->GetEnergyLow(),grif->GetGriffinHit(one)->GetTime()/1.0e8);
          singlesVsDetNum->Fill(grif->GetGriffinHit(one)->GetDetectorNumber(),grif->GetGriffinHit(one)->GetEnergyLow());
          //gamma-gamma spectra
          for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
