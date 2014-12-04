@@ -105,10 +105,11 @@ std::vector<std::pair<double,int> > AngleCombinations(double binWidth = 2., doub
    return result;
 }
    
-TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000.) {
-   TStopwatch w;
-   w.Start();
-
+TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000., long maxEntries = 0, TStopwatch* w = NULL) {
+   if(w == NULL) {
+      w = new TStopwatch;
+      w->Start();
+   }
    TList* list = new TList;
 
    const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
@@ -235,6 +236,13 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    TH2F* addbackCloverHits = new TH2F("addbackCloverHits","#gamma-#gamma hitpattern, clover addback",70,0,70,70,0,70); list->Add(addbackCloverHits);
    TH2F* addbackCloverHitsB = new TH2F("addbackCloverHitsB","#gamma-#gamma hitpattern, clover addback, coincident #beta",70,0,70,70,0,70); list->Add(addbackCloverHitsB);
 
+   //TH2F* sceptarHits = new TH2F("sceptarHits","sceptar-sceptar hitpattern",25,0,25,25,0,25); list->Add(sceptarHits);
+   //TH2F* pacesHits = new TH2F("pacesHits","paces-paces hitpattern",10,0,10,10,0,10); list->Add(pacesHits);
+   //TH2F* descantHits = new TH2F("descantHits","descant-descant hitpattern",70,0,70,70,0,70); list->Add(descantHits);
+
+   TH2F* griffinSceptarHits = new TH2F("griffinSceptarHits","GRIFFIN hits vs. SCEPTAR hits", 25,0,25,70,0,70); list->Add(griffinSceptarHits);
+   TH2F* addbackSceptarHits = new TH2F("addbackSceptarHits","GRIFFIN hits vs. SCEPTAR hits", 25,0,25,70,0,70); list->Add(addbackSceptarHits);
+
    //descant waveform - not added to list, this only happens if we find any waveforms
    TH2F* rawWaveform = new TH2F("rawWaveform","raw DESCANT waveforms;time [ns];pulse height [ADC channels]",120,0.,120.,4096,0,4096);
    TH2F* intNormWaveform = new TH2F("intNormWaveform","DESCANT waveforms normalized by integral;time [ns];pulse height [ADC channels]",120,0.,120.,1200,-0.1,1.1);
@@ -308,7 +316,10 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    std::cout<<std::fixed<<std::setprecision(1);
    int entry;
    size_t angIndex;
-   for(entry = 0; entry < tree->GetEntries(); ++entry) {
+   if(maxEntries == 0 || maxEntries > tree->GetEntries()) {
+      maxEntries = tree->GetEntries();
+   }
+   for(entry = 0; entry < maxEntries; ++entry) {
       tree->GetEntry(entry);
       //std::cout<<entry<<": got "<<grif->GetMultiplicity()<<" griffin detectors"<<std::flush;
       //if(gotSceptar) {
@@ -393,7 +404,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             if((grif->GetGriffinHit(one)->GetPosition()-grif->GetGriffinHit(two)->GetPosition()).Mag()<105) {
                eVsTimeNeighbours->Fill(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime(),grif->GetGriffinHit(one)->GetEnergyLow());
             }
-            griffinHits->Fill(4*grif->GetGriffinHit(one)->GetDetectorNumber()+grif->GetGriffinHit(one)->GetCrystalNumber(),4*grif->GetGriffinHit(two)->GetDetectorNumber()+grif->GetGriffinHit(two)->GetCrystalNumber());
+            griffinHits->Fill(grif->GetGriffinHit(one)->GetArrayNumber(),grif->GetGriffinHit(two)->GetArrayNumber());
             double ang = grif->GetGriffinHit(one)->GetPosition().Angle(grif->GetGriffinHit(two)->GetPosition())*180./TMath::Pi();
             if(ang > 90.) {
                ang = 180. - ang;
@@ -454,7 +465,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                //beta-gamma
                gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergyLow());
                
-
+               griffinSceptarHits->Fill(scep->GetSceptarHit(b)->GetDetectorNumber(), grif->GetGriffinHit(one)->GetArrayNumber());
 
                for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
                   if(two == one) {
@@ -463,7 +474,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                   //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(two)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(two)->GetTime()) > coincHigh) {
                      //continue;
                   //}
-                  griffinHitsB->Fill(4*grif->GetGriffinHit(one)->GetDetectorNumber()+grif->GetGriffinHit(one)->GetCrystalNumber(),4*grif->GetGriffinHit(two)->GetDetectorNumber()+grif->GetGriffinHit(two)->GetCrystalNumber());
+                  griffinHitsB->Fill(grif->GetGriffinHit(one)->GetArrayNumber(),grif->GetGriffinHit(two)->GetArrayNumber());
                   if(two > one) {
                      timeB->Fill(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime());
                      cfdDiffB->Fill(grif->GetGriffinHit(two)->GetCfd()-grif->GetGriffinHit(one)->GetCfd());
@@ -545,7 +556,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             if(1458. < grif->GetAddBackHit(one)->GetEnergyLow()+grif->GetAddBackHit(two)->GetEnergyLow() && grif->GetAddBackHit(one)->GetEnergyLow()+grif->GetAddBackHit(two)->GetEnergyLow() < 1465.) {
                eVsAngle1460->Fill(grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition())*180./TMath::Pi(), grif->GetAddBackHit(one)->GetEnergyLow());
             }
-            addbackHits->Fill(4*grif->GetAddBackHit(one)->GetDetectorNumber()+grif->GetAddBackHit(one)->GetCrystalNumber(),4*grif->GetAddBackHit(two)->GetDetectorNumber()+grif->GetAddBackHit(two)->GetCrystalNumber());
+            addbackHits->Fill(grif->GetAddBackHit(one)->GetArrayNumber(),grif->GetAddBackHit(two)->GetArrayNumber());
             double ang = grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition())*180./TMath::Pi();
             if(ang > 90.) {
                ang = 180. - ang;
@@ -604,7 +615,8 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                   //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(two)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(two)->GetTime()) > coincHigh) {
                      //continue;
                   //}
-                  addbackHitsB->Fill(4*grif->GetAddBackHit(one)->GetDetectorNumber()+grif->GetAddBackHit(one)->GetCrystalNumber(),4*grif->GetAddBackHit(two)->GetDetectorNumber()+grif->GetAddBackHit(two)->GetCrystalNumber());
+                  addbackHitsB->Fill(grif->GetAddBackHit(one)->GetArrayNumber(),grif->GetAddBackHit(two)->GetArrayNumber());
+                  addbackSceptarHits->Fill(scep->GetSceptarHit(b)->GetDetectorNumber(), grif->GetAddBackHit(one)->GetArrayNumber());
                   if(two > one) {
                      addbackTimeB->Fill(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime());
                      addbackCfdDiffB->Fill(grif->GetAddBackHit(two)->GetCfd()-grif->GetAddBackHit(one)->GetCfd());
@@ -641,14 +653,14 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             if(two == one) {
                continue;
             }
-            addbackCloverHits->Fill(4*grif->GetAddBackCloverHit(one)->GetDetectorNumber()+grif->GetAddBackCloverHit(one)->GetCrystalNumber(),4*grif->GetAddBackCloverHit(two)->GetDetectorNumber()+grif->GetAddBackCloverHit(two)->GetCrystalNumber());
+            addbackCloverHits->Fill(grif->GetAddBackCloverHit(one)->GetArrayNumber(),grif->GetAddBackCloverHit(two)->GetArrayNumber());
             addbackCloverMatrix->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
-            if(coincLow <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < coincHigh) {
+            if(coincLow <= TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) < coincHigh) {
                addbackCloverMatrix_coinc->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
-            } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < (bg+coincHigh)) {
+            } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) < (bg+coincHigh)) {
                addbackCloverMatrix_bg->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
             }
-            if(grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition()) < TMath::Pi()/2.) {
+            if(grif->GetAddBackCloverHit(one)->GetPosition().Angle(grif->GetAddBackCloverHit(two)->GetPosition()) < TMath::Pi()/2.) {
                addbackCloverMatrixClose->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
                if(coincLow <= TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) < coincHigh) {
                   addbackCloverMatrixClose_coinc->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
@@ -662,7 +674,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
       if(gotSceptar && scep->GetMultiplicity() >= 1) {
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             for(one = 0; one < (int) grif->GetAddBackCloverMultiplicity(); ++one) {
-               //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(one)->GetTime()) > coincHigh) {
+               //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) > coincHigh) {
                   //continue;
                //}
                addbackCloverSinglesB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow());
@@ -670,10 +682,10 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                   if(two == one) {
                      continue;
                   }
-                  //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(two)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(two)->GetTime()) > coincHigh) {
+                  //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackCloverHit(two)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackCloverHit(two)->GetTime()) > coincHigh) {
                      //continue;
                   //}
-                  addbackCloverHitsB->Fill(4*grif->GetAddBackCloverHit(one)->GetDetectorNumber()+grif->GetAddBackCloverHit(one)->GetCrystalNumber(),4*grif->GetAddBackCloverHit(two)->GetDetectorNumber()+grif->GetAddBackCloverHit(two)->GetCrystalNumber());
+                  addbackCloverHitsB->Fill(grif->GetAddBackCloverHit(one)->GetArrayNumber(),grif->GetAddBackCloverHit(two)->GetArrayNumber());
                   addbackCloverMatrixB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
                   if(coincLow <= TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) < coincHigh) {
                      addbackCloverMatrix_coincB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
@@ -682,7 +694,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                   }
                   if(grif->GetAddBackCloverHit(one)->GetPosition().Angle(grif->GetAddBackCloverHit(two)->GetPosition()) < TMath::Pi()/2.) {
                      addbackCloverMatrixCloseB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
-                     if(coincLow <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < coincHigh) {
+                     if(coincLow <= TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) < coincHigh) {
                         addbackCloverMatrixClose_coincB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
                      } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackCloverHit(two)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) < (bg+coincHigh)) {
                         addbackCloverMatrixClose_bgB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow(), grif->GetAddBackCloverHit(two)->GetEnergyLow());
@@ -695,12 +707,12 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 
 
       if(entry%25000 == 0) {
-         std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w.RealTime() << " seconds" << "\r" << std::flush;
-         w.Continue();
+         std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w->RealTime() << " seconds" << "\r" << std::flush;
+         w->Continue();
       }
    }
-   std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w.RealTime() << " seconds" << std::endl;
-   w.Continue();
+   std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w->RealTime() << " seconds" << std::endl;
+   w->Continue();
 
    //create all background corrected matrices
    TH2F* matrix_bgcorr = (TH2F*) matrix_coinc->Clone("matrix_bgcorr"); list->Add(matrix_bgcorr);
@@ -790,7 +802,8 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 #endif
 
    list->Sort();
-   std::cout << "done after " << w.RealTime() << " seconds" << std::endl;
+   std::cout << "creating histograms done after " << w->RealTime() << " seconds" << std::endl;
+   w->Continue();
    return list;
 }
 
@@ -798,10 +811,13 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 #ifndef __CINT__ 
 
 int main(int argc, char **argv) {
-   if(argc != 3 && argc != 2) {
-      printf("try again (usage: %s <analysis tree file> <optional: output file>).\n",argv[0]);
+   if(argc != 4 && argc != 3 && argc != 2) {
+      printf("try again (usage: %s <analysis tree file> <optional: output file> <max entries>).\n",argv[0]);
       return 0;
    }
+
+   TStopwatch w;
+   w.Start();
 
    std::string fileName;
    if(argc == 2) {
@@ -838,12 +854,24 @@ int main(int argc, char **argv) {
       return 1;
    }
    
+   std::cout << argv[0] << ": starting MakeMatrices after " << w.RealTime() << " seconds" << std::endl;
+   w.Continue();
+
    //coinc window = 0-20, bg window 40-60, 6000 bins from 0. to 6000. (default is 4000)
-   TList *list = MakeMatrices(tree, 0., 20., 80., 6000, 0., 6000.);
+   TList *list;
+   if(argc < 4) {
+      list = MakeMatrices(tree, 0., 20., 80., 6000, 0., 6000., 0, &w);
+   } else {
+      int entries = atoi(argv[3]);
+      std::cout<<"Limiting processing of analysis tree to "<<entries<<" entries!"<<std::endl;
+      list = MakeMatrices(tree, 0., 20., 80., 6000, 0., 6000., entries, &w);
+   }
 
    TFile *outfile = new TFile(fileName.c_str(),"create");
    list->Write();
    outfile->Close();
+
+   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl;
 
    return 0;
 }

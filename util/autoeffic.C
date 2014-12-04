@@ -97,7 +97,7 @@ Double_t fitFunction(Double_t *dim, Double_t *par){
 TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, bool verbosity = false){
 
    Double_t binWidth = h->GetXaxis()->GetBinWidth(par[1]);//Need to find the bin widths so that the integral makes sense
-   Int_t rw = binWidth*15;  //This number may change depending on the source used   
+   Int_t rw = binWidth*30;  //This number may change depending on the source used   
    //Set the number of iterations. The code is pretty quick, so having a lot isn't an issue	
    TVirtualFitter::SetMaxIterations(10000);
    Int_t xp = par[1];
@@ -121,7 +121,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
    pp->SetParName(9,"bg offset");
 
    //Set some physical limits for parameters
-   pp->SetParLimits(0,0.5*yp, 2*yp);
+//   pp->SetParLimits(0,0.5*yp, 2*yp);
    pp->SetParLimits(1,xp-rw,xp+rw);
    pp->SetParLimits(2,0.5,12);
    pp->SetParLimits(3,0.000,10);
@@ -136,7 +136,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
  // pp->FixParameter(3,0);
  //  pp->FixParameter(7,0);
  //  pp->FixParameter(4,0);
-   pp->FixParameter(5,0);
+ //  pp->FixParameter(5,0);
 
    if(verbosity)
       const char * options = "RFSM+";
@@ -1275,3 +1275,111 @@ TGraphErrors* autoeffic152(TH1 *hist,Double_t runlengthsecs, Double_t activitykB
    return res;
 
 }
+
+
+void autogain56(const char *f, int channum = -1, bool verbosity = false){
+
+   TFile *file = new TFile(f,"READ"); 
+
+	TH2D * matrix = (TH2D*)file->Get("hp_charge");
+	std::cout << "Channum is: " << channum << std::endl;
+	autogain56(matrix, channum, verbosity);
+}
+
+
+void autogain56(TH2 *mat, int channum = -1, bool verbosity = false){
+
+   TFile *f = new TFile("gainfits.root","RECREATE");
+   TH1D* h1 = new TH1D;
+	if(channum == -1){
+		for(int i=1; i<=64;i++){
+			TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
+			if(h1->Integral() < 1)
+				continue;
+			autogain56(h1,i,verbosity);
+		}
+	}
+	else{
+		int i = channum;
+		TH1D* h1 = (TH1D*) mat->ProjectionY(Form("Channel%d",i),i+1,i+1);
+		if(h1->Integral() < 1)
+			std::cout << "There are no counts in Channel " << channum << std::endl;
+		else
+			autogain56(h1,i,verbosity);
+	}
+	//std::cout << "IN THE SECOND FUNCTION" << std::endl;
+}
+
+TGraph* autogain56(TH1D *hist, int channum, bool verbosity = false){
+   TChannel *chan = 0;
+
+   static bool cal_flag = false;
+   if(cal_flag == false){
+      TChannel::ReadCalFile("new46K.cal"); //This can be made better
+      cal_flag = true;
+   }
+
+   TChannel *chan = TChannel::GetChannelByNumber(channum);
+   if(!chan){std::cout << "Could not find Channel"<<x<<std::endl;}
+   std::cout << "Now fitting channel "<<channum<<std::endl;
+   static bool cal_flag = false;
+   std::vector<Double_t> engvec;
+   
+   engvec.push_back(121.783);
+   engvec.push_back(1408.0110);
+ 
+
+   std::vector<double> engcoeffs = chan->GetENGCoeff();
+
+  // std::vector<Float_t> areavec;
+ //  std::vector<Float_t> area_uncertainty;
+   std::vector<Double_t> goodenergyvec;
+ //  std::vector<Float_t> goodintensvec;
+
+   hist->GetXaxis()->SetRangeUser(100.,16000.);
+   Double_t par[40];  
+   Float_t integral, sigma;
+	bool goodfit = true;
+   Double_t *centroid = new Double_t;
+
+  for (int p=0;p<engvec.size();p++) {
+   if(p==0)  Double_t xp = engvec.at(p)/engcoeffs.at(1);
+   else  Double_t xp = 1377.0/engcoeffs.at(1);
+     std::cout << "Fitting the " << engvec.at(p) << " keV line at channel " << xp << std::endl;
+  //   std::cout << "Trying to fit channel " << foundchan << " and match it to " << engvec[p]  <<std::endl; 
+     Int_t bin = xp;// hist->GetXaxis()->FindBin(xp);
+     Float_t yp = hist->GetBinContent(bin);
+     par[0] = yp;  //height
+     par[1] = xp;  //centroid
+     par[2] = 5;   //sigma
+     par[3] = 2;   //beta
+     par[4] = 2;   //R
+     par[5] = 1.0; //stp
+     par[6] = hist->GetBinContent(bin-50);  //A
+     par[7] = (hist->GetBinContent(bin-50) - hist->GetBinContent(bin+50))/100.;//B
+     par[8] = -0.5;   //C
+     par[9] = xp;  //bg offset
+     FitPeak(par,hist,integral,sigma,centroid,verbosity);
+     std::cout << "centroid is " << *centroid << std::endl;
+     goodenergyvec.push_back(*centroid);
+   }
+
+   hist->Write();
+
+   Double_t *energies = &(engvec[0]);
+   Double_t *goodenergy = &(goodenergyvec[0]);
+
+   TGraph* slopefit = new TGraph(2, goodenergy, energies);
+
+   TFitResultPtr fitres = slopefit->Fit("pol1","SC0");
+
+   chan->DestroyENGCal();
+   chan->AddENGCoefficient(fitres->Parameter(0));
+   chan->AddENGCoefficient(fitres->Parameter(1));
+	if(!goodfit)
+	{
+		chan->SetENGChi2(9999999);
+	}
+   delete centroid;
+   return slopefit;
+} 
