@@ -1,4 +1,4 @@
-SUBDIRS = src libraries
+SUBDIRS = src libraries util
 ALLDIRS = $(SUBDIRS)
 
 PLATFORM = $(shell uname)
@@ -52,7 +52,7 @@ all: print subdirs bin grsihist grsisort end
 
 docs: print subdirs bin grsihist grsisort html end
 
-util:
+util: libraries
 	@$(MAKE) -C $@
 
 print:
