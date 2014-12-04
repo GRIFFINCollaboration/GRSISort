@@ -53,7 +53,7 @@ void TGint::PrintLogo(bool lite) {
      printf("\t*%*s%*s*\n",width/2+5,"GRSI SPOON", width/2-5, "");
      printf("\t*%*s%*s*\n",width/2+reflength/2, ref.c_str(), width/2-reflength/2, "");
      printf("\t*%*s%*s*\n",width/2+5,"A lean-mean sorting machine", width/2-5, "");
-     printf("\t*%*s%*s*\n",width/2+5, "version 2.0", width/2-5, "");
+     printf("\t*%*s%*s*\n",width/2+5, "version 2.1.0 beta", width/2-5, "");
      printf("\t*%s*\n", std::string(width,'*').c_str());   
    }
 }
