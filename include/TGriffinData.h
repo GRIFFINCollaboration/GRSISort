@@ -62,36 +62,35 @@ class TGriffinData : public TGRSIDetectorData {
     inline void SetPPG(const Int_t &ppg)                 {fPPG.push_back(ppg);               }  //!
     
     inline void SetCore(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
-	      if(!frag || !channel || !mnemonic) return;
+	   if(!frag || !channel || !mnemonic) return;
 
-   	    if(mnemonic->outputsensor.compare(0,1,"B")==0) { return; }  //make this smarter.
-
-	       UShort_t CoreNbr=5;
-	       if(mnemonic->arraysubposition.compare(0,1,"B")==0)
-	  	       CoreNbr=0;
-	       else if(mnemonic->arraysubposition.compare(0,1,"G")==0)
-	  	       CoreNbr=1;
-	       else if(mnemonic->arraysubposition.compare(0,1,"R")==0)
-	  	       CoreNbr=2;
-	       else if(mnemonic->arraysubposition.compare(0,1,"W")==0)
-	  	       CoreNbr=3;
-
-          for(int x=0;x<frag->Charge.size();x++) {
-          SetCoreMidasId(frag->MidasId);
-          SetCoreNbrHits(frag->Charge.size());
-          SetIsHighGain(false);
-          SetPPG(frag->PPG);
-          SetCoreAddress(frag->ChannelAddress);
-
-         	SetCloverNumber(mnemonic->arrayposition);
-	       	SetCoreNumber(CoreNbr);
-            SetCoreEnergy(channel->CalibrateENG(frag->Charge.at(x)));		
-            SetCoreCharge(frag->Charge.at(x));
-		      SetCoreCFD(frag->Cfd.at(x));		
-	        //SetCoreTime(frag->TimeToTrig);		
-	         SetCoreTime(frag->GetTimeStamp());		
-          }
-
+     	   if(mnemonic->outputsensor.compare(0,1,"B")==0) { return; }  //make this smarter.
+   
+         UShort_t CoreNbr=5;
+            if(mnemonic->arraysubposition.compare(0,1,"B")==0)
+       	      CoreNbr=0;
+            else if(mnemonic->arraysubposition.compare(0,1,"G")==0)
+       	      CoreNbr=1;
+            else if(mnemonic->arraysubposition.compare(0,1,"R")==0)
+       	      CoreNbr=2;
+            else if(mnemonic->arraysubposition.compare(0,1,"W")==0)
+       	      CoreNbr=3;
+   
+            for(int x=0;x<frag->Charge.size();x++) {
+               SetCoreMidasId(frag->MidasId);
+               SetCoreNbrHits(frag->Charge.size());
+               SetIsHighGain(false);
+               SetPPG(frag->PPG);
+               SetCoreAddress(frag->ChannelAddress);
+           	   SetCloverNumber(mnemonic->arrayposition);
+            	SetCoreNumber(CoreNbr);
+               SetCoreEnergy(channel->CalibrateENG(frag->Charge.at(x)));		
+               SetCoreCharge(frag->Charge.at(x));
+     	         SetCoreCFD(frag->Cfd.at(x));		
+             //SetCoreTime(frag->TimeToTrig);		
+               SetCoreTime(frag->GetTimeStamp());		
+            }
+   
       } //! 
 
       inline Int_t    GetCoreMidasId(const unsigned int &i) const    {return fCore_MidasId.at(i); }
@@ -118,9 +117,9 @@ class TGriffinData : public TGRSIDetectorData {
 };
 
 
-#endif
+#endif //ifndef __CINT__
 
-#endif
+#endif //ifndef TGRIFFINDATA_H
 
 
 
