@@ -10,16 +10,19 @@
  */
 
 
-/* 
- * The TChannel is designed to hold all non-essential 
- * information of a TFragment (name, energy coeff, etc..)
- * that would otherwise clog up the FragmentTree.  The TChannel class
- * contains a static map to every channel make retrieval fairly 
- * easy.  The TChannel class also contains the ability to 
- * read and write a custom calibration file to set or 
- * save the TChannel information.
- *
- */
+ /////////////////////////////////////////////////////////////////////////
+ //                                                                     //
+ // TChannel                                                            //
+ //                                                                     //
+ // The TChannel is designed to hold all non-essential                  // 
+ // information of a TFragment (name, energy coeff, etc..)              //
+ // that would otherwise clog up the FragmentTree.  The TChannel class  //
+ // contains a static map to every channel make retrieval fairly        //
+ // easy.  The TChannel class also contains the ability to              //
+ // read and write a custom calibration file to set or                  //
+ // save the TChannel information.                                      //
+ //                                                                     //
+ /////////////////////////////////////////////////////////////////////////
 
 
 #include<string>
@@ -38,9 +41,7 @@
 class TChannel : public TNamed	{
 
   public:
-    //static TChannel *GetChannel(int temp_address);   
     static TChannel *GetChannel(unsigned int temp_address); 
-    // static TChannel *GetChannelByNumber(int temp_numebr);
     static TChannel *GetChannelByNumber(int temp_numebr);
     static TChannel *FindChannelByName(const char *name);
 
@@ -62,22 +63,26 @@ class TChannel : public TNamed	{
   private:
     unsigned int	   address;                                 //The address of the digitizer
     int		         integration;                             //The charge integration setting
-    std::string      channelname;                             
+    std::string      channelname;                             //The name of the channel (MNEMONIC)
     std::string      type_name;
     std::string      digitizertype;
     int 	            number;
     int		         stream;
     int              userinfonumber;
 
-    std::vector<double> ENGCoefficients;  double ENGChi2;
-    std::vector<double> CFDCoefficients;  double CFDChi2;
-    std::vector<double> LEDCoefficients;  double LEDChi2;
-    std::vector<double> TIMECoefficients; double TIMEChi2;
-    std::vector<double> EFFCoefficients;  double EFFChi2;
+    std::vector<double> ENGCoefficients;  //Energy calibration coeffs (low to high order)
+    double ENGChi2;                       //Chi2 of the energy calibration
+    std::vector<double> CFDCoefficients;  //CFD calibration coeffs (low to high order)
+    double CFDChi2;                       //Chi2 of the CFD calibration
+    std::vector<double> LEDCoefficients;  //LED calibration coeffs (low to high order)
+    double LEDChi2;                       //Chi2 of LED calibration
+    std::vector<double> TIMECoefficients; //Time calibration coeffs (low to high order)
+    double TIMEChi2;                      //Chi2 of the Time calibration
+    std::vector<double> EFFCoefficients;  //Efficiency calibration coeffs (low to high order)
+    double EFFChi2;                       //Chi2 of Efficiency calibration
 
-    //static TList *fChannelList;
-    static std::map<unsigned int,TChannel*> *fChannelMap;          //A map to all of the channels based on address
-    static std::map<int,TChannel*> *fChannelNumberMap;
+    static std::map<unsigned int,TChannel*> *fChannelMap; //A map to all of the channels based on address
+    static std::map<int,TChannel*> *fChannelNumberMap;    //A map of TChannels based on channel number
     static void UpdateChannelNumberMap();
 	 void OverWriteChannel(TChannel*);
 	 void AppendChannel(TChannel*);
