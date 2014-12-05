@@ -67,9 +67,9 @@ TChannel::TChannel(TChannel *chan) {
 
 
 bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
-	//printf("here 1.1\n");
+   //Compares the names of the two TChannels. Returns true if the names are the
+   //same, false if different.
    std::string namea; namea.assign(((TChannel)chana).GetChannelName());
-	//printf("here 1.2\n");
 	
    if(namea.compare(((TChannel)chanb).GetChannelName()) <= 0) return true;
    else return false;
@@ -116,7 +116,7 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
 }
 
 void TChannel::OverWriteChannel(TChannel *chan){
-
+    //Overwrites the current TChannel with chan.
     this->SetAddress(chan->GetAddress());
     this->SetIntegration(chan->GetIntegration());
     this->SetNumber(chan->GetNumber());
@@ -141,7 +141,7 @@ void TChannel::OverWriteChannel(TChannel *chan){
 }
 
 void TChannel::AppendChannel(TChannel *chan){
-
+    //Sets the current TChannel to chan
     if(chan->GetIntegration()!=0) 
 		this->SetIntegration(chan->GetIntegration()); 
     if(chan->GetNumber()!=0)
@@ -186,7 +186,6 @@ int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
     //If there is information in the chan, the current TChannel with the same address is updated with that information.
    if(!chan)
    	return 0;
-//   printf("temp_address = 0x%08x\n",chan->GetAddress());
    TChannel *oldchan = GetChannel(chan->GetAddress()); // look for already existing channel at this address
 	if(oldchan==0)
 		return 0;
@@ -215,8 +214,6 @@ void TChannel::Clear(Option_t *opt){
     EFFCoefficients.clear();
 }
 
-//TChannel *TChannel::GetChannel(int temp_add) {int x = temp_add; return GetChannel(x);}
-
 TChannel *TChannel::GetChannel(unsigned int temp_address) {
 //Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
 
@@ -229,8 +226,6 @@ TChannel *TChannel::GetChannel(unsigned int temp_address) {
 	}
 	return chan;
 }
-
-//TChannel *TChannel::GetChannelByNumber(int temp_num) {int x = temp_num; return GetChannel(x);}
 
 TChannel *TChannel::GetChannelByNumber(int temp_num) {
 //Returns the TChannel based on the channel number and not the channel address.
@@ -248,7 +243,7 @@ TChannel *TChannel::GetChannelByNumber(int temp_num) {
 }
 
 TChannel *TChannel::FindChannelByName(const char *cc_name){
-
+  //Finds the TChannel by the name of the channel 
   TChannel *chan = NULL;
   if(!cc_name)
     return chan;
@@ -315,6 +310,11 @@ void TChannel::DestroyCalibrations()   {
 };
 
 double TChannel::CalibrateENG(int charge) {
+   //Returns the calibrated energy of the channel when a charge is passed to it. 
+   //This is done by first adding a random number between 0 and 1 to the charge
+   //bin. This is then taken and divided by the integration parameter. The 
+   //polynomial energy calibration formula is then applied to get the calibrated
+   //energy.
     if(charge==0) 
       return 0.0000;
 
@@ -322,27 +322,32 @@ double TChannel::CalibrateENG(int charge) {
    if(integration != 0)
       temp_int = (int)integration;  //the 4 is the dis. 
    
+   //We need to add a random number between 0 and 1 before calibrating to avoid
+   //binning issues.
    return CalibrateENG(((double)charge+gRandom->Uniform()) / (double)temp_int);
 };
 
 double TChannel::CalibrateENG(double charge) {
+   //Returns the calibrated energy. The polynomial energy calibration formula is 
+   //applied to get the calibrated energy. This function does not use the 
+   //integration parameter.
    if(ENGCoefficients.size()==0)
       return charge;
    double cal_chg = 0.0;
    for(int i=0;i<ENGCoefficients.size();i++){
       cal_chg += ENGCoefficients[i] * pow((charge),i);
    }
-  // printf("(%.02f/%0.2f) *%.05f + %.05f = %.05f\n",charge,temp_int,ENGCoefficients[1],ENGCoefficients[0], cal_chg);
-	//Print();
-	//printf("ENGCoefficients.size() = %i\n\n\n",ENGCoefficients.size());
    return cal_chg;
 };
 
 double TChannel::CalibrateCFD(int cfd) {
+   //Calibrates the CFD properly.
    return CalibrateCFD((double)cfd + gRandom->Uniform());
 };
 
 double TChannel::CalibrateCFD(double cfd) {
+   //Returns the calibrated CFD. The polynomial CFD calibration formula is 
+   //applied to get the calibrated CFD. 
    if(CFDCoefficients.size()==0)
       return cfd;
 
@@ -355,10 +360,13 @@ double TChannel::CalibrateCFD(double cfd) {
 
 
 double TChannel::CalibrateLED(int led) {
+   //Calibrates the LED
    return CalibrateLED((double)led + gRandom->Uniform());
 };
 
 double TChannel::CalibrateLED(double led) {
+   //Returns the calibrated LED. The polynomial LED calibration formula is 
+   //applied to get the calibrated LED.
    if(LEDCoefficients.size()==0)
       return led;
 
@@ -370,10 +378,15 @@ double TChannel::CalibrateLED(double led) {
 }
 
 double TChannel::CalibrateTIME(int time)  {
+   //Calibrates the time spectrum
    return CalibrateTIME((double)time + gRandom->Uniform());
 };
 
 double TChannel::CalibrateTIME(double time)  {
+   //Returns the calibrated time. The polynomial time calibration formula is 
+   //applied to get the calibrated time. This function does not use the 
+   //integration parameter.
+  
    if(TIMECoefficients.size()==0)
       return time;
 
@@ -392,7 +405,6 @@ double TChannel::CalibrateEFF(double energy) {
 void TChannel::Print(Option_t *opt) {
    //Prints out the current TChannel.
 
-   //printf( DBLUE "%s\t" DYELLOW "0x%08x" RESET_COLOR "\n",this->GetChannelName(),this->GetAddress());
    printf( "%s\t{\n",channelname.c_str());
    printf( "Name:      %s\n",channelname.c_str());
    printf( "Number:    %i\n",number);
@@ -428,9 +440,7 @@ void TChannel::WriteCalFile(std::string outfilename) {
 	      chanVec.push_back(*iter->second);
    }
 
-//printf("here 1\n");
    std::sort(chanVec.begin(),chanVec.end(),TChannel::Compare);
-//printf("here 2\n");
 
    FILE *c_outputfile;
    if(outfilename.length()>0) {
@@ -449,7 +459,7 @@ void TChannel::WriteCalFile(std::string outfilename) {
 
 
 void TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
-//Reads the TChannel information for a Tree if it has already been written to a Tree.
+//Reads the TChannel information from a Tree if it has already been written to that Tree.
     if(!tree)
 	return;
     TList *list = tree->GetUserInfo();	
@@ -462,13 +472,13 @@ void TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
  	AddChannel(chan,opt);// if we read from the tree we want to overwrite any channels found
 	channelsfound ++;
     }
-    //printf("found %i channels in tree\n",cahnnelsfound);
     return;
 }
 
 
 void TChannel::ReadCalFile(const char *filename) {
-   //Makes TChannels from a cal file.
+   //Makes TChannels from a cal file to be used as the current calibration until grsisort
+   //is closed
    std::string infilename;
    infilename.append(filename);
 
@@ -493,8 +503,8 @@ void TChannel::ReadCalFile(const char *filename) {
    int detector = 0;
    std::string name;
 
-   //std::pair < int, int >pixel = std::make_pair(0, 0);
-
+   //Parse the cal file. This is useful because if the cal file contains something that
+   //the parser does not recognize, it just skips it!
    while (std::getline(infile, line)) {
       linenumber++;
       trim(&line);

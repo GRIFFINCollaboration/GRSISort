@@ -17,20 +17,30 @@ class TGRSIDetectorData;
 #endif
 
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TBGOData                                                   //
+//                                                            //
+// This Class contains the BGO data that is processed in      //
+// the TAnalysisTreeBuilder. This class is not written to a   //
+// tree and is not a ROOT class.                              //
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 class TBGOData : public TGRSIDetectorData	{
 
 	private:
 
-		std::vector<UShort_t> fBGO_CloverNbr;		//!
-		std::vector<UShort_t> fBGO_CrystalNbr;		//!
+		std::vector<UShort_t> fBGO_CloverNbr;		//!The clover that the BGO is on
+		std::vector<UShort_t> fBGO_CrystalNbr;		//!The BGO crystal
 		std::vector<UShort_t> fBGO_PmNbr;		//!
-		std::vector<Int_t>    fBGO_Charge;		//!
-		std::vector<Double_t> fBGO_Energy;		//!
-		std::vector<Double_t> fBGO_TimeCFD;		//!
-		std::vector<Double_t> fBGO_TimeLED;		//!
-		std::vector<Double_t> fBGO_Time;		//!
+		std::vector<Int_t>    fBGO_Charge;		//!The Charge collected by the BGO
+		std::vector<Double_t> fBGO_Energy;		//!The Energy collected by the BGO
+		std::vector<Double_t> fBGO_TimeCFD;		//!The CFD time of the hit in the BGO
+		std::vector<Double_t> fBGO_TimeLED;		//!The LED time of the hit in the BGO
+		std::vector<Double_t> fBGO_Time;		//!The time stamp of the hit in the BGO
 
-		std::vector<std::vector<int> > fBGO_Wave;	//!
+		std::vector<std::vector<int> > fBGO_Wave;	//!The waveform collected by the BGO
 
 		static bool fIsSet; //!
 
@@ -68,6 +78,7 @@ class TBGOData : public TGRSIDetectorData	{
 		};	//!
 
 		inline void SetBGO(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
+         //Sets the crystal number of the BGO based on the color in the MNEMONIC.
 			SetBGOCloverNbr(mnemonic->arrayposition);
 
 			UShort_t CrystalNbr=5;
