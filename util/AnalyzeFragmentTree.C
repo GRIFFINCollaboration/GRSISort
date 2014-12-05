@@ -153,10 +153,13 @@ TList *AnalyzeFragmentTree(TTree *tree, long entries = 0, TStopwatch* w = NULL) 
          }
       }
 
-      if(x%1500==0)
-         printf("\tOn fragment %li/%i               \r",x,fEntries);
+      if(entry%25000 == 0) {
+         std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w->RealTime() << " seconds" << "\r" << std::flush;
+         w->Continue();
+      }
    }
-   printf("\n\n");
+   std::cout << "\t" << entry << " / " << entries << " = "<< (float)entry/entries*100.0 << "%. " << w->RealTime() << " seconds" << std::endl << std::endl;
+   w->Continue();
   
    return list;
 }
