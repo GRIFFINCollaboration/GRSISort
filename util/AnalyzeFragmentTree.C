@@ -82,9 +82,9 @@ TList *AnalyzeFragmentTree(TTree *tree, long entries = 0, TStopwatch* w = NULL) 
 
    tree->GetEntry(indexvalues[0]);
    FragsIn++;
-
-   for(long x=1;x<fEntries;x++) {
-      if(tree->GetEntry(indexvalues[x]) == -1 ) { //move current frag to the next (x'th) entry in the tree
+   long entry;
+   for(entry = 1; entry < fEntries; entry++) {
+      if(tree->GetEntry(indexvalues[entry]) == -1 ) { //move current frag to the next (x'th) entry in the tree
          printf( "FIRE!!!" "\n");
          continue;
       } 
@@ -114,9 +114,9 @@ TList *AnalyzeFragmentTree(TTree *tree, long entries = 0, TStopwatch* w = NULL) 
       //printf("\nlooping over y = %ld - %ld\n",start,stop);
 
       //printf("Multiplicity = %d\n",stop-start)
-      for(long y=start;y<stop;y++) {
+      for(long y = start; y < stop; y++) {
          //If the index of the compared fragment equals the index of the first fragment, do nothing
-         if(y == x) {
+         if(y == entry) {
             continue;
          }
          if(tree->GetEntry(indexvalues[y]) == -1 ) { //move currentfrag to the next fragment
