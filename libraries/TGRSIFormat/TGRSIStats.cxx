@@ -4,6 +4,17 @@
 
 ClassImp(TGRSIStats)
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TGRSIStats                                                 //
+//                                                            //
+// This Class records necessary stats for each channel in a   //
+// a sub-run. The stats are created during data parsing of    //
+// the MIDAS file and are automatically written to the        //
+// fragment tree. If the -record_stats flag is used, a text   //
+// file is written as well.                                   //
+//                                                            //
+////////////////////////////////////////////////////////////////
 
 std::map<int,TGRSIStats*> *TGRSIStats::fStatsMap = new std::map<int,TGRSIStats*>;
 
@@ -22,8 +33,6 @@ TGRSIStats *TGRSIStats::GetStats(int temp_add) {
   return fStatsMap->at(temp_add);
 }
 
-
-
 TGRSIStats::TGRSIStats(int temp_add) { 
    fStatAddress = temp_add;
    Clear();
@@ -32,10 +41,12 @@ TGRSIStats::TGRSIStats(int temp_add) {
 TGRSIStats::~TGRSIStats() { }
 
 void TGRSIStats::Print(Option_t *opt) {
+//Prints the stats for the current channel.
 	printf( "Channel %i|%s deadtime = %f seconds\n",TChannel::GetChannel(GetAddress())->GetNumber(),TChannel::GetChannel(GetAddress())->GetChannelName(),GetDeadTime()*10*10E-9   );
 }
 
 void TGRSIStats::Clear(Option_t *opt) {
+//Clears the stats for the current channel.
      fDeadTime = 0;;
      fLostEvents = 0;
      fLastChannelIdSeen = -1;
