@@ -188,7 +188,7 @@ class TAnalysisTreeBuilder : public TObject {
       //Aux Detectors
       TDescant    *descant;                                 //A pointer to the Descant Mother Class
 
-	ClassDef(TAnalysisTreeBuilder,0)
+	ClassDef(TAnalysisTreeBuilder,0) //Builds the Analysis Tree out of TFragments
 
 };
 

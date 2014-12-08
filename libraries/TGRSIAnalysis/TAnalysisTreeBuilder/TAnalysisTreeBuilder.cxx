@@ -33,8 +33,7 @@ TEventQueue *TEventQueue::Get() {
 }
 
 void TEventQueue::Add(std::vector<TFragment> *event) {
-   //while(elock) { }
-   //SetLock();
+   //Thread-safe method for adding events to the event queue. 
    m_event.lock();
    fEventQueue.push(event);
    m_event.unlock();
@@ -43,24 +42,20 @@ void TEventQueue::Add(std::vector<TFragment> *event) {
 }
 
 std::vector<TFragment> *TEventQueue::PopEntry() {
+   //Thread-safe method for taking an event out of the event queue
    std::vector<TFragment> *temp;
-   //while(elock) { }
-   //SetLock();
    m_event.lock();
    temp = fEventQueue.front();
    fEventQueue.pop();
    m_event.unlock();
-   //UnsetLock();
    return temp;
 }
 
 int TEventQueue::Size() {
+   //Thread-safe method for checking the size of the event queue
    int temp;
-   //while(elock) { }
-   //SetLock();
    m_event.lock();
    temp = fEventQueue.size();
-   //UnsetLock();
    m_event.unlock();
    return temp;
 }
@@ -74,40 +69,35 @@ TWriteQueue::TWriteQueue() { }
 TWriteQueue::~TWriteQueue() { }
 
 TWriteQueue *TWriteQueue::Get() {
+   //Returns a pointer to the write queue
    if(!fPtrToQue)
       fPtrToQue = new TWriteQueue;
    return fPtrToQue;
 }
 
 void TWriteQueue::Add(std::map<const char*, TGRSIDetector*> *event) {
-   //while(wlock) { }
-   //SetLock();
+   //Thread-safe method for adding to the event queue
    m_write.lock();
    fWriteQueue.push(event);
-   //UnsetLock();
    m_write.unlock();
    return;
 }
 
 std::map<const char*, TGRSIDetector*> *TWriteQueue::PopEntry() {
+   //Thread safe method for taking an event out of the write queue
    std::map<const char*, TGRSIDetector*> *temp;
-   //while(wlock) { }
-   //SetLock();
    m_write.lock();
    temp = fWriteQueue.front();
    fWriteQueue.pop();
-   //UnsetLock();
    m_write.unlock();
    return temp;
 }
 
 int TWriteQueue::Size() {
+   //Thread-safe method for checking the size of the event queue
    int temp;
-   //while(wlock) { }
-   //SetLock();
    m_write.lock();
    temp = fWriteQueue.size();
-   //UnsetLock();
    m_write.unlock();
    return temp;
 }
@@ -124,12 +114,12 @@ int TWriteQueue::Size() {
 
 ClassImp(TAnalysisTreeBuilder)
 
-
+//This sets the minimum amount of memory that root can hold a tree in.
 const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
 TAnalysisTreeBuilder* TAnalysisTreeBuilder::fAnalysisTreeBuilder = 0;
 
-
+//Reset the statistics of the analysis tree builder
 long TAnalysisTreeBuilder::fEntries     = 0;
 int  TAnalysisTreeBuilder::fFragmentsIn = 0;
 int  TAnalysisTreeBuilder::fAnalysisIn  = 0;
@@ -137,12 +127,14 @@ int  TAnalysisTreeBuilder::fAnalysisOut = 0;
 
 
 TAnalysisTreeBuilder* TAnalysisTreeBuilder::Get() {
+   //Returns an instance of the singleton AnalysisTreeBuilder
    if(fAnalysisTreeBuilder == 0)
       fAnalysisTreeBuilder = new TAnalysisTreeBuilder;
    return fAnalysisTreeBuilder;
 }
 
 TAnalysisTreeBuilder::TAnalysisTreeBuilder() {
+   //The Default ctor for the analysis tree builder
    fFragmentChain = 0;
    fCurrentFragTree = 0;
    fCurrentFragFile = 0;
@@ -173,6 +165,8 @@ TAnalysisTreeBuilder::TAnalysisTreeBuilder() {
 TAnalysisTreeBuilder::~TAnalysisTreeBuilder() { }
 
 void TAnalysisTreeBuilder::StartMakeAnalysisTree(int argc, char** argv) {
+   //Sets up a fragment chain from the list of fragment files sent to
+   //grsisort. This fragment chain then gets sorted by timestamp.
    if(argc==1) {
       SetUpFragmentChain(TGRSIOptions::GetInputRoot());
    } else {
@@ -184,24 +178,20 @@ void TAnalysisTreeBuilder::StartMakeAnalysisTree(int argc, char** argv) {
 
 
 void TAnalysisTreeBuilder::InitChannels() {
+   //Initializes the channels from a cal file on the command line when 
+   //grsisort is started. If no cal file is input on the command line
+   //grsisort attempts to read the calibration from the fragment tree
+   //if it exists.
    
    if(!fCurrentFragTree)
       return;
 
+   //Delete channels from memory incase there is something in there still
    TChannel::DeleteAllChannels(); 
-   /*TList *list = fCurrentFragTree->GetUserInfo();
-   TIter iter(list);
-   while(TObject *obj = iter.Next()) {
-      if(!obj->InheritsFrom("TChannel"))
-         continue;
-      TChannel *chan = (TChannel*)obj;
-      int number = chan->GetUserInfoNumber(); // I should need to do this.. 
-      chan->SetNumber(number);
-      TChannel::AddChannel(chan,"save");
-      //chan->Print();
-   }*/
+   //Try to read the calibration data from the fragment tree
 	TChannel::ReadCalFromTree(fCurrentFragTree);
 
+   //If we find an input cal file, we overwrite what the tree calibration is with that cal file
    if(!TGRSIOptions::GetInputCal().empty()) {
       for(int x = 0;x<TGRSIOptions::GetInputCal().size();x++) {
          TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(x).c_str());
@@ -213,6 +203,9 @@ void TAnalysisTreeBuilder::InitChannels() {
 
 
 void TAnalysisTreeBuilder::SetUpFragmentChain(std::vector<std::string> infiles) {
+   //Makes a TChain of all of the fragments input on the command line. This may not work as
+   //desired for the Griffin DAQ. In this case histograms should be summed during post
+   //processing.
    TChain *chain = new TChain("FragmentTree");
    for(int x=0;x<infiles.size();x++) 
       chain->Add(infiles.at(x).c_str());
@@ -221,6 +214,7 @@ void TAnalysisTreeBuilder::SetUpFragmentChain(std::vector<std::string> infiles) 
 }
 
 void TAnalysisTreeBuilder::SetUpFragmentChain(TChain *chain) {
+   //Sets the fFragment chain from the TChain chain.
    if(fFragmentChain)
       delete fFragmentChain;
    fFragmentChain = chain;
@@ -228,6 +222,7 @@ void TAnalysisTreeBuilder::SetUpFragmentChain(TChain *chain) {
 }
 
 void TAnalysisTreeBuilder::SortFragmentChain() {
+   //Sorts the fragment chain by tree number.
    if(!fFragmentChain)
       return;
    
@@ -257,14 +252,12 @@ void TAnalysisTreeBuilder::SortFragmentChain() {
       SetupOutFile();
       SetupAnalysisTree();
 
-      //printf("==== creating process and write thread ====\n");
       fSortFragmentDone = false;
       fPrintStatus = true;
       fProcessThread = new std::thread(&TAnalysisTreeBuilder::ProcessEvent,this);
       fWriteThread = new std::thread(&TAnalysisTreeBuilder::WriteAnalysisTree,this);
       fStatusThread = new std::thread(&TAnalysisTreeBuilder::Status,this);
 
-      //if(fCurrentRunInfo->MajorIndex().length()>0 && fCurrentRunInfo->MajorIndex().compare("TimeStampHigh")==0) 
       fFragmentsIn = 0;
       fAnalysisIn  = 0;
       fAnalysisOut = 0;
@@ -277,7 +270,6 @@ void TAnalysisTreeBuilder::SortFragmentChain() {
       fProcessThread->join();
       fWriteThread->join();
       fPrintStatus = false;
-      //fStatusThread->join();
       
       CloseAnalysisFile();
       printf("\n");
@@ -289,7 +281,8 @@ void TAnalysisTreeBuilder::SortFragmentChain() {
 }
 
 void TAnalysisTreeBuilder::SortFragmentTree() {
-
+   //Sorts the fragment tree based on the TreeIndex major name.
+   //It then puts the fragment into the event Q.
    long major_min = (long) fCurrentFragTree->GetMinimum(fCurrentFragTree->GetTreeIndex()->GetMajorName());
    if(major_min<0)
       major_min = 0;
@@ -310,9 +303,6 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
       } else {
          TEventQueue::Get()->Add(event);
       }
-      //if((j%10000)==0 || j==major_max) {
-         //printf("\tprocessing event " CYAN "%i " RESET_COLOR "/" DBLUE " %li" RESET_COLOR "         \r",j,major_max);
-      //}
    }
    printf("\n");
    fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
@@ -322,40 +312,53 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
 
 
 void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
+   //Suprisingly, sorts the fragment tree by times stamps.
+   //It then takes the sorted fragments and puts them into the eventQ.
 
    TFragment *currentFrag = 0;
-   //TFragment *oldFrag = new TFragment;
 
+   //Find the TFragment cranch of the tree
    fCurrentFragTree->SetBranchAddress("TFragment",&currentFrag);
 
+   //Get the tree index of the fragment tree
    TTreeIndex *index = (TTreeIndex*)fCurrentFragTree->GetTreeIndex();
 
    fEntries = index->GetN();
    Long64_t *indexvalues = index->GetIndex();
+   //Set the major index to be sorted over as the high bits of the time stamp
    int major_max = fCurrentFragTree->GetMaximum("TimeStampHigh");
 
+   //Read in the first fragment from the fragment tree
    fCurrentFragTree->GetEntry(indexvalues[0]);
-   //*oldFrag = *currentFrag;
    long firstTimeStamp = currentFrag->GetTimeStamp();
    int  firstDetectorType = currentFrag->DetectorType;
+
+   //We set the buildevent flag to false by default. When the time gate closes we change this to true
+   //to tell the code to build the event and send it to be written to the analysis tree.
    bool buildevent = false;
    std::vector<TFragment> *event = new std::vector<TFragment>;//(1,*currentFrag);
    event->push_back(*currentFrag);
 
-   fFragmentsIn++;
+   fFragmentsIn++; //Increment the number of fragments that have been read
    
-   //std::set<int> channelSeen;
+   //loop over all of the fragments in the tree 
    for(int x=1;x<fEntries;x++) {
       if(fCurrentFragTree->GetEntry(indexvalues[x]) == -1 ) {  //major,minor) == -1) {
+         //GetEntry Reads all branches of entry and returns total number of bytes read.
+         //This means that if this if statement passes, we have had an I/O error.
          printf(DRED "FIRE!!!" RESET_COLOR  "\n");
          continue;
       }
       if(indexvalues[x] == indexvalues[x-1]) {
+         //If the last fragment index equals the current fragment index, you have a real fire
+         //this is likely caused by using a root version where the method we are employing here
+         //just so happens to not work. It is unlikely that there is a different reason for why
+         //this is happening.
          printf(DRED "REAL FIRE!!! x = %i, indexvalues[x] = %lld, indexvalues[x-1] = %lld" RESET_COLOR  "\n", x, indexvalues[x], indexvalues[x-1]);
-         //printf("currentFrag->MidasId = %i   oldFrag->MidasId = %i\n",currentFrag->MidasId, oldFrag->MidasId);
          continue;
       }
-      fFragmentsIn++;
+      fFragmentsIn++;//Now that we have read a new entry, we need to increment our counter
+
       //if we've already seen this channel we add the event to the queue
       //if(channelSeen.count(oldFrag->ChannelNumber) == 1) {
          //we might want to create an error statement here!!!
@@ -367,8 +370,14 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       //channelSeen.insert(oldFrag->ChannelNumber);
       //printf("\ntime diff = %ld\n",currentFrag->GetTimeStamp() - firstTimeStamp);
       
-
+      //We first compare the current fragment's time stamp to the time stamp of the fragment that opened
+      //up the time gate. We will eventually make this a walking gate rather than a static gate so that
+      //we can process the high-rate experiments better where the time-random background becomes more of an
+      //issue.
       long timediff = currentFrag->GetTimeStamp() - firstTimeStamp;
+
+      //We now set the "allowed" time windows for different detector streams to be called a coincidence
+      //The way this is done right now is not correct and should be changed in the near future.
       int currentDetectorType = currentFrag->DetectorType;
       //if((firstDetectorType == 1 && currentDetectorType == 2) || (firstDetectorType == 2 && currentDetectorType == 1) ) {
       //   if(timediff < 100 || timediff > 200)
@@ -396,8 +405,10 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       //      buildevent =true;
       //}
 
+      //We check to see if the coincidence window is shut. If it is we start building the event out of the old fragments
+      //and send it to the event Q for processing.
       //if(buildevent) {
-      //if(abs(currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
+//      if(abs(currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
       if((currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
          //printf("Adding %ld fragments to queue\n",event->size());
          //if(event->size() > 1) {
@@ -405,29 +416,29 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
                //event->at(i).Print();
             //}
          //}
+         //Add the event to the event Q and put the new fragment which is not part of the event into the start of the
+         //next event.
          TEventQueue::Get()->Add(event);
+         //Create a new event and push back the first fragment
          event = new std::vector<TFragment>;//(1,*currentFrag);
          event->push_back(*currentFrag);
          //channelSeen.clear();
          
+         //reset the build event flag and all of the properties of the fragment that opens up the time gate
          firstDetectorType = currentFrag->DetectorType;
          firstTimeStamp = currentFrag->GetTimeStamp();
          buildevent = false;
       } else {
+         //If we aren't ready to "build" the event, we fill the current event with the new fragment
          event->push_back(*currentFrag);
       }
-      //*oldFrag = *currentFrag;
-      //if((x%10000)==0 ) {
-         //printf("Reading %lld bytes in %d transactions\n",fCurrentFragFile->GetBytesRead(),  fCurrentFragFile->GetReadCalls());
-         //printf("\tprocessing fragment " CYAN "%i " RESET_COLOR "/" DBLUE " %li" RESET_COLOR "         \r",x,fEntries);
-      //}
-      //Print();
    }
-   //in case we have fragments left, we add them to the queue now
+   //in case we have fragments left after all of the fragments have been processed, we add them to the queue now
    if(event->size() > 0) {
       TEventQueue::Get()->Add(event);
    }
    
+   //Drop the TFragmentBranch from the Cache so we aren't still holding it in memory
    fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
    fCurrentFragTree->SetCacheSize(0);
    return;
@@ -437,24 +448,25 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 
 
 void TAnalysisTreeBuilder::SetupFragmentTree() {
-
+   //Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
    if(fCurrentRunInfo) {
       TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
-      //TGRSIRunInfo::SetPaces(false);
-      //TGRSIRunInfo::SetDescant(false);
       fCurrentRunInfo->Print();
    }
 
+   //Intialize the TChannel Information
    InitChannels();
 
+   //Set the sorting to be done on the timestamps if the fragment contains Griffin fragments
    if(fCurrentRunInfo->Griffin()) {
       fCurrentRunInfo->SetMajorIndex("TimeStampHigh");
       fCurrentRunInfo->SetMinorIndex("TimeStampLow");
    }
 
-
+   //Check to see if the fragment tree already has an index set. If not build the index based on timestamps if it is a Griffin 
+   //fragment. If it is not Griffin build based on the trigger Id.
    if(!fCurrentFragTree->GetTreeIndex()) {
       if(fCurrentRunInfo->MajorIndex().length()>0) {
          printf(DBLUE "Tree Index not found, building index on %s/%s..." RESET_COLOR,
@@ -471,17 +483,23 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
       printf(DBLUE " done!" RESET_COLOR "\n");
    }
 
+   //Set the branch to point at the Fragment Tree.
    TBranch *branch = fCurrentFragTree->GetBranch("TFragment");
+   //Make the fCurrentFragPtr point at the Fragment Tree.
    branch->SetAddress(&fCurrentFragPtr);
+   //Load the fragment tree into the MEM_SIZE (described in the header and above) into memory
    fCurrentFragTree->LoadBaskets(MEM_SIZE);   
    printf(DRED "\t MEM_SIZE = %zd" RESET_COLOR  "\n", MEM_SIZE);
    return;
 }
 
 void TAnalysisTreeBuilder::SetupOutFile() {
+   //Sets up the anaysistree.root file to write the created events into
    if(!fCurrentRunInfo)
       return;
    std::string outfilename = Form("analysis%05i_%03i.root",fCurrentRunInfo->RunNumber(),fCurrentRunInfo->SubRunNumber());
+   //We add the output analysis file to the "input root files" in case we want to do something with that file after we finish 
+   //sorting it.
    TGRSIOptions::AddInputRootFile(outfilename);
    if(fCurrentAnalysisFile)
       delete fCurrentAnalysisFile;
@@ -492,16 +510,22 @@ void TAnalysisTreeBuilder::SetupOutFile() {
 }
 
 void TAnalysisTreeBuilder::SetupAnalysisTree() { 
+   //Sets up the analysis tree by creating branches of the available detector systems. The available detector systems
+   //are set in the RunInfo of the fragment tree. When the analysis tree sorting begins, an output is created on screen
+   //that tells you which detector systems were found in the RunInfo.
    if(!fCurrentAnalysisFile || !fCurrentRunInfo)
       return;
+   //Create a new Analysis Tree in the analysistree.root file.
    fCurrentAnalysisFile->cd();
    if(fCurrentAnalysisTree)
       delete fCurrentAnalysisTree;
    fCurrentAnalysisTree = new TTree("AnalysisTree","AnalysisTree");
 
+   //Load in the run info
    TGRSIRunInfo *info = fCurrentRunInfo;
    TTree *tree = fCurrentAnalysisTree;
 
+   //Set new branches in the analysis tree if the run info in the fragment tree says the detectors are in the data stream
    int basketSize = 128000; //128000;
    if(info->Tigress())   { tree->Bronch("TTigress","TTigress",&tigress); }//, basketSize); } 
    if(info->Sharc())     { tree->Bronch("TSharc","TSharc",&sharc); }//, basketSize); } 
@@ -529,7 +553,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
 }
 
 void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
-
+   //Clears the current analysis tree branches.
    if(!fCurrentAnalysisFile || !fCurrentRunInfo)
       return;
    TGRSIRunInfo *info = fCurrentRunInfo;
@@ -554,7 +578,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
 }
 
 void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*> *detectors) {
-
+   //Build the hits in each of the detectors.
    if(!fCurrentAnalysisFile || !fCurrentRunInfo)
       return;
    TGRSIRunInfo *info = fCurrentRunInfo;
@@ -566,110 +590,76 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*,
 }
 
 void TAnalysisTreeBuilder::FillWriteQueue(std::map<const char*, TGRSIDetector*> *detectors) {
+   //Fill the write Q with the built hits in each of the detectors.
    fAnalysisIn++;
-   //printf("incremented fAnalysisIn to %d, %d fragments in this event\n",fAnalysisIn, detectors->size());
    TWriteQueue::Get()->Add(detectors);
 }
 
 void TAnalysisTreeBuilder::WriteAnalysisTree() {
-   //TStopwatch w;
+   //Write the analysis tree to the root file. We do this by filling the analysis tree with each
+   //of the built events in the write Q.
    int counter = 0;
-   //w.Start();
    while(TWriteQueue::Size() > 0 || TEventQueue::Size() > 0 || !fSortFragmentDone) {
       if(TWriteQueue::Size() == 0) {
          std::this_thread::sleep_for(std::chrono::milliseconds(100));
-         //printf("WriteAnalysisTree: no events in write queue or so %i\n",counter++);
          continue;
       }
       std::map<const char*, TGRSIDetector*> *detectors = TWriteQueue::PopEntry();
       fAnalysisOut++;
-      //if(fAnalysisOut==1000) {
-         //printf("\n\n");
-         //fCurrentAnalysisTree->OptimizeBaskets((Long64_t)1000000000,1.1);//,"d");
-         //printf("\n\n");
-      //}   
+
       FillAnalysisTree(detectors);
-      //if(fSortFragmentDone && TEventQueue::Size() == 0 && TWriteQueue::Size()%10000==0) {
-         //printf(DYELLOW HIDE_CURSOR " \t%12i " RESET_COLOR "/"
-                //DBLUE " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR
-                //"     write queue size / # of events / events written.\t\t%f seconds." SHOW_CURSOR "\r",
-                //TWriteQueue::Size(),fAnalysisIn,fAnalysisOut,w.RealTime());
-         //w.Continue(); 
-         //Print();
-      //}
    }
-   //printf(DYELLOW HIDE_CURSOR " \t%12i " RESET_COLOR "/"
-          //DBLUE " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR
-          //"     write queue size / # of events / events written.\t\t%f seconds." SHOW_CURSOR "\n",
-          //TWriteQueue::Size(),fAnalysisIn,fAnalysisOut,w.RealTime());
-   //printf(RED "\t\t\t\t  WRITE QUE STOPPED." RESET_COLOR  "\n" );
 }
 
 void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*> *detectors) {
+   //Fill the analysis Tree with the built events. Each detector gets its own branch in the analysis tree
    if(!fCurrentAnalysisTree || !detectors) {
       printf("returned from fill without filling (%p %p)!\n",fCurrentAnalysisTree, detectors);   
       return;
    }   
-//printf("filling analysis tree with %lu detectors\n",detectors->size());
    
    // clear branches
    ClearActiveAnalysisTreeBranches();	
 
+   //Fill the detector map with TDetector classes if the mnemonic of the detector is in the map.
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
       if(strcmp(det->first,"TI") == 0) {
-      //if(strcmp(det->second->IsA()->GetName(),"TTigress") == 0) {
          tigress = (TTigress*) det->second;
       } else if(strcmp(det->first,"SH") == 0) {
-      //} else if(strcmp(det->second->IsA()->GetName(),"TSharc") == 0) {
          sharc = (TSharc*) det->second;
       } else if(strcmp(det->first,"TR") == 0) {
-      //} else if(strcmp(det->second->IsA()->GetName(),"TTriFoil") == 0) {
          triFoil = (TTriFoil*) det->second;
-      //} else if(strcmp(det->second->IsA()->GetName(),"TRf") == 0) {
          //*rf = *((TRf*) det->second);
       } else if(strcmp(det->first,"CS") == 0) {
-      //} else if(strcmp(det->second->IsA()->GetName(),"TCSM") == 0) {
          csm = (TCSM*) det->second;
       //} else if(strcmp(det->second->IsA()->GetName(),"TSpice") == 0) {
          //*spice = *((TSpice*) det->second);
       //} else if(strcmp(det->second->IsA()->GetName(),"TTip") == 0) {
          //*tip = *((TTip*) det->second);
       } else if(strcmp(det->first,"GR") == 0) {
-      //} else if(strcmp(det->second->IsA()->GetName(),"TGriffin") == 0) {
          griffin = (TGriffin*) det->second;
-         //printf(CYAN "Got GRIFFIN detector: %ld hits" RESET_COLOR "\n",griffin->GetMultiplicity());
       } else if(strcmp(det->first,"SE") == 0) {
-      //} else if(strcmp(det->second->IsA()->GetName(),"TSceptar") == 0) {
          sceptar = (TSceptar*) det->second;
       } else if(strcmp(det->first,"DS") == 0) {
          descant = (TDescant*) det->second;
-     // } else if(strcmp(det->second->IsA()->GetName(),"TPaces") == 0) {
       } else if(strcmp(det->first,"PA") == 0) {
          paces = (TPaces*) det->second;
       } 
    }
-   //time1 += w1.RealTime();
-   //w1.Reset();
-   //w1.Start();
    fCurrentAnalysisTree->Fill();
-   //time2 += w1.RealTime();
-   //counter++;
    
+   //Zero the detectors in the detector map
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
       delete det->second;
       det->second = 0;
    }
    delete detectors;
    detectors = 0;
-   //if(counter>10000) {
-   //   printf("\n\ntime1 = %.04f    |  time2 = %.04f\n\n",time1,time2);
-   //   fflush(stdout);
-   //   time1 = 0.0; time2 = 0.0; counter = 0;
-   //}
    return;
 }
 
 void TAnalysisTreeBuilder::CloseAnalysisFile() {
+   //Safely close the analysis file.
    if(!fCurrentAnalysisFile)
       return;
 
@@ -693,82 +683,59 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
 
 
 void TAnalysisTreeBuilder::ProcessEvent() {
-//printf("\nSTARTING PROCESSEVENT\n");
-   //TStopwatch w;
+   //Process the event. We do this by filling a map of the detectors, and put the hits into the appropriate detector class.
+   //This is important because different detector systems will need different experimental data/conditions to be set.
    int counter = 0;
-   //w.Start();
    while(TEventQueue::Size() > 0 || !fSortFragmentDone) {
       if(TEventQueue::Size() == 0) { 
          std::this_thread::sleep_for(std::chrono::milliseconds(100));
-         //printf("ProcessEvent: no events in event queue %i\n",counter++);
          continue; 
       }
+      
+      //We need to pull the event out of the Event Q
       std::vector<TFragment> *event = TEventQueue::PopEntry();
-      //printf(DYELLOW "\n======================================== %ld" RESET_COLOR "\n",event->size());
       MNEMONIC mnemonic;
       std::map<const char*, TGRSIDetector*> *detectors = new std::map<const char*, TGRSIDetector*>;
-      //std::vector<TGRSIDetector*> *detectors = new std::vector<TGRSIDetector*>;
-      //TStopwatch w;
-      //w.Start();
       for(int i=0;i<event->size();i++) {
-         //printf("ChannelAddress =0x%08x\t",event->at(i).ChannelAddress);
       
          TChannel *channel = TChannel::GetChannel(event->at(i).ChannelAddress);
-         //printf("name: %s \n",channel->GetChannelName());
-      
-         //event->at(i).Print();
          if(!channel)
             continue;
          ClearMNEMONIC(&mnemonic);
          ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
          
-         //PrintMNEMONIC(&mnemonic);
-         //channel->Print();
-         //printf("ChannelName = %s\n",channel->GetChannelName());
-      
+         //We use the MNEMONIC in order to figure out what detector we want to put the set of fragments into
          if(mnemonic.system.compare("TI")==0) {
-            //detectors->push_back(new TTigress);
             if(detectors->find("TI") == detectors->end()) {
                (*detectors)["TI"] = new TTigress;
             }
             (*detectors)["TI"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("SH")==0) {
-            //detectors->push_back(new TSharc);
             if(detectors->find("SH") == detectors->end()) {
                (*detectors)["SH"] = new TSharc;
             }
             (*detectors)["SH"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("TR")==0) {	
-            //detectors->push_back(new TTriFoil);
             if(detectors->find("TR") == detectors->end()) {
                (*detectors)["TR"] = new TTriFoil;
             }
             (*detectors)["TR"]->FillData(&(event->at(i)),channel,&mnemonic);
-          //else if(mnemonic.system.compare("RF")==0) {	
-         //	FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("CS")==0) {	
-            //detectors->push_back(new TCSM);
             if(detectors->find("CS") == detectors->end()) {
                (*detectors)["CS"] = new TCSM;
             }
             (*detectors)["CS"]->FillData(&(event->at(i)),channel,&mnemonic);
-         //} else if(mnemonic.system.compare("SP")==0) {	
-         //	FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("GR")==0) {	
-            //printf("Found a GRIFFIN detector\n");
-            //detectors->push_back(new TGriffin);
             if(detectors->find("GR") == detectors->end()) {
                (*detectors)["GR"] = new TGriffin;
             }
             (*detectors)["GR"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("SE")==0) {	
-            //detectors->push_back(new TSceptar);
             if(detectors->find("SE") == detectors->end()) {
                (*detectors)["SE"] = new TSceptar;
             }
             (*detectors)["SE"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("PA")==0) {	
-            //detectors->push_back(new TPaces);
             if(detectors->find("PA") == detectors->end()) {
                (*detectors)["PA"] = new TPaces;
             }
@@ -790,34 +757,17 @@ void TAnalysisTreeBuilder::ProcessEvent() {
       }
 
       if(!detectors->empty()) {
-         //printf(DYELLOW "\t BUILDING " RESET_COLOR "\n");
          BuildActiveAnalysisTreeBranches(detectors);
-         //printf(DYELLOW "\t WRITING " RESET_COLOR "\n");
          FillWriteQueue(detectors);
-         //printf(DYELLOW "\t CLEARING " RESET_COLOR "\n");
-         //ClearActiveAnalysisTreeBranches();	
-         //printf(DYELLOW "\t DONE " RESET_COLOR "\n");
       }
-      //printf(DRED "\n----------------------------------------" RESET_COLOR "\n");
 
       delete event;
    
-      //if(fSortFragmentDone && TEventQueue::Size()%10000==0) {
-         //printf(DYELLOW HIDE_CURSOR " \t%12i " RESET_COLOR "/"
-                //DBLUE " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR
-                //"     event queue size / # of events / events written.\t\t%f seconds." SHOW_CURSOR "\r",
-                //TEventQueue::Size(),fAnalysisIn,fAnalysisOut,w.RealTime());
-         //w.Continue(); 
-      //}
    }
-   //printf(DYELLOW HIDE_CURSOR " \t%12i " RESET_COLOR "/"
-          //DBLUE " %12i " RESET_COLOR "/" DRED " %12i " RESET_COLOR
-          //"     event queue size / # of events / events written.\t\t%f seconds." SHOW_CURSOR "\n",
-          //TEventQueue::Size(),fAnalysisIn,fAnalysisOut,w.RealT  ime());
-  //printf(RED "\t\t\t\t  PROCESS QUE STOPPED." RESET_COLOR  "\n" );
 }
 
 void TAnalysisTreeBuilder::Print(Option_t *opt) {
+   //Prints information about the Q's and threads in the AnalysisTreeBuilding process
    if(fCurrentFragFile && fCurrentAnalysisFile)
       printf(DMAGENTA " %s/%s" RESET_COLOR  "\n",fCurrentFragFile->GetName(),fCurrentAnalysisFile->GetName());
    printf(DMAGENTA " fSortFragmentDone         = %s" RESET_COLOR "\n",fSortFragmentDone ? "true":"false");
@@ -830,6 +780,7 @@ void TAnalysisTreeBuilder::Print(Option_t *opt) {
 }
 
 void TAnalysisTreeBuilder::Status() {
+   //Prints the current status for each of the threads in the TAnalysisTree Building process
    TStopwatch w;
    w.Start();
    bool fragmentsDone = false;
