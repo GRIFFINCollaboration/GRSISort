@@ -88,7 +88,7 @@ end: grsisort
 
 clean:
 	@$(RM) *~
-	$(RM) ./bin/grsisort
+	$(RM) ./bin/*
 	@for dir in $(ALLDIRS); do \
 		$(MAKE) -C $$dir $@; \
 	done
