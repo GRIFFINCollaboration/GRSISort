@@ -19,29 +19,29 @@
 class TFragmentQueue : public TObject {
 	
 	public:
-		static TFragmentQueue *GetQueue(std::string quename = "GOOD");
+		static TFragmentQueue *GetQueue(std::string quename = "GOOD"); //Returns the Queue with the name "quename"
 		virtual ~TFragmentQueue();
 
       int FragsInQueue() { return fFragsInQueue;   }
 
 	private:
-		static TFragmentQueue *fFragmentQueueClassPointer;
+		static TFragmentQueue *fFragmentQueueClassPointer; //Pointer to the fragment Q multiton
       static std::map<std::string,TFragmentQueue*> *fFragmentMap;
       TFragmentQueue();
 	
 
-		std::queue<TFragment*> fFragmentQueue;
-		int fFragsInQueue;
+		std::queue<TFragment*> fFragmentQueue; //The fragment Queue
+		int fFragsInQueue;	//The current number of fragments in the Q
 
 		void StatusUpdate();
-		bool fStatusUpdateOn;
+		bool fStatusUpdateOn; //flag that determines whether the Q status should be read out
 
 		bool fStop;
 		
-		int fragments_in;		
+		int fragments_in; 		
 		int fragments_out;
 
-		TStopwatch *sw;
+		TStopwatch *sw; //The stop watch used for timing in the status
 		void ResetRateCounter();
 
 		unsigned int fTotalFragsIn;
@@ -83,7 +83,7 @@ class TFragmentQueue : public TObject {
       void Print(Option_t *opt = "");
 		void Clear(Option_t *opt = "");
 		
-		ClassDef(TFragmentQueue,0);
+		ClassDef(TFragmentQueue,0); //The Class used to hold fragments when building events
 };
 
 

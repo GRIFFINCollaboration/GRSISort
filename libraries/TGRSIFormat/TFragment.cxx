@@ -5,6 +5,15 @@
 
 ClassImp(TFragment)
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TFragment                                                  //
+//                                                            //
+// This Class contains all of the information in an event     //
+// fragment                                                   //
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 TFragment::TFragment(){
    // Default Constructor
    Class()->IgnoreTObjectStreamer(true);

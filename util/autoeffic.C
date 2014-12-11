@@ -481,7 +481,7 @@ TGraph* autogain60(TH1D *hist, int channum, bool verbosity = false){
      par[7] = (hist->GetBinContent(bin-50) - hist->GetBinContent(bin+50))/100.;//B
      par[8] = -0.5;   //C
      par[9] = xp;  //bg offset
-     goodfit = goodfit & FitPeak(par,hist,integral,sigma,centroid,verbosity);
+     FitPeak(par,hist,integral,sigma,centroid,verbosity);
    //  if(goodfit){ //DO STUFF HERE
   //   	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
   //   	area_uncertainty.push_back(sigma);
