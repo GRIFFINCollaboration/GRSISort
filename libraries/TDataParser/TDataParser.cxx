@@ -390,7 +390,8 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 //		delete EventFrag;
 //		return -x;
 //	}
-   
+   //The master Filter Pattern is in an unstable state right now and is not
+   //always written to the maidas file
 	if(SetGRIFMasterFilterPattern(data[x],EventFrag)) {
       x++;
 	} 
@@ -399,11 +400,15 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
       x++;
 	}
 
+   //The channel trigger ID is in an unstable state right now and is not
+   //always written to the maidas file
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -x;
 	}
 
+   //The Network packet number is for debugging and is not always writted to
+   //the midas file.
    if(SetGRIFNetworkPacket(data[x],EventFrag)) {
       x++;
    }
@@ -420,14 +425,14 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 		uint32_t value  = dword & 0x0fffffff; 
 
 		switch(packet) {
-         case 0x80000000:
+         case 0x80000000: //The 8 packet type is for event headers
                //if this happens, we have "accidentially" found another event.
                break;
-         case 0xc0000000:
+         case 0xc0000000: //The c packet type is for waveforms
 		         if(!no_waveforms) 
                   SetGRIFWaveForm(value,EventFrag);
             break;
-			case 0xb0000000:
+			case 0xb0000000: //The b packet type contains the dead-time word
 				SetGRIFDeadTime(value,EventFrag);
 				break;
          case 0xd0000000: {
@@ -439,11 +444,11 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 //				if(true) { //value == EventFrag->ChannelId) { //header has to equal the trailer
             if(value == EventFrag->ChannelId){
                if(record_stats)
-						FillStats(EventFrag);
+						FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);				
                if(x != size-1)
                   printf( DBLUE "x | size: " DRED "%i | %i" RESET_COLOR "\n",x,size); //once this happens we need to recursively call GriffinDataToFragment with the remaining datums.
-               return NumFragsFound;
+               return NumFragsFound; //This will be more important when we start putting multiple fragments into a single mid event
 				} else  {
 					return -x;
             }
@@ -597,17 +602,21 @@ void TDataParser::FillStats(TFragment *frag) {
 //          The total deadtime for the channel
 //          The lowest MIDAS Time stamp
 //          The highest MIDAS Time stamp
-	TGRSIStats *stat = TGRSIStats::GetStats(frag->ChannelAddress);
-	//printf("Filling stats: 0x%08x\n",stat);
-	stat->IncDeadTime(frag->DeadTime);
+	TGRSIStats *stat = TGRSIStats::GetStats(frag->ChannelAddress); //get the stats for the specific channel
+	stat->IncDeadTime(frag->DeadTime); //Increments the deadtime for the specific channel.
 
-   TGRSIStats::IncGoodEvents();
+   TGRSIStats::IncGoodEvents(); //Since we made it to this stage, we have a good event and should increment the good event counter
+	//If this event contains either the lowest (or highest) time stamp recorded so far we should increment the 
+	//lowest (or highest) time stamp in the stats. This allows us to determine the total run length.
 	if( (frag->MidasTimeStamp < TGRSIStats::GetLowestMidasTimeStamp()) ||
 	    (TGRSIStats::GetLowestMidasTimeStamp() == 0)) {
 		TGRSIStats::SetLowestMidasTimeStamp(frag->MidasTimeStamp);
 	} else if (frag->MidasTimeStamp > TGRSIStats::GetHighestMidasTimeStamp()) {
 		TGRSIStats::SetHighestMidasTimeStamp(frag->MidasTimeStamp);
 	}
+	//If this event contains the lowest (or highest) recorded packet number recorded so far we should increment the
+	// lowest (or highest) network packet in the stats. This allows us to determine whe total number of network 
+	//packets created.
 	if( (frag->NetworkPacketNumber < TGRSIStats::GetLowestNetworkPacket()) ||
 	    (TGRSIStats::GetLowestNetworkPacket() == 0)) {
 		TGRSIStats::SetLowestNetworkPacket(frag->NetworkPacketNumber);
