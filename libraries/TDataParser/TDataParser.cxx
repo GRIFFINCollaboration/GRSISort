@@ -435,7 +435,12 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 			case 0xb0000000: //The b packet type contains the dead-time word
 				SetGRIFDeadTime(value,EventFrag);
 				break;
-			case 0xe0000000: //The e packet type is the event trailer
+         case 0xd0000000: {
+            uint32_t temp_int = packet +value;  // <--- RYAN!  make me smarter.  thank you, pcb.
+            SetGRIFNetworkPacket(temp_int,EventFrag); // The network packet placement is not yet stable.
+            }                                         // in the K runs of 2014 it is just after the deadtime.  pcb.
+            break;                                 
+         case 0xe0000000:
 //				if(true) { //value == EventFrag->ChannelId) { //header has to equal the trailer
             if(value == EventFrag->ChannelId){
                if(record_stats)
@@ -539,10 +544,12 @@ bool TDataParser::SetGRIFChannelTriggerId(uint32_t value, TFragment *frag) {
 
 bool TDataParser::SetGRIFNetworkPacket(uint32_t value, TFragment *frag) {
 //Ignores the network packet number (for now)
-	if( (value &0xf0000000) != 0xd0000000) {
+//   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
+   if( (value &0xf0000000) != 0xd0000000) {
 		return false;
 	}
    frag->NetworkPacketNumber = value & 0x0fffffff;
+//   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
    return true;
 }
 

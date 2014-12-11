@@ -80,6 +80,11 @@ TList* AngularCorrelations(TH1D** slice, TNucleus* nuc, bool verbosity) {
    for(int i = 0; i<51;i++){
       slice[i]->GetXaxis()->SetRangeUser(250,2500);
 
+      if(slice[i]->Integral(250,2500) <= 0.) {
+         std::cout<<"Slice '"<<slice[i]->GetName()<<"' has no entries in range 250-2500!"<<std::endl;
+         list->Add(slice[i]);
+         continue;
+      }
       for (int p=0;p<engvec.size();p++) {
          Float_t xp = engvec.at(p);
     
@@ -96,8 +101,12 @@ TList* AngularCorrelations(TH1D** slice, TNucleus* nuc, bool verbosity) {
          par[7] = (slice[i]->GetBinContent(xp-15) - slice[i]->GetBinContent(xp+15))/100.*binWidth;//B
          par[8] = -0.5;   //C
          par[9] = xp;  //bg offset
-         if(xp <1200){
-	         TFitResultPtr fitresult = FitPeak(par,slice[i],integral, sigma,dummyarray,verbosity);
+         if(xp <1200) {
+            try {
+	            TFitResultPtr fitresult = FitPeak(par,slice[i],integral, sigma,dummyarray,verbosity);
+            } catch(std::exception& exc) {
+               std::cout<<"FitPeak failed with exception "<<exc.what()<<std::endl;
+            }
          }
       }
       list->Add(slice[i]);
@@ -283,7 +292,12 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
 
    TVirtualFitter *fitter = TVirtualFitter::GetFitter();
 
-   assert(fitter != 0); //make sure something was actually fit
+   //assert(fitter != 0); //make sure something was actually fit
+   if(fitter == 0) {
+      std::cout<<"Fitting failed!"<<std::endl;
+      return fitres;
+   }
+
    TMatrixDSym covMatrix = fitres->GetCovarianceMatrix(); //This allows us to find the uncertainty in the integral
 
    Double_t sigma_integral = photopeak->IntegralError(xp-rw,xp+rw)/binWidth;
