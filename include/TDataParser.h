@@ -22,7 +22,7 @@ class TDataParser { //: public TObject {
 	
   public:
     ~TDataParser();
-    static TDataParser *instance();
+    static TDataParser *instance();    //returns the global TDataParser Object
     static void SetNoWaveForms(bool temp = true) {no_waveforms = temp;}
     static void SetRecordStats(bool temp = true) {record_stats = temp;}      
 
@@ -30,7 +30,7 @@ class TDataParser { //: public TObject {
     static const unsigned long fgMaxTriggerId; //The last trigger ID Called
     static unsigned long fgLastMidasId;        //The last MIDAS ID in the midas file
     static unsigned long fgLastTriggerId;      //The last Trigged ID in the MIDAS File
-    static unsigned long fgLastNetworkPacket;
+    static unsigned long fgLastNetworkPacket;  //The last network packet recieved.
 
     static std::map<int,int> fragment_id_map;
 

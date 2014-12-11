@@ -1,50 +1,43 @@
 
 #include "TFragmentQueue.h"
 
-//#include "CalibrationManager.h"
-//#include "RootIOManager.h"
-
-
 std::mutex TFragmentQueue::All;
 std::mutex TFragmentQueue::Sorted;
 
 ClassImp(TFragmentQueue);
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TFragmentQueue                                             //
+//                                                            //
+// This class is where we store fragments that are being      //
+// built into events by the TAnalysisTree. It is thread-safe  //
+// and returns it's status in order to monitor progress.      //
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 TFragmentQueue *TFragmentQueue::fFragmentQueueClassPointer = NULL;
 std::map<std::string,TFragmentQueue*> *TFragmentQueue::fFragmentMap = new std::map<std::string,TFragmentQueue*>;
 std::map<int,int> TFragmentQueue::fragment_id_map;
 
-
-
 TFragmentQueue *TFragmentQueue::GetQueue(std::string quename)	{
+//Get a pointer to the global event Q with the name quename. 
 	while(TFragmentQueue::All.try_lock())	{
-		//do nothing
+		//try to lock Q, if another thread is using it do nothing
 	}
-   
    
    if(fFragmentMap->count(quename) == 0)
       fFragmentMap->insert(std::pair<std::string,TFragmentQueue*>(quename,new TFragmentQueue));
-
    
-   /*
-   if(fFragmentQueueClassPointer==NULL)	{
-	//printf(BLUE "\nfrag que ptr = 0x%08x" RESET_COLOR "\n",fFragmentQueueClassPointer);
-		fFragmentQueueClassPointer = new TFragmentQueue();
-	//printf(RED "\nfrag que ptr = 0x%08x" RESET_COLOR "\n",fFragmentQueueClassPointer);
-	}
-   */
-
-
    TFragmentQueue::All.unlock();
-	//return fFragmentQueueClassPointer;
+	//unlock the Q when this thread is done with it.
 	return fFragmentMap->at(quename);
 
 }
 
 TFragmentQueue::TFragmentQueue()	{	
-	//printf(DRED "\n\tFragment Queue Created." RESET_COLOR "\n");
 	fFragsInQueue = 0;
-
+	//When the Global Q is created, start a timer to see how long we are using it.
 	sw = new TStopwatch();
 	sw->Start();
 
@@ -52,18 +45,18 @@ TFragmentQueue::TFragmentQueue()	{
 
 	Clear();
 
-	//StartStatusUpdate();
-
 }
 
 TFragmentQueue::~TFragmentQueue()	{	}
 
 
 void TFragmentQueue::Print(Option_t *opt) { 
+//Print the status of the Fragment Queue
    CheckStatus();   
 }
 
 void TFragmentQueue::Clear(Option_t *opt)	{
+//Clear the entire Queue, Queue counters, and timer.
 	bool locked =false;
 	if(!fFragmentQueue.empty())	{
 		while(!TFragmentQueue::All.try_lock())	{
@@ -101,6 +94,7 @@ void TFragmentQueue::Clear(Option_t *opt)	{
 
 
 void TFragmentQueue::StartStatusUpdate()	{
+//The status thread runs the status update at various intervals to show the progress of the analysis tree.
 	fStatusUpdateOn = true;
 
 	std::thread statusUpdate(&TFragmentQueue::StatusUpdate, this);
@@ -109,20 +103,21 @@ void TFragmentQueue::StartStatusUpdate()	{
 }
 
 void TFragmentQueue::StopStatusUpdate()	{
+//Stops the status update
 	fStatusUpdateOn = false;
 }
 
 
 
 void TFragmentQueue::Add(TFragment *frag)	{
+//Add a Fragment to the fragment Queue.
+
 
     //when we move to multithreaded parsing, these three lines will 
     //need to move inside the lock.  pcb.
 //	CalibrationManager::instance()->CalibrateFragment(frag);
 		fragment_id_map[frag->TriggerId]++;
 		frag->FragmentId = fragment_id_map[frag->TriggerId];
-		
-	
 		
 		while(!TFragmentQueue::Sorted.try_lock())	{
 			//do nothing	
@@ -186,7 +181,7 @@ TFragment *TFragmentQueue::Get()	{
 }*/
 
 void TFragmentQueue::Pop()	{	
-
+//Tage a fragment out of the Queue
 	while(!TFragmentQueue::Sorted.try_lock())	{ 
 		//do nothing
 	}	
@@ -200,8 +195,8 @@ void TFragmentQueue::Pop()	{
 	//delete frag;
 }
 
-TFragment *TFragmentQueue::PopFragment()
-{
+TFragment *TFragmentQueue::PopFragment(){
+//Take a fragment out of the Queue and return a pointer to it.
 	//std::unique_lock<std::mutex> sorted(Sorted,std::defer_lock);
 	//sorted.lock();
 	while(!TFragmentQueue::Sorted.try_lock())	{
@@ -224,10 +219,12 @@ TFragment *TFragmentQueue::PopFragment()
 }	
 
 int TFragmentQueue::Size()	{
+//Returns the number of fragments in the Queue
 	return fFragsInQueue;
 }
 
 void TFragmentQueue::CheckStatus()	{
+//Checks the status of the Queue. This is called by the Print() function.
 	//std::unique_lock<std::mutex> all(All,std::defer_lock);
 	//all.lock();
 	while(!TFragmentQueue::All.try_lock())	{
@@ -246,7 +243,7 @@ void TFragmentQueue::CheckStatus()	{
 };
 
 void TFragmentQueue::StatusUpdate()	{
-
+//Updates the status of the fragment Queue
 	float time = 0;
 	float frag_rate_in = 0;
 	float frag_rate_out = 0;
@@ -278,6 +275,8 @@ void TFragmentQueue::StatusUpdate()	{
 }
 
 void TFragmentQueue::ResetRateCounter()	{
+//Resets the number of fragments in and fragments out counter. This is useful for checking to see if the rate
+//of fragment parsing is changing.
 	//std::unique_lock<std::mutex> all(All,std::defer_lock);
 	//all.lock();
 	while(!TFragmentQueue::All.try_lock())	{
