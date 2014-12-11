@@ -23,6 +23,7 @@ namespace TGRSIFunctions {
    Double_t LanGausHighRes(Double_t *x,Double_t *pars);
    Double_t LanGaus(Double_t *x,Double_t *pars);
    Double_t MultiGausWithBG(Double_t *x,Double_t *pars);
+   //Double_t TripleAlphaGausWithBG(Double_t *x,Double_t *pars);
    Double_t SkewedGaus2(Double_t *dim, Double_t *par);
    Double_t MultiSkewedGausWithBG2(Double_t *dim, Double_t *par);
 
