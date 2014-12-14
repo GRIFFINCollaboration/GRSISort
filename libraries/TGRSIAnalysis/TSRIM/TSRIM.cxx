@@ -43,7 +43,7 @@ void TSRIM::ReadEnergyLossFile(const char *filename, double emax, double emin, b
 
 	infile.open(buf);
  	if(!infile.good()){
-		printf("Couldn't find the file..\n");
+		printf("{TSRIM} Warning : Couldn't find the file '%s' ..\n",filename);
 		return;
 	}
 	std::string line;
