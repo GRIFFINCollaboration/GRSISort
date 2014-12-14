@@ -52,6 +52,7 @@ public:
       GetHtml()->SetSourceDir("$(GRSISYS)/util");
       GetHtml()->Convert("html_generator.C", "Generates HTML Documentation", "./htmldoc/", "./");
       GetHtml()->Convert("DroppedData.C","Calculates Dropped Events","./htmldoc/","./");
+      GetHtml()->Convert("MakeTimeDiffSpec.C","Does basic analysis","./htmldoc/""./");
    }
 
    void MakeDocForAllClasses() 
