@@ -55,6 +55,11 @@ Double_t TGRSIFunctions::PhotoPeak(Double_t *dim, Double_t *par){
    return Gaus(dim,par) + SkewedGaus(dim,par);
 }
 
+Double_t TGRSIFunctions::PhotoPeakBG(Double_t *dim, Double_t *par){
+//Returns a single RadWare style peak   
+   return Gaus(dim,par) + SkewedGaus(dim,par) + StepFunction(dim,par) + PolyBg(dim,&par[6],2);
+}
+
 Double_t TGRSIFunctions::Gaus(Double_t *dim, Double_t *par){
 //This is a gaussian that has been scaled to match up with Radware photopeak results. 
 //It contains a scaling factor for the relative height of the skewed gaussian to the 
