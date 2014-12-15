@@ -2,10 +2,36 @@
 
 ClassImp(TPeak)
 
-TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh,  Option_t* type) : fcentroid(cent){
+TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh,  Option_t* type){
 
+   Bool_t out_of_range_flag = false;
+
+   if(cent > xhigh){
+      printf("centroid is higher than range\n");
+      out_of_range_flag = true;
+   }
+   else if (cent < xlow){
+      printf("centroid is lower than range\n");
+      out_of_range_flag = true;
+   }
+
+   //This fixes things if your user is like me and screws up a lot.
+   if(out_of_range_flag){
+      if (xlow > cent)
+         std::swap(xlow, cent);
+      if (xlow > xhigh)
+         std::swap(xlow, xhigh);
+      if (cent > xhigh)
+         std::swap(cent, xhigh);
+      printf("Something about your range was wrong. Assuming:\n");
+      printf("centroid: %d \t range: %d to %d\n",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh));
+   }
+
+   //Set the fit function to be a radware style photo peak.
+   this->fcentroid = cent;
    ffitfunc = new TF1("photopeak",TGRSIFunctions::PhotoPeak,xlow,xhigh,10);
-
+   ffitbg   = new TF1("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10);
+   this->SetName(Form("Chan%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh)));
 
 }
 

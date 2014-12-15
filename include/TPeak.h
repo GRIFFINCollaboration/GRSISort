@@ -4,6 +4,7 @@
 #include "TFitResultPtr.h"
 #include "TFitResult.h"
 #include <string>
+#include <algorithm>
 
 using namespace TGRSIFunctions;
 
@@ -20,7 +21,7 @@ using namespace TGRSIFunctions;
 class TPeak : public TNamed {
    friend class TGRSIFitter;
  public: 
-   TPeak(){};
+   TPeak():ffitfunc(0),ffitbg(0){};
    ~TPeak(){};
 
    TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, Option_t* type = "gsc");
@@ -45,7 +46,8 @@ class TPeak : public TNamed {
    void SetAreaErr(Double_t d_a){fd_area = d_a;}
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
 
-   void SetFitResult(TFitResultPtr fitres){ ffitres = *fitres; }
+ protected:  
+   void SetFitResult(TFitResultPtr fitres){ ffitres = fitres; }
 
  public:
    virtual void Print();
@@ -57,8 +59,9 @@ class TPeak : public TNamed {
    Double_t farea; //->
    Double_t fd_area; //->
 
-   TFitResult ffitres;//->
+   TFitResultPtr ffitres;//->
    TF1* ffitfunc;
+   TF1* ffitbg;
 
   ClassDef(TPeak,1);
 
