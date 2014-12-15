@@ -2,54 +2,16 @@
 
 ClassImp(TGRSIFitter)
 
-//This will be changed
-Double_t TGRSIFitter::fitFunction(Double_t *dim, Double_t *par){
-   return PhotoPeak(dim, par) + StepFunction(dim,par) + PolyBg(dim,&par[6],3);  
-}
-
-Double_t TGRSIFitter::multifitFunction(Double_t *dim, Double_t *par,Int_t npeaks){
-   Double_t result = PolyBg(dim,par,3);
-   for(Int_t p=0;p<npeaks;p++){
-      result += PhotoPeak(dim,&par[6*p+4]) + StepFunction(dim,&par[6*p+4]);
-   }
-   return result;
-}
-
-
-/*
-Double_t fpeaks(Double_t *x, Double_t *par) {
-   Double_t result = par[0] + par[1]*x[0];
-   for (Int_t p=0;p<npeaks;p++) {
-      Double_t norm  = par[3*p+2];
-      Double_t mean  = par[3*p+3];
-      Double_t sigma = par[3*p+4];
-      result += norm*TMath::Gaus(x[0],mean,sigma);
-   }
-   return result;
-}
-*/
-
-//void TGRSIFitter::FitPeak(Int_t limit1, Int_t limit2, std::initializer_list<double> centroid){
-
-//}
-
 int TGRSIFitter::FitPeak(Int_t limit1, Int_t limit2, Double_t centroid) {} // termination version
 
+
+
+
+
+
+
+
 /*
-void TGRSIFitter::FitNPeaks(Int_t limit1, Int_t limit2, Int_t npeaks, ...){
-//This fits a GRIFFIN photopeak. This apparantly may not be portable to OSX. Need to test.
-   va_list centroids;
-   va_start(centroids, npeaks+2);
-   while (npeaks-- > 2)
-             va_arg(centroids, Double_t));
-            va_end(args);
-
-// return first + sum(...);
-}
-*/
-
-//This function is used to perform the actual fit
-//This needs to change as it can be done with a TPeak or a TFitReultPtr
 TFitResultPtr TGRSIFitter::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity){
 
    //I should come up with something smarter to return from this function. If I return a smart pointer to the fitresult it should be good enough (I think).
@@ -63,7 +25,7 @@ TFitResultPtr TGRSIFitter::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Fl
    Int_t yp = par[0];
    Int_t A = par[6];
    //Define the fit function and the range of the fit
-   TF1 *pp = new TF1("photopeak",fitFunction,xp-rw,xp+rw,10);
+   TF1 *pp = new TF1("photopeak","gaus",xp-rw,xp+rw,10);
 
    //Name the parameters so it is easy to see what the code is doing
    pp->SetParName(0,"Height");
@@ -165,6 +127,6 @@ TFitResultPtr TGRSIFitter::FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Fl
  //  return photopeak;
 
 }
-
+*/
 
 

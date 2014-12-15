@@ -476,20 +476,20 @@ void TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
 }
 
 
-void TChannel::ReadCalFile(const char *filename) {
+Bool_t TChannel::ReadCalFile(const char *filename) {
    //Makes TChannels from a cal file to be used as the current calibration until grsisort
    //is closed
    std::string infilename;
    infilename.append(filename);
 
    if(infilename.length()==0)
-      return;
+      return false;
 
    ifstream infile;
    infile.open(infilename.c_str());
    if (!infile) {
       printf("could not open file.\n");
-      return;
+      return false;
    }
 
    TChannel *channel = 0;
@@ -635,7 +635,7 @@ void TChannel::ReadCalFile(const char *filename) {
    }
    printf("parsed %i lines.\n",linenumber);
 
-   return;
+   return true;
 }
 
 void TChannel::trim(std::string * line, const std::string & trimChars) {
