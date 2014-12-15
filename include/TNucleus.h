@@ -17,9 +17,6 @@
 
 using namespace std;
 
-
-
-
 class TNucleus : public TNamed{
 
  private:
@@ -42,14 +39,14 @@ class TNucleus : public TNamed{
   void SetMass(double);  				// Sets the mass manually (in MeV)
   void SetMass();  					// Sets the mass based on the A and mass excess of nucleus (in MeV)
   void SetSymbol(const char*);  			// Sets the atomic symbol for the nucleus
-  int GetZ()              {return fZ;}  		// Gets the Z (# of protons) of the nucleus
-  int GetN()              {return fN;}			// Gets the N (# of neutrons) of the nucleus
-  int GetA()              {return fN+fZ;}		// Gets the A (Z + N) of the nucleus
-  double GetMassExcess()  {return fMassExcess;}		// Gets the mass excess of the nucleus (in MeV)
-  double GetMass()        {return fMass;}		// Gets the mass of the nucleus (in MeV)
-  const char* GetSymbol() {return fSymbol.c_str();}	// Gets the atomic symbol of the nucleus
+  int GetZ() const             {return fZ;}  		// Gets the Z (# of protons) of the nucleus
+  int GetN() const             {return fN;}			// Gets the N (# of neutrons) of the nucleus
+  int GetA() const             {return fN+fZ;}		// Gets the A (Z + N) of the nucleus
+  double GetMassExcess() const {return fMassExcess;}		// Gets the mass excess of the nucleus (in MeV)
+  double GetMass() const       {return fMass;}		// Gets the mass of the nucleus (in MeV)
+  const char* GetSymbol() const{return fSymbol.c_str();}	// Gets the atomic symbol of the nucleus
  
- double GetRadius();					
+ double GetRadius() const;					
   int GetZfromSymbol(char*);				
 
   TList TransitionList;

@@ -13,12 +13,6 @@ using namespace std;
 
 //#define debug
 
-
-
-
-
-
-
 ClassImp(TNucleus);
 
 /////////////////////////////////////////////////////////////////
@@ -29,10 +23,6 @@ ClassImp(TNucleus);
 // (mass, Z, symbol, radius, etc.)
 //
 /////////////////////////////////////////////////////////////////
-
-
-
-
 
 //const char *TNucleus::massfile = "/home/tiguser/packages/GRSISort/libraries/TGRSIAnalysis/TNucleus/SourceData/mass.dat";
 
@@ -250,14 +240,12 @@ void TNucleus::SetMass(){
   fMass = amu*GetA()+GetMassExcess();
 }
 
-
-
-
 void TNucleus::SetSymbol(const char* symbol){
 // Sets the atomic symbol for the nucleus
   fSymbol = symbol;
 }
-int TNucleus::GetZfromSymbol(char* symbol){
+
+int TNucleus::GetZfromSymbol(char* symbol) {
 // Figures out the Z of the nucleus based on the atomic symbol
   char symbols[105][3] = {"H","HE","LI","BE","B","C","N","O","F","NE","NA","MG","AL","SI","P","S","CL","AR","K","CA","SC","TI","V","CR","MN","FE","CO","NI","CU","ZN","GA","GE","AS","SE","BR","KR","RB","SR","Y","ZR","NB","MO","TC","RU","RH","PD","AG","CD","IN","SN","SB","TE","F","XE","CS","BA","LA","CE","PR","ND","PM","SM","EU","GD","TB","DY","HO","ER","TM","YB","LU","HF","TA","W","RE","OS","IR","PT","AU","HG","TI","PB","BI","PO","AT","RN","FR","RA","AC","TH","PA","U","NP","PU","AM","CM","BK","CF","ES","FM","MD","NO","LR","RF","HA"};
   int length = strlen(symbol);
@@ -280,7 +268,7 @@ int TNucleus::GetZfromSymbol(char* symbol){
   return 0;
 }
 
-double TNucleus::GetRadius(){
+double TNucleus::GetRadius() const{
 // Gets the radius of the nucleus (in fm).
 // The radius is calculated using 1.12*A^1/3 - 0.94*A^-1/3
   return 1.12*pow(this->GetA(),1./3.) - 0.94*pow(this->GetA(),-1./3.);
