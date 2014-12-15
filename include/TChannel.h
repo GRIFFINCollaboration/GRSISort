@@ -160,7 +160,7 @@ class TChannel : public TNamed	{
     void DestroyEFFCal();
 
     static void ReadCalFromTree(TTree*,Option_t *opt="overwrite");
-    static Bool_t ReadCalFile(const char *filename = "");
+    static Int_t ReadCalFile(const char *filename = "");
     static void WriteCalFile(std::string outfilename = "");
 
     virtual void Print(Option_t *opt = "");
