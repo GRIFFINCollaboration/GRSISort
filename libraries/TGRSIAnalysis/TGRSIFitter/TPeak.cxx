@@ -52,7 +52,6 @@ void TPeak::SetType(Option_t * type){
 
 //   fpeakfit = new TF1("photopeak","gauss",fxlow,fxhigh);  
 
-
 }
 
 void TPeak::Clear(){
