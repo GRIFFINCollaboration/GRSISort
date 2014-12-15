@@ -61,7 +61,7 @@ void TPeak::Clear(){
    fd_area       = 0.0;
 }
 
-void TPeak::Print(){
+void TPeak::Print() const{
    printf("Name:        %s \n", this->GetName()); 
    printf("Centroid:    %lf +/- %lf \n", fcentroid,fd_centroid);
    printf("Area: 	      %lf +/- %lf \n", farea, fd_area);

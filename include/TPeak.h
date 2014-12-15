@@ -50,7 +50,7 @@ class TPeak : public TNamed {
    void SetFitResult(TFitResultPtr fitres){ ffitres = fitres; }
 
  public:
-   virtual void Print();
+   virtual void Print() const;
    virtual void Clear();
 
  private:   
