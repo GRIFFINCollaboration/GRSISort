@@ -36,10 +36,10 @@ public:
 
    Int_t    NetworkPacketNumber;  //->  Network packet number
 
-   Short_t ChannelNumber;         //->
-   UInt_t ChannelAddress;         //->
-   std::vector<Int_t> Cfd;        //-> 
-   std::vector<Int_t> Led;        //->
+   Short_t ChannelNumber;         //->  Channel Number
+   UInt_t ChannelAddress;         //->  Address of the channel
+   std::vector<Int_t> Cfd;        //->  CFD of each pileup hit
+   std::vector<Int_t> Led;        //->  LED of each pileup hit
    std::vector<Int_t> Charge;	    //->  The Integrated Charge 
 
    //unsigned long TimeStamp;     //->
@@ -54,10 +54,10 @@ public:
    UShort_t NumberOfFilters;      //-> Number of filter patterns passed
    UShort_t NumberOfPileups;      //-> Number of piled up hits 1-3
    UShort_t DataType;             //-> 
-   UShort_t DetectorType;         //->
-   UInt_t ChannelId;              //->
+   UShort_t DetectorType;         //-> Detector Type (PACES,HPGe, etc)
+   UInt_t ChannelId;              //-> Threshold crossing counter for a channel
 
-   std::vector<UShort_t>  KValue; //->
+   std::vector<UShort_t>  KValue; //-> KValue for each pileup hit
 
    /// *****************************  ////
 
