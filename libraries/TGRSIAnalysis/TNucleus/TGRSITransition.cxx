@@ -7,9 +7,9 @@ ClassImp(TGRSITransition)
 TGRSITransition::TGRSITransition() {
   Class()->IgnoreTObjectStreamer(true);
   energy                 = 0.0; 
-  energy_uncertainity    = 0.0; 
+  energy_uncertainty    = 0.0; 
   intensity              = 0.0; 
-  intensity_uncertainity = 0.0;  
+  intensity_uncertainty = 0.0;  
 
 }
 
