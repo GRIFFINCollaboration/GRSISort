@@ -16,7 +16,10 @@ Double_t TGRSIFitter::Fit(TPeak *peak, Option_t *opt){
       printf("Empty TPeak, please try again\n");
       return -1;
    }
-
+   
+   //Should figure out a way to send default parameters to the fitter. rd
+   TF1* fitfunc = peak->GetFitFunction();
+   //fitfunc->Print();
    return 0;
 }
 
