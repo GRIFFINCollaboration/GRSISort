@@ -29,10 +29,15 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh,  Option_t* type){
 
    //Set the fit function to be a radware style photo peak.
    this->fcentroid = cent;
-   ffitfunc = new TF1("photopeak",TGRSIFunctions::PhotoPeak,xlow,xhigh,10);
-   ffitbg   = new TF1("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10);
+   ffitfunc = new TF1("photopeak",TGRSIFunctions::PhotoPeak,xlow,xhigh,10); //This is just the photopeak
+   ffitbg   = new TF1("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10); //This is the photopeak +BG
    this->SetName(Form("Chan%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh)));
 
+}
+
+void TPeak::SetFitResult(TFitResultPtr fitres){ 
+   ffitres = fitres; 
+   //I should also set the TF1* members here
 }
 
 void TPeak::SetType(Option_t * type){

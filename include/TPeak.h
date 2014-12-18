@@ -36,7 +36,7 @@ class TPeak : public TNamed {
    Double_t GetArea() const         { return farea; }
    Double_t GetAreaErr() const      { return fd_area; }
 
-   TF1* GetFit() const              { return ffitfunc; } 
+   TF1* GetFitFunction() const      { return ffitbg; } 
 
  public:
    void SetCentroidErr(Double_t centerr){fd_centroid = centerr;}
@@ -47,7 +47,7 @@ class TPeak : public TNamed {
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
 
  protected:  
-   void SetFitResult(TFitResultPtr fitres){ ffitres = fitres; }
+   void SetFitResult(TFitResultPtr fitres);
 
  public:
    virtual void Print() const;

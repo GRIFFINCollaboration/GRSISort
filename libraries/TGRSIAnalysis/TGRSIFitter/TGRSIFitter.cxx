@@ -1,10 +1,24 @@
 #include "TGRSIFitter.h"
 
-ClassImp(TGRSIFitter)
+ClassImp(TGRSIFitter);
 
 int TGRSIFitter::FitPeak(Int_t limit1, Int_t limit2, Double_t centroid) {} // termination version
 
+Double_t TGRSIFitter::Fit(TPeak *peak, Option_t *opt){
+//This is the algorithm used if a TPeak is passed to the fitter
+//It returns the chi2 of the fit or a negative number for an error
+//Errors: "-1": the TPeak* passed was empty
+   Bool_t verbosity = false;
+   if(strchr(opt,'v') != NULL){
+      verbosity = true;
+   }
+   if(peak = 0){
+      printf("Empty TPeak, please try again\n");
+      return -1;
+   }
 
+   return 0;
+}
 
 
 

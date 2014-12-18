@@ -1,3 +1,6 @@
+#ifndef __TGRSIFITTER_H
+#define __TGRSIFITTER_H
+
 #include "TGRSIFunctions.h"
 #include "TObject.h"
 #include "TH1.h"
@@ -21,17 +24,13 @@ using namespace TGRSIFunctions;
 
 //typedef std::tuple <int, double, double> CPIs;
 
-class TGRSIFitter : public TObject {
- public: 
-   TGRSIFitter(){};
-   ~TGRSIFitter(){};
+class TGRSIFitter {
 
- public: 
  //  void FitPeak(Int_t limit1, Int_t limit2, std::initializer_list<double> centroid);
    //void FitPeak(Int_t limit1, Int_t limit2, ...);
 //TFitResultPtr FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity);
 
- public:
+   static Double_t Fit(TPeak* peak, Option_t *opt = "");
    int FitPeak(Int_t limit1, Int_t limit2, Int_t cent){FitPeak(limit1,limit2,(double)(cent));}
    int FitPeak(Int_t limit1, Int_t limit2, Double_t cent); // termination version
    template<int, int, typename First, typename... Rest>
@@ -40,9 +39,8 @@ class TGRSIFitter : public TObject {
  //        centroid.push_back(std::make_pair(firstcent,0));
          FitPeak(limit1,limit2,rest...); // note: arg1 does not appear here!
       }
-
-
-  ClassDef(TGRSIFitter,1);
-
+   
+   ClassDef(TGRSIFitter,0);
 };
 
+#endif
