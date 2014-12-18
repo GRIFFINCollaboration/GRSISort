@@ -20,7 +20,7 @@ using namespace TGRSIFunctions;
 
 class TPeak : public TGRSIFit {
  public: 
-   TPeak():ffitfunc(0),ffitbg(0){};
+   TPeak():ffitfunc(0),ffitbg(0),ffithist(0){};
    ~TPeak(){};
 
    TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, Option_t* type = "gsc");
@@ -35,6 +35,10 @@ class TPeak : public TGRSIFit {
    Double_t GetArea() const         { return farea; }
    Double_t GetAreaErr() const      { return fd_area; }
 
+   Double_t Fit(Option_t *opt = "");
+   Double_t Fit(TH1* hist, Option_t *opt = "");
+   Double_t Fit(const char* histname, Option_t *opt);
+
    TF1* GetFitFunction() const      { return ffitbg; } 
 
  public:
@@ -44,6 +48,8 @@ class TPeak : public TGRSIFit {
    void SetArea(Double_t a){farea = a;}
    void SetAreaErr(Double_t d_a){fd_area = d_a;}
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
+   Bool_t SetHist(TH1* hist = 0);
+   Bool_t SetHist(const char* histname);
 
  protected:  
    void SetFitResult(TFitResultPtr fitres);
@@ -61,6 +67,7 @@ class TPeak : public TGRSIFit {
    TFitResultPtr ffitres;//->
    TF1* ffitfunc;
    TF1* ffitbg;
+   TH1* ffithist;
 
   ClassDef(TPeak,1);
 

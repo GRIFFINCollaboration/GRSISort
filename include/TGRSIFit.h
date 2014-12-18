@@ -35,6 +35,8 @@ class TGRSIFit : public TNamed {
 //TFitResultPtr FitPhotoPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Double_t *energy, Bool_t verbosity);
 
    virtual Double_t Fit(Option_t *opt = "") = 0;
+   virtual Bool_t SetHist(void* hist) = 0;
+
 //   int FitPeak(Int_t limit1, Int_t limit2, Int_t cent){FitPeak(limit1,limit2,(double)(cent));}
 //   int FitPeak(Int_t limit1, Int_t limit2, Double_t cent); // termination version
 /*   template<int, int, typename First, typename... Rest>

@@ -33,6 +33,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh,  Option_t* type){
    ffitbg   = new TF1("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10); //This is the photopeak +BG
    this->SetName(Form("Chan%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh)));
 
+   ffithist = 0; //This will be used later to determine if a histogram was set for the peak.
+
 }
 
 void TPeak::SetFitResult(TFitResultPtr fitres){ 
@@ -58,6 +60,50 @@ void TPeak::SetType(Option_t * type){
 //   fpeakfit = new TF1("photopeak","gauss",fxlow,fxhigh);  
 
 }
+
+Double_t TPeak::Fit(Option_t *opt){
+//It returns the chi2 of the fit or a negative number for an error
+//Errors: "-1": the TPeak* passed was empty
+   Bool_t verbosity = false;
+   if(strchr(opt,'v') != NULL){
+      verbosity = true;
+   }
+
+   //Now we do the fitting!
+   
+   return 0;
+}
+
+Double_t TPeak::Fit(TH1 *hist, Option_t *opt){
+   SetHist(hist);
+   return Fit(opt);
+}
+
+Double_t TPeak::Fit(const char* histname, Option_t *opt){
+   SetHist(histname);
+   return Fit(opt);
+}
+
+Bool_t TPeak::SetHist(TH1* hist){
+   if(!hist){
+      //Return the current pad's historgram 
+      //need to put this here when I get around to it. rd
+      printf("No hist is set\n");
+   }
+   else{
+      ffithist = hist;
+   }
+
+}
+
+Bool_t TPeak::SetHist(const char* histname){
+   TH1 *hist = 0;
+   gROOT->GetObject(histname,hist);
+   if (hist) {
+      return SetHist(hist);
+   }
+}
+
 
 void TPeak::Clear(){
    fcentroid     = 0.0;
