@@ -1,6 +1,6 @@
 #include "TGRSIFunctions.h"
+#include "TGRSIFit.h"
 #include "TF1.h"
-#include "TNamed.h"
 #include "TFitResultPtr.h"
 #include "TFitResult.h"
 #include <string>
@@ -18,8 +18,7 @@ using namespace TGRSIFunctions;
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-class TPeak : public TNamed {
-   friend class TGRSIFitter;
+class TPeak : public TGRSIFit {
  public: 
    TPeak():ffitfunc(0),ffitbg(0){};
    ~TPeak(){};

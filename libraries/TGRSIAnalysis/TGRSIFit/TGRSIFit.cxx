@@ -1,8 +1,9 @@
-#include "TGRSIFitter.h"
+#include "TGRSIFit.h"
 
-ClassImp(TGRSIFitter);
+ClassImp(TGRSIFit);
 
-int TGRSIFitter::FitPeak(Int_t limit1, Int_t limit2, Double_t centroid) {} // termination version
+/*
+int TGRSIFit::FitPeak(Int_t limit1, Int_t limit2, Double_t centroid) {} // termination version
 
 Double_t TGRSIFitter::Fit(TPeak *peak, Option_t *opt){
 //This is the algorithm used if a TPeak is passed to the fitter
@@ -22,7 +23,7 @@ Double_t TGRSIFitter::Fit(TPeak *peak, Option_t *opt){
    //fitfunc->Print();
    return 0;
 }
-
+*/
 
 
 
