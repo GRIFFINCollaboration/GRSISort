@@ -2,7 +2,7 @@
 
 ClassImp(TPeak)
 
-TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh,  Option_t* type){
+TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_t* type){
 
    this->Clear();
    Bool_t out_of_range_flag = false;
@@ -39,7 +39,7 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh,  Option_t* type){
    ffitbg   = new TF1("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10); //This is the photopeak +BG
    this->SetName(Form("Chan%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh))); //Gives a default name to the peak
 
-   ffithist = 0; //This will be used later to determine if a histogram was set for the peak.
+   ffithist = fithist; //This will be used later to determine if a histogram was set for the peak.
    ffitres  = 0;
    //We need to set parameter names now.
    ffitbg->SetParName(0,"Height");
@@ -52,6 +52,23 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh,  Option_t* type){
    ffitbg->SetParName(7,"B");
    ffitbg->SetParName(8,"C");
    ffitbg->SetParName(9,"bg offset");
+
+
+//I need to figure out a way to force a guess initial
+   //Set some physical limits for parameters
+//  ffitbg->SetParLimits(0,0.5*yp, 2*yp);
+   ffitbg->SetParLimits(1,xlow,xhigh);
+   ffitbg->SetParLimits(2,0.5,12);
+   ffitbg->SetParLimits(3,0.000,10);
+   ffitbg->SetParLimits(4,0,500);
+   ffitbg->SetParLimits(5,0,1000000);
+   ffitbg->SetParLimits(6,0,ffitbg->GetParameter(6)*1.4);
+   ffitbg->SetParLimits(9,xlow,xhigh);
+
+   //Actually set the parameters in the photopeak function
+   //ffitbg->SetParameters(par);
+  //Fixing has to come after setting
+   ffitbg->FixParameter(8,0);
 }
 
 void TPeak::SetFitResult(TFitResultPtr fitres){ 
@@ -78,13 +95,38 @@ void TPeak::SetType(Option_t * type){
 
 }
 
+void TPeak::InitParams(){
+//Makes initial guesses at parameters for the fit. Uses the histogram to
+//get the initial parameters
+   ffitbg->SetParameter("Height",100);
+/*   ffitbg->SetParName(1,"centroid");
+   ffitbg->SetParamater("sigma",1.0); 
+   ffitbg->SetParName(3,"beta");
+   ffitbg->SetParName(4,"R");
+   ffitbg->SetParName(5,"step");
+   ffitbg->SetParName(6,"A");
+   ffitbg->SetParName(7,"B");
+   ffitbg->SetParName(8,"C");
+   ffitbg->SetParName(9,"bg offset");
+*/
+   this->init_flag = true;
+}
+
 Double_t TPeak::Fit(Option_t *opt){
 //It returns the chi2 of the fit or a negative number for an error
 //Errors: "-1": the TPeak* passed was empty
+   if(!ffithist) {
+      printf("No histogram set! Aborting...\n");
+      return -1;
+   }
+
    Bool_t verbosity = false;
    if(strchr(opt,'v') != NULL){
       verbosity = true;
    }
+
+   if(!init_flag) InitParams();
+   
 
    //Now we do the fitting!
    
@@ -113,7 +155,6 @@ Bool_t TPeak::SetHist(TH1* hist){
    else{
       ffithist = hist;
    }
-
 }
 
 Bool_t TPeak::SetHist(const char* histname){
@@ -135,6 +176,7 @@ void TPeak::Clear(){
    ffitbg        = 0;
    ffithist      = 0;
    ffitres       = 0;
+   init_flag     = false;
 }
 
 void TPeak::Print(Option_t *opt) const{
@@ -145,6 +187,7 @@ void TPeak::Print(Option_t *opt) const{
    if(strchr(opt,'+') != NULL){
       if(ffithist) printf("Histogram:   %s \n", ffithist->GetName()); 
       if(ffitbg) printf("Fit Function: "); ffitbg->Print(); //Rewrite this to print errors
+      printf("Params Init: %d\n", init_flag);
    }
 }
 

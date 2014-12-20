@@ -24,7 +24,7 @@ class TPeak : public TGRSIFit {
    TPeak():ffitfunc(0),ffitbg(0),ffithist(0){};
    ~TPeak(){};
 
-   TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, Option_t* type = "gsc");
+   TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, TH1* = 0, Option_t* type = "gsc");
 
  public:   
    //This is public as it may be used for initial guesses
@@ -63,6 +63,8 @@ class TPeak : public TGRSIFit {
    void SetAreaErr(Double_t d_a){fd_area = d_a;}
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
 
+   void InitParams();
+
  public:
    virtual void Print(Option_t *opt = "") const;
    virtual void Clear();
@@ -78,6 +80,8 @@ class TPeak : public TGRSIFit {
    TF1* ffitfunc;
    TF1* ffitbg;
    TH1* ffithist;
+
+   Bool_t init_flag;
 
   ClassDef(TPeak,1);
 
