@@ -18,6 +18,7 @@ using namespace TGRSIFunctions;
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
+//It might make sense to have this inherit from TF1 instead of including a TF1 inside of it. Not exactly sure.
 class TPeak : public TGRSIFit {
  public: 
    TPeak():ffitfunc(0),ffitbg(0),ffithist(0){};
@@ -34,8 +35,13 @@ class TPeak : public TGRSIFit {
    Double_t GetCentroidErr() const  { return fd_centroid; }
    Double_t GetArea() const         { return farea; }
    Double_t GetAreaErr() const      { return fd_area; }
-   Double_t GetParameter(const char *parname);
-   Double_t GetParError(const char *parname);
+
+   Double_t GetParameter(const char *parname) const      { return ffitbg->GetParameter(parname);}
+   Double_t GetParameter(Int_t &parnumber) const         { return ffitbg->GetParameter(parnumber);}
+   Double_t GetParError(const char *parname) const       { return ffitbg->GetParError(GetParNumber(parname)); }
+   Double_t GetParError(Int_t &parnumber) const          { return ffitbg->GetParError(parnumber);}
+   const char *GetParName(Int_t &parnumber) const        { return ffitbg->GetParName(parnumber);}
+   Int_t GetParNumber(const char *parname) const         { return ffitbg->GetParNumber(parname);}
 
    Double_t Fit(Option_t *opt = "");
    Double_t Fit(TH1* hist, Option_t *opt = "");

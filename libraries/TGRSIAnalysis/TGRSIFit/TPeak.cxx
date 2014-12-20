@@ -144,16 +144,8 @@ void TPeak::Print(Option_t *opt) const{
    printf("Area: 	      %lf +/- %lf \n", farea, fd_area);
    if(strchr(opt,'+') != NULL){
       if(ffithist) printf("Histogram:   %s \n", ffithist->GetName()); 
-      if(ffitfunc) printf("Fit Function: "); ffitfunc->Print(); //Something about this gets grumpy
+      if(ffitbg) printf("Fit Function: "); ffitbg->Print(); //Rewrite this to print errors
    }
-}
-
-Double_t TPeak::GetParameter(const char *parname){
-   return ffitfunc->GetParameter(parname);
-}
-
-Double_t TPeak::GetParError(const char *parname){
-   return ffitfunc->GetParError(ffitfunc->GetParNumber(parname)); //Might clean this up with a TPeak::Parnumber function
 }
 
 
