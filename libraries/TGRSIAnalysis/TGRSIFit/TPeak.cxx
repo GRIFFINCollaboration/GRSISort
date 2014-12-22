@@ -2,10 +2,13 @@
 
 ClassImp(TPeak)
 
-TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_t* type){
+TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_t* type) : TGRSIFit() {
 
    this->Clear();
    Bool_t out_of_range_flag = false;
+
+   TH1 *ffithist = new TH1(*fithist);
+   //ffithist = fithist;
 
    if(cent > xhigh){
       printf("centroid is higher than range\n");
@@ -39,8 +42,6 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_
    ffitbg   = new TF1("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10); //This is the photopeak +BG
    this->SetName(Form("Chan%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh))); //Gives a default name to the peak
 
-   ffithist = fithist; //This will be used later to determine if a histogram was set for the peak.
-   ffitres  = 0;
    //We need to set parameter names now.
    ffitbg->SetParName(0,"Height");
    ffitbg->SetParName(1,"centroid");
@@ -71,10 +72,24 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_
    ffitbg->FixParameter(8,0);
 }
 
-void TPeak::SetFitResult(TFitResultPtr fitres){ 
-   ffitres = fitres; 
-   //I should also set the TF1* members here
+TPeak::~TPeak(){
+   delete ffithist;
+   delete ffitfunc;
+   delete ffitbg;
 }
+
+TPeak::TPeak(const TPeak &copy) : TGRSIFit(copy){
+   
+   this->fcentroid    = copy.fcentroid;
+   this->fd_centroid  = copy.fd_centroid;
+   this->farea        = copy.farea;
+   this->fd_area      = copy.fd_area;
+
+   TF1* ffitfunc = new TF1(*(copy.ffitfunc));
+   TF1* ffitbg   = new TF1(*(copy.ffitbg));
+   TH1* ffithist = new TH1(*(copy.ffithist));
+}
+
 
 void TPeak::SetType(Option_t * type){
 // This sets the style of gaussian fit function to use for the fitted peak. 
@@ -168,15 +183,18 @@ Bool_t TPeak::SetHist(const char* histname){
 void TPeak::Clear(){
 //Clear the TPeak including functions and histogram, does not
 //currently clear inherited members such as name.
+//want to make a clear that doesn't clear everything
    fcentroid     = 0.0;
    fd_centroid   = 0.0;
    farea         = 0.0;
    fd_area       = 0.0;
    ffitfunc      = 0;
    ffitbg        = 0;
-   ffithist      = 0;
-   ffitres       = 0;
+   ffithist      = 0; 
    init_flag     = false;
+   TGRSIFit::Clear();
+   //Do deep clean stuff maybe? require an option?
+
 }
 
 void TPeak::Print(Option_t *opt) const{
@@ -188,6 +206,7 @@ void TPeak::Print(Option_t *opt) const{
       if(ffithist) printf("Histogram:   %s \n", ffithist->GetName()); 
       if(ffitbg) printf("Fit Function: "); ffitbg->Print(); //Rewrite this to print errors
       printf("Params Init: %d\n", init_flag);
+      TGRSIFit::Print(); //Polymorphise this a bit better
    }
 }
 

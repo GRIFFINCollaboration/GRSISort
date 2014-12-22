@@ -18,18 +18,21 @@ using namespace TGRSIFunctions;
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-//It might make sense to have this inherit from TF1 instead of including a TF1 inside of it. Not exactly sure.
 class TPeak : public TGRSIFit {
+//It might make sense to have this inherit from TF1 instead of including a TF1 inside of it. Not exactly sure.
+//The more I thought about it the less I liked this method. I think it makes it harder to integrate without the bg
+//And to fit internally. Automatic fitting is nice for people who are poor at the interpreter.
  public: 
-   TPeak():ffitfunc(0),ffitbg(0),ffithist(0){};
-   ~TPeak(){};
+   TPeak():ffitfunc(0),ffitbg(0),ffithist(0),TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
+   ~TPeak();
+   TPeak(const TPeak &copy);
 
    TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, TH1* = 0, Option_t* type = "gsc");
 
  public:   
    //This is public as it may be used for initial guesses
    void SetCentroid(Double_t cent)  { fcentroid = cent; }
-   void SetType(Option_t *);
+   void SetType(Option_t *type);
 
    Double_t GetCentroid() const     { return fcentroid; }
    Double_t GetCentroidErr() const  { return fd_centroid; }
@@ -51,14 +54,12 @@ class TPeak : public TGRSIFit {
    TH1* GetHist() const             { return ffithist;} 
 
  public:
-   void SetCentroidErr(Double_t centerr){fd_centroid = centerr;}
-   void SetCentroid(Double_t cent, Double_t d_cent) { SetCentroid(cent); SetCentroidErr(d_cent);}
-
    Bool_t SetHist(TH1* hist = 0);
    Bool_t SetHist(const char* histname);
 
  protected:  
-   void SetFitResult(TFitResultPtr fitres);
+   void SetCentroidErr(Double_t centerr){fd_centroid = centerr;}
+   void SetCentroid(Double_t cent, Double_t d_cent) { SetCentroid(cent); SetCentroidErr(d_cent);}
    void SetArea(Double_t a){farea = a;}
    void SetAreaErr(Double_t d_a){fd_area = d_a;}
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
@@ -76,12 +77,9 @@ class TPeak : public TGRSIFit {
    Double_t farea; //->
    Double_t fd_area; //->
 
-   TFitResultPtr ffitres;//->
    TF1* ffitfunc;
-   TF1* ffitbg;
+   TF1* ffitbg;//I dont think we need both of these.
    TH1* ffithist;
-
-   Bool_t init_flag;
 
   ClassDef(TPeak,1);
 

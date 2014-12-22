@@ -2,6 +2,26 @@
 
 ClassImp(TGRSIFit);
 
+TGRSIFit::TGRSIFit(){
+   this->Clear();
+}
+
+TGRSIFit::TGRSIFit(const TGRSIFit &copy) : TNamed(copy){
+   this->init_flag   = copy.init_flag;
+   this->ffitresult  = copy.ffitresult;
+}
+
+
+void TGRSIFit::Print(Option_t *opt) const {
+   ffitresult->Print();
+}
+
+void TGRSIFit::Clear() {
+   ffitresult->Clear();
+}
+
+
+
 /*
 int TGRSIFit::FitPeak(Int_t limit1, Int_t limit2, Double_t centroid) {} // termination version
 
