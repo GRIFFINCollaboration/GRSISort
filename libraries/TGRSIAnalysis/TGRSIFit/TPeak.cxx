@@ -132,6 +132,14 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    SetInitialized();
    return true;
 }
+
+Bool_t TPeak::SetFitResult(TFitResultPtr fitresult){
+
+   //This is where we will do integrals and stuff.
+
+   TGRSIFit::SetFitResult(fitresult);
+}
+
 /*
 Double_t TPeak::Fit(Option_t *opt){
 //It returns the chi2 of the fit or a negative number for an error

@@ -32,6 +32,8 @@ class TPeak : public TGRSIFit {
    void SetCentroid(Double_t cent)  { fcentroid = cent; }
    void SetType(Option_t *type);
 
+   Bool_t SetFitResult(TFitResultPtr fitresult);
+
    Double_t GetCentroid() const     { return fcentroid; }
    Double_t GetCentroidErr() const  { return fd_centroid; }
    Double_t GetArea() const         { return farea; }
@@ -42,6 +44,7 @@ class TPeak : public TGRSIFit {
    Double_t Fit(const char* histname, Option_t *opt);
 */
    TF1* GetFitFunction() const      { return (TF1*)(this); } //I might move the fit functions to TGRSIFit, it's just a little tricky to initilize the function
+
 
  protected:  
    void SetCentroidErr(Double_t centerr){fd_centroid = centerr;}

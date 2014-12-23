@@ -35,15 +35,15 @@ class TGRSIFit : public TF1 {
    virtual void SetHistogram(TH1* hist){fHistogram = hist;}
 
  protected:
-   void SetFitResult(TFitResultPtr fitresult){ ffitresult = fitresult;} 
    Bool_t IsInitialized() const { return init_flag; }
    void SetInitialized(Bool_t flag = true) {init_flag = flag;}
    void GoodFit(Bool_t flag = true) { goodfit_flag = flag; }
+   inline virtual Bool_t SetFitResult(TFitResultPtr fitresult){ ffitresult = fitresult; }
 
  private:
-   TFitResultPtr ffitresult;//->
    Bool_t init_flag;
    Bool_t goodfit_flag;
+   TFitResultPtr ffitresult;
 
  public:  
    virtual void Print(Option_t *opt = "") const;
