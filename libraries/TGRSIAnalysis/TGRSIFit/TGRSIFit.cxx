@@ -14,10 +14,15 @@ TGRSIFit::TGRSIFit(const TGRSIFit &copy) : TNamed(copy){
 
 void TGRSIFit::Print(Option_t *opt) const {
    ffitresult->Print();
+   if(strchr(opt,'+') != NULL){
+      printf("Params Init: %d\n", init_flag);
+      TNamed::Print(opt);
+   }
 }
 
 void TGRSIFit::Clear() {
-   ffitresult->Clear();
+   init_flag = false;
+   ffitresult = 0;
 }
 
 

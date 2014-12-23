@@ -6,8 +6,9 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_
 
    this->Clear();
    Bool_t out_of_range_flag = false;
-
-   TH1 *ffithist = new TH1(*fithist);
+   if(fithist)
+      ffithist = new TH1F(*((TH1F*)(fithist)));
+      
    //ffithist = fithist;
 
    if(cent > xhigh){
@@ -54,22 +55,9 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_
    ffitbg->SetParName(8,"C");
    ffitbg->SetParName(9,"bg offset");
 
+   if(ffithist)
+      this->InitParams();
 
-//I need to figure out a way to force a guess initial
-   //Set some physical limits for parameters
-//  ffitbg->SetParLimits(0,0.5*yp, 2*yp);
-   ffitbg->SetParLimits(1,xlow,xhigh);
-   ffitbg->SetParLimits(2,0.5,12);
-   ffitbg->SetParLimits(3,0.000,10);
-   ffitbg->SetParLimits(4,0,500);
-   ffitbg->SetParLimits(5,0,1000000);
-   ffitbg->SetParLimits(6,0,ffitbg->GetParameter(6)*1.4);
-   ffitbg->SetParLimits(9,xlow,xhigh);
-
-   //Actually set the parameters in the photopeak function
-   //ffitbg->SetParameters(par);
-  //Fixing has to come after setting
-   ffitbg->FixParameter(8,0);
 }
 
 TPeak::~TPeak(){
@@ -94,6 +82,7 @@ TPeak::TPeak(const TPeak &copy) : TGRSIFit(copy){
 void TPeak::SetType(Option_t * type){
 // This sets the style of gaussian fit function to use for the fitted peak. 
 // Probably won't be used for much, but I'm leaving the option here for others
+// This would be a good spot to change whether the functions is a Gaus or Landau etc.
 
    //Not using this right now, just starting with all of these components added in
    if(strchr(type,'g') != NULL){
@@ -110,9 +99,32 @@ void TPeak::SetType(Option_t * type){
 
 }
 
-void TPeak::InitParams(){
+Bool_t TPeak::InitParams(){
 //Makes initial guesses at parameters for the fit. Uses the histogram to
 //get the initial parameters
+   if(!ffithist){
+      printf("No histogram set yet, parameters not initialized\n");
+      return false;
+   }
+
+   Double_t xlow, xhigh;
+  // ffitbg->GetRange(xlow,xhigh);
+
+//I need to figure out a way to force a guess initial
+   //Set some physical limits for parameters
+//  ffitbg->SetParLimits(0,0.5*yp, 2*yp);
+   ffitbg->SetParLimits(1,xlow,xhigh);
+   ffitbg->SetParLimits(2,0.5,12);
+   ffitbg->SetParLimits(3,0.000,10);
+   ffitbg->SetParLimits(4,0,500);
+   ffitbg->SetParLimits(5,0,1000000);
+   ffitbg->SetParLimits(6,0,ffitbg->GetParameter(6)*1.4);
+   ffitbg->SetParLimits(9,xlow,xhigh);
+
+   //Actually set the parameters in the photopeak function
+   //ffitbg->SetParameters(par);
+  //Fixing has to come after setting
+   ffitbg->FixParameter(8,0);
    ffitbg->SetParameter("Height",100);
 /*   ffitbg->SetParName(1,"centroid");
    ffitbg->SetParamater("sigma",1.0); 
@@ -125,6 +137,7 @@ void TPeak::InitParams(){
    ffitbg->SetParName(9,"bg offset");
 */
    this->init_flag = true;
+   return true;
 }
 
 Double_t TPeak::Fit(Option_t *opt){
@@ -168,7 +181,7 @@ Bool_t TPeak::SetHist(TH1* hist){
       printf("No hist is set\n");
    }
    else{
-      ffithist = hist;
+      ffithist = (TH1F*)hist;
    }
 }
 
@@ -188,10 +201,9 @@ void TPeak::Clear(){
    fd_centroid   = 0.0;
    farea         = 0.0;
    fd_area       = 0.0;
-   ffitfunc      = 0;
-   ffitbg        = 0;
-   ffithist      = 0; 
-   init_flag     = false;
+   if(ffitfunc) ffitfunc->Clear();
+   if(ffitbg)   ffitbg->Clear();   
+   if(ffithist) ffithist = 0; 
    TGRSIFit::Clear();
    //Do deep clean stuff maybe? require an option?
 
@@ -205,8 +217,7 @@ void TPeak::Print(Option_t *opt) const{
    if(strchr(opt,'+') != NULL){
       if(ffithist) printf("Histogram:   %s \n", ffithist->GetName()); 
       if(ffitbg) printf("Fit Function: "); ffitbg->Print(); //Rewrite this to print errors
-      printf("Params Init: %d\n", init_flag);
-      TGRSIFit::Print(); //Polymorphise this a bit better
+      TGRSIFit::Print(opt); //Polymorphise this a bit better
    }
 }
 

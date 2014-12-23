@@ -28,7 +28,7 @@ class TGRSIFit : public TNamed {
  public:
    //Every fit object should have to initialize parameters and have a fit method defined.
    virtual Double_t Fit(Option_t *opt = "") = 0;
-   virtual void InitParams() = 0;
+   virtual Bool_t InitParams() = 0;
 
  protected:
    void SetFitResult(TFitResultPtr fitresult){ ffitresult = fitresult;} 
@@ -36,7 +36,7 @@ class TGRSIFit : public TNamed {
 
  private:
    TFitResultPtr ffitresult;//->
- 
+
  public:  
    virtual void Print(Option_t *opt = "") const;
    virtual void Clear();

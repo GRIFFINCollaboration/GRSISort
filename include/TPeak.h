@@ -23,14 +23,16 @@ class TPeak : public TGRSIFit {
 //The more I thought about it the less I liked this method. I think it makes it harder to integrate without the bg
 //And to fit internally. Automatic fitting is nice for people who are poor at the interpreter.
  public: 
-   TPeak():ffitfunc(0),ffitbg(0),ffithist(0),TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
+   //ctors and dtors
    ~TPeak();
    TPeak(const TPeak &copy);
-
    TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, TH1* = 0, Option_t* type = "gsc");
+   
+ protected:
+   TPeak():ffitfunc(0),ffitbg(0),ffithist(0),TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
+
 
  public:   
-   //This is public as it may be used for initial guesses
    void SetCentroid(Double_t cent)  { fcentroid = cent; }
    void SetType(Option_t *type);
 
@@ -64,7 +66,8 @@ class TPeak : public TGRSIFit {
    void SetAreaErr(Double_t d_a){fd_area = d_a;}
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
 
-   void InitParams();
+ public:
+   Bool_t InitParams();
 
  public:
    virtual void Print(Option_t *opt = "") const;
@@ -79,7 +82,7 @@ class TPeak : public TGRSIFit {
 
    TF1* ffitfunc;
    TF1* ffitbg;//I dont think we need both of these.
-   TH1* ffithist;
+   TH1F* ffithist;
 
   ClassDef(TPeak,1);
 
