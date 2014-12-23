@@ -2,12 +2,11 @@
 
 ClassImp(TPeak)
 
-TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_t* type) : TGRSIFit() {
+TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_t* type) : TGRSIFit(TF1("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10)){ 
 
    this->Clear();
    Bool_t out_of_range_flag = false;
-   if(fithist)
-      ffithist = fithist; //We don't really own this, so we don't want to allocate it here
+   if(!fithist) fithist = GetHistogram();
 
    if(cent > xhigh){
       printf("centroid is higher than range\n");
@@ -30,6 +29,7 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_
       printf("centroid: %d \t range: %d to %d\n",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh));
    }
 
+   this->SetRange(xlow,xhigh);
       //We also need to make initial guesses at parameters
       //We need nice ways to access parameters etc.
       //Need to make a TMultipeak-like thing (does a helper class come into play then?)
@@ -38,32 +38,29 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_
    this->fcentroid = cent;
    //This function might be unnecessary. Will revist this later. rd.
    ffitfunc = new TF1("photopeak",TGRSIFunctions::PhotoPeak,xlow,xhigh,10); //This is just the photopeak
-   ffitbg   = new TF1("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10); //This is the photopeak +BG
    this->SetName(Form("Chan%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh))); //Gives a default name to the peak
 
    //We need to set parameter names now.
-   ffitbg->SetParName(0,"Height");
-   ffitbg->SetParName(1,"centroid");
-   ffitbg->SetParName(2,"sigma");
-   ffitbg->SetParName(3,"beta");
-   ffitbg->SetParName(4,"R");
-   ffitbg->SetParName(5,"step");
-   ffitbg->SetParName(6,"A");
-   ffitbg->SetParName(7,"B");
-   ffitbg->SetParName(8,"C");
-   ffitbg->SetParName(9,"bg offset");
+   this->SetParName(0,"Height");
+   this->SetParName(1,"centroid");
+   this->SetParName(2,"sigma");
+   this->SetParName(3,"beta");
+   this->SetParName(4,"R");
+   this->SetParName(5,"step");
+   this->SetParName(6,"A");
+   this->SetParName(7,"B");
+   this->SetParName(8,"C");
+   this->SetParName(9,"bg offset");
 
-   if(ffithist)
-      this->InitParams();
+   if(fithist)
+      this->InitParams(fithist);
 
 }
 
 TPeak::~TPeak(){
-   delete ffithist;
    delete ffitfunc;
-   delete ffitbg;
 }
-
+/*
 TPeak::TPeak(const TPeak &copy) : TGRSIFit(copy){
    
    this->fcentroid    = copy.fcentroid;
@@ -75,7 +72,7 @@ TPeak::TPeak(const TPeak &copy) : TGRSIFit(copy){
    this->ffitbg   = new TF1(*(copy.ffitbg));
    this->ffithist = copy.ffithist;
 }
-
+*/
 
 void TPeak::SetType(Option_t * type){
 // This sets the style of gaussian fit function to use for the fitted peak. 
@@ -97,47 +94,45 @@ void TPeak::SetType(Option_t * type){
 
 }
 
-Bool_t TPeak::InitParams(){
+Bool_t TPeak::InitParams(TH1 *fithist){
 //Makes initial guesses at parameters for the fit. Uses the histogram to
-//get the initial parameters
-   if(!ffithist){
-      printf("No histogram set yet, parameters not initialized\n");
+   Double_t xlow,xhigh;
+   GetRange(xlow,xhigh);
+
+   this->SetParLimits(1,xlow,xhigh);
+   this->SetParLimits(2,0.5,12);
+   this->SetParLimits(3,0.000,10);
+   this->SetParLimits(4,0,500);
+   this->SetParLimits(5,0,1000000);
+   this->SetParLimits(6,0,GetParameter(6)*1.4);
+   this->SetParLimits(9,xlow,xhigh);
+
+   if(!fithist && fHistogram) 
+      fithist = GetHistogram();
+
+   if(!fithist){
+      printf("No histogram is associated yet, no initial guesses made\n");
       return false;
    }
-
-   Double_t xlow, xhigh;
-  // ffitbg->GetRange(xlow,xhigh);
-
-//I need to figure out a way to force a guess initial
-   //Set some physical limits for parameters
-//  ffitbg->SetParLimits(0,0.5*yp, 2*yp);
-   ffitbg->SetParLimits(1,xlow,xhigh);
-   ffitbg->SetParLimits(2,0.5,12);
-   ffitbg->SetParLimits(3,0.000,10);
-   ffitbg->SetParLimits(4,0,500);
-   ffitbg->SetParLimits(5,0,1000000);
-   ffitbg->SetParLimits(6,0,ffitbg->GetParameter(6)*1.4);
-   ffitbg->SetParLimits(9,xlow,xhigh);
-
+   //Make initial guesses
    //Actually set the parameters in the photopeak function
-   //ffitbg->SetParameters(par);
   //Fixing has to come after setting
-   ffitbg->FixParameter(8,0);
-   ffitbg->SetParameter("Height",100);
-/*   ffitbg->SetParName(1,"centroid");
-   ffitbg->SetParamater("sigma",1.0); 
-   ffitbg->SetParName(3,"beta");
-   ffitbg->SetParName(4,"R");
-   ffitbg->SetParName(5,"step");
-   ffitbg->SetParName(6,"A");
-   ffitbg->SetParName(7,"B");
-   ffitbg->SetParName(8,"C");
-   ffitbg->SetParName(9,"bg offset");
-*/
+  //Might have to include bin widths eventually
+   this->SetParameter("Height",fithist->GetBinContent(fcentroid));
+   this->SetParameter("centroid",fcentroid);
+   this->SetParameter("sigma",1.0);
+   this->SetParameter("beta",0.5);
+   this->SetParameter("R", 1.0);
+   this->SetParameter("step",1.0);
+   this->SetParameter("A",fithist->GetBinContent(fcentroid-xlow));
+   this->SetParameter("B",(fithist->GetBinContent(fcentroid-xlow) - fithist->GetBinContent(fcentroid+xhigh))/100.);
+   this->SetParameter("C",-0.5);
+   this->SetParameter("bg offset",fcentroid);
+   this->FixParameter(8,0);
    SetInitialized();
    return true;
 }
-
+/*
 Double_t TPeak::Fit(Option_t *opt){
 //It returns the chi2 of the fit or a negative number for an error
 //Errors: "-1": the TPeak* passed was empty
@@ -189,7 +184,7 @@ Bool_t TPeak::SetHist(const char* histname){
    if (hist) {
       return SetHist(hist);
    }
-}
+}*/
 
 void TPeak::Clear(){
 //Clear the TPeak including functions and histogram, does not
@@ -200,8 +195,6 @@ void TPeak::Clear(){
    farea         = 0.0;
    fd_area       = 0.0;
    if(ffitfunc) ffitfunc->Clear();
-   if(ffitbg)   ffitbg->Clear();   
-   if(ffithist) ffithist = 0; 
    TGRSIFit::Clear();
    //Do deep clean stuff maybe? require an option?
 
@@ -214,7 +207,7 @@ void TPeak::Print(Option_t *opt) const{
    printf("Area: 	      %lf +/- %lf \n", farea, fd_area);
    if(strchr(opt,'+') != NULL){
       if(ffithist) printf("Histogram:   %s \n", ffithist->GetName()); 
-      if(ffitbg) printf("Fit Function: "); ffitbg->Print(); //Rewrite this to print errors
+      TF1::Print();
       TGRSIFit::Print(opt); //Polymorphise this a bit better
    }
 }

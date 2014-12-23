@@ -19,17 +19,14 @@ using namespace TGRSIFunctions;
 ////////////////////////////////////////////////////////////////
 
 class TPeak : public TGRSIFit {
-//It might make sense to have this inherit from TF1 instead of including a TF1 inside of it. Not exactly sure.
-//The more I thought about it the less I liked this method. I think it makes it harder to integrate without the bg
-//And to fit internally. Automatic fitting is nice for people who are poor at the interpreter.
  public: 
    //ctors and dtors
    ~TPeak();
-   TPeak(const TPeak &copy);
+ //  TPeak(const TPeak &copy);
    TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, TH1* fithist = 0, Option_t* type = "gsc");
    
  protected:
-   TPeak():ffitfunc(0),ffitbg(0),ffithist(0),TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
+   TPeak():ffitfunc(0),ffithist(0),TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
 
  public:   
    void SetCentroid(Double_t cent)  { fcentroid = cent; }
@@ -39,24 +36,12 @@ class TPeak : public TGRSIFit {
    Double_t GetCentroidErr() const  { return fd_centroid; }
    Double_t GetArea() const         { return farea; }
    Double_t GetAreaErr() const      { return fd_area; }
-
-   Double_t GetParameter(const char *parname) const      { return ffitbg->GetParameter(parname);}
-   Double_t GetParameter(Int_t &parnumber) const         { return ffitbg->GetParameter(parnumber);}
-   Double_t GetParError(const char *parname) const       { return ffitbg->GetParError(GetParNumber(parname)); }
-   Double_t GetParError(Int_t &parnumber) const          { return ffitbg->GetParError(parnumber);}
-   const char *GetParName(Int_t &parnumber) const        { return ffitbg->GetParName(parnumber);}
-   Int_t GetParNumber(const char *parname) const         { return ffitbg->GetParNumber(parname);}
-
+/*
    Double_t Fit(Option_t *opt = "");
    Double_t Fit(TH1* hist, Option_t *opt = "");
    Double_t Fit(const char* histname, Option_t *opt);
-
-   TF1* GetFitFunction() const      { return ffitbg; } //I might move the fit functions to TGRSIFit, it's just a little tricky to initilize the function
-   TH1* GetHist() const             { return ffithist;} 
-
- public:
-   Bool_t SetHist(TH1* hist = 0);
-   Bool_t SetHist(const char* histname);
+*/
+   TF1* GetFitFunction() const      { return (TF1*)(this); } //I might move the fit functions to TGRSIFit, it's just a little tricky to initilize the function
 
  protected:  
    void SetCentroidErr(Double_t centerr){fd_centroid = centerr;}
@@ -66,7 +51,7 @@ class TPeak : public TGRSIFit {
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
 
  public:
-   Bool_t InitParams();
+   Bool_t InitParams(TH1 *fithist = 0);
 
  public:
    virtual void Print(Option_t *opt = "") const;
@@ -79,9 +64,8 @@ class TPeak : public TGRSIFit {
    Double_t farea; //->
    Double_t fd_area; //->
 
-   TF1* ffitbg;
    TF1* ffitfunc;
-   TH1* ffithist;
+   TH1* ffithist;//!
 
   ClassDef(TPeak,1);
 

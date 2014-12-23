@@ -6,8 +6,9 @@ TGRSIFit::TGRSIFit(){
    this->Clear();
 }
 
-TGRSIFit::TGRSIFit(const TGRSIFit &copy) : TNamed(copy){
+TGRSIFit::TGRSIFit(const TGRSIFit &copy) : TF1(copy){
    this->init_flag   = copy.init_flag;
+   this->goodfit_flag= copy.goodfit_flag;
    this->ffitresult  = copy.ffitresult;
 }
 
@@ -16,12 +17,14 @@ void TGRSIFit::Print(Option_t *opt) const {
    ffitresult->Print();
    if(strchr(opt,'+') != NULL){
       printf("Params Init: %d\n", init_flag);
+      printf("Good Fit:    %d\n", goodfit_flag);
       TNamed::Print(opt);
    }
 }
 
 void TGRSIFit::Clear() {
    init_flag = false;
+   goodfit_flag = false;
    ffitresult = 0;
 }
 
