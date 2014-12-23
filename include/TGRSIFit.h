@@ -19,12 +19,13 @@
 using namespace TGRSIFunctions;
 
 class TGRSIFit : public TNamed {
-  protected: 
+ public:
+   virtual ~TGRSIFit(){};
+
+ protected: 
    TGRSIFit();
    TGRSIFit(const TGRSIFit &copy);
-   virtual ~TGRSIFit(){};
-   
-
+  
  public:
    //Every fit object should have to initialize parameters and have a fit method defined.
    virtual Double_t Fit(Option_t *opt = "") = 0;
@@ -32,10 +33,12 @@ class TGRSIFit : public TNamed {
 
  protected:
    void SetFitResult(TFitResultPtr fitresult){ ffitresult = fitresult;} 
-   Bool_t init_flag;
+   Bool_t IsInitialized() const { return init_flag; }
+   void SetInitialized(Bool_t flag = true) {init_flag = flag;}
 
  private:
    TFitResultPtr ffitresult;//->
+   Bool_t init_flag;
 
  public:  
    virtual void Print(Option_t *opt = "") const;

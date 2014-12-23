@@ -7,9 +7,7 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_
    this->Clear();
    Bool_t out_of_range_flag = false;
    if(fithist)
-      ffithist = new TH1F(*((TH1F*)(fithist)));
-      
-   //ffithist = fithist;
+      ffithist = fithist; //We don't really own this, so we don't want to allocate it here
 
    if(cent > xhigh){
       printf("centroid is higher than range\n");
@@ -73,9 +71,9 @@ TPeak::TPeak(const TPeak &copy) : TGRSIFit(copy){
    this->farea        = copy.farea;
    this->fd_area      = copy.fd_area;
 
-   TF1* ffitfunc = new TF1(*(copy.ffitfunc));
-   TF1* ffitbg   = new TF1(*(copy.ffitbg));
-   TH1* ffithist = new TH1(*(copy.ffithist));
+   this->ffitfunc = new TF1(*(copy.ffitfunc));
+   this->ffitbg   = new TF1(*(copy.ffitbg));
+   this->ffithist = copy.ffithist;
 }
 
 
@@ -136,7 +134,7 @@ Bool_t TPeak::InitParams(){
    ffitbg->SetParName(8,"C");
    ffitbg->SetParName(9,"bg offset");
 */
-   this->init_flag = true;
+   SetInitialized();
    return true;
 }
 
@@ -153,7 +151,7 @@ Double_t TPeak::Fit(Option_t *opt){
       verbosity = true;
    }
 
-   if(!init_flag) InitParams();
+   if(!IsInitialized()) InitParams();
    
 
    //Now we do the fitting!

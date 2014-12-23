@@ -26,11 +26,10 @@ class TPeak : public TGRSIFit {
    //ctors and dtors
    ~TPeak();
    TPeak(const TPeak &copy);
-   TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, TH1* = 0, Option_t* type = "gsc");
+   TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, TH1* fithist = 0, Option_t* type = "gsc");
    
  protected:
    TPeak():ffitfunc(0),ffitbg(0),ffithist(0),TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
-
 
  public:   
    void SetCentroid(Double_t cent)  { fcentroid = cent; }
@@ -52,7 +51,7 @@ class TPeak : public TGRSIFit {
    Double_t Fit(TH1* hist, Option_t *opt = "");
    Double_t Fit(const char* histname, Option_t *opt);
 
-   TF1* GetFitFunction() const      { return ffitbg; } 
+   TF1* GetFitFunction() const      { return ffitbg; } //I might move the fit functions to TGRSIFit, it's just a little tricky to initilize the function
    TH1* GetHist() const             { return ffithist;} 
 
  public:
@@ -80,9 +79,9 @@ class TPeak : public TGRSIFit {
    Double_t farea; //->
    Double_t fd_area; //->
 
+   TF1* ffitbg;
    TF1* ffitfunc;
-   TF1* ffitbg;//I dont think we need both of these.
-   TH1F* ffithist;
+   TH1* ffithist;
 
   ClassDef(TPeak,1);
 
