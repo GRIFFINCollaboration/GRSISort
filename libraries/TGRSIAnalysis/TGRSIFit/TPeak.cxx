@@ -133,11 +133,36 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    return true;
 }
 
-Bool_t TPeak::SetFitResult(TFitResultPtr fitresult){
+Bool_t TPeak::Fit(TH1* fithist){
+   if(!fithist && fHistogram){
+      fithist = fHistogram;
+   }
+   else{
+      printf("No histogram associated with Peak\n");
+      return false;
+   }
+   if(!IsInitialized()) 
+      InitParams(fithist);
 
+   //Now that it is initialized, let's fit it.
+   TFitResultPtr fitres = fithist->Fit(this,"RS");
+   Double_t xlow,xhigh;
+   this->GetRange(xlow,xhigh);
+   //Make a function that does not include the background
+   TF1 *tmppeak = new TF1(*((TF1*)(this)));
+   tmppeak->SetName("tmppeak");
+   tmppeak->SetParameter("step",0.0);
+   tmppeak->SetParameter("A",0.0);
+   tmppeak->SetParameter("B",0.0);
+   tmppeak->SetParameter("C",0.0);
+   
    //This is where we will do integrals and stuff.
-
-   TGRSIFit::SetFitResult(fitresult);
+   if(farea < 0.01){
+      farea = tmppeak->Integral(xlow,xhigh);
+      fd_area = tmppeak->IntegralError(xlow,xhigh,tmppeak->GetParameters(),fitres->GetCovarianceMatrix().GetMatrixArray());
+   }
+   delete tmppeak;
+   
 }
 
 /*

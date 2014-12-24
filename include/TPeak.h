@@ -32,7 +32,7 @@ class TPeak : public TGRSIFit {
    void SetCentroid(Double_t cent)  { fcentroid = cent; }
    void SetType(Option_t *type);
 
-   Bool_t SetFitResult(TFitResultPtr fitresult);
+   Bool_t Fit(TH1* fithist = 0);
 
    Double_t GetCentroid() const     { return fcentroid; }
    Double_t GetCentroidErr() const  { return fd_centroid; }
