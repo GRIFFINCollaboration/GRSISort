@@ -24,9 +24,9 @@ class TPeak : public TGRSIFit {
    ~TPeak();
  //  TPeak(const TPeak &copy);
    TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, TH1* fithist = 0, Option_t* type = "gsc");
+   TPeak():TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
    
  protected:
-   TPeak():ffitfunc(0),ffithist(0),TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
 
  public:   
    void SetCentroid(Double_t cent)  { fcentroid = cent; }
@@ -66,9 +66,6 @@ class TPeak : public TGRSIFit {
    Double_t fd_centroid; //->
    Double_t farea; //->
    Double_t fd_area; //->
-
-   TF1* ffitfunc;
-   TH1* ffithist;//!
 
   ClassDef(TPeak,1);
 
