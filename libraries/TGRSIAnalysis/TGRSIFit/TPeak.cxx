@@ -147,12 +147,12 @@ Bool_t TPeak::Fit(TH1* fithist){
 
    printf("HERE\n");
    //Now that it is initialized, let's fit it.
-   TFitResultPtr fitres = fithist->Fit((TF1*)(this),"RV");
+   TFitResultPtr fitres = fithist->Fit((TF1*)(this),"RVS");
    printf("HERE2\n");
    Double_t xlow,xhigh;
    this->GetRange(xlow,xhigh);
    //Make a function that does not include the background
- /*  TF1 *tmppeak = new TF1(*((TF1*)(this)));
+   TF1 *tmppeak = new TF1(*((TF1*)(this)));
    tmppeak->SetName("tmppeak");
    tmppeak->SetParameter("step",0.0);
    tmppeak->SetParameter("A",0.0);
@@ -165,7 +165,7 @@ Bool_t TPeak::Fit(TH1* fithist){
       fd_area = tmppeak->IntegralError(xlow,xhigh,tmppeak->GetParameters(),fitres->GetCovarianceMatrix().GetMatrixArray());
    }
    delete tmppeak;
-   */
+   
 }
 
 /*
