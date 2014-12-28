@@ -29,13 +29,14 @@ class TPeak : public TGRSIFit {
  protected:
 
  public:   
-   void SetCentroid(Double_t cent)  { fcentroid = cent; }
+   void SetCentroid(Double_t cent)  { SetParameter("centroid",cent); }
    void SetType(Option_t *type);
 
-   Bool_t Fit(TH1* fithist = 0);
+   Bool_t Fit(TH1* fithist, Option_t *opt = "");
+  // Bool_t Fit(TH1* fithist = 0);
 
-   Double_t GetCentroid() const     { return fcentroid; }
-   Double_t GetCentroidErr() const  { return fd_centroid; }
+   Double_t GetCentroid() const     { return GetParameter("cenroid"); }
+   Double_t GetCentroidErr() const  { return GetParError(GetParNumber("centroid")); }
    Double_t GetArea() const         { return farea; }
    Double_t GetAreaErr() const      { return fd_area; }
 /*
@@ -47,8 +48,6 @@ class TPeak : public TGRSIFit {
 
 
  protected:  
-   void SetCentroidErr(Double_t centerr){fd_centroid = centerr;}
-   void SetCentroid(Double_t cent, Double_t d_cent) { SetCentroid(cent); SetCentroidErr(d_cent);}
    void SetArea(Double_t a){farea = a;}
    void SetAreaErr(Double_t d_a){fd_area = d_a;}
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
@@ -62,8 +61,6 @@ class TPeak : public TGRSIFit {
 
  private:  
    //Centroid will eventually be read from parameters
-   Double_t fcentroid; //->
-   Double_t fd_centroid; //->
    Double_t farea; //->
    Double_t fd_area; //->
 

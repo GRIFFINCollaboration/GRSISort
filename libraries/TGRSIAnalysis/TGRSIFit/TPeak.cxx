@@ -35,7 +35,6 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_
       //Need to make a TMultipeak-like thing (does a helper class come into play then?)
 
    //Set the fit function to be a radware style photo peak.
-   this->fcentroid = cent;
    //This function might be unnecessary. Will revist this later. rd.
    this->SetName(Form("Chan%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh))); //Gives a default name to the peak
 
@@ -50,6 +49,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_
    this->SetParName(7,"B");
    this->SetParName(8,"C");
    this->SetParName(9,"bg_offset");
+
+   this->SetParameter("centroid",cent);
 
    if(fithist)
       this->InitParams(fithist);
@@ -95,7 +96,7 @@ Bool_t TPeak::InitParams(TH1 *fithist){
 //Makes initial guesses at parameters for the fit. Uses the histogram to
    Double_t xlow,xhigh;
    GetRange(xlow,xhigh);
-   Int_t bin = fithist->GetXaxis()->FindBin(fcentroid);
+   Int_t bin = fithist->GetXaxis()->FindBin(GetParameter("centroid"));
    Int_t binlow = fithist->GetXaxis()->FindBin(xlow);
    Int_t binhigh = fithist->GetXaxis()->FindBin(xhigh);
    Double_t binWidth = fithist->GetBinWidth(bin);
@@ -118,8 +119,9 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    //Actually set the parameters in the photopeak function
   //Fixing has to come after setting
   //Might have to include bin widths eventually
+  //The centroid should already be set by this point in the ctor
    this->SetParameter("Height",fithist->GetBinContent(bin));
-   this->SetParameter("centroid",fcentroid);
+   this->SetParameter("centroid",GetParameter("centroid"));
    this->SetParameter("sigma",1.0);
    this->SetParameter("beta",0.5);
    this->SetParameter("R", 1.0);
@@ -127,13 +129,13 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    this->SetParameter("A",fithist->GetBinContent(binlow));
    this->SetParameter("B",(fithist->GetBinContent(binlow) - fithist->GetBinContent(binhigh))/(xlow-xhigh));
    this->SetParameter("C",-0.5);
-   this->SetParameter("bg_offset",fcentroid);
+   this->SetParameter("bg_offset",GetParameter("centroid"));
    this->FixParameter(8,0);
    SetInitialized();
    return true;
 }
 
-Bool_t TPeak::Fit(TH1* fithist){
+Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    if(!fithist && fHistogram){
       fithist = fHistogram;
    }
@@ -145,10 +147,8 @@ Bool_t TPeak::Fit(TH1* fithist){
       InitParams(fithist);
    TVirtualFitter::SetMaxIterations(10000);
 
-   printf("HERE\n");
    //Now that it is initialized, let's fit it.
-   TFitResultPtr fitres = fithist->Fit((TF1*)(this),"RVS");
-   printf("HERE2\n");
+   TFitResultPtr fitres = fithist->Fit((TF1*)(this),Form("%sRS",opt));//The RS needs to always be there
    Double_t xlow,xhigh;
    this->GetRange(xlow,xhigh);
    //Make a function that does not include the background
@@ -226,8 +226,6 @@ void TPeak::Clear(){
 //Clear the TPeak including functions and histogram, does not
 //currently clear inherited members such as name.
 //want to make a clear that doesn't clear everything
-   fcentroid     = 0.0;
-   fd_centroid   = 0.0;
    farea         = 0.0;
    fd_area       = 0.0;
    TGRSIFit::Clear();
@@ -238,7 +236,7 @@ void TPeak::Clear(){
 void TPeak::Print(Option_t *opt) const{
 //Prints TPeak properties. To see More properties use the option "+"
    printf("Name:        %s \n", this->GetName()); 
-   printf("Centroid:    %lf +/- %lf \n", fcentroid,fd_centroid);
+   printf("Centroid:    %lf +/- %lf \n", this->GetParameter("centroid"),this->GetParError(GetParNumber("centroid")));
    printf("Area: 	      %lf +/- %lf \n", farea, fd_area);
    if(strchr(opt,'+') != NULL){
       TF1::Print();
