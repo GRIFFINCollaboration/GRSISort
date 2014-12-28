@@ -104,7 +104,6 @@ class TAnalysisTreeBuilder : public TObject {
    public:
       virtual ~TAnalysisTreeBuilder();
 
-
       static TAnalysisTreeBuilder* Get();
       void ProcessEvent();
 

@@ -1,11 +1,51 @@
-#include "TGRSIFitter.h"
+#include "TGRSIFit.h"
 
-ClassImp(TGRSIFitter)
+ClassImp(TGRSIFit);
 
-int TGRSIFitter::FitPeak(Int_t limit1, Int_t limit2, Double_t centroid) {} // termination version
+TGRSIFit::TGRSIFit(){
+   this->Clear();
+}
 
+TGRSIFit::TGRSIFit(const TGRSIFit &copy) : TF1(copy){
+   this->init_flag   = copy.init_flag;
+   this->goodfit_flag= copy.goodfit_flag;
+}
 
+void TGRSIFit::Print(Option_t *opt) const {
+   if(strchr(opt,'+') != NULL){
+      printf("Params Init: %d\n", init_flag);
+      printf("Good Fit:    %d\n", goodfit_flag);
+      TNamed::Print(opt);
+   }
+}
 
+void TGRSIFit::Clear() {
+   init_flag = false;
+   goodfit_flag = false;
+}
+
+/*
+int TGRSIFit::FitPeak(Int_t limit1, Int_t limit2, Double_t centroid) {} // termination version
+
+Double_t TGRSIFitter::Fit(TPeak *peak, Option_t *opt){
+//This is the algorithm used if a TPeak is passed to the fitter
+//It returns the chi2 of the fit or a negative number for an error
+//Errors: "-1": the TPeak* passed was empty
+   Bool_t verbosity = false;
+   if(strchr(opt,'v') != NULL){
+      verbosity = true;
+   }
+   if(peak = 0){
+      printf("Empty TPeak, please try again\n");
+      return -1;
+   }
+   
+   //Should figure out a way to send default parameters to the fitter. rd
+   TF1* fitfunc = peak->GetFitFunction();
+   //fitfunc->Print();
+   return 0;
+}
+*/
 
 
 

@@ -184,7 +184,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
 
    assert(fitter != 0); //make sure something was actually fit
    Double_t * covMatrix = fitres->GetCovarianceMatrix(); //This allows us to find the uncertainty in the integral
-
+   //I don't think I am doing this properly
    Double_t sigma_integral = photopeak->IntegralError(xp-rw,xp+rw)/binWidth;
 
    std::cout << "Integral = " << integral << " +/- " << sigma_integral << std::endl;

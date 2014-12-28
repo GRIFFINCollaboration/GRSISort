@@ -39,7 +39,4 @@ namespace TGRSIFunctions {
 
 }
 
-
-
-
 #endif
