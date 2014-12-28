@@ -24,7 +24,8 @@ class TGRSIFit : public TF1 {
 
  protected: 
    TGRSIFit();
-   TGRSIFit(const char *name,Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn, xmin, xmax, npar){};
+   //TGRSIFit(const char *name,Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn, xmin, xmax, npar){};
+   TGRSIFit(TF1 fitfunc) : TF1(fitfunc){};
    TGRSIFit(const TGRSIFit &copy);
   
  public:

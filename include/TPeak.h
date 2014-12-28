@@ -18,7 +18,7 @@ using namespace TGRSIFunctions;
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-class TPeak : public TGRSIFit {
+class TPeak : public virtual TGRSIFit {
  public: 
    //ctors and dtors
    ~TPeak();

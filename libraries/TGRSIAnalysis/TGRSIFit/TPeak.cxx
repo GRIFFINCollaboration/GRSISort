@@ -2,7 +2,7 @@
 
 ClassImp(TPeak)
 
-TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_t* type) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){ 
+TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_t* type) : TGRSIFit(TF1("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10)){ 
 
    this->Clear();
    Bool_t out_of_range_flag = false;
