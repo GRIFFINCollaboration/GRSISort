@@ -2,6 +2,7 @@
 
 ClassImp(TPeak)
 
+//This makes a temporary TF1 I think, but I'm not sure an easier (that is nice) way to do it
 TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_t* type) : TGRSIFit(TF1("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10)){ 
 
    this->Clear();

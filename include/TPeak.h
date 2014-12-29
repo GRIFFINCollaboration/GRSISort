@@ -21,7 +21,7 @@ using namespace TGRSIFunctions;
 class TPeak : public virtual TGRSIFit {
  public: 
    //ctors and dtors
-   ~TPeak();
+   virtual ~TPeak();
  //  TPeak(const TPeak &copy);
    TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, TH1* fithist = 0, Option_t* type = "gsc");
    TPeak():TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
