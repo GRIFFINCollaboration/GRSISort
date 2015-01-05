@@ -1,7 +1,39 @@
-#include "TECal.h"
+#include "TGainMatch.h"
 
-ClassImp(TECal)
+ClassImp(TGainMatch)
 
+TGainMatch::TGainMatch(){}
+
+TGainMatch::~TGainMatch(){}
+
+Bool_t TGainMatch::CourseMatch(TH1* hist, Int_t chanNum){
+//This functions is used to perform a rough gain matching on a 60Co
+//source. This makes gain matching over a wide range much easier to do afterwards
+   fcourse_match = true;
+   if(!hist) return false;
+   
+   TChannel *chan = TChannel::GetChannelByNumber(chanNum);
+   if(!chan){
+      printf("Channel Number %d does not exist in current memory.\n",chanNum);
+      return false;
+   }
+
+   
+
+
+   return true;
+}
+
+void TGainMatch::Print() const {
+   TCal::Print();
+}
+
+void TGainMatch::Clear() {
+   this->fcourse_match = true;
+   TCal::Clear();
+}
+
+   /*
 TECal::TECal(){
    this->OpenFile("GRSICal.root");
 }
@@ -163,3 +195,5 @@ Bool_t TECal::FitEnergyCal(){
 
    return true;
 }
+
+*/
