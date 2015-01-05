@@ -287,7 +287,7 @@ static int DrawCredits(bool draw, bool extended)
 
    y = DrawCreditItem("Conception: ", gConception, y, draw);
 
-   y += 2*lineSpacing;
+   y += 2*lineSpacing - 1;
 
    y = DrawCreditItem("Lead Developers: ", gLeadDevelopers, y, draw);
 
@@ -338,6 +338,7 @@ static int DrawCredits(bool draw, bool extended)
       }
    }
 */
+   y += 10;
    return y;
 }
 
