@@ -19,10 +19,12 @@ NamespaceImp(TGRSIFunctions);
 Double_t TGRSIFunctions::PolyBg(Double_t *x, Double_t *par,Int_t order) {
 //Polynomial function of the form SUM(par[i]*(x - shift)^i). The shift is done to match parameters with Radware output. 
 
-   if(sizeof(par)/sizeof(par[0]) < (order + 2)){
+/*   if((Double_t)(sizeof(par))/(Double_t)(sizeof(par[0])) < (order + 2)){ //This doesn't work with the current method
       std::cout << "not enough parameters passed to function" << std::endl;
+      std::cout << "sizeof par = " << sizeof(par) << std::endl;
+      std::cout << "size of par[0] = " << sizeof(par[0]) << std::endl; 
       return 0;
-   }   
+   }   */
 
    Double_t result = 0.0;
    for(Int_t i = 0; i<order; i++) {
@@ -53,6 +55,11 @@ Double_t TGRSIFunctions::StepFunction(Double_t *dim, Double_t *par){
 Double_t TGRSIFunctions::PhotoPeak(Double_t *dim, Double_t *par){
 //Returns the combination of a TGRSIFunctions::Gaus + a TGRSIFunctions::SkewedGaus  
    return Gaus(dim,par) + SkewedGaus(dim,par);
+}
+
+Double_t TGRSIFunctions::PhotoPeakBG(Double_t *dim, Double_t *par){
+//Returns a single RadWare style peak   
+   return Gaus(dim,par) + SkewedGaus(dim,par) + StepFunction(dim,par) + PolyBg(dim,&par[6],2);
 }
 
 Double_t TGRSIFunctions::Gaus(Double_t *dim, Double_t *par){

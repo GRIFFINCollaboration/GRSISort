@@ -85,15 +85,11 @@ static void ParseMNEMONIC(std::string *name,MNEMONIC *mnemonic) {
    return;
 }
 
-
 static void ParseMNEMONIC(const char *name,MNEMONIC *mnemonic) {
    std::string sname = name;
    ParseMNEMONIC(&sname,mnemonic);
    return;
 }
-
-
-
 
 static void PrintMNEMONIC(MNEMONIC *mnemonic) {
 	if(!mnemonic)

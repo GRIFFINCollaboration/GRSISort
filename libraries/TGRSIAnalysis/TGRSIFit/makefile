@@ -1,5 +1,5 @@
 
-OBJECTS = TGRSIFunctions.o TGRSIFunctionsDict.o TGRSIFitter.o TGRSIFitterDict.o TPeak.o TPeakDict.o 
+OBJECTS = TGRSIFunctions.o TGRSIFunctionsDict.o TGRSIFit.o TGRSIFitDict.o TPeak.o TPeakDict.o 
 
 CFLAGS += -fPIC
 
@@ -10,7 +10,7 @@ CAT=cat
 
 .PHONY: all clean gone
 
-all: libTGRSIFitter.so
+all: libTGRSIFit.so
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
 
 

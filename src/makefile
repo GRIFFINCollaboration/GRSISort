@@ -38,7 +38,7 @@ LIBS += -lNucleus
 LIBS += -lKinematics
 LIBS += -lSRIM
 LIBS += -lTECal
-LIBS += -lTGRSIFitter
+LIBS += -lTGRSIFit
 
 DETLIBS =  -lTigress
 DETLIBS += -lSharc
