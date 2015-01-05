@@ -43,6 +43,7 @@ class TGRSIint : public TRint {
       void InitFlags();
       void ApplyOptions();
       //void SetEnv();
+      void DrawLogo();
 
    private: 
       bool fPrintLogo;

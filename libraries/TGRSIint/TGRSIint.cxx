@@ -15,7 +15,12 @@
 #include "TGHtmlBrowser.h"
 //#include <pstream.h>
 
+#include <thread>
+
 ClassImp(TGRSIint)
+
+extern void PopupLogo(bool);
+extern void WaitLogo();
 
 TGRSIint *TGRSIint::fTGRSIint = NULL;
 
@@ -152,9 +157,17 @@ void TGRSIint::PrintLogo(bool print) {
      printf("\t*%*s%*s*\n",width/2+5,"GRSI SPOON", width/2-5, "");
      printf("\t*%*s%*s*\n",width/2+reflength/2, ref.c_str(), width/2-reflength/2, "");
      printf("\t*%*s%*s*\n",width/2+14,"A lean, mean sorting machine", width/2-14, "");
-     printf("\t*%*s%*s*\n",width/2+9, "version 2.2.0 beta", width/2-9, "");
+     printf("\t*%*s%*s*\n",width/2+9, "version 2.2.0 stable", width/2-9, "");
      printf("\t*%s*\n", std::string(width,'*').c_str());   
+
+     std::thread drawlogo(&TGRSIint::DrawLogo,this);
+     drawlogo.detach();
    }
+}
+
+void TGRSIint::DrawLogo() {
+   PopupLogo(false);
+   WaitLogo();
 }
 
 void TGRSIint::GetOptions(int *argc, char **argv) {
