@@ -10,6 +10,7 @@ LDROOT += -lXMLParser
 LDROOT += -lXMLIO
 LDROOT += -lProof
 LDROOT += -lGuiHtml
+LDROOT += -lSpectrum
 
 INC = -I$(BASE)/include
 INC += -I$(MIDASSYS)/include
@@ -37,7 +38,7 @@ LIBS += -lGRSIFormat
 LIBS += -lNucleus
 LIBS += -lKinematics
 LIBS += -lSRIM
-LIBS += -lTECal
+LIBS += -lTCal
 LIBS += -lTGRSIFit
 
 DETLIBS =  -lTigress
