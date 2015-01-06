@@ -78,7 +78,6 @@ void GH1D::Draw(Option_t *option) {
       gPad->SetCrosshair();
       if(tgc_ptr) {
          //gPad->GetCanvas()->Connect("ProcessEvent(Int_t,Int_t,Int_t,TObject*)","TCanvas",tgc_ptr,"CatchEvent(Int_t,Int_t,Int_t,TObject*)");
-         TQObject::Connect("TCanvas", "ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", "GCanvas",tgc_ptr,"CatchEvent(Int_t,Int_t,Int_t,TObject*)");
       }
    }
    printf("Draw called\t\t%p\n",gPad);

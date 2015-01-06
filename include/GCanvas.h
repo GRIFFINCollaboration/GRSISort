@@ -13,8 +13,10 @@ class GCanvas : public TCanvas {
         virtual ~GCanvas();
 
         //void ProcessEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
-        void CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
+        //void CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
 
+        void HandleInput(EEventType event,Int_t x,Int_t y);
+        void ExecuteEvent(Int_t event,Int_t x,Int_t y);
 
    private:
       void GCanvasInit();
