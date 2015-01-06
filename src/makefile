@@ -10,6 +10,7 @@ LDROOT += -lXMLParser
 LDROOT += -lXMLIO
 LDROOT += -lProof
 LDROOT += -lGuiHtml
+LDROOT += -lSpectrum
 
 INC = -I$(BASE)/include
 INC += -I$(MIDASSYS)/include

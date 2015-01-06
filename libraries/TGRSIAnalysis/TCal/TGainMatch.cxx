@@ -11,49 +11,63 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
 //source. This makes gain matching over a wide range much easier to do afterwards
    fcoarse_match = true;
    if(!hist) return false;
-   
+
+   //I might want to do a clear of the gainmatching parameters at this point.
+
+   //Check to see that the histogram isn't empty
+   if(hist->GetEntries() > 1){
+      printf("The histogram is empty\n");
+      return false;
+   }
+
+   //See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
    TChannel *chan = TChannel::GetChannelByNumber(chanNum);
    if(!chan){
       printf("Channel Number %d does not exist in current memory.\n",chanNum);
       return false;
    }
 
-   std::vector<Double_t> engvec(2);
+   //Set the channel number
+   SetChannelNumber(chanNum);
 
+   std::vector<Double_t> engvec(2); //This is the vector of expected energies
+   //We do coarse gain matching on 60Co. So I have hardcoded the energies for now
    engvec.push_back(1173.228);
    engvec.push_back(1332.492);
  
-   TSpectrum *s = new TSpectrum();
+   //Use a TSpectrum to find the two largest peaks in the spectrum
+   TSpectrum *s = new TSpectrum; //This might not have to be allocated
    Int_t nfound = s->Search(hist,2,"goff",0.08); //This will be dependent on the source used.
-   
-   
 
+   //If we didn't find two peaks, it is likely we gave it garbage
    if(nfound <2){
       std::cout << "Did not find enough peaks" << std::endl;
-      exit(1);
+      delete s;
+      return false;
    }
 
-   std::vector<Double_t> foundchan;
+   //We want to store the centroids of the found peaks
+   std::vector<Double_t> foundbin(2);
    for(int x=0;x<nfound;x++)
-      foundchan.push_back(s->GetPositionX()[x]);
+      foundbin.push_back(s->GetPositionX()[x]);
+ 
+   //Get Bin Width for use later. I am using the first peak found to set the bin width
+   //If you are using antisymmetric binning... god help you.
+   Double_t binWidth = hist->GetBinWidth(foundbin[0]);
 
+   //Set the number of data points to 2. In the gain matching graph.
+   this->Set(2);
 
+   //We now want to create a peak for each one we found (2) and fit them.
+   for(int x=0; x<nfound; x++){
+      TPeak tmpPeak(foundbin[x],foundbin[x] - 20./binWidth, foundbin[x] + 20./binWidth);
+      tmpPeak.SetName(Form("GM_Chan%u_%lf",GetChannelNumber(),foundbin[x]));//Change the name of the TPeak to know it's origin
+      tmpPeak.Fit(hist,"+");
+      this->SetPoint(x,engvec[x],tmpPeak.GetParameter("centroid"));
+   }
 
+   this->Fit("pol1","C0");
 
-
-
-
-
-
-
-   Double_t *energies = &(engvec[0]);
-   Double_t *goodenergy = &(goodenergyvec[0]);
-
-   TGraph* slopefit = new TGraph(nfound, goodenergy, energies);
-
-   TFitResultPtr fitres = slopefit->Fit("pol1","SC0");
-//   if(slopefit->GetFunction("pol1")->GetChisquare() > 10.) {
-//      slopefit->RemovePoint(slopefit->GetN()-1);
    delete s;
    return true;
 }

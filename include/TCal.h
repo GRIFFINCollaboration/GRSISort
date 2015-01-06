@@ -27,19 +27,29 @@
 #include "../include/TGRSITransition.h"
 
 
-class TCal : public TMultiGraph {
+class TCal : public TGraphErrors {
  public: 
    TCal();
-   TCal(const char* name, const char* title) : TMultiGraph(name,title){}
+   TCal(const char* name, const char* title){SetNameTitle(name,title);}
    virtual ~TCal(); 
+
+ public:
+   UInt_t GetChannelNumber() const { return fchanNum; }
 
  protected: 
    virtual void Clear();
    virtual void Print() const;
+   
+   void SetChannelNumber(UInt_t channum) { fchanNum = channum; }
+   virtual Bool_t IsGroupable() const = 0;
 
  protected:
    std::vector<Double_t> fcoeffs;
    std::vector<Double_t> fdcoeffs;
+
+ private:
+   UInt_t fchanNum;
+   
    /*
    void OpenFile(const char * filename);
  public:

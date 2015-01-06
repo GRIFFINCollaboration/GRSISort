@@ -2,6 +2,8 @@
 #define __TGAINMATCH_H__
 
 #include "TCal.h"
+#include "TPeak.h"
+#include "TSpectrum.h"
 
 class TGainMatch : public TCal {
  public: 
@@ -14,6 +16,8 @@ class TGainMatch : public TCal {
 
    void Clear();
    void Print() const;
+
+   Bool_t IsGroupable() const {return false;}
 
  private:
    Bool_t fcoarse_match;

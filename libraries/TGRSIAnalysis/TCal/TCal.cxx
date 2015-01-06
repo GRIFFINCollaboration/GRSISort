@@ -11,9 +11,11 @@ TCal::~TCal(){}
 void TCal::Clear(){
    this->fcoeffs.clear();
    this->fdcoeffs.clear();
+   this->fchanNum = 0;
 }
 
 void TCal::Print() const{
+   printf("Channel Number: %u",fchanNum);
    printf("Coefficients:\n");
    for(Int_t i=0; i<fcoeffs.size();i++){
       printf("Coefficient %d: %lf +/- %lf\n",i,fcoeffs[i],fdcoeffs[i]);
