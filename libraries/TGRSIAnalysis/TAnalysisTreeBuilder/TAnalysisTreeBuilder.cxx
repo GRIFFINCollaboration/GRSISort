@@ -627,7 +627,7 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
          tigress = (TTigress*) det->second;
       } else if(strcmp(det->first,"SH") == 0) {
          sharc = (TSharc*) det->second;
-      } else if(strcmp(det->first,"TR") == 0) {
+      } else if(strcmp(det->first,"Tr") == 0) {
          triFoil = (TTriFoil*) det->second;
          //*rf = *((TRf*) det->second);
       } else if(strcmp(det->first,"CS") == 0) {
@@ -715,11 +715,11 @@ void TAnalysisTreeBuilder::ProcessEvent() {
                (*detectors)["SH"] = new TSharc;
             }
             (*detectors)["SH"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("TR")==0) {	
-            if(detectors->find("TR") == detectors->end()) {
-               (*detectors)["TR"] = new TTriFoil;
+         } else if(mnemonic.system.compare("Tr")==0) {	
+            if(detectors->find("Tr") == detectors->end()) {
+               (*detectors)["Tr"] = new TTriFoil;
             }
-            (*detectors)["TR"]->FillData(&(event->at(i)),channel,&mnemonic);
+            (*detectors)["Tr"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("CS")==0) {	
             if(detectors->find("CS") == detectors->end()) {
                (*detectors)["CS"] = new TCSM;

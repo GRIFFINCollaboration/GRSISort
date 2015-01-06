@@ -52,21 +52,29 @@ void TSharcHit::Print(Option_t *options)	{
 
 
 Double_t  TSharcHit::GetFrontChgHeight() {
-  TChannel *chan = TChannel::GetChannel(front_address);
+  int temp_add = back_address;
+  if((0x00f00000&back_address) != 0x00200000) {
+    temp_add += 0x00200000;
+  }
+  TChannel *chan = TChannel::GetChannel(temp_add);
   if(!chan) {
-    printf("AHHHH, can't find sharc channel with address 0x%p in TChannel\n",front_address);
+    printf("AHHHH, can't find sharc channel with address %p in TChannel\n",temp_add);
     return front_charge;
   }
-  return ((double)(front_charge)+gRandom->Uniform())/((double)chan->GetIntegration());
+  return chan->CalibrateENG(front_charge);
 }
 
 Double_t  TSharcHit::GetBackChgHeight() {
-  TChannel *chan = TChannel::GetChannel(back_address);
+  int temp_add = back_address;
+  if((0x00f00000&back_address) != 0x00200000) {
+    temp_add += 0x00200000;
+  }
+  TChannel *chan = TChannel::GetChannel(temp_add);
   if(!chan) {
-    printf("AHHHH, can't find sharc channel with address 0x%p in TChannel\n",back_address);
+    printf("AHHHH, can't find sharc channel with address %p in TChannel\n",temp_add);
     return back_charge;
   }
-  return ((double)(front_charge)+gRandom->Uniform())/((double)chan->GetIntegration());
+  return chan->CalibrateENG(back_charge); //((double)(front_charge)+gRandom->Uniform())/((double)chan->GetIntegration());
 }
 
 
@@ -75,7 +83,7 @@ Double_t  TSharcHit::GetPadChgHeight() {
      return 0.0;
   TChannel *chan = TChannel::GetChannel(p_address);
   if(!chan) {
-    printf("AHHHH, can't find sharc channel with address 0x%p in TChannel\n",p_address);
+    printf("AHHHH, can't find sharc channel with address %p in TChannel\n",p_address);
     return pad_charge;
   }
   return ((double)(front_charge)+gRandom->Uniform())/((double)chan->GetIntegration());

@@ -130,6 +130,7 @@ static Pixmap GetRootLogo()
    Pixmap logo = 0;
    Screen *xscreen = XDefaultScreenOfDisplay(gDisplay);
    if (!xscreen) return logo;
+
    int depth = PlanesOfScreen(xscreen);
 
 
@@ -158,16 +159,25 @@ static Pixmap GetRootLogo()
 #endif // defined(XpmColorKey)
    std::string file;
    file.append(getenv("GRSISYS"));
-   file.append("/libraries/TGRSIint/grsisplash.xpm");
+   file.append("/libraries/TGRSIint/grsisplash_bw.xpm");
+   
+   //printf("test 2\n");
+   //printf("file:  %s\n",file.c_str());
+
 #ifdef ROOTICONPATH
    //snprintf(file, sizeof(file), "%s/Splash.xpm", ROOTICONPATH);
    ///snprintf(file, sizeof(file), "%s/Splash.xpm", ROOTICONPATH);
 #else
    //snprintf(file, sizeof(file), "%s/icons/Splash.xpm", getenv("ROOTSYS"));
 #endif
+   //printf("test 3\n");
    int ret = XpmReadFileToPixmap(gDisplay, gLogoWindow,
                                  (char*)file.c_str(), &logo, 0, &attr);
+   //printf("test 4\n");
    XpmFreeAttributes(&attr);
+   //printf("test 5\n");
+
+   //printf("logo  = %i\n",logo);
 
    if (ret == XpmSuccess || ret == XpmColorError)
       return logo;
@@ -280,7 +290,12 @@ static int DrawCredits(bool draw, bool extended)
    // If extended is true draw or returns size for extended full
    // credits list.
 
+   //printf("here 1 \n");
+
    if (!gFont) return 150;  // size not important no text will be drawn anyway
+
+   
+   //printf("here 2 \n");
 
    int lineSpacing = gFont->max_bounds.ascent + gFont->max_bounds.descent;
    int y = lineSpacing;
@@ -357,7 +372,7 @@ void ScrollCredits(int ypos)
 void PopupLogo(bool about)
 {
    // Popup logo, waiting till ROOT is ready to run.
-
+   //printf("here 8\n");
    gDisplay = XOpenDisplay("");
    if (!gDisplay) return;
 
@@ -372,12 +387,16 @@ void PopupLogo(bool about)
    gLogoWindow = XCreateSimpleWindow(gDisplay, DefaultRootWindow(gDisplay),
                                      -100, -100, 50, 50, 0, fore, back);
 
+   //printf("here 9\n");
    gLogoPixmap = GetRootLogo();
+   //printf("here 9.5    gLogoPixmap = %i\n",gLogoPixmap);
+   
    if (!gLogoPixmap) {
       XCloseDisplay(gDisplay);
       gDisplay = 0;
       return;
    }
+   //printf("here 10\n");
 
    Window root;
    int x, y;
@@ -386,6 +405,8 @@ void PopupLogo(bool about)
                 &bw, &depth);
 
    Screen *xscreen = XDefaultScreenOfDisplay(gDisplay);
+
+
    if (!xscreen) {
       XCloseDisplay(gDisplay);
       gDisplay = 0;
@@ -533,3 +554,7 @@ void CloseDisplay()
    if (gDisplay)
       close(ConnectionNumber(gDisplay));
 }
+
+
+
+

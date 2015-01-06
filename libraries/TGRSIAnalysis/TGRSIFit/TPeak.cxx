@@ -2,11 +2,11 @@
 
 ClassImp(TPeak)
 
-TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_t* type) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){ 
+//This makes a temporary TF1 I think, but I'm not sure an easier (that is nice) way to do it
+TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){ 
 
    this->Clear();
    Bool_t out_of_range_flag = false;
-   if(!fithist) fithist = fHistogram;
 
    if(cent > xhigh){
       printf("centroid is higher than range\n");
@@ -52,8 +52,6 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TH1* fithist, Option_
 
    this->SetParameter("centroid",cent);
 
-   if(fithist)
-      this->InitParams(fithist);
 }
 
 TPeak::~TPeak(){
@@ -137,6 +135,7 @@ Bool_t TPeak::InitParams(TH1 *fithist){
 
 Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    if(!fithist && fHistogram){
+      printf("No hist passed, trying something...");
       fithist = fHistogram;
    }
    if(!fithist){
@@ -145,10 +144,11 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    }
    if(!IsInitialized()) 
       InitParams(fithist);
-   TVirtualFitter::SetMaxIterations(10000);
+   TVirtualFitter::SetMaxIterations(100000);
 
    //Now that it is initialized, let's fit it.
-   TFitResultPtr fitres = fithist->Fit((TF1*)(this),Form("%sRS",opt));//The RS needs to always be there
+   TFitResultPtr fitres = fithist->Fit(this,Form("%sRSM",opt));//The RS needs to always be there
+   printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
    Double_t xlow,xhigh;
    this->GetRange(xlow,xhigh);
    //Make a function that does not include the background
@@ -233,7 +233,7 @@ void TPeak::Clear(){
 
 }
 
-void TPeak::Print(Option_t *opt) const{
+void TPeak::Print(Option_t *opt) const {
 //Prints TPeak properties. To see More properties use the option "+"
    printf("Name:        %s \n", this->GetName()); 
    printf("Centroid:    %lf +/- %lf \n", this->GetParameter("centroid"),this->GetParError(GetParNumber("centroid")));
