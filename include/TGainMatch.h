@@ -15,7 +15,7 @@ class TGainMatch : public TCal {
    Bool_t CoarseMatch(TH1 *hist,Int_t channelNum);
 
    void Clear();
-   void Print() const;
+   void Print(Option_t *opt = "") const;
 
    Bool_t IsGroupable() const {return false;}
 

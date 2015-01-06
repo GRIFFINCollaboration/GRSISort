@@ -14,7 +14,7 @@ void TCal::Clear(){
    this->fchanNum = 0;
 }
 
-void TCal::Print() const{
+void TCal::Print(Option_t *opt) const{
    printf("Channel Number: %u",fchanNum);
    printf("Coefficients:\n");
    for(Int_t i=0; i<fcoeffs.size();i++){

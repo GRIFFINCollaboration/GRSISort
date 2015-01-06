@@ -38,7 +38,7 @@ class TCal : public TGraphErrors {
 
  protected: 
    virtual void Clear();
-   virtual void Print() const;
+   virtual void Print(Option_t *opt = "") const;
    
    void SetChannelNumber(UInt_t channum) { fchanNum = channum; }
    virtual Bool_t IsGroupable() const = 0;

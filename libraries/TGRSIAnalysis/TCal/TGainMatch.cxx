@@ -15,7 +15,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
    //I might want to do a clear of the gainmatching parameters at this point.
 
    //Check to see that the histogram isn't empty
-   if(hist->GetEntries() > 1){
+   if(hist->GetEntries() < 1){
       printf("The histogram is empty\n");
       return false;
    }
@@ -30,14 +30,14 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
    //Set the channel number
    SetChannelNumber(chanNum);
 
-   std::vector<Double_t> engvec(2); //This is the vector of expected energies
+   std::vector<Double_t> engvec; //This is the vector of expected energies
    //We do coarse gain matching on 60Co. So I have hardcoded the energies for now
    engvec.push_back(1173.228);
    engvec.push_back(1332.492);
  
    //Use a TSpectrum to find the two largest peaks in the spectrum
    TSpectrum *s = new TSpectrum; //This might not have to be allocated
-   Int_t nfound = s->Search(hist,2,"goff",0.08); //This will be dependent on the source used.
+   Int_t nfound = s->Search(hist); 
 
    //If we didn't find two peaks, it is likely we gave it garbage
    if(nfound <2){
@@ -47,10 +47,11 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
    }
 
    //We want to store the centroids of the found peaks
-   std::vector<Double_t> foundbin(2);
-   for(int x=0;x<nfound;x++)
-      foundbin.push_back(s->GetPositionX()[x]);
- 
+   std::vector<Double_t> foundbin;
+   for(int x=0;x<nfound;x++){
+      foundbin.push_back((Double_t)(s->GetPositionX()[x]));
+      printf("Found peak at bin %lf\n",foundbin[x]);
+   }
    //Get Bin Width for use later. I am using the first peak found to set the bin width
    //If you are using antisymmetric binning... god help you.
    Double_t binWidth = hist->GetBinWidth(foundbin[0]);
@@ -62,7 +63,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
    for(int x=0; x<nfound; x++){
       TPeak tmpPeak(foundbin[x],foundbin[x] - 20./binWidth, foundbin[x] + 20./binWidth);
       tmpPeak.SetName(Form("GM_Chan%u_%lf",GetChannelNumber(),foundbin[x]));//Change the name of the TPeak to know it's origin
-      tmpPeak.Fit(hist,"+");
+      tmpPeak.Fit(hist,"EM+");
       this->SetPoint(x,engvec[x],tmpPeak.GetParameter("centroid"));
    }
 
@@ -72,7 +73,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
    return true;
 }
 
-void TGainMatch::Print() const {
+void TGainMatch::Print(Option_t *opt) const {
    printf("GainMatching: ");
    if(fcoarse_match) 
       printf("COARSE\n");
