@@ -1,6 +1,8 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#define GRSI_RELEASE "2.2.0 stable"
+
 #define RESET_COLOR "\e[m"
 #define BLUE "\e[1;34m"
 #define YELLOW "\e[1;33m"

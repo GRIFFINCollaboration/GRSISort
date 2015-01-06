@@ -1,15 +1,11 @@
 
-OBJECTS = TGRSIOptions.o TGRSIOptionsDict.o TGRSIint.o TGRSIintDict.o grsixx.o
+OBJECTS = GCanvas.o GH1D.o GROOTDict.o GTree.o GChain.o 
+INCDIR = $(BASE)/include
+DICTOBJ = $(INCDIR)/GCanvas.h $(INCDIR)/GH1D.h $(INCDIR)/GTree.h $(INCDIR)/GChain.h
+DICTNAM = GROOT
 
 CFLAGS += -fPIC
-
-
-ifeq ($(PLATFORM),Darwin)
-export __APPLE__ = 1
-else
-CFLAGS += -DLINUX
-WORDS = words.o
-endif
+LFLAGS = `root-config --glibs`
 
 #COMP_STRING="Now Compling "
 DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
@@ -18,13 +14,12 @@ CAT=cat
 
 .PHONY: all clean gone
 
-all: libTGRSIint.so
+all: libGROOT.so
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
 
-
-libTGRSIint.so: $(OBJECTS)
+%.so: $(OBJECTS)
 	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"
-	@$(COMPILESHARED)$@ $(CFLAGS) -olibTGRSIint.so $(OBJECTS) $(WORDS)  2> temp.log || touch temp.errors
+	@$(COMPILESHARED)$@ $(CFLAGS) $(LFLAGS) -o$@ $(OBJECTS) 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
 		&& $(CAT) temp.log && \
@@ -35,7 +30,7 @@ libTGRSIint.so: $(OBJECTS)
 		else printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10  $(OK_STRING); \
 		fi;
 	@$(RM) -f temp.errors temp.log
-	@cp libTGRSIint.so ..
+	@cp $@ ..
 
 %.o: %.cxx
 	@printf " ${COM_COLOR}%s ${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@ 
@@ -51,11 +46,9 @@ libTGRSIint.so: $(OBJECTS)
 		fi;
 	@$(RM) -f temp.errors temp.log
 
-
-
-%Dict.cxx: $(BASE)/include/%.h
+$(DICTNAM)Dict.cxx: $(DICTOBJ)
 	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
-	@rootcint -f $@ -c $^ 2> temp.log || touch temp.errors
+	@rootcint -f $@ -c -I$(INCDIR) -p $(DICTOBJ) $(DICTNAM)LinkDef.h 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
 		&& $(CAT) temp.log && \

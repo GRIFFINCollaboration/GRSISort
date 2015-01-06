@@ -57,7 +57,12 @@ DETLIBS += -lPaces
 DETLIBS += -lDescant
 DETLIBS += -lGRSIDetector
 
+DETLIBS += -lGROOT
+
 SYSLIBS = #-ldl -lxml2
+SYSLIBS += -lX11 
+SYSLIBS += -lXpm
+
 
 #COMP_STRING="Now Compiling"
 
