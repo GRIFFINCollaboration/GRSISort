@@ -154,7 +154,8 @@ void TGRSIint::PrintLogo(bool print) {
 
      const unsigned int width = reflength + (reflength % 2);
      printf("\t*%s*\n", std::string(width,'*').c_str());   
-     printf("\t*%*s%*s*\n",width/2+5,"GRSI SPOON", width/2-5, "");
+     printf("\t*%*s%*s*\n",width/2+4,"GRSI Sort", width/2-4, "");
+     printf("\t*%*s%*s*\n",width/2+12,"a remake of GRSI SPOON", width/2-12, "");
      printf("\t*%*s%*s*\n",width/2+reflength/2, ref.c_str(), width/2-reflength/2, "");
      printf("\t*%*s%*s*\n",width/2+14,"A lean, mean sorting machine", width/2-14, "");
      printf("\t*%*s%*s*\n",width/2+9, "version 2.2.0 stable", width/2-9, "");
