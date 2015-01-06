@@ -27,9 +27,10 @@
 #include "../include/TGRSITransition.h"
 
 
-class TCal : public TGraphErrors {
+class TCal : public TMultiGraph {
  public: 
    TCal();
+   TCal(const char* name, const char* title) : TMultiGraph(name,title){}
    virtual ~TCal(); 
 
  protected: 

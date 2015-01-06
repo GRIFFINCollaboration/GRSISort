@@ -6,10 +6,10 @@ TGainMatch::TGainMatch(){}
 
 TGainMatch::~TGainMatch(){}
 
-Bool_t TGainMatch::CourseMatch(TH1* hist, Int_t chanNum){
+Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
 //This functions is used to perform a rough gain matching on a 60Co
 //source. This makes gain matching over a wide range much easier to do afterwards
-   fcourse_match = true;
+   fcoarse_match = true;
    if(!hist) return false;
    
    TChannel *chan = TChannel::GetChannelByNumber(chanNum);
@@ -18,18 +18,57 @@ Bool_t TGainMatch::CourseMatch(TH1* hist, Int_t chanNum){
       return false;
    }
 
+   std::vector<Double_t> engvec(2);
+
+   engvec.push_back(1173.228);
+   engvec.push_back(1332.492);
+ 
+   TSpectrum *s = new TSpectrum();
+   Int_t nfound = s->Search(hist,2,"goff",0.08); //This will be dependent on the source used.
+   
    
 
+   if(nfound <2){
+      std::cout << "Did not find enough peaks" << std::endl;
+      exit(1);
+   }
 
+   std::vector<Double_t> foundchan;
+   for(int x=0;x<nfound;x++)
+      foundchan.push_back(s->GetPositionX()[x]);
+
+
+
+
+
+
+
+
+
+
+   Double_t *energies = &(engvec[0]);
+   Double_t *goodenergy = &(goodenergyvec[0]);
+
+   TGraph* slopefit = new TGraph(nfound, goodenergy, energies);
+
+   TFitResultPtr fitres = slopefit->Fit("pol1","SC0");
+//   if(slopefit->GetFunction("pol1")->GetChisquare() > 10.) {
+//      slopefit->RemovePoint(slopefit->GetN()-1);
+   delete s;
    return true;
 }
 
 void TGainMatch::Print() const {
+   printf("GainMatching: ");
+   if(fcoarse_match) 
+      printf("COARSE\n");
+   else              
+      printf("FINE\n");
    TCal::Print();
 }
 
 void TGainMatch::Clear() {
-   this->fcourse_match = true;
+   this->fcoarse_match = true;
    TCal::Clear();
 }
 
