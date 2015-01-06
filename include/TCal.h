@@ -1,4 +1,7 @@
-#include <TObject.h>
+#ifndef __TCAL_H__
+#define __TCAL_H__
+
+#include <TNamed.h>
 #include "TH1.h"
 #include "TF1.h"
 #include "TList.h"
@@ -24,12 +27,30 @@
 #include "../include/TGRSITransition.h"
 
 
-class TECal : public TObject {
+class TCal : public TGraphErrors {
  public: 
-   TECal();
-   TECal(const char *filename);
-   ~TECal(); 
+   TCal();
+   TCal(const char* name, const char* title){SetNameTitle(name,title);}
+   virtual ~TCal(); 
 
+ public:
+   UInt_t GetChannelNumber() const { return fchanNum; }
+
+ protected: 
+   virtual void Clear();
+   virtual void Print(Option_t *opt = "") const;
+   
+   void SetChannelNumber(UInt_t channum) { fchanNum = channum; }
+   virtual Bool_t IsGroupable() const = 0;
+
+ protected:
+   std::vector<Double_t> fcoeffs;
+   std::vector<Double_t> fdcoeffs;
+
+ private:
+   UInt_t fchanNum;
+   
+   /*
    void OpenFile(const char * filename);
  public:
    void CalibrateEfficiency();
@@ -49,7 +70,9 @@ class TECal : public TObject {
    std::map<Int_t,std::map<std::string,TGraphErrors*>> fefficiencyMap;
 
    void AddGraph(Int_t channum, const char *nucname, TGraphErrors *graph, const char* directory = "");
-
-  ClassDef(TECal,1);
+*/
+  ClassDef(TCal,1);
 
 };
+
+#endif

@@ -18,12 +18,12 @@ using namespace TGRSIFunctions;
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-class TPeak : public virtual TGRSIFit {
+class TPeak : public TGRSIFit {
  public: 
    //ctors and dtors
    virtual ~TPeak();
  //  TPeak(const TPeak &copy);
-   TPeak(Double_t cent, Double_t xlow = 0, Double_t xhigh = 0, TH1* fithist = 0, Option_t* type = "gsc");
+   TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type="gsc");
    TPeak():TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
    
  protected:
@@ -35,7 +35,7 @@ class TPeak : public virtual TGRSIFit {
    Bool_t Fit(TH1* fithist, Option_t *opt = "");
   // Bool_t Fit(TH1* fithist = 0);
 
-   Double_t GetCentroid() const     { return GetParameter("cenroid"); }
+   Double_t GetCentroid() const     { return GetParameter("centroid"); }
    Double_t GetCentroidErr() const  { return GetParError(GetParNumber("centroid")); }
    Double_t GetArea() const         { return farea; }
    Double_t GetAreaErr() const      { return fd_area; }
