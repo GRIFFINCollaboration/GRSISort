@@ -17,7 +17,7 @@ TCal::~TCal(){
 }
 
 void TCal::Clear(){
-   this->fchanNum = 0;
+   this->fchanNum = 9999;
 }
 
 void TCal::Print(Option_t *opt) const{
