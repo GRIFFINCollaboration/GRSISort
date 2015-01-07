@@ -9,7 +9,6 @@ TGainMatch::~TGainMatch(){}
 Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
 //This functions is used to perform a rough gain matching on a 60Co
 //source. This makes gain matching over a wide range much easier to do afterwards
-   fcoarse_match = true;
    if(!hist) return false;
 
    //I might want to do a clear of the gainmatching parameters at this point.
@@ -57,21 +56,120 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
    Double_t binWidth = hist->GetBinWidth(foundbin[0]);
 
    //Set the number of data points to 2. In the gain matching graph.
-   this->Set(2);
+   Graph()->Set(2);
 
    //We now want to create a peak for each one we found (2) and fit them.
    for(int x=0; x<nfound; x++){
       TPeak tmpPeak(foundbin[x],foundbin[x] - 20./binWidth, foundbin[x] + 20./binWidth);
       tmpPeak.SetName(Form("GM_Chan%u_%lf",GetChannelNumber(),foundbin[x]));//Change the name of the TPeak to know it's origin
       tmpPeak.Fit(hist,"EM+");
-      this->SetPoint(x,engvec[x],tmpPeak.GetParameter("centroid"));
+      Graph()->SetPoint(x,engvec[x],tmpPeak.GetParameter("centroid"));
    }
 
-   this->Fit("pol1","C0");
+   TFitResultPtr fitres = Graph()->Fit("pol1","SC0+");
 
+   //We have finished gain matching so let the TGainMatch know that it is a coarse gain
+   fcoarse_match = true;
    delete s;
    return true;
 }
+
+Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2, Int_t channelNum){
+//You need to pass a TPeak with the centroid and range set to the real energy centroid and ranges.
+//The function uses the coarse gain parameters to find the peak and gain matches the raw spectrum.
+//This is more useful as it allows a script to find all of the peaks.
+   
+   if(!hist1 || !hist2) return false;
+
+   //Check to see that the histogram isn't empty
+   if(hist1->GetEntries() < 1 || hist2->GetEntries() < 1){
+      printf("Histogram is empty\n");
+      return false;
+   }
+
+   //See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
+   TChannel *chan = TChannel::GetChannelByNumber(channelNum);
+   if(!chan){
+      printf("Channel Number %d does not exist in current memory.\n",channelNum);
+      return false;
+   }
+
+   //Set the channel number
+   SetChannelNumber(channelNum);
+   Graph()->Set(2);
+
+   //The first thing we need to do is "un-gain correct" the centroids of the TPeaks.
+   //First read in the rough gain coefficients
+   std::vector<Double_t> rough_coeffs = chan->GetENGCoeff();
+   
+   Double_t gain = rough_coeffs.at(1);
+
+   //Find the energy of the peak that we want to use
+   Double_t energy[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
+
+   //Offsets are very small right now so I'm not including them until they become a problem.
+   peak1->SetParameter("centroid",energy[0]/gain);
+   peak2->SetParameter("centroid",energy[1]/gain);
+
+   //Change the range for the fit to be in the gain corrected spectrum
+   peak1->SetRange(peak1->GetXmin()/gain,peak1->GetXmax()/gain);
+   peak2->SetRange(peak2->GetXmin()/gain,peak2->GetXmin()/gain);
+
+   peak1->Fit(hist1,"EM");
+   peak2->Fit(hist2,"EM");
+
+   Double_t centroid[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
+
+   //Put the peaks in order for ease (if the user put them in the wrong order)
+   if ( energy[0] > energy[1]){
+         std::swap(energy[0], energy[1]);
+         std::swap(centroid[0],centroid[1]);
+   }
+
+   Graph()->SetPoint(0,energy[0],centroid[0]);
+   Graph()->SetPoint(1,energy[1],centroid[1]);
+   
+   TFitResultPtr fitres = Graph()->Fit("pol1","SC0+");
+
+   fcoarse_match = false;
+   return true;
+
+}
+
+Bool_t TGainMatch::FineMatch(TH1* hist, TPeak* peak1, TPeak* peak2, Int_t channelNum){
+//You need to pass a TPeak with the centroid and range set to the real energy centroid and ranges.
+//The function uses the coarse gain parameters to find the peak and gain matches the raw spectrum.
+//This is more useful as it allows a script to find all of the peaks.
+
+   return FineMatch(hist,peak1,hist,peak1,channelNum);
+
+}
+
+
+Bool_t TGainMatch::FineMatch(TH1* hist, Double_t energy1, Double_t energy2, Int_t channelNum){
+//Performs fine gain matching on one histogram once we have set the rough energy
+//coefficients.
+
+   return FineMatch(hist,energy1,hist,energy2,channelNum);
+}
+
+Bool_t TGainMatch::FineMatch(TH1* hist1, Double_t energy1, TH1* hist2, Double_t energy2, Int_t channelNum){
+//Performs fine gain matching on two histograms once we have set the rough energy
+//coefficients. You use this if you have a two different sources giving your full range 
+//of energy. This histograms should be binned the same. NOT IMPLEMENTED
+
+   //using an automatic range of 10 keV for testing purposes.
+   TPeak *peak1 = new TPeak(energy1,energy1-10.0,energy1+10.0);
+   TPeak *peak2 = new TPeak(energy2,energy2-10.0,energy2+10.0);
+   
+   Bool_t result = FineMatch(hist1,peak1,hist2,peak2,channelNum);
+
+   delete peak1;
+   delete peak2;
+   return result;
+}
+
+
 
 void TGainMatch::Print(Option_t *opt) const {
    printf("GainMatching: ");
