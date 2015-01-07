@@ -1,5 +1,5 @@
 
-OBJECTS = TCal.o TCalDict.o TGainMatch.o TGainMatchDict.o
+OBJECTS = TCal.o TCalDict.o TEfficiencyCal.o TEfficiencyCalDict.o TEnergyCal.o TEnergyCalDict.o TGainMatch.o TGainMatchDict.o
 
 CFLAGS += -fPIC
 
