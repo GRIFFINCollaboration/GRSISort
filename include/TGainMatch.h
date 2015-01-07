@@ -18,6 +18,9 @@ class TGainMatch : public TCal {
    Bool_t FineMatch(TH1 *hist1, Double_t energy1, Double_t energy2, Int_t channelNum);
    Bool_t FineMatch(TH1 *hist1, Double_t energy1, TH1 *hist2, Double_t energy2, Int_t channelNum);
 
+   std::vector<Double_t> GetParameters() const;
+   Double_t GetParameter(Int_t parameter) const;
+
    void Clear();
    void Print(Option_t *opt = "") const;
 

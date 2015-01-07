@@ -33,16 +33,20 @@ class TCal : public TNamed {
    TCal(const char* name, const char* title);
    virtual ~TCal(); 
 
+ //pure virtual functions  
+   virtual Bool_t IsGroupable() const = 0;
+   virtual std::vector<Double_t> GetParameters() const = 0;
+   virtual Double_t GetParameter(Int_t parameter) const = 0;
+
  public:
    UInt_t GetChannelNumber() const { return fchanNum; }
-   TGraphErrors *Graph() { return fgraph; }
+   TGraphErrors *Graph() const { return fgraph; }
 
  protected: 
    virtual void Clear();
    virtual void Print(Option_t *opt = "") const;
    
    void SetChannelNumber(UInt_t channum) { fchanNum = channum; }
-   virtual Bool_t IsGroupable() const = 0;
 
  private:
    UInt_t fchanNum;
