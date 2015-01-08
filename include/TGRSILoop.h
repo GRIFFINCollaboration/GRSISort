@@ -9,7 +9,7 @@
 #include <thread>
 #endif
 
-#include <TObject.h>
+#include "TObject.h"
 
 #include "TGRSIint.h"
 #include "TMidasFile.h"

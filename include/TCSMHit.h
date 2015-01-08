@@ -9,7 +9,7 @@
 #include "TChannel.h"
 #include "TVector3.h" 
 
-#include <TGRSIDetectorHit.h>
+#include "TGRSIDetectorHit.h"
 
 class TCSMHit : public TGRSIDetectorHit 	{
 	public:

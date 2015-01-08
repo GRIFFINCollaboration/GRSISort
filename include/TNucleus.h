@@ -9,7 +9,7 @@
 #include <fstream>
 #include <string>
 
-#include <TGRSITransition.h>
+#include "TGRSITransition.h"
 
 #include "TObject.h"
 #include "TNamed.h"

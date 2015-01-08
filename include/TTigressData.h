@@ -10,7 +10,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 
-#include <TGRSIDetectorData.h>
+#include "TGRSIDetectorData.h"
 
 class TTigressData : public TGRSIDetectorData {
 

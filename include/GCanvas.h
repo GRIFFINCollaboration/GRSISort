@@ -1,7 +1,7 @@
 #ifndef GRUTCANVAS_H
 #define GRUTCANVAS_H
 
-#include <TCanvas.h>
+#include "TCanvas.h"
 
 class GCanvas : public TCanvas {
    public:
