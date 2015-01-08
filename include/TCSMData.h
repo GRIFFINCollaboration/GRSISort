@@ -20,7 +20,7 @@ using namespace std ;
 #include "TFragment.h"
 #include "TChannel.h"
 
-#include <TGRSIDetectorData.h>
+#include "TGRSIDetectorData.h"
 
 class TCSMData : public TGRSIDetectorData  {
 private:

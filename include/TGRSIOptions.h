@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <string>
 
-#include <TObject.h>
+#include "TObject.h"
 
 namespace TGRSIOptions {
 

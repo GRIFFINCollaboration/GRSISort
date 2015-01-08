@@ -9,9 +9,9 @@
 #include <vector>
 
 //#include "TChannel.h"
-#include <TVector3.h> 
-#include <TObject.h> 
-#include <Rtypes.h>
+#include "TVector3.h" 
+#include "TObject.h" 
+#include "Rtypes.h"
 
 
 class TGRSIDetectorHit : public TObject 	{

@@ -485,7 +485,7 @@ Int_t TChannel::ReadCalFile(const char *filename) {
    if(infilename.length()==0)
       return 0;
 
-   ifstream infile;
+   std::ifstream infile;
    infile.open(infilename.c_str());
    if (!infile) {
       printf("could not open file.\n");

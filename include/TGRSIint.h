@@ -7,11 +7,11 @@
 #include <cstdio>
 #include <string>
 
-#include <TSystem.h>
-#include <TSysEvtHandler.h>
-#include <TRint.h>
-#include <TList.h>
-#include <TEnv.h>
+#include "TSystem.h"
+#include "TSysEvtHandler.h"
+#include "TRint.h"
+#include "TList.h"
+#include "TEnv.h"
 
 class TGRSIint : public TRint {
 
@@ -32,7 +32,7 @@ class TGRSIint : public TRint {
       void PrintHelp(bool);
       void PrintLogo(bool);
       bool HandleTermInput();
-      int  TabCompletionHook(char*,int*,ostream&);
+      int  TabCompletionHook(char*,int*,std::ostream&);
 
       //bool Sort() {return TEventLoop::Get()->SortMidas();}
 

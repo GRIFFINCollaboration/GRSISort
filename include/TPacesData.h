@@ -5,11 +5,11 @@
 #include <cstdio>
 #include <vector>
 
-#include <Globals.h>
-#include <TFragment.h>
-#include <TChannel.h>
+#include "Globals.h"
+#include "TFragment.h"
+#include "TChannel.h"
 
-#include <TGRSIDetectorData.h>
+#include "TGRSIDetectorData.h"
 
 class TPacesData : public TGRSIDetectorData {
 

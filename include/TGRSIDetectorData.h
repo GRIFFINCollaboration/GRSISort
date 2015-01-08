@@ -11,7 +11,7 @@
 
 #include <cstdlib>
 
-#include <TObject.h>
+#include "TObject.h"
 
 class TGRSIDetectorData {
 

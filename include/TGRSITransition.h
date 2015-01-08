@@ -3,8 +3,8 @@
 
 #include <cstdio>
 
-#include <TClass.h>
-#include <TObject.h>
+#include "TClass.h"
+#include "TObject.h"
 
 class TGRSITransition : public TObject {
    friend class TNucleus;
