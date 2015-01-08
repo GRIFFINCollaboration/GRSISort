@@ -6,15 +6,15 @@
 #include <vector>
 #include <cstdio>
 
-#include <TSceptarHit.h>
+#include "TSceptarHit.h"
 #ifndef __CINT__
-#include <TSceptarData.h>
+#include "TSceptarData.h"
 #else
 class TSceptarData;
 #endif
-#include <TVector3.h> 
+#include "TVector3.h" 
 
-#include <TGRSIDetector.h> 
+#include "TGRSIDetector.h" 
 
 
 class TSceptar : public TGRSIDetector {
@@ -44,7 +44,7 @@ class TSceptar : public TGRSIDetector {
 
    public:
 //     static bool SetWave()      { return fSetWave;  }	                        //!
-     bool SetBeta(bool flag = true) { beta = flag; }                          //!
+     void SetBeta(bool flag = true) { beta = flag; }                          //!
      bool Beta()                {return beta;}                                //!  
 
    private:

@@ -6,17 +6,17 @@
 #include <vector>
 #include <cstdio>
 
-#include <TGriffinHit.h>
+#include "TGriffinHit.h"
 #ifndef __CINT__
-#include <TGriffinData.h>
+#include "TGriffinData.h"
 #else
 class TGriffinData;
 #endif
-#include <TBGOData.h>
-#include <TVector3.h> 
+#include "TBGOData.h"
+#include "TVector3.h" 
 
-#include <TGriffinHit.h>
-#include <TGRSIDetector.h> 
+#include "TGriffinHit.h"
+#include "TGRSIDetector.h" 
 
 
 class TGriffin : public TGRSIDetector {

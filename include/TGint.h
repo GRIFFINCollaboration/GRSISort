@@ -1,7 +1,7 @@
 #ifndef TGINT_H
 #define TGINT_H
 
-#include <TRint.h>
+#include "TRint.h"
 
 class TGint : public TRint {
 

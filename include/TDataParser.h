@@ -7,9 +7,9 @@
 #include <vector>
 #include <map>
 
-#include <TChannel.h>
-#include <TFragment.h>
-//#include <TObject.h>
+#include "TChannel.h"
+#include "TFragment.h"
+//#include "TObject.h"
 
 class TDataParser { //: public TObject { 
 

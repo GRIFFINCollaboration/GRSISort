@@ -11,10 +11,10 @@
 #ifndef __CINT__
 #endif
 
-#include <TMath.h>
-#include <TVector3.h>
+#include "TMath.h"
+#include "TVector3.h"
 
-#include <TGRSIDetector.h>
+#include "TGRSIDetector.h"
 
 #ifndef __CINT__
 #include "TSharcData.h"

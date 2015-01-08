@@ -1,3 +1,6 @@
+#ifndef TPEAK_H
+#define TPEAK_H
+
 #include "TGRSIFunctions.h"
 #include "TGRSIFit.h"
 #include "TF1.h"
@@ -68,3 +71,4 @@ class TPeak : public TGRSIFit {
 
 };
 
+#endif
