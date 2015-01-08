@@ -6,9 +6,9 @@ TGainMatch::TGainMatch(){}
 
 TGainMatch::~TGainMatch(){}
 
-Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
+Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Double_t energy2){
 //This functions is used to perform a rough gain matching on a 60Co
-//source. This makes gain matching over a wide range much easier to do afterwards
+//source by default. This makes gain matching over a wide range much easier to do afterwards
    if(!hist) return false;
 
    //I might want to do a clear of the gainmatching parameters at this point.
@@ -31,8 +31,11 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
 
    std::vector<Double_t> engvec; //This is the vector of expected energies
    //We do coarse gain matching on 60Co. So I have hardcoded the energies for now
-   engvec.push_back(1173.228);
-   engvec.push_back(1332.492);
+   engvec.push_back(energy1);
+   engvec.push_back(energy2);
+
+   //Sort these in case the peak is returned in the wrong order
+   std::sort(engvec.begin(),engvec.end()); 
  
    //Use a TSpectrum to find the two largest peaks in the spectrum
    TSpectrum *s = new TSpectrum; //This might not have to be allocated
@@ -51,6 +54,8 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum){
       foundbin.push_back((Double_t)(s->GetPositionX()[x]));
       printf("Found peak at bin %lf\n",foundbin[x]);
    }
+   std::sort(foundbin.begin(),foundbin.end()); 
+
    //Get Bin Width for use later. I am using the first peak found to set the bin width
    //If you are using antisymmetric binning... god help you.
    Double_t binWidth = hist->GetBinWidth(foundbin[0]);
