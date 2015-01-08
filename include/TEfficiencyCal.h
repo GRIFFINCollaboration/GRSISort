@@ -15,12 +15,17 @@ class TEfficiencyCal : public TCal {
    std::vector<Double_t> GetParameters() const;
    Double_t GetParameter(Int_t parameter) const;
 
-   void Clear();
+   void Clear(Option_t *opt = "");
    void Print(Option_t *opt = "") const;
+
+   void SetFitFunction(void* fnc);
 
    Bool_t IsGroupable() const {return true;}
 
+   void ScaleGraph(Double_t scale_factor) const{};
+
  private:
+   Double_t fscale_factor;
    
    ClassDef(TEfficiencyCal,1);
 

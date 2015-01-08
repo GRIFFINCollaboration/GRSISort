@@ -42,8 +42,10 @@ class TCal : public TNamed {
    UInt_t GetChannelNumber() const { return fchanNum; }
    TGraphErrors *Graph() const { return fgraph; }
 
+   virtual void SetFitFunction(void* fnc){};
+
  protected: 
-   virtual void Clear();
+   virtual void Clear(Option_t *opt = "");
    virtual void Print(Option_t *opt = "") const;
    
    void SetChannelNumber(UInt_t channum) { fchanNum = channum; }

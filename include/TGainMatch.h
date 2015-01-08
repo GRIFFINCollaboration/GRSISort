@@ -4,6 +4,7 @@
 #include "TCal.h"
 #include "TPeak.h"
 #include "TSpectrum.h"
+#include <algorithm>
 
 class TGainMatch : public TCal {
  public: 
