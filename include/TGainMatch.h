@@ -5,6 +5,7 @@
 #include "TPeak.h"
 #include "TSpectrum.h"
 #include <algorithm>
+#include <map>
 
 class TGainMatch : public TCal {
  public: 
@@ -22,14 +23,14 @@ class TGainMatch : public TCal {
    std::vector<Double_t> GetParameters() const;
    Double_t GetParameter(Int_t parameter) const;
 
-   void Clear();
+   void Clear(Option_t *opt = "");
    void Print(Option_t *opt = "") const;
 
    Bool_t IsGroupable() const {return false;}
 
  private:
    Bool_t fcoarse_match;
-   
+
    ClassDef(TGainMatch,1);
 
 };

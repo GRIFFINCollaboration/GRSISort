@@ -196,8 +196,6 @@ Double_t TGainMatch::GetParameter(Int_t parameter) const{
    return Graph()->GetFunction("gain")->GetParameter(parameter); //Root does all of the checking for us.
 }
 
-
-
 void TGainMatch::Print(Option_t *opt) const {
    printf("GainMatching: ");
    if(fcoarse_match) 
@@ -207,7 +205,7 @@ void TGainMatch::Print(Option_t *opt) const {
    TCal::Print();
 }
 
-void TGainMatch::Clear() {
+void TGainMatch::Clear(Option_t *opt) {
    this->fcoarse_match = true;
    TCal::Clear();
 }
