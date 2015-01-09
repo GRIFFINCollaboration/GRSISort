@@ -9,7 +9,7 @@
 #include <map>
 #include <string>
 
-#include <TH1D.h>
+#include "TH1D.h"
 
 class GH1D : public TH1D {
 

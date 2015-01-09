@@ -11,10 +11,10 @@
 #include "TChannel.h"
 #include "TCrystalHit.h"
 
-#include <TMath.h>
-#include <TVector3.h>
+#include "TMath.h"
+#include "TVector3.h"
 
-#include <TGRSIDetectorHit.h>
+#include "TGRSIDetectorHit.h"
 
 
 class TTigressHit : public TGRSIDetectorHit {

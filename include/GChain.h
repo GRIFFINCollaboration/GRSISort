@@ -1,7 +1,7 @@
 #ifndef GChain__H
 #define GChain__H
 
-#include <TChain.h>
+#include "TChain.h"
 
 class GChain : public TChain { 
 

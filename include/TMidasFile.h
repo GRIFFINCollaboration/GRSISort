@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include <TObject.h>
+#include "TObject.h"
 
 class TMidasEvent;
 

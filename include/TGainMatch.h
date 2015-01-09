@@ -13,6 +13,13 @@ class TGainMatch : public TCal {
 
  public:
    Bool_t CoarseMatch(TH1 *hist,Int_t channelNum);
+   Bool_t FineMatch(TH1 *hist1, TPeak* peak1, TH1 *hist2, TPeak* peak2, Int_t channelNum);
+   Bool_t FineMatch(TH1 *hist, TPeak* peak1, TPeak* peak2, Int_t channelNum);
+   Bool_t FineMatch(TH1 *hist1, Double_t energy1, Double_t energy2, Int_t channelNum);
+   Bool_t FineMatch(TH1 *hist1, Double_t energy1, TH1 *hist2, Double_t energy2, Int_t channelNum);
+
+   std::vector<Double_t> GetParameters() const;
+   Double_t GetParameter(Int_t parameter) const;
 
    void Clear();
    void Print(Option_t *opt = "") const;

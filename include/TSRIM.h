@@ -9,10 +9,10 @@
 #include<map>
 #include<utility>
 
-#include<TGraph.h>
-#include<TSpline.h>
-#include<TH1.h>
-#include<TF1.h>
+#include"TGraph.h"
+#include"TSpline.h"
+#include"TH1.h"
+#include"TF1.h"
 
 #include<iostream>
 using namespace std;

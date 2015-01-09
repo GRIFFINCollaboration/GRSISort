@@ -11,7 +11,7 @@
 #include "TChannel.h"
 
 #ifndef __CINT__
-#include <TGRSIDetectorData.h>
+#include "TGRSIDetectorData.h"
 #else
 class TGRSIDetectorData;
 #endif

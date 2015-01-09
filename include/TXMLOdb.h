@@ -19,9 +19,9 @@
 #include <string>
 #include <vector>
 
-#include <TXMLNode.h>
-#include <TXMLDocument.h>
-#include <TDOMParser.h>
+#include "TXMLNode.h"
+#include "TXMLDocument.h"
+#include "TDOMParser.h"
 
 
 //#include "VirtualOdb"

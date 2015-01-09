@@ -125,7 +125,7 @@ bool TGRSIint::HandleTermInput() {
    return TRint::HandleTermInput();
 }
 
-int TGRSIint::TabCompletionHook(char* buf, int* pLoc, ostream& out) {
+int TGRSIint::TabCompletionHook(char* buf, int* pLoc, std::ostream& out) {
    return TRint::TabCompletionHook(buf,pLoc,out);
 }
 

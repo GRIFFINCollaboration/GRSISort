@@ -10,7 +10,7 @@
 
 #include "TFragment.h"
 #ifndef __CINT__
-#include <TTriFoilData.h>
+#include "TTriFoilData.h"
 #else
 class TTriFoilData;
 #endif
