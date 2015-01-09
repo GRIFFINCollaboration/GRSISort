@@ -4,14 +4,14 @@
 #include <cstdio>
 #include <cmath>
 
-#include <TFragment.h>
-#include <TChannel.h>
-#include <TCrystalHit.h>
+#include "TFragment.h"
+#include "TChannel.h"
+#include "TCrystalHit.h"
 
-#include <TVector3.h>
+#include "TVector3.h"
 
 
-#include <TGRSIDetectorHit.h>
+#include "TGRSIDetectorHit.h"
 
 
 class TSceptarHit : public TGRSIDetectorHit {

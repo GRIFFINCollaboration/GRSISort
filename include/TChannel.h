@@ -25,18 +25,18 @@
  /////////////////////////////////////////////////////////////////////////
 
 
-#include<string>
-#include<cmath>
-#include<utility>
-#include<map>
+#include <string>
+#include <cmath>
+#include <utility>
+#include <map>
 
-#include<TNamed.h>
-#include<TRandom.h>
-#include<TList.h>
-#include<TTree.h>
+#include "TNamed.h"
+#include "TRandom.h"
+#include "TList.h"
+#include "TTree.h"
 
-#include"TFragment.h"
-#include"Globals.h"
+#include "TFragment.h"
+#include "Globals.h"
 
 class TChannel : public TNamed	{
 

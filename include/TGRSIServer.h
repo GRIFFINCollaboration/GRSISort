@@ -16,10 +16,10 @@
  *
 */ 
 
-#include <TServerSocket.h>
-#include <TMonitor.h>
-#include <TSocket.h>
-#include <TMessage.h>
+#include "TServerSocket.h"
+#include "TMonitor.h"
+#include "TSocket.h"
+#include "TMessage.h"
 
 
 class TGRSIServer : public TServerSocket {

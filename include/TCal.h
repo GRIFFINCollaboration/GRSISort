@@ -1,7 +1,7 @@
 #ifndef __TCAL_H__
 #define __TCAL_H__
 
-#include <TNamed.h>
+#include "TNamed.h"
 #include "TH1.h"
 #include "TF1.h"
 #include "TList.h"
@@ -27,51 +27,32 @@
 #include "../include/TGRSITransition.h"
 
 
-class TCal : public TGraphErrors {
+class TCal : public TNamed {
  public: 
    TCal();
-   TCal(const char* name, const char* title){SetNameTitle(name,title);}
+   TCal(const char* name, const char* title);
    virtual ~TCal(); 
+
+ //pure virtual functions  
+   virtual Bool_t IsGroupable() const = 0;
+   virtual std::vector<Double_t> GetParameters() const = 0;
+   virtual Double_t GetParameter(Int_t parameter) const = 0;
 
  public:
    UInt_t GetChannelNumber() const { return fchanNum; }
+   TGraphErrors *Graph() const { return fgraph; }
 
  protected: 
    virtual void Clear();
    virtual void Print(Option_t *opt = "") const;
    
    void SetChannelNumber(UInt_t channum) { fchanNum = channum; }
-   virtual Bool_t IsGroupable() const = 0;
-
- protected:
-   std::vector<Double_t> fcoeffs;
-   std::vector<Double_t> fdcoeffs;
 
  private:
    UInt_t fchanNum;
-   
-   /*
-   void OpenFile(const char * filename);
- public:
-   void CalibrateEfficiency();
-   void CalibrateEnergy();
-   Bool_t FitEnergyCal();
-   void AddEnergyGraph(TGraphErrors *graph, Int_t channum, const char *nucname, const char* directory = "");
-   void AddEnergyGraph(Int_t channum, const char *nucname, TGraphErrors *graph, const char* directory = "");
-   void AddEfficiencyGraph(Int_t channum, const char * nucname, TGraphErrors *graph,const char* directory = "");
-   void AutoFitSource();
+   TGraphErrors *fgraph;
 
-
-   void ColorGraphsBySource(Bool_t colflag = kTRUE, TDirectory* source = NULL);
-
- private:
-   TFile *effFile; //= NULL;
-   std::map<Int_t,std::map<std::string,TGraphErrors*>> fenergyMap;
-   std::map<Int_t,std::map<std::string,TGraphErrors*>> fefficiencyMap;
-
-   void AddGraph(Int_t channum, const char *nucname, TGraphErrors *graph, const char* directory = "");
-*/
-  ClassDef(TCal,1);
+   ClassDef(TCal,1);
 
 };
 

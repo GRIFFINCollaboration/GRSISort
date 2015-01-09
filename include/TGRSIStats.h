@@ -1,6 +1,8 @@
+#ifndef TGRSISTATS_H
+#define TGRSISTATS_H
 
 #include <map>
-#include <TObject.h>
+#include "TObject.h"
 
 
 
@@ -67,4 +69,4 @@ class TGRSIStats : public TObject {
 };
 
 
-
+#endif

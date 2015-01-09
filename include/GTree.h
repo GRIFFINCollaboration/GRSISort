@@ -1,7 +1,7 @@
 #ifndef GTREE__H
 #define GTREE__H
 
-#include <TTree.h>
+#include "TTree.h"
 
 class GTree : public TTree { 
 

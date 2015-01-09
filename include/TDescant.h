@@ -6,15 +6,15 @@
 #include <vector>
 #include <cstdio>
 
-#include <TDescantHit.h>
+#include "TDescantHit.h"
 #ifndef __CINT__
-#include <TDescantData.h>
+#include "TDescantData.h"
 #else
 class TDescantData;
 #endif
-#include <TVector3.h> 
+#include "TVector3.h" 
 
-#include <TGRSIDetector.h> 
+#include "TGRSIDetector.h" 
 
 
 class TDescant : public TGRSIDetector {
@@ -44,7 +44,7 @@ class TDescant : public TGRSIDetector {
 
    public:
      static bool SetWave()      { return fSetWave;  }	                        //!
-     bool SetHit(bool flag = true) { hit_flag = flag; }                          //!
+     void SetHit(bool flag = true) { hit_flag = flag; }                          //!
      bool Hit()                {return hit_flag;}                                //!  
 
    private:

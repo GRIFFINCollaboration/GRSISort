@@ -26,10 +26,10 @@ class TCSMData;
 #endif
 #include "TCSMHit.h"
 
-#include <TMath.h>
-#include <TVector3.h>
+#include "TMath.h"
+#include "TVector3.h"
 
-#include <TGRSIDetector.h>
+#include "TGRSIDetector.h"
 
 #ifndef PI
 #define PI                       (TMath::Pi())

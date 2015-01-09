@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <vector>
 
-#include <TGRSIDetectorHit.h>
+#include "TGRSIDetectorHit.h"
 
 
 class TCrystalHit : public TGRSIDetectorHit	{

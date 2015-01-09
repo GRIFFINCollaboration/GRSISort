@@ -1,4 +1,6 @@
 
+#include "Globals.h"
+
 #include <TClass.h>
 #include <TPaveStats.h>
 #include <TList.h>
@@ -10,39 +12,40 @@
 
 #include "GCanvas.h"
 
+#include <iostream>
+
 int GCanvas::lastx = 0;
 int GCanvas::lasty = 0;
 
 GCanvas::GCanvas(Bool_t build)
-            :TCanvas(build)  {  
+        :TCanvas(build)  {  
    GCanvasInit();
-
 }
 
 
 GCanvas::GCanvas(const char* name, const char* title, Int_t form)
-            :TCanvas(name,title,form) { 
+        :TCanvas(name,title,form) { 
    GCanvasInit();
 
 }
 
 
 GCanvas::GCanvas(const char* name, const char* title, Int_t ww, Int_t wh)
-            :TCanvas(name,title,ww,wh) { 
+        :TCanvas(name,title,ww,wh) { 
    GCanvasInit();
 
 }
 
 
 GCanvas::GCanvas(const char* name, Int_t ww, Int_t wh, Int_t winid)
-            :TCanvas(name,ww,wh,winid) { 
+        :TCanvas(name,ww,wh,winid) { 
    GCanvasInit();
 
 }
 
 
 GCanvas::GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t ww, Int_t wh)
-            :TCanvas(name,title,wtopx,wtopy,ww,wh) { 
+        :TCanvas(name,title,wtopx,wtopy,ww,wh) { 
    GCanvasInit();
 }
 
@@ -54,6 +57,8 @@ GCanvas::~GCanvas() {
 void GCanvas::GCanvasInit() {
    printf("GCanvasInit called.\n");
 
+   //TQObject::Connect("TCanvas", "HandleInput(Int_t,Int_t,Int_t)", "GCanvas",this,"CatchEvent(Int_t,Int_t,Int_t)");
+   //TQObject::Connect("TCanvas", "ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", "GCanvas",this,"CatchEvent(Int_t,Int_t,Int_t,TObject*)");
 
 }
 
@@ -67,7 +72,7 @@ void GCanvas::GCanvasInit() {
 //}
 
 
-void GCanvas::CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj) {
+//void GCanvas::CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj) {
    //printf("{GCanvas} CatchEvent:\n");
    //printf("\tevent: \t0x%08x\n",event);
    //printf("\tobject:\t0x%08x",obj);
@@ -82,14 +87,45 @@ void GCanvas::CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj) {
    //   printf("\n");
    //printf("\tx:     \t%i\n",x);
    //printf("\ty:     \t%i\n",y);
-   switch(event) {
-      case kKeyPress: 
-         HandleKeyPress(x,y,obj);
-         break;
+//   switch(event) {
+//      case kArrowKeyPress:
+//      case kKeyPress: 
+//         HandleKeyPress(x,y,0);
+//         break;
+//       default:
+//         TCanvas::HandleInput((EEventType)event,x,y);
+//         return;;
+//   };
+//   TCanvas::ProcessedEvent(event,x,y,0);
+//   return;
+//}
 
-   };
+void GCanvas::ExecuteEvent(Int_t event,Int_t x,Int_t y) { 
+  printf("exc event called.\n");
 }
 
+void GCanvas::HandleInput(EEventType event,Int_t x,Int_t y) {
+   printf(DRED);
+   printf("{GCanvas} HandleEvent:\n");
+   printf("\tevent: \t0x%08x\n",event);
+   if(this->GetSelected())
+      printf("\tfselected found[0x%08x]\t %s\n",this->GetSelected(),this->GetSelected()->GetName());
+   printf(RESET_COLOR);
+   switch(event) {
+      case kArrowKeyPress:
+      case kArrowKeyRelease:
+      case kKeyPress: 
+      case kKeyRelease:
+         HandleKeyPress(x,y,this->GetSelected());
+         break;
+       default:
+         //TCanvas::HandleInput(event,x,y);
+         return;
+   };
+   //TCanvas::ProcessedEvent(event,x,y,this->GetSelected());
+   return;
+
+}
 
 
 void GCanvas::UpdateStatsInfo(int x, int y) {
@@ -112,27 +148,32 @@ void GCanvas::UpdateStatsInfo(int x, int y) {
 }
 
 void GCanvas::HandleKeyPress(int x,int key,TObject *obj) {
-
-   //printf("\tx:     \t%i\n",x);
-   //printf("\ty:     \t%i\n",y);
+   printf(DBLUE);
+   //printf("\tevent  \t%i\n",this->GetEvent());
+   std::cout << "\tevent  \t" << this->GetEvent() << "\n";
+   printf("\tx:     \t%i\n",x);
+   printf("\tkey:   \t%i\n",key);
+   printf(RESET_COLOR);
    switch(key) {
       case kKey_Up:
-         printf("UP!\n");         
-         printf("\tobj = %s\n",obj->GetName());
-
+         printf("UP!\n");    
+         if(obj)
+            printf("\tobj = %s\n",obj->GetName());
          break;
       case kKey_Down:
          printf("DOWN!\n");         
-         printf("\tobj = %s\n",obj->GetName());
+         if(obj)
+            printf("\tobj = %s\n",obj->GetName());
          break;
       case kKey_Right:
          printf("RIGHT!\n");         
-         printf("\tobj = %s\n",obj->GetName());
+         if(obj)
+            printf("\tobj = %s\n",obj->GetName());
          break;
       case kKey_Left:
          printf("LEFT!\n");         
-         printf("\tobj = %s\n",obj->GetName());
+         if(obj)
+            printf("\tobj = %s\n",obj->GetName());
          break;
-
    };
 }

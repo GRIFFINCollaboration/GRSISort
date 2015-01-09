@@ -6,15 +6,15 @@
 #include <vector>
 #include <cstdio>
 
-#include <TPacesHit.h>
+#include "TPacesHit.h"
 #ifndef __CINT__
-#include <TPacesData.h>
+#include "TPacesData.h"
 #else
 class TPacesData;
 #endif
-#include <TVector3.h> 
+#include "TVector3.h" 
 
-#include <TGRSIDetector.h> 
+#include "TGRSIDetector.h" 
 
 
 class TPaces : public TGRSIDetector {
