@@ -7,7 +7,7 @@ TCal::TCal(){
    fchanNum = 9999;
 }
 
-TCal::TCal(const char* name, const char* title) : TCal() {
+TCal::TCal(const char* name, const char* title) {
    SetNameTitle(name,title);
    fgraph->SetNameTitle(name,title);
 }
