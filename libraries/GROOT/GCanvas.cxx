@@ -56,10 +56,9 @@ GCanvas::~GCanvas() {
 
 void GCanvas::GCanvasInit() {
    printf("GCanvasInit called.\n");
-
+//   this->SetCrosshair(true);
    //TQObject::Connect("TCanvas", "HandleInput(Int_t,Int_t,Int_t)", "GCanvas",this,"CatchEvent(Int_t,Int_t,Int_t)");
-   //TQObject::Connect("TCanvas", "ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", "GCanvas",this,"CatchEvent(Int_t,Int_t,Int_t,TObject*)");
-
+   TQObject::Connect("TCanvas", "ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", "GCanvas",this,"CatchEvent(Int_t,Int_t,Int_t,TObject*)");
 }
 
 
@@ -72,10 +71,10 @@ void GCanvas::GCanvasInit() {
 //}
 
 
-//void GCanvas::CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj) {
-   //printf("{GCanvas} CatchEvent:\n");
-   //printf("\tevent: \t0x%08x\n",event);
-   //printf("\tobject:\t0x%08x",obj);
+void GCanvas::CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj) {
+   printf("{GCanvas} CatchEvent:\n");
+   printf("\tevent: \t0x%08x\n",event);
+   printf("\tobject:\t0x%08x",obj);
    //if(obj) {
    //   printf("\t%s\n",obj->IsA()->GetName());
    //   if(x != lastx) {
@@ -87,44 +86,52 @@ void GCanvas::GCanvasInit() {
    //   printf("\n");
    //printf("\tx:     \t%i\n",x);
    //printf("\ty:     \t%i\n",y);
-//   switch(event) {
-//      case kArrowKeyPress:
-//      case kKeyPress: 
-//         HandleKeyPress(x,y,0);
-//         break;
-//       default:
+
+   switch(event) {
+      //case kArrowKeyPress:
+      case kKeyPress: 
+         HandleKeyPress(event,x,y,0);
+         break;
+       default:
 //         TCanvas::HandleInput((EEventType)event,x,y);
-//         return;;
-//   };
+         return;;
+   };
 //   TCanvas::ProcessedEvent(event,x,y,0);
-//   return;
-//}
+   return;
+}
 
 void GCanvas::ExecuteEvent(Int_t event,Int_t x,Int_t y) { 
   printf("exc event called.\n");
 }
 
 void GCanvas::HandleInput(EEventType event,Int_t x,Int_t y) {
+   //this->SetEditable(false);
    printf(DRED);
    printf("{GCanvas} HandleEvent:\n");
-   printf("\tevent: \t0x%08x\n",event);
+   printf(DYELLOW "\tevent: \t0x%08x\n" DRED,event);
    if(this->GetSelected())
       printf("\tfselected found[0x%08x]\t %s\n",this->GetSelected(),this->GetSelected()->GetName());
+   printf(DYELLOW);
    printf(RESET_COLOR);
+   gPad->SetEditable(false);
    switch(event) {
-      case kArrowKeyPress:
-      case kArrowKeyRelease:
-      case kKeyPress: 
-      case kKeyRelease:
-         HandleKeyPress(x,y,this->GetSelected());
-         break;
+//      case kArrowKeyPress:
+      //case kArrowKeyRelease:
+//      case kKeyPress: 
+      //case kKeyRelease:
+         //this->SetEditable(true);
+//         HandleKeyPress(x,y,this->GetSelected());
+//         break;
        default:
-         //TCanvas::HandleInput(event,x,y);
+         printf(RED"\t\tHANDLE DEFAULT!" RESET_COLOR "\n");
+         TCanvas::HandleInput(event,x,y);
+         gPad->SetEditable(true);
          return;
    };
-   //TCanvas::ProcessedEvent(event,x,y,this->GetSelected());
+   TCanvas::ProcessedEvent(event,x,y,this->GetSelected());
+   //this->SetEditable(false);
+   gPad->SetEditable(true);
    return;
-
 }
 
 
@@ -147,10 +154,11 @@ void GCanvas::UpdateStatsInfo(int x, int y) {
    }
 }
 
-void GCanvas::HandleKeyPress(int x,int key,TObject *obj) {
+void GCanvas::HandleKeyPress(int event,int x,int key,TObject *obj) {
    printf(DBLUE);
    //printf("\tevent  \t%i\n",this->GetEvent());
    std::cout << "\tevent  \t" << this->GetEvent() << "\n";
+   printf("\tfsel:  \t%s\n",this->GetSelected()->GetName());
    printf("\tx:     \t%i\n",x);
    printf("\tkey:   \t%i\n",key);
    printf(RESET_COLOR);
@@ -177,3 +185,12 @@ void GCanvas::HandleKeyPress(int x,int key,TObject *obj) {
          break;
    };
 }
+
+void GCanvas::Draw(Option_t *opt) {
+   printf("GCanvas Draw was called.\n");
+   TCanvas::Draw(opt);
+   //this->FindObject("TFrame")->SetBit(kCannotMove);
+}
+
+
+

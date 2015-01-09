@@ -2,10 +2,12 @@
 #include <TPad.h>
 #include <TString.h>
 #include <TList.h>
+#include <TBox.h>
 
 #include "GH1D.h"
 #include "GCanvas.h"
 
+#include "Globals.h"
 
 int GH1D::fUniqueId = 0;
 std::map <GH1D*,int> GH1D::fCurrentHistMap;
@@ -74,13 +76,9 @@ void GH1D::Draw(Option_t *option) {
    }
 
    TH1D::Draw(opt2.Data());
-   if(gPad) {
-      gPad->SetCrosshair();
-      if(tgc_ptr) {
-         //gPad->GetCanvas()->Connect("ProcessEvent(Int_t,Int_t,Int_t,TObject*)","TCanvas",tgc_ptr,"CatchEvent(Int_t,Int_t,Int_t,TObject*)");
-      }
-   }
-   printf("Draw called\t\t%p\n",gPad);
+   gPad->FindObject("TFrame");//->SetBit(TBox::kCannotMove);
+   gPad->GetListOfPrimitives()->Print();
+   printf("Draw called\t\t%p\t%p\n",gPad,gPad->FindObject("TFrame"));
 }
 
 
@@ -100,4 +98,11 @@ void GH1D::CheckMapStats() {
       printf("\thist[%i]: fUnique = %i\t%s\n",x++,iter->second,iter->first->GetName());
    }
    printf("-----------------------\n");
+}
+
+
+void GH1D::ExecuteEvent(Int_t evnet,Int_t x,Int_t y) {
+   printf(DYELLOW);
+   printf("GH1D Execute event called.\n");
+   printf(RESET_COLOR);
 }
