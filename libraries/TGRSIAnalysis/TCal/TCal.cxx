@@ -3,11 +3,11 @@
 ClassImp(TCal)
 
 TCal::TCal(){
-   fgraph = new TGraphErrors;
-   Clear();
+   InitTCal();
 }
 
 TCal::TCal(const char* name, const char* title) {
+   InitTCal();
    SetNameTitle(name,title);
    fgraph->SetNameTitle(name,title);
 }
@@ -27,4 +27,9 @@ void TCal::Print(Option_t *opt) const{
 //      printf("Coefficient %d: %lf +/- %lf\n",i,fcoeffs[i],fdcoeffs[i]);
  //  }
 
+}
+
+void TCal::InitTCal() {
+   fgraph = new TGraphErrors;
+   Clear();
 }
