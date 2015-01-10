@@ -9,9 +9,9 @@
 
 class TGainMatch : public TCal {
  public: 
-   TGainMatch();
+   TGainMatch(){}
    TGainMatch(const char* name, const char* title) : TCal(name,title){}
-   ~TGainMatch(); 
+   ~TGainMatch(){} 
 
  public:
    Bool_t CoarseMatch(TH1 *hist,Int_t channelNum,Double_t energy1 = 1173.228, Double_t energy2 = 1332.492);

@@ -2,14 +2,18 @@
 #define __TCALMANAGER_H__
 
 #include "TCal.h"
+#include "TNamed.h"
 
-class TCalManager {
+class TCalManager : public TNamed {
  public: 
    TCalManager();
+   TCalManager(const char* name, const char* title) : TNamed(name,title){};
    ~TCalManager(); 
 
  public:
-   TCal* GetCalByChanNum(UInt_t channum);
+   TCal* GetCal(UInt_t channum);
+   void AddToManager(TCal* cal, UInt_t channum, Option_t *opt = ""); 
+   void AddToManager(TCal* cal, Option_t *opt = "");
 
  private:
    typedef std::map<UInt_t,TCal*> CalMap;

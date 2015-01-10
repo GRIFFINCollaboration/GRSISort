@@ -2,10 +2,6 @@
 
 ClassImp(TGainMatch)
 
-TGainMatch::TGainMatch(){}
-
-TGainMatch::~TGainMatch(){}
-
 Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Double_t energy2){
 //This functions is used to perform a rough gain matching on a 60Co
 //source by default. This makes gain matching over a wide range much easier to do afterwards
