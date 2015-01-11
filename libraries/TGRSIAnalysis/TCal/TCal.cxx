@@ -3,11 +3,11 @@
 ClassImp(TCal)
 
 TCal::TCal(){
-   fchanNum = 9999;
-   fgraph = new TGraphErrors;
+   InitTCal();
 }
 
 TCal::TCal(const char* name, const char* title) {
+   InitTCal();
    SetNameTitle(name,title);
    fgraph = new TGraphErrors;
    fgraph->SetNameTitle(name,title);
@@ -26,4 +26,9 @@ void TCal::Clear(Option_t *opt) {
 
 void TCal::Print(Option_t *opt) const{
    printf("Channel Number: %u\n",fchanNum);
+}
+
+void TCal::InitTCal() {
+   fgraph = new TGraphErrors;
+   Clear();
 }

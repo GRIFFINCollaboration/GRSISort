@@ -13,10 +13,12 @@ class GCanvas : public TCanvas {
         virtual ~GCanvas();
 
         //void ProcessEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
-        //void CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
+        void CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
 
         void HandleInput(EEventType event,Int_t x,Int_t y);
         void ExecuteEvent(Int_t event,Int_t x,Int_t y);
+
+        void Draw(Option_t *opt="");
 
    private:
       void GCanvasInit();
@@ -29,7 +31,7 @@ class GCanvas : public TCanvas {
       static int lasty;
 
 
-      void HandleKeyPress(int x,int y,TObject *obj);
+      void HandleKeyPress(int event,int x,int y,TObject *obj);
 
 
 };

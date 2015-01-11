@@ -22,7 +22,7 @@ std::map<int,int> TFragmentQueue::fragment_id_map;
 
 TFragmentQueue *TFragmentQueue::GetQueue(std::string quename)	{
 //Get a pointer to the global event Q with the name quename. 
-	while(TFragmentQueue::All.try_lock())	{
+	while(!TFragmentQueue::All.try_lock())	{
 		//try to lock Q, if another thread is using it do nothing
 	}
    

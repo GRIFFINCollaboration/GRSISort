@@ -52,6 +52,7 @@ class TCal : public TNamed {
    void SetChannelNumber(UInt_t channum) { fchanNum = channum; }
 
  private:
+   void InitTCal();
    UInt_t fchanNum;
    TGraphErrors *fgraph;
 

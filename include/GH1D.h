@@ -28,6 +28,8 @@ class GH1D : public TH1D {
 
       static void CheckMapStats();
 
+      void ExecuteEvent(Int_t evnet,Int_t x,Int_t y);
+
    private:
 
       void InitGH1D();
