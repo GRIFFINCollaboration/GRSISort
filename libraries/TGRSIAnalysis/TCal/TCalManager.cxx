@@ -3,7 +3,8 @@
 ClassImp(TCalManager)
 
 TCalManager::TCalManager(){
-   fClass = 0;
+   fClass = 0; //fClass will point to a TClass which is made persistant through a root session within gROOT.
+               //So we don't need to worry about allocating it.
 }
 
 TCalManager::TCalManager(const char* classname){
@@ -26,7 +27,6 @@ void TCalManager::RemoveCal(UInt_t channum, Option_t *opt){
       delete cal;
       fcalmap.erase(channum);
    }
-
 }
 
 void TCalManager::SetClass(const char* classname){
@@ -60,7 +60,7 @@ void TCalManager::SetClass(TClass* cl){
       Error("SetClass", "%s must inherit from TObject as the left most base class.", classname);
       return;      
   }
-  printf("Creating a TCalManager of type: %s\n",classname);
+  printf("Changing TCalManager to type: %s\n",classname);
   Int_t nch = strlen(classname)+2;
   char *name = new char[nch];
   snprintf(name,nch, "%ss", classname);
@@ -136,6 +136,23 @@ void TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
    
 }
 
+void TCalManager::Clear(Option_t *opt) {
+//This deletes all of the current TCal's. It also resets the class
+//type to 0.
+   CalMap::iterator iter;
+   for(iter = fcalmap.begin(); iter != fcalmap.end(); iter++)   {
+		if(iter->second)
+	      delete iter->second;
+      iter->second = 0;
+   }
+   fClass = 0;
+}
+
+void TCalManager::Print(Option_t *opt) const{
+   if(fClass)
+      printf("Type: %s\n", fClass->GetName());
+   printf("Size: %u\n", fcalmap.size());
+}
 
 
 
