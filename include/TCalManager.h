@@ -20,6 +20,9 @@ class TCalManager : public TNamed {
    void SetClass(TClass *cl);
    const char* GetClass(){ return fClass ? fClass->ClassName() : 0;}
 
+   virtual void Print(Option_t *opt = "") const;
+   virtual void Clear(Option_t *opt = "");
+
    TCal* operator[](UInt_t channum){ return GetCal(channum);}
 
  private:
