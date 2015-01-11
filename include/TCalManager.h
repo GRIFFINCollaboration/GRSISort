@@ -20,6 +20,8 @@ class TCalManager : public TNamed {
    void SetClass(TClass *cl);
    const char* GetClass(){ return fClass ? fClass->ClassName() : 0;}
 
+   TCal* operator[](UInt_t channum){ return GetCal(channum);}
+
  private:
    typedef std::map<UInt_t,TCal*> CalMap;
    CalMap fcalmap;
