@@ -14,10 +14,9 @@ TCal::TCal(const char* name, const char* title) {
 }
 
 TCal::~TCal(){
-   if(fgraph){
+   if(fgraph)
       delete fgraph;
-      fgraph = 0;
-   }
+   fgraph = 0;
 }
 
 void TCal::Clear(Option_t *opt) {

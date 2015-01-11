@@ -41,12 +41,13 @@ class TCal : public TNamed {
  public:
    UInt_t GetChannelNumber() const { return fchanNum; }
    TGraphErrors *Graph() const { return fgraph; }
+   virtual void WriteToChannel() const { printf("Not defined for %s\n",ClassName()); }
 
    virtual void SetFitFunction(void* fnc){};
+   virtual void Print(Option_t *opt = "") const;
+   virtual void Clear(Option_t *opt = "");
 
  protected: 
-   virtual void Clear(Option_t *opt = "");
-   virtual void Print(Option_t *opt = "") const;
    
    void SetChannelNumber(UInt_t channum) { fchanNum = channum; }
 
