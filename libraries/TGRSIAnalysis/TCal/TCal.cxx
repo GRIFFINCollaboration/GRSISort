@@ -9,24 +9,23 @@ TCal::TCal(){
 TCal::TCal(const char* name, const char* title) {
    InitTCal();
    SetNameTitle(name,title);
+   fgraph = new TGraphErrors;
    fgraph->SetNameTitle(name,title);
 }
 
 TCal::~TCal(){
-   delete fgraph;
+   if(fgraph)
+      delete fgraph;
+   fgraph = 0;
 }
 
-void TCal::Clear(){
+void TCal::Clear(Option_t *opt) {
    this->fchanNum = 9999;
+   fgraph->Clear();
 }
 
 void TCal::Print(Option_t *opt) const{
    printf("Channel Number: %u\n",fchanNum);
-   printf("Coefficients:\n");
-//   for(Int_t i=0; i<fcoeffs.size();i++){
-//      printf("Coefficient %d: %lf +/- %lf\n",i,fcoeffs[i],fdcoeffs[i]);
- //  }
-
 }
 
 void TCal::InitTCal() {
