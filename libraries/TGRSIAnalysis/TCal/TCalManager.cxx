@@ -60,7 +60,7 @@ void TCalManager::SetClass(TClass* cl){
       Error("SetClass", "%s must inherit from TObject as the left most base class.", classname);
       return;      
   }
-  printf("Creating a TCalManager of type: %s\n",classname);
+  printf("Changing TCalManager to type: %s\n",classname);
   Int_t nch = strlen(classname)+2;
   char *name = new char[nch];
   snprintf(name,nch, "%ss", classname);
@@ -149,8 +149,9 @@ void TCalManager::Clear(Option_t *opt) {
 }
 
 void TCalManager::Print(Option_t *opt) const{
-   printf("Type: %s", fClass->GetName());
-   printf("Size: %u", fcalmap.size());
+   if(fClass)
+      printf("Type: %s\n", fClass->GetName());
+   printf("Size: %u\n", fcalmap.size());
 }
 
 
