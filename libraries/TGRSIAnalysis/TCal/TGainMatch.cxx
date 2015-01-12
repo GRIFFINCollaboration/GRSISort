@@ -181,6 +181,11 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, Double_t energy1, TH1* hist2, Double_t 
 
 std::vector<Double_t> TGainMatch::GetParameters() const{
    std::vector<Double_t> paramlist;
+   if(!(this->Graph()->GetFunction("gain"))){
+      Error("GetParameters","Gains have not been fitted yet");
+      return paramlist;
+   }
+   
    Int_t nparams = this->Graph()->GetFunction("gain")->GetNpar();
 
    for(int i=0;i<nparams;i++)
@@ -190,11 +195,22 @@ std::vector<Double_t> TGainMatch::GetParameters() const{
 }
 
 Double_t TGainMatch::GetParameter(Int_t parameter) const{
+   if(!(this->Graph()->GetFunction("gain"))){
+      Error("GetParameter","Gains have not been fitted yet");
+      return 0;
+   }
    return Graph()->GetFunction("gain")->GetParameter(parameter); //Root does all of the checking for us.
 }
 
-void TGainMatch::WriteToTChannel() const {
-
+void TGainMatch::WriteToChannel() const {
+   if(!GetChannel()){
+      Error("WriteToChannel","No Channel Set");
+      return;
+   }
+   GetChannel()->DestroyENGCal();
+   //Set the energy parameters based on the fitted gains.
+   GetChannel()->AddENGCoefficient(this->GetParameter(0));
+   GetChannel()->AddENGCoefficient(this->GetParameter(1));
 }
 
 void TGainMatch::Print(Option_t *opt) const {

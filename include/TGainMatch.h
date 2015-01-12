@@ -27,7 +27,7 @@ class TGainMatch : public TCal {
    void Print(Option_t *opt = "") const;
 
    Bool_t IsGroupable() const {return false;}
-   void WriteToTChannel() const;
+   void WriteToChannel() const;
 
  private:
    Bool_t fcoarse_match;
