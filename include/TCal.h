@@ -26,7 +26,6 @@
 
 #include "../include/TGRSITransition.h"
 
-
 class TCal : public TNamed {
  public: 
    TCal();
@@ -39,22 +38,20 @@ class TCal : public TNamed {
    virtual Double_t GetParameter(Int_t parameter) const = 0;
 
  public:
-   UInt_t GetChannelNumber() const { return fchanNum; }
    TGraphErrors *Graph() const { return fgraph; }
-   virtual void WriteToChannel() const { printf("Not defined for %s\n",ClassName()); }
+   virtual void WriteToChannel() const {Error("WriteToChannel","Not defined for %s",ClassName());}
 
+   TChannel *GetChannel() const;
+   Bool_t SetChannel(const TChannel* chan);
+   Bool_t SetChannel(UInt_t channum);
    virtual void SetFitFunction(void* fnc){};
    virtual void Print(Option_t *opt = "") const;
    virtual void Clear(Option_t *opt = "");
 
- protected: 
-   
-   void SetChannelNumber(UInt_t channum) { fchanNum = channum; }
-
  private:
    void InitTCal();
-   UInt_t fchanNum;
    TGraphErrors *fgraph;
+   TChannel *fchan;
 
    ClassDef(TCal,1);
 

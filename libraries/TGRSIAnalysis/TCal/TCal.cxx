@@ -19,16 +19,44 @@ TCal::~TCal(){
    fgraph = 0;
 }
 
+Bool_t TCal::SetChannel(const TChannel* chan){
+   if(!chan){
+      Error("SetChannel","TChannel does not exist");
+      return false;
+   }
+
+   fchan = (TChannel*)chan;
+   return true;
+}
+
+Bool_t TCal::SetChannel(UInt_t channum){
+   TChannel *chan = TChannel::GetChannelByNumber(channum);
+   if(!chan){
+      Error("SetChannel","Channel Number %d does not exist in current memory.",channum);
+      return false;
+   }
+   else
+      return SetChannel(chan);
+}
+
+TChannel* TCal::GetChannel() const {
+   return fchan;
+}
+
 void TCal::Clear(Option_t *opt) {
-   this->fchanNum = 9999;
+   fchan = 0;
    fgraph->Clear();
 }
 
 void TCal::Print(Option_t *opt) const{
-   printf("Channel Number: %u\n",fchanNum);
+   if(fchan)
+      printf("Channel Number: %u\n",fchan->GetNumber());
+   else
+      printf("Channel Number: NOT SET\n");
 }
 
 void TCal::InitTCal() {
    fgraph = new TGraphErrors;
+   fchan = 0;
    Clear();
 }

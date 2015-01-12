@@ -30,20 +30,19 @@ void TCalManager::RemoveCal(UInt_t channum, Option_t *opt){
 }
 
 void TCalManager::SetClass(const char* classname){
-   
+//Sets the Derived class of the TCal being held in the TCalManager
    SetClass(TClass::GetClass(classname));
-
 }
 
-void TCalManager::SetClass(TClass* cl){
-
+void TCalManager::SetClass(const TClass* cl){
+//Sets the Derived class of the TCal being held in the TCalManager
   if(fClass) {
      printf("TCalManager type already set to %s\n",fClass->ClassName());
      return;
   }
 
-  //fClass = (TClass*)cl;
-  fClass = cl;
+  fClass = (TClass*)cl;
+  //fClass = cl;
   if(!fClass) {
      MakeZombie();
      Error("SetClass", "called with a null pointer");
@@ -70,12 +69,13 @@ void TCalManager::SetClass(TClass* cl){
 }
 
 TCal *TCalManager::GetCal(UInt_t channum) {
+//Gets the TCal for the channel number channum
    TCal *cal  = 0;
    try {
 	   cal = fcalmap.at(channum);
    } 
    catch(const std::out_of_range& oor) {
-      printf("Channel %u is empty\n",channum);
+      Error("GetCal","Channel %u is empty",channum);
 	   return 0;
    }
    return cal;
@@ -85,11 +85,11 @@ void TCalManager::AddToManager(TCal* cal, Option_t *opt) {
 //Makes a Deep copy of cal and adds it to the CalManager Map. 
 
    //Check to see if the channel number has been set. If not, the user must supply one in the function call.
-   if(cal->GetChannelNumber() != 9999){
-      AddToManager(cal,cal->GetChannelNumber(),opt);
+   if(cal->GetChannel() != 0){
+      AddToManager(cal,cal->GetChannel()->GetNumber(),opt);
    }
    else{
-      printf("Channel Number has not been set\n");
+      Error("AddToManager","Channel has not been set");
       return;
    }
    //Might have to do other checks
@@ -99,23 +99,20 @@ void TCalManager::AddToManager(TCal* cal, Option_t *opt) {
 void TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
 //Makes a Deep copy of cal and adds it to the CalManager Map for channel number
 //channum.
-
    if(!cal)
       return;
 
    if(!fClass)
       SetClass(cal->ClassName());
    else if(fClass->GetName() != cal->ClassName()){
-     printf("Error trying to put a %s in a TCalManager of type %s\n",cal->ClassName(),fClass->GetName());
+     Error("AddToManager","Trying to put a %s in a TCalManager of type %s",cal->ClassName(),fClass->GetName());
      return;
    }
 
-   if(channum == 9999){
-      printf("Channel Number has not been set\n");
-      return;
-   }
+   if(!(cal->SetChannel(channum)))
+      return; //TCal does the Error for us.
    
-   if(fcalmap.count(channum)==1) {// if this cal already exists
+   if(fcalmap.count(cal->GetChannel()->GetNumber())==1) {// if this cal already exists
 	   if(strcmp(opt,"overwrite")==0) {
 	      TCal *oldcal = GetCal(channum);
          //delete the old calibration for this channel number
@@ -125,7 +122,7 @@ void TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
 			return;
 	   } 
       else {
-	      printf("Trying to add a channel that already exists!\n");
+	      Error("AddToManager","Trying to add a channel that already exists!");
 			return;
 	   }	
    } 
@@ -134,6 +131,16 @@ void TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
       fcalmap.insert(std::make_pair(channum,newcal));
     }
    
+}
+
+void TCalManager::WriteToChannel() const {
+//Writes all of the TCals to TChannel based on the method WriteToChannel 
+//defined in the TCal held by TCalManager.
+   CalMap::const_iterator iter;
+   for(iter = fcalmap.begin(); iter != fcalmap.end(); iter++)   {
+		if(iter->second)
+         iter->second->WriteToChannel();
+   }
 }
 
 void TCalManager::Clear(Option_t *opt) {
@@ -145,6 +152,7 @@ void TCalManager::Clear(Option_t *opt) {
 	      delete iter->second;
       iter->second = 0;
    }
+   fcalmap.clear();
    fClass = 0;
 }
 
