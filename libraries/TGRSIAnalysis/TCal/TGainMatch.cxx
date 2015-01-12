@@ -11,19 +11,19 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
 
    //Check to see that the histogram isn't empty
    if(hist->GetEntries() < 1){
-      printf("The histogram is empty\n");
+      Error("CoarseMatch","The histogram is empty");
       return false;
    }
 
    //See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
    TChannel *chan = TChannel::GetChannelByNumber(chanNum);
    if(!chan){
-      printf("Channel Number %d does not exist in current memory.\n",chanNum);
+      Error("CoarseMatch","Channel Number %d does not exist in current memory.",chanNum);
       return false;
    }
 
    //Set the channel number
-   SetChannelNumber(chanNum);
+   SetChannel(chan);
 
    std::vector<Double_t> engvec; //This is the vector of expected energies
    //We do coarse gain matching on 60Co. So I have hardcoded the energies for now
@@ -39,7 +39,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
 
    //If we didn't find two peaks, it is likely we gave it garbage
    if(nfound <2){
-      std::cout << "Did not find enough peaks" << std::endl;
+      Error("CoarseMatch","Did not find enough peaks");
       delete s;
       return false;
    }
@@ -62,7 +62,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    //We now want to create a peak for each one we found (2) and fit them.
    for(int x=0; x<nfound; x++){
       TPeak tmpPeak(foundbin[x],foundbin[x] - 20./binWidth, foundbin[x] + 20./binWidth);
-      tmpPeak.SetName(Form("GM_Chan%u_%lf",GetChannelNumber(),foundbin[x]));//Change the name of the TPeak to know it's origin
+      tmpPeak.SetName(Form("GM_Chan%u_%lf",GetChannel()->GetNumber(),foundbin[x]));//Change the name of the TPeak to know it's origin
       tmpPeak.Fit(hist,"EM+");
       Graph()->SetPoint(x,engvec[x],tmpPeak.GetParameter("centroid"));
    }
@@ -87,19 +87,20 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2,
 
    //Check to see that the histogram isn't empty
    if(hist1->GetEntries() < 1 || hist2->GetEntries() < 1){
-      printf("Histogram is empty\n");
+      Error("FineMatch","Histogram is empty");
       return false;
    }
 
    //See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
    TChannel *chan = TChannel::GetChannelByNumber(channelNum);
    if(!chan){
-      printf("Channel Number %d does not exist in current memory.\n",channelNum);
+      Error("FineMatch","Channel Number %d does not exist in current memory.",channelNum);
       return false;
    }
 
    //Set the channel number
-   SetChannelNumber(channelNum);
+   SetChannel(chan);
+
    Graph()->Set(2);
 
    //The first thing we need to do is "un-gain correct" the centroids of the TPeaks.
@@ -190,6 +191,10 @@ std::vector<Double_t> TGainMatch::GetParameters() const{
 
 Double_t TGainMatch::GetParameter(Int_t parameter) const{
    return Graph()->GetFunction("gain")->GetParameter(parameter); //Root does all of the checking for us.
+}
+
+void TGainMatch::WriteToTChannel() const {
+
 }
 
 void TGainMatch::Print(Option_t *opt) const {

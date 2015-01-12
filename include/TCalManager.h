@@ -17,8 +17,9 @@ class TCalManager : public TNamed {
    void AddToManager(TCal* cal, Option_t *opt = "");
    void RemoveCal(UInt_t channum, Option_t *opt="");
    void SetClass(const char* classname);
-   void SetClass(TClass *cl);
-   const char* GetClass(){ return fClass ? fClass->ClassName() : 0;}
+   void SetClass(const TClass *cl);
+   const char* GetClass(){ return fClass ? fClass->GetName() : 0;}
+   void WriteToChannel() const;
 
    virtual void Print(Option_t *opt = "") const;
    virtual void Clear(Option_t *opt = "");
