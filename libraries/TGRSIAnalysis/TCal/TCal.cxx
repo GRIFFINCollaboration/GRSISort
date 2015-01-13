@@ -24,7 +24,6 @@ Bool_t TCal::SetChannel(const TChannel* chan){
       Error("SetChannel","TChannel does not exist");
       return false;
    }
-
    fchan = (TChannel*)chan;
    return true;
 }
@@ -39,7 +38,7 @@ Bool_t TCal::SetChannel(UInt_t channum){
       return SetChannel(chan);
 }
 
-TChannel* TCal::GetChannel() const {
+TChannel* const TCal::GetChannel() const {
    return fchan;
 }
 
@@ -57,6 +56,7 @@ void TCal::Print(Option_t *opt) const{
 
 void TCal::InitTCal() {
    fgraph = new TGraphErrors;
+   ffitfunc = 0;
    fchan = 0;
    Clear();
 }

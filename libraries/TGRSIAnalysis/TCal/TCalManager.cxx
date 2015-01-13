@@ -81,36 +81,37 @@ TCal *TCalManager::GetCal(UInt_t channum) {
    return cal;
 }
 
-void TCalManager::AddToManager(TCal* cal, Option_t *opt) {
+Bool_t TCalManager::AddToManager(TCal* cal, Option_t *opt) {
 //Makes a Deep copy of cal and adds it to the CalManager Map. 
 
    //Check to see if the channel number has been set. If not, the user must supply one in the function call.
    if(cal->GetChannel() != 0){
-      AddToManager(cal,cal->GetChannel()->GetNumber(),opt);
+      return AddToManager(cal,cal->GetChannel()->GetNumber(),opt);
    }
    else{
       Error("AddToManager","Channel has not been set");
-      return;
+      return false;
    }
    //Might have to do other checks
 
 }
    
-void TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
+Bool_t TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
 //Makes a Deep copy of cal and adds it to the CalManager Map for channel number
 //channum.
    if(!cal)
-      return;
+      return false;
 
    if(!fClass)
       SetClass(cal->ClassName());
    else if(fClass->GetName() != cal->ClassName()){
      Error("AddToManager","Trying to put a %s in a TCalManager of type %s",cal->ClassName(),fClass->GetName());
-     return;
+     return false;
    }
-
-   if(!(cal->SetChannel(channum)))
-      return; //TCal does the Error for us.
+   
+   if(!(cal->GetChannel()))
+      if(!(cal->SetChannel(channum)))
+         return false; //TCal does the Error for us.
    
    if(fcalmap.count(cal->GetChannel()->GetNumber())==1) {// if this cal already exists
 	   if(strcmp(opt,"overwrite")==0) {
@@ -119,17 +120,23 @@ void TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
          delete oldcal;
 			oldcal = (TCal*)cal->Clone(cal->GetName());
          fcalmap.at(channum) = oldcal;
-			return;
+			return true;
 	   } 
       else {
 	      Error("AddToManager","Trying to add a channel that already exists!");
-			return;
+			return false;
 	   }	
    } 
    else {
       TCal* newcal = (TCal*)cal->Clone(cal->GetName());
+      //Clone uses ROOT streamers. We have taken the TChannel out of the streamer.
+      //This means that we have to set the channel manually here.
+      //I might override the Clone function to do this for me
+      newcal->SetChannel(cal->GetChannel());
+      printf("newcal: %p, cal: %p\n",newcal->GetChannel(),cal->GetChannel());
       fcalmap.insert(std::make_pair(channum,newcal));
     }
+   return true;
    
 }
 
