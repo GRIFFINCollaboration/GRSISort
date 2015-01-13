@@ -16,12 +16,11 @@
 #include <vector>
 #include <utility>
 #include "TROOT.h"
-#include "TFile.h"
 #include "TChannel.h"
 #include "TMultiGraph.h"
 #include "TGraphErrors.h"
 #include "TNucleus.h"
-#include "TKey.h"
+#include "TRef.h"
 //#include "../include/TNucleus.h"
 
 #include "../include/TGRSITransition.h"
@@ -52,8 +51,7 @@ class TCal : public TNamed {
  private:
    void InitTCal();
    TGraphErrors *fgraph; //->
-   //This exclamation mark below makes it so TCalManager does not make a copy of the TChannel
-   TChannel *fchan;  //! 
+   TRef fchan; //This points at the TChannel
    TF1* ffitfunc; //->
 
    ClassDef(TCal,1);
