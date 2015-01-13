@@ -40,18 +40,21 @@ class TCal : public TNamed {
  public:
    TGraphErrors *Graph() const { return fgraph; }
    virtual void WriteToChannel() const {Error("WriteToChannel","Not defined for %s",ClassName());}
+   virtual TF1* GetFitFunction() const { return ffitfunc; } 
+   virtual void SetFitFunction(const TF1* func){ ffitfunc = (TF1*)func; };
 
-   TChannel *GetChannel() const;
+   TChannel* const GetChannel() const;
    Bool_t SetChannel(const TChannel* chan);
    Bool_t SetChannel(UInt_t channum);
-   virtual void SetFitFunction(void* fnc){};
    virtual void Print(Option_t *opt = "") const;
    virtual void Clear(Option_t *opt = "");
 
  private:
    void InitTCal();
-   TGraphErrors *fgraph;
-   TChannel *fchan;
+   TGraphErrors *fgraph; //->
+   //This exclamation mark below makes it so TCalManager does not make a copy of the TChannel
+   TChannel *fchan;  //! 
+   TF1* ffitfunc; //->
 
    ClassDef(TCal,1);
 
