@@ -136,6 +136,8 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
       return;
 
    fOffline = true;
+   //Once this is done, we want to set the frags read from midas to 0 for use in the next sort.
+   fFragsReadFromMidas = 0;
 
    std::ifstream in(midasfile->GetFilename(), std::ifstream::in | std::ifstream::binary);
    in.seekg(0, std::ifstream::end);
@@ -443,8 +445,6 @@ void TGRSILoop::Finalize() {
    printf(DMAGENTA "successfully sorted " DBLUE "%0d" DMAGENTA "/" 
           DCYAN "%0d" DMAGENTA "  ---> " DYELLOW " %.2f" DMAGENTA " percent passed." 
           RESET_COLOR "\n",fFragsSentToTree,fFragsReadFromMidas,((double)fFragsSentToTree/(double)fFragsReadFromMidas)*100.);
-   //Once this is done, we want to set the frags read from midas to 0 for use in the next sort.
-   fFragsReadFromMidas = 0;
 
 //   TIter *iter = TChannel::GetChannelIter();   
 //   while(TChannel *chan = (TChannel*)iter->Next()) {

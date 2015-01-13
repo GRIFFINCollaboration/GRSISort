@@ -2,10 +2,13 @@
 #define __TGAINMATCH_H__
 
 #include "TCal.h"
+#include "TCalManager.h"
 #include "TPeak.h"
 #include "TSpectrum.h"
+#include "TH2.h"
 #include <algorithm>
 #include <map>
+
 
 class TGainMatch : public TCal {
  public: 
@@ -14,6 +17,8 @@ class TGainMatch : public TCal {
    ~TGainMatch(){} 
 
  public:
+   static Bool_t CoarseMatchAll(TCalManager* cm,TH2 *mat, Double_t energy1 = 1173.228, Double_t energy2 = 1332.492);
+
    Bool_t CoarseMatch(TH1 *hist,Int_t channelNum,Double_t energy1 = 1173.228, Double_t energy2 = 1332.492);
    Bool_t FineMatch(TH1 *hist1, TPeak* peak1, TH1 *hist2, TPeak* peak2, Int_t channelNum);
    Bool_t FineMatch(TH1 *hist, TPeak* peak1, TPeak* peak2, Int_t channelNum);

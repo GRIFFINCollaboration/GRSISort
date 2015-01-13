@@ -63,13 +63,14 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    for(int x=0; x<nfound; x++){
       TPeak tmpPeak(foundbin[x],foundbin[x] - 20./binWidth, foundbin[x] + 20./binWidth);
       tmpPeak.SetName(Form("GM_Chan%u_%lf",GetChannel()->GetNumber(),foundbin[x]));//Change the name of the TPeak to know it's origin
-      tmpPeak.Fit(hist,"EM+");
-      Graph()->SetPoint(x,engvec[x],tmpPeak.GetParameter("centroid"));
+      tmpPeak.Fit(hist,"M+");
+      Graph()->SetPoint(x,tmpPeak.GetParameter("centroid"),engvec[x]);
    }
 
    TF1* gainfit = new TF1("gain","pol1");
 
    Graph()->Fit(gainfit,"SC0");
+   SetFitFunction(Graph()->GetFunction("gain"));//Have to do this because I want to delete gainfit.
 
    delete gainfit;
    //We have finished gain matching so let the TGainMatch know that it is a coarse gain
@@ -138,7 +139,8 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2,
    TF1* gainfit = new TF1("gain","pol1");
 
    Graph()->Fit(gainfit,"SC0");
-
+   SetFitFunction(Graph()->GetFunction("gain"));//Have to do this because I want to delete gainfit
+    
    delete gainfit;
 
    fcoarse_match = false;
@@ -181,12 +183,12 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, Double_t energy1, TH1* hist2, Double_t 
 
 std::vector<Double_t> TGainMatch::GetParameters() const{
    std::vector<Double_t> paramlist;
-   if(!(this->Graph()->GetFunction("gain"))){
+   if(!GetFitFunction()){
       Error("GetParameters","Gains have not been fitted yet");
       return paramlist;
    }
    
-   Int_t nparams = this->Graph()->GetFunction("gain")->GetNpar();
+   Int_t nparams = GetFitFunction()->GetNpar();
 
    for(int i=0;i<nparams;i++)
       paramlist.push_back(GetParameter(i));
@@ -195,11 +197,11 @@ std::vector<Double_t> TGainMatch::GetParameters() const{
 }
 
 Double_t TGainMatch::GetParameter(Int_t parameter) const{
-   if(!(this->Graph()->GetFunction("gain"))){
+   if(!GetFitFunction()){
       Error("GetParameter","Gains have not been fitted yet");
       return 0;
    }
-   return Graph()->GetFunction("gain")->GetParameter(parameter); //Root does all of the checking for us.
+   return GetFitFunction()->GetParameter(parameter); //Root does all of the checking for us.
 }
 
 void TGainMatch::WriteToChannel() const {
@@ -208,6 +210,8 @@ void TGainMatch::WriteToChannel() const {
       return;
    }
    GetChannel()->DestroyENGCal();
+   printf("Writing to channel %d\n",GetChannel()->GetNumber());
+   printf("p0 = %lf \t p1 = %lf\n",this->GetParameter(0),this->GetParameter(1));
    //Set the energy parameters based on the fitted gains.
    GetChannel()->AddENGCoefficient(this->GetParameter(0));
    GetChannel()->AddENGCoefficient(this->GetParameter(1));
@@ -220,6 +224,50 @@ void TGainMatch::Print(Option_t *opt) const {
    else              
       printf("FINE\n");
    TCal::Print();
+}
+
+
+Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2 *mat, Double_t energy1, Double_t energy2){
+//If you supply this function with a matrix of Channel vs. energy it will automatically slice, 
+//and figure out the coarse gains. I might add a channel range option later
+   std::vector<Int_t> badlist;
+   TGainMatch *gm = new TGainMatch;
+   if(!cm){
+      gm->Error("CoarseMatchAll","CalManager Pointer is NULL");
+      return false;
+   }
+   if(!mat){
+      gm->Error("CoarseMatchAll","TH2 Pointer is NULL");
+      return false;
+   }
+   //Find the range of channels provided
+   Int_t first_chan = mat->GetXaxis()->GetFirst();
+   Int_t last_chan  = mat->GetXaxis()->GetLast();
+   //The first thing we need to do is slice the matrix into it's channel vs energy.
+   TH1D* h1 = new TH1D;
+	for(int chan=first_chan; chan<=last_chan;chan++){
+      gm->Clear();
+      printf("\nNow fitting channel: %d\n",chan);
+		TH1D* h1 = (TH1D*)(mat->ProjectionY(Form("Channel%d",chan),chan+1,chan+1,"o"));
+      printf("BIN WIDTH %lf\n",h1->GetXaxis()->GetBinWidth(h1->GetXaxis()->GetFirst() + 1));
+		if(h1->Integral() < 100)
+         continue;
+
+      if(!(gm->CoarseMatch(h1,chan))){
+         badlist.push_back(chan);
+         continue;
+      }
+      cm->AddToManager(gm);
+   }
+   if(badlist.size())
+      printf("The following channels did not gain match properly: ");
+   for(int i=0;i<badlist.size();i++)
+      printf("%d\t",badlist.at(i));
+   
+   delete h1;
+   delete gm;
+   
+   return true;
 }
 
 void TGainMatch::Clear(Option_t *opt) {
