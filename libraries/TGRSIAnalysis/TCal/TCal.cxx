@@ -24,6 +24,7 @@ Bool_t TCal::SetChannel(const TChannel* chan){
       Error("SetChannel","TChannel does not exist");
       return false;
    }
+   //Set our TRef to point at the TChannel
    fchan = (TChannel*)chan;
    return true;
 }
@@ -39,7 +40,7 @@ Bool_t TCal::SetChannel(UInt_t channum){
 }
 
 TChannel* const TCal::GetChannel() const {
-   return fchan;
+   return (TChannel*)(fchan.GetObject()); //Gets the object pointed at by the TRef and casts it to a TChannel
 }
 
 void TCal::Clear(Option_t *opt) {
@@ -48,8 +49,8 @@ void TCal::Clear(Option_t *opt) {
 }
 
 void TCal::Print(Option_t *opt) const{
-   if(fchan)
-      printf("Channel Number: %u\n",fchan->GetNumber());
+   if(GetChannel())
+      printf("Channel Number: %u\n",GetChannel()->GetNumber());
    else
       printf("Channel Number: NOT SET\n");
 }

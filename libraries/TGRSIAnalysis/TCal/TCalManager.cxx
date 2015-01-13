@@ -129,10 +129,10 @@ Bool_t TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
    } 
    else {
       TCal* newcal = (TCal*)cal->Clone(cal->GetName());
-      //Clone uses ROOT streamers. We have taken the TChannel out of the streamer.
-      //This means that we have to set the channel manually here.
-      //I might override the Clone function to do this for me
-      newcal->SetChannel(cal->GetChannel());
+      //Clone uses ROOT streamers. We have made the TChannel part of the TCal a TRef.
+      //This has the effect of making it persistent as far as the ROOT streamer
+      //facility is concerned. All of the other "pointer members" of the TCal
+      //Get Deep copied into the TCal Manager.
       printf("newcal: %p, cal: %p\n",newcal->GetChannel(),cal->GetChannel());
       fcalmap.insert(std::make_pair(channum,newcal));
     }
