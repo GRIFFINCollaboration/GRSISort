@@ -25,13 +25,16 @@ class TPeak : public TGRSIFit {
  public: 
    //ctors and dtors
    virtual ~TPeak();
- //  TPeak(const TPeak &copy);
+   TPeak(const TPeak &copy);
    TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type="gsc");
-   TPeak():TGRSIFit(){}; //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
+   TPeak(); //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
    
  protected:
+   void InitNames();
+   
 
- public:   
+ public:
+   virtual void Copy(TObject &obj) const;
    void SetCentroid(Double_t cent)  { SetParameter("centroid",cent); }
    void SetType(Option_t *type);
 

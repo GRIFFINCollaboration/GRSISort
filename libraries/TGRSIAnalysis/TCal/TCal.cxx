@@ -9,7 +9,6 @@ TCal::TCal(){
 TCal::TCal(const char* name, const char* title) {
    InitTCal();
    SetNameTitle(name,title);
-   fgraph = new TGraphErrors;
    fgraph->SetNameTitle(name,title);
 }
 
@@ -53,6 +52,17 @@ void TCal::Print(Option_t *opt) const{
       printf("Channel Number: %u\n",GetChannel()->GetNumber());
    else
       printf("Channel Number: NOT SET\n");
+
+
+   if(ffitfunc){
+   printf("\n*******************************\n");
+   printf(" Fit:\n");      
+      ffitfunc->Print();
+   printf("\n*******************************\n");   
+   }
+   else
+      printf("Parameters: FIT NOT SET\n");
+
 }
 
 void TCal::InitTCal() {

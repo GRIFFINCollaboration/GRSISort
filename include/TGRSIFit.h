@@ -25,15 +25,16 @@ class TGRSIFit : public TF1 {
  protected: 
    TGRSIFit();
    //TGRSIFit(const char *name,Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn, xmin, xmax, npar){};
-   TGRSIFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1) : TF1(name,formula,xmin,xmax){}
-   TGRSIFit(const char* name, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name,xmin,xmax,npar){}
-   TGRSIFit(const char* name, void* fcn, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn,xmin,xmax,npar){}
-   TGRSIFit(const char* name, ROOT::Math::ParamFunctor f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0) : TF1(name,f,xmin,xmax,npar){}
-   TGRSIFit(const char* name, void* ptr, Double_t xmin, Double_t xmax, Int_t npar, const char* className) : TF1(name,ptr, xmin, xmax, npar, className){}
+   TGRSIFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1) : TF1(name,formula,xmin,xmax){this->Clear(); } 
+   TGRSIFit(const char* name, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name,xmin,xmax,npar){this->Clear(); }
+   TGRSIFit(const char* name, void* fcn, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn,xmin,xmax,npar){this->Clear(); }
+   TGRSIFit(const char* name, ROOT::Math::ParamFunctor f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0) : TF1(name,f,xmin,xmax,npar){this->Clear(); }
+   TGRSIFit(const char* name, void* ptr, Double_t xmin, Double_t xmax, Int_t npar, const char* className) : TF1(name,ptr, xmin, xmax, npar, className){this->Clear(); }
 
    TGRSIFit(const TGRSIFit &copy);
   
  public:
+   virtual void Copy(TObject &copy) const;
    //Every fit object should have to initialize parameters and have a fit method defined.
  //  virtual Double_t Fit(Option_t *opt = "") = 0;
    virtual Bool_t InitParams(TH1*) = 0;

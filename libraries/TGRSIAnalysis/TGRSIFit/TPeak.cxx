@@ -39,6 +39,18 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGR
    this->SetName(Form("Chan%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh))); //Gives a default name to the peak
 
    //We need to set parameter names now.
+   this->InitNames();
+   this->SetParameter("centroid",cent);
+}
+
+TPeak::TPeak() : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,0,1000,10){
+   this->InitNames();
+}
+
+TPeak::~TPeak(){
+}
+
+void TPeak::InitNames(){
    this->SetParName(0,"Height");
    this->SetParName(1,"centroid");
    this->SetParName(2,"sigma");
@@ -49,26 +61,19 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGR
    this->SetParName(7,"B");
    this->SetParName(8,"C");
    this->SetParName(9,"bg_offset");
-
-   this->SetParameter("centroid",cent);
-
 }
 
-TPeak::~TPeak(){
-}
-/*
+
 TPeak::TPeak(const TPeak &copy) : TGRSIFit(copy){
-   
-   this->fcentroid    = copy.fcentroid;
-   this->fd_centroid  = copy.fd_centroid;
-   this->farea        = copy.farea;
-   this->fd_area      = copy.fd_area;
-
-   this->ffitfunc = new TF1(*(copy.ffitfunc));
-   this->ffitbg   = new TF1(*(copy.ffitbg));
-   this->ffithist = copy.ffithist;
+   ((TPeak&)copy).Copy(*this);
 }
-*/
+
+void TPeak::Copy(TObject &obj) const {
+   ((TPeak&)obj).farea = farea;
+   ((TPeak&)obj).fd_area = fd_area;
+   TGRSIFit::Copy(obj);
+}
+
 
 void TPeak::SetType(Option_t * type){
 // This sets the style of gaussian fit function to use for the fitted peak. 
@@ -147,12 +152,29 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    TVirtualFitter::SetMaxIterations(100000);
 
    //Now that it is initialized, let's fit it.
+   //Just in case the range changed, we should reset the centroid and bg energy limits
+   this->SetParLimits(1,GetXmin(),GetXmax());
+   this->SetParLimits(9,GetXmin(),GetXmax());
+
+
+
    TFitResultPtr fitres = fithist->Fit(this,Form("%sRSM",opt));//The RS needs to always be there
+
+   if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
+      if(fitres->Parameter(3) < 1){
+         FixParameter(4,0);
+         FixParameter(3,1);
+         std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
+         fitres = fithist->Fit(this,Form("%sRSM",opt));
+      }
+   }
+
    printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
    Double_t xlow,xhigh;
    this->GetRange(xlow,xhigh);
    //Make a function that does not include the background
-   TF1 *tmppeak = new TF1(*((TF1*)(this)));
+   //TF1 *tmppeak = new TF1(*((TF1*)(this)));
+   TPeak *tmppeak = new TPeak(*this);
    tmppeak->SetName("tmppeak");
    tmppeak->SetParameter("step",0.0);
    tmppeak->SetParameter("A",0.0);
