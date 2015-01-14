@@ -38,7 +38,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
  
    //Use a TSpectrum to find the two largest peaks in the spectrum
    TSpectrum *s = new TSpectrum; //This might not have to be allocated
-   Int_t nfound = s->Search(hist,2,"",0.50); 
+   Int_t nfound = s->Search(hist,2,"",0.50); //This returns peaks in order of their height in the spectrum.
 
    //If we didn't find two peaks, it is likely we gave it garbage
    if(nfound <2){
@@ -49,7 +49,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
 
    //We want to store the centroids of the found peaks
    std::vector<Double_t> foundbin;
-   for(int x=0;x<nfound;x++){
+   for(int x=0;x<2;x++){ //I have hard-coded this to 2 because I'm assuming the rough match peaks will be by far the largest.
       foundbin.push_back((Double_t)(s->GetPositionX()[x]));
       printf("Found peak at bin %lf\n",foundbin[x]);
    }
