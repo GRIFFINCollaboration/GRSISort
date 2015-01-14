@@ -26,7 +26,7 @@ public:
   void OutClose(); ///< Close output file
 
   int  Read(TMidasEvent *event); ///< Read one event from the file
-  bool Write(TMidasEvent *event); ///< Write one event to the output file
+  bool Write(TMidasEvent *event,Option_t *opt =""); ///< Write one event to the output file
 
   const char* GetFilename()  const { return fFilename.c_str();  } ///< Get the name of this file
   int         GetLastErrno() const { return fLastErrno; }         ///< Get error value for the last file error
