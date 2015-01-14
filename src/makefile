@@ -16,6 +16,9 @@ INC = -I$(BASE)/include
 INC += -I$(MIDASSYS)/include
 
 LIBDIR = -L$(BASE)/libraries
+ifeq ($(PLATFORM),Darwin)
+LIBDIR += -L/opt/X11/lib 
+endif
 ifdef MIDASSYS
 ifeq ($(PLATFORM),Darwin)
 LIBDIR += -L$(MIDASSYS)/darwin/lib
@@ -69,7 +72,7 @@ SYSLIBS += -lXpm
 
 grsisort: $(OBJECTS) $(LIBRARIES)
 	@printf " ${COM_COLOR}%s ${OBJ_COLOR}\t grsisort ${NO_COLOR}" $(COMP_STRING)
-	@$(CXX) $^ $(CFLAGS) $(CPPFLAGS) $(INC) $(LIBDIR) $(LFALGS) $(LIBS) $(DETLIBS) $(LDROOT) $(SYSLIBS) -o $@  2> temp.log || touch temp.errors
+	@$(CXX) $^ $(CFLAGS) $(CPPFLAGS) $(INC) $(LIBDIR) $(LIBS) $(DETLIBS) $(LDROOT) $(SYSLIBS) -o $@  2> temp.log || touch temp.errors
 	@if test -e temp.errors; then  \
 	 printf "\r ${COM_COLOR}%s ${OBJ_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
 	 && $(CAT) temp.log  \

@@ -22,17 +22,20 @@ std::map<int,int> TFragmentQueue::fragment_id_map;
 
 TFragmentQueue *TFragmentQueue::GetQueue(std::string quename)	{
 //Get a pointer to the global event Q with the name quename. 
-	while(TFragmentQueue::All.try_lock())	{
-		//try to lock Q, if another thread is using it do nothing
-	}
    
-   if(fFragmentMap->count(quename) == 0)
-      fFragmentMap->insert(std::pair<std::string,TFragmentQueue*>(quename,new TFragmentQueue));
+   if(fFragmentMap->count(quename) == 0) {
+      while(!TFragmentQueue::All.try_lock())	{
+         //try to lock Q, if another thread is using it do nothing
+      }
+      if(fFragmentMap->count(quename) == 0) {
+	 fFragmentMap->insert(std::pair<std::string,TFragmentQueue*>(quename,new TFragmentQueue));
+      }
    
-   TFragmentQueue::All.unlock();
-	//unlock the Q when this thread is done with it.
-	return fFragmentMap->at(quename);
+      //unlock the Q when this thread is done with it.
+      TFragmentQueue::All.unlock();
+   }
 
+   return fFragmentMap->at(quename);
 }
 
 TFragmentQueue::TFragmentQueue()	{	

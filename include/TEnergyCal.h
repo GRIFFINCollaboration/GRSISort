@@ -15,7 +15,7 @@ class TEnergyCal : public TCal {
    std::vector<Double_t> GetParameters() const;
    Double_t GetParameter(Int_t parameter) const;
 
-   void Clear();
+   void Clear(Option_t *opt = "");
    void Print(Option_t *opt = "") const;
 
    Bool_t IsGroupable() const {return true;}

@@ -114,6 +114,8 @@ void GCanvas::HandleInput(EEventType event,Int_t x,Int_t y) {
    printf(DYELLOW);
    printf(RESET_COLOR);
    gPad->SetEditable(false);
+   //If the below switch breaks. You need to upgrade your version of ROOT
+   //Version 5.34.24 works.
    switch(event) {
       case kArrowKeyPress:
       //case kArrowKeyRelease:
@@ -121,7 +123,7 @@ void GCanvas::HandleInput(EEventType event,Int_t x,Int_t y) {
       //case kKeyRelease:
          //this->SetEditable(true);
          HandleKeyPress(event,x,y,this->GetSelected());
-//         break;
+         break;
        default:
          printf(RED"\t\tHANDLE DEFAULT!" RESET_COLOR "\n");
          TCanvas::HandleInput(event,x,y);

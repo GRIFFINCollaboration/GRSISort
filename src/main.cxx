@@ -7,6 +7,17 @@
 #include "TEnv.h"
 #include "TGRSIint.h"
 
+#ifdef __APPLE__
+#define HAVE_UTMPX_H
+#define UTMP_NO_ADDR
+#ifndef ut_user
+#   define ut_user ut_name
+#endif
+#ifndef UTMP_FILE
+#define UTMP_FILE "/etc/utmp"
+#endif
+#endif
+
 
 # ifdef HAVE_UTMPX_H
 # include <utmpx.h>

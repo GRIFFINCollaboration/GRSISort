@@ -26,7 +26,7 @@ void TEnergyCal::Print(Option_t *opt) const {
    TCal::Print();
 }
 
-void TEnergyCal::Clear() {
+void TEnergyCal::Clear(Option_t *opt) {
    TCal::Clear();
 }
 

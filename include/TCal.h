@@ -16,16 +16,14 @@
 #include <vector>
 #include <utility>
 #include "TROOT.h"
-#include "TFile.h"
 #include "TChannel.h"
 #include "TMultiGraph.h"
 #include "TGraphErrors.h"
 #include "TNucleus.h"
-#include "TKey.h"
+#include "TRef.h"
 //#include "../include/TNucleus.h"
 
 #include "../include/TGRSITransition.h"
-
 
 class TCal : public TNamed {
  public: 
@@ -39,19 +37,22 @@ class TCal : public TNamed {
    virtual Double_t GetParameter(Int_t parameter) const = 0;
 
  public:
-   UInt_t GetChannelNumber() const { return fchanNum; }
    TGraphErrors *Graph() const { return fgraph; }
+   virtual void WriteToChannel() const {Error("WriteToChannel","Not defined for %s",ClassName());}
+   virtual TF1* GetFitFunction() const { return ffitfunc; } 
+   virtual void SetFitFunction(const TF1* func){ ffitfunc = (TF1*)func; };
 
- protected: 
-   virtual void Clear();
+   TChannel* const GetChannel() const;
+   Bool_t SetChannel(const TChannel* chan);
+   Bool_t SetChannel(UInt_t channum);
    virtual void Print(Option_t *opt = "") const;
-   
-   void SetChannelNumber(UInt_t channum) { fchanNum = channum; }
+   virtual void Clear(Option_t *opt = "");
 
  private:
    void InitTCal();
-   UInt_t fchanNum;
-   TGraphErrors *fgraph;
+   TGraphErrors *fgraph; //->
+   TRef fchan; //This points at the TChannel
+   TF1* ffitfunc; //->
 
    ClassDef(TCal,1);
 
