@@ -16,7 +16,11 @@ class TGainMatch : public TCal {
    TGainMatch(const char* name, const char* title) : TCal(name,title){}
    ~TGainMatch(){} 
 
+   TGainMatch(const TGainMatch &copy);
+
  public:
+   void Copy(TObject &obj) const;
+
    static Bool_t CoarseMatchAll(TCalManager* cm, TH2 *mat, Double_t energy1 = 1173.228, Double_t energy2 = 1332.492);
    static Bool_t FineMatchAll(TCalManager* cm, TH2 *mat, Double_t energy1, Double_t energy2);
    static Bool_t FineMatchAll(TCalManager* cm, TH2 *mat1, Double_t energy1, TH2 *mat2, Double_t energy2);

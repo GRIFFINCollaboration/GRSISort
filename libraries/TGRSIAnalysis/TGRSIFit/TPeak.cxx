@@ -173,7 +173,6 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    Double_t xlow,xhigh;
    this->GetRange(xlow,xhigh);
    //Make a function that does not include the background
-   //TF1 *tmppeak = new TF1(*((TF1*)(this)));
    TPeak *tmppeak = new TPeak(*this);
    tmppeak->SetName("tmppeak");
    tmppeak->SetParameter("step",0.0);

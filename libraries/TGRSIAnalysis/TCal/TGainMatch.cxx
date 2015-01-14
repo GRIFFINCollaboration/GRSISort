@@ -2,6 +2,15 @@
 
 ClassImp(TGainMatch)
 
+TGainMatch::TGainMatch(const TGainMatch &copy) : TCal(copy){
+   ((TCal&)copy).Copy(*this);
+}
+
+void TGainMatch::Copy(TObject &obj) const{
+   ((TGainMatch&)obj).fcoarse_match = fcoarse_match; 
+   TCal::Copy(obj);
+}
+
 Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Double_t energy2){
 //This functions is used to perform a rough gain matching on a 60Co
 //source by default. This makes gain matching over a wide range much easier to do afterwards

@@ -18,6 +18,18 @@ TCal::~TCal(){
    fgraph = 0;
 }
 
+TCal::TCal(const TCal &copy) : TNamed(copy){
+   InitTCal();
+   ((TCal&)copy).Copy(*this);
+}
+
+void TCal::Copy(TObject &obj) const{
+   ((TCal&)obj).fchan = fchan;
+   if(fgraph)     *(((TCal&)obj).fgraph)     =  *fgraph;
+   if(ffitfunc)   *(((TCal&)obj).ffitfunc)  =  *ffitfunc;
+   TNamed::Copy((TCal&)obj);
+}
+
 Bool_t TCal::SetChannel(const TChannel* chan){
    if(!chan){
       Error("SetChannel","TChannel does not exist");

@@ -31,12 +31,15 @@ class TCal : public TNamed {
    TCal(const char* name, const char* title);
    virtual ~TCal(); 
 
+   TCal(const TCal& copy);
+
  //pure virtual functions  
    virtual Bool_t IsGroupable() const = 0;
    virtual std::vector<Double_t> GetParameters() const = 0;
    virtual Double_t GetParameter(Int_t parameter) const = 0;
 
  public:
+   virtual void Copy(TObject &obj) const;
    TGraphErrors *Graph() const { return fgraph; }
    virtual void WriteToChannel() const {Error("WriteToChannel","Not defined for %s",ClassName());}
    virtual TF1* GetFitFunction() const { return ffitfunc; } 

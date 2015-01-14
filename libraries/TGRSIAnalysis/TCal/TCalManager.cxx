@@ -128,9 +128,10 @@ Bool_t TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
 	   }	
    } 
    else {
-      TCal* newcal = (TCal*)cal->Clone(cal->GetName());//I can fix this to be more C++ like rather than ROOT.
-                                                       //I just need to write the appropriate copy constructors
-
+      TCal* newcal = (TCal*)cal->Clone(cal->GetName());
+      //In order to construct a new derived class you need to know the type at compile time.
+      //Clone lets us get around this. There are other ways to do this using "virtual constructor idioms"
+      //but the basically do what clone does anyway.
       //Clone uses ROOT streamers. We have made the TChannel part of the TCal a TRef.
       //This has the effect of making it persistent as far as the ROOT streamer
       //facility is concerned. All of the other "pointer members" of the TCal
