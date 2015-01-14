@@ -78,7 +78,10 @@ void GH1D::Draw(Option_t *option) {
    TH1D::Draw(opt2.Data());
    gPad->FindObject("TFrame");//->SetBit(TBox::kCannotMove);
    gPad->GetListOfPrimitives()->Print();
-   printf("Draw called\t\t%p\t%p\n",gPad,gPad->FindObject("TFrame"));
+   gPad->Update();
+   gPad->FindObject("TFrame")->SetBit(TBox::kCannotMove);
+   //printf("gPad->FindObject(\"TFrame\") = %p\n",gPad->FindObject("TFrame")); //->SetBit(kCannotMove);
+   //printf("Draw called\t\t%p\t%p\n",gPad,gPad->FindObject("TFrame"));
 }
 
 
