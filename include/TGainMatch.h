@@ -33,14 +33,17 @@ class TGainMatch : public TCal {
    Bool_t FineMatch(TH1 *hist1, Double_t energy1, Double_t energy2, Int_t channelNum = 9999);
    Bool_t FineMatch(TH1 *hist1, Double_t energy1, TH1 *hist2, Double_t energy2, Int_t channelNum = 9999);
 
-   std::vector<Double_t> GetParameters() const;
-   Double_t GetParameter(Int_t parameter) const;
-
    void Clear(Option_t *opt = "");
    void Print(Option_t *opt = "") const;
 
    Bool_t IsGroupable() const {return false;}
    void WriteToChannel() const;
+
+   void SetNucleus(TNucleus* nuc) { Warning("SetNucleus","Is not used in TGainMatching");} 
+   TNucleus* GetNucleus() const { Warning("GetNucleus","Is not used in TGainMatching"); return 0; }
+
+   void SetHist(TH1* nuc) { Warning("SetHist","Is not used in TGainMatching");} 
+   TH1* GetHist() const { Warning("GetHist","Is not used in TGainMatching"); return 0; }
 
  private:
    Bool_t fcoarse_match;

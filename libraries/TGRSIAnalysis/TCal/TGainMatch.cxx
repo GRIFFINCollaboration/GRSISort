@@ -3,7 +3,7 @@
 ClassImp(TGainMatch)
 
 TGainMatch::TGainMatch(const TGainMatch &copy) : TCal(copy){
-   ((TCal&)copy).Copy(*this);
+   ((TGainMatch&)copy).Copy(*this);
 }
 
 void TGainMatch::Copy(TObject &obj) const{
@@ -217,29 +217,6 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, Double_t energy1, TH1* hist2, Double_t 
    delete peak2;
    return result;
    return 0;
-}
-
-std::vector<Double_t> TGainMatch::GetParameters() const{
-   std::vector<Double_t> paramlist;
-   if(!GetFitFunction()){
-      Error("GetParameters","Gains have not been fitted yet");
-      return paramlist;
-   }
-   
-   Int_t nparams = GetFitFunction()->GetNpar();
-
-   for(int i=0;i<nparams;i++)
-      paramlist.push_back(GetParameter(i));
-
-   return paramlist;
-}
-
-Double_t TGainMatch::GetParameter(Int_t parameter) const{
-   if(!GetFitFunction()){
-      Error("GetParameter","Gains have not been fitted yet");
-      return 0;
-   }
-   return GetFitFunction()->GetParameter(parameter); //Root does all of the checking for us.
 }
 
 void TGainMatch::WriteToChannel() const {
