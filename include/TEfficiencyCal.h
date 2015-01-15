@@ -11,18 +11,17 @@ class TEfficiencyCal : public TCal {
    TEfficiencyCal(const char* name, const char* title) : TCal(name,title){}
    ~TEfficiencyCal(); 
 
+   TEfficiencyCal(const TEfficiencyCal &copy);
+
  public:
-   std::vector<Double_t> GetParameters() const;
-   Double_t GetParameter(Int_t parameter) const;
+   void Copy(TObject &obj) const;
 
    void Clear(Option_t *opt = "");
    void Print(Option_t *opt = "") const;
 
-   void SetFitFunction(void* fnc);
-
    Bool_t IsGroupable() const {return true;}
 
-   void ScaleGraph(Double_t scale_factor) const{};
+   void ScaleGraph(Double_t scale_factor);
 
  private:
    Double_t fscale_factor;

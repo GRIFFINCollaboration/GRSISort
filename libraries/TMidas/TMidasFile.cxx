@@ -344,7 +344,7 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
   return rd + rd_head;
 }
 
-bool TMidasFile::Write(TMidasEvent *midasEvent)
+bool TMidasFile::Write(TMidasEvent *midasEvent,Option_t *opt)
 {
   int wr = -2;
 
@@ -361,8 +361,9 @@ bool TMidasFile::Write(TMidasEvent *midasEvent)
     printf("TMidasFile: error on write event header, return %i, size requested %lu\n",wr,sizeof(TMidas_EVENT_HEADER));
     return false;
   }
-
-  printf("Written event header to outfile , return is %i\n",wr);
+ 
+  if(strncmp(opt,"q",1)!=0)
+    printf("Written event header to outfile , return is %i\n",wr);
 
   if (fOutGzFile)
 #ifdef HAVE_ZLIB
@@ -372,7 +373,9 @@ bool TMidasFile::Write(TMidasEvent *midasEvent)
 #endif
   else
     wr = write(fOutFile, (char*)midasEvent->GetData(), midasEvent->GetDataSize());
-  printf("Written event to outfile , return is %d\n",wr);
+
+  if(strncmp(opt,"q",1)!=0)
+    printf("Written event to outfile , return is %d\n",wr);
 
   return wr;
 }
