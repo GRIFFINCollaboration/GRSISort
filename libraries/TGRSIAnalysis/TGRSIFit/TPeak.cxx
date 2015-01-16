@@ -158,15 +158,17 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 
 
 
-   TFitResultPtr fitres = fithist->Fit(this,Form("%sRSM",opt));//The RS needs to always be there
+   TFitResultPtr fitres = fithist->Fit(this,Form("%sRSML",opt));//The RS needs to always be there
 
    if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
       if(fitres->Parameter(3) < 1){
          FixParameter(4,0);
          FixParameter(3,1);
          std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
-         fitres = fithist->Fit(this,Form("%sRSM",opt));
+         fitres = fithist->Fit(this,Form("%sRSML",opt));
       }
+    
+
    }
 
    Double_t binWidth = fithist->GetBinWidth(GetParameter("centroid"));
