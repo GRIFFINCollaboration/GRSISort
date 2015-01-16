@@ -72,7 +72,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    Graph()->Set(2);
 
    //We now want to create a peak for each one we found (2) and fit them.
-   for(int x=0; x<nfound; x++){
+   for(int x=0; x<2; x++){
       TPeak tmpPeak(foundbin[x],foundbin[x] - 20./binWidth, foundbin[x] + 20./binWidth);
       tmpPeak.SetName(Form("GM_Cent_%lf",foundbin[x]));//Change the name of the TPeak to know it's origin
       tmpPeak.Fit(hist,"M+");
