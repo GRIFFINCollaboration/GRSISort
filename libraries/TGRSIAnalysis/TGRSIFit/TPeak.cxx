@@ -169,11 +169,17 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
       }
    }
 
+   Double_t binWidth = fithist->GetBinWidth(GetParameter("centroid"));
    printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
    Double_t xlow,xhigh;
+   Double_t int_low, int_high; 
    this->GetRange(xlow,xhigh);
+   int_low = xlow - 200.*binWidth;
+   int_high = xhigh + 200.*binWidth;
+
    //Make a function that does not include the background
    TPeak *tmppeak = new TPeak(*this);
+   tmppeak->SetRange(int_low,int_high);//This will help get the true area of the gaussian 200 ~ infinity in a gaus
    tmppeak->SetName("tmppeak");
    tmppeak->SetParameter("step",0.0);
    tmppeak->SetParameter("A",0.0);
@@ -182,8 +188,8 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    
    //This is where we will do integrals and stuff.
    if(farea < 0.01){
-      farea = tmppeak->Integral(xlow,xhigh);
-      fd_area = tmppeak->IntegralError(xlow,xhigh,tmppeak->GetParameters(),fitres->GetCovarianceMatrix().GetMatrixArray());
+      farea = tmppeak->Integral(int_low,int_high)/binWidth;
+      fd_area = tmppeak->IntegralError(int_low,int_high,tmppeak->GetParameters(),fitres->GetCovarianceMatrix().GetMatrixArray())/binWidth;
    }
    delete tmppeak;
    
