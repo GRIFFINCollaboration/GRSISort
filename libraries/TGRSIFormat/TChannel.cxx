@@ -458,10 +458,10 @@ void TChannel::WriteCalFile(std::string outfilename) {
 }
 
 
-void TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
+Int_t TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
 //Reads the TChannel information from a Tree if it has already been written to that Tree.
     if(!tree)
-	return;
+	return 0;
     TList *list = tree->GetUserInfo();	
     TIter iter(list);
     int channelsfound = 0;
@@ -472,7 +472,7 @@ void TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
  	AddChannel(chan,opt);// if we read from the tree we want to overwrite any channels found
 	channelsfound ++;
     }
-    return;
+    return channelsfound;
 }
 
 
