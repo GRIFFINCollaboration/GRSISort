@@ -41,8 +41,10 @@ void TCSM::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
       data = new TCSMData();
    if(mnemonic->collectedcharge.compare(0,1,"N")==0 ) { //Horizontal Strips. aka "front"
       data->SetHorizontal(frag,channel,mnemonic);
+      //cout<<":";
    } else if(mnemonic->collectedcharge.compare(0,1,"P")==0 ) { //Vertical Strips. aka "back"
       data->SetVertical(frag,channel,mnemonic);
+      //cout<<".";
    }
 }
 
@@ -52,6 +54,8 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)	{
      cdata = (this->data); 
   if(!cdata)
      return;
+
+  //cdata->Print();
 
 
   //  after the data has been taken from the fragement tree, the data
@@ -558,12 +562,12 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)	{
     for(int j=0;j<E_Hits.size();j++) {
       //E_Hits.at(j).Print(); 
       if(usedpixel.at(j)) {
-        printf(" I AM HERE 1\n");
+        //printf(" I AM HERE 1\n");
         continue; 
       }
       if(D_Hits.at(i).GetDetectorNumber() == E_Hits.at(j).GetDetectorNumber()) {
     		if((D_Hits.at(i).GetDPosition() - E_Hits.at(j).GetEPosition()).Mag()>10.0) {
-          printf(" I AM HERE 2\n");
+          //printf(" I AM HERE 2\n");
       		continue;
         }
     		usedpixel.at(j) = true;
