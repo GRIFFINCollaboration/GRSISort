@@ -1,6 +1,7 @@
 #ifndef __TCAL_H__
 #define __TCAL_H__
 
+#include "Varargs.h"
 #include "TNamed.h"
 #include "TH1.h"
 #include "TF1.h"
@@ -44,6 +45,8 @@ class TCal : public TNamed {
    virtual void SetFitFunction(const TF1* func){ ffitfunc = (TF1*)func; };
    virtual std::vector<Double_t> GetParameters() const;
    virtual Double_t GetParameter(Int_t parameter) const ;
+
+   //static TGraphErrors MergeGraphs(TCal *cal,...);
 
    TChannel* const GetChannel() const;
    Bool_t SetChannel(const TChannel* chan);

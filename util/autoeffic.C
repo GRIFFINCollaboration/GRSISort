@@ -685,7 +685,7 @@ int autoefficiency60(TH2D *mat,const char *name,Double_t runlengthsecs, Double_t
    TPeak *peak = 0;
    tree->Branch("TPeak","TPeak", &peak);
      std::cout << &peak << std::endl;
-
+   
    gSystem->Load("libNucleus");
    TNucleus nuc(name);
    nuc.SetSourceData();
@@ -700,17 +700,14 @@ int autoefficiency60(TH2D *mat,const char *name,Double_t runlengthsecs, Double_t
 			continue;
       peak = new TPeak;
       mg->Add(autoefficiency60(tree,peak,h1,i,&nuc, runlengthsecs,activitykBq,verbosity));
+      h1->Write();
       delete peak;
    //   mg->Add(graph);
 	}
    mg->Draw("PA0");
    tree->Write();
-
-   TFile* graphfile = new TFile("efficgraph.root", "RECREATE");
+ 
    mg->Write();
-   graphfile->Close();
-
-   delete graphfile;
  
    outfile.Close();
   return 1;
@@ -752,13 +749,13 @@ TMultiGraph* autoefficiency60(TTree *tree, TPeak *peak, TH1D *hist,int channum,T
  //  }
 
 // Search
-   hist->GetXaxis()->SetRangeUser(250,4000*4);
+   //hist->GetXaxis()->SetRangeUser(0,4000*4);
 
 //   nuc->TransitionList.Sort();
 
-   std::vector<float> engvec;
-   std::vector<float> intensvec;
-   TIter iter(&(nuc->TransitionList));
+   Double_t engvec[2] = {276.0,358.0};
+   std::vector<Double_t> intensvec;
+/*   TIter iter(&(nuc->TransitionList));
    TObject* obj;
    while(obj = iter.Next()) {
       if(!obj->InheritsFrom("TGRSITransition"))
@@ -767,9 +764,12 @@ TMultiGraph* autoefficiency60(TTree *tree, TPeak *peak, TH1D *hist,int channum,T
       intensvec.push_back(static_cast<float>(tran->intensity));
       engvec.push_back(static_cast<float>(tran->energy));
    }
-
- 
-
+*/
+  // engvec.push_back(80.99); 
+  intensvec.push_back(35.55);
+   
+  // engvec.push_back(358.01); 
+   intensvec.push_back(62.06);
    std::vector<Float_t> areavec;
    std::vector<Float_t> area_uncertainty;
    std::vector<Float_t> goodenergyvec;
@@ -777,53 +777,52 @@ TMultiGraph* autoefficiency60(TTree *tree, TPeak *peak, TH1D *hist,int channum,T
    std::vector<Float_t> channumvec;
 
 
+   TSpectrum *s = new TSpectrum;
+   Int_t nfound = s->Search(hist); 
+   printf("Found %d candidate peaks to fit\n",nfound);
+   
+   std::vector<float> vec;
+   for(int x=0;x<nfound;x++){
+      printf("s->GetPosition[x] = %lf\n",s->GetPositionX()[x] );
+      if(s->GetPositionX()[x] < 285. && s->GetPositionX()[x] >265.) engvec[0] = s->GetPositionX()[x];
+      if(s->GetPositionX()[x] < 370. && s->GetPositionX()[x] > 340.) engvec[1] = s->GetPositionX()[x];
+   }
+
+   std::cout << "0: " << engvec[0] << std::endl;
+   std::cout << "1: " << engvec[1] << std::endl;
+
+
 
    Float_t integral, sigma; 
    Double_t binWidth = hist->GetXaxis()->GetBinWidth(1000);
    Double_t dummyarray[4];
 
+
    std::cout << "bin width is " << binWidth << std::endl;
-  for (int p=0;p<engvec.size();p++) {
-     Float_t xp = engvec.at(p);
-     std::cout << "Trying to fit " << xp << " keV" <<std::endl; 
-
-     Int_t bin = hist->GetXaxis()->FindBin(xp);
-     std::cout << "Bin is: " << bin << "xp is " << xp << std::endl;
-     Float_t yp = hist->GetBinContent(bin);
-     std::cout << "yp is: "<<yp << std::endl;
-     par[0] = yp;  //height
-     par[1] = xp;  //centroid
-     par[2] = 1.0;   //sigma
-     par[3] = 1.0;   //beta
-     par[4] = 40.0;   //R
-     par[5] = 1.0; //stp
-     par[6] = hist->GetBinContent(xp-15);  //A
-     par[7] = (hist->GetBinContent(xp-15) - hist->GetBinContent(xp+15))/100.*binWidth;//B
-     par[8] = -0.5;   //C
-     par[9] = xp;  //bg offset
-     TFitResultPtr fitresult = FitPeak(par,hist,integral, sigma,dummyarray,verbosity);
-     //peak = new TPeak;
-     peak->Clear();
-     std::cout << peak << std::endl;
-     peak->SetCentroid(fitresult->Parameter(1), fitresult->ParError(1));
-     peak->SetArea(integral,sigma);
-     peak->SetFitResult(fitresult);
-     peak->Print();
-    // tree->Fill();
-     	areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
-     	//area_uncertainty.push_back(sigma);
-      area_uncertainty.push_back(0.01*integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
-      std::cout<< "Eff = " << areavec.back() << "+/-" << area_uncertainty.back()<< std::endl;
+  for (int p=0;p<2;p++) {
+     Double_t centroid = engvec[p];
+     
+     TPeak *tpeak = new TPeak(centroid,(centroid-10.),(centroid+15.));
+     tpeak->InitParams(hist);
+     tpeak->Fit(hist,"+");
+     integral = tpeak->GetArea();
+     sigma = 0.0;// tpeak->GetAreaErr();
+     	//areavec.push_back(integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
+     areavec.push_back(integral);
+     area_uncertainty.push_back(sigma);
+      //area_uncertainty.push_back(0.01*integral/((intensvec.at(p)/100.0)*activitykBq*1000.0*runlengthsecs));
+      
+     std::cout<< "Eff = " << areavec.back() << "+/-" << area_uncertainty.back()<< std::endl;
       channumvec.push_back((Float_t)(channum));
-
+     delete tpeak;
  //    }
    }
 
-  std::cout << "IM PRINTING!!!" << std::endl;
-  std::cout << "Chi2 = " << fitresult->Chi2() << std::endl;
+ // std::cout << "IM PRINTING!!!" << std::endl;
+ // std::cout << "Chi2 = " << fitresult->Chi2() << std::endl;
    std::cout << "or made it here" << std::endl;
-   static Float_t eff1;
-   static Float_t eff2;
+//   static Float_t eff1;
+//   static Float_t eff2;
    Float_t *area = &(areavec[0]);
  //  Float_t *energies = &(engvec[0]);
  //  float *goodenergy = &(goodenergyvec[0])
@@ -832,8 +831,8 @@ TMultiGraph* autoefficiency60(TTree *tree, TPeak *peak, TH1D *hist,int channum,T
   // hist->DrawCopy();
  //  TGraph *slopefit = new TGraph(areavec.size(),goodenergy,area ); 
    TGraphErrors *effic = new TGraphErrors(1,&chan[0],&area[0],0,&darea[0]);
-   eff1 += area[0];
-   eff2 += area[1];
+ //  eff1 += area[0];
+ //  eff2 += area[1];
    effic->SetMarkerStyle(21);
    effic->SetMarkerColor(kRed);
    effic->SetLineColor(kRed);
@@ -846,8 +845,8 @@ TMultiGraph* autoefficiency60(TTree *tree, TPeak *peak, TH1D *hist,int channum,T
    efficmg->Add(effic);
    efficmg->Add(effic2);
 
-   std::cout << "Sum of eff so far: " <<eff1 << std::endl;
-   std::cout << "Sum of eff2 so far: " << eff2 << std::endl;
+ //  std::cout << "Sum of eff so far: " <<eff1 << std::endl;
+ //  std::cout << "Sum of eff2 so far: " << eff2 << std::endl;
    
   // printf("Now fitting: Be patient\n");
  //  slopefit->Fit("pol1");
@@ -859,6 +858,7 @@ TMultiGraph* autoefficiency60(TTree *tree, TPeak *peak, TH1D *hist,int channum,T
    //return slopefit;
    //delete dummyarray;
    return efficmg;
+   delete s;
 
 }
 

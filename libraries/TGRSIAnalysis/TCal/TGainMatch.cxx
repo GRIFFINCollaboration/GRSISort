@@ -72,7 +72,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    Graph()->Set(2);
 
    //We now want to create a peak for each one we found (2) and fit them.
-   for(int x=0; x<nfound; x++){
+   for(int x=0; x<2; x++){
       TPeak tmpPeak(foundbin[x],foundbin[x] - 20./binWidth, foundbin[x] + 20./binWidth);
       tmpPeak.SetName(Form("GM_Cent_%lf",foundbin[x]));//Change the name of the TPeak to know it's origin
       tmpPeak.Fit(hist,"M+");
@@ -146,14 +146,26 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2,
    Double_t energy[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
    std::cout << peak1->GetParameter("centroid") << " ENERGIES " << energy[1] << std::endl;  
    //Offsets are very small right now so I'm not including them until they become a problem.
-   peak1->SetParameter("centroid",energy[0]/gain);
-   peak2->SetParameter("centroid",energy[1]/gain);
-
+  // peak1->SetParameter("centroid",energy[0]/gain);
+  // peak2->SetParameter("centroid",energy[1]/gain);
    //Change the range for the fit to be in the gain corrected spectrum
 
    peak1->SetRange(peak1->GetXmin()/gain,peak1->GetXmax()/gain);
    peak2->SetRange(peak2->GetXmin()/gain,peak2->GetXmax()/gain);
 
+   //The gains won't be perfect, so we need to search for the peak within a range.
+   TSpectrum s;
+   Int_t nfound = s.Search(hist1); 
+   for(int x=0;x<nfound;x++)
+      if(s.GetPositionX()[x] < peak1->GetXmax() && s.GetPositionX()[x] > peak1->GetXmin()) 
+        peak1->SetParameter("centroid",s.GetPositionX()[x]);
+
+   s.Clear();//Clear s, so that we can use it again.
+   nfound = s.Search(hist2); //Search the next histogram
+   for(int x=0;x<nfound;x++)
+      if(s.GetPositionX()[x] < peak2->GetXmax() && s.GetPositionX()[x] > peak2->GetXmin()) 
+         peak2->SetParameter("centroid",s.GetPositionX()[x]);
+   
    peak1->Fit(hist1,"M+");
    peak2->Fit(hist2,"M+");
    
