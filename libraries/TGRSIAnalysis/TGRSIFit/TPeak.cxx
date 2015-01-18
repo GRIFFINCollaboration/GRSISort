@@ -107,9 +107,9 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    this->SetParLimits(2,0.5,12);
    this->SetParLimits(3,0.000,10);
    this->SetParLimits(4,0,500);
-   this->SetParLimits(5,0,1000000);
+   //Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
    this->SetParLimits(6,0,GetParameter(6)*1.4);
-   this->SetParLimits(9,xlow,xhigh);
+   //this->SetParLimits(9,xlow,xhigh);
 
    if(!fithist && fHistogram) 
       fithist = GetHistogram();
@@ -167,9 +167,12 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
          std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
          fitres = fithist->Fit(this,Form("%sRSML",opt));
       }
-    
-
    }
+ /*  if(fitres->Parameter(5) < 0.0){
+      FixParameter(5,0);
+      std::cout << "Step < 0. Retrying fit with stp = 0" << std::endl;
+      fitres = fithist->Fit(this,Form("%sRSML",opt));
+   }*/
 
    Double_t binWidth = fithist->GetBinWidth(GetParameter("centroid"));
    printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
@@ -180,20 +183,34 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    int_high = xhigh + 200.*binWidth;
 
    //Make a function that does not include the background
-   TPeak *tmppeak = new TPeak(*this);
-   tmppeak->SetRange(int_low,int_high);//This will help get the true area of the gaussian 200 ~ infinity in a gaus
-   tmppeak->SetName("tmppeak");
+   //Intgrate the background.
+   //TPeak *tmppeak = new TPeak(*this);
+   TPeak *tmppeak = new TPeak;
+   this->Copy(*tmppeak);
    tmppeak->SetParameter("step",0.0);
    tmppeak->SetParameter("A",0.0);
    tmppeak->SetParameter("B",0.0);
    tmppeak->SetParameter("C",0.0);
+   tmppeak->SetParameter("bg_offset",0.0);
+   tmppeak->SetRange(int_low,int_high);//This will help get the true area of the gaussian 200 ~ infinity in a gaus
+   tmppeak->SetName("tmppeak");
    
+   //SOMETHING IS WRONG WITH THESE UNCERTAINTIES
    //This is where we will do integrals and stuff.
-   if(farea < 0.01){
-      farea = tmppeak->Integral(int_low,int_high)/binWidth;
-      fd_area = tmppeak->IntegralError(int_low,int_high,tmppeak->GetParameters(),fitres->GetCovarianceMatrix().GetMatrixArray())/binWidth;
-   }
-   delete tmppeak;
+   farea = (tmppeak->Integral(int_low,int_high))/binWidth;
+   //Set the background values in the covariance matrix to 0, while keeping their covariance errors
+   TMatrixDSym CovMat = fitres->GetCovarianceMatrix();
+   CovMat(6,6) = 0.0;
+   CovMat(7,7) = 0.0;
+   CovMat(8,8) = 0.0;
+   CovMat(9,9) = 0.0;
+
+   CovMat.Print();
+   fd_area = (tmppeak->IntegralError(int_low,int_high,tmppeak->GetParameters(),CovMat.GetMatrixArray())) /binWidth;
+   
+
+   //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
+   //delete tmppeak;
    
 }
 

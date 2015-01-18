@@ -15,6 +15,8 @@ class TEfficiencyCal : public TCal {
 
  public:
    void Copy(TObject &obj) const;
+   void AddPoint(Double_t energy, Double_t area, Double_t d_energy=0.0, Double_t d_area=0.0);
+   void AddPoint(TPeak *peak);
 
    void Clear(Option_t *opt = "");
    void Print(Option_t *opt = "") const;

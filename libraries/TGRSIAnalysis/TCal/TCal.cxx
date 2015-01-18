@@ -24,6 +24,30 @@ TCal::TCal(const TCal &copy) : TNamed(copy){
    ((TCal&)copy).Copy(*this);
 }
 
+/*TGraphErrors TCal::MergeGraphs(TCal *cal,...){
+   //Probably does not work properly yet
+   TGraphErrors ge;
+   TList* glist;
+   TClass *cl = cal->Class();
+   if(!(cal->IsGroupable())){
+      cal->Error("MergeGraphs","%s is not groupable",cal->ClassName());
+      return ge;
+   }
+   va_list ap;
+   va_start(ap, cal);
+   while(cal){
+      if(cal->Class() != cl){
+         cal->Error("MergeGraphs","Trying to merge a %s to a %s",cal->ClassName(),cl->ClassName());
+         return ge;
+      }
+      glist.Add(cal->Graph());
+      cal= var_arg(ap, TCal*);
+   }
+   va_end(ap);
+   ge.Merge(glist);
+   return ge;
+}*/
+
 void TCal::SetNucleus(TNucleus* nuc){
    if(!nuc){
       Error("SetNucleus","Nucleus does not exist");
@@ -31,6 +55,10 @@ void TCal::SetNucleus(TNucleus* nuc){
    }
    if(fnuc)
       Warning("SetNucleus","Overwriting nucleus: %s",fnuc->GetName());
+   if(!(nuc->SetSourceData())){
+      Error("SetNucleus","Source Data not found for %s",nuc->GetName());
+      return;
+   }
    fnuc = nuc;
 }
 

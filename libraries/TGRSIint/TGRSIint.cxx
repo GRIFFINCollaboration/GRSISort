@@ -77,11 +77,8 @@ void TGRSIint::ApplyOptions() {
    if(fAutoSort){
      TGRSILoop::Get()->SortMidas();
    }
-   
-   
    bool foundCal = false;
    if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
-      //We should put a line here that reads a cal file so the hists are altered based on the input cal file
       TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
    if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0) { 
       TAnalysisTreeBuilder::Get()->StartMakeAnalysisTree();
