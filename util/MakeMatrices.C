@@ -222,6 +222,8 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    
    TH1F* scepMultB    = new TH1F("scepMultB",        "Sceptar multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(scepMultB);
    TH1F* scepMultCutB = new TH1F("scepMultCutB",Form("Sceptar multiplicity in built event with #Delta t = %d - %d, and coincident beta",coincLow,coincHigh),65,0.,65.); list->Add(scepMultCutB);
+
+   TH1F* paceMult    = new TH1F("paceMult",        "Paces multiplicity in built event",65,0.,65.);                                             list->Add(paceMult);
  
    //diagnostics
    TH2F* eVsAngle1460 = new TH2F("eVsAngle1460","#gamma addback energy vs. angle between detectors", 180, 0., 180., 1500, 0., 1500.); list->Add(eVsAngle1460);
@@ -294,6 +296,11 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 
    TH3F* angCorr_bg = new TH3F("angCorr_bg",Form("angular correlation cube, background within %d - %d [ 10 ns];energy [keV];energy [keV];angle [^{o}]", bg+coincLow, bg+coincHigh), nof3Dbins, xBins, nof3Dbins, yBins, angleCombinations.size(), zBins); list->Add(angCorr_bg);
    TH3F* angCorrAddback_bg = new TH3F("angCorrAddback_bg",Form("angular correlation cube, background within %d - %d [ 10 ns];energy [keV];energy [keV];angle [^{o}]", bg+coincLow, bg+coincHigh), nof3Dbins, xBins, nof3Dbins, yBins, angleCombinations.size(), zBins); list->Add(angCorrAddback_bg);
+
+   // paces spectra
+   TH1F* paceSingles = new TH1F("paceSingles","Paces singles; Charge, high gain; Counts",3000,0,3000e3); list->Add(paceSingles);
+   TH2F* paceAddback = new TH2F("paceAddback","Paces hits vs. Griffin addback hits; Paces charge, high gain; Addback energy, low gain",3000,0,3000e3,nofBins,low,high); list->Add(paceAddback);
+   TH2F* paceCoinc = new TH2F("paceCoinc","Paces coincident hits; Paces charge, high gain; Paces charge, high gain",3000,0,3000e3,3000,0,3000e3); list->Add(paceCoinc);
 
    //set up branches
    TGriffin* grif = 0;
@@ -382,6 +389,10 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             }
          }
          scepMultCut->Fill(coincBetaMult);
+      }
+      //paces multiplicities
+      if(gotPaces) {
+         paceMult->Fill(pace->GetMultiplicity());
       }
       //sceptar coincident multiplicities
       if(gotSceptar && scep->GetMultiplicity() >= 1) {
@@ -565,6 +576,19 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
          }
       }
 
+      // paces spectra
+      if(gotPaces ) {
+         for(one=0;one< (int) pace->GetMultiplicity(); ++one){
+            paceSingles->Fill(pace->GetPacesHit(one)->GetChargeHigh());
+            for (two=0;two< (int) grif->GetMultiplicity(); ++two){
+               paceAddback->Fill(pace->GetPacesHit(one)->GetChargeHigh(),grif->GetAddBackHit(two)->GetEnergyLow());
+            }
+	         for (two=0; two< (int) pace->GetMultiplicity(); ++two){
+               if(one==two) continue;    
+	            paceCoinc->Fill(pace->GetPacesHit(one)->GetChargeHigh(),pace->GetPacesHit(two)->GetChargeHigh());
+            }      
+          }
+      }  
       //addback spectra
       //addback timing spectra
       //gamma-gamma spectra
