@@ -252,6 +252,31 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)	{
       //cout<<"addr: "<<addr<<endl;
       if(cdata->GetHorizontal_DetectorPos(addr)=='D')
       {
+        if(cdata->GetHorizontal_DetectorNbr(addr)==2)
+        {
+    		   	csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(addr));		//!
+
+				    csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(addr)); 				//! 
+			      csmhit.SetDVerticalCharge(cdata->GetHorizontal_Charge(addr));    			//!
+						
+			      csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(addr)); 			//!
+			      csmhit.SetDVerticalStrip(6);   			//!
+						
+			      csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(addr));					//!
+			      csmhit.SetDVerticalCFD(cdata->GetHorizontal_TimeCFD(addr));					//!
+					
+			      csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(addr));	//!
+			      csmhit.SetDVerticalTime(cdata->GetHorizontal_Time(addr));		//!
+			
+			      csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(addr));				//!
+			      csmhit.SetDVerticalEnergy(cdata->GetHorizontal_Energy(addr));				//!
+
+			      csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(addr),
+                                                     cdata->GetHorizontal_DetectorPos(addr),
+                                                     cdata->GetHorizontal_StripNbr(addr),
+                                                     6));
+	            D_Hits.push_back(csmhit);
+	      }
         if(cdata->GetHorizontal_DetectorNbr(addr)==3)
         {
     		   	csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(addr));		//!
