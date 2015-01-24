@@ -73,8 +73,8 @@ void GCanvas::GCanvasInit() {
 
 void GCanvas::CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj) {
    printf("{GCanvas} CatchEvent:\n");
-   printf("\tevent: \t0x%08x\n",event);
-   printf("\tobject:\t0x%08x",obj);
+   printf("\tevent: \t%p\n",event);
+   printf("\tobject:\t%p",obj);
    //if(obj) {
    //   printf("\t%s\n",obj->IsA()->GetName());
    //   if(x != lastx) {
@@ -140,7 +140,7 @@ void GCanvas::HandleInput(EEventType event,Int_t x,Int_t y) {
 void GCanvas::UpdateStatsInfo(int x, int y) {
    TIter next(this->GetListOfPrimitives());
    TObject *obj;
-   while(obj=next()) {
+   while((obj=next())) {
       if(obj->InheritsFrom("TH1")) {
          ((TH1*)obj)->SetBit(TH1::kNoStats);
          printf("found : %s\n",obj->GetName());

@@ -60,7 +60,7 @@ void TCSMHit::Print(Option_t *options)	{
   printf(DGREEN "\t\t Vert    Horiz" RESET_COLOR "\n");
   printf(DBLUE "\tStrip:\t" RESET_COLOR "   %i       %i" RESET_COLOR "\n", ver_d_strip,hor_d_strip);
   printf(DBLUE "\tCharge:\t" RESET_COLOR "   %d       %d" RESET_COLOR "\n", ver_d_charge,hor_d_charge);
-  printf(DBLUE "\tTime:\t" RESET_COLOR "   %d       %d" RESET_COLOR "\n", ver_d_time,hor_d_time);
-  printf(DBLUE "\tCFD:\t" RESET_COLOR "   %d       %d" RESET_COLOR "\n", ver_d_cfd,hor_d_cfd);
+  printf(DBLUE "\tTime:\t" RESET_COLOR "   %d       %lf" RESET_COLOR "\n", ver_d_time,hor_d_time);
+  printf(DBLUE "\tCFD:\t" RESET_COLOR "   %d       %lf" RESET_COLOR "\n", ver_d_cfd,hor_d_cfd);
 }
 
