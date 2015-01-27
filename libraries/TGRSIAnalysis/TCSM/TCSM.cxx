@@ -55,7 +55,7 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)	{
   if(!cdata)
      return;
 
-  //cdata->Print();
+  cdata->Print();
 
 
   //  after the data has been taken from the fragement tree, the data
