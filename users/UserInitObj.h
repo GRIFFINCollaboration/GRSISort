@@ -33,7 +33,7 @@
    GetOutputList()->Add(new TH1D("Charge_0x100d","Charge_0x100d",8000,0,4000));
    GetOutputList()->Add(new TH1D("Charge_0x100e","Charge_0x100e",8000,0,4000));
    GetOutputList()->Add(new TH1D("Charge_0x100f","Charge_0x100f",8000,0,4000));
-   GetOutputList()->Add(new TH1D("EnergySum","EnergySum",5000,0,2500));
+   GetOutputList()->Add(new TH1D("EnergySum","EnergySum",10000,0,5000));
 
    GetOutputList()->Add(new TH1D("Charge_nofilter","Charge_nofilter",8000,0,4000));
    GetOutputList()->Add(new TH1D("Charge_filter","Charge_filter",8000,0,4000));

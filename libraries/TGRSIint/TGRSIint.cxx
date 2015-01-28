@@ -82,8 +82,6 @@ void TGRSIint::ApplyOptions() {
    if(fAutoSort){
      TGRSILoop::Get()->SortMidas();
    }
-   
-   
    bool foundCal = false;
    if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
       TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
@@ -100,12 +98,12 @@ void TGRSIint::ApplyOptions() {
    }
    if(TGRSIOptions::GetInputRoot().size() > 0) {
       if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
-         ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
-         printf("Reading Calibration from from \"%s\" FragmentTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str()); //Will put real file name in here but it's bed time
+         Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
+         printf("Read calibration info for %d channels from \"%s\" FragmentTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str()); 
       }   
       if(TGRSIOptions::GetInputRoot().at(0).find("analysis") != std::string::npos){ 
-         ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
-         printf("Reading Calibration from from \"%s\" AnalysisTree if it exists\n",TGRSIOptions::GetInputRoot().at(0).c_str());
+         Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
+         printf("Read calibration info for %d channels from \"%s\" AnalysisTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
       }
    }
   

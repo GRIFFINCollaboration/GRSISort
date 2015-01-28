@@ -2,6 +2,15 @@
 
 ClassImp(TGainMatch)
 
+TGainMatch::TGainMatch(const TGainMatch &copy) : TCal(copy){
+   ((TGainMatch&)copy).Copy(*this);
+}
+
+void TGainMatch::Copy(TObject &obj) const{
+   ((TGainMatch&)obj).fcoarse_match = fcoarse_match; 
+   TCal::Copy(obj);
+}
+
 Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Double_t energy2){
 //This functions is used to perform a rough gain matching on a 60Co
 //source by default. This makes gain matching over a wide range much easier to do afterwards
@@ -63,7 +72,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    Graph()->Set(2);
 
    //We now want to create a peak for each one we found (2) and fit them.
-   for(int x=0; x<nfound; x++){
+   for(int x=0; x<2; x++){
       TPeak tmpPeak(foundbin[x],foundbin[x] - 20./binWidth, foundbin[x] + 20./binWidth);
       tmpPeak.SetName(Form("GM_Cent_%lf",foundbin[x]));//Change the name of the TPeak to know it's origin
       tmpPeak.Fit(hist,"M+");
@@ -137,14 +146,26 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2,
    Double_t energy[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
    std::cout << peak1->GetParameter("centroid") << " ENERGIES " << energy[1] << std::endl;  
    //Offsets are very small right now so I'm not including them until they become a problem.
-   peak1->SetParameter("centroid",energy[0]/gain);
-   peak2->SetParameter("centroid",energy[1]/gain);
-
+  // peak1->SetParameter("centroid",energy[0]/gain);
+  // peak2->SetParameter("centroid",energy[1]/gain);
    //Change the range for the fit to be in the gain corrected spectrum
 
    peak1->SetRange(peak1->GetXmin()/gain,peak1->GetXmax()/gain);
    peak2->SetRange(peak2->GetXmin()/gain,peak2->GetXmax()/gain);
 
+   //The gains won't be perfect, so we need to search for the peak within a range.
+   TSpectrum s;
+   Int_t nfound = s.Search(hist1); 
+   for(int x=0;x<nfound;x++)
+      if(s.GetPositionX()[x] < peak1->GetXmax() && s.GetPositionX()[x] > peak1->GetXmin()) 
+        peak1->SetParameter("centroid",s.GetPositionX()[x]);
+
+   s.Clear();//Clear s, so that we can use it again.
+   nfound = s.Search(hist2); //Search the next histogram
+   for(int x=0;x<nfound;x++)
+      if(s.GetPositionX()[x] < peak2->GetXmax() && s.GetPositionX()[x] > peak2->GetXmin()) 
+         peak2->SetParameter("centroid",s.GetPositionX()[x]);
+   
    peak1->Fit(hist1,"M+");
    peak2->Fit(hist2,"M+");
    
@@ -208,29 +229,6 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, Double_t energy1, TH1* hist2, Double_t 
    delete peak2;
    return result;
    return 0;
-}
-
-std::vector<Double_t> TGainMatch::GetParameters() const{
-   std::vector<Double_t> paramlist;
-   if(!GetFitFunction()){
-      Error("GetParameters","Gains have not been fitted yet");
-      return paramlist;
-   }
-   
-   Int_t nparams = GetFitFunction()->GetNpar();
-
-   for(int i=0;i<nparams;i++)
-      paramlist.push_back(GetParameter(i));
-
-   return paramlist;
-}
-
-Double_t TGainMatch::GetParameter(Int_t parameter) const{
-   if(!GetFitFunction()){
-      Error("GetParameter","Gains have not been fitted yet");
-      return 0;
-   }
-   return GetFitFunction()->GetParameter(parameter); //Root does all of the checking for us.
 }
 
 void TGainMatch::WriteToChannel() const {

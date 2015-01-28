@@ -14,6 +14,7 @@
 #include "TChain.h"
 #include "TFile.h"
 #include "TList.h"
+#include "TF1.h"
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TH3F.h"
@@ -44,12 +45,12 @@ void MakeMatrices() {
    } else {
       fileName.insert(0,"matrices_");
    }
-   TFile *outfile = new TFile(file.c_str(),"create");
+   TFile *outfile = new TFile(file.c_str(),"recreate");
    list->Write();
 }
 #endif
 
-std::vector<std::pair<double,int> > AngleCombinations(double binWidth = 2., double distance = 110.) {
+std::vector<std::pair<double,int> > AngleCombinations(double binWidth = 2., double distance = 110., bool folding = true) {
    std::vector<std::pair<double,int> > result;
 
    std::vector<double> angle;
@@ -61,7 +62,7 @@ std::vector<std::pair<double,int> > AngleCombinations(double binWidth = 2., doub
                   continue;
                }
                angle.push_back(TGriffin::GetPosition(firstDet, firstCry, distance).Angle(TGriffin::GetPosition(secondDet, secondCry, distance))*180./TMath::Pi());
-               if(angle.back() > 90.) {
+               if(folding && angle.back() > 90.) {
                   angle.back() = 180. - angle.back();
                }
                //std::cout<<firstDet<<", "<<firstCry<<" - "<<secondDet<<", "<<secondCry<<": "<<angle.back()<<std::endl;
@@ -221,6 +222,8 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    
    TH1F* scepMultB    = new TH1F("scepMultB",        "Sceptar multiplicity in built event with coincident beta",65,0.,65.);                                             list->Add(scepMultB);
    TH1F* scepMultCutB = new TH1F("scepMultCutB",Form("Sceptar multiplicity in built event with #Delta t = %d - %d, and coincident beta",coincLow,coincHigh),65,0.,65.); list->Add(scepMultCutB);
+
+   TH1F* paceMult    = new TH1F("paceMult",        "Paces multiplicity in built event",65,0.,65.);                                             list->Add(paceMult);
  
    //diagnostics
    TH2F* eVsAngle1460 = new TH2F("eVsAngle1460","#gamma addback energy vs. angle between detectors", 180, 0., 180., 1500, 0., 1500.); list->Add(eVsAngle1460);
@@ -259,21 +262,45 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    TH2F* timeVsEnergy = new TH2F("timeVsEnergy","time vs #gamma-ray energy",4000,0,4000,6000,0,6000); list->Add(timeVsEnergy); 
    
    //angular correlation cube
-   double angleWidth = 1.;
-   TH3F* angCorr = new TH3F("angCorr","angular correlation cube;energy [keV];energy [keV];angle [^{o}]", nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorr);
-   TH3F* angCorrAddback = new TH3F("angCorrAddback","angular correlation cube;energy [keV];energy [keV];angle [^{o}]", nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorrAddback);
+   bool folding = true;//fold angles to range 0-90 degree
+   double angleWidth = 1.;//Determines the separation and grouping of angles
+   
+   std::vector<std::pair<double,int> > angleCombinations = AngleCombinations(angleWidth, 110., folding);
+   std::cout<<"got "<<angleCombinations.size()<<" angles"<<std::endl;
+   for(auto ang = angleCombinations.begin(); ang != angleCombinations.end(); ang++) {
+      std::cout<<(*ang).first<<" degree: "<<(*ang).second<<" combinations"<<std::endl;
+   }
 
-   TH3F* angCorr_coinc = new TH3F("angCorr_coinc",Form("angular correlation cube, within %d - %d [10 ns];energy [keV];energy [keV];angle [^{o}]", coincLow, coincHigh), nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorr_coinc);
-   TH3F* angCorrAddback_coinc = new TH3F("angCorrAddback_coinc",Form("angular correlation cube, within %d - %d [10 ns];energy [keV];energy [keV];angle [^{o}]", coincLow, coincHigh), nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorrAddback_coinc);
+   //even spaced binning in x and y, 1 keV bin width
+   int nof3Dbins = 1500;
+   double* xBins = new double[nof3Dbins+1];
+   double* yBins = new double[nof3Dbins+1];
+   for(int i = 0; i <= nof3Dbins; ++i) {
+      xBins[i] = (double) i;
+      yBins[i] = (double) i;
+   }
 
-   TH3F* angCorr_bg = new TH3F("angCorr_bg",Form("angular correlation cube, background within %d - %d [ 10 ns];energy [keV];energy [keV];angle [^{o}]", bg+coincLow, bg+coincHigh), nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorr_bg);
-   TH3F* angCorrAddback_bg = new TH3F("angCorrAddback_bg",Form("angular correlation cube, background within %d - %d [ 10 ns];energy [keV];energy [keV];angle [^{o}]", bg+coincLow, bg+coincHigh), nofBins/5, low, high, nofBins/5, low, high, 90*angleWidth, 0., 90.); list->Add(angCorrAddback_bg);
+   //binning in z is based on the angle combinations
+   double* zBins = new double[angleCombinations.size()+1];
+   for(size_t i = 0; i < angleCombinations.size()-1; ++i) {
+      zBins[i+1] = (angleCombinations[i].first + angleCombinations[i+1].first)/2.;
+   }
+   zBins[0] = angleCombinations[0].first - (zBins[1] - angleCombinations[0].first);
+   zBins[angleCombinations.size()] = angleCombinations.back().first + (angleCombinations.back().first - zBins[angleCombinations.size()-1]);
 
-   std::vector<std::pair<double,int> > angleCombinations = AngleCombinations(angleWidth, 110.);
-   //std::cout<<"got "<<angleCombinations.size()<<" angles"<<std::endl;
-   //for(auto ang = angleCombinations.begin(); ang != angleCombinations.end(); ang++) {
-   //   std::cout<<(*ang).first<<" degree: "<<(*ang).second<<" combinations"<<std::endl;
-   //}
+   TH3F* angCorr = new TH3F("angCorr","angular correlation cube;energy [keV];energy [keV];angle [^{o}]", nof3Dbins, xBins, nof3Dbins, yBins, angleCombinations.size(), zBins); list->Add(angCorr);
+   TH3F* angCorrAddback = new TH3F("angCorrAddback","angular correlation cube;energy [keV];energy [keV];angle [^{o}]", nof3Dbins, xBins, nof3Dbins, yBins, angleCombinations.size(), zBins); list->Add(angCorrAddback);
+
+   TH3F* angCorr_coinc = new TH3F("angCorr_coinc",Form("angular correlation cube, within %d - %d [10 ns];energy [keV];energy [keV];angle [^{o}]", coincLow, coincHigh), nof3Dbins, xBins, nof3Dbins, yBins, angleCombinations.size(), zBins); list->Add(angCorr_coinc);
+   TH3F* angCorrAddback_coinc = new TH3F("angCorrAddback_coinc",Form("angular correlation cube, within %d - %d [10 ns];energy [keV];energy [keV];angle [^{o}]", coincLow, coincHigh), nof3Dbins, xBins, nof3Dbins, yBins, angleCombinations.size(), zBins); list->Add(angCorrAddback_coinc);
+
+   TH3F* angCorr_bg = new TH3F("angCorr_bg",Form("angular correlation cube, background within %d - %d [ 10 ns];energy [keV];energy [keV];angle [^{o}]", bg+coincLow, bg+coincHigh), nof3Dbins, xBins, nof3Dbins, yBins, angleCombinations.size(), zBins); list->Add(angCorr_bg);
+   TH3F* angCorrAddback_bg = new TH3F("angCorrAddback_bg",Form("angular correlation cube, background within %d - %d [ 10 ns];energy [keV];energy [keV];angle [^{o}]", bg+coincLow, bg+coincHigh), nof3Dbins, xBins, nof3Dbins, yBins, angleCombinations.size(), zBins); list->Add(angCorrAddback_bg);
+
+   // paces spectra
+   TH1F* paceSingles = new TH1F("paceSingles","Paces singles; Charge, high gain; Counts",3000,0,3000e3); list->Add(paceSingles);
+   TH2F* paceAddback = new TH2F("paceAddback","Paces hits vs. Griffin addback hits; Paces charge, high gain; Addback energy, low gain",3000,0,3000e3,nofBins,low,high); list->Add(paceAddback);
+   TH2F* paceCoinc = new TH2F("paceCoinc","Paces coincident hits; Paces charge, high gain; Paces charge, high gain",3000,0,3000e3,3000,0,3000e3); list->Add(paceCoinc);
 
    //set up branches
    TGriffin* grif = 0;
@@ -363,6 +390,10 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
          }
          scepMultCut->Fill(coincBetaMult);
       }
+      //paces multiplicities
+      if(gotPaces) {
+         paceMult->Fill(pace->GetMultiplicity());
+      }
       //sceptar coincident multiplicities
       if(gotSceptar && scep->GetMultiplicity() >= 1) {
          grifMultB->Fill(grif->GetMultiplicity());
@@ -408,7 +439,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             }
             griffinHits->Fill(grif->GetGriffinHit(one)->GetArrayNumber(),grif->GetGriffinHit(two)->GetArrayNumber());
             double ang = grif->GetGriffinHit(one)->GetPosition().Angle(grif->GetGriffinHit(two)->GetPosition())*180./TMath::Pi();
-            if(ang > 90.) {
+            if(folding && ang > 90.) {
                ang = 180. - ang;
             }
             for(angIndex = 0; angIndex < angleCombinations.size(); ++angIndex) {
@@ -545,6 +576,19 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
          }
       }
 
+      // paces spectra
+      if(gotPaces ) {
+         for(one=0;one< (int) pace->GetMultiplicity(); ++one){
+            paceSingles->Fill(pace->GetPacesHit(one)->GetChargeHigh());
+            for (two=0;two< (int) grif->GetMultiplicity(); ++two){
+               paceAddback->Fill(pace->GetPacesHit(one)->GetChargeHigh(),grif->GetAddBackHit(two)->GetEnergyLow());
+            }
+	         for (two=0; two< (int) pace->GetMultiplicity(); ++two){
+               if(one==two) continue;    
+	            paceCoinc->Fill(pace->GetPacesHit(one)->GetChargeHigh(),pace->GetPacesHit(two)->GetChargeHigh());
+            }      
+          }
+      }  
       //addback spectra
       //addback timing spectra
       //gamma-gamma spectra
@@ -560,7 +604,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             }
             addbackHits->Fill(grif->GetAddBackHit(one)->GetArrayNumber(),grif->GetAddBackHit(two)->GetArrayNumber());
             double ang = grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition())*180./TMath::Pi();
-            if(ang > 90.) {
+            if(folding && ang > 90.) {
                ang = 180. - ang;
             }
             for(angIndex = 0; angIndex < angleCombinations.size(); ++angIndex) {
@@ -757,11 +801,11 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    addbackCloverMatrixClose_bgcorrB->SetTitle(Form("#gamma-#gamma matrix with coincident beta, clover addback, angle between detectors < 90^{o}, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
    addbackCloverMatrixClose_bgcorrB->Add(addbackCloverMatrixClose_bgB,-1.);
 
-   TH2F* angCorr_bgcorr = (TH2F*) angCorr_coinc->Clone("angCorr_bgcorr"); list->Add(angCorr_bgcorr);
+   TH3F* angCorr_bgcorr = (TH3F*) angCorr_coinc->Clone("angCorr_bgcorr"); list->Add(angCorr_bgcorr);
    angCorr_bgcorr->SetTitle(Form("angular correlation cube, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
    angCorr_bgcorr->Add(angCorr_bg,-1.);
 
-   TH2F* angCorrAddback_bgcorr = (TH2F*) angCorrAddback_coinc->Clone("angCorrAddback_bgcorr"); list->Add(angCorrAddback_bgcorr);
+   TH3F* angCorrAddback_bgcorr = (TH3F*) angCorrAddback_coinc->Clone("angCorrAddback_bgcorr"); list->Add(angCorrAddback_bgcorr);
    angCorrAddback_bgcorr->SetTitle(Form("angular correlation cube, background corrected (%d - %d minus %d - %d)",coincLow, coincHigh, coincLow+bg, coincHigh+bg));
    angCorrAddback_bgcorr->Add(angCorrAddback_bg,-1.);
 
@@ -777,6 +821,26 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
       list->Add(intNormWaveformPsd);
       list->Add(peakNormWaveformPsd);
    }
+
+   //add a transfer function to the 3D spectra that defines the transparency for use with glcol and glcolz options
+   //for these option gStyle->SetCanvasPreferGL(1) has to be called beforehand
+   TF1* tf = new TF1("TransferFunction","sin(x/[0]*(TMath::Pi()/2.))");
+   tf->SetParameter(0,angCorr->GetMaximum());
+   angCorr->GetListOfFunctions()->Add(tf);
+   tf->SetParameter(0,angCorrAddback->GetMaximum());
+   angCorrAddback->GetListOfFunctions()->Add(tf);
+   tf->SetParameter(0,angCorr_coinc->GetMaximum());
+   angCorr_coinc->GetListOfFunctions()->Add(tf);
+   tf->SetParameter(0,angCorrAddback_coinc->GetMaximum());
+   angCorrAddback_coinc->GetListOfFunctions()->Add(tf);
+   tf->SetParameter(0,angCorr_bg->GetMaximum());
+   angCorr_bg->GetListOfFunctions()->Add(tf);
+   tf->SetParameter(0,angCorrAddback_bg->GetMaximum());
+   angCorrAddback_bg->GetListOfFunctions()->Add(tf);
+   tf->SetParameter(0,angCorr_bgcorr->GetMaximum());
+   angCorr_bgcorr->GetListOfFunctions()->Add(tf);
+   tf->SetParameter(0,angCorrAddback_bgcorr->GetMaximum());
+   angCorrAddback_bgcorr->GetListOfFunctions()->Add(tf);
 
 #ifdef __CINT__ 
    TCanvas* c = new TCanvas;
@@ -833,12 +897,6 @@ int main(int argc, char **argv) {
       fileName = argv[2];
    }
 
-   struct stat fileInfo; 
-   if(stat(fileName.c_str(),&fileInfo) == 0) {
-      printf("File '%s' already exists, please remove it before re-running %s!\n",fileName.c_str(),argv[0]);
-      return 1;
-   }
-  
    TFile* file = new TFile(argv[1]);
    if(file == NULL) {
       printf("Failed to open file '%s'!\n",argv[1]);
@@ -869,7 +927,7 @@ int main(int argc, char **argv) {
       list = MakeMatrices(tree, 0., 20., 80., 6000, 0., 6000., entries, &w);
    }
 
-   TFile *outfile = new TFile(fileName.c_str(),"create");
+   TFile *outfile = new TFile(fileName.c_str(),"recreate");
    list->Write();
    outfile->Close();
 
