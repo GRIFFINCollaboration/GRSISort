@@ -11,8 +11,10 @@
 #pragma link C++ class GH1D+;
 #pragma link C++ class GCanvas+;
 
+#pragma link C++ class GFile+;
 #pragma link C++ class GTree+;
 #pragma link C++ class GChain+;
+
 
 
 #endif
