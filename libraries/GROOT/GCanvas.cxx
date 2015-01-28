@@ -9,10 +9,15 @@
 #include <TH1.h>
 #include <Buttons.h>
 #include <KeySymbols.h> 
+#include <TVirtualX.h>
+#include <TROOT.h>
 
 #include "GCanvas.h"
+#include "GROOTGuiFactory.h"
+
 
 #include <iostream>
+
 
 int GCanvas::lastx = 0;
 int GCanvas::lasty = 0;
@@ -39,8 +44,9 @@ GCanvas::GCanvas(const char* name, const char* title, Int_t ww, Int_t wh)
 
 GCanvas::GCanvas(const char* name, Int_t ww, Int_t wh, Int_t winid)
         :TCanvas(name,ww,wh,winid) { 
-   GCanvasInit();
-
+  // this constructor is used to create an embedded canvas
+  // I see no reason for us to support this here.  pcb.
+  GCanvasInit();
 }
 
 
@@ -52,14 +58,32 @@ GCanvas::GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, 
 
 GCanvas::~GCanvas() {
    //TCanvas::~TCanvas();           
+
+    fRootCanvas->RemoveBind((const TGWindow*)fRootCanvas,gVirtualX->KeysymToKeycode(kKey_Up),0);
+
 }
 
 void GCanvas::GCanvasInit() {
    printf("GCanvasInit called.\n");
-//   this->SetCrosshair(true);
-   //TQObject::Connect("TCanvas", "HandleInput(Int_t,Int_t,Int_t)", "GCanvas",this,"CatchEvent(Int_t,Int_t,Int_t)");
-   //TQObject::Connect("TCanvas", "ProcessedEvent(Int_t,Int_t,Int_t,TObject*)", "GCanvas",this,"CatchEvent(Int_t,Int_t,Int_t,TObject*)");
+   // ok, to interact with the default TGWindow
+   // stuff from the root gui we need a out own GRootCanvas.  
+   // We make this using GROOTGuiFactory, which replaces the
+   // TRootGuiFactory used in the creation of some of the 
+   // default gui's (canvas,browser,etc).  
+
+   //if(gVirtualX->InheritsFrom("TGX11")) {
+   //    printf("\tusing x11-like graphical interface.\n");
+   //}
+   
+
+   this->SetCrosshair(true);
 }
+
+
+
+
+
+
 
 
 //void GCanvas::ProcessEvent(Int_t event,Int_t x,Int_t y,TObject *obj) {
@@ -71,52 +95,39 @@ void GCanvas::GCanvasInit() {
 //}
 
 
-void GCanvas::CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj) {
-   printf("{GCanvas} CatchEvent:\n");
-   printf("\tevent: \t0x%08x\n",event);
-   printf("\tobject:\t0x%08x",obj);
-   //if(obj) {
-   //   printf("\t%s\n",obj->IsA()->GetName());
-   //   if(x != lastx) {
-   //      lastx = x;
-   //      UpdateStatsInfo(x,y);
-   //   }
-   //}
-   //else
-   //   printf("\n");
-   //printf("\tx:     \t%i\n",x);
-   //printf("\ty:     \t%i\n",y);
 
-   switch(event) {
-      //case kArrowKeyPress:
-      case kKeyPress: 
-         HandleKeyPress(event,x,y,0);
-         break;
-       default:
-//         TCanvas::HandleInput((EEventType)event,x,y);
-         return;;
-   };
-//   TCanvas::ProcessedEvent(event,x,y,0);
-   return;
-}
+//void GCanvas::ExecuteEvent(Int_t event,Int_t x,Int_t y) { 
+//  printf("exc event called.\n");
+//}
 
-void GCanvas::ExecuteEvent(Int_t event,Int_t x,Int_t y) { 
-  printf("exc event called.\n");
-}
 
 void GCanvas::HandleInput(EEventType event,Int_t x,Int_t y) {
-   //this->SetEditable(false);
-   printf(DRED);
-   printf("{GCanvas} HandleEvent:\n");
-   printf(DYELLOW "\tevent: \t0x%08x\n" DRED,event);
-   if(this->GetSelected())
-      printf("\tfselected found[0x%08x]\t %s\n",this->GetSelected(),this->GetSelected()->GetName());
-   printf(DYELLOW);
-   printf(RESET_COLOR);
-   gPad->SetEditable(false);
-   //If the below switch breaks. You need to upgrade your version of ROOT
-   //Version 5.34.24 works.
-   switch(event) {
+   this->SetEditable(false);
+//   printf(DRED);
+//   printf("{GCanvas} HandleEvent:\n");
+//   printf(DYELLOW "\tevent: \t0x%08x\n" DRED,event);
+//   if(this->GetSelected())
+//      printf("\tfselected found[0x%08x]\t %s\n",this->GetSelected(),this->GetSelected()->GetName());
+//   printf(DBLUE);
+   //Event_t ev;
+   //int px,py;
+   //printf("CheckEvent = %i\n",gVirtualX->CheckEvent(fCanvasWindowID,(EGEventType)event,ev));
+   //printf("CheckEvent = %i\n",gVirtualX->CheckEvent(gVirtualX->GetCurrentWindow(),(EGEventType)event,ev));
+
+   //gVirtualX->SelectWindow(this->GetCanvasID());
+   //int myevent = gVirtualX->RequestLocator(1, 1, px, py);
+
+   //printf("CheckEvent = %i\n",gVirtualX->CheckEvent(gVirtualX->GetDefaultRootWindow(),(EGEventType)event,ev));
+   //printf("Events pending = %i\n",gVirtualX->EventsPending());
+
+   //gVirtualX->NextEvent(ev);
+   //printf("Event from request: %08x\n",&myevent);
+
+
+//   printf(RESET_COLOR);
+  //If the below switch breaks. You need to upgrade your version of ROOT
+  //Version 5.34.24 works.
+  switch(event) {
       case kArrowKeyPress:
       //case kArrowKeyRelease:
       case kKeyPress: 
@@ -125,14 +136,16 @@ void GCanvas::HandleInput(EEventType event,Int_t x,Int_t y) {
          HandleKeyPress(event,x,y,this->GetSelected());
          break;
        default:
-         printf(RED"\t\tHANDLE DEFAULT!" RESET_COLOR "\n");
+         //printf(RED"\t\tHANDLE DEFAULT!" RESET_COLOR "\n");
          TCanvas::HandleInput(event,x,y);
-         gPad->SetEditable(true);
-         return;
+         //printf("Window_t = 0x%08x\n",gVirtualX->GetCurrentWindow());
+         break;
    };
-   TCanvas::ProcessedEvent(event,x,y,this->GetSelected());
-   //this->SetEditable(false);
-   gPad->SetEditable(true);
+
+   
+   //TCanvas::ProcessedEvent(event,x,y,this->GetSelected());
+   //this->SetEditable(fal);
+   this->SetEditable(true);
    return;
 }
 
@@ -197,6 +210,7 @@ void GCanvas::HandleKeyPress(int event,int x,int key,TObject *obj) {
 void GCanvas::Draw(Option_t *opt) {
    printf("GCanvas Draw was called.\n");
    TCanvas::Draw(opt);
+   this->FindObject("TFrame")->SetBit(TBox::kCannotMove);
 }
 
 

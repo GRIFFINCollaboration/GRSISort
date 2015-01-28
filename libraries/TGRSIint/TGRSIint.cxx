@@ -9,6 +9,7 @@
 #include "TDataParser.h"
 #include "TAnalysisTreeBuilder.h"
 #include "Getline.h"
+#include "GROOTGuiFactory.h"
 
 #include "Globals.h"
 
@@ -67,7 +68,11 @@ void TGRSIint::InitFlags() {
 }
 
 void TGRSIint::ApplyOptions() {
-  	
+   
+   if(!false) { // this will be change to something like, if(!ClassicRoot) 
+      LoadGROOTGraphics();
+   }
+
    if(TGRSIOptions::ReadingMaterial()) {
       std::thread fnews = std::thread(ReadTheNews);
       fnews.detach();
@@ -310,6 +315,14 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
 }
 
 
+void TGRSIint::LoadGROOTGraphics() {
+   if (gROOT->IsBatch()) return;
+   // force Canvas to load, this ensures global GUI Factory ptr exists.
+   gROOT->LoadClass("TCanvas", "Gpad");
+   gGuiFactory =  new GROOTGuiFactory();  
+}
+
+
 void TGRSIint::PrintHelp(bool print) {
    if(print) {
       printf( DRED BG_WHITE "     Sending Help!!     " RESET_COLOR  "\n");
@@ -364,11 +377,6 @@ bool TGRSIInterruptHandler::Notify() {
    gApplication->Terminate();
    return true;
 }
-
-
-
-
-
 
 
 
