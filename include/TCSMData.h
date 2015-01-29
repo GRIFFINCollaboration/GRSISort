@@ -55,7 +55,9 @@ public:
   
   void Clear(Option_t *opt = ""); //!
   //void Clear(const Option_t*) {};
-  void Print(Option_t *opt = ""); //!
+  void Print(); //!
+  void Print(int addr); //!
+  
   
   static void Set(bool flag=true) { fIsSet=flag; } //!
   static bool IsSet() { return fIsSet; }           //!
