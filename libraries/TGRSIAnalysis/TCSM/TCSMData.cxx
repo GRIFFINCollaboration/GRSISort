@@ -83,18 +83,22 @@ void TCSMData::Print()
   }
 }
 
-void TCSMData::Print(int addr)
+void TCSMData::Print(int addr, bool horizontal)
 {
-  printf(DRED "\n \tPrinting a single event at %2i\n" RESET_COLOR, addr);
+  printf(DRED "\n \tPrinting a single ");
+  if(horizontal)
+    printf("horizontal");
+  else
+    printf("vertical");
+  printf(" event at %2i\n" RESET_COLOR, addr);
   printf(GREEN "\tDetNbr  DetPos  StripNbr       Energy        Charge           CFD             LED            Time \n" RESET_COLOR);
 
-  if(GetHorizontal_Charge(addr)>0.)
+  if(horizontal)
   {
     printf(BLUE "\tHorizontal:\n" RESET_COLOR);
     printf("\t %2i       %c        %2i     %11.2f  %12i  %12i  %14i  %14.2f\n",GetHorizontal_DetectorNbr(addr), GetHorizontal_DetectorPos(addr), GetHorizontal_StripNbr(addr), GetHorizontal_Energy(addr), GetHorizontal_Charge(addr), GetHorizontal_TimeCFD(addr), GetHorizontal_TimeLED(addr), GetHorizontal_Time(addr));
   }
-  
-  if(GetVertical_Charge(addr)>0.)
+  if(!horizontal)
   {
     printf(RED "\tVertical:\n" RESET_COLOR);
     printf("\t %2i       %c        %2i     %11.2f  %12i  %12i  %14i  %14.2f\n",GetVertical_DetectorNbr(addr), GetVertical_DetectorPos(addr), GetVertical_StripNbr(addr), GetVertical_Energy(addr), GetVertical_Charge(addr), GetVertical_TimeCFD(addr), GetVertical_TimeLED(addr), GetVertical_Time(addr));

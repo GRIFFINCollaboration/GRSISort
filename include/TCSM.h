@@ -35,7 +35,6 @@ class TCSMData;
 #define PI                       (TMath::Pi())
 #endif
 
-
 class TCSM :  public TGRSIDetector 	{
 	public:
 		TCSM();
@@ -56,6 +55,8 @@ class TCSM :  public TGRSIDetector 	{
 	private: 
 		TCSMData *data;                             //!
 		std::vector <TCSMHit> csm_hits;
+		void BuildVH(vector<int> &,vector<int> &,vector<TCSMHit> &,TCSMData*);
+		
 
 		//int CombineHits(TCSMHit*,TCSMHit*,int,int);				//!
 		//void RemoveHits(std::vector<TCSMHit>*,std::set<int>*);	//!

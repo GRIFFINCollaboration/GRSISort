@@ -21,7 +21,6 @@ ClassImp(TCSM)
 //==========================================================================//
 //==========================================================================//
 
-
 int TCSM::fCfdBuildDiff = 5;
 
 TCSM::TCSM() : data(0)
@@ -65,7 +64,7 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
   if(!cdata)
     return;
 
-  cdata->Print();
+  //cdata->Print();
   //  after the data has been taken from the fragement tree, the data
   //  is stored/correlated breifly in by the tcsmdata class - these
   //  function takes the data out of tcsmdata, and puts it into the
@@ -75,7 +74,6 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
   //  pcb.
   //
   std::string option = opt;
-  TCSMHit csmhit;
   std::vector<TCSMHit> D_Hits;
   std::vector<TCSMHit> E_Hits;
   //int fCfdBuildDiff = 5; // largest acceptable time difference between events (clock ticks)  (50 ns)
@@ -92,6 +90,87 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
   int total_ver_hits = 0;
   int total_hor_hits = 0;
 
+  std::vector<int> v1d;
+  std::vector<int> v2d;
+  std::vector<int> v1e;
+  std::vector<int> v2e;
+  std::vector<int> v3d;
+  std::vector<int> v4d;
+
+  std::vector<int> h1d;
+  std::vector<int> h2d;
+  std::vector<int> h1e;
+  std::vector<int> h2e;
+  std::vector<int> h3d;
+  std::vector<int> h4d;
+
+  v1d.clear();
+  v2d.clear();
+  v1e.clear();
+  v2e.clear();
+  v3d.clear();
+  v4d.clear();
+  
+  h1d.clear();
+  h2d.clear();
+  h1e.clear();
+  h2e.clear();
+  h3d.clear();
+  h4d.clear();
+
+  for(int hiter=0;hiter<cdata->GetMultiplicityHorizontal();hiter++)
+  {
+    if(cdata->GetHorizontal_DetectorNbr(hiter)==3)
+      h3d.push_back(hiter);
+    else if(cdata->GetHorizontal_DetectorNbr(hiter)==4)
+      h4d.push_back(hiter);
+    else if(cdata->GetHorizontal_DetectorNbr(hiter)==1)
+    {
+      if(cdata->GetHorizontal_DetectorPos(hiter)=='D')
+	h1d.push_back(hiter);
+      else if(cdata->GetHorizontal_DetectorPos(hiter)=='E')
+	h1e.push_back(hiter);
+    }
+    else if(cdata->GetHorizontal_DetectorNbr(hiter)==2)
+    {
+      if(cdata->GetHorizontal_DetectorPos(hiter)=='D')
+	h2d.push_back(hiter);
+      else if(cdata->GetHorizontal_DetectorPos(hiter)=='E')
+	h2e.push_back(hiter);
+    }
+  }
+
+  for(int viter=0;viter<cdata->GetMultiplicityVertical();viter++)
+  {
+    if(cdata->GetVertical_DetectorNbr(viter)==3)
+      v3d.push_back(viter);
+    else if(cdata->GetVertical_DetectorNbr(viter)==4)
+      v4d.push_back(viter);
+    else if(cdata->GetVertical_DetectorNbr(viter)==1)
+    {
+      if(cdata->GetVertical_DetectorPos(viter)=='D')
+	v1d.push_back(viter);
+      else if(cdata->GetVertical_DetectorPos(viter)=='E')
+	v1e.push_back(viter);
+    }
+    else if(cdata->GetVertical_DetectorNbr(viter)==2)
+    {
+      if(cdata->GetVertical_DetectorPos(viter)=='D')
+	v2d.push_back(viter);
+      else if(cdata->GetVertical_DetectorPos(viter)=='E')
+	v2e.push_back(viter);
+    }
+  }
+
+  BuildVH(v1d,h1d,D_Hits,cdata);
+  BuildVH(v1e,h1e,E_Hits,cdata);
+  BuildVH(v2d,h2d,D_Hits,cdata);
+  BuildVH(v2e,h2e,E_Hits,cdata);
+  BuildVH(v3d,h3d,D_Hits,cdata);
+  BuildVH(v4d,h4d,D_Hits,cdata);
+  
+  
+  /*HERE IS THE OLD EVENT BUILDER
   for(int i=0; i<cdata->GetMultiplicityHorizontal(); i++)
   {
     total_hor_energy += cdata->GetHorizontal_Energy(i);
@@ -99,7 +178,7 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
 
     for(int j=0; j<cdata->GetMultiplicityVertical(); j++)
     {
-      total_ver_energy += cdata->GetVertical_Energy(i);
+      total_ver_energy += cdata->GetVertical_Energy(j);
       total_ver_hits++;
 
       if(cdata->GetHorizontal_DetectorNbr(i) == cdata->GetVertical_DetectorNbr(j))	  //check if same detector
@@ -125,7 +204,7 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
             csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(i));				//!
             csmhit.SetDVerticalEnergy(cdata->GetVertical_Energy(j));				//!
 
-            /*if(cdata->GetHorizontal_DetectorNbr(i)==2)
+            if(cdata->GetHorizontal_DetectorNbr(i)==2)
             {
               if(cdata->GetHorizontal_StripNbr(i)==9 ||
                   cdata->GetHorizontal_StripNbr(i)==10 ||
@@ -144,7 +223,7 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
                 csmhit.SetDHorizontalCharge(cdata->GetVertical_Charge(j));
                 csmhit.SetDHorizontalEnergy(cdata->GetVertical_Energy(j));
               }
-            }*/
+            }
 
             csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(i),
                                                   cdata->GetHorizontal_DetectorPos(i),
@@ -179,7 +258,7 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
       }
     }
   }
-
+  */
   std::vector<int>HorStrpFree;
   std::vector<int> VerStrpFree;
 
@@ -194,6 +273,21 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
     if(!VerUsed.at(j))
       VerStrpFree.push_back(j);
   }
+  
+  /*FREE HIT PRINT
+  for(int iter=0; iter<VerStrpFree.size(); iter++)
+  {
+    int addr = VerStrpFree.at(iter);
+    
+    cdata->Print(addr,0);
+  }
+
+  for(int iter=0; iter<HorStrpFree.size(); iter++)
+  {
+    int addr = HorStrpFree.at(iter);
+    
+    cdata->Print(addr,1);
+  }*/
   
 /*  HERE BE EVENT RECOVERY
   for(int iter=0; iter<VerStrpFree.size(); iter++)
@@ -297,13 +391,10 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
 
   for(int i=0; i<D_Hits.size(); i++)
   {
-    //D_Hits.at(i).Print();
     for(int j=0; j<E_Hits.size(); j++)
     {
-      //E_Hits.at(j).Print();
       if(usedpixel.at(j))
       {
-        //printf(" I AM HERE 1\n");
         continue;
       }
 
@@ -311,7 +402,6 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
       {
         if((D_Hits.at(i).GetDPosition() - E_Hits.at(j).GetEPosition()).Mag()>10.0)
         {
-          //printf(" I AM HERE 2\n");
           continue;
         }
 
@@ -327,7 +417,6 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
         D_Hits.at(i).SetEHorizontalTime(E_Hits.at(j).GetEHorizontalTime());
         D_Hits.at(i).SetEVerticalTime(E_Hits.at(j).GetEVerticalTime());
         D_Hits.at(i).SetEPosition(E_Hits.at(j).GetEPosition());
-        //D_Hits.at(i).Print();
       } // comparison of detector numbers
     } // loop over e hits
 
@@ -427,6 +516,45 @@ TVector3 TCSM::GetPosition(int detector,char pos, int horizontalstrip, int verti
   return(Pos);
 }
 
+void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,TCSMData *cdataVH)
+{
+  if(vvec.size()==0 && hvec.size()==0)
+    return;
+
+  TCSMHit csmhitVH;
+  
+  if(vvec.size()==1&&hvec.size()==1)
+  {
+    csmhitVH.SetDetectorNumber(cdataVH->GetHorizontal_DetectorNbr(hvec.at(0)));		//!
+    csmhitVH.SetDHorizontalCharge(cdataVH->GetHorizontal_Charge(hvec.at(0))); 				//!
+    csmhitVH.SetDVerticalCharge(cdataVH->GetVertical_Charge(vvec.at(0)));    			//!
+    csmhitVH.SetDHorizontalStrip(cdataVH->GetHorizontal_StripNbr(hvec.at(0))); 			//!
+    csmhitVH.SetDVerticalStrip(cdataVH->GetVertical_StripNbr(vvec.at(0)));   			//!
+    csmhitVH.SetDHorizontalCFD(cdataVH->GetHorizontal_TimeCFD(hvec.at(0)));					//!
+    csmhitVH.SetDVerticalCFD(cdataVH->GetVertical_TimeCFD(vvec.at(0)));					//!
+    csmhitVH.SetDHorizontalTime(cdataVH->GetHorizontal_Time(hvec.at(0)));	//!
+    csmhitVH.SetDVerticalTime(cdataVH->GetVertical_Time(vvec.at(0)));		//!
+    csmhitVH.SetDHorizontalEnergy(cdataVH->GetHorizontal_Energy(hvec.at(0)));				//!
+    csmhitVH.SetDVerticalEnergy(cdataVH->GetVertical_Energy(vvec.at(0)));				//!
+    csmhitVH.SetDPosition(TCSM::GetPosition(cdataVH->GetHorizontal_DetectorNbr(hvec.at(0)),
+					  cdataVH->GetHorizontal_DetectorPos(hvec.at(0)),
+					  cdataVH->GetHorizontal_StripNbr(hvec.at(0)),
+					  cdataVH->GetVertical_StripNbr(vvec.at(0))));
+    //csmhitVH.Print();
+    hitvec.push_back(csmhitVH);
+    vvec.pop_back();
+    hvec.pop_back();
+  }
+  if(!vvec.empty() || !hvec.empty())
+  {
+    cdataVH->Print();
+    for(int iter=0;iter<vvec.size();iter++)
+    {
+      cout<<vvec.at(iter)<<endl;
+    }
+  }
+  
+}
 
 
 
