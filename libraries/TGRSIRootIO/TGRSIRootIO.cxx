@@ -22,6 +22,8 @@ TGRSIRootIO *TGRSIRootIO::Get()  {
 TGRSIRootIO::TGRSIRootIO() { 
    //printf("TGRSIRootIO has been created.\n");
 
+  fFragmentTree = 0;
+  fEpicsTree    = 0;
 
   foutfile = 0; //new TFile("test_out.root","recreate");
 
@@ -58,11 +60,8 @@ void TGRSIRootIO::SetUpFragmentTree() {
 
 
 void TGRSIRootIO::SetUpEpicsTree() {
-
    if(TGRSIOptions::IgnoreEpics()) 
      return;
-
-
    if(foutfile)
       foutfile->cd();
    fEPICSTimesFillCalled = 0;
@@ -94,7 +93,6 @@ void TGRSIRootIO::FillFragmentTree(TFragment *frag) {
 void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
   if(TGRSIOptions::IgnoreEpics()) 
     return;
-
    *fEXBufferFrag = *EXfrag;
    int bytes =  fEpicsTree->Fill();
    if(bytes < 1)

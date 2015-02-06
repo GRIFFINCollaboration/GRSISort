@@ -29,6 +29,59 @@ TGRSIRunInfo *TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();
 
 //int TGRSIRunInfo::fNumberOfTrueSystems = 0;
 
+void TGRSIRunInfo::Streamer(TBuffer &b) {
+ UInt_t R__s, R__c;
+ if(b.IsReading()) {
+   Version_t R__v = b.ReadVersion(&R__s,&R__c); if (R__v) { }
+   TObject::Streamer(b);  
+   {Int_t  R__int ; b >> R__int;  fRunNumber = R__int;}
+   {Int_t  R__int ; b >> R__int;  fSubRunNumber = R__int;}
+   {Bool_t R__bool; b >> R__bool; fTigress = R__bool;   }
+   {Bool_t R__bool; b >> R__bool; fSharc = R__bool;     }
+   {Bool_t R__bool; b >> R__bool; fTriFoil = R__bool;   }
+   {Bool_t R__bool; b >> R__bool; fRf = R__bool;        }
+   {Bool_t R__bool; b >> R__bool; fCSM = R__bool;       }
+   {Bool_t R__bool; b >> R__bool; fSpice = R__bool;     }
+   {Bool_t R__bool; b >> R__bool; fTip = R__bool;       }
+   {Bool_t R__bool; b >> R__bool; fS3 = R__bool;        }
+                                              
+   {Bool_t R__bool; b >> R__bool; fGriffin = R__bool;   }
+   {Bool_t R__bool; b >> R__bool; fSceptar = R__bool;   }
+   {Bool_t R__bool; b >> R__bool; fPaces = R__bool;     }
+   {Bool_t R__bool; b >> R__bool; fDante = R__bool;     }
+   {Bool_t R__bool; b >> R__bool; fZeroDegree = R__bool;}
+   {Bool_t R__bool; b >> R__bool; fDescant = R__bool;   }
+   {TString R__str; R__str.Streamer(b); fMajorIndex.assign(R__str.Data()); } 
+   {TString R__str; R__str.Streamer(b); fMinorIndex.assign(R__str.Data()); }
+   fGRSIRunInfo = this;
+   b.CheckByteCount(R__s,R__c,TGRSIRunInfo::IsA());
+ } else {
+   R__c = b.WriteVersion(TGRSIRunInfo::IsA(),true);
+   TObject::Streamer(b);  
+   {Int_t R__int = fRunNumber;    b << R__int;}
+   {Int_t R__int = fSubRunNumber; b << R__int;}
+   {Bool_t R__bool = fTigress;    b << R__bool;}
+   {Bool_t R__bool = fSharc;      b << R__bool;}
+   {Bool_t R__bool = fTriFoil;    b << R__bool;}
+   {Bool_t R__bool = fRf;         b << R__bool;}
+   {Bool_t R__bool = fCSM;        b << R__bool;}
+   {Bool_t R__bool = fSpice;      b << R__bool;}
+   {Bool_t R__bool = fTip;        b << R__bool;}
+   {Bool_t R__bool = fS3;         b << R__bool;}
+   
+   {Bool_t R__bool = fGriffin;    b << R__bool;}
+   {Bool_t R__bool = fSceptar;    b << R__bool;}
+   {Bool_t R__bool = fPaces;      b << R__bool;}
+   {Bool_t R__bool = fDante;      b << R__bool;}
+   {Bool_t R__bool = fZeroDegree; b << R__bool;}
+   {Bool_t R__bool = fDescant;    b << R__bool;}
+   {TString R__str; R__str = fMajorIndex.c_str(); R__str.Streamer(b);}
+   {TString R__str; R__str = fMinorIndex.c_str(); R__str.Streamer(b);}
+   b.SetByteCount(R__c,true);
+ }
+}
+
+
 TGRSIRunInfo *TGRSIRunInfo::Get() {
    if(!fGRSIRunInfo)
       fGRSIRunInfo = new TGRSIRunInfo();

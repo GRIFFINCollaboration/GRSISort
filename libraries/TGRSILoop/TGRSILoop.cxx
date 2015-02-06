@@ -90,9 +90,9 @@ bool TGRSILoop::SortMidas() {
   //          printf("\n");
             delete fMidasThread; fMidasThread = 0;
    
-          }
-	     	mfile->Close();
-      }
+         }
+	     mfile->Close();
+     }
 	   delete mfile;
    }
    TGRSIOptions::GetInputMidas().clear();
@@ -105,8 +105,6 @@ bool TGRSILoop::SortMidas() {
 
 void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
 
-   if(!TGRSIRootIO::Get()->GetRootOutFile())
-      TGRSIRootIO::Get()->SetUpRootOutFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
    
    fFragsSentToTree = 0;
    TFragment *frag = 0;
@@ -155,6 +153,9 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 
    TStopwatch w;
    w.Start();
+
+   if(!TGRSIRootIO::Get()->GetRootOutFile())
+     TGRSIRootIO::Get()->SetUpRootOutFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
 
    while(true) {
       bytes = midasfile->Read(&fMidasEvent);
@@ -484,8 +485,8 @@ void TGRSILoop::Finalize() {
 
 
 bool TGRSILoop::ProcessEPICS(double *ptr,int &dsize,TMidasEvent *mevent,TMidasFile *mfile) { 
-  	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
-	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
+   unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
+	 unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
    int epics_banks = TDataParser::EPIXToScalar(ptr,dsize,mserial,mtime);
 
    return true;

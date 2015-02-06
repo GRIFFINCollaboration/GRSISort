@@ -451,10 +451,10 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    //Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
-   if(fCurrentRunInfo) {
-      TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
+   //if(fCurrentRunInfo) {
+   //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
       fCurrentRunInfo->Print();
-   }
+   //}
 
    //Intialize the TChannel Information
    InitChannels();

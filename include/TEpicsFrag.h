@@ -36,6 +36,9 @@ class TEpicsFrag : public TObject	{
     std::vector<std::string> Name;
     std::vector<std::string> Unit;
 
+    int GetSize() { return Data.size(); }
+    inline int GetData(const unsigned int &i) { if(i>=Data.size()) return Data.back(); else return Data.at(i); }
+
     virtual void Clear(Option_t *opt = ""); //!
     virtual void Print(Option_t *opt = ""); //!
     

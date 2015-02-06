@@ -6,7 +6,7 @@
 #include "TGRSIStats.h"
 
 #include "TEpicsFrag.h"
-#include "TDataPArser.h"
+#include "TGRSIRootIO.h"
 
 #include "Rtypes.h"
 
@@ -665,19 +665,20 @@ int TDataParser::EightPIDataToFragment(uint32_t stream,uint32_t* data,
 int TDataParser::EPIXToScalar(double *data,int size,unsigned int midasserialnumber,time_t midastime) {
 
    int NumFragsFound = 1;
-   TEpicsFrag EXfrag;
+   TEpicsFrag *EXfrag = new TEpicsFrag;
 
-   EXfrag.MidasTimeStamp = midastime;
-   EXfrag.MidasId        = midasserialnumber;	 
+   EXfrag->MidasTimeStamp = midastime;
+   EXfrag->MidasId        = midasserialnumber;	 
 
 
    for(int x=0;x<size;x++) {
-      EXfrag.Data.push_back(*(data+x));
+      EXfrag->Data.push_back(*(data+x));
    }
-   EXfrag.Print();
-   TGRSIRootIO::Get()->FillEpicsTree(&EXFrag);
 
-  return NumFragsFound;
+   //EXfrag->Print();
+   TGRSIRootIO::Get()->FillEpicsTree(EXfrag);
+   delete EXfrag;
+   return NumFragsFound;
 }
 
 
