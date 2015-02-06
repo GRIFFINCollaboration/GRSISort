@@ -58,9 +58,6 @@ GCanvas::GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, 
 
 GCanvas::~GCanvas() {
    //TCanvas::~TCanvas();           
-
-    fRootCanvas->RemoveBind((const TGWindow*)fRootCanvas,gVirtualX->KeysymToKeycode(kKey_Up),0);
-
 }
 
 void GCanvas::GCanvasInit() {

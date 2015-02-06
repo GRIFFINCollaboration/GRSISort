@@ -81,17 +81,23 @@ TBrowserImp *GROOTGuiFactory::CreateBrowserImp(TBrowser *b, const char *title,
    TString browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
    TPluginHandler *ph = gROOT->GetPluginManager()->FindHandler("TBrowserImp", 
                                                                browserVersion);
-   TString browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
+   //TString browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
+   TString browserOptions(gEnv->GetValue("Browser.Options", "FEI"));
    if (opt && strlen(opt))
       browserOptions = opt;
+
+   browserOptions = "FEI";
+
    browserOptions.ToUpper();
    if (browserOptions.Contains("LITE"))
       return new TRootBrowserLite(b, title, width, height);
    if (ph && ph->LoadPlugin() != -1) {
+      printf("i am here now 1.\t %s \n",browserOptions.Data());
       TBrowserImp *imp = (TBrowserImp *)ph->ExecPlugin(5, b, title, width, 
          height, browserOptions.Data());
       if (imp) return imp;
    }
+   printf(" and never here.\n");
    return new TRootBrowserLite(b, title, width, height);
 }
 

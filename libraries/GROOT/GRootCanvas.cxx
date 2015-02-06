@@ -613,6 +613,8 @@ GRootCanvas::~GRootCanvas()
    // Delete ROOT basic canvas. Order is significant. Delete in reverse
    // order of creation.
 
+
+
    delete fToolTip;
    if (fIconPic) gClient->FreePicture(fIconPic);
    if (fEditor && !fEmbedded) delete fEditor;
@@ -656,6 +658,8 @@ GRootCanvas::~GRootCanvas()
    delete fOptionMenu;
    delete fToolsMenu;
    delete fHelpMenu;
+
+
 }
 
 //______________________________________________________________________________
@@ -1471,7 +1475,7 @@ void GRootCanvas::ShowEditor(Bool_t show)
    if (fParent && fParent != fClient->GetDefaultRoot()) {
       TGMainFrame *main = (TGMainFrame *)fParent->GetMainFrame();
       fMainFrame->HideFrame(fEditorFrame);
-      if (main && main->InheritsFrom("GRootBrowser")) {
+      if (main && main->InheritsFrom("TRootBrowser")) {
          TRootBrowser *browser = (TRootBrowser *)main;
          if (!fEmbedded)
             browser->GetTabRight()->Connect("Selected(Int_t)", "GRootCanvas",

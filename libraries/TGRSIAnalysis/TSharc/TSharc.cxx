@@ -74,7 +74,7 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
 	//printf("frontsize = %i   |  backsize = %i  \n",sdata->GetMultiplicityFront(),sdata->GetMultiplicityBack());
 
 
-	if((sdata->GetMultiplicityFront()!=1) && (sdata->GetMultiplicityBack()!=1) )   ///need to remove this soon and replaces with time gates in the loops below
+	if((sdata->GetMultiplicityFront()!=1) || (sdata->GetMultiplicityBack()!=1) )   ///need to remove this soon and replaces with time gates in the loops below
 		return;																							 //// !!! pcb. and add better building condition.
 		
 
@@ -82,10 +82,11 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
 
    for(int i=0;i<sdata->GetMultiplicityFront();i++)	{	
       for(int j=0;j<sdata->GetMultiplicityBack();j++)	{	
-         if(sdata->GetFront_DetectorNbr(i) != sdata->GetBack_DetectorNbr(j))
-				continue;
-			if(abs(sdata->GetFront_Charge(i) - sdata->GetBack_Charge(j)) > 15000)//naive charge cut keeps >99.9% of data.
-				continue;
+         if(sdata->GetFront_DetectorNbr(i) != sdata->GetBack_DetectorNbr(j)) {
+            continue;
+         }
+			   if(abs(sdata->GetFront_Charge(i) - sdata->GetBack_Charge(j)) > 6000)//naive charge cut keeps >99.9% of data.
+				    continue;
 
 		/*	
 			printf("pair(%i,%i) Detector Number: %i\n",i,j,data->GetFront_DetectorNbr(i));
@@ -113,8 +114,8 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
          hit.SetBackCharge(sdata->GetBack_Charge(j));
          hit.SetBackAddress(sdata->GetBack_ChannelAddress(j));
 
-			hit.SetFrontStrip(sdata->GetFront_StripNbr(i));
-			hit.SetBackStrip(sdata->GetBack_StripNbr(j));
+			   hit.SetFrontStrip(sdata->GetFront_StripNbr(i));
+			   hit.SetBackStrip(sdata->GetBack_StripNbr(j));
 
          hit.SetPosition(TSharc::GetPosition(hit.GetDetectorNumber(),
                                              hit.GetFrontStrip(),

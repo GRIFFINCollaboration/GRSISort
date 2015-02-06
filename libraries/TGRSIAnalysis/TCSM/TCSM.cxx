@@ -252,7 +252,7 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)	{
       //cout<<"addr: "<<addr<<endl;
       if(cdata->GetHorizontal_DetectorPos(addr)=='D')
       {
-        if(cdata->GetHorizontal_DetectorNbr(addr)==2)
+        if(cdata->GetHorizontal_DetectorNbr(addr)==2 && cdata->GetHorizontal_StripNbr(addr)!=9)
         {
     		   	csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(addr));		//!
 
