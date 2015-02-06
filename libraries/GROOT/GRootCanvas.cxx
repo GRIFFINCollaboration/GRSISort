@@ -1826,11 +1826,10 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t *event)
       if (str[0] == 3)   // ctrl-c sets the interrupt flag
          gROOT->SetInterrupt();
 
-      printf("HandleContainerKey has been called with a kGKeyPress.\n");
+      //printf("HandleContainerKey has been called with a kGKeyPress.\n");
 
       // handle arrow keys
       if (keysym > 0x1011 && keysym < 0x1016) {
-         printf("1 here??\n");
          Window_t dum1, dum2, wid;
          UInt_t mask = 0;
          Int_t mx, my, tx, ty;

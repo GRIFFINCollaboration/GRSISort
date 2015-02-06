@@ -29,6 +29,9 @@ namespace TGRSIOptions {
       extern bool fProgressDialog;
       extern bool fWorkHarder;
       extern bool fReadingMaterial;
+      extern bool fIgnoreFileOdb;
+      extern bool fIgnoreEpics;
+
       }
       std::string GetHostName();
       std::string GetExptName();
@@ -47,6 +50,12 @@ namespace TGRSIOptions {
 
       void SetCloseAfterSort(bool flag=true); 
       bool CloseAfterSort();                  
+
+      void SetIgnoreFileOdb(bool flag=true);
+      bool IgnoreFileOdb();
+
+      void SetIgnoreEpics(bool flag=true);
+      bool IgnoreEpics();
 
       void SetLogErrors(bool flag=true);      
       bool LogErrors();			
