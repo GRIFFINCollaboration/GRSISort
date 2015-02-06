@@ -56,6 +56,9 @@ class TCSM :  public TGRSIDetector 	{
 		TCSMData *data;                             //!
 		std::vector <TCSMHit> csm_hits;
 		void BuildVH(vector<int> &,vector<int> &,vector<TCSMHit> &,TCSMData*);
+		TCSMHit MakeHit(int, int, TCSMData*);
+		TCSMHit MakeHit(vector<int> &,vector<int> &, TCSMData*);
+		
 		
 
 		//int CombineHits(TCSMHit*,TCSMHit*,int,int);				//!

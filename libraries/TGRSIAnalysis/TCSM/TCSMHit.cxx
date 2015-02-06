@@ -47,6 +47,8 @@ void TCSMHit::Clear(Option_t *options)	{
 void TCSMHit::Print(Option_t *options)	{
   std::cout<<"Printing TCSMHit:  Horizontal    Vertical"<<std::endl;
   std::cout<<"Detector number: "<<GetDetectorNumber()<<std::endl;
+  //std::cout<<"Detector position: "<<GetDetectorPosition()<<std::endl;
+  std::cout<<"D"<<std::endl;
   std::cout<<"Strip: "<<GetDHorizontalStrip()<<" "<<GetDVerticalStrip()<<std::endl;
   
   std::cout<<"Charge: "<<GetDHorizontalCharge()<<" "<<GetDVerticalCharge()<<std::endl;
@@ -54,5 +56,14 @@ void TCSMHit::Print(Option_t *options)	{
   std::cout<<"CFD: "<<GetDHorizontalCFD()<<" "<<GetDVerticalCFD()<<std::endl;
   
   std::cout<<"Energy: "<<GetDHorizontalEnergy()<<" "<<GetDVerticalEnergy()<<std::endl;
+  std::cout<<"E"<<std::endl;
+  std::cout<<"Strip: "<<GetEHorizontalStrip()<<" "<<GetEVerticalStrip()<<std::endl;
+  
+  std::cout<<"Charge: "<<GetEHorizontalCharge()<<" "<<GetEVerticalCharge()<<std::endl;
+  
+  std::cout<<"CFD: "<<GetEHorizontalCFD()<<" "<<GetEVerticalCFD()<<std::endl;
+  
+  std::cout<<"Energy: "<<GetEHorizontalEnergy()<<" "<<GetEVerticalEnergy()<<std::endl;
+  std::cout<<std::endl;
 }
 

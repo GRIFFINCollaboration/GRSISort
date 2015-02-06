@@ -518,49 +518,243 @@ TVector3 TCSM::GetPosition(int detector,char pos, int horizontalstrip, int verti
 
 void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,TCSMData *cdataVH)
 {
+  double window = .1;
+  
   if(vvec.size()==0 && hvec.size()==0)
     return;
 
-  TCSMHit csmhitVH;
-  
-  if(vvec.size()==1&&hvec.size()==1)
+
+  else if(vvec.size()==1&&hvec.size()==0)
   {
-    csmhitVH.SetDetectorNumber(cdataVH->GetHorizontal_DetectorNbr(hvec.at(0)));		//!
-    csmhitVH.SetDHorizontalCharge(cdataVH->GetHorizontal_Charge(hvec.at(0))); 				//!
-    csmhitVH.SetDVerticalCharge(cdataVH->GetVertical_Charge(vvec.at(0)));    			//!
-    csmhitVH.SetDHorizontalStrip(cdataVH->GetHorizontal_StripNbr(hvec.at(0))); 			//!
-    csmhitVH.SetDVerticalStrip(cdataVH->GetVertical_StripNbr(vvec.at(0)));   			//!
-    csmhitVH.SetDHorizontalCFD(cdataVH->GetHorizontal_TimeCFD(hvec.at(0)));					//!
-    csmhitVH.SetDVerticalCFD(cdataVH->GetVertical_TimeCFD(vvec.at(0)));					//!
-    csmhitVH.SetDHorizontalTime(cdataVH->GetHorizontal_Time(hvec.at(0)));	//!
-    csmhitVH.SetDVerticalTime(cdataVH->GetVertical_Time(vvec.at(0)));		//!
-    csmhitVH.SetDHorizontalEnergy(cdataVH->GetHorizontal_Energy(hvec.at(0)));				//!
-    csmhitVH.SetDVerticalEnergy(cdataVH->GetVertical_Energy(vvec.at(0)));				//!
-    csmhitVH.SetDPosition(TCSM::GetPosition(cdataVH->GetHorizontal_DetectorNbr(hvec.at(0)),
-					  cdataVH->GetHorizontal_DetectorPos(hvec.at(0)),
-					  cdataVH->GetHorizontal_StripNbr(hvec.at(0)),
-					  cdataVH->GetVertical_StripNbr(vvec.at(0))));
-    //csmhitVH.Print();
-    hitvec.push_back(csmhitVH);
-    vvec.pop_back();
-    hvec.pop_back();
+    vvec.clear();//Throw it out for now.
   }
+
+  else if(vvec.size()==0&&hvec.size()==1)
+  {
+    hvec.clear();//Throw it out for now.
+  }
+  
+  else if(vvec.size()==1&&hvec.size()==1)
+  {
+    hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+    hvec.clear();
+    vvec.clear();
+  }
+
+  else if(vvec.size()==1&&hvec.size()==2)
+  {
+    hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
+    hvec.clear();
+    vvec.clear();
+  }
+  
+  else if(vvec.size()==2&&hvec.size()==1)
+  {
+    hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
+    hvec.clear();
+    vvec.clear();
+  }
+
+  else if(vvec.size()==2&&hvec.size()==2)
+  {
+    double vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
+    double vc2 = cdataVH->GetVertical_Charge(vvec.at(1));
+    double hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
+    double hc2 = cdataVH->GetHorizontal_Charge(hvec.at(1));
+    if( vc1*(1.-window)<hc1 && vc1*(1.+window)>hc1 ) //Vertical Charge 1 is within window% of Horizontal Charge 1
+    {
+      if( vc2*(1.-window)<hc2 && vc2*(1.+window)>hc2 ) //Vertical Charge 2 is within window% of Horizontal Charge 2
+      {
+      //I can build both 1,1 and 2,2
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+      hitvec.push_back(MakeHit(hvec.at(1),vvec.at(1),cdataVH));
+      hvec.clear();
+      vvec.clear();
+      }
+    }
+    else if( vc1*(1.-window)<hc2 && vc1*(1.+window)>hc2 ) //Vertical Charge 1 is within window% of Horizontal Charge 2
+    {
+      if( vc2*(1.-window)<hc1 && vc2*(1.+window)>hc1 ) //Vertical Charge 2 is within window% of Horizontal Charge 1
+      {
+	//I can build both 1,2 and 2,1
+	hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
+	hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
+	hvec.clear();
+	vvec.clear();
+      }
+    }
+  }
+  
   if(!vvec.empty() || !hvec.empty())
   {
     cdataVH->Print();
+    for(int iter=0;iter<hvec.size();iter++)
+    {
+      cout<<DBLUE<<hvec.at(iter)<<RESET_COLOR<<endl;
+    }
     for(int iter=0;iter<vvec.size();iter++)
     {
-      cout<<vvec.at(iter)<<endl;
+      cout<<DRED<<vvec.at(iter)<<RESET_COLOR<<endl;
     }
   }
   
 }
 
 
+TCSMHit TCSM::MakeHit(int hh, int vv, TCSMData *cdata)
+{
+  TCSMHit csmhit;
 
+  if(cdata->GetHorizontal_DetectorNbr(hh)!=cdata->GetVertical_DetectorNbr(vv))
+    cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match."<<endl;
+  if(cdata->GetHorizontal_DetectorPos(hh)!=cdata->GetVertical_DetectorPos(vv))
+    cerr<<"\tSomething is wrong, Horizontal and Vertical positions don't match."<<endl;
 
+  if(cdata->GetHorizontal_DetectorPos(hh)=='D')
+  {  
+    csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(hh));
+    csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(hh));
+    csmhit.SetDVerticalCharge(cdata->GetVertical_Charge(vv));
+    csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(hh));
+    csmhit.SetDVerticalStrip(cdata->GetVertical_StripNbr(vv));
+    csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(hh));
+    csmhit.SetDVerticalCFD(cdata->GetVertical_TimeCFD(vv));
+    csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(hh));
+    csmhit.SetDVerticalTime(cdata->GetVertical_Time(vv));
+    csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(hh));
+    csmhit.SetDVerticalEnergy(cdata->GetVertical_Energy(vv));
+    csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(hh),
+					   cdata->GetHorizontal_DetectorPos(hh),
+					   cdata->GetHorizontal_StripNbr(hh),
+					   cdata->GetVertical_StripNbr(vv)));
+  }
+  else if(cdata->GetHorizontal_DetectorPos(hh)=='E')
+  {
+    csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(hh));
+    csmhit.SetEHorizontalCharge(cdata->GetHorizontal_Charge(hh));
+    csmhit.SetEVerticalCharge(cdata->GetVertical_Charge(vv));
+    csmhit.SetEHorizontalStrip(cdata->GetHorizontal_StripNbr(hh));
+    csmhit.SetEVerticalStrip(cdata->GetVertical_StripNbr(vv));
+    csmhit.SetEHorizontalCFD(cdata->GetHorizontal_TimeCFD(hh));
+    csmhit.SetEVerticalCFD(cdata->GetVertical_TimeCFD(vv));
+    csmhit.SetEHorizontalTime(cdata->GetHorizontal_Time(hh));
+    csmhit.SetEVerticalTime(cdata->GetVertical_Time(vv));
+    csmhit.SetEHorizontalEnergy(cdata->GetHorizontal_Energy(hh));
+    csmhit.SetEVerticalEnergy(cdata->GetVertical_Energy(vv));
+    csmhit.SetEPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(hh),
+					  cdata->GetHorizontal_DetectorPos(hh),
+					  cdata->GetHorizontal_StripNbr(hh),
+					  cdata->GetVertical_StripNbr(vv)));
+  }
+  csmhit.Print();
+  return(csmhit);
+}
 
+TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
+{
+  TCSMHit csmhit;
 
+  if(hhV.size()==0 || vvV.size()==0)
+    cerr<<"\tSomething is wrong, empty vector in MakeHit"<<endl;
+
+  int DetNumH = cdata->GetHorizontal_DetectorNbr(hhV.at(0));
+  char DetPosH = cdata->GetHorizontal_DetectorPos(hhV.at(0));
+  int ChargeH = 0;
+  int StripH = -1;
+  int ConFraH = 0;
+  double TimeH = 0;
+  double EnergyH = 0;
+  int biggestH = 0;
+
+  int DetNumV = cdata->GetVertical_DetectorNbr(vvV.at(0));
+  char DetPosV = cdata->GetVertical_DetectorPos(vvV.at(0));
+  int ChargeV = 0;
+  int StripV = -1;
+  int ConFraV = 0;
+  double TimeV = 0;
+  double EnergyV = 0;
+  int biggestV = 0;
+  
+  for(int iterH=0;iterH<hhV.size();iterH++)
+  {
+    if(cdata->GetHorizontal_Charge(hhV.at(iterH))>cdata->GetHorizontal_Charge(biggestH))
+      biggestH = hhV.at(iterH);
+
+    if(cdata->GetHorizontal_DetectorNbr(hhV.at(iterH))!=DetNumH)
+      cerr<<"\tSomething is wrong, Horizontal detector numbers don't match in vector loop."<<endl;
+    if(cdata->GetHorizontal_DetectorPos(hhV.at(iterH))!=DetPosH)
+      cerr<<"\tSomething is wrong, Horizontal detector positions don't match in vector loop."<<endl;
+    
+    ChargeH += cdata->GetHorizontal_Charge(hhV.at(iterH));
+    EnergyH += cdata->GetHorizontal_Energy(hhV.at(iterH));
+  }
+
+  StripH = cdata->GetHorizontal_StripNbr(biggestH);
+  ConFraH = cdata->GetHorizontal_TimeCFD(biggestH);
+  TimeH = cdata->GetHorizontal_Time(biggestH);
+
+  for(int iterV=0;iterV<vvV.size();iterV++)
+  {
+    if(cdata->GetVertical_Charge(vvV.at(iterV))>cdata->GetVertical_Charge(biggestV))
+      biggestV = vvV.at(iterV);
+    
+    if(cdata->GetVertical_DetectorNbr(vvV.at(iterV))!=DetNumV)
+      cerr<<"\tSomething is wrong, Vertical detector numbers don't match in vector loop."<<endl;
+    if(cdata->GetVertical_DetectorPos(vvV.at(iterV))!=DetPosV)
+      cerr<<"\tSomething is wrong, Vertical detector positions don't match in vector loop."<<endl;
+    
+    ChargeV += cdata->GetVertical_Charge(vvV.at(iterV));
+    EnergyV += cdata->GetVertical_Energy(vvV.at(iterV));
+  }
+  
+  StripV = cdata->GetVertical_StripNbr(biggestV);
+  ConFraV = cdata->GetVertical_TimeCFD(biggestV);
+  TimeV = cdata->GetVertical_Time(biggestV);
+  
+  if(DetNumH!=DetNumV)
+    cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match in vector."<<endl;
+  if(DetPosH!=DetPosV)
+    cerr<<"\tSomething is wrong, Horizontal and Vertical positions don't match in vector."<<endl;
+  
+  if(DetPosH=='D')
+  {
+    csmhit.SetDetectorNumber(DetNumH);
+    csmhit.SetDHorizontalCharge(ChargeH);
+    csmhit.SetDVerticalCharge(ChargeV);
+    csmhit.SetDHorizontalStrip(StripH);
+    csmhit.SetDVerticalStrip(StripV);
+    csmhit.SetDHorizontalCFD(ConFraH);
+    csmhit.SetDVerticalCFD(ConFraV);
+    csmhit.SetDHorizontalTime(TimeH);
+    csmhit.SetDVerticalTime(TimeV);
+    csmhit.SetDHorizontalEnergy(EnergyH);
+    csmhit.SetDVerticalEnergy(EnergyV);
+    csmhit.SetDPosition(TCSM::GetPosition(DetNumH,
+					  DetPosH,
+					  StripH,
+					  StripV));
+  }
+  else if(DetPosH=='E')
+  {
+    csmhit.SetDetectorNumber(DetNumH);
+    csmhit.SetEHorizontalCharge(ChargeH);
+    csmhit.SetEVerticalCharge(ChargeV);
+    csmhit.SetEHorizontalStrip(StripH);
+    csmhit.SetEVerticalStrip(StripV);
+    csmhit.SetEHorizontalCFD(ConFraH);
+    csmhit.SetEVerticalCFD(ConFraV);
+    csmhit.SetEHorizontalTime(TimeH);
+    csmhit.SetEVerticalTime(TimeV);
+    csmhit.SetEHorizontalEnergy(EnergyH);
+    csmhit.SetEVerticalEnergy(EnergyV);
+    csmhit.SetEPosition(TCSM::GetPosition(DetNumH,
+					  DetPosH,
+					  StripH,
+					  StripV));
+  }
+  csmhit.Print();
+  return(csmhit);
+}
 
 
 
