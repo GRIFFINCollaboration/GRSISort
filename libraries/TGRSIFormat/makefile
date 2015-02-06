@@ -1,7 +1,7 @@
 
 #OBJECTS = TFragment.o TFragmentDict.o TChannel.o TChannelDict.o TFragmentQueue.o TFragmentQueueDict.o TGRSIStats.o TGRSIStatsDict.o TFragmentSelector.o TFragmentSelectorDict.o TGRSIRunInfo.o TGRSIRunInfoDict.o 
 
-OBJECTS = TFragment.o TChannel.o TFragmentQueue.o TGRSIStats.o TFragmentSelector.o TGRSIRunInfo.o TGRSIFormatDict.o 
+OBJECTS = TFragment.o TChannel.o TFragmentQueue.o TGRSIStats.o TFragmentSelector.o TGRSIRunInfo.o TEpicsFrag.o TGRSIFormatDict.o 
 
 CFLAGS += -fPIC
 CFLAGS += -I $(BASE)/users
@@ -67,9 +67,9 @@ libGRSIFormat.so: $(OBJECTS)
 		fi;
 #	@$(RM) -f temp.errors temp.log
 
-TGRSIFormatDict.cxx: $(INCDIR)/TFragment.h $(INCDIR)/TChannel.h $(INCDIR)/TFragmentQueue.h $(INCDIR)/TFragmentSelector.h $(INCDIR)/TGRSIRunInfo.h $(INCDIR)/TGRSIStats.h
+TGRSIFormatDict.cxx: $(INCDIR)/TFragment.h $(INCDIR)/TChannel.h $(INCDIR)/TFragmentQueue.h $(INCDIR)/TFragmentSelector.h $(INCDIR)/TGRSIRunInfo.h $(INCDIR)/TGRSIStats.h $(INCDIR)/TEpicsFrag.h
 	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
-	@rootcint -f $@ -c -p $(INCDIR)/TFragment.h $(INCDIR)/TChannel.h $(INCDIR)/TFragmentQueue.h $(INCDIR)/TFragmentSelector.h $(INCDIR)/TGRSIRunInfo.h $(INCDIR)/TGRSIStats.h TGRSIFormatLinkDef.h 2> temp.log || touch temp.errors
+	@rootcint -f $@ -c -p $(INCDIR)/TFragment.h $(INCDIR)/TChannel.h $(INCDIR)/TFragmentQueue.h $(INCDIR)/TFragmentSelector.h $(INCDIR)/TGRSIRunInfo.h $(INCDIR)/TGRSIStats.h $(INCDIR)/TEpicsFrag.h TGRSIFormatLinkDef.h 2> temp.log || touch temp.errors
 #	@rootcint -f $@ -c `root-config --cflags` -p $(INCDIR)/TFragment.h $(INCDIR)/TChannel.h $(INCDIR)/TFragmentQueue.h $(INCDIR)/TFragmentSelector.h $(INCDIR)/TGRSIRunInfo.h $(INCDIR)/TGRSIStats.h TGRSIFormatLinkDef.h 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \

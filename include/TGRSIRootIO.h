@@ -14,6 +14,7 @@
 #include "TChannel.h"
 #include "TNucleus.h"
 #include "TKinematics.h"
+#include "TEpicsFrag.h"
 
 class TGRSIRootIO : public TObject {
 
@@ -26,15 +27,18 @@ class TGRSIRootIO : public TObject {
       TGRSIRootIO();
 
    private:
-      TTree *fTChannelTree;
+      //TTree *fTChannelTree;
       TTree *fFragmentTree;
+      TTree *fEpicsTree;
       TFile *foutfile;
       int fTimesFillCalled;
+      int fEPICSTimesFillCalled;
 
       std::vector<TFile*> finfiles;
 
-      TFragment *fBufferFrag;
-      TChannel *fBufferChannel;
+      TFragment  *fBufferFrag;
+      TEpicsFrag *fEXBufferFrag;
+      TChannel   *fBufferChannel;
 
    public:
       void SetUpRootOutFile(int,int);
@@ -56,6 +60,11 @@ class TGRSIRootIO : public TObject {
       TTree *GetFragmentTree()  { return fFragmentTree;  }
       void FillFragmentTree(TFragment*);
       void FinalizeFragmentTree();
+
+      void SetUpEpicsTree();
+      TTree *GetEpicsTree()  { return fEpicsTree;  }
+      void FillEpicsTree(TEpicsFrag*);
+      void FinalizeEpicsTree();
 
       void MakeUserHistsFromFragmentTree();
       void WriteRunStats();

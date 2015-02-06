@@ -209,6 +209,9 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
             EndRun(0,0,0);
             break;
          default:
+            //static int mycounter = 0;
+            //printf("mycounter = %i\n",mycounter++);
+
             ProcessMidasEvent(&fMidasEvent,midasfile);
             break;
       };
@@ -226,11 +229,18 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 
 
 void TGRSILoop::SetFileOdb(char *data, int size) {
-   //chaeck if we have already set the tchannels....
+   //check if we have already set the tchannels....
    //
-   if(fOdb) 
+   if(fOdb) {
    	delete fOdb;
-	 
+	   fOdb = 0;
+   } 
+
+   if(TGRSIOptions::IgnoreFileOdb()) {
+      printf(DYELLOW "\tskipping odb information stored in file.\n" RESET_COLOR);
+      return;
+   }
+
 	fOdb = new TXMLOdb(data,size);
 
 	TChannel::DeleteAllChannels();
@@ -422,14 +432,32 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
          case 1:
             mevent->SetBankList();
             if((banksize = mevent->LocateBank(NULL,"WFDN",&ptr))>0) {
-	       if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mevent, mfile)) { }
+	            if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mevent, mfile)) { }
                               //(unsigned int)(mevent->GetSerialNumber()),
                               //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
             else if((banksize = mevent->LocateBank(NULL,"GRF1",&ptr))>0) {
-            if(!ProcessGRIFFIN((uint32_t*)ptr,banksize, mevent, mfile)) { }
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize, mevent, mfile)) { }
 			      //(unsigned int)(mevent->GetSerialNumber()),
 			      //(unsigned int)(mevent->GetTimeStamp()))) { }
+            }
+            else if( (banksize = mevent->LocateBank(NULL,"FME0",&ptr))>0) {
+               if(!Process8PI(0,(uint32_t*)ptr,banksize,mevent,mfile)) {}
+            } else if( (banksize = mevent->LocateBank(NULL,"FME1",&ptr))>0) {
+               if(!Process8PI(1,(uint32_t*)ptr,banksize,mevent,mfile)) {}
+            } else if( (banksize = mevent->LocateBank(NULL,"FME2",&ptr))>0) {
+               if(!Process8PI(2,(uint32_t*)ptr,banksize,mevent,mfile)) {}
+            } else if( (banksize = mevent->LocateBank(NULL,"FME3",&ptr))>0) {
+               if(!Process8PI(3,(uint32_t*)ptr,banksize,mevent,mfile)) {}
+            }
+            break;
+         case 4:
+         case 5:
+            mevent->SetBankList();
+            if((banksize = mevent->LocateBank(NULL,"EPIX",&ptr))>0) {
+	            if(!ProcessEPICS((double*)ptr, banksize, mevent, mfile)) { }
+                              //(unsigned int)(mevent->GetSerialNumber()),
+                              //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
       };
    }
@@ -455,7 +483,11 @@ void TGRSILoop::Finalize() {
 }
 
 
-bool TGRSILoop::ProcessEPICS() { //TMidasEvent *mevent)   {
+bool TGRSILoop::ProcessEPICS(double *ptr,int &dsize,TMidasEvent *mevent,TMidasFile *mfile) { 
+  	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
+	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
+   int epics_banks = TDataParser::EPIXToScalar(ptr,dsize,mserial,mtime);
+
    return true;
 }
 
@@ -473,6 +505,21 @@ bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent, T
 	   return false;
 	}
 }
+
+bool TGRSILoop::Process8PI(uint32_t stream,uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile) {
+	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
+	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
+	int frags = TDataParser::EightPIDataToFragment(stream,ptr,dsize,mserial,mtime);
+	if(frags>-1) {
+      fFragsReadFromMidas += frags;
+	   return true;
+	} else	{
+      fFragsReadFromMidas += 1;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
+	   if(!suppress_error && mevent)  mevent->Print(Form("a%i",(-1*frags)-1));
+	   return false;
+	}
+}
+
 
 bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile)   {
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
@@ -527,4 +574,4 @@ void TGRSILoop::Clear(Option_t *opt) {   }
 
 
 
-
+                                        

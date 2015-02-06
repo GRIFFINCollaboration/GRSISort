@@ -11,6 +11,7 @@
 //#pragma link C++ class std::vector<UShort_t>+;
 
 #pragma link C++ class TFragment+;
+#pragma link C++ class TEpicsFrag+;
 #pragma link C++ class TChannel+;
 #pragma link C++ class TGRSIRunInfo+;
 #pragma link C++ class TGRSIStats+;
