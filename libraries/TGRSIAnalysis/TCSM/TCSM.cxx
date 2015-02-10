@@ -63,8 +63,8 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
 
   if(!cdata)
     return;
-
-  //cdata->Print();
+cout<<endl<<YELLOW<<"****************************************"<<RESET_COLOR<<endl;
+  cdata->Print();
   //  after the data has been taken from the fragement tree, the data
   //  is stored/correlated breifly in by the tcsmdata class - these
   //  function takes the data out of tcsmdata, and puts it into the
@@ -161,6 +161,14 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
 	v2e.push_back(viter);
     }
   }
+
+  cout<<"\t1D: "<<v1d.size()<<" "<<h1d.size()<<endl;
+  cout<<"\t1E: "<<v1e.size()<<" "<<h1e.size()<<endl;
+  cout<<"\t2D: "<<v2d.size()<<" "<<h2d.size()<<endl;
+  cout<<"\t2E: "<<v2e.size()<<" "<<h2e.size()<<endl;
+  cout<<"\t3D: "<<v3d.size()<<" "<<h3d.size()<<endl;
+  cout<<"\t4D: "<<v4d.size()<<" "<<h4d.size()<<endl;
+  
 
   BuildVH(v1d,h1d,D_Hits,cdata);
   BuildVH(v1e,h1e,E_Hits,cdata);
@@ -519,30 +527,40 @@ TVector3 TCSM::GetPosition(int detector,char pos, int horizontalstrip, int verti
 void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,TCSMData *cdataVH)
 {
   double window = .1;
+
+  //cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
   
   if(vvec.size()==0 && hvec.size()==0)
     return;
 
-
   else if(vvec.size()==1&&hvec.size()==0)
   {
+    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
+    
     vvec.clear();//Throw it out for now.
   }
 
   else if(vvec.size()==0&&hvec.size()==1)
   {
+    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
+    
     hvec.clear();//Throw it out for now.
   }
   
   else if(vvec.size()==1&&hvec.size()==1)
   {
+    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
+    
     hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+    //cout<<"\t MakeHit Called. 1,1: "<<endl;
     hvec.clear();
     vvec.clear();
   }
 
-  else if(vvec.size()==1&&hvec.size()==2)
+  /*else if(vvec.size()==1&&hvec.size()==2)
   {
+    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
+    
     hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
     hvec.clear();
     vvec.clear();
@@ -550,13 +568,17 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
   
   else if(vvec.size()==2&&hvec.size()==1)
   {
+    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
+    
     hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
     hvec.clear();
     vvec.clear();
-  }
+  }*/
 
   else if(vvec.size()==2&&hvec.size()==2)
   {
+    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
+    
     double vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
     double vc2 = cdataVH->GetVertical_Charge(vvec.at(1));
     double hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
@@ -587,7 +609,7 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
   
   if(!vvec.empty() || !hvec.empty())
   {
-    cdataVH->Print();
+    //cdataVH->Print();
     for(int iter=0;iter<hvec.size();iter++)
     {
       cout<<DBLUE<<hvec.at(iter)<<RESET_COLOR<<endl;
@@ -604,6 +626,8 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
 TCSMHit TCSM::MakeHit(int hh, int vv, TCSMData *cdata)
 {
   TCSMHit csmhit;
+  csmhit.Clear();
+  //cout<<"HH: "<<hh<<" VV: "<<vv<<endl;
 
   if(cdata->GetHorizontal_DetectorNbr(hh)!=cdata->GetVertical_DetectorNbr(vv))
     cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match."<<endl;
@@ -611,7 +635,8 @@ TCSMHit TCSM::MakeHit(int hh, int vv, TCSMData *cdata)
     cerr<<"\tSomething is wrong, Horizontal and Vertical positions don't match."<<endl;
 
   if(cdata->GetHorizontal_DetectorPos(hh)=='D')
-  {  
+  {
+    //cout<<"MakeHit in D"<<endl;
     csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(hh));
     csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(hh));
     csmhit.SetDVerticalCharge(cdata->GetVertical_Charge(vv));
@@ -630,6 +655,7 @@ TCSMHit TCSM::MakeHit(int hh, int vv, TCSMData *cdata)
   }
   else if(cdata->GetHorizontal_DetectorPos(hh)=='E')
   {
+    //cout<<"MakeHit in E"<<endl;
     csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(hh));
     csmhit.SetEHorizontalCharge(cdata->GetHorizontal_Charge(hh));
     csmhit.SetEVerticalCharge(cdata->GetVertical_Charge(vv));
@@ -646,6 +672,7 @@ TCSMHit TCSM::MakeHit(int hh, int vv, TCSMData *cdata)
 					  cdata->GetHorizontal_StripNbr(hh),
 					  cdata->GetVertical_StripNbr(vv)));
   }
+  //if(hh!=0||vv!=0)
   csmhit.Print();
   return(csmhit);
 }
@@ -653,6 +680,7 @@ TCSMHit TCSM::MakeHit(int hh, int vv, TCSMData *cdata)
 TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
 {
   TCSMHit csmhit;
+  csmhit.Clear();
 
   if(hhV.size()==0 || vvV.size()==0)
     cerr<<"\tSomething is wrong, empty vector in MakeHit"<<endl;
