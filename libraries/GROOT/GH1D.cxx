@@ -95,7 +95,7 @@ void GH1D::RemoveFromMap(GH1D *hist) {
 }
 
 void GH1D::CheckMapStats() {
-   printf("Number of GH1Ds in memory[%i]:\n",fCurrentHistMap.size());
+   printf("Number of GH1Ds in memory[%lu]:\n",fCurrentHistMap.size());
    std::map<GH1D*,int>::iterator iter; int x=0;
    for (iter = fCurrentHistMap.begin(); iter != fCurrentHistMap.end(); iter++) {
       printf("\thist[%i]: fUnique = %i\t%s\n",x++,iter->second,iter->first->GetName());

@@ -40,7 +40,6 @@ class TGRSIFit : public TF1 {
    virtual Bool_t InitParams(TH1*) = 0;
    Bool_t IsGoodFit() const { return goodfit_flag; }
    virtual void SetHistogram(TH1* hist){fHistogram = hist;} //fHistogram is a member of TF1. I'm not sure this does anything proper right now
-
  protected:
    Bool_t IsInitialized() const { return init_flag; }
    void SetInitialized(Bool_t flag = true) {init_flag = flag;}

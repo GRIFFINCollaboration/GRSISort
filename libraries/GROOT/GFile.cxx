@@ -3,13 +3,11 @@
 
 ClassImp(GFile)
 
-GFile::GFile() {
-  TFile::TFile();
+GFile::GFile() : TFile() {
   GFileInit();
 }
 
-GFile::GFile(const char *name,Option_t *opt,const char *ftitle,Int_t compress) {
-   TFile::TFile(name,opt,ftitle,compress);
+GFile::GFile(const char *name,Option_t *opt,const char *ftitle,Int_t compress) : TFile(name,opt,ftitle,compress) {
    GFileInit();
 }
 

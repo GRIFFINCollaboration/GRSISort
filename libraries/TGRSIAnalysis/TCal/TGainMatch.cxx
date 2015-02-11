@@ -159,13 +159,23 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2,
    for(int x=0;x<nfound;x++)
       if(s.GetPositionX()[x] < peak1->GetXmax() && s.GetPositionX()[x] > peak1->GetXmin()) 
         peak1->SetParameter("centroid",s.GetPositionX()[x]);
-
-   s.Clear();//Clear s, so that we can use it again.
-   nfound = s.Search(hist2); //Search the next histogram
-   for(int x=0;x<nfound;x++)
-      if(s.GetPositionX()[x] < peak2->GetXmax() && s.GetPositionX()[x] > peak2->GetXmin()) 
-         peak2->SetParameter("centroid",s.GetPositionX()[x]);
    
+   std::cout << "Centroid Guess " << peak1->GetCentroid() << std::endl;
+   std::cout << "Range Low " << peak1->GetXmin() << " " << peak1->GetXmax() << std::endl;
+   
+   TSpectrum s2;
+   nfound = s2.Search(hist2); //Search the next histogram
+   for(int x=0;x<nfound;x++)
+      std::cout << s2.GetPositionX()[x] << std::endl;
+
+   for(int x=0;x<nfound;x++)
+      if(s2.GetPositionX()[x] < peak2->GetXmax() && s2.GetPositionX()[x] > peak2->GetXmin()) 
+         peak2->SetParameter("centroid",s2.GetPositionX()[x]);
+   
+   std::cout << "Centroid Guess " << peak2->GetCentroid() << std::endl;
+   std::cout << "Range High " << peak2->GetXmin() << " " << peak2->GetXmax() << std::endl;
+
+
    peak1->Fit(hist1,"M+");
    peak2->Fit(hist2,"M+");
    
