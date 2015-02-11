@@ -129,7 +129,8 @@ class TAnalysisTreeBuilder : public TObject {
       void StartMakeAnalysisTree(int argc=1, char **argv=0);
 
       void ClearActiveAnalysisTreeBranches();
-		void BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*>*);
+      void ResetActiveAnalysisTreeBranches();
+		  void BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*>*);
 
       void Print(Option_t *opt ="");
 

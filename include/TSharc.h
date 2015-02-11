@@ -40,7 +40,7 @@ class TSharc : public TGRSIDetector	{
 	public: 
 		inline Short_t    GetNumberOfHits()   	{return sharc_hits.size();}	//->
 		inline TSharcHit *GetHit(int i)		   {return &sharc_hits.at(i);}	//->
-      static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);	//! 
+    static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);	//! 
 
 		void BuildHits(TGRSIDetectorData *sd=0,Option_t * = "");			   //!
 

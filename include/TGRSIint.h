@@ -44,6 +44,7 @@ class TGRSIint : public TRint {
       void ApplyOptions();
       //void SetEnv();
       void DrawLogo();
+      void LoadGROOTGraphics();
 
    private: 
       bool fPrintLogo;

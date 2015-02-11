@@ -98,7 +98,7 @@ void TFragment::Print(Option_t *opt)	{
    TChannel *chan = TChannel::GetChannel(this->ChannelAddress);
    //printf("%s Event at	%i:\n", chan->GetDigitizerType().c_str(), MidasId);
    char buff[20];
-   time(&MidasTimeStamp);
+   ctime(&MidasTimeStamp);
    struct tm * timeinfo = localtime(&MidasTimeStamp);
    strftime(buff,20,"%b %d %H:%M:%S",timeinfo);
    printf("MidasTimeStamp: %s\n",buff);

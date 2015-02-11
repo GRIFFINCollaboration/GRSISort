@@ -9,6 +9,7 @@
 #include "TDataParser.h"
 #include "TAnalysisTreeBuilder.h"
 #include "Getline.h"
+#include "GROOTGuiFactory.h"
 
 #include "Globals.h"
 
@@ -67,7 +68,11 @@ void TGRSIint::InitFlags() {
 }
 
 void TGRSIint::ApplyOptions() {
-  	
+   
+   if(!false) { // this will be change to something like, if(!ClassicRoot) 
+      LoadGROOTGraphics();
+   }
+
    if(TGRSIOptions::ReadingMaterial()) {
       std::thread fnews = std::thread(ReadTheNews);
       fnews.detach();
@@ -270,10 +275,13 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                printf(DBLUE"      now providing reading material while you wait." RESET_COLOR "\n");
                TGRSIOptions::SetReadingMaterial(true);
             } else if(temp.compare("no_speed")==0) {
-                printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
-                TGRSIOptions::SetProgressDialog(false);
+               printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
+               TGRSIOptions::SetProgressDialog(false);
             } else if(temp.compare("help")==0) {
                fPrintHelp = true;
+            } else if(temp.compare("ignore_odb")==0) { 
+               // useful when dealing with midas file that have corrupt odbs in them .
+               TGRSIOptions::SetIgnoreFileOdb(true);          
             } else {
                printf(DBLUE  "    option: " DYELLOW "%s " DBLUE "passed but not understood." RESET_COLOR "\n",temp.c_str());
             }
@@ -305,6 +313,14 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
          }   
       }
    }
+}
+
+
+void TGRSIint::LoadGROOTGraphics() {
+   if (gROOT->IsBatch()) return;
+   // force Canvas to load, this ensures global GUI Factory ptr exists.
+   gROOT->LoadClass("TCanvas", "Gpad");
+   gGuiFactory =  new GROOTGuiFactory();  
 }
 
 
@@ -362,11 +378,6 @@ bool TGRSIInterruptHandler::Notify() {
    gApplication->Terminate();
    return true;
 }
-
-
-
-
-
 
 
 
