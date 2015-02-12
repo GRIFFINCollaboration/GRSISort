@@ -63,7 +63,7 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
 
   if(!cdata)
     return;
-cout<<endl<<YELLOW<<"****************************************"<<RESET_COLOR<<endl;
+  cout<<endl<<YELLOW<<"****************************************"<<RESET_COLOR<<endl;
   cdata->Print();
   //  after the data has been taken from the fragement tree, the data
   //  is stored/correlated breifly in by the tcsmdata class - these
@@ -77,18 +77,11 @@ cout<<endl<<YELLOW<<"****************************************"<<RESET_COLOR<<end
   std::vector<TCSMHit> D_Hits;
   std::vector<TCSMHit> E_Hits;
   //int fCfdBuildDiff = 5; // largest acceptable time difference between events (clock ticks)  (50 ns)
-  /*
-    if(GetMultiplicityHorizontal()>1 || GetMultiplicityVertical()>1)
-    return;
-  */
+
   std::vector<bool> HorUsed;
   std::vector<bool> VerUsed;
   HorUsed.assign(cdata->GetMultiplicityHorizontal(), false);
   VerUsed.assign(cdata->GetMultiplicityVertical(), false);
-  double total_ver_energy = 0.0;
-  double total_hor_energy = 0.0;
-  int total_ver_hits = 0;
-  int total_hor_hits = 0;
 
   std::vector<int> v1d;
   std::vector<int> v2d;
@@ -176,6 +169,8 @@ cout<<endl<<YELLOW<<"****************************************"<<RESET_COLOR<<end
   BuildVH(v2e,h2e,E_Hits,cdata);
   BuildVH(v3d,h3d,D_Hits,cdata);
   BuildVH(v4d,h4d,D_Hits,cdata);
+
+  BuilddEE(D_Hits,E_Hits,csm_hits);
   
   
   /*HERE IS THE OLD EVENT BUILDER
@@ -395,7 +390,7 @@ cout<<endl<<YELLOW<<"****************************************"<<RESET_COLOR<<end
   }*/
 
   //now we will try to match front and back detectors.
-  std::vector<bool> usedpixel(E_Hits.size(), false);
+  /*std::vector<bool> usedpixel(E_Hits.size(), false);
 
   for(int i=0; i<D_Hits.size(); i++)
   {
@@ -437,7 +432,7 @@ cout<<endl<<YELLOW<<"****************************************"<<RESET_COLOR<<end
     {
       csm_hits.push_back(E_Hits.at(k));
     }
-  }
+  }*/
 }
 
 
@@ -525,67 +520,86 @@ TVector3 TCSM::GetPosition(int detector,char pos, int horizontalstrip, int verti
 }
 
 void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,TCSMData *cdataVH)
-{
-  double window = .1;
-
-  //cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
-  
+{  
   if(vvec.size()==0 && hvec.size()==0)
     return;
 
   else if(vvec.size()==1&&hvec.size()==0)
-  {
-    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
-    
+  {    
     vvec.clear();//Throw it out for now.
   }
 
   else if(vvec.size()==0&&hvec.size()==1)
-  {
-    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
-    
+  {    
     hvec.clear();//Throw it out for now.
   }
   
   else if(vvec.size()==1&&hvec.size()==1)
-  {
-    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
-    
+  {    
     hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
-    //cout<<"\t MakeHit Called. 1,1: "<<endl;
     hvec.clear();
     vvec.clear();
   }
 
-  /*else if(vvec.size()==1&&hvec.size()==2)
+  else if(vvec.size()==1&&hvec.size()==2)
   {
-    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
-    
-    hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
-    hvec.clear();
-    vvec.clear();
+    int vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
+    int hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
+    int hc2 = cdataVH->GetHorizontal_Charge(hvec.at(1));
+    if(AlmostEqual(vc1,hc1+hc2))
+    {
+      hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
+      hvec.clear();
+      vvec.clear();
+    }
+    else if(AlmostEqual(vc1,hc1))
+    {
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+      vvec.clear();
+      hvec.erase(hvec.begin());
+    }
+    else if(AlmostEqual(vc1,hc2))
+    {
+      hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
+      vvec.clear();
+      hvec.pop_back();
+    }
   }
   
   else if(vvec.size()==2&&hvec.size()==1)
   {
-    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
-    
-    hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
-    hvec.clear();
-    vvec.clear();
-  }*/
+    int vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
+    int vc2 = cdataVH->GetVertical_Charge(vvec.at(1));
+    int hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
+    if(AlmostEqual(vc1+vc2,hc1))
+    {
+      hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
+      hvec.clear();
+      vvec.clear();
+    }
+    else if(AlmostEqual(vc1,hc1))
+    {
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+      vvec.erase(vvec.begin());
+      hvec.clear();
+    }
+    else if(AlmostEqual(vc2,hc1))
+    {
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
+      vvec.pop_back();
+      hvec.clear();
+    }
+  }
 
   else if(vvec.size()==2&&hvec.size()==2)
-  {
-    cout<<"Vvec size: "<<vvec.size()<<" Hvec size: "<<hvec.size()<<endl;
-    
-    double vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
-    double vc2 = cdataVH->GetVertical_Charge(vvec.at(1));
-    double hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
-    double hc2 = cdataVH->GetHorizontal_Charge(hvec.at(1));
-    if( vc1*(1.-window)<hc1 && vc1*(1.+window)>hc1 ) //Vertical Charge 1 is within window% of Horizontal Charge 1
+  {    
+    int vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
+    int vc2 = cdataVH->GetVertical_Charge(vvec.at(1));
+    int hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
+    int hc2 = cdataVH->GetHorizontal_Charge(hvec.at(1));
+    if( AlmostEqual(vc1,hc1) )
     {
-      if( vc2*(1.-window)<hc2 && vc2*(1.+window)>hc2 ) //Vertical Charge 2 is within window% of Horizontal Charge 2
+      if( AlmostEqual(vc2,hc2) )
       {
       //I can build both 1,1 and 2,2
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
@@ -594,9 +608,9 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
       vvec.clear();
       }
     }
-    else if( vc1*(1.-window)<hc2 && vc1*(1.+window)>hc2 ) //Vertical Charge 1 is within window% of Horizontal Charge 2
+    else if( AlmostEqual(vc1,hc2) )
     {
-      if( vc2*(1.-window)<hc1 && vc2*(1.+window)>hc1 ) //Vertical Charge 2 is within window% of Horizontal Charge 1
+      if( AlmostEqual(vc2,hc1) )
       {
 	//I can build both 1,2 and 2,1
 	hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
@@ -607,7 +621,7 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     }
   }
   
-  if(!vvec.empty() || !hvec.empty())
+  /*if(!vvec.empty() || !hvec.empty())
   {
     //cdataVH->Print();
     for(int iter=0;iter<hvec.size();iter++)
@@ -618,7 +632,7 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     {
       cout<<DRED<<vvec.at(iter)<<RESET_COLOR<<endl;
     }
-  }
+  }*/
   
 }
 
@@ -673,7 +687,7 @@ TCSMHit TCSM::MakeHit(int hh, int vv, TCSMData *cdata)
 					  cdata->GetVertical_StripNbr(vv)));
   }
   //if(hh!=0||vv!=0)
-  csmhit.Print();
+  //csmhit.Print();
   return(csmhit);
 }
 
@@ -681,7 +695,7 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
 {
   TCSMHit csmhit;
   csmhit.Clear();
-
+  cout<<"Make Hit Starting."<<endl;
   if(hhV.size()==0 || vvV.size()==0)
     cerr<<"\tSomething is wrong, empty vector in MakeHit"<<endl;
 
@@ -694,6 +708,8 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
   double EnergyH = 0;
   int biggestH = 0;
 
+  cout<<"Make Hit Horizontal Setup Done."<<endl;
+
   int DetNumV = cdata->GetVertical_DetectorNbr(vvV.at(0));
   char DetPosV = cdata->GetVertical_DetectorPos(vvV.at(0));
   int ChargeV = 0;
@@ -702,6 +718,8 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
   double TimeV = 0;
   double EnergyV = 0;
   int biggestV = 0;
+
+  cout<<"Make Hit Vertical Setup Done."<<endl;
   
   for(int iterH=0;iterH<hhV.size();iterH++)
   {
@@ -721,6 +739,8 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
   ConFraH = cdata->GetHorizontal_TimeCFD(biggestH);
   TimeH = cdata->GetHorizontal_Time(biggestH);
 
+  cout<<"MakeHit Horizontal Done."<<endl;
+
   for(int iterV=0;iterV<vvV.size();iterV++)
   {
     if(cdata->GetVertical_Charge(vvV.at(iterV))>cdata->GetVertical_Charge(biggestV))
@@ -738,6 +758,8 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
   StripV = cdata->GetVertical_StripNbr(biggestV);
   ConFraV = cdata->GetVertical_TimeCFD(biggestV);
   TimeV = cdata->GetVertical_Time(biggestV);
+
+  cout<<"MakeHIt Vertical Done."<<endl;
   
   if(DetNumH!=DetNumV)
     cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match in vector."<<endl;
@@ -780,9 +802,87 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
 					  StripH,
 					  StripV));
   }
-  csmhit.Print();
+  cout<<"?"<<endl;
+  //csmhit.Print();
   return(csmhit);
 }
 
+void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits)
+{
+  //cout<<"DHitVec size: "<<DHitVec.size()<<" EHitVec size: "<<EHitVec.size()<<endl;
+  
+  for(int diter=0;diter<DHitVec.size();diter++)
+  {
+    //cout<<"diter: "<<diter<<endl;
+    if(DHitVec.at(diter).GetDetectorNumber()>=3)//If I am in the side detectors, I will never have any E information
+    {
+      BuiltHits.push_back(DHitVec.at(diter));
+      DHitVec.at(diter).Print();
+      //DHitVec.erase(DHitVec.begin()+diter);
+    }
+    
+    else
+    {
+      for(int eiter=0;eiter<EHitVec.size();eiter++)
+      {
+	//cout<<"eiter: "<<eiter<<endl;
+	
+	if(DHitVec.at(diter).GetDetectorNumber()==EHitVec.at(eiter).GetDetectorNumber())//Hits are in the same stack
+	{
+	  if( AlmostEqual(DHitVec.at(diter).GetDPosition().Theta(),EHitVec.at(eiter).GetEPosition().Theta()) )
+	  {
+	    BuiltHits.push_back(CombineHits(DHitVec.at(diter),EHitVec.at(eiter)));
+	  }
+	}	
+      }
+    }
+  }
+}
 
+TCSMHit TCSM::CombineHits(TCSMHit d_hit,TCSMHit e_hit)
+{
+  //cout<<"I'm combining hits!!"<<endl;
+  //d_hit.Print();
+  //e_hit.Print();
+  
+  if(d_hit.GetDetectorNumber()!=e_hit.GetDetectorNumber())
+    cerr<<"Something is wrong.  In combine hits, the detector numbers don't match"<<endl;
+
+  d_hit.SetEHorizontalStrip(e_hit.GetEHorizontalStrip());
+  d_hit.SetEVerticalStrip(e_hit.GetEVerticalStrip());
+  
+  d_hit.SetEHorizontalCharge(e_hit.GetEHorizontalCharge());
+  d_hit.SetEVerticalCharge(e_hit.GetEVerticalCharge());
+
+  d_hit.SetEHorizontalEnergy(e_hit.GetEHorizontalEnergy());
+  d_hit.SetEVerticalEnergy(e_hit.GetEVerticalEnergy());
+
+  d_hit.SetEHorizontalCFD(e_hit.GetEHorizontalCFD());
+  d_hit.SetEVerticalCFD(e_hit.GetEVerticalCFD());
+
+  d_hit.SetEHorizontalTime(e_hit.GetEHorizontalTime());
+  d_hit.SetEVerticalTime(e_hit.GetEVerticalTime());
+
+  d_hit.SetEPosition(e_hit.GetEPosition());
+  
+  //d_hit.Print();
+  return(d_hit);
+  
+}
+
+bool TCSM::AlmostEqual(int val1, int val2)
+{
+  //cout<<"int AlmostEqual Called."<<endl;
+  double diff = double(abs(val1 - val2));
+  double ave = (val1+val2)/2.;
+  double frac = diff/ave;
+  //cout<<"Val1: "<<val1<<" Val2: "<<val2<<" Diff: "<<diff<<" Ave: "<<ave<<" Frac: "<<frac<<" Return: "<< (frac<AlmostEqualWindow) <<endl;
+  return frac < AlmostEqualWindow;
+}
+
+bool TCSM::AlmostEqual(double val1, double val2)
+{
+  double frac = fabs(val1 - val2)/((val1+val2)/2.);
+  return frac < AlmostEqualWindow;
+}
 
