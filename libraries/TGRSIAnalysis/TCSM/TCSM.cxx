@@ -4,23 +4,6 @@
 
 ClassImp(TCSM)
 
-// various csm dimensions in mm
-//const int TCSM::frontstripslist[16]     = {16,16,16,16,	24,24,24,24,	24,24,24,24,	16,16,16,16};
-//const int TCSM::backstripslist[16]      = {24,24,24,24,	48,48,48,48,	48,48,48,48,	24,24,24,24};
-//const double TCSM::frontpitchlist[16]   = {2.0,2.0,2.0,2.0,	3.0,3.0,3.0,3.0,	3.0,3.0,3.0,3.0,	2.0,2.0,2.0,2.0};
-//const double TCSM::backpitchlist[16]    = {PI/48,PI/48,PI/48,PI/48,	1.0,1.0,1.0,1.0,	1.0,1.0,1.0,1.0,	PI/48,PI/48,PI/48,PI/48};    // QQQ back pitches are angles
-//const double TCSM::stripFpitch          = TCSM::Ydim / TCSM::frontstripslist[5]; // 72.0/24 = 3.0 mm
-//const double TCSM::ringpitch            = TCSM::Rdim / TCSM::frontstripslist[1]; // 32.0/16 = 2.0 mm
-//const double TCSM::stripBpitch          = TCSM::Zdim / TCSM::backstripslist[5] ; // 48.0/48 = 1.0 mm
-//const double TCSM::segmentpitch         = TCSM::Pdim / TCSM::backstripslist[1] ; // 81.6/24 = 3.4 degrees (angular pitch)
-
-
-//==========================================================================//
-//==========================================================================//
-//==========================================================================//
-//==========================================================================//
-//==========================================================================//
-
 int TCSM::fCfdBuildDiff = 5;
 
 TCSM::TCSM() : data(0)
@@ -33,9 +16,6 @@ TCSM::~TCSM()
 {
   if(data) delete data;
 }
-
-
-
 
 void TCSM::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)
 {
@@ -63,8 +43,8 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
 
   if(!cdata)
     return;
-  cout<<endl<<YELLOW<<"****************************************"<<RESET_COLOR<<endl;
-  cdata->Print();
+  //cout<<endl<<YELLOW<<"****************************************"<<RESET_COLOR<<endl;
+  //cdata->Print();
   //  after the data has been taken from the fragement tree, the data
   //  is stored/correlated breifly in by the tcsmdata class - these
   //  function takes the data out of tcsmdata, and puts it into the
@@ -76,12 +56,6 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
   std::string option = opt;
   std::vector<TCSMHit> D_Hits;
   std::vector<TCSMHit> E_Hits;
-  //int fCfdBuildDiff = 5; // largest acceptable time difference between events (clock ticks)  (50 ns)
-
-  std::vector<bool> HorUsed;
-  std::vector<bool> VerUsed;
-  HorUsed.assign(cdata->GetMultiplicityHorizontal(), false);
-  VerUsed.assign(cdata->GetMultiplicityVertical(), false);
 
   std::vector<int> v1d;
   std::vector<int> v2d;
@@ -155,13 +129,14 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
     }
   }
 
+  /* I print my vector sizes here.
   cout<<"\t1D: "<<v1d.size()<<" "<<h1d.size()<<endl;
   cout<<"\t1E: "<<v1e.size()<<" "<<h1e.size()<<endl;
   cout<<"\t2D: "<<v2d.size()<<" "<<h2d.size()<<endl;
   cout<<"\t2E: "<<v2e.size()<<" "<<h2e.size()<<endl;
   cout<<"\t3D: "<<v3d.size()<<" "<<h3d.size()<<endl;
   cout<<"\t4D: "<<v4d.size()<<" "<<h4d.size()<<endl;
-  
+  */
 
   BuildVH(v1d,h1d,D_Hits,cdata);
   BuildVH(v1e,h1e,E_Hits,cdata);
@@ -171,268 +146,19 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
   BuildVH(v4d,h4d,D_Hits,cdata);
 
   BuilddEE(D_Hits,E_Hits,csm_hits);
+
+  /* This prints the built hits
+  if(csm_hits.size()>2)
+    cout<<DRED;
+  else if(csm_hits.size()>1)
+    cout<<DGREEN;  
   
-  
-  /*HERE IS THE OLD EVENT BUILDER
-  for(int i=0; i<cdata->GetMultiplicityHorizontal(); i++)
+  for(int finaliter=0;finaliter<csm_hits.size();finaliter++)
   {
-    total_hor_energy += cdata->GetHorizontal_Energy(i);
-    total_hor_hits++;
-
-    for(int j=0; j<cdata->GetMultiplicityVertical(); j++)
-    {
-      total_ver_energy += cdata->GetVertical_Energy(j);
-      total_ver_hits++;
-
-      if(cdata->GetHorizontal_DetectorNbr(i) == cdata->GetVertical_DetectorNbr(j))	  //check if same detector
-      {
-        if(cdata->GetHorizontal_DetectorPos(i) == cdata->GetVertical_DetectorPos(j))   //check the are from the same position!
-        {
-          //if(abs(GetHorizontal_TimeCFD(i)-GetVertical_TimeCFD(j)) > fCfdBuildDiff) {
-          //	continue; // ensure there is front-back time correlation to protect against noise/false coinc.
-          //}
-          csmhit.Clear();
-
-          if(cdata->GetHorizontal_DetectorPos(i) == 'D')    //i decided this is going to mean Delta.
-          {
-            csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(i));		//!
-            csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(i)); 				//!
-            csmhit.SetDVerticalCharge(cdata->GetVertical_Charge(j));    			//!
-            csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(i)); 			//!
-            csmhit.SetDVerticalStrip(cdata->GetVertical_StripNbr(j));   			//!
-            csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(i));					//!
-            csmhit.SetDVerticalCFD(cdata->GetVertical_TimeCFD(j));					//!
-            csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(i));	//!
-            csmhit.SetDVerticalTime(cdata->GetVertical_Time(j));		//!
-            csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(i));				//!
-            csmhit.SetDVerticalEnergy(cdata->GetVertical_Energy(j));				//!
-
-            if(cdata->GetHorizontal_DetectorNbr(i)==2)
-            {
-              if(cdata->GetHorizontal_StripNbr(i)==9 ||
-                  cdata->GetHorizontal_StripNbr(i)==10 ||
-                  cdata->GetHorizontal_StripNbr(i)==11)
-              {
-                csmhit.SetDHorizontalCharge(cdata->GetVertical_Charge(j));
-                csmhit.SetDHorizontalEnergy(cdata->GetVertical_Energy(j));
-              }
-            }
-
-            if(cdata->GetHorizontal_DetectorNbr(i)==3)
-            {
-              if(cdata->GetHorizontal_StripNbr(i)==12 ||
-                  cdata->GetHorizontal_StripNbr(i)==15)
-              {
-                csmhit.SetDHorizontalCharge(cdata->GetVertical_Charge(j));
-                csmhit.SetDHorizontalEnergy(cdata->GetVertical_Energy(j));
-              }
-            }
-
-            csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(i),
-                                                  cdata->GetHorizontal_DetectorPos(i),
-                                                  cdata->GetHorizontal_StripNbr(i),
-                                                  cdata->GetVertical_StripNbr(j)));
-            VerUsed.at(j) = true;
-            HorUsed.at(i) = true;
-            D_Hits.push_back(csmhit);
-          }
-          else if(cdata->GetHorizontal_DetectorPos(i) == 'E')
-          {
-            csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(i));		//!
-            csmhit.SetEHorizontalCharge(cdata->GetHorizontal_Charge(i)); 				//!
-            csmhit.SetEVerticalCharge(cdata->GetVertical_Charge(j));    			//!
-            csmhit.SetEHorizontalStrip(cdata->GetHorizontal_StripNbr(i)); 			//!
-            csmhit.SetEVerticalStrip(cdata->GetVertical_StripNbr(j));   			//!
-            csmhit.SetEHorizontalCFD(cdata->GetHorizontal_TimeCFD(i));					//!
-            csmhit.SetEVerticalCFD(cdata->GetVertical_TimeCFD(j));					//!
-            csmhit.SetEHorizontalTime(cdata->GetHorizontal_Time(i)); //!
-            csmhit.SetEVerticalTime(cdata->GetVertical_Time(j));     //!
-            csmhit.SetEHorizontalEnergy(cdata->GetHorizontal_Energy(i));				//!
-            csmhit.SetEVerticalEnergy(cdata->GetVertical_Energy(j));				//!
-            csmhit.SetEPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(i),
-                                                  cdata->GetHorizontal_DetectorPos(i),
-                                                  cdata->GetHorizontal_StripNbr(i),
-                                                  cdata->GetVertical_StripNbr(j)));
-            VerUsed.at(j) = true;
-            HorUsed.at(i) = true;
-            E_Hits.push_back(csmhit);
-          }
-        }
-      }
-    }
+    csm_hits.at(finaliter).Print();
   }
+  cout<<RESET_COLOR;
   */
-  std::vector<int>HorStrpFree;
-  std::vector<int> VerStrpFree;
-
-  for(int i=0; i<cdata->GetMultiplicityHorizontal(); i++)
-  {
-    if(!HorUsed.at(i))
-      HorStrpFree.push_back(i);
-  }
-
-  for(int j=0; j<cdata->GetMultiplicityVertical(); j++)
-  {
-    if(!VerUsed.at(j))
-      VerStrpFree.push_back(j);
-  }
-  
-  /*FREE HIT PRINT
-  for(int iter=0; iter<VerStrpFree.size(); iter++)
-  {
-    int addr = VerStrpFree.at(iter);
-    
-    cdata->Print(addr,0);
-  }
-
-  for(int iter=0; iter<HorStrpFree.size(); iter++)
-  {
-    int addr = HorStrpFree.at(iter);
-    
-    cdata->Print(addr,1);
-  }*/
-  
-/*  HERE BE EVENT RECOVERY
-  for(int iter=0; iter<VerStrpFree.size(); iter++)
-  {
-    int addr = VerStrpFree.at(iter);
-
-    if(cdata->GetVertical_DetectorNbr(addr)==1 && cdata->GetVertical_DetectorPos(addr)=='D')
-    {
-      csmhit.SetDetectorNumber(cdata->GetVertical_DetectorNbr(addr));		//!
-      csmhit.SetDHorizontalCharge(cdata->GetVertical_Charge(addr)); 				//!
-      csmhit.SetDVerticalCharge(cdata->GetVertical_Charge(addr));    			//!
-      csmhit.SetDHorizontalStrip(6); 			//!
-      csmhit.SetDVerticalStrip(cdata->GetVertical_StripNbr(addr));   			//!
-      csmhit.SetDHorizontalCFD(cdata->GetVertical_TimeCFD(addr));					//!
-      csmhit.SetDVerticalCFD(cdata->GetVertical_TimeCFD(addr));					//!
-      csmhit.SetDHorizontalTime(cdata->GetVertical_Time(addr));	//!
-      csmhit.SetDVerticalTime(cdata->GetVertical_Time(addr));		//!
-      csmhit.SetDHorizontalEnergy(cdata->GetVertical_Energy(addr));				//!
-      csmhit.SetDVerticalEnergy(cdata->GetVertical_Energy(addr));				//!
-      //cout<<"Here2"<<endl;
-      csmhit.SetDPosition(TCSM::GetPosition(cdata->GetVertical_DetectorNbr(addr),
-                                            cdata->GetVertical_DetectorPos(addr),
-                                            6,
-                                            cdata->GetVertical_StripNbr(addr)));
-      //cout<<"Here3"<<endl;
-      D_Hits.push_back(csmhit);
-      //cout<<"Here4"<<endl;
-    }
-  }
-
-  for(int iter=0; iter<HorStrpFree.size(); iter++)
-  {
-    int addr = HorStrpFree.at(iter);
-
-    //cout<<"addr: "<<addr<<endl;
-    if(cdata->GetHorizontal_DetectorPos(addr)=='D')
-    {
-      if(cdata->GetHorizontal_DetectorNbr(addr)==2 && cdata->GetHorizontal_StripNbr(addr)!=9)
-      {
-        csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(addr));		//!
-        csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(addr)); 				//!
-        csmhit.SetDVerticalCharge(cdata->GetHorizontal_Charge(addr));    			//!
-        csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(addr)); 			//!
-        csmhit.SetDVerticalStrip(6);   			//!
-        csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(addr));					//!
-        csmhit.SetDVerticalCFD(cdata->GetHorizontal_TimeCFD(addr));					//!
-        csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(addr));	//!
-        csmhit.SetDVerticalTime(cdata->GetHorizontal_Time(addr));		//!
-        csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(addr));				//!
-        csmhit.SetDVerticalEnergy(cdata->GetHorizontal_Energy(addr));				//!
-        csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(addr),
-                                              cdata->GetHorizontal_DetectorPos(addr),
-                                              cdata->GetHorizontal_StripNbr(addr),
-                                              6));
-        D_Hits.push_back(csmhit);
-      }
-
-      if(cdata->GetHorizontal_DetectorNbr(addr)==3)
-      {
-        csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(addr));		//!
-        csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(addr)); 				//!
-        csmhit.SetDVerticalCharge(cdata->GetHorizontal_Charge(addr));    			//!
-        csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(addr)); 			//!
-        csmhit.SetDVerticalStrip(11);   			//!
-        csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(addr));					//!
-        csmhit.SetDVerticalCFD(cdata->GetHorizontal_TimeCFD(addr));					//!
-        csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(addr));	//!
-        csmhit.SetDVerticalTime(cdata->GetHorizontal_Time(addr));		//!
-        csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(addr));				//!
-        csmhit.SetDVerticalEnergy(cdata->GetHorizontal_Energy(addr));				//!
-        csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(addr),
-                                              cdata->GetHorizontal_DetectorPos(addr),
-                                              cdata->GetHorizontal_StripNbr(addr),
-                                              11));
-        D_Hits.push_back(csmhit);
-      }
-      else if(cdata->GetHorizontal_DetectorNbr(addr)==4)
-      {
-        csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(addr));		//!
-        csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(addr)); 				//!
-        csmhit.SetDVerticalCharge(cdata->GetHorizontal_Charge(addr));    			//!
-        csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(addr)); 			//!
-        csmhit.SetDVerticalStrip(15);   			//!
-        csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(addr));					//!
-        csmhit.SetDVerticalCFD(cdata->GetHorizontal_TimeCFD(addr));					//!
-        csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(addr));	//!
-        csmhit.SetDVerticalTime(cdata->GetHorizontal_Time(addr));		//!
-        csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(addr));				//!
-        csmhit.SetDVerticalEnergy(cdata->GetHorizontal_Energy(addr));				//!
-        csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(addr),
-                                              cdata->GetHorizontal_DetectorPos(addr),
-                                              cdata->GetHorizontal_StripNbr(addr),
-                                              15));
-        D_Hits.push_back(csmhit);
-      }
-    }
-  }*/
-
-  //now we will try to match front and back detectors.
-  /*std::vector<bool> usedpixel(E_Hits.size(), false);
-
-  for(int i=0; i<D_Hits.size(); i++)
-  {
-    for(int j=0; j<E_Hits.size(); j++)
-    {
-      if(usedpixel.at(j))
-      {
-        continue;
-      }
-
-      if(D_Hits.at(i).GetDetectorNumber() == E_Hits.at(j).GetDetectorNumber())
-      {
-        if((D_Hits.at(i).GetDPosition() - E_Hits.at(j).GetEPosition()).Mag()>10.0)
-        {
-          continue;
-        }
-
-        usedpixel.at(j) = true;
-        D_Hits.at(i).SetEHorizontalCharge(E_Hits.at(j).GetEHorizontalCharge());
-        D_Hits.at(i).SetEVerticalCharge(E_Hits.at(j).GetEVerticalCharge());
-        D_Hits.at(i).SetEHorizontalStrip(E_Hits.at(j).GetEHorizontalStrip());
-        D_Hits.at(i).SetEVerticalStrip(E_Hits.at(j).GetEVerticalStrip());
-        D_Hits.at(i).SetEHorizontalCFD(E_Hits.at(j).GetEHorizontalCFD());
-        D_Hits.at(i).SetEVerticalCFD(E_Hits.at(j).GetEVerticalCFD());
-        D_Hits.at(i).SetEHorizontalEnergy(E_Hits.at(j).GetEHorizontalEnergy());
-        D_Hits.at(i).SetEVerticalEnergy(E_Hits.at(j).GetEVerticalEnergy());
-        D_Hits.at(i).SetEHorizontalTime(E_Hits.at(j).GetEHorizontalTime());
-        D_Hits.at(i).SetEVerticalTime(E_Hits.at(j).GetEVerticalTime());
-        D_Hits.at(i).SetEPosition(E_Hits.at(j).GetEPosition());
-      } // comparison of detector numbers
-    } // loop over e hits
-
-    csm_hits.push_back(D_Hits.at(i));
-  }
-
-  for(int k=0; k<usedpixel.size(); k++) //This loop puts in hits from E that weren't correlated
-  {
-    if(!usedpixel.at(k))
-    {
-      csm_hits.push_back(E_Hits.at(k));
-    }
-  }*/
 }
 
 
@@ -597,31 +323,26 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     int vc2 = cdataVH->GetVertical_Charge(vvec.at(1));
     int hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
     int hc2 = cdataVH->GetHorizontal_Charge(hvec.at(1));
-    if( AlmostEqual(vc1,hc1) )
+    if( AlmostEqual(vc1,hc1) && AlmostEqual(vc2,hc2) )
     {
-      if( AlmostEqual(vc2,hc2) )
-      {
       //I can build both 1,1 and 2,2
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(1),cdataVH));
       hvec.clear();
       vvec.clear();
-      }
     }
-    else if( AlmostEqual(vc1,hc2) )
+    else if( AlmostEqual(vc1,hc2) && AlmostEqual(vc2,hc1) )
     {
-      if( AlmostEqual(vc2,hc1) )
-      {
-	//I can build both 1,2 and 2,1
-	hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
-	hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
-	hvec.clear();
-	vvec.clear();
-      }
+      //I can build both 1,2 and 2,1
+      hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
+      hvec.clear();
+      vvec.clear();
     }
   }
   
-  /*if(!vvec.empty() || !hvec.empty())
+  /* This prints unused hits in a pretty ugly manner
+  if(!vvec.empty() || !hvec.empty())
   {
     //cdataVH->Print();
     for(int iter=0;iter<hvec.size();iter++)
@@ -695,7 +416,7 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
 {
   TCSMHit csmhit;
   csmhit.Clear();
-  cout<<"Make Hit Starting."<<endl;
+  //cout<<"Make Hit Starting."<<endl;
   if(hhV.size()==0 || vvV.size()==0)
     cerr<<"\tSomething is wrong, empty vector in MakeHit"<<endl;
 
@@ -708,7 +429,7 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
   double EnergyH = 0;
   int biggestH = 0;
 
-  cout<<"Make Hit Horizontal Setup Done."<<endl;
+  //cout<<"Make Hit Horizontal Setup Done."<<endl;
 
   int DetNumV = cdata->GetVertical_DetectorNbr(vvV.at(0));
   char DetPosV = cdata->GetVertical_DetectorPos(vvV.at(0));
@@ -719,7 +440,7 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
   double EnergyV = 0;
   int biggestV = 0;
 
-  cout<<"Make Hit Vertical Setup Done."<<endl;
+  //cout<<"Make Hit Vertical Setup Done."<<endl;
   
   for(int iterH=0;iterH<hhV.size();iterH++)
   {
@@ -739,7 +460,7 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
   ConFraH = cdata->GetHorizontal_TimeCFD(biggestH);
   TimeH = cdata->GetHorizontal_Time(biggestH);
 
-  cout<<"MakeHit Horizontal Done."<<endl;
+  //cout<<"MakeHit Horizontal Done."<<endl;
 
   for(int iterV=0;iterV<vvV.size();iterV++)
   {
@@ -759,7 +480,7 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
   ConFraV = cdata->GetVertical_TimeCFD(biggestV);
   TimeV = cdata->GetVertical_Time(biggestV);
 
-  cout<<"MakeHIt Vertical Done."<<endl;
+  //cout<<"MakeHIt Vertical Done."<<endl;
   
   if(DetNumH!=DetNumV)
     cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match in vector."<<endl;
@@ -802,7 +523,7 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
 					  StripH,
 					  StripV));
   }
-  cout<<"?"<<endl;
+
   //csmhit.Print();
   return(csmhit);
 }
@@ -810,32 +531,37 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
 void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits)
 {
   //cout<<"DHitVec size: "<<DHitVec.size()<<" EHitVec size: "<<EHitVec.size()<<endl;
+  if(DHitVec.size()==0&&EHitVec.size()==0)//Why am I even here?!
+    return;
   
   for(int diter=0;diter<DHitVec.size();diter++)
   {
     //cout<<"diter: "<<diter<<endl;
-    if(DHitVec.at(diter).GetDetectorNumber()>=3)//If I am in the side detectors, I will never have any E information
+    for(int eiter=0;eiter<EHitVec.size();eiter++)
     {
-      BuiltHits.push_back(DHitVec.at(diter));
-      DHitVec.at(diter).Print();
-      //DHitVec.erase(DHitVec.begin()+diter);
-    }
-    
-    else
-    {
-      for(int eiter=0;eiter<EHitVec.size();eiter++)
+      //cout<<"eiter: "<<eiter<<endl;
+
+      if(DHitVec.at(diter).GetDetectorNumber()==EHitVec.at(eiter).GetDetectorNumber())//Hits are in the same stack
       {
-	//cout<<"eiter: "<<eiter<<endl;
-	
-	if(DHitVec.at(diter).GetDetectorNumber()==EHitVec.at(eiter).GetDetectorNumber())//Hits are in the same stack
+	if( AlmostEqual(DHitVec.at(diter).GetDPosition().Theta(),EHitVec.at(eiter).GetEPosition().Theta())//Same-ish Theta
+	  && AlmostEqual(DHitVec.at(diter).GetDPosition().Phi(),EHitVec.at(eiter).GetEPosition().Phi()) )//Same-ish Phi
 	{
-	  if( AlmostEqual(DHitVec.at(diter).GetDPosition().Theta(),EHitVec.at(eiter).GetEPosition().Theta()) )
-	  {
-	    BuiltHits.push_back(CombineHits(DHitVec.at(diter),EHitVec.at(eiter)));
-	  }
-	}	
+	  BuiltHits.push_back(CombineHits(DHitVec.at(diter),EHitVec.at(eiter)));
+	  DHitVec.erase(DHitVec.begin()+diter);
+	  EHitVec.erase(EHitVec.begin()+eiter);
+	}
       }
     }
+  }
+
+  //Send through the stragglers.  This is very permissive, but we trust BuildVH to take care of the riff-raff
+  for(int j=0;j<EHitVec.size();j++)
+  {
+    BuiltHits.push_back(EHitVec.at(j));
+  }
+  for(int i=0;i<DHitVec.size();i++)
+  {
+    BuiltHits.push_back(DHitVec.at(i));
   }
 }
 
