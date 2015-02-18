@@ -22,6 +22,8 @@ TGRSIRootIO *TGRSIRootIO::Get()  {
 TGRSIRootIO::TGRSIRootIO() { 
    //printf("TGRSIRootIO has been created.\n");
 
+  fFragmentTree = 0;
+  fEpicsTree    = 0;
 
   foutfile = 0; //new TFile("test_out.root","recreate");
 
@@ -56,6 +58,20 @@ void TGRSIRootIO::SetUpFragmentTree() {
 
 }
 
+
+void TGRSIRootIO::SetUpEpicsTree() {
+   if(TGRSIOptions::IgnoreEpics()) 
+     return;
+   if(foutfile)
+      foutfile->cd();
+   fEPICSTimesFillCalled = 0;
+   fEpicsTree = new TTree("EpicsTree","EpicsTree");
+   fEXBufferFrag = 0;
+   fEpicsTree->Bronch("TEpicsFrag","TEpicsFrag",&fEXBufferFrag,128000,99);
+	printf("EPICS-Tree set up.\n");
+
+}
+
 //void TGRSIRootIO::FillChannelTree(TChannel *chan) {
 //   if(!fTChannelTree)
 //      return;
@@ -70,9 +86,18 @@ void TGRSIRootIO::FillFragmentTree(TFragment *frag) {
    int bytes =  fFragmentTree->Fill();
    if(bytes < 1)
       printf("\n fill failed with bytes = %i\n",bytes);
-
-
    fTimesFillCalled++;
+}
+
+
+void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
+  if(TGRSIOptions::IgnoreEpics()) 
+    return;
+   *fEXBufferFrag = *EXfrag;
+   int bytes =  fEpicsTree->Fill();
+   if(bytes < 1)
+      printf("\n fill failed with bytes = %i\n",bytes);
+   fEPICSTimesFillCalled++;
 }
 
 
@@ -103,10 +128,22 @@ void TGRSIRootIO::FinalizeFragmentTree() {
       break;
 	}
    
+   foutfile->cd();
    fFragmentTree->AutoSave(); //Write();
-	
-   return;
+	return;
 }
+
+
+void TGRSIRootIO::FinalizeEpicsTree() {
+  if(TGRSIOptions::IgnoreEpics()) 
+    return;
+  if(!fEpicsTree || !foutfile)
+      return;
+   foutfile->cd();
+   fEpicsTree->AutoSave(); //Write();
+	return;
+}
+
 
 void TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
   
@@ -123,6 +160,7 @@ void TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
    foutfile = new TFile(filename,"recreate");
    
    SetUpFragmentTree();
+   SetUpEpicsTree();
 
    return;
 }
@@ -135,7 +173,8 @@ void TGRSIRootIO::CloseRootOutFile()   {
    foutfile->cd();
    printf(DMAGENTA "\n Fill tree called " DYELLOW "%i " DMAGENTA "times.\n" RESET_COLOR, fTimesFillCalled);
    
-   FinalizeFragmentTree();  
+   FinalizeFragmentTree(); 
+   FinalizeEpicsTree();
 
    if(TGRSIRunInfo::GetNumberOfSystems()>0) {
       printf(DMAGENTA " Writing RunInfo with " DYELLOW "%i " DMAGENTA " systems to file." RESET_COLOR "\n",TGRSIRunInfo::GetNumberOfSystems());

@@ -5,6 +5,9 @@
 #include "TFragmentQueue.h"
 #include "TGRSIStats.h"
 
+#include "TEpicsFrag.h"
+#include "TGRSIRootIO.h"
+
 #include "Rtypes.h"
 
 ////////////////////////////////////////////////////////////////
@@ -641,6 +644,54 @@ void TDataParser::FillStats(TFragment *frag) {
 
 
 
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+
+int TDataParser::EightPIDataToFragment(uint32_t stream,uint32_t* data,
+                                     int size,unsigned int midasserialnumber, time_t midastime) {
+
+   int NumFragsFound = 1;
+   TFragment *EventFrag = new TFragment();
+
+   EventFrag->MidasTimeStamp = midastime;
+   EventFrag->MidasId = midasserialnumber;	 
+
+   TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
+
+   return 1;
+}
+
+
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+
+
+int TDataParser::EPIXToScalar(double *data,int size,unsigned int midasserialnumber,time_t midastime) {
+
+   int NumFragsFound = 1;
+   TEpicsFrag *EXfrag = new TEpicsFrag;
+
+   EXfrag->MidasTimeStamp = midastime;
+   EXfrag->MidasId        = midasserialnumber;	 
+
+
+   for(int x=0;x<size;x++) {
+      EXfrag->Data.push_back(*(data+x));
+   }
+
+   EXfrag->Print();
+   TGRSIRootIO::Get()->FillEpicsTree(EXfrag);
+   delete EXfrag;
+   return NumFragsFound;
+}
 
 
 
