@@ -12,7 +12,7 @@
 void Make1DChargeHistograms(TChain *chain, TFile *outfile=0) {
 
 
-   TH2F *hist = new TH2F("hist","hist",3000,0,3000,16000,0,64000);
+   TH2F *hist = new TH2F("hist","hist",3000,0,3000,64000,0,64000);
    printf("Making charge histograms..."); fflush(stdout);
    chain->Project("hist","Charge/125.0:ChannelNumber");
    printf(" done!\n");  fflush(stdout);
@@ -35,6 +35,31 @@ void Make1DChargeHistograms(TChain *chain, TFile *outfile=0) {
    return;
 }
 
+void Make1DEnergyHistograms(TChain *chain, TFile *outfile=0) {
+
+
+   TH2F *hist = new TH2F("hist","hist",3000,0,3000,32000,0,32000);
+   printf("Making charge histograms..."); fflush(stdout);
+   chain->Project("hist","GetEnergy():ChannelNumber");
+   printf(" done!\n");  fflush(stdout);
+
+   for(int x=0;x<3000;x++) {
+      TH1D *h = hist->ProjectionY("py",x,x);
+      if(h->Integral()>0) {
+         TChannel *channel = TChannel::GetChannelByNumber(x);
+         if(!channel)
+            h->SetNameTitle(Form("histEng_%04i",x),Form("hist_%04i",x));
+         else
+            h->SetNameTitle(Form("histEng_%04i",x),channel->GetChannelName());
+         if(outfile) {
+            outfile->cd();
+            h->Write();
+            printf("Wrote hist %s to file %s\n",h->GetName(),outfile->GetName());
+         }   
+      }
+   }
+   return;
+}
 
 #ifndef __CINT__
 
@@ -86,6 +111,7 @@ int main(int argc, char **argv) {
       rootout = new TFile(outfilename.c_str(),"recreate");
 
    Make1DChargeHistograms(frag_chain,rootout); 
+	Make1DEnergyHistograms(frag_chain,rootout); 
 
    return 0;
 }

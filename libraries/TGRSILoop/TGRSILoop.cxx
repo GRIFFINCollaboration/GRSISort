@@ -198,6 +198,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
                   TGRSIRunInfo::SetXMLODBFileData(buffer);
                }
                TGRSIRunInfo::SetRunInfo(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
+               TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
             }
             break;
          case 0x8001:

@@ -45,7 +45,7 @@ public:
 	inline void SetData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
 		SetTimeStampHigh(frag->TimeStampHigh);
 		SetTimeStampLow(frag->TimeStampLow);
-		SetTimeToTrig(frag->TimeToTrig);
+		SetTimeToTrig(frag->Zc.at(0));
 		SetWaveBuffer(frag->wavebuffer);
 	} //!
 	

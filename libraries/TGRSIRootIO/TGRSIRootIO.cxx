@@ -88,19 +88,21 @@ void TGRSIRootIO::FillFragmentTree(TFragment *frag) {
 void TGRSIRootIO::FinalizeFragmentTree() {
    if(!fFragmentTree || !foutfile)
       return;
-   //TIter *iter = TChannel::GetChannelIter();   
    TList *list = fFragmentTree->GetUserInfo();
-   //while(TChannel *chan = (TChannel*)iter->Next()) {
-   //   list->Add(chan);
-   //}
    std::map < unsigned int, TChannel * >::iterator iter;
-	for(iter=TChannel::GetChannelMap()->begin();iter!=TChannel::GetChannelMap()->end();iter++) {
-		TChannel *chan = new TChannel(iter->second);
-		//TChannel::CopyChannel(chan,iter->second);
-		list->Add(chan);//(iter->second);
-	}
-
    foutfile->cd();
+   for(iter=TChannel::GetChannelMap()->begin();iter!=TChannel::GetChannelMap()->end();iter++) {
+		TChannel *chan = new TChannel(iter->second);
+      chan->SetNameTitle(Form("TChannels[%i]",TChannel::GetNumberOfChannels()),
+                         Form("%i TChannels.",TChannel::GetNumberOfChannels()));
+      //list->Add(chan);//(iter->second);
+                     // using the write command on any tchannel will now write all 
+      chan->Write(); // the tchannels to a root file.  additionally reading a tchannel
+                     // from a rootfile will read all the channels saved to it.  tchannels
+                     // are now saved as a text buffer to the root file.  
+      break;
+	}
+   
    fFragmentTree->AutoSave(); //Write();
 	
    return;
