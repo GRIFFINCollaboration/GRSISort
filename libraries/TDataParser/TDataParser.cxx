@@ -687,7 +687,7 @@ int TDataParser::EPIXToScalar(double *data,int size,unsigned int midasserialnumb
       EXfrag->Data.push_back(*(data+x));
    }
 
-   EXfrag->Print();
+   //EXfrag->Print();
    TGRSIRootIO::Get()->FillEpicsTree(EXfrag);
    delete EXfrag;
    return NumFragsFound;
