@@ -39,13 +39,15 @@ public:
    Short_t ChannelNumber;         //->  Channel Number
    UInt_t ChannelAddress;         //->  Address of the channel
    std::vector<Int_t> Cfd;        //->  CFD of each pileup hit
+   std::vector<Int_t> Zc;         //->  ZC of each pileup hit
+   std::vector<Int_t> ccShort;    //->  Integration over the waveform rise (Descant only?)
+   std::vector<Int_t> ccLong;     //->  Integration over the wavefrom fall (Descant only?)
    std::vector<Int_t> Led;        //->  LED of each pileup hit
    std::vector<Int_t> Charge;	    //->  The Integrated Charge 
 
    //unsigned long TimeStamp;     //->
    Int_t TimeStampLow;            //->  Timestamp low bits
    Int_t TimeStampHigh;           //->  Timestamp high bits
-   Int_t TimeToTrig;              //->
 
 	/// Added to combine Grif Fragment  ////
 
@@ -66,10 +68,14 @@ public:
    long GetTimeStamp(); //!
    const char *GetName(); //!
    double GetEnergy(); //!
+   long GetTimeStamp_ns(); //!
+
+   Int_t Get4GCfd(int i=0); //!
+
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 
    virtual void Print(Option_t *opt = ""); //!
     
-   ClassDef(TFragment,3);  // Event Fragments
+   ClassDef(TFragment,4);  // Event Fragments
 };
 #endif // TFRAGMENT_H

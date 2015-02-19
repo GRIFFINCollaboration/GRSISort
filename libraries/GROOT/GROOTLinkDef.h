@@ -5,8 +5,9 @@
 #pragma link off all functions;
 #pragma link C++ nestedclasses;
 
-#pragma link C++ class GRootCanvas+;
 #pragma link C++ class GROOTGuiFactory+;
+#pragma link C++ class GRootCanvas+;
+#pragma link C++ class GRootBrowser+;
 
 #pragma link C++ class GH1D+;
 #pragma link C++ class GCanvas+;

@@ -37,7 +37,7 @@ void MakeMatrices() {
    }
 
    //coinc window = 0-20, bg window 40-60, 6000 bins from 0. to 6000. (default is 4000)
-   TList *list = MakeMatrices(AnalysisTree, 0., 20., 80., 6000, 0., 6000.);
+   TList *list = MakeMatrices(AnalysisTree, 0., 30., 80., 6000, 0., 6000.);
 
    std::string fileName = gFile->GetName();
    if(fileName.find_last_of("/") != std::string::npos) {
@@ -920,11 +920,11 @@ int main(int argc, char **argv) {
    //coinc window = 0-20, bg window 40-60, 6000 bins from 0. to 6000. (default is 4000)
    TList *list;
    if(argc < 4) {
-      list = MakeMatrices(tree, 0., 20., 80., 6000, 0., 6000., 0, &w);
+      list = MakeMatrices(tree, 0., 30., 80., 6000, 0., 6000., 0, &w);
    } else {
       int entries = atoi(argv[3]);
       std::cout<<"Limiting processing of analysis tree to "<<entries<<" entries!"<<std::endl;
-      list = MakeMatrices(tree, 0., 20., 80., 6000, 0., 6000., entries, &w);
+      list = MakeMatrices(tree, 0., 30., 80., 6000, 0., 6000., entries, &w);
    }
 
    TFile *outfile = new TFile(fileName.c_str(),"recreate");

@@ -1,5 +1,5 @@
 
-OBJECTS = main.o 
+OBJECTS = grsisort.o 
 vpath %.so $(BASE)/libraries
 LIBRARIES = libTGRSIint.so
 

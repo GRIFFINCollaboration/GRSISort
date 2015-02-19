@@ -1,4 +1,4 @@
-//g++ MakeTimeDiffSpec.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat `root-config --cflags --libs` -lTreePlayer -o runfaster
+//g++ MakeTimeDiffSpec.C -I$GRSISYS/include -L$GRSISYS/libraries -lGRSIFormat `root-config --cflags --libs` -lTreePlayer -o MakeTimeDiffSpec
 
 
 
@@ -57,6 +57,9 @@ TList *MakeTimeDiffSpec(TTree *tree) {
 
 
    TH1F *gg_diff = new TH1F("gg_diff","gg_diff",12000,-6000,6000); list->Add(gg_diff);
+   TH2F *promptEng = new TH2F("promptEng","Prompt Gamma Rays",50,0,50,4000,0,4000); list->Add(promptEng);
+   TH2F *coincEng = new TH2F("coincEng","Coincident Gamma Rays",50,0,50,4000,0,4000); list->Add(coincEng);	
+
 
    //TH2F *gg_diff_mod[4];
    //gg_diff_mod[0] = new TH2F("gg_diff_0","gg_diff_0",4,0,4,600,0,600); list->Add(gg_diff_mod[0]);
@@ -95,6 +98,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    TH1F *bb_diff = new TH1F("bb_diff","bb_diff",12000,-6000,6000); list->Add(bb_diff);
 
    TH1F* bg_coinc_gE = new TH1F("bg_coinc_gE","bg_coinc_gE",16000,0,16000); list->Add(bg_coinc_gE);
+  
  //  TH2F* gg_coinc_gE = new TH1F("gg_coinc","gg_coinc", 8000,0,8000,8000,0,8000); list->Add(gg_coinc);
 
    //TH2F *gg_diff_E1 = new TH2F("gg_diff_E1","gg time difference of card 3&1 vs energy of card 1",4000,0.,4000.,600,0.,600.); list->Add(gg_diff_E1);
@@ -150,7 +154,10 @@ TList *MakeTimeDiffSpec(TTree *tree) {
     
          if(myFrag.DetectorType == 1) {
             if(currentFrag->DetectorType == 1) {
+		TFragment tempFrag=*currentFrag;
                gg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+		promptEng->Fill(currentFrag->GetTimeStamp() - myFrag.GetTimeStamp() ,myFrag.GetEnergy());
+		coincEng->Fill(currentFrag->GetTimeStamp() - myFrag.GetTimeStamp() ,tempFrag.GetEnergy());
             } else if(currentFrag->DetectorType == 2) {
                gb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
                bg_coinc_gE->Fill(myFrag.GetEnergy());

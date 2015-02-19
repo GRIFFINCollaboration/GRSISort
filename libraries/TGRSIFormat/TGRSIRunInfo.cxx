@@ -4,6 +4,8 @@
 ClassImp(TGRSIRunInfo)
 
 TGRSIRunInfo *TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();  
+      
+std::string TGRSIRunInfo::fGRSIVersion;
 
 //int  TGRSIRunInfo::fRunNumber    = 0;
 //int  TGRSIRunInfo::fSubRunNumber = -1;

@@ -1,13 +1,3 @@
-// @(#)root/gui:$Id$
-// Author: Fons Rademakers   15/01/98
-
-/*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
- * All rights reserved.                                                  *
- *                                                                       *
- * For the licensing terms see $ROOTSYS/LICENSE.                         *
- * For the list of contributors see $ROOTSYS/README/CREDITS.             *
- *************************************************************************/
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -605,6 +595,7 @@ void GRootCanvas::CreateCanvas(const char *name)
 
    gVirtualX->SetDNDAware(fId, fDNDTypeList);
    SetDNDTarget(kTRUE);
+
 }
 
 //______________________________________________________________________________
@@ -641,6 +632,7 @@ GRootCanvas::~GRootCanvas()
       delete fHorizontal1;
       delete fHorizontal1Layout;
 
+      fMenuBar->Dump();
       delete fMenuBar;
       delete fMenuBarLayout;
       delete fMenuBarItemLayout;
@@ -1476,12 +1468,14 @@ void GRootCanvas::ShowEditor(Bool_t show)
       TGMainFrame *main = (TGMainFrame *)fParent->GetMainFrame();
       fMainFrame->HideFrame(fEditorFrame);
       if (main && main->InheritsFrom("TRootBrowser")) {
+         printf("I am here GRootCanvas 1469.\n");
          TRootBrowser *browser = (TRootBrowser *)main;
          if (!fEmbedded)
             browser->GetTabRight()->Connect("Selected(Int_t)", "GRootCanvas",
                                             this, "Activated(Int_t)");
          fEmbedded = kTRUE;
          if (show && (!fEditor || !((TGedEditor *)fEditor)->IsMapped())) {
+         printf("I am here GRootCanvas 1476.\n");
             if (!browser->GetTabLeft()->GetTabTab("Pad Editor")) {
                browser->StartEmbedding(TRootBrowser::kLeft);
                if (!fEditor)
@@ -1499,6 +1493,7 @@ void GRootCanvas::ShowEditor(Bool_t show)
                }
             }
             else
+         printf("I am here GRootCanvas 1494.\n");
                fEditor = TVirtualPadEditor::GetPadEditor(kFALSE);
          }
          if (show) browser->GetTabLeft()->SetTab("Pad Editor");

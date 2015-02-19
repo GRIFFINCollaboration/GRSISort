@@ -38,6 +38,9 @@ void TFragment::Clear(Option_t *opt){
 
    ChannelAddress    = -1;
    Cfd.clear();//              = -1;
+   Zc.clear();//              = -1;
+   ccShort.clear();//
+   ccLong.clear();//
    Led.clear();//               = -1;
    Charge.clear();//            = -1;
   
@@ -69,6 +72,24 @@ long TFragment::GetTimeStamp() {
    time  = time << 28;
    time |= TimeStampLow & 0x0fffffff;
    return time;
+}
+
+
+long TFragment::GetTimeStamp_ns() {
+   long ns = 0;
+   if(DataType==2 && Cfd.size()>0) {
+     ns = Cfd.at(0) & (0x03c00000) >> 22;
+   }
+   return 10*GetTimeStamp() + ns;  
+}
+
+Int_t TFragment::Get4GCfd(int i) { // return a 4G cfd in terms 
+  if(Cfd.size()==0)                // of 1/256 ns since the trigger
+     return -1;
+  if(Cfd.size()<i)
+     i = Cfd.size()-1;
+  return  Cfd.at(i)&0x003fffff;
+
 }
 
 
@@ -113,10 +134,10 @@ void TFragment::Print(Option_t *opt)	{
    printf("\tChannel Num:      %i\n", ChannelNumber);
    printf("\tCharge[%lu]	  ",Charge.size());   for(int x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");
    printf("\tCFD[%lu]		  ",Cfd.size());      for(int x=0;x<Cfd.size();x++)   {printf( "     0x%08x", Cfd.at(x));} printf("\n");
+   printf("\tZC[%lu]		  ",Zc.size());      for(int x=0;x<Zc.size();x++)   {printf( "     0x%08x", Zc.at(x));} printf("\n");
    printf("\tLED[%lu]		  ",Led.size());      for(int x=0;x<Led.size();x++)   {printf( "     0x%08x", Led.at(x));} printf("\n");
    printf("\tTimeStamp High: 0x%08x\n", TimeStampHigh);
    printf("\tTimeStamp Low:    0x%08x\n", TimeStampLow);
-   printf("\tTimeToTrig:  %i\n", TimeToTrig);
    //unsigned short temptime = (TimeStampLow & 0x0000ffff) - ((Cfd >> 4) & 0x0000ffff);   //TimeStampLow&0x0000ffff; 
    //printf("\ttime from timestamp(to the nearest 10ns):    0x%04x\t%ins\n", temptime, temptime * 10);
    if (!wavebuffer.empty())

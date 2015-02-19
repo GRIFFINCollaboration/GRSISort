@@ -2,10 +2,6 @@ Unix.*.Root.MacroPath: .:$(GRSISYS)/util:$(ROOTSYS)/macros
 #Unix.*.Root.DynamicPath:  .:~/rootlibs:$(ROOTSYS)/lib:$/home/tiguser/packages/SharcAnalysis
 
 
-
-
-
-
 #files to load at log in:
 Rint.Logon: $(GRSISYS)/.grsi_logon
 Rint.History $(GRSISYS)/.grsi_history
@@ -14,9 +10,9 @@ Rint.HistSize: 1000000
 #default root variables form the grsi enviorment
 Canvas.MoveOpaque: true
 Canvas.ShowEventStatus: true
-Canvas.ShowToolBar: true
+#Canvas.ShowToolBar: true
 
 
-
+Browser.Name: GRootBrowser
 
 

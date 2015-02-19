@@ -73,8 +73,8 @@ static const char *gRootDocumentation[] = {
 };
 
 static const char *gKeyContributors[] = {
+  "V. Bildstein",
   "D. Miller",
-  "V. Bildstien",
    0  
 };
 
