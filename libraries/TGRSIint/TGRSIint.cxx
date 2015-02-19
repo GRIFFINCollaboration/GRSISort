@@ -194,7 +194,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
          if(sargv[0] == '-') 
            printf(DBLUE "   found option flag '-' not immediately followed by an option." RESET_COLOR "\n");
          else   
-           printf(DBLUE "   stand alone option %s not understood, skipping." RESET_COLOR, sargv.c_str());
+           printf(DBLUE "   stand alone option %s not understood, skipping." RESET_COLOR "\n", sargv.c_str());
       }
       if (!strcmp(argv[i],"-?") || !strncmp(argv[i], "--help", 6)) {
          fPrintHelp = true;
@@ -238,9 +238,9 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
         break;
       } else if (sargv[0] == '-' && sargv[1] != '-') { //single char options.
         sargv = sargv.substr(1);  //drop the minus;
+        int defaultcounter = 0;
         for(int c=0;c<sargv.length();c++) {
           char key = sargv[c];
-          int defaultcounter = 0;
           switch(toupper(key)) {
             case 'A':
       		  printf(DBLUE "Atempting to make analysis trees." RESET_COLOR "\n");
@@ -265,14 +265,14 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
               printf(DBLUE "Option \"e\" found in list, but must be followed by experiment name; skipping!\n" RESET_COLOR);
               break;
             default:
-              printf(DBLUE "   option %s found but not understood, skipping." RESET_COLOR, sargv.c_str());
+              printf(DBLUE "   option %c found but not understood, skipping." RESET_COLOR "\n", sargv[c]);
               defaultcounter++;
-              if(defaultcounter>2) {
-                printf("Perhaps you are trying to use a word length argument?");
-                printf("if so, use -- in front of the word instead.");
+              if(defaultcounter>1) {
+                printf("Perhaps you are trying to use a word length argument?\n");
+                printf("if so, use -- in front of the word instead\n.");
                 fPrintHelp = true;
-                c = sargv.length()-1;
-                i = *argc - 1;   
+                c = sargv.length() + 1;
+                i = *argc + 1;   
               }   
               break;
           }
