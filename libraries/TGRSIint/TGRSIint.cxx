@@ -53,7 +53,8 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
       InitFlags();
       GetOptions(&argc,argv);
       PrintLogo(fPrintLogo);
-      SetPrompt( DYELLOW "GRSI [%d] " RESET_COLOR);
+    //  SetPrompt( DYELLOW "GRSI [%d] " RESET_COLOR);
+      SetPrompt("GRSI [%d] ");
       PrintHelp(fPrintHelp);
       ApplyOptions();
 }
