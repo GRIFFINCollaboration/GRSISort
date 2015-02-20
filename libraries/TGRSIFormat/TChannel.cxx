@@ -521,7 +521,7 @@ Int_t TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
    TList *list =  tempf->GetListOfKeys();
    TIter iter(list);
    while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
-      if(!obj->InheritsFrom("TChannel"))
+      if(obj && !obj->InheritsFrom("TChannel"))
          continue;
       TChannel *c = (TChannel*)obj;
       return GetNumberOfChannels();
