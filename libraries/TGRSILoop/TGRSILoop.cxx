@@ -133,6 +133,9 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
    if(!midasfile)
       return;
 
+   //This is a new midas sort, so we should start by resetting the version number in the code.
+   TGRSIRunInfo::ClearGRSIVersion();
+
    fOffline = true;
    //Once this is done, we want to set the frags read from midas to 0 for use in the next sort.
    fFragsReadFromMidas = 0;

@@ -20,6 +20,10 @@ int main(int argc, char **argv) {
    TMidasFile *infile  = new TMidasFile;
    TMidasFile *outfile = new TMidasFile;
    TMidasEvent *event  = new TMidasEvent;
+   
+   if(argv[1] == argv[2]){
+      printf("ERROR: Cannot overwrite midas file %s\n",argv[1]);
+   }
 
    infile->Open(argv[1]);
    outfile->OutOpen(argv[2]);
