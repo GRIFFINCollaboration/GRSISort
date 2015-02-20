@@ -60,7 +60,7 @@ class TChannel : public TNamed	{
 
     static bool Compare(const TChannel&,const TChannel&);
 
-    static TChannel *GetDefaultChannel() { if(fChannelMap->size()>0) return fChannelMap->at(0); return 0; }
+    static TChannel *GetDefaultChannel();
 
   private:
     unsigned int	   address;                                 //The address of the digitizer

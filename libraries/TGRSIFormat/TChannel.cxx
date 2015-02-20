@@ -214,6 +214,13 @@ int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
 	return 0;
 }
 
+TChannel *TChannel::GetDefaultChannel() {
+  if(fChannelMap->size()>0) {
+     return fChannelMap->begin()->second;
+  }
+  return 0;
+}
+
 
 
 void TChannel::Clear(Option_t *opt){
