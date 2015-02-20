@@ -7,6 +7,12 @@ Rint.Logon: $(GRSISYS)/.grsi_logon
 Rint.History $(GRSISYS)/.grsi_history
 Rint.HistSize: 1000000 
 
+Rint.PromptColor: #CCCC00
+Rint.BracketColor: bold green
+Rint.BadBracketColor: bold red underlined
+Rint.TabComColor: magenta
+
+
 #default root variables form the grsi enviorment
 Canvas.MoveOpaque: true
 Canvas.ShowEventStatus: true
