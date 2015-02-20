@@ -97,7 +97,7 @@ void TGRSIRunInfo::SetInfoFromFile(TGRSIRunInfo *tmp) {
 }
 
 
-TGRSIRunInfo::TGRSIRunInfo() { 
+TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) { 
    //if(fNumberOfTrueSystems>0)
    //   TGRSIRunInfo::Get() = this;
    //else 
