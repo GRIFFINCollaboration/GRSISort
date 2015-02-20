@@ -709,6 +709,11 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
    ///******************************////
    ///******************************////
 
+   if(TChannel::GetNumberOfChannels()>0) {
+     TChannel *c = TChannel::GetDefaultChannel();
+     c->Write();
+   }
+
    fCurrentAnalysisFile->cd();
    if(fCurrentAnalysisTree)
       fCurrentAnalysisTree->Write();

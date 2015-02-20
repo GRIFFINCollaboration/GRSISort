@@ -60,6 +60,8 @@ class TChannel : public TNamed	{
 
     static bool Compare(const TChannel&,const TChannel&);
 
+    static TChannel *GetDefaultChannel() { if(fChannelMap->size()>0) return fChannelMap->at(0); return 0; }
+
   private:
     unsigned int	   address;                                 //The address of the digitizer
     int		         integration;                             //The charge integration setting
