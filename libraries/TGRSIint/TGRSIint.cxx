@@ -103,8 +103,8 @@ void TGRSIint::ApplyOptions() {
          printf("Read calibration info for %d channels from \"%s\" FragmentTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str()); 
       }   
       if(TGRSIOptions::GetInputRoot().at(0).find("analysis") != std::string::npos){ 
-         Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
-         printf("Read calibration info for %d channels from \"%s\" AnalysisTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
+         //Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
+         //printf("Read calibration info for %d channels from \"%s\" AnalysisTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
       }
    }
   
