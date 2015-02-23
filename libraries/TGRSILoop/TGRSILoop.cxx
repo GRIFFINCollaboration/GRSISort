@@ -13,6 +13,8 @@
 #include "TGRSIStats.h"
 #include "TGRSIRunInfo.h"
 
+#include "GRSIVersion.h"
+
 ClassImp(TGRSILoop)
 
 TGRSILoop *TGRSILoop::fTGRSILoop = 0;

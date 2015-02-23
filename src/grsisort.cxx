@@ -1,4 +1,5 @@
 
+
 #include <cstdio>
 #include <string>
 #include <sys/stat.h>
@@ -8,6 +9,7 @@
 #include "TPluginManager.h"
 #include "TGRSIint.h"
 
+#include "GRSIVersion.h"
 
 #ifdef __APPLE__
 #define HAVE_UTMPX_H

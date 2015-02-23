@@ -12,6 +12,7 @@
 #include "GROOTGuiFactory.h"
 
 #include "Globals.h"
+#include "GRSIVersion.h"
 
 #include "TGHtmlBrowser.h"
 //#include <pstream.h>

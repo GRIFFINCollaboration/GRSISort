@@ -65,7 +65,7 @@ public:
 
    std::vector<Short_t>  wavebuffer;//-> waveform words
   
-   long GetTimeStamp(); //!
+   long GetTimeStamp() const; //!
    const char *GetName(); //!
    double GetEnergy(); //!
    long GetTimeStamp_ns(); //!
@@ -75,7 +75,10 @@ public:
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 
    virtual void Print(Option_t *opt = ""); //!
-    
+
+   bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
+   bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
+
    ClassDef(TFragment,4);  // Event Fragments
 };
 #endif // TFRAGMENT_H
