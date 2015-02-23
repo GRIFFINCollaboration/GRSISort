@@ -674,7 +674,7 @@ int TDataParser::EightPIDataToFragment(uint32_t stream,uint32_t* data,
 /////////////***************************************************************/////////////
 
 
-int TDataParser::EPIXToScalar(double *data,int size,unsigned int midasserialnumber,time_t midastime) {
+int TDataParser::EPIXToScalar(float *data,int size,unsigned int midasserialnumber,time_t midastime) {
 
    int NumFragsFound = 1;
    TEpicsFrag *EXfrag = new TEpicsFrag;

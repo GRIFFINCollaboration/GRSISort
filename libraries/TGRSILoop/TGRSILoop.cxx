@@ -457,7 +457,7 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
          case 5:
             mevent->SetBankList();
             if((banksize = mevent->LocateBank(NULL,"MSRD",&ptr))>0) {
-	            if(!ProcessEPICS((double*)ptr, banksize, mevent, mfile)) { }
+	            if(!ProcessEPICS((float*)ptr, banksize, mevent, mfile)) { }
                               //(unsigned int)(mevent->GetSerialNumber()),
                               //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
@@ -485,7 +485,7 @@ void TGRSILoop::Finalize() {
 }
 
 
-bool TGRSILoop::ProcessEPICS(double *ptr,int &dsize,TMidasEvent *mevent,TMidasFile *mfile) { 
+bool TGRSILoop::ProcessEPICS(float *ptr,int &dsize,TMidasEvent *mevent,TMidasFile *mfile) { 
    unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	 unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
    int epics_banks = TDataParser::EPIXToScalar(ptr,dsize,mserial,mtime);
