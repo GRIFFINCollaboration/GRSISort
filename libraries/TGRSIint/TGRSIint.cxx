@@ -162,7 +162,7 @@ void TGRSIint::PrintLogo(bool print) {
      printf("\t*%*s%*s*\n",width/2+12,"a remake of GRSI SPOON", width/2-12, "");
      printf("\t*%*s%*s*\n",width/2+reflength/2, ref.c_str(), width/2-reflength/2, "");
      printf("\t*%*s%*s*\n",width/2+14,"A lean, mean sorting machine", width/2-14, "");
-     printf("\t*%*s%*s*\n",width/2+9, "version 2.2.0 stable", width/2-9, "");
+     printf("\t*%*s%*s*\n",width/2+9,"version " GRSI_RELEASE, width/2-9, "");
      printf("\t*%s*\n", std::string(width,'*').c_str());   
 
      std::thread drawlogo(&TGRSIint::DrawLogo,this);
