@@ -22,6 +22,8 @@ TGRSIRootIO *TGRSIRootIO::Get()  {
 TGRSIRootIO::TGRSIRootIO() { 
    //printf("TGRSIRootIO has been created.\n");
 
+  fFragmentTree = 0;
+  fEpicsTree    = 0;
 
   foutfile = 0; //new TFile("test_out.root","recreate");
 
@@ -56,6 +58,20 @@ void TGRSIRootIO::SetUpFragmentTree() {
 
 }
 
+
+void TGRSIRootIO::SetUpEpicsTree() {
+   if(TGRSIOptions::IgnoreEpics()) 
+     return;
+   if(foutfile)
+      foutfile->cd();
+   fEPICSTimesFillCalled = 0;
+   fEpicsTree = new TTree("EpicsTree","EpicsTree");
+   fEXBufferFrag = 0;
+   fEpicsTree->Bronch("TEpicsFrag","TEpicsFrag",&fEXBufferFrag,128000,99);
+	printf("EPICS-Tree set up.\n");
+
+}
+
 //void TGRSIRootIO::FillChannelTree(TChannel *chan) {
 //   if(!fTChannelTree)
 //      return;
@@ -70,9 +86,18 @@ void TGRSIRootIO::FillFragmentTree(TFragment *frag) {
    int bytes =  fFragmentTree->Fill();
    if(bytes < 1)
       printf("\n fill failed with bytes = %i\n",bytes);
-
-
    fTimesFillCalled++;
+}
+
+
+void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
+  if(TGRSIOptions::IgnoreEpics()) 
+    return;
+   *fEXBufferFrag = *EXfrag;
+   int bytes =  fEpicsTree->Fill();
+   if(bytes < 1)
+      printf("\n fill failed with bytes = %i\n",bytes);
+   fEPICSTimesFillCalled++;
 }
 
 
@@ -88,23 +113,37 @@ void TGRSIRootIO::FillFragmentTree(TFragment *frag) {
 void TGRSIRootIO::FinalizeFragmentTree() {
    if(!fFragmentTree || !foutfile)
       return;
-   //TIter *iter = TChannel::GetChannelIter();   
    TList *list = fFragmentTree->GetUserInfo();
-   //while(TChannel *chan = (TChannel*)iter->Next()) {
-   //   list->Add(chan);
-   //}
    std::map < unsigned int, TChannel * >::iterator iter;
-	for(iter=TChannel::GetChannelMap()->begin();iter!=TChannel::GetChannelMap()->end();iter++) {
+   foutfile->cd();
+   for(iter=TChannel::GetChannelMap()->begin();iter!=TChannel::GetChannelMap()->end();iter++) {
 		TChannel *chan = new TChannel(iter->second);
-		//TChannel::CopyChannel(chan,iter->second);
-		list->Add(chan);//(iter->second);
+      chan->SetNameTitle(Form("TChannels[%i]",TChannel::GetNumberOfChannels()),
+                         Form("%i TChannels.",TChannel::GetNumberOfChannels()));
+      //list->Add(chan);//(iter->second);
+                     // using the write command on any tchannel will now write all 
+      chan->Write(); // the tchannels to a root file.  additionally reading a tchannel
+                     // from a rootfile will read all the channels saved to it.  tchannels
+                     // are now saved as a text buffer to the root file.  
+      break;
 	}
-
+   
    foutfile->cd();
    fFragmentTree->AutoSave(); //Write();
-	
-   return;
+	return;
 }
+
+
+void TGRSIRootIO::FinalizeEpicsTree() {
+  if(TGRSIOptions::IgnoreEpics()) 
+    return;
+  if(!fEpicsTree || !foutfile)
+      return;
+   foutfile->cd();
+   fEpicsTree->AutoSave(); //Write();
+	return;
+}
+
 
 void TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
   
@@ -121,6 +160,7 @@ void TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
    foutfile = new TFile(filename,"recreate");
    
    SetUpFragmentTree();
+   SetUpEpicsTree();
 
    return;
 }
@@ -133,7 +173,8 @@ void TGRSIRootIO::CloseRootOutFile()   {
    foutfile->cd();
    printf(DMAGENTA "\n Fill tree called " DYELLOW "%i " DMAGENTA "times.\n" RESET_COLOR, fTimesFillCalled);
    
-   FinalizeFragmentTree();  
+   FinalizeFragmentTree(); 
+   FinalizeEpicsTree();
 
    if(TGRSIRunInfo::GetNumberOfSystems()>0) {
       printf(DMAGENTA " Writing RunInfo with " DYELLOW "%i " DMAGENTA " systems to file." RESET_COLOR "\n",TGRSIRunInfo::GetNumberOfSystems());

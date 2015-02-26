@@ -60,6 +60,8 @@ class TChannel : public TNamed	{
 
     static bool Compare(const TChannel&,const TChannel&);
 
+    static TChannel *GetDefaultChannel();
+
   private:
     unsigned int	   address;                                 //The address of the digitizer
     int		         integration;                             //The charge integration setting
@@ -161,12 +163,22 @@ class TChannel : public TNamed	{
 
     static Int_t ReadCalFromTree(TTree*,Option_t *opt="overwrite");
     static Int_t ReadCalFile(const char *filename = "");
+    static Int_t ParseInputData(const char *inputdata = "");
     static void WriteCalFile(std::string outfilename = "");
 
     virtual void Print(Option_t *opt = "");
     virtual void Clear(Option_t *opt = "");
     //static  void PrintAll(Option_t *opt = "");      
 
-    ClassDef(TChannel,3) //Contains the Digitizer Information
+  
+  private:
+     // the follow is to make the custum streamer 
+     // stuff play nice.  pcb.
+     static std::string fFileName;
+     static std::string fFileData;
+     static void InitChannelInput();
+     static void SaveToSelf(const char*);
+
+    ClassDef(TChannel,4) //Contains the Digitizer Information
 };
 #endif

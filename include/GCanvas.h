@@ -2,6 +2,7 @@
 #define GRUTCANVAS_H
 
 #include "TCanvas.h"
+#include "TRootCanvas.h"
 
 class GCanvas : public TCanvas {
    public:
@@ -13,10 +14,9 @@ class GCanvas : public TCanvas {
         virtual ~GCanvas();
 
         //void ProcessEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
-        void CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
+        //void CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
 
         void HandleInput(EEventType event,Int_t x,Int_t y);
-        void ExecuteEvent(Int_t event,Int_t x,Int_t y);
 
         void Draw(Option_t *opt="");
 
@@ -33,8 +33,9 @@ class GCanvas : public TCanvas {
 
       void HandleKeyPress(int event,int x,int y,TObject *obj);
 
+      Window_t fCanvasWindowID;
+      TRootCanvas *fRootCanvas;
 
 };
 
 #endif
-

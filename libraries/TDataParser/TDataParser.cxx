@@ -5,6 +5,9 @@
 #include "TFragmentQueue.h"
 #include "TGRSIStats.h"
 
+#include "TEpicsFrag.h"
+#include "TGRSIRootIO.h"
+
 #include "Rtypes.h"
 
 ////////////////////////////////////////////////////////////////
@@ -217,14 +220,17 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment *currentfrag) {
       cfdBits = (currentfrag->Cfd.back() >> 4);
       tsBits  = currentfrag->TimeStampLow & 0x007fffff;
       // probably should check that there hasn't been any wrap around here
-      currentfrag->TimeToTrig = tsBits - cfdBits;
+      //currentfrag->TimeToTrig = tsBits - cfdBits;
+      currentfrag->Zc.push_back(tsBits - cfdBits);
    } else if ( dig_type.compare(0,5,"Tig64")==0 ) {
-      currentfrag->TimeToTrig = (currentfrag->Cfd.back() >> 5);
+      //currentfrag->TimeToTrig = (currentfrag->Cfd.back() >> 5);
+      currentfrag->Zc.push_back(tsBits - cfdBits);
       // cfdBits	= (eventfragment->Cfd >> 5);
       // tsBits  = eventfragment->TimeStampLow & 0x003fffff;
    } else {
       cfdBits = (currentfrag->Cfd.back() >> 4);
       tsBits  = currentfrag->TimeStampLow & 0x007fffff;
+      currentfrag->Zc.push_back(tsBits - cfdBits);
       //printf(DYELLOW "Address: 0x%08x | " RESET_COLOR); (TChannel::GetChannel(currentfrag->ChannelAddress))->Print();
       //printf("CFD obtained without knowing digitizer type with midas Id = %d!\n",currentfrag->MidasId );
    }
@@ -459,7 +465,10 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 					EventFrag->Charge.push_back((*(data+x) & 0x03ffffff));	
 					x = x + 1;
  					EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
-					EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
+                 EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
+               //x = x + 1;
+ 					//EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
+					//EventFrag->Zc.push_back( (*(data+x) & 0x03ffffff));
 	          }
    	       break;
 		};
@@ -548,8 +557,14 @@ bool TDataParser::SetGRIFNetworkPacket(uint32_t value, TFragment *frag) {
    if( (value &0xf0000000) != 0xd0000000) {
 		return false;
 	}
-   frag->NetworkPacketNumber = value & 0x0fffffff;
-//   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
+   if( (value&0x0f000000) == 0x0f000000) {
+     // descant zero crossing time.
+     frag->Zc.push_back( value & 0x00ffffff);
+   }
+   else {
+     frag->NetworkPacketNumber = value & 0x00ffffff;
+     //   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
+   }
    return true;
 }
 
@@ -629,6 +644,54 @@ void TDataParser::FillStats(TFragment *frag) {
 
 
 
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+
+int TDataParser::EightPIDataToFragment(uint32_t stream,uint32_t* data,
+                                     int size,unsigned int midasserialnumber, time_t midastime) {
+
+   int NumFragsFound = 1;
+   TFragment *EventFrag = new TFragment();
+
+   EventFrag->MidasTimeStamp = midastime;
+   EventFrag->MidasId = midasserialnumber;	 
+
+   TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
+
+   return 1;
+}
+
+
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+/////////////***************************************************************/////////////
+
+
+int TDataParser::EPIXToScalar(float *data,int size,unsigned int midasserialnumber,time_t midastime) {
+
+   int NumFragsFound = 1;
+   TEpicsFrag *EXfrag = new TEpicsFrag;
+
+   EXfrag->MidasTimeStamp = midastime;
+   EXfrag->MidasId        = midasserialnumber;	 
+
+
+   for(int x=0;x<size;x++) {
+      EXfrag->Data.push_back(*(data+x));
+   }
+
+   //EXfrag->Print();
+   TGRSIRootIO::Get()->FillEpicsTree(EXfrag);
+   delete EXfrag;
+   return NumFragsFound;
+}
 
 
 

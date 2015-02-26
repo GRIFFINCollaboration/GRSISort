@@ -451,10 +451,10 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    //Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
-   if(fCurrentRunInfo) {
-      TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
+   //if(fCurrentRunInfo) {
+   //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
       fCurrentRunInfo->Print();
-   }
+   //}
 
    //Intialize the TChannel Information
    InitChannels();
@@ -497,7 +497,11 @@ void TAnalysisTreeBuilder::SetupOutFile() {
    //Sets up the anaysistree.root file to write the created events into
    if(!fCurrentRunInfo)
       return;
-   std::string outfilename = Form("analysis%05i_%03i.root",fCurrentRunInfo->RunNumber(),fCurrentRunInfo->SubRunNumber());
+   std::string outfilename;
+   if(fCurrentRunInfo->SubRunNumber() == -1)
+     outfilename = Form("analysis%05i.root",fCurrentRunInfo->RunNumber());
+   else
+     outfilename = Form("analysis%05i_%03i.root",fCurrentRunInfo->RunNumber(),fCurrentRunInfo->SubRunNumber());
    //We add the output analysis file to the "input root files" in case we want to do something with that file after we finish 
    //sorting it.
    TGRSIOptions::AddInputRootFile(outfilename);
@@ -559,6 +563,32 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    TGRSIRunInfo *info = fCurrentRunInfo;
    TTree *tree = fCurrentAnalysisTree;
 
+   if(info->Tigress())   { tigress->Clear(); }
+   if(info->Sharc())     { sharc->Clear(); }
+   if(info->TriFoil())   { triFoil->Clear(); }
+   //if(info->Rf())        { rf->Clear(); } 
+   if(info->CSM())       { csm->Clear(); }
+   //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
+   //if(info->Tip())       { tip->Clear(); } 
+//printf("clearing griffin 0x08%x\n",griffin);
+//griffin->Print();
+   if(info->Griffin())   { griffin->Clear(); }
+   if(info->Sceptar())   { sceptar->Clear(); }
+   if(info->Paces())     { paces->Clear(); } 
+   //if(info->Dante())     { dante->Clear(); } 
+   //if(info->ZeroDegree()){ zerodegree->Clear(); } 
+   if(info->Descant())   { descant->Clear();}
+   //printf("ClearActiveAnalysisTreeBranches done\n");
+}
+
+
+void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
+   //Clears the current analysis tree branches.
+   if(!fCurrentAnalysisFile || !fCurrentRunInfo)
+      return;
+   TGRSIRunInfo *info = fCurrentRunInfo;
+   TTree *tree = fCurrentAnalysisTree;
+
    if(info->Tigress())   { tigress = 0; }//->Clear(); }
    if(info->Sharc())     { sharc = 0; }//->Clear(); }
    if(info->TriFoil())   { triFoil = 0; }//->Clear(); }
@@ -576,6 +606,14 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    if(info->Descant())   { descant = 0; }//->Clear();}
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
+
+
+
+
+
+
+
+
 
 void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*> *detectors) {
    //Build the hits in each of the detectors.
@@ -619,7 +657,9 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
    }   
    
    // clear branches
-   ClearActiveAnalysisTreeBranches();	
+   //ClearActiveAnalysisTreeBranches();	
+   ResetActiveAnalysisTreeBranches();	
+   
 
    //Fill the detector map with TDetector classes if the mnemonic of the detector is in the map.
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
@@ -648,6 +688,7 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
    }
    fCurrentAnalysisTree->Fill();
    
+   //ClearActiveAnalysisTreeBranches();	
    //Zero the detectors in the detector map
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
       delete det->second;
@@ -655,6 +696,7 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
    }
    delete detectors;
    detectors = 0;
+
    return;
 }
 
@@ -670,6 +712,12 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
    printf("Writing file %s\n",fCurrentAnalysisFile->GetName());
    ///******************************////
    ///******************************////
+
+   if(TChannel::GetNumberOfChannels()>0) {
+     TChannel *c = TChannel::GetDefaultChannel();
+     c->Write();
+   }
+   //TChannel::DeleteAllChannels();
 
    fCurrentAnalysisFile->cd();
    if(fCurrentAnalysisTree)
@@ -790,16 +838,16 @@ void TAnalysisTreeBuilder::Status() {
 //             "    processed fragments / # of fragments/ # of events / event queue size / write queue size / events written.\t%.1f seconds." SHOW_CURSOR "\r",
 //             fFragmentsIn, fEntries, fAnalysisIn, TEventQueue::Size(), TWriteQueue::Size(), fAnalysisOut, w.RealTime());
       if(!sortingDone) {
-         printf(DYELLOW HIDE_CURSOR "Fragments: %.1f \%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f \%," 
+         printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
                 DGREEN "   write speed: %9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
                (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime());
       } else {
          if(fAnalysisOut > 0) {
-            printf(DYELLOW HIDE_CURSOR "Fragments: %.1f \%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f \%," 
+            printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
                    DGREEN "   write speed: %9.1f built events/second." RESET_COLOR "  %.1f seconds, %.1f seconds remaining." SHOW_CURSOR "\r",
                   (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime(), ((double)(fAnalysisIn-fAnalysisOut))/fAnalysisOut*w.RealTime());
          } else {
-            printf(DYELLOW HIDE_CURSOR "Fragments: %.1f \%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f \%," 
+            printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
                    DGREEN "   write speed: %9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
                   (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime());
          }

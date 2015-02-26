@@ -96,7 +96,7 @@ class TBGOData : public TGRSIDetectorData	{
 			SetBGOCharge(frag->Charge.at(0));
 			SetBGOCFD(frag->Cfd.at(0));
 			SetBGOLED(frag->Led.at(0));
-			SetBGOTime(frag->TimeToTrig);
+			SetBGOTime(frag->Zc.at(0));
 		};	
 		
 		/////////////////////           GETTERS           ////////////////////////

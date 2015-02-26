@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <Globals.h>
+#include <GRSIVersion.h>
 
 #include "RConfigure.h"
 
@@ -73,8 +74,8 @@ static const char *gRootDocumentation[] = {
 };
 
 static const char *gKeyContributors[] = {
+  "V. Bildstein",
   "D. Miller",
-  "V. Bildstien",
    0  
 };
 

@@ -1,11 +1,15 @@
 
+
 #include <cstdio>
 #include <string>
 #include <sys/stat.h>
 #include <netdb.h>
 
 #include "TEnv.h"
+#include "TPluginManager.h"
 #include "TGRSIint.h"
+
+#include "GRSIVersion.h"
 
 #ifdef __APPLE__
 #define HAVE_UTMPX_H
@@ -34,6 +38,7 @@
 static STRUCT_UTMP *gUtmpContents;
 
 void SetGRSIEnv();
+void SetGRSIPluginHandlers();
 static int ReadUtmp();
 static STRUCT_UTMP *SearchEntry(int, const char*);
 static void SetDisplay();
@@ -47,6 +52,7 @@ int main(int argc, char **argv) {
    //Find the grsisort environment variable so that we can read in .grsirc
    SetDisplay();
    SetGRSIEnv();
+   SetGRSIPluginHandlers();
    TGRSIint *input = 0;
    
    //Create an instance of the grsi interpreter so that we can run root-like interpretive mode
@@ -69,6 +75,15 @@ void SetGRSIEnv() {
    //Read in grsirc in the GRSISYS directory to set user defined options on grsisort startup
    grsi_path +=  ".grsirc"; 
    gEnv->ReadFile(grsi_path.c_str(),kEnvChange);
+}
+
+void SetGRSIPluginHandlers() {
+   //gPluginMgr->AddHandler("GRootCanvas","grsi","GRootCanvas"
+   gPluginMgr->AddHandler("TGuiFactory","root","GROOTGuiFactory","Gui","GROOTGuiFactory()");
+   gPluginMgr->AddHandler("TBrowserImp","GRootBrowser","GRootBrowser",
+                          "Gui","NewBrowser(TBrowser *,const char *,Int_t,Int_t,UInt_t,UInt_t");
+   gPluginMgr->AddHandler("TBrowserImp","GRootBrowser","GRootBrowser",
+                          "Gui","NewBrowser(TBrowser *,const char *,Int_t,Int_t");
 }
 
 static int ReadUtmp() {

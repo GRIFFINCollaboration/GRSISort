@@ -43,6 +43,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include "Globals.h"
 
 struct SpeHeader {
   int32_t buffsize;          /*fortran file, each record starts with record size */            // 14
@@ -171,6 +172,7 @@ void WriteHist(TH1 *hist,fstream *outfile)	{
    if(hist->GetRMS() > 16384/2) {
       while(hist->GetNbinsX()>16384)	{
 	     	hist = hist->Rebin(2);
+         printf(DBLUE "\t!!  %s has been compressed by 2." RESET_COLOR "\n",hist->GetName());
    	}
       spehead.size = hist->GetNbinsX();
    } else if(hist->GetNbinsX()>16384) {

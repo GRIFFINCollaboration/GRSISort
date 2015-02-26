@@ -12,7 +12,8 @@ namespace TGRSIOptions {
   bool fProgressDialog = true;
   bool fWorkHarder = false;
   bool fReadingMaterial = false;
-
+  bool fIgnoreFileOdb  = false;
+  bool fIgnoreEpics    = false;
   bool fCloseAfterSort = false;
 
   std::string fexptname;
@@ -40,6 +41,11 @@ std::vector<std::string> GetMacroFile()  {  return fMacroFile;      }
 const char *GetXMLODBFile(int runnumber,int subrunnumber);
 const char *GetCalFile(int runnumber,int subrunnumber);
 
+void SetIgnoreFileOdb(bool flag) { fIgnoreFileOdb=flag; }
+bool IgnoreFileOdb()             { return fIgnoreFileOdb; }
+
+void SetIgnoreEpics(bool flag) { fIgnoreEpics=flag; }
+bool IgnoreEpics()             { return fIgnoreEpics; }
 
 void SetCloseAfterSort(bool flag) { fCloseAfterSort=flag; }
 bool CloseAfterSort()                  { return fCloseAfterSort; }

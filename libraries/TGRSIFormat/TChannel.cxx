@@ -2,12 +2,18 @@
 
 #include <stdexcept>
 #include<fstream>
+#include<iostream>
+#include<iomanip>
 #include<fcntl.h>
 #include<unistd.h>
 
 #include <vector>
 #include <sstream>
 #include <algorithm>
+
+#include <TFile.h>
+#include <TKey.h>
+
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
  * 
@@ -31,6 +37,9 @@ ClassImp(TChannel)
 std::map<unsigned int,TChannel*> *TChannel::fChannelMap = new std::map<unsigned int,TChannel*>; // global maps of channels
 std::map<int,TChannel*> *TChannel::fChannelNumberMap = new std::map<int,TChannel*>;
 
+std::string TChannel::fFileName;
+std::string TChannel::fFileData;
+
 TChannel::TChannel() { Clear(); }  //default constructor need to write to root file.
 
 TChannel::~TChannel(){}
@@ -40,6 +49,7 @@ TChannel::TChannel(const char *temp_name) {
    SetName(temp_name);
    channelname = temp_name;
 }
+
 
 TChannel::TChannel(TChannel *chan) {
 //Makes a copy of a the TChannel. 
@@ -63,6 +73,15 @@ TChannel::TChannel(TChannel *chan) {
     this->SetLEDChi2(chan->GetLEDChi2());
     this->SetTIMEChi2(chan->GetTIMEChi2());
     this->SetEFFChi2(chan->GetEFFChi2());
+}
+
+
+
+void TChannel::InitChannelInput() {
+
+  int channels_found = ParseInputData(fFileData.c_str()); 
+  printf("Successfully read %i TChannels from File\n",channels_found);  
+  return;
 }
 
 
@@ -193,6 +212,13 @@ int TChannel::UpdateChannel(TChannel *chan,Option_t *opt) {
 	oldchan->AppendChannel(chan);
 
 	return 0;
+}
+
+TChannel *TChannel::GetDefaultChannel() {
+  if(fChannelMap->size()>0) {
+     return fChannelMap->begin()->second;
+  }
+  return 0;
 }
 
 
@@ -405,24 +431,26 @@ double TChannel::CalibrateEFF(double energy) {
 void TChannel::Print(Option_t *opt) {
    //Prints out the current TChannel.
 
-   printf( "%s\t{\n",channelname.c_str());
-   printf( "Name:      %s\n",channelname.c_str());
-   printf( "Number:    %i\n",number);
-   printf( "Address:   0x%08x\n", address);
-   printf( "Digitizer: %s\n",digitizertype.c_str());
-   printf( "EngCoeff:  "  );
+   std::cout <<  channelname << "\t{\n";  //,channelname.c_str();
+   std::cout <<  "Name:      " << channelname << "\n";
+   std::cout <<  "Number:    " << number << "\n";
+   std::cout << std::setfill('0');
+   std::cout <<  "Address:   0x" << std::hex << std::setw(8) << address << std::dec << "\n";
+   std::cout << std::setfill(' ');
+   std::cout <<  "Digitizer: " << digitizertype << "\n"; 
+   std::cout <<  "EngCoeff:  "  ;
    for(int x=0;x<ENGCoefficients.size();x++)
-      printf( "%f\t", ENGCoefficients.at(x) );
-   printf("\n");
-   printf("Integration: %i\n",integration);
-   printf( "ENGChi2:   %f\n",ENGChi2);
-   printf( "EffCoeff:  "  );
+      std::cout <<  ENGCoefficients.at(x) << "\t";
+   std::cout <<  "\n";
+   std::cout <<  "Integration: " << integration << "\n";
+   std::cout <<  "ENGChi2:   " << ENGChi2 << "\n";
+   std::cout <<  "EffCoeff:  "  ;
    for(int x=0;x<EFFCoefficients.size();x++ )
-      printf( "%f\t", EFFCoefficients.at(x) );
-   printf("\n");
-   printf( "EFFChi2:   %f\n",EFFChi2);
-   printf("\n}\n");
-   printf( "//====================================//\n");
+      std::cout << EFFCoefficients.at(x) << "\t" ;
+   std::cout << "\n";
+   std::cout << "EFFChi2:   " << EFFChi2 << "\n" ;
+   std::cout << "\n}\n";
+   std::cout << "//====================================//\n";
 };
 
 
@@ -442,6 +470,17 @@ void TChannel::WriteCalFile(std::string outfilename) {
 
    std::sort(chanVec.begin(),chanVec.end(),TChannel::Compare);
 
+
+/*
+   std::stringstream buffer;
+   std::streambuf *std_out = std::cout.rdbuf(buffer.rdbuf());
+   WriteCalFile();
+   fFileData.assign(buffer.str()); 
+   std::cout.rdbuf(std_out);
+*/
+
+
+
    FILE *c_outputfile;
    if(outfilename.length()>0) {
       c_outputfile = freopen (outfilename.c_str(),"w",stdout);
@@ -460,7 +499,8 @@ void TChannel::WriteCalFile(std::string outfilename) {
 
 Int_t TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
 //Reads the TChannel information from a Tree if it has already been written to that Tree.
-    if(!tree)
+/*
+   if(!tree)
 	return 0;
     TList *list = tree->GetUserInfo();	
     TIter iter(list);
@@ -473,6 +513,27 @@ Int_t TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
 	channelsfound ++;
     }
     return channelsfound;
+*/
+
+   if(!tree)
+	  return 0;
+   TFile *tempf = tree->GetCurrentFile();
+   TList *list =  tempf->GetListOfKeys();
+   TIter iter(list);
+
+
+   //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
+   while(TKey *key = (TKey*)(iter.Next())) {
+      if(!key || strcmp(key->GetClassName(),"TChannel"))
+         continue;
+      //TObject *  obj = key->ReadObj();
+      //if(obj && !obj->InheritsFrom("TChannel"))
+      //   continue;
+      //TChannel *c = (TChannel*)obj;
+      TChannel *c = (TChannel*)key->ReadObj();
+      return GetNumberOfChannels();
+   }
+     return 0;
 }
 
 
@@ -483,14 +544,49 @@ Int_t TChannel::ReadCalFile(const char *filename) {
    infilename.append(filename);
 
    if(infilename.length()==0)
-      return 0;
+      return -1;
 
    std::ifstream infile;
    infile.open(infilename.c_str());
    if (!infile) {
       printf("could not open file.\n");
-      return 0;
+      return -2;
    }
+   infile.seekg(0,std::ios::end);
+   int length = infile.tellg();
+   if(length<1)
+      return -2;
+
+   char buffer[length];
+   infile.seekg(0,std::ios::beg);
+   infile.read(buffer,length);
+
+   int channels_found = ParseInputData((const char*)buffer); 
+   SaveToSelf(infilename.c_str());
+   return channels_found;
+}
+
+void TChannel::SaveToSelf(const char *fname) {
+   if(fFileName.length()==0) {
+      fFileName.assign(fname);
+   } else if(fFileName.compare(fname)==0) {
+     // do nothing.
+   } else {
+     // also do nothing, but perhaps jest append the names toghter...
+   }
+   std::stringstream buffer;
+   std::streambuf *std_out = std::cout.rdbuf(buffer.rdbuf());
+   WriteCalFile();
+   fFileData.assign(buffer.str()); 
+   std::cout.rdbuf(std_out);
+   //printf("%s\n",fFileData.c_str());
+   return;
+}
+
+
+Int_t TChannel::ParseInputData(const char *inputdata) {
+
+   std::istringstream infile(inputdata);
 
    TChannel *channel = 0;
 
@@ -650,5 +746,30 @@ void TChannel::trim(std::string * line, const std::string & trimChars) {
       *line = line->substr(0, found + 1);
    return;
 }
+
+void TChannel::Streamer(TBuffer &R__b) {
+   UInt_t R__s, R__c;
+   if(R__b.IsReading()) { // reading from file
+      Version_t R__v = R__b.ReadVersion(&R__s,&R__c); if (R__v) { }
+      TNamed::Streamer(R__b);
+      { TString R__str; R__str.Streamer(R__b); fFileName.assign(R__str.Data()); }
+      { TString R__str; R__str.Streamer(R__b); fFileData.assign(R__str.Data()); }
+      InitChannelInput();
+      R__b.CheckByteCount(R__s,R__c,TChannel::IsA());
+   } else {               // writing to file
+      R__c = R__b.WriteVersion(TChannel::IsA(),true);
+      TNamed::Streamer(R__b);
+      {TString R__str = fFileName.c_str(); R__str.Streamer(R__b);}
+      {TString R__str = fFileData.c_str(); R__str.Streamer(R__b);}
+      R__b.SetByteCount(R__c,true);
+   }
+}
+
+
+
+
+
+
+
 
 

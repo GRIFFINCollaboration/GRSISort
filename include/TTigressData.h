@@ -103,7 +103,7 @@ class TTigressData : public TGRSIDetectorData {
 				SetCoreCharge(frag->Charge.at(0));
 				SetCoreCFD(frag->Cfd.at(0));		
 				SetCoreLED(frag->Led.at(0));		
-				SetCoreTime(frag->TimeToTrig);		
+				SetCoreTime(frag->Zc.at(0));		
 		}; //! 
 
 
@@ -154,7 +154,7 @@ class TTigressData : public TGRSIDetectorData {
 				SetSegmentCharge(frag->Charge.at(0));
 				SetSegmentCFD(frag->Cfd.at(0));		
 				SetSegmentLED(frag->Led.at(0));		
-				SetSegmentTime(frag->TimeToTrig);		
+				SetSegmentTime(frag->Zc.at(0));		
 		}; 
 
 

@@ -133,7 +133,7 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    this->SetParameter("B",(fithist->GetBinContent(binlow) - fithist->GetBinContent(binhigh))/(xlow-xhigh));
    this->SetParameter("C",-0.5);
    this->SetParameter("bg_offset",GetParameter("centroid"));
-   this->FixParameter(8,0);
+   this->FixParameter(8,0.00);
    SetInitialized();
    return true;
 }
@@ -159,6 +159,8 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 
 
    TFitResultPtr fitres = fithist->Fit(this,Form("%sRSML",opt));//The RS needs to always be there
+   //After performing this fit I want to put something here that takes the fit result (good,bad,etc)
+   //for printing out. RD
 
    if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
       if(fitres->Parameter(3) < 1){
@@ -205,10 +207,9 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    CovMat(8,8) = 0.0;
    CovMat(9,9) = 0.0;
 
-   CovMat.Print();
    fd_area = (tmppeak->IntegralError(int_low,int_high,tmppeak->GetParameters(),CovMat.GetMatrixArray())) /binWidth;
-   
 
+   printf("Integral: %lf +/- %lf\n",farea,fd_area);
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
    //delete tmppeak;
    

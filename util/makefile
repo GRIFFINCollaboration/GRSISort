@@ -1,5 +1,5 @@
 CXXTARGET = Root2Rad
-ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms
+ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms offsetadd
 
 CFLAGS += -fPIC
 CFLAGS += `root-config --cflags --libs`
@@ -13,7 +13,7 @@ CAT=cat
 
 .PHONY: all clean gone end
 
-UTILFLAGS =  -L$(GRSISYS)/libraries  -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `root-config --cflags --libs` -lTreePlayer -lX11 -lXpm
+UTILFLAGS =  -L$(GRSISYS)/libraries  -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `root-config --cflags --libs` -lTreePlayer -lGROOT -lX11 -lXpm
 
 
 UTIL_STRING = "Finished compiling utilities"

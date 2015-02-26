@@ -93,7 +93,7 @@ public:
 	 SetHorizontal_Energy(channel->CalibrateENG(frag->Charge.at(0)));
 	 SetHorizontal_TimeCFD(frag->Cfd.at(0));
 	 SetHorizontal_TimeLED(frag->Led.at(0));
-	 SetHorizontal_Time(frag->TimeToTrig);
+	 SetHorizontal_Time(frag->Zc.at(0));
  	 SetHorizontal_Charge(frag->Charge.at(0));
   };	//! 
 	
@@ -104,7 +104,7 @@ public:
 		SetVertical_Energy(channel->CalibrateENG(frag->Charge.at(0)));
 		SetVertical_TimeCFD(frag->Cfd.at(0));
 		SetVertical_TimeLED(frag->Led.at(0));
-		SetVertical_Time(frag->TimeToTrig);
+		SetVertical_Time(frag->Zc.at(0));
  		SetVertical_Charge(frag->Charge.at(0));
 	};	//!
 	
