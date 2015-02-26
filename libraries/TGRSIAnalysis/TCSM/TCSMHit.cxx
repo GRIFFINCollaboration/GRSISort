@@ -73,3 +73,30 @@ void TCSMHit::Print(Option_t *options)	{
   std::cout<<std::endl;
 }
 
+bool TCSMHit::IsEmpty()
+{
+  bool isempty=0;
+  if(hor_d_strip == -1)
+    if(hor_d_charge == 0)
+      if(hor_d_cfd == 0.0)
+	if(ver_d_strip == -1)
+	  if(ver_d_charge == 0)
+	    if(ver_d_cfd == 0.0)
+	      if(hor_e_strip == -1)
+		if(hor_e_charge == 0)
+		  if( hor_e_cfd == 0.0)
+		    if(ver_e_strip == -1)
+		      if(ver_e_charge == 0)
+			if(ver_e_cfd == 0.0)
+			  if(hor_d_energy == 0.0)
+			    if(ver_d_energy == 0.0)
+			      if(hor_d_time == 0.0)
+				if(ver_d_time == 0.0)
+				  if(hor_e_energy == 0.0)
+				    if(ver_e_energy == 0.0)
+				      if(hor_e_time == 0.0)
+					if(ver_e_time == 0.0)
+					  if(detectornumber == 0)
+					    isempty = 1;
+  return isempty;
+}

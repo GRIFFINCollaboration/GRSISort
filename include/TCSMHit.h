@@ -56,6 +56,7 @@ class TCSMHit : public TGRSIDetectorHit 	{
 		//TVector3 position;  //
 
 	public:
+	  bool IsEmpty();
 
 		virtual void Clear(Option_t* = "");	//!
 		virtual void Print(Option_t* = "");	//!

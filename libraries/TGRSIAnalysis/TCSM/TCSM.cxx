@@ -1,6 +1,6 @@
 #include <TMath.h>
 #include "TCSM.h"
-
+#define RECOVERHITS 1
 
 ClassImp(TCSM)
 
@@ -57,6 +57,21 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
   std::vector<TCSMHit> D_Hits;
   std::vector<TCSMHit> E_Hits;
 
+  /*This is a quick thing to look at my max angle difference
+  std::vector<double> angles;
+
+  angles.push_back(abs(TCSM::GetPosition(1,'D',16,16).Theta()-TCSM::GetPosition(1,'D',16,15).Theta()));
+  angles.push_back(abs(TCSM::GetPosition(1,'D',16,16).Theta()-TCSM::GetPosition(1,'D',15,16).Theta()));
+  angles.push_back(abs(TCSM::GetPosition(2,'E',16,16).Theta()-TCSM::GetPosition(2,'E',16,15).Theta()));
+  angles.push_back(abs(TCSM::GetPosition(2,'E',16,16).Theta()-TCSM::GetPosition(2,'E',15,16).Theta()));
+  angles.push_back(abs(TCSM::GetPosition(4,'D',16,16).Theta()-TCSM::GetPosition(4,'D',16,15).Theta()));
+  angles.push_back(abs(TCSM::GetPosition(4,'D',16,16).Theta()-TCSM::GetPosition(4,'D',15,16).Theta()));
+
+  sort(angles.begin(),angles.end());
+
+  cout<<angles.at(0)<<" "<<angles.at(0)*180/3.14159<<endl;
+  cout<<angles.at(5)<<" "<<angles.at(5)*180/3.14159<<endl;*/
+  
   std::vector<int> v1d;
   std::vector<int> v2d;
   std::vector<int> v1e;
@@ -162,7 +177,6 @@ void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
 }
 
 
-
 void TCSM::Clear(Option_t *option)
 {
   //cout << "clearing " << endl;
@@ -251,13 +265,15 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     return;
 
   else if(vvec.size()==1&&hvec.size()==0)
-  {    
-    vvec.clear();//Throw it out for now.
+  {
+    RecoverHit('V',vvec.at(0),cdataVH,hitvec);
+    vvec.clear();
   }
 
   else if(vvec.size()==0&&hvec.size()==1)
-  {    
-    hvec.clear();//Throw it out for now.
+  {
+    RecoverHit('H',hvec.at(0),cdataVH,hitvec);
+    hvec.clear();
   }
   
   else if(vvec.size()==1&&hvec.size()==1)
@@ -339,7 +355,36 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
       hvec.clear();
       vvec.clear();
     }
+    else if( AlmostEqual(vc1,hc1) )
+    {
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+      hvec.erase(hvec.begin());
+      vvec.erase(vvec.begin());
+    }
+    else if( AlmostEqual(vc2,hc1) )
+    {
+      hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
+      hvec.erase(hvec.begin());
+      vvec.pop_back();
+    }
+    else if( AlmostEqual(vc1,hc2) )
+    {
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
+      hvec.pop_back();
+      vvec.erase(vvec.begin());
+    }
+    else if( AlmostEqual(vc2,hc2) )
+    {
+      hitvec.push_back(MakeHit(hvec.at(1),vvec.at(1),cdataVH));
+      hvec.pop_back();
+      vvec.pop_back();
+    }
   }
+
+
+  
+  //else
+    //cdataVH->Print();
   
   /* This prints unused hits in a pretty ugly manner
   if(!vvec.empty() || !hvec.empty())
@@ -543,10 +588,13 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
 
       if(DHitVec.at(diter).GetDetectorNumber()==EHitVec.at(eiter).GetDetectorNumber())//Hits are in the same stack
       {
-	if( AlmostEqual(DHitVec.at(diter).GetDPosition().Theta(),EHitVec.at(eiter).GetEPosition().Theta())//Same-ish Theta
-	  && AlmostEqual(DHitVec.at(diter).GetDPosition().Phi(),EHitVec.at(eiter).GetEPosition().Phi()) )//Same-ish Phi
+	if( AlmostEqual(DHitVec.at(diter).GetDPosition().Theta(),EHitVec.at(eiter).GetEPosition().Theta()))//Same-ish Theta
+	  //&& AlmostEqual(DHitVec.at(diter).GetDPosition().Phi(),EHitVec.at(eiter).GetEPosition().Phi()) )//Same-ish Phi
 	{
 	  BuiltHits.push_back(CombineHits(DHitVec.at(diter),EHitVec.at(eiter)));
+	  //cout<<DRED;
+	  //BuiltHits.back().Print();
+	  //cout<<RESET_COLOR;
 	  DHitVec.erase(DHitVec.begin()+diter);
 	  EHitVec.erase(EHitVec.begin()+eiter);
 	}
@@ -555,13 +603,150 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
   }
 
   //Send through the stragglers.  This is very permissive, but we trust BuildVH to take care of the riff-raff
-  for(int j=0;j<EHitVec.size();j++)
-  {
-    BuiltHits.push_back(EHitVec.at(j));
-  }
   for(int i=0;i<DHitVec.size();i++)
   {
+    /*if(EHitVec.size()>0)
+    {
+      cout<<"*************************"<<endl;
+      cout<<DBLUE;
+      DHitVec.at(i).Print();
+      cout<<RESET_COLOR;
+    }*/
     BuiltHits.push_back(DHitVec.at(i));
+  }
+  for(int j=0;j<EHitVec.size();j++)
+  {
+    /*if(DHitVec.size()>0)
+    {
+      cout<<DGREEN;
+      EHitVec.at(j).Print();
+      cout<<RESET_COLOR;
+    }*/
+    BuiltHits.push_back(EHitVec.at(j));
+  }
+}
+
+void TCSM::RecoverHit(char orientation, int location, TCSMData *cdata, vector<TCSMHit> &hits)
+{
+  if(!RECOVERHITS)
+    return;
+  
+  TCSMHit csmhit;
+  csmhit.Clear();
+
+  int detno=-1;
+  char pos='X';
+  //cout<<DGREEN<<"*****************************************"<<RESET_COLOR<<endl;
+  
+  if(orientation=='V')
+  {
+    //cout<<"pos should be "<<char(cdata->GetVertical_DetectorPos(location))<<endl;
+    pos=char(cdata->GetVertical_DetectorPos(location));
+    //cout<<"pos is "<<pos<<endl;
+    detno=cdata->GetVertical_DetectorNbr(location);
+  }
+  else if(orientation=='H')
+  {
+    //cout<<"pos should be "<<char(cdata->GetHorizontal_DetectorPos(location))<<endl;
+    pos=char(cdata->GetHorizontal_DetectorPos(location));
+    //cout<<"pos is "<<pos<<endl;
+    detno=cdata->GetHorizontal_DetectorNbr(location);
+  }
+  
+  if(detno==1)
+    return;
+  else if(detno==2)
+  {
+    if(pos=='D' && orientation=='V')//Recover 2DN09, channel 1040
+    {
+      csmhit.SetDetectorNumber(cdata->GetVertical_DetectorNbr(location));
+      csmhit.SetDHorizontalCharge(cdata->GetVertical_Charge(location));
+      csmhit.SetDVerticalCharge(cdata->GetVertical_Charge(location));
+      csmhit.SetDHorizontalStrip(9);
+      csmhit.SetDVerticalStrip(cdata->GetVertical_StripNbr(location));
+      csmhit.SetDHorizontalCFD(cdata->GetVertical_TimeCFD(location));
+      csmhit.SetDVerticalCFD(cdata->GetVertical_TimeCFD(location));
+      csmhit.SetDHorizontalTime(cdata->GetVertical_Time(location));
+      csmhit.SetDVerticalTime(cdata->GetVertical_Time(location));
+      csmhit.SetDHorizontalEnergy(cdata->GetVertical_Energy(location));
+      csmhit.SetDVerticalEnergy(cdata->GetVertical_Energy(location));
+      csmhit.SetDPosition(TCSM::GetPosition(cdata->GetVertical_DetectorNbr(location),
+					    cdata->GetVertical_DetectorPos(location),
+					    9,
+					    cdata->GetVertical_StripNbr(location)));
+    }
+  }
+  else if(detno==3)
+  {
+    if(pos=='E')
+    {
+      cerr<<"3E in RecoverHit"<<endl;
+      //cdata->Print();
+      //cout<<"Loc: "<<location<<endl;
+      //cout<<"Vars: "<<detno<<" "<<pos<<endl;
+      //if(orientation=='V') cout<<"V "<<cdata->GetVertical_DetectorNbr(location)<<" "<<char(cdata->GetVertical_DetectorPos(location))<<endl;
+      //else if(orientation=='H') cout<<"H "<<cdata->GetHorizontal_DetectorNbr(location)<<" "<<char(cdata->GetHorizontal_DetectorPos(location))<<endl;
+      
+      return;
+    }
+    else if(orientation=='H')//Recover 3DP11, channel 1145
+    {
+      csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(location));
+      csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(location));
+      csmhit.SetDVerticalCharge(cdata->GetHorizontal_Charge(location));
+      csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(location));
+      csmhit.SetDVerticalStrip(11);
+      csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(location));
+      csmhit.SetDVerticalCFD(cdata->GetHorizontal_TimeCFD(location));
+      csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(location));
+      csmhit.SetDVerticalTime(cdata->GetHorizontal_Time(location));
+      csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(location));
+      csmhit.SetDVerticalEnergy(cdata->GetHorizontal_Energy(location));
+      csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(location),
+					    cdata->GetHorizontal_DetectorPos(location),
+					    cdata->GetHorizontal_StripNbr(location),
+					    11));
+    }
+  }
+  else if(detno==4)
+  {
+    if(pos=='E')
+    {
+      cerr<<"4E in RecoverHit"<<endl;
+      return;
+    }
+    else if(orientation=='H')//Recover 4DP15, channel 1181
+    {
+      csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(location));
+      csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(location));
+      csmhit.SetDVerticalCharge(cdata->GetHorizontal_Charge(location));
+      csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(location));
+      csmhit.SetDVerticalStrip(15);
+      csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(location));
+      csmhit.SetDVerticalCFD(cdata->GetHorizontal_TimeCFD(location));
+      csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(location));
+      csmhit.SetDVerticalTime(cdata->GetHorizontal_Time(location));
+      csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(location));
+      csmhit.SetDVerticalEnergy(cdata->GetHorizontal_Energy(location));
+      csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(location),
+					    cdata->GetHorizontal_DetectorPos(location),
+					    cdata->GetHorizontal_StripNbr(location),
+					    15));
+    }
+  }
+  else
+  {
+    cerr<<"Something is wrong.  The detector number in recover hit is out of bounds."<<endl;
+    return;
+  }
+
+  if(!csmhit.IsEmpty())
+  {
+    //cdata->Print();
+    //cout<<DRED;
+    //csmhit.Print();
+    //cout<<RESET_COLOR;
+    hits.push_back(csmhit);
   }
 }
 

@@ -60,6 +60,7 @@ class TCSM :  public TGRSIDetector 	{
 		TCSMHit MakeHit(int, int, TCSMData*);
 		TCSMHit MakeHit(vector<int> &,vector<int> &, TCSMData*);
 		TCSMHit CombineHits(TCSMHit d_hit,TCSMHit e_hit);
+		void RecoverHit(char, int, TCSMData *, vector<TCSMHit> &);
 		bool AlmostEqual(int, int);
 		bool AlmostEqual(double,double);
 		
