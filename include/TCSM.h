@@ -65,7 +65,7 @@ class TCSM :  public TGRSIDetector 	{
 		bool AlmostEqual(double,double);
 		
 		
-		double AlmostEqualWindow = .1;
+		double AlmostEqualWindow;
 
 		//int CombineHits(TCSMHit*,TCSMHit*,int,int);				//!
 		//void RemoveHits(std::vector<TCSMHit>*,std::set<int>*);	//!

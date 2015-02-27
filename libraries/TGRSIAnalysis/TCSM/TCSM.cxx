@@ -10,6 +10,7 @@ TCSM::TCSM() : data(0)
 {
   Class()->IgnoreTObjectStreamer(true);
   //InitializeSRIMInputs();
+  AlmostEqualWindow = .1;
 }
 
 TCSM::~TCSM()
