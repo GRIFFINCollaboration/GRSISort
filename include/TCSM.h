@@ -35,7 +35,6 @@ class TCSMData;
 #define PI                       (TMath::Pi())
 #endif
 
-
 class TCSM :  public TGRSIDetector 	{
 	public:
 		TCSM();
@@ -56,6 +55,17 @@ class TCSM :  public TGRSIDetector 	{
 	private: 
 		TCSMData *data;                             //!
 		std::vector <TCSMHit> csm_hits;
+		void BuildVH(vector<int> &,vector<int> &,vector<TCSMHit> &,TCSMData*);
+		void BuilddEE(vector<TCSMHit> &,vector<TCSMHit> &,vector<TCSMHit> &);
+		TCSMHit MakeHit(int, int, TCSMData*);
+		TCSMHit MakeHit(vector<int> &,vector<int> &, TCSMData*);
+		TCSMHit CombineHits(TCSMHit d_hit,TCSMHit e_hit);
+		void RecoverHit(char, int, TCSMData *, vector<TCSMHit> &);
+		bool AlmostEqual(int, int);
+		bool AlmostEqual(double,double);
+		
+		
+		double AlmostEqualWindow;
 
 		//int CombineHits(TCSMHit*,TCSMHit*,int,int);				//!
 		//void RemoveHits(std::vector<TCSMHit>*,std::set<int>*);	//!
