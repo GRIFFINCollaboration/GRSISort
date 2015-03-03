@@ -75,8 +75,9 @@ class TGRSIRunInfo : public TObject {
       static void SetInfoFromFile(TGRSIRunInfo *temp);
 
       static const char* GetGRSIVersion() { return fGRSIVersion.c_str(); } 
-      static void SetGRSIVersion(const char *ver) { if(!fGRSIVersion.length()==0) 
-                                                    printf( ALERTTEXT "WARING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n",fGRSIVersion.c_str());
+      static void ClearGRSIVersion() { fGRSIVersion.clear(); } 
+      static void SetGRSIVersion(const char *ver) { if(fGRSIVersion.length()!=0)
+                                                    printf( ALERTTEXT "WARNING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n",fGRSIVersion.c_str());
                                                     else fGRSIVersion.assign(ver); }
 
 
