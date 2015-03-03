@@ -520,10 +520,17 @@ Int_t TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
    TFile *tempf = tree->GetCurrentFile();
    TList *list =  tempf->GetListOfKeys();
    TIter iter(list);
-   while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
-      if(obj && !obj->InheritsFrom("TChannel"))
+
+
+   //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
+   while(TKey *key = (TKey*)(iter.Next())) {
+      if(!key || strcmp(key->GetClassName(),"TChannel"))
          continue;
-      TChannel *c = (TChannel*)obj;
+      //TObject *  obj = key->ReadObj();
+      //if(obj && !obj->InheritsFrom("TChannel"))
+      //   continue;
+      //TChannel *c = (TChannel*)obj;
+      TChannel *c = (TChannel*)key->ReadObj();
       return GetNumberOfChannels();
    }
      return 0;

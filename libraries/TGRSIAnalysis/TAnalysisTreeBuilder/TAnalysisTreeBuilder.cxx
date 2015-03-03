@@ -497,7 +497,11 @@ void TAnalysisTreeBuilder::SetupOutFile() {
    //Sets up the anaysistree.root file to write the created events into
    if(!fCurrentRunInfo)
       return;
-   std::string outfilename = Form("analysis%05i_%03i.root",fCurrentRunInfo->RunNumber(),fCurrentRunInfo->SubRunNumber());
+   std::string outfilename;
+   if(fCurrentRunInfo->SubRunNumber() == -1)
+     outfilename = Form("analysis%05i.root",fCurrentRunInfo->RunNumber());
+   else
+     outfilename = Form("analysis%05i_%03i.root",fCurrentRunInfo->RunNumber(),fCurrentRunInfo->SubRunNumber());
    //We add the output analysis file to the "input root files" in case we want to do something with that file after we finish 
    //sorting it.
    TGRSIOptions::AddInputRootFile(outfilename);

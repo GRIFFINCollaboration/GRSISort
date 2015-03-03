@@ -67,6 +67,7 @@ $(SUBDIRS):
 
 grsisort: src
 	@mv $</$@ bin/$@
+	@cp util/grsi-config bin/
 
 bin:
 ifeq ($(wildcard ./bin),) 

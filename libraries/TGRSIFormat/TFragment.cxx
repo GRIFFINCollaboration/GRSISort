@@ -67,7 +67,7 @@ void TFragment::Clear(Option_t *opt){
 
 }
 
-long TFragment::GetTimeStamp() {
+long TFragment::GetTimeStamp() const {
    long time = TimeStampHigh;
    time  = time << 28;
    time |= TimeStampLow & 0x0fffffff;

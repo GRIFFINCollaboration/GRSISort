@@ -12,6 +12,7 @@
 #include "GROOTGuiFactory.h"
 
 #include "Globals.h"
+#include "GRSIVersion.h"
 
 #include "TGHtmlBrowser.h"
 //#include <pstream.h>
@@ -103,8 +104,8 @@ void TGRSIint::ApplyOptions() {
          printf("Read calibration info for %d channels from \"%s\" FragmentTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str()); 
       }   
       if(TGRSIOptions::GetInputRoot().at(0).find("analysis") != std::string::npos){ 
-         //Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
-         //printf("Read calibration info for %d channels from \"%s\" AnalysisTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
+         Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
+         printf("Read calibration info for %d channels from \"%s\" AnalysisTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
       }
    }
   
@@ -162,7 +163,7 @@ void TGRSIint::PrintLogo(bool print) {
      printf("\t*%*s%*s*\n",width/2+12,"a remake of GRSI SPOON", width/2-12, "");
      printf("\t*%*s%*s*\n",width/2+reflength/2, ref.c_str(), width/2-reflength/2, "");
      printf("\t*%*s%*s*\n",width/2+14,"A lean, mean sorting machine", width/2-14, "");
-     printf("\t*%*s%*s*\n",width/2+9, "version 2.2.0 stable", width/2-9, "");
+     printf("\t*%*s%*s*\n",width/2+9,"version " GRSI_RELEASE, width/2-9, "");
      printf("\t*%s*\n", std::string(width,'*').c_str());   
 
      std::thread drawlogo(&TGRSIint::DrawLogo,this);
