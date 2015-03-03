@@ -171,7 +171,7 @@ public:
 	
   ///////////i//////////           GETTERS           ////////////////////////
   inline UShort_t GetFront_DetectorNbr(const unsigned int &i) const {return fSharc_StripFront_DetectorNbr[i];}	//!
-  inline UShort_t GetFront_ChannelAddress(const unsigned int &i)    const {return fSharc_StripFront_ChannelAddress[i];}		//!
+  inline Int_t    GetFront_ChannelAddress(const unsigned int &i)    const {return fSharc_StripFront_ChannelAddress[i];}		//!
   inline UShort_t GetFront_StripNbr(const unsigned int &i)    const {return fSharc_StripFront_StripNbr[i];}		//!
   inline Double_t GetFront_Energy(const unsigned int &i)      const {return fSharc_StripFront_Energy[i];}		//!
   inline Double_t GetFront_EngChi2(const unsigned int &i)      const {return fSharc_StripFront_EngChi2[i];}		//!
@@ -183,7 +183,7 @@ public:
   inline std::vector<Int_t> GetFront_Wave(const unsigned int &i)	const {return fSharc_StripFront_Wave.at(i);}		//!
 
   inline UShort_t GetBack_DetectorNbr(const unsigned int &i) const {return fSharc_StripBack_DetectorNbr[i];}	//!
-  inline UShort_t GetBack_ChannelAddress(const unsigned int &i)    const {return fSharc_StripBack_ChannelAddress[i];}		//!
+  inline Int_t    GetBack_ChannelAddress(const unsigned int &i)    const {return fSharc_StripBack_ChannelAddress[i];}		//!
   inline UShort_t GetBack_StripNbr(const unsigned int &i)    const {return fSharc_StripBack_StripNbr[i];}		//!
   inline Double_t GetBack_Energy(const unsigned int &i)      const {return fSharc_StripBack_Energy[i];}			//!
   inline Double_t GetBack_EngChi2(const unsigned int &i)      const {return fSharc_StripBack_EngChi2[i];}		//!
