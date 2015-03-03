@@ -13,88 +13,264 @@
 #include "Globals.h"
 #include "TF1.h"
 #include "TMath.h"
+#include "TString.h"
+
+#include<TMidasFile.h>
+#include<TMidasEvent.h>
+#include<vector>
 
 #include <iostream>
 
-//void WriteEventToFile(TMidasFile*,TMidasEvent*,Option_t);
 
-void ProcessEvent(TMidasEvent*,TMidasFile*);
+class TEventTime {
+   public: 
+      TEventTime(TMidasEvent* event){
+         event->SetBankList();
+  
+         void *ptr;
+         int banksize = event->LocateBank(NULL,"GRF1",&ptr);
 
-const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
+         int type  = 0xffffffff;
+         int value = 0xffffffff;
 
-void CheckHighTimeStamp(TTree *tree,  int64_t *correction){
+         int64_t time = 0;
+
+         for(int x=0;x<banksize;x++) {
+            value = *((int*)ptr+x);
+            type  = value & 0xf0000000; 
+         
+
+            switch(type) {
+               case 0x80000000:
+                  dettype = value & 0x0000000f;
+                  chanadd = (value &0x0003fff0)>> 4;
+                  break;
+               case 0xa0000000:
+                  timelow = value & 0x0fffffff;
+                  break;
+               case 0xb0000000:
+                  timehigh = value & 0x00003fff;
+                  break;
+
+            };
+         }
+         timemidas = (unsigned int)(event->GetTimeStamp());
+         if(timemidas < low_timemidas)
+            low_timemidas = timemidas;
+
+         SetDigitizer();
+      }
+
+      ~TEventTime(){}
+
+      int64_t GetTimeStamp(){
+         long time = timehigh;
+         time  = time << 28;
+         time |= timelow & 0x0fffffff;
+         return time;
+   
+      }  
+      int TimeStampHigh(){
+         return timehigh;
+      }
+   
+      unsigned long MidasTime(){
+         return timemidas;
+      }
+
+      int Digitizer(){
+         return digitizernum;
+      }
+
+      int DetectorType(){
+         return dettype;
+      }
+
+      void SetDigitizer(){
+      //Maybe make a map somewhere of digitizer vs address
+         switch(chanadd&0x0000ff00) {
+            case 0x00000000: // if the first GRIF-16
+               digitizernum =  0;
+               break;
+            case 0x00000100: // if the second GRIF-16
+               digitizernum =  1;
+               break;
+            case 0x00001000: // if the third GRIF-16
+               digitizernum =  2;
+               break;
+            case 0x00001100: // if the fourth GRIF-16
+               digitizernum =  3;
+               break;
+            case 0x00001200: // if the fifth GRIF-16
+               digitizernum =  4;
+               break;
+            default:
+               return;
+         };
+            digmap.insert( std::pair<int,int>(digitizernum, digmap.size()));
+      }
+      
+      inline static int NDigitizers(){
+         return digmap.size();
+      }
+      
+      static unsigned long GetLowestMidasTime(){
+         return low_timemidas;
+      }
+
+      int DigIndex(){
+         return digmap.find(digitizernum)->second;
+      }
+
+      static std::map<int,int> digmap;
+      static unsigned long low_timemidas; 
+ 
+   private:
+      int timelow;
+      int timehigh;
+      unsigned long timemidas;
+      int dettype;
+      int chanadd;
+      char digitizernum;
+
+};
+
+
+int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
+   int events_read = 0;
+   const int total_events = 1E6;
+   TMidasEvent *event  = new TMidasEvent;
+   eventQ->reserve(total_events);
+
+   while(infile->Read(event)>0 && eventQ->size()<total_events) {
+      switch(event->GetEventId()) {
+         case 0x8000:
+            printf(DRED "start of run\n");
+            event->Print();
+            printf(RESET_COLOR);
+            break;
+         case 0x8001:
+            printf(DGREEN "end of run\n");
+            event->Print();
+            printf(RESET_COLOR);
+            break;
+         default:
+            if(event->GetEventId() !=1 ) {
+               break;
+            }
+            events_read++;
+            eventQ->push_back(new TEventTime(event));//I'll keep 3G data in here for now in case we need to use it for time stamping 
+            break;
+       };
+      if(events_read % 25000 == 0){
+         printf(DYELLOW "\tQUEUEING EVENT %d/%d  \r" RESET_COLOR,events_read,total_events); fflush(stdout);
+      }
+   }
+   printf("\n");
+   delete event;
+   return 0;
+}
+
+unsigned long TEventTime::low_timemidas = -1;
+std::map<int,int> TEventTime::digmap;
+
+void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
 //This function should return an array of corrections
 
    TList *midvshigh = new TList;
    printf(DBLUE "Correcting High time stamps...\n" RESET_COLOR);
    //These first four are for looking to see if high time-stamp reset
-   TH2D *midvshigh1 = new TH2D("midvshigh1","midvshigh1", 5000, 0, 5000,5000,0,5000); midvshigh->Add(midvshigh1);
-   TH2D *midvshigh2 = new TH2D("midvshigh2","midvshigh2", 5000, 0, 5000,5000,0,5000); midvshigh->Add(midvshigh2);
-   TH2D *midvshigh3 = new TH2D("midvshigh3","midvshigh3", 5000, 0, 5000,5000,0,5000); midvshigh->Add(midvshigh3);
-   TH2D *midvshigh4 = new TH2D("midvshigh4","midvshigh4", 5000, 0, 5000,5000,0,5000); midvshigh->Add(midvshigh4);
-
-   TFragment *currentFrag = 0;
-   TBranch *branch = tree->GetBranch("TFragment");
-   branch->SetAddress(&currentFrag);
-   tree->LoadBaskets(MEM_SIZE);
+   std::map<int,int>::iterator mapit;
+   for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
+      TH2D *midvshighhist = new TH2D(Form("midvshigh%d",mapit->first),Form("midvshigh%d",mapit->first), 5000,0,5000,5000,0,5000); midvshigh->Add(midvshighhist);
+   }
   
-   time_t lowmidtime = tree->GetMinimum("MidasTimeStamp");
+   unsigned int lowmidtime = TEventTime::GetLowestMidasTime();
 
    //MidasTimeStamp is the only time we can trust at this level. 
-   printf(DYELLOW "Tree Index not found, building index on %s/%s..." RESET_COLOR,"MidasTimeStamp","TimeStampHigh");  fflush(stdout);
-   tree->BuildIndex("MidasTimeStamp","TimeStampHigh");
-   printf(" done!\n");
 
-   TTreeIndex *index = (TTreeIndex*)tree->GetTreeIndex();
-   Long64_t *indexvalues = index->GetIndex();
-   int fEntries = index->GetN();
+   int fEntries = eventQ->size();
 
    int FragsIn = 0;
 
-   tree->GetEntry(indexvalues[0]);
    FragsIn++;
-   int low_hightime[4] = {0,0,0,0};
-   int digitizer;
+   int *lowest_hightime;
+   lowest_hightime = new int[TEventTime::NDigitizers()];
+   //Clear lowest hightime
+   for(int i=0;i<TEventTime::NDigitizers();i++){
+      lowest_hightime[i] = 0;
+   }
 
-//   for(long x=1;x<fEntries;x++) {
-     for(long x=1;x<fEntries;x++) {
-      if(tree->GetEntry(indexvalues[x]) == -1 ) { //move current frag to the next (x'th) entry in the tree
-         printf( "FIRE!!!" "\n");
-         continue;
-      } 
+   std::vector<TEventTime*>::iterator it;
+   for(it = eventQ->begin(); it != eventQ->end(); it++) {
       //This makes the plot, might not be required
-      long time = currentFrag->GetTimeStamp();  //Get the timestamp of the x'th fragment 
-      long hightime = currentFrag->TimeStampHigh;
-      time_t midtime = currentFrag->MidasTimeStamp - lowmidtime;
-      if(midtime>20) break;
-      digitizer = (int)((currentFrag->ChannelNumber-1)/16.0);
-      if(currentFrag->DetectorType == 1)
-         ((TH2D*)(midvshigh->At(digitizer)))->Fill(midtime, hightime);
-         if(hightime < low_hightime[digitizer])
-            low_hightime[digitizer] = hightime;
+      int hightime = (*it)->TimeStampHigh();
+      unsigned long midtime = (*it)->MidasTime() - lowmidtime;
+      if(midtime>20) break;//20 seconds seems like plenty enough time
+    
+      if((*it)->DetectorType() == 1){
+         ((TH2D*)(midvshigh->At((*it)->DigIndex())))->Fill(midtime, hightime);
+         if(hightime < lowest_hightime[(*it)->DigIndex()])
+            lowest_hightime[TEventTime::digmap.at((*it)->DigIndex())] = hightime;
+      }
      }
 
    //find lowest digitizer
-   int lowest_dig=0;
-   for(int i =0; i<4; i++){
-      if(low_hightime[i] < low_hightime[lowest_dig])
-         lowest_dig = i;
+   int lowest_dig = 0;
+   for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
+      if(lowest_hightime[mapit->second] < lowest_hightime[lowest_dig])
+         lowest_dig = mapit->second;
    }
 
    midvshigh->Print();  
    printf("The lowest digitizer is %d\n",lowest_dig);
    printf("*****  High time shifts *******\n");
-   for(int i =0; i<4;i++){
-      printf("%d:\t %d\n",i,low_hightime[i]);
+   for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
+      printf("%d:\t %d\n",mapit->first,lowest_hightime[mapit->second]);
       //Calculate the shift to 0 all digitizers
-      correction[i] = ((low_hightime[i] - low_hightime[lowest_dig]) & 0x00003fff) << 28;
+      correction[mapit->second] = ((lowest_hightime[mapit->second] - lowest_hightime[lowest_dig]) & 0x00003fff) << 28;
    }
    printf("********************\n");
 
    midvshigh->Write();
    midvshigh->Delete();
+   delete[] lowest_hightime;
 
 }
+
+int main(int argc, char **argv) {
+
+   if(argc!=2) {
+      printf("Usage: ./offsetfind <input.mid>\n");
+      return 1;
+   }
+
+   TMidasFile *infile  = new TMidasFile;
+   infile->Open(argv[1]);
+
+   GFile *outfile = new GFile("outfile.root","RECREATE");
+
+   std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
+   std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;
+   QueueEvents(infile,eventQ);
+   std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
+
+   int64_t *correction;
+   correction = new int64_t[TEventTime::NDigitizers()];
+   CheckHighTimeStamp(eventQ,correction);
+
+
+   //Have to do deleting on Q if we move to a next step of fixing the MIDAS File
+   infile->Close();
+   outfile->Close();
+   delete[] correction;
+   delete infile;
+
+}
+//void WriteEventToFile(TMidasFile*,TMidasEvent*,Option_t);
+
+/*
+const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
 void GetRoughTimeDiff(TTree *tree, int64_t *correction){
    //We want the MIDAS time stamps to still be the way we index these events, but we want to index on low time stamps next
@@ -216,7 +392,7 @@ void GetTimeDiff(TTree *tree, int64_t *correction){
    int best_digitizer = 0;
    //find the best digitizer
    for(int i =0;i<4;i++){
-      printf("Correction %d: %ld\n",i,correction[i]);
+      printf("Rough Low-time-stamp shift %d: %ld\n",i,correction[i]);
       if(correction[best_digitizer] > correction[i])
          best_digitizer = i;
    }
@@ -310,8 +486,8 @@ void GetTimeDiff(TTree *tree, int64_t *correction){
    for(int i=0;i<4;i++){
       correction[i] -= best_time_diff;
       printf("Correction for channel %d = %ld *10ns\n",i,correction[i]);
+        
    }
-
    bestvs->Print();
    bestvs->Write();
    bestvs->Delete();
@@ -337,9 +513,8 @@ int main(int argc, char **argv) {
    TChannel::ReadCalFromTree(tree);
 
    int64_t correction[4] = {0,0,0,0};
-   //Make some hists for debugging
-   TList *midvshigh = new TList;
-   TList *bestvs = new TList;
+   int64_t dig_number[4] = {0,1,2,3};
+
    //This does checking of the high time stamps.
    //CheckHighTimeStamp(tree,correction);
    //GetRoughTimeDiff(tree,correction);
@@ -350,4 +525,4 @@ int main(int argc, char **argv) {
    return 0;
 }
 
-
+*/
