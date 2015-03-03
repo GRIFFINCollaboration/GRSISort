@@ -654,17 +654,154 @@ void TDataParser::FillStats(TFragment *frag) {
 int TDataParser::EightPIDataToFragment(uint32_t stream,uint32_t* data,
                                      int size,unsigned int midasserialnumber, time_t midastime) {
 
-   int NumFragsFound = 1;
-   TFragment *EventFrag = new TFragment();
+   int NumFragsFound = 0;
+   //TFragment *EventFrag = new TFragment();
+   //EventFrag->MidasTimeStamp = midastime;
+   //EventFrag->MidasId = midasserialnumber;	 
 
-   EventFrag->MidasTimeStamp = midastime;
-   EventFrag->MidasId = midasserialnumber;	 
 
-   TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
+   for(int i=0;i<size;i++) {
+     if( (data[i]==0xff06) || (data[i]==0xff16) ) { //found a fifo...
+        i+=1; //lets get the next int.
+        int fifowords =  data[i] & 0x00001fff;
+        i+=1;
+        int fifoserial = data[i] & 0x000000ff;
+        i+=1;
+        if(stream == 0)
+          printf(DBLUE "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
+        else if(stream == 1)
+          printf(DGREEN "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
+        else if(stream == 2)
+          printf(DRED "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
+        else if(stream == 3)
+          printf(DYELLOW "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
+        //at this point am looking at the actual fera bank.
+        //   ->convert to an arry of shorts.
+        //   ->iterate
+        bool extrafifo = false;
+        unsigned short *words = (unsigned short*)(data+i);
+        if(fifowords%2!=0) {
+           fifowords += 1;
+           extrafifo = true;
+        }
+        printf(DMAGENTA "i = %i    2*size =  %i   fifowords  = %i  " RESET_COLOR  "\n",i,2*size,fifowords);
+        
+        for(int j=0;j<fifowords;j+=2) {
+           unsigned short temp = words[j];
+           words[j] = words[j+1];
+           words[j+1] = temp;
+        }
 
+
+        NumFragsFound += FifoToFragment(words,fifowords,extrafifo,midasserialnumber,midastime); 
+        i+= (fifowords/2);
+     }
+   }
+
+
+
+   //TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
+   //return NumFragsFound;
    return 1;
 }
 
+int TDataParser::FifoToFragment(unsigned short *data,int size,bool zerobuffer,
+                                unsigned int midasserialnumber, time_t midastime) {
+
+   if(size<10) //this is too short to be anything useful
+     return 0;
+
+   TFragment *EventFrag = new TFragment();
+   EventFrag->MidasTimeStamp = midastime;
+   EventFrag->MidasId = midasserialnumber;	 
+
+
+   printf("\t");
+   for(int j=0;j<size;j++) {
+     if(j!=0 && (j%8==0))
+       printf("\n\t");
+     printf("0x%04x ",data[j]);
+   }
+   printf("\n\n");
+
+   unsigned short type;
+   unsigned short value,value2;
+   
+   int ulm = 0;
+   if(zerobuffer)
+      ulm = size-9;
+   else 
+      ulm = size-8;
+   type = data[ulm];
+   if((type &0xfff0) != 0xff20) { //not a ulm, bad things are happening.
+     if(EventFrag) delete EventFrag;
+     printf("here??   ulm = %i   0x%04x  \n",ulm,type);
+     return 0;
+   } else {
+     EventFrag->DetectorType = (type&0x000f);
+     value = data[ulm+1];
+     EventFrag->PPG = (value&0x3ff);
+     EventFrag->TriggerBitPattern = (value&0xf000)>>11;
+     EventFrag->TimeStampLow  = data[ulm+2]*65536 +data[ulm+3];
+     EventFrag->TimeStampHigh = data[ulm+4]*65536 +data[ulm+5];
+     EventFrag->TriggerId     = data[ulm+6]*65536 +data[ulm+7];
+   }
+   size = ulm;  //only look at what is left.
+   for(int x=0;x<size;x++) {
+     type  = data[x]; // & 0x80f0;
+     printf("type = 0x%04x  ||  type&0x80f0 = 0x%04x\n",type,(type&0x80f0));
+     switch(type & 0x80f0) {
+        case 0x8010:  // Lecroy 3377
+          value = *(data+x+1);  //this is just so I can start the loop...
+          x++;
+          while(((value&0x8000)==0) && x<size) {
+            value  = data[x]; x+=1;
+            value2 = data[x]; x+=1; 
+            if((value&0x7c00) != (value2&0x7c00)) 
+               printf("TIME MISMATCH!  bad things are happening.\n");
+            int temp = ((value&0x7c00)>>10) << 16;
+            temp += ((value&0x00ff) << 8) + (value2&0x00ff);
+            //printf("size = %i | ulm = %i | x = %i  | temp = 0x%08x \n",size,ulm,x,temp);
+            EventFrag->Cfd.push_back(temp);
+          }
+          printf(DGREEN "ENDED TDC LOOP  data[%i] = 0x%04x" RESET_COLOR "\n",x,data[x]);
+          break;
+        case 0x8040:
+        case 0x8050: // Ortect AD114 single channel ?
+        case 0x8060:
+          value = data[++x];
+          if(EventFrag->DetectorType==0) {
+             int temp = (type&0x001f) << 16;
+             temp += value&0x3fff;
+             //printf("temp = %08x\n",temp);
+             EventFrag->Charge.push_back(temp);
+             EventFrag->ChannelNumber = 0;
+             //EventFrag->ChannelNumber  = (type&0x001f); //clear as mud.
+             //EventFrag->ChannelAddress = 0x0000 + EventFrag->ChannelNumber;
+             //EventFrag->Charge.push_back(value&0x3fff);
+          } else if (EventFrag->DetectorType==3){
+             int temp = (type&0x001f) << 16;
+             temp += value&0x3fff;
+             //printf("temp = %08x\n",temp);
+             EventFrag->Charge.push_back(temp);
+             EventFrag->ChannelNumber = 3;
+             //EventFrag->ChannelNumber  = (type&0x001f); //clear as mud.
+             //EventFrag->ChannelAddress = 0x3000 + EventFrag->ChannelNumber;
+             //EventFrag->Charge.push_back(value&0x3fff);
+          }
+          //printf("value = 0x%04x\n",value);
+          break;
+
+
+     };
+   }
+   EventFrag->Print();
+
+
+   TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
+
+  return 1;
+}
 
 /////////////***************************************************************/////////////
 /////////////***************************************************************/////////////

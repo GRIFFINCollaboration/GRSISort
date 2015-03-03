@@ -765,11 +765,13 @@ void TChannel::Streamer(TBuffer &R__b) {
    }
 }
 
-
-
-
-
-
-
-
+void TChannel::WriteToRoot(const char *name) {
+  TChannel *c = GetDefaultChannel(); 
+  if(!c) 
+     printf("No TChannels found to write.\n");
+  if(!gDirectory)
+     printf("No file opened to wrtie to.\n");
+  c->Write();
+  return;
+}
 

@@ -513,8 +513,21 @@ bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent, T
 bool TGRSILoop::Process8PI(uint32_t stream,uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile) {
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
-	int frags = TDataParser::EightPIDataToFragment(stream,ptr,dsize,mserial,mtime);
-	if(frags>-1) {
+  
+   std::string banklist = mevent->GetBankList();
+   int frags = 0;
+   for(int i=0;i<banklist.length();i+=4) {
+      std::string bankname;
+      bankname = banklist.substr(i,4);
+      dsize = mevent->LocateBank(0,bankname.c_str(),(void**)&ptr);
+      if(!dsize)
+         continue;
+      char str_char = bankname[3];
+      stream = atoi(&str_char);
+      frags += TDataParser::EightPIDataToFragment(stream,ptr,dsize,mserial,mtime);
+   }
+   //mevent->Print("a");
+   if(frags>-1) {
       fFragsReadFromMidas += frags;
 	   return true;
 	} else	{

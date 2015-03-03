@@ -43,6 +43,9 @@ class TDataParser { //: public TObject {
     static int EPIXToScalar(float *data,int size,unsigned int midasserialnumber = 0,time_t midastime = 0);
 	 static int EightPIDataToFragment(uint32_t stream,uint32_t* data,
                                      int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
+    static int FifoToFragment(unsigned short *data,int size,bool zerobuffer=false,
+                              unsigned int midasserialnumber=0, time_t midastime=0); 
+
 
   private:
     static void SetTIGWave(uint32_t, TFragment*);
