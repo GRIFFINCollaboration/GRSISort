@@ -170,6 +170,8 @@ class TChannel : public TNamed	{
     virtual void Clear(Option_t *opt = "");
     //static  void PrintAll(Option_t *opt = "");      
 
+    static void WriteToRoot(const char *name ="");
+
   
   private:
      // the follow is to make the custum streamer 
