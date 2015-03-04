@@ -9,8 +9,6 @@
 
 #include <TClass.h>
 
-using namespace std;
-
 //#define debug
 
 ClassImp(TNucleus);
@@ -133,7 +131,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
   double emass;
   char tmp[256];
   ifstream mass_file;
-  mass_file.open(MassFile,ios::in);
+  mass_file.open(MassFile,std::ios::in);
   while(!mass_file.bad() && !mass_file.eof() && i < 3008){
     mass_file>>n;
     mass_file>>z;

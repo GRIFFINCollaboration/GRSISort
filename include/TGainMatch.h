@@ -1,5 +1,5 @@
-#ifndef __TGAINMATCH_H__
-#define __TGAINMATCH_H__
+#ifndef TGAINMATCH_H__
+#define TGAINMATCH_H__
 
 #include "TCal.h"
 #include "TCalManager.h"

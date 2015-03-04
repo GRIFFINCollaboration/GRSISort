@@ -171,7 +171,7 @@ void TCalManager::Clear(Option_t *opt) {
 void TCalManager::Print(Option_t *opt) const{
    if(fClass)
       printf("Type: %s\n", fClass->GetName());
-   printf("Size: %u\n", fcalmap.size());
+      std::cout << "Size: " << fcalmap.size() << std::endl; //Printing this way due to size_type return
 }
 
 

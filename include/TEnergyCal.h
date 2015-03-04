@@ -1,5 +1,5 @@
-#ifndef __TENERGYCAL_H__
-#define __TENERGYCAL_H__
+#ifndef TENERGYCAL_H__
+#define TENERGYCAL_H__
 
 #include "TCal.h"
 #include "TPeak.h"

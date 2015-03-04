@@ -1,5 +1,5 @@
-#ifndef __TCALMANAGER_H__
-#define __TCALMANAGER_H__
+#ifndef TCALMANAGER_H__
+#define TCALMANAGER_H__
 
 #include "TCal.h"
 #include "TNamed.h"

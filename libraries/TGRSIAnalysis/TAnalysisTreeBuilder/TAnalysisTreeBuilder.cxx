@@ -868,11 +868,11 @@ void TAnalysisTreeBuilder::Status() {
 //          "    processed fragments / # of fragments/ # of events / event queue size / write queue size / events written.\t%.1f seconds." SHOW_CURSOR "\n",
 //          fFragmentsIn, fEntries, fAnalysisIn, TEventQueue::Size(), TWriteQueue::Size(), fAnalysisOut, w.RealTime());
    if(fAnalysisOut > 0) {
-      printf(DYELLOW HIDE_CURSOR "Fragments: %.1f \%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f \%," 
+      printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
              DGREEN "   write speed: %9.1f built events/second." RESET_COLOR "  %.1f seconds, %.1f seconds remaining." SHOW_CURSOR "\r",
             (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime(), ((double)(fAnalysisIn-fAnalysisOut))/fAnalysisOut*w.RealTime());
    } else {
-      printf(DYELLOW HIDE_CURSOR "Fragments: %.1f \%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f \%," 
+      printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
              DGREEN "   write speed: %9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
             (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime());
    }

@@ -1,5 +1,5 @@
-#ifndef __TNUCLEUS_H
-#define __TNUCLEUS_H
+#ifndef TNUCLEUS_H
+#define TNUCLEUS_H
 
 #include <iostream>
 #include <math.h>
@@ -14,8 +14,6 @@
 #include "TObject.h"
 #include "TNamed.h"
 #include "TList.h"
-
-using namespace std;
 
 class TNucleus : public TNamed{
 
@@ -58,7 +56,7 @@ private:
   int fZ;						// Number of protons (Z)
   double fMass;						// Mass (in MeV)
   double fMassExcess;					// Mass excess (in MeV)
-  string fSymbol;					// Atomic symbol (ex. Ba, C, O, N)
+  std::string fSymbol;					// Atomic symbol (ex. Ba, C, O, N)
 
 	ClassDef(TNucleus,1);				// Creates a nucleus with corresponding nuclear information
 };

@@ -33,7 +33,7 @@ void TSRIM::ReadEnergyLossFile(const char *filename, double emax, double emin, b
 	std::ifstream infile;
 
 	std::string fname = filename;
-	if(fname.find(".txt")==string::npos)
+	if(fname.find(".txt")==std::string::npos)
   	fname.append(".txt");
 
 	char buf[256];

@@ -1,5 +1,5 @@
-#ifndef __TEFFICIENCYCAL_H__
-#define __TEFFICIENCYCAL_H__
+#ifndef TEFFICIENCYCAL_H__
+#define TEFFICIENCYCAL_H__
 
 #include "TCal.h"
 #include "TPeak.h"

@@ -1,5 +1,5 @@
-#ifndef __TCAL_H__
-#define __TCAL_H__
+#ifndef TCAL_H__
+#define TCAL_H__
 
 #include "Varargs.h"
 #include "TNamed.h"
