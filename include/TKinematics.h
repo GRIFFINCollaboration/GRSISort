@@ -1,5 +1,5 @@
-#ifndef __TKINEMATICS_H
-#define __TKINEMATICS_H
+#ifndef TKINEMATICS_H
+#define TKINEMATICS_H
 
 #include <iostream>
 #include <fstream>

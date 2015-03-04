@@ -1,5 +1,5 @@
-#ifndef __TGRSIFIT_H
-#define __TGRSIFIT_H
+#ifndef TGRSIFIT_H
+#define TGRSIFIT_H
 
 #include "TGRSIFunctions.h"
 #include "TObject.h"

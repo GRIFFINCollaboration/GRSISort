@@ -1,5 +1,5 @@
-#ifndef __TBETADECAY_H
-#define __TBETADECAY_H
+#ifndef TBETADECAY_H
+#define TBETADECAY_H
 
 #include <iostream>
 #include <fstream>

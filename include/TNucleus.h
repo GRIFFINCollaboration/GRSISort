@@ -1,5 +1,5 @@
-#ifndef __TNUCLEUS_H
-#define __TNUCLEUS_H
+#ifndef TNUCLEUS_H
+#define TNUCLEUS_H
 
 #include <iostream>
 #include <math.h>

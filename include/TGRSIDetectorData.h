@@ -1,5 +1,5 @@
-#ifndef __GRSIDetectorDATA__
-#define __GRSIDetectorDATA__
+#ifndef TGRSIDetectorDATA_H
+#define TGRSIDetectorDATA_H
 
 #ifndef __CINT__
 

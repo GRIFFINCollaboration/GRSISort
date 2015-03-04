@@ -1,5 +1,5 @@
-#ifndef __TGRSIFUNCTIONS_H
-#define __TGRSIFUNCTIONS_H
+#ifndef TGRSIFUNCTIONS_H
+#define TGRSIFUNCTIONS_H
 
 #include <iostream>
 #include <fstream>
