@@ -15,7 +15,6 @@
 #include"TF1.h"
 
 #include<iostream>
-using namespace std;
 
 class TSRIM	{
 
