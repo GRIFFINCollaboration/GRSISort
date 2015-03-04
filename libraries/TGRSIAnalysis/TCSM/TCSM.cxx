@@ -382,6 +382,68 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     }
   }
 
+  /*
+  else if(vvec.size()==3&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==3&&hvec.size()==2)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==2&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==2&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==1&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==3&&hvec.size()==1)
+  {
+    cdataVH->Print();
+    
+  }
+  */
+    
+  /*else
+  {
+    vector<bool> vertUsed (vvec.size(),false);
+    vector<bool> horUsed (hvec.size(),false);
+    for(int vloop = 0; vloop<vvec.size(); vloop++)
+    {
+      if(vertUsed.at(vloop))
+	continue;
+      
+      double VE = cdataVH->GetVertical_Energy(vvec.at(vloop));
+      for(int hloop = 0; hloop<hvec.size(); hloop++)
+      {
+	if(horUsed.at(hloop))
+	  continue;
+	
+	double HE = cdataVH->GetHorizontal_Energy(hvec.at(hloop));
+
+	if(AlmostEqual(VE,HE))
+	{
+	  cdataVH->Print();
+	  hitvec.push_back(MakeHit(hvec.at(hloop),vvec.at(vloop),cdataVH));
+	  hitvec.back().Print();
+	  vertUsed.at(vloop) = true;
+	  horUsed.at(hloop) = true;
+	}
+      }
+    }
+  }*/
+
 
   
   //else
