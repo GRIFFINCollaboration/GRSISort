@@ -286,22 +286,22 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
 
   else if(vvec.size()==1&&hvec.size()==2)
   {
-    int vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
-    int hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
-    int hc2 = cdataVH->GetHorizontal_Charge(hvec.at(1));
-    if(AlmostEqual(vc1,hc1+hc2))
+    int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
+    int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
+    int he2 = cdataVH->GetHorizontal_Energy(hvec.at(1));
+    if(AlmostEqual(ve1,he1+he2))
     {
       hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
       hvec.clear();
       vvec.clear();
     }
-    else if(AlmostEqual(vc1,hc1))
+    else if(AlmostEqual(ve1,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
       vvec.clear();
       hvec.erase(hvec.begin());
     }
-    else if(AlmostEqual(vc1,hc2))
+    else if(AlmostEqual(ve1,he2))
     {
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
       vvec.clear();
@@ -311,22 +311,22 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
   
   else if(vvec.size()==2&&hvec.size()==1)
   {
-    int vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
-    int vc2 = cdataVH->GetVertical_Charge(vvec.at(1));
-    int hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
-    if(AlmostEqual(vc1+vc2,hc1))
+    int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
+    int ve2 = cdataVH->GetVertical_Energy(vvec.at(1));
+    int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
+    if(AlmostEqual(ve1+ve2,he1))
     {
       hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
       hvec.clear();
       vvec.clear();
     }
-    else if(AlmostEqual(vc1,hc1))
+    else if(AlmostEqual(ve1,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
       vvec.erase(vvec.begin());
       hvec.clear();
     }
-    else if(AlmostEqual(vc2,hc1))
+    else if(AlmostEqual(ve2,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
       vvec.pop_back();
@@ -336,11 +336,11 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
 
   else if(vvec.size()==2&&hvec.size()==2)
   {    
-    int vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
-    int vc2 = cdataVH->GetVertical_Charge(vvec.at(1));
-    int hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
-    int hc2 = cdataVH->GetHorizontal_Charge(hvec.at(1));
-    if( AlmostEqual(vc1,hc1) && AlmostEqual(vc2,hc2) )
+    int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
+    int ve2 = cdataVH->GetVertical_Energy(vvec.at(1));
+    int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
+    int he2 = cdataVH->GetHorizontal_Energy(hvec.at(1));
+    if( AlmostEqual(ve1,he1) && AlmostEqual(ve2,he2) )
     {
       //I can build both 1,1 and 2,2
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
@@ -348,7 +348,7 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
       hvec.clear();
       vvec.clear();
     }
-    else if( AlmostEqual(vc1,hc2) && AlmostEqual(vc2,hc1) )
+    else if( AlmostEqual(ve1,he2) && AlmostEqual(ve2,he1) )
     {
       //I can build both 1,2 and 2,1
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
@@ -356,25 +356,25 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
       hvec.clear();
       vvec.clear();
     }
-    else if( AlmostEqual(vc1,hc1) )
+    else if( AlmostEqual(ve1,he1) )
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
       hvec.erase(hvec.begin());
       vvec.erase(vvec.begin());
     }
-    else if( AlmostEqual(vc2,hc1) )
+    else if( AlmostEqual(ve2,he1) )
     {
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
       hvec.erase(hvec.begin());
       vvec.pop_back();
     }
-    else if( AlmostEqual(vc1,hc2) )
+    else if( AlmostEqual(ve1,he2) )
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
       hvec.pop_back();
       vvec.erase(vvec.begin());
     }
-    else if( AlmostEqual(vc2,hc2) )
+    else if( AlmostEqual(ve2,he2) )
     {
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(1),cdataVH));
       hvec.pop_back();
