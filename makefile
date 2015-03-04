@@ -5,7 +5,7 @@ PLATFORM = $(shell uname)
 
 export PLATFORM:= $(PLATFORM)
 
-export CFLAGS = -std=c++0x -O2 -I$(PWD)/include -g
+export CFLAGS = -std=c++0x -O2 -I$(PWD)/include -g -Wl,--no-as-needed
 
 #export GRSISYS:= $(GRSISYS)
 
