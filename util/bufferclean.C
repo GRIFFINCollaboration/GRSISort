@@ -1,153 +1,20 @@
 // Author: Ryan Dunlop 
 
 //g++ offsetfind.cxx `root-config --cflags --libs` -I${GRSISYS}/include -L${GRSISYS}/libraries -lMidasFormat -lXMLParser  -ooffsetfind
-
-
 #include"TMidasFile.h"
 #include"TMidasEvent.h"
 #include"GFile.h"
-#include"TFragment.h"
-#include"TTree.h"
-#include"TChannel.h"
-#include"TH2D.h"
-#include "TTreeIndex.h"
-#include "TVirtualIndex.h"
-#include "Globals.h"
-#include "TF1.h"
-#include "TMath.h"
-#include "TString.h"
-
-#include<TMidasFile.h>
-#include<TMidasEvent.h>
-#include<vector>
-
+#include "TStopwatch.h"
+#include "TSystem.h"
+#include <map>
 #include <iostream>
-
-
-class TEventTime {
-   public: 
-      TEventTime(TMidasEvent* event){
-         event->SetBankList();
-  
-         void *ptr;
-         int banksize = event->LocateBank(NULL,"GRF1",&ptr);
-
-         int type  = 0xffffffff;
-         int value = 0xffffffff;
-
-         int64_t time = 0;
-
-         for(int x=0;x<banksize;x++) {
-            value = *((int*)ptr+x);
-            type  = value & 0xf0000000; 
-         
-
-            switch(type) {
-               case 0x80000000:
-                  dettype = value & 0x0000000f;
-                  chanadd = (value &0x0003fff0)>> 4;
-                  break;
-               case 0xa0000000:
-                  timelow = value & 0x0fffffff;
-                  break;
-               case 0xb0000000:
-                  timehigh = value & 0x00003fff;
-                  break;
-
-            };
-         }
-         timemidas = (unsigned int)(event->GetTimeStamp());
-         if(timemidas < low_timemidas)
-            low_timemidas = timemidas;
-
-         SetDigitizer();
-      }
-
-      ~TEventTime(){}
-
-      int64_t GetTimeStamp(){
-         long time = timehigh;
-         time  = time << 28;
-         time |= timelow & 0x0fffffff;
-         return time;
-   
-      }  
-      int TimeStampHigh(){
-         return timehigh;
-      }
-   
-      unsigned long MidasTime(){
-         return timemidas;
-      }
-
-      int Digitizer(){
-         return digitizernum;
-      }
-
-      int DetectorType(){
-         return dettype;
-      }
-
-      void SetDigitizer(){
-      //Maybe make a map somewhere of digitizer vs address
-         switch(chanadd&0x0000ff00) {
-            case 0x00000000: // if the first GRIF-16
-               digitizernum =  0;
-               break;
-            case 0x00000100: // if the second GRIF-16
-               digitizernum =  1;
-               break;
-            case 0x00001000: // if the third GRIF-16
-               digitizernum =  2;
-               break;
-            case 0x00001100: // if the fourth GRIF-16
-               digitizernum =  3;
-               break;
-            case 0x00001200: // if the fifth GRIF-16
-               digitizernum =  4;
-               break;
-            default:
-               return;
-         };
-            digmap.insert( std::pair<int,int>(digitizernum, digmap.size()));
-      }
-      
-      inline static int NDigitizers(){
-         return digmap.size();
-      }
-      
-      static unsigned long GetLowestMidasTime(){
-         return low_timemidas;
-      }
-
-      int DigIndex(){
-         return digmap.find(digitizernum)->second;
-      }
-
-      static std::map<int,int> digmap;
-      static unsigned long low_timemidas; 
- 
-   private:
-      int timelow;
-      int timehigh;
-      unsigned long timemidas;
-      int dettype;
-      int chanadd;
-      char digitizernum;
-
-};
-
-void WriteEventToFile(TMidasFile* file, TMidasEvent* event){
-
-
-}
+#include <fstream>
 
 Bool_t CheckEvent(TMidasEvent *evt){
    //This function does not work if a Midas event contains multiple fragments
    static std::map<Int_t, Bool_t> triggermap; //Map of Digitizer vs have we had a triggerId < 10 yet?
    //First parse the  Midas Event.
    evt->SetBankList();
- 
 
    //Need to put something in that says "if not a Griffin fragment (ie epics) return true"
    void *ptr;
@@ -189,7 +56,6 @@ Bool_t CheckEvent(TMidasEvent *evt){
    }
    else if(trigId < 10){
       triggermap.find(dignum)->second = true;
-      evt->Print();
       return true;
    }
    else 
@@ -212,16 +78,63 @@ int main(int argc, char **argv) {
    TMidasFile *outfile = new TMidasFile;
    infile->Open(argv[1]);
    outfile->OutOpen(argv[2]);
+ 
+   std::ifstream in(infile->GetFilename(), std::ifstream::in | std::ifstream::binary);
+   in.seekg(0, std::ifstream::end);
+   long long filesize = in.tellg();
+   in.close();
+
+   int bytes = 0;
+   long long bytesread = 0;
+
+   TStopwatch w;
+   w.Start();
 
    TMidasEvent *event = new TMidasEvent;
+   UInt_t num_bad_evt =0;
+   UInt_t num_evt =0;
 
-   while(infile->Read(event)>0) {
-      if(CheckEvent(event)){
-         printf("TRUE\n\n");
-         WriteEventToFile(outfile,event);
+   while(true) {
+      bytes = infile->Read(event);
+      if(bytes == 0){
+         printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",infile->GetFilename(),infile->GetLastError());
+      if(infile->GetLastErrno()==-1)  //try to read some more...
+         continue;
+      break;
       }
-      else printf("FALSE\n\n");
+      bytesread += bytes;
+                                          
+      switch(event->GetEventId()) {
+         case 0x8000:
+            printf("start of run\n");
+            outfile->Write(event);
+            event->Print();
+            break;
+         case 0x8001:
+            printf("end of run\n");
+            event->Print();
+            outfile->Write(event);
+            break;
+         case 0x0001: //This is a GRIFFIN digitizer event
+            if(CheckEvent(event)){
+               outfile->Write(event,"q");
+            }
+            else{
+               num_bad_evt++;
+            } 
+            num_evt++;
+            break;
+         default: //Probably epics
+            outfile->Write(event,"q");
+            break;
+       };
+       if(num_evt %5000 == 0){
+         gSystem->ProcessEvents();
+         printf(HIDE_CURSOR " bad events %u/%u have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r", num_bad_evt,num_evt,(bytesread/1000000.0),(filesize/1000000.0),(bytesread/1000000.0)/w.RealTime());
+         w.Continue();
+       }
    }
+   printf("\n");
 
    infile->Close();
    outfile->Close();
