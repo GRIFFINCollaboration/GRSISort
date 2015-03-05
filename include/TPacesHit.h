@@ -1,5 +1,5 @@
 // Author: Peter C. Bender
-//
+
 #ifndef TPACESHIT_H
 #define TPACESHIT_H
 
