@@ -48,7 +48,7 @@ public:
    {
       // Create a "beautified" version of this source file.
       // It will be called htmldoc/htmlex.C.html.
-
+      GetHtml()->SetMacroPath("$(ROOTSYS)/macros/");
       GetHtml()->SetSourceDir("$(GRSISYS)/util");
       GetHtml()->Convert("html_generator.C", "Generates HTML Documentation", "./htmldoc/", "./");
       GetHtml()->Convert("DroppedData.C","Calculates Dropped Events","./htmldoc/","./");
@@ -62,14 +62,11 @@ public:
       // too - you will end up with a copy of ROOT's class reference.
       // The documentation will end up in the subdirectory htmldoc/.
 
-      std::string inclpath = "$(GRSISYS)/include";
+      std::string inclpath = "$(GRSISYS)/grsisort/";
       std::stringstream totpath;
       totpath << inclpath << fpath.str();
       std::string incldirs = totpath.str(); 
-      GetHtml()->SetInputDir(incldirs.c_str());
-     // GetHtml()->SetInputDir("$(GRSISYS):$(GRSISYS)/libraries/TGRSIFormat");
-    //  GetHtml()->SetIncludePath("$(GRSISYS)/include");
-     // GetHtml()->SetSourceDir("$GRSISYS/libraries");
+      GetHtml()->SetSourceDir(incldirs.c_str());
       GetHtml()->SetOutputDir("$GRSISYS/htmldoc");
       GetHtml()->MakeAll();
    }
@@ -91,6 +88,10 @@ public:
        fpath << ":$(GRSISYS)/libraries/" << newpath;
    }
 
+   void AddRootSourcePath(){
+      fpath << ":$(ROOTSYS)/";
+   }
+
 protected:
    THtml* GetHtml() 
    {
@@ -109,34 +110,14 @@ void html_generator() {
 
    gErrorIgnoreLevel=kError;
 
-   //Order matters!!!!
-   gSystem->Load("libRint");
-   gSystem->Load("libCint");
-   gSystem->Load("libPhysics");
-   gSystem->Load("libTreePlayer");
-   gSystem->Load("libMidasFormat");
-   gSystem->Load("libGRSIFormat");
-   gSystem->Load("libGRSIDetector");
-   gSystem->Load("libGRSIRootIO");
-   gSystem->Load("libTigress");
-   gSystem->Load("libGriffin");
-   gSystem->Load("libCSM");
-   gSystem->Load("libDataParser");
-   gSystem->Load("libNucleus");
-   gSystem->Load("libKinematics");
-   gSystem->Load("libSharc");
-   gSystem->Load("libAnalysisTreeBuilder");
-   gSystem->Load("libGRSIFunctions");
-   gSystem->Load("libBetaDecay");
-   gSystem->Load("libProof");
-   gSystem->Load("libGRSILoop");
-   gSystem->Load("libTGRSIint");
-
    gSystem->ListLibraries();
 
    THtmlCreator html;
    html.SetProductName("GRSISort");
 
+   html.AddRootSourcePath();
+//We must do this because of our naming convention of GRSISort directories
+   html.AddSourcePath("GROOT");
    html.AddSourcePath("TGRSIFormat"); 
    html.AddSourcePath("TDataParser");
    html.AddSourcePath("TGint");
@@ -151,10 +132,15 @@ void html_generator() {
    html.AddSourcePath("TGRSIAnalysis/TSharc");
    html.AddSourcePath("TGRSIAnalysis/TCSM");
    html.AddSourcePath("TGRSIAnalysis/TGriffin");
+   html.AddSourcePath("TGRSIAnalysis/TGRSIFit");
+   html.AddSourcePath("TGRSIAnalysis/TPaces");
+   html.AddSourcePath("TGRSIAnalysis/TSceptar");
+   html.AddSourcePath("TGRSIAnalysis/TSharc");
+   html.AddSourcePath("TGRSIAnalysis/TSRIM");
    html.AddSourcePath("TGRSIAnalysis/TGRSIDetector");
    html.AddSourcePath("TGRSIAnalysis/TTigress");
-   html.AddSourcePath("TGRSIAnalysis/TGRSIFunctions");
    html.AddSourcePath("TGRSIAnalysis/TBetaDecay");
+   html.AddSourcePath("TGRSIAnalysis/TCal");
 
    html.RunAll();
 }
