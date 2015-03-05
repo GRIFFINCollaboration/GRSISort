@@ -143,9 +143,57 @@ void WriteEventToFile(TMidasFile* file, TMidasEvent* event){
 }
 
 Bool_t CheckEvent(TMidasEvent *evt){
+   //This function does not work if a Midas event contains multiple fragments
+   static std::map<Int_t, Bool_t> triggermap; //Map of Digitizer vs have we had a triggerId < 10 yet?
+   //First parse the  Midas Event.
+   evt->SetBankList();
+ 
 
+   //Need to put something in that says "if not a Griffin fragment (ie epics) return true"
+   void *ptr;
+   int banksize = evt->LocateBank(NULL,"GRF1",&ptr);
 
-   return true;
+   int type  = 0xffffffff;
+   int value = 0xffffffff;
+
+   UInt_t chanadd = 0;
+   UInt_t trigId = 0;
+   UInt_t dettype = 0;
+   Int_t dignum = -1;
+
+   for(int x=0;x<banksize;x++) {
+      value = *((int*)ptr+x);
+      type  = value & 0xf0000000; 
+
+      switch(type) {
+         case 0x80000000:
+            dettype = value & 0x0000000f;
+            chanadd = (value &0x0003fff0)>> 4;
+            dignum = chanadd&0x0000ff00;
+            break;
+         case 0x90000000:
+            trigId = value & 0x0fffffff;
+      };
+   }
+   if(triggermap.find(dignum) == triggermap.end()){
+      triggermap[dignum] = false; //initialize the new digitizer number to false.
+   }
+   //Check to make sure we aren't getting any triggerId's = 0. I think these are corrupt events RD.
+   if(trigId == 0){
+      return false;
+   }
+
+   //Check against map of trigger Id's to see if we have hit the elusive < 10 mark yet.
+   if(triggermap.find(dignum)->second == true){ 
+      return true;
+   }
+   else if(trigId < 10){
+      triggermap.find(dignum)->second = true;
+      evt->Print();
+      return true;
+   }
+   else 
+      return false;
 }
 
 int main(int argc, char **argv) {
@@ -169,8 +217,10 @@ int main(int argc, char **argv) {
 
    while(infile->Read(event)>0) {
       if(CheckEvent(event)){
+         printf("TRUE\n\n");
          WriteEventToFile(outfile,event);
       }
+      else printf("FALSE\n\n");
    }
 
    infile->Close();
