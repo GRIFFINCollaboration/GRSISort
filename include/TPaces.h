@@ -1,3 +1,5 @@
+// Author: Peter C. Bender
+
 #ifndef TPACES_H
 #define TPACES_H
 
@@ -15,7 +17,6 @@ class TPacesData;
 #include "TVector3.h" 
 
 #include "TGRSIDetector.h" 
-
 
 class TPaces : public TGRSIDetector {
 
@@ -35,8 +36,8 @@ class TPaces : public TGRSIDetector {
      TPaces& operator=(const TPaces&);  //! 
 
    private: 
-     TPacesData *pacesdata;                 //!  Used to build PACES Hits
-     std::vector <TPacesHit> paces_hits; //   The set of crystal hits
+     TPacesData *pacesdata;                  //!  Used to build PACES Hits
+     std::vector <TPacesHit> paces_hits;     //   The set of crystal hits
 	
      static bool fSetCoreWave;		         //!  Flag for Waveforms ON/OFF
  
@@ -44,10 +45,10 @@ class TPaces : public TGRSIDetector {
      static long fLastPPG;                   //!  value of the last ppg
 
      long fCycleStartTime;                   //   The start of the cycle as it's saved to the tree
-     bool ftapemove;                         //
-     bool fbackground;                       //
-     bool fbeamon;                           // 
-     bool fdecay;                            // 
+     bool ftapemove;                         //   flag set during tape move portion of cycle
+     bool fbackground;                       //   flag set during background portion of cycle
+     bool fbeamon;                           //   flag set during beam on portion of cycle
+     bool fdecay;                            //   flag set during decay portion of cycle
 
    public:
      static bool SetCoreWave()      { return fSetCoreWave;  }	//!
@@ -71,7 +72,7 @@ class TPaces : public TGRSIDetector {
      virtual void Clear(Option_t *opt = "");		      //!
      virtual void Print(Option_t *opt = "");		//!
 
-   ClassDef(TPaces,1)  // Paces Physics structure
+   ClassDef(TPaces,1)  // Paces Physics structure for 
 
 
 };
