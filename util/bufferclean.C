@@ -10,9 +10,11 @@
 #include <iostream>
 #include <fstream>
 
+Int_t chanId_threshold = 50;
+
 Bool_t CheckEvent(TMidasEvent *evt){
    //This function does not work if a Midas event contains multiple fragments
-   static std::map<Int_t, Bool_t> triggermap; //Map of Digitizer vs have we had a triggerId < 10 yet?
+   static std::map<Int_t, Bool_t> triggermap; //Map of Digitizer vs have we had a triggerId < threshold yet?
    //First parse the  Midas Event.
    evt->SetBankList();
 
@@ -50,11 +52,11 @@ Bool_t CheckEvent(TMidasEvent *evt){
       return false;
    }
 
-   //Check against map of trigger Id's to see if we have hit the elusive < 10 mark yet.
+   //Check against map of trigger Id's to see if we have hit the elusive < threshold mark yet.
    if(triggermap.find(dignum)->second == true){ 
       return true;
    }
-   else if(trigId < 10){
+   else if(trigId < chanId_threshold){
       triggermap.find(dignum)->second = true;
       return true;
    }
