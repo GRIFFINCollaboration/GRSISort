@@ -107,13 +107,17 @@ int main(int argc, char **argv) {
       switch(event->GetEventId()) {
          case 0x8000:
             printf("start of run\n");
-            outfile->Write(event);
+            outfile->Write(event,"q");
+            printf(DGREEN);
             event->Print();
+            printf(RESET_COLOR);
             break;
          case 0x8001:
             printf("end of run\n");
+            printf(DRED);
             event->Print();
-            outfile->Write(event);
+            printf(RESET_COLOR);
+            outfile->Write(event,"q");
             break;
          case 0x0001: //This is a GRIFFIN digitizer event
             if(CheckEvent(event)){
