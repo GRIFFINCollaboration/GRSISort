@@ -170,7 +170,7 @@ class TChannel : public TNamed	{
     virtual void Clear(Option_t *opt = "");
     //static  void PrintAll(Option_t *opt = "");      
 
-    static void WriteToRoot(const char *name ="");
+    static int WriteToRoot(const char *name ="");
 
   
   private:

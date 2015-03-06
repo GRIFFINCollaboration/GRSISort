@@ -22,6 +22,7 @@ using namespace std;
 class TKinematics : public TNamed {
 public:
   TKinematics(double beame, const char* projectile, const char* target,const char* ejectile = NULL, const char* recoil = NULL, const char *name = "");
+  TKinematics(const char *beam, const char *targ, const char *ejec, const char *reco, double ebeam, double ex3=0.0, const char *name="");
   TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char *name = "");
   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, const char *name = "");
   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, double ex3, const char *name = "");
@@ -37,7 +38,10 @@ public:
   TSpline3* labvscm(double thmin, double thmax, double size, int part = 2);
   TSpline3* cmvslab(double thmin, double thmax, double size, int part = 2);
   TSpline3* Steffen_labvscminverse(double thmin, double thmax, double size, int part = 2);
- 
+
+
+  TGraph* Evslab_graph(double thmin, double thmax, double size, int part = 2);
+
   double GetCmEnergy(double ebeam);
   double GetCmEnergy();
   double GetBeamEnergy(double LabAngle, double LabEnergy);
@@ -131,6 +135,7 @@ private:
   double T_final(int);
   
   TSpline3 *Cm2LabSpline;
+  void InitKin();
  
   ClassDef(TKinematics,1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments
  
