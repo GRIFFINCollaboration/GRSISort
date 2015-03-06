@@ -765,6 +765,7 @@ void TChannel::Streamer(TBuffer &R__b) {
 }
 
 int TChannel::WriteToRoot(const char *name) {
+   //Writes Cal File information to the tree
   TChannel *c = GetDefaultChannel(); 
   if(!c) 
      printf("No TChannels found to write.\n");

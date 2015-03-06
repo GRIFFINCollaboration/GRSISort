@@ -1,3 +1,4 @@
+//Author Peter C. Bender
 
 #include <iostream>
 #include "TPaces.h"
@@ -29,6 +30,7 @@ TPaces::TPaces() : pacesdata(0)	{
 }
 
 TPaces::TPaces(const TPaces& rhs) {
+   //Default Copy Constructor
      pacesdata     = 0;
      paces_hits = rhs.paces_hits;
      fSetCoreWave = rhs.fSetCoreWave;
@@ -61,6 +63,7 @@ void TPaces::Print(Option_t *opt) {
 }
 
 TPaces& TPaces::operator=(const TPaces& rhs) {
+   //Assignment operator
      pacesdata    = 0;
      paces_hits   = rhs.paces_hits;
      fSetCoreWave = rhs.fSetCoreWave;

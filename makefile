@@ -81,7 +81,9 @@ endif
 
 html: libraries grsisort
 	@printf " ${COM_COLOR}Building      ${OBJ_COLOR} HTML Documentation ${NO_COLOR}\n"
-	@root -b -q util/html_generator.C >/dev/null
+	@cp -r include grsisort
+	@grsisort -q -l --work_harder util/html_generator.C #>/dev/null
+	@$(RM) -r grsisort
 	@$(RM) tempfile.out
 
 end: grsisort

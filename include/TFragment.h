@@ -1,3 +1,5 @@
+// Author: Peter C. Bender    06/14
+
 #ifndef TFRAGMENT_H
 #define TFRAGMENT_H
 
