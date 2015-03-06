@@ -1,5 +1,7 @@
 //g++ -c -fPIC TKinematics.cc -I./ `root-config --cflags`
+
 #include "TKinematics.h"
+#include "Globals.h"
 
 using namespace std;
 
@@ -15,6 +17,7 @@ ClassImp(TKinematics);
 //////////////////////////////////////////////////////////////////
 
 TKinematics::TKinematics(double beame, const char *beam, const char *targ, const char *ejec, const char *reco, const char *name){
+  InitKin();
 
 	TNucleus *b,*t,*e,*r;
 
@@ -46,6 +49,7 @@ TKinematics::TKinematics(double beame, const char *beam, const char *targ, const
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char *name){
 // By not providing the ejectile (only prociding projectile, target, and beam energy) elestic scattering is assumed
+  InitKin();
   fParticle[0] = projectile;
   fParticle[1] = target;
   fParticle[2] = NULL;
@@ -62,6 +66,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, c
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, const char *name){
 // Kinematics using the provided projectile, target, recoil, and ejectile, as well as beam energy
+  InitKin();
   fParticle[0] = projectile;
   fParticle[1] = target;
   fParticle[2] = recoil;
@@ -80,10 +85,11 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, double ex3, const char *name){
 // Kinematics using the provided projectile, target, recoil, ejectile, beam energy, and excited state of the recoil
+  InitKin();
   fParticle[0] = projectile;
   fParticle[1] = target;
-  fParticle[2] = recoil;
-  fParticle[3] = ejectile;
+  fParticle[2] = recoil;           // This is oppiste what is right below it. 
+  fParticle[3] = ejectile;         // we need to define a convention and stick with it  pcb.
   for(int i=0;i<4;i++)
     fM[i]=fParticle[i]->GetMass();
     
@@ -95,33 +101,179 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
   Cm2LabSpline = 0;
 }
 
+
+TKinematics::TKinematics(const char *beam, const char *targ, const char *ejec, const char *reco, double ebeam, double ex3, const char *name){
+  InitKin();
+	TNucleus *b,*t,*e,*r;
+
+	b = new TNucleus(beam);
+	t = new TNucleus(targ);
+	name = Form("%s(%s,%s)%s",targ,beam,ejec,reco);
+	
+	if(!ejec  || !reco) {
+		//TKinematics(b,t,beame,name);
+	} else { 
+		e = new TNucleus(ejec);
+		r = new TNucleus(reco);
+	}
+
+  fParticle[0] = b;
+  fParticle[1] = t;
+  fParticle[2] = e;
+  fParticle[3] = r;
+  for(int i=0;i<4;i++)
+    fM[i]=fParticle[i]->GetMass();
+    
+  fEBeam = ebeam;
+  fQValue = (fM[0]+fM[1])-(fM[2]+fM[3])-ex3;
+  Initial();
+  FinalCm();
+  SetName(name);
+  Cm2LabSpline = 0;
+}
+
+
+void TKinematics::InitKin() {
+
+  //  zeros all initial variables.
+  //  pcb
+
+  fTCm_i = 0;
+  fTCm_f = 0;
+
+  fQValue   = 0;
+  fEBeam    = 0;
+  fBeta_cm  = 0;
+  fGamma_cm = 0;
+
+  for(int i=0;i<4;i++) {
+    fParticle[i] = 0;
+    fM[i] = 0;
+    fT[i] = 0;
+    fE[i] = 0;
+    fP[i] = 0;
+    fV[i] = 0;
+    fTheta[i] = 0;
+   
+    fTcm[i] = 0;
+    fEcm[i] = 0;
+    fPcm[i] = 0;
+    fVcm[i] = 0;
+    fBetacm[i]  = 0;
+    fThetacm[i] = 0;
+  }
+}
+
+
+
 TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part){
   //cout << "maximum scattering angle: " << GetMaxAngle(fVcm[part])*180./PI  << endl;
   //cout << "max " << thmax << " min " << thmin << " steps " << (int)((thmax-thmin)/size)+1 << endl;
-  double* energy = new double[(int)((thmax-thmin)/size)+1];
-  double* angle = new double[(int)((thmax-thmin)/size)+1];
-  int number =0;
-  double deg2rad=PI/180.;
-  for(int i=0;i<((thmax-thmin)/size);i++){
-    Final((thmin+i*size)*PI/180.,2);
-    angle[i]=GetThetalab(part)*180./PI;
-    energy[i]=GetTlab(part) * 1000; 
-    if(angle[i]<1 || angle[i] > GetMaxAngle(fVcm[part])*180./PI-1)
-      break;
-    if(energy[i]<1e15||energy[i]>0.0)
-      number++;
-    else
-      break;
-    //cout << setprecision(4) << GetThetacm(3)/deg2rad << "\t" << setprecision(4) << GetThetacm(2)/deg2rad << "\t" << setprecision(4) << GetThetalab(3)/deg2rad << "\t" << setprecision(4) << GetThetalab(2)/deg2rad << "\t" << setprecision(4) << GetTlab(3) << "\t" << setprecision(4) << GetTlab(2) << endl;  
-    //cout << "theta " <<(thmin+i*size)<<" res "<< angle[i] << " energy " << energy[i] << endl;
+
+  //double* energy = new double[(int)((thmax-thmin)/size)+1];
+  //double* angle = new double[(int)((thmax-thmin)/size)+1];
+
+  if(part<2||part>3) {
+    printf(ALERTTEXT "WARNING: the function Evslab should use nuclei after the reaction (part 2 or part 3)" RESET_COLOR "\n");
+    return 0;
   }
-  TGraph* graph = new TGraph(number, angle, energy);
-  TSpline3* spline = new TSpline3("ETh_lab",graph);
-  delete graph;
-  delete[] angle;
-  delete[] energy;
+
+  std::vector<double> energy;
+  std::vector<double> angle;
+
+  int number =0;
+  double deg2rad=PI/180.0;
+  double rad2deg=180.0/PI;
+
+  int steps = ((int)(thmax+1) - (int)thmin) / (int)size;   // when is size ever needed to be a double?? pcb.
+                                                           // i am under the impression that size should always be 1.0;
+                                                           //
+  double lastangle = 0.0;;
+  //for(int i=0;i<((thmax-thmin)/size);i++){
+  for(int i=0;i<steps;i++){
+    Final((thmin+i*size)*deg2rad,2);//part);   //2);
+    double tmpangle = GetThetalab(part)*(1/deg2rad);
+    double tmpeng   = GetTlab(part) * 1000;
+    //printf("step[%i] \t tmpangle = %.02f \t tmpeng = %.02f\n",i,tmpangle,tmpeng);
+    if(tmpangle<lastangle) {
+      printf(ALERTTEXT "WARNING: the abscissa(theta) is no longer increasing; Drawing spline will fail." RESET_COLOR "\n");
+      printf(ALERTTEXT "         try Evslab_graph to see what this looks like.                         " RESET_COLOR "\n");
+      return 0;
+    }
+    lastangle = tmpangle;
+    if(tmpangle<1 || tmpangle > (GetMaxAngle(fVcm[part])*rad2deg) -1)
+      continue;
+    if(tmpeng>1e15||tmpeng<0.0)
+      continue;
+
+    angle.push_back(GetThetalab(part)* (1/deg2rad));
+    energy.push_back(GetTlab(part) * 1000); 
+
+  }
+
+
+  TGraph graph(angle.size(), angle.data(), energy.data());
+  TSpline3* spline = new TSpline3("ETh_lab",&graph);
   return spline;
 }
+
+
+
+TGraph* TKinematics::Evslab_graph(double thmin, double thmax, double size, int part){
+  //cout << "maximum scattering angle: " << GetMaxAngle(fVcm[part])*180./PI  << endl;
+  //cout << "max " << thmax << " min " << thmin << " steps " << (int)((thmax-thmin)/size)+1 << endl;
+
+  //double* energy = new double[(int)((thmax-thmin)/size)+1];
+  //double* angle = new double[(int)((thmax-thmin)/size)+1];
+
+  if(part<2||part>3) {
+    printf(ALERTTEXT "WARNING: the function Evslab_graph should use nuclei after the reaction (part 2 or part 3)" RESET_COLOR "\n");
+    return 0;
+  }
+
+  std::vector<double> energy;
+  std::vector<double> angle;
+
+  int number =0;
+  double deg2rad=PI/180.0;
+  double rad2deg=180.0/PI;
+
+  int steps = ((int)(thmax+1) - (int)thmin) / (int)size;   // when is size ever needed to be a double?? pcb.
+                                                           // i am under the impression that size should always be 1.0;
+                                                           //
+  double lastangle = 0.0;;
+  //for(int i=0;i<((thmax-thmin)/size);i++){
+  for(int i=0;i<steps;i++){
+    Final((thmin+i*size)*deg2rad,2);//part);   //2);
+    double tmpangle = GetThetalab(part)*(1/deg2rad);
+    double tmpeng   = GetTlab(part) * 1000;
+    //printf("step[%i] \t tmpangle = %.02f \t tmpeng = %.02f\n",i,tmpangle,tmpeng);
+    lastangle = tmpangle;
+    if(tmpangle<1 || tmpangle > (GetMaxAngle(fVcm[part])*rad2deg) -1)
+      continue;
+    if(tmpeng>1e15||tmpeng<0.0)
+      continue;
+
+    angle.push_back(GetThetalab(part)* (1/deg2rad));
+    energy.push_back(GetTlab(part) * 1000); 
+
+  }
+
+
+  TGraph *graph = new TGraph(angle.size(), angle.data(), energy.data());
+  //TSpline3* spline = new TSpline3("ETh_lab",&graph);
+  return graph;
+}
+
+
+
+
+
+
+
+
+
+
 TSpline3* TKinematics::Evscm(double thmin, double thmax, double size, int part){
   double* energy = new double[(int)((thmax-thmin)/size)+1];
   double* angle = new double[(int)((thmax-thmin)/size)+1];
@@ -554,6 +706,8 @@ double TKinematics::Sigma_cm2lab(double angle_cm, double sigma_cm){
   return sigma_cm*(1/fGamma_cm*wurzel*wurzel*wurzel/(1+x*cos(PI-angle_cm)));  
 }
 */
+
+
 double TKinematics::Sigma_lab2cm(double angle_cm, double sigma_lab){
   double gam2 = fM[0]*fM[2]/fM[1]/fM[3]*fTCm_i/fTCm_f;
   gam2 = sqrt(gam2);
@@ -573,6 +727,8 @@ double TKinematics::Sigma_lab2cm(double angle_cm, double sigma_lab){
   //wurzel = sqrt(wurzel);
   //return sigma_lab/(1/fGamma_cm*wurzel*wurzel*wurzel/(1+gam2*cos(angle_cm)));  
 }
+
+
 void TKinematics::SigmaErr_lab2cm(double angle, double err, double &sigma, double &errsigma){
   double g = fM[0]*fM[2]/fM[1]/fM[3]*fTCm_i/fTCm_f;
   g = sqrt(g);
@@ -581,18 +737,24 @@ void TKinematics::SigmaErr_lab2cm(double angle, double err, double &sigma, doubl
   errsigma = fGamma_cm/pow(w,1.5) * sqrt( pow(sigma*g*sin(PI-angle)*(-2+g*g-g*cos(PI-angle))/w * err,2) + pow((1+g*cos(PI-angle))*errsigma,2  ) ); 
   //sigma/=(1/fGamma_cm*w*w*w/(1+g*cos(PI-angle)));
 }
+
+
 void TKinematics::Transform2cm(double &angle, double &sigma){
   //double angle_lab = angle;
   angle = PI-Angle_lab2cm(fVcm[2], angle);
   sigma = Sigma_lab2cm(angle, sigma);
   return;
 }
+
+
 void TKinematics::Transform2cm(double &angle, double &errangle, double &sigma, double &errsigma){
   AngleErr_lab2cm(angle, errangle);
   Transform2cm(angle,sigma);
   SigmaErr_lab2cm(angle, errangle, sigma, errsigma);
   return;
 }
+
+
 double TKinematics::Rutherford(double angle_cm){
 // Returns the Rutherford scattering impact parameter, b, given the angle of the ejectile in the CM frame
   double a = 0.5*1.43997649*fParticle[0]->GetZ()*fParticle[1]->GetZ()/fTCm_i;
@@ -600,6 +762,8 @@ double TKinematics::Rutherford(double angle_cm){
   b=b*b;
   return a*a/b*0.0025;//1b=0.01fm
 }
+
+
 TSpline3* TKinematics::Ruthvscm(double thmin, double thmax, double size){
   double* cross = new double[(int)((thmax-thmin)/size)+1];
   double* angle = new double[(int)((thmax-thmin)/size)+1];
@@ -622,6 +786,8 @@ TSpline3* TKinematics::Ruthvscm(double thmin, double thmax, double size){
   delete[] cross;
   return spline;
 }
+
+
 TSpline3* TKinematics::Ruthvslab(double thmin, double thmax, double size, int part){
   double* cross = new double[(int)((thmax-thmin)/size)+1];
   double* angle = new double[(int)((thmax-thmin)/size)+1];

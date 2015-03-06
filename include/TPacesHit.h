@@ -1,3 +1,5 @@
+// Author: Peter C. Bender
+
 #ifndef TPACESHIT_H
 #define TPACESHIT_H
 
@@ -20,22 +22,22 @@ class TPacesHit : public TGRSIDetectorHit {
 		virtual ~TPacesHit();
 
 	private:
-		UShort_t crystal;
+		UShort_t crystal; //The paces crystal number
 
-      UInt_t address;
+      UInt_t address;   //The address of the read-out digitizer
 
-      Int_t filter;
+      Int_t filter;     //The Master Filter Pattern
 
-      Int_t ppg;
+      Int_t ppg;        //The current PPG pattern
 
-      Int_t charge_lowgain;
-      Int_t charge_highgain;
-      Int_t cfd;
-      Double_t energy_lowgain;
-      Double_t energy_highgain;
-      Long_t time;
+      Int_t charge_lowgain;  //The charge collected from the low gain 
+      Int_t charge_highgain; //The charge collected from the high gain
+      Int_t cfd;             //The cfd time
+      Double_t energy_lowgain; //The calibrated energy from the low gain
+      Double_t energy_highgain; //The calibrated energy from the high gain
+      Long_t time;               //The time stamp of the hit
 
-      std::vector<Short_t> waveform;  //!
+      std::vector<Short_t> waveform;  //! waveform of PACES hit
    
 	public:
 
@@ -85,10 +87,7 @@ class TPacesHit : public TGRSIDetectorHit {
 		virtual void Clear(Option_t *opt = "");		                   //!
 		virtual void Print(Option_t *opt = "") const; 	                   //!
 
-	ClassDef(TPacesHit,2)
+	ClassDef(TPacesHit,2) //Holds information for individual PACES hits
 };
-
-
-
 
 #endif
