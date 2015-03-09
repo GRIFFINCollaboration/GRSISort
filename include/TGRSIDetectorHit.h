@@ -14,6 +14,15 @@
 #include "Rtypes.h"
 
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TGRSIDetectorHit                                           //
+//                                                            //
+// This is class that contains the basic info about detector  //
+// hits. This is where the position of a detector is stored.
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 class TGRSIDetectorHit : public TObject 	{
 	public:
 		TGRSIDetectorHit();
@@ -33,9 +42,9 @@ class TGRSIDetectorHit : public TObject 	{
       virtual Bool_t BremSuppressed(TGRSIDetectorHit*);
 
    protected:
-      TVector3 position;
+      TVector3 position; //Position of hit detector
 
-	ClassDef(TGRSIDetectorHit,1)
+	ClassDef(TGRSIDetectorHit,1) //Stores the information for a detector hit
 };
 
 
