@@ -118,6 +118,9 @@ class TEventTime {
 };
 
 
+unsigned long TEventTime::low_timemidas = -1;
+std::map<int,int> TEventTime::digmap;
+
 int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    int events_read = 0;
    const int total_events = 1E6;
@@ -153,9 +156,6 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    return 0;
 }
 
-unsigned long TEventTime::low_timemidas = -1;
-std::map<int,int> TEventTime::digmap;
-
 void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
 //This function should return an array of corrections
 
@@ -164,7 +164,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
    //These first four are for looking to see if high time-stamp reset
    std::map<int,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-      TH2D *midvshighhist = new TH2D(Form("midvshigh%d",mapit->first),Form("midvshigh%d",mapit->first), 5000,0,5000,5000,0,5000); midvshigh->Add(midvshighhist);
+      TH2D *midvshighhist = new TH2D(Form("midvshigh_%#06x",mapit->first),Form("midvshig_h0x%#06x",mapit->first), 5000,0,5000,5000,0,5000); midvshigh->Add(midvshighhist);
    }
   
    unsigned int lowmidtime = TEventTime::GetLowestMidasTime();
@@ -219,13 +219,21 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
    delete[] lowest_hightime;
 
 }
+
 /*
 void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    //We want the MIDAS time stamps to still be the way we index these events, but we want to index on low time stamps next
    printf(DBLUE "Looking for rough time differences...\n" RESET_COLOR);
 
+   TList *roughlist = new TList;
+   //These first four are for looking to see if high time-stamp reset
+   std::map<int,int>::iterator mapit;
+   for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
+      TH2D *roughhist = new TH2D(Form("rough_%#06x",mapit->first),Form("rough_h0x%#06x",mapit->first), 5000,0,5000,5000,0,5000); roughlist->Add(roughhist);
+   }
+
    TList *bestvsrough = new TList;
-   TH1C *bestvs1rough = new TH1C("bestvs1rough","bestvs1rough",50E6,-25E6,25E6); bestvsrough->Add(bestvs1rough);
+   TH1C *bestvs1rough = new TH1C(,"bestvs1rough",50E6,-25E6,25E6); bestvsrough->Add(bestvs1rough);
    TH1C *bestvs2rough = new TH1C("bestvs2rough","bestvs2rough",50E6,-25E6,25E6); bestvsrough->Add(bestvs2rough);
    TH1C *bestvs3rough = new TH1C("bestvs3rough","bestvs3rough",50E6,-25E6,25E6); bestvsrough->Add(bestvs3rough);
    TH1C *bestvs4rough = new TH1C("bestvs4rough","bestvs4rough",50E6,-25E6,25E6); bestvsrough->Add(bestvs4rough);
