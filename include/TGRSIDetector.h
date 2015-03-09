@@ -20,6 +20,15 @@ class TGRSIDetectorData;
 #include "TFragment.h"
 #include "TChannel.h"
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TGRSIDetector                                              //
+//                                                            //
+// This is an abstract class that contains the basic info     //
+// about a detector. This is where the hits are built and
+// the data is filled.
+//                                                            //
+////////////////////////////////////////////////////////////////
 
 
 class TGRSIDetector : public TObject	{
@@ -38,7 +47,7 @@ class TGRSIDetector : public TObject	{
 
       //TGRSIDetectorData *data;    //!
 
-   ClassDef(TGRSIDetector,0)  
+   ClassDef(TGRSIDetector,0) //Abstract class for detector systems 
 };
 
 
