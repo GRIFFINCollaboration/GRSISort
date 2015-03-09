@@ -108,7 +108,7 @@ Double_t TSharcHit::PadEnergyCal() {
 
 Double_t TSharcHit::FrontEnergyCal() { //!
   TChannel *chan = TChannel::GetChannel(front_address);
-  printf("\n\nchan = %p.\t front_address = %i\n",chan,front_address);
+//  printf("\n\nchan = %p.\t front_address = %i\n",chan,front_address);
   if(!chan)
     chan = TChannel::GetChannelByNumber(front_address);
   if(!chan)

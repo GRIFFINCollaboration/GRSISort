@@ -286,22 +286,22 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
 
   else if(vvec.size()==1&&hvec.size()==2)
   {
-    int vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
-    int hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
-    int hc2 = cdataVH->GetHorizontal_Charge(hvec.at(1));
-    if(AlmostEqual(vc1,hc1+hc2))
+    int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
+    int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
+    int he2 = cdataVH->GetHorizontal_Energy(hvec.at(1));
+    if(AlmostEqual(ve1,he1+he2))
     {
       hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
       hvec.clear();
       vvec.clear();
     }
-    else if(AlmostEqual(vc1,hc1))
+    else if(AlmostEqual(ve1,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
       vvec.clear();
       hvec.erase(hvec.begin());
     }
-    else if(AlmostEqual(vc1,hc2))
+    else if(AlmostEqual(ve1,he2))
     {
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
       vvec.clear();
@@ -311,22 +311,22 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
   
   else if(vvec.size()==2&&hvec.size()==1)
   {
-    int vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
-    int vc2 = cdataVH->GetVertical_Charge(vvec.at(1));
-    int hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
-    if(AlmostEqual(vc1+vc2,hc1))
+    int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
+    int ve2 = cdataVH->GetVertical_Energy(vvec.at(1));
+    int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
+    if(AlmostEqual(ve1+ve2,he1))
     {
       hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
       hvec.clear();
       vvec.clear();
     }
-    else if(AlmostEqual(vc1,hc1))
+    else if(AlmostEqual(ve1,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
       vvec.erase(vvec.begin());
       hvec.clear();
     }
-    else if(AlmostEqual(vc2,hc1))
+    else if(AlmostEqual(ve2,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
       vvec.pop_back();
@@ -336,11 +336,11 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
 
   else if(vvec.size()==2&&hvec.size()==2)
   {    
-    int vc1 = cdataVH->GetVertical_Charge(vvec.at(0));
-    int vc2 = cdataVH->GetVertical_Charge(vvec.at(1));
-    int hc1 = cdataVH->GetHorizontal_Charge(hvec.at(0));
-    int hc2 = cdataVH->GetHorizontal_Charge(hvec.at(1));
-    if( AlmostEqual(vc1,hc1) && AlmostEqual(vc2,hc2) )
+    int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
+    int ve2 = cdataVH->GetVertical_Energy(vvec.at(1));
+    int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
+    int he2 = cdataVH->GetHorizontal_Energy(hvec.at(1));
+    if( AlmostEqual(ve1,he1) && AlmostEqual(ve2,he2) )
     {
       //I can build both 1,1 and 2,2
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
@@ -348,7 +348,7 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
       hvec.clear();
       vvec.clear();
     }
-    else if( AlmostEqual(vc1,hc2) && AlmostEqual(vc2,hc1) )
+    else if( AlmostEqual(ve1,he2) && AlmostEqual(ve2,he1) )
     {
       //I can build both 1,2 and 2,1
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
@@ -356,31 +356,93 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
       hvec.clear();
       vvec.clear();
     }
-    else if( AlmostEqual(vc1,hc1) )
+    else if( AlmostEqual(ve1,he1) )
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
       hvec.erase(hvec.begin());
       vvec.erase(vvec.begin());
     }
-    else if( AlmostEqual(vc2,hc1) )
+    else if( AlmostEqual(ve2,he1) )
     {
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
       hvec.erase(hvec.begin());
       vvec.pop_back();
     }
-    else if( AlmostEqual(vc1,hc2) )
+    else if( AlmostEqual(ve1,he2) )
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
       hvec.pop_back();
       vvec.erase(vvec.begin());
     }
-    else if( AlmostEqual(vc2,hc2) )
+    else if( AlmostEqual(ve2,he2) )
     {
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(1),cdataVH));
       hvec.pop_back();
       vvec.pop_back();
     }
   }
+
+  /*
+  else if(vvec.size()==3&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==3&&hvec.size()==2)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==2&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==2&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==1&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==3&&hvec.size()==1)
+  {
+    cdataVH->Print();
+    
+  }
+  */
+    
+  /*else
+  {
+    vector<bool> vertUsed (vvec.size(),false);
+    vector<bool> horUsed (hvec.size(),false);
+    for(int vloop = 0; vloop<vvec.size(); vloop++)
+    {
+      if(vertUsed.at(vloop))
+	continue;
+      
+      double VE = cdataVH->GetVertical_Energy(vvec.at(vloop));
+      for(int hloop = 0; hloop<hvec.size(); hloop++)
+      {
+	if(horUsed.at(hloop))
+	  continue;
+	
+	double HE = cdataVH->GetHorizontal_Energy(hvec.at(hloop));
+
+	if(AlmostEqual(VE,HE))
+	{
+	  cdataVH->Print();
+	  hitvec.push_back(MakeHit(hvec.at(hloop),vvec.at(vloop),cdataVH));
+	  hitvec.back().Print();
+	  vertUsed.at(vloop) = true;
+	  horUsed.at(hloop) = true;
+	}
+      }
+    }
+  }*/
 
 
   
@@ -579,13 +641,36 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
   //cout<<"DHitVec size: "<<DHitVec.size()<<" EHitVec size: "<<EHitVec.size()<<endl;
   if(DHitVec.size()==0&&EHitVec.size()==0)//Why am I even here?!
     return;
+
+  /*cout<<YELLOW<<"******************************************"<<RESET_COLOR<<endl;
+  
+  for(int i =0; i< DHitVec.size();i++)
+  {
+    cout<<DGREEN;
+    DHitVec.at(i).Print();
+    cout<<RESET_COLOR;
+  }
+  for(int i =0; i< EHitVec.size();i++)
+  {
+    cout<<DGREEN;
+    EHitVec.at(i).Print();
+    cout<<RESET_COLOR;
+  }*/
+
+  vector<bool> EUsed (EHitVec.size(),false);
+  vector<bool> DUsed (DHitVec.size(),false);
   
   for(int diter=0;diter<DHitVec.size();diter++)
   {
     //cout<<"diter: "<<diter<<endl;
+    if(DUsed.at(diter))
+      continue;
+    
     for(int eiter=0;eiter<EHitVec.size();eiter++)
     {
       //cout<<"eiter: "<<eiter<<endl;
+      if(EUsed.at(eiter))
+	continue;
 
       if(DHitVec.at(diter).GetDetectorNumber()==EHitVec.at(eiter).GetDetectorNumber())//Hits are in the same stack
       {
@@ -593,11 +678,11 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
 	  //&& AlmostEqual(DHitVec.at(diter).GetDPosition().Phi(),EHitVec.at(eiter).GetEPosition().Phi()) )//Same-ish Phi
 	{
 	  BuiltHits.push_back(CombineHits(DHitVec.at(diter),EHitVec.at(eiter)));
-	  //cout<<DRED;
-	  //BuiltHits.back().Print();
-	  //cout<<RESET_COLOR;
-	  DHitVec.erase(DHitVec.begin()+diter);
-	  EHitVec.erase(EHitVec.begin()+eiter);
+	  /*cout<<DRED;
+	  BuiltHits.back().Print();
+	  cout<<RESET_COLOR;*/
+	  DUsed.at(diter) = true;
+	  EUsed.at(eiter) = true;
 	}
       }
     }
@@ -613,7 +698,13 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
       DHitVec.at(i).Print();
       cout<<RESET_COLOR;
     }*/
-    BuiltHits.push_back(DHitVec.at(i));
+    if(!DUsed.at(i))
+    {
+      BuiltHits.push_back(DHitVec.at(i));
+      /*cout<<DBLUE;
+      BuiltHits.back().Print();
+      cout<<RESET_COLOR;*/
+    }
   }
   for(int j=0;j<EHitVec.size();j++)
   {
@@ -623,7 +714,13 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
       EHitVec.at(j).Print();
       cout<<RESET_COLOR;
     }*/
-    BuiltHits.push_back(EHitVec.at(j));
+    if(!EUsed.at(j))
+    {
+      BuiltHits.push_back(EHitVec.at(j));
+      /*cout<<DBLUE;
+      BuiltHits.back().Print();
+      cout<<RESET_COLOR;*/
+    }
   }
 }
 

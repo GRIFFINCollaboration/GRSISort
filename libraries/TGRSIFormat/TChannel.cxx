@@ -479,8 +479,6 @@ void TChannel::WriteCalFile(std::string outfilename) {
    std::cout.rdbuf(std_out);
 */
 
-
-
    FILE *c_outputfile;
    if(outfilename.length()>0) {
       c_outputfile = freopen (outfilename.c_str(),"w",stdout);
@@ -748,6 +746,7 @@ void TChannel::trim(std::string * line, const std::string & trimChars) {
 }
 
 void TChannel::Streamer(TBuffer &R__b) {
+   this->SetBit(kCanDelete);
    UInt_t R__s, R__c;
    if(R__b.IsReading()) { // reading from file
       Version_t R__v = R__b.ReadVersion(&R__s,&R__c); if (R__v) { }
@@ -765,14 +764,52 @@ void TChannel::Streamer(TBuffer &R__b) {
    }
 }
 
-void TChannel::WriteToRoot(const char *name) {
+int TChannel::WriteToRoot(const char *name) {
    //Writes Cal File information to the tree
   TChannel *c = GetDefaultChannel(); 
   if(!c) 
      printf("No TChannels found to write.\n");
+  TFile *f = gDirectory->GetFile();
   if(!gDirectory)
-     printf("No file opened to write to.\n");
+     printf("No file opened to wrtie to.\n");
+  TIter iter(gDirectory->GetListOfKeys());
+
+  printf("1 Number of Channels: %i\n",GetNumberOfChannels());
+  gDirectory->ls();
+
+  bool found = false;
+  std::string mastername  = "TChannel"; 
+  std::string mastertitle = "TChannel";
+  std::string channelbuffer = fFileData; 
+  //std::map<std::string,int> indexmap;
+  while(TKey *key = (TKey*)(iter.Next())) {
+    if(!key || strcmp(key->GetClassName(),"TChannel"))
+         continue;
+    if(!found) {
+      found = true;
+      TChannel *c = (TChannel*)key->ReadObj();
+      mastername.assign(c->GetName());
+      mastertitle.assign(c->GetTitle());
+    }
+    std::string cname = key->ReadObj()->GetName();
+    //TFile *f = gDirectory->GetFile();
+    cname.append(";*");
+    gDirectory->Delete(cname.c_str());
+    //indexmap[cname]++;
+    //std::string cnamei = cname; cnamei.append(Form(";%i",indexmap[cname]));
+    //printf("cnamei = %s\n",cnamei.c_str());
+    //gDirectory->Delete(cnamei.c_str());
+    TChannel::DeleteAllChannels();
+  }
+  printf("1 Number of Channels: %i\n",GetNumberOfChannels());
+  gDirectory->ls();
+  TChannel::ParseInputData(channelbuffer.c_str());
+  c = TChannel::GetDefaultChannel();
+  c->SetNameTitle(mastername.c_str(),mastertitle.c_str());
   c->Write();
-  return;
+  printf("1 Number of Channels: %i\n",GetNumberOfChannels());
+  gDirectory->ls();
+  
+  return GetNumberOfChannels();
 }
 
