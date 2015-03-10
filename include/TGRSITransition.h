@@ -6,6 +6,16 @@
 #include "TClass.h"
 #include "TObject.h"
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TGRSITransition                                            //
+//                                                            //
+// This Class contains the information about a nuclear 
+// transition. These transitions are a part of a TNucleus
+// and are typically set within the TNucleus framework
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 class TGRSITransition : public TObject {
    friend class TNucleus;
    public:
@@ -25,13 +35,16 @@ class TGRSITransition : public TObject {
       double GetIntensity() const {return intensity;}
       double GetIntensityUncertainty() const {return intensity_uncertainty;}
 
-   protected:
-      double energy;
-      double energy_uncertainty;
-      double intensity;
-      double intensity_uncertainty;
+      void Clear(Option_t *opt = "");
+      void Print(Option_t *opt = "");
 
-   ClassDef(TGRSITransition,1)
+   protected:
+      double energy;                  //Energy of the transition
+      double energy_uncertainty;      //Uncertainty in the energy of the transition
+      double intensity;               //Intensity of the transition
+      double intensity_uncertainty;   //Uncertainty in the intensity
+
+   ClassDef(TGRSITransition,1) //Information about a TNucleus transition
 };
 
 #endif

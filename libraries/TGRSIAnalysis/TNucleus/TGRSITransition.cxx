@@ -1,22 +1,45 @@
 
 #include <TGRSITransition.h>
 
-
 ClassImp(TGRSITransition)
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TGRSITransition                                            //
+//                                                            //
+// This Class contains the information about a nuclear 
+// transition. These transitions are a part of a TNucleus
+// and are typically set within the TNucleus framework
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 TGRSITransition::TGRSITransition() {
+//Default constructor for TGRSITransition
   Class()->IgnoreTObjectStreamer(true);
+  Clear();
+}
+
+TGRSITransition::~TGRSITransition() {
+//Default Destructor
+}
+
+void TGRSITransition::Print(Option_t *opt) {
+//Prints information about the TGRSITransition
+   printf("**************************\n");
+   printf("TGRSITransition:\n");
+   printf("Energy:    %lf\t+/-%lf\n");
+   printf("Intensity: %lf\t+/-%lf\n");
+   printf("**************************\n");
+
+}
+
+void TGRSITransition::Clear(Option_t *opt){
+   //Clears TGRSITransition
   energy                 = 0.0; 
   energy_uncertainty    = 0.0; 
   intensity              = 0.0; 
   intensity_uncertainty = 0.0;  
-
 }
-
-TGRSITransition::~TGRSITransition() { }
-
-
-
 
 int TGRSITransition::Compare(const TObject *obj) const { 
 //Compares the intensities of the TGRSITransitions and returns
