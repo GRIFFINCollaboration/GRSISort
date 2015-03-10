@@ -430,7 +430,6 @@ double TChannel::CalibrateEFF(double energy) {
 
 void TChannel::Print(Option_t *opt) {
    //Prints out the current TChannel.
-
    std::cout <<  channelname << "\t{\n";  //,channelname.c_str();
    std::cout <<  "Name:      " << channelname << "\n";
    std::cout <<  "Number:    " << number << "\n";
@@ -453,6 +452,30 @@ void TChannel::Print(Option_t *opt) {
    std::cout << "//====================================//\n";
 };
 
+std::string TChannel::PrintToString(Option_t *opt) {
+  std::string buffer;
+   buffer.append("\n");
+   buffer.append(channelname); buffer.append("\t{\n");  //,channelname.c_str();
+   buffer.append("Name:      "); buffer.append(channelname); buffer.append("\n");
+   buffer.append(Form("Number:    %d\n",number));
+   buffer.append(Form("Address:   0x%08x\n",address));
+   buffer.append(Form("Digitizer: %s\n",digitizertype.c_str())); 
+   buffer.append("EngCoeff:  ");
+   for(int x=0;x<ENGCoefficients.size();x++)
+      buffer.append(Form("%f\t",ENGCoefficients.at(x)));
+   buffer.append("\n");
+   buffer.append(Form("Integration: %d\n",integration));
+   buffer.append(Form("ENGChi2:     %f\n",ENGChi2));
+   buffer.append("EffCoeff:  ");
+   for(int x=0;x<EFFCoefficients.size();x++)
+      buffer.append(Form("%f\t",EFFCoefficients.at(x)));
+   buffer.append("\n");
+   buffer.append(Form("EFFChi2:   %f\n",EFFChi2));
+   buffer.append("\n}\n");
+   buffer.append("//====================================//\n");
+  
+  return buffer;
+}
 
 void TChannel::WriteCalFile(std::string outfilename) {
    //prints the context of addresschannelmap formatted correctly to stdout if
@@ -491,6 +514,42 @@ void TChannel::WriteCalFile(std::string outfilename) {
       int fd = open("/dev/tty", O_WRONLY);
       stdout = fdopen(fd, "w");
    }
+   return;
+}
+
+
+void TChannel::WriteCalBuffer(Option_t *opt) {
+   // writes any tchannels in memory to the internal buffer 
+   // fFileData.  Can be used to over write info that is there
+   // or create the buffer if the channels originated from the odb.
+
+
+   std::map <unsigned int, TChannel * >::iterator iter;
+   std::vector<TChannel> chanVec;
+   std::vector<TChannel>::iterator iter_vec;
+   for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
+		if(iter->second)
+	      chanVec.push_back(*iter->second);
+   }
+
+   std::sort(chanVec.begin(),chanVec.end(),TChannel::Compare);
+
+
+/*
+   std::stringstream buffer;
+   std::streambuf *std_out = std::cout.rdbuf(buffer.rdbuf());
+   WriteCalFile();
+   fFileData.assign(buffer.str()); 
+   std::cout.rdbuf(std_out);
+*/
+
+   std::string data;
+
+   for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+      data.append(iter_vec->PrintToString());
+   }
+   fFileData.clear();
+   fFileData = data;
    return;
 }
 
@@ -582,7 +641,7 @@ void TChannel::SaveToSelf(const char *fname) {
 }
 
 
-Int_t TChannel::ParseInputData(const char *inputdata) {
+Int_t TChannel::ParseInputData(const char *inputdata,Option_t *opt) {
 
    std::istringstream infile(inputdata);
 
@@ -727,7 +786,8 @@ Int_t TChannel::ParseInputData(const char *inputdata) {
       }
 
    }
-   printf("parsed %i lines.\n",linenumber);
+   if(strcmp(opt,"q"))
+     printf("parsed %i lines.\n",linenumber);
 
    return newchannels;
 }
@@ -774,14 +834,21 @@ int TChannel::WriteToRoot(const char *name) {
      printf("No file opened to wrtie to.\n");
   TIter iter(gDirectory->GetListOfKeys());
 
-  printf("1 Number of Channels: %i\n",GetNumberOfChannels());
-  gDirectory->ls();
+  //printf("1 Number of Channels: %i\n",GetNumberOfChannels());
+  //gDirectory->ls();
 
   bool found = false;
   std::string mastername  = "TChannel"; 
   std::string mastertitle = "TChannel";
   std::string channelbuffer = fFileData; 
   //std::map<std::string,int> indexmap;
+  WriteCalBuffer();
+  std::string savedata = fFileData;
+  
+
+  int fd = open("/dev/null", O_WRONLY); // turn of stdout.
+  stdout = fdopen(fd, "w");
+
   while(TKey *key = (TKey*)(iter.Next())) {
     if(!key || strcmp(key->GetClassName(),"TChannel"))
          continue;
@@ -801,15 +868,29 @@ int TChannel::WriteToRoot(const char *name) {
     //gDirectory->Delete(cnamei.c_str());
     TChannel::DeleteAllChannels();
   }
-  printf("1 Number of Channels: %i\n",GetNumberOfChannels());
-  gDirectory->ls();
-  TChannel::ParseInputData(channelbuffer.c_str());
+
+  fd = open("/dev/tty", O_WRONLY);  // turn on stdout.
+  stdout = fdopen(fd, "w");
+
+  ParseInputData(savedata.c_str(),"q");
+  SaveToSelf(savedata.c_str());
+  //printf("1 Number of Channels: %i\n",GetNumberOfChannels());
+  //gDirectory->ls();
+  TChannel::ParseInputData(channelbuffer.c_str(),"q");
   c = TChannel::GetDefaultChannel();
   c->SetNameTitle(mastername.c_str(),mastertitle.c_str());
-  c->Write();
-  printf("1 Number of Channels: %i\n",GetNumberOfChannels());
-  gDirectory->ls();
+  c->Write("",TObject::kOverwrite);
   
+
+  ParseInputData(savedata.c_str(),"q");
+  SaveToSelf(savedata.c_str());
+
+
+  //printf("1 Number of Channels: %i\n",GetNumberOfChannels());
+  //gDirectory->ls();
+  //TChannel::DeleteAllChannels();
+  //gDirectory->GetFile()->Get("c->GetName()");
+  printf("  %i TChannels saved to %s.\n",GetNumberOfChannels(),gDirectory->GetFile()->GetName());
   return GetNumberOfChannels();
 }
 

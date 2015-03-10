@@ -163,12 +163,14 @@ class TChannel : public TNamed	{
 
     static Int_t ReadCalFromTree(TTree*,Option_t *opt="overwrite");
     static Int_t ReadCalFile(const char *filename = "");
-    static Int_t ParseInputData(const char *inputdata = "");
+    static Int_t ParseInputData(const char *inputdata = "",Option_t *opt = "");
     static void WriteCalFile(std::string outfilename = "");
+    static void WriteCalBuffer(Option_t *opt ="");
 
     virtual void Print(Option_t *opt = "");
     virtual void Clear(Option_t *opt = "");
     //static  void PrintAll(Option_t *opt = "");      
+    std::string PrintToString(Option_t *opt="");
 
     static int WriteToRoot(const char *name ="");
 
