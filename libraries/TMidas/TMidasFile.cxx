@@ -139,6 +139,10 @@ bool TMidasFile::Open(const char *filename)
       pipe = "bzip2 -dc ";
       pipe += filename;
     }
+  else{
+     pipe = "cat ";
+     pipe+=filename;
+  }
 
   if (pipe.length() > 0)
     {
@@ -315,7 +319,7 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
   if (fDoByteSwap){
     printf("Swapping bytes\n");
     midasEvent->SwapBytesEventHeader();
-}
+   }
   if (!midasEvent->IsGoodSize())
     { 
       fLastErrno = -1;
