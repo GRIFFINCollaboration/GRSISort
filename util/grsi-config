@@ -46,7 +46,7 @@ utildir=$GRSISYS/etc
 
 grsilibs="-lGRSIDetector -lGRSIFormat -lNucleus -lKinematics -lSRIM -lBetaDecay -lTGRSIFit -lTCal -lGROOT"
 detlibs="-lTigress -lGriffin -lSharc -lTriFoil -lCSM -lSceptar -lPaces -lDescant"
-grsimore="-lMidasFormat -lDataParser -lGRSILoop -lGRSIint -lGRSIRootIO -lAnalysisTreeBuilder"
+grsimore="-lMidasFormat -lDataParser -lGRSILoop -lTGRSIint -lGRSIRootIO -lAnalysisTreeBuilder"
 
 cflags="-std=c++0x -I$incdir"
 
@@ -112,7 +112,7 @@ while test $# -gt 0; do
       if test "x$libsout" = "xyes" ; then
         out=$"$out $grsimore "
       else
-        out=$"$out -L${libdir} $grsilibs $detlibs $grsimore "
+        out=$"$out -L${libdir} $grsilibs $detlibs $grsimore -lXMLParser -lXMLIO -lX11 -lXpm -lProof -lGuiHtml "
       fi
       ;;
     --root)
@@ -121,7 +121,7 @@ while test $# -gt 0; do
         continue
       fi
       rootout="yes"
-      out="$out `root-config --cflags --libs` -lPhysics -lSpectrum"
+      out="$out `root-config --cflags --libs` -lPhysics -lSpectrum" 
       ;;
     --help)
       ### Print a helpful message...

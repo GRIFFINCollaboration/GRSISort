@@ -18,19 +18,19 @@ class TGRSIStats : public TObject {
 
    private:
      static std::map<int,TGRSIStats*> *fStatsMap; //A Map of channel number to a set of stats
-     static time_t fLowestMidasTimeStamp; //The lowest midas time stamp recorded during a sub-run
-     static time_t fHighestMidasTimeStamp;//This highest midas time stamp recorded during a sub-run
+     static time_t fLowestMidasTimeStamp;         //The lowest midas time stamp recorded during a sub-run
+     static time_t fHighestMidasTimeStamp;        //This highest midas time stamp recorded during a sub-run
 
-     static Int_t fLowestNetworkPacket; //The lowest network packet recorded during a sub-run
-     static Int_t fHighestNetworkPacket; //The highest network packet recorded durin a sub-run
+     static Int_t fLowestNetworkPacket;           //The lowest network packet recorded during a sub-run
+     static Int_t fHighestNetworkPacket;          //The highest network packet recorded durin a sub-run
 
-     int fStatAddress; //The address that the stats correspon to
+     int fStatAddress;                            //The address that the stats correspon to
 
-     unsigned long fDeadTime; //The total dead-time recorded in a channel
-     int fLostEvents; //The number of lost events in a channel
-     int fLastChannelIdSeen; //The last channelId that came from the channel
+     unsigned long fDeadTime;                     //The total dead-time recorded in a channel
+     int fLostEvents;                             //The number of lost events in a channel
+     int fLastChannelIdSeen;                      //The last channelId that came from the channel
 
-     static Long_t fGoodEvents; //The total number of good events in a sub-run
+     static Long_t fGoodEvents;                   //The total number of good events in a sub-run
 
    public:
       ~TGRSIStats();

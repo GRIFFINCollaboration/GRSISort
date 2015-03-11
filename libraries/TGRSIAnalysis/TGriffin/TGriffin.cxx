@@ -380,7 +380,7 @@ void TGriffin::BuildAddBack(Option_t *opt) {
 
          int d_time = abs(addback_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
 
-         if( (res.Mag() < 105) && (d_time < 30) )    {    ///Still need to tune these values!! pcb.
+         if( (res.Mag() < 105) && (d_time < 20) )    {    ///Still need to tune these values!! pcb.
             used = true;
             addback_hits.at(j).Add(this->GetGriffinHit(i));
             break;
@@ -411,7 +411,7 @@ void TGriffin::BuildAddBackClover(Option_t *opt) {
             continue;
          int d_time = abs(addback_clover_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
 
-         if(  (d_time < 30)  )    {    ///Still need to tune these values!! pcb.
+         if(  (d_time < 20)  )    {    ///Still need to tune these values!! pcb.
             used = true;
             addback_clover_hits.at(j).Add(this->GetGriffinHit(i));
             break;
