@@ -83,6 +83,13 @@ public:
       GetHtml()->SetProductName(name);
    }
 
+   void SetEtcDir(TString name)
+   {
+      gSystem->PrependPathName(getenv("GRSISYS"), name);
+      GetHtml()->SetEtcDir(name);
+      std::cout << "ETC " << GetHtml()->GetEtcDir() << std::endl;
+   }
+
    void AddSourcePath(std::string newpath)
    {   
        fpath << ":$(GRSISYS)/libraries/" << newpath;
@@ -109,13 +116,13 @@ private:
 void html_generator() {
 
    gErrorIgnoreLevel=kError;
-
+   
    gSystem->ListLibraries();
 
    THtmlCreator html;
    html.SetProductName("GRSISort");
-
    html.AddRootSourcePath();
+   html.SetEtcDir("etc/html");
 //We must do this because of our naming convention of GRSISort directories
    html.AddSourcePath("GROOT");
    html.AddSourcePath("TGRSIFormat"); 
