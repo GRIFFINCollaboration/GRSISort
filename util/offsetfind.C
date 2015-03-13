@@ -14,7 +14,7 @@
 #include "TF1.h"
 #include "TMath.h"
 #include "TString.h"
-#include "TPeak.h"
+#include "TPolyMarker.h"
 
 #include<TMidasFile.h>
 #include<TMidasEvent.h>
@@ -345,10 +345,10 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::vector<TEventTime*>::iterator hit1;
    std::vector<TEventTime*>::iterator hit2;
    int event1count = 0;
-   const int range = 250;
+   const int range = 1250;
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
-      if(event1count%25000 == 0)
+      if(event1count%75000 == 0)
          printf("Processing Event %d / %d       \r",event1count,eventQ->size()); fflush(stdout);
       
       event1count++;
@@ -388,27 +388,18 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    }
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
       fillhist = (TH1D*)(list->At(mapit->second));
-/*      TF1* gausfit = new TF1(Form("Fit_0x%04x",mapit->first),"[0]*TMath::Exp(-(x-[1])*(x-[1])/2./([2]*[2])) + [3]",-100,100);
-      gausfit->SetParNames("Constant","Mean","Sigma","Flat");
-      gausfit->SetParameters(500,  0.0, 10.0, 10);
-      gausfit->SetParLimits(1,-50,50);
-      gausfit->SetParLimits(2,0.0,30.0);
-      gausfit->SetParLimits(3,0,10000000);
-      gausfit->SetNpx(1000);
-      fillhist->Fit(gausfit,"MR+");
-  */
-      printf("FITTING ADDRESS: 0x%04x\n",mapit->first);
-      TPeak* gausfit = new TPeak(0,-50,50);
-      gausfit->InitParams(fillhist);
-      gausfit->SetParLimits(3,-50,50);
-      gausfit->FixParameter(5,0.0);
-      gausfit->FixParameter(7,0.0);
-      gausfit->SetNpx(1000);
-      gausfit->Fit(fillhist,"MR+");
-      correction[mapit->second] += (int64_t)(gausfit->GetParameter("centroid"));
-      delete gausfit;
-      
+      correction[mapit->second] +=  (int64_t)fillhist->GetBinCenter(fillhist->GetMaximumBin());
+      TPolyMarker *pm = new TPolyMarker;
+      pm->SetNextPoint(fillhist->GetBinCenter(fillhist->GetMaximumBin()),fillhist->GetBinContent(fillhist->GetMaximumBin())+10);
+      pm->SetMarkerStyle(23);
+      pm->SetMarkerColor(kRed);
+      pm->SetMarkerSize(1.3);
+      fillhist->GetListOfFunctions()->Add(pm);
+ //     fillhist->Draw();
+
    }
+      
+   
    printf("*****  Final time shifts *******\n");
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
       printf("0x%04x:\t %d\n",mapit->first,correction[mapit->second]);
