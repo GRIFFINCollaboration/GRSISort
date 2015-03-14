@@ -15,13 +15,15 @@
 #include "TMath.h"
 #include "TString.h"
 #include "TPolyMarker.h"
+#include "TStopwatch.h"
+#include "TSystem.h"
 
 #include<TMidasFile.h>
 #include<TMidasEvent.h>
 #include<vector>
 
 #include <iostream>
-
+#include <fstream>
 
 class TEventTime {
    public: 
@@ -187,7 +189,8 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
    //These first four are for looking to see if high time-stamp reset
    std::map<int,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-      TH2D *midvshighhist = new TH2D(Form("midvshigh_0x%04x",mapit->first),Form("midvshigh_0x%04x",mapit->first), 5000,0,5000,5000,0,5000); midvshigh->Add(midvshighhist);
+      TH2D *midvshighhist = new TH2D(Form("midvshigh_0x%04x",mapit->first),Form("midvshigh_0x%04x",mapit->first), 5000,0,5000,5000,0,5000); 
+      midvshigh->Add(midvshighhist);
    }
   
    unsigned int lowmidtime = TEventTime::GetLowestMidasTime();
@@ -255,7 +258,9 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::map<int,bool> keep_filling;
    std::map<int,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-      TH1C *roughhist = new TH1C(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 50E6,-25E6,25E6); roughlist->Add(roughhist);
+      TH1C *roughhist = new TH1C(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 50E6,-25E6,25E6); 
+      roughhist->SetTitle(Form("rough_0x%04x against 0x%04x",mapit->first,TEventTime::GetBestDigitizer()));
+      roughlist->Add(roughhist);
       keep_filling[mapit->first] = true;
    }
    
@@ -267,7 +272,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::vector<TEventTime*>::iterator hit1;
    std::vector<TEventTime*>::iterator hit2;
    int event1count = 0;
-   const int range = 1000;
+   const int range = 250;
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%250000 == 0)
@@ -334,7 +339,9 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
 
    std::map<int,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-      TH1D *hist = new TH1D(Form("timediff_0x%04x",mapit->first),Form("timediff_0x%04x",mapit->first), 1000,-500,500); list->Add(hist);
+      TH1D *hist = new TH1D(Form("timediff_0x%04x",mapit->first),Form("timediff_0x%04x",mapit->first), 1000,-500,500); 
+      hist->SetTitle(Form("timediff_0x%04x Against 0x%04x",mapit->first,TEventTime::GetBestDigitizer()));
+      list->Add(hist);
    }
    
    //The "best digitizer" is set when we fill the event Q
@@ -345,7 +352,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::vector<TEventTime*>::iterator hit1;
    std::vector<TEventTime*>::iterator hit2;
    int event1count = 0;
-   const int range = 1250;
+   const int range = 500;
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%75000 == 0)
@@ -412,17 +419,254 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
 
 }
 
+void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
+   if(event->GetEventId() !=1 ) {
+      outfile->Write(event,"q");
+      return;
+   }
+   event->SetBankList();
+   int size;
+   int data[1024];
+  
+   void *ptr;
+   int banksize = event->LocateBank(NULL,"GRF1",&ptr);
+
+   int type  = 0xffffffff;
+   int value = 0xffffffff;
+
+   int dettype = 0;
+   int chanadd = 0;
+
+   int timelow  = 0;
+   int timehigh = 0;
+
+   int64_t time = 0;
+
+   for(int x=0;x<banksize;x++) {
+      value = *((int*)ptr+x);
+      type  = value & 0xf0000000; 
+
+      switch(type) {
+         case 0x80000000:
+            dettype = value & 0x0000000f;
+            chanadd = (value &0x0003fff0)>> 4;
+            break;
+         case 0xa0000000:
+            timelow = value & 0x0fffffff;
+            break;
+         case 0xb0000000:
+            timehigh = value & 0x00003fff;
+            break;
+
+      };
+   }
+
+   //printf("chanadd = 0x%08x
+   //event->Print("a");
+
+   //printf("dettype  = 0x%08x\n",dettype);
+   //printf("chanadd  = 0x%08x\n",chanadd);
+                                    
+   //printf("timelow  = 0x%08x\n",timelow);
+   //printf("timehigh = 0x%08x\n",timehigh);
+
+
+
+  /* if( (dettype==1) || (dettype ==5) ) { // 1 for GRIFFIN, 5 for PACES
+     //do nothing.
+   } else {
+    outfile->Write(event,"q");
+    return;
+   }
+
+   */
+ /*
+   if(((chanadd&0x0000ff00) == 0x00000000) ||
+      ((chanadd&0x0000ff00) == 0x00001000) ||
+      ((chanadd&0x0000ff00) == 0x00001100) ||
+      ((chanadd&0x0000ff00) == 0x00001200)) {
+      //do nothing.
+    } else {
+      outfile->Write(event,"q");
+      return;
+    }
+*/
+   time = timehigh;
+   time = time << 28;
+   time |= timelow &0x0fffffff;
+
+   
+
+   int dig_index = TEventTime::digmap.find(chanadd&0x0000ff00)->second; //This is where in the corrections list we find this digitzer
+                                                                //I know, I know...This is the worst way to do this...
+                                                                //This code morphed over time and it's hacked together in the
+                                                                //worst way possible...get over it...I hate it too.... RD
+
+
+   if((chanadd&0x0000ff00) != TEventTime::GetBestDigitizer()){
+      time -= correction[dig_index];
+   }
+
+   //printf("time = 0x%016x\n",time);
+   //std::cout << "time    = " << std::hex << time << std::endl;
+
+   // Here's where we change the values of the time stamps!!!!
+ /*  switch(chanadd&0x0000ff00) {
+      case 0x00000000: // if the first GRIF-16
+//         time -= 10919355323; // run 2369 correction
+         time -= 87; // run 2394 correction
+         break;
+      case 0x00000100: // if the second GRIF-16
+         break;
+      case 0x00001000: // if the third GRIF-16
+//         time -= 10919355323; // run 2369 correction
+         break;
+      case 0x00001100: // if the fourth GRIF-16
+//         time -= 10919355239; // run 2369 correction
+         break;
+      case 0x00001200: // if the fifth GRIF-16
+//         time += 7;
+         time -= 87; // run 2394 correction
+         break;
+   };*/
+   if(time<0)
+      time += 0x3ffffffffff;
+   else if(time>0x3ffffffffff)
+      time -= 0x3ffffffffff;
+
+   // moving these inside the next switch, to account for doubly printed words.
+   // (hey, it happens.)
+   // -JKS, 14 January 2015
+   //timelow = time&0x0fffffff;
+   //timehigh = (time&0x3fff0000000) >> 28;
+
+//   printf(DRED);
+//   event->Print("a");
+//   printf(RESET_COLOR);
+
+   TMidasEvent copyevent = *event;
+   copyevent.SetBankList();
+
+   banksize = copyevent.LocateBank(NULL,"GRF1",&ptr);
+   for(int x=0;x<banksize;x++) {
+      value = *((int*)ptr+x);
+      type  = value & 0xf0000000; 
+
+      switch(type) {
+         case 0xa0000000:
+            timelow = time&0x0fffffff;
+            timelow += 0xa0000000;
+            *((int*)ptr+x) = timelow;
+            break;
+         case 0xb0000000: {
+            timehigh = (time&0x3fff0000000) >> 28;
+            int tempdead = value & 0xffffc000;
+            timehigh +=tempdead;
+            *((int*)ptr+x) = timehigh;
+            break;
+         }
+      };
+
+
+
+       //printf( "0x%08x ",*((int*)ptr+x));
+       //if(x!=0 && (x%7)==0)
+       //   printf("\n");
+   }
+   //printf("===================\n");
+
+   outfile->Write(&copyevent,"q");
+
+//   printf(DBLUE);
+//   copyevent.Print("a");
+//   printf(RESET_COLOR);
+
+}
+
+void WriteEvents(TMidasFile* infile, TMidasFile* outfile,int64_t* correction) {
+
+   std::ifstream in(infile->GetFilename(), std::ifstream::in | std::ifstream::binary);
+   in.seekg(0, std::ifstream::end);
+   long long filesize = in.tellg();
+   in.close();
+
+   int bytes = 0;
+   long long bytesread = 0;
+
+   UInt_t num_evt = 0;
+
+   TStopwatch w;
+   w.Start();
+
+   TMidasEvent* event = new TMidasEvent;
+
+   while(true) {
+      bytes = infile->Read(event);
+      if(bytes == 0){
+         printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",infile->GetFilename(),infile->GetLastError());
+      if(infile->GetLastErrno()==-1)  //try to read some more...
+         continue;
+      break;
+      }
+      bytesread += bytes;
+                                          
+      switch(event->GetEventId()) {
+         case 0x8000:
+            printf("start of run\n");
+            outfile->Write(event,"q");
+            printf(DGREEN);
+            event->Print();
+            printf(RESET_COLOR);
+            break;
+         case 0x8001:
+            printf("end of run\n");
+            printf(DRED);
+            event->Print();
+            printf(RESET_COLOR);
+            outfile->Write(event,"q");
+            break;
+         default: 
+            num_evt++;
+            ProcessEvent(event,outfile,correction);
+            break;
+       };
+       if(num_evt %5000 == 0){
+         gSystem->ProcessEvents();
+         printf(HIDE_CURSOR " Events %d have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r",num_evt,(bytesread/1000000.0),(filesize/1000000.0),(bytesread/1000000.0)/w.RealTime());
+         w.Continue();
+       }
+   }
+   printf("\n");
+   
+   delete event;
+
+}
+
 int main(int argc, char **argv) {
 
-   if(argc!=2) {
-      printf("Usage: ./offsetfind <input.mid>\n");
+   if(argc!=3) {
+      printf("Usage: ./offsetadd <input.mid> <output.mid>\n");
       return 1;
+   }
+   if(argv[1] == argv[2]){
+      printf("ERROR: Cannot overwrite midas file %s\n",argv[1]);
    }
 
    TMidasFile *infile  = new TMidasFile;
+   TMidasFile *outfilemid = new TMidasFile;
    infile->Open(argv[1]);
+   outfilemid->OutOpen(argv[2]);
+   
+   int runnumber = infile->GetRunNumber();
+   int subrunnumber = infile->GetSubRunNumber();
+   char filename[64];
+   if(subrunnumber>-1)
+      sprintf(filename,"time_diffs%05i_%03i.root",runnumber,subrunnumber); 
+   else
+      sprintf(filename,"time_diffs%05i.root",runnumber);
+	printf("Creating root outfile: %s\n",filename);
 
-   GFile *outfile = new GFile("outfile.root","RECREATE");
+   GFile *outfile = new GFile(filename,"RECREATE");
 
    std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
    std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;
@@ -434,6 +678,10 @@ int main(int argc, char **argv) {
    CheckHighTimeStamp(eventQ,correction);
    GetRoughTimeDiff(eventQ,correction);
    GetTimeDiff(eventQ,correction);
+   infile->Close();
+   infile->Open(argv[1]);//This seems like the easiest way to reset the file....
+   //It might be worth threading the Read/Write Part of this...its slooooooow.
+   WriteEvents(infile,outfilemid,correction);
 
 
    //Have to do deleting on Q if we move to a next step of fixing the MIDAS File
@@ -441,5 +689,9 @@ int main(int argc, char **argv) {
    outfile->Close();
    delete[] correction;
    delete infile;
+   delete outfile;
+   delete outfilemid;
 
 }
+
+

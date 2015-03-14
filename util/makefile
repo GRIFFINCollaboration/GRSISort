@@ -1,5 +1,5 @@
 CXXTARGET = Root2Rad
-ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfindtree bufferclean ExamineMidasFile
+ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile
 
 
 
