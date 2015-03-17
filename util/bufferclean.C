@@ -10,7 +10,7 @@
 #include <iostream>
 #include <fstream>
 
-Int_t chanId_threshold = 50;
+Int_t chanId_threshold = 10;
 
 Bool_t CheckEvent(TMidasEvent *evt){
    //This function does not work if a Midas event contains multiple fragments
@@ -44,8 +44,8 @@ Bool_t CheckEvent(TMidasEvent *evt){
             trigId = value & 0x0fffffff;
       };
    }
-   if(triggermap.find(dignum) == triggermap.end()){
-      triggermap[dignum] = false; //initialize the new digitizer number to false.
+   if(triggermap.find(chanadd) == triggermap.end()){
+      triggermap[chanadd] = false; //initialize the new digitizer number to false.
    }
    //Check to make sure we aren't getting any triggerId's = 0. I think these are corrupt events RD.
    if(trigId == 0){
@@ -53,11 +53,11 @@ Bool_t CheckEvent(TMidasEvent *evt){
    }
 
    //Check against map of trigger Id's to see if we have hit the elusive < threshold mark yet.
-   if(triggermap.find(dignum)->second == true){ 
+   if(triggermap.find(chanadd)->second == true){ 
       return true;
    }
    else if(trigId < chanId_threshold){
-      triggermap.find(dignum)->second = true;
+      triggermap.find(chanadd)->second = true;
       return true;
    }
    else 
