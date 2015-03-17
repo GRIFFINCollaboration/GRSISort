@@ -147,7 +147,7 @@ std::map<int,int> TEventTime::digmap;
 
 int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    int events_read = 0;
-   const int total_events = 1E6;
+   const int total_events = 1E7;
    TMidasEvent *event  = new TMidasEvent;
    eventQ->reserve(total_events);
 
@@ -254,7 +254,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::map<int,bool> keep_filling;
    std::map<int,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-      TH1C *roughhist = new TH1C(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 6E8,-3E8,3E8); 
+      TH1C *roughhist = new TH1C(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 6E7,-3E8,3E8); 
       roughhist->SetTitle(Form("rough_0x%04x against 0x%04x",mapit->first,TEventTime::GetBestDigitizer()));
       roughlist->Add(roughhist);
       keep_filling[mapit->first] = true;
@@ -268,7 +268,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::vector<TEventTime*>::iterator hit1;
    std::vector<TEventTime*>::iterator hit2;
    int event1count = 0;
-   const int range = 250;
+   const int range = 1000;
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%250000 == 0)
@@ -348,7 +348,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::vector<TEventTime*>::iterator hit1;
    std::vector<TEventTime*>::iterator hit2;
    int event1count = 0;
-   const int range = 250;
+   const int range = 1000;
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%75000 == 0)
