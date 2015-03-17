@@ -677,7 +677,7 @@ int main(int argc, char **argv) {
    infile->Close();
    infile->Open(argv[1]);//This seems like the easiest way to reset the file....
    //It might be worth threading the Read/Write Part of this...its slooooooow.
-  // WriteEvents(infile,outfilemid,correction);
+   WriteEvents(infile,outfilemid,correction);
 
 
    //Have to do deleting on Q if we move to a next step of fixing the MIDAS File
