@@ -28,9 +28,12 @@ TMidasFile::TMidasFile()
   fGzFile = NULL;
   fPoFile = NULL;
   fLastErrno = 0;
+  fCurrentBufferSize = 0;
 
   fOutFile = -1;
   fOutGzFile = NULL;
+
+  fMaxBufferSize = 1E6;
 
   fDoByteSwap = *(char*)(&endian) != 0x78;
 }
@@ -348,6 +351,64 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
   return rd + rd_head;
 }
 
+void TMidasFile::FillBuffer(TMidasEvent *midasEvent, Option_t *opt){
+//Fills A buffer to be written to a midas file.   
+
+   
+   //Not the prettiest way to do this but it works.
+   //It seems to be filling in the wrong order of bits, but this does it correctly
+   //There is a byte swap happening at some point in this process. Might have to put something
+   //in here that protects against "Endian-ness"
+   fWriteBuffer.push_back((char)(midasEvent->GetEventId()&0xFF));
+   fWriteBuffer.push_back((char)(midasEvent->GetEventId() >> 8));
+
+   fWriteBuffer.push_back((char)(midasEvent->GetTriggerMask()&0xFF));
+   fWriteBuffer.push_back((char)(midasEvent->GetTriggerMask() >> 8));
+
+   fWriteBuffer.push_back((char)(midasEvent->GetSerialNumber() & 0xFF));
+   fWriteBuffer.push_back((char)((midasEvent->GetSerialNumber() >> 8) & 0xFF));
+   fWriteBuffer.push_back((char)((midasEvent->GetSerialNumber() >> 16) & 0xFF));
+   fWriteBuffer.push_back((char)(midasEvent->GetSerialNumber() >> 24));
+  
+   fWriteBuffer.push_back((char)(midasEvent->GetTimeStamp() & 0xFF));
+   fWriteBuffer.push_back((char)((midasEvent->GetTimeStamp() >> 8) & 0xFF));
+   fWriteBuffer.push_back((char)((midasEvent->GetTimeStamp() >> 16) & 0xFF));
+   fWriteBuffer.push_back((char)(midasEvent->GetTimeStamp() >> 24));
+   
+   fWriteBuffer.push_back((char)(midasEvent->GetDataSize() & 0xFF));
+   fWriteBuffer.push_back((char)((midasEvent->GetDataSize() >> 8) & 0xFF));
+   fWriteBuffer.push_back((char)((midasEvent->GetDataSize() >> 16) & 0xFF));
+   fWriteBuffer.push_back((char)(midasEvent->GetDataSize() >> 24));
+ 
+   for(int i=0; i<midasEvent->GetDataSize();i++){
+      fWriteBuffer.push_back(midasEvent->GetData()[i]);
+   }
+  
+   fCurrentBufferSize += midasEvent->GetDataSize() + sizeof(TMidas_EVENT_HEADER);
+
+   if(fWriteBuffer.size() >  fMaxBufferSize)
+      WriteBuffer();
+}
+
+bool TMidasFile::WriteBuffer(){
+   int wr = -2;
+ 
+   if (fOutGzFile){
+      #ifdef HAVE_ZLIB
+         wr = gzwrite(*(gzFile*)fOutGzFile, fWriteBuffer.data(), fCurrentBufferSize);
+      #else
+         assert(!"Cannot get here");
+      #endif
+   }
+   else{
+      wr = write(fOutFile, fWriteBuffer.data(), fCurrentBufferSize);
+   }
+   fCurrentBufferSize = 0;
+   fWriteBuffer.clear();
+
+   return wr;
+}
+
 bool TMidasFile::Write(TMidasEvent *midasEvent,Option_t *opt)
 {
   int wr = -2;
@@ -384,6 +445,10 @@ bool TMidasFile::Write(TMidasEvent *midasEvent,Option_t *opt)
   return wr;
 }
 
+void TMidasFile::SetMaxBufferSize(int maxsize){
+   fMaxBufferSize = maxsize;
+}
+
 void TMidasFile::Close()
 {
   if (fPoFile)
@@ -402,6 +467,10 @@ void TMidasFile::Close()
 
 void TMidasFile::OutClose()
 {
+
+   if(fWriteBuffer.size()){
+      WriteBuffer();
+   }
 #ifdef HAVE_ZLIB
   if (fOutGzFile) {
     gzflush(*(gzFile*)fOutGzFile, Z_FULL_FLUSH);
