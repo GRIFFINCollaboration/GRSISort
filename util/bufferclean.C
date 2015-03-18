@@ -9,6 +9,8 @@
 #include <map>
 #include <iostream>
 #include <fstream>
+#include "TMidasQueue.h"
+#include <chrono>
 
 Int_t chanId_threshold = 10;
 
@@ -64,8 +66,21 @@ Bool_t CheckEvent(TMidasEvent *evt){
       return false;
 }
 
-int main(int argc, char **argv) {
 
+/*void AddToQueue(TMidasEvent* evt){
+   evtQ.push(evt);
+}
+*/
+
+void Write(TMidasEvent *evt,TMidasFile *outfile){
+   outfile->FillBuffer(evt);
+
+  // if(outfile->GetBufferSize() > 100000){
+  //    outfile->WriteBuffer();
+  // }
+}
+
+int main(int argc, char **argv) {
    if(argc!=3) {
       printf("Usage: ./bufferclear <input.mid> <output.mid>\n");
       return 1;
@@ -76,12 +91,12 @@ int main(int argc, char **argv) {
       return 1;
    }
 
-   TMidasFile *infile  = new TMidasFile;
-   TMidasFile *outfile = new TMidasFile;
-   infile->Open(argv[1]);
-   outfile->OutOpen(argv[2]);
+   TMidasFile *file  = new TMidasFile;
+   //TMidasFile *outfile = new TMidasFile;
+   file->Open(argv[1]);
+   file->OutOpen(argv[2]);
  
-   std::ifstream in(infile->GetFilename(), std::ifstream::in | std::ifstream::binary);
+   std::ifstream in(file->GetFilename(), std::ifstream::in | std::ifstream::binary);
    in.seekg(0, std::ifstream::end);
    long long filesize = in.tellg();
    in.close();
@@ -92,15 +107,15 @@ int main(int argc, char **argv) {
    TStopwatch w;
    w.Start();
 
-   TMidasEvent *event = new TMidasEvent;
    UInt_t num_bad_evt =0;
    UInt_t num_evt =0;
+   TMidasEvent *event = new TMidasEvent;//need to new for each event
 
    while(true) {
-      bytes = infile->Read(event);
+      bytes = file->Read(event);
       if(bytes == 0){
-         printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",infile->GetFilename(),infile->GetLastError());
-      if(infile->GetLastErrno()==-1)  //try to read some more...
+         printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",file->GetFilename(),file->GetLastError());
+      if(file->GetLastErrno()==-1)  //try to read some more...
          continue;
       break;
       }
@@ -109,7 +124,8 @@ int main(int argc, char **argv) {
       switch(event->GetEventId()) {
          case 0x8000:
             printf("start of run\n");
-            outfile->Write(event,"q");
+           // file->Write(event,"q");
+            Write(event,file);
             printf(DGREEN);
             event->Print();
             printf(RESET_COLOR);
@@ -119,11 +135,13 @@ int main(int argc, char **argv) {
             printf(DRED);
             event->Print();
             printf(RESET_COLOR);
-            outfile->Write(event,"q");
+          //  file->Write(event,"q");
+            Write(event,file);
             break;
          case 0x0001: //This is a GRIFFIN digitizer event
             if(CheckEvent(event)){
-               outfile->Write(event,"q");
+               Write(event,file);
+               //file->Write(event,"q");
             }
             else{
                num_bad_evt++;
@@ -131,21 +149,25 @@ int main(int argc, char **argv) {
             num_evt++;
             break;
          default: //Probably epics
-            outfile->Write(event,"q");
+            Write(event,file);
+          //  file->Write(event,"q");
             break;
        };
+       
        if(num_evt %5000 == 0){
          gSystem->ProcessEvents();
          printf(HIDE_CURSOR " bad events %u/%u have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r", num_bad_evt,num_evt,(bytesread/1000000.0),(filesize/1000000.0),(bytesread/1000000.0)/w.RealTime());
          w.Continue();
        }
    }
+   file->WriteBuffer();
+
    printf("\n");
 
-   infile->Close();
-   outfile->Close();
-   delete infile;
-   delete outfile;
+   file->Close();
+   file->OutClose();
+   delete file;
+   //delete outfile;
 
 }
 //void WriteEventToFile(TMidasFile*,TMidasEvent*,Option_t);
