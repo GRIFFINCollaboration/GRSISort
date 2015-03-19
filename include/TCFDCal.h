@@ -23,8 +23,6 @@ class TCFDCal : public TCal {
    void SetParameters(std::vector<Double_t> paramvec);
    void SetParameter(Int_t idx, Double_t param);
 
-   virtual void WriteToAllChannels(std::string mnominc = "");
-
    //static TGraphErrors MergeGraphs(TCal *cal,...);
 
    virtual void Print(Option_t *opt = "") const;
