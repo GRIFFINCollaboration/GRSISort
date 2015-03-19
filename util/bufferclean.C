@@ -9,7 +9,6 @@
 #include <map>
 #include <iostream>
 #include <fstream>
-#include "TMidasQueue.h"
 #include <chrono>
 
 Int_t chanId_threshold = 10;
