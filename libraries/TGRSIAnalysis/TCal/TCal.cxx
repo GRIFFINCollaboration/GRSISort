@@ -76,6 +76,7 @@ void TCal::Copy(TObject &obj) const{
 Bool_t TCal::SetChannel(const TChannel* chan){
    if(!chan){
       Error("SetChannel","TChannel does not exist");
+      printf("%p\n",chan);
       return false;
    }
    //Set our TRef to point at the TChannel
@@ -84,7 +85,17 @@ Bool_t TCal::SetChannel(const TChannel* chan){
 }
 
 void TCal::WriteToAllChannels(std::string mnemonic){
-   Error("WriteToAllChannels","Not Defined for %c",ClassName());
+   std::map<unsigned int,TChannel*>::iterator mapit;
+   std::map<unsigned int,TChannel*> *chanmap = TChannel::GetChannelMap();
+   TChannel* orig_chan = GetChannel();
+   for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++){
+      if(!mnemonic.size() || !strncmp(mapit->second->GetChannelName(),mnemonic.c_str(),3)){
+         SetChannel(mapit->second);
+         WriteToChannel();
+      }
+   }
+   if(orig_chan)
+      SetChannel(orig_chan);
 }
 
 std::vector<Double_t> TCal::GetParameters() const{

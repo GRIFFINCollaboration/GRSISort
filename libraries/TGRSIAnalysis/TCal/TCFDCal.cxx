@@ -37,19 +37,6 @@ void TCFDCal::SetParameter(Int_t idx, Double_t param){
    }
 }
 
-void TCFDCal::WriteToAllChannels(std::string mnemonic){
-   std::map<unsigned int,TChannel*>::iterator mapit;
-   std::map<unsigned int,TChannel*> *chanmap = TChannel::GetChannelMap();
-   TChannel* orig_chan = GetChannel();
-   for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++){
-      if(!mnemonic.size() || !strncmp(mapit->second->GetChannelName(),mnemonic.c_str(),3)){
-         SetChannel(mapit->second);
-         WriteToChannel();
-      }
-   }
-   SetChannel(orig_chan);
-}
-
 void TCFDCal::ReadFromChannel() {
    if(!GetChannel()){
       Error("ReadFromChannel","No Channel Set");
