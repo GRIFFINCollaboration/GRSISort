@@ -417,7 +417,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
 
 void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
    if(event->GetEventId() !=1 ) {
-      outfile->Write(event,"q");
+      outfile->FillBuffer(event);
       return;
    }
    event->SetBankList();
@@ -571,7 +571,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
    }
    //printf("===================\n");
 
-   outfile->Write(&copyevent,"q");
+   outfile->FillBuffer(&copyevent);
 
 //   printf(DBLUE);
 //   copyevent.Print("a");
@@ -579,9 +579,9 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
 
 }
 
-void WriteEvents(TMidasFile* infile, TMidasFile* outfile,int64_t* correction) {
+void WriteEvents(TMidasFile* file, int64_t* correction) {
 
-   std::ifstream in(infile->GetFilename(), std::ifstream::in | std::ifstream::binary);
+   std::ifstream in(file->GetFilename(), std::ifstream::in | std::ifstream::binary);
    in.seekg(0, std::ifstream::end);
    long long filesize = in.tellg();
    in.close();
@@ -597,10 +597,10 @@ void WriteEvents(TMidasFile* infile, TMidasFile* outfile,int64_t* correction) {
    TMidasEvent* event = new TMidasEvent;
 
    while(true) {
-      bytes = infile->Read(event);
+      bytes = file->Read(event);
       if(bytes == 0){
-         printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",infile->GetFilename(),infile->GetLastError());
-      if(infile->GetLastErrno()==-1)  //try to read some more...
+         printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",file->GetFilename(),file->GetLastError());
+      if(file->GetLastErrno()==-1)  //try to read some more...
          continue;
       break;
       }
@@ -609,7 +609,7 @@ void WriteEvents(TMidasFile* infile, TMidasFile* outfile,int64_t* correction) {
       switch(event->GetEventId()) {
          case 0x8000:
             printf("start of run\n");
-            outfile->Write(event,"q");
+            file->FillBuffer(event);
             printf(DGREEN);
             event->Print();
             printf(RESET_COLOR);
@@ -619,11 +619,11 @@ void WriteEvents(TMidasFile* infile, TMidasFile* outfile,int64_t* correction) {
             printf(DRED);
             event->Print();
             printf(RESET_COLOR);
-            outfile->Write(event,"q");
+            file->FillBuffer(event);
             break;
          default: 
             num_evt++;
-            ProcessEvent(event,outfile,correction);
+            ProcessEvent(event,file,correction);
             break;
        };
        if(num_evt %5000 == 0){
@@ -635,26 +635,26 @@ void WriteEvents(TMidasFile* infile, TMidasFile* outfile,int64_t* correction) {
    printf("\n");
    
    delete event;
+   file->WriteBuffer();
 
 }
 
 int main(int argc, char **argv) {
 
    if(argc!=3) {
-      printf("Usage: ./offsetadd <input.mid> <output.mid>\n");
+      printf("Usage: ./offsetfix <input.mid> <output.mid>\n");
       return 1;
    }
    if(argv[1] == argv[2]){
       printf("ERROR: Cannot overwrite midas file %s\n",argv[1]);
    }
 
-   TMidasFile *infile  = new TMidasFile;
-   TMidasFile *outfilemid = new TMidasFile;
-   infile->Open(argv[1]);
-   outfilemid->OutOpen(argv[2]);
+   TMidasFile *midfile  = new TMidasFile;
+   midfile->Open(argv[1]);
+   midfile->OutOpen(argv[2]);
    
-   int runnumber = infile->GetRunNumber();
-   int subrunnumber = infile->GetSubRunNumber();
+   int runnumber = midfile->GetRunNumber();
+   int subrunnumber = midfile->GetSubRunNumber();
    char filename[64];
    if(subrunnumber>-1)
       sprintf(filename,"time_diffs%05i_%03i.root",runnumber,subrunnumber); 
@@ -666,7 +666,7 @@ int main(int argc, char **argv) {
 
    std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
    std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;
-   QueueEvents(infile,eventQ);
+   QueueEvents(midfile,eventQ);
    std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
 
    int64_t *correction;
@@ -674,19 +674,19 @@ int main(int argc, char **argv) {
    CheckHighTimeStamp(eventQ,correction);
    GetRoughTimeDiff(eventQ,correction);
    GetTimeDiff(eventQ,correction);
-   infile->Close();
-   infile->Open(argv[1]);//This seems like the easiest way to reset the file....
+   midfile->Close();
+   midfile->Open(argv[1]);//This seems like the easiest way to reset the file....
    //It might be worth threading the Read/Write Part of this...its slooooooow.
-   WriteEvents(infile,outfilemid,correction);
+   WriteEvents(midfile,correction);
 
 
    //Have to do deleting on Q if we move to a next step of fixing the MIDAS File
-   infile->Close();
+   midfile->Close();
+   midfile->OutClose();
    outfile->Close();
    delete[] correction;
-   delete infile;
    delete outfile;
-   delete outfilemid;
+   delete midfile;
 
 }
 
