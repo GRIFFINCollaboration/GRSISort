@@ -83,6 +83,10 @@ Bool_t TCal::SetChannel(const TChannel* chan){
    return true;
 }
 
+void TCal::WriteToAllChannels(std::string mnemonic){
+   Error("WriteToAllChannels","Not Defined for %c",ClassName());
+}
+
 std::vector<Double_t> TCal::GetParameters() const{
    std::vector<Double_t> paramlist;
    if(!GetFitFunction()){
