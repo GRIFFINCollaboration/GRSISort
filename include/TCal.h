@@ -44,7 +44,7 @@ class TCal : public TNamed {
    virtual TF1* GetFitFunction() const { return ffitfunc; } 
    virtual void SetFitFunction(const TF1* func){ ffitfunc = (TF1*)func; };
    virtual std::vector<Double_t> GetParameters() const;
-   virtual Double_t GetParameter(Int_t parameter) const ;
+   virtual Double_t GetParameter(Int_t parameter) const;
 
    //static TGraphErrors MergeGraphs(TCal *cal,...);
 
@@ -53,6 +53,8 @@ class TCal : public TNamed {
    Bool_t SetChannel(UInt_t channum);
    virtual void Print(Option_t *opt = "") const;
    virtual void Clear(Option_t *opt = "");
+
+   virtual void WriteToAllChannels(std::string mnemonic = "");
 
    virtual void SetHist(TH1* hist);
    TH1* GetHist() const {return fhist;}
