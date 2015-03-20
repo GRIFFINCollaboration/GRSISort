@@ -29,12 +29,12 @@ void TCFDCal::SetParameters(std::vector<Double_t> paramvec){
 }
 
 void TCFDCal::SetParameter(Int_t idx, Double_t param){
-   try {
+/*   try {
 	   fparameters.at(idx) = param;
    } 
    catch(const std::out_of_range& oor) {
       Error("SetParameter","Parameter %d does not exist yet",idx);
-   }
+   } */
 }
 
 void TCFDCal::ReadFromChannel() {
