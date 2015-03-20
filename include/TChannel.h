@@ -145,12 +145,18 @@ class TChannel : public TNamed	{
 
     double CalibrateENG(double);
     double CalibrateENG(int);
+    
     double CalibrateCFD(double);
     double CalibrateCFD(int);
+    
     double CalibrateLED(double);
     double CalibrateLED(int); 
+
     double CalibrateTIME(double);
     double CalibrateTIME(int);
+    inline double GetTZero(double tempd) { return CalibrateTIME(tempd); }
+    inline double GetTZero(int    tempi) { return CalibrateTIME(tempi); }
+
     double CalibrateEFF(double);
 
     void DestroyCalibrations();

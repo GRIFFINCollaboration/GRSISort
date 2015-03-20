@@ -67,12 +67,25 @@ void TFragment::Clear(Option_t *opt){
 
 }
 
-long TFragment::GetTimeStamp() const {
+double TFragment::GetTimeStamp() const {
    long time = TimeStampHigh;
    time  = time << 28;
    time |= TimeStampLow & 0x0fffffff;
-   return time;
+   
+   TChannel *chan = TChannel::GetChannel(ChannelAddress);
+   if(!chan )//|| Charge.size()<1)
+      return double(time);
+   return double(time) - chan->GetTZero(GetEnergy());
 }
+
+double TFragment::GetTZero() const {
+   TChannel *chan = TChannel::GetChannel(ChannelAddress);
+   if(!chan )//|| Charge.size()<1)
+      return 0.000;
+   return chan->GetTZero(GetEnergy());
+}
+
+
 
 
 long TFragment::GetTimeStamp_ns() {
@@ -101,7 +114,7 @@ const char *TFragment::GetName() {
 }
 
 
-double TFragment::GetEnergy() {
+double TFragment::GetEnergy() const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || Charge.size()<1)
       return 0.00;

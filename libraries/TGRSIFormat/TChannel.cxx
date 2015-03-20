@@ -368,8 +368,9 @@ double TChannel::CalibrateENG(double charge) {
 
 double TChannel::CalibrateCFD(int cfd) {
    //Calibrates the CFD properly.
-   return CalibrateCFD((double)cfd + gRandom->Uniform());
+   return CalibrateCFD((double)cfd+gRandom->Uniform());
 };
+
 
 double TChannel::CalibrateCFD(double cfd) {
    //Returns the calibrated CFD. The polynomial CFD calibration formula is 
@@ -381,8 +382,12 @@ double TChannel::CalibrateCFD(double cfd) {
    for(int i=0;i<CFDCoefficients.size();i++){
       cal_cfd += CFDCoefficients[i] * pow(cfd,i);
    }
+
    return cal_cfd;
 };
+
+
+
 
 
 double TChannel::CalibrateLED(int led) {
@@ -403,25 +408,34 @@ double TChannel::CalibrateLED(double led) {
    return cal_led;
 }
 
-double TChannel::CalibrateTIME(int time)  {
+
+
+
+double TChannel::CalibrateTIME(int chg)  {
    //Calibrates the time spectrum
-   return CalibrateTIME((double)time + gRandom->Uniform());
+   if(TIMECoefficients.size()!=3 || (chg<1))
+      return 0.0000;
+   return CalibrateTIME(CalibrateENG(chg));
 };
 
-double TChannel::CalibrateTIME(double time)  {
-   //Returns the calibrated time. The polynomial time calibration formula is 
-   //applied to get the calibrated time. This function does not use the 
-   //integration parameter.
+double TChannel::CalibrateTIME(double energy)  {
+  // uses the values stored in TIMECOefficients to calculate a 
+  // "walk correction" factor.  This function returns the correction
+  // not an adjusted time stamp!   pcb.
+  if(TIMECoefficients.size()!=3 || (energy<3.0))
+    return 0.0000;
   
-   if(TIMECoefficients.size()==0)
-      return time;
+  double time_correction = 0.0;
+  //time_correction = (TIMECoefficients.at(0)/(energy+TIMECoefficients.at(1))) + TIMECoefficients.at(2);
 
-   double cal_time = 0.0;
-   for(int i=0;i<TIMECoefficients.size();i++){
-      cal_time += TIMECoefficients[i] * pow(time,i);
-   }
-   return cal_time;
+  time_correction = TIMECoefficients.at(0) + (TIMECoefficients.at(1) * pow(energy,TIMECoefficients.at(2)));
+
+  return time_correction;
 }
+
+
+
+
 
 double TChannel::CalibrateEFF(double energy) {
    //This needs to be added
@@ -774,7 +788,11 @@ Int_t TChannel::ParseInputData(const char *inputdata,Option_t *opt) {
             } else if(type.compare("TIMECOEFF")==0) {
                channel->DestroyTIMECal();
                double value;
-               while (ss >> value) {   channel->AddTIMECoefficient(value); } 
+               while (ss >> value) {   channel->AddTIMECoefficient(value); }
+            } else if(type.compare("WALK")==0) {
+               channel->DestroyTIMECal();
+               double value;
+               while (ss >> value) {   channel->AddTIMECoefficient(value); }
             } else if(type.compare("EFFCOEFF")==0) {
                channel->DestroyEFFCal();
                double value;
