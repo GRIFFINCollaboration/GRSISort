@@ -63,9 +63,12 @@ class TEventTime {
          
          SetDigitizer();
   
-         if(GetTimeStamp() < lowest_time || lowest_time == -1){
-            lowest_time = GetTimeStamp();
-            best_dig = Digitizer();
+         if(!(digset.find(Digitizer())->second)){
+            digset.find(Digitizer())->second = true;
+            if(GetTimeStamp() < lowest_time || lowest_time == -1){
+               lowest_time = GetTimeStamp();
+               best_dig = Digitizer();
+            }
          }
       }
 
@@ -98,6 +101,7 @@ class TEventTime {
       //Maybe make a map somewhere of digitizer vs address
          digitizernum = chanadd&0x0000ff00;
          digmap.insert( std::pair<int,int>(digitizernum, digmap.size()));
+         digset.insert( std::pair<int,bool>(digitizernum,false));
       }
 
       static void OrderDigitizerMap(){
@@ -113,7 +117,8 @@ class TEventTime {
       }
 
       inline static unsigned int GetBestDigitizer(){
-         return best_dig;
+         return 0x0100;
+         //return best_dig;
       }
       
       static unsigned long GetLowestMidasTime(){
@@ -124,7 +129,12 @@ class TEventTime {
          return digmap.find(digitizernum)->second;
       }
 
+      inline static int64_t GetLowestTime(){
+         return lowest_time;
+      }
+
       static std::map<int,int> digmap;
+      static std::map<int,bool> digset;
       static unsigned long low_timemidas;
       static unsigned int best_dig;
       static int64_t lowest_time;
@@ -144,6 +154,7 @@ unsigned long TEventTime::low_timemidas = -1;
 int64_t TEventTime::lowest_time = -1;
 unsigned int TEventTime::best_dig = 0;
 std::map<int,int> TEventTime::digmap;
+std::map<int,bool> TEventTime::digset;
 
 int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    int events_read = 0;
@@ -187,7 +198,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
    TList *midvshigh = new TList;
    printf(DBLUE "Correcting High time stamps...\n" RESET_COLOR);
    //These first four are for looking to see if high time-stamp reset
-   std::map<int,int>::iterator mapit;
+   std::map<int,int>::iterator mapit; //This is an iterator over the digitizer map 
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
       TH2D *midvshighhist = new TH2D(Form("midvshigh_0x%04x",mapit->first),Form("midvshigh_0x%04x",mapit->first), 5000,0,5000,5000,0,5000); 
       midvshigh->Add(midvshighhist);
@@ -212,6 +223,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
       unsigned long midtime = (*it)->MidasTime() - lowmidtime;
       if(midtime>20) break;//20 seconds seems like plenty enough time
     
+      //The next few lines are probably unnecessary
       ((TH2D*)(midvshigh->At((*it)->DigIndex())))->Fill(midtime, hightime);
       if(lowest_hightime.find((*it)->Digitizer()) == lowest_hightime.end()){
          lowest_hightime[(*it)->Digitizer()] = hightime; //initialize this as the first time that is seen.
@@ -221,20 +233,25 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
    //find lowest digitizer 
    int lowest_dig = 0;
    int lowtime = 999999;
-   for(mapit = lowest_hightime.begin(); mapit != lowest_hightime.end(); mapit++){
+ /*  for(mapit = lowest_hightime.begin(); mapit != lowest_hightime.end(); mapit++){
       if(mapit->second < lowtime){
          lowest_dig = mapit->first;
          lowtime = mapit->second;
       }
-   }
+   }*/
+
+   lowest_dig = TEventTime::GetBestDigitizer();
+   lowtime = lowest_hightime.find(lowest_dig)->second;
 
    midvshigh->Print();  
    printf("The lowest digitizer is 0x%04x\n",lowest_dig);
    printf("*****  High time shifts *******\n");
    for(mapit = lowest_hightime.begin(); mapit != lowest_hightime.end(); mapit++){
-      printf("0x%04x:\t %d\n",mapit->first,mapit->second);
-      //Calculate the shift to 0 all digitizers
-      correction[TEventTime::digmap.find(mapit->first)->second] = ((int64_t)((mapit->second-lowtime))*(1<<28)) ;
+      if(mapit->first == lowest_dig)
+         continue;
+      printf("0x%04x:\t %d \t %lf sec\n",mapit->first,mapit->second -lowtime, static_cast<double>((static_cast<int64_t>(mapit->second-lowtime))*(1<<28))/1.0E8);
+      //Calculate the shift to the first event in all digitizers
+      correction[TEventTime::digmap.find(mapit->first)->second] = ((static_cast<int64_t>(mapit->second-lowtime))*(1<<28)) ;
    }
    printf("********************\n");
 
@@ -268,7 +285,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::vector<TEventTime*>::iterator hit1;
    std::vector<TEventTime*>::iterator hit2;
    int event1count = 0;
-   const int range = 1000;
+   const int range = 1500;
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%250000 == 0)
@@ -278,7 +295,8 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) 
          continue;
 
-      int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];
+ //     int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];
+      int64_t time1 = (*hit1)->GetTimeStamp();
   
       if(event1count > range){
          hit2 = hit1 - range;
@@ -310,13 +328,19 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    }
 
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
+      if(mapit->first == TEventTime::GetBestDigitizer())
+         continue;
       fillhist = (TH1C*)(roughlist->At(mapit->second));
-      correction[mapit->second] +=  (int64_t)fillhist->GetBinCenter(fillhist->GetMaximumBin());
+      std::cout << static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin())) << std::endl;
+      correction[mapit->second] +=  static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin()));
    }
 
    printf("*****  Rough time shifts *******\n");
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      printf("0x%04x:\t %d\n",mapit->first,correction[mapit->second]);
+      if(mapit->first == TEventTime::GetBestDigitizer())
+         printf("0x%04x:\t BEST\n");
+      else
+         printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
 
@@ -348,7 +372,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::vector<TEventTime*>::iterator hit1;
    std::vector<TEventTime*>::iterator hit2;
    int event1count = 0;
-   const int range = 1000;
+   const int range = 1500;
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%75000 == 0)
@@ -361,7 +385,8 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) 
          continue;
 
-      int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];;
+    //  int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];;
+      int64_t time1 = (*hit1)->GetTimeStamp();
   
       if(event1count > range){
          hit2 = hit1 - range;
@@ -382,7 +407,6 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
             int64_t time2 = (*hit2)->GetTimeStamp() - correction[(*hit2)->DigIndex()];
             if(time2-time1 < 2147483647 && time2-time1 > -2147483647){//Make sure we are casting this to 32 bit properly
                Int_t bin = static_cast<Int_t>(time2 - time1);
-               
                fillhist->Fill(bin);
             }
          }
@@ -390,8 +414,11 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       }
    }
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
+      if(mapit->first == TEventTime::GetBestDigitizer())
+         continue;
       fillhist = (TH1D*)(list->At(mapit->second));
-      correction[mapit->second] +=  (int64_t)fillhist->GetBinCenter(fillhist->GetMaximumBin());
+      std::cout << static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin())) << std::endl;
+      correction[mapit->second] +=  static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin()));
       TPolyMarker *pm = new TPolyMarker;
       pm->SetNextPoint(fillhist->GetBinCenter(fillhist->GetMaximumBin()),fillhist->GetBinContent(fillhist->GetMaximumBin())+10);
       pm->SetMarkerStyle(23);
@@ -405,7 +432,10 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    
    printf("*****  Final time shifts *******\n");
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      printf("0x%04x:\t %d\n",mapit->first,correction[mapit->second]);
+      if(mapit->first == TEventTime::GetBestDigitizer())
+         printf("0x%04x:\t BEST\n");
+      else
+         printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
         
