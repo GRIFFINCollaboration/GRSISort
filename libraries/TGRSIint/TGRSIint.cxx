@@ -396,7 +396,7 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
 
 
 bool TGRSIInterruptHandler::Notify() {
-   printf("\n" DRED BG_WHITE  "   Control-c was pressed.   " RESET_COLOR "\n");
+   printf("\n" DRED BG_WHITE  "   Control-c was pressed.   " RESET_COLOR  SHOW_CURSOR "\n");
    abort();
    gApplication->Terminate();
    return true;
