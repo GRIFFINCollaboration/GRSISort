@@ -308,12 +308,12 @@ bool TNucleus::SetSourceData() {
          continue;
       TGRSITransition *tran = new TGRSITransition; 
       std::stringstream ss(line);
-      ss >> tran->energy;
-      ss >> tran->energy_uncertainty;
-      ss >> tran->intensity;
-      ss >> tran->intensity_uncertainty;
+      ss >> tran->fenergy;
+      ss >> tran->fenergy_uncertainty;
+      ss >> tran->fintensity;
+      ss >> tran->fintensity_uncertainty;
       TransitionList.Add(tran);
-      printf("eng: %.02f\tinten: %.02f\n",((TGRSITransition*)TransitionList.Last())->energy,((TGRSITransition*)TransitionList.Last())->intensity);
+      printf("eng: %.02f\tinten: %.02f\n",((TGRSITransition*)TransitionList.Last())->fenergy,((TGRSITransition*)TransitionList.Last())->fintensity);
    }                                                                                                         
 
    return true;

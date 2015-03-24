@@ -27,18 +27,18 @@ void TGRSITransition::Print(Option_t *opt) {
 //Prints information about the TGRSITransition
    printf("**************************\n");
    printf("TGRSITransition:\n");
-   printf("Energy:    %lf\t+/-%lf\n");
-   printf("Intensity: %lf\t+/-%lf\n");
+   printf("Energy:    %lf\t+/-%lf\n",fenergy,fenergy_uncertainty);
+   printf("Intensity: %lf\t+/-%lf\n",fintensity,fintensity_uncertainty);
    printf("**************************\n");
 
 }
 
 void TGRSITransition::Clear(Option_t *opt){
    //Clears TGRSITransition
-  energy                 = 0.0; 
-  energy_uncertainty    = 0.0; 
-  intensity              = 0.0; 
-  intensity_uncertainty = 0.0;  
+  fenergy                 = 0.0; 
+  fenergy_uncertainty    = 0.0; 
+  fintensity              = 0.0; 
+  fintensity_uncertainty = 0.0;  
 }
 
 int TGRSITransition::Compare(const TObject *obj) const { 
@@ -46,11 +46,11 @@ int TGRSITransition::Compare(const TObject *obj) const {
 //-1 if this >  obj
 //0 if  this == obj
 //1 if  this <  obj
-   if(this->intensity > ((TGRSITransition*)obj)->intensity) 
+   if(this->fintensity > ((TGRSITransition*)obj)->fintensity) 
       return -1;  
-   if(this->intensity == ((TGRSITransition*)obj)->intensity) 
+   if(this->fintensity == ((TGRSITransition*)obj)->fintensity) 
       return  0;  
-   if(this->intensity < ((TGRSITransition*)obj)->intensity) 
+   if(this->fintensity < ((TGRSITransition*)obj)->fintensity) 
       return  1;  
 }
 
