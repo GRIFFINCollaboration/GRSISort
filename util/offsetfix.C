@@ -21,6 +21,7 @@
 #include<TMidasFile.h>
 #include<TMidasEvent.h>
 #include<vector>
+#include<TDataParser.h>
 
 #include <iostream>
 #include <fstream>
@@ -67,7 +68,14 @@ class TEventTime {
             digset.find(Digitizer())->second = true;
             if(GetTimeStamp() < lowest_time || lowest_time == -1){
                lowest_time = GetTimeStamp();
-               best_dig = Digitizer();
+               if(Digitizer() == 0x0000 ||
+                  Digitizer() == 0x0100 ||
+                  Digitizer() == 0x0200 ||
+                  Digitizer() == 0x1000 ||
+                  Digitizer() == 0x1200 ||
+                  Digitizer() == 0x1100 ||
+                  Digitizer() == 0x1300)
+                  best_dig = Digitizer();
             }
          }
       }
@@ -117,8 +125,8 @@ class TEventTime {
       }
 
       inline static unsigned int GetBestDigitizer(){
-         return 0x0100;
-         //return best_dig;
+        // return 0x1000;
+         return best_dig;
       }
       
       static unsigned long GetLowestMidasTime(){
@@ -156,11 +164,26 @@ unsigned int TEventTime::best_dig = 0;
 std::map<int,int> TEventTime::digmap;
 std::map<int,bool> TEventTime::digset;
 
+void PrintError(TMidasEvent *event, int frags,bool verb){
+   if(verb){
+      printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+      printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", (-1*frags));
+	   if(event)  event->Print(Form("a%i",(-1*frags)-1));
+      printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+   }
+}
+
 int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    int events_read = 0;
    const int total_events = 1E7;
    TMidasEvent *event  = new TMidasEvent;
    eventQ->reserve(total_events);
+   void *ptr;
+   int banksize;
+
+   //Do checks on the event
+	unsigned int mserial=0; if(event) mserial = (unsigned int)(event->GetSerialNumber());
+	unsigned int mtime=0;   if(event) mtime   = (unsigned int)(event->GetTimeStamp());
 
    while(infile->Read(event)>0 && eventQ->size()<total_events) {
       switch(event->GetEventId()) {
@@ -178,8 +201,17 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
             if(event->GetEventId() !=1 ) {
                break;
             }
-            events_read++;
-            eventQ->push_back(new TEventTime(event));//I'll keep 3G data in here for now in case we need to use it for time stamping 
+            event->SetBankList();
+            if((banksize = event->LocateBank(NULL,"GRF1",&ptr))>0) {
+               int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,mserial,mtime);
+               if(frags > -1){
+                  events_read++;
+                  eventQ->push_back(new TEventTime(event));//I'll keep 3G data in here for now in case we need to use it for time stamping 
+               }
+               else{
+                  PrintError(event,frags,0);
+               }
+            }
             break;
        };
       if(events_read % 250000 == 0){
@@ -290,7 +322,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       //We want to have the first hit be in the "good digitizer"
       if(event1count%250000 == 0)
          printf("Processing Event %d /%d      \r",event1count,eventQ->size()); fflush(stdout);
-         event1count++;
+      event1count++;
 
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) 
          continue;
@@ -307,8 +339,12 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       //Now that we have the best digitizer, we can start looping through the events 
       int event2count = 0;
       while(hit2 != eventQ->end() && event2count < range*2){
+
          event2count++;
-         if(hit1 == hit2) continue;
+         if(hit1 == hit2){
+            hit2++;
+            continue;
+         }
          int digitizer = (*hit2)->Digitizer();
          if(keep_filling[digitizer]){
             fillhist = (TH1C*)(roughlist->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
@@ -322,8 +358,8 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
                }
             }
             
-            hit2++;
-      }
+         }
+         hit2++;
      }
    }
 
@@ -382,8 +418,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       //We need to make sure that that if we have a digitizer of 0, we have a detector type of 1
       if( (*hit1)->Digitizer() == 0 && (*hit1)->DetectorType()!=1) continue; 
          
-      if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) 
-         continue;
+      if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) continue;
 
     //  int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];;
       int64_t time1 = (*hit1)->GetTimeStamp();
@@ -399,7 +434,10 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       while(hit2 != eventQ->end() && event2count < range*2){
          event2count++;
          //We need to make sure that that if we have a digitizer of 0, we have a detector type of 1
-         if( (*hit2)->Digitizer() == 0 && (*hit2)->DetectorType()!=1) continue; 
+         if( (*hit2)->Digitizer() == 0 && (*hit2)->DetectorType()!=1){
+            hit2++;
+            continue; 
+         }
  
          if(hit1 != hit2 ){
             int digitizer = (*hit2)->Digitizer();
