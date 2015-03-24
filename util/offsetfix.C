@@ -344,6 +344,10 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       while(hit2 != eventQ->end() && event2count < range*2){
 
          event2count++;
+         if( (*hit2)->Digitizer() == 0 && (*hit2)->DetectorType()>1){
+            hit2++;
+            continue; 
+         }
          if(hit1 == hit2){
             hit2++;
             continue;
@@ -437,7 +441,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       while(hit2 != eventQ->end() && event2count < range*2){
          event2count++;
          //We need to make sure that that if we have a digitizer of 0, we have a detector type of 1
-         if( (*hit2)->Digitizer() == 0 && (*hit2)->DetectorType()!=1){
+         if( (*hit2)->Digitizer() == 0 && (*hit2)->DetectorType()>1){
             hit2++;
             continue; 
          }
