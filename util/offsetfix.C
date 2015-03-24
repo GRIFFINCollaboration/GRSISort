@@ -279,8 +279,10 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
    printf("The lowest digitizer is 0x%04x\n",lowest_dig);
    printf("*****  High time shifts *******\n");
    for(mapit = lowest_hightime.begin(); mapit != lowest_hightime.end(); mapit++){
-      if(mapit->first == lowest_dig)
+      if(mapit->first == lowest_dig){
+         correction[TEventTime::digmap.find(mapit->first)->second] = 0;
          continue;
+      }
       printf("0x%04x:\t %d \t %lf sec\n",mapit->first,mapit->second -lowtime, static_cast<double>((static_cast<int64_t>(mapit->second-lowtime))*(1<<28))/1.0E8);
       //Calculate the shift to the first event in all digitizers
       correction[TEventTime::digmap.find(mapit->first)->second] = ((static_cast<int64_t>(mapit->second-lowtime))*(1<<28)) ;
