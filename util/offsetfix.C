@@ -326,8 +326,9 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
          printf("Processing Event %d /%d      \r",event1count,eventQ->size()); fflush(stdout);
       event1count++;
 
-      if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) 
-         continue;
+      if( (*hit1)->Digitizer() == 0 && (*hit1)->DetectorType()>1) continue; 
+
+      if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer())  continue;
 
  //     int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];
       int64_t time1 = (*hit1)->GetTimeStamp();
@@ -418,7 +419,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       
       event1count++;
       //We need to make sure that that if we have a digitizer of 0, we have a detector type of 1
-      if( (*hit1)->Digitizer() == 0 && (*hit1)->DetectorType()!=1) continue; 
+      if( (*hit1)->Digitizer() == 0 && (*hit1)->DetectorType()>1) continue; 
          
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) continue;
 
