@@ -175,7 +175,7 @@ void PrintError(TMidasEvent *event, int frags,bool verb){
 
 int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    int events_read = 0;
-   const int total_events = 1E7;
+   const int total_events = 1E6;
    TMidasEvent *event  = new TMidasEvent;
    eventQ->reserve(total_events);
    void *ptr;
@@ -305,7 +305,8 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::map<int,bool> keep_filling;
    std::map<int,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-      TH1C *roughhist = new TH1C(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 6E7,-3E8,3E8); 
+     // TH1F *roughhist = new TH1F(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 6E7,-3E8,3E8); 
+      TH1D *roughhist = new TH1D(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 3E7,-3E8,3E8); 
       roughhist->SetTitle(Form("rough_0x%04x against 0x%04x",mapit->first,TEventTime::GetBestDigitizer()));
       roughlist->Add(roughhist);
       keep_filling[mapit->first] = true;
@@ -314,19 +315,20 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    //The "best digitizer" is set when we fill the event Q
    printf(DYELLOW "Using the best digitizer 0x%04x\n" RESET_COLOR, TEventTime::GetBestDigitizer());
 
-   TH1C* fillhist; //This pointer is useful later to clean up a lot of messiness
+   TH1D* fillhist; //This pointer is useful later to clean up a lot of messiness
 
    std::vector<TEventTime*>::iterator hit1;
    std::vector<TEventTime*>::iterator hit2;
+   const int range = 5000;
    int event1count = 0;
-   const int range = 1500;
-   for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
+ //  for(hit1 = (eventQ->begin()+8000); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
+   for(hit1 = (eventQ->begin()); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
-      if(event1count%250000 == 0)
+      if(event1count%75000 == 0)
          printf("Processing Event %d /%d      \r",event1count,eventQ->size()); fflush(stdout);
       event1count++;
 
-      if( (*hit1)->Digitizer() == 0 && (*hit1)->DetectorType()>1) continue; 
+      if( ((*hit1)->Digitizer() == 0) && ((*hit1)->DetectorType()>1)) continue; 
 
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer())  continue;
 
@@ -341,39 +343,40 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       }
       //Now that we have the best digitizer, we can start looping through the events 
       int event2count = 0;
-      while(hit2 != eventQ->end() && event2count < range*2){
+      while((hit2 != eventQ->end()) && (event2count < 2*range)){
 
-         event2count++;
-         if( (*hit2)->Digitizer() == 0 && (*hit2)->DetectorType()>1){
-            hit2++;
+         if( ((*hit2)->Digitizer() == 0) && ((*hit2)->DetectorType()>2)){
+            ++hit2;
             continue; 
          }
          if(hit1 == hit2){
-            hit2++;
+            ++hit2;
             continue;
          }
+         event2count++;
          int digitizer = (*hit2)->Digitizer();
          if(keep_filling[digitizer]){
-            fillhist = (TH1C*)(roughlist->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
+            fillhist = (TH1D*)(roughlist->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
             int64_t time2 = (*hit2)->GetTimeStamp() - correction[(*hit2)->DigIndex()];
             Int_t bin = static_cast<Int_t>(time2 - time1);
                
-            if(fillhist->FindBin(bin) > 0 && fillhist->FindBin(bin) < fillhist->GetNbinsX()){
-               if(fillhist->GetBinContent(fillhist->Fill(bin))>126){
-                  keep_filling[digitizer] = false;
-                  printf("\nDigitizer 0x%04x is done filling\n",digitizer);
-               }
+            if((fillhist->FindBin(bin) > 0) && (fillhist->FindBin(bin) < fillhist->GetNbinsX())){
+               fillhist->Fill(bin);
+            //   if(fillhist->GetBinContent(fillhist->Fill(bin))>126){
+              //    keep_filling[digitizer] = false;
+              //    printf("\nDigitizer 0x%04x is done filling\n",digitizer);
+              // }
             }
             
          }
-         hit2++;
+         ++hit2;
      }
    }
 
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
       if(mapit->first == TEventTime::GetBestDigitizer())
          continue;
-      fillhist = (TH1C*)(roughlist->At(mapit->second));
+      fillhist = (TH1D*)(roughlist->At(mapit->second));
       std::cout << static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin())) << std::endl;
       correction[mapit->second] +=  static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin()));
    }
@@ -415,7 +418,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::vector<TEventTime*>::iterator hit1;
    std::vector<TEventTime*>::iterator hit2;
    int event1count = 0;
-   const int range = 1500;
+   const int range = 2000;
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%75000 == 0)
@@ -438,10 +441,10 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       }
       //Now that we have the best digitizer, we can start looping through the events 
       int event2count = 0;
-      while(hit2 != eventQ->end() && event2count < range*2){
+      while((hit2 != eventQ->end()) && (event2count < range*2)){
          event2count++;
          //We need to make sure that that if we have a digitizer of 0, we have a detector type of 1
-         if( (*hit2)->Digitizer() == 0 && (*hit2)->DetectorType()>1){
+         if( ((*hit2)->Digitizer() == 0) && ((*hit2)->DetectorType()>1)){
             hit2++;
             continue; 
          }
@@ -450,7 +453,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
             int digitizer = (*hit2)->Digitizer();
             fillhist = (TH1D*)(list->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
             int64_t time2 = (*hit2)->GetTimeStamp() - correction[(*hit2)->DigIndex()];
-            if(time2-time1 < 2147483647 && time2-time1 > -2147483647){//Make sure we are casting this to 32 bit properly
+            if((time2-time1 < 2147483647) && (time2-time1 > -2147483647)){//Make sure we are casting this to 32 bit properly
                Int_t bin = static_cast<Int_t>(time2 - time1);
                fillhist->Fill(bin);
             }
@@ -532,36 +535,6 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
       };
    }
 
-   //printf("chanadd = 0x%08x
-   //event->Print("a");
-
-   //printf("dettype  = 0x%08x\n",dettype);
-   //printf("chanadd  = 0x%08x\n",chanadd);
-                                    
-   //printf("timelow  = 0x%08x\n",timelow);
-   //printf("timehigh = 0x%08x\n",timehigh);
-
-
-
-  /* if( (dettype==1) || (dettype ==5) ) { // 1 for GRIFFIN, 5 for PACES
-     //do nothing.
-   } else {
-    outfile->Write(event,"q");
-    return;
-   }
-
-   */
- /*
-   if(((chanadd&0x0000ff00) == 0x00000000) ||
-      ((chanadd&0x0000ff00) == 0x00001000) ||
-      ((chanadd&0x0000ff00) == 0x00001100) ||
-      ((chanadd&0x0000ff00) == 0x00001200)) {
-      //do nothing.
-    } else {
-      outfile->Write(event,"q");
-      return;
-    }
-*/
    time = timehigh;
    time = time << 28;
    time |= timelow &0x0fffffff;
@@ -578,28 +551,6 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
       time -= correction[dig_index];
    }
 
-   //printf("time = 0x%016x\n",time);
-   //std::cout << "time    = " << std::hex << time << std::endl;
-
-   // Here's where we change the values of the time stamps!!!!
- /*  switch(chanadd&0x0000ff00) {
-      case 0x00000000: // if the first GRIF-16
-//         time -= 10919355323; // run 2369 correction
-         time -= 87; // run 2394 correction
-         break;
-      case 0x00000100: // if the second GRIF-16
-         break;
-      case 0x00001000: // if the third GRIF-16
-//         time -= 10919355323; // run 2369 correction
-         break;
-      case 0x00001100: // if the fourth GRIF-16
-//         time -= 10919355239; // run 2369 correction
-         break;
-      case 0x00001200: // if the fifth GRIF-16
-//         time += 7;
-         time -= 87; // run 2394 correction
-         break;
-   };*/
    if(time<0)
       time += 0x3ffffffffff;
    else if(time>0x3ffffffffff)
