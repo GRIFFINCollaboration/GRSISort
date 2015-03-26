@@ -469,8 +469,8 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       TSpectrum* spec = new TSpectrum();
       spec->Search(fillhist);
       double peak = spec->GetPositionX()[0];
-      std::cout << static_cast<int64_t>(peak) << std::endl;
-      correction[mapit->second] +=  static_cast<int64_t>(peak);
+      std::cout << static_cast<int64_t>(floor(peak+0.5)) << std::endl;
+      correction[mapit->second] +=  static_cast<int64_t>(floor(peak+0.5));
  //     fillhist->Draw();
 
    }
