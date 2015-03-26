@@ -6,6 +6,7 @@
 #include"GFile.h"
 #include"TFragment.h"
 #include"TTree.h"
+#include"TSpectrum.h"
 #include"TChannel.h"
 #include"TH2D.h"
 #include "TTreeIndex.h"
@@ -465,14 +466,11 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       if(mapit->first == TEventTime::GetBestDigitizer())
          continue;
       fillhist = (TH1D*)(list->At(mapit->second));
-      std::cout << static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin())) << std::endl;
-      correction[mapit->second] +=  static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin()));
-      TPolyMarker *pm = new TPolyMarker;
-      pm->SetNextPoint(fillhist->GetBinCenter(fillhist->GetMaximumBin()),fillhist->GetBinContent(fillhist->GetMaximumBin())+10);
-      pm->SetMarkerStyle(23);
-      pm->SetMarkerColor(kRed);
-      pm->SetMarkerSize(1.3);
-      fillhist->GetListOfFunctions()->Add(pm);
+      TSpectrum* spec = new TSpectrum();
+      spec->Search(fillhist);
+      double peak = spec->GetPositionX()[0];
+      std::cout << static_cast<int64_t>(peak) << std::endl;
+      correction[mapit->second] +=  static_cast<int64_t>(peak);
  //     fillhist->Draw();
 
    }
