@@ -256,7 +256,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
       int hightime = (*it)->TimeStampHigh();
       unsigned long midtime = (*it)->MidasTime() - lowmidtime;
       if(midtime>20) break;//20 seconds seems like plenty enough time
-    
+      if( ((*it1)->Digitizer() == 0) && ((*it1)->DetectorType()>1)) continue; 
       //The next few lines are probably unnecessary
       ((TH2D*)(midvshigh->At((*it)->DigIndex())))->Fill(midtime, hightime);
       if(lowest_hightime.find((*it)->Digitizer()) == lowest_hightime.end()){
