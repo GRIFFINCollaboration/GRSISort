@@ -1,4 +1,4 @@
-//g++ offsetfind.cxx `root-config --cflags --libs` -I${GRSISYS}/include -L${GRSISYS}/libraries -lMidasFormat -lXMLParser  -ooffsetfind
+//g++ offsetfind.cxx `root-config --cflags --libs` -I${GRSISYS}/include -L${GRSISYS}/libraries -lMidasFormat -lXMLParser -lSpectrum  -ooffsetfind
 
 
 #include"TMidasFile.h"
@@ -126,8 +126,8 @@ class TEventTime {
       }
 
       inline static unsigned int GetBestDigitizer(){
-        // return 0x1000;
-         return best_dig;
+         return 0x0200;
+        // return best_dig;
       }
       
       static unsigned long GetLowestMidasTime(){
