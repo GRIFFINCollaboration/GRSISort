@@ -207,7 +207,7 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
                int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,mserial,mtime);
                if(frags > -1){
                   events_read++;
-                  eventQ->push_back(new TEventTime(event));//I'll keep 3G data in here for now in case we need to use it for time stamping 
+                  eventQ->push_back(new TEventTime(event));//I'll keep 4G data in here for now in case we need to use it for time stamping 
                }
                else{
                   PrintError(event,frags,0);
@@ -234,6 +234,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
    std::map<int,int>::iterator mapit; //This is an iterator over the digitizer map 
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
       TH2D *midvshighhist = new TH2D(Form("midvshigh_0x%04x",mapit->first),Form("midvshigh_0x%04x",mapit->first), 5000,0,5000,5000,0,5000); 
+      correction[mapit->second] = 0; //initialize the correction to 0
       midvshigh->Add(midvshighhist);
    }
   
