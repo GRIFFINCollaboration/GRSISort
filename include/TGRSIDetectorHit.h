@@ -29,7 +29,6 @@ class TGRSIDetectorHit : public TObject 	{
 		virtual ~TGRSIDetectorHit();
 
 	public:
-
 		virtual void Clear(Option_t* opt = "");	//!
 		virtual void Print(Option_t* opt = "");	//!
       //We need a common function for all detectors in here

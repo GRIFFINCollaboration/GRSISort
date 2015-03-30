@@ -38,7 +38,7 @@ class TEventTime {
          int type  = 0xffffffff;
          int value = 0xffffffff;
 
-         int64_t time = 0;
+         uint64_t time = 0;
 
          for(int x=0;x<banksize;x++) {
             value = *((int*)ptr+x);
@@ -59,7 +59,7 @@ class TEventTime {
 
             };
          }
-         timemidas = (unsigned int)(event->GetTimeStamp());
+         timemidas = event->GetTimeStamp();
          if(timemidas < low_timemidas)
             low_timemidas = timemidas;
          
@@ -83,14 +83,14 @@ class TEventTime {
 
       ~TEventTime(){}
 
-      int64_t GetTimeStamp(){
-         long time = timehigh;
+      uint64_t GetTimeStamp(){
+         uint64_t time = timehigh;
          time  = time << 28;
          time |= timelow & 0x0fffffff;
          return time;
    
       }  
-      int TimeStampHigh(){
+      unsigned int TimeStampHigh(){
          return timehigh;
       }
    
@@ -125,7 +125,7 @@ class TEventTime {
          return digmap.size();
       }
 
-      inline static unsigned int GetBestDigitizer(){
+      inline static int GetBestDigitizer(){
         // return 0x1000;
          return best_dig;
       }
@@ -138,19 +138,19 @@ class TEventTime {
          return digmap.find(digitizernum)->second;
       }
 
-      inline static int64_t GetLowestTime(){
+      inline static uint64_t GetLowestTime(){
          return lowest_time;
       }
 
       static std::map<int,int> digmap;
       static std::map<int,bool> digset;
       static unsigned long low_timemidas;
-      static unsigned int best_dig;
-      static int64_t lowest_time;
+      static int best_dig;
+      static uint64_t lowest_time;
  
    private:
-      int timelow;
-      int timehigh;
+      unsigned int timelow;
+      unsigned int timehigh;
       unsigned long timemidas;
       int dettype;
       int chanadd;
@@ -160,8 +160,8 @@ class TEventTime {
 
 
 unsigned long TEventTime::low_timemidas = -1;
-int64_t TEventTime::lowest_time = -1;
-unsigned int TEventTime::best_dig = 0;
+uint64_t TEventTime::lowest_time = -1;
+int TEventTime::best_dig = 0;
 std::map<int,int> TEventTime::digmap;
 std::map<int,bool> TEventTime::digset;
 
@@ -184,7 +184,7 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
 
    //Do checks on the event
 	unsigned int mserial=0; if(event) mserial = (unsigned int)(event->GetSerialNumber());
-	unsigned int mtime=0;   if(event) mtime   = (unsigned int)(event->GetTimeStamp());
+	unsigned int mtime=0;   if(event) mtime   = event->GetTimeStamp();
 
    while(infile->Read(event)>0 && eventQ->size()<total_events) {
       switch(event->GetEventId()) {
@@ -287,7 +287,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
       }
       printf("0x%04x:\t %d \t %lf sec\n",mapit->first,mapit->second -lowtime, static_cast<double>((static_cast<int64_t>(mapit->second-lowtime))*(1<<28))/1.0E8);
       //Calculate the shift to the first event in all digitizers
-      correction[TEventTime::digmap.find(mapit->first)->second] = ((static_cast<int64_t>(mapit->second-lowtime))*(1<<28)) ;
+      correction[TEventTime::digmap.find(mapit->first)->second] = ((static_cast<uint64_t>(mapit->second-lowtime))*(1<<28)) ;
    }
    printf("********************\n");
 
@@ -335,7 +335,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer())  continue;
 
  //     int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];
-      int64_t time1 = (*hit1)->GetTimeStamp();
+      int64_t time1 = static_cast<int64_t>((*hit1)->GetTimeStamp());
   
       if(event1count > range){
          hit2 = hit1 - range;
@@ -359,7 +359,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
          int digitizer = (*hit2)->Digitizer();
          if(keep_filling[digitizer]){
             fillhist = (TH1D*)(roughlist->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
-            int64_t time2 = (*hit2)->GetTimeStamp() - correction[(*hit2)->DigIndex()];
+            int64_t time2 = static_cast<int64_t>((*hit2)->GetTimeStamp()) - correction[(*hit2)->DigIndex()];
             Int_t bin = static_cast<Int_t>(time2 - time1);
                
             if((fillhist->FindBin(bin) > 0) && (fillhist->FindBin(bin) < fillhist->GetNbinsX())){
@@ -433,7 +433,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) continue;
 
     //  int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];;
-      int64_t time1 = (*hit1)->GetTimeStamp();
+      int64_t time1 = static_cast<int64_t>((*hit1)->GetTimeStamp());
   
       if(event1count > range){
          hit2 = hit1 - range;
@@ -454,7 +454,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
          if(hit1 != hit2 ){
             int digitizer = (*hit2)->Digitizer();
             fillhist = (TH1D*)(list->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
-            int64_t time2 = (*hit2)->GetTimeStamp() - correction[(*hit2)->DigIndex()];
+            int64_t time2 = static_cast<int64_t>((*hit2)->GetTimeStamp()) - correction[(*hit2)->DigIndex()];
             if((time2-time1 < 2147483647) && (time2-time1 > -2147483647)){//Make sure we are casting this to 32 bit properly
                Int_t bin = static_cast<Int_t>(time2 - time1);
                fillhist->Fill(bin);
@@ -510,10 +510,10 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
    int dettype = 0;
    int chanadd = 0;
 
-   int timelow  = 0;
-   int timehigh = 0;
+   unsigned int timelow  = 0;
+   unsigned int timehigh = 0;
 
-   int64_t time = 0;
+   uint64_t time = 0;
 
    for(int x=0;x<banksize;x++) {
       value = *((int*)ptr+x);
@@ -689,10 +689,9 @@ int main(int argc, char **argv) {
 
    GFile *outfile = new GFile(filename,"RECREATE");
 
-   std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
    std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;
    QueueEvents(midfile,eventQ);
-   std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
+   std::cout << "Number of Digitizers Found: " << TEventTime::digmap.size() << std::endl;
 
    int64_t *correction;
    correction = new int64_t[TEventTime::NDigitizers()];
