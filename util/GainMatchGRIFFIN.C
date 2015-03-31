@@ -261,10 +261,13 @@ void create_gainmatch_graphs(const char* histFileName, int minchannel, int maxch
 		}
 		else if (twopeaks)
 		{
-			if (spec2->GetNPeaks()!=2)
+         		double y1 = spec2->GetPositionY()[0];
+         		double y2 = spec2->GetPositionY()[1];
+			if (spec2->GetNPeaks()!=2 || abs(y1-y2)*2/(y1+y2)>0.5)
 			{
-				posbigb = spec2->GetPositionX()[0];
-				std::cout <<"Warning: Two peaks were specified, but not found. Setting only peak found to " <<largepeak <<std::endl;
+	            		if (y1>y2) posbigb = spec2->GetPositionX()[0];
+            			else posbigbg = spec2->GetPositionX()[1];
+				std::cout <<"Warning: Two peaks were specified, but not found. Setting tallest/only peak found to " <<largepeak <<std::endl;
 			}
 			else
 			{
