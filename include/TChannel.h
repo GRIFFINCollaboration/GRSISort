@@ -41,9 +41,9 @@
 class TChannel : public TNamed	{
 
   public:
-    static TChannel *GetChannel(unsigned int temp_address); 
-    static TChannel *GetChannelByNumber(int temp_numebr);
-    static TChannel *FindChannelByName(const char *name);
+    static TChannel * const GetChannel(unsigned int temp_address); 
+    static TChannel * const GetChannelByNumber(int temp_numebr);
+    static TChannel * const FindChannelByName(const char *name);
 
     TChannel();
     TChannel(const char*);
@@ -129,9 +129,9 @@ class TChannel : public TNamed	{
     std::vector<double> GetTIMECoeff() { return TIMECoefficients;}
     std::vector<double> GetEFFCoeff()  { return EFFCoefficients;}
 
-    inline void AddENGCoefficient(double temp)  { ENGCoefficients.push_back(temp);}
-    inline void AddCFDCoefficient(double temp)  { CFDCoefficients.push_back(temp);}
-    inline void AddLEDCoefficient(double temp)  { LEDCoefficients.push_back(temp);}
+    inline void AddENGCoefficient(double temp)  { ENGCoefficients.push_back(temp); }
+    inline void AddCFDCoefficient(double temp)  { CFDCoefficients.push_back(temp); }
+    inline void AddLEDCoefficient(double temp)  { LEDCoefficients.push_back(temp); }
     inline void AddTIMECoefficient(double temp) { TIMECoefficients.push_back(temp);}
     inline void AddEFFCoefficient(double temp)  { EFFCoefficients.push_back(temp);}
 
