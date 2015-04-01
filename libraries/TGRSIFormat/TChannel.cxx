@@ -298,12 +298,33 @@ TChannel * const TChannel::FindChannelByName(const char *cc_name){
 
 void TChannel::UpdateChannelNumberMap() {
 //Updates the fChannelNumberMap based on the entries in the fChannelMap. This should be called before using the fChannelNumberMap.
-    std::map < unsigned int, TChannel * >::iterator iter1;
+   std::map < unsigned int, TChannel * >::iterator mapiter;
+   fChannelNumberMap->clear();//This isn't the nicest way to do this but will keep us consistent.
+
+   for(mapiter = fChannelMap->begin(); mapiter != fChannelMap->end(); mapiter++){
+      fChannelNumberMap->insert(std::make_pair(mapiter->second->GetNumber(),mapiter->second));
+   }
+    /*
     for(iter1 = fChannelMap->begin(); iter1 != fChannelMap->end(); iter1++) {
-	if(fChannelNumberMap->count(iter1->second->GetNumber())==0) {
-            fChannelNumberMap->insert(std::make_pair(iter1->second->GetNumber(),iter1->second));
-        }
-    }
+	   if(fChannelNumberMap->count(iter1->second->GetNumber())==0) {
+         fChannelNumberMap->insert(std::make_pair(iter1->second->GetNumber(),iter1->second));
+      }
+      else{
+         fChannelNumberMap.find(iter1->second->GetNumber())->second = iter1->second
+      }
+    }*/
+}
+
+void TChannel::SetAddress(unsigned int tmpadd){
+//Sets the address of a TChannel and also overwrites that channel if it is in the channel map
+   std::map<unsigned int,TChannel*>::iterator iter1;
+   for(iter1 = fChannelMap->begin(); iter1 != fChannelMap->end(); iter1++){
+      if(iter1->second == this){
+         std::cout << "Channel at address: 0x" << std::hex << address << " already exists. Please use AddChannel() or OverWriteChannel() to change this TChannel" <<std::dec << std::endl;
+         break;
+      }
+   }
+   this->address = tmpadd;
 }
 
 
@@ -639,6 +660,7 @@ Int_t TChannel::ReadCalFile(const char *filename) {
 
    int channels_found = ParseInputData((const char*)buffer); 
    SaveToSelf(infilename.c_str());
+   UpdateChannelNumberMap();
    return channels_found;
 }
 

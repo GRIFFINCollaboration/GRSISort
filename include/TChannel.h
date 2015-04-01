@@ -86,6 +86,7 @@ class TChannel : public TNamed	{
     static std::map<unsigned int,TChannel*> *fChannelMap; //A map to all of the channels based on address
     static std::map<int,TChannel*> *fChannelNumberMap;    //A map of TChannels based on channel number
     static void UpdateChannelNumberMap();
+    static void UpdateChannelMap();
 	 void OverWriteChannel(TChannel*);
 	 void AppendChannel(TChannel*);
 
@@ -98,9 +99,9 @@ class TChannel : public TNamed	{
 	 static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 
   public:
-    inline void SetAddress(unsigned int tmpadd) 	  {address = tmpadd;}
+    void SetAddress(unsigned int tmpadd);
     inline void SetChannelName(const char *tmpname)  {channelname.assign(tmpname);} 
-    inline void SetNumber(int tmpnum)	              {number = tmpnum;}
+    inline void SetNumber(int tmpnum)	              {number = tmpnum; UpdateChannelNumberMap();}
     inline void SetIntegration(int tmpint)	        {integration = tmpint;}
     inline void SetStream(int tmpstream)	           {stream = tmpstream;}
     inline void SetUserInfoNumber(int tempinfo)      {userinfonumber = tempinfo;}
