@@ -95,11 +95,12 @@ bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
 }
 
 void TChannel::DeleteAllChannels() {
-//Safely deletes fChannelMap
+//Safely deletes fChannelMap and fChannelNumberMap
    std::map < unsigned int, TChannel * >::iterator iter;
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
 		if(iter->second)
 	      delete iter->second;
+      //These maps should point to the same pointers, so this should clear out both
       iter->second = 0;
    }
    fChannelMap->clear();
@@ -116,16 +117,19 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
 //        "save"      -  The temporary channel is not deleted after being placed in the map. 
     if(!chan)
         return;
-   if(fChannelMap->count(chan->GetAddress())==1) {// if this channel existss
+   if(fChannelMap->count(chan->GetAddress())==1) {// if this channel exists
 	   if(strcmp(opt,"overwrite")==0) {
 			TChannel *oldchan = GetChannel(chan->GetAddress());
 			oldchan->OverWriteChannel(chan);
+         //Need to also update the channel number map RD
+         UpdateChannelNumberMap();
 			return;
 	   } else {
 	      printf("Trying to add a channel that already exists!\n");
 			return;
 	   }	
     } else {
+      //We need to update the channel maps to correspond to the new channel that has been added. 
 		fChannelMap->insert(std::make_pair(chan->GetAddress(),chan));
 		if(chan->GetNumber() != 0 && fChannelNumberMap->count(chan->GetNumber())==0)
 	   	 fChannelNumberMap->insert(std::make_pair(chan->GetNumber(),chan));
@@ -240,7 +244,7 @@ void TChannel::Clear(Option_t *opt){
     EFFCoefficients.clear();
 }
 
-TChannel *TChannel::GetChannel(unsigned int temp_address) {
+TChannel * const TChannel::GetChannel(unsigned int temp_address) {
 //Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
 
     TChannel *chan = 0;
@@ -253,11 +257,12 @@ TChannel *TChannel::GetChannel(unsigned int temp_address) {
 	return chan;
 }
 
-TChannel *TChannel::GetChannelByNumber(int temp_num) {
+TChannel * const TChannel::GetChannelByNumber(int temp_num) {
 //Returns the TChannel based on the channel number and not the channel address.
-    if(fChannelMap->size() != fChannelNumberMap->size()) {
+  //  if(fChannelMap->size() != fChannelNumberMap->size()) {
+  // We should just always update this map before we use it
 	UpdateChannelNumberMap();
-    }
+//    }
     TChannel *chan  = 0;
     try {
 	chan = fChannelNumberMap->at(temp_num);
@@ -268,7 +273,7 @@ TChannel *TChannel::GetChannelByNumber(int temp_num) {
     return chan;
 }
 
-TChannel *TChannel::FindChannelByName(const char *cc_name){
+TChannel * const TChannel::FindChannelByName(const char *cc_name){
   //Finds the TChannel by the name of the channel 
   TChannel *chan = NULL;
   if(!cc_name)
@@ -864,7 +869,7 @@ int TChannel::WriteToRoot(const char *name) {
   std::string savedata = fFileData;
   
 
-  int fd = open("/dev/null", O_WRONLY); // turn of stdout.
+  int fd = open("/dev/null", O_WRONLY); // turn off stdout.
   stdout = fdopen(fd, "w");
 
   while(TKey *key = (TKey*)(iter.Next())) {
