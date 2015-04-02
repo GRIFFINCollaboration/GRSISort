@@ -488,7 +488,13 @@ void TChannel::Print(Option_t *opt) {
       std::cout << EFFCoefficients.at(x) << "\t" ;
    std::cout << "\n";
    std::cout << "EFFChi2:   " << EFFChi2 << "\n" ;
-   std::cout << "\n}\n";
+   if(TIMECoefficients.size()){
+      std::cout<< "TIMECoeff: " ;
+      for(int x=0;x<TIMECoefficients.size();x++)
+         std::cout << TIMECoefficients.at(x) << "\t";
+      std::cout << "\n";
+   }
+   std::cout << "}\n";
    std::cout << "//====================================//\n";
 };
 
@@ -511,7 +517,14 @@ std::string TChannel::PrintToString(Option_t *opt) {
       buffer.append(Form("%f\t",EFFCoefficients.at(x)));
    buffer.append("\n");
    buffer.append(Form("EFFChi2:   %f\n",EFFChi2));
+   if(TIMECoefficients.size()){
+      buffer.append("TIMECoeff:  ");
+      for(int x=0;x<TIMECoefficients.size();x++)
+         buffer.append(Form("%f\t",TIMECoefficients.at(x)));
+      buffer.append("\n");
+   }
    buffer.append("\n}\n");
+   
    buffer.append("//====================================//\n");
   
   return buffer;
