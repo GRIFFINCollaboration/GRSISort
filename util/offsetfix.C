@@ -126,8 +126,8 @@ class TEventTime {
       }
 
       inline static unsigned int GetBestDigitizer(){
-         return 0x0200;
-        // return best_dig;
+        //return 0x0200;
+         return best_dig;
       }
       
       static unsigned long GetLowestMidasTime(){
@@ -255,7 +255,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
       int hightime = (*it)->TimeStampHigh();
       unsigned long midtime = (*it)->MidasTime() - lowmidtime;
       if(midtime>20) break;//20 seconds seems like plenty enough time
-    
+      if( ((*it)->Digitizer() == 0) && ((*it)->DetectorType()>1)) continue; 
       //The next few lines are probably unnecessary
       ((TH2D*)(midvshigh->At((*it)->DigIndex())))->Fill(midtime, hightime);
       if(lowest_hightime.find((*it)->Digitizer()) == lowest_hightime.end()){
