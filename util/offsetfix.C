@@ -38,7 +38,7 @@ class TEventTime {
          int type  = 0xffffffff;
          int value = 0xffffffff;
 
-         int64_t time = 0;
+         uint64_t time = 0;
 
          for(int x=0;x<banksize;x++) {
             value = *((int*)ptr+x);
@@ -59,7 +59,7 @@ class TEventTime {
 
             };
          }
-         timemidas = (unsigned int)(event->GetTimeStamp());
+         timemidas = event->GetTimeStamp();
          if(timemidas < low_timemidas)
             low_timemidas = timemidas;
          
@@ -83,14 +83,14 @@ class TEventTime {
 
       ~TEventTime(){}
 
-      int64_t GetTimeStamp(){
-         long time = timehigh;
+      uint64_t GetTimeStamp(){
+         uint64_t time = timehigh;
          time  = time << 28;
          time |= timelow & 0x0fffffff;
          return time;
    
       }  
-      int TimeStampHigh(){
+      unsigned int TimeStampHigh(){
          return timehigh;
       }
    
@@ -111,6 +111,7 @@ class TEventTime {
          digitizernum = chanadd&0x0000ff00;
          digmap.insert( std::pair<int,int>(digitizernum, digmap.size()));
          digset.insert( std::pair<int,bool>(digitizernum,false));
+         correctionmap.insert(std::pair<int,int64_t>(digitizernum,0));
       }
 
       static void OrderDigitizerMap(){
@@ -125,8 +126,8 @@ class TEventTime {
          return digmap.size();
       }
 
-      inline static unsigned int GetBestDigitizer(){
-        //return 0x0200;
+      inline static int GetBestDigitizer(){
+        // return 0x1000;
          return best_dig;
       }
       
@@ -138,19 +139,20 @@ class TEventTime {
          return digmap.find(digitizernum)->second;
       }
 
-      inline static int64_t GetLowestTime(){
+      inline static uint64_t GetLowestTime(){
          return lowest_time;
       }
 
       static std::map<int,int> digmap;
       static std::map<int,bool> digset;
+      static std::map<int,int64_t> correctionmap;
       static unsigned long low_timemidas;
-      static unsigned int best_dig;
-      static int64_t lowest_time;
+      static int best_dig;
+      static uint64_t lowest_time;
  
    private:
-      int timelow;
-      int timehigh;
+      unsigned int timelow;
+      unsigned int timehigh;
       unsigned long timemidas;
       int dettype;
       int chanadd;
@@ -160,10 +162,11 @@ class TEventTime {
 
 
 unsigned long TEventTime::low_timemidas = -1;
-int64_t TEventTime::lowest_time = -1;
-unsigned int TEventTime::best_dig = 0;
+uint64_t TEventTime::lowest_time = -1;
+int TEventTime::best_dig = 0;
 std::map<int,int> TEventTime::digmap;
 std::map<int,bool> TEventTime::digset;
+std::map<int,int64_t> TEventTime::correctionmap;
 
 void PrintError(TMidasEvent *event, int frags,bool verb){
    if(verb){
@@ -184,7 +187,7 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
 
    //Do checks on the event
 	unsigned int mserial=0; if(event) mserial = (unsigned int)(event->GetSerialNumber());
-	unsigned int mtime=0;   if(event) mtime   = (unsigned int)(event->GetTimeStamp());
+	unsigned int mtime=0;   if(event) mtime   = event->GetTimeStamp();
 
    while(infile->Read(event)>0 && eventQ->size()<total_events) {
       switch(event->GetEventId()) {
@@ -207,7 +210,7 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
                int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,mserial,mtime);
                if(frags > -1){
                   events_read++;
-                  eventQ->push_back(new TEventTime(event));//I'll keep 3G data in here for now in case we need to use it for time stamping 
+                  eventQ->push_back(new TEventTime(event));//I'll keep 4G data in here for now in case we need to use it for time stamping 
                }
                else{
                   PrintError(event,frags,0);
@@ -225,7 +228,7 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    return 0;
 }
 
-void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
+void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
 //This function should return an array of corrections
 
    TList *midvshigh = new TList;
@@ -281,12 +284,11 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
    printf("*****  High time shifts *******\n");
    for(mapit = lowest_hightime.begin(); mapit != lowest_hightime.end(); mapit++){
       if(mapit->first == lowest_dig){
-         correction[TEventTime::digmap.find(mapit->first)->second] = 0;
          continue;
       }
       printf("0x%04x:\t %d \t %lf sec\n",mapit->first,mapit->second -lowtime, static_cast<double>((static_cast<int64_t>(mapit->second-lowtime))*(1<<28))/1.0E8);
       //Calculate the shift to the first event in all digitizers
-      correction[TEventTime::digmap.find(mapit->first)->second] = ((static_cast<int64_t>(mapit->second-lowtime))*(1<<28)) ;
+      TEventTime::correctionmap.find(mapit->first)->second = ((static_cast<uint64_t>(mapit->second-lowtime))*(1<<28));
    }
    printf("********************\n");
 
@@ -296,7 +298,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
 }
 
 
-void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
+void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
    //We want the MIDAS time stamps to still be the way we index these events, but we want to index on low time stamps next
    printf(DBLUE "Looking for rough time differences...\n" RESET_COLOR);
 
@@ -333,8 +335,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
 
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer())  continue;
 
- //     int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];
-      int64_t time1 = (*hit1)->GetTimeStamp();
+      int64_t time1 = static_cast<int64_t>((*hit1)->GetTimeStamp());
   
       if(event1count > range){
          hit2 = hit1 - range;
@@ -358,7 +359,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
          int digitizer = (*hit2)->Digitizer();
          if(keep_filling[digitizer]){
             fillhist = (TH1D*)(roughlist->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
-            int64_t time2 = (*hit2)->GetTimeStamp() - correction[(*hit2)->DigIndex()];
+            int64_t time2 = static_cast<int64_t>((*hit2)->GetTimeStamp()) - TEventTime::correctionmap.find((*hit2)->Digitizer())->second;
             Int_t bin = static_cast<Int_t>(time2 - time1);
                
             if((fillhist->FindBin(bin) > 0) && (fillhist->FindBin(bin) < fillhist->GetNbinsX())){
@@ -379,15 +380,16 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
          continue;
       fillhist = (TH1D*)(roughlist->At(mapit->second));
       std::cout << static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin())) << std::endl;
-      correction[mapit->second] +=  static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin()));
+      TEventTime::correctionmap.find(mapit->first)->second +=  static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin()));
    }
 
    printf("*****  Rough time shifts *******\n");
-   for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      if(mapit->first == TEventTime::GetBestDigitizer())
+   std::map<int,int64_t>::iterator cit;
+   for(cit = TEventTime::correctionmap.begin(); cit != TEventTime::correctionmap.end(); cit++){
+      if(cit->first == TEventTime::GetBestDigitizer())
          printf("0x%04x:\t BEST\n");
       else
-         printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
+         printf("0x%04x:\t %lld\n",cit->first,cit->second);
    }
    printf("********************\n");
 
@@ -397,7 +399,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
 
 }
 
-void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
+void GetTimeDiff(std::vector<TEventTime*> *eventQ){
    //We want the MIDAS time stamps to still be the way we index these events, but we want to index on low time stamps next
    printf(DBLUE "Looking for final time differences...\n" RESET_COLOR);
 
@@ -431,8 +433,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
          
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) continue;
 
-    //  int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];;
-      int64_t time1 = (*hit1)->GetTimeStamp();
+      int64_t time1 = static_cast<int64_t>((*hit1)->GetTimeStamp());
   
       if(event1count > range){
          hit2 = hit1 - range;
@@ -453,7 +454,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
          if(hit1 != hit2 ){
             int digitizer = (*hit2)->Digitizer();
             fillhist = (TH1D*)(list->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
-            int64_t time2 = (*hit2)->GetTimeStamp() - correction[(*hit2)->DigIndex()];
+            int64_t time2 = static_cast<int64_t>((*hit2)->GetTimeStamp()) - TEventTime::correctionmap.find((*hit2)->Digitizer())->second;
             if((time2-time1 < 2147483647) && (time2-time1 > -2147483647)){//Make sure we are casting this to 32 bit properly
                Int_t bin = static_cast<Int_t>(time2 - time1);
                fillhist->Fill(bin);
@@ -470,28 +471,29 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       spec->Search(fillhist);
       double peak = spec->GetPositionX()[0];
       std::cout << static_cast<int64_t>(floor(peak+0.5)) << std::endl;
-      correction[mapit->second] +=  static_cast<int64_t>(floor(peak+0.5));
+      TEventTime::correctionmap.find(mapit->first)->second +=  static_cast<int64_t>(floor(peak+0.5));
  //     fillhist->Draw();
 
    }
       
-   
-   printf("*****  Final time shifts *******\n");
-   for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      if(mapit->first == TEventTime::GetBestDigitizer())
+   printf("*****  Rough time shifts *******\n");
+   std::map<int,int64_t>::iterator cit;
+   for(cit = TEventTime::correctionmap.begin(); cit != TEventTime::correctionmap.end(); cit++){
+      if(cit->first == TEventTime::GetBestDigitizer())
          printf("0x%04x:\t BEST\n");
       else
-         printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
+         printf("0x%04x:\t %lld\n",cit->first,cit->second);
+        // printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
-        
+
    list->Print();
    list->Write();
    list->Delete();
 
 }
 
-void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
+void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    if(event->GetEventId() !=1 ) {
       outfile->FillBuffer(event);
       return;
@@ -509,10 +511,10 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
    int dettype = 0;
    int chanadd = 0;
 
-   int timelow  = 0;
-   int timehigh = 0;
+   unsigned int timelow  = 0;
+   unsigned int timehigh = 0;
 
-   int64_t time = 0;
+   uint64_t time = 0;
 
    for(int x=0;x<banksize;x++) {
       value = *((int*)ptr+x);
@@ -537,17 +539,9 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
    time = time << 28;
    time |= timelow &0x0fffffff;
 
-   
-
-   int dig_index = TEventTime::digmap.find(chanadd&0x0000ff00)->second; //This is where in the corrections list we find this digitzer
-                                                                //I know, I know...This is the worst way to do this...
-                                                                //This code morphed over time and it's hacked together in the
-                                                                //worst way possible...get over it...I hate it too.... RD
-
-
-   if((chanadd&0x0000ff00) != TEventTime::GetBestDigitizer()){
-      time -= correction[dig_index];
-   }
+//   if((chanadd&0x0000ff00) != TEventTime::GetBestDigitizer()){
+   time -= TEventTime::correctionmap.find(chanadd&0x0000ff00)->second;    
+ //  }
 
    if(time<0)
       time += 0x3ffffffffff;
@@ -603,7 +597,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile,int64_t* correction) {
 
 }
 
-void WriteEvents(TMidasFile* file, int64_t* correction) {
+void WriteEvents(TMidasFile* file) {
 
    std::ifstream in(file->GetFilename(), std::ifstream::in | std::ifstream::binary);
    in.seekg(0, std::ifstream::end);
@@ -647,7 +641,7 @@ void WriteEvents(TMidasFile* file, int64_t* correction) {
             break;
          default: 
             num_evt++;
-            ProcessEvent(event,file,correction);
+            ProcessEvent(event,file);
             break;
        };
        if(num_evt %5000 == 0){
@@ -663,10 +657,76 @@ void WriteEvents(TMidasFile* file, int64_t* correction) {
 
 }
 
+void WriteCorrectionFile(int runnumber){
+//I think I can directly write the map, but I was having a bit of trouble, so I'm using this Tree hack
+   char filename[64];
+   sprintf(filename,"corrections%05i.root",runnumber); 
+   GFile *corrfile = new GFile(filename,"RECREATE");
+
+   //Just going to make a corrections map for now...it should be a map throughout....
+
+   int address;
+   Long64_t correction;
+   TTree *t = new TTree("correctiontree","Tree with map");
+   t->Branch("address",&address);
+   t->Branch("correction",&correction);
+
+   std::map<int,int64_t>::iterator it;
+   for(it = TEventTime::correctionmap.begin();it != TEventTime::correctionmap.end();it++){
+      address = it->first;
+      correction = it->second;
+      t->Fill();
+   }
+   corrfile->Write();
+   
+   corrfile->Close();
+   delete corrfile;
+}
+
+int CorrectionFile(int runnumber){
+//I think I can directly write the map, but I was having a bit of trouble, so I'm using this Tree hack
+   char filename[64];
+   sprintf(filename,"corrections%05i.root",runnumber); 
+   GFile *corrfile = new GFile(filename,"READ");
+   if(!(corrfile->IsOpen())){
+      delete corrfile;
+      return 0;
+   }
+   
+   printf(DGREEN "Found Correction File %s\n" RESET_COLOR,filename);
+
+   TTree* t; corrfile->GetObject("correctiontree",t);
+   TBranch *baddress = 0;
+   TBranch *bcorrection = 0;
+   int address;
+   Long64_t correction;
+   t->SetBranchAddress("address",&address,&baddress);
+   t->SetBranchAddress("correction",&correction,&bcorrection);
+
+   int i =0;
+   printf("Digitizer \t Correction\n");
+   while(true){
+      Long64_t tentry = t->LoadTree(++i);
+      if(tentry<0) break;
+      baddress->GetEntry(tentry);
+      bcorrection->GetEntry(tentry);
+      printf("0x%04x: \t\t %lld\n",address,correction);
+      TEventTime::correctionmap.insert(std::pair<int,int64_t>(address,correction));
+   }
+
+   t->ResetBranchAddresses();
+   printf(DGREEN "Found %d digitizers\n" RESET_COLOR,TEventTime::correctionmap.size());
+   corrfile->Close();
+   delete corrfile;
+
+   return TEventTime::correctionmap.size();
+
+}
+
 int main(int argc, char **argv) {
 
-   if(argc!=3) {
-      printf("Usage: ./offsetfix <input.mid> <output.mid>\n");
+   if(argc<3) {
+      printf("Usage: ./offsetfix <input.mid> <output.mid> <y/n>(read correction file)\n");
       return 1;
    }
    if(argv[1] == argv[2]){
@@ -685,31 +745,42 @@ int main(int argc, char **argv) {
    else
       sprintf(filename,"time_diffs%05i.root",runnumber);
 	printf("Creating root outfile: %s\n",filename);
+   
+   int nDigitizers = 0;
+   if(argc == 4){
+      if(strcmp(argv[3],"n")==0){
+         nDigitizers = 0;
+      }
+      else{
+         nDigitizers = CorrectionFile(runnumber);
+      }
+   }
+   else{
+      nDigitizers = CorrectionFile(runnumber);
+   }
 
-   GFile *outfile = new GFile(filename,"RECREATE");
+   if(!nDigitizers){
+      GFile *outfile = new GFile(filename,"RECREATE");
+      std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;
+      QueueEvents(midfile,eventQ);
+      std::cout << "Number of Digitizers Found: " << TEventTime::digmap.size() << std::endl;
 
-   std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
-   std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;
-   QueueEvents(midfile,eventQ);
-   std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
+      CheckHighTimeStamp(eventQ);
+      GetRoughTimeDiff(eventQ);
+      GetTimeDiff(eventQ);
+      WriteCorrectionFile(runnumber);
+      midfile->Close();
+      midfile->Open(argv[1]);//This seems like the easiest way to reset the file....
+      outfile->Close();
+      delete outfile;
+   }
 
-   int64_t *correction;
-   correction = new int64_t[TEventTime::NDigitizers()];
-   CheckHighTimeStamp(eventQ,correction);
-   GetRoughTimeDiff(eventQ,correction);
-   GetTimeDiff(eventQ,correction);
-   midfile->Close();
-   midfile->Open(argv[1]);//This seems like the easiest way to reset the file....
-   //It might be worth threading the Read/Write Part of this...its slooooooow.
-   WriteEvents(midfile,correction);
+   WriteEvents(midfile);
 
 
    //Have to do deleting on Q if we move to a next step of fixing the MIDAS File
    midfile->Close();
    midfile->OutClose();
-   outfile->Close();
-   delete[] correction;
-   delete outfile;
    delete midfile;
 
 }
