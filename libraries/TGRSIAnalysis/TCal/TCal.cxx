@@ -94,6 +94,7 @@ void TCal::WriteToAllChannels(std::string mnemonic){
          WriteToChannel();
       }
    }
+   printf("\n");
    if(orig_chan)
       SetChannel(orig_chan);
 }

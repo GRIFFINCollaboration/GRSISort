@@ -136,6 +136,7 @@ class TChannel : public TNamed	{
     inline void AddTIMECoefficient(double temp) { TIMECoefficients.push_back(temp);}
     inline void AddEFFCoefficient(double temp)  { EFFCoefficients.push_back(temp);}
 
+
     inline void SetENGChi2(double temp)  { ENGChi2 = temp; }
     inline void SetCFDChi2(double temp)  { CFDChi2 = temp; }
     inline void SetLEDChi2(double temp)  { LEDChi2 = temp; }
