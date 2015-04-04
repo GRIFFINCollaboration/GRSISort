@@ -60,23 +60,31 @@ class TEventTime {
             };
          }
          timemidas = event->GetTimeStamp();
-         if(timemidas < low_timemidas)
-            low_timemidas = timemidas;
          
          SetDigitizer();
   
          if(!(digset.find(Digitizer())->second)){
             digset.find(Digitizer())->second = true;
             if(GetTimeStamp() < lowest_time || lowest_time == -1){
-               lowest_time = GetTimeStamp();
-               if(Digitizer() == 0x0000 ||
+            /*   if(Digitizer() == 0x0000 ||
                   Digitizer() == 0x0100 ||
                   Digitizer() == 0x0200 ||
                   Digitizer() == 0x1000 ||
                   Digitizer() == 0x1200 ||
                   Digitizer() == 0x1100 ||
                   Digitizer() == 0x1300)
+                  lowest_time = GetTimeStamp();
                   best_dig = Digitizer();
+            }*/
+               if(Digitizer() == 0x0000 ||
+                  Digitizer() == 0x0100 ||
+                  Digitizer() == 0x1000 ||
+                  Digitizer() == 0x1100 ){
+                  lowest_time = GetTimeStamp();
+                  best_dig = Digitizer();
+                  if(timemidas < low_timemidas)
+                     low_timemidas = timemidas;
+               }
             }
          }
       }
