@@ -127,7 +127,11 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
 	   } else {
 	      printf("Trying to add a channel that already exists!\n");
 			return;
-	   }	
+	   }
+    } else if((chan->GetAddress()&0x00ffffff)==0x00ffffff) {
+          //this is the default tigress value for i am not there. 
+          //we should not imclude it in the map.
+          delete chan;
     } else {
       //We need to update the channel maps to correspond to the new channel that has been added. 
 		fChannelMap->insert(std::make_pair(chan->GetAddress(),chan));
@@ -555,6 +559,27 @@ void TChannel::WriteCalFile(std::string outfilename) {
    std::cout.rdbuf(std_out);
 */
 
+
+   if(outfilename.length()>0) {
+     ofstream calout;
+     calout.open(outfilename.c_str());
+     for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+        std::string chanstr = iter_vec->PrintToString();
+        calout << chanstr.c_str();
+        calout << std::endl;
+     }
+     calout << std::endl;
+     calout.close();
+   } else {  
+     for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+        iter_vec->Print();
+     }
+   }
+
+
+
+
+/*
    FILE *c_outputfile;
    if(outfilename.length()>0) {
       c_outputfile = freopen (outfilename.c_str(),"w",stdout);
@@ -567,6 +592,7 @@ void TChannel::WriteCalFile(std::string outfilename) {
       int fd = open("/dev/tty", O_WRONLY);
       stdout = fdopen(fd, "w");
    }
+*/  
    return;
 }
 
