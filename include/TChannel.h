@@ -41,9 +41,9 @@
 class TChannel : public TNamed	{
 
   public:
-    static TChannel *GetChannel(unsigned int temp_address); 
-    static TChannel *GetChannelByNumber(int temp_numebr);
-    static TChannel *FindChannelByName(const char *name);
+    static TChannel * const GetChannel(unsigned int temp_address); 
+    static TChannel * const GetChannelByNumber(int temp_numebr);
+    static TChannel * const FindChannelByName(const char *name);
 
     TChannel();
     TChannel(const char*);
@@ -86,6 +86,7 @@ class TChannel : public TNamed	{
     static std::map<unsigned int,TChannel*> *fChannelMap; //A map to all of the channels based on address
     static std::map<int,TChannel*> *fChannelNumberMap;    //A map of TChannels based on channel number
     static void UpdateChannelNumberMap();
+    static void UpdateChannelMap();
 	 void OverWriteChannel(TChannel*);
 	 void AppendChannel(TChannel*);
 
@@ -98,9 +99,9 @@ class TChannel : public TNamed	{
 	 static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 
   public:
-    inline void SetAddress(unsigned int tmpadd) 	  {address = tmpadd;}
+    void SetAddress(unsigned int tmpadd);
     inline void SetChannelName(const char *tmpname)  {channelname.assign(tmpname);} 
-    inline void SetNumber(int tmpnum)	              {number = tmpnum;}
+    inline void SetNumber(int tmpnum)	              {number = tmpnum; UpdateChannelNumberMap();}
     inline void SetIntegration(int tmpint)	        {integration = tmpint;}
     inline void SetStream(int tmpstream)	           {stream = tmpstream;}
     inline void SetUserInfoNumber(int tempinfo)      {userinfonumber = tempinfo;}
@@ -129,11 +130,12 @@ class TChannel : public TNamed	{
     std::vector<double> GetTIMECoeff() { return TIMECoefficients;}
     std::vector<double> GetEFFCoeff()  { return EFFCoefficients;}
 
-    inline void AddENGCoefficient(double temp)  { ENGCoefficients.push_back(temp);}
-    inline void AddCFDCoefficient(double temp)  { CFDCoefficients.push_back(temp);}
-    inline void AddLEDCoefficient(double temp)  { LEDCoefficients.push_back(temp);}
+    inline void AddENGCoefficient(double temp)  { ENGCoefficients.push_back(temp); }
+    inline void AddCFDCoefficient(double temp)  { CFDCoefficients.push_back(temp); }
+    inline void AddLEDCoefficient(double temp)  { LEDCoefficients.push_back(temp); }
     inline void AddTIMECoefficient(double temp) { TIMECoefficients.push_back(temp);}
     inline void AddEFFCoefficient(double temp)  { EFFCoefficients.push_back(temp);}
+
 
     inline void SetENGChi2(double temp)  { ENGChi2 = temp; }
     inline void SetCFDChi2(double temp)  { CFDChi2 = temp; }

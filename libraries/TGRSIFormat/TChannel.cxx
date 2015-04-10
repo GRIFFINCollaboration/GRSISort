@@ -95,11 +95,12 @@ bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
 }
 
 void TChannel::DeleteAllChannels() {
-//Safely deletes fChannelMap
+//Safely deletes fChannelMap and fChannelNumberMap
    std::map < unsigned int, TChannel * >::iterator iter;
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
 		if(iter->second)
 	      delete iter->second;
+      //These maps should point to the same pointers, so this should clear out both
       iter->second = 0;
    }
    fChannelMap->clear();
@@ -116,16 +117,23 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
 //        "save"      -  The temporary channel is not deleted after being placed in the map. 
     if(!chan)
         return;
-   if(fChannelMap->count(chan->GetAddress())==1) {// if this channel existss
+   if(fChannelMap->count(chan->GetAddress())==1) {// if this channel exists
 	   if(strcmp(opt,"overwrite")==0) {
 			TChannel *oldchan = GetChannel(chan->GetAddress());
 			oldchan->OverWriteChannel(chan);
+         //Need to also update the channel number map RD
+         UpdateChannelNumberMap();
 			return;
 	   } else {
 	      printf("Trying to add a channel that already exists!\n");
 			return;
-	   }	
+	   }
+    } else if((chan->GetAddress()&0x00ffffff)==0x00ffffff) {
+          //this is the default tigress value for i am not there. 
+          //we should not imclude it in the map.
+          delete chan;
     } else {
+      //We need to update the channel maps to correspond to the new channel that has been added. 
 		fChannelMap->insert(std::make_pair(chan->GetAddress(),chan));
 		if(chan->GetNumber() != 0 && fChannelNumberMap->count(chan->GetNumber())==0)
 	   	 fChannelNumberMap->insert(std::make_pair(chan->GetNumber(),chan));
@@ -240,7 +248,7 @@ void TChannel::Clear(Option_t *opt){
     EFFCoefficients.clear();
 }
 
-TChannel *TChannel::GetChannel(unsigned int temp_address) {
+TChannel * const TChannel::GetChannel(unsigned int temp_address) {
 //Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
 
     TChannel *chan = 0;
@@ -253,11 +261,12 @@ TChannel *TChannel::GetChannel(unsigned int temp_address) {
 	return chan;
 }
 
-TChannel *TChannel::GetChannelByNumber(int temp_num) {
+TChannel * const TChannel::GetChannelByNumber(int temp_num) {
 //Returns the TChannel based on the channel number and not the channel address.
-    if(fChannelMap->size() != fChannelNumberMap->size()) {
+  //  if(fChannelMap->size() != fChannelNumberMap->size()) {
+  // We should just always update this map before we use it
 	UpdateChannelNumberMap();
-    }
+//    }
     TChannel *chan  = 0;
     try {
 	chan = fChannelNumberMap->at(temp_num);
@@ -268,7 +277,7 @@ TChannel *TChannel::GetChannelByNumber(int temp_num) {
     return chan;
 }
 
-TChannel *TChannel::FindChannelByName(const char *cc_name){
+TChannel * const TChannel::FindChannelByName(const char *cc_name){
   //Finds the TChannel by the name of the channel 
   TChannel *chan = NULL;
   if(!cc_name)
@@ -293,12 +302,33 @@ TChannel *TChannel::FindChannelByName(const char *cc_name){
 
 void TChannel::UpdateChannelNumberMap() {
 //Updates the fChannelNumberMap based on the entries in the fChannelMap. This should be called before using the fChannelNumberMap.
-    std::map < unsigned int, TChannel * >::iterator iter1;
+   std::map < unsigned int, TChannel * >::iterator mapiter;
+   fChannelNumberMap->clear();//This isn't the nicest way to do this but will keep us consistent.
+
+   for(mapiter = fChannelMap->begin(); mapiter != fChannelMap->end(); mapiter++){
+      fChannelNumberMap->insert(std::make_pair(mapiter->second->GetNumber(),mapiter->second));
+   }
+    /*
     for(iter1 = fChannelMap->begin(); iter1 != fChannelMap->end(); iter1++) {
-	if(fChannelNumberMap->count(iter1->second->GetNumber())==0) {
-            fChannelNumberMap->insert(std::make_pair(iter1->second->GetNumber(),iter1->second));
-        }
-    }
+	   if(fChannelNumberMap->count(iter1->second->GetNumber())==0) {
+         fChannelNumberMap->insert(std::make_pair(iter1->second->GetNumber(),iter1->second));
+      }
+      else{
+         fChannelNumberMap.find(iter1->second->GetNumber())->second = iter1->second
+      }
+    }*/
+}
+
+void TChannel::SetAddress(unsigned int tmpadd){
+//Sets the address of a TChannel and also overwrites that channel if it is in the channel map
+   std::map<unsigned int,TChannel*>::iterator iter1;
+   for(iter1 = fChannelMap->begin(); iter1 != fChannelMap->end(); iter1++){
+      if(iter1->second == this){
+         std::cout << "Channel at address: 0x" << std::hex << address << " already exists. Please use AddChannel() or OverWriteChannel() to change this TChannel" <<std::dec << std::endl;
+         break;
+      }
+   }
+   this->address = tmpadd;
 }
 
 
@@ -462,7 +492,13 @@ void TChannel::Print(Option_t *opt) {
       std::cout << EFFCoefficients.at(x) << "\t" ;
    std::cout << "\n";
    std::cout << "EFFChi2:   " << EFFChi2 << "\n" ;
-   std::cout << "\n}\n";
+   if(TIMECoefficients.size()){
+      std::cout<< "TIMECoeff: " ;
+      for(int x=0;x<TIMECoefficients.size();x++)
+         std::cout << TIMECoefficients.at(x) << "\t";
+      std::cout << "\n";
+   }
+   std::cout << "}\n";
    std::cout << "//====================================//\n";
 };
 
@@ -485,7 +521,14 @@ std::string TChannel::PrintToString(Option_t *opt) {
       buffer.append(Form("%f\t",EFFCoefficients.at(x)));
    buffer.append("\n");
    buffer.append(Form("EFFChi2:   %f\n",EFFChi2));
+   if(TIMECoefficients.size()){
+      buffer.append("TIMECoeff:  ");
+      for(int x=0;x<TIMECoefficients.size();x++)
+         buffer.append(Form("%f\t",TIMECoefficients.at(x)));
+      buffer.append("\n");
+   }
    buffer.append("\n}\n");
+   
    buffer.append("//====================================//\n");
   
   return buffer;
@@ -516,6 +559,27 @@ void TChannel::WriteCalFile(std::string outfilename) {
    std::cout.rdbuf(std_out);
 */
 
+
+   if(outfilename.length()>0) {
+     ofstream calout;
+     calout.open(outfilename.c_str());
+     for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+        std::string chanstr = iter_vec->PrintToString();
+        calout << chanstr.c_str();
+        calout << std::endl;
+     }
+     calout << std::endl;
+     calout.close();
+   } else {  
+     for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+        iter_vec->Print();
+     }
+   }
+
+
+
+
+/*
    FILE *c_outputfile;
    if(outfilename.length()>0) {
       c_outputfile = freopen (outfilename.c_str(),"w",stdout);
@@ -528,6 +592,7 @@ void TChannel::WriteCalFile(std::string outfilename) {
       int fd = open("/dev/tty", O_WRONLY);
       stdout = fdopen(fd, "w");
    }
+*/  
    return;
 }
 
@@ -634,6 +699,7 @@ Int_t TChannel::ReadCalFile(const char *filename) {
 
    int channels_found = ParseInputData((const char*)buffer); 
    SaveToSelf(infilename.c_str());
+   UpdateChannelNumberMap();
    return channels_found;
 }
 
@@ -864,7 +930,7 @@ int TChannel::WriteToRoot(const char *name) {
   std::string savedata = fFileData;
   
 
-  int fd = open("/dev/null", O_WRONLY); // turn of stdout.
+  int fd = open("/dev/null", O_WRONLY); // turn off stdout.
   stdout = fdopen(fd, "w");
 
   while(TKey *key = (TKey*)(iter.Next())) {

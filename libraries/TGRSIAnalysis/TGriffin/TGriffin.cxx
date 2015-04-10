@@ -203,8 +203,10 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
-   griffin_hits.clear();
 
+   
+   griffin_hits.clear();
+   griffin_hits.reserve(gdata->GetMultiplicity());
 
   // std::vector<TGriffinHit> temp_hits;
   // std::map<std::pair<int,int>,std::pair<int,int> > address_gain_map;  // < <det,core>, <high gain , low gain> >
