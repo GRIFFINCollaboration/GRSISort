@@ -147,8 +147,8 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2,
    Double_t energy[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
    std::cout << peak1->GetParameter("centroid") << " ENERGIES " << energy[1] << std::endl;  
    //Offsets are very small right now so I'm not including them until they become a problem.
-   peak1->SetParameter("centroid",energy[0]/gain -offset);
-   peak2->SetParameter("centroid",energy[1]/gain-offset);
+   peak1->SetParameter("centroid",(energy[0]-offset)/gain);
+   peak2->SetParameter("centroid",(energy[1]-offset)/gain);
    //Change the range for the fit to be in the gain corrected spectrum
 
    peak1->SetRange(peak1->GetXmin()/gain,peak1->GetXmax()/gain);
@@ -208,7 +208,7 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2,
    peak1->Draw("same");
    peak2->Draw("same");
 
-   Double_t centroid[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
+   Double_t centroid[2] = {peak1->GetCentroid(), peak2->GetCentroid()};
 
    //Put the peaks in order for ease (if the user put them in the wrong order)
    //Apparantly there is a TGraph Sort method. Might look into this later.
