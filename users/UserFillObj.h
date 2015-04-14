@@ -3,7 +3,7 @@
 
 
    TH1D *hist = (TH1D*)(GetOutputList()->FindObject(Form("Charge_0x%04x",fragment->ChannelAddress)));
-	if(hist) hist->Fill(fragment->Charge.at(0)/512.0);
+	if(hist) hist->Fill(fragment->Charge.at(0)/125.0);
 
    hist = (TH1D*)(GetOutputList()->FindObject(Form("Energy_0x%04x",fragment->ChannelAddress)));
 	if(hist) hist->Fill(channel->CalibrateENG(fragment->Charge.at(0)));
