@@ -108,8 +108,9 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    this->SetParLimits(3,0.000,10);
    this->SetParLimits(4,0,100); // this is a percentage. no reason for it to go to 500% - JKS
    //Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
-   this->SetParLimits(6,0,fithist->GetBinContent(fithist->GetBinCenter(bin))*1.4);
+   this->SetParLimits(6,0.0,fithist->GetBinContent(bin)*1.4);
    //this->SetParLimits(9,xlow,xhigh);
+   this->SetParLimits(5,0.0,1.0E2);
 
    if(!fithist && fHistogram) 
       fithist = GetHistogram();
@@ -123,18 +124,19 @@ Bool_t TPeak::InitParams(TH1 *fithist){
   //Fixing has to come after setting
   //Might have to include bin widths eventually
   //The centroid should already be set by this point in the ctor
-   this->SetParameter("Height",fithist->GetBinContent(fithist->GetBinCenter(bin)));
+   this->SetParameter("Height",fithist->GetBinContent(bin));
    this->SetParameter("centroid",GetParameter("centroid"));
  //  this->SetParameter("sigma",(xhigh-xlow)*0.5); // slightly more robust starting value for sigma -JKS
    this->SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
    this->SetParameter("beta",0.5);
    this->SetParameter("R", 1.0);
    this->SetParameter("step",1.0);
-   this->SetParameter("A",fithist->GetBinContent(fithist->GetBinCenter(binlow)));
-   this->SetParameter("B",(fithist->GetBinContent(fithist->GetBinCenter(binlow)) - fithist->GetBinContent(fithist->GetBinCenter(binhigh)))/(xlow-xhigh));
+   this->SetParameter("A",fithist->GetBinContent(binhigh));
+   this->SetParameter("B",(fithist->GetBinContent(binlow) - fithist->GetBinContent(binhigh))/(xlow-xhigh));
    this->SetParameter("C",-0.5);
    this->SetParameter("bg_offset",GetParameter("centroid"));
-  // this->FixParameter(8,0.00);
+   this->FixParameter(8,0.00);
+   this->FixParameter(4,0.00);
    SetInitialized();
    return true;
 }
@@ -172,12 +174,12 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
          fitres = fithist->Fit(this,Form("%sRSM",opt));
       }
    }
-   if(fitres->Parameter(5) < 0.0){
+/*   if(fitres->Parameter(5) < 0.0){
       FixParameter(5,0);
       std::cout << "Step < 0. Retrying fit with stp = 0" << std::endl;
       fitres = fithist->Fit(this,Form("%sRSML",opt));
    }
-
+*/
    Double_t binWidth = fithist->GetBinWidth(GetParameter("centroid"));
    Double_t width = this->GetParameter("sigma");
    printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
