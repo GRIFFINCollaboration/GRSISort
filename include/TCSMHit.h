@@ -65,12 +65,12 @@ class TCSMHit : public TGRSIDetectorHit 	{
 
 		Double_t GetEHorizontalEnergy()	{	return hor_e_energy;	};	//!
 		Double_t GetEVerticalEnergy()	   {	return ver_e_energy;	};	//!
-		Double_t GetEEnergy()	         { return hor_e_energy; } //!
+		Double_t GetEEnergy();
 		Double_t GetETime()		         {	return hor_e_time;		}	//!
 		
 		Double_t GetDHorizontalEnergy()	{	return hor_d_energy;	};	//!
 		Double_t GetDVerticalEnergy()    {	return ver_d_energy;	};	//!
-		Double_t GetDEnergy()	         { return ver_d_energy; } //!
+		Double_t GetDEnergy();
 		Double_t GetDTime()		         {	return ver_d_time;		}	//!
 
 		UShort_t GetDetectorNumber()	   { return detectornumber;	} //!
@@ -108,7 +108,7 @@ class TCSMHit : public TGRSIDetectorHit 	{
 
 
 		TVector3 GetPosition()	{	return d_position;	 }	//!
-		Double_t GetEnergy()		{return ver_e_energy + hor_d_energy;} //!
+		Double_t GetEnergy()		{return GetDEnergy() + GetEEnergy();} //!
 		Double_t GetTime()		{return ver_d_time;} //!
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
