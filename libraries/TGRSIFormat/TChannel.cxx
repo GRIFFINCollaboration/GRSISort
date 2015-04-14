@@ -888,6 +888,8 @@ int TChannel::WriteToRoot(const char *name) {
   if(!c) 
      printf("No TChannels found to write.\n");
   TFile *f = gDirectory->GetFile();
+  std::string oldoption = std::string(f->GetOption());
+  f->ReOpen("UPDATE");
   if(!gDirectory)
      printf("No file opened to wrtie to.\n");
   TIter iter(gDirectory->GetListOfKeys());
@@ -949,6 +951,8 @@ int TChannel::WriteToRoot(const char *name) {
   //TChannel::DeleteAllChannels();
   //gDirectory->GetFile()->Get("c->GetName()");
   printf("  %i TChannels saved to %s.\n",GetNumberOfChannels(),gDirectory->GetFile()->GetName());
+  printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
+  f->ReOpen(oldoption.c_str());
   return GetNumberOfChannels();
 }
 
