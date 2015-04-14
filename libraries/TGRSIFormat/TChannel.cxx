@@ -882,14 +882,20 @@ void TChannel::Streamer(TBuffer &R__b) {
    }
 }
 
-int TChannel::WriteToRoot(const char *name) {
+int TChannel::WriteToRoot(TFile *fileptr) {
    //Writes Cal File information to the tree
   TChannel *c = GetDefaultChannel(); 
+  //Maintain old gDirectory info
+  TDirectory *savdir = gDirectory;
+
   if(!c) 
      printf("No TChannels found to write.\n");
-  TFile *f = gDirectory->GetFile();
-  std::string oldoption = std::string(f->GetOption());
-  f->ReOpen("UPDATE");
+  if(!fileptr)
+      fileptr = gDirectory->GetFile();
+      
+  fileptr->cd();
+  std::string oldoption = std::string(fileptr->GetOption());
+  fileptr->ReOpen("UPDATE");
   if(!gDirectory)
      printf("No file opened to wrtie to.\n");
   TIter iter(gDirectory->GetListOfKeys());
@@ -952,7 +958,8 @@ int TChannel::WriteToRoot(const char *name) {
   //gDirectory->GetFile()->Get("c->GetName()");
   printf("  %i TChannels saved to %s.\n",GetNumberOfChannels(),gDirectory->GetFile()->GetName());
   printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
-  f->ReOpen(oldoption.c_str());
+  fileptr->ReOpen(oldoption.c_str());
+  savdir->cd();//Go back to original gDirectory
   return GetNumberOfChannels();
 }
 
