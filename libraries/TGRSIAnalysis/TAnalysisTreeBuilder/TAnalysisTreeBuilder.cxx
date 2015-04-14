@@ -426,11 +426,12 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
          
          //reset the build event flag and all of the properties of the fragment that opens up the time gate
          firstDetectorType = currentFrag->DetectorType;
-         firstTimeStamp = currentFrag->GetTimeStamp();
+         firstTimeStamp = currentFrag->GetTimeStamp(); //THIS IS FOR STATIC WINDOW
          buildevent = false;
       } else {
          //If we aren't ready to "build" the event, we fill the current event with the new fragment
          event->push_back(*currentFrag);
+         firstTimeStamp = currentFrag->GetTimeStamp(); //THIS IS FOR MOVING WINDO
       }
    }
    //in case we have fragments left after all of the fragments have been processed, we add them to the queue now
@@ -773,12 +774,12 @@ void TAnalysisTreeBuilder::ProcessEvent() {
                (*detectors)["CS"] = new TCSM;
             }
             (*detectors)["CS"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("GR")==0) {	
+         } else if(mnemonic.system.compare("GR")==0 && event->at(i).DetectorType <2) {	
             if(detectors->find("GR") == detectors->end()) {
                (*detectors)["GR"] = new TGriffin;
             }
             (*detectors)["GR"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("SE")==0) {	
+         } else if(mnemonic.system.compare("SE")==0 && event->at(i).DetectorType == 2) {	
             if(detectors->find("SE") == detectors->end()) {
                (*detectors)["SE"] = new TSceptar;
             }
