@@ -108,7 +108,7 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2,
    }
 
    //See if the channel exists. There is no point in finding the gains if we don't have anywhere to write it
-   Double_t gain;
+   Double_t gain,offset;
    TChannel *chan = TChannel::GetChannelByNumber(channelNum);
    if(!chan){
       if(channelNum !=9999)
@@ -130,6 +130,7 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2,
       //First read in the rough gain coefficients
       std::vector<Double_t> rough_coeffs = chan->GetENGCoeff();
       gain = rough_coeffs.at(1);
+      offset = rough_coeffs.at(0);
    }
 
    //The reason I'm using TPeak here is we might want to gain match "TPhotopeaks", or "TElectronPeaks", or 
@@ -146,44 +147,68 @@ Bool_t TGainMatch::FineMatch(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* peak2,
    Double_t energy[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
    std::cout << peak1->GetParameter("centroid") << " ENERGIES " << energy[1] << std::endl;  
    //Offsets are very small right now so I'm not including them until they become a problem.
-  // peak1->SetParameter("centroid",energy[0]/gain);
-  // peak2->SetParameter("centroid",energy[1]/gain);
+   peak1->SetParameter("centroid",(energy[0]-offset)/gain);
+   peak2->SetParameter("centroid",(energy[1]-offset)/gain);
    //Change the range for the fit to be in the gain corrected spectrum
 
    peak1->SetRange(peak1->GetXmin()/gain,peak1->GetXmax()/gain);
    peak2->SetRange(peak2->GetXmin()/gain,peak2->GetXmax()/gain);
 
    //The gains won't be perfect, so we need to search for the peak within a range.
+   hist1->GetXaxis()->SetRangeUser(peak1->GetXmin(),peak1->GetXmax());
    TSpectrum s;
-   Int_t nfound = s.Search(hist1); 
+   Int_t nfound = s.Search(hist1);
+
    for(int x=0;x<nfound;x++)
-      if(s.GetPositionX()[x] < peak1->GetXmax() && s.GetPositionX()[x] > peak1->GetXmin()) 
-        peak1->SetParameter("centroid",s.GetPositionX()[x]);
-   
+      std::cout << s.GetPositionX()[x] << std::endl;
+   Double_t closest_peak = 0;
+   Double_t closest_diff = 10000;
+   for(int x=0;x<nfound;x++)
+      if(s.GetPositionX()[x] < peak1->GetXmax() && s.GetPositionX()[x] > peak1->GetXmin()){ 
+         if(fabs(peak1->GetCentroid() - s.GetPositionX()[x]) < closest_diff){
+            closest_peak = s.GetPositionX()[x];
+            closest_diff = fabs(peak1->GetCentroid() - s.GetPositionX()[x]);
+         }
+      }
+
+   Double_t range_width = (peak1->GetXmax() - peak1->GetXmin())/2.;
+   peak1->SetParameter("centroid",closest_peak);
+   peak1->SetRange(peak1->GetCentroid()-range_width,peak1->GetCentroid()+range_width);
    std::cout << "Centroid Guess " << peak1->GetCentroid() << std::endl;
    std::cout << "Range Low " << peak1->GetXmin() << " " << peak1->GetXmax() << std::endl;
    
+   closest_peak = 0;
+   closest_diff = 10000;
+   hist2->GetXaxis()->SetRangeUser(peak2->GetXmin(),peak2->GetXmax());
    TSpectrum s2;
    nfound = s2.Search(hist2); //Search the next histogram
    for(int x=0;x<nfound;x++)
       std::cout << s2.GetPositionX()[x] << std::endl;
 
    for(int x=0;x<nfound;x++)
-      if(s2.GetPositionX()[x] < peak2->GetXmax() && s2.GetPositionX()[x] > peak2->GetXmin()) 
-         peak2->SetParameter("centroid",s2.GetPositionX()[x]);
+      if(s2.GetPositionX()[x] < peak2->GetXmax() && s2.GetPositionX()[x] > peak2->GetXmin()){ 
+         if(fabs(peak2->GetCentroid() - s2.GetPositionX()[x]) < closest_diff){
+            closest_peak = s2.GetPositionX()[x];
+            closest_diff = fabs(peak2->GetCentroid() - s2.GetPositionX()[x]);
+         }
+      }
+   Double_t range_width2 = (peak2->GetXmax() - peak2->GetXmin())/2.;
+   peak2->SetParameter("centroid",closest_peak);
+   peak2->SetRange(peak2->GetCentroid()-range_width2,peak2->GetCentroid()+range_width2);
    
    std::cout << "Centroid Guess " << peak2->GetCentroid() << std::endl;
    std::cout << "Range High " << peak2->GetXmin() << " " << peak2->GetXmax() << std::endl;
 
-
-   peak1->Fit(hist1,"M+");
-   peak2->Fit(hist2,"M+");
+   hist1->GetXaxis()->UnZoom();
+   hist2->GetXaxis()->UnZoom();
+   peak1->Fit(hist1,"MS+");
+   peak2->Fit(hist2,"MS+");
    
    hist1->Draw();
    peak1->Draw("same");
    peak2->Draw("same");
 
-   Double_t centroid[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
+   Double_t centroid[2] = {peak1->GetCentroid(), peak2->GetCentroid()};
 
    //Put the peaks in order for ease (if the user put them in the wrong order)
    //Apparantly there is a TGraph Sort method. Might look into this later.

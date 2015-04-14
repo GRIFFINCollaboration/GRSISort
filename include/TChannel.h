@@ -180,7 +180,7 @@ class TChannel : public TNamed	{
     //static  void PrintAll(Option_t *opt = "");      
     std::string PrintToString(Option_t *opt="");
 
-    static int WriteToRoot(const char *name ="");
+    static int WriteToRoot(TFile *fileptr = 0);
 
   
   private:
