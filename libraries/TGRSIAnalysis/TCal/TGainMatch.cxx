@@ -448,12 +448,30 @@ Bool_t TGainMatch::Align(TH1* test, TH1* hist,Int_t low_range, Int_t high_range)
       return false;
    }
    int randomSeed = -1;
-   ftest = test;//Need this histogram to be seen by ftotal...Don't know how else to do this right now.
+   fhist = hist;//Need this histogram to be seen by ftotal...Don't know how else to do this right now.
  //  TF1 *tmpfunc = new TF1("tmpfunc",this,&TGainMatch::HistCompare,test->GetMinimumStored()+1,test->GetMaximumStored()-1,3);
    
+  /* //Initial Guesses
+
+   TSpectrum stest,shist;
+   TGraph guess_graph;
+   Int_t nfoundtest = stest.Search(test);
+   Int_t nfoundhist = shist.Search(hist);
+   TF1* shift_guess = new TF1("shift_guess","pol1");
+   if(nfoundtest >1 && nfoundhist > 1){
+      stest.GetPositionX()[0]/shist.GetPositionX()[0];
+      guess_graph.SetPoint(0,shist.GetPositionX()[0],stest.GetPositionX()[0]);
+      guess_graph.SetPoint(1,shist.GetPositionX()[1],stest.GetPositionX()[1]);
+
+      guess_graph.Print();
+
+      TFitResultPtr res = guess_graph.Fit(shift_guess,"SC0");
+   }
+*/
+
    TF1 *tmpfunc = new TF1("tmpfunc",this,&TGainMatch::HistCompare,low_range,high_range,3);
    tmpfunc->SetNpx(10000);
-   Double_t norm = hist->GetMaximum();
+   Double_t norm = test->GetMaximum();
    tmpfunc->SetParameters(1.0,1.0,1.0);
 
  //  hist->Sumw2();
@@ -472,12 +490,13 @@ Bool_t TGainMatch::Align(TH1* test, TH1* hist,Int_t low_range, Int_t high_range)
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
    TVirtualFitter::SetPrecision(1.0e-10);
    TVirtualFitter::SetMaxIterations(10000);
-   TFitResultPtr res = hist->Fit("tmpfunc","RSIVL");
+   TFitResultPtr res = test->Fit("tmpfunc","RSILV");
    fAlign_coeffs[0] = res->Parameter(1);
    fAlign_coeffs[1] = res->Parameter(2);
    std::cout << "Chi2: " << res->Chi2()/res->Ndf()<< std::endl;
 
    faligned = true;
+  // delete shift_guess;
    return true;
 
 }
@@ -502,7 +521,8 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2 *mat, Int_t low_rang
    Int_t last_chan  = mat->GetXaxis()->GetLast();
    //The first thing we need to do is slice the matrix into it's channel vs energy.
    TH1D* h1 = new TH1D;
-	for(int chan=first_chan; chan<=last_chan;chan++){
+//	for(int chan=first_chan; chan<=last_chan;chan++){
+	for(int chan=first_chan; chan<=2;chan++){
       gm->Clear();
       printf("\nNow fitting channel: %d\n",chan);
 		TH1D* h1 = (TH1D*)(mat->ProjectionY(Form("Channel%d",chan),chan+1,chan+1,"o"));
@@ -527,22 +547,81 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2 *mat, Int_t low_rang
    return true;
 }
 
-Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2 *mat, TH1* testhist, Double_t energy1, Double_t energy2,Int_t low_range, Int_t high_range){
+Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2 *charge_mat, TH2* eng_mat, Int_t testchan, Double_t energy1, Double_t energy2,Int_t low_range, Int_t high_range){
+   //Should be run to correct drifting gains. Requires a previously gain matched spectrum, and ideally a roughly energy calibrated matrix
+
+   TGainMatch* gm = new TGainMatch;
+   if(!cm){
+      gm->Error("FineMatchAll","CalManager Pointer is NULL");
+      return false;
+   }
+   if(!charge_mat || !eng_mat){
+      gm->Error("FineMatchAll","TH2 Pointer is NULL");
+      return false;
+   }
+  /* if(!testhist){
+      gm->Error("FineMatchAll","TH1 Pointer is NULL");
+      return false;
+   }*/
+   Double_t binwidth;
+   binwidth = (Int_t)(0.5+1./eng_mat->GetYaxis()->GetBinWidth(100));
+   eng_mat->RebinY(binwidth);
+
+
+   std::vector<Int_t> badlist;
+   //Find the range of channels provided, we want to use the largest range provided
+   Int_t first_chan = eng_mat->GetXaxis()->GetFirst();
+   Int_t last_chan  = eng_mat->GetXaxis()->GetLast();
+   //The first thing we need to do is slice the matrix into it's channel vs energy.
+   TH1D* chargeh = new TH1D;
+   TH1D* engh = new TH1D;
+
+   TH1D* testhist = new TH1D;
+   testhist = (TH1D*)(eng_mat->ProjectionY(Form("Test%d_mat",testchan),testchan+1,testchan+1,"o"));
+
+
+	for(int chan=first_chan; chan<=last_chan;chan++){
+ //  for(int chan=48;chan<=49;chan++){
+      printf("\nNow fitting channel: %d\n",chan);
+		TH1D* chargeh = (TH1D*)(charge_mat->ProjectionY(Form("Charge%d_mat",chan),chan+1,chan+1,"o"));
+      TH1D* engh = (TH1D*)(eng_mat->ProjectionY(Form("Energy%d_mat",chan),chan+1,chan+1,"o"));
+		if(chargeh->Integral() < 100 || chargeh->Integral() < 100){
+         gm->Warning("FineMatchAll","Empty channel = %d",chan);
+         continue;
+      }
+      //Needs to align before matching
+      if(!(gm->FineMatch(engh,testhist,chargeh,energy1,energy2,low_range,high_range,chan))){
+         badlist.push_back(chan);
+         continue;
+      }
+      cm->AddToManager(gm);
+   }
+   if(badlist.size())
+      printf("The following channels did not gain match properly: ");
+   for(int i=0;i<badlist.size();i++)
+      printf("%d\t",badlist.at(i));
+
+   
+   delete engh;
+   delete chargeh;
+   delete testhist;
+   delete gm;
    
    return true;
 }
 
 
-Bool_t TGainMatch::FineMatch(TH1 *hist1, TH1* testhist, Double_t energy1, Double_t energy2, Int_t low_range, Int_t high_range, Int_t channelNum){
-   Align(testhist,hist1,low_range,high_range);
-   TH1* hist2 = hist1; //Cheating for easier modification later
-   if(!hist1 || !testhist){
+Bool_t TGainMatch::FineMatch(TH1 *energy_hist, TH1* testhist, TH1* charge_hist, Double_t energy1, Double_t energy2, Int_t low_range, Int_t high_range, Int_t channelNum){
+   //Should be run to correct drifting gains. Requires a previously gain matched spectrum, and ideally a roughly energy calibrated spectrum
+   Align(testhist,energy_hist,low_range,high_range);
+   TH1* hist2 = charge_hist; //Cheating for easier modification later
+   if(!charge_hist || !testhist || !energy_hist){
       Error("FineMatch","No histogram being pointed to");
       return false;
    }
 
    //Check to see that the histogram isn't empty
-   if(hist1->GetEntries() < 1 || testhist->GetEntries() < 1){
+   if(charge_hist->GetEntries() < 1 || testhist->GetEntries() < 1 || energy_hist->GetEntries()<1){
       Error("FineMatchFast","Histogram is empty");
       return false;
    }
@@ -574,8 +653,8 @@ Bool_t TGainMatch::FineMatch(TH1 *hist1, TH1* testhist, Double_t energy1, Double
       offset = rough_coeffs.at(0);
    }
 
-   TPeak *peak1 = new TPeak(energy1,energy1-10.0,energy1+10.0);
-   TPeak *peak2 = new TPeak(energy2,energy2-10.0,energy2+10.0);
+   TPeak *peak1 = new TPeak(energy1,energy1-15.0,energy1+15.0);
+   TPeak *peak2 = new TPeak(energy2,energy2-15.0,energy2+15.0);
 
    //Set the channel number
    Graph()->Set(2);
@@ -584,20 +663,30 @@ Bool_t TGainMatch::FineMatch(TH1 *hist1, TH1* testhist, Double_t energy1, Double
    Double_t energy[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
    std::cout << peak1->GetParameter("centroid") << " ENERGIES " << energy[1] << std::endl;  
    //Offsets are very small right now so I'm not including them until they become a problem.
-   peak1->SetParameter("centroid",((energy[0]-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0]);
-   peak2->SetParameter("centroid",((energy[0]-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0]);
+//   peak1->SetParameter("centroid",((energy[0]-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0]);
+//   peak2->SetParameter("centroid",((energy[0]-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0]);
+   peak1->SetParameter("centroid",(energy[0]*fAlign_coeffs[1]+fAlign_coeffs[0] -offset)/gain);
+   peak2->SetParameter("centroid",(energy[1]*fAlign_coeffs[1]+fAlign_coeffs[0] -offset)/gain);
    //Change the range for the fit to be in the gain corrected spectrum
+   
+   std::cout << " Should be: " << ((energy[0]*fAlign_coeffs[1]+fAlign_coeffs[0] -offset)/gain)<< std::endl;
+   std::cout << " Should be: " <<   ((energy[1]*fAlign_coeffs[1]+fAlign_coeffs[0] -offset)/gain)  << std::endl;
 
-   peak1->SetRange(((peak1->GetXmin()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0],((peak1->GetXmax()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0]);
-   peak2->SetRange(((peak2->GetXmin()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0],((peak2->GetXmax()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0]);
+
+//   peak1->SetRange(((peak1->GetXmin()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0],((peak1->GetXmax()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0]);
+//   peak2->SetRange(((peak2->GetXmin()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0],((peak2->GetXmax()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0]);
+   peak1->SetRange(((peak1->GetXmin()*fAlign_coeffs[1]+fAlign_coeffs[0] -offset)/gain),((peak1->GetXmax()*fAlign_coeffs[1] - fAlign_coeffs[0]-offset)/gain));
+   peak2->SetRange(((peak2->GetXmin()*fAlign_coeffs[1]+fAlign_coeffs[0] -offset)/gain),((peak2->GetXmax()*fAlign_coeffs[1] - fAlign_coeffs[0]-offset)/gain));
 
    //The gains won't be perfect, so we need to search for the peak within a range.
-   hist1->GetXaxis()->SetRangeUser(peak1->GetXmin()-20.,peak1->GetXmax()+20.);
    TSpectrum s;
-   Int_t nfound = s.Search(hist1,2,"",0.3);
+   Int_t nfound = s.Search(charge_hist,2,"",0.8);
+   charge_hist->GetXaxis()->SetRangeUser(peak1->GetXmin()-20.,peak1->GetXmax()+20.);
+   nfound = s.Search(charge_hist,2,"",0.3);
 
    for(int x=0;x<nfound;x++)
       std::cout << s.GetPositionX()[x] << std::endl;
+   Double_t largest_peak = s.GetPositionX()[0];
    Double_t closest_peak = 0;
    Double_t closest_diff = 10000;
    for(int x=0;x<nfound;x++){
@@ -606,6 +695,7 @@ Bool_t TGainMatch::FineMatch(TH1 *hist1, TH1* testhist, Double_t energy1, Double
          closest_diff = fabs(peak1->GetCentroid() - s.GetPositionX()[x]);
       }
    }
+   
 
    Double_t range_width = (peak1->GetXmax() - peak1->GetXmin())/2.;
    peak1->SetParameter("centroid",closest_peak);
@@ -615,30 +705,33 @@ Bool_t TGainMatch::FineMatch(TH1 *hist1, TH1* testhist, Double_t energy1, Double
    
    closest_peak = 0;
    closest_diff = 10000;
-   hist2->GetXaxis()->SetRangeUser(peak2->GetXmin()-20.,peak2->GetXmax()+20.);
    TSpectrum s2;
+   nfound = s2.Search(hist2,2,"",0.8); //Search the next histogram
+   hist2->GetXaxis()->SetRangeUser(peak2->GetXmin()-20.,peak2->GetXmax()+20.);
+   std::cout << "RANGE: " << peak2->GetXmin()-20. << " " << peak2->GetXmax()+20. << std::endl;
    nfound = s2.Search(hist2,2,"",0.3); //Search the next histogram
    for(int x=0;x<nfound;x++)
       std::cout << s2.GetPositionX()[x] << std::endl;
 
+   largest_peak = s2.GetPositionX()[0];
    for(int x=0;x<nfound;x++)
       if(fabs(peak2->GetCentroid() - s2.GetPositionX()[x]) < closest_diff){
          closest_peak = s2.GetPositionX()[x];
          closest_diff = fabs(peak2->GetCentroid() - s2.GetPositionX()[x]);
       }
    Double_t range_width2 = (peak2->GetXmax() - peak2->GetXmin())/2.;
-   peak2->SetParameter("centroid",closest_peak);
+   peak2->SetParameter("centroid",largest_peak);
    peak2->SetRange(peak2->GetCentroid()-range_width2,peak2->GetCentroid()+range_width2);
    
    std::cout << "Centroid Guess " << peak2->GetCentroid() << std::endl;
    std::cout << "Range High " << peak2->GetXmin() << " " << peak2->GetXmax() << std::endl;
 
-   hist1->GetXaxis()->UnZoom();
+   charge_hist->GetXaxis()->UnZoom();
    hist2->GetXaxis()->UnZoom();
-   peak1->Fit(hist1,"MS+");
+   peak1->Fit(charge_hist,"MS+");
    peak2->Fit(hist2,"MS+");
    
-   hist1->Draw();
+   charge_hist->Draw();
    peak1->Draw("same");
    peak2->Draw("same");
 
@@ -671,8 +764,8 @@ Bool_t TGainMatch::FineMatch(TH1 *hist1, TH1* testhist, Double_t energy1, Double
 
 Double_t TGainMatch::HistCompare(Double_t *x, Double_t *par) {
    Double_t xx = x[0];
-   Int_t bin = ftest->GetXaxis()->FindBin(xx*par[2] + par[1]);
-   Double_t content = ftest->GetBinContent(bin);
+   Int_t bin = fhist->GetXaxis()->FindBin(xx*par[2] + par[1]);
+   Double_t content = fhist->GetBinContent(bin);
 
    return par[0]*content;
 }
