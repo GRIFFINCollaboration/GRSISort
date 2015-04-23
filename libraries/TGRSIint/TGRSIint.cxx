@@ -135,7 +135,7 @@ int TGRSIint::TabCompletionHook(char* buf, int* pLoc, std::ostream& out) {
 }
 
 
-Long_t TGRUTint::ProcessLine(const char* line,Bool_t sync, Int_t *error) {
+Long_t TGRSIint::ProcessLine(const char* line,Bool_t sync, Int_t *error) {
   //printf("line = %s\n");
   if(!strcmp(line,"TCanvas::MakeDefCanvas();"))
     line = "GCanvas::MakeDefCanvas();";
