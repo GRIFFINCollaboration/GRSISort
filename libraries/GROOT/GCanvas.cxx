@@ -378,7 +378,7 @@ bool GCanvas::HandleMousePress(Int_t event,Int_t x,Int_t y) {
   bool used = false;
 
   if(!strcmp(GetSelected()->GetName(),"TFrame") && fMarkerMode) {
-   ((TFrame*)GetSelected())->SetBit(TBox::kCannotMove);
+    //((TFrame*)GetSelected())->SetBit(TBox::kCannotMove);
     if(GetNMarkers()==4)
        RemoveMarker();
     AddMarker(x,y);

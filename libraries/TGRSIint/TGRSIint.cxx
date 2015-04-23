@@ -134,6 +134,19 @@ int TGRSIint::TabCompletionHook(char* buf, int* pLoc, std::ostream& out) {
    return TRint::TabCompletionHook(buf,pLoc,out);
 }
 
+
+Long_t TGRUTint::ProcessLine(const char* line,Bool_t sync, Int_t *error) {
+  //printf("line = %s\n");
+  if(!strcmp(line,"TCanvas::MakeDefCanvas();"))
+    line = "GCanvas::MakeDefCanvas();";
+  return TRint::ProcessLine(line,sync,error);
+}
+
+
+
+
+
+
 void ReadTheNews(void) {
    //gROOT->ProcessLine(".! wget -q -l1 - http://en.wikipedia.org/wiki/Special:Random -Otemp.html");
    //new TGHtmlBrowser("temp.html");
