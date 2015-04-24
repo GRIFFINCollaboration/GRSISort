@@ -3,6 +3,7 @@
 
 #include "TCanvas.h"
 #include "TRootCanvas.h"
+#include "TPeak.h"
 
 #include "TLine.h"
 
@@ -65,6 +66,7 @@ class GCanvas : public TCanvas {
       bool SetLinearBG(GMarker *m1=0,GMarker *m2=0);
       bool GausFit(GMarker *m1=0,GMarker *m2=0);
       bool GausBGFit(GMarker *m1=0,GMarker *m2=0);
+      bool PeakFit(GMarker *m1=0,GMarker *m2=0);
 
       Window_t fCanvasWindowID;
       TRootCanvas *fRootCanvas;
