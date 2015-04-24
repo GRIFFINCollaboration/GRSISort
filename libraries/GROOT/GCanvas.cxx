@@ -364,6 +364,8 @@ bool GCanvas::HandleMousePress(Int_t event,Int_t x,Int_t y) {
   //printf("Mouse clicked  %i   %i\n",x,y);
   if(!GetSelected())
     return false;
+  if(GetSelected()->InheritsFrom("TCanvas"))
+     ((TCanvas*)GetSelected())->cd();
 
   TIter iter(gPad->GetListOfPrimitives());
   TH1 *hist = 0;
