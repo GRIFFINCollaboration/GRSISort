@@ -146,7 +146,7 @@ class TChannel : public TNamed	{
     //void CalibrateFragment(TFragment*);
 
     double CalibrateENG(double);
-    double CalibrateENG(int);
+    double CalibrateENG(int,int integration=0);
     
     double CalibrateCFD(double);
     double CalibrateCFD(int);

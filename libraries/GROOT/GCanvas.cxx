@@ -334,11 +334,17 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
     case kKey_n: 
       while(GetNMarkers())
          RemoveMarker();
+      hist->GetListOfFunctions()->Delete();
       edit = true;
       break;  
     case kKey_o:
       hist->GetXaxis()->UnZoom();
       edit = true;    
+      while(GetNMarkers())
+         RemoveMarker();
+      break;
+    case kKey_p:
+      edit = PeakFit();
       break;
     case kKey_S:
       if(fStatsDisplayed)
@@ -361,6 +367,8 @@ bool GCanvas::HandleMousePress(Int_t event,Int_t x,Int_t y) {
   //printf("Mouse clicked  %i   %i\n",x,y);
   if(!GetSelected())
     return false;
+  if(GetSelected()->InheritsFrom("TCanvas"))
+     ((TCanvas*)GetSelected())->cd();
 
   TIter iter(gPad->GetListOfPrimitives());
   TH1 *hist = 0;
@@ -378,7 +386,7 @@ bool GCanvas::HandleMousePress(Int_t event,Int_t x,Int_t y) {
   bool used = false;
 
   if(!strcmp(GetSelected()->GetName(),"TFrame") && fMarkerMode) {
-   ((TFrame*)GetSelected())->SetBit(TBox::kCannotMove);
+    //((TFrame*)GetSelected())->SetBit(TBox::kCannotMove);
     if(GetNMarkers()==4)
        RemoveMarker();
     AddMarker(x,y);
@@ -433,7 +441,7 @@ bool GCanvas::SetLinearBG(GMarker *m1,GMarker *m2) {
   hist->Fit(bg,"QR+");
   bg->SetRange(gPad->GetUxmin(),gPad->GetUxmax());
   bg->Draw("SAME");
-  //hist->GetListOfFunctions()->Add(bg);
+  hist->GetListOfFunctions()->Add(bg);
   //bg->Draw("same");
   return true;
 }
@@ -489,6 +497,7 @@ bool GCanvas::GausBGFit(GMarker *m1,GMarker *m2) {
   TF1 *bg = new TF1("bg","pol1",x[0],x[1]);
   bg->SetParameters(gausfit->GetParameter(0),gausfit->GetParameter(1));
   bg->Draw("same");
+  hist->GetListOfFunctions()->Add(bg);
   
   double param[5];
   double error[5];
@@ -577,6 +586,75 @@ bool GCanvas::GausFit(GMarker *m1,GMarker *m2) {
                                          ((error[2]/param[2])*(error[2]/param[2])));
   printf("Area:      % 4.02f  +/- %.02f\n",
          integral,int_err);
+  return true;
+  
+}
+
+bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
+  TIter iter(gPad->GetListOfPrimitives());
+  TH1 *hist = 0;
+  bool edit = false;
+  while(TObject *obj = iter.Next()) {
+     if( obj->InheritsFrom("TH1") &&
+        !obj->InheritsFrom("TH2") &&  
+        !obj->InheritsFrom("TH3") ) {  
+        hist = (TH1*)obj; 
+     }
+  }
+  if(!hist)
+     return false;
+  if(!m1 || !m2) {
+    if(GetNMarkers()<2) {
+       return false;
+    } else { 
+       m1 = fMarkers.at(fMarkers.size()-1);
+       m2 = fMarkers.at(fMarkers.size()-2);
+    }
+  }
+  
+  TPeak *mypeak = (TPeak*)(hist->GetFunction("peak"));
+  if(mypeak)
+     mypeak->Delete();
+  int binx[2];
+  double x[2];
+  double y[2];
+  if(m1->localx < m2->localx) {
+    x[0]=m1->localx; x[1]=m2->localx;
+    binx[0]=m1->x;   binx[1]=m2->x;
+    y[0]=hist->GetBinContent(m1->x); y[1]=hist->GetBinContent(m2->x); 
+  } else {
+    x[1]=m1->localx; x[0]=m2->localx;
+    binx[1]=m1->x;   binx[0]=m2->x;
+    y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
+  }
+  //printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
+  mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);
+//  TF1 *gfit = new TF1("gaus","gaus",x[0],x[1]);
+//  hist->Fit(gfit,"QR+");
+
+  ///gausfit->SetParameters(y[0],0,gfit->GetParameter(0),gfit->GetParameter(1),gfit->GetParameter(2));
+  
+//  gfit->Delete();
+  //hist->GetFunction("gaus")->Delete();
+
+  mypeak->Fit(hist);
+  /*
+  double param[3];
+  double error[3];
+   
+  gausfit->GetParameters(param);
+  error[0] = gausfit->GetParError(0);
+  error[1] = gausfit->GetParError(1);
+  error[2] = gausfit->GetParError(2);
+  
+  printf("\nIntegral from % 4.01f to % 4.01f: %f\n",x[0],x[1],gausfit->Integral(x[0],x[1])/hist->GetBinWidth(1));
+  printf("Centroid:  % 4.02f  +/- %.02f\n",param[1],error[1]);
+  printf("FWHM:      % 4.02f  +/- %.02f\n",param[2]*2.35,error[2]*2.35);
+  double integral = gausfit->Integral(x[0],x[1])/hist->GetBinWidth(1);
+  double int_err  = integral*TMath::Sqrt((error[0]/param[0])*(error[0]/param[0]) +
+                                         ((error[2]/param[2])*(error[2]/param[2])));
+  printf("Area:      % 4.02f  +/- %.02f\n",
+         integral,int_err);*/
   return true;
   
 }

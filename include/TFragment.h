@@ -70,7 +70,7 @@ public:
    double GetTimeStamp() const; //!
    double GetTZero() const; //!
    const char *GetName(); //!
-   double GetEnergy()const; //!
+   double GetEnergy(int iter=0)const; //!
    long GetTimeStamp_ns(); //!
 
 

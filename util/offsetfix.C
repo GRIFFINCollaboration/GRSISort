@@ -265,7 +265,9 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
       if(lowest_hightime.find((*it)->Digitizer()) == lowest_hightime.end()){
          lowest_hightime[(*it)->Digitizer()] = hightime; //initialize this as the first time that is seen.
       }
-     }
+      else if(hightime < lowest_hightime.find((*it)->Digitizer())->second)
+         lowest_hightime.find((*it)->Digitizer())->second = hightime;
+   }
 
    //find lowest digitizer 
    int lowest_dig = 0;

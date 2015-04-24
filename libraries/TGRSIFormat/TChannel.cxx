@@ -365,7 +365,7 @@ void TChannel::DestroyCalibrations()   {
    DestroyEFFCal();
 };
 
-double TChannel::CalibrateENG(int charge) {
+double TChannel::CalibrateENG(int charge,int temp_int) {
    //Returns the calibrated energy of the channel when a charge is passed to it. 
    //This is done by first adding a random number between 0 and 1 to the charge
    //bin. This is then taken and divided by the integration parameter. The 
@@ -374,9 +374,13 @@ double TChannel::CalibrateENG(int charge) {
     if(charge==0) 
       return 0.0000;
 
-   int temp_int = 1; //125.0;
-   if(integration != 0)
-      temp_int = (int)integration;  //the 4 is the dis. 
+   //int temp_int = 1; //125.0;
+   if(temp_int==0) {
+     if(integration != 0)
+       temp_int = (int)integration;  //the 4 is the dis. 
+     else
+       temp_int = 1;
+   } 
    
    //We need to add a random number between 0 and 1 before calibrating to avoid
    //binning issues.
