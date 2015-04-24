@@ -43,12 +43,19 @@ class TNucleus : public TNamed{
   double GetMassExcess() const {return fMassExcess;}		// Gets the mass excess of the nucleus (in MeV)
   double GetMass() const       {return fMass;}		// Gets the mass of the nucleus (in MeV)
   const char* GetSymbol() const{return fSymbol.c_str();}	// Gets the atomic symbol of the nucleus
+
+  void AddTransition(Double_t energy, Double_t intensity, Double_t energy_uncertainty = 0.0, Double_t intensity_uncertainty = 0.0);
+  void AddTransition(TGRSITransition *tran);
+  Bool_t RemoveTransition(Int_t idx);
  
  double GetRadius() const;					
   int GetZfromSymbol(char*);				
 
   TList TransitionList;
   bool SetSourceData();
+
+  void Print(Option_t *opt = "") const;
+  void WriteSourceFile(std::string outfilename = "");
 
 private:
   int fA; 						// Number of nucleons (Z + N) 
