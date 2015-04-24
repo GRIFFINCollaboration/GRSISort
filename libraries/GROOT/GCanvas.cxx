@@ -343,7 +343,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
       while(GetNMarkers())
          RemoveMarker();
       break;
-    case kKey_p:
+    case kKey_f:
       edit = PeakFit();
       break;
     case kKey_S:
