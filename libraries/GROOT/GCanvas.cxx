@@ -334,11 +334,14 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
     case kKey_n: 
       while(GetNMarkers())
          RemoveMarker();
+      hist->GetListOfFunctions()->Delete();
       edit = true;
       break;  
     case kKey_o:
       hist->GetXaxis()->UnZoom();
       edit = true;    
+      while(GetNMarkers())
+         RemoveMarker();
       break;
     case kKey_S:
       if(fStatsDisplayed)
@@ -433,7 +436,7 @@ bool GCanvas::SetLinearBG(GMarker *m1,GMarker *m2) {
   hist->Fit(bg,"QR+");
   bg->SetRange(gPad->GetUxmin(),gPad->GetUxmax());
   bg->Draw("SAME");
-  //hist->GetListOfFunctions()->Add(bg);
+  hist->GetListOfFunctions()->Add(bg);
   //bg->Draw("same");
   return true;
 }
@@ -489,6 +492,7 @@ bool GCanvas::GausBGFit(GMarker *m1,GMarker *m2) {
   TF1 *bg = new TF1("bg","pol1",x[0],x[1]);
   bg->SetParameters(gausfit->GetParameter(0),gausfit->GetParameter(1));
   bg->Draw("same");
+  hist->GetListOfFunctions()->Add(bg);
   
   double param[5];
   double error[5];
