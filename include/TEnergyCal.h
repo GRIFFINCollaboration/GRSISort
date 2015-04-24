@@ -14,6 +14,9 @@ class TEnergyCal : public TCal {
  public:
    std::vector<Double_t> GetParameters() const;
    Double_t GetParameter(Int_t parameter) const;
+   void WriteToChannel() const;
+
+   void AddPoint(Double_t measured, Double_t accepted);
 
    void Clear(Option_t *opt = "");
    void Print(Option_t *opt = "") const;
