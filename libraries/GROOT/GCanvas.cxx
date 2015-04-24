@@ -731,16 +731,16 @@ bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
   error[4] = gausfit->GetParError(7);
   error[4] = gausfit->GetParError(8);
   error[4] = gausfit->GetParError(9);
- /* 
+  
   printf("\nIntegral from % 4.01f to % 4.01f: %f\n",x[0],x[1],gausfit->Integral(x[0],x[1])/hist->GetBinWidth(1));
-  printf("Centroid:  % 4.02f  +/- %.02f\n",param[3],error[3]);
-  printf("FWHM:      % 4.02f  +/- %.02f\n",fabs(param[4]*2.35),error[4]*2.35);
-  double integral = gausfit->Integral(x[0],x[1])/hist->GetBinWidth(1);
-  double int_err  = integral*TMath::Sqrt(((error[2]/param[2])*(error[2]/param[2]))+
-                                         ((error[4]/param[4])*(error[4]/param[4])));
-  printf("Area:      % 4.02f  +/- %.02f\n",
-         integral - (bg->Integral(x[0],x[1])/hist->GetBinWidth(1)),int_err);
- */ 
+  printf("Centroid:  % 4.02f  +/- %.02f\n",param[1],error[1]);
+  printf("FWHM:      % 4.02f  +/- %.02f\n",fabs(param[2]*2.35),error[2]*2.35);
+ // double integral = gausfit->Integral(x[0],x[1])/hist->GetBinWidth(1);
+ // double int_err  = integral*TMath::Sqrt(((error[2]/param[2])*(error[2]/param[2]))+
+ //                                        ((error[4]/param[4])*(error[4]/param[4])));
+ // printf("Area:      % 4.02f  +/- %.02f\n",
+ //        integral - (bg->Integral(x[0],x[1])/hist->GetBinWidth(1)),int_err);
+  
   return true;
   
 }
