@@ -27,6 +27,8 @@
 #include "TGFrame.h"
 #endif
 
+
+
 class TGCanvas;
 class TGMenuBar;
 class TGPopupMenu;
@@ -40,6 +42,8 @@ class TVirtualPadEditor;
 class TGDockableFrame;
 class TGDNDManager;
 class TGToolTip;
+
+class GCanvas;
 
 class GRootCanvas : public TGMainFrame, public TCanvasImp {
 
@@ -109,8 +113,8 @@ private:
    Bool_t   HandleDNDLeave();
 
 public:
-   GRootCanvas(TCanvas *c = 0, const char *name = "ROOT Canvas", UInt_t width = 500, UInt_t height = 300);
-   GRootCanvas(TCanvas *c, const char *name, Int_t x, Int_t y, UInt_t width, UInt_t height);
+   GRootCanvas(GCanvas *c = 0, const char *name = "ROOT Canvas", UInt_t width = 500, UInt_t height = 300);
+   GRootCanvas(GCanvas *c, const char *name, Int_t x, Int_t y, UInt_t width, UInt_t height);
    virtual ~GRootCanvas();
 
    void     AdjustSize();
