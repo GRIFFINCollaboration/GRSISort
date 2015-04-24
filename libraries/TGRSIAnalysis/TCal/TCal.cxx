@@ -55,10 +55,6 @@ void TCal::SetNucleus(TNucleus* nuc){
    }
    if(fnuc)
       Warning("SetNucleus","Overwriting nucleus: %s",fnuc->GetName());
-   if(!(nuc->SetSourceData())){
-      Error("SetNucleus","Source Data not found for %s",nuc->GetName());
-      return;
-   }
    fnuc = nuc;
 }
 

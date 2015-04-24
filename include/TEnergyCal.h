@@ -17,6 +17,9 @@ class TEnergyCal : public TCal {
    void WriteToChannel() const;
 
    void AddPoint(Double_t measured, Double_t accepted);
+   Bool_t AddPoint(Int_t idx, Double_t measured);
+
+   void SetNucleus(TNucleus *nuc);
 
    void Clear(Option_t *opt = "");
    void Print(Option_t *opt = "") const;

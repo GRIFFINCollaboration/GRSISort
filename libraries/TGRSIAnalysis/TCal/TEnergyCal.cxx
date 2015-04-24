@@ -22,10 +22,27 @@ Double_t TEnergyCal::GetParameter(Int_t parameter) const{
    return Graph()->GetFunction("gain")->GetParameter(parameter); //Root does all of the checking for us.
 }
 
+void TEnergyCal::SetNucleus(TNucleus* nuc){
+   TCal::SetNucleus(nuc);
+   for(int i = 0; i< GetNucleus()->NTransitions();i++){
+      Graph()->SetPoint(i,GetNucleus()->GetTransition(i)->GetEnergy(),0.0);
+      Graph()->SetPointError(i,GetNucleus()->GetTransition(i)->GetEnergyUncertainty(),0.0);
+   }
+}
+
 void TEnergyCal::AddPoint(Double_t measured, Double_t accepted){
 
 
 
+}
+
+Bool_t TEnergyCal::AddPoint(Int_t idx, Double_t measured){
+   if(!GetNucleus()){
+      printf("No nucleus set yet...\n");
+      return false;
+   }
+
+   return true;
 }
 
 void TEnergyCal::WriteToChannel() const {
