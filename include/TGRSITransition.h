@@ -38,6 +38,8 @@ class TGRSITransition : public TObject {
       void Clear(Option_t *opt = "");
       void Print(Option_t *opt = "");
 
+      std::string PrintToString();
+
    protected:
       double fenergy;                  //Energy of the transition
       double fenergy_uncertainty;      //Uncertainty in the energy of the transition
