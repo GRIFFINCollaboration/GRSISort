@@ -353,6 +353,14 @@ Bool_t TNucleus::RemoveTransition(Int_t idx){
    }
 }
 
+TGRSITransition* TNucleus::GetTransition(Int_t idx){
+   TGRSITransition *tran = (TGRSITransition*)TransitionList.At(idx);
+   if(!tran)
+      printf("Out of Range\n");
+
+   return tran;
+}
+
 void TNucleus::Print(Option_t *opt) const{
 //Prints out the Name of the nucleus, as well as the numerated transition list
    printf("Nucleus: %s\n",GetName());
@@ -363,20 +371,19 @@ void TNucleus::Print(Option_t *opt) const{
 }
 
 void TNucleus::WriteSourceFile(std::string outfilename){
- /*  if(outfilename.length() > 0) {
+   if(outfilename.length() > 0) {
      ofstream sourceout;
      sourceout.open(outfilename.c_str());
-     for(int i=0; int < TransitionList.GetSize(); i++)   {
-        std::string chanstr = tran->PrintToString();
-        calout << chanstr.c_str();
-        calout << std::endl;
+     for(int i=0; i < TransitionList.GetSize(); i++)   {
+        std::string transtr = ((TGRSITransition*)(TransitionList.At(i)))->PrintToString();
+        sourceout << transtr.c_str();
+        sourceout << std::endl;
      }
-     calout << std::endl;
-     calout.close();
-   } else {  
-     for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
-        iter_vec->Print();
-     }
-   }*/
+     sourceout << std::endl;
+     sourceout.close();
+   } 
+
 }
+
+
 

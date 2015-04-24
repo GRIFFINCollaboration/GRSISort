@@ -47,6 +47,7 @@ class TNucleus : public TNamed{
   void AddTransition(Double_t energy, Double_t intensity, Double_t energy_uncertainty = 0.0, Double_t intensity_uncertainty = 0.0);
   void AddTransition(TGRSITransition *tran);
   Bool_t RemoveTransition(Int_t idx);
+  TGRSITransition *GetTransition(Int_t idx);
  
  double GetRadius() const;					
   int GetZfromSymbol(char*);				

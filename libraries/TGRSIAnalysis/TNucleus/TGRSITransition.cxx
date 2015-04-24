@@ -38,8 +38,8 @@ std::string TGRSITransition::PrintToString(){
   std::string buffer;
    buffer.append(Form("%lf\t",fenergy)); 
    buffer.append(Form("%lf\t",fenergy_uncertainty)); 
-   buffer.append(Form("%lf,\t",fintensity)); 
-   buffer.append(Form("%lf,\t",fintensity_uncertainty)); 
+   buffer.append(Form("%lf\t",fintensity)); 
+   buffer.append(Form("%lf\t",fintensity_uncertainty)); 
   return buffer;
 
 }
