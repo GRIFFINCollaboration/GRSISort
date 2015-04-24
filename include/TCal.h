@@ -53,12 +53,13 @@ class TCal : public TNamed {
    Bool_t SetChannel(UInt_t channum);
    virtual void Print(Option_t *opt = "") const;
    virtual void Clear(Option_t *opt = "");
+   virtual void Draw(Option_t *chopt = "");
 
    virtual void WriteToAllChannels(std::string mnemonic = "");
 
    virtual void SetHist(TH1* hist);
    TH1* GetHist() const {return fhist;}
-   virtual void SetNucleus(TNucleus* nuc);
+   virtual void SetNucleus(TNucleus* nuc,Option_t *opt = "");
    virtual TNucleus* GetNucleus() const { return fnuc; }
 
  private:
