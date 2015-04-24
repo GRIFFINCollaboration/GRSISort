@@ -1,5 +1,5 @@
 
-OBJECTS = GROOTGuiFactory.o GRootCanvas.o GRootBrowser.o GCanvas.o GH1D.o GROOTDict.o GTree.o GChain.o GFile.o
+OBJECTS = GROOTGuiFactory.o GRootCanvas.o GRootBrowser.o GCanvas.o GRootCanvasManager.o GH1D.o GROOTDict.o GTree.o GChain.o GFile.o
 INCDIR = $(BASE)/include
 DICTOBJ =  $(INCDIR)/GROOTGuiFactory.h 
 DICTOBJ += $(INCDIR)/GRootCanvas.h 
