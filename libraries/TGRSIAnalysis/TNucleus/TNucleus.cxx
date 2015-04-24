@@ -104,6 +104,7 @@ TNucleus::TNucleus(const char *name){
   SetMass();
 	SetSymbol(symbol.c_str());
   SetName(element.c_str());
+  SetSourceData();
 }
 /*
 */
@@ -115,6 +116,7 @@ TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol){
   fSymbol = symbol;
   fMass = mass;
   SetName(symbol);
+  SetSourceData();
 }
 
 TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
@@ -159,11 +161,16 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
 	name = name.substr(name.find_first_not_of("0123456789 "));
 	name.append(number);
   SetName(name.c_str());
+  SetSourceData();
 }
 
 //void TNucleus::SetA(int aval){
 //  fA = aval;
 //}
+
+TNucleus::~TNucleus(){
+   TransitionList.Delete();
+}
 
 const char* TNucleus::SortName(const char* name){
 //Names a nucleus based on symbol (ex. 26Na OR Na26). This is to get a nice naming convention.
@@ -272,8 +279,6 @@ double TNucleus::GetRadius() const{
   return 1.12*pow(this->GetA(),1./3.) - 0.94*pow(this->GetA(),-1./3.);
 }
 
-
-
 bool TNucleus::SetSourceData() {
 
    std::string name = GetSymbol();
@@ -313,11 +318,74 @@ bool TNucleus::SetSourceData() {
       ss >> tran->fintensity;
       ss >> tran->fintensity_uncertainty;
       TransitionList.Add(tran);
-      printf("eng: %.02f\tinten: %.02f\n",((TGRSITransition*)TransitionList.Last())->fenergy,((TGRSITransition*)TransitionList.Last())->fintensity);
+    //  printf("eng: %.02f\tinten: %.02f\n",((TGRSITransition*)TransitionList.Last())->fenergy,((TGRSITransition*)TransitionList.Last())->fintensity);
    }                                                                                                         
 
+   printf("Found %d Transitions for %s\n",TransitionList.GetSize(),GetName());
    return true;
 
+}
 
-};
+void TNucleus::AddTransition(Double_t energy, Double_t intensity, Double_t energy_uncertainty, Double_t intensity_uncertainty){
+   TGRSITransition * tran = new TGRSITransition;
+   tran->fenergy = energy;
+   tran->fenergy_uncertainty = energy_uncertainty;
+   tran->fintensity = intensity;
+   tran->fintensity_uncertainty = intensity_uncertainty;
+
+   AddTransition(tran);
+}
+
+void TNucleus::AddTransition(TGRSITransition* tran){
+   TransitionList.Add(tran);
+}
+
+Bool_t TNucleus::RemoveTransition(Int_t idx){
+   TGRSITransition *tran;
+   tran = (TGRSITransition*)TransitionList.RemoveAt(idx);
+   if(tran){
+      printf("Removed transition: ");
+      printf("%d\t eng: %.02f\tinten: %.02f\n",idx,tran->fenergy,tran->fintensity);
+      delete tran;
+      return true;
+   }
+   else{
+      printf("Out of range\n");
+      return false;
+   }
+}
+
+TGRSITransition* TNucleus::GetTransition(Int_t idx){
+   TGRSITransition *tran = (TGRSITransition*)TransitionList.At(idx);
+   if(!tran)
+      printf("Out of Range\n");
+
+   return tran;
+}
+
+void TNucleus::Print(Option_t *opt) const{
+//Prints out the Name of the nucleus, as well as the numerated transition list
+   printf("Nucleus: %s\n",GetName());
+   for(int i =0; i< TransitionList.GetSize();i++){
+      printf("%d\t eng: %.02f\tinten: %.02f\n",((TGRSITransition*)TransitionList.At(i))->fenergy,((TGRSITransition*)TransitionList.At(i))->fintensity);
+
+   }
+}
+
+void TNucleus::WriteSourceFile(std::string outfilename){
+   if(outfilename.length() > 0) {
+     ofstream sourceout;
+     sourceout.open(outfilename.c_str());
+     for(int i=0; i < TransitionList.GetSize(); i++)   {
+        std::string transtr = ((TGRSITransition*)(TransitionList.At(i)))->PrintToString();
+        sourceout << transtr.c_str();
+        sourceout << std::endl;
+     }
+     sourceout << std::endl;
+     sourceout.close();
+   } 
+
+}
+
+
 

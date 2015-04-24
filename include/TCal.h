@@ -67,7 +67,7 @@ class TCal : public TNamed {
    TRef fchan; //This points at the TChannel
    TF1* ffitfunc; //->
    TH1* fhist; //Histogram that was fit by the TPeak.
-   TNucleus* fnuc;
+   TNucleus* fnuc; //Nucleus that we are calibrating against
 
    ClassDef(TCal,1);
 
