@@ -343,7 +343,10 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
       while(GetNMarkers())
          RemoveMarker();
       break;
-    case kKey_p:
+    case kKey_f:
+      edit = PeakFitQ();
+      break;
+    case kKey_F:
       edit = PeakFit();
       break;
     case kKey_S:
@@ -655,6 +658,89 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
                                          ((error[2]/param[2])*(error[2]/param[2])));
   printf("Area:      % 4.02f  +/- %.02f\n",
          integral,int_err);*/
+  return true;
+  
+}
+
+
+bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
+  TIter iter(gPad->GetListOfPrimitives());
+  TH1 *hist = 0;
+  bool edit = false;
+  while(TObject *obj = iter.Next()) {
+     if( obj->InheritsFrom("TH1") &&
+        !obj->InheritsFrom("TH2") &&  
+        !obj->InheritsFrom("TH3") ) {  
+        hist = (TH1*)obj; 
+     }
+  }
+  if(!hist)
+     return false;
+  if(!m1 || !m2) {
+    if(GetNMarkers()<2) {
+       return false;
+    } else { 
+       m1 = fMarkers.at(fMarkers.size()-1);
+       m2 = fMarkers.at(fMarkers.size()-2);
+    }
+  }
+  
+  TPeak *mypeak = (TPeak*)(hist->GetFunction("peak"));
+  if(mypeak)
+     mypeak->Delete();
+  int binx[2];
+  double x[2];
+  double y[2];
+  if(m1->localx < m2->localx) {
+    x[0]=m1->localx; x[1]=m2->localx;
+    binx[0]=m1->x;   binx[1]=m2->x;
+    y[0]=hist->GetBinContent(m1->x); y[1]=hist->GetBinContent(m2->x); 
+  } else {
+    x[1]=m1->localx; x[0]=m2->localx;
+    binx[1]=m1->x;   binx[0]=m2->x;
+    y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
+  }
+  //printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
+  mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);
+//  TF1 *gfit = new TF1("gaus","gaus",x[0],x[1]);
+//  hist->Fit(gfit,"QR+");
+
+  ///gausfit->SetParameters(y[0],0,gfit->GetParameter(0),gfit->GetParameter(1),gfit->GetParameter(2));
+  
+//  gfit->Delete();
+  //hist->GetFunction("gaus")->Delete();
+
+  mypeak->Fit(hist,"QR+");
+  TF1 *peakfit = (TF1*)hist->GetListOfFunctions()->Last();
+  //hist->GetListOfFunctions()->Print();
+  if(!peakfit) {
+    printf("peakfit not found??\n");
+    return false;
+  }   
+ 
+  double param[10];
+  double error[10];
+  peakfit->GetParameters(param);
+  error[0] = gausfit->GetParError(0);
+  error[1] = gausfit->GetParError(1);
+  error[2] = gausfit->GetParError(2);
+  error[3] = gausfit->GetParError(3);
+  error[4] = gausfit->GetParError(4);
+  error[4] = gausfit->GetParError(5);
+  error[4] = gausfit->GetParError(6);
+  error[4] = gausfit->GetParError(7);
+  error[4] = gausfit->GetParError(8);
+  error[4] = gausfit->GetParError(9);
+ /* 
+  printf("\nIntegral from % 4.01f to % 4.01f: %f\n",x[0],x[1],gausfit->Integral(x[0],x[1])/hist->GetBinWidth(1));
+  printf("Centroid:  % 4.02f  +/- %.02f\n",param[3],error[3]);
+  printf("FWHM:      % 4.02f  +/- %.02f\n",fabs(param[4]*2.35),error[4]*2.35);
+  double integral = gausfit->Integral(x[0],x[1])/hist->GetBinWidth(1);
+  double int_err  = integral*TMath::Sqrt(((error[2]/param[2])*(error[2]/param[2]))+
+                                         ((error[4]/param[4])*(error[4]/param[4])));
+  printf("Area:      % 4.02f  +/- %.02f\n",
+         integral - (bg->Integral(x[0],x[1])/hist->GetBinWidth(1)),int_err);
+ */ 
   return true;
   
 }

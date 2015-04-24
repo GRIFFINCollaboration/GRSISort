@@ -67,6 +67,7 @@ class GCanvas : public TCanvas {
       bool GausFit(GMarker *m1=0,GMarker *m2=0);
       bool GausBGFit(GMarker *m1=0,GMarker *m2=0);
       bool PeakFit(GMarker *m1=0,GMarker *m2=0);
+      bool PeakFitQ(GMarker *m1=0,GMarker *m2=0);
 
       Window_t fCanvasWindowID;
       TRootCanvas *fRootCanvas;

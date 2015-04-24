@@ -154,6 +154,10 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
       InitParams(fithist);
    TVirtualFitter::SetMaxIterations(100000);
 
+   TString options(opt); bool Print = true;
+   if(options.Contains("Q"))
+     Print = false;
+
    //Now that it is initialized, let's fit it.
    //Just in case the range changed, we should reset the centroid and bg energy limits
    this->SetParLimits(1,GetXmin(),GetXmax());
@@ -182,7 +186,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 */
    Double_t binWidth = fithist->GetBinWidth(GetParameter("centroid"));
    Double_t width = this->GetParameter("sigma");
-   printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
+   if(Print) printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
    Double_t xlow,xhigh;
    Double_t int_low, int_high; 
    this->GetRange(xlow,xhigh);
@@ -214,7 +218,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 
    fd_area = (tmppeak->IntegralError(int_low,int_high,tmppeak->GetParameters(),CovMat.GetMatrixArray())) /binWidth;
 
-   printf("Integral: %lf +/- %lf\n",farea,fd_area);
+   if(Print) printf("Integral: %lf +/- %lf\n",farea,fd_area);
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
    //delete tmppeak;
    
