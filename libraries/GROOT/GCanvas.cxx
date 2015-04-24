@@ -732,7 +732,7 @@ bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
   error[4] = peakfit->GetParError(8);
   error[4] = peakfit->GetParError(9);
   
-  printf("\nIntegral from % 4.01f to % 4.01f: %f\n",x[0],x[1],gausfit->Integral(x[0],x[1])/hist->GetBinWidth(1));
+  printf("\nIntegral from % 4.01f to % 4.01f: %f\n",x[0],x[1],peakfit->Integral(x[0],x[1])/hist->GetBinWidth(1));
   printf("Centroid:  % 4.02f  +/- %.02f\n",param[1],error[1]);
   printf("FWHM:      % 4.02f  +/- %.02f\n",fabs(param[2]*2.35),error[2]*2.35);
  // double integral = gausfit->Integral(x[0],x[1])/hist->GetBinWidth(1);
