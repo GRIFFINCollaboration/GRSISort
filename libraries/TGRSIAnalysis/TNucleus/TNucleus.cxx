@@ -168,6 +168,10 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
 //  fA = aval;
 //}
 
+TNucleus::~TNucleus(){
+   TransitionList.Delete();
+}
+
 const char* TNucleus::SortName(const char* name){
 //Names a nucleus based on symbol (ex. 26Na OR Na26). This is to get a nice naming convention.
 	std::string Name = name;
@@ -274,8 +278,6 @@ double TNucleus::GetRadius() const{
 // The radius is calculated using 1.12*A^1/3 - 0.94*A^-1/3
   return 1.12*pow(this->GetA(),1./3.) - 0.94*pow(this->GetA(),-1./3.);
 }
-
-
 
 bool TNucleus::SetSourceData() {
 
