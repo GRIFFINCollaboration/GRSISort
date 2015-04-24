@@ -48,7 +48,7 @@ TCal::TCal(const TCal &copy) : TNamed(copy){
    return ge;
 }*/
 
-void TCal::SetNucleus(TNucleus* nuc){
+void TCal::SetNucleus(TNucleus* nuc,Option_t * opt){
    if(!nuc){
       Error("SetNucleus","Nucleus does not exist");
       return;
@@ -145,6 +145,10 @@ void TCal::Clear(Option_t *opt) {
    fgraph->Clear();
 }
 
+void TCal::Draw(Option_t* chopt){
+   Graph()->Draw(chopt);
+}
+
 void TCal::Print(Option_t *opt) const{
    if(GetChannel())
       printf("Channel Number: %u\n",GetChannel()->GetNumber());
@@ -160,6 +164,12 @@ void TCal::Print(Option_t *opt) const{
    }
    else
       printf("Parameters: FIT NOT SET\n");
+
+   printf("Nucleus: ");
+   if(GetNucleus())
+      printf("%s\n",GetNucleus()->GetName());
+   else
+      printf("NOT SET\n");
 
 }
 
