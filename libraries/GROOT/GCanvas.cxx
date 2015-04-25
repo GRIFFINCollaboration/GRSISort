@@ -19,6 +19,9 @@
 #include "GROOTGuiFactory.h"
 
 #include <iostream>
+#include <fstream>
+#include <string>
+
 #include <TMath.h>
 
 #ifndef kArrowKeyPress
@@ -336,7 +339,14 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          RemoveMarker();
       hist->GetListOfFunctions()->Delete();
       edit = true;
-      break;  
+      break; 
+    case kKey_N:
+      while(GetNMarkers())  
+         RemoveMarker();
+      if(hist->GetListOfFunctions()->Last())   
+         hist->GetListOfFunctions()->Last()->Delete();
+      edit = true;
+      break;
     case kKey_o:
       hist->GetXaxis()->UnZoom();
       edit = true;    
@@ -357,6 +367,22 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
       hist->SetStats(fStatsDisplayed);
       edit = true;
       break;
+    case kKey_F10:{
+      std::ofstream outfile;
+      for(int i=0;i<hist->GetListOfFunctions()->GetSize();i++) {
+        //printf("\n\n%s | %s\n",hist->GetListOfFunctions()->At(i)->IsA()->GetName(),((TF1*)hist->GetListOfFunctions()->At(i))->GetName());
+        if(hist->GetListOfFunctions()->At(i)->InheritsFrom("TPeak")) {
+           if(!outfile.is_open())
+              outfile.open(Form("%s.fits",hist->GetName()));
+           outfile << ((TPeak*)hist->GetListOfFunctions()->At(i))->PrintString();
+           outfile << "\n\n";
+        }   
+      } 
+      if(!outfile.is_open())
+        outfile.close();
+      }    
+      break;
+
   };
   if(edit) {
     gPad->Modified();
@@ -716,8 +742,11 @@ bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
   if(!peakfit) {
     printf("peakfit not found??\n");
     return false;
-  }   
- 
+  }
+  ((TPeak*)peakfit)->Print();
+  
+     
+/* 
   double param[10];
   double error[10];
   peakfit->GetParameters(param);
@@ -740,7 +769,7 @@ bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
  //                                        ((error[4]/param[4])*(error[4]/param[4])));
  // printf("Area:      % 4.02f  +/- %.02f\n",
  //        integral - (bg->Integral(x[0],x[1])/hist->GetBinWidth(1)),int_err);
-  
+ */ 
   return true;
   
 }
