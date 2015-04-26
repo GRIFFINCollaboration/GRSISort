@@ -63,14 +63,17 @@ class TPeak : public TGRSIFit {
 
  public:
    virtual void Print(Option_t *opt = "") const;
+   const char*  PrintString(Option_t *opt = "") const;
    virtual void Clear();
 
  private:  
    //Centroid will eventually be read from parameters
    Double_t farea; //->
    Double_t fd_area; //->
+   Double_t fchi2; //->
+   Double_t fNdf; //->
 
-  ClassDef(TPeak,1);
+  ClassDef(TPeak,2);
 
 };
 

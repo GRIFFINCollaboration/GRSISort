@@ -50,6 +50,8 @@ class TNucleus : public TNamed{
   void AddTransition(TGRSITransition *tran);
   Bool_t RemoveTransition(Int_t idx);
   TGRSITransition *GetTransition(Int_t idx);
+
+  Int_t NTransitions() const { return TransitionList.GetSize();};
  
  double GetRadius() const;					
   int GetZfromSymbol(char*);				

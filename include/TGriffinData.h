@@ -83,7 +83,7 @@ class TGriffinData : public TGRSIDetectorData {
                SetPPG(frag->PPG);
                SetCoreAddress(frag->ChannelAddress);
            	   SetCloverNumber(mnemonic->arrayposition);
-            	SetCoreNumber(CoreNbr);
+            	 SetCoreNumber(CoreNbr);
                SetCoreEnergy(channel->CalibrateENG(frag->Charge.at(x)));		
                SetCoreCharge(frag->Charge.at(x));
      	         SetCoreCFD(frag->Cfd.at(x));		
