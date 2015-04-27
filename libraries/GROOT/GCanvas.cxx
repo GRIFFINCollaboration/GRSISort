@@ -186,7 +186,6 @@ void GCanvas::UpdateStatsInfo(int x, int y) {
          st->GetListOfLines()->Delete();
          st->AddText(Form("X      %i",x));
          st->AddText(Form("Counts %i",y));
-         
          //st->Paint();
          //gPad->Modified();
          //gPad->Update();
@@ -205,24 +204,32 @@ void GCanvas::Draw(Option_t *opt) {
 }
 
 
-bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
-
-  TIter iter(gPad->GetListOfPrimitives());
+std::vector<TH1*> GCanvas::Find1DHists() {
+  std::vector<TH1*> tempvec;
   TH1 *hist = 0;
+  TIter iter(gPad->GetListOfPrimitives());
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
         !obj->InheritsFrom("TH2") &&  
         !obj->InheritsFrom("TH3") ) {  
-        hist = (TH1*)obj; 
+        tempvec.push_back((TH1*)obj); 
      }
   }
-  if(!hist)
+  return tempvec;
+}
+
+
+bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
+
+  
+  std::vector<TH1*> hists = Find1DHists();
+  if(hists.size()==0)
      return false;
-  int first = hist->GetXaxis()->GetFirst();
-  int last = hist->GetXaxis()->GetLast();
+  int first = hists.at(0)->GetXaxis()->GetFirst();
+  int last = hists.at(0)->GetXaxis()->GetLast();
  
   int min = std::min(first,0);
-  int max = std::max(last,hist->GetXaxis()->GetNbins()+1);
+  int max = std::max(last,hists.at(0)->GetXaxis()->GetNbins()+1);
 
 
   //printf("first = %i  |  last = %i\n", first,last);
@@ -249,7 +256,8 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
             last  = last -(xdiff/2);
           }
         }
-        hist->GetXaxis()->SetRange(first,last);
+        for(int i=0;i<hists.size();i++)
+          hists.at(i)->GetXaxis()->SetRange(first,last);
         gPad->Modified();
         gPad->Update();
       }
@@ -273,7 +281,8 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
             first = first+(xdiff/2); 
           }
         }
-        hist->GetXaxis()->SetRange(first,last);
+        for(int i=0;i<hists.size();i++)
+          hists.at(i)->GetXaxis()->SetRange(first,last);
         gPad->Modified();
         gPad->Update();
       }
@@ -332,6 +341,14 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          case kKey_G:
             edit = GausBGFit();
             break;
+         case kKey_l:
+            SetLogy(0);
+            edit = true;
+            break;
+         case kKey_L:
+            SetLogy(1);
+            edit = true;
+            break;
          case kKey_m:
             SetMarkerMode(true);
             break;
@@ -355,6 +372,8 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             edit = true;    
             while(GetNMarkers())
                RemoveMarker();
+            break;
+         case kKey_p: //project.
             break;
          case kKey_f:
             edit = PeakFitQ();

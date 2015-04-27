@@ -11,7 +11,7 @@
 #include "RConfigure.h"
 
 #include "GRootCanvas.h"
-#include "GRootCanvasManager.h"
+//#include "GRootCanvasManager.h"
 
 #include "TRootApplication.h"
 #include "TRootHelpDialog.h"
@@ -665,7 +665,7 @@ void GRootCanvas::Close()
 {
    // Called via TCanvasImp interface by TCanvas.
    //printf("Closing canvas 0x%08x\n",((TCanvasImp*)this)->Canvas());
-   GRootCanvasManager::RemoveCanvas(((TCanvasImp*)this)->Canvas());
+   //GRootObjcetManager::CanvasClosed(((TCanvasImp*)this)->Canvas());
    TVirtualPadEditor* gged = TVirtualPadEditor::GetPadEditor(kFALSE);
    if(gged && gged->GetCanvas() == fCanvas) {
       if (fEmbedded) {

@@ -60,6 +60,8 @@ class GCanvas : public TCanvas {
       void AddMarker(int,int,int dim=1);
       void RemoveMarker();
 
+      std::vector<TH1*> Find1DHists();
+
       //void HandleKeyPress(int event,int x,int y,TObject *obj);
       bool HandleArrowKeyPress(Event_t *event,UInt_t *keysym);
       bool HandleKeyboardPress(Event_t *event,UInt_t *keysym);
