@@ -69,12 +69,12 @@ TPeak::TPeak(const TPeak &copy) : TGRSIFit(copy){
 }
 
 void TPeak::Copy(TObject &obj) const {
+   TGRSIFit::Copy(obj);
    ((TPeak&)obj).farea = farea;
    ((TPeak&)obj).fd_area = fd_area;
 
    ((TPeak&)obj).fchi2 = fchi2;
    ((TPeak&)obj).fNdf  = fNdf;
-   TGRSIFit::Copy(obj);
 }
 
 
@@ -145,6 +145,7 @@ Bool_t TPeak::InitParams(TH1 *fithist){
 }
 
 Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
+   TString optstr = opt;
    if(!fithist && fHistogram){
       printf("No hist passed, trying something...");
       fithist = fHistogram;
@@ -224,7 +225,10 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 
    if(Print) printf("Integral: %lf +/- %lf\n",farea,fd_area);
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
-   //delete tmppeak;
+   Copy(*fithist->GetFunction(GetName()));
+   if(optstr.Contains("+"))
+      Copy(*fithist->GetListOfFunctions()->Last());
+   delete tmppeak;
    
 }
 

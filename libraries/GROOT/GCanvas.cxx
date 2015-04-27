@@ -458,8 +458,8 @@ TF1 *GCanvas::GetLastFit() {
   if(!hist)
      return 0;
   if(hist->GetListOfFunctions()->GetSize()>0) 
-     return ((TF1*)hist->GetListOfFunctions()->Last()); 
-  return 0; 
+     return (TF1*)(hist->GetListOfFunctions()->Last()); 
+  return 0;
 }
 
 
@@ -672,9 +672,9 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
     }
   }
   
-  TPeak *mypeak = (TPeak*)(hist->GetFunction("peak"));
-  if(mypeak)
-     mypeak->Delete();
+ // TPeak *mypeak = (TPeak*)(hist->GetFunction("peak"));
+ // if(mypeak)
+  //   mypeak->Delete();
   int binx[2];
   double x[2];
   double y[2];
@@ -688,7 +688,7 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
     y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
   }
   //printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
-  mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);
+  TPeak* mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);
 //  TF1 *gfit = new TF1("gaus","gaus",x[0],x[1]);
 //  hist->Fit(gfit,"QR+");
 
@@ -742,9 +742,6 @@ bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
     }
   }
   
-  TPeak *mypeak = (TPeak*)(hist->GetFunction("peak"));
-  if(mypeak)
-     mypeak->Delete();
   int binx[2];
   double x[2];
   double y[2];
@@ -758,7 +755,11 @@ bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
     y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
   }
   //printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
-  mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);
+  TPeak * mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);
+/*  if(hist->FindObject(mypeak->GetName())){
+     //delete mypeak;
+     mypeak = (TPeak*)(hist->FindObject(mypeak->GetName()));
+  }*/
 //  TF1 *gfit = new TF1("gaus","gaus",x[0],x[1]);
 //  hist->Fit(gfit,"QR+");
 
@@ -767,14 +768,14 @@ bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
 //  gfit->Delete();
   //hist->GetFunction("gaus")->Delete();
 
-  mypeak->Fit(hist,"QR+");
-  TF1 *peakfit = (TF1*)hist->GetListOfFunctions()->Last();
+  mypeak->Fit(hist,"Q+");
+  TPeak *peakfit = (TPeak*)(hist->GetListOfFunctions()->Last());
   //hist->GetListOfFunctions()->Print();
   if(!peakfit) {
     printf("peakfit not found??\n");
     return false;
   }
-  ((TPeak*)peakfit)->Print();
+  mypeak->Print();
   
      
 /* 
