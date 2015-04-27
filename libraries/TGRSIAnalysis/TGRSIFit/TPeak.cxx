@@ -41,13 +41,23 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGR
    //We need to set parameter names now.
    this->InitNames();
    this->SetParameter("centroid",cent);
+
+   background = new TF1("background",TGRSIFunctions::StepBG,xlow,xhigh,10);
+   background->SetNpx(1000);
+   background->SetLineStyle(2);
+   background->SetLineColor(kBlack);
 }
 
 TPeak::TPeak() : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,0,1000,10){
    this->InitNames();
+   background = new TF1("background",TGRSIFunctions::StepBG,0,1000,10);
+   background->SetNpx(1000);
+   background->SetLineStyle(2);
+   background->SetLineColor(kBlack);
 }
 
 TPeak::~TPeak(){
+   if(background) delete background;
 }
 
 void TPeak::InitNames(){
@@ -228,6 +238,10 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    Copy(*fithist->GetListOfFunctions()->Last());
    if(optstr.Contains("+"))
       Copy(*fithist->GetListOfFunctions()->Before(fithist->GetListOfFunctions()->Last()));
+   
+   //Set the background for drawing later
+   background->SetParameters(this->GetParameters());
+
    delete tmppeak;
    
 }

@@ -60,6 +60,7 @@ class TPeak : public TGRSIFit {
 
  public:
    Bool_t InitParams(TH1 *fithist = 0);
+   TF1* Background() const { return background; } 
 
  public:
    virtual void Print(Option_t *opt = "") const;
@@ -72,6 +73,8 @@ class TPeak : public TGRSIFit {
    Double_t fd_area; 
    Double_t fchi2; 
    Double_t fNdf; 
+
+   TF1* background;
 
   ClassDef(TPeak,2);
 
