@@ -225,9 +225,9 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 
    if(Print) printf("Integral: %lf +/- %lf\n",farea,fd_area);
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
-   Copy(*fithist->GetFunction(GetName()));
+   Copy(*fithist->GetListOfFunctions()->Last());
    if(optstr.Contains("+"))
-      Copy(*fithist->GetListOfFunctions()->Last());
+      Copy(*fithist->GetListOfFunctions()->Before(fithist->GetListOfFunctions()->Last()));
    delete tmppeak;
    
 }
