@@ -42,6 +42,8 @@ class GCanvas : public TCanvas {
       Int_t  GetNMarkers() { return fMarkers.size(); }
       void SetMarkerMode(bool flag=true) {fMarkerMode = flag;}
 
+      TF1 *GetLastFit();
+
    private:
       void GCanvasInit();
 
@@ -57,6 +59,8 @@ class GCanvas : public TCanvas {
       std::vector<GMarker*> fMarkers;
       void AddMarker(int,int,int dim=1);
       void RemoveMarker();
+
+      std::vector<TH1*> Find1DHists();
 
       //void HandleKeyPress(int event,int x,int y,TObject *obj);
       bool HandleArrowKeyPress(Event_t *event,UInt_t *keysym);

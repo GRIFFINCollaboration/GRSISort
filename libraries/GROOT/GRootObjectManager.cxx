@@ -1,5 +1,5 @@
 
-#include <GRootCanvasManager.h>
+#include <GRootObjectManager.h>
 //#include <TCanvas.h>
 
 
@@ -13,22 +13,22 @@ GPadObj::~GPadObj() { fObject=0; }
 
 
 
-GRootCanvasManager *GRootCanvasManager::fGRootCanvasManager = 0;
+GRootObjectManager *GRootObjectManager::fGRootObjectManager = 0;
 
-GRootCanvasManager *GRootCanvasManager::Instance() {
-   if(!fGRootCanvasManager)
-     fGRootCanvasManager = new GRootCanvasManager;
+GRootObjectManager *GRootObjectManager::Instance() {
+   if(!fGRootObjectManager)
+     fGRootObjectManager = new GRootObjectManager;
 }
 
-std::map<TCanvas*,std::vector<GPadObj*> > GRootCanvasManager::fCanvasMap;
+std::map<TCanvas*,std::vector<GPadObj*> > GRootObjectManager::fCanvasMap;
 
-GRootCanvasManager::GRootCanvasManager() { }
+GRootObjectManager::GRootObjectManager() { }
 
-GRootCanvasManager::~GRootCanvasManager() { }
+GRootObjectManager::~GRootObjectManager() { }
 
-void GRootCanvasManager::Update() { }
+void GRootObjectManager::Update() { }
 
-void GRootCanvasManager::AddCanvas(TCanvas *c) {
+void GRootObjectManager::AddCanvas(GCanvas *c) {
   //printf("c = 0x%08x\n",c); fflush(stdout);
   if(!c)
      return;
@@ -42,7 +42,7 @@ void GRootCanvasManager::AddCanvas(TCanvas *c) {
   }
 }  
 
-void GRootCanvasManager::RemoveCanvas(TCanvas *c) {
+void GRootObjectManager::RemoveCanvas(GCanvas *c) {
   /*
   //printf("c = 0x%08x\n",c); fflush(stdout);
   if(!c)
