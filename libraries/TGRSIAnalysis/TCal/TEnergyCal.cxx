@@ -2,9 +2,20 @@
 
 ClassImp(TEnergyCal)
 
-TEnergyCal::TEnergyCal(){}
+TEnergyCal::TEnergyCal(){
+   SetDefaultTitles();
+}
 
 TEnergyCal::~TEnergyCal(){}
+
+void TEnergyCal::SetDefaultTitles(){
+   Graph()->SetTitle("Energy Calibration");
+   Graph()->GetXaxis()->SetTitle("Accepted Energy (keV)");
+   Graph()->GetYaxis()->SetTitle("Measured Centroid");
+   Graph()->GetYaxis()->CenterTitle();
+   Graph()->GetXaxis()->CenterTitle();
+}
+
 
 std::vector<Double_t> TEnergyCal::GetParameters() const{
    //WILL NEED TO CHANGE THIS APPROPRIATELY
@@ -36,6 +47,7 @@ void TEnergyCal::SetNucleus(TNucleus* nuc,Option_t *opt){
    else if(GetNucleus())
       printf("Nucleus already exists. Use \"F\" option to overwrite\n");
 
+   SetDefaultTitles();
    Graph()->Sort();
 }
 
@@ -92,5 +104,6 @@ void TEnergyCal::Print(Option_t *opt) const {
 
 void TEnergyCal::Clear(Option_t *opt) {
    TCal::Clear();
+   SetDefaultTitles();
 }
 

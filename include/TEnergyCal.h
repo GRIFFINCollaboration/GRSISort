@@ -24,6 +24,7 @@ class TEnergyCal : public TCal {
 
    void Clear(Option_t *opt = "");
    void Print(Option_t *opt = "") const;
+   void SetDefaultTitles();
    void Draw(Option_t *opt = "ap"){Graph()->Draw(opt);}
 
    Bool_t IsGroupable() const {return true;}
