@@ -304,21 +304,18 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
 
   //printf("keysym = %i\n",*keysym);
   TIter iter(gPad->GetListOfPrimitives());
-  TH1 *hist = 0;
   TGraphErrors * ge = 0;
   bool edit = false;
   while(TObject *obj = iter.Next()) {
-     if( obj->InheritsFrom("TH1") &&
-        !obj->InheritsFrom("TH2") &&  
-        !obj->InheritsFrom("TH3") ) {  
-        hist = (TH1*)obj; 
-     }
      if(obj->InheritsFrom("TGraphErrors")){
            ge = (TGraphErrors*)obj;
      }
   }
+  std::vector<TH1*> hists = Find1DHists();
+  if(hists.size()==0)
+     return false;
 
-   if(hist){
+   if(hists.size()>0){
       switch(*keysym) {
          case kKey_b:
             edit = SetLinearBG();
@@ -327,9 +324,11 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             if(GetNMarkers()<2)
                break;
             if(fMarkers.at(fMarkers.size()-1)->localx < fMarkers.at(fMarkers.size()-2)->localx) 
-               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-1)->localx,fMarkers.at(fMarkers.size()-2)->localx);
+               for(int i=0;i<hists.size();i++)
+                 hists.at(i)->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-1)->localx,fMarkers.at(fMarkers.size()-2)->localx);
             else
-               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-2)->localx,fMarkers.at(fMarkers.size()-1)->localx);
+               for(int i=0;i<hists.size();i++)
+                 hists.at(i)->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-2)->localx,fMarkers.at(fMarkers.size()-1)->localx);
             edit = true;
             while(GetNMarkers())
                RemoveMarker();
@@ -356,18 +355,20 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          case kKey_n: 
             while(GetNMarkers())
                RemoveMarker();
-            hist->GetListOfFunctions()->Delete();
+            for(int i=0;i<hists.size();i++)
+              hists.at(i)->GetListOfFunctions()->Delete();
             edit = true;
             break; 
          case kKey_N:
             while(GetNMarkers())  
                RemoveMarker();
-            if(hist->GetListOfFunctions()->Last())   
-               hist->GetListOfFunctions()->Last()->Delete();
+            if(hists.back()->GetListOfFunctions()->Last())   
+               hists.back()->GetListOfFunctions()->Last()->Delete();
             edit = true;
             break;
          case kKey_o:
-            hist->GetXaxis()->UnZoom();
+            for(int i=0;i<hists.size();i++)
+              hists.at(i)->GetXaxis()->UnZoom();
             edit = true;    
             while(GetNMarkers())
                RemoveMarker();
@@ -385,17 +386,18 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                fStatsDisplayed = false;
             else
                fStatsDisplayed = true;
-            hist->SetStats(fStatsDisplayed);
+            for(int i=0;i<hists.size();i++)
+              hists.at(i)->SetStats(fStatsDisplayed);
             edit = true;
             break;
          case kKey_F10:{
             std::ofstream outfile;
-            for(int i=0;i<hist->GetListOfFunctions()->GetSize();i++) {
+            for(int i=0;i<hists.back()->GetListOfFunctions()->GetSize();i++) {
                //printf("\n\n%s | %s\n",hist->GetListOfFunctions()->At(i)->IsA()->GetName(),((TF1*)hist->GetListOfFunctions()->At(i))->GetName());
-               if(hist->GetListOfFunctions()->At(i)->InheritsFrom("TPeak")) {
+               if(hists.back()->GetListOfFunctions()->At(i)->InheritsFrom("TPeak")) {
                   if(!outfile.is_open())
-                     outfile.open(Form("%s.fits",hist->GetName()));
-                  outfile << ((TPeak*)hist->GetListOfFunctions()->At(i))->PrintString();
+                     outfile.open(Form("%s.fits",hists.back()->GetName()));
+                  outfile << ((TPeak*)hists.back()->GetListOfFunctions()->At(i))->PrintString();
                   outfile << "\n\n";
                }     
             } 
