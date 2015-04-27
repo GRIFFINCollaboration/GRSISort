@@ -306,11 +306,10 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
      }
      if(obj->InheritsFrom("TGraphErrors")){
            ge = (TGraphErrors*)obj;
-           std::cout << "FOUND"<< std::endl;
      }
   }
 
-   if(hist)
+   if(hist){
       switch(*keysym) {
          case kKey_b:
             edit = SetLinearBG();
@@ -386,7 +385,8 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          }    
          break;
 
-   };
+      };
+   }
    if(ge){
       switch(*keysym) {
          case kKey_p:
