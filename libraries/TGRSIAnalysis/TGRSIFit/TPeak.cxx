@@ -85,6 +85,7 @@ void TPeak::Copy(TObject &obj) const {
 
    ((TPeak&)obj).fchi2 = fchi2;
    ((TPeak&)obj).fNdf  = fNdf;
+   background->Copy(*(((TPeak&)obj).background));
 }
 
 
@@ -234,14 +235,13 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    fd_area = (tmppeak->IntegralError(int_low,int_high,tmppeak->GetParameters(),CovMat.GetMatrixArray())) /binWidth;
 
    if(Print) printf("Integral: %lf +/- %lf\n",farea,fd_area);
+   //Set the background for drawing later
+   background->SetParameters(this->GetParameters());
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
    Copy(*fithist->GetListOfFunctions()->Last());
    if(optstr.Contains("+"))
       Copy(*fithist->GetListOfFunctions()->Before(fithist->GetListOfFunctions()->Last()));
    
-   //Set the background for drawing later
-   background->SetParameters(this->GetParameters());
-
    delete tmppeak;
    
 }
@@ -343,5 +343,8 @@ const char * TPeak::PrintString(Option_t *opt) const {
    return temp.c_str();
 }
 
+void TPeak::DrawBackground(Option_t *opt) const{
+   background->Draw(opt);
+}
 
 
