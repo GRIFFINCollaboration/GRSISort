@@ -72,6 +72,20 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured){
    return true;
 }
 
+Bool_t TEnergyCal::SetPoint(Int_t idx, TPeak *peak){
+   if(!peak){
+      printf("No Peak, pointer is null\n");
+      return false;
+   }
+   Double_t centroid = peak->GetCentroid();
+   Double_t d_centroid = peak->GetCentroidErr();
+
+   SetPoint(idx,centroid);
+   return SetPointError(idx,d_centroid);
+
+
+}
+
 Bool_t TEnergyCal::SetPointError(Int_t idx, Double_t measured_uncertainty){
    if(!GetNucleus()){
       printf("No nucleus set yet...\n");
