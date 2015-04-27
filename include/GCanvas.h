@@ -42,6 +42,8 @@ class GCanvas : public TCanvas {
       Int_t  GetNMarkers() { return fMarkers.size(); }
       void SetMarkerMode(bool flag=true) {fMarkerMode = flag;}
 
+      TF1 *GetLastFit();
+
    private:
       void GCanvasInit();
 
