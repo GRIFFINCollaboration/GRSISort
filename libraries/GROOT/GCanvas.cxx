@@ -16,6 +16,8 @@
 #include <TF1.h>
 #include <TGraph.h>
 
+#include <TContextMenu.h>
+
 #include "GCanvas.h"
 #include "GROOTGuiFactory.h"
 
@@ -332,6 +334,12 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             edit = true;
             while(GetNMarkers())
                RemoveMarker();
+            break;
+         case kKey_E:
+            GetContextMenu()->Action(hists.back()->GetXaxis(),hists.back()->GetXaxis()->Class()->GetMethodAny("SetRangeUser"));
+            for(int i=0;i<hists.size()-1;i++)
+               hists.at(i)->GetXaxis()->SetRangeUser(hists.back()->GetXaxis()->GetFirst(),hists.back()->GetXaxis()->GetLast());
+            edit = true;
             break;
          case kKey_g:
             edit = GausFit();
