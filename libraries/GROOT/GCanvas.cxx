@@ -7,6 +7,7 @@
 #include <TText.h>
 #include <TLatex.h>
 #include <TH1.h>
+#include <TGraphErrors.h>
 #include <Buttons.h>
 #include <KeySymbols.h> 
 #include <TVirtualX.h>
@@ -295,6 +296,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
   //printf("keysym = %i\n",*keysym);
   TIter iter(gPad->GetListOfPrimitives());
   TH1 *hist = 0;
+  TGraphErrors * ge = 0;
   bool edit = false;
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
@@ -302,93 +304,103 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
         !obj->InheritsFrom("TH3") ) {  
         hist = (TH1*)obj; 
      }
+     if(obj->InheritsFrom("TGraphErrors")){
+           ge = (TGraphErrors*)obj;
+           std::cout << "FOUND"<< std::endl;
+     }
   }
 
-  if(!hist)
-     return false;
-
-
-  switch(*keysym) {
-    case kKey_b:
-      edit = SetLinearBG();
-      break;
-    case kKey_e:
-      if(GetNMarkers()<2)
+   if(hist)
+      switch(*keysym) {
+         case kKey_b:
+            edit = SetLinearBG();
+            break;
+         case kKey_e:
+            if(GetNMarkers()<2)
+               break;
+            if(fMarkers.at(fMarkers.size()-1)->localx < fMarkers.at(fMarkers.size()-2)->localx) 
+               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-1)->localx,fMarkers.at(fMarkers.size()-2)->localx);
+            else
+               hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-2)->localx,fMarkers.at(fMarkers.size()-1)->localx);
+            edit = true;
+            while(GetNMarkers())
+               RemoveMarker();
+            break;
+         case kKey_g:
+            edit = GausFit();
+            break;
+         case kKey_G:
+            edit = GausBGFit();
+            break;
+         case kKey_m:
+            SetMarkerMode(true);
+            break;
+         case kKey_M:
+            SetMarkerMode(false);
+         case kKey_n: 
+            while(GetNMarkers())
+               RemoveMarker();
+            hist->GetListOfFunctions()->Delete();
+            edit = true;
+            break; 
+         case kKey_N:
+            while(GetNMarkers())  
+               RemoveMarker();
+            if(hist->GetListOfFunctions()->Last())   
+               hist->GetListOfFunctions()->Last()->Delete();
+            edit = true;
+            break;
+         case kKey_o:
+            hist->GetXaxis()->UnZoom();
+            edit = true;    
+            while(GetNMarkers())
+               RemoveMarker();
+            break;
+         case kKey_f:
+            edit = PeakFitQ();
+            break;
+         case kKey_F:
+            edit = PeakFit();
+            break;
+         case kKey_S:
+            if(fStatsDisplayed)
+               fStatsDisplayed = false;
+            else
+               fStatsDisplayed = true;
+            hist->SetStats(fStatsDisplayed);
+            edit = true;
+            break;
+         case kKey_F10:{
+            std::ofstream outfile;
+            for(int i=0;i<hist->GetListOfFunctions()->GetSize();i++) {
+               //printf("\n\n%s | %s\n",hist->GetListOfFunctions()->At(i)->IsA()->GetName(),((TF1*)hist->GetListOfFunctions()->At(i))->GetName());
+               if(hist->GetListOfFunctions()->At(i)->InheritsFrom("TPeak")) {
+                  if(!outfile.is_open())
+                     outfile.open(Form("%s.fits",hist->GetName()));
+                  outfile << ((TPeak*)hist->GetListOfFunctions()->At(i))->PrintString();
+                  outfile << "\n\n";
+               }     
+            } 
+            if(!outfile.is_open())
+               outfile.close();
+         }    
          break;
-      if(fMarkers.at(fMarkers.size()-1)->localx < fMarkers.at(fMarkers.size()-2)->localx) 
-        hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-1)->localx,fMarkers.at(fMarkers.size()-2)->localx);
-      else
-        hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-2)->localx,fMarkers.at(fMarkers.size()-1)->localx);
-      edit = true;
-      while(GetNMarkers())
-         RemoveMarker();
-      break;
-    case kKey_g:
-      edit = GausFit();
-      break;
-    case kKey_G:
-      edit = GausBGFit();
-      break;
-    case kKey_m:
-      SetMarkerMode(true);
-      break;
-    case kKey_M:
-      SetMarkerMode(false);
-    case kKey_n: 
-      while(GetNMarkers())
-         RemoveMarker();
-      hist->GetListOfFunctions()->Delete();
-      edit = true;
-      break; 
-    case kKey_N:
-      while(GetNMarkers())  
-         RemoveMarker();
-      if(hist->GetListOfFunctions()->Last())   
-         hist->GetListOfFunctions()->Last()->Delete();
-      edit = true;
-      break;
-    case kKey_o:
-      hist->GetXaxis()->UnZoom();
-      edit = true;    
-      while(GetNMarkers())
-         RemoveMarker();
-      break;
-    case kKey_f:
-      edit = PeakFitQ();
-      break;
-    case kKey_F:
-      edit = PeakFit();
-      break;
-    case kKey_S:
-      if(fStatsDisplayed)
-         fStatsDisplayed = false;
-      else
-         fStatsDisplayed = true;
-      hist->SetStats(fStatsDisplayed);
-      edit = true;
-      break;
-    case kKey_F10:{
-      std::ofstream outfile;
-      for(int i=0;i<hist->GetListOfFunctions()->GetSize();i++) {
-        //printf("\n\n%s | %s\n",hist->GetListOfFunctions()->At(i)->IsA()->GetName(),((TF1*)hist->GetListOfFunctions()->At(i))->GetName());
-        if(hist->GetListOfFunctions()->At(i)->InheritsFrom("TPeak")) {
-           if(!outfile.is_open())
-              outfile.open(Form("%s.fits",hist->GetName()));
-           outfile << ((TPeak*)hist->GetListOfFunctions()->At(i))->PrintString();
-           outfile << "\n\n";
-        }   
-      } 
-      if(!outfile.is_open())
-        outfile.close();
-      }    
-      break;
 
-  };
-  if(edit) {
-    gPad->Modified();
-    gPad->Update();
-  }
-  return true;
+   };
+   if(ge){
+      switch(*keysym) {
+         case kKey_p:
+            ge->Print();
+            break;
+      };
+   }
+
+
+   if(edit) {
+      gPad->Modified();
+      gPad->Update();
+   }
+   return true;
 }
 
 
