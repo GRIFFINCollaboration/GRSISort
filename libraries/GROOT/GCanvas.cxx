@@ -444,6 +444,25 @@ bool GCanvas::HandleMousePress(Int_t event,Int_t x,Int_t y) {
   return used;
 }
 
+
+TF1 *GCanvas::GetLastFit() { 
+  TH1 *hist = 0;
+  TIter iter(gPad->GetListOfPrimitives());
+  while(TObject *obj = iter.Next()) {
+     if( obj->InheritsFrom("TH1") &&
+        !obj->InheritsFrom("TH2") &&  
+        !obj->InheritsFrom("TH3") ) {  
+        hist = (TH1*)obj; 
+     }
+  }
+  if(!hist)
+     return 0;
+  if(hist->GetListOfFunctions()->GetSize()>0) 
+     return ((TF1*)hist->GetListOfFunctions()->Last()); 
+  return 0; 
+}
+
+
 bool GCanvas::SetLinearBG(GMarker *m1,GMarker *m2) {
   TIter iter(gPad->GetListOfPrimitives());
   TH1 *hist = 0;
