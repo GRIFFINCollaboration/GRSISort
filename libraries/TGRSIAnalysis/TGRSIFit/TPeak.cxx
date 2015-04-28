@@ -248,6 +248,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    
    delete tmppeak;
    
+   return true; 
 }
 
 /*
