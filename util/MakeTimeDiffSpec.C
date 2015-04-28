@@ -117,8 +117,9 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    
       TFragment myFrag  = *currentFrag;         //Set myfrag to be the x'th fragment before incrementing it.
       long time = currentFrag->GetTimeStamp();  //Get the timestamp of the x'th fragment 
-      long timelow  = time + 0;
-      long timehigh  = time + 300; 
+     
+      long timelow  = time -100;
+      long timehigh  = time +100; 
 //        long timelow = time + 0;
 //        long timehigh = time + 10000;   
       int time_low  = (int) (timelow & 0x0fffffff);
@@ -151,7 +152,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
             printf( "FIRE!!!" "\n");
             continue;
          } 
-    
+        //printf("myFrag.DetectorType = %i, currentFrag.DetectorType = %i",myFrag.DetectorType,currentFrag->DetectorType);
          if(myFrag.DetectorType == 1) {
             if(currentFrag->DetectorType == 1) {
 		TFragment tempFrag=*currentFrag;
@@ -162,7 +163,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
                gb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
                bg_coinc_gE->Fill(myFrag.GetEnergy());
             } else {
-               //printf("Unknown detector type\n");
+          
             }
          } else if(myFrag.DetectorType == 2) {
             if(currentFrag->DetectorType == 1) {
@@ -171,7 +172,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
             } else if(currentFrag->DetectorType == 2) {
                bb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
             } else {
-               //printf("Unknown detector type\n");
+               
             }
          }
       }
@@ -203,7 +204,8 @@ int main(int argc, char **argv) {
 
    const char* name = f->GetName();
 
-   TFile *outfile = new TFile(Form("mats_%s",name),"recreate");
+ //  TFile *outfile = new TFile(Form("mats_%s",name),"recreate");
+   TFile *outfile = new TFile("junk.root","recreate");
    list->Write();
 
    return 0;

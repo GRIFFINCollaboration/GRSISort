@@ -95,11 +95,12 @@ bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
 }
 
 void TChannel::DeleteAllChannels() {
-//Safely deletes fChannelMap
+//Safely deletes fChannelMap and fChannelNumberMap
    std::map < unsigned int, TChannel * >::iterator iter;
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
 		if(iter->second)
 	      delete iter->second;
+      //These maps should point to the same pointers, so this should clear out both
       iter->second = 0;
    }
    fChannelMap->clear();
@@ -116,16 +117,23 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
 //        "save"      -  The temporary channel is not deleted after being placed in the map. 
     if(!chan)
         return;
-   if(fChannelMap->count(chan->GetAddress())==1) {// if this channel existss
+   if(fChannelMap->count(chan->GetAddress())==1) {// if this channel exists
 	   if(strcmp(opt,"overwrite")==0) {
 			TChannel *oldchan = GetChannel(chan->GetAddress());
 			oldchan->OverWriteChannel(chan);
+         //Need to also update the channel number map RD
+         UpdateChannelNumberMap();
 			return;
 	   } else {
 	      printf("Trying to add a channel that already exists!\n");
 			return;
-	   }	
+	   }
+    } else if((chan->GetAddress()&0x00ffffff)==0x00ffffff) {
+          //this is the default tigress value for i am not there. 
+          //we should not imclude it in the map.
+          delete chan;
     } else {
+      //We need to update the channel maps to correspond to the new channel that has been added. 
 		fChannelMap->insert(std::make_pair(chan->GetAddress(),chan));
 		if(chan->GetNumber() != 0 && fChannelNumberMap->count(chan->GetNumber())==0)
 	   	 fChannelNumberMap->insert(std::make_pair(chan->GetNumber(),chan));
@@ -240,7 +248,7 @@ void TChannel::Clear(Option_t *opt){
     EFFCoefficients.clear();
 }
 
-TChannel *TChannel::GetChannel(unsigned int temp_address) {
+TChannel * const TChannel::GetChannel(unsigned int temp_address) {
 //Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
 
     TChannel *chan = 0;
@@ -253,11 +261,12 @@ TChannel *TChannel::GetChannel(unsigned int temp_address) {
 	return chan;
 }
 
-TChannel *TChannel::GetChannelByNumber(int temp_num) {
+TChannel * const TChannel::GetChannelByNumber(int temp_num) {
 //Returns the TChannel based on the channel number and not the channel address.
-    if(fChannelMap->size() != fChannelNumberMap->size()) {
+  //  if(fChannelMap->size() != fChannelNumberMap->size()) {
+  // We should just always update this map before we use it
 	UpdateChannelNumberMap();
-    }
+//    }
     TChannel *chan  = 0;
     try {
 	chan = fChannelNumberMap->at(temp_num);
@@ -268,7 +277,7 @@ TChannel *TChannel::GetChannelByNumber(int temp_num) {
     return chan;
 }
 
-TChannel *TChannel::FindChannelByName(const char *cc_name){
+TChannel * const TChannel::FindChannelByName(const char *cc_name){
   //Finds the TChannel by the name of the channel 
   TChannel *chan = NULL;
   if(!cc_name)
@@ -293,12 +302,33 @@ TChannel *TChannel::FindChannelByName(const char *cc_name){
 
 void TChannel::UpdateChannelNumberMap() {
 //Updates the fChannelNumberMap based on the entries in the fChannelMap. This should be called before using the fChannelNumberMap.
-    std::map < unsigned int, TChannel * >::iterator iter1;
+   std::map < unsigned int, TChannel * >::iterator mapiter;
+   fChannelNumberMap->clear();//This isn't the nicest way to do this but will keep us consistent.
+
+   for(mapiter = fChannelMap->begin(); mapiter != fChannelMap->end(); mapiter++){
+      fChannelNumberMap->insert(std::make_pair(mapiter->second->GetNumber(),mapiter->second));
+   }
+    /*
     for(iter1 = fChannelMap->begin(); iter1 != fChannelMap->end(); iter1++) {
-	if(fChannelNumberMap->count(iter1->second->GetNumber())==0) {
-            fChannelNumberMap->insert(std::make_pair(iter1->second->GetNumber(),iter1->second));
-        }
-    }
+	   if(fChannelNumberMap->count(iter1->second->GetNumber())==0) {
+         fChannelNumberMap->insert(std::make_pair(iter1->second->GetNumber(),iter1->second));
+      }
+      else{
+         fChannelNumberMap.find(iter1->second->GetNumber())->second = iter1->second
+      }
+    }*/
+}
+
+void TChannel::SetAddress(unsigned int tmpadd){
+//Sets the address of a TChannel and also overwrites that channel if it is in the channel map
+   std::map<unsigned int,TChannel*>::iterator iter1;
+   for(iter1 = fChannelMap->begin(); iter1 != fChannelMap->end(); iter1++){
+      if(iter1->second == this){
+         std::cout << "Channel at address: 0x" << std::hex << address << " already exists. Please use AddChannel() or OverWriteChannel() to change this TChannel" <<std::dec << std::endl;
+         break;
+      }
+   }
+   this->address = tmpadd;
 }
 
 
@@ -335,7 +365,7 @@ void TChannel::DestroyCalibrations()   {
    DestroyEFFCal();
 };
 
-double TChannel::CalibrateENG(int charge) {
+double TChannel::CalibrateENG(int charge,int temp_int) {
    //Returns the calibrated energy of the channel when a charge is passed to it. 
    //This is done by first adding a random number between 0 and 1 to the charge
    //bin. This is then taken and divided by the integration parameter. The 
@@ -344,9 +374,13 @@ double TChannel::CalibrateENG(int charge) {
     if(charge==0) 
       return 0.0000;
 
-   int temp_int = 1; //125.0;
-   if(integration != 0)
-      temp_int = (int)integration;  //the 4 is the dis. 
+   //int temp_int = 1; //125.0;
+   if(temp_int==0) {
+     if(integration != 0)
+       temp_int = (int)integration;  //the 4 is the dis. 
+     else
+       temp_int = 1;
+   } 
    
    //We need to add a random number between 0 and 1 before calibrating to avoid
    //binning issues.
@@ -368,8 +402,9 @@ double TChannel::CalibrateENG(double charge) {
 
 double TChannel::CalibrateCFD(int cfd) {
    //Calibrates the CFD properly.
-   return CalibrateCFD((double)cfd + gRandom->Uniform());
+   return CalibrateCFD((double)cfd+gRandom->Uniform());
 };
+
 
 double TChannel::CalibrateCFD(double cfd) {
    //Returns the calibrated CFD. The polynomial CFD calibration formula is 
@@ -381,8 +416,12 @@ double TChannel::CalibrateCFD(double cfd) {
    for(int i=0;i<CFDCoefficients.size();i++){
       cal_cfd += CFDCoefficients[i] * pow(cfd,i);
    }
+
    return cal_cfd;
 };
+
+
+
 
 
 double TChannel::CalibrateLED(int led) {
@@ -403,25 +442,34 @@ double TChannel::CalibrateLED(double led) {
    return cal_led;
 }
 
-double TChannel::CalibrateTIME(int time)  {
+
+
+
+double TChannel::CalibrateTIME(int chg)  {
    //Calibrates the time spectrum
-   return CalibrateTIME((double)time + gRandom->Uniform());
+   if(TIMECoefficients.size()!=3 || (chg<1))
+      return 0.0000;
+   return CalibrateTIME(CalibrateENG(chg));
 };
 
-double TChannel::CalibrateTIME(double time)  {
-   //Returns the calibrated time. The polynomial time calibration formula is 
-   //applied to get the calibrated time. This function does not use the 
-   //integration parameter.
+double TChannel::CalibrateTIME(double energy)  {
+  // uses the values stored in TIMECOefficients to calculate a 
+  // "walk correction" factor.  This function returns the correction
+  // not an adjusted time stamp!   pcb.
+  if(TIMECoefficients.size()!=3 || (energy<3.0))
+    return 0.0000;
   
-   if(TIMECoefficients.size()==0)
-      return time;
+  double time_correction = 0.0;
+  //time_correction = (TIMECoefficients.at(0)/(energy+TIMECoefficients.at(1))) + TIMECoefficients.at(2);
 
-   double cal_time = 0.0;
-   for(int i=0;i<TIMECoefficients.size();i++){
-      cal_time += TIMECoefficients[i] * pow(time,i);
-   }
-   return cal_time;
+  time_correction = TIMECoefficients.at(0) + (TIMECoefficients.at(1) * pow(energy,TIMECoefficients.at(2)));
+
+  return time_correction;
 }
+
+
+
+
 
 double TChannel::CalibrateEFF(double energy) {
    //This needs to be added
@@ -448,7 +496,13 @@ void TChannel::Print(Option_t *opt) {
       std::cout << EFFCoefficients.at(x) << "\t" ;
    std::cout << "\n";
    std::cout << "EFFChi2:   " << EFFChi2 << "\n" ;
-   std::cout << "\n}\n";
+   if(TIMECoefficients.size()){
+      std::cout<< "TIMECoeff: " ;
+      for(int x=0;x<TIMECoefficients.size();x++)
+         std::cout << TIMECoefficients.at(x) << "\t";
+      std::cout << "\n";
+   }
+   std::cout << "}\n";
    std::cout << "//====================================//\n";
 };
 
@@ -471,7 +525,14 @@ std::string TChannel::PrintToString(Option_t *opt) {
       buffer.append(Form("%f\t",EFFCoefficients.at(x)));
    buffer.append("\n");
    buffer.append(Form("EFFChi2:   %f\n",EFFChi2));
+   if(TIMECoefficients.size()){
+      buffer.append("TIMECoeff:  ");
+      for(int x=0;x<TIMECoefficients.size();x++)
+         buffer.append(Form("%f\t",TIMECoefficients.at(x)));
+      buffer.append("\n");
+   }
    buffer.append("\n}\n");
+   
    buffer.append("//====================================//\n");
   
   return buffer;
@@ -502,6 +563,27 @@ void TChannel::WriteCalFile(std::string outfilename) {
    std::cout.rdbuf(std_out);
 */
 
+
+   if(outfilename.length()>0) {
+     ofstream calout;
+     calout.open(outfilename.c_str());
+     for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+        std::string chanstr = iter_vec->PrintToString();
+        calout << chanstr.c_str();
+        calout << std::endl;
+     }
+     calout << std::endl;
+     calout.close();
+   } else {  
+     for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+        iter_vec->Print();
+     }
+   }
+
+
+
+
+/*
    FILE *c_outputfile;
    if(outfilename.length()>0) {
       c_outputfile = freopen (outfilename.c_str(),"w",stdout);
@@ -514,6 +596,7 @@ void TChannel::WriteCalFile(std::string outfilename) {
       int fd = open("/dev/tty", O_WRONLY);
       stdout = fdopen(fd, "w");
    }
+*/  
    return;
 }
 
@@ -620,6 +703,7 @@ Int_t TChannel::ReadCalFile(const char *filename) {
 
    int channels_found = ParseInputData((const char*)buffer); 
    SaveToSelf(infilename.c_str());
+   UpdateChannelNumberMap();
    return channels_found;
 }
 
@@ -774,7 +858,11 @@ Int_t TChannel::ParseInputData(const char *inputdata,Option_t *opt) {
             } else if(type.compare("TIMECOEFF")==0) {
                channel->DestroyTIMECal();
                double value;
-               while (ss >> value) {   channel->AddTIMECoefficient(value); } 
+               while (ss >> value) {   channel->AddTIMECoefficient(value); }
+            } else if(type.compare("WALK")==0) {
+               channel->DestroyTIMECal();
+               double value;
+               while (ss >> value) {   channel->AddTIMECoefficient(value); }
             } else if(type.compare("EFFCOEFF")==0) {
                channel->DestroyEFFCal();
                double value;
@@ -824,14 +912,24 @@ void TChannel::Streamer(TBuffer &R__b) {
    }
 }
 
-int TChannel::WriteToRoot(const char *name) {
+int TChannel::WriteToRoot(TFile *fileptr) {
    //Writes Cal File information to the tree
   TChannel *c = GetDefaultChannel(); 
+  //Maintain old gDirectory info
+  TDirectory *savdir = gDirectory;
+
   if(!c) 
      printf("No TChannels found to write.\n");
-  TFile *f = gDirectory->GetFile();
-  if(!gDirectory)
-     printf("No file opened to wrtie to.\n");
+  if(!fileptr)
+      fileptr = gDirectory->GetFile();
+      
+  fileptr->cd();
+  std::string oldoption = std::string(fileptr->GetOption());
+  if(oldoption == "READ") {
+    fileptr->ReOpen("UPDATE");
+  }
+	if(!gDirectory)
+     printf("No file opened to write to.\n");
   TIter iter(gDirectory->GetListOfKeys());
 
   //printf("1 Number of Channels: %i\n",GetNumberOfChannels());
@@ -846,7 +944,7 @@ int TChannel::WriteToRoot(const char *name) {
   std::string savedata = fFileData;
   
 
-  int fd = open("/dev/null", O_WRONLY); // turn of stdout.
+  int fd = open("/dev/null", O_WRONLY); // turn off stdout.
   stdout = fdopen(fd, "w");
 
   while(TKey *key = (TKey*)(iter.Next())) {
@@ -891,6 +989,11 @@ int TChannel::WriteToRoot(const char *name) {
   //TChannel::DeleteAllChannels();
   //gDirectory->GetFile()->Get("c->GetName()");
   printf("  %i TChannels saved to %s.\n",GetNumberOfChannels(),gDirectory->GetFile()->GetName());
+  if(oldoption == "READ") {
+    printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
+    fileptr->ReOpen("READ");
+  }
+	savdir->cd();//Go back to original gDirectory
   return GetNumberOfChannels();
 }
 

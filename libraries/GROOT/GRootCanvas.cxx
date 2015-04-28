@@ -11,6 +11,7 @@
 #include "RConfigure.h"
 
 #include "GRootCanvas.h"
+//#include "GRootCanvasManager.h"
 
 #include "TRootApplication.h"
 #include "TRootHelpDialog.h"
@@ -64,6 +65,7 @@
 
 #include "HelpText.h"
 
+#include "GCanvas.h"
 
 // Canvas menu command ids
 enum ERootCanvasCommands {
@@ -148,6 +150,10 @@ enum ERootCanvasCommands {
    kToolCutG
 
 };
+
+#define kArrowKeyPress 25
+#define kArrowKeyRelease 26
+
 
 static const char *gOpenTypes[] = { "ROOT files",   "*.root",
                                     "All files",    "*",
@@ -289,7 +295,7 @@ Bool_t GRootContainer::HandleButton(Event_t *event)
 ClassImp(GRootCanvas)
 
 //______________________________________________________________________________
-GRootCanvas::GRootCanvas(TCanvas *c, const char *name, UInt_t width, UInt_t height)
+GRootCanvas::GRootCanvas(GCanvas *c, const char *name, UInt_t width, UInt_t height)
    : TGMainFrame(gClient->GetRoot(), width, height), TCanvasImp(c)
 {
    // Create a basic ROOT canvas.
@@ -302,7 +308,7 @@ GRootCanvas::GRootCanvas(TCanvas *c, const char *name, UInt_t width, UInt_t heig
 }
 
 //______________________________________________________________________________
-GRootCanvas::GRootCanvas(TCanvas *c, const char *name, Int_t x, Int_t y, UInt_t width, UInt_t height)
+GRootCanvas::GRootCanvas(GCanvas *c, const char *name, Int_t x, Int_t y, UInt_t width, UInt_t height)
    : TGMainFrame(gClient->GetRoot(), width, height), TCanvasImp(c)
 {
    // Create a basic ROOT canvas.
@@ -658,6 +664,8 @@ GRootCanvas::~GRootCanvas()
 void GRootCanvas::Close()
 {
    // Called via TCanvasImp interface by TCanvas.
+   //printf("Closing canvas 0x%08x\n",((TCanvasImp*)this)->Canvas());
+   //GRootObjcetManager::CanvasClosed(((TCanvasImp*)this)->Canvas());
    TVirtualPadEditor* gged = TVirtualPadEditor::GetPadEditor(kFALSE);
    if(gged && gged->GetCanvas() == fCanvas) {
       if (fEmbedded) {
@@ -816,6 +824,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
                   // Handle File menu items...
                   case kFileNewCanvas:
                      gROOT->MakeDefCanvas();
+                     //GCanvas::MakeDefCanvas();
                      break;
                   case kFileOpen:
                      {
@@ -1008,7 +1017,7 @@ again:
                   case kViewMarkers:
                      {
                         TVirtualPad *padsav = gPad->GetCanvas();
-                        TCanvas *m = new TCanvas("markers","Marker Types",600,200);
+                        GCanvas *m = new GCanvas("markers","Marker Types",600,200);
                         TMarker::DisplayMarkerTypes();
                         m->Update();
                         if (padsav) padsav->cd();
@@ -1721,28 +1730,28 @@ Bool_t GRootCanvas::HandleContainerButton(Event_t *event)
       fButton = button;
       if (button == kButton1) {
          if (event->fState & kKeyShiftMask)
-            fCanvas->HandleInput(kButton1Shift, x, y);
+            ((GCanvas*)fCanvas)->HandleInput(kButton1Shift, x, y);
          else
-            fCanvas->HandleInput(kButton1Down, x, y);
+            ((GCanvas*)fCanvas)->HandleInput(kButton1Down, x, y);
       }
       if (button == kButton2)
-         fCanvas->HandleInput(kButton2Down, x, y);
+         ((GCanvas*)fCanvas)->HandleInput(kButton2Down, x, y);
       if (button == kButton3) {
-         fCanvas->HandleInput(kButton3Down, x, y);
+         ((GCanvas*)fCanvas)->HandleInput(kButton3Down, x, y);
          fButton = 0;  // button up is consumed by TContextMenu
       }
 
    } else if (event->fType == kButtonRelease) {
       if (button == kButton4)
-         fCanvas->HandleInput(kWheelUp, x, y);
+         ((GCanvas*)fCanvas)->HandleInput(kWheelUp, x, y);
       if (button == kButton5)
-         fCanvas->HandleInput(kWheelDown, x, y);
+         ((GCanvas*)fCanvas)->HandleInput(kWheelDown, x, y);
       if (button == kButton1)
-         fCanvas->HandleInput(kButton1Up, x, y);
+         ((GCanvas*)fCanvas)->HandleInput(kButton1Up, x, y);
       if (button == kButton2)
-         fCanvas->HandleInput(kButton2Up, x, y);
+         ((GCanvas*)fCanvas)->HandleInput(kButton2Up, x, y);
       if (button == kButton3)
-         fCanvas->HandleInput(kButton3Up, x, y);
+         ((GCanvas*)fCanvas)->HandleInput(kButton3Up, x, y);
 
       fButton = 0;
    }
@@ -1760,11 +1769,11 @@ Bool_t GRootCanvas::HandleContainerDoubleClick(Event_t *event)
    Int_t y = event->fY;
 
    if (button == kButton1)
-      fCanvas->HandleInput(kButton1Double, x, y);
+      ((GCanvas*)fCanvas)->HandleInput(kButton1Double, x, y);
    if (button == kButton2)
-      fCanvas->HandleInput(kButton2Double, x, y);
+      ((GCanvas*)fCanvas)->HandleInput(kButton2Double, x, y);
    if (button == kButton3)
-      fCanvas->HandleInput(kButton3Double, x, y);
+      ((GCanvas*)fCanvas)->HandleInput(kButton3Double, x, y);
 
    return kTRUE;
 }
@@ -1817,8 +1826,8 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t *event)
 
       if (str[0] == kESC){   // ESC sets the escape flag
          gROOT->SetEscape();
-         fCanvas->HandleInput(kButton1Up, 0, 0);
-         fCanvas->HandleInput(kMouseMotion, 0, 0);
+         ((GCanvas*)fCanvas)->HandleInput(kButton1Up, 0, 0);
+         ((GCanvas*)fCanvas)->HandleInput(kMouseMotion, 0, 0);
          gPad->Modified();
          return kTRUE;
       }
@@ -1838,8 +1847,8 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t *event)
                                          fCanvasContainer->GetId(),
                                          mx, my, tx, ty, dum1);
 
-         //fCanvas->HandleInput(kArrowKeyPress, tx, ty);
-         fCanvas->HandleInput(kArrowKeyPress, tx, keysym);
+         //((GCanvas*)fCanvas)->HandleInput(kArrowKeyPress, tx, ty);
+         ((GCanvas*)fCanvas)->HandleInput((EEventType)kArrowKeyPress, tx, keysym);
          // handle case where we got consecutive same keypressed events coming
          // from auto-repeat on Windows (as it fires only successive keydown events)
          if ((previous_keysym == keysym) && (previous_event == kGKeyPress)) {
@@ -1863,12 +1872,12 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t *event)
                default:
                   break;
             }
-            fCanvas->HandleInput(kArrowKeyRelease, tx, ty);
+            ((GCanvas*)fCanvas)->HandleInput((EEventType)kArrowKeyRelease, tx, ty);
          }
          previous_keysym = keysym;
       }
       else {
-         fCanvas->HandleInput(kKeyPress, str[0], keysym);
+         ((GCanvas*)fCanvas)->HandleInput(kKeyPress, str[0], keysym);
       }
    } else if (event->fType == kKeyRelease) {
       UInt_t keysym;
@@ -1881,28 +1890,43 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t *event)
          Int_t mx, my, tx, ty;
          wid = gVirtualX->GetDefaultRootWindow();
          gVirtualX->QueryPointer(wid, dum1, dum2, mx, my, mx, my, mask);
+
+         //printf("GetCanvas() = 0x%08x\t%s\n",gPad->GetCanvas(),gPad->GetCanvas()->IsA()->GetName());
+         GCanvas *gCanvas = (GCanvas*)gPad->GetCanvas();
+
+         gCanvas->HandleArrowKeyPress(event,&keysym);
+/*
          switch (keysym) {
             case 0x1012: // left
+               printf("LEFT\n");
                //gVirtualX->Warp(--mx, my, wid);
                break;
             case 0x1013: // up
+               printf("UP\n");
                //gVirtualX->Warp(mx, --my, wid);
                break;
             case 0x1014: // right
+               printf("RIGHT\n");
                //gVirtualX->Warp(++mx, my, wid);
                break;
             case 0x1015: // down
+               printf("DOWN\n");
                //gVirtualX->Warp(mx, ++my, wid);
                break;
             default:
                break;
          }
+*/         
          gVirtualX->TranslateCoordinates(gClient->GetDefaultRoot()->GetId(),
                                          fCanvasContainer->GetId(),
                                          mx, my, tx, ty, dum1);
-         fCanvas->HandleInput(kArrowKeyRelease, tx, ty);
+         ((GCanvas*)fCanvas)->HandleInput((EEventType)kArrowKeyRelease, tx, ty);
          previous_keysym = keysym;
+      } else {
+        GCanvas *gCanvas = (GCanvas*)gPad->GetCanvas();
+        gCanvas->HandleKeyboardPress(event,&keysym);
       }
+ 
       fButton = 0;
    }
    previous_event = event->fType;
@@ -1918,15 +1942,15 @@ Bool_t GRootCanvas::HandleContainerMotion(Event_t *event)
    Int_t y = event->fY;
 
    if (fButton == 0)
-      fCanvas->HandleInput(kMouseMotion, x, y);
+      ((GCanvas*)fCanvas)->HandleInput(kMouseMotion, x, y);
    if (fButton == kButton1) {
       if (event->fState & kKeyShiftMask)
-         fCanvas->HandleInput(EEventType(8), x, y);
+         ((GCanvas*)fCanvas)->HandleInput(EEventType(8), x, y);
       else
-         fCanvas->HandleInput(kButton1Motion, x, y);
+         ((GCanvas*)fCanvas)->HandleInput(kButton1Motion, x, y);
    }
    if (fButton == kButton2)
-      fCanvas->HandleInput(kButton2Motion, x, y);
+      ((GCanvas*)fCanvas)->HandleInput(kButton2Motion, x, y);
 
    return kTRUE;
 }
@@ -1954,7 +1978,7 @@ Bool_t GRootCanvas::HandleContainerCrossing(Event_t *event)
    // pointer grabs create also an enter and leave event but with fCode
    // either kNotifyGrab or kNotifyUngrab, don't propagate these events
    if (event->fType == kLeaveNotify && event->fCode == kNotifyNormal)
-      fCanvas->HandleInput(kMouseLeave, x, y);
+      ((GCanvas*)fCanvas)->HandleInput(kMouseLeave, x, y);
 
    return kTRUE;
 }

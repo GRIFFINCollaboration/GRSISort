@@ -187,7 +187,18 @@ void TGRSIRootIO::CloseRootOutFile()   {
        TGRSIRootIO::Get()->WriteRunStats();
    }
 
+
+
    foutfile->Close();
+   //if(fFragmentTree) {
+   //   delete fFragmentTree;
+   //   fFragmentTree = 0;
+   //}
+   //if(fEpicsTree) {
+   //   delete fEpicsTree;
+   //   fEpicsTree = 0;
+   //}
+
 	delete foutfile;	
 	foutfile = 0;
 	return;

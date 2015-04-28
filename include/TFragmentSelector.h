@@ -127,8 +127,16 @@ void TFragmentSelector::Init(TTree *tree)
    fChain = tree;
 
    fChain->SetBranchAddress("TFragment",&fragment);
+   //Start by reading calirbations from tree
+   TChannel::ReadCalFromTree(tree);
+      
+   //Then load the calibration information from the first cal file on the command line, and over writes other channels with any cal files that follow
+  // if(!TGRSIOptions::GetInputCal().empty())
+  //    for(int x = 0;x<TGRSIOptions::GetInputCal().size();x++) 
+  //       TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(x).c_str());
+      
 
-
+/*
   if(TChannel::GetNumberOfChannels()==0) {
      TList *chanlist = fChain->GetUserInfo();
      TIter iter(chanlist);
@@ -142,7 +150,7 @@ void TFragmentSelector::Init(TTree *tree)
         //TChannel::CopyChannel(newchan,chan);
      }
    }
-
+*/
 
 
 /*

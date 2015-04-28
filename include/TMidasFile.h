@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include <stdint.h>
 #include "TObject.h"
 
 class TMidasEvent;
@@ -28,6 +29,10 @@ public:
   int  Read(TMidasEvent *event); ///< Read one event from the file
   bool Write(TMidasEvent *event,Option_t *opt =""); ///< Write one event to the output file
 
+  void FillBuffer(TMidasEvent *event, Option_t *opt=""); //Fill buffer to write out chunks of data
+  bool WriteBuffer();
+  //int GetBufferSize() const { return fWriteBuffer.size(); }
+
   const char* GetFilename()  const { return fFilename.c_str();  } ///< Get the name of this file
   int         GetLastErrno() const { return fLastErrno; }         ///< Get error value for the last file error
   const char* GetLastError() const { return fLastError.c_str(); } ///< Get error text for the last file error
@@ -35,10 +40,16 @@ public:
   int	GetRunNumber();
   int	GetSubRunNumber();
 
+  void SetMaxBufferSize(int maxsize);
+
 protected:
 
   std::string fFilename; ///< name of the currently open file
   std::string fOutFilename; ///< name of the currently open file
+
+  std::vector<char> fWriteBuffer;
+  uint32_t fCurrentBufferSize;
+  uint32_t fMaxBufferSize;
 
   int         fLastErrno; ///< errno from the last operation
   std::string fLastError; ///< error string from last errno

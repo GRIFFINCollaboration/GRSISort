@@ -134,6 +134,26 @@ int TGRSIint::TabCompletionHook(char* buf, int* pLoc, std::ostream& out) {
    return TRint::TabCompletionHook(buf,pLoc,out);
 }
 
+
+Long_t TGRSIint::ProcessLine(const char* line,Bool_t sync, Int_t *error) {
+  //printf("line = %s\n");
+  //if(!strcmp(line,"TCanvas::MakeDefCanvas();"))
+  //  line = "GCanvas::MakeDefCanvas();";
+  TString sline(line);;
+  if(sline.Contains("TCanvas")) {
+    std::string s=line;
+    size_t f = s.find("TCanvas");
+    s.replace(f,std::string("TCanvas").length(),"GCanvas");
+    s.replace(f,std::string("TCanvas").length(),"GCanvas");   line = s.c_str();
+  }
+  return TRint::ProcessLine(line,sync,error);
+}
+
+
+
+
+
+
 void ReadTheNews(void) {
    //gROOT->ProcessLine(".! wget -q -l1 - http://en.wikipedia.org/wiki/Special:Random -Otemp.html");
    //new TGHtmlBrowser("temp.html");
@@ -396,7 +416,7 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
 
 
 bool TGRSIInterruptHandler::Notify() {
-   printf("\n" DRED BG_WHITE  "   Control-c was pressed.   " RESET_COLOR "\n");
+   printf("\n" DRED BG_WHITE  "   Control-c was pressed.   " RESET_COLOR  SHOW_CURSOR "\n");
    abort();
    gApplication->Terminate();
    return true;
