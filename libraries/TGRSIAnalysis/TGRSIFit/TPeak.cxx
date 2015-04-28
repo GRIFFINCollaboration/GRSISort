@@ -1,4 +1,5 @@
 #include "TPeak.h"
+#include "TGraph.h"
 
 ClassImp(TPeak)
 
@@ -86,6 +87,7 @@ void TPeak::Copy(TObject &obj) const {
    ((TPeak&)obj).fchi2 = fchi2;
    ((TPeak&)obj).fNdf  = fNdf;
    background->Copy(*(((TPeak&)obj).background));
+   ((TPeak&)obj).SetHist(GetHist());
 }
 
 
@@ -126,8 +128,8 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    //this->SetParLimits(9,xlow,xhigh);
    this->SetParLimits(5,0.0,1.0E2);
 
-   if(!fithist && fHistogram) 
-      fithist = GetHistogram();
+   if(!fithist && GetHist()) 
+      fithist = GetHist();
 
    if(!fithist){
       printf("No histogram is associated yet, no initial guesses made\n");
@@ -157,7 +159,7 @@ Bool_t TPeak::InitParams(TH1 *fithist){
 
 Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    TString optstr = opt;
-   if(!fithist && fHistogram){
+   if(!fithist && !GetHist()){
       printf("No hist passed, trying something...");
       fithist = fHistogram;
    }
@@ -168,6 +170,8 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    if(!IsInitialized()) 
       InitParams(fithist);
    TVirtualFitter::SetMaxIterations(100000);
+
+   SetHist(fithist);
 
    TString options(opt); bool Print = true;
    if(options.Contains("Q"))
@@ -345,6 +349,38 @@ const char * TPeak::PrintString(Option_t *opt) const {
 
 void TPeak::DrawBackground(Option_t *opt) const{
    background->Draw(opt);
+}
+
+void TPeak::DrawResiduals() const{
+   if(!GetHist()){
+      printf("No hist set\n");
+      return;
+   }
+   if(fchi2<0.000000001){
+      printf("No fit performed\n");
+      return;
+   }
+
+   Double_t xlow,xhigh;
+   GetRange(xlow,xhigh);
+   Int_t nbins = GetHist()->GetXaxis()->GetNbins();
+   Double_t *res = new Double_t[nbins];
+   Double_t *bin = new Double_t[nbins];
+   Int_t points = 0;
+
+   for(int i =1;i<=nbins;i++) {
+      if(GetHist()->GetBinCenter(i) <= xlow || GetHist()->GetBinCenter(i) >= xhigh)
+         continue;
+      res[points] = (GetHist()->GetBinContent(i) - this->Eval(GetHist()->GetBinCenter(i)))+ this->GetParameter("Height")/2;///GetHist()->GetBinError(i));// + this->GetParameter("Height") + 10.;
+      bin[points] = GetHist()->GetBinCenter(i);
+      points++;
+   }
+   TGraph *residuals = new TGraph(points,bin,res);
+   residuals->Draw();
+
+   delete[] res;
+   delete[] bin;
+
 }
 
 

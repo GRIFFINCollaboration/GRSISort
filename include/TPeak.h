@@ -62,6 +62,7 @@ class TPeak : public TGRSIFit {
    Bool_t InitParams(TH1 *fithist = 0);
    TF1* Background() const { return background; } 
    void DrawBackground(Option_t *opt = "SAME") const; // *MENU*
+   void DrawResiduals() const; // *MENU*
 
  public:
    virtual void Print(Option_t *opt = "") const;
