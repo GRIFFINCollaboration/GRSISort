@@ -37,12 +37,14 @@ class GRootObjectManager {
     //bool AddObject(TObject*);    
     //bool RemoveObject(TObject*);    
 
-    void Update();
+    //void Update();
 
     //TH1    *GetNext1D(TH1*);
     //TH2    *GetNext2D(TH2*);
     //TH3    *GetNext3D(TH3*);
     //TGraph *GetNextGraph(TGraph*);
+
+    //void Print();
 
   private:
     GRootObjectManager();
@@ -52,15 +54,18 @@ class GRootObjectManager {
 
     TList fCanvas;
 
-    TList fOneDHists;
-    TList fTwoDHists;
-    TList fThreeDHists;
-    TList fGraphs;
-    TList fMisc;
+    //TList fOneDHists;
+    //TList fTwoDHists;
+    //TList fThreeDHists;
+    //TList fGraphs;
+    //TList fMisc;
 
-    void UpdateLists();    
+    //void Cleanup();
+    //void ExtractObjects(TCollection*);
 
-  //ClassDef(GRootObjectManager,0)
+
+
+  ClassDef(GRootObjectManager,0)
 };
 
 #endif
