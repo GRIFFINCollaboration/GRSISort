@@ -10,6 +10,9 @@ TGRSIFit::TGRSIFit(const TGRSIFit &copy) : TF1(copy){
    ((TGRSIFit&)copy).Copy(*this);
 }
 
+TGRSIFit::~TGRSIFit(){
+}
+
 void TGRSIFit::Copy(TObject &obj) const{
    ((TGRSIFit&)obj).init_flag   = init_flag;
    ((TGRSIFit&)obj).goodfit_flag= goodfit_flag;
