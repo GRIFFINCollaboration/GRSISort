@@ -5,20 +5,20 @@ PLATFORM = $(shell uname)
 
 export PLATFORM:= $(PLATFORM)
 
-export CFLAGS = -std=c++0x -O2 -I$(PWD)/include -g -Wl,--no-as-needed
+export CFLAGS = -std=c++0x -O2 -I$(PWD)/include -g `root-config --cflags`
 
 #export GRSISYS:= $(GRSISYS)
 
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 export CFLAGS += -DOS_DARWIN -DHAVE_ZLIB #-lz
-export CFLAGS += `root-config --cflags`
 export LFLAGS = -dynamiclib -undefined dynamic_lookup -single_module # 
 export SHAREDSWITCH = -install_name # ENDING SPACE
+export CXX = clang++ 
 export CPP = clang++ 
 else
 export __LINUX__:= 1	
-export CFLAGS += `root-config --cflags`
+export LFLAGS = -Wl,--no-as-needed
 export SHAREDSWITCH = -shared -Wl,-soname,#NO ENDING SPACE
 export CPP = g++
 endif
@@ -91,7 +91,11 @@ end: grsisort
 
 clean:
 	@$(RM) *~
+ifeq ($(PLATFORM),Darwin)
+	$(RM) -r ./bin/*
+else
 	$(RM) ./bin/*
+endif
 	@for dir in $(ALLDIRS); do \
 		$(MAKE) -C $$dir $@; \
 	done

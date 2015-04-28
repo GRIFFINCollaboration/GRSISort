@@ -27,8 +27,8 @@ void TGRSITransition::Print(Option_t *opt) {
 //Prints information about the TGRSITransition
    printf("**************************\n");
    printf("TGRSITransition:\n");
-   printf("Energy:    %lf\t+/-%lf\n");
-   printf("Intensity: %lf\t+/-%lf\n");
+   printf("Energy:    %lf\t+/-%lf\n", energy, energy_uncertainty);
+   printf("Intensity: %lf\t+/-%lf\n", intensity, intensity_uncertainty);
    printf("**************************\n");
 
 }
@@ -52,6 +52,8 @@ int TGRSITransition::Compare(const TObject *obj) const {
       return  0;  
    if(this->intensity < ((TGRSITransition*)obj)->intensity) 
       return  1;  
+   printf("%s: Error, intensity neither greater, nor equal, nor smaller than provided intensity!\n",__PRETTY_FUNCTION__);
+   return -9;
 }
 
 
