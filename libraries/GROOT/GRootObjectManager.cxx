@@ -1,4 +1,7 @@
 
+#include <TROOT.h>
+#include <TFolder.h>
+
 #include <GRootObjectManager.h>
 //#include <TCanvas.h>
 
@@ -43,7 +46,7 @@ void GRootObjectManager::AddCanvas(GCanvas *c) {
 }  
 
 void GRootObjectManager::RemoveCanvas(GCanvas *c) {
-  /*
+  
   //printf("c = 0x%08x\n",c); fflush(stdout);
   if(!c)
      return;
@@ -56,5 +59,21 @@ void GRootObjectManager::RemoveCanvas(GCanvas *c) {
   } else {
      printf("Trying to remove canvas not in map...\n");
   }
-  */
+  
 };
+
+void GRootObjectManager::UpdateLists() {
+  //gROOT->GetRootFolder();
+  TFolder *mem  = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Memory");
+  TFolder *disk = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
+
+  TIter mem_iter(mem->GetListOfFolders());
+  //while(TObject *obj = FolderIter(mem_iter)) { 
+    //handle the object;   
+  //}
+
+
+}
+
+
+

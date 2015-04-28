@@ -33,7 +33,6 @@ class GRootObjectManager {
     static void AddCanvas(GCanvas*);
     static void RemoveCanvas(GCanvas*);
 
-    //bool CheckForNewObjects();
    
     //bool AddObject(TObject*);    
     //bool RemoveObject(TObject*);    
@@ -59,6 +58,7 @@ class GRootObjectManager {
     TList fGraphs;
     TList fMisc;
 
+    void UpdateLists();    
 
   //ClassDef(GRootObjectManager,0)
 };
