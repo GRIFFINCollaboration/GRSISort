@@ -1,10 +1,11 @@
 
 OBJECTS = GROOTGuiFactory.o GRootCanvas.o GRootBrowser.o GCanvas.o GDirectory.o \
-          GRootObjectManager.o GH1D.o GROOTDict.o GTree.o GChain.o GFile.o
+          GRootGlobals.o GRootObjectManager.o GH1D.o GROOTDict.o GTree.o GChain.o GFile.o
 INCDIR = $(BASE)/include
 DICTOBJ =  $(INCDIR)/GROOTGuiFactory.h 
 DICTOBJ += $(INCDIR)/GRootCanvas.h 
-#DICTOBJ += $(INCDIR)/GRootObjectManager.h 
+DICTOBJ += $(INCDIR)/GRootObjectManager.h 
+DICTOBJ += $(INCDIR)/GRootGlobals.h 
 DICTOBJ += $(INCDIR)/GRootBrowser.h 
 DICTOBJ += $(INCDIR)/GCanvas.h 
 DICTOBJ += $(INCDIR)/GDirectory.h 
