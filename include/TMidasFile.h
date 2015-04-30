@@ -7,7 +7,12 @@
 
 #include <string>
 
-#include <stdint.h>
+#ifdef __APPLE__ 
+	#include <_types/_uint32_t.h> 
+#else 
+	#include <stdint.h> 
+#endif
+
 #include "TObject.h"
 
 class TMidasEvent;

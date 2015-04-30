@@ -111,7 +111,7 @@ Double_t TGRSIFunctions::MultiSkewedGausWithBG(Double_t *dim, Double_t *par) {
   // STATIC VARIABLE  (npeaks) must be set before using!!!
   // TGRSIFunctions::Set(int num);
   //
-  // Limits need to be impossed or error states may occour.
+  // Limits need to be imposed or error states may occour.
   //
 	double result = par[1] + dim[0]*par[2]; // background.
 	for(int i=0;i<par[0];i++){// par[0] is number of peaks
