@@ -22,7 +22,7 @@
 #include "TRootApplication.h"
 
 #include "GRootCanvas.h"
-//#include "GRootObjectManager.h"
+#include "GRootObjectManager.h"
 
 #include "TRootBrowserLite.h"
 #include "TRootContextMenu.h"
@@ -65,7 +65,7 @@ TCanvasImp *GROOTGuiFactory::CreateCanvasImp(TCanvas *c, const char *title,
    //GRootObjectManager::Instance()->AddCanvas(c);
    //return new GRootCanvas(c, title, width, height);i
    GRootCanvas *grc = new GRootCanvas((GCanvas*)c, title, width, height);
-   //GRootObjectManager::AddCanvas(c);
+   GRootObjectManager::AddCanvas(c);
    return grc;
 
 }
@@ -79,7 +79,7 @@ TCanvasImp *GROOTGuiFactory::CreateCanvasImp(TCanvas *c, const char *title,
    //GRootObjectManager::Instance()->AddCanvas(c);
    //return new GRootCanvas(c, title, x, y, width, height);
    GRootCanvas *grc = new GRootCanvas((GCanvas*)c, title, x, y, width, height);
-   //GRootObjectManager::AddCanvas(c);
+   GRootObjectManager::AddCanvas(c);
    return grc;
 }
 
