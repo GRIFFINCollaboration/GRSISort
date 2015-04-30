@@ -9,17 +9,16 @@ TCal::TCal(){
 TCal::TCal(const char* name, const char* title) {
    InitTCal();
    SetNameTitle(name,title);
-   fgraph->SetNameTitle(name,title);
+   //fgraph->SetNameTitle(name,title);
 }
 
 TCal::~TCal(){
-   if(fgraph) delete fgraph;
    fnuc = 0;
-   fgraph = 0;
+   //fgraph = 0;
    fhist = 0;
 }
 
-TCal::TCal(const TCal &copy) : TNamed(copy){
+TCal::TCal(const TCal &copy) : TGraphErrors(copy){
    InitTCal();
    ((TCal&)copy).Copy(*this);
 }
@@ -61,12 +60,11 @@ void TCal::SetNucleus(TNucleus* nuc,Option_t * opt){
 void TCal::Copy(TObject &obj) const{
    ((TCal&)obj).fchan = fchan;
    //Things to make deep copies of
-   if(fgraph)     *(((TCal&)obj).fgraph)     =  *fgraph;
    if(ffitfunc)   *(((TCal&)obj).ffitfunc)   =  *ffitfunc;
 
    //Members to make shallow copies of
                     ((TCal&)obj).fnuc        =  fnuc;
-   TNamed::Copy((TCal&)obj);
+   TNamed::Copy((TGraphErrors&)obj);
 }
 
 Bool_t TCal::SetChannel(const TChannel* chan){
@@ -142,13 +140,13 @@ void TCal::SetHist(TH1* hist) {
 
 void TCal::Clear(Option_t *opt) {
    fchan = 0;
-   fgraph->Clear();
+   TGraphErrors::Clear();
 }
-
+/*
 void TCal::Draw(Option_t* chopt){
-   Graph()->Draw(chopt);
+   Draw(chopt);
 }
-
+*/
 void TCal::Print(Option_t *opt) const{
    if(GetChannel())
       printf("Channel Number: %u\n",GetChannel()->GetNumber());
@@ -174,7 +172,7 @@ void TCal::Print(Option_t *opt) const{
 }
 
 void TCal::InitTCal() {
-   fgraph = new TGraphErrors;
+  // fgraph = new TGraphErrors;
    ffitfunc = 0;
    fchan = 0;
    fnuc = 0;

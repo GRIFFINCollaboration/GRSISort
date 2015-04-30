@@ -7,6 +7,7 @@
 #include <TText.h>
 #include <TLatex.h>
 #include <TH1.h>
+#include <TGraphErrors.h>
 #include <Buttons.h>
 #include <KeySymbols.h> 
 #include <TVirtualX.h>
@@ -15,10 +16,15 @@
 #include <TF1.h>
 #include <TGraph.h>
 
+#include <TContextMenu.h>
+
 #include "GCanvas.h"
 #include "GROOTGuiFactory.h"
 
 #include <iostream>
+#include <fstream>
+#include <string>
+
 #include <TMath.h>
 
 #ifndef kArrowKeyPress
@@ -182,7 +188,6 @@ void GCanvas::UpdateStatsInfo(int x, int y) {
          st->GetListOfLines()->Delete();
          st->AddText(Form("X      %i",x));
          st->AddText(Form("Counts %i",y));
-         
          //st->Paint();
          //gPad->Modified();
          //gPad->Update();
@@ -201,24 +206,32 @@ void GCanvas::Draw(Option_t *opt) {
 }
 
 
-bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
-
-  TIter iter(gPad->GetListOfPrimitives());
+std::vector<TH1*> GCanvas::Find1DHists() {
+  std::vector<TH1*> tempvec;
   TH1 *hist = 0;
+  TIter iter(gPad->GetListOfPrimitives());
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
         !obj->InheritsFrom("TH2") &&  
         !obj->InheritsFrom("TH3") ) {  
-        hist = (TH1*)obj; 
+        tempvec.push_back((TH1*)obj); 
      }
   }
-  if(!hist)
+  return tempvec;
+}
+
+
+bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
+
+  
+  std::vector<TH1*> hists = Find1DHists();
+  if(hists.size()==0)
      return false;
-  int first = hist->GetXaxis()->GetFirst();
-  int last = hist->GetXaxis()->GetLast();
+  int first = hists.at(0)->GetXaxis()->GetFirst();
+  int last = hists.at(0)->GetXaxis()->GetLast();
  
   int min = std::min(first,0);
-  int max = std::max(last,hist->GetXaxis()->GetNbins()+1);
+  int max = std::max(last,hists.at(0)->GetXaxis()->GetNbins()+1);
 
 
   //printf("first = %i  |  last = %i\n", first,last);
@@ -245,7 +258,8 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
             last  = last -(xdiff/2);
           }
         }
-        hist->GetXaxis()->SetRange(first,last);
+        for(int i=0;i<hists.size();i++)
+          hists.at(i)->GetXaxis()->SetRange(first,last);
         gPad->Modified();
         gPad->Update();
       }
@@ -269,7 +283,8 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
             first = first+(xdiff/2); 
           }
         }
-        hist->GetXaxis()->SetRange(first,last);
+        for(int i=0;i<hists.size();i++)
+          hists.at(i)->GetXaxis()->SetRange(first,last);
         gPad->Modified();
         gPad->Update();
       }
@@ -291,75 +306,130 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
 
   //printf("keysym = %i\n",*keysym);
   TIter iter(gPad->GetListOfPrimitives());
-  TH1 *hist = 0;
+  TGraphErrors * ge = 0;
   bool edit = false;
   while(TObject *obj = iter.Next()) {
-     if( obj->InheritsFrom("TH1") &&
-        !obj->InheritsFrom("TH2") &&  
-        !obj->InheritsFrom("TH3") ) {  
-        hist = (TH1*)obj; 
+     if(obj->InheritsFrom("TGraphErrors")){
+           ge = (TGraphErrors*)obj;
      }
   }
-
-  if(!hist)
+  std::vector<TH1*> hists = Find1DHists();
+  if(hists.size()==0)
      return false;
 
-
-  switch(*keysym) {
-    case kKey_b:
-      edit = SetLinearBG();
-      break;
-    case kKey_e:
-      if(GetNMarkers()<2)
+   if(hists.size()>0){
+      switch(*keysym) {
+         case kKey_b:
+            edit = SetLinearBG();
+            break;
+         case kKey_e:
+            if(GetNMarkers()<2)
+               break;
+            if(fMarkers.at(fMarkers.size()-1)->localx < fMarkers.at(fMarkers.size()-2)->localx) 
+               for(int i=0;i<hists.size();i++)
+                 hists.at(i)->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-1)->localx,fMarkers.at(fMarkers.size()-2)->localx);
+            else
+               for(int i=0;i<hists.size();i++)
+                 hists.at(i)->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-2)->localx,fMarkers.at(fMarkers.size()-1)->localx);
+            edit = true;
+            while(GetNMarkers())
+               RemoveMarker();
+            break;
+         case kKey_E:
+            GetContextMenu()->Action(hists.back()->GetXaxis(),hists.back()->GetXaxis()->Class()->GetMethodAny("SetRangeUser"));
+            for(int i=0;i<hists.size()-1;i++)
+               hists.at(i)->GetXaxis()->SetRangeUser(hists.back()->GetXaxis()->GetFirst(),hists.back()->GetXaxis()->GetLast());
+            edit = true;
+            break;
+         case kKey_g:
+            edit = GausFit();
+            break;
+         case kKey_G:
+            edit = GausBGFit();
+            break;
+         case kKey_l:
+            SetLogy(0);
+            edit = true;
+            break;
+         case kKey_L:
+            SetLogy(1);
+            edit = true;
+            break;
+         case kKey_m:
+            SetMarkerMode(true);
+            break;
+         case kKey_M:
+            SetMarkerMode(false);
+         case kKey_n: 
+            while(GetNMarkers())
+               RemoveMarker();
+            for(int i=0;i<hists.size();i++)
+              hists.at(i)->GetListOfFunctions()->Delete();
+            edit = true;
+            break; 
+         case kKey_N:
+            while(GetNMarkers())  
+               RemoveMarker();
+            if(hists.back()->GetListOfFunctions()->Last())   
+               hists.back()->GetListOfFunctions()->Last()->Delete();
+            edit = true;
+            break;
+         case kKey_o:
+            for(int i=0;i<hists.size();i++)
+              hists.at(i)->GetXaxis()->UnZoom();
+            edit = true;    
+            while(GetNMarkers())
+               RemoveMarker();
+            break;
+         case kKey_p: //project.
+            break;
+         case kKey_f:
+            edit = PeakFitQ();
+            break;
+         case kKey_F:
+            edit = PeakFit();
+            break;
+         case kKey_S:
+            if(fStatsDisplayed)
+               fStatsDisplayed = false;
+            else
+               fStatsDisplayed = true;
+            for(int i=0;i<hists.size();i++)
+              hists.at(i)->SetStats(fStatsDisplayed);
+            edit = true;
+            break;
+         case kKey_F10:{
+            std::ofstream outfile;
+            for(int i=0;i<hists.back()->GetListOfFunctions()->GetSize();i++) {
+               //printf("\n\n%s | %s\n",hist->GetListOfFunctions()->At(i)->IsA()->GetName(),((TF1*)hist->GetListOfFunctions()->At(i))->GetName());
+               if(hists.back()->GetListOfFunctions()->At(i)->InheritsFrom("TPeak")) {
+                  if(!outfile.is_open())
+                     outfile.open(Form("%s.fits",hists.back()->GetName()));
+                  outfile << ((TPeak*)hists.back()->GetListOfFunctions()->At(i))->PrintString();
+                  outfile << "\n\n";
+               }     
+            } 
+            if(!outfile.is_open())
+               outfile.close();
+         }    
          break;
-      if(fMarkers.at(fMarkers.size()-1)->localx < fMarkers.at(fMarkers.size()-2)->localx) 
-        hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-1)->localx,fMarkers.at(fMarkers.size()-2)->localx);
-      else
-        hist->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-2)->localx,fMarkers.at(fMarkers.size()-1)->localx);
-      edit = true;
-      while(GetNMarkers())
-         RemoveMarker();
-      break;
-    case kKey_g:
-      edit = GausFit();
-      break;
-    case kKey_G:
-      edit = GausBGFit();
-      break;
-    case kKey_m:
-      SetMarkerMode(true);
-      break;
-    case kKey_M:
-      SetMarkerMode(false);
-    case kKey_n: 
-      while(GetNMarkers())
-         RemoveMarker();
-      hist->GetListOfFunctions()->Delete();
-      edit = true;
-      break;  
-    case kKey_o:
-      hist->GetXaxis()->UnZoom();
-      edit = true;    
-      while(GetNMarkers())
-         RemoveMarker();
-      break;
-    case kKey_p:
-      edit = PeakFit();
-      break;
-    case kKey_S:
-      if(fStatsDisplayed)
-         fStatsDisplayed = false;
-      else
-         fStatsDisplayed = true;
-      hist->SetStats(fStatsDisplayed);
-      edit = true;
-      break;
-  };
-  if(edit) {
-    gPad->Modified();
-    gPad->Update();
-  }
-  return true;
+
+      };
+   }
+   if(ge){
+      switch(*keysym) {
+         case kKey_p:
+            ge->Print();
+            break;
+      };
+   }
+
+
+   if(edit) {
+      gPad->Modified();
+      gPad->Update();
+   }
+   return true;
 }
 
 
@@ -402,6 +472,25 @@ bool GCanvas::HandleMousePress(Int_t event,Int_t x,Int_t y) {
   }
   return used;
 }
+
+
+TF1 *GCanvas::GetLastFit() { 
+  TH1 *hist = 0;
+  TIter iter(gPad->GetListOfPrimitives());
+  while(TObject *obj = iter.Next()) {
+     if( obj->InheritsFrom("TH1") &&
+        !obj->InheritsFrom("TH2") &&  
+        !obj->InheritsFrom("TH3") ) {  
+        hist = (TH1*)obj; 
+     }
+  }
+  if(!hist)
+     return 0;
+  if(hist->GetListOfFunctions()->GetSize()>0) 
+     return (TF1*)(hist->GetListOfFunctions()->Last()); 
+  return 0;
+}
+
 
 bool GCanvas::SetLinearBG(GMarker *m1,GMarker *m2) {
   TIter iter(gPad->GetListOfPrimitives());
@@ -612,9 +701,9 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
     }
   }
   
-  TPeak *mypeak = (TPeak*)(hist->GetFunction("peak"));
-  if(mypeak)
-     mypeak->Delete();
+ // TPeak *mypeak = (TPeak*)(hist->GetFunction("peak"));
+ // if(mypeak)
+  //   mypeak->Delete();
   int binx[2];
   double x[2];
   double y[2];
@@ -628,7 +717,7 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
     y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
   }
   //printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
-  mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);
+  TPeak* mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);
 //  TF1 *gfit = new TF1("gaus","gaus",x[0],x[1]);
 //  hist->Fit(gfit,"QR+");
 
@@ -638,6 +727,7 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
   //hist->GetFunction("gaus")->Delete();
 
   mypeak->Fit(hist);
+  mypeak->Background()->Draw("SAME");
   /*
   double param[3];
   double error[3];
@@ -655,6 +745,94 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
                                          ((error[2]/param[2])*(error[2]/param[2])));
   printf("Area:      % 4.02f  +/- %.02f\n",
          integral,int_err);*/
+  return true;
+  
+}
+
+
+bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
+  TIter iter(gPad->GetListOfPrimitives());
+  TH1 *hist = 0;
+  bool edit = false;
+  while(TObject *obj = iter.Next()) {
+     if( obj->InheritsFrom("TH1") &&
+        !obj->InheritsFrom("TH2") &&  
+        !obj->InheritsFrom("TH3") ) {  
+        hist = (TH1*)obj; 
+     }
+  }
+  if(!hist)
+     return false;
+  if(!m1 || !m2) {
+    if(GetNMarkers()<2) {
+       return false;
+    } else { 
+       m1 = fMarkers.at(fMarkers.size()-1);
+       m2 = fMarkers.at(fMarkers.size()-2);
+    }
+  }
+  
+  int binx[2];
+  double x[2];
+  double y[2];
+  if(m1->localx < m2->localx) {
+    x[0]=m1->localx; x[1]=m2->localx;
+    binx[0]=m1->x;   binx[1]=m2->x;
+    y[0]=hist->GetBinContent(m1->x); y[1]=hist->GetBinContent(m2->x); 
+  } else {
+    x[1]=m1->localx; x[0]=m2->localx;
+    binx[1]=m1->x;   binx[0]=m2->x;
+    y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
+  }
+  //printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
+  TPeak * mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);
+/*  if(hist->FindObject(mypeak->GetName())){
+     //delete mypeak;
+     mypeak = (TPeak*)(hist->FindObject(mypeak->GetName()));
+  }*/
+//  TF1 *gfit = new TF1("gaus","gaus",x[0],x[1]);
+//  hist->Fit(gfit,"QR+");
+
+  ///gausfit->SetParameters(y[0],0,gfit->GetParameter(0),gfit->GetParameter(1),gfit->GetParameter(2));
+  
+//  gfit->Delete();
+  //hist->GetFunction("gaus")->Delete();
+
+  mypeak->Fit(hist,"Q+");
+  TPeak *peakfit = (TPeak*)(hist->GetListOfFunctions()->Last());
+  //hist->GetListOfFunctions()->Print();
+  if(!peakfit) {
+    printf("peakfit not found??\n");
+    return false;
+  }
+  mypeak->Background()->Draw("SAME");
+  mypeak->Print();
+  
+     
+/* 
+  double param[10];
+  double error[10];
+  peakfit->GetParameters(param);
+  error[0] = peakfit->GetParError(0);
+  error[1] = peakfit->GetParError(1);
+  error[2] = peakfit->GetParError(2);
+  error[3] = peakfit->GetParError(3);
+  error[4] = peakfit->GetParError(4);
+  error[4] = peakfit->GetParError(5);
+  error[4] = peakfit->GetParError(6);
+  error[4] = peakfit->GetParError(7);
+  error[4] = peakfit->GetParError(8);
+  error[4] = peakfit->GetParError(9);
+  
+  printf("\nIntegral from % 4.01f to % 4.01f: %f\n",x[0],x[1],peakfit->Integral(x[0],x[1])/hist->GetBinWidth(1));
+  printf("Centroid:  % 4.02f  +/- %.02f\n",param[1],error[1]);
+  printf("FWHM:      % 4.02f  +/- %.02f\n",fabs(param[2]*2.35),error[2]*2.35);
+ // double integral = gausfit->Integral(x[0],x[1])/hist->GetBinWidth(1);
+ // double int_err  = integral*TMath::Sqrt(((error[2]/param[2])*(error[2]/param[2]))+
+ //                                        ((error[4]/param[4])*(error[4]/param[4])));
+ // printf("Area:      % 4.02f  +/- %.02f\n",
+ //        integral - (bg->Integral(x[0],x[1])/hist->GetBinWidth(1)),int_err);
+ */ 
   return true;
   
 }

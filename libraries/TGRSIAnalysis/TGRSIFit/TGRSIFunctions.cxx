@@ -52,6 +52,10 @@ Double_t TGRSIFunctions::StepFunction(Double_t *dim, Double_t *par){
    return TMath::Abs(step)*height/100.0*TMath::Erfc((x-c)/(TMath::Sqrt(2.0)*sigma));
 }
 
+Double_t TGRSIFunctions::StepBG(Double_t *dim, Double_t *par){
+   return StepFunction(dim,par) + PolyBg(dim,&par[6],2);
+}
+
 Double_t TGRSIFunctions::PhotoPeak(Double_t *dim, Double_t *par){
 //Returns the combination of a TGRSIFunctions::Gaus + a TGRSIFunctions::SkewedGaus  
    return Gaus(dim,par) + SkewedGaus(dim,par);

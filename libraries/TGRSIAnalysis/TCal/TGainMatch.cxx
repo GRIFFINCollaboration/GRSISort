@@ -69,20 +69,20 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
    Double_t binWidth = hist->GetBinWidth(foundbin[0]);
 
    //Set the number of data points to 2. In the gain matching graph.
-   Graph()->Set(2);
+   this->Set(2);
 
    //We now want to create a peak for each one we found (2) and fit them.
    for(int x=0; x<2; x++){
       TPeak tmpPeak(foundbin[x],foundbin[x] - 20./binWidth, foundbin[x] + 20./binWidth);
       tmpPeak.SetName(Form("GM_Cent_%lf",foundbin[x]));//Change the name of the TPeak to know it's origin
       tmpPeak.Fit(hist,"M+");
-      Graph()->SetPoint(x,tmpPeak.GetParameter("centroid"),engvec[x]);
+      this->SetPoint(x,tmpPeak.GetParameter("centroid"),engvec[x]);
    }
 
    TF1* gainfit = new TF1("gain","pol1");
 
-   TFitResultPtr res = Graph()->Fit(gainfit,"SC0");
-   SetFitFunction(Graph()->GetFunction("gain"));//Have to do this because I want to delete gainfit.
+   TFitResultPtr res = this->Fit(gainfit,"SC0");
+   SetFitFunction(this->GetFunction("gain"));//Have to do this because I want to delete gainfit.
    fGain_coeffs[0] = res->Parameter(0);
    fGain_coeffs[1] = res->Parameter(1);
 
@@ -145,7 +145,7 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
    }
 
    //Set the channel number
-   Graph()->Set(2);
+   this->Set(2);
 
    //Find the energy of the peak that we want to use
    Double_t energy[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
@@ -218,13 +218,13 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
          std::swap(centroid[0],centroid[1]);
    }
 
-   Graph()->SetPoint(0,centroid[0],energy[0]);
-   Graph()->SetPoint(1,centroid[1],energy[1]);
+   this->SetPoint(0,centroid[0],energy[0]);
+   this->SetPoint(1,centroid[1],energy[1]);
 
    TF1* gainfit = new TF1("gain","pol1");
 
-   TFitResultPtr res = Graph()->Fit(gainfit,"SC0");
-   SetFitFunction(Graph()->GetFunction("gain"));//Have to do this because I want to delete gainfit
+   TFitResultPtr res = this->Fit(gainfit,"SC0");
+   SetFitFunction(this->GetFunction("gain"));//Have to do this because I want to delete gainfit
    fGain_coeffs[0] = res->Parameter(0);
    fGain_coeffs[1] = res->Parameter(1);
     
@@ -657,7 +657,8 @@ Bool_t TGainMatch::FineMatch(TH1 *energy_hist, TH1* testhist, TH1* charge_hist, 
    TPeak *peak2 = new TPeak(energy2,energy2-15.0,energy2+15.0);
 
    //Set the channel number
-   Graph()->Set(2);
+   //Graph()->Set(2);
+   this->Set(2);
 
    //Find the energy of the peak that we want to use
    Double_t energy[2] = {peak1->GetParameter("centroid"), peak2->GetParameter("centroid")};
@@ -744,13 +745,13 @@ Bool_t TGainMatch::FineMatch(TH1 *energy_hist, TH1* testhist, TH1* charge_hist, 
          std::swap(centroid[0],centroid[1]);
    }
 
-   Graph()->SetPoint(0,centroid[0],energy[0]);
-   Graph()->SetPoint(1,centroid[1],energy[1]);
+   this->SetPoint(0,centroid[0],energy[0]);
+   this->SetPoint(1,centroid[1],energy[1]);
 
    TF1* gainfit = new TF1("gain","pol1");
 
-   TFitResultPtr res = Graph()->Fit(gainfit,"SC0");
-   SetFitFunction(Graph()->GetFunction("gain"));//Have to do this because I want to delete gainfit
+   TFitResultPtr res = this->Fit(gainfit,"SC0");
+   SetFitFunction(this->GetFunction("gain"));//Have to do this because I want to delete gainfit
    fGain_coeffs[0] = res->Parameter(0);
    fGain_coeffs[1] = res->Parameter(1);
     

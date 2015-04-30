@@ -60,17 +60,25 @@ class TPeak : public TGRSIFit {
 
  public:
    Bool_t InitParams(TH1 *fithist = 0);
+   TF1* Background() const { return background; } 
+   void DrawBackground(Option_t *opt = "SAME") const; // *MENU*
+   void DrawResiduals() const; // *MENU*
 
  public:
    virtual void Print(Option_t *opt = "") const;
+   const char*  PrintString(Option_t *opt = "") const;
    virtual void Clear();
 
- private:  
+ private: 
    //Centroid will eventually be read from parameters
-   Double_t farea; //->
-   Double_t fd_area; //->
+   Double_t farea; 
+   Double_t fd_area; 
+   Double_t fchi2; 
+   Double_t fNdf; 
 
-  ClassDef(TPeak,1);
+   TF1* background;
+
+  ClassDef(TPeak,2);
 
 };
 

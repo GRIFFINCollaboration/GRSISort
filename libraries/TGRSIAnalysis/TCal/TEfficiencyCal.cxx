@@ -17,13 +17,13 @@ void TEfficiencyCal::Copy(TObject &obj) const{
 }
 
 void TEfficiencyCal::ScaleGraph(Double_t scale_factor){
-   if(!Graph()){
+   if(!GetN()){
       Error("ScaleGraph","Graph does not exist");
       return;
    }
-   for(int i=0;i<Graph()->GetN();i++){ 
-      Graph()->GetY()[i] *= scale_factor;
-      Graph()->GetEY()[i] *=scale_factor;
+   for(int i=0;i<GetN();i++){ 
+      GetY()[i] *= scale_factor;
+      GetEY()[i] *=scale_factor;
    }
 
    fscale_factor = scale_factor;
@@ -51,10 +51,10 @@ void TEfficiencyCal::AddPoint(Double_t energy, Double_t area, Double_t d_energy,
    efficiency = area/intensity;
    d_efficiency = efficiency*TMath::Sqrt(TMath::Power(d_efficiency/efficiency,2.0) + TMath::Power(d_area/area,2.0));
 
-   Graph()->SetPoint(Graph()->GetN(), energy, efficiency);
-   Graph()->SetPointError(Graph()->GetN()-1,d_energy,d_efficiency);
+   SetPoint(GetN(), energy, efficiency);
+   SetPointError(GetN()-1,d_energy,d_efficiency);
 
-   Graph()->Sort(); //This keeps the points in order of energy;
+   Sort(); //This keeps the points in order of energy;
 
 }
 

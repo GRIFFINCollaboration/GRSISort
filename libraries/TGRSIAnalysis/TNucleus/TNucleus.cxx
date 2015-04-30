@@ -367,7 +367,7 @@ void TNucleus::Print(Option_t *opt) const{
 //Prints out the Name of the nucleus, as well as the numerated transition list
    printf("Nucleus: %s\n",GetName());
    for(int i =0; i< TransitionList.GetSize();i++){
-      printf("%d\t eng: %.02f\tinten: %.02f\n",((TGRSITransition*)TransitionList.At(i))->fenergy,((TGRSITransition*)TransitionList.At(i))->fintensity);
+      printf("%d\t eng: %.02f\tinten: %.02f\n",i,((TGRSITransition*)TransitionList.At(i))->fenergy,((TGRSITransition*)TransitionList.At(i))->fintensity);
 
    }
 }
