@@ -523,7 +523,7 @@ bool GCanvas::SetLinearBG(GMarker *m1,GMarker *m2) {
     y[0]=hist->GetBinContent(m1->x); y[1]=hist->GetBinContent(m2->x); 
   } else {
     x[1]=m1->localx; x[0]=m2->localx;
-    y[1]=hist->GetBinContent(m1->x); y[2]=hist->GetBinContent(m2->x); 
+    y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
   }
   printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
   bg = new TF1("linbg","pol1",x[0],x[1]);
