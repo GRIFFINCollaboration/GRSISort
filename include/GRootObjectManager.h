@@ -44,11 +44,15 @@ class GMemObj : public TNamed {
     void     SetParent(TObject *parent) { fParent = parent; }
     void     SetFile(TFile *file)       { fFile   = file;   }
 
+    const char *GetObjOption() { return fOption.c_str(); }
+    const char *GetObjName()   { return fObjName.c_str(); }
+
   private:
     TObject *fThis;
     TObject *fParent;
     TFile   *fFile;
     std::string fOption;
+    std::string fObjName;
 
   ClassDef(GMemObj,0)  
 };
@@ -84,7 +88,7 @@ class GRootObjectManager {
     GMemObj *FindMemObject(const char *name) { return ((GMemObj*)fObjectsMap->FindObject(Form("%s_%s",name,"memobj"))); }
 
 
-    static void Update();
+    static void Update(Option_t *opt = "MemClean");
     void Print();
 
   private:

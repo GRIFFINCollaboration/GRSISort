@@ -28,7 +28,7 @@ TH1D *ProjectionX(TH2* mat,int lowbin,int highbin) {
   //Add to manager;
   temphist->SetNameTitle(hname.c_str(),hname.c_str());
   GRootObjectManager::AddObject(mat,0,0);
-  GRootObjectManager::AddObject(temphist,mat,0);
+  GRootObjectManager::AddObject(temphist,mat,0,"ProjX");
   return temphist;
 }
 
@@ -51,7 +51,7 @@ TH1D *ProjectionY(TH2* mat,int lowbin,int highbin) {
   TH1D *temphist = mat->ProjectionY(hname.c_str(),lowbin,highbin);
   temphist->SetNameTitle(hname.c_str(),hname.c_str());
   GRootObjectManager::AddObject(mat,0,0);
-  GRootObjectManager::AddObject(temphist,mat,0);
+  GRootObjectManager::AddObject(temphist,mat,0,"ProjY");
   //Add to manager;
   return temphist;
 }
@@ -79,7 +79,7 @@ TH1D *ProjectionX(TH2* mat,double lowvalue,double highvalue) {
   TH1D *temphist = mat->ProjectionX(hname.c_str(),lowbin,highbin);
   temphist->SetNameTitle(hname.c_str(),hname.c_str());
   GRootObjectManager::AddObject(mat,0,0);
-  GRootObjectManager::AddObject(temphist,mat,0);
+  GRootObjectManager::AddObject(temphist,mat,0,"ProjX");
   //Add to manager;
   return temphist;
 }
@@ -107,7 +107,7 @@ TH1D *ProjectionY(TH2* mat,double lowvalue,double highvalue) {
   TH1D *temphist = mat->ProjectionY(hname.c_str(),lowbin,highbin);
   temphist->SetNameTitle(hname.c_str(),hname.c_str());
   GRootObjectManager::AddObject(mat,0,0);
-  GRootObjectManager::AddObject(temphist,mat,0);
+  GRootObjectManager::AddObject(temphist,mat,0,"ProjY");
   //Add to manager;
   return temphist;
 }

@@ -3,6 +3,7 @@
 #include <TFolder.h>
 #include <TClass.h>
 #include <TKey.h>
+#include <TString.h>
 
 #include <GRootObjectManager.h>
 //#include <TCanvas.h>
@@ -27,7 +28,8 @@ GMemObj::GMemObj(TObject *obj,TObject *par,TFile *file,Option_t *opt) {
   fThis      = obj;
   fParent    = par;
   fFile      = file;
-  fOption    = opt;
+  fObjName.assign(obj->GetName()); 
+  fOption.assign(opt);
 }
 
 GMemObj::~GMemObj() { } //fObject=0; }
@@ -276,7 +278,14 @@ TGraph *GRootObjectManager::GetLastGraph(TObject *object) { }
 
 
 
-void GRootObjectManager::Update() {
+void GRootObjectManager::Update(Option_t *opt) {
+  TString option = opt;
+  bool u_mem    = option.Contains("MEM",TString::ECaseCompare::kIgnoreCase);
+  bool u_file   = option.Contains("FILE",TString::ECaseCompare::kIgnoreCase);
+  bool u_all    = option.Contains("ALL",TString::ECaseCompare::kIgnoreCase);
+  bool u_clean  = option.Contains("CLEAN",TString::ECaseCompare::kIgnoreCase);
+  
+
   if(fCanvasList && (fCanvasList->GetSize() != fCanvasMap.size())) {
     if(fCanvasList->GetSize()>fCanvasMap.size()) {
       TIter iter(fCanvasList);
@@ -293,22 +302,32 @@ void GRootObjectManager::Update() {
   }
   
   //Scan memory for "useful" objects.
-  TFolder *folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Memory");
-  ExtractObjects(folder->GetListOfFolders());
-
+  if(u_mem || u_all) {
+    TFolder *folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Memory");
+    ExtractObjects(folder->GetListOfFolders());
+  }
   //Scan loaded files...
-//  folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
-//  ExtractObjects(folder->GetListOfFolders());
+  if(u_file || u_all) {
+    TFolder *folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
+    ExtractObjects(folder->GetListOfFolders());
+  }
 
   //finally, lets look for cuts...
-  TList *list = (TList*)gROOT->GetListOfSpecials()->FindObject("ROOT Files");
-  ExtractObjects((TCollection*)list);
+  if(u_all) {
+    TList *list = (TList*)gROOT->GetListOfSpecials()->FindObject("ROOT Files");
+    ExtractObjects((TCollection*)list);
+  }
 
-  fObjectsMap->Sort();
 
   //I need to clean up still...
-
-
+  if(u_clean) {
+    TIter iter(fObjectsMap);
+    while(GMemObj *mobj = ((GMemObj*)iter.Next())) {
+      if(!gROOT->FindObjectAny(mobj->GetObjName()))
+         RemoveObject(mobj->GetObjName());
+    }
+  }
+  fObjectsMap->Sort();
   return;
 }
 
