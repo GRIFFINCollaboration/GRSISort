@@ -212,7 +212,7 @@ TH1 *GRootObjectManager::GetNext1D(TObject *object) {
         return (TH1*)s;
      }   
      mobj_cur   = (GMemObj*)fObjectsMap->After(mobj_cur);
-     if(mobj_cur==0)
+     if(!mobj_cur)
         mobj_cur = (GMemObj*)fObjectsMap->First();
   }
   return 0;
@@ -255,7 +255,7 @@ TH1 *GRootObjectManager::GetLast1D(TObject *object) {
         return (TH1*)s;
      }   
      mobj_cur   = (GMemObj*)fObjectsMap->Before(mobj_cur);
-     if(mobj_cur==0)
+     if(!mobj_cur)
         mobj_cur = (GMemObj*)fObjectsMap->Last();
   }
   return 0;
