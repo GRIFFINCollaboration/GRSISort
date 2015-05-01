@@ -150,7 +150,7 @@ TAnalysisTreeBuilder::TAnalysisTreeBuilder() {
    //rf->Clear();
    csm = 0;//new TCSM;
    //spice->Clear(); s3->Clear();
-   //tip->Clear();
+   tip = 0;
 
    griffin = 0;//new TGriffin;
    sceptar = 0;//new TSceptar;
@@ -538,7 +538,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    //if(info->Rf())        { tree->Bronch("TRf","TRf",&rf); }//, basketSize); } 
    if(info->CSM())       { tree->Bronch("TCSM","TCSM",&csm); }//, basketSize); } 
    //if(info->Spice())     { tree->Bronch("TSpice","TSpice",&spice); }//, basketSize); tree->SetBronch("TS3","TS3",&s3); }//, basketSize); } 
-   //if(info->Tip())       { tree->Bronch("TTip","TTip",&tip); }//, basketSize); } 
+   if(info->Tip())       { tree->Bronch("TTip","TTip",&tip); }//, basketSize); } 
 
    if(info->Griffin())   { TBranch *branch = tree->Bronch("TGriffin","TGriffin",&griffin, basketSize, 99);}// branch->SetAddress(0);} 
    if(info->Sceptar())   { TBranch *branch = tree->Bronch("TSceptar","TSceptar",&sceptar, basketSize, 99);}// branch->SetAddress(0);} 
@@ -570,7 +570,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    //if(info->Rf())        { rf->Clear(); } 
    if(info->CSM())       { csm->Clear(); }
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
-   //if(info->Tip())       { tip->Clear(); } 
+   if(info->Tip())       { tip->Clear(); } 
 //printf("clearing griffin 0x08%x\n",griffin);
 //griffin->Print();
    if(info->Griffin())   { griffin->Clear(); }
@@ -596,7 +596,7 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
    //if(info->Rf())        { rf->Clear(); } 
    if(info->CSM())       { csm = 0; }//->Clear(); }
    //if(info->Spice())     { spice->Clear(); s3->Clear(); } 
-   //if(info->Tip())       { tip->Clear(); } 
+   if(info->Tip())       { tip = 0; } 
 //printf("clearing griffin 0x08%x\n",griffin);
 //griffin->Print();
    if(info->Griffin())   { griffin = 0; }//->Clear(); }
@@ -685,6 +685,8 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
          descant = (TDescant*) det->second;
       } else if(strcmp(det->first,"PA") == 0) {
          paces = (TPaces*) det->second;
+      } else if(strcmp(det->first,"TP") == 0) {
+         tip = (TTip*) det->second;
       } 
    }
    fCurrentAnalysisTree->Fill();
@@ -802,6 +804,11 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //	FillData(&(event->at(i)),channel,&mnemonic);
          //} else if(mnemonic.system.compare("DE")==0) {	
          //	FillData(&(event->at(i)),channel,&mnemonic);
+         } else if(mnemonic.system.compare("TP")==0) {	
+            if(detectors->find("TP") == detectors->end()) {
+               (*detectors)["TP"] = new TTip;
+            }
+            (*detectors)["TP"]->FillData(&(event->at(i)),channel,&mnemonic);
          }
       }
 

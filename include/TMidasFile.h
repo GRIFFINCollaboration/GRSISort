@@ -57,7 +57,9 @@ protected:
   uint32_t fMaxBufferSize;
 
   int         fLastErrno; ///< errno from the last operation
+public:
   std::string fLastError; ///< error string from last errno
+protected:
 
   bool fDoByteSwap; ///< "true" if file has to be byteswapped
 

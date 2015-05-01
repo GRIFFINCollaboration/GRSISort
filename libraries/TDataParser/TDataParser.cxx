@@ -252,22 +252,21 @@ void TDataParser::SetTIGCharge(uint32_t value, TFragment *currentfragment) {
    currentfragment->ChannelNumber = chan->GetNumber();
 
    if( dig_type.compare(0,5,"Tig10") == 0)	{
-     currentfragment->Charge.push_back(value &  0x03ffffff);
-     if(value & 0x02000000)	{
+     if(value & 0x02000000)	
          currentfragment->Charge.push_back( -( (~((int32_t)value & 0x01ffffff)) & 0x01ffffff)+1);
-		 }
-	 } else if( dig_type.compare(0,5,"Tig64") == 0) {
-	   currentfragment->Charge.push_back((value &	0x003fffff));
-		 if(value & 0x00200000)	{
-		    currentfragment->Charge.push_back( -( (~((int32_t)value & 0x001fffff)) & 0x001fffff)+1);
-		 }
-	 }
-	 else{
-	    currentfragment->Charge.push_back( ((int32_t)value &	0x03ffffff));
-		  if(value & 0x02000000)	{
-			   currentfragment->Charge.push_back( -( (~((int32_t)value & 0x01ffffff)) & 0x01ffffff)+1);
-		  }
-	 }
+	   else 
+         currentfragment->Charge.push_back(value &  0x03ffffff);
+	} else if( dig_type.compare(0,5,"Tig64") == 0) {
+		 if(value & 0x00200000)	
+		   currentfragment->Charge.push_back( -( (~((int32_t)value & 0x001fffff)) & 0x001fffff)+1);
+		else  
+	      currentfragment->Charge.push_back((value &	0x003fffff));
+	} else {
+		 if(value & 0x02000000)	
+			currentfragment->Charge.push_back( -( (~((int32_t)value & 0x01ffffff)) & 0x01ffffff)+1);
+		 else
+ 	      currentfragment->Charge.push_back( ((int32_t)value &	0x03ffffff));
+	}
 }
 
 bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment *currentfrag) {

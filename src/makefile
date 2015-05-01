@@ -51,7 +51,7 @@ DETLIBS += -lTriFoil
 DETLIBS += -lCSM
 #DETLIBS += -lSpice
 #DETLIBS += -lS3
-#DETLIBS += -lTip
+DETLIBS += -lTip
 
 DETLIBS += -lGriffin
 DETLIBS += -lSceptar
