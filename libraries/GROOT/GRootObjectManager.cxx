@@ -267,12 +267,12 @@ TH1 *GRootObjectManager::GetLast1D(TObject *object) {
 
 
 
-TH2    *GRootObjectManager::GetNext2D(TObject *object) { }
-TH2    *GRootObjectManager::GetLast2D(TObject *object) { }
+TH2    *GRootObjectManager::GetNext2D(TObject *object) { return 0; }
+TH2    *GRootObjectManager::GetLast2D(TObject *object) { return 0; }
 //TH3    *GRootObjectManager::GetNext3D(TObject *object) { }
 //TH3    *GRootObjectManager::GetLast3D(TObject *object) { }
-TGraph *GRootObjectManager::GetNextGraph(TObject *object) { }
-TGraph *GRootObjectManager::GetLastGraph(TObject *object) { }
+TGraph *GRootObjectManager::GetNextGraph(TObject *object) { return 0; }
+TGraph *GRootObjectManager::GetLastGraph(TObject *object) { return 0; }
 
 
 
