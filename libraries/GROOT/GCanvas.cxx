@@ -403,6 +403,18 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
               if(mobj->GetParent()) {
                  printf("parent mobj:  0x%08x\n", GRootObjectManager::Instance()->FindMemObject(mobj->GetParent())) ;
                  printf("parent name:  %s\n",mobj->GetParent()->GetName());
+                 if(!mobj->GetParent()->InheritsFrom("TH2"))
+                   break;
+                 TH1D* temphist = 0;
+                 if(GetNMarkers()<2)
+                   break;
+                 if(fMarkers.at(fMarkers.size()-1)->x < fMarkers.at(fMarkers.size()-2)->x) 
+                   temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-1)->x,
+                                                            fMarkers.at(fMarkers.size()-2)->x);
+                 else
+                   temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-2)->x,
+                                                            fMarkers.at(fMarkers.size()-1)->x);
+                 temphist->Draw();
               }   
             }
             break;
