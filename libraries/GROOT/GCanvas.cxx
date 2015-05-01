@@ -21,6 +21,7 @@
 #include "GCanvas.h"
 #include "GROOTGuiFactory.h"
 #include "GRootObjectManager.h"
+#include "GRootGlobals.h"
 
 #include <iostream>
 #include <fstream>
@@ -397,6 +398,13 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                RemoveMarker();
             break;
          case kKey_p: //project.
+            if(GMemObj *mobj = GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName())) {
+              printf("object parent:  0x%08x\n",mobj->GetParent());
+              if(mobj->GetParent()) {
+                 printf("parent mobj:  0x%08x\n", GRootObjectManager::Instance()->FindMemObject(mobj->GetParent())) ;
+                 printf("parent name:  %s\n",mobj->GetParent()->GetName());
+              }   
+            }
             break;
          case kKey_f:
             edit = PeakFitQ();

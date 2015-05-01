@@ -80,6 +80,9 @@ class GRootObjectManager {
     TGraph *GetNextGraph(TObject *object=0);
     TGraph *GetLastGraph(TObject *object=0);
 
+    GMemObj *FindMemObject(TObject *object ) { return ((GMemObj*)fObjectsMap->FindObject(object)); }
+    GMemObj *FindMemObject(const char *name) { return ((GMemObj*)fObjectsMap->FindObject(name)); }
+
 
     static void Update();
     void Print();
@@ -90,7 +93,6 @@ class GRootObjectManager {
 
     static std::map<TCanvas*,std::vector<GPadObj> > fCanvasMap;
     static TList *fCanvasList;
-
 
     //static std::map<std::string,GMemObj > fObjectsMap;
     static TList *fObjectsMap;
