@@ -390,13 +390,13 @@ void GRootObjectManager::Cleanup() {
 
 void GRootObjectManager::Print() {
    Update();
-   printf("Canvases currently tracked:  %i\n",fCanvasMap.size());
+   printf("Canvases currently tracked:  %lu\n",fCanvasMap.size());
    printf("fCanvasMapList Content:\n");
    //fCanvasList->Print();
    std::map<TCanvas*,std::vector<GPadObj> >::iterator iter;
    int counter = 0;
    for(iter=fCanvasMap.begin();iter!=fCanvasMap.end();iter++)
-       printf("\t% 2i.\t%s, contains %i objects.\n",counter++,iter->first->GetName(),iter->second.size());
+       printf("\t% 2i.\t%s, contains %lu objects.\n",counter++,iter->first->GetName(),iter->second.size());
 
    printf("Objects currently tracked:  %i\n",fObjectsMap->GetSize());
    printf("fObjectsMap Content:\n");
@@ -408,7 +408,7 @@ void GRootObjectManager::Print() {
    //                                                                          iter2->second.GetParent(),iter2->second.GetFile());
    TIter Oiter(fObjectsMap);
    while(GMemObj *mobj = (GMemObj*)Oiter.Next()) {
-      printf("\t% 2i.\t%s [%s], parent[0x%08x] | file[0x%08x].\n",counter++,mobj->GetObject()->GetName(),
+      printf("\t% 2i.\t%s [%s], parent[%p] | file[%p].\n",counter++,mobj->GetObject()->GetName(),
                                                                             mobj->GetObject()->IsA()->GetName(),
                                                                             mobj->GetParent(),mobj->GetFile());
 
