@@ -279,11 +279,11 @@ TGraph *GRootObjectManager::GetLastGraph(TObject *object) { return 0; }
 
 
 void GRootObjectManager::Update(Option_t *opt) {
-  TString option = opt;
-  bool u_mem    = option.Contains("MEM",TString::ECaseCompare::kIgnoreCase);
-  bool u_file   = option.Contains("FILE",TString::ECaseCompare::kIgnoreCase);
-  bool u_all    = option.Contains("ALL",TString::ECaseCompare::kIgnoreCase);
-  bool u_clean  = option.Contains("CLEAN",TString::ECaseCompare::kIgnoreCase);
+  //TString option = opt;
+  //bool u_mem    = option.Contains("MEM",TString::ECaseCompare::kIgnoreCase);
+  //bool u_file   = option.Contains("FILE",TString::ECaseCompare::kIgnoreCase);
+  //bool u_all    = option.Contains("ALL",TString::ECaseCompare::kIgnoreCase);
+  //bool u_clean  = option.Contains("CLEAN",TString::ECaseCompare::kIgnoreCase);
   
 
   if(fCanvasList && (fCanvasList->GetSize() != fCanvasMap.size())) {
@@ -302,31 +302,31 @@ void GRootObjectManager::Update(Option_t *opt) {
   }
   
   //Scan memory for "useful" objects.
-  if(u_mem || u_all) {
+  //if(u_mem || u_all) {
     TFolder *folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Memory");
     ExtractObjects(folder->GetListOfFolders());
-  }
+  //}
   //Scan loaded files...
-  if(u_file || u_all) {
-    TFolder *folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
+  //if(u_file || u_all) {
+    folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
     ExtractObjects(folder->GetListOfFolders());
-  }
+  //}
 
   //finally, lets look for cuts...
-  if(u_all) {
+//  if(u_all) {
     TList *list = (TList*)gROOT->GetListOfSpecials()->FindObject("ROOT Files");
     ExtractObjects((TCollection*)list);
-  }
+//  }
 
 
   //I need to clean up still...
-  if(u_clean) {
-    TIter iter(fObjectsMap);
-    while(GMemObj *mobj = ((GMemObj*)iter.Next())) {
-      if(!gROOT->FindObjectAny(mobj->GetObjName()))
-         RemoveObject(mobj->GetObjName());
-    }
-  }
+//  if(u_clean) {
+//    TIter iter(fObjectsMap);
+//    while(GMemObj *mobj = ((GMemObj*)iter.Next())) {
+//      if(!gROOT->FindObjectAny(mobj->GetObjName()))
+//         RemoveObject(mobj->GetObjName());
+//    }
+//  }
   fObjectsMap->Sort();
   return;
 }
@@ -408,7 +408,7 @@ void GRootObjectManager::Cleanup() {
 
 
 void GRootObjectManager::Print() {
-   Update();
+   Update("");
    printf("Canvases currently tracked:  %lu\n",fCanvasMap.size());
    printf("fCanvasMapList Content:\n");
    //fCanvasList->Print();
