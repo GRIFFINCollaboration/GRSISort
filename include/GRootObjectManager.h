@@ -5,6 +5,7 @@
 #include <TList.h>
 #include <TVirtualPad.h>
 
+#include <TDirectoryFile.h>
 #include <TH1.h>
 #include <TH2.h>
 #include <TH3.h>
@@ -15,7 +16,7 @@
 #include <string>
 #include <map>
 
-class GPadObj {
+class GPadObj : public TNamed {
   public:
      GPadObj(TObject*obj,Int_t pnum=0,Option_t *opt="");
      ~GPadObj();
@@ -28,13 +29,16 @@ class GPadObj {
       GCanvas*   fCanvas;
       //std::vector<std::string> fSource;
       std::string  fOption;
+
+   ClassDef(GPadObj,0)
 };
 
-class GMemObj {
+class GMemObj : public TNamed {
   public:
     GMemObj(TObject *obj, TObject *par=0,TFile *file=0,Option_t *opt="");
     ~GMemObj();
 
+    TObject *GetObject() { return fThis;   }
     TObject *GetParent() { return fParent; }
     TFile   *GetFile()   { return fFile;   }
     void     SetParent(TObject *parent) { fParent = parent; }
@@ -45,6 +49,8 @@ class GMemObj {
     TObject *fParent;
     TFile   *fFile;
     std::string fOption;
+
+  ClassDef(GMemObj,0)  
 };
 
 
@@ -57,20 +63,25 @@ class GRootObjectManager {
     static void AddCanvas(GCanvas*);
     static void AddCanvas(TCanvas*);
     static void RemoveCanvas(GCanvas*);
-    static void RemoveCanvas(TCanvas*);
+    static void RemoveCanvas(TCanvas* = 0);
 
     static void AddObject(TObject *obj,TObject *par=0,TFile *file=0,Option_t *opt="");
     static void RemoveObject(TObject*);
+    //static void AddObject(const char *name,TObject *par=0,TFile *file=0,Option_t *opt="");
+    static void RemoveObject(const char *name);
   
     static bool SetParent(TObject *object,TObject *parent);
     static bool SetFile(TObject *object,TFile *file);
 
     TH1    *GetNext1D(TObject *object =0);
+    TH1    *GetLast1D(TObject *object =0);
     TH2    *GetNext2D(TObject *object =0);
+    TH2    *GetLast2D(TObject *object =0);
     TGraph *GetNextGraph(TObject *object=0);
+    TGraph *GetLastGraph(TObject *object=0);
 
 
-    void Update();
+    static void Update();
     void Print();
 
   private:
@@ -78,11 +89,11 @@ class GRootObjectManager {
     static GRootObjectManager *fGRootObjectManager;
 
     static std::map<TCanvas*,std::vector<GPadObj> > fCanvasMap;
-    TList *fCanvasList;
+    static TList *fCanvasList;
 
 
-    static std::map<TObject*,GMemObj > fObjectsMap;
-
+    //static std::map<std::string,GMemObj > fObjectsMap;
+    static TList *fObjectsMap;
 
     //static std::map<TObject*,std::vector<GMemObj*> > f1DHistsMap;
     //static std::map<TObject*,std::vector<GMemObj*> > f2DHistsMap;
@@ -92,7 +103,8 @@ class GRootObjectManager {
     //static std::map<TObject*,std::vector<GMemObj*> > fMiscMap;
 
     //void Cleanup();
-    void ExtractObjects(TCollection*);
+    static void ExtractObjects(TCollection*);
+    static void ExtractObjectsFromFile(TDirectoryFile *file);
 
   ClassDef(GRootObjectManager,0)
 };

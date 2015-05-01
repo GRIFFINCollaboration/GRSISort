@@ -2,12 +2,15 @@
 #include <TROOT.h>
 #include <TFolder.h>
 #include <TClass.h>
+#include <TKey.h>
 
 #include <GRootObjectManager.h>
 //#include <TCanvas.h>
 
+ClassImp(GPadObj)
 
 GPadObj::GPadObj(TObject*obj,Int_t pnum, Option_t *opt) {
+  SetName(Form("%s_%s",obj->GetName(),"padobj"));
   fObject    = obj;
   fParent    = 0;
   fPadNumber = pnum;
@@ -17,7 +20,10 @@ GPadObj::GPadObj(TObject*obj,Int_t pnum, Option_t *opt) {
 GPadObj::~GPadObj() { fObject=0; }
 
 
+ClassImp(GMemObj)
+
 GMemObj::GMemObj(TObject *obj,TObject *par,TFile *file,Option_t *opt) {
+  SetName(Form("%s_%s",obj->GetName(),"memobj")); 
   fThis      = obj;
   fParent    = par;
   fFile      = file;
@@ -25,7 +31,6 @@ GMemObj::GMemObj(TObject *obj,TObject *par,TFile *file,Option_t *opt) {
 }
 
 GMemObj::~GMemObj() { } //fObject=0; }
-
 
 
 
@@ -41,13 +46,16 @@ GRootObjectManager *GRootObjectManager::Instance() {
 }
 
 std::map<TCanvas*,std::vector<GPadObj> > GRootObjectManager::fCanvasMap;
+TList *GRootObjectManager::fCanvasList = 0;
 
-std::map<TObject*,GMemObj > GRootObjectManager::fObjectsMap;
+//std::map<const char*,GMemObj > GRootObjectManager::fObjectsMap;
+TList *GRootObjectManager::fObjectsMap = new TList;
 
 GRootObjectManager::GRootObjectManager() { 
    printf("GRootObjectManager created.\n"); 
    fCanvasList = (TList*)gROOT->GetListOfCanvases();
    //fObjectList = (TList*)gROOT->GetList
+   //this->Connect("Closed()","TCanvas",this,"RemoveCanvas()"
 }
 
 GRootObjectManager::~GRootObjectManager() {
@@ -77,8 +85,16 @@ void GRootObjectManager::RemoveCanvas(GCanvas *c) { RemoveCanvas((TCanvas*)c); }
 void GRootObjectManager::RemoveCanvas(TCanvas *c) {
   
   //printf("c = 0x%08x\n",c); fflush(stdout);
-  if(!c)
-     return;
+  if(!c) {
+    std::map<TCanvas*,std::vector<GPadObj> >::iterator it;
+    for(it = fCanvasMap.begin();it!=fCanvasMap.end();it++) {
+      if(!fCanvasList->FindObject(it->first)) {
+        //printf("\n  canvas 0x%08x has been removed from map.\n",it->first);
+        fCanvasMap.erase(it->first);
+      }  
+    }
+    return;
+  }   
   //printf("here.\n");
   if(fCanvasMap.count(c)>0) {
     //printf("\n  canvas 0x%08x has been removed from map.\n",c);
@@ -95,81 +111,173 @@ void GRootObjectManager::RemoveCanvas(TCanvas *c) {
 void GRootObjectManager::AddObject(TObject *object,TObject *par,TFile *file,Option_t *opt) { 
   if(!object)
      return;
+  if(strlen(object->GetName())<1)
+     return; 
   if(object->InheritsFrom("TH1")   || // all histograms.
      object->InheritsFrom("TGraph") || // all graphs (include TCutG's)
      object->InheritsFrom("TCut")) {    // string cuts (esm:  "x<10")
-     if(!fObjectsMap.count(object)) {
-        fObjectsMap.insert(std::pair<TObject*,GMemObj>(object,GMemObj(object,par,file,opt))) ;
-     }
+     //if(fObjectsMap->count(object)<1) {
+     //   fObjectsMap->insert(std::pair<TObject*,GMemObj>(object,GMemObj(object,par,file,opt))) ;
+     //}
+     if(!fObjectsMap->FindObject(Form("%s_%s",object->GetName(),"memobj")))
+        fObjectsMap->Add(new GMemObj(object,par,file,opt));
   }
 }
 
 void GRootObjectManager::RemoveObject(TObject *object) {
   if(!object)
      return;
-  if(fObjectsMap.count(object)>0) {
-     fObjectsMap.erase(object);
-  }
+  if(strlen(object->GetName())<1)
+     return; 
+  TObject *obj = fObjectsMap->FindObject(Form("%s_%s",object->GetName(),"memobj"));
+  if(obj) {
+    fObjectsMap->Remove(obj);
+    delete obj;
+  }  
+    //fObjectsMap->erase(object);
 }
 
+void GRootObjectManager::RemoveObject(const char *name) {
+  if(strlen(name)<1)
+     return; 
+  TObject *obj = fObjectsMap->FindObject(Form("%s_%s",name,"memobj"));
+  if(obj) {
+    fObjectsMap->Remove(obj);
+    delete obj;
+  }  
+}
+
+
 bool GRootObjectManager::SetParent(TObject *object,TObject *parent) {
-  if(fObjectsMap.count(object)<1)
+  if(!object)
      return false;
-  fObjectsMap.at(object).SetParent(parent);
-  return true;
+  if(strlen(object->GetName())<1)
+     return false; 
+  TObject *obj = fObjectsMap->FindObject(Form("%s_%s",object->GetName(),"memobj"));
+  if(obj) {
+     ((GMemObj*)obj)->SetParent(parent);
+     return true;
+  }   
+  return false;
 }
 
 
 bool GRootObjectManager::SetFile(TObject *object,TFile *file) {
-  if(fObjectsMap.count(object)<1)
+  if(!object)
      return false;
-  fObjectsMap.at(object).SetFile(file);
-  return true;
+  if(strlen(object->GetName())<1)
+     return false; 
+  TObject *obj = fObjectsMap->FindObject(Form("%s_%s",object->GetName(),"memobj"));
+  if(obj) {
+     ((GMemObj*)obj)->SetFile(file);
+     return true;
+  }   
+  return false;
 }
+
 
 TH1 *GRootObjectManager::GetNext1D(TObject *object) {
   //Returns the next TH1 currently managed from
   //from the key object. If no object is passed,
   //returns the first TH1 from the beginning of 
   //the map.
-  std::map<TObject*,GMemObj>::iterator it;
-  std::map<TObject*,GMemObj>::iterator start;
-  if(!object) {
-    it=fObjectsMap.begin();
-    for(;it!=fObjectsMap.end();it++) {
-      //printf("it->first->GetName() = %s\n",it->first->GetName());
-      if(it->first->InheritsFrom("TH1") &&
-         !it->first->InheritsFrom("TH2") &&
-         !it->first->InheritsFrom("TH3")   ) {
-         return (TH1*)it->first;
+  
+  if(fObjectsMap->GetSize()<2)
+     return 0;
+  if(!object) { 
+    TIter iter(fObjectsMap);
+    while(GMemObj *mobj = (GMemObj*)iter.Next()) { 
+      TObject *s = mobj->GetObject();
+      if(s->InheritsFrom("TH1") &&
+        !s->InheritsFrom("TH2") &&
+        !s->InheritsFrom("TH3")   ) {
+        return (TH1*)s;
       }   
     }
-  } else {
-    it=fObjectsMap.find(object);
-    start = it;
-    it++;
-    for(;it!=start;it++) { 
-      if(it==fObjectsMap.end())
-        it=fObjectsMap.begin();
-      //printf("it->first->GetName() = %s\n",it->first->GetName());
-      if(  it->first->InheritsFrom("TH1") &&
-        !it->first->InheritsFrom("TH2") &&
-        !it->first->InheritsFrom("TH3")   ) {
-        return (TH1*)it->first;
-      }
-    }
+    return 0;
+  }
+
+  if(strlen(object->GetName())<1)
+     return 0; 
+  const char *name = Form("%s_%s",object->GetName(),"memobj");
+  GMemObj *mobj_start = (GMemObj*)fObjectsMap->FindObject(name);
+  GMemObj *mobj_cur   = (GMemObj*)fObjectsMap->After(mobj_start);
+  if(!mobj_cur)
+     mobj_cur = (GMemObj*)fObjectsMap->First();
+  while(mobj_cur != mobj_start) {
+     TObject *s = mobj_cur->GetObject();
+     if(s->InheritsFrom("TH1") &&
+        !s->InheritsFrom("TH2") &&
+        !s->InheritsFrom("TH3")   ) {
+        return (TH1*)s;
+     }   
+     mobj_cur   = (GMemObj*)fObjectsMap->After(mobj_cur);
+     if(mobj_cur=0)
+        mobj_cur = (GMemObj*)fObjectsMap->First();
   }
   return 0;
 }
 
+
+TH1 *GRootObjectManager::GetLast1D(TObject *object) {
+  //Returns the last TH1 currently managed from
+  //from the key object. If no object is passed,
+  //returns the first TH1 from the beginning of 
+  //the map.
+
+  if(fObjectsMap->GetSize()<2)
+     return 0;
+  if(!object) { 
+    TIter iter(fObjectsMap,kIterBackward);
+    while(GMemObj *mobj = (GMemObj*)iter.Next()) { 
+      TObject *s = mobj->GetObject();
+      if(s->InheritsFrom("TH1") &&
+         !s->InheritsFrom("TH2") &&
+         !s->InheritsFrom("TH3")   ) {
+         return (TH1*)s;
+      }   
+    }
+    return 0;
+  }
+
+  if(strlen(object->GetName())<1)
+     return 0; 
+  const char *name = Form("%s_%s",object->GetName(),"memobj");
+  GMemObj *mobj_start = (GMemObj*)fObjectsMap->FindObject(name);
+  GMemObj *mobj_cur   = (GMemObj*)fObjectsMap->Before(mobj_start);
+  if(!mobj_cur)
+     mobj_cur = (GMemObj*)fObjectsMap->Last();
+  while(mobj_cur != mobj_start) {
+     TObject *s = mobj_cur->GetObject();
+     if(s->InheritsFrom("TH1") &&
+        !s->InheritsFrom("TH2") &&
+        !s->InheritsFrom("TH3")   ) {
+        return (TH1*)s;
+     }   
+     mobj_cur   = (GMemObj*)fObjectsMap->Before(mobj_cur);
+     if(mobj_cur=0)
+        mobj_cur = (GMemObj*)fObjectsMap->Last();
+  }
+  return 0;
+}
+
+
+
+
+
+
+
 TH2    *GRootObjectManager::GetNext2D(TObject *object) { }
+TH2    *GRootObjectManager::GetLast2D(TObject *object) { }
 //TH3    *GRootObjectManager::GetNext3D(TObject *object) { }
+//TH3    *GRootObjectManager::GetLast3D(TObject *object) { }
 TGraph *GRootObjectManager::GetNextGraph(TObject *object) { }
+TGraph *GRootObjectManager::GetLastGraph(TObject *object) { }
 
 
 
 void GRootObjectManager::Update() {
-  if(fCanvasList->GetSize() != fCanvasMap.size()) {
+  if(fCanvasList && (fCanvasList->GetSize() != fCanvasMap.size())) {
     if(fCanvasList->GetSize()>fCanvasMap.size()) {
       TIter iter(fCanvasList);
       while(TCanvas *canvas = (TCanvas*)iter.Next()) {
@@ -196,6 +304,11 @@ void GRootObjectManager::Update() {
   TList *list = (TList*)gROOT->GetListOfSpecials()->FindObject("ROOT Files");
   ExtractObjects((TCollection*)list);
 
+  fObjectsMap->Sort();
+
+  //I need to clean up still...
+
+
   return;
 }
 
@@ -205,8 +318,11 @@ void GRootObjectManager::ExtractObjects(TCollection *list) {
   TIter iter(list);
   TObject *object = 0;
   while(object = iter.Next()) {
+    //printf("object->GetName() = %s \n",object->GetName());
     if(object->InheritsFrom("TFolder")) {
        ExtractObjects(((TFolder*)object)->GetListOfFolders());
+    } else if(object->InheritsFrom("TDirectoryFile")) {
+       ExtractObjectsFromFile((TDirectoryFile*)object);
     } else if(object->InheritsFrom("TDirectory")) {
        ExtractObjects(((TDirectory*)object)->GetList());
     } else {
@@ -215,6 +331,29 @@ void GRootObjectManager::ExtractObjects(TCollection *list) {
   }
   return;
 }
+
+void GRootObjectManager::ExtractObjectsFromFile(TDirectoryFile *file) {
+  TIter iter(file->GetListOfKeys());
+  TKey *key=0;
+  while(key=(TKey*)iter.Next()) {
+    TClass *rclass = gROOT->GetClass(key->GetClassName());
+    //printf("rclasss->GetName() = %s\n",rclass->GetName());
+    if(rclass->InheritsFrom("TFolder")) {
+       ExtractObjects(((TFolder*)key->ReadObj())->GetListOfFolders());
+    } else if(rclass->InheritsFrom("TDirectoryFile")) { 
+       ExtractObjectsFromFile((TDirectoryFile*)key->ReadObj());
+    } else if(rclass->InheritsFrom("TDirectory")) {
+       ExtractObjects(((TDirectory*)key->ReadObj())->GetList());
+    } else if((rclass->InheritsFrom("TH1")     ||
+               rclass->InheritsFrom("TGraph")) &&
+               !rclass->InheritsFrom("TH3")    ){
+       AddObject(key->ReadObj());
+    }
+
+
+  }
+}
+
 
 /*
 
@@ -258,16 +397,21 @@ void GRootObjectManager::Print() {
    for(iter=fCanvasMap.begin();iter!=fCanvasMap.end();iter++)
        printf("\t% 2i.\t%s, contains %i objects.\n",counter++,iter->first->GetName(),iter->second.size());
 
-   printf("Objects currently tracked:  %i\n",fObjectsMap.size());
+   printf("Objects currently tracked:  %i\n",fObjectsMap->GetSize());
    printf("fObjectsMap Content:\n");
    //fCanvasList->Print();
-   std::map<TObject*,GMemObj >::iterator iter2;
+   //std::map<TObject*,GMemObj >::iterator iter2;
    counter = 0;
-   for(iter2=fObjectsMap.begin();iter2!=fObjectsMap.end();iter2++)
-       printf("\t% 2i.\t%s [%s], parent[0x%08x] | file[0c%08x].\n",counter++,iter2->first->GetName(),iter2->first->IsA()->GetName(),
-                                                                             iter2->second.GetParent(),iter2->second.GetFile());
+   //for(iter2=fObjectsMap->begin();iter2!=fObjectsMap->end();iter2++)
+   //    printf("\t% 2i.\t%s [%s], parent[0x%08x] | file[0c%08x].\n",counter++,iter2->first->GetName(),iter2->first->IsA()->GetName(),
+   //                                                                          iter2->second.GetParent(),iter2->second.GetFile());
+   TIter Oiter(fObjectsMap);
+   while(GMemObj *mobj = (GMemObj*)Oiter.Next()) {
+      printf("\t% 2i.\t%s [%s], parent[0x%08x] | file[0x%08x].\n",counter++,mobj->GetObject()->GetName(),
+                                                                            mobj->GetObject()->IsA()->GetName(),
+                                                                            mobj->GetParent(),mobj->GetFile());
 
-
+   }
 }
 
 

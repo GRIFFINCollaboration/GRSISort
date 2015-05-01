@@ -9,6 +9,8 @@
 #pragma link C++ class GRootCanvas+;
 #pragma link C++ class GRootBrowser+;
 
+#pragma link C++ class GPadObj+;
+#pragma link C++ class GMemObj+;
 #pragma link C++ class GRootObjectManager+;
 
 #pragma link C++ function ProjectionX(TH2*,int,int);

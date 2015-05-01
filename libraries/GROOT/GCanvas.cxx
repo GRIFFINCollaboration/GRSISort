@@ -20,6 +20,7 @@
 
 #include "GCanvas.h"
 #include "GROOTGuiFactory.h"
+#include "GRootObjectManager.h"
 
 #include <iostream>
 #include <fstream>
@@ -241,7 +242,7 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
   int mdiff = max-min-2;
   //if(xdiff==mdiff)
   //   return;
-
+  TH1 *temph = 0;
   switch (*keysym) {
     case 0x1012: // left
      {
@@ -267,6 +268,13 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
       break;
     case 0x1013: // up
       //printf("UP\n");
+      temph = GRootObjectManager::Instance()->GetNext1D((TObject*)hists.at(0));
+      if(temph) {
+        temph->GetXaxis()->SetRange(first,last);
+        temph->Draw();
+        gPad->Modified();
+        gPad->Update();
+      }
       break;
     case 0x1014: // right
      {
@@ -292,6 +300,13 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
       break;
     case 0x1015: // down
       //printf("DOWN\n");
+      temph = GRootObjectManager::Instance()->GetLast1D((TObject*)hists.at(0));
+      if(temph) {
+        temph->GetXaxis()->SetRange(first,last);
+        temph->Draw();
+        gPad->Modified();
+        gPad->Update();
+      }
       break;
     default:
       printf("keysym = %i\n",*keysym);
