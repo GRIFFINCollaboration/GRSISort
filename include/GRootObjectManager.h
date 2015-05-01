@@ -81,7 +81,7 @@ class GRootObjectManager {
     TGraph *GetLastGraph(TObject *object=0);
 
     GMemObj *FindMemObject(TObject *object ) { return ((GMemObj*)fObjectsMap->FindObject(object)); }
-    GMemObj *FindMemObject(const char *name) { return ((GMemObj*)fObjectsMap->FindObject(Form("%s_%s",name,"memobj")); }
+    GMemObj *FindMemObject(const char *name) { return ((GMemObj*)fObjectsMap->FindObject(Form("%s_%s",name,"memobj"))); }
 
 
     static void Update();
