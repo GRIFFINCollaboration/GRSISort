@@ -297,8 +297,8 @@ void GRootObjectManager::Update() {
   ExtractObjects(folder->GetListOfFolders());
 
   //Scan loaded files...
-  folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
-  ExtractObjects(folder->GetListOfFolders());
+//  folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
+//  ExtractObjects(folder->GetListOfFolders());
 
   //finally, lets look for cuts...
   TList *list = (TList*)gROOT->GetListOfSpecials()->FindObject("ROOT Files");
