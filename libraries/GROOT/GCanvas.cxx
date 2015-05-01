@@ -398,11 +398,11 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                RemoveMarker();
             break;
          case kKey_p: //project.
-            printf("\n  0x%08x\n",GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName()));
+            printf("\n  %p\n",GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName()));
             if(GMemObj *mobj = GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName())) {
-              printf("object parent:  0x%08x\n",mobj->GetParent());
+              printf("object parent:  %p\n",mobj->GetParent());
               if(mobj->GetParent()) {
-                 printf("parent mobj:  0x%08x\n", GRootObjectManager::Instance()->FindMemObject(mobj->GetParent())) ;
+                 printf("parent mobj:  %p\n", GRootObjectManager::Instance()->FindMemObject(mobj->GetParent())) ;
                  printf("parent name:  %s\n",mobj->GetParent()->GetName());
                  if(!mobj->GetParent()->InheritsFrom("TH2"))
                    break;

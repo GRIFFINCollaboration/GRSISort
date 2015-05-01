@@ -44,8 +44,6 @@
 #define BUILDINGTIMECONDITION 2
 #define BUILDINGTRIGGERCONDITION 999
 
-#include <string>
-
 #if __APPLE__
 #ifdef __CINT__
 #undef __GNUC__
@@ -54,10 +52,18 @@ typedef char int8_t;
 #endif
 #endif
 
+#if __APPLE__ 
+#include <_types/_uint8_t.h> 
+#include <_types/_uint16_t.h>
+#include <_types/_uint32_t.h> 
+#include <_types/_uint64_t.h> 
+#endif
+#include <stdint.h> 
+
 #include <string>
 #include <cstdio>
 #include <cstdlib>
-#include <stdint.h>
+//#include <stdint.h>
 struct MNEMONIC {
   int16_t arrayposition;
   int16_t segment;
