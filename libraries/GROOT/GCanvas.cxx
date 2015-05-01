@@ -398,6 +398,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                RemoveMarker();
             break;
          case kKey_p: //project.
+            printf("\n  0x%08x\n",GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName()));
             if(GMemObj *mobj = GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName())) {
               printf("object parent:  0x%08x\n",mobj->GetParent());
               if(mobj->GetParent()) {
@@ -414,8 +415,11 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                  else
                    temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-2)->x,
                                                             fMarkers.at(fMarkers.size()-1)->x);
+                 //printf("i am here.\n");
                  temphist->Draw();
-              }   
+                 edit = true;
+              }  
+              
             }
             break;
          case kKey_f:
