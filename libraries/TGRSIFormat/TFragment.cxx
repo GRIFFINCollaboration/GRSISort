@@ -127,6 +127,10 @@ double TFragment::GetEnergy(int i) const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || !(Charge.size()>i))
       return 0.00;
+   if(chan->UseCalFileIntegration()) {
+     return chan->CalibrateENG((int)(Charge.at(i)),0);  // this will use the integration value
+                                                        // in the tchannel if it exists.
+   }
    if(KValue.size()>i && KValue.at(i)>0)
      return chan->CalibrateENG((int)(Charge.at(i)),(int)KValue.at(i));
    return chan->CalibrateENG((int)(Charge.at(i)));

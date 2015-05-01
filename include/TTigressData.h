@@ -90,7 +90,8 @@ class TTigressData : public TGRSIDetectorData {
 
 				SetCloverNumber(mnemonic->arrayposition);
 				SetCoreNumber(CoreNbr);
-				SetCoreEnergy(channel->CalibrateENG(frag->Charge.at(0)));		
+				//SetCoreEnergy(channel->CalibrateENG(frag->Charge.at(0)));		
+				SetCoreEnergy(frag->GetEnergy(0));		
 
 //				printf("CORE\n");
 //				channel->Print();
@@ -143,7 +144,8 @@ class TTigressData : public TGRSIDetectorData {
 					CoreNbr=3;
 				SetSegCoreNumber(CoreNbr);
 				SetSegmentNumber(mnemonic->segment);
-				SetSegmentEnergy(channel->CalibrateENG(frag->Charge.at(0)));				
+				//SetSegmentEnergy(channel->CalibrateENG(frag->Charge.at(0)));				
+				SetSegmentEnergy(frag->GetEnergy(0));				
 
 //				printf("SEGMENT\n");
 //				channel->Print();
