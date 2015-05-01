@@ -316,8 +316,8 @@ void GRootObjectManager::Update() {
 
 void GRootObjectManager::ExtractObjects(TCollection *list) {
   TIter iter(list);
-  TObject *object = 0;
-  while(object = iter.Next()) {
+  TObject *object = iter.Next(); //iter.Next() returns nullptr if there is no next iterator
+  while(object) {
     //printf("object->GetName() = %s \n",object->GetName());
     if(object->InheritsFrom("TFolder")) {
        ExtractObjects(((TFolder*)object)->GetListOfFolders());
@@ -328,14 +328,15 @@ void GRootObjectManager::ExtractObjects(TCollection *list) {
     } else {
        AddObject(object);
     }
+	object = iter.Next();
   }
   return;
 }
 
 void GRootObjectManager::ExtractObjectsFromFile(TDirectoryFile *file) {
   TIter iter(file->GetListOfKeys());
-  TKey *key=0;
-  while(key=(TKey*)iter.Next()) {
+  TKey *key=(TKey*)(iter.Next());//iter.Next() returns nullptr if there is no next iterator
+  while(key) {
     TClass *rclass = gROOT->GetClass(key->GetClassName());
     //printf("rclasss->GetName() = %s\n",rclass->GetName());
     if(rclass->InheritsFrom("TFolder")) {
@@ -349,7 +350,7 @@ void GRootObjectManager::ExtractObjectsFromFile(TDirectoryFile *file) {
                !rclass->InheritsFrom("TH3")    ){
        AddObject(key->ReadObj());
     }
-
+	key = (TKey*)(iter.Next());
 
   }
 }
