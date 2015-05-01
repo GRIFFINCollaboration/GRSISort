@@ -267,12 +267,12 @@ TH1 *GRootObjectManager::GetLast1D(TObject *object) {
 
 
 
-TH2    *GRootObjectManager::GetNext2D(TObject *object) { }
-TH2    *GRootObjectManager::GetLast2D(TObject *object) { }
+TH2    *GRootObjectManager::GetNext2D(TObject *object) { return 0; }
+TH2    *GRootObjectManager::GetLast2D(TObject *object) { return 0; }
 //TH3    *GRootObjectManager::GetNext3D(TObject *object) { }
 //TH3    *GRootObjectManager::GetLast3D(TObject *object) { }
-TGraph *GRootObjectManager::GetNextGraph(TObject *object) { }
-TGraph *GRootObjectManager::GetLastGraph(TObject *object) { }
+TGraph *GRootObjectManager::GetNextGraph(TObject *object) { return 0; }
+TGraph *GRootObjectManager::GetLastGraph(TObject *object) { return 0; }
 
 
 
@@ -316,8 +316,8 @@ void GRootObjectManager::Update() {
 
 void GRootObjectManager::ExtractObjects(TCollection *list) {
   TIter iter(list);
-  TObject *object = 0;
-  while(object = iter.Next()) {
+  TObject *object = iter.Next(); //iter.Next() returns nullptr if there is no next iterator
+  while(object) {
     //printf("object->GetName() = %s \n",object->GetName());
     if(object->InheritsFrom("TFolder")) {
        ExtractObjects(((TFolder*)object)->GetListOfFolders());
@@ -328,14 +328,15 @@ void GRootObjectManager::ExtractObjects(TCollection *list) {
     } else {
        AddObject(object);
     }
+	object = iter.Next();
   }
   return;
 }
 
 void GRootObjectManager::ExtractObjectsFromFile(TDirectoryFile *file) {
   TIter iter(file->GetListOfKeys());
-  TKey *key=0;
-  while(key=(TKey*)iter.Next()) {
+  TKey *key=(TKey*)(iter.Next());//iter.Next() returns nullptr if there is no next iterator
+  while(key) {
     TClass *rclass = gROOT->GetClass(key->GetClassName());
     //printf("rclasss->GetName() = %s\n",rclass->GetName());
     if(rclass->InheritsFrom("TFolder")) {
@@ -349,7 +350,7 @@ void GRootObjectManager::ExtractObjectsFromFile(TDirectoryFile *file) {
                !rclass->InheritsFrom("TH3")    ){
        AddObject(key->ReadObj());
     }
-
+	key = (TKey*)(iter.Next());
 
   }
 }
@@ -389,13 +390,13 @@ void GRootObjectManager::Cleanup() {
 
 void GRootObjectManager::Print() {
    Update();
-   printf("Canvases currently tracked:  %i\n",fCanvasMap.size());
+   printf("Canvases currently tracked:  %lu\n",fCanvasMap.size());
    printf("fCanvasMapList Content:\n");
    //fCanvasList->Print();
    std::map<TCanvas*,std::vector<GPadObj> >::iterator iter;
    int counter = 0;
    for(iter=fCanvasMap.begin();iter!=fCanvasMap.end();iter++)
-       printf("\t% 2i.\t%s, contains %i objects.\n",counter++,iter->first->GetName(),iter->second.size());
+       printf("\t% 2i.\t%s, contains %lu objects.\n",counter++,iter->first->GetName(),iter->second.size());
 
    printf("Objects currently tracked:  %i\n",fObjectsMap->GetSize());
    printf("fObjectsMap Content:\n");
@@ -407,7 +408,7 @@ void GRootObjectManager::Print() {
    //                                                                          iter2->second.GetParent(),iter2->second.GetFile());
    TIter Oiter(fObjectsMap);
    while(GMemObj *mobj = (GMemObj*)Oiter.Next()) {
-      printf("\t% 2i.\t%s [%s], parent[0x%08x] | file[0x%08x].\n",counter++,mobj->GetObject()->GetName(),
+      printf("\t% 2i.\t%s [%s], parent[%p] | file[%p].\n",counter++,mobj->GetObject()->GetName(),
                                                                             mobj->GetObject()->IsA()->GetName(),
                                                                             mobj->GetParent(),mobj->GetFile());
 
