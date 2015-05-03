@@ -1,5 +1,5 @@
-#ifndef TSCEPTARDATA_H
-#define TSCEPTARDATA_H
+#ifndef TTIPDATA_H
+#define TTIPDATA_H
 
 #ifndef __CINT__
 
@@ -13,7 +13,7 @@
 
 #include "TGRSIDetectorData.h"
 
-class TSceptarData : public TGRSIDetectorData {
+class TTipData : public TGRSIDetectorData {
 
 	private:
 		std::vector<UShort_t> fDet_Nbr;		//!
@@ -27,8 +27,8 @@ class TSceptarData : public TGRSIDetectorData {
       static bool fSetWave;    //!  
 		static bool fIsSet;      //!
    public:
-		TSceptarData();					//!
-		virtual ~TSceptarData();			//!
+		TTipData();					//!
+		virtual ~TTipData();			//!
 
 		static void Set(bool flag=true) { fIsSet=flag; } //!
 		static bool IsSet() { return fIsSet; }           //!
@@ -51,16 +51,16 @@ class TSceptarData : public TGRSIDetectorData {
 		   if(!frag || !channel || !mnemonic) return;
          
          for(int x=0;x<frag->Charge.size();x++) {
-     		   //SetDetNumber(frag->ChannelNumber);
+            //frag->Print();
+
      		   SetDetNumber(mnemonic->arrayposition);
 	   	   SetDetAddress(frag->ChannelAddress);
-            //SetDetEnergy(channel->CalibrateENG(frag->Charge.at(x)));
-            SetDetEnergy(frag->GetEnergy(x));
-		      SetDetCharge(frag->Charge.at(x));
-		      SetDetCFD(frag->Cfd.at(x));	 
-		      SetDetTime(frag->GetTimeStamp());	
+            SetDetEnergy(channel->CalibrateENG(frag->Charge.at(0)));
+		      SetDetCharge(frag->Charge.at(0));
+            SetDetCFD(frag->Cfd.at(0));	 
+  	         SetDetTime(frag->GetTimeStamp());	
             if(fSetWave)
-   		      SetWave(frag->wavebuffer);
+ 		        SetWave(frag->wavebuffer);
          }
       }; //! 
 
@@ -75,14 +75,8 @@ class TSceptarData : public TGRSIDetectorData {
 
 		inline unsigned int GetMultiplicity()		{return fDet_Nbr.size();}	//!
 		
-		//ClassDef(TSceptarData,0) //! // TSceptarData structure
 };
 
 #endif
 
 #endif
-
-
-
-
-

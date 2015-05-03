@@ -5,6 +5,7 @@ A lean, mean, sorting machine.
 
 **There is a wiki!!  use the link->** [WIKI](http://github.com/pcbend/GRSISort/wiki)
 
+test edit.
 
 To compile for a .sh shell execute `source SOURCEME.sh` in your terminal from the GRSISort Directory
 

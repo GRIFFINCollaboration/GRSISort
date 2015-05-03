@@ -111,7 +111,7 @@ Double_t TGRSIFunctions::MultiSkewedGausWithBG(Double_t *dim, Double_t *par) {
   // STATIC VARIABLE  (npeaks) must be set before using!!!
   // TGRSIFunctions::Set(int num);
   //
-  // Limits need to be impossed or error states may occour.
+  // Limits need to be imposed or error states may occour.
   //
 	double result = par[1] + dim[0]*par[2]; // background.
 	for(int i=0;i<par[0];i++){// par[0] is number of peaks
@@ -148,7 +148,7 @@ Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t *dim, Double_t *par) {
   // Limits need to be impossed or error states may occour.
   //
 	double result = par[1] + dim[0]*par[2]; // background.
-	for(int i=0;i<std::abs(par[0]);i++){// par[0] is number of peaks
+	for(int i=0;i<(int)(par[0]+0.5);i++){// par[0] is number of peaks
 		Double_t tmp_par[4];
   	tmp_par[0]   = par[4*i+3]; //height of photopeak
   	tmp_par[1]   = par[4*i+4]; //Peak Centroid of non skew gaus
@@ -170,7 +170,7 @@ Double_t TGRSIFunctions::LanGaus(Double_t *x, Double_t *pars){
     y = x[0]-2.5*pars[3]+dy*i;
 
     spec = pars[1]+pars[2]*y; // define background SHOULD THIS BE CONVOLUTED ????? *************************************
-    for( int n=0; n<std::abs(pars[0]); n++) // the implementation of landau function should be done using the landau function
+    for( int n=0; n<(int)(pars[0]+0.5); n++) // the implementation of landau function should be done using the landau function
       spec +=pars[3*n+4]*TMath::Landau(-y,-pars[3*n+5],pars[3*n+6])/TMath::Landau(0,0,100); // add peaks, dividing by max height of landau
 
     gaus = TMath::Gaus(-x[0],-y,pars[3])/sqrt(2*PI*pars[3]*pars[3]); // gaus must be normalisd so there is no sigma weighting
@@ -190,7 +190,7 @@ Double_t TGRSIFunctions::LanGausHighRes(Double_t *x, Double_t *pars){ // 5x more
     y = x[0]-4*pars[3]+dy*i;
 
     spec = pars[1]+pars[2]*y;
-    for( int n=0; n<std::abs(pars[0]); n++)
+    for( int n=0; n<(int)(pars[0]+0.5); n++)
       spec +=pars[3*n+4]*TMath::Landau(-y,-pars[3*n+5],pars[3*n+6])/TMath::Landau(0,0,100);
 
     gaus = TMath::Gaus(-x[0],-y,pars[3])/sqrt(2*PI*pars[3]*pars[3]);
@@ -207,7 +207,7 @@ Double_t TGRSIFunctions::MultiGausWithBG(Double_t *dim, Double_t *par) {
   //
   double amp,mean,sigma;
 	double result = par[1] + dim[0]*par[2]; // background.
-	for(int i=0;i<std::abs(par[0]);i++) {
+	for(int i=0;i<(int)(par[0]+0.5);i++) {
     amp = par[3*i+3];
     mean = par[3*i+4];
     sigma = par[3*i+5];

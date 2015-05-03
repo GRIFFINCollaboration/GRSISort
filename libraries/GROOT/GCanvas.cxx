@@ -20,6 +20,8 @@
 
 #include "GCanvas.h"
 #include "GROOTGuiFactory.h"
+#include "GRootObjectManager.h"
+#include "GRootGlobals.h"
 
 #include <iostream>
 #include <fstream>
@@ -241,7 +243,7 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
   int mdiff = max-min-2;
   //if(xdiff==mdiff)
   //   return;
-
+  TH1 *temph = 0;
   switch (*keysym) {
     case 0x1012: // left
      {
@@ -267,6 +269,13 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
       break;
     case 0x1013: // up
       //printf("UP\n");
+      temph = GRootObjectManager::Instance()->GetNext1D((TObject*)hists.at(0));
+      if(temph) {
+        temph->GetXaxis()->SetRange(first,last);
+        temph->Draw();
+        gPad->Modified();
+        gPad->Update();
+      }
       break;
     case 0x1014: // right
      {
@@ -292,6 +301,13 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
       break;
     case 0x1015: // down
       //printf("DOWN\n");
+      temph = GRootObjectManager::Instance()->GetLast1D((TObject*)hists.at(0));
+      if(temph) {
+        temph->GetXaxis()->SetRange(first,last);
+        temph->Draw();
+        gPad->Modified();
+        gPad->Update();
+      }
       break;
     default:
       printf("keysym = %i\n",*keysym);
@@ -382,6 +398,29 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                RemoveMarker();
             break;
          case kKey_p: //project.
+            printf("\n  %p\n",GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName()));
+            if(GMemObj *mobj = GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName())) {
+              printf("object parent:  %p\n",mobj->GetParent());
+              if(mobj->GetParent()) {
+                 printf("parent mobj:  %p\n", GRootObjectManager::Instance()->FindMemObject(mobj->GetParent())) ;
+                 printf("parent name:  %s\n",mobj->GetParent()->GetName());
+                 if(!mobj->GetParent()->InheritsFrom("TH2"))
+                   break;
+                 TH1D* temphist = 0;
+                 if(GetNMarkers()<2)
+                   break;
+                 if(fMarkers.at(fMarkers.size()-1)->x < fMarkers.at(fMarkers.size()-2)->x) 
+                   temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-1)->x,
+                                                            fMarkers.at(fMarkers.size()-2)->x);
+                 else
+                   temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-2)->x,
+                                                            fMarkers.at(fMarkers.size()-1)->x);
+                 //printf("i am here.\n");
+                 temphist->Draw();
+                 edit = true;
+              }  
+              
+            }
             break;
          case kKey_f:
             edit = PeakFitQ();
@@ -523,7 +562,7 @@ bool GCanvas::SetLinearBG(GMarker *m1,GMarker *m2) {
     y[0]=hist->GetBinContent(m1->x); y[1]=hist->GetBinContent(m2->x); 
   } else {
     x[1]=m1->localx; x[0]=m2->localx;
-    y[1]=hist->GetBinContent(m1->x); y[2]=hist->GetBinContent(m2->x); 
+    y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
   }
   printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
   bg = new TF1("linbg","pol1",x[0],x[1]);
