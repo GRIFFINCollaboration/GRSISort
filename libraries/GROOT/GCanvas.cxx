@@ -497,8 +497,10 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                    }
                  }
                  //printf("i am here.\n");
-                 if(tempbg)
+                 if(tempbg){
                     temphist->Add(tempbg,-1);
+                    temphist->SetTitle(Form("%s %s",temphist->GetTitle(),tempbg->GetTitle()));
+                 }
                  temphist->Draw();
                  edit = true;
               }  
@@ -1109,6 +1111,7 @@ TH1 *GCanvas::GetBackGroundHist(GMarker *addlow,GMarker *addhigh) {
         //if(!mobj || !mobj->GetParent() || !mobj->GetParent()->InheritsFrom("TH2"))
         //   return 0;
         TH1 *temp  = (TH1*)hist->Clone(Form("%s_bg",hist->GetName()));
+        temp ->SetTitle(Form(" - bg(frac %0.4f",bg_frac));
         temp->Scale(bg_frac);
         return temp;
       }
@@ -1124,6 +1127,7 @@ TH1 *GCanvas::GetBackGroundHist(GMarker *addlow,GMarker *addhigh) {
         temp_bg = ((TH2*)mobj->GetParent())->ProjectionX(Form("%s_bg",hist->GetName()),fBG_Markers.at(0)->x,fBG_Markers.at(1)->x);
       else 
         temp_bg = ((TH2*)mobj->GetParent())->ProjectionY(Form("%s_bg",hist->GetName()),fBG_Markers.at(0)->x,fBG_Markers.at(1)->x);
+      temp_bg->SerTitle(Form(" - bg(%.01f to %.01f)",fBG_Markers.at(0)->localx,fBG_Marker.at(1)->localx));
       return temp_bg;
       }
       //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
