@@ -135,10 +135,10 @@ void GCanvas::AddMarker(int x,int y,int dim) {
 void GCanvas::RemoveMarker() {
   if(fMarkers.size()<1)
     return;
-  if(fMarkers.at(0))
-     delete fMarkers.at(0);
+  if(fMarkers.at(fMarkers.size()-1))
+     delete fMarkers.at(fMarkers.size()-1);
   //printf("Marker %i Removed\n");
-  fMarkers.erase(fMarkers.begin());
+  fMarkers.erase(fMarkers.end()-1);
   return;
 }
 
