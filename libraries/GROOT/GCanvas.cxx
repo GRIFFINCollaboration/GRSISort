@@ -497,6 +497,11 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                                                 fMarkers.at(fMarkers.size()-1));
                    }
                  }
+                 printf("addgate: %i\n",fMarkers.at(0)->x);
+                 printf("addgate: %i\n",fMarkers.at(1)->x);
+                 printf("subgate: %i\n",fBG_Markers.at(0)->x);
+                 printf("subgate: %i\n",fBG_Markers.at(0)->x);
+                 
                  //printf("i am here.\n");
                  if(tempbg){
                     temphist->Add(tempbg,-1);
