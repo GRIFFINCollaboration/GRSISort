@@ -1088,7 +1088,9 @@ TH1 *GCanvas::GetBackGroundHist(GMarker *addlow,GMarker *addhigh) {
         TF1 *const_bg = hist->GetFunction("const_bg");
         if(!const_bg) // not yet set.
            return 0;
-        Double_t pj_total = hist->Integral(0,hist->GetNbinsX(),"width"); 
+        Double_t pj_total = hist->Integral(0,hist->GetNbinsX(),"width");
+        if(pj_total<1)
+           return 0;
         Double_t bg_frac  = (addhigh->localx-addlow->localx +1)*const_bg->GetParameter(0)/pj_total;
         //GMemObj = *mobj = GRootObjectManager::Instance()->FindObject(hist->GetName());
         //if(!mobj || !mobj->GetParent() || !mobj->GetParent()->InheritsFrom("TH2"))
