@@ -33,7 +33,7 @@ void TEpicsFrag::Clear(Option_t *opt) {
   Unit.clear();
 } 
 
-void TEpicsFrag::Print(Option_t *opt) { 
+void TEpicsFrag::Print(Option_t *opt) const { 
    int largest = Data.size();
    if(Name.size()>largest) largest = Name.size();
    if(Unit.size()>largest) largest = Unit.size();

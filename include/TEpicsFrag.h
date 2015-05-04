@@ -40,7 +40,7 @@ class TEpicsFrag : public TObject	{
     inline float GetData(const unsigned int &i) { if(i>=Data.size()) return Data.back(); else return Data.at(i); }
 
     virtual void Clear(Option_t *opt = ""); //!
-    virtual void Print(Option_t *opt = ""); //!
+    virtual void Print(Option_t *opt = "") const; //!
     
     ClassDef(TEpicsFrag,1);  // Event Fragments
 };

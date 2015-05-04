@@ -85,8 +85,8 @@ namespace TGRSIOptions {
       void AddMacroFile(std::string &input);   
 
       
-      void Print(Option_t *opt = "");
-      void Clear(Option_t *opt = "");
+      //void Print(Option_t *opt = "") const;
+      //void Clear(Option_t *opt = "");
 
  
 

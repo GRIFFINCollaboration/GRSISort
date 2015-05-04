@@ -247,7 +247,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
       Copy(*fithist->GetListOfFunctions()->Before(fithist->GetListOfFunctions()->Last()));
    
    delete tmppeak;
-   
+   return true;
 }
 
 /*
