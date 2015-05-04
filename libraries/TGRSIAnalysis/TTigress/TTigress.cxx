@@ -36,6 +36,7 @@ void TTigress::Clear(Option_t *opt)	{
 
 	tigress_hits.clear();
 	addback_hits.clear();
+	clover_addback_hits.clear();
 
 }
 
@@ -168,9 +169,10 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 		//DopplerCorrect(&(tigress_hits.at(i)));
 	}
 
-	if(tigress_hits.size()>1)
+	//if(tigress_hits.size()>1){
 		BuildAddBack();
-
+		BuildCloverAddBack();
+	//}
 }
 
 
@@ -418,7 +420,44 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, int dist)	{
 		}
 
 
+void TTigress::BuildCloverAddBack(Option_t *opt)	{ 
 
+	if(this->tigress_hits.size() == 0)
+    	return;
+
+	clover_addback_hits.clear();
+
+	if(this->GetMultiplicity() == 1) clover_addback_hits.push_back(*(this->GetTigressHit(0)));
+
+	else{
+
+		clover_addback_hits.push_back(*(this->GetTigressHit(0)));
+		clover_addback_hits.at(0).Add(&(clover_addback_hits.at(0)));
+
+		for(int i = 1; i<this->GetMultiplicity(); i++)   {
+		 	bool used = false;
+			 for(int j =0; j<clover_addback_hits.size();j++)    {
+		     	int d_time = abs(clover_addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
+
+		
+				if( clover_addback_hits.at(j).GetDetectorNumber() == this->GetTigressHit(i)->GetDetectorNumber() )	{
+				     if( (d_time < 11) )    {
+		 		        used = true;
+		     		     clover_addback_hits.at(j).Add(this->GetTigressHit(i));
+		         	  break;
+			     	}
+				}
+
+		 	}
+			 if(!used) {
+		 	    clover_addback_hits.push_back(*(this->GetTigressHit(i)));
+		     	 clover_addback_hits.back().Add(&(clover_addback_hits.back()));
+			 }
+		}
+
+	}
+
+}
 
 void TTigress::BuildAddBack(Option_t *opt)	{ 
 
@@ -426,42 +465,50 @@ void TTigress::BuildAddBack(Option_t *opt)	{
     	return;
 
 	addback_hits.clear();
-	addback_hits.push_back(*(this->GetTigressHit(0)));
-	addback_hits.at(0).Add(&(addback_hits.at(0)));
 
-	for(int i = 1; i<this->GetMultiplicity(); i++)   {
-    	bool used = false;
-	    for(int j =0; j<addback_hits.size();j++)    {
-    	    TVector3 res = addback_hits.at(j).GetLastHit() - this->GetTigressHit(i)->GetPosition();
-        	int d_time = abs(addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
+	if(this->GetMultiplicity() == 1) addback_hits.push_back(*(this->GetTigressHit(0)));
 
-			int seg1 = std::get<2>(addback_hits.at(j).GetLastPosition());
-			int seg2 = this->GetTigressHit(i)->GetInitialHit();
+	else{
+
+		addback_hits.push_back(*(this->GetTigressHit(0)));
+		addback_hits.at(0).Add(&(addback_hits.at(0)));
+
+		for(int i = 1; i<this->GetMultiplicity(); i++)   {
+		 	bool used = false;
+			 for(int j =0; j<addback_hits.size();j++)    {
+		 	   TVector3 res = addback_hits.at(j).GetLastHit() - this->GetTigressHit(i)->GetPosition();
+		     	int d_time = abs(addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
+
+				int seg1 = std::get<2>(addback_hits.at(j).GetLastPosition());
+				int seg2 = this->GetTigressHit(i)->GetInitialHit();
 		
-			if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{
-		        if( (res.Mag() < 54) && (d_time < 11) )    {
-    		        used = true;
-        		    addback_hits.at(j).Add(this->GetTigressHit(i));
-            		break;
-	        	}
-			}
-			else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{
-		        if( (res.Mag() < 105) && (d_time < 11) )    {
-    		        used = true;
-        		    addback_hits.at(j).Add(this->GetTigressHit(i));
-            		break;
-	        	}
-			}
+				if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{
+				     if( (res.Mag() < 54) && (d_time < 11) )    {
+		 		        used = true;
+		     		    addback_hits.at(j).Add(this->GetTigressHit(i));
+		         		break;
+			     	}
+				}
+				else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{
+				     if( (res.Mag() < 105) && (d_time < 11) )    {
+		 		        used = true;
+		     		    addback_hits.at(j).Add(this->GetTigressHit(i));
+		         		break;
+			     	}
+				}
 
 
 
 
-    	}
-	    if(!used) {
-    	    addback_hits.push_back(*(this->GetTigressHit(i)));
-        	addback_hits.back().Add(&(addback_hits.back()));
-	    }
+		 	}
+			 if(!used) {
+		 	    addback_hits.push_back(*(this->GetTigressHit(i)));
+		     	addback_hits.back().Add(&(addback_hits.back()));
+			 }
+		}
+
 	}
+
 }
 
 

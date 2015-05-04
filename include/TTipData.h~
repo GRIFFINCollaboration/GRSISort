@@ -64,7 +64,7 @@ class TTipData : public TGRSIDetectorData {
 
 				// Check CsI
 				if(mnemonic->subsystem.compare(0,1,"W")==0) {
-					SetPID(DoPID(frag->wavebuffer));
+					SetPID(DoPID(frag->wavebuffer, frac->Zc.at(0)));
 				}
 				else SetPID(-1);
 
