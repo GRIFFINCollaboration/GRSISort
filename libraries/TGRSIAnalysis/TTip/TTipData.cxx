@@ -31,4 +31,8 @@ void TTipData::Print(Option_t *opt)	{
 	printf("not yet written.\n");
 }
 
+Double_t TTipData::DoPID(std::vector<Short_t> waveform){
+	// Space for PID function - needs importing from SFU software
+}
+
 #endif

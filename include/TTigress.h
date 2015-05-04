@@ -34,12 +34,16 @@ class TTigress : public TGRSIDetector {
       void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
 		//void BuildHits(TTigressData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
 		void BuildAddBack(Option_t *opt="");	//!
+		void BuildCloverAddBack(Option_t *opt="");	//!
 
 		TTigressHit *GetTigressHit(int i)	{	return &tigress_hits[i];	}	//!
 		Short_t GetMultiplicity()		{	return tigress_hits.size();	}		//!
 
 		TTigressHit *GetAddBackHit(int i)	{	return &addback_hits[i];	}	//!
 		Short_t GetAddBackMultiplicity()	{	return addback_hits.size();	}	//!
+
+		TTigressHit *GetCloverAddBackHit(int i)	{	return &clover_addback_hits[i];	}	//!
+		Short_t GetCloverAddBackMultiplicity()	{	return clover_addback_hits.size();	}	//!
 
 		TVector3 GetPosition(TTigressHit *,int distance=0);									//!
 
@@ -56,7 +60,8 @@ class TTigress : public TGRSIDetector {
 		TBGOData     *bgodata;        //!
 
 		std::vector <TTigressHit> tigress_hits;
-		std::vector <TTigressHit> addback_hits;		
+		std::vector <TTigressHit> addback_hits;
+		std::vector <TTigressHit> clover_addback_hits;			
 
 		static double beta;
 

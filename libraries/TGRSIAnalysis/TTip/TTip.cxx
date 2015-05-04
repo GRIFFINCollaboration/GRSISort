@@ -68,6 +68,8 @@ void TTip::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
       dethit.SetTime(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
+
+		dethit.SetPID(gdata->GetPID(i));
 		
       dethit.SetDetectorNumber(gdata->GetDetNumber(i));
 
