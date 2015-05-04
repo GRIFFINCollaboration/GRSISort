@@ -16,6 +16,7 @@
 #include <TF1.h>
 #include <TGraph.h>
 
+#include <TApplication.h>
 #include <TContextMenu.h>
 
 #include "GCanvas.h"
