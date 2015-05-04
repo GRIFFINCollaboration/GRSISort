@@ -1053,8 +1053,8 @@ bool GCanvas::SetBGGate(GMarker *m1, GMarker *m2, GMarker *m3, GMarker *m4) {
         
         RemoveMarker(); // remove marker #3 so the project will work...
         
-        GMarker *mark = new GMarker();
-        mark->x = m3->x + (abs(m1->x-m2->x)+1);
+        GMarker *mark = new GMarker(*m3);
+        mark->x = m3->x + (abs(m1->x - m2->x)+1);
         mark->localx = gPad->AbsPixeltoX(mark->x);
         AddBGMarker(mark);
         
