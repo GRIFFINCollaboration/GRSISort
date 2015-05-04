@@ -987,6 +987,7 @@ void GCanvas::SetBackGroundSubtractionType() {
   fBGSubtraction_type++;
   if(fBGSubtraction_type >5)
      fBGSubtraction_type = 0;
+  printf("\n");
   switch(fBGSubtraction_type) {
     case 0:
      printf("BG subtraction off, project will not automatically subtract background.\n",fBGSubtraction_type);
@@ -1000,7 +1001,7 @@ void GCanvas::SetBackGroundSubtractionType() {
     default:
      printf("Changing BG subtraction type, type is now: %i\n",fBGSubtraction_type);
   };
-  gApplication->ProcessLine("");
+  gROOT->ProcessLine(";");
   return;
 }
 
@@ -1012,14 +1013,21 @@ bool GCanvas::SetBackGround(GMarker *m1,GMarker *m2,GMarker *m3,GMarker *m4) {
       printf(RED "\nBackground Subtraction type not set, no Background subtraction will be performed.\n" RESET_COLOR );
       break;
     case 1:
-      if(!m1) {
+      //if(!m1) {
+      if(fMarkers.size()<1) {
         printf(RED "\nPlace at least one marker to set background level.\n" RESET_COLOR );
         break;
+      } else if(fMarkers.size()<2) {
+         AddBGMarker(fMarkers.at(fMarkers.size()-1));
+         RemoveMarker();
+      } else {
+         AddBGMarker(fMarkers.at(fMarkers.size()-1));
+         AddBGMarker(fMarkers.at(fMarkers.size()-2));
+         RemoveMarker();
+         RemoveMarker();
       }
-      AddBGMarker(m1);
-      if(m2)
-         AddBGMarker(m2);
-      edit = SetConstentBG();
+
+      edit = SetConstantBG();
       break;
     case 2:
       //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
@@ -1074,7 +1082,7 @@ bool GCanvas::SetBGGate(GMarker *m1, GMarker *m2, GMarker *m3, GMarker *m4) {
   };
 }
 
-bool GCanvas::SetConstentBG() {
+bool GCanvas::SetConstantBG() {
   bool edit = false;
   std::vector<TH1*> hists = Find1DHists();
   if(hists.size()<1)

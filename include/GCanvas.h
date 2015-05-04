@@ -85,7 +85,7 @@ class GCanvas : public TCanvas {
 
       bool SetBackGround(GMarker *m1=0,GMarker *m2=0,GMarker *m3=0,GMarker *m4=0);
       bool SetLinearBG(GMarker *m1=0,GMarker *m2=0);
-      bool SetConstentBG(); //GMarker *m1=0,GMarker *m2=0);
+      bool SetConstantBG(); //GMarker *m1=0,GMarker *m2=0);
       bool SetBGGate(GMarker *m1,GMarker *m2,GMarker *m3=0,GMarker *m4=0);
       
       TH1 *GetBackGroundHist(GMarker *addlow,GMarker *addhigh);
