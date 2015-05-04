@@ -34,6 +34,7 @@ class TTip : public TGRSIDetector {
 		void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
 
 		void Clear(Option_t *opt = "");
+		void Print(Option_t *opt = "");
 
 
 	private:

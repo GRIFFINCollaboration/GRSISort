@@ -76,3 +76,6 @@ void TTip::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       tip_hits.push_back(dethit);
    }
 }
+
+void TTip::Print(Option_t *opt) { }
+
