@@ -40,7 +40,7 @@ class TTipHit : public TGRSIDetectorHit {
       inline void SetEnergy(const Double_t &x)     { energy   = x; }   //!
       inline void SetTime(const Long_t &x)         { time     = x; }   //!
       inline void SetPosition(TVector3 x)          { position = x; }   //!
-      inline void SetPID(Double_t x)          		{ PID = x; }   //!
+      inline void SetPID(Double_t x)          { position = x; }   //!
 
       inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
 
