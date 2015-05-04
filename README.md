@@ -3,7 +3,7 @@
 
 A lean, mean, sorting machine. 
 
-**There is a wiki!!  use the link->** [WIKI](http://github.com/pcbend/GRSISort/wiki)
+**There is a wiki!!  use the link->** [WIKI](http://github.com/GRIFFINCollaboration/GRSISort/wiki)
 
 test edit.
 
