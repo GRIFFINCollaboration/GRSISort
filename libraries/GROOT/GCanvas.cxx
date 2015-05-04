@@ -409,6 +409,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             edit = true;
             while(GetNMarkers())
                RemoveMarker();
+            ClearBGMarkers();
             break;
          case kKey_E:
             GetContextMenu()->Action(hists.back()->GetXaxis(),hists.back()->GetXaxis()->Class()->GetMethodAny("SetRangeUser"));
@@ -504,7 +505,9 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                  temphist->Draw();
                  edit = true;
               }  
-              
+              while(GetNMarkers())
+                 RemoveMarker();
+              ClearBGMarkers();
             }
             break;
          case kKey_f:
