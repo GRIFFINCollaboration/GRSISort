@@ -341,6 +341,9 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          case kKey_b:
             edit = SetLinearBG();
             break;
+         case kKey_B:
+            SetBackGroundSubtractionType();
+            break;
          case kKey_e:
             if(GetNMarkers()<2)
                break;
