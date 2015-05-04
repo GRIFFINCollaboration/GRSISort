@@ -427,21 +427,20 @@ void TTigress::BuildCloverAddBack(Option_t *opt)	{
 
 	clover_addback_hits.clear();
 
-	if(this->GetMultiplicity() == 1) clover_addback_hits.push_back(*(this->GetTigressHit(0)));
-
+	if(this->GetMultiplicity() == 1) 
+      clover_addback_hits.push_back(*(this->GetTigressHit(0)));
 	else{
-
-		clover_addback_hits.push_back(*(this->GetTigressHit(0)));
+      clover_addback_hits.push_back(*(this->GetTigressHit(0)));
 		clover_addback_hits.at(0).Add(&(clover_addback_hits.at(0)));
 
-		for(int i = 1; i<this->GetMultiplicity(); i++)   {
+      for(int i = 1; i<this->GetMultiplicity(); i++)   {
 		 	bool used = false;
 			 for(int j =0; j<clover_addback_hits.size();j++)    {
 		     	int d_time = abs(clover_addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
 
 		
 				if( clover_addback_hits.at(j).GetDetectorNumber() == this->GetTigressHit(i)->GetDetectorNumber() )	{
-				     if( (d_time < 11) )    {
+				     if( (d_time < 11) )    { // gate hard coded to 110ns.
 		 		        used = true;
 		     		     clover_addback_hits.at(j).Add(this->GetTigressHit(i));
 		         	  break;
@@ -466,8 +465,8 @@ void TTigress::BuildAddBack(Option_t *opt)	{
 
 	addback_hits.clear();
 
-	if(this->GetMultiplicity() == 1) addback_hits.push_back(*(this->GetTigressHit(0)));
-
+	if(this->GetMultiplicity() == 1) 
+      addback_hits.push_back(*(this->GetTigressHit(0)));
 	else{
 
 		addback_hits.push_back(*(this->GetTigressHit(0)));
@@ -482,15 +481,15 @@ void TTigress::BuildAddBack(Option_t *opt)	{
 				int seg1 = std::get<2>(addback_hits.at(j).GetLastPosition());
 				int seg2 = this->GetTigressHit(i)->GetInitialHit();
 		
-				if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{
-				     if( (res.Mag() < 54) && (d_time < 11) )    {
+				if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
+				     if( (res.Mag() < 54) && (d_time < 110) )    {  // time gate == 110  ns  pos gate == 54mm
 		 		        used = true;
 		     		    addback_hits.at(j).Add(this->GetTigressHit(i));
 		         		break;
 			     	}
 				}
-				else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{
-				     if( (res.Mag() < 105) && (d_time < 11) )    {
+				else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{ // front to back
+				     if( (res.Mag() < 105) && (d_time < 110) )    {     // time gate == 110 ns pos gate == 105mm.
 		 		        used = true;
 		     		    addback_hits.at(j).Add(this->GetTigressHit(i));
 		         		break;
