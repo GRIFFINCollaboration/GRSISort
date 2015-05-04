@@ -1130,7 +1130,7 @@ TH1 *GCanvas::GetBackGroundHist(GMarker *addlow,GMarker *addhigh) {
         temp_bg = ((TH2*)mobj->GetParent())->ProjectionX(Form("%s_bg",hist->GetName()),fBG_Markers.at(0)->x,fBG_Markers.at(1)->x);
       else 
         temp_bg = ((TH2*)mobj->GetParent())->ProjectionY(Form("%s_bg",hist->GetName()),fBG_Markers.at(0)->x,fBG_Markers.at(1)->x);
-      temp_bg->SetTitle(Form(" - bg(%.01f to %.01f)",fBG_Markers.at(0)->localx,fBG_Markers.at(1)->localx));
+      temp_bg->SetTitle(Form(" - bg(%i to %i)",fBG_Markers.at(0)->x,fBG_Markers.at(1)->x));
       return temp_bg;
       }
       //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
