@@ -976,8 +976,20 @@ void GCanvas::SetBackGroundSubtractionType() {
   fBGSubtraction_type++;
   if(fBGSubtraction_type >5)
      fBGSubtraction_type = 0;
-  
-  printf("Changing BG subtraction type, type is now: %i\n",fBGSubtraction_type);
+  switch(fBGSubtraction_type) {
+    case 0:
+     printf("BG subtraction off, project will not automatically subtract background.\n",fBGSubtraction_type);
+     break;
+    case 1:
+     printf("BG subtraction set to fraction of total projection, use b to set fraction.\n",fBGSubtraction_type);
+     break;
+    case 2:
+     printf("BG subtraction set to marker3, use b to confirm subtraction gate.\n",fBGSubtraction_type);
+     break;
+    default:
+     printf("Changing BG subtraction type, type is now: %i\n",fBGSubtraction_type);
+  };
+  gApplication->ProcessLine("");
   return;
 }
 
