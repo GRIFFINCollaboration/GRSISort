@@ -24,6 +24,7 @@
 #include "GRootObjectManager.h"
 #include "GRootGlobals.h"
 
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -460,7 +461,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                RemoveMarker();
             break;
          case kKey_p: //project.
-            printf("\n  %p\n",GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName()));
+            //printf("\n  %p\n",GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName()));
             if(GMemObj *mobj = GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName())) {
               //printf("object parent:  %p\n",mobj->GetParent());
               if(mobj->GetParent()) {
@@ -985,7 +986,8 @@ void GCanvas::SetBackGroundSubtractionType() {
   //
 
   fBGSubtraction_type++;
-  if(fBGSubtraction_type >5)
+  //if(fBGSubtraction_type >5)
+  if(fBGSubtraction_type >2)
      fBGSubtraction_type = 0;
   printf("\n");
   switch(fBGSubtraction_type) {
@@ -1001,7 +1003,7 @@ void GCanvas::SetBackGroundSubtractionType() {
     default:
      printf("Changing BG subtraction type, type is now: %i\n",fBGSubtraction_type);
   };
-  gROOT->ProcessLine(";");
+  //TGRSInt::ShowPrompt();
   return;
 }
 
@@ -1132,7 +1134,7 @@ TH1 *GCanvas::GetBackGroundHist(GMarker *addlow,GMarker *addhigh) {
         //if(!mobj || !mobj->GetParent() || !mobj->GetParent()->InheritsFrom("TH2"))
         //   return 0;
         TH1 *temp  = (TH1*)hist->Clone(Form("%s_bg",hist->GetName()));
-        temp ->SetTitle(Form(" - bg(frac %0.4f",bg_frac));
+        temp ->SetTitle(Form(" - bg(frac %0.4f)",bg_frac));
         temp->Scale(bg_frac);
         return temp;
       }
