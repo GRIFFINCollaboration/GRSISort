@@ -462,10 +462,10 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          case kKey_p: //project.
             printf("\n  %p\n",GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName()));
             if(GMemObj *mobj = GRootObjectManager::Instance()->FindMemObject(hists.at(0)->GetName())) {
-              printf("object parent:  %p\n",mobj->GetParent());
+              //printf("object parent:  %p\n",mobj->GetParent());
               if(mobj->GetParent()) {
-                 printf("parent mobj:  %p\n", GRootObjectManager::Instance()->FindMemObject(mobj->GetParent())) ;
-                 printf("parent name:  %s\n",mobj->GetParent()->GetName());
+                 //printf("parent mobj:  %p\n", GRootObjectManager::Instance()->FindMemObject(mobj->GetParent())) ;
+                 //printf("parent name:  %s\n",mobj->GetParent()->GetName());
                  if(!mobj->GetParent()->InheritsFrom("TH2"))
                    break;
                  TH1D* temphist = 0;
@@ -497,10 +497,10 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                                                 fMarkers.at(fMarkers.size()-1));
                    }
                  }
-                 printf("addgate: %i\n",fMarkers.at(0)->x);
-                 printf("addgate: %i\n",fMarkers.at(1)->x);
-                 printf("subgate: %i\n",fBG_Markers.at(0)->x);
-                 printf("subgate: %i\n",fBG_Markers.at(1)->x);
+                 //printf("addgate: %i\n",fMarkers.at(0)->x);
+                 //printf("addgate: %i\n",fMarkers.at(1)->x);
+                 //printf("subgate: %i\n",fBG_Markers.at(0)->x);
+                 //printf("subgate: %i\n",fBG_Markers.at(1)->x);
                  
                  //printf("i am here.\n");
                  if(tempbg){
