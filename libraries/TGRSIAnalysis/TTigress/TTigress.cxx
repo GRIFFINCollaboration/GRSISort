@@ -473,7 +473,7 @@ void TTigress::BuildAddBack(Option_t *opt)	{
 		addback_hits.push_back(*(this->GetTigressHit(0)));
 		addback_hits.at(0).Add(&(addback_hits.at(0)));
 
-		for(int i = 0; i<this->GetMultiplicity(); i++)   {
+		for(int i = 1; i<this->GetMultiplicity(); i++)   {
 		 	bool used = false;
 			 for(int j =0; j<addback_hits.size();j++)    {
 		 	   TVector3 res = addback_hits.at(j).GetLastHit() - this->GetTigressHit(i)->GetPosition();
