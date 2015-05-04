@@ -1051,7 +1051,6 @@ bool GCanvas::SetBGGate(GMarker *m1, GMarker *m2, GMarker *m3, GMarker *m4) {
       else {
         AddBGMarker(m3);
         
-        RemoveMarker(); // remove marker #3 so the project will work...
         
         GMarker *mark = new GMarker(*m3);
         mark->x = m3->x + (abs(m1->x - m2->x)+1);
@@ -1067,6 +1066,9 @@ bool GCanvas::SetBGGate(GMarker *m1, GMarker *m2, GMarker *m3, GMarker *m4) {
         mark->linex = new TLine(mark->localx,GetUymin(),mark->localx,GetUymax());
         mark->linex->SetLineColor(kBlue);
         mark->linex->Draw();
+
+
+        RemoveMarker(); // remove marker #3 so the project will work...
       }
       return true;
   };
