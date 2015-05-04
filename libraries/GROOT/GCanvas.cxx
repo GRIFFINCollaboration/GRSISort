@@ -34,6 +34,20 @@
 #define kArrowKeyRelease 26
 #endif
 
+ClassImp(GMarker)
+
+void GMarker::Copy(TObject &object) const {
+  TObject::Copy(object);
+  ((GMarker&)object).x      = x;
+  ((GMarker&)object).y      = y;
+  ((GMarker&)object).localx = localx;
+  ((GMarker&)object).localy = localy;
+  ((GMarker&)object).linex  = 0;
+  ((GMarker&)object).liney  = 0;
+}
+
+
+
 int GCanvas::lastx = 0;
 int GCanvas::lasty = 0;
 
@@ -124,6 +138,40 @@ void GCanvas::RemoveMarker() {
      delete fMarkers.at(0);
   //printf("Marker %i Removed\n");
   fMarkers.erase(fMarkers.begin());
+  return;
+}
+
+void GCanvas::OrderMarkers() { 
+  std::sort(fMarkers.begin(),fMarkers.end());
+  return;
+}
+
+
+
+void GCanvas::AddBGMarker(GMarker *mark) {
+  GMarker *bg_mark = new GMarker(*mark);
+  fBG_Markers.push_back(bg_mark);
+}
+
+
+void GCanvas::RemoveBGMarker() {
+  if(fBG_Markers.size()<1)
+    return;
+  if(fBG_Markers.at(0))
+     delete fBG_Markers.at(0);
+  //printf("Marker %i Removed\n");
+  fBG_Markers.erase(fBG_Markers.begin());
+  return;
+}
+
+void GCanvas::ClearBGMarkers() {
+  while(fBG_Markers.size()>0)
+     RemoveBGMarker();
+  return;
+}
+
+void GCanvas::OrderBGMarkers() { 
+  std::sort(fBG_Markers.begin(),fBG_Markers.end());
   return;
 }
 
@@ -338,8 +386,12 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
 
    if(hists.size()>0){
       switch(*keysym) {
-         case kKey_b:
-            edit = SetLinearBG();
+         case kKey_b: {
+              GMarker *markers[4] = {0};
+              for(int i=0;i<GetNMarkers();i++) 
+                 markers[i] = fMarkers.at(i);
+              edit = SetBackGround(markers[0],markers[1],markers[2],markers[3]);
+            }
             break;
          case kKey_B:
             SetBackGroundSubtractionType();
@@ -385,6 +437,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          case kKey_n: 
             while(GetNMarkers())
                RemoveMarker();
+            ClearBGMarkers();
             for(int i=0;i<hists.size();i++)
               hists.at(i)->GetListOfFunctions()->Delete();
             edit = true;
@@ -392,6 +445,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          case kKey_N:
             while(GetNMarkers())  
                RemoveMarker();
+            ClearBGMarkers();
             if(hists.back()->GetListOfFunctions()->Last())   
                hists.back()->GetListOfFunctions()->Last()->Delete();
             edit = true;
@@ -413,15 +467,37 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                  if(!mobj->GetParent()->InheritsFrom("TH2"))
                    break;
                  TH1D* temphist = 0;
+                 TH1*  tempbg   = 0;
                  if(GetNMarkers()<2)
                    break;
-                 if(fMarkers.at(fMarkers.size()-1)->x < fMarkers.at(fMarkers.size()-2)->x) 
-                   temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-1)->x,
-                                                            fMarkers.at(fMarkers.size()-2)->x);
-                 else
-                   temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-2)->x,
-                                                            fMarkers.at(fMarkers.size()-1)->x);
+                 if(!strcmp(mobj->GetOption(),"ProjY")) {  // if we are working with a y projection, useX axis.
+                   if(fMarkers.at(fMarkers.size()-1)->x < fMarkers.at(fMarkers.size()-2)->x) { 
+                     temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-1)->x,
+                                                                    fMarkers.at(fMarkers.size()-2)->x);
+                     tempbg = GetBackGroundHist(fMarkers.at(fMarkers.size()-1),
+                                                fMarkers.at(fMarkers.size()-2));
+                   } else {
+                     temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-2)->x,
+                                                                    fMarkers.at(fMarkers.size()-1)->x);
+                     tempbg = GetBackGroundHist(fMarkers.at(fMarkers.size()-2),
+                                                fMarkers.at(fMarkers.size()-1));
+                   }
+                 } else {  // if we are working with a x projection, use y axis
+                   if(fMarkers.at(fMarkers.size()-1)->x < fMarkers.at(fMarkers.size()-2)->x) {
+                     temphist = ProjectionY((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-1)->x,
+                                                                    fMarkers.at(fMarkers.size()-2)->x);
+                     tempbg = GetBackGroundHist(fMarkers.at(fMarkers.size()-1),
+                                                fMarkers.at(fMarkers.size()-2));
+                   } else {
+                     temphist = ProjectionY((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-2)->x,
+                                                                    fMarkers.at(fMarkers.size()-1)->x);
+                     tempbg = GetBackGroundHist(fMarkers.at(fMarkers.size()-2),
+                                                fMarkers.at(fMarkers.size()-1));
+                   }
+                 }
                  //printf("i am here.\n");
+                 if(tempbg)
+                    temphist->Add(tempbg,-1);
                  temphist->Draw();
                  edit = true;
               }  
@@ -905,4 +981,145 @@ void GCanvas::SetBackGroundSubtractionType() {
   return;
 }
 
+bool GCanvas::SetBackGround(GMarker *m1,GMarker *m2,GMarker *m3,GMarker *m4) {
+  ClearBGMarkers();  //removes all BG markers... 
+  bool edit = false;
+  switch(fBGSubtraction_type) {   
+    case 0:
+      printf(RED "\nBackground Subtraction type not set, no Background subtraction will be performed.\n" RESET_COLOR );
+      break;
+    case 1:
+      if(!m1) {
+        printf(RED "\nPlace at least one marker to set background level.\n" RESET_COLOR );
+        break;
+      }
+      AddBGMarker(m1);
+      if(m2)
+         AddBGMarker(m2);
+      edit = SetConstentBG();
+      break;
+    case 2:
+      //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+      if(!m3) {
+        printf(RED "\nThree markers need.  First two peak, three for bg.\n" RESET_COLOR );
+        break;
+      }
+      edit = SetBGGate(m1,m2,m3,0);
+      break;
+    case 3:
+      printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+      break;
+    case 4:
+      printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+      break;
+    case 5:
+      printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+      break;
+  };
+  return edit;
+}
+
+bool GCanvas::SetBGGate(GMarker *m1, GMarker *m2, GMarker *m3, GMarker *m4) {
+  ClearBGMarkers();
+  switch(fBGSubtraction_type) {   
+    case 2:
+      if(!m1 || !m2 || !m3)
+         return false;
+      else {
+        AddBGMarker(m3);
+        GMarker *mark = new GMarker();
+        mark->x = m3->x + (abs(m1->x-m2->x)+1);
+        mark->localx = gPad->AbsPixeltoX(mark->x);
+        AddBGMarker(mark);
+        
+        mark = fBG_Markers.at(0);
+        mark->linex = new TLine(mark->localx,GetUymin(),mark->localx,GetUymax());
+        mark->linex->SetLineColor(kBlue);
+        mark->linex->Draw();
+        
+        mark = fBG_Markers.at(1);
+        mark->linex = new TLine(mark->localx,GetUymin(),mark->localx,GetUymax());
+        mark->linex->SetLineColor(kBlue);
+        mark->linex->Draw();
+      }
+      return true;
+  };
+}
+
+bool GCanvas::SetConstentBG() {
+  bool edit = false;
+  std::vector<TH1*> hists = Find1DHists();
+  if(hists.size()<1)
+     return edit;
+  if(GetNBG_Markers()<1)
+     return edit;
+  OrderBGMarkers();
+  TF1 *const_bg = hists.at(0)->GetFunction("const_bg");
+  if(const_bg)
+     const_bg->Delete();
+  double x[2];
+  if(GetNBG_Markers()==1) {
+    x[0]=fBG_Markers.at(0)->localx; x[1]=fBG_Markers.at(0)->localx;
+  } else {
+    x[0]=fBG_Markers.at(0)->localx; x[1]=fBG_Markers.at(1)->localx;
+  }
+  const_bg = new TF1("const_bg","pol0",x[0],x[1]);
+  hists.at(0)->Fit(const_bg,"QR+");
+  TAxis *xaxis = hists.at(0)->GetXaxis();
+  const_bg->SetRange(xaxis->GetFirst(),xaxis->GetLast());
+  const_bg->Draw("SAME");
+  hists.at(0)->GetListOfFunctions()->Add(const_bg);
+  edit = true;
+  return edit;
+
+}
+
+TH1 *GCanvas::GetBackGroundHist(GMarker *addlow,GMarker *addhigh) {
+  std::vector<TH1*> hists = Find1DHists();
+  if(hists.size()<1)
+     return 0;
+  TH1 *hist = hists.at(0);
+  switch(fBGSubtraction_type) {   
+    case 0:
+      //printf(RED "\nBackground Subtraction type not set, no Background subtraction will be performed.\n" RESET_COLOR );
+      return 0;
+    case 1: {
+        // check that bg was been set:
+        TF1 *const_bg = hist->GetFunction("const_bg");
+        if(!const_bg) // not yet set.
+           return 0;
+        Double_t pj_total = hist->Integral(0,hist->GetNbinsX(),"width"); 
+        Double_t bg_frac  = (addhigh->localx-addlow->localx +1)*const_bg->GetParameter(0)/pj_total;
+        //GMemObj = *mobj = GRootObjectManager::Instance()->FindObject(hist->GetName());
+        //if(!mobj || !mobj->GetParent() || !mobj->GetParent()->InheritsFrom("TH2"))
+        //   return 0;
+        TH1 *temp  = (TH1*)hist->Clone(Form("%s_bg",hist->GetName()));
+        temp->Scale(bg_frac);
+        return temp;
+      }
+    case 2: {
+      TH1 *temp_bg =0;
+      if(GetNBG_Markers()<2)
+         return temp_bg;
+      OrderBGMarkers();
+      GMemObj *mobj = GRootObjectManager::Instance()->FindMemObject(hist->GetName());
+      if(!mobj || !mobj->GetParent() || !mobj->GetParent()->InheritsFrom("TH2"))
+         return temp_bg;
+      if(!strcmp(mobj->GetOption(),"ProjY")) 
+        temp_bg = ((TH2*)mobj->GetParent())->ProjectionX(Form("%s_bg",hist->GetName()),fBG_Markers.at(0)->x,fBG_Markers.at(1)->x);
+      else 
+        temp_bg = ((TH2*)mobj->GetParent())->ProjectionY(Form("%s_bg",hist->GetName()),fBG_Markers.at(0)->x,fBG_Markers.at(1)->x);
+      return temp_bg;
+      }
+      //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+    case 3:
+      printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+    case 4:
+      printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+    case 5:
+      printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+      break;
+  };
+  return 0;
+}
 

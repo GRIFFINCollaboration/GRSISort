@@ -36,7 +36,10 @@ class GPadObj : public TNamed {
 class GMemObj : public TNamed {
   public:
     GMemObj(TObject *obj, TObject *par=0,TFile *file=0,Option_t *opt="");
+    GMemObj(const GMemObj &obj) { ((GMemObj&)obj).Copy(*this); }
     ~GMemObj();
+
+    void Copy(TObject &object) const;
 
     TObject *GetObject() { return fThis;   }
     TObject *GetParent() { return fParent; }
