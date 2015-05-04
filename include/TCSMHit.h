@@ -59,57 +59,57 @@ class TCSMHit : public TGRSIDetectorHit 	{
 	  bool IsEmpty();
 
 		virtual void Clear(Option_t* = "");	//!
-		virtual void Print(Option_t* = "");	//!
+		virtual void Print(Option_t* = "") const;	//!
 
 		//static bool Compare(TCSMHit *lhs,TCSMHit *rhs); //!
 
-		Double_t GetEHorizontalEnergy()	{	return hor_e_energy;	};	//!
-		Double_t GetEVerticalEnergy()	   {	return ver_e_energy;	};	//!
-		Double_t GetEEnergy();
-		Double_t GetETime()		         {	return hor_e_time;		}	//!
+		Double_t GetEHorizontalEnergy() const	{	return hor_e_energy;	};	//!
+		Double_t GetEVerticalEnergy() const	   {	return ver_e_energy;	};	//!
+		Double_t GetEEnergy() const ;
+		Double_t GetETime() const		         {	return hor_e_time;		}	//!
 		
-		Double_t GetDHorizontalEnergy()	{	return hor_d_energy;	};	//!
-		Double_t GetDVerticalEnergy()    {	return ver_d_energy;	};	//!
-		Double_t GetDEnergy();
-		Double_t GetDTime()		         {	return ver_d_time;		}	//!
+		Double_t GetDHorizontalEnergy() const	{	return hor_d_energy;	};	//!
+		Double_t GetDVerticalEnergy() const    {	return ver_d_energy;	};	//!
+		Double_t GetDEnergy() const;
+		Double_t GetDTime() const		         {	return ver_d_time;		}	//!
 
-		UShort_t GetDetectorNumber()	   { return detectornumber;	} //!
+		UShort_t GetDetectorNumber() const	   { return detectornumber;	} //!
 
-		Int_t GetEHorizontalCharge() 	   {	return	hor_e_charge;}	//!
-		Int_t GetEVerticalCharge()		   {	return	ver_e_charge;	}	//!
+		Int_t GetEHorizontalCharge() const	   {	return	hor_e_charge;}	//!
+		Int_t GetEVerticalCharge()	const  	   {	return	ver_e_charge;	}	//!
 
-		Int_t GetDHorizontalCharge() 	   {	return	hor_d_charge;}	//!
-		Int_t GetDVerticalCharge()		   {	return	ver_d_charge;	}	//!
-
-
-		Double_t GetEHorizontalTime()	   {	return hor_e_time;	}	//!
-		Double_t GetEVerticalTime()		{	return ver_e_time;	}	//!
-
-		Double_t GetDHorizontalTime()	   {	return hor_d_time;	}	//!
-		Double_t GetDVerticalTime()		{	return ver_d_time;	}	//!
+		Int_t GetDHorizontalCharge() const	   {	return	hor_d_charge;}	//!
+		Int_t GetDVerticalCharge()	const  	   {	return	ver_d_charge;	}	//!
 
 
+		Double_t GetEHorizontalTime() const	   {	return hor_e_time;	}	//!
+		Double_t GetEVerticalTime() const		{	return ver_e_time;	}	//!
 
-		Int_t GetEHorizontalStrip(){	return	hor_e_strip;	}	//!
-		Int_t GetEVerticalStrip()	{	return	ver_e_strip;	}	//!
+		Double_t GetDHorizontalTime() const	   {	return hor_d_time;	}	//!
+		Double_t GetDVerticalTime() const		{	return ver_d_time;	}	//!
+
+
+
+		Int_t GetEHorizontalStrip() const     {	return	hor_e_strip;	}	//!
+		Int_t GetEVerticalStrip() const   	  {	return	ver_e_strip;	}	//!
 		
-		Int_t GetDHorizontalStrip(){	return	hor_d_strip;	}	//!
-		Int_t GetDVerticalStrip()	{	return	ver_d_strip;	}	//!
+		Int_t GetDHorizontalStrip() const     {	return	hor_d_strip;	}	//!
+		Int_t GetDVerticalStrip() const       {	return	ver_d_strip;	}	//!
 	
-		Int_t GetEHorizontalCFD()	{	return hor_e_cfd;	}	//!
-		Int_t GetEVerticalCFD()		{	return ver_e_cfd;	}	//!
+		Int_t GetEHorizontalCFD() const       {	return hor_e_cfd;	}	//!
+		Int_t GetEVerticalCFD() const         {	return ver_e_cfd;	}	//!
 
-		Int_t GetDHorizontalCFD()	{	return hor_d_cfd;	}	//!
-		Int_t GetDVerticalCFD()		{	return ver_d_cfd;	}	//!
+		Int_t GetDHorizontalCFD() const    	  {	return hor_d_cfd;	}	//!
+		Int_t GetDVerticalCFD()	const         {	return ver_d_cfd;	}	//!
 
-		TVector3 GetEPosition()	{	return e_position;	}	//!
-		TVector3 GetDPosition()	{	return d_position;	}	//!
+		TVector3 GetEPosition() const     	  {	return e_position;	}	//!
+		TVector3 GetDPosition() const         {	return d_position;	}	//!
 
 
 
-		TVector3 GetPosition()	{	return d_position;	 }	//!
-		Double_t GetEnergy()		{return GetDEnergy() + GetEEnergy();} //!
-		Double_t GetTime()		{return ver_d_time;} //!
+		TVector3 GetPosition() const	{	return d_position;	 }	//!
+		Double_t GetEnergy() const		{return GetDEnergy() + GetEEnergy();} //!
+		Double_t GetTime() const		{return ver_d_time;} //!
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////

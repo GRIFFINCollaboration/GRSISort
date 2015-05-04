@@ -587,7 +587,7 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, T
 
 
 
-void TGRSILoop::Print(Option_t *opt) {   }
+void TGRSILoop::Print(Option_t *opt) const { printf("Print() Currently Does nothing\n");  }
 
 
 void TGRSILoop::Clear(Option_t *opt) {   }

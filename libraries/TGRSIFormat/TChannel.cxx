@@ -482,7 +482,7 @@ double TChannel::CalibrateEFF(double energy) {
    return 1.0;
 }
 
-void TChannel::Print(Option_t *opt) {
+void TChannel::Print(Option_t *opt) const {
    //Prints out the current TChannel.
    std::cout <<  channelname << "\t{\n";  //,channelname.c_str();
    std::cout <<  "Name:      " << channelname << "\n";

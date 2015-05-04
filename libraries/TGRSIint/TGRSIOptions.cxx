@@ -90,9 +90,9 @@ const char *GetCalFile(int runnumber, int subrunnumber) {
 	return "";
 }
 
-void Print(Option_t *opt) {   }
+//void Print(Option_t *opt) {   }
 
-void Clear(Option_t *opt) {   }
+//void Clear(Option_t *opt) {   }
 
 
 }
