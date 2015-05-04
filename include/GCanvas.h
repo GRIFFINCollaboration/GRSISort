@@ -19,7 +19,7 @@ class GMarker : public TObject{
     TLine *linex;
     TLine *liney;
     void Copy(TObject &object) const;
-    bool operator<(const GMarker &rhs) const { return x <rhs.x; }
+    bool operator<(const GMarker &rhs) const { return rhs.x < x; }
     ClassDef(GMarker,0)
 };
 
