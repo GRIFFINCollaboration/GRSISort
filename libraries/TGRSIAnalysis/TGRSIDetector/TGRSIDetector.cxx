@@ -28,7 +28,7 @@ TGRSIDetector::~TGRSIDetector()	{
 
 }
 
-void TGRSIDetector::Print(Option_t *opt) {
+void TGRSIDetector::Print(Option_t *opt) const {
 // Default print statement for TGRSIDetector. Currently does
 // nothing
 }

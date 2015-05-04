@@ -822,7 +822,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
    }
 }
 
-void TAnalysisTreeBuilder::Print(Option_t *opt) {
+void TAnalysisTreeBuilder::Print(Option_t *opt) const {
    //Prints information about the Q's and threads in the AnalysisTreeBuilding process
    if(fCurrentFragFile && fCurrentAnalysisFile)
       printf(DMAGENTA " %s/%s" RESET_COLOR  "\n",fCurrentFragFile->GetName(),fCurrentAnalysisFile->GetName());

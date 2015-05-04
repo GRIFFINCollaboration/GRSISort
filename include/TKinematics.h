@@ -97,8 +97,8 @@ public:
   //double Sigma_cm2labnew(double vcm, double angle_cm, double sigma_cm);
   double Rutherford(double angle_cm);
 
-  void Print(Option_t *opt="") { }
-  void Clear(Option_t *opt="") { }
+ // void Print(Option_t *opt="") { }
+ // void Clear(Option_t *opt="") { }
     
 private:
 

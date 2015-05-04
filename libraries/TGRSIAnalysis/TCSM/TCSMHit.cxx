@@ -44,7 +44,7 @@ void TCSMHit::Clear(Option_t *options)	{
    detectornumber = 0;	//
 }
 
-Double_t TCSMHit::GetDEnergy()
+Double_t TCSMHit::GetDEnergy() const
 {
   bool debug = 0;
   bool trustVertical = 1;
@@ -122,13 +122,15 @@ Double_t TCSMHit::GetDEnergy()
     if(debug) std::cout<<"**Returning: "<<GetDHorizontalEnergy()<<std::endl;
     return(GetDHorizontalEnergy());
   }
-  else if(!trustVertical && !trustVertical)
+  else if(!trustVertical && !trustVertical) //Are these correct??? RD
     return(0.);
-  else
+  else{
     std::cerr<<"  ERROR, I don't know who to trust in GetDEnergy()"<<std::endl;
+    return -1; //I added this here so that there is guaranteed a return at the end of the function RD 
+  }
 }
 
-Double_t TCSMHit::GetEEnergy()
+Double_t TCSMHit::GetEEnergy() const
 {
   bool trustVertical = 1;
   bool trustHoriztonal = 1;
@@ -176,12 +178,16 @@ Double_t TCSMHit::GetEEnergy()
     return(GetEVerticalEnergy());
   else if(!trustVertical && trustHoriztonal)
     return(GetEHorizontalEnergy());
-  else if(!trustVertical && !trustVertical)
+  else if(!trustVertical && !trustVertical) //Are these correct? RD
     return(0.);
-  else
-    std::cerr<<"  ERROR, I don't know who to trust in GetEEnergy()"<<std::endl;}
+  else{
+    return -1; //I added this here so that there is guaranteed a return at the end of the function RD 
+    std::cerr<<"  ERROR, I don't know who to trust in GetEEnergy()"<<std::endl;
+  }
 
-void TCSMHit::Print(Option_t *options)	{
+}
+
+void TCSMHit::Print(Option_t *options) const	{
   std::cout<<"Printing TCSMHit:  Horizontal    Vertical"<<std::endl;
   std::cout<<"Detector number: "<<GetDetectorNumber()<<std::endl;
   //std::cout<<"Detector position: "<<GetDetectorPosition()<<std::endl;
