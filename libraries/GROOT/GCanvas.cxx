@@ -173,7 +173,18 @@ void GCanvas::ClearBGMarkers() {
 }
 
 void GCanvas::OrderBGMarkers() { 
-  std::sort(fBG_Markers.begin(),fBG_Markers.end());
+  //std::sort(fBG_Markers.begin(),fBG_Markers.end());
+  if(fBG_Markers.size()<2)
+     return;
+  GMarker mark0(*fBG_Markers.at(0));
+  GMarker mark1(*fBG_Markers.at(1));
+  if(mark0.x < mark1.x) {
+    AddBGMarker(&mark0);
+    AddBGMarker(&mark1);
+  } else {
+    AddBGMarker(&mark1);
+    AddBGMarker(&mark0);
+  }
   return;
 }
 
