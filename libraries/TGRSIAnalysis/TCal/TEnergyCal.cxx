@@ -10,8 +10,8 @@ TEnergyCal::~TEnergyCal(){}
 
 void TEnergyCal::SetDefaultTitles(){
    this->SetTitle("Energy Calibration");
-   this->GetXaxis()->SetTitle("Accepted Energy (keV)");
-   this->GetYaxis()->SetTitle("Measured Centroid");
+   this->GetYaxis()->SetTitle("Accepted Energy (keV)");
+   this->GetXaxis()->SetTitle("Measured Centroid");
    this->GetYaxis()->CenterTitle();
    this->GetXaxis()->CenterTitle();
 }
@@ -40,8 +40,8 @@ void TEnergyCal::SetNucleus(TNucleus* nuc,Option_t *opt){
       TGraphErrors::Clear();
       TCal::SetNucleus(nuc);
       for(int i = 0; i< GetNucleus()->NTransitions();i++){
-         TGraphErrors::SetPoint(i,GetNucleus()->GetTransition(i)->GetEnergy(),0.0);
-         TGraphErrors::SetPointError(i,GetNucleus()->GetTransition(i)->GetEnergyUncertainty(),0.0);
+         TGraphErrors::SetPoint(i,0.0,GetNucleus()->GetTransition(i)->GetEnergy());
+         TGraphErrors::SetPointError(i,0.0,GetNucleus()->GetTransition(i)->GetEnergyUncertainty());
       }
    }
    else if(GetNucleus())
@@ -53,8 +53,8 @@ void TEnergyCal::SetNucleus(TNucleus* nuc,Option_t *opt){
 
 void TEnergyCal::AddPoint(Double_t measured, Double_t accepted, Double_t measured_uncertainty, Double_t accepted_uncertainty){
    Int_t point = this->GetN();
-   TGraphErrors::SetPoint(point,accepted,measured);
-   TGraphErrors::SetPointError(point,accepted_uncertainty,measured_uncertainty);
+   TGraphErrors::SetPoint(point,measured,accepted);
+   TGraphErrors::SetPointError(point,measured_uncertainty,accepted_uncertainty);
    this->Sort();
 }
 
@@ -66,7 +66,7 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured){
 
    Double_t x,y;
    this->GetPoint(idx,x,y);
-   TGraphErrors::SetPoint(idx,x,measured);
+   TGraphErrors::SetPoint(idx,measured,y);
    this->Sort();
 
    return true;
@@ -92,7 +92,7 @@ Bool_t TEnergyCal::SetPointError(Int_t idx, Double_t measured_uncertainty){
       return false;
    }
 
-   TGraphErrors::SetPointError(idx,GetErrorX(idx),measured_uncertainty);
+   TGraphErrors::SetPointError(idx,measured_uncertainty,GetErrorX(idx));
    Sort();
 
    return true;
