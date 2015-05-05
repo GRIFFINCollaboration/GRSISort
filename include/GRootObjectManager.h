@@ -92,7 +92,9 @@ class GRootObjectManager {
 
 
     static void Update(Option_t *opt = "MemClean");
+    static TList *GetObjectsList() { return fObjectsMap; }
     void Print();
+
 
   private:
     GRootObjectManager();

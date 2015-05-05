@@ -5,6 +5,8 @@
 #include <string>
 
 #include <TAxis.h>
+#include <TDirectory.h>
+#include <TFile.h>
 
 #include <GRootObjectManager.h>
 
@@ -113,10 +115,29 @@ TH1D *ProjectionY(TH2* mat,double lowvalue,double highvalue) {
 }
 
 
+void SaveAll(const char *fname,Option_t *opt) {
+  TString sname(fname);
+  if(!sname.Contains(".root")) {
+    printf("Try SaveAll(filename.root) instead;  Warning: if filename.root already exists, it will be replaced!\n");
+    return;
+  }
+  TDirectory *cur_dir = gDirectory;
+  TFile f(sname.Data(),opt); 
 
-
-
-
+  TList *list = GRootObjectManager::GetObjectsList();
+  list->Sort();
+  TIter iter(list);
+  while(TObject  *obj = iter.Next()) {
+    if(!obj->InheritsFrom("GMemObj"))
+       continue;
+    GMemObj *mobj = (GMemObj*)obj;
+    if(mobj->GetObject())
+       mobj->GetObject()->Write();
+  }
+  f.Close();
+  cur_dir->cd();
+  return;
+}
 
 
 
