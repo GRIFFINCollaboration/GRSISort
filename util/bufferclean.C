@@ -23,8 +23,8 @@ Bool_t CheckEvent(TMidasEvent *evt){
    void *ptr;
    int banksize = evt->LocateBank(NULL,"GRF1",&ptr);
 
-   int type  = 0xffffffff;
-   int value = 0xffffffff;
+   uint32_t type  = 0xffffffff;
+   uint32_t value = 0xffffffff;
 
    UInt_t chanadd = 0;
    UInt_t trigId = 0;

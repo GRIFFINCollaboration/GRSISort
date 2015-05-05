@@ -68,7 +68,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    void *ptr;
    int banksize = event->LocateBank(NULL,"GRF1",&ptr);
 
-   int type  = 0xffffffff;
+   uint32_t type  = 0xffffffff;
    int value = 0xffffffff;
 
    int dettype = 0;
