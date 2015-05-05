@@ -253,19 +253,19 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
    }
 
 	fOdb = new TXMLOdb(data,size);
-
 	TChannel::DeleteAllChannels();
 
    TXMLNode *node = fOdb->FindPath("/Experiment");
-   if(!node->HasChildren())
+   if(!node->HasChildren()){
       return;
+   }
    node = node->GetChildren();
    std::string expt;
    while(1) {
-      std::string key = fOdb->GetNodeName(node);
-      if(key.compare("Name")==0) {
-         expt = node->GetText();
-         break;
+        std::string key = fOdb->GetNodeName(node) ;
+        if(key.compare("Name")==0) {
+        expt = node->GetText();
+        break;
       }
       if(!node->HasNextNode())
          break;

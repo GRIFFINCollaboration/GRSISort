@@ -19,6 +19,7 @@
 #pragma link C++ function ProjectionY(TH2*,double,double);
 
 #pragma link C++ function Prompt();
+#pragma link C++ function SaveAll(const char*,Option_t*);
 
 #pragma link C++ function Help;
 #pragma link C++ function Commands;
