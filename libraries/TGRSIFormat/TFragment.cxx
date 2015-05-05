@@ -146,7 +146,7 @@ double TFragment::GetCharge(int i) const {
    if(KValue.size()>i && KValue.at(i)>0){
       return ((double)Charge.at(i)+gRandom->Uniform())/((double)KValue.at(i));// this will use the integration value
    }
-   return ((double)Charge.at(i)+gRandom->Uniform());// this will use the integration value
+   return ((double)Charge.at(i)+gRandom->Uniform());// this will use no integration value
 }
 
 void TFragment::Print(Option_t *opt)	{
