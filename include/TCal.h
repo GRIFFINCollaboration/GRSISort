@@ -62,15 +62,17 @@ class TCal : public TGraphErrors {
    virtual void SetNucleus(TNucleus* nuc,Option_t *opt = "");
    virtual TNucleus* GetNucleus() const { return fnuc; }
 
- private:
+ protected:
    void InitTCal();
+
+ private:
    //TGraphErrors *fgraph; //->
    TRef fchan; //This points at the TChannel
-   TF1* ffitfunc; //->
+   TF1* ffitfunc; //-> Fit function representing calibration
    TH1* fhist; //Histogram that was fit by the TPeak.
    TNucleus* fnuc; //Nucleus that we are calibrating against
 
-   ClassDef(TCal,1);
+   ClassDef(TCal,1); //Abstract Class for Calibrations
 
 };
 
