@@ -485,29 +485,31 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                  if(GetNMarkers()<2)
                    break;
                  if(!strcmp(mobj->GetOption(),"ProjY")) {  // if we are working with a y projection, useX axis.
-                   if(fMarkers.at(fMarkers.size()-1)->x < fMarkers.at(fMarkers.size()-2)->x) { 
-                     temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-1)->x,
-                                                                    fMarkers.at(fMarkers.size()-2)->x);
-                     tempbg = GetBackGroundHist(fMarkers.at(fMarkers.size()-1),
-                                                fMarkers.at(fMarkers.size()-2));
-                   } else {
-                     temphist = ProjectionX((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-2)->x,
-                                                                    fMarkers.at(fMarkers.size()-1)->x);
-                     tempbg = GetBackGroundHist(fMarkers.at(fMarkers.size()-2),
-                                                fMarkers.at(fMarkers.size()-1));
+                   int yvalue1 = ((TH2*)mobj->GetParent())->GetYaxis()->FindBin(fMarkers.at(fMarkers.size()-1)->localx);
+                   int yvalue0 = ((TH2*)mobj->GetParent())->GetYaxis()->FindBin(fMarkers.at(fMarkers.size()-2)->localx);
+                   if(yvalue1<yvalue0) {
+                      double temp = yvalue0;
+                      yvalue0 = yvalue1;
+                      yvalue1 = temp;
                    }
+                   temphist = ProjectionX((TH2*)mobj->GetParent(),yvalue0,yvalue1); 
+
+                   tempbg = GetBackGroundHist(fMarkers.at(fMarkers.size()-1),
+                                              fMarkers.at(fMarkers.size()-2));
+                   
                  } else {  // if we are working with a x projection, use y axis
-                   if(fMarkers.at(fMarkers.size()-1)->x < fMarkers.at(fMarkers.size()-2)->x) {
-                     temphist = ProjectionY((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-1)->x,
-                                                                    fMarkers.at(fMarkers.size()-2)->x);
-                     tempbg = GetBackGroundHist(fMarkers.at(fMarkers.size()-1),
-                                                fMarkers.at(fMarkers.size()-2));
-                   } else {
-                     temphist = ProjectionY((TH2*)mobj->GetParent(),fMarkers.at(fMarkers.size()-2)->x,
-                                                                    fMarkers.at(fMarkers.size()-1)->x);
-                     tempbg = GetBackGroundHist(fMarkers.at(fMarkers.size()-2),
-                                                fMarkers.at(fMarkers.size()-1));
+                   int xvalue1 = ((TH2*)mobj->GetParent())->GetYaxis()->FindBin(fMarkers.at(fMarkers.size()-1)->localx);
+                   int xvalue0 = ((TH2*)mobj->GetParent())->GetYaxis()->FindBin(fMarkers.at(fMarkers.size()-2)->localx);
+                   if(xvalue1<xvalue0) {
+                      double temp = xvalue0;
+                      xvalue0 = xvalue1;
+                      xvalue1 = temp;
                    }
+                   temphist = ProjectionY((TH2*)mobj->GetParent(),xvalue0,xvalue1); 
+                   
+                   tempbg = GetBackGroundHist(fMarkers.at(fMarkers.size()-1),
+                                              fMarkers.at(fMarkers.size()-2));
+
                  }
                  //printf("addgate: %i\n",fMarkers.at(0)->x);
                  //printf("addgate: %i\n",fMarkers.at(1)->x);
@@ -1128,6 +1130,7 @@ TH1 *GCanvas::GetBackGroundHist(GMarker *addlow,GMarker *addhigh) {
   if(hists.size()<1)
      return 0;
   TH1 *hist = hists.at(0);
+
   switch(fBGSubtraction_type) {   
     case 0:
       //printf(RED "\nBackground Subtraction type not set, no Background subtraction will be performed.\n" RESET_COLOR );
@@ -1157,11 +1160,17 @@ TH1 *GCanvas::GetBackGroundHist(GMarker *addlow,GMarker *addhigh) {
       GMemObj *mobj = GRootObjectManager::Instance()->FindMemObject(hist->GetName());
       if(!mobj || !mobj->GetParent() || !mobj->GetParent()->InheritsFrom("TH2"))
          return temp_bg;
-      if(!strcmp(mobj->GetOption(),"ProjY")) 
-        temp_bg = ((TH2*)mobj->GetParent())->ProjectionX(Form("%s_bg",hist->GetName()),fBG_Markers.at(0)->x,fBG_Markers.at(1)->x);
-      else 
-        temp_bg = ((TH2*)mobj->GetParent())->ProjectionY(Form("%s_bg",hist->GetName()),fBG_Markers.at(0)->x,fBG_Markers.at(1)->x);
-      temp_bg->SetTitle(Form(" - bg(%i to %i)",fBG_Markers.at(0)->x,fBG_Markers.at(1)->x));
+      int bin0,bin1;
+      if(!strcmp(mobj->GetOption(),"ProjY")) { 
+        bin1 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(fBG_Markers.size()-1)->localx);
+        bin0 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(fBG_Markers.size()-2)->localx);
+        temp_bg = ((TH2*)mobj->GetParent())->ProjectionX(Form("%s_bg",hist->GetName()),bin0,bin1);
+      } else {
+        bin1 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(fBG_Markers.size()-1)->localx);
+        bin0 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(fBG_Markers.size()-2)->localx);
+        temp_bg = ((TH2*)mobj->GetParent())->ProjectionY(Form("%s_bg",hist->GetName()),bin0,bin1);
+      }
+      temp_bg->SetTitle(Form(" - bg(%.0f to %.0f)",fBG_Markers.at(0)->localx,fBG_Markers.at(1)->localx));
       return temp_bg;
       }
       //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
