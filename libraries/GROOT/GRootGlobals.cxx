@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <string>
 
+#include <TRint.h>
+#include <Getline.h>
 #include <TAxis.h>
 
 #include <GRootObjectManager.h>
@@ -118,7 +120,7 @@ TH1D *ProjectionY(TH2* mat,double lowvalue,double highvalue) {
 
 
 
-
+void Prompt()   { Getlinem(EGetLineMode::kInit,((TRint*)gApplication)->GetPrompt()); }
 
 void Help()     { printf("This is helpful information.\n"); }
 void Commands() { printf("this is a list of useful commands.\n");}

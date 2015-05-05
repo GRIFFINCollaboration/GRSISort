@@ -10,6 +10,6 @@ TH1D *ProjectionY(TH2 *mat,double lowvalue,double highvalue=-1); /*MENU*/
 
 void Help();
 void Commands();
-
+void Prompt();
 
 #endif
