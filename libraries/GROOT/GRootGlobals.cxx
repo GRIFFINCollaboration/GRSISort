@@ -4,7 +4,11 @@
 #include <cstdio>
 #include <string>
 
+#include <TRint.h>
+#include <Getline.h>
 #include <TAxis.h>
+#include <TDirectory.h>
+#include <TFile.h>
 
 #include <GRootObjectManager.h>
 
@@ -15,13 +19,13 @@ TH1D *ProjectionX(TH2* mat,int lowbin,int highbin) {
   if((lowbin==0)&&highbin==-1) {
      hname.append("X_total");
   } else if((lowbin!=0)&&(highbin==-1)) {
-     hname.append(Form("X_0-%.0f",mat->GetXaxis()->GetXmax()));
+     hname.append(Form("X_0to%.0f",mat->GetXaxis()->GetXmax()));
   } else {
      if(lowbin>highbin) {
        printf("ProjectX: low value greater than highvalue\n");
        return 0;
      }
-     hname.append(Form("X_%.0f-%.0f",mat->GetXaxis()->GetBinLowEdge(lowbin),
+     hname.append(Form("X_%.0fto%.0f",mat->GetXaxis()->GetBinLowEdge(lowbin),
                                     mat->GetXaxis()->GetBinUpEdge(highbin)));
   }
   TH1D *temphist = mat->ProjectionX(hname.c_str(),lowbin,highbin);
@@ -39,13 +43,13 @@ TH1D *ProjectionY(TH2* mat,int lowbin,int highbin) {
   if((lowbin==0)&&highbin==-1) {
      hname.append("Y__total");
   } else if((lowbin!=0)&&(highbin==-1)) {
-     hname.append(Form("Y_0-%.0f",mat->GetYaxis()->GetXmax()));
+     hname.append(Form("Y_0to%.0f",mat->GetYaxis()->GetXmax()));
   } else {
      if(lowbin>highbin) {
        printf("ProjectX: low value greater than highvalue\n");
        return 0;
      }
-     hname.append(Form("Y_%.0f-%.0f",mat->GetYaxis()->GetBinLowEdge(lowbin),
+     hname.append(Form("Y_%.0fto%.0f",mat->GetYaxis()->GetBinLowEdge(lowbin),
                                     mat->GetYaxis()->GetBinUpEdge(highbin)));
   }
   TH1D *temphist = mat->ProjectionY(hname.c_str(),lowbin,highbin);
@@ -113,12 +117,31 @@ TH1D *ProjectionY(TH2* mat,double lowvalue,double highvalue) {
 }
 
 
+void SaveAll(const char *fname,Option_t *opt) {
+  TString sname(fname);
+  if(!sname.Contains(".root")) {
+    printf("Try SaveAll(filename.root) instead;  Warning: if filename.root already exists, it will be replaced!\n");
+    return;
+  }
+  TDirectory *cur_dir = gDirectory;
+  TFile f(sname.Data(),opt); 
 
+  TList *list = GRootObjectManager::GetObjectsList();
+  list->Sort();
+  TIter iter(list);
+  while(TObject  *obj = iter.Next()) {
+    if(!obj->InheritsFrom("GMemObj"))
+       continue;
+    GMemObj *mobj = (GMemObj*)obj;
+    if(mobj->GetObject())
+       mobj->GetObject()->Write();
+  }
+  f.Close();
+  cur_dir->cd();
+  return;
+}
 
-
-
-
-
+void Prompt()   { Getlinem(EGetLineMode::kInit,((TRint*)gApplication)->GetPrompt()); }
 
 void Help()     { printf("This is helpful information.\n"); }
 void Commands() { printf("this is a list of useful commands.\n");}

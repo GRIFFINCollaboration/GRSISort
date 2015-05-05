@@ -320,8 +320,10 @@ void GRootObjectManager::Update(Option_t *opt) {
   //}
   //Scan loaded files...
   //if(u_file || u_all) {
-    folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
-    ExtractObjects(folder->GetListOfFolders());
+  
+//    folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
+//    ExtractObjects(folder->GetListOfFolders());
+
   //}
 
   //finally, lets look for cuts...

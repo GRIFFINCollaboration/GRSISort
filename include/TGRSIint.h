@@ -36,6 +36,8 @@ class TGRSIint : public TRint {
 
       //bool Sort() {return TEventLoop::Get()->SortMidas();}
 
+      //static void ShowPrompt() { Getlinem(kInit,GetPrompt()); }
+
       static TEnv *GetEnv() { return fGRSIEnv; }
 
       Long_t ProcessLine(const char* line,Bool_t sync=kFALSE,Int_t *error=0);
