@@ -17,13 +17,13 @@ TH1D *ProjectionX(TH2* mat,int lowbin,int highbin) {
   if((lowbin==0)&&highbin==-1) {
      hname.append("X_total");
   } else if((lowbin!=0)&&(highbin==-1)) {
-     hname.append(Form("X_0-%.0f",mat->GetXaxis()->GetXmax()));
+     hname.append(Form("X_0to%.0f",mat->GetXaxis()->GetXmax()));
   } else {
      if(lowbin>highbin) {
        printf("ProjectX: low value greater than highvalue\n");
        return 0;
      }
-     hname.append(Form("X_%.0f-%.0f",mat->GetXaxis()->GetBinLowEdge(lowbin),
+     hname.append(Form("X_%.0fto%.0f",mat->GetXaxis()->GetBinLowEdge(lowbin),
                                     mat->GetXaxis()->GetBinUpEdge(highbin)));
   }
   TH1D *temphist = mat->ProjectionX(hname.c_str(),lowbin,highbin);
@@ -41,13 +41,13 @@ TH1D *ProjectionY(TH2* mat,int lowbin,int highbin) {
   if((lowbin==0)&&highbin==-1) {
      hname.append("Y__total");
   } else if((lowbin!=0)&&(highbin==-1)) {
-     hname.append(Form("Y_0-%.0f",mat->GetYaxis()->GetXmax()));
+     hname.append(Form("Y_0to%.0f",mat->GetYaxis()->GetXmax()));
   } else {
      if(lowbin>highbin) {
        printf("ProjectX: low value greater than highvalue\n");
        return 0;
      }
-     hname.append(Form("Y_%.0f-%.0f",mat->GetYaxis()->GetBinLowEdge(lowbin),
+     hname.append(Form("Y_%.0fto%.0f",mat->GetYaxis()->GetBinLowEdge(lowbin),
                                     mat->GetYaxis()->GetBinUpEdge(highbin)));
   }
   TH1D *temphist = mat->ProjectionY(hname.c_str(),lowbin,highbin);
