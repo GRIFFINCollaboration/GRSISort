@@ -35,8 +35,8 @@ class TEventTime {
          void *ptr;
          int banksize = event->LocateBank(NULL,"GRF1",&ptr);
 
-         int type  = 0xffffffff;
-         int value = 0xffffffff;
+         uint32_t type  = 0xffffffff;
+         uint32_t value = 0xffffffff;
 
          uint64_t time = 0;
 
@@ -331,7 +331,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
    for(hit1 = (eventQ->begin()); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%75000 == 0)
-         printf("Processing Event %d /%d      \r",event1count,eventQ->size()); fflush(stdout);
+         printf("Processing Event %d /%lu      \r",event1count,eventQ->size()); fflush(stdout);
       event1count++;
 
       if( ((*hit1)->Digitizer() == 0) && ((*hit1)->DetectorType()>1)) continue; 
@@ -390,7 +390,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
    std::map<int,int64_t>::iterator cit;
    for(cit = TEventTime::correctionmap.begin(); cit != TEventTime::correctionmap.end(); cit++){
       if(cit->first == TEventTime::GetBestDigitizer())
-         printf("0x%04x:\t BEST\n");
+         printf("0x%04x:\t BEST\n",cit->first);
       else
          printf("0x%04x:\t %lld\n",cit->first,cit->second);
    }
@@ -428,7 +428,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%75000 == 0)
-         printf("Processing Event %d / %d       \r",event1count,eventQ->size()); fflush(stdout);
+         printf("Processing Event %d / %lu       \r",event1count,eventQ->size()); fflush(stdout);
       
       event1count++;
       //We need to make sure that that if we have a digitizer of 0, we have a detector type of 1
@@ -483,7 +483,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
    std::map<int,int64_t>::iterator cit;
    for(cit = TEventTime::correctionmap.begin(); cit != TEventTime::correctionmap.end(); cit++){
       if(cit->first == TEventTime::GetBestDigitizer())
-         printf("0x%04x:\t BEST\n");
+         printf("0x%04x:\t BEST\n",cit->first);
       else
          printf("0x%04x:\t %lld\n",cit->first,cit->second);
         // printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
@@ -508,8 +508,8 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    void *ptr;
    int banksize = event->LocateBank(NULL,"GRF1",&ptr);
 
-   int type  = 0xffffffff;
-   int value = 0xffffffff;
+   uint32_t type  = 0xffffffff;
+   uint32_t value = 0xffffffff;
 
    int dettype = 0;
    int chanadd = 0;
