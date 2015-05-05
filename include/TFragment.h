@@ -71,6 +71,7 @@ public:
    double GetTZero() const; //!
    const char *GetName(); //!
    double GetEnergy(int iter=0)const; //!
+   double GetCharge(int iter=0)const; //!
    long GetTimeStamp_ns(); //!
 
 
