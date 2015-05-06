@@ -32,7 +32,7 @@ class TEnergyCal : public TCal {
 
  private:
    
-   ClassDef(TEnergyCal,1);
+   ClassDef(TEnergyCal,1); //Class used for Energy Calibrations
 
 };
 

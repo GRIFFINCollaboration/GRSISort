@@ -253,36 +253,17 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
    }
 
 	fOdb = new TXMLOdb(data,size);
-
 	TChannel::DeleteAllChannels();
 
    TXMLNode *node = fOdb->FindPath("/Experiment");
-   if(!node->HasChildren())
+   if(!node->HasChildren()){
       return;
-   node = node->GetChildren();
-
-  while(1) {
-      if(strcmp("Name",fOdb->GetNodeName(node))){//If these are not equal, break and move on
-        if(!node->HasNextNode()){
-            break;
-        }
-        node = node->GetNextNode();
-        break;
-      }
-      else 
-        break;
    }
-
-    const char* expt = node->GetText();
-
-   if(!strcmp("tigress",expt))
-      SetTIGOdb();
-   else if(!strcmp("griffin",expt))
-      SetGRIFFOdb();
-  // std::string expt;
-/*   while(1) {
-        std::string key(fOdb->GetNodeName(node), strlen(fOdb->GetNodeName(node))) ;
-        if(key.compare(name)==0) {
+   node = node->GetChildren();
+   std::string expt;
+   while(1) {
+        std::string key = fOdb->GetNodeName(node) ;
+        if(key.compare("Name")==0) {
         expt = node->GetText();
         break;
       }
@@ -293,7 +274,7 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
    if(expt.compare("tigress")==0)
       SetTIGOdb();
    else if(expt.compare("griffin")==0)
-      SetGRIFFOdb();*/
+      SetGRIFFOdb();
 }
 
 void TGRSILoop::SetGRIFFOdb() {

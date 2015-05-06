@@ -136,7 +136,18 @@ double TFragment::GetEnergy(int i) const {
    return chan->CalibrateENG((int)(Charge.at(i)));
 }
 
-
+double TFragment::GetCharge(int i) const {
+   TChannel *chan = TChannel::GetChannel(ChannelAddress);
+   if(!chan || !(Charge.size()>i))
+      return 0.00;
+   if(chan->UseCalFileIntegration()) {
+      return ((double)Charge.at(i)+gRandom->Uniform())/((double)chan->GetIntegration());// this will use the integration value
+   }                                                                       // in the tchannel if it exists.
+   if(KValue.size()>i && KValue.at(i)>0){
+      return ((double)Charge.at(i)+gRandom->Uniform())/((double)KValue.at(i));// this will use the integration value
+   }
+   return ((double)Charge.at(i)+gRandom->Uniform());// this will use the integration value
+}
 
 void TFragment::Print(Option_t *opt)	{
    //Prints out all fields of the TFragment

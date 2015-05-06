@@ -13,6 +13,6 @@ void SaveAll(const char* fname,Option_t *opt="recreate");
 
 void Help();
 void Commands();
-
+void Prompt();
 
 #endif

@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <string>
 
+#include <TRint.h>
+#include <Getline.h>
 #include <TAxis.h>
 #include <TDirectory.h>
 #include <TFile.h>
@@ -139,7 +141,7 @@ void SaveAll(const char *fname,Option_t *opt) {
   return;
 }
 
-
+void Prompt()   { Getlinem(EGetLineMode::kInit,((TRint*)gApplication)->GetPrompt()); }
 
 void Help()     { printf("This is helpful information.\n"); }
 void Commands() { printf("this is a list of useful commands.\n");}

@@ -1016,7 +1016,7 @@ void GCanvas::SetBackGroundSubtractionType() {
     default:
      printf("Changing BG subtraction type, type is now: %i\n",fBGSubtraction_type);
   };
-  //TGRSInt::ShowPrompt();
+  Prompt();
   return;
 }
 
