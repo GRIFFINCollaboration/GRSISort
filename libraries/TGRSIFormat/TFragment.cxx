@@ -1,5 +1,6 @@
 #include"TFragment.h"
 #include"TChannel.h"
+#include <iostream>
 
 #include <TClass.h>
 
@@ -113,15 +114,23 @@ const char *TFragment::GetName() {
    return chan->GetChannelName();
 }
 
-
+/*
 double TFragment::GetEnergy() const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || Charge.size()<1)
       return 0.00;
    return chan->CalibrateENG((int)(Charge.at(0)));
 }
+*/
 
-
+double TFragment::GetEnergy(int i) const {
+   TChannel *chan = TChannel::GetChannel(ChannelAddress);
+   if(!chan || !(Charge.size()>i))
+      return 0.00;
+   if(KValue.size()>i && KValue.at(i)>0)
+     return chan->CalibrateENG((int)(Charge.at(i)),(int)KValue.at(i));
+   return chan->CalibrateENG((int)(Charge.at(i)));
+}
 
 
 

@@ -169,7 +169,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
           
             }
          } else if(myFrag.DetectorType == 2) {
-            if(currentFrag->DetectorType == 1) {
+            if(currentFrag->DetectorType == 0) {
                bg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
                bg_coinc_gE->Fill(currentFrag->GetEnergy());
             } else if(currentFrag->DetectorType == 2) {
@@ -207,7 +207,8 @@ int main(int argc, char **argv) {
 
    const char* name = f->GetName();
 
-   TFile *outfile = new TFile(Form("mats_%s",name),"recreate");
+ //  TFile *outfile = new TFile(Form("mats_%s",name),"recreate");
+   TFile *outfile = new TFile("junk.root","recreate");
    list->Write();
 
    return 0;

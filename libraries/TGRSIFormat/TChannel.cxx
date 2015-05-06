@@ -127,7 +127,11 @@ void TChannel::AddChannel(TChannel *chan,Option_t *opt) {
 	   } else {
 	      printf("Trying to add a channel that already exists!\n");
 			return;
-	   }	
+	   }
+    } else if((chan->GetAddress()&0x00ffffff)==0x00ffffff) {
+          //this is the default tigress value for i am not there. 
+          //we should not imclude it in the map.
+          delete chan;
     } else {
       //We need to update the channel maps to correspond to the new channel that has been added. 
 		fChannelMap->insert(std::make_pair(chan->GetAddress(),chan));
@@ -361,7 +365,7 @@ void TChannel::DestroyCalibrations()   {
    DestroyEFFCal();
 };
 
-double TChannel::CalibrateENG(int charge) {
+double TChannel::CalibrateENG(int charge,int temp_int) {
    //Returns the calibrated energy of the channel when a charge is passed to it. 
    //This is done by first adding a random number between 0 and 1 to the charge
    //bin. This is then taken and divided by the integration parameter. The 
@@ -370,9 +374,13 @@ double TChannel::CalibrateENG(int charge) {
     if(charge==0) 
       return 0.0000;
 
-   int temp_int = 1; //125.0;
-   if(integration != 0)
-      temp_int = (int)integration;  //the 4 is the dis. 
+   //int temp_int = 1; //125.0;
+   if(temp_int==0) {
+     if(integration != 0)
+       temp_int = (int)integration;  //the 4 is the dis. 
+     else
+       temp_int = 1;
+   } 
    
    //We need to add a random number between 0 and 1 before calibrating to avoid
    //binning issues.
@@ -555,6 +563,27 @@ void TChannel::WriteCalFile(std::string outfilename) {
    std::cout.rdbuf(std_out);
 */
 
+
+   if(outfilename.length()>0) {
+     ofstream calout;
+     calout.open(outfilename.c_str());
+     for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+        std::string chanstr = iter_vec->PrintToString();
+        calout << chanstr.c_str();
+        calout << std::endl;
+     }
+     calout << std::endl;
+     calout.close();
+   } else {  
+     for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+        iter_vec->Print();
+     }
+   }
+
+
+
+
+/*
    FILE *c_outputfile;
    if(outfilename.length()>0) {
       c_outputfile = freopen (outfilename.c_str(),"w",stdout);
@@ -567,6 +596,7 @@ void TChannel::WriteCalFile(std::string outfilename) {
       int fd = open("/dev/tty", O_WRONLY);
       stdout = fdopen(fd, "w");
    }
+*/  
    return;
 }
 
@@ -882,14 +912,24 @@ void TChannel::Streamer(TBuffer &R__b) {
    }
 }
 
-int TChannel::WriteToRoot(const char *name) {
+int TChannel::WriteToRoot(TFile *fileptr) {
    //Writes Cal File information to the tree
   TChannel *c = GetDefaultChannel(); 
+  //Maintain old gDirectory info
+  TDirectory *savdir = gDirectory;
+
   if(!c) 
      printf("No TChannels found to write.\n");
-  TFile *f = gDirectory->GetFile();
-  if(!gDirectory)
-     printf("No file opened to wrtie to.\n");
+  if(!fileptr)
+      fileptr = gDirectory->GetFile();
+      
+  fileptr->cd();
+  std::string oldoption = std::string(fileptr->GetOption());
+  if(oldoption == "READ") {
+    fileptr->ReOpen("UPDATE");
+  }
+	if(!gDirectory)
+     printf("No file opened to write to.\n");
   TIter iter(gDirectory->GetListOfKeys());
 
   //printf("1 Number of Channels: %i\n",GetNumberOfChannels());
@@ -949,6 +989,11 @@ int TChannel::WriteToRoot(const char *name) {
   //TChannel::DeleteAllChannels();
   //gDirectory->GetFile()->Get("c->GetName()");
   printf("  %i TChannels saved to %s.\n",GetNumberOfChannels(),gDirectory->GetFile()->GetName());
+  if(oldoption == "READ") {
+    printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
+    fileptr->ReOpen("READ");
+  }
+	savdir->cd();//Go back to original gDirectory
   return GetNumberOfChannels();
 }
 

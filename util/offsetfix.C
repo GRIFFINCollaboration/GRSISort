@@ -60,23 +60,24 @@ class TEventTime {
             };
          }
          timemidas = event->GetTimeStamp();
-         if(timemidas < low_timemidas)
-            low_timemidas = timemidas;
          
          SetDigitizer();
   
          if(!(digset.find(Digitizer())->second)){
             digset.find(Digitizer())->second = true;
             if(GetTimeStamp() < lowest_time || lowest_time == -1){
-               lowest_time = GetTimeStamp();
                if(Digitizer() == 0x0000 ||
                   Digitizer() == 0x0100 ||
                   Digitizer() == 0x0200 ||
                   Digitizer() == 0x1000 ||
                   Digitizer() == 0x1200 ||
                   Digitizer() == 0x1100 ||
-                  Digitizer() == 0x1300)
+                  Digitizer() == 0x1300){
+                  lowest_time = GetTimeStamp();
                   best_dig = Digitizer();
+                  if(timemidas < low_timemidas)
+                     low_timemidas = timemidas;
+               }
             }
          }
       }
@@ -264,7 +265,9 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
       if(lowest_hightime.find((*it)->Digitizer()) == lowest_hightime.end()){
          lowest_hightime[(*it)->Digitizer()] = hightime; //initialize this as the first time that is seen.
       }
-     }
+      else if(hightime < lowest_hightime.find((*it)->Digitizer())->second)
+         lowest_hightime.find((*it)->Digitizer())->second = hightime;
+   }
 
    //find lowest digitizer 
    int lowest_dig = 0;

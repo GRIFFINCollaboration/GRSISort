@@ -26,7 +26,7 @@
 
 #include "../include/TGRSITransition.h"
 
-class TCal : public TNamed {
+class TCal : public TGraphErrors {
  public: 
    TCal();
    TCal(const char* name, const char* title);
@@ -39,7 +39,7 @@ class TCal : public TNamed {
 
  public:
    virtual void Copy(TObject &obj) const;
-   TGraphErrors *Graph() const { return fgraph; }
+   //TGraphErrors *Graph() const { return fgraph; }
    virtual void WriteToChannel() const {Error("WriteToChannel","Not defined for %s",ClassName());}
    virtual TF1* GetFitFunction() const { return ffitfunc; } 
    virtual void SetFitFunction(const TF1* func){ ffitfunc = (TF1*)func; };
@@ -53,21 +53,22 @@ class TCal : public TNamed {
    Bool_t SetChannel(UInt_t channum);
    virtual void Print(Option_t *opt = "") const;
    virtual void Clear(Option_t *opt = "");
+   //virtual void Draw(Option_t *chopt = "");
 
    virtual void WriteToAllChannels(std::string mnemonic = "");
 
    virtual void SetHist(TH1* hist);
    TH1* GetHist() const {return fhist;}
-   virtual void SetNucleus(TNucleus* nuc);
+   virtual void SetNucleus(TNucleus* nuc,Option_t *opt = "");
    virtual TNucleus* GetNucleus() const { return fnuc; }
 
  private:
    void InitTCal();
-   TGraphErrors *fgraph; //->
+   //TGraphErrors *fgraph; //->
    TRef fchan; //This points at the TChannel
    TF1* ffitfunc; //->
    TH1* fhist; //Histogram that was fit by the TPeak.
-   TNucleus* fnuc;
+   TNucleus* fnuc; //Nucleus that we are calibrating against
 
    ClassDef(TCal,1);
 

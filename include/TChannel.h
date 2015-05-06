@@ -146,7 +146,7 @@ class TChannel : public TNamed	{
     //void CalibrateFragment(TFragment*);
 
     double CalibrateENG(double);
-    double CalibrateENG(int);
+    double CalibrateENG(int,int integration=0);
     
     double CalibrateCFD(double);
     double CalibrateCFD(int);
@@ -180,7 +180,7 @@ class TChannel : public TNamed	{
     //static  void PrintAll(Option_t *opt = "");      
     std::string PrintToString(Option_t *opt="");
 
-    static int WriteToRoot(const char *name ="");
+    static int WriteToRoot(TFile *fileptr = 0);
 
   
   private:

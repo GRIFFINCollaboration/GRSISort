@@ -144,6 +144,8 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    TH1F* timeEGate = new TH1F("timeEGate","#gamma-#gamma time difference energy gate on 1808 and 1130;time[10 ns]",200,0.,200.);  list->Add(timeEGate);
    TH1F* timeModuleOne = new TH1F("timeModuleOne","#gamma-#gamma time difference for 1. grif-16;time[10 ns]",200,0.,200.); list->Add(timeModuleOne);
 
+   TH1F* sceptarSceptarTime = new TH1F("sceptarSceptarTime","#beta-#beta time difference;time[10 ns]",400,-200.,200.);list->Add(sceptarSceptarTime);
+
    TH1F* cfdDiff = new TH1F("cfdDiff","cfd difference",2000,-1000.,1000.); list->Add(cfdDiff);
    TH1F* cfdDiffEGate = new TH1F("cfdDiffEGate","cfd difference energy gate on 1808 and 1130",2000,-1000.,1000.); list->Add(cfdDiffEGate);
    TH1F* cfdDiffModuleOne = new TH1F("cfdDiffModuleOne","cfd difference for 1. grif-16",2000,-1000.,1000.); list->Add(cfdDiffModuleOne);
@@ -254,7 +256,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    TH2F* eVsTimeNeighbours = new TH2F("eVsTimeNeighbours","energy vs. time for neighbouring crystals",400, -200., 200., nofBins, low, high); list->Add(eVsTimeNeighbours);
 
    //hit pattern
-   TH2F* griffinHits = new TH2F("griffinHits","#gamma-#gamma hitpattern",70,0,70,70,0,70); list->Add(griffinHits);
+   TH2F* griffinHits = new TH2F("griffinHits","#gamma-#gamma hitpattern",100,0,100,100,0,100); list->Add(griffinHits);
    TH2F* griffinHitsB = new TH2F("griffinHitsB","#gamma-#gamma hitpattern, coincident #beta",70,0,70,70,0,70); list->Add(griffinHitsB);
 
    TH2F* addbackHits = new TH2F("addbackHits","#gamma-#gamma hitpattern, addback",70,0,70,70,0,70); list->Add(addbackHits);
@@ -509,7 +511,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             } else {
                std::cout<<"Error, didn't find any matching angle for "<<ang<<std::endl;
             }
-            if(two > one) {
+            if(two > one)  {
                timeDiff->Fill(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime());
                cfdDiff->Fill(grif->GetGriffinHit(two)->GetCfd()-grif->GetGriffinHit(one)->GetCfd());
                if((1125<grif->GetGriffinHit(one)->GetEnergyLow() && grif->GetGriffinHit(one)->GetEnergyLow()<1135 && 1805<grif->GetGriffinHit(two)->GetEnergyLow() && grif->GetGriffinHit(two)->GetEnergyLow()<1815) ||
@@ -543,15 +545,20 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
       //all beta coincident spectra
       if(gotSceptar && scep->GetMultiplicity() >= 1) {
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
+            for(one = 0; one<(int)scep->GetMultiplicity();++one){
+               if(b == one)
+                  continue;
+               sceptarSceptarTime->Fill(scep->GetSceptarHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime());
+            }
             for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
-               //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime()) > coincHigh) {
-                  //continue;
-               //}
                griffinSceptarTime->Fill(grif->GetGriffinHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime());
                griffinSceptarCfd->Fill(grif->GetGriffinHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime());
                griffinSceptarEnergyVsTime->Fill(grif->GetGriffinHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime(),grif->GetGriffinHit(one)->GetEnergyLow());
                griffinSceptarEnergyVsCfd->Fill(grif->GetGriffinHit(one)->GetTime()-scep->GetSceptarHit(b)->GetTime(),grif->GetGriffinHit(one)->GetEnergyLow());
                //beta-gamma
+               if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime()) > 20) {
+                  continue;
+               }
                gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergyLow());
                
                griffinSceptarHits->Fill(scep->GetSceptarHit(b)->GetDetectorNumber(), grif->GetGriffinHit(one)->GetArrayNumber());
@@ -560,9 +567,9 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                   if(two == one) {
                      continue;
                   }
-                  //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(two)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(two)->GetTime()) > coincHigh) {
-                     //continue;
-                  //}
+                  if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(two)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(two)->GetTime()) > 20) {
+                     continue;
+                  }
                   griffinHitsB->Fill(grif->GetGriffinHit(one)->GetArrayNumber(),grif->GetGriffinHit(two)->GetArrayNumber());
                   if(two > one) {
                      timeB->Fill(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime());
@@ -577,9 +584,9 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                         cfdDiffModuleOneB->Fill(grif->GetGriffinHit(two)->GetCfd()-grif->GetGriffinHit(one)->GetCfd());
                      }
                   }
-                  if(!gotSceptar && (grif->GetGriffinHit(one)->GetAddress()%16 == 15 || grif->GetGriffinHit(two)->GetAddress()%16 == 15)) {
-                     continue;
-                  }
+           //       if(!gotSceptar && (grif->GetGriffinHit(one)->GetAddress()%16 == 15 || grif->GetGriffinHit(two)->GetAddress()%16 == 15)) {
+           //          continue;
+           //       }
                   matrixB->Fill(grif->GetGriffinHit(one)->GetEnergyLow(), grif->GetGriffinHit(two)->GetEnergyLow());
                   if(coincLow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < coincHigh) {
                      matrix_coincB->Fill(grif->GetGriffinHit(one)->GetEnergyLow(), grif->GetGriffinHit(two)->GetEnergyLow());
@@ -706,9 +713,9 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
       if(gotSceptar && scep->GetMultiplicity() >= 1) {
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             for(one = 0; one < (int) grif->GetAddBackMultiplicity(); ++one) {
-               //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(one)->GetTime()) > coincHigh) {
-                  //continue;
-               //}
+               if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackHit(one)->GetTime()) > 20) {
+                  continue;
+               }
                addbackSinglesB->Fill(grif->GetAddBackHit(one)->GetEnergyLow());
                for(two = 0; two < (int) grif->GetAddBackMultiplicity(); ++two) {
                   if(two == one) {
@@ -776,9 +783,9 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
       if(gotSceptar && scep->GetMultiplicity() >= 1) {
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             for(one = 0; one < (int) grif->GetAddBackCloverMultiplicity(); ++one) {
-               //if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) > coincHigh) {
-                  //continue;
-               //}
+               if(coincLow > TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) || TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetAddBackCloverHit(one)->GetTime()) > coincHigh) {
+                  continue;
+               }
                addbackCloverSinglesB->Fill(grif->GetAddBackCloverHit(one)->GetEnergyLow());
                for(two = 0; two < (int) grif->GetAddBackCloverMultiplicity(); ++two) {
                   if(two == one) {

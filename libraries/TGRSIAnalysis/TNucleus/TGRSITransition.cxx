@@ -33,6 +33,17 @@ void TGRSITransition::Print(Option_t *opt) {
 
 }
 
+std::string TGRSITransition::PrintToString(){
+//Writes transitions in a way that is nicer to ourput.
+  std::string buffer;
+   buffer.append(Form("%lf\t",fenergy)); 
+   buffer.append(Form("%lf\t",fenergy_uncertainty)); 
+   buffer.append(Form("%lf\t",fintensity)); 
+   buffer.append(Form("%lf\t",fintensity_uncertainty)); 
+  return buffer;
+
+}
+
 void TGRSITransition::Clear(Option_t *opt){
    //Clears TGRSITransition
   fenergy                 = 0.0; 

@@ -5,20 +5,21 @@ PLATFORM = $(shell uname)
 
 export PLATFORM:= $(PLATFORM)
 
-export CFLAGS = -std=c++0x -O2 -I$(PWD)/include -g -Wl,--no-as-needed
+export CFLAGS = -std=c++0x -O2 -I$(PWD)/include -g `root-config --cflags`
 
 #export GRSISYS:= $(GRSISYS)
 
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 export CFLAGS += -DOS_DARWIN -DHAVE_ZLIB #-lz
-export CFLAGS += `root-config --cflags`
+export CFLAGS += -I/opt/X11/include -Qunused-arguments
 export LFLAGS = -dynamiclib -undefined dynamic_lookup -single_module # 
 export SHAREDSWITCH = -install_name # ENDING SPACE
 export CPP = clang++ 
+export CXX = clang++
 else
 export __LINUX__:= 1	
-export CFLAGS += `root-config --cflags`
+export CFLAGS += -Wl,--no-as-needed 
 export SHAREDSWITCH = -shared -Wl,-soname,#NO ENDING SPACE
 export CPP = g++
 endif
