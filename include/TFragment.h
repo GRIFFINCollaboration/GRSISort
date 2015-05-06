@@ -73,12 +73,15 @@ public:
    double GetEnergy(int iter=0)const; //!
    long GetTimeStamp_ns(); //!
 
-
    Int_t Get4GCfd(int i=0); //!
+
+   bool  IsTigCore(); //! 
 
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 
    virtual void Print(Option_t *opt = ""); //!
+   
+
 
    bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }

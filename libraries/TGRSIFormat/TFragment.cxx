@@ -173,13 +173,18 @@ void TFragment::Print(Option_t *opt)	{
 
 }
 
+bool TFragment::IsTigCore() {
+  // If a tigress fragment a signal from the core
+  // return true, else false.
 
+  std::string channame = this->GetName();
+  if(channame.length()<9) //not a good mnemonic
+     return false;
+  if(!channame.compare(0,3,"TIG"))
+    if(!channame.compare(6,3,"N00"))
+      return true;
+  return false;
 
-
-
-
-
-
-
+};
 
 
