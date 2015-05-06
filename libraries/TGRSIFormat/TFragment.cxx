@@ -91,7 +91,7 @@ double TFragment::GetTZero() const {
 long TFragment::GetTimeStamp_ns() {
    long ns = 0;
    if(DataType==2 && Cfd.size()>0) {
-     ns = Cfd.at(0) & (0x03c00000) >> 22;
+     ns = (Cfd.at(0) >> 21) & 0xf;
    }
    return 10*GetTimeStamp() + ns;  
 }
@@ -101,7 +101,7 @@ Int_t TFragment::Get4GCfd(int i) { // return a 4G cfd in terms
      return -1;
   if(Cfd.size()<i)
      i = Cfd.size()-1;
-  return  Cfd.at(i)&0x003fffff;
+  return  Cfd.at(i)&0x001fffff;
 
 }
 
