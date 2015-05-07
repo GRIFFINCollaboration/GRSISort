@@ -396,7 +396,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 //		return -x;
 //	}
    //The master Filter Pattern is in an unstable state right now and is not
-   //always written to the maidas file
+   //always written to the midas file
 	if(SetGRIFMasterFilterPattern(data[x],EventFrag)) {
       x++;
 	} 
@@ -406,13 +406,13 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 	}
 
    //The channel trigger ID is in an unstable state right now and is not
-   //always written to the maidas file
+   //always written to the midas file
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -x;
 	}
 
-   //The Network packet number is for debugging and is not always writted to
+   //The Network packet number is for debugging and is not always written to
    //the midas file.
    if(SetGRIFNetworkPacket(data[x],EventFrag)) {
       x++;
@@ -431,7 +431,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 
 		switch(packet) {
          case 0x80000000: //The 8 packet type is for event headers
-               //if this happens, we have "accidentially" found another event.
+               //if this happens, we have "accidentally" found another event.
                break;
          case 0xc0000000: //The c packet type is for waveforms
 		         if(!no_waveforms) 
@@ -472,6 +472,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
    	       break;
 		};
 	}
+	delete EventFrag;
 	return -x;
 }
 
