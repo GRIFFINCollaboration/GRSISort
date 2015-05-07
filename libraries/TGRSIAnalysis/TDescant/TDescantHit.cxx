@@ -19,7 +19,6 @@ bool TDescantHit::InFilter(Int_t wantedfilter) {
 
 void TDescantHit::Clear(Option_t *opt)	{
 	detector = 0;
-   address = 0xffffffff;
    filter = 0;
    charge = -1;
    cfd    = -1;

@@ -13,7 +13,7 @@ ClassImp(TGRSIDetectorHit)
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TGRSIDetectorHit::TGRSIDetectorHit()	{ 
+TGRSIDetectorHit::TGRSIDetectorHit() : address(0xFFFFFFFF)	{ 
 //Default constructor
 
   /* Class()->IgnoreTObjectStreamer(true); */
@@ -35,6 +35,7 @@ void TGRSIDetectorHit::Print(Option_t *opt) {
 }
 
 void TGRSIDetectorHit::Clear(Option_t *opt) {
+   address = 0xFFFFFFFF;
 //General clear statement for a TGRSIDetectorHit.
 //Currently does nothing.
 }

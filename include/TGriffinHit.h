@@ -24,8 +24,6 @@ class TGriffinHit : public TGRSIDetectorHit {
 		UShort_t detector;
 		UShort_t crystal;
 
-      UInt_t address;
-
       Int_t filter;
 
       Int_t ppg;
@@ -63,8 +61,6 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       inline void SetTime(const Long_t &x)       { time   = x;   }   //!
 
-      inline void SetAddress(const UInt_t &x)      { address = x; } //!
-
       inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
 
 		void SetPosition(double dist =110);                                				  //!
@@ -83,8 +79,6 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline Double_t GetEnergyLow() const		     {	return energy_lowgain;   }  //!
       inline Double_t GetEnergyHigh() const		     {	return energy_highgain;   }  //!
 		inline Long_t   GetTime() const 			        {	return time;     }  //!
-
-      inline UInt_t   GetAddress() const             {   return address; } //!
 
       inline Int_t    GetFilterPatter() const         {   return filter;   }  //!
       inline Int_t    GetPPG() const                  {   return ppg;   }  //!

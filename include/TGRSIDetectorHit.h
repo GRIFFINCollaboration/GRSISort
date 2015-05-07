@@ -37,10 +37,13 @@ class TGRSIDetectorHit : public TObject 	{
 		//virtual TVector3 GetPosition() = 0;	//!
 		//virtual void SetPosition(TGRSIDetectorHit &) = 0;	//!
       virtual TVector3 GetPosition() const {return position;}
+      inline UInt_t   GetAddress() const             {   return address; } //!
+      inline void SetAddress(const UInt_t &x)      { address = x; } //!
 
       virtual Bool_t BremSuppressed(TGRSIDetectorHit*);
 
    protected:
+      UInt_t address;
       TVector3 position; //Position of hit detector
 
 	ClassDef(TGRSIDetectorHit,1) //Stores the information for a detector hit

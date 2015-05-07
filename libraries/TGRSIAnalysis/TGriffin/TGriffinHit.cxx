@@ -92,7 +92,6 @@ bool TGriffinHit::InFilter(Int_t wantedfilter) {
 void TGriffinHit::Clear(Option_t *opt)	{
 
 	detector = 0;
-   address = 0xffffffff;
    
    crystal  = 5;
 

@@ -24,8 +24,6 @@ class TPacesHit : public TGRSIDetectorHit {
 	private:
 		UShort_t crystal; //The paces crystal number
 
-      UInt_t address;   //The address of the read-out digitizer
-
       Int_t filter;     //The Master Filter Pattern
 
       Int_t ppg;        //The current PPG pattern
@@ -58,8 +56,6 @@ class TPacesHit : public TGRSIDetectorHit {
 
       inline void SetTime(const Long_t &x)       { time   = x;   }   //!
 
-      inline void SetAddress(const UInt_t &x)      { address = x; } //!
-
       inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
 		
 		/////////////////////////		/////////////////////////////////////
@@ -71,8 +67,6 @@ class TPacesHit : public TGRSIDetectorHit {
       inline Double_t GetEnergyLow() const		     {	return energy_lowgain;   }  //!
       inline Double_t GetEnergyHigh() const		     {	return energy_highgain;   }  //!
 		inline Long_t   GetTime() const 			        {	return time;     }  //!
-
-      inline UInt_t   GetAddress() const             {   return address; } //!
 
       inline Int_t    GetFilterPatter() const         {   return filter;   }  //!
       inline Int_t    GetPPG() const                  {   return ppg;   }  //!

@@ -21,7 +21,6 @@ class TDescantHit : public TGRSIDetectorHit {
 
   private:
     UShort_t detector;
-    UInt_t   address;
     Int_t    filter;
     Int_t    charge;
     Int_t    cfd;
@@ -34,7 +33,6 @@ class TDescantHit : public TGRSIDetectorHit {
   public:
 		/////////////////////////		/////////////////////////////////////
       inline void SetDetectorNumber(const int &x)  { detector = x; }   //!
-      inline void SetAddress(const UInt_t &x)      { address  = x; }   //!
       inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
       inline void SetCharge(const int &x)          { charge   = x; }   //!
       inline void SetCfd(const int &x)             { cfd      = x; }   //!
@@ -72,7 +70,6 @@ class TDescantHit : public TGRSIDetectorHit {
 
 		/////////////////////////		/////////////////////////////////////
 		inline UShort_t GetDetectorNumber()	     {	return detector; }  //!
-      inline UInt_t   GetAddress()             {   return address;  }  //!
       inline Int_t    GetFiterPatter()         {   return filter;   }  //!
 		inline Int_t    GetCharge()			     {	return charge;	  }  //!
       inline Int_t    GetCfd()                 {   return cfd;      }  //!
