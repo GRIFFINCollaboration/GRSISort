@@ -39,7 +39,7 @@ class TDescantHit : public TGRSIDetectorHit {
       inline void SetPsd(const int &x)             { psd      = x; }   //!
       inline void SetEnergy(const Double_t &x)     { energy   = x; }   //!
       inline void SetTime(const Long_t &x)         { time     = x; }   //!
-      inline void SetPosition(TVector3 x)          { position = x; }   //!
+   //   inline void SetPosition(TVector3 x)          { position = x; }   //!
 
 
       inline void SetWaveform(std::vector<Short_t> x) { 
@@ -76,6 +76,7 @@ class TDescantHit : public TGRSIDetectorHit {
       inline Int_t    GetPsd()                 {   return psd;      }  //!
       inline Double_t GetEnergy()	   	     {	return energy;   }  //!
 		inline Long_t   GetTime()			        {	return time;     }  //!
+      TVector3 GetPosition() const {}
 
       inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 

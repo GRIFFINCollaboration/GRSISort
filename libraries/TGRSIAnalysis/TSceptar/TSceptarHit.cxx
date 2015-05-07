@@ -25,7 +25,7 @@ void TSceptarHit::Clear(Option_t *opt)	{
    energy = 0.0;
    time   = 0;
 
-   position.SetXYZ(0,0,1);
+   //position.SetXYZ(0,0,1);
 
   // waveform.clear();
 }
@@ -46,7 +46,7 @@ void TSceptarHit::Add(TSceptarHit *hit)	{
    if(!CompareEnergy(this,hit)) {
       this->cfd    = hit->GetCfd();    
       this->time   = hit->GetTime();
-      this->position = hit->GetPosition();
+      //this->position = hit->GetPosition();
    }
    this->SetCharge(0);
 

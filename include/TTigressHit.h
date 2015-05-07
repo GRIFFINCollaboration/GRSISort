@@ -51,7 +51,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		void SetCrystalNumber(const int &i)	 { crystal = i; }					//!
 		void SetInitalHit(const int &i)		   { first_segment = i; }				//!
 
-		void SetPosition(const TVector3 &p)  { position = p;	}					//!
+//		void SetPosition(const TVector3 &p)  { position = p;	}					//!
 		//void SetDoppler(const double &d)	   { doppler = d;	}					//!
 		
 		/////////////////////////		/////////////////////////////////////
@@ -63,6 +63,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		inline double GetEnergy()		         {	return core.GetEnergy();	}		//!
 		inline double GetTime()			         {	return core.GetTime();		}		//!
     inline double GetTimeCFD()           {  return core.GetCfd(); } //!
+      TVector3 GetPosition() const {}
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
 		inline double GetDoppler(double beta,TVector3 *vec=0) { 

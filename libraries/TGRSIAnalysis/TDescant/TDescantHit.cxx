@@ -26,7 +26,7 @@ void TDescantHit::Clear(Option_t *opt)	{
    energy = 0.0;
    time   = 0;
 
-   position.SetXYZ(0,0,1);
+ //  position.SetXYZ(0,0,1);
 
    waveform.clear();
 }
@@ -48,7 +48,7 @@ void TDescantHit::Add(TDescantHit *hit)	{
       this->cfd    = hit->GetCfd();    
       this->psd    = hit->GetPsd();    
       this->time   = hit->GetTime();
-      this->position = hit->GetPosition();
+  //    this->position = hit->GetPosition();
    }
    this->SetCharge(0);
 

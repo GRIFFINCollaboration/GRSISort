@@ -64,7 +64,7 @@ void TTigressHit::CheckFirstHit(int charge,int segment)	{
 
 void TTigressHit::Add(TTigressHit *hit)	{
 	if(this == hit)	{
-		lasthit = position;
+//		lasthit = position;
 		lastpos = std::make_tuple(GetDetectorNumber(),GetCrystalNumber(),GetInitialHit());
 		return;
 	}

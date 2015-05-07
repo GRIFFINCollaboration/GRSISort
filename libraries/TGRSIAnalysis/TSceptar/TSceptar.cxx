@@ -126,8 +126,8 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 		
       dethit.SetDetectorNumber(gdata->GetDetNumber(i));
    
-      dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
-
+   //   dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
+//FIX
       sceptar_hits.push_back(dethit);
       TSceptar::SetBeta();
    }

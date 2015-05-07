@@ -239,8 +239,8 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       corehit.SetDetectorNumber(gdata->GetCloverNumber(i));
       corehit.SetCrystalNumber(gdata->GetCoreNumber(i));
    
-      corehit.SetPosition();
-      
+//      corehit.SetPosition();
+ //FIX     
       corehit.SetPPG(gdata->GetPPG(i));
 
       if((gdata->GetPPG(i) == 0xd000 && gdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event

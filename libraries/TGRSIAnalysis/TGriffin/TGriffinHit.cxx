@@ -106,7 +106,7 @@ void TGriffinHit::Clear(Option_t *opt)	{
    energy_highgain = 0.0;
    time   = 0;
 
-   position.SetXYZ(0,0,1);
+   //position.SetXYZ(0,0,1);
 
 	for(int x=0;x<bgo.size();x++)	{
 		bgo[x].Clear();
@@ -116,9 +116,9 @@ void TGriffinHit::Clear(Option_t *opt)	{
    waveform.clear();
 }
 
-void TGriffinHit::SetPosition(double dist) {
-	position = TGriffin::GetPosition(detector,crystal,dist);
-}
+//void TGriffinHit::SetPosition(double dist) {
+	//position = TGriffin::GetPosition(detector,crystal,dist);
+//}
 
 
 void TGriffinHit::Print(Option_t *opt) const	{
@@ -142,7 +142,7 @@ void TGriffinHit::Add(TGriffinHit *hit)	{
    if(!CompareEnergy(this,hit)) {
       this->cfd    = hit->GetCfd();    
       this->time   = hit->GetTime();
-      this->position = hit->GetPosition();
+     // this->position = hit->GetPosition();
    }
    this->SetChargeLow(0);
    this->SetChargeHigh(0);

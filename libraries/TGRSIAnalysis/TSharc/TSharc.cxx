@@ -117,10 +117,11 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
 			   hit.SetFrontStrip(sdata->GetFront_StripNbr(i));
 			   hit.SetBackStrip(sdata->GetBack_StripNbr(j));
 
-         hit.SetPosition(TSharc::GetPosition(hit.GetDetectorNumber(),
-                                             hit.GetFrontStrip(),
-                                             hit.GetBackStrip()));
-         
+        // hit.SetPosition(TSharc::GetPosition(hit.GetDetectorNumber(),
+          //                                   hit.GetFrontStrip(),
+          //hit.GetBackStrip()));
+         //FIX
+
         	this->sharc_hits.push_back(hit);
 
          //inline void SetPadE(const Double_t &tenergy)		{	p_energy = tenergy;	}	//!

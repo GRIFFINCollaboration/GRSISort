@@ -63,10 +63,11 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
 
-		void SetPosition(double dist =110);                                				  //!
+//		void SetPosition(double dist =110);                                				  //!
 
 		
 		/////////////////////////		/////////////////////////////////////
+      TVector3 GetPosition() const {}
 		inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
 		inline UShort_t GetCrystalNumber() const	     {	return crystal;  }  //!
 

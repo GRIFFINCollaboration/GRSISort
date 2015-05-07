@@ -70,6 +70,7 @@ class TPacesHit : public TGRSIDetectorHit {
 
       inline Int_t    GetFilterPatter() const         {   return filter;   }  //!
       inline Int_t    GetPPG() const                  {   return ppg;   }  //!
+      TVector3 GetPosition() const {}
       inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
 
       bool   InFilter(Int_t);  //!
