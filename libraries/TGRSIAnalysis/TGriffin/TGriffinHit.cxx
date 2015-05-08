@@ -120,6 +120,10 @@ void TGriffinHit::Clear(Option_t *opt)	{
 	//position = TGriffin::GetPosition(detector,crystal,dist);
 //}
 
+TVector3 TGriffinHit::GetPosition(Double_t radial_pos) const {
+   return TGriffin::GetPosition(detector,crystal,radial_pos);
+}
+
 
 void TGriffinHit::Print(Option_t *opt) const	{
 

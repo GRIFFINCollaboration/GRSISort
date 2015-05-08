@@ -67,7 +67,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 
 		
 		/////////////////////////		/////////////////////////////////////
-      TVector3 GetPosition() const {}
+      TVector3 GetPosition(Double_t radial_dist = 110.0) const;
 		inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
 		inline UShort_t GetCrystalNumber() const	     {	return crystal;  }  //!
 

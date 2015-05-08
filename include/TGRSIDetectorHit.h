@@ -36,7 +36,7 @@ class TGRSIDetectorHit : public TObject 	{
 
 		//virtual TVector3 GetPosition() = 0;	//!
 		//virtual void SetPosition(TGRSIDetectorHit &) = 0;	//!
-      virtual TVector3 GetPosition() const {printf("Not Implemented for %s",ClassName());}
+      virtual TVector3 GetPosition(Double_t pos_param) const {printf("Not Implemented for %s",ClassName());}
       inline UInt_t   GetAddress() const             {   return address; } //!
       inline void SetAddress(const UInt_t &x)      { address = x; } //!
 
