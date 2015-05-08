@@ -38,12 +38,15 @@ class TGRSIDetectorHit : public TObject 	{
 		//virtual void SetPosition(TGRSIDetectorHit &) = 0;	//!
       virtual TVector3 GetPosition(Double_t pos_param) const {printf("Not Implemented for %s",ClassName());}
       inline UInt_t   GetAddress() const             {   return address; } //!
+
       inline void SetAddress(const UInt_t &x)      { address = x; } //!
+      void SetPosition(const TVector3 &pos)        { position = pos; } //! 
 
       virtual Bool_t BremSuppressed(TGRSIDetectorHit*);
 
    protected:
       UInt_t address;
+      TVector3 position; //!
 
 	ClassDef(TGRSIDetectorHit,1) //Stores the information for a detector hit
 };
