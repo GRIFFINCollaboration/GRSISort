@@ -50,9 +50,9 @@ void MakeMatrices() {
 }
 #endif
 
-std::vector<std::pair<double,int> > AngleCombinations(double binWidth = 2., double distance = 110., bool folding = true) {
+std::vector<std::pair<double,int> > AngleCombinations(double distance = 110., bool folding = true) {
    std::vector<std::pair<double,int> > result;
-
+   std::vector<std::pair<double,int> > grouped_result;
    std::vector<double> angle;
    for(int firstDet = 1; firstDet <= 16; ++firstDet) {
       for(int firstCry = 0; firstCry < 4; ++firstCry) {
@@ -83,9 +83,8 @@ std::vector<std::pair<double,int> > AngleCombinations(double binWidth = 2., doub
    for(size_t a = 0; a < angle.size(); ++a) {
       //std::cout<<angle[a]<<" \t"<<result.size()<<std::endl;
       for(r = 0; r < result.size(); ++r) {
-         if(TMath::Abs(angle[a] - result[r].first/result[r].second) < binWidth) {
+	if(TMath::Abs(angle[a] - result[r].first) < 0.001) {
             //std::cout<<"found another angle close to "<<result[r].first/result[r].second<<": "<<angle[a]<<std::endl;
-            result[r].first += angle[a];
             (result[r].second)++;
             break;
          }
@@ -96,12 +95,37 @@ std::vector<std::pair<double,int> > AngleCombinations(double binWidth = 2., doub
       }
    }
 
-   //the angle is right now the sum of all angles, so we need to average it
-   for(auto res = result.begin(); res != result.end(); res++) {
-      (*res).first /= (*res).second;
-   }
-   
    //std::cout<<"found "<<result.size()<<" angles"<<std::endl;
+
+   //we now have all angles and weights
+   if(folding) {//if we fold we also want to group
+     std::vector<std::pair<double,int> > groupedResult;
+     for(size_t i = 0, r = 0; i < result.size(); ++i) {
+       //Groups angles so that weighting factors are fairly equally distributed giving approximately
+       //equal distributions to the angles. 
+       //Angles are averaged and weights are summed. 
+       switch(i) {
+       case 0:
+       case 1:
+	 groupedResult.push_back(result[i]);
+	 break;
+       case 2:
+       case 4:
+       case 6:
+	 if(i+1 >= result.size()) {
+	   std::cerr<<"Error!"<<std::endl;
+	 }
+	 groupedResult.push_back(std::make_pair((result[i].first+result[i+1].first)/2.,result[i].second+result[i+1].second));
+	 ++i;
+	 break;
+       default:
+	 groupedResult.push_back(std::make_pair((result[i].first+result[i+1].first+result[i+2].first)/3.,result[i].second+result[i+1].second+result[i+2].second));
+	 i+=2;	 
+	 break;
+       }
+     }
+     return groupedResult;
+   }
 
    return result;
 }
@@ -265,9 +289,8 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
    
    //angular correlation cube
    bool folding = true;//fold angles to range 0-90 degree
-   double angleWidth = 1.;//Determines the separation and grouping of angles
    
-   std::vector<std::pair<double,int> > angleCombinations = AngleCombinations(angleWidth, 110., folding);
+   std::vector<std::pair<double,int> > angleCombinations = AngleCombinations(110., folding);
    std::cout<<"got "<<angleCombinations.size()<<" angles"<<std::endl;
    for(auto ang = angleCombinations.begin(); ang != angleCombinations.end(); ang++) {
       std::cout<<(*ang).first<<" degree: "<<(*ang).second<<" combinations"<<std::endl;
@@ -442,10 +465,43 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             griffinHits->Fill(grif->GetGriffinHit(one)->GetArrayNumber(),grif->GetGriffinHit(two)->GetArrayNumber());
             double ang = grif->GetGriffinHit(one)->GetPosition().Angle(grif->GetGriffinHit(two)->GetPosition())*180./TMath::Pi();
             if(folding && ang > 90.) {
-               ang = 180. - ang;
+	      ang = 180. - ang; //angle folding
             }
+	    //This is just a rough way to match the angles by the way they are grouped 
+	    //I will come back to this and make it cleaner once I start working on more 
+	    //experimental data. 
+	    if(folded){
+	      if(ang > 25. && ang < 27.){
+		ang == 26.1459;
+	      }
+	      else if(ang > 30. && ang < 34.){
+		ang == 32.8002;
+	      }
+	      else if(ang > 40. && ang < 47.){
+		ang = 45.579;
+	      }
+	      else if(ang > 48. && ang < 54.){
+		ang = 50.7357;
+	      }
+	      else if(ang > 60. && ang < 64.){
+		ang = 61.9807;
+	      }
+	      else if(ang > 65 && ang < 68.){
+		ang = 66.3109;
+	      }
+	      else if(ang > 69. && ang < 74.){
+		ang = 71.2693;
+	      }
+	      else if(ang > 76. && ang < 84.){
+		ang = 79.3643;
+	      }
+	      else if(ang > 86.){
+		ang = 86.9799;
+	      }
+	    }
+
             for(angIndex = 0; angIndex < angleCombinations.size(); ++angIndex) {
-               if(TMath::Abs(ang - angleCombinations[angIndex].first) < angleWidth) {
+	      if(TMath::Abs(ang - angleCombinations[angIndex].first) < 1.0) {
                   break;
                }
             }
@@ -615,12 +671,12 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                ang = 180. - ang;
             }
             for(angIndex = 0; angIndex < angleCombinations.size(); ++angIndex) {
-               if(TMath::Abs(ang - angleCombinations[angIndex].first) < angleWidth) {
+               if(ang == angleCombinations[angIndex].first) {
                   break;
                }
             }
             if(angIndex < angleCombinations.size()) {
-               angCorrAddback->Fill(grif->GetGriffinHit(one)->GetEnergyLow(),grif->GetGriffinHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+               angCorrAddback->Fill(grif->GetAddbackHit(one)->GetEnergyLow(),grif->GetAddbackHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
             } else {
                std::cout<<"Error, didn't find any matching angle for "<<ang<<std::endl;
             }
@@ -635,12 +691,12 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             if(coincLow <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < coincHigh) {
                addbackMatrix_coinc->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
                if(angIndex < angleCombinations.size()) {
-                  angCorrAddback_coinc->Fill(grif->GetGriffinHit(one)->GetEnergyLow(),grif->GetGriffinHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+                  angCorrAddback_coinc->Fill(grif->GetAddbackHit(one)->GetEnergyLow(),grif->GetAddbackHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
                }
             } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < (bg+coincHigh)) {
                addbackMatrix_bg->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
                if(angIndex < angleCombinations.size()) {
-                  angCorrAddback_bg->Fill(grif->GetGriffinHit(one)->GetEnergyLow(),grif->GetGriffinHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+                  angCorrAddback_bg->Fill(grif->GetAddbackHit(one)->GetEnergyLow(),grif->GetAddbackHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
                }
             }
             if(grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition()) < TMath::Pi()/2.) {

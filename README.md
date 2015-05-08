@@ -5,8 +5,6 @@ A lean, mean, sorting machine.
 
 **There is a wiki!!  use the link->** [WIKI](http://github.com/GRIFFINCollaboration/GRSISort/wiki)
 
-test edit.
-
 To compile for a .sh shell execute `source SOURCEME.sh` in your terminal from the GRSISort Directory
 
 To avoid running this script every session, add the following to your **~/.bashrc**
