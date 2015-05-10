@@ -21,8 +21,9 @@ class TGriffinHit : public TGRSIDetectorHit {
 		virtual ~TGriffinHit();
 
 	private:
-		UShort_t detector;
-		UShort_t crystal;
+		UShort_t detector;//!
+		UShort_t crystal;//!
+      UShort_t address_high;
 
       Int_t filter;
 
@@ -31,15 +32,19 @@ class TGriffinHit : public TGRSIDetectorHit {
       Int_t charge_lowgain;
       Int_t charge_highgain;
       Int_t cfd;
-      Double_t energy_lowgain;
-      Double_t energy_highgain;
+      Double_t energy_lowgain;//!
+      Double_t energy_highgain;//!
       Long_t time;
 
 		std::vector<TCrystalHit> bgo;  //!
       std::vector<Short_t> waveform;  //!
+
+      Bool_t fdetectorset;//!
+      Bool_t fposset;//!
    
 
 	public:
+      void SetHit();
 
     //  static unsigned int GriffinSceptarSuppressors_det[16][4];
 		/////////////////////////		/////////////////////////////////////
@@ -63,11 +68,11 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
 
-//		void SetPosition(double dist =110);                                				  //!
-
-		
 		/////////////////////////		/////////////////////////////////////
       TVector3 GetPosition(Double_t radial_dist = 110.0) const;
+      Double_t GetEnergy(EGain gainlev = kLow) const { }
+      UInt_t GetAddress(EGain gainlev = kLow) const { return (gainlev == kLow) ? faddress : address_high; }
+
 		inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
 		inline UShort_t GetCrystalNumber() const	     {	return crystal;  }  //!
 

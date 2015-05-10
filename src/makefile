@@ -45,20 +45,20 @@ LIBS += -lTCal
 LIBS += -lTGRSIFit
 
 DETLIBS =  -lTigress
-DETLIBS += -lSharc
-DETLIBS += -lTriFoil
+#DETLIBS += -lSharc
+#DETLIBS += -lTriFoil
 #DETLIBS += -lRf
-DETLIBS += -lCSM
+#DETLIBS += -lCSM
 #DETLIBS += -lSpice
 #DETLIBS += -lS3
-DETLIBS += -lTip
+#DETLIBS += -lTip
 
 DETLIBS += -lGriffin
-DETLIBS += -lSceptar
-DETLIBS += -lPaces
+#DETLIBS += -lSceptar
+#DETLIBS += -lPaces
 #DETLIBS += -lDante
 #DETLIBS += -lZeroDegree
-DETLIBS += -lDescant
+#DETLIBS += -lDescant
 DETLIBS += -lGRSIDetector
 
 DETLIBS += -lGROOT

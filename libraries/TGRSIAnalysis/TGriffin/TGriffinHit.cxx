@@ -1,6 +1,7 @@
 
 #include "TGriffin.h"
 #include "TGriffinHit.h"
+#include "Globals.h"
 
 ClassImp(TGriffinHit)
 
@@ -82,6 +83,50 @@ TGriffinHit::TGriffinHit()	{
 TGriffinHit::~TGriffinHit()	{	}
 
 
+void TGriffinHit::SetHit() {
+   MNEMONIC mnemonic;
+   TChannel *channel = TChannel::GetChannel(GetAddress(kLow));
+   if(!channel){
+      Error("SetHit()","No TChannel Set");
+      return;
+   }
+      
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+	if(!channel) return;
+
+   UShort_t CoreNbr=5;
+   if(mnemonic.arraysubposition.compare(0,1,"B")==0)
+      CoreNbr=0;
+   else if(mnemonic.arraysubposition.compare(0,1,"G")==0)
+      CoreNbr=1;
+   else if(mnemonic.arraysubposition.compare(0,1,"R")==0)
+      CoreNbr=2;
+   else if(mnemonic.arraysubposition.compare(0,1,"W")==0)
+      CoreNbr=3;
+   
+   SetDetectorNumber(mnemonic.arrayposition);
+   SetCrystalNumber(CoreNbr);
+   fdetectorset = true;
+
+   SetEnergyLow(channel->CalibrateENG(charge_lowgain));
+
+   SetPosition(GetPosition());
+   fposset = true;
+
+   fhit_set = true;
+   //Now set the high gains
+/*   channel = TChannel(GetAddress(kHigh));
+   if(!channel)
+      return;
+   //Check to see if the mnemonic is consistant
+   if(GetDetectorNumber() != mnomnic.arraposition){
+      Error("SetHit()","Low and High gain mnemonics do not agree!");
+   }
+   SetEnergyHigh(channel);
+*/
+}
+
 bool TGriffinHit::InFilter(Int_t wantedfilter) {
  // check if the desired filter is in wanted filter;
  // return the answer;
@@ -91,6 +136,7 @@ bool TGriffinHit::InFilter(Int_t wantedfilter) {
 
 void TGriffinHit::Clear(Option_t *opt)	{
 
+   address_high = 0xFFFF;
 	detector = 0;
    
    crystal  = 5;
@@ -107,18 +153,18 @@ void TGriffinHit::Clear(Option_t *opt)	{
    time   = 0;
 
    //position.SetXYZ(0,0,1);
-
+/*
 	for(int x=0;x<bgo.size();x++)	{
 		bgo[x].Clear();
 	}
 	bgo.clear();
-
+*/
    waveform.clear();
-}
+   fhit_set = false;
+   fdetectorset = false;
+   fposset = false;
 
-//void TGriffinHit::SetPosition(double dist) {
-	//position = TGriffin::GetPosition(detector,crystal,dist);
-//}
+}
 
 TVector3 TGriffinHit::GetPosition(Double_t radial_pos) const {
    return TGriffin::GetPosition(detector,crystal,radial_pos);

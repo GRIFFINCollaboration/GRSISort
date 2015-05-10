@@ -24,7 +24,8 @@ class TCrystalHit : public TGRSIDetectorHit	{
 		std::vector<int> wave;	//!
 
 	public:
-		
+		void SetHit() {};
+
 		virtual void Clear(Option_t *opt = "");		//!
 		virtual void Print(Option_t *opt = "");		//!
 

@@ -41,7 +41,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		#endif
 
 	public:
-
+      void SetHit() {}
 		/////////////////////////		/////////////////////////////////////
 		void SetCore(TCrystalHit &temp)		  { core = temp;	} 					//!
 		void SetSegment(TCrystalHit &temp)	{ segment.push_back(temp);	}		//!
