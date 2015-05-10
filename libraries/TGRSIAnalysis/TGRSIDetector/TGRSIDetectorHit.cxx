@@ -13,7 +13,7 @@ ClassImp(TGRSIDetectorHit)
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TGRSIDetectorHit::TGRSIDetectorHit() : faddress(0xFFFFFFFF), fposition(0,0,1), fhit_set(false)	{ 
+TGRSIDetectorHit::TGRSIDetectorHit() : faddress(0xFFFFFFFF), fposition(0,0,1), fHitSet(false)	{ 
 //Default constructor
 
   /* Class()->IgnoreTObjectStreamer(true); */

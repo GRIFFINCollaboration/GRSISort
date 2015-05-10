@@ -48,12 +48,15 @@ class TGRSIDetectorHit : public TObject 	{
       void SetPosition(const TVector3 &pos)        { fposition = pos; } //! 
 
       virtual Bool_t BremSuppressed(TGRSIDetectorHit*);
-      Bool_t IsHitSet() const { return fhit_set; }
+      Bool_t IsHitSet() const { return fHitSet; }
 
    protected:
       UInt_t faddress;
       TVector3 fposition; //!
-      Bool_t fhit_set;    //!
+      Bool_t fHitSet;    //!
+      Bool_t fDetectorSet;//!
+      Bool_t fPosSet;//!
+      Bool_t fEnergySet;//!
 
 	ClassDef(TGRSIDetectorHit,1) //Stores the information for a detector hit
 };

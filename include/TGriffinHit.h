@@ -10,7 +10,7 @@
 
 #include "TVector3.h"
 
-#include "TSceptarHit.h"
+//#include "TSceptarHit.h"
 
 #include "TGRSIDetectorHit.h"
 
@@ -39,10 +39,6 @@ class TGriffinHit : public TGRSIDetectorHit {
 		std::vector<TCrystalHit> bgo;  //!
       std::vector<Short_t> waveform;  //!
 
-      Bool_t fdetectorset;//!
-      Bool_t fposset;//!
-   
-
 	public:
       void SetHit();
 
@@ -70,8 +66,9 @@ class TGriffinHit : public TGRSIDetectorHit {
 
 		/////////////////////////		/////////////////////////////////////
       TVector3 GetPosition(Double_t radial_dist = 110.0) const;
-      Double_t GetEnergy(EGain gainlev = kLow) const { }
+      Double_t GetEnergy(EGain gainlev = kLow) const;
       UInt_t GetAddress(EGain gainlev = kLow) const { return (gainlev == kLow) ? faddress : address_high; }
+      Int_t GetCharge(EGain gainlev = kLow) const;
 
 		inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
 		inline UShort_t GetCrystalNumber() const	     {	return crystal;  }  //!
@@ -97,14 +94,14 @@ class TGriffinHit : public TGRSIDetectorHit {
       static bool CompareEnergy(TGriffinHit*,TGriffinHit*);  //!
       void Add(TGriffinHit*);    //! 
 
-      Bool_t BremSuppressed(TSceptarHit*);
+   //   Bool_t BremSuppressed(TSceptarHit*);
 
 
 	public:
 		virtual void Clear(Option_t *opt = "");		                   //!
 		virtual void Print(Option_t *opt = "") const; 	                   //!
 
-	ClassDef(TGriffinHit,2)
+	ClassDef(TGriffinHit,2);
 };
 
 

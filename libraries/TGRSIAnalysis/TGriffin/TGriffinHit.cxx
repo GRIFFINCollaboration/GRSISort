@@ -93,7 +93,6 @@ void TGriffinHit::SetHit() {
       
    ClearMNEMONIC(&mnemonic);
    ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
-	if(!channel) return;
 
    UShort_t CoreNbr=5;
    if(mnemonic.arraysubposition.compare(0,1,"B")==0)
@@ -107,14 +106,21 @@ void TGriffinHit::SetHit() {
    
    SetDetectorNumber(mnemonic.arrayposition);
    SetCrystalNumber(CoreNbr);
-   fdetectorset = true;
+   fDetectorSet = true;
 
    SetEnergyLow(channel->CalibrateENG(charge_lowgain));
+   fEnergySet = true;
+
+   //Try doing the high energy.
+   channel = TChannel::GetChannel(GetAddress(kHigh));
+   if(channel){
+      SetEnergyHigh(channel->CalibrateENG(charge_highgain));
+   }
 
    SetPosition(GetPosition());
-   fposset = true;
+   fPosSet = true;
 
-   fhit_set = true;
+   fHitSet = true;
    //Now set the high gains
 /*   channel = TChannel(GetAddress(kHigh));
    if(!channel)
@@ -160,13 +166,17 @@ void TGriffinHit::Clear(Option_t *opt)	{
 	bgo.clear();
 */
    waveform.clear();
-   fhit_set = false;
-   fdetectorset = false;
-   fposset = false;
+   fHitSet = false;
+   fDetectorSet = false;
+   fPosSet = false;
+   fEnergySet = false;
 
 }
 
 TVector3 TGriffinHit::GetPosition(Double_t radial_pos) const {
+   if(fPosSet)
+      return fposition;
+
    return TGriffin::GetPosition(detector,crystal,radial_pos);
 }
 
@@ -201,11 +211,46 @@ void TGriffinHit::Add(TGriffinHit *hit)	{
    this->SetEnergyLow(this->GetEnergyLow() + hit->GetEnergyLow());
 }
 
-Bool_t TGriffinHit::BremSuppressed(TSceptarHit* schit){
+Double_t TGriffinHit::GetEnergy(EGain gainlev) const { 
+   if(!fEnergySet){
+      TChannel *channel = TChannel::GetChannel(GetAddress(gainlev));
+      if(!channel){
+         Error("GetEnergy(EGain)","No TChannel set for address %u",GetAddress(gainlev));
+         return 0.0;
+      }
+
+      return channel->CalibrateENG(GetCharge(gainlev));
+   }
+   else{
+      switch(gainlev){
+         case kLow:
+            return GetEnergyLow();
+         case kHigh:
+            return GetEnergyHigh();
+         default:
+            Error("GetEnergy(EGain)","Gain level does not exists");
+            return 0.0;
+      };
+   }
+}
+
+Int_t TGriffinHit::GetCharge(EGain gainlev) const {
+   switch(gainlev){
+      case kLow:
+         return GetChargeLow();
+      case kHigh:
+         return GetChargeHigh();
+      default:
+         Error("GetCharge(EGain)","Gain level does not exists");
+         return 0.0;
+      };
+
+}
+/*Bool_t TGriffinHit::BremSuppressed(TSceptarHit* schit){
  
 
    return false;
 }
-
+*/
 
 
