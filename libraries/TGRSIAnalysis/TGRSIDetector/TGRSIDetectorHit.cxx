@@ -22,6 +22,13 @@ TGRSIDetectorHit::~TGRSIDetectorHit()	{
 //Default destructor
 }
 
+void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
+  TObject::Copy((TObject&)rhs);
+  ((TGRSIDetectorHit&)rhs).address  = address;
+  ((TGRSIDetectorHit&)rhs).position = position;
+  ((TGRSIDetectorHit&)rhs).waveform = waveform;
+}
+
 void TGRSIDetectorHit::Print(Option_t *opt) const {
 //General print statement for a TGRSIDetectorHit.
 //Currently prints nothing.

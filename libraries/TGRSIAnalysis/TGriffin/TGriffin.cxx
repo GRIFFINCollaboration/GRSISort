@@ -18,8 +18,8 @@ ClassImp(TGriffin)
 
 
 bool TGriffin::fSetCoreWave = false;
-bool TGriffin::fSetBGOHits  = false;
-bool TGriffin::fSetBGOWave  = false;
+//bool TGriffin::fSetBGOHits  = false;
+//bool TGriffin::fSetBGOWave  = false;
 
 long TGriffin::fCycleStart  = 0;
 long TGriffin::fLastPPG     = 0;
@@ -58,32 +58,31 @@ TVector3 TGriffin::gCloverPosition[17] = {
 };
 
 
-TGriffin::TGriffin() : grifdata(0), bgodata(0)	{
-   //Default Constructor
-   //Class()->IgnoreTObjectStreamer(true);
-   //if(!gCloverPositionSet) {
-      //gCloverPositionSet = true;
-      //InitCloverPositions();
-   //}
+TGriffin::TGriffin(): TGRSIDetector(),grifdata(0),bgodata(0)	{
    Clear();
 }
 
 TGriffin::TGriffin(const TGriffin& rhs) {
-     grifdata     = 0;
-     bgodata      = 0;
-     griffin_hits = rhs.griffin_hits;
-     addback_hits = rhs.addback_hits;
-     addback_clover_hits = rhs.addback_clover_hits;
-     fSetBGOHits  = rhs.fSetBGOHits;
-     fSetCoreWave = rhs.fSetCoreWave;
-     fSetBGOWave  = rhs.fSetBGOWave;
-     ftapemove    = rhs.ftapemove;
-     fbackground  = rhs.fbackground;
-     fbeamon      = rhs.fbeamon;
-     fdecay       = rhs.fdecay;
+  Copy(rhs);
 }
 
-TGriffin::~TGriffin()	{
+void TGriffin::Copy(TGriffin &rhs) const {
+  TGRSIDetector::Copy((TGRSIDetector)rhs);
+
+  ((TGriffin&)rhs).griffin_hits        = griffin_hits;
+  ((TGriffin&)rhs).addback_hits        = addback_hits;
+  ((TGriffin&)rhs).addback_clover_hits = addback_clover_hits;
+  ((TGriffin&)rhs).fSetBGOHits         = fSetBGOHits;
+  ((TGriffin&)rhs).fSetCoreWave        = fSetCoreWave;
+  ((TGriffin&)rhs).fSetBGOWave         = fSetBGOWave;
+  ((TGriffin&)rhs).ftapemove           = ftapemove;
+  ((TGriffin&)rhs).fbackground         = fbackground;
+  ((TGriffin&)rhs).fbeamon             = fbeamon;      
+  ((TGriffin&)rhs).fdecay              = fdecay;       
+  return;                                      
+}                                       
+
+TGriffin::~TGriffin():~TGRSIDetector()	{
    //Default Destructor
    if(grifdata) delete grifdata;
    if(bgodata)  delete bgodata;

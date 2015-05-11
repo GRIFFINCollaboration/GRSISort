@@ -30,8 +30,12 @@ class TGRSIDetectorHit : public TObject 	{
    // 2. An "Energy value."  What this is left the parent class, but it is going to return a double.
    // 3. A   Time  value.     This should be a time value common for detectors (derived from the timestamp)
    //                        Units matter here, I am adobting the ns as the standard.
+                           
    // 4. A   Position.       Tvector3s are nice, they make doing geometery trival.  Each hit needs one to determine
    //                        where it is in space, the actual memory of the thing will be stored here.
+   //                        ***  This is not actually needed here unless we start do waveform analysis to 
+   //                        ***  better determine where the hit is.
+                           
    // 5. The waveform.       Since we are dealing with digital daqs, a waveform is a fairly common thing to have.  It
    //                        may not allows be present, put it is echoed enough that the storage for it belongs here.
 
@@ -41,6 +45,7 @@ class TGRSIDetectorHit : public TObject 	{
 		virtual ~TGRSIDetectorHit();
 
 	public:
+      virtual void Copy(TGRSIDetectorHit &) const;    //!
 		virtual void Clear(Option_t* opt = "") const;	//!
 		virtual void Print(Option_t* opt = "");	      //!
       //We need a common function for all detectors in here

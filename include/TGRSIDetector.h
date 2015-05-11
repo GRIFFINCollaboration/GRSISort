@@ -37,17 +37,17 @@ class TGRSIDetector : public TObject	{
 		virtual ~TGRSIDetector();
 
 	public: 
-		virtual void BuildHits(TGRSIDetectorData *data=0,Option_t * = "") = 0;			   //!
-		virtual void FillData(TFragment*,TChannel*,MNEMONIC*) = 0; //!
+		virtual void BuildHits(TGRSIDetectorData *data=0,Option_t * = "") = 0; //!
+		virtual void FillData(TFragment*,TChannel*,MNEMONIC*)             = 0; //!
 
-      virtual void Clear(Option_t *opt = "");		//!
-		virtual void Print(Option_t *opt = "") const;		//!
+      virtual void Copy(TGRSIDetector&) const;        //!
+      virtual void Clear(Option_t *opt = "");         //!
+		virtual void Print(Option_t *opt = "") const;   //!
 
       //virtual TGRSIDetectorData *GetData() //{ //return data;}
-
       //TGRSIDetectorData *data;    //!
 
-   ClassDef(TGRSIDetector,0) //Abstract class for detector systems 
+   ClassDef(TGRSIDetector,1) //Abstract class for detector systems 
 };
 
 

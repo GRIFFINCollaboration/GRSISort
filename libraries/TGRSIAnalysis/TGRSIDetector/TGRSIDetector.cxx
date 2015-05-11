@@ -15,17 +15,17 @@ ClassImp(TGRSIDetector)
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TGRSIDetector::TGRSIDetector() {
+TGRSIDetector::TGRSIDetector():TObject() {
    //Default constructor.
-
-/*   Class()->IgnoreTObjectStreamer(true);
-*/
 }
 
 
-TGRSIDetector::~TGRSIDetector()	{
+TGRSIDetector::~TGRSIDetector():~TObject()	{
 //Default Destructor.
+}
 
+void TGRSIDetector::Copy(TGRSIDetector &rhs) const {
+   TObject::Copy((TObject&)rhs);
 }
 
 void TGRSIDetector::Print(Option_t *opt) const {
