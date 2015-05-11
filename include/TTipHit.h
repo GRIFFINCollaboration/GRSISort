@@ -39,7 +39,7 @@ class TTipHit : public TGRSIDetectorHit {
       inline void SetCfd(const int &x)             { cfd      = x; }   //!
       inline void SetEnergy(const Double_t &x)     { energy   = x; }   //!
       inline void SetTime(const Long_t &x)         { time     = x; }   //!
-      inline void SetPosition(TVector3 x)          { position = x; }   //!
+  //    inline void SetPosition(TVector3 x)          { position = x; }   //!
       inline void SetPID(Double_t x)          		{ PID = x; }   //!
 
       inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
@@ -53,6 +53,7 @@ class TTipHit : public TGRSIDetectorHit {
       inline Double_t GetEnergy()	   	     {	return energy;   }  //!
 		inline Long_t   GetTime()			        {	return time;     }  //!
 		inline Double_t GetPID()			        {	return PID;     }  //!
+      TVector3 GetPosition() const {}
 
       inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 

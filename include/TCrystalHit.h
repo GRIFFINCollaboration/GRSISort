@@ -24,7 +24,8 @@ class TCrystalHit : public TGRSIDetectorHit	{
 		std::vector<int> wave;	//!
 
 	public:
-		
+		void SetHit() {};
+
 		virtual void Clear(Option_t *opt = "");		//!
 		virtual void Print(Option_t *opt = "");		//!
 
@@ -34,6 +35,7 @@ class TCrystalHit : public TGRSIDetectorHit	{
 		inline double GetTime()		{	return time;	}	//!
 		inline double GetCfd()		{	return cfd;	}	//!
 
+      TVector3 GetPosition() const {}
 		inline void SetSegmentNumber(const int &seg) { segment = seg;   }       //!	
 		inline void SetCharge(const int &chg)	{	charge = chg;	}	//!
 		inline void SetEnergy(const double &e)	{	energy = e;	}	//!

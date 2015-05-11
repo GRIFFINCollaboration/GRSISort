@@ -15,6 +15,7 @@ ClassImp(TGRSIDetectorHit)
 
 TGRSIDetectorHit::TGRSIDetectorHit(const int &fAddress):TObject()	{ 
   //Default constructor
+  Clear();
   address = fAddress;
   Class()->IgnoreTObjectStreamer(true);
 }

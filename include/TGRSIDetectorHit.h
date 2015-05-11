@@ -55,27 +55,36 @@ class TGRSIDetectorHit : public TObject 	{
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
 
 		inline void SetPosition(const TVector3& temp_pos) { position = temp_pos; } //!
-		inline TVector3 GetPosition() { return position; }	//!
+		inline TVector3 GetPosition() const { return position; }	//!
       
+      //Abstract methods. These are required in all derived classes
       virtual double GetEnergy(Option_t *opt="") const { AbstractMethod("GetEnergy"); }
       virtual double GetTime(Option_t *opt="")   const { AbstractMethod("GetTime");   }  // Returns a time value to the nearest nanosecond!
+      //virtual void SetHit() { AbstractMethod("SetHit()");}
+      //We need a common function for all detectors in here
+		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
+
 
       inline void  SetAddress(const Int_t &temp_address) { address = temp_address; } //!
-      inline Int_t GetAddress()                          { return address; }         //!
+      inline Int_t GetAddress()     const                { return address; }         //!
 
-      inline TChannel *GetChannel()                   { return TChannel::GetChannel(address); }  //!
+      inline TChannel *GetChannel() const                { return TChannel::GetChannel(address); }  //!
 
       inline void SetWaveform(std::vector<Short_t> x) { waveform = x;    } //!
       inline std::vector<Short_t> GetWaveForm() const { return waveform; } //!
 
       inline void           SetParent(TGRSIDetector *fParent)   { parent = (TObject*)fParent ; } //!
-      inline TGRSIDetector *GetParent()                         { return ((TGRSIDetector*)parent.GetObject()); } //!
+      inline TGRSIDetector *GetParent() const                   { return ((TGRSIDetector*)parent.GetObject()); } //!
 
    protected:
       Int_t     address;  //address of the the channel in the DAQ.
       TVector3  position; //Position of hit detector.
       TRef      parent;   //pointer to the mother classs;
       std::vector<Short_t> waveform;  
+      //Bool_t fHitSet;    //!
+      //Bool_t fDetectorSet;//!
+      //Bool_t fPosSet;//!
+      //Bool_t fEnergySet;//!
 
 	ClassDef(TGRSIDetectorHit,2) //Stores the information for a detector hit
 };

@@ -10,7 +10,7 @@
 
 #include "TVector3.h"
 
-#include "TSceptarHit.h"
+//#include "TSceptarHit.h"
 
 #include "TGRSIDetectorHit.h"
 
@@ -33,6 +33,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 		/////////////////////////  Setters	/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { filter = x;   }                  //! 
       inline void SetPPG(const int &x)             { ppg = x;   }                     //! 
+      //void SetHit();
 
       inline void SetChargeLow(const int &x)       { charge_lowgain  = x;   }         //!
       inline void SetChargeHigh(const int &x)      { charge_highgain = x;   }         //!
@@ -46,23 +47,21 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline Int_t    GetFilterPatter() const         {   return filter;   }          //!
       inline Int_t    GetPPG() const                  {   return ppg;   }             //!
 
-      inline Int_t    GetChargeLow() const			  {	return charge_lowgain;	  }  //!
-		inline Int_t    GetChargeHigh() const			  {	return charge_highgain;	  }  //!
-
+             Int_t    GetCharge(Option_t *opt ="low") const;                          //!
       inline Int_t    GetCfd() const                 {   return cfd;      }           //!
-		inline Long_t   GetTime() const 			        {	return time;     }           //!
+		//inline Long_t   GetTime() const 			        {	return time;     }           //!
 
       /////////////////////////  Required Functions ///////////////////////////
-      double GetEnergy();                                                             //!
-      double GetTime();                                                               //!
+      double GetEnergy(Option_t *opt ="low") const;                             //!
+      double GetTime(Option_t *opt = "") const;                                 //!
 
       /////////////////////////  Recommended Functions/////////////////////////
 
 
 
 		/////////////////////////  TChannel Helpers /////////////////////////////////////
-      Int_t GetDetector();                                                           //!
-      Int_t GetCrystal();                                                            //!
+      const Int_t GetDetector() const;                                                //!
+      const Int_t GetCrystal()  const;                                                //!
 
 		/////////////////////////		/////////////////////////////////////
 		//inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
@@ -82,18 +81,17 @@ class TGriffinHit : public TGRSIDetectorHit {
       //inline Int_t    GetPPG() const                  {   return ppg;   }  //!
       //inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
 
-//      bool   InFilter(Int_t);  //!
+      bool   InFilter(Int_t);  //!
 
 //      static bool CompareEnergy(TGriffinHit*,TGriffinHit*);  //!
 //      void Add(TGriffinHit*);    //! 
-
       //Bool_t BremSuppressed(TSceptarHit*);
 
 	public:
 		virtual void Clear(Option_t *opt = "");		                   //!
 		virtual void Print(Option_t *opt = "") const; 	                   //!
 
-	ClassDef(TGriffinHit,2)
+	ClassDef(TGriffinHit,2);
 };
 
 
