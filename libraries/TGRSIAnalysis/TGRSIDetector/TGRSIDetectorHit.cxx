@@ -13,7 +13,7 @@ ClassImp(TGRSIDetectorHit)
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TGRSIDetectorHit::TGRSIDetectorHit()	{ 
+TGRSIDetectorHit::TGRSIDetectorHit() : faddress(0xFFFFFFFF), fposition(0,0,1), fHitSet(false)	{ 
 //Default constructor
 
   /* Class()->IgnoreTObjectStreamer(true); */
@@ -29,12 +29,14 @@ Bool_t TGRSIDetectorHit::BremSuppressed(TGRSIDetectorHit *bremorigin){
    return false;
 }
 
-void TGRSIDetectorHit::Print(Option_t *opt) {
+void TGRSIDetectorHit::Print(Option_t *opt) const {
 //General print statement for a TGRSIDetectorHit.
 //Currently prints nothing.
 }
 
 void TGRSIDetectorHit::Clear(Option_t *opt) {
+   faddress = 0xFFFFFFFF;
+   fposition.SetXYZ(0.0,0.0,1.0);
 //General clear statement for a TGRSIDetectorHit.
 //Currently does nothing.
 }

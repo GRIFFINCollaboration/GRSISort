@@ -10,7 +10,7 @@
 
 #include "TVector3.h"
 
-#include "TSceptarHit.h"
+//#include "TSceptarHit.h"
 
 #include "TGRSIDetectorHit.h"
 
@@ -21,10 +21,9 @@ class TGriffinHit : public TGRSIDetectorHit {
 		virtual ~TGriffinHit();
 
 	private:
-		UShort_t detector;
-		UShort_t crystal;
-
-      UInt_t address;
+		UShort_t detector;//!
+		UShort_t crystal;//!
+      UShort_t address_high;
 
       Int_t filter;
 
@@ -33,15 +32,15 @@ class TGriffinHit : public TGRSIDetectorHit {
       Int_t charge_lowgain;
       Int_t charge_highgain;
       Int_t cfd;
-      Double_t energy_lowgain;
-      Double_t energy_highgain;
+      Double_t energy_lowgain;//!
+      Double_t energy_highgain;//!
       Long_t time;
 
 		std::vector<TCrystalHit> bgo;  //!
       std::vector<Short_t> waveform;  //!
-   
 
 	public:
+      void SetHit();
 
     //  static unsigned int GriffinSceptarSuppressors_det[16][4];
 		/////////////////////////		/////////////////////////////////////
@@ -63,14 +62,14 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       inline void SetTime(const Long_t &x)       { time   = x;   }   //!
 
-      inline void SetAddress(const UInt_t &x)      { address = x; } //!
-
       inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
 
-		void SetPosition(double dist =110);                                				  //!
-
-		
 		/////////////////////////		/////////////////////////////////////
+      TVector3 GetPosition(Double_t radial_dist = 110.0) const;
+      Double_t GetEnergy(EGain gainlev = kLow) const;
+      UInt_t GetAddress(EGain gainlev = kLow) const { return (gainlev == kLow) ? faddress : address_high; }
+      Int_t GetCharge(EGain gainlev = kLow) const;
+
 		inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
 		inline UShort_t GetCrystalNumber() const	     {	return crystal;  }  //!
 
@@ -84,8 +83,6 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline Double_t GetEnergyHigh() const		     {	return energy_highgain;   }  //!
 		inline Long_t   GetTime() const 			        {	return time;     }  //!
 
-      inline UInt_t   GetAddress() const             {   return address; } //!
-
       inline Int_t    GetFilterPatter() const         {   return filter;   }  //!
       inline Int_t    GetPPG() const                  {   return ppg;   }  //!
       inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
@@ -97,14 +94,14 @@ class TGriffinHit : public TGRSIDetectorHit {
       static bool CompareEnergy(TGriffinHit*,TGriffinHit*);  //!
       void Add(TGriffinHit*);    //! 
 
-      Bool_t BremSuppressed(TSceptarHit*);
+   //   Bool_t BremSuppressed(TSceptarHit*);
 
 
 	public:
 		virtual void Clear(Option_t *opt = "");		                   //!
 		virtual void Print(Option_t *opt = "") const; 	                   //!
 
-	ClassDef(TGriffinHit,2)
+	ClassDef(TGriffinHit,2);
 };
 
 

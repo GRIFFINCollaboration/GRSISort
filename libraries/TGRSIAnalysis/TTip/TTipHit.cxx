@@ -33,7 +33,7 @@ void TTipHit::Clear(Option_t *opt)	{
    energy = 0.0;
    time   = 0;
 
-   position.SetXYZ(0,0,1);
+   //position.SetXYZ(0,0,1);
 
   // waveform.clear();
 }

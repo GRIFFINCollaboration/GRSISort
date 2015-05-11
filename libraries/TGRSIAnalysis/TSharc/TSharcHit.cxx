@@ -37,7 +37,7 @@ void TSharcHit::Clear(Option_t *options)	{
 	back_address   = 0xffffffff;
 
 	detectornumber	=	0;	//
-	position.SetXYZ(0,0,1); // 
+	//position.SetXYZ(0,0,1); // 
 
 }
 
@@ -95,7 +95,9 @@ Double_t  TSharcHit::GetPadChgHeight() {
 Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
 	TVector3 posoff; 
 	posoff.SetXYZ(Xoff,Yoff,Zoff);
-   return (position+posoff).Theta();
+   //return (position+posoff).Theta();
+   //FIX
+   return 0.0;
 }
 
 Double_t TSharcHit::PadEnergyCal() {

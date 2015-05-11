@@ -29,19 +29,34 @@ class TGRSIDetectorHit : public TObject 	{
 		virtual ~TGRSIDetectorHit();
 
 	public:
+      enum EGain { kHigh, kLow };
 		virtual void Clear(Option_t* opt = "");	//!
-		virtual void Print(Option_t* opt = "");	//!
+		virtual void Print(Option_t* opt = "") const;	//!
+  
+      //Abstract methods. These are required in all derived classes
+      virtual Double_t GetEnergy(EGain gainlev = kLow) const { AbstractMethod("GetEnergy()");}
+      virtual void SetHit() { AbstractMethod("SetHit()");}
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
 
 		//virtual TVector3 GetPosition() = 0;	//!
 		//virtual void SetPosition(TGRSIDetectorHit &) = 0;	//!
-      virtual TVector3 GetPosition() const {return position;}
+      virtual TVector3 GetPosition(Double_t pos_param) const {   return fposition; }
+      virtual inline UInt_t   GetAddress(EGain gainlev = kLow) const {   return faddress;  } //!
+
+      inline void SetAddress(const UInt_t &x)      { faddress = x; } //!
+      void SetPosition(const TVector3 &pos)        { fposition = pos; } //! 
 
       virtual Bool_t BremSuppressed(TGRSIDetectorHit*);
+      Bool_t IsHitSet() const { return fHitSet; }
 
    protected:
-      TVector3 position; //Position of hit detector
+      UInt_t faddress;
+      TVector3 fposition; //!
+      Bool_t fHitSet;    //!
+      Bool_t fDetectorSet;//!
+      Bool_t fPosSet;//!
+      Bool_t fEnergySet;//!
 
 	ClassDef(TGRSIDetectorHit,1) //Stores the information for a detector hit
 };

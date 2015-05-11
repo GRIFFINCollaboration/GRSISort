@@ -165,7 +165,9 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       }
     }  // all bgo's set.
 
-		tigress_hits.at(i).SetPosition(GetPosition(&(tigress_hits.at(i))));
+	//	tigress_hits.at(i).SetPosition(GetPosition(&(tigress_hits.at(i))));
+//FIX
+
 		//DopplerCorrect(&(tigress_hits.at(i)));
 	}
 

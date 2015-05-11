@@ -134,8 +134,8 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
          }
       }
 		
-      dethit.SetPosition(TDescant::GetPosition(gdata->GetDetNumber(i)));
-
+//      dethit.SetPosition(TDescant::GetPosition(gdata->GetDetNumber(i)));
+//FIX
       descant_hits.push_back(dethit);
       TDescant::SetHit();
    }

@@ -36,8 +36,6 @@ bool TPacesHit::InFilter(Int_t wantedfilter) {
 
 void TPacesHit::Clear(Option_t *opt)	{
  //Clear the TPacesHit
-   address = 0xffffffff;
-   
    crystal  = 6;
 
    charge_lowgain = -1;
