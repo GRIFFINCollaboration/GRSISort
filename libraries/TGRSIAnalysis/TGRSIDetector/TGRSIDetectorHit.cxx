@@ -13,8 +13,15 @@ ClassImp(TGRSIDetectorHit)
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TGRSIDetectorHit::TGRSIDetectorHit()	{ 
+TGRSIDetectorHit::TGRSIDetectorHit(const int &fAddress):TObject()	{ 
   //Default constructor
+  address = fAddress;
+  Class()->IgnoreTObjectStreamer(true);
+}
+
+TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs)	{ 
+  //Default Copy constructor
+  ((TGRSIDetectorHit&)rhs).Copy(*this);
   Class()->IgnoreTObjectStreamer(true);
 }
 
@@ -38,6 +45,6 @@ void TGRSIDetectorHit::Clear(Option_t *opt) {
   //General clear statement for a TGRSIDetectorHit.
   address = 0xffffffff;    // -1
   position.SetXYZ(0,0,1);  // unit vector along the beam.
-  wavefrom.clear();        // reset size to zero.
+  waveform.clear();        // reset size to zero.
 }
 

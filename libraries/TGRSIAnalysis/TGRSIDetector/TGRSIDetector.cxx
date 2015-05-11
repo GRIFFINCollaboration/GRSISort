@@ -1,6 +1,7 @@
 
 
 #include "TGRSIDetector.h"
+#include "TGRSIDetectorHit.h"
 #include <TClass.h>
 
 ClassImp(TGRSIDetector)
@@ -19,8 +20,12 @@ TGRSIDetector::TGRSIDetector():TObject() {
    //Default constructor.
 }
 
+TGRSIDetector::TGRSIDetector(const TGRSIDetector& rhs) {
+   //Default Copy constructor.
+   ((TGRSIDetector&)rhs).Copy(*this);
+}
 
-TGRSIDetector::~TGRSIDetector():~TObject()	{
+TGRSIDetector::~TGRSIDetector()	{
 //Default Destructor.
 }
 
@@ -38,5 +43,6 @@ void TGRSIDetector::Clear(Option_t *opt) {
 // Default clear statement for TGRSIDetector. Currently does
 // nothing
 }
+
 
 

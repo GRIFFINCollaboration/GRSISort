@@ -11,9 +11,11 @@
 #include "TChannel.h"
 #include "TVector3.h" 
 #include "TObject.h" 
+#include "TRef.h"
 #include "Rtypes.h"
 
 class TGRSIDetector;
+
 
 ////////////////////////////////////////////////////////////////
 //                                                            //
@@ -41,32 +43,33 @@ class TGRSIDetectorHit : public TObject 	{
 
 
 	public:
-		TGRSIDetectorHit(const int &fAddress=0xffffffff)    { address=fAddress; }
+		TGRSIDetectorHit(const int &fAddress=0xffffffff);    //{ address=fAddress; }
+		TGRSIDetectorHit(const TGRSIDetectorHit&);
 		virtual ~TGRSIDetectorHit();
 
 	public:
       virtual void Copy(TGRSIDetectorHit &) const;    //!
-		virtual void Clear(Option_t* opt = "") const;	//!
-		virtual void Print(Option_t* opt = "");	      //!
+		virtual void Clear(Option_t* opt = "");         //!
+		virtual void Print(Option_t* opt = "") const;	//!
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
 
-		inline void SetPosition(const TVector3& temp_ pos) { position = temp_pos; } //!
+		inline void SetPosition(const TVector3& temp_pos) { position = temp_pos; } //!
 		inline TVector3 GetPosition() { return position; }	//!
       
-      virtual double GetEnergy() const = 0;
-      virtual double GetTime()   const = 0;  // Returns a time value to the nearest nanosecond!
+      virtual double GetEnergy(Option_t *opt="") const { AbstractMethod("GetEnergy"); }
+      virtual double GetTime(Option_t *opt="")   const { AbstractMethod("GetTime");   }  // Returns a time value to the nearest nanosecond!
 
-      inline void  SetAddress(Int_t &temp_address)    { address = temp_address; } //!
-      inline Int_t GetAddress()                       { return address; }         //!
+      inline void  SetAddress(const Int_t &temp_address) { address = temp_address; } //!
+      inline Int_t GetAddress()                          { return address; }         //!
 
-      inline void TChannel *GetChannel()              { return TChannel::GetChannel(address); }
+      inline TChannel *GetChannel()                   { return TChannel::GetChannel(address); }  //!
 
       inline void SetWaveform(std::vector<Short_t> x) { waveform = x;    } //!
       inline std::vector<Short_t> GetWaveForm() const { return waveform; } //!
 
-      inline void           SetParent(TGRSIDetector *fParent)   { parent = fParent ; } //!
-      inline TGRSIDetector *GetParent(TGRSIDetector *fParent)   { return ((TGRSIDector*)parent.GetObject()); } //!
+      inline void           SetParent(TGRSIDetector *fParent)   { parent = (TObject*)fParent ; } //!
+      inline TGRSIDetector *GetParent()                         { return ((TGRSIDetector*)parent.GetObject()); } //!
 
    protected:
       Int_t     address;  //address of the the channel in the DAQ.

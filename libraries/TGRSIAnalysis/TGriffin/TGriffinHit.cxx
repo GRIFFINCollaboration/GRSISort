@@ -8,10 +8,10 @@ TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{
 	Clear();
 }
 
-TGriffinHit::~TGriffinHit():~TGRSIDetectorHit()	{	}
+TGriffinHit::~TGriffinHit()  {	}
 
 void TGriffinHit::Clear(Option_t *opt)	{
-   TGRSIDetector::Clear(opt);    // clears the base (address, position and waveform)
+   TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
    charge_lowgain  = -1;
    charge_highgain = -1;
    filter          =  0;
@@ -21,10 +21,10 @@ void TGriffinHit::Clear(Option_t *opt)	{
 }
 
 void TGriffinHit::Print(Option_t *opt) const	{
-   printf("Griffin Detector: %i\n",detector);
-	printf("Griffin Crystal:  %i\n",crystal);
-	printf("Griffin hit energy: %.2f\n",GetEnergyLow());
-	printf("Griffin hit time:   %ld\n",GetTime());
+   //printf("Griffin Detector: %i\n",detector);
+	//printf("Griffin Crystal:  %i\n",crystal);
+	//printf("Griffin hit energy: %.2f\n",GetEnergyLow());
+	//printf("Griffin hit time:   %ld\n",GetTime());
    //printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
 }
 
@@ -41,7 +41,36 @@ double TGriffinHit::GetTime() {
 }
 
 void TGriffinHit::SetPosition(double dist) {
-	SetPosition(TGriffin::GetPosition(detector,crystal,dist));
+	TGRSIDetectorHit::SetPosition(TGriffin::GetPosition(GetDetector(),GetCrystal(),dist));
+}
+
+Int_t TGriffinHit::GetDetector() { 
+  TChannel *chan = GetChannel();
+  if(!chan)
+     return -1;
+  MNEMONIC mnemonic;
+  ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+  return mnemonic.arrayposition;
+}
+
+Int_t TGriffinHit::GetCrystal() { 
+  TChannel *chan = GetChannel();
+  if(!chan)
+     return -1;
+  MNEMONIC mnemonic;
+  ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+  char color = mnemonic.arraysubposition[0];
+  switch(color) {
+     case 'B':
+       return 0;
+     case 'G':
+       return 1;
+     case 'R':
+       return 2;
+     case 'W':
+       return 3;  
+  };
+  return -1;  
 }
 
 

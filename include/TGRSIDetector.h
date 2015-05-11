@@ -20,6 +20,8 @@ class TGRSIDetectorData;
 #include "TFragment.h"
 #include "TChannel.h"
 
+class TGRSIDetectorHit;
+
 ////////////////////////////////////////////////////////////////
 //                                                            //
 // TGRSIDetector                                              //
@@ -34,15 +36,18 @@ class TGRSIDetectorData;
 class TGRSIDetector : public TObject	{
 	public:
 		TGRSIDetector();
+		TGRSIDetector(const TGRSIDetector&);
 		virtual ~TGRSIDetector();
 
 	public: 
-		virtual void BuildHits(TGRSIDetectorData *data=0,Option_t * = "") = 0; //!
-		virtual void FillData(TFragment*,TChannel*,MNEMONIC*)             = 0; //!
+		virtual void BuildHits(TGRSIDetectorData *data=0,Option_t * = "") { AbstractMethod("BuildHits"); } //! = 0; //!
+		virtual void FillData(TFragment*,TChannel*,MNEMONIC*)             { AbstractMethod("FillData");  } //! = 0; //!
 
       virtual void Copy(TGRSIDetector&) const;        //!
       virtual void Clear(Option_t *opt = "");         //!
 		virtual void Print(Option_t *opt = "") const;   //!
+
+      virtual void AddHit(TGRSIDetectorHit* hit, Option_t *opt ="") = 0;        //!
 
       //virtual TGRSIDetectorData *GetData() //{ //return data;}
       //TGRSIDetectorData *data;    //!
