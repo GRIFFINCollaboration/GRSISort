@@ -22,13 +22,15 @@ TGRSIDetectorHit::~TGRSIDetectorHit()	{
 //Default destructor
 }
 
-void TGRSIDetectorHit::Print(Option_t *opt) {
+void TGRSIDetectorHit::Print(Option_t *opt) const {
 //General print statement for a TGRSIDetectorHit.
 //Currently prints nothing.
 }
 
 void TGRSIDetectorHit::Clear(Option_t *opt) {
   //General clear statement for a TGRSIDetectorHit.
-  position.SetXYZ(0,0,1);
+  address = 0xffffffff;    // -1
+  position.SetXYZ(0,0,1);  // unit vector along the beam.
+  wavefrom.clear();        // reset size to zero.
 }
 
