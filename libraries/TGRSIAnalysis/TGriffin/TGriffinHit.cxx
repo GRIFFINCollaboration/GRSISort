@@ -10,8 +10,26 @@ TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{
 }
 
 
+TGriffinHit::TGriffinHit(const TGriffinHit &rhs)	{	
+	Clear();
+   ((TGriffinHit&)rhs).Copy(*this);
+}
+
+
+
 TGriffinHit::~TGriffinHit()  {	}
 
+void TGriffinHit::Copy(TGriffinHit &rhs) const {
+  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
+
+  ((TGriffinHit&)rhs).filter          = filter;
+  ((TGriffinHit&)rhs).ppg             = ppg;
+  ((TGriffinHit&)rhs).charge_lowgain  = charge_lowgain;
+  ((TGriffinHit&)rhs).charge_highgain = charge_highgain;
+  ((TGriffinHit&)rhs).cfd             = cfd;
+  ((TGriffinHit&)rhs).time            = time;
+  return;                                      
+}                                       
 
 /*
 void TGriffinHit::SetHit() {

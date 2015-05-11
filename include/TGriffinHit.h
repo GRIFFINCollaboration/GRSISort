@@ -18,6 +18,7 @@
 class TGriffinHit : public TGRSIDetectorHit {
 	public:
 		TGriffinHit();
+		TGriffinHit(const TGriffinHit&);
 		virtual ~TGriffinHit();
 
 	private:
@@ -88,8 +89,9 @@ class TGriffinHit : public TGRSIDetectorHit {
       //Bool_t BremSuppressed(TSceptarHit*);
 
 	public:
-		virtual void Clear(Option_t *opt = "");		                   //!
-		virtual void Print(Option_t *opt = "") const; 	                   //!
+		virtual void Clear(Option_t *opt = "");		 //!
+		virtual void Print(Option_t *opt = "") const; //!
+      virtual void Copy(TGriffinHit&) const;        //!
 
 	ClassDef(TGriffinHit,2);
 };
