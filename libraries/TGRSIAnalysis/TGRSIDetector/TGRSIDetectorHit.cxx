@@ -9,24 +9,17 @@ ClassImp(TGRSIDetectorHit)
 // TGRSIDetectorHit                                           //
 //                                                            //
 // This is class that contains the basic info about detector  //
-// hits. This is where the position of a detector is stored.
+// hits. This is where the position of a detector is stored.  //
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
 TGRSIDetectorHit::TGRSIDetectorHit()	{ 
-//Default constructor
-
-  /* Class()->IgnoreTObjectStreamer(true); */
+  //Default constructor
+  Class()->IgnoreTObjectStreamer(true);
 }
 
 TGRSIDetectorHit::~TGRSIDetectorHit()	{
 //Default destructor
-}
-
-Bool_t TGRSIDetectorHit::BremSuppressed(TGRSIDetectorHit *bremorigin){
-   //Checks to see if the hit is bremsstrahlung suppressed or not.
-   //Currently ALWAYS returns false.
-   return false;
 }
 
 void TGRSIDetectorHit::Print(Option_t *opt) {
@@ -35,7 +28,7 @@ void TGRSIDetectorHit::Print(Option_t *opt) {
 }
 
 void TGRSIDetectorHit::Clear(Option_t *opt) {
-//General clear statement for a TGRSIDetectorHit.
-//Currently does nothing.
+  //General clear statement for a TGRSIDetectorHit.
+  position.SetXYZ(0,0,1);
 }
 
