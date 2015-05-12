@@ -29,6 +29,13 @@ TGRSIDetector::~TGRSIDetector()	{
 //Default Destructor.
 }
 
+void TGRSIDetector::AddHit(TGRSIDetectorHit *hit,Option_t *opt) {
+  hit->SetParent(this); 
+  PushBackHit(hit);
+  return;
+}
+
+
 void TGRSIDetector::Copy(TGRSIDetector &rhs) const {
    TObject::Copy((TObject&)rhs);
 }

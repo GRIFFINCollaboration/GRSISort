@@ -54,7 +54,7 @@ LIBS += -lTGRSIFit
 #DETLIBS += -lTip
 
 DETLIBS += -lGriffin
-#DETLIBS += -lSceptar
+DETLIBS += -lSceptar
 #DETLIBS += -lPaces
 ##DETLIBS += -lDante
 ##DETLIBS += -lZeroDegree

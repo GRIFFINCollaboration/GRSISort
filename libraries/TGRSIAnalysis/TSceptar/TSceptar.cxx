@@ -76,7 +76,7 @@ TSceptar& TSceptar::operator=(const TSceptar& rhs) {
 }
 
 
-void TSceptar::Print(Option_t *opt)	{
+void TSceptar::Print(Option_t *opt) const	{
   //Prints out TSceptar members, currently does nothing.
   printf("not yet written...\n");
   return;
@@ -95,6 +95,10 @@ void TSceptar::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
    TSceptarData::Set();
 }
 
+void TSceptar::PushBackHit(TGRSIDetectorHit *schit) {
+  sceptar_hits.push_back(*((TSceptarHit*)schit));
+  return;
+}
 
 void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 //Builds the GRIFFIN Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
@@ -114,7 +118,7 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
       dethit.SetAddress(gdata->GetDetAddress(i));
       
-      dethit.SetEnergy(gdata->GetDetEnergy(i));
+ //     dethit.SetEnergy(gdata->GetDetEnergy(i));
       dethit.SetCharge(gdata->GetDetCharge(i));
 
       dethit.SetTime(gdata->GetDetTime(i));
@@ -124,7 +128,7 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 //         dethit.SetWaveform(gdata->GetDetWave(i));
 //      }
 		
-      dethit.SetDetectorNumber(gdata->GetDetNumber(i));
+//      dethit.SetDetector(gdata->GetDetNumber(i));
    
    //   dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
 //FIX

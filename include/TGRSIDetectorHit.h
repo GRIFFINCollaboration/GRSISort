@@ -75,6 +75,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual inline void SetCfd(const int &x)             { cfd    = x;   }                  //!
       virtual inline Int_t    GetCfd() const                 {   return cfd;      }           //!
  
+      virtual UInt_t SetDetector() { AbstractMethod("SetDetector()");}
 
       inline TChannel *GetChannel() const                { return TChannel::GetChannel(address); }  //!
 
@@ -87,13 +88,18 @@ class TGRSIDetectorHit : public TObject 	{
    protected:
       Int_t     address;  //address of the the channel in the DAQ.
       Int_t     charge;   //charge collected from the hit
-      Int_t     cfd;
+      Int_t     cfd;  
       Long_t    time;
       TVector3  position; //! Position of hit detector.
       Double_t  energy;   //! Energy of the Hit.
       TRef      parent;   //pointer to the mother class;
       std::vector<Short_t> waveform;  
       //Bool_t fHitSet;    //!
+ 
+   //flags   
+   protected:  
+      Bool_t is_det_set;
+      
       //Bool_t fDetectorSet;//!
       //Bool_t fPosSet;//!
       //Bool_t fEnergySet;//!

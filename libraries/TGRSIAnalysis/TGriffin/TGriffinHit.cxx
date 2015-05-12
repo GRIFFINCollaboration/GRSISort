@@ -97,8 +97,10 @@ void TGriffinHit::Clear(Option_t *opt)	{
    detector        = 0xFFFF;
    crystal         = 0xFFFF;
 
-   is_det_set      = false;
    is_crys_set     = false;
+
+   //I think we want to make sure the entire Hit is cleared including the BASE.
+   TGRSIDetectorHit::Clear();
 }
 
 

@@ -20,23 +20,18 @@ class TSceptarHit : public TGRSIDetectorHit {
     ~TSceptarHit();
 
   private:
-    UShort_t detector;//!
+    UShort_t detector; //!
     Int_t    filter;
-    Int_t    charge;
-    Int_t    cfd;
-    Double_t energy;//!
     Long_t   time;
    
     std::vector<Short_t> waveform; //!
    
   public:
 
-   void SetHit();
+  // void SetHit();
 		/////////////////////////		/////////////////////////////////////
-      inline void SetDetectorNumber(const int &x)  { detector = x; }   //!
+      UInt_t SetDetector();   //!
       inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
-      inline void SetCharge(const int &x)          { charge   = x; }   //!
-      inline void SetCfd(const int &x)             { cfd      = x; }   //!
       inline void SetEnergy(const Double_t &x)     { energy   = x; }   //!
       inline void SetTime(const Long_t &x)         { time     = x; }   //!
    //   inline void SetPosition(TVector3 x)          { position = x; }   //!
@@ -45,11 +40,8 @@ class TSceptarHit : public TGRSIDetectorHit {
 
 		/////////////////////////		/////////////////////////////////////
       TVector3 GetPosition() const;
-		inline UShort_t GetDetectorNumber()	const     {	return detector; }  //!
+		inline UShort_t GetDetector()	const     {	return detector; }  //!
       inline Int_t    GetFiterPatter()    const     {   return filter;   }  //!
-		inline Int_t    GetCharge()			const     {	return charge;	  }  //!
-      inline Int_t    GetCfd()            const     {   return cfd;      }  //!
-      Double_t GetEnergy() const;  //!
 		inline Long_t   GetTime()			   const     {	return time;     }  //!
 
       inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
@@ -61,7 +53,7 @@ class TSceptarHit : public TGRSIDetectorHit {
 
 	public:
 		void Clear(Option_t *opt = "");		                    //!
-		void Print(Option_t *opt = "");		                    //!
+		void Print(Option_t *opt = "") const;		                    //!
 
 	ClassDef(TSceptarHit,1)
 };
