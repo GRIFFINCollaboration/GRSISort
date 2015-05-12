@@ -58,8 +58,9 @@ class TGRSIDetectorHit : public TObject 	{
 		inline TVector3 GetPosition() const { return position; }	//!
       
       //Abstract methods. These are required in all derived classes
-      virtual double GetEnergy(Option_t *opt="") const { AbstractMethod("GetEnergy"); }
-      virtual double GetTime(Option_t *opt="")   const { AbstractMethod("GetTime");   }  // Returns a time value to the nearest nanosecond!
+      virtual double GetEnergy(Option_t *opt="") const;
+      virtual double GetTime(Option_t *opt="")   const { AbstractMethod("GetTime()");   }  // Returns a time value to the nearest nanosecond!
+      virtual inline void SetTime(const Long_t &x)         { time   = x;   }                  //! Maybe make this abstract?
       //virtual void SetHit() { AbstractMethod("SetHit()");}
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
@@ -67,6 +68,13 @@ class TGRSIDetectorHit : public TObject 	{
 
       inline void  SetAddress(const Int_t &temp_address) { address = temp_address; } //!
       inline Int_t GetAddress()     const                { return address; }         //!
+
+      inline void SetCharge(const Int_t &temp_charge) { charge = temp_charge;} //!
+      inline Int_t GetCharge() const                    { return charge;} //!
+
+      virtual inline void SetCfd(const int &x)             { cfd    = x;   }                  //!
+      virtual inline Int_t    GetCfd() const                 {   return cfd;      }           //!
+ 
 
       inline TChannel *GetChannel() const                { return TChannel::GetChannel(address); }  //!
 
@@ -78,8 +86,12 @@ class TGRSIDetectorHit : public TObject 	{
 
    protected:
       Int_t     address;  //address of the the channel in the DAQ.
-      TVector3  position; //Position of hit detector.
-      TRef      parent;   //pointer to the mother classs;
+      Int_t     charge;   //charge collected from the hit
+      Int_t     cfd;
+      Long_t    time;
+      TVector3  position; //! Position of hit detector.
+      Double_t  energy;   //! Energy of the Hit.
+      TRef      parent;   //pointer to the mother class;
       std::vector<Short_t> waveform;  
       //Bool_t fHitSet;    //!
       //Bool_t fDetectorSet;//!

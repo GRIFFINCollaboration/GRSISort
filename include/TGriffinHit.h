@@ -24,45 +24,42 @@ class TGriffinHit : public TGRSIDetectorHit {
 	private:
       Int_t filter;
       Int_t ppg;
+      UInt_t detector;
+      UInt_t crystal;
 
-      Int_t charge_lowgain;
-      Int_t charge_highgain;
-      Int_t cfd;
-      Long_t time;
-   
+   //flags
+   private:
+      Bool_t is_det_set;
+      Bool_t is_crys_set;
+
 	public:
 		/////////////////////////  Setters	/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { filter = x;   }                  //! 
       inline void SetPPG(const int &x)             { ppg = x;   }                     //! 
       //void SetHit();
-
-      inline void SetChargeLow(const int &x)       { charge_lowgain  = x;   }         //!
-      inline void SetChargeHigh(const int &x)      { charge_highgain = x;   }         //!
-
-      inline void SetCfd(const int &x)             { cfd    = x;   }                  //!
-      inline void SetTime(const Long_t &x)         { time   = x;   }                  //!
+      virtual double GetTime(Option_t *opt = "") const;                                 //!
 
 		void SetPosition(double dist =110);                                				  //!
 
 		/////////////////////////  Getters	/////////////////////////////////////
-      inline Int_t    GetFilterPatter() const         {   return filter;   }          //!
+      inline Int_t    GetFilterPattern() const         {   return filter;   }          //!
       inline Int_t    GetPPG() const                  {   return ppg;   }             //!
 
-             Int_t    GetCharge(Option_t *opt ="low") const;                          //!
-      inline Int_t    GetCfd() const                 {   return cfd;      }           //!
+   //          Int_t    GetCharge(Option_t *opt ="low") const;                          //!
 		//inline Long_t   GetTime() const 			        {	return time;     }           //!
 
       /////////////////////////  Required Functions ///////////////////////////
-      double GetEnergy(Option_t *opt ="low") const;                             //!
-      double GetTime(Option_t *opt = "") const;                                 //!
+  //    double GetEnergy(Option_t *opt ="low") const;                             //!
 
       /////////////////////////  Recommended Functions/////////////////////////
 
 
 
 		/////////////////////////  TChannel Helpers /////////////////////////////////////
-      const Int_t GetDetector() const;                                                //!
-      const Int_t GetCrystal()  const;                                                //!
+      const UInt_t GetDetector() const;                                                //!
+      UInt_t SetDetector();
+      const UInt_t GetCrystal()  const;                                                //!
+      UInt_t SetCrystal();
 
 		/////////////////////////		/////////////////////////////////////
 		//inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
