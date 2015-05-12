@@ -40,8 +40,8 @@ class TGRSIDetector : public TObject	{
 		virtual ~TGRSIDetector();
 
 	public: 
-		virtual void BuildHits(TGRSIDetectorData *data=0,Option_t * = "") { AbstractMethod("BuildHits"); } //! = 0; //!
-		virtual void FillData(TFragment*,TChannel*,MNEMONIC*)             { AbstractMethod("FillData");  } //! = 0; //!
+		virtual void BuildHits(TGRSIDetectorData *data=0,Option_t * = "") { AbstractMethod("BuildHits()"); } //! = 0; //!
+		virtual void FillData(TFragment*,TChannel*,MNEMONIC*)             { AbstractMethod("FillData()");  } //! = 0; //!
 
       virtual void Copy(TGRSIDetector&) const;        //!
       virtual void Clear(Option_t *opt = "");         //!

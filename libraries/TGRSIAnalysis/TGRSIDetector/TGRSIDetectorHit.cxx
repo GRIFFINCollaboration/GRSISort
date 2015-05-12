@@ -30,6 +30,15 @@ TGRSIDetectorHit::~TGRSIDetectorHit()	{
 //Default destructor
 }
 
+double TGRSIDetectorHit::GetEnergy(Option_t *opt) const{
+   TChannel *chan = GetChannel();
+   if(!chan){
+      printf("no TChannel set for this address\n");
+      return 0.00;
+   }
+   return chan->CalibrateENG(GetCharge());
+}
+
 void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   TObject::Copy((TObject&)rhs);
   ((TGRSIDetectorHit&)rhs).address  = address;

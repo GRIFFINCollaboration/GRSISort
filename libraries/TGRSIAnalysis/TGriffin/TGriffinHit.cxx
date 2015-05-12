@@ -24,8 +24,6 @@ void TGriffinHit::Copy(TGriffinHit &rhs) const {
 
   ((TGriffinHit&)rhs).filter          = filter;
   ((TGriffinHit&)rhs).ppg             = ppg;
-  ((TGriffinHit&)rhs).charge_lowgain  = charge_lowgain;
-  ((TGriffinHit&)rhs).charge_highgain = charge_highgain;
   ((TGriffinHit&)rhs).cfd             = cfd;
   ((TGriffinHit&)rhs).time            = time;
   return;                                      
@@ -92,12 +90,15 @@ bool TGriffinHit::InFilter(Int_t wantedfilter) {
 
 void TGriffinHit::Clear(Option_t *opt)	{
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
-   charge_lowgain = -1;
-   charge_highgain = -1;
    filter          =  0;
    ppg             =  0;
    cfd             = -1;
    time            = -1;
+   detector        = 0xFFFF;
+   crystal         = 0xFFFF;
+
+   is_det_set      = false;
+   is_crys_set     = false;
 }
 
 
@@ -108,7 +109,7 @@ void TGriffinHit::Print(Option_t *opt) const	{
 	//printf("Griffin hit time:   %ld\n",GetTime());
    //printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
 }
-
+/*
 double TGriffinHit::GetEnergy(Option_t *opt) const { 
   TChannel *chan = GetChannel();
   if(!chan || (charge_lowgain<0 && charge_highgain<0) ) {
@@ -127,7 +128,7 @@ Int_t TGriffinHit::GetCharge(Option_t *opt) const {
     return charge_highgain; 
   return charge_lowgain; 
 }
-
+*/
 
 
 double TGriffinHit::GetTime(Option_t *opt) const {
@@ -139,35 +140,79 @@ void TGriffinHit::SetPosition(double dist) {
 	TGRSIDetectorHit::SetPosition(TGriffin::GetPosition(GetDetector(),GetCrystal(),dist));
 }
 
-const Int_t TGriffinHit::GetDetector() const { 
-  TChannel *chan = GetChannel();
-  if(!chan)
-     return -1;
-  MNEMONIC mnemonic;
-  ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-  return mnemonic.arrayposition;
+const UInt_t TGriffinHit::GetDetector() const { //These should set the data members eventually
+   if(is_det_set)
+      return detector;
+
+   TChannel *chan = GetChannel();
+   if(!chan)
+      return -1;
+   MNEMONIC mnemonic;
+   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+   return mnemonic.arrayposition;
 }
 
-const Int_t TGriffinHit::GetCrystal() const { 
-  TChannel *chan = GetChannel();
-  if(!chan)
-     return -1;
-  MNEMONIC mnemonic;
-  ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-  char color = mnemonic.arraysubposition[0];
-  switch(color) {
-     case 'B':
-       return 0;
-     case 'G':
-       return 1;
-     case 'R':
-       return 2;
-     case 'W':
-       return 3;  
-  };
-  return -1;  
+UInt_t TGriffinHit::SetDetector() { //These should set the data members eventually
+   TChannel *chan = GetChannel();
+   if(!chan)
+      return -1;
+   MNEMONIC mnemonic;
+   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+   detector = mnemonic.arrayposition;
+   is_det_set = true;
+   return detector;
 }
 
+const UInt_t TGriffinHit::GetCrystal() const { 
+   if(is_crys_set)
+      return crystal;
+
+   TChannel *chan = GetChannel();
+   if(!chan)
+      return -1;
+   MNEMONIC mnemonic;
+   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+   char color = mnemonic.arraysubposition[0];
+   switch(color) {
+      case 'B':
+         return 0;
+      case 'G':
+         return 1;
+      case 'R':
+         return 2;
+      case 'W':
+         return 3;  
+   };
+   return -1;  
+}
+
+UInt_t TGriffinHit::SetCrystal() { 
+   TChannel *chan = GetChannel();
+   if(!chan)
+      return -1;
+   MNEMONIC mnemonic;
+   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+   char color = mnemonic.arraysubposition[0];
+   is_crys_set = true;
+   switch(color) {
+      case 'B':
+         crystal = 0;
+         break;
+      case 'G':
+         crystal = 1;
+         break;
+      case 'R':
+         crystal = 2;
+         break;
+      case 'W':
+         crystal = 3;
+         break;
+      default:
+         crystal = 0xFFFF;
+         is_crys_set = false;
+   };
+   return crystal;
+}
 
 //bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
 //		return(lhs->GetEnergyLow()) > rhs->GetEnergyLow();
