@@ -470,7 +470,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
 	    //This is just a rough way to match the angles by the way they are grouped 
 	    //I will come back to this and make it cleaner once I start working on more 
 	    //experimental data. 
-	    if(folded){
+	    if(folding) { //ed){
 	      if(ang > 25. && ang < 27.){
 		ang == 26.1459;
 	      }
@@ -676,7 +676,7 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
                }
             }
             if(angIndex < angleCombinations.size()) {
-               angCorrAddback->Fill(grif->GetAddbackHit(one)->GetEnergyLow(),grif->GetAddbackHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+               angCorrAddback->Fill(grif->GetAddBackHit(one)->GetEnergyLow(),grif->GetAddBackHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
             } else {
                std::cout<<"Error, didn't find any matching angle for "<<ang<<std::endl;
             }
@@ -691,12 +691,12 @@ TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 
             if(coincLow <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < coincHigh) {
                addbackMatrix_coinc->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
                if(angIndex < angleCombinations.size()) {
-                  angCorrAddback_coinc->Fill(grif->GetAddbackHit(one)->GetEnergyLow(),grif->GetAddbackHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+                  angCorrAddback_coinc->Fill(grif->GetAddBackHit(one)->GetEnergyLow(),grif->GetAddBackHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
                }
             } else if((bg+coincLow) <= TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) && TMath::Abs(grif->GetAddBackHit(two)->GetTime()-grif->GetAddBackHit(one)->GetTime()) < (bg+coincHigh)) {
                addbackMatrix_bg->Fill(grif->GetAddBackHit(one)->GetEnergyLow(), grif->GetAddBackHit(two)->GetEnergyLow());
                if(angIndex < angleCombinations.size()) {
-                  angCorrAddback_bg->Fill(grif->GetAddbackHit(one)->GetEnergyLow(),grif->GetAddbackHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
+                  angCorrAddback_bg->Fill(grif->GetAddBackHit(one)->GetEnergyLow(),grif->GetAddBackHit(two)->GetEnergyLow(),angleCombinations[angIndex].first,1./angleCombinations[angIndex].second);
                }
             }
             if(grif->GetAddBackHit(one)->GetPosition().Angle(grif->GetAddBackHit(two)->GetPosition()) < TMath::Pi()/2.) {
