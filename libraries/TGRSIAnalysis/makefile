@@ -1,4 +1,4 @@
-SUBDIRS = TGRSIDetector TGriffin #TTip TTigress  TSharc TTriFoil TPaces TDescant TSceptar TCSM 
+SUBDIRS = TGRSIDetector TGriffin TSceptar #TTip TTigress  TSharc TTriFoil TPaces TDescant TCSM 
 SUBDIRS += TNucleus TKinematics TSRIM TBetaDecay TAnalysisTreeBuilder TCal TGRSIFit
 ALLDIRS = $(SUBDIRS)
 

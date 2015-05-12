@@ -11,7 +11,7 @@ TSceptarHit::TSceptarHit()	{
 }
 
 TSceptarHit::~TSceptarHit()	{	}
-
+/*
 void TSceptarHit::SetHit(){
    MNEMONIC mnemonic;
    TChannel *channel = TChannel::GetChannel(GetAddress());
@@ -30,6 +30,23 @@ void TSceptarHit::SetHit(){
    fHitSet = true;
 
 }
+*/
+
+UInt_t TSceptarHit::SetDetector() {
+   MNEMONIC mnemonic;
+   TChannel *channel = GetChannel();
+   if(!channel){
+      Error("SetDetector","No TChannel exists for address %u",GetAddress());
+      return -1;
+   }
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+   detector = mnemonic.arrayposition;
+   is_det_set = true;
+   return detector;
+}
+   
+
 
 bool TSceptarHit::InFilter(Int_t wantedfilter) {
    // check if the desired filter is in wanted filter;
@@ -38,12 +55,8 @@ bool TSceptarHit::InFilter(Int_t wantedfilter) {
 }
 
 void TSceptarHit::Clear(Option_t *opt)	{
-	detector = 0;
+	detector = 0xFFFF;
    filter = 0;
-   charge = -1;
-   cfd    = -1;
-   energy = 0.0;
-   time   = 0;
    TGRSIDetectorHit::Clear();
 
    //position.SetXYZ(0,0,1);
@@ -51,7 +64,7 @@ void TSceptarHit::Clear(Option_t *opt)	{
   // waveform.clear();
 }
 
-void TSceptarHit::Print(Option_t *opt)	{
+void TSceptarHit::Print(Option_t *opt) const	{
    printf("Sceptar Detector: %i\n",detector);
 	printf("Sceptar hit energy: %.2f\n",GetEnergy());
 	printf("Sceptar hit time:   %.ld\n",GetTime());
@@ -73,7 +86,7 @@ void TSceptarHit::Add(TSceptarHit *hit)	{
 
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
 }
-
+/*
 Double_t TSceptarHit::GetEnergy() const {
    if(fEnergySet)
       return energy;
@@ -86,13 +99,6 @@ Double_t TSceptarHit::GetEnergy() const {
       return channel->CalibrateENG(GetCharge()); 
    }
 }
-
-TVector3 TSceptarHit::GetPosition() const {
-   if(fPosSet)
-      return fposition;
-   else{
-      return TSceptar::GetPosition(GetDetectorNumber());
-   }
-}
+*/
 
 

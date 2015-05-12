@@ -29,7 +29,6 @@ class TGriffinHit : public TGRSIDetectorHit {
 
    //flags
    private:
-      Bool_t is_det_set;
       Bool_t is_crys_set;
 
 	public:

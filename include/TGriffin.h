@@ -89,7 +89,7 @@ class TGriffin : public TGRSIDetector {
 
      static int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
 
-     void AddHit(TGRSIDetectorHit *hit,Option_t *opt="");//!
+   //  void AddHit(TGRSIDetectorHit *hit,Option_t *opt="");//!
    private:
      static TVector3 gCloverPosition[17];               //! Position of each HPGe Clover
      void ClearStatus() { fGriffinBits.ResetAllBits(kFALSE); } //!     
@@ -98,6 +98,9 @@ class TGriffin : public TGRSIDetector {
      virtual void Copy(TGriffin&) const;                //!
      virtual void Clear(Option_t *opt = "all");		     //!
      virtual void Print(Option_t *opt = "") const;		  //!
+
+   protected:
+     void PushBackHit(TGRSIDetectorHit* ghit);
 
    ClassDef(TGriffin,2)  // Griffin Physics structure
 

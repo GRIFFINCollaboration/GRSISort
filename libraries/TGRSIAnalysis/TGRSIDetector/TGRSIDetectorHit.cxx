@@ -56,5 +56,6 @@ void TGRSIDetectorHit::Clear(Option_t *opt) {
   address = 0xffffffff;    // -1
   position.SetXYZ(0,0,1);  // unit vector along the beam.
   waveform.clear();        // reset size to zero.
+  is_det_set = false;
 }
 

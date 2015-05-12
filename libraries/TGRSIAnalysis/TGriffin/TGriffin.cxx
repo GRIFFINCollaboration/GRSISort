@@ -188,13 +188,9 @@ void TGriffin::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 //      TBGOData::Set();   
 //}
 
-void TGriffin::AddHit(TGRSIDetectorHit *hit,Option_t *opt) {
-  TGriffinHit *ghit = (TGriffinHit*)hit;
-  hit->SetParent(this); 
-  griffin_hits.push_back(TGriffinHit(*ghit));
-  return;
+void TGriffin::PushBackHit(TGRSIDetectorHit *ghit){
+   griffin_hits.push_back(*((TGriffinHit*)ghit));
 }
-
 
 void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 //Builds the GRIFFIN Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 

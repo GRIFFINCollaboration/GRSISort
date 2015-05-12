@@ -52,7 +52,10 @@ class TSceptar : public TGRSIDetector {
 
    public:         
      void Clear(Option_t *opt = "");		//!
-     void Print(Option_t *opt = "");		//!
+     void Print(Option_t *opt = "") const;		//!
+
+   protected:
+     void PushBackHit(TGRSIDetectorHit* schit);
 
    ClassDef(TSceptar,1)  // Sceptar Physics structure
 

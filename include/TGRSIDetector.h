@@ -47,8 +47,9 @@ class TGRSIDetector : public TObject	{
       virtual void Clear(Option_t *opt = "");         //!
 		virtual void Print(Option_t *opt = "") const;   //!
 
-      virtual void AddHit(TGRSIDetectorHit* hit, Option_t *opt ="") = 0;        //!
-
+      virtual void AddHit(TGRSIDetectorHit* hit, Option_t *opt ="");        //!
+   protected:
+      virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
       //virtual TGRSIDetectorData *GetData() //{ //return data;}
       //TGRSIDetectorData *data;    //!
 
