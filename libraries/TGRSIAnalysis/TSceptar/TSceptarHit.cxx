@@ -11,6 +11,16 @@ TSceptarHit::TSceptarHit()	{
 }
 
 TSceptarHit::~TSceptarHit()	{	}
+
+TSceptarHit::TSceptarHit(const TSceptarHit &rhs)	{	
+	Clear();
+   ((TSceptarHit&)rhs).Copy(*this);
+}
+
+void TSceptarHit::Copy(TSceptarHit &rhs) const {
+  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
+}                                       
+
 /*
 void TSceptarHit::SetHit(){
    MNEMONIC mnemonic;
@@ -32,20 +42,9 @@ void TSceptarHit::SetHit(){
 }
 */
 
-UInt_t TSceptarHit::SetDetector() {
-   MNEMONIC mnemonic;
-   TChannel *channel = GetChannel();
-   if(!channel){
-      Error("SetDetector","No TChannel exists for address %u",GetAddress());
-      return -1;
-   }
-   ClearMNEMONIC(&mnemonic);
-   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
-   detector = mnemonic.arrayposition;
-   is_det_set = true;
-   return detector;
+TVector3 TSceptarHit::GetPosition(double dist) {
+	return TSceptar::GetPosition(detector);
 }
-   
 
 
 bool TSceptarHit::InFilter(Int_t wantedfilter) {

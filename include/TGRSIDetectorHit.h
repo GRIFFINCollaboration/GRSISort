@@ -55,7 +55,8 @@ class TGRSIDetectorHit : public TObject 	{
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
 
 		inline void SetPosition(const TVector3& temp_pos) { position = temp_pos; } //!
-		inline TVector3 GetPosition() const { return position; }	//!
+      void SetPosition(Double_t temp_pos = 0);
+		virtual TVector3 GetPosition(Double_t dist = 0); //!
       
       //Abstract methods. These are required in all derived classes
       virtual double GetEnergy(Option_t *opt="") const;
@@ -75,7 +76,8 @@ class TGRSIDetectorHit : public TObject 	{
       virtual inline void SetCfd(const int &x)             { cfd    = x;   }                  //!
       virtual inline Int_t    GetCfd() const                 {   return cfd;      }           //!
  
-      virtual UInt_t SetDetector() { AbstractMethod("SetDetector()");}
+      virtual Int_t SetDetector();
+      virtual Int_t GetDetector() const;
 
       inline TChannel *GetChannel() const                { return TChannel::GetChannel(address); }  //!
 
@@ -90,6 +92,7 @@ class TGRSIDetectorHit : public TObject 	{
       Int_t     charge;   //charge collected from the hit
       Int_t     cfd;  
       Long_t    time;
+      Int_t    detector; //! Detector Number
       TVector3  position; //! Position of hit detector.
       Double_t  energy;   //! Energy of the Hit.
       TRef      parent;   //pointer to the mother class;
@@ -99,6 +102,7 @@ class TGRSIDetectorHit : public TObject 	{
    //flags   
    protected:  
       Bool_t is_det_set;
+      Bool_t is_pos_set;
       
       //Bool_t fDetectorSet;//!
       //Bool_t fPosSet;//!
