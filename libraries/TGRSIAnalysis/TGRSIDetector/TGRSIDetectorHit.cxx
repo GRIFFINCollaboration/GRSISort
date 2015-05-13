@@ -61,6 +61,7 @@ void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   ((TGRSIDetectorHit&)rhs).charge   = charge;
   ((TGRSIDetectorHit&)rhs).detector = detector;
   ((TGRSIDetectorHit&)rhs).energy   = energy;
+  ((TGRSIDetectorHit&)rhs).parent  = parent;  
 }
 
 void TGRSIDetectorHit::Print(Option_t *opt) const {
