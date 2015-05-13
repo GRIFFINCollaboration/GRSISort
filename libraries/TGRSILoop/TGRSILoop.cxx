@@ -252,8 +252,8 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
       return;
    }
 
-   printf("data = 0x%08x\n",data);
-   printf("size = %i\n",size);
+   //printf("data = 0x%08x\n",data);
+   //printf("size = %i\n",size);
 
 	fOdb = new TXMLOdb(data,size);
 	TChannel::DeleteAllChannels();
