@@ -132,6 +132,7 @@ double TGriffinHit::GetTime(Option_t *opt) const {
 
 TVector3 TGriffinHit::GetPosition(Double_t dist){
 	TGRSIDetectorHit::SetPosition(TGriffin::GetPosition(GetDetector(),GetCrystal(),dist));
+   return position;
 }
 
 const UInt_t TGriffinHit::GetCrystal() const { 
