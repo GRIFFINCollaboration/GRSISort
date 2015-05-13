@@ -72,11 +72,11 @@ double TFragment::GetTimeStamp() const {
    long time = TimeStampHigh;
    time  = time << 28;
    time |= TimeStampLow & 0x0fffffff;
-   
+   double dtime = double(time)+ gRandom->Uniform();
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan )//|| Charge.size()<1)
-      return double(time);
-   return double(time) - chan->GetTZero(GetEnergy());
+      return dtime;
+   return dtime - chan->GetTZero(GetEnergy());
 }
 
 double TFragment::GetTZero() const {
