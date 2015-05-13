@@ -41,6 +41,16 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt) const{
    return chan->CalibrateENG((int)GetCharge());
 }
 
+Double_t TGRSIDetectorHit::SetEnergy(Option_t *opt) {
+   if(is_energy_set)
+      return energy;
+
+   energy = GetEnergy(opt);
+   if(energy>0.00)
+      is_energy_set = true;
+   return energy;
+}
+
 void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   TObject::Copy((TObject&)rhs);
   ((TGRSIDetectorHit&)rhs).address  = address;
@@ -49,6 +59,8 @@ void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   ((TGRSIDetectorHit&)rhs).cfd      = cfd;
   ((TGRSIDetectorHit&)rhs).time     = time;
   ((TGRSIDetectorHit&)rhs).charge   = charge;
+  ((TGRSIDetectorHit&)rhs).detector = detector;
+  ((TGRSIDetectorHit&)rhs).energy   = energy;
 }
 
 void TGRSIDetectorHit::Print(Option_t *opt) const {
@@ -65,8 +77,10 @@ void TGRSIDetectorHit::Clear(Option_t *opt) {
   cfd             = -1;
   time            = -1;
   detector        = -1;
+  energy          =  0.0;
   is_det_set = false;
   is_pos_set = false;
+  is_energy_set = false;
 }
 
 UInt_t TGRSIDetectorHit::GetDetector() const {
@@ -104,6 +118,8 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist){
    
    if(is_det_set)
       return GetPosition(dist); //Calls the derivative GetPosition function
+
+   return TVector3(0,0,1);
 
 }
 

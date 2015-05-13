@@ -60,7 +60,8 @@ class TGRSIDetectorHit : public TObject 	{
       
       //Abstract methods. These are required in all derived classes
       virtual double GetEnergy(Option_t *opt="") const;
-      virtual double GetTime(Option_t *opt="")   const { AbstractMethod("GetTime()");   }  // Returns a time value to the nearest nanosecond!
+      Double_t SetEnergy(Option_t *opt="");
+      virtual double GetTime(Option_t *opt="")   const { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
       virtual inline void SetTime(const ULong_t &x)         { time   = x;   }                  //! Maybe make this abstract?
       //virtual void SetHit() { AbstractMethod("SetHit()");}
       //We need a common function for all detectors in here
@@ -103,6 +104,7 @@ class TGRSIDetectorHit : public TObject 	{
    protected:  
       Bool_t is_det_set;
       Bool_t is_pos_set;
+      Bool_t is_energy_set;
       
       //Bool_t fDetectorSet;//!
       //Bool_t fPosSet;//!
