@@ -252,6 +252,9 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
       return;
    }
 
+   printf("data = 0x%08x\n",data);
+   printf("size = %i\n",size);
+
 	fOdb = new TXMLOdb(data,size);
 	TChannel::DeleteAllChannels();
 
@@ -262,9 +265,13 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
    node = node->GetChildren();
    std::string expt;
    while(1) {
+        //printf("before call.\n"); fflush(stdout);
+        //printf("fodb = 0x%08x\n",fOdb);fflush(stdout);
+        //printf("node = 0x%08x\n",node);fflush(stdout);
+        //node->Print();
         std::string key = fOdb->GetNodeName(node) ;
         if(key.compare("Name")==0) {
-        expt = node->GetText();
+          expt = node->GetText();
         break;
       }
       if(!node->HasNextNode())

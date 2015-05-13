@@ -1,9 +1,10 @@
 
 #include "TXMLOdb.h"
-#include <iostream>
 
 #include <TList.h>
 #include <TXMLAttr.h>
+
+char TXMLOdb::textbuffer[256];
 
 TXMLOdb::TXMLOdb(char *buffer,int size)   {
    fOdb = 0;
@@ -81,7 +82,7 @@ TXMLNode *TXMLOdb::FindPath(const char *path, TXMLNode *node) {
    while(true) {
       slash = pathname.find_first_of('/',last);
       elems.push_back(pathname.substr(last,slash-last));
-      //printf("last = %i\tslash = %i\n",last,slash);
+//      printf("last = %i\tslash = %i\n",last,slash);
       last = slash+1;
       if(slash==std::string::npos)
          break;
@@ -90,7 +91,7 @@ TXMLNode *TXMLOdb::FindPath(const char *path, TXMLNode *node) {
    for(int x=0;x<elems.size();x++) {
       node = FindNode(elems.at(x).c_str(),node);
       if(node) {
-         //printf("elem[%i]\t= %s\tnode = %s\n",x,elems.at(x).c_str(),GetNodeName(node).c_str());
+//         printf("elem[%i]\t= %s\tnode = %s\n",x,elems.at(x).c_str(),GetNodeName(node));
       }
       else {
          node = 0;
@@ -118,12 +119,14 @@ TXMLNode *TXMLOdb::FindPath(const char *path, TXMLNode *node) {
 }
 
 
-std::string TXMLOdb::GetNodeName(TXMLNode *node) {
+const char* TXMLOdb::GetNodeName(TXMLNode *node) {
+//std::string TXMLOdb::GetNodeName(TXMLNode *node) {
    TList *list = node->GetAttributes();
    if(list) {
       std::string buffer = ((TXMLAttr*)(list->At(0)))->GetValue();
       //list->Delete();
-      return buffer;
+      strcpy(textbuffer,buffer.c_str());
+      return ((const char*)textbuffer);//buffer.c_str();;
    } else {
       return "";
    }
