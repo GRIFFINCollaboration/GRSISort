@@ -9,23 +9,17 @@ TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{
 	Clear();
 }
 
-
 TGriffinHit::TGriffinHit(const TGriffinHit &rhs)	{	
 	Clear();
    ((TGriffinHit&)rhs).Copy(*this);
 }
 
-
-
 TGriffinHit::~TGriffinHit()  {	}
 
 void TGriffinHit::Copy(TGriffinHit &rhs) const {
   TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
-
   ((TGriffinHit&)rhs).filter          = filter;
   ((TGriffinHit&)rhs).ppg             = ppg;
-  ((TGriffinHit&)rhs).cfd             = cfd;
-  ((TGriffinHit&)rhs).time            = time;
   return;                                      
 }                                       
 
@@ -92,8 +86,6 @@ void TGriffinHit::Clear(Option_t *opt)	{
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
    filter          =  0;
    ppg             =  0;
-   cfd             = -1;
-   time            = -1;
    detector        = 0xFFFF;
    crystal         = 0xFFFF;
 
@@ -138,31 +130,8 @@ double TGriffinHit::GetTime(Option_t *opt) const {
   return time;
 }
 
-void TGriffinHit::SetPosition(double dist) {
+TVector3 TGriffinHit::GetPosition(Double_t dist){
 	TGRSIDetectorHit::SetPosition(TGriffin::GetPosition(GetDetector(),GetCrystal(),dist));
-}
-
-const UInt_t TGriffinHit::GetDetector() const { //These should set the data members eventually
-   if(is_det_set)
-      return detector;
-
-   TChannel *chan = GetChannel();
-   if(!chan)
-      return -1;
-   MNEMONIC mnemonic;
-   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-   return mnemonic.arrayposition;
-}
-
-UInt_t TGriffinHit::SetDetector() { //These should set the data members eventually
-   TChannel *chan = GetChannel();
-   if(!chan)
-      return -1;
-   MNEMONIC mnemonic;
-   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-   detector = mnemonic.arrayposition;
-   is_det_set = true;
-   return detector;
 }
 
 const UInt_t TGriffinHit::GetCrystal() const { 
@@ -189,30 +158,7 @@ const UInt_t TGriffinHit::GetCrystal() const {
 }
 
 UInt_t TGriffinHit::SetCrystal() { 
-   TChannel *chan = GetChannel();
-   if(!chan)
-      return -1;
-   MNEMONIC mnemonic;
-   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-   char color = mnemonic.arraysubposition[0];
-   is_crys_set = true;
-   switch(color) {
-      case 'B':
-         crystal = 0;
-         break;
-      case 'G':
-         crystal = 1;
-         break;
-      case 'R':
-         crystal = 2;
-         break;
-      case 'W':
-         crystal = 3;
-         break;
-      default:
-         crystal = 0xFFFF;
-         is_crys_set = false;
-   };
+   crystal = GetCrystal();
    return crystal;
 }
 

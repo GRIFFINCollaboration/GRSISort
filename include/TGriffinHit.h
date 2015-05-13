@@ -24,7 +24,6 @@ class TGriffinHit : public TGRSIDetectorHit {
 	private:
       Int_t filter;
       Int_t ppg;
-      UInt_t detector;
       UInt_t crystal;
 
    //flags
@@ -38,7 +37,8 @@ class TGriffinHit : public TGRSIDetectorHit {
       //void SetHit();
       virtual double GetTime(Option_t *opt = "") const;                                 //!
 
-		void SetPosition(double dist =110);                                				  //!
+		void SetPosition(double dist =110);   //!
+      TVector3 GetPosition(Double_t dist = 110.0); //!
 
 		/////////////////////////  Getters	/////////////////////////////////////
       inline Int_t    GetFilterPattern() const         {   return filter;   }          //!
@@ -55,8 +55,6 @@ class TGriffinHit : public TGRSIDetectorHit {
 
 
 		/////////////////////////  TChannel Helpers /////////////////////////////////////
-      const UInt_t GetDetector() const;                                                //!
-      UInt_t SetDetector();
       const UInt_t GetCrystal()  const;                                                //!
       UInt_t SetCrystal();
 

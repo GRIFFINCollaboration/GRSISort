@@ -152,10 +152,6 @@ TGriffin& TGriffin::operator=(const TGriffin& rhs) {
      return *this;
 }
 
-
-
-
-
 void TGriffin::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
 //Fills the "Data" structure for a specific channel with TFragment frag.
    if(!frag || !channel || !mnemonic)
@@ -232,6 +228,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
       corehit.SetTime(gdata->GetCoreTime(i));
       corehit.SetCfd(gdata->GetCoreCFD(i));
+      corehit.SetCharge(gdata->GetCoreCharge(i));
 
       if(TGriffin::SetCoreWave()){
          corehit.SetWaveform(gdata->GetCoreWave(i));

@@ -781,7 +781,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
             (*detectors)["GR"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("SE")==0 && event->at(i).DetectorType == 2) {	//This is here because of DAQ weirdness (will likely want to remove)
             if(detectors->find("SE") == detectors->end()) {
-               //(*detectors)["SE"] = new TSceptar;
+               (*detectors)["SE"] = new TSceptar;
             }
             (*detectors)["SE"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("PA")==0) {	

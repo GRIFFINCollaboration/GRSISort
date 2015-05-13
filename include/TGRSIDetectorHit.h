@@ -55,27 +55,30 @@ class TGRSIDetectorHit : public TObject 	{
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
 
 		inline void SetPosition(const TVector3& temp_pos) { position = temp_pos; } //!
-		inline TVector3 GetPosition() const { return position; }	//!
+      void SetPosition(Double_t temp_pos = 0);
+		virtual TVector3 GetPosition(Double_t dist = 0); //!
       
       //Abstract methods. These are required in all derived classes
       virtual double GetEnergy(Option_t *opt="") const;
-      virtual double GetTime(Option_t *opt="")   const { AbstractMethod("GetTime()");   }  // Returns a time value to the nearest nanosecond!
-      virtual inline void SetTime(const Long_t &x)         { time   = x;   }                  //! Maybe make this abstract?
+      Double_t SetEnergy(Option_t *opt="");
+      virtual double GetTime(Option_t *opt="")   const { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
+      virtual inline void SetTime(const ULong_t &x)         { time   = x;   }                  //! Maybe make this abstract?
       //virtual void SetHit() { AbstractMethod("SetHit()");}
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
 
 
-      inline void  SetAddress(const Int_t &temp_address) { address = temp_address; } //!
-      inline Int_t GetAddress()     const                { return address; }         //!
+      inline void  SetAddress(const UInt_t &temp_address) { address = temp_address; } //!
+      inline UInt_t GetAddress()     const                { return address; }         //!
 
-      inline void SetCharge(const Int_t &temp_charge) { charge = temp_charge;} //!
-      inline Int_t GetCharge() const                    { return charge;} //!
+      inline void SetCharge(const UInt_t &temp_charge) { charge = temp_charge;} //!
+      inline UInt_t GetCharge() const                    { return charge;} //!
 
-      virtual inline void SetCfd(const int &x)             { cfd    = x;   }                  //!
-      virtual inline Int_t    GetCfd() const                 {   return cfd;      }           //!
+      virtual inline void SetCfd(const unsigned int &x)             { cfd    = x;   }                  //!
+      virtual inline UInt_t    GetCfd() const                 {   return cfd;      }           //!
  
-      virtual UInt_t SetDetector() { AbstractMethod("SetDetector()");}
+      virtual UInt_t SetDetector();
+      virtual UInt_t GetDetector() const;
 
       inline TChannel *GetChannel() const                { return TChannel::GetChannel(address); }  //!
 
@@ -86,10 +89,11 @@ class TGRSIDetectorHit : public TObject 	{
       inline TGRSIDetector *GetParent() const                   { return ((TGRSIDetector*)parent.GetObject()); } //!
 
    protected:
-      Int_t     address;  //address of the the channel in the DAQ.
-      Int_t     charge;   //charge collected from the hit
-      Int_t     cfd;  
-      Long_t    time;
+      UInt_t     address;  //address of the the channel in the DAQ.
+      UInt_t     charge;   //charge collected from the hit
+      UInt_t     cfd;  
+      ULong_t    time;
+      UInt_t    detector; //! Detector Number
       TVector3  position; //! Position of hit detector.
       Double_t  energy;   //! Energy of the Hit.
       TRef      parent;   //pointer to the mother class;
@@ -99,6 +103,8 @@ class TGRSIDetectorHit : public TObject 	{
    //flags   
    protected:  
       Bool_t is_det_set;
+      Bool_t is_pos_set;
+      Bool_t is_energy_set;
       
       //Bool_t fDetectorSet;//!
       //Bool_t fPosSet;//!

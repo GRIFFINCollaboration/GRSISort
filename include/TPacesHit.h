@@ -63,7 +63,7 @@ class TPacesHit : public TGRSIDetectorHit {
 	
 		inline Int_t    GetChargeLow() const			  {	return charge_lowgain;	  }  //!
 		inline Int_t    GetChargeHigh() const			  {	return charge_highgain;	  }  //!
-      inline Int_t    GetCfd() const                 {   return cfd;      }  //!
+      inline UInt_t    GetCfd() const                 {   return cfd;      }  //!
       inline Double_t GetEnergyLow() const		     {	return energy_lowgain;   }  //!
       inline Double_t GetEnergyHigh() const		     {	return energy_highgain;   }  //!
 		inline Long_t   GetTime() const 			        {	return time;     }  //!

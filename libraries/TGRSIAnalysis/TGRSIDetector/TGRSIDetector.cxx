@@ -35,7 +35,6 @@ void TGRSIDetector::AddHit(TGRSIDetectorHit *hit,Option_t *opt) {
   return;
 }
 
-
 void TGRSIDetector::Copy(TGRSIDetector &rhs) const {
    TObject::Copy((TObject&)rhs);
 }
@@ -44,7 +43,6 @@ void TGRSIDetector::Print(Option_t *opt) const {
 // Default print statement for TGRSIDetector. Currently does
 // nothing
 }
-
 
 void TGRSIDetector::Clear(Option_t *opt) {
 // Default clear statement for TGRSIDetector. Currently does
