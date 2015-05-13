@@ -158,30 +158,7 @@ const UInt_t TGriffinHit::GetCrystal() const {
 }
 
 UInt_t TGriffinHit::SetCrystal() { 
-   TChannel *chan = GetChannel();
-   if(!chan)
-      return -1;
-   MNEMONIC mnemonic;
-   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-   char color = mnemonic.arraysubposition[0];
-   is_crys_set = true;
-   switch(color) {
-      case 'B':
-         crystal = 0;
-         break;
-      case 'G':
-         crystal = 1;
-         break;
-      case 'R':
-         crystal = 2;
-         break;
-      case 'W':
-         crystal = 3;
-         break;
-      default:
-         crystal = 0xFFFF;
-         is_crys_set = false;
-   };
+   crystal = GetCrystal();
    return crystal;
 }
 

@@ -38,7 +38,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt) const{
       printf("no TChannel set for this address\n");
       return 0.00;
    }
-   return chan->CalibrateENG(GetCharge());
+   return chan->CalibrateENG((int)GetCharge());
 }
 
 void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
@@ -48,6 +48,7 @@ void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   ((TGRSIDetectorHit&)rhs).waveform = waveform;
   ((TGRSIDetectorHit&)rhs).cfd      = cfd;
   ((TGRSIDetectorHit&)rhs).time     = time;
+  ((TGRSIDetectorHit&)rhs).charge   = charge;
 }
 
 void TGRSIDetectorHit::Print(Option_t *opt) const {
@@ -60,6 +61,7 @@ void TGRSIDetectorHit::Clear(Option_t *opt) {
   address = 0xffffffff;    // -1
   position.SetXYZ(0,0,1);  // unit vector along the beam.
   waveform.clear();        // reset size to zero.
+  charge          = 0;
   cfd             = -1;
   time            = -1;
   detector        = -1;
@@ -67,7 +69,7 @@ void TGRSIDetectorHit::Clear(Option_t *opt) {
   is_pos_set = false;
 }
 
-Int_t TGRSIDetectorHit::GetDetector() const {
+UInt_t TGRSIDetectorHit::GetDetector() const {
    if(is_det_set)
       return detector;
 
@@ -82,7 +84,7 @@ Int_t TGRSIDetectorHit::GetDetector() const {
    return mnemonic.arrayposition;
 }
 
-Int_t TGRSIDetectorHit::SetDetector() {
+UInt_t TGRSIDetectorHit::SetDetector() {
    detector = GetDetector();
    is_det_set = true;
    return detector;
