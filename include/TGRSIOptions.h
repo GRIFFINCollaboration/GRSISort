@@ -31,6 +31,7 @@ namespace TGRSIOptions {
       extern bool fReadingMaterial;
       extern bool fIgnoreFileOdb;
       extern bool fIgnoreEpics;
+      extern bool fWriteBadFrags;
 
       }
       std::string GetHostName();
@@ -74,6 +75,9 @@ namespace TGRSIOptions {
 
       void SetReadingMaterial(bool flag=true);
       bool ReadingMaterial();
+
+      void SetWriteBadFrags(bool flag=true);
+      bool WriteBadFrags();
 
       void SetHostName(std::string &host);
       void SetExptName(std::string &expt); 
