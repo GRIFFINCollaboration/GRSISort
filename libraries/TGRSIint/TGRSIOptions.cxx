@@ -15,6 +15,7 @@ namespace TGRSIOptions {
   bool fIgnoreFileOdb  = false;
   bool fIgnoreEpics    = false;
   bool fCloseAfterSort = false;
+  bool fWriteBadFrags  = false;
 
   std::string fexptname;
   std::string fhostname;
@@ -70,6 +71,10 @@ bool MakeAnalysisTree()                   { return fMakeAnalysisTree;}
 
 void SetHostName(std::string &host) {fhostname.assign(host);}
 void SetExptName(std::string &expt) {fexptname.assign(expt);}
+
+void SetWriteBadFrags(bool flag)  {fWriteBadFrags=flag;}
+bool WriteBadFrags()              {return fWriteBadFrags;}
+
 
 void AddInputRootFile(std::string &input)  {  fInputRootFile.push_back(input);    }
 void AddInputMidasFile(std::string &input) {  fInputMidasFile.push_back(input);   }
