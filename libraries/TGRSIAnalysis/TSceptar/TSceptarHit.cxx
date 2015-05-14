@@ -42,7 +42,7 @@ void TSceptarHit::SetHit(){
 }
 */
 
-TVector3 TSceptarHit::GetPosition(double dist) {
+TVector3 TSceptarHit::GetPosition(double dist) const {
 	return TSceptar::GetPosition(detector);
 }
 

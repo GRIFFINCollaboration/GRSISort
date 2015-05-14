@@ -40,7 +40,7 @@ class TSceptarHit : public TGRSIDetectorHit {
 		/////////////////////////		/////////////////////////////////////
       inline Int_t    GetFiterPatter()    const     {   return filter;   }  //!
 		inline ULong_t   GetTime()			   const     {	return time;     }  //!
-      TVector3 GetPosition(Double_t dist); //!
+      TVector3 GetPosition(Double_t dist = 0) const; //!
 
       inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 
@@ -53,9 +53,6 @@ class TSceptarHit : public TGRSIDetectorHit {
 		void Clear(Option_t *opt = "");		                    //!
 		void Print(Option_t *opt = "") const;		                    //!
       virtual void Copy(TSceptarHit&) const;        //!
-
-   protected:
-      TVector3 GetPosition(double param = 0) const;
 
 	ClassDef(TSceptarHit,1)
 };
