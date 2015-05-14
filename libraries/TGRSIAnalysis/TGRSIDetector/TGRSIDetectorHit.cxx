@@ -109,14 +109,10 @@ void TGRSIDetectorHit::SetPosition(double dist) {
 	position = TGRSIDetectorHit::GetPosition(dist); //Calls a general Hit GetPosition function
 }
 
-TVector3 TGRSIDetectorHit::GetPosition(Double_t dist){
+TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
    if(is_pos_set)
       return position;
 
-   if(!is_det_set){
-      SetDetector();
-   }
-   
    if(is_det_set)
       return GetPosition(dist); //Calls the derivative GetPosition function
 

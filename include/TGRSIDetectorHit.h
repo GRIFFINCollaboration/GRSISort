@@ -56,7 +56,7 @@ class TGRSIDetectorHit : public TObject 	{
 
 		inline void SetPosition(const TVector3& temp_pos) { position = temp_pos; } //!
       void SetPosition(Double_t temp_pos = 0);
-		virtual TVector3 GetPosition(Double_t dist = 0); //!
+		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
       
       //Abstract methods. These are required in all derived classes
       virtual double GetEnergy(Option_t *opt="") const;

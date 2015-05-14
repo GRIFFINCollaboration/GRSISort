@@ -38,7 +38,7 @@ class TGriffinHit : public TGRSIDetectorHit {
       virtual double GetTime(Option_t *opt = "") const;                                 //!
 
 //		void SetPosition(double dist =110);   //!
-      TVector3 GetPosition(Double_t dist = 110.0); //!
+      TVector3 GetPosition(Double_t dist = 110.0) const; //!
 
 		/////////////////////////  Getters	/////////////////////////////////////
       inline Int_t    GetFilterPattern() const         {   return filter;   }          //!
@@ -62,7 +62,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 		//inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
 		//inline UShort_t GetCrystalNumber() const	     {	return crystal;  }  //!
 
-      //inline UShort_t GetArrayNumber() { return( 4*(GetDetectorNumber()-1)+(GetCrystalNumber()+1)); } //!
+      inline UShort_t GetArrayNumber() { return( 4*(GetDetector()-1)+(GetCrystal()+1)); } //!
       // returns a number 1-64 ( 1 = Detector 1 blue;  64 =  Detector 16 white; ) 
 
       //inline Int_t    GetChargeLow() const			  {	return charge_lowgain;	  }  //!
