@@ -97,11 +97,11 @@ void TGriffinHit::Clear(Option_t *opt)	{
 
 
 void TGriffinHit::Print(Option_t *opt) const	{
-   //printf("Griffin Detector: %i\n",detector);
-	//printf("Griffin Crystal:  %i\n",crystal);
-	//printf("Griffin hit energy: %.2f\n",GetEnergyLow());
+   printf("Griffin Detector: %i\n",GetDetector());
+	printf("Griffin Crystal:  %i\n",GetCrystal());
+   printf("Griffin Energy:   %lf\n",GetEnergy());
 	//printf("Griffin hit time:   %ld\n",GetTime());
-   //printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
+   printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",GetPosition().Theta() *180/(3.141597),GetPosition().Phi() *180/(3.141597));
 }
 /*
 double TGriffinHit::GetEnergy(Option_t *opt) const { 
@@ -130,8 +130,8 @@ double TGriffinHit::GetTime(Option_t *opt) const {
   return time;
 }
 
-TVector3 TGriffinHit::GetPosition(Double_t dist){
-	TGRSIDetectorHit::SetPosition(TGriffin::GetPosition(GetDetector(),GetCrystal(),dist));
+TVector3 TGriffinHit::GetPosition(Double_t dist) const{
+	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
 const UInt_t TGriffinHit::GetCrystal() const { 
