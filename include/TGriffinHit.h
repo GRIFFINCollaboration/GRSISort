@@ -24,11 +24,11 @@ class TGriffinHit : public TGRSIDetectorHit {
 	private:
       Int_t filter;
       Int_t ppg;
-      UInt_t crystal;
+      UInt_t crystal; //!
 
    //flags
    private:
-      Bool_t is_crys_set;
+      Bool_t is_crys_set; //!
 
 	public:
 		/////////////////////////  Setters	/////////////////////////////////////
@@ -37,7 +37,7 @@ class TGriffinHit : public TGRSIDetectorHit {
       //void SetHit();
       virtual double GetTime(Option_t *opt = "") const;                                 //!
 
-		void SetPosition(double dist =110);   //!
+//		void SetPosition(double dist =110);   //!
       TVector3 GetPosition(Double_t dist = 110.0); //!
 
 		/////////////////////////  Getters	/////////////////////////////////////

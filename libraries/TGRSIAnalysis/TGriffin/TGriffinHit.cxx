@@ -97,6 +97,7 @@ void TGriffinHit::Clear(Option_t *opt)	{
 
 
 void TGriffinHit::Print(Option_t *opt) const	{
+   printf("Griffin Hit\n");
    //printf("Griffin Detector: %i\n",detector);
 	//printf("Griffin Crystal:  %i\n",crystal);
 	//printf("Griffin hit energy: %.2f\n",GetEnergyLow());

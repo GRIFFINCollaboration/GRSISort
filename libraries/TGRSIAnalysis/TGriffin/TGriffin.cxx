@@ -188,6 +188,17 @@ void TGriffin::PushBackHit(TGRSIDetectorHit *ghit){
    griffin_hits.push_back(*((TGriffinHit*)ghit));
 }
 
+TGRSIDetectorHit* TGriffin::GetHit(const Int_t idx) {
+   return GetGriffinHit(idx);
+}
+
+TGriffinHit* TGriffin::GetGriffinHit(const int i) {
+   if(i < GetMultiplicity())
+      return &griffin_hits.at(i);   
+   else
+      return 0;
+}
+
 void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 //Builds the GRIFFIN Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
 //This is done for both GRIFFIN and it's suppressors.
@@ -275,6 +286,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
   */    
 
    }
+
    //printf("created %ld hits\n",griffin_hits.size());
 
 

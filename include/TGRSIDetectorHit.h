@@ -88,6 +88,8 @@ class TGRSIDetectorHit : public TObject 	{
       inline void           SetParent(TGRSIDetector *fParent)   { parent = (TObject*)fParent ; } //!
       inline TGRSIDetector *GetParent() const                   { return ((TGRSIDetector*)parent.GetObject()); } //!
 
+      void Shout() { printf("HELLO!\n");}
+
    protected:
       UInt_t     address;  //address of the the channel in the DAQ.
       UInt_t     charge;   //charge collected from the hit
@@ -96,15 +98,15 @@ class TGRSIDetectorHit : public TObject 	{
       UInt_t    detector; //! Detector Number
       TVector3  position; //! Position of hit detector.
       Double_t  energy;   //! Energy of the Hit.
-      TRef      parent;   //pointer to the mother class;
+      TRef      parent;   // pointer to the mother class;
       std::vector<Short_t> waveform;  
       //Bool_t fHitSet;    //!
  
    //flags   
    protected:  
-      Bool_t is_det_set;
-      Bool_t is_pos_set;
-      Bool_t is_energy_set;
+      Bool_t is_det_set;   //!
+      Bool_t is_pos_set;   //!
+      Bool_t is_energy_set;   //!
       
       //Bool_t fDetectorSet;//!
       //Bool_t fPosSet;//!

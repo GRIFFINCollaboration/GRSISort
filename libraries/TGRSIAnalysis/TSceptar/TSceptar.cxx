@@ -149,3 +149,10 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 //     TSceptar::SetBeta();
    }
 }
+
+TGRSIDetectorHit* TSceptar::GetHit(const Int_t idx){
+   if(idx < GetMultiplicity())
+      return &(sceptar_hits.at(idx));
+   else 
+      return 0;
+}

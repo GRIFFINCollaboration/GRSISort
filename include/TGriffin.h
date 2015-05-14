@@ -33,10 +33,11 @@ class TGriffin : public TGRSIDetector {
      //void BuildAddBack(Option_t *opt="");	//!
      //void BuildAddBackClover(Option_t *opt=""); //!
 
-     TGriffinHit *GetGriffinHit(const int i) { return &griffin_hits.at(i);   }  //!
+     TGriffinHit *GetGriffinHit(const int i); //!
+     TGRSIDetectorHit* GetHit(const Int_t idx = 0);
+     Int_t GetMultiplicity() const {return griffin_hits.size();}
      //TGriffinHit &GetGriffinHit(const int i) { return  griffin_hits.at(i);   }  //!
-     Int_t        GetMultiplicity() const    { return griffin_hits.size();   }  //!
-
+    // Int_t        GetMultiplicity() const    { return griffin_hits.size();   }  //!
 
      //TGriffinHit *GetAddBackHit(int i)        {	return &addback_hits[i];   }	//!
      //Short_t GetAddBackMultiplicity() const   {	return addback_hits.size();}	//!
@@ -57,7 +58,7 @@ class TGriffin : public TGRSIDetector {
    private: 
      TGriffinData *grifdata;                 //!  Used to build GRIFFIN Hits
      //TBGOData     *bgodata;                  //!  Used to build BGO Hits
-     std::vector <TGriffinHit> griffin_hits; //   The set of crystal hits
+     std::vector <TGriffinHit> griffin_hits; //  The set of crystal hits
      //std::vector <TGriffinHit> addback_hits; //   The set of add-back hits		
      //std::vector <TGriffinHit> addback_clover_hits; //  The set of add-back2 hits
 
