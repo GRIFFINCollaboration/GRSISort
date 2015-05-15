@@ -15,6 +15,8 @@
 #include <TFrame.h>
 #include <TF1.h>
 #include <TGraph.h>
+#include <TPolyMarker.h>
+#include <TSpectrum.h>
 
 #include <TApplication.h>
 #include <TContextMenu.h>
@@ -408,6 +410,12 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             break;
          case kKey_B:
             SetBackGroundSubtractionType();
+            break;
+         case kKey_d:
+            edit = DisplayPeaks();
+            break;
+         case kKey_D:
+            edit = RemovePeaks();
             break;
          case kKey_e:
             if(GetNMarkers()<2)
@@ -1185,3 +1193,97 @@ TH1 *GCanvas::GetBackGroundHist(GMarker *addlow,GMarker *addhigh) {
   return 0;
 }
 
+void GCanvas::ShowPeaks()
+{
+	// remove previous labels
+	TIter iter(this->GetListOfPrimitives());
+	TObject *obj;
+	while(obj=iter())
+	{
+		if (strcmp(obj->GetName(),"peaklabel")==0) obj->Delete();
+	}
+
+	TIter next(this->GetListOfPrimitives());
+	TH1* hst;
+	double thresh=0.01;
+	while(obj=next())
+	{
+		if (obj->InheritsFrom("TH1") && !obj->InheritsFrom("TH2") && !obj->InheritsFrom("TH3"))
+		{
+			hst = (TH1*) obj;
+			TSpectrum* spec = new TSpectrum();
+			spec->Search(hst,2,"Qnodraw",thresh);
+			TPolyMarker *pm = (TPolyMarker*)hst->GetListOfFunctions()->FindObject("TPolyMarker");
+			if (!pm)
+			{
+				printf("No TPolyMarker object in the list of functions for histogram %s\n",hst->GetName());
+				return;
+			}
+			TObjArray* testarray = (TObjArray*)hst->GetListOfFunctions()->FindObject("PeakLabels");
+			if (testarray)
+			{
+				hst->GetListOfFunctions()->Remove(testarray);
+				delete testarray;
+			}
+		
+			TObjArray* array = new TObjArray();
+			array->SetName("PeakLabels");
+			int n = pm->GetN();
+			if (n>20) n=20;
+			TText* text;
+			double *x = pm->GetX();
+			double *y = pm->GetY();
+			for (int i=0;i<n;i++)
+			{
+				text = new TText(x[i],y[i],Form("%.1f",x[i]));
+				text->SetName("peaklabel");
+				text->SetTextSize(0.025);
+				text->SetTextAngle(90);
+				text->SetTextAlign(12);
+				text->SetTextFont(42);
+				text->SetTextColor(hst->GetLineColor());
+				array->Add(text);
+			}
+			hst->GetListOfFunctions()->Remove(pm);
+			delete pm;
+			array->Draw();
+		}
+		else continue;
+	}
+	return;
+}
+
+bool GCanvas::DisplayPeaks()
+{
+	// if we already have this TExec attached, don't attach it again.
+	TIter iter(this->GetListOfExecs());
+	TObject *obj;
+	while(obj=iter())
+	{
+		if (strcmp(obj->GetName(),"ShowPeaks")==0) return false;
+	}
+
+	const char* name = this->GetName();
+	this->AddExec("ShowPeaks",Form("%s->ShowPeaks()",name));
+	return true;
+}
+
+bool GCanvas::RemovePeaks()
+{
+	// remove TExec attached to canvas
+	TIter iter(this->GetListOfExecs());
+	TObject *obj;
+	// this loop makes sure that all peak exec functions are clear
+	while(obj=iter())
+	{
+		if (strcmp(obj->GetName(),"ShowPeaks")==0) this->DeleteExec("ShowPeaks");
+	}
+
+	// clean up remaining labels
+	TIter next(this->GetListOfPrimitives());
+	while(obj=next())
+	{
+		if (strcmp(obj->GetName(),"peaklabel")==0) obj->Delete();
+	}
+	return true;
+}
