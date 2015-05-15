@@ -243,8 +243,8 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    background->SetParameters(this->GetParameters());
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
    Copy(*fithist->GetListOfFunctions()->Last());
-   if(optstr.Contains("+"))
-      Copy(*fithist->GetListOfFunctions()->Before(fithist->GetListOfFunctions()->Last()));
+  // if(optstr.Contains("+"))
+  //    Copy(*fithist->GetListOfFunctions()->Before(fithist->GetListOfFunctions()->Last()));
    
    delete tmppeak;
    return true;
