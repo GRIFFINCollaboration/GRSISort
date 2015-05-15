@@ -128,6 +128,7 @@ double TFragment::GetEnergy(int i) const {
    if(!chan || !(Charge.size()>i))
       return 0.00;
    if(chan->UseCalFileIntegration()) {
+      //printf("I am here\n");
      return chan->CalibrateENG((int)(Charge.at(i)),0);  // this will use the integration value
                                                         // in the tchannel if it exists.
    }
@@ -199,3 +200,17 @@ bool TFragment::IsTigCore() {
 };
 
 
+bool TFragment::IsGriffCore() {
+  // If a tigress fragment a signal from the core
+  // return true, else false.
+
+  std::string channame = this->GetName();
+  if(channame.length()<9) //not a good mnemonic
+     return false;
+  if(!channame.compare(0,3,"GRG"))
+      return true;
+    //if(!channame.compare(6,3,"N00"))
+      return true;
+  return false;
+
+};
