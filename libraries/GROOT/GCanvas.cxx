@@ -411,10 +411,10 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          case kKey_B:
             SetBackGroundSubtractionType();
             break;
-         case kKey_d:
+         case kKey_s:
             edit = DisplayPeaks();
             break;
-         case kKey_D:
+         case kKey_S:
             edit = RemovePeaks();
             break;
          case kKey_e:
