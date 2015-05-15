@@ -77,6 +77,7 @@ public:
    Int_t Get4GCfd(int i=0); //!
 
    bool  IsTigCore(); //! 
+   bool  IsGriffCore(); //! 
 
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 
