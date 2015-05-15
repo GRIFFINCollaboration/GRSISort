@@ -411,12 +411,6 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          case kKey_B:
             SetBackGroundSubtractionType();
             break;
-         case kKey_s:
-            edit = DisplayPeaks();
-            break;
-         case kKey_S:
-            edit = RemovePeaks();
-            break;
          case kKey_e:
             if(GetNMarkers()<2)
                break;
@@ -543,7 +537,13 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          case kKey_F:
             edit = PeakFit();
             break;
+         case kKey_s:
+            edit = DisplayPeaks();
+            break;
          case kKey_S:
+            edit = RemovePeaks();
+            break;
+         /*case kKey_S:
             if(fStatsDisplayed)
                fStatsDisplayed = false;
             else
@@ -552,6 +552,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
               hists.at(i)->SetStats(fStatsDisplayed);
             edit = true;
             break;
+         */
          case kKey_F10:{
             std::ofstream outfile;
             for(int i=0;i<hists.back()->GetListOfFunctions()->GetSize();i++) {
