@@ -542,7 +542,7 @@ std::string TChannel::PrintToString(Option_t *opt) {
       buffer.append("\n");
    }
    if(usecalfileint) 
-       buffer.append("FileInt: %d\n",(int)usecalfileint);
+       buffer.append(Form("FileInt: %d\n",(int)usecalfileint));
    buffer.append("}\n");
    
    buffer.append("//====================================//\n");
