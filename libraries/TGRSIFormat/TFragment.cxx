@@ -107,7 +107,7 @@ Int_t TFragment::Get4GCfd(int i) { // return a 4G cfd in terms
 }
 
 
-const char *TFragment::GetName() {
+const char *TFragment::GetName() const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan)
       return "";
@@ -147,7 +147,7 @@ double TFragment::GetCharge(int i) const {
    if(KValue.size()>i && KValue.at(i)>0){
       return ((double)Charge.at(i)+gRandom->Uniform())/((double)KValue.at(i));// this will use the integration value
    }
-   return ((double)Charge.at(i)+gRandom->Uniform());// this will use the integration value
+   return ((double)Charge.at(i)+gRandom->Uniform());// this will use no integration value
 }
 
 void TFragment::Print(Option_t *opt)	{
@@ -214,3 +214,57 @@ bool TFragment::IsGriffCore() {
   return false;
 
 };
+
+bool TFragment::IsDetector(std::string prefix, Option_t *opt) const {
+   //Checks to see if the current fragment constains the same "prefix", for example "GRG"
+   //The option determines whether the channel should be:
+   // - C : The core of a segmented detector
+   // - S : The segments of a segmented detector
+   // - A : Low gain output of a detector
+   // - B : High gain output of a detectora
+   // If C or S are not given, default to C
+   // If A or B are not given, default to A
+   //Note that multiple options add to the output, so "CAB" would return the core with both high and low gain
+   //One should eventually add N,P,T options as well.
+   TString pre = prefix;
+   TString option = opt;
+   TString channame = this->GetName();
+   option.ToUpper();
+   //Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs to be done
+   //Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then checks
+   //for conditions.
+   if(channame.BeginsWith(pre)){
+      bool high_gain = option.Contains("B");
+      bool low_gain = option.Contains("A");
+      bool core = option.Contains("C");
+      bool segments = option.Contains("S");
+   
+      if(!high_gain && !low_gain)
+         low_gain = true;
+
+      if(!core && !segments)
+         core = true;
+
+      if(!high_gain && channame.EndsWith("B")){
+         return false;
+      }
+      if(!low_gain && channame.EndsWith("A")){
+         return false;
+      }
+      //Now remove the last letter for comparing segments/core.
+      channame = channame.Chop();
+
+      if(!core && channame.EndsWith("00"))
+         return false;
+      if(!segments && !channame.EndsWith("00"))
+         return false;
+
+      channame = channame.Chop();
+      channame = channame.Chop();
+
+      return true;
+
+   }
+   else return false;
+
+}

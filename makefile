@@ -91,13 +91,14 @@ end: grsisort
 	@printf " ${WARN_COLOR}Compilation Success. woohoo!${NO_COLOR}\n\n"
 
 clean:
-	@$(RM) *~
-	$(RM) ./bin/*
+	@$(RM) $(GRSISYS)/*~                      
+	$(RM) -R $(GRSISYS)/bin/*dSYM
+	$(RM) $(GRSISYS)/bin/*
 	@for dir in $(ALLDIRS); do \
 		$(MAKE) -C $$dir $@; \
 	done
 
 veryclean: clean
-	$(RM) -r ./htmldoc
+	$(RM) -r $(GRSISYS)/htmldoc
 
 
