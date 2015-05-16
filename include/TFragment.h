@@ -76,9 +76,7 @@ public:
 
    Int_t Get4GCfd(int i=0); //!
 
-   bool IsDetector(std::string prefix,Option_t *opt = "CA") const;
-   bool  IsTigCore(); //! 
-   bool  IsGriffCore(); //! 
+   bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!
 
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 
