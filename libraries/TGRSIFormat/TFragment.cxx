@@ -72,11 +72,11 @@ double TFragment::GetTimeStamp() const {
    long time = TimeStampHigh;
    time  = time << 28;
    time |= TimeStampLow & 0x0fffffff;
-   
+   double dtime = double(time)+ gRandom->Uniform();
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan )//|| Charge.size()<1)
-      return double(time);
-   return double(time) - chan->GetTZero(GetEnergy());
+      return dtime;
+   return dtime - chan->GetTZero(GetEnergy());
 }
 
 double TFragment::GetTZero() const {
@@ -92,7 +92,7 @@ double TFragment::GetTZero() const {
 long TFragment::GetTimeStamp_ns() {
    long ns = 0;
    if(DataType==2 && Cfd.size()>0) {
-     ns = Cfd.at(0) & (0x03c00000) >> 22;
+     ns = (Cfd.at(0) >> 21) & 0xf;
    }
    return 10*GetTimeStamp() + ns;  
 }
@@ -102,7 +102,7 @@ Int_t TFragment::Get4GCfd(int i) { // return a 4G cfd in terms
      return -1;
   if(Cfd.size()<i)
      i = Cfd.size()-1;
-  return  Cfd.at(i)&0x003fffff;
+  return  Cfd.at(i)&0x001fffff;
 
 }
 
@@ -128,6 +128,7 @@ double TFragment::GetEnergy(int i) const {
    if(!chan || !(Charge.size()>i))
       return 0.00;
    if(chan->UseCalFileIntegration()) {
+      //printf("I am here\n");
      return chan->CalibrateENG((int)(Charge.at(i)),0);  // this will use the integration value
                                                         // in the tchannel if it exists.
    }
@@ -184,13 +185,32 @@ void TFragment::Print(Option_t *opt)	{
 
 }
 
+bool TFragment::IsTigCore() {
+  // If a tigress fragment a signal from the core
+  // return true, else false.
+
+  std::string channame = this->GetName();
+  if(channame.length()<9) //not a good mnemonic
+     return false;
+  if(!channame.compare(0,3,"TIG"))
+    if(!channame.compare(6,3,"N00"))
+      return true;
+  return false;
+
+};
 
 
+bool TFragment::IsGriffCore() {
+  // If a tigress fragment a signal from the core
+  // return true, else false.
 
+  std::string channame = this->GetName();
+  if(channame.length()<9) //not a good mnemonic
+     return false;
+  if(!channame.compare(0,3,"GRG"))
+      return true;
+    //if(!channame.compare(6,3,"N00"))
+      return true;
+  return false;
 
-
-
-
-
-
-
+};

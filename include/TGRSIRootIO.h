@@ -29,14 +29,17 @@ class TGRSIRootIO : public TObject {
    private:
       //TTree *fTChannelTree;
       TTree *fFragmentTree;
+      TTree *fBadFragmentTree;
       TTree *fEpicsTree;
       TFile *foutfile;
       int fTimesFillCalled;
+      int fTimesBadFillCalled;
       int fEPICSTimesFillCalled;
 
       std::vector<TFile*> finfiles;
 
       TFragment  *fBufferFrag;
+      TFragment  *fBadBufferFrag;
       TEpicsFrag *fEXBufferFrag;
       TChannel   *fBufferChannel;
 
@@ -60,6 +63,11 @@ class TGRSIRootIO : public TObject {
       TTree *GetFragmentTree()  { return fFragmentTree;  }
       void FillFragmentTree(TFragment*);
       void FinalizeFragmentTree();
+
+      void SetUpBadFragmentTree();
+      TTree *GetBadFragmentTree()  { return fBadFragmentTree;  }
+      void FillBadFragmentTree(TFragment*);
+      void FinalizeBadFragmentTree();
 
       void SetUpEpicsTree();
       TTree *GetEpicsTree()  { return fEpicsTree;  }

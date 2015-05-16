@@ -59,6 +59,7 @@ TChannel::TChannel(TChannel *chan) {
     this->SetNumber(chan->GetNumber());
     this->SetStream(chan->GetStream());
     this->SetUserInfoNumber(chan->GetUserInfoNumber());
+    this->SetName(chan->GetName());
     this->SetChannelName(chan->GetChannelName());
     this->SetDigitizerType(chan->GetDigitizerType());
 
@@ -246,6 +247,7 @@ void TChannel::Clear(Option_t *opt){
     EFFChi2           =  0.0;
     userinfonumber    =  0xffffffff;
     usecalfileint     =  false;
+    SetName("DefaultTChannel");
 
     ENGCoefficients.clear();
     CFDCoefficients.clear();

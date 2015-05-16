@@ -1,6 +1,7 @@
 #ifndef GRUTCANVAS_H
 #define GRUTCANVAS_H
 
+#include "TROOT.h"
 #include "TCanvas.h"
 #include "TRootCanvas.h"
 #include "TPeak.h"
@@ -45,10 +46,12 @@ class GCanvas : public TCanvas {
       Int_t  GetNMarkers() { return fMarkers.size(); }
       Int_t  GetNBG_Markers() { return fBG_Markers.size(); }
       void SetMarkerMode(bool flag=true) {fMarkerMode = flag;}
+      void ShowPeaks();
 
       static void SetBackGroundSubtractionType();
 
       TF1 *GetLastFit();
+      static void Prompt() { gROOT->ProcessLine("Getlinem(kInit,TGRSIint::instance()->GetPrompt())"); }
 
    private:
       void GCanvasInit();
@@ -97,6 +100,8 @@ class GCanvas : public TCanvas {
 
       static int fBGSubtraction_type;
 
+      bool DisplayPeaks();
+      bool RemovePeaks();
 
       Window_t fCanvasWindowID;
       TRootCanvas *fRootCanvas;

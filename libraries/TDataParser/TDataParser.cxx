@@ -447,7 +447,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
             break;                                 
          case 0xe0000000:
 //				if(true) { //value == EventFrag->ChannelId) { //header has to equal the trailer
-            if(value == EventFrag->ChannelId){
+	   if((value & 0x3fff) == (EventFrag->ChannelId & 0x3fff)){
                if(record_stats)
 						FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);				
@@ -455,6 +455,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
                   printf( DBLUE "x | size: " DRED "%i | %i" RESET_COLOR "\n",x,size); //once this happens we need to recursively call GriffinDataToFragment with the remaining datums.
                return NumFragsFound; //This will be more important when we start putting multiple fragments into a single mid event
 				} else  {
+               TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
 					return -x;
             }
             break;
@@ -472,6 +473,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
    	       break;
 		};
 	}
+   TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
 	return -x;
 }
 
