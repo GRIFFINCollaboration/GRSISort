@@ -69,13 +69,14 @@ public:
   
    double GetTimeStamp() const; //!
    double GetTZero() const; //!
-   const char *GetName(); //!
+   const char *GetName() const; //!
    double GetEnergy(int iter=0)const; //!
    double GetCharge(int iter=0)const; //!
    long GetTimeStamp_ns(); //!
 
    Int_t Get4GCfd(int i=0); //!
 
+   bool IsDetector(std::string prefix,Option_t *opt = "CA") const;
    bool  IsTigCore(); //! 
    bool  IsGriffCore(); //! 
 
