@@ -24,6 +24,7 @@ class TDescant : public TGRSIDetector {
      virtual ~TDescant();
 
   public: 
+     TGRSIDetectorHit* GetHit(const Int_t idx =0);
      TDescantHit *GetDescantHit(int i)        {	return &descant_hits[i];   }	//!
      Short_t GetMultiplicity() const	       {	return descant_hits.size();}	//!
 
@@ -44,17 +45,18 @@ class TDescant : public TGRSIDetector {
 
    public:
      static bool SetWave()      { return fSetWave;  }	                        //!
-     void SetHit(bool flag = true) { hit_flag = flag; }                          //!
      bool Hit()                {return hit_flag;}                                //!  
-
+     void SetHit(bool flag = true) { hit_flag = flag; }
    private:
-     static TVector3 gPosition[21];                                     //!  Position of each Paddle
+     static TVector3 gPosition[21];                                     //!  Position of each Paddle needs to be updated
 
    public:         
      void Clear(Option_t *opt = "");		//!
-     void Print(Option_t *opt = "");		//!
+     void Print(Option_t *opt = "") const;		//!
 
-   ClassDef(TDescant,1)  // Descant Physics structure
+     void PushBackHit(TGRSIDetectorHit* deshit);
+
+     ClassDef(TDescant,1)  // Descant Physics structure
 
 
 };

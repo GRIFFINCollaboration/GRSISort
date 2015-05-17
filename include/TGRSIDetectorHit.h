@@ -51,44 +51,36 @@ class TGRSIDetectorHit : public TObject 	{
       virtual void Copy(TGRSIDetectorHit &) const;    //!
 		virtual void Clear(Option_t* opt = "");         //!
 		virtual void Print(Option_t* opt = "") const;	//!
+      static bool CompareEnergy(TGRSIDetectorHit *lhs, TGRSIDetectorHit *rhs);
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
 
-		inline void SetPosition(const TVector3& temp_pos) { position = temp_pos; } //!
+		inline void SetPosition(const TVector3& temp_pos)           { position = temp_pos; } //!
+      inline void SetAddress(const UInt_t &temp_address)          { address = temp_address; } //!
+      inline void SetCharge(const UInt_t &temp_charge)            { charge = temp_charge;} //!
+      inline void SetParent(TGRSIDetector *fParent)               { parent = (TObject*)fParent ; } //!
+      inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    } //!
+      virtual inline void SetCfd(const unsigned int &x)           { cfd    = x;   }                  //!
+      virtual inline void SetTime(const ULong_t &x)               { time   = x;   }                  //! Maybe make this abstract?
+ 
       void SetPosition(Double_t temp_pos = 0);
-		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
+      Double_t SetEnergy(Option_t *opt="");
+      virtual UInt_t SetDetector();
       
       //Abstract methods. These are required in all derived classes
+		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
       virtual double GetEnergy(Option_t *opt="") const;
-      Double_t SetEnergy(Option_t *opt="");
-      virtual double GetTime(Option_t *opt="")   const { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
-      virtual inline void SetTime(const ULong_t &x)         { time   = x;   }                  //! Maybe make this abstract?
+      virtual UInt_t GetDetector() const;
+      virtual double GetTime(Option_t *opt="")   const      { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
+      virtual inline UInt_t    GetCfd() const               {   return cfd;      }           //!
+      inline UInt_t GetAddress()     const                  { return address; }         //!
+      inline UInt_t GetCharge() const                       { return charge;} //!
+      inline TChannel *GetChannel() const                   { return TChannel::GetChannel(address); }  //!
+      inline std::vector<Short_t> GetWaveForm() const       { return waveform; } //!
+      inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!
       //virtual void SetHit() { AbstractMethod("SetHit()");}
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
-
-
-      inline void  SetAddress(const UInt_t &temp_address) { address = temp_address; } //!
-      inline UInt_t GetAddress()     const                { return address; }         //!
-
-      inline void SetCharge(const UInt_t &temp_charge) { charge = temp_charge;} //!
-      inline UInt_t GetCharge() const                    { return charge;} //!
-
-      virtual inline void SetCfd(const unsigned int &x)             { cfd    = x;   }                  //!
-      virtual inline UInt_t    GetCfd() const                 {   return cfd;      }           //!
- 
-      virtual UInt_t SetDetector();
-      virtual UInt_t GetDetector() const;
-
-      inline TChannel *GetChannel() const                { return TChannel::GetChannel(address); }  //!
-
-      inline void SetWaveform(std::vector<Short_t> x) { waveform = x;    } //!
-      inline std::vector<Short_t> GetWaveForm() const { return waveform; } //!
-
-      inline void           SetParent(TGRSIDetector *fParent)   { parent = (TObject*)fParent ; } //!
-      inline TGRSIDetector *GetParent() const                   { return ((TGRSIDetector*)parent.GetObject()); } //!
-
-      void Shout() { printf("HELLO!\n");}
 
    protected:
       UInt_t     address;  //address of the the channel in the DAQ.

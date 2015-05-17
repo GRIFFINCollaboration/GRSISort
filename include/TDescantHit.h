@@ -20,25 +20,15 @@ class TDescantHit : public TGRSIDetectorHit {
     ~TDescantHit();
 
   private:
-    UShort_t detector;
     Int_t    filter;
-    Int_t    charge;
-    Int_t    cfd;
     Int_t    psd;
-    Double_t energy;
-    Long_t   time;
   
     std::vector<Short_t> waveform; //
   
   public:
 		/////////////////////////		/////////////////////////////////////
-      inline void SetDetectorNumber(const int &x)  { detector = x; }   //!
       inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
-      inline void SetCharge(const int &x)          { charge   = x; }   //!
-      inline void SetCfd(const int &x)             { cfd      = x; }   //!
       inline void SetPsd(const int &x)             { psd      = x; }   //!
-      inline void SetEnergy(const Double_t &x)     { energy   = x; }   //!
-      inline void SetTime(const Long_t &x)         { time     = x; }   //!
    //   inline void SetPosition(TVector3 x)          { position = x; }   //!
 
 
@@ -69,27 +59,22 @@ class TDescantHit : public TGRSIDetectorHit {
       } //!
 
 		/////////////////////////		/////////////////////////////////////
-		inline UShort_t GetDetectorNumber()	     {	return detector; }  //!
-      inline Int_t    GetFiterPatter()         {   return filter;   }  //!
-		inline Int_t    GetCharge()			     {	return charge;	  }  //!
-      inline Int_t    GetCfd()                 {   return cfd;      }  //!
+      inline Int_t    GetFilterPattern()         {   return filter;   }  //!
       inline Int_t    GetPsd()                 {   return psd;      }  //!
-      inline Double_t GetEnergy()	   	     {	return energy;   }  //!
-		inline Long_t   GetTime()			        {	return time;     }  //!
-      TVector3 GetPosition() const {}
+      TVector3 GetPosition(Double_t dist = 0) const; //!
 
       inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 
       bool   InFilter(Int_t);                                          //!
 
-      static bool CompareEnergy(TDescantHit*,TDescantHit*);            //!
-      void Add(TDescantHit*);                                          //!
+ //     static bool CompareEnergy(TDescantHit*,TDescantHit*);            //!
+ //     void Add(TDescantHit*);                                          //!
 
       bool AnalyzeWaveform();                                          //!
 
 	public:
 		void Clear(Option_t *opt = "");		                    //!
-		void Print(Option_t *opt = "");		                    //!
+		void Print(Option_t *opt = "") const;		                    //!
 
 	ClassDef(TDescantHit,3)
 };

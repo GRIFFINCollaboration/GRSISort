@@ -87,11 +87,10 @@ TSceptar& TSceptar::operator=(const TSceptar& rhs) {
 }
 
 void TSceptar::Print(Option_t *opt) const	{
-  //Prints out TSceptar members, currently does nothing.
+  //Prints out TSceptar members, currently does little.
   printf("sceptardata = 0x%p\n",sceptardata);
   if(sceptardata) sceptardata->Print();
   printf("%lu sceptar_hits\n",sceptar_hits.size());
-  return;
 }
 
 

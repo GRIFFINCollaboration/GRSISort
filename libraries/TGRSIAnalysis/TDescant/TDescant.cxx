@@ -76,12 +76,24 @@ TDescant& TDescant::operator=(const TDescant& rhs) {
 }
 
 
-void TDescant::Print(Option_t *opt)	{
-  //Prints out TDescant members, currently does nothing.
-  printf("not yet written...\n");
-  return;
+void TDescant::Print(Option_t *opt) const	{
+  //Prints out TDescant members, currently does little.
+  printf("descantdata = 0x%p\n",descantdata);
+  if(descantdata) descantdata->Print();
+  printf("%lu descant_hits\n",descant_hits.size());
 }
 
+TGRSIDetectorHit* TDescant::GetHit(const Int_t idx){
+   if(idx < GetMultiplicity())
+      return &(descant_hits.at(idx));
+   else 
+      return 0;
+}
+
+void TDescant::PushBackHit(TGRSIDetectorHit *deshit) {
+  descant_hits.push_back(*((TDescantHit*)deshit));
+  return;
+}
 
 void TDescant::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
 //Fills the "Data" structure for a specific channel with TFragment frag.
@@ -112,11 +124,11 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
       TDescantHit dethit;
 
-      dethit.SetDetectorNumber(gdata->GetDetNumber(i));
+//      dethit.SetDetectorNumber(gdata->GetDetNumber(i));
    
       dethit.SetAddress(gdata->GetDetAddress(i));
       
-      dethit.SetEnergy(gdata->GetDetEnergy(i));
+//      dethit.SetEnergy(gdata->GetDetEnergy(i));
       dethit.SetCharge(gdata->GetDetCharge(i));
 
       dethit.SetTime(gdata->GetDetTime(i));

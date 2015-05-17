@@ -69,12 +69,12 @@ void TSceptarHit::Print(Option_t *opt) const	{
 	printf("Sceptar hit time:   %.ld\n",GetTime());
 }
 
-
+/*
 bool TSceptarHit::CompareEnergy(TSceptarHit *lhs, TSceptarHit *rhs)	{
    return(lhs->GetEnergy()) > rhs->GetEnergy();
 }
-
-
+*/
+/*
 void TSceptarHit::Add(TSceptarHit *hit)	{
    if(!CompareEnergy(this,hit)) {
       this->cfd    = hit->GetCfd();    
@@ -85,6 +85,7 @@ void TSceptarHit::Add(TSceptarHit *hit)	{
 
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
 }
+*/
 /*
 Double_t TSceptarHit::GetEnergy() const {
    if(fEnergySet)

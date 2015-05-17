@@ -58,7 +58,7 @@ DETLIBS += -lSceptar
 #DETLIBS += -lPaces
 ##DETLIBS += -lDante
 ##DETLIBS += -lZeroDegree
-#DETLIBS += -lDescant
+DETLIBS += -lDescant
 DETLIBS += -lGRSIDetector
 
 DETLIBS += -lGROOT

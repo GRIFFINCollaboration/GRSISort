@@ -31,23 +31,20 @@ class TSceptarHit : public TGRSIDetectorHit {
   // void SetHit();
 		/////////////////////////		/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
-      inline void SetEnergy(const Double_t &x)     { energy   = x; }   //!
-      inline void SetTime(const ULong_t &x)         { time     = x; }   //!
    //   inline void SetPosition(TVector3 x)          { position = x; }   //!
 
       inline void SetWaveform(std::vector<Short_t> x) { waveform = x; } //!
 
 		/////////////////////////		/////////////////////////////////////
-      inline Int_t    GetFiterPatter()    const     {   return filter;   }  //!
-		inline ULong_t   GetTime()			   const     {	return time;     }  //!
+      inline Int_t    GetFilterPattern()    const     {   return filter;   }  //!
       TVector3 GetPosition(Double_t dist = 0) const; //!
 
       inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 
       bool   InFilter(Int_t);                                          //!
 
-      static bool CompareEnergy(TSceptarHit*,TSceptarHit*);            //!
-      void Add(TSceptarHit*);                                          //!
+ //     static bool CompareEnergy(TSceptarHit*,TSceptarHit*);            //!
+ //     void Add(TSceptarHit*);                                          //!
 
 	public:
 		void Clear(Option_t *opt = "");		                    //!

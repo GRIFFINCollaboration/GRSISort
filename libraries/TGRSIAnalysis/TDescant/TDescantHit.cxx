@@ -18,31 +18,25 @@ bool TDescantHit::InFilter(Int_t wantedfilter) {
 }
 
 void TDescantHit::Clear(Option_t *opt)	{
-	detector = 0;
    filter = 0;
-   charge = -1;
-   cfd    = -1;
    psd    = -1;
-   energy = 0.0;
-   time   = 0;
-
  //  position.SetXYZ(0,0,1);
 
    waveform.clear();
 }
 
-void TDescantHit::Print(Option_t *opt)	{
+void TDescantHit::Print(Option_t *opt) const	{
    printf("Descant Detector: %i\n",detector);
 	printf("Descant hit energy: %.2f\n",GetEnergy());
 	printf("Descant hit time:   %.ld\n",GetTime());
 }
 
-
+/*
 bool TDescantHit::CompareEnergy(TDescantHit *lhs, TDescantHit *rhs)	{
    return(lhs->GetEnergy()) > rhs->GetEnergy();
 }
-
-
+*/
+/*
 void TDescantHit::Add(TDescantHit *hit)	{
    if(!CompareEnergy(this,hit)) {
       this->cfd    = hit->GetCfd();    
@@ -54,7 +48,7 @@ void TDescantHit::Add(TDescantHit *hit)	{
 
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
 }
-
+*/
 bool TDescantHit::AnalyzeWaveform() {
    bool error = false;
   
@@ -129,5 +123,9 @@ bool TDescantHit::AnalyzeWaveform() {
    }
   
    return !error;
+}
+
+TVector3 TDescantHit::GetPosition(double dist) const {
+	return TDescant::GetPosition(detector);
 }
 
