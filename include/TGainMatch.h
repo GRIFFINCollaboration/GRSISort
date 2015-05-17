@@ -27,6 +27,8 @@ class TGainMatch : public TCal {
  public:
    void Copy(TObject &obj) const;
 
+   void CalculateGain(Double_t cent1, Double_t cent2, Double_t eng1, Double_t eng2);
+
    static Bool_t CoarseMatchAll(TCalManager* cm, TH2 *mat, Double_t energy1 = 1173.228, Double_t energy2 = 1332.492);
    static Bool_t FineMatchFastAll(TCalManager* cm, TH2 *mat, Double_t energy1, Double_t energy2);
    static Bool_t FineMatchFastAll(TCalManager* cm, TH2 *mat1, Double_t energy1, TH2 *mat2, Double_t energy2);

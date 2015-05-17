@@ -120,3 +120,6 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
 
 }
 
+bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit *lhs, TGRSIDetectorHit *rhs) {
+   return (lhs->GetEnergy() > rhs->GetEnergy());
+}
