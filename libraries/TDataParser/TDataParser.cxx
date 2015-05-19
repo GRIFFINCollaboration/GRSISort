@@ -455,6 +455,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
                   printf( DBLUE "x | size: " DRED "%i | %i" RESET_COLOR "\n",x,size); //once this happens we need to recursively call GriffinDataToFragment with the remaining datums.
                return NumFragsFound; //This will be more important when we start putting multiple fragments into a single mid event
 				} else  {
+               TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
 					return -x;
             }
             break;
@@ -472,7 +473,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
    	       break;
 		};
 	}
-	delete EventFrag;
+   TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
 	return -x;
 }
 

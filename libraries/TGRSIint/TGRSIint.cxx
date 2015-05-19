@@ -321,6 +321,10 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
        } else if(temp.compare("no_speed")==0) {
           printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
           TGRSIOptions::SetProgressDialog(false);
+       } else if((temp.compare("bad_frags")==0)     || (temp.compare("write_bad_frags")==0) ||
+                 (temp.compare("bad_fragments")==0) || (temp.compare("write_bad_fragments")==0)) {
+          printf(DBLUE "    failed fragements being written too BadFragmentTree." RESET_COLOR "\n");
+          TGRSIOptions::SetWriteBadFrags(true);
        } else if(temp.compare("help")==0) {
           fPrintHelp = true;
        } else if(temp.compare("ignore_odb")==0) { 

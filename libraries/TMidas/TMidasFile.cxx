@@ -3,7 +3,7 @@
 //
 
 #include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -92,7 +92,7 @@ bool TMidasFile::Open(const char *filename)
       if (s == NULL)
         {
           fLastErrno = -1;
-          fLastError = "TMidasFile::Open: Invalid ssh:// URI. Should be: ssh://user@host/file/path/...";
+          fLastError.assign("TMidasFile::Open: Invalid ssh:// URI. Should be: ssh://user@host/file/path/...");
           return false;
         }
 
@@ -150,13 +150,12 @@ bool TMidasFile::Open(const char *filename)
   if (pipe.length() > 0)
     {
       fprintf(stderr,"TMidasFile::Open: Reading from pipe: %s\n", pipe.c_str());
-
       fPoFile = popen(pipe.c_str(), "r");
 
       if (fPoFile == NULL)
         {
           fLastErrno = errno;
-          fLastError = strerror(errno);
+          fLastError.assign(std::strerror(errno));
           return false;
         }
 
@@ -173,7 +172,7 @@ bool TMidasFile::Open(const char *filename)
       if (fFile <= 0)
         {
           fLastErrno = errno;
-          fLastError = strerror(errno);
+          fLastError.assign(std::strerror(errno));
           return false;
         }
 
@@ -186,12 +185,12 @@ bool TMidasFile::Open(const char *filename)
           if ((*(gzFile*)fGzFile) == NULL)
             {
               fLastErrno = -1;
-              fLastError = "zlib gzdopen() error";
+              fLastError.assign("zlib gzdopen() error");
               return false;
             }
 #else
           fLastErrno = -1;
-          fLastError = "Do not know how to read compressed MIDAS files";
+          fLastError.assign("Do not know how to read compressed MIDAS files");
           return false;
 #endif
         }
@@ -222,7 +221,7 @@ bool TMidasFile::OutOpen(const char *filename)
   if (fOutFile <= 0)
     {
       fLastErrno = errno;
-      fLastError = strerror(errno);
+      fLastError.assign(std::strerror(errno));
       return false;
     }
   
@@ -238,7 +237,7 @@ bool TMidasFile::OutOpen(const char *filename)
       if ((*(gzFile*)fOutGzFile) == NULL)
 	{
 	  fLastErrno = -1;
-	  fLastError = "zlib gzdopen() error";
+	  fLastError.assign("zlib gzdopen() error");
 	  return false;
 	}
       printf("Opened gz file successfully\n");
@@ -247,14 +246,14 @@ bool TMidasFile::OutOpen(const char *filename)
 	  if (gzsetparams(*(gzFile*)fOutGzFile, 1, Z_DEFAULT_STRATEGY) != Z_OK) {
 	    printf("Cannot set gzparams\n");
 	    fLastErrno = -1;
-	    fLastError = "zlib gzsetparams() error";
+	    fLastError.assign("zlib gzsetparams() error");
 	    return false;
 	  }
 	  printf("setparams for gz file successfully\n");  
 	}
 #else
       fLastErrno = -1;
-      fLastError = "Do not know how to write compressed MIDAS files";
+      fLastError.assign("Do not know how to write compressed MIDAS files");
       return false;
 #endif
     }
@@ -309,13 +308,13 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
   if (rd_head == 0)
     {
       fLastErrno = 0;
-      fLastError = "EOF";
+      fLastError.assign("EOF");
       return 0;
     }
   else if (rd_head != sizeof(TMidas_EVENT_HEADER))
     {
       fLastErrno = errno;
-      fLastError = strerror(errno);
+      fLastError.assign(std::strerror(errno));
       return 0;
     }
 
@@ -326,7 +325,7 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
   if (!midasEvent->IsGoodSize())
     { 
       fLastErrno = -1;
-      fLastError = "Invalid event size";
+      fLastError.assign("Invalid event size");
       return 0;
     }
 
@@ -342,7 +341,7 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
   if (rd != (int)midasEvent->GetDataSize())
     {
       fLastErrno = errno;
-      fLastError = strerror(errno);
+      fLastError.assign(std::strerror(errno));
       return 0;
     }
 
