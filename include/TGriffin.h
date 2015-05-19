@@ -83,10 +83,10 @@ class TGriffin : public TGRSIDetector {
      void SetBeamOn(Bool_t flag=kTRUE)     { fGriffinBits.SetBitNumber(kBeamOn,flag);}     //!
      void SetDecay(Bool_t flag=kTRUE)      { fGriffinBits.SetBitNumber(kDecay,flag);}      //!
 
-     bool GetTapeMove()   const { fGriffinBits.TestBitNumber(kTapeMove);}//!
-     bool GetBackground() const { fGriffinBits.TestBitNumber(kBackGround);}//!
-     bool GetBeamOn()     const { fGriffinBits.TestBitNumber(kBeamOn);}//!
-     bool GetDecay()      const { fGriffinBits.TestBitNumber(kDecay);}//!
+     bool GetTapeMove()   const { return fGriffinBits.TestBitNumber(kTapeMove);}//!
+     bool GetBackground() const { return fGriffinBits.TestBitNumber(kBackGround);}//!
+     bool GetBeamOn()     const { return fGriffinBits.TestBitNumber(kBeamOn);}//!
+     bool GetDecay()      const { return fGriffinBits.TestBitNumber(kDecay);}//!
 
      static int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
 
