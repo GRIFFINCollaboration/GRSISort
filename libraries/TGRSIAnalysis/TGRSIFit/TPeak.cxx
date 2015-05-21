@@ -196,7 +196,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
          FixParameter(3,1);
          std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
    	 // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
-         fithist->GetListOfFunctions()->RemoveLast();//Remove the fit if it was bad.
+         fithist->GetListOfFunctions()->Last()->Delete();//Remove the fit if it was bad.
          fitres = fithist->Fit(this,Form("%sRSM",opt));
       }
    }
