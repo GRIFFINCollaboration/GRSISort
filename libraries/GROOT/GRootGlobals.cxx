@@ -9,6 +9,12 @@
 #include <TAxis.h>
 #include <TDirectory.h>
 #include <TFile.h>
+#include <TPolyMarker.h>
+#include <TSpectrum.h>
+#include <TText.h>
+#include <TExec.h>
+#include <TKey.h>
+#include <TObject.h>
 
 #include <GRootObjectManager.h>
 
@@ -139,6 +145,104 @@ void SaveAll(const char *fname,Option_t *opt) {
   f.Close();
   cur_dir->cd();
   return;
+}
+
+void PeakSearch(TH1* hst, double thresh=0.001)
+{
+	TSpectrum* spec = new TSpectrum(20);
+	spec->Search(hst,2,"Qnodraw",thresh);
+	TPolyMarker *pm = (TPolyMarker*)hst->GetListOfFunctions()->FindObject("TPolyMarker");
+	if (!pm)
+	{
+		printf("No TPolyMarker object in the list of functions for histogram %s\n",hst->GetName());
+		return;
+	}
+	TObjArray* testarray = (TObjArray*)hst->GetListOfFunctions()->FindObject("PeakLabels");
+	if (testarray)
+	{
+		hst->GetListOfFunctions()->Remove(testarray);
+		delete testarray;
+	}
+
+	TObjArray* array = new TObjArray();
+	array->SetName("PeakLabels");
+	int n = pm->GetN();
+	TText* text;
+	double *x = pm->GetX();
+	double *y = pm->GetY();
+	for (int i=0;i<n;i++)
+	{
+		text = new TText(x[i],y[i],Form("%.1f",x[i]));
+		text->SetTextSize(0.025);
+		text->SetTextAngle(90);
+		text->SetTextAlign(12);
+		text->SetTextFont(42);
+		text->SetTextColor(hst->GetLineColor());
+		array->Add(text);
+	}
+	hst->GetListOfFunctions()->Remove(pm);
+	delete pm;
+	hst->GetListOfFunctions()->Add(array);
+	return;
+}
+
+bool ShowPeaks()
+{
+	TList* list = gFile->GetListOfKeys();
+	TIter iter(list);
+	TObject* obj;
+	double thresh=0.01;
+	while(obj=iter())
+	{
+		TKey* key = (TKey*) obj;
+		const char* buffer= key->GetClassName();
+		if (strncmp(buffer,"TH1",3) == 0)
+		{
+			TH1* hst = (TH1*) gFile->Get(obj->GetName());
+			TExec* testexec = (TExec*)hst->GetListOfFunctions()->FindObject("PeakSearch");
+			if (testexec)
+			{
+				return false;
+			}
+			else
+			{
+				const char* name = hst->GetName();
+				TExec* peaksearch = new TExec("PeakSearch",Form("PeakSearch(%s,%f)",name,thresh));
+				hst->GetListOfFunctions()->Add(peaksearch);
+			}
+		}
+	}
+	return true;
+}
+
+bool RemovePeaks()
+{
+	TList* list = gFile->GetListOfKeys();
+	TIter iter(list);
+	TObject *obj;
+	while(obj=iter())
+	{
+		TKey* key = (TKey*) obj;
+		const char* buffer= key->GetClassName();
+		if (strncmp(buffer,"TH1",3) == 0)
+		{
+			TH1* hst = (TH1*) gFile->Get(obj->GetName());
+			TObjArray* testarray = (TObjArray*)hst->GetListOfFunctions()->FindObject("PeakLabels");
+			if (testarray)
+			{
+				hst->GetListOfFunctions()->Remove(testarray);
+				delete testarray;
+			}
+
+			TExec* testexec = (TExec*)hst->GetListOfFunctions()->FindObject("PeakSearch");
+			if (testexec)
+			{
+				hst->GetListOfFunctions()->Remove(testexec);
+				delete testexec;
+			}
+		}
+	}
+	return true;
 }
 
 void Prompt()   { Getlinem(EGetLineMode::kInit,((TRint*)gApplication)->GetPrompt()); }

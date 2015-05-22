@@ -2,6 +2,7 @@
 #define GROOTGLOBALS__H
 
 #include <TH2.h>
+#include <TH1.h>
 
 TH1D *ProjectionX(TH2 *mat,int lowbin=0,int highbin=-1); /*MENU*/
 TH1D *ProjectionY(TH2 *mat,int lowbin=0,int highbin=-1); /*MENU*/
@@ -10,6 +11,9 @@ TH1D *ProjectionY(TH2 *mat,double lowvalue,double highvalue=-1); /*MENU*/
 
 void SaveAll(const char* fname,Option_t *opt="recreate");
 
+void PeakSearch(TH1 *hst,double thresh);
+bool ShowPeaks();
+bool RemovePeaks();
 
 void Help();
 void Commands();
