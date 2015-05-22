@@ -322,6 +322,7 @@ void TPeak::Print(Option_t *opt) const {
    printf("Name:        %s \n", this->GetName()); 
    printf("Centroid:    %lf +/- %lf \n", this->GetParameter("centroid"),this->GetParError(GetParNumber("centroid")));
    printf("Area: 	      %lf +/- %lf \n", farea, fd_area);
+   printf("FWHM:        %lf +/- %lf \n", this->GetParameter("sigma")*2.3548, this->GetParError(GetParNumber("sigma"))*2.3548);
    printf("Chi^2/NDF:   %lf\n",fchi2/fNdf);
    if(strchr(opt,'+') != NULL){
       TF1::Print();
