@@ -147,26 +147,29 @@ void SaveAll(const char *fname,Option_t *opt) {
   return;
 }
 
-void PeakSearch(TH1* hst, double thresh=0.001)
-{
-	TSpectrum* spec = new TSpectrum(20);
-	spec->Search(hst,2,"Qnodraw",thresh);
+int PeakSearch(TH1* hst, double sigma, double thresh,Option_t *opt)  {
+	//TSpectrum spec(20);
+	//spec.Search(hst,sigma,"Qnodraw",thresh);
+   TSpectrum::StaticSearch(hst,sigma,"Qnodraw",thresh);
 	TPolyMarker *pm = (TPolyMarker*)hst->GetListOfFunctions()->FindObject("TPolyMarker");
 	if (!pm)
 	{
 		printf("No TPolyMarker object in the list of functions for histogram %s\n",hst->GetName());
-		return;
+		return 0;
 	}
 	TObjArray* testarray = (TObjArray*)hst->GetListOfFunctions()->FindObject("PeakLabels");
 	if (testarray)
 	{
 		hst->GetListOfFunctions()->Remove(testarray);
-		delete testarray;
+		//delete testarray;
+      testarray->Delete();  //guarantees the text objects it points to are removed as well.
 	}
 
-	TObjArray* array = new TObjArray();
+   TObjArray* array = new TObjArray();
 	array->SetName("PeakLabels");
 	int n = pm->GetN();
+   if(n<1)
+      return 0;
 	TText* text;
 	double *x = pm->GetX();
 	double *y = pm->GetY();
@@ -181,18 +184,38 @@ void PeakSearch(TH1* hst, double thresh=0.001)
 		array->Add(text);
 	}
 	hst->GetListOfFunctions()->Remove(pm);
-	delete pm;
+	//delete pm;
+   pm->Delete();
 	hst->GetListOfFunctions()->Add(array);
-	return;
+	return n;
 }
 
-bool ShowPeaks()
+bool ShowPeaks(TH1 *hists,unsigned int NHists)
 {
-	TList* list = gFile->GetListOfKeys();
-	TIter iter(list);
-	TObject* obj;
-	double thresh=0.01;
-	while(obj=iter())
+	//TList* list = gFile->GetListOfKeys();  //things can go out of scope preventing this from working.
+	//TIter iter(list);
+	double sigma  = 2.0;
+	double thresh = 0.01;
+   int num_found =0;
+   for(int x=0;x<NHists;x++) {
+     if(TObject *obj = (hists+x)->GetListOfFunctions()->FindObject("PeakLabels")) {
+        //if we have any array of peak labels, we remove it; we have no 
+        //idea whether the user has change the range of the histogram so we 
+        //research/re-display.
+        (hists+x)->GetListOfFunctions()->Remove(obj); 
+        ((TObjArray*)obj)->Delete();
+     }
+     num_found += (PeakSearch((hists+x),sigma,thresh,""));  // this find and adds the peaks...
+                                                            // with the peaks added to the list of functions,
+                                                            // returning true to update the pad will display them.
+   }
+   if(num_found)
+      return true;
+   else 
+      return false;
+
+   /*
+   while(obj=iter())
 	{
 		TKey* key = (TKey*) obj;
 		const char* buffer= key->GetClassName();
@@ -213,10 +236,22 @@ bool ShowPeaks()
 		}
 	}
 	return true;
+   */
 }
 
-bool RemovePeaks()
+bool RemovePeaks(TH1 *hists, unsigned int Nhists)
 {
+   bool return_flag = false;
+   for(int x=0;x<Nhists;x++) {
+     if(TObject *obj = (hists+x)->GetListOfFunctions()->FindObject("PeakLabels")) {
+        //if we have any array of peak labels, we remove it; 
+        return_flag = true;
+        (hists+x)->GetListOfFunctions()->Remove(obj); 
+        ((TObjArray*)obj)->Delete();
+     }
+   }
+   return return_flag;
+   /*
 	TList* list = gFile->GetListOfKeys();
 	TIter iter(list);
 	TObject *obj;
@@ -243,6 +278,7 @@ bool RemovePeaks()
 		}
 	}
 	return true;
+   */
 }
 
 void Prompt()   { Getlinem(EGetLineMode::kInit,((TRint*)gApplication)->GetPrompt()); }
