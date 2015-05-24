@@ -202,6 +202,9 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
    std::string pre = prefix;
    TString option = opt;
    std::string channame = this->GetName();
+   if(channame.length()<9)
+      return false;
+
    option.ToUpper();
    //Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs to be done
    //Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then checks

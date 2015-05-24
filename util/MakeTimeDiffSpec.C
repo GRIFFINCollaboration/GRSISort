@@ -39,7 +39,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    bool last_gamma_filled = false;
 
    //TChannel::ReadCalFromTree(tree);
-   TChannel::ReadCalFile("/data1/griffin/nbernier/FragmentTrees/allGRIFFINcal_1316.cal");
+   TChannel::ReadCalFile("/tig/grsmid01_data1/griffin/nbernier/FragmentTrees/allGRIFFINcal_1316.cal");
 
    //tree->SetBranchAddress("TFragment",&currentFrag);
    printf("Loading tree branches into mem..."); fflush(stdout);
@@ -59,9 +59,12 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    int fEntries = index->GetN();
 
 
-   TH1F *gg_diff = new TH1F("gg_diff","gg_diff",12000,-6000,6000); list->Add(gg_diff);
-   TH2F *promptEng = new TH2F("promptEng","Prompt Gamma Rays",100,0,100,4000,0,4000); list->Add(promptEng);
-   TH2F *coincEng = new TH2F("coincEng","Coincident Gamma Rays",100,0,100,4000,0,4000); list->Add(coincEng);	
+   TH1F *gg_diff    = new TH1F("gg_diff","gg_diff",12000,-6000,6000); list->Add(gg_diff);
+   TH2F *promptEng  = new TH2F("promptEng","Prompt Gamma Rays",100,0,100,4000,0,4000); list->Add(promptEng);
+   TH2F *coincEng   = new TH2F("coincEng","Coincident Gamma Rays",100,0,100,4000,0,4000); list->Add(coincEng);	
+
+   TH2F *gg_adc     = new TH2F("gg_adc","Coincident Gamma Rays by adc number",
+                               100,0,100,100,0,100);  list->Add(gg_adc);
 
 
    //TH2F *gg_diff_mod[4];
@@ -168,6 +171,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
             if(!currFragName.compare(0,3,"GRG")) {
               TFragment tempFrag=*currentFrag;
               gg_diff->Fill((long)myFrag.GetTimeStamp() - (long)currentFrag->GetTimeStamp());
+              gg_adc->Fill(currentFrag->ChannelNumber,myFrag.ChannelNumber);
 		        promptEng->Fill((long)currentFrag->GetTimeStamp() - (long)myFrag.GetTimeStamp() ,myFrag.GetEnergy());
 		        coincEng->Fill((long)currentFrag->GetTimeStamp() - (long)myFrag.GetTimeStamp() ,tempFrag.GetEnergy());
             } else if(!currFragName.compare(0,3,"SEP")) {
