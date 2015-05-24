@@ -131,8 +131,13 @@ void GCanvas::AddMarker(int x,int y,int dim) {
     mark->linex->Draw();
     mark->liney->Draw();
   }
-  fMarkers.push_back(mark);
+  if(fMarkers.size()>0) {
+    fMarkers.insert(fMarkers.begin(),mark);
+  } else {
+    fMarkers.push_back(mark);
+  }
   //printf("MarkerAdded %i | %i",x,y);
+  return;
 }
 
 void GCanvas::RemoveMarker() {
