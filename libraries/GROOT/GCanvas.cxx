@@ -554,10 +554,10 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             edit = PeakFit();
             break;
          case kKey_s:
-            edit = ShowPeaks(*hists.data(),hists.size());
+            edit = ShowPeaks(hists.data(),hists.size());
             break;
          case kKey_S:
-            edit = RemovePeaks(*hists.data(),hists.size());
+            edit = RemovePeaks(hists.data(),hists.size());
             break;
          /*case kKey_S:
             if(fStatsDisplayed)

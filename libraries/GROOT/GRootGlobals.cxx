@@ -190,7 +190,7 @@ int PeakSearch(TH1* hst, double sigma, double thresh,Option_t *opt)  {
 	return n;
 }
 
-bool ShowPeaks(TH1 *hists,unsigned int NHists)
+bool ShowPeaks(TH1 **hists,unsigned int NHists)
 {
    //printf("Show peaks called,  0x%08x, Nhist = %i.",hists,NHists);
 	//TList* list = gFile->GetListOfKeys();  //things can go out of scope preventing this from working.
@@ -199,14 +199,14 @@ bool ShowPeaks(TH1 *hists,unsigned int NHists)
 	double thresh = 0.01;
    int num_found =0;
    for(int x=0;x<NHists;x++) {
-     if(TObject *obj = (hists+x)->GetListOfFunctions()->FindObject("PeakLabels")) {
+     if(TObject *obj = hists[x]->GetListOfFunctions()->FindObject("PeakLabels")) {
         //if we have any array of peak labels, we remove it; we have no 
         //idea whether the user has change the range of the histogram so we 
         //research/re-display.
-        (hists+x)->GetListOfFunctions()->Remove(obj); 
+        hists[x]->GetListOfFunctions()->Remove(obj); 
         ((TObjArray*)obj)->Delete();
      }
-     num_found += (PeakSearch((hists+x),sigma,thresh,""));  // this find and adds the peaks...
+     num_found += PeakSearch(hists[x],sigma,thresh,"");  // this find and adds the peaks...
                                                             // with the peaks added to the list of functions,
                                                             // returning true to update the pad will display them.
    }
@@ -243,14 +243,14 @@ bool ShowPeaks(TH1 *hists,unsigned int NHists)
    */
 }
 
-bool RemovePeaks(TH1 *hists, unsigned int Nhists)
+bool RemovePeaks(TH1 **hists, unsigned int Nhists)
 {
    bool return_flag = false;
    for(int x=0;x<Nhists;x++) {
-     if(TObject *obj = (hists+x)->GetListOfFunctions()->FindObject("PeakLabels")) {
+     if(TObject *obj = hists[x]->GetListOfFunctions()->FindObject("PeakLabels")) {
         //if we have any array of peak labels, we remove it; 
         return_flag = true;
-        (hists+x)->GetListOfFunctions()->Remove(obj); 
+        hists[x]->GetListOfFunctions()->Remove(obj); 
         ((TObjArray*)obj)->Delete();
      }
    }
