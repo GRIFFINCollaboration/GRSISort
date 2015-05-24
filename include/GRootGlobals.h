@@ -11,9 +11,9 @@ TH1D *ProjectionY(TH2 *mat,double lowvalue,double highvalue=-1); /*MENU*/
 
 void SaveAll(const char* fname,Option_t *opt="recreate");
 
-void PeakSearch(TH1 *hst,double thresh);
-bool ShowPeaks();
-bool RemovePeaks();
+int  PeakSearch(TH1 *hst,double sigma=2.0,double thresh=0.01,Option_t *opt = "");
+bool ShowPeaks(TH1 **hists,unsigned int Nhists=1);
+bool RemovePeaks(TH1 **hists,unsigned int Nhists=1);
 
 void Help();
 void Commands();

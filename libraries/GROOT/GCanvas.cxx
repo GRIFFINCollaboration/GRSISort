@@ -293,6 +293,17 @@ std::vector<TH1*> GCanvas::Find1DHists() {
   return tempvec;
 }
 
+std::vector<TH1*> GCanvas::FindAllHists() {
+  std::vector<TH1*> tempvec;
+  TH1 *hist = 0;
+  TIter iter(gPad->GetListOfPrimitives());
+  while(TObject *obj = iter.Next()) {
+     if( obj->InheritsFrom("TH1"))
+        tempvec.push_back((TH1*)obj); 
+  }
+  return tempvec;
+}
+
 
 bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
 
@@ -543,10 +554,10 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             edit = PeakFit();
             break;
          case kKey_s:
-            edit = ShowPeaks();
+            edit = ShowPeaks(hists.data(),hists.size());
             break;
          case kKey_S:
-            edit = RemovePeaks();
+            edit = RemovePeaks(hists.data(),hists.size());
             break;
          /*case kKey_S:
             if(fStatsDisplayed)
