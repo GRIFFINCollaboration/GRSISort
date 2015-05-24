@@ -192,6 +192,7 @@ int PeakSearch(TH1* hst, double sigma, double thresh,Option_t *opt)  {
 
 bool ShowPeaks(TH1 *hists,unsigned int NHists)
 {
+   //printf("Show peaks called,  0x%08x, Nhist = %i.",hists,NHists);
 	//TList* list = gFile->GetListOfKeys();  //things can go out of scope preventing this from working.
 	//TIter iter(list);
 	double sigma  = 2.0;
@@ -209,11 +210,14 @@ bool ShowPeaks(TH1 *hists,unsigned int NHists)
                                                             // with the peaks added to the list of functions,
                                                             // returning true to update the pad will display them.
    }
-   if(num_found)
+   if(num_found) {
+      //printf("Show peaks, found %i, returning true.",num_found);
       return true;
-   else 
+   }   
+   else { 
+      //printf("Show peaks, found %i, returning false.",num_found);
       return false;
-
+   }
    /*
    while(obj=iter())
 	{
