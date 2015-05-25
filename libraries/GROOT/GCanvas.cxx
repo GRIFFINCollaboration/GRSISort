@@ -1163,20 +1163,24 @@ bool GCanvas::SetBGGate(GMarker *m1, GMarker *m2, GMarker *m3, GMarker *m4) {
            mark->linex->SetLineColor(kBlue);
            mark->linex->Draw();
         } 
+        RemoveMarker(); // remove marker #4 so the project will work...
+        RemoveMarker(); // remove marker #3 so the project will work...
      }
      return true;
    case 4:
      if(!m1 || !m2 )
         return false;
      else {
-       AddBGMarker(m3);
-       AddBGMarker(m4);
+       AddBGMarker(m1);
+       AddBGMarker(m2);
        for(int x=0;x<2;x++) {
          GMarker *mark = fBG_Markers.at(x);
          mark->linex = new TLine(mark->localx,GetUymin(),mark->localx,GetUymax());
          mark->linex->SetLineColor(kBlue);
          mark->linex->Draw();
        } 
+       RemoveMarker(); // remove marker #4 so the project will work...
+       RemoveMarker(); // remove marker #3 so the project will work...
      }  
      return true;
   };
