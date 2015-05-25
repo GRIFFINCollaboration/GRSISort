@@ -1025,7 +1025,7 @@ void GCanvas::SetBackGroundSubtractionType() {
 
   fBGSubtraction_type++;
   //if(fBGSubtraction_type >5)
-  if(fBGSubtraction_type >2)
+  if(fBGSubtraction_type >4)
      fBGSubtraction_type = 0;
   printf("\n");
   switch(fBGSubtraction_type) {
@@ -1036,7 +1036,13 @@ void GCanvas::SetBackGroundSubtractionType() {
      printf("BG subtraction set to fraction of total projection, use b to set fraction.\n",fBGSubtraction_type);
      break;
     case 2:
-     printf("BG subtraction set to marker3, use b to confirm subtraction gate.\n",fBGSubtraction_type);
+     printf("BG subtraction set to ( marker3->| ), use b to confirm subtraction gate.\n",fBGSubtraction_type);
+     break;
+    case 3:
+     printf("BG subtraction set to ( marker3->| ) & ( marker4->| ), use b to confirm subtraction gates.\n",fBGSubtraction_type);
+     break;
+    case 4:
+     printf("BG subtraction set to ( marker1->marker2 ), use b to confirm subtraction gates.\n",fBGSubtraction_type);
      break;
     default:
      printf("Changing BG subtraction type, type is now: %i\n",fBGSubtraction_type);
@@ -1073,15 +1079,27 @@ bool GCanvas::SetBackGround(GMarker *m1,GMarker *m2,GMarker *m3,GMarker *m4) {
       //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
       if(!m3) {
         printf(RED "\nThree markers need.  First two peak, three for bg.\n" RESET_COLOR );
+        Prompt();
         break;
       }
       edit = SetBGGate(m1,m2,m3,0);
       break;
     case 3:
-      printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+      if(!m3 || !m4) {
+        printf(RED "\nFour markers need.  First two peak, three and four for split bg.\n" RESET_COLOR );
+        Prompt();
+        break;
+      }
+      edit = SetBGGate(m1,m2,m3,m4);
       break;
     case 4:
-      printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+      if(!m3 || !m4) {
+        printf(RED "\nTwo markers need.  BG gate between marker1 and marker2.\n" RESET_COLOR );
+        Prompt();
+        break;
+      }
+      edit = SetBGGate(m3,m4);
+      //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
       break;
     case 5:
       printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
@@ -1119,6 +1137,48 @@ bool GCanvas::SetBGGate(GMarker *m1, GMarker *m2, GMarker *m3, GMarker *m4) {
         RemoveMarker(); // remove marker #3 so the project will work...
       }
       return true;
+   case 3:
+     if(!m1 || !m2 || !m3 || !m4)
+        return false;
+     else {
+        AddBGMarker(m3);
+
+        GMarker *mark = new GMarker(*m3);
+        if((abs(m1->x - m2->x)%2) != 0)
+          mark->x = m3->x + ((abs(m1->x - m2->x)+1)/2 + 1 );
+        else 
+          mark->x = m3->x + (abs(m1->x - m2->x)/2 + 1);
+        mark->localx = gPad->AbsPixeltoX(mark->x);
+        AddBGMarker(mark);
+
+        AddBGMarker(m4);
+        mark = new GMarker(*m3);
+        mark->x = m3->x + (abs(m1->x - m2->x)/2 + 1);
+        mark->localx = gPad->AbsPixeltoX(mark->x);
+        AddBGMarker(mark);
+
+        for(int x=0;x<4;x++) {
+           mark = fBG_Markers.at(x);
+           mark->linex = new TLine(mark->localx,GetUymin(),mark->localx,GetUymax());
+           mark->linex->SetLineColor(kBlue);
+           mark->linex->Draw();
+        } 
+     }
+     return true;
+   case 4:
+     if(!m1 || !m2 )
+        return false;
+     else {
+       AddBGMarker(m3);
+       AddBGMarker(m4);
+       for(int x=0;x<2;x++) {
+         GMarker *mark = fBG_Markers.at(x);
+         mark->linex = new TLine(mark->localx,GetUymin(),mark->localx,GetUymax());
+         mark->linex->SetLineColor(kBlue);
+         mark->linex->Draw();
+       } 
+     }  
+     return true;
   };
 }
 
@@ -1199,13 +1259,63 @@ TH1 *GCanvas::GetBackGroundHist(GMarker *addlow,GMarker *addhigh) {
       return temp_bg;
       }
       //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
-    case 3:
-      printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
-    case 4:
-      printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+    case 3: {
+      TH1 *temp_bg  =0;
+      TH1 *temp_bg1 =0;
+      if(GetNBG_Markers()<4)
+         return temp_bg;
+      OrderBGMarkers();
+      GMemObj *mobj = GRootObjectManager::Instance()->FindMemObject(hist->GetName());
+      if(!mobj || !mobj->GetParent() || !mobj->GetParent()->InheritsFrom("TH2"))
+         return temp_bg;
+      int bin0,bin1;
+      if(!strcmp(mobj->GetOption(),"ProjY")) { 
+        bin1 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(0)->localx);
+        bin0 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(1)->localx);
+        temp_bg = ((TH2*)mobj->GetParent())->ProjectionX(Form("%s_bg",hist->GetName()),bin0,bin1);
+        bin1 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(2)->localx);
+        bin0 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(3)->localx);
+        temp_bg1 = ((TH2*)mobj->GetParent())->ProjectionX(Form("%s_bg",hist->GetName()),bin0,bin1);
+      } else {
+        bin1 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(0)->localx);
+        bin0 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(1)->localx);
+        temp_bg = ((TH2*)mobj->GetParent())->ProjectionY(Form("%s_bg",hist->GetName()),bin0,bin1);
+        bin1 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(2)->localx);
+        bin0 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(3)->localx);
+        temp_bg1 = ((TH2*)mobj->GetParent())->ProjectionY(Form("%s_bg",hist->GetName()),bin0,bin1);
+      }
+      temp_bg->Add(temp_bg1,1);
+      temp_bg->SetTitle(Form(" - bg(%.0f to %.0f and %.0f to %.0f)",fBG_Markers.at(0)->localx,fBG_Markers.at(1)->localx,
+                                                                    fBG_Markers.at(2)->localx,fBG_Markers.at(3)->localx));
+      return temp_bg;
+      }
+      //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
+    case 4: {
+      TH1 *temp_bg  =0;
+      if(GetNBG_Markers()<2)
+         return temp_bg;
+      OrderBGMarkers();
+      GMemObj *mobj = GRootObjectManager::Instance()->FindMemObject(hist->GetName());
+      if(!mobj || !mobj->GetParent() || !mobj->GetParent()->InheritsFrom("TH2"))
+         return temp_bg;
+      int bin0,bin1;
+      if(!strcmp(mobj->GetOption(),"ProjY")) { 
+        bin1 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(0)->localx);
+        bin0 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(1)->localx);
+        temp_bg = ((TH2*)mobj->GetParent())->ProjectionX(Form("%s_bg",hist->GetName()),bin0,bin1);
+      } else {
+        bin1 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(0)->localx);
+        bin0 = ((TH2*)mobj->GetParent())->GetXaxis()->FindBin(fBG_Markers.at(1)->localx);
+        temp_bg = ((TH2*)mobj->GetParent())->ProjectionY(Form("%s_bg",hist->GetName()),bin0,bin1);
+      }
+      temp_bg->SetTitle(Form(" - bg(%.0f to %.0f)",fBG_Markers.at(0)->localx,fBG_Markers.at(1)->localx));
+      return temp_bg;
+      }
+      //printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
     case 5:
       printf(RED "\nWork in progress, check back soon; no Background subtraction will be performed.\n" RESET_COLOR );
       break;
+      
   };
   return 0;
 }
