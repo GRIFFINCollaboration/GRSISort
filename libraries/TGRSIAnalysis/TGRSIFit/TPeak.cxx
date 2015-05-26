@@ -120,12 +120,12 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    Int_t binhigh = fithist->GetXaxis()->FindBin(xhigh);
    Double_t binWidth = fithist->GetBinWidth(bin);
    this->SetParLimits(1,xlow,xhigh);
-   this->SetParLimits(2,0.1,xhigh-xlow); // sigma should be less than the window width - JKS
-   this->SetParLimits(3,0.000,10);
-   this->SetParLimits(4,0,100); // this is a percentage. no reason for it to go to 500% - JKS
+   this->SetParLimits(2,0.1,(xhigh-xlow)); // sigma should be less than the window width - JKS
+   this->SetParLimits(3,0.000001,10);
+   this->SetParLimits(4,0.000001,100); // this is a percentage. no reason for it to go to 500% - JKS
    //Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
-   this->SetParLimits(6,0.0,fithist->GetBinContent(bin)*1.4);
-   //this->SetParLimits(9,xlow,xhigh);
+   this->SetParLimits(6,0.0,fithist->GetBinContent(bin)*100.);
+   this->SetParLimits(9,xlow,xhigh);
    this->SetParLimits(5,0.0,1.0E2);
 
    if(!fithist && GetHist()) 
@@ -143,15 +143,17 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    this->SetParameter("Height",fithist->GetBinContent(bin));
    this->SetParameter("centroid",GetParameter("centroid"));
  //  this->SetParameter("sigma",(xhigh-xlow)*0.5); // slightly more robust starting value for sigma -JKS
-   this->SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
-   this->SetParameter("beta",0.5);
+ //  this->SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
+   this->SetParameter("sigma",TMath::Sqrt(9.0 + 4.*GetParameter("centroid")/1000.));
+   this->SetParameter("beta",GetParameter("sigma")/2.0);
    this->SetParameter("R", 1.0);
    this->SetParameter("step",1.0);
    this->SetParameter("A",fithist->GetBinContent(binhigh));
    this->SetParameter("B",(fithist->GetBinContent(binlow) - fithist->GetBinContent(binhigh))/(xlow-xhigh));
-   this->SetParameter("C",-0.5);
+   this->SetParameter("C",0.0000);
    this->SetParameter("bg_offset",GetParameter("centroid"));
    this->FixParameter(8,0.00);
+   this->FixParameter(3,GetParameter("beta"));
    this->FixParameter(4,0.00);
    SetInitialized();
    return true;
@@ -184,17 +186,19 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 
 
    // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
-   TFitResultPtr fitres = fithist->Fit(this,Form("%sRSM",opt));//The RS needs to always be there
+   TFitResultPtr fitres = fithist->Fit(this,Form("%sRS",opt));//The RS needs to always be there
    //After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    //for printing out. RD
 
    if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
       if(fitres->Parameter(3) < 1){
+         InitParams(fithist);
          FixParameter(4,0);
          FixParameter(3,1);
          std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
    	 // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
-         fitres = fithist->Fit(this,Form("%sRSM",opt));
+         fithist->GetListOfFunctions()->Last()->Delete();
+         fitres = fithist->Fit(this,Form("%sRS",opt));
       }
    }
 /*   if(fitres->Parameter(5) < 0.0){
