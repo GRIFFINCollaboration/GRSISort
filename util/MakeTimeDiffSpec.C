@@ -39,12 +39,15 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    bool last_beta_filled = false;
    bool last_gamma_filled = false;
 
-   TChannel::ReadCalFromTree(tree);
+   //TChannel::ReadCalFromTree(tree);
+   TChannel::ReadCalFile("/tig/grsmid01_data1/griffin/nbernier/FragmentTrees/allGRIFFINcal_1316.cal");
 
    //tree->SetBranchAddress("TFragment",&currentFrag);
+   printf("Loading tree branches into mem..."); fflush(stdout);
    TBranch *branch = tree->GetBranch("TFragment");
    branch->SetAddress(&currentFrag);
    tree->LoadBaskets(MEM_SIZE);
+   printf(" done!\n");
 
    printf("Tree Index not found, building index on %s/%s...",
           "TimeStampHigh","TimeStampLow");  fflush(stdout);
@@ -57,9 +60,12 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    int fEntries = index->GetN();
 
 
-   TH1F *gg_diff = new TH1F("gg_diff","gg_diff",12000,-6000,6000); list->Add(gg_diff);
-   TH2F *promptEng = new TH2F("promptEng","Prompt Gamma Rays",50,0,50,4000,0,4000); list->Add(promptEng);
-   TH2F *coincEng = new TH2F("coincEng","Coincident Gamma Rays",50,0,50,4000,0,4000); list->Add(coincEng);	
+   TH1F *gg_diff    = new TH1F("gg_diff","gg_diff",12000,-6000,6000); list->Add(gg_diff);
+   TH2F *promptEng  = new TH2F("promptEng","Prompt Gamma Rays",100,0,100,4000,0,4000); list->Add(promptEng);
+   TH2F *coincEng   = new TH2F("coincEng","Coincident Gamma Rays",100,0,100,4000,0,4000); list->Add(coincEng);	
+
+   TH2F *gg_adc     = new TH2F("gg_adc","Coincident Gamma Rays by adc number",
+                               100,0,100,100,0,100);  list->Add(gg_adc);
 
 
    //TH2F *gg_diff_mod[4];
@@ -127,9 +133,9 @@ TList *MakeTimeDiffSpec(TTree *tree) {
       } 
    
       TFragment myFrag  = *currentFrag;         //Set myfrag to be the x'th fragment before incrementing it.
-      long time = currentFrag->GetTimeStamp();  //Get the timestamp of the x'th fragment 
+      long time = (long)currentFrag->GetTimeStamp();  //Get the timestamp of the x'th fragment 
      
-      long timelow  = time -1000;
+      long timelow  = time - 1000;
       long timehigh  = time + 1000; 
 //        long timelow = time + 0;
 //        long timehigh = time + 10000;   
@@ -154,7 +160,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
       //printf("\nlooping over y = %ld - %ld\n",start,stop);
       //
       //printf("Multiplicity = %d\n",stop-start)
-      for(long y=start;y<stop;y++) {
+      for(long y=start;y<=stop;y++) {
          //If the index of the comapred fragment equals the index of the first fragment, do nothing
          if(y == x) {
             continue;
@@ -163,31 +169,33 @@ TList *MakeTimeDiffSpec(TTree *tree) {
             printf( "FIRE!!!" "\n");
             continue;
          } 
-        //printf("myFrag.DetectorType = %i, currentFrag.DetectorType = %i",myFrag.DetectorType,currentFrag->DetectorType);
-        if(myFrag.ChannelAddress == currentFrag->ChannelAddress) {
+         //printf("myFrag.DetectorType = %i, currentFrag.DetectorType = %i",myFrag.DetectorType,currentFrag->DetectorType);
+         if(myFrag.ChannelAddress == currentFrag->ChannelAddress) {
            continue;
-        }
-         if(myFrag.DetectorType == 1) {
-            if(currentFrag->DetectorType == 1) {
-		TFragment tempFrag=*currentFrag;
-               gg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
-		promptEng->Fill(currentFrag->GetTimeStamp() - myFrag.GetTimeStamp() ,myFrag.GetEnergy());
-		coincEng->Fill(currentFrag->GetTimeStamp() - myFrag.GetTimeStamp() ,tempFrag.GetEnergy());
-            } else if(currentFrag->DetectorType == 2) {
-               gb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
-               gb_diff_Id->Fill(myFrag.ChannelAddress%2048, currentFrag->ChannelAddress);
-               gb_diff_Eg->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp(),myFrag.Charge[0]%50000);
-               gb_diff_Eb->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp(),currentFrag->Charge[0]%50000);
-               EbVsEg->Fill(myFrag.Charge[0]%50000, currentFrag->Charge[0]%50000);
+         }
+
+         std::string myFragName = myFrag.GetName();
+         std::string currFragName = currentFrag->GetName();
+           
+         //if(myFrag.DetectorType == 0) {
+         if(myFragName.compare(0,3,"GRG") == 0 && myFrag.DetectorType == 1) {
+            if(currFragName.compare(0,3,"GRG") == 0 && myFrag.DetectorType == 1) {
+              TFragment tempFrag=*currentFrag;
+              gg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+              gg_adc->Fill(currentFrag->ChannelNumber,myFrag.ChannelNumber);
+		          promptEng->Fill(currentFrag->GetTimeStamp() - myFrag.GetTimeStamp() ,myFrag.GetEnergy());
+		          coincEng->Fill(currentFrag->GetTimeStamp() - myFrag.GetTimeStamp() ,tempFrag.GetEnergy());
+            } else if(!currFragName.compare(0,3,"SEP")) {
+               gb_diff->Fill((long)myFrag.GetTimeStamp() - (long)currentFrag->GetTimeStamp());
                bg_coinc_gE->Fill(myFrag.GetEnergy());
             } else {
           
             }
-         } else if(myFrag.DetectorType == 2) {
-            if(currentFrag->DetectorType == 1) {
-               bg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+         } else if(myFragName.compare(0,3,"SEP") == 0 && myFrag.DetectorType == 2) {
+            if(currFragName.compare(0,3,"GRG") == 0 && myFrag.DetectorType == 1) {
+               bg_diff->Fill((long)myFrag.GetTimeStamp() - (long)currentFrag->GetTimeStamp());
                bg_coinc_gE->Fill(currentFrag->GetEnergy());
-            } else if(currentFrag->DetectorType == 2) {
+            } else if(currFragName.compare(0,3,"SEP") == 0 && currentFrag->DetectorType == 2) {
                bb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
                bb_diff_Id->Fill(myFrag.ChannelAddress, currentFrag->ChannelAddress, myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
                if(myFrag.ChannelAddress < currentFrag->ChannelAddress) {

@@ -321,6 +321,10 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
        } else if(temp.compare("no_speed")==0) {
           printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
           TGRSIOptions::SetProgressDialog(false);
+       } else if((temp.compare("bad_frags")==0)     || (temp.compare("write_bad_frags")==0) ||
+                 (temp.compare("bad_fragments")==0) || (temp.compare("write_bad_fragments")==0)) {
+          printf(DBLUE "    failed fragements being written too BadFragmentTree." RESET_COLOR "\n");
+          TGRSIOptions::SetWriteBadFrags(true);
        } else if(temp.compare("help")==0) {
           fPrintHelp = true;
        } else if(temp.compare("ignore_odb")==0) { 
@@ -395,6 +399,13 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
       //fInputCalFile->push_back(filename);
       TGRSIOptions::AddInputCalFile(filename);
       return true;
+   } else if(ext.compare("info")==0) { 
+      if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
+         return true;
+      else {
+         printf("Problem reading run-info file %s\n",filename.c_str());
+         return false;
+      }
    } else if(ext.compare("xml")==0) { 
       //fInputOdbFile->push_back(filename);
       TGRSIOptions::AddInputOdbFile(filename);

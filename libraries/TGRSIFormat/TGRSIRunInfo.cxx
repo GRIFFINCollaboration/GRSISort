@@ -1,6 +1,11 @@
 
 #include "TGRSIRunInfo.h"
 
+#include <fstream>
+#include <sstream>
+
+#include <TGRSIOptions.h>
+
 ClassImp(TGRSIRunInfo)
 
 TGRSIRunInfo *TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();  
@@ -38,6 +43,11 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    TObject::Streamer(b);  
    {Int_t  R__int ; b >> R__int;  fRunNumber = R__int;}
    {Int_t  R__int ; b >> R__int;  fSubRunNumber = R__int;}
+   if(R__v>2) {
+     {Int_t  R__int ; b >> R__int;  fHPGeArrayPosition = R__int;}
+     {Int_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
+     {Double_t  R__double ; b >> R__double;  fAddBackWindow = R__double;}
+   }
    {Bool_t R__bool; b >> R__bool; fTigress = R__bool;   }
    {Bool_t R__bool; b >> R__bool; fSharc = R__bool;     }
    {Bool_t R__bool; b >> R__bool; fTriFoil = R__bool;   }
@@ -54,7 +64,15 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Bool_t R__bool; b >> R__bool; fZeroDegree = R__bool;}
    {Bool_t R__bool; b >> R__bool; fDescant = R__bool;   }
    {TString R__str; R__str.Streamer(b); fMajorIndex.assign(R__str.Data()); } 
+   //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
    {TString R__str; R__str.Streamer(b); fMinorIndex.assign(R__str.Data()); }
+   //printf("fMinorIndex = %s\n",fMinorIndex.c_str());
+   if(R__v >2) {
+     {TString R__str; R__str.Streamer(b); fRunInfoFileName.assign(R__str.Data()); }
+     //printf("fRunInfoFileNameMajor = %s\n",fRunInfoFileName.c_str());
+     {TString R__str; R__str.Streamer(b); fRunInfoFile.assign(R__str.Data()); }
+     //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
+   }
    fGRSIRunInfo = this;
    b.CheckByteCount(R__s,R__c,TGRSIRunInfo::IsA());
  } else {
@@ -62,6 +80,9 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    TObject::Streamer(b);  
    {Int_t R__int = fRunNumber;    b << R__int;}
    {Int_t R__int = fSubRunNumber; b << R__int;}
+   {Int_t R__int = fHPGeArrayPosition; b << R__int;}
+   {Int_t R__int = fBuildWindow;       b << R__int;}
+   {Double_t R__double = fAddBackWindow;  b << R__double;}
    {Bool_t R__bool = fTigress;    b << R__bool;}
    {Bool_t R__bool = fSharc;      b << R__bool;}
    {Bool_t R__bool = fTriFoil;    b << R__bool;}
@@ -77,8 +98,12 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Bool_t R__bool = fDante;      b << R__bool;}
    {Bool_t R__bool = fZeroDegree; b << R__bool;}
    {Bool_t R__bool = fDescant;    b << R__bool;}
-   {TString R__str; R__str = fMajorIndex.c_str(); R__str.Streamer(b);}
-   {TString R__str; R__str = fMinorIndex.c_str(); R__str.Streamer(b);}
+   //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
+   //printf("fMinorIndex = %s\n",fMinorIndex.c_str());
+   {TString R__str(fMajorIndex.c_str());      R__str.Streamer(b); printf("TSring::data = %s\n",R__str.Data());  }//; R__str = fMajorIndex.c_str();      R__str.Streamer(b);}
+   {TString R__str(fMinorIndex.c_str());      R__str.Streamer(b);  printf("TSring::data = %s\n",R__str.Data()); }//; R__str = fMinorIndex.c_str();      R__str.Streamer(b);}
+   {TString R__str(fRunInfoFileName.c_str()); R__str.Streamer(b);   }//; R__str = fRunInfoFileName.c_str(); R__str.Streamer(b);}
+   {TString R__str(fRunInfoFile.c_str());     R__str.Streamer(b);   }//; R__str = fRunInfoFile.c_str();     R__str.Streamer(b);}
    b.SetByteCount(R__c,true);
  }
 }
@@ -100,8 +125,14 @@ void TGRSIRunInfo::SetInfoFromFile(TGRSIRunInfo *tmp) {
 TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) { 
    //if(fNumberOfTrueSystems>0)
    //   TGRSIRunInfo::Get() = this;
-   //else 
-   Clear(); 
+   //else
+   
+   fHPGeArrayPosition = 110.0;
+   fBuildWindow       = 200;  
+   fAddBackWindow     = 15.0;
+
+   Clear();
+
 }
 
 TGRSIRunInfo::~TGRSIRunInfo() { }
@@ -113,12 +144,19 @@ void TGRSIRunInfo::Print(Option_t *opt) {
    printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
    printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
    printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
+   printf("\t\tTIP:          %s\n", Tip() ? "true" : "false");
    printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
    printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
    printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
    printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
    printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
-   printf("\t=====================\n");
+   printf("\n");
+   printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
+   printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
+   printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
+   printf("\n");
+   printf("\t==============================\n");
+
 }
 
 void TGRSIRunInfo::Clear(Option_t *opt) {
@@ -213,15 +251,125 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
          SetDescant();
       }
    }
+   if(Tigress()) {
+     Get()->fMajorIndex.assign("TriggerId");
+     Get()->fMinorIndex.assign("FragmentId");
+   } else if(Griffin()) {
+     Get()->fMajorIndex.assign("TimeStampHigh");
+     Get()->fMinorIndex.assign("TimeStampLow");
+   }
+
+   if(Get()->fRunInfoFile.length())
+      ParseInputData(Get()->fRunInfoFile.c_str());
+
    //TGRSIRunInfo::Get()->Print();
 }
 
 
-void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {
+void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {  }
 
 
+Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
+   std::string infilename;
+   infilename.append(filename);
 
+   if(infilename.length()==0)
+      return false;
+
+   std::ifstream infile;
+   infile.open(infilename.c_str());
+   if (!infile) {
+      printf("could not open file.\n");
+      return false;
+   }
+   infile.seekg(0,std::ios::end);
+   int length = infile.tellg();
+   if(length<1) {
+      printf("file is empty.\n");
+      return false;
+   }
+   char buffer[length];
+   infile.seekg(0,std::ios::beg);
+   infile.read(buffer,length);
+
+   Get()->SetRunInfoFileName(filename);
+   Get()->SetRunInfoFile(buffer);
+   
+   return ParseInputData((const char*)buffer); 
 }
+
+Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
+
+   std::istringstream infile(inputdata);
+   std::string line;
+   int linenumber = 0;
+
+   //Parse the info file. 
+   while (std::getline(infile, line)) {
+      linenumber++;
+      trim(&line);
+      int comment = line.find("//");
+      if (comment != std::string::npos) {
+         line = line.substr(0, comment);
+      }
+      if (!line.length())
+         continue;
+
+      int ntype = line.find(":");
+      if (ntype == std::string::npos) //no seperator, not useful.
+        continue;
+
+      std::string type = line.substr(0, ntype);
+      line = line.substr(ntype + 1, line.length());
+      trim(&line);
+      int j = 0;
+      while (type[j]) {
+        char c = *(type.c_str() + j);
+        c = toupper(c);
+        type[j++] = c;
+      }
+      if( type.compare("BW")==0 || type.compare("BUILDWINDOW")==0 ) {     
+        std::istringstream ss(line);
+        long int temp_bw; ss >> temp_bw;
+        Get()->SetBuildWindow(temp_bw);
+      } else if( type.compare("ABW")==0 || type.compare("ADDBACKWINDOW")==0 || type.compare("ADDBACK") ) {
+        std::istringstream ss(line);
+        double temp_abw; ss >> temp_abw;
+        Get()->SetAddBackWindow(temp_abw);
+      } else if( type.compare("CAL")==0 || type.compare("CALFILE")==0 ) {
+        TGRSIOptions::AddInputCalFile(line);
+      } else if( type.compare("MID")==0 || type.compare("MIDAS")==0 || type.compare("MIDASFILE")==0 ) {
+        TGRSIOptions::AddInputMidasFile(line);
+      } else if( type.compare("ARRAYPOS")==0 || type.compare("HPGEPOS")==0) {
+        std::istringstream ss(line);
+        double temp_int; ss >> temp_int;
+        Get()->SetHPGeArrayPosition(temp_int);
+      }
+   }
+
+   if(strcmp(opt,"q")) {
+     printf("parsed %i lines.\n",linenumber);
+     printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
+     printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
+     printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
+   }
+   return true;
+}
+
+
+void TGRSIRunInfo::trim(std::string * line, const std::string & trimChars) {
+//Removes the the string "trimCars" from  the string 'line'
+   if (line->length() == 0)
+      return;
+   std::size_t found = line->find_first_not_of(trimChars);
+   if (found != std::string::npos)
+      *line = line->substr(found, line->length());
+   found = line->find_last_not_of(trimChars);
+   if (found != std::string::npos)
+      *line = line->substr(0, found + 1);
+   return;
+}
+
 
 
 

@@ -71,6 +71,8 @@ class TChannel : public TNamed	{
     int 	            number;
     int		         stream;
     int              userinfonumber;
+    bool             usecalfileint;
+
 
     std::vector<double> ENGCoefficients;  //Energy calibration coeffs (low to high order)
     double ENGChi2;                       //Chi2 of the energy calibration
@@ -98,6 +100,7 @@ class TChannel : public TNamed	{
 	
 	 static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 
+
   public:
     void SetAddress(unsigned int tmpadd);
     inline void SetChannelName(const char *tmpname)  {channelname.assign(tmpname);} 
@@ -123,6 +126,9 @@ class TChannel : public TNamed	{
     double GetLEDChi2()  { return LEDChi2; }
     double GetTIMEChi2() { return TIMEChi2; }
     double GetEFFChi2()  { return EFFChi2;} 
+
+    void SetUseCalFileIntegration(bool flag=true) {usecalfileint=flag;}
+    bool UseCalFileIntegration() { return usecalfileint; }
 
     std::vector<double> GetENGCoeff()  { return ENGCoefficients;}
     std::vector<double> GetCFDCoeff()  { return CFDCoefficients;}
@@ -175,7 +181,7 @@ class TChannel : public TNamed	{
     static void WriteCalFile(std::string outfilename = "");
     static void WriteCalBuffer(Option_t *opt ="");
 
-    virtual void Print(Option_t *opt = "");
+    virtual void Print(Option_t *opt = "") const;
     virtual void Clear(Option_t *opt = "");
     //static  void PrintAll(Option_t *opt = "");      
     std::string PrintToString(Option_t *opt="");

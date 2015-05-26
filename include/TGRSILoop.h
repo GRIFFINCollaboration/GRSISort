@@ -44,6 +44,7 @@ class TGRSILoop : public TObject {
 
       int fFragsReadFromMidas;
       int fFragsSentToTree;
+      int fBadFragsSentToTree;
 
    #ifndef __CINT__
       std::thread *fMidasThread;
@@ -76,7 +77,7 @@ class TGRSILoop : public TObject {
       int GetFragsReadFromMidas() { return fFragsReadFromMidas; }
 
       void Clear(Option_t *opt="");
-      void Print(Option_t *opt="");
+      void Print(Option_t *opt="") const;
 
    ClassDef(TGRSILoop,0)
 };

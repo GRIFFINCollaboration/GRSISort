@@ -29,7 +29,7 @@ private:
   std::vector<UShort_t>   fSharc_StripFront_StripNbr;		//!
   std::vector<Double_t>   fSharc_StripFront_Energy;			//!
   std::vector<Double_t>   fSharc_StripFront_EngChi2;			//!
-  std::vector<UInt_t>	  fSharc_StripFront_Charge;			//!
+  std::vector<Int_t>	    fSharc_StripFront_Charge;			//!
   std::vector<Double_t>   fSharc_StripFront_TimeCFD;			//!
   std::vector<Double_t>   fSharc_StripFront_TimeLED;			//!
   std::vector<Double_t>   fSharc_StripFront_Time;			//!
@@ -41,7 +41,7 @@ private:
   std::vector<UShort_t>   fSharc_StripBack_StripNbr;			//!
   std::vector<Double_t>   fSharc_StripBack_Energy;			   //!
   std::vector<Double_t>   fSharc_StripBack_EngChi2;			//!
-  std::vector<UInt_t>	  fSharc_StripBack_Charge;			//!
+  std::vector<Int_t>	    fSharc_StripBack_Charge;			//!
   std::vector<Double_t>   fSharc_StripBack_TimeCFD;			//!
   std::vector<Double_t>   fSharc_StripBack_TimeLED;			//!
   std::vector<Double_t>   fSharc_StripBack_Time;				//!
@@ -76,7 +76,7 @@ public:
   inline void SetFront_StripNbr(const UShort_t &StripNbr){fSharc_StripFront_StripNbr.push_back(StripNbr);}		//!
   inline void SetFront_Energy(const Double_t &Energy){fSharc_StripFront_Energy.push_back(Energy);}				//!
   inline void SetFront_EngChi2(const Double_t &Chi2){fSharc_StripFront_EngChi2.push_back(Chi2);}				//!
-  inline void SetFront_Charge(const UInt_t &Charge){fSharc_StripFront_Charge.push_back(Charge);}				//!
+  inline void SetFront_Charge(const  Int_t &Charge){fSharc_StripFront_Charge.push_back(Charge);}				//!
   inline void SetFront_TimeCFD(const Double_t &TimeCFD){fSharc_StripFront_TimeCFD.push_back(TimeCFD);}			//!
   inline void SetFront_TimeLED(const Double_t &TimeLED){fSharc_StripFront_TimeLED.push_back(TimeLED);}			//!
   inline void SetFront_Time(const Double_t &Time){fSharc_StripFront_Time.push_back(Time);}						//!
@@ -89,7 +89,7 @@ public:
   inline void SetBack_StripNbr(const UShort_t &StripNbr){fSharc_StripBack_StripNbr.push_back(StripNbr);}		//!
   inline void SetBack_Energy(const Double_t &Energy){fSharc_StripBack_Energy.push_back(Energy);}				//!
   inline void SetBack_EngChi2(const Double_t &Chi2){fSharc_StripBack_EngChi2.push_back(Chi2);}				//!
-  inline void SetBack_Charge(const UInt_t &Charge){fSharc_StripBack_Charge.push_back(Charge);}					//!
+  inline void SetBack_Charge(const  Int_t &Charge){fSharc_StripBack_Charge.push_back(Charge);}					//!
   inline void SetBack_TimeCFD(const Double_t &TimeCFD){fSharc_StripBack_TimeCFD.push_back(TimeCFD);}			//!
   inline void SetBack_TimeLED(const Double_t &TimeLED){fSharc_StripBack_TimeLED.push_back(TimeLED);}			//!
   inline void SetBack_Time(const Double_t &Time){fSharc_StripBack_Time.push_back(Time);}						//!
@@ -115,7 +115,8 @@ public:
 		SetFront_StripNbr(mnemonic->segment);
 		SetFront_ChannelAddress(frag->ChannelAddress);
 		if(channel->GetENGChi2() < 10000 && channel->GetENGChi2()!=0.00) /// Tell SJC to make this a variable, he loves calibrating sharc.
-			SetFront_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+         SetFront_Energy(frag->GetEnergy(0));
+			//SetFront_Energy(channel->CalibrateENG(frag->Charge.at(0)));
 		else 
 			SetFront_Energy(0.0);
 		SetFront_TimeCFD(frag->Cfd.at(0));
@@ -133,7 +134,8 @@ public:
 		SetBack_ChannelAddress(frag->ChannelAddress);
 
 		if(channel->GetENGChi2() < 10000 && channel->GetENGChi2()!=0.00)
-			SetBack_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+			SetBack_Energy(frag->GetEnergy(0));
+			//SetBack_Energy(channel->CalibrateENG(frag->Charge.at(0)));
 		else
 			SetBack_Energy(0.0);
 
@@ -151,7 +153,7 @@ public:
 		SetPAD_ChannelAddress(frag->ChannelAddress);
 
 		if(channel->GetENGChi2() < 10000 && channel->GetENGChi2()!=0.00)
-			SetPAD_Energy(channel->CalibrateENG(frag->Charge.at(0)));
+			SetPAD_Energy(frag->GetEnergy(0));
 		else
 			SetPAD_Energy(0.0);
 
@@ -175,7 +177,7 @@ public:
   inline UShort_t GetFront_StripNbr(const unsigned int &i)    const {return fSharc_StripFront_StripNbr[i];}		//!
   inline Double_t GetFront_Energy(const unsigned int &i)      const {return fSharc_StripFront_Energy[i];}		//!
   inline Double_t GetFront_EngChi2(const unsigned int &i)      const {return fSharc_StripFront_EngChi2[i];}		//!
-  inline UInt_t 	GetFront_Charge(const unsigned int &i)      const {return fSharc_StripFront_Charge[i];}		//!
+  inline Int_t 	  GetFront_Charge(const unsigned int &i)      const {return fSharc_StripFront_Charge[i];}		//!
   inline Double_t GetFront_TimeCFD(const unsigned int &i)     const {return fSharc_StripFront_TimeCFD[i];}		//!
   inline Double_t GetFront_TimeLED(const unsigned int &i)     const {return fSharc_StripFront_TimeLED[i];}		//!
   inline Double_t GetFront_Time(const unsigned int &i)     const {return fSharc_StripFront_Time[i];}			//!
@@ -187,7 +189,7 @@ public:
   inline UShort_t GetBack_StripNbr(const unsigned int &i)    const {return fSharc_StripBack_StripNbr[i];}		//!
   inline Double_t GetBack_Energy(const unsigned int &i)      const {return fSharc_StripBack_Energy[i];}			//!
   inline Double_t GetBack_EngChi2(const unsigned int &i)      const {return fSharc_StripBack_EngChi2[i];}		//!
-  inline UInt_t	GetBack_Charge(const unsigned int &i)      const {return fSharc_StripBack_Charge[i];}		//!
+  inline Int_t	  GetBack_Charge(const unsigned int &i)      const {return fSharc_StripBack_Charge[i];}		//!
   inline Double_t GetBack_TimeCFD(const unsigned int &i)     const {return fSharc_StripBack_TimeCFD[i];}		//!
   inline Double_t GetBack_TimeLED(const unsigned int &i)     const {return fSharc_StripBack_TimeLED[i];}		//!
   inline Double_t GetBack_Time(const unsigned int &i)     const {return fSharc_StripBack_Time[i];}				//!

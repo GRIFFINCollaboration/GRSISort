@@ -1,6 +1,8 @@
 
 #include <stdint.h>
 
+#include <signal.h>
+
 #include <TSystem.h>
 #include <TStopwatch.h>
 
@@ -38,6 +40,8 @@ TGRSILoop::TGRSILoop()   {
 
    fFragsSentToTree = 0;
    fFragsReadFromMidas = 0;
+
+   fBadFragsSentToTree = 0;
 
    fMidasThread = 0;
    fFillTreeThread = 0;
@@ -109,8 +113,11 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
 
    
    fFragsSentToTree = 0;
+   fBadFragsSentToTree = 0;
    TFragment *frag = 0;
-   while(TFragmentQueue::GetQueue()->FragsInQueue() !=0 || fMidasThreadRunning)
+   while(TFragmentQueue::GetQueue()->FragsInQueue() !=0      || 
+         TFragmentQueue::GetQueue("BAD")->FragsInQueue() !=0 ||
+         fMidasThreadRunning)
    {
       frag = TFragmentQueue::GetQueue()->PopFragment();
       if(frag) {
@@ -118,6 +125,14 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
  	      delete frag;
          fFragsSentToTree++;
       }
+
+      frag = TFragmentQueue::GetQueue("BAD")->PopFragment();
+      if(frag) {
+         TGRSIRootIO::Get()->FillBadFragmentTree(frag);
+         delete frag;
+         fBadFragsSentToTree++;
+      } 
+
       if(!fMidasThreadRunning && TFragmentQueue::GetQueue()->FragsInQueue()%5000==0) {
          printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
                 DBLUE   "%i"   RESET_COLOR
@@ -126,10 +141,14 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
       }
    }
 
+
    printf("\n");
    //printf(" \n\n quiting fill tree thread \n\n");
    return;
 }
+
+//void SignalHandler(int signal) { throw "segfault!"; }
+
 
 void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
    if(!midasfile)
@@ -161,14 +180,15 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 
    if(!TGRSIRootIO::Get()->GetRootOutFile())
      TGRSIRootIO::Get()->SetUpRootOutFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
-
    while(true) {
       bytes = midasfile->Read(&fMidasEvent);
       currenteventnumber++;
       if(bytes == 0){
-         printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",midasfile->GetFilename(),midasfile->GetLastError());
-			if(midasfile->GetLastErrno()==-1)  //try to read some more...
-				continue;
+         if(midasfile->GetLastError()) {
+           printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",midasfile->GetFilename(),midasfile->GetLastError());
+         } else {//catch(char *e) { 
+           printf(DMAGENTA "\tfile: %s ended on unknown state." RESET_COLOR "\n",midasfile->GetFilename());
+         }
          break;
       }
       bytesread += bytes;
@@ -249,20 +269,27 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
       return;
    }
 
-	fOdb = new TXMLOdb(data,size);
+   //printf("data = 0x%08x\n",data);
+   //printf("size = %i\n",size);
 
+	fOdb = new TXMLOdb(data,size);
 	TChannel::DeleteAllChannels();
 
    TXMLNode *node = fOdb->FindPath("/Experiment");
-   if(!node->HasChildren())
+   if(!node->HasChildren()){
       return;
+   }
    node = node->GetChildren();
    std::string expt;
    while(1) {
-      std::string key = fOdb->GetNodeName(node);
-      if(key.compare("Name")==0) {
-         expt = node->GetText();
-         break;
+        //printf("before call.\n"); fflush(stdout);
+        //printf("fodb = 0x%08x\n",fOdb);fflush(stdout);
+        //printf("node = 0x%08x\n",node);fflush(stdout);
+        //node->Print();
+        std::string key = fOdb->GetNodeName(node) ;
+        if(key.compare("Name")==0) {
+          expt = node->GetText();
+        break;
       }
       if(!node->HasNextNode())
          break;
@@ -587,7 +614,7 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, int bank, TMidasEvent 
 
 
 
-void TGRSILoop::Print(Option_t *opt) {   }
+void TGRSILoop::Print(Option_t *opt) const { printf("Print() Currently Does nothing\n");  }
 
 
 void TGRSILoop::Clear(Option_t *opt) {   }

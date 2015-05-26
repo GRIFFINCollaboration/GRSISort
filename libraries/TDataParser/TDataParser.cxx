@@ -252,22 +252,21 @@ void TDataParser::SetTIGCharge(uint32_t value, TFragment *currentfragment) {
    currentfragment->ChannelNumber = chan->GetNumber();
 
    if( dig_type.compare(0,5,"Tig10") == 0)	{
-     currentfragment->Charge.push_back(value &  0x03ffffff);
-     if(value & 0x02000000)	{
+     if(value & 0x02000000)	
          currentfragment->Charge.push_back( -( (~((int32_t)value & 0x01ffffff)) & 0x01ffffff)+1);
-		 }
-	 } else if( dig_type.compare(0,5,"Tig64") == 0) {
-	   currentfragment->Charge.push_back((value &	0x003fffff));
-		 if(value & 0x00200000)	{
-		    currentfragment->Charge.push_back( -( (~((int32_t)value & 0x001fffff)) & 0x001fffff)+1);
-		 }
-	 }
-	 else{
-	    currentfragment->Charge.push_back( ((int32_t)value &	0x03ffffff));
-		  if(value & 0x02000000)	{
-			   currentfragment->Charge.push_back( -( (~((int32_t)value & 0x01ffffff)) & 0x01ffffff)+1);
-		  }
-	 }
+	   else 
+         currentfragment->Charge.push_back(value &  0x03ffffff);
+	} else if( dig_type.compare(0,5,"Tig64") == 0) {
+		 if(value & 0x00200000)	
+		   currentfragment->Charge.push_back( -( (~((int32_t)value & 0x001fffff)) & 0x001fffff)+1);
+		else  
+	      currentfragment->Charge.push_back((value &	0x003fffff));
+	} else {
+		 if(value & 0x02000000)	
+			currentfragment->Charge.push_back( -( (~((int32_t)value & 0x01ffffff)) & 0x01ffffff)+1);
+		 else
+ 	      currentfragment->Charge.push_back( ((int32_t)value &	0x03ffffff));
+	}
 }
 
 bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment *currentfrag) {
@@ -445,8 +444,6 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
             SetGRIFNetworkPacket(dword,EventFrag); // The network packet placement is not yet stable.
             break;                                 
          case 0xe0000000:
-//				if(true) { //value == EventFrag->ChannelId) { //header has to equal the trailer
-//            if(value == EventFrag->ChannelId){
             // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
             // change should be backward-compatible
             if((value & 0x3fff) == (EventFrag->ChannelId & 0x3fff)){
@@ -457,6 +454,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
                   printf( DBLUE "x | size: " DRED "%i | %i" RESET_COLOR "\n",x,size); //once this happens we need to recursively call GriffinDataToFragment with the remaining datums.
                return NumFragsFound; //This will be more important when we start putting multiple fragments into a single mid event
 				} else  {
+               TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
 					return -x;
             }
             break;
@@ -496,6 +494,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
    	      break;
 		};
 	}
+   TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
 	return -x;
 }
 

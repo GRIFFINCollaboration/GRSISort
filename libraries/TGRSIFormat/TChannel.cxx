@@ -59,6 +59,7 @@ TChannel::TChannel(TChannel *chan) {
     this->SetNumber(chan->GetNumber());
     this->SetStream(chan->GetStream());
     this->SetUserInfoNumber(chan->GetUserInfoNumber());
+    this->SetName(chan->GetName());
     this->SetChannelName(chan->GetChannelName());
     this->SetDigitizerType(chan->GetDigitizerType());
 
@@ -73,6 +74,7 @@ TChannel::TChannel(TChannel *chan) {
     this->SetLEDChi2(chan->GetLEDChi2());
     this->SetTIMEChi2(chan->GetTIMEChi2());
     this->SetEFFChi2(chan->GetEFFChi2());
+    this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
 }
 
 
@@ -163,7 +165,8 @@ void TChannel::OverWriteChannel(TChannel *chan){
     this->SetLEDChi2(chan->GetLEDChi2());
     this->SetTIMEChi2(chan->GetTIMEChi2());
     this->SetEFFChi2(chan->GetEFFChi2());
-
+    
+    this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
 	return;
 }
 
@@ -203,6 +206,9 @@ void TChannel::AppendChannel(TChannel *chan){
 		this->SetTIMEChi2(chan->GetTIMEChi2());
     if(chan->GetEFFChi2() != 0.0)
 		this->SetEFFChi2(chan->GetEFFChi2());
+    
+    if(chan->UseCalFileIntegration())
+       this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
 
 	return;
 }
@@ -240,6 +246,8 @@ void TChannel::Clear(Option_t *opt){
     ENGChi2           =  0.0;
     EFFChi2           =  0.0;
     userinfonumber    =  0xffffffff;
+    usecalfileint     =  false;
+    SetName("DefaultTChannel");
 
     ENGCoefficients.clear();
     CFDCoefficients.clear();
@@ -476,7 +484,7 @@ double TChannel::CalibrateEFF(double energy) {
    return 1.0;
 }
 
-void TChannel::Print(Option_t *opt) {
+void TChannel::Print(Option_t *opt) const {
    //Prints out the current TChannel.
    std::cout <<  channelname << "\t{\n";  //,channelname.c_str();
    std::cout <<  "Name:      " << channelname << "\n";
@@ -502,6 +510,8 @@ void TChannel::Print(Option_t *opt) {
          std::cout << TIMECoefficients.at(x) << "\t";
       std::cout << "\n";
    }
+   if(usecalfileint) 
+      std::cout << "FileInt: " << usecalfileint << "\n";
    std::cout << "}\n";
    std::cout << "//====================================//\n";
 };
@@ -531,7 +541,9 @@ std::string TChannel::PrintToString(Option_t *opt) {
          buffer.append(Form("%f\t",TIMECoefficients.at(x)));
       buffer.append("\n");
    }
-   buffer.append("\n}\n");
+   if(usecalfileint) 
+       buffer.append(Form("FileInt: %d\n",(int)usecalfileint));
+   buffer.append("}\n");
    
    buffer.append("//====================================//\n");
   
@@ -867,6 +879,12 @@ Int_t TChannel::ParseInputData(const char *inputdata,Option_t *opt) {
                channel->DestroyEFFCal();
                double value;
                while (ss >> value) {   channel->AddEFFCoefficient(value); }
+            } else if(type.compare("FILEINT")==0) {
+               int tempstream; ss>>tempstream;
+               if(tempstream>0)
+                 channel->SetUseCalFileIntegration(true);
+               else 
+                 channel->SetUseCalFileIntegration(false);
             } else  {
 
             }

@@ -33,7 +33,7 @@
 #include "TCSM.h"       
 //#include "TSpice.h"     
 //#include "TS3.h"        
-//#include "TTip.h"       
+#include "TTip.h"       
    
 #include "TGriffin.h"   
 #include "TSceptar.h"   
@@ -132,7 +132,7 @@ class TAnalysisTreeBuilder : public TObject {
       void ResetActiveAnalysisTreeBranches();
 		  void BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*>*);
 
-      void Print(Option_t *opt ="");
+      void Print(Option_t *opt ="") const;
 
       void Status();
 
@@ -176,7 +176,7 @@ class TAnalysisTreeBuilder : public TObject {
       TCSM        *csm;                                     //A pointer to the CSM Mother Class
       //TSpice      *spice;  
       //TS3         *s3;
-      //TTip        *tip;    
+      TTip        *tip;    
        
       //GrifAux detectors
       TGriffin    *griffin;                                 //A pointer to the Griffin Mother Class

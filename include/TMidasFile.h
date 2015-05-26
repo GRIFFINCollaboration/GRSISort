@@ -7,7 +7,12 @@
 
 #include <string>
 
-#include <stdint.h>
+#ifdef __APPLE__ 
+	#include <_types/_uint32_t.h> 
+#else 
+	#include <stdint.h> 
+#endif
+
 #include "TObject.h"
 
 class TMidasEvent;
@@ -53,6 +58,7 @@ protected:
 
   int         fLastErrno; ///< errno from the last operation
   std::string fLastError; ///< error string from last errno
+protected:
 
   bool fDoByteSwap; ///< "true" if file has to be byteswapped
 

@@ -4,6 +4,8 @@
 #include <TList.h>
 #include <TXMLAttr.h>
 
+char TXMLOdb::textbuffer[256];
+
 TXMLOdb::TXMLOdb(char *buffer,int size)   {
    fOdb = 0;
    fDoc = 0;
@@ -118,11 +120,13 @@ TXMLNode *TXMLOdb::FindPath(const char *path, TXMLNode *node) {
 
 
 const char* TXMLOdb::GetNodeName(TXMLNode *node) {
+//std::string TXMLOdb::GetNodeName(TXMLNode *node) {
    TList *list = node->GetAttributes();
    if(list) {
       std::string buffer = ((TXMLAttr*)(list->At(0)))->GetValue();
       //list->Delete();
-      return buffer.c_str();
+      strcpy(textbuffer,buffer.c_str());
+      return ((const char*)textbuffer);//buffer.c_str();;
    } else {
       return "";
    }

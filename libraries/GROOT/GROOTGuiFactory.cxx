@@ -22,7 +22,7 @@
 #include "TRootApplication.h"
 
 #include "GRootCanvas.h"
-#include "GRootCanvasManager.h"
+#include "GRootObjectManager.h"
 
 #include "TRootBrowserLite.h"
 #include "TRootContextMenu.h"
@@ -62,10 +62,12 @@ TCanvasImp *GROOTGuiFactory::CreateCanvasImp(TCanvas *c, const char *title,
 {
    // Create a ROOT native GUI version of TCanvasImp
    printf("Created a GRootCanvas.\n");
-   //GRootCanvasManager::Instance()->AddCanvas(c);
+   //GRootObjectManager::Instance()->AddCanvas(c);
    //return new GRootCanvas(c, title, width, height);i
    GRootCanvas *grc = new GRootCanvas((GCanvas*)c, title, width, height);
-   //GRootCanvasManager::AddCanvas(c);
+   //GRootObjectManager::AddCanvas(c);
+   c->Connect("Closed()","GRootObjectManager",this,"RemoveCanvas()");
+   GRootObjectManager::Update();
    return grc;
 
 }
@@ -76,10 +78,12 @@ TCanvasImp *GROOTGuiFactory::CreateCanvasImp(TCanvas *c, const char *title,
 {
    // Create a ROOT native GUI version of TCanvasImp
    printf("Created a GRootCanvas.\n");
-   //GRootCanvasManager::Instance()->AddCanvas(c);
+   //GRootObjectManager::Instance()->AddCanvas(c);
    //return new GRootCanvas(c, title, x, y, width, height);
    GRootCanvas *grc = new GRootCanvas((GCanvas*)c, title, x, y, width, height);
-   //GRootCanvasManager::AddCanvas(c);
+   //GRootObjectManager::AddCanvas(c);
+   c->Connect("Closed()","GRootObjectManager",this,"RemoveCanvas()");
+   GRootObjectManager::Update();
    return grc;
 }
 

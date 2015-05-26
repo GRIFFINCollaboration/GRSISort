@@ -36,7 +36,7 @@ class TGRSITransition : public TObject {
       double GetIntensityUncertainty() const {return fintensity_uncertainty;}
 
       void Clear(Option_t *opt = "");
-      void Print(Option_t *opt = "");
+      void Print(Option_t *opt = "") const;
 
       std::string PrintToString();
 
