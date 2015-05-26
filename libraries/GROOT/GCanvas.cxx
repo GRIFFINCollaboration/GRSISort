@@ -131,7 +131,7 @@ void GCanvas::AddMarker(int x,int y,int dim) {
     mark->linex->Draw();
     mark->liney->Draw();
   }
-  if(fMarkers.size()>4) {
+  if(fMarkers.size()>3) {
     delete fMarkers.at(0);
     fMarkers.erase(fMarkers.begin()); 
     //fMarkers.insert(fMarkers.begin(),mark);
@@ -632,8 +632,8 @@ bool GCanvas::HandleMousePress(Int_t event,Int_t x,Int_t y) {
 
   if(!strcmp(GetSelected()->GetName(),"TFrame") && fMarkerMode) {
     //((TFrame*)GetSelected())->SetBit(TBox::kCannotMove);
-    if(GetNMarkers()==4)
-       RemoveMarker();
+    //if(GetNMarkers()==4)
+    //   RemoveMarker();
     AddMarker(x,y);
     //int px = gPad->AbsPixeltoX(x);
     //TLine *line = new TLine(px,GetUymin(),px,GetUymax());
