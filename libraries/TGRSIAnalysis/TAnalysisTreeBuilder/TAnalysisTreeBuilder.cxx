@@ -409,7 +409,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       //and send it to the event Q for processing.
       //if(buildevent) {
 //      if(abs(currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
-      if((currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
+      if((currentFrag->GetTimeStamp() - firstTimeStamp) > 250) {  // 2 micro-sec.
          //printf("Adding %ld fragments to queue\n",event->size());
          //if(event->size() > 1) {
             //for(int i = 0; i < event->size(); ++i) {

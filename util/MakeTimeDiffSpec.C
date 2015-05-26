@@ -18,6 +18,7 @@
 #include "TList.h"
 #include "TH1F.h"
 #include "TH2F.h"
+#include "TH3F.h"
 
 #include "TChannel.h"
 
@@ -104,6 +105,16 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    //TH2F *gg_diff_E1 = new TH2F("gg_diff_E1","gg time difference of card 3&1 vs energy of card 1",4000,0.,4000.,600,0.,600.); list->Add(gg_diff_E1);
    //TH2F *gg_diff_E3 = new TH2F("gg_diff_E3","gg time difference of card 3&1 vs energy of card 3",4000,0.,4000.,600,0.,600.); list->Add(gg_diff_E3);
 
+   TH3F *bb_diff_Id = new TH3F("bb_diff_Id","bb_diff_Id",400,1200,1600,400,1200,1600,50,-25,25); list->Add(bb_diff_Id);
+   TH2F *bb_diff_E1 = new TH2F("bb_diff_E1","bb_diff_E1",1200,-600,600,1000,0,50e3); list->Add(bb_diff_E1);
+   TH2F *bb_diff_E2 = new TH2F("bb_diff_E2","bb_diff_E2",1200,-600,600,1000,0,50e3); list->Add(bb_diff_E2);
+
+   TH2F *gb_diff_Id = new TH2F("gb_diff_Id","gb_diff_Id",2000,0,2000,2000,0,2000); list->Add(gb_diff_Id);
+   TH2F *gb_diff_Eg = new TH2F("gb_diff_Eg","gb_diff_Eg",1200,-600,600,1000,0,50e3); list->Add(gb_diff_Eg);
+   TH2F *gb_diff_Eb = new TH2F("gb_diff_Eb","gb_diff_Eb",1200,-600,600,1000,0,50e3); list->Add(gb_diff_Eb);
+
+   TH2F *EbVsEg = new TH2F("EbVsEg","EbVsEg",1000,0,50e3,1000,0,50e3); list->Add(EbVsEg);
+
    int FragsIn = 0;
 
    tree->GetEntry(indexvalues[0]);
@@ -118,8 +129,8 @@ TList *MakeTimeDiffSpec(TTree *tree) {
       TFragment myFrag  = *currentFrag;         //Set myfrag to be the x'th fragment before incrementing it.
       long time = currentFrag->GetTimeStamp();  //Get the timestamp of the x'th fragment 
      
-      long timelow  = time -100;
-      long timehigh  = time +100; 
+      long timelow  = time -1000;
+      long timehigh  = time + 1000; 
 //        long timelow = time + 0;
 //        long timehigh = time + 10000;   
       int time_low  = (int) (timelow & 0x0fffffff);
@@ -153,6 +164,9 @@ TList *MakeTimeDiffSpec(TTree *tree) {
             continue;
          } 
         //printf("myFrag.DetectorType = %i, currentFrag.DetectorType = %i",myFrag.DetectorType,currentFrag->DetectorType);
+        if(myFrag.ChannelAddress == currentFrag->ChannelAddress) {
+           continue;
+        }
          if(myFrag.DetectorType == 1) {
             if(currentFrag->DetectorType == 1) {
 		TFragment tempFrag=*currentFrag;
@@ -161,6 +175,10 @@ TList *MakeTimeDiffSpec(TTree *tree) {
 		coincEng->Fill(currentFrag->GetTimeStamp() - myFrag.GetTimeStamp() ,tempFrag.GetEnergy());
             } else if(currentFrag->DetectorType == 2) {
                gb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+               gb_diff_Id->Fill(myFrag.ChannelAddress%2048, currentFrag->ChannelAddress);
+               gb_diff_Eg->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp(),myFrag.Charge[0]%50000);
+               gb_diff_Eb->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp(),currentFrag->Charge[0]%50000);
+               EbVsEg->Fill(myFrag.Charge[0]%50000, currentFrag->Charge[0]%50000);
                bg_coinc_gE->Fill(myFrag.GetEnergy());
             } else {
           
@@ -171,6 +189,12 @@ TList *MakeTimeDiffSpec(TTree *tree) {
                bg_coinc_gE->Fill(currentFrag->GetEnergy());
             } else if(currentFrag->DetectorType == 2) {
                bb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+               bb_diff_Id->Fill(myFrag.ChannelAddress, currentFrag->ChannelAddress, myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+               if(myFrag.ChannelAddress < currentFrag->ChannelAddress) {
+                  bb_diff_E1->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp(),myFrag.Charge[0]);
+               } else if(myFrag.ChannelAddress > currentFrag->ChannelAddress) {
+                  bb_diff_E2->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp(),myFrag.Charge[0]);
+               }
             } else {
                
             }

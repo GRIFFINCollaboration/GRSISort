@@ -445,9 +445,12 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
                               //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
             else if((banksize = mevent->LocateBank(NULL,"GRF1",&ptr))>0) {
-               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize, mevent, mfile)) { }
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,1, mevent, mfile)) { }
 			      //(unsigned int)(mevent->GetSerialNumber()),
 			      //(unsigned int)(mevent->GetTimeStamp()))) { }
+            }
+            else if((banksize = mevent->LocateBank(NULL,"GRF2",&ptr))>0) {
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,2, mevent, mfile)) { }
             }
             else if( (banksize = mevent->LocateBank(NULL,"FME0",&ptr))>0) {
                if(!Process8PI(0,(uint32_t*)ptr,banksize,mevent,mfile)) {}
@@ -542,11 +545,11 @@ bool TGRSILoop::Process8PI(uint32_t stream,uint32_t *ptr, int &dsize, TMidasEven
 }
 
 
-bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile)   {
+bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, int bank, TMidasEvent *mevent, TMidasFile *mfile)   {
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
 
-	int frags = TDataParser::GriffinDataToFragment(ptr,dsize,mserial,mtime);
+	int frags = TDataParser::GriffinDataToFragment(ptr,dsize,bank,mserial,mtime);
 	if(frags>-1)	{
       fFragsReadFromMidas += frags;
       return true;

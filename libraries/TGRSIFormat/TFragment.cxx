@@ -73,7 +73,7 @@ double TFragment::GetTimeStamp() const {
    time |= TimeStampLow & 0x0fffffff;
    
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
-   if(!chan )//|| Charge.size()<1)
+   if(!chan || Charge.size()<1) // I put the charge check back in because somehow I have events with zero charge. -JKS
       return double(time);
    return double(time) - chan->GetTZero(GetEnergy());
 }
