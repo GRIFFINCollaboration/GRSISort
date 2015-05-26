@@ -458,10 +458,17 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             edit = GausBGFit();
             break;
          case kKey_l:
+            for(int i=0;i<hists.size();i++) {
+               hists.at(i)->GetYaxis()->UnZoom();
+            }
             SetLogy(0);
             edit = true;
             break;
          case kKey_L:
+            for(int i=0;i<hists.size();i++) {
+              if(hists.at(i)->GetYaxis()->GetXmin()<0)
+                 hists.at(i)->GetYaxis()->SetRangeUser(0,hists.at(i)->GetYaxis()->GetXmax());
+            }
             SetLogy(1);
             edit = true;
             break;
