@@ -18,6 +18,7 @@
 #include "TList.h"
 #include "TH1F.h"
 #include "TH2F.h"
+#include "TH3F.h"
 
 #include "TChannel.h"
 
@@ -110,6 +111,16 @@ TList *MakeTimeDiffSpec(TTree *tree) {
    //TH2F *gg_diff_E1 = new TH2F("gg_diff_E1","gg time difference of card 3&1 vs energy of card 1",4000,0.,4000.,600,0.,600.); list->Add(gg_diff_E1);
    //TH2F *gg_diff_E3 = new TH2F("gg_diff_E3","gg time difference of card 3&1 vs energy of card 3",4000,0.,4000.,600,0.,600.); list->Add(gg_diff_E3);
 
+   TH3F *bb_diff_Id = new TH3F("bb_diff_Id","bb_diff_Id",400,1200,1600,400,1200,1600,50,-25,25); list->Add(bb_diff_Id);
+   TH2F *bb_diff_E1 = new TH2F("bb_diff_E1","bb_diff_E1",1200,-600,600,1000,0,50e3); list->Add(bb_diff_E1);
+   TH2F *bb_diff_E2 = new TH2F("bb_diff_E2","bb_diff_E2",1200,-600,600,1000,0,50e3); list->Add(bb_diff_E2);
+
+   TH2F *gb_diff_Id = new TH2F("gb_diff_Id","gb_diff_Id",2000,0,2000,2000,0,2000); list->Add(gb_diff_Id);
+   TH2F *gb_diff_Eg = new TH2F("gb_diff_Eg","gb_diff_Eg",1200,-600,600,1000,0,50e3); list->Add(gb_diff_Eg);
+   TH2F *gb_diff_Eb = new TH2F("gb_diff_Eb","gb_diff_Eb",1200,-600,600,1000,0,50e3); list->Add(gb_diff_Eb);
+
+   TH2F *EbVsEg = new TH2F("EbVsEg","EbVsEg",1000,0,50e3,1000,0,50e3); list->Add(EbVsEg);
+
    int FragsIn = 0;
 
    tree->GetEntry(indexvalues[0]);
@@ -167,25 +178,31 @@ TList *MakeTimeDiffSpec(TTree *tree) {
          std::string currFragName = currentFrag->GetName();
            
          //if(myFrag.DetectorType == 0) {
-         if(!myFragName.compare(0,3,"GRG")) {
-            if(!currFragName.compare(0,3,"GRG")) {
+         if(myFragName.compare(0,3,"GRG") == 0 && myFrag.DetectorType == 1) {
+            if(currFragName.compare(0,3,"GRG") == 0 && myFrag.DetectorType == 1) {
               TFragment tempFrag=*currentFrag;
-              gg_diff->Fill((long)myFrag.GetTimeStamp() - (long)currentFrag->GetTimeStamp());
+              gg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
               gg_adc->Fill(currentFrag->ChannelNumber,myFrag.ChannelNumber);
-		        promptEng->Fill((long)currentFrag->GetTimeStamp() - (long)myFrag.GetTimeStamp() ,myFrag.GetEnergy());
-		        coincEng->Fill((long)currentFrag->GetTimeStamp() - (long)myFrag.GetTimeStamp() ,tempFrag.GetEnergy());
+		          promptEng->Fill(currentFrag->GetTimeStamp() - myFrag.GetTimeStamp() ,myFrag.GetEnergy());
+		          coincEng->Fill(currentFrag->GetTimeStamp() - myFrag.GetTimeStamp() ,tempFrag.GetEnergy());
             } else if(!currFragName.compare(0,3,"SEP")) {
                gb_diff->Fill((long)myFrag.GetTimeStamp() - (long)currentFrag->GetTimeStamp());
                bg_coinc_gE->Fill(myFrag.GetEnergy());
             } else {
           
             }
-         } else if(!myFragName.compare(0,3,"SEP")) {
-            if(!currFragName.compare(0,3,"GRG")) {
+         } else if(myFragName.compare(0,3,"SEP") == 0 && myFrag.DetectorType == 2) {
+            if(currFragName.compare(0,3,"GRG") == 0 && myFrag.DetectorType == 1) {
                bg_diff->Fill((long)myFrag.GetTimeStamp() - (long)currentFrag->GetTimeStamp());
                bg_coinc_gE->Fill(currentFrag->GetEnergy());
-            } else if(!currFragName.compare(0,3,"SEP")) {
-               bb_diff->Fill((long)myFrag.GetTimeStamp() - (long)currentFrag->GetTimeStamp());
+            } else if(currFragName.compare(0,3,"SEP") == 0 && currentFrag->DetectorType == 2) {
+               bb_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+               bb_diff_Id->Fill(myFrag.ChannelAddress, currentFrag->ChannelAddress, myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
+               if(myFrag.ChannelAddress < currentFrag->ChannelAddress) {
+                  bb_diff_E1->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp(),myFrag.Charge[0]);
+               } else if(myFrag.ChannelAddress > currentFrag->ChannelAddress) {
+                  bb_diff_E2->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp(),myFrag.Charge[0]);
+               }
             } else {
                
             }

@@ -38,7 +38,7 @@ class TDataParser { //: public TObject {
   public:
     //static std::vector<TFragment*> TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
     static int TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
-    static int GriffinDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
+    static int GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasserialnumber = 0, time_t midastime = 0);
    
     static int EPIXToScalar(float *data,int size,unsigned int midasserialnumber = 0,time_t midastime = 0);
 	 static int EightPIDataToFragment(uint32_t stream,uint32_t* data,
@@ -57,13 +57,15 @@ class TDataParser { //: public TObject {
     static bool SetTIGTriggerID(uint32_t, TFragment*);
     static bool SetTIGTimeStamp(uint32_t*, TFragment*);
 
-    static bool SetGRIFHeader(uint32_t,TFragment*);
+    static bool SetGRIFHeader(uint32_t,TFragment*,int);
     static bool SetGRIFPPG(uint32_t,TFragment*);
     static bool SetGRIFMasterFilterId(uint32_t,TFragment*);
     static bool SetGRIFMasterFilterPattern(uint32_t,TFragment*);
     static bool SetGRIFChannelTriggerId(uint32_t,TFragment*);  
     static bool SetGRIFTimeStampLow(uint32_t,TFragment*);
     static bool SetGRIFNetworkPacket(uint32_t,TFragment*);
+    static bool SetGRIFCc(uint32_t, TFragment*);
+    static bool SetGRIFPsd(uint32_t, TFragment*);
 
     static bool SetGRIFWaveForm(uint32_t,TFragment*);
     static bool SetGRIFDeadTime(uint32_t,TFragment*);
