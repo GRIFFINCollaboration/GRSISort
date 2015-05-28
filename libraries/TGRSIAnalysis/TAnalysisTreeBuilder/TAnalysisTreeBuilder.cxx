@@ -774,12 +774,12 @@ void TAnalysisTreeBuilder::ProcessEvent() {
                //(*detectors)["CS"] = new TCSM;
             }
             (*detectors)["CS"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("GR")==0 && event->at(i).DetectorType <2) {	//This is here because of DAQ weirdness (will likely want to remove)
+         } else if(mnemonic.system.compare("GR")==0) {
             if(detectors->find("GR") == detectors->end()) {
                (*detectors)["GR"] = new TGriffin;
             }
             (*detectors)["GR"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("SE")==0 && event->at(i).DetectorType == 2) {	//This is here because of DAQ weirdness (will likely want to remove)
+         } else if(mnemonic.system.compare("SE")==0) {
             if(detectors->find("SE") == detectors->end()) {
                (*detectors)["SE"] = new TSceptar;
             }

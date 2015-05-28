@@ -11,7 +11,7 @@
 #include <fstream>
 #include <chrono>
 
-Int_t chanId_threshold = 10;
+Int_t chanId_threshold = 50;
 
 Bool_t CheckEvent(TMidasEvent *evt){
    //This function does not work if a Midas event contains multiple fragments

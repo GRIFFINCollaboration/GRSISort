@@ -718,7 +718,7 @@ int CorrectionFile(int runnumber){
    }
 
    t->ResetBranchAddresses();
-   printf(DGREEN "Found %d digitizers\n" RESET_COLOR,TEventTime::correctionmap.size());
+   printf(DGREEN "Found %lu digitizers\n" RESET_COLOR,TEventTime::correctionmap.size());
    corrfile->Close();
    delete corrfile;
 
