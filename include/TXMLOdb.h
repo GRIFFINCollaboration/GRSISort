@@ -36,7 +36,8 @@ class TXMLOdb { //: public TDOMParser { //, public VirtualOdb {
       TDOMParser *fParser;
       TXMLNode *fOdb;
 
-      std::string GetNodeName(TXMLNode*);
+      const char *GetNodeName(TXMLNode*);
+      //std::string GetNodeName(TXMLNode*);
       TXMLNode* FindNode(const char *name, TXMLNode *node=0);
 //      void DumpTree(TXMLNode*node = NULL, int level = 0);
 //      void DumpDirTree(TXMLNode*node = NULL, int level = 0);
@@ -58,6 +59,9 @@ class TXMLOdb { //: public TDOMParser { //, public VirtualOdb {
 //      float    odbReadFloat(const char*name, int index, float  defaultValue );
 //      const char* odbReadString(const char*name, int index, const char* defaultValue );
 //      int      odbReadArraySize(const char*name);
+   private:
+     static char textbuffer[256];
+
 
    ClassDef(TXMLOdb,0)
 

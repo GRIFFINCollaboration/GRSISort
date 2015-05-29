@@ -69,14 +69,14 @@ public:
   
    double GetTimeStamp() const; //!
    double GetTZero() const; //!
-   const char *GetName(); //!
+   const char *GetName() const; //!
    double GetEnergy(int iter=0)const; //!
    double GetCharge(int iter=0)const; //!
    long GetTimeStamp_ns(); //!
 
    Int_t Get4GCfd(int i=0); //!
 
-   bool  IsTigCore(); //! 
+   bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!
 
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 

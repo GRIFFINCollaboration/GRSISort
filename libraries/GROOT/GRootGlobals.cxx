@@ -9,6 +9,12 @@
 #include <TAxis.h>
 #include <TDirectory.h>
 #include <TFile.h>
+#include <TPolyMarker.h>
+#include <TSpectrum.h>
+#include <TText.h>
+#include <TExec.h>
+#include <TKey.h>
+#include <TObject.h>
 
 #include <GRootObjectManager.h>
 
@@ -139,6 +145,144 @@ void SaveAll(const char *fname,Option_t *opt) {
   f.Close();
   cur_dir->cd();
   return;
+}
+
+int PeakSearch(TH1* hst, double sigma, double thresh,Option_t *opt)  {
+	//TSpectrum spec(20);
+	//spec.Search(hst,sigma,"Qnodraw",thresh);
+   TSpectrum::StaticSearch(hst,sigma,"Qnodraw",thresh);
+	TPolyMarker *pm = (TPolyMarker*)hst->GetListOfFunctions()->FindObject("TPolyMarker");
+	if (!pm)
+	{
+		printf("No TPolyMarker object in the list of functions for histogram %s\n",hst->GetName());
+		return 0;
+	}
+	TObjArray* testarray = (TObjArray*)hst->GetListOfFunctions()->FindObject("PeakLabels");
+	if (testarray)
+	{
+		hst->GetListOfFunctions()->Remove(testarray);
+		//delete testarray;
+      testarray->Delete();  //guarantees the text objects it points to are removed as well.
+	}
+
+   TObjArray* array = new TObjArray();
+	array->SetName("PeakLabels");
+	int n = pm->GetN();
+   if(n<1)
+      return 0;
+	TText* text;
+	double *x = pm->GetX();
+	double *y = pm->GetY();
+	for (int i=0;i<n;i++)
+	{
+		text = new TText(x[i],y[i],Form("%.1f",x[i]));
+		text->SetTextSize(0.025);
+		text->SetTextAngle(90);
+		text->SetTextAlign(12);
+		text->SetTextFont(42);
+		text->SetTextColor(hst->GetLineColor());
+		array->Add(text);
+	}
+	hst->GetListOfFunctions()->Remove(pm);
+	//delete pm;
+   pm->Delete();
+	hst->GetListOfFunctions()->Add(array);
+	return n;
+}
+
+bool ShowPeaks(TH1 **hists,unsigned int NHists)
+{
+   //printf("Show peaks called,  0x%08x, Nhist = %i.",hists,NHists);
+	//TList* list = gFile->GetListOfKeys();  //things can go out of scope preventing this from working.
+	//TIter iter(list);
+	double sigma  = 2.0;
+	double thresh = 0.01;
+   int num_found =0;
+   for(int x=0;x<NHists;x++) {
+     if(TObject *obj = hists[x]->GetListOfFunctions()->FindObject("PeakLabels")) {
+        //if we have any array of peak labels, we remove it; we have no 
+        //idea whether the user has change the range of the histogram so we 
+        //research/re-display.
+        hists[x]->GetListOfFunctions()->Remove(obj); 
+        ((TObjArray*)obj)->Delete();
+     }
+     num_found += PeakSearch(hists[x],sigma,thresh,"");  // this find and adds the peaks...
+                                                            // with the peaks added to the list of functions,
+                                                            // returning true to update the pad will display them.
+   }
+   if(num_found) {
+      //printf("Show peaks, found %i, returning true.",num_found);
+      return true;
+   }   
+   else { 
+      //printf("Show peaks, found %i, returning false.",num_found);
+      return false;
+   }
+   /*
+   while(obj=iter())
+	{
+		TKey* key = (TKey*) obj;
+		const char* buffer= key->GetClassName();
+		if (strncmp(buffer,"TH1",3) == 0)
+		{
+			TH1* hst = (TH1*) gFile->Get(obj->GetName());
+			TExec* testexec = (TExec*)hst->GetListOfFunctions()->FindObject("PeakSearch");
+			if (testexec)
+			{
+				return false;
+			}
+			else
+			{
+				const char* name = hst->GetName();
+				TExec* peaksearch = new TExec("PeakSearch",Form("PeakSearch(%s,%f)",name,thresh));
+				hst->GetListOfFunctions()->Add(peaksearch);
+			}
+		}
+	}
+	return true;
+   */
+}
+
+bool RemovePeaks(TH1 **hists, unsigned int Nhists)
+{
+   bool return_flag = false;
+   for(int x=0;x<Nhists;x++) {
+     if(TObject *obj = hists[x]->GetListOfFunctions()->FindObject("PeakLabels")) {
+        //if we have any array of peak labels, we remove it; 
+        return_flag = true;
+        hists[x]->GetListOfFunctions()->Remove(obj); 
+        ((TObjArray*)obj)->Delete();
+     }
+   }
+   return return_flag;
+   /*
+	TList* list = gFile->GetListOfKeys();
+	TIter iter(list);
+	TObject *obj;
+	while(obj=iter())
+	{
+		TKey* key = (TKey*) obj;
+		const char* buffer= key->GetClassName();
+		if (strncmp(buffer,"TH1",3) == 0)
+		{
+			TH1* hst = (TH1*) gFile->Get(obj->GetName());
+			TObjArray* testarray = (TObjArray*)hst->GetListOfFunctions()->FindObject("PeakLabels");
+			if (testarray)
+			{
+				hst->GetListOfFunctions()->Remove(testarray);
+				delete testarray;
+			}
+
+			TExec* testexec = (TExec*)hst->GetListOfFunctions()->FindObject("PeakSearch");
+			if (testexec)
+			{
+				hst->GetListOfFunctions()->Remove(testexec);
+				delete testexec;
+			}
+		}
+	}
+	return true;
+   */
 }
 
 void Prompt()   { Getlinem(EGetLineMode::kInit,((TRint*)gApplication)->GetPrompt()); }

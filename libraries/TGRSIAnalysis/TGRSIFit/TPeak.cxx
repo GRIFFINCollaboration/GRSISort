@@ -190,6 +190,8 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    //After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    //for printing out. RD
 
+   Int_t fitStatus = fitres; //This returns a fit status from the TFitResult Ptr
+
    if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
       if(fitres->Parameter(3) < 1){
          InitParams(fithist);

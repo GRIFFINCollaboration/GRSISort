@@ -4,6 +4,8 @@
 #include <TRandom.h>
 #include <TMath.h>
 
+#include <TGRSIRunInfo.h>
+
 ////////////////////////////////////////////////////////////
 //                    
 // TGriffin
@@ -248,8 +250,8 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       //corehit.SetDetectorNumber(gdata->GetCloverNumber(i));
       //corehit.SetCrystalNumber(gdata->GetCoreNumber(i));
    
-//      corehit.SetPosition();
- //FIX     
+      corehit.SetPosition(TGRSIRunInfo::HPGeArrayPosition());
+      
       corehit.SetPPG(gdata->GetPPG(i));
 
       if((gdata->GetPPG(i) == 0xd000 && gdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
@@ -393,7 +395,7 @@ void TGriffin::BuildAddBack(Option_t *opt) {
 
          int d_time = std::abs(addback_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
 
-         if( (res.Mag() < 105) && (d_time < 20) )    {    ///Still need to tune these values!! pcb.
+         if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {    ///Still need to tune these values!! pcb.
             used = true;
             addback_hits.at(j).Add(this->GetGriffinHit(i));
             break;
@@ -424,7 +426,7 @@ void TGriffin::BuildAddBackClover(Option_t *opt) {
             continue;
          int d_time = std::abs(addback_clover_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
 
-         if(  (d_time < 20)  )    {    ///Still need to tune these values!! pcb.
+         if(  (d_time < TGRSIRunInfo::AddBackWindow() )  )    {    ///Still need to tune these values!! pcb.
             used = true;
             addback_clover_hits.at(j).Add(this->GetGriffinHit(i));
             break;

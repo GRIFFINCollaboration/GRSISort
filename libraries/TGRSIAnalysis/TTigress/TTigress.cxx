@@ -7,6 +7,8 @@
 #include <TMath.h>
 #include <TClass.h>
 
+#include <TGRSIRunInfo.h>
+
 ClassImp(TTigress)
 
 //double TTigress::beta = 0.00;
@@ -442,7 +444,7 @@ void TTigress::BuildCloverAddBack(Option_t *opt)	{
 
 		
 				if( clover_addback_hits.at(j).GetDetectorNumber() == this->GetTigressHit(i)->GetDetectorNumber() )	{
-				     if( (d_time < 11) )    { // gate hard coded to 110ns.
+				     if( (d_time < TGRSIRunInfo::AddBackWindow() ) )    { // gate hard coded to 110ns.
 		 		        used = true;
 		     		     clover_addback_hits.at(j).Add(this->GetTigressHit(i));
 		         	  break;
@@ -484,14 +486,14 @@ void TTigress::BuildAddBack(Option_t *opt)	{
 				int seg2 = this->GetTigressHit(i)->GetInitialHit();
 		
 				if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
-				     if( (res.Mag() < 54) && (d_time < 110) )    {  // time gate == 110  ns  pos gate == 54mm
+				     if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
 		 		        used = true;
 		     		    addback_hits.at(j).Add(this->GetTigressHit(i));
 		         		break;
 			     	}
 				}
 				else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{ // front to back
-				     if( (res.Mag() < 105) && (d_time < 110) )    {     // time gate == 110 ns pos gate == 105mm.
+				     if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {     // time gate == 110 ns pos gate == 105mm.
 		 		        used = true;
 		     		    addback_hits.at(j).Add(this->GetTigressHit(i));
 		         		break;

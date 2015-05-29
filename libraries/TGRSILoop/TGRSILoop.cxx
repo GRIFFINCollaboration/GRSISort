@@ -1,6 +1,8 @@
 
 #include <stdint.h>
 
+#include <signal.h>
+
 #include <TSystem.h>
 #include <TStopwatch.h>
 
@@ -38,6 +40,8 @@ TGRSILoop::TGRSILoop()   {
 
    fFragsSentToTree = 0;
    fFragsReadFromMidas = 0;
+
+   fBadFragsSentToTree = 0;
 
    fMidasThread = 0;
    fFillTreeThread = 0;
@@ -109,8 +113,11 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
 
    
    fFragsSentToTree = 0;
+   fBadFragsSentToTree = 0;
    TFragment *frag = 0;
-   while(TFragmentQueue::GetQueue()->FragsInQueue() !=0 || fMidasThreadRunning)
+   while(TFragmentQueue::GetQueue()->FragsInQueue() !=0      || 
+         TFragmentQueue::GetQueue("BAD")->FragsInQueue() !=0 ||
+         fMidasThreadRunning)
    {
       frag = TFragmentQueue::GetQueue()->PopFragment();
       if(frag) {
@@ -118,6 +125,14 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
  	      delete frag;
          fFragsSentToTree++;
       }
+
+      frag = TFragmentQueue::GetQueue("BAD")->PopFragment();
+      if(frag) {
+         TGRSIRootIO::Get()->FillBadFragmentTree(frag);
+         delete frag;
+         fBadFragsSentToTree++;
+      } 
+
       if(!fMidasThreadRunning && TFragmentQueue::GetQueue()->FragsInQueue()%5000==0) {
          printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
                 DBLUE   "%i"   RESET_COLOR
@@ -126,10 +141,14 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
       }
    }
 
+
    printf("\n");
    //printf(" \n\n quiting fill tree thread \n\n");
    return;
 }
+
+//void SignalHandler(int signal) { throw "segfault!"; }
+
 
 void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
    if(!midasfile)
@@ -161,17 +180,15 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 
    if(!TGRSIRootIO::Get()->GetRootOutFile())
      TGRSIRootIO::Get()->SetUpRootOutFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
-
    while(true) {
       bytes = midasfile->Read(&fMidasEvent);
       currenteventnumber++;
       if(bytes == 0){
-         if(!midasfile->GetLastErrno())
-           printf(DMAGENTA "\tfile: %s ended on unknown state." RESET_COLOR "\n",midasfile->GetFilename());
-         else
+         if(midasfile->GetLastError()) {
            printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",midasfile->GetFilename(),midasfile->GetLastError());
-			if(midasfile->GetLastErrno()==-1)  //try to read some more...
-				continue;
+         } else {//catch(char *e) { 
+           printf(DMAGENTA "\tfile: %s ended on unknown state." RESET_COLOR "\n",midasfile->GetFilename());
+         }
          break;
       }
       bytesread += bytes;
@@ -252,6 +269,9 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
       return;
    }
 
+   //printf("data = 0x%08x\n",data);
+   //printf("size = %i\n",size);
+
 	fOdb = new TXMLOdb(data,size);
 	TChannel::DeleteAllChannels();
 
@@ -262,9 +282,13 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
    node = node->GetChildren();
    std::string expt;
    while(1) {
+        //printf("before call.\n"); fflush(stdout);
+        //printf("fodb = 0x%08x\n",fOdb);fflush(stdout);
+        //printf("node = 0x%08x\n",node);fflush(stdout);
+        //node->Print();
         std::string key = fOdb->GetNodeName(node) ;
         if(key.compare("Name")==0) {
-        expt = node->GetText();
+          expt = node->GetText();
         break;
       }
       if(!node->HasNextNode())
@@ -448,9 +472,12 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
                               //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
             else if((banksize = mevent->LocateBank(NULL,"GRF1",&ptr))>0) {
-               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize, mevent, mfile)) { }
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,1, mevent, mfile)) { }
 			      //(unsigned int)(mevent->GetSerialNumber()),
 			      //(unsigned int)(mevent->GetTimeStamp()))) { }
+            }
+            else if((banksize = mevent->LocateBank(NULL,"GRF2",&ptr))>0) {
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,2, mevent, mfile)) { }
             }
             else if( (banksize = mevent->LocateBank(NULL,"FME0",&ptr))>0) {
                if(!Process8PI(0,(uint32_t*)ptr,banksize,mevent,mfile)) {}
@@ -545,11 +572,11 @@ bool TGRSILoop::Process8PI(uint32_t stream,uint32_t *ptr, int &dsize, TMidasEven
 }
 
 
-bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile)   {
+bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, int bank, TMidasEvent *mevent, TMidasFile *mfile)   {
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
 
-	int frags = TDataParser::GriffinDataToFragment(ptr,dsize,mserial,mtime);
+	int frags = TDataParser::GriffinDataToFragment(ptr,dsize,bank,mserial,mtime);
 	if(frags>-1)	{
       fFragsReadFromMidas += frags;
       return true;
