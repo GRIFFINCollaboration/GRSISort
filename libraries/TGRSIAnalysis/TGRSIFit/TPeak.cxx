@@ -188,12 +188,15 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    //After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    //for printing out. RD
 
+   Int_t fitStatus = fitres; //This returns a fit status from the TFitResult Ptr
+
    if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
       if(fitres->Parameter(3) < 1){
          FixParameter(4,0);
          FixParameter(3,1);
          std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
    	 // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
+         fithist->GetListOfFunctions()->Last()->Delete();//Remove the fit if it was bad.
          fitres = fithist->Fit(this,Form("%sRSM",opt));
       }
    }
@@ -243,8 +246,6 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    background->SetParameters(this->GetParameters());
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
    Copy(*fithist->GetListOfFunctions()->Last());
-   if(optstr.Contains("+"))
-      Copy(*fithist->GetListOfFunctions()->Before(fithist->GetListOfFunctions()->Last()));
    
    delete tmppeak;
    return true;

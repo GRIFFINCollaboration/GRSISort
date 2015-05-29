@@ -46,7 +46,6 @@ class GCanvas : public TCanvas {
       Int_t  GetNMarkers() { return fMarkers.size(); }
       Int_t  GetNBG_Markers() { return fBG_Markers.size(); }
       void SetMarkerMode(bool flag=true) {fMarkerMode = flag;}
-      void ShowPeaks();
 
       static void SetBackGroundSubtractionType();
 
@@ -79,6 +78,7 @@ class GCanvas : public TCanvas {
 
 
       std::vector<TH1*> Find1DHists();
+      std::vector<TH1*> FindAllHists();
 
       //void HandleKeyPress(int event,int x,int y,TObject *obj);
       bool HandleArrowKeyPress(Event_t *event,UInt_t *keysym);
@@ -99,9 +99,6 @@ class GCanvas : public TCanvas {
       bool PeakFitQ(GMarker *m1=0,GMarker *m2=0);
 
       static int fBGSubtraction_type;
-
-      bool DisplayPeaks();
-      bool RemovePeaks();
 
       Window_t fCanvasWindowID;
       TRootCanvas *fRootCanvas;
