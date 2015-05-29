@@ -375,7 +375,7 @@ bool TDataParser::SetTIGTimeStamp(uint32_t *data,TFragment *currentfrag ) {
 /////////////***************************************************************/////////////
 /////////////***************************************************************/////////////
 
-int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int midasserialnumber, time_t midastime)	{
+int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasserialnumber, time_t midastime)	{
 //Converts a Griffin flavoured MIDAS file into a TFragment
    int NumFragsFound = 1;
    TFragment *EventFrag = new TFragment();
@@ -385,7 +385,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 
 	int x = 0;  
    //int x = 6;
-	if(!SetGRIFHeader(data[x++],EventFrag)) {
+	if(!SetGRIFHeader(data[x++],EventFrag,bank)) {
 		printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n",data[0]);
 		delete EventFrag;
 		return -x;
@@ -440,14 +440,13 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 			case 0xb0000000: //The b packet type contains the dead-time word
 				SetGRIFDeadTime(value,EventFrag);
 				break;
-         case 0xd0000000: {
-            uint32_t temp_int = packet +value;  // <--- RYAN!  make me smarter.  thank you, pcb.
-            SetGRIFNetworkPacket(temp_int,EventFrag); // The network packet placement is not yet stable.
-            }                                         // in the K runs of 2014 it is just after the deadtime.  pcb.
+         case 0xd0000000: 
+            SetGRIFNetworkPacket(dword,EventFrag); // The network packet placement is not yet stable.
             break;                                 
          case 0xe0000000:
-//				if(true) { //value == EventFrag->ChannelId) { //header has to equal the trailer
-	   if((value & 0x3fff) == (EventFrag->ChannelId & 0x3fff)){
+            // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
+            // change should be backward-compatible
+            if((value & 0x3fff) == (EventFrag->ChannelId & 0x3fff)){
                if(record_stats)
 						FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);				
@@ -455,23 +454,47 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
                   printf( DBLUE "x | size: " DRED "%i | %i" RESET_COLOR "\n",x,size); //once this happens we need to recursively call GriffinDataToFragment with the remaining datums.
                return NumFragsFound; //This will be more important when we start putting multiple fragments into a single mid event
 				} else  {
+               TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
 					return -x;
             }
             break;
+         case 0xf0000000:
+            switch(bank){
+               case 1: // header format from before May 2015 experiments
+                  return -x;
+                  break;
+               case 2:
+                  if(x+1 < size) {
+                    SetGRIFCc(value, EventFrag);
+                    ++x;
+                    dword = *(data+x);
+                    SetGRIFPsd(dword, EventFrag);
+                  } else {
+                    return -x;
+                  }
+                  break;
+               default:
+                  printf("This bank not yet defined.\n");
+                  break;
+            }
+            break;
+         
  		   default:				
 	      	if((packet & 0x80000000) == 0x00000000) {
-					EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 21 );
-					EventFrag->Charge.push_back((*(data+x) & 0x03ffffff));	
-					x = x + 1;
- 					EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
-                 EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
-               //x = x + 1;
- 					//EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
-					//EventFrag->Zc.push_back( (*(data+x) & 0x03ffffff));
+            if(x+1 < size) {
+					    EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 21 );
+					    EventFrag->Charge.push_back((*(data+x) & 0x03ffffff));	
+					    ++x;
+ 					    EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
+              EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
+            } else {
+               return -x;
 	          }
-   	       break;
+          }
+   	      break;
 		};
 	}
+   TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
 	return -x;
 }
 
@@ -479,25 +502,52 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, unsigned int mi
 
 
 
-bool TDataParser::SetGRIFHeader(uint32_t value,TFragment *frag) {
-//Sets: 
-//     The number of filters
-//     The Data Type
-//     Number of Pileups
-//     Channel Address
-//     Detector Type
-	if( (value&0xf0000000) != 0x80000000) {
-		return false;
-	}
-	frag->NumberOfFilters =  (value &0x0f000000)>> 24;
-   frag->DataType        =  (value &0x00e00000)>> 21;
-   frag->NumberOfPileups =  (value &0x001c0000)>> 18;
-   frag->ChannelAddress  =  (value &0x0003fff0)>> 4;
-   frag->DetectorType    =  (value &0x0000000f);
-  
-  // if(frag-DetectorType==2)
-  //    frag->ChannelAddress += 0x8000;
-
+bool TDataParser::SetGRIFHeader(uint32_t value,TFragment *frag,int bank) {
+   switch(bank){
+      case 1: // header format from before May 2015 experiments
+         //Sets: 
+         //     The number of filters
+         //     The Data Type
+         //     Number of Pileups
+         //     Channel Address
+         //     Detector Type
+         if( (value&0xf0000000) != 0x80000000) {
+            return false;
+         }
+         frag->NumberOfFilters =  (value &0x0f000000)>> 24;
+         frag->DataType        =  (value &0x00e00000)>> 21;
+         frag->NumberOfPileups =  (value &0x001c0000)>> 18;
+         frag->ChannelAddress  =  (value &0x0003fff0)>> 4;
+         frag->DetectorType    =  (value &0x0000000f);
+           
+         // if(frag-DetectorType==2)
+         //    frag->ChannelAddress += 0x8000;
+         break;
+      case 2:
+         //Sets: 
+         //     The number of filters
+         //     The Data Type
+         //     Number of Pileups
+         //     Channel Address
+         //     Detector Type
+         if( (value&0xf0000000) != 0x80000000) {
+            return false;
+         }
+         frag->NumberOfPileups =  (value &0x0c000000)>> 26;
+         frag->DataType        =  (value &0x03800000)>> 23;
+         frag->NumberOfFilters =  (value &0x00700000)>> 20;
+         frag->ChannelAddress  =  (value &0x000ffff0)>> 4;
+         frag->DetectorType    =  (value &0x0000000f);
+           
+         // if(frag-DetectorType==2)
+         //    frag->ChannelAddress += 0x8000;
+         break;
+      default:
+         printf("This bank not yet defined.\n");
+         break;
+   }
+         
+         
    TChannel *chan = TChannel::GetChannel(frag->ChannelAddress);
    if(chan) {
       frag->ChannelNumber = chan->GetNumber();
@@ -534,7 +584,7 @@ bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment *frag) {
 	if( (value &0xc0000000) != 0x00000000) {
 		return false;
 	}
-	frag->TriggerBitPattern = value & 0x3fff0000;
+	frag->TriggerBitPattern = (value & 0x3fff0000) >> 16; // bit shift included by JKS
    frag->PPG = value & 0x0000ffff;//This is due to new GRIFFIN data format
 	return true;
 }
@@ -609,6 +659,20 @@ bool TDataParser::SetGRIFDeadTime(uint32_t value, TFragment *frag) {
 }
 
 
+bool TDataParser::SetGRIFCc(uint32_t value, TFragment* frag) {
+   //set the short integration and the lower 9 bits of the long integration
+   frag->ccShort.push_back(value & 0x7ffff);
+   frag->ccLong.push_back(value >> 19);
+   return true;
+}
+
+
+bool TDataParser::SetGRIFPsd(uint32_t value, TFragment* frag) {
+   //set the zero crossing and the higher 10 bits of the long integration
+   frag->Zc.push_back(value & 0x003fffff);
+   frag->ccLong.back() |=  ((value & 0x7fe00000) >> 12);//21 bits from zero crossing minus 9 lower bits
+   return true;
+}
 
 void TDataParser::FillStats(TFragment *frag) {
 //Takes a TFragment and records statistics for it's channel address.

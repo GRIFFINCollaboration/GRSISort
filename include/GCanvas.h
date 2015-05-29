@@ -78,6 +78,7 @@ class GCanvas : public TCanvas {
 
 
       std::vector<TH1*> Find1DHists();
+      std::vector<TH1*> FindAllHists();
 
       //void HandleKeyPress(int event,int x,int y,TObject *obj);
       bool HandleArrowKeyPress(Event_t *event,UInt_t *keysym);
@@ -98,7 +99,6 @@ class GCanvas : public TCanvas {
       bool PeakFitQ(GMarker *m1=0,GMarker *m2=0);
 
       static int fBGSubtraction_type;
-
 
       Window_t fCanvasWindowID;
       TRootCanvas *fRootCanvas;
