@@ -100,7 +100,7 @@ void TGriffinHit::Print(Option_t *opt) const	{
    printf("Griffin Detector: %i\n",GetDetector());
 	printf("Griffin Crystal:  %i\n",GetCrystal());
    printf("Griffin Energy:   %lf\n",GetEnergy());
-	//printf("Griffin hit time:   %ld\n",GetTime());
+	printf("Griffin hit time:   %lf\n",GetTime());
    printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",GetPosition().Theta() *180/(3.141597),GetPosition().Phi() *180/(3.141597));
 }
 /*
@@ -127,7 +127,7 @@ Int_t TGriffinHit::GetCharge(Option_t *opt) const {
 
 double TGriffinHit::GetTime(Option_t *opt) const {
   //still need to figure out how to handle the times
-  return time;
+  return (double)time;
 }
 
 TVector3 TGriffinHit::GetPosition(Double_t dist) const{

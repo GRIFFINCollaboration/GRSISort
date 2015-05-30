@@ -24,7 +24,7 @@ TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs)	{
   //Default Copy constructor
   ((TGRSIDetectorHit&)rhs).Copy(*this);
   //((TGriffinHit&)rhs).cfd             = cfd;
-  //((TGriffinHit&)rhs).time            = time;
+  //rhs.time            = time;
   Class()->IgnoreTObjectStreamer(true);
 }
 

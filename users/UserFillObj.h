@@ -12,10 +12,10 @@
    if(histcfd) histcfd->Fill(fragment->Cfd.at(0));
 
 	TH2D *mat = (TH2D*)(GetOutputList()->FindObject("hp_charge"));
-	if(mat && fragment->DetectorType ==1) mat->Fill(channel->GetNumber(),fragment->GetCharge(0));
+	if(mat && fragment->DetectorType <= 1 ) mat->Fill(channel->GetNumber(),fragment->GetCharge(0));
 
 	mat = (TH2D*)(GetOutputList()->FindObject("hp_energy"));
-	if(mat && fragment->DetectorType == 1) mat->Fill(channel->GetNumber(),fragment->GetEnergy());
+	if(mat && fragment->DetectorType <= 1) mat->Fill(channel->GetNumber(),fragment->GetEnergy());
 
    hist = (TH1D*)(GetOutputList()->FindObject("test"));
 	if(hist) hist->Fill(channel->GetNumber());
@@ -24,7 +24,7 @@
 	if(hist) hist->Fill(fragment->PPG);
    
    hist = (TH1D*)(GetOutputList()->FindObject("EnergySum"));
-   if(hist && fragment->DetectorType == 1) hist->Fill(fragment->GetEnergy());
+   if(hist && fragment->DetectorType <= 1) hist->Fill(fragment->GetEnergy());
 
 	hist = (TH1D*)(GetOutputList()->FindObject("ChannelId"));
 	if(hist) hist->Fill(fragment->ChannelId);

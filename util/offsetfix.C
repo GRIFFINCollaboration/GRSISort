@@ -33,7 +33,7 @@ class TEventTime {
          event->SetBankList();
   
          void *ptr;
-         int banksize = event->LocateBank(NULL,"GRF1",&ptr);
+         int banksize = event->LocateBank(NULL,"GRF2",&ptr);
 
          uint32_t type  = 0xffffffff;
          uint32_t value = 0xffffffff;
@@ -48,7 +48,7 @@ class TEventTime {
             switch(type) {
                case 0x80000000:
                   dettype = value & 0x0000000F;
-                  chanadd = (value &0x0003fff0)>> 4;
+                  chanadd = (value &0x000ffff0)>> 4;
                   break;
                case 0xa0000000:
                   timelow = value & 0x0fffffff;
@@ -207,8 +207,8 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
                break;
             }
             event->SetBankList();
-            if((banksize = event->LocateBank(NULL,"GRF1",&ptr))>0) {
-               int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,mserial,mtime);
+            if((banksize = event->LocateBank(NULL,"GRF2",&ptr))>0) {
+               int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,2,mserial,mtime);
                if(frags > -1){
                   events_read++;
                   eventQ->push_back(new TEventTime(event));//I'll keep 4G data in here for now in case we need to use it for time stamping 
@@ -506,7 +506,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    int data[1024];
   
    void *ptr;
-   int banksize = event->LocateBank(NULL,"GRF1",&ptr);
+   int banksize = event->LocateBank(NULL,"GRF2",&ptr);
 
    uint32_t type  = 0xffffffff;
    uint32_t value = 0xffffffff;
@@ -526,7 +526,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
       switch(type) {
          case 0x80000000:
             dettype = value & 0x0000000f;
-            chanadd = (value &0x0003fff0)>> 4;
+            chanadd = (value &0x000ffff0)>> 4;
             break;
          case 0xa0000000:
             timelow = value & 0x0fffffff;
@@ -564,7 +564,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    TMidasEvent copyevent = *event;
    copyevent.SetBankList();
 
-   banksize = copyevent.LocateBank(NULL,"GRF1",&ptr);
+   banksize = copyevent.LocateBank(NULL,"GRF2",&ptr);
    for(int x=0;x<banksize;x++) {
       value = *((int*)ptr+x);
       type  = value & 0xf0000000; 

@@ -53,6 +53,11 @@ bool TSceptarHit::InFilter(Int_t wantedfilter) {
    return true;
 }
 
+double TSceptarHit::GetTime(Option_t *opt) const {
+
+   return (double)time;
+}
+
 void TSceptarHit::Clear(Option_t *opt)	{
 	detector = 0xFFFF;
    filter = 0;
@@ -64,9 +69,9 @@ void TSceptarHit::Clear(Option_t *opt)	{
 }
 
 void TSceptarHit::Print(Option_t *opt) const	{
-   printf("Sceptar Detector: %i\n",detector);
+   printf("Sceptar Detector: %i\n",GetDetector());
 	printf("Sceptar hit energy: %.2f\n",GetEnergy());
-	printf("Sceptar hit time:   %.ld\n",GetTime());
+	printf("Sceptar hit time:   %.lf\n",GetTime());
 }
 
 /*

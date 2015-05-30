@@ -18,6 +18,7 @@ class TDescantHit : public TGRSIDetectorHit {
   public:
     TDescantHit();
     ~TDescantHit();
+	 TDescantHit(const TDescantHit&);
 
   private:
     Int_t    filter;
@@ -73,6 +74,7 @@ class TDescantHit : public TGRSIDetectorHit {
       bool AnalyzeWaveform();                                          //!
 
 	public:
+      void Copy(TDescantHit&) const;        //!
 		void Clear(Option_t *opt = "");		                    //!
 		void Print(Option_t *opt = "") const;		                    //!
 
