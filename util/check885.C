@@ -8,11 +8,15 @@ void check885() {
       return;
    }
    
-   AnalysisTree->Project("hist(8000,0,4000)","griffin_hits.energy_lowgain","@sceptar_hits.size()>0");
+   AnalysisTree->Project("hist(8000,0,4000)","griffin_hits.GetEnergy()","@sceptar_hits.size()>0");
    TH1F *hist  = (TH1F*)gROOT->FindObjectAny("hist");
    TH1F *hist2 = (TH1F*)hist->Clone("hist2");
    
-   double sum = hist2->Integral(883/hist2->GetBinWidth(883),887/hist2->GetBinWidth(887));
+  // double sum = hist2->Integral(883/hist2->GetBinWidth(883),887/hist2->GetBinWidth(887));
+
+   TPeak * peak = new TPeak(883,875,892);
+   peak->Fit(hist);
+   double sum = peak->GetArea();
 
    hist2->GetXaxis()->SetRangeUser(870,910);
 

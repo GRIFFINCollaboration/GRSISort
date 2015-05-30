@@ -34,7 +34,8 @@ LFLAGS = -Wl,--no-as-needed
 endif
 
 CXXTARGET = Root2Rad
-ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop EnergyCal EfficCal LeanMatrices
+#ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop EnergyCal EfficCal LeanMatrices
+ROOTTARGET = MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop EnergyCal EfficCal LeanMatrices
 
 CFLAGS += -fPIC -O2
 CFLAGS += -std=c++0x -O2 -I$(PWD)/include -g `root-config --cflags --libs`
