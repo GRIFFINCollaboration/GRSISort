@@ -34,7 +34,8 @@ LFLAGS = -Wl,--no-as-needed
 endif
 
 CXXTARGET = Root2Rad
-ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop EnergyCal EfficCal
+#ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop EnergyCal EfficCal LeanMatrices
+ROOTTARGET = MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop EnergyCal EfficCal LeanMatrices
 
 CFLAGS += -fPIC -O2
 CFLAGS += -std=c++0x -O2 -I$(PWD)/include -g `root-config --cflags --libs`
@@ -50,7 +51,9 @@ CAT=cat
 
 #UTILFLAGS = $(LIBDIR) -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTGRSIFit -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `grsi-config --cflags --libs` -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
 
-UTILFLAGS = $(LIBDIR) -lAnalysisTreeBuilder -lTGRSIFit -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
+UTILFLAGS = -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector
+
+UTILFLAGS += $(LIBDIR) -lAnalysisTreeBuilder -lTGRSIFit -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
 
 UTIL_STRING = "Finished compiling utilities"
 

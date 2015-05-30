@@ -72,7 +72,7 @@ class TPacesData : public TGRSIDetectorData {
           SetCoreAddress(frag->ChannelAddress);
 
           for(int x=0;x<frag->Charge.size();x++) {
-            SetCoreCharge(frag->Charge.at(x));
+            SetCoreCharge(frag->GetCharge(x));
 		      SetCoreCFD(frag->Cfd.at(x));		
 	        //SetCoreTime(frag->Zc.at(0));		
 	         SetCoreTime(frag->GetTimeStamp());		

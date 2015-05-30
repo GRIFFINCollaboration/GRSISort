@@ -56,7 +56,7 @@ class TSceptarData : public TGRSIDetectorData {
 	   	   SetDetAddress(frag->ChannelAddress);
             //SetDetEnergy(channel->CalibrateENG(frag->Charge.at(x)));
             SetDetEnergy(frag->GetEnergy(x));
-		      SetDetCharge(frag->Charge.at(x));
+		      SetDetCharge(frag->GetCharge(x));
 		      SetDetCFD(frag->Cfd.at(x));	 
 		      SetDetTime(frag->GetTimeStamp());	
             if(fSetWave)

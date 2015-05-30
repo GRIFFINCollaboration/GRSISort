@@ -30,7 +30,7 @@ TGRSIDetector::~TGRSIDetector()	{
 }
 
 void TGRSIDetector::AddHit(TGRSIDetectorHit *hit,Option_t *opt) {
-  hit->SetParent(this); 
+ // hit->SetParent(this); 
   PushBackHit(hit);
   return;
 }
