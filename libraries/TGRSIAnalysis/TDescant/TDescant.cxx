@@ -58,21 +58,32 @@ TDescant::~TDescant()	{
    if(descantdata) delete descantdata;
 }
 
+void TDescant::Copy(TDescant &rhs) const {
+  TGRSIDetector::Copy((TGRSIDetector&)rhs);
+
+  ((TDescant&)rhs).descantdata     = 0;
+
+  ((TDescant&)rhs).descant_hits        = descant_hits;
+  ((TDescant&)rhs).fSetWave            = fSetWave;
+  return;                                      
+}                                       
+
+TDescant::TDescant(const TDescant& rhs) {
+  ((TDescant&)rhs).Copy(*this);
+}
+
 void TDescant::Clear(Option_t *opt)	{
 //Clears all of the hits and data
-   if(descantdata) descantdata->Clear();
-
+   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+      TGRSIDetector::Clear(opt);
+      if(descantdata) descantdata->Clear();
+   }
 	descant_hits.clear();
 }
 
-
-
 TDescant& TDescant::operator=(const TDescant& rhs) {
-     descantdata     = 0;
-     descant_hits = rhs.descant_hits;
-     fSetWave = rhs.fSetWave;
-
-     return *this;
+   rhs.Copy(*this);
+   return *this;
 }
 
 
@@ -84,10 +95,15 @@ void TDescant::Print(Option_t *opt) const	{
 }
 
 TGRSIDetectorHit* TDescant::GetHit(const Int_t idx){
-   if(idx < GetMultiplicity())
+   return GetDescantHit(idx);
+}
+
+TDescantHit* TDescant::GetDescantHit(const Int_t idx) {
+   if( idx < GetMultiplicity())
       return &(descant_hits.at(idx));
-   else 
+   else
       return 0;
+
 }
 
 void TDescant::PushBackHit(TGRSIDetectorHit *deshit) {
@@ -118,9 +134,10 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
-   descant_hits.clear();
-   TDescant::SetHit(false);
+   Clear("");
+   descant_hits.reserve(gdata->GetMultiplicity());
    
+
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
       TDescantHit dethit;
 
@@ -148,7 +165,9 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 		
 //      dethit.SetPosition(TDescant::GetPosition(gdata->GetDetNumber(i)));
 //FIX
-      descant_hits.push_back(dethit);
-      TDescant::SetHit();
+      AddHit(&dethit);
+ //     descant_hits.push_back(dethit);
+     // TDescant::SetHit();
    }
 }
+

@@ -21,11 +21,13 @@ class TDescant : public TGRSIDetector {
 
   public:
      TDescant();
+     TDescant(const TDescant&);
      virtual ~TDescant();
 
   public: 
      TGRSIDetectorHit* GetHit(const Int_t idx =0);
-     TDescantHit *GetDescantHit(int i)        {	return &descant_hits[i];   }	//!
+     TDescantHit* GetDescantHit(const Int_t idx = 0);
+
      Short_t GetMultiplicity() const	       {	return descant_hits.size();}	//!
 
      static TVector3 GetPosition(int DetNbr)  { return gPosition[DetNbr];}	//!
@@ -51,6 +53,7 @@ class TDescant : public TGRSIDetector {
      static TVector3 gPosition[21];                                     //!  Position of each Paddle needs to be updated
 
    public:         
+     void Copy(TDescant&) const;                //!
      void Clear(Option_t *opt = "");		//!
      void Print(Option_t *opt = "") const;		//!
 
