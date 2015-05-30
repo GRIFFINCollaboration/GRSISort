@@ -76,6 +76,8 @@ class TGRSILoop : public TObject {
       int GetFragsSentToTree()    { return fFragsSentToTree; }
       int GetFragsReadFromMidas() { return fFragsReadFromMidas; }
 
+      static bool GetSuppressError() { return suppress_error; } 
+
       void Clear(Option_t *opt="");
       void Print(Option_t *opt="") const;
 

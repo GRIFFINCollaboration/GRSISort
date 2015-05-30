@@ -60,6 +60,7 @@ public:
    UShort_t DataType;             //-> 
    UShort_t DetectorType;         //-> Detector Type (PACES,HPGe, etc)
    UInt_t ChannelId;              //-> Threshold crossing counter for a channel
+   UInt_t AcceptedChannelId;      //-> Accepted threshold crossing counter for a channel
 
    std::vector<UShort_t>  KValue; //-> KValue for each pileup hit
 
@@ -87,6 +88,6 @@ public:
    bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 
-   ClassDef(TFragment,4);  // Event Fragments
+   ClassDef(TFragment,5);  // Event Fragments
 };
 #endif // TFRAGMENT_H

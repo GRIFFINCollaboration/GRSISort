@@ -4,6 +4,7 @@
 
 #include "TFragmentQueue.h"
 #include "TGRSIStats.h"
+#include "TGRSILoop.h"
 
 #include "TEpicsFrag.h"
 #include "TGRSIRootIO.h"
@@ -447,6 +448,20 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
             // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
             // change should be backward-compatible
             if((value & 0x3fff) == (EventFrag->ChannelId & 0x3fff)){
+               if(!TGRSILoop::Get()->GetSuppressError() && EventFrag->DataType == 2) {
+                  // check whether the nios finished and if so whether it finished with an error
+                  if(((value>>14) & 0x1) == 0x1) {
+                     if(((value>>16) & 0xff) != 0) {
+                        printf( BLUE "0x%04x: NIOS code finished with error 0x%02x" RESET_COLOR "\n",EventFrag->ChannelAddress, (value>>16) & 0xff);
+                     }
+                  }
+               }
+               if(EventFrag->DataType == 1) {
+                  EventFrag->AcceptedChannelId = (value>>14) & 0x3fff;
+                  //printf("Set AcceptedChannelId to 0x%04x (from 0x%08x => 0x%04x)\n", EventFrag->AcceptedChannelId, value, value>>14);
+               } else {
+                  EventFrag->AcceptedChannelId = 0;
+               }
                if(record_stats)
 						FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);				
