@@ -3,7 +3,8 @@
 
 A lean, mean, sorting machine. 
 
-**For Update Information** Please Join the [Analysis_User] team (https://github.com/orgs/GRIFFINCollaboration/teams/analysis_users)
+**For Update Information** Please Join the [Analysis_User](https://github.com/orgs/GRIFFINCollaboration/teams/analysis_users) team 
+
 **There is a wiki!!  use the link->** [WIKI](http://github.com/GRIFFINCollaboration/GRSISort/wiki)
 
 To compile for a .sh shell execute `source SOURCEME.sh` in your terminal from the GRSISort Directory
