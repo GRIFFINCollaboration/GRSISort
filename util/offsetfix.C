@@ -37,7 +37,7 @@ class TEventTime {
 
          uint32_t type  = 0xffffffff;
          uint32_t value = 0xffffffff;
-
+    
          uint64_t time = 0;
 
          for(int x=0;x<banksize;x++) {
@@ -66,18 +66,18 @@ class TEventTime {
          if(!(digset.find(Digitizer())->second)){
             digset.find(Digitizer())->second = true;
             if(GetTimeStamp() < lowest_time || lowest_time == -1){
-               if(Digitizer() == 0x0000 ||
+  /*             if(Digitizer() == 0x0000 ||
                   Digitizer() == 0x0100 ||
                   Digitizer() == 0x0200 ||
                   Digitizer() == 0x1000 ||
                   Digitizer() == 0x1200 ||
                   Digitizer() == 0x1100 ||
                   Digitizer() == 0x1300){
-                  lowest_time = GetTimeStamp();
+     */             lowest_time = GetTimeStamp();
                   best_dig = Digitizer();
                   if(timemidas < low_timemidas)
                      low_timemidas = timemidas;
-               }
+           //    }
             }
          }
       }
@@ -110,6 +110,10 @@ class TEventTime {
       void SetDigitizer(){
       //Maybe make a map somewhere of digitizer vs address
          digitizernum = chanadd&0x0000ff00;
+         if(dettype > 1 && (chanadd&0xF) > 1){
+            digitizernum+=2;
+         }
+
          digmap.insert( std::pair<int,int>(digitizernum, digmap.size()));
          digset.insert( std::pair<int,bool>(digitizernum,false));
          correctionmap.insert(std::pair<int,int64_t>(digitizernum,0));
@@ -253,7 +257,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
    //Clear lowest hightime
    std::map<int,int> lowest_hightime;
    std::vector<TEventTime*>::iterator it;
-
+   
    for(it = eventQ->begin(); it != eventQ->end(); it++) {
       //This makes the plot, might not be required
       int hightime = (*it)->TimeStampHigh();
@@ -261,7 +265,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
       if(midtime>20) break;//20 seconds seems like plenty enough time
       if( ((*it)->Digitizer() == 0) && ((*it)->DetectorType()>1)) continue; 
       //The next few lines are probably unnecessary
-      ((TH2D*)(midvshigh->At((*it)->DigIndex())))->Fill(midtime, hightime);
+      ((TH2D*)(midvshigh->FindObject(Form("midvshigh_0x%04x",(*it)->Digitizer()))))->Fill(midtime, hightime);
       if(lowest_hightime.find((*it)->Digitizer()) == lowest_hightime.end()){
          lowest_hightime[(*it)->Digitizer()] = hightime; //initialize this as the first time that is seen.
       }
@@ -269,7 +273,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
          lowest_hightime.find((*it)->Digitizer())->second = hightime;
    }
 
-   //find lowest digitizer 
+//find lowest digitizer 
    int lowest_dig = 0;
    int lowtime = 999999;
  /*  for(mapit = lowest_hightime.begin(); mapit != lowest_hightime.end(); mapit++){
@@ -543,8 +547,14 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    time |= timelow &0x0fffffff;
 
 //   if((chanadd&0x0000ff00) != TEventTime::GetBestDigitizer()){
-   time -= TEventTime::correctionmap.find(chanadd&0x0000ff00)->second;    
- //  }
+   if((dettype<2) || ((chanadd&0xf) < 2) ){   
+      time -= TEventTime::correctionmap.find(chanadd&0x0000ff00)->second;    
+   }
+   else{
+      time -= TEventTime::correctionmap.find((chanadd&0x0000ff00)+2)->second;    
+    }
+
+//  }
 
    if(time<0)
       time += 0x3ffffffffff;

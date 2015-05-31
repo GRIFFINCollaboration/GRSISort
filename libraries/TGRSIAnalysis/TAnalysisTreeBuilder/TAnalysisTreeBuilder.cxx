@@ -718,6 +718,7 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
      TChannel *c = TChannel::GetDefaultChannel();
      c->Write();
    }
+   fCurrentRunInfo->Write();
    //TChannel::DeleteAllChannels();
 
    fCurrentAnalysisFile->cd();
