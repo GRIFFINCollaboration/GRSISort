@@ -10,9 +10,7 @@
 
 #include "TVector3.h"
 
-
 #include "TGRSIDetectorHit.h"
-
 
 class TDescantHit : public TGRSIDetectorHit {
   public:
@@ -28,9 +26,9 @@ class TDescantHit : public TGRSIDetectorHit {
     Int_t    psd;
     Double_t energy;
     Long_t   time;
-  
+
     std::vector<Short_t> waveform; //
-  
+
   public:
 		/////////////////////////		/////////////////////////////////////
       inline void SetDetectorNumber(const int &x)  { detector = x; }   //!
@@ -43,8 +41,7 @@ class TDescantHit : public TGRSIDetectorHit {
       inline void SetTime(const Long_t &x)         { time     = x; }   //!
       inline void SetPosition(TVector3 x)          { position = x; }   //!
 
-
-      inline void SetWaveform(std::vector<Short_t> x) { 
+      inline void SetWaveform(std::vector<Short_t> x) {
          if(x.size() <= 8) {
             return;
          }
@@ -70,17 +67,25 @@ class TDescantHit : public TGRSIDetectorHit {
          }
       } //!
 
-		/////////////////////////		/////////////////////////////////////
-		inline UShort_t GetDetectorNumber()	     {	return detector; }  //!
-      inline UInt_t   GetAddress()             {   return address;  }  //!
-      inline Int_t    GetFiterPatter()         {   return filter;   }  //!
-		inline Int_t    GetCharge()			     {	return charge;	  }  //!
-      inline Int_t    GetCfd()                 {   return cfd;      }  //!
-      inline Int_t    GetPsd()                 {   return psd;      }  //!
-      inline Double_t GetEnergy()	   	     {	return energy;   }  //!
-		inline Long_t   GetTime()			        {	return time;     }  //!
+      /////////////////////////		/////////////////////////////////////
+		inline UShort_t   GetDetectorNumber()     { return detector;   }  //!
+      inline UInt_t     GetAddress()            { return address;    }  //!
+      inline Int_t      GetFiterPatter()        { return filter;     }  //!
+		inline Int_t      GetCharge()             { return charge;     }  //!
+      inline Int_t      GetCfd()                { return cfd;        }  //!
+      inline Int_t      GetPsd()                { return psd;        }  //!
+      inline Double_t   GetEnergy()             { return energy;     }  //!
+		inline Long_t     GetTime()               { return time;       }  //!
 
       inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
+
+      Int_t CalculateCfd(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps); //!
+      Int_t CalculateCfdAndMonitor(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor); //!
+      std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow); //!
+      std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow); //!
+      std::vector<Int_t> CalculatePartialSum(); //!
+      Int_t CalculatePsd(double fraction, int interpolation_steps); //!
+      Int_t CalculatePsdAndPartialSums(double fraction, int interpolation_steps, std::vector<Int_t>& partialsums); //!
 
       bool   InFilter(Int_t);                                          //!
 
