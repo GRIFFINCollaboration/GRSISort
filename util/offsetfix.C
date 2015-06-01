@@ -738,7 +738,7 @@ int CorrectionFile(int runnumber){
 
 int main(int argc, char **argv) {
 
-   if(argc<3) {
+   if(argc<2) {
       printf("Usage: ./offsetfix <input.mid> <output.mid> <y/n>(read correction file)\n");
       return 1;
    }
@@ -748,10 +748,14 @@ int main(int argc, char **argv) {
 
    TMidasFile *midfile  = new TMidasFile;
    midfile->Open(argv[1]);
-   midfile->OutOpen(argv[2]);
-   
    int runnumber = midfile->GetRunNumber();
    int subrunnumber = midfile->GetSubRunNumber();
+   if(argc < 3){
+      midfile->OutOpen(Form("fixrun%05d_%03d.mid",runnumber,subrunnumber));
+   }
+   else{
+      midfile->OutOpen(argv[2]);
+   }
    char filename[64];
    if(subrunnumber>-1)
       sprintf(filename,"time_diffs%05i_%03i.root",runnumber,subrunnumber); 

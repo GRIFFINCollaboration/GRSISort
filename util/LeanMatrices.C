@@ -62,14 +62,19 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
    ///////////////////////////////////// SETUP ///////////////////////////////////////
    //Histogram paramaters
    Double_t low = 0;
-   Double_t high = 5000;
-   Double_t nofBins = 5000;
+   Double_t high = 10000;
+   Double_t nofBins = 10000;
 
    //Coincidence Parameters
    Double_t ggTlow = 0.;   //Times are in 10's of ns
    Double_t ggThigh = 40.;
    Double_t gbTlow =  0.;
    Double_t gbThigh = 80.;
+
+   Double_t ggBGlow = 100.;
+   Double_t ggBGhigh = 175.;
+
+   Double_t ggBGScale = (ggThigh - ggTlow)/(ggBGhigh - ggBGlow);
    
    if(w == NULL) {
       w = new TStopwatch;
@@ -85,8 +90,11 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
    TH1F* ggTimeDiff = new TH1F("ggTimeDiff", "#gamma-#gamma time difference", 300,0,300); list->Add(ggTimeDiff);
    TH1F* gbTimeDiff = new TH1F("gbTimeDiff", "#gamma-#beta time difference", 1000,0,1000); list->Add(gbTimeDiff); 
    TH2F* ggmatrix = new TH2F("ggmatrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(ggmatrix);
+   TH2F* ggmatrixt = new TH2F("ggmatrixt","#gamma-#gamma matrix t-corr",nofBins,low,high,nofBins,low,high); list->Add(ggmatrixt);
    TH2F* gammaSinglesB_hp = new TH2F("gammaSinglesB_hp", "#gamma-#beta vs. SC channel", nofBins,low,high,20,1,21); list->Add(gammaSinglesB_hp);
    TH2F* ggbmatrix = new TH2F("ggbmatrix","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrix);
+   TH2F* ggbmatrixt = new TH2F("ggbmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixt);
+
    ///////////////////////////////////// PROCESSING /////////////////////////////////////
 
    //set up branches
@@ -139,6 +147,10 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
                //If they are close enough in time, fill the gamma-gamma matrix. This will be symmetric because we are doing a double loop over gammas
                ggmatrix->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
             }
+            if(ggBGlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggBGhigh) { 
+               //If they are close enough in time, fill the gamma-gamma matrix. This will be symmetric because we are doing a double loop over gammas
+               ggmatrixt->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
+            }
          }
       }
          
@@ -163,6 +175,10 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
                         //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
                         ggbmatrix->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
                      }
+                     if(ggBGlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggBGhigh) { 
+                        //If they are close enough in time, fill the gamma-gamma matrix. This will be symmetric because we are doing a double loop over gammas
+                        ggbmatrixt->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
+                     }
                    }                   
                   break;
                }
@@ -174,6 +190,11 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
       }
 
    }
+   ggmatrixt->Scale(-ggBGScale);
+   ggmatrixt->Add(ggmatrix);
+
+   ggbmatrixt->Scale(-ggBGScale);
+   ggbmatrixt->Add(ggbmatrix);
    list->Sort(); //Sorts the list alphabetically
    std::cout << "creating histograms done after " << w->RealTime() << " seconds" << std::endl;
    w->Continue();
