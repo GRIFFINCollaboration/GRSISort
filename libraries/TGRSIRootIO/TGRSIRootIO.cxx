@@ -184,7 +184,7 @@ void TGRSIRootIO::FinalizeEpicsTree() {
 }
 
 
-void TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
+bool TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
   
    char filename[64];
    if(subrunnumber>-1)
@@ -197,12 +197,16 @@ void TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
    std::string tempname(filename);
    TGRSIOptions::AddInputRootFile(tempname);
    foutfile = new TFile(filename,"recreate");
+
+   if(!foutfile->IsOpen()) {
+      return false;
+   }
    
    SetUpFragmentTree();
    SetUpBadFragmentTree();
    SetUpEpicsTree();
 
-   return;
+   return true;
 }
 
 void TGRSIRootIO::CloseRootOutFile()   {
