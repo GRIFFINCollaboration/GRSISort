@@ -44,7 +44,7 @@ class TGRSIRootIO : public TObject {
       TChannel   *fBufferChannel;
 
    public:
-      void SetUpRootOutFile(int,int);
+      bool SetUpRootOutFile(int,int);
       void CloseRootOutFile(); 
       int GetRunNumber(std::string);
       int GetSubRunNumber(std::string);
