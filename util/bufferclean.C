@@ -21,7 +21,7 @@ Bool_t CheckEvent(TMidasEvent *evt){
 
    //Need to put something in that says "if not a Griffin fragment (ie epics) return true"
    void *ptr;
-   int banksize = evt->LocateBank(NULL,"GRF1",&ptr);
+   int banksize = evt->LocateBank(NULL,"GRF2",&ptr);
 
    uint32_t type  = 0xffffffff;
    uint32_t value = 0xffffffff;
