@@ -100,8 +100,8 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Bool_t R__bool = fDescant;    b << R__bool;}
    //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
    //printf("fMinorIndex = %s\n",fMinorIndex.c_str());
-   {TString R__str(fMajorIndex.c_str());      R__str.Streamer(b); printf("TString::data = %s\n",R__str.Data());  }//; R__str = fMajorIndex.c_str();      R__str.Streamer(b);}
-   {TString R__str(fMinorIndex.c_str());      R__str.Streamer(b);  printf("TString::data = %s\n",R__str.Data()); }//; R__str = fMinorIndex.c_str();      R__str.Streamer(b);}
+   {TString R__str(fMajorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data());  }//; R__str = fMajorIndex.c_str();      R__str.Streamer(b);}
+   {TString R__str(fMinorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data()); }//; R__str = fMinorIndex.c_str();      R__str.Streamer(b);}
    {TString R__str(fRunInfoFileName.c_str()); R__str.Streamer(b);   }//; R__str = fRunInfoFileName.c_str(); R__str.Streamer(b);}
    {TString R__str(fRunInfoFile.c_str());     R__str.Streamer(b);   }//; R__str = fRunInfoFile.c_str();     R__str.Streamer(b);}
    b.SetByteCount(R__c,true);
