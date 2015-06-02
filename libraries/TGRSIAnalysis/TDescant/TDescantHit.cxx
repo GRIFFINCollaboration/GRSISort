@@ -1,5 +1,6 @@
 #include "TDescant.h"
 #include "TDescantHit.h"
+#include "Globals.h"
 
 #include <iostream>
 #include <algorithm>
@@ -14,51 +15,62 @@ TDescantHit::TDescantHit()	{
 
 TDescantHit::~TDescantHit()	{	}
 
+TDescantHit::TDescantHit(const TDescantHit &rhs){
+   Clear();
+   ((TDescantHit&)rhs).Copy(*this);
+}
+
+void TDescantHit::Copy(TDescantHit &rhs) const {
+   TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
+	((TDescantHit&)rhs).filter = filter;
+	((TDescantHit&)rhs).psd = psd;
+   return;
+}
+
+TVector3 TDescantHit::GetPosition(double dist) const {
+	return TDescant::GetPosition(detector);
+}
+
 bool TDescantHit::InFilter(Int_t wantedfilter) {
    // check if the desired filter is in wanted filter;
    // return the answer;
    return true;
 }
 
+double TDescantHit::GetTime(Option_t *opt) const {
+   return (double)time;
+}
+
 void TDescantHit::Clear(Option_t *opt)	{
-   detector = 0;
-   address = 0xffffffff;
    filter = 0;
-   charge = -1;
-   cfd    = -1;
    psd    = -1;
-   energy = 0.0;
-   time   = 0;
-
-   position.SetXYZ(0,0,1);
-
-   waveform.clear();
+   TGRSIDetectorHit::Clear();
 }
 
-void TDescantHit::Print(Option_t *opt)	{
-   printf("Descant Detector: %i\n",detector);
-   printf("Descant hit energy: %.2f\n",GetEnergy());
-   printf("Descant hit time:   %.ld\n",GetTime());
+void TDescantHit::Print(Option_t *opt) const	{
+   printf("Descant Detector: %i\n",GetDetector());
+	printf("Descant hit energy: %.2f\n",GetEnergy());
+	printf("Descant hit time:   %.f\n",GetTime());
 }
 
-
+/*
 bool TDescantHit::CompareEnergy(TDescantHit *lhs, TDescantHit *rhs)	{
    return(lhs->GetEnergy()) > rhs->GetEnergy();
 }
-
-
+*/
+/*
 void TDescantHit::Add(TDescantHit *hit)	{
-   if(!CompareEnergy(this,hit)) {
+  if(!CompareEnergy(this,hit)) {
       this->cfd    = hit->GetCfd();    
       this->psd    = hit->GetPsd();    
       this->time   = hit->GetTime();
-      this->position = hit->GetPosition();
+  	 	//this->position = hit->GetPosition();
    }
    this->SetCharge(0);
 
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
 }
-
+*/
 bool TDescantHit::AnalyzeWaveform() {
    bool error = false;
 
@@ -69,9 +81,10 @@ bool TDescantHit::AnalyzeWaveform() {
    int interpolation_steps = 256;
    int delay = 8;
    double attenuation = 24./64.;
-   int halfsmoothingwindow = 0;
-
-   for(size_t i = 0; i < 8 && i < waveform.size(); ++i) {
+   int halfsmoothingwindow = 0; //2*halfsmoothingwindow + 1 = number of samples in moving window.
+	
+   // baseline algorithm: correct each adc with average of first two samples in that adc
+	for(size_t i = 0; i < 8 && i < waveform.size(); ++i) {
       baseline_corrections[i] = waveform[i];
    }
    for(size_t i = 8; i < 16 && i < waveform.size(); ++i) {

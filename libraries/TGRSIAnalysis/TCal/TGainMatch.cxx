@@ -11,6 +11,29 @@ void TGainMatch::Copy(TObject &obj) const{
    TCal::Copy(obj);
 }
 
+void TGainMatch::CalculateGain(Double_t cent1, Double_t cent2, Double_t eng1, Double_t eng2){
+
+   //Put the peaks in order for ease (if the user put them in the wrong order)
+   //Apparantly there is a TGraph Sort method. Might look into this later.
+   if ( eng1 > eng2){
+         std::swap(eng1, eng2);
+         std::swap(cent1,cent2);
+   }
+
+   this->SetPoint(0,cent1,eng1);
+   this->SetPoint(1,cent2,eng2);
+
+   TF1* gainfit = new TF1("gain","pol1");
+
+   TFitResultPtr res = this->Fit(gainfit,"SC0");
+   SetFitFunction(this->GetFunction("gain"));//Have to do this because I want to delete gainfit
+   fGain_coeffs[0] = res->Parameter(0);
+   fGain_coeffs[1] = res->Parameter(1);
+    
+   delete gainfit;
+
+}
+
 Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Double_t energy2){
 //This functions is used to perform a rough gain matching on a 60Co
 //source by default. This makes gain matching over a wide range much easier to do afterwards

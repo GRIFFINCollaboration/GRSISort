@@ -33,11 +33,11 @@ class TEventTime {
          event->SetBankList();
   
          void *ptr;
-         int banksize = event->LocateBank(NULL,"GRF1",&ptr);
+         int banksize = event->LocateBank(NULL,"GRF2",&ptr);
 
          uint32_t type  = 0xffffffff;
          uint32_t value = 0xffffffff;
-
+    
          uint64_t time = 0;
 
          for(int x=0;x<banksize;x++) {
@@ -48,7 +48,7 @@ class TEventTime {
             switch(type) {
                case 0x80000000:
                   dettype = value & 0x0000000F;
-                  chanadd = (value &0x0003fff0)>> 4;
+                  chanadd = (value &0x000ffff0)>> 4;
                   break;
                case 0xa0000000:
                   timelow = value & 0x0fffffff;
@@ -66,18 +66,18 @@ class TEventTime {
          if(!(digset.find(Digitizer())->second)){
             digset.find(Digitizer())->second = true;
             if(GetTimeStamp() < lowest_time || lowest_time == -1){
-               if(Digitizer() == 0x0000 ||
+  /*             if(Digitizer() == 0x0000 ||
                   Digitizer() == 0x0100 ||
                   Digitizer() == 0x0200 ||
                   Digitizer() == 0x1000 ||
                   Digitizer() == 0x1200 ||
                   Digitizer() == 0x1100 ||
                   Digitizer() == 0x1300){
-                  lowest_time = GetTimeStamp();
+     */             lowest_time = GetTimeStamp();
                   best_dig = Digitizer();
                   if(timemidas < low_timemidas)
                      low_timemidas = timemidas;
-               }
+           //    }
             }
          }
       }
@@ -110,6 +110,10 @@ class TEventTime {
       void SetDigitizer(){
       //Maybe make a map somewhere of digitizer vs address
          digitizernum = chanadd&0x0000ff00;
+         if(dettype > 1 && (chanadd&0xF) > 1){
+            digitizernum+=2;
+         }
+
          digmap.insert( std::pair<int,int>(digitizernum, digmap.size()));
          digset.insert( std::pair<int,bool>(digitizernum,false));
          correctionmap.insert(std::pair<int,int64_t>(digitizernum,0));
@@ -207,8 +211,8 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
                break;
             }
             event->SetBankList();
-            if((banksize = event->LocateBank(NULL,"GRF1",&ptr))>0) {
-               int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,mserial,mtime);
+            if((banksize = event->LocateBank(NULL,"GRF2",&ptr))>0) {
+               int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,2,mserial,mtime);
                if(frags > -1){
                   events_read++;
                   eventQ->push_back(new TEventTime(event));//I'll keep 4G data in here for now in case we need to use it for time stamping 
@@ -253,7 +257,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
    //Clear lowest hightime
    std::map<int,int> lowest_hightime;
    std::vector<TEventTime*>::iterator it;
-
+   
    for(it = eventQ->begin(); it != eventQ->end(); it++) {
       //This makes the plot, might not be required
       int hightime = (*it)->TimeStampHigh();
@@ -261,7 +265,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
       if(midtime>20) break;//20 seconds seems like plenty enough time
       if( ((*it)->Digitizer() == 0) && ((*it)->DetectorType()>1)) continue; 
       //The next few lines are probably unnecessary
-      ((TH2D*)(midvshigh->At((*it)->DigIndex())))->Fill(midtime, hightime);
+      ((TH2D*)(midvshigh->FindObject(Form("midvshigh_0x%04x",(*it)->Digitizer()))))->Fill(midtime, hightime);
       if(lowest_hightime.find((*it)->Digitizer()) == lowest_hightime.end()){
          lowest_hightime[(*it)->Digitizer()] = hightime; //initialize this as the first time that is seen.
       }
@@ -269,7 +273,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
          lowest_hightime.find((*it)->Digitizer())->second = hightime;
    }
 
-   //find lowest digitizer 
+//find lowest digitizer 
    int lowest_dig = 0;
    int lowtime = 999999;
  /*  for(mapit = lowest_hightime.begin(); mapit != lowest_hightime.end(); mapit++){
@@ -506,7 +510,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    int data[1024];
   
    void *ptr;
-   int banksize = event->LocateBank(NULL,"GRF1",&ptr);
+   int banksize = event->LocateBank(NULL,"GRF2",&ptr);
 
    uint32_t type  = 0xffffffff;
    uint32_t value = 0xffffffff;
@@ -526,7 +530,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
       switch(type) {
          case 0x80000000:
             dettype = value & 0x0000000f;
-            chanadd = (value &0x0003fff0)>> 4;
+            chanadd = (value &0x000ffff0)>> 4;
             break;
          case 0xa0000000:
             timelow = value & 0x0fffffff;
@@ -543,8 +547,14 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    time |= timelow &0x0fffffff;
 
 //   if((chanadd&0x0000ff00) != TEventTime::GetBestDigitizer()){
-   time -= TEventTime::correctionmap.find(chanadd&0x0000ff00)->second;    
- //  }
+   if((dettype<2) || ((chanadd&0xf) < 2) ){   
+      time -= TEventTime::correctionmap.find(chanadd&0x0000ff00)->second;    
+   }
+   else{
+      time -= TEventTime::correctionmap.find((chanadd&0x0000ff00)+2)->second;    
+    }
+
+//  }
 
    if(time<0)
       time += 0x3ffffffffff;
@@ -564,7 +574,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    TMidasEvent copyevent = *event;
    copyevent.SetBankList();
 
-   banksize = copyevent.LocateBank(NULL,"GRF1",&ptr);
+   banksize = copyevent.LocateBank(NULL,"GRF2",&ptr);
    for(int x=0;x<banksize;x++) {
       value = *((int*)ptr+x);
       type  = value & 0xf0000000; 
@@ -718,7 +728,7 @@ int CorrectionFile(int runnumber){
    }
 
    t->ResetBranchAddresses();
-   printf(DGREEN "Found %d digitizers\n" RESET_COLOR,TEventTime::correctionmap.size());
+   printf(DGREEN "Found %lu digitizers\n" RESET_COLOR,TEventTime::correctionmap.size());
    corrfile->Close();
    delete corrfile;
 
@@ -728,7 +738,7 @@ int CorrectionFile(int runnumber){
 
 int main(int argc, char **argv) {
 
-   if(argc<3) {
+   if(argc<2) {
       printf("Usage: ./offsetfix <input.mid> <output.mid> <y/n>(read correction file)\n");
       return 1;
    }
@@ -738,10 +748,14 @@ int main(int argc, char **argv) {
 
    TMidasFile *midfile  = new TMidasFile;
    midfile->Open(argv[1]);
-   midfile->OutOpen(argv[2]);
-   
    int runnumber = midfile->GetRunNumber();
    int subrunnumber = midfile->GetSubRunNumber();
+   if(argc < 3){
+      midfile->OutOpen(Form("fixrun%05d_%03d.mid",runnumber,subrunnumber));
+   }
+   else{
+      midfile->OutOpen(argv[2]);
+   }
    char filename[64];
    if(subrunnumber>-1)
       sprintf(filename,"time_diffs%05i_%03i.root",runnumber,subrunnumber); 

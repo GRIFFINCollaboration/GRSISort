@@ -45,6 +45,8 @@ class TPeak : public TGRSIFit {
    Double_t GetCentroidErr() const  { return GetParError(GetParNumber("centroid")); }
    Double_t GetArea() const         { return farea; }
    Double_t GetAreaErr() const      { return fd_area; }
+   Double_t GetFWHM() const         { return GetParameter("sigma")*2.3548;}
+   Double_t GetFWHMErr() const      { return GetParError(GetParNumber("sigma"))*2.3548;}
 /*
    Double_t Fit(Option_t *opt = "");
    Double_t Fit(TH1* hist, Option_t *opt = "");

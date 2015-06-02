@@ -1,5 +1,6 @@
 #include "TSceptar.h"
 #include "TSceptarHit.h"
+#include "Globals.h"
 
 #include <iostream>
 #include <algorithm>
@@ -14,47 +15,93 @@ TSceptarHit::TSceptarHit()	{
 
 TSceptarHit::~TSceptarHit()	{	}
 
+TSceptarHit::TSceptarHit(const TSceptarHit &rhs)	{	
+   Clear();
+   ((TSceptarHit&)rhs).Copy(*this);
+}
+
+void TSceptarHit::Copy(TSceptarHit &rhs) const {
+  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
+	((TSceptarHit&)rhs).filter = filter;
+}                                       
+
+/*
+void TSceptarHit::SetHit(){
+   MNEMONIC mnemonic;
+   TChannel *channel = TChannel::GetChannel(GetAddress());
+   if(!channel){
+      Error("SetHit","No TChannel exists for address %u",GetAddress());
+      return;
+   }
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+   SetDetectorNumber(mnemonic.arrayposition);
+   fDetectorSet = true;
+   SetEnergy(channel->CalibrateENG(GetCharge()));
+   fEnergySet = true;
+   SetPosition(TSceptar::GetPosition(GetDetectorNumber()));
+   fPosSet = true;
+   fHitSet = true;
+
+}
+*/
+
+TVector3 TSceptarHit::GetPosition(double dist) const {
+	return TSceptar::GetPosition(detector);
+}
+
 bool TSceptarHit::InFilter(Int_t wantedfilter) {
    // check if the desired filter is in wanted filter;
    // return the answer;
    return true;
 }
 
+double TSceptarHit::GetTime(Option_t *opt) const {
+   return (double)time;
+}
+
 void TSceptarHit::Clear(Option_t *opt)	{
-   detector = 0;
-   address = 0xffffffff;
    filter = 0;
-   charge = -1;
-   cfd    = -1;
-   energy = 0.0;
-   time   = 0;
-
-   position.SetXYZ(0,0,1);
-
-   waveform.clear();
+   TGRSIDetectorHit::Clear();
 }
 
-void TSceptarHit::Print(Option_t *opt)	{
-   printf("Sceptar Detector: %i\n",detector);
-   printf("Sceptar hit energy: %.2f\n",GetEnergy());
-   printf("Sceptar hit time:   %.ld\n",GetTime());
+void TSceptarHit::Print(Option_t *opt) const	{
+   printf("Sceptar Detector: %i\n",GetDetector());
+	printf("Sceptar hit energy: %.2f\n",GetEnergy());
+	printf("Sceptar hit time:   %.lf\n",GetTime());
 }
 
+/*
 bool TSceptarHit::CompareEnergy(TSceptarHit *lhs, TSceptarHit *rhs)	{
    return(lhs->GetEnergy()) > rhs->GetEnergy();
 }
-
+*/
+/*
 void TSceptarHit::Add(TSceptarHit *hit)	{
    if(!CompareEnergy(this,hit)) {
       this->cfd    = hit->GetCfd();    
       this->time   = hit->GetTime();
-      this->position = hit->GetPosition();
+      //this->position = hit->GetPosition();
    }
    this->SetCharge(0);
 
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
 }
-
+*/
+/*
+Double_t TSceptarHit::GetEnergy() const {
+   if(fEnergySet)
+      return energy;
+   else{
+      TChannel* channel = TChannel::GetChannel(GetAddress());
+      if(!channel){
+         Error("GetEnergy()","No TChannel exists for address %u",GetAddress());
+         return 0.0;
+      }
+      return channel->CalibrateENG(GetCharge()); 
+   }
+}
+*/
 bool TSceptarHit::AnalyzeWaveform() {
    bool error = false;
    std::vector<Int_t> baseline_corrections (8, 0);
@@ -67,8 +114,6 @@ bool TSceptarHit::AnalyzeWaveform() {
    int halfsmoothingwindow = 0; //2*halfsmoothingwindow + 1 = number of samples in moving window.
 
    // baseline algorithm: correct each adc with average of first two samples in that adc
-   size_t baseline_length = 8;
-
    for(size_t i = 0; i < 8 && i < waveform.size(); ++i) {
       baseline_corrections[i] = waveform[i];
    }
@@ -79,8 +124,7 @@ bool TSceptarHit::AnalyzeWaveform() {
       waveform[i] -= baseline_corrections[i%8];
    }
 
-//   this->cfd = CalculateCfd(attenuation, delay, halfsmoothingwindow, interpolation_steps);
-   this->cfd = CalculateCfdAndMonitor(attenuation, delay, halfsmoothingwindow, interpolation_steps, cfdmonitor);
+   this->cfd = CalculateCfd(attenuation, delay, halfsmoothingwindow, interpolation_steps);
 
    return !(error);
 

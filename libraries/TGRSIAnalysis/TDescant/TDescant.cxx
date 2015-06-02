@@ -58,30 +58,57 @@ TDescant::~TDescant()	{
    if(descantdata) delete descantdata;
 }
 
+void TDescant::Copy(TDescant &rhs) const {
+  TGRSIDetector::Copy((TGRSIDetector&)rhs);
+
+  ((TDescant&)rhs).descantdata     = 0;
+
+  ((TDescant&)rhs).descant_hits        = descant_hits;
+  ((TDescant&)rhs).fSetWave            = fSetWave;
+  return;                                      
+}                                       
+
+TDescant::TDescant(const TDescant& rhs) {
+  ((TDescant&)rhs).Copy(*this);
+}
+
 void TDescant::Clear(Option_t *opt)	{
 //Clears all of the hits and data
-   if(descantdata) descantdata->Clear();
-
+   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+      TGRSIDetector::Clear(opt);
+      if(descantdata) descantdata->Clear();
+   }
 	descant_hits.clear();
 }
 
-
-
 TDescant& TDescant::operator=(const TDescant& rhs) {
-     descantdata     = 0;
-     descant_hits = rhs.descant_hits;
-     fSetWave = rhs.fSetWave;
-
-     return *this;
+   rhs.Copy(*this);
+   return *this;
 }
 
+void TDescant::Print(Option_t *opt) const	{
+  //Prints out TDescant members, currently does little.
+  printf("descantdata = 0x%p\n",descantdata);
+  if(descantdata) descantdata->Print();
+  printf("%lu descant_hits\n",descant_hits.size());
+}
 
-void TDescant::Print(Option_t *opt)	{
-  //Prints out TDescant members, currently does nothing.
-  printf("not yet written...\n");
+TGRSIDetectorHit* TDescant::GetHit(const Int_t idx){
+   return GetDescantHit(idx);
+}
+
+TDescantHit* TDescant::GetDescantHit(const Int_t idx) {
+   if( idx < GetMultiplicity())
+      return &(descant_hits.at(idx));
+   else
+      return 0;
+
+}
+
+void TDescant::PushBackHit(TGRSIDetectorHit *deshit) {
+  descant_hits.push_back(*((TDescantHit*)deshit));
   return;
 }
-
 
 void TDescant::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
 //Fills the "Data" structure for a specific channel with TFragment frag.
@@ -106,17 +133,18 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
-   descant_hits.clear();
-   TDescant::SetHit(false);
+   Clear("");
+   descant_hits.reserve(gdata->GetMultiplicity());
    
+
    for(int i=0;i<gdata->GetMultiplicity();i++)	{
       TDescantHit dethit;
 
-      dethit.SetDetectorNumber(gdata->GetDetNumber(i));
+//      dethit.SetDetectorNumber(gdata->GetDetNumber(i));
    
       dethit.SetAddress(gdata->GetDetAddress(i));
       
-      dethit.SetEnergy(gdata->GetDetEnergy(i));
+//      dethit.SetEnergy(gdata->GetDetEnergy(i));
       dethit.SetCharge(gdata->GetDetCharge(i));
 
       dethit.SetTime(gdata->GetDetTime(i));
@@ -134,9 +162,11 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
          }
       }
 		
-      dethit.SetPosition(TDescant::GetPosition(gdata->GetDetNumber(i)));
-
-      descant_hits.push_back(dethit);
-      TDescant::SetHit();
+//      dethit.SetPosition(TDescant::GetPosition(gdata->GetDetNumber(i)));
+//FIX
+      AddHit(&dethit);
+ //     descant_hits.push_back(dethit);
+     // TDescant::SetHit();
    }
 }
+

@@ -178,8 +178,11 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
    TStopwatch w;
    w.Start();
 
-   if(!TGRSIRootIO::Get()->GetRootOutFile())
-     TGRSIRootIO::Get()->SetUpRootOutFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
+   if(!TGRSIRootIO::Get()->GetRootOutFile()) {
+     if(!(TGRSIRootIO::Get()->SetUpRootOutFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()))) {
+        return;
+     }
+   }
    while(true) {
       bytes = midasfile->Read(&fMidasEvent);
       currenteventnumber++;

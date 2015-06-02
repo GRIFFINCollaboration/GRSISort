@@ -675,8 +675,6 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
          csm = (TCSM*) det->second;
       //} else if(strcmp(det->second->IsA()->GetName(),"TSpice") == 0) {
          //*spice = *((TSpice*) det->second);
-      //} else if(strcmp(det->second->IsA()->GetName(),"TTip") == 0) {
-         //*tip = *((TTip*) det->second);
       } else if(strcmp(det->first,"GR") == 0) {
          griffin = (TGriffin*) det->second;
       } else if(strcmp(det->first,"SE") == 0) {
@@ -720,6 +718,7 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
      TChannel *c = TChannel::GetDefaultChannel();
      c->Write();
    }
+   fCurrentRunInfo->Write();
    //TChannel::DeleteAllChannels();
 
    fCurrentAnalysisFile->cd();
@@ -758,37 +757,37 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //We use the MNEMONIC in order to figure out what detector we want to put the set of fragments into
          if(mnemonic.system.compare("TI")==0) {
             if(detectors->find("TI") == detectors->end()) {
-               (*detectors)["TI"] = new TTigress;
+               //(*detectors)["TI"] = new TTigress;
             }
             (*detectors)["TI"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("SH")==0) {
             if(detectors->find("SH") == detectors->end()) {
-               (*detectors)["SH"] = new TSharc;
+               //(*detectors)["SH"] = new TSharc;
             }
             (*detectors)["SH"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("Tr")==0) {	
             if(detectors->find("Tr") == detectors->end()) {
-               (*detectors)["Tr"] = new TTriFoil;
+               //(*detectors)["Tr"] = new TTriFoil;
             }
             (*detectors)["Tr"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("CS")==0) {	
             if(detectors->find("CS") == detectors->end()) {
-               (*detectors)["CS"] = new TCSM;
+               //(*detectors)["CS"] = new TCSM;
             }
             (*detectors)["CS"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("GR")==0 && event->at(i).DetectorType <2) {	//This is here because of DAQ weirdness (will likely want to remove)
+         } else if(mnemonic.system.compare("GR")==0) {
             if(detectors->find("GR") == detectors->end()) {
                (*detectors)["GR"] = new TGriffin;
             }
             (*detectors)["GR"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("SE")==0 && event->at(i).DetectorType == 2) {	//This is here because of DAQ weirdness (will likely want to remove)
+         } else if(mnemonic.system.compare("SE")==0) {
             if(detectors->find("SE") == detectors->end()) {
                (*detectors)["SE"] = new TSceptar;
             }
             (*detectors)["SE"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("PA")==0) {	
             if(detectors->find("PA") == detectors->end()) {
-               (*detectors)["PA"] = new TPaces;
+               //(*detectors)["PA"] = new TPaces;
             }
             (*detectors)["PA"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("DS")==0) {	
@@ -806,7 +805,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //	FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("TP")==0) {	
             if(detectors->find("TP") == detectors->end()) {
-               (*detectors)["TP"] = new TTip;
+               //(*detectors)["TP"] = new TTip;
             }
             (*detectors)["TP"]->FillData(&(event->at(i)),channel,&mnemonic);
          }

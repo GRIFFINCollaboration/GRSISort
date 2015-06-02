@@ -11,7 +11,7 @@
 #include <fstream>
 #include <chrono>
 
-Int_t chanId_threshold = 10;
+Int_t chanId_threshold = 50;
 
 Bool_t CheckEvent(TMidasEvent *evt){
    //This function does not work if a Midas event contains multiple fragments
@@ -21,7 +21,7 @@ Bool_t CheckEvent(TMidasEvent *evt){
 
    //Need to put something in that says "if not a Griffin fragment (ie epics) return true"
    void *ptr;
-   int banksize = evt->LocateBank(NULL,"GRF1",&ptr);
+   int banksize = evt->LocateBank(NULL,"GRF2",&ptr);
 
    uint32_t type  = 0xffffffff;
    uint32_t value = 0xffffffff;
@@ -80,7 +80,7 @@ void Write(TMidasEvent *evt,TMidasFile *outfile){
 }
 
 int main(int argc, char **argv) {
-   if(argc!=3) {
+   if(argc<2) {
       printf("Usage: ./bufferclear <input.mid> <output.mid>\n");
       return 1;
    }
@@ -93,7 +93,14 @@ int main(int argc, char **argv) {
    TMidasFile *file  = new TMidasFile;
    //TMidasFile *outfile = new TMidasFile;
    file->Open(argv[1]);
-   file->OutOpen(argv[2]);
+   int runnumber = file->GetRunNumber();
+   int subrunnumber = file->GetSubRunNumber();
+   if(argc < 3){
+      file->OutOpen(Form("cleanrun%05d_%03d.mid",runnumber,subrunnumber));
+   }
+   else{
+      file->OutOpen(argv[2]);
+   }
  
    std::ifstream in(file->GetFilename(), std::ifstream::in | std::ifstream::binary);
    in.seekg(0, std::ifstream::end);

@@ -15,6 +15,7 @@
 
 #pragma link C++ class TGriffinHit+;
 #pragma link C++ class std::vector<TGriffinHit>+;
+#pragma link C++ class std::vector<TGriffinHit*>+;
 #pragma link C++ class TGriffin+;
 
 #endif

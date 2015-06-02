@@ -90,6 +90,8 @@ class TSharcHit : public TGRSIDetectorHit 	{
 
 		inline Double_t GetEnergy() {	return (p_energy>0) ? (p_energy + d_energy_front) : d_energy_front ;}
 		inline Double_t GetTime()	 {	return d_time_front; }
+
+      TVector3 GetPosition() const {}
 			
 		//inline Double_t GetFrontCFD()		{	return front_cfd;	}	//!
 		//inline Double_t GetBackCFD()		{	return back_cfd;	}	//!
@@ -112,7 +114,7 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		//void SetFrontCFD(const double &cfd)		{	front_cfd = cfd;	} //!
 		//void SetBackCFD(const double &cfd)		{	back_cfd = cfd;		} //!
 
-		inline void SetPosition(const TVector3 &pos)	{	position = pos;		} //!
+	//	inline void SetPosition(const TVector3 &pos)	{	position = pos;		} //!
 
 		//void SetPixel(const int &front, const  int &back)	{front_strip = front; back_strip = back;}	//!
 		inline void SetDetector(const UShort_t &detector)	{	detectornumber = detector;	}						//!

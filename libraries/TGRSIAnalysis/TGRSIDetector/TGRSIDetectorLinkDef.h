@@ -10,6 +10,7 @@
 
 #pragma link C++ class TGRSIDetectorHit+;
 #pragma link C++ class std::vector<TGRSIDetectorHit>+;
+#pragma link C++ class std::vector<TGRSIDetectorHit*>+;
 #pragma link C++ class TGRSIDetector+;
 
 #endif

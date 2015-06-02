@@ -6,13 +6,15 @@
 #include <vector>
 #include <cstdio>
 
+#include <TBits.h>
+
 #include "TGriffinHit.h"
 #ifndef __CINT__
 #include "TGriffinData.h"
 #else
 class TGriffinData;
 #endif
-#include "TBGOData.h"
+//#include "TBGOData.h"
 #include "TVector3.h" 
 
 #include "TGriffinHit.h"
@@ -28,25 +30,26 @@ class TGriffin : public TGRSIDetector {
 
   public: 
      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
-     //void BuildHits(TGriffinData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
-     void BuildAddBack(Option_t *opt="");	//!
-     void BuildAddBackClover(Option_t *opt=""); //!
+     //void BuildAddBack(Option_t *opt="");	//!
+     //void BuildAddBackClover(Option_t *opt=""); //!
 
-     TGriffinHit *GetGriffinHit(int i)        {	return &griffin_hits[i];   }	//!
-     Short_t GetMultiplicity() const	      {	return griffin_hits.size();}	//!
+     TGriffinHit *GetGriffinHit(const int i); //!
+     TGRSIDetectorHit* GetHit(const Int_t idx = 0);
+     Int_t GetMultiplicity() const {return griffin_hits.size();}
+     //TGriffinHit &GetGriffinHit(const int i) { return  griffin_hits.at(i);   }  //!
+    // Int_t        GetMultiplicity() const    { return griffin_hits.size();   }  //!
 
-     TGriffinHit *GetAddBackHit(int i)        {	return &addback_hits[i];   }	//!
-     Short_t GetAddBackMultiplicity() const   {	return addback_hits.size();}	//!
+     //TGriffinHit *GetAddBackHit(int i)        {	return &addback_hits[i];   }	//!
+     //Short_t GetAddBackMultiplicity() const   {	return addback_hits.size();}	//!
 
-     TGriffinHit *GetAddBackCloverHit(int i)       { return &addback_clover_hits[i]; }   //!
-     Short_t GetAddBackCloverMultiplicity() const  { return addback_clover_hits.size();} //!
+     //TGriffinHit *GetAddBackCloverHit(int i)       { return &addback_clover_hits[i]; }   //!
+     //Short_t GetAddBackCloverMultiplicity() const  { return addback_clover_hits.size();} //!
 
 		//TVector3 GetPosition(TGriffinHit *,int distance=0);						//!
-
+    // TVector3 GetPosition(Double_t dist = 110.0);
      static TVector3 GetPosition(int DetNbr ,int CryNbr = 5, double distance = 110.0);		//!
-
      void FillData(TFragment*,TChannel*,MNEMONIC*); //!
-     void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
+     //void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
 
      TGriffin& operator=(const TGriffin&);  //! 
 
@@ -54,51 +57,53 @@ class TGriffin : public TGRSIDetector {
 
    private: 
      TGriffinData *grifdata;                 //!  Used to build GRIFFIN Hits
-     TBGOData     *bgodata;                  //!  Used to build BGO Hits
-     std::vector <TGriffinHit> griffin_hits; //   The set of crystal hits
-     std::vector <TGriffinHit> addback_hits; //   The set of add-back hits		
-     std::vector <TGriffinHit> addback_clover_hits; //  The set of add-back2 hits
+     //TBGOData     *bgodata;                  //!  Used to build BGO Hits
+     std::vector <TGriffinHit> griffin_hits; //  The set of crystal hits
+     //std::vector <TGriffinHit> addback_hits; //   The set of add-back hits		
+     //std::vector <TGriffinHit> addback_clover_hits; //  The set of add-back2 hits
 
-     static bool fSetBGOHits;		            //!  Flag that determines if BGOHits are being measured			 
+     //static bool fSetBGOHits;		            //!  Flag that determines if BGOHits are being measured			 
 		
      static bool fSetCoreWave;		         //!  Flag for Waveforms ON/OFF
-     static bool fSetBGOWave;		            //!  Flag for BGO Waveforms ON/OFF
+     //static bool fSetBGOWave;		            //!  Flag for BGO Waveforms ON/OFF
 
      static long fCycleStart;                //!  The start of the cycle
      static long fLastPPG;                   //!  value of the last ppg
 
-     long fCycleStartTime;                   //   The start of the cycle as it's saved to the tree
-     bool ftapemove;                         //
-     bool fbackground;                       //
-     bool fbeamon;                           // 
-     bool fdecay;                            // 
+     enum  GriffinFlags{kCycleStartTime,kTapeMove,kBackGround,kBeamOn,kDecay};
+     TBits fGriffinBits;
 
    public:
-     static bool SetBGOHits()       { return fSetBGOHits;   }	//!
-     static bool SetCoreWave()      { return fSetCoreWave;  }	//!
-     static bool SetBGOWave()	    { return fSetBGOWave;   } //!
+     static bool SetCoreWave()        { return fSetCoreWave;  }	//!
+     //static bool SetBGOHits()       { return fSetBGOHits;   }	//!
+     //static bool SetBGOWave()	    { return fSetBGOWave;   } //!
 
-     void SetTapeMove()     { ftapemove = kTRUE; }//!
-     void SetBackground()   { fbackground = kTRUE;}//!
-     void SetBeamOn()       { fbeamon = kTRUE;}//!
-     void SetDecay()        { fdecay = kTRUE;}//!
+     void SetTapeMove(Bool_t flag=kTRUE)   { fGriffinBits.SetBitNumber(kTapeMove,flag); }  //!
+     void SetBackground(Bool_t flag=kTRUE) { fGriffinBits.SetBitNumber(kBackGround,flag);} //!
+     void SetBeamOn(Bool_t flag=kTRUE)     { fGriffinBits.SetBitNumber(kBeamOn,flag);}     //!
+     void SetDecay(Bool_t flag=kTRUE)      { fGriffinBits.SetBitNumber(kDecay,flag);}      //!
 
-     bool GetTapeMove()   const { return ftapemove;  }//!
-     bool GetBackground() const { return fbackground;}//!
-     bool GetBeamOn()     const { return fbeamon;    }//!
-     bool GetDecay()      const { return fdecay;     }//!
+     bool GetTapeMove()   const { return fGriffinBits.TestBitNumber(kTapeMove);}//!
+     bool GetBackground() const { return fGriffinBits.TestBitNumber(kBackGround);}//!
+     bool GetBeamOn()     const { return fGriffinBits.TestBitNumber(kBeamOn);}//!
+     bool GetDecay()      const { return fGriffinBits.TestBitNumber(kDecay);}//!
 
      static int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
 
+   //  void AddHit(TGRSIDetectorHit *hit,Option_t *opt="");//!
    private:
-     static TVector3 gCloverPosition[17];          //!  Position of each HPGe Clover
-     void ClearStatus() { ftapemove = kFALSE; fbackground = kFALSE; fbeamon = kFALSE; fdecay = kFALSE;}//!     
+     static TVector3 gCloverPosition[17];               //! Position of each HPGe Clover
+     void ClearStatus() { fGriffinBits.ResetAllBits(kFALSE); } //!     
 
    public:         
-     virtual void Clear(Option_t *opt = "");		      //!
-     virtual void Print(Option_t *opt = "");		//!
+     virtual void Copy(TGriffin&) const;                //!
+     virtual void Clear(Option_t *opt = "all");		     //!
+     virtual void Print(Option_t *opt = "") const;		  //!
 
-   ClassDef(TGriffin,1)  // Griffin Physics structure
+   protected:
+     void PushBackHit(TGRSIDetectorHit* ghit);
+
+   ClassDef(TGriffin,2)  // Griffin Physics structure
 
 
 };
