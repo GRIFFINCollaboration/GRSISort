@@ -1,11 +1,15 @@
 #include "TDescant.h"
 #include "TDescantHit.h"
+#include "Globals.h"
+
+#include <iostream>
+#include <algorithm>
 
 ClassImp(TDescantHit)
 
 TDescantHit::TDescantHit()	{	
    //Class()->IgnoreTObjectStreamer(true);
-   //Class()->AddRule("TSceptarHit waveform attributes=NotOwner");
+   //Class()->AddRule("TDescantHit waveform attributes=NotOwner");
    Clear();
 }
 
@@ -18,11 +22,14 @@ TDescantHit::TDescantHit(const TDescantHit &rhs){
 
 void TDescantHit::Copy(TDescantHit &rhs) const {
    TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
- //  ((TDescantHit&)rhs).filter       =     filter;
- //  ((TDescantHit&)rhs).psd          =     psd;
+	((TDescantHit&)rhs).filter = filter;
+	((TDescantHit&)rhs).psd = psd;
    return;
 }
 
+TVector3 TDescantHit::GetPosition(double dist) const {
+	return TDescant::GetPosition(detector);
+}
 
 bool TDescantHit::InFilter(Int_t wantedfilter) {
    // check if the desired filter is in wanted filter;
@@ -30,18 +37,20 @@ bool TDescantHit::InFilter(Int_t wantedfilter) {
    return true;
 }
 
+double TDescantHit::GetTime(Option_t *opt) const {
+   return (double)time;
+}
+
 void TDescantHit::Clear(Option_t *opt)	{
    filter = 0;
    psd    = -1;
-//   position.SetXYZ(0,0,1);
-
-   waveform.clear();
+   TGRSIDetectorHit::Clear();
 }
 
 void TDescantHit::Print(Option_t *opt) const	{
    printf("Descant Detector: %i\n",GetDetector());
 	printf("Descant hit energy: %.2f\n",GetEnergy());
-	printf("Descant hit time:   %.ld\n",GetTime());
+	printf("Descant hit time:   %.f\n",GetTime());
 }
 
 /*
@@ -55,7 +64,7 @@ void TDescantHit::Add(TDescantHit *hit)	{
       this->cfd    = hit->GetCfd();    
       this->psd    = hit->GetPsd();    
       this->time   = hit->GetTime();
-  //    this->position = hit->GetPosition();
+  	 	//this->position = hit->GetPosition();
    }
    this->SetCharge(0);
 
@@ -64,81 +73,184 @@ void TDescantHit::Add(TDescantHit *hit)	{
 */
 bool TDescantHit::AnalyzeWaveform() {
    bool error = false;
-  
-   // baseline algorithm: average of the first <n> samples
-   size_t baseline_length = 10;
-   double baseline = 0;
-   //printf("here %d\n",waveform.size());
-   if(waveform.size() < baseline_length) {
-      error = true;
-   } else {
-      for(size_t i = 0; i < baseline_length; ++i) {
-         baseline += ((double)waveform[i]);
-      }
-      baseline /= ((double)baseline_length);
-   }
-   //printf("now here %d\n",error);
+
+   std::vector<Int_t> baseline_corrections (8, 0);
+   std::vector<Short_t> smoothedwaveform;
 
    // all timing algorithms use interpolation with this many steps between two samples (all times are stored as integers)
    int interpolation_steps = 256;
-      
-   // cfd algorithm: attenuated minus delayed sample
-   // the zero-crossing is determined by a positive sample followed by two negative samples
-   int delay = 10;
-   double attenuation = 11./64.;
-
-   //printf("here2\n");
-   if(waveform.size() < delay+2) {
-      error = true;
-   } else {
-      double monitor[3] = {attenuation*(waveform[delay+2] - baseline) - (waveform[2] - baseline),
-		                     attenuation*(waveform[delay+1] - baseline) - (waveform[1] - baseline),
-		                     attenuation*(waveform[delay]   - baseline) - (waveform[0] - baseline)};
-
-      for(size_t i = delay+3; i < waveform.size(); ++i) {
-         if(monitor[2] >= 0. && monitor[1] < 0. && monitor[0] < monitor[1]) {
-            //interpolate cfd time
-            //the zero crossing is between i-2 and i-1
-            cfd = (i-2. + monitor[2]/(monitor[2]-monitor[1]))*interpolation_steps;
-            break;
-         }
-         if(i == waveform.size() -1) {
-            //printf("failed to get zero-crossing of cfd monitor signal\n");
-            error = true;
-         }
-         monitor[2] = monitor[1];
-         monitor[1] = monitor[0];
-         monitor[0] = attenuation*(waveform[i] - baseline) - (waveform[i-delay] - baseline);
-      }
+   int delay = 8;
+   double attenuation = 24./64.;
+   int halfsmoothingwindow = 0; //2*halfsmoothingwindow + 1 = number of samples in moving window.
+	
+   // baseline algorithm: correct each adc with average of first two samples in that adc
+	for(size_t i = 0; i < 8 && i < waveform.size(); ++i) {
+      baseline_corrections[i] = waveform[i];
    }
-   //printf("now here2 %d\n",error);
+   for(size_t i = 8; i < 16 && i < waveform.size(); ++i) {
+      baseline_corrections[i-8] = ((baseline_corrections[i-8] + waveform[i]) + ((baseline_corrections[i-8] + waveform[i]) > 0 ? 1 : -1)) >> 1;
+   }
+   for(size_t i = 0; i < waveform.size(); ++i) {
+      waveform[i] -= baseline_corrections[i%8];
+   }
+
+   this->cfd = CalculateCfd(attenuation, delay, halfsmoothingwindow, interpolation_steps);
 
    // PSD
    // time to zero-crossing algorithm: time when sum reaches n% of the total sum minus the cfd time
-   double fraction = 0.9;
-   int total_sum = 0;
-   for(size_t i = 0; i < waveform.size(); ++i) {
-      total_sum += waveform[i] - baseline;
+   double fraction = 0.85;
+
+   this->psd = CalculatePsd(fraction, interpolation_steps);
+
+   if(psd < 0) {
+      error = true;
    }
-   
-   double sum = -fraction*total_sum + waveform[0] - baseline;
-   for(size_t i = 1; i < waveform.size(); ++i) {
-      sum += waveform[i] - baseline;
-      if(sum >= 0) {
-         // interpolate between i-1 and i
-         psd = (i - sum/(waveform[i] - baseline))*interpolation_steps;
-         break;
-      }
-      if(i == waveform.size() -1) {
-         //printf("failed to get psd\n");
-         error = true;
-      }
-   }
-  
-   return !error;
+
+   return !(error);
+
 }
 
-TVector3 TDescantHit::GetPosition(double dist) const {
-	return TDescant::GetPosition(detector);
+Int_t TDescantHit::CalculateCfd(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps) {
+
+   std::vector<Short_t> monitor;
+
+   return CalculateCfdAndMonitor(attenuation, delay, halfsmoothingwindow, interpolation_steps, monitor);
+
 }
 
+Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor) {
+
+   Short_t monitormax = 0;
+
+   bool cfderror = true;
+   bool armed = false;
+
+   Int_t cfd = 0;
+
+   std::vector<Short_t> smoothedwaveform;
+
+   if(waveform.size() > delay+1) {
+
+      if(halfsmoothingwindow > 0) {
+         smoothedwaveform = TDescantHit::CalculateSmoothedWaveform(halfsmoothingwindow);
+      }
+      else{
+         smoothedwaveform = waveform;
+      }
+
+      monitor.resize(smoothedwaveform.size()-delay);
+      monitor[0] = attenuation*smoothedwaveform[delay]-smoothedwaveform[0];
+      if(monitor[0] > monitormax) {
+         armed = true;
+         monitormax = monitor[0];
+      }
+
+      for(size_t i = delay + 1; i < smoothedwaveform.size(); ++i) {
+         monitor[i-delay] = attenuation*smoothedwaveform[i]-smoothedwaveform[i-delay];
+         if(monitor[i-delay] > monitormax) {
+            armed=true;
+            monitormax = monitor[i-delay];
+         }
+         else {
+            if(armed == true && monitor[i-delay] < 0) {
+               armed = false;
+               cfderror = false;
+               if(monitor[i-delay-1]-monitor[i-delay] != 0) {
+                  //Linear interpolation.
+                  cfd = (i-delay)*interpolation_steps + (monitor[i-delay-1]*interpolation_steps)/(monitor[i-delay-1]-monitor[i-delay]);
+               }
+               else {
+                  //Should be impossible, since monitor[i-delay-1] => 0 and monitor[i-delay] > 0
+                  cfd = 0;
+               }
+            }
+         }
+      }
+   }
+   else {
+      monitor.resize(0);
+   }
+
+   return cfd;
+
+}
+
+std::vector<Short_t> TDescantHit::CalculateSmoothedWaveform(unsigned int halfsmoothingwindow) {
+
+   std::vector<Short_t> smoothedwaveform(std::max((size_t)0, waveform.size()-2*halfsmoothingwindow), 0);
+
+   for(size_t i = halfsmoothingwindow; i < waveform.size()-halfsmoothingwindow; ++i) {
+      for(int j = -(int)halfsmoothingwindow; j <= (int)halfsmoothingwindow; ++j) {
+         smoothedwaveform[i-halfsmoothingwindow] += waveform[i+j];
+      }
+//      double temp = smoothedwaveform[i-halfsmoothingwindow]/(2.0*halfsmoothingwindow+1);
+//      smoothedwaveform[i-halfsmoothingwindow] = (temp > 0.0) ? (temp + 0.5) : (temp - 0.5);
+   }
+
+   return smoothedwaveform;
+
+}
+
+std::vector<Short_t> TDescantHit::CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow) {
+
+   std::vector<Short_t> monitor(std::max((size_t)0, waveform.size()-delay), 0);
+   std::vector<Short_t> smoothedwaveform;
+
+   if(halfsmoothingwindow > 0) {
+      smoothedwaveform = TDescantHit::CalculateSmoothedWaveform(halfsmoothingwindow);
+   }
+   else{
+      smoothedwaveform = waveform;
+   }
+
+   for(size_t i = delay; i < waveform.size(); ++i) {
+      monitor[i-delay] = attenuation*smoothedwaveform[i]-smoothedwaveform[i-delay];
+   }
+
+   return monitor;
+
+}
+
+std::vector<Int_t> TDescantHit::CalculatePartialSum() {
+
+   std::vector<Int_t> partialsums(waveform.size(), 0);
+
+   if(waveform.size() > 0) {
+      partialsums[0] = waveform[0];
+      for(size_t i = 1; i < waveform.size(); ++i) {
+         partialsums[i] = partialsums[i-1] + waveform[i];
+      }
+   }
+   return partialsums;
+}
+
+Int_t TDescantHit::CalculatePsd(double fraction, int interpolation_steps) {
+
+   std::vector<Int_t> partialsums;
+
+   return CalculatePsdAndPartialSums(fraction, interpolation_steps, partialsums);
+
+}
+
+Int_t TDescantHit::CalculatePsdAndPartialSums(double fraction, int interpolation_steps, std::vector<Int_t>& partialsums) {
+
+   Int_t psd;
+   partialsums = CalculatePartialSum();
+   if(partialsums.empty() == true) {
+      return -1;
+   }
+   int total_sum = partialsums.back();
+
+   psd = -1;
+   if(partialsums[0] < fraction*total_sum) {
+      for(size_t i = 1; i < partialsums.size(); ++i) {
+         if(partialsums[i] >= fraction*total_sum) {
+            psd = i*interpolation_steps - ((partialsums[i]-fraction*total_sum)*interpolation_steps)/waveform[i];
+            break;
+         }
+      }
+   }
+
+   return psd;
+
+}

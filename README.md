@@ -3,6 +3,8 @@
 
 A lean, mean, sorting machine. 
 
+**For Update Information** Please Join the [Analysis_User](https://github.com/orgs/GRIFFINCollaboration/teams/analysis_users) team 
+
 **There is a wiki!!  use the link->** [WIKI](http://github.com/GRIFFINCollaboration/GRSISort/wiki)
 
 branch check.

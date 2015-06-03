@@ -86,7 +86,6 @@ TDescant& TDescant::operator=(const TDescant& rhs) {
    return *this;
 }
 
-
 void TDescant::Print(Option_t *opt) const	{
   //Prints out TDescant members, currently does little.
   printf("descantdata = 0x%p\n",descantdata);

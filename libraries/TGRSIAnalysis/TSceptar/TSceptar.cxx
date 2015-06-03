@@ -17,7 +17,7 @@
 ClassImp(TSceptar)
 
 
-//bool TSceptar::fSetWave = false;
+bool TSceptar::fSetWave = false;
 
 TVector3 TSceptar::gPaddlePosition[21] = { 
    //Sceptar positions from Evan; Thanks Evan.
@@ -136,9 +136,17 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       dethit.SetTime(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
 
-//      if(TSceptar::SetWave()){
-//         dethit.SetWaveform(gdata->GetDetWave(i));
-//      }
+      if(TSceptar::SetWave()){
+         if(gdata->GetDetWave(i).size() == 0) {
+            printf("Warning, TSceptar::SetWave() set, but data waveform size is zero!\n");
+         }
+         dethit.SetWaveform(gdata->GetDetWave(i));
+         if(dethit.GetWaveform().size() > 0) {
+//            printf("Analyzing waveform, current cfd = %d\n",dethit.GetCfd());
+            bool analyzed = dethit.AnalyzeWaveform();
+//            printf("%s analyzed waveform, cfd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd());
+         }
+      }
 		
       //dethit.SetDetector(gdata->GetDetNumber(i));
    

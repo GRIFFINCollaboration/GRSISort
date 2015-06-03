@@ -10,9 +10,7 @@
 
 #include "TVector3.h"
 
-
 #include "TGRSIDetectorHit.h"
-
 
 class TDescantHit : public TGRSIDetectorHit {
   public:
@@ -23,17 +21,15 @@ class TDescantHit : public TGRSIDetectorHit {
   private:
     Int_t    filter;
     Int_t    psd;
-  
-    std::vector<Short_t> waveform; //
-  
+//    std::vector<Short_t> waveform;
+
   public:
 		/////////////////////////		/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
       inline void SetPsd(const int &x)             { psd      = x; }   //!
    //   inline void SetPosition(TVector3 x)          { position = x; }   //!
 
-
-      inline void SetWaveform(std::vector<Short_t> x) { 
+      inline void SetWaveform(std::vector<Short_t> x) {
          if(x.size() <= 8) {
             return;
          }
@@ -60,11 +56,19 @@ class TDescantHit : public TGRSIDetectorHit {
       } //!
 
 		/////////////////////////		/////////////////////////////////////
-      inline Int_t    GetFilterPattern()         {   return filter;   }  //!
-      inline Int_t    GetPsd()                 {   return psd;      }  //!
+      inline Int_t    GetFilterPattern()       { return filter;   }  //!
+      inline Int_t    GetPsd()                 { return psd;      }  //!
       TVector3 GetPosition(Double_t dist = 0) const; //!
-
+      double GetTime(Option_t * opt = "") const; //!
       inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
+
+      Int_t CalculateCfd(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps); //!
+      Int_t CalculateCfdAndMonitor(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor); //!
+      std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow); //!
+      std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow); //!
+      std::vector<Int_t> CalculatePartialSum(); //!
+      Int_t CalculatePsd(double fraction, int interpolation_steps); //!
+      Int_t CalculatePsdAndPartialSums(double fraction, int interpolation_steps, std::vector<Int_t>& partialsums); //!
 
       bool   InFilter(Int_t);                                          //!
 
@@ -80,8 +84,5 @@ class TDescantHit : public TGRSIDetectorHit {
 
 	ClassDef(TDescantHit,3)
 };
-
-
-
 
 #endif
