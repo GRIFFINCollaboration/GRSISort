@@ -35,6 +35,9 @@ class TEventTime {
          void *ptr;
          int banksize = event->LocateBank(NULL,"GRF2",&ptr);
 
+         if(!banksize)
+            banksize = event->LocateBank(NULL,"GRF1",&ptr);
+
          uint32_t type  = 0xffffffff;
          uint32_t value = 0xffffffff;
     
@@ -211,7 +214,13 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
                break;
             }
             event->SetBankList();
-            if((banksize = event->LocateBank(NULL,"GRF2",&ptr))>0) {
+            
+
+               banksize = event->LocateBank(NULL,"GRF2",&ptr);
+            if(!banksize)
+               banksize = event->LocateBank(NULL,"GRF1",&ptr);
+
+            if(banksize>0) {
                int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,2,mserial,mtime);
                if(frags > -1){
                   events_read++;
@@ -511,6 +520,8 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
   
    void *ptr;
    int banksize = event->LocateBank(NULL,"GRF2",&ptr);
+   if(!banksize)
+      banksize = event->LocateBank(NULL,"GRF1",&ptr);
 
    uint32_t type  = 0xffffffff;
    uint32_t value = 0xffffffff;
@@ -575,6 +586,9 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    copyevent.SetBankList();
 
    banksize = copyevent.LocateBank(NULL,"GRF2",&ptr);
+   if(!banksize)
+      banksize = copyevent.LocateBank(NULL,"GRF1",&ptr);
+
    for(int x=0;x<banksize;x++) {
       value = *((int*)ptr+x);
       type  = value & 0xf0000000; 
