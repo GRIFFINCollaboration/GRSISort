@@ -91,7 +91,7 @@ class TGRSIDetectorHit : public TObject 	{
       TVector3  position; //! Position of hit detector.
       Double_t  energy;   //! Energy of the Hit.
    //   TRef      parent;   // pointer to the mother class;
-      std::vector<Short_t> waveform;  //!
+      std::vector<Short_t> waveform;  //
       //Bool_t fHitSet;    //!
  
    //flags   
