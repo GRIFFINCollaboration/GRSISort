@@ -632,7 +632,8 @@ bool ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    time |= timelow &0x0fffffff;
 
 //   if((chanadd&0x0000ff00) != TEventTime::GetBestDigitizer()){
-   if((dettype<2) || ((chanadd&0xf) < 2) ){   
+ //  if((dettype<2) || ((chanadd&0xf) < 2) ){   
+   if(dettype > 1 && ((chanadd&0xF) > 1) && ((chanadd&0xF00)>1)) {
       time -= TEventTime::correctionmap.find(chanadd&0x0000ff00)->second;    
    }
    else{
