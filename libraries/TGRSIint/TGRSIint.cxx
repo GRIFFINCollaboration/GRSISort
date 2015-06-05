@@ -399,6 +399,13 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
       //fInputCalFile->push_back(filename);
       TGRSIOptions::AddInputCalFile(filename);
       return true;
+   } else if(ext.compare("info")==0) { 
+      if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
+         return true;
+      else {
+         printf("Problem reading run-info file %s\n",filename.c_str());
+         return false;
+      }
    } else if(ext.compare("xml")==0) { 
       //fInputOdbFile->push_back(filename);
       TGRSIOptions::AddInputOdbFile(filename);
