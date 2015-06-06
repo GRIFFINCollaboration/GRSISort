@@ -228,7 +228,7 @@ class TGRSIRunInfo : public TObject {
   
 
    public:
-      void Print(Option_t *opt = "");
+      void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
    ClassDef(TGRSIRunInfo,3);
