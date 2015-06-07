@@ -137,26 +137,31 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
 
 TGRSIRunInfo::~TGRSIRunInfo() { }
 
-void TGRSIRunInfo::Print(Option_t *opt) {
-   printf("\tTGRSIRunInfo Status:\n");
-   printf("\t\tRunNumber:    %05i\n",TGRSIRunInfo::Get()->fRunNumber);
-   printf("\t\tSubRunNumber: %03i\n",TGRSIRunInfo::Get()->fSubRunNumber);
-   printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
-   printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
-   printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
-   printf("\t\tTIP:          %s\n", Tip() ? "true" : "false");
-   printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
-   printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
-   printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
-   printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
-   printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
-   printf("\n");
-   printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
-   printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
-   printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
-   printf("\n");
-   printf("\t==============================\n");
-
+void TGRSIRunInfo::Print(Option_t *opt) const {
+   if(strchr(opt,'a') != NULL){
+      printf("\tTGRSIRunInfo Status:\n");
+      printf("\t\tRunNumber:    %05i\n",TGRSIRunInfo::Get()->fRunNumber);
+      printf("\t\tSubRunNumber: %03i\n",TGRSIRunInfo::Get()->fSubRunNumber);
+      printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
+      printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
+      printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
+      printf("\t\tTIP:          %s\n", Tip() ? "true" : "false");
+      printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
+      printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
+      printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
+      printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
+      printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
+      printf("\n");
+      printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
+      printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
+      printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
+      printf("\n");
+      printf("\t==============================\n");
+   }
+   else{
+      printf("\t\tRunNumber:    %05i\t",TGRSIRunInfo::Get()->fRunNumber);
+      printf("\t\tSubRunNumber: %03i\n",TGRSIRunInfo::Get()->fSubRunNumber);
+   }
 }
 
 void TGRSIRunInfo::Clear(Option_t *opt) {

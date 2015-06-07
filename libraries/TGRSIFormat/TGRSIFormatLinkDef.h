@@ -15,6 +15,8 @@
 #pragma link C++ class TEpicsFrag+;
 #pragma link C++ class TChannel-;
 #pragma link C++ class TGRSIRunInfo-;
+#pragma link C++ class TGRSISortInfo+;
+#pragma link C++ class TGRSISortList+;
 
 #pragma link C++ class TGRSIStats+;
 #pragma link C++ class TFragmentQueue+;
