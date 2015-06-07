@@ -16,16 +16,16 @@ void check885() {
    
   // double sum = hist2->Integral(883/hist2->GetBinWidth(883),887/hist2->GetBinWidth(887));
 
-   TPeak * peak = new TPeak(883,875,892);
+   TPeak * peak = new TPeak(885,875,892);
    //double sing_area = 0.0;
-  // peak->Fit(histsing);
-  // sing_area = peak->GetArea();
+   peak->Fit(histsing);
+   sing_area = peak->GetArea();
 
- //  peak->Clear();
+   peak->Clear();
    peak->Fit(hist);
    double sum = peak->GetArea();
 
-  // double b_effic = sum/sing_area;
+   double b_effic = sum/sing_area;
 
    hist2->GetXaxis()->SetRangeUser(870,910);
 
@@ -36,9 +36,16 @@ void check885() {
    
    if(TGRSIRunInfo::Get()) {
      // printf("\n
-      printf("\n\tRun %05i_%03i:\t%i counts in %.2f seconds.\t%.4f cnts/min\n",
+      printf("\n\tRun %05i_%03i singles:\t%i counts in %.2f seconds.\t%.4f cnts/min\n",
+      TGRSIRunInfo::Get()->RunNumber(),TGRSIRunInfo::Get()->SubRunNumber(),
+      (int)sing_area,time,sing_area/(time/60.0));
+      printf("\tRun %05i_%03i beta-gamma:\t%i counts in %.2f seconds.\t%.4f cnts/min\n",
       TGRSIRunInfo::Get()->RunNumber(),TGRSIRunInfo::Get()->SubRunNumber(),
       (int)sum,time,sum/(time/60.0));
+      printf("\tbeta efficiency:\t %.2f %.\n",
+      b_effic*100.);
+      printf("\tsingles area:\t %05i\n",sing_area);
+      printf("\tparticles/sec:\t %.2f\n",sing_area/time*0.11*0.58);
    }
 
    TCanvas *c1 = new TCanvas;

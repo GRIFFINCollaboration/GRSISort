@@ -67,7 +67,7 @@ class TGriffin : public TGRSIDetector {
      static bool fSetCoreWave;		         //!  Flag for Waveforms ON/OFF
      //static bool fSetBGOWave;		            //!  Flag for BGO Waveforms ON/OFF
 
-     static long fCycleStart;                //!  The start of the cycle
+     long fCycleStart;                //!  The start of the cycle
      static long fLastPPG;                   //!  value of the last ppg
 
      enum  GriffinFlags{kCycleStartTime,kTapeMove,kBackGround,kBeamOn,kDecay};
@@ -88,7 +88,7 @@ class TGriffin : public TGRSIDetector {
      bool GetBeamOn()     const { return fGriffinBits.TestBitNumber(kBeamOn);}//!
      bool GetDecay()      const { return fGriffinBits.TestBitNumber(kDecay);}//!
 
-     static int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
+     int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
 
    //  void AddHit(TGRSIDetectorHit *hit,Option_t *opt="");//!
    private:
