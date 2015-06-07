@@ -22,6 +22,7 @@
 #include "TStopwatch.h"
 #include "TMath.h"
 #include "TGRSIRunInfo.h"
+#include "Globals.h"
 
 #ifndef __CINT__ 
 #include "TGriffin.h"
@@ -67,15 +68,17 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
 
    //Coincidence Parameters
    Double_t ggTlow = 0.;   //Times are in 10's of ns
-   Double_t ggThigh = 40.;
+   Double_t ggThigh = 60.;
    Double_t gbTlow =  0.;
-   Double_t gbThigh = 80.;
+   Double_t gbThigh = 100.;
 
    Double_t ggBGlow = 100.;
    Double_t ggBGhigh = 175.;
-
+   Double_t gbBGlow = -160.;
+   Double_t gbBGhigh = 0.;
    Double_t ggBGScale = (ggThigh - ggTlow)/(ggBGhigh - ggBGlow);
-   
+   Double_t gbBGScale = (gbThigh - gbTlow)/(gbBGhigh - gbBGlow);
+
    if(w == NULL) {
       w = new TStopwatch;
       w->Start();
@@ -87,14 +90,22 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
    //We create some spectra and then add it to the list
    TH1F* gammaSingles = new TH1F("gammaSingles","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaSingles);
    TH1F* gammaSinglesB = new TH1F("gammaSinglesB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
+   TH1F* gammaSinglesBt = new TH1F("gammaSinglesBt","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaSinglesBt);
    TH1F* ggTimeDiff = new TH1F("ggTimeDiff", "#gamma-#gamma time difference", 300,0,300); list->Add(ggTimeDiff);
-   TH1F* gbTimeDiff = new TH1F("gbTimeDiff", "#gamma-#beta time difference", 1000,0,1000); list->Add(gbTimeDiff); 
+   TH1F* gbTimeDiff = new TH1F("gbTimeDiff", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(gbTimeDiff); 
+   TH1F* gtimestamp = new TH1F("gtimestamp", "#gamma time stamp", 10000,0,1000); list->Add(gtimestamp);
+   TH1F* btimestamp = new TH1F("btimestamp", "#beta time stamp", 10000,0,1000); list->Add(btimestamp);
+   TH2F* gbEnergyvsgTime = new TH2F("gbEnergyvsgTime", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsgTime);
+   TH2F* gbEnergyvsbTime = new TH2F("gbEnergyvsbTime", "#gamma #beta coincident: #beta timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsbTime);
    TH2F* ggmatrix = new TH2F("ggmatrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(ggmatrix);
    TH2F* ggmatrixt = new TH2F("ggmatrixt","#gamma-#gamma matrix t-corr",nofBins,low,high,nofBins,low,high); list->Add(ggmatrixt);
    TH2F* gammaSinglesB_hp = new TH2F("gammaSinglesB_hp", "#gamma-#beta vs. SC channel", nofBins,low,high,20,1,21); list->Add(gammaSinglesB_hp);
    TH2F* ggbmatrix = new TH2F("ggbmatrix","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrix);
    TH2F* ggbmatrixt = new TH2F("ggbmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixt);
-
+   TH2F* grifscep_hp = new TH2F("grifscep_hp","Sceptar vs Griffin hit pattern",64,0,64,20,0,20); list->Add(grifscep_hp);
+   TH2F* gbTimevsg = new TH2F("gbTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(gbTimevsg); 
+   TH2F* gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", 25000.,0.,25000., 4500,low,4500); list->Add(gammaSinglesCyc);
+   TH2F* gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", 25000.,0.,25000.,4500,low,4500); list->Add(gammaSinglesBCyc);
    ///////////////////////////////////// PROCESSING /////////////////////////////////////
 
    //set up branches
@@ -131,11 +142,15 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
       tree->GetEntry(entry);
       
       //loop over the gammas in the event packet
-      //grif the variable which points to the current TGriffin
+      //grif is the variable which points to the current TGriffin
       for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
          //We want to put every gamma ray in this event into the singles
          gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergy()); 
-
+         gtimestamp->Fill(grif->GetGriffinHit(one)->GetTime()/100000000.);
+         Long_t time = (Long_t)(grif->GetHit(one)->GetTime());
+    //     time = time%2268500000L;
+         time = time%957500000L;
+         gammaSinglesCyc->Fill(grif->GetCycleTimeInMilliSeconds(grif->GetHit(one)->GetTime()/10.), grif->GetHit(one)->GetEnergy());
          //We now want to loop over any other gammas in this packet
          for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
             if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
@@ -148,39 +163,53 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
                ggmatrix->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
             }
             if(ggBGlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggBGhigh) { 
-               //If they are close enough in time, fill the gamma-gamma matrix. This will be symmetric because we are doing a double loop over gammas
+               //If they are not close enough in time, fill the time-random gamma-gamma matrix. This will be symmetric because we are doing a double loop over gammas
                ggmatrixt->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
             }
          }
       }
-         
- 
-      //Now we check for betas in the event
-      if(gotSceptar && scep->GetMultiplicity() >= 1) {
-         for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
-            for(int b = 0; b < scep->GetMultiplicity(); ++b) {
-               //Check for beta-gamma coincidence
+      
+
+      //Now we make beta gamma coincident matrices
+      if(gotSceptar && scep->GetMultiplicity() > 0) {
+        //We do an outside loop on gammas so that we can break on the betas if we see a beta in coincidence (we don't want to bin twice just because we have two betas)
+         for(int b = 0; b < scep->GetMultiplicity(); ++b) {
+            btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
+            for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
                //Be careful about time ordering!!!! betas and gammas are not symmetric out of the DAQ
-               gbTimeDiff->Fill(TMath::Abs(scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime()));
-               if(gbTlow >= scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime() && scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime() <= gbThigh) {
+               //Fill the time diffrence spectra
+               gbTimeDiff->Fill(grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime());
+               gbTimevsg->Fill(grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime(),grif->GetHit(one)->GetEnergy());
+               if((gbTlow <= grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) {
+                  gbEnergyvsbTime->Fill(scep->GetHit(b)->GetTime(),grif->GetHit(one)->GetEnergy());
+               }
+               if((gbTlow <= grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) {
                   //Plots a gamma energy spectrum in coincidence with a beta
+                  gbEnergyvsgTime->Fill(grif->GetGriffinHit(one)->GetTime()/1e8, grif->GetGriffinHit(one)->GetEnergy());
                   gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergy());
                   gammaSinglesB_hp->Fill(grif->GetGriffinHit(one)->GetEnergy(),scep->GetSceptarHit(b)->GetDetector());
-                  for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
-                    if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
-                      continue;
-                    }
-                  
-                     if(ggTlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggThigh) { 
-                        //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
-                        ggbmatrix->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
-                     }
-                     if(ggBGlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggBGhigh) { 
-                        //If they are close enough in time, fill the gamma-gamma matrix. This will be symmetric because we are doing a double loop over gammas
-                        ggbmatrixt->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
-                     }
-                   }                   
-                  break;
+                  grifscep_hp->Fill(grif->GetGriffinHit(one)->GetArrayNumber(),scep->GetSceptarHit(b)->GetDetector());
+                  gammaSinglesBCyc->Fill(grif->GetCycleTimeInMilliSeconds(grif->GetHit(one)->GetTime())/100.,grif->GetHit(one)->GetEnergy());
+                  //Now we want to loop over gamma rays if they are in coincidence.
+                  if(grif->GetMultiplicity() > 1){
+                     for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
+                       if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
+                         continue;
+                       }
+                     
+                        if(ggTlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggThigh) { 
+                           //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
+                           ggbmatrix->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
+                        }
+                        if(ggBGlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggBGhigh) { 
+                           //If they are not close enough in time, fill the gamma-gamma-beta time-random matrix. This will be symmetric because we are doing a double loop over gammas
+                           ggbmatrixt->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
+                        }
+                     }                   
+                  }
+               }
+               if((gbBGlow <= grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbBGhigh)) {
+                  gammaSinglesBt->Fill(grif->GetHit(one)->GetEnergy());                 
                }
             }
          }
@@ -195,6 +224,10 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
 
    ggbmatrixt->Scale(-ggBGScale);
    ggbmatrixt->Add(ggbmatrix);
+
+   gammaSinglesBt->Scale(-gbBGScale);
+   gammaSinglesBt->Add(gammaSinglesB);
+
    list->Sort(); //Sorts the list alphabetically
    std::cout << "creating histograms done after " << w->RealTime() << " seconds" << std::endl;
    w->Continue();
@@ -234,6 +267,7 @@ int main(int argc, char **argv) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
+   printf("Sorting file:" DBLUE " %s" RESET_COLOR"\n",file->GetName());
    TGRSIRunInfo* runinfo  = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
 
    TTree* tree = (TTree*) file->Get("AnalysisTree");
@@ -242,6 +276,7 @@ int main(int argc, char **argv) {
       printf("Failed to find analysis tree in file '%s'!\n",argv[1]);
       return 1;
    }
+   //Get the TGRSIRunInfo from the analysis Tree.
    
    TList *list;//We return a list because we fill a bunch of TH1's and shove them into this list.
    TFile * outfile;
@@ -269,11 +304,18 @@ int main(int argc, char **argv) {
       std::cout<<"Limiting processing of analysis tree to "<<entries<<" entries!"<<std::endl;
       list = exAnalysis(tree, entries, &w);
    }
-   printf("Writing to File: %s\n",outfile->GetName());
+   printf("Writing to File: " DYELLOW "%s" RESET_COLOR"\n",outfile->GetName());
    list->Write();
+   //Write the run info into the tree as well if there is run info in the Analysis Tree
+   TList *runinfoList = new TList;
+   if(runinfo){
+      runinfoList->Add(runinfo);
+      runinfoList->Write("TGRSIRunInfoList",TObject::kSingleKey);
+   }
    outfile->Close();
 
-   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl;
+   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl << std::endl;
+
 
    return 0;
 }

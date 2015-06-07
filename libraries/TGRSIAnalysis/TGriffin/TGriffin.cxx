@@ -23,7 +23,7 @@ bool TGriffin::fSetCoreWave = false;
 //bool TGriffin::fSetBGOHits  = false;
 //bool TGriffin::fSetBGOWave  = false;
 
-long TGriffin::fCycleStart  = 0;
+//long TGriffin::fCycleStart  = 0;
 long TGriffin::fLastPPG     = 0;
 
 //bool     TGriffin::gCloverPositionSet = false;
@@ -80,7 +80,8 @@ void TGriffin::Copy(TGriffin &rhs) const {
   //((TGriffin&)rhs).fSetBGOHits         = fSetBGOHits;
   ((TGriffin&)rhs).fSetCoreWave        = fSetCoreWave;
   ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
-  //((TGriffin&)rhs).fSetBGOWave         = fSetBGOWave;
+  ((TGriffin&)rhs).fCycleStart         = fCycleStart;
+   //((TGriffin&)rhs).fSetBGOWave         = fSetBGOWave;
   //((TGriffin&)rhs).ftapemove           = ftapemove;
   //((TGriffin&)rhs).fbackground         = fbackground;
   //((TGriffin&)rhs).fbeamon             = fbeamon;      
@@ -132,6 +133,7 @@ void TGriffin::Clear(Option_t *opt)	{
      ClearStatus();
    }
 	griffin_hits.clear();
+   fCycleStart = 0;
 	//addback_hits.clear();
 	//addback_clover_hits.clear();
 }
@@ -144,7 +146,8 @@ void TGriffin::Print(Option_t *opt) const {
   //printf("bgodata  = 0x%p\n",bgodata);
   //if(bgodata) bgodata->Print();
   printf("%lu griffin_hits\n",griffin_hits.size());
-  //printf("%lu addback_hits\n",addback_hits.size());
+  printf("%ld cycle start\n",fCycleStart);
+   //printf("%lu addback_hits\n",addback_hits.size());
   //printf("%lu addback_clover_hits\n",addback_clover_hits.size());
   return;
 }
