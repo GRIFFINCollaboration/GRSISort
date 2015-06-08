@@ -962,7 +962,7 @@ int TChannel::WriteToRoot(TFile *fileptr) {
   WriteCalBuffer();
   std::string savedata = fFileData;
   
-
+  FILE* originalstdout = stdout;
   int fd = open("/dev/null", O_WRONLY); // turn off stdout.
   stdout = fdopen(fd, "w");
 
@@ -986,8 +986,7 @@ int TChannel::WriteToRoot(TFile *fileptr) {
     TChannel::DeleteAllChannels();
   }
 
-  fd = open("/dev/tty", O_WRONLY);  // turn on stdout.
-  stdout = fdopen(fd, "w");
+  stdout = originalstdout; //Restore stdout
 
   ParseInputData(savedata.c_str(),"q");
   SaveToSelf(savedata.c_str());
