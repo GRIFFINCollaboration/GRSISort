@@ -27,6 +27,8 @@
 #include <iostream>
 #include <fstream>
 
+Bool_t SplitMezz = false;
+
 class TEventTime {
    public: 
       TEventTime(TMidasEvent* event){
@@ -34,7 +36,12 @@ class TEventTime {
   
          void *ptr;
          int banksize = event->LocateBank(NULL,"GRF2",&ptr);
+         int bank = 2;
 
+         if(!banksize){
+            banksize = event->LocateBank(NULL,"GRF1",&ptr);
+            bank = 1;
+         }
          uint32_t type  = 0xffffffff;
          uint32_t value = 0xffffffff;
     
@@ -44,12 +51,45 @@ class TEventTime {
             value = *((int*)ptr+x);
             type  = value & 0xf0000000; 
          
-
             switch(type) {
                case 0x80000000:
-                  dettype = value & 0x0000000F;
-                  chanadd = (value &0x000ffff0)>> 4;
-                  break;
+                 switch(bank){
+                    case 1: // header format from before May 2015 experiments
+                       //Sets: 
+                       //     The number of filters
+                       //     The Data Type
+                       //     Number of Pileups
+                       //     Channel Address
+                       //     Detector Type
+                       if( (value&0xf0000000) != 0x80000000) {
+                //          return false;
+                       }
+                       chanadd  =  (value &0x0003fff0)>> 4;
+                       dettype    =  (value &0x0000000f);
+                         
+                       // if(frag-DetectorType==2)
+                       //    frag->ChannelAddress += 0x8000;
+                       break;
+                    case 2:
+                       //Sets: 
+                       //     The number of filters
+                       //     The Data Type
+                       //     Number of Pileups
+                       //     Channel Address
+                       //     Detector Type
+                       if( (value&0xf0000000) != 0x80000000) {
+                  //        return false;
+                       }
+                       chanadd  =  (value &0x000ffff0)>> 4;
+                       dettype    =  (value &0x0000000f);
+                         
+                       // if(frag-DetectorType==2)
+                       //    frag->ChannelAddress += 0x8000;
+                       break;
+                    default:
+                       printf("This bank not yet defined.\n");
+                       break;
+               }
                case 0xa0000000:
                   timelow = value & 0x0fffffff;
                   break;
@@ -58,6 +98,7 @@ class TEventTime {
                   break;
 
             };
+            
          }
          timemidas = event->GetTimeStamp();
          
@@ -81,6 +122,7 @@ class TEventTime {
             }
          }
       }
+
 
       ~TEventTime(){}
 
@@ -110,7 +152,7 @@ class TEventTime {
       void SetDigitizer(){
       //Maybe make a map somewhere of digitizer vs address
          digitizernum = chanadd&0x0000ff00;
-         if(dettype > 1 && (chanadd&0xF) > 1){
+         if(dettype > 1 && ((chanadd&0xF) > 1) && ((chanadd&0xF00)>1) && SplitMezz) {
             digitizernum+=2;
          }
 
@@ -185,6 +227,8 @@ void PrintError(TMidasEvent *event, int frags,bool verb){
 int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    int events_read = 0;
    const int total_events = 1E6;
+   //const int event_start = 1E5;
+   const int event_start = 1E5;
    TMidasEvent *event  = new TMidasEvent;
    eventQ->reserve(total_events);
    void *ptr;
@@ -211,11 +255,18 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
                break;
             }
             event->SetBankList();
-            if((banksize = event->LocateBank(NULL,"GRF2",&ptr))>0) {
+            
+
+               banksize = event->LocateBank(NULL,"GRF2",&ptr);
+            if(!banksize)
+               banksize = event->LocateBank(NULL,"GRF1",&ptr);
+
+            if(banksize>0) {
                int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,2,mserial,mtime);
                if(frags > -1){
                   events_read++;
-                  eventQ->push_back(new TEventTime(event));//I'll keep 4G data in here for now in case we need to use it for time stamping 
+                  if(events_read > event_start)
+                     eventQ->push_back(new TEventTime(event));//I'll keep 4G data in here for now in case we need to use it for time stamping 
                }
                else{
                   PrintError(event,frags,0);
@@ -500,18 +551,23 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
 
 }
 
-void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
+bool ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    if(event->GetEventId() !=1 ) {
       outfile->FillBuffer(event);
-      return;
+      return false;
    }
    event->SetBankList();
    int size;
    int data[1024];
   
    void *ptr;
+   
    int banksize = event->LocateBank(NULL,"GRF2",&ptr);
-
+   int bank = 2;
+   if(!banksize){
+      banksize = event->LocateBank(NULL,"GRF1",&ptr);
+      bank =1;
+   }
    uint32_t type  = 0xffffffff;
    uint32_t value = 0xffffffff;
 
@@ -528,18 +584,52 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
       type  = value & 0xf0000000; 
 
       switch(type) {
-         case 0x80000000:
-            dettype = value & 0x0000000f;
-            chanadd = (value &0x000ffff0)>> 4;
-            break;
-         case 0xa0000000:
-            timelow = value & 0x0fffffff;
-            break;
-         case 0xb0000000:
-            timehigh = value & 0x00003fff;
-            break;
+          case 0x80000000:
+            switch(bank){
+                case 1: // header format from before May 2015 experiments
+                   //Sets: 
+                    //     The number of filters
+                  //     The Data Type
+                  //     Number of Pileups
+                 //     Channel Address
+                 //     Detector Type
+                  if( (value&0xf0000000) != 0x80000000) {
+                     return false;
+                   }
+                  chanadd  =  (value &0x0003fff0)>> 4;
+                  dettype    =  (value &0x0000000f);
+                       
+                   // if(frag-DetectorType==2)
+                  //    frag->ChannelAddress += 0x8000;
+                  break;
+               case 2:
+                  //Sets: 
+                  //     The number of filters
+                  //     The Data Type
+                  //     Number of Pileups
+                  //     Channel Address
+                  //     Detector Type
+                  if( (value&0xf0000000) != 0x80000000) {
+                     return false;
+                  }
+                  chanadd  =  (value &0x000ffff0)>> 4;
+                  dettype    =  (value &0x0000000f);
+                       
+                  // if(frag-DetectorType==2)
+                  //    frag->ChannelAddress += 0x8000;
+                  break;
+               default:
+                  printf("This bank not yet defined.\n");
+                  break;
+             };
+             case 0xa0000000:
+                timelow = value & 0x0fffffff;
+                break;
+             case 0xb0000000:
+                timehigh = value & 0x00003fff;
+                break;
 
-      };
+           };
    }
 
    time = timehigh;
@@ -547,7 +637,8 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    time |= timelow &0x0fffffff;
 
 //   if((chanadd&0x0000ff00) != TEventTime::GetBestDigitizer()){
-   if((dettype<2) || ((chanadd&0xf) < 2) ){   
+ //  if((dettype<2) || ((chanadd&0xf) < 2) ){   
+   if(dettype > 1 && ((chanadd&0xF) > 1) && ((chanadd&0xF00)>1) && SplitMezz) {
       time -= TEventTime::correctionmap.find(chanadd&0x0000ff00)->second;    
    }
    else{
@@ -575,6 +666,9 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    copyevent.SetBankList();
 
    banksize = copyevent.LocateBank(NULL,"GRF2",&ptr);
+   if(!banksize)
+      banksize = copyevent.LocateBank(NULL,"GRF1",&ptr);
+
    for(int x=0;x<banksize;x++) {
       value = *((int*)ptr+x);
       type  = value & 0xf0000000; 
@@ -607,7 +701,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
 //   printf(DBLUE);
 //   copyevent.Print("a");
 //   printf(RESET_COLOR);
-
+   return true;
 }
 
 void WriteEvents(TMidasFile* file) {
