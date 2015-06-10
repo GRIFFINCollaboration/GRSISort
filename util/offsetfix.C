@@ -27,6 +27,8 @@
 #include <iostream>
 #include <fstream>
 
+Bool_t SplitMezz = false;
+
 class TEventTime {
    public: 
       TEventTime(TMidasEvent* event){
@@ -150,7 +152,7 @@ class TEventTime {
       void SetDigitizer(){
       //Maybe make a map somewhere of digitizer vs address
          digitizernum = chanadd&0x0000ff00;
-         if(dettype > 1 && ((chanadd&0xF) > 1) && ((chanadd&0xF00)>1)) {
+         if(dettype > 1 && ((chanadd&0xF) > 1) && ((chanadd&0xF00)>1) && SplitMezz) {
             digitizernum+=2;
          }
 
@@ -225,6 +227,8 @@ void PrintError(TMidasEvent *event, int frags,bool verb){
 int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    int events_read = 0;
    const int total_events = 1E6;
+   //const int event_start = 1E5;
+   const int event_start = 1E5;
    TMidasEvent *event  = new TMidasEvent;
    eventQ->reserve(total_events);
    void *ptr;
@@ -261,7 +265,8 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
                int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,2,mserial,mtime);
                if(frags > -1){
                   events_read++;
-                  eventQ->push_back(new TEventTime(event));//I'll keep 4G data in here for now in case we need to use it for time stamping 
+                  if(events_read > event_start)
+                     eventQ->push_back(new TEventTime(event));//I'll keep 4G data in here for now in case we need to use it for time stamping 
                }
                else{
                   PrintError(event,frags,0);
@@ -633,7 +638,7 @@ bool ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
 
 //   if((chanadd&0x0000ff00) != TEventTime::GetBestDigitizer()){
  //  if((dettype<2) || ((chanadd&0xf) < 2) ){   
-   if(dettype > 1 && ((chanadd&0xF) > 1) && ((chanadd&0xF00)>1)) {
+   if(dettype > 1 && ((chanadd&0xF) > 1) && ((chanadd&0xF00)>1) && SplitMezz) {
       time -= TEventTime::correctionmap.find(chanadd&0x0000ff00)->second;    
    }
    else{
