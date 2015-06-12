@@ -11,7 +11,7 @@
 #include <fstream>
 #include <chrono>
 
-Int_t chanId_threshold = 50;
+Int_t chanId_threshold = 100;
 
 Bool_t CheckEvent(TMidasEvent *evt){
    //This function does not work if a Midas event contains multiple fragments
@@ -22,10 +22,12 @@ Bool_t CheckEvent(TMidasEvent *evt){
    //Need to put something in that says "if not a Griffin fragment (ie epics) return true"
    void *ptr;
    int banksize = evt->LocateBank(NULL,"GRF2",&ptr);
+   int bank = 2;
 
-   if(!banksize)
+   if(!banksize){
       banksize = evt->LocateBank(NULL,"GRF1",&ptr);
-
+      bank = 1;
+   }
    uint32_t type  = 0xffffffff;
    uint32_t value = 0xffffffff;
 
@@ -40,8 +42,43 @@ Bool_t CheckEvent(TMidasEvent *evt){
 
       switch(type) {
          case 0x80000000:
-            dettype = value & 0x0000000f;
-            chanadd = (value &0x0003fff0)>> 4;
+            switch(bank){
+                case 1: // header format from before May 2015 experiments
+                   //Sets: 
+                    //     The number of filters
+                  //     The Data Type
+                  //     Number of Pileups
+                 //     Channel Address
+                 //     Detector Type
+                  if( (value&0xf0000000) != 0x80000000) {
+                     return false;
+                   }
+                  chanadd  =  (value &0x0003fff0)>> 4;
+                  dettype    =  (value &0x0000000f);
+                       
+                   // if(frag-DetectorType==2)
+                  //    frag->ChannelAddress += 0x8000;
+                  break;
+               case 2:
+                  //Sets: 
+                  //     The number of filters
+                  //     The Data Type
+                  //     Number of Pileups
+                  //     Channel Address
+                  //     Detector Type
+                  if( (value&0xf0000000) != 0x80000000) {
+                     return false;
+                  }
+                  chanadd  =  (value &0x000ffff0)>> 4;
+                  dettype    =  (value &0x0000000f);
+                       
+                  // if(frag-DetectorType==2)
+                  //    frag->ChannelAddress += 0x8000;
+                  break;
+               default:
+                  printf("This bank not yet defined.\n");
+                  break;
+             };
             dignum = chanadd&0x0000ff00;
             break;
          case 0x90000000:
@@ -104,6 +141,8 @@ int main(int argc, char **argv) {
    else{
       file->OutOpen(argv[2]);
    }
+
+   
  
    std::ifstream in(file->GetFilename(), std::ifstream::in | std::ifstream::binary);
    in.seekg(0, std::ifstream::end);
