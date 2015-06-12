@@ -63,7 +63,6 @@ Long64_t TGRSISortList::Merge(TCollection *list){
    //The TCollection will be filled by something like hadd. Each element in the list will be a TGRSISortList from
    //An individual file that was submitted to hadd.
    TGRSISortList *sortlist = 0;
-   std::cout << "TRYING TO MERGE" << std::endl;
 
    while ((sortlist = (TGRSISortList *)it.Next())){
       //Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.    
