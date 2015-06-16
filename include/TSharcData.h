@@ -121,7 +121,8 @@ public:
 			SetFront_Energy(0.0);
 		SetFront_TimeCFD(frag->Cfd.at(0));
 		SetFront_TimeLED(frag->Led.at(0));
-		SetFront_Time(frag->Zc.at(0));
+		//SetFront_Time(frag->Zc.at(0));
+		SetFront_Time(frag->GetTimeStamp());
  		SetFront_Charge(frag->Charge.at(0));
 		SetFront_EngChi2(channel->GetENGChi2());
 	}
@@ -141,7 +142,8 @@ public:
 
 		SetBack_TimeCFD(frag->Cfd.at(0));
 		SetBack_TimeLED(frag->Led.at(0));
-		SetBack_Time(frag->Zc.at(0));
+		//SetBack_Time(frag->Zc.at(0));
+		SetBack_Time(frag->GetTimeStamp());
  		SetBack_Charge(frag->Charge.at(0));
 		SetBack_EngChi2(channel->GetENGChi2());
 	}
@@ -160,7 +162,8 @@ public:
 
 		SetPAD_TimeCFD(frag->Cfd.at(0));
 		SetPAD_TimeLED(frag->Led.at(0));
-		SetPAD_Time(frag->Zc.at(0));
+		//SetPAD_Time(frag->Zc.at(0));
+		SetPAD_Time(frag->GetTimeStamp());
  		SetPAD_Charge(frag->Charge.at(0));
 		SetPAD_EngChi2(channel->GetENGChi2());
 	}
