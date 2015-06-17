@@ -44,7 +44,7 @@ LIBS += -lSRIM
 LIBS += -lTCal
 LIBS += -lTGRSIFit
 
-#DETLIBS =  -lTigress
+DETLIBS =  -lTigress
 #DETLIBS += -lSharc
 #DETLIBS += -lTriFoil
 ##DETLIBS += -lRf

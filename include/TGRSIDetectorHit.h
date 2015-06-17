@@ -60,7 +60,7 @@ class TGRSIDetectorHit : public TObject 	{
       inline void SetCharge(const UInt_t &temp_charge)            { charge = temp_charge;} //!
   //    inline void SetParent(TGRSIDetector *fParent)               { parent = (TObject*)fParent ; } //!
       inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    } //!
-      virtual inline void SetCfd(const unsigned int &x)           { cfd    = x;   }                  //!
+      virtual inline void SetCfd(const Double_t &x)               { cfd    = x;   }                  //!
       virtual inline void SetTime(const ULong_t &x)               { time   = x;   }                  //! Maybe make this abstract?
  
       void SetPosition(Double_t temp_pos = 0);
@@ -72,7 +72,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual double GetEnergy(Option_t *opt="") const;
       virtual UInt_t GetDetector() const;
       virtual double GetTime(Option_t *opt="")   const      { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
-      virtual inline UInt_t    GetCfd() const               {   return cfd;      }           //!
+      virtual inline Double_t    GetCfd() const             {   return cfd;      }           //!
       inline UInt_t GetAddress()     const                  { return address; }         //!
       inline UInt_t GetCharge() const                       { return charge;} //!
       inline TChannel *GetChannel() const                   { return TChannel::GetChannel(address); }  //!
@@ -85,7 +85,7 @@ class TGRSIDetectorHit : public TObject 	{
    protected:
       UInt_t     address;  //address of the the channel in the DAQ.
       UInt_t     charge;   //charge collected from the hit
-      UInt_t     cfd;  
+      Double_t  cfd;  
       ULong_t    time;
       UInt_t    detector; //! Detector Number
       TVector3  position; //! Position of hit detector.
