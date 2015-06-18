@@ -17,7 +17,7 @@ TTigressHit::TTigressHit()	{
 TTigressHit::~TTigressHit()	{	}
 
 TTigressHit::TTigressHit(const TTigressHit& rhs)	{	
-    ((TGRSIDetectorHit&)rhs).Copy(*this);
+   ((TGRSIDetectorHit&)rhs).Copy(*this);
 }
 
 

@@ -71,7 +71,7 @@ class TGRSIDetectorHit : public TObject 	{
 		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
       virtual double GetEnergy(Option_t *opt="") const;
       virtual UInt_t GetDetector() const;
-      virtual double GetTime(Option_t *opt="")   const      { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
+      virtual double GetTime(Option_t *opt="")   const      {return 0.0; } //AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
       virtual inline Double_t    GetCfd() const             {   return cfd;      }           //!
       inline UInt_t GetAddress()     const                  { return address; }         //!
       inline UInt_t GetCharge() const                       { return charge;} //!
