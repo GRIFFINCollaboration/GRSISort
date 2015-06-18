@@ -52,6 +52,7 @@ class TTigress : public TGRSIDetector {
       void AddAddBackHit(const TTigressHit&); 
       //void AddCloverAddBackHit(const TTigressHit&); 
 
+      void PushBackHit(TGRSIDetectorHit* hit) { }
 
 		//static void   SetBeta(double b) 		{	TTigress::beta = b;	} 		//!
 		//static void   DopplerCorrect(TTigressHit *);							//!

@@ -23,11 +23,13 @@ bool TTigress::fSetBGOWave = false;
 
 TTigress::TTigress() : tigdata(0), bgodata(0)	{
    //Class()->IgnoreTObjectStreamer(true);
+   tigress_hits.SetClass("TTigressHit");
+   addback_hits.SetClass("TTigressHit");
    Clear();
 }
 
 TTigress::TTigress(const TTigress& rhs) {
-  ((TTigress&)rhs).Copy(*this);
+   ((TTigress&)rhs).Copy(*this);
 }
 
 TTigress::~TTigress()	{
