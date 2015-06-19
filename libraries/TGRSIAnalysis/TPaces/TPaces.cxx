@@ -22,6 +22,7 @@ long TPaces::fLastPPG     = 0;
 
 TPaces::TPaces() : TGRSIDetector(),pacesdata(0) {
    Clear();
+   SetHitClass("TPacesHit");
 }
 
 TPaces::TPaces(const TPaces& rhs) {
@@ -117,10 +118,10 @@ void TPaces::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       corehit.SetCfd(pdata->GetCoreCFD(i));
       corehit.SetCharge(pdata->GetCoreCharge(i));
 
-      if(TPaces::SetCoreWave()){
+ /*     if(TPaces::SetCoreWave()){
          corehit.SetWaveform(pdata->GetCoreWave(i));
       }
- 
+ */
       corehit.SetPPG(pdata->GetPPG(i));
 
       if((pdata->GetPPG(i) == 0xd000 && pdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
@@ -139,3 +140,9 @@ TVector3 TPaces::GetPosition(int DetNbr) {
    //Does not currently contain any positons.
    return TVector3(0,0,1);
 }
+
+void TPaces::AddHit(TGRSIDetectorHit* hit, Option_t *opt){
+   TPacesHit *newhit = (TPacesHit*)GetHitArray()->ConstructedAt(GetHitArray()->GetEntries());
+   hit->Copy(*((TPacesHit*)newhit));
+}
+

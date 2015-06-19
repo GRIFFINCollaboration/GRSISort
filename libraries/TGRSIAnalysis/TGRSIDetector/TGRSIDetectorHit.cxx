@@ -55,7 +55,7 @@ void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   TObject::Copy((TObject&)rhs);
   ((TGRSIDetectorHit&)rhs).address  = address;
   ((TGRSIDetectorHit&)rhs).position = position;
-  ((TGRSIDetectorHit&)rhs).waveform = waveform;
+//  ((TGRSIDetectorHit&)rhs).waveform = waveform;
   ((TGRSIDetectorHit&)rhs).cfd      = cfd;
   ((TGRSIDetectorHit&)rhs).time     = time;
   ((TGRSIDetectorHit&)rhs).charge   = charge;
@@ -73,7 +73,7 @@ void TGRSIDetectorHit::Clear(Option_t *opt) {
   //General clear statement for a TGRSIDetectorHit.
   address = 0xffffffff;    // -1
   position.SetXYZ(0,0,1);  // unit vector along the beam.
-  waveform.clear();        // reset size to zero.
+//  waveform.clear();        // reset size to zero.
   charge          = 0;
   cfd             = -1;
   time            = -1;

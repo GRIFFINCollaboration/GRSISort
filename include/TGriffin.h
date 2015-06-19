@@ -33,9 +33,9 @@ class TGriffin : public TGRSIDetector {
      //void BuildAddBack(Option_t *opt="");	//!
      //void BuildAddBackClover(Option_t *opt=""); //!
 
-     TGriffinHit *GetGriffinHit(const int i); //!
-     TGRSIDetectorHit* GetHit(const Int_t idx = 0);
-     Int_t GetMultiplicity() const {return griffin_hits.size();}
+   //  TGriffinHit *GetGriffinHit(const int i); //!
+   //  TGRSIDetectorHit* GetHit(const Int_t idx = 0);
+   //  Int_t GetMultiplicity() const {return griffin_hits.Size();}
      //TGriffinHit &GetGriffinHit(const int i) { return  griffin_hits.at(i);   }  //!
     // Int_t        GetMultiplicity() const    { return griffin_hits.size();   }  //!
 
@@ -58,7 +58,7 @@ class TGriffin : public TGRSIDetector {
    private: 
      TGriffinData *grifdata;                 //!  Used to build GRIFFIN Hits
      //TBGOData     *bgodata;                  //!  Used to build BGO Hits
-     std::vector <TGriffinHit> griffin_hits; //  The set of crystal hits
+   //  std::vector <TGriffinHit> griffin_hits; //  The set of crystal hits
      //std::vector <TGriffinHit> addback_hits; //   The set of add-back hits		
      //std::vector <TGriffinHit> addback_clover_hits; //  The set of add-back2 hits
 
@@ -77,6 +77,8 @@ class TGriffin : public TGRSIDetector {
      static bool SetCoreWave()        { return fSetCoreWave;  }	//!
      //static bool SetBGOHits()       { return fSetBGOHits;   }	//!
      //static bool SetBGOWave()	    { return fSetBGOWave;   } //!
+
+     void AddHit(TGRSIDetectorHit* hit,Option_t* opt="");
 
      void SetTapeMove(Bool_t flag=kTRUE)   { fGriffinBits.SetBitNumber(kTapeMove,flag); }  //!
      void SetBackground(Bool_t flag=kTRUE) { fGriffinBits.SetBitNumber(kBackGround,flag);} //!
@@ -101,7 +103,8 @@ class TGriffin : public TGRSIDetector {
      virtual void Print(Option_t *opt = "") const;		  //!
 
    protected:
-     void PushBackHit(TGRSIDetectorHit* ghit);
+   //  void PushBackHit(TGRSIDetectorHit* ghit);
+    // void SetClass() { GetHitArray()->SetClass("TGriffinHit"); printf("GRIFFIN\n"); }
 
    ClassDef(TGriffin,2)  // Griffin Physics structure
 

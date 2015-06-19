@@ -62,6 +62,7 @@ TVector3 TGriffin::gCloverPosition[17] = {
 
 TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
    Clear();
+   SetHitClass("TGriffinHit");
 }
 
 TGriffin::TGriffin(const TGriffin& rhs) {
@@ -74,7 +75,7 @@ void TGriffin::Copy(TGriffin &rhs) const {
   ((TGriffin&)rhs).grifdata     = 0;
   //((TGriffin&)rhs).bgodata      = 0;
 
-  ((TGriffin&)rhs).griffin_hits        = griffin_hits;
+  //((TGriffin&)rhs).griffin_hits        = griffin_hits;
   //((TGriffin&)rhs).addback_hits        = addback_hits;
   //((TGriffin&)rhs).addback_clover_hits = addback_clover_hits;
   //((TGriffin&)rhs).fSetBGOHits         = fSetBGOHits;
@@ -132,7 +133,7 @@ void TGriffin::Clear(Option_t *opt)	{
 	  //if(bgodata)  bgodata->Clear();
      ClearStatus();
    }
-	griffin_hits.clear();
+	//griffin_hits.clear();
    fCycleStart = 0;
 	//addback_hits.clear();
 	//addback_clover_hits.clear();
@@ -145,7 +146,7 @@ void TGriffin::Print(Option_t *opt) const {
   if(grifdata) grifdata->Print();
   //printf("bgodata  = 0x%p\n",bgodata);
   //if(bgodata) bgodata->Print();
-  printf("%lu griffin_hits\n",griffin_hits.size());
+  //printf("%lu griffin_hits\n",griffin_hits.size());
   printf("%ld cycle start\n",fCycleStart);
    //printf("%lu addback_hits\n",addback_hits.size());
   //printf("%lu addback_clover_hits\n",addback_clover_hits.size());
@@ -188,21 +189,23 @@ void TGriffin::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 //   }
 //      TBGOData::Set();   
 //}
-
+/*
 void TGriffin::PushBackHit(TGRSIDetectorHit *ghit){
    griffin_hits.push_back(*((TGriffinHit*)ghit));
 }
-
+*/
+/*
 TGRSIDetectorHit* TGriffin::GetHit(const Int_t idx) {
    return GetGriffinHit(idx);
 }
-
+*/
+/*
 TGriffinHit* TGriffin::GetGriffinHit(const int i) {
    if(i < GetMultiplicity())
-      return &griffin_hits.at(i);   
+      return 0;//&griffin_hits.at(i);   
    else
       return 0;
-}
+}*/
 
 void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 //Builds the GRIFFIN Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
@@ -219,7 +222,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    
    //griffin_hits.clear();
    Clear("");
-   griffin_hits.reserve(gdata->GetMultiplicity());
+   //griffin_hits.reserve(gdata->GetMultiplicity());
 
   // std::vector<TGriffinHit> temp_hits;
   // std::map<std::pair<int,int>,std::pair<int,int> > address_gain_map;  // < <det,core>, <high gain , low gain> >
@@ -245,11 +248,11 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       corehit.SetTime(gdata->GetCoreTime(i));
       corehit.SetCfd(gdata->GetCoreCFD(i));
       corehit.SetCharge(gdata->GetCoreCharge(i));
-
+/*
       if(TGriffin::SetCoreWave()){
          corehit.SetWaveform(gdata->GetCoreWave(i));
       }
-		
+*/		
       //corehit.SetDetectorNumber(gdata->GetCloverNumber(i));
       //corehit.SetCrystalNumber(gdata->GetCoreNumber(i));
    
@@ -442,3 +445,7 @@ void TGriffin::BuildAddBackClover(Option_t *opt) {
 }
 */
 
+void TGriffin::AddHit(TGRSIDetectorHit* hit, Option_t *opt){
+   TGriffinHit *newhit = (TGriffinHit*)GetHitArray()->ConstructedAt(GetHitArray()->GetEntries());
+   hit->Copy(*((TGriffinHit*)newhit));
+}

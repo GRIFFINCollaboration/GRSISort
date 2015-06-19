@@ -59,7 +59,7 @@ class TGRSIDetectorHit : public TObject 	{
       inline void SetAddress(const UInt_t &temp_address)          { address = temp_address; } //!
       inline void SetCharge(const Int_t &temp_charge)            { charge = temp_charge;} //!
   //    inline void SetParent(TGRSIDetector *fParent)               { parent = (TObject*)fParent ; } //!
-      inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    } //!
+//      inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    } //!
       virtual inline void SetCfd(const unsigned int &x)           { cfd    = x;   }                  //!
       virtual inline void SetTime(const ULong_t &x)               { time   = x;   }                  //! Maybe make this abstract?
  
@@ -76,7 +76,7 @@ class TGRSIDetectorHit : public TObject 	{
       inline UInt_t GetAddress()     const                  { return address; }         //!
       inline Double_t GetCharge() const                       { return charge;} //!
       inline TChannel *GetChannel() const                   { return TChannel::GetChannel(address); }  //!
-      inline std::vector<Short_t> GetWaveForm() const       { return waveform; } //!
+ //     inline std::vector<Short_t> GetWaveForm() const       { return waveform; } //!
    //   inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!
       //virtual void SetHit() { AbstractMethod("SetHit()");}
       //We need a common function for all detectors in here
@@ -91,7 +91,7 @@ class TGRSIDetectorHit : public TObject 	{
       TVector3  position; //! Position of hit detector.
       Double_t  energy;   //! Energy of the Hit.
    //   TRef      parent;   // pointer to the mother class;
-      std::vector<Short_t> waveform;  //
+     // std::vector<Short_t> waveform;  //
       //Bool_t fHitSet;    //!
  
    //flags   

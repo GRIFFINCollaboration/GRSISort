@@ -102,6 +102,7 @@ Double_t TSceptarHit::GetEnergy() const {
    }
 }
 */
+/*
 bool TSceptarHit::AnalyzeWaveform() {
    bool error = false;
    std::vector<Int_t> baseline_corrections (8, 0);
@@ -231,4 +232,4 @@ std::vector<Short_t> TSceptarHit::CalculateCfdMonitor(double attenuation, int de
    return monitor;
 
 }
-
+*/
