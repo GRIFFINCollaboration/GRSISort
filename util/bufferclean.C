@@ -23,6 +23,9 @@ Bool_t CheckEvent(TMidasEvent *evt){
    void *ptr;
    int banksize = evt->LocateBank(NULL,"GRF2",&ptr);
 
+   if(!banksize)
+      banksize = evt->LocateBank(NULL,"GRF1",&ptr);
+
    uint32_t type  = 0xffffffff;
    uint32_t value = 0xffffffff;
 
