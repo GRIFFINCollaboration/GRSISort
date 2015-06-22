@@ -184,7 +184,7 @@ TFragment *TFragmentQueue::Get()	{
 }*/
 
 void TFragmentQueue::Pop()	{	
-//Tage a fragment out of the Queue
+//Take a fragment out of the Queue
 	while(!TFragmentQueue::Sorted.try_lock())	{ 
 		//do nothing
 	}	
