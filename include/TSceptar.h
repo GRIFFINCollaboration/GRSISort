@@ -41,7 +41,6 @@ class TSceptar : public TGRSIDetector {
      TSceptarData *sceptardata;                                               //!  Used to build GRIFFIN Hits
      std::vector <TSceptarHit> sceptar_hits;                                  //   The set of crystal hits
       
-     void AddHit(TGRSIDetectorHit *hit,Option_t* opt ="");
      static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
 
      bool beta;                                                               //   Is there a sceptar hit?
@@ -60,7 +59,6 @@ class TSceptar : public TGRSIDetector {
 
    protected:
      void PushBackHit(TGRSIDetectorHit* schit);
-     void SetClass() { GetHitArray()->SetClass("TSceptarHit");}
 
    ClassDef(TSceptar,1)  // Sceptar Physics structure
 

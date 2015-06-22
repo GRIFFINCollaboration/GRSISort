@@ -68,7 +68,6 @@ class TPaces : public TGRSIDetector {
      static int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
 
 
-     void AddHit(TGRSIDetectorHit *hit, Option_t* opt ="");
    //  void AddHit(TGRSIDetectorHit *hit,Option_t *opt="");//!
    private:
     // static TVector3 gCloverPosition[17];               //! Position of each HPGe Clover
@@ -81,7 +80,6 @@ class TPaces : public TGRSIDetector {
 
    protected:
      void PushBackHit(TGRSIDetectorHit* phit);
-     void SetClass() { GetHitArray()->SetClass("TPacesHit");}
 
    ClassDef(TPaces,2)  // Paces Physics structure
 

@@ -6,6 +6,7 @@
 ClassImp(TGriffinHit)
 
 TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{	
+   Class()->IgnoreTObjectStreamer(kTRUE);
 	Clear();
 }
 

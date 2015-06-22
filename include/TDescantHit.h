@@ -28,7 +28,7 @@ class TDescantHit : public TGRSIDetectorHit {
       inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
       inline void SetPsd(const int &x)             { psd      = x; }   //!
    //   inline void SetPosition(TVector3 x)          { position = x; }   //!
-/*
+
       inline void SetWaveform(std::vector<Short_t> x) {
          if(x.size() <= 8) {
             return;
@@ -54,7 +54,7 @@ class TDescantHit : public TGRSIDetectorHit {
             }
          }
       } //!
-*/
+
 		/////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()       { return filter;   }  //!
       inline Int_t    GetPsd()                 { return psd;      }  //!

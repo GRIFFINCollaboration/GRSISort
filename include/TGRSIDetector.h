@@ -6,7 +6,6 @@
 #include <cstdio>
 #include <vector>
 #include "TVector3.h"
-#include "TClonesArray.h"
 
 #ifndef __CINT__
 #endif
@@ -49,22 +48,15 @@ class TGRSIDetector : public TObject	{
       virtual void Clear(Option_t *opt = "");         //!
 		virtual void Print(Option_t *opt = "") const;   //!
 
-      virtual void AddHit(TGRSIDetectorHit* hit, Option_t *opt ="") {}        //!
+      void AddHit(TGRSIDetectorHit *hit,Option_t *opt ="");
+//      virtual void AddHit(TGRSIDetectorHit* hit, Option_t *opt ="") {}        //!
 
       void Init();
 
    protected:
-  //    virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
+      virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
       //virtual TGRSIDetectorData *GetData() //{ //return data;}
       //TGRSIDetectorData *data;    //!
-
-      Int_t GetMultiplicity() const {return fhits.GetEntries();}
-      TGRSIDetectorHit* GetHit(const Int_t i){ return (TGRSIDetectorHit*)(fhits.At(i));};
-      void SetHitClass(const char* hitclass) { GetHitArray()->SetClass(hitclass); }
-      TClonesArray* GetHitArray() { return &fhits; } 
-
-   private:
-      TClonesArray fhits;
 
    ClassDef(TGRSIDetector,1) //Abstract class for detector systems 
 };

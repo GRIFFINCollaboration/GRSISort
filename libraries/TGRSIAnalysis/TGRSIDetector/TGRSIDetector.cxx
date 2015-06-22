@@ -18,10 +18,12 @@ ClassImp(TGRSIDetector)
 
 TGRSIDetector::TGRSIDetector():TObject(){
    //Default constructor.
+  Class()->IgnoreTObjectStreamer(kTRUE);
 }
 
 TGRSIDetector::TGRSIDetector(const TGRSIDetector& rhs) {
    //Default Copy constructor.
+  Class()->IgnoreTObjectStreamer(kTRUE);
    ((TGRSIDetector&)rhs).Copy(*this);
 }
 
@@ -29,16 +31,15 @@ TGRSIDetector::~TGRSIDetector()	{
 //Default Destructor.
 }
 
-/*
+
 void TGRSIDetector::AddHit(TGRSIDetectorHit *hit,Option_t *opt) {
    // hit->SetParent(this); 
- // PushBackHit(hit);
+  PushBackHit(hit);
   return;
 }
-*/
+
 void TGRSIDetector::Copy(TGRSIDetector &rhs) const {
    TObject::Copy((TObject&)rhs);
-   fhits.Copy(rhs.fhits);
 }
 
 void TGRSIDetector::Print(Option_t *opt) const {

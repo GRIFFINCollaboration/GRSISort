@@ -47,7 +47,7 @@ TVector3 TDescant::gPosition[21] = {
 
 TDescant::TDescant() : descantdata(0)	{
    //Default Constructor
-   //Class()->IgnoreTObjectStreamer(true);
+   Class()->IgnoreTObjectStreamer(true);
    //Class()->AddRule("TDescant descant_hits attributes=NotOwner");
    //Class()->AddRule("TDescant descantdata attributes=NotOwner");
    Clear();
@@ -60,6 +60,7 @@ TDescant::~TDescant()	{
 
 void TDescant::Copy(TDescant &rhs) const {
   TGRSIDetector::Copy((TGRSIDetector&)rhs);
+  Class()->IgnoreTObjectStreamer(kTRUE);
 
   ((TDescant&)rhs).descantdata     = 0;
 
@@ -149,7 +150,7 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
       dethit.SetTime(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
-/* UNCOMMENTED FOR NOW
+ 
       if(TDescant::SetWave()){
          if(gdata->GetDetWave(i).size() == 0) {
             //printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
@@ -161,7 +162,7 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
             //printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd(),dethit.GetPsd());
          }
       }
-		*/
+		
 //      dethit.SetPosition(TDescant::GetPosition(gdata->GetDetNumber(i)));
 //FIX
       AddHit(&dethit);

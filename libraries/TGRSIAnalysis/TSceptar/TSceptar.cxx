@@ -47,11 +47,10 @@ TVector3 TSceptar::gPaddlePosition[21] = {
 
 TSceptar::TSceptar() : sceptardata(0)	{
    //Default Constructor
-   //Class()->IgnoreTObjectStreamer(true);
+   Class()->IgnoreTObjectStreamer(true);
    //Class()->AddRule("TSceptar sceptar_hits attributes=NotOwner");
    //Class()->AddRule("TSceptar sceptardata attributes=NotOwner");
    Clear();
-   SetHitClass("TSceptarHit");
 }
 
 TSceptar::~TSceptar()	{
@@ -60,6 +59,7 @@ TSceptar::~TSceptar()	{
 }
 
 TSceptar::TSceptar(const TSceptar& rhs) {
+  Class()->IgnoreTObjectStreamer(kTRUE);
   ((TSceptar&)rhs).Copy(*this);
 }
 
@@ -166,7 +166,3 @@ TGRSIDetectorHit* TSceptar::GetHit(const Int_t idx){
       return 0;
 }
 
-void TSceptar::AddHit(TGRSIDetectorHit* hit, Option_t *opt){
-   TSceptarHit *newhit = (TSceptarHit*)GetHitArray()->ConstructedAt(GetHitArray()->GetEntries());
-   hit->Copy(*((TSceptarHit*)newhit));
-}

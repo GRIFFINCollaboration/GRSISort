@@ -21,11 +21,12 @@ long TPaces::fCycleStart  = 0;
 long TPaces::fLastPPG     = 0;
 
 TPaces::TPaces() : TGRSIDetector(),pacesdata(0) {
+   Class()->IgnoreTObjectStreamer(kTRUE);
    Clear();
-   SetHitClass("TPacesHit");
 }
 
 TPaces::TPaces(const TPaces& rhs) {
+  Class()->IgnoreTObjectStreamer(kTRUE);
   ((TPaces&)rhs).Copy(*this);
 }
 
@@ -139,10 +140,5 @@ TVector3 TPaces::GetPosition(int DetNbr) {
    //Gets the position vector for a crystal specified by DetNbr
    //Does not currently contain any positons.
    return TVector3(0,0,1);
-}
-
-void TPaces::AddHit(TGRSIDetectorHit* hit, Option_t *opt){
-   TPacesHit *newhit = (TPacesHit*)GetHitArray()->ConstructedAt(GetHitArray()->GetEntries());
-   hit->Copy(*((TPacesHit*)newhit));
 }
 
