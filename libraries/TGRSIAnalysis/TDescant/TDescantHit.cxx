@@ -8,7 +8,7 @@
 ClassImp(TDescantHit)
 
 TDescantHit::TDescantHit()	{	
-   //Class()->IgnoreTObjectStreamer(true);
+   Class()->IgnoreTObjectStreamer(true);
    //Class()->AddRule("TDescantHit waveform attributes=NotOwner");
    Clear();
 }
@@ -22,6 +22,7 @@ TDescantHit::TDescantHit(const TDescantHit &rhs){
 
 void TDescantHit::Copy(TDescantHit &rhs) const {
    TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
+  Class()->IgnoreTObjectStreamer(kTRUE);
 	((TDescantHit&)rhs).filter = filter;
 	((TDescantHit&)rhs).psd = psd;
    return;

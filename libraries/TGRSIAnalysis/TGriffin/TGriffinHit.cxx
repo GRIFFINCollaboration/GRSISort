@@ -6,6 +6,7 @@
 ClassImp(TGriffinHit)
 
 TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{	
+   Class()->IgnoreTObjectStreamer(kTRUE);
 	Clear();
 }
 
@@ -86,13 +87,10 @@ void TGriffinHit::Clear(Option_t *opt)	{
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
    filter          =  0;
    ppg             =  0;
-   detector        = 0xFFFF;
    crystal         = 0xFFFF;
 
    is_crys_set     = false;
 
-   //I think we want to make sure the entire Hit is cleared including the BASE.
-   TGRSIDetectorHit::Clear();
 }
 
 

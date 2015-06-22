@@ -234,6 +234,13 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    void *ptr;
    int banksize;
 
+   int subrun = infile->GetSubRunNumber();
+
+   if(subrun <1){
+      printf(DBLUE "Subrun 000, Starting event checker at event %d\n" RESET_COLOR,event_start);
+      printf(DBLUE "Please check that results still make sense\n" RESET_COLOR);
+   }
+
    //Do checks on the event
 	unsigned int mserial=0; if(event) mserial = (unsigned int)(event->GetSerialNumber());
 	unsigned int mtime=0;   if(event) mtime   = event->GetTimeStamp();
@@ -265,7 +272,7 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
                int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,2,mserial,mtime);
                if(frags > -1){
                   events_read++;
-                  if(events_read > event_start)
+                  if((subrun > 0) || (events_read > event_start))
                      eventQ->push_back(new TEventTime(event));//I'll keep 4G data in here for now in case we need to use it for time stamping 
                }
                else{
@@ -639,10 +646,10 @@ bool ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
 //   if((chanadd&0x0000ff00) != TEventTime::GetBestDigitizer()){
  //  if((dettype<2) || ((chanadd&0xf) < 2) ){   
    if(dettype > 1 && ((chanadd&0xF) > 1) && ((chanadd&0xF00)>1) && SplitMezz) {
-      time -= TEventTime::correctionmap.find(chanadd&0x0000ff00)->second;    
+      time -= TEventTime::correctionmap.find((chanadd&0x0000ff00)+2)->second;    
    }
    else{
-      time -= TEventTime::correctionmap.find((chanadd&0x0000ff00)+2)->second;    
+      time -= TEventTime::correctionmap.find(chanadd&0x0000ff00)->second;    
     }
 
 //  }
