@@ -59,8 +59,13 @@ class TGRSIDetectorHit : public TObject 	{
       inline void SetAddress(const UInt_t &temp_address)          { address = temp_address; } //!
       inline void SetCharge(const Int_t &temp_charge)            { charge = temp_charge;} //!
   //    inline void SetParent(TGRSIDetector *fParent)               { parent = (TObject*)fParent ; } //!
+<<<<<<< HEAD
 //      inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    } //!
       virtual inline void SetCfd(const unsigned int &x)           { cfd    = x;   }                  //!
+=======
+      inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    } //!
+      virtual inline void SetCfd(const Double_t &x)               { cfd    = x;   }                  //!
+>>>>>>> 61a344efa789327adb9cdaa29dae2817bbc1c3a6
       virtual inline void SetTime(const ULong_t &x)               { time   = x;   }                  //! Maybe make this abstract?
  
       void SetPosition(Double_t temp_pos = 0);
@@ -71,8 +76,8 @@ class TGRSIDetectorHit : public TObject 	{
 		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
       virtual double GetEnergy(Option_t *opt="") const;
       virtual UInt_t GetDetector() const;
-      virtual double GetTime(Option_t *opt="")   const      { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
-      virtual inline UInt_t    GetCfd() const               {   return cfd;      }           //!
+      virtual double GetTime(Option_t *opt="")   const      {return 0.0; } //AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
+      virtual inline Double_t    GetCfd() const             {   return cfd;      }           //!
       inline UInt_t GetAddress()     const                  { return address; }         //!
       inline Double_t GetCharge() const                       { return charge;} //!
       inline TChannel *GetChannel() const                   { return TChannel::GetChannel(address); }  //!

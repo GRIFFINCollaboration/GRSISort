@@ -534,9 +534,9 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    int basketSize = 128000; //128000;
    if(info->Tigress())   { tree->Bronch("TTigress","TTigress",&tigress); }//, basketSize); } 
    if(info->Sharc())     { tree->Bronch("TSharc","TSharc",&sharc); }//, basketSize); } 
-   if(info->TriFoil())   { tree->Bronch("TTriFoil","TTriFoil",&triFoil); }//, basketSize); } 
+//   if(info->TriFoil())   { tree->Bronch("TTriFoil","TTriFoil",&triFoil); }//, basketSize); } 
    //if(info->Rf())        { tree->Bronch("TRf","TRf",&rf); }//, basketSize); } 
-   if(info->CSM())       { tree->Bronch("TCSM","TCSM",&csm); }//, basketSize); } 
+//   if(info->CSM())       { tree->Bronch("TCSM","TCSM",&csm); }//, basketSize); } 
    //if(info->Spice())     { tree->Bronch("TSpice","TSpice",&spice); }//, basketSize); tree->SetBronch("TS3","TS3",&s3); }//, basketSize); } 
    if(info->Tip())       { tree->Bronch("TTip","TTip",&tip); }//, basketSize); } 
 
@@ -757,7 +757,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //We use the MNEMONIC in order to figure out what detector we want to put the set of fragments into
          if(mnemonic.system.compare("TI")==0) {
             if(detectors->find("TI") == detectors->end()) {
-               //(*detectors)["TI"] = new TTigress;
+               (*detectors)["TI"] = new TTigress;
             }
             (*detectors)["TI"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("SH")==0) {
@@ -765,16 +765,16 @@ void TAnalysisTreeBuilder::ProcessEvent() {
                //(*detectors)["SH"] = new TSharc;
             }
             (*detectors)["SH"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("Tr")==0) {	
-            if(detectors->find("Tr") == detectors->end()) {
+//         } else if(mnemonic.system.compare("Tr")==0) {	
+//            if(detectors->find("Tr") == detectors->end()) {
                //(*detectors)["Tr"] = new TTriFoil;
-            }
-            (*detectors)["Tr"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("CS")==0) {	
-            if(detectors->find("CS") == detectors->end()) {
+//            }
+//            (*detectors)["Tr"]->FillData(&(event->at(i)),channel,&mnemonic);
+//         } else if(mnemonic.system.compare("CS")==0) {	
+//            if(detectors->find("CS") == detectors->end()) {
                //(*detectors)["CS"] = new TCSM;
-            }
-            (*detectors)["CS"]->FillData(&(event->at(i)),channel,&mnemonic);
+//            }
+//            (*detectors)["CS"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("GR")==0) {
             if(detectors->find("GR") == detectors->end()) {
                (*detectors)["GR"] = new TGriffin;
