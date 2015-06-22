@@ -792,7 +792,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
             (*detectors)["PA"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("DS")==0) {	
             if(detectors->find("DS") == detectors->end()) {
-              // (*detectors)["DS"] = new TDescant;
+               (*detectors)["DS"] = new TDescant;
             }
             (*detectors)["DS"]->FillData(&(event->at(i)),channel,&mnemonic);
          //else if(mnemonic.system.compare("PA")==0) {	
