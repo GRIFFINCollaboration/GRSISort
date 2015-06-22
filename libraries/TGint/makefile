@@ -11,8 +11,7 @@ CAT=cat
 .PHONY: all clean gone
 
 all: libTGint.so $(OBJECTS)
-	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
-
+	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $< ;
 
 libTGint.so: $(OBJECTS)
 	@$(ECHO) $(COMP_STRING)
