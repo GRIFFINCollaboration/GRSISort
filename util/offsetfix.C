@@ -156,13 +156,13 @@ class TEventTime {
             digitizernum+=2;
          }
 
-         digmap.insert( std::pair<int,int>(digitizernum, digmap.size()));
-         digset.insert( std::pair<int,bool>(digitizernum,false));
-         correctionmap.insert(std::pair<int,int64_t>(digitizernum,0));
+         digmap.insert( std::pair<uint32_t,int>(digitizernum, digmap.size()));
+         digset.insert( std::pair<uint32_t,bool>(digitizernum,false));
+         correctionmap.insert(std::pair<uint32_t,int64_t>(digitizernum,0));
       }
 
       static void OrderDigitizerMap(){
-         std::map<int,int>::iterator it;
+         std::map<uint32_t,int>::iterator it;
          int index = 0;
          for(it = digmap.begin(); it != digmap.end();it++){
             it->second = index++;
@@ -173,7 +173,7 @@ class TEventTime {
          return digmap.size();
       }
 
-      inline static int GetBestDigitizer(){
+      inline static uint32_t GetBestDigitizer(){
         // return 0x1000;
          return best_dig;
       }
@@ -190,11 +190,11 @@ class TEventTime {
          return lowest_time;
       }
 
-      static std::map<int,int> digmap;
-      static std::map<int,bool> digset;
-      static std::map<int,int64_t> correctionmap;
+      static std::map<uint32_t,int> digmap;
+      static std::map<uint32_t,bool> digset;
+      static std::map<uint32_t,int64_t> correctionmap;
       static unsigned long low_timemidas;
-      static int best_dig;
+      static uint32_t best_dig;
       static uint64_t lowest_time;
  
    private:
@@ -202,18 +202,18 @@ class TEventTime {
       unsigned int timehigh;
       unsigned long timemidas;
       int dettype;
-      int chanadd;
-      int digitizernum;
+      uint32_t chanadd;
+      uint32_t digitizernum;
 
 };
 
 
 unsigned long TEventTime::low_timemidas = -1;
 uint64_t TEventTime::lowest_time = -1;
-int TEventTime::best_dig = 0;
-std::map<int,int> TEventTime::digmap;
-std::map<int,bool> TEventTime::digset;
-std::map<int,int64_t> TEventTime::correctionmap;
+uint32_t TEventTime::best_dig = 0;
+std::map<uint32_t,int> TEventTime::digmap;
+std::map<uint32_t,bool> TEventTime::digset;
+std::map<uint32_t,int64_t> TEventTime::correctionmap;
 
 void PrintError(TMidasEvent *event, int frags,bool verb){
    if(verb){
@@ -297,7 +297,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
    TList *midvshigh = new TList;
    printf(DBLUE "Correcting High time stamps...\n" RESET_COLOR);
    //These first four are for looking to see if high time-stamp reset
-   std::map<int,int>::iterator mapit; //This is an iterator over the digitizer map 
+   std::map<uint32_t,int>::iterator mapit; //This is an iterator over the digitizer map 
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
       TH2D *midvshighhist = new TH2D(Form("midvshigh_0x%04x",mapit->first),Form("midvshigh_0x%04x",mapit->first), 5000,0,5000,5000,0,5000); 
       midvshigh->Add(midvshighhist);
@@ -313,7 +313,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
 
    FragsIn++;
    //Clear lowest hightime
-   std::map<int,int> lowest_hightime;
+   std::map<uint32_t,int> lowest_hightime;
    std::vector<TEventTime*>::iterator it;
    
    for(it = eventQ->begin(); it != eventQ->end(); it++) {
@@ -332,7 +332,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
    }
 
 //find lowest digitizer 
-   int lowest_dig = 0;
+   uint32_t lowest_dig = 0;
    int lowtime = 999999;
  /*  for(mapit = lowest_hightime.begin(); mapit != lowest_hightime.end(); mapit++){
       if(mapit->second < lowtime){
@@ -370,8 +370,8 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
    TList *roughlist = new TList;
    //These first four are for looking to see if high time-stamp reset
 
-   std::map<int,bool> keep_filling;
-   std::map<int,int>::iterator mapit;
+   std::map<uint32_t,bool> keep_filling;
+   std::map<uint32_t,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
      // TH1F *roughhist = new TH1F(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 6E7,-3E8,3E8); 
       TH1D *roughhist = new TH1D(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 3E7,-3E8,3E8); 
@@ -421,7 +421,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
             continue;
          }
          event2count++;
-         int digitizer = (*hit2)->Digitizer();
+         uint32_t digitizer = (*hit2)->Digitizer();
          if(keep_filling[digitizer]){
             fillhist = (TH1D*)(roughlist->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
             int64_t time2 = static_cast<int64_t>((*hit2)->GetTimeStamp()) - TEventTime::correctionmap.find((*hit2)->Digitizer())->second;
@@ -449,7 +449,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
    }
 
    printf("*****  Rough time shifts *******\n");
-   std::map<int,int64_t>::iterator cit;
+   std::map<uint32_t,int64_t>::iterator cit;
    for(cit = TEventTime::correctionmap.begin(); cit != TEventTime::correctionmap.end(); cit++){
       if(cit->first == TEventTime::GetBestDigitizer())
          printf("0x%04x:\t BEST\n",cit->first);
@@ -471,7 +471,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
    TList *list = new TList;
    //These first four are for looking to see if high time-stamp reset
 
-   std::map<int,int>::iterator mapit;
+   std::map<uint32_t,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
       TH1D *hist = new TH1D(Form("timediff_0x%04x",mapit->first),Form("timediff_0x%04x",mapit->first), 1000,-500,500); 
       hist->SetTitle(Form("timediff_0x%04x Against 0x%04x",mapit->first,TEventTime::GetBestDigitizer()));
@@ -517,7 +517,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
          }
  
          if(hit1 != hit2 ){
-            int digitizer = (*hit2)->Digitizer();
+            uint32_t digitizer = (*hit2)->Digitizer();
             fillhist = (TH1D*)(list->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
             int64_t time2 = static_cast<int64_t>((*hit2)->GetTimeStamp()) - TEventTime::correctionmap.find((*hit2)->Digitizer())->second;
             if((time2-time1 < 2147483647) && (time2-time1 > -2147483647)){//Make sure we are casting this to 32 bit properly
@@ -542,7 +542,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
    }
       
    printf("*****  Rough time shifts *******\n");
-   std::map<int,int64_t>::iterator cit;
+   std::map<uint32_t,int64_t>::iterator cit;
    for(cit = TEventTime::correctionmap.begin(); cit != TEventTime::correctionmap.end(); cit++){
       if(cit->first == TEventTime::GetBestDigitizer())
          printf("0x%04x:\t BEST\n",cit->first);
@@ -578,8 +578,8 @@ bool ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    uint32_t type  = 0xffffffff;
    uint32_t value = 0xffffffff;
 
-   int dettype = 0;
-   int chanadd = 0;
+   uint32_t dettype = 0;
+   uint32_t chanadd = 0;
 
    unsigned int timelow  = 0;
    unsigned int timehigh = 0;
@@ -779,13 +779,13 @@ void WriteCorrectionFile(int runnumber){
 
    //Just going to make a corrections map for now...it should be a map throughout....
 
-   int address;
+   uint32_t address;
    Long64_t correction;
    TTree *t = new TTree("correctiontree","Tree with map");
    t->Branch("address",&address);
    t->Branch("correction",&correction);
 
-   std::map<int,int64_t>::iterator it;
+   std::map<uint32_t,int64_t>::iterator it;
    for(it = TEventTime::correctionmap.begin();it != TEventTime::correctionmap.end();it++){
       address = it->first;
       correction = it->second;
@@ -812,7 +812,7 @@ int CorrectionFile(int runnumber){
    TTree* t; corrfile->GetObject("correctiontree",t);
    TBranch *baddress = 0;
    TBranch *bcorrection = 0;
-   int address;
+   uint32_t address;
    Long64_t correction;
    t->SetBranchAddress("address",&address,&baddress);
    t->SetBranchAddress("correction",&correction,&bcorrection);
@@ -825,7 +825,7 @@ int CorrectionFile(int runnumber){
       baddress->GetEntry(tentry);
       bcorrection->GetEntry(tentry);
       printf("0x%04x: \t\t %lld\n",address,correction);
-      TEventTime::correctionmap.insert(std::pair<int,int64_t>(address,correction));
+      TEventTime::correctionmap.insert(std::pair<uint32_t,int64_t>(address,correction));
    }
 
    t->ResetBranchAddresses();
