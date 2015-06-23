@@ -206,7 +206,7 @@ TGRSIDetectorHit* TGriffin::GetHit(const Int_t idx) {
 
 TGriffinHit* TGriffin::GetGriffinHit(const int i) {
    if(i < GetMultiplicity())
-      return 0;//&griffin_hits.at(i);   
+      return &griffin_hits.at(i);   
    else
       return 0;
 }

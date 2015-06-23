@@ -815,7 +815,6 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          BuildActiveAnalysisTreeBranches(detectors);
          FillWriteQueue(detectors);
       }
-
       delete event;
    
    }

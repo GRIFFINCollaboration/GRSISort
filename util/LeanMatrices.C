@@ -139,15 +139,20 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
       maxEntries = tree->GetEntries();
    }
    for(entry = 1; entry < maxEntries; ++entry) { //Only loop over the set number of entries
+   printf("HERE\n");
                                                  //I'm starting at entry 1 because of the weird high stamp of 4.
       tree->GetEntry(entry);
       
       //loop over the gammas in the event packet
       //grif is the variable which points to the current TGriffin
+      printf("MULT = %d\n",grif->GetMultiplicity());
       for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
+         printf("HIT\n");
          //We want to put every gamma ray in this event into the singles
          gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergy()); 
+         printf("MADE IT\n");
          gtimestamp->Fill(grif->GetGriffinHit(one)->GetTime()/100000000.);
+         printf("MADE IT 2\n");
          Long_t time = (Long_t)(grif->GetHit(one)->GetTime());
     //     time = time%2268500000L;
          time = time%957500000L;
@@ -218,6 +223,7 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
       if((entry%10000) == 1){
          printf("Completed %d of %d \r",entry,maxEntries);
       }
+   printf("HERE\n");
 
    }
    ggmatrixt->Scale(-ggBGScale);
