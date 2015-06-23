@@ -51,7 +51,7 @@ class TGRSIDetector : public TObject	{
       void AddHit(TGRSIDetectorHit *hit,Option_t *opt ="");
 //      virtual void AddHit(TGRSIDetectorHit* hit, Option_t *opt ="") {}        //!
 
-      void Init();
+    //  void Init();
 
    protected:
       virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
