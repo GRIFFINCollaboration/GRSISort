@@ -51,7 +51,7 @@ CAT=cat
 
 #UTILFLAGS = $(LIBDIR) -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTGRSIFit -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `grsi-config --cflags --libs` -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
 
-UTILFLAGS = -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector
+UTILFLAGS = -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTigress
 
 UTILFLAGS += $(LIBDIR) -lAnalysisTreeBuilder -lTGRSIFit -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
 
