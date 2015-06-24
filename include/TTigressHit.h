@@ -43,9 +43,9 @@ class TTigressHit : public TGRSIDetectorHit {
 	public:
 
 		/////////////////////////		/////////////////////////////////////
-		void SetCore(TCrystalHit &temp)		  { core = temp;	} 					//!
-		void SetSegment(TCrystalHit &temp)	{ segment.push_back(temp);	}		//!
-		void SetBGO(TCrystalHit &temp)		  { bgo.push_back(temp);	}			//!
+		void SetCore(TCrystalHit &temp)		  { core = temp;	} 					  //!
+		void SetSegment(TCrystalHit &temp)	  { segment.push_back(temp);	}    //!
+		void SetBGO(TCrystalHit &temp)		  { bgo.push_back(temp);	}       //!
 
 		void SetDetectorNumber(const int &i) { detector = i;	} 				//!
 		void SetCrystalNumber(const int &i)	 { crystal = i; }					//!

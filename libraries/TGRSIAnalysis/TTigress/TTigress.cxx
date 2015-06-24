@@ -13,7 +13,7 @@ ClassImp(TTigress)
 
 //double TTigress::beta = 0.00;
 
-bool TTigress::fSetSegmentHits = false;//true;
+bool TTigress::fSetSegmentHits = true;
 bool TTigress::fSetBGOHits = true;
 
 bool TTigress::fSetCoreWave = false;
@@ -70,9 +70,9 @@ void TTigress::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 	  	if((mnemonic->segment==0) || (mnemonic->segment==9 ))	{
  				tigdata->SetCore(frag,channel,mnemonic);
 			} else {                         
-				//if(SetSegmentHits()) {
+				if(SetSegmentHits() && frag->GetCharge()>10) { // non-zero charge.
  					tigdata->SetSegment(frag,channel,mnemonic);
-				//}
+				}
 			}
   } else if(mnemonic->subsystem.compare(0,1,"S")==0) {
       FillBGOData(frag,channel,mnemonic);
@@ -112,9 +112,9 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 		temp_crystal.Clear();
 
 		temp_crystal.SetCharge(tdata->GetCoreCharge(i));
-    temp_crystal.SetEnergy(tdata->GetCoreEnergy(i));
-    temp_crystal.SetTime(tdata->GetCoreTime(i));
-    temp_crystal.SetCfd(tdata->GetCoreCFD(i));
+      temp_crystal.SetEnergy(tdata->GetCoreEnergy(i));
+      temp_crystal.SetTime(tdata->GetCoreTime(i));
+      temp_crystal.SetCfd(tdata->GetCoreCFD(i));
 
 		if(TTigress::SetCoreWave())	{
         	temp_crystal.SetWave(tdata->GetCoreWave(i));
@@ -122,7 +122,7 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 		
 		corehit.SetCore(temp_crystal);	
 		corehit.SetDetectorNumber(tdata->GetCloverNumber(i));
-    corehit.SetCrystalNumber(tdata->GetCoreNumber(i));
+      corehit.SetCrystalNumber(tdata->GetCoreNumber(i));
 
 
 		tigress_hits.push_back(corehit);

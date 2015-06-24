@@ -36,13 +36,13 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		UShort_t		detectornumber;  //
 		Int_t			  pad_charge;		  //
 
-	  Double_t		d_energy_front;  //		
-  	Double_t		d_time_front;	  //		
-	  Double_t		d_energy_back;  //		
-  	Double_t		d_time_back;	  //		
+      Double_t		d_energy_front;  //		
+    	Double_t		d_time_front;	  //		
+      Double_t		d_energy_back;  //		
+      Double_t		d_time_back;	  //		
 	  //Double_t		d_cfd;		  //		
 
-  	Double_t		p_energy;	//			pad only;
+      Double_t		p_energy;	//			pad only;
  		Double_t		p_time;		//			pad only;
 		Int_t       p_address;  //
  		//Double_t		p_cfd;		//

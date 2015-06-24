@@ -184,7 +184,7 @@ void TRFFitter::FindPhase(const vector<TRFFitter::vector_element_t> &waveform, B
       error_offset    = 0;
       correlation     = 0;
    }
-   rftime = TwoPi()/rf_omega + phase;
+   rftime = TwoPi()/(rf_omega - phase);
    set = true;
 }
 
