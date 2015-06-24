@@ -715,7 +715,7 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
   //Send through the stragglers.  This is very permissive, but we trust BuildVH to take care of the riff-raff
   for(int i=0;i<DHitVec.size();i++)
   {
-    cout<<"*************************"<<endl;
+    //cout<<"*************************"<<endl;
   
 //     if(EHitVec.size()>0)
 //     {
@@ -726,9 +726,9 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
     if(!DUsed.at(i))
     {
       BuiltHits.push_back(DHitVec.at(i));
-      cout<<DBLUE;
-      BuiltHits.back().Print();
-      cout<<RESET_COLOR;
+//       cout<<DBLUE;
+//       BuiltHits.back().Print();
+//       cout<<RESET_COLOR;
     }
   }
   for(int j=0;j<EHitVec.size();j++)
@@ -742,9 +742,9 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
     if(!EUsed.at(j))
     {
       BuiltHits.push_back(EHitVec.at(j));
-      cout<<DBLUE;
-      BuiltHits.back().Print();
-      cout<<RESET_COLOR;
+//       cout<<DBLUE;
+//       BuiltHits.back().Print();
+//       cout<<RESET_COLOR;
     }
   }
 }
