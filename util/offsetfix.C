@@ -820,7 +820,7 @@ int CorrectionFile(int runnumber){
    int i =0;
    printf("Digitizer \t Correction\n");
    while(true){
-      Long64_t tentry = t->LoadTree(++i);
+      Long64_t tentry = t->LoadTree(i++);
       if(tentry<0) break;
       baddress->GetEntry(tentry);
       bcorrection->GetEntry(tentry);
