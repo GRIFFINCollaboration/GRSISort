@@ -688,38 +688,63 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
     }
   }
 
+  //This loop adds uncorrelated events in the telescope together.  This may be bad, but let's see.
+  for(int i=0;i<DHitVec.size();i++)
+  {
+    if(!DUsed.at(i))
+    {
+      for(int j=0;j<EHitVec.size();j++)
+      {
+	if(!EUsed.at(j))
+	{
+	  if(EHitVec.at(j).GetDetectorNumber()==DHitVec.at(i).GetDetectorNumber())
+	  {
+	    BuiltHits.push_back(CombineHits(DHitVec.at(i),EHitVec.at(j)));
+	    cout<<DRED;
+	    BuiltHits.back().Print();
+	    cout<<RESET_COLOR;
+	    DUsed.at(i) = true;
+	    EUsed.at(j) = true;
+	  }
+	}
+      }
+    }
+  }
+
+
   //Send through the stragglers.  This is very permissive, but we trust BuildVH to take care of the riff-raff
   for(int i=0;i<DHitVec.size();i++)
   {
-    /*if(EHitVec.size()>0)
-    {
-      cout<<"*************************"<<endl;
-      cout<<DBLUE;
-      DHitVec.at(i).Print();
-      cout<<RESET_COLOR;
-    }*/
+    cout<<"*************************"<<endl;
+  
+//     if(EHitVec.size()>0)
+//     {
+//       cout<<DGREEN;
+//       DHitVec.at(i).Print();
+//       cout<<RESET_COLOR;
+//     }
     if(!DUsed.at(i))
     {
       BuiltHits.push_back(DHitVec.at(i));
-      /*cout<<DBLUE;
+      cout<<DBLUE;
       BuiltHits.back().Print();
-      cout<<RESET_COLOR;*/
+      cout<<RESET_COLOR;
     }
   }
   for(int j=0;j<EHitVec.size();j++)
   {
-    /*if(DHitVec.size()>0)
-    {
-      cout<<DGREEN;
-      EHitVec.at(j).Print();
-      cout<<RESET_COLOR;
-    }*/
+//     if(DHitVec.size()>0)
+//     {
+//       cout<<DGREEN;
+//       EHitVec.at(j).Print();
+//       cout<<RESET_COLOR;
+//     }
     if(!EUsed.at(j))
     {
       BuiltHits.push_back(EHitVec.at(j));
-      /*cout<<DBLUE;
+      cout<<DBLUE;
       BuiltHits.back().Print();
-      cout<<RESET_COLOR;*/
+      cout<<RESET_COLOR;
     }
   }
 }
