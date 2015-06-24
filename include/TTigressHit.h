@@ -55,14 +55,14 @@ class TTigressHit : public TGRSIDetectorHit {
 		//void SetDoppler(const double &d)	   { doppler = d;	}					//!
 		
 		/////////////////////////		/////////////////////////////////////
-		inline int GetDetectorNumber()	     {	return detector;		}			//!
-		inline int GetCrystalNumber()	       {	return crystal;			}			//!
-		inline int GetInitialHit()		       {	return first_segment;	}			//!
+		inline int GetDetectorNumber()	      {  return detector;		}			//!
+		inline int GetCrystalNumber()	         {  return crystal;			}			//!
+		inline int GetInitialHit()		         {  return first_segment;	}			//!
 	
-		inline int GetCharge()			         {	return core.GetCharge();	}		//!
-		inline double GetEnergy()		         {	return core.GetEnergy();	}		//!
-		inline double GetTime()			         {	return core.GetTime();		}		//!
-    inline double GetTimeCFD()           {  return core.GetCfd(); } //!
+		inline int GetCharge()			         {  return core.GetCharge();	}		//!
+		inline double GetEnergy()		         {  return core.GetEnergy();	}		//!
+		inline double GetTime()			         {  return core.GetTime();		}		//!
+      inline double GetTimeCFD()             {  return core.GetCfd(); } //!
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
 		inline double GetDoppler(double beta,TVector3 *vec=0) { 
