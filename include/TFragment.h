@@ -77,6 +77,7 @@ public:
    Int_t Get4GCfd(int i=0); //!
 
    bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!
+   bool HasWave() const { return (wavebuffer.size()>0) ?  true : false; } //!
 
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 
@@ -87,6 +88,6 @@ public:
    bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 
-   ClassDef(TFragment,4);  // Event Fragments
+   ClassDef(TFragment,5);  // Event Fragments
 };
 #endif // TFRAGMENT_H

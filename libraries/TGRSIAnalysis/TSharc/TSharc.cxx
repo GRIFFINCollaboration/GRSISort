@@ -124,6 +124,8 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
          hit.SetFrontCFD(sdata->GetFront_TimeCFD(i));
          hit.SetBackCFD(sdata->GetBack_TimeCFD(j));
 
+       //  hit.SetFrontTime(sdata->GetFront_Zc(i));
+       //  hit.SetBackTime(sdata->GetBack_Zc(j));
 
        	 this->sharc_hits.push_back(hit);
 
