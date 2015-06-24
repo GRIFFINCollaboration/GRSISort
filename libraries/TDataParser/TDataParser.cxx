@@ -224,9 +224,12 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment *currentfrag) {
       currentfrag->Zc.push_back(tsBits - cfdBits);
    } else if ( dig_type.compare(0,5,"Tig64")==0 ) {
       //currentfrag->TimeToTrig = (currentfrag->Cfd.back() >> 5);
-      currentfrag->Zc.push_back(tsBits - cfdBits);
-      // cfdBits	= (eventfragment->Cfd >> 5);
-      // tsBits  = eventfragment->TimeStampLow & 0x003fffff;
+      cfdBits	= (currentfrag->Cfd.back() >> 4) & 0x003fffff;
+      //tsBits  = currentfrag->TimeStampLow & 0x0000ffff; //0x003fffff;
+      currentfrag->Zc.push_back(abs(cfdBits)&0x000fffff);
+      
+      //currentfrag->Print();
+      //printf("\n------------------------------\n\n\n");
    } else {
       cfdBits = (currentfrag->Cfd.back() >> 4);
       tsBits  = currentfrag->TimeStampLow & 0x007fffff;
