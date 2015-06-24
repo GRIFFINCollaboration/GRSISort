@@ -468,43 +468,45 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
 
 	addback_hits.clear();
 
-	if(this->GetMultiplicity() == 1) 
-      if(use_suppression)
-        if(!tigress_hits.at(0).GetCore()->Suppress())
+	if(this->GetMultiplicity() == 1) { 
+      if(use_suppression) {
+        if(!tigress_hits.at(0).GetCore()->Suppress()) {
           addback_hits.push_back(*(this->GetTigressHit(0)));
-	else{
+        }
+      }  
+ 	} else {
 
 		//addback_hits.push_back(*(this->GetTigressHit(0)));
 		//addback_hits.at(0).Add(&(addback_hits.at(0)));
 
-		for(int i = 0; i<this->GetMultiplicity(); i++)   {
-		 	bool used = false;
+      for(int i = 0; i<this->GetMultiplicity(); i++)   {
+         bool used = false;
          if(use_suppression && tigress_hits.at(i).GetCore()->Suppress())
             continue;
          if(addback_hits.size()==0)  {
-	        addback_hits.push_back(*(this->GetTigressHit(i)));
-	        addback_hits.at(i).Add(&(addback_hits.at(0)));
+           addback_hits.push_back(*(this->GetTigressHit(i)));
+           addback_hits.at(i).Add(&(addback_hits.at(0)));
          } else {
-  			  for(int j =0; j<addback_hits.size();j++)    {
+           for(int j =0; j<addback_hits.size();j++)    {
              TVector3 res = addback_hits.at(j).GetLastHit() - this->GetTigressHit(i)->GetPosition();
-		       int d_time = abs(addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
+             int d_time = abs(addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
 
-			    int seg1 = std::get<2>(addback_hits.at(j).GetLastPosition());
-			    int seg2 = this->GetTigressHit(i)->GetInitialHit();
-		
-			    if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
-			         if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
-		 	            used = true;
-		       	    addback_hits.at(j).Add(this->GetTigressHit(i));
-		          		break;
-			      	}
-			    }
-			    else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{ // front to back
-			         if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {     // time gate == 110 ns pos gate == 105mm.
-		 	            used = true;
-		       	    addback_hits.at(j).Add(this->GetTigressHit(i));
-		          		break;
-			      	}
+             int seg1 = std::get<2>(addback_hits.at(j).GetLastPosition());
+             int seg2 = this->GetTigressHit(i)->GetInitialHit();
+             
+             if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
+               if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
+                  used = true;
+                addback_hits.at(j).Add(this->GetTigressHit(i));
+              	   break;
+               }
+             }
+             else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{ // front to back
+               if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {     // time gate == 110 ns pos gate == 105mm.
+                 used = true;
+             	  addback_hits.at(j).Add(this->GetTigressHit(i));
+                 break;
+               }
 				}
 		 	 }
         }
