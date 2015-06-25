@@ -481,8 +481,8 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
 
       for(int i = 0; i<this->GetMultiplicity(); i++)   {
          bool used = false;
-         if(use_suppression && tigress_hits.at(i).GetCore()->Suppress())
-            continue;
+         //if(use_suppression && tigress_hits.at(i).GetCore()->Suppress())
+         //   continue;
          for(int j =0; j<addback_hits.size();j++)    {
            TVector3 res = addback_hits.at(j).GetLastHit() - this->GetTigressHit(i)->GetPosition();
            int d_time = abs(addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
@@ -493,13 +493,21 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
            if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
              if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
                used = true;
-               addback_hits.at(j).Add(this->GetTigressHit(i));
+               if(use_suppression && tigress_hits.at(i).GetCore()->Suppress())
+               
+               } else {
+                 addback_hits.at(j).Add(this->GetTigressHit(i));
+               }  
                break;
              }
            } else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{ // front to back
              if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {     // time gate == 110 ns pos gate == 105mm.
                used = true;
-               addback_hits.at(j).Add(this->GetTigressHit(i));
+               if(use_suppression && tigress_hits.at(i).GetCore()->Suppress()) {
+
+               } else {
+                 addback_hits.at(j).Add(this->GetTigressHit(i));
+               }
                break;
              }
            }
@@ -508,8 +516,10 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
         //addback_hits.at(0).Add(&(addback_hits.at(0)));
       
 		if(!used) {
-		  addback_hits.push_back(*(this->GetTigressHit(i)));
-		  addback_hits.back().Add(&(addback_hits.back()));
+        if(use_suppression && !tigress_hits.at(i).GetCore()->Suppress()) {
+          addback_hits.push_back(*(this->GetTigressHit(i)));
+          addback_hits.back().Add(&(addback_hits.back()));
+        }
 		}
     }
   }
