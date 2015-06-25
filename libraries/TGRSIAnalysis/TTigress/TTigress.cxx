@@ -468,14 +468,6 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
 
 	addback_hits.clear();
 
-	if(this->GetMultiplicity() == 1) { 
-      if(use_suppression) {
-        if(!tigress_hits.at(0).GetCore()->Suppress()) {
-          addback_hits.push_back(*(this->GetTigressHit(0)));
-        }
-      }  
- 	} else {
-
 		//addback_hits.push_back(*(this->GetTigressHit(0)));
 		//addback_hits.at(0).Add(&(addback_hits.at(0)));
 
@@ -522,7 +514,7 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
         }
 		}
     }
-  }
+  
 }
 
 void TTigress::EraseHit(std::vector<TTigressHit> &hits, int element) {
