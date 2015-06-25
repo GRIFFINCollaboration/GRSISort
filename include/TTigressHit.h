@@ -36,6 +36,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	
 		//need to do sudo tracking to build addback.
 		TVector3 lasthit;  //!
+      double   lastenergy; //!
 		#ifndef __CINT__
 		std::tuple<int,int,int> lastpos; //!
 		#endif
@@ -95,7 +96,6 @@ class TTigressHit : public TGRSIDetectorHit {
 
 		static bool Compare(TTigressHit lhs, TTigressHit rhs);	      //!     { return (lhs.GetDetectorNumber() < rhs.GetDetectorNumber()); }
 		static bool CompareEnergy(TTigressHit lhs, TTigressHit rhs);	//!     { return (lhs.GetDetectorNumber() < rhs.GetDetectorNumber()); }
-		static bool CompareFirstSegmentEnergy(TTigressHit lhs, TTigressHit rhs);	//!     { return (lhs.GetDetectorNumber() < rhs.GetDetectorNumber()); }
 		
       
 		void Add(TTigressHit*);                                       //!

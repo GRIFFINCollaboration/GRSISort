@@ -30,6 +30,7 @@ void TTigressHit::Clear(Option_t *opt)	{
 	bgo.clear();
 
 	lasthit.SetXYZ(0,0,0);
+   lastenergy = 0.0;
 }
 
 
@@ -54,10 +55,6 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs)	{
 		return(lhs.GetEnergy()) > rhs.GetEnergy();
 }
 
-bool TTigressHit::CompareFirstSegmentEnergy(TTigressHit *lhs, TTigressHit *rhs)	{
-		return(lhs->GetFirstSegmentCharge()) > rhs->GetFirstSegmentCharge();
-}
-
 
 void TTigressHit::CheckFirstHit(int charge,int segment)	{
 	if(abs(charge) > first_segment_charge)	{
@@ -70,7 +67,7 @@ void TTigressHit::CheckFirstHit(int charge,int segment)	{
 void TTigressHit::Add(TTigressHit *hit)	{
 	if(this == hit)	{
 		lasthit    = position;
-      lastenergy = GetPosition();
+      lastenergy = GetEnergy();
 		lastpos    = std::make_tuple(GetDetectorNumber(),GetCrystalNumber(),GetInitialHit());
 		return;
 	}
@@ -81,9 +78,9 @@ void TTigressHit::Add(TTigressHit *hit)	{
      this->lasthit    = hit->GetPosition();
      this->lastpos    = std::make_tuple(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());
    } else {
-     this->cfd      = hit->GetCfd();    
-     this->time     = hit->GetTime();
-     this->position = hit->GetPosition();
+     this->GetCore()->SetCfd(hit->GetTimeCFD());    
+     this->GetCore()->SetTime(hit->GetTime());
+     this->SetPosition(hit->GetPosition());
    }
 }
 
