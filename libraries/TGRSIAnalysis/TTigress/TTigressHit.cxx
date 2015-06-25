@@ -69,15 +69,17 @@ void TTigressHit::CheckFirstHit(int charge,int segment)	{
 
 void TTigressHit::Add(TTigressHit *hit)	{
 	if(this == hit)	{
-		lasthit = position;
-		lastpos = std::make_tuple(GetDetectorNumber(),GetCrystalNumber(),GetInitialHit());
+		lasthit    = position;
+      lastenergy = GetPosition();
+		lastpos    = std::make_tuple(GetDetectorNumber(),GetCrystalNumber(),GetInitialHit());
 		return;
 	}
    this->core.SetEnergy(this->GetEnergy() + hit->GetEnergy());
 
-   if(CompareEnergy(this,hit)) {
-     this->lasthit = hit->GetPosition();
-     this->lastpos = std::make_tuple(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());
+   if(lastenergy < hit->GetEnergy()) {
+     this->lastenergy = hit->GetEnergy();
+     this->lasthit    = hit->GetPosition();
+     this->lastpos    = std::make_tuple(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());
    } else {
      this->cfd      = hit->GetCfd();    
      this->time     = hit->GetTime();
