@@ -75,13 +75,13 @@ void TTigressHit::Add(TTigressHit *hit)	{
 	}
    this->core.SetEnergy(this->GetEnergy() + hit->GetEnergy());
 
-   if(CompareFirstSegemntEnergy(this,hit)) {
+   if(CompareEnergy(this,hit)) {
      this->lasthit = hit->GetPosition();
      this->lastpos = std::make_tuple(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());
    } else {
-      this->cfd      = hit->GetCfd();    
-      this->time     = hit->GetTime();
-      this->position = hit->GetPosition();
+     this->cfd      = hit->GetCfd();    
+     this->time     = hit->GetTime();
+     this->position = hit->GetPosition();
    }
 }
 
