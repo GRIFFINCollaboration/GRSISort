@@ -59,6 +59,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		inline int GetCrystalNumber()	         {  return crystal;			}			//!
 		inline int GetInitialHit()		         {  return first_segment;	}			//!
 	
+      inline int GetFirstSegmentCharge()     {  return first_segment_charge; }
 		inline int GetCharge()			         {  return core.GetCharge();	}		//!
 		inline double GetEnergy()		         {  return core.GetEnergy();	}		//!
 		inline double GetTime()			         {  return core.GetTime();		}		//!
@@ -94,7 +95,9 @@ class TTigressHit : public TGRSIDetectorHit {
 
 		static bool Compare(TTigressHit lhs, TTigressHit rhs);	      //!     { return (lhs.GetDetectorNumber() < rhs.GetDetectorNumber()); }
 		static bool CompareEnergy(TTigressHit lhs, TTigressHit rhs);	//!     { return (lhs.GetDetectorNumber() < rhs.GetDetectorNumber()); }
+		static bool CompareFirstSegmentEnergy(TTigressHit lhs, TTigressHit rhs);	//!     { return (lhs.GetDetectorNumber() < rhs.GetDetectorNumber()); }
 		
+      
 		void Add(TTigressHit*);                                       //!
 		TVector3 GetLastHit()	{return lasthit;}                       //!
 		#ifndef __CINT__

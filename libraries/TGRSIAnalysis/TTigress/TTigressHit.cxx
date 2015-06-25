@@ -54,10 +54,15 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs)	{
 		return(lhs.GetEnergy()) > rhs.GetEnergy();
 }
 
+bool TTigressHit::CompareFirstSegmentEnergy(TTigressHit *lhs, TTigressHit *rhs)	{
+		return(lhs->GetFirstSegmentCharge()) > rhs->GetFirstSegmentCharge();
+}
+
 
 void TTigressHit::CheckFirstHit(int charge,int segment)	{
 	if(abs(charge) > first_segment_charge)	{
- 		first_segment = segment;
+ 		first_segment        = segment;
+      first_segment_charge = charge;
 	}
 	return;				
 }
@@ -68,9 +73,16 @@ void TTigressHit::Add(TTigressHit *hit)	{
 		lastpos = std::make_tuple(GetDetectorNumber(),GetCrystalNumber(),GetInitialHit());
 		return;
 	}
-	this->core.SetEnergy(this->GetEnergy() + hit->GetEnergy());
-	this->lasthit = hit->GetPosition();
-	this->lastpos = std::make_tuple(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());
+   this->core.SetEnergy(this->GetEnergy() + hit->GetEnergy());
+
+   if(CompareFirstSegemntEnergy(this,hit)) {
+     this->lasthit = hit->GetPosition();
+     this->lastpos = std::make_tuple(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());
+   } else {
+      this->cfd      = hit->GetCfd();    
+      this->time     = hit->GetTime();
+      this->position = hit->GetPosition();
+   }
 }
 
 
