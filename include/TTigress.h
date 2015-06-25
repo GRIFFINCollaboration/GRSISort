@@ -61,7 +61,8 @@ class TTigress : public TGRSIDetector {
 
 		std::vector <TTigressHit> tigress_hits;
 		std::vector <TTigressHit> addback_hits;
-		std::vector <TTigressHit> clover_addback_hits;			
+ 		std::vector <TTigressHit> clover_addback_hits;			
+      void EraseHit(std::vector<TTigressHit> &hits,int element);
 
 		static double beta;
 

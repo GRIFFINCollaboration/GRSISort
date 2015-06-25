@@ -493,8 +493,8 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
            if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
              if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
                used = true;
-               if(use_suppression && tigress_hits.at(i).GetCore()->Suppress())
-               
+               if(use_suppression && tigress_hits.at(i).GetCore()->Suppress()) {
+                 EraseHit(addback_hits,j); 
                } else {
                  addback_hits.at(j).Add(this->GetTigressHit(i));
                }  
@@ -504,7 +504,7 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
              if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {     // time gate == 110 ns pos gate == 105mm.
                used = true;
                if(use_suppression && tigress_hits.at(i).GetCore()->Suppress()) {
-
+                 EraseHit(addback_hits,j); 
                } else {
                  addback_hits.at(j).Add(this->GetTigressHit(i));
                }
@@ -525,6 +525,10 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
   }
 }
 
+void TTigress::EraseHit(std::vector<TTigressHit> &hits, int element) {
+  hits.erase(hits.begin()+element);
+  return;
+}
 
 
 
