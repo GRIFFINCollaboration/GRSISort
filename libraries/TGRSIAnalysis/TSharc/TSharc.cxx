@@ -85,7 +85,7 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
          if(sdata->GetFront_DetectorNbr(i) != sdata->GetBack_DetectorNbr(j)) {
             continue;
          }
-			   if(abs(sdata->GetFront_Charge(i) - sdata->GetBack_Charge(j)) > 6000)//naive charge cut keeps >99.9% of data.
+			   if(abs(sdata->GetFront_Charge(i) - sdata->GetBack_Charge(j)) > 12000)//naive 6000 charge cut keeps >99.9% of data.  now with more data! 6/15/2015 pcb.
 				    continue;
 
 		/*	
@@ -121,7 +121,13 @@ void	TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
                                              hit.GetFrontStrip(),
                                              hit.GetBackStrip()));
          
-        	this->sharc_hits.push_back(hit);
+         hit.SetFrontCFD(sdata->GetFront_TimeCFD(i));
+         hit.SetBackCFD(sdata->GetBack_TimeCFD(j));
+
+       //  hit.SetFrontTime(sdata->GetFront_Zc(i));
+       //  hit.SetBackTime(sdata->GetBack_Zc(j));
+
+       	 this->sharc_hits.push_back(hit);
 
          //inline void SetPadE(const Double_t &tenergy)		{	p_energy = tenergy;	}	//!
          //inline void SetPadT(const Double_t &ttime)		{	p_time = ttime;	}		//!

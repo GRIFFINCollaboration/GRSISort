@@ -74,10 +74,22 @@ struct MNEMONIC {
   std::string outputsensor;
 };
 
+static void SetRFMNEMONIC(std::string *name,MNEMONIC *mnemonic) {
+   mnemonic->system.assign(*name,0,2);
+   mnemonic->subsystem.assign("X");
+   mnemonic->arrayposition = 0;
+   mnemonic->arraysubposition.assign("X");
+   mnemonic->collectedcharge.assign("X");
+   mnemonic->segment = 0;
+   mnemonic->outputsensor.assign("X");
+}
 
 static void ParseMNEMONIC(std::string *name,MNEMONIC *mnemonic) {
-	if(!name || name->length()<9)
-		return;
+	if(!name || name->length()<9) {
+     if((name->length()<1) && (name->compare(0,2,"RF")==0))
+       SetRFMNEMONIC(name,mnemonic);
+     return;
+   }   
    std::string buf;
    mnemonic->system.assign(*name,0,2);
    mnemonic->subsystem.assign(*name,2,1);

@@ -36,6 +36,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	
 		//need to do sudo tracking to build addback.
 		TVector3 lasthit;  //!
+      double   lastenergy; //!
 		#ifndef __CINT__
 		std::tuple<int,int,int> lastpos; //!
 		#endif
@@ -43,9 +44,9 @@ class TTigressHit : public TGRSIDetectorHit {
 	public:
 
 		/////////////////////////		/////////////////////////////////////
-		void SetCore(TCrystalHit &temp)		  { core = temp;	} 					//!
-		void SetSegment(TCrystalHit &temp)	{ segment.push_back(temp);	}		//!
-		void SetBGO(TCrystalHit &temp)		  { bgo.push_back(temp);	}			//!
+		void SetCore(TCrystalHit &temp)		  { core = temp;	} 					  //!
+		void SetSegment(TCrystalHit &temp)	  { segment.push_back(temp);	}    //!
+		void SetBGO(TCrystalHit &temp)		  { bgo.push_back(temp);	}       //!
 
 		void SetDetectorNumber(const int &i) { detector = i;	} 				//!
 		void SetCrystalNumber(const int &i)	 { crystal = i; }					//!
@@ -55,14 +56,15 @@ class TTigressHit : public TGRSIDetectorHit {
 		//void SetDoppler(const double &d)	   { doppler = d;	}					//!
 		
 		/////////////////////////		/////////////////////////////////////
-		inline int GetDetectorNumber()	     {	return detector;		}			//!
-		inline int GetCrystalNumber()	       {	return crystal;			}			//!
-		inline int GetInitialHit()		       {	return first_segment;	}			//!
+		inline int GetDetectorNumber()	      {  return detector;		}			//!
+		inline int GetCrystalNumber()	         {  return crystal;			}			//!
+		inline int GetInitialHit()		         {  return first_segment;	}			//!
 	
-		inline int GetCharge()			         {	return core.GetCharge();	}		//!
-		inline double GetEnergy()		         {	return core.GetEnergy();	}		//!
-		inline double GetTime()			         {	return core.GetTime();		}		//!
-    inline double GetTimeCFD()           {  return core.GetCfd(); } //!
+      inline int GetFirstSegmentCharge()     {  return first_segment_charge; }
+		inline int GetCharge()			         {  return core.GetCharge();	}		//!
+		inline double GetEnergy()		         {  return core.GetEnergy();	}		//!
+		inline double GetTime()			         {  return core.GetTime();		}		//!
+      inline double GetTimeCFD()             {  return core.GetCfd(); } //!
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
 		inline double GetDoppler(double beta,TVector3 *vec=0) { 
@@ -95,6 +97,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		static bool Compare(TTigressHit lhs, TTigressHit rhs);	      //!     { return (lhs.GetDetectorNumber() < rhs.GetDetectorNumber()); }
 		static bool CompareEnergy(TTigressHit lhs, TTigressHit rhs);	//!     { return (lhs.GetDetectorNumber() < rhs.GetDetectorNumber()); }
 		
+      
 		void Add(TTigressHit*);                                       //!
 		TVector3 GetLastHit()	{return lasthit;}                       //!
 		#ifndef __CINT__
