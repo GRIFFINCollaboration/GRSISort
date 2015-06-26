@@ -700,9 +700,9 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
 	  if(EHitVec.at(j).GetDetectorNumber()==DHitVec.at(i).GetDetectorNumber())
 	  {
 	    BuiltHits.push_back(CombineHits(DHitVec.at(i),EHitVec.at(j)));
-	    cout<<DRED;
+	    /*cout<<DRED;
 	    BuiltHits.back().Print();
-	    cout<<RESET_COLOR;
+	    cout<<RESET_COLOR;*/
 	    DUsed.at(i) = true;
 	    EUsed.at(j) = true;
 	  }
