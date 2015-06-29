@@ -17,7 +17,7 @@
 ClassImp(TDescant)
 
 
-bool TDescant::fSetWave = true;
+bool TDescant::fSetWave = false;
 
 TVector3 TDescant::gPosition[21] = { 
    //Sceptar positions from Evan; Thanks Evan.
@@ -156,9 +156,9 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
          }
          dethit.SetWaveform(gdata->GetDetWave(i));
          if(dethit.GetWaveform().size() > 0) {
-            //printf("Analyzing waveform, current cfd = %d, psd = %d\n",dethit.GetCfd(),dethit.GetPsd());
+            printf("Analyzing waveform, current cfd = %d, psd = %d\n",dethit.GetCfd(),dethit.GetPsd());
             bool analyzed = dethit.AnalyzeWaveform();
-            //printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd(),dethit.GetPsd());
+            printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd(),dethit.GetPsd());
          }
       }
 		
