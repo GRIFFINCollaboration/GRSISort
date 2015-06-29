@@ -5,7 +5,7 @@
 ClassImp(TTigressHit)
 
 TTigressHit::TTigressHit()	{	
-   Class()->IgnoreTObjectStreamer(true);
+   //Class()->IgnoreTObjectStreamer(true);
 	Clear();
 }
 
@@ -57,8 +57,9 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs)	{
 
 
 void TTigressHit::CheckFirstHit(int charge,int segment)	{
-	if(abs(charge) > first_segment_charge)	{
- 		first_segment        = segment;
+   printf(DYELLOW "charge = %i  | first_segment_charge = %i \n", charge,first_segment_charge);
+   if(abs(charge) > first_segment_charge)	{
+ 		SetInitialHit(segment);
       first_segment_charge = charge;
 	}
 	return;				

@@ -131,7 +131,7 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 	for(int i=0;i<tigress_hits.size();i++)	{
 	   for(int j=0;j<tdata->GetSegmentMultiplicity();j++)	{
 	      if((tigress_hits[i].GetDetectorNumber() == tdata->GetSegCloverNumber(j))  && (tigress_hits[i].GetCrystalNumber() == tdata->GetSegCoreNumber(j))) {
-	         tigress_hits[i].CheckFirstHit(tdata->GetSegmentCharge(j),tdata->GetSegmentNumber(j));
+	         tigress_hits[i].CheckFirstHit(tdata->GetSegmentCharge(j),tdata->GetSegmentNumber(j));  // Sets the initial hit.
 
 				if(!SetSegmentHits()) 
 					continue;
@@ -476,9 +476,16 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
     for(int j =0; j<addback_hits.size();j++)    {
       TVector3 res = addback_hits.at(j).GetLastHit() - this->GetTigressHit(i)->GetPosition();
       int d_time   = abs(addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
+      int det1     = std::get<0>(addback_hits.at(j).GetLastPosition());
+      int cry1     = std::get<1>(addback_hits.at(j).GetLastPosition());
       int seg1     = std::get<2>(addback_hits.at(j).GetLastPosition());
+      
+      int det2     = this->GetTigressHit(i)->GetDetectorNumber(); 
+      int cry2     = this->GetTigressHit(i)->GetCrystalNumber(); 
       int seg2     = this->GetTigressHit(i)->GetInitialHit();
-      printf("\t\t" DGREEN "addback[loop %i] seg1[%i] seg2[%i]  res = %.02f  d_time =  %i" RESET_COLOR ,j,seg1,seg2,res.Mag(),d_time);
+
+
+      printf("\t\t" DGREEN "addback[loop %i] seg1[%02i %i %i] seg2[%02i %i %i]  res = %.02f  d_time =  %i" RESET_COLOR ,j,det1,cry1,seg1,det2,cry2,seg2,res.Mag(),d_time);
       if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
         if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
           used = true;

@@ -38,7 +38,6 @@ std::string TGRSIRunInfo::fGRSIVersion;
 
 void TGRSIRunInfo::Streamer(TBuffer &b) {
  UInt_t R__s, R__c;
- printf("run info streamed.\n");
  if(b.IsReading()) {
    Version_t R__v = b.ReadVersion(&R__s,&R__c); if (R__v) { }
    TObject::Streamer(b);  
@@ -132,7 +131,7 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    fBuildWindow       = 200;  
    fAddBackWindow     = 15.0;
 
-   printf("run info created.\n");
+   //printf("run info created.\n");
 
    Clear();
 
@@ -337,10 +336,8 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
         long int temp_bw; ss >> temp_bw;
         Get()->SetBuildWindow(temp_bw);
       } else if(type.compare("ADW")==0 || type.compare("ADDBACKWINDOW")==0 || type.compare("ADDBACK")==0 ) {
-        printf("type = %s\n",type.c_str());
         std::istringstream ss(line);
         double temp_abw; ss >> temp_abw;
-        printf("found addback window, setting to: %.02f \n",temp_abw);
         Get()->SetAddBackWindow(temp_abw);
       } else if( type.compare("CAL")==0 || type.compare("CALFILE")==0 ) {
         TGRSIOptions::AddInputCalFile(line);

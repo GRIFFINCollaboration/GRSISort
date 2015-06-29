@@ -44,13 +44,13 @@ class TTigressHit : public TGRSIDetectorHit {
 	public:
 
 		/////////////////////////		/////////////////////////////////////
-		void SetCore(TCrystalHit &temp)		  { core = temp;	} 					  //!
-		void SetSegment(TCrystalHit &temp)	  { segment.push_back(temp);	}    //!
-		void SetBGO(TCrystalHit &temp)		  { bgo.push_back(temp);	}       //!
+		void SetCore(TCrystalHit &temp)		  { core = temp;	} 					//!
+		void SetSegment(TCrystalHit &temp)	  { segment.push_back(temp);	}  //!
+		void SetBGO(TCrystalHit &temp)		  { bgo.push_back(temp);	}     //!
 
-		void SetDetectorNumber(const int &i) { detector = i;	} 				//!
-		void SetCrystalNumber(const int &i)	 { crystal = i; }					//!
-		void SetInitalHit(const int &i)		   { first_segment = i; }				//!
+		void SetDetectorNumber(const int &i)  { detector = i;	}              //!
+		void SetCrystalNumber(const int &i)	  { crystal = i; }					//!
+		void SetInitialHit(const int &i)      { first_segment = i; }         //!
 
 		void SetPosition(const TVector3 &p)  { position = p;	}					//!
 		//void SetDoppler(const double &d)	   { doppler = d;	}					//!
