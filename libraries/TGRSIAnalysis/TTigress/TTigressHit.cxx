@@ -57,7 +57,7 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs)	{
 
 
 void TTigressHit::CheckFirstHit(int charge,int segment)	{
-   printf(DYELLOW "charge = %i  | first_segment_charge = %i \n", charge,first_segment_charge);
+   //printf(DYELLOW "charge = %i  | first_segment_charge = %i \n", charge,first_segment_charge);
    if(abs(charge) > first_segment_charge)	{
  		SetInitialHit(segment);
       first_segment_charge = charge;
@@ -74,7 +74,7 @@ void TTigressHit::Add(TTigressHit *hit)	{
 	}
    this->core.SetEnergy(this->GetEnergy() + hit->GetEnergy());
 
-   if(lastenergy < hit->GetEnergy()) {
+   if(lastenergy > hit->GetEnergy()) {
      this->lastenergy = hit->GetEnergy();
      this->lasthit    = hit->GetPosition();
      this->lastpos    = std::make_tuple(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());

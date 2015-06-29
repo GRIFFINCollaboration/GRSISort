@@ -468,7 +468,7 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
 
   std::vector<int> to_erase;
   use_suppression = false;
-  printf("\t" DRED "Building Addback with %i tigress hits." RESET_COLOR "\n",GetMultiplicity());
+  //printf("\t" DRED "Building Addback with %i tigress hits." RESET_COLOR "\n",GetMultiplicity());
   for(int i = 0; i<GetMultiplicity(); i++)   {
     bool used = false;
     //if(use_suppression && tigress_hits.at(i).GetCore()->Suppress())
@@ -485,7 +485,7 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
       int seg2     = this->GetTigressHit(i)->GetInitialHit();
 
 
-      printf("\t\t" DGREEN "addback[loop %i] seg1[%02i %i %i] seg2[%02i %i %i]  res = %.02f  d_time =  %i" RESET_COLOR ,j,det1,cry1,seg1,det2,cry2,seg2,res.Mag(),d_time);
+      //printf("\t\t" DGREEN "addback[loop %i] seg1[%02i %i %i] seg2[%02i %i %i]  res = %.02f  d_time =  %i" RESET_COLOR ,j,det1,cry1,seg1,det2,cry2,seg2,res.Mag(),d_time);
       if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
         if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
           used = true;
@@ -507,7 +507,7 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
           break;
         }
       } 
-      printf (DBLUE "\t used = %s" RESET_COLOR "\n", used ? "true":"false");
+      //printf (DBLUE "\t used = %s" RESET_COLOR "\n", used ? "true":"false");
     }
     //addback_hits.push_back(*(this->GetTigressHit(i)));
     //addback_hits.at(0).Add(&(addback_hits.at(0)));
@@ -523,8 +523,8 @@ void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{
         EraseHit(addback_hits,to_erase.at(i));
     }
   }
-  printf("\t" DYELLOW "Addback Hits Built: %i addback hits." RESET_COLOR "\n",GetAddBackMultiplicity());
-  printf("--------------------------------------------------------\n");
+  //printf("\t" DYELLOW "Addback Hits Built: %i addback hits." RESET_COLOR "\n",GetAddBackMultiplicity());
+  //printf("--------------------------------------------------------\n");
 }
 
 void TTigress::EraseHit(std::vector<TTigressHit> &hits, int element) {
