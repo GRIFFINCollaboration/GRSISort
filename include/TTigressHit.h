@@ -33,7 +33,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		std::vector<TCrystalHit> bgo;
 
 		//double doppler;
-	
+
 		//need to do sudo tracking to build addback.
 		TVector3 lasthit;  //!
       double   lastenergy; //!

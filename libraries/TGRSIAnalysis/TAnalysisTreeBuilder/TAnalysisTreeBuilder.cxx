@@ -454,7 +454,9 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
    //if(fCurrentRunInfo) {
    //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
-      fCurrentRunInfo->Print();
+   if(TGRSIOptions::ExternalRunInfo()) 
+      TGRSIOptions::SetExternalRunInfo();
+   fCurrentRunInfo->Print();
    //}
 
    //Intialize the TChannel Information

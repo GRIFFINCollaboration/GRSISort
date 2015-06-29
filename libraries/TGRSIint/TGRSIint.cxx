@@ -400,12 +400,16 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
       TGRSIOptions::AddInputCalFile(filename);
       return true;
    } else if(ext.compare("info")==0) { 
-      if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
-         return true;
-      else {
-         printf("Problem reading run-info file %s\n",filename.c_str());
-         return false;
-      }
+      if(!TGRSIOptions::ExternalRunInfo())
+        TGRSIOptions::AddExternalRunInfo(filename);
+      else
+        printf(DRED "more than one run info found!  discarding %s\n",filename.c_str());
+      //if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
+      //   return true;
+      //else {
+      //   printf("Problem reading run-info file %s\n",filename.c_str());
+      //   return false;
+      //}
    } else if(ext.compare("xml")==0) { 
       //fInputOdbFile->push_back(filename);
       TGRSIOptions::AddInputOdbFile(filename);

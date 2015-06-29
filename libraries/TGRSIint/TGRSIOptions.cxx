@@ -1,4 +1,5 @@
 #include "TGRSIOptions.h"
+#include "TGRSIRunInfo.h"
 
 NamespaceImp(TGRSIOptions)
 
@@ -24,6 +25,7 @@ namespace TGRSIOptions {
   std::vector<std::string> fInputRootFile;
   std::vector<std::string> fInputOdbFile;
   std::vector<std::string> fInputCalFile;
+  std::vector<std::string> fExternalRunInfo;
   std::vector<std::string> fMacroFile;
 
 std::string GetHostName(){
@@ -38,6 +40,19 @@ std::vector<std::string> GetInputMidas() {  return fInputMidasFile; }
 std::vector<std::string> GetInputCal()   {  return fInputCalFile;   }
 std::vector<std::string> GetInputOdb()   {  return fInputOdbFile;   }
 std::vector<std::string> GetMacroFile()  {  return fMacroFile;      }
+
+
+void AddExternalRunInfo(std::string file) { fExternalRunInfo.push_back(file); }
+
+void SetExternalRunInfo() {
+  if(ExternalRunInfo())
+    if(!TGRSIRunInfo::ReadInfoFile(fExternalRunInfo.at(0).c_str())) 
+      printf("Problem reading run-info file %s\n",fExternalRunInfo.at(0).c_str());
+  return;
+}
+
+bool ExternalRunInfo() { if(fExternalRunInfo.size()>0) return true; else return false; }
+
 
 const char *GetXMLODBFile(int runnumber,int subrunnumber);
 const char *GetCalFile(int runnumber,int subrunnumber);

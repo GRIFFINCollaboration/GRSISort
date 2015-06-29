@@ -462,59 +462,62 @@ void TTigress::BuildCloverAddBack(Option_t *opt)	{
 }
 
 void TTigress::BuildAddBack(Option_t *opt, bool use_suppression)	{ 
+  //if(this->tigress_hits.size() == 0)
+  //  return;
+  addback_hits.clear();
 
-	//if(this->tigress_hits.size() == 0)
-   // 	return;
-
-	addback_hits.clear();
-
-		//addback_hits.push_back(*(this->GetTigressHit(0)));
-		//addback_hits.at(0).Add(&(addback_hits.at(0)));
-
-      for(int i = 0; i<this->GetMultiplicity(); i++)   {
-         bool used = false;
-         //if(use_suppression && tigress_hits.at(i).GetCore()->Suppress())
-         //   continue;
-         for(int j =0; j<addback_hits.size();j++)    {
-           TVector3 res = addback_hits.at(j).GetLastHit() - this->GetTigressHit(i)->GetPosition();
-           int d_time = abs(addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
-
-           int seg1 = std::get<2>(addback_hits.at(j).GetLastPosition());
-           int seg2 = this->GetTigressHit(i)->GetInitialHit();
-             
-           if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
-             if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
-               used = true;
-               if(use_suppression && tigress_hits.at(i).GetCore()->Suppress()) {
-                 EraseHit(addback_hits,j); 
-               } else {
-                 addback_hits.at(j).Add(this->GetTigressHit(i));
-               }  
-               break;
-             }
-           } else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{ // front to back
-             if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {     // time gate == 110 ns pos gate == 105mm.
-               used = true;
-               if(use_suppression && tigress_hits.at(i).GetCore()->Suppress()) {
-                 EraseHit(addback_hits,j); 
-               } else {
-                 addback_hits.at(j).Add(this->GetTigressHit(i));
-               }
-               break;
-             }
-           }
+  std::vector<int> to_erase;
+  use_suppression = false;
+  printf("\t" DRED "Building Addback with %i tigress hits." RESET_COLOR "\n",GetMultiplicity());
+  for(int i = 0; i<GetMultiplicity(); i++)   {
+    bool used = false;
+    //if(use_suppression && tigress_hits.at(i).GetCore()->Suppress())
+    //   continue;
+    for(int j =0; j<addback_hits.size();j++)    {
+      TVector3 res = addback_hits.at(j).GetLastHit() - this->GetTigressHit(i)->GetPosition();
+      int d_time   = abs(addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
+      int seg1     = std::get<2>(addback_hits.at(j).GetLastPosition());
+      int seg2     = this->GetTigressHit(i)->GetInitialHit();
+      printf("\t\t" DGREEN "addback[loop %i] seg1[%i] seg2[%i]  res = %.02f  d_time =  %i" RESET_COLOR ,j,seg1,seg2,res.Mag(),d_time);
+      if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
+        if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
+          used = true;
+          if(tigress_hits.at(i).GetCore()->Suppress()) {
+            to_erase.push_back(j);//EraseHit(addback_hits,j); 
+          }  
+          //} else {
+          addback_hits.at(j).Add(this->GetTigressHit(i));
+          break;
         }
-        //addback_hits.push_back(*(this->GetTigressHit(i)));
-        //addback_hits.at(0).Add(&(addback_hits.at(0)));
-      
-		if(!used) {
-        if(use_suppression && !tigress_hits.at(i).GetCore()->Suppress()) {
-          addback_hits.push_back(*(this->GetTigressHit(i)));
-          addback_hits.back().Add(&(addback_hits.back()));
+      } else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{ // front to back
+        if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {     // time gate == 110 ns pos gate == 105mm.
+          used = true;
+          if(tigress_hits.at(i).GetCore()->Suppress()) {
+            to_erase.push_back(j);//EraseHit(addback_hits,j); 
+          }
+          //} else {
+          addback_hits.at(j).Add(this->GetTigressHit(i));
+          break;
         }
-		}
+      } 
+      printf (DBLUE "\t used = %s" RESET_COLOR "\n", used ? "true":"false");
     }
-  
+    //addback_hits.push_back(*(this->GetTigressHit(i)));
+    //addback_hits.at(0).Add(&(addback_hits.at(0)));
+    if(!used) {
+      addback_hits.push_back(*(this->GetTigressHit(i)));
+      addback_hits.back().Add(&(addback_hits.back()));
+    }
+  }
+  if(use_suppression) {
+  std::sort(to_erase.begin(),to_erase.end(),std::greater<int>());
+    for(int i=0;i<to_erase.size();i++) {
+      if(addback_hits.size()>to_erase.at(i))
+        EraseHit(addback_hits,to_erase.at(i));
+    }
+  }
+  printf("\t" DYELLOW "Addback Hits Built: %i addback hits." RESET_COLOR "\n",GetAddBackMultiplicity());
+  printf("--------------------------------------------------------\n");
 }
 
 void TTigress::EraseHit(std::vector<TTigressHit> &hits, int element) {
