@@ -601,13 +601,13 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, int bank, TMidasEvent 
             }
             else
 					errfilename.append("error_log.log");
-            FILE *errfileptr = freopen(errfilename.c_str(),"a",stdout);
+				  FILE* originalstdout = stdout;
+				  FILE *errfileptr = freopen(errfilename.c_str(),"a",stdout);
 			   printf("\n//**********************************************//\n");
 				if(mevent) mevent->Print("a");
 			   printf("\n//**********************************************//\n");
 			   fclose(errfileptr);
-		      int fd = open("/dev/tty", O_WRONLY);
-	     		stdout = fdopen(fd, "w");
+	     		stdout = originalstdout;
 			}
 		}
 	}

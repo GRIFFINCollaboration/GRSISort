@@ -10,8 +10,8 @@ CAT=cat
 
 .PHONY: all clean gone
 
-all: libAnalysisTreeBuilder.so
-	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
+all: libAnalysisTreeBuilder.so $(OBJECTS)
+	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $< ;
 
 
 %.so: $(OBJECTS)

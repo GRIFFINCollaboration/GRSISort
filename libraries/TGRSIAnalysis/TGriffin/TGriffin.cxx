@@ -61,11 +61,15 @@ TVector3 TGriffin::gCloverPosition[17] = {
 
 
 TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
+   Class()->IgnoreTObjectStreamer(kTRUE);
+   fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
    Clear();
 }
 
 TGriffin::TGriffin(const TGriffin& rhs) {
+  Class()->IgnoreTObjectStreamer(kTRUE);
   ((TGriffin&)rhs).Copy(*this);
+  fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 }
 
 void TGriffin::Copy(TGriffin &rhs) const {
@@ -134,6 +138,7 @@ void TGriffin::Clear(Option_t *opt)	{
    }
 	griffin_hits.clear();
    fCycleStart = 0;
+   fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 	//addback_hits.clear();
 	//addback_clover_hits.clear();
 }
@@ -193,9 +198,11 @@ void TGriffin::PushBackHit(TGRSIDetectorHit *ghit){
    griffin_hits.push_back(*((TGriffinHit*)ghit));
 }
 
+
 TGRSIDetectorHit* TGriffin::GetHit(const Int_t idx) {
    return GetGriffinHit(idx);
 }
+
 
 TGriffinHit* TGriffin::GetGriffinHit(const int i) {
    if(i < GetMultiplicity())
@@ -217,7 +224,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
 
    
-   //griffin_hits.clear();
+   griffin_hits.clear();
    Clear("");
    griffin_hits.reserve(gdata->GetMultiplicity());
 
@@ -245,11 +252,11 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       corehit.SetTime(gdata->GetCoreTime(i));
       corehit.SetCfd(gdata->GetCoreCFD(i));
       corehit.SetCharge(gdata->GetCoreCharge(i));
-
+/*
       if(TGriffin::SetCoreWave()){
          corehit.SetWaveform(gdata->GetCoreWave(i));
       }
-		
+*/		
       //corehit.SetDetectorNumber(gdata->GetCloverNumber(i));
       //corehit.SetCrystalNumber(gdata->GetCoreNumber(i));
    

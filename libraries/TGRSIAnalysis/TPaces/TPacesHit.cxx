@@ -6,10 +6,12 @@
 ClassImp(TPacesHit)
 
 TPacesHit::TPacesHit():TGRSIDetectorHit()	{	
+   Class()->IgnoreTObjectStreamer(kTRUE);
 	Clear();
 }
 
 TPacesHit::TPacesHit(const TPacesHit &rhs)	{	
+   Class()->IgnoreTObjectStreamer(kTRUE);
 	Clear();
    ((TPacesHit&)rhs).Copy(*this);
 }

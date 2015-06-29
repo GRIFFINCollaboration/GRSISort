@@ -10,9 +10,8 @@ CAT=cat
 
 .PHONY: all clean gone
 
-all: libNucleus.so
-	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
-
+all: libNucleus.so $(OBJECTS)
+	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $< ;
 
 %.so: $(OBJECTS)
 	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"

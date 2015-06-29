@@ -92,7 +92,7 @@ bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
    //same, false if different.
    std::string namea; namea.assign(((TChannel)chana).GetChannelName());
 	
-   if(namea.compare(((TChannel)chanb).GetChannelName()) <= 0) return true;
+   if(namea.compare(((TChannel)chanb).GetChannelName()) < 0) return true;
    else return false;
 }
 
@@ -962,7 +962,7 @@ int TChannel::WriteToRoot(TFile *fileptr) {
   WriteCalBuffer();
   std::string savedata = fFileData;
   
-
+  FILE* originalstdout = stdout;
   int fd = open("/dev/null", O_WRONLY); // turn off stdout.
   stdout = fdopen(fd, "w");
 
@@ -986,8 +986,7 @@ int TChannel::WriteToRoot(TFile *fileptr) {
     TChannel::DeleteAllChannels();
   }
 
-  fd = open("/dev/tty", O_WRONLY);  // turn on stdout.
-  stdout = fdopen(fd, "w");
+  stdout = originalstdout; //Restore stdout
 
   ParseInputData(savedata.c_str(),"q");
   SaveToSelf(savedata.c_str());
