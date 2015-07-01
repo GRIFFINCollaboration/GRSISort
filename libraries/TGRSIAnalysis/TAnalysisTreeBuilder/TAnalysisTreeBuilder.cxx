@@ -754,6 +754,8 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          if(!channel)
             continue;
          ClearMNEMONIC(&mnemonic);
+         //if(strlen(channel->GetChannelName())>0)
+         //  printf("chnnel->GetChannelName() = %s\n",channel->GetChannelName());
          ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
          
          //We use the MNEMONIC in order to figure out what detector we want to put the set of fragments into

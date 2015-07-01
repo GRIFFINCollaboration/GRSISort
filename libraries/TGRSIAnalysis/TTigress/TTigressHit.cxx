@@ -70,10 +70,13 @@ void TTigressHit::Add(TTigressHit *hit)	{
 		lasthit    = position;
       lastenergy = GetEnergy();
 		lastpos    = std::make_tuple(GetDetectorNumber(),GetCrystalNumber(),GetInitialHit());
+      SetSuppress(hit->Suppress());
 		return;
 	}
    this->core.SetEnergy(this->GetEnergy() + hit->GetEnergy());
 
+   if(hit->Suppress()) { this->SetSuppress(true); }  // if any of the add back compents is 
+                                                     // suppressed, suppress the entire hit.
    if(lastenergy > hit->GetEnergy()) {
      this->lastenergy = hit->GetEnergy();
      this->lasthit    = hit->GetPosition();

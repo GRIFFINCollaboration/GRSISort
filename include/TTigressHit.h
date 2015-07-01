@@ -84,11 +84,13 @@ class TTigressHit : public TGRSIDetectorHit {
 			return tmp;
 		}
 
-		inline int GetSegmentMultiplicity()		        {	return segment.size();	}	//!
-		inline TCrystalHit *GetSegment(const int &i)	{	return &segment.at(i);	}	//!
+		inline int GetSegmentMultiplicity()		      { return segment.size();	}	//!
+		inline TCrystalHit *GetSegment(const int &i)	{ return &segment.at(i);	}	//!
 
-		inline int GetBGOMultiplicity()			      {	return bgo.size();	}		      //!
-		inline TCrystalHit *GetBGO(const int &i)	{	return &bgo.at(i);	}	        //!
+		inline int GetBGOMultiplicity()			      { return bgo.size();	}		      //!
+		inline TCrystalHit *GetBGO(const int &i)	   { return &bgo.at(i);	}	        //!
+      inline bool Suppress()                       { return GetCore()->Suppress(); }
+      inline void SetSuppress(bool flag = true)    { GetCore()->SetSuppress(flag); }
 
 		inline TCrystalHit *GetCore()								{	return &core;	}	       		  //!
 
