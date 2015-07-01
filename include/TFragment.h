@@ -78,6 +78,8 @@ public:
    Int_t Get4GCfd(int i=0); //!
 
    bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!
+   int  GetColor(Option_t *opt = "") const; //!
+   bool HasWave() const { return (wavebuffer.size()>0) ?  true : false; } //!
 
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 

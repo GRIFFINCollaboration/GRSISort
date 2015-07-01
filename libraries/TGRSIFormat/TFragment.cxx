@@ -210,7 +210,7 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
    //Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs to be done
    //Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then checks
    //for conditions.
-   if(channame.compare(0,pre.length(),pre)) {     //channame.BeginsWith(pre)){
+   if(!channame.compare(0,pre.length(),pre)) {     //channame.BeginsWith(pre)){
       if(option.Length()<1) //no option.
          return true;
       if(channame.length()>8) {
@@ -227,3 +227,22 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
      return false;
 
 }
+
+int TFragment::GetColor(Option_t *opt) const {
+   std::string channame = this->GetName();
+   if(channame.length()<9)
+      return false;
+   char color = channame[5];
+   switch(color) {
+      case 'B':
+        return 0;
+      case 'G':
+        return 1;
+      case 'R':
+        return 2;
+      case 'W':
+        return 3;
+   };
+   return -1;
+};
+

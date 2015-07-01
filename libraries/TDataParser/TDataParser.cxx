@@ -225,9 +225,12 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment *currentfrag) {
       currentfrag->Zc.push_back(tsBits - cfdBits);
    } else if ( dig_type.compare(0,5,"Tig64")==0 ) {
       //currentfrag->TimeToTrig = (currentfrag->Cfd.back() >> 5);
-      currentfrag->Zc.push_back(tsBits - cfdBits);
-      // cfdBits	= (eventfragment->Cfd >> 5);
-      // tsBits  = eventfragment->TimeStampLow & 0x003fffff;
+      cfdBits	= (currentfrag->Cfd.back() >> 4) & 0x003fffff;
+      //tsBits  = currentfrag->TimeStampLow & 0x0000ffff; //0x003fffff;
+      currentfrag->Zc.push_back(abs(cfdBits)&0x000fffff);
+      
+      //currentfrag->Print();
+      //printf("\n------------------------------\n\n\n");
    } else {
       cfdBits = (currentfrag->Cfd.back() >> 4);
       tsBits  = currentfrag->TimeStampLow & 0x007fffff;
@@ -397,7 +400,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
 //		return -x;
 //	}
    //The master Filter Pattern is in an unstable state right now and is not
-   //always written to the maidas file
+   //always written to the midas file
 	if(SetGRIFMasterFilterPattern(data[x],EventFrag)) {
       x++;
 	} 
@@ -407,13 +410,13 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
 	}
 
    //The channel trigger ID is in an unstable state right now and is not
-   //always written to the maidas file
+   //always written to the midas file
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
 		delete EventFrag;
 		return -x;
 	}
 
-   //The Network packet number is for debugging and is not always writted to
+   //The Network packet number is for debugging and is not always written to
    //the midas file.
    if(SetGRIFNetworkPacket(data[x],EventFrag)) {
       x++;
@@ -432,7 +435,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
 
 		switch(packet) {
          case 0x80000000: //The 8 packet type is for event headers
-               //if this happens, we have "accidentially" found another event.
+               //if this happens, we have "accidentally" found another event.
                break;
          case 0xc0000000: //The c packet type is for waveforms
 		         if(!no_waveforms) 

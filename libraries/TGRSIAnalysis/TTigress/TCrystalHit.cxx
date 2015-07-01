@@ -7,7 +7,7 @@
 ClassImp(TCrystalHit)
 
 
-TCrystalHit::TCrystalHit()	{
+TCrystalHit::TCrystalHit(): suppress(false)	{
    Class()->IgnoreTObjectStreamer(true);
 	Clear();
 }

@@ -20,6 +20,7 @@ namespace TGRSIOptions {
       extern std::vector<std::string> fInputMidasFile;
       extern std::vector<std::string> fInputCalFile;
       extern std::vector<std::string> fInputOdbFile;
+    	extern std::vector<std::string> fExternalRunInfo;
     	extern std::vector<std::string> fMacroFile;
 
       extern bool fCloseAfterSort;
@@ -48,6 +49,9 @@ namespace TGRSIOptions {
 		const char *GetXMLODBFile(int runnumber=0,int subrunnumber=-1);
       const char *GetCalFile(int runnumber=0,int subrunnumber=-1);
 
+      void AddExternalRunInfo(std::string);
+      void SetExternalRunInfo();
+      bool ExternalRunInfo();
 
       void SetCloseAfterSort(bool flag=true); 
       bool CloseAfterSort();                  

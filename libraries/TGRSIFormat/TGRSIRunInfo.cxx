@@ -131,6 +131,8 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    fBuildWindow       = 200;  
    fAddBackWindow     = 15.0;
 
+   //printf("run info created.\n");
+
    Clear();
 
 }
@@ -144,6 +146,7 @@ void TGRSIRunInfo::Print(Option_t *opt) {
    printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
    printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
    printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
+   printf("\t\tTRF:          %s\n", RF() ? "true" : "false");
    printf("\t\tTIP:          %s\n", Tip() ? "true" : "false");
    printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
    printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
@@ -218,8 +221,8 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
          if(!TriFoil()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
          SetTriFoil();
       } else if(system.compare("RF")==0) {
-         if(!Rf()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
-         SetRf();
+         if(!RF()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+         SetRF();
       } else if(system.compare("CS")==0) {
          if(!CSM()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
          SetCSM();
@@ -272,7 +275,7 @@ void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {  }
 Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
    std::string infilename;
    infilename.append(filename);
-
+   printf("Reading file: %s\n",filename);
    if(infilename.length()==0)
       return false;
 
@@ -332,7 +335,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
         std::istringstream ss(line);
         long int temp_bw; ss >> temp_bw;
         Get()->SetBuildWindow(temp_bw);
-      } else if( type.compare("ABW")==0 || type.compare("ADDBACKWINDOW")==0 || type.compare("ADDBACK") ) {
+      } else if(type.compare("ADW")==0 || type.compare("ADDBACKWINDOW")==0 || type.compare("ADDBACK")==0 ) {
         std::istringstream ss(line);
         double temp_abw; ss >> temp_abw;
         Get()->SetAddBackWindow(temp_abw);

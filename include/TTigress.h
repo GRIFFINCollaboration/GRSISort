@@ -33,7 +33,7 @@ class TTigress : public TGRSIDetector {
 	public: 
       void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
 		//void BuildHits(TTigressData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
-		void BuildAddBack(Option_t *opt="");	//!
+		void BuildAddBack(Option_t *opt="", bool use_suppresion =  true);	//!
 		void BuildCloverAddBack(Option_t *opt="");	//!
 
 		TTigressHit *GetTigressHit(int i)	{	return &tigress_hits[i];	}	//!
@@ -61,7 +61,8 @@ class TTigress : public TGRSIDetector {
 
 		std::vector <TTigressHit> tigress_hits;
 		std::vector <TTigressHit> addback_hits;
-		std::vector <TTigressHit> clover_addback_hits;			
+ 		std::vector <TTigressHit> clover_addback_hits;			
+      void EraseHit(std::vector<TTigressHit> &hits,int element);
 
 		static double beta;
 
