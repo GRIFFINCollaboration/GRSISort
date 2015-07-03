@@ -62,6 +62,7 @@ struct SpeHeader {
 
 void WriteHist(TH1*,fstream*);
 void WriteMat(TH2*,fstream*);
+void WriteM4b(TH2D*, fstream*);
 
 int main(int argc, char** argv)	{	
 
@@ -93,6 +94,7 @@ int main(int argc, char** argv)	{
 	TIter next(keys);
 	TList *histstowrite = new TList();
 	TList *matstowrite = new TList();
+   TList *m4bstowrite = new TList();
 	//int counter = 1;
 	while( TKey *currentkey = (TKey*)next() ) {
 		std::string keytype = currentkey->ReadObj()->IsA()->GetName();
@@ -101,6 +103,8 @@ int main(int argc, char** argv)	{
 			//if((counter-1)%4==0)
 			//	printf("*****************************\n");
 			histstowrite->Add(currentkey->ReadObj());
+      } else if(keytype.compare(0,4,"TH2D")==0){
+         m4bstowrite->Add(currentkey->ReadObj());
 		} else if(keytype.compare(0,3,"TH2")==0) {
          matstowrite->Add(currentkey->ReadObj());
       }
@@ -130,6 +134,19 @@ int main(int argc, char** argv)	{
 		outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
 		WriteMat(currentmat, &outfile);
 		printf("\t%s written to file %s.\n",currentmat->GetName(),outfilename.c_str());
+		outfile.close();
+	}
+
+
+	TIter nextm4b(m4bstowrite);
+	while( TH2D *currentm4b = (TH2D*)nextm4b() ) {
+      std::string outfilename = path + "/";
+		outfilename.append(currentm4b->GetName());
+		outfilename.append(".m4b");
+		fstream outfile;
+		outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
+		WriteM4b(currentm4b, &outfile);
+		printf("\t%s written to file %s.\n",currentm4b->GetName(),outfilename.c_str());
 		outfile.close();
 	}
 
@@ -163,6 +180,29 @@ void WriteMat(TH2 *mat, fstream *outfile) {
    delete empty;
 }
 
+void WriteM4b(TH2D *mat, fstream *outfile) {
+   int xbins = mat->GetXaxis()->GetNbins();
+   int ybins = mat->GetYaxis()->GetNbins();
+   
+	TH1D *empty = new TH1D("empty","empty",4096,0,4096);
+
+   for(int y=1;y<=4096;y++ ) {
+      uint32_t buffer[4096] = {0};
+		TH1D *proj;
+		if(y<=ybins)
+			proj = mat->ProjectionX("proj",y,y);
+		else
+			proj = empty;
+      for(int x=1;x<=4096;x++ ) {
+         if(x<=xbins)
+            buffer[x-1] = (uint32_t)(proj->GetBinContent(x));//    mat->GetBinContent(x,y));
+         else
+            buffer[x-1] = 0;
+      }
+   	outfile->write((char*)(&buffer),sizeof(buffer));	
+   }
+   delete empty;
+}
 
 void WriteHist(TH1 *hist,fstream *outfile)	{
 	SpeHeader spehead;
