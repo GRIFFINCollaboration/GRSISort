@@ -57,6 +57,7 @@ void TFragment::Clear(Option_t *opt){
    DataType           = 0; 
    DetectorType       = 0; 
    ChannelId          = 0; 
+   AcceptedChannelId  = 0; 
 
 
 

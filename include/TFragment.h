@@ -60,6 +60,7 @@ public:
    UShort_t DataType;             //-> 
    UShort_t DetectorType;         //-> Detector Type (PACES,HPGe, etc)
    UInt_t ChannelId;              //-> Threshold crossing counter for a channel
+   UInt_t AcceptedChannelId;      //-> Accepted threshold crossing counter for a channel
 
    std::vector<UShort_t>  KValue; //-> KValue for each pileup hit
 
