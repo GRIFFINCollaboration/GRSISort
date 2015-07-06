@@ -60,6 +60,7 @@ public:
    UShort_t DataType;             //-> 
    UShort_t DetectorType;         //-> Detector Type (PACES,HPGe, etc)
    UInt_t ChannelId;              //-> Threshold crossing counter for a channel
+   //UInt_t AcceptedChannelId;      //-> Accepted threshold crossing counter for a channel
 
    std::vector<UShort_t>  KValue; //-> KValue for each pileup hit
 
@@ -84,8 +85,6 @@ public:
    using TObject::Print; 
    virtual void Print(Option_t *opt = ""); //!
    
-
-
    bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 
