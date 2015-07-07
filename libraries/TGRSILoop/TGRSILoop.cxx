@@ -119,7 +119,7 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
          TFragmentQueue::GetQueue("BAD")->FragsInQueue() !=0 ||
          fMidasThreadRunning)
    {
-      frag = TFragmentQueue::GetQueue()->PopFragment();
+      frag = TFragmentQueue::GetQueue("GOOD")->PopFragment();
       if(frag) {
          TGRSIRootIO::Get()->FillFragmentTree(frag);
  	      delete frag;
@@ -533,7 +533,8 @@ bool TGRSILoop::ProcessEPICS(float *ptr,int &dsize,TMidasEvent *mevent,TMidasFil
 bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile)   {
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
-	int frags = TDataParser::TigressDataToFragment(ptr,dsize,mserial,mtime);
+   int iter=0;
+	int frags = TDataParser::TigressDataToFragment(ptr,dsize,&iter,mserial,mtime);
 	if(frags>-1) {
       fFragsReadFromMidas += frags;
 	   return true;
@@ -576,17 +577,22 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, int bank, TMidasEvent 
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
 
-	int frags = TDataParser::GriffinDataToFragment(ptr,dsize,bank,mserial,mtime);
-	if(frags>-1)	{
-      fFragsReadFromMidas += frags;
-      return true;
-	} else {	       
-      fFragsReadFromMidas += 1;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
-		if(!suppress_error) {
+   int iter  = 0;
+	int frags = 0; TDataParser::GriffinDataToFragment(ptr,dsize,&iter,bank,mserial,mtime);
+	while(iter < dsize) {
+     //printf(" iter / dsize = %i / %i \n",iter,dsize);
+	  frags = TDataParser::GriffinDataToFragment(ptr+iter,dsize-iter,&iter,bank,mserial,mtime);
+     fFragsReadFromMidas += 1;//= frags;
+     if(frags>-1)	{
+       //fFragsReadFromMidas += 1;//= frags;
+       //return true;
+     } else {
+       //fFragsReadFromMidas += 1;   // if the midas bank fails, we record info about the fail conversion and try again.  pcb.
+       if(!suppress_error) {       // 
 			if(!TGRSIOptions::LogErrors()) {
 			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
-			   printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", (-1*frags));
-	    		   if(mevent)  mevent->Print(Form("a%i",(-1*frags)-1));
+			   printf(DRED "\nBad things are happening. Failed around datum %i" RESET_COLOR "\n", (iter));// frags));
+	    		   if(mevent)  mevent->Print(Form("a%i",(iter-1)));//frags)-1));
 			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
 		   } else {
 				std::string errfilename; 
@@ -606,9 +612,23 @@ bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, int bank, TMidasEvent 
 		      int fd = open("/dev/tty", O_WRONLY);
 	     		stdout = fdopen(fd, "w");
 			}
-		}
-	}
-   return false;
+		 }
+       //ok, now we have multiple frags per event - and we know we failed parseing an
+       //midas event. The error has already been logged above, let's check for another 
+       //header and try again...   pcb. (7/5/15).
+       while( ((*(ptr+iter)&0xf0000000)!=0x80000000) && (iter < dsize) ) { iter++; }
+       if(!suppress_error) {       // 
+         if(!TGRSIOptions::LogErrors()) {
+           if(iter <dsize) {
+             printf(DGREEN "Recovered data stream on datum %i" RESET_COLOR "\n",iter);
+           } 
+           printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+         }
+       }
+     }  
+   }
+   return true;
+   //return false;
 }
 
 

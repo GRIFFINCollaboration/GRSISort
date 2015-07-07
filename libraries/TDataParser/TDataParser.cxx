@@ -4,6 +4,7 @@
 
 #include "TFragmentQueue.h"
 #include "TGRSIStats.h"
+#include "TGRSILoop.h"
 
 #include "TEpicsFrag.h"
 #include "TGRSIRootIO.h"
@@ -50,7 +51,7 @@ TDataParser::~TDataParser() {}
 
 
 //std::vector<TFragment*> TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber, time_t midastime) {
-int TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber, time_t midastime) {
+int TDataParser::TigressDataToFragment(uint32_t *data,int size,int *iter,unsigned int midasserialnumber, time_t midastime) {
 //Converts A MIDAS File from the Tigress DAQ into a TFragment.
    std::vector<TFragment*> FragsFound;
    int NumFragsFound = 0;
@@ -378,7 +379,8 @@ bool TDataParser::SetTIGTimeStamp(uint32_t *data,TFragment *currentfrag ) {
 /////////////***************************************************************/////////////
 /////////////***************************************************************/////////////
 
-int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasserialnumber, time_t midastime)	{
+
+int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int *iter, int bank, unsigned int midasserialnumber, time_t midastime)	{
 //Converts a Griffin flavoured MIDAS file into a TFragment
    int NumFragsFound = 1;
    TFragment *EventFrag = new TFragment();
@@ -389,8 +391,9 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
 	int x = 0;  
    //int x = 6;
 	if(!SetGRIFHeader(data[x++],EventFrag,bank)) {
-		printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n",data[0]);
+		printf(DYELLOW "data[%i] = 0x%08x" RESET_COLOR "\n",x-1,data[x-1]);
 		delete EventFrag;
+      *iter += x;
 		return -x;
 	}
 
@@ -401,17 +404,21 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
    //The master Filter Pattern is in an unstable state right now and is not
    //always written to the midas file
 	if(SetGRIFMasterFilterPattern(data[x],EventFrag)) {
+      //printf("in set grif filter pattern thingie.\n");
       x++;
 	} 
 
   if(SetGRIFMasterFilterId(data[x],EventFrag)) {
+      //printf("in set grif filter id thingie.\n");
       x++;
 	}
 
    //The channel trigger ID is in an unstable state right now and is not
    //always written to the midas file
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
+      //printf("in set grif channel trigger thingie.\n");
 		delete EventFrag;
+      *iter += x;
 		return -x;
 	}
 
@@ -423,6 +430,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
 
 	if(!SetGRIFTimeStampLow(data[x++],EventFrag)) {
 		delete EventFrag;
+      *iter += x;
 		return -x;
 	}
 
@@ -450,14 +458,34 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
             // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
             // change should be backward-compatible
             if((value & 0x3fff) == (EventFrag->ChannelId & 0x3fff)){
+               if(!TGRSILoop::Get()->GetSuppressError() && EventFrag->DataType == 2) {
+                  // check whether the nios finished and if so whether it finished with an error
+                  if(((value>>14) & 0x1) == 0x1) {
+                     if(((value>>16) & 0xff) != 0) {
+                        printf( BLUE "0x%04x: NIOS code finished with error 0x%02x" RESET_COLOR "\n",EventFrag->ChannelAddress, (value>>16) & 0xff);
+                     }
+                  }
+               }
+              
+               // Adding new data members to the fragment is not backwards 
+               // compatable.  Also, an unsigned int to care a 1 is a pretty exssive.
+               // If we really need this, I suggest moving to a TBits Objectt, which we 
+               // can move all such flags too and expained with out breaking things backwards.
+               //if(EventFrag->DataType == 1) {
+               //   EventFrag->AcceptedChannelId = (value>>14) & 0x3fff;
+                  //printf("Set AcceptedChannelId to 0x%04x (from 0x%08x => 0x%04x)\n", EventFrag->AcceptedChannelId, value, value>>14);
+               //} else {
+               //   EventFrag->AcceptedChannelId = 0;
+               //}
+
                if(record_stats)
 						FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
-					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);				
-               if(x != size-1)
-                  printf( DBLUE "x | size: " DRED "%i | %i" RESET_COLOR "\n",x,size); //once this happens we need to recursively call GriffinDataToFragment with the remaining datums.
+					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);			
+               *iter +=(x+1);
                return NumFragsFound; //This will be more important when we start putting multiple fragments into a single mid event
 				} else  {
                TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
+               *iter += x;
 					return -x;
             }
             break;
@@ -485,12 +513,13 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
  		   default:				
 	      	if((packet & 0x80000000) == 0x00000000) {
             if(x+1 < size) {
-					    EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 21 );
-					    EventFrag->Charge.push_back((*(data+x) & 0x03ffffff));	
-					    ++x;
- 					    EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
+              EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 21 );
+              EventFrag->Charge.push_back((*(data+x) & 0x03ffffff));	
+              ++x;
+              EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
               EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
             } else {
+               *iter += x;
                return -x;
 	          }
           }
@@ -498,6 +527,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
 		};
 	}
    TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
+   *iter += x;
 	return -x;
 }
 

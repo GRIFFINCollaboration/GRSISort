@@ -454,7 +454,9 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
    //if(fCurrentRunInfo) {
    //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
-      fCurrentRunInfo->Print();
+   if(TGRSIOptions::ExternalRunInfo()) 
+      TGRSIOptions::SetExternalRunInfo();
+   fCurrentRunInfo->Print();
    //}
 
    //Intialize the TChannel Information
@@ -752,6 +754,8 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          if(!channel)
             continue;
          ClearMNEMONIC(&mnemonic);
+         //if(strlen(channel->GetChannelName())>0)
+         //  printf("chnnel->GetChannelName() = %s\n",channel->GetChannelName());
          ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
          
          //We use the MNEMONIC in order to figure out what detector we want to put the set of fragments into

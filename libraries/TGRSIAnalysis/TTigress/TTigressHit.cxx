@@ -5,7 +5,7 @@
 ClassImp(TTigressHit)
 
 TTigressHit::TTigressHit()	{	
-   Class()->IgnoreTObjectStreamer(true);
+   //Class()->IgnoreTObjectStreamer(true);
 	Clear();
 }
 
@@ -57,8 +57,9 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs)	{
 
 
 void TTigressHit::CheckFirstHit(int charge,int segment)	{
-	if(abs(charge) > first_segment_charge)	{
- 		first_segment        = segment;
+   //printf(DYELLOW "charge = %i  | first_segment_charge = %i \n", charge,first_segment_charge);
+   if(abs(charge) > first_segment_charge)	{
+ 		SetInitialHit(segment);
       first_segment_charge = charge;
 	}
 	return;				
@@ -69,11 +70,14 @@ void TTigressHit::Add(TTigressHit *hit)	{
 		lasthit    = position;
       lastenergy = GetEnergy();
 		lastpos    = std::make_tuple(GetDetectorNumber(),GetCrystalNumber(),GetInitialHit());
+      SetSuppress(hit->Suppress());
 		return;
 	}
    this->core.SetEnergy(this->GetEnergy() + hit->GetEnergy());
 
-   if(lastenergy < hit->GetEnergy()) {
+   if(hit->Suppress()) { this->SetSuppress(true); }  // if any of the add back compents is 
+                                                     // suppressed, suppress the entire hit.
+   if(lastenergy > hit->GetEnergy()) {
      this->lastenergy = hit->GetEnergy();
      this->lasthit    = hit->GetPosition();
      this->lastpos    = std::make_tuple(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());

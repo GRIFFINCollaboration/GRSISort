@@ -27,6 +27,7 @@ void TTigressData::Clear(Option_t *opt)	{
 	fCore_TimeCFD.clear();
 	fCore_TimeLED.clear();
 	fCore_Time.clear();
+	fCore_TimeStamp.clear();
 
 	for(int x=0;x<fCore_Wave.size();x++)	{
 		fCore_Wave[x].clear();
