@@ -376,8 +376,7 @@ bool TDataParser::SetTIGTimeStamp(uint32_t *data,TFragment *currentfrag ) {
 /////////////***************************************************************/////////////
 
 int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasserialnumber, time_t midastime) {
-//Converts a Griffin flavoured MIDAS file into a TFragment
-   int NumFragsFound = 1;
+//Converts a Griffin flavoured MIDAS file into a TFragment and returns the number of words processed (or the negative index of the word it failed on)
    TFragment *EventFrag = new TFragment();
 
    EventFrag->MidasTimeStamp = midastime;
@@ -450,9 +449,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
                if(record_stats)
                   FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
                TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
-               if(x != size-1)
-                  printf( DBLUE "x | size: " DRED "%i | %i" RESET_COLOR "\n",x,size); //once this happens we need to recursively call GriffinDataToFragment with the remaining datums.
-               return NumFragsFound; //This will be more important when we start putting multiple fragments into a single mid event
+               return x;
             } else  {
                TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
                return -x;
