@@ -642,23 +642,28 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
 
 void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits)
 {
+  bool printbit =0;
   //cout<<"DHitVec size: "<<DHitVec.size()<<" EHitVec size: "<<EHitVec.size()<<endl;
   if(DHitVec.size()==0&&EHitVec.size()==0)//Why am I even here?!
     return;
-
-  /*cout<<YELLOW<<"******************************************"<<RESET_COLOR<<endl;
   
-  for(int i =0; i< DHitVec.size();i++)
+  /*else if(DHitVec.size()>2 && EHitVec.size()>=2)
   {
-    cout<<DGREEN;
-    DHitVec.at(i).Print();
-    cout<<RESET_COLOR;
-  }
-  for(int i =0; i< EHitVec.size();i++)
-  {
-    cout<<DGREEN;
-    EHitVec.at(i).Print();
-    cout<<RESET_COLOR;
+    printbit =1;
+    cout<<YELLOW<<"******************************************"<<RESET_COLOR<<endl;
+
+    for(int i =0; i< DHitVec.size();i++)
+    {
+      cout<<DRED;
+      DHitVec.at(i).Print();
+      cout<<RESET_COLOR;
+    }
+    for(int i =0; i< EHitVec.size();i++)
+    {
+      cout<<DBLUE;
+      EHitVec.at(i).Print();
+      cout<<RESET_COLOR;
+    }
   }*/
 
   vector<bool> EUsed (EHitVec.size(),false);
@@ -687,6 +692,7 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
 	  cout<<RESET_COLOR;*/
 	  DUsed.at(diter) = true;
 	  EUsed.at(eiter) = true;
+	  break;
 	}
       }
     }
@@ -709,6 +715,7 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
 	    cout<<RESET_COLOR;*/
 	    DUsed.at(i) = true;
 	    EUsed.at(j) = true;
+	    break;
 	  }
 	}
       }
@@ -730,9 +737,12 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
     if(!DUsed.at(i))
     {
       BuiltHits.push_back(DHitVec.at(i));
-//       cout<<DBLUE;
+//       if(printbit)
+//       {
+//       cout<<DGREEN;
 //       BuiltHits.back().Print();
 //       cout<<RESET_COLOR;
+//       }
     }
   }
   for(int j=0;j<EHitVec.size();j++)
@@ -746,9 +756,22 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
     if(!EUsed.at(j))
     {
       BuiltHits.push_back(EHitVec.at(j));
-//       cout<<DBLUE;
-//       BuiltHits.back().Print();
-//       cout<<RESET_COLOR;
+//       if(printbit)
+//       {
+// 	cout<<DGREEN;
+// 	BuiltHits.back().Print();
+// 	cout<<RESET_COLOR;
+//       }
+    }
+  }
+
+  if(printbit)
+  {
+    for(int k =0; k<BuiltHits.size();k++)
+    {
+      cout<<DGREEN;
+      BuiltHits.at(k).Print();
+      cout<<RESET_COLOR<<endl;
     }
   }
 }
