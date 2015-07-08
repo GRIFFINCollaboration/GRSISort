@@ -87,9 +87,9 @@ class TDescantData : public TGRSIDetectorData {
       inline Double_t GetDetEnergy(const unsigned int &i)	   {return fDet_Eng.at(i);}	//!
 		inline Int_t    GetDetCharge(const unsigned int &i)	   {return fDet_Chg.at(i);}	//!
 		inline Int_t    GetDetCFD(const unsigned int &i)	      {return fDet_CFD.at(i);}	//!
-		inline Int_t    GetDetZc(const unsigned int &i)	      {return fDet_Zc.at(i);}	//!
-		inline Int_t    GetDetCcShort(const unsigned int &i)	      {return fDet_CcShort.at(i);}	//!
-		inline Int_t    GetDetCcLong(const unsigned int &i)	      {return fDet_CcLong.at(i);}	//!
+		inline Int_t    GetDetZc(const unsigned int &i)	         {return fDet_Zc.at(i);}	//!
+		inline Int_t    GetDetCcShort(const unsigned int &i)	   {return fDet_CcShort.at(i);}	//!
+		inline Int_t    GetDetCcLong(const unsigned int &i)	   {return fDet_CcLong.at(i);}	//!
 		inline Long_t   GetDetTime(const unsigned int &i)	      {return fDet_Time.at(i);}	//!
 
 		inline std::vector<Short_t> GetDetWave(const unsigned int &i)	{if(fSetWave) { return fDet_Wave.at(i);} else {std::vector<Short_t> w; return w;}}	//!
