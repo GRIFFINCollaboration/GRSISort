@@ -64,6 +64,10 @@ TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
    Class()->IgnoreTObjectStreamer(kTRUE);
    fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
    Clear();
+   addback_criterion = [](TGriffinHit& one, TGriffinHit& two) { 
+      return ((one.GetDetector() == two.GetDetector()) && 
+	      (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow())); 
+   };
 }
 
 TGriffin::TGriffin(const TGriffin& rhs) {
@@ -79,7 +83,7 @@ void TGriffin::Copy(TGriffin &rhs) const {
   //((TGriffin&)rhs).bgodata      = 0;
 
   ((TGriffin&)rhs).griffin_hits        = griffin_hits;
-  //((TGriffin&)rhs).addback_hits        = addback_hits;
+  ((TGriffin&)rhs).addback_hits        = addback_hits;
   //((TGriffin&)rhs).addback_clover_hits = addback_clover_hits;
   //((TGriffin&)rhs).fSetBGOHits         = fSetBGOHits;
   ((TGriffin&)rhs).fSetCoreWave        = fSetCoreWave;
@@ -136,7 +140,8 @@ void TGriffin::Clear(Option_t *opt)	{
 	  //if(bgodata)  bgodata->Clear();
      ClearStatus();
    }
-	griffin_hits.clear();
+   griffin_hits.clear();
+   addback_hits.clear();
    fCycleStart = 0;
    fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 	//addback_hits.clear();
@@ -209,6 +214,42 @@ TGriffinHit* TGriffin::GetGriffinHit(const int i) {
       return &griffin_hits.at(i);   
    else
       return 0;
+}
+
+Int_t TGriffin::GetAddbackMultiplicity() {
+   // Automatically builds the addback hits using the addback_criterion (if the size of the addback_hits vector is zero) and return the number of addback hits
+   if(griffin_hits.size() == 0) {
+      return 0;
+   }
+   if(addback_hits.size() == 0) {
+      // use the first griffin hit as starting point for the addback hits
+      addback_hits.push_back(griffin_hits[0]);
+
+      // loop over remaining griffin hits
+      size_t i, j;
+      for(i = 1; i < griffin_hits.size(); ++i) {
+	 // check for each existing addback hit if this griffin hit should be added
+	 for(j = 0; j < addback_hits.size(); ++j) {
+	    if(addback_criterion(addback_hits[j], griffin_hits[i])) {
+	       addback_hits[j].Add(&(griffin_hits[i]));
+	       break;
+	    }
+	 }
+	 if(j == addback_hits.size()) {
+	    addback_hits.push_back(griffin_hits[i]);
+	 }
+      }
+   }
+
+   return addback_hits.size();
+}
+
+TGriffinHit* TGriffin::GetAddbackHit(const int i) {
+   if(i < GetAddbackMultiplicity()) {
+      return &addback_hits.at(i);
+   } else {
+      return NULL;
+   }
 }
 
 void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
