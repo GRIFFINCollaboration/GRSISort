@@ -642,6 +642,128 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
 
 void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits)
 {
+  std::vector<TCSMHit> d1;
+  std::vector<TCSMHit> d2;
+  std::vector<TCSMHit> e1;
+  std::vector<TCSMHit> e2;
+
+  d1.clear();
+  d2.clear();
+  e1.clear();
+  e2.clear();
+  
+  for(int diter=0;diter<DHitVec.size();diter++)
+  {
+    if(DHitVec.at(diter).GetDetectorNumber()==3 || DHitVec.at(diter).GetDetectorNumber()==4)//I am in side detectors
+    {
+      //I will never have a pair in the side detector, so go ahead and send it through.
+      BuiltHits.push_back(DHitVec.at(diter));
+    }
+    else if(DHitVec.at(diter).GetDetectorNumber()==1)
+    {
+      d1.push_back(DHitVec.at(diter));
+    }
+    else if(DHitVec.at(diter).GetDetectorNumber()==2)
+    {
+      d2.push_back(DHitVec.at(diter));
+    }
+    else
+    {
+      cerr<<"  Caution, in BuilddEE detector number in D vector is out of bounds."<<endl;
+    }
+  }
+
+  for(int eiter=0;eiter<EHitVec.size();eiter++)
+  {
+    if(EHitVec.at(eiter).GetDetectorNumber()==1)
+    {
+      e1.push_back(EHitVec.at(eiter));
+    }
+    else if(EHitVec.at(eiter).GetDetectorNumber()==2)
+    {
+      e2.push_back(EHitVec.at(eiter));
+    }
+    else
+    {
+      cerr<<"  Caution, in BuilddEE detector number in E vector is out of bounds."<<endl;
+    }
+  }
+
+  MakedEE(d1,e1,BuiltHits);
+  MakedEE(d2,e2,BuiltHits);
+  
+}
+
+void TCSM::MakedEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits)
+{
+
+  if(DHitVec.size()==0 && EHitVec.size()==0)
+    return;
+  else if(DHitVec.size()==1 && EHitVec.size()==0)
+    BuiltHits.push_back(DHitVec.at(0));
+  else if(DHitVec.size()==0 && EHitVec.size()==1)
+    return;
+  else if(DHitVec.size()==1 && EHitVec.size()==1)
+    BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+  else if(DHitVec.size()==2 && EHitVec.size()==1)
+  {
+    double dt1 = DHitVec.at(0).GetDPosition().Theta();
+    double dt2 = DHitVec.at(1).GetDPosition().Theta();
+    double et = EHitVec.at(0).GetEPosition().Theta();
+
+    if( abs(dt1-et) <= abs(dt2-et) )
+    {
+      //cout<<DRED;
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(DHitVec.at(1));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+    else
+    {
+      //cout<<DBLUE;
+      BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(DHitVec.at(0));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+  }
+  else if(DHitVec.size()==2 && EHitVec.size()==2)
+  {
+    double dt1 = DHitVec.at(0).GetDPosition().Theta();
+    double dt2 = DHitVec.at(1).GetDPosition().Theta();
+    double et1 = EHitVec.at(0).GetEPosition().Theta();
+    double et2 = EHitVec.at(1).GetEPosition().Theta();
+
+    if( abs(dt1-et1)+abs(dt2-et2) <= abs(dt1-et2)+abs(dt2-et1) )
+    {
+      //cout<<DRED;
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(1)));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+    else
+    {
+      //cout<<DBLUE;
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(1)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+  }
+  else
+  {
+    cout<<"D Size: "<<DHitVec.size()<<" E Size: "<<EHitVec.size()<<endl;
+  }
+}
+
+void TCSM::OldBuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits)
+{
   bool printbit =0;
   //cout<<"DHitVec size: "<<DHitVec.size()<<" EHitVec size: "<<EHitVec.size()<<endl;
   if(DHitVec.size()==0&&EHitVec.size()==0)//Why am I even here?!
