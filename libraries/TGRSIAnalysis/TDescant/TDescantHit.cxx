@@ -24,6 +24,9 @@ void TDescantHit::Copy(TDescantHit &rhs) const {
    TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
   Class()->IgnoreTObjectStreamer(kTRUE);
 	((TDescantHit&)rhs).filter = filter;
+	((TDescantHit&)rhs).zc = zc;
+	((TDescantHit&)rhs).ccShort = ccShort;
+	((TDescantHit&)rhs).ccLong = ccLong;
 	((TDescantHit&)rhs).psd = psd;
    return;
 }

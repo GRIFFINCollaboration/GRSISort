@@ -200,6 +200,9 @@ void TDescant::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
       dethit.SetTime(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
+      dethit.SetZc(gdata->GetDetZc(i));
+      dethit.SetCcShort(gdata->GetDetCcShort(i));
+      dethit.SetCcLong(gdata->GetDetCcLong(i));
  
       if(TDescant::SetWave()){
          if(gdata->GetDetWave(i).size() == 0) {
