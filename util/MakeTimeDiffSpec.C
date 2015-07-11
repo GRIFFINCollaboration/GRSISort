@@ -118,8 +118,8 @@ TList *MakeTimeDiffSpec(TTree *tree) {
       TFragment myFrag  = *currentFrag;         //Set myfrag to be the x'th fragment before incrementing it.
       long time = currentFrag->GetTimeStamp();  //Get the timestamp of the x'th fragment 
      
-      long timelow  = time -100;
-      long timehigh  = time +100; 
+      long timelow  = time - 1000;
+      long timehigh  = time + 1000; 
 //        long timelow = time + 0;
 //        long timehigh = time + 10000;   
       int time_low  = (int) (timelow & 0x0fffffff);
@@ -153,8 +153,11 @@ TList *MakeTimeDiffSpec(TTree *tree) {
             continue;
          } 
         //printf("myFrag.DetectorType = %i, currentFrag.DetectorType = %i",myFrag.DetectorType,currentFrag->DetectorType);
-         if(myFrag.DetectorType == 1) {
-            if(currentFrag->DetectorType == 1) {
+	 if(myFrag.ChannelAddress == currentFrag->ChannelAddress) {
+	   continue;
+	 }
+         if(myFrag.DetectorType == 0) {
+            if(currentFrag->DetectorType == 0) {
 		TFragment tempFrag=*currentFrag;
                gg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
 		promptEng->Fill(currentFrag->GetTimeStamp() - myFrag.GetTimeStamp() ,myFrag.GetEnergy());
@@ -166,7 +169,7 @@ TList *MakeTimeDiffSpec(TTree *tree) {
           
             }
          } else if(myFrag.DetectorType == 2) {
-            if(currentFrag->DetectorType == 1) {
+            if(currentFrag->DetectorType == 0) {
                bg_diff->Fill(myFrag.GetTimeStamp() - currentFrag->GetTimeStamp());
                bg_coinc_gE->Fill(currentFrag->GetEnergy());
             } else if(currentFrag->DetectorType == 2) {
