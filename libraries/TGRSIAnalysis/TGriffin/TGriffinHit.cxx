@@ -160,24 +160,22 @@ UInt_t TGriffinHit::SetCrystal() {
    return crystal;
 }
 
-//bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
-//		return(lhs->GetEnergyLow()) > rhs->GetEnergyLow();
-//}
+bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
+   return(lhs->GetEnergy()) > rhs->GetEnergy();
+}
 
 
 
-//void TGriffinHit::Add(TGriffinHit *hit)	{
-//   if(!CompareEnergy(this,hit)) {
-//      this->cfd    = hit->GetCfd();    
-//      this->time   = hit->GetTime();
-//      this->position = hit->GetPosition();
-//   }
-//   this->SetChargeLow(0);
-//   this->SetChargeHigh(0);
-//
-//   this->SetEnergyHigh(this->GetEnergyHigh() + hit->GetEnergyHigh());
-//   this->SetEnergyLow(this->GetEnergyLow() + hit->GetEnergyLow());
-//}
+void TGriffinHit::Add(TGriffinHit *hit)	{
+   if(!CompareEnergy(this,hit)) {
+      this->cfd    = hit->GetCfd();    
+      this->time   = hit->GetTime();
+      this->position = hit->GetPosition();
+   }
+   this->SetCharge(0);
+
+   this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+}
 
 //Bool_t TGriffinHit::BremSuppressed(TSceptarHit* schit){
 //   return false;
