@@ -45,7 +45,7 @@ class TGriffin : public TGRSIDetector {
 
 #ifndef __CINT__
       void SetAddbackCriterion(std::function<bool(TGriffinHit&, TGriffinHit&)> criterion) { addback_criterion = criterion; }
-      std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() { return addback_criterion; }
+      std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() const { return addback_criterion; }
 #endif
 
       Int_t GetAddbackMultiplicity();
@@ -68,7 +68,7 @@ class TGriffin : public TGRSIDetector {
       TBits fGriffinBits;
 
       std::vector <TGriffinHit> addback_hits; //! Used to create addback hits on the fly
-      std::function<bool(TGriffinHit&, TGriffinHit&)> addback_criterion;
+      static std::function<bool(TGriffinHit&, TGriffinHit&)> addback_criterion;
 
    public:
       static bool SetCoreWave()        { return fSetCoreWave;  }	//!
