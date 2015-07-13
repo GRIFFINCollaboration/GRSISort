@@ -53,7 +53,7 @@ class TTipHit : public TGRSIDetectorHit {
       inline Double_t GetEnergy()	   	     {	return energy;   }  //!
 		inline Long_t   GetTime()			        {	return time;     }  //!
 		inline Double_t GetPID()			        {	return PID;     }  //!
-      TVector3 GetPosition() const {}
+      TVector3 GetPosition() const {return TVector3();}
 
       inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 
