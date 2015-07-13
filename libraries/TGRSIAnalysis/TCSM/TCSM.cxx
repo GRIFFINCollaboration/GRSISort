@@ -703,6 +703,11 @@ void TCSM::MakedEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSM
     BuiltHits.push_back(DHitVec.at(0));
   else if(DHitVec.size()==0 && EHitVec.size()==1)
     return;
+  else if(DHitVec.size()==2 && EHitVec.size()==0)
+  {
+    BuiltHits.push_back(DHitVec.at(0));
+    BuiltHits.push_back(DHitVec.at(1));
+  }
   else if(DHitVec.size()==1 && EHitVec.size()==1)
     BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
   else if(DHitVec.size()==2 && EHitVec.size()==1)
