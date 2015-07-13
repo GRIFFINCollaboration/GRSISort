@@ -1041,19 +1041,19 @@ void GCanvas::SetBackGroundSubtractionType() {
   printf("\n");
   switch(fBGSubtraction_type) {
     case 0:
-     printf("BG subtraction off, project will not automatically subtract background.\n",fBGSubtraction_type);
+     printf("BG subtraction off, project will not automatically subtract background.\n");
      break;
     case 1:
-     printf("BG subtraction set to fraction of total projection, use b to set fraction.\n",fBGSubtraction_type);
+     printf("BG subtraction set to fraction of total projection, use b to set fraction.\n");
      break;
     case 2:
-     printf("BG subtraction set to ( marker3->| ), use b to confirm subtraction gate.\n",fBGSubtraction_type);
+     printf("BG subtraction set to ( marker3->| ), use b to confirm subtraction gate.\n");
      break;
     case 3:
-     printf("BG subtraction set to ( marker3->| ) & ( marker4->| ), use b to confirm subtraction gates.\n",fBGSubtraction_type);
+     printf("BG subtraction set to ( marker3->| ) & ( marker4->| ), use b to confirm subtraction gates.\n");
      break;
     case 4:
-     printf("BG subtraction set to ( marker1->marker2 ), use b to confirm subtraction gates.\n",fBGSubtraction_type);
+     printf("BG subtraction set to ( marker1->marker2 ), use b to confirm subtraction gates.\n");
      break;
     default:
      printf("Changing BG subtraction type, type is now: %i\n",fBGSubtraction_type);
@@ -1192,6 +1192,8 @@ bool GCanvas::SetBGGate(GMarker *m1, GMarker *m2, GMarker *m3, GMarker *m4) {
        RemoveMarker(); // remove marker #3 so the project will work...
      }  
      return true;
+     default:
+        return false;
   };
 }
 
