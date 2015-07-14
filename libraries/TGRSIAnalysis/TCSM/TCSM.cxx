@@ -702,14 +702,19 @@ void TCSM::MakedEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSM
   else if(DHitVec.size()==1 && EHitVec.size()==0)
     BuiltHits.push_back(DHitVec.at(0));
   else if(DHitVec.size()==0 && EHitVec.size()==1)
-    return;
+    BuiltHits.push_back(EHitVec.at(0));
+  else if(DHitVec.size()==1 && EHitVec.size()==1)
+    BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
   else if(DHitVec.size()==2 && EHitVec.size()==0)
   {
     BuiltHits.push_back(DHitVec.at(0));
     BuiltHits.push_back(DHitVec.at(1));
   }
-  else if(DHitVec.size()==1 && EHitVec.size()==1)
-    BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+  else if(DHitVec.size()==0 && EHitVec.size()==2)
+  {
+    BuiltHits.push_back(EHitVec.at(0));
+    BuiltHits.push_back(EHitVec.at(1));
+  }
   else if(DHitVec.size()==2 && EHitVec.size()==1)
   {
     double dt1 = DHitVec.at(0).GetDPosition().Theta();
@@ -731,6 +736,31 @@ void TCSM::MakedEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSM
       BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(0)));
       //BuiltHits.back().Print();
       BuiltHits.push_back(DHitVec.at(0));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+  }
+  else if(DHitVec.size()==1 && EHitVec.size()==2)
+  {
+    double dt = DHitVec.at(0).GetDPosition().Theta();
+    double et1 = EHitVec.at(0).GetEPosition().Theta();
+    double et2 = EHitVec.at(0).GetEPosition().Theta();
+    
+    if( abs(dt-et1) <= abs(dt-et2) )
+    {
+      //cout<<DRED;
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(EHitVec.at(1));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+    else
+    {
+      //cout<<DBLUE;
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(1)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(EHitVec.at(0));
       //BuiltHits.back().Print();
       //cout<<RESET_COLOR;
     }
