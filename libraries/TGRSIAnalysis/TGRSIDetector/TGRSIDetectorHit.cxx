@@ -131,8 +131,9 @@ UInt_t TGRSIDetectorHit::SetDetector(UInt_t det) {
    return detector;
 }
 
-void TGRSIDetectorHit::SetPosition(double dist) {
+TVector3 TGRSIDetectorHit::SetPosition(double dist) {
 	position = TGRSIDetectorHit::GetPosition(dist); //Calls a general Hit GetPosition function
+   return position;
 }
 
 TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
@@ -143,6 +144,17 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
       return GetPosition(dist); //Calls the derivative GetPosition function
 
    return TVector3(0,0,1);
+
+}
+
+TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
+   if(is_pos_set)
+      return position;
+
+   if(is_det_set)
+      return GetPosition(dist); //Calls the derivative GetPosition function
+
+   return SetPosition(dist);
 
 }
 

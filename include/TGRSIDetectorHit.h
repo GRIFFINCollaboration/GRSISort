@@ -63,12 +63,13 @@ class TGRSIDetectorHit : public TObject 	{
       inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    } //!
       virtual inline void SetTime(const ULong_t &x)               { time   = x;   }                  //! Maybe make this abstract?
  
-      void SetPosition(Double_t temp_pos = 0);
+      TVector3 SetPosition(Double_t temp_pos = 0);
       void SetEnergy(double en) { energy = en; is_energy_set = true; }
       virtual UInt_t SetDetector(UInt_t det);
       
       //Abstract methods. These are required in all derived classes
 		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
+      virtual TVector3 GetPosition(Double_t dist = 0);
       virtual double GetEnergy(Option_t *opt="") const;
       virtual double GetEnergy(Option_t *opt="");
       virtual UInt_t GetDetector() const;
