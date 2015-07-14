@@ -134,7 +134,6 @@ TGriffin::~TGriffin()	{
 
 void TGriffin::Clear(Option_t *opt)	{
    //Clears the mother, all of the hits and any stored data
-   //if(!strcmp(opt,"all") {
    if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
      TGRSIDetector::Clear(opt);
      if(grifdata) grifdata->Clear();
@@ -145,8 +144,6 @@ void TGriffin::Clear(Option_t *opt)	{
    addback_hits.clear();
    fCycleStart = 0;
    fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
-	//addback_hits.clear();
-	//addback_clover_hits.clear();
 }
 
 

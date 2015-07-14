@@ -96,6 +96,7 @@ class TGriffin : public TGRSIDetector {
       virtual void Copy(TGriffin&) const;                //!
       virtual void Clear(Option_t *opt = "all");		     //!
       virtual void Print(Option_t *opt = "") const;		  //!
+      void ResetAddback() { addback_hits.clear(); }		     //!
 
    protected:
       void PushBackHit(TGRSIDetectorHit* ghit);

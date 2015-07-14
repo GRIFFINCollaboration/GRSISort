@@ -167,14 +167,17 @@ bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
 
 
 void TGriffinHit::Add(TGriffinHit *hit)	{
+   // add another griffin hit to this one (for addback), 
+   // using the time and position information of the one with the higher energy
    if(!CompareEnergy(this,hit)) {
-      this->cfd    = hit->GetCfd();    
+      this->cfd    = hit->GetCfd();
       this->time   = hit->GetTime();
       this->position = hit->GetPosition();
    }
-   this->SetCharge(0);
 
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+   //this has to be done at the very end, otherwise this->GetEnergy() might not work
+   this->SetCharge(0);
 }
 
 //Bool_t TGriffinHit::BremSuppressed(TSceptarHit* schit){
