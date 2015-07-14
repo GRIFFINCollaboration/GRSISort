@@ -35,22 +35,21 @@ TGRSIDetectorHit::~TGRSIDetectorHit()	{
 double TGRSIDetectorHit::GetEnergy(Option_t *opt) const{
    if(is_energy_set)
       return energy;
+   else 
+      return -1; //This happens to constant TGriffins if no energy is set.
+}
+
+double TGRSIDetectorHit::GetEnergy(Option_t *opt){
+   if(is_energy_set)
+      return energy;
    TChannel *chan = GetChannel();
    if(!chan){
       printf("no TChannel set for this address\n");
       return 0.00;
    }
-   return chan->CalibrateENG(GetCharge());
-}
-
-Double_t TGRSIDetectorHit::SetEnergy(Option_t *opt) {
-   if(is_energy_set)
+      SetEnergy(chan->CalibrateENG(GetCharge()));
       return energy;
 
-   energy = GetEnergy(opt);
-   if(energy>0.00)
-      is_energy_set = true;
-   return energy;
 }
 
 void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
@@ -63,6 +62,8 @@ void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   ((TGRSIDetectorHit&)rhs).charge   = charge;
   ((TGRSIDetectorHit&)rhs).detector = detector;
   ((TGRSIDetectorHit&)rhs).energy   = energy;
+  ((TGRSIDetectorHit&)rhs).is_energy_set   = is_energy_set;
+
 //  ((TGRSIDetectorHit&)rhs).parent  = parent;  
 }
 

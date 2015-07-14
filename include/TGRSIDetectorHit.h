@@ -64,13 +64,13 @@ class TGRSIDetectorHit : public TObject 	{
       virtual inline void SetTime(const ULong_t &x)               { time   = x;   }                  //! Maybe make this abstract?
  
       void SetPosition(Double_t temp_pos = 0);
-      Double_t SetEnergy(Option_t *opt="");
       void SetEnergy(double en) { energy = en; is_energy_set = true; }
       virtual UInt_t SetDetector();
       
       //Abstract methods. These are required in all derived classes
 		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
       virtual double GetEnergy(Option_t *opt="") const;
+      virtual double GetEnergy(Option_t *opt="");
       virtual UInt_t GetDetector() const;
       virtual double GetTime(Option_t *opt="")   const      {return 0.0; } //AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
       virtual inline Int_t   GetCfd() const             {   return cfd;      }           //!
