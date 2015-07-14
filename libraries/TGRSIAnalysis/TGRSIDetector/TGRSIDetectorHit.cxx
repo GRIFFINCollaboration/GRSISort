@@ -70,6 +70,7 @@ void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   ((TGRSIDetectorHit&)rhs).energy   = energy;
   ((TGRSIDetectorHit&)rhs).is_energy_set   = is_energy_set;
   ((TGRSIDetectorHit&)rhs).is_det_set      = is_det_set;
+  ((TGRSIDetectorHit&)rhs).is_pos_set      = is_pos_set;
 
 //  ((TGRSIDetectorHit&)rhs).parent  = parent;  
 }
