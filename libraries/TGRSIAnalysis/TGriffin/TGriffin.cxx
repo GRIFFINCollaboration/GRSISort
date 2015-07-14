@@ -59,15 +59,16 @@ TVector3 TGriffin::gCloverPosition[17] = {
    TVector3(TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Cos(TMath::DegToRad()*(337.5)), TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Sin(TMath::DegToRad()*(337.5)), TMath::Cos(TMath::DegToRad()*(135.0)))
 };
 
+std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::addback_criterion = [](TGriffinHit& one, TGriffinHit& two) { 
+   return ((one.GetDetector() == two.GetDetector()) && 
+	   (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow())); 
+};
+
 
 TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
    Class()->IgnoreTObjectStreamer(kTRUE);
    fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
    Clear();
-   addback_criterion = [](TGriffinHit& one, TGriffinHit& two) { 
-      return ((one.GetDetector() == two.GetDetector()) && 
-	      (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow())); 
-   };
 }
 
 TGriffin::TGriffin(const TGriffin& rhs) {
