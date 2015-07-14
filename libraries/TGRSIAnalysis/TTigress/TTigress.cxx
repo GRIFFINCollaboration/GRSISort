@@ -148,7 +148,7 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 		//}
 		
 		corehit.SetCore(temp_crystal);	
-		corehit.SetDetector(); //(UInt_t)tdata->GetCloverNumber(i));
+		corehit.SetDetector((UInt_t)tdata->GetCloverNumber(i));
       corehit.SetCrystal();  //tdata->GetCoreNumber(i));
 
 

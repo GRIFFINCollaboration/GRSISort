@@ -35,13 +35,19 @@ TGRSIDetectorHit::~TGRSIDetectorHit()	{
 double TGRSIDetectorHit::GetEnergy(Option_t *opt) const{
    if(is_energy_set)
       return energy;
-   else 
-      return -1; //This happens to constant TGriffins if no energy is set.
+
+   TChannel *chan = GetChannel();
+   if(!chan){
+      printf("no TChannel set for this address\n");
+      return 0.00;
+   }
+      return chan->CalibrateENG(GetCharge());
 }
 
 double TGRSIDetectorHit::GetEnergy(Option_t *opt){
    if(is_energy_set)
       return energy;
+
    TChannel *chan = GetChannel();
    if(!chan){
       printf("no TChannel set for this address\n");
@@ -63,6 +69,7 @@ void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   ((TGRSIDetectorHit&)rhs).detector = detector;
   ((TGRSIDetectorHit&)rhs).energy   = energy;
   ((TGRSIDetectorHit&)rhs).is_energy_set   = is_energy_set;
+  ((TGRSIDetectorHit&)rhs).is_det_set      = is_det_set;
 
 //  ((TGRSIDetectorHit&)rhs).parent  = parent;  
 }
@@ -102,8 +109,24 @@ UInt_t TGRSIDetectorHit::GetDetector() const {
    return mnemonic.arrayposition;
 }
 
-UInt_t TGRSIDetectorHit::SetDetector() {
-   detector = GetDetector();
+UInt_t TGRSIDetectorHit::GetDetector() {
+   if(is_det_set)
+      return detector;
+
+   MNEMONIC mnemonic;
+   TChannel *channel = GetChannel();
+   if(!channel){
+      Error("SetDetector","No TChannel exists for address %u",GetAddress());
+      return -1;
+   }
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+   return SetDetector(mnemonic.arrayposition);
+}
+
+
+UInt_t TGRSIDetectorHit::SetDetector(UInt_t det) {
+   detector = det;
    is_det_set = true;
    return detector;
 }
