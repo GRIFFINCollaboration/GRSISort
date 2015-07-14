@@ -132,7 +132,7 @@ TVector3 TGriffinHit::GetPosition(Double_t dist) const{
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
-const UInt_t TGriffinHit::GetCrystal() const { 
+UInt_t TGriffinHit::GetCrystal() const { 
    if(is_crys_set)
       return crystal;
 
@@ -155,16 +155,43 @@ const UInt_t TGriffinHit::GetCrystal() const {
    return -1;  
 }
 
-UInt_t TGriffinHit::SetCrystal() { 
-   crystal = GetCrystal();
+UInt_t TGriffinHit::GetCrystal() {
+   if(is_crys_set)
+      return crystal;
+
+   TChannel *chan = GetChannel();
+   if(!chan)
+      return -1;
+   MNEMONIC mnemonic;
+   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+   char color = mnemonic.arraysubposition[0];
+   return SetCrystal(color);
+}
+
+UInt_t TGriffinHit::SetCrystal(UInt_t crynum) {
+   crystal = crynum;
+   is_crys_set = true;
+   return crystal;
+}
+
+UInt_t TGriffinHit::SetCrystal(char color) { 
+   switch(color) {
+      case 'B':
+         crystal = 0;
+      case 'G':
+         crystal = 1;
+      case 'R':
+         crystal = 2;
+      case 'W':
+         crystal = 3;  
+   };
+   is_crys_set = true;
    return crystal;
 }
 
 bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
    return(lhs->GetEnergy()) > rhs->GetEnergy();
 }
-
-
 
 void TGriffinHit::Add(TGriffinHit *hit)	{
    // add another griffin hit to this one (for addback), 

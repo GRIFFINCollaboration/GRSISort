@@ -55,8 +55,10 @@ class TGriffinHit : public TGRSIDetectorHit {
 
 
 		/////////////////////////  TChannel Helpers /////////////////////////////////////
-      const UInt_t GetCrystal()  const;                                                //!
-      UInt_t SetCrystal();
+      UInt_t GetCrystal()  const;//!
+      UInt_t GetCrystal();
+      UInt_t SetCrystal(char color);
+      UInt_t SetCrystal(UInt_t crynum);
 
 		/////////////////////////		/////////////////////////////////////
 		//inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
