@@ -699,8 +699,8 @@ Bool_t TGainMatch::FineMatch(TH1 *energy_hist, TH1* testhist, TH1* charge_hist, 
 
 //   peak1->SetRange(((peak1->GetXmin()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0],((peak1->GetXmax()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0]);
 //   peak2->SetRange(((peak2->GetXmin()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0],((peak2->GetXmax()-offset)/gain)*fAlign_coeffs[1] + fAlign_coeffs[0]);
-   peak1->SetRange(((peak1->GetXmin()*fAlign_coeffs[1]+fAlign_coeffs[0] -offset)/gain),((peak1->GetXmax()*fAlign_coeffs[1] - fAlign_coeffs[0]-offset)/gain));
-   peak2->SetRange(((peak2->GetXmin()*fAlign_coeffs[1]+fAlign_coeffs[0] -offset)/gain),((peak2->GetXmax()*fAlign_coeffs[1] - fAlign_coeffs[0]-offset)/gain));
+   peak1->SetRange(((peak1->GetXmin()*fAlign_coeffs[1]+fAlign_coeffs[0] -offset)/gain),((peak1->GetXmax()*fAlign_coeffs[1] + fAlign_coeffs[0]-offset)/gain));
+   peak2->SetRange(((peak2->GetXmin()*fAlign_coeffs[1]+fAlign_coeffs[0] -offset)/gain),((peak2->GetXmax()*fAlign_coeffs[1] + fAlign_coeffs[0]-offset)/gain));
 
    //The gains won't be perfect, so we need to search for the peak within a range.
    TSpectrum s;

@@ -36,13 +36,13 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		UShort_t		detectornumber;  //
 		Int_t			  pad_charge;		  //
 
-	  Double_t		d_energy_front;  //		
-  	Double_t		d_time_front;	  //		
-	  Double_t		d_energy_back;  //		
-  	Double_t		d_time_back;	  //		
-	  //Double_t		d_cfd;		  //		
+      Double_t		d_energy_front;  //
+      Double_t		d_time_front;	  //
+      Double_t		d_energy_back;  //
+      Double_t		d_time_back;	  //
+      //Double_t		d_cfd;		  //
 
-  	Double_t		p_energy;	//			pad only;
+      Double_t		p_energy;	//			pad only;
  		Double_t		p_time;		//			pad only;
 		Int_t       p_address;  //
  		//Double_t		p_cfd;		//
@@ -91,13 +91,13 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		inline Double_t GetEnergy() {	return (p_energy>0) ? (p_energy + d_energy_front) : d_energy_front ;}
 		inline Double_t GetTime()	 {	return d_time_front; }
 
-      TVector3 GetPosition() const {}
+      TVector3 GetPosition() const {return TVector3();}
 			
 		//inline Double_t GetFrontCFD()		{	return front_cfd;	}	//!
 		//inline Double_t GetBackCFD()		{	return back_cfd;	}	//!
 
-    Double_t PadEnergyCal(); //!
-    Double_t FrontEnergyCal(); //!
+      Double_t PadEnergyCal(); //!
+      Double_t FrontEnergyCal(); //!
 
 		Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0) { return GetTheta(Xoff,Yoff,Zoff)*TMath::RadToDeg(); } ; //! 
 		Double_t GetTheta(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0); //! 
@@ -114,7 +114,7 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		//void SetFrontCFD(const double &cfd)		{	front_cfd = cfd;	} //!
 		//void SetBackCFD(const double &cfd)		{	back_cfd = cfd;		} //!
 
-	//	inline void SetPosition(const TVector3 &pos)	{	position = pos;		} //!
+      //	inline void SetPosition(const TVector3 &pos)	{	position = pos;		} //!
 
 		//void SetPixel(const int &front, const  int &back)	{front_strip = front; back_strip = back;}	//!
 		inline void SetDetector(const UShort_t &detector)	{	detectornumber = detector;	}						//!

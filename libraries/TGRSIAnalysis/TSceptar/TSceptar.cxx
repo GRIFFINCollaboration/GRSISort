@@ -138,7 +138,7 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       dethit.SetCfd(gdata->GetDetCFD(i));
 
       //UNCOMMENTED FOR NOW
-/*      if(TSceptar::SetWave()){
+      if(TSceptar::SetWave()){
          if(gdata->GetDetWave(i).size() == 0) {
             printf("Warning, TSceptar::SetWave() set, but data waveform size is zero!\n");
          }
@@ -149,7 +149,7 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 //            printf("%s analyzed waveform, cfd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd());
          }
       }
-*/		
+		
       //dethit.SetDetector(gdata->GetDetNumber(i));
    
    //   dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));

@@ -224,5 +224,6 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
          return true;
    } else 
      return false;
-
+   
+   return false;
 }
