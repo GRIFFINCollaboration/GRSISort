@@ -65,6 +65,7 @@ class TGRSIDetectorHit : public TObject 	{
  
       void SetPosition(Double_t temp_pos = 0);
       Double_t SetEnergy(Option_t *opt="");
+      void SetEnergy(double en) { energy = en; is_energy_set = true; }
       virtual UInt_t SetDetector();
       
       //Abstract methods. These are required in all derived classes

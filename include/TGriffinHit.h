@@ -78,7 +78,6 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       bool   InFilter(Int_t);  //!
 
-      void SetEnergy(double en) { energy = en; }
       static bool CompareEnergy(TGriffinHit*,TGriffinHit*);  //!
       void Add(TGriffinHit*);    //! 
       //Bool_t BremSuppressed(TSceptarHit*);

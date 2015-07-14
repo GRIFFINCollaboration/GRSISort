@@ -33,6 +33,8 @@ TGRSIDetectorHit::~TGRSIDetectorHit()	{
 }
 
 double TGRSIDetectorHit::GetEnergy(Option_t *opt) const{
+   if(is_energy_set)
+      return energy;
    TChannel *chan = GetChannel();
    if(!chan){
       printf("no TChannel set for this address\n");

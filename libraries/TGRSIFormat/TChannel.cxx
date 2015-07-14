@@ -401,8 +401,8 @@ double TChannel::CalibrateENG(double charge) {
    //integration parameter.
    if(ENGCoefficients.size()==0)
       return charge;
-   double cal_chg = 0.0;
-   for(int i=0;i<ENGCoefficients.size();i++){
+   double cal_chg = ENGCoefficients[0];
+   for(int i=1;i<ENGCoefficients.size();i++){
       cal_chg += ENGCoefficients[i] * pow((charge),i);
    }
    return cal_chg;
