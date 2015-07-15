@@ -45,13 +45,13 @@ LIBS += -lTCal
 LIBS += -lTGRSIFit
 
 DETLIBS =  -lTigress
-#DETLIBS += -lSharc
+DETLIBS += -lSharc
 #DETLIBS += -lTriFoil
 ##DETLIBS += -lRf
 #DETLIBS += -lCSM
 ##DETLIBS += -lSpice
 ##DETLIBS += -lS3
-#DETLIBS += -lTip
+DETLIBS += -lTip
 
 DETLIBS += -lGriffin
 DETLIBS += -lSceptar

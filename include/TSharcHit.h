@@ -19,7 +19,8 @@
 class TSharcHit : public TGRSIDetectorHit 	{
 	public:
 		TSharcHit();
-		~TSharcHit();
+		virtual ~TSharcHit();
+      TSharcHit(const TSharcHit&);
 
 	private:
 
@@ -54,6 +55,7 @@ class TSharcHit : public TGRSIDetectorHit 	{
 
 		virtual void Clear(Option_t* = "");	//!
 		virtual void Print(Option_t* = "");	//!
+      virtual void Copy(TSharcHit&) const;        //!
 
 		//void CalibrateSharcHit(TChannel *); //!
 		//static bool Compare(TSharcHit *lhs,TSharcHit *rhs); //!
