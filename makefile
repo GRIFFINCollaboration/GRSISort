@@ -1,5 +1,5 @@
 SUBDIRS = src libraries
-ALLDIRS = $(SUBDIRS) util
+ALLDIRS = $(SUBDIRS) util examples
 
 PLATFORM = $(shell uname)
 
@@ -56,6 +56,9 @@ all: print grsisort analysis util end
 docs: print subdirs bin grsihist grsisort html config end
 
 util: libraries grsisort print
+	@$(MAKE) -C $@
+
+examples: libraries grsisort print
 	@$(MAKE) -C $@
 
 analysis: libraries grsisort print
