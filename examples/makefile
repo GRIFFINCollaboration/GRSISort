@@ -36,7 +36,7 @@ endif
 CFLAGS += -fPIC -O2
 CFLAGS += -std=c++0x -O2 -I$(PWD)/include -g `root-config --cflags --libs`
 
-CXXTARGET=$(wildcard *.cxx) $(wildcard *.C)
+CXXTARGET=exAnalysis
 
 BINDIR = $(GRSISYS)/bin
 
@@ -61,7 +61,7 @@ all: end
 end:$(addprefix $(BINDIR)/,$(CXXTARGET))
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(UTIL_STRING);
 
-$(BINDIR)/%: %
+$(BINDIR)/%: %.cxx
 	@printf " ${COM_COLOR}%s ${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) $(basename $^) 
 	@$(CXX) $^ $(CFLAGS) $(CPPFLAGS) $(UTILFLAGS) -o$@ 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
@@ -74,8 +74,6 @@ $(BINDIR)/%: %
 		else printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $(basename $^) 10  $(OK_STRING); \
 		fi;
 	@$(RM) -f temp.errors temp.log temp.comp
-
-
 
 clean:
 	$(RM) $(GRSISYS)/bin/$(ROOTTARGET) $(GRSISYS)/bin/$(CXXTARGET) *~ *Dict* *so 
