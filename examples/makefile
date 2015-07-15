@@ -33,12 +33,10 @@ ifndef __APPLE__
 LFLAGS = -Wl,--no-as-needed
 endif
 
-CXXTARGET = Root2Rad
-#ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop EnergyCal EfficCal LeanMatrices
-ROOTTARGET = MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop EnergyCal EfficCal gadd
-
 CFLAGS += -fPIC -O2
 CFLAGS += -std=c++0x -O2 -I$(PWD)/include -g `root-config --cflags --libs`
+
+CXXTARGET=exAnalysis
 
 BINDIR = $(GRSISYS)/bin
 
@@ -49,35 +47,21 @@ CAT=cat
 
 .PHONY: all clean gone end
 
-#UTILFLAGS = $(LIBDIR) -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTGRSIFit -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `grsi-config --cflags --libs` -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
-
+#UTILFLAGS = `grsi-config --cflags --all-libs --root`
 UTILFLAGS = -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTigress
 
 UTILFLAGS += $(LIBDIR) -lAnalysisTreeBuilder -lTGRSIFit -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
 
-UTIL_STRING = "Finished compiling utilities"
+
+UTIL_STRING = "Finished compiling examples"
+
 
 all: end
 
-end: $(addprefix $(BINDIR)/,$(CXXTARGET) $(ROOTTARGET)) 
-	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(UTIL_STRING) ;
+end:$(addprefix $(BINDIR)/,$(CXXTARGET))
+	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(UTIL_STRING);
 
 $(BINDIR)/%: %.cxx
-	@printf " ${COM_COLOR}%s ${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) $(basename $^) 
-	@$(CXX) $^ $(CFLAGS) $(CPPFLAGS) -o$@ 2> temp.log || touch temp.errors
-	@if test -e temp.errors; then \
-		printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $(basename $^) 10 $(ERROR_STRING) \
-		&& $(CAT) temp.log && \
-		printf "${ERROR_COLOR}%s\n${NO_COLOR}" ${PWD};  \
-		elif test -s temp.log; then \
-		printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${WARN_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $(basename $^) 10 $(WARN_STRING) \
-		&& $(CAT) temp.log; \
-		else printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $(basename $^) 10  $(OK_STRING); \
-		fi;
-	@$(RM) -f temp.errors temp.log temp.comp
-#@mv $@ $(GRSISYS)/bin/$@
-
-$(BINDIR)/%: %.C
 	@printf " ${COM_COLOR}%s ${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) $(basename $^) 
 	@$(CXX) $^ $(CFLAGS) $(CPPFLAGS) $(UTILFLAGS) -o$@ 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
@@ -90,7 +74,6 @@ $(BINDIR)/%: %.C
 		else printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $(basename $^) 10  $(OK_STRING); \
 		fi;
 	@$(RM) -f temp.errors temp.log temp.comp
-
 
 clean:
 	$(RM) $(GRSISYS)/bin/$(ROOTTARGET) $(GRSISYS)/bin/$(CXXTARGET) *~ *Dict* *so 
