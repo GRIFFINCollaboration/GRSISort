@@ -97,7 +97,9 @@ TVector3 TDescant::gPosition[71] = {
 
 TDescant::TDescant() : descantdata(0)	{
    //Default Constructor
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    //Class()->AddRule("TDescant descant_hits attributes=NotOwner");
    //Class()->AddRule("TDescant descantdata attributes=NotOwner");
    Clear();
@@ -110,7 +112,9 @@ TDescant::~TDescant()	{
 
 void TDescant::Copy(TDescant &rhs) const {
   TGRSIDetector::Copy((TGRSIDetector&)rhs);
-  Class()->IgnoreTObjectStreamer(kTRUE);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 
   ((TDescant&)rhs).descantdata     = 0;
 

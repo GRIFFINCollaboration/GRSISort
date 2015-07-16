@@ -8,6 +8,7 @@
 #pragma link C++ class GROOTGuiFactory+;
 #pragma link C++ class GRootCanvas+;
 #pragma link C++ class GRootBrowser+;
+#pragma link C++ class GBrowserPlugin+;
 
 #pragma link C++ class GPadObj+;
 #pragma link C++ class GMemObj+;

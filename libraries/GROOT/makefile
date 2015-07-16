@@ -59,7 +59,7 @@ all: libGROOT.so $(OBJECTS)
 
 $(DICTNAM)Dict.cxx: $(DICTOBJ)
 	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
-	@rootcint -f $@ -c -I$(INCDIR) -p $(DICTOBJ) $(DICTNAM)LinkDef.h 2> temp.log || touch temp.errors
+	@rootcint -f $@ -c -I$(INCDIR) -p -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} $(DICTOBJ) $(DICTNAM)LinkDef.h 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
 		&& $(CAT) temp.log && \

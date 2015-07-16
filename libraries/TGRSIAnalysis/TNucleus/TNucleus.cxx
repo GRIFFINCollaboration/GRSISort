@@ -132,7 +132,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
   int i = 0,n,z;
   double emass;
   char tmp[256];
-  ifstream mass_file;
+  std::ifstream mass_file;
   mass_file.open(MassFile,std::ios::in);
   while(!mass_file.bad() && !mass_file.eof() && i < 3008){
     mass_file>>n;
@@ -293,7 +293,7 @@ bool TNucleus::SetSourceData() {
    path +=  name;
 
    printf("path = %s\n",path.c_str());
-   ifstream sourcefile;
+	std::ifstream sourcefile;
    sourcefile.open(path.c_str());
    if(!sourcefile.is_open()) {
       printf("unable to set source data for %s.\n",GetName());
@@ -374,7 +374,7 @@ void TNucleus::Print(Option_t *opt) const{
 
 void TNucleus::WriteSourceFile(std::string outfilename){
    if(outfilename.length() > 0) {
-     ofstream sourceout;
+	  std::ofstream sourceout;
      sourceout.open(outfilename.c_str());
      for(int i=0; i < TransitionList.GetSize(); i++)   {
         std::string transtr = ((TGRSITransition*)(TransitionList.At(i)))->PrintToString();

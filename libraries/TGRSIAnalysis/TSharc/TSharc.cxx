@@ -27,7 +27,9 @@ ClassImp(TSharc)
 //==========================================================================//
 
 TSharc::TSharc() : data(0)	{
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 }
 
 TSharc::~TSharc()	{
