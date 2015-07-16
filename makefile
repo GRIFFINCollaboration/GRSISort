@@ -1,5 +1,5 @@
 SUBDIRS = src libraries
-ALLDIRS = $(SUBDIRS) util
+ALLDIRS = $(SUBDIRS) util examples scripts
 
 PLATFORM = $(shell uname)
 
@@ -54,12 +54,23 @@ MAKE=make --no-print-directory
 
 .PHONY: all subdirs $(ALLDIRS) clean util
 
-all: print subdirs bin grsihist grsisort end
+#all: print config subdirs bin grsihist grsisort analysis util end
 
-docs: print subdirs bin grsihist grsisort html end
+all: print grsisort analysis util end
 
-util: libraries
+docs: print subdirs bin grsihist grsisort html config end
+
+util: libraries grsisort print
 	@$(MAKE) -C $@
+
+examples: libraries grsisort print
+	@$(MAKE) -C $@
+
+scripts: libraries grsisort print
+	@$(MAKE) -C $@
+
+analysis: libraries grsisort print
+	@$(MAKE) -C myanalysis
 
 print:
 	@echo "Compiling on $(PLATFORM)"
@@ -68,11 +79,13 @@ subdirs: $(SUBDIRS)
 
 src: print libraries
 
-$(SUBDIRS):
+$(SUBDIRS): print
 	@$(MAKE) -C $@
 
-grsisort: src
+grsisort: src libraries print bin config
 	@mv $</$@ bin/$@
+
+config: print
 	@cp util/grsi-config bin/
 	@find libraries/*/ -name "*.pcm" -exec cp {} libraries/ \;
 
