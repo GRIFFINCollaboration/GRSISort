@@ -76,5 +76,5 @@ $(BINDIR)/%: %.cxx
 	@$(RM) -f temp.errors temp.log temp.comp
 
 clean:
-	$(RM) $(GRSISYS)/bin/$(ROOTTARGET) $(GRSISYS)/bin/$(CXXTARGET) *~ *Dict* *so 
+	$(RM) $(GRSISYS)/bin/$(CXXTARGET) *~ *Dict* *so 
 

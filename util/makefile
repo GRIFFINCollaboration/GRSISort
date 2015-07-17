@@ -93,5 +93,5 @@ $(BINDIR)/%: %.C
 
 
 clean:
-	$(RM) $(GRSISYS)/bin/$(ROOTTARGET) $(GRSISYS)/bin/$(CXXTARGET) *~ *Dict* *so 
+	$(RM) $(GRSISYS)/bin/$(CXXTARGET) $(GRSISYS)/bin/$(ROOTTARGET) *~ *Dict* *so 
 
