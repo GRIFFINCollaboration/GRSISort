@@ -1,6 +1,7 @@
 #include <TMath.h>
 #include "TCSM.h"
 #define RECOVERHITS 1
+#define SUMHITS 0
 
 ClassImp(TCSM)
 
@@ -289,7 +290,7 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
     int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
     int he2 = cdataVH->GetHorizontal_Energy(hvec.at(1));
-    if(AlmostEqual(ve1,he1+he2))
+    if(AlmostEqual(ve1,he1+he2) && SUMHITS)
     {
       hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
       hvec.clear();
@@ -298,14 +299,16 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     else if(AlmostEqual(ve1,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+      RecoverHit('H',hvec.at(1),cdataVH,hitvec);
       vvec.clear();
-      hvec.erase(hvec.begin());
+      hvec.clear();
     }
     else if(AlmostEqual(ve1,he2))
     {
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
+      RecoverHit('H',hvec.at(0),cdataVH,hitvec);
       vvec.clear();
-      hvec.pop_back();
+      hvec.clear();
     }
   }
   
@@ -314,7 +317,7 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
     int ve2 = cdataVH->GetVertical_Energy(vvec.at(1));
     int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
-    if(AlmostEqual(ve1+ve2,he1))
+    if(AlmostEqual(ve1+ve2,he1) && SUMHITS)
     {
       hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
       hvec.clear();
@@ -323,13 +326,15 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     else if(AlmostEqual(ve1,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
-      vvec.erase(vvec.begin());
+      RecoverHit('V',vvec.at(1),cdataVH,hitvec);
+      vvec.clear();
       hvec.clear();
     }
     else if(AlmostEqual(ve2,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
-      vvec.pop_back();
+      RecoverHit('V',vvec.at(0),cdataVH,hitvec);
+      vvec.clear();
       hvec.clear();
     }
   }
