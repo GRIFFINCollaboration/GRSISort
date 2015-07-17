@@ -7,13 +7,6 @@
 #include "TSpectrum.h"
 #include "TH2.h"
 #include "TF1.h"
-#include "Math/Minimizer.h"
-#include "Math/Factory.h"
-#include "Math/Functor.h"
-#include "TRandom2.h"
-#include "TError.h"
-#include <algorithm>
-#include <map>
 
 
 class TGainMatch : public TCal {
