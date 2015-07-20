@@ -16,6 +16,7 @@ INC = -I$(BASE)/include
 INC += -I$(MIDASSYS)/include
 
 LIBDIR = -L$(BASE)/libraries
+LIBDIR += -L$(BASE)/users
 ifeq ($(PLATFORM),Darwin)
 LIBDIR += -L/opt/X11/lib 
 endif
@@ -44,9 +45,11 @@ LIBS += -lSRIM
 LIBS += -lTCal
 LIBS += -lTGRSIFit
 
+LIBS += -lGRSIUser
+
 DETLIBS =  -lTigress
 DETLIBS += -lSharc
-#DETLIBS += -lTriFoil
+DETLIBS += -lTriFoil
 ##DETLIBS += -lRf
 #DETLIBS += -lCSM
 ##DETLIBS += -lSpice
