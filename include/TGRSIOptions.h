@@ -32,6 +32,7 @@ namespace TGRSIOptions {
       extern bool fReadingMaterial;
       extern bool fIgnoreFileOdb;
       extern bool fIgnoreEpics;
+      extern bool fIgnoreSCLR;
       extern bool fWriteBadFrags;
 
       }
@@ -61,6 +62,9 @@ namespace TGRSIOptions {
 
       void SetIgnoreEpics(bool flag=true);
       bool IgnoreEpics();
+      
+      void SetIgnoreSCLR(bool flag=true);
+      bool IgnoreSCLR();
 
       void SetLogErrors(bool flag=true);      
       bool LogErrors();			
