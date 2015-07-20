@@ -5,7 +5,12 @@ PLATFORM = $(shell uname)
 
 export PLATFORM:= $(PLATFORM)
 
-export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -g `root-config --cflags`
+export MAJOR_ROOT_VERSION = `root-config --version | cut -d '.' -f1`
+#if [ ${MAJOR_ROOT_VERSION} -lt 5 ] ; then \
+#	$(error ${MAJOR_ROOT_VERSION} too small)
+#fi
+
+export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -g `root-config --cflags` -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION}
 
 #export GRSISYS:= $(GRSISYS)
 
@@ -85,6 +90,7 @@ grsisort: src libraries users print bin config
 
 config: print
 	@cp util/grsi-config bin/
+	@find libraries/*/ -name "*.pcm" -exec cp {} libraries/ \;
 
 bin:
 ifeq ($(wildcard ./bin),) 

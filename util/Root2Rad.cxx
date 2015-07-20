@@ -60,9 +60,9 @@ struct SpeHeader {
 //the value of all bins in int sizes
 //an integer os bin size * 4           ------- number of char in the histogram.
 
-void WriteHist(TH1*,fstream*);
-void WriteMat(TH2*,fstream*);
-void WriteM4b(TH2D*, fstream*);
+void WriteHist(TH1*, std::fstream*);
+void WriteMat(TH2*, std::fstream*);
+void WriteM4b(TH2D*, std::fstream*);
 
 int main(int argc, char** argv)	{	
 
@@ -86,7 +86,7 @@ int main(int argc, char** argv)	{
 	//std::string outfilename = infile->GetName();
 	//outfilename.erase(outfilename.find_last_of('.'));
 	//outfilename.append(".spe");
-	//fstream outfile;
+	//std::fstream outfile;
 	//outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
 	
 	TList *keys = infile->GetListOfKeys();
@@ -117,7 +117,7 @@ int main(int argc, char** argv)	{
       std::string outfilename = path + "/";
 		outfilename.append(currenthist->GetName());
 		outfilename.append(".spe");
-		fstream outfile;
+		std::fstream outfile;
 		outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
 		WriteHist(currenthist, &outfile);
 		printf("\t%s written to file %s.\n",currenthist->GetName(),outfilename.c_str());
@@ -130,7 +130,7 @@ int main(int argc, char** argv)	{
       std::string outfilename = path + "/";
 		outfilename.append(currentmat->GetName());
 		outfilename.append(".mat");
-		fstream outfile;
+		std::fstream outfile;
 		outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
 		WriteMat(currentmat, &outfile);
 		printf("\t%s written to file %s.\n",currentmat->GetName(),outfilename.c_str());
@@ -143,7 +143,7 @@ int main(int argc, char** argv)	{
       std::string outfilename = path + "/";
 		outfilename.append(currentm4b->GetName());
 		outfilename.append(".m4b");
-		fstream outfile;
+		std::fstream outfile;
 		outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
 		WriteM4b(currentm4b, &outfile);
 		printf("\t%s written to file %s.\n",currentm4b->GetName(),outfilename.c_str());
@@ -156,7 +156,7 @@ int main(int argc, char** argv)	{
 	return 0;
 }
 
-void WriteMat(TH2 *mat, fstream *outfile) {
+void WriteMat(TH2 *mat, std::fstream *outfile) {
    int xbins = mat->GetXaxis()->GetNbins();
    int ybins = mat->GetYaxis()->GetNbins();
    
@@ -180,7 +180,7 @@ void WriteMat(TH2 *mat, fstream *outfile) {
    delete empty;
 }
 
-void WriteM4b(TH2D *mat, fstream *outfile) {
+void WriteM4b(TH2D *mat, std::fstream *outfile) {
    int xbins = mat->GetXaxis()->GetNbins();
    int ybins = mat->GetYaxis()->GetNbins();
    
@@ -204,7 +204,7 @@ void WriteM4b(TH2D *mat, fstream *outfile) {
    delete empty;
 }
 
-void WriteHist(TH1 *hist,fstream *outfile)	{
+void WriteHist(TH1 *hist, std::fstream *outfile)	{
 	SpeHeader spehead;
 	spehead.buffsize = 24;
   	strncpy(spehead.label,hist->GetName(),8); 

@@ -38,7 +38,7 @@ libTGint.so: $(OBJECTS)
 
 %Dict.cxx: $(BASE)/include/%.h
 	@$(ECHO) $(DICT_STRING)
-	@rootcint -f $@ -c $^ 2> temp.log || touch temp.errors
+	@rootcint -f $@ -c -p -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} $^ 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then $(ECHO) $(ERROR_STRING) && $(CAT) temp.log && \
 		$(ECHO) "\033[0;31m from $^ in ${PWD} \033[m"; \
 		elif test -s temp.log; then $(ECHO) $(WARN_STRING) && $(CAT) temp.log; \

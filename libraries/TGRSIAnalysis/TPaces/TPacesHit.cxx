@@ -6,12 +6,16 @@
 ClassImp(TPacesHit)
 
 TPacesHit::TPacesHit():TGRSIDetectorHit()	{	
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 	Clear();
 }
 
 TPacesHit::TPacesHit(const TPacesHit &rhs)	{	
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 	Clear();
    ((TPacesHit&)rhs).Copy(*this);
 }

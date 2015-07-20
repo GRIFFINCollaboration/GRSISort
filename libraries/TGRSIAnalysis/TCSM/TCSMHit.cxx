@@ -4,7 +4,9 @@
 ClassImp(TCSMHit)
 
 TCSMHit::TCSMHit()	{	
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 

@@ -18,12 +18,14 @@ ClassImp(TGRSIDetector)
 
 TGRSIDetector::TGRSIDetector():TObject(){
    //Default constructor.
-  Class()->IgnoreTObjectStreamer(kTRUE);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 }
 
 TGRSIDetector::TGRSIDetector(const TGRSIDetector& rhs) {
    //Default Copy constructor.
-  Class()->IgnoreTObjectStreamer(kTRUE);
+  //Class()->IgnoreTObjectStreamer(kTRUE);
    ((TGRSIDetector&)rhs).Copy(*this);
 }
 

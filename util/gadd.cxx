@@ -80,23 +80,23 @@
 int main( int argc, char **argv )
 {
 
-   if ( argc < 3 || "-h" == string(argv[1]) || "--help" == string(argv[1]) ) {
-      cout << "Usage: " << argv[0] << " [-f[0-9]] [-k] [-T] [-O] [-n maxopenedfiles] [-v verbosity] targetfile source1 [source2 source3 ...]" << endl;
-      cout << "This program will add histograms from a list of root files and write them" << endl;
-      cout << "to a target root file. The target file is newly created and must not " << endl;
-      cout << "exist, or if -f (\"force\") is given, must not be one of the source files." << endl;
-      cout << "Supply at least two source files for this to make sense... ;-)" << endl;
-      cout << "If the option -k is used, gadd will not exit on corrupt or non-existant input files but skip the offending files instead." << endl;
-      cout << "If the option -T is used, Trees are not merged" <<endl;
-      cout << "If the option -O is used, when merging TTree, the basket size is re-optimized" <<endl;
-      cout << "If the option -v is used, explicitly set the verbosity level; 0 request no output, 99 is the default" <<endl;
-      cout << "If the option -n is used, gadd will open at most 'maxopenedfiles' at once, use 0 to request to use the system maximum." << endl;
-      cout << "When -the -f option is specified, one can also specify the compression" <<endl;
-      cout << "level of the target file. By default the compression level is 1, but" <<endl;
-      cout << "if \"-f0\" is specified, the target file will not be compressed." <<endl;
-      cout << "if \"-f6\" is specified, the compression level 6 will be used." <<endl;
-      cout << "if Target and source files have different compression levels"<<endl;
-      cout << " a slower method is used"<<endl;
+   if ( argc < 3 || "-h" == std::string(argv[1]) || "--help" == std::string(argv[1]) ) {
+      std::cout << "Usage: " << argv[0] << " [-f[0-9]] [-k] [-T] [-O] [-n maxopenedfiles] [-v verbosity] targetfile source1 [source2 source3 ...]" << std::endl;
+      std::cout << "This program will add histograms from a list of root files and write them" << std::endl;
+      std::cout << "to a target root file. The target file is newly created and must not " << std::endl;
+      std::cout << "exist, or if -f (\"force\") is given, must not be one of the source files." << std::endl;
+      std::cout << "Supply at least two source files for this to make sense... ;-)" << std::endl;
+      std::cout << "If the option -k is used, gadd will not exit on corrupt or non-existant input files but skip the offending files instead." << std::endl;
+      std::cout << "If the option -T is used, Trees are not merged" <<std::endl;
+      std::cout << "If the option -O is used, when merging TTree, the basket size is re-optimized" <<std::endl;
+      std::cout << "If the option -v is used, explicitly set the verbosity level; 0 request no output, 99 is the default" <<std::endl;
+      std::cout << "If the option -n is used, gadd will open at most 'maxopenedfiles' at once, use 0 to request to use the system maximum." << std::endl;
+      std::cout << "When -the -f option is specified, one can also specify the compression" <<std::endl;
+      std::cout << "level of the target file. By default the compression level is 1, but" <<std::endl;
+      std::cout << "if \"-f0\" is specified, the target file will not be compressed." <<std::endl;
+      std::cout << "if \"-f6\" is specified, the compression level 6 will be used." <<std::endl;
+      std::cout << "if Target and source files have different compression levels"<<std::endl;
+      std::cout << " a slower method is used"<<std::endl;
       return 1;
    }
 
@@ -125,7 +125,7 @@ int main( int argc, char **argv )
          ++ffirst;
       } else if ( strcmp(argv[a],"-n") == 0 ) {
          if (a+1 >= argc) {
-            cerr << "Error: no maximum number of opened was provided after -n.\n";
+            std::cerr << "Error: no maximum number of opened was provided after -n.\n";
          } else {
             Long_t request = strtol(argv[a+1], 0, 10);
             if (request < kMaxLong && request >= 0) {
@@ -133,13 +133,13 @@ int main( int argc, char **argv )
                ++a;
                ++ffirst;
             } else {
-               cerr << "Error: could not parse the max number of opened file passed after -n: " << argv[a+1] << ". We will use the system maximum.\n";
+               std::cerr << "Error: could not parse the max number of opened file passed after -n: " << argv[a+1] << ". We will use the system maximum.\n";
             }
          }
          ++ffirst;
       } else if ( strcmp(argv[a],"-v") == 0 ) {
          if (a+1 >= argc) {
-            cerr << "Error: no verbosity level was provided after -v.\n";
+            std::cerr << "Error: no verbosity level was provided after -v.\n";
          } else {
             Long_t request = strtol(argv[a+1], 0, 10);
             if (request < kMaxLong && request >= 0) {
@@ -147,7 +147,7 @@ int main( int argc, char **argv )
                ++a;
                ++ffirst;
             } else {
-               cerr << "Error: could not parse the verbosity level passed after -v: " << argv[a+1] << ". We will use the default value (99).\n";
+               std::cerr << "Error: could not parse the verbosity level passed after -v: " << argv[a+1] << ". We will use the default value (99).\n";
             }
          }
          ++ffirst;
@@ -164,7 +164,7 @@ int main( int argc, char **argv )
          }
          if (!force) {
             // Bad argument
-            cerr << "Error: option " << argv[a] << " is not a supported option.\n";
+            std::cerr << "Error: option " << argv[a] << " is not a supported option.\n";
             ++ffirst;
          }
       } else if (!outputPlace) {
@@ -186,7 +186,7 @@ int main( int argc, char **argv )
    }
       
    if (verbosity > 1) {
-      cout << "gadd Target file: " << targetname << endl;
+      std::cout << "gadd Target file: " << targetname << std::endl;
    }
 
    TFileMerger merger(kFALSE,kFALSE);
@@ -196,8 +196,8 @@ int main( int argc, char **argv )
       merger.SetMaxOpenedFiles(maxopenedfiles);
    }
    if (!merger.OutputFile(targetname,force,newcomp) ) {
-      cerr << "gadd error opening target file (does " << argv[ffirst-1] << " exist?)." << endl;
-      cerr << "Pass \"-f\" argument to force re-creation of output file." << endl;
+      std::cerr << "gadd error opening target file (does " << argv[ffirst-1] << " exist?)." << std::endl;
+      std::cerr << "Pass \"-f\" argument to force re-creation of output file." << std::endl;
       exit(1);
    }
 
@@ -217,9 +217,9 @@ int main( int argc, char **argv )
          }         
       } else if( ! merger.AddFile(argv[i]) ) {
          if ( skip_errors ) {
-            cerr << "gadd skipping file with error: " << argv[i] << endl;
+            std::cerr << "gadd skipping file with error: " << argv[i] << std::endl;
          } else {
-            cerr << "gadd exiting due to error in " << argv[i] << endl;
+            std::cerr << "gadd exiting due to error in " << argv[i] << std::endl;
             return 1;
          }
       }
@@ -229,8 +229,8 @@ int main( int argc, char **argv )
    } else {
       if (merger.HasCompressionChange()) {
          // Don't warn if the user any request re-optimization.
-         cout <<"gadd Sources and Target have different compression levels"<<endl;
-         cout <<"gadd merging will be slower"<<endl;
+         std::cout <<"gadd Sources and Target have different compression levels"<<std::endl;
+         std::cout <<"gadd merging will be slower"<<std::endl;
       }
    }
    merger.SetNotrees(noTrees);
@@ -238,12 +238,12 @@ int main( int argc, char **argv )
 
    if (status) {
       if (verbosity == 1) {
-         cout << "gadd merged " << merger.GetMergeList()->GetEntries() << " input files in " << targetname << ".\n";
+         std::cout << "gadd merged " << merger.GetMergeList()->GetEntries() << " input files in " << targetname << ".\n";
       }
       return 0;
    } else {
       if (verbosity == 1) {
-         cout << "gadd failure during the merge of " << merger.GetMergeList()->GetEntries() << " input files in " << targetname << ".\n";
+         std::cout << "gadd failure during the merge of " << merger.GetMergeList()->GetEntries() << " input files in " << targetname << ".\n";
       }
       return 1;
    }

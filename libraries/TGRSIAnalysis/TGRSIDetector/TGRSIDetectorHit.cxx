@@ -17,7 +17,9 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int &fAddress):TObject()	{
   //Default constructor
   Clear();
   address = fAddress;
-  Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 }
 
 TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs)	{ 
@@ -25,7 +27,9 @@ TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs)	{
   ((TGRSIDetectorHit&)rhs).Copy(*this);
   //((TGriffinHit&)rhs).cfd             = cfd;
   //rhs.time            = time;
-  Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 }
 
 TGRSIDetectorHit::~TGRSIDetectorHit()	{

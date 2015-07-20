@@ -66,15 +66,19 @@ std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::addback_criterion = []
 
 
 TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
    fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
 TGriffin::TGriffin(const TGriffin& rhs) {
-  Class()->IgnoreTObjectStreamer(kTRUE);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+   fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
   ((TGriffin&)rhs).Copy(*this);
-  fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 }
 
 void TGriffin::Copy(TGriffin &rhs) const {
@@ -143,7 +147,7 @@ void TGriffin::Clear(Option_t *opt)	{
    griffin_hits.clear();
    addback_hits.clear();
    fCycleStart = 0;
-   fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
+   //fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 }
 
 
