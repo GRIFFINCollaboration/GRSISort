@@ -20,7 +20,7 @@ class TGainMatch : public TCal {
  public: 
    TGainMatch(){}
    TGainMatch(const char* name, const char* title) : TCal(name,title){Clear();}
-   ~TGainMatch(){} 
+   virtual ~TGainMatch(){} 
 
    TGainMatch(const TGainMatch &copy);
 

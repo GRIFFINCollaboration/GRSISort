@@ -15,7 +15,7 @@
 class TSceptarHit : public TGRSIDetectorHit {
   public:
     TSceptarHit();
-    ~TSceptarHit();
+    virtual ~TSceptarHit();
     TSceptarHit(const TSceptarHit&);
 
   private:

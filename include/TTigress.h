@@ -30,7 +30,7 @@ class TTigress : public TGRSIDetector {
 	public:
 		TTigress();
       TTigress(const TTigress&);
-		~TTigress();
+		virtual ~TTigress();
 
 	public: 
       void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!

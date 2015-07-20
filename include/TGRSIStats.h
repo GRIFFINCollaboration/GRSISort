@@ -33,7 +33,7 @@ class TGRSIStats : public TObject {
      static Long_t fGoodEvents;                   //The total number of good events in a sub-run
 
    public:
-      ~TGRSIStats();
+      virtual ~TGRSIStats();
       static std::map<int,TGRSIStats*> *GetMap() { return fStatsMap;}
       static int GetSize() { if(fStatsMap) return fStatsMap->size(); else return 0; }
 

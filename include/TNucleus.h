@@ -28,7 +28,7 @@ class TNucleus : public TNamed{
   TNucleus(int Z, int N, double mass, const char* symbol);		// Creates a nucleus with Z, N, mass, and symbol
   TNucleus(int Z, int N, const char* MassFile = 0); // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
 
-  ~TNucleus();
+  virtual ~TNucleus();
 	
   //static void SetMassFile(const char *tmp = NULL);// {massfile = tmp;} //Sets the mass file to be used
 

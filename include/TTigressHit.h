@@ -23,7 +23,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	public:
 		TTigressHit();
 		TTigressHit(const TTigressHit&);
-		~TTigressHit();
+		virtual ~TTigressHit();
 
 	private:
 		//UShort_t detector;

@@ -14,7 +14,7 @@ public:
   TBetaDecay(TNucleus *parent);
   TBetaDecay(char* name);
   TBetaDecay(Int_t Z, Int_t N);
-  ~TBetaDecay();
+  virtual ~TBetaDecay();
 
 public:
   TNucleus *GetParent() const {return fparent;} 
