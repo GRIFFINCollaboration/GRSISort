@@ -926,6 +926,38 @@ int TDataParser::EPIXToScalar(float *data,int size,unsigned int midasserialnumbe
    return NumFragsFound;
 }
 
+int TDataParser::SCLRToScalar(uint32_t *data,int size,unsigned int midasserialnumber,time_t midastime) {
+
+   int NumFragsFound = 1;
+   TSCLRFrag *Sfrag = new TSCLRFrag;
+
+   Sfrag->MidasTimeStamp = midastime;
+   Sfrag->MidasId        = midasserialnumber;	 
+
+   //printf("\nsclr unpacked called with size = %i\n\n",size);
+  
+
+   if((size%4) != 0) {
+      //make some error mode
+      //printf("here 1 \n");
+      TGRSIRootIO::Get()->FillSCLRTree(Sfrag); // fill the tree so at least there is a record of it's timestamp.
+      return 0;
+   }
+   for(int x=0;x<size;x=x+4) {
+      Sfrag->Data1.push_back((UInt_t)data[x+0]);
+      Sfrag->Data2.push_back((UInt_t)data[x+1]);
+      Sfrag->Data3.push_back((UInt_t)data[x+2]);
+      Sfrag->Data4.push_back((UInt_t)data[x+3]);
+   }
+   for(int x=0;x<TSCLRFrag::AddressMap.size();x++) {Sfrag->Address.push_back(TSCLRFrag::AddressMap.at(x)); }
+   //Sfrag->Print();
+
+   TGRSIRootIO::Get()->FillSCLRTree(Sfrag);
+   delete Sfrag;
+   Sfrag = 0;
+   //printf("[%i]  frag deleted, return.\n\n\n",midasserialnumber);
+   return NumFragsFound;
+}
 
 
 
