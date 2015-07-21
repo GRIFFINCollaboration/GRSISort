@@ -38,7 +38,7 @@ class TCSMData;
 class TCSM :  public TGRSIDetector 	{
 	public:
 		TCSM();
-		~TCSM();
+		virtual ~TCSM();
 
 	public: 
 		virtual void Clear(Option_t * = "");		//!

@@ -15,7 +15,7 @@
 class TDescantHit : public TGRSIDetectorHit {
   public:
     TDescantHit();
-    ~TDescantHit();
+    virtual ~TDescantHit();
 	 TDescantHit(const TDescantHit&);
 
   private:

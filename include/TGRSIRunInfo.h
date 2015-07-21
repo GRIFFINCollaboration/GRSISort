@@ -65,7 +65,7 @@ class TGRSIRunInfo : public TObject {
 
    public:
       static TGRSIRunInfo *Get();
-      ~TGRSIRunInfo();
+      virtual ~TGRSIRunInfo();
       TGRSIRunInfo();   // This should not be used.
                         // root forces me have this here instead 
                         // of a private class member in 

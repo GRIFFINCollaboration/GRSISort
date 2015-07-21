@@ -12,7 +12,7 @@ class GMarker : public TObject{
   public:
     GMarker():x(-1),y(-1),linex(0),liney(0),localx(0.0),localy(0.0) { }
     GMarker(const GMarker &m) { ((GMarker&)m).Copy(*this); }
-    ~GMarker() { if(linex) linex->Delete(); if(liney) liney->Delete(); }
+    virtual ~GMarker() { if(linex) linex->Delete(); if(liney) liney->Delete(); }
     int x;
     int y;
     double localx;
