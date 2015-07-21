@@ -1,58 +1,17 @@
 
 OBJECTS = TGRSIOptions.o TGRSIOptionsDict.o TGRSIint.o TGRSIintDict.o grsixx.o
-
-CFLAGS += -fPIC
-
+NAME = TGRSIint
 
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__ = 1
 else
 CFLAGS += -DLINUX
-WORDS = words.o
+WORD = words.o
 endif
 
-#COMP_STRING="Now Compling "
-DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
+-include ../../make.rules
 
-CAT=cat
-
-.PHONY: all clean gone
-
-all: libTGRSIint.so $(OBJECTS)
-	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $< ;
-
-libTGRSIint.so: $(OBJECTS)
-	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"
-	@$(COMPILESHARED)$@ $(CFLAGS) -olibTGRSIint.so $(OBJECTS) $(WORDS)  2> temp.log || touch temp.errors
-	@if test -e temp.errors; then \
-		printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
-		&& $(CAT) temp.log && \
-		printf "${ERROR_COLOR}%s\n${NO_COLOR}" ${PWD};  \
-		elif test -s temp.log; then \
-		printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${WARN_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(WARN_STRING) \
-		&& $(CAT) temp.log; \
-		else printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10  $(OK_STRING); \
-		fi;
-	@$(RM) -f temp.errors temp.log
-	@cp libTGRSIint.so ..
-
-%.o: %.cxx
-	@printf " ${COM_COLOR}%s ${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@ 
-	@$(CXX) -c $^ $(CFLAGS) $(CPPFLAGS) 2> temp.log || touch temp.errors
-	@if test -e temp.errors; then \
-		printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
-		&& $(CAT) temp.log && \
-		printf "${ERROR_COLOR}%s\n${NO_COLOR}" ${PWD};  \
-		elif test -s temp.log; then \
-		printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${WARN_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(WARN_STRING) \
-		&& $(CAT) temp.log; \
-		else printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10  $(OK_STRING); \
-		fi;
-	@$(RM) -f temp.errors temp.log
-
-
-
-%Dict.cxx: $(BASE)/include/%.h
+%Dict.cxx: $(INCDIR)/%.h
 	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
 	@rootcint -f $@ -c -p -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} $^ 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
@@ -65,9 +24,3 @@ libTGRSIint.so: $(OBJECTS)
 		else printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10  $(OK_STRING); \
 		fi;
 	@$(RM) -f temp.errors temp.log
-
-clean:
-	$(RM) $(OBJECTS) *~ *Dict* *so 
-
-
-
