@@ -9,7 +9,7 @@ class TEfficiencyCal : public TCal {
  public: 
    TEfficiencyCal();
    TEfficiencyCal(const char* name, const char* title) : TCal(name,title){}
-   ~TEfficiencyCal(); 
+   virtual ~TEfficiencyCal(); 
 
    TEfficiencyCal(const TEfficiencyCal &copy);
 

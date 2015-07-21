@@ -58,7 +58,9 @@ double TSharc::segmentpitch         = TSharc::Pdim / 24.0;  //TSharc::backstrips
 // The dimensions are described for a single detector of each type UQ,UB,DB,DQ, and all other detectors can be calculated by rotating this
 
 TSharc::TSharc() : data(0)	{
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 

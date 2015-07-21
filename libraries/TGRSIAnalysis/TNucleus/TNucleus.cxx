@@ -293,7 +293,7 @@ bool TNucleus::SetSourceData() {
    path +=  name;
 
    printf("path = %s\n",path.c_str());
-   std::ifstream sourcefile;
+	std::ifstream sourcefile;
    sourcefile.open(path.c_str());
    if(!sourcefile.is_open()) {
       printf("unable to set source data for %s.\n",GetName());
@@ -374,7 +374,7 @@ void TNucleus::Print(Option_t *opt) const{
 
 void TNucleus::WriteSourceFile(std::string outfilename){
    if(outfilename.length() > 0) {
-     std::ofstream sourceout;
+	  std::ofstream sourceout;
      sourceout.open(outfilename.c_str());
      for(int i=0; i < TransitionList.GetSize(); i++)   {
         std::string transtr = ((TGRSITransition*)(TransitionList.At(i)))->PrintToString();

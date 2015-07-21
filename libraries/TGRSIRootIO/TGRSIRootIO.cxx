@@ -355,7 +355,7 @@ void TGRSIRootIO::WriteRunStats(){
    fStatsTree->Bronch("TGRSIStats","TGRSIStats",&stats);
 
   std::map<int,TGRSIStats*>::iterator iter;
-  ofstream statsout;
+  std::ofstream statsout;
   statsout.open(Form("stats%05i_%03i.log",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
   statsout << "\nRun time to the nearest second = " << TGRSIStats::GetRunTime()  << std::endl << std::endl;
   for(iter = TGRSIStats::GetMap()->begin();iter!=TGRSIStats::GetMap()->end();iter++) {

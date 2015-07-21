@@ -15,7 +15,9 @@ ClassImp(TGRSITransition)
 
 TGRSITransition::TGRSITransition() {
 //Default constructor for TGRSITransition
-  Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
   Clear();
 }
 

@@ -20,7 +20,7 @@ class TGRSIRootIO : public TObject {
 
    public:
       static TGRSIRootIO *Get();
-      ~TGRSIRootIO();
+      virtual ~TGRSIRootIO();
    
    private:
       static TGRSIRootIO *fTGRSIRootIO;

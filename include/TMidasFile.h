@@ -23,7 +23,7 @@ class TMidasFile : public TObject
 {
 public:
   TMidasFile(); ///< default constructor
-  ~TMidasFile(); ///< destructor
+  virtual ~TMidasFile(); ///< destructor
 
   bool Open(const char* filename); ///< Open input file
   bool OutOpen(const char* filename); ///< Open output file

@@ -27,7 +27,7 @@
 class TEpicsFrag : public TObject	{
   public:
     TEpicsFrag(); 
-    ~TEpicsFrag(); 
+    virtual ~TEpicsFrag(); 
 
     time_t   MidasTimeStamp;       //->  Timestamp of the MIDAS event  
     Int_t    MidasId;              //->  MIDAS ID

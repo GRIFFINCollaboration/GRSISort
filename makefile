@@ -1,11 +1,16 @@
 SUBDIRS = src libraries
-ALLDIRS = $(SUBDIRS) util examples scripts
+ALLDIRS = $(SUBDIRS) util examples scripts users
 
 PLATFORM = $(shell uname)
 
 export PLATFORM:= $(PLATFORM)
 
-export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -g `root-config --cflags`
+export MAJOR_ROOT_VERSION = `root-config --version | cut -d '.' -f1`
+#if [ ${MAJOR_ROOT_VERSION} -lt 5 ] ; then \
+#	$(error ${MAJOR_ROOT_VERSION} too small)
+#fi
+
+export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -g `root-config --cflags` -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION}
 
 #export GRSISYS:= $(GRSISYS)
 
@@ -13,7 +18,7 @@ ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 export CFLAGS += -DOS_DARWIN -DHAVE_ZLIB #-lz
 export CFLAGS += -I/opt/X11/include -Qunused-arguments
-export LFLAGS = -dynamiclib -undefined dynamic_lookup -single_module -Wl,-install_name,'@executable_path/../libraries/$$@' # 
+export LFLAGS = -dynamiclib -undefined dynamic_lookup -single_module -Wl,-install_name,'@executable_path/../libraries/$$@'
 export SHAREDSWITCH = -install_name # ENDING SPACE
 export CXX = clang++ 
 export CPP = clang++ 
@@ -56,16 +61,19 @@ all: print grsisort analysis util end
 
 docs: print subdirs bin grsihist grsisort html config end
 
-util: libraries grsisort print
+util: libraries users grsisort print
 	@$(MAKE) -C $@
 
-examples: libraries grsisort print
+examples: libraries users grsisort print
+	@$(MAKE) -C $@
+
+users: libraries print
 	@$(MAKE) -C $@
 
 scripts: libraries grsisort print
 	@$(MAKE) -C $@
 
-analysis: libraries grsisort print
+analysis: libraries users grsisort print
 	@$(MAKE) -C myanalysis
 
 print:
@@ -73,16 +81,17 @@ print:
 
 subdirs: $(SUBDIRS)
 
-src: print libraries
+src: print libraries users
 
 $(SUBDIRS): print
 	@$(MAKE) -C $@
 
-grsisort: src libraries print bin config
+grsisort: src libraries users print bin config
 	@mv $</$@ bin/$@
 
 config: print
 	@cp util/grsi-config bin/
+	@find libraries/*/ -name "*.pcm" -exec cp {} libraries/ \;
 
 bin:
 ifeq ($(wildcard ./bin),) 

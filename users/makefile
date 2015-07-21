@@ -1,22 +1,7 @@
 
-OBJECTS = GROOTGuiFactory.o GRootCanvas.o GRootBrowser.o GCanvas.o GDirectory.o \
-          GRootGlobals.o GRootObjectManager.o GH1D.o GROOTDict.o GTree.o GChain.o GFile.o
-INCDIR = $(BASE)/include
-DICTOBJ =  $(INCDIR)/GROOTGuiFactory.h 
-DICTOBJ += $(INCDIR)/GRootCanvas.h 
-DICTOBJ += $(INCDIR)/GRootObjectManager.h 
-DICTOBJ += $(INCDIR)/GRootGlobals.h 
-DICTOBJ += $(INCDIR)/GRootBrowser.h 
-DICTOBJ += $(INCDIR)/GCanvas.h 
-DICTOBJ += $(INCDIR)/GDirectory.h 
-DICTOBJ += $(INCDIR)/GH1D.h 
-DICTOBJ += $(INCDIR)/GFile.h 
-DICTOBJ += $(INCDIR)/GTree.h 
-DICTOBJ += $(INCDIR)/GChain.h
-DICTNAM = GROOT
+OBJECTS = TUserSortInfo.o TUserSortInfoDict.o
 
 CFLAGS += -fPIC
-LFLAGS = `root-config --glibs`
 
 #COMP_STRING="Now Compling "
 DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
@@ -25,12 +10,12 @@ CAT=cat
 
 .PHONY: all clean gone
 
-all: libGROOT.so $(OBJECTS)
+all: libGRSIUser.so $(OBJECTS)
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $< ;
 
-%.so: $(OBJECTS)
+libGRSIUser.so: $(OBJECTS)
 	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"
-	@$(COMPILESHARED)$@ $(CFLAGS) $(LFLAGS) -o$@ $(OBJECTS) 2> temp.log || touch temp.errors
+	@$(COMPILESHARED)$@ $(CFLAGS) -o$@ $(OBJECTS) 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
 		&& $(CAT) temp.log && \
@@ -41,7 +26,7 @@ all: libGROOT.so $(OBJECTS)
 		else printf "\r ${COM_COLOR}%s${OBJ_COLOR}%-30s ${OK_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10  $(OK_STRING); \
 		fi;
 	@$(RM) -f temp.errors temp.log
-	@cp $@ ..
+	@cp $@ $(GRSISYS)/libraries/
 
 %.o: %.cxx
 	@printf " ${COM_COLOR}%s ${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@ 
@@ -57,9 +42,11 @@ all: libGROOT.so $(OBJECTS)
 		fi;
 	@$(RM) -f temp.errors temp.log
 
-$(DICTNAM)Dict.cxx: $(DICTOBJ)
+
+%Dict.cxx: $(BASE)/include/%.h
+	@printf " Trying this" $(COMP_STRING) $@
 	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
-	@rootcint -f $@ -c -I$(INCDIR) -p -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} $(DICTOBJ) $(DICTNAM)LinkDef.h 2> temp.log || touch temp.errors
+	@rootcint -f $@ -c $^ 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
 		&& $(CAT) temp.log && \

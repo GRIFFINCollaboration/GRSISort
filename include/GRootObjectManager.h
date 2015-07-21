@@ -19,7 +19,7 @@
 class GPadObj : public TNamed {
   public:
      GPadObj(TObject*obj,Int_t pnum=0,Option_t *opt="");
-     ~GPadObj();
+     virtual ~GPadObj();
 
    private:
       //PadObj(); 
@@ -37,7 +37,7 @@ class GMemObj : public TNamed {
   public:
     GMemObj(TObject *obj, TObject *par=0,TFile *file=0,Option_t *opt="");
     GMemObj(const GMemObj &obj) { ((GMemObj&)obj).Copy(*this); }
-    ~GMemObj();
+    virtual ~GMemObj();
 
     void Copy(TObject &object) const;
 

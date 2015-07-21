@@ -8,7 +8,9 @@
 ClassImp(TSceptarHit)
 
 TSceptarHit::TSceptarHit()	{	
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    //Class()->AddRule("TSceptarHit waveform attributes=NotOwner");
    Clear();
 }
@@ -16,7 +18,9 @@ TSceptarHit::TSceptarHit()	{
 TSceptarHit::~TSceptarHit()	{	}
 
 TSceptarHit::TSceptarHit(const TSceptarHit &rhs)	{	
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
    ((TSceptarHit&)rhs).Copy(*this);
 }

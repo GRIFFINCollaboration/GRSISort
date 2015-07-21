@@ -21,12 +21,16 @@ long TPaces::fCycleStart  = 0;
 long TPaces::fLastPPG     = 0;
 
 TPaces::TPaces() : TGRSIDetector(),pacesdata(0) {
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
 TPaces::TPaces(const TPaces& rhs) {
-  Class()->IgnoreTObjectStreamer(kTRUE);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
   ((TPaces&)rhs).Copy(*this);
 }
 

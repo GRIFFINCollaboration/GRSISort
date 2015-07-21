@@ -578,7 +578,7 @@ void TChannel::WriteCalFile(std::string outfilename) {
 
 
    if(outfilename.length()>0) {
-     std::ofstream calout;
+	  std::ofstream calout;
      calout.open(outfilename.c_str());
      for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
         std::string chanstr = iter_vec->PrintToString();

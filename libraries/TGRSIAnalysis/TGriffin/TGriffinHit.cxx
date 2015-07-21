@@ -6,7 +6,9 @@
 ClassImp(TGriffinHit)
 
 TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{	
+#if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 	Clear();
 }
 

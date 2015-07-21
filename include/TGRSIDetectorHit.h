@@ -63,7 +63,7 @@ class TGRSIDetectorHit : public TObject 	{
       inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    } //!
       virtual inline void SetTime(const ULong_t &x)               { time   = x;   }                  //! Maybe make this abstract?
  
-      TVector3 SetPosition(Double_t temp_pos = 0);
+      virtual TVector3 SetPosition(Double_t temp_pos = 0);
       void SetEnergy(double en) { energy = en; is_energy_set = true; }
       virtual UInt_t SetDetector(UInt_t det);
       

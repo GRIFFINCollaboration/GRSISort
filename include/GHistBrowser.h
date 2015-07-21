@@ -9,7 +9,7 @@
 class GHistBrowser : public TGMainFrame {
 
   public:
-    ~GHistBrowser();
+    virtual ~GHistBrowser();
 
   private:
     static GHistBrowser *fGHistBrowser;
