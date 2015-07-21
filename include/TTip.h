@@ -24,17 +24,25 @@ class TTip : public TGRSIDetector {
 
 	public:
 
-		~TTip();
+		virtual ~TTip();
 		TTip();	
+      TTip(const TTip& rhs);
 
-		TTipHit *GetTipHit(int i)        {	return &tip_hits[i];   }	//!
+		TTipHit *GetTipHit(const int i) ;//!
+      TGRSIDetectorHit *GetHit(const int i);
 		Short_t GetMultiplicity() const	       {	return tip_hits.size();}	//!
 
 		void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = "");           //!
 		void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
+      void Copy(TTip &rhs) const;
+
+      TTip& operator=(const TTip&);  //!
 
 		void Clear(Option_t *opt = "");
+		void Print(Option_t *opt = "");
 
+   protected:
+     void PushBackHit(TGRSIDetectorHit* tiphit);
 
 	private:
 

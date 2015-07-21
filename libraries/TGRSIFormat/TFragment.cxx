@@ -72,11 +72,11 @@ double TFragment::GetTimeStamp() const {
    long time = TimeStampHigh;
    time  = time << 28;
    time |= TimeStampLow & 0x0fffffff;
-   
+   double dtime = double(time)+ gRandom->Uniform();
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan )//|| Charge.size()<1)
-      return double(time);
-   return double(time) - chan->GetTZero(GetEnergy());
+      return dtime;
+   return dtime - chan->GetTZero(GetEnergy());
 }
 
 double TFragment::GetTZero() const {
@@ -107,7 +107,7 @@ Int_t TFragment::Get4GCfd(int i) { // return a 4G cfd in terms
 }
 
 
-const char *TFragment::GetName() {
+const char *TFragment::GetName() const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan)
       return "";
@@ -128,6 +128,7 @@ double TFragment::GetEnergy(int i) const {
    if(!chan || !(Charge.size()>i))
       return 0.00;
    if(chan->UseCalFileIntegration()) {
+      //printf("I am here\n");
      return chan->CalibrateENG((int)(Charge.at(i)),0);  // this will use the integration value
                                                         // in the tchannel if it exists.
    }
@@ -136,7 +137,18 @@ double TFragment::GetEnergy(int i) const {
    return chan->CalibrateENG((int)(Charge.at(i)));
 }
 
-
+double TFragment::GetCharge(int i) const {
+   TChannel *chan = TChannel::GetChannel(ChannelAddress);
+   if(!chan || !(Charge.size()>i))
+      return 0.00;
+   if(chan->UseCalFileIntegration()) {
+      return ((double)Charge.at(i)+gRandom->Uniform())/((double)chan->GetIntegration());// this will use the integration value
+   }                                                                       // in the tchannel if it exists.
+   if(KValue.size()>i && KValue.at(i)>0){
+      return ((double)Charge.at(i)+gRandom->Uniform())/((double)KValue.at(i));// this will use the integration value
+   }
+   return ((double)Charge.at(i)+gRandom->Uniform());// this will use no integration value
+}
 
 void TFragment::Print(Option_t *opt)	{
    //Prints out all fields of the TFragment
@@ -176,10 +188,42 @@ void TFragment::Print(Option_t *opt)	{
 
 
 
+bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
+   //Checks to see if the current fragment constains the same "prefix", for example "GRG"
+   //The option determines whether the channel should be:
+   // - C : The core of a segmented detector
+   // - S : The segments of a segmented detector
+   // - A : Low gain output of a detector
+   // - B : High gain output of a detectora
+   // If C or S are not given, default to C
+   // If A or B are not given, default to A
+   //Note that multiple options add to the output, so "CAB" would return the core with both high and low gain
+   //One should eventually add N,P,T options as well.
+   std::string pre = prefix;
+   TString option = opt;
+   std::string channame = this->GetName();
+   if(channame.length()<9)
+      return false;
 
-
-
-
-
-
-
+   option.ToUpper();
+   //Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs to be done
+   //Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then checks
+   //for conditions.
+   if(channame.compare(0,pre.length(),pre)) {     //channame.BeginsWith(pre)){
+      if(option.Length()<1) //no option.
+         return true;
+      if(channame.length()>8) {
+        if(option.Contains("B") && (std::toupper(channame[9])==std::toupper('B')))
+          return true;
+        else if(option.Contains("A") && (std::toupper(channame[9])==std::toupper('A')))
+          return true;
+      }
+      if(option.Contains("C") && !channame.compare(7,2,"00"))
+        return true;
+      else if(option.Contains("S") && channame.compare(7,2,"00"))
+         return true;
+   } else 
+     return false;
+   
+   return false;
+}

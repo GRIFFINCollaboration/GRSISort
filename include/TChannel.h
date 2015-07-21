@@ -181,7 +181,7 @@ class TChannel : public TNamed	{
     static void WriteCalFile(std::string outfilename = "");
     static void WriteCalBuffer(Option_t *opt ="");
 
-    virtual void Print(Option_t *opt = "");
+    virtual void Print(Option_t *opt = "") const;
     virtual void Clear(Option_t *opt = "");
     //static  void PrintAll(Option_t *opt = "");      
     std::string PrintToString(Option_t *opt="");

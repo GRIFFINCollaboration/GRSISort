@@ -34,6 +34,18 @@ GMemObj::GMemObj(TObject *obj,TObject *par,TFile *file,Option_t *opt) {
 
 GMemObj::~GMemObj() { } //fObject=0; }
 
+void GMemObj::Copy(TObject &object) const {
+  TObject::Copy(object);
+
+  ((GMemObj&)object).fThis    = fThis;
+  ((GMemObj&)object).fParent  = fParent;
+  ((GMemObj&)object).fFile    = fFile;
+  ((GMemObj&)object).fOption  = fOption;
+  ((GMemObj&)object).fObjName = fObjName;
+  return;
+}
+
+
 
 
 ClassImp(GRootObjectManager)
@@ -308,8 +320,10 @@ void GRootObjectManager::Update(Option_t *opt) {
   //}
   //Scan loaded files...
   //if(u_file || u_all) {
-    folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
-    ExtractObjects(folder->GetListOfFolders());
+  
+//    folder = (TFolder*)gROOT->GetRootFolder()->FindObject("ROOT Files");
+//    ExtractObjects(folder->GetListOfFolders());
+
   //}
 
   //finally, lets look for cuts...

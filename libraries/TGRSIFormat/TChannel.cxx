@@ -59,6 +59,7 @@ TChannel::TChannel(TChannel *chan) {
     this->SetNumber(chan->GetNumber());
     this->SetStream(chan->GetStream());
     this->SetUserInfoNumber(chan->GetUserInfoNumber());
+    this->SetName(chan->GetName());
     this->SetChannelName(chan->GetChannelName());
     this->SetDigitizerType(chan->GetDigitizerType());
 
@@ -91,7 +92,7 @@ bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
    //same, false if different.
    std::string namea; namea.assign(((TChannel)chana).GetChannelName());
 	
-   if(namea.compare(((TChannel)chanb).GetChannelName()) <= 0) return true;
+   if(namea.compare(((TChannel)chanb).GetChannelName()) < 0) return true;
    else return false;
 }
 
@@ -246,6 +247,7 @@ void TChannel::Clear(Option_t *opt){
     EFFChi2           =  0.0;
     userinfonumber    =  0xffffffff;
     usecalfileint     =  false;
+    SetName("DefaultTChannel");
 
     ENGCoefficients.clear();
     CFDCoefficients.clear();
@@ -399,8 +401,8 @@ double TChannel::CalibrateENG(double charge) {
    //integration parameter.
    if(ENGCoefficients.size()==0)
       return charge;
-   double cal_chg = 0.0;
-   for(int i=0;i<ENGCoefficients.size();i++){
+   double cal_chg = ENGCoefficients[0];
+   for(int i=1;i<ENGCoefficients.size();i++){
       cal_chg += ENGCoefficients[i] * pow((charge),i);
    }
    return cal_chg;
@@ -482,7 +484,7 @@ double TChannel::CalibrateEFF(double energy) {
    return 1.0;
 }
 
-void TChannel::Print(Option_t *opt) {
+void TChannel::Print(Option_t *opt) const {
    //Prints out the current TChannel.
    std::cout <<  channelname << "\t{\n";  //,channelname.c_str();
    std::cout <<  "Name:      " << channelname << "\n";
@@ -539,8 +541,9 @@ std::string TChannel::PrintToString(Option_t *opt) {
          buffer.append(Form("%f\t",TIMECoefficients.at(x)));
       buffer.append("\n");
    }
-   if(usecalfileint) 
-       buffer.append("FileInt: %d\n",(int)usecalfileint);
+   if(usecalfileint){ 
+       buffer.append(Form("FileInt: %d\n",(int)usecalfileint));
+   }
    buffer.append("}\n");
    
    buffer.append("//====================================//\n");
@@ -959,7 +962,7 @@ int TChannel::WriteToRoot(TFile *fileptr) {
   WriteCalBuffer();
   std::string savedata = fFileData;
   
-
+  FILE* originalstdout = stdout;
   int fd = open("/dev/null", O_WRONLY); // turn off stdout.
   stdout = fdopen(fd, "w");
 
@@ -983,8 +986,7 @@ int TChannel::WriteToRoot(TFile *fileptr) {
     TChannel::DeleteAllChannels();
   }
 
-  fd = open("/dev/tty", O_WRONLY);  // turn on stdout.
-  stdout = fdopen(fd, "w");
+  stdout = originalstdout; //Restore stdout
 
   ParseInputData(savedata.c_str(),"q");
   SaveToSelf(savedata.c_str());

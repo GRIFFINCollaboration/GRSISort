@@ -20,7 +20,7 @@ class TGriffinData : public TGRSIDetectorData {
     //std::vector<TGriffinCoreData> fCore; //!
     std::vector<UShort_t> fClover_Nbr;		//!
     std::vector<UShort_t> fCore_Nbr;		//!
-    std::vector<UInt_t>   fCore_Address;		//!
+    std::vector<Int_t>    fCore_Address;		//!
     std::vector<Bool_t>   fCore_IsHighGain; //!
     std::vector<Double_t> fCore_Eng;		//!
     std::vector<Int_t>    fCore_Chg;		//!
@@ -47,7 +47,7 @@ class TGriffinData : public TGRSIDetectorData {
 
     inline void SetCloverNumber(const UShort_t &CloverNumber) {fClover_Nbr.push_back(CloverNumber);  }//!
     inline void SetCoreNumber(const UShort_t  &CoreNumber)    {fCore_Nbr.push_back(CoreNumber);      }	//!
-    inline void SetCoreAddress(const UInt_t  &CoreAddress)    {fCore_Address.push_back(CoreAddress); }	//!
+    inline void SetCoreAddress(const Int_t  &CoreAddress)     {fCore_Address.push_back(CoreAddress); }	//!
     inline void SetCoreEnergy(const Double_t &CoreEnergy)     {fCore_Eng.push_back(CoreEnergy);      }	//!
     inline void SetCoreCharge(const Int_t &CoreCharge)	     {fCore_Chg.push_back(CoreCharge);      }	//!
     inline void SetCoreCFD(const Long_t &CoreTimeCFD)	        {fCore_TimeCFD.push_back(CoreTimeCFD); }	//!	
@@ -89,7 +89,7 @@ class TGriffinData : public TGRSIDetectorData {
                //else
                //  SetCoreEnergy(channel->CalibrateENG(frag->Charge.at(x)));		
                SetCoreEnergy(frag->GetEnergy(x));
-               SetCoreCharge(frag->Charge.at(x));
+               SetCoreCharge(frag->GetCharge(x));
      	         SetCoreCFD(frag->Cfd.at(x));		
              //SetCoreTime(frag->Zc.at(0));		
                SetCoreTime(frag->GetTimeStamp());		
@@ -102,7 +102,7 @@ class TGriffinData : public TGRSIDetectorData {
 
       inline UShort_t GetCloverNumber(const unsigned int &i) const   {return fClover_Nbr.at(i);}	//!
       inline UShort_t GetCoreNumber(const unsigned int &i) const     {return fCore_Nbr.at(i);}	//!
-      inline UInt_t   GetCoreAddress(const unsigned int &i) const    {return fCore_Address.at(i);}	//!
+      inline Int_t    GetCoreAddress(const unsigned int &i) const    {return fCore_Address.at(i);}	//!
 
       inline Double_t GetCoreEnergy(const unsigned int &i) const     {return fCore_Eng.at(i);}	//!
       inline Int_t  GetCoreCharge(const unsigned int &i) const       {return fCore_Chg.at(i);}	//!

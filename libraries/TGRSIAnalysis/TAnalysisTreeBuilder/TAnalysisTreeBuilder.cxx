@@ -409,7 +409,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       //and send it to the event Q for processing.
       //if(buildevent) {
 //      if(abs(currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
-      if((currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
+      if((currentFrag->GetTimeStamp() - firstTimeStamp) > TGRSIRunInfo::BuildWindow() ) { //200) {  // 2 micro-sec.
          //printf("Adding %ld fragments to queue\n",event->size());
          //if(event->size() > 1) {
             //for(int i = 0; i < event->size(); ++i) {
@@ -454,7 +454,7 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
    //if(fCurrentRunInfo) {
    //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
-      fCurrentRunInfo->Print();
+      fCurrentRunInfo->Print("a");
    //}
 
    //Intialize the TChannel Information
@@ -534,9 +534,9 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    int basketSize = 128000; //128000;
    if(info->Tigress())   { tree->Bronch("TTigress","TTigress",&tigress); }//, basketSize); } 
    if(info->Sharc())     { tree->Bronch("TSharc","TSharc",&sharc); }//, basketSize); } 
-   if(info->TriFoil())   { tree->Bronch("TTriFoil","TTriFoil",&triFoil); }//, basketSize); } 
+//   if(info->TriFoil())   { tree->Bronch("TTriFoil","TTriFoil",&triFoil); }//, basketSize); } 
    //if(info->Rf())        { tree->Bronch("TRf","TRf",&rf); }//, basketSize); } 
-   if(info->CSM())       { tree->Bronch("TCSM","TCSM",&csm); }//, basketSize); } 
+//   if(info->CSM())       { tree->Bronch("TCSM","TCSM",&csm); }//, basketSize); } 
    //if(info->Spice())     { tree->Bronch("TSpice","TSpice",&spice); }//, basketSize); tree->SetBronch("TS3","TS3",&s3); }//, basketSize); } 
    if(info->Tip())       { tree->Bronch("TTip","TTip",&tip); }//, basketSize); } 
 
@@ -675,8 +675,6 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*
          csm = (TCSM*) det->second;
       //} else if(strcmp(det->second->IsA()->GetName(),"TSpice") == 0) {
          //*spice = *((TSpice*) det->second);
-      //} else if(strcmp(det->second->IsA()->GetName(),"TTip") == 0) {
-         //*tip = *((TTip*) det->second);
       } else if(strcmp(det->first,"GR") == 0) {
          griffin = (TGriffin*) det->second;
       } else if(strcmp(det->first,"SE") == 0) {
@@ -720,6 +718,7 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
      TChannel *c = TChannel::GetDefaultChannel();
      c->Write();
    }
+   fCurrentRunInfo->Write();
    //TChannel::DeleteAllChannels();
 
    fCurrentAnalysisFile->cd();
@@ -763,25 +762,25 @@ void TAnalysisTreeBuilder::ProcessEvent() {
             (*detectors)["TI"]->FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("SH")==0) {
             if(detectors->find("SH") == detectors->end()) {
-               (*detectors)["SH"] = new TSharc;
+               //(*detectors)["SH"] = new TSharc;
             }
             (*detectors)["SH"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("Tr")==0) {	
-            if(detectors->find("Tr") == detectors->end()) {
-               (*detectors)["Tr"] = new TTriFoil;
-            }
-            (*detectors)["Tr"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("CS")==0) {	
-            if(detectors->find("CS") == detectors->end()) {
-               (*detectors)["CS"] = new TCSM;
-            }
-            (*detectors)["CS"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("GR")==0 && event->at(i).DetectorType <2) {	//This is here because of DAQ weirdness (will likely want to remove)
+//         } else if(mnemonic.system.compare("Tr")==0) {	
+//            if(detectors->find("Tr") == detectors->end()) {
+               //(*detectors)["Tr"] = new TTriFoil;
+//            }
+//            (*detectors)["Tr"]->FillData(&(event->at(i)),channel,&mnemonic);
+//         } else if(mnemonic.system.compare("CS")==0) {	
+//            if(detectors->find("CS") == detectors->end()) {
+               //(*detectors)["CS"] = new TCSM;
+//            }
+//            (*detectors)["CS"]->FillData(&(event->at(i)),channel,&mnemonic);
+         } else if(mnemonic.system.compare("GR")==0) {
             if(detectors->find("GR") == detectors->end()) {
                (*detectors)["GR"] = new TGriffin;
             }
             (*detectors)["GR"]->FillData(&(event->at(i)),channel,&mnemonic);
-         } else if(mnemonic.system.compare("SE")==0 && event->at(i).DetectorType == 2) {	//This is here because of DAQ weirdness (will likely want to remove)
+         } else if(mnemonic.system.compare("SE")==0) {
             if(detectors->find("SE") == detectors->end()) {
                (*detectors)["SE"] = new TSceptar;
             }
@@ -806,7 +805,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //	FillData(&(event->at(i)),channel,&mnemonic);
          } else if(mnemonic.system.compare("TP")==0) {	
             if(detectors->find("TP") == detectors->end()) {
-               (*detectors)["TP"] = new TTip;
+               //(*detectors)["TP"] = new TTip;
             }
             (*detectors)["TP"]->FillData(&(event->at(i)),channel,&mnemonic);
          }
@@ -816,13 +815,12 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          BuildActiveAnalysisTreeBranches(detectors);
          FillWriteQueue(detectors);
       }
-
       delete event;
    
    }
 }
 
-void TAnalysisTreeBuilder::Print(Option_t *opt) {
+void TAnalysisTreeBuilder::Print(Option_t *opt) const {
    //Prints information about the Q's and threads in the AnalysisTreeBuilding process
    if(fCurrentFragFile && fCurrentAnalysisFile)
       printf(DMAGENTA " %s/%s" RESET_COLOR  "\n",fCurrentFragFile->GetName(),fCurrentAnalysisFile->GetName());

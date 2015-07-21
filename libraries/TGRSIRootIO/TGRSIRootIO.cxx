@@ -23,6 +23,7 @@ TGRSIRootIO::TGRSIRootIO() {
    //printf("TGRSIRootIO has been created.\n");
 
   fFragmentTree = 0;
+  fBadFragmentTree =0;
   fEpicsTree    = 0;
 
   foutfile = 0; //new TFile("test_out.root","recreate");
@@ -59,6 +60,22 @@ void TGRSIRootIO::SetUpFragmentTree() {
 }
 
 
+void TGRSIRootIO::SetUpBadFragmentTree() {
+   if(!TGRSIOptions::WriteBadFrags())
+      return;
+   if(foutfile)
+      foutfile->cd();
+   fTimesBadFillCalled = 0;
+   fBadFragmentTree = new TTree("BadFragmentTree","BadFragmentTree");
+   fBadBufferFrag = 0;
+   fBadFragmentTree->Bronch("TFragment","TFragment",&fBadBufferFrag,128000,99);
+	printf("BadFragmentTree set up.\n");
+
+}
+
+
+
+
 void TGRSIRootIO::SetUpEpicsTree() {
    if(TGRSIOptions::IgnoreEpics()) 
      return;
@@ -89,6 +106,16 @@ void TGRSIRootIO::FillFragmentTree(TFragment *frag) {
    fTimesFillCalled++;
 }
 
+
+void TGRSIRootIO::FillBadFragmentTree(TFragment *frag) {
+   if(!TGRSIOptions::WriteBadFrags())
+      return;
+   *fBadBufferFrag = *frag;
+   int bytes =  fBadFragmentTree->Fill();
+   if(bytes < 1)
+      printf("\n (BadTree) fill failed with bytes = %i\n",bytes);
+   fTimesBadFillCalled++;
+}
 
 void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
   if(TGRSIOptions::IgnoreEpics()) 
@@ -136,6 +163,16 @@ void TGRSIRootIO::FinalizeFragmentTree() {
 }
 
 
+void TGRSIRootIO::FinalizeBadFragmentTree() {
+   if(!fFragmentTree || !foutfile)
+      return;
+   foutfile->cd();
+   fBadFragmentTree->AutoSave(); //Write();
+	return;
+}
+
+
+
 void TGRSIRootIO::FinalizeEpicsTree() {
   if(TGRSIOptions::IgnoreEpics()) 
     return;
@@ -147,7 +184,7 @@ void TGRSIRootIO::FinalizeEpicsTree() {
 }
 
 
-void TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
+bool TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
   
    char filename[64];
    if(subrunnumber>-1)
@@ -160,11 +197,16 @@ void TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
    std::string tempname(filename);
    TGRSIOptions::AddInputRootFile(tempname);
    foutfile = new TFile(filename,"recreate");
+
+   if(!foutfile->IsOpen()) {
+      return false;
+   }
    
    SetUpFragmentTree();
+   SetUpBadFragmentTree();
    SetUpEpicsTree();
 
-   return;
+   return true;
 }
 
 void TGRSIRootIO::CloseRootOutFile()   {
@@ -174,6 +216,8 @@ void TGRSIRootIO::CloseRootOutFile()   {
       return;
    foutfile->cd();
    printf(DMAGENTA "\n Fill tree called " DYELLOW "%i " DMAGENTA "times.\n" RESET_COLOR, fTimesFillCalled);
+   if(TGRSIOptions::WriteBadFrags())
+     printf(DRED "   Fill bad tree called " DYELLOW "%i " DRED "times.\n" RESET_COLOR, fTimesBadFillCalled);
    
    FinalizeFragmentTree(); 
    FinalizeEpicsTree();

@@ -8,25 +8,40 @@ ClassImp(TCrystalHit)
 
 
 TCrystalHit::TCrystalHit()	{
-   Class()->IgnoreTObjectStreamer(true);
+   //Class()->IgnoreTObjectStreamer(true);
 	Clear();
 }
+
+
+TCrystalHit::TCrystalHit(const TCrystalHit &rhs)	{
+   //Class()->IgnoreTObjectStreamer(true);
+   ((TCrystalHit&)rhs).Copy(*this);
+
+}
+
+
 
 TCrystalHit::~TCrystalHit()	{	}
 
 void TCrystalHit::Clear(Option_t *opt)	{
 	segment = -1;
-	charge  = 0xffffffff;
+   TGRSIDetectorHit::Clear();
+	//charge  = 0xffffffff;
 	
-	energy = 0.0;
-	time = 0.0;
-	cfd = 0.0;
+	//energy = 0.0;
+	//time = 0.0;
+	//cfd = 0.0;
 
-	wave.clear();
+	//wave.clear();
 }
 
 
-void TCrystalHit::Print(Option_t *opt)	{
+void TCrystalHit::Print(Option_t *opt)	const {
 	//not yet written.
 	printf("TCrystalHit::Print() not yet written.\n");
+}
+
+void TCrystalHit::Copy(TCrystalHit &rhs) const {
+  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
+  ((TCrystalHit&)rhs).segment = segment;
 }

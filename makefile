@@ -1,11 +1,11 @@
 SUBDIRS = src libraries
-ALLDIRS = $(SUBDIRS) util
+ALLDIRS = $(SUBDIRS) util examples scripts
 
 PLATFORM = $(shell uname)
 
 export PLATFORM:= $(PLATFORM)
 
-export CFLAGS = -std=c++0x -O2 -I$(PWD)/include -g `root-config --cflags`
+export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -g `root-config --cflags`
 
 #export GRSISYS:= $(GRSISYS)
 
@@ -13,7 +13,7 @@ ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 export CFLAGS += -DOS_DARWIN -DHAVE_ZLIB #-lz
 export CFLAGS += -I/opt/X11/include -Qunused-arguments
-export LFLAGS = -dynamiclib -undefined dynamic_lookup -single_module # 
+export LFLAGS = -dynamiclib -undefined dynamic_lookup -single_module -Wl,-install_name,'@executable_path/../libraries/$$@' # 
 export SHAREDSWITCH = -install_name # ENDING SPACE
 export CXX = clang++ 
 export CPP = clang++ 
@@ -50,12 +50,23 @@ MAKE=make --no-print-directory
 
 .PHONY: all subdirs $(ALLDIRS) clean util
 
-all: print subdirs bin grsihist grsisort end
+#all: print config subdirs bin grsihist grsisort analysis util end
 
-docs: print subdirs bin grsihist grsisort html end
+all: print grsisort analysis util end
 
-util: libraries
+docs: print subdirs bin grsihist grsisort html config end
+
+util: libraries grsisort print
 	@$(MAKE) -C $@
+
+examples: libraries grsisort print
+	@$(MAKE) -C $@
+
+scripts: libraries grsisort print
+	@$(MAKE) -C $@
+
+analysis: libraries grsisort print
+	@$(MAKE) -C myanalysis
 
 print:
 	@echo "Compiling on $(PLATFORM)"
@@ -64,11 +75,13 @@ subdirs: $(SUBDIRS)
 
 src: print libraries
 
-$(SUBDIRS):
+$(SUBDIRS): print
 	@$(MAKE) -C $@
 
-grsisort: src
+grsisort: src libraries print bin config
 	@mv $</$@ bin/$@
+
+config: print
 	@cp util/grsi-config bin/
 
 bin:
@@ -92,17 +105,14 @@ end: grsisort
 	@printf " ${WARN_COLOR}Compilation Success. woohoo!${NO_COLOR}\n\n"
 
 clean:
-	@$(RM) *~
-ifeq ($(PLATFORM),Darwin)
-	$(RM) -r ./bin/*
-else
-	$(RM) ./bin/*
-endif
+	@$(RM) $(GRSISYS)/*~                      
+	$(RM) -R $(GRSISYS)/bin/*dSYM
+	$(RM) $(GRSISYS)/bin/*
 	@for dir in $(ALLDIRS); do \
 		$(MAKE) -C $$dir $@; \
 	done
 
 veryclean: clean
-	$(RM) -r ./htmldoc
+	$(RM) -r $(GRSISYS)/htmldoc
 
 

@@ -23,7 +23,7 @@ TGRSITransition::~TGRSITransition() {
 //Default Destructor
 }
 
-void TGRSITransition::Print(Option_t *opt) {
+void TGRSITransition::Print(Option_t *opt) const {
 //Prints information about the TGRSITransition
    printf("**************************\n");
    printf("TGRSITransition:\n");
@@ -59,9 +59,9 @@ int TGRSITransition::Compare(const TObject *obj) const {
 //1 if  this <  obj
    if(this->fintensity > ((TGRSITransition*)obj)->fintensity) 
       return -1;  
-   if(this->fintensity == ((TGRSITransition*)obj)->fintensity) 
+   else if(this->fintensity == ((TGRSITransition*)obj)->fintensity) 
       return  0;  
-   if(this->fintensity < ((TGRSITransition*)obj)->fintensity) 
+   else//(this->fintensity < ((TGRSITransition*)obj)->fintensity) 
       return  1;  
    printf("%s: Error, intensity neither greater, nor equal, nor smaller than provided intensity!\n",__PRETTY_FUNCTION__);
    return -9;

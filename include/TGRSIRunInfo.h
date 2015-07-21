@@ -125,7 +125,8 @@ class TGRSIRunInfo : public TObject {
       static const char* GetXMLODBFileName() { return fGRSIRunInfo->fXMLODBFileName.c_str(); }
       static const char* GetXMLODBFileData() { return fGRSIRunInfo->fXMLODBFile.c_str(); }
 
-
+      static Bool_t  ReadInfoFile(const char *filename = "");
+      static Bool_t  ParseInputData(const char *inputdata = "",Option_t *opt = "q");
 
       static inline int  GetNumberOfSystems() { return fGRSIRunInfo->fNumberOfTrueSystems; }
 
@@ -144,6 +145,19 @@ class TGRSIRunInfo : public TObject {
       static inline bool Dante()     { return fGRSIRunInfo->fDante; }
       static inline bool ZeroDegree(){ return fGRSIRunInfo->fZeroDegree; }
       static inline bool Descant()   { return fGRSIRunInfo->fDescant; }
+
+      inline void SetRunInfoFileName(const char *fname) {  fRunInfoFileName.assign(fname); }
+      inline void SetRunInfoFile(const char *ffile)     {  fRunInfoFile.assign(ffile); }
+     
+
+      inline void SetBuildWindow(const long int t_bw)    { fBuildWindow = t_bw; } 
+      inline void SetAddBackWindow(const double   t_abw) { fAddBackWindow = t_abw; } 
+
+      static inline long int BuildWindow()    { return Get()->fBuildWindow; }
+      static inline double   AddBackWindow()  { return Get()->fAddBackWindow; }
+
+      inline void SetHPGeArrayPosition(const int arr_pos) { fHPGeArrayPosition = arr_pos; }
+      static inline int  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
 
    private:
       static TGRSIRunInfo *fGRSIRunInfo;
@@ -199,11 +213,25 @@ class TGRSIRunInfo : public TObject {
       std::string fMajorIndex;  
       std::string fMinorIndex;  
 
+      /////////////////////////////////////////////////
+      //////////////// Building Options ///////////////
+      /////////////////////////////////////////////////
+
+      std::string fRunInfoFileName;
+      std::string fRunInfoFile;
+	   static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
+
+      long int fBuildWindow;          // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
+      double   fAddBackWindow;        // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
+      
+      double  fHPGeArrayPosition;        // Position of the HPGe Array (default = 110.0 mm );
+  
+
    public:
-      void Print(Option_t *opt = "");
+      void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
-   ClassDef(TGRSIRunInfo,2);
+   ClassDef(TGRSIRunInfo,3);
 };
 
 #endif

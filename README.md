@@ -3,9 +3,11 @@
 
 A lean, mean, sorting machine. 
 
-**There is a wiki!!  use the link->** [WIKI](http://github.com/pcbend/GRSISort/wiki)
+**For Update Information** Please Join the [Analysis_User](https://github.com/orgs/GRIFFINCollaboration/teams/analysis_users) team 
 
-test edit.
+**There is a wiki!!  use the link->** [WIKI](http://github.com/GRIFFINCollaboration/GRSISort/wiki)
+
+branch check.
 
 To compile for a .sh shell execute `source SOURCEME.sh` in your terminal from the GRSISort Directory
 

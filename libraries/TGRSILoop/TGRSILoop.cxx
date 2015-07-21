@@ -1,6 +1,8 @@
 
 #include <stdint.h>
 
+#include <signal.h>
+
 #include <TSystem.h>
 #include <TStopwatch.h>
 
@@ -38,6 +40,8 @@ TGRSILoop::TGRSILoop()   {
 
    fFragsSentToTree = 0;
    fFragsReadFromMidas = 0;
+
+   fBadFragsSentToTree = 0;
 
    fMidasThread = 0;
    fFillTreeThread = 0;
@@ -109,8 +113,11 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
 
    
    fFragsSentToTree = 0;
+   fBadFragsSentToTree = 0;
    TFragment *frag = 0;
-   while(TFragmentQueue::GetQueue()->FragsInQueue() !=0 || fMidasThreadRunning)
+   while(TFragmentQueue::GetQueue()->FragsInQueue() !=0      || 
+         TFragmentQueue::GetQueue("BAD")->FragsInQueue() !=0 ||
+         fMidasThreadRunning)
    {
       frag = TFragmentQueue::GetQueue()->PopFragment();
       if(frag) {
@@ -118,6 +125,14 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
  	      delete frag;
          fFragsSentToTree++;
       }
+
+      frag = TFragmentQueue::GetQueue("BAD")->PopFragment();
+      if(frag) {
+         TGRSIRootIO::Get()->FillBadFragmentTree(frag);
+         delete frag;
+         fBadFragsSentToTree++;
+      } 
+
       if(!fMidasThreadRunning && TFragmentQueue::GetQueue()->FragsInQueue()%5000==0) {
          printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
                 DBLUE   "%i"   RESET_COLOR
@@ -126,10 +141,14 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
       }
    }
 
+
    printf("\n");
    //printf(" \n\n quiting fill tree thread \n\n");
    return;
 }
+
+//void SignalHandler(int signal) { throw "segfault!"; }
+
 
 void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
    if(!midasfile)
@@ -159,19 +178,20 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
    TStopwatch w;
    w.Start();
 
-   if(!TGRSIRootIO::Get()->GetRootOutFile())
-     TGRSIRootIO::Get()->SetUpRootOutFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
-
+   if(!TGRSIRootIO::Get()->GetRootOutFile()) {
+     if(!(TGRSIRootIO::Get()->SetUpRootOutFile(midasfile->GetRunNumber(),midasfile->GetSubRunNumber()))) {
+        return;
+     }
+   }
    while(true) {
       bytes = midasfile->Read(&fMidasEvent);
       currenteventnumber++;
       if(bytes == 0){
-         if(!midasfile->GetLastErrno())
-           printf(DMAGENTA "\tfile: %s ended on unknown state." RESET_COLOR "\n",midasfile->GetFilename());
-         else
+         if(midasfile->GetLastError()) {
            printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",midasfile->GetFilename(),midasfile->GetLastError());
-			if(midasfile->GetLastErrno()==-1)  //try to read some more...
-				continue;
+         } else {//catch(char *e) { 
+           printf(DMAGENTA "\tfile: %s ended on unknown state." RESET_COLOR "\n",midasfile->GetFilename());
+         }
          break;
       }
       bytesread += bytes;
@@ -252,20 +272,27 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
       return;
    }
 
-	fOdb = new TXMLOdb(data,size);
+   //printf("data = 0x%08x\n",data);
+   //printf("size = %i\n",size);
 
+	fOdb = new TXMLOdb(data,size);
 	TChannel::DeleteAllChannels();
 
    TXMLNode *node = fOdb->FindPath("/Experiment");
-   if(!node->HasChildren())
+   if(!node->HasChildren()){
       return;
+   }
    node = node->GetChildren();
    std::string expt;
    while(1) {
-      std::string key = fOdb->GetNodeName(node);
-      if(key.compare("Name")==0) {
-         expt = node->GetText();
-         break;
+        //printf("before call.\n"); fflush(stdout);
+        //printf("fodb = 0x%08x\n",fOdb);fflush(stdout);
+        //printf("node = 0x%08x\n",node);fflush(stdout);
+        //node->Print();
+        std::string key = fOdb->GetNodeName(node) ;
+        if(key.compare("Name")==0) {
+          expt = node->GetText();
+        break;
       }
       if(!node->HasNextNode())
          break;
@@ -448,9 +475,12 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
                               //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
             else if((banksize = mevent->LocateBank(NULL,"GRF1",&ptr))>0) {
-               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize, mevent, mfile)) { }
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,1, mevent, mfile)) { }
 			      //(unsigned int)(mevent->GetSerialNumber()),
 			      //(unsigned int)(mevent->GetTimeStamp()))) { }
+            }
+            else if((banksize = mevent->LocateBank(NULL,"GRF2",&ptr))>0) {
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,2, mevent, mfile)) { }
             }
             else if( (banksize = mevent->LocateBank(NULL,"FME0",&ptr))>0) {
                if(!Process8PI(0,(uint32_t*)ptr,banksize,mevent,mfile)) {}
@@ -545,49 +575,63 @@ bool TGRSILoop::Process8PI(uint32_t stream,uint32_t *ptr, int &dsize, TMidasEven
 }
 
 
-bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile)   {
-	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
-	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
+bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, int bank, TMidasEvent *mevent, TMidasFile *mfile)   {
+   unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
+   unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
 
-	int frags = TDataParser::GriffinDataToFragment(ptr,dsize,mserial,mtime);
-	if(frags>-1)	{
-      fFragsReadFromMidas += frags;
-      return true;
-	} else {	       
-      fFragsReadFromMidas += 1;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
-		if(!suppress_error) {
-			if(!TGRSIOptions::LogErrors()) {
-			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
-			   printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", (-1*frags));
-	    		   if(mevent)  mevent->Print(Form("a%i",(-1*frags)-1));
-			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
-		   } else {
-				std::string errfilename; 
-				if(mfile) {
-               if(mfile->GetSubRunNumber() != -1)
-                  errfilename.append(Form("error%05i_%03i.log",mfile->GetRunNumber(),mfile->GetSubRunNumber()));
-               else    
-                  errfilename.append(Form("error%05i.log",mfile->GetRunNumber()));
+   //loop over words in event to find fragment header
+   for(int index = 0; index < dsize;) {
+      if(((ptr[index])&0xf0000000) == 0x80000000) {
+         //if we found a fragment header we pass the data to the data parser which returns the number of words read
+         int words = TDataParser::GriffinDataToFragment(&ptr[index],dsize-index,bank,mserial,mtime);
+         if(words>0) {
+            //we successfully read one event with <words> words, so we advance the index by words
+            ++fFragsReadFromMidas;
+            index += words;
+         } else {	       
+            //we failed to read the fragment on word <-words>, so advance the index by -words and we create an error message
+            ++fFragsReadFromMidas;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
+            index -= words;
+            if(!suppress_error) {
+               if(!TGRSIOptions::LogErrors()) {
+                  printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+                  printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", index);
+       	          if(mevent)  mevent->Print(Form("a%i",index-1));
+                  printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+               } else {
+                  std::string errfilename; 
+                  if(mfile) {
+                     if(mfile->GetSubRunNumber() != -1) {
+                        errfilename.append(Form("error%05i_%03i.log",mfile->GetRunNumber(),mfile->GetSubRunNumber()));
+                     } else {
+                        errfilename.append(Form("error%05i.log",mfile->GetRunNumber()));
+                     }
+                  } else {
+                     errfilename.append("error_log.log");
+                  }
+                  FILE* originalstdout = stdout;
+                  FILE *errfileptr = freopen(errfilename.c_str(),"a",stdout);
+                  printf("\n//**********************************************//\n");
+                  if(mevent) mevent->Print("a");
+                  printf("\n//**********************************************//\n");
+                  fclose(errfileptr);
+                  stdout = originalstdout;
+               }
             }
-            else
-					errfilename.append("error_log.log");
-            FILE *errfileptr = freopen(errfilename.c_str(),"a",stdout);
-			   printf("\n//**********************************************//\n");
-				if(mevent) mevent->Print("a");
-			   printf("\n//**********************************************//\n");
-			   fclose(errfileptr);
-		      int fd = open("/dev/tty", O_WRONLY);
-	     		stdout = fdopen(fd, "w");
-			}
-		}
-	}
-   return false;
+         }
+      } else {
+         //this is not a fragment header, so we advance the index
+         ++index;
+      }
+   }
+
+   return true;
 }
 
 
 
 
-void TGRSILoop::Print(Option_t *opt) {   }
+void TGRSILoop::Print(Option_t *opt) const { printf("Print() Currently Does nothing\n");  }
 
 
 void TGRSILoop::Clear(Option_t *opt) {   }

@@ -264,7 +264,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
           char key = sargv[c];
           switch(toupper(key)) {
             case 'A':
-      		  printf(DBLUE "Atempting to make analysis trees." RESET_COLOR "\n");
+      		  printf(DBLUE "Attempting to make analysis trees." RESET_COLOR "\n");
          	  TGRSIOptions::SetMakeAnalysisTree();
 		        break;
             case 'Q':
@@ -321,6 +321,10 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
        } else if(temp.compare("no_speed")==0) {
           printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
           TGRSIOptions::SetProgressDialog(false);
+       } else if((temp.compare("bad_frags")==0)     || (temp.compare("write_bad_frags")==0) ||
+                 (temp.compare("bad_fragments")==0) || (temp.compare("write_bad_fragments")==0)) {
+          printf(DBLUE "    failed fragements being written to BadFragmentTree." RESET_COLOR "\n");
+          TGRSIOptions::SetWriteBadFrags(true);
        } else if(temp.compare("help")==0) {
           fPrintHelp = true;
        } else if(temp.compare("ignore_odb")==0) { 
@@ -340,7 +344,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
                 pwd = argv[i]; 
                 argv[i]= null;
              //} 
-               printf("\tOption %s is a directory, ignoing for now.\n",pwd.c_str()); 
+               printf("\tOption %s is a directory, ignoring for now.\n",pwd.c_str());
           } else if (size > 0) {
              // if file add to list of files to be processed
              FileAutoDetect(argv[i],size);
@@ -349,7 +353,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
              printf("file %s has size 0, skipping\n", dir);
           }
        } else {
-          //file does not exsist... assuming output file.
+          //file does not exist... assuming output file.
           FileAutoDetect(argv[i],-1);
           argv[i] = null;
        }   
@@ -395,6 +399,13 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
       //fInputCalFile->push_back(filename);
       TGRSIOptions::AddInputCalFile(filename);
       return true;
+   } else if(ext.compare("info")==0) { 
+      if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
+         return true;
+      else {
+         printf("Problem reading run-info file %s\n",filename.c_str());
+         return false;
+      }
    } else if(ext.compare("xml")==0) { 
       //fInputOdbFile->push_back(filename);
       TGRSIOptions::AddInputOdbFile(filename);

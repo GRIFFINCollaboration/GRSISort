@@ -11,8 +11,8 @@ CAT=cat
 
 .PHONY: all clean gone
 
-all: libTGRSIServer.so
-	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $^ ;
+all: libTGRSIServer.so $(OBJECTS)
+	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $< ;
 
 libTGRSIServer.so: $(OBJECTS)
 	@printf " ${COM_COLOR}%s${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"

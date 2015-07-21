@@ -31,8 +31,8 @@ class TEventTime {
          void *ptr;
          int banksize = event->LocateBank(NULL,"GRF1",&ptr);
 
-         int type  = 0xffffffff;
-         int value = 0xffffffff;
+         uint32_t type  = 0xffffffff;
+         uint32_t value = 0xffffffff;
 
          int64_t time = 0;
 

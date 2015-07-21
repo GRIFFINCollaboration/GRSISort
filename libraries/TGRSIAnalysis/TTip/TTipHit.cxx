@@ -13,10 +13,23 @@
 ClassImp(TTipHit)
 
 TTipHit::TTipHit()	{	
+   Class()->IgnoreTObjectStreamer(true);
    Clear();
 }
 
 TTipHit::~TTipHit()	{	}
+
+TTipHit::TTipHit(const TTipHit &rhs)	{	
+   Class()->IgnoreTObjectStreamer(kTRUE);
+   Clear();
+   ((TTipHit&)rhs).Copy(*this);
+}
+
+void TTipHit::Copy(TTipHit &rhs) const {
+  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
+	((TTipHit&)rhs).filter  = filter;
+	((TTipHit&)rhs).PID     = PID;
+}                                       
 
 bool TTipHit::InFilter(Int_t wantedfilter) {
    // check if the desired filter is in wanted filter;
@@ -25,15 +38,9 @@ bool TTipHit::InFilter(Int_t wantedfilter) {
 }
 
 void TTipHit::Clear(Option_t *opt)	{
-	detector = 0;
-   address = 0xffffffff;
    filter = 0;
-   charge = -1;
-   cfd    = -1;
-   energy = 0.0;
-   time   = 0;
-
-   position.SetXYZ(0,0,1);
+   PID   = 0;
+   //position.SetXYZ(0,0,1);
 
   // waveform.clear();
 }

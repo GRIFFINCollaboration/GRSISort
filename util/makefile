@@ -1,10 +1,44 @@
+PLATFORM = $(shell uname)
+
+export PLATFORM:= $(PLATFORM)
+
+ifeq ($(PLATFORM),Darwin)
+export __APPLE__:= 1
+export CFLAGS += -DOS_DARWIN -DHAVE_ZLIB #-lz
+export CFLAGS += -I/opt/X11/include -Qunused-arguments
+export LFLAGS = -dynamiclib -undefined dynamic_lookup -single_module # 
+export SHAREDSWITCH = -install_name # ENDING SPACE
+export CPP = clang++ 
+export CXX = clang++
+else
+export __LINUX__:= 1	
+export CFLAGS += -Wl,--no-as-needed 
+export SHAREDSWITCH = -shared -Wl,-soname,#NO ENDING SPACE
+export CPP = g++
+endif
+
+LIBDIR = -L$(BASE)/libraries
+ifeq ($(PLATFORM),Darwin)
+LIBDIR += -L/opt/X11/lib 
+endif
+ifdef MIDASSYS
+ifeq ($(PLATFORM),Darwin)
+LIBDIR += -L$(MIDASSYS)/darwin/lib
+else ifeq ($(PLATFORM),Linux)
+LIBDIR += -L$(MIDASSYS)/linux/lib
+endif
+endif
+
+ifndef __APPLE__
+LFLAGS = -Wl,--no-as-needed
+endif
+
 CXXTARGET = Root2Rad
-ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop
+#ROOTTARGET = MakeMatrices MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop EnergyCal EfficCal LeanMatrices
+ROOTTARGET = MakeTimeDiffSpec Make1DChargeHistograms offsetadd offsetfind offsetfix offsetfindtree bufferclean ExamineMidasFile timeloop EnergyCal EfficCal gadd
 
-
-
-CFLAGS += -fPIC
-CFLAGS += `root-config --cflags --libs`
+CFLAGS += -fPIC -O2
+CFLAGS += -std=c++0x -O2 -I$(PWD)/include -g `root-config --cflags --libs`
 
 BINDIR = $(GRSISYS)/bin
 
@@ -15,15 +49,18 @@ CAT=cat
 
 .PHONY: all clean gone end
 
-UTILFLAGS =  -L$(GRSISYS)/libraries  -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTGRSIFit -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `grsi-config --cflags --libs` -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
+#UTILFLAGS = $(LIBDIR) -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTGRSIFit -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `grsi-config --cflags --libs` -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
 
+UTILFLAGS = -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTigress
+
+UTILFLAGS += $(LIBDIR) -lAnalysisTreeBuilder -lTGRSIFit -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
 
 UTIL_STRING = "Finished compiling utilities"
 
-all: $(addprefix $(BINDIR)/,$(CXXTARGET) $(ROOTTARGET)) end
+all: end
 
-end:
-	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(UTIL_STRING) $^ ;
+end: $(addprefix $(BINDIR)/,$(CXXTARGET) $(ROOTTARGET)) 
+	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(UTIL_STRING) ;
 
 $(BINDIR)/%: %.cxx
 	@printf " ${COM_COLOR}%s ${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) $(basename $^) 
