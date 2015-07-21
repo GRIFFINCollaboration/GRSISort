@@ -5,12 +5,12 @@ PLATFORM = $(shell uname)
 
 export PLATFORM:= $(PLATFORM)
 
-export MAJOR_ROOT_VERSION = `root-config --version | cut -d '.' -f1`
+export MAJOR_ROOT_VERSION := `root-config --version | cut -d '.' -f1`
 #if [ ${MAJOR_ROOT_VERSION} -lt 5 ] ; then \
 #	$(error ${MAJOR_ROOT_VERSION} too small)
 #fi
 
-export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -g `root-config --cflags` -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION}
+export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -g `root-config --cflags` -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} -fPIC
 
 #export GRSISYS:= $(GRSISYS)
 
@@ -32,14 +32,15 @@ endif
 export COMPILESHARED   = $(CPP) $(LFLAGS) $(SHAREDSWITCH)#NO ENDING SPACE
 
 export BASE:= $(CURDIR)
+export INCDIR:= $(BASE)/include
 
 export CAT=cat
 
-export OK_STRING="[OK]"
-export ERROR_STRING="[ERROR]"
-export WARN_STRING="[WARNING]"
-export COMP_STRING="Now Compiling "
-export FIN_STRING="Finished Building "
+export OK_STRING:="[OK]"
+export ERROR_STRING:="[ERROR]"
+export WARN_STRING:="[WARNING]"
+export COMP_STRING:="Now Compiling "
+export FIN_STRING:="Finished Building "
 
 export COM_COLOR=\033[0;34m
 export OBJ_COLOR=\033[0;36m
@@ -51,11 +52,11 @@ export NO_COLOR=\033[m
 export FIN_COLOR=\033[3;34m
 export FIN_OBJ_COLOR=\033[3;32m
 
+export DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
+
 MAKE=make --no-print-directory 
 
 .PHONY: all subdirs $(ALLDIRS) clean util
-
-#all: print config subdirs bin grsihist grsisort analysis util end
 
 all: print grsisort analysis util end
 
