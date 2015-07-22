@@ -91,7 +91,7 @@ grsisort: src libraries users print bin config
 
 config: print
 	@cp util/grsi-config bin/
-	@find libraries/*/ -name "*.pcm" -exec cp {} libraries/ \;
+	@find libraries/*/ users/ -name "*.pcm" -exec cp {} libraries/ \;
 
 bin:
 ifeq ($(wildcard ./bin),) 
