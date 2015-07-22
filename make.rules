@@ -9,6 +9,8 @@ DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
 
 .PHONY: all clean gone
 
+.SECONDARY:
+
 all: lib$(NAME).so
 	@printf "\r ${FIN_COLOR}%s${FIN_OBJ_COLOR}%-30s ${NO_COLOR}\n" $(FIN_STRING) $< ; \
 
@@ -27,8 +29,9 @@ all: lib$(NAME).so
 	@$(RM) -f temp.errors temp.log
 	@cp $@ $(BASE)/libraries
 
-%.o: %.cxx $(DEPDIR)
-	@printf " ${COM_COLOR}%s ${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@ 
+%.o: %.cxx
+	@printf " ${COM_COLOR}%s ${OBJ_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"
+	@mkdir -p $(DEPDIR)
 	@$(MAKEDEPEND); \
 		cp $*.d $(df).P; \
 		sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
@@ -48,7 +51,7 @@ all: lib$(NAME).so
 
 
 $(DICTNAM)Dict.cxx: $(DICTOBJ)
-	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) $@
+	@printf " ${COM_COLOR}%s${DICT_COLOR}%s${NO_COLOR}" $(COMP_STRING) "$@"
 	@rootcint -f $@ -c -I$(INCDIR) -p -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} $(DICTOBJ) $(DICTNAM)LinkDef.h 2> temp.log || touch temp.errors
 	@if test -e temp.errors; then \
 		printf "\r ${COM_COLOR}%s${DICT_COLOR}%-30s ${ERROR_COLOR}%*s${NO_COLOR}\n" $(COMP_STRING) $@ 10 $(ERROR_STRING) \
@@ -63,9 +66,6 @@ $(DICTNAM)Dict.cxx: $(DICTOBJ)
 
 clean:
 	$(RM) -r $(DEPDIR) $(OBJECTS) *~ *Dict* *so
-
-$(DEPDIR):
-	@mkdir -p $@
 
 -include $(OBJECTS:%.o=$(DEPDIR)/%.P)
 
