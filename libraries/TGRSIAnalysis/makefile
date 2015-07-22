@@ -13,5 +13,3 @@ clean:
 	@for dir in $(ALLDIRS); do \
 		$(MAKE) -C $$dir $@; \
 	done
-
-
