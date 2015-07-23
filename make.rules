@@ -2,7 +2,11 @@
 DEPDIR = .deps
 df = $(DEPDIR)/$(*F)
 
+ifeq ($(PLATFORM),Darwin)
+MAKEDEPEND = clang -MM -MF $*.d $(CFLAGS) $(CPPFLAGS) $*.cxx
+else
 MAKEDEPEND = gcc -MM -MF $*.d $(CFLAGS) $(CPPFLAGS) $*.cxx
+endif
 
 #COMP_STRING="Now Compling "
 DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
