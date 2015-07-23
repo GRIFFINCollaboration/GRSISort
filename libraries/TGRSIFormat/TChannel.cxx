@@ -838,7 +838,13 @@ Int_t TChannel::ParseInputData(const char *inputdata,Option_t *opt) {
             } else if(type.compare("STREAM")==0) {
                int tempstream; ss>>tempstream;
                channel->SetStream(tempstream);
-            } else if(type.compare("DIGITZER")==0) {
+            } else if(type.compare("DIGITIZER")==0) {
+              int j=0;
+              while (type[j]) {
+                 char c = *(type.c_str() + j);
+                 c = toupper(c);
+                 type[j++] = c;
+              }
                channel->SetDigitizerType(line.c_str());
             } else if(type.compare("ENGCHI2")==0) {
                double tempdbl; ss>>tempdbl;
