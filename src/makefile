@@ -40,6 +40,7 @@ LIBS += -lAnalysisTreeBuilder
 LIBS += -lGRSIFormat
 LIBS += -lNucleus
 LIBS += -lKinematics
+LIBS += -lReaction
 LIBS += -lSRIM
 LIBS += -lTCal
 LIBS += -lTGRSIFit
