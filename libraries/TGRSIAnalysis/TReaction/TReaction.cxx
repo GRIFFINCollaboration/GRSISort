@@ -71,6 +71,13 @@ void TReaction::InitReaction(){
 
 }
 
+double TReaction::GetTBeam(bool inverse) { 
+  if(fInverse || inverse)
+    return (fGLab[0]-1)*fM[1];
+  else
+    return fTLab[0];
+}
+
 void TReaction::SetCmFrame(double exc){
 	
 	// particles in CM frame
@@ -456,13 +463,14 @@ void TReaction::Clear(Option_t *opt) {
 		fVCm[i] = 0;
 		fPCm[i] = 0;
 		fGCm[i] = 0;
-		
-		fTLab[i] = 0;
-		fELab[i] = 0;
-		fVLab[i] = 0;
-		fPLab[i] = 0;
-		fGLab[i] = 0;		
-		
+                	
+	        if(i<2) {
+		  fTLab[i] = 0;
+		  fELab[i] = 0;
+		  fVLab[i] = 0;
+		  fPLab[i] = 0;
+		  fGLab[i] = 0;		
+		}
 	}
 	return;
 }

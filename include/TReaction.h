@@ -66,7 +66,8 @@ public:
 	double GetExc()  					{  return fExc; 			    }
 	double GetQVal()  				{  return fQVal; 			    }
 	bool	 Inverse()  				{  return fInverse; 		   }
-	double GetTBeam(bool inverse) {return false; }   ///FIX ME!
+	double GetTBeam(bool inverse);
+        double GetVBeam()                               {  return fVLab[0]; }
 	
 	// CM frame properties
 	double GetInvariantMass()	{  return fInvariantMass;	}	
@@ -168,7 +169,7 @@ private:
   
   // PARTICLE IN LAB FRAME
   // Note that in the lab frame only the initial state (beam/targ) is fixed in the reaction
-	double fTLab[2];
+  double fTLab[2];
   double fELab[2];
   double fPLab[2];
   double fVLab[2];
