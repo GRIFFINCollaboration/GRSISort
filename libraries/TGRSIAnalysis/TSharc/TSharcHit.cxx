@@ -6,12 +6,38 @@
 ClassImp(TSharcHit)
 
 TSharcHit::TSharcHit()	{	
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 	Clear();
 }
 
 TSharcHit::~TSharcHit()	{	}
 
+TSharcHit::TSharcHit(const TSharcHit &rhs)	{	
+   Class()->IgnoreTObjectStreamer(kTRUE);
+   Clear();
+   ((TSharcHit&)rhs).Copy(*this);
+}
+
+void TSharcHit::Copy(TSharcHit &rhs) const {
+  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
+((TSharcHit&)rhs).front_strip		=	front_strip;	  
+((TSharcHit&)rhs).front_charge	=	front_charge;   
+((TSharcHit&)rhs).back_strip		=	back_strip;	  
+((TSharcHit&)rhs).back_charge		=	back_charge;	  
+((TSharcHit&)rhs).pad_charge		=	pad_charge;	  
+((TSharcHit&)rhs).d_energy_front =	d_energy_front;     
+((TSharcHit&)rhs).d_time_front	=	d_time_front;       
+((TSharcHit&)rhs).d_energy_back	=	d_energy_back;      
+((TSharcHit&)rhs).d_time_back 	=	d_time_back;        
+((TSharcHit&)rhs).p_energy			=  p_energy;		    
+((TSharcHit&)rhs).p_time			=  p_time;		    
+((TSharcHit&)rhs).p_address      =  p_address;     
+((TSharcHit&)rhs).front_address  =  front_address; 
+((TSharcHit&)rhs).back_address   =  back_address;  
+((TSharcHit&)rhs).detectornumber	=	detectornumber;
+}                                       
 
 void TSharcHit::Clear(Option_t *options)	{
 

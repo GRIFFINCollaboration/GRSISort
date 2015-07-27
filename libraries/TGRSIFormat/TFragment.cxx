@@ -17,7 +17,9 @@ ClassImp(TFragment)
 
 TFragment::TFragment(){
    // Default Constructor
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
@@ -224,5 +226,6 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
          return true;
    } else 
      return false;
-
+   
+   return false;
 }

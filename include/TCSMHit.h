@@ -15,7 +15,7 @@
 class TCSMHit : public TGRSIDetectorHit 	{
 	public:
 		TCSMHit();
-		~TCSMHit();
+		virtual ~TCSMHit();
 
 	private:
 

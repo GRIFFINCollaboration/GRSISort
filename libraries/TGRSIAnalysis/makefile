@@ -1,4 +1,4 @@
-SUBDIRS = TGRSIDetector TGriffin TSceptar TDescant TPaces TTigress #TTip  TSharc TTriFoil TCSM 
+SUBDIRS = TGRSIDetector TGriffin TSceptar TDescant TPaces TTigress TTip TSharc TTriFoil # TCSM 
 SUBDIRS += TNucleus TKinematics TSRIM TBetaDecay TAnalysisTreeBuilder TCal TGRSIFit
 ALLDIRS = $(SUBDIRS)
 
@@ -13,5 +13,3 @@ clean:
 	@for dir in $(ALLDIRS); do \
 		$(MAKE) -C $$dir $@; \
 	done
-
-

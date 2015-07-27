@@ -15,18 +15,24 @@
 class TDescantHit : public TGRSIDetectorHit {
   public:
     TDescantHit();
-    ~TDescantHit();
+    virtual ~TDescantHit();
 	 TDescantHit(const TDescantHit&);
 
   private:
     Int_t    filter;
     Int_t    psd;
+    Int_t    zc;
+    Int_t    ccShort;
+    Int_t    ccLong;
 //    std::vector<Short_t> waveform;
 
   public:
 		/////////////////////////		/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
       inline void SetPsd(const int &x)             { psd      = x; }   //!
+      inline void SetZc(const int &x)              { zc       = x; }   //!
+      inline void SetCcShort(const int &x)         { ccShort  = x; }   //!
+      inline void SetCcLong(const int &x)          { ccLong   = x; }   //!
    //   inline void SetPosition(TVector3 x)          { position = x; }   //!
 
       inline void SetWaveform(std::vector<Short_t> x) {
@@ -58,9 +64,12 @@ class TDescantHit : public TGRSIDetectorHit {
 		/////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()       { return filter;   }  //!
       inline Int_t    GetPsd()                 { return psd;      }  //!
+      inline Int_t    GetZc()                  { return zc;      }  //!
+      inline Int_t    GetCcShort()             { return ccShort;      }  //!
+      inline Int_t    GetCcLong()              { return ccLong;      }  //!
       TVector3 GetPosition(Double_t dist = 0) const; //!
       double GetTime(Option_t * opt = "") const; //!
-      inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
+//      inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 
       Int_t CalculateCfd(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps); //!
       Int_t CalculateCfdAndMonitor(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor); //!

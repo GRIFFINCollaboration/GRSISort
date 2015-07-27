@@ -22,6 +22,7 @@
 #include "TStopwatch.h"
 #include "TMath.h"
 #include "TGRSIRunInfo.h"
+#include "TGRSISortInfo.h"
 #include "Globals.h"
 
 #ifndef __CINT__ 
@@ -307,10 +308,11 @@ int main(int argc, char **argv) {
    printf("Writing to File: " DYELLOW "%s" RESET_COLOR"\n",outfile->GetName());
    list->Write();
    //Write the run info into the tree as well if there is run info in the Analysis Tree
-   TList *runinfoList = new TList;
+   TGRSISortList *sortinfolist = new TGRSISortList;
    if(runinfo){
-      runinfoList->Add(runinfo);
-      runinfoList->Write("TGRSIRunInfoList",TObject::kSingleKey);
+      TGRSISortInfo *info = new TGRSISortInfo(runinfo);
+      sortinfolist->AddSortInfo(info);
+      sortinfolist->Write("TGRSISortList",TObject::kSingleKey);
    }
    outfile->Close();
 

@@ -186,7 +186,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 
 
    // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
-   TFitResultPtr fitres = fithist->Fit(this,Form("%sRS",opt));//The RS needs to always be there
+   TFitResultPtr fitres = fithist->Fit(this,Form("%sLRS",opt));//The RS needs to always be there
    //After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    //for printing out. RD
 

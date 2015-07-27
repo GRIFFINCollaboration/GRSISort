@@ -21,19 +21,22 @@ class TTriFoil :  public TGRSIDetector {
 	
 	public:
 		TTriFoil();
-		~TTriFoil();
+		virtual ~TTriFoil();
+      TTriFoil(const TTriFoil& rhs);
 
 		std::vector<Short_t> GetWave() { return tf_wave;	};
-		bool Beam(){return beam;};
-		int TBeam(){return tbeam;};
+		bool Beam() const{return beam;};
+		int TBeam() const {return tbeam;};
 	
-		bool HasWave() { return !tf_wave.empty(); };
+		bool HasWave() const { return !tf_wave.empty(); };
+      time_t GetTimeStamp() const {return timestamp;}
 
 		void BuildHits(TGRSIDetectorData *data=0, Option_t * = "");	//!
 		void FillData(TFragment*,TChannel*,MNEMONIC*);	//!
 
 		void Clear(Option_t *opt = ""); 	//!
-		void Print(Option_t *opt = ""); 	//!
+		void Print(Option_t *opt = "") const; 	//!
+      void Copy(TTriFoil &rhs) const;
 
 		
 	

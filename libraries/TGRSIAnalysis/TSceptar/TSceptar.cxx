@@ -47,7 +47,9 @@ TVector3 TSceptar::gPaddlePosition[21] = {
 
 TSceptar::TSceptar() : sceptardata(0)	{
    //Default Constructor
-   //Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    //Class()->AddRule("TSceptar sceptar_hits attributes=NotOwner");
    //Class()->AddRule("TSceptar sceptardata attributes=NotOwner");
    Clear();
@@ -59,6 +61,9 @@ TSceptar::~TSceptar()	{
 }
 
 TSceptar::TSceptar(const TSceptar& rhs) {
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
   ((TSceptar&)rhs).Copy(*this);
 }
 
@@ -136,6 +141,7 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       dethit.SetTime(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
 
+      //UNCOMMENTED FOR NOW
       if(TSceptar::SetWave()){
          if(gdata->GetDetWave(i).size() == 0) {
             printf("Warning, TSceptar::SetWave() set, but data waveform size is zero!\n");
@@ -163,3 +169,4 @@ TGRSIDetectorHit* TSceptar::GetHit(const Int_t idx){
    else 
       return 0;
 }
+

@@ -30,7 +30,8 @@ class TSharcData;
 class TSharc : public TGRSIDetector	{
 	public:
 		TSharc();
-		~TSharc();
+		virtual ~TSharc();
+      TSharc(const TSharc& rhs);
 
 	private:
 		std::vector <TSharcHit> sharc_hits;
@@ -39,8 +40,13 @@ class TSharc : public TGRSIDetector	{
 
 	public: 
 		inline Short_t    GetNumberOfHits()   	{return sharc_hits.size();}	//->
-		inline TSharcHit *GetHit(int i)		   {return &sharc_hits.at(i);}	//->
-    static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);	//! 
+		TSharcHit *GetSharcHit(const int i);	//->
+      TGRSIDetectorHit *GetHit(const int i);
+      static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);	//! 
+
+      void Copy(TSharc &rhs) const;
+
+      TSharc& operator=(const TSharc&);  //!
 
 		void BuildHits(TGRSIDetectorData *sd=0,Option_t * = "");			   //!
 
@@ -51,6 +57,9 @@ class TSharc : public TGRSIDetector	{
 
     //TSharcData *GetData() { return &data; }  //!
 		void FillData(TFragment*,TChannel*,MNEMONIC*); //!
+
+   protected:
+     void PushBackHit(TGRSIDetectorHit* sharchit);
 
 	private: 
 

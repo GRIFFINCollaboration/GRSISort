@@ -92,7 +92,7 @@ bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
    //same, false if different.
    std::string namea; namea.assign(((TChannel)chana).GetChannelName());
 	
-   if(namea.compare(((TChannel)chanb).GetChannelName()) <= 0) return true;
+   if(namea.compare(((TChannel)chanb).GetChannelName()) < 0) return true;
    else return false;
 }
 
@@ -401,8 +401,8 @@ double TChannel::CalibrateENG(double charge) {
    //integration parameter.
    if(ENGCoefficients.size()==0)
       return charge;
-   double cal_chg = 0.0;
-   for(int i=0;i<ENGCoefficients.size();i++){
+   double cal_chg = ENGCoefficients[0];
+   for(int i=1;i<ENGCoefficients.size();i++){
       cal_chg += ENGCoefficients[i] * pow((charge),i);
    }
    return cal_chg;
@@ -578,7 +578,7 @@ void TChannel::WriteCalFile(std::string outfilename) {
 
 
    if(outfilename.length()>0) {
-     ofstream calout;
+	  std::ofstream calout;
      calout.open(outfilename.c_str());
      for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
         std::string chanstr = iter_vec->PrintToString();
@@ -962,7 +962,7 @@ int TChannel::WriteToRoot(TFile *fileptr) {
   WriteCalBuffer();
   std::string savedata = fFileData;
   
-
+  FILE* originalstdout = stdout;
   int fd = open("/dev/null", O_WRONLY); // turn off stdout.
   stdout = fdopen(fd, "w");
 
@@ -986,8 +986,7 @@ int TChannel::WriteToRoot(TFile *fileptr) {
     TChannel::DeleteAllChannels();
   }
 
-  fd = open("/dev/tty", O_WRONLY);  // turn on stdout.
-  stdout = fdopen(fd, "w");
+  stdout = originalstdout; //Restore stdout
 
   ParseInputData(savedata.c_str(),"q");
   SaveToSelf(savedata.c_str());

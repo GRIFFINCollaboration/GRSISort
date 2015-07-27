@@ -52,43 +52,38 @@ class TSharcHit : public TGRSIDetectorHit {
     virtual void Copy(const TObject &);        //!
     virtual void Clear(Option_t* = "");        //!
     virtual void Print(Option_t* = "")  const; //!
+    
+    inline UShort_t GetDetectorNumber() const  { return detectornumber;  } //!
+    inline UShort_t GetFrontStrip()     const  {  return  front_strip;  }  //!
+    inline UShort_t GetBackStrip()      const  {  return  back_strip;    }  //!
 
-    TGRSIDetectorHit *GetFront() const  { return this; }
-    TGRSIDetectorHit *GetBack()  const  { return &backhit; }
-    TGRSIDetectorHit *GetPad()   const  { return &padhit; }
+    TGRSIDetectorHit *GetFront() const { return this; }
+    TGRSIDetectorHit *GetBack()  const { return &backhit; }
+    TGRSIDetectorHit *GetPad()   const { return &padhit; }
 
-    inline Double_t GetDeltaE()       {  return GetFront()->GetEnergy();  };  //!
-    inline Double_t GetDeltaT()       {  return GetFront()->GetTime();    };  //!
+    const inline Double_t GetDeltaE()       { return GetFront()->GetEnergy();  }  //!
+    const inline Double_t GetDeltaT()       { return GetFront()->GetTime();    }  //!
 
-    inline Double_t GetDeltaFrontE()  {  return  GetFront()->GetEnergy(); };  //!
-    inline Double_t GetDeltaFrontT()  {  return  GetFront()->GetTime();   };  //!
-    inline Double_t GetDeltaBackE()   {  return  GetBack()->GetEnergy(); };   //!
-    inline Double_t GetDeltaBackT()   {  return  GetBack()->GetTime();   };   //!
+    const inline Double_t GetDeltaFrontE()  { return GetFront()->GetEnergy(); }  //!
+    const inline Double_t GetDeltaFrontT()  { return GetFront()->GetTime();   }  //!
+    const inline Double_t GetDeltaBackE()   { return GetBack()->GetEnergy();  }  //!
+    const inline Double_t GetDeltaBackT()   { return GetBack()->GetTime();    }  //!
 
-    inline Int_t GetFrontAddress()    {  return GetFront()->GetAddress();  }  //!
-    inline Int_t GetBackAddress()     {  return GetBack()->GetAddress();  }   //!
-    inline Int_t GetPadAddress()      {  return GetPad()->GetAddress();  }    //!
+    const inline Int_t GetFrontAddress()    { return GetFront()->GetAddress(); }  //!
+    const inline Int_t GetBackAddress()     { return GetBack()->GetAddress();  }  //!
+    const inline Int_t GetPadAddress()      { return GetPad()->GetAddress();   }  //!
 
-    inline Double_t GetPadE()         {  return GetPad->GetEnergy()p_energy;  };  //!
-    inline Double_t GetPadT()         {  return p_time;    };  //!
+    const inline Double_t GetPadE()         { return GetPad()->GetEnergy();    }  //!
+    const inline Double_t GetPadT()         { return GetPad()->GetTime();      }  //!
 
-    inline Int_t GetDetectorNumber()  { return detectornumber;  } //!
     //std::pair<int,int>  GetPixel()  { return std::make_pair(front_strip,back_strip);  }  //!
 
-    inline Int_t    GetFrontCharge()     {  return  front_charge;  }  //!
-           Double_t GetFrontChgHeight();   //!
-    inline Double_t GetFrontChgDbl()     {  return  (Double_t)front_charge + gRandom->Uniform();  }  //!
-    inline Int_t    GetBackCharge()      {  return  back_charge;  }  //!
-           Double_t GetBackChgHeight();    //!
-    inline Double_t GetBackChgDbl()      {  return  (Double_t)back_charge + gRandom->Uniform();  }  //!
-    inline Int_t    GetPadCharge()       {  return  pad_charge;    }  //!
-           Double_t GetPadChgHeight();     //!
-    
-    inline UShort_t GetFrontStrip()      {  return  front_strip;  }  //!
-    inline UShort_t GetBackStrip()       {  return  back_strip;    }  //!
+    const Double_t    GetFrontCharge()      { return GetFront()->GetCharge();  }  //!  //Charge is now stored after integration.
+    const Double_t    GetBackCharge()       { return GetBack()->GetCharge();   }  //!  //Charge is now stored after integration.
+    const Double_t    GetPadCharge()        { return GetPad()->GetCharge();    }  //!  //Charge is now stored after integration.
 
-    inline Double_t GetEnergy()          {  return (p_energy>0) ? (p_energy + d_energy_front) : d_energy_front ;}
-    inline Double_t GetTime()            {  return d_time_front; }
+    inline Double_t GetEnergy()          {  return GetFront()->GetEnergy() + GetPad()->GetEnergy(); }
+    inline Double_t GetTime()            {  return GetFront()->GetTime(); }
 
     TVector3 GetPosition() const {}
       

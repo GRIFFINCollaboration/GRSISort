@@ -59,12 +59,25 @@ TVector3 TGriffin::gCloverPosition[17] = {
    TVector3(TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Cos(TMath::DegToRad()*(337.5)), TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Sin(TMath::DegToRad()*(337.5)), TMath::Cos(TMath::DegToRad()*(135.0)))
 };
 
+std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::addback_criterion = [](TGriffinHit& one, TGriffinHit& two) { 
+   return ((one.GetDetector() == two.GetDetector()) && 
+	   (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow())); 
+};
+
 
 TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+   fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
 TGriffin::TGriffin(const TGriffin& rhs) {
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+   fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
   ((TGriffin&)rhs).Copy(*this);
 }
 
@@ -75,7 +88,7 @@ void TGriffin::Copy(TGriffin &rhs) const {
   //((TGriffin&)rhs).bgodata      = 0;
 
   ((TGriffin&)rhs).griffin_hits        = griffin_hits;
-  //((TGriffin&)rhs).addback_hits        = addback_hits;
+  ((TGriffin&)rhs).addback_hits        = addback_hits;
   //((TGriffin&)rhs).addback_clover_hits = addback_clover_hits;
   //((TGriffin&)rhs).fSetBGOHits         = fSetBGOHits;
   ((TGriffin&)rhs).fSetCoreWave        = fSetCoreWave;
@@ -125,17 +138,16 @@ TGriffin::~TGriffin()	{
 
 void TGriffin::Clear(Option_t *opt)	{
    //Clears the mother, all of the hits and any stored data
-   //if(!strcmp(opt,"all") {
    if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
      TGRSIDetector::Clear(opt);
      if(grifdata) grifdata->Clear();
 	  //if(bgodata)  bgodata->Clear();
      ClearStatus();
    }
-	griffin_hits.clear();
+   griffin_hits.clear();
+   addback_hits.clear();
    fCycleStart = 0;
-	//addback_hits.clear();
-	//addback_clover_hits.clear();
+   //fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 }
 
 
@@ -193,15 +205,53 @@ void TGriffin::PushBackHit(TGRSIDetectorHit *ghit){
    griffin_hits.push_back(*((TGriffinHit*)ghit));
 }
 
+
 TGRSIDetectorHit* TGriffin::GetHit(const Int_t idx) {
    return GetGriffinHit(idx);
 }
+
 
 TGriffinHit* TGriffin::GetGriffinHit(const int i) {
    if(i < GetMultiplicity())
       return &griffin_hits.at(i);   
    else
       return 0;
+}
+
+Int_t TGriffin::GetAddbackMultiplicity() {
+   // Automatically builds the addback hits using the addback_criterion (if the size of the addback_hits vector is zero) and return the number of addback hits
+   if(griffin_hits.size() == 0) {
+      return 0;
+   }
+   if(addback_hits.size() == 0) {
+      // use the first griffin hit as starting point for the addback hits
+      addback_hits.push_back(griffin_hits[0]);
+
+      // loop over remaining griffin hits
+      size_t i, j;
+      for(i = 1; i < griffin_hits.size(); ++i) {
+	 // check for each existing addback hit if this griffin hit should be added
+	 for(j = 0; j < addback_hits.size(); ++j) {
+	    if(addback_criterion(addback_hits[j], griffin_hits[i])) {
+	       addback_hits[j].Add(&(griffin_hits[i]));
+	       break;
+	    }
+	 }
+	 if(j == addback_hits.size()) {
+	    addback_hits.push_back(griffin_hits[i]);
+	 }
+      }
+   }
+
+   return addback_hits.size();
+}
+
+TGriffinHit* TGriffin::GetAddbackHit(const int i) {
+   if(i < GetAddbackMultiplicity()) {
+      return &addback_hits.at(i);
+   } else {
+      return NULL;
+   }
 }
 
 void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
@@ -217,7 +267,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
 
    
-   //griffin_hits.clear();
+   griffin_hits.clear();
    Clear("");
    griffin_hits.reserve(gdata->GetMultiplicity());
 
@@ -245,11 +295,11 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       corehit.SetTime(gdata->GetCoreTime(i));
       corehit.SetCfd(gdata->GetCoreCFD(i));
       corehit.SetCharge(gdata->GetCoreCharge(i));
-
+/*
       if(TGriffin::SetCoreWave()){
          corehit.SetWaveform(gdata->GetCoreWave(i));
       }
-		
+*/		
       //corehit.SetDetectorNumber(gdata->GetCloverNumber(i));
       //corehit.SetCrystalNumber(gdata->GetCoreNumber(i));
    

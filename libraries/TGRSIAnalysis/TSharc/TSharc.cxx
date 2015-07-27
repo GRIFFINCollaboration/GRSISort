@@ -26,12 +26,53 @@ ClassImp(TSharc)
 //==========================================================================//
 //==========================================================================//
 
+double TSharc::Xdim        = +72.0; // total X dimension of all boxes
+double TSharc::Ydim        = +72.0; // total Y dimension of all boxes
+double TSharc::Zdim        = +48.0; // total Z dimension of all boxes
+double TSharc::Rdim        = +32.0; // Rmax-Rmin for all QQQs 
+double TSharc::Pdim        = +81.6; // QQQ quadrant angular range (degrees)
+double TSharc::XposUB      = +42.5;
+double TSharc::YminUB      = -36.0;
+double TSharc::ZminUB      = -5.00;
+double TSharc::XposDB      = +40.5;
+double TSharc::YminDB      = -36.0;
+double TSharc::ZminDB      = +9.00;
+double TSharc::ZposUQ      = -66.5;
+double TSharc::RminUQ      = +9.00;
+double TSharc::PminUQ      = +2.00; // degrees
+double TSharc::ZposDQ      = +74.5;
+double TSharc::RminDQ      = +9.00;
+double TSharc::PminDQ      = +6.40; // degrees
+
+//const int TSharc::frontstripslist[16]     = {16,16,16,16,	24,24,24,24,	24,24,24,24,	16,16,16,16};
+//const int TSharc::backstripslist[16]      = {24,24,24,24,	48,48,48,48,	48,48,48,48,	24,24,24,24};		
+
+//const double TSharc::frontpitchlist[16]   = {2.0,2.0,2.0,2.0,	3.0,3.0,3.0,3.0,	3.0,3.0,3.0,3.0,	2.0,2.0,2.0,2.0};
+//const double TSharc::backpitchlist[16]    = {PI/48,PI/48,PI/48,PI/48,	1.0,1.0,1.0,1.0,	1.0,1.0,1.0,1.0,	PI/48,PI/48,PI/48,PI/48}; 
+// QQQ back pitches are angles
+//
+double TSharc::stripFpitch          = TSharc::Ydim / 24.0;  //TSharc::frontstripslist[5]; // 72.0/24 = 3.0 mm
+double TSharc::ringpitch            = TSharc::Rdim / 16.0;  //TSharc::frontstripslist[1]; // 32.0/16 = 2.0 mm
+double TSharc::stripBpitch          = TSharc::Zdim / 48.0;  //TSharc::backstripslist[5] ; // 48.0/48 = 1.0 mm
+double TSharc::segmentpitch         = TSharc::Pdim / 24.0;  //TSharc::backstripslist[1] ; // 81.6/24 = 3.4 degrees (angular pitch)
+
+// The dimensions are described for a single detector of each type UQ,UB,DB,DQ, and all other detectors can be calculated by rotating this
+
 TSharc::TSharc() : data(0)	{
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
+   Clear();
 }
 
 TSharc::~TSharc()	{
 	if(data) delete data;
+}
+
+TSharc::TSharc(const TSharc& rhs) {
+  Class()->IgnoreTObjectStreamer(kTRUE);
+  Clear();
+  ((TSharc&)rhs).Copy(*this);
 }
 
 
@@ -225,6 +266,7 @@ void TSharc::RemoveHits(std::vector<TSharcHit> *hits,std::set<int> *to_remove)	{
 }
 
 void TSharc::Clear(Option_t *option)	{
+  TGRSIDetector::Clear(option);
   if(data) data->Clear();
   sharc_hits.clear();
   return;
@@ -235,37 +277,20 @@ void TSharc::Print(Option_t *option)	{
   return;
 }
 
-double TSharc::Xdim        = +72.0; // total X dimension of all boxes
-double TSharc::Ydim        = +72.0; // total Y dimension of all boxes
-double TSharc::Zdim        = +48.0; // total Z dimension of all boxes
-double TSharc::Rdim        = +32.0; // Rmax-Rmin for all QQQs 
-double TSharc::Pdim        = +81.6; // QQQ quadrant angular range (degrees)
-double TSharc::XposUB      = +42.5;
-double TSharc::YminUB      = -36.0;
-double TSharc::ZminUB      = -5.00;
-double TSharc::XposDB      = +40.5;
-double TSharc::YminDB      = -36.0;
-double TSharc::ZminDB      = +9.00;
-double TSharc::ZposUQ      = -66.5;
-double TSharc::RminUQ      = +9.00;
-double TSharc::PminUQ      = +2.00; // degrees
-double TSharc::ZposDQ      = +74.5;
-double TSharc::RminDQ      = +9.00;
-double TSharc::PminDQ      = +6.40; // degrees
+void TSharc::Copy(TSharc &rhs) const {
+  TGRSIDetector::Copy((TGRSIDetector&)rhs);
 
-//const int TSharc::frontstripslist[16]     = {16,16,16,16,	24,24,24,24,	24,24,24,24,	16,16,16,16};
-//const int TSharc::backstripslist[16]      = {24,24,24,24,	48,48,48,48,	48,48,48,48,	24,24,24,24};		
+  ((TSharc&)rhs).data     = 0;
 
-//const double TSharc::frontpitchlist[16]   = {2.0,2.0,2.0,2.0,	3.0,3.0,3.0,3.0,	3.0,3.0,3.0,3.0,	2.0,2.0,2.0,2.0};
-//const double TSharc::backpitchlist[16]    = {PI/48,PI/48,PI/48,PI/48,	1.0,1.0,1.0,1.0,	1.0,1.0,1.0,1.0,	PI/48,PI/48,PI/48,PI/48}; 
-// QQQ back pitches are angles
-//
-double TSharc::stripFpitch          = TSharc::Ydim / 24.0;  //TSharc::frontstripslist[5]; // 72.0/24 = 3.0 mm
-double TSharc::ringpitch            = TSharc::Rdim / 16.0;  //TSharc::frontstripslist[1]; // 32.0/16 = 2.0 mm
-double TSharc::stripBpitch          = TSharc::Zdim / 48.0;  //TSharc::backstripslist[5] ; // 48.0/48 = 1.0 mm
-double TSharc::segmentpitch         = TSharc::Pdim / 24.0;  //TSharc::backstripslist[1] ; // 81.6/24 = 3.4 degrees (angular pitch)
+  ((TSharc&)rhs).sharc_hits    = sharc_hits;
+  return;                                      
+}                                       
 
-// The dimensions are described for a single detector of each type UQ,UB,DB,DQ, and all other detectors can be calculated by rotating this
+TSharc& TSharc::operator=(const TSharc& rhs) {
+   rhs.Copy(*this);
+   return *this;
+}
+
 TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double X, double Y, double Z)	{
   int FrontDet = detector;
   int FrontStr = frontstrip;
@@ -313,8 +338,22 @@ TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double
   return (position + position_offset);
 }
 
+TGRSIDetectorHit* TSharc::GetHit(const Int_t idx) {
+   return GetSharcHit(idx);
+}
 
 
+TSharcHit* TSharc::GetSharcHit(const int i) {
+   if(i < GetMultiplicity())
+      return &sharc_hits.at(i);   
+   else
+      return 0;
+}
+
+void TSharc::PushBackHit(TGRSIDetectorHit *sharchit) {
+  sharc_hits.push_back(*((TSharcHit*)sharchit));
+  return;
+}
 
 
 

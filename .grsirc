@@ -3,7 +3,7 @@ Unix.*.Root.MacroPath: .:$(GRSISYS)/util:$(ROOTSYS)/macros
 
 
 #files to load at log in:
-Rint.Logon: $(GRSISYS)/.grsi_logon
+Rint.Logon: $(GRSISYS)/grsi_logon.C
 Rint.History $(GRSISYS)/.grsi_history
 Rint.HistSize: 1000000 
 

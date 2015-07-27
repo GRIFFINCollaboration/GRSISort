@@ -21,10 +21,16 @@ long TPaces::fCycleStart  = 0;
 long TPaces::fLastPPG     = 0;
 
 TPaces::TPaces() : TGRSIDetector(),pacesdata(0) {
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
 TPaces::TPaces(const TPaces& rhs) {
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
   ((TPaces&)rhs).Copy(*this);
 }
 
@@ -117,10 +123,10 @@ void TPaces::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       corehit.SetCfd(pdata->GetCoreCFD(i));
       corehit.SetCharge(pdata->GetCoreCharge(i));
 
-      if(TPaces::SetCoreWave()){
+ /*     if(TPaces::SetCoreWave()){
          corehit.SetWaveform(pdata->GetCoreWave(i));
       }
- 
+ */
       corehit.SetPPG(pdata->GetPPG(i));
 
       if((pdata->GetPPG(i) == 0xd000 && pdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
@@ -139,3 +145,4 @@ TVector3 TPaces::GetPosition(int DetNbr) {
    //Does not currently contain any positons.
    return TVector3(0,0,1);
 }
+

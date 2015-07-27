@@ -20,7 +20,7 @@ class TGRSITransition : public TObject {
    friend class TNucleus;
    public:
       TGRSITransition();
-      ~TGRSITransition();
+      virtual ~TGRSITransition();
 
       bool IsSortable() const { return true; }
       int Compare(const TObject *obj) const;

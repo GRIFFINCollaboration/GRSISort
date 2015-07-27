@@ -6,6 +6,9 @@
 ClassImp(TGriffinHit)
 
 TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{	
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 	Clear();
 }
 
@@ -86,13 +89,10 @@ void TGriffinHit::Clear(Option_t *opt)	{
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
    filter          =  0;
    ppg             =  0;
-   detector        = 0xFFFF;
    crystal         = 0xFFFF;
 
    is_crys_set     = false;
 
-   //I think we want to make sure the entire Hit is cleared including the BASE.
-   TGRSIDetectorHit::Clear();
 }
 
 
@@ -134,7 +134,7 @@ TVector3 TGriffinHit::GetPosition(Double_t dist) const{
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
-const UInt_t TGriffinHit::GetCrystal() const { 
+UInt_t TGriffinHit::GetCrystal() const { 
    if(is_crys_set)
       return crystal;
 
@@ -157,29 +157,57 @@ const UInt_t TGriffinHit::GetCrystal() const {
    return -1;  
 }
 
-UInt_t TGriffinHit::SetCrystal() { 
-   crystal = GetCrystal();
+UInt_t TGriffinHit::GetCrystal() {
+   if(is_crys_set)
+      return crystal;
+
+   TChannel *chan = GetChannel();
+   if(!chan)
+      return -1;
+   MNEMONIC mnemonic;
+   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+   char color = mnemonic.arraysubposition[0];
+   return SetCrystal(color);
+}
+
+UInt_t TGriffinHit::SetCrystal(UInt_t crynum) {
+   crystal = crynum;
+   is_crys_set = true;
    return crystal;
 }
 
-//bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
-//		return(lhs->GetEnergyLow()) > rhs->GetEnergyLow();
-//}
+UInt_t TGriffinHit::SetCrystal(char color) { 
+   switch(color) {
+      case 'B':
+         crystal = 0;
+      case 'G':
+         crystal = 1;
+      case 'R':
+         crystal = 2;
+      case 'W':
+         crystal = 3;  
+   };
+   is_crys_set = true;
+   return crystal;
+}
 
+bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
+   return(lhs->GetEnergy()) > rhs->GetEnergy();
+}
 
+void TGriffinHit::Add(TGriffinHit *hit)	{
+   // add another griffin hit to this one (for addback), 
+   // using the time and position information of the one with the higher energy
+   if(!CompareEnergy(this,hit)) {
+      this->cfd    = hit->GetCfd();
+      this->time   = hit->GetTime();
+      this->position = hit->GetPosition();
+   }
 
-//void TGriffinHit::Add(TGriffinHit *hit)	{
-//   if(!CompareEnergy(this,hit)) {
-//      this->cfd    = hit->GetCfd();    
-//      this->time   = hit->GetTime();
-//      this->position = hit->GetPosition();
-//   }
-//   this->SetChargeLow(0);
-//   this->SetChargeHigh(0);
-//
-//   this->SetEnergyHigh(this->GetEnergyHigh() + hit->GetEnergyHigh());
-//   this->SetEnergyLow(this->GetEnergyLow() + hit->GetEnergyLow());
-//}
+   this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+   //this has to be done at the very end, otherwise this->GetEnergy() might not work
+   this->SetCharge(0);
+}
 
 //Bool_t TGriffinHit::BremSuppressed(TSceptarHit* schit){
 //   return false;

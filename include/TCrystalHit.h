@@ -34,11 +34,11 @@ class TCrystalHit : public TGRSIDetectorHit	{
 		inline int    GetSegment()       { return segment;}   //!
 		//inline int    GetCharge()	{	return charge; }	//!		
 		inline double GetEnergy() const 	{ return local_energy;	}	//!
-		//inline double GetTime()		{	return time;	}	//!
+		inline double GetTime(Option_t *opt="") const { return time;	}	//!
 		//inline double GetCfd()		{	return cfd;	}	   //!
 
-      TVector3 GetPosition() const {}
-		inline void SetSegment(const int &seg) { segment = seg;   }       //!	
+      TVector3 GetPosition() const {return TVector3();}
+		inline void SetSegment(const int &seg) { segment = seg;   }       //!
 		//inline void SetCharge(const int &chg)	{	charge = chg;	}	//!
 		inline void SetEnergy(const double &e)	{	local_energy = e;	}	//!
 		//inline void SetTime(const double &t)	{	time = t;	}	//!
