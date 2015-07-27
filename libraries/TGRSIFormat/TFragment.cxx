@@ -152,7 +152,7 @@ double TFragment::GetCharge(int i) const {
    return ((double)Charge.at(i)+gRandom->Uniform());// this will use no integration value
 }
 
-void TFragment::Print(Option_t *opt)	{
+void TFragment::Print(Option_t *opt) const {
    //Prints out all fields of the TFragment
 
 

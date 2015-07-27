@@ -74,13 +74,16 @@ public:
    double GetCharge(int iter=0)const; //!
    long GetTimeStamp_ns(); //!
 
+   Int_t GetCfd(int iter=0) const { return Cfd.at(i); } //!
+   Int_t GetLed(int iter=0) const { return Led.at(i); } //!
+
    Int_t Get4GCfd(int i=0); //!
 
    bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!
 
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 
-   virtual void Print(Option_t *opt = ""); //!
+   virtual void Print(Option_t *opt = "") const; //!
    
 
 
