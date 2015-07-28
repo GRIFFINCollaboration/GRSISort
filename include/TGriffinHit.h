@@ -35,7 +35,7 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline void SetFilterPattern(const int &x)   { filter = x;   }                  //! 
       inline void SetPPG(const int &x)             { ppg = x;   }                     //! 
       //void SetHit();
-      virtual double GetTime(Option_t *opt = "") const;                                 //!
+      virtual ULong_t GetTime(Option_t *opt = "") const;                                 //!
 
 //		void SetPosition(double dist =110);   //!
       TVector3 GetPosition(Double_t dist = 110.0) const; //!

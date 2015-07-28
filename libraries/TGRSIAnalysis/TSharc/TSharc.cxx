@@ -2,6 +2,7 @@
 #include <TMath.h>
 
 #include "TSharc.h"
+#include "TSharcData.h"
 #include <TClass.h>
 
 
@@ -13,7 +14,7 @@ ClassImp(TSharc)
 //const int TSharc::backstripslist[16]      = {24,24,24,24,  48,48,48,48,  48,48,48,48,  24,24,24,24};    
 
 //const double TSharc::frontpitchlist[16]   = {2.0,2.0,2.0,2.0,  3.0,3.0,3.0,3.0,  3.0,3.0,3.0,3.0,  2.0,2.0,2.0,2.0};
-//const double TSharc::backpitchlist[16]    = {PI/48,PI/48,PI/48,PI/48,  1.0,1.0,1.0,1.0,  1.0,1.0,1.0,1.0,  PI/48,PI/48,PI/48,PI/48};    // QQQ back pitches are angles
+//const double TSharc::backpitchlist[16]    = {TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48,  1.0,1.0,1.0,1.0,  1.0,1.0,1.0,1.0,  TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48};    // QQQ back pitches are angles
 //const double TSharc::stripFpitch          = TSharc::Ydim / TSharc::frontstripslist[5]; // 72.0/24 = 3.0 mm
 //const double TSharc::ringpitch            = TSharc::Rdim / TSharc::frontstripslist[1]; // 32.0/16 = 2.0 mm
 //const double TSharc::stripBpitch          = TSharc::Zdim / TSharc::backstripslist[5] ; // 48.0/48 = 1.0 mm
@@ -51,7 +52,7 @@ double TSharc::PminDQ      = +6.40; // degrees
 //const int TSharc::backstripslist[16]      = {24,24,24,24,  48,48,48,48,  48,48,48,48,  24,24,24,24};    
 
 //const double TSharc::frontpitchlist[16]   = {2.0,2.0,2.0,2.0,  3.0,3.0,3.0,3.0,  3.0,3.0,3.0,3.0,  2.0,2.0,2.0,2.0};
-//const double TSharc::backpitchlist[16]    = {PI/48,PI/48,PI/48,PI/48,  1.0,1.0,1.0,1.0,  1.0,1.0,1.0,1.0,  PI/48,PI/48,PI/48,PI/48}; 
+//const double TSharc::backpitchlist[16]    = {TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48,  1.0,1.0,1.0,1.0,  1.0,1.0,1.0,1.0,  TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48}; 
 // QQQ back pitches are angles
 //
 double TSharc::stripFpitch          = TSharc::Ydim / 24.0;  //TSharc::frontstripslist[5]; // 72.0/24 = 3.0 mm
@@ -74,7 +75,7 @@ TSharc::~TSharc()  {
 
 TSharc::TSharc(const TSharc& rhs) {
   Class()->IgnoreTObjectStreamer(kTRUE);
-  Clear();
+  Clear("ALL");
   ((TSharc&)rhs).Copy(*this);
 }
 
@@ -83,7 +84,7 @@ void TSharc::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
    if(!data)
       data = new TSharcData();
    if(mnemonic->arraysubposition.compare(0,1,"E")==0) {//PAD
-      data->SetPAD(frag,channel,mnemonic);
+      data->SetPad(frag,channel,mnemonic);
    } else if(mnemonic->arraysubposition.compare(0,1,"D")==0) {//not a PAD
     if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front
       data->SetFront(frag,channel,mnemonic);
@@ -143,11 +144,11 @@ void  TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)  {
       this->sharc_hits.push_back(hit);
     }
   }
-  for(int k=0;k<sdata->GetMultiplicityPAD();k++)  {  
+  for(int k=0;k<sdata->GetSizePad();k++)  {  
     for(int l=0;l<sharc_hits.size();l++)  {
-      if(sdata->GetPAD_DetectorNbr(k) != sharc_hits.at(l).GetDetectorNumber())
+      if(sdata->GetPad_DetectorNbr(k) != sharc_hits.at(l).GetDetectorNumber())
         continue;
-      sharc_hits.at(l).SetPad(sdata->GetPAD_Fragment(k)); 
+      sharc_hits.at(l).SetPad(sdata->GetPad_Fragment(k)); 
     }
   }
 
@@ -168,31 +169,33 @@ void TSharc::Clear(Option_t *option)  {
   TGRSIDetector::Clear(option);
   if(data) data->Clear();
     sharc_hits.clear();
+  
+  if(!strcmp(option,"ALL")) { 
+    X_offset = 0.00;
+    Y_offset = 0.00;
+    Z_offset = 0.00;
+  }
   return;
 }
 
-void TSharc::Print(Option_t *option)  {
+void TSharc::Print(Option_t *option) const  {
   printf("not yet written...\n");
   return;
 }
 
-void TSharc::Copy(TSharc &rhs) const {
-  TGRSIDetector::Copy((TGRSIDetector&)rhs);
+void TSharc::Copy(TObject &rhs) const {
+  //if(!rhs.InheritsFrom("TSharc"))
+  //  return;
+  TGRSIDetector::Copy((TObject&)rhs);
 
-  ((TSharc&)rhs).data       = 0;
-  ((TSharc&)rhs).X_offset   = X_offset;
-  ((TSharc&)rhs).Y_offset   = Y_offset;
-  ((TSharc&)rhs).Z_offset   = Z_offset;
-
-
-  ((TSharc&)rhs).sharc_hits = sharc_hits;
+  ((TSharc&)rhs).sharc_hits = ((TSharc&)*this).sharc_hits;
+  ((TSharc&)rhs).data     = 0;                        //((TSharc&)rhs).data;    
+  ((TSharc&)rhs).X_offset = ((TSharc&)*this).X_offset;
+  ((TSharc&)rhs).Y_offset = ((TSharc&)*this).Y_offset;
+  ((TSharc&)rhs).Z_offset = ((TSharc&)*this).Z_offset;
   return;                                      
 }                                       
 
-TSharc& TSharc::operator=(const TSharc& rhs) {
-   rhs.Copy(*this);
-   return *this;
-}
 
 TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double X, double Y, double Z)  {
   int FrontDet = detector;
@@ -226,32 +229,24 @@ TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double
     nrots = FrontDet-13;
     double z = ZposUQ;
     double rho = RminUQ + (FrontStr+0.5)*ringpitch;    // [(+9.0) - (+41.0)] 
-    double phi = (PminUQ + (BackStr+0.5)*segmentpitch)*PI/180.0;  // [(+2.0) - (+83.6)] 
+    double phi = (PminUQ + (BackStr+0.5)*segmentpitch)*TMath::Pi()/180.0;  // [(+2.0) - (+83.6)] 
     position.SetXYZ(rho*TMath::Sin(phi),rho*TMath::Cos(phi),z);   
   }
   else if(FrontDet<=4){ // forward (downstream) QQQ
     nrots = FrontDet-1;
     double z = ZposDQ;
     double rho = RminDQ + (FrontStr+0.5)*ringpitch;    // [(+9.0) - (+41.0)] 
-    double phi = (PminDQ + (BackStr+0.5)*segmentpitch)*PI/180.0;  // [(+6.4) - (+88.0)] 
+    double phi = (PminDQ + (BackStr+0.5)*segmentpitch)*TMath::Pi()/180.0;  // [(+6.4) - (+88.0)] 
     position.SetXYZ(rho*TMath::Sin(phi),rho*TMath::Cos(phi),z);    
   }  
 
-  position.RotateZ(PI*nrots/2);
+  position.RotateZ(TMath::Pi()*nrots/2);
   return (position + position_offset);
 }
 
 TGRSIDetectorHit* TSharc::GetHit(const Int_t idx) {
    return GetSharcHit(idx);
 }
-
-void TSharc::PushBackHit(TGRSIDetectorHit *sharchit) {
-  sharc_hits.push_back(*((TSharcHit*)sharchit));
-  return;
-}
-
-
-
 
 
 

@@ -61,8 +61,8 @@ bool TSceptarHit::InFilter(Int_t wantedfilter) {
    return true;
 }
 
-double TSceptarHit::GetTime(Option_t *opt) const {
-   return (double)time;
+ULong_t TSceptarHit::GetTime(Option_t *opt) const {
+   return time;
 }
 
 void TSceptarHit::Clear(Option_t *opt)	{

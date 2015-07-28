@@ -67,7 +67,8 @@ public:
 
    std::vector<Short_t>  wavebuffer;//-> waveform words
   
-   double GetTimeStamp() const; //!
+   double GetTime()      const; //!
+   long   GetTimeStamp() const; //!
    double GetTZero() const; //!
    const char *GetName() const; //!
    double GetEnergy(int iter=0)const; //!

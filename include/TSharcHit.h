@@ -40,6 +40,7 @@ class TFragment;
 class TSharcHit : public TGRSIDetectorHit {
   public:
     TSharcHit();
+    TSharcHit(const TSharcHit&);
     ~TSharcHit();
   
   private:
@@ -53,7 +54,7 @@ class TSharcHit : public TGRSIDetectorHit {
 
 
   public:
-    virtual void Copy(TGRSIDetector &) const;  //!
+    virtual void Copy(TObject &) const;        //!
     virtual void Clear(Option_t* = "");        //!
     virtual void Print(Option_t* = "")  const; //!
     
@@ -104,9 +105,9 @@ class TSharcHit : public TGRSIDetectorHit {
     void SetFrontStrip(const UShort_t &strip)   { front_strip    = strip; }  //!
     void SetBackStrip(const UShort_t &strip)    { back_strip     = strip; }  //!
 
-    void SetFront(const TFragment *frag); //!  
-    void SetBack (const TFragment *frag); //!
-    void SetPad  (const TFragment *frag); //!
+    void SetFront(const TFragment &frag); //!  
+    void SetBack (const TFragment &frag); //!
+    void SetPad  (const TFragment &frag); //!
     
 
   ClassDef(TSharcHit,6)

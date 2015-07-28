@@ -44,7 +44,7 @@ void TSharcData::Clear(Option_t *opt)
 }
 
 /////////////////////////
-void TSharcData::Print(Option_t *opt) 
+void TSharcData::Print(Option_t *opt) const  
 {
   // Energy
   

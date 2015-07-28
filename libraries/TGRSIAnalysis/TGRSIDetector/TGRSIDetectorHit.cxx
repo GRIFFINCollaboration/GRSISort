@@ -62,19 +62,22 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt){
 
 }
 
-void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
-  TObject::Copy((TObject&)rhs);
-  ((TGRSIDetectorHit&)rhs).address  = address;
-  ((TGRSIDetectorHit&)rhs).position = position;
-  ((TGRSIDetectorHit&)rhs).waveform = waveform;
-  ((TGRSIDetectorHit&)rhs).cfd      = cfd;
-  ((TGRSIDetectorHit&)rhs).time     = time;
-  ((TGRSIDetectorHit&)rhs).charge   = charge;
-  ((TGRSIDetectorHit&)rhs).detector = detector;
-  ((TGRSIDetectorHit&)rhs).energy   = energy;
-  ((TGRSIDetectorHit&)rhs).is_energy_set   = is_energy_set;
-  ((TGRSIDetectorHit&)rhs).is_det_set      = is_det_set;
-  ((TGRSIDetectorHit&)rhs).is_pos_set      = is_pos_set;
+void TGRSIDetectorHit::Copy(TObject &rhs) const {
+  //if(!rhs.InheritsFrom("TGRSIDetectorHit")
+  //   return;
+
+  TObject::Copy(rhs);
+  ((TGRSIDetectorHit&)rhs).address         = ((TGRSIDetectorHit&)*this).address;
+  ((TGRSIDetectorHit&)rhs).position        = ((TGRSIDetectorHit&)*this).position;
+  ((TGRSIDetectorHit&)rhs).waveform        = ((TGRSIDetectorHit&)*this).waveform;
+  ((TGRSIDetectorHit&)rhs).cfd             = ((TGRSIDetectorHit&)*this).cfd;
+  ((TGRSIDetectorHit&)rhs).time            = ((TGRSIDetectorHit&)*this).time;
+  ((TGRSIDetectorHit&)rhs).charge          = ((TGRSIDetectorHit&)*this).charge;
+  ((TGRSIDetectorHit&)rhs).detector        = ((TGRSIDetectorHit&)*this).detector;
+  ((TGRSIDetectorHit&)rhs).energy          = ((TGRSIDetectorHit&)*this).energy;
+  ((TGRSIDetectorHit&)rhs).is_energy_set   = ((TGRSIDetectorHit&)*this).is_energy_set;
+  ((TGRSIDetectorHit&)rhs).is_det_set      = ((TGRSIDetectorHit&)*this).is_det_set;
+  ((TGRSIDetectorHit&)rhs).is_pos_set      = ((TGRSIDetectorHit&)*this).is_pos_set;
 
 //  ((TGRSIDetectorHit&)rhs).parent  = parent;  
 }
@@ -114,20 +117,6 @@ UInt_t TGRSIDetectorHit::GetDetector() const {
    return mnemonic.arrayposition;
 }
 
-UInt_t TGRSIDetectorHit::GetDetector() {
-   if(is_det_set)
-      return detector;
-
-   MNEMONIC mnemonic;
-   TChannel *channel = GetChannel();
-   if(!channel){
-      Error("SetDetector","No TChannel exists for address %u",GetAddress());
-      return -1;
-   }
-   ClearMNEMONIC(&mnemonic);
-   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
-   return SetDetector(mnemonic.arrayposition);
-}
 
 
 UInt_t TGRSIDetectorHit::SetDetector(UInt_t det) {
@@ -166,3 +155,17 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
 bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit *lhs, TGRSIDetectorHit *rhs) {
    return (lhs->GetEnergy() > rhs->GetEnergy());
 }
+
+
+void TGRSIDetectorHit::CopyFragment(const TFragment &frag) {
+  this->address  = frag.ChannelAddress;  
+  this->charge   = frag.GetCharge();
+  this->cfd      = frag.GetCfd();
+  this->time     = frag.GetTime();
+  this->position = TVector3(0,0,1); 
+  this->energy   = frag.GetEnergy();
+
+  this->SetDetector(this->GetDetector());
+}
+
+

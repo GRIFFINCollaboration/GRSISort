@@ -45,10 +45,13 @@ class TGRSIDetectorHit : public TObject 	{
 	public:
 		TGRSIDetectorHit(const int &fAddress=0xffffffff);    //{ address=fAddress; }
 		TGRSIDetectorHit(const TGRSIDetectorHit&);
-		virtual ~TGRSIDetectorHit();
+	   TGRSIDetectorHit(const TFragment &frag)      { this->CopyFragment(frag); }
+      void CopyFragment(const TFragment&);
+      virtual ~TGRSIDetectorHit();
+
 
 	public:
-      virtual void Copy(TGRSIDetectorHit &) const;    //!
+      virtual void Copy(TObject&) const;              //!
       virtual void Clear(Option_t* opt = "");         //!
       virtual void Print(Option_t* opt = "") const;	//!
       static bool CompareEnergy(TGRSIDetectorHit *lhs, TGRSIDetectorHit *rhs);

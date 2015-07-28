@@ -35,18 +35,18 @@ class TSharc : public TGRSIDetector  {
 
     int GetSize() { return sharc_hits.size();} //!
 
-    virtual void Copy(const TObject&);         //!
+    virtual void Copy(TObject&) const;         //!
     virtual void Clear(Option_t * = "");       //!
     virtual void Print(Option_t * = "") const; //!
     
-    TSharc& operator=(const TSharc& rhs);  { Copy(rhs); }//!
+    TSharc& operator=(const TSharc& rhs)  { if(this!=&rhs) ((TSharc&)rhs).Copy(*this); return *this; }//!
 
     //TSharcData *GetData() { return &data; }  //!
     void FillData(TFragment*,TChannel*,MNEMONIC*);           //! Collects the fragments to make front/back/pad coinc.
     void BuildHits(TGRSIDetectorData *sd=0,Option_t * = ""); //! Builds the fragments into sharchits.
 
   protected:
-    void PushBackHit(TGRSIDetectorHit* sharchit) { sharc_hits.push_back(*sharchit); };
+    void PushBackHit(TGRSIDetectorHit* sharchit) { sharc_hits.push_back(*((TSharcHit*)sharchit)); };
   
   private:
     std::vector <TSharcHit> sharc_hits;

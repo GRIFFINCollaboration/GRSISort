@@ -55,7 +55,7 @@ void TPacesHit::Print(Option_t *opt) const	{
 	printf("Paces hit time:   %f\n",GetTime());
 }
 
-double TPacesHit::GetTime(Option_t *opt) const {
+ULong_t TPacesHit::GetTime(Option_t *opt) const {
   //still need to figure out how to handle the times
   return time;
 }
