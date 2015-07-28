@@ -57,7 +57,7 @@ class TGRSIDetectorHit : public TObject 	{
 
 		inline void SetPosition(const TVector3& temp_pos)           { position = temp_pos; } //!
       inline void SetAddress(const UInt_t &temp_address)          { address = temp_address; } //!
-      inline void SetCharge(const Int_t &temp_charge)            { charge = temp_charge;} //!
+      inline void SetCharge(const Float_t &temp_charge)            { charge = temp_charge;} //!
   //    inline void SetParent(TGRSIDetector *fParent)               { parent = (TObject*)fParent ; } //!
       virtual inline void SetCfd(const Int_t &x)           { cfd    = x;   }                  //!
       inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    } //!
@@ -77,7 +77,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual double GetTime(Option_t *opt="")   const      {return 0.0; } //AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
       virtual inline Int_t   GetCfd() const             {   return cfd;      }           //!
       inline UInt_t GetAddress()     const                  { return address; }         //!
-      inline Double_t GetCharge() const                       { return charge;} //!
+      inline Float_t GetCharge() const                       { return charge;} //!
       inline TChannel *GetChannel() const                   { return TChannel::GetChannel(address); }  //!
       inline std::vector<Short_t> GetWaveform() const       { return waveform; } //!
     //  inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!
@@ -87,7 +87,7 @@ class TGRSIDetectorHit : public TObject 	{
 
    protected:
       UInt_t     address;  //address of the the channel in the DAQ.
-      Double_t  charge;   //charge collected from the hit
+      Float_t  charge;   //charge collected from the hit
       Int_t     cfd;     // CFD time of the Hit
       ULong_t    time;    // Timsstamp given to hit
       UInt_t    detector; //! Detector Number

@@ -373,7 +373,7 @@ void TChannel::DestroyCalibrations()   {
    DestroyEFFCal();
 };
 
-double TChannel::CalibrateENG(int charge,int temp_int) {
+Float_t TChannel::CalibrateENG(int charge,int temp_int) {
    //Returns the calibrated energy of the channel when a charge is passed to it. 
    //This is done by first adding a random number between 0 and 1 to the charge
    //bin. This is then taken and divided by the integration parameter. The 
@@ -392,16 +392,16 @@ double TChannel::CalibrateENG(int charge,int temp_int) {
    
    //We need to add a random number between 0 and 1 before calibrating to avoid
    //binning issues.
-   return CalibrateENG(((double)charge+gRandom->Uniform()) / (double)temp_int);
+   return CalibrateENG(((Float_t)charge+(Float_t)(gRandom->Uniform())) / (Float_t)temp_int);
 };
 
-double TChannel::CalibrateENG(double charge) {
+Float_t TChannel::CalibrateENG(Float_t charge) {
    //Returns the calibrated energy. The polynomial energy calibration formula is 
    //applied to get the calibrated energy. This function does not use the 
    //integration parameter.
    if(ENGCoefficients.size()==0)
       return charge;
-   double cal_chg = ENGCoefficients[0];
+   Float_t cal_chg = ENGCoefficients[0];
    for(int i=1;i<ENGCoefficients.size();i++){
       cal_chg += ENGCoefficients[i] * pow((charge),i);
    }
@@ -457,7 +457,7 @@ double TChannel::CalibrateTIME(int chg)  {
    //Calibrates the time spectrum
    if(TIMECoefficients.size()!=3 || (chg<1))
       return 0.0000;
-   return CalibrateTIME(CalibrateENG(chg));
+   return CalibrateTIME((double)(CalibrateENG(chg)));
 };
 
 double TChannel::CalibrateTIME(double energy)  {

@@ -142,10 +142,10 @@ bool TMidasFile::Open(const char *filename)
       pipe = "bzip2 -dc ";
       pipe += filename;
     }
-//  else{
-//     pipe = "cat ";
-//     pipe+=filename;
-//  }
+  else{
+     pipe = "cat ";
+     pipe+=filename;
+  }
 
   if (pipe.length() > 0)
     {

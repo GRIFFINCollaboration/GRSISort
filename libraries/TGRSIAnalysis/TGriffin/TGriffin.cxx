@@ -89,6 +89,7 @@ void TGriffin::Copy(TGriffin &rhs) const {
 
   ((TGriffin&)rhs).griffin_hits        = griffin_hits;
   ((TGriffin&)rhs).addback_hits        = addback_hits;
+  ((TGriffin&)rhs).faddback_frags      = faddback_frags;
   //((TGriffin&)rhs).addback_clover_hits = addback_clover_hits;
   //((TGriffin&)rhs).fSetBGOHits         = fSetBGOHits;
   ((TGriffin&)rhs).fSetCoreWave        = fSetCoreWave;
@@ -104,7 +105,10 @@ void TGriffin::Copy(TGriffin &rhs) const {
 
 TGriffin::~TGriffin()	{
    //Default Destructor
-   if(grifdata) delete grifdata;
+   if(grifdata) {
+      delete grifdata;
+      grifdata = 0;
+   }
    //if(bgodata)  delete bgodata;
 }
 
@@ -139,13 +143,14 @@ TGriffin::~TGriffin()	{
 void TGriffin::Clear(Option_t *opt)	{
    //Clears the mother, all of the hits and any stored data
    if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
-     TGRSIDetector::Clear(opt);
-     if(grifdata) grifdata->Clear();
+      if(grifdata) grifdata->Clear();
 	  //if(bgodata)  bgodata->Clear();
      ClearStatus();
    }
+   TGRSIDetector::Clear(opt);
    griffin_hits.clear();
    addback_hits.clear();
+   faddback_frags.clear();
    fCycleStart = 0;
    //fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 }
@@ -234,11 +239,13 @@ Int_t TGriffin::GetAddbackMultiplicity() {
 	 for(j = 0; j < addback_hits.size(); ++j) {
 	    if(addback_criterion(addback_hits[j], griffin_hits[i])) {
 	       addback_hits[j].Add(&(griffin_hits[i]));
+          faddback_frags[j]++;
 	       break;
 	    }
 	 }
 	 if(j == addback_hits.size()) {
 	    addback_hits.push_back(griffin_hits[i]);
+       faddback_frags.push_back(1);
 	 }
       }
    }
@@ -265,8 +272,6 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
-
-   
    griffin_hits.clear();
    Clear("");
    griffin_hits.reserve(gdata->GetMultiplicity());
@@ -303,7 +308,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       //corehit.SetDetectorNumber(gdata->GetCloverNumber(i));
       //corehit.SetCrystalNumber(gdata->GetCoreNumber(i));
    
-      corehit.SetPosition(TGRSIRunInfo::HPGeArrayPosition());
+     // corehit.SetPosition(TGRSIRunInfo::HPGeArrayPosition());
       
       corehit.SetPPG(gdata->GetPPG(i));
 
@@ -492,3 +497,19 @@ void TGriffin::BuildAddBackClover(Option_t *opt) {
 }
 */
 
+void TGriffin::ResetAddback() {
+//Used to clear the addback hits. When playing back a tree, this must
+//be called before building the new addback hits, otherwise, a copy of
+//the old addback hits will be stored instead.
+   addback_hits.clear();
+   faddback_frags.clear();
+}
+
+UShort_t TGriffin::GetNAddbackFrags(int idx) const{
+ //Get the number of addback "fragments" contributing to the total addback hit
+ //with index idx.
+   if(idx < faddback_frags.size())
+      return faddback_frags.at(idx);   
+   else
+      return 0;
+}

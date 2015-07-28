@@ -80,8 +80,8 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       bool   InFilter(Int_t);  //!
 
-      static bool CompareEnergy(TGriffinHit*,TGriffinHit*);  //!
-      void Add(TGriffinHit*);    //! 
+      static bool CompareEnergy(const TGriffinHit*, const TGriffinHit*);  //!
+      void Add(const TGriffinHit*);    //! 
       //Bool_t BremSuppressed(TSceptarHit*);
 
 	public:

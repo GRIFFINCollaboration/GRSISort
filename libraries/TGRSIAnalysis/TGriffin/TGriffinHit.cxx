@@ -191,11 +191,11 @@ UInt_t TGriffinHit::SetCrystal(char color) {
    return crystal;
 }
 
-bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
+bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	{
    return(lhs->GetEnergy()) > rhs->GetEnergy();
 }
 
-void TGriffinHit::Add(TGriffinHit *hit)	{
+void TGriffinHit::Add(const TGriffinHit *hit)	{
    // add another griffin hit to this one (for addback), 
    // using the time and position information of the one with the higher energy
    if(!CompareEnergy(this,hit)) {
