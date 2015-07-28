@@ -51,8 +51,9 @@ class TSharcHit : public TGRSIDetectorHit {
     TGRSIDetectorHit padhit;    //
 
 
+
   public:
-    virtual void Copy(const TObject &);        //!
+    virtual void Copy(TGRSIDetector &) const;  //!
     virtual void Clear(Option_t* = "");        //!
     virtual void Print(Option_t* = "")  const; //!
     
@@ -85,10 +86,11 @@ class TSharcHit : public TGRSIDetectorHit {
     const Double_t    GetBackCharge()       { return GetBack()->GetCharge();   }  //!  //Charge is now stored after integration.
     const Double_t    GetPadCharge()        { return GetPad()->GetCharge();    }  //!  //Charge is now stored after integration.
 
-    inline Double_t GetEnergy()          {  return GetFront()->GetEnergy() + GetPad()->GetEnergy(); }
-    inline Double_t GetTime()            {  return GetFront()->GetTime(); }
+    inline Double_t GetEnergy()             { return GetFront()->GetEnergy() + GetPad()->GetEnergy(); }
+    inline Double_t GetTime()               { return GetFront()->GetTime(); }
 
-    TVector3 GetPosition() const {}
+    TVector3 GetPosition() const;
+   
       
 
     Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0) { return GetTheta(Xoff,Yoff,Zoff)*TMath::RadToDeg(); } ; //! 
@@ -98,10 +100,13 @@ class TSharcHit : public TGRSIDetectorHit {
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
+    void SetDetectorNumber(const UShort_t &det) { detectornumber = det;   }  //!
+    void SetFrontStrip(const UShort_t &strip)   { front_strip    = strip; }  //!
+    void SetBackStrip(const UShort_t &strip)    { back_strip     = strip; }  //!
 
-    void SetFront(TFragment *frag); //!  
-    void SetBack (TFragment *frag); //!
-    void SetPad  (TFragment *frag); //!
+    void SetFront(const TFragment *frag); //!  
+    void SetBack (const TFragment *frag); //!
+    void SetPad  (const TFragment *frag); //!
     
 
   ClassDef(TSharcHit,6)

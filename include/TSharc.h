@@ -26,6 +26,12 @@ class TSharc : public TGRSIDetector  {
     TSharcHit        *GetSharcHit(const int i) { return (TSharcHit*)GetHit(i); } ;  
     TGRSIDetectorHit *GetHit(const int i);
     static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);  //! 
+    static double GetXOffset() const  { return X_offset; }
+    static double GetYOffset() const  { return Y_offset; }
+    static double GetZOffset() const  { return Z_offset; }
+    static TVector3 GetOffset() const { return TVector3(X_offset,Y_offset,Z_offset); } 
+    static void   SetXYZOffset(const double x,const double y,const double z) { X_offset =x; Y_offset=y; Z_offset=z; }
+
 
     int GetSize() { return sharc_hits.size();} //!
 
@@ -49,6 +55,10 @@ class TSharc : public TGRSIDetector  {
 
   private: 
     TSharcData *data;    //!
+
+    static double X_offset;  //!
+    static double Y_offset;  //!
+    static double Z_offset;  //!
 
     // various sharc dimensions set in mm, taken from IOP SHARC white paper
     static double Xdim; // total X dimension of all boxes
