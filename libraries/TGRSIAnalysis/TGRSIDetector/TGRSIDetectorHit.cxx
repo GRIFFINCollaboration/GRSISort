@@ -36,7 +36,7 @@ TGRSIDetectorHit::~TGRSIDetectorHit()	{
 //Default destructor
 }
 
-double TGRSIDetectorHit::GetEnergy(Option_t *opt) const{
+double TGRSIDetectorHit::GetEnergy(Option_t *opt) const {
    if(is_energy_set)
       return energy;
 
@@ -47,10 +47,11 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt) const{
    }
       return chan->CalibrateENG(GetCharge());
 }
-
+/* non const version
 double TGRSIDetectorHit::GetEnergy(Option_t *opt){
-   if(is_energy_set)
+   if(is_energy_set){
       return energy;
+   }
 
    TChannel *chan = GetChannel();
    if(!chan){
@@ -61,6 +62,8 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt){
       return energy;
 
 }
+
+*/
 
 void TGRSIDetectorHit::Copy(TObject &rhs) const {
   //if(!rhs.InheritsFrom("TGRSIDetectorHit")
@@ -75,10 +78,10 @@ void TGRSIDetectorHit::Copy(TObject &rhs) const {
   ((TGRSIDetectorHit&)rhs).charge          = ((TGRSIDetectorHit&)*this).charge;
   ((TGRSIDetectorHit&)rhs).detector        = ((TGRSIDetectorHit&)*this).detector;
   ((TGRSIDetectorHit&)rhs).energy          = ((TGRSIDetectorHit&)*this).energy;
-  ((TGRSIDetectorHit&)rhs).is_energy_set   = ((TGRSIDetectorHit&)*this).is_energy_set;
-  ((TGRSIDetectorHit&)rhs).is_det_set      = ((TGRSIDetectorHit&)*this).is_det_set;
-  ((TGRSIDetectorHit&)rhs).is_pos_set      = ((TGRSIDetectorHit&)*this).is_pos_set;
-
+  
+  ((TGRSIDetectorHit&)rhs).is_energy_set   = false;
+  ((TGRSIDetectorHit&)rhs).is_det_set      = false;
+  ((TGRSIDetectorHit&)rhs).is_pos_set      = false;
 //  ((TGRSIDetectorHit&)rhs).parent  = parent;  
 }
 
@@ -117,7 +120,22 @@ UInt_t TGRSIDetectorHit::GetDetector() const {
    return mnemonic.arrayposition;
 }
 
+/* non const version
+UInt_t TGRSIDetectorHit::GetDetector() {
+   if(is_det_set)
+      return detector;
 
+   MNEMONIC mnemonic;
+   TChannel *channel = GetChannel();
+   if(!channel){
+      Error("SetDetector","No TChannel exists for address %u",GetAddress());
+      return -1;
+   }
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+   return SetDetector(mnemonic.arrayposition);
+}
+*/
 
 UInt_t TGRSIDetectorHit::SetDetector(UInt_t det) {
    detector = det;
@@ -134,13 +152,13 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
    if(is_pos_set)
       return position;
 
-   if(is_det_set)
+   //if(is_det_set)// Dont necessarily need this (job of derived)
       return GetPosition(dist); //Calls the derivative GetPosition function
 
    return TVector3(0,0,1);
 
 }
-
+/* non const version
 TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
    if(is_pos_set)
       return position;
@@ -151,7 +169,7 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
    return TVector3(0,0,1);
 
 }
-
+*/
 bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit *lhs, TGRSIDetectorHit *rhs) {
    return (lhs->GetEnergy() > rhs->GetEnergy());
 }

@@ -38,8 +38,8 @@ class TSceptar : public TGRSIDetector {
      TSceptar& operator=(const TSceptar&);  //!
 
    private: 
-     TSceptarData *sceptardata;                                               //!  Used to build GRIFFIN Hits
-     std::vector <TSceptarHit> sceptar_hits;                                  //   The set of crystal hits
+     TSceptarData *sceptardata;                                               //!  Used to build SCEPTAR Hits
+     std::vector <TSceptarHit> sceptar_hits;                                  //   The set of sceptar hits
       
      static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
 

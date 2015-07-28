@@ -76,7 +76,7 @@ class TSceptarHit : public TGRSIDetectorHit {
 		void Print(Option_t *opt = "") const;		                    //!
       virtual void Copy(TSceptarHit&) const;        //!
 
-	ClassDef(TSceptarHit,1)
+	ClassDef(TSceptarHit,1) //Stores the information for a SceptarHit
 };
 
 #endif
