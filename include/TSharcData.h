@@ -29,8 +29,8 @@ private:
   std::vector<UShort_t>   fSharc_StripFront_StripNbr;		//!
   std::vector<Double_t>   fSharc_StripFront_Energy;			//!
   std::vector<Double_t>   fSharc_StripFront_EngChi2;			//!
-  std::vector<Int_t>	    fSharc_StripFront_Charge;			//!
-  std::vector<Double_t>   fSharc_StripFront_TimeCFD;			//!
+  std::vector<Int_t>	     fSharc_StripFront_Charge;			//!
+  std::vector<Int_t>      fSharc_StripFront_TimeCFD;			//!
   std::vector<Double_t>   fSharc_StripFront_TimeLED;			//!
   std::vector<Double_t>   fSharc_StripFront_Time;			//!
   std::vector<std::vector<Int_t> > fSharc_StripFront_Wave;			//!  
@@ -41,8 +41,8 @@ private:
   std::vector<UShort_t>   fSharc_StripBack_StripNbr;			//!
   std::vector<Double_t>   fSharc_StripBack_Energy;			   //!
   std::vector<Double_t>   fSharc_StripBack_EngChi2;			//!
-  std::vector<Int_t>	    fSharc_StripBack_Charge;			//!
-  std::vector<Double_t>   fSharc_StripBack_TimeCFD;			//!
+  std::vector<Int_t>	     fSharc_StripBack_Charge;			//!
+  std::vector<Int_t>      fSharc_StripBack_TimeCFD;			//!
   std::vector<Double_t>   fSharc_StripBack_TimeLED;			//!
   std::vector<Double_t>   fSharc_StripBack_Time;				//!
   std::vector<std::vector<Int_t> > fSharc_StripBack_Wave;	//!	
@@ -52,7 +52,7 @@ private:
   std::vector<Double_t>   fSharc_PAD_Energy;					//!
   std::vector<Double_t>   fSharc_PAD_EngChi2;			   //!
   std::vector<Int_t>	     fSharc_PAD_Charge;					//!
-  std::vector<Double_t>   fSharc_PAD_TimeCFD;				//!
+  std::vector<Int_t>      fSharc_PAD_TimeCFD;				//!
   std::vector<Double_t>   fSharc_PAD_TimeLED;				//!
   std::vector<Double_t>   fSharc_PAD_Time;					//!
   std::vector<std::vector<Int_t> > fSharc_PAD_Wave;		//!
@@ -77,7 +77,7 @@ public:
   inline void SetFront_Energy(const Double_t &Energy){fSharc_StripFront_Energy.push_back(Energy);}				//!
   inline void SetFront_EngChi2(const Double_t &Chi2){fSharc_StripFront_EngChi2.push_back(Chi2);}				//!
   inline void SetFront_Charge(const  Int_t &Charge){fSharc_StripFront_Charge.push_back(Charge);}				//!
-  inline void SetFront_TimeCFD(const Double_t &TimeCFD){fSharc_StripFront_TimeCFD.push_back(TimeCFD);}			//!
+  inline void SetFront_TimeCFD(const Int_t &TimeCFD){fSharc_StripFront_TimeCFD.push_back(TimeCFD);}			//!
   inline void SetFront_TimeLED(const Double_t &TimeLED){fSharc_StripFront_TimeLED.push_back(TimeLED);}			//!
   inline void SetFront_Time(const Double_t &Time){fSharc_StripFront_Time.push_back(Time);}						//!
 
@@ -90,7 +90,7 @@ public:
   inline void SetBack_Energy(const Double_t &Energy){fSharc_StripBack_Energy.push_back(Energy);}				//!
   inline void SetBack_EngChi2(const Double_t &Chi2){fSharc_StripBack_EngChi2.push_back(Chi2);}				//!
   inline void SetBack_Charge(const  Int_t &Charge){fSharc_StripBack_Charge.push_back(Charge);}					//!
-  inline void SetBack_TimeCFD(const Double_t &TimeCFD){fSharc_StripBack_TimeCFD.push_back(TimeCFD);}			//!
+  inline void SetBack_TimeCFD(const Int_t &TimeCFD){fSharc_StripBack_TimeCFD.push_back(TimeCFD);}			//!
   inline void SetBack_TimeLED(const Double_t &TimeLED){fSharc_StripBack_TimeLED.push_back(TimeLED);}			//!
   inline void SetBack_Time(const Double_t &Time){fSharc_StripBack_Time.push_back(Time);}						//!
 
@@ -102,7 +102,7 @@ public:
   inline void SetPAD_Energy(const Double_t &Energy){fSharc_PAD_Energy.push_back(Energy);}						//!
   inline void SetPAD_EngChi2(const Double_t &Chi2){fSharc_PAD_EngChi2.push_back(Chi2);}				//!
   inline void SetPAD_Charge(const Int_t &Charge){fSharc_PAD_Charge.push_back(Charge);}							//!
-  inline void SetPAD_TimeCFD(const Double_t &TimeCFD){fSharc_PAD_TimeCFD.push_back(TimeCFD);}					//!
+  inline void SetPAD_TimeCFD(const Int_t &TimeCFD){fSharc_PAD_TimeCFD.push_back(TimeCFD);}					//!
   inline void SetPAD_TimeLED(const Double_t &TimeLED){fSharc_PAD_TimeLED.push_back(TimeLED);}					//!
   inline void SetPAD_Time(const Double_t &Time){fSharc_PAD_Time.push_back(Time);}								//!
 
@@ -177,8 +177,8 @@ public:
   inline UShort_t GetFront_StripNbr(const unsigned int &i)    const {return fSharc_StripFront_StripNbr[i];}		//!
   inline Double_t GetFront_Energy(const unsigned int &i)      const {return fSharc_StripFront_Energy[i];}		//!
   inline Double_t GetFront_EngChi2(const unsigned int &i)      const {return fSharc_StripFront_EngChi2[i];}		//!
-  inline Int_t 	  GetFront_Charge(const unsigned int &i)      const {return fSharc_StripFront_Charge[i];}		//!
-  inline Double_t GetFront_TimeCFD(const unsigned int &i)     const {return fSharc_StripFront_TimeCFD[i];}		//!
+  inline Int_t 	GetFront_Charge(const unsigned int &i)      const {return fSharc_StripFront_Charge[i];}		//!
+  inline Int_t    GetFront_TimeCFD(const unsigned int &i)     const {return fSharc_StripFront_TimeCFD[i];}		//!
   inline Double_t GetFront_TimeLED(const unsigned int &i)     const {return fSharc_StripFront_TimeLED[i];}		//!
   inline Double_t GetFront_Time(const unsigned int &i)     const {return fSharc_StripFront_Time[i];}			//!
 
@@ -189,8 +189,8 @@ public:
   inline UShort_t GetBack_StripNbr(const unsigned int &i)    const {return fSharc_StripBack_StripNbr[i];}		//!
   inline Double_t GetBack_Energy(const unsigned int &i)      const {return fSharc_StripBack_Energy[i];}			//!
   inline Double_t GetBack_EngChi2(const unsigned int &i)      const {return fSharc_StripBack_EngChi2[i];}		//!
-  inline Int_t	  GetBack_Charge(const unsigned int &i)      const {return fSharc_StripBack_Charge[i];}		//!
-  inline Double_t GetBack_TimeCFD(const unsigned int &i)     const {return fSharc_StripBack_TimeCFD[i];}		//!
+  inline Int_t	   GetBack_Charge(const unsigned int &i)      const {return fSharc_StripBack_Charge[i];}		//!
+  inline Int_t    GetBack_TimeCFD(const unsigned int &i)     const {return fSharc_StripBack_TimeCFD[i];}		//!
   inline Double_t GetBack_TimeLED(const unsigned int &i)     const {return fSharc_StripBack_TimeLED[i];}		//!
   inline Double_t GetBack_Time(const unsigned int &i)     const {return fSharc_StripBack_Time[i];}				//!
 
@@ -201,7 +201,7 @@ public:
   inline Double_t GetPAD_Energy(const unsigned int &i)      const {return fSharc_PAD_Energy[i];}				//!
   inline Double_t GetPAD_EngChi2(const unsigned int &i)      const {return fSharc_PAD_EngChi2[i];}		//!
   inline Int_t		GetPAD_Charge(const int &i)      		const {return fSharc_PAD_Charge[i];}				//!
-  inline Double_t GetPAD_TimeCFD(const unsigned int &i)     const {return fSharc_PAD_TimeCFD[i];}				//!
+  inline Int_t    GetPAD_TimeCFD(const unsigned int &i)     const {return fSharc_PAD_TimeCFD[i];}				//!
   inline Double_t GetPAD_TimeLED(const unsigned int &i)     const {return fSharc_PAD_TimeLED[i];}				//!
   inline Double_t GetPAD_Time(const unsigned int &i)    	  const {return fSharc_PAD_Time[i];}				//!
 
