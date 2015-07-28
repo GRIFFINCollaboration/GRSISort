@@ -70,16 +70,23 @@ void TFragment::Clear(Option_t *opt){
 
 }
 
-double TFragment::GetTimeStamp() const {
+long TFragment::GetTimeStamp() const {
    long time = TimeStampHigh;
    time  = time << 28;
    time |= TimeStampLow & 0x0fffffff;
-   double dtime = double(time)+ gRandom->Uniform();
+   return time;
+}
+
+
+double TFragment::GetTime() const {
+   double dtime = double(GetTimeStamp())+ gRandom->Uniform();
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan )//|| Charge.size()<1)
       return dtime;
    return dtime - chan->GetTZero(GetEnergy());
 }
+
+
 
 double TFragment::GetTZero() const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
@@ -152,7 +159,7 @@ double TFragment::GetCharge(int i) const {
    return ((double)Charge.at(i)+gRandom->Uniform());// this will use no integration value
 }
 
-void TFragment::Print(Option_t *opt)	{
+void TFragment::Print(Option_t *opt) const {
    //Prints out all fields of the TFragment
 
 

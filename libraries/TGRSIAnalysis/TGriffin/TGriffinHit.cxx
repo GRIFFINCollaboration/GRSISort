@@ -125,9 +125,9 @@ Int_t TGriffinHit::GetCharge(Option_t *opt) const {
 */
 
 
-double TGriffinHit::GetTime(Option_t *opt) const {
+ULong_t TGriffinHit::GetTime(Option_t *opt) const {
   //still need to figure out how to handle the times
-  return (double)time;
+  return time;
 }
 
 TVector3 TGriffinHit::GetPosition(Double_t dist) const{

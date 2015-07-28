@@ -45,23 +45,26 @@ class TGRSIDetectorHit : public TObject 	{
 	public:
 		TGRSIDetectorHit(const int &fAddress=0xffffffff);    //{ address=fAddress; }
 		TGRSIDetectorHit(const TGRSIDetectorHit&);
-		virtual ~TGRSIDetectorHit();
+	   TGRSIDetectorHit(const TFragment &frag)      { this->CopyFragment(frag); }
+      void CopyFragment(const TFragment&);
+      virtual ~TGRSIDetectorHit();
+
 
 	public:
-      virtual void Copy(TGRSIDetectorHit &) const;    //!
-		virtual void Clear(Option_t* opt = "");         //!
-		virtual void Print(Option_t* opt = "") const;	//!
+      virtual void Copy(TObject&) const;              //!
+      virtual void Clear(Option_t* opt = "");         //!
+      virtual void Print(Option_t* opt = "") const;	//!
       static bool CompareEnergy(TGRSIDetectorHit *lhs, TGRSIDetectorHit *rhs);
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
 
-		inline void SetPosition(const TVector3& temp_pos)           { position = temp_pos; } //!
+      inline void SetPosition(const TVector3& temp_pos)           { position = temp_pos; }    //!
       inline void SetAddress(const UInt_t &temp_address)          { address = temp_address; } //!
-      inline void SetCharge(const Int_t &temp_charge)            { charge = temp_charge;} //!
-  //    inline void SetParent(TGRSIDetector *fParent)               { parent = (TObject*)fParent ; } //!
-      virtual inline void SetCfd(const Int_t &x)           { cfd    = x;   }                  //!
-      inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    } //!
-      virtual inline void SetTime(const ULong_t &x)               { time   = x;   }                  //! Maybe make this abstract?
+      inline void SetCharge(const Double_t &temp_charge)          { charge = temp_charge;}    //!
+  //    inline void SetParent(TGRSIDetector *fParent)             { parent = (TObject*)fParent ; } //!
+      inline void SetWaveform(std::vector<Short_t> x)             { waveform = x;    }        //!
+      virtual inline void SetCfd(const Double_t &x)               { cfd    = x;   }           //!
+      virtual inline void SetTime(const ULong_t &x)               { time   = x;   }           //! Maybe make this abstract?
  
       virtual TVector3 SetPosition(Double_t temp_pos = 0);
       void SetEnergy(double en) { energy = en; is_energy_set = true; }
@@ -73,11 +76,13 @@ class TGRSIDetectorHit : public TObject 	{
       virtual double GetEnergy(Option_t *opt="") const;
  //     virtual double GetEnergy(Option_t *opt="");
       virtual UInt_t GetDetector() const;
+      //virtual double GetTime(Option_t *opt="")   const    { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
+      virtual ULong_t GetTime(Option_t *opt="")   const     { return time;   }  // Returns a time value to the nearest nanosecond!
  //     virtual UInt_t GetDetector();
-      virtual double GetTime(Option_t *opt="")   const      {return 0.0; } //AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
+//      virtual double GetTime(Option_t *opt="")   const      {return 0.0; } //AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
       virtual inline Int_t   GetCfd() const             {   return cfd;      }           //!
       inline UInt_t GetAddress()     const                  { return address; }         //!
-      inline Double_t GetCharge() const                       { return charge;} //!
+      inline Double_t GetCharge() const                     { return charge;} //!
       inline TChannel *GetChannel() const                   { return TChannel::GetChannel(address); }  //!
       inline std::vector<Short_t> GetWaveform() const       { return waveform; } //!
     //  inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!
@@ -99,15 +104,15 @@ class TGRSIDetectorHit : public TObject 	{
  
    //flags   
    protected:  
-      Bool_t is_det_set;   //!
-      Bool_t is_pos_set;   //!
+      Bool_t is_det_set;      //!
+      Bool_t is_pos_set;      //!
       Bool_t is_energy_set;   //!
       
       //Bool_t fDetectorSet;//!
       //Bool_t fPosSet;//!
       //Bool_t fEnergySet;//!
 
-	ClassDef(TGRSIDetectorHit,2) //Stores the information for a detector hit
+	ClassDef(TGRSIDetectorHit,3) //Stores the information for a detector hit
 };
 
 
