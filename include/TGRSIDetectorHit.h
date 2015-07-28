@@ -49,13 +49,13 @@ class TGRSIDetectorHit : public TObject 	{
 
 	public:
       virtual void Copy(TGRSIDetectorHit &) const;    //!
-		virtual void Clear(Option_t* opt = "");         //!
-		virtual void Print(Option_t* opt = "") const;	//!
+      virtual void Clear(Option_t* opt = "");         //!
+      virtual void Print(Option_t* opt = "") const;	//!
       static bool CompareEnergy(TGRSIDetectorHit *lhs, TGRSIDetectorHit *rhs);
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
 
-		inline void SetPosition(const TVector3& temp_pos)           { position = temp_pos; }    //!
+      inline void SetPosition(const TVector3& temp_pos)           { position = temp_pos; }    //!
       inline void SetAddress(const UInt_t &temp_address)          { address = temp_address; } //!
       inline void SetCharge(const Double_t &temp_charge)          { charge = temp_charge;}    //!
   //    inline void SetParent(TGRSIDetector *fParent)             { parent = (TObject*)fParent ; } //!
@@ -68,16 +68,16 @@ class TGRSIDetectorHit : public TObject 	{
       virtual UInt_t SetDetector(UInt_t det);
       
       //Abstract methods. These are required in all derived classes
-		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
+      virtual TVector3 GetPosition(Double_t dist = 0) const; //!
       virtual TVector3 GetPosition(Double_t dist = 0);
       virtual double GetEnergy(Option_t *opt="") const;
       virtual double GetEnergy(Option_t *opt="");
       virtual UInt_t GetDetector() const;
-      //virtual double GetTime(Option_t *opt="")   const      { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
-      virtual ULong_t GetTime(Option_t *opt="")   const      { return time0;   }  // Returns a time value to the nearest nanosecond!
+      //virtual double GetTime(Option_t *opt="")   const    { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
+      virtual ULong_t GetTime(Option_t *opt="")   const     { return time;   }  // Returns a time value to the nearest nanosecond!
       virtual inline Double_t    GetCfd() const             { return cfd;     }           //!
       inline UInt_t GetAddress()     const                  { return address; }         //!
-      inline Double_t GetCharge() const                       { return charge;} //!
+      inline Double_t GetCharge() const                     { return charge;} //!
       inline TChannel *GetChannel() const                   { return TChannel::GetChannel(address); }  //!
       inline std::vector<Short_t> GetWaveform() const       { return waveform; } //!
    //   inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!

@@ -179,9 +179,13 @@ void TSharc::Print(Option_t *option)  {
 void TSharc::Copy(TSharc &rhs) const {
   TGRSIDetector::Copy((TGRSIDetector&)rhs);
 
-  ((TSharc&)rhs).data     = 0;
+  ((TSharc&)rhs).data       = 0;
+  ((TSharc&)rhs).X_offset   = X_offset;
+  ((TSharc&)rhs).Y_offset   = Y_offset;
+  ((TSharc&)rhs).Z_offset   = Z_offset;
 
-  ((TSharc&)rhs).sharc_hits    = sharc_hits;
+
+  ((TSharc&)rhs).sharc_hits = sharc_hits;
   return;                                      
 }                                       
 
@@ -239,14 +243,6 @@ TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double
 
 TGRSIDetectorHit* TSharc::GetHit(const Int_t idx) {
    return GetSharcHit(idx);
-}
-
-
-TSharcHit* TSharc::GetSharcHit(const int i) {
-   if(i < GetMultiplicity())
-      return &sharc_hits.at(i);   
-   else
-      return 0;
 }
 
 void TSharc::PushBackHit(TGRSIDetectorHit *sharchit) {

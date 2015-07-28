@@ -61,9 +61,9 @@ class TSharcHit : public TGRSIDetectorHit {
     inline UShort_t GetFrontStrip()     const  {  return  front_strip;  }  //!
     inline UShort_t GetBackStrip()      const  {  return  back_strip;    }  //!
 
-    TGRSIDetectorHit *GetFront() const { return this; }
-    TGRSIDetectorHit *GetBack()  const { return &backhit; }
-    TGRSIDetectorHit *GetPad()   const { return &padhit; }
+    TGRSIDetectorHit *GetFront()  { return this; }
+    TGRSIDetectorHit *GetBack()   { return &backhit; }
+    TGRSIDetectorHit *GetPad()    { return &padhit; }
 
     const inline Double_t GetDeltaE()       { return GetFront()->GetEnergy();  }  //!
     const inline Double_t GetDeltaT()       { return GetFront()->GetTime();    }  //!

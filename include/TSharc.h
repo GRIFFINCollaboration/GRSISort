@@ -26,10 +26,10 @@ class TSharc : public TGRSIDetector  {
     TSharcHit        *GetSharcHit(const int i) { return (TSharcHit*)GetHit(i); } ;  
     TGRSIDetectorHit *GetHit(const int i);
     static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);  //! 
-    static double GetXOffset() const  { return X_offset; }
-    static double GetYOffset() const  { return Y_offset; }
-    static double GetZOffset() const  { return Z_offset; }
-    static TVector3 GetOffset() const { return TVector3(X_offset,Y_offset,Z_offset); } 
+    static double GetXOffset()  { return X_offset; }
+    static double GetYOffset()  { return Y_offset; }
+    static double GetZOffset()  { return Z_offset; }
+    static TVector3 GetOffset() { return TVector3(X_offset,Y_offset,Z_offset); } 
     static void   SetXYZOffset(const double x,const double y,const double z) { X_offset =x; Y_offset=y; Z_offset=z; }
 
 
@@ -39,7 +39,7 @@ class TSharc : public TGRSIDetector  {
     virtual void Clear(Option_t * = "");       //!
     virtual void Print(Option_t * = "") const; //!
     
-    TSharc& operator=(const TSharc& rhs);  { this->Copy(rhs); }//!
+    TSharc& operator=(const TSharc& rhs);  { Copy(rhs); }//!
 
     //TSharcData *GetData() { return &data; }  //!
     void FillData(TFragment*,TChannel*,MNEMONIC*);           //! Collects the fragments to make front/back/pad coinc.

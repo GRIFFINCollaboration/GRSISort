@@ -72,7 +72,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		inline int GetCharge()	  const	    {	return core.GetCharge();	}		//!
 		inline double GetEnergy() const	    {	return core.GetEnergy();	}		//!
 		inline double GetTime()  const       { return core.GetTime();		}		//!
-      inline Int_t GetCfd()    const      { return core.GetCfd(); }          //!
+      //inline Int_t GetCfd()    const      { return core.GetCfd(); }          //!
       TVector3 GetPosition(Double_t dist=110.); // { return TTigress::GetPosition(GetDetector(),GetCrystal(),GetInitialHit(),dist); }
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
