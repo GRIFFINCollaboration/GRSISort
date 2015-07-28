@@ -61,6 +61,7 @@ TSceptar::~TSceptar()	{
 }
 
 TSceptar::TSceptar(const TSceptar& rhs) {
+   //Copy Contructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -68,7 +69,8 @@ TSceptar::TSceptar(const TSceptar& rhs) {
 }
 
 void TSceptar::Clear(Option_t *opt)	{
-//Clears all of the hits and data
+//Clears all of the hits
+//The Option "all" clears the base class and data.
    if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
       TGRSIDetector::Clear(opt);
       if(sceptardata) sceptardata->Clear();
@@ -78,6 +80,7 @@ void TSceptar::Clear(Option_t *opt)	{
 }
 
 void TSceptar::Copy(TSceptar &rhs) const {
+   //Copies a TSceptar
   TGRSIDetector::Copy((TGRSIDetector&)rhs);
 
   ((TSceptar&)rhs).sceptardata     = 0;
@@ -92,7 +95,7 @@ TSceptar& TSceptar::operator=(const TSceptar& rhs) {
 }
 
 void TSceptar::Print(Option_t *opt) const	{
-  //Prints out TSceptar members, currently does little.
+  //Prints out TSceptar Multiplicity, currently does little.
   printf("sceptardata = 0x%p\n",sceptardata);
   if(sceptardata) sceptardata->Print();
   printf("%lu sceptar_hits\n",sceptar_hits.size());
@@ -112,8 +115,9 @@ void TSceptar::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 }
 
 void TSceptar::PushBackHit(TGRSIDetectorHit *schit) {
-  sceptar_hits.push_back(*((TSceptarHit*)schit));
-  return;
+   //Adds a Hit to the list of TSceptar Hits
+   sceptar_hits.push_back(*((TSceptarHit*)schit));
+   return;
 }
 
 void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
@@ -164,6 +168,7 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 }
 
 TGRSIDetectorHit* TSceptar::GetHit(const Int_t idx){
+   //Gets the TSceptarHit at index idx. 
    if(idx < GetMultiplicity())
       return &(sceptar_hits.at(idx));
    else 

@@ -36,7 +36,7 @@ TGRSIDetectorHit::~TGRSIDetectorHit()	{
 //Default destructor
 }
 
-double TGRSIDetectorHit::GetEnergy(Option_t *opt) const{
+double TGRSIDetectorHit::GetEnergy(Option_t *opt) const {
    if(is_energy_set)
       return energy;
 
@@ -47,10 +47,11 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt) const{
    }
       return chan->CalibrateENG(GetCharge());
 }
-
+/* non const version
 double TGRSIDetectorHit::GetEnergy(Option_t *opt){
-   if(is_energy_set)
+   if(is_energy_set){
       return energy;
+   }
 
    TChannel *chan = GetChannel();
    if(!chan){
@@ -61,7 +62,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt){
       return energy;
 
 }
-
+*/
 void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   TObject::Copy((TObject&)rhs);
   ((TGRSIDetectorHit&)rhs).address  = address;
@@ -72,9 +73,9 @@ void TGRSIDetectorHit::Copy(TGRSIDetectorHit &rhs) const {
   ((TGRSIDetectorHit&)rhs).charge   = charge;
   ((TGRSIDetectorHit&)rhs).detector = detector;
   ((TGRSIDetectorHit&)rhs).energy   = energy;
-  ((TGRSIDetectorHit&)rhs).is_energy_set   = is_energy_set;
-  ((TGRSIDetectorHit&)rhs).is_det_set      = is_det_set;
-  ((TGRSIDetectorHit&)rhs).is_pos_set      = is_pos_set;
+  ((TGRSIDetectorHit&)rhs).is_energy_set   = false;
+  ((TGRSIDetectorHit&)rhs).is_det_set      = false;
+  ((TGRSIDetectorHit&)rhs).is_pos_set      = false;
 
 //  ((TGRSIDetectorHit&)rhs).parent  = parent;  
 }
@@ -113,7 +114,7 @@ UInt_t TGRSIDetectorHit::GetDetector() const {
    ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
    return mnemonic.arrayposition;
 }
-
+/* non const version
 UInt_t TGRSIDetectorHit::GetDetector() {
    if(is_det_set)
       return detector;
@@ -128,7 +129,7 @@ UInt_t TGRSIDetectorHit::GetDetector() {
    ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
    return SetDetector(mnemonic.arrayposition);
 }
-
+*/
 
 UInt_t TGRSIDetectorHit::SetDetector(UInt_t det) {
    detector = det;
@@ -145,13 +146,13 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
    if(is_pos_set)
       return position;
 
-   if(is_det_set)
+   //if(is_det_set)// Dont necessarily need this (job of derived)
       return GetPosition(dist); //Calls the derivative GetPosition function
 
    return TVector3(0,0,1);
 
 }
-
+/* non const version
 TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
    if(is_pos_set)
       return position;
@@ -162,7 +163,7 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
    return TVector3(0,0,1);
 
 }
-
+*/
 bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit *lhs, TGRSIDetectorHit *rhs) {
    return (lhs->GetEnergy() > rhs->GetEnergy());
 }

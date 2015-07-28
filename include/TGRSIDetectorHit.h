@@ -69,18 +69,18 @@ class TGRSIDetectorHit : public TObject 	{
       
       //Abstract methods. These are required in all derived classes
 		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
-      virtual TVector3 GetPosition(Double_t dist = 0);
+  //    virtual TVector3 GetPosition(Double_t dist = 0);
       virtual double GetEnergy(Option_t *opt="") const;
-      virtual double GetEnergy(Option_t *opt="");
+ //     virtual double GetEnergy(Option_t *opt="");
       virtual UInt_t GetDetector() const;
-      virtual UInt_t GetDetector();
+ //     virtual UInt_t GetDetector();
       virtual double GetTime(Option_t *opt="")   const      {return 0.0; } //AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
       virtual inline Int_t   GetCfd() const             {   return cfd;      }           //!
       inline UInt_t GetAddress()     const                  { return address; }         //!
       inline Double_t GetCharge() const                       { return charge;} //!
       inline TChannel *GetChannel() const                   { return TChannel::GetChannel(address); }  //!
       inline std::vector<Short_t> GetWaveform() const       { return waveform; } //!
-   //   inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!
+    //  inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!
       //virtual void SetHit() { AbstractMethod("SetHit()");}
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
