@@ -22,10 +22,6 @@ class TPacesHit : public TGRSIDetectorHit {
       Int_t filter;
       Int_t ppg;
 
-   //flags
-   private:
-      Bool_t is_crys_set; //!
-
 	public:
 		/////////////////////////  Setters	/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { filter = x;   }                  //! 

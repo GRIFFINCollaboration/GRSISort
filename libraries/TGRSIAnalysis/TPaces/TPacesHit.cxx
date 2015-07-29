@@ -41,11 +41,6 @@ void TPacesHit::Clear(Option_t *opt)	{
    filter          =  0;
    ppg             =  0;
    detector        = 0xFFFF;
-
-   is_crys_set     = false;
-
-   //I think we want to make sure the entire Hit is cleared including the BASE.
-   TGRSIDetectorHit::Clear();
 }
 
 

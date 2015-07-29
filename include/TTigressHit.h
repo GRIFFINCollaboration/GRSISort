@@ -30,7 +30,6 @@ class TTigressHit : public TGRSIDetectorHit {
 		UInt_t   crystal;              //!
 		UShort_t first_segment;        
 		Float_t    first_segment_charge; //!
-      Bool_t is_crys_set;            //!
 
       Double_t fEnergy;
 
@@ -58,7 +57,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		void AddBGO(TCrystalHit &temp);		  //{ bgo.push_back(temp);	}			//!
 
 		//void SetDetectorNumber(const int &i) { detector = i;	} 				//!
-		void SetCrystal()	                   { crystal = GetCrystal(); }		//!
+		void SetCrystal()	                   { crystal = GetCrystal(); SetFlag(TGRSIDetectorHit::kIsSubDetSet,true); }		//!
 		void SetInitalHit(const int &i)		 { first_segment = i; }				//!
 
 //		void SetPosition(const TVector3 &p)  { position = p;	}					//!
