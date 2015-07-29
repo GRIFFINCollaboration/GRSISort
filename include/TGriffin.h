@@ -24,6 +24,17 @@ class TGriffinData;
 
 class TGriffin : public TGRSIDetector {
 
+   enum EPPG {
+      kTapeMove      = 0x1,
+      kBackGround    = 0x2,
+      kBeamOn        = 0x4,
+      kDecay         = 0x8,
+      kCycleStartTime= 0x10,
+      //Room for 0x20
+      //Room for 0x40
+      //Room for 0x80
+   };
+
    public:
       TGriffin();
       TGriffin(const TGriffin&);
@@ -69,8 +80,7 @@ class TGriffin : public TGRSIDetector {
       long fCycleStart;                //!  The start of the cycle
       static long fLastPPG;                   //!  value of the last ppg
 
-      enum  GriffinFlags{kCycleStartTime,kTapeMove,kBackGround,kBeamOn,kDecay};
-      TBits fGriffinBits;
+      UChar_t fGriffinBits;
 
       std::vector <TGriffinHit> addback_hits; //! Used to create addback hits on the fly
       std::vector <UShort_t> faddback_frags; //! Number of crystals involved in creating in the addback hit
@@ -80,22 +90,24 @@ class TGriffin : public TGRSIDetector {
       //static bool SetBGOHits()       { return fSetBGOHits;   }	//!
       //static bool SetBGOWave()	    { return fSetBGOWave;   } //!
 
-      void SetTapeMove(Bool_t flag=kTRUE)   { fGriffinBits.SetBitNumber(kTapeMove,flag); }  //!
-      void SetBackground(Bool_t flag=kTRUE) { fGriffinBits.SetBitNumber(kBackGround,flag);} //!
-      void SetBeamOn(Bool_t flag=kTRUE)     { fGriffinBits.SetBitNumber(kBeamOn,flag);}     //!
-      void SetDecay(Bool_t flag=kTRUE)      { fGriffinBits.SetBitNumber(kDecay,flag);}      //!
+      void SetTapeMove(Bool_t flag=kTRUE)   { SetBitNumber(kTapeMove,flag); }  //!
+      void SetBackground(Bool_t flag=kTRUE) { SetBitNumber(kBackGround,flag);} //!
+      void SetBeamOn(Bool_t flag=kTRUE)     { SetBitNumber(kBeamOn,flag);}     //!
+      void SetDecay(Bool_t flag=kTRUE)      { SetBitNumber(kDecay,flag);}      //!
 
-      bool GetTapeMove()   const { return fGriffinBits.TestBitNumber(kTapeMove);}//!
-      bool GetBackground() const { return fGriffinBits.TestBitNumber(kBackGround);}//!
-      bool GetBeamOn()     const { return fGriffinBits.TestBitNumber(kBeamOn);}//!
-      bool GetDecay()      const { return fGriffinBits.TestBitNumber(kDecay);}//!
+      bool GetTapeMove()   const { return TestBitNumber(kTapeMove);}//!
+      bool GetBackground() const { return TestBitNumber(kBackGround);}//!
+      bool GetBeamOn()     const { return TestBitNumber(kBeamOn);}//!
+      bool GetDecay()      const { return TestBitNumber(kDecay);}//!
 
       int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
 
       //  void AddHit(TGRSIDetectorHit *hit,Option_t *opt="");//!
    private:
       static TVector3 gCloverPosition[17];               //! Position of each HPGe Clover
-      void ClearStatus() { fGriffinBits.ResetAllBits(kFALSE); } //!
+      void ClearStatus() { fGriffinBits = 0; } //!
+      void SetBitNumber(enum EPPG ppg,Bool_t set);
+      Bool_t TestBitNumber(enum EPPG ppg) const {return (ppg & fGriffinBits);}
 
    public:
       virtual void Copy(TGriffin&) const;                //!

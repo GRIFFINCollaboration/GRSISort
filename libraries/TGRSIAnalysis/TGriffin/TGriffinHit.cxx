@@ -23,6 +23,7 @@ void TGriffinHit::Copy(TGriffinHit &rhs) const {
   TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
   ((TGriffinHit&)rhs).filter          = filter;
   ((TGriffinHit&)rhs).ppg             = ppg;
+  ((TGriffinHit&)rhs).is_crys_set     = false;
   return;                                      
 }                                       
 
