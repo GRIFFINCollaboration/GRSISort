@@ -103,6 +103,8 @@ void TGriffin::Copy(TGriffin &rhs) const {
   ((TGriffin&)rhs).fSetCoreWave        = fSetCoreWave;
   ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
   ((TGriffin&)rhs).fCycleStart         = fCycleStart;
+  ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
+
    //((TGriffin&)rhs).fSetBGOWave         = fSetBGOWave;
   //((TGriffin&)rhs).ftapemove           = ftapemove;
   //((TGriffin&)rhs).fbackground         = fbackground;
@@ -519,4 +521,11 @@ UShort_t TGriffin::GetNAddbackFrags(int idx) const{
       return faddback_frags.at(idx);   
    else
       return 0;
+}
+
+void TGriffin::SetBitNumber(enum EPPG ppg,Bool_t set){
+   if(set)
+      fGriffinBits |= ppg;
+   else
+      fGriffinBits &= (~ppg);
 }
