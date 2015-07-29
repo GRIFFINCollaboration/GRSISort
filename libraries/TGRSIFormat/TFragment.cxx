@@ -79,7 +79,7 @@ long TFragment::GetTimeStamp() const {
 
 
 double TFragment::GetTime() const {
-   double dtime = double(GetTimeStamp())+ gRandom->Uniform();
+   double dtime = (double)(GetTimeStamp())+ gRandom->Uniform();
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan )//|| Charge.size()<1)
       return dtime;

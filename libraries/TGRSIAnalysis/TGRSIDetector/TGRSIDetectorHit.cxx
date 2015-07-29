@@ -37,7 +37,7 @@ TGRSIDetectorHit::~TGRSIDetectorHit()	{
 }
 
 Double_t TGRSIDetectorHit::GetTime(Option_t *opt) const{
-   double dtime = double(GetTimeStamp())+ gRandom->Uniform();
+   Double_t dtime = (Double_t)(GetTimeStamp())+ gRandom->Uniform();
    TChannel *chan = GetChannel();
    if(!chan )//|| Charge.size()<1)
       return dtime;
