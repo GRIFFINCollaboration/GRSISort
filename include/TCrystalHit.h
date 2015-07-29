@@ -32,17 +32,11 @@ class TCrystalHit : public TGRSIDetectorHit	{
       virtual void Copy(TCrystalHit&) const;             //!
 
 		inline int    GetSegment()       { return segment;}   //!
-		//inline int    GetCharge()	{	return charge; }	//!		
 		inline double GetEnergy() const 	{ return local_energy;	}	//!
-//		inline double GetTime(Option_t *opt="") const { return time;	}	//!
-		//inline double GetCfd()		{	return cfd;	}	   //!
 
       TVector3 GetPosition() const {return TVector3();}
 		inline void SetSegment(const int &seg) { segment = seg;   }       //!
-		//inline void SetCharge(const int &chg)	{	charge = chg;	}	//!
 		inline void SetEnergy(const double &e)	{	local_energy = e;	}	//!
-		//inline void SetTime(const double &t)	{	time = t;	}	//!
-		//inline void SetCfd(const double &c)	{	cfd = c;	}	//!
 
 		//inline void SetWave(const std::vector<int> &w)	{	wave = w;	} //!
 		//inline std::vector<int> *GetWave()	{	return &wave;	}	  //!

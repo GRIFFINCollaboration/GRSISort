@@ -83,9 +83,9 @@ class TSharcHit : public TGRSIDetectorHit {
 
     //std::pair<int,int>  GetPixel()  { return std::make_pair(front_strip,back_strip);  }  //!
 
-    const Double_t    GetFrontCharge()      { return GetFront()->GetCharge();  }  //!  //Charge is now stored after integration.
-    const Double_t    GetBackCharge()       { return GetBack()->GetCharge();   }  //!  //Charge is now stored after integration.
-    const Double_t    GetPadCharge()        { return GetPad()->GetCharge();    }  //!  //Charge is now stored after integration.
+    const Float_t    GetFrontCharge()        { return GetFront()->GetCharge();  }  //!  //Charge is now stored after integration.
+    const Float_t    GetBackCharge()         { return GetBack()->GetCharge();   }  //!  //Charge is now stored after integration.
+    const Float_t    GetPadCharge()          { return GetPad()->GetCharge();    }  //!  //Charge is now stored after integration.
 
     inline Double_t GetEnergy()             { return GetFront()->GetEnergy() + GetPad()->GetEnergy(); }
     inline Double_t GetTime()               { return GetFront()->GetTime(); }

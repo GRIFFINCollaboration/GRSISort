@@ -20,19 +20,19 @@ class TCSMHit : public TGRSIDetectorHit 	{
 	private:
 
 		Short_t  hor_d_strip;	//
-		Int_t    hor_d_charge;	//	
+		Float_t  hor_d_charge;	//	
 		Int_t    hor_d_cfd;		//	
 
 		Short_t  ver_d_strip;		//
-		Int_t    ver_d_charge;	//
+		Float_t  ver_d_charge;	//
 		Int_t    ver_d_cfd;		// 		
 
 		Short_t  hor_e_strip;	//
-		Int_t    hor_e_charge;	//	
+	   Float_t  hor_e_charge;	//	
 		Int_t    hor_e_cfd;		//	
 
 		Short_t  ver_e_strip;		//
-		Int_t	   ver_e_charge;	//
+		Float_t	ver_e_charge;	//
 		Int_t    ver_e_cfd;		// 		
 
 	  	Double_t hor_d_energy;		//		
@@ -75,11 +75,11 @@ class TCSMHit : public TGRSIDetectorHit 	{
 
 		UShort_t GetDetectorNumber() const	   { return detectornumber;	} //!
 
-		Int_t GetEHorizontalCharge() const	   {	return	hor_e_charge;}	//!
-		Int_t GetEVerticalCharge()	const  	   {	return	ver_e_charge;	}	//!
+		Float_t GetEHorizontalCharge() const	{	return	hor_e_charge;}	//!
+		Float_t GetEVerticalCharge()	const  	{	return	ver_e_charge;	}	//!
 
-		Int_t GetDHorizontalCharge() const	   {	return	hor_d_charge;}	//!
-		Int_t GetDVerticalCharge()	const  	   {	return	ver_d_charge;	}	//!
+		Float_t GetDHorizontalCharge() const	{	return	hor_d_charge;}	//!
+		Float_t GetDVerticalCharge()	const  	{	return	ver_d_charge;	}	//!
 
 
 		Double_t GetEHorizontalTime() const	   {	return hor_e_time;	}	//!
@@ -117,11 +117,11 @@ class TCSMHit : public TGRSIDetectorHit 	{
 
 		inline void  SetDetectorNumber(const Int_t &tempnum)			{ detectornumber = tempnum;	} //!
 
-		inline void SetEHorizontalCharge(const Int_t temp) 	{hor_e_charge = temp;}	//!
-		inline void SetEVerticalCharge(const Int_t temp)	{ver_e_charge  = temp;}	//!
+		inline void SetEHorizontalCharge(const Float_t temp)  {hor_e_charge = temp;}	//!
+		inline void SetEVerticalCharge(const Float_t temp)	{ver_e_charge  = temp;}	//!
 
-		inline void SetDHorizontalCharge(const Int_t temp) 	{hor_d_charge = temp;}	//!
-		inline void SetDVerticalCharge(const Int_t temp)	{ver_d_charge  = temp;}	//!
+		inline void SetDHorizontalCharge(const Float_t temp) 	{hor_d_charge = temp;}	//!
+		inline void SetDVerticalCharge(const Float_t temp)	{ver_d_charge  = temp;}	//!
 
 		inline void SetEHorizontalStrip(const Int_t temp)	{hor_e_strip  = temp;}	//!
 		inline void SetEVerticalStrip(const Int_t temp)		{ver_e_strip   = temp;}	//!

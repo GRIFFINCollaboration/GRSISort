@@ -157,7 +157,7 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
       //What we are actually doing is applying the recirpocal gain to the energy of the real peak
       //to figure out where the centroid of the charge is spectrum is roughly going to be
       //First read in the rough gain coefficients
-      std::vector<Double_t> rough_coeffs = chan->GetENGCoeff();
+      std::vector<Float_t> rough_coeffs = chan->GetENGCoeff();
       gain = rough_coeffs.at(1);
       offset = rough_coeffs.at(0);
    }
@@ -674,7 +674,7 @@ Bool_t TGainMatch::FineMatch(TH1 *energy_hist, TH1* testhist, TH1* charge_hist, 
       //What we are actually doing is applying the recirpocal gain to the energy of the real peak
       //to figure out where the centroid of the charge is spectrum is roughly going to be
       //First read in the rough gain coefficients
-      std::vector<Double_t> rough_coeffs = chan->GetENGCoeff();
+      std::vector<Float_t> rough_coeffs = chan->GetENGCoeff();
       gain = rough_coeffs.at(1);
       offset = rough_coeffs.at(0);
    }

@@ -28,7 +28,7 @@ void TDescantData::Clear(Option_t *opt)	{
    fDet_Wave.clear();
 }
 
-void TDescantData::Print(Option_t *opt)	{
+void TDescantData::Print(Option_t *opt) const	{
    // not yet written.
    printf("not yet written.\n");
 }

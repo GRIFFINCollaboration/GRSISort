@@ -124,12 +124,6 @@ Int_t TGriffinHit::GetCharge(Option_t *opt) const {
 }
 */
 
-
-ULong_t TGriffinHit::GetTime(Option_t *opt) const {
-  //still need to figure out how to handle the times
-  return time;
-}
-
 TVector3 TGriffinHit::GetPosition(Double_t dist) const{
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
@@ -191,17 +185,18 @@ UInt_t TGriffinHit::SetCrystal(char color) {
    return crystal;
 }
 
-bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
+bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	{
    return(lhs->GetEnergy()) > rhs->GetEnergy();
 }
 
-void TGriffinHit::Add(TGriffinHit *hit)	{
+void TGriffinHit::Add(const TGriffinHit *hit)	{
    // add another griffin hit to this one (for addback), 
    // using the time and position information of the one with the higher energy
    if(!CompareEnergy(this,hit)) {
       this->cfd    = hit->GetCfd();
       this->time   = hit->GetTime();
       this->position = hit->GetPosition();
+      this->address = hit->GetAddress();
    }
 
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
@@ -212,7 +207,6 @@ void TGriffinHit::Add(TGriffinHit *hit)	{
 //Bool_t TGriffinHit::BremSuppressed(TSceptarHit* schit){
 //   return false;
 //}
-
 
 
 

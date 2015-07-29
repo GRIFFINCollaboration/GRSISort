@@ -72,7 +72,7 @@ public:
    double GetTZero() const; //!
    const char *GetName() const; //!
    double GetEnergy(int iter=0)const; //!
-   double GetCharge(int iter=0)const; //!
+   Float_t GetCharge(int iter=0)const; //!
    long GetTimeStamp_ns(); //!
 
    Int_t GetCfd(int iter=0) const { return Cfd.at(iter); } //!

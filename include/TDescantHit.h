@@ -68,7 +68,6 @@ class TDescantHit : public TGRSIDetectorHit {
       inline Int_t    GetCcShort()             { return ccShort;      }  //!
       inline Int_t    GetCcLong()              { return ccLong;      }  //!
       TVector3 GetPosition(Double_t dist = 0) const; //!
-      virtual ULong_t GetTime(Option_t * opt = "") const; //!
 //      inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 
       Int_t CalculateCfd(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps); //!

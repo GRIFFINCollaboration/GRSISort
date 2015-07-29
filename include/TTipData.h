@@ -20,7 +20,7 @@ class TTipData : public TGRSIDetectorData {
 		std::vector<UShort_t> fDet_Nbr;		//!
 		std::vector<UInt_t>   fDet_Address;		//!
       std::vector<Double_t> fDet_Eng;		//!
-		std::vector<Int_t>    fDet_Chg;		//!
+		std::vector<Float_t>  fDet_Chg;		//!
 		std::vector<Int_t>    fDet_CFD;		//!
 		std::vector<Long_t>   fDet_Time;		//!
 		std::vector<std::vector<Short_t> >fDet_Wave;	//!
@@ -34,8 +34,8 @@ class TTipData : public TGRSIDetectorData {
 		static void Set(bool flag=true) { fIsSet=flag; } //!
 		static bool IsSet() { return fIsSet; }           //!
 
-		void Clear(Option_t *opt = "");		//!
-		void Print(Option_t *opt = "");		//!
+		void Clear(Option_t *opt = "");		      //!
+		void Print(Option_t *opt = "") const;		//!
 
 	private:
 
@@ -43,7 +43,7 @@ class TTipData : public TGRSIDetectorData {
 		inline void SetDetNumber(const UShort_t  &DetNumber)	   {fDet_Nbr.push_back(DetNumber);      }	//!
 		inline void SetDetAddress(const UInt_t  &DetAddress)	   {fDet_Address.push_back(DetAddress); }	//!
       inline void SetDetEnergy(const Double_t  &DetEnergy)	   {fDet_Eng.push_back(DetEnergy);      }	//!
-		inline void SetDetCharge(const Int_t &DetCharge)	      {fDet_Chg.push_back(DetCharge);      }	//!
+		inline void SetDetCharge(const Float_t &DetCharge)	      {fDet_Chg.push_back(DetCharge);      }	//!
 		inline void SetDetCFD(const Int_t &DetCFD)	            {fDet_CFD.push_back(DetCFD); 			 }	//!	
 		inline void SetDetTime(const Long_t    &DetTime)	      {fDet_Time.push_back(DetTime);       }	//!
 
@@ -74,7 +74,7 @@ class TTipData : public TGRSIDetectorData {
 		inline UShort_t GetDetNumber(const unsigned int &i)	   {return fDet_Nbr.at(i);}	//!
 		inline UInt_t   GetDetAddress(const unsigned int &i)	   {return fDet_Address.at(i);}	//!
       inline Double_t GetDetEnergy(const unsigned int &i)	   {return fDet_Eng.at(i);}	//!
-		inline Int_t    GetDetCharge(const unsigned int &i)	   {return fDet_Chg.at(i);}	//!
+		inline Float_t  GetDetCharge(const unsigned int &i)	   {return fDet_Chg.at(i);}	//!
 		inline Int_t    GetDetCFD(const unsigned int &i)	      {return fDet_CFD.at(i);}	//!
 		inline Long_t   GetDetTime(const unsigned int &i)	      {return fDet_Time.at(i);}	//!
 

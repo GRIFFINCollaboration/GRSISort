@@ -73,6 +73,7 @@ class TGriffin : public TGRSIDetector {
       TBits fGriffinBits;
 
       std::vector <TGriffinHit> addback_hits; //! Used to create addback hits on the fly
+      std::vector <UShort_t> faddback_frags; //! Number of crystals involved in creating in the addback hit
 
    public:
       static bool SetCoreWave()        { return fSetCoreWave;  }	//!
@@ -100,7 +101,8 @@ class TGriffin : public TGRSIDetector {
       virtual void Copy(TGriffin&) const;                //!
       virtual void Clear(Option_t *opt = "all");		     //!
       virtual void Print(Option_t *opt = "") const;		  //!
-      void ResetAddback() { addback_hits.clear(); }		     //!
+      void ResetAddback();		     //!
+      UShort_t GetNAddbackFrags(int idx) const;
 
    protected:
       void PushBackHit(TGRSIDetectorHit* ghit);

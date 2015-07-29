@@ -110,7 +110,7 @@ Bool_t TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
      Error("AddToManager","Trying to put a %s in a TCalManager of type %s",cal->ClassName(),fClass->GetName());
      return false;
    }
-   
+
    if(!(cal->GetChannel()))
       if(!(cal->SetChannel(channum)))
          return false; //TCal does the Error for us.
@@ -130,7 +130,7 @@ Bool_t TCalManager::AddToManager(TCal* cal, UInt_t channum, Option_t *opt) {
 	   }	
    } 
    else {
-      TCal* newcal = (TCal*)cal->Clone(cal->GetName());
+      TCal* newcal = (TCal*)(cal->Clone(cal->GetName()));
       //In order to construct a new derived class you need to know the type at compile time.
       //Clone lets us get around this. There are other ways to do this using "virtual constructor idioms"
       //but the basically do what clone does anyway.

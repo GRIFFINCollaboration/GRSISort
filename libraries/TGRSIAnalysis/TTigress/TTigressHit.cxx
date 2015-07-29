@@ -89,7 +89,7 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs)	{
 
 
 void TTigressHit::CheckFirstHit(int charge,int segment)	{
-	if(abs(charge) > first_segment_charge)	{
+	if(fabs(charge) > first_segment_charge)	{
  		first_segment = segment;
 	}
 	return;				
