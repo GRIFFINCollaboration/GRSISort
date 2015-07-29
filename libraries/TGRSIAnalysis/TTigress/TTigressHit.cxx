@@ -40,8 +40,6 @@ void TTigressHit::Clear(Option_t *opt)	{
 	crystal  = -1;
 	first_segment = 0;
 	first_segment_charge = 0.0;
-   is_crys_set     = false;
-
 	core.Clear();
 	//for(int x=0;x<segment.size();x++) { 
 	//	segment[x].Clear();
@@ -112,7 +110,7 @@ TVector3 TTigressHit::GetPosition(Double_t dist) { return TTigress::GetPosition(
 
 
 int TTigressHit::GetCrystal() {
-   if(is_crys_set)
+   if(IsCrystalSet())
       return crystal;
 
    TChannel *chan = GetChannel();

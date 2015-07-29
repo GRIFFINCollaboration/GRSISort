@@ -26,10 +26,6 @@ class TGriffinHit : public TGRSIDetectorHit {
       Int_t ppg;
       UInt_t crystal; //!
 
-   //flags
-   private:
-      Bool_t is_crys_set; //
-
 	public:
 		/////////////////////////  Setters	/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { filter = x;   }                  //! 

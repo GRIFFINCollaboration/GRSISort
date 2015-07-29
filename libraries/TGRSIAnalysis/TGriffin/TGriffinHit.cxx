@@ -23,7 +23,6 @@ void TGriffinHit::Copy(TGriffinHit &rhs) const {
   TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
   ((TGriffinHit&)rhs).filter          = filter;
   ((TGriffinHit&)rhs).ppg             = ppg;
-  ((TGriffinHit&)rhs).is_crys_set     = false;
   return;                                      
 }                                       
 
@@ -92,8 +91,6 @@ void TGriffinHit::Clear(Option_t *opt)	{
    ppg             =  0;
    crystal         = 0xFFFF;
 
-   is_crys_set     = false;
-
 }
 
 
@@ -130,7 +127,7 @@ TVector3 TGriffinHit::GetPosition(Double_t dist) const{
 }
 
 UInt_t TGriffinHit::GetCrystal() const { 
-   if(is_crys_set)
+   if(IsCrystalSet())
       return crystal;
 
    TChannel *chan = GetChannel();
@@ -153,7 +150,7 @@ UInt_t TGriffinHit::GetCrystal() const {
 }
 
 UInt_t TGriffinHit::GetCrystal() {
-   if(is_crys_set)
+   if(IsCrystalSet())
       return crystal;
 
    TChannel *chan = GetChannel();
@@ -167,7 +164,6 @@ UInt_t TGriffinHit::GetCrystal() {
 
 UInt_t TGriffinHit::SetCrystal(UInt_t crynum) {
    crystal = crynum;
-   is_crys_set = true;
    return crystal;
 }
 
@@ -182,7 +178,7 @@ UInt_t TGriffinHit::SetCrystal(char color) {
       case 'W':
          crystal = 3;  
    };
-   is_crys_set = true;
+   SetFlag(TGRSIDetectorHit::kIsSubDetSet,true);
    return crystal;
 }
 
