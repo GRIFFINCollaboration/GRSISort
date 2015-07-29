@@ -78,7 +78,6 @@ void TGriffin::SetAddbackCriterion(bool (*criterion)(TGriffinHit&,TGriffinHit&))
 TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
-   fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
 }
@@ -86,7 +85,6 @@ TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
 TGriffin::TGriffin(const TGriffin& rhs) {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
-   fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
   ((TGriffin&)rhs).Copy(*this);
 }
@@ -188,7 +186,6 @@ void TGriffin::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 //Fills the "Data" structure for a specific channel with TFragment frag.
    if(!frag || !channel || !mnemonic)
       return;
-
    if(!grifdata)   
       grifdata = new TGriffinData();
 

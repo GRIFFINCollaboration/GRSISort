@@ -40,12 +40,23 @@ class TGRSIDetectorHit : public TObject 	{
                            
    // 5. The waveform.       Since we are dealing with digital daqs, a waveform is a fairly common thing to have.  It
    //                        may not allows be present, put it is echoed enough that the storage for it belongs here.
+   enum Ebitflag {
+      kIsDetSet      = 0x1,
+      kIsEnergySet   = 0x2,
+      kIsPositionSet = 0x4,
+      //Room for 0x8
+      //Room for 0x10
+      //Room for 0x20
+      //Room for 0x40
+      //Room for 0x80
+      kIsAllSet      = 0xFF
+   };
 
 
 	public:
 		TGRSIDetectorHit(const int &fAddress=0xffffffff);    //{ address=fAddress; }
 		TGRSIDetectorHit(const TGRSIDetectorHit&);
-	   TGRSIDetectorHit(const TFragment &frag)      { this->CopyFragment(frag); }
+	   TGRSIDetectorHit(const TFragment &frag)      { Class()->IgnoreTObjectStreamer(); this->CopyFragment(frag); }
       void CopyFragment(const TFragment&);
       virtual ~TGRSIDetectorHit();
 
@@ -67,25 +78,32 @@ class TGRSIDetectorHit : public TObject 	{
       virtual inline void SetTime(const ULong_t &x)               { time   = x;   }                  //! Maybe make this abstract?
  
       virtual TVector3 SetPosition(Double_t temp_pos = 0);
-      void SetEnergy(double en) { energy = en; is_energy_set = true; }
+      void SetEnergy(double en) { energy = en; SetFlag(kIsEnergySet,true);}
       virtual UInt_t SetDetector(UInt_t det);
       
       //Abstract methods. These are required in all derived classes
 		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
-  //    virtual TVector3 GetPosition(Double_t dist = 0);
+      virtual TVector3 GetPosition(Double_t dist = 0);
       virtual double GetEnergy(Option_t *opt="") const;
- //     virtual double GetEnergy(Option_t *opt="");
+      virtual double GetEnergy(Option_t *opt="");
       virtual UInt_t GetDetector() const;
       //virtual double GetTime(Option_t *opt="")   const    { AbstractMethod("GetTime()"); return 0.00;   }  // Returns a time value to the nearest nanosecond!
       virtual ULong_t GetTimeStamp(Option_t *opt="")   const     { return time;   }  // Returns a time value to the nearest nanosecond!
       virtual Double_t GetTime(Option_t *opt = "") const;
- //     virtual UInt_t GetDetector();
+      virtual UInt_t GetDetector();
       virtual inline Int_t   GetCfd() const             {   return cfd;      }           //!
       inline UInt_t GetAddress()     const                  { return address; }         //!
       inline Float_t GetCharge() const                       { return charge;} //!
       inline TChannel *GetChannel() const                   { return TChannel::GetChannel(address); }  //!
       inline std::vector<Short_t> GetWaveform() const       { return waveform; } //!
     //  inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!
+      
+   protected:
+      Bool_t IsDetSet() const {return (fbitflags & kIsDetSet);}
+      Bool_t IsPosSet() const {return (fbitflags & kIsPositionSet);}
+      Bool_t IsEnergySet() const {return (fbitflags & kIsEnergySet);} 
+
+      void SetFlag(enum Ebitflag,Bool_t set);
 
    protected:
       UInt_t   address;    //address of the the channel in the DAQ.
@@ -101,9 +119,7 @@ class TGRSIDetectorHit : public TObject 	{
  
    //flags   
    protected:  
-      Bool_t is_det_set;      //!
-      Bool_t is_pos_set;      //!
-      Bool_t is_energy_set;   //!
+      UChar_t fbitflags;
       
       //Bool_t fDetectorSet;//!
       //Bool_t fPosSet;//!
