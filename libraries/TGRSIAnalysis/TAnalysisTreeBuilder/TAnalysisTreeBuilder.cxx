@@ -115,7 +115,7 @@ int TWriteQueue::Size() {
 ClassImp(TAnalysisTreeBuilder)
 
 //This sets the minimum amount of memory that root can hold a tree in.
-const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
+const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)16; // 8 GB
 
 TAnalysisTreeBuilder* TAnalysisTreeBuilder::fAnalysisTreeBuilder = 0;
 

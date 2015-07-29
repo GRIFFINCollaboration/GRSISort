@@ -67,12 +67,16 @@ public:
 
    std::vector<Short_t>  wavebuffer;//-> waveform words
   
-   double GetTimeStamp() const; //!
+   double GetTime()      const; //!
+   long   GetTimeStamp() const; //!
    double GetTZero() const; //!
    const char *GetName() const; //!
    double GetEnergy(int iter=0)const; //!
    Float_t GetCharge(int iter=0)const; //!
    long GetTimeStamp_ns(); //!
+
+   Int_t GetCfd(int iter=0) const { return Cfd.at(iter); } //!
+   Int_t GetLed(int iter=0) const { return Led.at(iter); } //!
 
    Int_t Get4GCfd(int i=0); //!
 
@@ -80,7 +84,7 @@ public:
 
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 
-   virtual void Print(Option_t *opt = ""); //!
+   virtual void Print(Option_t *opt = "") const; //!
    
 
 

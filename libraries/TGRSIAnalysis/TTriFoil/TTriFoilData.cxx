@@ -34,7 +34,7 @@ void TTriFoilData::Clear(Option_t *opt)
 }
 
 /////////////////////////
-void TTriFoilData::Print(Option_t *opt) 
+void TTriFoilData::Print(Option_t *opt) const
 {
 	printf("No print for you!\n");
 

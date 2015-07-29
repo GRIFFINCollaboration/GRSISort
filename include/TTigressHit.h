@@ -29,7 +29,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		//UShort_t detector;
 		UInt_t   crystal;              //!
 		UShort_t first_segment;        
-		Int_t    first_segment_charge; //!
+		Float_t    first_segment_charge; //!
       Bool_t is_crys_set;            //!
 
       Double_t fEnergy;
@@ -69,10 +69,10 @@ class TTigressHit : public TGRSIDetectorHit {
 		       int GetCrystal();	          //{	return crystal;			}		//!
 		inline int GetInitialHit()		       {	return first_segment;	}			//!
 	
-		inline int GetCharge()	  const	    {	return core.GetCharge();	}		//!
+		inline Float_t GetCharge()	  const	 {	return core.GetCharge();	}		//!
 		inline double GetEnergy() const	    {	return core.GetEnergy();	}		//!
 		inline double GetTime()  const       { return core.GetTime();		}		//!
-      inline Int_t GetCfd()    const      { return core.GetCfd(); }          //!
+      //inline Int_t GetCfd()    const      { return core.GetCfd(); }          //!
       TVector3 GetPosition(Double_t dist=110.); // { return TTigress::GetPosition(GetDetector(),GetCrystal(),GetInitialHit(),dist); }
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 

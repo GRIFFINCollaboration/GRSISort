@@ -43,9 +43,14 @@ class TGriffin : public TGRSIDetector {
 
       //void AddHit(TGriffinHit *hit) { griffin_hits.push_back(*hit); }
 
+      
+      static bool addback_criterion_singleclover(TGriffinHit&, TGriffinHit&);
+      //static bool addback_criterion_array(TGriffinHit&, TGriffinHit&);
+      void SetAddbackCriterion(bool (*criterion)(TGriffinHit&, TGriffinHit&));
 #ifndef __CINT__
       void SetAddbackCriterion(std::function<bool(TGriffinHit&, TGriffinHit&)> criterion) { addback_criterion = criterion; }
       std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() const { return addback_criterion; }
+      static std::function<bool(TGriffinHit&, TGriffinHit&)> addback_criterion;
 #endif
 
       Int_t GetAddbackMultiplicity();
@@ -69,7 +74,6 @@ class TGriffin : public TGRSIDetector {
 
       std::vector <TGriffinHit> addback_hits; //! Used to create addback hits on the fly
       std::vector <UShort_t> faddback_frags; //! Number of crystals involved in creating in the addback hit
-      static std::function<bool(TGriffinHit&, TGriffinHit&)> addback_criterion;
 
    public:
       static bool SetCoreWave()        { return fSetCoreWave;  }	//!

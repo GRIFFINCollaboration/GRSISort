@@ -40,9 +40,13 @@ void TGRSIDetector::AddHit(TGRSIDetectorHit *hit,Option_t *opt) {
   return;
 }
 
-void TGRSIDetector::Copy(TGRSIDetector &rhs) const {
-   TObject::Copy((TObject&)rhs);
+void TGRSIDetector::Copy(TObject &rhs) const {
+  //if(!rhs.InheritsFrom("TGRSIDetector"))
+  //   return;
+  TObject::Copy((TObject&)rhs);
+  
 }
+
 
 void TGRSIDetector::Print(Option_t *opt) const {
 // Default print statement for TGRSIDetector. Currently does

@@ -124,12 +124,6 @@ Int_t TGriffinHit::GetCharge(Option_t *opt) const {
 }
 */
 
-
-double TGriffinHit::GetTime(Option_t *opt) const {
-  //still need to figure out how to handle the times
-  return (double)time;
-}
-
 TVector3 TGriffinHit::GetPosition(Double_t dist) const{
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
@@ -202,6 +196,7 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
       this->cfd    = hit->GetCfd();
       this->time   = hit->GetTime();
       this->position = hit->GetPosition();
+      this->address = hit->GetAddress();
    }
 
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());

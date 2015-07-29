@@ -55,11 +55,6 @@ void TPacesHit::Print(Option_t *opt) const	{
 	printf("Paces hit time:   %f\n",GetTime());
 }
 
-double TPacesHit::GetTime(Option_t *opt) const {
-  //still need to figure out how to handle the times
-  return time;
-}
-
 TVector3 TPacesHit::GetPosition(Double_t dist) const{
 	return TPaces::GetPosition(GetDetector());
 }

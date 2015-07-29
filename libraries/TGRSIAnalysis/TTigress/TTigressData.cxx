@@ -47,7 +47,7 @@ void TTigressData::Clear(Option_t *opt)	{
 	fSegment_Wave.clear();
 }
 
-void TTigressData::Print(Option_t *opt)	{
+void TTigressData::Print(Option_t *opt) const	{
 	// not yet written.
 	printf("not yet written.\n");
 }
