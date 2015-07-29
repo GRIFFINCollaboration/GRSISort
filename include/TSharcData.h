@@ -83,7 +83,7 @@ public:
   const inline UInt_t   GetFront_Address(const unsigned int &i)        const { return fSharc_FrontFragment.at(i).ChannelAddress; } //!
   const inline Double_t GetFront_Energy(const unsigned int &i)         const { return fSharc_FrontFragment.at(i).GetEnergy();}     //!
   const inline Double_t GetFront_Charge(const unsigned int &i)         const { return fSharc_FrontFragment.at(i).GetCharge();}     //!
-  const inline Double_t GetFront_Cfd(const unsigned int &i)            const { return fSharc_FrontFragment.at(i).GetCfd();}        //!
+  const inline Int_t    GetFront_Cfd(const unsigned int &i)            const { return fSharc_FrontFragment.at(i).GetCfd();}        //!
   const inline Double_t GetFront_Led(const unsigned int &i)            const { return fSharc_FrontFragment.at(i).GetLed();}        //!
   const inline Double_t GetFront_TimeStamp(const unsigned int &i)      const { return fSharc_FrontFragment.at(i).GetTimeStamp();}  //!
   const inline TFragment GetFront_Fragment(const unsigned int &i)      const { return fSharc_FrontFragment.at(i);}                 //!
@@ -94,7 +94,7 @@ public:
   const inline UInt_t   GetBack_Address(const unsigned int &i)        const { return fSharc_BackFragment.at(i).ChannelAddress; }   //!
   const inline Double_t GetBack_Energy(const unsigned int &i)         const { return fSharc_BackFragment.at(i).GetEnergy();}       //!
   const inline Float_t  GetBack_Charge(const unsigned int &i)         const { return fSharc_BackFragment.at(i).GetCharge();}       //!
-  const inline Double_t GetBack_Cfd(const unsigned int &i)            const { return fSharc_BackFragment.at(i).GetCfd();}          //!
+  const inline Int_t    GetBack_Cfd(const unsigned int &i)            const { return fSharc_BackFragment.at(i).GetCfd();}          //!
   const inline Double_t GetBack_Led(const unsigned int &i)            const { return fSharc_BackFragment.at(i).GetLed();}          //!
   const inline Double_t GetBack_TimeStamp(const unsigned int &i)      const { return fSharc_BackFragment.at(i).GetTimeStamp();}    //!
   const inline TFragment GetBack_Fragment(const unsigned int &i)      const { return fSharc_BackFragment.at(i);}                   //!
