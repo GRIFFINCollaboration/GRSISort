@@ -31,16 +31,19 @@ class TGRSIRootIO : public TObject {
       TTree *fFragmentTree;
       TTree *fBadFragmentTree;
       TTree *fEpicsTree;
+      TTree *fSCLRTree;
       TFile *foutfile;
       int fTimesFillCalled;
       int fTimesBadFillCalled;
       int fEPICSTimesFillCalled;
+      int fSCLRTimesFillCalled;
 
       std::vector<TFile*> finfiles;
 
       TFragment  *fBufferFrag;
       TFragment  *fBadBufferFrag;
       TEpicsFrag *fEXBufferFrag;
+      TSCLRFrag  *fSBufferFrag;
       TChannel   *fBufferChannel;
 
    public:
@@ -73,6 +76,13 @@ class TGRSIRootIO : public TObject {
       TTree *GetEpicsTree()  { return fEpicsTree;  }
       void FillEpicsTree(TEpicsFrag*);
       void FinalizeEpicsTree();
+
+      void SetUpSCLRTree();
+      TTree *GetSCLRTree()  { return fSCLRTree;  }
+      void FillSCLRTree(TSCLRFrag*);
+      void FinalizeSCLRTree();
+
+
 
       void MakeUserHistsFromFragmentTree();
       void WriteRunStats();

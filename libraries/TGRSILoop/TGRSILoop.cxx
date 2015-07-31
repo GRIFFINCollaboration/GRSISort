@@ -9,6 +9,7 @@
 #include "TGRSILoop.h"
 #include "TGRSIOptions.h"
 #include "TDataParser.h"
+#include "TEpicsFrag.h"
 
 #include "TFragmentQueue.h"
 #include "TGRSIRootIO.h"
@@ -46,6 +47,10 @@ TGRSILoop::TGRSILoop()   {
    fMidasThread = 0;
    fFillTreeThread = 0;
    fOdb = 0;
+
+   fIamTigress = false;
+   fIamGriffin = false;
+
 }
 
 TGRSILoop::~TGRSILoop()  {  }
@@ -295,10 +300,14 @@ void TGRSILoop::SetFileOdb(char *data, int size) {
          break;
       node = node->GetNextNode();
    }
-   if(expt.compare("tigress")==0)
-      SetTIGOdb();
-   else if(expt.compare("griffin")==0)
-      SetGRIFFOdb();
+   if(expt.compare("tigress")==0) {
+     fIamTigress = true;
+     SetTIGOdb();
+   }
+   else if(expt.compare("griffin")==0) {
+     fIamGriffin = true;
+     SetGRIFFOdb();
+   }
 }
 
 void TGRSILoop::SetGRIFFOdb() {
@@ -460,6 +469,7 @@ void TGRSILoop::SetTIGOdb()  {
 bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
    if(!mevent)
       return false;
+   //printf("mevent->GetSerialNumber = %i\n",mevent->GetSerialNumber());
    int banksize;
    void *ptr;
    try {
@@ -489,6 +499,19 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
                if(!Process8PI(3,(uint32_t*)ptr,banksize,mevent,mfile)) {}
             }
             break;
+         case 2:
+           if(!fIamGriffin) {
+              break;
+           }
+           mevent->SetBankList();
+           if((banksize = mevent->LocateBank(NULL,"SCLR",&ptr))>0) {
+             if(!TGRSIRootIO::Get()->GetSCLRTree()) {
+               TSCLRFrag::SetAddressMap(0,0);
+               TGRSIRootIO::Get()->SetUpSCLRTree();
+             }
+	          if(!ProcessSCLR((uint32_t*)ptr, banksize, mevent, mfile)) { }
+           }
+           break;
          case 4:
          case 5:
             mevent->SetBankList();
@@ -497,6 +520,8 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
                               //(unsigned int)(mevent->GetSerialNumber()),
                               //(unsigned int)(mevent->GetTimeStamp()))) { }
             }
+
+            
       };
    }
    catch(const std::bad_alloc&) {   }
@@ -528,6 +553,14 @@ bool TGRSILoop::ProcessEPICS(float *ptr,int &dsize,TMidasEvent *mevent,TMidasFil
 
    return true;
 }
+
+bool TGRSILoop::ProcessSCLR(uint32_t *ptr,int &dsize,TMidasEvent *mevent,TMidasFile *mfile) { 
+   unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
+	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
+   int sclr_banks = TDataParser::SCLRToScalar(ptr,dsize,mserial,mtime);
+  return true;
+}
+
 
 
 bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile)   {

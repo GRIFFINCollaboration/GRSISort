@@ -330,6 +330,12 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
        } else if(temp.compare("ignore_odb")==0) { 
           // useful when dealing with midas file that have corrupt odbs in them .
           TGRSIOptions::SetIgnoreFileOdb(true);          
+       } else if(temp.compare("ignore_epics")==0) { 
+          // useful when dealing with midas file that have corrupt odbs in them .
+          TGRSIOptions::SetIgnoreEpics(true);          
+       } else if(temp.compare("ignore_sclr")==0) { 
+          // useful when dealing with midas file that have corrupt odbs in them .
+          TGRSIOptions::SetIgnoreSCLR(true);          
        } else {
           printf(DBLUE  "    option: " DYELLOW "%s " DBLUE "passed but not understood." RESET_COLOR "\n",temp.c_str());
        }

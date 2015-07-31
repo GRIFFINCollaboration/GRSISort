@@ -103,7 +103,7 @@ int TDataParser::TigressDataToFragment(uint32_t *data,int size,int *iter,unsigne
             break;
          case 0x4: // cfd values.  This also ends the the fragment!
             SetTIGCfd(value,EventFrag);
-            SetTIGCharge(temp_charge,EventFrag);
+            //SetTIGCharge(temp_charge,EventFrag);
             SetTIGLed(temp_led,EventFrag);
             ///check whether the fragment is 'good'
             //FragsFound.push_back(EventFrag);
@@ -122,31 +122,31 @@ int TDataParser::TigressDataToFragment(uint32_t *data,int size,int *iter,unsigne
                EventFrag = 0;
             break;
          case 0x5: // raw charge evaluation.
-            //SetTIGCharge(value,EventFrag);
-				{
-   				TChannel *chan = TChannel::GetChannel(EventFrag->ChannelAddress);
-					if(!chan) {
-						temp_charge = (value &  0x03ffffff);
-                  if(value & 0x02000000)  
-                     temp_charge = -( (~(value & 0x01ffffff)) & 0x01ffffff)+1;
-					} else if(strncmp(chan->GetChannelName(),"Tig10",5) == 0) {
-                  //eventfragment->PileUp = (value &  0x04000000);
-                  temp_charge   = (value &  0x03ffffff);
-                  if(value & 0x02000000)  {
-                     temp_charge = -( (~(value & 0x01ffffff)) & 0x01ffffff)+1;
-                  }
-					} else if(strncmp(chan->GetChannelName(),"Tig64",5) == 0) {
-                  //eventfragment->PileUp = (value &  0x04000000);
-                  temp_charge   = (value &  0x003fffff);
-                  if(value & 0x00200000)  {
-                     temp_charge = -( (~(value & 0x001fffff)) & 0x001fffff)+1;
-                  }
-               } else {
-						temp_charge = (value &  0x03ffffff);
-                  if(value & 0x02000000)  
-                     temp_charge = -( (~(value & 0x01ffffff)) & 0x01ffffff)+1;
-					}
-				}
+            SetTIGCharge(value,EventFrag);
+  //			{
+  //				TChannel *chan = TChannel::GetChannel(EventFrag->ChannelAddress);
+  //				if(!chan) {
+  //					temp_charge = (value &  0x03ffffff);
+  //               if(value & 0x02000000)  
+  //                  temp_charge = -( (~(value & 0x01ffffff)) & 0x01ffffff)+1;
+  //				} else if(strncmp(chan->GetDigitizerType(),"Tig10",5) == 0) {
+  //               //eventfragment->PileUp = (value &  0x04000000);
+  //               temp_charge   = (value &  0x03ffffff);
+  //               if(value & 0x02000000)  {
+  //                  temp_charge = -( (~(value & 0x01ffffff)) & 0x01ffffff)+1;
+  //               }
+  //				} else if(strncmp(chan->GetDigitizerType(),"Tig64",5) == 0) {
+  //               //eventfragment->PileUp = (value &  0x04000000);
+  //               temp_charge   = (value &  0x003fffff);
+  //               if(value & 0x00200000)  {
+  //                  temp_charge = -( (~(value & 0x001fffff)) & 0x001fffff)+1;
+  //               }
+  //            } else {
+  //					temp_charge = (value &  0x03ffffff);
+  //               if(value & 0x02000000)  
+  //                  temp_charge = -( (~(value & 0x01ffffff)) & 0x01ffffff)+1;
+  //				}
+  //			}
             //temp_charge = value;
             break;
          case 0x6:
@@ -255,12 +255,13 @@ void TDataParser::SetTIGCharge(uint32_t value, TFragment *currentfragment) {
 	std::string dig_type = chan->GetDigitizerType();
    currentfragment->ChannelNumber = chan->GetNumber();
 
-   if( dig_type.compare(0,5,"Tig10") == 0)	{
+
+   if((dig_type.compare(0,5,"Tig10") == 0) || (dig_type.compare(0,5,"TIG10") == 0))	{
      if(value & 0x02000000)	
          currentfragment->Charge.push_back( -( (~((int32_t)value & 0x01ffffff)) & 0x01ffffff)+1);
 	   else 
          currentfragment->Charge.push_back(value &  0x03ffffff);
-	} else if( dig_type.compare(0,5,"Tig64") == 0) {
+   } else if((dig_type.compare(0,5,"Tigi64") == 0) || (dig_type.compare(0,5,"TIG64") == 0))	{
 		 if(value & 0x00200000)	
 		   currentfragment->Charge.push_back( -( (~((int32_t)value & 0x001fffff)) & 0x001fffff)+1);
 		else  
@@ -271,6 +272,19 @@ void TDataParser::SetTIGCharge(uint32_t value, TFragment *currentfragment) {
 		 else
  	      currentfragment->Charge.push_back( ((int32_t)value &	0x03ffffff));
 	}
+/*
+   if(currentfragment->ChannelNumber>1983 && 
+      currentfragment->ChannelNumber<1988 &&
+      currentfragment->Charge.back()<0    ) {
+      printf("Name     = %s\n",currentfragment->GetName());
+      printf("Address  = 0x%08x\n",currentfragment->ChannelAddress);
+      printf("value    = 0x%08x\t%i\n",value,value);
+      printf("dig_type = %s\n",dig_type.c_str());
+      printf("Charge   = 0x%08x\t%i\n",currentfragment->Charge.back(),currentfragment->Charge.back()/125.0);
+      chan->Print();
+      printf("----------------------------------------\n");
+   }
+*/
 }
 
 bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment *currentfrag) {
@@ -926,6 +940,38 @@ int TDataParser::EPIXToScalar(float *data,int size,unsigned int midasserialnumbe
    return NumFragsFound;
 }
 
+int TDataParser::SCLRToScalar(uint32_t *data,int size,unsigned int midasserialnumber,time_t midastime) {
+
+   int NumFragsFound = 1;
+   TSCLRFrag *Sfrag = new TSCLRFrag;
+
+   Sfrag->MidasTimeStamp = midastime;
+   Sfrag->MidasId        = midasserialnumber;	 
+
+   //printf("\nsclr unpacked called with size = %i\n\n",size);
+  
+
+   if((size%4) != 0) {
+      //make some error mode
+      //printf("here 1 \n");
+      TGRSIRootIO::Get()->FillSCLRTree(Sfrag); // fill the tree so at least there is a record of it's timestamp.
+      return 0;
+   }
+   for(int x=0;x<size;x=x+4) {
+      Sfrag->Data1.push_back((UInt_t)data[x+0]);
+      Sfrag->Data2.push_back((UInt_t)data[x+1]);
+      Sfrag->Data3.push_back((UInt_t)data[x+2]);
+      Sfrag->Data4.push_back((UInt_t)data[x+3]);
+   }
+   for(int x=0;x<TSCLRFrag::AddressMap.size();x++) {Sfrag->Address.push_back(TSCLRFrag::AddressMap.at(x)); }
+   //Sfrag->Print();
+
+   TGRSIRootIO::Get()->FillSCLRTree(Sfrag);
+   delete Sfrag;
+   Sfrag = 0;
+   //printf("[%i]  frag deleted, return.\n\n\n",midasserialnumber);
+   return NumFragsFound;
+}
 
 
 

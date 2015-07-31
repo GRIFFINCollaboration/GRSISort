@@ -15,6 +15,7 @@ namespace TGRSIOptions {
   bool fReadingMaterial = false;
   bool fIgnoreFileOdb  = false;
   bool fIgnoreEpics    = false;
+  bool fIgnoreSCLR     = false;
   bool fCloseAfterSort = false;
   bool fWriteBadFrags  = false;
 
@@ -62,6 +63,9 @@ bool IgnoreFileOdb()             { return fIgnoreFileOdb; }
 
 void SetIgnoreEpics(bool flag) { fIgnoreEpics=flag; }
 bool IgnoreEpics()             { return fIgnoreEpics; }
+
+void SetIgnoreSCLR(bool flag) { fIgnoreSCLR=flag; }
+bool IgnoreSCLR()             { return fIgnoreSCLR; }
 
 void SetCloseAfterSort(bool flag) { fCloseAfterSort=flag; }
 bool CloseAfterSort()                  { return fCloseAfterSort; }
