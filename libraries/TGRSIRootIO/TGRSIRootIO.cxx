@@ -143,19 +143,20 @@ void TGRSIRootIO::FinalizeFragmentTree() {
    TList *list = fFragmentTree->GetUserInfo();
    std::map < unsigned int, TChannel * >::iterator iter;
    foutfile->cd();
-   //for(iter=TChannel::GetChannelMap()->begin();iter!=TChannel::GetChannelMap()->end();iter++) {
-		TChannel *chan = TChannel::GetDefaultChannel();//new TChannel(iter->second);
+	TChannel *chan = TChannel::GetDefaultChannel();//new TChannel(iter->second);
+	if(chan != NULL) {
       chan->SetNameTitle(Form("TChannels[%i]",TChannel::GetNumberOfChannels()),
                          Form("%i TChannels.",TChannel::GetNumberOfChannels()));
-      //list->Add(chan);//(iter->second);
                            // using the write command on any tchannel will now write all 
       chan->WriteToRoot(); // the tchannels to a root file.  additionally reading a tchannel
                            // from a rootfile will read all the channels saved to it.  tchannels
                            // are now saved as a text buffer to the root file.  pcb.
-  //    break;
-	//}                      // update. (3/9/2015) the WriteToRoot function should now 
+	                        // update. (3/9/2015) the WriteToRoot function should now 
                            // corretcly save the tchannels even if the came from the odb(i.e. internal 
                            // data buffer not set.)  pcb.
+   } else {
+		printf("Failed to get default channel, not going to write TChannel information!\n");
+	}
    
    foutfile->cd();
    fFragmentTree->AutoSave(); //Write();
