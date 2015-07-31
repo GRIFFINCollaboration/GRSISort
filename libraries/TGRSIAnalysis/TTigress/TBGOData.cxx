@@ -32,7 +32,7 @@ void TBGOData::Clear(Option_t *opt)	{
 }
 
 
-void TBGOData::Print(Option_t *opt)	{
+void TBGOData::Print(Option_t *opt) const	{
     //not yet written.
     printf("not yet written.\n");
 

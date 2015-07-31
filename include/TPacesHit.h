@@ -22,16 +22,11 @@ class TPacesHit : public TGRSIDetectorHit {
       Int_t filter;
       Int_t ppg;
 
-   //flags
-   private:
-      Bool_t is_crys_set; //!
-
 	public:
 		/////////////////////////  Setters	/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { filter = x;   }                  //! 
       inline void SetPPG(const int &x)             { ppg = x;   }                     //! 
       //void SetHit();
-      virtual double GetTime(Option_t *opt = "") const;                                 //!
 
       TVector3 GetPosition(Double_t dist = 0.0) const; //!
 

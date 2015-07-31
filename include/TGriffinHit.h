@@ -26,16 +26,11 @@ class TGriffinHit : public TGRSIDetectorHit {
       Int_t ppg;
       UInt_t crystal; //!
 
-   //flags
-   private:
-      Bool_t is_crys_set; //!
-
 	public:
 		/////////////////////////  Setters	/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { filter = x;   }                  //! 
       inline void SetPPG(const int &x)             { ppg = x;   }                     //! 
       //void SetHit();
-      virtual double GetTime(Option_t *opt = "") const;                                 //!
 
 //		void SetPosition(double dist =110);   //!
       TVector3 GetPosition(Double_t dist = 110.0) const; //!
@@ -67,21 +62,14 @@ class TGriffinHit : public TGRSIDetectorHit {
       inline UShort_t GetArrayNumber() { return( 4*(GetDetector()-1)+(GetCrystal()+1)); } //!
       // returns a number 1-64 ( 1 = Detector 1 blue;  64 =  Detector 16 white; ) 
 
-      //inline Int_t    GetChargeLow() const			  {	return charge_lowgain;	  }  //!
-		//inline Int_t    GetChargeHigh() const			  {	return charge_highgain;	  }  //!
-      //inline Int_t    GetCfd() const                 {   return cfd;      }  //!
-      //inline Double_t GetEnergyLow() const		     {	return energy_lowgain;   }  //!
-      //inline Double_t GetEnergyHigh() const		     {	return energy_highgain;   }  //!
-		//inline Long_t   GetTime() const 			        {	return time;     }  //!
-
       //inline Int_t    GetFilterPatter() const         {   return filter;   }  //!
       //inline Int_t    GetPPG() const                  {   return ppg;   }  //!
       //inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
 
       bool   InFilter(Int_t);  //!
 
-      static bool CompareEnergy(TGriffinHit*,TGriffinHit*);  //!
-      void Add(TGriffinHit*);    //! 
+      static bool CompareEnergy(const TGriffinHit*, const TGriffinHit*);  //!
+      void Add(const TGriffinHit*);    //! 
       //Bool_t BremSuppressed(TSceptarHit*);
 
 	public:

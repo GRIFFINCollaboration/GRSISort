@@ -34,7 +34,7 @@ class TBGOData : public TGRSIDetectorData	{
 		std::vector<UShort_t> fBGO_CloverNbr;		//!The clover that the BGO is on
 		std::vector<UShort_t> fBGO_CrystalNbr;		//!The BGO crystal
 		std::vector<UShort_t> fBGO_PmNbr;		//!
-		std::vector<Int_t>    fBGO_Charge;		//!The Charge collected by the BGO
+		std::vector<Float_t>    fBGO_Charge;	//!The Charge collected by the BGO
 		std::vector<Double_t> fBGO_Energy;		//!The Energy collected by the BGO
 		std::vector<Int_t>    fBGO_TimeCFD;		//!The CFD time of the hit in the BGO
 		std::vector<Double_t> fBGO_TimeLED;		//!The LED time of the hit in the BGO
@@ -52,13 +52,13 @@ class TBGOData : public TGRSIDetectorData	{
 		static bool IsSet() { return fIsSet; }           //!
 
  		virtual void Clear(Option_t *opt = "");		//!
-		virtual void Print(Option_t *opt = "");		//!
+		virtual void Print(Option_t *opt = "") const;		//!
   
 		/////////////////////           SETTERS           ////////////////////////
 		inline void SetBGOCloverNbr(const UShort_t &BGOClvNbr)		{fBGO_CloverNbr.push_back(BGOClvNbr);}  //!
 		inline void SetBGOCrystalNbr(const UShort_t &BGOCryNbr)		{fBGO_CrystalNbr.push_back(BGOCryNbr);}	//!
 		inline void SetBGOPmNbr(const UShort_t &BGOPmNbr)		{fBGO_PmNbr.push_back(BGOPmNbr);}	//!
-		inline void SetBGOCharge(const Int_t &BGOCharge)		{fBGO_Charge.push_back(BGOCharge);}	//!	
+		inline void SetBGOCharge(const Float_t &BGOCharge)		{fBGO_Charge.push_back(BGOCharge);}	//!	
 		inline void SetBGOEnergy(const Double_t &BGOEnergy)		{fBGO_Energy.push_back(BGOEnergy);}	//!
 		inline void SetBGOCFD(const Int_t &BGOTimeCFD)   		{fBGO_TimeCFD.push_back(BGOTimeCFD);}	//!
 		inline void SetBGOLED(const Double_t &BGOTimeLED)		{fBGO_TimeLED.push_back(BGOTimeLED);}	//!
@@ -103,7 +103,7 @@ class TBGOData : public TGRSIDetectorData	{
     inline UShort_t GetBGOCloverNumber(const unsigned &i)       {return fBGO_CloverNbr.at(i);} //!
 		inline UShort_t GetBGOCoreNumber(const unsigned &i)      {return fBGO_CrystalNbr.at(i);}//!
 		inline UShort_t GetBGOPmNbr(const unsigned int &i)       {return fBGO_PmNbr.at(i); }	//!
-		inline Int_t    GetBGOCharge(const unsigned int &i)      {return fBGO_Charge.at(i);}	//!		
+		inline Float_t    GetBGOCharge(const unsigned int &i)      {return fBGO_Charge.at(i);}	//!		
 		inline Double_t GetBGOEnergy(const unsigned int &i)      {return fBGO_Energy.at(i);}	//!
 		inline Int_t    GetBGOCFD(const unsigned int &i)     {return fBGO_TimeCFD.at(i);}	//!
 		inline Double_t GetBGOLED(const unsigned int &i)     {return fBGO_TimeLED.at(i);}	//!

@@ -30,7 +30,7 @@ private:
   vector<Char_t>   fCSM_StripHorizontal_DetectorPos;		//!
   vector<Short_t>   fCSM_StripHorizontal_StripNbr;		//!
   vector<Double_t>   fCSM_StripHorizontal_Energy;			//!
-  vector<Int_t>	   fCSM_StripHorizontal_Charge;			//!
+  vector<Float_t>	   fCSM_StripHorizontal_Charge;			//!
   vector<Int_t>      fCSM_StripHorizontal_TimeCFD;			//!
   vector<Int_t>      fCSM_StripHorizontal_TimeLED;			//!
   vector<Double_t>   fCSM_StripHorizontal_Time;			//!
@@ -41,7 +41,7 @@ private:
   vector<Char_t>   fCSM_StripVertical_DetectorPos;		//!
   vector<Short_t>   fCSM_StripVertical_StripNbr;			//!
   vector<Double_t>   fCSM_StripVertical_Energy;			//!
-  vector<Int_t>	   fCSM_StripVertical_Charge;			//!
+  vector<Float_t>	   fCSM_StripVertical_Charge;			//!
   vector<Int_t>   fCSM_StripVertical_TimeCFD;			//!
   vector<Int_t>   fCSM_StripVertical_TimeLED;			//!
   vector<Double_t>   fCSM_StripVertical_Time;				//!
@@ -55,8 +55,8 @@ public:
   
   void Clear(Option_t *opt = ""); //!
   //void Clear(const Option_t*) {};
-  void Print(Option_t *opt = ""); //!
-  void Print(int addr,bool horizontal); //!
+  void Print(Option_t *opt = "") const; //!
+  void Print(int addr,bool horizontal) const; //!
   
   
   static void Set(bool flag=true) { fIsSet=flag; } //!
@@ -67,7 +67,7 @@ public:
   inline void SetHorizontal_DetectorPos(const UShort_t &DetPos){fCSM_StripHorizontal_DetectorPos.push_back(DetPos);}	//!
   inline void SetHorizontal_StripNbr(const Short_t &StripNbr) {fCSM_StripHorizontal_StripNbr.push_back(StripNbr);}		//!
   inline void SetHorizontal_Energy(const Double_t &Energy)     {fCSM_StripHorizontal_Energy.push_back(Energy);}				//!
-  inline void SetHorizontal_Charge(const Int_t &Charge)       {fCSM_StripHorizontal_Charge.push_back(Charge);}				//!
+  inline void SetHorizontal_Charge(const Float_t &Charge)       {fCSM_StripHorizontal_Charge.push_back(Charge);}				//!
   inline void SetHorizontal_TimeCFD(const Int_t &TimeCFD)   {fCSM_StripHorizontal_TimeCFD.push_back(TimeCFD);}			//!
   inline void SetHorizontal_TimeLED(const Int_t &TimeLED)   {fCSM_StripHorizontal_TimeLED.push_back(TimeLED);}			//!
   inline void SetHorizontal_Time(const Double_t &Time)         {fCSM_StripHorizontal_Time.push_back(Time);}						//!
@@ -79,7 +79,7 @@ public:
   inline void SetVertical_DetectorPos(const UShort_t &DetPos){fCSM_StripVertical_DetectorPos.push_back(DetPos);}		//!
   inline void SetVertical_StripNbr(const Short_t &StripNbr) {fCSM_StripVertical_StripNbr.push_back(StripNbr);}		//!
   inline void SetVertical_Energy(const Double_t &Energy)     {fCSM_StripVertical_Energy.push_back(Energy);}				//!
-  inline void SetVertical_Charge(const Int_t &Charge)       {fCSM_StripVertical_Charge.push_back(Charge);}					//!
+  inline void SetVertical_Charge(const Float_t &Charge)       {fCSM_StripVertical_Charge.push_back(Charge);}					//!
   inline void SetVertical_TimeCFD(const Int_t &TimeCFD)   {fCSM_StripVertical_TimeCFD.push_back(TimeCFD);}			//!
   inline void SetVertical_TimeLED(const Int_t &TimeLED)   {fCSM_StripVertical_TimeLED.push_back(TimeLED);}			//!
   inline void SetVertical_Time(const Double_t &Time)         {fCSM_StripVertical_Time.push_back(Time);}						//!
@@ -113,7 +113,7 @@ public:
   inline UShort_t GetHorizontal_DetectorPos(const unsigned int &i) const {return fCSM_StripHorizontal_DetectorPos[i];}	//!
   inline UShort_t GetHorizontal_StripNbr(const int &i)    const {return fCSM_StripHorizontal_StripNbr[i];}		//!
   inline Double_t GetHorizontal_Energy(const unsigned int &i)      const {return fCSM_StripHorizontal_Energy[i];}		//!
-  inline Int_t 	GetHorizontal_Charge(const unsigned int &i)      const {return fCSM_StripHorizontal_Charge[i];}		//!
+  inline Float_t 	GetHorizontal_Charge(const unsigned int &i)      const {return fCSM_StripHorizontal_Charge[i];}		//!
   inline Int_t    GetHorizontal_TimeCFD(const unsigned int &i)     const {return fCSM_StripHorizontal_TimeCFD[i];}		//!
   inline Int_t    GetHorizontal_TimeLED(const unsigned int &i)     const {return fCSM_StripHorizontal_TimeLED[i];}		//!
   inline Double_t GetHorizontal_Time(const unsigned int &i)     const {return fCSM_StripHorizontal_Time[i];}			//!
@@ -125,7 +125,7 @@ public:
   inline UShort_t GetVertical_DetectorPos(const unsigned int &i) const {return fCSM_StripVertical_DetectorPos[i];}	//!
   inline UShort_t GetVertical_StripNbr(const int &i)    const {return fCSM_StripVertical_StripNbr[i];}		//!
   inline Double_t GetVertical_Energy(const unsigned int &i)      const {return fCSM_StripVertical_Energy[i];}			//!
-  inline Int_t		GetVertical_Charge(const unsigned int &i)      const {return fCSM_StripVertical_Charge[i];}		//!
+  inline Float_t		GetVertical_Charge(const unsigned int &i)      const {return fCSM_StripVertical_Charge[i];}		//!
   inline Int_t    GetVertical_TimeCFD(const unsigned int &i)     const {return fCSM_StripVertical_TimeCFD[i];}		//!
   inline Int_t    GetVertical_TimeLED(const unsigned int &i)     const {return fCSM_StripVertical_TimeLED[i];}		//!
   inline Double_t GetVertical_Time(const unsigned int &i)     const {return fCSM_StripVertical_Time[i];}				//!

@@ -74,7 +74,7 @@ class TChannel : public TNamed	{
     bool             usecalfileint;
 
 
-    std::vector<double> ENGCoefficients;  //Energy calibration coeffs (low to high order)
+    std::vector<Float_t> ENGCoefficients;  //Energy calibration coeffs (low to high order)
     double ENGChi2;                       //Chi2 of the energy calibration
     std::vector<double> CFDCoefficients;  //CFD calibration coeffs (low to high order)
     double CFDChi2;                       //Chi2 of the CFD calibration
@@ -92,7 +92,7 @@ class TChannel : public TNamed	{
 	 void OverWriteChannel(TChannel*);
 	 void AppendChannel(TChannel*);
 
-    void SetENGCoefficients(std::vector<double> tmp) { ENGCoefficients = tmp; }
+    void SetENGCoefficients(std::vector<Float_t> tmp) { ENGCoefficients = tmp; }
     void SetCFDCoefficients(std::vector<double> tmp) { CFDCoefficients = tmp; }
     void SetLEDCoefficients(std::vector<double> tmp) { LEDCoefficients = tmp; }
     void SetTIMECoefficients(std::vector<double> tmp){ TIMECoefficients = tmp; }
@@ -130,13 +130,13 @@ class TChannel : public TNamed	{
     void SetUseCalFileIntegration(bool flag=true) {usecalfileint=flag;}
     bool UseCalFileIntegration() { return usecalfileint; }
 
-    std::vector<double> GetENGCoeff()  { return ENGCoefficients;}
+    std::vector<Float_t> GetENGCoeff() { return ENGCoefficients;}
     std::vector<double> GetCFDCoeff()  { return CFDCoefficients;}
     std::vector<double> GetLEDCoeff()  { return LEDCoefficients;}
     std::vector<double> GetTIMECoeff() { return TIMECoefficients;}
     std::vector<double> GetEFFCoeff()  { return EFFCoefficients;}
 
-    inline void AddENGCoefficient(double temp)  { ENGCoefficients.push_back(temp); }
+    inline void AddENGCoefficient(Float_t temp)  { ENGCoefficients.push_back(temp); }
     inline void AddCFDCoefficient(double temp)  { CFDCoefficients.push_back(temp); }
     inline void AddLEDCoefficient(double temp)  { LEDCoefficients.push_back(temp); }
     inline void AddTIMECoefficient(double temp) { TIMECoefficients.push_back(temp);}
@@ -151,8 +151,8 @@ class TChannel : public TNamed	{
 
     //void CalibrateFragment(TFragment*);
 
-    double CalibrateENG(double);
-    double CalibrateENG(int,int integration=0);
+    Float_t CalibrateENG(Float_t);
+    Float_t CalibrateENG(int,int integration=0);
     
     double CalibrateCFD(double);
     double CalibrateCFD(int);
