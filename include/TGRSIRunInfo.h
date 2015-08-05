@@ -11,20 +11,6 @@
  *
  */
 
-
-
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TGRSIRunInfo                                               //
-//                                                            //
-// This Class is designed to store and run dependent          //
-// information. It is used to store run numbers, existence of //
-// detector systems, reconstruction windows, etc. The         //
-// TGRSIRunInfo is written alongside both the fragment and    //
-// analysis trees.                                            //
-//                                                            //
-////////////////////////////////////////////////////////////////
-
 /* 
  * TGRSIRunInfo designed to be made as the FragmentTree
  * is created.  Right now, it simple remembers the run and 

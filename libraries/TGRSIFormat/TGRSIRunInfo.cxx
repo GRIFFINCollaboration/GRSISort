@@ -6,6 +6,18 @@
 
 #include <TGRSIOptions.h>
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TGRSIRunInfo                                               //
+//                                                            //
+// This Class is designed to store and run dependent          //
+// information. It is used to store run numbers, existence of //
+// detector systems, reconstruction windows, etc. The         //
+// TGRSIRunInfo is written alongside both the fragment and    //
+// analysis trees.                                            //
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 ClassImp(TGRSIRunInfo)
 
 TGRSIRunInfo *TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();  

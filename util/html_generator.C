@@ -49,7 +49,7 @@ public:
       // Create a "beautified" version of this source file.
       // It will be called htmldoc/htmlex.C.html.
       GetHtml()->SetMacroPath("$(ROOTSYS)/macros/");
-      GetHtml()->SetSourceDir("$(GRSISYS)/util");
+      GetHtml()->SetSourceDir("$(GRSISYS)/util:$(GRSISYS)/scripts");
       GetHtml()->Convert("html_generator.C", "Generates HTML Documentation", "./htmldoc/", "./");
       GetHtml()->Convert("DroppedData.C","Calculates Dropped Events","./htmldoc/","./");
    }
