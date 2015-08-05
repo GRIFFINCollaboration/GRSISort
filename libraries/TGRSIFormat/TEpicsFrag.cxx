@@ -10,7 +10,7 @@
 // TEpicsFrag                                                 //
 //                                                            //
 // This Class should contain all the information found in     //
-// NOT typeid 1 midas events.                                 //
+// NOT typeid 1 midas events. aka Epics (scaler) Events.      //
 //                                                            //
 //                                                            //
 ////////////////////////////////////////////////////////////////
@@ -18,6 +18,7 @@
 ClassImp(TEpicsFrag)
 
 TEpicsFrag::TEpicsFrag()  {
+  //Default Constructor.
   MidasTimeStamp =  0;   
   MidasId        = -1;         
 }
@@ -25,15 +26,18 @@ TEpicsFrag::TEpicsFrag()  {
 TEpicsFrag::~TEpicsFrag() { }
 
 void TEpicsFrag::Clear(Option_t *opt) {
-  MidasTimeStamp =  0;   
-  MidasId        = -1;         
+   //Clears the TEpicsFrag.
+   MidasTimeStamp =  0;   
+   MidasId        = -1;         
 
-  Data.clear();  
-  Name.clear();
-  Unit.clear();
+   Data.clear();  
+   Name.clear();
+   Unit.clear();
 } 
 
 void TEpicsFrag::Print(Option_t *opt) const { 
+   //Prints the TEpicsFrag. This includes Midas information as well the data
+   //kep inside of the scaler.
    int largest = Data.size();
    if(Name.size()>largest) largest = Name.size();
    if(Unit.size()>largest) largest = Unit.size();

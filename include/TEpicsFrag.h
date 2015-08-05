@@ -19,7 +19,7 @@
 // TEpicsFrag                                                 //
 //                                                            //
 // This Class should contain all the information found in     //
-// NOT typeid 1 midas events.                                 //
+// NOT typeid 1 midas events. aka Epics (scaler) Events.      //
 //                                                            //
 //                                                            //
 ////////////////////////////////////////////////////////////////
@@ -32,9 +32,9 @@ class TEpicsFrag : public TObject	{
     time_t   MidasTimeStamp;       //->  Timestamp of the MIDAS event  
     Int_t    MidasId;              //->  MIDAS ID
 
-    std::vector<float>      Data;
-    std::vector<std::string> Name;
-    std::vector<std::string> Unit;
+    std::vector<float>      Data;  //The data in the scaler
+    std::vector<std::string> Name; //The name of hte scaler
+    std::vector<std::string> Unit; //The Scaler unit
 
     int GetSize() { return Data.size(); }
     inline float GetData(const unsigned int &i) { if(i>=Data.size()) return Data.back(); else return Data.at(i); }
@@ -42,6 +42,6 @@ class TEpicsFrag : public TObject	{
     virtual void Clear(Option_t *opt = ""); //!
     virtual void Print(Option_t *opt = "") const; //!
     
-    ClassDef(TEpicsFrag,1);  // Event Fragments
+    ClassDef(TEpicsFrag,1);  // Scaler Fragments
 };
 #endif // TEPICSFRAG_H
