@@ -12,11 +12,24 @@
 
 #include "TMidasEvent.h"
 
-
 ClassImp(TMidasEvent)
+
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TMidasEvent                                                //
+//                                                            //
+// Contains the information within a Midas Event. This        //
+// usually includes a header, midas information such as timestamp
+// bank id, etc. And the bank data. The bank data is usually
+// the information supplied by either a scaler or the 
+// experimental DAQ system.
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 
 TMidasEvent::TMidasEvent()
 {
+   //Default constructor
   fData = NULL;
   fAllocatedByUs = false;
 
@@ -32,6 +45,7 @@ TMidasEvent::TMidasEvent()
 
 void TMidasEvent::Copy(const TMidasEvent& rhs)
 {
+   //Copies the entire TMidasEvent. This includes the bank information.
   fEventHeader = rhs.fEventHeader;
 
   fData        = (char*)malloc(fEventHeader.fDataSize);
@@ -46,6 +60,7 @@ void TMidasEvent::Copy(const TMidasEvent& rhs)
 
 TMidasEvent::TMidasEvent(const TMidasEvent &rhs)
 {
+   //Copy ctor.
   Copy(rhs);
 }
 
@@ -65,6 +80,7 @@ TMidasEvent& TMidasEvent::operator=(const TMidasEvent &rhs)
 
 void TMidasEvent::Clear()
 {
+   //Clears the TMidasEvent.
   if (fBankList)
     free(fBankList);
   fBankList = NULL;
@@ -85,6 +101,8 @@ void TMidasEvent::Clear()
 
 void TMidasEvent::SetData(uint32_t size, char* data)
 {
+   //Sets the data in the TMidasEvent as the data argument passed into
+   //this function.
   fEventHeader.fDataSize = size;
   assert(!fAllocatedByUs);
   assert(IsGoodSize());
@@ -120,6 +138,8 @@ uint32_t TMidasEvent::GetDataSize() const
 
 char* TMidasEvent::GetData()
 {
+   //Allocates the data if it has not been already, and then
+   //returns the allocated data.
   if (!fData)
     AllocateData();
   return fData;
@@ -350,6 +370,7 @@ void TMidasEvent::Print(const char *option) const
 
 void TMidasEvent::AllocateData()
 {
+   //Allocates space for the data from the event header if it is a good size
   assert(!fAllocatedByUs);
   assert(IsGoodSize());
   fData = (char*)malloc(fEventHeader.fDataSize);
@@ -364,6 +385,8 @@ const char* TMidasEvent::GetBankList() const
 
 int TMidasEvent::SetBankList()
 {
+   //Sets the bank list by Iterating of the banks.
+   //See IterateBank32 and IterateBank
   if (fEventHeader.fEventId <= 0)
     return 0;
 
@@ -521,6 +544,7 @@ _tmp= *((BYTE *)(x));                    \
 
 void TMidasEvent::SwapBytesEventHeader()
 {
+   //Swaps bytes in the header for endian-ness reasons
   WORD_SWAP(&fEventHeader.fEventId);
   WORD_SWAP(&fEventHeader.fTriggerMask);
   DWORD_SWAP(&fEventHeader.fSerialNumber);
@@ -529,6 +553,7 @@ void TMidasEvent::SwapBytesEventHeader()
 }
 
 int TMidasEvent::SwapBytes(bool force)
+   //Swaps bytes for endian-ness reasons
 {
   TMidas_BANK_HEADER *pbh;
   TMidas_BANK *pbk;
