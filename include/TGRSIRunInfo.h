@@ -12,6 +12,19 @@
  */
 
 
+
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TGRSIRunInfo                                               //
+//                                                            //
+// This Class is designed to store and run dependent          //
+// information. It is used to store run numbers, existence of //
+// detector systems, reconstruction windows, etc. The         //
+// TGRSIRunInfo is written alongside both the fragment and    //
+// analysis trees.                                            //
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 /* 
  * TGRSIRunInfo designed to be made as the FragmentTree
  * is created.  Right now, it simple remembers the run and 
@@ -160,15 +173,15 @@ class TGRSIRunInfo : public TObject {
       static inline int  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
 
    private:
-      static TGRSIRunInfo *fGRSIRunInfo;
+      static TGRSIRunInfo *fGRSIRunInfo; //Static pointer to TGRSIRunInfo
       //TGRSIRunInfo();
 
-      int fRunNumber;
-      int fSubRunNumber;
+      int fRunNumber;                     //The current run number
+      int fSubRunNumber;                  //The current sub run number
 
-      int fNumberOfTrueSystems;
+      int fNumberOfTrueSystems;           //The number of detection systems in the array
 
-      static std::string fGRSIVersion;
+      static std::string fGRSIVersion;    //The version of GRSISort that generated the file
 
       //  detector types to switch over in SetRunInfo()
       //  for more info, see: https://www.triumf.info/wiki/tigwiki/index.php/Detector_Nomenclature
@@ -188,37 +201,37 @@ class TGRSIRunInfo : public TObject {
       //               };
 
 
-      bool fTigress;
-      bool fSharc;
-      bool fTriFoil;
-      bool fRf;
-      bool fCSM;
-      bool fSpice;
-      bool fTip;
-      bool fS3;
+      bool fTigress;    //flag for Tigress on/off
+      bool fSharc;      //flag for Sharc on/off
+      bool fTriFoil;    //flag for TriFoil on/off
+      bool fRf;         //flag for RF on/off
+      bool fCSM;        //flag for CSM on/off
+      bool fSpice;      //flag for Spice on/off
+      bool fTip;        //flag for Tip on/off
+      bool fS3;         //flag for S3 on/off
 
-      bool fGriffin;
-      bool fSceptar;
-      bool fPaces;
-      bool fDante;
-      bool fZeroDegree;
-      bool fDescant;
+      bool fGriffin;    //flag for Griffin on/off
+      bool fSceptar;    //flag for Sceptar on/off
+      bool fPaces;      //flag for Paces on/off 
+      bool fDante;      //flag for LaBr on/off
+      bool fZeroDegree; //flag for Zero Degree Scintillator on/off
+      bool fDescant;    //flag for Descant on/off
 
-      std::string fCalFileName;
-      std::string fCalFile;
+      std::string fCalFileName;  //Name of calfile that generated cal
+      std::string fCalFile;      //Cal File to load into Cal of tree
 
-      std::string fXMLODBFileName;
-      std::string fXMLODBFile;
+      std::string fXMLODBFileName;  //Name of XML Odb file
+      std::string fXMLODBFile;      //The odb
 
-      std::string fMajorIndex;  
-      std::string fMinorIndex;  
+      std::string fMajorIndex;  //The Major index to order events during building
+      std::string fMinorIndex;  //The Minor index to order events during building
 
       /////////////////////////////////////////////////
       //////////////// Building Options ///////////////
       /////////////////////////////////////////////////
 
-      std::string fRunInfoFileName;
-      std::string fRunInfoFile;
+      std::string fRunInfoFileName; //The name of the Run info file
+      std::string fRunInfoFile;     //The contents of the run infor file
 	   static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 
       long int fBuildWindow;          // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
@@ -231,7 +244,7 @@ class TGRSIRunInfo : public TObject {
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
-   ClassDef(TGRSIRunInfo,3);
+   ClassDef(TGRSIRunInfo,3);  //Contains the run-dependent information.
 };
 
 #endif

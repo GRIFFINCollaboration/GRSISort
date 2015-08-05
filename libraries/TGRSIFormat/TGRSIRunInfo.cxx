@@ -37,6 +37,9 @@ std::string TGRSIRunInfo::fGRSIVersion;
 //int TGRSIRunInfo::fNumberOfTrueSystems = 0;
 
 void TGRSIRunInfo::Streamer(TBuffer &b) {
+   //Streamer for TGRSIRunInfo. Allows us to write all of the run info
+   //to disk like a string. This way there isn't any compatibility issues
+   //between different TGRSIRunInfo classes written by different users.
  UInt_t R__s, R__c;
  if(b.IsReading()) {
    Version_t R__v = b.ReadVersion(&R__s,&R__c); if (R__v) { }
@@ -110,12 +113,17 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
 
 
 TGRSIRunInfo *TGRSIRunInfo::Get() {
+   //The Getter for the singleton TGRSIRunInfo. This makes it
+   //so there is only even one instance of the run info during
+   //a session and it can be accessed from anywhere during that
+   //session.
    if(!fGRSIRunInfo)
       fGRSIRunInfo = new TGRSIRunInfo();
    return fGRSIRunInfo;
 }
 
 void TGRSIRunInfo::SetInfoFromFile(TGRSIRunInfo *tmp) {
+   //Sets the TGRSIRunInfo to the info passes as tmp.
    if(fGRSIRunInfo)
       delete fGRSIRunInfo;
    fGRSIRunInfo = tmp;
@@ -123,10 +131,13 @@ void TGRSIRunInfo::SetInfoFromFile(TGRSIRunInfo *tmp) {
 
 
 TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) { 
-   //if(fNumberOfTrueSystems>0)
-   //   TGRSIRunInfo::Get() = this;
-   //else
-   
+   //Default ctor for TGRSIRunInfo. The default values are:
+   //
+   //fHPGeArrayPosition = 110.0;
+   //fBuildWindow       = 200;  
+   //fAddBackWindow     = 15.0;
+
+
    fHPGeArrayPosition = 110.0;
    fBuildWindow       = 200;  
    fAddBackWindow     = 15.0;
@@ -138,6 +149,8 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
 TGRSIRunInfo::~TGRSIRunInfo() { }
 
 void TGRSIRunInfo::Print(Option_t *opt) const {
+   //Prints the TGRSIRunInfo. Options:
+   // a: Print out more details.
    if(strchr(opt,'a') != NULL){
       printf("\tTGRSIRunInfo Status:\n");
       printf("\t\tRunNumber:    %05i\n",TGRSIRunInfo::Get()->fRunNumber);
@@ -165,6 +178,8 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
 }
 
 void TGRSIRunInfo::Clear(Option_t *opt) {
+   //Clears the TGRSIRunInfo. Currently, there are no available
+   //options.
    
    fTigress = false;
    fSharc = false;
@@ -191,6 +206,7 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
 
 
 void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
+   //Sets the run info. This figures out what systems are available.
 
    printf("In runinfo, found %i channels.\n",TChannel::GetNumberOfChannels());
 
@@ -271,10 +287,14 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
 }
 
 
-void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {  }
+void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {
+//Currently does nothing.
+}
 
 
 Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
+   //Read in a run info file. These files have the extension .info.
+   //An example can be found in the "examples" directory.
    std::string infilename;
    infilename.append(filename);
 
@@ -304,6 +324,7 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
 }
 
 Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
+   //A helper function to parse the run info file.
 
    std::istringstream infile(inputdata);
    std::string line;
@@ -374,9 +395,4 @@ void TGRSIRunInfo::trim(std::string * line, const std::string & trimChars) {
       *line = line->substr(0, found + 1);
    return;
 }
-
-
-
-
-
 
