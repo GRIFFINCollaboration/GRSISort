@@ -35,25 +35,27 @@ void TCSMData::Clear(Option_t *opt)
   fCSM_StripHorizontal_DetectorNbr.clear();
   fCSM_StripHorizontal_DetectorPos.clear();
   fCSM_StripHorizontal_StripNbr.clear();
-  fCSM_StripHorizontal_Energy.clear();
-  fCSM_StripHorizontal_Charge.clear();
-  fCSM_StripHorizontal_TimeCFD.clear();
-  fCSM_StripHorizontal_TimeLED.clear();
-  fCSM_StripHorizontal_Time.clear();
+  fCSM_StripHorizontal_Fragment.clear();
+  //fCSM_StripHorizontal_Energy.clear();
+  //fCSM_StripHorizontal_Charge.clear();
+  //fCSM_StripHorizontal_TimeCFD.clear();
+  //fCSM_StripHorizontal_TimeLED.clear();
+  //fCSM_StripHorizontal_Time.clear();
 
-  fCSM_StripHorizontal_Wave.clear();
+  //fCSM_StripHorizontal_Wave.clear();
 
 
   fCSM_StripVertical_DetectorNbr.clear();
   fCSM_StripVertical_DetectorPos.clear();
   fCSM_StripVertical_StripNbr.clear();
-  fCSM_StripVertical_Energy.clear();
-  fCSM_StripVertical_Charge.clear();
-  fCSM_StripVertical_TimeCFD.clear();
-  fCSM_StripVertical_TimeLED.clear();
-  fCSM_StripVertical_Time.clear();
+  fCSM_StripVertical_Fragment.clear();
+  //fCSM_StripVertical_Energy.clear();
+  //fCSM_StripVertical_Charge.clear();
+  //fCSM_StripVertical_TimeCFD.clear();
+  //fCSM_StripVertical_TimeLED.clear();
+  //fCSM_StripVertical_Time.clear();
 
-  fCSM_StripVertical_Wave.clear();
+  //fCSM_StripVertical_Wave.clear();
 
 
 }
