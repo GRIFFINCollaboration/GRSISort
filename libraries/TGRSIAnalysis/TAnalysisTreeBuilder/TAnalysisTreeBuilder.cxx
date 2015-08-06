@@ -431,7 +431,9 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       } else {
          //If we aren't ready to "build" the event, we fill the current event with the new fragment
          event->push_back(*currentFrag);
-         firstTimeStamp = currentFrag->GetTimeStamp(); //THIS IS FOR MOVING WINDO
+         if(TGRSIRunInfo::IsMovingWindow()){
+            firstTimeStamp = currentFrag->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
+         }
       }
    }
    //in case we have fragments left after all of the fragments have been processed, we add them to the queue now
