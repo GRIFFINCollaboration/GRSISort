@@ -21,11 +21,19 @@
 #include "TCanvas.h"
 #include "TStopwatch.h"
 #include "TMath.h"
+#include "TGRSIRunInfo.h"
+#include "TUserSortInfo.h"
+#include "Globals.h"
 
 #ifndef __CINT__ 
 #include "TGriffin.h"
 #include "TSceptar.h"
 #endif
+
+#define CUBES 0
+#define SCEP 0
+#define ADDBACK 0
+#define FRAGCOUNT 1
 
 //This code is an example of how to write an analysis script to analyse an analysis tree
 //The compiled script works like this
@@ -61,15 +69,15 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
    ///////////////////////////////////// SETUP ///////////////////////////////////////
    //Histogram paramaters
    Double_t low = 0;
-   Double_t high = 5000;
-   Double_t nofBins = 5000;
+   Double_t high = 4000;
+   Double_t nofBins = 4000;
 
    //Coincidence Parameters
    Double_t ggTlow = 0.;   //Times are in 10's of ns
-   Double_t ggThigh = 30.;
-   Double_t gbTlow = -20.;
-   Double_t gbThigh = 20.;
-   
+   Double_t ggThigh = 60.;
+   Double_t gbTlow =  0.;
+   Double_t gbThigh = 100.;
+
    if(w == NULL) {
       w = new TStopwatch;
       w->Start();
@@ -79,10 +87,9 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
    const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
    //We create some spectra and then add it to the list
-   TH1F* gammaSingles = new TH1F("gammaSingles","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaSingles);
-   TH1F* gammaSinglesB = new TH1F("gammaSinglesB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
-   TH2F* ggmatrix = new TH2F("ggmatrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(ggmatrix);
- 
+   TH1D* gammaSingles = new TH1D("gammaSingles","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaSingles);
+   TH1D* gammaSinglesB = new TH1D("gammaSinglesB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
+   TH2D* ggmatrix = new TH2D("ggmatrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(ggmatrix);
    ///////////////////////////////////// PROCESSING /////////////////////////////////////
 
    //set up branches
@@ -114,41 +121,41 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
    if(maxEntries == 0 || maxEntries > tree->GetEntries()) {
       maxEntries = tree->GetEntries();
    }
-   for(entry = 0; entry < maxEntries; ++entry) { //Only loop over the set number of entries
+   for(entry = 0; entry < maxEntries; entry++) { //Only loop over the set number of entries
       tree->GetEntry(entry);
-      
       //loop over the gammas in the event packet
-      //grif the variable which points to the current TGriffin
+      //grif is the variable which points to the current TGriffin
       for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
          //We want to put every gamma ray in this event into the singles
-         gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergyLow()); //GetEnergyLow is a method in GRIFFIN to get the low gain energies
-
-         //We now want to loop over any other gammas in this packet
+         gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergy()); 
          for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
-            if(two == one) //If we are looking at the same gamma we don't want to call it a coincidence
+            if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
                continue;
             }
-            //Check to see if the two gammas are close enough in time
             if(ggTlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggThigh) { 
                //If they are close enough in time, fill the gamma-gamma matrix. This will be symmetric because we are doing a double loop over gammas
-               ggmatrix->Fill(grif->GetGriffinHit(one)->GetEnergyLow(), grif->GetGriffinHit(two)->GetEnergyLow());
+               ggmatrix->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
             }
+         }
       }
-         
 
-      //Now we check for betas in the event
-      if(gotSceptar && scep->GetMultiplicity() >= 1) {
+      //Now we make beta gamma coincident matrices
+      if(gotSceptar && scep->GetMultiplicity() > 0) {
+        //We do an outside loop on gammas so that we can break on the betas if we see a beta in coincidence (we don't want to bin twice just because we have two betas)
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
-               //Check for beta-gamma coincidence
                //Be careful about time ordering!!!! betas and gammas are not symmetric out of the DAQ
-               if(gbTlow >= scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime() && scep->GetSceptarHit(b)->GetTime()-grif->GetGriffinHit(one)->GetTime() <= gbThigh) {
-                  //Plots a gamma energy spectrum in coincidence with a beta
-                  gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergyLow());
+               //Fill the time diffrence spectra
+               if((gbTlow <= grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) {
+                  gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergy());
                }
             }
          }
       }
+      if((entry%10000) == 1){
+         printf("Completed %d of %d \r",entry,maxEntries);
+      }
+
    }
 
    list->Sort(); //Sorts the list alphabetically
@@ -157,16 +164,6 @@ TList *exAnalysis(TTree* tree, long maxEntries = 0, TStopwatch* w = NULL) {
    return list;
 
 }
-
-
-
-
-
-
-
-
-
-
 
 //This function gets run if running in compiled mode
 #ifndef __CINT__ 
@@ -180,6 +177,7 @@ int main(int argc, char **argv) {
    TStopwatch w;
    w.Start();
 
+   //Load the file containing the analysis tree.
    TFile* file = new TFile(argv[1]);
 
    if(file == NULL) {
@@ -190,18 +188,40 @@ int main(int argc, char **argv) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
+   printf("Sorting file:" DBLUE " %s" RESET_COLOR"\n",file->GetName());
+
+   //Load the run info from the analysis file
+   TGRSIRunInfo* runinfo  = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
 
    TTree* tree = (TTree*) file->Get("AnalysisTree");
-
+   //Read in the calibration info. This code will crash without this.
+   TChannel::ReadCalFromTree(tree);
    if(tree == NULL) {
       printf("Failed to find analysis tree in file '%s'!\n",argv[1]);
       return 1;
    }
+   //Get the TGRSIRunInfo from the analysis Tree.
    
+   TList *list;//We return a list because we fill a bunch of TH1's and shove them into this list.
+   TFile * outfile;
+   //This below part sets the name of the output file if one was not given upon starting the code.
+   if(argc<3)
+   {
+      if(!runinfo){
+         printf("Could not find run info, please provide output file name\n");
+         return 0;
+      }
+      int runnumber = runinfo->RunNumber();
+      int subrunnumber = runinfo->SubRunNumber();
+      outfile = new TFile(Form("matrix%05d_%03d.root",runnumber,subrunnumber),"recreate");
+   }
+   else
+   {
+      outfile = new TFile(argv[2],"recreate");
+   }
+
    std::cout << argv[0] << ": starting Analysis after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
-
-   TList *list;//We return a list because we fill a bunch of TH1's and shove them into this list.
    if(argc < 4) {
       list = exAnalysis(tree,0, &w);
    } else {
@@ -209,12 +229,19 @@ int main(int argc, char **argv) {
       std::cout<<"Limiting processing of analysis tree to "<<entries<<" entries!"<<std::endl;
       list = exAnalysis(tree, entries, &w);
    }
-
-   TFile *outfile = new TFile(argv[2],"recreate");
+   printf("Writing to File: " DYELLOW "%s" RESET_COLOR"\n",outfile->GetName());
    list->Write();
+   //Write the run info into the tree as well if there is run info in the Analysis Tree
+   TGRSISortList *sortinfolist = new TGRSISortList;
+   if(runinfo){
+      TUserSortInfo *info = new TUserSortInfo(runinfo);
+      sortinfolist->AddSortInfo(info);
+      sortinfolist->Write("TGRSISortList",TObject::kSingleKey);
+   }
    outfile->Close();
 
-   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl;
+   std::cout << argv[0] << " done after " << w.RealTime() << " seconds" << std::endl << std::endl;
+
 
    return 0;
 }
