@@ -89,7 +89,7 @@ $(SUBDIRS): print
 grsisort: src libraries users print bin config
 	@mv $</$@ bin/$@
 
-config: print
+config: print bin
 	@cp util/grsi-config bin/
 	@find libraries/*/ users/ -name "*.pcm" -exec cp {} libraries/ \;
 
