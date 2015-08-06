@@ -452,11 +452,18 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    //Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
 
-   if(!*(TGRSIRunInfo::Get()->GetRunInfoFileName())){
-      fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
+   const char* tmpRunInfoFileName = TGRSIRunInfo::Get()->GetRunInfoFileName();
+   //Set the run info file to what is stored in the fragment tree
+   fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
+
+   //overwrite the relevent information using the loaded info file.
+   //First check if there was a file
+   if(!*(tmpRunInfoFileName)){
+      //This does nothing
    }
    else{
-      fCurrentRunInfo = TGRSIRunInfo::Get();
+      printf("Reading from Run info: %s\n",tmpRunInfoFileName);
+      fCurrentRunInfo->ReadInfoFile(tmpRunInfoFileName);
    }
    //if(fCurrentRunInfo) {
    //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
