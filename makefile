@@ -10,7 +10,7 @@ export MAJOR_ROOT_VERSION := `root-config --version | cut -d '.' -f1`
 #	$(error ${MAJOR_ROOT_VERSION} too small)
 #fi
 
-export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -g `root-config --cflags` -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} -fPIC
+export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -I$(PWD)/users -g `root-config --cflags` -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} -fPIC
 
 #export GRSISYS:= $(GRSISYS)
 

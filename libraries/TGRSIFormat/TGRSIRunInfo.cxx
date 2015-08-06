@@ -62,6 +62,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
      {Int_t  R__int ; b >> R__int;  fHPGeArrayPosition = R__int;}
      {Int_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
      {Double_t  R__double ; b >> R__double;  fAddBackWindow = R__double;}
+     {Bool_t R__bool; b >> R__bool; fIsMovingWindow = R__bool;}
    }
    {Bool_t R__bool; b >> R__bool; fTigress = R__bool;   }
    {Bool_t R__bool; b >> R__bool; fSharc = R__bool;     }
@@ -98,6 +99,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Int_t R__int = fHPGeArrayPosition; b << R__int;}
    {Int_t R__int = fBuildWindow;       b << R__int;}
    {Double_t R__double = fAddBackWindow;  b << R__double;}
+   {Bool_t R__bool = fIsMovingWindow; b << R__bool;}
    {Bool_t R__bool = fTigress;    b << R__bool;}
    {Bool_t R__bool = fSharc;      b << R__bool;}
    {Bool_t R__bool = fTriFoil;    b << R__bool;}
@@ -148,11 +150,13 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    //fHPGeArrayPosition = 110.0;
    //fBuildWindow       = 200;  
    //fAddBackWindow     = 15.0;
+   //fIsMovingWindow    = true;
 
 
    fHPGeArrayPosition = 110.0;
    fBuildWindow       = 200;  
    fAddBackWindow     = 15.0;
+   fIsMovingWindow    = true;
 
    Clear();
 
@@ -178,6 +182,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
       printf("\n");
       printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
+      printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
       printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
       printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
       printf("\n");
@@ -370,6 +375,10 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
         std::istringstream ss(line);
         long int temp_bw; ss >> temp_bw;
         Get()->SetBuildWindow(temp_bw);
+      } else if( type.compare("MW")==0 || type.compare("MOVINGWINDOW")==0) {
+        std::istringstream ss(line);
+        bool temp_mw; ss >> temp_mw;
+        Get()->SetMovingWindow(temp_mw);
       } else if( type.compare("ABW")==0 || type.compare("ADDBACKWINDOW")==0 || type.compare("ADDBACK") ) {
         std::istringstream ss(line);
         double temp_abw; ss >> temp_abw;
@@ -388,6 +397,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
    if(strcmp(opt,"q")) {
      printf("parsed %i lines.\n",linenumber);
      printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
+     printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
      printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
      printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
    }
