@@ -115,7 +115,7 @@ int TWriteQueue::Size() {
 ClassImp(TAnalysisTreeBuilder)
 
 //This sets the minimum amount of memory that root can hold a tree in.
-const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
+const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)16; // 8 GB
 
 TAnalysisTreeBuilder* TAnalysisTreeBuilder::fAnalysisTreeBuilder = 0;
 
@@ -451,7 +451,20 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 void TAnalysisTreeBuilder::SetupFragmentTree() {
    //Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
+
+   const char* tmpRunInfoFileName = TGRSIRunInfo::Get()->GetRunInfoFileName();
+   //Set the run info file to what is stored in the fragment tree
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
+
+   //overwrite the relevent information using the loaded info file.
+   //First check if there was a file
+   if(!*(tmpRunInfoFileName)){
+      //This does nothing
+   }
+   else{
+      printf("Reading from Run info: %s\n",tmpRunInfoFileName);
+      fCurrentRunInfo->ReadInfoFile(tmpRunInfoFileName);
+   }
    //if(fCurrentRunInfo) {
    //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
       fCurrentRunInfo->Print("a");
