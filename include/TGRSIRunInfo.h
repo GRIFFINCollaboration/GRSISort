@@ -124,6 +124,9 @@ class TGRSIRunInfo : public TObject {
       static const char* GetXMLODBFileName() { return fGRSIRunInfo->fXMLODBFileName.c_str(); }
       static const char* GetXMLODBFileData() { return fGRSIRunInfo->fXMLODBFile.c_str(); }
 
+      static const char* GetRunInfoFileName() { return fGRSIRunInfo->fRunInfoFileName.c_str(); }
+      static const char* GetRunInfoFileData() { return fGRSIRunInfo->fRunInfoFile.c_str(); }
+
       static Bool_t  ReadInfoFile(const char *filename = "");
       static Bool_t  ParseInputData(const char *inputdata = "",Option_t *opt = "q");
 
@@ -217,7 +220,7 @@ class TGRSIRunInfo : public TObject {
       /////////////////////////////////////////////////
 
       std::string fRunInfoFileName; //The name of the Run info file
-      std::string fRunInfoFile;     //The contents of the run infor file
+      std::string fRunInfoFile;     //The contents of the run info file
 	   static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 
       long int fBuildWindow;          // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
