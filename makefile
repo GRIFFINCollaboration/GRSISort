@@ -57,7 +57,7 @@ MAKE=make --no-print-directory
 
 .PHONY: all subdirs $(ALLDIRS) clean util
 
-all: print grsisort analysis util end
+all: print grsisort analysis examples scripts util end
 
 docs: print subdirs bin grsihist grsisort html config end
 
