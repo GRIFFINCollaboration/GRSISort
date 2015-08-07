@@ -526,17 +526,18 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int *iter, int 
          
  		   default:				
 	      	if((packet & 0x80000000) == 0x00000000) {
-            if(x+1 < size) {
-              EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 21 );
-              EventFrag->Charge.push_back((*(data+x) & 0x03ffffff));	
-              ++x;
-              EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
-              EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
-            } else {
-               *iter += x;
-               return -x;
-	          }
-          }
+               //check that there is another word and that it is also a charge/cfd word
+               if(x+1 < size && (*(data+x+1) & 0x80000000) == 0x0) {
+                  EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 21 );
+                  EventFrag->Charge.push_back((*(data+x) & 0x03ffffff));	
+                  ++x;
+                  EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
+                  EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
+               } else {
+                  *iter += x;
+                  return -x;
+	            }
+            }
    	      break;
 		};
 	}
