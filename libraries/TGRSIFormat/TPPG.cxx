@@ -58,6 +58,9 @@ TPPG::~TPPG(){
 }
 
 Bool_t TPPG::MapIsEmpty() const {
+//Checks to see if the ppg map is empty. We need this because we need to put a default
+//PPG in at time T=0 to prevent bad things from happening. This function says the map
+//is empty when only the default is there, which it essentially is.
    if(fPPGStatusMap->size() ==1)//We check for size 1 because we always start with a Junk event at time 0.
       return true;
    else 
@@ -71,6 +74,10 @@ void TPPG::AddData(TPPGData* pat){
 }
 
 ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag){
+//Gets the last time that a status was given. If the ppg_pattern kJunk is passed, the 
+//current status at the time "time" is looked for. If exact_flag is false, the bits of "pat" 
+//are looked for and ignore the rest of the bits in the sotred statuses. If "exact_flag" 
+//is true, the entire ppg pattern "pat" must be met.
    if(MapIsEmpty()){
       printf("Empty\n");
       return 0;
@@ -104,6 +111,7 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag
 }
 
 uint16_t TPPG::GetStatus(ULong64_t time) const {
+//Returns the current status of the PPG at the time "time".
    if(MapIsEmpty()){
       printf("Empty\n");
    }

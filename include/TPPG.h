@@ -86,6 +86,8 @@ class TPPG : public TObject	{
     ULong64_t GetLastStatusTime(ULong64_t time, ppg_pattern pat = kJunk, bool exact_flag = false );
     Bool_t MapIsEmpty() const;
     std::size_t PPGSize() const {return fPPGStatusMap->size()- 1;}
+   
+    bool Correct(){ return true;}
 
     virtual void Print(Option_t *opt = "") const;
     virtual void Clear(Option_t *opt = "");
