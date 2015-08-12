@@ -70,7 +70,40 @@ void TPPG::AddData(TPPGData* pat){
    fPPGStatusMap->insert(std::make_pair(pat->GetTimeStamp(),new TPPGData(*pat)));
 }
 
-uint16_t TPPG::GetStatus(Double_t time) const {
+ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag){
+   if(MapIsEmpty()){
+      printf("Empty\n");
+      return 0;
+   }
+
+   PPGMap_t::iterator curppg_it = --(fPPGStatusMap->upper_bound(time));
+   PPGMap_t::iterator ppg_it;
+   if(pat == kJunk){
+      for(ppg_it = curppg_it; ppg_it != fPPGStatusMap->begin(); --ppg_it){
+         if(curppg_it->second->GetNewPPG() == ppg_it->second->GetNewPPG() && curppg_it != ppg_it ){
+            return ppg_it->first;
+         }
+      }
+   }
+   else{
+      for(ppg_it = curppg_it; ppg_it != fPPGStatusMap->begin(); --ppg_it){
+         if(exact_flag){
+            if(pat == ppg_it->second->GetNewPPG()){
+               return ppg_it->first;
+            }
+         }
+         else{
+            if(pat | ppg_it->second->GetNewPPG()){
+               return ppg_it->first;
+            }
+         }
+      }
+   }
+   printf("No previous status\n");
+   return 0;
+}
+
+uint16_t TPPG::GetStatus(ULong64_t time) const {
    if(MapIsEmpty()){
       printf("Empty\n");
    }
