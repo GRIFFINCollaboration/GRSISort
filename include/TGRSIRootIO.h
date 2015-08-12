@@ -15,6 +15,7 @@
 #include "TNucleus.h"
 #include "TKinematics.h"
 #include "TEpicsFrag.h"
+#include "TPPG.h"
 
 class TGRSIRootIO : public TObject {
 
@@ -31,9 +32,12 @@ class TGRSIRootIO : public TObject {
       TTree *fFragmentTree;
       TTree *fBadFragmentTree;
       TTree *fEpicsTree;
+      TPPG *fPPG;
+
       TFile *foutfile;
       int fTimesFillCalled;
       int fTimesBadFillCalled;
+      int fTimesPPGCalled;
       int fEPICSTimesFillCalled;
 
       std::vector<TFile*> finfiles;
@@ -68,6 +72,11 @@ class TGRSIRootIO : public TObject {
       TTree *GetBadFragmentTree()  { return fBadFragmentTree;  }
       void FillBadFragmentTree(TFragment*);
       void FinalizeBadFragmentTree();
+
+      void SetUpPPG();
+      TPPG *GetPPG()  { return fPPG;  }
+      void FillPPG(TPPGData*);
+      void FinalizePPG();
 
       void SetUpEpicsTree();
       TTree *GetEpicsTree()  { return fEpicsTree;  }

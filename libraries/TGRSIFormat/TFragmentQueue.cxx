@@ -189,7 +189,7 @@ void TFragmentQueue::Pop()	{
 		//do nothing
 	}	
 
-	TFragment *frag = (fFragmentQueue.front());	
+	TObject *frag = (fFragmentQueue.front());	
 	fFragmentQueue.pop();
 	fFragsInQueue--;
 	fragments_out++;
