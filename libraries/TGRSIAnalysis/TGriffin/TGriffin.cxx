@@ -18,7 +18,12 @@
 
 ClassImp(TGriffin)
 
-std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::addback_criterion(addback_criterion_singleclover);
+bool DefaultAddback(TGriffinHit& one, TGriffinHit& two) {
+	return ((one.GetDetector() == two.GetDetector()) &&
+			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
+};
+ 
+std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::addback_criterion = DefaultAddback;
 
 bool TGriffin::fSetCoreWave = false;
 //bool TGriffin::fSetBGOHits  = false;
@@ -59,20 +64,6 @@ TVector3 TGriffin::gCloverPosition[17] = {
    TVector3(TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Cos(TMath::DegToRad()*(247.5)), TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Sin(TMath::DegToRad()*(247.5)), TMath::Cos(TMath::DegToRad()*(135.0))),
    TVector3(TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Cos(TMath::DegToRad()*(337.5)), TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Sin(TMath::DegToRad()*(337.5)), TMath::Cos(TMath::DegToRad()*(135.0)))
 };
-
-bool TGriffin::addback_criterion_singleclover(TGriffinHit& one, TGriffinHit& two){
-   return ((one.GetDetector() == two.GetDetector()) && 
-	   (std::abs((long)one.GetTime() - (long)two.GetTime()) < TGRSIRunInfo::AddBackWindow())); 
-}
- 
-//bool addback_criterion_array(TGriffinHit& one, TGriffinHit& two){
-//   return ((one.GetDetector() == two.GetDetector()) && 
-// 	   (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow())); 
-//}
-
-void TGriffin::SetAddbackCriterion(bool (*criterion)(TGriffinHit&,TGriffinHit&)) { addback_criterion = criterion; }
-
-
 
 
 TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
