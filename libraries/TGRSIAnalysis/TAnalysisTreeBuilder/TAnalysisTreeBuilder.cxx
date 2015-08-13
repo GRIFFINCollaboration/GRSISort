@@ -733,8 +733,10 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
      c->Write();
    }
    fCurrentRunInfo->Write();
-   if(fCurrentPPG)
+   if(fCurrentPPG){
+      printf("Writing PPG Data\n");
       fCurrentPPG->Write();
+   }
    //TChannel::DeleteAllChannels();
 
    fCurrentAnalysisFile->cd();

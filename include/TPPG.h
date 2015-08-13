@@ -75,11 +75,13 @@ class TPPG : public TObject	{
       kJunk = 0xFFFF
    };
 
-   typedef std::map<Double_t,TPPGData*> PPGMap_t;
+   typedef std::map<ULong_t,TPPGData*> PPGMap_t;
   public:
     TPPG();
+	 TPPG(const TPPG&);
     virtual ~TPPG(); 
 
+    void Copy(TObject& rhs) const;
    public: 
     void AddData(TPPGData* pat);
     uint16_t GetStatus(ULong64_t time) const;
@@ -87,7 +89,12 @@ class TPPG : public TObject	{
     Bool_t MapIsEmpty() const;
     std::size_t PPGSize() const {return fPPGStatusMap->size()- 1;}
    
-    bool Correct(){ return true;}
+    bool Correct();
+
+    TPPGData* const Next();
+    TPPGData* const Previous();
+    TPPGData* const First();
+    TPPGData* const Last();
 
     virtual void Print(Option_t *opt = "") const;
     virtual void Clear(Option_t *opt = "");
@@ -95,6 +102,7 @@ class TPPG : public TObject	{
   private:
     PPGMap_t::iterator MapBegin() const { return ++(fPPGStatusMap->begin()); }
     PPGMap_t::iterator MapEnd() const   { return fPPGStatusMap->end(); }
+    PPGMap_t::iterator fcurrIterator; //!
 
   private:
     PPGMap_t *fPPGStatusMap;

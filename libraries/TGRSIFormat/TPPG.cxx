@@ -43,6 +43,10 @@ TPPG::TPPG(){
    this->Clear();
 }
 
+TPPG::TPPG(const TPPG& rhs){
+   rhs.Copy(*this);
+}
+
 TPPG::~TPPG(){
    if(fPPGStatusMap){
       PPGMap_t::iterator ppgit;
@@ -55,6 +59,11 @@ TPPG::~TPPG(){
       delete fPPGStatusMap;
    }
    fPPGStatusMap = 0;
+}
+
+void TPPG::Copy(TObject &rhs) const {
+   ((TPPG&)rhs)     = *this;
+   ((TPPG&)rhs).fcurrIterator = ((TPPG&)rhs).fPPGStatusMap->begin();
 }
 
 Bool_t TPPG::MapIsEmpty() const {
@@ -138,6 +147,56 @@ void TPPG::Clear(Option_t *opt){
    fPPGStatusMap->clear();
    //We always add a junk event to keep the code from crashing if we ask for a PPG below the lowest PPG time.
    AddData(new TPPGData);
+   fcurrIterator = fPPGStatusMap->begin();
+}
+
+bool TPPG::Correct() {
+   
+   
+   return true;
+}
+
+TPPGData* const TPPG::Next() {
+   if(fcurrIterator != MapEnd()){
+      return (++fcurrIterator)->second;
+   }
+   else{
+      printf("Already at last PPG\n");
+      return 0;
+   }
+}
+
+TPPGData* const TPPG::Previous() {
+   if(fcurrIterator != MapBegin()){
+      return (--fcurrIterator)->second;
+   }
+   else{
+      printf("Already at first PPG\n");
+      return 0;
+   }
+}
+
+TPPGData* const TPPG::Last(){
+   fcurrIterator = MapEnd();
+   --fcurrIterator;
+   return fcurrIterator->second;
+}
+
+TPPGData* const TPPG::First(){
+   fcurrIterator = MapBegin();
+   return fcurrIterator->second;
+}
+
+void TPPG::Streamer(TBuffer &R__b)
+{
+   // Stream an object of class TPPG.
+
+   if (R__b.IsReading()) {
+      R__b.ReadClassBuffer(TPPG::Class(),this);
+      fcurrIterator = fPPGStatusMap->begin();
+   } else {
+      R__b.WriteClassBuffer(TPPG::Class(),this);
+   }
 }
 
 /*const char* TPPG::ConvertStatus(ppg_pattern pattern){

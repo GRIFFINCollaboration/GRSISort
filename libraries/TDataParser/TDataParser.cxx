@@ -711,7 +711,6 @@ void TDataParser::FillStats(TFragment *frag) {
 
 int TDataParser::GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsigned int midasserialnumber, time_t midastime) {
    TPPGData *ppgEvent = new TPPGData;
- 
    int  kwordcounter = 0;
    int  x = 1; //We have already read the header so we can skip the 0th word.
    
@@ -741,7 +740,7 @@ int TDataParser::GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsig
             SetPPGHighTimeStamp(value,ppgEvent);
             break;
          case 0xe0000000:
-            if((value) == (ppgEvent->GetNewPPG())){
+            if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
                TGRSIRootIO::Get()->FillPPG(ppgEvent);
                return x;
             } else  {
