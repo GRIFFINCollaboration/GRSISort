@@ -235,18 +235,18 @@ Int_t TGriffin::GetAddbackMultiplicity() {
       // loop over remaining griffin hits
       size_t i, j;
       for(i = 1; i < griffin_hits.size(); ++i) {
-	 // check for each existing addback hit if this griffin hit should be added
-	 for(j = 0; j < addback_hits.size(); ++j) {
-	    if(addback_criterion(addback_hits[j], griffin_hits[i])) {
-	       addback_hits[j].Add(&(griffin_hits[i]));
-          faddback_frags[j]++;
-	       break;
-	    }
-	 }
-	 if(j == addback_hits.size()) {
-	    addback_hits.push_back(griffin_hits[i]);
-       faddback_frags.push_back(1);
-	 }
+	      // check for each existing addback hit if this griffin hit should be added
+	      for(j = 0; j < addback_hits.size(); ++j) {
+	         if(addback_criterion(addback_hits[j], griffin_hits[i])) {
+	            addback_hits[j].Add(&(griffin_hits[i]));
+               faddback_frags[j]++;
+	            break;
+	         }
+	      }
+	      if(j == addback_hits.size()) {
+	         addback_hits.push_back(griffin_hits[i]);
+            faddback_frags.push_back(1);
+	      }
       }
    }
 

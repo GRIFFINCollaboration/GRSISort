@@ -34,7 +34,7 @@ LFLAGS = -Wl,--no-as-needed
 endif
 
 CFLAGS += -fPIC -O2
-CFLAGS += -std=c++0x -O2 -I$(PWD)/include -g `root-config --cflags --libs`
+CFLAGS += -std=c++0x -O2 -I$(PWD)/include -I$(PWD)/users -g `root-config --cflags --libs`
 
 CXXTARGET=$(basename $(wildcard *.cxx)) 
 
@@ -50,7 +50,7 @@ CAT=cat
 #UTILFLAGS = `grsi-config --cflags --all-libs --root`
 UTILFLAGS = -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTigress
 
-UTILFLAGS += $(LIBDIR) -lAnalysisTreeBuilder -lTGRSIFit -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
+UTILFLAGS += $(LIBDIR) -lAnalysisTreeBuilder -lTGRSIFit -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum -lGRSIUser
 
 
 UTIL_STRING = "Finished compiling myanalysis"

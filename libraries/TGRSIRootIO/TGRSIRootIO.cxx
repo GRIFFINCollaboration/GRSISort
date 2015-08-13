@@ -25,6 +25,7 @@ TGRSIRootIO::TGRSIRootIO() {
   fFragmentTree = 0;
   fBadFragmentTree =0;
   fEpicsTree    = 0;
+  fPPG          = 0;
 
   foutfile = 0; //new TFile("test_out.root","recreate");
 
@@ -73,7 +74,12 @@ void TGRSIRootIO::SetUpBadFragmentTree() {
 
 }
 
-
+void TGRSIRootIO::SetUpPPG() {
+   if(foutfile)
+      foutfile->cd();
+   fTimesPPGCalled = 0;
+   fPPG = new TPPG;
+}
 
 
 void TGRSIRootIO::SetUpEpicsTree() {
@@ -115,6 +121,12 @@ void TGRSIRootIO::FillBadFragmentTree(TFragment *frag) {
    if(bytes < 1)
       printf("\n (BadTree) fill failed with bytes = %i\n",bytes);
    fTimesBadFillCalled++;
+}
+
+void TGRSIRootIO::FillPPG(TPPGData* data){
+   //Set PPG Stuff here
+   fPPG->AddData(data);
+   ++fTimesPPGCalled;
 }
 
 void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
@@ -172,7 +184,16 @@ void TGRSIRootIO::FinalizeBadFragmentTree() {
 	return;
 }
 
-
+void TGRSIRootIO::FinalizePPG(){
+   if(!fPPG || !foutfile)
+      return;
+   foutfile->cd();
+   if(fPPG->PPGSize()){
+      printf("Writing PPG\n");
+      fPPG->Write();
+   }
+   return;
+}
 
 void TGRSIRootIO::FinalizeEpicsTree() {
   if(TGRSIOptions::IgnoreEpics()) 
@@ -183,7 +204,6 @@ void TGRSIRootIO::FinalizeEpicsTree() {
    fEpicsTree->AutoSave(); //Write();
 	return;
 }
-
 
 bool TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
   
@@ -205,6 +225,7 @@ bool TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
    
    SetUpFragmentTree();
    SetUpBadFragmentTree();
+   SetUpPPG();
    SetUpEpicsTree();
 
    return true;
@@ -220,7 +241,8 @@ void TGRSIRootIO::CloseRootOutFile()   {
    if(TGRSIOptions::WriteBadFrags())
      printf(DRED "   Fill bad tree called " DYELLOW "%i " DRED "times.\n" RESET_COLOR, fTimesBadFillCalled);
    
-   FinalizeFragmentTree(); 
+   FinalizeFragmentTree();
+   FinalizePPG();
    FinalizeEpicsTree();
 
    if(TGRSIRunInfo::GetNumberOfSystems()>0) {

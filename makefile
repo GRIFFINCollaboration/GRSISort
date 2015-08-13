@@ -10,7 +10,7 @@ export MAJOR_ROOT_VERSION := `root-config --version | cut -d '.' -f1`
 #	$(error ${MAJOR_ROOT_VERSION} too small)
 #fi
 
-export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -g `root-config --cflags` -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} -fPIC
+export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -I$(PWD)/users -g `root-config --cflags` -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} -fPIC
 
 #export GRSISYS:= $(GRSISYS)
 
@@ -57,7 +57,7 @@ MAKE=make --no-print-directory
 
 .PHONY: all subdirs $(ALLDIRS) clean util
 
-all: print grsisort analysis util end
+all: print grsisort analysis examples scripts util end
 
 docs: print subdirs bin grsihist grsisort html config end
 
@@ -89,7 +89,7 @@ $(SUBDIRS): print
 grsisort: src libraries users print bin config
 	@mv $</$@ bin/$@
 
-config: print
+config: print bin
 	@cp util/grsi-config bin/
 	@find libraries/*/ users/ -name "*.pcm" -exec cp {} libraries/ \;
 

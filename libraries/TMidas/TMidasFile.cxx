@@ -20,8 +20,18 @@
 
 ClassImp(TMidasFile)
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TMidasFile                                                 //
+//                                                            //
+// This Class is used to read and write MIDAS files in the    //
+// root framework. It reads and writes TMidasEvents.          //
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 TMidasFile::TMidasFile()
 {
+   //Default Constructor
   uint32_t endian = 0x12345678;
 
   fFile = -1;
@@ -40,12 +50,14 @@ TMidasFile::TMidasFile()
 
 TMidasFile::~TMidasFile()
 {
+   //Default dtor. It closes the read in midas file as well as the output midas file.
   Close();
   OutClose();
 }
 
 static int hasSuffix(const char*name,const char*suffix)
 {
+   //Checks to see if midas file has suffix.
   const char* s = strstr(name,suffix);
   if (s == NULL)
     return 0;
@@ -390,6 +402,7 @@ void TMidasFile::FillBuffer(TMidasEvent *midasEvent, Option_t *opt){
 }
 
 bool TMidasFile::WriteBuffer(){
+   //Writes a buffer of TMidasEvents to the output file.
    int wr = -2;
  
    if (fOutGzFile){
@@ -410,6 +423,8 @@ bool TMidasFile::WriteBuffer(){
 
 bool TMidasFile::Write(TMidasEvent *midasEvent,Option_t *opt)
 {
+   //Writes an individual TMidasEvent to the output TMidasFile. This will
+   //write to a zipped file if the output file is defined as a zipped file.
   int wr = -2;
 
   if (fOutGzFile)
@@ -444,12 +459,16 @@ bool TMidasFile::Write(TMidasEvent *midasEvent,Option_t *opt)
   return wr;
 }
 
-void TMidasFile::SetMaxBufferSize(int maxsize){
+void TMidasFile::SetMaxBufferSize(int maxsize) {
+   //Sets the maximum buffer size for the TMidasEvents to be written to
+   //an output TMidasFile.
    fMaxBufferSize = maxsize;
 }
 
 void TMidasFile::Close()
 {
+   //Closes the input midas file. Use OutClose() to close the output 
+   //Midas File.
   if (fPoFile)
     pclose((FILE*)fPoFile);
   fPoFile = NULL;
@@ -466,6 +485,7 @@ void TMidasFile::Close()
 
 void TMidasFile::OutClose()
 {
+   //Closes the output midas file. Use Close() to close the read-in midas file
 
    if(fWriteBuffer.size()){
       WriteBuffer();
@@ -485,6 +505,8 @@ void TMidasFile::OutClose()
 
 
 int TMidasFile::GetRunNumber() {
+   //Parse the run number from the current TMidasFile. This assumes a format of
+   //run#####_###.mid or run#####.mid.
    if(fFilename.length()==0) {
       return 0;
    }
@@ -508,10 +530,12 @@ int TMidasFile::GetRunNumber() {
    }
    //printf(" %s \t %i \n",temp.c_str(),atoi(temp.c_str()));
    return atoi(temp.c_str());
-};
+}
 
 
 int TMidasFile::GetSubRunNumber()	{
+   //Parse the sub run number from the current TMidasFile. This assumes a format of
+   //run#####_###.mid or run#####.mid.
    if(fFilename.length()==0)
       return -1;
    std::size_t foundslash = fFilename.rfind('/');
@@ -526,7 +550,7 @@ int TMidasFile::GetSubRunNumber()	{
       return atoi(temp.c_str());
    }
    return -1;
-};
+}
 
 
 

@@ -9,6 +9,8 @@
 
 #include "TChannel.h"
 #include "TFragment.h"
+#include "TPPG.h"
+
 //#include "TObject.h"
 
 class TDataParser { //: public TObject { 
@@ -39,6 +41,7 @@ class TDataParser { //: public TObject {
     //static std::vector<TFragment*> TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
     static int TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
     static int GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasserialnumber = 0, time_t midastime = 0);
+    static int GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsigned int midasserialnumber=0, time_t midastime=0); 
    
     static int EPIXToScalar(float *data,int size,unsigned int midasserialnumber = 0,time_t midastime = 0);
 	 static int EightPIDataToFragment(uint32_t stream,uint32_t* data,
@@ -69,6 +72,12 @@ class TDataParser { //: public TObject {
 
     static bool SetGRIFWaveForm(uint32_t,TFragment*);
     static bool SetGRIFDeadTime(uint32_t,TFragment*);
+
+    static bool SetNewPPGPattern(uint32_t,TPPGData*);
+    static bool SetOldPPGPattern(uint32_t,TPPGData*);
+    static bool SetPPGNetworkPacket(uint32_t,TPPGData*);
+    static bool SetPPGLowTimeStamp(uint32_t,TPPGData*);
+    static bool SetPPGHighTimeStamp(uint32_t,TPPGData*);
 
     static void FillStats(TFragment*);
 

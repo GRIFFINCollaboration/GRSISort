@@ -68,7 +68,7 @@ protected:
   int         fOutFile; ///< open output file descriptor
   void*       fOutGzFile; ///< zlib compressed output file reader
 
-	ClassDef(TMidasFile,0)
+	ClassDef(TMidasFile,0) //Used to open and write Midas Files
 };
 
 #endif // TMidasFile.h

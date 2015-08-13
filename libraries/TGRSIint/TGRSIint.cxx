@@ -98,7 +98,7 @@ void TGRSIint::ApplyOptions() {
       printf("\tfile %s opened as _file%i\n",file->GetName(),x);
       TGRSIRootIO::Get()->LoadRootFile(file);
    }
-   if(TGRSIOptions::GetInputRoot().size() > 0) {
+   if(TGRSIOptions::GetInputRoot().size() > 0 && !fAutoSort && !fFragmentSort) {
       if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
          Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
          printf("Read calibration info for %d channels from \"%s\" FragmentTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str()); 
@@ -108,8 +108,14 @@ void TGRSIint::ApplyOptions() {
          printf("Read calibration info for %d channels from \"%s\" AnalysisTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
       }
    }
+
+   if(TGRSIOptions::GetInputCal().size() > 0){
+      for(int i =0; i<TGRSIOptions::GetInputCal().size();++i){
+         TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
+      }
+   }
   
-  if(TGRSIOptions::WorkHarder()) {
+   if(TGRSIOptions::WorkHarder()) {
       for(int x=0;x<TGRSIOptions::GetMacroFile().size();x++) {
          gROOT->Macro(TGRSIOptions::GetMacroFile().at(x).c_str());  
        // gROOT->ProcessLineSync(Form(".x %s",TGRSIOptions::GetMacroFile().at(x).c_str()));

@@ -390,6 +390,12 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
       return -x;
    }
 
+   //Changed on 11 Aug 2015 by RD to include PPG events. If the event has DataType 3 and address 0xFFFF, it is a PPG event.
+   if(EventFrag->DataType == 4 && EventFrag->ChannelAddress == 0xFFFF){
+      delete EventFrag;
+      return GriffinDataToPPGEvent(data,size,midasserialnumber,midastime);
+   }
+
 //   if(!SetGRIFPPG(data[x++],EventFrag)) {            //THIS FUNCTION SHOULD NOT BE USED
 //      delete EventFrag;
 //      return -x;
@@ -704,7 +710,86 @@ void TDataParser::FillStats(TFragment *frag) {
    return;
 }
 
+int TDataParser::GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsigned int midasserialnumber, time_t midastime) {
+   TPPGData *ppgEvent = new TPPGData;
+   int  kwordcounter = 0;
+   int  x = 1; //We have already read the header so we can skip the 0th word.
+   
+   if(SetNewPPGPattern(data[x],ppgEvent)) {
+      ++x;
+   } 
 
+   for(;x<size;x++) {
+      uint32_t dword  = *(data+x);
+      uint32_t packet = dword & 0xf0000000;
+      uint32_t value  = dword & 0x0fffffff; 
+
+      switch(packet) {
+         case 0x80000000: //The 8 packet type is for event headers
+               //if this happens, we have "accidentally" found another event.
+               return -x;
+         case 0x90000000: //The b packet type contains the dead-time word
+            SetOldPPGPattern(value,ppgEvent);
+            break;
+         case 0xd0000000: 
+            SetPPGNetworkPacket(dword,ppgEvent); // The network packet placement is not yet stable.
+            break;              
+         case 0xa0000000:
+            SetPPGLowTimeStamp(value,ppgEvent);
+            break;
+         case 0xb0000000:
+            SetPPGHighTimeStamp(value,ppgEvent);
+            break;
+         case 0xe0000000:
+            if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
+               TGRSIRootIO::Get()->FillPPG(ppgEvent);
+               return x;
+            } else  {
+               return -x;
+            }
+            break;
+      };
+   }
+   delete ppgEvent;
+   //No trailer found
+   return -x;
+}
+
+bool TDataParser::SetNewPPGPattern(uint32_t value, TPPGData* ppgevent){
+   if( (value &0xf0000000) != 0x00000000) {
+      return false;
+   }
+   ppgevent->SetNewPPG(value & 0x0fffffff);
+   return true;
+}
+
+bool TDataParser::SetOldPPGPattern(uint32_t value, TPPGData* ppgevent){
+   ppgevent->SetOldPPG(value & 0x0fffffff);
+   return true;
+}
+
+bool TDataParser::SetPPGNetworkPacket(uint32_t value, TPPGData *ppgevent) {
+//Ignores the network packet number (for now)
+//   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
+   if( (value &0xf0000000) != 0xd0000000) {
+      return false;
+   }
+   else {
+     ppgevent->SetNetworkPacketId(value & 0x00ffffff);
+     //   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
+   }
+   return true;
+}
+
+bool TDataParser::SetPPGLowTimeStamp(uint32_t value, TPPGData *ppgevent){
+   ppgevent->SetLowTimeStamp(value & 0x0fffffff);
+   return true;
+}
+
+bool TDataParser::SetPPGHighTimeStamp(uint32_t value, TPPGData *ppgevent){
+   ppgevent->SetHighTimeStamp(value & 0x0fffffff);
+   return true;
+}
 
 /////////////***************************************************************/////////////
 /////////////***************************************************************/////////////
