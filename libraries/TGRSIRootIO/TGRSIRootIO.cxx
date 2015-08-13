@@ -184,13 +184,12 @@ void TGRSIRootIO::FinalizeBadFragmentTree() {
 }
 
 void TGRSIRootIO::FinalizePPG(){
-   printf("Trying to write PPG\n");
    if(!fPPG || !foutfile)
       return;
    foutfile->cd();
    if(fPPG->PPGSize()){
+      printf("Writing PPG\n");
       fPPG->Write();
-      printf("Wrote PPG\n");
    }
    return;
 }

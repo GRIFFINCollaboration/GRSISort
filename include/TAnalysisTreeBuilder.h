@@ -25,6 +25,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
+#include "TPPG.h"
 
 #include "TTigress.h" 
 #include "TSharc.h"     
@@ -149,6 +150,7 @@ class TAnalysisTreeBuilder : public TObject {
       TTree  *fCurrentAnalysisTree;
       TFile  *fCurrentAnalysisFile;
       TGRSIRunInfo *fCurrentRunInfo;
+      TPPG *fCurrentPPG;
 
       static long fEntries;
       static int fFragmentsIn;

@@ -141,6 +141,7 @@ TAnalysisTreeBuilder::TAnalysisTreeBuilder() {
    fCurrentAnalysisTree = 0;
    fCurrentAnalysisFile = 0;
    fCurrentRunInfo = 0;
+   fCurrentPPG = 0;
 
    fCurrentFragPtr = 0;
 
@@ -472,6 +473,12 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
       fCurrentRunInfo->Print("a");
    //}
 
+   fCurrentPPG = (TPPG*)fCurrentFragFile->Get("TPPG");
+   if(fCurrentPPG){//We do this because not every run has PPG
+      printf("Found PPG data\n");
+      if(!fCurrentPPG->Correct())
+         printf("Errors in PPG that could not be corrected\n");
+   }
    //Intialize the TChannel Information
    InitChannels();
 
@@ -623,14 +630,6 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
 
-
-
-
-
-
-
-
-
 void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*> *detectors) {
    //Build the hits in each of the detectors.
    if(!fCurrentAnalysisFile || !fCurrentRunInfo)
@@ -734,6 +733,10 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
      c->Write();
    }
    fCurrentRunInfo->Write();
+   if(fCurrentPPG){
+      printf("Writing PPG Data\n");
+      fCurrentPPG->Write();
+   }
    //TChannel::DeleteAllChannels();
 
    fCurrentAnalysisFile->cd();
