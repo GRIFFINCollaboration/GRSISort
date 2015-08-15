@@ -63,7 +63,7 @@ TPPG::~TPPG(){
 
 void TPPG::Copy(TObject &rhs) const {
    ((TPPG&)rhs)     = *this;
-   ((TPPG&)rhs).fcurrIterator = ((TPPG&)rhs).fPPGStatusMap->begin();
+   ((TPPG&)rhs).fcurrIterator = ((TPPG&)rhs).fPPGStatusMap->begin();//might not need this
 }
 
 Bool_t TPPG::MapIsEmpty() const {
@@ -80,6 +80,8 @@ void TPPG::AddData(TPPGData* pat){
 //Adds a PPG status word at a given time in the current run. Makes a copy of the pointer to
 //store in the map.
    fPPGStatusMap->insert(std::make_pair(pat->GetTimeStamp(),new TPPGData(*pat)));
+   fCycleLength = 0;
+   fNumberOfCycleLengths.clear();
 }
 
 ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag){
@@ -109,13 +111,14 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag
             }
          }
          else{
-            if(pat | ppg_it->second->GetNewPPG()){
+            printf("pat %x, ppg_it->first %lld, ppg_it->second->GetNewPPG() %x\n",pat,ppg_it->first,ppg_it->second->GetNewPPG());
+            if(pat & ppg_it->second->GetNewPPG()){
                return ppg_it->first;
             }
          }
       }
    }
-   printf("No previous status\n");
+   //printf("No previous status\n");
    return 0;
 }
 
@@ -148,6 +151,8 @@ void TPPG::Clear(Option_t *opt){
    //We always add a junk event to keep the code from crashing if we ask for a PPG below the lowest PPG time.
    AddData(new TPPGData);
    fcurrIterator = fPPGStatusMap->begin();
+   fCycleLength = 0;
+   fNumberOfCycleLengths.clear();
 }
 
 bool TPPG::Correct() {
@@ -210,3 +215,23 @@ void TPPG::Streamer(TBuffer &R__b)
 
 
 }*/
+
+
+ULong64_t TPPG::GetCycleLength() {
+   if(fCycleLength == 0) {
+      PPGMap_t::iterator ppgit;
+      for(ppgit = MapBegin(); ppgit != MapEnd(); ++ppgit){
+         ULong64_t diff = ppgit->second->GetTimeStamp() - GetLastStatusTime(ppgit->second->GetTimeStamp());
+         fNumberOfCycleLengths[diff]++;
+      }
+      int counter =0;
+      for(auto it=fNumberOfCycleLengths.begin(); it!=fNumberOfCycleLengths.end();++it){
+         if(it->second > counter) {
+            counter = it->second;
+            fCycleLength = it->first;
+         }
+      }
+   }
+
+   return fCycleLength;
+}

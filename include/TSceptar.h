@@ -43,12 +43,8 @@ class TSceptar : public TGRSIDetector {
       
      static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
 
-     bool beta;                                                               //   Is there a sceptar hit?
-
    public:
      static bool SetWave()      { return fSetWave;  }	                        //!
-     void SetBeta(bool flag = true) { beta = flag; }                          //!
-     bool Beta()                {return beta;}                                //!  
 
    private:
      static TVector3 gPaddlePosition[21];                                     //!  Position of each Paddle

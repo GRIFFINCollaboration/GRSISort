@@ -90,6 +90,7 @@ class TPPG : public TObject	{
     std::size_t PPGSize() const {return fPPGStatusMap->size()- 1;}
    
     bool Correct();
+    ULong64_t GetCycleLength();
 
     TPPGData* const Next();
     TPPGData* const Previous();
@@ -106,7 +107,9 @@ class TPPG : public TObject	{
 
   private:
     PPGMap_t *fPPGStatusMap;
+   ULong64_t fCycleLength;
+   std::map<ULong64_t, int> fNumberOfCycleLengths;
 
-    ClassDef(TPPG,1) //Contains PPG information
+    ClassDef(TPPG,2) //Contains PPG information
 };
 #endif
