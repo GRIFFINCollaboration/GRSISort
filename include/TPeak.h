@@ -66,6 +66,9 @@ class TPeak : public TGRSIFit {
    void DrawBackground(Option_t *opt = "SAME") const; // *MENU*
    void DrawResiduals() const; // *MENU*
 
+   static void SetLogLikelihoodFlag(Bool_t flag = true) { fLogLikelihoodFlag = flag; }
+   static Bool_t GetLogLikelihoodFlag() { return fLogLikelihoodFlag; }
+
  public:
    virtual void Print(Option_t *opt = "") const;
    const char*  PrintString(Option_t *opt = "") const;
@@ -77,6 +80,8 @@ class TPeak : public TGRSIFit {
    Double_t fd_area; 
    Double_t fchi2; 
    Double_t fNdf; 
+
+   static bool fLogLikelihoodFlag;
 
    TF1* background;
 

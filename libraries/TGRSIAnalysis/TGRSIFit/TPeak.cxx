@@ -3,6 +3,8 @@
 
 ClassImp(TPeak)
 
+Bool_t TPeak::fLogLikelihoodFlag = false;
+
 //This makes a temporary TF1 I think, but I'm not sure an easier (that is nice) way to do it
 TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){ 
 
@@ -184,9 +186,15 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    this->SetParLimits(1,GetXmin(),GetXmax());
    this->SetParLimits(9,GetXmin(),GetXmax());
 
+   TFitResultPtr fitres;
+   //Log likelihood is the proper fitting technique UNLESS the data is a result of an addition or subtraction.
+   if(GetLogLikelihoodFlag()){
+      fitres = fithist->Fit(this,Form("%sLRS",opt));//The RS needs to always be there
+   }
+   else{
+      fitres = fithist->Fit(this,Form("%sRS",opt));//The RS needs to always be there
+   }
 
-   // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
-   TFitResultPtr fitres = fithist->Fit(this,Form("%sLRS",opt));//The RS needs to always be there
    //After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    //for printing out. RD
 
@@ -200,7 +208,12 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
          std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
    	 // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
          fithist->GetListOfFunctions()->Last()->Delete();
-         fitres = fithist->Fit(this,Form("%sRS",opt));
+         if(GetLogLikelihoodFlag()){
+            fitres = fithist->Fit(this,Form("%sLRS",opt));//The RS needs to always be there
+         }
+         else{
+            fitres = fithist->Fit(this,Form("%sRS",opt));
+         }
       }
    }
 /*   if(fitres->Parameter(5) < 0.0){
