@@ -2,6 +2,8 @@
 
 ClassImp(TGRSIFit);
 
+TString TGRSIFit::fDefaultFitType("");
+
 TGRSIFit::TGRSIFit(){
    this->Clear();
 }
@@ -28,9 +30,10 @@ void TGRSIFit::Print(Option_t *opt) const {
    }
 }
 
-void TGRSIFit::Clear() {
+void TGRSIFit::Clear(Option_t *opt) {
    init_flag = false;
    goodfit_flag = false;
+   fDefaultFitType.Clear();
 }
 
 /*

@@ -58,6 +58,10 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    TObject::Streamer(b);  
    {Int_t  R__int ; b >> R__int;  fRunNumber = R__int;}
    {Int_t  R__int ; b >> R__int;  fSubRunNumber = R__int;}
+   if(R__v>3) {
+     {Double_t  R__double ; b >> R__double;  fRunStart = R__double;}
+     {Double_t  R__double ; b >> R__double;  fRunStop  = R__double;}
+   }
    if(R__v>2) {
      {Int_t  R__int ; b >> R__int;  fHPGeArrayPosition = R__int;}
      {Int_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
@@ -96,6 +100,8 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    TObject::Streamer(b);  
    {Int_t R__int = fRunNumber;    b << R__int;}
    {Int_t R__int = fSubRunNumber; b << R__int;}
+   {Double_t R__double = fRunStart;  b << R__double;}
+   {Double_t R__double = fRunStop ;  b << R__double;}
    {Int_t R__int = fHPGeArrayPosition; b << R__int;}
    {Int_t R__int = fBuildWindow;       b << R__int;}
    {Double_t R__double = fAddBackWindow;  b << R__double;}
@@ -171,6 +177,8 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf("\tTGRSIRunInfo Status:\n");
       printf("\t\tRunNumber:    %05i\n",TGRSIRunInfo::Get()->fRunNumber);
       printf("\t\tSubRunNumber: %03i\n",TGRSIRunInfo::Get()->fSubRunNumber);
+      printf("\t\tRunStart:     %.0f\n",TGRSIRunInfo::Get()->fRunStart);
+      printf("\t\tRunStop:      %.0f\n",TGRSIRunInfo::Get()->fRunStop);
       printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
       printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
       printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");

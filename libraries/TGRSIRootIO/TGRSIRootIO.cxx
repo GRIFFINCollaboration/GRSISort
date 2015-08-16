@@ -78,7 +78,23 @@ void TGRSIRootIO::SetUpPPG() {
    if(foutfile)
       foutfile->cd();
    fTimesPPGCalled = 0;
-   fPPG = new TPPG;
+   if(TGRSIRunInfo::SubRunNumber() <= 0) {
+      fPPG = new TPPG;
+   } else {
+      TFile* prev_sub_run = new TFile(Form("fragment%05d_%03d.root",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
+      if(prev_sub_run->IsOpen()) {
+         if(prev_sub_run->Get("TPPG") != NULL) {
+            fPPG = (TPPG*) (prev_sub_run->Get("TPPG")->Clone());
+         } else {
+            printf("Error, could not find PPG in file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
+            fPPG = new TPPG;
+         }
+         prev_sub_run->Close();
+      } else {
+         printf("Error, could not find file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
+         fPPG = new TPPG;
+      }
+   }
 }
 
 
@@ -247,6 +263,10 @@ void TGRSIRootIO::CloseRootOutFile()   {
 
    if(TGRSIRunInfo::GetNumberOfSystems()>0) {
       printf(DMAGENTA " Writing RunInfo with " DYELLOW "%i " DMAGENTA " systems to file." RESET_COLOR "\n",TGRSIRunInfo::GetNumberOfSystems());
+      //get run start and stop (in seconds) from the fragment tree
+      TGRSIRunInfo::Get()->SetRunStart(fFragmentTree->GetMinimum("MidasTimeStamp"));
+      TGRSIRunInfo::Get()->SetRunStop( fFragmentTree->GetMaximum("MidasTimeStamp"));
+      printf("set run start to %.0f (%.0f), and stop to %.0f (%0.f)\n",TGRSIRunInfo::Get()->RunStart(),fFragmentTree->GetMinimum("MidasTimeStamp"),TGRSIRunInfo::Get()->RunStop(),fFragmentTree->GetMaximum("MidasTimeStamp"));
       TGRSIRunInfo::Get()->Write();
    }
 

@@ -16,6 +16,7 @@
 #include "TROOT.h"
 #include <utility>
 #include "TRef.h"
+#include "TString.h"
 
 using namespace TGRSIFunctions;
 
@@ -42,6 +43,9 @@ class TGRSIFit : public TF1 {
    Bool_t IsGoodFit() const { return goodfit_flag; }
    virtual void SetHist(TH1* hist){fhist = hist;} //fHistogram is a member of TF1. I'm not sure this does anything proper right now
    virtual TH1* GetHist() const { return (TH1*)(fhist.GetObject());}
+   static const char* GetDefaultFitType(){ return fDefaultFitType.Data(); }
+   static void SetDefaultFitType(const char* fittype){ fDefaultFitType = fittype; }
+
  protected:
    Bool_t IsInitialized() const { return init_flag; }
    void SetInitialized(Bool_t flag = true) {init_flag = flag;}
@@ -51,10 +55,11 @@ class TGRSIFit : public TF1 {
    Bool_t init_flag;
    Bool_t goodfit_flag; //This doesn't do anything yet
    TRef fhist;
+   static TString fDefaultFitType;
 
  public:  
    virtual void Print(Option_t *opt = "") const;
-   virtual void Clear();
+   virtual void Clear(Option_t* opt = "" );
 
    ClassDef(TGRSIFit,0);
 };

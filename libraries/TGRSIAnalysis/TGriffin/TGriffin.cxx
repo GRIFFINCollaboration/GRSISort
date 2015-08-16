@@ -231,6 +231,7 @@ Int_t TGriffin::GetAddbackMultiplicity() {
    if(addback_hits.size() == 0) {
       // use the first griffin hit as starting point for the addback hits
       addback_hits.push_back(griffin_hits[0]);
+      faddback_frags.push_back(1);
 
       // loop over remaining griffin hits
       size_t i, j;

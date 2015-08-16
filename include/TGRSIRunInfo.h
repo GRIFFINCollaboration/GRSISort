@@ -90,6 +90,12 @@ class TGRSIRunInfo : public TObject {
       static inline int  RunNumber() { return fGRSIRunInfo->fRunNumber; }
       static inline int  SubRunNumber() { return fGRSIRunInfo->fSubRunNumber; }
 
+      static inline void   SetRunStart(double tmp) { fGRSIRunInfo->fRunStart = tmp; }
+      static inline void   SetRunStop(double tmp) { fGRSIRunInfo->fRunStop = tmp; }
+
+      static inline double RunStart() { return fGRSIRunInfo->fRunStart; }
+      static inline double RunStop() { return fGRSIRunInfo->fRunStop; }
+
       static inline void SetMajorIndex(const char *tmpstr) { fGRSIRunInfo->fMajorIndex.assign(tmpstr); }
       static inline void SetMinorIndex(const char *tmpstr) { fGRSIRunInfo->fMinorIndex.assign(tmpstr); }
 
@@ -171,6 +177,9 @@ class TGRSIRunInfo : public TObject {
       int fRunNumber;                     //The current run number
       int fSubRunNumber;                  //The current sub run number
 
+      double fRunStart;                      //The start of the current run in seconds
+      double fRunStop;                       //The stop  of the current run in seconds
+
       int fNumberOfTrueSystems;           //The number of detection systems in the array
 
       static std::string fGRSIVersion;    //The version of GRSISort that generated the file
@@ -237,7 +246,7 @@ class TGRSIRunInfo : public TObject {
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
-   ClassDef(TGRSIRunInfo,3);  //Contains the run-dependent information.
+   ClassDef(TGRSIRunInfo,4);  //Contains the run-dependent information.
 };
 
 #endif
