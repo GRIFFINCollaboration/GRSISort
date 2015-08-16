@@ -81,7 +81,7 @@ class TPeak : public TGRSIFit {
    Double_t fchi2; 
    Double_t fNdf; 
 
-   static bool fLogLikelihoodFlag;
+   static bool fLogLikelihoodFlag; //!
 
    TF1* background;
 
