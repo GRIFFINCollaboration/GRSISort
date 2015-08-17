@@ -154,7 +154,7 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    this->SetParameter("B",(fithist->GetBinContent(binlow) - fithist->GetBinContent(binhigh))/(xlow-xhigh));
    this->SetParameter("C",0.0000);
    this->SetParameter("bg_offset",GetParameter("centroid"));
-   this->FixParameter(8,0.00);
+//   this->FixParameter(8,0.00);
    this->FixParameter(3,GetParameter("beta"));
    this->FixParameter(4,0.00);
    SetInitialized();
@@ -323,7 +323,7 @@ Bool_t TPeak::SetHist(const char* histname){
    }
 }*/
 
-void TPeak::Clear(){
+void TPeak::Clear(Option_t *opt){
 //Clear the TPeak including functions and histogram, does not
 //currently clear inherited members such as name.
 //want to make a clear that doesn't clear everything
