@@ -13,7 +13,12 @@ TPPGData::TPPGData(const TPPGData& rhs) {
 }
 
 void TPPGData::Copy(TObject &rhs) const {
-  ((TPPGData&)rhs)     = *this;
+  ((TPPGData&)rhs).ftimestamp        =  ftimestamp;      
+  ((TPPGData&)rhs).fold_ppg          =  fold_ppg;        
+  ((TPPGData&)rhs).fnew_ppg          =  fnew_ppg;                
+  ((TPPGData&)rhs).fNetworkPacketId  =  fNetworkPacketId;
+  ((TPPGData&)rhs).flowtimestamp     =  flowtimestamp;   
+  ((TPPGData&)rhs).fhightimestamp    =  fhightimestamp;  
 }
 
 void TPPGData::SetTimeStamp() {
@@ -44,15 +49,17 @@ TPPG::TPPG(){
 }
 
 TPPG::TPPG(const TPPG& rhs){
+   fPPGStatusMap = new PPGMap_t;
    rhs.Copy(*this);
 }
 
 TPPG::~TPPG(){
+   Clear();
+   PPGMap_t::iterator ppgit;
    if(fPPGStatusMap){
-      PPGMap_t::iterator ppgit;
       for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++){
          if(ppgit->second){
-            delete ppgit->second;
+            delete (ppgit->second);
          }
          ppgit->second = 0;
       }
@@ -61,9 +68,22 @@ TPPG::~TPPG(){
    fPPGStatusMap = 0;
 }
 
-void TPPG::Copy(TObject &rhs) const {
-   ((TPPG&)rhs)     = *this;
-   ((TPPG&)rhs).fcurrIterator = ((TPPG&)rhs).fPPGStatusMap->begin();//might not need this
+void TPPG::Copy(TObject &obj) const {
+   ((TPPG&)obj).fcurrIterator = ((TPPG&)obj).fPPGStatusMap->begin();//might not need this
+   ((TPPG&)obj).fCycleLength =  fCycleLength;
+   ((TPPG&)obj).fNumberOfCycleLengths = fNumberOfCycleLengths;
+
+   //We want to provide a copy of each of the data in the PPG rather than a copy of th pointer
+   if(((TPPG&)obj).fPPGStatusMap && fPPGStatusMap){
+      ((TPPG&)obj).fPPGStatusMap->clear();
+      PPGMap_t::iterator ppgit;
+      for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++){
+         if(ppgit->second){
+            ((TPPG&)obj).AddData(ppgit->second);
+         }
+      }
+   }
+
 }
 
 Bool_t TPPG::MapIsEmpty() const {
@@ -141,12 +161,21 @@ void TPPG::Print(Option_t *opt) const{
       printf("           PPG STATUS        \n");
       printf("*****************************\n");
       for(ppgit = MapBegin(); ppgit != MapEnd(); ppgit++){
-         ppgit->second->Print();
+         printf("%lld: ",ppgit->first); ppgit->second->Print();
       }
    }
 }
 
 void TPPG::Clear(Option_t *opt){
+   if(fPPGStatusMap){
+      PPGMap_t::iterator ppgit;
+      for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++){
+         if(ppgit->second){
+            delete (ppgit->second);
+         }
+         ppgit->second = 0;
+      }
+   }
    fPPGStatusMap->clear();
    //We always add a junk event to keep the code from crashing if we ask for a PPG below the lowest PPG time.
    AddData(new TPPGData);
@@ -155,15 +184,92 @@ void TPPG::Clear(Option_t *opt){
    fNumberOfCycleLengths.clear();
 }
 
-bool TPPG::Correct() {
+bool TPPG::Correct(bool verbose) {
+   //Correct the map of PPG events by checking that we always have a PPG event with the same status that occured fCycleLength ago.
+
+   //we use the cycle time to correct our ppg, so make sure it's set (GetCycleLength calculates and sets fCycleLength only if it's not already set)
+   GetCycleLength();
    
+   if(verbose) {
+      //we can now use fNumberOfCycleLengths to see how many cycle lengths we have that are wrong
+      for(auto it = fNumberOfCycleLengths.begin(); it != fNumberOfCycleLengths.end(); ++it) {
+         if((*it).first < fCycleLength) {
+            continue;
+         }
+         if((*it).first != fCycleLength) {
+            printf("Found %d wrong cycle length(s) of %lld (correct is %lld).\n", (*it).second, (*it).first, fCycleLength);
+         }
+      }
+   }
+   
+   //loop over all ppg data, check that the last ppg data of the same type was fCycleLength ago
+   //if it's not, enter ppg data at that time (multiple times?)
+   for(auto it = MapBegin(); it != MapEnd(); it++){
+      //skip the first cycle
+      if((*it).first < fCycleLength) {
+         continue;
+      }
+      //get time difference to previous ppg with same status
+      ULong64_t diff = (*it).second->GetTimeStamp() - GetLastStatusTime((*it).second->GetTimeStamp());
+      if(diff != fCycleLength) {
+         if(verbose) {
+            printf("%d: found missing ppg at time %lld (%lld != %lld)\n", std::distance(MapBegin(),it),(*it).first, diff, fCycleLength);
+         }
+         //check that the previous ppg with the same status is a multiple of fCycleLength ago and that no other ppg is in the map that was fCycleLength ago
+         if(diff%fCycleLength != 0) {
+            if(verbose) {
+               printf(DRED "PPG is messed up, cycle length is %lld, but the previous event with the same status was %lld ago!" RESET_COLOR "\n", fCycleLength, diff);
+            }
+            continue;
+            return false;
+         }
+         auto prev = fPPGStatusMap->find((*it).first - fCycleLength);
+         if(prev != fPPGStatusMap->end()) {
+            //check if the status of the current ppg and the old status of the ppg following the one fCycleLength ago are the same
+            //if they are, we change the status of the one fCycleLength ago to match the current status
+            if(it->second->GetNewPPG() == (++prev)->second->GetOldPPG()) {
+               (--prev)->second->SetNewPPG(it->second->GetNewPPG());
+            } else if(verbose) {
+               printf(DBLUE "PPG at %lld already exist with status 0x%x (current status is 0x%x)." RESET_COLOR "\n", (*it).first - fCycleLength, prev->second->GetNewPPG(), it->second->GetNewPPG());
+            }
+            continue;
+         }
+         //copy the current ppg data and correct it's time before inserting it into the map
+         TPPGData* new_data = new TPPGData(*((*it).second));
+         ULong64_t new_ts = (*it).first - fCycleLength;
+         new_data->SetHighTimeStamp(new_ts>>28);
+         new_data->SetLowTimeStamp(new_ts&0x0fffffff);
+         if(verbose) {
+            printf("inserting new ppg data at %lld\n",new_data->GetTimeStamp());
+         }
+         it = fPPGStatusMap->insert(std::make_pair(new_data->GetTimeStamp(),new_data)).first;
+         --it;
+      }
+   }
+      
+   //now we reset fCycleLength and calculate it again
+   fCycleLength = 0;
+   fNumberOfCycleLengths.clear();
+   GetCycleLength();
+   
+   if(verbose) {
+      //we can now use fNumberOfCycleLengths to see how many cycle lengths we have that are wrong
+      for(auto it = fNumberOfCycleLengths.begin(); it != fNumberOfCycleLengths.end(); ++it) {
+         if((*it).first < fCycleLength) {
+            continue;
+         }
+         if((*it).first != fCycleLength) {
+            printf("Found %d wrong cycle length(s) of %lld (correct is %lld).\n", (*it).second, (*it).first, fCycleLength);
+         }
+      }
+   }
    
    return true;
 }
 
 TPPGData* const TPPG::Next() {
-   if(fcurrIterator != MapEnd()){
-      return (++fcurrIterator)->second;
+   if(++fcurrIterator != MapEnd()){
+      return fcurrIterator->second;
    }
    else{
       printf("Already at last PPG\n");
@@ -234,4 +340,29 @@ ULong64_t TPPG::GetCycleLength() {
    }
 
    return fCycleLength;
+}
+
+Long64_t TPPG::Merge(TCollection *list){
+   TIter it(list);
+   TPPG *ppg = 0;
+
+   while ((ppg = (TPPG *)it.Next())){
+      *this += *ppg;
+   }
+   
+   return 0;
+
+}
+
+void TPPG::operator+=(const TPPG& rhs){                           
+   this->Add(&rhs);    
+}
+
+void TPPG::Add(const TPPG* ppg){
+   PPGMap_t::iterator ppgit;
+   for(ppgit = ppg->MapBegin(); ppgit != ppg->MapEnd(); ++ppgit){
+      if(ppgit->second){
+         AddData(ppgit->second);
+      }
+   }
 }
