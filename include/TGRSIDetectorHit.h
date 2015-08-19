@@ -27,7 +27,7 @@ class TGRSIDetector;
 ////////////////////////////////////////////////////////////////
 
 class TGRSIDetectorHit : public TObject 	{
-   // The bare bones; stuff all detecotors need.  
+   // The bare bones; stuff all detectors need.  
    // 1. An address.         The whoami for the detector. This is the value used by TChannel::GetChannel(address);
    // 2. An "Energy value."  What this is left the parent class, but it is going to return a double.
    // 3. A   Time  value.     This should be a time value common for detectors (derived from the timestamp)

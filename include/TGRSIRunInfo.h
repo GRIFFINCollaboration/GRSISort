@@ -90,11 +90,13 @@ class TGRSIRunInfo : public TObject {
       static inline int  RunNumber() { return fGRSIRunInfo->fRunNumber; }
       static inline int  SubRunNumber() { return fGRSIRunInfo->fSubRunNumber; }
 
-      static inline void   SetRunStart(double tmp) { fGRSIRunInfo->fRunStart = tmp; }
-      static inline void   SetRunStop(double tmp) { fGRSIRunInfo->fRunStop = tmp; }
+      static inline void   SetRunStart(double tmp)  { fGRSIRunInfo->fRunStart = tmp; }
+      static inline void   SetRunStop(double tmp)   { fGRSIRunInfo->fRunStop = tmp; }
+      static inline void   SetRunLength(double tmp) { fGRSIRunInfo->fRunLength = tmp; }
 
-      static inline double RunStart() { return fGRSIRunInfo->fRunStart; }
-      static inline double RunStop() { return fGRSIRunInfo->fRunStop; }
+      static inline double RunStart()  { return fGRSIRunInfo->fRunStart; }
+      static inline double RunStop()   { return fGRSIRunInfo->fRunStop; }
+      static inline double RunLength() { return fGRSIRunInfo->fRunLength; }
 
       static inline void SetMajorIndex(const char *tmpstr) { fGRSIRunInfo->fMajorIndex.assign(tmpstr); }
       static inline void SetMinorIndex(const char *tmpstr) { fGRSIRunInfo->fMinorIndex.assign(tmpstr); }
@@ -170,6 +172,9 @@ class TGRSIRunInfo : public TObject {
       inline void SetHPGeArrayPosition(const int arr_pos) { fHPGeArrayPosition = arr_pos; }
       static inline int  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
 
+      Long64_t Merge(TCollection *list);
+      void Add(TGRSIRunInfo* runinfo) { fRunStart = 0.; fRunStop = 0.; fRunLength += runinfo->RunLength(); }
+
    private:
       static TGRSIRunInfo *fGRSIRunInfo; //Static pointer to TGRSIRunInfo
       //TGRSIRunInfo();
@@ -177,8 +182,9 @@ class TGRSIRunInfo : public TObject {
       int fRunNumber;                     //The current run number
       int fSubRunNumber;                  //The current sub run number
 
-      double fRunStart;                      //The start of the current run in seconds
-      double fRunStop;                       //The stop  of the current run in seconds
+      double fRunStart;                      //The start  of the current run in seconds
+      double fRunStop;                       //The stop   of the current run in seconds
+      double fRunLength;                     //The length of the current run in seconds
 
       int fNumberOfTrueSystems;           //The number of detection systems in the array
 
@@ -246,7 +252,7 @@ class TGRSIRunInfo : public TObject {
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
-   ClassDef(TGRSIRunInfo,4);  //Contains the run-dependent information.
+   ClassDef(TGRSIRunInfo,5);  //Contains the run-dependent information.
 };
 
 #endif

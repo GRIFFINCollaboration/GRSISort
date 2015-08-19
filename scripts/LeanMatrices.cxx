@@ -100,6 +100,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    TH1D* gammaSinglesBt = new TH1D("gammaSinglesBt","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaSinglesBt);
    TH1D* ggTimeDiff = new TH1D("ggTimeDiff", "#gamma-#gamma time difference", 300,0,300); list->Add(ggTimeDiff);
    TH1D* gbTimeDiff = new TH1D("gbTimeDiff", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(gbTimeDiff); 
+   TH2D* bbTimeDiff = new TH2D("bbTimeDiff", "#beta energy vs. #beta-#beta time difference", 2000,-1000,1000, 1000, 0., 2e6); list->Add(bbTimeDiff); 
    TH1F* gtimestamp = new TH1F("gtimestamp", "#gamma time stamp", 10000,0,1000); list->Add(gtimestamp);
    TH1F* btimestamp = new TH1F("btimestamp", "#beta time stamp", 10000,0,1000); list->Add(btimestamp);
    TH2F* gbEnergyvsgTime = new TH2F("gbEnergyvsgTime", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsgTime);
@@ -130,6 +131,8 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    TH2F* aabmatrix = new TH2F("aabmatrix","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(aabmatrix);
    TH2F* aabmatrixt = new TH2F("aabmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixt);
    TH2F* abTimevsg = new TH2F("abTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(abTimevsg); 
+   TH2F* abTimevsgf = new TH2F("abTimevsgf","#gamma energy vs. #gamma-#beta timing (first #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgf); 
+   TH2F* abTimevsgl = new TH2F("abTimevsgl","#gamma energy vs. #gamma-#beta timing (last #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgl); 
    TH2F* gammaAddbackCyc = new TH2F("gammaAddbackCyc", "Cycle time vs. #gamma energy", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaAddbackCyc);
    TH2F* gammaAddbackBCyc = new TH2F("gammaAddbackBCyc", "Cycle time vs. #beta coinc #gamma energy", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaAddbackBCyc);
    TH2F* gammaAddbackBmCyc = new TH2F("gammaAddbackBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaAddbackBmCyc);
@@ -214,12 +217,18 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
       if(gotSceptar && scep->GetMultiplicity() > 0) {
          //We do an outside loop on gammas so that we can break on the betas if we see a beta in coincidence (we don't want to bin twice just because we have two betas)
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
+            //if(scep->GetHit(b)->GetEnergy() < 20000) continue;
             btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
             betaSinglesCyc->Fill((((ULong64_t)(scep->GetHit(b)->GetTime()))%(ppg->GetCycleLength()))/1e5,(scep->GetHit(b)->GetTime())/(ppg->GetCycleLength())); 
+            for(int b2 = 0; b2 < scep->GetMultiplicity(); ++b2) {
+               if(b == b2) continue;
+               bbTimeDiff->Fill(scep->GetHit(b)->GetTime()-scep->GetHit(b2)->GetTime(), scep->GetHit(b)->GetEnergy());
+            }
          }
          for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
             bool found = false;
             for(int b = 0; b < scep->GetMultiplicity(); ++b) {
+               //if(scep->GetHit(b)->GetEnergy() < 20000) continue;
                //Be careful about time ordering!!!! betas and gammas are not symmetric out of the DAQ
                //Fill the time diffrence spectra
                gbTimeDiff->Fill(grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime());
@@ -301,10 +310,17 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
          for(one = 0; one < (int) grif->GetAddbackMultiplicity(); ++one) {
             bool found = false;
             for(int b = 0; b < scep->GetMultiplicity(); ++b) {
+               //if(scep->GetHit(b)->GetEnergy() < 20000) continue;
                //Be careful about time ordering!!!! betas and gammas are not symmetric out of the DAQ
                //Fill the time diffrence spectra
                abTimeDiff->Fill(grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime());
                abTimevsg->Fill(grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime(),grif->GetAddbackHit(one)->GetEnergy());
+               if(b == 0) {
+                  abTimevsgf->Fill(grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime(),grif->GetAddbackHit(one)->GetEnergy());
+               }
+               if(b == scep->GetMultiplicity()-1) {
+                  abTimevsgl->Fill(grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime(),grif->GetAddbackHit(one)->GetEnergy());
+               }
                if((gbTlow <= grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) {
                   abEnergyvsbTime->Fill(scep->GetHit(b)->GetTime(),grif->GetAddbackHit(one)->GetEnergy());
                }

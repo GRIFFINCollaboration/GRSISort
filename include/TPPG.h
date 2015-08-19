@@ -24,6 +24,7 @@
 
 #include "TObject.h"
 #include "Globals.h"
+#include "TCollection.h"
 
 class TPPGData : public TObject {
     public:
@@ -88,8 +89,11 @@ class TPPG : public TObject	{
     ULong64_t GetLastStatusTime(ULong64_t time, ppg_pattern pat = kJunk, bool exact_flag = false );
     Bool_t MapIsEmpty() const;
     std::size_t PPGSize() const {return fPPGStatusMap->size()- 1;}
+    Long64_t Merge(TCollection *list);
+    void Add(const TPPG* ppg);
+    void operator+=(const TPPG& rhs);                           
    
-    bool Correct();
+    bool Correct(bool verbose = false);
     ULong64_t GetCycleLength();
 
     TPPGData* const Next();
@@ -107,8 +111,8 @@ class TPPG : public TObject	{
 
   private:
     PPGMap_t *fPPGStatusMap;
-   ULong64_t fCycleLength;
-   std::map<ULong64_t, int> fNumberOfCycleLengths;
+    ULong64_t fCycleLength;
+    std::map<ULong64_t, int> fNumberOfCycleLengths;
 
     ClassDef(TPPG,2) //Contains PPG information
 };
