@@ -98,7 +98,7 @@ void TGRSIint::ApplyOptions() {
       printf("\tfile %s opened as _file%i\n",file->GetName(),x);
       TGRSIRootIO::Get()->LoadRootFile(file);
    }
-   if(TGRSIOptions::GetInputRoot().size() > 0) {
+   if(TGRSIOptions::GetInputRoot().size() > 0 && !fAutoSort && !fFragmentSort) {
       if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
          Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
          printf("Read calibration info for %d channels from \"%s\" FragmentTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str()); 
@@ -108,8 +108,14 @@ void TGRSIint::ApplyOptions() {
          printf("Read calibration info for %d channels from \"%s\" AnalysisTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
       }
    }
+
+   if(TGRSIOptions::GetInputCal().size() > 0){
+      for(int i =0; i<TGRSIOptions::GetInputCal().size();++i){
+         TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
+      }
+   }
   
-  if(TGRSIOptions::WorkHarder()) {
+   if(TGRSIOptions::WorkHarder()) {
       for(int x=0;x<TGRSIOptions::GetMacroFile().size();x++) {
          gROOT->Macro(TGRSIOptions::GetMacroFile().at(x).c_str());  
        // gROOT->ProcessLineSync(Form(".x %s",TGRSIOptions::GetMacroFile().at(x).c_str()));
@@ -353,8 +359,10 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
              printf("file %s has size 0, skipping\n", dir);
           }
        } else {
-          //file does not exist... assuming output file.
-          FileAutoDetect(argv[i],-1);
+          //file does not exist... complain to the user about this
+          if(!FileAutoDetect(argv[i],-1)) {
+            printf(DRED "File %s does not exist, ignoring it!" RESET_COLOR "\n",argv[i]);
+          }
           argv[i] = null;
        }   
     }
@@ -383,39 +391,40 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
    //first search for extensions.
    std::string ext = filename.substr(filename.find_last_of('.')+1);
    //printf("\text = %s\n",ext.c_str());
-   if(ext.compare("root")==0) {
+   if(ext.compare("root")==0 && filesize > 0) {
       //printf("\tFound root file: %s\n",filename.c_str());
       //fInputRootFile->push_back(filename);
       TGRSIOptions::AddInputRootFile(filename);
       return true;
-   } else if(ext.compare("mid")==0 || ext.compare("bz2")==0) {
+   } else if((ext.compare("mid")==0 || ext.compare("bz2")==0) && filesize > 0) {
       //printf("\tFound midas file: %s\n",filename.c_str());
       //fInputMidasFile->push_back(filename);
       TGRSIOptions::AddInputMidasFile(filename);
       fAutoSort = true;
       return true;
-   } else if(ext.compare("cal")==0) { 
+   } else if(ext.compare("cal")==0 && filesize > 0) { 
       //printf("\tFound custom calibration file: %s\n",filename.c_str());
       //fInputCalFile->push_back(filename);
       TGRSIOptions::AddInputCalFile(filename);
       return true;
-   } else if(ext.compare("info")==0) { 
+   } else if(ext.compare("info")==0 && filesize > 0) { 
       if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
          return true;
       else {
          printf("Problem reading run-info file %s\n",filename.c_str());
          return false;
       }
-   } else if(ext.compare("xml")==0) { 
+   } else if(ext.compare("xml")==0 && filesize > 0) { 
       //fInputOdbFile->push_back(filename);
       TGRSIOptions::AddInputOdbFile(filename);
       //printf("\tFound xml odb file: %s\n",filename.c_str());
       return true;
-   } else if(ext.compare("odb")==0) { 
+   } else if(ext.compare("odb")==0 && filesize > 0) { 
       //printf("\tFound c-like odb file: %s\n",filename.c_str());
       printf("c-like odb structures can't be read yet.\n");
       return false;
    } else if((ext.compare("c")==0) || (ext.compare("C")==0) || (ext.compare("c+")==0) || (ext.compare("C+")==0)) {
+      //scripts are the only files that don't have to exist, they may also be found in the macro-paths
       TGRSIOptions::AddMacroFile(filename);
       return true;
    } else {

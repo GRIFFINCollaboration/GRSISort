@@ -7,7 +7,17 @@
 
 ClassImp(TSceptarHit)
 
-TSceptarHit::TSceptarHit()	{	
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TSceptarHit                                                //
+//                                                            //
+// This is class that contains the information about a sceptar//
+// hit. This class is used to find energy, time, etc.         //
+//                                                            //
+////////////////////////////////////////////////////////////////
+
+TSceptarHit::TSceptarHit()	{
+   //Default Constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -18,6 +28,7 @@ TSceptarHit::TSceptarHit()	{
 TSceptarHit::~TSceptarHit()	{	}
 
 TSceptarHit::TSceptarHit(const TSceptarHit &rhs)	{	
+   //Copy Constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -26,6 +37,7 @@ TSceptarHit::TSceptarHit(const TSceptarHit &rhs)	{
 }
 
 void TSceptarHit::Copy(TSceptarHit &rhs) const {
+   //Copies a TSceptarHit
   TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
 	((TSceptarHit&)rhs).filter = filter;
 }                                       
@@ -52,6 +64,8 @@ void TSceptarHit::SetHit(){
 */
 
 TVector3 TSceptarHit::GetPosition(double dist) const {
+   //Gets the position of the current TSceptarHit
+   //This position returns is of the center of the paddle
 	return TSceptar::GetPosition(detector);
 }
 
@@ -61,16 +75,17 @@ bool TSceptarHit::InFilter(Int_t wantedfilter) {
    return true;
 }
 
-double TSceptarHit::GetTime(Option_t *opt) const {
-   return (double)time;
-}
-
 void TSceptarHit::Clear(Option_t *opt)	{
+   //Clears the SceptarHit
    filter = 0;
    TGRSIDetectorHit::Clear();
 }
 
 void TSceptarHit::Print(Option_t *opt) const	{
+   //Prints the SceptarHit. Returns:
+   //Detector
+   //Energy
+   //Time
    printf("Sceptar Detector: %i\n",GetDetector());
 	printf("Sceptar hit energy: %.2f\n",GetEnergy());
 	printf("Sceptar hit time:   %.lf\n",GetTime());
@@ -109,6 +124,7 @@ Double_t TSceptarHit::GetEnergy() const {
 */
 
 bool TSceptarHit::AnalyzeWaveform() {
+   //Calculates the cfd time from the waveform
    bool error = false;
    std::vector<Int_t> baseline_corrections (8, 0);
    std::vector<Short_t> smoothedwaveform;
@@ -137,7 +153,7 @@ bool TSceptarHit::AnalyzeWaveform() {
 }
 
 Int_t TSceptarHit::CalculateCfd(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps) {
-
+   //Used when calculating the CFD from the waveform
    std::vector<Short_t> monitor;
 
    return CalculateCfdAndMonitor(attenuation, delay, halfsmoothingwindow, interpolation_steps, monitor);
@@ -145,6 +161,7 @@ Int_t TSceptarHit::CalculateCfd(double attenuation, int delay, int halfsmoothing
 }
 
 Int_t TSceptarHit::CalculateCfdAndMonitor(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor) {
+   //Used when calculating the CFD from the waveform
 
    Short_t monitormax = 0;
 
@@ -203,6 +220,7 @@ Int_t TSceptarHit::CalculateCfdAndMonitor(double attenuation, int delay, int hal
 }
 
 std::vector<Short_t> TSceptarHit::CalculateSmoothedWaveform(unsigned int halfsmoothingwindow) {
+   //Used when calculating the CFD from the waveform
 
    std::vector<Short_t> smoothedwaveform(std::max((size_t)0, waveform.size()-2*halfsmoothingwindow), 0);
 
@@ -219,6 +237,7 @@ std::vector<Short_t> TSceptarHit::CalculateSmoothedWaveform(unsigned int halfsmo
 }
 
 std::vector<Short_t> TSceptarHit::CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow) {
+   //Used when calculating the CFD from the waveform
 
    std::vector<Short_t> monitor(std::max((size_t)0, waveform.size()-delay), 0);
    std::vector<Short_t> smoothedwaveform;

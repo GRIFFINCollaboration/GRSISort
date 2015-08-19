@@ -83,7 +83,7 @@ protected:
   bool fAllocatedByUs; ///< "true" if we own the data buffer
 
 	
-	ClassDef(TMidasEvent,0)
+	ClassDef(TMidasEvent,0) //All of the data contained in a Midas Event
 };
 
 #endif // TMidasEvent.h

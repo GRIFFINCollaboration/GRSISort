@@ -91,8 +91,6 @@ void TGriffinHit::Clear(Option_t *opt)	{
    ppg             =  0;
    crystal         = 0xFFFF;
 
-   is_crys_set     = false;
-
 }
 
 
@@ -124,18 +122,12 @@ Int_t TGriffinHit::GetCharge(Option_t *opt) const {
 }
 */
 
-
-double TGriffinHit::GetTime(Option_t *opt) const {
-  //still need to figure out how to handle the times
-  return (double)time;
-}
-
 TVector3 TGriffinHit::GetPosition(Double_t dist) const{
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
 UInt_t TGriffinHit::GetCrystal() const { 
-   if(is_crys_set)
+   if(IsCrystalSet())
       return crystal;
 
    TChannel *chan = GetChannel();
@@ -158,7 +150,7 @@ UInt_t TGriffinHit::GetCrystal() const {
 }
 
 UInt_t TGriffinHit::GetCrystal() {
-   if(is_crys_set)
+   if(IsCrystalSet())
       return crystal;
 
    TChannel *chan = GetChannel();
@@ -172,7 +164,6 @@ UInt_t TGriffinHit::GetCrystal() {
 
 UInt_t TGriffinHit::SetCrystal(UInt_t crynum) {
    crystal = crynum;
-   is_crys_set = true;
    return crystal;
 }
 
@@ -187,21 +178,22 @@ UInt_t TGriffinHit::SetCrystal(char color) {
       case 'W':
          crystal = 3;  
    };
-   is_crys_set = true;
+   SetFlag(TGRSIDetectorHit::kIsSubDetSet,true);
    return crystal;
 }
 
-bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
+bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	{
    return(lhs->GetEnergy()) > rhs->GetEnergy();
 }
 
-void TGriffinHit::Add(TGriffinHit *hit)	{
+void TGriffinHit::Add(const TGriffinHit *hit)	{
    // add another griffin hit to this one (for addback), 
    // using the time and position information of the one with the higher energy
    if(!CompareEnergy(this,hit)) {
       this->cfd    = hit->GetCfd();
       this->time   = hit->GetTime();
       this->position = hit->GetPosition();
+      this->address = hit->GetAddress();
    }
 
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
@@ -212,7 +204,6 @@ void TGriffinHit::Add(TGriffinHit *hit)	{
 //Bool_t TGriffinHit::BremSuppressed(TSceptarHit* schit){
 //   return false;
 //}
-
 
 
 

@@ -21,6 +21,9 @@
 #pragma link C++ class TGRSIStats+;
 #pragma link C++ class TFragmentQueue+;
 #pragma link C++ class TFragmentSelector+;
+#pragma link C++ class TPPG-;
+#pragma link C++ class TPPGData+;
+#pragma link C++ class std::map<ULong64_t,TPPGData*>;
 
 #endif
 

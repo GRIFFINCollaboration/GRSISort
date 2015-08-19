@@ -25,6 +25,7 @@ TGRSIRootIO::TGRSIRootIO() {
   fFragmentTree = 0;
   fBadFragmentTree =0;
   fEpicsTree    = 0;
+  fPPG          = 0;
 
   foutfile = 0; //new TFile("test_out.root","recreate");
 
@@ -73,7 +74,28 @@ void TGRSIRootIO::SetUpBadFragmentTree() {
 
 }
 
-
+void TGRSIRootIO::SetUpPPG() {
+   if(foutfile)
+      foutfile->cd();
+   fTimesPPGCalled = 0;
+   if(TGRSIRunInfo::SubRunNumber() <= 0) {
+      fPPG = new TPPG;
+   } else {
+      TFile* prev_sub_run = new TFile(Form("fragment%05d_%03d.root",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
+      if(prev_sub_run->IsOpen()) {
+         if(prev_sub_run->Get("TPPG") != NULL) {
+            fPPG = (TPPG*) (prev_sub_run->Get("TPPG")->Clone());
+         } else {
+            printf("Error, could not find PPG in file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
+            fPPG = new TPPG;
+         }
+         prev_sub_run->Close();
+      } else {
+         printf("Error, could not find file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
+         fPPG = new TPPG;
+      }
+   }
+}
 
 
 void TGRSIRootIO::SetUpEpicsTree() {
@@ -117,6 +139,12 @@ void TGRSIRootIO::FillBadFragmentTree(TFragment *frag) {
    fTimesBadFillCalled++;
 }
 
+void TGRSIRootIO::FillPPG(TPPGData* data){
+   //Set PPG Stuff here
+   fPPG->AddData(data);
+   ++fTimesPPGCalled;
+}
+
 void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
   if(TGRSIOptions::IgnoreEpics()) 
     return;
@@ -143,19 +171,20 @@ void TGRSIRootIO::FinalizeFragmentTree() {
    TList *list = fFragmentTree->GetUserInfo();
    std::map < unsigned int, TChannel * >::iterator iter;
    foutfile->cd();
-   //for(iter=TChannel::GetChannelMap()->begin();iter!=TChannel::GetChannelMap()->end();iter++) {
-		TChannel *chan = TChannel::GetDefaultChannel();//new TChannel(iter->second);
+	TChannel *chan = TChannel::GetDefaultChannel();//new TChannel(iter->second);
+	if(chan != NULL) {
       chan->SetNameTitle(Form("TChannels[%i]",TChannel::GetNumberOfChannels()),
                          Form("%i TChannels.",TChannel::GetNumberOfChannels()));
-      //list->Add(chan);//(iter->second);
                            // using the write command on any tchannel will now write all 
       chan->WriteToRoot(); // the tchannels to a root file.  additionally reading a tchannel
                            // from a rootfile will read all the channels saved to it.  tchannels
                            // are now saved as a text buffer to the root file.  pcb.
-  //    break;
-	//}                      // update. (3/9/2015) the WriteToRoot function should now 
+	                        // update. (3/9/2015) the WriteToRoot function should now 
                            // corretcly save the tchannels even if the came from the odb(i.e. internal 
                            // data buffer not set.)  pcb.
+   } else {
+		printf("Failed to get default channel, not going to write TChannel information!\n");
+	}
    
    foutfile->cd();
    fFragmentTree->AutoSave(); //Write();
@@ -171,7 +200,16 @@ void TGRSIRootIO::FinalizeBadFragmentTree() {
 	return;
 }
 
-
+void TGRSIRootIO::FinalizePPG(){
+   if(!fPPG || !foutfile)
+      return;
+   foutfile->cd();
+   if(fPPG->PPGSize()){
+      printf("Writing PPG\n");
+      fPPG->Write("TPPG",TObject::kSingleKey);
+   }
+   return;
+}
 
 void TGRSIRootIO::FinalizeEpicsTree() {
   if(TGRSIOptions::IgnoreEpics()) 
@@ -182,7 +220,6 @@ void TGRSIRootIO::FinalizeEpicsTree() {
    fEpicsTree->AutoSave(); //Write();
 	return;
 }
-
 
 bool TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
   
@@ -204,6 +241,7 @@ bool TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
    
    SetUpFragmentTree();
    SetUpBadFragmentTree();
+   SetUpPPG();
    SetUpEpicsTree();
 
    return true;
@@ -219,11 +257,17 @@ void TGRSIRootIO::CloseRootOutFile()   {
    if(TGRSIOptions::WriteBadFrags())
      printf(DRED "   Fill bad tree called " DYELLOW "%i " DRED "times.\n" RESET_COLOR, fTimesBadFillCalled);
    
-   FinalizeFragmentTree(); 
+   FinalizeFragmentTree();
+   FinalizePPG();
    FinalizeEpicsTree();
 
    if(TGRSIRunInfo::GetNumberOfSystems()>0) {
       printf(DMAGENTA " Writing RunInfo with " DYELLOW "%i " DMAGENTA " systems to file." RESET_COLOR "\n",TGRSIRunInfo::GetNumberOfSystems());
+      //get run start and stop (in seconds) from the fragment tree
+      TGRSIRunInfo::Get()->SetRunStart(fFragmentTree->GetMinimum("MidasTimeStamp"));
+      TGRSIRunInfo::Get()->SetRunStop( fFragmentTree->GetMaximum("MidasTimeStamp"));
+      TGRSIRunInfo::Get()->SetRunLength(fFragmentTree->GetMaximum("MidasTimeStamp") - fFragmentTree->GetMinimum("MidasTimeStamp"));
+      printf("set run start to %.0f, and stop to %.0f (run length %.0f)\n",TGRSIRunInfo::Get()->RunStart(),TGRSIRunInfo::Get()->RunStop(),TGRSIRunInfo::Get()->RunLength());
       TGRSIRunInfo::Get()->Write();
    }
 

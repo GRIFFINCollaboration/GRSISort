@@ -41,6 +41,8 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
 //for gain matching purposes.
    if(!hist) return false;
 
+   fhist = hist;
+
    //I might want to do a clear of the gainmatching parameters at this point.
 
    //Check to see that the histogram isn't empty
@@ -96,9 +98,9 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
 
    //We now want to create a peak for each one we found (2) and fit them.
    for(int x=0; x<2; x++){
-      TPeak tmpPeak(foundbin[x],foundbin[x] - 20./binWidth, foundbin[x] + 20./binWidth);
+      TPeak tmpPeak(foundbin[x],foundbin[x] - 10./binWidth, foundbin[x] + 10./binWidth);
       tmpPeak.SetName(Form("GM_Cent_%lf",foundbin[x]));//Change the name of the TPeak to know it's origin
-      tmpPeak.Fit(hist,"M+");
+      tmpPeak.Fit(hist,"+");
       this->SetPoint(x,tmpPeak.GetParameter("centroid"),engvec[x]);
    }
 
@@ -155,7 +157,7 @@ Bool_t TGainMatch::FineMatchFast(TH1* hist1, TPeak* peak1, TH1* hist2, TPeak* pe
       //What we are actually doing is applying the recirpocal gain to the energy of the real peak
       //to figure out where the centroid of the charge is spectrum is roughly going to be
       //First read in the rough gain coefficients
-      std::vector<Double_t> rough_coeffs = chan->GetENGCoeff();
+      std::vector<Float_t> rough_coeffs = chan->GetENGCoeff();
       gain = rough_coeffs.at(1);
       offset = rough_coeffs.at(0);
    }
@@ -355,7 +357,8 @@ Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2 *mat, Double_t energy1, D
          badlist.push_back(chan);
          continue;
       }
-      cm->AddToManager(gm);
+      gm->SetName(Form("gm_chan_%d",chan));
+      cm->AddToManager(gm,chan);
    }
    if(badlist.size())
       printf("The following channels did not gain match properly: ");
@@ -671,7 +674,7 @@ Bool_t TGainMatch::FineMatch(TH1 *energy_hist, TH1* testhist, TH1* charge_hist, 
       //What we are actually doing is applying the recirpocal gain to the energy of the real peak
       //to figure out where the centroid of the charge is spectrum is roughly going to be
       //First read in the rough gain coefficients
-      std::vector<Double_t> rough_coeffs = chan->GetENGCoeff();
+      std::vector<Float_t> rough_coeffs = chan->GetENGCoeff();
       gain = rough_coeffs.at(1);
       offset = rough_coeffs.at(0);
    }

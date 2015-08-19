@@ -32,7 +32,7 @@ public:
 	static bool IsSet() { return fIsSet; }           //!
 
   void Clear(Option_t *opt=""); //!
-  void Print(Option_t *opt=""); //!
+  void Print(Option_t *opt="") const; //!
 
   /////////////////////           SETTERS           ////////////////////////
 

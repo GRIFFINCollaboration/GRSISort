@@ -17,7 +17,7 @@ class TDescantData : public TGRSIDetectorData {
 		std::vector<UShort_t> fDet_Nbr;		//!
 		std::vector<UInt_t>   fDet_Address;		//!
       std::vector<Double_t> fDet_Eng;		//!
-		std::vector<Int_t>    fDet_Chg;		//!
+		std::vector<Float_t>    fDet_Chg;		//!
 		std::vector<Int_t>    fDet_CFD;		//!
 		std::vector<Int_t>    fDet_Zc;		//!
 		std::vector<Int_t>    fDet_CcShort;		//!
@@ -35,13 +35,13 @@ class TDescantData : public TGRSIDetectorData {
 		static bool IsSet() { return fIsSet; }           //!
 
 		void Clear(Option_t *opt = "");		//!
-		void Print(Option_t *opt = "");		//!
+		void Print(Option_t *opt = "") const;		//!
 
 	private:
 		inline void SetDetNumber(const UShort_t  &DetNumber)	   {fDet_Nbr.push_back(DetNumber);      }	//!
 		inline void SetDetAddress(const UInt_t  &DetAddress)	   {fDet_Address.push_back(DetAddress); }	//!
       inline void SetDetEnergy(const Double_t  &DetEnergy)	   {fDet_Eng.push_back(DetEnergy);      }	//!
-		inline void SetDetCharge(const Int_t &DetCharge)	      {fDet_Chg.push_back(DetCharge);      }	//!
+		inline void SetDetCharge(const Float_t &DetCharge)	      {fDet_Chg.push_back(DetCharge);      }	//!
 		inline void SetDetCFD(const Int_t &DetCFD)	            {fDet_CFD.push_back(DetCFD); }	//!	
 		inline void SetDetZc(const Int_t &DetZc)	            {fDet_Zc.push_back(DetZc); }	//!	
 		inline void SetDetCcShort(const Int_t &DetCcShort)	            {fDet_CcShort.push_back(DetCcShort); }	//!	
@@ -85,7 +85,7 @@ class TDescantData : public TGRSIDetectorData {
 		inline UShort_t GetDetNumber(const unsigned int &i)	   {return fDet_Nbr.at(i);}	//!
 		inline UInt_t   GetDetAddress(const unsigned int &i)	   {return fDet_Address.at(i);}	//!
       inline Double_t GetDetEnergy(const unsigned int &i)	   {return fDet_Eng.at(i);}	//!
-		inline Int_t    GetDetCharge(const unsigned int &i)	   {return fDet_Chg.at(i);}	//!
+		inline Float_t  GetDetCharge(const unsigned int &i)	   {return fDet_Chg.at(i);}	//!
 		inline Int_t    GetDetCFD(const unsigned int &i)	      {return fDet_CFD.at(i);}	//!
 		inline Int_t    GetDetZc(const unsigned int &i)	         {return fDet_Zc.at(i);}	//!
 		inline Int_t    GetDetCcShort(const unsigned int &i)	   {return fDet_CcShort.at(i);}	//!

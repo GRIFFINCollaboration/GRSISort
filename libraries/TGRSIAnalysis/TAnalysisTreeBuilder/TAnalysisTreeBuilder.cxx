@@ -115,7 +115,7 @@ int TWriteQueue::Size() {
 ClassImp(TAnalysisTreeBuilder)
 
 //This sets the minimum amount of memory that root can hold a tree in.
-const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
+const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)16; // 16 GB
 
 TAnalysisTreeBuilder* TAnalysisTreeBuilder::fAnalysisTreeBuilder = 0;
 
@@ -141,6 +141,7 @@ TAnalysisTreeBuilder::TAnalysisTreeBuilder() {
    fCurrentAnalysisTree = 0;
    fCurrentAnalysisFile = 0;
    fCurrentRunInfo = 0;
+   fCurrentPPG = 0;
 
    fCurrentFragPtr = 0;
 
@@ -431,7 +432,9 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       } else {
          //If we aren't ready to "build" the event, we fill the current event with the new fragment
          event->push_back(*currentFrag);
-         firstTimeStamp = currentFrag->GetTimeStamp(); //THIS IS FOR MOVING WINDO
+         if(TGRSIRunInfo::IsMovingWindow()){
+            firstTimeStamp = currentFrag->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
+         }
       }
    }
    //in case we have fragments left after all of the fragments have been processed, we add them to the queue now
@@ -451,12 +454,31 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 void TAnalysisTreeBuilder::SetupFragmentTree() {
    //Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
+
+   const char* tmpRunInfoFileName = TGRSIRunInfo::Get()->GetRunInfoFileName();
+   //Set the run info file to what is stored in the fragment tree
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
+
+   //overwrite the relevent information using the loaded info file.
+   //First check if there was a file
+   if(!*(tmpRunInfoFileName)){
+      //This does nothing
+   }
+   else{
+      printf("Reading from Run info: %s\n",tmpRunInfoFileName);
+      fCurrentRunInfo->ReadInfoFile(tmpRunInfoFileName);
+   }
    //if(fCurrentRunInfo) {
    //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
       fCurrentRunInfo->Print("a");
    //}
 
+   fCurrentPPG = (TPPG*)fCurrentFragFile->Get("TPPG");
+   if(fCurrentPPG){//We do this because not every run has PPG
+      printf("Found PPG data\n");
+      if(!fCurrentPPG->Correct())
+         printf("Errors in PPG that could not be corrected\n");
+   }
    //Intialize the TChannel Information
    InitChannels();
 
@@ -608,14 +630,6 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
 
-
-
-
-
-
-
-
-
 void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*> *detectors) {
    //Build the hits in each of the detectors.
    if(!fCurrentAnalysisFile || !fCurrentRunInfo)
@@ -719,6 +733,10 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
      c->Write();
    }
    fCurrentRunInfo->Write();
+   if(fCurrentPPG){
+      printf("Writing PPG Data\n");
+      fCurrentPPG->Write("TPPG",TObject::kSingleKey);
+   }
    //TChannel::DeleteAllChannels();
 
    fCurrentAnalysisFile->cd();
