@@ -62,6 +62,9 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
      {Double_t  R__double ; b >> R__double;  fRunStart = R__double;}
      {Double_t  R__double ; b >> R__double;  fRunStop  = R__double;}
    }
+   if(R__v>4) {
+     {Double_t  R__double ; b >> R__double;  fRunLength = R__double;}
+   }
    if(R__v>2) {
      {Int_t  R__int ; b >> R__int;  fHPGeArrayPosition = R__int;}
      {Int_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
@@ -102,6 +105,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Int_t R__int = fSubRunNumber; b << R__int;}
    {Double_t R__double = fRunStart;  b << R__double;}
    {Double_t R__double = fRunStop ;  b << R__double;}
+   {Double_t R__double = fRunLength ;  b << R__double;}
    {Int_t R__int = fHPGeArrayPosition; b << R__int;}
    {Int_t R__int = fBuildWindow;       b << R__int;}
    {Double_t R__double = fAddBackWindow;  b << R__double;}
@@ -179,6 +183,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf("\t\tSubRunNumber: %03i\n",TGRSIRunInfo::Get()->fSubRunNumber);
       printf("\t\tRunStart:     %.0f\n",TGRSIRunInfo::Get()->fRunStart);
       printf("\t\tRunStop:      %.0f\n",TGRSIRunInfo::Get()->fRunStop);
+      printf("\t\tRunLength:    %.0f\n",TGRSIRunInfo::Get()->fRunLength);
       printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
       printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
       printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
@@ -426,3 +431,16 @@ void TGRSIRunInfo::trim(std::string * line, const std::string & trimChars) {
    return;
 }
 
+Long64_t TGRSIRunInfo::Merge(TCollection *list){
+   //Loop through the TCollection of TGRSISortLists, and add each entry to the original TGRSISort List
+   TIter it(list);
+   //The TCollection will be filled by something like hadd. Each element in the list will be a TGRSISortList from
+   //An individual file that was submitted to hadd.
+   TGRSIRunInfo *runinfo = 0;
+
+   while ((runinfo = (TGRSIRunInfo *)it.Next()) != NULL){
+      //Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.    
+      this->Add(runinfo);
+   }
+   return 0;
+}

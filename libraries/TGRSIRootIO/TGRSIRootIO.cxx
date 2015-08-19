@@ -206,7 +206,7 @@ void TGRSIRootIO::FinalizePPG(){
    foutfile->cd();
    if(fPPG->PPGSize()){
       printf("Writing PPG\n");
-      fPPG->Write();
+      fPPG->Write("TPPG",TObject::kSingleKey);
    }
    return;
 }
@@ -266,7 +266,8 @@ void TGRSIRootIO::CloseRootOutFile()   {
       //get run start and stop (in seconds) from the fragment tree
       TGRSIRunInfo::Get()->SetRunStart(fFragmentTree->GetMinimum("MidasTimeStamp"));
       TGRSIRunInfo::Get()->SetRunStop( fFragmentTree->GetMaximum("MidasTimeStamp"));
-      printf("set run start to %.0f (%.0f), and stop to %.0f (%0.f)\n",TGRSIRunInfo::Get()->RunStart(),fFragmentTree->GetMinimum("MidasTimeStamp"),TGRSIRunInfo::Get()->RunStop(),fFragmentTree->GetMaximum("MidasTimeStamp"));
+      TGRSIRunInfo::Get()->SetRunLength(fFragmentTree->GetMaximum("MidasTimeStamp") - fFragmentTree->GetMinimum("MidasTimeStamp"));
+      printf("set run start to %.0f, and stop to %.0f (run length %.0f)\n",TGRSIRunInfo::Get()->RunStart(),TGRSIRunInfo::Get()->RunStop(),TGRSIRunInfo::Get()->RunLength());
       TGRSIRunInfo::Get()->Write();
    }
 
