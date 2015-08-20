@@ -73,6 +73,12 @@ public:
    const char *GetName() const; //!
    double GetEnergy(int iter=0)const; //!
    double GetCharge(int iter=0)const; //!
+   Int_t  GetCfd(int iter=0)const; //!
+   Int_t  GetLed(int iter=0)const; //!
+     
+   
+   
+   
    long GetTimeStamp_ns(); //!
 
    Int_t Get4GCfd(int i=0); //!

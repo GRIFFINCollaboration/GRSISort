@@ -124,6 +124,22 @@ double TFragment::GetEnergy() const {
 }
 */
 
+
+
+Int_t TFragment::GetCfd(int iter)const {
+   if((Cfd.size()-1)>iter)
+      return 0;
+   return Cfd.at(iter);
+}
+
+
+Int_t TFragment::GetLed(int iter)const {
+   if((Led.size()-1)>iter)
+      return 0;
+   return Led.at(iter);
+}
+
+
 double TFragment::GetEnergy(int i) const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || !(Charge.size()>i))
