@@ -6,6 +6,7 @@
 #include "TF1.h"
 #include "TFitResultPtr.h"
 #include "TFitResult.h"
+#include "TGraph.h"
 #include <string>
 #include <algorithm>
 
@@ -64,10 +65,15 @@ class TPeak : public TGRSIFit {
    Bool_t InitParams(TH1 *fithist = 0);
    TF1* Background() const { return background; } 
    void DrawBackground(Option_t *opt = "SAME") const; // *MENU*
-   void DrawResiduals() const; // *MENU*
+   void DrawResiduals(); // *MENU*
 
    static void SetLogLikelihoodFlag(Bool_t flag = true) { fLogLikelihoodFlag = flag; }
    static Bool_t GetLogLikelihoodFlag() { return fLogLikelihoodFlag; }
+
+   static Bool_t CompareEnergy(const TPeak &lhs, const TPeak &rhs)  { return lhs.GetCentroid() < rhs.GetCentroid(); }
+   static Bool_t CompareArea(const TPeak &lhs, const TPeak &rhs)    { return lhs.GetArea() < rhs.GetArea(); }
+   static Bool_t CompareEnergy(const TPeak *lhs, const TPeak *rhs)  { return lhs->GetCentroid() < rhs->GetCentroid(); }
+   static Bool_t CompareArea(const TPeak *lhs, const TPeak *rhs)    { return lhs->GetArea() < rhs->GetArea(); }
 
  public:
    virtual void Print(Option_t *opt = "") const;
@@ -84,6 +90,7 @@ class TPeak : public TGRSIFit {
    static bool fLogLikelihoodFlag; //!
 
    TF1* background;
+   TGraph* fResiduals;
 
   ClassDef(TPeak,2);
 

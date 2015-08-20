@@ -36,6 +36,60 @@ void TGRSIFit::Clear(Option_t *opt) {
    fDefaultFitType.Clear();
 }
 
+Bool_t TGRSIFit::AddToGlobalList(Bool_t on){
+   // Add to global list of functions (gROOT->GetListOfFunctions() )
+   // return previous status (true of functions was already in the list false if not)
+   
+   if (!gROOT) return false;
+
+   if (on )  {
+      if(gROOT->GetListOfFunctions()->FindObject(this) != nullptr){
+         return on;
+      }
+      gROOT->GetListOfFunctions()->Add(this);
+      // do I need to delete previous one with the same name ???
+      //TF1 * old = dynamic_cast<TF1*>( gROOT->GetListOfFunctions()->FindObject(GetName()) );
+      //if (old) gROOT->GetListOfFunctions()->Remove(old);
+   }
+   else {
+      // if previous status was on and now is off
+      TF1 * old = dynamic_cast<TF1*>( gROOT->GetListOfFunctions()->FindObject(this->GetName()) );
+      if (!old) {
+         Warning("AddToGlobalList","Function is supposed to be in the global list but it is not present");
+         return kFALSE;
+      }
+      gROOT->GetListOfFunctions()->Remove(this);
+   }
+   return on;
+}
+
+Bool_t TGRSIFit::AddToGlobalList(TF1* func, Bool_t on){
+   // Add to global list of functions (gROOT->GetListOfFunctions() )
+   // return previous status (true of functions was already in the list false if not)
+   
+   if (!gROOT) return false;
+
+   if (on )  {
+      if(gROOT->GetListOfFunctions()->FindObject(func) != nullptr){
+         return on;
+      }
+      gROOT->GetListOfFunctions()->Add(func);
+      // do I need to delete previous one with the same name ???
+      //TF1 * old = dynamic_cast<TF1*>( gROOT->GetListOfFunctions()->FindObject(GetName()) );
+      //if (old) gROOT->GetListOfFunctions()->Remove(old);
+   }
+   else {
+      // if previous status was on and now is off
+      TF1 * old = dynamic_cast<TF1*>( gROOT->GetListOfFunctions()->FindObject(func->GetName()) );
+      if (!old) {
+         func->Warning("AddToGlobalList","Function is supposed to be in the global list but it is not present");
+         return kFALSE;
+      }
+      gROOT->GetListOfFunctions()->Remove(func);
+   }
+   return on;
+}
+
 /*
 int TGRSIFit::FitPeak(Int_t limit1, Int_t limit2, Double_t centroid) {} // termination version
 

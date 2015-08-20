@@ -45,6 +45,8 @@ class TGRSIFit : public TF1 {
    virtual TH1* GetHist() const { return (TH1*)(fhist.GetObject());}
    static const char* GetDefaultFitType(){ return fDefaultFitType.Data(); }
    static void SetDefaultFitType(const char* fittype){ fDefaultFitType = fittype; }
+   Bool_t AddToGlobalList(Bool_t on = kTRUE);
+   static Bool_t AddToGlobalList(TF1* func, Bool_t on = kTRUE);
 
  protected:
    Bool_t IsInitialized() const { return init_flag; }

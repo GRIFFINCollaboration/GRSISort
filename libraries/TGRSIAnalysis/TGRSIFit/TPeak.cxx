@@ -7,7 +7,8 @@ Bool_t TPeak::fLogLikelihoodFlag = false;
 
 //This makes a temporary TF1 I think, but I'm not sure an easier (that is nice) way to do it
 TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){ 
-
+   fResiduals = 0;
+   background = 0;
    this->Clear();
    Bool_t out_of_range_flag = false;
 
@@ -45,22 +46,34 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGR
    this->InitNames();
    this->SetParameter("centroid",cent);
 
-   background = new TF1("background",TGRSIFunctions::StepBG,xlow,xhigh,10);
-   background->SetNpx(1000);
-   background->SetLineStyle(2);
-   background->SetLineColor(kBlack);
+   this->background = new TF1(Form("background%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh)),TGRSIFunctions::StepBG,xlow,xhigh,10);
+   this->background->SetNpx(1000);
+   this->background->SetLineStyle(2);
+   this->background->SetLineColor(kBlack);
+   TGRSIFit::AddToGlobalList(background,kFALSE);
+
+   this->fResiduals = new TGraph;
 }
 
+
 TPeak::TPeak() : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,0,1000,10){
+   fResiduals = 0;
+   background = 0;
    this->InitNames();
    background = new TF1("background",TGRSIFunctions::StepBG,0,1000,10);
    background->SetNpx(1000);
    background->SetLineStyle(2);
    background->SetLineColor(kBlack);
+   TGRSIFit::AddToGlobalList(background,kFALSE);
+
+   fResiduals = new TGraph;
 }
 
 TPeak::~TPeak(){
    if(background) delete background;
+   if(fResiduals) delete fResiduals;
+   background = 0;
+   fResiduals  = 0;
 }
 
 void TPeak::InitNames(){
@@ -78,6 +91,10 @@ void TPeak::InitNames(){
 
 
 TPeak::TPeak(const TPeak &copy) : TGRSIFit(copy){
+   background = 0;
+   fResiduals = 0;
+   if(copy.background) this->background = new TF1(*(copy.background));
+   if(copy.fResiduals) this->fResiduals = new TGraph(*(copy.fResiduals));
    ((TPeak&)copy).Copy(*this);
 }
 
@@ -88,8 +105,11 @@ void TPeak::Copy(TObject &obj) const {
 
    ((TPeak&)obj).fchi2 = fchi2;
    ((TPeak&)obj).fNdf  = fNdf;
-   background->Copy(*(((TPeak&)obj).background));
+   ((TPeak&)obj).background->Copy(*background);
+   *(((TPeak&)obj).fResiduals) = *fResiduals;
+
    ((TPeak&)obj).SetHist(GetHist());
+
 }
 
 
@@ -371,7 +391,7 @@ void TPeak::DrawBackground(Option_t *opt) const{
    background->Draw(opt);
 }
 
-void TPeak::DrawResiduals() const{
+void TPeak::DrawResiduals() {
    if(!GetHist()){
       printf("No hist set\n");
       return;
@@ -387,16 +407,20 @@ void TPeak::DrawResiduals() const{
    Double_t *res = new Double_t[nbins];
    Double_t *bin = new Double_t[nbins];
    Int_t points = 0;
+   fResiduals->Clear();
 
    for(int i =1;i<=nbins;i++) {
       if(GetHist()->GetBinCenter(i) <= xlow || GetHist()->GetBinCenter(i) >= xhigh)
          continue;
       res[points] = (GetHist()->GetBinContent(i) - this->Eval(GetHist()->GetBinCenter(i)))+ this->GetParameter("Height")/2;///GetHist()->GetBinError(i));// + this->GetParameter("Height") + 10.;
       bin[points] = GetHist()->GetBinCenter(i);
+      fResiduals->SetPoint(i,bin[i],res[i]);
+
       points++;
    }
-   TGraph *residuals = new TGraph(points,bin,res);
-   residuals->Draw();
+
+
+   fResiduals->Draw();
 
    delete[] res;
    delete[] bin;
