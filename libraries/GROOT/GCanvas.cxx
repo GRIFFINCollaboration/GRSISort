@@ -668,8 +668,15 @@ TF1 *GCanvas::GetLastFit() {
   }
   if(!hist)
      return 0;
-  if(hist->GetListOfFunctions()->GetSize()>0) 
-     return (TF1*)(hist->GetListOfFunctions()->Last()); 
+  if(hist->GetListOfFunctions()->GetSize()>0){
+     TF1* tmpfit = (TF1*)(hist->GetListOfFunctions()->Last());
+     std::string tmpname = tmpfit->GetName();
+     while(tmpname.find("background") != std::string::npos ){
+         tmpfit = (TF1*)(hist->GetListOfFunctions()->Before(tmpfit));
+         tmpname = tmpfit->GetName();
+     }
+     return tmpfit; 
+  }
   return 0;
 }
 
@@ -908,8 +915,11 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
 //  gfit->Delete();
   //hist->GetFunction("gaus")->Delete();
 
-  mypeak->Fit(hist);
-  mypeak->Background()->Draw("SAME");
+  mypeak->Fit(hist,"+");
+  hist->GetListOfFunctions()->Add(mypeak->Background()->Clone());
+ // hist->GetListOfFunctions()->Add(mypeak);
+  TPeak *peakfit = (TPeak*)(hist->GetListOfFunctions()->Last());
+//  mypeak->Background()->Draw("SAME");
   /*
   double param[3];
   double error[3];
@@ -981,13 +991,15 @@ bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
   //hist->GetFunction("gaus")->Delete();
 
   mypeak->Fit(hist,"Q+");
+  hist->GetListOfFunctions()->Add(mypeak->Background()->Clone());
+ // hist->GetListOfFunctions()->Add(mypeak);
   TPeak *peakfit = (TPeak*)(hist->GetListOfFunctions()->Last());
   //hist->GetListOfFunctions()->Print();
   if(!peakfit) {
     printf("peakfit not found??\n");
     return false;
   }
-  mypeak->Background()->Draw("SAME");
+//  mypeak->Background()->Draw("SAME");
   mypeak->Print();
   
      

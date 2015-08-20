@@ -131,7 +131,7 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag
             }
          }
          else{
-            printf("pat %x, ppg_it->first %lld, ppg_it->second->GetNewPPG() %x\n",pat,ppg_it->first,ppg_it->second->GetNewPPG());
+            printf("pat %x, ppg_it->first %lu, ppg_it->second->GetNewPPG() %x\n",pat,ppg_it->first,ppg_it->second->GetNewPPG());
             if(pat & ppg_it->second->GetNewPPG()){
                return ppg_it->first;
             }
@@ -161,7 +161,7 @@ void TPPG::Print(Option_t *opt) const{
       printf("           PPG STATUS        \n");
       printf("*****************************\n");
       for(ppgit = MapBegin(); ppgit != MapEnd(); ppgit++){
-         printf("%lld: ",ppgit->first); ppgit->second->Print();
+         ppgit->second->Print();
       }
    }
 }
@@ -213,7 +213,7 @@ bool TPPG::Correct(bool verbose) {
       ULong64_t diff = (*it).second->GetTimeStamp() - GetLastStatusTime((*it).second->GetTimeStamp());
       if(diff != fCycleLength) {
          if(verbose) {
-            printf("%d: found missing ppg at time %lld (%lld != %lld)\n", std::distance(MapBegin(),it),(*it).first, diff, fCycleLength);
+            printf("%ld: found missing ppg at time %lu (%lld != %lld)\n", std::distance(MapBegin(),it),(*it).first, diff, fCycleLength);
          }
          //check that the previous ppg with the same status is a multiple of fCycleLength ago and that no other ppg is in the map that was fCycleLength ago
          if(diff%fCycleLength != 0) {
@@ -365,4 +365,9 @@ void TPPG::Add(const TPPG* ppg){
          AddData(ppgit->second);
       }
    }
+   //We want to rebuild our cycle length map and this is the easiest way to do it
+   fNumberOfCycleLengths.clear();
+   fCycleLength = 0;
+   GetCycleLength();
+
 }
