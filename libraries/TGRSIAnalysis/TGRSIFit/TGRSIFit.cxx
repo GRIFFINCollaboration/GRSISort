@@ -20,7 +20,6 @@ void TGRSIFit::Copy(TObject &obj) const{
    ((TGRSIFit&)obj).init_flag   = init_flag;
    ((TGRSIFit&)obj).goodfit_flag= goodfit_flag;
    TF1::Copy(obj);
-
 }
 
 void TGRSIFit::Print(Option_t *opt) const {
@@ -100,8 +99,10 @@ Bool_t TGRSIFit::AddToGlobalList(TF1* func, Bool_t on){
 //of TGRSIFits. So don't do it until this is sorted out. Make a vector or something instead.
 void TGRSIFit::operator delete(void *ptr){
       //operator delete
-      (static_cast<TGRSIFit*>(ptr))->AddToGlobalList(kFALSE);
-      TF1::operator delete(ptr);
+      
+      TGRSIFit* fitptr = (static_cast<TGRSIFit*>(ptr));
+      if(fitptr->AddToGlobalList(kFALSE))
+         TF1::operator delete(ptr);
 }
 
 void* TGRSIFit::operator new[](size_t sz){

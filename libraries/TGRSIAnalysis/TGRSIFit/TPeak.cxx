@@ -94,21 +94,27 @@ void TPeak::InitNames(){
 }
 
 
-TPeak::TPeak(const TPeak &copy) : TGRSIFit(copy){
+TPeak::TPeak(const TPeak &copy) : background(0), fResiduals(0){
    background = 0;
    fResiduals = 0;
-   if(copy.background) this->background = new TF1(*(copy.background));
-   if(copy.fResiduals) this->fResiduals = new TGraph(*(copy.fResiduals));
    ((TPeak&)copy).Copy(*this);
 }
 
 void TPeak::Copy(TObject &obj) const {
    TGRSIFit::Copy(obj);
+
+   if(!((TPeak&)obj).background){
+      ((TPeak&)obj).background = new TF1(*background);
+   }
+   if(!((TPeak&)obj).fResiduals)
+      ((TPeak&)obj).fResiduals = new TGraph(*fResiduals);
+
    ((TPeak&)obj).farea = farea;
    ((TPeak&)obj).fd_area = fd_area;
 
    ((TPeak&)obj).fchi2 = fchi2;
    ((TPeak&)obj).fNdf  = fNdf;
+
    *(((TPeak&)obj).background) = *background;
    *(((TPeak&)obj).fResiduals) = *fResiduals;
 
@@ -284,7 +290,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    background->SetParameters(this->GetParameters());
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
    Copy(*fithist->GetListOfFunctions()->Last());
-  // if(optstr.Contains("+"))
+ //  if(optstr.Contains("+"))
   //    Copy(*fithist->GetListOfFunctions()->Before(fithist->GetListOfFunctions()->Last()));
    
    delete tmppeak;
