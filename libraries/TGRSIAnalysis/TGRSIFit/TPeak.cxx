@@ -50,7 +50,7 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGR
    this->background->SetNpx(1000);
    this->background->SetLineStyle(2);
    this->background->SetLineColor(kBlack);
-   TGRSIFit::AddToGlobalList(background,kFALSE);
+//   TGRSIFit::AddToGlobalList(background,kFALSE);
 
    this->fResiduals = new TGraph;
 }
@@ -64,16 +64,20 @@ TPeak::TPeak() : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,0,1000,10){
    background->SetNpx(1000);
    background->SetLineStyle(2);
    background->SetLineColor(kBlack);
-   TGRSIFit::AddToGlobalList(background,kFALSE);
+//   TGRSIFit::AddToGlobalList(background,kFALSE);
 
    fResiduals = new TGraph;
 }
 
 TPeak::~TPeak(){
-   if(background) delete background;
+   this->AddToGlobalList(kFALSE); //Remvoe from global list in case it is part of another class.
+
+   if(background){
+      if(TGRSIFit::AddToGlobalList(background,kFALSE)){   
+         delete background;
+      }
+   }
    if(fResiduals) delete fResiduals;
-   background = 0;
-   fResiduals  = 0;
 }
 
 void TPeak::InitNames(){
@@ -105,13 +109,12 @@ void TPeak::Copy(TObject &obj) const {
 
    ((TPeak&)obj).fchi2 = fchi2;
    ((TPeak&)obj).fNdf  = fNdf;
-   ((TPeak&)obj).background->Copy(*background);
+   *(((TPeak&)obj).background) = *background;
    *(((TPeak&)obj).fResiduals) = *fResiduals;
 
    ((TPeak&)obj).SetHist(GetHist());
 
 }
-
 
 void TPeak::SetType(Option_t * type){
 // This sets the style of gaussian fit function to use for the fitted peak. 
@@ -130,7 +133,6 @@ void TPeak::SetType(Option_t * type){
    }
 
 //   fpeakfit = new TF1("photopeak","gauss",fxlow,fxhigh);  
-
 }
 
 Bool_t TPeak::InitParams(TH1 *fithist){

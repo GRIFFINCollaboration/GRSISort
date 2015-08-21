@@ -17,6 +17,7 @@
 #include <utility>
 #include "TRef.h"
 #include "TString.h"
+#include "Globals.h"
 
 using namespace TGRSIFunctions;
 
@@ -45,8 +46,17 @@ class TGRSIFit : public TF1 {
    virtual TH1* GetHist() const { return (TH1*)(fhist.GetObject());}
    static const char* GetDefaultFitType(){ return fDefaultFitType.Data(); }
    static void SetDefaultFitType(const char* fittype){ fDefaultFitType = fittype; }
+
+   //These are only to be called in the Dtor of classes to protect from ROOT's insane garbage collection system
+   //They can be called anywhere though as long as new classes are carefully destructed. 
    Bool_t AddToGlobalList(Bool_t on = kTRUE);
    static Bool_t AddToGlobalList(TF1* func, Bool_t on = kTRUE);
+
+   void operator delete(void *ptr);
+
+ protected:
+   void* operator new[](size_t sz) ;
+   void* operator new[](size_t sz, void* vp) ;
 
  protected:
    Bool_t IsInitialized() const { return init_flag; }
