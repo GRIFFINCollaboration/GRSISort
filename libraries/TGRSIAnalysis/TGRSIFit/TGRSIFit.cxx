@@ -94,31 +94,4 @@ Bool_t TGRSIFit::AddToGlobalList(TF1* func, Bool_t on){
    return true;
 }
 
-//This delete is here because we want things to be removed from the global list when we delete them. 
-//However, the delete[] operator does not work, so one might cause a seg fault when they use a dynamic array
-//of TGRSIFits. So don't do it until this is sorted out. Make a vector or something instead.
-void TGRSIFit::operator delete(void *ptr){
-      //operator delete
-      
-      TGRSIFit* fitptr = (static_cast<TGRSIFit*>(ptr));
-      if(fitptr->AddToGlobalList(kFALSE))
-         TF1::operator delete(ptr);
-}
-
-void* TGRSIFit::operator new[](size_t sz){
-      //operator delete. You must use delete[] to free the array before program completion
-      // Otherwise ROOT will try to delete the array using a normal delete call which is
-      //bad news bears and will result in a segmentation violation.
-      printf(DRED"It is DANGEROUS allocate dynamic arrays of TGRSIFits, use delete[] on the array before program completion, otherwise you will get a segfault.\n" RESET_COLOR);
-      return TF1::operator new[](sz);
-}
-
-void* TGRSIFit::operator new[](size_t sz, void* vp){
-      //operator delete. You must use delete[] to free the array before program completion
-      // Otherwise ROOT will try to delete the array using a normal delete call which is
-      //bad news bears and will result in a segmentation violation.
-      printf(DRED"It is DANGEROUS allocate dynamic arrays of TGRSIFits, use delete[] on the array before program completion, otherwise you will get a segfault.\n" RESET_COLOR);
-      return TF1::operator new[](sz,vp);
-}
-
 

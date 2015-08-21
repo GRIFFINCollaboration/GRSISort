@@ -50,7 +50,7 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGR
    this->background->SetNpx(1000);
    this->background->SetLineStyle(2);
    this->background->SetLineColor(kBlack);
-//   TGRSIFit::AddToGlobalList(background,kFALSE);
+   TGRSIFit::AddToGlobalList(background,kFALSE);
 
    this->fResiduals = new TGraph;
 }
@@ -64,18 +64,14 @@ TPeak::TPeak() : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,0,1000,10){
    background->SetNpx(1000);
    background->SetLineStyle(2);
    background->SetLineColor(kBlack);
-//   TGRSIFit::AddToGlobalList(background,kFALSE);
+   TGRSIFit::AddToGlobalList(background,kFALSE);
 
    fResiduals = new TGraph;
 }
 
 TPeak::~TPeak(){
-   this->AddToGlobalList(kFALSE); //Remvoe from global list in case it is part of another class.
-
    if(background){
-      if(TGRSIFit::AddToGlobalList(background,kFALSE)){   
-         delete background;
-      }
+      delete background;
    }
    if(fResiduals) delete fResiduals;
 }
