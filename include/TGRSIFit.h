@@ -52,11 +52,11 @@ class TGRSIFit : public TF1 {
    Bool_t AddToGlobalList(Bool_t on = kTRUE);
    static Bool_t AddToGlobalList(TF1* func, Bool_t on = kTRUE);
 
-   void operator delete(void *ptr);
+   //void operator delete(void *ptr);
 
  protected:
-   void* operator new[](size_t sz) ;
-   void* operator new[](size_t sz, void* vp) ;
+   //void* operator new[](size_t sz) ;
+   //void* operator new[](size_t sz, void* vp) ;
 
  protected:
    Bool_t IsInitialized() const { return init_flag; }

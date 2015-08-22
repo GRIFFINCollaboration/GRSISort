@@ -103,7 +103,7 @@ class TGRSIDetectorHit : public TObject 	{
       Bool_t IsDetSet() const {return (fbitflags & kIsDetSet);}
       Bool_t IsPosSet() const {return (fbitflags & kIsPositionSet);}
       Bool_t IsEnergySet() const {return (fbitflags & kIsEnergySet);} 
-      Bool_t IsSubDetSet() const {return (fbitflags * kIsSubDetSet);}
+      Bool_t IsSubDetSet() const {return (fbitflags & kIsSubDetSet);}
 
       Bool_t IsCrystalSet() const {return IsSubDetSet();}
 
