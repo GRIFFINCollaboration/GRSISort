@@ -274,6 +274,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    farea = (tmppeak->Integral(int_low,int_high))/binWidth;
    //Set the background values in the covariance matrix to 0, while keeping their covariance errors
    TMatrixDSym CovMat = fitres->GetCovarianceMatrix();
+   //CovMat(5,5) = 0.0;
    CovMat(6,6) = 0.0;
    CovMat(7,7) = 0.0;
    CovMat(8,8) = 0.0;
