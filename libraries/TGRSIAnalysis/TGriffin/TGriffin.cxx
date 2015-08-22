@@ -23,16 +23,10 @@ bool DefaultAddback(TGriffinHit& one, TGriffinHit& two) {
 			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
 };
  
-std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::addback_criterion = DefaultAddback;
+std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::fAddback_criterion = DefaultAddback;
 
 bool TGriffin::fSetCoreWave = false;
-//bool TGriffin::fSetBGOHits  = false;
-//bool TGriffin::fSetBGOWave  = false;
 
-//long TGriffin::fCycleStart  = 0;
-long TGriffin::fLastPPG     = 0;
-
-//bool     TGriffin::gCloverPositionSet = false;
 //This seems unnecessary, and why 17?;//  they are static members, and need
                                                                              //  to be defined outside the header
                                                                              //  17 is to have the detectors go from 1-16 
@@ -87,10 +81,8 @@ void TGriffin::Copy(TGriffin &rhs) const {
   //((TGriffin&)rhs).bgodata      = 0;
 
   ((TGriffin&)rhs).griffin_hits        = griffin_hits;
-  ((TGriffin&)rhs).addback_hits        = addback_hits;
-  ((TGriffin&)rhs).faddback_frags      = faddback_frags;
-  //((TGriffin&)rhs).addback_clover_hits = addback_clover_hits;
-  //((TGriffin&)rhs).fSetBGOHits         = fSetBGOHits;
+  ((TGriffin&)rhs).fAddback_hits        = fAddback_hits;
+  ((TGriffin&)rhs).fAddback_frags      = fAddback_frags;
   ((TGriffin&)rhs).fSetCoreWave        = fSetCoreWave;
   ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
   ((TGriffin&)rhs).fCycleStart         = fCycleStart;
@@ -150,8 +142,8 @@ void TGriffin::Clear(Option_t *opt)	{
    }
    TGRSIDetector::Clear(opt);
    griffin_hits.clear();
-   addback_hits.clear();
-   faddback_frags.clear();
+   fAddback_hits.clear();
+   fAddback_frags.clear();
    fCycleStart = 0;
    //fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 }
@@ -165,8 +157,6 @@ void TGriffin::Print(Option_t *opt) const {
   //if(bgodata) bgodata->Print();
   printf("%lu griffin_hits\n",griffin_hits.size());
   printf("%ld cycle start\n",fCycleStart);
-   //printf("%lu addback_hits\n",addback_hits.size());
-  //printf("%lu addback_clover_hits\n",addback_clover_hits.size());
   return;
 }
 
@@ -228,35 +218,39 @@ Int_t TGriffin::GetAddbackMultiplicity() {
    if(griffin_hits.size() == 0) {
       return 0;
    }
-   if(addback_hits.size() == 0) {
+	//if the addback has been reset, clear the addback hits
+	if((fGriffinBits & kAddback) == 0x0) {
+		fAddback_hits.clear();
+	}
+   if(fAddback_hits.size() == 0) {
       // use the first griffin hit as starting point for the addback hits
-      addback_hits.push_back(griffin_hits[0]);
-      faddback_frags.push_back(1);
+      fAddback_hits.push_back(griffin_hits[0]);
+      fAddback_frags.push_back(1);
 
       // loop over remaining griffin hits
       size_t i, j;
       for(i = 1; i < griffin_hits.size(); ++i) {
 	      // check for each existing addback hit if this griffin hit should be added
-	      for(j = 0; j < addback_hits.size(); ++j) {
-	         if(addback_criterion(addback_hits[j], griffin_hits[i])) {
-	            addback_hits[j].Add(&(griffin_hits[i]));
-               faddback_frags[j]++;
+	      for(j = 0; j < fAddback_hits.size(); ++j) {
+	         if(fAddback_criterion(fAddback_hits[j], griffin_hits[i])) {
+	            fAddback_hits[j].Add(&(griffin_hits[i]));
+               fAddback_frags[j]++;
 	            break;
 	         }
 	      }
-	      if(j == addback_hits.size()) {
-	         addback_hits.push_back(griffin_hits[i]);
-            faddback_frags.push_back(1);
+	      if(j == fAddback_hits.size()) {
+	         fAddback_hits.push_back(griffin_hits[i]);
+            fAddback_frags.push_back(1);
 	      }
       }
    }
 
-   return addback_hits.size();
+   return fAddback_hits.size();
 }
 
 TGriffinHit* TGriffin::GetAddbackHit(const int i) {
    if(i < GetAddbackMultiplicity()) {
-      return &addback_hits.at(i);
+      return &fAddback_hits.at(i);
    } else {
       return NULL;
    }
@@ -311,12 +305,6 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    
      // corehit.SetPosition(TGRSIRunInfo::HPGeArrayPosition());
       
-      corehit.SetPPG(gdata->GetPPG(i));
-
-      if((gdata->GetPPG(i) == 0xd000 && gdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
-         fCycleStart = corehit.GetTime();
-      }
-      fLastPPG = gdata->GetPPG(i);
       //fCycleStartTime = fCycleStart;
 
       //temp_hits.push_back(corehit);  
@@ -390,8 +378,6 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    //printf(DGREEN "|||||||||||||||||||||||||||||||||||||||||||||||||||||" RESET_COLOR "\n");
 
    //if(griffin_hits.size()>1)
-//   BuildAddBack();
-//   BuildAddBackClover();
 }
 
 
@@ -436,88 +422,29 @@ TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ) {
 }
 
 
-/*
-void TGriffin::BuildAddBack(Option_t *opt) { 
-   //Builds the addback for the GRIFFIN Event. This is based on a resolution set within the function. This will have to be
-   //tuned in order to make add-back the most efficient. 
-   if(this->griffin_hits.size() == 0)
-      return;
-   //We may have angular correlation add-back algorithms eventaully too.
-   addback_hits.clear();
-   addback_hits.push_back(*(this->GetGriffinHit(0)));
-   //	addback_hits.at(0).Add(&(addback_hits.at(0)));
-
-   for(int i = 1; i<this->GetMultiplicity(); i++) {
-      bool used = false;
-      for(int j =0; j<addback_hits.size();j++) {
-         TVector3 res = addback_hits.at(j).GetPosition() - this->GetGriffinHit(i)->GetPosition();
-
-         int d_time = std::abs(addback_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
-
-         if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {    ///Still need to tune these values!! pcb.
-            used = true;
-            addback_hits.at(j).Add(this->GetGriffinHit(i));
-            break;
-	      }
-      }
-      if(!used) {
-         addback_hits.push_back(*(this->GetGriffinHit(i)));
-        	//addback_hits.back().Add(&(addback_hits.back()));
-      }
-   }
-}
-*/
-/*
-void TGriffin::BuildAddBackClover(Option_t *opt) { 
-   //Builds the addback for the GRIFFIN Event. This is based on a resolution set within the function. This will have to be
-   //tuned in order to make add-back the most efficient. 
-   if(this->griffin_hits.size() == 0)
-      return;
-   //We may have angular correlation add-back algorithms eventaully too.
-   addback_clover_hits.clear();
-   addback_clover_hits.push_back(*(this->GetGriffinHit(0)));
-
-   for(int i = 1; i<this->GetMultiplicity(); i++) {
-      bool used = false;
-      for(int j =0; j<addback_clover_hits.size();j++) {
-//         TVector3 res = addback_hits.at(j).GetPosition() - this->GetGriffinHit(i)->GetPosition();
-         if(addback_clover_hits.at(j).GetDetectorNumber() != griffin_hits.at(i).GetDetectorNumber())
-            continue;
-         int d_time = std::abs(addback_clover_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
-
-         if(  (d_time < TGRSIRunInfo::AddBackWindow() )  )    {    ///Still need to tune these values!! pcb.
-            used = true;
-            addback_clover_hits.at(j).Add(this->GetGriffinHit(i));
-            break;
-	      }
-      }
-      if(!used) {
-         addback_clover_hits.push_back(*(this->GetGriffinHit(i)));
-      }
-   }
-}
-*/
-
 void TGriffin::ResetAddback() {
 //Used to clear the addback hits. When playing back a tree, this must
 //be called before building the new addback hits, otherwise, a copy of
 //the old addback hits will be stored instead.
-   addback_hits.clear();
-   faddback_frags.clear();
+//This should have changed now, we're using the stored griffin bits to reset the addback
+	//unset the addback bit in fGriffinBits
+	fGriffinBits &= ~kAddback;
+   fAddback_hits.clear();
+   fAddback_frags.clear();
 }
 
 UShort_t TGriffin::GetNAddbackFrags(int idx) const{
  //Get the number of addback "fragments" contributing to the total addback hit
  //with index idx.
-   if(idx < faddback_frags.size())
-      return faddback_frags.at(idx);   
+   if(idx < fAddback_frags.size())
+      return fAddback_frags.at(idx);   
    else
       return 0;
 }
 
-void TGriffin::SetBitNumber(enum EPPG ppg,Bool_t set){
+void TGriffin::SetBitNumber(enum EGriffinBits bit,Bool_t set){
    if(set)
-      fGriffinBits |= ppg;
+      fGriffinBits |= bit;
    else
-      fGriffinBits &= (~ppg);
+      fGriffinBits &= (~bit);
 }

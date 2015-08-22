@@ -17,33 +17,36 @@
 
 class TGriffinHit : public TGRSIDetectorHit {
 	public:
+		enum EGriffinHitBits {
+			kCrystalSet = 1<<0,
+			kPPGSet     = 1<<1,
+			kBit2       = 1<<2,
+			kBit3       = 1<<3,
+			kBit4       = 1<<4,
+			kBit5       = 1<<5,
+			kBit6       = 1<<6,
+			kBit7       = 1<<7
+		};
+
+	public:
 		TGriffinHit();
 		TGriffinHit(const TGriffinHit&);
 		virtual ~TGriffinHit();
 
 	private:
-      Int_t filter;
-      Int_t ppg;
-      UInt_t crystal; //!
+      Int_t fFilter;
+		UChar_t fGriffinHitBits;
+      UInt_t fCrystal; //!
+		Int_t fPPG; //!
 
 	public:
 		/////////////////////////  Setters	/////////////////////////////////////
-      inline void SetFilterPattern(const int &x)   { filter = x;   }                  //! 
-      inline void SetPPG(const int &x)             { ppg = x;   }                     //! 
-      //void SetHit();
+      inline void SetFilterPattern(const int &x)   { fFilter = x;   }                  //! 
 
-//		void SetPosition(double dist =110);   //!
       TVector3 GetPosition(Double_t dist = 110.0) const; //!
 
 		/////////////////////////  Getters	/////////////////////////////////////
-      inline Int_t    GetFilterPattern() const         {   return filter;   }          //!
-      inline Int_t    GetPPG() const                  {   return ppg;   }             //!
-
-   //          Int_t    GetCharge(Option_t *opt ="low") const;                          //!
-		//inline Long_t   GetTime() const 			        {	return time;     }           //!
-
-      /////////////////////////  Required Functions ///////////////////////////
-  //    double GetEnergy(Option_t *opt ="low") const;                             //!
+      inline Int_t    GetFilterPattern() const         {   return fFilter;   }          //!
 
       /////////////////////////  Recommended Functions/////////////////////////
 
@@ -56,15 +59,9 @@ class TGriffinHit : public TGRSIDetectorHit {
       UInt_t SetCrystal(UInt_t crynum);
 
 		/////////////////////////		/////////////////////////////////////
-		//inline UShort_t GetDetectorNumber() const	     {	return detector; }  //!
-		//inline UShort_t GetCrystalNumber() const	     {	return crystal;  }  //!
 
       inline UShort_t GetArrayNumber() { return( 4*(GetDetector()-1)+(GetCrystal()+1)); } //!
       // returns a number 1-64 ( 1 = Detector 1 blue;  64 =  Detector 16 white; ) 
-
-      //inline Int_t    GetFilterPatter() const         {   return filter;   }  //!
-      //inline Int_t    GetPPG() const                  {   return ppg;   }  //!
-      //inline std::vector<Short_t> GetWaveForm() const{   return waveform;} //!
 
       bool   InFilter(Int_t);  //!
 
