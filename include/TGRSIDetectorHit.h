@@ -40,16 +40,18 @@ class TGRSIDetectorHit : public TObject 	{
                            
    // 5. The waveform.       Since we are dealing with digital daqs, a waveform is a fairly common thing to have.  It
    //                        may not allows be present, put it is echoed enough that the storage for it belongs here.
+
+	// 
    public:
    enum Ebitflag {
-      kIsDetSet      = 0x1,
-      kIsEnergySet   = 0x2,
-      kIsPositionSet = 0x4,
-      kIsSubDetSet   = 0x8,
-      //Room for 0x10
-      //Room for 0x20
-      //Room for 0x40
-      //Room for 0x80
+      kIsDetSet      = 1<<0,
+      kIsEnergySet   = 1<<1,
+      kIsPositionSet = 1<<2,
+      kIsSubDetSet   = 1<<3,
+		kBit4          = 1<<4,
+		kBit5          = 1<<5,
+		kBit6          = 1<<6,
+		kBit7          = 1<<7,
       kIsAllSet      = 0xFF
    };
 
@@ -103,7 +105,7 @@ class TGRSIDetectorHit : public TObject 	{
       Bool_t IsDetSet() const {return (fbitflags & kIsDetSet);}
       Bool_t IsPosSet() const {return (fbitflags & kIsPositionSet);}
       Bool_t IsEnergySet() const {return (fbitflags & kIsEnergySet);} 
-      Bool_t IsSubDetSet() const {return (fbitflags * kIsSubDetSet);}
+      Bool_t IsSubDetSet() const {return (fbitflags & kIsSubDetSet);}
 
       Bool_t IsCrystalSet() const {return IsSubDetSet();}
 

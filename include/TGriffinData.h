@@ -32,8 +32,6 @@ class TGriffinData : public TGRSIDetectorData {
     std::vector<Int_t>        fCore_NbrHits; //!
     std::vector<Int_t>        fCore_MidasId; //!
 
-   std::vector<Int_t>         fPPG; //!
-
     static bool fIsSet; //!
 
   public:
@@ -60,8 +58,6 @@ class TGriffinData : public TGRSIDetectorData {
     
     inline void SetCoreWave(const std::vector<Short_t> &CoreWave)	{fCore_Wave.push_back(CoreWave);} //!
 
-    inline void SetPPG(const Int_t &ppg)                 {fPPG.push_back(ppg);               }  //!
-    
     inline void SetCore(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 	   if(!frag || !channel || !mnemonic) return;
 
@@ -81,7 +77,6 @@ class TGriffinData : public TGRSIDetectorData {
                SetCoreMidasId(frag->MidasId);
                SetCoreNbrHits(frag->Charge.size());
                SetIsHighGain(false);
-               SetPPG(frag->PPG);
                SetCoreAddress(frag->ChannelAddress);
            	   SetCloverNumber(mnemonic->arrayposition);
             	SetCoreNumber(CoreNbr);
@@ -111,8 +106,6 @@ class TGriffinData : public TGRSIDetectorData {
       inline Long_t GetCoreTime(const unsigned int &i) const       {return fCore_Time.at(i);}	//!
 
       inline Bool_t GetIsHighGain(const unsigned int &i) const       {return fCore_IsHighGain.at(i);} //!
-
-      inline Int_t GetPPG(const unsigned int &i) const               {return fPPG.at(i);} //!
 
       inline std::vector<Short_t> GetCoreWave(const unsigned int &i) const {return fCore_Wave.at(i);}	//!
 
