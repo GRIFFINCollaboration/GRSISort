@@ -17,9 +17,6 @@ ClassImp(TPaces)
 
 bool TPaces::fSetCoreWave = false;
 
-long TPaces::fCycleStart  = 0;
-long TPaces::fLastPPG     = 0;
-
 TPaces::TPaces() : TGRSIDetector(),pacesdata(0) {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
@@ -41,7 +38,6 @@ void TPaces::Copy(TPaces &rhs) const {
 
   ((TPaces&)rhs).paces_hits          = paces_hits;
   ((TPaces&)rhs).fSetCoreWave        = fSetCoreWave;
-  ((TPaces&)rhs).fPacesBits          = fPacesBits;
   return;                                      
 }                                       
 
@@ -56,7 +52,6 @@ void TPaces::Clear(Option_t *opt)	{
    if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
      TGRSIDetector::Clear(opt);
      if(pacesdata) pacesdata->Clear();
-     ClearStatus();
    }
 	paces_hits.clear();
 }
@@ -127,13 +122,6 @@ void TPaces::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
          corehit.SetWaveform(pdata->GetCoreWave(i));
       }
  */
-      corehit.SetPPG(pdata->GetPPG(i));
-
-      if((pdata->GetPPG(i) == 0xd000 && pdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
-         fCycleStart = corehit.GetTime();
-      }
-      fLastPPG = pdata->GetPPG(i);
-      //fCycleStartTime = fCycleStart;
 
       //temp_hits.push_back(corehit);  
       AddHit(&corehit);
