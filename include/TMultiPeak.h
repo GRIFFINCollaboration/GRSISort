@@ -33,7 +33,6 @@ class TMultiPeak : public TGRSIFit {
    //TMultiPeak(int n, ...);
   // TMultiPeak(double xlow, double xhigh, int n, ...);
    TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t> &centroids, Option_t *type = "gsc");
-   TMultiPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type="gsc");
    TMultiPeak(const TMultiPeak &copy);
    TMultiPeak(); //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
    
