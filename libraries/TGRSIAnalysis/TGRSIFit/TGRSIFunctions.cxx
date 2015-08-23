@@ -27,7 +27,7 @@ Double_t TGRSIFunctions::PolyBg(Double_t *x, Double_t *par,Int_t order) {
    }   */
 
    Double_t result = 0.0;
-   for(Int_t i = 0; i<order; i++) {
+   for(Int_t i = 0; i<=order; i++) {
       result += par[i]*TMath::Power(x[0]-par[order+1],i);
    }
    return result;
@@ -66,6 +66,28 @@ Double_t TGRSIFunctions::PhotoPeakBG(Double_t *dim, Double_t *par){
    return Gaus(dim,par) + SkewedGaus(dim,par) + StepFunction(dim,par) + PolyBg(dim,&par[6],2);
 }
 
+
+Double_t TGRSIFunctions::MultiPhotoPeakBG(Double_t *dim, Double_t *par) {
+  // STATIC VARIABLE  (npeaks) must be set before using!!!
+  //
+  // Limits need to be imposed or error states may occour.
+  //
+   //General background.
+   int npeaks = (int)(par[0]+0.5);
+	double result = PolyBg(dim,&par[1],2); // polynomial background. uses par[1->4]
+	for(int i=0;i<npeaks;i++){// par[0] is number of peaks
+		Double_t tmp_par[6];
+  	   tmp_par[0]   = par[6*i+5]; //height of photopeak
+  	   tmp_par[1]   = par[6*i+6]; //Peak Centroid of non skew gaus
+  	   tmp_par[2]   = par[6*i+7]; //standard deviation  of gaussian
+  	   tmp_par[3]   = par[6*i+8]; //"skewedness" of the skewed gaussian
+  	   tmp_par[4]   = par[6*i+9]; //relative height of skewed gaussian
+      tmp_par[5]   = par[6*i+10]; //Size of step in background
+		result += PhotoPeak(dim,tmp_par) + StepFunction(dim,tmp_par);
+	}
+	return result;
+}
+
 Double_t TGRSIFunctions::Gaus(Double_t *dim, Double_t *par){
 //This is a gaussian that has been scaled to match up with Radware photopeak results. 
 //It contains a scaling factor for the relative height of the skewed gaussian to the 
@@ -80,7 +102,7 @@ Double_t TGRSIFunctions::Gaus(Double_t *dim, Double_t *par){
    Double_t height   = par[0]; //height of photopeak
    Double_t c        = par[1]; //Peak Centroid of non skew gaus
    Double_t sigma    = par[2]; //standard deviation of gaussian
-   Double_t R        = par[4]; //relatice height of skewed gaussian
+   Double_t R        = par[4]; //relative height of skewed gaussian
 
    return height*(1.0-R/100.0)*TMath::Gaus(x,c,sigma);
 
@@ -103,6 +125,9 @@ Double_t TGRSIFunctions::SkewedGaus(Double_t *dim, Double_t *par){
    Double_t sigma    = par[2]; //standard deviation  of gaussian
    Double_t beta     = par[3]; //"skewedness" of the skewed gaussian
    Double_t R        = par[4]; //relative height of skewed gaussian
+   if(beta == 0.0){
+      return 0.0;
+   }
 
    return R*height/100.0*(TMath::Exp((x-c)/beta))*(TMath::Erfc(((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta)));
 

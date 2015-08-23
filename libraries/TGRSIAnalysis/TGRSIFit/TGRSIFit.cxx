@@ -36,6 +36,12 @@ void TGRSIFit::Clear(Option_t *opt) {
    fDefaultFitType.Clear();
 }
 
+void TGRSIFit::ClearParameters(Option_t *opt){
+   for(int i =0; i< GetNpar();++i){
+      SetParameter(i,0);
+   }
+}
+
 Bool_t TGRSIFit::AddToGlobalList(Bool_t on){
    // Add to global list of functions (gROOT->GetListOfFunctions() )
    // return previous status (true of functions was already in the list false if not)

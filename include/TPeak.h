@@ -23,6 +23,7 @@ using namespace TGRSIFunctions;
 ////////////////////////////////////////////////////////////////
 
 class TPeak : public TGRSIFit {
+   friend class TMultiPeak;
  public: 
    //ctors and dtors
    virtual ~TPeak();
@@ -60,6 +61,8 @@ class TPeak : public TGRSIFit {
    void SetArea(Double_t a){farea = a;}
    void SetAreaErr(Double_t d_a){fd_area = d_a;}
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
+   void SetChi2(Double_t chi2)   { fchi2 = chi2;}
+   void SetNdf(Double_t Ndf)     { fNdf  = Ndf; } 
 
  public:
    Bool_t InitParams(TH1 *fithist = 0);

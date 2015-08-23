@@ -52,12 +52,6 @@ class TGRSIFit : public TF1 {
    Bool_t AddToGlobalList(Bool_t on = kTRUE);
    static Bool_t AddToGlobalList(TF1* func, Bool_t on = kTRUE);
 
-   //void operator delete(void *ptr);
-
- protected:
-   //void* operator new[](size_t sz) ;
-   //void* operator new[](size_t sz, void* vp) ;
-
  protected:
    Bool_t IsInitialized() const { return init_flag; }
    void SetInitialized(Bool_t flag = true) {init_flag = flag;}
@@ -72,6 +66,7 @@ class TGRSIFit : public TF1 {
  public:  
    virtual void Print(Option_t *opt = "") const;
    virtual void Clear(Option_t* opt = "" );
+   virtual void ClearParameters(Option_t *opt = "");
 
    ClassDef(TGRSIFit,0);
 };

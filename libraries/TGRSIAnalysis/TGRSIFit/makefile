@@ -1,5 +1,5 @@
 
-OBJECTS = TGRSIFunctions.o TGRSIFunctionsDict.o TGRSIFit.o TGRSIFitDict.o TPeak.o TPeakDict.o 
+OBJECTS = TGRSIFunctions.o TGRSIFunctionsDict.o TGRSIFit.o TGRSIFitDict.o TPeak.o TPeakDict.o TMultiPeak.o TMultiPeakDict.o
 NAME = TGRSIFit
 
 -include ../../../make.rules

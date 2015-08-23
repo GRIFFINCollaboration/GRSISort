@@ -201,9 +201,9 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 
    SetHist(fithist);
 
-   TString options(opt); bool Print = true;
+   TString options(opt); bool print_flag = true;
    if(options.Contains("Q"))
-     Print = false;
+     print_flag = false;
 
    //Now that it is initialized, let's fit it.
    //Just in case the range changed, we should reset the centroid and bg energy limits
@@ -248,7 +248,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 */
    Double_t binWidth = fithist->GetBinWidth(GetParameter("centroid"));
    Double_t width = this->GetParameter("sigma");
-   if(Print) printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
+   if(print_flag) printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
    fchi2 = fitres->Chi2();  fNdf = fitres->Ndf();
    Double_t xlow,xhigh;
    Double_t int_low, int_high; 
@@ -274,15 +274,15 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    farea = (tmppeak->Integral(int_low,int_high))/binWidth;
    //Set the background values in the covariance matrix to 0, while keeping their covariance errors
    TMatrixDSym CovMat = fitres->GetCovarianceMatrix();
-   //CovMat(5,5) = 0.0;
+   CovMat(5,5) = 0.0;
    CovMat(6,6) = 0.0;
    CovMat(7,7) = 0.0;
    CovMat(8,8) = 0.0;
    CovMat(9,9) = 0.0;
-
+   CovMat.Print();
    fd_area = (tmppeak->IntegralError(int_low,int_high,tmppeak->GetParameters(),CovMat.GetMatrixArray())) /binWidth;
 
-   if(Print) printf("Integral: %lf +/- %lf\n",farea,fd_area);
+   if(print_flag) printf("Integral: %lf +/- %lf\n",farea,fd_area);
    //Set the background for drawing later
    background->SetParameters(this->GetParameters());
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
