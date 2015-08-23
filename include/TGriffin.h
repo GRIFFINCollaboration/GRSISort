@@ -23,17 +23,16 @@ class TGriffinData;
 
 
 class TGriffin : public TGRSIDetector {
-
-   enum EPPG {
-      kTapeMove      = 0x1,
-      kBackGround    = 0x2,
-      kBeamOn        = 0x4,
-      kDecay         = 0x8,
-      kCycleStartTime= 0x10,
-      //Room for 0x20
-      //Room for 0x40
-      //Room for 0x80
-   };
+	enum EGriffinBits {
+		kAddback = 1<<0,
+		kBit1    = 1<<1,
+		kBit2    = 1<<2,
+		kBit3    = 1<<3,
+		kBit4    = 1<<4,
+		kBit5    = 1<<5,
+		kBit6    = 1<<6,
+		kBit7    = 1<<7
+	};
 
    public:
       TGriffin();
@@ -56,15 +55,17 @@ class TGriffin : public TGRSIDetector {
 
       
 #ifndef __CINT__
-      void SetAddbackCriterion(std::function<bool(TGriffinHit&, TGriffinHit&)> criterion) { addback_criterion = criterion; }
-      std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() const { return addback_criterion; }
-      static std::function<bool(TGriffinHit&, TGriffinHit&)> addback_criterion;
+      void SetAddbackCriterion(std::function<bool(TGriffinHit&, TGriffinHit&)> criterion) { fAddback_criterion = criterion; }
+      std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() const { return fAddback_criterion; }
 #endif
 
       Int_t GetAddbackMultiplicity();
       TGriffinHit* GetAddbackHit(const int i);
 
    private:
+#ifndef __CINT__
+      static std::function<bool(TGriffinHit&, TGriffinHit&)> fAddback_criterion;
+#endif
       TGriffinData *grifdata;                 //!  Used to build GRIFFIN Hits
       //TBGOData     *bgodata;                  //!  Used to build BGO Hits
       std::vector <TGriffinHit> griffin_hits; //  The set of crystal hits
@@ -75,36 +76,23 @@ class TGriffin : public TGRSIDetector {
       //static bool fSetBGOWave;		            //!  Flag for BGO Waveforms ON/OFF
 
       long fCycleStart;                //!  The start of the cycle
-      static long fLastPPG;                   //!  value of the last ppg
 
       UChar_t fGriffinBits;
 
-      std::vector <TGriffinHit> addback_hits; //! Used to create addback hits on the fly
-      std::vector <UShort_t> faddback_frags; //! Number of crystals involved in creating in the addback hit
+      std::vector <TGriffinHit> fAddback_hits; //! Used to create addback hits on the fly
+      std::vector <UShort_t> fAddback_frags; //! Number of crystals involved in creating in the addback hit
 
    public:
       static bool SetCoreWave()        { return fSetCoreWave;  }	//!
       //static bool SetBGOHits()       { return fSetBGOHits;   }	//!
       //static bool SetBGOWave()	    { return fSetBGOWave;   } //!
 
-      void SetTapeMove(Bool_t flag=kTRUE)   { SetBitNumber(kTapeMove,flag); }  //!
-      void SetBackground(Bool_t flag=kTRUE) { SetBitNumber(kBackGround,flag);} //!
-      void SetBeamOn(Bool_t flag=kTRUE)     { SetBitNumber(kBeamOn,flag);}     //!
-      void SetDecay(Bool_t flag=kTRUE)      { SetBitNumber(kDecay,flag);}      //!
-
-      bool GetTapeMove()   const { return TestBitNumber(kTapeMove);}//!
-      bool GetBackground() const { return TestBitNumber(kBackGround);}//!
-      bool GetBeamOn()     const { return TestBitNumber(kBeamOn);}//!
-      bool GetDecay()      const { return TestBitNumber(kDecay);}//!
-
-      int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
-
       //  void AddHit(TGRSIDetectorHit *hit,Option_t *opt="");//!
    private:
       static TVector3 gCloverPosition[17];               //! Position of each HPGe Clover
       void ClearStatus() { fGriffinBits = 0; } //!
-      void SetBitNumber(enum EPPG ppg,Bool_t set);
-      Bool_t TestBitNumber(enum EPPG ppg) const {return (ppg & fGriffinBits);}
+      void SetBitNumber(enum EGriffinBits bit,Bool_t set);
+      Bool_t TestBitNumber(enum EGriffinBits bit) const {return (bit & fGriffinBits);}
 
    public:
       virtual void Copy(TGriffin&) const;                //!
@@ -116,7 +104,7 @@ class TGriffin : public TGRSIDetector {
    protected:
       void PushBackHit(TGRSIDetectorHit* ghit);
 
-      ClassDef(TGriffin,2)  // Griffin Physics structure
+      ClassDef(TGriffin,3)  // Griffin Physics structure
 
 
 };

@@ -13,6 +13,8 @@
 #include "TObject.h" 
 #include "TRef.h"
 #include "Rtypes.h"
+#include "TPPG.h"
+#include "TFile.h"
 
 class TGRSIDetector;
 
@@ -40,16 +42,18 @@ class TGRSIDetectorHit : public TObject 	{
                            
    // 5. The waveform.       Since we are dealing with digital daqs, a waveform is a fairly common thing to have.  It
    //                        may not allows be present, put it is echoed enough that the storage for it belongs here.
+
+	// 
    public:
    enum Ebitflag {
-      kIsDetSet      = 0x1,
-      kIsEnergySet   = 0x2,
-      kIsPositionSet = 0x4,
-      kIsSubDetSet   = 0x8,
-      //Room for 0x10
-      //Room for 0x20
-      //Room for 0x40
-      //Room for 0x80
+      kIsDetSet      = 1<<0,
+      kIsEnergySet   = 1<<1,
+      kIsPositionSet = 1<<2,
+      kIsSubDetSet   = 1<<3,
+		kIsPPGSet      = 1<<4,
+		kBit5          = 1<<5,
+		kBit6          = 1<<6,
+		kBit7          = 1<<7,
       kIsAllSet      = 0xFF
    };
 
@@ -99,13 +103,19 @@ class TGRSIDetectorHit : public TObject 	{
       inline std::vector<Short_t> GetWaveform() const       { return waveform; } //!
     //  inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!
       
+      //The PPG is only stored in events that come out of the GRIFFIN DAQ
+      uint16_t GetPPGStatus() const;
+      uint16_t GetPPGStatus();
+      uint16_t GetCycleTimeStamp() const;
+      uint16_t GetCycleTimeStamp();
+
+
    protected:
       Bool_t IsDetSet() const {return (fbitflags & kIsDetSet);}
       Bool_t IsPosSet() const {return (fbitflags & kIsPositionSet);}
       Bool_t IsEnergySet() const {return (fbitflags & kIsEnergySet);} 
-      Bool_t IsSubDetSet() const {return (fbitflags * kIsSubDetSet);}
-
-      Bool_t IsCrystalSet() const {return IsSubDetSet();}
+      Bool_t IsSubDetSet() const {return (fbitflags & kIsSubDetSet);}
+      Bool_t IsPPGSet() const {return (fbitflags & kIsPPGSet);}
 
       void SetFlag(enum Ebitflag,Bool_t set);
 
@@ -120,7 +130,11 @@ class TGRSIDetectorHit : public TObject 	{
    //   TRef      parent;   // pointer to the mother class;
      std::vector<Short_t> waveform;  //
       //Bool_t fHitSet;    //!
- 
+      uint16_t fPPGStatus; //! 
+      ULong_t  fCycleTimeStamp; //!
+
+      static TPPG* fPPG;
+
    //flags   
    protected:  
       UChar_t fbitflags;
@@ -129,7 +143,7 @@ class TGRSIDetectorHit : public TObject 	{
       //Bool_t fPosSet;//!
       //Bool_t fEnergySet;//!
 
-	ClassDef(TGRSIDetectorHit,3) //Stores the information for a detector hit
+	ClassDef(TGRSIDetectorHit,4) //Stores the information for a detector hit
 };
 
 

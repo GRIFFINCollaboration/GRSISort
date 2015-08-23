@@ -13,10 +13,15 @@ ClassImp(TGRSIDetectorHit)
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
+TPPG* TGRSIDetectorHit::fPPG = 0;
+
 TGRSIDetectorHit::TGRSIDetectorHit(const int &fAddress):TObject()	{ 
   //Default constructor
   Clear();
   address = fAddress;
+  if(!fPPG)
+   fPPG = (TPPG*)gDirectory->Get("TPPG"); //There Might be a better way to do this
+
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -27,6 +32,7 @@ TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs)	{
   ((TGRSIDetectorHit&)rhs).Copy(*this);
   //((TGriffinHit&)rhs).cfd             = cfd;
   //rhs.time            = time;
+   fPPG = (TPPG*)gDirectory->Get("TPPG"); //There Might be a better way to do this
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -86,7 +92,9 @@ void TGRSIDetectorHit::Copy(TObject &rhs) const {
   ((TGRSIDetectorHit&)rhs).detector        = ((TGRSIDetectorHit&)*this).detector;
   ((TGRSIDetectorHit&)rhs).energy          = ((TGRSIDetectorHit&)*this).energy;
   
-  ((TGRSIDetectorHit&)rhs).fbitflags       = 0;
+  ((TGRSIDetectorHit&)rhs).fbitflags       = ((TGRSIDetectorHit&)*this).fbitflags;
+  ((TGRSIDetectorHit&)rhs).fPPGStatus      = ((TGRSIDetectorHit&)*this).fPPGStatus;
+  ((TGRSIDetectorHit&)rhs).fCycleTimeStamp = ((TGRSIDetectorHit&)*this).fCycleTimeStamp;
 
 //  ((TGRSIDetectorHit&)rhs).parent  = parent;  
 }
@@ -107,6 +115,8 @@ void TGRSIDetectorHit::Clear(Option_t *opt) {
   detector        = -1;
   energy          =  0.0;
   fbitflags = 0;
+  fPPGStatus      = TPPG::kJunk;
+  fCycleTimeStamp = 0;
 }
 
 UInt_t TGRSIDetectorHit::GetDetector() const {
@@ -176,6 +186,45 @@ bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit *lhs, TGRSIDetectorHit *rh
    return (lhs->GetEnergy() > rhs->GetEnergy());
 }
 
+uint16_t TGRSIDetectorHit::GetPPGStatus() const {
+   if(IsPPGSet())
+      return fPPGStatus;
+
+   return TPPG::kJunk;
+}
+
+uint16_t TGRSIDetectorHit::GetPPGStatus() {
+   if(IsPPGSet())
+      return fPPGStatus;
+
+   if(!fPPG)
+      return TPPG::kJunk;
+
+   fPPGStatus = fPPG->GetStatus(this->GetTime());
+   fCycleTimeStamp = GetTime() - fPPG->GetLastStatusTime(GetTime());
+   SetFlag(kIsPPGSet,true);
+   return fPPGStatus;
+}
+
+uint16_t TGRSIDetectorHit::GetCycleTimeStamp() const {
+   if(IsPPGSet())
+      return fCycleTimeStamp;
+
+   return 0;
+}
+
+uint16_t TGRSIDetectorHit::GetCycleTimeStamp() {
+   if(IsPPGSet())
+      return fCycleTimeStamp;
+
+   if(!fPPG)
+      return 0;
+
+   fPPGStatus = fPPG->GetStatus(this->GetTime());
+   fCycleTimeStamp = GetTime() - fPPG->GetLastStatusTime(GetTime());
+   SetFlag(kIsPPGSet,true);
+   return fCycleTimeStamp;
+}
 
 void TGRSIDetectorHit::CopyFragment(const TFragment &frag) {
   this->address  = frag.ChannelAddress;  
@@ -184,7 +233,6 @@ void TGRSIDetectorHit::CopyFragment(const TFragment &frag) {
   this->time     = frag.GetTime();
   this->position = TVector3(0,0,1); 
   this->energy   = frag.GetEnergy();
-
   this->SetDetector(this->GetDetector());
 }
 

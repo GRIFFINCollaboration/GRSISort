@@ -25,7 +25,6 @@ TPacesHit::~TPacesHit()  {	}
 void TPacesHit::Copy(TPacesHit &rhs) const {
   TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
   ((TPacesHit&)rhs).filter          = filter;
-  ((TPacesHit&)rhs).ppg             = ppg;
   return;                                      
 }                                       
 
@@ -39,7 +38,6 @@ bool TPacesHit::InFilter(Int_t wantedfilter) {
 void TPacesHit::Clear(Option_t *opt)	{
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
    filter          =  0;
-   ppg             =  0;
    detector        = 0xFFFF;
 }
 
