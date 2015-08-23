@@ -102,12 +102,16 @@ UInt_t TGriffinHit::SetCrystal(char color) {
    switch(color) {
       case 'B':
          fCrystal = 0;
+         break;
       case 'G':
          fCrystal = 1;
+         break;
       case 'R':
          fCrystal = 2;
+         break;
       case 'W':
          fCrystal = 3;  
+         break;
    };
    SetFlag(TGRSIDetectorHit::kIsSubDetSet,true);
    return fCrystal;
