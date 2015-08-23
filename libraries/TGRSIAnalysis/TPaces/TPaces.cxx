@@ -97,7 +97,7 @@ TPacesHit* TPaces::GetPacesHit(const int i) {
       return 0;
 }
 
-void TPaces::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
+void TPaces::BuildHits(TDetectorData *data,Option_t *opt)	{
 //Builds the GRIFFIN Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
 //This is done for both GRIFFIN and it's suppressors.
    TPacesData *pdata = (TPacesData*)data;

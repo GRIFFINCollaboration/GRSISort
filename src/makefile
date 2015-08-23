@@ -63,6 +63,7 @@ DETLIBS += -lPaces
 ##DETLIBS += -lZeroDegree
 DETLIBS += -lDescant
 DETLIBS += -lGRSIDetector
+DETLIBS += -lDetector
 
 DETLIBS += -lGROOT
 

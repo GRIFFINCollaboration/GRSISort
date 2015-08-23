@@ -33,7 +33,7 @@ class TTigress : public TGRSIDetector {
 		virtual ~TTigress();
 
 	public: 
-      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
+      void BuildHits(TDetectorData *data =0,Option_t *opt = ""); //!
 		//void BuildHits(TTigressData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
 		void BuildAddBack(Option_t *opt="");	//!
 		//void BuildCloverAddBack(Option_t *opt="");	//!

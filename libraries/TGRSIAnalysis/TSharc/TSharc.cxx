@@ -95,7 +95,7 @@ void TSharc::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
   TSharcData::Set();
 }
 
-void  TSharc::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)  {
+void  TSharc::BuildHits(TDetectorData *ddata,Option_t *opt)  {
    TSharcData *sdata = (TSharcData*)ddata;
    if(sdata==0)
      sdata = (this->data); 
