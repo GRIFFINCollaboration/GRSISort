@@ -46,32 +46,12 @@ class TPaces : public TGRSIDetector {
 		
      static bool fSetCoreWave;		         //!  Flag for Waveforms ON/OFF
 
-     static long fCycleStart;                //!  The start of the cycle
-     static long fLastPPG;                   //!  value of the last ppg
-
-     enum  PacesFlags{kCycleStartTime,kTapeMove,kBackGround,kBeamOn,kDecay};
-     TBits fPacesBits;
-
    public:
      static bool SetCoreWave()        { return fSetCoreWave;  }	//!
-
-     void SetTapeMove(Bool_t flag=kTRUE)   { fPacesBits.SetBitNumber(kTapeMove,flag); }  //!
-     void SetBackground(Bool_t flag=kTRUE) { fPacesBits.SetBitNumber(kBackGround,flag);} //!
-     void SetBeamOn(Bool_t flag=kTRUE)     { fPacesBits.SetBitNumber(kBeamOn,flag);}     //!
-     void SetDecay(Bool_t flag=kTRUE)      { fPacesBits.SetBitNumber(kDecay,flag);}      //!
-
-     bool GetTapeMove()   const { return fPacesBits.TestBitNumber(kTapeMove);}//!
-     bool GetBackground() const { return fPacesBits.TestBitNumber(kBackGround);}//!
-     bool GetBeamOn()     const { return fPacesBits.TestBitNumber(kBeamOn);}//!
-     bool GetDecay()      const { return fPacesBits.TestBitNumber(kDecay);}//!
-
-     static int GetCycleTimeInMilliSeconds(long time) { return (int)((time-fCycleStart)/1e5); }//!
-
 
    //  void AddHit(TGRSIDetectorHit *hit,Option_t *opt="");//!
    private:
     // static TVector3 gCloverPosition[17];               //! Position of each HPGe Clover
-     void ClearStatus() { fPacesBits.ResetAllBits(kFALSE); } //!     
 
    public:         
      virtual void Copy(TPaces&) const;                //!
@@ -81,7 +61,7 @@ class TPaces : public TGRSIDetector {
    protected:
      void PushBackHit(TGRSIDetectorHit* phit);
 
-   ClassDef(TPaces,2)  // Paces Physics structure
+   ClassDef(TPaces,3)  // Paces Physics structure
 
 
 };

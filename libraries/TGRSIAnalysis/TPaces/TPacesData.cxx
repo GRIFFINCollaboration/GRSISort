@@ -29,8 +29,6 @@ void TPacesData::Clear(Option_t *opt)	{
 	fCore_TimeCFD.clear();
 	fCore_Time.clear();
 
-   fPPG.clear();
-
 
 	for(int x=0;x<fCore_Wave.size();x++)	{
 		fCore_Wave[x].clear();
