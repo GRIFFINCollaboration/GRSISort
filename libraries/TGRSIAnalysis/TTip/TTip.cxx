@@ -16,10 +16,10 @@
 
 ClassImp(TTip)
 
-TTip::TTip() : tipdata(0)	{   
+TTip::TTip() : tipdata(0) {   
 }
 
-TTip::~TTip()	{
+TTip::~TTip() {
    //Default Destructor
    if(tipdata) delete tipdata;
 }
@@ -38,11 +38,11 @@ void TTip::Copy(TTip &rhs) const {
   return;                                      
 }                                       
 
-void TTip::Clear(Option_t *opt)	{
+void TTip::Clear(Option_t *opt) {
 //Clears all of the hits and data
    if(tipdata) tipdata->Clear();
 
-	tip_hits.clear();
+   tip_hits.clear();
 }
 
 TTip& TTip::operator=(const TTip& rhs) {
@@ -58,13 +58,11 @@ void TTip::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
    if(!tipdata)   
       tipdata = new TTipData();
 
-   tipdata->SetDet(frag,channel,mnemonic);
+   //tipdata->SetDet(frag,channel,mnemonic);
    TTipData::Set();
-	
-
 }
 
-void TTip::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
+void TTip::BuildHits(TGRSIDetectorData *data,Option_t *opt) {
 //Builds the TIP Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
    TTipData *gdata = (TTipData*)data;
    if(gdata==0)
@@ -75,17 +73,17 @@ void TTip::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
    tip_hits.clear();
    
-   for(int i=0;i<gdata->GetMultiplicity();i++)	{
+   for(int i=0;i<gdata->GetMultiplicity();i++) {
       TTipHit dethit;
 
-      dethit.SetAddress(gdata->GetDetAddress(i));
+      //dethit.SetAddress(gdata->GetDetAddress(i));
       
-      dethit.SetCharge(gdata->GetDetCharge(i));
+      //dethit.SetCharge(gdata->GetDetCharge(i));
 
-      dethit.SetTime(gdata->GetDetTime(i));
-      dethit.SetCfd(gdata->GetDetCFD(i));
+      //dethit.SetTime(gdata->GetDetTime(i));
+      //dethit.SetCfd(gdata->GetDetCFD(i));
 
-		dethit.SetPID(gdata->GetPID(i));
+      //dethit.SetPID(gdata->GetPID(i));
 
       tip_hits.push_back(dethit);
    }

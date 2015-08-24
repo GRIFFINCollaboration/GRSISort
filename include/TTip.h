@@ -90,14 +90,14 @@ class TTip : public TGRSIDetector {
       int t10t90_flag;
       int    thigh;
       double sig2noise;
-    };
+    } WaveFormPar;
 
     typedef struct WaveShapPar { 
       double chisq;
       int    ndf;
       int    type;
       std::vector<double> t;  //decay constants for the fits
-      std::vstd::vector<double> am; //associated aplitudes for the decay constants
+      std::vector<double> am; //associated aplitudes for the decay constants
       double rf[5];
 
       //new stuff necessary for compiliation of Kris' waveform analyzer changes
@@ -105,7 +105,7 @@ class TTip : public TGRSIDetector {
       long double chisq_f;
       int    ndf_ex;
       int    ndf_f;
-    };  
+    } WaveShapPar;  
 
     WaveFormPar GetExclusionZone();
     WaveShapPar GetShape(WaveFormPar&);
