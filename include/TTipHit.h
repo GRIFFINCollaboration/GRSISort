@@ -21,7 +21,7 @@ class TTipHit : public TGRSIDetectorHit {
 
   private:
     Int_t    filter;    // 
-    //Double_t PID;       // 
+    Double_t fPID;       // 
 
     Double_t fast_amplitude;
     Double_t slow_amplitude;
@@ -32,10 +32,10 @@ class TTipHit : public TGRSIDetectorHit {
   public:
     /////////////////////////    /////////////////////////////////////
     inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
-    inline void SetPID(Double_t x)                { PID = x;     }   //!
+    inline void SetPID(Double_t x)                { fPID = x;     }   //!
 
     inline Int_t    GetFiterPatter()           { return filter;   }  //!
-    inline Double_t GetPID()                   { return PID;      }  //!
+    inline Double_t GetPID()                   { return fPID;      }  //!
     TVector3 GetPosition() const               { return TVector3();}
 
     bool   InFilter(Int_t);                                         //!

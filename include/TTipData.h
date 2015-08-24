@@ -17,7 +17,7 @@ class TTipData : public TGRSIDetectorData {
 
   private:
     std::vector <TFragment> fTip_Frag;  //!
-    std::vector <std::string> fTip_Name //!
+    std::vector <std::string> fTip_Name; //!
 
     static bool fIsSet;      //!
    public:
