@@ -61,7 +61,7 @@ int TEventQueue::Size() {
 }
 
 bool TWriteQueue::wlock = false;
-std::queue<std::map<const char*, TGRSIDetector*>*> TWriteQueue::fWriteQueue;
+std::queue<std::map<const char*, TDetector*>*> TWriteQueue::fWriteQueue;
 TWriteQueue *TWriteQueue::fPtrToQue = 0;
 
 TWriteQueue::TWriteQueue() { }
@@ -75,7 +75,7 @@ TWriteQueue *TWriteQueue::Get() {
    return fPtrToQue;
 }
 
-void TWriteQueue::Add(std::map<const char*, TGRSIDetector*> *event) {
+void TWriteQueue::Add(std::map<const char*, TDetector*> *event) {
    //Thread-safe method for adding to the event queue
    m_write.lock();
    fWriteQueue.push(event);
@@ -83,9 +83,9 @@ void TWriteQueue::Add(std::map<const char*, TGRSIDetector*> *event) {
    return;
 }
 
-std::map<const char*, TGRSIDetector*> *TWriteQueue::PopEntry() {
+std::map<const char*, TDetector*> *TWriteQueue::PopEntry() {
    //Thread safe method for taking an event out of the write queue
-   std::map<const char*, TGRSIDetector*> *temp;
+   std::map<const char*, TDetector*> *temp;
    m_write.lock();
    temp = fWriteQueue.front();
    fWriteQueue.pop();
@@ -630,7 +630,7 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
 
-void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*> *detectors) {
+void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*, TDetector*> *detectors) {
    //Build the hits in each of the detectors.
    if(!fCurrentAnalysisFile || !fCurrentRunInfo)
       return;
@@ -642,7 +642,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*,
    }
 }
 
-void TAnalysisTreeBuilder::FillWriteQueue(std::map<const char*, TGRSIDetector*> *detectors) {
+void TAnalysisTreeBuilder::FillWriteQueue(std::map<const char*, TDetector*> *detectors) {
    //Fill the write Q with the built hits in each of the detectors.
    fAnalysisIn++;
    TWriteQueue::Get()->Add(detectors);
@@ -657,14 +657,14 @@ void TAnalysisTreeBuilder::WriteAnalysisTree() {
          std::this_thread::sleep_for(std::chrono::milliseconds(100));
          continue;
       }
-      std::map<const char*, TGRSIDetector*> *detectors = TWriteQueue::PopEntry();
+      std::map<const char*, TDetector*> *detectors = TWriteQueue::PopEntry();
       fAnalysisOut++;
 
       FillAnalysisTree(detectors);
    }
 }
 
-void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TGRSIDetector*> *detectors) {
+void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TDetector*> *detectors) {
    //Fill the analysis Tree with the built events. Each detector gets its own branch in the analysis tree
    if(!fCurrentAnalysisTree || !detectors) {
       printf("returned from fill without filling (%p %p)!\n",fCurrentAnalysisTree, detectors);   
@@ -763,7 +763,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
       //We need to pull the event out of the Event Q
       std::vector<TFragment> *event = TEventQueue::PopEntry();
       MNEMONIC mnemonic;
-      std::map<const char*, TGRSIDetector*> *detectors = new std::map<const char*, TGRSIDetector*>;
+      std::map<const char*, TDetector*> *detectors = new std::map<const char*, TDetector*>;
       for(int i=0;i<event->size();i++) {
       
          TChannel *channel = TChannel::GetChannel(event->at(i).ChannelAddress);

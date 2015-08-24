@@ -32,7 +32,7 @@ class TSceptar : public TGRSIDetector {
 
      static TVector3 GetPosition(int DetNbr)  { return gPaddlePosition[DetNbr];}	//!
 
-     void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = "");           //!
+     void BuildHits(TDetectorData *data =0,Option_t *opt = "");           //!
      void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
 
      TSceptar& operator=(const TSceptar&);  //!

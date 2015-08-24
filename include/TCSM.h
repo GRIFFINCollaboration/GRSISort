@@ -43,7 +43,7 @@ class TCSM :  public TGRSIDetector 	{
 	public: 
 		virtual void Clear(Option_t * = "");		//!
 		virtual void Print(Option_t * = "");		//!
-		void BuildHits(TGRSIDetectorData *cd = 0,  Option_t * = "");			//!
+		void BuildHits(TDetectorData *cd = 0,  Option_t * = "");			//!
 
 		TCSMHit *GetHit(int i)		{return &csm_hits.at(i);}	//->
 		Short_t GetMultiplicity()	{return csm_hits.size();}	//->

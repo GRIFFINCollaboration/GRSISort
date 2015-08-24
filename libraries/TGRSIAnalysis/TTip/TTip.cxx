@@ -62,7 +62,7 @@ void TTip::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
    TTipData::Set();
 }
 
-void TTip::BuildHits(TGRSIDetectorData *data,Option_t *opt) {
+void TTip::BuildHits(TDetectorData *data,Option_t *opt)	{
 //Builds the TIP Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
    TTipData *gdata = (TTipData*)data;
    if(gdata==0)

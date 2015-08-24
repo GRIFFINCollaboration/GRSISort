@@ -69,6 +69,8 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
      {Int_t  R__int ; b >> R__int;  fHPGeArrayPosition = R__int;}
      {Int_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
      {Double_t  R__double ; b >> R__double;  fAddBackWindow = R__double;}
+   }
+   if(R__v>4) {
      {Bool_t R__bool; b >> R__bool; fIsMovingWindow = R__bool;}
    }
    {Bool_t R__bool; b >> R__bool; fTigress = R__bool;   }

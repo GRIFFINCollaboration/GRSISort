@@ -117,10 +117,7 @@ void TTigress::FillBGOData(TFragment *frag, TChannel *channel, MNEMONIC *mnemoni
 	TBGOData::Set();   
 }
 
-
-
-//void	TTigress::BuildHits(TTigressData *tdata,TBGOData *bdata,Option_t *opt)	{
-void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
+void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
    TTigressData *tdata = (TTigressData*)data;
    if(tdata==0)
       tdata = (this->tigdata);

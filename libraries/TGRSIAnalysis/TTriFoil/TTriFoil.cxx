@@ -45,7 +45,7 @@ TTriFoil::TTriFoil(const TTriFoil& rhs) {
   ((TTriFoil&)rhs).Copy(*this);
 }
 
-void TTriFoil::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
+void TTriFoil::BuildHits(TDetectorData *ddata,Option_t *opt)	{
   TTriFoilData *tfdata = (TTriFoilData*)ddata;
    if(tfdata==0)
      tfdata = (this->data);

@@ -257,7 +257,7 @@ TGriffinHit* TGriffin::GetAddbackHit(const int i) {
    }
 }
 
-void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
+void TGriffin::BuildHits(TDetectorData *data,Option_t *opt)	{
 //Builds the GRIFFIN Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
 //This is done for both GRIFFIN and it's suppressors.
    TGriffinData *gdata = (TGriffinData*)data;

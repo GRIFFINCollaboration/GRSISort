@@ -40,7 +40,7 @@ class TGriffin : public TGRSIDetector {
       virtual ~TGriffin();
 
    public:
-      void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
+      void BuildHits(TDetectorData *data =0,Option_t *opt = ""); //!
 
       TGriffinHit *GetGriffinHit(const int i); //!
       TGRSIDetectorHit* GetHit(const Int_t idx = 0);

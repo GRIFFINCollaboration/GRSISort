@@ -28,7 +28,7 @@ class TPaces : public TGRSIDetector {
      virtual ~TPaces();
 
   public: 
-     void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = ""); //!
+     void BuildHits(TDetectorData *data =0,Option_t *opt = ""); //!
 
      TPacesHit *GetPacesHit(const int i); //!
      TGRSIDetectorHit* GetHit(const Int_t idx = 0);

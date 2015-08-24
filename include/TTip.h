@@ -32,8 +32,8 @@ class TTip : public TGRSIDetector {
     TGRSIDetectorHit *GetHit(const int i);
     Short_t GetMultiplicity() const         {  return tip_hits.size();}  //!
 
-    void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = "");           //!
-    void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
+	 void BuildHits(TDetectorData *data =0,Option_t *opt = "");           //!
+	 void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
     void Copy(TTip &rhs) const;
 
     TTip& operator=(const TTip&);  //!

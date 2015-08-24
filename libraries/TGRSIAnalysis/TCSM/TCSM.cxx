@@ -37,7 +37,7 @@ void TCSM::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)
   }
 }
 
-void	TCSM::BuildHits(TGRSIDetectorData *ddata, Option_t *opt)
+void	TCSM::BuildHits(TDetectorData *ddata, Option_t *opt)
 {
   TCSMData *cdata = (TCSMData *)ddata;
 
