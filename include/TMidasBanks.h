@@ -25,25 +25,26 @@
 
 /// Bank header
 
+
 struct TMidas_BANK_HEADER {
-  uint32_t fDataSize; 
-  uint32_t fFlags; 
+  UInt_t fDataSize;  //int32_t 
+  UInt_t fFlags;     //int32_t
 };
 
 /// 16-bit data bank
 
 struct TMidas_BANK {
   char fName[4];      ///< bank name
-  uint16_t fType;     ///< type of data (see midas.h TID_xxx)
-  uint16_t fDataSize;
+  UShort_t fType;     //uint16_t ///< type of data (see midas.h TID_xxx)
+  UShort_t fDataSize; //uint16_t
 };
 
 /// 32-bit data bank
 
 struct TMidas_BANK32 {
   char fName[4];      ///< bank name
-  uint32_t fType;     ///< type of data (see midas.h TID_xxx)
-  uint32_t fDataSize;
+  UInt_t fType;     //uint32_t  ///< type of data (see midas.h TID_xxx)
+  UInt_t fDataSize; //uint32_t
 };
 
 #endif

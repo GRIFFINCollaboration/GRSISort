@@ -22,12 +22,12 @@ ClassImp(TNucleus);
 //
 /////////////////////////////////////////////////////////////////
 
-//const char *TNucleus::massfile = "/home/tiguser/packages/GRSISort/libraries/TGRSIAnalysis/TNucleus/SourceData/mass.dat";
+//const char *TNucleus::massfile = "/home/tiguser/packages/GRSISort/libraries/TGRSIAnalysis/SourceData/mass.dat";
 
 static double amu = 931.494043;
 //static double MeV2Kg = 1.77777778e-30;
 
-const char *TNucleus::massfile = "/libraries/TGRSIAnalysis/TNucleus/SourceData/mass.dat";
+const char *TNucleus::massfile = "/libraries/TGRSIAnalysis/SourceData/mass.dat";
 
 
 TNucleus::TNucleus(const char *name){
