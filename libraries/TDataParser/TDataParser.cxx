@@ -35,7 +35,7 @@ unsigned long TDataParser::fgLastNetworkPacket = 0;
 
 TChannel *TDataParser::gChannel = new TChannel;
 
-ClassImp(TDataParser)
+//ClassImp(TDataParser)
 
 TDataParser *TDataParser::instance() {
 //Get the global instance of the TDataParser Class

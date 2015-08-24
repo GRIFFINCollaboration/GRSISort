@@ -83,7 +83,7 @@ void TCSMData::Print(Option_t* opt) const
   }
 }
 
-void TCSMData::Print(int addr, bool horizontal)
+void TCSMData::Print(int addr, bool horizontal) const
 {
   printf(DRED "\n \tPrinting a single ");
   if(horizontal)
