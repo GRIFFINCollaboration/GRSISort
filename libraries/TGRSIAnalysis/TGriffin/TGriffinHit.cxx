@@ -118,7 +118,7 @@ UInt_t TGriffinHit::SetCrystal(char color) {
 }
 
 bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	{
-   return(lhs->GetEnergy()) > rhs->GetEnergy();
+   return(lhs->GetEnergy() > rhs->GetEnergy());
 }
 
 void TGriffinHit::Add(const TGriffinHit *hit)	{
