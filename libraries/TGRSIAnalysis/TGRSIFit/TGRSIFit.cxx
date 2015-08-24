@@ -42,6 +42,15 @@ void TGRSIFit::ClearParameters(Option_t *opt){
    }
 }
 
+void TGRSIFit::CopyParameters(TF1 *copy) const{
+   if(!copy)
+      return;
+   for(int i =0; i< GetNpar();++i){
+      if(copy->GetNpar() > i)
+         copy->SetParameter(i,GetParameter(i));
+   }
+}
+
 Bool_t TGRSIFit::AddToGlobalList(Bool_t on){
    // Add to global list of functions (gROOT->GetListOfFunctions() )
    // return previous status (true of functions was already in the list false if not)

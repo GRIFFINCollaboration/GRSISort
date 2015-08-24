@@ -34,26 +34,26 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
    this->SortPeaks();//Defaults to sorting by TPeak::CompareEnergy
    this->InitNames();
 
-   background = new TF1(Form("MPbackground_%d_to_%d",(Int_t)(xlow),(Int_t)(xhigh)),TGRSIFunctions::StepBG,xlow,xhigh,10);
-   background->SetNpx(1000);
-   background->SetLineStyle(2);
-   background->SetLineColor(kBlack);
-   TGRSIFit::AddToGlobalList(background,kFALSE);
+   fBackground = new TF1(Form("MPbackground_%d_to_%d",(Int_t)(xlow),(Int_t)(xhigh)),MultiStepBG,xlow,xhigh,centroids.size()*6+5);
+   fBackground->SetNpx(1000);
+   fBackground->SetLineStyle(2);
+   fBackground->SetLineColor(kBlack);
+   TGRSIFit::AddToGlobalList(fBackground,kFALSE);
    
 }
 
 TMultiPeak::TMultiPeak() : TGRSIFit("multipeakbg",MultiPhotoPeakBG,0,1000,10){
    this->InitNames();
-   background = new TF1("background",TGRSIFunctions::StepBG,0,1000,10);
-   background->SetNpx(1000);
-   background->SetLineStyle(2);
-   background->SetLineColor(kBlack);
-   TGRSIFit::AddToGlobalList(background,kFALSE);
+   fBackground = new TF1("background",MultiStepBG,1000,10);//This is a weird nonsense line.
+   fBackground->SetNpx(1000);
+   fBackground->SetLineStyle(2);
+   fBackground->SetLineColor(kBlack);
+   TGRSIFit::AddToGlobalList(fBackground,kFALSE);
 }
 
 TMultiPeak::~TMultiPeak(){
-   if(background){ 
-      delete background;
+   if(fBackground){ 
+      delete fBackground;
    }
    
    for(int i=0; i<fPeakVec.size(); ++i){
@@ -90,19 +90,19 @@ void TMultiPeak::InitNames(){
 }
 
 
-TMultiPeak::TMultiPeak(const TMultiPeak &copy) : background(0) {
+TMultiPeak::TMultiPeak(const TMultiPeak &copy) : fBackground(0) {
    ((TMultiPeak&)copy).Copy(*this);
 }
 
 void TMultiPeak::Copy(TObject &obj) const {
    TGRSIFit::Copy(obj);
    TMultiPeak *mpobj = (TMultiPeak*)(&obj);
-   if(!(mpobj->background)) 
-      mpobj->background = new TF1(*(background));
+   if(!(mpobj->fBackground)) 
+      mpobj->fBackground = new TF1(*(fBackground));
    else
-      *(mpobj->background) = *background;
+      *(mpobj->fBackground) = *fBackground;
 
-   TGRSIFit::AddToGlobalList(background,kFALSE);
+   TGRSIFit::AddToGlobalList(fBackground,kFALSE);
 
    //Copy all of the TPeaks.
    for(int i=0; i<fPeakVec.size();++i){
@@ -137,6 +137,8 @@ Bool_t TMultiPeak::InitParams(TH1 *fithist){
    this->SetParameter("B",(fithist->GetBinContent(binlow) - fithist->GetBinContent(binhigh))/(xlow-xhigh));
    this->SetParameter("C",0.0000);
    this->SetParameter("bg_offset",(xhigh+xlow)/2.0);
+
+   this->FixParameter(3,0);
 
    //We need to initialize parameters for every peak in the fit
    for(int i=0; i<fPeakVec.size();++i){
@@ -216,6 +218,8 @@ Bool_t TMultiPeak::Fit(TH1* fithist,Option_t *opt){
    CovMat(4,4) = 0.0;
 //   printf("covmat ");CovMat.Print();
 
+   //This copies the parameters background but the background function doesn't have peaks
+   this->CopyParameters(fBackground);
    //We now make a copy of the covariance matrix that has completel 0 diagonals so that we can remove the other peaks form the integral error.
    //This is done by adding back the peak of interest on the diagonal when it is integrated.
    TMatrixDSym emptyCovMat = CovMat;
@@ -274,6 +278,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist,Option_t *opt){
       peak->SetParameter("bg_offset",0.0);
       peak->SetChi2(fitres->Chi2());  
       peak->SetNdf(fitres->Ndf());
+
      // printf("tmp cov mat: ");tmpCovMat.Print();
 
       //Set the important diagonals for the integral of the covariance matrix
@@ -388,6 +393,25 @@ Double_t TMultiPeak::MultiPhotoPeakBG(Double_t *dim, Double_t *par) {
   	   tmp_par[4]   = par[6*i+9]; //relative height of skewed gaussian
       tmp_par[5]   = par[6*i+10]; //Size of step in background
 		result += TGRSIFunctions::PhotoPeak(dim,tmp_par) + TGRSIFunctions::StepFunction(dim,tmp_par);
+	}
+	return result;
+}
+
+Double_t TMultiPeak::MultiStepBG(Double_t *dim, Double_t *par) {
+  // Limits need to be imposed or error states may occour.
+  //
+   //General background.
+   int npeaks = (int)(par[0]+0.5);
+	double result = TGRSIFunctions::PolyBg(dim,&par[1],2); // polynomial background. uses par[1->4]
+	for(int i=0;i<npeaks;i++){// par[0] is number of peaks
+		Double_t tmp_par[6];
+  	   tmp_par[0]   = par[6*i+5]; //height of photopeak
+  	   tmp_par[1]   = par[6*i+6]; //Peak Centroid of non skew gaus
+  	   tmp_par[2]   = par[6*i+7]; //standard deviation  of gaussian
+  	   tmp_par[3]   = par[6*i+8]; //"skewedness" of the skewed gaussian
+  	   tmp_par[4]   = par[6*i+9]; //relative height of skewed gaussian
+      tmp_par[5]   = par[6*i+10]; //Size of step in background
+		result += TGRSIFunctions::StepFunction(dim,tmp_par);
 	}
 	return result;
 }
