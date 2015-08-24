@@ -219,7 +219,7 @@ Int_t TGriffin::GetAddbackMultiplicity() {
       return 0;
    }
 	//if the addback has been reset, clear the addback hits
-	if((fGriffinBits & kAddback) == 0x0) {
+	if((fGriffinBits & kIsAddbackSet) == 0x0) {
 		fAddback_hits.clear();
 	}
    if(fAddback_hits.size() == 0) {
@@ -243,6 +243,7 @@ Int_t TGriffin::GetAddbackMultiplicity() {
             fAddback_frags.push_back(1);
 	      }
       }
+	   SetBitNumber(kIsAddbackSet, true);
    }
 
    return fAddback_hits.size();
@@ -428,7 +429,7 @@ void TGriffin::ResetAddback() {
 //the old addback hits will be stored instead.
 //This should have changed now, we're using the stored griffin bits to reset the addback
 	//unset the addback bit in fGriffinBits
-	fGriffinBits &= ~kAddback;
+	SetBitNumber(kIsAddbackSet, false);
    fAddback_hits.clear();
    fAddback_frags.clear();
 }

@@ -65,6 +65,7 @@ class TGRSIDetectorHit : public TObject 	{
       void CopyFragment(const TFragment&);
       virtual ~TGRSIDetectorHit();
 
+      static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
 
 	public:
       virtual void Copy(TObject&) const;              //!

@@ -436,9 +436,15 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
 
 
 bool TGRSIInterruptHandler::Notify() {
+   static int abort_times =0;
+   if(abort_times>3) {
+     printf("\n" DRED BG_WHITE  "   Control-c was pressed harder.   " RESET_COLOR  SHOW_CURSOR "\n");
+     abort();
+   }
    printf("\n" DRED BG_WHITE  "   Control-c was pressed.   " RESET_COLOR  SHOW_CURSOR "\n");
-   abort();
+   abort_times++;
    gApplication->Terminate();
+
    return true;
 }
 

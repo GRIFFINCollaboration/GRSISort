@@ -24,14 +24,14 @@ class TGriffinData;
 
 class TGriffin : public TGRSIDetector {
 	enum EGriffinBits {
-		kAddback = 1<<0,
-		kBit1    = 1<<1,
-		kBit2    = 1<<2,
-		kBit3    = 1<<3,
-		kBit4    = 1<<4,
-		kBit5    = 1<<5,
-		kBit6    = 1<<6,
-		kBit7    = 1<<7
+		kIsAddbackSet = 1<<0,
+		kBit1         = 1<<1,
+		kBit2         = 1<<2,
+		kBit3         = 1<<3,
+		kBit4         = 1<<4,
+		kBit5         = 1<<5,
+		kBit6         = 1<<6,
+		kBit7         = 1<<7
 	};
 
    public:
@@ -105,8 +105,6 @@ class TGriffin : public TGRSIDetector {
       void PushBackHit(TGRSIDetectorHit* ghit);
 
       ClassDef(TGriffin,3)  // Griffin Physics structure
-
-
 };
 
 #endif

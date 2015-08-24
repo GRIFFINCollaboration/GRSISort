@@ -20,27 +20,32 @@ class TTipHit : public TGRSIDetectorHit {
     TTipHit(const TTipHit&);
 
   private:
-    Int_t    filter;
-	 Double_t PID;
+    Int_t    filter;    // 
+    Double_t fPID;       // 
+
+    Double_t fast_amplitude;
+    Double_t slow_amplitude;
+    Double_t gamma_amplitude;
    
+    Double_t fit_time;
+
   public:
-		/////////////////////////		/////////////////////////////////////
-      inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
-  //    inline void SetPosition(TVector3 x)          { position = x; }   //!
-      inline void SetPID(Double_t x)          		{ PID = x; }   //!
+    /////////////////////////    /////////////////////////////////////
+    inline void SetFilterPattern(const int &x)   { filter   = x; }   //! 
+    inline void SetPID(Double_t x)                { fPID = x;     }   //!
 
-      inline Int_t    GetFiterPatter()         {   return filter;   }  //!
-		inline Double_t GetPID()			        {	return PID;     }  //!
-      TVector3 GetPosition() const {return TVector3();}
+    inline Int_t    GetFiterPatter()           { return filter;   }  //!
+    inline Double_t GetPID()                   { return fPID;      }  //!
+    TVector3 GetPosition() const               { return TVector3();}
 
-      bool   InFilter(Int_t);                                         //!
+    bool   InFilter(Int_t);                                         //!
 
-	public:
-		void Clear(Option_t *opt = "");		                    //!
-		void Print(Option_t *opt = "");		                    //!
-      virtual void Copy(TTipHit&) const;        //!
+  public:
+    void Clear(Option_t *opt = "");                        //!
+    void Print(Option_t *opt = "");                        //!
+    virtual void Copy(TTipHit&) const;                     //!
 
-		ClassDef(TTipHit,1);
+    ClassDef(TTipHit,1);
 
 };
 
