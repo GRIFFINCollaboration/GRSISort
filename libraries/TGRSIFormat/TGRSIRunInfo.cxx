@@ -69,6 +69,8 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
      {Int_t  R__int ; b >> R__int;  fHPGeArrayPosition = R__int;}
      {Int_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
      {Double_t  R__double ; b >> R__double;  fAddBackWindow = R__double;}
+   }
+   if(R__v>4) {
      {Bool_t R__bool; b >> R__bool; fIsMovingWindow = R__bool;}
    }
    {Bool_t R__bool; b >> R__bool; fTigress = R__bool;   }
@@ -392,7 +394,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
         std::istringstream ss(line);
         bool temp_mw; ss >> temp_mw;
         Get()->SetMovingWindow(temp_mw);
-      } else if( type.compare("ABW")==0 || type.compare("ADDBACKWINDOW")==0 || type.compare("ADDBACK") ) {
+      } else if( type.compare("ABW")==0 || type.compare("ADDBACKWINDOW")==0 || type.compare("ADDBACK")==0 ) {
         std::istringstream ss(line);
         double temp_abw; ss >> temp_abw;
         Get()->SetAddBackWindow(temp_abw);

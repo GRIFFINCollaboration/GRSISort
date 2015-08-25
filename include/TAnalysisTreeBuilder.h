@@ -47,7 +47,7 @@
 //                                                            //
 // TAnalysisTreeBuilder                                       //
 //                                                            //
-// This Class builds events out of TGRSIDetectorHits. These   //
+// This Class builds events out of TDetectorHits. These       //
 // events then get written out to the analysis tree for post  //
 // processing. When a new detector class is added to the code //
 // it must also be added here for coincidence building        //
@@ -80,15 +80,15 @@ class TEventQueue : public TObject {
 class TWriteQueue : public TObject {
    public:
       static TWriteQueue *Get();
-      static void Add(std::map<const char*, TGRSIDetector*> *event); 
-      static std::map<const char*, TGRSIDetector*> *PopEntry();
+      static void Add(std::map<const char*, TDetector*> *event); 
+      static std::map<const char*, TDetector*> *PopEntry();
       static int Size();
       virtual ~TWriteQueue();
 
    private:
       TWriteQueue();
       static TWriteQueue *fPtrToQue;
-      static std::queue<std::map<const char*, TGRSIDetector*>*> fWriteQueue;
+      static std::queue<std::map<const char*, TDetector*>*> fWriteQueue;
       #ifndef __CINT__
       static std::mutex m_write;
       #endif
@@ -121,9 +121,9 @@ class TAnalysisTreeBuilder : public TObject {
       void SetupOutFile();
       void SetupAnalysisTree();
 
-      void FillWriteQueue(std::map<const char*, TGRSIDetector*>*);
+      void FillWriteQueue(std::map<const char*, TDetector*>*);
 
-      void FillAnalysisTree(std::map<const char*, TGRSIDetector*>*);
+      void FillAnalysisTree(std::map<const char*, TDetector*>*);
       void WriteAnalysisTree();
       void CloseAnalysisFile();
 
@@ -131,7 +131,7 @@ class TAnalysisTreeBuilder : public TObject {
 
       void ClearActiveAnalysisTreeBranches();
       void ResetActiveAnalysisTreeBranches();
-		  void BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*>*);
+		  void BuildActiveAnalysisTreeBranches(std::map<const char*, TDetector*>*);
 
       void Print(Option_t *opt ="") const;
 

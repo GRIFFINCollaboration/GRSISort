@@ -16,7 +16,7 @@ ClassImp(TGRSIDetector)
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TGRSIDetector::TGRSIDetector():TObject(){
+TGRSIDetector::TGRSIDetector():TDetector(){
    //Default constructor.
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);

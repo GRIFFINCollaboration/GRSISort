@@ -120,7 +120,7 @@ void TSceptar::PushBackHit(TGRSIDetectorHit *schit) {
    return;
 }
 
-void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
+void TSceptar::BuildHits(TDetectorData *data,Option_t *opt)	{
 //Builds the SCEPTAR Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
 //This is done for both GRIFFIN and it's suppressors.
    TSceptarData *gdata = (TSceptarData*)data;

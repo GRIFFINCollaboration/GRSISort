@@ -1,128 +1,157 @@
-SUBDIRS = src libraries
-ALLDIRS = $(SUBDIRS) util examples scripts users
+.PHONY: clean all
+.SECONDARY:
+.SECONDEXPANSION:
 
-PLATFORM = $(shell uname)
 
-export PLATFORM:= $(PLATFORM)
+PLATFORM:=$(shell uname)
+# EDIT THIS SECTION
 
-export MAJOR_ROOT_VERSION := `root-config --version | cut -d '.' -f1`
-#if [ ${MAJOR_ROOT_VERSION} -lt 5 ] ; then \
-#	$(error ${MAJOR_ROOT_VERSION} too small)
-#fi
+INCLUDES   = include users
+CFLAGS     = -g -std=c++0x -O2
+#-Wall -Wextra -pedantic -Wno-unused-parameter
+LINKFLAGS_PREFIX  =
+LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm -std=c++0x
+SRC_SUFFIX = cxx
 
-export CFLAGS = -std=c++0x -O2  -I$(PWD)/include -I$(PWD)/users -g `root-config --cflags` -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} -fPIC
-
-#export GRSISYS:= $(GRSISYS)
+# EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY
 
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
-export CFLAGS += -DOS_DARWIN -DHAVE_ZLIB #-lz
-export CFLAGS += -I/opt/X11/include -Qunused-arguments
-export LFLAGS = -dynamiclib -undefined dynamic_lookup -single_module -Wl,-install_name,'@executable_path/../libraries/$$@'
-export SHAREDSWITCH = -install_name # ENDING SPACE
-export CXX = clang++ 
-export CPP = clang++ 
-export CXX = clang++
+CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
+CFLAGS     += -I/opt/X11/include -Qunused-arguments
+LINKFLAGS_SUFFIX += -dynamiclib -undefined dynamic_lookup -single_module -Wl,-install_name,'@executable_path/../libraries/$$@'
+CPP        = clang++
+SHAREDSWITCH = -install_name # ENDING SPACE
 else
-export __LINUX__:= 1	
-export LFLAGS = -Wl,--no-as-needed
-export SHAREDSWITCH = -shared -Wl,-soname,#NO ENDING SPACE
-export CPP = g++
+export __LINUX__:= 1
+CPP        = g++
+CFLAGS     += -Wl,--no-as-needed
+LINKFLAGS_SUFFIX += -Wl,--no-as-needed
+SHAREDSWITCH = -shared -Wl,-soname,# NO ENDING SPACE
 endif
-export COMPILESHARED   = $(CPP) $(LFLAGS) $(SHAREDSWITCH)#NO ENDING SPACE
 
-export BASE:= $(CURDIR)
-export INCDIR:= $(BASE)/include
+COM_COLOR=\033[0;34m
+OBJ_COLOR=\033[0;36m
+BLD_COLOR=\033[3;34m
+LIB_COLOR=\033[3;36m
+OK_COLOR=\033[0;32m
+ERROR_COLOR=\033[0;31m
+WARN_COLOR=\033[0;33m
+NO_COLOR=\033[m
 
-export CAT=cat
+OK_STRING="[OK]"
+ERROR_STRING="[ERROR]"
+WARN_STRING="[WARNING]"
+COM_STRING="Compiling"
+BLD_STRING="Building\ "
+FIN_STRING="Finished Building"
 
-export OK_STRING:="[OK]"
-export ERROR_STRING:="[ERROR]"
-export WARN_STRING:="[WARNING]"
-export COMP_STRING:="Now Compiling "
-export FIN_STRING:="Finished Building "
+LIBRARY_DIRS   := $(shell find libraries/* -type d -links 2 2> /dev/null)
+LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
+LIBRARY_OUTPUT := $(patsubst %,libraries/lib%.so,$(LIBRARY_NAMES))
 
-export COM_COLOR=\033[0;34m
-export OBJ_COLOR=\033[0;36m
-export DICT_COLOR=\033[0;36m
-export OK_COLOR=\033[0;32m
-export ERROR_COLOR=\033[0;31m
-export WARN_COLOR=\033[0;33m
-export NO_COLOR=\033[m
-export FIN_COLOR=\033[3;34m
-export FIN_OBJ_COLOR=\033[3;32m
+INCLUDES  := $(addprefix -I$(PWD)/,$(INCLUDES))
+CFLAGS    += $(shell root-config --cflags)
+CFLAGS    += -MMD $(INCLUDES)
+LINKFLAGS += -Llibraries $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../libraries
+LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lXMLParser -lXMLIO -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof
+LINKFLAGS := $(LINKFLAGS_PREFIX) $(LINKFLAGS) $(LINKFLAGS_SUFFIX) $(CFLAGS)
 
-export DICT_STRING="Now Making Dict for ${OBJ_COLOR}$< ${NO_COLOR}"
+ROOT_LIBFLAGS := $(shell root-config --cflags)
 
-MAKE=make --no-print-directory 
+UTIL_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard util/*.$(SRC_SUFFIX)))
+#SANDBOX_O_FILES := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard Sandbox/*.$(SRC_SUFFIX)))
+SCRIPT_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard scripts/*.$(SRC_SUFFIX)))
+ANALYSIS_O_FILES := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard myAnalysis/*.$(SRC_SUFFIX)))
+MAIN_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard src/*.$(SRC_SUFFIX)))
+EXE_O_FILES     := $(UTIL_O_FILES) $(SANDBOX_O_FILES) $(SCRIPT_O_FILES) $(ANALYSIS_O_FILES)
+EXECUTABLES     := $(patsubst %.o,bin/%,$(notdir $(EXE_O_FILES))) bin/grsisort
 
-.PHONY: all subdirs $(ALLDIRS) clean util
+run_and_test =@printf "%b%b%b" " $(3)$(4)$(5)" $(notdir $(2)) "$(NO_COLOR)\r";  \
+                $(1) 2> $(2).log || touch $(2).error; \
+                if test -e $(2).error; then \
+                      printf "%-60b%b%s%b" "$(3)$(4)$(5)$(2)" "$(ERROR_COLOR)" "$(ERROR_STRING)" "$(NO_COLOR)\n"   ; \
+                      cat $(2).log; \
+                      rm -f $(2).log $(2).error; \
+                      exit 1; \
+                elif test -s $(2).log; then \
+                      printf "%-60b%b%s%b" "$(3)$(4)$(5)$(2)" "$(WARN_COLOR)" "$(WARN_STRING)" "$(NO_COLOR)\n"   ; \
+                      cat $(2).log; \
+                else  \
+                      printf "%b%-60s%b%s%b" "$(3)$(4)$(5)" $(notdir $(2)) "$(OK_COLOR)" "$(OK_STRING)" "$(NO_COLOR)\n"   ; \
+                fi; \
+                rm -f $(2).log $(2).error
 
-all: print grsisort analysis examples scripts util end
+all: $(EXECUTABLES) $(LIBRARY_OUTPUT) config 
+	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
-docs: print subdirs bin grsihist grsisort html config end
+#docs:
+#	doxygen doxygen.config
 
-util: libraries users grsisort print
-	@$(MAKE) -C $@
+bin/grsisort: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) bin
+	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-examples: libraries users grsisort print
-	@$(MAKE) -C $@
+bin/%: .build/util/%.o | $(LIBRARY_OUTPUT) bin
+	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-users: libraries print
-	@$(MAKE) -C $@
+bin/%: .build/Sandbox/%.o | $(LIBRARY_OUTPUT) bin
+	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-scripts: libraries grsisort print
-	@$(MAKE) -C $@
+bin/%: .build/scripts/%.o | $(LIBRARY_OUTPUT) bin
+	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-analysis: libraries users grsisort print
-	@$(MAKE) -C myanalysis
+bin/%: .build/myAnalysis/%.o | $(LIBRARY_OUTPUT) bin
+	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-print:
-	@echo "Compiling on $(PLATFORM)"
+bin:
+	@mkdir -p $@
 
-subdirs: $(SUBDIRS)
-
-src: print libraries users
-
-$(SUBDIRS): print
-	@$(MAKE) -C $@
-
-grsisort: src libraries users print bin config
-	@mv $</$@ bin/$@
-
-config: print bin
+config:
 	@cp util/grsi-config bin/
 	@find libraries/*/ users/ -name "*.pcm" -exec cp {} libraries/ \;
 
-bin:
-ifeq ($(wildcard ./bin),) 
-	@mkdir bin	 
-endif
+# Functions for determining the files included in a library.
+# All src files in the library directory are included.
+# If a LinkDef.h file is present in the library directory,
+#    a dictionary file will also be generated and added to the library.
+libdir          = $(shell find libraries -name $(1) -type d)
+lib_src_files   = $(shell find $(call libdir,$(1)) -name "*.$(SRC_SUFFIX)")
+lib_o_files     = $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(call lib_src_files,$(1)))
+lib_linkdef     = $(wildcard $(call libdir,$(1))/LinkDef.h)
+lib_dictionary  = $(patsubst %/LinkDef.h,.build/%/LibDictionary.o,$(call lib_linkdef,$(1)))
 
-grsihist:
-ifeq ($(wildcard ./.grsi_history),)
-	@touch .grsi_history
-endif
+libraries/lib%.so: $$(call lib_o_files,%) $$(call lib_dictionary,%)
+	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
-html: libraries grsisort
-	@printf " ${COM_COLOR}Building      ${OBJ_COLOR} HTML Documentation ${NO_COLOR}\n"
-	@cp -r include grsisort
-	@grsisort -q -l --work_harder util/html_generator.C #>/dev/null
-	@$(RM) -r grsisort
-	@$(RM) tempfile.out
+.build/%.o: %.$(SRC_SUFFIX)
+	@mkdir -p $(dir $@)
+	$(call run_and_test,$(CPP) -fPIC -c $< -o $@ $(CFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-end: grsisort
-	@printf " ${WARN_COLOR}Compilation Success. woohoo!${NO_COLOR}\n\n"
+dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell head $(1) -n 1 2> /dev/null)))
+find_linkdef = $(shell find $(1) -name "*LinkDef.h")
+
+# In order for all function names to be unique, rootcint requires unique output names.
+# Therefore, usual wildcard rules are insufficient.
+# Eval is more powerful, but is less convenient to use.
+define library_template
+.build/$(1)/$(notdir $(1))Dict.cxx: $$(call dict_header_files,$(1)/LinkDef.h) $(1)/LinkDef.h
+	@mkdir -p $$(dir $$@)
+	$$(call run_and_test,rootcint -f $$@ -c $$(INCLUDES) -p $$^,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
+
+.build/$(1)/LibDictionary.o: .build/$(1)/$(notdir $(1))Dict.cxx
+	$$(call run_and_test,$$(CPP) -fPIC -c $$< -o $$@ $$(CFLAGS),$$@,$$(COM_COLOR),$$(COM_STRING),$$(OBJ_COLOR) )
+endef
+
+$(foreach lib,$(LIBRARY_DIRS),$(eval $(call library_template,$(lib))))
+
+-include $(shell find .build -name '*.d' 2> /dev/null)
 
 clean:
-	@$(RM) $(GRSISYS)/*~                      
-	$(RM) -R $(GRSISYS)/bin/*dSYM
-	$(RM) $(GRSISYS)/bin/*
-	@for dir in $(ALLDIRS); do \
-		$(MAKE) -C $$dir $@; \
-	done
+	@printf "\nCleaning up\n\n"
+	@-$(RM) -rf .build
+	@-$(RM) -rf bin
+	@-$(RM) -f $(LIBRARY_OUTPUT)
 
-veryclean: clean
-	$(RM) -r $(GRSISYS)/htmldoc
-
-
+cleaner: clean
+	@printf "\nEven more clean up\n\n"
+	@-$(RM) -rf htmldoc

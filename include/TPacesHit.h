@@ -20,19 +20,16 @@ class TPacesHit : public TGRSIDetectorHit {
 
 	private:
       Int_t filter;
-      Int_t ppg;
 
 	public:
 		/////////////////////////  Setters	/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { filter = x;   }                  //! 
-      inline void SetPPG(const int &x)             { ppg = x;   }                     //! 
       //void SetHit();
 
       TVector3 GetPosition(Double_t dist = 0.0) const; //!
 
 		/////////////////////////  Getters	/////////////////////////////////////
       inline Int_t    GetFilterPattern() const         {   return filter;   }          //!
-      inline Int_t    GetPPG() const                  {   return ppg;   }             //!
 
 		/////////////////////////  TChannel Helpers /////////////////////////////////////
       bool   InFilter(Int_t);  //!
@@ -42,7 +39,7 @@ class TPacesHit : public TGRSIDetectorHit {
 		virtual void Print(Option_t *opt = "") const; //!
       virtual void Copy(TPacesHit&) const;        //!
 
-	ClassDef(TPacesHit,2);
+	ClassDef(TPacesHit,3);
 };
 
 

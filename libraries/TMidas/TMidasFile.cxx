@@ -154,11 +154,11 @@ bool TMidasFile::Open(const char *filename)
       pipe = "bzip2 -dc ";
       pipe += filename;
     }
-/*  else{
+  else{
      pipe = "cat ";
      pipe+=filename;
   }
-*/
+
   if (pipe.length() > 0)
     {
       fprintf(stderr,"TMidasFile::Open: Reading from pipe: %s\n", pipe.c_str());

@@ -12,8 +12,9 @@
 #include <cstdlib>
 
 #include "TObject.h"
+#include "TDetectorData.h"
 
-class TGRSIDetectorData {
+class TGRSIDetectorData : public TDetectorData {
 
 
    public:

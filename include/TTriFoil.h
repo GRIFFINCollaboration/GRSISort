@@ -31,7 +31,7 @@ class TTriFoil :  public TGRSIDetector {
 		bool HasWave() const { return !tf_wave.empty(); };
       time_t GetTimeStamp() const {return timestamp;}
 
-		void BuildHits(TGRSIDetectorData *data=0, Option_t * = "");	//!
+		void BuildHits(TDetectorData *data=0, Option_t * = "");	//!
 		void FillData(TFragment*,TChannel*,MNEMONIC*);	//!
 
 		void Clear(Option_t *opt = ""); 	//!

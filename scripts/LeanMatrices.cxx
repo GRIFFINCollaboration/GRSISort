@@ -141,6 +141,8 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    list->Add(ppg);
    list->Add(runInfo);
 
+   TGRSIDetectorHit::SetPPGPtr(ppg);
+
    ///////////////////////////////////// PROCESSING /////////////////////////////////////
 
    //set up branches
@@ -291,6 +293,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
                continue;
             }
             //Check to see if the two gammas are close enough in time
+            //VINZENZ I THINK THIS IS BREAKING THIS FOR SOME REASON.
             aaTimeDiff->Fill(TMath::Abs(grif->GetAddbackHit(two)->GetTime()-grif->GetAddbackHit(one)->GetTime()));
             if(ggTlow <= TMath::Abs(grif->GetAddbackHit(two)->GetTime()-grif->GetAddbackHit(one)->GetTime()) && TMath::Abs(grif->GetAddbackHit(two)->GetTime()-grif->GetAddbackHit(one)->GetTime()) < ggThigh) { 
                //If they are close enough in time, fill the gamma-gamma matrix. This will be symmetric because we are doing a double loop over gammas
@@ -362,7 +365,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
          }
       }
       if((entry%10000) == 0){
-         printf("Completed %d of %d \r",entry,maxEntries);
+         printf("Completed %d of %ld \r",entry,maxEntries);
       }
 
    }

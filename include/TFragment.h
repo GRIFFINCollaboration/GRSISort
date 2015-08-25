@@ -38,7 +38,7 @@ public:
 
    Int_t    NetworkPacketNumber;  //->  Network packet number
 
-   Short_t ChannelNumber;         //->  Channel Number
+   Short_t ChannelNumber;         //->  Channel Number    //ryan is going to delete this.
    UInt_t ChannelAddress;         //->  Address of the channel
    std::vector<Int_t> Cfd;        //->  CFD of each pileup hit
    std::vector<Int_t> Zc;         //->  ZC of each pileup hit
@@ -47,7 +47,6 @@ public:
    std::vector<Int_t> Led;        //->  LED of each pileup hit
    std::vector<Int_t> Charge;	    //->  The Integrated Charge 
 
-   //unsigned long TimeStamp;     //->
    Int_t TimeStampLow;            //->  Timestamp low bits
    Int_t TimeStampHigh;           //->  Timestamp high bits
 

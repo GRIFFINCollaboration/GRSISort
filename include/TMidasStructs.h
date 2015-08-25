@@ -2,8 +2,8 @@
 // TMidasStructs.h
 //
 
-//#ifndef INCLUDE_TMidasBanksH
-//#define INCLUDE_TMidasBanksH
+#ifndef INCLUDE_TMidasBanksH
+#define INCLUDE_TMidasBanksH
 
 //#include <stdint.h>
 
@@ -44,5 +44,4 @@ struct TMidas_BANK32 {
   uint32_t fDataSize;
 };
 
-//#endif
-//end
+#endif

@@ -59,6 +59,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		//void SetDetectorNumber(const int &i) { detector = i;	} 				//!
 		void SetCrystal()	                   { crystal = GetCrystal(); SetFlag(TGRSIDetectorHit::kIsSubDetSet,true); }		//!
 		void SetInitalHit(const int &i)		 { first_segment = i; }				//!
+      Bool_t IsCrystalSet() const {return IsSubDetSet();}
 
 //		void SetPosition(const TVector3 &p)  { position = p;	}					//!
 		//void SetDoppler(const double &d)	   { doppler = d;	}					//!

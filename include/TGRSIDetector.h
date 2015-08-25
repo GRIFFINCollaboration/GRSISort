@@ -13,12 +13,15 @@
 #include "TObject.h"
 #ifndef __CINT__
 #include "TGRSIDetectorData.h"
+#include "TDetectorData.h"
 #else
 class TGRSIDetectorData;
+class TDetectorData;
 #endif
 
 #include "TFragment.h"
 #include "TChannel.h"
+#include "TDetector.h"
 
 class TGRSIDetectorHit;
 
@@ -33,7 +36,7 @@ class TGRSIDetectorHit;
 ////////////////////////////////////////////////////////////////
 
 
-class TGRSIDetector : public TObject	{
+class TGRSIDetector : public TDetector	{
 	public:
 		TGRSIDetector();
 		TGRSIDetector(const TGRSIDetector&);
@@ -41,8 +44,8 @@ class TGRSIDetector : public TObject	{
 
 	public: 
       //virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
-		virtual void BuildHits(TGRSIDetectorData *data=0,Option_t * = "") { AbstractMethod("BuildHits()"); } //! = 0; //!
-		virtual void FillData(TFragment*,TChannel*,MNEMONIC*)             { AbstractMethod("FillData()");  } //! = 0; //!
+		virtual void BuildHits(TDetectorData *data=0,Option_t * = "") { AbstractMethod("BuildHits()"); } //! = 0; //!
+		virtual void FillData(TFragment*,TChannel*,MNEMONIC*)         { AbstractMethod("FillData()");  } //! = 0; //!
 
       virtual void Copy(TObject&) const;              //!
       virtual void Clear(Option_t *opt = "");         //!
