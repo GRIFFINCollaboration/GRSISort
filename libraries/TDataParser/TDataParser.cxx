@@ -506,6 +506,8 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int *iter, int 
          case 0xf0000000:
             switch(bank){
                case 1: // header format from before May 2015 experiments
+                  delete EventFrag;
+                  *iter += x;
                   return -x;
                   break;
                case 2:
