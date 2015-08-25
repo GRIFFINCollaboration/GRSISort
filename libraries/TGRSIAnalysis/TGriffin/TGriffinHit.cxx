@@ -135,7 +135,7 @@ void TGriffinHit::Print(Option_t *opt) const	{
 
 
 bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
-		return(lhs->GetEnergyLow()) > rhs->GetEnergyLow();
+		return(lhs->GetEnergyLow() > rhs->GetEnergyLow());
 }
 
 
