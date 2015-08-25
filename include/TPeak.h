@@ -28,7 +28,8 @@ class TPeak : public TGRSIFit {
    //ctors and dtors
    virtual ~TPeak();
    TPeak(const TPeak &copy);
-   TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type="gsc");
+   TPeak(Double_t cent, Double_t xlow, Double_t xhigh);
+   TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background);
    TPeak(); //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
    
  protected:
@@ -38,7 +39,6 @@ class TPeak : public TGRSIFit {
  public:
    virtual void Copy(TObject &obj) const;
    void SetCentroid(Double_t cent)  { SetParameter("centroid",cent); }
-   void SetType(Option_t *type);
 
    Bool_t Fit(TH1* fithist, Option_t *opt = ""); //Might switch this to TFitResultPtr
   // Bool_t Fit(TH1* fithist = 0);
@@ -66,7 +66,7 @@ class TPeak : public TGRSIFit {
 
  public:
    Bool_t InitParams(TH1 *fithist = 0);
-   TF1* Background() const { return background; } 
+   TF1* Background() const { return fBackground; } 
    void DrawBackground(Option_t *opt = "SAME") const; // *MENU*
    void DrawResiduals(); // *MENU*
 
@@ -88,11 +88,12 @@ class TPeak : public TGRSIFit {
    Double_t farea; 
    Double_t fd_area; 
    Double_t fchi2; 
-   Double_t fNdf; 
+   Double_t fNdf;
+   Bool_t fOwnBgFlag;
 
    static bool fLogLikelihoodFlag; //!
 
-   TF1* background;
+   TF1* fBackground;
    TGraph* fResiduals;
 
   ClassDef(TPeak,2);

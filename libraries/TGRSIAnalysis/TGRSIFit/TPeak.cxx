@@ -5,11 +5,12 @@ ClassImp(TPeak)
 
 Bool_t TPeak::fLogLikelihoodFlag = false;
 
-//This makes a temporary TF1 I think, but I'm not sure an easier (that is nice) way to do it
-TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){ 
+//We need c++ 11 for constructor delegation....
+TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){
    fResiduals = 0;
-   background = 0;
+   fBackground = 0;
    this->Clear();
+   fOwnBgFlag = false;
    Bool_t out_of_range_flag = false;
 
    if(cent > xhigh){
@@ -46,34 +47,104 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGR
    this->InitNames();
    this->SetParameter("centroid",cent);
 
-   this->background = new TF1(Form("background%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh)),TGRSIFunctions::StepBG,xlow,xhigh,10);
-   this->background->SetNpx(1000);
-   this->background->SetLineStyle(2);
-   this->background->SetLineColor(kBlack);
-   TGRSIFit::AddToGlobalList(background,kFALSE);
+   //Check to see if background is good.
+   if(background){
+      fBackground = background;
+      fOwnBgFlag = false;
+   }
+   else{
+      printf("Bad background pointer. Creating basic background.\n");
+      this->fBackground = new TF1(Form("background%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh)),TGRSIFunctions::StepBG,xlow,xhigh,10);
+      TGRSIFit::AddToGlobalList(fBackground,kFALSE);
+      fOwnBgFlag = true;
+   }
+      
+   this->fBackground->SetNpx(1000);
+   this->fBackground->SetLineStyle(2);
+   this->fBackground->SetLineColor(kBlack);
 
    this->fResiduals = new TGraph;
+
 }
 
+//This makes a temporary TF1 I think, but I'm not sure an easier (that is nice) way to do it
+TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){ 
+   fResiduals = 0;
+   fBackground = 0;
+   this->Clear();
+   fOwnBgFlag = true;
+   Bool_t out_of_range_flag = false;
+
+   if(cent > xhigh){
+      printf("centroid is higher than range\n");
+      out_of_range_flag = true;
+   }
+   else if (cent < xlow){
+      printf("centroid is lower than range\n");
+      out_of_range_flag = true;
+   }
+
+   //This fixes things if your user is like me and screws up a lot.
+   if(out_of_range_flag){
+      if (xlow > cent)
+         std::swap(xlow, cent);
+      if (xlow > xhigh)
+         std::swap(xlow, xhigh);
+      if (cent > xhigh)
+         std::swap(cent, xhigh);
+      printf("Something about your range was wrong. Assuming:\n");
+      printf("centroid: %d \t range: %d to %d\n",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh));
+   }
+
+   this->SetRange(xlow,xhigh);
+      //We also need to make initial guesses at parameters
+      //We need nice ways to access parameters etc.
+      //Need to make a TMultipeak-like thing (does a helper class come into play then?)
+
+   //Set the fit function to be a radware style photo peak.
+   //This function might be unnecessary. Will revist this later. rd.
+   this->SetName(Form("Chan%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh))); //Gives a default name to the peak
+
+   //We need to set parameter names now.
+   this->InitNames();
+   this->SetParameter("centroid",cent);
+
+   this->fBackground = new TF1(Form("background%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh)),TGRSIFunctions::StepBG,xlow,xhigh,10);
+      
+   this->fBackground->SetNpx(1000);
+   this->fBackground->SetLineStyle(2);
+   this->fBackground->SetLineColor(kBlack);
+   TGRSIFit::AddToGlobalList(fBackground,kFALSE);
+
+   this->fResiduals = new TGraph;
+
+}
 
 TPeak::TPeak() : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,0,1000,10){
    fResiduals = 0;
-   background = 0;
+   fBackground = 0;
    this->InitNames();
-   background = new TF1("background",TGRSIFunctions::StepBG,0,1000,10);
-   background->SetNpx(1000);
-   background->SetLineStyle(2);
-   background->SetLineColor(kBlack);
-   TGRSIFit::AddToGlobalList(background,kFALSE);
+   fOwnBgFlag = true;
+   fBackground = new TF1("background",TGRSIFunctions::StepBG,0,1000,10);
+   fBackground->SetNpx(1000);
+   fBackground->SetLineStyle(2);
+   fBackground->SetLineColor(kBlack);
+   TGRSIFit::AddToGlobalList(fBackground,kFALSE);
 
    fResiduals = new TGraph;
 }
 
 TPeak::~TPeak(){
-   if(background){
-      delete background;
+   if(fBackground && fOwnBgFlag){
+      delete fBackground;
    }
    if(fResiduals) delete fResiduals;
+}
+
+TPeak::TPeak(const TPeak &copy) : fBackground(0), fResiduals(0){
+   fBackground = 0;
+   fResiduals = 0;
+   ((TPeak&)copy).Copy(*this);
 }
 
 void TPeak::InitNames(){
@@ -89,18 +160,11 @@ void TPeak::InitNames(){
    this->SetParName(9,"bg_offset");
 }
 
-
-TPeak::TPeak(const TPeak &copy) : background(0), fResiduals(0){
-   background = 0;
-   fResiduals = 0;
-   ((TPeak&)copy).Copy(*this);
-}
-
 void TPeak::Copy(TObject &obj) const {
    TGRSIFit::Copy(obj);
 
-   if(!((TPeak&)obj).background){
-      ((TPeak&)obj).background = new TF1(*background);
+   if(!((TPeak&)obj).fBackground){
+      ((TPeak&)obj).fBackground = new TF1(*fBackground);
    }
    if(!((TPeak&)obj).fResiduals)
       ((TPeak&)obj).fResiduals = new TGraph(*fResiduals);
@@ -111,30 +175,13 @@ void TPeak::Copy(TObject &obj) const {
    ((TPeak&)obj).fchi2 = fchi2;
    ((TPeak&)obj).fNdf  = fNdf;
 
-   *(((TPeak&)obj).background) = *background;
+   *(((TPeak&)obj).fBackground) = *fBackground;
+   //We are making a direct copy of the background so the ownership is that of the copy
+   ((TPeak&)obj).fOwnBgFlag = true;
    *(((TPeak&)obj).fResiduals) = *fResiduals;
 
    ((TPeak&)obj).SetHist(GetHist());
 
-}
-
-void TPeak::SetType(Option_t * type){
-// This sets the style of gaussian fit function to use for the fitted peak. 
-// Probably won't be used for much, but I'm leaving the option here for others
-// This would be a good spot to change whether the functions is a Gaus or Landau etc.
-
-   //Not using this right now, just starting with all of these components added in
-   if(strchr(type,'g') != NULL){
-      //Gaussian     
-   }
-   if(strchr(type,'s') != NULL){
-      //skewed gaussian
-   }
-   if(strchr(type,'c') != NULL){
-      //include a step function to the background
-   }
-
-//   fpeakfit = new TF1("photopeak","gauss",fxlow,fxhigh);  
 }
 
 Bool_t TPeak::InitParams(TH1 *fithist){
@@ -279,12 +326,11 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    CovMat(7,7) = 0.0;
    CovMat(8,8) = 0.0;
    CovMat(9,9) = 0.0;
-   CovMat.Print();
    fd_area = (tmppeak->IntegralError(int_low,int_high,tmppeak->GetParameters(),CovMat.GetMatrixArray())) /binWidth;
 
    if(print_flag) printf("Integral: %lf +/- %lf\n",farea,fd_area);
    //Set the background for drawing later
-   background->SetParameters(this->GetParameters());
+   fBackground->SetParameters(this->GetParameters());
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
    Copy(*fithist->GetListOfFunctions()->Last());
  //  if(optstr.Contains("+"))
@@ -387,13 +433,13 @@ const char * TPeak::PrintString(Option_t *opt) const {
    temp.append("Chi^2/NDF:   ");temp.append(Form("%lf",fchi2/fNdf)); temp.append("\n");
    //if(strchr(opt,'+') != NULL){
    //   TF1::Print();
-   //   TGRSIFit::Print(opt); //Polymorphise this a bit better
+   TGRSIFit::Print(opt); //Polymorphise this a bit better
    //}
    return temp.c_str();
 }
 
 void TPeak::DrawBackground(Option_t *opt) const{
-   background->Draw(opt);
+   fBackground->Draw(opt);
 }
 
 void TPeak::DrawResiduals() {
