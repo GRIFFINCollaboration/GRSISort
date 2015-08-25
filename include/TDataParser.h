@@ -81,7 +81,7 @@ class TDataParser { //: public TObject {
 
     static void FillStats(TFragment*);
 
-    ClassDef(TDataParser,0); //Parses the MIDAS files into DAQ-dependent TFragments. 
+    //ClassDef(TDataParser,0); //Parses the MIDAS files into DAQ-dependent TFragments. 
 
 };
 

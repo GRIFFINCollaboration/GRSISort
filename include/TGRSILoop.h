@@ -9,15 +9,15 @@
 #include <thread>
 #endif
 
-#include "TObject.h"
-
 #include "TGRSIint.h"
 #include "TMidasFile.h"
 #include "TMidasEvent.h"
 #include "TXMLOdb.h"
 #include "TChannel.h"
-
 #include "Globals.h"
+
+#include "TObject.h"
+
 
 class TGRSILoop : public TObject {
    
