@@ -271,7 +271,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%250000 == 0)
-         printf("Processing Event %d /%d      \r",event1count,eventQ->size()); fflush(stdout);
+         printf("Processing Event %d /%lu      \r",event1count,eventQ->size()); fflush(stdout);
          event1count++;
 
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) 
@@ -315,7 +315,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
 
    printf("*****  Rough time shifts *******\n");
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      printf("0x%04x:\t %d\n",mapit->first,correction[mapit->second]);
+      printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
 
@@ -349,7 +349,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
       if(event1count%75000 == 0)
-         printf("Processing Event %d / %d       \r",event1count,eventQ->size()); fflush(stdout);
+         printf("Processing Event %d / %lu       \r",event1count,eventQ->size()); fflush(stdout);
       
       event1count++;
       //We need to make sure that that if we have a digitizer of 0, we have a detector type of 1
@@ -402,7 +402,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    
    printf("*****  Final time shifts *******\n");
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      printf("0x%04x:\t %d\n",mapit->first,correction[mapit->second]);
+      printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
         
