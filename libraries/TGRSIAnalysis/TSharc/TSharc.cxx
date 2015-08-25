@@ -128,7 +128,7 @@ void  TSharc::BuildHits(TDetectorData *ddata,Option_t *opt)  {
       if(sdata->GetFront_DetectorNbr(i) != sdata->GetBack_DetectorNbr(j)) {
         continue;
       }
-      if(abs(sdata->GetFront_Charge(i) - sdata->GetBack_Charge(j)) > 6000)//naive charge cut keeps >99.9% of data.
+      if(std::abs(sdata->GetFront_Charge(i) - sdata->GetBack_Charge(j)) > 6000)//naive charge cut keeps >99.9% of data.
         continue;
 
       TSharcHit hit; 

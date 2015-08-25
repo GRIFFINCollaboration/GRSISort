@@ -19,9 +19,8 @@ ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
 CFLAGS     += -I/opt/X11/include -Qunused-arguments
-LINKFLAGS_SUFFIX += -dynamiclib -undefined dynamic_lookup -single_module -Wl,-install_name,'@executable_path/../libraries/$$@'
 CPP        = clang++
-SHAREDSWITCH = -install_name # ENDING SPACE
+SHAREDSWITCH = -shared -undefined dynamic_lookup -dynamiclib -install_name,'@executable_path/../libraries/$$@'# NO ENDING SPACE
 else
 export __LINUX__:= 1
 CPP        = g++
@@ -46,7 +45,7 @@ COM_STRING="Compiling"
 BLD_STRING="Building\ "
 FIN_STRING="Finished Building"
 
-LIBRARY_DIRS   := $(shell find libraries/* -type d -links 2 2> /dev/null)
+LIBRARY_DIRS   := $(shell find libraries/* -type d 2> /dev/null | grep -v SourceData)
 LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
 LIBRARY_OUTPUT := $(patsubst %,libraries/lib%.so,$(LIBRARY_NAMES))
 
@@ -57,7 +56,7 @@ LINKFLAGS += -Llibraries $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/.
 LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lXMLParser -lXMLIO -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof
 LINKFLAGS := $(LINKFLAGS_PREFIX) $(LINKFLAGS) $(LINKFLAGS_SUFFIX) $(CFLAGS)
 
-ROOT_LIBFLAGS := $(shell root-config --cflags)
+ROOT_LIBFLAGS := $(shell root-config --cflags --glibs)
 
 UTIL_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard util/*.$(SRC_SUFFIX)))
 #SANDBOX_O_FILES := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard Sandbox/*.$(SRC_SUFFIX)))
@@ -127,7 +126,7 @@ libraries/lib%.so: $$(call lib_o_files,%) $$(call lib_dictionary,%)
 	@mkdir -p $(dir $@)
 	$(call run_and_test,$(CPP) -fPIC -c $< -o $@ $(CFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell head $(1) -n 1 2> /dev/null)))
+dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell head -n 1 $(1) 2> /dev/null)))
 find_linkdef = $(shell find $(1) -name "*LinkDef.h")
 
 # In order for all function names to be unique, rootcint requires unique output names.
