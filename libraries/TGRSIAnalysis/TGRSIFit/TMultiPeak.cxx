@@ -7,6 +7,12 @@ Bool_t TMultiPeak::fLogLikelihoodFlag = false;
 
 TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t> &centroids, Option_t *opt) : TGRSIFit("multipeakbg",MultiPhotoPeakBG,xlow,xhigh,centroids.size()*6 +5){
    this->Clear();
+   //We make the background first so we can send it to the TPeaks.
+   fBackground = new TF1(Form("MPbackground_%d_to_%d",(Int_t)(xlow),(Int_t)(xhigh)),MultiStepBG,xlow,xhigh,centroids.size()*6+5);
+   fBackground->SetNpx(1000);
+   fBackground->SetLineStyle(2);
+   fBackground->SetLineColor(kBlack);
+   TGRSIFit::AddToGlobalList(fBackground,kFALSE);
 
    for(int i=0; i<centroids.size(); i++){
       Bool_t out_of_range_flag = false;
@@ -23,7 +29,7 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
          printf("ignoring peak at %lf, make a new multi peak with the corrected energy\n",cent);
       }
       else{
-         TPeak* peak = new TPeak(cent,xlow,xhigh);
+         TPeak* peak = new TPeak(cent,xlow,xhigh,fBackground);
          peak->AddToGlobalList(kFALSE);
          fPeakVec.push_back(peak);
       }
@@ -34,31 +40,26 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
    this->SortPeaks();//Defaults to sorting by TPeak::CompareEnergy
    this->InitNames();
 
-   background = new TF1(Form("MPbackground_%d_to_%d",(Int_t)(xlow),(Int_t)(xhigh)),TGRSIFunctions::StepBG,xlow,xhigh,10);
-   background->SetNpx(1000);
-   background->SetLineStyle(2);
-   background->SetLineColor(kBlack);
-   TGRSIFit::AddToGlobalList(background,kFALSE);
-   
 }
 
 TMultiPeak::TMultiPeak() : TGRSIFit("multipeakbg",MultiPhotoPeakBG,0,1000,10){
+   //I don't think this constructor should be used, RD.
    this->InitNames();
-   background = new TF1("background",TGRSIFunctions::StepBG,0,1000,10);
-   background->SetNpx(1000);
-   background->SetLineStyle(2);
-   background->SetLineColor(kBlack);
-   TGRSIFit::AddToGlobalList(background,kFALSE);
+   fBackground = new TF1("background",MultiStepBG,1000,10);//This is a weird nonsense line.
+   fBackground->SetNpx(1000);
+   fBackground->SetLineStyle(2);
+   fBackground->SetLineColor(kBlack);
+   TGRSIFit::AddToGlobalList(fBackground,kFALSE);
 }
 
 TMultiPeak::~TMultiPeak(){
-   if(background){ 
-      delete background;
+   if(fBackground){ 
+      delete fBackground;
    }
    
    for(int i=0; i<fPeakVec.size(); ++i){
       if(fPeakVec.at(i)){
-            delete fPeakVec.at(i);
+         delete fPeakVec.at(i);
       }
    }
 
@@ -90,19 +91,19 @@ void TMultiPeak::InitNames(){
 }
 
 
-TMultiPeak::TMultiPeak(const TMultiPeak &copy) : background(0) {
+TMultiPeak::TMultiPeak(const TMultiPeak &copy) : fBackground(0) {
    ((TMultiPeak&)copy).Copy(*this);
 }
 
 void TMultiPeak::Copy(TObject &obj) const {
    TGRSIFit::Copy(obj);
    TMultiPeak *mpobj = (TMultiPeak*)(&obj);
-   if(!(mpobj->background)) 
-      mpobj->background = new TF1(*(background));
+   if(!(mpobj->fBackground)) 
+      mpobj->fBackground = new TF1(*(fBackground));
    else
-      *(mpobj->background) = *background;
+      *(mpobj->fBackground) = *fBackground;
 
-   TGRSIFit::AddToGlobalList(background,kFALSE);
+   TGRSIFit::AddToGlobalList(fBackground,kFALSE);
 
    //Copy all of the TPeaks.
    for(int i=0; i<fPeakVec.size();++i){
@@ -138,10 +139,11 @@ Bool_t TMultiPeak::InitParams(TH1 *fithist){
    this->SetParameter("C",0.0000);
    this->SetParameter("bg_offset",(xhigh+xlow)/2.0);
 
+   this->FixParameter(3,0);
+
    //We need to initialize parameters for every peak in the fit
    for(int i=0; i<fPeakVec.size();++i){
       Int_t bin = fithist->GetXaxis()->FindBin(fPeakVec.at(i)->GetCentroid());
-      printf("BIN: %d\n",bin);
       this->SetParLimits(6*i+5,-fithist->GetBinContent(bin),fithist->GetBinContent(bin)*5.);
       this->SetParLimits(6*i+6,bin-4,bin+4);
       this->SetParLimits(6*i+7,0.1,xhigh-xlow);//This will be linked to other peaks eventually.
@@ -163,7 +165,6 @@ Bool_t TMultiPeak::InitParams(TH1 *fithist){
       //Fix beta and R. These will be released if they are needed (or can be asked to be released).
       this->FixParameter(6*i+8,GetParameter(Form("Beta_%i",i)));
       this->FixParameter(6*i+9,0.00);
-      TF1::Print();
 
    }
 
@@ -216,6 +217,8 @@ Bool_t TMultiPeak::Fit(TH1* fithist,Option_t *opt){
    CovMat(4,4) = 0.0;
 //   printf("covmat ");CovMat.Print();
 
+   //This copies the parameters background but the background function doesn't have peaks
+   this->CopyParameters(fBackground);
    //We now make a copy of the covariance matrix that has completel 0 diagonals so that we can remove the other peaks form the integral error.
    //This is done by adding back the peak of interest on the diagonal when it is integrated.
    TMatrixDSym emptyCovMat = CovMat;
@@ -267,13 +270,14 @@ Bool_t TMultiPeak::Fit(TH1* fithist,Option_t *opt){
       peak->SetParameter("sigma",GetParameter(Form("Sigma_%i",i)));
       peak->SetParameter("beta",GetParameter(Form("Beta_%i",i)));
       peak->SetParameter("R",GetParameter(Form("R_%i",i)));
-      peak->SetParameter("step",0.0);
+      peak->SetParameter("step",GetParameter(Form("Step_%i",i)));
       peak->SetParameter("A",0.0);
       peak->SetParameter("B",0.0);
       peak->SetParameter("C",0.0);
       peak->SetParameter("bg_offset",0.0);
       peak->SetChi2(fitres->Chi2());  
       peak->SetNdf(fitres->Ndf());
+
      // printf("tmp cov mat: ");tmpCovMat.Print();
 
       //Set the important diagonals for the integral of the covariance matrix
@@ -289,8 +293,6 @@ Bool_t TMultiPeak::Fit(TH1* fithist,Option_t *opt){
       tmpMp->SetParameter(Form("Sigma_%i",i),GetParameter(Form("Sigma_%i",i)));
       tmpMp->SetParameter(Form("Beta_%i",i),GetParameter(Form("Beta_%i",i)));
       tmpMp->SetParameter(Form("R_%i",i),GetParameter(Form("R_%i",i)));
- //     peak->SetParameter("step",GetParameter(Form("Step_%i",i)));
-
    
       Double_t width = this->GetParameter(Form("Sigma_%i",i));
       Double_t xlow,xhigh;
@@ -392,6 +394,46 @@ Double_t TMultiPeak::MultiPhotoPeakBG(Double_t *dim, Double_t *par) {
 	return result;
 }
 
+Double_t TMultiPeak::MultiStepBG(Double_t *dim, Double_t *par) {
+  // Limits need to be imposed or error states may occour.
+  //
+   //General background.
+   int npeaks = (int)(par[0]+0.5);
+	double result = TGRSIFunctions::PolyBg(dim,&par[1],2); // polynomial background. uses par[1->4]
+	for(int i=0;i<npeaks;i++){// par[0] is number of peaks
+		Double_t tmp_par[6];
+  	   tmp_par[0]   = par[6*i+5]; //height of photopeak
+  	   tmp_par[1]   = par[6*i+6]; //Peak Centroid of non skew gaus
+  	   tmp_par[2]   = par[6*i+7]; //standard deviation  of gaussian
+  	   tmp_par[3]   = par[6*i+8]; //"skewedness" of the skewed gaussian
+  	   tmp_par[4]   = par[6*i+9]; //relative height of skewed gaussian
+      tmp_par[5]   = par[6*i+10]; //Size of step in background
+		result += TGRSIFunctions::StepFunction(dim,tmp_par);
+	}
+	return result;
+}
+
+Double_t TMultiPeak::SinglePeakBG(Double_t *dim, Double_t *par) {
+  // Limits need to be imposed or error states may occour.
+  //
+   //General background.
+   
+   int npeaks = (int)(par[0]+0.5);
+	double result = TGRSIFunctions::PolyBg(dim,&par[1],2); // polynomial background. uses par[1->4]
+	for(int i=0;i<npeaks;i++){// par[0] is number of peaks
+		Double_t tmp_par[6];
+  	   tmp_par[0]   = par[6*i+5]; //height of photopeak
+  	   tmp_par[1]   = par[6*i+6]; //Peak Centroid of non skew gaus
+  	   tmp_par[2]   = par[6*i+7]; //standard deviation  of gaussian
+  	   tmp_par[3]   = par[6*i+8]; //"skewedness" of the skewed gaussian
+  	   tmp_par[4]   = par[6*i+9]; //relative height of skewed gaussian
+      tmp_par[5]   = par[6*i+10]; //Size of step in background
+		result += TGRSIFunctions::StepFunction(dim,tmp_par);
+	}
+   result += TGRSIFunctions::PhotoPeak(dim,&par[npeaks*6+5]);
+	return result;
+}
+
 TPeak* TMultiPeak::GetPeak(UInt_t idx){
    if(idx < fPeakVec.size())
       return fPeakVec.at(idx);
@@ -399,4 +441,36 @@ TPeak* TMultiPeak::GetPeak(UInt_t idx){
       printf("No matching peak at index %u\n",idx);
 
    return 0;
+}
+
+void TMultiPeak::DrawPeaks() const {
+//Draws the individual TPeaks that make up the TMultiPeak. ROOT makes this a complicated process. The result on the
+//histogram might have memory issues.
+   Double_t xlow,xhigh;
+   GetRange(xlow,xhigh);
+   Double_t npeaks = fPeakVec.size();
+   for(int i=0; i<fPeakVec.size();++i){
+      TPeak* peak = fPeakVec.at(i);
+      //Should be good enough to draw between -2 and +2 fwhm
+      Double_t centroid = peak->GetCentroid();
+      Double_t range     = 2.*peak->GetFWHM();
+  
+      TF1* sum = new TF1(Form("tmp%s",peak->GetName()),SinglePeakBG,centroid-range,centroid+range,fPeakVec.size()*6 + 11);
+  
+      for(int j=0; j<GetNpar(); ++j){
+         sum->SetParameter(j,GetParameter(j));
+      }
+      for(int j=0; j<5;++j){
+         sum->SetParameter(npeaks*6 + 5 +j, peak->GetParameter(j));
+      }
+
+      sum->SetNpx(1000);
+      sum->SetLineStyle(2);
+      sum->SetLineColor(kMagenta);
+
+    //  peak->DrawF1(Form("%s + %s",peak->GetName(),Background()->GetName()),centroid-range,centroid+range,"same");
+      sum->SetRange(centroid-range,centroid+range);
+      sum->DrawCopy("SAME");
+      delete sum;
+   }
 }

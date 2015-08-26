@@ -44,6 +44,8 @@ class TMultiPeak : public TGRSIFit {
    bool InitParams(TH1* hist);
    void SortPeaks(Bool_t (*SortFunction)(const TPeak* ,const TPeak* ) = TPeak::CompareEnergy);
    TPeak* GetPeak(UInt_t idx);
+   void DrawPeaks() const;
+   TF1* Background() const { return fBackground; }
 
    static void SetLogLikelihoodFlag(bool flag){ fLogLikelihoodFlag = flag; }
    static bool GetLogLikelihoodFlag() { return fLogLikelihoodFlag; }
@@ -56,9 +58,11 @@ class TMultiPeak : public TGRSIFit {
  private:
    static bool fLogLikelihoodFlag; //!
    std::vector<TPeak*> fPeakVec;
-   TF1* background;
+   TF1* fBackground;
 
    static Double_t MultiPhotoPeakBG(Double_t *dim, Double_t *par); 
+   static Double_t MultiStepBG(Double_t *dim, Double_t *par); 
+   static Double_t SinglePeakBG(Double_t *dim, Double_t *par); 
 
   ClassDef(TMultiPeak,2);
 

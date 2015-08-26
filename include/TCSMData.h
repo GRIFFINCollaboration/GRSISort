@@ -20,9 +20,9 @@ using namespace std ;
 #include "TFragment.h"
 #include "TChannel.h"
 
-#include "TGRSIDetectorData.h"
+#include "TDetectorData.h"
 
-class TCSMData : public TGRSIDetectorData  {
+class TCSMData : public TDetectorData  {
 private:
   // CSM
   // Energy

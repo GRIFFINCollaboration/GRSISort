@@ -67,6 +67,7 @@ class TGRSIFit : public TF1 {
    virtual void Print(Option_t *opt = "") const;
    virtual void Clear(Option_t* opt = "" );
    virtual void ClearParameters(Option_t *opt = "");
+   virtual void CopyParameters(TF1* copy) const;
 
    ClassDef(TGRSIFit,0);
 };
