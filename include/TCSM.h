@@ -29,13 +29,13 @@ class TCSMData;
 #include "TMath.h"
 #include "TVector3.h"
 
-#include "TGRSIDetector.h"
+#include "TDetector.h"
 
 #ifndef PI
 #define PI                       (TMath::Pi())
 #endif
 
-class TCSM :  public TGRSIDetector 	{
+class TCSM :  public TDetector 	{
 	public:
 		TCSM();
 		virtual ~TCSM();
