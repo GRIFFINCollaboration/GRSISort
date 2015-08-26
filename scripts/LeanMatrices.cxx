@@ -365,7 +365,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
          }
       }
       if((entry%10000) == 0){
-         printf("Completed %d of %d \r",entry,maxEntries);
+         printf("Completed %d of %ld \r",entry,maxEntries);
       }
 
    }
