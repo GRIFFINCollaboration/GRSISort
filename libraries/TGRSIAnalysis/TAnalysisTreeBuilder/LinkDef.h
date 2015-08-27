@@ -8,6 +8,7 @@
 #pragma link C++ nestedclasses;
 
 #pragma link C++ class TAnalysisTreeBuilder+;
+#pragma link C++ class TEventQueue+;
 
 #endif
 

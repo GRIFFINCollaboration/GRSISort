@@ -60,41 +60,56 @@ class TEventQueue : public TObject {
       static void Add(std::vector<TFragment> *event); 
       static std::vector<TFragment> *PopEntry();
       static int Size();
-      virtual ~TEventQueue();
+      virtual ~TEventQueue() { std::cout << std::endl << "In event queue dstor." << std::endl; }
 
    private:
       TEventQueue();
+      TEventQueue(const TEventQueue&) { MayNotUse(__PRETTY_FUNCTION__); }
+      void operator=(const TEventQueue&){ MayNotUse(__PRETTY_FUNCTION__); }
       static TEventQueue *fPtrToQue;
-      static std::queue<std::vector<TFragment>*> fEventQueue;
-      #ifndef __CINT__
-      static std::mutex m_event;
-      #endif 
-      static bool elock;
-      static void SetLock() {  printf(BLUE "settting event lock" RESET_COLOR  "\n");  elock = true;}
-      static void UnsetLock() {  printf(RED "unsettting event lock" RESET_COLOR  "\n");  elock = false;}
 
-   //ClassDef(TEventQueue,0)
+      
+      void Add_Instance(std::vector<TFragment> *event); 
+      std::vector<TFragment> *PopEntry_Instance();
+      int Size_Instance();
+      
+      std::queue<std::vector<TFragment>*> fEventQueue;
+      #ifndef __CINT__
+      std::mutex m_event;
+      #endif 
+      bool elock;
+      void SetLock() {  printf(BLUE "settting event lock" RESET_COLOR  "\n");  elock = true;}
+      void UnsetLock() {  printf(RED "unsettting event lock" RESET_COLOR  "\n");  elock = false;}
+
+      ClassDef(TEventQueue,0)
 
 };
 
-class TWriteQueue : public TObject {
+//class TWriteQueue : public TObject {
+class TWriteQueue {
    public:
       static TWriteQueue *Get();
-      static void Add(std::map<const char*, TDetector*> *event); 
-      static std::map<const char*, TDetector*> *PopEntry();
+      static void Add(std::map<std::string, TDetector*> *event); 
+      static std::map<std::string, TDetector*> *PopEntry();
       static int Size();
-      virtual ~TWriteQueue();
+      virtual ~TWriteQueue()  { } //std::cout << std::endl << "In write queue dstor." << std::endl; }
 
    private:
       TWriteQueue();
       static TWriteQueue *fPtrToQue;
-      static std::queue<std::map<const char*, TDetector*>*> fWriteQueue;
+
+      
+      void Add_Instance(std::map<std::string, TDetector*> *event); 
+      std::map<std::string, TDetector*> *PopEntry_Instance();
+      int Size_Instance();
+      
+      std::queue<std::map<std::string, TDetector*>*> fWriteQueue;
       #ifndef __CINT__
-      static std::mutex m_write;
+      std::mutex m_write;
       #endif
-      static bool wlock;         
-      static void SetLock()   {  wlock = true; }  // printf(BLUE "settting write lock" RESET_COLOR  "\n");    }
-      static void UnsetLock() {  wlock = false;}  // printf(RED "unsettting write lock" RESET_COLOR  "\n");   }
+      bool wlock;         
+      void SetLock()   {  wlock = true; }  // printf(BLUE "settting write lock" RESET_COLOR  "\n");    }
+      void UnsetLock() {  wlock = false;}  // printf(RED "unsettting write lock" RESET_COLOR  "\n");   }
 
 	//ClassDef(TWriteQueue,0)
 
@@ -103,7 +118,8 @@ class TWriteQueue : public TObject {
 class TAnalysisTreeBuilder : public TObject {
 
    public:
-      virtual ~TAnalysisTreeBuilder();
+      //virtual ~TAnalysisTreeBuilder();
+      virtual ~TAnalysisTreeBuilder() { std::cout << std::endl << "In analysis tree builder dstor." << std::endl; }
 
       static TAnalysisTreeBuilder* Get();
       void ProcessEvent();
@@ -121,9 +137,9 @@ class TAnalysisTreeBuilder : public TObject {
       void SetupOutFile();
       void SetupAnalysisTree();
 
-      void FillWriteQueue(std::map<const char*, TDetector*>*);
+      void FillWriteQueue(std::map<std::string, TDetector*>*);
 
-      void FillAnalysisTree(std::map<const char*, TDetector*>*);
+      void FillAnalysisTree(std::map<std::string, TDetector*>*);
       void WriteAnalysisTree();
       void CloseAnalysisFile();
 
@@ -131,7 +147,7 @@ class TAnalysisTreeBuilder : public TObject {
 
       void ClearActiveAnalysisTreeBranches();
       void ResetActiveAnalysisTreeBranches();
-		  void BuildActiveAnalysisTreeBranches(std::map<const char*, TDetector*>*);
+		  void BuildActiveAnalysisTreeBranches(std::map<std::string, TDetector*>*);
 
       void Print(Option_t *opt ="") const;
 
