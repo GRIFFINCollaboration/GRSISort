@@ -92,7 +92,7 @@ bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
    //same, false if different.
    std::string namea; namea.assign(((TChannel)chana).GetChannelName());
 	
-   if(namea.compare(((TChannel)chanb).GetChannelName()) <= 0) return true;
+   if(namea.compare(((TChannel)chanb).GetChannelName()) < 0) return true;
    else return false;
 }
 

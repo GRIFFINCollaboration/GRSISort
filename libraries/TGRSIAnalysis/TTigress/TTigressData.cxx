@@ -38,6 +38,7 @@ void TTigressData::Clear(Option_t *opt)	{
 	fSeg_Core_Nbr.clear();
 	fSegment_Nbr.clear();	
 	fSegment_Eng.clear();
+	fSegment_Chg.clear();
 	fSegment_TimeCFD.clear();
 	fSegment_TimeLED.clear();
 	fSegment_Time.clear();
