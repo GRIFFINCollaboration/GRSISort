@@ -330,25 +330,18 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
 void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    //Suprisingly, sorts the fragment tree by times stamps.
    //It then takes the sorted fragments and puts them into the eventQ.
-   printf("getting ready to sort fragment tree by time stamp\n");
    TFragment *currentFrag = 0;
 
    //Find the TFragment cranch of the tree
    fCurrentFragTree->SetBranchAddress("TFragment",&currentFrag);
-   printf("TFragmentBranch set\n");
 
    //Get the tree index of the fragment tree
    TTreeIndex *index = (TTreeIndex*)fCurrentFragTree->GetTreeIndex();
-   printf("index acquired\n");
 
    fEntries = index->GetN();
-   printf("there are %i entries to sort\n",fEntries);
    Long64_t *indexvalues = index->GetIndex();
-   printf("got indexvalues array\n");
-   printf("fCurrentFragTree: %p\n",fCurrentFragTree);
    //Set the major index to be sorted over as the high bits of the time stamp
    int major_max = fCurrentFragTree->GetMaximum("TimeStampHigh");
-   printf("major index set\n");
    //Read in the first fragment from the fragment tree
    fCurrentFragTree->GetEntry(indexvalues[0]);
    long firstTimeStamp = currentFrag->GetTimeStamp();
@@ -364,7 +357,6 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    
    //loop over all of the fragments in the tree 
    for(int x=1;x<fEntries;x++) {
-      printf("\t%i",x);
       if(fCurrentFragTree->GetEntry(indexvalues[x]) == -1 ) {  //major,minor) == -1) {
          //GetEntry Reads all branches of entry and returns total number of bytes read.
          //This means that if this if statement passes, we have had an I/O error.
@@ -466,7 +458,6 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    //Drop the TFragmentBranch from the Cache so we aren't still holding it in memory
    fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
    fCurrentFragTree->SetCacheSize(0);
-   printf("done sorting.\n");
    return;
 }
 
