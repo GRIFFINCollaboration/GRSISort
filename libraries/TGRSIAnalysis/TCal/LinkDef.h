@@ -8,12 +8,12 @@
 #pragma link C++ nestedclasses;
 
 #pragma link C++ class TCal+;
+#pragma link C++ class TGainMatch+;
 #pragma link C++ class TCalManager+;
 #pragma link C++ class TCFDCal+;
 #pragma link C++ class TEnergyCal+;
 #pragma link C++ class TTimeCal+;
 #pragma link C++ class TEfficiencyCal+;
-#pragma link C++ class TGainMatch+;
 
 #endif
 
