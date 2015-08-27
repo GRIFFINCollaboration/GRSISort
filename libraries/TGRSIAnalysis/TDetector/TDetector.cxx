@@ -25,8 +25,9 @@ TDetector::TDetector():TObject(){
 
 TDetector::TDetector(const TDetector& rhs) {
    //Default Copy constructor.
-  //Class()->IgnoreTObjectStreamer(kTRUE);
-   ((TDetector&)rhs).Copy(*this);
+   //Class()->IgnoreTObjectStreamer(kTRUE);
+   //((TDetector&)rhs).Copy(*this);
+   ((TObject&)(rhs)).Copy(*this);
 }
 
 TDetector::~TDetector()	{

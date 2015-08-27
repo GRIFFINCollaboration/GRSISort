@@ -15,16 +15,9 @@
 //#include "TSharcData.h"
 
 
-std::mutex TEventQueue::m_event;
-std::mutex TWriteQueue::m_write;
-
-bool TEventQueue::elock = false;
-std::queue<std::vector<TFragment>*> TEventQueue::fEventQueue;
 TEventQueue *TEventQueue::fPtrToQue = 0;
 
 TEventQueue::TEventQueue() { }
-
-TEventQueue::~TEventQueue() { }
 
 TEventQueue *TEventQueue::Get() {
    if(!fPtrToQue)
@@ -33,6 +26,18 @@ TEventQueue *TEventQueue::Get() {
 }
 
 void TEventQueue::Add(std::vector<TFragment> *event) {
+  Get()->Add(event);
+}
+
+std::vector<TFragment> *TEventQueue::PopEntry() {
+  return Get()->PopEntry();
+}
+
+int TEventQueue::Size() {
+  return Get()->Size();
+}
+
+void TEventQueue::Add_Instance(std::vector<TFragment> *event) {
    //Thread-safe method for adding events to the event queue. 
    m_event.lock();
    fEventQueue.push(event);
@@ -41,7 +46,7 @@ void TEventQueue::Add(std::vector<TFragment> *event) {
    return;
 }
 
-std::vector<TFragment> *TEventQueue::PopEntry() {
+std::vector<TFragment> *TEventQueue::PopEntry_Instance() {
    //Thread-safe method for taking an event out of the event queue
    std::vector<TFragment> *temp;
    m_event.lock();
@@ -51,7 +56,7 @@ std::vector<TFragment> *TEventQueue::PopEntry() {
    return temp;
 }
 
-int TEventQueue::Size() {
+int TEventQueue::Size_Instance() {
    //Thread-safe method for checking the size of the event queue
    int temp;
    m_event.lock();
@@ -60,13 +65,11 @@ int TEventQueue::Size() {
    return temp;
 }
 
-bool TWriteQueue::wlock = false;
-std::queue<std::map<const char*, TDetector*>*> TWriteQueue::fWriteQueue;
 TWriteQueue *TWriteQueue::fPtrToQue = 0;
 
 TWriteQueue::TWriteQueue() { }
 
-TWriteQueue::~TWriteQueue() { }
+//TWriteQueue::~TWriteQueue() { }
 
 TWriteQueue *TWriteQueue::Get() {
    //Returns a pointer to the write queue
@@ -75,7 +78,19 @@ TWriteQueue *TWriteQueue::Get() {
    return fPtrToQue;
 }
 
-void TWriteQueue::Add(std::map<const char*, TDetector*> *event) {
+void TWriteQueue::Add(std::map<std::string, TDetector*> *event) {
+  Get()->Add_Instance(event);
+}
+
+std::map<std::string, TDetector*> *TWriteQueue::PopEntry() {
+  return Get()->PopEntry_Instance();
+}
+
+int TWriteQueue::Size() {
+  return Get()->Size_Instance();
+}
+
+void TWriteQueue::Add_Instance(std::map<std::string, TDetector*> *event) {
    //Thread-safe method for adding to the event queue
    m_write.lock();
    fWriteQueue.push(event);
@@ -83,9 +98,9 @@ void TWriteQueue::Add(std::map<const char*, TDetector*> *event) {
    return;
 }
 
-std::map<const char*, TDetector*> *TWriteQueue::PopEntry() {
+std::map<std::string, TDetector*> *TWriteQueue::PopEntry_Instance() {
    //Thread safe method for taking an event out of the write queue
-   std::map<const char*, TDetector*> *temp;
+   std::map<std::string, TDetector*> *temp;
    m_write.lock();
    temp = fWriteQueue.front();
    fWriteQueue.pop();
@@ -93,7 +108,7 @@ std::map<const char*, TDetector*> *TWriteQueue::PopEntry() {
    return temp;
 }
 
-int TWriteQueue::Size() {
+int TWriteQueue::Size_Instance() {
    //Thread-safe method for checking the size of the event queue
    int temp;
    m_write.lock();
@@ -163,7 +178,7 @@ TAnalysisTreeBuilder::TAnalysisTreeBuilder() {
 }
 
 
-TAnalysisTreeBuilder::~TAnalysisTreeBuilder() { }
+//TAnalysisTreeBuilder::~TAnalysisTreeBuilder() { }
 
 void TAnalysisTreeBuilder::StartMakeAnalysisTree(int argc, char** argv) {
    //Sets up a fragment chain from the list of fragment files sent to
@@ -455,18 +470,18 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    //Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
 
-   const char* tmpRunInfoFileName = TGRSIRunInfo::Get()->GetRunInfoFileName();
+   std::string tmpRunInfoFileName = TGRSIRunInfo::Get()->GetRunInfoFileName();
    //Set the run info file to what is stored in the fragment tree
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
 
    //overwrite the relevent information using the loaded info file.
    //First check if there was a file
-   if(!*(tmpRunInfoFileName)){
+   if((tmpRunInfoFileName.length()<1)){
       //This does nothing
    }
    else{
-      printf("Reading from Run info: %s\n",tmpRunInfoFileName);
-      fCurrentRunInfo->ReadInfoFile(tmpRunInfoFileName);
+      printf("Reading from Run info: %s\n",tmpRunInfoFileName.c_str());
+      fCurrentRunInfo->ReadInfoFile(tmpRunInfoFileName.c_str());
    }
    //if(fCurrentRunInfo) {
    //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
@@ -630,7 +645,7 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
 
-void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*, TDetector*> *detectors) {
+void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<std::string, TDetector*> *detectors) {
    //Build the hits in each of the detectors.
    if(!fCurrentAnalysisFile || !fCurrentRunInfo)
       return;
@@ -642,7 +657,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<const char*,
    }
 }
 
-void TAnalysisTreeBuilder::FillWriteQueue(std::map<const char*, TDetector*> *detectors) {
+void TAnalysisTreeBuilder::FillWriteQueue(std::map<std::string, TDetector*> *detectors) {
    //Fill the write Q with the built hits in each of the detectors.
    fAnalysisIn++;
    TWriteQueue::Get()->Add(detectors);
@@ -657,14 +672,14 @@ void TAnalysisTreeBuilder::WriteAnalysisTree() {
          std::this_thread::sleep_for(std::chrono::milliseconds(100));
          continue;
       }
-      std::map<const char*, TDetector*> *detectors = TWriteQueue::PopEntry();
+      std::map<std::string, TDetector*> *detectors = TWriteQueue::PopEntry();
       fAnalysisOut++;
 
       FillAnalysisTree(detectors);
    }
 }
 
-void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TDetector*> *detectors) {
+void TAnalysisTreeBuilder::FillAnalysisTree(std::map<std::string, TDetector*> *detectors) {
    //Fill the analysis Tree with the built events. Each detector gets its own branch in the analysis tree
    if(!fCurrentAnalysisTree || !detectors) {
       printf("returned from fill without filling (%p %p)!\n",fCurrentAnalysisTree, detectors);   
@@ -678,26 +693,27 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<const char*, TDetector*> *d
 
    //Fill the detector map with TDetector classes if the mnemonic of the detector is in the map.
    for(auto det = detectors->begin(); det != detectors->end(); det++) {
-      if(strcmp(det->first,"TI") == 0) {
+      if(det->first.compare(0,2,"TI") == 0) {
          tigress = (TTigress*) det->second;
-      } else if(strcmp(det->first,"SH") == 0) {
+      } else if(det->first.compare(0,2,"SH") == 0) {
          sharc = (TSharc*) det->second;
-      } else if(strcmp(det->first,"Tr") == 0) {
+      } else if(det->first.compare(0,2,"Tr") == 0) {
          triFoil = (TTriFoil*) det->second;
          //*rf = *((TRf*) det->second);
-      } else if(strcmp(det->first,"CS") == 0) {
+      } else if(det->first.compare(0,2,"CS") == 0) {
          csm = (TCSM*) det->second;
       //} else if(strcmp(det->second->IsA()->GetName(),"TSpice") == 0) {
          //*spice = *((TSpice*) det->second);
-      } else if(strcmp(det->first,"GR") == 0) {
+      } else if(det->first.compare(0,2,"GR") == 0) {
          griffin = (TGriffin*) det->second;
-      } else if(strcmp(det->first,"SE") == 0) {
+      } else if(det->first.compare(0,2,"SE") == 0) {
          sceptar = (TSceptar*) det->second;
-      } else if(strcmp(det->first,"DS") == 0) {
+      } else if(det->first.compare(0,2,"DS") == 0) {
          descant = (TDescant*) det->second;
-      } else if(strcmp(det->first,"PA") == 0) {
+      } else if(det->first.compare(0,2,"PA") == 0) {
          paces = (TPaces*) det->second;
-      } else if(strcmp(det->first,"TP") == 0) {
+      //} else if(det->first.compare(0,2,"TP") == 0) {
+      } else if(det->first.compare(0,2,"TP") == 0) {
          tip = (TTip*) det->second;
       } 
    }
@@ -763,7 +779,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
       //We need to pull the event out of the Event Q
       std::vector<TFragment> *event = TEventQueue::PopEntry();
       MNEMONIC mnemonic;
-      std::map<const char*, TDetector*> *detectors = new std::map<const char*, TDetector*>;
+      std::map<std::string, TDetector*> *detectors = new std::map<std::string, TDetector*>;
       for(int i=0;i<event->size();i++) {
       
          TChannel *channel = TChannel::GetChannel(event->at(i).ChannelAddress);

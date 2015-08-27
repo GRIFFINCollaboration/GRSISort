@@ -36,6 +36,11 @@ class TDetector : public TObject	{
 		TDetector();
 		TDetector(const TDetector&);
 		virtual ~TDetector();
+      TDetector &operator= (const TDetector& other) {
+        if(this !=&other) 
+          other.Copy(*this);
+        return *this;
+      }
 
 	public: 
       //virtual TDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
