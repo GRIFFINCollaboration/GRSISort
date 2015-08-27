@@ -2,8 +2,9 @@
 
 ClassImp(TGainMatch)
 
-TGainMatch::TGainMatch(const TGainMatch &copy) : TCal(copy){
-   ((TGainMatch&)copy).Copy(*this);
+TGainMatch::TGainMatch(const TGainMatch &copy) : TCal(copy) {
+  fhist = 0;
+  ((TGainMatch&)copy).Copy(*this);
 }
 
 void TGainMatch::Copy(TObject &obj) const{
