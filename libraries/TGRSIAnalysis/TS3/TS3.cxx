@@ -55,7 +55,7 @@ void TS3::BuildHits(TGRSIDetectorData *data,Option_t *opt)  {
      return;
 
   TS3Hit hit;
-
+  
   for(int i=0;i<sdata->GetRingMultiplicity();i++)     { 
     for(int j=0;j<sdata->GetSectorMultiplicity();j++)    { 
       if(sdata->GetRing_Detector(i) == sdata->GetSector_Detector(j))     {
@@ -63,14 +63,16 @@ void TS3::BuildHits(TGRSIDetectorData *data,Option_t *opt)  {
         hit.SetSectorNumber(sdata->GetSector_Number(j));
         hit.SetDetectorNumber(sdata->GetRing_Detector(i));
         TFragment tmpfrag = sdata->GetRing_Fragment(i);
+        
         hit.SetVariables(tmpfrag);
         TVector3 tmppos = GetPosition(hit.GetRingNumber(),hit.GetSectorNumber());
         hit.SetPosition(tmppos);
         s3_hits.push_back(hit);
+
       }
     }
   }
-
+  
 }
 
 TVector3 TS3::GetPosition(int ring, int sector)  {

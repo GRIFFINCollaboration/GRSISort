@@ -24,6 +24,7 @@ void TS3Data::Clear(Option_t *opt)  {
 
   fS3_SectorDetector.clear();
   fS3_SectorNumber.clear();
+  fS3_SectorFragment.clear();
 }
 
 
