@@ -147,6 +147,7 @@ void TGRSIRunInfo::Print(Option_t *opt) {
    printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
    printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
    printf("\t\tTRF:          %s\n", RF() ? "true" : "false");
+   printf("\t\tTSpice:       %s\n", Spice() ? "true" : "false");
    printf("\t\tTIP:          %s\n", Tip() ? "true" : "false");
    printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
    printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
