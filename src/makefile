@@ -50,8 +50,8 @@ DETLIBS += -lSharc
 DETLIBS += -lTriFoil
 DETLIBS += -lRF
 DETLIBS += -lCSM
-#DETLIBS += -lSpice
-#DETLIBS += -lS3
+DETLIBS += -lSiLi
+DETLIBS += -lS3
 DETLIBS += -lTip
 
 DETLIBS += -lGriffin

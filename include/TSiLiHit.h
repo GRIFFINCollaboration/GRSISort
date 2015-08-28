@@ -4,33 +4,41 @@
 #include <cstdio>
 #include <utility>
 
-#include "TVector3.h" 
-#include "TObject.h" 
+#include "TFragment.h"
+#include "TChannel.h"
+#include "TGRSIDetectorHit.h"
+
 
 class TSiLiHit : public TGRSIDetectorHit {
-	public:
-			TSiLiHit();
-			~TSiLiHit();
+  public:
+    TSiLiHit();
+    ~TSiLiHit();
 
-			TVector3 position;
+    void Clear(Option_t *opt="");
+    void Print(Option_t *opt="") const;
 
-			double energy;
-			unsigned int charge;
-			double time;
-			double cfd;
+    Short_t  GetSegment() {  return segment;  }
+    Double_t GetEnergy()  {  return energy;  }
+    Double_t GetTime()    {  return time;    }
+    Int_t    GetCharge()  {  return charge;  }
+    
+    void SetSegment(Short_t seg)       { segment = seg; }
+    void SetPosition(TVector3 &vec)    { position = vec; }
+    void SetVariables(TFragment &frag) { charge = frag.GetCharge();
+                                         energy = frag.GetEnergy();
+                                         time   = frag.GetTimeStamp();
+                                         cfd    = frag.GetCfd(); }
 
-			int segment;
+  private:
+    //TVector3 position;  //held in base.
+    Short_t  segment;
+    Double_t energy;
+    Double_t cfd;
+    Int_t    charge;
+    Long_t   time;
 
-			void Clear();
-			void Print();
-
-			int GetSegment()		{	return segment;	}
-			double GetEnergy()	{	return energy;	}
-			double GetCharge()	{	return charge;	}
-			double GetTime()		{	return time;		}
-
-	
-	ClassDef(TSiLiHit,2);
+  
+  ClassDef(TSiLiHit,2);
 
 };
 
