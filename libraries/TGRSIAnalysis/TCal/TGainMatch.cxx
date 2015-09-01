@@ -756,8 +756,8 @@ Bool_t TGainMatch::FineMatch(TH1 *energy_hist, TH1* testhist, TH1* charge_hist, 
 
    charge_hist->GetXaxis()->UnZoom();
    hist2->GetXaxis()->UnZoom();
-   peak1->Fit(charge_hist,"MS+");
-   peak2->Fit(hist2,"MS+");
+   peak1->Fit(charge_hist,"MSL+");
+   peak2->Fit(hist2,"MSL+");
    
    charge_hist->Draw();
    peak1->Draw("same");
