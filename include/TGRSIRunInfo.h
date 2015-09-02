@@ -57,6 +57,7 @@
 #include <TObject.h>
 #include <TTree.h>
 #include <TFile.h>
+#include <TKey.h>
 
 #include "TChannel.h"
 
@@ -71,7 +72,8 @@ class TGRSIRunInfo : public TObject {
                         // order to write this class to a tree.
                         // pcb.
       
-      static void ReadInfoFromFile(TGRSIRunInfo *temp);
+      static void SetRunInfo(TGRSIRunInfo *temp);
+      static Bool_t ReadInfoFromFile(TFile *tempf = 0);
 
       static const char* GetGRSIVersion() { return fGRSIVersion.c_str(); } 
       static void ClearGRSIVersion() { fGRSIVersion.clear(); } 

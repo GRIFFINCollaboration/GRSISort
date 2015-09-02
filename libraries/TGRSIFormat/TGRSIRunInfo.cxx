@@ -148,11 +148,43 @@ TGRSIRunInfo *TGRSIRunInfo::Get() {
    return fGRSIRunInfo;
 }
 
-void TGRSIRunInfo::ReadInfoFromFile(TGRSIRunInfo *tmp) {
+void TGRSIRunInfo::SetRunInfo(TGRSIRunInfo *tmp) {
    //Sets the TGRSIRunInfo to the info passes as tmp.
    if(fGRSIRunInfo)
       delete fGRSIRunInfo;
    fGRSIRunInfo = tmp;
+}
+
+Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
+
+   TDirectory *savdir = gDirectory;
+   if(tempf)
+      tempf->cd();
+
+   if (!(gDirectory->GetFile())){
+      printf("File does not exist\n");
+      savdir->cd();
+      return false;
+   }
+
+   tempf = gDirectory->GetFile();
+
+   TList *list =  tempf->GetListOfKeys();
+   TIter iter(list);
+
+   TGRSIRunInfo *tmpinfo;
+
+   //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
+   while(TKey *key = (TKey*)(iter.Next())) {
+      if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo"))
+         continue;
+      TGRSIRunInfo::SetRunInfo((TGRSIRunInfo*)key->ReadObj());
+      savdir->cd();
+      return true;
+   }
+     savdir->cd();
+     return false;
+
 }
 
 

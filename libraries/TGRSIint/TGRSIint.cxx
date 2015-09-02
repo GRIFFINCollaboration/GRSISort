@@ -102,10 +102,12 @@ void TGRSIint::ApplyOptions() {
       if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
          Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
          printf("Read calibration info for %d channels from \"%s\" FragmentTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str()); 
+         TGRSIRunInfo::ReadInfoFromFile();
       }   
       if(TGRSIOptions::GetInputRoot().at(0).find("analysis") != std::string::npos){ 
          Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
          printf("Read calibration info for %d channels from \"%s\" AnalysisTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
+         TGRSIRunInfo::ReadInfoFromFile();
       }
    }
 
@@ -113,11 +115,6 @@ void TGRSIint::ApplyOptions() {
       for(int i =0; i<TGRSIOptions::GetInputCal().size();++i){
          TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
       }
-   }
-
-   // read in TGRSIRunInfo  
-   if(TGRSIOptions::GetInputRoot().size() > 0) {
-      ProcessLine("TGRSIRunInfo->Get();");
    }
 
    if(TGRSIOptions::WorkHarder()) {
