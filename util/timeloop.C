@@ -100,7 +100,7 @@ void SetupFragmentTree() {
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
    //if(fCurrentRunInfo) {
-   //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
+   //   TGRSIRunInfo::ReadInfoFromFile(fCurrentRunInfo);
       fCurrentRunInfo->Print();
    //}
 
