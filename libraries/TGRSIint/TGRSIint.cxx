@@ -117,7 +117,7 @@ void TGRSIint::ApplyOptions() {
 
    // read in TGRSIRunInfo  
    if(TGRSIOptions::GetInputRoot().size() > 0) {
-      ProcessLine("TGRSIRunInfo->Get();");
+      ProcessLine("TGRSIRunInfo::ReadInfoFromFile()");
    }
 
    if(TGRSIOptions::WorkHarder()) {
