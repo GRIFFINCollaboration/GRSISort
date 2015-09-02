@@ -148,7 +148,7 @@ TGRSIRunInfo *TGRSIRunInfo::Get() {
    return fGRSIRunInfo;
 }
 
-void TGRSIRunInfo::SetInfoFromFile(TGRSIRunInfo *tmp) {
+void TGRSIRunInfo::ReadInfoFromFile(TGRSIRunInfo *tmp) {
    //Sets the TGRSIRunInfo to the info passes as tmp.
    if(fGRSIRunInfo)
       delete fGRSIRunInfo;

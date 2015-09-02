@@ -114,7 +114,12 @@ void TGRSIint::ApplyOptions() {
          TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
       }
    }
-  
+
+   // read in TGRSIRunInfo  
+   if(TGRSIOptions::GetInputRoot().size() > 0) {
+      ProcessLine("TGRSIRunInfo->Get();");
+   }
+
    if(TGRSIOptions::WorkHarder()) {
       for(int x=0;x<TGRSIOptions::GetMacroFile().size();x++) {
          gROOT->Macro(TGRSIOptions::GetMacroFile().at(x).c_str());  

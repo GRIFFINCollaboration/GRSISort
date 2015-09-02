@@ -22,14 +22,14 @@
  * The info is written ok at the end of the fragment tree process.
  * After reading the TGRSIRunInfo object from a TFile, the static function
  *
- *   TGRSIRunInfo::SetInfoFromFile(ptr_to_runinfo);
+ *   TGRSIRunInfo::ReadInfoFromFile(ptr_to_runinfo);
  *
  * must be called for any of teh functions here to work.
  *
  * Live example:
  
  root [1] TGRSIRunInfo *info = (TGRSIRunInfo*)_file0->Get("TGRSIRunInfo")
- root [2] TGRSIRunInfo::SetInfoFromFile(info);
+ root [2] TGRSIRunInfo::ReadInfoFromFile(info);
  root [3] info->Print()
    TGRSIRunInfo Status:
    RunNumber:    29038
@@ -71,7 +71,7 @@ class TGRSIRunInfo : public TObject {
                         // order to write this class to a tree.
                         // pcb.
       
-      static void SetInfoFromFile(TGRSIRunInfo *temp);
+      static void ReadInfoFromFile(TGRSIRunInfo *temp);
 
       static const char* GetGRSIVersion() { return fGRSIVersion.c_str(); } 
       static void ClearGRSIVersion() { fGRSIVersion.clear(); } 
