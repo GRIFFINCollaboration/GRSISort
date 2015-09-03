@@ -289,7 +289,7 @@ bool TNucleus::SetSourceData() {
       name[0] = name[0]-'A'+'a'; 
    name = name + Form("%i",GetA()) + ".sou";
    std::string path = getenv("GRSISYS");
-	path +=  "/libraries/TGRSIAnalysis/TNucleus/SourceData/";
+	path +=  "/libraries/TGRSIAnalysis/SourceData/";
    path +=  name;
 
    printf("path = %s\n",path.c_str());

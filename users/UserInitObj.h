@@ -47,8 +47,8 @@
    GetOutputList()->Add(new TH1D("MidasTimeStamp","MidasTimeStamp",1000000,0,1000000));	
    GetOutputList()->Add(new TH1D("TriggerId","TriggerId",1000000,6000000,10000000));
 
-   GetOutputList()->Add(new TH2D("hp_charge","Channel vs Charge",64,0,64,24000,0,12000));
-   GetOutputList()->Add(new TH2D("hp_energy","Channel vs Energy",64,0,64,20000,0,10000));
+   GetOutputList()->Add(new TH2D("hp_charge","Channel vs Charge",65,0,65,24000,0,12000));
+   GetOutputList()->Add(new TH2D("hp_energy","Channel vs Energy",65,0,65,20000,0,10000));
    
    GetOutputList()->Add(new TH1D("test","test",128,-64,64));
 
