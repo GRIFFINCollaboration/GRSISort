@@ -465,12 +465,20 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 
 
 void TAnalysisTreeBuilder::SetupFragmentTree() {
+printf("starting\n");
    //Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
+	if(fCurrentFragFile == NULL) {
+		printf("Failed to get current fragment file\n");
+		return;
+	}
 
    std::string tmpRunInfoFileName = TGRSIRunInfo::Get()->GetRunInfoFileName();
    //Set the run info file to what is stored in the fragment tree
    fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
+	if(fCurrentRunInfo == NULL) {
+		printf("Failed to get current run info\n");
+	}
 
    //overwrite the relevent information using the loaded info file.
    //First check if there was a file
@@ -481,10 +489,10 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
       printf("Reading from Run info: %s\n",tmpRunInfoFileName.c_str());
       fCurrentRunInfo->ReadInfoFile(tmpRunInfoFileName.c_str());
    }
-   //if(fCurrentRunInfo) {
+   if(fCurrentRunInfo) {
    //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
       fCurrentRunInfo->Print("a");
-   //}
+   }
 
    fCurrentPPG = (TPPG*)fCurrentFragFile->Get("TPPG");
    if(fCurrentPPG){//We do this because not every run has PPG
