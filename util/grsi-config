@@ -44,9 +44,9 @@ incdir=$GRSISYS/include
 utildir=$GRSISYS/etc
 
 
-grsilibs="-lGRSIDetector -lGRSIFormat -lNucleus -lKinematics -lSRIM -lBetaDecay -lTGRSIFit -lTCal -lGROOT"
-detlibs="-lTigress -lGriffin -lSharc -lTriFoil -lSceptar -lPaces -lDescant -lTip"
-grsimore="-lMidasFormat -lDataParser -lGRSILoop -lTGRSIint -lGRSIRootIO -lAnalysisTreeBuilder"
+grsilibs="-lTGRSIDetector -lTDetector -lTGRSIFormat -lTNucleus -lTKinematics -lTSRIM -lTBetaDecay -lTGRSIFit -lTCal -lGROOT"
+detlibs="-lTTigress -lTGriffin -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescant -lTTip"
+grsimore="-lTMidas -lTDataParser -lTGRSILoop -lTGRSIint -lTGRSIRootIO -lTAnalysisTreeBuilder"
 
 cflags="-std=c++0x -I$incdir"
 
