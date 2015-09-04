@@ -482,7 +482,7 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
       fCurrentRunInfo->ReadInfoFile(tmpRunInfoFileName.c_str());
    }
    //if(fCurrentRunInfo) {
-   //   TGRSIRunInfo::SetInfoFromFile(fCurrentRunInfo);
+   //   TGRSIRunInfo::ReadInfoFromFile(fCurrentRunInfo);
       fCurrentRunInfo->Print("a");
    //}
 
