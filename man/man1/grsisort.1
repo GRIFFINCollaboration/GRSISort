@@ -13,7 +13,8 @@ grsisort \- sort data from GRIFFIN or TIGRESS experiments
 [\fB\-\-log_errors\fR]
 [\fB\-\-work_harder\fR]
 [\fB\-\-reading_material\fR]
-[\fB\-\-bad_frags\fR | \fB\-\-bad_fragments\fR | \fB\-\-write_bad_frags\fR | \fB\-\-write_bad_fragments\fR]
+[\fB\-\-bad_frags\fR | \fB\-\-bad_fragments\fR | \fB\-\-write_bad_frags\fR |
+\fB\-\-write_bad_fragments\fR]
 [\fB\-\-no_speed\fR]
 [\fB\-\-ignore_odb\fR]
 [\fB\-h\fR \fIhost\fR]
@@ -30,7 +31,8 @@ File names with extension .root are treated as root input files.
 File names with extension .cal are treated as calibraton files.
 File names with extension .info are treated as run-info files.
 File names with extension .xml are treated as ODB input in xml format.
-File names with extension .odb are treated as c-like ODB input (not implemented yet).
+File names with extension .odb are treated as c-like ODB input (not implemented
+yet).
 File names with extension .C, .c, .C+, or .c+ are treated as root macro files.
 .SH DESCRIPTION
 .B grsisort
@@ -65,7 +67,8 @@ Suppress output for corrupt events.
 Write parsing errors to log-file.
 .TP
 .B \-\-work_harder
-Executes a macro with .x after the sorting is done. The macro has to be provided as one of the files.
+Executes a macro with .x after the sorting is done. The macro has to be provided
+as one of the files.
 .TP
 .B \-\-reading_material
 Provides reading material while waiting.
@@ -85,13 +88,24 @@ Get data from \fIhost\fR instead of file.
 \fB\-e\fR \fIexpt. name\fR
 Use \fIexpt. name\fR as experiment name to connect to.
 .SH EXAMPLES
-To sort a midas file into an analysis-tree using a custom calibraton and run-info file, without showing the splash screen:
+To sort a midas file into a fragment-tree, running a script called "Script.C" 
+afterwards before dropping into the interactive shell:
 .PP
 .nf
 .RS
-grsisort -al <midas file> <.cal file> <.info file>
+grsisort <midas file> --work_harder Script.C
+.RE
+.fi
+.PP
+To sort a midas file into an analysis-tree using a custom calibraton and 
+run-info file, without showing the splash screen and without the interactive
+shell:
+.PP
+.nf
+.RS
+grsisort -alq <midas file> <.cal file> <.info file>
 .RE
 .fi
 .PP
 .SH AUTHORS
-Peter Bender, Ryan Dunlop
+P.C. Bender, R. Dunlop, V. Bildstein, D. Miller

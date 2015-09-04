@@ -125,7 +125,7 @@ while test $# -gt 0; do
       ;;
     --help)
       ### Print a helpful message...
-      echo "Usage: `basname$0` [options]"
+      echo "Usage: `basename $0` [options]"
       echo ""
       echo "  --version       Print the current GRSI Version number."
       echo "  --cflags        Print compiler flags and header path."

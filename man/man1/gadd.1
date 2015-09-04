@@ -1,9 +1,15 @@
 .TH GADD 1
 .SH NAME
-gadd \- Merge ROOT histogram files created by grsisort into one file
+gadd \- Merge ROOT files into one file, with support for GRSISort classes
 .SH SYNOPSIS
 .B gadd 
-.I "outputfile inputfiles ..."
+[\fB\-kTO\fR]
+[\fB\-f\fR [\fI0-9\fR]]
+[\fB\-v\fR [\fIverbosity\fR]]
+[\fB\-n\fR \fImaxopenedfiles\fR]
+.I "targetfile sourcefiles ..."
+.PP
+Options can be grouped behind a single - (minus character).
 .SH DESCRIPTION
 This program will add histograms from a list of 
 .B ROOT 
@@ -11,49 +17,46 @@ files and write them to a target
 .B ROOT 
 file. The target file is newly created and must not be identical to
 one of the source files. 
-This program was copied from \fBhadd\fR and adapted to handle grsisort
+This program was copied from \fBhadd\fR and adapted to handle GRSISort
 classes.
-.SH "SEE ALSO"
+.SH OPTIONS
+.TP
+.B \-k
+Don't exit on corrupt or non-existant input files, but skip the offending files
+instead.
+.TP
+.B \-T
+Don't merge trees.
+.TP
+.B \-O
+When merging TTrees, re-optimize the basket size.
+.TP
+\fB\-v\fR [\fIverbosity\fR]
+Explicitly set the verbosity level; 0 requests no output, 99 is the default.
+.TP
+\fB\-n\fR \fImaxopenedfiles\fR
+Open at most 'maxopenedfiles' at once, use 0 to request the system maximum.
+.TP
+\fB\-f\fR [\fI0-9\fR]
+Force the creation of the target file, i.e. overwrite an existing file if it 
+exists.
+One can also specify the compression level of the target file.
+By default the compression level is 1, but if "-f0" is specified, the target 
+file will not be compressed.
+.SH SEE ALSO
 .SB
-\fIhadd\fR(1), \fIroot\fR(1)
+\fIhadd\fR(1), \fIgrsisort\fR(1), \fIroot\fR(1)
 .PP
 .\" .SE
-For extensive documentation on the \fBROOT\fR system, see
-.UR http://root.cern.ch
-\fIhttp://root.cern.ch\fR
+For documentation on GRSISort, see
+.UR https://github.com/GRIFFINCollaboration/GRSISort/wiki
+\fIhttps://github.com/GRIFFINCollaboration/GRSISort/wiki\fR
 .UE
 .PP
-A \fBUsers Guide\fR is available from
-.UR http://root.cern.ch/root/UsersGuide.html
+The GRSISort classes are all documented by the automatical documentation system
+.UR
+\fIhttps://rawgit.com/wiki/GriffinCollaboration/GRSISort/technical-docs/ROOT-Gen-Html/htmldoc/GRSISORT_Index.html\fR
 here.
 .UE
-.PP 
-The classes of ROOT are all documented by the automatic documentation
-system, and is available 
-.UR http://root.cern.ch/root/html/ClassIndex.html
-online.
-.UE
-.SH "ORIGINAL AUTHORS"
- Sven A. Schmidt 
-.UR sven.schmidt@cern.ch
-\fIsven.schmidt@cern.ch\fR, Dirk Geppert, and Rene Brun 
-.UR Rene.Brun@cern.ch
-\fIRene.Brun@cern.ch\fR
-.SH "COPYRIGHT"
-This library is free software; you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as
-published by the Free Software Foundation; either version 2.1 of the
-License, or (at your option) any later version.
-.P
-This library is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-.P
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-.SH AUTHOR 
-This manual page was written by Christian Holm Christensen
-<cholm@nbi.dk>, for the Debian GNU/Linux system (but may be used by
-others). 
+.SH AUTHORS
+P.C. Bender, R. Dunlop, V. Bildstein, D. Miller
