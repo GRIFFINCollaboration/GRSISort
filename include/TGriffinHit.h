@@ -34,9 +34,9 @@ class TGriffinHit : public TGRSIDetectorHit {
 		virtual ~TGriffinHit();
 
 	private:
-      Int_t fFilter;
-		UChar_t fGriffinHitBits;
-      UInt_t fCrystal; //!
+      Int_t fFilter;             //  The Filter Word
+		UChar_t fGriffinHitBits;   //  Transient Member Flags
+      UInt_t fCrystal;           //! Crystal Number       
 
 	public:
 		/////////////////////////  Setters	/////////////////////////////////////
