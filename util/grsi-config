@@ -77,7 +77,7 @@ while test $# -gt 0; do
     --version)
       ### Output the version number.  If GRSIVersion.h can not be found, give up.
       if test -r ${incdir}/GRSIVersion.h; then
-        out="$out GRSI_RELEASE: `sed -n 's,.*GRSI_RELEASE *\"\(.*\)\".*,\1,p' < ${incdir}/RVersion.h`"
+        out="$out GRSI_RELEASE: `sed -n 's,.*GRSI_RELEASE *\"\(.*\)\".*,\1,p' < ${incdir}/GRSIVersion.h`"
       else
         echo "cannot read ${incdir}/RVersion.h"
         exit 1
