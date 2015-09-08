@@ -6,6 +6,7 @@
 ClassImp(TGriffinHit)
 
 TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{	
+   //Default Ctor. Ignores TObject Streamer in ROOT < 6.
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -13,6 +14,7 @@ TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{
 }
 
 TGriffinHit::TGriffinHit(const TGriffinHit &rhs)	{	
+   //Copy Ctor. Ignores TObject Streamer in ROOT < 6.
 	Clear();
    ((TGriffinHit&)rhs).Copy(*this);
 }
@@ -36,16 +38,18 @@ bool TGriffinHit::InFilter(Int_t wantedfilter) {
 
 
 void TGriffinHit::Clear(Option_t *opt)	{
+   //Clears the information stored in the TGriffinHit.
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
    fFilter          =  0;
    fGriffinHitBits  =  0;
-   fCrystal         = 0xFFFF;
+   fCrystal         =  0xFFFF;
    fPPG             =  0;
 
 }
 
 
 void TGriffinHit::Print(Option_t *opt) const	{
+   //Prints the Detector Number, Crystal Number, Energy, Time and Angle.
    printf("Griffin Detector: %i\n",GetDetector());
 	printf("Griffin Crystal:  %i\n",GetCrystal());
    printf("Griffin Energy:   %lf\n",GetEnergy());
@@ -54,10 +58,12 @@ void TGriffinHit::Print(Option_t *opt) const	{
 }
 
 TVector3 TGriffinHit::GetPosition(Double_t dist) const{
+   //Returns the Position of the crystal of the current Hit.
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
 UInt_t TGriffinHit::GetCrystal() const { 
+   //Returns the Crystal Number of the Current hit.
    if(IsCrystalSet())
       return fCrystal;
 
@@ -81,6 +87,7 @@ UInt_t TGriffinHit::GetCrystal() const {
 }
 
 UInt_t TGriffinHit::GetCrystal() {
+   //Returns the Crystal Number of the Current hit.
    if(IsCrystalSet())
       return fCrystal;
 
