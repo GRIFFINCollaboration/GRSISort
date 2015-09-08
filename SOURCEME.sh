@@ -23,8 +23,8 @@ echo "Added $GRSISYS/bin to PATH"
 export LD_LIBRARY_PATH=$GRSISYS/libraries:$LD_LIBRARY_PATH
 echo "Added $GRSISYS/libraries to PATH."
 
-export MANPATH=$MANPATH:$GRSISYS/etc
-echo "Added $GRSISYS/etc to MANPATH."
+export MANPATH=$MANPATH:$GRSISYS/man
+echo "Added $GRSISYS/man to MANPATH."
 
 echo
 echo
@@ -32,7 +32,7 @@ echo "To avoid running this script every session add the following to your ~/.ba
 echo "export GRSISYS=$GRSISYS"
 echo "export PATH=\$GRSISYS/bin:\$PATH" 
 echo "export LD_LIBRARY_PATH=\$GRSISYS/libraries:\$LD_LIBRARY_PATH"
-echo "export MANPATH=$MANPATH:$GRSISYS/etc"
+echo "export MANPATH=$MANPATH:$GRSISYS/man"
 
 
 # clean up variables
