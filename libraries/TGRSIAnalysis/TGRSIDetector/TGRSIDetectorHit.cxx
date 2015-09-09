@@ -242,3 +242,7 @@ void TGRSIDetectorHit::SetFlag(enum Ebitflag flag,Bool_t set){
    else
       fbitflags &= (~flag);
 }
+
+//unsigned int TGRSIDetectorHit::GetHighestBitSet(UChar_t flag){
+//   return std::log2(flag);
+//}

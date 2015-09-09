@@ -2,10 +2,12 @@
 #include "TGriffin.h"
 #include "TGriffinHit.h"
 #include "Globals.h"
+#include <cmath>
 
 ClassImp(TGriffinHit)
 
 TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{	
+   //Default Ctor. Ignores TObject Streamer in ROOT < 6.
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -13,6 +15,7 @@ TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{
 }
 
 TGriffinHit::TGriffinHit(const TGriffinHit &rhs)	{	
+   //Copy Ctor. Ignores TObject Streamer in ROOT < 6.
 	Clear();
    ((TGriffinHit&)rhs).Copy(*this);
 }
@@ -36,16 +39,18 @@ bool TGriffinHit::InFilter(Int_t wantedfilter) {
 
 
 void TGriffinHit::Clear(Option_t *opt)	{
+   //Clears the information stored in the TGriffinHit.
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
    fFilter          =  0;
    fGriffinHitBits  =  0;
-   fCrystal         = 0xFFFF;
+   fCrystal         =  0xFFFF;
    fPPG             =  0;
 
 }
 
 
 void TGriffinHit::Print(Option_t *opt) const	{
+   //Prints the Detector Number, Crystal Number, Energy, Time and Angle.
    printf("Griffin Detector: %i\n",GetDetector());
 	printf("Griffin Crystal:  %i\n",GetCrystal());
    printf("Griffin Energy:   %lf\n",GetEnergy());
@@ -54,10 +59,12 @@ void TGriffinHit::Print(Option_t *opt) const	{
 }
 
 TVector3 TGriffinHit::GetPosition(Double_t dist) const{
+   //Returns the Position of the crystal of the current Hit.
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
 UInt_t TGriffinHit::GetCrystal() const { 
+   //Returns the Crystal Number of the Current hit.
    if(IsCrystalSet())
       return fCrystal;
 
@@ -81,6 +88,7 @@ UInt_t TGriffinHit::GetCrystal() const {
 }
 
 UInt_t TGriffinHit::GetCrystal() {
+   //Returns the Crystal Number of the Current hit.
    if(IsCrystalSet())
       return fCrystal;
 
@@ -136,4 +144,31 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
    this->SetCharge(0);
 }
 
+void TGriffinHit::SetGriffinFlag(enum EGriffinHitBits flag,Bool_t set){
+   if(set)
+      fGriffinHitBits |= flag;
+   else
+      fGriffinHitBits &= (~flag);
+}
+
+UChar_t TGriffinHit::NPileUps() const {
+   return ((fGriffinHitBits & kTotalPU1) + (fGriffinHitBits & kTotalPU2));
+}
+
+UChar_t TGriffinHit::PUHit() const { 
+   return ((fGriffinHitBits & kPUHit1) + (fGriffinHitBits & kPUHit2)) >> 2; 
+} 
+
+void TGriffinHit::SetNPileUps(UChar_t npileups) {
+   SetGriffinFlag(kTotalPU1,(npileups & kTotalPU1));  
+   SetGriffinFlag(kTotalPU2,(npileups & kTotalPU2));  
+}
+
+void TGriffinHit::SetPUHit(UChar_t puhit) {
+   if(puhit > 3)
+      puhit = 4;
+
+   SetGriffinFlag(kPUHit1,(puhit << 2) & kPUHit1);  
+   SetGriffinFlag(kPUHit2,(puhit << 2) & kPUHit2);  
+}
 

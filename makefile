@@ -145,6 +145,13 @@ $(foreach lib,$(LIBRARY_DIRS),$(eval $(call library_template,$(lib))))
 
 -include $(shell find .build -name '*.d' 2> /dev/null)
 
+html: all
+	@printf " ${COM_COLOR}Building      ${OBJ_COLOR} HTML Documentation ${NO_COLOR}\n"
+	@cp -r include grsisort
+	@grsisort -q -l --work_harder util/html_generator.C #>/dev/null
+	@$(RM) -r grsisort
+	@$(RM) tempfile.out
+
 clean:
 	@printf "\nCleaning up\n\n"
 	@-$(RM) -rf .build

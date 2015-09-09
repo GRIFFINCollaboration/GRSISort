@@ -50,9 +50,6 @@ class TGriffin : public TGRSIDetector {
       void FillData(TFragment*,TChannel*,MNEMONIC*); //!
 
       TGriffin& operator=(const TGriffin&);  //!
-
-      //void AddHit(TGriffinHit *hit) { griffin_hits.push_back(*hit); }
-
       
 #ifndef __CINT__
       void SetAddbackCriterion(std::function<bool(TGriffinHit&, TGriffinHit&)> criterion) { fAddback_criterion = criterion; }
@@ -76,8 +73,7 @@ class TGriffin : public TGRSIDetector {
       //static bool fSetBGOWave;		            //!  Flag for BGO Waveforms ON/OFF
 
       long fCycleStart;                //!  The start of the cycle
-
-      UChar_t fGriffinBits;
+      UChar_t fGriffinBits;            // Transient member flags
 
       std::vector <TGriffinHit> fAddback_hits; //! Used to create addback hits on the fly
       std::vector <UShort_t> fAddback_frags; //! Number of crystals involved in creating in the addback hit
@@ -87,7 +83,6 @@ class TGriffin : public TGRSIDetector {
       //static bool SetBGOHits()       { return fSetBGOHits;   }	//!
       //static bool SetBGOWave()	    { return fSetBGOWave;   } //!
 
-      //  void AddHit(TGRSIDetectorHit *hit,Option_t *opt="");//!
    private:
       static TVector3 gCloverPosition[17];               //! Position of each HPGe Clover
       void ClearStatus() { fGriffinBits = 0; } //!

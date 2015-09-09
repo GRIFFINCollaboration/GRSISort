@@ -61,6 +61,7 @@ TVector3 TGriffin::gCloverPosition[17] = {
 
 
 TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
+//Default ctor. Ignores TObjectStreamer in ROOT < 6
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -68,6 +69,7 @@ TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
 }
 
 TGriffin::TGriffin(const TGriffin& rhs) {
+//Copy ctor. Ignores TObjectStreamer in ROOT < 6
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -75,6 +77,7 @@ TGriffin::TGriffin(const TGriffin& rhs) {
 }
 
 void TGriffin::Copy(TGriffin &rhs) const {
+  //Copy function.
   TGRSIDetector::Copy((TGRSIDetector&)rhs);
 
   ((TGriffin&)rhs).grifdata     = 0;
@@ -88,11 +91,6 @@ void TGriffin::Copy(TGriffin &rhs) const {
   ((TGriffin&)rhs).fCycleStart         = fCycleStart;
   ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
 
-   //((TGriffin&)rhs).fSetBGOWave         = fSetBGOWave;
-  //((TGriffin&)rhs).ftapemove           = ftapemove;
-  //((TGriffin&)rhs).fbackground         = fbackground;
-  //((TGriffin&)rhs).fbeamon             = fbeamon;      
-  //((TGriffin&)rhs).fdecay              = fdecay;       
   return;                                      
 }                                       
 
@@ -104,34 +102,6 @@ TGriffin::~TGriffin()	{
    }
    //if(bgodata)  delete bgodata;
 }
-
-//void TGriffin::InitCloverPositions() {
-   ////Initiallizes the HPGe Clover positions as per the wiki <https://www.triumf.info/wiki/tigwiki/index.php/HPGe_Coordinate_Table>
-   //gCloverPosition[0].SetMagThetaPhi(1.0,TMath::DegToRad()*(0.0),TMath::DegToRad()*(0.0));
-//
-   ////Downstream lampshade
-   //gCloverPosition[1].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(67.5));
-   //gCloverPosition[2].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(157.5));
-   //gCloverPosition[3].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(247.5));
-   //gCloverPosition[4].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(337.5));
-//
-   ////Corona
-   //gCloverPosition[5].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(22.5));
-   //gCloverPosition[6].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(67.5));
-   //gCloverPosition[7].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(112.5));
-   //gCloverPosition[8].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(157.5));
-   //gCloverPosition[9].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(202.5));
-   //gCloverPosition[10].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(247.5));
-   //gCloverPosition[11].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(292.5));
-   //gCloverPosition[12].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(337.5));
-//
-   ////Upstream lampshade
-   //gCloverPosition[13].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(67.5));
-   //gCloverPosition[14].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(157.5));
-   //gCloverPosition[15].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(247.5));
-   //gCloverPosition[16].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(337.5));
-      //
-//}
 
 void TGriffin::Clear(Option_t *opt)	{
    //Clears the mother, all of the hits and any stored data
@@ -151,7 +121,7 @@ void TGriffin::Clear(Option_t *opt)	{
 
 void TGriffin::Print(Option_t *opt) const {
   //Prints out TGriffin members, currently does nothing.
-  printf("grifdata = 0x%p\n",grifdata);
+  printf("grifdata = %p\n",grifdata);
   if(grifdata) grifdata->Print();
   //printf("bgodata  = 0x%p\n",bgodata);
   //if(bgodata) bgodata->Print();
@@ -214,7 +184,7 @@ TGriffinHit* TGriffin::GetGriffinHit(const int i) {
 }
 
 Int_t TGriffin::GetAddbackMultiplicity() {
-   // Automatically builds the addback hits using the addback_criterion (if the size of the addback_hits vector is zero) and return the number of addback hits
+   // Automatically builds the addback hits using the addback_criterion (if the size of the addback_hits vector is zero) and return the number of addback hits.
    if(griffin_hits.size() == 0) {
       return 0;
    }
@@ -296,6 +266,8 @@ void TGriffin::BuildHits(TDetectorData *data,Option_t *opt)	{
       corehit.SetTime(gdata->GetCoreTime(i));
       corehit.SetCfd(gdata->GetCoreCFD(i));
       corehit.SetCharge(gdata->GetCoreCharge(i));
+      corehit.SetNPileUps((UChar_t)(gdata->GetCoreNbrHits(i)));
+      corehit.SetPUHit((UChar_t)(gdata->GetCorePUHit(i)));
 /*
       if(TGriffin::SetCoreWave()){
          corehit.SetWaveform(gdata->GetCoreWave(i));
@@ -444,6 +416,7 @@ UShort_t TGriffin::GetNAddbackFrags(int idx) const{
 }
 
 void TGriffin::SetBitNumber(enum EGriffinBits bit,Bool_t set){
+   //Used to set the flags that are stored in TGriffin.
    if(set)
       fGriffinBits |= bit;
    else

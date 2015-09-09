@@ -20,6 +20,7 @@ void TGriffinData::Clear(Option_t *opt)	{
 
    fCore_MidasId.clear();
    fCore_NbrHits.clear(); 
+   fCore_PUHit.clear();
 
 
 	fClover_Nbr.clear();
