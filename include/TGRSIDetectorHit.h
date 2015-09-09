@@ -110,6 +110,7 @@ class TGRSIDetectorHit : public TObject 	{
       uint16_t GetCycleTimeStamp() const;
       uint16_t GetCycleTimeStamp();
 
+     // unsigned int GetHighestBitSet(UChar_t flag);
 
    protected:
       Bool_t IsDetSet() const {return (fbitflags & kIsDetSet);}
