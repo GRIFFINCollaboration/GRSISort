@@ -54,7 +54,7 @@ class TSiLiHit : public TGRSIDetectorHit {
     Int_t    time;
 
   
-  ClassDef(TSiLiHit,3);
+  ClassDef(TSiLiHit,2);
 
 };
 
