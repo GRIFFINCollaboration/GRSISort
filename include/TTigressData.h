@@ -76,6 +76,9 @@ class TTigressData : public TGRSIDetectorData {
 		inline void SetCore(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 				if(!frag || !channel || !mnemonic) return;
 
+        if(frag->Charge.size() == 0 || frag->Cfd.size() == 0 || frag->Led.size() == 0 || frag->Zc.size() == 0)
+				  return;
+
 				if(mnemonic->outputsensor.compare(0,1,"b")==0) {	return; }  //make this smarter.
 
 
@@ -136,6 +139,11 @@ class TTigressData : public TGRSIDetectorData {
 		}	//!
 
 		inline void SetSegment(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
+				if(!frag || !channel || !mnemonic) return;
+				
+				if(frag->Charge.size() == 0 || frag->Cfd.size() == 0 || frag->Led.size() == 0 || frag->Zc.size() == 0)
+				  return;
+				
 				SetSegCloverNumber(mnemonic->arrayposition);
 				UShort_t CoreNbr=5;
 				if(mnemonic->arraysubposition.compare(0,1,"B")==0)

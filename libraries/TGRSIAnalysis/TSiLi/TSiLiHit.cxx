@@ -14,8 +14,10 @@ void TSiLiHit::Clear(Option_t *opt)  {
   cfd     = 0.0;
   charge  = -1;
   time    = -1;
+  ts      = -1;
 
 }
+
 
 void TSiLiHit::Print(Option_t *opt) const {
   printf("===============\n");

@@ -21,7 +21,6 @@ void TSiLi::Print(Option_t *opt) const  {
   printf("===============\n");
 }
 
-
 void TSiLi::FillData(TFragment *frag,TChannel *chan, MNEMONIC *mnem) {
   if(!data) data = new TSiLiData();
   data->SetSiLi(frag,chan,mnem);
@@ -34,17 +33,18 @@ void TSiLi::BuildHits(TGRSIDetectorData *data,Option_t *opt)  {
     sdata = this->data;
   if(!sdata)
     return;
+    
 
   TSiLiHit hit;
 
-  for(UInt_t i=0;i<sdata->GetMultiplicity();i++)     { 
+  for(int i=0;i<sdata->GetMultiplicity();i++)     { 
      hit.SetSegment(sdata->GetSegment(i));
      TVector3 tmppos = GetPosition(hit.GetSegment());
      hit.SetPosition(tmppos);
      TFragment tmp = sdata->GetFragment(i);
      hit.SetVariables(tmp);
   
-    sili_hits.push_back(hit);
+     sili_hits.push_back(hit);
   }
 
 }
