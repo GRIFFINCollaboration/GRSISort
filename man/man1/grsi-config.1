@@ -1,0 +1,53 @@
+.TH GRSI-CONFIG 1
+.SH NAME
+grsi-config \- ROOT utility for your Makefiles
+.SH SYNOPSIS
+.B grsi-config
+.I "[options]"
+.SH "DESCRIPTION"
+Put lines like 
+.RS 
+.nf 
+
+CFLAGS = $(shell grsi-config \-\-cflags)
+LIBS   = $(shell grsi-config \-\-libs)
+
+.fi
+.RE
+in your Makefile.
+.PP
+.SH OPTIONS 
+.TP 
+.B \-\-help
+Give a short list of options available, and exit.
+.TP
+.B \-\-version 
+Report the version number of installed \fBGRSISort\fR, and exit. 
+.TP
+.B \-\-libs
+Output a line suitable for linking a program agains the \fBGRSISort\fR
+libraries. The most used GRSI libraries are included. 
+.TP
+.B \-\-all-libs
+Output a line suitable for linking a program agains the \fBGRSISort\fR
+libraries. All GRSI libraries are included. 
+.TP
+.B \-\-cflags
+Output a line suitable for compiling a source file against the
+\fBGRSISort\fR header (class declararion) files. 
+.SH "SEE ALSO"
+\fIgrsisort\fR(1), \fIroot\fR(1), \fIroot-cint\fR(1)
+.PP
+.\" .SE
+For documentation on GRSISort, see
+.UR https://github.com/GRIFFINCollaboration/GRSISort/wiki
+\fIhttps://github.com/GRIFFINCollaboration/GRSISort/wiki\fR
+.UE
+.PP
+The GRSISort classes are all documented by the automatical documentation system
+.UR
+\fIhttps://rawgit.com/wiki/GriffinCollaboration/GRSISort/technical-docs/ROOT-Gen-Html/htmldoc/GRSISORT_Index.html\fR
+here.
+.UE
+.SH AUTHORS
+P.C. Bender, R. Dunlop, V. Bildstein, D. Miller

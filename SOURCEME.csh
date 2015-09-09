@@ -23,10 +23,14 @@ echo "Added $GRSISYS/bin to PATH"
 setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:$GRSISYS/libraries
 echo "Added $GRSISYS/libraries to PATH."
 
+setenv MANPATH ${MANPATH}:$GRSISYS/man
+echo "Added $GRSISYS/man to MANPATH."
+
 echo "To avoid running this script every session, add the following in your ~/.cshrc or ~/.tcshrc file"
 echo 'setenv GRSISYS $GRSISYS'
 echo 'set path = ($path $GRSISYS/bin)'
 echo 'setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:$GRSISYS/libraries'
+echo 'setenv MANPATH ${MANPATH}:$GRSISYS/man'
 
 #clean up the variables
 unset sourced sourcedfile
