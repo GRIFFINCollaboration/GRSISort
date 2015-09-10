@@ -75,6 +75,7 @@ public:
    double GetCharge(int iter=0)const; //!
    Int_t  GetCfd(int iter=0)const; //!
    Int_t  GetLed(int iter=0)const; //!
+   Int_t  GetZCross(int iter=0)const; //! 
      
    
    

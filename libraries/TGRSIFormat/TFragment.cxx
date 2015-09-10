@@ -87,9 +87,6 @@ double TFragment::GetTZero() const {
    return chan->GetTZero(GetEnergy());
 }
 
-
-
-
 long TFragment::GetTimeStamp_ns() {
    long ns = 0;
    if(DataType==2 && Cfd.size()>0) {
@@ -125,6 +122,13 @@ double TFragment::GetEnergy() const {
 */
 
 
+Int_t TFragment::GetZCross(int iter)const {
+
+   if((Zc.size()-1)>iter)
+      return 0;
+   return Zc.at(iter);
+
+}
 
 Int_t TFragment::GetCfd(int iter)const {
    if((Cfd.size()-1)>iter)

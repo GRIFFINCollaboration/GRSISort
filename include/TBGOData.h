@@ -79,6 +79,14 @@ class TBGOData : public TGRSIDetectorData	{
 
 		inline void SetBGO(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
          //Sets the crystal number of the BGO based on the color in the MNEMONIC.
+      
+      if(!frag || !channel || !mnemonic)
+        return;
+         
+      
+      if(frag->Charge.size() == 0 || frag->Cfd.size() == 0 || frag->Led.size() == 0 || frag->Zc.size() == 0)
+			  return;
+         
 			SetBGOCloverNbr(mnemonic->arrayposition);
 
 			UShort_t CrystalNbr=5;
