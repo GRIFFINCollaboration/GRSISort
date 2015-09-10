@@ -68,6 +68,8 @@ void TScaler::Copy(TObject &obj) const {
 	((TScaler&)obj).Clear();
    ((TScaler&)obj).fTimePeriod =  fTimePeriod;
    ((TScaler&)obj).fNumberOfTimePeriods = fNumberOfTimePeriods;
+   ((TScaler&)obj).fTotalTimePeriod =  fTotalTimePeriod;
+   ((TScaler&)obj).fTotalNumberOfTimePeriods = fTotalNumberOfTimePeriods;
 
    //We want to provide a copy of each of the data in the Scaler rather than a copy of the pointer
 	for(auto addrIt = fScalerMap.begin(); addrIt != fScalerMap.end(); ++addrIt) {
@@ -92,6 +94,8 @@ void TScaler::AddData(UInt_t address, TScalerData* scaler){
    fScalerMap[address].insert(std::make_pair(scaler->GetTimeStamp(),new TScalerData(*scaler)));
    fTimePeriod.clear();
    fNumberOfTimePeriods.clear();
+   fTotalTimePeriod = 0;
+   fTotalNumberOfTimePeriods.clear();
 }
 
 std::vector<UInt_t> TScaler::GetScaler(UInt_t address, ULong64_t time) const {
@@ -147,6 +151,8 @@ void TScaler::Clear(Option_t *opt){
 	fScalerMap.clear();
    fTimePeriod.clear();
    fNumberOfTimePeriods.clear();
+   fTotalTimePeriod = 0;
+   fTotalNumberOfTimePeriods.clear();
 }
 
 void TScaler::Streamer(TBuffer &R__b)
@@ -185,6 +191,33 @@ ULong64_t TScaler::GetTimePeriod(UInt_t address) {
    return fTimePeriod[address];
 }
 
+ULong64_t TScaler::GetTimePeriod() {
+//Get time period of scaler readouts for all addresses found by calculating all time differences and choosing the one that occurs most often.
+   if(fTotalTimePeriod == 0) {
+      //loop over all addresses in the ScalerMap
+		for(auto addrIt = fScalerMap.begin(); addrIt != fScalerMap.end(); ++addrIt) {
+			//check if we've already got the time differences for this address, if not, we create them by asking for the time period for this address
+			if(fNumberOfTimePeriods.find(addrIt->first) == fNumberOfTimePeriods.end()) {
+				GetTimePeriod(addrIt->first);
+			}
+			//add these time differences (we can't use map::insert, because that skips all existing entries)
+			for(auto it = fNumberOfTimePeriods[addrIt->first].begin(); it != fNumberOfTimePeriods[addrIt->first].end(); ++it) {
+				fTotalNumberOfTimePeriods[it->first] += it->second;
+			}
+		}
+      //now we have all time differences, so we can select the one that occurs most often
+      int counter = 0;
+      for(auto it = fTotalNumberOfTimePeriods.begin(); it != fTotalNumberOfTimePeriods.end(); ++it){
+         if(it->second > counter) {
+            counter = it->second;
+            fTotalTimePeriod = it->first;
+         }
+      }
+   }
+
+   return fTotalTimePeriod;
+}
+
 Long64_t TScaler::Merge(TCollection *list){
    TIter it(list);
    TScaler* scaler = NULL;
@@ -212,4 +245,6 @@ void TScaler::Add(const TScaler* scaler){
    //We want to rebuild our cycle length map and this is the easiest way to do it
    fNumberOfTimePeriods.clear();
    fTimePeriod.clear();
+   fTotalNumberOfTimePeriods.clear();
+   fTotalTimePeriod = 0;
 }

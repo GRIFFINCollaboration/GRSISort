@@ -383,7 +383,6 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
    EventFrag->MidasId = midasserialnumber; 
 
    int x = 0;  
-   //int x = 6;
    if(!SetGRIFHeader(data[x++],EventFrag,bank)) {
       printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n",data[0]);
       delete EventFrag;
@@ -395,16 +394,23 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
       delete EventFrag;
       return GriffinDataToPPGEvent(data,size,midasserialnumber,midastime);
    }
+	//If the event has detector type 15 (0xf) it's a scaler event.
+	if(EventFrag->DetectorType == 0xf) {
+		//a scaler event has 7 words (including header and trailer), make sure we have at least that much left
+		if(size < 7) {
+			return -x;
+		}
+		x = GriffinDataToScalerEvent(data, EventFrag->ChannelAddress);
+		delete EventFrag;
+		return x;
+	}
 
    //The Network packet number is for debugging and is not always written to
    //the midas file.
    if(SetGRIFNetworkPacket(data[x],EventFrag)) {
       x++;
    }
-//   if(!SetGRIFPPG(data[x++],EventFrag)) {            //THIS FUNCTION SHOULD NOT BE USED
-//      delete EventFrag;
-//      return -x;
-//   }
+
    //The master Filter Pattern is in an unstable state right now and is not
    //always written to the midas file
    if(SetGRIFMasterFilterPattern(data[x],EventFrag)) {
@@ -566,15 +572,6 @@ bool TDataParser::SetGRIFHeader(uint32_t value,TFragment *frag,int bank) {
    return true;
 };
 
-
-bool TDataParser::SetGRIFPPG(uint32_t value,TFragment *frag) {
-//Sets the Programmable Pattern Generator words
-   if( (value & 0xc0000000) != 0x00000000) {
-      return false;
-   }
-   frag->PPG = value & 0x3fffffff;
-   return true;
-};
 
 bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment *frag) {
 //Sets the Griffin master filter ID and PPG
@@ -800,6 +797,65 @@ bool TDataParser::SetPPGLowTimeStamp(uint32_t value, TPPGData *ppgevent){
 bool TDataParser::SetPPGHighTimeStamp(uint32_t value, TPPGData *ppgevent){
    ppgevent->SetHighTimeStamp(value & 0x0fffffff);
    return true;
+}
+
+int TDataParser::GriffinDataToScalerEvent(uint32_t *data, int address) {
+	TScalerData* scalerEvent = new TScalerData;
+   int  kwordcounter = 0;
+   int  x = 1; //We have already read the header so we can skip the 0th word.
+
+	//we expect a word starting with 0xd containing the network packet id
+	if(!SetScalerNetworkPacket(data[x++],scalerEvent)) {
+		return -x;
+	}
+
+	//we expect a word starting with 0xa containing the 28 lowest bits of the timestamp
+	if(!SetScalerLowTimeStamp(data[x++],scalerEvent)) {
+		return -x;
+	}
+	//followed by four scaler words (32 bits each)
+	for(int i = 0; i < 4; ++i) {
+	  if(!SetScalerValue(i, data[x++], scalerEvent)) {
+		  return -x;
+	  }
+	}
+	//and finally the trailer word with the highest 24 bits of the timestamp
+	if(!SetScalerHighTimeStamp(data[x++],scalerEvent)) {
+		return -x;
+	}
+	
+	TGRSIRootIO::Get()->FillScaler(address, scalerEvent);
+	return x;
+}
+
+bool TDataParser::SetScalerNetworkPacket(uint32_t value, TScalerData* scalerEvent) {
+//Ignores the network packet number (for now)
+   if((value>>24) != 0xd0) {
+      return false;
+   }
+	scalerEvent->SetNetworkPacketId(value & 0x00ffffff);
+   return true;
+}
+
+bool TDataParser::SetScalerLowTimeStamp(uint32_t value, TScalerData* scalerEvent) {
+	if((value>>28) != 0xa) {
+		return false;
+	}
+	scalerEvent->SetLowTimeStamp(value & 0x0fffffff);
+   return true;
+}
+
+bool TDataParser::SetScalerHighTimeStamp(uint32_t value, TScalerData* scalerEvent) {
+	if((value>>24) != 0xe0) {
+		return false;
+	}
+   scalerEvent->SetHighTimeStamp(value & 0x00ffffff);
+   return true;
+}
+
+bool TDataParser::SetScalerValue(int index, uint32_t value, TScalerData* scalerEvent) {
+	scalerEvent->SetScaler(index, value);
+	return true;
 }
 
 /////////////***************************************************************/////////////
