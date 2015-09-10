@@ -5,8 +5,10 @@ ClassImp(TDecayChain)
 ClassImp(TDecayFit)
 
 TDecay::TDecay() : fParent(0), fDaughter(0), fDecayFunc(0), fGeneration(1) {
+   fFirstParent = this;
    fDecayFunc = new TF1("decayfunc",this,&TDecay::ActivityFunc,0,10,2,"TDecay","ActivityFunc");
    fDecayFunc->SetParameters(0.0,0.0);
+   fDecayFunc->SetParNames("Intensity","DecayRate");
 }
 
 TDecay::TDecay(UInt_t generation, TDecay* parent) : fParent(0), fDaughter(0), fDecayFunc(0){
@@ -20,7 +22,6 @@ TDecay::TDecay(UInt_t generation, TDecay* parent) : fParent(0), fDaughter(0), fD
          if(curParent->GetParentDecay()){
             curParent = parent->GetParentDecay();
             ++gencounter;
-            printf("Gencounter = %d\n",gencounter);
          }
          else{
             fFirstParent = curParent;  
@@ -29,10 +30,15 @@ TDecay::TDecay(UInt_t generation, TDecay* parent) : fParent(0), fDaughter(0), fD
       if(gencounter != generation)
          printf("Generation numbers do not make sense\n");
    }
+   if(generation == 1){
+      fFirstParent = this;
+   }
+
    fGeneration = generation;
 
    fDecayFunc = new TF1("decayfunc",this,&TDecay::ActivityFunc,0,10,2,"TDecay","ActivityFunc");
-   fDecayFunc->SetParameters(0.0,0.0);
+   fDecayFunc->SetParameters(fFirstParent->GetIntensity(),0.0);
+   fDecayFunc->SetParNames("Intensity","DecayRate");
 }
 
 TDecay::~TDecay() {
@@ -60,54 +66,84 @@ Double_t TDecay::ActivityFunc(Double_t *dim, Double_t *par){
    //The general function for a decay chain
    //par[0] is the intensity
    //par[1] is the activity
-   Double_t result = par[1];
-   UInt_t gencounter = 1;
-   TDecay *curparent = GetParentDecay();
+   Double_t result = 1.0;
+   UInt_t gencounter = 0;
+   TDecay *curDecay = this;
    //Compute the first multiplication
-   while(curparent){
+   while(curDecay){
       ++gencounter;
-      result*= curparent->GetDecayRate();
-      curparent = curparent->GetParentDecay();
+
+      if(curDecay == this)
+         result *= par[1];
+      else
+         result *= curDecay->GetDecayRate();
+
+      curDecay = curDecay->GetParentDecay();
    }
    if(gencounter != fGeneration){
          printf("We have Problems!\n");
          return 0.0;
    }
+   //Multiply by the initial intensity of the intial parent.
+
+   fFirstParent->SetIntensity(par[0]);
+   if(fFirstParent == this)
+      result*=fFirstParent->GetIntensity()/par[1];
+   else
+      result*=fFirstParent->GetIntensity()/fFirstParent->GetDecayRate();
+
+   //Now we need to deal with the second term
+   Double_t sum = 0.0;
+   curDecay = this;
+   while(curDecay){
+      Double_t denom = 1.0;
+      TDecay* denomDecay = this;
+      while(denomDecay){
+         if(denomDecay != curDecay){ 
+       
+            if(denomDecay == this)
+               denom*=par[1] - curDecay->GetDecayRate(); 
+            else if (curDecay == this)
+               denom*=denomDecay->GetDecayRate() - par[1]; 
+            else
+               denom*=denomDecay->GetDecayRate() - curDecay->GetDecayRate(); 
+
+         } 
+         denomDecay = denomDecay->GetParentDecay();
+      }
+
+      if(curDecay == this)
+         sum+=TMath::Exp(-par[1]*dim[0])/denom; 
+      else
+         sum+=TMath::Exp(-curDecay->GetDecayRate()*dim[0])/denom; 
+
+      curDecay = curDecay->GetParentDecay();
+   }
+   result*=sum;
    
    return result;
 
-   /*
-   for(Int_t n=0; n<nChain;n++){
-      //Calculate this equation for the nth nucleus.
-      Double_t firstterm = 1.0;
-      //Compute the first multiplication
-      for(Int_t j=0; j<n-1; j++){
-         firstterm*=par[1+3*j];
-      }
-      Double_t secondterm = 0.0;
-      for(Int_t i=0; i<n; i++){
-         Double_t sum = 0.0;
-         for(Int_t j=i; j<n; j++){
-            Double_t denom = 1.0;
-            for(Int_t p=i;p<n;p++){
-               if(p!=j){ denom*=par[1+3*p]-par[1+3*j]; } 
-            }
-            sum+=par[0+3*i]/par[1+3*i]*TMath::Exp(-par[1+3*j]*dim[0])/denom; 
-          }
-          secondterm += sum;
-      }
-      par[2+3*n] = par[1+3*n]*firstterm*secondterm;
-      totalActivity += par[2+3*n];
-   }*/
+}
+
+TFitResultPtr TDecay::Fit(TH1* fithist) {
+   TFitResultPtr fitres = fithist->Fit(fDecayFunc,"LRSME");
+   Double_t chi2 = fitres->Chi2();
+   Double_t ndf = fitres->Ndf();
+
+   printf("Chi2/ndf = %lf\n",chi2/ndf);
+   
+   return fitres;
+
 }
 
 void TDecay::Print(Option_t *option) const{
-   printf("Intensity: %lf c/s\n", GetIntensity());
-   printf(" HalfLife: %lf s\n", GetHalfLife());
+   printf("Intensity: %lf +/- %lf c/s\n", GetIntensity(), GetIntensityError());
+   printf(" HalfLife: %lf +/- %lf s\n", GetHalfLife(), GetHalfLifeError());
    if(fParent)
       printf("Parent Address: %p\n", fParent);
    if(fDaughter)
       printf("Daughter Address: %p\n", fDaughter);
+   printf("First Parent: %p\n", fFirstParent);
 
 }
 

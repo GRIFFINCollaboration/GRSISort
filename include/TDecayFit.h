@@ -3,6 +3,10 @@
 
 #include "TNamed.h"
 #include "TF1.h"
+#include "TMath.h"
+#include "TFitResult.h"
+#include "TFitResultPtr.h"
+#include "TH1.h"
 
 class TDecay : public TNamed {
   public:
@@ -15,6 +19,9 @@ class TDecay : public TNamed {
    Double_t GetHalfLife() const  { return (fDecayFunc->GetParameter(1) > 0.0) ? std::log(2.0)/fDecayFunc->GetParameter(1) : 0.0; }
    Double_t GetDecayRate() const { return fDecayFunc->GetParameter(1); }
    Double_t GetIntensity() const { return fDecayFunc->GetParameter(0); }
+   Double_t GetHalfLifeError() const  { return GetDecayRate() ? GetHalfLife()*GetDecayRateError()/GetDecayRate() : 0.0;}
+   Double_t GetDecayRateError() const { return fDecayFunc->GetParError(1); }
+   Double_t GetIntensityError() const { return fDecayFunc->GetParError(0); }
    void SetHalfLife(const Double_t &halflife)  { fDecayFunc->SetParameter(1,std::log(2.0)/halflife); }
    void SetDecayRate(const Double_t &decayrate){ fDecayFunc->SetParameter(1,decayrate); }
    void SetIntensity(const Double_t &intens)   { fDecayFunc->SetParameter(0,intens); }
@@ -26,6 +33,8 @@ class TDecay : public TNamed {
    void FixIntensity()                         { fDecayFunc->FixParameter(0,GetIntensity());}
    void Draw(Option_t *option = "");
    Double_t Eval(Double_t t);
+   TFitResultPtr Fit(TH1* fithist);
+
 
    void SetDaughterDecay(TDecay *daughter) { fDaughter = daughter; }
    void SetParentDecay(TDecay *parent) { fParent = parent; }
