@@ -846,10 +846,10 @@ bool TDataParser::SetScalerLowTimeStamp(uint32_t value, TScalerData* scalerEvent
 }
 
 bool TDataParser::SetScalerHighTimeStamp(uint32_t value, TScalerData* scalerEvent) {
-	if((value>>24) != 0xe0) {
+	if((value>>24) != 0xe0 || (value&0xff) != (scalerEvent->GetLowTimeStamp()>>20)) {
 		return false;
 	}
-   scalerEvent->SetHighTimeStamp(value & 0x00ffffff);
+   scalerEvent->SetHighTimeStamp((value>>8) & 0x0000ffff);
    return true;
 }
 

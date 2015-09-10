@@ -90,6 +90,7 @@ class TScaler : public TObject {
 	void AddData(UInt_t address, TScalerData* scaler);
 	std::vector<UInt_t> GetScaler(UInt_t address, ULong64_t time) const;
 	UInt_t GetScaler(UInt_t address, ULong64_t time, size_t index) const;
+	UInt_t GetScalerDifference(UInt_t address, ULong64_t time, size_t index) const;
 	Bool_t MapIsEmpty() const;
 	std::size_t Size() const {return fScalerMap.size();}
 	Long64_t Merge(TCollection *list);

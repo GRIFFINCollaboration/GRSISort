@@ -139,7 +139,7 @@ double TFragment::GetEnergy(int i) const {
    if(chan->UseCalFileIntegration()) {
       //printf("I am here\n");
      return chan->CalibrateENG((int)(Charge.at(i)),0);  // this will use the integration value
-                                                        // in the tchannel if it exists.
+                                                        // in the TChannel if it exists.
    }
    if(KValue.size()>i && KValue.at(i)>0)
      return chan->CalibrateENG((int)(Charge.at(i)),(int)KValue.at(i));
@@ -152,7 +152,7 @@ Float_t TFragment::GetCharge(int i) const {
       return 0.00;
    if(chan->UseCalFileIntegration()) {
       return ((Float_t)Charge.at(i)+gRandom->Uniform())/((Float_t)chan->GetIntegration());// this will use the integration value
-   }                                                                       // in the tchannel if it exists.
+   }                                                                                      // in the TChannel if it exists.
    if(KValue.size()>i && KValue.at(i)>0){
       return ((Float_t)Charge.at(i)+gRandom->Uniform())/((Float_t)KValue.at(i));// this will use the integration value
    }

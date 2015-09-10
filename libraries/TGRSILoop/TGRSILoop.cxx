@@ -260,7 +260,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 
 
 void TGRSILoop::SetFileOdb(char *data, int size) {
-   //check if we have already set the tchannels....
+   //check if we have already set the TChannels....
    //
    if(fOdb) {
    	delete fOdb;
@@ -352,7 +352,7 @@ void TGRSILoop::SetGRIFFOdb() {
       //TChannel::UpdateChannel(tempchan);
       TChannel::AddChannel(tempchan,"overwrite");
    } 
-   printf("\t%i tchannels created.\n",TChannel::GetNumberOfChannels());
+   printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
 
    return;
 }
