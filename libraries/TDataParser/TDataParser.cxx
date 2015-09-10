@@ -396,6 +396,11 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
       return GriffinDataToPPGEvent(data,size,midasserialnumber,midastime);
    }
 
+   //The Network packet number is for debugging and is not always written to
+   //the midas file.
+   if(SetGRIFNetworkPacket(data[x],EventFrag)) {
+      x++;
+   }
 //   if(!SetGRIFPPG(data[x++],EventFrag)) {            //THIS FUNCTION SHOULD NOT BE USED
 //      delete EventFrag;
 //      return -x;
@@ -715,6 +720,12 @@ int TDataParser::GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsig
    int  kwordcounter = 0;
    int  x = 1; //We have already read the header so we can skip the 0th word.
    
+   //The Network packet number is for debugging and is not always written to
+   //the midas file.
+   if(SetPPGNetworkPacket(data[x],ppgEvent)){ // The network packet placement is not yet stable.
+      x++;
+   }
+
    if(SetNewPPGPattern(data[x],ppgEvent)) {
       ++x;
    } 
