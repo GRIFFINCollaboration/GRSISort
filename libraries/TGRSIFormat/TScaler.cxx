@@ -37,7 +37,7 @@ void TScalerData::Clear(Option_t* opt) {
 }
 
 void TScalerData::Print(Option_t* opt) const {
-  printf("time: %7lld",GetTimeStamp());
+  printf("time: %16lld",GetTimeStamp());
   for(size_t i = 0; i < fScaler.size(); ++i) {
 	 printf("\t Scaler[%lu]: 0x%07x", i, fScaler[i]);
   }
@@ -120,8 +120,34 @@ UInt_t TScaler::GetScaler(UInt_t address, ULong64_t time, size_t index) const {
 	if(fScalerMap.find(address) == fScalerMap.end()) {
 		return 0;
 	}
+   //if the time is before our first entry, we return zero
+	if(fScalerMap.find(address)->second.upper_bound(time) == fScalerMap.find(address)->second.begin()) {
+		return 0;
+	}
    //The upper_bound and lower_bound functions always return an iterator to the NEXT map element. We back off by one because we want to know what the last Scaler event was.
-   return (--(fScalerMap.find(address)->second.upper_bound(time)))->second->GetScaler(index);
+   return (std::prev(fScalerMap.find(address)->second.upper_bound(time)))->second->GetScaler(index);
+}
+
+UInt_t TScaler::GetScalerDifference(UInt_t address, ULong64_t time, size_t index) const {
+//Returns the difference between "index"th scaler value for address "address" at the time "time" and the previous scaler value.
+   if(MapIsEmpty()){
+      printf("Empty\n");
+   }
+   //Check that this address exists
+	if(fScalerMap.find(address) == fScalerMap.end()) {
+		return 0;
+	}
+   //if this is the before the first scaler, we just return zero
+	if(fScalerMap.find(address)->second.upper_bound(time) == fScalerMap.find(address)->second.begin()) {
+		return 0;
+	}
+   //if this is the first scaler, we just return it's value
+	if(std::prev(fScalerMap.find(address)->second.upper_bound(time)) == fScalerMap.find(address)->second.begin()) {
+      //The upper_bound and lower_bound functions always return an iterator to the NEXT map element. We back off by one because we want to know what the last Scaler event was.
+		return (std::prev(fScalerMap.find(address)->second.upper_bound(time)))->second->GetScaler(index);
+	}
+   //The upper_bound and lower_bound functions always return an iterator to the NEXT map element. We back off by one because we want to know what the last Scaler event was.
+   return (std::prev(fScalerMap.find(address)->second.upper_bound(time)))->second->GetScaler(index) - (std::prev(fScalerMap.find(address)->second.upper_bound(time),2))->second->GetScaler(index);
 }
 
 void TScaler::Print(Option_t *opt) const{
