@@ -137,9 +137,7 @@ Double_t TDecay::Eval(Double_t t){
 }
 
 Double_t TDecay::EvalPar(const Double_t* x, const Double_t* par){
-   printf("par: %lf %lf %lf %lf\n",par[0],par[1],par[2],par[3]);
    fTotalDecayFunc->InitArgs(x,par);
-   printf("result: %lf\n", fTotalDecayFunc->EvalPar(x,par));
 
    return fTotalDecayFunc->EvalPar(x,par);
 }
@@ -164,7 +162,6 @@ Double_t TDecay::ActivityFunc(Double_t *dim, Double_t *par){
    }
    //Multiply by the initial intensity of the intial parent.
    result*=par[0]/par[1];
-printf("Entering\n");
    //Now we need to deal with the second term
    Double_t sum = 0.0;
    curDecay = this;
@@ -174,8 +171,6 @@ printf("Entering\n");
       while(denomDecay){
          if(denomDecay != curDecay){
             denom*=par[denomDecay->GetGeneration()] - par[curDecay->GetGeneration()]; 
-   if(GetGeneration() ==3)
-      printf("sum: %lf denom: %lf\n",sum,denom);
          } 
          denomDecay = denomDecay->GetParentDecay();
       }
@@ -291,7 +286,6 @@ Double_t TDecayChain::ChainActivityFunc(Double_t *dim, Double_t *par){
    for(int i=0;i<fDecayChain.size();++i){
       result += GetDecay(i)->EvalPar(dim,par);
    }
-   printf("Result: %lf\n",result);
    
    return result;
 }
@@ -303,6 +297,21 @@ Double_t TDecayChain::Eval(Double_t t) const{
 void TDecayChain::Draw(Option_t *opt) {
    SetChainParameters();
    fChainFunc->Draw(opt);
+}
+
+void TDecayChain::DrawComponents(Option_t *opt, Bool_t color_flag) {
+   SetChainParameters();
+   fDecayChain.at(0)->SetMinimum(0);
+   fDecayChain.at(0)->SetLineColor(1);
+   fDecayChain.at(0)->Draw(opt);
+   for(int i=1; i< fDecayChain.size(); ++i){
+      if(color_flag){
+         fDecayChain.at(i)->SetLineColor(i+3);
+      }
+      fDecayChain.at(i)->Draw(Form("same%s",opt));
+    //  fDecayChain.at(i)->SetLineColor(orig_color);
+   }
+
 }
 
 void TDecayChain::AddToChain(TDecay* decay){
