@@ -74,7 +74,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 		virtual void Print(Option_t *opt = "") const; //!
       virtual void Copy(TGriffinHit&) const;        //!
 
-	ClassDef(TGriffinHit,3);
+	ClassDef(TGriffinHit,3); //Information about a GRIFFIN Hit
 };
 
 
