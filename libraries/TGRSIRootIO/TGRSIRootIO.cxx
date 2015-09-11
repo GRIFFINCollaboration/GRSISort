@@ -26,6 +26,7 @@ TGRSIRootIO::TGRSIRootIO() {
   fBadFragmentTree =0;
   fEpicsTree    = 0;
   fPPG          = 0;
+  fScaler       = 0;
 
   foutfile = 0; //new TFile("test_out.root","recreate");
 
@@ -98,6 +99,30 @@ void TGRSIRootIO::SetUpPPG() {
 }
 
 
+void TGRSIRootIO::SetUpScaler() {
+   if(foutfile)
+      foutfile->cd();
+   fTimesScalerCalled = 0;
+   if(TGRSIRunInfo::SubRunNumber() <= 0) {
+      fScaler = new TScaler;
+   } else {
+      TFile* prev_sub_run = new TFile(Form("fragment%05d_%03d.root",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
+      if(prev_sub_run->IsOpen()) {
+         if(prev_sub_run->Get("TScaler") != NULL) {
+            fScaler = (TScaler*) (prev_sub_run->Get("TScaler")->Clone());
+         } else {
+            printf("Error, could not find Scaler in file fragment%05d_%03d.root, not adding previous Scaler data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
+            fScaler = new TScaler;
+         }
+         prev_sub_run->Close();
+      } else {
+         printf("Error, could not find file fragment%05d_%03d.root, not adding previous Scaler data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
+         fScaler = new TScaler;
+      }
+   }
+}
+
+
 void TGRSIRootIO::SetUpEpicsTree() {
    if(TGRSIOptions::IgnoreEpics()) 
      return;
@@ -139,10 +164,15 @@ void TGRSIRootIO::FillBadFragmentTree(TFragment *frag) {
    fTimesBadFillCalled++;
 }
 
-void TGRSIRootIO::FillPPG(TPPGData* data){
+void TGRSIRootIO::FillPPG(TPPGData* data) {
    //Set PPG Stuff here
    fPPG->AddData(data);
    ++fTimesPPGCalled;
+}
+
+void TGRSIRootIO::FillScaler(int address, TScalerData* data) {
+  fScaler->AddData(address, data);
+  ++fTimesScalerCalled;
 }
 
 void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
@@ -175,12 +205,12 @@ void TGRSIRootIO::FinalizeFragmentTree() {
 	if(chan != NULL) {
       chan->SetNameTitle(Form("TChannels[%i]",TChannel::GetNumberOfChannels()),
                          Form("%i TChannels.",TChannel::GetNumberOfChannels()));
-                           // using the write command on any tchannel will now write all 
-      chan->WriteToRoot(); // the tchannels to a root file.  additionally reading a tchannel
-                           // from a rootfile will read all the channels saved to it.  tchannels
+                           // using the write command on any TChannel will now write all 
+      chan->WriteToRoot(); // the TChannels to a root file.  additionally reading a TChannel
+                           // from a rootfile will read all the channels saved to it.  TChannels
                            // are now saved as a text buffer to the root file.  pcb.
 	                        // update. (3/9/2015) the WriteToRoot function should now 
-                           // corretcly save the tchannels even if the came from the odb(i.e. internal 
+                           // corretcly save the TChannels even if the came from the odb(i.e. internal 
                            // data buffer not set.)  pcb.
    } else {
 		printf("Failed to get default channel, not going to write TChannel information!\n");
@@ -200,14 +230,27 @@ void TGRSIRootIO::FinalizeBadFragmentTree() {
 	return;
 }
 
-void TGRSIRootIO::FinalizePPG(){
+void TGRSIRootIO::FinalizePPG() {
    if(!fPPG || !foutfile)
       return;
    foutfile->cd();
-   if(fPPG->PPGSize()){
+   if(fPPG->PPGSize()) {
       printf("Writing PPG\n");
       fPPG->Write("TPPG",TObject::kSingleKey);
    }
+   return;
+}
+
+void TGRSIRootIO::FinalizeScaler() {
+   if(!fScaler || !foutfile)
+      return;
+   foutfile->cd();
+   if(fScaler->Size()) {
+      printf("Writing Scaler\n");
+      fScaler->Write("TScaler",TObject::kSingleKey);
+   } else {
+      printf("No Scaler data\n");
+	}
    return;
 }
 
@@ -242,6 +285,7 @@ bool TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
    SetUpFragmentTree();
    SetUpBadFragmentTree();
    SetUpPPG();
+	SetUpScaler();
    SetUpEpicsTree();
 
    return true;
@@ -259,6 +303,7 @@ void TGRSIRootIO::CloseRootOutFile()   {
    
    FinalizeFragmentTree();
    FinalizePPG();
+	FinalizeScaler();
    FinalizeEpicsTree();
 
    if(TGRSIRunInfo::GetNumberOfSystems()>0) {

@@ -16,6 +16,7 @@
 #include "TKinematics.h"
 #include "TEpicsFrag.h"
 #include "TPPG.h"
+#include "TScaler.h"
 
 class TGRSIRootIO : public TObject {
 
@@ -33,11 +34,13 @@ class TGRSIRootIO : public TObject {
       TTree *fBadFragmentTree;
       TTree *fEpicsTree;
       TPPG *fPPG;
+		TScaler* fScaler;
 
       TFile *foutfile;
       int fTimesFillCalled;
       int fTimesBadFillCalled;
       int fTimesPPGCalled;
+      int fTimesScalerCalled;
       int fEPICSTimesFillCalled;
 
       std::vector<TFile*> finfiles;
@@ -77,6 +80,11 @@ class TGRSIRootIO : public TObject {
       TPPG *GetPPG()  { return fPPG;  }
       void FillPPG(TPPGData*);
       void FinalizePPG();
+
+		void SetUpScaler();
+		TScaler* GetScaler() { return fScaler; }
+		void FillScaler(int, TScalerData*);
+		void FinalizeScaler();
 
       void SetUpEpicsTree();
       TTree *GetEpicsTree()  { return fEpicsTree;  }
