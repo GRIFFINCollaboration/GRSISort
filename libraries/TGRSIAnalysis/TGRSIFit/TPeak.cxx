@@ -188,7 +188,7 @@ Bool_t TPeak::InitParams(TH1 *fithist){
 //Makes initial guesses at parameters for the fit. Uses the histogram to
    Double_t xlow,xhigh;
    GetRange(xlow,xhigh);
-   Int_t bin = fithist->GetXaxis()->FindBin(GetParameter("centroid"));
+   Int_t bin = fithist->GetBinCenter(GetParameter("centroid"));
    Int_t binlow = fithist->GetXaxis()->FindBin(xlow);
    Int_t binhigh = fithist->GetXaxis()->FindBin(xhigh);
    Double_t binWidth = fithist->GetBinWidth(bin);

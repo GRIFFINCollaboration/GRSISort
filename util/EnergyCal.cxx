@@ -20,7 +20,26 @@
 //#include "../include/TNucleus.h"
 #include "../include/TGRSITransition.h"
 
-double transition[8][2] = {
+const int ntrans = 15;
+
+//double transition[8][2] = {
+double transition[ntrans][2] = {
+   {121.783 , 0.002},
+   {244.692 , 0.002},
+   {295.939 , 0.008},
+   {344.276 , 0.004},
+   {367.789 , 0.005},
+   {411.115 , 0.005},
+   {443.976 , 0.005},
+   {688.678 , 0.006},
+   {778.903 , 0.006},
+   {867.388 , 0.008},
+   {964.131 , 0.009},
+   {1005.279, 0.017},
+   {1212.95 , 0.012},
+   {1299.124, 0.012},
+   {1408.011, 0.140}};
+/*
    {131.6 , 0.2},
    {212.8 , 0.1},
    {229.1 , 0.1},
@@ -31,9 +50,26 @@ double transition[8][2] = {
    {472.7 , 0.1},
    {649.1 , 0.1},
    {698.1 , 0.1}};
-
-double tranrange[8][2] = {
+*/
+double tranrange[ntrans][2] = {
+   {15,15},
+   {15,15},
    {10,10},
+   {15,15},
+   {10,10},
+   {15,15},
+   {15,15},
+   {5,15},
+   {15,15},
+   {15,15},
+   {15,15},
+   {10,10},
+   {15,15},
+   {15,15},
+   {15,15}};
+   
+   
+   /*   {10,10},
    {10,10},
    {10,5},
 //   5,
@@ -43,10 +79,10 @@ double tranrange[8][2] = {
    {20,9},
    {10,10},
    {20,15}};
-
+*/
 
 void GetCal(TH1* hist, TGraphErrors* ge, TGraphErrors *fwhm){
-   for(int i =0;i<7;i++){
+   for(int i =0;i<ntrans;i++){
       double energy = transition[i][0];
       double denergy= transition[i][1];
       double rangelow = tranrange[i][0];
@@ -60,7 +96,7 @@ void GetCal(TH1* hist, TGraphErrors* ge, TGraphErrors *fwhm){
       std::cout << "PEAK POS " << peak_pos <<  std::endl;
       TPeak *peak = new TPeak(peak_pos,peak_pos-rangelow,peak_pos+rangehigh);
  //     peak->Clear();
-      peak->InitParams(hist);
+   //   peak->InitParams(hist);
       peak->Fit(hist,"+");
       ge->SetPoint(i,energy,energy - peak->GetCentroid());
       ge->SetPointError(i,denergy, TMath::Sqrt( TMath::Power(denergy,2) + TMath::Power(peak->GetCentroidErr(),2)));
@@ -107,6 +143,7 @@ int main(int argc, char **argv) {
       fwhm->Clear();
       ge->Clear();
       current_hist = eng_mat->ProjectionY(Form("chan%d_py",i),i+1,i+1);
+      if(current_hist->Integral() < 1000) continue;
       GetCal(current_hist, ge, fwhm);
       ge->SetName(Form("chan%d_g",i));
       ge->GetXaxis()->SetTitle("Actual Energy (keV)");

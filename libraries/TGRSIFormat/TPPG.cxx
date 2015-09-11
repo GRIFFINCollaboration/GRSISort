@@ -69,13 +69,13 @@ TPPG::~TPPG(){
 }
 
 void TPPG::Copy(TObject &obj) const {
+  ((TPPG&)obj).Clear();
    ((TPPG&)obj).fcurrIterator = ((TPPG&)obj).fPPGStatusMap->begin();//might not need this
    ((TPPG&)obj).fCycleLength =  fCycleLength;
    ((TPPG&)obj).fNumberOfCycleLengths = fNumberOfCycleLengths;
 
    //We want to provide a copy of each of the data in the PPG rather than a copy of th pointer
    if(((TPPG&)obj).fPPGStatusMap && fPPGStatusMap){
-      ((TPPG&)obj).fPPGStatusMap->clear();
       PPGMap_t::iterator ppgit;
       for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++){
          if(ppgit->second){

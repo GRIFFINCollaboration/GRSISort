@@ -615,7 +615,7 @@ void TChannel::WriteCalFile(std::string outfilename) {
 
 
 void TChannel::WriteCalBuffer(Option_t *opt) {
-   // writes any tchannels in memory to the internal buffer 
+   // writes any TChannels in memory to the internal buffer 
    // fFileData.  Can be used to over write info that is there
    // or create the buffer if the channels originated from the odb.
 

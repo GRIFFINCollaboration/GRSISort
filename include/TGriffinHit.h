@@ -18,10 +18,10 @@
 class TGriffinHit : public TGRSIDetectorHit {
 	public:
 		enum EGriffinHitBits {
-			kCrystalSet = 1<<0,
-			kBit1       = 1<<1,
-			kBit2       = 1<<2,
-			kBit3       = 1<<3,
+			kTotalPU1   = 1<<0,
+			kTotalPU2   = 1<<1,
+			kPUHit1     = 1<<2,
+			kPUHit2     = 1<<3,
 			kBit4       = 1<<4,
 			kBit5       = 1<<5,
 			kBit6       = 1<<6,
@@ -58,6 +58,11 @@ class TGriffinHit : public TGRSIDetectorHit {
       UInt_t SetCrystal(UInt_t crynum);
       Bool_t IsCrystalSet() const {return IsSubDetSet();}
 
+      UChar_t NPileUps() const; 
+      UChar_t PUHit() const;    
+      void SetNPileUps(UChar_t npileups);
+      void SetPUHit(UChar_t puhit);
+      
 		/////////////////////////		/////////////////////////////////////
 
       inline UShort_t GetArrayNumber() { return( 4*(GetDetector()-1)+(GetCrystal()+1)); } //!
@@ -74,7 +79,11 @@ class TGriffinHit : public TGRSIDetectorHit {
 		virtual void Print(Option_t *opt = "") const; //!
       virtual void Copy(TGriffinHit&) const;        //!
 
-	ClassDef(TGriffinHit,3); //Information about a GRIFFIN Hit
+   private:
+      void SetGriffinFlag(enum EGriffinHitBits,Bool_t set);
+	
+      ClassDef(TGriffinHit,3); //Information about a GRIFFIN Hit
+
 };
 
 
