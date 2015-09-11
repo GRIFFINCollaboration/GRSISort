@@ -13,19 +13,17 @@ TH1F* TestDecay(TDecay *decay,Int_t nPoints=10000){
 }
 
 void TestDecayChain(){
-   TDecayChain *chain = new TDecayChain(3);
-   chain->GetDecay(0)->SetHalfLife(3);
+   TDecayChain *chain = new TDecayChain(2);
+   chain->GetDecay(0)->SetHalfLife(1);
    chain->GetDecay(0)->SetIntensity(100);
+ //  chain->GetDecay(0)->SetEfficiency(0.0);
    chain->GetDecay(1)->SetHalfLife(5);
-   chain->GetDecay(2)->SetHalfLife(7);
-
-   chain->GetDecay(0)->Print();
-   chain->GetDecay(1)->Print();
- //  chain->GetDecay(2)->Print();
+   //chain->GetDecay(2)->SetHalfLife();
 
    chain->Draw();
-   chain->GetDecay(0)->Draw("same");
-   chain->GetDecay(1)->Draw("same");
+   chain->DrawComponents("same");
+  // chain->GetDecay(2)->Draw("same");
+
 
    TCanvas* c1 = new TCanvas;
    chain->GetDecay(1)->Draw();

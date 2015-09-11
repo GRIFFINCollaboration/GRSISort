@@ -46,6 +46,10 @@ class TDecay : public TNamed {
    void Release();
    void SetRange(Double_t tlow, Double_t thigh);
    void SetName(const char* name);
+   void SetLineColor(Color_t color) { fTotalDecayFunc->SetLineColor(color); }
+   Color_t GetLineColor() const { return fTotalDecayFunc->GetLineColor(); }
+   void SetMinimum(Double_t min) {fTotalDecayFunc->SetMinimum(min); fDecayFunc->SetMinimum(min);}
+   void SetMaximum(Double_t max) {fTotalDecayFunc->SetMaximum(max); fDecayFunc->SetMaximum(max);}
 
   private:
    void SetDecayRateError(Double_t err) { fDecayFunc->SetParError(1,err); }
@@ -95,6 +99,9 @@ class TDecayChain : public TObject {
    void Print(Option_t *option = "") const;
 
    void SetChainParameters();
+   const TF1 * const GetChainFunc() const { return fChainFunc; }
+   void DrawComponents(Option_t *opt = "",Bool_t color_flag = true);
+
 
   private:
    void AddToChain(TDecay* decay);
