@@ -10,8 +10,9 @@
 
 class TDecay : public TNamed {
   public:
-   TDecay();
-   TDecay(UInt_t generation, TDecay* parent);
+   //TDecay(Double_t tlow, Double_t thigh);
+   TDecay(UInt_t generation, TDecay* parent, Double_t tlow = 0,Double_t thigh = 10);
+   TDecay(TDecay* parent = 0, Double_t tlow = 0, Double_t thigh = 10);
    ~TDecay();
 
   public:
@@ -39,18 +40,21 @@ class TDecay : public TNamed {
    void ReleaseIntensity()                     { fDecayFunc->ReleaseParameter(0);}
    void Draw(Option_t *option = "");
    Double_t Eval(Double_t t);
+   Double_t EvalPar(const Double_t* x, const Double_t* par=0);
    TFitResultPtr Fit(TH1* fithist);
    void Fix();
    void Release();
+   void SetRange(Double_t tlow, Double_t thigh);
+   void SetName(const char* name);
 
   private:
    void SetDecayRateError(Double_t err) { fDecayFunc->SetParError(1,err); }
    void SetIntensityError(Double_t err) { fDecayFunc->SetParError(0,err); }
-   void SetTotalDecayParameters();
 
   public:
    void SetDaughterDecay(TDecay *daughter) { fDaughter = daughter; }
    void SetParentDecay(TDecay *parent) { fParent = parent; }
+   void SetTotalDecayParameters();
 
    const TF1 * const GetDecayFunc() const { return fDecayFunc; }
    const TF1 * const GetTotalDecayFunc() { SetTotalDecayParameters(); return fTotalDecayFunc; }
@@ -81,10 +85,24 @@ class TDecay : public TNamed {
 class TDecayChain : public TObject {
   public:
    TDecayChain();
+   TDecayChain(UInt_t generations);
    ~TDecayChain();
 
+   TDecay* GetDecay(UInt_t generation);
+   Double_t Eval(Double_t t) const;
+   void Draw(Option_t *option = "");
+
+   void Print(Option_t *option = "") const;
+
+   void SetChainParameters();
+
   private:
-   std::vector<TDecay*> fDecayChain; 
+   void AddToChain(TDecay* decay);
+   Double_t ChainActivityFunc(Double_t *dim, Double_t *par);
+
+  private:
+   std::vector<TDecay*> fDecayChain; //The Decays in the Decay Chain
+   TF1* fChainFunc;  //Function describing the total chain activity
 
    ClassDef(TDecayChain,1) //Class representing a decay chain
 };
