@@ -33,11 +33,11 @@ TDecay::TDecay(TDecay* parent, Double_t tlow, Double_t thigh) : fParent(0), fDau
       fFirstParent = this;
       fGeneration = 1;
    }
-   fDecayFunc = new TF1(Form("decayfunc_gen%d",fGeneration),this,&TDecay::ActivityFunc,0,10,2,"TDecay","ActivityFunc");
+   fDecayFunc = new TDecayF1(Form("decayfunc_gen%d",fGeneration),this,&TDecay::ActivityFunc,0,10,2,"TDecay","ActivityFunc");
    fDecayFunc->SetParameters(fFirstParent->GetIntensity(),0.0);
    fDecayFunc->SetParNames("Intensity","DecayRate");
 
-   fTotalDecayFunc = new TF1(Form("totaldecayfunc_gen%d",fGeneration),this,&TDecay::ActivityFunc,0,10,fGeneration+1,"TDecay","ActivityFunc");
+   fTotalDecayFunc = new TDecayF1(Form("totaldecayfunc_gen%d",fGeneration),this,&TDecay::ActivityFunc,0,10,fGeneration+1,"TDecay","ActivityFunc");
    SetTotalDecayParameters();
    if(fFirstParent != this)
       FixIntensity(0);
@@ -71,11 +71,11 @@ TDecay::TDecay(UInt_t generation, TDecay* parent, Double_t tlow, Double_t thigh)
 
    fGeneration = generation;
 
-   fDecayFunc = new TF1("tmpname",this,&TDecay::ActivityFunc,0,10,2,"TDecay","ActivityFunc");
+   fDecayFunc = new TDecayF1("tmpname",this,&TDecay::ActivityFunc,0,10,2,"TDecay","ActivityFunc");
    fDecayFunc->SetParameters(fFirstParent->GetIntensity(),0.0);
    fDecayFunc->SetParNames("Intensity","DecayRate");
 
-   fTotalDecayFunc = new TF1("tmpname",this,&TDecay::ActivityFunc,0,10,fGeneration+1,"TDecay","ActivityFunc");
+   fTotalDecayFunc = new TDecayF1("tmpname",this,&TDecay::ActivityFunc,0,10,fGeneration+1,"TDecay","ActivityFunc");
    SetTotalDecayParameters();
    if(fFirstParent != this)
       FixIntensity(0);
@@ -257,7 +257,7 @@ TDecayChain::TDecayChain(UInt_t generations){
       parent = curDecay;
    }
 
-   fChainFunc = new TF1("tmpname",this,&TDecayChain::ChainActivityFunc,0,10,fDecayChain.size()+1,"TDecayChain","ChainActivityFunc");
+   fChainFunc = new TDecayF1("tmpname",this,&TDecayChain::ChainActivityFunc,0,10,fDecayChain.size()+1,"TDecayChain","ChainActivityFunc");
    SetChainParameters();
 }
 

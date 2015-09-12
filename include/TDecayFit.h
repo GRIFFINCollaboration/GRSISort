@@ -1,8 +1,9 @@
+// Author: Ryan Dunlop    09/15
 #ifndef TDECAYFIT_H
 #define TDECAYFIT_H
 
 #include "TNamed.h"
-#include "TF1.h"
+#include "TDecayF1.h"
 #include "TMath.h"
 #include "TFitResult.h"
 #include "TFitResultPtr.h"
@@ -66,8 +67,8 @@ class TDecay : public TNamed {
    void SetParentDecay(TDecay *parent) { fParent = parent; }
    void SetTotalDecayParameters();
 
-   const TF1 * const GetDecayFunc() const { return fDecayFunc; }
-   const TF1 * const GetTotalDecayFunc() { SetTotalDecayParameters(); return fTotalDecayFunc; }
+   const TDecayF1 * const GetDecayFunc() const { return fDecayFunc; }
+   const TDecayF1 * const GetTotalDecayFunc() { SetTotalDecayParameters(); return fTotalDecayFunc; }
 
    TDecay* const GetParentDecay();
    TDecay* const GetDaughterDecay();
@@ -81,8 +82,8 @@ class TDecay : public TNamed {
   private:
    UInt_t fGeneration;     //Generation from the primary
    Double_t fDetectionEfficiency; //The probability that this decay can be detected
-   TF1 *fDecayFunc;        //Function describing decay
-   TF1 *fTotalDecayFunc;   //Function used to access other fits
+   TDecayF1 *fDecayFunc;        //Function describing decay
+   TDecayF1 *fTotalDecayFunc;   //Function used to access other fits
    TDecay *fParent;        //Parent Decay
    TDecay *fDaughter;      //Daughter Decay
    TDecay *fFirstParent;   //FirstParent in the decay
@@ -105,7 +106,7 @@ class TDecayChain : public TObject {
    void Print(Option_t *option = "") const;
 
    void SetChainParameters();
-   const TF1 * const GetChainFunc() { SetChainParameters(); return fChainFunc; }
+   const TDecayF1 * const GetChainFunc() { SetChainParameters(); return fChainFunc; }
    void DrawComponents(Option_t *opt = "",Bool_t color_flag = true);
    TFitResultPtr Fit(TH1* fithist);
 
@@ -116,7 +117,7 @@ class TDecayChain : public TObject {
 
   private:
    std::vector<TDecay*> fDecayChain; //The Decays in the Decay Chain
-   TF1* fChainFunc;  //Function describing the total chain activity
+   TDecayF1* fChainFunc;  //Function describing the total chain activity
 
    ClassDef(TDecayChain,1) //Class representing a decay chain
 };

@@ -1,4 +1,4 @@
-//TGRSIFit.h TGRSIFunctions.h TMultiPeak.h TPeak.h TDecayFit.h
+//TGRSIFit.h TGRSIFunctions.h TMultiPeak.h TPeak.h TDecayFit.h TDecayF1.h
 
 #ifdef __CINT__
 
@@ -17,7 +17,7 @@
 #pragma link C++ class TDecayChain+;
 #pragma link C++ class TDecayFit+;
 #pragma link C++ class std::vector<TDecay*>+;
-
+#pragma link C++ class TDecayF1+;
 
 #endif
 
