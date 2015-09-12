@@ -7,8 +7,14 @@
 #include "TFitResult.h"
 #include "TFitResultPtr.h"
 #include "TH1.h"
+#include "Math/Minimizer.h"
+#include "Math/Factory.h"
+#include "Math/Functor.h"
+#include "TVirtualFitter.h"
 
 class TDecay : public TNamed {
+   friend class TDecayChain;
+   friend class TDecayFit;
   public:
    //TDecay(Double_t tlow, Double_t thigh);
    TDecay(UInt_t generation, TDecay* parent, Double_t tlow = 0,Double_t thigh = 10);
@@ -99,8 +105,9 @@ class TDecayChain : public TObject {
    void Print(Option_t *option = "") const;
 
    void SetChainParameters();
-   const TF1 * const GetChainFunc() const { return fChainFunc; }
+   const TF1 * const GetChainFunc() { SetChainParameters(); return fChainFunc; }
    void DrawComponents(Option_t *opt = "",Bool_t color_flag = true);
+   TFitResultPtr Fit(TH1* fithist);
 
 
   private:
