@@ -170,6 +170,9 @@ Double_t TDecay::ActivityFunc(Double_t *dim, Double_t *par){
       TDecay* denomDecay = this;
       while(denomDecay){
          if(denomDecay != curDecay){
+            //This term has problems if two or more rates are very similar. Will have to put a taylor expansion in here
+            //if this problem comes up. I believe the solution to this also depends on the number of nuclei in the chain
+            //that have similar rates. I think either of these issues is fairly rare, so I'll fix it when it comes up.
             denom*=par[denomDecay->GetGeneration()] - par[curDecay->GetGeneration()]; 
          } 
          denomDecay = denomDecay->GetParentDecay();
@@ -186,10 +189,13 @@ Double_t TDecay::ActivityFunc(Double_t *dim, Double_t *par){
 }
 
 TFitResultPtr TDecay::Fit(TH1* fithist) {
+   ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
+   TVirtualFitter::SetPrecision(1.0e-10);
+   TVirtualFitter::SetMaxIterations(10000);
    Int_t parCounter = 1;
    TDecay* curDecay = fFirstParent;
    SetTotalDecayParameters();
-   TFitResultPtr fitres = fithist->Fit(fTotalDecayFunc,"LRSME");
+   TFitResultPtr fitres = fithist->Fit(fTotalDecayFunc,"LRSE");
    Double_t chi2 = fitres->Chi2();
    Double_t ndf = fitres->Ndf();
 
@@ -275,8 +281,6 @@ void TDecayChain::SetChainParameters(){
       fChainFunc->SetParName(i,fDecayChain.back()->GetTotalDecayFunc()->GetParName(i));
       fDecayChain.back()->GetTotalDecayFunc()->GetParLimits(i,low_limit,high_limit);
       fChainFunc->SetParLimits(i,low_limit,high_limit);
-      fDecayChain.back()->GetTotalDecayFunc()->Print();
-
    }
 }
 
@@ -323,12 +327,43 @@ TDecay* TDecayChain::GetDecay(UInt_t generation){
    if(generation < fDecayChain.size()){
       return fDecayChain.at(generation);
    }
+   SetChainParameters();
 
    return 0;   
 }
 
 void TDecayChain::Print(Option_t *option) const {
-   printf("Number of Decays in Chain: %d\n",fDecayChain.size());
+   printf("Number of Decays in Chain: %lu\n",fDecayChain.size());
+   for(int i=0; i<fDecayChain.size();++i){
+      fDecayChain.at(i)->Print();
+      printf("\n");
+   }
+
+}
+
+TFitResultPtr TDecayChain::Fit(TH1* fithist) {
+   ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
+   TVirtualFitter::SetPrecision(1.0e-10);
+   TVirtualFitter::SetMaxIterations(10000);
+   Int_t parCounter = 1;
+   TDecay* curDecay = fDecayChain.at(0);
+   SetChainParameters();
+   TFitResultPtr fitres = fithist->Fit(fChainFunc,"LRSE");
+   Double_t chi2 = fitres->Chi2();
+   Double_t ndf = fitres->Ndf();
+
+   printf("Chi2/ndf = %lf\n",chi2/ndf);
+
+   //Now copy the fits back to the appropriate nuclei.
+   curDecay->SetIntensity(fChainFunc->GetParameter(0)); curDecay->SetIntensityError(fChainFunc->GetParError(0));
+   //Now we need to set the parameters for each of the parents
+   while(curDecay){
+      curDecay->SetDecayRate(fChainFunc->GetParameter(parCounter)); curDecay->SetDecayRateError(fChainFunc->GetParError(parCounter));
+      curDecay = curDecay->GetDaughterDecay();
+      ++parCounter;
+   }
+   
+   return fitres;
 
 }
 
