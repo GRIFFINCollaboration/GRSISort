@@ -16,6 +16,7 @@
 #pragma link C++ class TDecay+;
 #pragma link C++ class TDecayChain+;
 #pragma link C++ class TDecayFit+;
+#pragma link C++ class std::vector<TDecay*>+;
 
 
 #endif
