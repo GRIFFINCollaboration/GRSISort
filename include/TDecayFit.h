@@ -1,26 +1,80 @@
 // Author: Ryan Dunlop    09/15
-#ifndef TDECAYFIT_H
-#define TDECAYFIT_H
+#ifndef TDECAY_H
+#define TDECAY_H
 
 #include "TNamed.h"
-#include "TDecayF1.h"
 #include "TMath.h"
 #include "TFitResult.h"
 #include "TFitResultPtr.h"
+#include "TF1.h"
 #include "TH1.h"
 #include "Math/Minimizer.h"
 #include "Math/Factory.h"
 #include "Math/Functor.h"
 #include "TVirtualFitter.h"
 
-class TDecay : public TNamed {
+#include <string>
+
+
+class TVirtualDecay;
+class TSingleDecay;
+class TDecay;
+class TDecayChain;
+
+class TDecayFit : public TF1 {
+  public:
+   TDecayFit() : TF1() {}; 
+   //TGRSIFit(const char *name,Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn, xmin, xmax, npar){};
+   TDecayFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1) : TF1(name,formula,xmin,xmax){ } 
+   TDecayFit(const char* name, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name,xmin,xmax,npar) { }
+   TDecayFit(const char* name, void* fcn, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn,xmin,xmax,npar){}
+   TDecayFit(const char* name, ROOT::Math::ParamFunctor f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0) : TF1(name,f,xmin,xmax,npar){}
+   TDecayFit(const char* name, void* ptr, Double_t xmin, Double_t xmax, Int_t npar, const char* className) : TF1(name,ptr, xmin, xmax, npar, className){ }
+#ifndef __CINT__
+   TDecayFit(const char *name, Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar){}
+   TDecayFit(const char *name, Double_t (*fcn)(const Double_t *, const Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar) {}
+#endif
+   TDecayFit(const char *name, void *ptr, void *ptr2,Double_t xmin, Double_t xmax, Int_t npar, const char *className, const char *methodName = 0) : TF1(name,ptr,ptr2,xmin,xmax,npar,className,methodName){}
+
+   template <class PtrObj, typename MemFn>
+   TDecayFit(const char *name, const  PtrObj& p, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char * className = 0, const char *methodName = 0) : TF1(name,p,memFn,xmin,xmax,npar,className,methodName) {}
+
+   template <typename Func>
+   TDecayFit(const char *name, Func f, Double_t xmin, Double_t xmax, Int_t npar, const char *className = 0  ) : TF1(name,f,xmin,xmax,npar,className){}
+   virtual ~TDecayFit() {}
+
+   void SetDecay(TVirtualDecay* decay);
+   TVirtualDecay* GetDecay() const;
+   void DrawComponents() const; // *MENU* 
+
+  private:
+   //I'll have to set up the streamers to do the proper thing here.
+   std::string fDecayClass; //!
+
+   ClassDef(TDecayFit,1);  // Extends TF1 for nuclear decays
+};
+
+class TVirtualDecay : public TNamed {
+  public: 
+   TVirtualDecay() {}
+   ~TVirtualDecay() {}
+
+   virtual void DrawComponents();
+   void Print(Option_t *opt ="") const = 0;
+
+   ClassDef(TVirtualDecay,1) //Abstract Class for TDecayFit
+};
+
+class TSingleDecay : public TVirtualDecay {
    friend class TDecayChain;
    friend class TDecayFit;
+   friend class TDecay;
+ //  friend class TDecay;
   public:
    //TDecay(Double_t tlow, Double_t thigh);
-   TDecay(UInt_t generation, TDecay* parent, Double_t tlow = 0,Double_t thigh = 10);
-   TDecay(TDecay* parent = 0, Double_t tlow = 0, Double_t thigh = 10);
-   ~TDecay();
+   TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow = 0,Double_t thigh = 10);
+   TSingleDecay(TSingleDecay* parent = 0, Double_t tlow = 0, Double_t thigh = 10);
+   virtual ~TSingleDecay();
 
   public:
    ///// TF1 Helpers ////
@@ -48,7 +102,7 @@ class TDecay : public TNamed {
    void Draw(Option_t *option = "");
    Double_t Eval(Double_t t);
    Double_t EvalPar(const Double_t* x, const Double_t* par=0);
-   TFitResultPtr Fit(TH1* fithist);
+   TFitResultPtr Fit(TH1* fithist,Option_t *opt ="");
    void Fix();
    void Release();
    void SetRange(Double_t tlow, Double_t thigh);
@@ -62,77 +116,112 @@ class TDecay : public TNamed {
    void SetDecayRateError(Double_t err) { fDecayFunc->SetParError(1,err); }
    void SetIntensityError(Double_t err) { fDecayFunc->SetParError(0,err); }
 
+   void SetChainId(UInt_t id) { fChainId = id; }
+
   public:
-   void SetDaughterDecay(TDecay *daughter) { fDaughter = daughter; }
-   void SetParentDecay(TDecay *parent) { fParent = parent; }
+   void SetDaughterDecay(TSingleDecay *daughter) { fDaughter = daughter; }
+   void SetParentDecay(TSingleDecay *parent) { fParent = parent; }
    void SetTotalDecayParameters();
+   void SetDecayId(UInt_t Id) {fUnId = Id; }
+   UInt_t GetDecayId() const { return fUnId; }
+   UInt_t GetChainId() const { return fChainId; }
 
-   const TDecayF1 * const GetDecayFunc() const { return fDecayFunc; }
-   const TDecayF1 * const GetTotalDecayFunc() { SetTotalDecayParameters(); return fTotalDecayFunc; }
+   const TDecayFit * const GetDecayFunc() const { return fDecayFunc; }
+   const TDecayFit * const GetTotalDecayFunc() { SetTotalDecayParameters(); return fTotalDecayFunc; }
 
-   TDecay* const GetParentDecay();
-   TDecay* const GetDaughterDecay();
+   TSingleDecay* const GetParentDecay();
+   TSingleDecay* const GetDaughterDecay();
    
    Double_t ActivityFunc(Double_t *dim, Double_t *par);
 
    void Print(Option_t *option = "") const;
 
-   
-
   private:
    UInt_t fGeneration;     //Generation from the primary
    Double_t fDetectionEfficiency; //The probability that this decay can be detected
-   TDecayF1 *fDecayFunc;        //Function describing decay
-   TDecayF1 *fTotalDecayFunc;   //Function used to access other fits
-   TDecay *fParent;        //Parent Decay
-   TDecay *fDaughter;      //Daughter Decay
-   TDecay *fFirstParent;   //FirstParent in the decay
+   TDecayFit *fDecayFunc;        //Function describing decay
+   TDecayFit *fTotalDecayFunc;   //Function used to access other fits
+   TSingleDecay *fParent;        //Parent Decay
+   TSingleDecay *fDaughter;      //Daughter Decay
+   TSingleDecay *fFirstParent;   //FirstParent in the decay
+   UInt_t fUnId;
+   static UInt_t fCounter;
+   UInt_t fChainId;
 
  //  static Double_t ExpDecay(Double_t *dim, Double_t par);
 
-   ClassDef(TDecay,1) //Class containing Decay information
+   ClassDef(TSingleDecay,1) //Class containing Single Decay information
 };
 
-class TDecayChain : public TObject {
+class TDecayChain : public TVirtualDecay {
   public:
    TDecayChain();
    TDecayChain(UInt_t generations);
-   ~TDecayChain();
+   virtual ~TDecayChain();
 
-   TDecay* GetDecay(UInt_t generation);
+   TSingleDecay* GetDecay(UInt_t generation);
    Double_t Eval(Double_t t) const;
    void Draw(Option_t *option = "");
+   Int_t Size() const { return fDecayChain.size(); } 
 
    void Print(Option_t *option = "") const;
 
    void SetChainParameters();
-   const TDecayF1 * const GetChainFunc() { SetChainParameters(); return fChainFunc; }
+   void SetRange(Double_t xlow, Double_t xhigh);
+   const TDecayFit * const GetChainFunc() { SetChainParameters(); return fChainFunc; }
    void DrawComponents(Option_t *opt = "",Bool_t color_flag = true);
-   TFitResultPtr Fit(TH1* fithist);
+   TFitResultPtr Fit(TH1* fithist, Option_t *opt = "");
+   Double_t EvalPar(const Double_t* x, const Double_t* par=0);
+
+   UInt_t GetChainId() const {return fChainId; }
 
 
   private:
-   void AddToChain(TDecay* decay);
+   void AddToChain(TSingleDecay* decay);
    Double_t ChainActivityFunc(Double_t *dim, Double_t *par);
+   static UInt_t fChainCounter;
 
   private:
-   std::vector<TDecay*> fDecayChain; //The Decays in the Decay Chain
-   TDecayF1* fChainFunc;  //Function describing the total chain activity
+   std::vector<TSingleDecay*> fDecayChain; //The Decays in the Decay Chain
+   TDecayFit* fChainFunc;  //Function describing the total chain activity
+   UInt_t fChainId;
 
    ClassDef(TDecayChain,1) //Class representing a decay chain
 };
 
-class TDecayFit : public TObject {
+class TDecay : public TVirtualDecay {
   public:
-   TDecayFit();
-   ~TDecayFit();
+   TDecay() {}
+   TDecay(std::vector<TDecayChain*> chain);
+   virtual ~TDecay();
 
-   //TDecay * GetDecay(int idx);
+   void AddChain(TDecayChain* chain){ fChainList.push_back(chain);}
+   Double_t DecayFit(Double_t *dim, Double_t *par);
+   TDecayChain* GetChain(UInt_t idx);
+
+   void SetHalfLife(UInt_t Id, Double_t halflife);
+   TFitResultPtr Fit(TH1* fithist, Option_t *opt = "");
+
+   void Print(Option_t* opt = "") const;
+   void PrintMap() const;
+   const TF1 * const GetFitFunc() { return fFitFunc; }
+   void SetBackground(Double_t background) { fFitFunc->SetParameter(0,background);}
+   Double_t GetBackground() const {return fFitFunc->GetParameter(0); }
+   Double_t GetBackgroundError() const {return fFitFunc->GetParError(0); }
+   void SetRange(Double_t xlow, Double_t xhigh);
+
+   void Draw(Option_t *opt);
 
   private:
+   void RemakeMap();
+   void SetParameters();
 
-   ClassDef(TDecayFit,1) //Class for fitting decay curves
+  private:
+   std::vector<TDecayChain*> fChainList;
+   TDecayFit* fFitFunc;
+   std::map<UInt_t, std::vector<TSingleDecay*>> fDecayMap;
+
+   ClassDef(TDecay,1) //Contains all decay chains in a fit
 };
-
 
 #endif
