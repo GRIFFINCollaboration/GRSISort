@@ -78,8 +78,8 @@ class TEventQueue : public TObject {
       std::mutex m_event;
       #endif 
       bool elock;
-      void SetLock() {  printf(BLUE "settting event lock" RESET_COLOR  "\n");  elock = true;}
-      void UnsetLock() {  printf(RED "unsettting event lock" RESET_COLOR  "\n");  elock = false;}
+      void SetLock() {  printf(BLUE "setting event lock" RESET_COLOR  "\n");  elock = true;}
+      void UnsetLock() {  printf(RED "unsetting event lock" RESET_COLOR  "\n");  elock = false;}
 
       ClassDef(TEventQueue,0)
 

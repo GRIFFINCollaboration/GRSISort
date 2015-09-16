@@ -332,128 +332,91 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    //It then takes the sorted fragments and puts them into the eventQ.
    TFragment *currentFrag = 0;
 
-   //Find the TFragment cranch of the tree
+   //Find the TFragment branch of the tree
    fCurrentFragTree->SetBranchAddress("TFragment",&currentFrag);
 
-   //Get the tree index of the fragment tree
-   TTreeIndex *index = (TTreeIndex*)fCurrentFragTree->GetTreeIndex();
+   fEntries = fCurrentFragTree->GetEntries();
 
-   fEntries = index->GetN();
-   Long64_t *indexvalues = index->GetIndex();
-   //Set the major index to be sorted over as the high bits of the time stamp
-   int major_max = fCurrentFragTree->GetMaximum("TimeStampHigh");
-   //Read in the first fragment from the fragment tree
-   fCurrentFragTree->GetEntry(indexvalues[0]);
-   long firstTimeStamp = currentFrag->GetTimeStamp();
-   int  firstDetectorType = currentFrag->DetectorType;
+   //this vector holds all fragments of one built event and get's passed to the event queue
+   std::vector<TFragment>* event = NULL;
+	//this multiset is used to sort the fragments we're reading sequentially from the tree
+	std::multiset<TFragment,std::less<TFragment> > sortedFragments;
 
-   //We set the buildevent flag to false by default. When the time gate closes we change this to true
-   //to tell the code to build the event and send it to be written to the analysis tree.
-   bool buildevent = false;
-   std::vector<TFragment> *event = new std::vector<TFragment>;//(1,*currentFrag);
-   event->push_back(*currentFrag);
 
-   fFragmentsIn++; //Increment the number of fragments that have been read
-   
    //loop over all of the fragments in the tree 
-   for(int x=1;x<fEntries;x++) {
-      if(fCurrentFragTree->GetEntry(indexvalues[x]) == -1 ) {  //major,minor) == -1) {
+   for(int x = 0; x < fEntries; ++x) {
+      if(fCurrentFragTree->GetEntry(x) == -1 ) {
          //GetEntry Reads all branches of entry and returns total number of bytes read.
          //This means that if this if statement passes, we have had an I/O error.
          printf(DRED "FIRE!!!" RESET_COLOR  "\n");
          continue;
       }
-      if(indexvalues[x] == indexvalues[x-1]) {
-         //If the last fragment index equals the current fragment index, you have a real fire
-         //this is likely caused by using a root version where the method we are employing here
-         //just so happens to not work. It is unlikely that there is a different reason for why
-         //this is happening.
-         printf(DRED "REAL FIRE!!! x = %i, indexvalues[x] = %lld, indexvalues[x-1] = %lld" RESET_COLOR  "\n", x, indexvalues[x], indexvalues[x-1]);
-         continue;
-      }
       fFragmentsIn++;//Now that we have read a new entry, we need to increment our counter
 
-      //if we've already seen this channel we add the event to the queue
-      //if(channelSeen.count(oldFrag->ChannelNumber) == 1) {
-         //we might want to create an error statement here!!!
-         //TEventQueue::Get()->Add(event);
-         //event = new std::vector<TFragment>;
-         //channelSeen.clear();
-      //}
-      //event->push_back(*oldFrag);
-      //channelSeen.insert(oldFrag->ChannelNumber);
-      //printf("\ntime diff = %ld\n",currentFrag->GetTimeStamp() - firstTimeStamp);
-      
-      //We first compare the current fragment's time stamp to the time stamp of the fragment that opened
-      //up the time gate. We will eventually make this a walking gate rather than a static gate so that
-      //we can process the high-rate experiments better where the time-random background becomes more of an
-      //issue.
-      long timediff = currentFrag->GetTimeStamp() - firstTimeStamp;
+		//put the fragment into the multiset
+		sortedFragments.insert(*currentFrag);
 
-      //We now set the "allowed" time windows for different detector streams to be called a coincidence
-      //The way this is done right now is not correct and should be changed in the near future.
-      int currentDetectorType = currentFrag->DetectorType;
-      //if((firstDetectorType == 1 && currentDetectorType == 2) || (firstDetectorType == 2 && currentDetectorType == 1) ) {
-      //   if(timediff < 100 || timediff > 200)
-      //      buildevent =true;
-      //} else if((firstDetectorType == 1 && currentDetectorType == 5) || (firstDetectorType == 5 && currentDetectorType == 1)) {
-      //   if(timediff < 0 || timediff > 100)
-      //      buildevent =true;
-      //} else if((firstDetectorType == 1 && currentDetectorType == 6) || (firstDetectorType == 6 && currentDetectorType == 1)) {
-      //   if(timediff < 0 || timediff > 200)
-      //      buildevent =true;
-      //} else if((firstDetectorType == 2 && currentDetectorType == 5) || (firstDetectorType == 5 && currentDetectorType == 2)) {
-      //   if(timediff < 100 || timediff > 200)
-      //      buildevent =true;
-      //} else if((firstDetectorType == 2 && currentDetectorType == 6) || (firstDetectorType == 6 && currentDetectorType == 2)) {
-      //   if(timediff < 0 || timediff > 100)
-      //      buildevent =true;
-      //} else if((firstDetectorType == 5 && currentDetectorType == 6) || (firstDetectorType == 6 && currentDetectorType == 5)) {
-      //   if(timediff < 0 || timediff > 200)
-      //      buildevent =true;
-      //} else if((firstDetectorType == currentDetectorType)) {
-      //   if(timediff < 0 || timediff > 100)
-      //      buildevent =true;
-      //} else   {
-      //   if(timediff < 0 || timediff > 200)
-      //      buildevent =true;
-      //}
+		//We start putting fragments into a build event when either the time 
+		//difference between the first and the last fragment is larger than a 
+		//given value, or if the size of the multiset is above a given threshold
+		//and the first and last of the fragments are at least BuildWindow apart.
+ 		long firstTimeStamp = (*(sortedFragments.begin())).GetTimeStamp();
+		long lastTimeStamp = (*(std::prev(sortedFragments.end()))).GetTimeStamp();
+		if(//(lastTimeStamp - firstTimeStamp > TGRSIRunInfo::BufferDuration()) ||
+			(sortedFragments.size() > TGRSIRunInfo::BufferSize() && (lastTimeStamp - firstTimeStamp > TGRSIRunInfo::BuildWindow()))) {
+			//We are now in a situation where we think that no more fragments will be read that will end up at the beginning of the multiset.
+			//So we can put everything that is in the BuildWindow of the first fragment into our built event.
+			//For this we loop through the fragments in the multiset, put them into the new event vector, and once the time difference is larger than BuildWindow,
+			//we put the event into the queue, erase the fragments from the multiset, and stop the loop.
+			event = new std::vector<TFragment>;
+			for(auto it = sortedFragments.begin(); it != sortedFragments.end(); ++it) {
+				if(it->GetTimeStamp() - firstTimeStamp <= TGRSIRunInfo::BuildWindow()) {
+					event->push_back(*it);
+					if(TGRSIRunInfo::IsMovingWindow()){
+						firstTimeStamp = it->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
+					}
+				} else {
+					//Add the event to the event Q.
+					TEventQueue::Get()->Add(event);
+					//erase the fragments [first,current), i.e. from the first to the current, but not the current one itself
+					sortedFragments.erase(sortedFragments.begin(),it);
+					//this screws up the iterators, so never remove the break statement after this!
+					break;
+				}
+			}
+		}
+   }//loop over entries
 
-      //We check to see if the coincidence window is shut. If it is we start building the event out of the old fragments
-      //and send it to the event Q for processing.
-      //if(buildevent) {
-//      if(abs(currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.
-      if((currentFrag->GetTimeStamp() - firstTimeStamp) > TGRSIRunInfo::BuildWindow() ) { //200) {  // 2 micro-sec.
-         //printf("Adding %ld fragments to queue\n",event->size());
-         //if(event->size() > 1) {
-            //for(int i = 0; i < event->size(); ++i) {
-               //event->at(i).Print();
-            //}
-         //}
-         //Add the event to the event Q and put the new fragment which is not part of the event into the start of the
-         //next event.
-         TEventQueue::Get()->Add(event);
-         //Create a new event and push back the first fragment
-         event = new std::vector<TFragment>;//(1,*currentFrag);
-         event->push_back(*currentFrag);
-         //channelSeen.clear();
-         
-         //reset the build event flag and all of the properties of the fragment that opens up the time gate
-         firstDetectorType = currentFrag->DetectorType;
-         firstTimeStamp = currentFrag->GetTimeStamp(); //THIS IS FOR STATIC WINDOW
-         buildevent = false;
-      } else {
-         //If we aren't ready to "build" the event, we fill the current event with the new fragment
-         event->push_back(*currentFrag);
-         if(TGRSIRunInfo::IsMovingWindow()){
-            firstTimeStamp = currentFrag->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
-         }
-      }
-   }
-   //in case we have fragments left after all of the fragments have been processed, we add them to the queue now
-   if(event->size() > 0) {
-      TEventQueue::Get()->Add(event);
-   }
+	printf("Finished reading %d fragments, built %d events, got %d fragments left\t\t\t\t\t\t\t\t\t\t\n", fFragmentsIn, fAnalysisIn, sortedFragments.size());
+
+   //In case we have fragments left after all of the fragments have been processed, we add them to the queue now.
+	while(!sortedFragments.empty()) {
+ 		long firstTimeStamp = (*(sortedFragments.begin())).GetTimeStamp();
+		event = new std::vector<TFragment>;
+		auto it = sortedFragments.begin();
+		for(; it != sortedFragments.end(); ++it) {
+			if(it->GetTimeStamp() - firstTimeStamp <= TGRSIRunInfo::BuildWindow()) {
+				event->push_back(*it);
+				if(TGRSIRunInfo::IsMovingWindow()){
+					firstTimeStamp = it->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
+				}
+			} else {
+				//Add the event to the event Q.
+				TEventQueue::Get()->Add(event);
+				//erase the fragments [first,current), i.e. from the first to the current, but not the current one itself
+				sortedFragments.erase(sortedFragments.begin(),it);
+				//this screws up the iterators, so never remove the break statement after this!
+				break;
+			}
+		}
+		//if this is the last fragments, just fill them
+		if(it == sortedFragments.end()) {
+			//Add the event to the event Q.
+			TEventQueue::Get()->Add(event);
+			//erase the fragments [first,current), i.e. from the first to the current, but not the current one itself
+			sortedFragments.erase(sortedFragments.begin(),it);
+		}
+	}//while sortedFragments isn't empty
    
    //Drop the TFragmentBranch from the Cache so we aren't still holding it in memory
    fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
@@ -502,30 +465,6 @@ printf("starting\n");
    }
    //Intialize the TChannel Information
    InitChannels();
-
-   //Set the sorting to be done on the timestamps if the fragment contains Griffin fragments
-   if(fCurrentRunInfo->Griffin()) {
-      fCurrentRunInfo->SetMajorIndex("TimeStampHigh");
-      fCurrentRunInfo->SetMinorIndex("TimeStampLow");
-   }
-
-   //Check to see if the fragment tree already has an index set. If not build the index based on timestamps if it is a Griffin 
-   //fragment. If it is not Griffin build based on the trigger Id.
-   if(!fCurrentFragTree->GetTreeIndex()) {
-      if(fCurrentRunInfo->MajorIndex().length()>0) {
-         printf(DBLUE "Tree Index not found, building index on %s/%s..." RESET_COLOR,
-                        fCurrentRunInfo->MajorIndex().c_str(),fCurrentRunInfo->MinorIndex().c_str());  fflush(stdout); 
-         if(fCurrentRunInfo->MinorIndex().length()>0) {
-            fCurrentFragTree->BuildIndex(fCurrentRunInfo->MajorIndex().c_str(),fCurrentRunInfo->MinorIndex().c_str());
-         } else {
-            fCurrentFragTree->BuildIndex(fCurrentRunInfo->MajorIndex().c_str());
-         }
-      } else {
-         printf(DBLUE "Tree Index not found, building index on TriggerId/FragmentId..." RESET_COLOR);  fflush(stdout);   
-         fCurrentFragTree->BuildIndex("TriggerId","FragmentId");
-      }
-      printf(DBLUE " done!" RESET_COLOR "\n");
-   }
 
    //Set the branch to point at the Fragment Tree.
    TBranch *branch = fCurrentFragTree->GetBranch("TFragment");
@@ -887,7 +826,7 @@ void TAnalysisTreeBuilder::Status() {
       if(!sortingDone) {
          printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
                 DGREEN "   write speed: %9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
-               (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime());
+					 (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime());
       } else {
          if(fAnalysisOut > 0) {
             printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 

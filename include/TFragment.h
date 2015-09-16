@@ -28,6 +28,7 @@
 class TFragment : public TObject	{
 public:
    TFragment(); 
+	TFragment(const TFragment&, int hit = -1); //copy constructor that copies only the requested hit (if hit is in range 0 - Cfd.size())
    virtual ~TFragment(); 
 
    time_t   MidasTimeStamp;       //->  Timestamp of the MIDAS event  
@@ -65,6 +66,9 @@ public:
    /// *****************************  ////
 
    std::vector<Short_t>  wavebuffer;//-> waveform words
+
+	int NumberOfHits;              //! transient member to count the number of pile-up hits in the original fragment
+	int HitIndex;                  //! transient member indicating which pile-up hit this is in the original fragment
   
    double GetTime()      const; //!
    long   GetTimeStamp() const; //!
@@ -90,6 +94,6 @@ public:
    bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 
-   ClassDef(TFragment,4);  // Event Fragments
+   ClassDef(TFragment,5);  // Event Fragments
 };
 #endif // TFRAGMENT_H

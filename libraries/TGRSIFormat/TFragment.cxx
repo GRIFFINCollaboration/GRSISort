@@ -15,12 +15,62 @@ ClassImp(TFragment)
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TFragment::TFragment(){
+TFragment::TFragment() {
    // Default Constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
+}
+
+TFragment::TFragment(const TFragment& rhs, int hit) {
+  //copy constructor that copies only the requested hit (if hit is in range 0 - Cfd.size()), if hit is negative, it act's as a normal copy constructor
+  
+  //first copy all "normal" data members
+  MidasTimeStamp = rhs.MidasTimeStamp;
+  MidasId = rhs.MidasId;
+  TriggerId = rhs.TriggerId;
+  FragmentId = rhs.FragmentId;
+  TriggerBitPattern = rhs.TriggerBitPattern;
+
+  NetworkPacketNumber = rhs.NetworkPacketNumber;
+
+  ChannelNumber = rhs.ChannelNumber;
+  ChannelAddress = rhs.ChannelAddress;
+
+  TimeStampLow = rhs.TimeStampLow;
+  TimeStampHigh = rhs.TimeStampHigh;
+
+  PPG = rhs.PPG;
+  DeadTime = rhs.DeadTime;
+  NumberOfFilters = rhs.NumberOfFilters;
+  NumberOfPileups = rhs.NumberOfPileups;
+  DataType = rhs.DataType;
+  DetectorType = rhs.DetectorType;
+  ChannelId = rhs.ChannelId;
+
+  KValue = rhs.KValue;
+
+  wavebuffer = rhs.wavebuffer;
+
+  if(hit < 0 || hit >= Cfd.size()) {
+	  Cfd = rhs.Cfd;
+	  Zc = rhs.Zc;
+	  ccShort = rhs.ccShort;
+	  ccLong = rhs.ccLong;
+	  Led = rhs.Led;
+	  Charge = rhs.Charge;
+  } else {
+	  Cfd.push_back(rhs.Cfd[hit]);
+	  Zc.push_back(rhs.Zc[hit]);
+	  ccShort.push_back(rhs.ccShort[hit]);
+	  ccLong.push_back(rhs.ccLong[hit]);
+	  Led.push_back(rhs.Led[hit]);
+	  Charge.push_back(rhs.Charge[hit]);
+  }
+
+  NumberOfHits = Cfd.size();
+  HitIndex = hit;
 }
 
 TFragment::~TFragment(){
