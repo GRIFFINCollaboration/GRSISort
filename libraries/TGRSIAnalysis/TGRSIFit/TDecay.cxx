@@ -1,4 +1,4 @@
-#include "TDecayFit.h"
+#include "TDecay.h"
 
 ClassImp(TSingleDecay)
 ClassImp(TDecayChain)

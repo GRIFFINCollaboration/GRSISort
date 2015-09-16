@@ -1,4 +1,4 @@
-//TGRSIFit.h TGRSIFunctions.h TMultiPeak.h TPeak.h TDecayFit.h 
+//TGRSIFit.h TGRSIFunctions.h TMultiPeak.h TPeak.h TDecay.h 
 
 #ifdef __CINT__
 
