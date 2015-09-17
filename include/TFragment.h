@@ -92,7 +92,7 @@ public:
    using TObject::Print; 
    virtual void Print(Option_t *opt = "") const; //!
    
-
+   bool Compare(const TFragment &rhs) const { return (GetTimeStamp_ns() < rhs.GetTimeStamp_ns()); }
 
    bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }

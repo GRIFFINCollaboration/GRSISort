@@ -148,6 +148,21 @@ double TFragment::GetTZero() const {
 }
 
 
+long TFragment::GetCfdTime() {
+   long ns = 0;
+	if(DataType < 0 && index < Cfd.size()) {//TGriffin
+	  //cfd replaces the lowest 26 bits of the timestamp
+	  //so ns = CFD - 26 LSB of timestamp
+	  ns = Cfd.at(index) - TimeStampLow & 0x03ffffff
+	} else if(DataType == 2 && index < Cfd.size()) {//TSceptar
+	  //cfd is a difference from the leading edge time stamp in 1/256th of a ns
+	  //but also contains an offset between the 100Mhz timestamp clock and the 125MHz data clock
+	  //so we add/subtract (?) the proper cfd divided by 256 to the offset
+	  ns = (Cfd.at(index) >> 21) & 0xf - (Cfd.at(index) >> 8) & 0x1fff;
+   }
+   return 10*GetTimeStamp() + ns;  
+}
+
 
 
 long TFragment::GetTimeStamp_ns() {
