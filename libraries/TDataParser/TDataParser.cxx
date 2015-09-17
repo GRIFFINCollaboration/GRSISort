@@ -807,7 +807,7 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t *data, int address) {
 	//we expect a word starting with 0xd containing the network packet id
    //this is a different format than the others because it will not always be in the scaler word
 	if(SetScalerNetworkPacket(data[x],scalerEvent)) {
-		return x++;
+		x++;
 	}
 
 	//we expect a word starting with 0xa containing the 28 lowest bits of the timestamp
@@ -824,7 +824,6 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t *data, int address) {
 	if(!SetScalerHighTimeStamp(data[x++],scalerEvent)) {
 		return -x;
 	}
-	
 	TGRSIRootIO::Get()->FillScaler(address, scalerEvent);
 	return x;
 }
