@@ -48,6 +48,7 @@ class TGriffin : public TGRSIDetector {
 
       static TVector3 GetPosition(int DetNbr ,int CryNbr = 5, double distance = 110.0);		//!
       void FillData(TFragment*,TChannel*,MNEMONIC*); //!
+      void BuildHits(TFragment*,MNEMONIC*); //!
 
       TGriffin& operator=(const TGriffin&);  //!
       

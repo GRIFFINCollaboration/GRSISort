@@ -73,12 +73,12 @@ TFragment::TFragment(const TFragment& rhs, int hit) {
   HitIndex = hit;
 }
 
-TFragment::~TFragment(){
+TFragment::~TFragment() {
   // Default destructor does nothing right now
   //Clear();
 }
 
-void TFragment::Clear(Option_t *opt){  
+void TFragment::Clear(Option_t *opt) {  
    // Clears all fields of the TFragment
    MidasTimeStamp    = 0;
    MidasId           = 0;
@@ -118,6 +118,8 @@ void TFragment::Clear(Option_t *opt){
    if(!KValue.empty())     //->
    	KValue.clear();      //->
 
+	NumberOfHits = -1;
+	HitIndex = -1;
 }
 
 long TFragment::GetTimeStamp() const {

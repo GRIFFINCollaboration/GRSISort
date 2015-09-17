@@ -128,6 +128,25 @@ void TPaces::BuildHits(TDetectorData *data,Option_t *opt)	{
    }
 }
 
+void TPaces::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+//Builds the PACES Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
+//This is done for both PACES and it's suppressors.
+	if(!frag || !mnemonic)
+      return;
+
+   Clear("");
+
+	for(int i = 0; i < frag->Charge.size(); ++i) {
+	  TPacesHit hit;
+	  hit.SetAddress(frag->ChannelAddress);
+	  hit.SetTime(frag->GetTimeStamp());
+	  hit.SetCfd(frag->GetCfd(i));
+	  hit.SetCharge(frag->GetCharge(i));
+	  
+	  AddHit(&hit);
+	}
+}
+
 TVector3 TPaces::GetPosition(int DetNbr) {
    //Gets the position vector for a crystal specified by DetNbr
    //Does not currently contain any positons.

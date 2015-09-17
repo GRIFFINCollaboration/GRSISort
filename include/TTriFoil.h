@@ -33,6 +33,7 @@ class TTriFoil :  public TGRSIDetector {
 
 		void BuildHits(TDetectorData *data=0, Option_t * = "");	//!
 		void FillData(TFragment*,TChannel*,MNEMONIC*);	//!
+		void BuildHits(TFragment*,MNEMONIC*);	//!
 
 		void Clear(Option_t *opt = ""); 	//!
 		void Print(Option_t *opt = "") const; 	//!

@@ -46,6 +46,7 @@ class TGRSIDetector : public TDetector	{
       //virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
 		virtual void BuildHits(TDetectorData *data=0,Option_t * = "") { AbstractMethod("BuildHits()"); } //! = 0; //!
 		virtual void FillData(TFragment*,TChannel*,MNEMONIC*)         { AbstractMethod("FillData()");  } //! = 0; //!
+		virtual void BuildHits(TFragment*,MNEMONIC*)                  { AbstractMethod("BuildHits()"); } //! = 0; //!
 
       virtual void Copy(TObject&) const;              //!
       virtual void Clear(Option_t *opt = "");         //!

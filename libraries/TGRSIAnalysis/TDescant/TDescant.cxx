@@ -228,3 +228,37 @@ void TDescant::BuildHits(TDetectorData *data,Option_t *opt)	{
    }
 }
 
+void TDescant::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+//Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
+//This is done for both DESCANT and it's suppressors.
+	if(!frag || !mnemonic)
+      return;
+
+   Clear("");
+
+	for(int i = 0; i < frag->Charge.size(); ++i) {
+	  TDescantHit hit;
+	  hit.SetAddress(frag->ChannelAddress);
+	  hit.SetTime(frag->GetTimeStamp());
+	  hit.SetCfd(frag->GetCfd(i));
+	  hit.SetCharge(frag->GetCharge(i));
+	  hit.SetZc(frag->GetZc(i));
+	  hit.SetCcShort(frag->GetCcShort(i));
+	  hit.SetCcLong(frag->GetCcLong(i));
+	  
+      if(TDescant::SetWave()){
+         if(frag->wavebuffer.size() == 0) {
+            //printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
+         }
+         hit.SetWaveform(frag->wavebuffer);
+         if(hit.GetWaveform().size() > 0) {
+            printf("Analyzing waveform, current cfd = %d, psd = %d\n",hit.GetCfd(),hit.GetPsd());
+            bool analyzed = hit.AnalyzeWaveform();
+            printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",hit.GetCfd(),hit.GetPsd());
+         }
+      }
+
+	  AddHit(&hit);
+	}
+}
+

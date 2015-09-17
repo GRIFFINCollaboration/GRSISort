@@ -353,8 +353,10 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       }
       fFragmentsIn++;//Now that we have read a new entry, we need to increment our counter
 
-		//put the fragment into the multiset
-		sortedFragments.insert(*currentFrag);
+		//pull the different pile-up hits apart and put the into the sorted buffer as different fragments
+		for(int hit = 0; hit < currentFrag->Cfd.size(); ++hit) {
+			sortedFragments.insert(TFragment(*currentFrag, hit));
+		}
 
 		//We start putting fragments into a build event when either the time 
 		//difference between the first and the last fragment is larger than a 
@@ -759,7 +761,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
             if(detectors->find("GR") == detectors->end()) {
                (*detectors)["GR"] = new TGriffin;
             }
-            (*detectors)["GR"]->FillData(&(event->at(i)),channel,&mnemonic);
+            (*detectors)["GR"]->BuildHits(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("SE")==0) {
             if(detectors->find("SE") == detectors->end()) {
                (*detectors)["SE"] = new TSceptar;

@@ -43,6 +43,7 @@ class TSharc : public TGRSIDetector  {
 
     //TSharcData *GetData() { return &data; }  //!
     void FillData(TFragment*,TChannel*,MNEMONIC*);           //! Collects the fragments to make front/back/pad coinc.
+    void BuildHits(TFragment*,MNEMONIC*);           //! Collects the fragments to make front/back/pad coinc.
     void BuildHits(TDetectorData *sd=0,Option_t * = ""); //! Builds the fragments into sharchits.
 
   protected:

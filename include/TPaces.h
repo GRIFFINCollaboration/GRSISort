@@ -36,6 +36,7 @@ class TPaces : public TGRSIDetector {
      
      static TVector3 GetPosition(int DetNbr);		//!
      void FillData(TFragment*,TChannel*,MNEMONIC*); //!
+     void BuildHits(TFragment*,MNEMONIC*); //!
 
      TPaces& operator=(const TPaces&);  //! 
 

@@ -78,8 +78,11 @@ public:
    Float_t GetCharge(int iter=0)const; //!
    long GetTimeStamp_ns(); //!
 
-   Int_t GetCfd(int iter=0) const { return Cfd.at(iter); } //!
-   Int_t GetLed(int iter=0) const { return Led.at(iter); } //!
+   Int_t GetCfd(int iter=0)     const { return Cfd.at(iter);     } //!
+   Int_t GetLed(int iter=0)     const { return Led.at(iter);     } //!
+   Int_t GetZc(int iter=0)      const { return Zc.at(iter);      } //!
+   Int_t GetCcShort(int iter=0) const { return ccShort.at(iter); } //!
+   Int_t GetCcLong(int iter=0)  const { return ccLong.at(iter);  } //!
 
    Int_t Get4GCfd(int i=0); //!
 

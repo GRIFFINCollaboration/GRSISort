@@ -179,6 +179,36 @@ void	TCSM::BuildHits(TDetectorData *ddata, Option_t *opt)
   */
 }
 
+void TCSM::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+////Builds the CSM Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
+////This is done for both CSM and it's suppressors.
+//	if(!frag || !mnemonic)
+//      return;
+//
+//   Clear("");
+//
+//	for(int i = 0; i < frag->Charge.size(); ++i) {
+//	  TCSMHit hit;
+//	  hit.SetAddress(frag->ChannelAddress);
+//	  hit.SetTime(frag->GetTimeStamp());
+//	  hit.SetCfd(frag->GetCfd(i));
+//	  hit.SetCharge(frag->GetCharge(i));
+//	  
+//      if(TCSM::SetWave()){
+//         if(frag->wavebuffer.size() == 0) {
+//            printf("Warning, TCSM::SetWave() set, but data waveform size is zero!\n");
+//         }
+//         hit.SetWaveform(frag->wavebuffer);
+//         if(hit.GetWaveform().size() > 0) {
+//            printf("Analyzing waveform, current cfd = %d, psd = %d\n",hit.GetCfd(),hit.GetPsd());
+//            bool analyzed = hit.AnalyzeWaveform();
+//            printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",hit.GetCfd(),hit.GetPsd());
+//         }
+//      }
+//
+//	  AddHit(&hit);
+//	}
+}
 
 void TCSM::Clear(Option_t *option)
 {
