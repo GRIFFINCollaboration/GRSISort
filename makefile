@@ -107,7 +107,7 @@ bin:
 
 config:
 	@cp util/grsi-config bin/
-	@find libraries/*/ users/ -name "*.pcm" -exec cp {} libraries/ \;
+	@find .build/ users/ -name "*.pcm" -exec cp {} libraries/ \;
 
 # Functions for determining the files included in a library.
 # All src files in the library directory are included.
@@ -133,9 +133,9 @@ find_linkdef = $(shell find $(1) -name "*LinkDef.h")
 # Therefore, usual wildcard rules are insufficient.
 # Eval is more powerful, but is less convenient to use.
 define library_template
-.build/$(1)/$(notdir $(1))Dict.cxx: $$(call dict_header_files,$(1)/LinkDef.h) $(1)/LinkDef.h
+.build/$(1)/$(notdir $(1))Dict.cxx: $(1)/LinkDef.h $$(call dict_header_files,$(1)/LinkDef.h)
 	@mkdir -p $$(dir $$@)
-	$$(call run_and_test,rootcint -f $$@ -c $$(INCLUDES) -p $$^,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
+	$$(call run_and_test,rootcint -f $$@ -c $$(INCLUDES) -p $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
 
 .build/$(1)/LibDictionary.o: .build/$(1)/$(notdir $(1))Dict.cxx
 	$$(call run_and_test,$$(CPP) -fPIC -c $$< -o $$@ $$(CFLAGS),$$@,$$(COM_COLOR),$$(COM_STRING),$$(OBJ_COLOR) )
