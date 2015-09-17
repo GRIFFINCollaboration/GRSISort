@@ -805,8 +805,9 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t *data, int address) {
    int  x = 1; //We have already read the header so we can skip the 0th word.
 
 	//we expect a word starting with 0xd containing the network packet id
-	if(!SetScalerNetworkPacket(data[x++],scalerEvent)) {
-		return -x;
+   //this is a different format than the others because it will not always be in the scaler word
+	if(SetScalerNetworkPacket(data[x],scalerEvent)) {
+		return x++;
 	}
 
 	//we expect a word starting with 0xa containing the 28 lowest bits of the timestamp
@@ -829,11 +830,10 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t *data, int address) {
 }
 
 bool TDataParser::SetScalerNetworkPacket(uint32_t value, TScalerData* scalerEvent) {
-//Ignores the network packet number (for now)
-   if((value>>24) != 0xd0) {
+   if((value>>28) != 0xd) {
       return false;
    }
-	scalerEvent->SetNetworkPacketId(value & 0x00ffffff);
+	scalerEvent->SetNetworkPacketId(value & 0x0fffffff);
    return true;
 }
 
