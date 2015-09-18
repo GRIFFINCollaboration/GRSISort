@@ -80,11 +80,13 @@ class TGRSIRootIO : public TObject {
       TPPG *GetPPG()  { return fPPG;  }
       void FillPPG(TPPGData*);
       void FinalizePPG();
+      int GetTimesPPGCalled()  { return fTimesPPGCalled;  }
 
 		void SetUpScaler();
 		TScaler* GetScaler() { return fScaler; }
 		void FillScaler(int, TScalerData*);
 		void FinalizeScaler();
+      int GetTimesScalerCalled()  { return fTimesScalerCalled;  }
 
       void SetUpEpicsTree();
       TTree *GetEpicsTree()  { return fEpicsTree;  }

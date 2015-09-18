@@ -510,10 +510,12 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
 void TGRSILoop::Initialize() {   }
 
 void TGRSILoop::Finalize() { 
+   int PPGEvents = TGRSIRootIO::Get()->GetTimesPPGCalled();
+   int ScalerEvents = TGRSIRootIO::Get()->GetTimesScalerCalled();
    printf("in finalization phase.\n");   
    printf(DMAGENTA "successfully sorted " DBLUE "%0d" DMAGENTA "/" 
           DCYAN "%0d" DMAGENTA "  ---> " DYELLOW " %.2f" DMAGENTA " percent passed." 
-          RESET_COLOR "\n",fFragsSentToTree,fFragsReadFromMidas,((double)fFragsSentToTree/(double)fFragsReadFromMidas)*100.);
+          RESET_COLOR "\n",fFragsSentToTree+PPGEvents+ScalerEvents,fFragsReadFromMidas,((double)(fFragsSentToTree+PPGEvents+ScalerEvents)/(double)fFragsReadFromMidas)*100.);
 
 //   TIter *iter = TChannel::GetChannelIter();   
 //   while(TChannel *chan = (TChannel*)iter->Next()) {
