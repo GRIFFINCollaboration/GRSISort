@@ -206,6 +206,7 @@ class TDecay : public TVirtualDecay {
    TDecayChain* GetChain(UInt_t idx);
 
    void SetHalfLife(Int_t Id, Double_t halflife);
+   void SetHalfLifeLimits(Int_t Id, Double_t low, Double_t high);
    TFitResultPtr Fit(TH1* fithist, Option_t *opt = "");
 
    void Print(Option_t* opt = "") const;
