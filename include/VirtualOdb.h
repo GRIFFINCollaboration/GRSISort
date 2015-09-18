@@ -13,7 +13,15 @@
 #define INCLUDE_VirtualOdb_H
 
 /// Interface class for ODB access
-#include <stdint.h>
+#if __APPLE__ 
+//#include <_types/_uint8_t.h> 
+#include <_types/_uint16_t.h>
+#include <_types/_uint32_t.h> 
+#include <_types/_uint64_t.h> 
+#include <sys/_types/_int16_t.h> 
+#else
+#include <stdint.h> 
+#endif
 
 class TXMLNode;
 

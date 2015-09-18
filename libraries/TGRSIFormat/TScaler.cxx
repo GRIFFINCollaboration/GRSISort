@@ -16,6 +16,7 @@ TScalerData::TScalerData(const TScalerData& rhs) {
 void TScalerData::Copy(TObject &rhs) const {
   ((TScalerData&)rhs).fTimeStamp       =  fTimeStamp;      
   ((TScalerData&)rhs).fScaler          =  fScaler;        
+  ((TScalerData&)rhs).fNetworkPacketId =  fNetworkPacketId;        
   ((TScalerData&)rhs).fLowTimeStamp    =  fLowTimeStamp;   
   ((TScalerData&)rhs).fHighTimeStamp   =  fHighTimeStamp;  
 }
@@ -33,6 +34,7 @@ void TScalerData::Clear(Option_t* opt) {
    fTimeStamp        =  0;
    fLowTimeStamp     =  0;
    fHighTimeStamp    =  0;
+   fNetworkPacketId  =  -1;
    fScaler.clear();
 }
 

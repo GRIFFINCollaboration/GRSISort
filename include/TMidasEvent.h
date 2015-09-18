@@ -6,7 +6,6 @@
 #define TMIDASEVENT_H
 
 #include "Globals.h"
-#include <stdint.h>
 //#include "TMidasStructs.h"
 #include "TMidasEventHeader.h"
 

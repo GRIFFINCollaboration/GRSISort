@@ -2,7 +2,6 @@
 #define TDATAPARSER_H
 
 #include "Globals.h"
-#include <stdint.h>
 #include <ctime>
 #include <vector>
 #include <map>
