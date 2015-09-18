@@ -95,8 +95,9 @@ TDecay *GenDecay(){
    TDecayChain *chain = new TDecayChain(2);
 //   TDecayChain *chain2 = new TDecayChain(1);
 
-   chain->GetDecay(0)->SetHalfLife(12.77);
-   chain->GetDecay(1)->SetHalfLife(1.68);
+   chain->GetDecay(0)->SetHalfLife(5);
+   chain->GetDecay(1)->SetHalfLife(1);
+ //  chain->GetDecay(1)->SetHalfLife(15);
 //   chain2->GetDecay(0)->SetHalfLife(6);
 
    chain->GetDecay(0)->SetIntensity(100);
