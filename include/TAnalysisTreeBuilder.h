@@ -7,7 +7,6 @@
 #include <vector>
 #include <string>
 #include <queue>
-#include <stdint.h>
 #ifndef __CINT__
 #define _GLIBCXX_USE_NANOSLEEP 1
    #include <thread>

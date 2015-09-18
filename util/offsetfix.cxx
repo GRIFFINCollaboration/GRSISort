@@ -654,9 +654,7 @@ bool ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
 
 //  }
 
-   if(time<0)
-      time += 0x3ffffffffff;
-   else if(time>0x3ffffffffff)
+   if(time>0x3ffffffffff)
       time -= 0x3ffffffffff;
 
    // moving these inside the next switch, to account for doubly printed words.

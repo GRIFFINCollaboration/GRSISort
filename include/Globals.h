@@ -57,8 +57,10 @@ typedef char int8_t;
 #include <_types/_uint16_t.h>
 #include <_types/_uint32_t.h> 
 #include <_types/_uint64_t.h> 
-#endif
+#include <sys/_types/_int16_t.h> 
+#else
 #include <stdint.h> 
+#endif
 
 #include <string>
 #include <cstdio>
