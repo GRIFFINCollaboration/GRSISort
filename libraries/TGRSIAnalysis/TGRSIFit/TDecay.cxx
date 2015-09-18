@@ -196,7 +196,8 @@ void TSingleDecay::UpdateDecays(){
 void TSingleDecay::SetHalfLifeLimits(const Double_t &low, const Double_t &high){
    fDecayFunc->SetParLimits(1,std::log(2)/low,std::log(2)/high);
    //Tell this info to the rest of the decays
-   UpdateDecays();}
+   UpdateDecays();
+}
    
 void TSingleDecay::SetIntensityLimits(const Double_t &low, const Double_t &high){
    fFirstParent->fDecayFunc->SetParLimits(0,low,high);
@@ -206,6 +207,20 @@ void TSingleDecay::SetIntensityLimits(const Double_t &low, const Double_t &high)
 void TSingleDecay::SetDecayRateLimits(const Double_t &low, const Double_t &high){
    fDecayFunc->SetParLimits(1,low,high);
    UpdateDecays();
+}
+
+void TSingleDecay::GetHalfLifeLimits(Double_t &low, Double_t &high) const{
+   fDecayFunc->GetParLimits(1,low,high);
+   low = std::log(2)/low;
+   high = std::log(2)/high;
+}
+   
+void TSingleDecay::GetIntensityLimits(Double_t &low, Double_t &high) const{
+   fFirstParent->fDecayFunc->GetParLimits(0,low,high);
+}
+
+void TSingleDecay::GetDecayRateLimits(Double_t &low, Double_t &high) const{
+   fDecayFunc->GetParLimits(1,low,high);
 }
 
 TSingleDecay* const TSingleDecay::GetParentDecay(){
@@ -598,14 +613,18 @@ void TDecay::SetParameters(){
    fFitFunc->SetParLimits(0,tmpbglow,tmpbghigh);
 
    Int_t par_counter = 1;
-
+   Double_t low,high;
    for(int i =0; i<fChainList.size(); ++i){
       fFitFunc->SetParName(par_counter,Form("Intensity_ChainId%d",fChainList.at(i)->GetDecay(0)->GetChainId()));
       fChainList.at(i)->SetChainParameters();
+      fChainList.at(i)->GetDecay(0)->GetIntensityLimits(low,high);
+      fFitFunc->SetParLimits(par_counter,low,high);
       fFitFunc->SetParameter(par_counter++, fChainList.at(i)->GetDecay(0)->GetIntensity());
    }
    for(auto it = fDecayMap.begin(); it != fDecayMap.end();++it){
       fFitFunc->SetParName(par_counter,Form("DecayRate_DecayId%d",it->first));
+      it->second.at(0)->GetDecayRateLimits(low,high);
+      fFitFunc->SetParLimits(par_counter,low,high);
       fFitFunc->SetParameter(par_counter++, it->second.at(0)->GetDecayRate());
    }
 

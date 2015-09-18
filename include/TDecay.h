@@ -46,7 +46,7 @@ class TDecayFit : public TF1 {
    void SetDecay(TVirtualDecay* decay);
    TVirtualDecay* GetDecay() const;
  //  void DrawComponents() const; // *MENU* 
-   void DrawComponents() const; // *MENU* 
+   void DrawComponents() const; 
 
    virtual void Print(Option_t *opt = "") const;
 
@@ -101,6 +101,9 @@ class TSingleDecay : public TVirtualDecay {
    void SetHalfLifeLimits(const Double_t &low, const Double_t &high);
    void SetIntensityLimits(const Double_t &low, const Double_t &high);
    void SetDecayRateLimits(const Double_t &low, const Double_t &high);
+   void GetHalfLifeLimits(Double_t &low, Double_t &high) const;
+   void GetIntensityLimits(Double_t &low, Double_t &high) const;
+   void GetDecayRateLimits(Double_t &low, Double_t &high) const;
    void ReleaseHalfLife()                      { fDecayFunc->ReleaseParameter(1);}
    void ReleaseDecayRate()                     { fDecayFunc->ReleaseParameter(1);}
    void ReleaseIntensity()                     { fDecayFunc->ReleaseParameter(0);}
@@ -207,6 +210,7 @@ class TDecay : public TVirtualDecay {
 
    void SetHalfLife(Int_t Id, Double_t halflife);
    void SetHalfLifeLimits(Int_t Id, Double_t low, Double_t high);
+   void FixHalfLife(Int_t Id,Double_t halflife) {SetHalfLifeLimits(Id,halflife,halflife);}
    TFitResultPtr Fit(TH1* fithist, Option_t *opt = "");
 
    void Print(Option_t* opt = "") const;
