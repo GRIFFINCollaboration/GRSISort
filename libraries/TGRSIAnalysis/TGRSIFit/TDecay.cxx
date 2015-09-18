@@ -666,6 +666,20 @@ void TDecay::SetHalfLife(Int_t Id, Double_t halflife){
 
 }
 
+void TDecay::SetHalfLifeLimits(Int_t Id, Double_t low, Double_t high){
+  auto it = fDecayMap.find(Id);
+   if(it == fDecayMap.end()){
+      printf("Could not find Id = : %d\n",Id);
+      return;
+   }
+   for(int i=0; i<it->second.size(); ++i){
+      it->second.at(i)->SetHalfLifeLimits(low,high);
+      it->second.at(i)->SetTotalDecayParameters();
+   }
+
+}
+
+
 void TDecay::Print(Option_t *opt) const{
    printf("Background: %lf +/- %lf\n\n", GetBackground(),GetBackgroundError());
    for(auto it = fDecayMap.begin(); it!=fDecayMap.end();++it){
