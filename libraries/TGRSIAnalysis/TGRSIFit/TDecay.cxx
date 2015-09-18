@@ -20,10 +20,11 @@ UInt_t TSingleDecay::fCounter = 0;
 UInt_t TDecayChain::fChainCounter = 0;
 
 void TDecayFit::DrawComponents() const { 
+   printf("pointer: %p\n",fDecay);
+   
    printf("Class: %s\n",fDecay->ClassName());
    fDecay->DrawComponents("same");
-   fDecay->Draw("same");
- //  printf("pointer: %p\n",fDecayClass);
+ //  fDecay->Draw("same");
 //   printf("Is valid: %d\n",fDecay.IsValid());
  //  GetDecay()->Print();
 //   GetDecay()->DrawComponents(); 
@@ -532,7 +533,7 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
    Int_t parCounter = 1;
    SetParameters();
 
-   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sLRSE+",opt));
+   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sLRSE",opt));
    Double_t chi2 = fitres->Chi2();
    Double_t ndf = fitres->Ndf();
 
@@ -581,6 +582,9 @@ void TDecay::SetParameters(){
    fFitFunc->GetRange(xlow,xhigh);
 
    Double_t tmpbg = fFitFunc->GetParameter(0);
+   Double_t tmpbglow, tmpbghigh;
+   fFitFunc->GetParLimits(0,tmpbglow,tmpbghigh);
+   Double_t tmpbgerr = fFitFunc->GetParError(0);
    if(fFitFunc){
       delete fFitFunc;
       fFitFunc = 0;
@@ -589,6 +593,8 @@ void TDecay::SetParameters(){
    fFitFunc->SetDecay(this);
    fFitFunc->SetParName(0,"Background");
    fFitFunc->SetParameter(0,tmpbg);
+   fFitFunc->SetParError(0,tmpbgerr);
+   fFitFunc->SetParLimits(0,tmpbglow,tmpbghigh);
 
    Int_t par_counter = 1;
 

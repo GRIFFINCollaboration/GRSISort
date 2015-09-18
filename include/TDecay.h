@@ -45,6 +45,7 @@ class TDecayFit : public TF1 {
 
    void SetDecay(TVirtualDecay* decay);
    TVirtualDecay* GetDecay() const;
+ //  void DrawComponents() const; // *MENU* 
    void DrawComponents() const; // *MENU* 
 
    virtual void Print(Option_t *opt = "") const;
@@ -217,6 +218,10 @@ class TDecay : public TVirtualDecay {
    void DrawComponents(Option_t *opt = "",Bool_t color_flag = true);
    void Draw(Option_t *opt = "");
    void DrawBackground(Option_t *opt = "");
+   void FixBackground(const Double_t &background)  { fFitFunc->FixParameter(0,background); }
+   void FixBackground()                         { fFitFunc->FixParameter(0,GetBackground());}
+   void SetBackgroundLimits(const Double_t &low, const Double_t &high);
+   void ReleaseBackground()                    { fFitFunc->ReleaseParameter(0);}
 
   private:
    void RemakeMap();
