@@ -286,7 +286,7 @@ TFitResultPtr TSingleDecay::Fit(TH1* fithist,Option_t *opt) {
    Int_t parCounter = 1;
    TSingleDecay* curDecay = fFirstParent;
    SetTotalDecayParameters();
-   TFitResultPtr fitres = fithist->Fit(fTotalDecayFunc,Form("%sLRSE",opt));
+   TFitResultPtr fitres = fithist->Fit(fTotalDecayFunc,Form("%sWLRS",opt));
    Double_t chi2 = fitres->Chi2();
    Double_t ndf = fitres->Ndf();
 
@@ -449,7 +449,7 @@ TFitResultPtr TDecayChain::Fit(TH1* fithist, Option_t* opt) {
    Int_t parCounter = 1;
    TSingleDecay* curDecay = fDecayChain.at(0);
    SetChainParameters();
-   TFitResultPtr fitres = fithist->Fit(fChainFunc,Form("%sLRSE",opt));
+   TFitResultPtr fitres = fithist->Fit(fChainFunc,Form("%sWLRS",opt));
    Double_t chi2 = fitres->Chi2();
    Double_t ndf = fitres->Ndf();
 
@@ -530,10 +530,11 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
    TVirtualFitter::SetPrecision(1.0e-10);
    TVirtualFitter::SetMaxIterations(10000);
+   fithist->Sumw2();
    Int_t parCounter = 1;
    SetParameters();
 
-   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sLRSE",opt));
+   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sWLRS",opt));
    Double_t chi2 = fitres->Chi2();
    Double_t ndf = fitres->Ndf();
 
