@@ -322,6 +322,10 @@ void TPPG::Streamer(TBuffer &R__b)
 
 }*/
 
+ULong64_t TPPG::GetTimeInCycle(ULong64_t real_time){
+   return real_time%GetCycleLength();
+
+}
 
 ULong64_t TPPG::GetCycleLength() {
    if(fCycleLength == 0) {
