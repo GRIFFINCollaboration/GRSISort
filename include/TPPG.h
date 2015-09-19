@@ -95,6 +95,7 @@ class TPPG : public TObject	{
    
     bool Correct(bool verbose = false);
     ULong64_t GetCycleLength();
+    ULong64_t GetTimeInCycle(ULong64_t real_time);
 
     TPPGData* const Next();
     TPPGData* const Previous();
