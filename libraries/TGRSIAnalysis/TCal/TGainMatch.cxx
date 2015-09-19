@@ -348,18 +348,18 @@ Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2 *mat, Double_t energy1, D
    TH1D* h1 = new TH1D;
 	for(int chan=first_chan; chan<=last_chan;chan++){
       gm->Clear();
-      printf("\nNow fitting channel: %d\n",chan);
-		TH1D* h1 = (TH1D*)(mat->ProjectionY(Form("Channel%d",chan),chan+1,chan+1,"o"));
+      printf("\nNow fitting channel: %d\n",chan-1);
+		TH1D* h1 = (TH1D*)(mat->ProjectionY(Form("Channel%d",chan),chan,chan,"o"));
       printf("BIN WIDTH %lf\n",h1->GetXaxis()->GetBinWidth(h1->GetXaxis()->GetFirst() + 1));
 		if(h1->Integral() < 100)
          continue;
 
-      if(!(gm->CoarseMatch(h1,chan))){
-         badlist.push_back(chan);
+      if(!(gm->CoarseMatch(h1,chan-1))){
+         badlist.push_back(chan-1);
          continue;
       }
-      gm->SetName(Form("gm_chan_%d",chan));
-      cm->AddToManager(gm,chan);
+      gm->SetName(Form("gm_chan_%d",chan-1));
+      cm->AddToManager(gm,chan-1);
    }
    if(badlist.size())
       printf("The following channels did not gain match properly: ");
@@ -426,15 +426,15 @@ Bool_t TGainMatch::FineMatchFastAll(TCalManager* cm, TH2 *mat1, TPeak* peak1, TH
       TPeak *copy_peak1 = new TPeak(*peak1);
       TPeak *copy_peak2 = new TPeak(*peak2);
 
-      printf("\nNow fitting channel: %d\n",chan);
-		TH1D* h1 = (TH1D*)(mat1->ProjectionY(Form("Channel%d_mat1",chan),chan+1,chan+1,"o"));
-		TH1D* h2 = (TH1D*)(mat2->ProjectionY(Form("Channel%d_mat2",chan),chan+1,chan+1,"o"));
+      printf("\nNow fitting channel: %d\n",chan-1);
+		TH1D* h1 = (TH1D*)(mat1->ProjectionY(Form("Channel%d_mat1",chan-1),chan,chan,"o"));
+		TH1D* h2 = (TH1D*)(mat2->ProjectionY(Form("Channel%d_mat2",chan-1),chan,chan,"o"));
 		if(h1->Integral() < 100 || h2->Integral() < 100){
-         gm->Warning("FineMatchFastAll","Empty channel = %d",chan);
+         gm->Warning("FineMatchFastAll","Empty channel = %d",chan-1);
          continue;
       }
-      if(!(gm->FineMatchFast(h1,copy_peak1,h2,copy_peak2,chan))){
-         badlist.push_back(chan);
+      if(!(gm->FineMatchFast(h1,copy_peak1,h2,copy_peak2,chan-1))){
+         badlist.push_back(chan-1);
          continue;
       }
       cm->AddToManager(gm);
@@ -609,16 +609,16 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2 *charge_mat, TH2* eng_mat, 
 
 	for(int chan=first_chan; chan<=last_chan;chan++){
  //  for(int chan=48;chan<=49;chan++){
-      printf("\nNow fitting channel: %d\n",chan);
-		TH1D* chargeh = (TH1D*)(charge_mat->ProjectionY(Form("Charge%d_mat",chan),chan+1,chan+1,"o"));
-      TH1D* engh = (TH1D*)(eng_mat->ProjectionY(Form("Energy%d_mat",chan),chan+1,chan+1,"o"));
+      printf("\nNow fitting channel: %d\n",chan-1);
+		TH1D* chargeh = (TH1D*)(charge_mat->ProjectionY(Form("Charge%d_mat",chan-1),chan,chan,"o"));
+      TH1D* engh = (TH1D*)(eng_mat->ProjectionY(Form("Energy%d_mat",chan-1),chan,chan,"o"));
 		if(chargeh->Integral() < 100 || chargeh->Integral() < 100){
-         gm->Warning("FineMatchAll","Empty channel = %d",chan);
+         gm->Warning("FineMatchAll","Empty channel = %d",chan-1);
          continue;
       }
       //Needs to align before matching
-      if(!(gm->FineMatch(engh,testhist,chargeh,energy1,energy2,low_range,high_range,chan))){
-         badlist.push_back(chan);
+      if(!(gm->FineMatch(engh,testhist,chargeh,energy1,energy2,low_range,high_range,chan-1))){
+         badlist.push_back(chan-1);
          continue;
       }
       cm->AddToManager(gm);

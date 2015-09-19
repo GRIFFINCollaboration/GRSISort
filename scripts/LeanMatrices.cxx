@@ -1,5 +1,5 @@
 
-//g++ exAnalysis.C -std=c++0x -I$GRSISYS/include -L$GRSISYS/libraries -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTGRSIFit -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `grsi-config --cflags --libs` `root-config --cflags --libs`  -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
+//g++ LeanMatrices.cxx -std=c++0x -I$GRSISYS/include -L$GRSISYS/libraries -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTGRSIFit -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `grsi-config --cflags --libs` `root-config --cflags --libs`  -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
 #include <iostream>
 #include <iomanip>
 #include <utility>
@@ -36,8 +36,8 @@
 //The compiled script works like this
 //
 //  1. Starts in the main function by finding the analysis tree, setting up input and output files
-//  2. Calls the exAnalysis function
-//  3. exAnalysis creates 1D and 2D histograms and adds them to a list
+//  2. Calls the LeanMatrices function
+//  3. LeanMatrices creates 1D and 2D histograms and adds them to a list
 //  4. Some loops over event "packets" decides which histograms should be filled and fills them.
 //  5. The list of now filled histograms is returned to the main function
 //  6. The list is written (meaning all of the histograms are written) to the output root file
@@ -48,21 +48,21 @@
 //This function gets run if running interpretively
 //Not recommended for the analysis scripts
 #ifdef __CINT__ 
-void exAnalysis() {
+void LeanMatrices() {
    if(!AnalysisTree) {
       printf("No analysis tree found!\n");
       return;
    }
    //coinc window = 0-20, bg window 40-60, 6000 bins from 0. to 6000. (default is 4000)
-   TList *list = exAnalysis(AnalysisTree, TPPG, TGRSIRunInfo, 0.);
+   TList *list = LeanMatrices(AnalysisTree, TPPG, TGRSIRunInfo, 0.);
 
    TFile *outfile = new TFile("output.root","recreate");
    list->Write();
 }
 #endif
 
-TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = NULL) {
-   if(ppg == NULL || runInfo == NULL) {
+TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = NULL) {
+   if(runInfo == NULL) {
       return NULL;
    }
 
@@ -101,6 +101,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    TH1D* ggTimeDiff = new TH1D("ggTimeDiff", "#gamma-#gamma time difference", 300,0,300); list->Add(ggTimeDiff);
    TH1D* gbTimeDiff = new TH1D("gbTimeDiff", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(gbTimeDiff); 
    TH2D* bbTimeDiff = new TH2D("bbTimeDiff", "#beta energy vs. #beta-#beta time difference", 2000,-1000,1000, 1000, 0., 2e6); list->Add(bbTimeDiff); 
+   TH2D* gTimeDiff = new TH2D("gTimeDiff", "channel vs. time difference", 2000,0,2000, 65, 1., 65.); list->Add(gTimeDiff); 
    TH1F* gtimestamp = new TH1F("gtimestamp", "#gamma time stamp", 10000,0,1000); list->Add(gtimestamp);
    TH1F* btimestamp = new TH1F("btimestamp", "#beta time stamp", 10000,0,1000); list->Add(btimestamp);
    TH2F* gbEnergyvsgTime = new TH2F("gbEnergyvsgTime", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsgTime);
@@ -112,10 +113,18 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    TH2F* ggbmatrixt = new TH2F("ggbmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixt);
    TH2F* grifscep_hp = new TH2F("grifscep_hp","Sceptar vs Griffin hit pattern",64,0,64,20,0,20); list->Add(grifscep_hp);
    TH2F* gbTimevsg = new TH2F("gbTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(gbTimevsg); 
-   TH2F* gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesCyc);
-   TH2F* gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
-   TH2F* gammaSinglesBmCyc = new TH2F("gammaSinglesBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBmCyc);
-   TH2F* betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5,100,0,100); list->Add(betaSinglesCyc);
+
+   TH2F* gammaSinglesCyc;
+   TH2F* gammaSinglesBCyc;
+   TH2F* gammaSinglesBmCyc;
+   TH2F* betaSinglesCyc;
+
+   if(ppg){
+      gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesCyc);
+      gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
+      gammaSinglesBmCyc = new TH2F("gammaSinglesBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBmCyc);
+      betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5,100,0,100); list->Add(betaSinglesCyc);
+   }
    //addback spectra
    TH1D* gammaAddback = new TH1D("gammaAddback","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
    TH1D* gammaAddbackB = new TH1D("gammaAddbackB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaAddbackB);
@@ -133,15 +142,23 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    TH2F* abTimevsg = new TH2F("abTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(abTimevsg); 
    TH2F* abTimevsgf = new TH2F("abTimevsgf","#gamma energy vs. #gamma-#beta timing (first #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgf); 
    TH2F* abTimevsgl = new TH2F("abTimevsgl","#gamma energy vs. #gamma-#beta timing (last #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgl); 
-   TH2F* gammaAddbackCyc = new TH2F("gammaAddbackCyc", "Cycle time vs. #gamma energy", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaAddbackCyc);
-   TH2F* gammaAddbackBCyc = new TH2F("gammaAddbackBCyc", "Cycle time vs. #beta coinc #gamma energy", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaAddbackBCyc);
-   TH2F* gammaAddbackBmCyc = new TH2F("gammaAddbackBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaAddbackBmCyc);
 
+   TH2F* gammaAddbackCyc;
+   TH2F* gammaAddbackBCyc;
+   TH2F* gammaAddbackBmCyc; 
+   if(ppg){
+      gammaAddbackCyc = new TH2F("gammaAddbackCyc", "Cycle time vs. #gamma energy", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaAddbackCyc);
+      gammaAddbackBCyc = new TH2F("gammaAddbackBCyc", "Cycle time vs. #beta coinc #gamma energy", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaAddbackBCyc);
+      gammaAddbackBmCyc = new TH2F("gammaAddbackBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", ppg->GetCycleLength()/1000000,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaAddbackBmCyc);
+   }
    list->Sort(); //Sorts the list alphabetically
-   list->Add(ppg);
-   list->Add(runInfo);
+   if(ppg)
+      list->Add(ppg);
 
-   TGRSIDetectorHit::SetPPGPtr(ppg);
+   list->Add(runInfo);
+   
+   if(ppg)
+      TGRSIDetectorHit::SetPPGPtr(ppg);
 
    ///////////////////////////////////// PROCESSING /////////////////////////////////////
 
@@ -174,6 +191,9 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    
    list->Add(t);
 
+   //store the last timestamp of each channel
+   std::vector<long> lastTimeStamp(65,0);
+
    std::cout<<std::fixed<<std::setprecision(1); //This just make outputs not look terrible
    size_t angIndex;
    if(maxEntries == 0 || maxEntries > tree->GetEntries()) {
@@ -193,9 +213,17 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
          gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergy()); 
          gtimestamp->Fill(grif->GetGriffinHit(one)->GetTime()/100000000.);
          Long_t time = (Long_t)(grif->GetHit(one)->GetTime());
+         if(ppg){
          time = time%ppg->GetCycleLength();
-         //gammaSinglesCyc->Fill((time - ppg->GetLastStatusTime(time, TPPG::kTapeMove))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
-         gammaSinglesCyc->Fill(time/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
+            //gammaSinglesCyc->Fill((time - ppg->GetLastStatusTime(time, TPPG::kTapeMove))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
+            gammaSinglesCyc->Fill(time/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
+         }
+         if(grif->GetGriffinHit(one)->GetArrayNumber() < lastTimeStamp.size()) {
+            if(lastTimeStamp.at(grif->GetGriffinHit(one)->GetArrayNumber()) > 0) {
+               gTimeDiff->Fill(grif->GetHit(one)->GetTimeStamp() - lastTimeStamp.at(grif->GetGriffinHit(one)->GetArrayNumber()), grif->GetGriffinHit(one)->GetArrayNumber());
+            }
+            lastTimeStamp.at(grif->GetGriffinHit(one)->GetArrayNumber()) = grif->GetHit(one)->GetTimeStamp();
+         }
          //We now want to loop over any other gammas in this packet
          for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
             if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
@@ -221,7 +249,8 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             //if(scep->GetHit(b)->GetEnergy() < 20000) continue;
             btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
-            betaSinglesCyc->Fill((((ULong64_t)(scep->GetHit(b)->GetTime()))%(ppg->GetCycleLength()))/1e5,(scep->GetHit(b)->GetTime())/(ppg->GetCycleLength())); 
+            if(ppg)
+               betaSinglesCyc->Fill((((ULong64_t)(scep->GetHit(b)->GetTime()))%(ppg->GetCycleLength()))/1e5,(scep->GetHit(b)->GetTime())/(ppg->GetCycleLength())); 
             for(int b2 = 0; b2 < scep->GetMultiplicity(); ++b2) {
                if(b == b2) continue;
                bbTimeDiff->Fill(scep->GetHit(b)->GetTime()-scep->GetHit(b2)->GetTime(), scep->GetHit(b)->GetEnergy());
@@ -240,14 +269,17 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
                }
                if((gbTlow <= grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) {
                   ULong64_t time = (ULong64_t)(grif->GetHit(one)->GetTime());
-                  time = time%ppg->GetCycleLength();
+                  if(ppg){
+                     time = time%ppg->GetCycleLength();
+                     gammaSinglesBmCyc->Fill(time/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
+                  }
                   //Plots a gamma energy spectrum in coincidence with a beta
                   gbEnergyvsgTime->Fill(grif->GetGriffinHit(one)->GetTime()/1e8, grif->GetGriffinHit(one)->GetEnergy());
                   gammaSinglesBm->Fill(grif->GetGriffinHit(one)->GetEnergy());
-                  gammaSinglesBmCyc->Fill(time/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
                   if(!found) {
                      gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergy());
-                     gammaSinglesBCyc->Fill(time/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
+                     if(ppg)
+                        gammaSinglesBCyc->Fill(time/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
                   }
                   gammaSinglesB_hp->Fill(grif->GetGriffinHit(one)->GetEnergy(),scep->GetSceptarHit(b)->GetDetector());
                   grifscep_hp->Fill(grif->GetGriffinHit(one)->GetArrayNumber(),scep->GetSceptarHit(b)->GetDetector());
@@ -284,10 +316,12 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
          //We want to put every gamma ray in this event into the singles
          gammaAddback->Fill(grif->GetAddbackHit(one)->GetEnergy()); 
          Long_t time = (Long_t)(grif->GetAddbackHit(one)->GetTime());
-         time = time%ppg->GetCycleLength();
-         //gammaSinglesCyc->Fill((time - ppg->GetLastStatusTime(time, TPPG::kTapeMove))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
-         gammaAddbackCyc->Fill(time/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
-         //We now want to loop over any other gammas in this packet
+         if(ppg){
+            time = time%ppg->GetCycleLength();
+            //gammaSinglesCyc->Fill((time - ppg->GetLastStatusTime(time, TPPG::kTapeMove))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
+            gammaAddbackCyc->Fill(time/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
+            //We now want to loop over any other gammas in this packet
+         }
          for(two = 0; two < (int) grif->GetAddbackMultiplicity(); ++two) {
             if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
                continue;
@@ -329,14 +363,17 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
                }
                if((gbTlow <= grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) {
                   ULong64_t time = (ULong64_t)(grif->GetAddbackHit(one)->GetTime());
-                  time = time%ppg->GetCycleLength();
-                  //Plots a gamma energy spectrum in coincidence with a beta
+                  if(ppg){
+                     time = time%ppg->GetCycleLength();
+                     gammaAddbackBmCyc->Fill(time/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
+                     //Plots a gamma energy spectrum in coincidence with a beta
+                  }
                   abEnergyvsgTime->Fill(grif->GetAddbackHit(one)->GetTime()/1e8, grif->GetAddbackHit(one)->GetEnergy());
                   gammaAddbackBm->Fill(grif->GetAddbackHit(one)->GetEnergy());
-                  gammaAddbackBmCyc->Fill(time/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
                   if(!found) {
                      gammaAddbackB->Fill(grif->GetAddbackHit(one)->GetEnergy());
-                     gammaAddbackBCyc->Fill(time/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
+                     if(ppg)
+                        gammaAddbackBCyc->Fill(time/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
                   }
                   gammaAddbackB_hp->Fill(grif->GetAddbackHit(one)->GetEnergy(),scep->GetSceptarHit(b)->GetDetector());
                   //Now we want to loop over gamma rays if they are in coincidence.
@@ -429,11 +466,11 @@ int main(int argc, char **argv) {
 
    //Get PPG from File
    TPPG* myPPG = (TPPG*)file->Get("TPPG");
-   if(myPPG == NULL) {
+/*   if(myPPG == NULL) {
       printf("Failed to find PPG information in file '%s'!\n",argv[1]);
       return 1;
    }
-
+*/
    //Get run info from File
    TGRSIRunInfo* runInfo = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
    if(runInfo == NULL) {
@@ -469,14 +506,14 @@ int main(int argc, char **argv) {
    std::cout << argv[0] << ": starting Analysis after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
    if(argc < 4) {
-      list = exAnalysis(tree,myPPG,runInfo,0, &w);
+      list = LeanMatrices(tree,myPPG,runInfo,0, &w);
    } else {
       int entries = atoi(argv[3]);
       std::cout<<"Limiting processing of analysis tree to "<<entries<<" entries!"<<std::endl;
-      list = exAnalysis(tree,myPPG,runInfo, entries, &w);
+      list = LeanMatrices(tree,myPPG,runInfo, entries, &w);
    }
    if(list == NULL) {
-      std::cout<<"exAnalysis returned TList* NULL!\n"<<std::endl;
+      std::cout<<"LeanMatrices returned TList* NULL!\n"<<std::endl;
       return 1;
    }
 
