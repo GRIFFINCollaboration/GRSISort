@@ -92,15 +92,21 @@ TDecay *TestDecay(){
 }
 
 TDecay *GenDecay(){
-   TDecayChain *chain = new TDecayChain(2);
-//   TDecayChain *chain2 = new TDecayChain(1);
+   TDecayChain *chain = new TDecayChain(1);
+   TDecayChain *chain2 = new TDecayChain(1);
 
    chain->GetDecay(0)->SetHalfLife(5);
-   chain->GetDecay(1)->SetHalfLife(1);
+   chain->GetDecay(0)->SetDecayId(1);
+   chain2->GetDecay(0)->SetHalfLife(1);
+   chain2->GetDecay(0)->SetDecayId(2);
+//   chain->GetDecay(0)->SetDecayRate(log(2)/5);
+//   chain2->GetDecay(0)->SetDecayRate(log(2)/1);
+
  //  chain->GetDecay(1)->SetHalfLife(15);
 //   chain2->GetDecay(0)->SetHalfLife(6);
 
    chain->GetDecay(0)->SetIntensity(100);
+   chain2->GetDecay(0)->SetIntensity(20);
 //   chain2->GetDecay(0)->SetIntensity(10);
 
  //  chain2->GetDecay(0)->SetDecayId(12);
@@ -109,8 +115,9 @@ TDecay *GenDecay(){
 
    std::vector<TDecayChain *> list;
    list.push_back(chain);
-   //list.push_back(chain2);
+   list.push_back(chain2);
    TDecay *decay = new TDecay(list);
+   decay->SetHalfLifeLimits(1,4,6);
 
   // decay->SetHalfLife(12,10);
    decay->SetBackground(10);

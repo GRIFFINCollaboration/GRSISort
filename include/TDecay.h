@@ -210,7 +210,8 @@ class TDecay : public TVirtualDecay {
 
    void SetHalfLife(Int_t Id, Double_t halflife);
    void SetHalfLifeLimits(Int_t Id, Double_t low, Double_t high);
-   void FixHalfLife(Int_t Id,Double_t halflife) {SetHalfLifeLimits(Id,halflife,halflife);}
+   void SetDecayRateLimits(Int_t Id, Double_t low, Double_t high);
+   void FixHalfLife(Int_t Id,Double_t halflife) {SetHalfLife(Id,halflife); SetHalfLifeLimits(Id,halflife,halflife);}
    TFitResultPtr Fit(TH1* fithist, Option_t *opt = "");
 
    void Print(Option_t* opt = "") const;

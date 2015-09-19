@@ -159,7 +159,8 @@ void TSingleDecay::SetTotalDecayParameters() {
       fTotalDecayFunc->SetParameter(parCounter,curDecay->GetDecayRate());
       fTotalDecayFunc->SetParName(parCounter,Form("DecayRate%d",parCounter));
       curDecay->GetDecayFunc()->GetParLimits(1,low_limit,high_limit);
-      fTotalDecayFunc->SetParLimits(parCounter,low_limit,high_limit);
+      if(low_limit != 0 && high_limit != 0)
+         fTotalDecayFunc->SetParLimits(parCounter,low_limit,high_limit);
       ++parCounter;
       curDecay = curDecay->GetDaughterDecay();
    }
@@ -194,7 +195,10 @@ void TSingleDecay::UpdateDecays(){
 }
 
 void TSingleDecay::SetHalfLifeLimits(const Double_t &low, const Double_t &high){
-   fDecayFunc->SetParLimits(1,std::log(2)/low,std::log(2)/high);
+   if(low == 0 || high ==0)
+      fDecayFunc->SetParLimits(1,std::log(2)/high,1e30);
+
+   fDecayFunc->SetParLimits(1,std::log(2)/high,std::log(2)/low);
    //Tell this info to the rest of the decays
    UpdateDecays();
 }
@@ -210,7 +214,11 @@ void TSingleDecay::SetDecayRateLimits(const Double_t &low, const Double_t &high)
 }
 
 void TSingleDecay::GetHalfLifeLimits(Double_t &low, Double_t &high) const{
-   fDecayFunc->GetParLimits(1,low,high);
+   fDecayFunc->GetParLimits(1,high,low);
+   if(low == 0)
+      low = 0.000000000001;
+   if(high == 0)
+      high = 0.000000000001;
    low = std::log(2)/low;
    high = std::log(2)/high;
 }
@@ -503,6 +511,7 @@ TDecay::TDecay(std::vector<TDecayChain*> chainlist) : fFitFunc(0){
 
    fFitFunc = new TDecayFit("tmpfit",this,&TDecay::DecayFit,0,10,1,"TDecay","DecayFit");
    fFitFunc->SetDecay(this);
+   RemakeMap();
    SetParameters();
 }
 
@@ -545,7 +554,8 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
    TVirtualFitter::SetPrecision(1.0e-10);
    TVirtualFitter::SetMaxIterations(10000);
-   fithist->Sumw2();
+   if(!fithist->GetSumw2N())
+      fithist->Sumw2();
    Int_t parCounter = 1;
    SetParameters();
 
@@ -698,6 +708,18 @@ void TDecay::SetHalfLifeLimits(Int_t Id, Double_t low, Double_t high){
 
 }
 
+void TDecay::SetDecayRateLimits(Int_t Id, Double_t low, Double_t high){
+  auto it = fDecayMap.find(Id);
+   if(it == fDecayMap.end()){
+      printf("Could not find Id = : %d\n",Id);
+      return;
+   }
+   for(int i=0; i<it->second.size(); ++i){
+      it->second.at(i)->SetDecayRateLimits(low,high);
+      it->second.at(i)->SetTotalDecayParameters();
+   }
+
+}
 
 void TDecay::Print(Option_t *opt) const{
    printf("Background: %lf +/- %lf\n\n", GetBackground(),GetBackgroundError());
