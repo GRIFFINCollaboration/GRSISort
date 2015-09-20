@@ -324,7 +324,10 @@ void TPPG::Streamer(TBuffer &R__b)
 
 ULong64_t TPPG::GetTimeInCycle(ULong64_t real_time){
    return real_time%GetCycleLength();
+}
 
+ULong64_t TPPG::GetCycleNumber(ULong64_t real_time){
+   return real_time/GetCycleLength();
 }
 
 ULong64_t TPPG::GetCycleLength() {
@@ -346,6 +349,10 @@ ULong64_t TPPG::GetCycleLength() {
    return fCycleLength;
 }
 
+ULong64_t TPPG::GetNumberOfCycles() {
+   return Last()->GetTimeStamp()/GetCycleLength();
+}
+
 Long64_t TPPG::Merge(TCollection *list){
    TIter it(list);
    TPPG *ppg = 0;
@@ -356,6 +363,11 @@ Long64_t TPPG::Merge(TCollection *list){
    
    return 0;
 
+}
+
+ULong64_t TPPG::GetStatusStart(ppg_pattern pat) {
+  //return the time in the cycle when pat starts
+  return GetTimeInCycle(GetLastStatusTime(Last()->GetTimeStamp(), pat));
 }
 
 void TPPG::operator+=(const TPPG& rhs){                           
