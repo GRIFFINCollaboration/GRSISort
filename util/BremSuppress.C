@@ -33,8 +33,8 @@ BremSuppress(TH2 * hp_mat, Double_t threshold){
       }
    }
 */
-   printf("const Int_t nScDet = %d;\n",nScDet); 
-   printf("const Int_t nGrDet = %d;\n",nGrDet); 
+   printf("const Int_t nScDet = %d;\n",nScDet+1); 
+   printf("const Int_t nGrDet = %d;\n",nGrDet+1); 
    printf("Bool_t supp_flag[nScDet][nGrDet] = {\n");
    for(int sc=0; sc<=lastScDet;++sc){
       printf("{ "); 
@@ -48,7 +48,7 @@ BremSuppress(TH2 * hp_mat, Double_t threshold){
       if(sc != (lastScDet))
          printf("},//%d\n",hp_mat->GetXaxis()->GetBinLowEdge(sc));
       else
-         printf("}//%d",hp_mat->GetXaxis()->GetBinLowEdge(sc));
+         printf("}//%d\n",hp_mat->GetXaxis()->GetBinLowEdge(sc));
    }
    printf("};\n");
    hp_mat->SetMinimum(threshold);
