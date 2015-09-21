@@ -98,6 +98,9 @@ class GCanvas : public TCanvas {
       bool PeakFit(GMarker *m1=0,GMarker *m2=0);
       bool PeakFitQ(GMarker *m1=0,GMarker *m2=0);
 
+      bool Integrate(GMarker *m1=0,GMarker *m2=0);
+      bool IntegrateBG(GMarker *m1=0,GMarker *m2=0);
+
       static int fBGSubtraction_type;
 
       Window_t fCanvasWindowID;
