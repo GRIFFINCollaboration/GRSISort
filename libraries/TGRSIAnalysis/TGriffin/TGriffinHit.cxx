@@ -24,10 +24,11 @@ TGriffinHit::~TGriffinHit()  {	}
 
 void TGriffinHit::Copy(TGriffinHit &rhs) const {
   TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
-  ((TGriffinHit&)rhs).fFilter          = fFilter;
-  ((TGriffinHit&)rhs).fGriffinHitBits  = fGriffinHitBits;
-  ((TGriffinHit&)rhs).fCrystal         = fCrystal;
-  ((TGriffinHit&)rhs).fPPG             = fPPG;
+  ((TGriffinHit&)rhs).fFilter                = fFilter;
+  ((TGriffinHit&)rhs).fGriffinHitBits        = fGriffinHitBits;
+  ((TGriffinHit&)rhs).fCrystal               = fCrystal;
+  ((TGriffinHit&)rhs).fPPG                   = fPPG;
+  ((TGriffinHit&)rhs).fBremSuppressed_flag   = fBremSuppressed_flag;//! Bremsstrahlung Suppression flag.
   return;                                      
 }                                       
 
@@ -41,10 +42,11 @@ bool TGriffinHit::InFilter(Int_t wantedfilter) {
 void TGriffinHit::Clear(Option_t *opt)	{
    //Clears the information stored in the TGriffinHit.
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
-   fFilter          =  0;
-   fGriffinHitBits  =  0;
-   fCrystal         =  0xFFFF;
-   fPPG             =  0;
+   fFilter              =  0;
+   fGriffinHitBits      =  0;
+   fCrystal             =  0xFFFF;
+   fPPG                 =  0;
+   fBremSuppressed_flag = false;
 
 }
 
@@ -133,10 +135,10 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
    // add another griffin hit to this one (for addback), 
    // using the time and position information of the one with the higher energy
    if(!CompareEnergy(this,hit)) {
-      this->cfd    = hit->GetCfd();
-      this->time   = hit->GetTime();
-      this->position = hit->GetPosition();
-      this->address = hit->GetAddress();
+      this->SetCfd(hit->GetCfd());
+      this->SetTime(hit->GetTime());
+      this->SetPosition(hit->GetPosition());
+      this->SetAddress(hit->GetAddress());
    }
 
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());

@@ -90,6 +90,7 @@ void TGriffin::Copy(TGriffin &rhs) const {
   ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
   ((TGriffin&)rhs).fCycleStart         = fCycleStart;
   ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
+   
 
   return;                                      
 }                                       
