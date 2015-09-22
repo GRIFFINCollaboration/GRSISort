@@ -38,7 +38,7 @@ bool TPacesHit::InFilter(Int_t wantedfilter) {
 void TPacesHit::Clear(Option_t *opt)	{
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
    filter          =  0;
-   detector        = 0xFFFF;
+   fdetector       =  0xFFFF;
 }
 
 

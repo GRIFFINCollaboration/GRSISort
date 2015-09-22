@@ -260,6 +260,9 @@ Double_t TSingleDecay::ActivityFunc(Double_t *dim, Double_t *par){
    //par[1*i] is the activity
    Double_t result = 1.0;
    UInt_t gencounter = 0;
+   Double_t tlow,thigh;
+   fTotalDecayFunc->GetRange(tlow,thigh);
+   Double_t t = dim[0] - tlow;
    TSingleDecay *curDecay = this;
    //Compute the first multiplication
    while(curDecay){
@@ -292,7 +295,7 @@ Double_t TSingleDecay::ActivityFunc(Double_t *dim, Double_t *par){
          denomDecay = denomDecay->GetParentDecay();
       }
 
-      sum+=TMath::Exp(-par[curDecay->GetGeneration()]*dim[0])/denom; 
+      sum+=TMath::Exp(-par[curDecay->GetGeneration()]*t)/denom; 
 
       curDecay = curDecay->GetParentDecay();
    }
@@ -559,7 +562,8 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
    Int_t parCounter = 1;
    SetParameters();
 
-   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sWLRS",opt));
+   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sWLRS0",opt));
+   fFitFunc->DrawClone("same");
    Double_t chi2 = fitres->Chi2();
    Double_t ndf = fitres->Ndf();
 
@@ -660,12 +664,14 @@ void TDecay::DrawComponents(Option_t *opt, Bool_t color_flag) {
    Double_t low,high;
    fFitFunc->GetRange(low,high);
 
+   Int_t color_counter=1;
    TF1* tmp_comp = new TF1("tmpname",this,&TDecay::ComponentFunc,low,high,1,"TDecay","ComponentFunc");
    for(auto it = fDecayMap.begin(); it != fDecayMap.end(); ++it){
-      tmp_comp->SetName(Form("Componenet_%d",it->first));
+      tmp_comp->SetName(Form("Component_%d",it->first));
       tmp_comp->SetParameter(0,it->first);
-      tmp_comp->SetLineColor(it->first+1);
-      tmp_comp->DrawCopy("same");
+      if(color_counter == kRed || color_counter == kWhite) color_counter++;
+      tmp_comp->SetLineColor(color_counter++);
+      tmp_comp->DrawClone("same");
    }
    delete tmp_comp;
    DrawBackground();
@@ -678,7 +684,7 @@ void TDecay::DrawBackground(Option_t *opt){
    TF1 *bg = new TF1("bg","pol0",low,high);
    bg->SetParameter(0,GetBackground());
    bg->SetLineColor(kMagenta);
-   bg->DrawCopy("same");
+   bg->DrawClone("same");
    delete bg;
 }
 

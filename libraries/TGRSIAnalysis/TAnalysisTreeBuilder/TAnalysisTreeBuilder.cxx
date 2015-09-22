@@ -317,7 +317,7 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
       if(event->empty()) {
          delete event;
       } else {
-         TEventQueue::Get()->Add(event);
+         TEventQueue::Add(event);
       }
    }
    printf("\n");
@@ -376,7 +376,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       //if we've already seen this channel we add the event to the queue
       //if(channelSeen.count(oldFrag->ChannelNumber) == 1) {
          //we might want to create an error statement here!!!
-         //TEventQueue::Get()->Add(event);
+         //TEventQueue::Add(event);
          //event = new std::vector<TFragment>;
          //channelSeen.clear();
       //}
@@ -432,7 +432,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
          //}
          //Add the event to the event Q and put the new fragment which is not part of the event into the start of the
          //next event.
-         TEventQueue::Get()->Add(event);
+         TEventQueue::Add(event);
          //Create a new event and push back the first fragment
          event = new std::vector<TFragment>;//(1,*currentFrag);
          event->push_back(*currentFrag);
@@ -452,7 +452,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    }
    //in case we have fragments left after all of the fragments have been processed, we add them to the queue now
    if(event->size() > 0) {
-      TEventQueue::Get()->Add(event);
+      TEventQueue::Add(event);
    }
    
    //Drop the TFragmentBranch from the Cache so we aren't still holding it in memory
@@ -667,7 +667,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<std::string,
 void TAnalysisTreeBuilder::FillWriteQueue(std::map<std::string, TDetector*> *detectors) {
    //Fill the write Q with the built hits in each of the detectors.
    fAnalysisIn++;
-   TWriteQueue::Get()->Add(detectors);
+   TWriteQueue::Add(detectors);
 }
 
 void TAnalysisTreeBuilder::WriteAnalysisTree() {

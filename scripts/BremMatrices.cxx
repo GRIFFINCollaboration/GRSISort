@@ -1,5 +1,5 @@
 
-//g++ LeanMatrices.cxx -std=c++0x -I$GRSISYS/include -L$GRSISYS/libraries -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTGRSIFit -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `grsi-config --cflags --libs` `root-config --cflags --libs`  -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
+//g++ BremMatrices.cxx -std=c++0x -I$GRSISYS/include -L$GRSISYS/libraries -lAnalysisTreeBuilder -lGriffin -lSceptar -lDescant -lPaces -lGRSIDetector -lTGRSIFit -lTigress -lSharc -lCSM -lTriFoil -lTGRSIint -lGRSILoop -lMidasFormat -lGRSIRootIO -lDataParser -lGRSIFormat -lMidasFormat -lXMLParser -lXMLIO -lProof -lGuiHtml `grsi-config --cflags --libs` `root-config --cflags --libs`  -lTreePlayer -lGROOT -lX11 -lXpm -lSpectrum
 #include <iostream>
 #include <iomanip>
 #include <utility>
@@ -36,8 +36,8 @@
 //The compiled script works like this
 //
 //  1. Starts in the main function by finding the analysis tree, setting up input and output files
-//  2. Calls the LeanMatrices function
-//  3. LeanMatrices creates 1D and 2D histograms and adds them to a list
+//  2. Calls the BremMatrices function
+//  3. BremMatrices creates 1D and 2D histograms and adds them to a list
 //  4. Some loops over event "packets" decides which histograms should be filled and fills them.
 //  5. The list of now filled histograms is returned to the main function
 //  6. The list is written (meaning all of the histograms are written) to the output root file
@@ -48,24 +48,51 @@
 //This function gets run if running interpretively
 //Not recommended for the analysis scripts
 #ifdef __CINT__ 
-void LeanMatrices() {
+void BremMatrices() {
    if(!AnalysisTree) {
       printf("No analysis tree found!\n");
       return;
    }
    //coinc window = 0-20, bg window 40-60, 6000 bins from 0. to 6000. (default is 4000)
-   TList *list = LeanMatrices(AnalysisTree, TPPG, TGRSIRunInfo, 0.);
+   TList *list = BremMatrices(AnalysisTree, TPPG, TGRSIRunInfo, 0.);
 
    TFile *outfile = new TFile("output.root","recreate");
    list->Write();
 }
 #endif
 
-TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = NULL) {
+TList *BremMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = NULL) {
    if(runInfo == NULL) {
       return NULL;
    }
 
+const Int_t nScDet = 21;
+const Int_t nGrDet = 65;
+Bool_t supp_flag[nScDet][nGrDet] = {
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//0
+{ false, false, false, false, true , false, false, false, false, true , false, false, false, true , true , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//1
+{ false, true , true , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//2
+   { false, false, false, false, false, true , true , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//3
+   { false, false, false, false, false, false, false, false, false, true , true , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//4
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//5
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, true , false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//6
+   { false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, true , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//7
+   { false, false, false, false, false, false, true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, true , false, false, true , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//8
+  { false, false, false, false, false, false, false, false, false, false, true , true , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, true , false, false, true , true , false, false, true , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//9
+  { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//10
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, false, true , false, false, false, false, false, false, false, false, true , false, false, false },//11
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//12
+{ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, true , true , false, false, true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, true , true , false, false, true , false, false, false, false },//13
+{ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//14
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true  },//15
+{ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , true , true , false, false, false, false, false, false, false, false, false, true , false, false },//16
+{ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//17
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , true , true , false, false, false, false, false, false, false, false },//18
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , true , true , false, false, false, false },//19
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, true , true  }//20
+};
+
+   Bool_t hit_flags[65] = {0};
    ///////////////////////////////////// SETUP ///////////////////////////////////////
    //Histogram paramaters
    Double_t low = 0;
@@ -110,75 +137,77 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 
    //We create some spectra and then add it to the list
    //hit patterns
-   TH2D* bIdVsgId = new TH2D("bIdVsgId","Sceptar Id vs Griffin Id",20,1,21,64,1,65); list->Add(bIdVsgId);
-
+   TH2D* bIdVsgId = new TH2D("bIdVsgIdbrem","Sceptar Id vs Griffin Id",20,1,21,64,1,65); list->Add(bIdVsgId);
+ 
    //gamma single spectra
-   TH1D* gammaSingles = new TH1D("gammaSingles","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaSingles);
-   TH1D* gammaSinglesB = new TH1D("gammaSinglesB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
-   TH1D* gammaSinglesBm = new TH1D("gammaSinglesBm","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaSinglesBm);
-   TH1D* gammaSinglesBt = new TH1D("gammaSinglesBt","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaSinglesBt);
-   TH1D* ggTimeDiff = new TH1D("ggTimeDiff", "#gamma-#gamma time difference", 300,0,300); list->Add(ggTimeDiff);
-   TH1D* gbTimeDiff = new TH1D("gbTimeDiff", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(gbTimeDiff); 
-   TH2D* bbTimeDiff = new TH2D("bbTimeDiff", "#beta energy vs. #beta-#beta time difference", 2000,-1000,1000, 1000, 0., 2e6); list->Add(bbTimeDiff); 
-   TH2D* gTimeDiff = new TH2D("gTimeDiff", "channel vs. time difference", 2000,0,2000, 65, 1., 65.); list->Add(gTimeDiff); 
-   TH1F* gtimestamp = new TH1F("gtimestamp", "#gamma time stamp", 10000,0,1000); list->Add(gtimestamp);
-   TH1F* btimestamp = new TH1F("btimestamp", "#beta time stamp", 10000,0,1000); list->Add(btimestamp);
-   TH2F* gbEnergyvsgTime = new TH2F("gbEnergyvsgTime", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsgTime);
-   TH2F* gbEnergyvsbTime = new TH2F("gbEnergyvsbTime", "#gamma #beta coincident: #beta timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsbTime);
-   TH2D* ggmatrix = new TH2D("ggmatrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(ggmatrix);
-   TH2D* ggmatrixt = new TH2D("ggmatrixt","#gamma-#gamma matrix t-corr",nofBins,low,high,nofBins,low,high); list->Add(ggmatrixt);
-   TH2F* gammaSinglesB_hp = new TH2F("gammaSinglesB_hp", "#gamma-#beta vs. SC channel", nofBins,low,high,20,1,21); list->Add(gammaSinglesB_hp);
-   TH2F* ggbmatrix = new TH2F("ggbmatrix","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrix);
-   TH2F* ggbmatrixt = new TH2F("ggbmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixt);
-   TH2F* grifscep_hp = new TH2F("grifscep_hp","Sceptar vs Griffin hit pattern",64,0,64,20,0,20); list->Add(grifscep_hp);
-   TH2F* gbTimevsg = new TH2F("gbTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(gbTimevsg); 
-   TH2D* ggbmatrixOn = new TH2D("ggbmatrixOn","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOn);
-   TH2F* ggbmatrixBg = new TH2F("ggbmatrixBg","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixBg);
-   TH2F* ggbmatrixOff = new TH2F("ggbmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOff);
+   TH1D* gammaSingles = new TH1D("gammaSinglesbrem","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaSingles);
+   TH1D* gammaSinglesB = new TH1D("gammaSinglesBbrem","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
+   TH1D* gammaSinglesBm = new TH1D("gammaSinglesBmbrem","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaSinglesBm);
+   TH1D* gammaSinglesBt = new TH1D("gammaSinglesBtbrem","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaSinglesBt);
+   TH1D* ggTimeDiff = new TH1D("ggTimeDiffbrem", "#gamma-#gamma time difference", 300,0,300); list->Add(ggTimeDiff);
+   TH1D* gbTimeDiff = new TH1D("gbTimeDiffbrem", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(gbTimeDiff); 
+   TH2D* bbTimeDiff = new TH2D("bbTimeDiffbrem", "#beta energy vs. #beta-#beta time difference", 2000,-1000,1000, 1000, 0., 2e6); list->Add(bbTimeDiff); 
+   TH2D* gTimeDiff = new TH2D("gTimeDiffbrem", "channel vs. time difference", 2000,0,2000, 65, 1., 65.); list->Add(gTimeDiff); 
+   TH1F* gtimestamp = new TH1F("gtimestampbrem", "#gamma time stamp", 10000,0,1000); list->Add(gtimestamp);
+   TH1F* btimestamp = new TH1F("btimestampbrem", "#beta time stamp", 10000,0,1000); list->Add(btimestamp);
+   TH2F* gbEnergyvsgTime = new TH2F("gbEnergyvsgTimebrem", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsgTime);
+   TH2F* gbEnergyvsbTime = new TH2F("gbEnergyvsbTimebrem", "#gamma #beta coincident: #beta timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsbTime);
+   TH2D* ggmatrix = new TH2D("ggmatrixbrem","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(ggmatrix);
+   TH2D* ggmatrixt = new TH2D("ggmatrixtbrem","#gamma-#gamma matrix t-corr",nofBins,low,high,nofBins,low,high); list->Add(ggmatrixt);
+   TH2F* gammaSinglesB_hp = new TH2F("gammaSinglesB_hpbrem", "#gamma-#beta vs. SC channel", nofBins,low,high,20,1,21); list->Add(gammaSinglesB_hp);
+   TH2F* ggbmatrix = new TH2F("ggbmatrixbrem","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrix);
+   TH2F* ggbmatrixt = new TH2F("ggbmatrixtbrem","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixt);
+   TH2F* grifscep_hp = new TH2F("grifscep_hpbrem","Sceptar vs Griffin hit pattern",64,0,64,20,0,20); list->Add(grifscep_hp);
+   TH2F* gbTimevsg = new TH2F("gbTimevsgbrem","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(gbTimevsg); 
+   TH2F* ggbmatrixOn = new TH2F("ggbmatrixOnbrem","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOn);
+   TH2F* ggbmatrixBg = new TH2F("ggbmatrixBgbrem","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixBg);
+   TH2F* ggbmatrixOff = new TH2F("ggbmatrixOffbrem","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOff);
+
+   TH1D* veto_hp = new TH1D("veto_hp","number of vetoed gamma rays",65,0,65); list->Add(veto_hp);
 
    TH2F* gammaSinglesCyc;
    TH2F* gammaSinglesBCyc;
    TH2F* gammaSinglesBmCyc;
    TH2F* betaSinglesCyc;
 
-   gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
-   gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
-   gammaSinglesBmCyc = new TH2F("gammaSinglesBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBmCyc);
-   betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,200,0,200); list->Add(betaSinglesCyc);
-
+   gammaSinglesCyc = new TH2F("gammaSinglesCycbrem", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
+   gammaSinglesBCyc = new TH2F("gammaSinglesBCycbrem", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
+   gammaSinglesBmCyc = new TH2F("gammaSinglesBmCycbrem", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBmCyc);
+   betaSinglesCyc = new TH2F("betaSinglesCycbrem", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,200,0,200); list->Add(betaSinglesCyc);
+   
    //addback spectra
-   TH1D* gammaAddback = new TH1D("gammaAddback","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
-   TH1D* gammaAddbackB = new TH1D("gammaAddbackB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaAddbackB);
-   TH1D* gammaAddbackBm = new TH1D("gammaAddbackBm","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaAddbackBm);
-   TH1D* gammaAddbackBt = new TH1D("gammaAddbackBt","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaAddbackBt);
-   TH1D* aaTimeDiff = new TH1D("aaTimeDiff", "#gamma-#gamma time difference", 300,0,300); list->Add(aaTimeDiff);
-   TH1D* abTimeDiff = new TH1D("abTimeDiff", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(abTimeDiff); 
-   TH2F* abEnergyvsgTime = new TH2F("abEnergyvsgTime", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(abEnergyvsgTime);
-   TH2F* abEnergyvsbTime = new TH2F("abEnergyvsbTime", "#gamma #beta coincident: #beta timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(abEnergyvsbTime);
-   TH2D* aamatrix = new TH2D("aamatrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(aamatrix);
-   TH2D* aamatrixt = new TH2D("aamatrixt","#gamma-#gamma matrix t-corr",nofBins,low,high,nofBins,low,high); list->Add(aamatrixt);
-   TH2F* gammaAddbackB_hp = new TH2F("gammaAddbackB_hp", "#gamma-#beta vs. SC channel", nofBins,low,high,20,1,21); list->Add(gammaAddbackB_hp);
-   TH2F* aabmatrix = new TH2F("aabmatrix","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(aabmatrix);
-   TH2F* aabmatrixt = new TH2F("aabmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixt);
-   TH2F* abTimevsg = new TH2F("abTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(abTimevsg); 
-   TH2F* abTimevsgf = new TH2F("abTimevsgf","#gamma energy vs. #gamma-#beta timing (first #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgf); 
-   TH2F* abTimevsgl = new TH2F("abTimevsgl","#gamma energy vs. #gamma-#beta timing (last #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgl); 
-   TH2D* aabmatrixOn = new TH2D("aabmatrixOn","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOn);
-   TH2F* aabmatrixBg = new TH2F("aabmatrixBg","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixBg);
-   TH2F* aabmatrixOff = new TH2F("aabmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOff);
+   TH1D* gammaAddback = new TH1D("gammaAddbackbrem","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
+   TH1D* gammaAddbackB = new TH1D("gammaAddbackBbrem","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaAddbackB);
+   TH1D* gammaAddbackBm = new TH1D("gammaAddbackBmbrem","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaAddbackBm);
+   TH1D* gammaAddbackBt = new TH1D("gammaAddbackBtbrem","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaAddbackBt);
+   TH1D* aaTimeDiff = new TH1D("aaTimeDiffbrem", "#gamma-#gamma time difference", 300,0,300); list->Add(aaTimeDiff);
+   TH1D* abTimeDiff = new TH1D("abTimeDiffbrem", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(abTimeDiff); 
+   TH2F* abEnergyvsgTime = new TH2F("abEnergyvsgTimebrem", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(abEnergyvsgTime);
+   TH2F* abEnergyvsbTime = new TH2F("abEnergyvsbTimebrem", "#gamma #beta coincident: #beta timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(abEnergyvsbTime);
+   TH2D* aamatrix = new TH2D("aamatrixbrem","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(aamatrix);
+   TH2D* aamatrixt = new TH2D("aamatrixtbrem","#gamma-#gamma matrix t-corr",nofBins,low,high,nofBins,low,high); list->Add(aamatrixt);
+   TH2F* gammaAddbackB_hp = new TH2F("gammaAddbackB_hpbrem", "#gamma-#beta vs. SC channel", nofBins,low,high,20,1,21); list->Add(gammaAddbackB_hp);
+   TH2F* aabmatrix = new TH2F("aabmatrixbrem","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(aabmatrix);
+   TH2F* aabmatrixt = new TH2F("aabmatrixtbrem","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixt);
+   TH2F* abTimevsg = new TH2F("abTimevsgbrem","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(abTimevsg); 
+   TH2F* abTimevsgf = new TH2F("abTimevsgfbrem","#gamma energy vs. #gamma-#beta timing (first #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgf); 
+   TH2F* abTimevsgl = new TH2F("abTimevsglbrem","#gamma energy vs. #gamma-#beta timing (last #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgl); 
+   TH2F* aabmatrixOn = new TH2F("aabmatrixOnbrem","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOn);
+   TH2F* aabmatrixBg = new TH2F("aabmatrixBgbrem","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixBg);
+   TH2F* aabmatrixOff = new TH2F("aabmatrixOffbrem","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOff);
 
    TH2F* gammaAddbackCyc;
    TH2F* gammaAddbackBCyc;
    TH2F* gammaAddbackBmCyc; 
-   gammaAddbackCyc = new TH2F("gammaAddbackCyc", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaAddbackCyc);
-   gammaAddbackBCyc = new TH2F("gammaAddbackBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaAddbackBCyc);
-   gammaAddbackBmCyc = new TH2F("gammaAddbackBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaAddbackBmCyc);
+   gammaAddbackCyc = new TH2F("gammaAddbackCycbrem", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaAddbackCyc);
+   gammaAddbackBCyc = new TH2F("gammaAddbackBCycbrem", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaAddbackBCyc);
+   gammaAddbackBmCyc = new TH2F("gammaAddbackBmCycbrem", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaAddbackBmCyc);
    list->Sort(); //Sorts the list alphabetically
    if(ppg)
       list->Add(ppg);
 
    list->Add(runInfo);
-
+   
    if(ppg)
       TGRSIDetectorHit::SetPPGPtr(ppg);
 
@@ -211,7 +240,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TVectorD* t = new TVectorD(2);
    (*t)[0] = runInfo->RunStart();
    (*t)[1] = runInfo->RunStop();
-
+   
    list->Add(t);
 
    //store the last timestamp of each channel
@@ -222,23 +251,58 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    if(maxEntries == 0 || maxEntries > tree->GetEntries()) {
       maxEntries = tree->GetEntries();
    }
-   // maxEntries = 1e5;
+  // maxEntries = 1e5;
    int entry;
    for(entry = 1; entry < maxEntries; ++entry) { //Only loop over the set number of entries
-      //I'm starting at entry 1 because of the weird high stamp of 4.
+                                                 //I'm starting at entry 1 because of the weird high stamp of 4.
       tree->GetEntry(entry);
 
       grif->ResetAddback();
+      bool beta_hit = false;
+      for(one=0; one<grif->GetMultiplicity(); ++one){
+         grif->GetGriffinHit(one)->SetIsBremSuppressed(false);
+         for(int b=0; b<scep->GetMultiplicity();++b){
+            if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
+            if((gbTlow <= grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) {
+               for(int i=0;i<65;++i){
+                  if(supp_flag[scep->GetHit(b)->GetDetector()][i])
+                     hit_flags[i] = true;
+               }
+               beta_hit = true;
+               grif->GetGriffinHit(one)->MakeBremSuppressed(supp_flag[scep->GetSceptarHit(b)->GetDetector()][grif->GetGriffinHit(one)->GetArrayNumber()]);              
+            }
+         }
+      }
+      if(beta_hit){
+         for(int i =0;i<65;++i){
+            if(hit_flags[i]){
+               veto_hp->Fill(i);
+            }
+            hit_flags[i] = false;
+         }
+      }
+
+      for(one=0; one<grif->GetAddbackMultiplicity(); ++one){
+         grif->GetAddbackHit(one)->SetIsBremSuppressed(false);
+         for(int b=0; b<scep->GetMultiplicity();++b){
+            if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
+            if((gbTlow <= grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) {
+               grif->GetAddbackHit(one)->MakeBremSuppressed(supp_flag[scep->GetSceptarHit(b)->GetDetector()][grif->GetAddbackHit(one)->GetArrayNumber()]);              
+            }
+         }
+      }
+
 
       //loop over the gammas in the event packet
       //grif is the variable which points to the current TGriffin
       for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
+         if(grif->GetGriffinHit(one)->GetIsBremSuppressed()) continue;
          //We want to put every gamma ray in this event into the singles
          gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergy()); 
          gtimestamp->Fill(grif->GetGriffinHit(one)->GetTime()/100000000.);
          Long_t time = (Long_t)(grif->GetHit(one)->GetTime());
          if(ppg){
-            time = time%ppg->GetCycleLength();
+         time = time%ppg->GetCycleLength();
             //gammaSinglesCyc->Fill((time - ppg->GetLastStatusTime(time, TPPG::kTapeMove))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
             gammaSinglesCyc->Fill(time/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
          }
@@ -253,6 +317,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
                continue;
             }
+            if(grif->GetGriffinHit(two)->GetIsBremSuppressed()) continue;
             //Check to see if the two gammas are close enough in time
             ggTimeDiff->Fill(TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()));
             if(ggTlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggThigh) { 
@@ -265,7 +330,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             }
          }
       }
-
+      
 
       //Now we make beta gamma coincident matrices
       if(gotSceptar && scep->GetMultiplicity() > 0) {
@@ -284,7 +349,10 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                bbTimeDiff->Fill(scep->GetHit(b)->GetTime()-scep->GetHit(b2)->GetTime(), scep->GetHit(b)->GetEnergy());
             }
          }
+
+         if(grif->GetMultiplicity() && scep->GetMultiplicity())
          for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
+            if(grif->GetGriffinHit(one)->GetIsBremSuppressed()) continue;
             bool found = false;
             for(int b = 0; b < scep->GetMultiplicity(); ++b) {
                if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
@@ -304,7 +372,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                   //Plots a gamma energy spectrum in coincidence with a beta
                   gbEnergyvsgTime->Fill(grif->GetGriffinHit(one)->GetTime()/1e8, grif->GetGriffinHit(one)->GetEnergy());
                   gammaSinglesBm->Fill(grif->GetGriffinHit(one)->GetEnergy());
-                  bIdVsgId->Fill(scep->GetSceptarHit(b)->GetDetector(), grif->GetGriffinHit(one)->GetArrayNumber());
+                  bIdVsgId->Fill(scep->GetHit(b)->GetDetector(), grif->GetGriffinHit(one)->GetArrayNumber());
                   if(!found) {
                      gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergy());
                      if(ppg)
@@ -316,10 +384,11 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                   //Now we want to loop over gamma rays if they are in coincidence.
                   if(grif->GetMultiplicity() > 1){
                      for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
-                        if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
-                           continue;
-                        }
-
+                       if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
+                         continue;
+                       }
+                       if(grif->GetGriffinHit(two)->GetIsBremSuppressed()) continue;
+                     
                         if(ggTlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggThigh) { 
                            //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
                            ggbmatrix->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
@@ -345,10 +414,11 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             }
          }
       }
-
+      
       //loop over the addbacks in the event packet
       //grif is the variable which points to the current TGriffin
       for(one = 0; one < (int) grif->GetAddbackMultiplicity(); ++one) {
+         if(grif->GetAddbackHit(one)->GetIsBremSuppressed()) continue;
          //We want to put every gamma ray in this event into the singles
          gammaAddback->Fill(grif->GetAddbackHit(one)->GetEnergy()); 
          Long_t time = (Long_t)(grif->GetAddbackHit(one)->GetTime());
@@ -359,9 +429,11 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             //We now want to loop over any other gammas in this packet
          }
          for(two = 0; two < (int) grif->GetAddbackMultiplicity(); ++two) {
+            if(grif->GetAddbackHit(two)->GetIsBremSuppressed()) continue;
             if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
                continue;
             }
+            if(grif->GetAddbackHit(two)->GetIsBremSuppressed()) continue;
             //Check to see if the two gammas are close enough in time
             //VINZENZ I THINK THIS IS BREAKING THIS FOR SOME REASON.
             aaTimeDiff->Fill(TMath::Abs(grif->GetAddbackHit(two)->GetTime()-grif->GetAddbackHit(one)->GetTime()));
@@ -375,12 +447,13 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             }
          }
       }
-
+      
 
       //Now we make beta gamma coincident matrices
       if(gotSceptar && scep->GetMultiplicity() > 0) {
          //We do an outside loop on gammas so that we can break on the betas if we see a beta in coincidence (we don't want to bin twice just because we have two betas)
          for(one = 0; one < (int) grif->GetAddbackMultiplicity(); ++one) {
+            if(grif->GetAddbackHit(one)->GetIsBremSuppressed()) continue;
             bool found = false;
             for(int b = 0; b < scep->GetMultiplicity(); ++b) {
                if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
@@ -415,10 +488,11 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                   //Now we want to loop over gamma rays if they are in coincidence.
                   if(grif->GetAddbackMultiplicity() > 1){
                      for(two = 0; two < (int) grif->GetAddbackMultiplicity(); ++two) {
-                        if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
-                           continue;
-                        }
-
+                       if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
+                         continue;
+                       }
+                        if(grif->GetAddbackHit(two)->GetIsBremSuppressed()) continue;
+                     
                         if(ggTlow <= TMath::Abs(grif->GetAddbackHit(two)->GetTime()-grif->GetAddbackHit(one)->GetTime()) && TMath::Abs(grif->GetAddbackHit(two)->GetTime()-grif->GetAddbackHit(one)->GetTime()) < ggThigh) { 
                            //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
                            aabmatrix->Fill(grif->GetAddbackHit(one)->GetEnergy(), grif->GetAddbackHit(two)->GetEnergy());
@@ -509,11 +583,11 @@ int main(int argc, char **argv) {
 
    //Get PPG from File
    TPPG* myPPG = (TPPG*)file->Get("TPPG");
-   /*   if(myPPG == NULL) {
-        printf("Failed to find PPG information in file '%s'!\n",argv[1]);
-        return 1;
-        }
-        */
+/*   if(myPPG == NULL) {
+      printf("Failed to find PPG information in file '%s'!\n",argv[1]);
+      return 1;
+   }
+*/
    //Get run info from File
    TGRSIRunInfo* runInfo = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
    if(runInfo == NULL) {
@@ -528,7 +602,7 @@ int main(int argc, char **argv) {
       return 1;
    }
    //Get the TGRSIRunInfo from the analysis Tree.
-
+   
    TList *list;//We return a list because we fill a bunch of TH1's and shove them into this list.
    TFile * outfile;
    if(argc<3)
@@ -539,7 +613,7 @@ int main(int argc, char **argv) {
       }
       int runnumber = runInfo->RunNumber();
       int subrunnumber = runInfo->SubRunNumber();
-      outfile = new TFile(Form("matrix%05d_%03d.root",runnumber,subrunnumber),"recreate");
+      outfile = new TFile(Form("bmatrix%05d_%03d.root",runnumber,subrunnumber),"recreate");
    }
    else
    {
@@ -549,14 +623,14 @@ int main(int argc, char **argv) {
    std::cout << argv[0] << ": starting Analysis after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
    if(argc < 4) {
-      list = LeanMatrices(tree,myPPG,runInfo,0, &w);
+      list = BremMatrices(tree,myPPG,runInfo,0, &w);
    } else {
       int entries = atoi(argv[3]);
       std::cout<<"Limiting processing of analysis tree to "<<entries<<" entries!"<<std::endl;
-      list = LeanMatrices(tree,myPPG,runInfo, entries, &w);
+      list = BremMatrices(tree,myPPG,runInfo, entries, &w);
    }
    if(list == NULL) {
-      std::cout<<"LeanMatrices returned TList* NULL!\n"<<std::endl;
+      std::cout<<"BremMatrices returned TList* NULL!\n"<<std::endl;
       return 1;
    }
 

@@ -34,9 +34,10 @@ class TGriffinHit : public TGRSIDetectorHit {
 		virtual ~TGriffinHit();
 
 	private:
-      Int_t fFilter;             //  The Filter Word
-		UChar_t fGriffinHitBits;   //  Transient Member Flags
-      UInt_t fCrystal;           //! Crystal Number       
+      Int_t fFilter;              //  The Filter Word
+		UChar_t fGriffinHitBits;    //  Transient Member Flags
+      UInt_t fCrystal;            //! Crystal Number       
+      Bool_t fBremSuppressed_flag;//! Bremsstrahlung Suppression flag.
 
 	public:
 		/////////////////////////  Setters	/////////////////////////////////////
@@ -67,6 +68,9 @@ class TGriffinHit : public TGRSIDetectorHit {
 
       inline UShort_t GetArrayNumber() { return( 4*(GetDetector()-1)+(GetCrystal()+1)); } //!
       // returns a number 1-64 ( 1 = Detector 1 blue;  64 =  Detector 16 white; ) 
+      Bool_t GetIsBremSuppressed() const { return fBremSuppressed_flag; }
+      void SetIsBremSuppressed(const Bool_t &supp_flag) { fBremSuppressed_flag = supp_flag; }
+      void MakeBremSuppressed(const Bool_t &supp_flag) { fBremSuppressed_flag |= supp_flag; }
 
       bool   InFilter(Int_t);  //!
 
@@ -82,7 +86,7 @@ class TGriffinHit : public TGRSIDetectorHit {
    private:
       void SetGriffinFlag(enum EGriffinHitBits,Bool_t set);
 	
-      ClassDef(TGriffinHit,3); //Information about a GRIFFIN Hit
+      ClassDef(TGriffinHit,4); //Information about a GRIFFIN Hit
 
 };
 

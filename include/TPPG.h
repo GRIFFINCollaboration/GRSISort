@@ -93,9 +93,15 @@ class TPPG : public TObject	{
     void Add(const TPPG* ppg);
     void operator+=(const TPPG& rhs);                           
    
+    void SetCycleLength(ULong64_t length) { fCycleLength = length; }
+
     bool Correct(bool verbose = false);
     ULong64_t GetCycleLength();
+    ULong64_t GetNumberOfCycles();
     ULong64_t GetTimeInCycle(ULong64_t real_time);
+    ULong64_t GetCycleNumber(ULong64_t real_time);
+
+    ULong64_t GetStatusStart(ppg_pattern);
 
     TPPGData* const Next();
     TPPGData* const Previous();

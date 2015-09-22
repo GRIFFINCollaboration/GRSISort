@@ -141,7 +141,7 @@ void TSceptar::BuildHits(TDetectorData *data,Option_t *opt)	{
  //     dethit.SetEnergy(gdata->GetDetEnergy(i));
       dethit.SetCharge(gdata->GetDetCharge(i));
 
-      dethit.SetTime(gdata->GetDetTime(i));
+      dethit.SetTimeStamp(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
 
       //UNCOMMENTED FOR NOW

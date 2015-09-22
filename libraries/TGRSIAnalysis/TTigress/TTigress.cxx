@@ -165,7 +165,7 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
            temp_crystal.SetSegment(tdata->GetSegmentNumber(j));
            temp_crystal.SetCharge(tdata->GetSegmentCharge(j));
            temp_crystal.SetEnergy(tdata->GetSegmentEnergy(j));
-           temp_crystal.SetTime(tdata->GetSegmentTime(j));
+           temp_crystal.SetTimeStamp(tdata->GetSegmentTime(j));
            temp_crystal.SetCfd(tdata->GetSegmentCFD(j));
 
            //if(TTigress::SetSegmentWave()) {

@@ -4,6 +4,7 @@
 #define TFRAGMENT_H
 
 #include "Globals.h"
+#include "TPPG.h"
 
 #include <vector>
 #include <time.h>
@@ -64,6 +65,8 @@ public:
    /// *****************************  ////
 
    std::vector<Short_t>  wavebuffer;//-> waveform words
+
+   TPPG* fPPG; //!
   
    double GetTime()      const; //!
    long   GetTimeStamp() const; //!
@@ -72,6 +75,8 @@ public:
    double GetEnergy(int iter=0)const; //!
    Float_t GetCharge(int iter=0)const; //!
    long GetTimeStamp_ns(); //!
+   ULong64_t GetTimeInCycle(); //!
+   ULong64_t GetCycleNumber(); //!
 
    Int_t GetCfd(int iter=0) const { return Cfd.at(iter); } //!
    Int_t GetLed(int iter=0) const { return Led.at(iter); } //!

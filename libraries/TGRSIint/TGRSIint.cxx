@@ -85,8 +85,6 @@ void TGRSIint::ApplyOptions() {
      TGRSILoop::Get()->SortMidas();
    }
    bool foundCal = false;
-   if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
-      TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
    if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0) { 
       TAnalysisTreeBuilder::Get()->StartMakeAnalysisTree();
    }
@@ -116,6 +114,9 @@ void TGRSIint::ApplyOptions() {
          TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
       }
    }
+
+   if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
+      TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
 
    if(TGRSIOptions::WorkHarder()) {
       for(int x=0;x<TGRSIOptions::GetMacroFile().size();x++) {

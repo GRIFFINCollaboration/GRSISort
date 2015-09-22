@@ -90,6 +90,7 @@ void TGriffin::Copy(TGriffin &rhs) const {
   ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
   ((TGriffin&)rhs).fCycleStart         = fCycleStart;
   ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
+   
 
   return;                                      
 }                                       
@@ -263,7 +264,7 @@ void TGriffin::BuildHits(TDetectorData *data,Option_t *opt)	{
       //   corehit.SetChargeLow(gdata->GetCoreCharge(i));
       //}
 
-      corehit.SetTime(gdata->GetCoreTime(i));
+      corehit.SetTimeStamp(gdata->GetCoreTime(i));
       corehit.SetCfd(gdata->GetCoreCFD(i));
       corehit.SetCharge(gdata->GetCoreCharge(i));
       corehit.SetNPileUps((UChar_t)(gdata->GetCoreNbrHits(i)));

@@ -564,6 +564,12 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
          case kKey_F:
             edit = PeakFit();
             break;
+         case kKey_i:
+            edit = Integrate();
+            break;
+         case kKey_I:
+            edit = IntegrateBG();
+            break;
          case kKey_s:
             edit = ShowPeaks(hists.data(),hists.size());
             break;
@@ -797,6 +803,102 @@ bool GCanvas::GausBGFit(GMarker *m1,GMarker *m2) {
          integral - (bg->Integral(x[0],x[1])/hist->GetBinWidth(1)),int_err);
   return true;
   
+}
+
+bool GCanvas::Integrate(GMarker *m1, GMarker *m2){
+   TIter iter(gPad->GetListOfPrimitives());
+   TH1 *hist = 0;
+   bool edit = false;
+   while(TObject *obj = iter.Next()) {
+     if( obj->InheritsFrom("TH1") &&
+        !obj->InheritsFrom("TH2") &&  
+        !obj->InheritsFrom("TH3") ) {  
+        hist = (TH1*)obj; 
+     }
+   }
+   if(!hist)
+      return false;
+
+   if(!m1 || !m2) {
+      if(GetNMarkers()<2) {
+         return false;
+      } else { 
+         m1 = fMarkers.at(fMarkers.size()-1);
+         m2 = fMarkers.at(fMarkers.size()-2);
+      }
+  }
+   Double_t low_x,high_x;
+   low_x = m1->localx;
+   high_x = m2->localx;
+   if(m1->localx < m2->localx){
+      low_x = m1->localx;
+      high_x = m2->localx;
+   }
+   else{
+      low_x = m2->localx;
+      high_x = m1->localx;
+   }
+   Int_t low_bin = hist->FindBin(low_x);
+   Int_t high_bin = hist->FindBin(high_x);
+
+   printf("Integral: %lf\n",hist->Integral(low_bin,high_bin));
+   return true;
+
+}
+
+bool GCanvas::IntegrateBG(GMarker *m1, GMarker *m2){
+   TIter iter(gPad->GetListOfPrimitives());
+   TH1 *hist = 0;
+   bool edit = false;
+   while(TObject *obj = iter.Next()) {
+     if( obj->InheritsFrom("TH1") &&
+        !obj->InheritsFrom("TH2") &&  
+        !obj->InheritsFrom("TH3") ) {  
+        hist = (TH1*)obj; 
+     }
+   }
+   if(!hist)
+      return false;
+
+   if(!m1 || !m2) {
+      if(GetNMarkers()<2) {
+         return false;
+      } else { 
+         m1 = fMarkers.at(fMarkers.size()-1);
+         m2 = fMarkers.at(fMarkers.size()-2);
+      }
+   }
+
+   Double_t low_counts, high_counts;
+   Double_t low_x,high_x;
+   low_x = m1->localx;
+   high_x = m2->localx;
+   if(m1->localx < m2->localx){
+      low_x = m1->localx;
+      high_x = m2->localx;
+   }
+   else{
+      low_x = m2->localx;
+      high_x = m1->localx;
+   }
+   Int_t low_bin = hist->FindBin(low_x);
+   Int_t high_bin = hist->FindBin(high_x);
+   TF1 *background = new TF1("background","pol1",low_x,high_x);
+   low_counts = hist->GetBinContent(low_bin);
+   high_counts = hist->GetBinContent(high_bin);
+   
+   background->SetParameter(1,(high_counts - low_counts)/(high_x - low_x));
+   background->SetParameter(0,high_counts - background->GetParameter(1)*high_x);
+
+   background->Draw("same");
+   Double_t integral = hist->Integral(low_bin,high_bin);
+   Double_t bglevel = 0.5*background->GetParameter(1)*(TMath::Power(high_x,2.) - TMath::Power(low_x,2.)) + background->GetParameter(0)*(high_x - low_x) ;
+   bglevel /= hist->GetBinWidth(high_x);
+   printf("Total Counts: %lf\n",integral);
+   printf("   BG Counts: %lf\n",bglevel);
+   printf("    Integral: %lf\n",integral - bglevel);
+   return true;
+
 }
 
 bool GCanvas::GausFit(GMarker *m1,GMarker *m2) {

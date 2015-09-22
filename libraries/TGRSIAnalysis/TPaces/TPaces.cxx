@@ -114,7 +114,7 @@ void TPaces::BuildHits(TDetectorData *data,Option_t *opt)	{
       TPacesHit corehit;
 
       corehit.SetAddress(pdata->GetCoreAddress(i));
-      corehit.SetTime(pdata->GetCoreTime(i));
+      corehit.SetTimeStamp(pdata->GetCoreTime(i));
       corehit.SetCfd(pdata->GetCoreCFD(i));
       corehit.SetCharge(pdata->GetCoreCharge(i));
 

@@ -1,5 +1,6 @@
-#include"TFragment.h"
-#include"TChannel.h"
+#include "TFragment.h"
+#include "TChannel.h"
+#include "TROOT.h"
 #include <iostream>
 
 #include <TClass.h>
@@ -68,6 +69,7 @@ void TFragment::Clear(Option_t *opt){
    if(!KValue.empty())     //->
    	KValue.clear();      //->
 
+   fPPG = NULL;
 }
 
 long TFragment::GetTimeStamp() const {
@@ -157,6 +159,26 @@ Float_t TFragment::GetCharge(int i) const {
       return ((Float_t)Charge.at(i)+gRandom->Uniform())/((Float_t)KValue.at(i));// this will use the integration value
    }
    return ((Float_t)Charge.at(i)+gRandom->Uniform());// this will use no integration value
+}
+
+ULong64_t TFragment::GetTimeInCycle() {
+   if(fPPG == NULL) {
+      fPPG = (TPPG*) gROOT->FindObject("TPPG");
+   }
+   if(fPPG == NULL) {
+      return 0;
+   }
+   return fPPG->GetTimeInCycle(GetTimeStamp());
+}
+
+ULong64_t TFragment::GetCycleNumber() {
+   if(fPPG == NULL) {
+      fPPG = (TPPG*) gROOT->FindObject("TPPG");
+   }
+   if(fPPG == NULL) {
+      return 0;
+   }
+   return fPPG->GetCycleNumber(GetTimeStamp());
 }
 
 void TFragment::Print(Option_t *opt) const {

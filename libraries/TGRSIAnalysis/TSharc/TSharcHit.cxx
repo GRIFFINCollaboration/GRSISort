@@ -56,14 +56,14 @@ void TSharcHit::Print(Option_t *options) const {
 }
 
 TVector3 TSharcHit::GetPosition() const {
-  return  position; // returned from this -> i.e front...
+  return  fposition; // returned from this -> i.e front...
   //return TSharc::GetPosition(detectornumber,front_strip,back_strip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());  //! 
 }
 
 Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
   TVector3 posoff; 
   posoff.SetXYZ(Xoff,Yoff,Zoff);
-  return (position+posoff).Theta();
+  return (fposition+posoff).Theta();
 }
 
 

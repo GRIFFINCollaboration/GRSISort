@@ -46,7 +46,7 @@ void TTipHit::Clear(Option_t *opt) {
 }
 
 void TTipHit::Print(Option_t *opt) {
-   printf("Tip Detector: %i\n",detector);
+   printf("Tip Detector: %i\n",GetDetector());
    printf("Tip hit energy: %.2f\n",GetEnergy());
    printf("Tip hit time:   %.f\n",GetTime());
 }

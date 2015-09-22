@@ -15,10 +15,10 @@ ClassImp(TGRSIDetectorHit)
 
 TPPG* TGRSIDetectorHit::fPPG = 0;
 
-TGRSIDetectorHit::TGRSIDetectorHit(const int &fAddress):TObject()	{ 
+TGRSIDetectorHit::TGRSIDetectorHit(const int &Address):TObject()	{ 
   //Default constructor
   Clear();
-  address = fAddress;
+  faddress = Address;
   if(!fPPG)
    fPPG = (TPPG*)gDirectory->Get("TPPG"); //There Might be a better way to do this
 
@@ -43,17 +43,35 @@ TGRSIDetectorHit::~TGRSIDetectorHit()	{
 }
 
 Double_t TGRSIDetectorHit::GetTime(Option_t *opt) const{
-   Double_t dtime = (Double_t)(GetTimeStamp())+ gRandom->Uniform();
+   if(IsTimeSet())
+      return ftime;
+
+   Double_t dtime = (Double_t)(GetTimeStamp()) + gRandom->Uniform();
    TChannel *chan = GetChannel();
-   if(!chan )//|| Charge.size()<1)
+   if(!chan)
       return dtime;
 
-   return dtime - chan->GetTZero(GetEnergy());
+   return dtime-chan->GetTZero(GetEnergy());
 }
+
+Double_t TGRSIDetectorHit::GetTime(Option_t *opt) {
+   if(IsTimeSet())
+      return ftime;
+
+   Double_t dtime = (Double_t)(GetTimeStamp()) + gRandom->Uniform();
+   TChannel *chan = GetChannel();
+   if(!chan)
+      return dtime;
+   
+   SetTime(dtime-chan->GetTZero(GetEnergy()));
+
+   return ftime;
+}
+
 
 double TGRSIDetectorHit::GetEnergy(Option_t *opt) const {
    if(IsEnergySet())
-      return energy;
+      return fenergy;
 
    TChannel *chan = GetChannel();
    if(!chan){
@@ -65,7 +83,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt) const {
 
 double TGRSIDetectorHit::GetEnergy(Option_t *opt){
    if(IsEnergySet()){
-      return energy;
+      return fenergy;
    }
 
    TChannel *chan = GetChannel();
@@ -74,7 +92,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt){
       return 0.00;
    }
       SetEnergy(chan->CalibrateENG(GetCharge()));
-      return energy;
+      return fenergy;
 
 }
 
@@ -83,14 +101,15 @@ void TGRSIDetectorHit::Copy(TObject &rhs) const {
   //   return;
 
   TObject::Copy(rhs);
-  ((TGRSIDetectorHit&)rhs).address         = ((TGRSIDetectorHit&)*this).address;
-  ((TGRSIDetectorHit&)rhs).position        = ((TGRSIDetectorHit&)*this).position;
-  ((TGRSIDetectorHit&)rhs).waveform        = ((TGRSIDetectorHit&)*this).waveform;
-  ((TGRSIDetectorHit&)rhs).cfd             = ((TGRSIDetectorHit&)*this).cfd;
-  ((TGRSIDetectorHit&)rhs).time            = ((TGRSIDetectorHit&)*this).time;
-  ((TGRSIDetectorHit&)rhs).charge          = ((TGRSIDetectorHit&)*this).charge;
-  ((TGRSIDetectorHit&)rhs).detector        = ((TGRSIDetectorHit&)*this).detector;
-  ((TGRSIDetectorHit&)rhs).energy          = ((TGRSIDetectorHit&)*this).energy;
+  ((TGRSIDetectorHit&)rhs).faddress         = ((TGRSIDetectorHit&)*this).faddress;
+  ((TGRSIDetectorHit&)rhs).fposition        = ((TGRSIDetectorHit&)*this).fposition;
+  ((TGRSIDetectorHit&)rhs).fwaveform        = ((TGRSIDetectorHit&)*this).fwaveform;
+  ((TGRSIDetectorHit&)rhs).fcfd             = ((TGRSIDetectorHit&)*this).fcfd;
+  ((TGRSIDetectorHit&)rhs).ftimestamp      = ((TGRSIDetectorHit&)*this).ftimestamp;
+  ((TGRSIDetectorHit&)rhs).fcharge          = ((TGRSIDetectorHit&)*this).fcharge;
+  ((TGRSIDetectorHit&)rhs).fdetector        = ((TGRSIDetectorHit&)*this).fdetector;
+  ((TGRSIDetectorHit&)rhs).fenergy          = ((TGRSIDetectorHit&)*this).fenergy;
+  ((TGRSIDetectorHit&)rhs).ftime            = ((TGRSIDetectorHit&)*this).ftime;
   
   ((TGRSIDetectorHit&)rhs).fbitflags       = ((TGRSIDetectorHit&)*this).fbitflags;
   ((TGRSIDetectorHit&)rhs).fPPGStatus      = ((TGRSIDetectorHit&)*this).fPPGStatus;
@@ -106,14 +125,14 @@ void TGRSIDetectorHit::Print(Option_t *opt) const {
 
 void TGRSIDetectorHit::Clear(Option_t *opt) {
   //General clear statement for a TGRSIDetectorHit.
-  address = 0xffffffff;    // -1
-  position.SetXYZ(0,0,1);  // unit vector along the beam.
-  waveform.clear();        // reset size to zero.
-  charge          = 0;
-  cfd             = -1;
-  time            = -1;
-  detector        = -1;
-  energy          =  0.0;
+  faddress = 0xffffffff;    // -1
+  fposition.SetXYZ(0,0,1);  // unit vector along the beam.
+  fwaveform.clear();        // reset size to zero.
+  fcharge          = 0;
+  fcfd             = -1;
+  ftimestamp            = -1;
+  fdetector        = -1;
+  fenergy          =  0.0;
   fbitflags = 0;
   fPPGStatus      = TPPG::kJunk;
   fCycleTimeStamp = 0;
@@ -121,7 +140,7 @@ void TGRSIDetectorHit::Clear(Option_t *opt) {
 
 UInt_t TGRSIDetectorHit::GetDetector() const {
    if(IsDetSet())
-     return detector;
+     return fdetector;
 
    MNEMONIC mnemonic;
    TChannel *channel = GetChannel();
@@ -136,7 +155,7 @@ UInt_t TGRSIDetectorHit::GetDetector() const {
 
 UInt_t TGRSIDetectorHit::GetDetector() {
    if(IsDetSet())
-      return detector;
+      return fdetector;
 
    MNEMONIC mnemonic;
    TChannel *channel = GetChannel();
@@ -150,19 +169,19 @@ UInt_t TGRSIDetectorHit::GetDetector() {
 }
 
 UInt_t TGRSIDetectorHit::SetDetector(UInt_t det) {
-   detector = det;
+   fdetector = det;
    SetFlag(kIsDetSet,true);
-   return detector;
+   return fdetector;
 }
 
 TVector3 TGRSIDetectorHit::SetPosition(Double_t dist) {
-	position = TGRSIDetectorHit::GetPosition(dist); //Calls a general Hit GetPosition function
-   return position;
+	fposition = TGRSIDetectorHit::GetPosition(dist); //Calls a general Hit GetPosition function
+   return fposition;
 }
 
 TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
    if(IsPosSet())
-      return position;
+      return fposition;
 
    if(IsDetSet())
       return GetPosition(dist); //Calls the derivative GetPosition function
@@ -173,7 +192,7 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
 
 TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
   if(IsPosSet())
-      return position;
+      return fposition;
 
    if(IsDetSet())
       return SetPosition(dist); //Calls the derivative GetPosition function
@@ -227,13 +246,13 @@ uint16_t TGRSIDetectorHit::GetCycleTimeStamp() {
 }
 
 void TGRSIDetectorHit::CopyFragment(const TFragment &frag) {
-  this->address  = frag.ChannelAddress;  
-  this->charge   = frag.GetCharge();
-  this->cfd      = frag.GetCfd();
-  this->time     = frag.GetTime();
-  this->position = TVector3(0,0,1); 
-  this->energy   = frag.GetEnergy();
-  this->SetDetector(this->GetDetector());
+  this->faddress  = frag.ChannelAddress;  
+  this->fcharge   = frag.GetCharge();
+  this->fcfd      = frag.GetCfd();
+  this->ftimestamp= frag.GetTimeStamp();
+  this->fposition = TVector3(0,0,1); 
+  this->fenergy   = frag.GetEnergy();
+ // this->SetDetector(frag.GetDetector());
 }
 
 void TGRSIDetectorHit::SetFlag(enum Ebitflag flag,Bool_t set){
