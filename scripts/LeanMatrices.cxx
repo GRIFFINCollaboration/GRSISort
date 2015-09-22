@@ -132,7 +132,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TH2F* ggbmatrixt = new TH2F("ggbmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixt);
    TH2F* grifscep_hp = new TH2F("grifscep_hp","Sceptar vs Griffin hit pattern",64,0,64,20,0,20); list->Add(grifscep_hp);
    TH2F* gbTimevsg = new TH2F("gbTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(gbTimevsg); 
-   TH2F* ggbmatrixOn = new TH2F("ggbmatrixOn","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOn);
+   TH2D* ggbmatrixOn = new TH2D("ggbmatrixOn","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOn);
    TH2F* ggbmatrixBg = new TH2F("ggbmatrixBg","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixBg);
    TH2F* ggbmatrixOff = new TH2F("ggbmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOff);
 
@@ -145,7 +145,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
    gammaSinglesBmCyc = new TH2F("gammaSinglesBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBmCyc);
    betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,200,0,200); list->Add(betaSinglesCyc);
-   
+
    //addback spectra
    TH1D* gammaAddback = new TH1D("gammaAddback","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
    TH1D* gammaAddbackB = new TH1D("gammaAddbackB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaAddbackB);
@@ -163,7 +163,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TH2F* abTimevsg = new TH2F("abTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(abTimevsg); 
    TH2F* abTimevsgf = new TH2F("abTimevsgf","#gamma energy vs. #gamma-#beta timing (first #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgf); 
    TH2F* abTimevsgl = new TH2F("abTimevsgl","#gamma energy vs. #gamma-#beta timing (last #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgl); 
-   TH2F* aabmatrixOn = new TH2F("aabmatrixOn","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOn);
+   TH2D* aabmatrixOn = new TH2D("aabmatrixOn","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOn);
    TH2F* aabmatrixBg = new TH2F("aabmatrixBg","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixBg);
    TH2F* aabmatrixOff = new TH2F("aabmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOff);
 
@@ -178,7 +178,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
       list->Add(ppg);
 
    list->Add(runInfo);
-   
+
    if(ppg)
       TGRSIDetectorHit::SetPPGPtr(ppg);
 
@@ -211,7 +211,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TVectorD* t = new TVectorD(2);
    (*t)[0] = runInfo->RunStart();
    (*t)[1] = runInfo->RunStop();
-   
+
    list->Add(t);
 
    //store the last timestamp of each channel
@@ -222,14 +222,14 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    if(maxEntries == 0 || maxEntries > tree->GetEntries()) {
       maxEntries = tree->GetEntries();
    }
-  // maxEntries = 1e5;
+   // maxEntries = 1e5;
    int entry;
    for(entry = 1; entry < maxEntries; ++entry) { //Only loop over the set number of entries
-                                                 //I'm starting at entry 1 because of the weird high stamp of 4.
+      //I'm starting at entry 1 because of the weird high stamp of 4.
       tree->GetEntry(entry);
 
       grif->ResetAddback();
-      
+
       //loop over the gammas in the event packet
       //grif is the variable which points to the current TGriffin
       for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
@@ -238,7 +238,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
          gtimestamp->Fill(grif->GetGriffinHit(one)->GetTime()/100000000.);
          Long_t time = (Long_t)(grif->GetHit(one)->GetTime());
          if(ppg){
-         time = time%ppg->GetCycleLength();
+            time = time%ppg->GetCycleLength();
             //gammaSinglesCyc->Fill((time - ppg->GetLastStatusTime(time, TPPG::kTapeMove))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
             gammaSinglesCyc->Fill(time/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
          }
@@ -265,7 +265,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             }
          }
       }
-      
+
 
       //Now we make beta gamma coincident matrices
       if(gotSceptar && scep->GetMultiplicity() > 0) {
@@ -316,10 +316,10 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                   //Now we want to loop over gamma rays if they are in coincidence.
                   if(grif->GetMultiplicity() > 1){
                      for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
-                       if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
-                         continue;
-                       }
-                     
+                        if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
+                           continue;
+                        }
+
                         if(ggTlow <= TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) && TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()) < ggThigh) { 
                            //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
                            ggbmatrix->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy());
@@ -345,7 +345,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             }
          }
       }
-      
+
       //loop over the addbacks in the event packet
       //grif is the variable which points to the current TGriffin
       for(one = 0; one < (int) grif->GetAddbackMultiplicity(); ++one) {
@@ -375,7 +375,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             }
          }
       }
-      
+
 
       //Now we make beta gamma coincident matrices
       if(gotSceptar && scep->GetMultiplicity() > 0) {
@@ -415,10 +415,10 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                   //Now we want to loop over gamma rays if they are in coincidence.
                   if(grif->GetAddbackMultiplicity() > 1){
                      for(two = 0; two < (int) grif->GetAddbackMultiplicity(); ++two) {
-                       if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
-                         continue;
-                       }
-                     
+                        if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
+                           continue;
+                        }
+
                         if(ggTlow <= TMath::Abs(grif->GetAddbackHit(two)->GetTime()-grif->GetAddbackHit(one)->GetTime()) && TMath::Abs(grif->GetAddbackHit(two)->GetTime()-grif->GetAddbackHit(one)->GetTime()) < ggThigh) { 
                            //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
                            aabmatrix->Fill(grif->GetAddbackHit(one)->GetEnergy(), grif->GetAddbackHit(two)->GetEnergy());
@@ -509,11 +509,11 @@ int main(int argc, char **argv) {
 
    //Get PPG from File
    TPPG* myPPG = (TPPG*)file->Get("TPPG");
-/*   if(myPPG == NULL) {
-      printf("Failed to find PPG information in file '%s'!\n",argv[1]);
-      return 1;
-   }
-*/
+   /*   if(myPPG == NULL) {
+        printf("Failed to find PPG information in file '%s'!\n",argv[1]);
+        return 1;
+        }
+        */
    //Get run info from File
    TGRSIRunInfo* runInfo = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
    if(runInfo == NULL) {
@@ -528,7 +528,7 @@ int main(int argc, char **argv) {
       return 1;
    }
    //Get the TGRSIRunInfo from the analysis Tree.
-   
+
    TList *list;//We return a list because we fill a bunch of TH1's and shove them into this list.
    TFile * outfile;
    if(argc<3)
