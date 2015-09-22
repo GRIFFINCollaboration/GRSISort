@@ -109,6 +109,7 @@ void TGRSIDetectorHit::Copy(TObject &rhs) const {
   ((TGRSIDetectorHit&)rhs).fcharge          = ((TGRSIDetectorHit&)*this).fcharge;
   ((TGRSIDetectorHit&)rhs).fdetector        = ((TGRSIDetectorHit&)*this).fdetector;
   ((TGRSIDetectorHit&)rhs).fenergy          = ((TGRSIDetectorHit&)*this).fenergy;
+  ((TGRSIDetectorHit&)rhs).ftime            = ((TGRSIDetectorHit&)*this).ftime;
   
   ((TGRSIDetectorHit&)rhs).fbitflags       = ((TGRSIDetectorHit&)*this).fbitflags;
   ((TGRSIDetectorHit&)rhs).fPPGStatus      = ((TGRSIDetectorHit&)*this).fPPGStatus;
