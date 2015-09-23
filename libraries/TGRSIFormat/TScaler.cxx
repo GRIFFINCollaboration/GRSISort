@@ -1,6 +1,8 @@
 
 #include "TScaler.h"
 
+#include "TROOT.h"
+
 ClassImp(TScalerData)
 ClassImp(TScaler)
 
@@ -162,18 +164,27 @@ UInt_t TScaler::GetScalerDifference(UInt_t address, ULong64_t time, size_t index
    return (currIt->second->GetScaler(index)) - (std::prev(currIt)->second->GetScaler(index));
 }
 
-void TScaler::Print(Option_t *opt) const{
+void TScaler::Print(Option_t *opt, UInt_t address) const{
    if(MapIsEmpty()){
       printf("Empty\n");
    } else {
-	   for(auto addrIt = fScalerMap.begin(); addrIt != fScalerMap.end(); ++addrIt) {
+		if(fScalerMap.find(address) == fScalerMap.end()) {
+			for(auto addrIt = fScalerMap.begin(); addrIt != fScalerMap.end(); ++addrIt) {
+				printf("*****************************\n");
+				printf("        Scaler 0x%08x        \n",addrIt->first);
+				printf("*****************************\n");
+				for(auto dataIt = addrIt->second.begin(); dataIt != addrIt->second.end(); ++dataIt) { 
+				dataIt->second->Print();
+				}
+			}
+		} else {
 			printf("*****************************\n");
-			printf("        Scaler 0x%08x        \n",addrIt->first);
+			printf("        Scaler 0x%08x        \n",address);
 			printf("*****************************\n");
-		   for(auto dataIt = addrIt->second.begin(); dataIt != addrIt->second.end(); ++dataIt) { 
+			for(auto dataIt = fScalerMap.at(address).begin(); dataIt != fScalerMap.at(address).end(); ++dataIt) { 
 				dataIt->second->Print();
 			}
-      }
+		}
    }
 }
 
@@ -191,11 +202,63 @@ void TScaler::Clear(Option_t *opt){
    fNumberOfTimePeriods.clear();
    fTotalTimePeriod = 0;
    fTotalNumberOfTimePeriods.clear();
+	fPPG = NULL;
+	for(auto addrIt = fHist.begin(); addrIt != fHist.end(); ++addrIt) {
+	  if(addrIt->second != NULL) {
+		 delete (addrIt->second);
+		 addrIt->second = NULL;
+	  }
+	}
+	fHist.clear();
 }
 
-void TScaler::Streamer(TBuffer &R__b)
-{
-   // Stream an object of class TScaler.
+TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
+	//draw scaler differences (i.e. current scaler minus last scaler) vs. time in cycle
+
+	//check if the address exists in the scaler data
+	if(fScalerMap.find(address) == fScalerMap.end()) {
+		return NULL;
+	}
+	//if the address doesn't exist in the histogram map, insert a null pointer
+	if(fHist.find(address) == fHist.end()) {
+		fHist[address] == NULL;
+	}
+	//try and find the ppg (if we haven't already done so
+	if(fPPG == NULL) {
+		fPPG = (TPPG*) gROOT->FindObject("TPPG");
+		//if we can't find the ppg we're done here
+		if(fPPG == NULL) {
+			return NULL;
+		}
+	}
+
+	TString opt = option;
+	opt.ToLower();
+	//if the histogram hasn't been created yet or the "redraw" option has been given, we create the histogram
+	Int_t opt_index = opt.Index("redraw");
+	if(fHist[address] == NULL || opt_index >= 0) {
+		int nofBins = fPPG->GetCycleLength()/GetTimePeriod(address);
+		fHist[address] = new TH1D(Form("TScalerHist_%04x",address),Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", index, address, fPPG->GetCycleLength()/1e5/nofBins),
+										  nofBins, 0., fPPG->GetCycleLength()/1e5);
+		//we have to skip the first data point in case this is a sub-run 
+		//loop over the remaining scaler data for this address
+		for(auto it = std::next(fScalerMap[address].begin()); it != fScalerMap[address].end(); ++it) {
+			//fill the difference between the current and the next scaler
+			fHist[address]->Fill(fPPG->GetTimeInCycle(it->first)/1e5,it->second->GetScaler(index) - std::prev(it)->second->GetScaler(index));
+		}
+	}
+	//if redraw was part of the original options, remove it from the options passed on
+	if(opt_index >= 0) {
+		opt.Remove(opt_index,6);
+	}
+	
+	fHist[address]->Draw(opt);
+
+	return fHist[address];
+}
+
+void TScaler::Streamer(TBuffer &R__b) {
+	// Stream an object of class TScaler.
 
    if (R__b.IsReading()) {
       R__b.ReadClassBuffer(TScaler::Class(),this);
