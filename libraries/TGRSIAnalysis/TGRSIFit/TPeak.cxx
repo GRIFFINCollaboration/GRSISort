@@ -186,6 +186,9 @@ void TPeak::Copy(TObject &obj) const {
 
 Bool_t TPeak::InitParams(TH1 *fithist){
 //Makes initial guesses at parameters for the fit. Uses the histogram to
+	if(fithist == NULL) {
+		return false;
+	}
    Double_t xlow,xhigh;
    GetRange(xlow,xhigh);
    Int_t bin = fithist->GetBinCenter(GetParameter("centroid"));
@@ -254,8 +257,16 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 
    //Now that it is initialized, let's fit it.
    //Just in case the range changed, we should reset the centroid and bg energy limits
-   this->SetParLimits(1,GetXmin(),GetXmax());
-   this->SetParLimits(9,GetXmin(),GetXmax());
+	//check first if the parameter has been fixed!
+	double parmin, parmax;
+	this->GetParLimits(1,parmin,parmax);
+	if(parmin < parmax) {
+		this->SetParLimits(1,GetXmin(),GetXmax());
+	}
+	this->GetParLimits(9,parmin,parmax);
+	if(parmin < parmax) {
+		this->SetParLimits(9,GetXmin(),GetXmax());
+	}
 
    TFitResultPtr fitres;
    //Log likelihood is the proper fitting technique UNLESS the data is a result of an addition or subtraction.
