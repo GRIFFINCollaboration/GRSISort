@@ -7,8 +7,6 @@ A lean, mean, sorting machine.
 
 **There is a wiki!!  use the link->** [WIKI](http://github.com/GRIFFINCollaboration/GRSISort/wiki)
 
-branch check.
-
 To compile for a .sh shell execute `source SOURCEME.sh` in your terminal from the GRSISort Directory
 
 To avoid running this script every session, add the following to your **~/.bashrc**
@@ -29,12 +27,13 @@ setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:$GRSISYS/libraries
 Warning: compiling in csh has been known to be an issue. Use sh if possible.
 
 
-once complete type `make` in the GRSISort directory
+Once complete type `make` in the GRSISort directory
 
 -----------------------------------------
 Running
 -----------------------------------------
 grsisort will open up a root session in the grsi environment
+
 Commands:
 
 #Unpacking the MIDAS File

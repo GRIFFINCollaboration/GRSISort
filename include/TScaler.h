@@ -26,6 +26,9 @@
 #include "TObject.h"
 #include "Globals.h"
 #include "TCollection.h"
+#include "TH1D.h"
+
+#include "TPPG.h"
 
 class TScalerData : public TObject {
  public:
@@ -100,8 +103,9 @@ class TScaler : public TObject {
 	ULong64_t GetTimePeriod();
 	ULong64_t GetTimePeriod(UInt_t address);
 
-	virtual void Print(Option_t *opt = "") const;
+	virtual void Print(Option_t *opt = "", UInt_t address = 0) const;
 	virtual void Clear(Option_t *opt = "");
+	TH1D* Draw(UInt_t address, size_t index = 0, Option_t *opt = "");
 
  private:
 	ScalerMap_t fScalerMap;
@@ -109,6 +113,8 @@ class TScaler : public TObject {
 	std::map<UInt_t,std::map<ULong64_t, int> > fNumberOfTimePeriods;
 	ULong64_t fTotalTimePeriod;
 	std::map<ULong64_t,int> fTotalNumberOfTimePeriods;
+	TPPG* fPPG; //!
+	std::map<UInt_t, TH1D*> fHist; //!
 
 	ClassDef(TScaler,1) //Contains scaler information
 };
