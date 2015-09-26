@@ -221,7 +221,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
 	}
 	//if the address doesn't exist in the histogram map, insert a null pointer
 	if(fHist.find(address) == fHist.end()) {
-		fHist[address] == NULL;
+		fHist[address] = NULL;
 	}
 	//try and find the ppg (if we haven't already done so
 	if(fPPG == NULL) {
@@ -238,7 +238,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
 	Int_t opt_index = opt.Index("redraw");
 	if(fHist[address] == NULL || opt_index >= 0) {
 		int nofBins = fPPG->GetCycleLength()/GetTimePeriod(address);
-		fHist[address] = new TH1D(Form("TScalerHist_%04x",address),Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", index, address, fPPG->GetCycleLength()/1e5/nofBins),
+		fHist[address] = new TH1D(Form("TScalerHist_%04x",address),Form("scaler %zu vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", index, address, fPPG->GetCycleLength()/1e5/nofBins),
 										  nofBins, 0., fPPG->GetCycleLength()/1e5);
 		//we have to skip the first data point in case this is a sub-run 
 		//loop over the remaining scaler data for this address
