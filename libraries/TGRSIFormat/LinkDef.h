@@ -28,6 +28,7 @@
 #pragma link C++ class TScaler-;
 #pragma link C++ class TScalerData+;
 #pragma link C++ class std::map<UInt_t, std::map<ULong64_t, TScalerData*> >;
+#pragma link C++ class std::map<ULong64_t, TScalerData*>;
 
 #endif
 

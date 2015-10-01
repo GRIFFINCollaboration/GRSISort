@@ -96,12 +96,16 @@ class TScaler : public TObject {
 	UInt_t GetScalerDifference(UInt_t address, ULong64_t time, size_t index) const;
 	Bool_t MapIsEmpty() const;
 	std::size_t Size() const {return fScalerMap.size();}
+	std::size_t NumberOfScalerReadouts() const;
 	Long64_t Merge(TCollection *list);
 	void Add(const TScaler* scaler);
 	void operator+=(const TScaler& rhs);                           
    
 	ULong64_t GetTimePeriod();
 	ULong64_t GetTimePeriod(UInt_t address);
+
+   std::map<UInt_t, ULong64_t> GetTimePeriodMap() { return fTimePeriod; }
+   std::map<UInt_t,std::map<ULong64_t, int> > GetNumberOfTimePeriods() { return fNumberOfTimePeriods; }
 
 	virtual void Print(Option_t *opt = "", UInt_t address = 0) const;
 	virtual void Clear(Option_t *opt = "");
