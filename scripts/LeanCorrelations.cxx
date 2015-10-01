@@ -220,7 +220,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
       //angCorr_coinc_Binnedab[i] = new TH2F(Form("angCorr_coinc_Binnedab_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window;energy [keV];energy [keV]",angleCombinationsab[i].first), nofBins, low, high, nofBins,low,high); list->Add(angCorr_coinc_Binnedab[i]);
       angCorr_coinc_Binnedab[i] = new THnSparseF(Form("angCorr_coinc_Binnedab_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window;energy [keV];energy [keV]",angleCombinationsab[i].first), 2,bins,min,max); list->Add(angCorr_coinc_Binnedab[i]);
       angCorr_coinc_Binnedab_bg[i] = new THnSparseF(Form("angCorr_coinc_Binnedab_bg_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window, time randoms;energy [keV];energy [keV]",angleCombinationsab[i].first), 2,bins,min,max); list->Add(angCorr_coinc_Binnedab_bg[i]);
-      angleComboMapab.insert(std::make_pair<double,int>(angleCombinationsab[i].first,i));
+      angleComboMapab.insert(std::make_pair(angleCombinationsab.at(i).first,i));
    }
    //TH2F** angCorr_coinc_Binned = new TH2F*[angleCombinations.size()+1];
    THnSparseF** angCorr_coinc_Binned = new THnSparseF*[angleCombinations.size()+1];
@@ -232,7 +232,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
       angCorr_coinc_Binned[i] = new THnSparseF(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), 2,bins, min,max); list->Add(angCorr_coinc_Binned[i]);
       angCorr_coinc_Binned_bg[i] = new THnSparseF(Form("angCorr_coinc_Binned_bg_%d",i),Form("angular correlation at %.1f ^{o} on beam window, time randoms;energy [keV];energy [keV]",angleCombinations[i].first), 2,bins, min,max); list->Add(angCorr_coinc_Binned_bg[i]);
       angCorr_coinc_Binned_uncorr[i] = new THnSparseF(Form("angCorr_coinc_Binned_uncorr_%d",i),Form("angular correlation at %.1f ^{o} on beam window (uncorrelated);energy [keV];energy [keV]",angleCombinations[i].first), 2,bins, min,max); list->Add(angCorr_coinc_Binned_uncorr[i]);
-      angleComboMap.insert(std::make_pair<double,int>(angleCombinations[i].first,i));
+      angleComboMap.insert(std::make_pair(angleCombinations[i].first,i));
    }
 
    Double_t tlow[2] = {0,0};
