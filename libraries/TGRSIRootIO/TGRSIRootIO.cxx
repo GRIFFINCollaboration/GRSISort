@@ -246,8 +246,9 @@ void TGRSIRootIO::FinalizeScaler() {
       return;
    foutfile->cd();
    if(fScaler->Size()) {
-      printf("Writing Scaler\n");
-      fScaler->Write("TScaler",TObject::kSingleKey);
+      printf("Not Writing Scaler\n");
+  //    printf("Number of Scalers: %d\n",fScaler->NumberOfScalerReadouts());
+     // fScaler->Write("TScaler",TObject::kSingleKey);
    } else {
       printf("No Scaler data\n");
 	}

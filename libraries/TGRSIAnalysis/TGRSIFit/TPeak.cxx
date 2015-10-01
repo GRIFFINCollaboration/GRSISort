@@ -3,7 +3,7 @@
 
 ClassImp(TPeak)
 
-Bool_t TPeak::fLogLikelihoodFlag = false;
+Bool_t TPeak::fLogLikelihoodFlag = true;
 
 //We need c++ 11 for constructor delegation....
 TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){
@@ -247,7 +247,9 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    }
    if(!IsInitialized()) 
       InitParams(fithist);
+   ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
    TVirtualFitter::SetMaxIterations(100000);
+   TVirtualFitter::SetPrecision(1e-5);
 
    SetHist(fithist);
 
@@ -271,7 +273,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    TFitResultPtr fitres;
    //Log likelihood is the proper fitting technique UNLESS the data is a result of an addition or subtraction.
    if(GetLogLikelihoodFlag()){
-      fitres = fithist->Fit(this,Form("%sLRS",opt));//The RS needs to always be there
+      fitres = fithist->Fit(this,Form("%sRLS",opt));//The RS needs to always be there
    }
    else{
       fitres = fithist->Fit(this,Form("%sRS",opt));//The RS needs to always be there
@@ -291,7 +293,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    	 // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
          fithist->GetListOfFunctions()->Last()->Delete();
          if(GetLogLikelihoodFlag()){
-            fitres = fithist->Fit(this,Form("%sLRS",opt));//The RS needs to always be there
+            fitres = fithist->Fit(this,Form("%sRLS",opt));//The RS needs to always be there
          }
          else{
             fitres = fithist->Fit(this,Form("%sRS",opt));

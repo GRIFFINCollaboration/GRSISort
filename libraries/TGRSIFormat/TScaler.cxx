@@ -92,6 +92,15 @@ Bool_t TScaler::MapIsEmpty() const {
    return (fScalerMap.size() == 1); //We check for size 1 because we always start with an empty event at time 0.
 }
 
+size_t TScaler::NumberOfScalerReadouts() const {
+   size_t readouts = 0;
+   for(auto it = fScalerMap.begin(); it != fScalerMap.end(); ++it) {
+      readouts += it->second.size();
+   }
+
+   return readouts;
+}
+
 void TScaler::AddData(UInt_t address, TScalerData* scaler){
 //Adds a Scaler status word for a given address at a given time in the current run. 
 //Makes a copy of the pointer to store in the map.
@@ -244,6 +253,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
 		//loop over the remaining scaler data for this address
 		for(auto it = std::next(fScalerMap[address].begin()); it != fScalerMap[address].end(); ++it) {
 			//fill the difference between the current and the next scaler
+         //printf("Fill(%d, %d)\n",fPPG->GetTimeInCycle(it->first)/1e5,it->second->GetScaler(index) - std::prev(it)->second->GetScaler(index));
 			fHist[address]->Fill(fPPG->GetTimeInCycle(it->first)/1e5,it->second->GetScaler(index) - std::prev(it)->second->GetScaler(index));
 		}
 	}
