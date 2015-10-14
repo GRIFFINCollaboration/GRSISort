@@ -39,6 +39,7 @@
 #include<TClass.h>
 #include<TKey.h>
 #include<TTimeStamp.h>
+#include "THnSparse.h"
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -62,7 +63,7 @@ struct SpeHeader {
 
 void WriteHist(TH1*, std::fstream*);
 void WriteMat(TH2*, std::fstream*);
-void WriteM4b(TH2D*, std::fstream*);
+void WriteM4b(TH2*, std::fstream*);
 
 int main(int argc, char** argv)	{	
 
@@ -103,10 +104,21 @@ int main(int argc, char** argv)	{
 			//if((counter-1)%4==0)
 			//	printf("*****************************\n");
 			histstowrite->Add(currentkey->ReadObj());
-      } else if(keytype.compare(0,4,"TH2D")==0){
-         m4bstowrite->Add(currentkey->ReadObj());
-		} else if(keytype.compare(0,3,"TH2")==0) {
+      } else if(keytype.compare(0,4,"TH2C")==0 || keytype.compare(0,4,"TH2S")==0){
          matstowrite->Add(currentkey->ReadObj());
+		} else if(keytype.compare(0,3,"TH2")==0) {
+         m4bstowrite->Add(currentkey->ReadObj());
+		} else if(keytype.compare(0,3,"THn")==0) {
+         THnSparse* hist = ((THnSparse*) (currentkey->ReadObj()));
+         if(hist->GetNdimensions() == 1) {
+			   histstowrite->Add(hist->Projection(0));
+         } else if(hist->GetNdimensions() == 2) {
+		      if(keytype.compare(17,1,"C")==0 || keytype.compare(17,1,"S")==0) {
+               matstowrite->Add(hist->Projection(0,1));
+            } else {
+               m4bstowrite->Add(hist->Projection(0,1));
+            }
+         }
       }
 	}
 
@@ -139,7 +151,7 @@ int main(int argc, char** argv)	{
 
 
 	TIter nextm4b(m4bstowrite);
-	while( TH2D *currentm4b = (TH2D*)nextm4b() ) {
+	while( TH2 *currentm4b = (TH2*)nextm4b() ) {
       std::string outfilename = path + "/";
 		outfilename.append(currentm4b->GetName());
 		outfilename.append(".m4b");
@@ -180,7 +192,7 @@ void WriteMat(TH2 *mat, std::fstream *outfile) {
    delete empty;
 }
 
-void WriteM4b(TH2D *mat, std::fstream *outfile) {
+void WriteM4b(TH2 *mat, std::fstream *outfile) {
    int xbins = mat->GetXaxis()->GetNbins();
    int ybins = mat->GetYaxis()->GetNbins();
    
@@ -247,6 +259,7 @@ void WriteHist(TH1 *hist, std::fstream *outfile)	{
 
 	return;	
 }
+
 
 
 

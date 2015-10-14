@@ -6,6 +6,7 @@
 #include "TF1.h"
 #include "TFitResultPtr.h"
 #include "TFitResult.h"
+#include "Math/Minimizer.h"
 #include "TGraph.h"
 #include <string>
 #include <algorithm>
