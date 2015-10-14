@@ -27,7 +27,7 @@ TSceptarHit::TSceptarHit()	{
 
 TSceptarHit::~TSceptarHit()	{	}
 
-TSceptarHit::TSceptarHit(const TSceptarHit &rhs)	{	
+TSceptarHit::TSceptarHit(const TSceptarHit &rhs) : TGRSIDetectorHit() {	
    //Copy Constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
@@ -165,15 +165,13 @@ Int_t TSceptarHit::CalculateCfdAndMonitor(double attenuation, int delay, int hal
 
    Short_t monitormax = 0;
 
-   bool cfderror = true;
    bool armed = false;
 
    Int_t cfd = 0;
 
    std::vector<Short_t> smoothedwaveform;
 
-   if(fwaveform.size() > delay+1) {
-
+   if((int) fwaveform.size() > delay+1) {
       if(halfsmoothingwindow > 0) {
          smoothedwaveform = TSceptarHit::CalculateSmoothedWaveform(halfsmoothingwindow);
       }
@@ -197,7 +195,6 @@ Int_t TSceptarHit::CalculateCfdAndMonitor(double attenuation, int delay, int hal
          else {
             if(armed == true && monitor[i-delay] < 0) {
                armed = false;
-               cfderror = false;
                if(monitor[i-delay-1]-monitor[i-delay] != 0) {
                   //Linear interpolation.
                   cfd = (i-delay)*interpolation_steps + (monitor[i-delay-1]*interpolation_steps)/(monitor[i-delay-1]-monitor[i-delay]);

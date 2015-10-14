@@ -30,7 +30,8 @@ namespace TGRSIOptions {
       extern bool fWorkHarder;
       extern bool fReadingMaterial;
       extern bool fIgnoreFileOdb;
-      extern bool fIgnoreEpics;
+		extern bool fIgnoreScaler;
+		extern bool fIgnoreEpics;
       extern bool fWriteBadFrags;
 
       }
@@ -54,6 +55,9 @@ namespace TGRSIOptions {
 
       void SetIgnoreFileOdb(bool flag=true);
       bool IgnoreFileOdb();
+
+      void SetIgnoreScaler(bool flag=true);
+      bool IgnoreScaler();
 
       void SetIgnoreEpics(bool flag=true);
       bool IgnoreEpics();
@@ -91,11 +95,7 @@ namespace TGRSIOptions {
       
       //void Print(Option_t *opt = "") const;
       //void Clear(Option_t *opt = "");
-
- 
-
-
-};
+}
 
 #endif
 

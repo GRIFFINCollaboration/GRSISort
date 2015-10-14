@@ -24,7 +24,7 @@ TTip::~TTip() {
    if(tipdata) delete tipdata;
 }
 
-TTip::TTip(const TTip& rhs) {
+TTip::TTip(const TTip& rhs) : TGRSIDetector() {
   Class()->IgnoreTObjectStreamer(kTRUE);
   ((TTip&)rhs).Copy(*this);
 }
@@ -73,7 +73,7 @@ void TTip::BuildHits(TDetectorData *data,Option_t *opt)	{
 
    tip_hits.clear();
    
-   for(int i=0;i<gdata->GetMultiplicity();i++) {
+   for(size_t i=0;i<gdata->GetMultiplicity();i++) {
       TTipHit dethit;
 
       //dethit.SetAddress(gdata->GetDetAddress(i));

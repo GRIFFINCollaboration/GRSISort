@@ -72,8 +72,8 @@ public:
    long   GetTimeStamp() const; //!
    double GetTZero() const; //!
    const char *GetName() const; //!
-   double GetEnergy(int iter=0)const; //!
-   Float_t GetCharge(int iter=0)const; //!
+   double GetEnergy(size_t iter=0)const; //!
+   Float_t GetCharge(size_t iter=0)const; //!
    long GetTimeStamp_ns(); //!
    ULong64_t GetTimeInCycle(); //!
    ULong64_t GetCycleNumber(); //!
@@ -81,7 +81,7 @@ public:
    Int_t GetCfd(int iter=0) const { return Cfd.at(iter); } //!
    Int_t GetLed(int iter=0) const { return Led.at(iter); } //!
 
-   Int_t Get4GCfd(int i=0); //!
+   Int_t Get4GCfd(size_t i=0); //!
 
    bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!
 

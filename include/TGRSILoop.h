@@ -44,16 +44,19 @@ class TGRSILoop : public TObject {
 
       int fFragsReadFromMidas;
       int fFragsSentToTree;
-      int fBadFragsSentToTree;
-
+		int fBadFragsSentToTree;
+		int fScalersSentToTree;
+ 
    #ifndef __CINT__
       std::thread *fMidasThread;
       std::thread *fFillTreeThread;
+      std::thread *fFillScalerThread;
    #endif
 
    public:
       bool fMidasThreadRunning;
       bool fFillTreeThreadRunning;
+      bool fFillScalerThreadRunning;
       
       void SetSuppressError(bool temp = true) { suppress_error = temp; } 
       bool IsOnline()   { return !fOffline;  }
@@ -62,6 +65,7 @@ class TGRSILoop : public TObject {
       bool SortMidas();
       void ProcessMidasFile(TMidasFile*);
       void FillFragmentTree(TMidasFile*);
+      void FillScalerTree();
       bool ProcessMidasEvent(TMidasEvent*,TMidasFile *mfile=0);
       bool ProcessTIGRESS(uint32_t *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0); 
       bool ProcessGRIFFIN(uint32_t *ptr,int &dsize,int bank,TMidasEvent *mevent=0,TMidasFile *mfile=0); 

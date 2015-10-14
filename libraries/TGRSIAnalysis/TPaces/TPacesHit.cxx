@@ -5,14 +5,14 @@
 
 ClassImp(TPacesHit)
 
-TPacesHit::TPacesHit():TGRSIDetectorHit()	{	
+TPacesHit::TPacesHit() : TGRSIDetectorHit()	{	
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 	Clear();
 }
 
-TPacesHit::TPacesHit(const TPacesHit &rhs)	{	
+TPacesHit::TPacesHit(const TPacesHit &rhs) : TGRSIDetectorHit() {	
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif

@@ -15,7 +15,7 @@ ClassImp(TGRSIDetectorHit)
 
 TPPG* TGRSIDetectorHit::fPPG = 0;
 
-TGRSIDetectorHit::TGRSIDetectorHit(const int &Address):TObject()	{ 
+TGRSIDetectorHit::TGRSIDetectorHit(const int &Address) : TObject() { 
   //Default constructor
   Clear();
   faddress = Address;
@@ -27,7 +27,7 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int &Address):TObject()	{
 #endif
 }
 
-TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs)	{ 
+TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs) : TObject() { 
   //Default Copy constructor
   ((TGRSIDetectorHit&)rhs).Copy(*this);
   //((TGriffinHit&)rhs).cfd             = cfd;
@@ -38,7 +38,7 @@ TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs)	{
 #endif
 }
 
-TGRSIDetectorHit::~TGRSIDetectorHit()	{
+TGRSIDetectorHit::~TGRSIDetectorHit() {
 //Default destructor
 }
 

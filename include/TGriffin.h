@@ -94,7 +94,7 @@ class TGriffin : public TGRSIDetector {
       virtual void Clear(Option_t *opt = "all");		     //!
       virtual void Print(Option_t *opt = "") const;		  //!
       void ResetAddback();		     //!
-      UShort_t GetNAddbackFrags(int idx) const;
+      UShort_t GetNAddbackFrags(size_t idx) const;
 
    protected:
       void PushBackHit(TGRSIDetectorHit* ghit);

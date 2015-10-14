@@ -136,11 +136,11 @@ class TSingleDecay : public TVirtualDecay {
    Int_t GetDecayId() const { return fUnId; }
    Int_t GetChainId() const { return fChainId; }
 
-   const TDecayFit* const GetDecayFunc() const { return fDecayFunc; }
-   const TDecayFit* const GetTotalDecayFunc() { SetTotalDecayParameters(); return fTotalDecayFunc; }
+   const TDecayFit* GetDecayFunc() const { return fDecayFunc; }
+   const TDecayFit* GetTotalDecayFunc() { SetTotalDecayParameters(); return fTotalDecayFunc; }
 
-   TSingleDecay* const GetParentDecay();
-   TSingleDecay* const GetDaughterDecay();
+   TSingleDecay* GetParentDecay();
+   TSingleDecay* GetDaughterDecay();
    
    Double_t ActivityFunc(Double_t *dim, Double_t *par);
 
@@ -178,7 +178,7 @@ class TDecayChain : public TVirtualDecay {
 
    void SetChainParameters();
    void SetRange(Double_t xlow, Double_t xhigh);
-   const TDecayFit * const GetChainFunc() { SetChainParameters(); return fChainFunc; }
+   const TDecayFit* GetChainFunc() { SetChainParameters(); return fChainFunc; }
    void DrawComponents(Option_t *opt = "",Bool_t color_flag = true);
    TFitResultPtr Fit(TH1* fithist, Option_t *opt = "");
    Double_t EvalPar(const Double_t* x, const Double_t* par=0);
@@ -216,7 +216,7 @@ class TDecay : public TVirtualDecay {
 
    void Print(Option_t* opt = "") const;
    void PrintMap() const;
-   const TF1 * const GetFitFunc() { return fFitFunc; }
+   const TF1* GetFitFunc() { return fFitFunc; }
    void SetBackground(Double_t background) { fFitFunc->SetParameter(0,background);}
    Double_t GetBackground() const {return fFitFunc->GetParameter(0); }
    Double_t GetBackgroundError() const {return fFitFunc->GetParError(0); }

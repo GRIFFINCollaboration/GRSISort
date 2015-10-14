@@ -40,7 +40,7 @@ void TTriFoil::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
 	//TTriFoil::Set();
 }
 
-TTriFoil::TTriFoil(const TTriFoil& rhs) {
+TTriFoil::TTriFoil(const TTriFoil& rhs) : TGRSIDetector() {
   Class()->IgnoreTObjectStreamer(kTRUE);
   ((TTriFoil&)rhs).Copy(*this);
 }
@@ -58,7 +58,7 @@ void TTriFoil::BuildHits(TDetectorData *ddata,Option_t *opt)	{
 	//timestamp = frag->MidasTimeStamp;
 	int max = 0;
 	int imax =0;
-	for(int i=0;i<tf_wave.size();i++){
+	for(size_t i=0;i<tf_wave.size();i++){
 		if(tf_wave[i]>max){
 			max = tf_wave[i];
 			imax = i;

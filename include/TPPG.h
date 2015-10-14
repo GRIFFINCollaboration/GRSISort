@@ -103,10 +103,10 @@ class TPPG : public TObject	{
 
     ULong64_t GetStatusStart(ppg_pattern);
 
-    TPPGData* const Next();
-    TPPGData* const Previous();
-    TPPGData* const First();
-    TPPGData* const Last();
+    const TPPGData* Next();
+    const TPPGData* Previous();
+    const TPPGData* First();
+    const TPPGData* Last();
 
     virtual void Print(Option_t *opt = "") const;
     virtual void Clear(Option_t *opt = "");

@@ -141,7 +141,7 @@ TPeak::~TPeak(){
    if(fResiduals) delete fResiduals;
 }
 
-TPeak::TPeak(const TPeak &copy) : fBackground(0), fResiduals(0){
+TPeak::TPeak(const TPeak &copy) : TGRSIFit(), fBackground(0), fResiduals(0){
    fBackground = 0;
    fResiduals = 0;
    ((TPeak&)copy).Copy(*this);
@@ -194,7 +194,7 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    Int_t bin = fithist->GetBinCenter(GetParameter("centroid"));
    Int_t binlow = fithist->GetXaxis()->FindBin(xlow);
    Int_t binhigh = fithist->GetXaxis()->FindBin(xhigh);
-   Double_t binWidth = fithist->GetBinWidth(bin);
+   //Double_t binWidth = fithist->GetBinWidth(bin);
    this->SetParLimits(1,xlow,xhigh);
    this->SetParLimits(2,0.1,(xhigh-xlow)); // sigma should be less than the window width - JKS
    this->SetParLimits(3,0.000001,10);
@@ -282,7 +282,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    //After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    //for printing out. RD
 
-   Int_t fitStatus = fitres; //This returns a fit status from the TFitResult Ptr
+   //Int_t fitStatus = fitres; //This returns a fit status from the TFitResult Ptr
 
    if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
       if(fitres->Parameter(3) < 1){

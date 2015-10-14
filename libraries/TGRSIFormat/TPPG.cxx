@@ -8,7 +8,7 @@ TPPGData::TPPGData(){
    Clear();
 }
 
-TPPGData::TPPGData(const TPPGData& rhs) {
+TPPGData::TPPGData(const TPPGData& rhs) : TObject() {
   ((TPPGData&)rhs).Copy(*this);
 }
 
@@ -43,17 +43,17 @@ void TPPGData::Print(Option_t* opt) const{
    printf("time: %7lld\t PPG Status: 0x%07x\t Old: 0x%07x\n",GetTimeStamp(),fnew_ppg,fold_ppg); 
 }
 
-TPPG::TPPG(){
+TPPG::TPPG() {
    fPPGStatusMap = new PPGMap_t;
    this->Clear();
 }
 
-TPPG::TPPG(const TPPG& rhs){
+TPPG::TPPG(const TPPG& rhs) : TObject() {
    fPPGStatusMap = new PPGMap_t;
    rhs.Copy(*this);
 }
 
-TPPG::~TPPG(){
+TPPG::~TPPG() {
    Clear();
    PPGMap_t::iterator ppgit;
    if(fPPGStatusMap){
@@ -267,7 +267,7 @@ bool TPPG::Correct(bool verbose) {
    return true;
 }
 
-TPPGData* const TPPG::Next() {
+const TPPGData* TPPG::Next() {
    if(++fcurrIterator != MapEnd()){
       return fcurrIterator->second;
    }
@@ -277,7 +277,7 @@ TPPGData* const TPPG::Next() {
    }
 }
 
-TPPGData* const TPPG::Previous() {
+const TPPGData* TPPG::Previous() {
    if(fcurrIterator != MapBegin()){
       return (--fcurrIterator)->second;
    }
@@ -287,13 +287,13 @@ TPPGData* const TPPG::Previous() {
    }
 }
 
-TPPGData* const TPPG::Last(){
+const TPPGData* TPPG::Last(){
    fcurrIterator = MapEnd();
    --fcurrIterator;
    return fcurrIterator->second;
 }
 
-TPPGData* const TPPG::First(){
+const TPPGData* TPPG::First(){
    fcurrIterator = MapBegin();
    return fcurrIterator->second;
 }

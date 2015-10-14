@@ -54,34 +54,33 @@
 ////////////////////////////////////////////////////////////////
 
 class TEventQueue : public TObject {
-   public:
-      static TEventQueue *Get();
-      static void Add(std::vector<TFragment> *event); 
-      static std::vector<TFragment> *PopEntry();
-      static int Size();
-      virtual ~TEventQueue() { std::cout << std::endl << "In event queue dstor." << std::endl; }
+  public:
+	static TEventQueue *Get();
+	static void Add(std::vector<TFragment> *event); 
+	static std::vector<TFragment> *PopEntry();
+	static int Size();
+	virtual ~TEventQueue() { std::cout << std::endl << "In event queue dstor." << std::endl; }
 
-   private:
-      TEventQueue();
-      TEventQueue(const TEventQueue&) { MayNotUse(__PRETTY_FUNCTION__); }
-      void operator=(const TEventQueue&){ MayNotUse(__PRETTY_FUNCTION__); }
-      static TEventQueue *fPtrToQue;
+  private:
+	TEventQueue();
+   TEventQueue(const TEventQueue&) : TObject() { MayNotUse(__PRETTY_FUNCTION__); }
+	void operator=(const TEventQueue&){ MayNotUse(__PRETTY_FUNCTION__); }
+	static TEventQueue *fPtrToQue;
 
       
-      void Add_Instance(std::vector<TFragment> *event); 
-      std::vector<TFragment> *PopEntry_Instance();
-      int Size_Instance();
+	void Add_Instance(std::vector<TFragment> *event); 
+	std::vector<TFragment> *PopEntry_Instance();
+	int Size_Instance();
       
-      std::queue<std::vector<TFragment>*> fEventQueue;
-      #ifndef __CINT__
-      std::mutex m_event;
-      #endif 
-      bool elock;
-      void SetLock() {  printf(BLUE "settting event lock" RESET_COLOR  "\n");  elock = true;}
-      void UnsetLock() {  printf(RED "unsettting event lock" RESET_COLOR  "\n");  elock = false;}
+	std::queue<std::vector<TFragment>*> fEventQueue;
+#ifndef __CINT__
+	std::mutex m_event;
+#endif 
+	bool elock;
+	void SetLock() {  printf(BLUE "settting event lock" RESET_COLOR  "\n");  elock = true;}
+	void UnsetLock() {  printf(RED "unsettting event lock" RESET_COLOR  "\n");  elock = false;}
 
-      ClassDef(TEventQueue,0)
-
+	ClassDef(TEventQueue,0)
 };
 
 //class TWriteQueue : public TObject {

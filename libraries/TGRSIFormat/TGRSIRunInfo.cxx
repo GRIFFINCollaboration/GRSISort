@@ -67,7 +67,11 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    }
    if(R__v>2) {
      {Int_t  R__int ; b >> R__int;  fHPGeArrayPosition = R__int;}
-     {Int_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
+	  if(R__v>5) {
+		 {Long_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
+	  } else {
+		 {Int_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
+	  }
      {Double_t  R__double ; b >> R__double;  fAddBackWindow = R__double;}
    }
    if(R__v>4) {
@@ -109,7 +113,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Double_t R__double = fRunStop ;  b << R__double;}
    {Double_t R__double = fRunLength ;  b << R__double;}
    {Int_t R__int = fHPGeArrayPosition; b << R__int;}
-   {Int_t R__int = fBuildWindow;       b << R__int;}
+   {Long_t R__long = fBuildWindow;       b << R__long;}
    {Double_t R__double = fAddBackWindow;  b << R__double;}
    {Bool_t R__bool = fIsMovingWindow; b << R__bool;}
    {Bool_t R__bool = fTigress;    b << R__bool;}
@@ -172,8 +176,6 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
    TList *list =  tempf->GetListOfKeys();
    TIter iter(list);
 
-   TGRSIRunInfo *tmpinfo;
-
    //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
    while(TKey *key = (TKey*)(iter.Next())) {
       if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo"))
@@ -182,9 +184,9 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
       savdir->cd();
       return true;
    }
-     savdir->cd();
-     return false;
+	savdir->cd();
 
+	return false;
 }
 
 
@@ -279,14 +281,12 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    if(subrunnum != -1) 
       SetSubRunNumber(subrunnum);
 
-   int counter = 0;
    std::map<unsigned int,TChannel*>::iterator iter; 
    
    for(iter = TChannel::GetChannelMap()->begin();iter != TChannel::GetChannelMap()->end(); iter++) {
       std::string channelname = iter->second->GetChannelName();
       MNEMONIC mnemonic;
       ParseMNEMONIC(&channelname,&mnemonic);
-     //printf("\t%-04i:\t%s\n",counter++,channelname.c_str());
 
       //  detector system type.
       //  for more info, see: https://www.triumf.info/wiki/tigwiki/index.php/Detector_Nomenclature
@@ -377,7 +377,7 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
       printf("file is empty.\n");
       return false;
    }
-   char buffer[length];
+   char* buffer = new char[length];
    infile.seekg(0,std::ios::beg);
    infile.read(buffer,length);
 
@@ -395,18 +395,18 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
    int linenumber = 0;
 
    //Parse the info file. 
-   while (std::getline(infile, line)) {
+   while(std::getline(infile, line)) {
       linenumber++;
       trim(&line);
-      int comment = line.find("//");
-      if (comment != std::string::npos) {
+      size_t comment = line.find("//");
+      if(comment != std::string::npos) {
          line = line.substr(0, comment);
       }
-      if (!line.length())
+      if(!line.length())
          continue;
 
-      int ntype = line.find(":");
-      if (ntype == std::string::npos) //no seperator, not useful.
+      size_t ntype = line.find(":");
+      if(ntype == std::string::npos) //no seperator, not useful.
         continue;
 
       std::string type = line.substr(0, ntype);

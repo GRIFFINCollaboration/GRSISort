@@ -30,7 +30,7 @@ void TPacesData::Clear(Option_t *opt)	{
 	fCore_Time.clear();
 
 
-	for(int x=0;x<fCore_Wave.size();x++)	{
+	for(size_t x=0;x<fCore_Wave.size();x++)	{
 		fCore_Wave[x].clear();
 	}
 	fCore_Wave.clear();

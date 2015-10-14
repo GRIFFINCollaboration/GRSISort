@@ -21,7 +21,7 @@ ClassImp(TGriffin)
 bool DefaultAddback(TGriffinHit& one, TGriffinHit& two) {
 	return ((one.GetDetector() == two.GetDetector()) &&
 			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
-};
+}
  
 std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::fAddback_criterion = DefaultAddback;
 
@@ -68,7 +68,7 @@ TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
    Clear();
 }
 
-TGriffin::TGriffin(const TGriffin& rhs) {
+TGriffin::TGriffin(const TGriffin& rhs) : TGRSIDetector() {
 //Copy ctor. Ignores TObjectStreamer in ROOT < 6
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
@@ -122,7 +122,7 @@ void TGriffin::Clear(Option_t *opt)	{
 
 void TGriffin::Print(Option_t *opt) const {
   //Prints out TGriffin members, currently does nothing.
-  printf("grifdata = %p\n",grifdata);
+  printf("grifdata = %p\n",(void*) grifdata);
   if(grifdata) grifdata->Print();
   //printf("bgodata  = 0x%p\n",bgodata);
   //if(bgodata) bgodata->Print();
@@ -250,7 +250,7 @@ void TGriffin::BuildHits(TDetectorData *data,Option_t *opt)	{
    //printf("=========================================================\n");
    //printf("gdata->GetMultiplicity() = %i\n",gdata->GetMultiplicity());
 
-   for(int i=0;i<gdata->GetMultiplicity();i++)	{
+   for(size_t i=0;i<gdata->GetMultiplicity();i++)	{
       TGriffinHit corehit;
 
       corehit.SetAddress(gdata->GetCoreAddress(i));
@@ -407,10 +407,10 @@ void TGriffin::ResetAddback() {
    fAddback_frags.clear();
 }
 
-UShort_t TGriffin::GetNAddbackFrags(int idx) const{
+UShort_t TGriffin::GetNAddbackFrags(size_t idx) const{
  //Get the number of addback "fragments" contributing to the total addback hit
  //with index idx.
-   if(idx < fAddback_frags.size())
+  if(idx < fAddback_frags.size())
       return fAddback_frags.at(idx);   
    else
       return 0;

@@ -363,7 +363,7 @@ Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2 *mat, Double_t energy1, D
    }
    if(badlist.size())
       printf("The following channels did not gain match properly: ");
-   for(int i=0;i<badlist.size();i++)
+   for(size_t i=0;i<badlist.size();i++)
       printf("%d\t",badlist.at(i));
    
    delete h1;
@@ -444,7 +444,7 @@ Bool_t TGainMatch::FineMatchFastAll(TCalManager* cm, TH2 *mat1, TPeak* peak1, TH
    }
    if(badlist.size())
       printf("The following channels did not gain match properly: ");
-   for(int i=0;i<badlist.size();i++)
+   for(size_t i=0;i<badlist.size();i++)
       printf("%d\t",badlist.at(i));
    
    delete h1;
@@ -474,7 +474,6 @@ Bool_t TGainMatch::Align(TH1* test, TH1* hist,Int_t low_range, Int_t high_range)
       printf("Unassigned histogram\n");
       return false;
    }
-   int randomSeed = -1;
    fhist = hist;//Need this histogram to be seen by ftotal...Don't know how else to do this right now.
  //  TF1 *tmpfunc = new TF1("tmpfunc",this,&TGainMatch::HistCompare,test->GetMinimumStored()+1,test->GetMaximumStored()-1,3);
    
@@ -498,7 +497,6 @@ Bool_t TGainMatch::Align(TH1* test, TH1* hist,Int_t low_range, Int_t high_range)
 
    TF1 *tmpfunc = new TF1("tmpfunc",this,&TGainMatch::HistCompare,low_range,high_range,3);
    tmpfunc->SetNpx(10000);
-   Double_t norm = test->GetMaximum();
    tmpfunc->SetParameters(1.0,1.0,1.0);
 
  //  hist->Sumw2();
@@ -510,8 +508,8 @@ Bool_t TGainMatch::Align(TH1* test, TH1* hist,Int_t low_range, Int_t high_range)
 */
   // ftot->SetParLimits(0,.3*norm,norm);
 
-   const char* minName = "Minuit2";
-   const char* algoName = "Scan";
+   //const char* minName = "Minuit2";
+   //const char* algoName = "Scan";
    //ROOT::Math::MinimizerOptions::SetDefaultMinimizer("TMinuit2","Simplex");  
 //   TVirtualFitter::SetDefaultFitter("Fumili"); //USE COMBINATION!!!!
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
@@ -545,7 +543,7 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2 *mat, Int_t low_rang
    }
    //Find the range of channels provided
    Int_t first_chan = mat->GetXaxis()->GetFirst();
-   Int_t last_chan  = mat->GetXaxis()->GetLast();
+   //Int_t last_chan  = mat->GetXaxis()->GetLast();
    //The first thing we need to do is slice the matrix into it's channel vs energy.
    TH1D* h1 = new TH1D;
 //	for(int chan=first_chan; chan<=last_chan;chan++){
@@ -565,7 +563,7 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2 *mat, Int_t low_rang
    }
    if(badlist.size())
       printf("The following channels did not gain match properly: ");
-   for(int i=0;i<badlist.size();i++)
+   for(size_t i=0;i<badlist.size();i++)
       printf("%d\t",badlist.at(i));
    
    delete h1;
@@ -625,7 +623,7 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2 *charge_mat, TH2* eng_mat, 
    }
    if(badlist.size())
       printf("The following channels did not gain match properly: ");
-   for(int i=0;i<badlist.size();i++)
+   for(size_t i=0;i<badlist.size();i++)
       printf("%d\t",badlist.at(i));
 
    

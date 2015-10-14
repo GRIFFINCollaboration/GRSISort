@@ -38,10 +38,10 @@ void TEpicsFrag::Clear(Option_t *opt) {
 void TEpicsFrag::Print(Option_t *opt) const { 
    //Prints the TEpicsFrag. This includes Midas information as well the data
    //kep inside of the scaler.
-   int largest = Data.size();
+   size_t largest = Data.size();
    if(Name.size()>largest) largest = Name.size();
    if(Unit.size()>largest) largest = Unit.size();
-   printf("------ EPICS %i Varibles Found ------\n",largest);
+   printf("------ EPICS %i Varibles Found ------\n",(int)largest);
 
    char buff[20];
    ctime(&MidasTimeStamp);
@@ -50,7 +50,7 @@ void TEpicsFrag::Print(Option_t *opt) const {
 
    printf("  MidasTimeStamp: %s\n",buff);
    printf("  MidasId:    	  %i\n", MidasId);
-   for(int i=0;i<largest;i++) {
+   for(size_t i=0;i<largest;i++) {
       if(Name.size()>i) std::cout << std::setw(16) << Name.at(i);
       else std::cout << std::setw(16) << "";
       if(Data.size()>i) {

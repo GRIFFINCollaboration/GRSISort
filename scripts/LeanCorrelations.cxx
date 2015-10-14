@@ -106,7 +106,7 @@ std::vector<std::pair<double,int> > AngleCombinations(double distance = 110., bo
 
    if(folding) {//if we fold we also want to group
       std::vector<std::pair<double,int> > groupedResult;
-      for(size_t i = 0, r = 0; i < result.size(); ++i) {
+      for(size_t i = 0; i < result.size(); ++i) {
          switch(i) {
             case 0:
             case 1:
@@ -150,24 +150,24 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    Double_t gbTlow =  -20.;
    Double_t gbThigh = 20.;
 
-   Double_t ggBGlow = 100.;
-   Double_t ggBGhigh = 175.;
+   //Double_t ggBGlow = 100.;
+   //Double_t ggBGhigh = 175.;
    Double_t gbBGlow = 50.;
    Double_t gbBGhigh = 170.;
-   Double_t ggBGScale = (ggThigh - ggTlow)/(ggBGhigh - ggBGlow);
-   Double_t gbBGScale = (gbThigh - gbTlow)/(gbBGhigh - gbBGlow);
+   //Double_t ggBGScale = (ggThigh - ggTlow)/(ggBGhigh - ggBGlow);
+   //Double_t gbBGScale = (gbThigh - gbTlow)/(gbBGhigh - gbBGlow);
 
    Double_t betaThres = 800.;
 
    //this is in ms
-   Double_t cycleLength = 15000;
+   //Double_t cycleLength = 15000;
 
-   Double_t bgStart  =  1.5e8;
-   Double_t bgEnd    =  3.5e8;
-   Double_t onStart  =  3.5e8;
-   Double_t onEnd    = 14.0e8;
-   Double_t offStart = 14.5e8;
-   Double_t offEnd   = 15.5e8;
+   //Double_t bgStart  =  1.5e8;
+   //Double_t bgEnd    =  3.5e8;
+   //Double_t onStart  =  3.5e8;
+   //Double_t onEnd    = 14.0e8;
+   //Double_t offStart = 14.5e8;
+   //Double_t offEnd   = 15.5e8;
 
    if(w == NULL) {
       w = new TStopwatch;
@@ -175,7 +175,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    }
    TList* list = new TList;
 
-   const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
+   //const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
    //This should be map to speed this up significantly.
 
@@ -199,7 +199,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
       yBins[i] = (double) i;
    }
    double* zBins = new double[angleCombinations.size()+1];
-   for(int i = 0; i<angleCombinations.size()+1; i++){
+   for(size_t i = 0; i<angleCombinations.size()+1; i++){
       zBins[i] = (double) i;
    }
 
@@ -215,7 +215,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    THnSparseF** angCorr_coinc_Binnedab_bg = new THnSparseF*[angleCombinationsab.size()+1];
    THnSparseF* ggbmatrix = new THnSparseF("ggbmatrix","#gamma-#gamma-#beta matrix",2,bins,min,max); list->Add(ggbmatrix);
    THnSparseF* ggbmatrix_bg = new THnSparseF("ggbmatrix_bg", "#gamma-#gamma-#beta background matrix", 2, bins, min, max); list->Add(ggbmatrix_bg);
-   for(int i = 0; i < angleCombinationsab.size()+1; ++i) {
+   for(int i = 0; i < (int) angleCombinationsab.size()+1; ++i) {
       //  angCorr_coinc_Binnedab[i] = new TH2F(Form("angCorr_coinc_Binnedab_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window;energy [keV];energy [keV]",angleCombinationsab[i].first), 1500, xBins, 1500, yBins); list->Add(angCorr_coinc_Binnedab[i]);
       //angCorr_coinc_Binnedab[i] = new TH2F(Form("angCorr_coinc_Binnedab_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window;energy [keV];energy [keV]",angleCombinationsab[i].first), nofBins, low, high, nofBins,low,high); list->Add(angCorr_coinc_Binnedab[i]);
       angCorr_coinc_Binnedab[i] = new THnSparseF(Form("angCorr_coinc_Binnedab_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window;energy [keV];energy [keV]",angleCombinationsab[i].first), 2,bins,min,max); list->Add(angCorr_coinc_Binnedab[i]);
@@ -226,7 +226,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    THnSparseF** angCorr_coinc_Binned = new THnSparseF*[angleCombinations.size()+1];
    THnSparseF** angCorr_coinc_Binned_bg = new THnSparseF*[angleCombinations.size()+1];
    THnSparseF** angCorr_coinc_Binned_uncorr = new THnSparseF*[angleCombinations.size()+1];
-   for(int i = 0; i < angleCombinations.size()+1; ++i) {
+   for(int i = 0; i < (int) angleCombinations.size()+1; ++i) {
       //  angCorr_coinc_Binned[i] = new TH2F(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), 1500, xBins, 1500, yBins); list->Add(angCorr_coinc_Binned[i]);
       // angCorr_coinc_Binned[i] = new TH2F(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), nofBins, low, high,nofBins,low,high); list->Add(angCorr_coinc_Binned[i]);
       angCorr_coinc_Binned[i] = new THnSparseF(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), 2,bins, min,max); list->Add(angCorr_coinc_Binned[i]);
@@ -235,8 +235,8 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
       angleComboMap.insert(std::make_pair(angleCombinations[i].first,i));
    }
 
-   Double_t tlow[2] = {0,0};
-   Double_t thigh[2] = {200,200};
+   //Double_t tlow[2] = {0,0};
+   //Double_t thigh[2] = {200,200};
    TH2D* bggTimeDiff = new TH2D("bggTimeDiff", "Time Difference;t_{#gamma2}-t_{#beta};t_{#gamma1}-t_{#beta};",400,-200.,200.,400,-200.,200.); list->Add(bggTimeDiff);
    TH2D* bggTimeDiffLargeE = new TH2D("bggTimeDiffLargeE", "Time Difference, E_{#gamma} > 1 MeV;t_{#gamma2}-t_{#beta};t_{#gamma1}-t_{#beta};",400,-200.,200.,400,-200.,200.); list->Add(bggTimeDiffLargeE);
 
@@ -259,18 +259,18 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
 
    //tree->LoadBaskets(MEM_SIZE);   
 
-   long entries = tree->GetEntries();
+   //long entries = tree->GetEntries();
 
    //These are the indices of the two hits being compared
    int one;
    int two;
-   int three;
-   size_t angIndexab;
-   int index = 0;
+   //int three;
+   //size_t angIndexab;
+   //int index = 0;
    std::cout<<std::fixed<<std::setprecision(1); //This just make outputs not look terrible
-   int entry;
+   long entry;
    int bggCount = 0;
-   size_t angIndex;
+   //size_t angIndex;
 
    TGriffin oldgrifArray[3];
    TSceptar oldscepArray[3];
@@ -371,14 +371,12 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
             }
          }
          for(one = 0; one < (int) grif->GetAddbackMultiplicity(); ++one) {
-            bool foundBeta = false;
             for(int b = 0; b < scep->GetMultiplicity(); ++b) {
                if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
                for(two = 0; two < (int) grif->GetAddbackMultiplicity(); ++two) {
                   if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
                      continue;
                   }
-                  foundBeta = true;
                   if(((gbTlow <= grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) && 
                      ((gbTlow <= grif->GetAddbackHit(two)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(two)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh))) {
                      double angab = grif->GetAddbackHit(one)->GetPosition().Angle(grif->GetAddbackHit(two)->GetPosition())*180./TMath::Pi();
@@ -409,7 +407,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
       }
 
       if((entry%10000) == 1){
-         printf("Completed %d of %d \r",entry,maxEntries);
+         printf("Completed %ld of %ld \r",entry,maxEntries);
       }
    }
 

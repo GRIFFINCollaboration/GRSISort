@@ -7,16 +7,16 @@ ClassImp(TTigressHit)
 
 TVector3 TTigressHit::beam;
 
-TTigressHit::TTigressHit()	{	
+TTigressHit::TTigressHit() {	
 	Clear();
    segment.SetClass("TCrystalHit");
    bgo.SetClass("TCrystalHit");
    beam.SetXYZ(0,0,1);
 }
 
-TTigressHit::~TTigressHit()	{	}
+TTigressHit::~TTigressHit() {	}
 
-TTigressHit::TTigressHit(const TTigressHit& rhs)	{	
+TTigressHit::TTigressHit(const TTigressHit& rhs) : TGRSIDetectorHit() {	
    ((TGRSIDetectorHit&)rhs).Copy(*this);
 }
 
@@ -34,7 +34,7 @@ void TTigressHit::AddBGO(TCrystalHit &temp) {
 
 
 
-void TTigressHit::Clear(Option_t *opt)	{
+void TTigressHit::Clear(Option_t *opt) {
    TGRSIDetectorHit::Clear(opt);
 	//detector = -1;
 	crystal  = -1;
@@ -45,7 +45,7 @@ void TTigressHit::Clear(Option_t *opt)	{
 	//	segment[x].Clear();
 	//}
 	segment.Clear("C");
-	//for(int x=0;x<bgo.size();x++)	{
+	//for(int x=0;x<bgo.size();x++) {
 	//	bgo[x].Clear();
 	//}
 	bgo.Clear("C");
@@ -71,30 +71,30 @@ void TTigressHit::Print(Option_t *opt)	const {
 }
 
 
-bool TTigressHit::Compare(TTigressHit lhs, TTigressHit rhs)	{
-	if (lhs.GetDetector() == rhs.GetDetector())	{
+bool TTigressHit::Compare(TTigressHit lhs, TTigressHit rhs) {
+	if (lhs.GetDetector() == rhs.GetDetector()) {
 		return(lhs.GetCrystal() < rhs.GetCrystal());
 	}
-	else	{
+	else {
 		return (lhs.GetDetector() < rhs.GetDetector()); 
 	}
 }
 
 
-bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs)	{
+bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs) {
 		return(lhs.GetEnergy()) > rhs.GetEnergy();
 }
 
 
-void TTigressHit::CheckFirstHit(int charge,int segment)	{
-	if(fabs(charge) > first_segment_charge)	{
+void TTigressHit::CheckFirstHit(int charge,int segment) {
+	if(fabs(charge) > first_segment_charge) {
  		first_segment = segment;
 	}
 	return;				
 }
 
-void TTigressHit::SumHit(TTigressHit *hit)	{
-	if(this == hit)	{
+void TTigressHit::SumHit(TTigressHit *hit) {
+	if(this == hit) {
 //		lasthit = position;
 		lastpos = std::make_tuple(GetDetector(),GetCrystal(),GetInitialHit());
 		return;

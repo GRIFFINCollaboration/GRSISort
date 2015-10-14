@@ -78,36 +78,36 @@ public:
   }
 
   ///////////i//////////           GETTERS           ////////////////////////
-  const inline UShort_t GetFront_DetectorNbr(const unsigned int &i)    const { return fSharc_Front_DetectorNbr[i];}                 //!
-  const inline UShort_t GetFront_StripNbr(const unsigned int &i)       const { return fSharc_Front_StripNbr[i];}                    //!
-  const inline UInt_t   GetFront_Address(const unsigned int &i)        const { return fSharc_FrontFragment.at(i).ChannelAddress; } //!
-  const inline Double_t GetFront_Energy(const unsigned int &i)         const { return fSharc_FrontFragment.at(i).GetEnergy();}     //!
-  const inline Double_t GetFront_Charge(const unsigned int &i)         const { return fSharc_FrontFragment.at(i).GetCharge();}     //!
-  const inline Int_t    GetFront_Cfd(const unsigned int &i)            const { return fSharc_FrontFragment.at(i).GetCfd();}        //!
-  const inline Double_t GetFront_Led(const unsigned int &i)            const { return fSharc_FrontFragment.at(i).GetLed();}        //!
-  const inline Double_t GetFront_TimeStamp(const unsigned int &i)      const { return fSharc_FrontFragment.at(i).GetTimeStamp();}  //!
-  const inline TFragment GetFront_Fragment(const unsigned int &i)      const { return fSharc_FrontFragment.at(i);}                 //!
-  inline std::vector<Short_t> GetFront_Wave(const unsigned int &i)     const { return fSharc_FrontFragment.at(i).wavebuffer;}      //!
+  inline UShort_t GetFront_DetectorNbr(const unsigned int &i)        const { return fSharc_Front_DetectorNbr[i];}                 //!
+  inline UShort_t GetFront_StripNbr(const unsigned int &i)           const { return fSharc_Front_StripNbr[i];}                    //!
+  inline UInt_t   GetFront_Address(const unsigned int &i)            const { return fSharc_FrontFragment.at(i).ChannelAddress; } //!
+  inline Double_t GetFront_Energy(const unsigned int &i)             const { return fSharc_FrontFragment.at(i).GetEnergy();}     //!
+  inline Double_t GetFront_Charge(const unsigned int &i)             const { return fSharc_FrontFragment.at(i).GetCharge();}     //!
+  inline Int_t    GetFront_Cfd(const unsigned int &i)                const { return fSharc_FrontFragment.at(i).GetCfd();}        //!
+  inline Double_t GetFront_Led(const unsigned int &i)                const { return fSharc_FrontFragment.at(i).GetLed();}        //!
+  inline Double_t GetFront_TimeStamp(const unsigned int &i)          const { return fSharc_FrontFragment.at(i).GetTimeStamp();}  //!
+  inline TFragment GetFront_Fragment(const unsigned int &i)          const { return fSharc_FrontFragment.at(i);}                 //!
+  inline std::vector<Short_t> GetFront_Wave(const unsigned int &i)   const { return fSharc_FrontFragment.at(i).wavebuffer;}      //!
 
-  const inline UShort_t GetBack_DetectorNbr(const unsigned int &i)    const { return fSharc_Back_DetectorNbr[i];}                  //!
-  const inline UShort_t GetBack_StripNbr(const unsigned int &i)       const { return fSharc_Back_StripNbr[i];}                     //!
-  const inline UInt_t   GetBack_Address(const unsigned int &i)        const { return fSharc_BackFragment.at(i).ChannelAddress; }   //!
-  const inline Double_t GetBack_Energy(const unsigned int &i)         const { return fSharc_BackFragment.at(i).GetEnergy();}       //!
-  const inline Float_t  GetBack_Charge(const unsigned int &i)         const { return fSharc_BackFragment.at(i).GetCharge();}       //!
-  const inline Int_t    GetBack_Cfd(const unsigned int &i)            const { return fSharc_BackFragment.at(i).GetCfd();}          //!
-  const inline Double_t GetBack_Led(const unsigned int &i)            const { return fSharc_BackFragment.at(i).GetLed();}          //!
-  const inline Double_t GetBack_TimeStamp(const unsigned int &i)      const { return fSharc_BackFragment.at(i).GetTimeStamp();}    //!
-  const inline TFragment GetBack_Fragment(const unsigned int &i)      const { return fSharc_BackFragment.at(i);}                   //!
-  inline std::vector<Short_t> GetBack_Wave(const unsigned int &i)     const { return fSharc_BackFragment.at(i).wavebuffer;}        //!
+  inline UShort_t GetBack_DetectorNbr(const unsigned int &i)         const { return fSharc_Back_DetectorNbr[i];}                  //!
+  inline UShort_t GetBack_StripNbr(const unsigned int &i)            const { return fSharc_Back_StripNbr[i];}                     //!
+  inline UInt_t   GetBack_Address(const unsigned int &i)             const { return fSharc_BackFragment.at(i).ChannelAddress; }   //!
+  inline Double_t GetBack_Energy(const unsigned int &i)              const { return fSharc_BackFragment.at(i).GetEnergy();}       //!
+  inline Float_t  GetBack_Charge(const unsigned int &i)              const { return fSharc_BackFragment.at(i).GetCharge();}       //!
+  inline Int_t    GetBack_Cfd(const unsigned int &i)                 const { return fSharc_BackFragment.at(i).GetCfd();}          //!
+  inline Double_t GetBack_Led(const unsigned int &i)                 const { return fSharc_BackFragment.at(i).GetLed();}          //!
+  inline Double_t GetBack_TimeStamp(const unsigned int &i)           const { return fSharc_BackFragment.at(i).GetTimeStamp();}    //!
+  inline TFragment GetBack_Fragment(const unsigned int &i)           const { return fSharc_BackFragment.at(i);}                   //!
+  inline std::vector<Short_t> GetBack_Wave(const unsigned int &i)    const { return fSharc_BackFragment.at(i).wavebuffer;}        //!
 
-  const inline UShort_t GetPad_DetectorNbr(const unsigned int &i)    const { return fSharc_Pad_DetectorNbr[i];}                    //!
-  const inline UInt_t   GetPad_Address(const unsigned int &i)        const { return fSharc_PadFragment.at(i).ChannelAddress; }     //!
-  const inline Double_t GetPad_Energy(const unsigned int &i)         const { return fSharc_PadFragment.at(i).GetEnergy();}         //!
-  const inline Float_t  GetPad_Charge(const unsigned int &i)         const { return fSharc_PadFragment.at(i).GetCharge();}         //!
-  const inline Double_t GetPad_Cfd(const unsigned int &i)            const { return fSharc_PadFragment.at(i).GetCfd();}            //!
-  const inline Double_t GetPad_Led(const unsigned int &i)            const { return fSharc_PadFragment.at(i).GetLed();}            //!
-  const inline Double_t GetPad_TimeStamp(const unsigned int &i)      const { return fSharc_PadFragment.at(i).GetTimeStamp();}      //!
-  const inline TFragment GetPad_Fragment(const unsigned int &i)      const { return fSharc_PadFragment.at(i);}                     //!
+  inline UShort_t GetPad_DetectorNbr(const unsigned int &i)          const { return fSharc_Pad_DetectorNbr[i];}                    //!
+  inline UInt_t   GetPad_Address(const unsigned int &i)              const { return fSharc_PadFragment.at(i).ChannelAddress; }     //!
+  inline Double_t GetPad_Energy(const unsigned int &i)               const { return fSharc_PadFragment.at(i).GetEnergy();}         //!
+  inline Float_t  GetPad_Charge(const unsigned int &i)               const { return fSharc_PadFragment.at(i).GetCharge();}         //!
+  inline Double_t GetPad_Cfd(const unsigned int &i)                  const { return fSharc_PadFragment.at(i).GetCfd();}            //!
+  inline Double_t GetPad_Led(const unsigned int &i)                  const { return fSharc_PadFragment.at(i).GetLed();}            //!
+  inline Double_t GetPad_TimeStamp(const unsigned int &i)            const { return fSharc_PadFragment.at(i).GetTimeStamp();}      //!
+  inline TFragment GetPad_Fragment(const unsigned int &i)            const { return fSharc_PadFragment.at(i);}                     //!
   inline std::vector<Short_t> GetPad_Wave(const unsigned int &i)     const { return fSharc_PadFragment.at(i).wavebuffer;}          //!
 
   inline unsigned int GetSizeFront() const {return fSharc_Front_DetectorNbr.size();} //!

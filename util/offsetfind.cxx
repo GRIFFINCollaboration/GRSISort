@@ -34,7 +34,7 @@ class TEventTime {
          uint32_t type  = 0xffffffff;
          uint32_t value = 0xffffffff;
 
-         int64_t time = 0;
+         //int64_t time = 0;
 
          for(int x=0;x<banksize;x++) {
             value = *((int*)ptr+x);
@@ -110,7 +110,7 @@ class TEventTime {
          return digmap.size();
       }
 
-      inline static unsigned int GetBestDigitizer(){
+      inline static int GetBestDigitizer(){
          return best_dig;
       }
       
@@ -124,7 +124,7 @@ class TEventTime {
 
       static std::map<int,int> digmap;
       static unsigned long low_timemidas;
-      static unsigned int best_dig;
+      static int best_dig;
       static int64_t lowest_time;
  
    private:
@@ -140,7 +140,7 @@ class TEventTime {
 
 unsigned long TEventTime::low_timemidas = -1;
 int64_t TEventTime::lowest_time = -1;
-unsigned int TEventTime::best_dig = 0;
+int TEventTime::best_dig = 0;
 std::map<int,int> TEventTime::digmap;
 
 int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
@@ -194,7 +194,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
 
    //MidasTimeStamp is the only time we can trust at this level. 
 
-   int fEntries = eventQ->size();
+   //int fEntries = eventQ->size();
 
    int FragsIn = 0;
 
@@ -315,7 +315,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
 
    printf("*****  Rough time shifts *******\n");
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
+      printf("0x%04x:\t %ld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
 
@@ -374,7 +374,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
          if( (*hit2)->Digitizer() == 0 && (*hit2)->DetectorType()!=1) continue; 
  
          if(hit1 != hit2 ){
-            int digitizer = (*hit2)->Digitizer();
+            //int digitizer = (*hit2)->Digitizer();
             fillhist = (TH1D*)(list->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
             int64_t time2 = (*hit2)->GetTimeStamp() - correction[(*hit2)->DigIndex()];
             if(time2-time1 < 2147483647 && time2-time1 > -2147483647){//Make sure we are casting this to 32 bit properly
@@ -402,7 +402,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    
    printf("*****  Final time shifts *******\n");
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
+      printf("0x%04x:\t %ld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
         

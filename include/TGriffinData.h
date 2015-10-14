@@ -75,7 +75,7 @@ class TGriffinData : public TGRSIDetectorData {
             else if(mnemonic->arraysubposition.compare(0,1,"W")==0)
        	      CoreNbr=3;
    
-            for(int x=0;x<frag->Charge.size();x++) {
+            for(size_t x=0;x<frag->Charge.size();x++) {
                SetCoreMidasId(frag->MidasId);
                SetCoreNbrHits(frag->Charge.size());
                SetCorePUHit(x);

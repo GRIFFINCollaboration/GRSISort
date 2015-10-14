@@ -108,13 +108,12 @@ long TFragment::GetTimeStamp_ns() {
    return 10*GetTimeStamp() + ns;  
 }
 
-Int_t TFragment::Get4GCfd(int i) { // return a 4G cfd in terms 
+Int_t TFragment::Get4GCfd(size_t i) { // return a 4G cfd in terms 
   if(Cfd.size()==0)                // of 1/256 ns since the trigger
      return -1;
   if(Cfd.size()<i)
      i = Cfd.size()-1;
   return  Cfd.at(i)&0x001fffff;
-
 }
 
 
@@ -134,7 +133,7 @@ double TFragment::GetEnergy() const {
 }
 */
 
-double TFragment::GetEnergy(int i) const {
+double TFragment::GetEnergy(size_t i) const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || !(Charge.size()>i))
       return 0.00;
@@ -148,7 +147,7 @@ double TFragment::GetEnergy(int i) const {
    return chan->CalibrateENG((int)(Charge.at(i)));
 }
 
-Float_t TFragment::GetCharge(int i) const {
+Float_t TFragment::GetCharge(size_t i) const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || !(Charge.size()>i))
       return 0.00;
@@ -201,10 +200,10 @@ void TFragment::Print(Option_t *opt) const {
 	   printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetChannelName());
    printf("\tChannel Address: 0x%08x\n", ChannelAddress);
    printf("\tChannel Num:      %i\n", ChannelNumber);
-   printf("\tCharge[%lu]	  ",Charge.size());   for(int x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");
-   printf("\tCFD[%lu]		  ",Cfd.size());      for(int x=0;x<Cfd.size();x++)   {printf( "     0x%08x", Cfd.at(x));} printf("\n");
-   printf("\tZC[%lu]		  ",Zc.size());      for(int x=0;x<Zc.size();x++)   {printf( "     0x%08x", Zc.at(x));} printf("\n");
-   printf("\tLED[%lu]		  ",Led.size());      for(int x=0;x<Led.size();x++)   {printf( "     0x%08x", Led.at(x));} printf("\n");
+   printf("\tCharge[%lu]	  ",Charge.size());   for(size_t x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");
+   printf("\tCFD[%lu]		  ",Cfd.size());      for(size_t x=0;x<Cfd.size();x++)   {printf( "     0x%08x", Cfd.at(x));} printf("\n");
+   printf("\tZC[%lu]		     ",Zc.size());       for(size_t x=0;x<Zc.size();x++)    {printf( "     0x%08x", Zc.at(x));} printf("\n");
+   printf("\tLED[%lu]		  ",Led.size());      for(size_t x=0;x<Led.size();x++)   {printf( "     0x%08x", Led.at(x));} printf("\n");
    printf("\tTimeStamp High: 0x%08x\n", TimeStampHigh);
    printf("\tTimeStamp Low:    0x%08x\n", TimeStampLow);
    //unsigned short temptime = (TimeStampLow & 0x0000ffff) - ((Cfd >> 4) & 0x0000ffff);   //TimeStampLow&0x0000ffff; 

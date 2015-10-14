@@ -35,8 +35,8 @@ void ProcessEvent(std::vector<TFragment> *event) {
   if(event->size()<2)
      return;
   
-  for(int x=0;x<event->size();x++) {
-    for(int y=x+1;y<event->size();y++) {
+  for(size_t x=0;x<event->size();x++) {
+    for(size_t y=x+1;y<event->size();y++) {
       if( ((event->at(x).GetEnergy()>1330.0) &&  (event->at(x).GetEnergy()<1335.0)) || 
           ((event->at(y).GetEnergy()>1330.0) &&  (event->at(y).GetEnergy()<1335.0))  )  {
       int timediff      = abs(event->at(x).TimeStampLow-event->at(y).TimeStampLow);
@@ -163,16 +163,16 @@ int main(int argc, char **argv) {
    Int_t fEntries = index->GetN();
    Long64_t *indexvalues = index->GetIndex();
    //Set the major index to be sorted over as the high bits of the time stamp
-   int major_max = fCurrentFragTree->GetMaximum("TimeStampHigh");
+   //int major_max = fCurrentFragTree->GetMaximum("TimeStampHigh");
 
    //Read in the first fragment from the fragment tree
    fCurrentFragTree->GetEntry(indexvalues[0]);
    long firstTimeStamp = currentFrag->GetTimeStamp();
-   int  firstDetectorType = currentFrag->DetectorType;
+   //int  firstDetectorType = currentFrag->DetectorType;
 
    //We set the buildevent flag to false by default. When the time gate closes we change this to true
    //to tell the code to build the event and send it to be written to the analysis tree.
-   bool buildevent = false;
+   //bool buildevent = false;
    std::vector<TFragment> *event = new std::vector<TFragment>;//(1,*currentFrag);
    event->push_back(*currentFrag);
 
@@ -206,11 +206,11 @@ int main(int argc, char **argv) {
          //channelSeen.clear();
 
 
-      long timediff = currentFrag->GetTimeStamp() - firstTimeStamp;
+      //long timediff = currentFrag->GetTimeStamp() - firstTimeStamp;
 
       //We now set the "allowed" time windows for different detector streams to be called a coincidence
       //The way this is done right now is not correct and should be changed in the near future.
-      int currentDetectorType = currentFrag->DetectorType;
+      //int currentDetectorType = currentFrag->DetectorType;
 
 
       if((currentFrag->GetTimeStamp() - firstTimeStamp) > 200) {  // 2 micro-sec.

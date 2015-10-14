@@ -13,6 +13,7 @@ namespace TGRSIOptions {
   bool fWorkHarder = false;
   bool fReadingMaterial = false;
   bool fIgnoreFileOdb  = false;
+  bool fIgnoreScaler   = false;
   bool fIgnoreEpics    = false;
   bool fCloseAfterSort = false;
   bool fWriteBadFrags  = false;
@@ -44,6 +45,9 @@ const char *GetCalFile(int runnumber,int subrunnumber);
 
 void SetIgnoreFileOdb(bool flag) { fIgnoreFileOdb=flag; }
 bool IgnoreFileOdb()             { return fIgnoreFileOdb; }
+
+void SetIgnoreScaler(bool flag) { fIgnoreScaler=flag; }
+bool IgnoreScaler()             { return fIgnoreScaler; }
 
 void SetIgnoreEpics(bool flag) { fIgnoreEpics=flag; }
 bool IgnoreEpics()             { return fIgnoreEpics; }

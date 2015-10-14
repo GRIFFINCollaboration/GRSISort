@@ -14,7 +14,7 @@ TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{
 	Clear();
 }
 
-TGriffinHit::TGriffinHit(const TGriffinHit &rhs)	{	
+TGriffinHit::TGriffinHit(const TGriffinHit &rhs) : TGRSIDetectorHit() {	
    //Copy Ctor. Ignores TObject Streamer in ROOT < 6.
 	Clear();
    ((TGriffinHit&)rhs).Copy(*this);
