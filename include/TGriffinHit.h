@@ -86,7 +86,7 @@ class TGriffinHit : public TGRSIDetectorHit {
    private:
       void SetGriffinFlag(enum EGriffinHitBits,Bool_t set);
 	
-      ClassDef(TGriffinHit,4); //Information about a GRIFFIN Hit
+      ClassDef(TGriffinHit,5); //Information about a GRIFFIN Hit
 
 };
 

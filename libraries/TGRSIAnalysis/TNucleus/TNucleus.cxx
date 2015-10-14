@@ -11,7 +11,7 @@
 
 //#define debug
 
-ClassImp(TNucleus);
+ClassImp(TNucleus)
 
 /////////////////////////////////////////////////////////////////
 //
@@ -306,7 +306,7 @@ bool TNucleus::SetSourceData() {
    int linenumber = 0;
    while(getline(sourcefile,line)) {
       linenumber++;
-      int comment = line.find("//");
+      size_t comment = line.find("//");
       if (comment != std::string::npos) 
          line = line.substr(0, comment);
       if(line.length()==0)

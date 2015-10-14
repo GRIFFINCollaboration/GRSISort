@@ -54,7 +54,7 @@ class TDescantData : public TGRSIDetectorData {
 		inline void SetDet(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 		   if(!frag || !channel || !mnemonic) return;
          
-         for(int x=0;x<frag->Charge.size();x++) {
+         for(size_t x=0;x<frag->Charge.size();x++) {
      		   SetDetNumber(mnemonic->arrayposition);
 	   	   SetDetAddress(frag->ChannelAddress);
             //SetDetEnergy(channel->CalibrateENG(frag->Charge.at(x)));

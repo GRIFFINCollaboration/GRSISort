@@ -11,12 +11,13 @@ TScalerData::TScalerData(){
 	fScaler.resize(4); //we expect to have four scaler values
 }
 
-TScalerData::TScalerData(const TScalerData& rhs) {
+TScalerData::TScalerData(const TScalerData& rhs) : TObject() {
   ((TScalerData&)rhs).Copy(*this);
 }
 
 void TScalerData::Copy(TObject &rhs) const {
   ((TScalerData&)rhs).fTimeStamp       =  fTimeStamp;      
+  ((TScalerData&)rhs).fAddress         =  fAddress;      
   ((TScalerData&)rhs).fScaler          =  fScaler;        
   ((TScalerData&)rhs).fNetworkPacketId =  fNetworkPacketId;        
   ((TScalerData&)rhs).fLowTimeStamp    =  fLowTimeStamp;   
@@ -34,14 +35,15 @@ void TScalerData::Clear(Option_t* opt) {
 //Clears the TScalerData and leaves it a "junk" state. By junk, I just mean default
 //so that we can tell that this Scaler is no good.
    fTimeStamp        =  0;
+	fAddress          =  0;
    fLowTimeStamp     =  0;
    fHighTimeStamp    =  0;
-   fNetworkPacketId  =  -1;
+   fNetworkPacketId  = -1;
    fScaler.clear();
 }
 
 void TScalerData::Print(Option_t* opt) const {
-  printf("time: %16lld",GetTimeStamp());
+  printf("time: %16lld, address: 0x%04x",GetTimeStamp(),fAddress);
   for(size_t i = 0; i < fScaler.size(); ++i) {
 	 printf("\t Scaler[%lu]: 0x%07x", i, fScaler[i]);
   }
@@ -52,7 +54,7 @@ TScaler::TScaler(){
    this->Clear();
 }
 
-TScaler::TScaler(const TScaler& rhs){
+TScaler::TScaler(const TScaler& rhs) : TObject() {
    rhs.Copy(*this);
 }
 
@@ -221,7 +223,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
 	}
 	//if the address doesn't exist in the histogram map, insert a null pointer
 	if(fHist.find(address) == fHist.end()) {
-		fHist[address] == NULL;
+		fHist[address] = NULL;
 	}
 	//try and find the ppg (if we haven't already done so
 	if(fPPG == NULL) {
@@ -238,8 +240,8 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
 	Int_t opt_index = opt.Index("redraw");
 	if(fHist[address] == NULL || opt_index >= 0) {
 		int nofBins = fPPG->GetCycleLength()/GetTimePeriod(address);
-		fHist[address] = new TH1D(Form("TScalerHist_%04x",address),Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", index, address, fPPG->GetCycleLength()/1e5/nofBins),
-										  nofBins, 0., fPPG->GetCycleLength()/1e5);
+		fHist[address] = new TH1D(Form("TScalerHist_%04x",address),Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", (int) index, address, 
+																							 fPPG->GetCycleLength()/1e5/nofBins), nofBins, 0., fPPG->GetCycleLength()/1e5);
 		//we have to skip the first data point in case this is a sub-run 
 		//loop over the remaining scaler data for this address
 		for(auto it = std::next(fScalerMap[address].begin()); it != fScalerMap[address].end(); ++it) {
@@ -257,15 +259,14 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
 	return fHist[address];
 }
 
-void TScaler::Streamer(TBuffer &R__b) {
-	// Stream an object of class TScaler.
-
-   if (R__b.IsReading()) {
-      R__b.ReadClassBuffer(TScaler::Class(),this);
-   } else {
-      R__b.WriteClassBuffer(TScaler::Class(),this);
-   }
-}
+//void TScaler::Streamer(TBuffer &R__b) {
+//	// Stream an object of class TScaler.
+//   if (R__b.IsReading()) {
+//      R__b.ReadClassBuffer(TScaler::Class(),this);
+//   } else {
+//      R__b.WriteClassBuffer(TScaler::Class(),this);
+//   }
+//}
 
 ULong64_t TScaler::GetTimePeriod(UInt_t address) {
 //Get time period of scaler readouts for address "address" by calculating all time differences and choosing the one that occurs most often.

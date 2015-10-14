@@ -219,7 +219,7 @@ GCanvas *GCanvas::MakeDefCanvas() {
   //printf("GCanvas::MakeDefCanvas"," created default GCanvas with name %s",cdef);
   delete [] cdef;
   return c;
-};
+}
 
 //void GCanvas::ProcessEvent(Int_t event,Int_t x,Int_t y,TObject *obj) {
 //   printf("{GCanvas} ProcessEvent:\n");
@@ -285,7 +285,6 @@ void GCanvas::Draw(Option_t *opt) {
 
 std::vector<TH1*> GCanvas::Find1DHists() {
   std::vector<TH1*> tempvec;
-  TH1 *hist = 0;
   TIter iter(gPad->GetListOfPrimitives());
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
@@ -299,7 +298,6 @@ std::vector<TH1*> GCanvas::Find1DHists() {
 
 std::vector<TH1*> GCanvas::FindAllHists() {
   std::vector<TH1*> tempvec;
-  TH1 *hist = 0;
   TIter iter(gPad->GetListOfPrimitives());
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1"))
@@ -346,7 +344,7 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
             last  = last -(xdiff/2);
           }
         }
-        for(int i=0;i<hists.size();i++)
+        for(size_t i=0;i<hists.size();i++)
           hists.at(i)->GetXaxis()->SetRange(first,last);
         gPad->Modified();
         gPad->Update();
@@ -378,7 +376,7 @@ bool GCanvas::HandleArrowKeyPress(Event_t *event,UInt_t *keysym) {
             first = first+(xdiff/2); 
           }
         }
-        for(int i=0;i<hists.size();i++)
+        for(size_t i=0;i<hists.size();i++)
           hists.at(i)->GetXaxis()->SetRange(first,last);
         gPad->Modified();
         gPad->Update();
@@ -435,10 +433,10 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             if(GetNMarkers()<2)
                break;
             if(fMarkers.at(fMarkers.size()-1)->localx < fMarkers.at(fMarkers.size()-2)->localx) 
-               for(int i=0;i<hists.size();i++)
+               for(size_t i=0;i<hists.size();i++)
                  hists.at(i)->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-1)->localx,fMarkers.at(fMarkers.size()-2)->localx);
             else
-               for(int i=0;i<hists.size();i++)
+               for(size_t i=0;i<hists.size();i++)
                  hists.at(i)->GetXaxis()->SetRangeUser(fMarkers.at(fMarkers.size()-2)->localx,fMarkers.at(fMarkers.size()-1)->localx);
             edit = true;
             while(GetNMarkers())
@@ -447,7 +445,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             break;
          case kKey_E:
             GetContextMenu()->Action(hists.back()->GetXaxis(),hists.back()->GetXaxis()->Class()->GetMethodAny("SetRangeUser"));
-            for(int i=0;i<hists.size()-1;i++)
+            for(size_t i=0;i<hists.size()-1;i++)
                hists.at(i)->GetXaxis()->SetRangeUser(hists.back()->GetXaxis()->GetFirst(),hists.back()->GetXaxis()->GetLast());
             edit = true;
             break;
@@ -458,14 +456,14 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             edit = GausBGFit();
             break;
          case kKey_l:
-            for(int i=0;i<hists.size();i++) {
+            for(size_t i=0;i<hists.size();i++) {
                hists.at(i)->GetYaxis()->UnZoom();
             }
             SetLogy(0);
             edit = true;
             break;
          case kKey_L:
-            for(int i=0;i<hists.size();i++) {
+            for(size_t i=0;i<hists.size();i++) {
               if(hists.at(i)->GetYaxis()->GetXmin()<0)
                  hists.at(i)->GetYaxis()->SetRangeUser(0,hists.at(i)->GetYaxis()->GetXmax());
             }
@@ -481,7 +479,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             while(GetNMarkers())
                RemoveMarker();
             ClearBGMarkers();
-            for(int i=0;i<hists.size();i++)
+            for(size_t i=0;i<hists.size();i++)
               hists.at(i)->GetListOfFunctions()->Delete();
             edit = true;
             break; 
@@ -494,7 +492,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
             edit = true;
             break;
          case kKey_o:
-            for(int i=0;i<hists.size();i++)
+            for(size_t i=0;i<hists.size();i++)
               hists.at(i)->GetXaxis()->UnZoom();
             edit = true;    
             while(GetNMarkers())
@@ -581,7 +579,7 @@ bool GCanvas::HandleKeyboardPress(Event_t *event,UInt_t *keysym) {
                fStatsDisplayed = false;
             else
                fStatsDisplayed = true;
-            for(int i=0;i<hists.size();i++)
+            for(size_t i=0;i<hists.size();i++)
               hists.at(i)->SetStats(fStatsDisplayed);
             edit = true;
             break;
@@ -630,7 +628,6 @@ bool GCanvas::HandleMousePress(Int_t event,Int_t x,Int_t y) {
 
   TIter iter(gPad->GetListOfPrimitives());
   TH1 *hist = 0;
-  bool edit = false;
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
         !obj->InheritsFrom("TH2") &&  
@@ -690,7 +687,6 @@ TF1 *GCanvas::GetLastFit() {
 bool GCanvas::SetLinearBG(GMarker *m1,GMarker *m2) {
   TIter iter(gPad->GetListOfPrimitives());
   TH1 *hist = 0;
-  bool edit = false;
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
         !obj->InheritsFrom("TH2") &&  
@@ -712,13 +708,10 @@ bool GCanvas::SetLinearBG(GMarker *m1,GMarker *m2) {
   if(bg)
      bg->Delete();
   double x[2];
-  double y[2];
   if(m1->localx < m2->localx) {
     x[0]=m1->localx; x[1]=m2->localx;
-    y[0]=hist->GetBinContent(m1->x); y[1]=hist->GetBinContent(m2->x); 
   } else {
     x[1]=m1->localx; x[0]=m2->localx;
-    y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
   }
   printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
   bg = new TF1("linbg","pol1",x[0],x[1]);
@@ -733,7 +726,6 @@ bool GCanvas::SetLinearBG(GMarker *m1,GMarker *m2) {
 bool GCanvas::GausBGFit(GMarker *m1,GMarker *m2) {
   TIter iter(gPad->GetListOfPrimitives());
   TH1 *hist = 0;
-  bool edit = false;
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
         !obj->InheritsFrom("TH2") &&  
@@ -755,16 +747,13 @@ bool GCanvas::GausBGFit(GMarker *m1,GMarker *m2) {
   TF1 *gausfit = hist->GetFunction("gausfit");
   if(gausfit)
      gausfit->Delete();
-  int binx[2];
   double x[2];
   double y[2];
   if(m1->localx < m2->localx) {
     x[0]=m1->localx; x[1]=m2->localx;
-    binx[0]=m1->x;   binx[1]=m2->x;
     y[0]=hist->GetBinContent(m1->x); y[1]=hist->GetBinContent(m2->x); 
   } else {
     x[1]=m1->localx; x[0]=m2->localx;
-    binx[1]=m1->x;   binx[0]=m2->x;
     y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
   }
   //printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
@@ -808,7 +797,6 @@ bool GCanvas::GausBGFit(GMarker *m1,GMarker *m2) {
 bool GCanvas::Integrate(GMarker *m1, GMarker *m2){
    TIter iter(gPad->GetListOfPrimitives());
    TH1 *hist = 0;
-   bool edit = false;
    while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
         !obj->InheritsFrom("TH2") &&  
@@ -849,7 +837,6 @@ bool GCanvas::Integrate(GMarker *m1, GMarker *m2){
 bool GCanvas::IntegrateBG(GMarker *m1, GMarker *m2){
    TIter iter(gPad->GetListOfPrimitives());
    TH1 *hist = 0;
-   bool edit = false;
    while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
         !obj->InheritsFrom("TH2") &&  
@@ -904,7 +891,6 @@ bool GCanvas::IntegrateBG(GMarker *m1, GMarker *m2){
 bool GCanvas::GausFit(GMarker *m1,GMarker *m2) {
   TIter iter(gPad->GetListOfPrimitives());
   TH1 *hist = 0;
-  bool edit = false;
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
         !obj->InheritsFrom("TH2") &&  
@@ -926,17 +912,11 @@ bool GCanvas::GausFit(GMarker *m1,GMarker *m2) {
   TF1 *gausfit = hist->GetFunction("gausfit");
   if(gausfit)
      gausfit->Delete();
-  int binx[2];
   double x[2];
-  double y[2];
   if(m1->localx < m2->localx) {
     x[0]=m1->localx; x[1]=m2->localx;
-    binx[0]=m1->x;   binx[1]=m2->x;
-    y[0]=hist->GetBinContent(m1->x); y[1]=hist->GetBinContent(m2->x); 
   } else {
     x[1]=m1->localx; x[0]=m2->localx;
-    binx[1]=m1->x;   binx[0]=m2->x;
-    y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
   }
   //printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
   gausfit = new TF1("gausfit","gaus",x[0],x[1]);
@@ -973,7 +953,6 @@ bool GCanvas::GausFit(GMarker *m1,GMarker *m2) {
 bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
   TIter iter(gPad->GetListOfPrimitives());
   TH1 *hist = 0;
-  bool edit = false;
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
         !obj->InheritsFrom("TH2") &&  
@@ -995,17 +974,11 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
  // TPeak *mypeak = (TPeak*)(hist->GetFunction("peak"));
  // if(mypeak)
   //   mypeak->Delete();
-  int binx[2];
   double x[2];
-  double y[2];
   if(m1->localx < m2->localx) {
     x[0]=m1->localx; x[1]=m2->localx;
-    binx[0]=m1->x;   binx[1]=m2->x;
-    y[0]=hist->GetBinContent(m1->x); y[1]=hist->GetBinContent(m2->x); 
   } else {
     x[1]=m1->localx; x[0]=m2->localx;
-    binx[1]=m1->x;   binx[0]=m2->x;
-    y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
   }
   //printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
   TPeak* mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);
@@ -1020,7 +993,7 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
   mypeak->Fit(hist,"+");
   hist->GetListOfFunctions()->Add(mypeak->Background()->Clone());
  // hist->GetListOfFunctions()->Add(mypeak);
-  TPeak *peakfit = (TPeak*)(hist->GetListOfFunctions()->Last());
+  //TPeak *peakfit = (TPeak*)(hist->GetListOfFunctions()->Last());
 //  mypeak->Background()->Draw("SAME");
   /*
   double param[3];
@@ -1047,7 +1020,6 @@ bool GCanvas::PeakFit(GMarker *m1,GMarker *m2) {
 bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
   TIter iter(gPad->GetListOfPrimitives());
   TH1 *hist = 0;
-  bool edit = false;
   while(TObject *obj = iter.Next()) {
      if( obj->InheritsFrom("TH1") &&
         !obj->InheritsFrom("TH2") &&  
@@ -1066,17 +1038,11 @@ bool GCanvas::PeakFitQ(GMarker *m1,GMarker *m2) {
     }
   }
   
-  int binx[2];
   double x[2];
-  double y[2];
   if(m1->localx < m2->localx) {
     x[0]=m1->localx; x[1]=m2->localx;
-    binx[0]=m1->x;   binx[1]=m2->x;
-    y[0]=hist->GetBinContent(m1->x); y[1]=hist->GetBinContent(m2->x); 
   } else {
     x[1]=m1->localx; x[0]=m2->localx;
-    binx[1]=m1->x;   binx[0]=m2->x;
-    y[1]=hist->GetBinContent(m1->x); y[0]=hist->GetBinContent(m2->x); 
   }
   //printf("x[0] = %.02f   x[1] = %.02f\n",x[0],x[1]);
   TPeak * mypeak = new TPeak((x[0]+x[1])/2.0,x[0],x[1]);

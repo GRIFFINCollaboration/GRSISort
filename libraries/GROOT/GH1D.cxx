@@ -56,10 +56,8 @@ void GH1D::Draw(Option_t *option) {
       }
    }
  
-   GCanvas  *tgc_ptr = 0;
-
    if (gPad) {
-      if (!gPad->IsEditable()) tgc_ptr = new GCanvas();  //gROOT->MakeDefCanvas();
+      if (!gPad->IsEditable()) new GCanvas();  //gROOT->MakeDefCanvas();
       if (index>=0) {
          if (gPad->GetX1() == 0   && gPad->GetX2() == 1 &&
              gPad->GetY1() == 0   && gPad->GetY2() == 1 &&
@@ -72,7 +70,7 @@ void GH1D::Draw(Option_t *option) {
       }
    } else {
       if (index>=0) opt2.Remove(index,4);
-      tgc_ptr = new GCanvas;
+      new GCanvas;
    }
 
    TH1D::Draw(opt2.Data());

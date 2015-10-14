@@ -76,7 +76,7 @@ int main(int argc, char** argv)	{
    std::string path = infile->GetName();
    path.erase(path.find_last_of('.'));
 
-   struct stat st = {0};
+   struct stat st = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
    if(stat(path.c_str(),&st)==-1) {
       mkdir(path.c_str(),0755);

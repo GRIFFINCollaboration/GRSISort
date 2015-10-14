@@ -106,7 +106,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    }
    TList* list = new TList;
 
-   const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
+   //const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
    //We create some spectra and then add it to the list
    //hit patterns
@@ -136,16 +136,16 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TH2F* ggbmatrixBg = new TH2F("ggbmatrixBg","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixBg);
    TH2F* ggbmatrixOff = new TH2F("ggbmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOff);
 
-   TH2F* gammaSinglesCyc;
-   TH2F* gammaSinglesBCyc;
-   TH2F* gammaSinglesBmCyc;
-   TH2F* betaSinglesCyc;
-
-   gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
-   gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
-   gammaSinglesBmCyc = new TH2F("gammaSinglesBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBmCyc);
-   betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,200,0,200); list->Add(betaSinglesCyc);
-
+   TH2F* gammaSinglesCyc = NULL;
+   TH2F* gammaSinglesBCyc = NULL;
+   TH2F* gammaSinglesBmCyc = NULL;
+   TH2F* betaSinglesCyc = NULL;
+   if(ppg){
+      gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
+      gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
+      gammaSinglesBmCyc = new TH2F("gammaSinglesBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBmCyc);
+      betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,200,0,200); list->Add(betaSinglesCyc);
+   }
    //addback spectra
    TH1D* gammaAddback = new TH1D("gammaAddback","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
    TH1D* gammaAddbackB = new TH1D("gammaAddbackB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaAddbackB);
@@ -201,9 +201,8 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 
    //tree->LoadBaskets(MEM_SIZE);   
 
-   long entries = tree->GetEntries();
+   //long entries = tree->GetEntries();
    //long entries = 1e6;
-
    //These are the indices of the two hits being compared
    int one;
    int two;
@@ -218,15 +217,32 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    std::vector<long> lastTimeStamp(65,0);
 
    std::cout<<std::fixed<<std::setprecision(1); //This just make outputs not look terrible
-   size_t angIndex;
+   //size_t angIndex;
    if(maxEntries == 0 || maxEntries > tree->GetEntries()) {
       maxEntries = tree->GetEntries();
    }
-   // maxEntries = 1e5;
+    //maxEntries = 1e5;
    int entry;
    for(entry = 1; entry < maxEntries; ++entry) { //Only loop over the set number of entries
       //I'm starting at entry 1 because of the weird high stamp of 4.
       tree->GetEntry(entry);
+
+		if(runInfo->SubRunNumber() > 21) {
+		  //in run 04921 we got a wrap-around of the timestamp within subrun 22
+		  //so from subrun 22 on we add 2^42 to each timestamp that is less than 2^41
+		  ULong_t thres = 0x1;
+		  thres = thres<<41;
+		  for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
+			 if(grif->GetGriffinHit(one)->GetTimeStamp() < thres) {
+				grif->GetGriffinHit(one)->SetTimeStamp(grif->GetGriffinHit(one)->GetTimeStamp() + 2*thres);
+			 }
+		  }
+		  for(one = 0; one < (int) scep->GetMultiplicity(); ++one) {
+			 if(scep->GetSceptarHit(one)->GetTimeStamp() < thres) {
+				scep->GetSceptarHit(one)->SetTimeStamp(scep->GetSceptarHit(one)->GetTimeStamp() + 2*thres);
+			 }
+		  }
+		}
 
       grif->ResetAddback();
 

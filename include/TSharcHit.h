@@ -66,26 +66,26 @@ class TSharcHit : public TGRSIDetectorHit {
     TGRSIDetectorHit *GetBack()   { return &backhit; }
     TGRSIDetectorHit *GetPad()    { return &padhit; }
 
-    const inline Double_t GetDeltaE()       { return GetFront()->GetEnergy();  }  //!
-    const inline Double_t GetDeltaT()       { return GetFront()->GetTime();    }  //!
+    inline Double_t GetDeltaE()       { return GetFront()->GetEnergy();  }  //!
+    inline Double_t GetDeltaT()       { return GetFront()->GetTime();    }  //!
 
-    const inline Double_t GetDeltaFrontE()  { return GetFront()->GetEnergy(); }  //!
-    const inline Double_t GetDeltaFrontT()  { return GetFront()->GetTime();   }  //!
-    const inline Double_t GetDeltaBackE()   { return GetBack()->GetEnergy();  }  //!
-    const inline Double_t GetDeltaBackT()   { return GetBack()->GetTime();    }  //!
+    inline Double_t GetDeltaFrontE()  { return GetFront()->GetEnergy(); }  //!
+    inline Double_t GetDeltaFrontT()  { return GetFront()->GetTime();   }  //!
+    inline Double_t GetDeltaBackE()   { return GetBack()->GetEnergy();  }  //!
+    inline Double_t GetDeltaBackT()   { return GetBack()->GetTime();    }  //!
 
-    const inline Int_t GetFrontAddress()    { return GetFront()->GetAddress(); }  //!
-    const inline Int_t GetBackAddress()     { return GetBack()->GetAddress();  }  //!
-    const inline Int_t GetPadAddress()      { return GetPad()->GetAddress();   }  //!
+    inline Int_t GetFrontAddress()    { return GetFront()->GetAddress(); }  //!
+    inline Int_t GetBackAddress()     { return GetBack()->GetAddress();  }  //!
+    inline Int_t GetPadAddress()      { return GetPad()->GetAddress();   }  //!
 
-    const inline Double_t GetPadE()         { return GetPad()->GetEnergy();    }  //!
-    const inline Double_t GetPadT()         { return GetPad()->GetTime();      }  //!
+    inline Double_t GetPadE()         { return GetPad()->GetEnergy();    }  //!
+    inline Double_t GetPadT()         { return GetPad()->GetTime();      }  //!
 
     //std::pair<int,int>  GetPixel()  { return std::make_pair(front_strip,back_strip);  }  //!
 
-    const Float_t    GetFrontCharge()        { return GetFront()->GetCharge();  }  //!  //Charge is now stored after integration.
-    const Float_t    GetBackCharge()         { return GetBack()->GetCharge();   }  //!  //Charge is now stored after integration.
-    const Float_t    GetPadCharge()          { return GetPad()->GetCharge();    }  //!  //Charge is now stored after integration.
+    Float_t    GetFrontCharge()        { return GetFront()->GetCharge();  }  //!  //Charge is now stored after integration.
+    Float_t    GetBackCharge()         { return GetBack()->GetCharge();   }  //!  //Charge is now stored after integration.
+    Float_t    GetPadCharge()          { return GetPad()->GetCharge();    }  //!  //Charge is now stored after integration.
 
     inline Double_t GetEnergy()             { return GetFront()->GetEnergy() + GetPad()->GetEnergy(); }
     inline Double_t GetTime()               { return GetFront()->GetTime(); }

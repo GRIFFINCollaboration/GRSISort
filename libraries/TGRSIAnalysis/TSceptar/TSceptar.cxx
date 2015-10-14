@@ -60,7 +60,7 @@ TSceptar::~TSceptar()	{
    if(sceptardata) delete sceptardata;
 }
 
-TSceptar::TSceptar(const TSceptar& rhs) {
+TSceptar::TSceptar(const TSceptar& rhs) : TGRSIDetector() {
    //Copy Contructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
@@ -96,7 +96,7 @@ TSceptar& TSceptar::operator=(const TSceptar& rhs) {
 
 void TSceptar::Print(Option_t *opt) const	{
   //Prints out TSceptar Multiplicity, currently does little.
-  printf("sceptardata = 0x%p\n",sceptardata);
+	printf("sceptardata = 0x%p\n",(void*) sceptardata);
   if(sceptardata) sceptardata->Print();
   printf("%lu sceptar_hits\n",sceptar_hits.size());
 }
@@ -133,7 +133,7 @@ void TSceptar::BuildHits(TDetectorData *data,Option_t *opt)	{
    //Clear("");
    sceptar_hits.reserve(gdata->GetMultiplicity());
    
-   for(int i=0;i<gdata->GetMultiplicity();i++)	{
+   for(size_t i=0;i<gdata->GetMultiplicity();i++)	{
       TSceptarHit dethit;
 
       dethit.SetAddress(gdata->GetDetAddress(i));
@@ -152,7 +152,7 @@ void TSceptar::BuildHits(TDetectorData *data,Option_t *opt)	{
          dethit.SetWaveform(gdata->GetDetWave(i));
          if(dethit.GetWaveform().size() > 0) {
 //            printf("Analyzing waveform, current cfd = %d\n",dethit.GetCfd());
-            bool analyzed = dethit.AnalyzeWaveform();
+            dethit.AnalyzeWaveform();
 //            printf("%s analyzed waveform, cfd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd());
          }
       }

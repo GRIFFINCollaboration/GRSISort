@@ -14,7 +14,7 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
    fBackground->SetLineColor(kBlack);
    TGRSIFit::AddToGlobalList(fBackground,kFALSE);
 
-   for(int i=0; i<centroids.size(); i++){
+   for(size_t i=0; i<centroids.size(); i++){
       Bool_t out_of_range_flag = false;
       Double_t cent = centroids.at(i);
       if(cent > xhigh){
@@ -57,7 +57,7 @@ TMultiPeak::~TMultiPeak(){
       delete fBackground;
    }
    
-   for(int i=0; i<fPeakVec.size(); ++i){
+   for(size_t i=0; i<fPeakVec.size(); ++i){
       if(fPeakVec.at(i)){
          delete fPeakVec.at(i);
       }
@@ -77,9 +77,7 @@ void TMultiPeak::InitNames(){
    this->SetParName(3,"C");
    this->SetParName(4,"bg_offset");
 
-   for(int i=0; i<fPeakVec.size();++i){
-      Int_t cent = static_cast<Int_t>(fPeakVec.at(i)->GetCentroid());
-
+   for(int i=0; i<(int)fPeakVec.size();++i){
       this->SetParName(6*i+5,Form("Height_%i",i));
       this->SetParName(6*i+6,Form("Centroid_%i",i));
       this->SetParName(6*i+7,Form("Sigma_%i",i));
@@ -91,7 +89,7 @@ void TMultiPeak::InitNames(){
 }
 
 
-TMultiPeak::TMultiPeak(const TMultiPeak &copy) : fBackground(0) {
+TMultiPeak::TMultiPeak(const TMultiPeak &copy) : TGRSIFit(), fBackground(0) {
    ((TMultiPeak&)copy).Copy(*this);
 }
 
@@ -106,7 +104,7 @@ void TMultiPeak::Copy(TObject &obj) const {
    TGRSIFit::AddToGlobalList(fBackground,kFALSE);
 
    //Copy all of the TPeaks.
-   for(int i=0; i<fPeakVec.size();++i){
+   for(size_t i=0; i<fPeakVec.size();++i){
       TPeak* peak = new TPeak(*(fPeakVec.at(i)));
       peak->AddToGlobalList(kFALSE);
       mpobj->fPeakVec.push_back(peak);
@@ -130,7 +128,6 @@ Bool_t TMultiPeak::InitParams(TH1 *fithist){
    GetRange(xlow,xhigh);
    Int_t binlow = fithist->GetXaxis()->FindBin(xlow);
    Int_t binhigh = fithist->GetXaxis()->FindBin(xhigh);
-   Double_t binWidth = fithist->GetBinWidth(xhigh);
 
    //Initialize background
    this->SetParLimits(1,0.0,fithist->GetBinContent(binlow)*100.0);
@@ -142,7 +139,7 @@ Bool_t TMultiPeak::InitParams(TH1 *fithist){
    this->FixParameter(3,0);
 
    //We need to initialize parameters for every peak in the fit
-   for(int i=0; i<fPeakVec.size();++i){
+   for(int i=0; i<(int)fPeakVec.size();++i){
       Int_t bin = fithist->GetXaxis()->FindBin(fPeakVec.at(i)->GetCentroid());
       this->SetParLimits(6*i+5,-fithist->GetBinContent(bin),fithist->GetBinContent(bin)*5.);
       this->SetParLimits(6*i+6,bin-4,bin+4);
@@ -207,7 +204,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist,Option_t *opt){
    //After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    //for printing out. RD
 
-   Int_t fitStatus = fitres; //This returns a fit status from the TFitResult Ptr
+   //Int_t fitStatus = fitres; //This returns a fit status from the TFitResult Ptr
    //This removes the background parts of the fit form the integral error, while maintaining the covariance between the fits and the background.
    TMatrixDSym CovMat = fitres->GetCovarianceMatrix();
    CovMat(0,0) = 0.0;
@@ -222,7 +219,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist,Option_t *opt){
    //We now make a copy of the covariance matrix that has completel 0 diagonals so that we can remove the other peaks form the integral error.
    //This is done by adding back the peak of interest on the diagonal when it is integrated.
    TMatrixDSym emptyCovMat = CovMat;
-   for(int i =0; i<fPeakVec.size();++i){
+   for(size_t i =0; i<fPeakVec.size();++i){
       emptyCovMat(6*i+5,6*i+5) = 0.0;
       emptyCovMat(6*i+6,6*i+6) = 0.0;
       emptyCovMat(6*i+7,6*i+7) = 0.0;
@@ -259,7 +256,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist,Option_t *opt){
 */
    if(print_flag) printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
    //We will now set the parameters of each of the peaks based on the fits.
-   for(int i=0; i< fPeakVec.size();++i){
+   for(int i=0; i< (int)fPeakVec.size();++i){
       TMultiPeak *tmpMp = new TMultiPeak(*this);
       tmpMp->ClearParameters();//We need to clear all of the parameters so that we can add the ones we want back in
       Double_t binWidth = fithist->GetBinWidth(GetParameter(Form("Centroid_%i",i)));
@@ -331,7 +328,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist,Option_t *opt){
 
 void TMultiPeak::Clear(Option_t* opt){
    TGRSIFit::Clear(opt);
-   for(int i =0; i<fPeakVec.size(); ++i){
+   for(size_t i =0; i<fPeakVec.size(); ++i){
       if(fPeakVec.at(i)){
          delete fPeakVec.at(i);
          fPeakVec.at(i) = 0;
@@ -346,11 +343,10 @@ void TMultiPeak::Print(Option_t *opt) const {
    printf("Name:        %s \n", this->GetName()); 
    printf("Number of Peaks: %lu\n",fPeakVec.size());
    TF1::Print();
-   for(int i=0; i<fPeakVec.size(); ++i){
+   for(int i=0; i<(int)fPeakVec.size(); ++i){
       printf("Peak: %i\n",i);
       fPeakVec.at(i)->Print(opt);
       printf("\n");
-
    }
 }
 
@@ -449,7 +445,7 @@ void TMultiPeak::DrawPeaks() const {
    Double_t xlow,xhigh;
    GetRange(xlow,xhigh);
    Double_t npeaks = fPeakVec.size();
-   for(int i=0; i<fPeakVec.size();++i){
+   for(size_t i=0; i<fPeakVec.size();++i){
       TPeak* peak = fPeakVec.at(i);
       //Should be good enough to draw between -2 and +2 fwhm
       Double_t centroid = peak->GetCentroid();

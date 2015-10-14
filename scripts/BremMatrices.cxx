@@ -133,7 +133,7 @@ Bool_t supp_flag[nScDet][nGrDet] = {
    }
    TList* list = new TList;
 
-   const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
+   //const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
    //We create some spectra and then add it to the list
    //hit patterns
@@ -230,7 +230,7 @@ Bool_t supp_flag[nScDet][nGrDet] = {
 
    //tree->LoadBaskets(MEM_SIZE);   
 
-   long entries = tree->GetEntries();
+   //long entries = tree->GetEntries();
    //long entries = 1e6;
 
    //These are the indices of the two hits being compared
@@ -247,7 +247,7 @@ Bool_t supp_flag[nScDet][nGrDet] = {
    std::vector<long> lastTimeStamp(65,0);
 
    std::cout<<std::fixed<<std::setprecision(1); //This just make outputs not look terrible
-   size_t angIndex;
+   //size_t angIndex;
    if(maxEntries == 0 || maxEntries > tree->GetEntries()) {
       maxEntries = tree->GetEntries();
    }

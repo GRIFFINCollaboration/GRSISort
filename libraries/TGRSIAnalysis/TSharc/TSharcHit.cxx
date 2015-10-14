@@ -16,7 +16,7 @@ TSharcHit::TSharcHit()	{
 
 TSharcHit::~TSharcHit()	{	}
 
-TSharcHit::TSharcHit(const TSharcHit &rhs)	{	
+TSharcHit::TSharcHit(const TSharcHit &rhs) : TGRSIDetectorHit() {	
    Class()->IgnoreTObjectStreamer(kTRUE);
    Clear();
    ((TSharcHit&)rhs).Copy(*this);

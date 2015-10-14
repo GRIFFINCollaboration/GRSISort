@@ -17,7 +17,7 @@ TDescantHit::TDescantHit()	{
 
 TDescantHit::~TDescantHit()	{	}
 
-TDescantHit::TDescantHit(const TDescantHit &rhs){
+TDescantHit::TDescantHit(const TDescantHit &rhs) : TGRSIDetectorHit() {
    Clear();
    ((TDescantHit&)rhs).Copy(*this);
 }
@@ -114,7 +114,7 @@ bool TDescantHit::AnalyzeWaveform() {
 
 }
 
-Int_t TDescantHit::CalculateCfd(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps) {
+Int_t TDescantHit::CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, int interpolation_steps) {
 
    std::vector<Short_t> monitor;
 
@@ -122,11 +122,10 @@ Int_t TDescantHit::CalculateCfd(double attenuation, int delay, int halfsmoothing
 
 }
 
-Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor) {
+Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor) {
 
    Short_t monitormax = 0;
 
-   bool cfderror = true;
    bool armed = false;
 
    Int_t cfd = 0;
@@ -158,7 +157,6 @@ Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, int delay, int hal
          else {
             if(armed == true && monitor[i-delay] < 0) {
                armed = false;
-               cfderror = false;
                if(monitor[i-delay-1]-monitor[i-delay] != 0) {
                   //Linear interpolation.
                   cfd = (i-delay)*interpolation_steps + (monitor[i-delay-1]*interpolation_steps)/(monitor[i-delay-1]-monitor[i-delay]);
@@ -176,7 +174,6 @@ Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, int delay, int hal
    }
 
    return cfd;
-
 }
 
 std::vector<Short_t> TDescantHit::CalculateSmoothedWaveform(unsigned int halfsmoothingwindow) {

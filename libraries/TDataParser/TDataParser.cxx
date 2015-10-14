@@ -3,6 +3,7 @@
 #include "Globals.h"
 
 #include "TFragmentQueue.h"
+#include "TScalerQueue.h"
 #include "TGRSIStats.h"
 
 #include "TEpicsFrag.h"
@@ -55,10 +56,6 @@ int TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int mid
    std::vector<TFragment*> FragsFound;
    int NumFragsFound = 0;
    TFragment *EventFrag = new TFragment();
-  //FragsFound.push_back(EventFrag);
-   //EventFrag->Clear();   
-   bool badtimestamp = false;
-   bool needtodeletelast = false;
    EventFrag->MidasTimeStamp = midastime;
    EventFrag->MidasId = midasserialnumber;    
    
@@ -69,17 +66,16 @@ int TDataParser::TigressDataToFragment(uint32_t *data, int size,unsigned int mid
 
    if(!SetTIGTriggerID(dword,EventFrag)) {
       delete EventFrag;
-      printf(RED "Setting TriggerId (0x%08x) falied on midas event: " DYELLOW "%i" RESET_COLOR "\n",dword,midasserialnumber);
+      printf(RED "Setting TriggerId (0x%08x) failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",dword,midasserialnumber);
       return NumFragsFound;  
    }
    x+=1;
    if(!SetTIGTimeStamp((data+x),EventFrag)) { 
       delete EventFrag;
-      printf(RED "Setting TimeStamp falied on midas event: " DYELLOW "%i" RESET_COLOR "\n",midasserialnumber);
+      printf(RED "Setting TimeStamp failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",midasserialnumber);
       return NumFragsFound;
    }
    int temp_charge =  0;
-   int temp_cfd    =  0;
    int temp_led    =  0;
    for(;x<size;x++) {
       dword = *(data+x);
@@ -214,8 +210,8 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment *currentfrag) {
    std::string dig_type = (chan)->GetDigitizerType();
 
    // remove vernier for now and calculate the time to the trigger
-   int32_t tsBits;
-   int32_t cfdBits;
+   int32_t tsBits  = 0;
+   int32_t cfdBits = 0;
    if ( dig_type.compare(0,5,"Tig10")==0) {
       cfdBits = (currentfrag->Cfd.back() >> 4);
       tsBits  = currentfrag->TimeStampLow & 0x007fffff;
@@ -439,7 +435,6 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
       return -x;
    }
 
-   int  kwordcounter = 0;
    for(;x<size;x++) {
       uint32_t dword  = *(data+x);
       uint32_t packet = dword & 0xf0000000;
@@ -570,7 +565,7 @@ bool TDataParser::SetGRIFHeader(uint32_t value,TFragment *frag,int bank) {
    }
    
    return true;
-};
+}
 
 
 bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment *frag) {
@@ -714,7 +709,6 @@ void TDataParser::FillStats(TFragment *frag) {
 
 int TDataParser::GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsigned int midasserialnumber, time_t midastime) {
    TPPGData *ppgEvent = new TPPGData;
-   int  kwordcounter = 0;
    int  x = 1; //We have already read the header so we can skip the 0th word.
    
    //The Network packet number is for debugging and is not always written to
@@ -801,7 +795,7 @@ bool TDataParser::SetPPGHighTimeStamp(uint32_t value, TPPGData *ppgevent){
 
 int TDataParser::GriffinDataToScalerEvent(uint32_t *data, int address) {
 	TScalerData* scalerEvent = new TScalerData;
-   int  kwordcounter = 0;
+	scalerEvent->SetAddress(address);
    int  x = 1; //We have already read the header so we can skip the 0th word.
 
 	//we expect a word starting with 0xd containing the network packet id
@@ -824,7 +818,9 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t *data, int address) {
 	if(!SetScalerHighTimeStamp(data[x++],scalerEvent)) {
 		return -x;
 	}
-	TGRSIRootIO::Get()->FillScaler(address, scalerEvent);
+	
+	TScalerQueue::Get()->Add(scalerEvent);
+
 	return x;
 }
 

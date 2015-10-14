@@ -198,7 +198,7 @@ bool ShowPeaks(TH1 **hists,unsigned int NHists)
 	double sigma  = 2.0;
 	double thresh = 0.01;
    int num_found =0;
-   for(int x=0;x<NHists;x++) {
+   for(unsigned int x=0;x<NHists;x++) {
      if(TObject *obj = hists[x]->GetListOfFunctions()->FindObject("PeakLabels")) {
         //if we have any array of peak labels, we remove it; we have no 
         //idea whether the user has change the range of the histogram so we 
@@ -246,7 +246,7 @@ bool ShowPeaks(TH1 **hists,unsigned int NHists)
 bool RemovePeaks(TH1 **hists, unsigned int Nhists)
 {
    bool return_flag = false;
-   for(int x=0;x<Nhists;x++) {
+   for(unsigned int x=0;x<Nhists;x++) {
      if(TObject *obj = hists[x]->GetListOfFunctions()->FindObject("PeakLabels")) {
         //if we have any array of peak labels, we remove it; 
         return_flag = true;

@@ -11,7 +11,7 @@
 #include <fstream>
 #include <chrono>
 
-Int_t chanId_threshold = 100;
+UInt_t chanId_threshold = 100;
 
 Bool_t CheckEvent(TMidasEvent *evt){
    //This function does not work if a Midas event contains multiple fragments
@@ -33,8 +33,8 @@ Bool_t CheckEvent(TMidasEvent *evt){
 
    UInt_t chanadd = 0;
    UInt_t trigId = 0;
-   UInt_t dettype = 0;
-   Int_t dignum = -1;
+   //UInt_t dettype = 0;
+   //Int_t dignum = -1;
 
    for(int x=0;x<banksize;x++) {
       value = *((int*)ptr+x);
@@ -54,7 +54,7 @@ Bool_t CheckEvent(TMidasEvent *evt){
                      return false;
                    }
                   chanadd  =  (value &0x0003fff0)>> 4;
-                  dettype    =  (value &0x0000000f);
+                  //dettype    =  (value &0x0000000f);
                        
                    // if(frag-DetectorType==2)
                   //    frag->ChannelAddress += 0x8000;
@@ -70,7 +70,7 @@ Bool_t CheckEvent(TMidasEvent *evt){
                      return false;
                   }
                   chanadd  =  (value &0x000ffff0)>> 4;
-                  dettype    =  (value &0x0000000f);
+                  //dettype    =  (value &0x0000000f);
                        
                   // if(frag-DetectorType==2)
                   //    frag->ChannelAddress += 0x8000;
@@ -79,7 +79,7 @@ Bool_t CheckEvent(TMidasEvent *evt){
                   printf("This bank not yet defined.\n");
                   break;
              };
-            dignum = chanadd&0x0000ff00;
+            //dignum = chanadd&0x0000ff00;
             break;
          case 0x90000000:
             trigId = value & 0x0fffffff;

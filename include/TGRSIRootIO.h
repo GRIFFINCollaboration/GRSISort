@@ -33,6 +33,7 @@ class TGRSIRootIO : public TObject {
       TTree *fFragmentTree;
       TTree *fBadFragmentTree;
       TTree *fEpicsTree;
+      TTree *fScalerTree;
       TPPG *fPPG;
 		TScaler* fScaler;
 
@@ -49,6 +50,8 @@ class TGRSIRootIO : public TObject {
       TFragment  *fBadBufferFrag;
       TEpicsFrag *fEXBufferFrag;
       TChannel   *fBufferChannel;
+
+		TScalerData* fScalerData;
 
    public:
       bool SetUpRootOutFile(int,int);
@@ -82,16 +85,17 @@ class TGRSIRootIO : public TObject {
       void FinalizePPG();
       int GetTimesPPGCalled()  { return fTimesPPGCalled;  }
 
-		void SetUpScaler();
-		TScaler* GetScaler() { return fScaler; }
-		void FillScaler(int, TScalerData*);
-		void FinalizeScaler();
+      void SetUpScalerTree();
+      TTree *GetScalerTree()  { return fScalerTree;  }
+      void FillScalerTree(TScalerData*);
+      void FinalizeScalerTree();
       int GetTimesScalerCalled()  { return fTimesScalerCalled;  }
 
       void SetUpEpicsTree();
       TTree *GetEpicsTree()  { return fEpicsTree;  }
       void FillEpicsTree(TEpicsFrag*);
       void FinalizeEpicsTree();
+
 
       void MakeUserHistsFromFragmentTree();
       void WriteRunStats();

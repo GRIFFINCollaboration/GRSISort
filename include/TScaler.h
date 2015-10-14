@@ -38,7 +38,7 @@ class TScalerData : public TObject {
 	
 	void Copy(TObject& rhs) const;
 	
-	//void SetAddress(Uint_t address) { fAddress = address; }
+	void SetAddress(UInt_t address) { fAddress = address; }
 	void SetNetworkPacketId(UInt_t network_id) { fNetworkPacketId = network_id; }
 	void SetLowTimeStamp(UInt_t low_time) { fLowTimeStamp = low_time; SetTimeStamp(); }
 	void SetHighTimeStamp(UInt_t high_time) { fHighTimeStamp = high_time; SetTimeStamp();}
@@ -51,7 +51,7 @@ class TScalerData : public TObject {
 
 	void SetTimeStamp();
 
-	//UInt_t GetAddress() const { return fAddress; }
+	UInt_t GetAddress() const { return fAddress; }
 	UInt_t GetNetworkPacketId() const { return fNetworkPacketId; }
 	UInt_t GetLowTimeStamp() const { return fLowTimeStamp; }
 	UInt_t GetHighTimeStamp() const { return fHighTimeStamp; }
@@ -71,7 +71,7 @@ class TScalerData : public TObject {
  private:
 	ULong64_t fTimeStamp;
 	UInt_t fNetworkPacketId;
-	//UInt_t fAddress;
+	UInt_t fAddress;
 	std::vector<UInt_t> fScaler;
 	UInt_t fLowTimeStamp;
 	UInt_t fHighTimeStamp;
@@ -82,7 +82,6 @@ class TScalerData : public TObject {
 class TScaler : public TObject {
  public:
 
-   typedef std::map<UInt_t, std::map<ULong_t, TScalerData*> > ScalerMap_t;
  public:
 	TScaler();
 	TScaler(const TScaler&);
@@ -108,11 +107,11 @@ class TScaler : public TObject {
 	TH1D* Draw(UInt_t address, size_t index = 0, Option_t *opt = "");
 
  private:
-	ScalerMap_t fScalerMap;
-	std::map<UInt_t, ULong64_t> fTimePeriod;
-	std::map<UInt_t,std::map<ULong64_t, int> > fNumberOfTimePeriods;
-	ULong64_t fTotalTimePeriod;
-	std::map<ULong64_t,int> fTotalNumberOfTimePeriods;
+	std::map<UInt_t, std::map<ULong_t, TScalerData*> > fScalerMap; //a map between addresses and maps between timestamps and scaler data
+	std::map<UInt_t, ULong64_t> fTimePeriod; //! a map between addresses and time differences (used to calculate the time period)
+	std::map<UInt_t,std::map<ULong64_t, int> > fNumberOfTimePeriods;//!
+	ULong64_t fTotalTimePeriod;//!
+	std::map<ULong64_t,int> fTotalNumberOfTimePeriods;//!
 	TPPG* fPPG; //!
 	std::map<UInt_t, TH1D*> fHist; //!
 

@@ -62,8 +62,8 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
       return;
    }
    event->SetBankList();
-   int size;
-   int data[1024];
+   //int size;
+   //int data[1024];
   
    void *ptr;
    int banksize = event->LocateBank(NULL,"GRF1",&ptr);

@@ -72,7 +72,7 @@ TSharc::~TSharc()  {
   if(data) delete data;
 }
 
-TSharc::TSharc(const TSharc& rhs) {
+TSharc::TSharc(const TSharc& rhs) : TGRSIDetector() {
   Class()->IgnoreTObjectStreamer(kTRUE);
   Clear("ALL");
   ((TSharc&)rhs).Copy(*this);
@@ -123,8 +123,8 @@ void  TSharc::BuildHits(TDetectorData *ddata,Option_t *opt)  {
     
 
   //printf("Building sharc hits.\n");
-  for(int i=0;i<sdata->GetSizeFront();i++)  {  
-    for(int j=0;j<sdata->GetSizeBack();j++)  {  
+  for(size_t i=0;i<sdata->GetSizeFront();i++)  {  
+    for(size_t j=0;j<sdata->GetSizeBack();j++)  {  
       if(sdata->GetFront_DetectorNbr(i) != sdata->GetBack_DetectorNbr(j)) {
         continue;
       }
@@ -143,8 +143,8 @@ void  TSharc::BuildHits(TDetectorData *ddata,Option_t *opt)  {
       this->sharc_hits.push_back(hit);
     }
   }
-  for(int k=0;k<sdata->GetSizePad();k++)  {  
-    for(int l=0;l<sharc_hits.size();l++)  {
+  for(size_t k=0;k<sdata->GetSizePad();k++)  {  
+    for(size_t l=0;l<sharc_hits.size();l++)  {
       if(sdata->GetPad_DetectorNbr(k) != sharc_hits.at(l).GetDetectorNumber())
         continue;
       sharc_hits.at(l).SetPad(sdata->GetPad_Fragment(k)); 
@@ -157,7 +157,7 @@ void TSharc::RemoveHits(std::vector<TSharcHit> *hits,std::set<int> *to_remove)  
 
   std::set<int>::reverse_iterator iter;
   for(iter= to_remove->rbegin(); iter != to_remove->rend(); iter++)  {
-    if(*iter == 0xffffffff)
+    if(*iter == -1)
       continue;
     hits->erase(hits->begin()+*iter);
 
@@ -199,7 +199,7 @@ void TSharc::Copy(TObject &rhs) const {
 TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double X, double Y, double Z)  {
   int FrontDet = detector;
   int FrontStr = frontstrip;
-  int BackDet  = detector;
+  //int BackDet  = detector;
   int BackStr  = backstrip;
   int nrots = 0; // allows us to rotate into correct position
   double x = 0;

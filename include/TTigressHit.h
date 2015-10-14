@@ -78,7 +78,6 @@ class TTigressHit : public TGRSIDetectorHit {
 
 
 		inline double GetDoppler(double beta,TVector3 *vec=0) { 
-			bool madevec = false;
 			if(vec==0) {
 				vec = &beam;
 			}

@@ -1,7 +1,7 @@
 #include "TGRSIFunctions.h"
 
 //Without this macro the THtml doc for TGRSIFunctions can't be generated
-NamespaceImp(TGRSIFunctions);
+NamespaceImp(TGRSIFunctions)
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -245,7 +245,7 @@ Double_t TGRSIFunctions::MultiGausWithBG(Double_t *dim, Double_t *par) {
 
 
 
-Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nChain, Double_t SecondsPerBin){
+Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, UInt_t nChain, Double_t SecondsPerBin){
 //****NOT TESTED****The Bateman equation is the general closed form for a decay chain of nuclei. This functions returns
 //the total activity from a given chain of nuclei.
 //Requires the following parameters:
@@ -265,24 +265,24 @@ Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nChain, Dou
 
 //LOOP OVER ALL NUCLEI
 
-   for(Int_t n=0; n<nChain;n++){
+   for(UInt_t n=0; n<nChain;n++){
       //Calculate this equation for the nth nucleus.
       Double_t firstterm = 1.0;
       //Compute the first multiplication
-      for(Int_t j=0; j<n-1; j++){
+      for(UInt_t j=0; j<n-1; j++){
          firstterm*=par[1+3*j];
       }
       Double_t secondterm = 0.0;
-      for(Int_t i=0; i<n; i++){
-         Double_t sum = 0.0;
-         for(Int_t j=i; j<n; j++){
-            Double_t denom = 1.0;
-            for(Int_t p=i;p<n;p++){
-               if(p!=j){ denom*=par[1+3*p]-par[1+3*j]; } 
-            }
-            sum+=par[0+3*i]/par[1+3*i]*TMath::Exp(-par[1+3*j]*dim[0])/denom; 
-          }
-          secondterm += sum;
+      for(UInt_t i=0; i<n; i++){
+			Double_t sum = 0.0;
+			for(UInt_t j=i; j<n; j++){
+				Double_t denom = 1.0;
+				for(UInt_t p=i;p<n;p++){
+					if(p!=j){ denom*=par[1+3*p]-par[1+3*j]; } 
+				}
+				sum+=par[0+3*i]/par[1+3*i]*TMath::Exp(-par[1+3*j]*dim[0])/denom; 
+			}
+			secondterm += sum;
       }
       par[2+3*n] = par[1+3*n]*firstterm*secondterm;
       totalActivity += par[2+3*n];

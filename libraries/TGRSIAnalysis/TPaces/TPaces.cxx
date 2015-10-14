@@ -24,7 +24,7 @@ TPaces::TPaces() : TGRSIDetector(),pacesdata(0) {
    Clear();
 }
 
-TPaces::TPaces(const TPaces& rhs) {
+TPaces::TPaces(const TPaces& rhs) : TGRSIDetector() {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -59,7 +59,7 @@ void TPaces::Clear(Option_t *opt)	{
 
 void TPaces::Print(Option_t *opt) const {
   //Prints out TPaces members, currently does nothing.
-  printf("pacesdata = 0x%p\n",pacesdata);
+  printf("pacesdata = 0x%p\n",(void*) pacesdata);
   if(pacesdata) pacesdata->Print();
   printf("%lu paces_hits\n",paces_hits.size());
   return;
@@ -110,7 +110,7 @@ void TPaces::BuildHits(TDetectorData *data,Option_t *opt)	{
    Clear("");
    paces_hits.reserve(pdata->GetMultiplicity());
 
-   for(int i=0;i<pdata->GetMultiplicity();i++)	{
+   for(size_t i=0;i<pdata->GetMultiplicity();i++)	{
       TPacesHit corehit;
 
       corehit.SetAddress(pdata->GetCoreAddress(i));

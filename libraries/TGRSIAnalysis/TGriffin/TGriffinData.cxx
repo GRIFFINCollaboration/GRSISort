@@ -32,9 +32,6 @@ void TGriffinData::Clear(Option_t *opt)	{
 	fCore_TimeCFD.clear();
 	fCore_Time.clear();
 
-	for(int x=0;x<fCore_Wave.size();x++)	{
-		fCore_Wave[x].clear();
-	}
 	fCore_Wave.clear();
 
 }

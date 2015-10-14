@@ -391,7 +391,7 @@ void TMidasFile::FillBuffer(TMidasEvent *midasEvent, Option_t *opt){
    fWriteBuffer.push_back((char)((midasEvent->GetDataSize() >> 16) & 0xFF));
    fWriteBuffer.push_back((char)(midasEvent->GetDataSize() >> 24));
  
-   for(int i=0; i<midasEvent->GetDataSize();i++){
+   for(size_t i=0; i<midasEvent->GetDataSize();i++){
       fWriteBuffer.push_back(midasEvent->GetData()[i]);
    }
   

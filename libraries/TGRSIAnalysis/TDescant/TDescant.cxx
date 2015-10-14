@@ -123,7 +123,7 @@ void TDescant::Copy(TDescant &rhs) const {
   return;                                      
 }                                       
 
-TDescant::TDescant(const TDescant& rhs) {
+TDescant::TDescant(const TDescant& rhs) : TGRSIDetector() {
   ((TDescant&)rhs).Copy(*this);
 }
 
@@ -143,7 +143,7 @@ TDescant& TDescant::operator=(const TDescant& rhs) {
 
 void TDescant::Print(Option_t *opt) const	{
   //Prints out TDescant members, currently does little.
-  printf("descantdata = 0x%p\n",descantdata);
+  printf("descantdata = 0x%p\n", (void*) descantdata);
   if(descantdata) descantdata->Print();
   printf("%lu descant_hits\n",descant_hits.size());
 }
@@ -192,7 +192,7 @@ void TDescant::BuildHits(TDetectorData *data,Option_t *opt)	{
    descant_hits.reserve(gdata->GetMultiplicity());
    
 
-   for(int i=0;i<gdata->GetMultiplicity();i++)	{
+   for(size_t i=0;i<gdata->GetMultiplicity();i++)	{
       TDescantHit dethit;
 
 //      dethit.SetDetectorNumber(gdata->GetDetNumber(i));

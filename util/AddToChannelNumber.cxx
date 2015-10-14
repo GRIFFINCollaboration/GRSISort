@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
 
    TChannel::DeleteAllChannels();
 
-   for(int i =0; i<chanlist.size();++i){
+   for(size_t i =0; i<chanlist.size();++i){
       TChannel::AddChannel(chanlist.at(i));
    }
 

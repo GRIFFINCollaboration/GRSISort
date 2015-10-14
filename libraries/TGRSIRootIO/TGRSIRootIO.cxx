@@ -25,8 +25,8 @@ TGRSIRootIO::TGRSIRootIO() {
   fFragmentTree = 0;
   fBadFragmentTree =0;
   fEpicsTree    = 0;
+  fScalerTree   = 0;
   fPPG          = 0;
-  fScaler       = 0;
 
   foutfile = 0; //new TFile("test_out.root","recreate");
 
@@ -99,29 +99,18 @@ void TGRSIRootIO::SetUpPPG() {
 }
 
 
-void TGRSIRootIO::SetUpScaler() {
+void TGRSIRootIO::SetUpScalerTree() {
+   if(TGRSIOptions::IgnoreScaler()) 
+     return;
    if(foutfile)
       foutfile->cd();
    fTimesScalerCalled = 0;
-   if(TGRSIRunInfo::SubRunNumber() <= 0) {
-      fScaler = new TScaler;
-   } else {
-      TFile* prev_sub_run = new TFile(Form("fragment%05d_%03d.root",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
-      if(prev_sub_run->IsOpen()) {
-         if(prev_sub_run->Get("TScaler") != NULL) {
-            fScaler = (TScaler*) (prev_sub_run->Get("TScaler")->Clone());
-         } else {
-            printf("Error, could not find Scaler in file fragment%05d_%03d.root, not adding previous Scaler data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
-            fScaler = new TScaler;
-         }
-         prev_sub_run->Close();
-      } else {
-         printf("Error, could not find file fragment%05d_%03d.root, not adding previous Scaler data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
-         fScaler = new TScaler;
-      }
-   }
-}
+   fScalerTree = new TTree("ScalerTree","ScalerTree");
+	fScalerData = NULL;
+   fScalerTree->Bronch("TScalerData","TScalerData",&fScalerData,128000,99);
+	printf("Scaler-Tree set up.\n");
 
+}
 
 void TGRSIRootIO::SetUpEpicsTree() {
    if(TGRSIOptions::IgnoreEpics()) 
@@ -170,9 +159,14 @@ void TGRSIRootIO::FillPPG(TPPGData* data) {
    ++fTimesPPGCalled;
 }
 
-void TGRSIRootIO::FillScaler(int address, TScalerData* data) {
-  fScaler->AddData(address, data);
-  ++fTimesScalerCalled;
+void TGRSIRootIO::FillScalerTree(TScalerData *scalerData) {
+  if(TGRSIOptions::IgnoreScaler()) 
+    return;
+   *fScalerData = *scalerData;
+   int bytes =  fScalerTree->Fill();
+   if(bytes < 1)
+      printf("\n fill failed with bytes = %i\n",bytes);
+   fTimesScalerCalled++;
 }
 
 void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
@@ -198,7 +192,7 @@ void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
 void TGRSIRootIO::FinalizeFragmentTree() {
    if(!fFragmentTree || !foutfile)
       return;
-   TList *list = fFragmentTree->GetUserInfo();
+   //TList *list = fFragmentTree->GetUserInfo();
    std::map < unsigned int, TChannel * >::iterator iter;
    foutfile->cd();
 	TChannel *chan = TChannel::GetDefaultChannel();//new TChannel(iter->second);
@@ -241,19 +235,6 @@ void TGRSIRootIO::FinalizePPG() {
    return;
 }
 
-void TGRSIRootIO::FinalizeScaler() {
-   if(!fScaler || !foutfile)
-      return;
-   foutfile->cd();
-   if(fScaler->Size()) {
-      printf("Writing Scaler\n");
-      fScaler->Write("TScaler",TObject::kSingleKey);
-   } else {
-      printf("No Scaler data\n");
-	}
-   return;
-}
-
 void TGRSIRootIO::FinalizeEpicsTree() {
   if(TGRSIOptions::IgnoreEpics()) 
     return;
@@ -261,6 +242,16 @@ void TGRSIRootIO::FinalizeEpicsTree() {
       return;
    foutfile->cd();
    fEpicsTree->AutoSave(); //Write();
+	return;
+}
+
+void TGRSIRootIO::FinalizeScalerTree() {
+  if(TGRSIOptions::IgnoreScaler()) 
+    return;
+  if(!fScalerTree || !foutfile)
+      return;
+   foutfile->cd();
+   fScalerTree->Write();
 	return;
 }
 
@@ -285,7 +276,7 @@ bool TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
    SetUpFragmentTree();
    SetUpBadFragmentTree();
    SetUpPPG();
-	SetUpScaler();
+	SetUpScalerTree();
    SetUpEpicsTree();
 
    return true;
@@ -303,7 +294,7 @@ void TGRSIRootIO::CloseRootOutFile()   {
    
    FinalizeFragmentTree();
    FinalizePPG();
-	FinalizeScaler();
+	FinalizeScalerTree();
    FinalizeEpicsTree();
 
    if(TGRSIRunInfo::GetNumberOfSystems()>0) {
@@ -336,7 +327,7 @@ void TGRSIRootIO::CloseRootOutFile()   {
 	foutfile = 0;
 	return;
 
-};
+}
 
 
 void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
@@ -348,12 +339,12 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
  
    TChain *chain = new TChain("FragmentTree");
 
-   for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
+   for(size_t x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
       TFile f(TGRSIOptions::GetInputRoot().at(x).c_str(),"read");
       //printf("%s  f.FindObject(\"FragmentTree\") =0x%08x\n",f.GetName(),     f.FindObject("FragmentTree"));
       //if(f.FindObject("FragmentTree")) {
-	//printf("here 4 \n");
-	chain->Add(TGRSIOptions::GetInputRoot().at(x).c_str());
+		//printf("here 4 \n");
+		chain->Add(TGRSIOptions::GetInputRoot().at(x).c_str());
       //}
       f.Close();
    }
@@ -412,7 +403,7 @@ int TGRSIRootIO::GetRunNumber(std::string filename) {
    }
    //printf(" %s \t %i \n",temp.c_str(),atoi(temp.c_str()));
    return atoi(temp.c_str());
-};
+}
 
 
 int TGRSIRootIO::GetSubRunNumber(std::string filename)	{
@@ -432,7 +423,7 @@ int TGRSIRootIO::GetSubRunNumber(std::string filename)	{
       return atoi(temp.c_str());
    }
    return -1;
-};
+}
 
 void TGRSIRootIO::WriteRunStats(){
   printf("entering writing\n");

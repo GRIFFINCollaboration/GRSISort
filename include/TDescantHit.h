@@ -48,7 +48,7 @@ class TDescantHit : public TGRSIDetectorHit {
             // 67,01,32,45: shift all by +2, except for the last pair which need to be shifted by -6
             Int_t reordered = i-2;
             reordered = reordered+1-2*(reordered%2);
-            if(reordered >= fwaveform.size()) {
+            if(reordered >= (Int_t) fwaveform.size()) {
                continue;
             }
             if(reordered%8 < 6) {
@@ -70,8 +70,8 @@ class TDescantHit : public TGRSIDetectorHit {
       TVector3 GetPosition(Double_t dist = 0) const; //!
 //      inline std::vector<Short_t> GetWaveform() { return waveform; }  //!
 
-      Int_t CalculateCfd(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps); //!
-      Int_t CalculateCfdAndMonitor(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor); //!
+      Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, int interpolation_steps); //!
+      Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor); //!
       std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow); //!
       std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow); //!
       std::vector<Int_t> CalculatePartialSum(); //!
@@ -90,7 +90,7 @@ class TDescantHit : public TGRSIDetectorHit {
 		void Clear(Option_t *opt = "");		                    //!
 		void Print(Option_t *opt = "") const;		                    //!
 
-	ClassDef(TDescantHit,3)
+	ClassDef(TDescantHit,4)
 };
 
 #endif

@@ -88,7 +88,7 @@ TXMLNode *TXMLOdb::FindPath(const char *path, TXMLNode *node) {
          break;
    }
    
-   for(int x=0;x<elems.size();x++) {
+   for(size_t x=0;x<elems.size();x++) {
       node = FindNode(elems.at(x).c_str(),node);
       if(node) {
 //         printf("elem[%i]\t= %s\tnode = %s\n",x,elems.at(x).c_str(),GetNodeName(node));

@@ -84,11 +84,11 @@ void TGRSIint::ApplyOptions() {
    if(fAutoSort){
      TGRSILoop::Get()->SortMidas();
    }
-   bool foundCal = false;
+   //bool foundCal = false;
    if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0) { 
       TAnalysisTreeBuilder::Get()->StartMakeAnalysisTree();
    }
-   for(int x=0;x<TGRSIOptions::GetInputRoot().size();x++) {
+   for(int x=0;x<(int)(TGRSIOptions::GetInputRoot().size());x++) {
       //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
       long error = ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
       if(error <=0) continue;
@@ -110,7 +110,7 @@ void TGRSIint::ApplyOptions() {
    }
 
    if(TGRSIOptions::GetInputCal().size() > 0){
-      for(int i =0; i<TGRSIOptions::GetInputCal().size();++i){
+		for(size_t i =0; i<TGRSIOptions::GetInputCal().size();++i){
          TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
       }
    }
@@ -119,7 +119,7 @@ void TGRSIint::ApplyOptions() {
       TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
 
    if(TGRSIOptions::WorkHarder()) {
-      for(int x=0;x<TGRSIOptions::GetMacroFile().size();x++) {
+      for(size_t x=0;x<TGRSIOptions::GetMacroFile().size();x++) {
          gROOT->Macro(TGRSIOptions::GetMacroFile().at(x).c_str());  
        // gROOT->ProcessLineSync(Form(".x %s",TGRSIOptions::GetMacroFile().at(x).c_str()));
       }
@@ -269,7 +269,7 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
       } else if (sargv[0] == '-' && sargv[1] != '-') { //single char options.
         sargv = sargv.substr(1);  //drop the minus;
         int defaultcounter = 0;
-        for(int c=0;c<sargv.length();c++) {
+        for(size_t c=0;c<sargv.length();c++) {
           char key = sargv[c];
           switch(toupper(key)) {
             case 'A':
@@ -339,6 +339,10 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
        } else if(temp.compare("ignore_odb")==0) { 
           // useful when dealing with midas file that have corrupt odbs in them .
           TGRSIOptions::SetIgnoreFileOdb(true);          
+       } else if(temp.compare("ignore_epics")==0) { 
+          TGRSIOptions::SetIgnoreEpics(true);          
+       } else if(temp.compare("ignore_scaler")==0) { 
+          TGRSIOptions::SetIgnoreScaler(true);          
        } else {
           printf(DBLUE  "    option: " DYELLOW "%s " DBLUE "passed but not understood." RESET_COLOR "\n",temp.c_str());
        }

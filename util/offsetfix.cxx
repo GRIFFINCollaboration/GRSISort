@@ -45,7 +45,7 @@ class TEventTime {
          uint32_t type  = 0xffffffff;
          uint32_t value = 0xffffffff;
     
-         uint64_t time = 0;
+         //uint64_t time = 0;
 
          for(int x=0;x<banksize;x++) {
             value = *((int*)ptr+x);
@@ -106,7 +106,7 @@ class TEventTime {
   
          if(!(digset.find(Digitizer())->second)){
             digset.find(Digitizer())->second = true;
-            if(GetTimeStamp() < lowest_time || lowest_time == -1){
+            if(GetTimeStamp() < lowest_time){
   /*             if(Digitizer() == 0x0000 ||
                   Digitizer() == 0x0100 ||
                   Digitizer() == 0x0200 ||
@@ -141,7 +141,7 @@ class TEventTime {
          return timemidas;
       }
 
-      int Digitizer(){
+      uint32_t Digitizer(){
          return digitizernum;
       }
 
@@ -209,7 +209,7 @@ class TEventTime {
 
 
 unsigned long TEventTime::low_timemidas = -1;
-uint64_t TEventTime::lowest_time = -1;
+uint64_t TEventTime::lowest_time = 0xffffffffffffffff;
 uint32_t TEventTime::best_dig = 0;
 std::map<uint32_t,int> TEventTime::digmap;
 std::map<uint32_t,bool> TEventTime::digset;
@@ -307,7 +307,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
 
    //MidasTimeStamp is the only time we can trust at this level. 
 
-   int fEntries = eventQ->size();
+   //int fEntries = eventQ->size();
 
    int FragsIn = 0;
 
@@ -396,7 +396,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
          printf("Processing Event %d /%lu      \r",event1count,eventQ->size()); fflush(stdout);
       event1count++;
 
-      if( ((*hit1)->Digitizer() == 0) && ((*hit1)->DetectorType()>1)) continue; 
+      if(((*hit1)->Digitizer() == 0) && ((*hit1)->DetectorType()>1)) continue; 
 
       if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer())  continue;
 
@@ -454,7 +454,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
       if(cit->first == TEventTime::GetBestDigitizer())
          printf("0x%04x:\t BEST\n",cit->first);
       else
-         printf("0x%04x:\t %lld\n",cit->first,cit->second);
+         printf("0x%04x:\t %ld\n",cit->first,cit->second);
    }
    printf("********************\n");
 
@@ -517,7 +517,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
          }
  
          if(hit1 != hit2 ){
-            uint32_t digitizer = (*hit2)->Digitizer();
+            //uint32_t digitizer = (*hit2)->Digitizer();
             fillhist = (TH1D*)(list->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
             int64_t time2 = static_cast<int64_t>((*hit2)->GetTimeStamp()) - TEventTime::correctionmap.find((*hit2)->Digitizer())->second;
             if((time2-time1 < 2147483647) && (time2-time1 > -2147483647)){//Make sure we are casting this to 32 bit properly
@@ -547,7 +547,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
       if(cit->first == TEventTime::GetBestDigitizer())
          printf("0x%04x:\t BEST\n",cit->first);
       else
-         printf("0x%04x:\t %lld\n",cit->first,cit->second);
+         printf("0x%04x:\t %ld\n",cit->first,cit->second);
         // printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
@@ -564,8 +564,8 @@ bool ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
       return false;
    }
    event->SetBankList();
-   int size;
-   int data[1024];
+   //int size;
+   //int data[1024];
   
    void *ptr;
    

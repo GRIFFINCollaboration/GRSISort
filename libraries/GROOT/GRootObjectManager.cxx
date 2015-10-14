@@ -119,7 +119,7 @@ void GRootObjectManager::RemoveCanvas(TCanvas *c) {
      //printf("Trying to remove canvas not in map...\n");
   }
   
-};
+}
 
 
 void GRootObjectManager::AddObject(TObject *object,TObject *par,TFile *file,Option_t *opt) { 
@@ -298,8 +298,8 @@ void GRootObjectManager::Update(Option_t *opt) {
   //bool u_clean  = option.Contains("CLEAN",TString::ECaseCompare::kIgnoreCase);
   
 
-  if(fCanvasList && (fCanvasList->GetSize() != fCanvasMap.size())) {
-    if(fCanvasList->GetSize()>fCanvasMap.size()) {
+  if(fCanvasList && (fCanvasList->GetSize() != (Int_t)fCanvasMap.size())) {
+    if(fCanvasList->GetSize()>(Int_t)fCanvasMap.size()) {
       TIter iter(fCanvasList);
       while(TCanvas *canvas = (TCanvas*)iter.Next()) {
         if(!fCanvasMap.count(canvas))
@@ -441,10 +441,9 @@ void GRootObjectManager::Print() {
    //                                                                          iter2->second.GetParent(),iter2->second.GetFile());
    TIter Oiter(fObjectsMap);
    while(GMemObj *mobj = (GMemObj*)Oiter.Next()) {
-      printf("\t% 2i.\t%s [%s], parent[%p] | file[%p].\n",counter++,mobj->GetObject()->GetName(),
-                                                                            mobj->GetObject()->IsA()->GetName(),
-                                                                            mobj->GetParent(),mobj->GetFile());
-
+	   printf("\t% 2i.\t%s [%s], parent[%p] | file[%p].\n",counter++,mobj->GetObject()->GetName(),
+				 mobj->GetObject()->IsA()->GetName(),
+				 (void*)mobj->GetParent(),(void*)mobj->GetFile());
    }
 }
 

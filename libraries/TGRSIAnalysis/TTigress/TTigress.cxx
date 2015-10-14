@@ -28,7 +28,8 @@ TTigress::TTigress() : tigdata(0), bgodata(0)	{
    Clear();
 }
 
-TTigress::TTigress(const TTigress& rhs) {
+TTigress::TTigress(const TTigress& rhs)
+  : TGRSIDetector() {
    ((TTigress&)rhs).Copy(*this);
 }
 
@@ -83,16 +84,6 @@ void TTigress::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 
    if(!tigdata)   
       tigdata = new TTigressData();
-   UShort_t color =5;   
-   if(mnemonic->arraysubposition.compare(0,1,"B")==0) {
-	    color = 0;      
-   } else if(mnemonic->arraysubposition.compare(0,1,"G")==0) {
-	    color = 1;
-   } else if(mnemonic->arraysubposition.compare(0,1,"R")==0) {
-	    color = 2;
-   } else if(mnemonic->arraysubposition.compare(0,1,"W")==0) {
-	    color = 3;
-   } 
    if(mnemonic->subsystem.compare(0,1,"G")==0) { 
 	  	if((mnemonic->segment==0) || (mnemonic->segment==9 ))	{
  				tigdata->SetCore(frag,channel,mnemonic);
@@ -130,7 +121,7 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
 	TCrystalHit temp_crystal;
 
 	//First build the core hits.
-	for(int i=0;i<tdata->GetCoreMultiplicity();i++)	{
+	for(size_t i=0;i<tdata->GetCoreMultiplicity();i++)	{
 
 		TTigressHit corehit;
 		temp_crystal.Clear();
@@ -154,7 +145,7 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
 	}
 	
 	for(int i=0;i<tigress_hits.GetEntries();i++)	{
-	   for(int j=0;j<tdata->GetSegmentMultiplicity();j++)	{
+	   for(size_t j=0;j<tdata->GetSegmentMultiplicity();j++)	{
 	      if((GetTigressHit(i)->GetDetector() == tdata->GetSegCloverNumber(j))  && (GetTigressHit(i)->GetCrystal() == tdata->GetSegCoreNumber(j))) {
 	         GetTigressHit(i)->CheckFirstHit(tdata->GetSegmentCharge(j),tdata->GetSegmentNumber(j));
 
@@ -176,7 +167,7 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
 	   }  // all segments set.  
 
     if(TTigress::SetBGOHits() && bdata)  {
-      for(int j=0;j< bdata->GetBGOMultiplicity();j++)  {
+      for(size_t j=0;j< bdata->GetBGOMultiplicity();j++)  {
         if((GetTigressHit(i)->GetDetector() == bdata->GetBGOCloverNumber(j))  && (GetTigressHit(i)->GetCrystal() == bdata->GetBGOCoreNumber(j))) {
           temp_crystal.Clear();
           temp_crystal.SetSegment(bdata->GetBGOPmNbr(j));

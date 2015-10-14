@@ -41,7 +41,7 @@ class TSceptarHit : public TGRSIDetectorHit {
             // 67,01,32,45: shift all by +2, except for the last pair which need to be shifted by -6
             Int_t reordered = i-2;
             reordered = reordered+1-2*(reordered%2);
-            if(reordered >= fwaveform.size()) {
+            if(reordered >= (Int_t) fwaveform.size()) {
                continue;
             }
             if(reordered%8 < 6) {
@@ -75,7 +75,7 @@ class TSceptarHit : public TGRSIDetectorHit {
 		void Print(Option_t *opt = "") const;		                    //!
       virtual void Copy(TSceptarHit&) const;        //!
 
-	ClassDef(TSceptarHit,1) //Stores the information for a SceptarHit
+	ClassDef(TSceptarHit,2) //Stores the information for a SceptarHit
 };
 
 #endif

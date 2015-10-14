@@ -19,7 +19,7 @@ TTipHit::TTipHit() {
 
 TTipHit::~TTipHit() { }
 
-TTipHit::TTipHit(const TTipHit &rhs) {
+TTipHit::TTipHit(const TTipHit &rhs) : TGRSIDetectorHit() {
    Class()->IgnoreTObjectStreamer(kTRUE);
    Clear();
    ((TTipHit&)rhs).Copy(*this);
