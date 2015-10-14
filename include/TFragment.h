@@ -60,6 +60,7 @@ public:
    UShort_t DataType;             //-> 
    UShort_t DetectorType;         //-> Detector Type (PACES,HPGe, etc)
    UInt_t ChannelId;              //-> Threshold crossing counter for a channel
+   //UInt_t AcceptedChannelId;      //-> Accepted threshold crossing counter for a channel
 
    std::vector<UShort_t>  KValue; //-> KValue for each pileup hit
 
@@ -72,21 +73,28 @@ public:
    const char *GetName() const; //!
    double GetEnergy(int iter=0)const; //!
    double GetCharge(int iter=0)const; //!
+   Int_t  GetCfd(int iter=0)const; //!
+   Int_t  GetLed(int iter=0)const; //!
+   Int_t  GetZCross(int iter=0)const; //! 
+     
+   
+   
+   
    long GetTimeStamp_ns(); //!
 
    Int_t Get4GCfd(int i=0); //!
 
    bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!
+   int  GetColor(Option_t *opt = "") const; //!
+   bool HasWave() const { return (wavebuffer.size()>0) ?  true : false; } //!
 
    virtual void	Clear(Option_t *opt = ""); //!
    using TObject::Print; 
    virtual void Print(Option_t *opt = ""); //!
    
-
-
    bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 
-   ClassDef(TFragment,4);  // Event Fragments
+   ClassDef(TFragment,5);  // Event Fragments
 };
 #endif // TFRAGMENT_H

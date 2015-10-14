@@ -55,13 +55,23 @@ class TTigress : public TGRSIDetector {
 		void FillData(TFragment*,TChannel*,MNEMONIC*); //!
 		void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
 
+      inline void     SetTimeStamp(Double_t &timestamp)         { fTimeStamp = timestamp; } //!
+      inline Double_t GetTimeStamp()                            { return fTimeStamp;      } //!
+      inline void     CheckAndSetTimeStamp(Double_t timestamp)  { if((fTimeStamp==-1) || (timestamp<fTimeStamp)) fTimeStamp=timestamp; }  
+
+      inline void   AddRawBGO() { fRawBGOHits++;      }
+      inline Int_t  GetRawBGO() { return fRawBGOHits; }
+
 	private: 
 		TTigressData *tigdata;        //!
 		TBGOData     *bgodata;        //!
 
 		std::vector <TTigressHit> tigress_hits;
 		std::vector <TTigressHit> addback_hits;
-		std::vector <TTigressHit> clover_addback_hits;			
+ 		std::vector <TTigressHit> clover_addback_hits;			
+
+      Double_t fTimeStamp;
+      Int_t    fRawBGOHits;
 
 		static double beta;
 
@@ -89,7 +99,7 @@ class TTigress : public TGRSIDetector {
 		virtual void Clear(Option_t *opt = "");		//!
 		virtual void Print(Option_t *opt = "");		//!
 
-   ClassDef(TTigress,1)  // Tigress Physics structure
+   ClassDef(TTigress,3)  // Tigress Physics structure
 
 
 };

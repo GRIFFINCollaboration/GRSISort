@@ -100,7 +100,7 @@ class TGRSIRunInfo : public TObject {
       static inline void SetTigress(bool flag = true)     { fGRSIRunInfo->fTigress = flag; }
       static inline void SetSharc(bool flag = true)       { fGRSIRunInfo->fSharc = flag; }
       static inline void SetTriFoil(bool flag = true)     { fGRSIRunInfo->fTriFoil = flag; }
-      static inline void SetRf(bool flag = true)          { fGRSIRunInfo->fRf = flag; }
+      static inline void SetRF(bool flag = true)          { fGRSIRunInfo->fRf = flag; }
       static inline void SetCSM(bool flag = true)         { fGRSIRunInfo->fCSM = flag; }
       static inline void SetSpice(bool flag = true)       { fGRSIRunInfo->fSpice = flag; }
       static inline void SetS3(bool flag = true)          { fGRSIRunInfo->fS3 = flag;  }
@@ -133,7 +133,7 @@ class TGRSIRunInfo : public TObject {
       static inline bool Tigress()   { return fGRSIRunInfo->fTigress; }
       static inline bool Sharc()     { return fGRSIRunInfo->fSharc; }
       static inline bool TriFoil()   { return fGRSIRunInfo->fTriFoil; }
-      static inline bool Rf()        { return fGRSIRunInfo->fRf; }
+      static inline bool RF()        { return fGRSIRunInfo->fRf; }
       static inline bool CSM()       { return fGRSIRunInfo->fCSM; }
       static inline bool Spice()     { return fGRSIRunInfo->fSpice; }
       static inline bool Tip()       { return fGRSIRunInfo->fTip; }

@@ -1,6 +1,7 @@
 #include <TMath.h>
 #include "TCSM.h"
 #define RECOVERHITS 1
+#define SUMHITS 0
 
 ClassImp(TCSM)
 
@@ -10,7 +11,7 @@ TCSM::TCSM() : data(0)
 {
   Class()->IgnoreTObjectStreamer(true);
   //InitializeSRIMInputs();
-  AlmostEqualWindow = .1;
+  AlmostEqualWindow = .2;
 }
 
 TCSM::~TCSM()
@@ -289,7 +290,7 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
     int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
     int he2 = cdataVH->GetHorizontal_Energy(hvec.at(1));
-    if(AlmostEqual(ve1,he1+he2))
+    if(AlmostEqual(ve1,he1+he2) && SUMHITS)
     {
       hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
       hvec.clear();
@@ -298,14 +299,16 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     else if(AlmostEqual(ve1,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+      RecoverHit('H',hvec.at(1),cdataVH,hitvec);
       vvec.clear();
-      hvec.erase(hvec.begin());
+      hvec.clear();
     }
     else if(AlmostEqual(ve1,he2))
     {
       hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
+      RecoverHit('H',hvec.at(0),cdataVH,hitvec);
       vvec.clear();
-      hvec.pop_back();
+      hvec.clear();
     }
   }
   
@@ -314,7 +317,7 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
     int ve2 = cdataVH->GetVertical_Energy(vvec.at(1));
     int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
-    if(AlmostEqual(ve1+ve2,he1))
+    if(AlmostEqual(ve1+ve2,he1) && SUMHITS)
     {
       hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
       hvec.clear();
@@ -323,13 +326,15 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     else if(AlmostEqual(ve1,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
-      vvec.erase(vvec.begin());
+      RecoverHit('V',vvec.at(1),cdataVH,hitvec);
+      vvec.clear();
       hvec.clear();
     }
     else if(AlmostEqual(ve2,he1))
     {
       hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
-      vvec.pop_back();
+      RecoverHit('V',vvec.at(0),cdataVH,hitvec);
+      vvec.clear();
       hvec.clear();
     }
   }
@@ -340,21 +345,25 @@ void TCSM::BuildVH(vector<int> &vvec,vector<int> &hvec,vector<TCSMHit> &hitvec,T
     int ve2 = cdataVH->GetVertical_Energy(vvec.at(1));
     int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
     int he2 = cdataVH->GetHorizontal_Energy(hvec.at(1));
-    if( AlmostEqual(ve1,he1) && AlmostEqual(ve2,he2) )
+    if( (AlmostEqual(ve1,he1) && AlmostEqual(ve2,he2)) || (AlmostEqual(ve1,he2) && AlmostEqual(ve2,he1)) )
     {
-      //I can build both 1,1 and 2,2
-      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
-      hitvec.push_back(MakeHit(hvec.at(1),vvec.at(1),cdataVH));
-      hvec.clear();
-      vvec.clear();
-    }
-    else if( AlmostEqual(ve1,he2) && AlmostEqual(ve2,he1) )
-    {
-      //I can build both 1,2 and 2,1
-      hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
-      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
-      hvec.clear();
-      vvec.clear();
+      //I can build both 1,1 and 2,2 or 1,2 and 2,1
+      if(abs(ve1-he1)+abs(ve2-he2) <= abs(ve1-he2)+abs(ve2-he1))
+      {
+	//1,1 and 2,2 mimimizes difference
+	hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+	hitvec.push_back(MakeHit(hvec.at(1),vvec.at(1),cdataVH));
+	hvec.clear();
+	vvec.clear();
+      }
+      else if(abs(ve1-he1)+abs(ve2-he2) > abs(ve1-he2)+abs(ve2-he1))
+      {
+	//1,2 and 2,1 mimimizes difference
+	hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
+	hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
+	hvec.clear();
+	vvec.clear();
+      }
     }
     else if( AlmostEqual(ve1,he1) )
     {
@@ -638,23 +647,185 @@ TCSMHit TCSM::MakeHit(vector<int> &hhV,vector<int> &vvV, TCSMData *cdata)
 
 void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits)
 {
+  std::vector<TCSMHit> d1;
+  std::vector<TCSMHit> d2;
+  std::vector<TCSMHit> e1;
+  std::vector<TCSMHit> e2;
+
+  d1.clear();
+  d2.clear();
+  e1.clear();
+  e2.clear();
+  
+  for(int diter=0;diter<DHitVec.size();diter++)
+  {
+    if(DHitVec.at(diter).GetDetectorNumber()==3 || DHitVec.at(diter).GetDetectorNumber()==4)//I am in side detectors
+    {
+      //I will never have a pair in the side detector, so go ahead and send it through.
+      BuiltHits.push_back(DHitVec.at(diter));
+    }
+    else if(DHitVec.at(diter).GetDetectorNumber()==1)
+    {
+      d1.push_back(DHitVec.at(diter));
+    }
+    else if(DHitVec.at(diter).GetDetectorNumber()==2)
+    {
+      d2.push_back(DHitVec.at(diter));
+    }
+    else
+    {
+      cerr<<"  Caution, in BuilddEE detector number in D vector is out of bounds."<<endl;
+    }
+  }
+
+  for(int eiter=0;eiter<EHitVec.size();eiter++)
+  {
+    if(EHitVec.at(eiter).GetDetectorNumber()==1)
+    {
+      e1.push_back(EHitVec.at(eiter));
+    }
+    else if(EHitVec.at(eiter).GetDetectorNumber()==2)
+    {
+      e2.push_back(EHitVec.at(eiter));
+    }
+    else
+    {
+      cerr<<"  Caution, in BuilddEE detector number in E vector is out of bounds."<<endl;
+    }
+  }
+
+  MakedEE(d1,e1,BuiltHits);
+  MakedEE(d2,e2,BuiltHits);
+  
+}
+
+void TCSM::MakedEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits)
+{
+
+  if(DHitVec.size()==0 && EHitVec.size()==0)
+    return;
+  else if(DHitVec.size()==1 && EHitVec.size()==0)
+    BuiltHits.push_back(DHitVec.at(0));
+  else if(DHitVec.size()==0 && EHitVec.size()==1)
+    BuiltHits.push_back(EHitVec.at(0));
+  else if(DHitVec.size()==1 && EHitVec.size()==1)
+    BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+  else if(DHitVec.size()==2 && EHitVec.size()==0)
+  {
+    BuiltHits.push_back(DHitVec.at(0));
+    BuiltHits.push_back(DHitVec.at(1));
+  }
+  else if(DHitVec.size()==0 && EHitVec.size()==2)
+  {
+    BuiltHits.push_back(EHitVec.at(0));
+    BuiltHits.push_back(EHitVec.at(1));
+  }
+  else if(DHitVec.size()==2 && EHitVec.size()==1)
+  {
+    double dt1 = DHitVec.at(0).GetDPosition().Theta();
+    double dt2 = DHitVec.at(1).GetDPosition().Theta();
+    double et = EHitVec.at(0).GetEPosition().Theta();
+
+    if( abs(dt1-et) <= abs(dt2-et) )
+    {
+      //cout<<DRED;
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(DHitVec.at(1));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+    else
+    {
+      //cout<<DBLUE;
+      BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(DHitVec.at(0));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+  }
+  else if(DHitVec.size()==1 && EHitVec.size()==2)
+  {
+    double dt = DHitVec.at(0).GetDPosition().Theta();
+    double et1 = EHitVec.at(0).GetEPosition().Theta();
+    double et2 = EHitVec.at(0).GetEPosition().Theta();
+    
+    if( abs(dt-et1) <= abs(dt-et2) )
+    {
+      //cout<<DRED;
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(EHitVec.at(1));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+    else
+    {
+      //cout<<DBLUE;
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(1)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(EHitVec.at(0));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+  }
+  else if(DHitVec.size()==2 && EHitVec.size()==2)
+  {
+    double dt1 = DHitVec.at(0).GetDPosition().Theta();
+    double dt2 = DHitVec.at(1).GetDPosition().Theta();
+    double et1 = EHitVec.at(0).GetEPosition().Theta();
+    double et2 = EHitVec.at(1).GetEPosition().Theta();
+
+    if( abs(dt1-et1)+abs(dt2-et2) <= abs(dt1-et2)+abs(dt2-et1) )
+    {
+      //cout<<DRED;
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(1)));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+    else
+    {
+      //cout<<DBLUE;
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(1)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      //cout<<RESET_COLOR;
+    }
+  }
+  else
+  {
+    cout<<"D Size: "<<DHitVec.size()<<" E Size: "<<EHitVec.size()<<endl;
+  }
+}
+
+void TCSM::OldBuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits)
+{
+  bool printbit =0;
   //cout<<"DHitVec size: "<<DHitVec.size()<<" EHitVec size: "<<EHitVec.size()<<endl;
   if(DHitVec.size()==0&&EHitVec.size()==0)//Why am I even here?!
     return;
-
-  /*cout<<YELLOW<<"******************************************"<<RESET_COLOR<<endl;
   
-  for(int i =0; i< DHitVec.size();i++)
+  /*else if(DHitVec.size()>2 && EHitVec.size()>=2)
   {
-    cout<<DGREEN;
-    DHitVec.at(i).Print();
-    cout<<RESET_COLOR;
-  }
-  for(int i =0; i< EHitVec.size();i++)
-  {
-    cout<<DGREEN;
-    EHitVec.at(i).Print();
-    cout<<RESET_COLOR;
+    printbit =1;
+    cout<<YELLOW<<"******************************************"<<RESET_COLOR<<endl;
+
+    for(int i =0; i< DHitVec.size();i++)
+    {
+      cout<<DRED;
+      DHitVec.at(i).Print();
+      cout<<RESET_COLOR;
+    }
+    for(int i =0; i< EHitVec.size();i++)
+    {
+      cout<<DBLUE;
+      EHitVec.at(i).Print();
+      cout<<RESET_COLOR;
+    }
   }*/
 
   vector<bool> EUsed (EHitVec.size(),false);
@@ -683,43 +854,86 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
 	  cout<<RESET_COLOR;*/
 	  DUsed.at(diter) = true;
 	  EUsed.at(eiter) = true;
+	  break;
 	}
       }
     }
   }
 
+  //This loop adds uncorrelated events in the telescope together.  This may be bad, but let's see.
+  for(int i=0;i<DHitVec.size();i++)
+  {
+    if(!DUsed.at(i))
+    {
+      for(int j=0;j<EHitVec.size();j++)
+      {
+	if(!EUsed.at(j))
+	{
+	  if(EHitVec.at(j).GetDetectorNumber()==DHitVec.at(i).GetDetectorNumber())
+	  {
+	    BuiltHits.push_back(CombineHits(DHitVec.at(i),EHitVec.at(j)));
+	    /*cout<<DRED;
+	    BuiltHits.back().Print();
+	    cout<<RESET_COLOR;*/
+	    DUsed.at(i) = true;
+	    EUsed.at(j) = true;
+	    break;
+	  }
+	}
+      }
+    }
+  }
+
+
   //Send through the stragglers.  This is very permissive, but we trust BuildVH to take care of the riff-raff
   for(int i=0;i<DHitVec.size();i++)
   {
-    /*if(EHitVec.size()>0)
-    {
-      cout<<"*************************"<<endl;
-      cout<<DBLUE;
-      DHitVec.at(i).Print();
-      cout<<RESET_COLOR;
-    }*/
+    //cout<<"*************************"<<endl;
+  
+//     if(EHitVec.size()>0)
+//     {
+//       cout<<DGREEN;
+//       DHitVec.at(i).Print();
+//       cout<<RESET_COLOR;
+//     }
     if(!DUsed.at(i))
     {
       BuiltHits.push_back(DHitVec.at(i));
-      /*cout<<DBLUE;
-      BuiltHits.back().Print();
-      cout<<RESET_COLOR;*/
+//       if(printbit)
+//       {
+//       cout<<DGREEN;
+//       BuiltHits.back().Print();
+//       cout<<RESET_COLOR;
+//       }
     }
   }
   for(int j=0;j<EHitVec.size();j++)
   {
-    /*if(DHitVec.size()>0)
-    {
-      cout<<DGREEN;
-      EHitVec.at(j).Print();
-      cout<<RESET_COLOR;
-    }*/
+//     if(DHitVec.size()>0)
+//     {
+//       cout<<DGREEN;
+//       EHitVec.at(j).Print();
+//       cout<<RESET_COLOR;
+//     }
     if(!EUsed.at(j))
     {
       BuiltHits.push_back(EHitVec.at(j));
-      /*cout<<DBLUE;
-      BuiltHits.back().Print();
-      cout<<RESET_COLOR;*/
+//       if(printbit)
+//       {
+// 	cout<<DGREEN;
+// 	BuiltHits.back().Print();
+// 	cout<<RESET_COLOR;
+//       }
+    }
+  }
+
+  if(printbit)
+  {
+    for(int k =0; k<BuiltHits.size();k++)
+    {
+      cout<<DGREEN;
+      BuiltHits.at(k).Print();
+      cout<<RESET_COLOR<<endl;
     }
   }
 }

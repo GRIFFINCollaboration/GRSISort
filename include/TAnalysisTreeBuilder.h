@@ -29,10 +29,10 @@
 #include "TTigress.h" 
 #include "TSharc.h"     
 #include "TTriFoil.h"   
-//#include "TRf.h"        
+#include "TRF.h"        
 #include "TCSM.h"       
-//#include "TSpice.h"     
-//#include "TS3.h"        
+#include "TSiLi.h"     
+#include "TS3.h"        
 #include "TTip.h"       
    
 #include "TGriffin.h"   
@@ -172,10 +172,10 @@ class TAnalysisTreeBuilder : public TObject {
       TTigress    *tigress;                                 //A pointer to the Tigress Mother Class
       TSharc      *sharc;                                   //A pointer to the Sharc Mother Class
       TTriFoil    *triFoil;                                 //A pointer to the TriFoil Mother Class
-      //TRf         *rf;      
+      TRF         *rf;                                      //A pointer to the TRF Mother Class 
       TCSM        *csm;                                     //A pointer to the CSM Mother Class
-      //TSpice      *spice;  
-      //TS3         *s3;
+      TSiLi       *sili;  
+      TS3         *s3;
       TTip        *tip;    
        
       //GrifAux detectors

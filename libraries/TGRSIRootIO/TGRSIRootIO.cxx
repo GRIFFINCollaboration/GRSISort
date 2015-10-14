@@ -22,9 +22,10 @@ TGRSIRootIO *TGRSIRootIO::Get()  {
 TGRSIRootIO::TGRSIRootIO() { 
    //printf("TGRSIRootIO has been created.\n");
 
-  fFragmentTree = 0;
+  fFragmentTree    = 0;
   fBadFragmentTree =0;
-  fEpicsTree    = 0;
+  fEpicsTree       = 0;
+  fSCLRTree        = 0;
 
   foutfile = 0; //new TFile("test_out.root","recreate");
 
@@ -73,9 +74,6 @@ void TGRSIRootIO::SetUpBadFragmentTree() {
 
 }
 
-
-
-
 void TGRSIRootIO::SetUpEpicsTree() {
    if(TGRSIOptions::IgnoreEpics()) 
      return;
@@ -86,8 +84,25 @@ void TGRSIRootIO::SetUpEpicsTree() {
    fEXBufferFrag = 0;
    fEpicsTree->Bronch("TEpicsFrag","TEpicsFrag",&fEXBufferFrag,128000,99);
 	printf("EPICS-Tree set up.\n");
+}
+
+
+void TGRSIRootIO::SetUpSCLRTree() {
+   if(TGRSIOptions::IgnoreSCLR()) 
+     return;
+   if(foutfile)
+      foutfile->cd();
+   fSCLRTimesFillCalled = 0;
+   fSCLRTree = new TTree("SCLRTree","SCLRTree");
+   fSBufferFrag = 0;
+   fSCLRTree->Bronch("TSCLRFrag","TSCLRFrag",&fSBufferFrag,128000,99);
+	printf("SCLR-Tree set up.\n");
 
 }
+
+
+
+
 
 //void TGRSIRootIO::FillChannelTree(TChannel *chan) {
 //   if(!fTChannelTree)
@@ -120,12 +135,35 @@ void TGRSIRootIO::FillBadFragmentTree(TFragment *frag) {
 void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
   if(TGRSIOptions::IgnoreEpics()) 
     return;
+  if(!fEpicsTree)
+     return;
    *fEXBufferFrag = *EXfrag;
    int bytes =  fEpicsTree->Fill();
    if(bytes < 1)
-      printf("\n fill failed with bytes = %i\n",bytes);
+      printf("\n [EPIX] fill failed with bytes = %i\n",bytes);
    fEPICSTimesFillCalled++;
 }
+
+void TGRSIRootIO::FillSCLRTree(TSCLRFrag *Sfrag) {
+  //printf("\tSfrag = 0x%08x\n");
+  //printf("\tfill called with Sfrag->MidasId  %i\n",Sfrag->MidasId);
+  if(TGRSIOptions::IgnoreSCLR()) 
+    return;
+  if(!fSCLRTree || !Sfrag)
+     return;
+  fSBufferFrag->Copy(*Sfrag);
+  //if(fSCLRTree->GetEntries()) {
+  //  fSCLRTree->Show(fSCLRTree->GetEntries()-1);
+  //}
+  //fSBufferFrag->Print("LITE");
+  int bytes =  fSCLRTree->Fill();
+  fSBufferFrag->Clear();
+  if(bytes < 1)
+     printf("\n [SCLR] fill failed with bytes = %i\n",bytes);
+  fSCLRTimesFillCalled++;
+}
+
+
 
 
 //void TGRSIRootIO::FinalizeChannelTree() {
@@ -183,6 +221,17 @@ void TGRSIRootIO::FinalizeEpicsTree() {
 	return;
 }
 
+void TGRSIRootIO::FinalizeSCLRTree() {
+  if(TGRSIOptions::IgnoreSCLR()) 
+    return;
+  if(!fSCLRTree || !foutfile)
+      return;
+   foutfile->cd();
+   fSCLRTree->AutoSave(); //Write();
+	return;
+}
+
+
 
 bool TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
   
@@ -221,6 +270,7 @@ void TGRSIRootIO::CloseRootOutFile()   {
    
    FinalizeFragmentTree(); 
    FinalizeEpicsTree();
+   FinalizeSCLRTree();
 
    if(TGRSIRunInfo::GetNumberOfSystems()>0) {
       printf(DMAGENTA " Writing RunInfo with " DYELLOW "%i " DMAGENTA " systems to file." RESET_COLOR "\n",TGRSIRunInfo::GetNumberOfSystems());

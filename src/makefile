@@ -40,10 +40,12 @@ LIBS += -lAnalysisTreeBuilder
 LIBS += -lGRSIFormat
 LIBS += -lNucleus
 LIBS += -lKinematics
+LIBS += -lReaction
 LIBS += -lSRIM
 LIBS += -lTCal
 LIBS += -lTGRSIFit
 
+<<<<<<< HEAD
 #DETLIBS =  -lTigress
 #DETLIBS += -lSharc
 #DETLIBS += -lTriFoil
@@ -52,6 +54,16 @@ LIBS += -lTGRSIFit
 ##DETLIBS += -lSpice
 ##DETLIBS += -lS3
 #DETLIBS += -lTip
+=======
+DETLIBS =  -lTigress
+DETLIBS += -lSharc
+DETLIBS += -lTriFoil
+DETLIBS += -lRF
+DETLIBS += -lCSM
+DETLIBS += -lSiLi
+DETLIBS += -lS3
+DETLIBS += -lTip
+>>>>>>> 18457cbe454032633fe297725db18b8ee9bfab7c
 
 DETLIBS += -lGriffin
 DETLIBS += -lSceptar

@@ -13,6 +13,7 @@
 #pragma link C++ class TFragment+;
 
 #pragma link C++ class TEpicsFrag+;
+#pragma link C++ class TSCLRFrag+;
 #pragma link C++ class TChannel-;
 #pragma link C++ class TGRSIRunInfo-;
 #pragma link C++ class TGRSISortInfo+;

@@ -1,5 +1,14 @@
 #include "TGainMatch.h"
 
+#include "Math/Minimizer.h"
+#include "Math/Factory.h"
+#include "Math/Functor.h"
+#include "TRandom2.h"
+#include "TError.h"
+#include <algorithm>
+#include <map>
+
+
 ClassImp(TGainMatch)
 
 TGainMatch::TGainMatch(const TGainMatch &copy) : TCal(copy){

@@ -57,6 +57,7 @@ void TFragment::Clear(Option_t *opt){
    DataType           = 0; 
    DetectorType       = 0; 
    ChannelId          = 0; 
+   //AcceptedChannelId  = 0; 
 
 
 
@@ -85,9 +86,6 @@ double TFragment::GetTZero() const {
       return 0.000;
    return chan->GetTZero(GetEnergy());
 }
-
-
-
 
 long TFragment::GetTimeStamp_ns() {
    long ns = 0;
@@ -122,6 +120,29 @@ double TFragment::GetEnergy() const {
    return chan->CalibrateENG((int)(Charge.at(0)));
 }
 */
+
+
+Int_t TFragment::GetZCross(int iter)const {
+
+   if((Zc.size()-1)>iter)
+      return 0;
+   return Zc.at(iter);
+
+}
+
+Int_t TFragment::GetCfd(int iter)const {
+   if((Cfd.size()-1)>iter)
+      return 0;
+   return Cfd.at(iter);
+}
+
+
+Int_t TFragment::GetLed(int iter)const {
+   if((Led.size()-1)>iter)
+      return 0;
+   return Led.at(iter);
+}
+
 
 double TFragment::GetEnergy(int i) const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
@@ -209,7 +230,7 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
    //Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs to be done
    //Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then checks
    //for conditions.
-   if(channame.compare(0,pre.length(),pre)) {     //channame.BeginsWith(pre)){
+   if(!channame.compare(0,pre.length(),pre)) {     //channame.BeginsWith(pre)){
       if(option.Length()<1) //no option.
          return true;
       if(channame.length()>8) {
@@ -226,3 +247,22 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
      return false;
 
 }
+
+int TFragment::GetColor(Option_t *opt) const {
+   std::string channame = this->GetName();
+   if(channame.length()<9)
+      return false;
+   char color = channame[5];
+   switch(color) {
+      case 'B':
+        return 0;
+      case 'G':
+        return 1;
+      case 'R':
+        return 2;
+      case 'W':
+        return 3;
+   };
+   return -1;
+};
+

@@ -44,4 +44,45 @@ class TEpicsFrag : public TObject	{
     
     ClassDef(TEpicsFrag,1);  // Event Fragments
 };
+
+
+
+class TSCLRFrag : public TObject	{
+  public:
+    TSCLRFrag(); 
+    ~TSCLRFrag(); 
+
+    time_t   MidasTimeStamp;       //  Timestamp of the MIDAS event  
+    Int_t    MidasId;              //  MIDAS ID
+
+    static void SetAddressMap(int*,int);           //!  // done once per run.
+    static std::vector<Int_t >      AddressMap; //!
+    
+    std::vector<UInt_t >     Address;
+    std::vector<UInt_t>      Data1;
+    std::vector<UInt_t>      Data2;
+    std::vector<UInt_t>      Data3;
+    std::vector<UInt_t>      Data4;
+
+    int GetSize() { return Data1.size(); }
+    inline UInt_t GetData1(const unsigned int &i) { return Data1.at(i); }
+    inline UInt_t GetData2(const unsigned int &i) { return Data2.at(i); }
+    inline UInt_t GetData3(const unsigned int &i) { return Data3.at(i); }
+    inline UInt_t GetData4(const unsigned int &i) { return Data4.at(i); }
+    
+    virtual void Clear(Option_t *opt = ""); //!
+    virtual void Print(Option_t *opt = "") const; //!
+    virtual void Copy(const TSCLRFrag&); 
+
+    ClassDef(TSCLRFrag,1);  // Event Fragments
+};
+
+
+
+
+
+
+
+
+
 #endif // TEPICSFRAG_H

@@ -40,6 +40,9 @@ class TGRSILoop : public TObject {
       bool fTestMode;
       bool fOffline;   
 
+      bool fIamTigress;
+      bool fIamGriffin;
+
       TXMLOdb *fOdb;
 
       int fFragsReadFromMidas;
@@ -68,6 +71,7 @@ class TGRSILoop : public TObject {
       bool Process8PI(uint32_t stream,uint32_t *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0);
       bool ProcessEPICS(float *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0);
       //bool ProcessEPICS(double *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0);
+      bool ProcessSCLR(uint32_t *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0);
 
       void SetFileOdb(char *data,int size);
       void SetTIGOdb();
@@ -75,6 +79,8 @@ class TGRSILoop : public TObject {
 
       int GetFragsSentToTree()    { return fFragsSentToTree; }
       int GetFragsReadFromMidas() { return fFragsReadFromMidas; }
+
+      static bool GetSuppressError() { return suppress_error; } 
 
       void Clear(Option_t *opt="");
       void Print(Option_t *opt="") const;

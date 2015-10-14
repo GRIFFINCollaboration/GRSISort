@@ -33,9 +33,10 @@ class TTigressHit : public TGRSIDetectorHit {
 		std::vector<TCrystalHit> bgo;
 
 		//double doppler;
-	
+
 		//need to do sudo tracking to build addback.
 		TVector3 lasthit;  //!
+      double   lastenergy; //!
 		#ifndef __CINT__
 		std::tuple<int,int,int> lastpos; //!
 		#endif
@@ -44,26 +45,34 @@ class TTigressHit : public TGRSIDetectorHit {
       void SetHit() {}
 		/////////////////////////		/////////////////////////////////////
 		void SetCore(TCrystalHit &temp)		  { core = temp;	} 					//!
-		void SetSegment(TCrystalHit &temp)	{ segment.push_back(temp);	}		//!
-		void SetBGO(TCrystalHit &temp)		  { bgo.push_back(temp);	}			//!
+		void SetSegment(TCrystalHit &temp)	  { segment.push_back(temp);	}  //!
+		void SetBGO(TCrystalHit &temp)		  { bgo.push_back(temp);	}     //!
 
-		void SetDetectorNumber(const int &i) { detector = i;	} 				//!
-		void SetCrystalNumber(const int &i)	 { crystal = i; }					//!
-		void SetInitalHit(const int &i)		   { first_segment = i; }				//!
+		void SetDetectorNumber(const int &i)  { detector = i;	}              //!
+		void SetCrystalNumber(const int &i)	  { crystal = i; }					//!
+		void SetInitialHit(const int &i)      { first_segment = i; }         //!
 
 //		void SetPosition(const TVector3 &p)  { position = p;	}					//!
 		//void SetDoppler(const double &d)	   { doppler = d;	}					//!
 		
 		/////////////////////////		/////////////////////////////////////
-		inline int GetDetectorNumber()	     {	return detector;		}			//!
-		inline int GetCrystalNumber()	       {	return crystal;			}			//!
-		inline int GetInitialHit()		       {	return first_segment;	}			//!
+		inline int GetDetectorNumber()	      {  return detector;		}			//!
+		inline int GetCrystalNumber()	         {  return crystal;			}			//!
+		inline int GetInitialHit()		         {  return first_segment;	}			//!
 	
+<<<<<<< HEAD
 		inline int GetCharge()			         {	return core.GetCharge();	}		//!
 		inline double GetEnergy()		         {	return core.GetEnergy();	}		//!
 		inline double GetTime()			         {	return core.GetTime();		}		//!
     inline double GetTimeCFD()           {  return core.GetCfd(); } //!
       TVector3 GetPosition() const {}
+=======
+      inline int GetFirstSegmentCharge()     {  return first_segment_charge; }
+		inline int GetCharge()			         {  return core.GetCharge();	}		//!
+		inline double GetEnergy()		         {  return core.GetEnergy();	}		//!
+		inline double GetTime()			         {  return core.GetTime();		}		//!
+      inline double GetTimeCFD()             {  return core.GetCfd(); } //!
+>>>>>>> 18457cbe454032633fe297725db18b8ee9bfab7c
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
 		inline double GetDoppler(double beta,TVector3 *vec=0) { 
@@ -83,11 +92,13 @@ class TTigressHit : public TGRSIDetectorHit {
 			return tmp;
 		}
 
-		inline int GetSegmentMultiplicity()		        {	return segment.size();	}	//!
-		inline TCrystalHit *GetSegment(const int &i)	{	return &segment.at(i);	}	//!
+		inline int GetSegmentMultiplicity()		      { return segment.size();	}	//!
+		inline TCrystalHit *GetSegment(const int &i)	{ return &segment.at(i);	}	//!
 
-		inline int GetBGOMultiplicity()			      {	return bgo.size();	}		      //!
-		inline TCrystalHit *GetBGO(const int &i)	{	return &bgo.at(i);	}	        //!
+		inline int GetBGOMultiplicity()			      { return bgo.size();	}		      //!
+		inline TCrystalHit *GetBGO(const int &i)	   { return &bgo.at(i);	}	        //!
+      inline bool Suppress()                       { return GetCore()->Suppress(); }
+      inline void SetSuppress(bool flag = true)    { GetCore()->SetSuppress(flag); }
 
 		inline TCrystalHit *GetCore()								{	return &core;	}	       		  //!
 
@@ -96,6 +107,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		static bool Compare(TTigressHit lhs, TTigressHit rhs);	      //!     { return (lhs.GetDetectorNumber() < rhs.GetDetectorNumber()); }
 		static bool CompareEnergy(TTigressHit lhs, TTigressHit rhs);	//!     { return (lhs.GetDetectorNumber() < rhs.GetDetectorNumber()); }
 		
+      
 		void Add(TTigressHit*);                                       //!
 		TVector3 GetLastHit()	{return lasthit;}                       //!
 		#ifndef __CINT__

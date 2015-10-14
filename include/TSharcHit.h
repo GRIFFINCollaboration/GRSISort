@@ -26,23 +26,23 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		UShort_t		front_strip;	  //
 		Int_t	    	front_address; //   Should be Address.
 		Int_t			 front_charge;	  //	
-		//double 	 front_cfd;		  //	
+		double 	 front_cfd;		  // 	
 		
 		UShort_t		back_strip;		  //
 		Int_t	   	  back_address;  //   Should be Address.
 		Int_t			  back_charge;	  //
-		//double		back_cfd;	  // 		
+		double		back_cfd;	  // 		
 
 		UShort_t		detectornumber;  //
 		Int_t			  pad_charge;		  //
 
-	  Double_t		d_energy_front;  //		
-  	Double_t		d_time_front;	  //		
-	  Double_t		d_energy_back;  //		
-  	Double_t		d_time_back;	  //		
+      Double_t		d_energy_front;  //		
+    	Double_t		d_time_front;	  //		
+      Double_t		d_energy_back;  //		
+      Double_t		d_time_back;	  //		
 	  //Double_t		d_cfd;		  //		
 
-  	Double_t		p_energy;	//			pad only;
+      Double_t		p_energy;	//			pad only;
  		Double_t		p_time;		//			pad only;
 		Int_t       p_address;  //
  		//Double_t		p_cfd;		//
@@ -93,8 +93,8 @@ class TSharcHit : public TGRSIDetectorHit 	{
 
       TVector3 GetPosition() const {}
 			
-		//inline Double_t GetFrontCFD()		{	return front_cfd;	}	//!
-		//inline Double_t GetBackCFD()		{	return back_cfd;	}	//!
+		inline Double_t GetFrontCFD()		{	return front_cfd;	}	//!
+		inline Double_t GetBackCFD()		{	return back_cfd;	}	//!
 
     Double_t PadEnergyCal(); //!
     Double_t FrontEnergyCal(); //!
@@ -111,8 +111,8 @@ class TSharcHit : public TGRSIDetectorHit 	{
 		inline void SetPadE(const Double_t &tenergy)		{	p_energy = tenergy;	}	//!
 		inline void SetPadT(const Double_t &ttime)		{	p_time = ttime;	}		//!
 
-		//void SetFrontCFD(const double &cfd)		{	front_cfd = cfd;	} //!
-		//void SetBackCFD(const double &cfd)		{	back_cfd = cfd;		} //!
+    void SetFrontCFD(const double &cfd)		{	front_cfd = cfd;	} //!
+		void SetBackCFD(const double &cfd)		{	back_cfd = cfd;		} //!
 
 	//	inline void SetPosition(const TVector3 &pos)	{	position = pos;		} //!
 

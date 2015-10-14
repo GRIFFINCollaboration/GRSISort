@@ -23,6 +23,7 @@ class TTigressData : public TGRSIDetectorData {
 		std::vector<Double_t> fCore_TimeCFD;		//!
 		std::vector<Double_t> fCore_TimeLED;		//!
 		std::vector<Double_t> fCore_Time;		//!
+		std::vector<Double_t>   fCore_TimeStamp;		//!
 		std::vector<std::vector<int> >fCore_Wave;	//!
 
 
@@ -49,13 +50,14 @@ class TTigressData : public TGRSIDetectorData {
 		virtual void Clear(Option_t *opt = "");		//!
 		virtual void Print(Option_t *opt = "");		//!
 
-		inline void SetCloverNumber(const UShort_t &CloverNumber) {fClover_Nbr.push_back(CloverNumber);  }//!
-		inline void SetCoreNumber(const UShort_t  &CoreNumber)	  {fCore_Nbr.push_back(CoreNumber);      }	//!
-		inline void SetCoreEnergy(const Double_t  &CoreEnergy)	  {fCore_Eng.push_back(CoreEnergy);      }	//!
-		inline void SetCoreCharge(const Int_t &CoreCharge)	      {fCore_Chg.push_back(CoreCharge);      }	//!
+		inline void SetCloverNumber(const UShort_t &CloverNumber)   {fClover_Nbr.push_back(CloverNumber);  }//!
+		inline void SetCoreNumber(const UShort_t  &CoreNumber)	   {fCore_Nbr.push_back(CoreNumber);      }	//!
+		inline void SetCoreEnergy(const Double_t  &CoreEnergy)	   {fCore_Eng.push_back(CoreEnergy);      }	//!
+		inline void SetCoreCharge(const Int_t &CoreCharge)	         {fCore_Chg.push_back(CoreCharge);      }	//!
 		inline void SetCoreCFD(const Double_t &CoreTimeCFD)	      {fCore_TimeCFD.push_back(CoreTimeCFD); }	//!	
 		inline void SetCoreLED(const Double_t &CoreTimeLED)	      {fCore_TimeLED.push_back(CoreTimeLED); }	//!	
-		inline void SetCoreTime(const Double_t    &CoreTime)	    {fCore_Time.push_back(CoreTime);       }	//!
+		inline void SetCoreTime(const Double_t    &CoreTime)	      {fCore_Time.push_back(CoreTime);       }	//!
+		inline void SetCoreTimeStamp(const Double_t &CoreTimeStamp) {fCore_TimeStamp.push_back(CoreTimeStamp); }	//!
 		
 		inline void SetCoreWave(const std::vector<int> &CoreWave)	{fCore_Wave.push_back(CoreWave);} //!
 	
@@ -68,10 +70,14 @@ class TTigressData : public TGRSIDetectorData {
 			SetCoreCFD(CrystalTimeCFD);		
 			SetCoreLED(CrystalTimeLED);		
 			SetCoreTime(CrystalTime);		
+
 		}	//!
 
 		inline void SetCore(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 				if(!frag || !channel || !mnemonic) return;
+
+        if(frag->Charge.size() == 0 || frag->Cfd.size() == 0 || frag->Led.size() == 0 || frag->Zc.size() == 0)
+				  return;
 
 				if(mnemonic->outputsensor.compare(0,1,"b")==0) {	return; }  //make this smarter.
 
@@ -99,11 +105,12 @@ class TTigressData : public TGRSIDetectorData {
 //				frag->Print();
 //				printf("energy;  %.02f\n",channel->CalibrateENG(frag->Charge.at(0)));
 //				printf("============================================================\n");
-
+            SetCoreTimeStamp(frag->GetTimeStamp());
 
 				SetCoreCharge(frag->Charge.at(0));
 				SetCoreCFD(frag->Cfd.at(0));		
 				SetCoreLED(frag->Led.at(0));		
+			   //SetCoreTime(frag->GetTimeStamp());		
 				SetCoreTime(frag->Zc.at(0));		
 		}; //! 
 
@@ -132,6 +139,11 @@ class TTigressData : public TGRSIDetectorData {
 		}	//!
 
 		inline void SetSegment(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
+				if(!frag || !channel || !mnemonic) return;
+				
+				if(frag->Charge.size() == 0 || frag->Cfd.size() == 0 || frag->Led.size() == 0 || frag->Zc.size() == 0)
+				  return;
+				
 				SetSegCloverNumber(mnemonic->arrayposition);
 				UShort_t CoreNbr=5;
 				if(mnemonic->arraysubposition.compare(0,1,"B")==0)
@@ -156,6 +168,7 @@ class TTigressData : public TGRSIDetectorData {
 				SetSegmentCharge(frag->Charge.at(0));
 				SetSegmentCFD(frag->Cfd.at(0));		
 				SetSegmentLED(frag->Led.at(0));		
+			 	//SetSegmentTime(frag->GetTimeStamp());		
 				SetSegmentTime(frag->Zc.at(0));		
 		}; 
 
@@ -167,6 +180,7 @@ class TTigressData : public TGRSIDetectorData {
 		inline Double_t GetCoreCFD(const unsigned int &i)	{return fCore_TimeCFD.at(i);}	//!
 		inline Double_t GetCoreLED(const unsigned int &i)	{return fCore_TimeLED.at(i);}	//!	
 		inline Double_t GetCoreTime(const unsigned int &i)	{return fCore_Time.at(i);}	//!
+		inline Double_t GetCoreTimeStamp(const unsigned int &i)	{return fCore_TimeStamp.at(i);}	//!
 
 		inline std::vector<int> GetCoreWave(const unsigned int &i)	{return fCore_Wave.at(i);}	//!
 

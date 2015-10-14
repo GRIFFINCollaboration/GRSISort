@@ -37,10 +37,11 @@ class TDataParser { //: public TObject {
 
   public:
     //static std::vector<TFragment*> TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
-    static int TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
-    static int GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasserialnumber = 0, time_t midastime = 0);
+    static int TigressDataToFragment(uint32_t *data, int size, int *iter, unsigned int midasserialnumber = 0, time_t midastime = 0);
+    static int GriffinDataToFragment(uint32_t *data, int size, int *iter, int bank, unsigned int midasserialnumber = 0, time_t midastime = 0);
    
     static int EPIXToScalar(float *data,int size,unsigned int midasserialnumber = 0,time_t midastime = 0);
+    static int SCLRToScalar(uint32_t *data,int size,unsigned int midasserialnumber = 0,time_t midastime = 0);
 	 static int EightPIDataToFragment(uint32_t stream,uint32_t* data,
                                      int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
     static int FifoToFragment(unsigned short *data,int size,bool zerobuffer=false,
