@@ -76,7 +76,7 @@ class TScalerData : public TObject {
 	UInt_t fLowTimeStamp;
 	UInt_t fHighTimeStamp;
 
-	ClassDef(TScalerData,1) //Contains scaler data information
+	ClassDef(TScalerData,2) //Contains scaler data information
 };
 
 class TScaler : public TObject {
@@ -119,6 +119,6 @@ class TScaler : public TObject {
 	TPPG* fPPG; //!
 	std::map<UInt_t, TH1D*> fHist; //!
 
-	ClassDef(TScaler,1) //Contains scaler information
+	ClassDef(TScaler,2) //Contains scaler information
 };
 #endif

@@ -254,7 +254,7 @@ class TGRSIRunInfo : public TObject {
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
-   ClassDef(TGRSIRunInfo,5);  //Contains the run-dependent information.
+   ClassDef(TGRSIRunInfo,6);  //Contains the run-dependent information.
 };
 
 #endif
