@@ -47,7 +47,7 @@ void TS3::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
 
 
 
-void TS3::BuildHits(TGRSIDetectorData *data,Option_t *opt)  {
+void TS3::BuildHits(TDetectorData *data,Option_t *opt)  {
   TS3Data *sdata = (TS3Data*)data;
   if(sdata==0)
      sdata = this->data;
@@ -61,7 +61,7 @@ void TS3::BuildHits(TGRSIDetectorData *data,Option_t *opt)  {
       if(sdata->GetRing_Detector(i) == sdata->GetSector_Detector(j))     {
         hit.SetRingNumber(sdata->GetRing_Number(i));
         hit.SetSectorNumber(sdata->GetSector_Number(j));
-        hit.SetDetectorNumber(sdata->GetRing_Detector(i));
+        hit.SetDetector(sdata->GetRing_Detector(i));
         TFragment tmpfrag = sdata->GetRing_Fragment(i);
         
         hit.SetVariables(tmpfrag);

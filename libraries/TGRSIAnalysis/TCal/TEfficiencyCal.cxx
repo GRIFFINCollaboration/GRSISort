@@ -46,10 +46,10 @@ void TEfficiencyCal::AddPoint(Double_t energy, Double_t area, Double_t d_energy,
 
    Double_t efficiency,d_efficiency;
    Double_t intensity = 1.0;//nuc;
-   Double_t d_intensity = 0.1;
 
    efficiency = area/intensity;
-   d_efficiency = efficiency*TMath::Sqrt(TMath::Power(d_efficiency/efficiency,2.0) + TMath::Power(d_area/area,2.0));
+ 	d_efficiency = d_area/intensity;
+   //d_efficiency = efficiency*TMath::Sqrt(TMath::Power(d_efficiency/efficiency,2.0) + TMath::Power(d_area/area,2.0));
 
    SetPoint(GetN(), energy, efficiency);
    SetPointError(GetN()-1,d_energy,d_efficiency);

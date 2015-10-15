@@ -10,14 +10,14 @@ class TCFDCal : public TCal {
    TCFDCal(const char* name, const char* title) : TCal(name,title){};
    virtual ~TCFDCal(){}; 
 
- //pure virtual functions  
+	//pure virtual functions  
    virtual Bool_t IsGroupable() const {return false;}
 
  public:
    virtual void WriteToChannel() const;
    virtual void ReadFromChannel();
    virtual std::vector<Double_t> GetParameters() const;
-   virtual Double_t GetParameter(Int_t parameter) const ;
+   virtual Double_t GetParameter(UInt_t parameter) const ;
 
    void AddParameter(Double_t param);
    void SetParameters(std::vector<Double_t> paramvec);

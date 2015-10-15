@@ -3,10 +3,14 @@
 
 ClassImp(TPeak)
 
-//This makes a temporary TF1 I think, but I'm not sure an easier (that is nice) way to do it
-TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){ 
+Bool_t TPeak::fLogLikelihoodFlag = true;
 
+//We need c++ 11 for constructor delegation....
+TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){
+   fResiduals = 0;
+   fBackground = 0;
    this->Clear();
+   fOwnBgFlag = false;
    Bool_t out_of_range_flag = false;
 
    if(cent > xhigh){
@@ -43,22 +47,104 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type) : TGR
    this->InitNames();
    this->SetParameter("centroid",cent);
 
-   background = new TF1("background",TGRSIFunctions::StepBG,xlow,xhigh,10);
-   background->SetNpx(1000);
-   background->SetLineStyle(2);
-   background->SetLineColor(kBlack);
+   //Check to see if background is good.
+   if(background){
+      fBackground = background;
+      fOwnBgFlag = false;
+   }
+   else{
+      printf("Bad background pointer. Creating basic background.\n");
+      this->fBackground = new TF1(Form("background%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh)),TGRSIFunctions::StepBG,xlow,xhigh,10);
+      TGRSIFit::AddToGlobalList(fBackground,kFALSE);
+      fOwnBgFlag = true;
+   }
+      
+   this->fBackground->SetNpx(1000);
+   this->fBackground->SetLineStyle(2);
+   this->fBackground->SetLineColor(kBlack);
+
+   this->fResiduals = new TGraph;
+
+}
+
+//This makes a temporary TF1 I think, but I'm not sure an easier (that is nice) way to do it
+TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10){ 
+   fResiduals = 0;
+   fBackground = 0;
+   this->Clear();
+   fOwnBgFlag = true;
+   Bool_t out_of_range_flag = false;
+
+   if(cent > xhigh){
+      printf("centroid is higher than range\n");
+      out_of_range_flag = true;
+   }
+   else if (cent < xlow){
+      printf("centroid is lower than range\n");
+      out_of_range_flag = true;
+   }
+
+   //This fixes things if your user is like me and screws up a lot.
+   if(out_of_range_flag){
+      if (xlow > cent)
+         std::swap(xlow, cent);
+      if (xlow > xhigh)
+         std::swap(xlow, xhigh);
+      if (cent > xhigh)
+         std::swap(cent, xhigh);
+      printf("Something about your range was wrong. Assuming:\n");
+      printf("centroid: %d \t range: %d to %d\n",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh));
+   }
+
+   this->SetRange(xlow,xhigh);
+      //We also need to make initial guesses at parameters
+      //We need nice ways to access parameters etc.
+      //Need to make a TMultipeak-like thing (does a helper class come into play then?)
+
+   //Set the fit function to be a radware style photo peak.
+   //This function might be unnecessary. Will revist this later. rd.
+   this->SetName(Form("Chan%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh))); //Gives a default name to the peak
+
+   //We need to set parameter names now.
+   this->InitNames();
+   this->SetParameter("centroid",cent);
+
+   this->fBackground = new TF1(Form("background%d_%d_to_%d",(Int_t)(cent),(Int_t)(xlow),(Int_t)(xhigh)),TGRSIFunctions::StepBG,xlow,xhigh,10);
+      
+   this->fBackground->SetNpx(1000);
+   this->fBackground->SetLineStyle(2);
+   this->fBackground->SetLineColor(kBlack);
+   TGRSIFit::AddToGlobalList(fBackground,kFALSE);
+
+   this->fResiduals = new TGraph;
+
 }
 
 TPeak::TPeak() : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,0,1000,10){
+   fResiduals = 0;
+   fBackground = 0;
    this->InitNames();
-   background = new TF1("background",TGRSIFunctions::StepBG,0,1000,10);
-   background->SetNpx(1000);
-   background->SetLineStyle(2);
-   background->SetLineColor(kBlack);
+   fOwnBgFlag = true;
+   fBackground = new TF1("background",TGRSIFunctions::StepBG,0,1000,10);
+   fBackground->SetNpx(1000);
+   fBackground->SetLineStyle(2);
+   fBackground->SetLineColor(kBlack);
+   TGRSIFit::AddToGlobalList(fBackground,kFALSE);
+
+   fResiduals = new TGraph;
 }
 
 TPeak::~TPeak(){
-   if(background) delete background;
+   if(fBackground && fOwnBgFlag){
+      delete fBackground;
+   }
+   if(fResiduals) delete fResiduals;
+}
+
+TPeak::TPeak(const TPeak &copy) : TGRSIFit(), fBackground(0), fResiduals(0){
+   fBackground = 0;
+   fResiduals = 0;
+   ((TPeak&)copy).Copy(*this);
 }
 
 void TPeak::InitNames(){
@@ -74,58 +160,48 @@ void TPeak::InitNames(){
    this->SetParName(9,"bg_offset");
 }
 
-
-TPeak::TPeak(const TPeak &copy) : TGRSIFit(copy){
-   ((TPeak&)copy).Copy(*this);
-}
-
 void TPeak::Copy(TObject &obj) const {
    TGRSIFit::Copy(obj);
+
+   if(!((TPeak&)obj).fBackground){
+      ((TPeak&)obj).fBackground = new TF1(*fBackground);
+   }
+   if(!((TPeak&)obj).fResiduals)
+      ((TPeak&)obj).fResiduals = new TGraph(*fResiduals);
+
    ((TPeak&)obj).farea = farea;
    ((TPeak&)obj).fd_area = fd_area;
 
    ((TPeak&)obj).fchi2 = fchi2;
    ((TPeak&)obj).fNdf  = fNdf;
-   background->Copy(*(((TPeak&)obj).background));
+
+   *(((TPeak&)obj).fBackground) = *fBackground;
+   //We are making a direct copy of the background so the ownership is that of the copy
+   ((TPeak&)obj).fOwnBgFlag = true;
+   *(((TPeak&)obj).fResiduals) = *fResiduals;
+
    ((TPeak&)obj).SetHist(GetHist());
-}
-
-
-void TPeak::SetType(Option_t * type){
-// This sets the style of gaussian fit function to use for the fitted peak. 
-// Probably won't be used for much, but I'm leaving the option here for others
-// This would be a good spot to change whether the functions is a Gaus or Landau etc.
-
-   //Not using this right now, just starting with all of these components added in
-   if(strchr(type,'g') != NULL){
-      //Gaussian     
-   }
-   if(strchr(type,'s') != NULL){
-      //skewed gaussian
-   }
-   if(strchr(type,'c') != NULL){
-      //include a step function to the background
-   }
-
-//   fpeakfit = new TF1("photopeak","gauss",fxlow,fxhigh);  
 
 }
 
 Bool_t TPeak::InitParams(TH1 *fithist){
 //Makes initial guesses at parameters for the fit. Uses the histogram to
+	if(fithist == NULL) {
+		return false;
+	}
    Double_t xlow,xhigh;
    GetRange(xlow,xhigh);
-   Int_t bin = fithist->GetXaxis()->FindBin(GetParameter("centroid"));
+   Int_t bin = fithist->GetBinCenter(GetParameter("centroid"));
    Int_t binlow = fithist->GetXaxis()->FindBin(xlow);
    Int_t binhigh = fithist->GetXaxis()->FindBin(xhigh);
-   Double_t binWidth = fithist->GetBinWidth(bin);
+   //Double_t binWidth = fithist->GetBinWidth(bin);
    this->SetParLimits(1,xlow,xhigh);
-   this->SetParLimits(2,0.1,xhigh-xlow); // sigma should be less than the window width - JKS
-   this->SetParLimits(3,0.000,10);
-   this->SetParLimits(4,0,100); // this is a percentage. no reason for it to go to 500% - JKS
+   this->SetParLimits(2,0.1,(xhigh-xlow)); // sigma should be less than the window width - JKS
+   this->SetParLimits(3,0.000001,10);
+   this->SetParLimits(4,0.000001,100); // this is a percentage. no reason for it to go to 500% - JKS
    //Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
-   this->SetParLimits(6,0.0,fithist->GetBinContent(bin)*1.4);
-   //this->SetParLimits(9,xlow,xhigh);
+   this->SetParLimits(6,0.0,fithist->GetBinContent(bin)*100.);
+   this->SetParLimits(9,xlow,xhigh);
    this->SetParLimits(5,0.0,1.0E2);
 
    if(!fithist && GetHist()) 
@@ -143,15 +219,17 @@ Bool_t TPeak::InitParams(TH1 *fithist){
    this->SetParameter("Height",fithist->GetBinContent(bin));
    this->SetParameter("centroid",GetParameter("centroid"));
  //  this->SetParameter("sigma",(xhigh-xlow)*0.5); // slightly more robust starting value for sigma -JKS
-   this->SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
-   this->SetParameter("beta",0.5);
+ //  this->SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
+   this->SetParameter("sigma",TMath::Sqrt(9.0 + 4.*GetParameter("centroid")/1000.));
+   this->SetParameter("beta",GetParameter("sigma")/2.0);
    this->SetParameter("R", 1.0);
    this->SetParameter("step",1.0);
    this->SetParameter("A",fithist->GetBinContent(binhigh));
    this->SetParameter("B",(fithist->GetBinContent(binlow) - fithist->GetBinContent(binhigh))/(xlow-xhigh));
-   this->SetParameter("C",-0.5);
+   this->SetParameter("C",0.0000);
    this->SetParameter("bg_offset",GetParameter("centroid"));
-   this->FixParameter(8,0.00);
+//   this->FixParameter(8,0.00);
+   this->FixParameter(3,GetParameter("beta"));
    this->FixParameter(4,0.00);
    SetInitialized();
    return true;
@@ -169,35 +247,57 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    }
    if(!IsInitialized()) 
       InitParams(fithist);
+   ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
    TVirtualFitter::SetMaxIterations(100000);
+   TVirtualFitter::SetPrecision(1e-5);
 
    SetHist(fithist);
 
-   TString options(opt); bool Print = true;
+   TString options(opt); bool print_flag = true;
    if(options.Contains("Q"))
-     Print = false;
+     print_flag = false;
 
    //Now that it is initialized, let's fit it.
    //Just in case the range changed, we should reset the centroid and bg energy limits
-   this->SetParLimits(1,GetXmin(),GetXmax());
-   this->SetParLimits(9,GetXmin(),GetXmax());
+	//check first if the parameter has been fixed!
+	double parmin, parmax;
+	this->GetParLimits(1,parmin,parmax);
+	if(parmin < parmax) {
+		this->SetParLimits(1,GetXmin(),GetXmax());
+	}
+	this->GetParLimits(9,parmin,parmax);
+	if(parmin < parmax) {
+		this->SetParLimits(9,GetXmin(),GetXmax());
+	}
 
+   TFitResultPtr fitres;
+   //Log likelihood is the proper fitting technique UNLESS the data is a result of an addition or subtraction.
+   if(GetLogLikelihoodFlag()){
+      fitres = fithist->Fit(this,Form("%sRLS",opt));//The RS needs to always be there
+   }
+   else{
+      fitres = fithist->Fit(this,Form("%sRS",opt));//The RS needs to always be there
+   }
 
-   // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
-   TFitResultPtr fitres = fithist->Fit(this,Form("%sRSM",opt));//The RS needs to always be there
    //After performing this fit I want to put something here that takes the fit result (good,bad,etc)
    //for printing out. RD
 
-   Int_t fitStatus = fitres; //This returns a fit status from the TFitResult Ptr
+   //Int_t fitStatus = fitres; //This returns a fit status from the TFitResult Ptr
 
    if(fitres->ParError(2) != fitres->ParError(2)){ //Check to see if nan
       if(fitres->Parameter(3) < 1){
+         InitParams(fithist);
          FixParameter(4,0);
          FixParameter(3,1);
          std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
    	 // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
-         fithist->GetListOfFunctions()->Last()->Delete();//Remove the fit if it was bad.
-         fitres = fithist->Fit(this,Form("%sRSM",opt));
+         fithist->GetListOfFunctions()->Last()->Delete();
+         if(GetLogLikelihoodFlag()){
+            fitres = fithist->Fit(this,Form("%sRLS",opt));//The RS needs to always be there
+         }
+         else{
+            fitres = fithist->Fit(this,Form("%sRS",opt));
+         }
       }
    }
 /*   if(fitres->Parameter(5) < 0.0){
@@ -208,7 +308,7 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
 */
    Double_t binWidth = fithist->GetBinWidth(GetParameter("centroid"));
    Double_t width = this->GetParameter("sigma");
-   if(Print) printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
+   if(print_flag) printf("Chi^2/NDF = %lf\n",fitres->Chi2()/fitres->Ndf());
    fchi2 = fitres->Chi2();  fNdf = fitres->Ndf();
    Double_t xlow,xhigh;
    Double_t int_low, int_high; 
@@ -234,18 +334,20 @@ Bool_t TPeak::Fit(TH1* fithist,Option_t *opt){
    farea = (tmppeak->Integral(int_low,int_high))/binWidth;
    //Set the background values in the covariance matrix to 0, while keeping their covariance errors
    TMatrixDSym CovMat = fitres->GetCovarianceMatrix();
+   CovMat(5,5) = 0.0;
    CovMat(6,6) = 0.0;
    CovMat(7,7) = 0.0;
    CovMat(8,8) = 0.0;
    CovMat(9,9) = 0.0;
-
    fd_area = (tmppeak->IntegralError(int_low,int_high,tmppeak->GetParameters(),CovMat.GetMatrixArray())) /binWidth;
 
-   if(Print) printf("Integral: %lf +/- %lf\n",farea,fd_area);
+   if(print_flag) printf("Integral: %lf +/- %lf\n",farea,fd_area);
    //Set the background for drawing later
-   background->SetParameters(this->GetParameters());
+   fBackground->SetParameters(this->GetParameters());
    //To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
    Copy(*fithist->GetListOfFunctions()->Last());
+ //  if(optstr.Contains("+"))
+  //    Copy(*fithist->GetListOfFunctions()->Before(fithist->GetListOfFunctions()->Last()));
    
    delete tmppeak;
    return true;
@@ -305,7 +407,7 @@ Bool_t TPeak::SetHist(const char* histname){
    }
 }*/
 
-void TPeak::Clear(){
+void TPeak::Clear(Option_t *opt){
 //Clear the TPeak including functions and histogram, does not
 //currently clear inherited members such as name.
 //want to make a clear that doesn't clear everything
@@ -323,6 +425,7 @@ void TPeak::Print(Option_t *opt) const {
    printf("Name:        %s \n", this->GetName()); 
    printf("Centroid:    %lf +/- %lf \n", this->GetParameter("centroid"),this->GetParError(GetParNumber("centroid")));
    printf("Area: 	      %lf +/- %lf \n", farea, fd_area);
+   printf("FWHM:        %lf +/- %lf \n", this->GetParameter("sigma")*2.3548, this->GetParError(GetParNumber("sigma"))*2.3548);
    printf("Chi^2/NDF:   %lf\n",fchi2/fNdf);
    if(strchr(opt,'+') != NULL){
       TF1::Print();
@@ -343,16 +446,16 @@ const char * TPeak::PrintString(Option_t *opt) const {
    temp.append("Chi^2/NDF:   ");temp.append(Form("%lf",fchi2/fNdf)); temp.append("\n");
    //if(strchr(opt,'+') != NULL){
    //   TF1::Print();
-   //   TGRSIFit::Print(opt); //Polymorphise this a bit better
+   TGRSIFit::Print(opt); //Polymorphise this a bit better
    //}
    return temp.c_str();
 }
 
 void TPeak::DrawBackground(Option_t *opt) const{
-   background->Draw(opt);
+   fBackground->Draw(opt);
 }
 
-void TPeak::DrawResiduals() const{
+void TPeak::DrawResiduals() {
    if(!GetHist()){
       printf("No hist set\n");
       return;
@@ -368,16 +471,20 @@ void TPeak::DrawResiduals() const{
    Double_t *res = new Double_t[nbins];
    Double_t *bin = new Double_t[nbins];
    Int_t points = 0;
+   fResiduals->Clear();
 
    for(int i =1;i<=nbins;i++) {
       if(GetHist()->GetBinCenter(i) <= xlow || GetHist()->GetBinCenter(i) >= xhigh)
          continue;
       res[points] = (GetHist()->GetBinContent(i) - this->Eval(GetHist()->GetBinCenter(i)))+ this->GetParameter("Height")/2;///GetHist()->GetBinError(i));// + this->GetParameter("Height") + 10.;
       bin[points] = GetHist()->GetBinCenter(i);
+      fResiduals->SetPoint(i,bin[i],res[i]);
+
       points++;
    }
-   TGraph *residuals = new TGraph(points,bin,res);
-   residuals->Draw();
+
+
+   fResiduals->Draw();
 
    delete[] res;
    delete[] bin;

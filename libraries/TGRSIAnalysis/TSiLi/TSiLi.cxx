@@ -27,7 +27,7 @@ void TSiLi::FillData(TFragment *frag,TChannel *chan, MNEMONIC *mnem) {
 }
 
 
-void TSiLi::BuildHits(TGRSIDetectorData *data,Option_t *opt)  {
+void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
   TSiLiData *sdata = (TSiLiData*)data;
   if(!sdata)
     sdata = this->data;

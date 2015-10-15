@@ -5,7 +5,7 @@
 
 using namespace std;
 
-ClassImp(TKinematics);
+ClassImp(TKinematics)
 
 //////////////////////////////////////////////////////////////////
 //
@@ -26,6 +26,9 @@ TKinematics::TKinematics(double beame, const char *beam, const char *targ, const
 	name = Form("%s(%s,%s)%s",targ,beam,ejec,reco);
 	
 	if(!ejec  || !reco) {
+		//without ejectile or recoil, elastic scattering is assumed
+		e = b;
+		r = t;
 		//TKinematics(b,t,beame,name);
 	} else { 
 		e = new TNucleus(ejec);
@@ -37,7 +40,7 @@ TKinematics::TKinematics(double beame, const char *beam, const char *targ, const
   fParticle[2] = e;
   fParticle[3] = r;
   for(int i=0;i<4;i++)
-    fM[i]=fParticle[i]->GetMass();
+    fM[i] = fParticle[i]->GetMass();
     
   fEBeam = beame;
   fQValue = (fM[0]+fM[1])-(fM[2]+fM[3]);
@@ -111,6 +114,9 @@ TKinematics::TKinematics(const char *beam, const char *targ, const char *ejec, c
 	name = Form("%s(%s,%s)%s",targ,beam,ejec,reco);
 	
 	if(!ejec  || !reco) {
+		//without ejectile or recoil, elastic scattering is assumed
+		e = b;
+		r = t;
 		//TKinematics(b,t,beame,name);
 	} else { 
 		e = new TNucleus(ejec);
@@ -181,7 +187,6 @@ TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
   std::vector<double> energy;
   std::vector<double> angle;
 
-  int number =0;
   double deg2rad=PI/180.0;
   double rad2deg=180.0/PI;
 
@@ -234,21 +239,18 @@ TGraph* TKinematics::Evslab_graph(double thmin, double thmax, double size, int p
   std::vector<double> energy;
   std::vector<double> angle;
 
-  int number =0;
-  double deg2rad=PI/180.0;
   double rad2deg=180.0/PI;
+  double deg2rad=PI/180.0;
 
   int steps = ((int)(thmax+1) - (int)thmin) / (int)size;   // when is size ever needed to be a double?? pcb.
                                                            // i am under the impression that size should always be 1.0;
                                                            //
-  double lastangle = 0.0;;
   //for(int i=0;i<((thmax-thmin)/size);i++){
   for(int i=0;i<steps;i++){
     Final((thmin+i*size)*deg2rad,2);//part);   //2);
     double tmpangle = GetThetalab(part)*(1/deg2rad);
     double tmpeng   = GetTlab(part) * 1000;
     //printf("step[%i] \t tmpangle = %.02f \t tmpeng = %.02f\n",i,tmpangle,tmpeng);
-    lastangle = tmpangle;
     if(tmpangle<1 || tmpangle > (GetMaxAngle(fVcm[part])*rad2deg) -1)
       continue;
     if(tmpeng>1e15||tmpeng<0.0)
@@ -280,7 +282,7 @@ TSpline3* TKinematics::Evscm(double thmin, double thmax, double size, int part){
   int number =0;
   double deg2rad=PI/180.;
   for(int i=0;i<((thmax-thmin)/size);i++){
-    Final((thmin+i*size)*PI/180.,2);
+    Final((thmin+i*size)*deg2rad,2);
     angle[i]=GetThetacm(part)*180./PI;
     energy[i]=GetTlab(part); 
     number++;
@@ -310,7 +312,7 @@ double TKinematics::GetExcEnergy(TLorentzVector recoil){
 
   return eex;
 							    
-};
+}
 
 double TKinematics::GetExcEnergy(TVector3 position,double KinE){
 //Gets the excitation energy of the recoil in the CM frame using a vector & energy

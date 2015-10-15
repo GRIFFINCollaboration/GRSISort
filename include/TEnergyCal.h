@@ -9,7 +9,7 @@ class TEnergyCal : public TCal {
  public: 
    TEnergyCal();
    TEnergyCal(const char* name, const char* title) : TCal(name,title){}
-   ~TEnergyCal(); 
+   virtual ~TEnergyCal(); 
 
  public:
    std::vector<Double_t> GetParameters() const;

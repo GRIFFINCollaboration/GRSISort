@@ -1,5 +1,5 @@
 #ifndef TS3DATA_H
-#define TS3DAtA_H
+#define TS3DATA_H
 
 #include <cstdlib>
 #include <vector>

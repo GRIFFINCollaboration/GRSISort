@@ -15,7 +15,9 @@ ClassImp(TGRSITransition)
 
 TGRSITransition::TGRSITransition() {
 //Default constructor for TGRSITransition
-  Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
   Clear();
 }
 
@@ -63,6 +65,8 @@ int TGRSITransition::Compare(const TObject *obj) const {
       return  0;  
    else//(this->fintensity < ((TGRSITransition*)obj)->fintensity) 
       return  1;  
+   printf("%s: Error, intensity neither greater, nor equal, nor smaller than provided intensity!\n",__PRETTY_FUNCTION__);
+   return -9;
 }
 
 

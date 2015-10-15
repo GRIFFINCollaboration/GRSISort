@@ -13,12 +13,17 @@
 #include "TObject.h"
 #ifndef __CINT__
 #include "TGRSIDetectorData.h"
+#include "TDetectorData.h"
 #else
 class TGRSIDetectorData;
+class TDetectorData;
 #endif
 
 #include "TFragment.h"
 #include "TChannel.h"
+#include "TDetector.h"
+
+class TGRSIDetectorHit;
 
 ////////////////////////////////////////////////////////////////
 //                                                            //
@@ -31,23 +36,32 @@ class TGRSIDetectorData;
 ////////////////////////////////////////////////////////////////
 
 
-class TGRSIDetector : public TObject	{
+class TGRSIDetector : public TDetector	{
 	public:
 		TGRSIDetector();
+		TGRSIDetector(const TGRSIDetector&);
 		virtual ~TGRSIDetector();
 
 	public: 
-		virtual void BuildHits(TGRSIDetectorData *data=0,Option_t * = "") = 0;			   //!
-		virtual void FillData(TFragment*,TChannel*,MNEMONIC*) = 0; //!
+      //virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
+		virtual void BuildHits(TDetectorData *data=0,Option_t * = "") { AbstractMethod("BuildHits()"); } //! = 0; //!
+		virtual void FillData(TFragment*,TChannel*,MNEMONIC*)         { AbstractMethod("FillData()");  } //! = 0; //!
 
-      virtual void Clear(Option_t *opt = "");		//!
-		virtual void Print(Option_t *opt = "") const;		//!
+      virtual void Copy(TObject&) const;              //!
+      virtual void Clear(Option_t *opt = "");         //!
+		virtual void Print(Option_t *opt = "") const;   //!
 
+      void AddHit(TGRSIDetectorHit *hit,Option_t *opt ="");
+//      virtual void AddHit(TGRSIDetectorHit* hit, Option_t *opt ="") {}        //!
+
+    //  void Init();
+
+   protected:
+      virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
       //virtual TGRSIDetectorData *GetData() //{ //return data;}
-
       //TGRSIDetectorData *data;    //!
 
-   ClassDef(TGRSIDetector,0) //Abstract class for detector systems 
+   ClassDef(TGRSIDetector,1) //Abstract class for detector systems 
 };
 
 

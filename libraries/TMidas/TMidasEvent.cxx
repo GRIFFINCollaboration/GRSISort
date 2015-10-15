@@ -12,11 +12,24 @@
 
 #include "TMidasEvent.h"
 
-
 ClassImp(TMidasEvent)
+
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TMidasEvent                                                //
+//                                                            //
+// Contains the information within a Midas Event. This        //
+// usually includes a header, midas information such as timestamp
+// bank id, etc. And the bank data. The bank data is usually
+// the information supplied by either a scaler or the 
+// experimental DAQ system.
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 
 TMidasEvent::TMidasEvent()
 {
+   //Default constructor
   fData = NULL;
   fAllocatedByUs = false;
 
@@ -30,8 +43,8 @@ TMidasEvent::TMidasEvent()
   fEventHeader.fDataSize     = 0;
 }
 
-void TMidasEvent::Copy(const TMidasEvent& rhs)
-{
+void TMidasEvent::Copy(const TMidasEvent& rhs){
+   //Copies the entire TMidasEvent. This includes the bank information.
   fEventHeader = rhs.fEventHeader;
 
   fData        = (char*)malloc(fEventHeader.fDataSize);
@@ -44,18 +57,16 @@ void TMidasEvent::Copy(const TMidasEvent& rhs)
   assert(fBankList);
 }
 
-TMidasEvent::TMidasEvent(const TMidasEvent &rhs)
-{
+TMidasEvent::TMidasEvent(const TMidasEvent &rhs) : TObject() {
+   //Copy ctor.
   Copy(rhs);
 }
 
-TMidasEvent::~TMidasEvent()
-{
+TMidasEvent::~TMidasEvent() {
   Clear();
 }
 
-TMidasEvent& TMidasEvent::operator=(const TMidasEvent &rhs)
-{
+TMidasEvent& TMidasEvent::operator=(const TMidasEvent &rhs) {
   if (&rhs != this)
     Clear();
 
@@ -63,8 +74,8 @@ TMidasEvent& TMidasEvent::operator=(const TMidasEvent &rhs)
   return *this;
 }
 
-void TMidasEvent::Clear()
-{
+void TMidasEvent::Clear() {
+   //Clears the TMidasEvent.
   if (fBankList)
     free(fBankList);
   fBankList = NULL;
@@ -83,8 +94,9 @@ void TMidasEvent::Clear()
   fEventHeader.fDataSize     = 0;
 }
 
-void TMidasEvent::SetData(uint32_t size, char* data)
-{
+void TMidasEvent::SetData(uint32_t size, char* data) {
+   //Sets the data in the TMidasEvent as the data argument passed into
+   //this function.
   fEventHeader.fDataSize = size;
   assert(!fAllocatedByUs);
   assert(IsGoodSize());
@@ -93,55 +105,47 @@ void TMidasEvent::SetData(uint32_t size, char* data)
   SwapBytes(false);
 }
 
-uint16_t TMidasEvent::GetEventId() const
-{
+uint16_t TMidasEvent::GetEventId() const {
   return fEventHeader.fEventId;
 }
 
-uint16_t TMidasEvent::GetTriggerMask() const
-{
+uint16_t TMidasEvent::GetTriggerMask() const {
   return fEventHeader.fTriggerMask;
 }
 
-uint32_t TMidasEvent::GetSerialNumber() const
-{
+uint32_t TMidasEvent::GetSerialNumber() const {
   return fEventHeader.fSerialNumber;
 }
 
-uint32_t TMidasEvent::GetTimeStamp() const
-{
+uint32_t TMidasEvent::GetTimeStamp() const {
   return fEventHeader.fTimeStamp;
 }
 
-uint32_t TMidasEvent::GetDataSize() const
-{
+uint32_t TMidasEvent::GetDataSize() const {
   return fEventHeader.fDataSize;
 }
 
-char* TMidasEvent::GetData()
-{
+char* TMidasEvent::GetData() {
+   //Allocates the data if it has not been already, and then
+   //returns the allocated data.
   if (!fData)
     AllocateData();
   return fData;
 }
 
-TMidas_EVENT_HEADER *TMidasEvent::GetEventHeader()
-{
+TMidas_EVENT_HEADER *TMidasEvent::GetEventHeader() {
   return &fEventHeader;
 }
 
-bool TMidasEvent::IsGoodSize() const
-{
+bool TMidasEvent::IsGoodSize() const {
   return fEventHeader.fDataSize > 0 && fEventHeader.fDataSize <= 500 * 1024 * 1024;
 }
 
-bool TMidasEvent::IsBank32() const
-{
+bool TMidasEvent::IsBank32() const {
   return ((TMidas_BANK_HEADER *)fData)->fFlags & (1<<4);
 }
 
-int TMidasEvent::LocateBank(const void *unused, const char *name, void **pdata) const
-{
+int TMidasEvent::LocateBank(const void *unused, const char *name, void **pdata) const {
   /// See FindBank()
 
   int bktype, bklen;
@@ -160,8 +164,7 @@ int TMidasEvent::LocateBank(const void *unused, const char *name, void **pdata) 
 static const unsigned TID_SIZE[] = {0, 1, 1, 1, 2, 2, 4, 4, 4, 4, 8, 1, 0, 0, 0, 0, 0};
 static const unsigned TID_MAX = (sizeof(TID_SIZE)/sizeof(TID_SIZE[0]));
 
-int TMidasEvent::FindBank(const char* name, int *bklen, int *bktype, void **pdata) const
-{
+int TMidasEvent::FindBank(const char* name, int *bklen, int *bktype, void **pdata) const {
   /// Find a data bank.
   /// \param [in] name Name of the data bank to look for.
   /// \param [out] bklen Number of array elements in this bank.
@@ -243,8 +246,7 @@ int TMidasEvent::FindBank(const char* name, int *bklen, int *bktype, void **pdat
   return 0;
 }
 
-void TMidasEvent::Print(const char *option) const
-{
+void TMidasEvent::Print(const char *option) const {
   /// Print data held in this class.
   /// \param [in] option If 'a' (for "all") then the raw data will be
   /// printed out too.
@@ -348,8 +350,8 @@ void TMidasEvent::Print(const char *option) const
     }
 }
 
-void TMidasEvent::AllocateData()
-{
+void TMidasEvent::AllocateData() {
+   //Allocates space for the data from the event header if it is a good size
   assert(!fAllocatedByUs);
   assert(IsGoodSize());
   fData = (char*)malloc(fEventHeader.fDataSize);
@@ -357,13 +359,13 @@ void TMidasEvent::AllocateData()
   fAllocatedByUs = true;
 }
 
-const char* TMidasEvent::GetBankList() const
-{
+const char* TMidasEvent::GetBankList() const {
   return fBankList;
 }
 
-int TMidasEvent::SetBankList()
-{
+int TMidasEvent::SetBankList() {
+   //Sets the bank list by Iterating of the banks.
+   //See IterateBank32 and IterateBank
   if (fEventHeader.fEventId <= 0)
     return 0;
 
@@ -409,8 +411,7 @@ int TMidasEvent::SetBankList()
   return fBanksN;
 }
 
-int TMidasEvent::IterateBank(TMidas_BANK **pbk, char **pdata) const
-{
+int TMidasEvent::IterateBank(TMidas_BANK **pbk, char **pdata) const {
   /// Iterates through banks inside an event. The function can be used
   /// to enumerate all banks of an event.
   /// \param [in] pbk Pointer to the bank header, must be NULL for the
@@ -437,8 +438,7 @@ int TMidasEvent::IterateBank(TMidas_BANK **pbk, char **pdata) const
   return (*pbk)->fDataSize;
 }
 
-int TMidasEvent::IterateBank32(TMidas_BANK32 **pbk, char **pdata) const
-{
+int TMidasEvent::IterateBank32(TMidas_BANK32 **pbk, char **pdata) const {
   /// See IterateBank()
 
   const TMidas_BANK_HEADER* event = (const TMidas_BANK_HEADER*)fData;
@@ -519,8 +519,8 @@ _tmp= *((BYTE *)(x));                    \
 *((BYTE *)(x)) = *(((BYTE *)(x))+1);     \
 *(((BYTE *)(x))+1) = _tmp; }
 
-void TMidasEvent::SwapBytesEventHeader()
-{
+void TMidasEvent::SwapBytesEventHeader() {
+  //Swaps bytes in the header for endian-ness reasons
   WORD_SWAP(&fEventHeader.fEventId);
   WORD_SWAP(&fEventHeader.fTriggerMask);
   DWORD_SWAP(&fEventHeader.fSerialNumber);
@@ -528,8 +528,8 @@ void TMidasEvent::SwapBytesEventHeader()
   DWORD_SWAP(&fEventHeader.fDataSize);
 }
 
-int TMidasEvent::SwapBytes(bool force)
-{
+int TMidasEvent::SwapBytes(bool force) {
+  //Swaps bytes for endian-ness reasons
   TMidas_BANK_HEADER *pbh;
   TMidas_BANK *pbk;
   TMidas_BANK32 *pbk32;

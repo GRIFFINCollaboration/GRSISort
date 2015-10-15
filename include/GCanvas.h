@@ -10,18 +10,18 @@
 
 class GMarker : public TObject{
   public:
-    GMarker():x(-1),y(-1),linex(0),liney(0),localx(0.0),localy(0.0) { }
-    GMarker(const GMarker &m) { ((GMarker&)m).Copy(*this); }
-    ~GMarker() { if(linex) linex->Delete(); if(liney) liney->Delete(); }
-    int x;
-    int y;
-    double localx;
-    double localy;
-    TLine *linex;
-    TLine *liney;
-    void Copy(TObject &object) const;
-    bool operator<(const GMarker &rhs) const { return x < rhs.x; }
-    ClassDef(GMarker,0)
+   GMarker():x(-1),y(-1),localx(0.0),localy(0.0),linex(0),liney(0) { }
+   GMarker(const GMarker &m) :TObject() { ((GMarker&)m).Copy(*this); }
+   virtual ~GMarker() { if(linex) linex->Delete(); if(liney) liney->Delete(); }
+   int x;
+   int y;
+   double localx;
+   double localy;
+   TLine *linex;
+   TLine *liney;
+   void Copy(TObject &object) const;
+   bool operator<(const GMarker &rhs) const { return x < rhs.x; }
+   ClassDef(GMarker,0)
 };
 
 
@@ -97,6 +97,9 @@ class GCanvas : public TCanvas {
       bool GausBGFit(GMarker *m1=0,GMarker *m2=0);
       bool PeakFit(GMarker *m1=0,GMarker *m2=0);
       bool PeakFitQ(GMarker *m1=0,GMarker *m2=0);
+
+      bool Integrate(GMarker *m1=0,GMarker *m2=0);
+      bool IntegrateBG(GMarker *m1=0,GMarker *m2=0);
 
       static int fBGSubtraction_type;
 
