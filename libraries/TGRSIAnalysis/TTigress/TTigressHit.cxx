@@ -64,7 +64,7 @@ void TTigressHit::Copy(TTigressHit &rhs) const {
 }
 
 
-void TTigressHit::Print(Option_t *opt)	const {
+void TTigressHit::Print(Option_t *opt)	{
 	printf("Tigress hit energy: %.2f\n",GetEnergy());
 	printf("Tigress hit time:   %.2f\n",GetTime());
 	//printf("Tigress hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
@@ -105,11 +105,12 @@ void TTigressHit::SumHit(TTigressHit *hit) {
 }
 
 
-TVector3 TTigressHit::GetPosition(Double_t dist) { return TTigress::GetPosition(GetDetector(),GetCrystal(),GetInitialHit(),dist); }
+TVector3 TTigressHit::GetPosition(Double_t dist) const {
+   //Returns the Position of the crystal of the current Hit.
+	return TTigress::GetPosition(GetDetector(),GetCrystal(),dist);
+}
 
-
-
-int TTigressHit::GetCrystal() {
+int TTigressHit::GetCrystal() const {
    if(IsCrystalSet())
       return crystal;
 

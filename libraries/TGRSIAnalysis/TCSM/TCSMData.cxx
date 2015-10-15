@@ -67,7 +67,7 @@ void TCSMData::Print(Option_t* opt) const {
   if(GetMultiplicityHorizontal()>0) {
     printf(BLUE "Horizontal:\n" RESET_COLOR);
     for(size_t i=0;i<GetMultiplicityHorizontal();i++) {
-      printf(" %2i       %c        %2i     %11.2f  %12f  %12i  %14i  %14.2f\n",GetHorizontal_DetectorNbr(i), GetHorizontal_DetectorPos(i), GetHorizontal_StripNbr(i), GetHorizontal_Energy(i), GetHorizontal_Charge(i), GetHorizontal_TimeCFD(i), GetHorizontal_TimeLED(i), GetHorizontal_Time(i));
+      printf(" %2i       %c        %2i     %11.2f  %12i  %12i  %14i  %14.2f\n",GetHorizontal_DetectorNbr(i), GetHorizontal_DetectorPos(i), GetHorizontal_StripNbr(i), GetHorizontal_Energy(i), GetHorizontal_Charge(i), GetHorizontal_TimeCFD(i), GetHorizontal_TimeLED(i), GetHorizontal_Time(i));
       //cout<<GetHorizontal_DetectorNbr(i)<<" "<<char(GetHorizontal_DetectorPos(i))<<" "<<GetHorizontal_StripNbr(i)<<" "<<GetHorizontal_Energy(i)<<" "<<GetHorizontal_Charge(i)<<" "<<GetHorizontal_TimeCFD(i)<<" "<<GetHorizontal_TimeLED(i)<<" "<<GetHorizontal_Time(i)<<endl;
     }
   }
@@ -75,7 +75,7 @@ void TCSMData::Print(Option_t* opt) const {
   if(GetMultiplicityVertical()>0) {
     printf(RED "Vertical:\n" RESET_COLOR);
     for(size_t i=0;i<GetMultiplicityVertical();i++) {
-      printf(" %2i       %c        %2i     %11.2f  %12f  %12i  %14i  %14.2f\n",GetVertical_DetectorNbr(i), GetVertical_DetectorPos(i), GetVertical_StripNbr(i), GetVertical_Energy(i), GetVertical_Charge(i), GetVertical_TimeCFD(i), GetVertical_TimeLED(i), GetVertical_Time(i));
+      printf(" %2i       %c        %2i     %11.2f  %12i  %12i  %14i  %14.2f\n",GetVertical_DetectorNbr(i), GetVertical_DetectorPos(i), GetVertical_StripNbr(i), GetVertical_Energy(i), GetVertical_Charge(i), GetVertical_TimeCFD(i), GetVertical_TimeLED(i), GetVertical_Time(i));
     }
   }
 }
@@ -91,10 +91,10 @@ void TCSMData::Print(int addr, bool horizontal) const {
 
   if(horizontal) {
     printf(BLUE "\tHorizontal:\n" RESET_COLOR);
-    printf("\t %2i       %c        %2i     %11.2f  %12f  %12i  %14i  %14.2f\n",GetHorizontal_DetectorNbr(addr), GetHorizontal_DetectorPos(addr), GetHorizontal_StripNbr(addr), GetHorizontal_Energy(addr), GetHorizontal_Charge(addr), GetHorizontal_TimeCFD(addr), GetHorizontal_TimeLED(addr), GetHorizontal_Time(addr));
+    printf("\t %2i       %c        %2i     %11.2f  %12i  %12i  %14i  %14.2f\n",GetHorizontal_DetectorNbr(addr), GetHorizontal_DetectorPos(addr), GetHorizontal_StripNbr(addr), GetHorizontal_Energy(addr), GetHorizontal_Charge(addr), GetHorizontal_TimeCFD(addr), GetHorizontal_TimeLED(addr), GetHorizontal_Time(addr));
   }
   if(!horizontal) {
     printf(RED "\tVertical:\n" RESET_COLOR);
-    printf("\t %2i       %c        %2i     %11.2f  %12f  %12i  %14i  %14.2f\n",GetVertical_DetectorNbr(addr), GetVertical_DetectorPos(addr), GetVertical_StripNbr(addr), GetVertical_Energy(addr), GetVertical_Charge(addr), GetVertical_TimeCFD(addr), GetVertical_TimeLED(addr), GetVertical_Time(addr));
+    printf("\t %2i       %c        %2i     %11.2f  %12i  %12i  %14i  %14.2f\n",GetVertical_DetectorNbr(addr), GetVertical_DetectorPos(addr), GetVertical_StripNbr(addr), GetVertical_Energy(addr), GetVertical_Charge(addr), GetVertical_TimeCFD(addr), GetVertical_TimeLED(addr), GetVertical_Time(addr));
   }
 }
