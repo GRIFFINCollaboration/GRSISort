@@ -39,8 +39,8 @@ class TSiLiData : public TGRSIDetectorData {
 
     inline UInt_t  GetMultiplicity()  {return  fSiLiSegment.size();  }
 
-    inline UShort_t  GetSegment(int &i)  {  return fSiLiSegment.at(i);  }  //!
-    inline TFragment GetFragment(int &i) {  return fSiLiFragment.at(i);  }  //!
+    inline UShort_t  GetSegment(UInt_t& i)  {  return fSiLiSegment.at(i);  }  //!
+    inline TFragment GetFragment(UInt_t& i) {  return fSiLiFragment.at(i);  }  //!
 
 };
 

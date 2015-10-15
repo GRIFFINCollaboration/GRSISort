@@ -76,7 +76,7 @@ int TDataParser::TigressDataToFragment(uint32_t *data,int size,unsigned int mida
       printf(RED "Setting TimeStamp failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",midasserialnumber);
       return NumFragsFound;
    }
-   int temp_charge =  0;
+   //int temp_charge =  0;
    int temp_led    =  0;
    for(;x<size;x++) {
       dword = *(data+x);

@@ -646,39 +646,25 @@ void TCSM::BuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCS
   e1.clear();
   e2.clear();
   
-  for(int diter=0;diter<DHitVec.size();diter++)
-  {
-    if(DHitVec.at(diter).GetDetectorNumber()==3 || DHitVec.at(diter).GetDetectorNumber()==4)//I am in side detectors
-    {
+  for(size_t diter=0;diter<DHitVec.size();diter++) {
+    if(DHitVec.at(diter).GetDetectorNumber()==3 || DHitVec.at(diter).GetDetectorNumber()==4) { //I am in side detectors
       //I will never have a pair in the side detector, so go ahead and send it through.
       BuiltHits.push_back(DHitVec.at(diter));
-    }
-    else if(DHitVec.at(diter).GetDetectorNumber()==1)
-    {
+    } else if(DHitVec.at(diter).GetDetectorNumber()==1) {
       d1.push_back(DHitVec.at(diter));
-    }
-    else if(DHitVec.at(diter).GetDetectorNumber()==2)
-    {
+	 } else if(DHitVec.at(diter).GetDetectorNumber()==2) {
       d2.push_back(DHitVec.at(diter));
-    }
-    else
-    {
+    } else {
       cerr<<"  Caution, in BuilddEE detector number in D vector is out of bounds."<<endl;
     }
   }
 
-  for(int eiter=0;eiter<EHitVec.size();eiter++)
-  {
-    if(EHitVec.at(eiter).GetDetectorNumber()==1)
-    {
+  for(size_t eiter=0;eiter<EHitVec.size();eiter++) {
+    if(EHitVec.at(eiter).GetDetectorNumber()==1) {
       e1.push_back(EHitVec.at(eiter));
-    }
-    else if(EHitVec.at(eiter).GetDetectorNumber()==2)
-    {
+    } else if(EHitVec.at(eiter).GetDetectorNumber()==2) {
       e2.push_back(EHitVec.at(eiter));
-    }
-    else
-    {
+    } else {
       cerr<<"  Caution, in BuilddEE detector number in E vector is out of bounds."<<endl;
     }
   }
@@ -699,33 +685,25 @@ void TCSM::MakedEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSM
     BuiltHits.push_back(EHitVec.at(0));
   else if(DHitVec.size()==1 && EHitVec.size()==1)
     BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
-  else if(DHitVec.size()==2 && EHitVec.size()==0)
-  {
+  else if(DHitVec.size()==2 && EHitVec.size()==0) {
     BuiltHits.push_back(DHitVec.at(0));
     BuiltHits.push_back(DHitVec.at(1));
-  }
-  else if(DHitVec.size()==0 && EHitVec.size()==2)
-  {
+  } else if(DHitVec.size()==0 && EHitVec.size()==2) {
     BuiltHits.push_back(EHitVec.at(0));
     BuiltHits.push_back(EHitVec.at(1));
-  }
-  else if(DHitVec.size()==2 && EHitVec.size()==1)
-  {
+  } else if(DHitVec.size()==2 && EHitVec.size()==1) {
     double dt1 = DHitVec.at(0).GetDPosition().Theta();
     double dt2 = DHitVec.at(1).GetDPosition().Theta();
     double et = EHitVec.at(0).GetEPosition().Theta();
 
-    if( abs(dt1-et) <= abs(dt2-et) )
-    {
+    if( abs(dt1-et) <= abs(dt2-et) ) {
       //cout<<DRED;
       BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
       //BuiltHits.back().Print();
       BuiltHits.push_back(DHitVec.at(1));
       //BuiltHits.back().Print();
       //cout<<RESET_COLOR;
-    }
-    else
-    {
+    } else {
       //cout<<DBLUE;
       BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(0)));
       //BuiltHits.back().Print();
@@ -733,24 +711,19 @@ void TCSM::MakedEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSM
       //BuiltHits.back().Print();
       //cout<<RESET_COLOR;
     }
-  }
-  else if(DHitVec.size()==1 && EHitVec.size()==2)
-  {
+  } else if(DHitVec.size()==1 && EHitVec.size()==2) {
     double dt = DHitVec.at(0).GetDPosition().Theta();
     double et1 = EHitVec.at(0).GetEPosition().Theta();
     double et2 = EHitVec.at(0).GetEPosition().Theta();
     
-    if( abs(dt-et1) <= abs(dt-et2) )
-    {
+    if( abs(dt-et1) <= abs(dt-et2) ) {
       //cout<<DRED;
       BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
       //BuiltHits.back().Print();
       BuiltHits.push_back(EHitVec.at(1));
       //BuiltHits.back().Print();
       //cout<<RESET_COLOR;
-    }
-    else
-    {
+    } else {
       //cout<<DBLUE;
       BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(1)));
       //BuiltHits.back().Print();
@@ -758,25 +731,20 @@ void TCSM::MakedEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSM
       //BuiltHits.back().Print();
       //cout<<RESET_COLOR;
     }
-  }
-  else if(DHitVec.size()==2 && EHitVec.size()==2)
-  {
+  } else if(DHitVec.size()==2 && EHitVec.size()==2) {
     double dt1 = DHitVec.at(0).GetDPosition().Theta();
     double dt2 = DHitVec.at(1).GetDPosition().Theta();
     double et1 = EHitVec.at(0).GetEPosition().Theta();
     double et2 = EHitVec.at(1).GetEPosition().Theta();
 
-    if( abs(dt1-et1)+abs(dt2-et2) <= abs(dt1-et2)+abs(dt2-et1) )
-    {
+    if( abs(dt1-et1)+abs(dt2-et2) <= abs(dt1-et2)+abs(dt2-et1) ) {
       //cout<<DRED;
       BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
       //BuiltHits.back().Print();
       BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(1)));
       //BuiltHits.back().Print();
       //cout<<RESET_COLOR;
-    }
-    else
-    {
+    } else {
       //cout<<DBLUE;
       BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(1)));
       //BuiltHits.back().Print();
@@ -784,99 +752,88 @@ void TCSM::MakedEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSM
       //BuiltHits.back().Print();
       //cout<<RESET_COLOR;
     }
-  }
-  else
-  {
+  } else {
     cout<<"D Size: "<<DHitVec.size()<<" E Size: "<<EHitVec.size()<<endl;
   }
 }
 
 void TCSM::OldBuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits)
 {
-  bool printbit =0;
-  //cout<<"DHitVec size: "<<DHitVec.size()<<" EHitVec size: "<<EHitVec.size()<<endl;
-  if(DHitVec.size()==0&&EHitVec.size()==0)//Why am I even here?!
-    return;
+	bool printbit =0;
+	//cout<<"DHitVec size: "<<DHitVec.size()<<" EHitVec size: "<<EHitVec.size()<<endl;
+	if(DHitVec.size()==0&&EHitVec.size()==0)//Why am I even here?!
+		return;
   
-  /*else if(DHitVec.size()>2 && EHitVec.size()>=2)
-  {
-    printbit =1;
-    cout<<YELLOW<<"******************************************"<<RESET_COLOR<<endl;
-
-    for(int i =0; i< DHitVec.size();i++)
-    {
-      cout<<DRED;
-      DHitVec.at(i).Print();
-      cout<<RESET_COLOR;
-    }
-    for(int i =0; i< EHitVec.size();i++)
-    {
-      cout<<DBLUE;
-      EHitVec.at(i).Print();
-      cout<<RESET_COLOR;
-    }
-  }*/
-
-  vector<bool> EUsed (EHitVec.size(),false);
-  vector<bool> DUsed (DHitVec.size(),false);
-  
-  for(size_t diter=0;diter<DHitVec.size();diter++) {
-	  //cout<<"diter: "<<diter<<endl;
-	  if(DUsed.at(diter))
-		  continue;
-    
-    for(int eiter=0;eiter<EHitVec.size();eiter++)
-    {
-      //cout<<"eiter: "<<eiter<<endl;
-      if(EUsed.at(eiter))
-	continue;
-
-      if(DHitVec.at(diter).GetDetectorNumber()==EHitVec.at(eiter).GetDetectorNumber())//Hits are in the same stack
-      {
-	if( AlmostEqual(DHitVec.at(diter).GetDPosition().Theta(),EHitVec.at(eiter).GetEPosition().Theta()))//Same-ish Theta
-	  //&& AlmostEqual(DHitVec.at(diter).GetDPosition().Phi(),EHitVec.at(eiter).GetEPosition().Phi()) )//Same-ish Phi
-	{
-	  BuiltHits.push_back(CombineHits(DHitVec.at(diter),EHitVec.at(eiter)));
-	  /*cout<<DRED;
-	  BuiltHits.back().Print();
-	  cout<<RESET_COLOR;*/
-	  DUsed.at(diter) = true;
-	  EUsed.at(eiter) = true;
-	  break;
-	}
-      }
-    }
-  }
-
-  //This loop adds uncorrelated events in the telescope together.  This may be bad, but let's see.
-  for(int i=0;i<DHitVec.size();i++)
-  {
-    if(!DUsed.at(i))
-    {
-      for(int j=0;j<EHitVec.size();j++)
-      {
-	if(!EUsed.at(j))
-	{
-	  if(EHitVec.at(j).GetDetectorNumber()==DHitVec.at(i).GetDetectorNumber())
+	/*else if(DHitVec.size()>2 && EHitVec.size()>=2)
 	  {
-	    BuiltHits.push_back(CombineHits(DHitVec.at(i),EHitVec.at(j)));
-	    /*cout<<DRED;
-	    BuiltHits.back().Print();
-	    cout<<RESET_COLOR;*/
-	    DUsed.at(i) = true;
-	    EUsed.at(j) = true;
-	    break;
+	  printbit =1;
+	  cout<<YELLOW<<"******************************************"<<RESET_COLOR<<endl;
+
+	  for(int i =0; i< DHitVec.size();i++)
+	  {
+	  cout<<DRED;
+	  DHitVec.at(i).Print();
+	  cout<<RESET_COLOR;
 	  }
+	  for(int i =0; i< EHitVec.size();i++)
+	  {
+	  cout<<DBLUE;
+	  EHitVec.at(i).Print();
+	  cout<<RESET_COLOR;
+	  }
+	  }*/
+
+	vector<bool> EUsed (EHitVec.size(),false);
+	vector<bool> DUsed (DHitVec.size(),false);
+  
+	for(size_t diter=0;diter<DHitVec.size();diter++) {
+		//cout<<"diter: "<<diter<<endl;
+		if(DUsed.at(diter))
+			continue;
+    
+		for(size_t eiter=0;eiter<EHitVec.size();eiter++) {
+			//cout<<"eiter: "<<eiter<<endl;
+			if(EUsed.at(eiter))
+				continue;
+
+			if(DHitVec.at(diter).GetDetectorNumber()==EHitVec.at(eiter).GetDetectorNumber()) {//Hits are in the same stack
+				if( AlmostEqual(DHitVec.at(diter).GetDPosition().Theta(),EHitVec.at(eiter).GetEPosition().Theta())) {//Same-ish Theta
+					//&& AlmostEqual(DHitVec.at(diter).GetDPosition().Phi(),EHitVec.at(eiter).GetEPosition().Phi()) )//Same-ish Phi
+					BuiltHits.push_back(CombineHits(DHitVec.at(diter),EHitVec.at(eiter)));
+					/*cout<<DRED;
+					  BuiltHits.back().Print();
+					  cout<<RESET_COLOR;*/
+					DUsed.at(diter) = true;
+					EUsed.at(eiter) = true;
+					break;
+				}
+			}
+		}
 	}
-      }
-    }
-  }
+
+	//This loop adds uncorrelated events in the telescope together.  This may be bad, but let's see.
+	for(size_t i=0;i<DHitVec.size();i++) {
+		if(!DUsed.at(i)) {
+			for(size_t j=0;j<EHitVec.size();j++) {
+				if(!EUsed.at(j)) {
+					if(EHitVec.at(j).GetDetectorNumber()==DHitVec.at(i).GetDetectorNumber()) {
+						BuiltHits.push_back(CombineHits(DHitVec.at(i),EHitVec.at(j)));
+						/*cout<<DRED;
+						  BuiltHits.back().Print();
+						  cout<<RESET_COLOR;*/
+						DUsed.at(i) = true;
+						EUsed.at(j) = true;
+						break;
+					}
+				}
+			}
+		}
+	}
 
 
   //Send through the stragglers.  This is very permissive, but we trust BuildVH to take care of the riff-raff
-  for(int i=0;i<DHitVec.size();i++)
-  {
-    //cout<<"*************************"<<endl;
+	for(size_t i=0;i<DHitVec.size();i++) {
+		//cout<<"*************************"<<endl;
   
 //     if(EHitVec.size()>0)
 //     {
@@ -884,50 +841,44 @@ void TCSM::OldBuilddEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<
 //       DHitVec.at(i).Print();
 //       cout<<RESET_COLOR;
 //     }
-    if(!DUsed.at(i))
-    {
-      BuiltHits.push_back(DHitVec.at(i));
+		if(!DUsed.at(i)) {
+			BuiltHits.push_back(DHitVec.at(i));
 //       if(printbit)
 //       {
 //       cout<<DGREEN;
 //       BuiltHits.back().Print();
 //       cout<<RESET_COLOR;
 //       }
-    }
-  }
-  for(int j=0;j<EHitVec.size();j++)
-  {
+		}
+	}
+	for(size_t j=0;j<EHitVec.size();j++) {
 //     if(DHitVec.size()>0)
 //     {
 //       cout<<DGREEN;
 //       EHitVec.at(j).Print();
 //       cout<<RESET_COLOR;
 //     }
-    if(!EUsed.at(j))
-    {
-      BuiltHits.push_back(EHitVec.at(j));
+		if(!EUsed.at(j)) {
+			BuiltHits.push_back(EHitVec.at(j));
 //       if(printbit)
 //       {
 // 	cout<<DGREEN;
 // 	BuiltHits.back().Print();
 // 	cout<<RESET_COLOR;
 //       }
-    }
-  }
+		}
+	}
 
-  if(printbit)
-  {
-    for(int k =0; k<BuiltHits.size();k++)
-    {
-      cout<<DGREEN;
-      BuiltHits.at(k).Print();
-      cout<<RESET_COLOR<<endl;
-    }
-  }
+	if(printbit) {
+		for(size_t k =0; k<BuiltHits.size();k++) {
+			cout<<DGREEN;
+			BuiltHits.at(k).Print();
+			cout<<RESET_COLOR<<endl;
+		}
+	}
 }
 
-void TCSM::RecoverHit(char orientation, int location, TCSMData *cdata, vector<TCSMHit> &hits)
-{
+void TCSM::RecoverHit(char orientation, int location, TCSMData *cdata, vector<TCSMHit> &hits) {
   if(!RECOVERHITS)
     return;
   
@@ -939,19 +890,19 @@ void TCSM::RecoverHit(char orientation, int location, TCSMData *cdata, vector<TC
   //cout<<DGREEN<<"*****************************************"<<RESET_COLOR<<endl;
   
   if(orientation=='V') {
-    //cout<<"pos should be "<<char(cdata->GetVertical_DetectorPos(location))<<endl;
-    pos=char(cdata->GetVertical_DetectorPos(location));
-    //cout<<"pos is "<<pos<<endl;
-    detno=cdata->GetVertical_DetectorNbr(location);
+	  //cout<<"pos should be "<<char(cdata->GetVertical_DetectorPos(location))<<endl;
+	  pos=char(cdata->GetVertical_DetectorPos(location));
+	  //cout<<"pos is "<<pos<<endl;
+	  detno=cdata->GetVertical_DetectorNbr(location);
   } else if(orientation=='H') {
-    //cout<<"pos should be "<<char(cdata->GetHorizontal_DetectorPos(location))<<endl;
-    pos=char(cdata->GetHorizontal_DetectorPos(location));
-    //cout<<"pos is "<<pos<<endl;
-    detno=cdata->GetHorizontal_DetectorNbr(location);
+	  //cout<<"pos should be "<<char(cdata->GetHorizontal_DetectorPos(location))<<endl;
+	  pos=char(cdata->GetHorizontal_DetectorPos(location));
+	  //cout<<"pos is "<<pos<<endl;
+	  detno=cdata->GetHorizontal_DetectorNbr(location);
   }
   
   if(detno==1)
-    return;
+	  return;
   else if(detno==2) {
 	  if(pos=='D' && orientation=='V') {//Recover 2DN09, channel 1040
 		  csmhit.SetDetectorNumber(cdata->GetVertical_DetectorNbr(location));
