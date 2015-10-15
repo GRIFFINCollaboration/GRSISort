@@ -18,15 +18,13 @@ class TPacesData : public TGRSIDetectorData {
     std::vector<UInt_t>   fCore_Address;		//!
     std::vector<Bool_t>   fCore_IsHighGain; //!
     std::vector<Double_t> fCore_Eng;		//!
-    std::vector<Int_t>    fCore_Chg;		//!
-    std::vector<Long_t>   fCore_TimeCFD;	//!
+    std::vector<Float_t>    fCore_Chg;		//!
+    std::vector<Int_t>    fCore_TimeCFD;	//!
     std::vector<Long_t>   fCore_Time;		//!
     std::vector<std::vector<Short_t> >fCore_Wave;	//!
 
     std::vector<Int_t>        fCore_NbrHits; //!
     std::vector<Int_t>        fCore_MidasId; //!
-
-   std::vector<Int_t>         fPPG; //!
 
     static bool fIsSet; //!
 
@@ -43,8 +41,8 @@ class TPacesData : public TGRSIDetectorData {
     inline void SetCoreNumber(const UShort_t  &CoreNumber)    {fCore_Nbr.push_back(CoreNumber);      }	//!
     inline void SetCoreAddress(const UInt_t  &CoreAddress)    {fCore_Address.push_back(CoreAddress); }	//!
     inline void SetCoreEnergy(const Double_t &CoreEnergy)     {fCore_Eng.push_back(CoreEnergy);      }	//!
-    inline void SetCoreCharge(const Int_t &CoreCharge)	     {fCore_Chg.push_back(CoreCharge);      }	//!
-    inline void SetCoreCFD(const Long_t &CoreTimeCFD)	        {fCore_TimeCFD.push_back(CoreTimeCFD); }	//!	
+    inline void SetCoreCharge(const Float_t &CoreCharge)	     {fCore_Chg.push_back(CoreCharge);      }	//!
+    inline void SetCoreCFD(const Int_t &CoreTimeCFD)	        {fCore_TimeCFD.push_back(CoreTimeCFD); }	//!	
     inline void SetCoreTime(const Long_t    &CoreTime)        {fCore_Time.push_back(CoreTime);       }	//!
     inline void SetIsHighGain(const Bool_t &IsHighGain)       {fCore_IsHighGain.push_back(IsHighGain); } //!
     
@@ -53,8 +51,6 @@ class TPacesData : public TGRSIDetectorData {
     
     inline void SetCoreWave(const std::vector<Short_t> &CoreWave)	{fCore_Wave.push_back(CoreWave);} //!
 
-    inline void SetPPG(const Int_t &ppg)                 {fPPG.push_back(ppg);               }  //!
-    
     inline void SetCore(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 	      if(!frag || !channel || !mnemonic) return;
 
@@ -67,12 +63,11 @@ class TPacesData : public TGRSIDetectorData {
           //core.fCore_IsHighGain = false;
           SetIsHighGain(false);
 
-         SetPPG(frag->PPG);
           //core.fCore_Address = frag->ChannelAddress;
           SetCoreAddress(frag->ChannelAddress);
 
-          for(int x=0;x<frag->Charge.size();x++) {
-            SetCoreCharge(frag->Charge.at(x));
+          for(size_t x=0;x<frag->Charge.size();x++) {
+            SetCoreCharge(frag->GetCharge(x));
 		      SetCoreCFD(frag->Cfd.at(x));		
 	        //SetCoreTime(frag->Zc.at(0));		
 	         SetCoreTime(frag->GetTimeStamp());		
@@ -87,13 +82,11 @@ class TPacesData : public TGRSIDetectorData {
       inline UInt_t   GetCoreAddress(const unsigned int &i) const    {return fCore_Address.at(i);}	//!
 
       inline Double_t GetCoreEnergy(const unsigned int &i) const     {return fCore_Eng.at(i);}	//!
-      inline Int_t  GetCoreCharge(const unsigned int &i) const       {return fCore_Chg.at(i);}	//!
-      inline Long_t GetCoreCFD(const unsigned int &i) const          {return fCore_TimeCFD.at(i);}	//!
+      inline Float_t  GetCoreCharge(const unsigned int &i) const     {return fCore_Chg.at(i);}	//!
+      inline Int_t    GetCoreCFD(const unsigned int &i) const        {return fCore_TimeCFD.at(i);}	//!
       inline Long_t GetCoreTime(const unsigned int &i) const       {return fCore_Time.at(i);}	//!
 
       inline Bool_t GetIsHighGain(const unsigned int &i) const       {return fCore_IsHighGain.at(i);} //!
-
-      inline Int_t GetPPG(const unsigned int &i) const               {return fPPG.at(i);} //!
 
       inline std::vector<Short_t> GetCoreWave(const unsigned int &i) const {return fCore_Wave.at(i);}	//!
 

@@ -47,7 +47,9 @@ TVector3 TSceptar::gPaddlePosition[21] = {
 
 TSceptar::TSceptar() : sceptardata(0)	{
    //Default Constructor
-   //Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    //Class()->AddRule("TSceptar sceptar_hits attributes=NotOwner");
    //Class()->AddRule("TSceptar sceptardata attributes=NotOwner");
    Clear();
@@ -58,28 +60,45 @@ TSceptar::~TSceptar()	{
    if(sceptardata) delete sceptardata;
 }
 
-void TSceptar::Clear(Option_t *opt)	{
-//Clears all of the hits and data
-   if(sceptardata) sceptardata->Clear();
+TSceptar::TSceptar(const TSceptar& rhs) : TGRSIDetector() {
+   //Copy Contructor
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
+  ((TSceptar&)rhs).Copy(*this);
+}
 
+void TSceptar::Clear(Option_t *opt)	{
+//Clears all of the hits
+//The Option "all" clears the base class and data.
+   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+      TGRSIDetector::Clear(opt);
+      if(sceptardata) sceptardata->Clear();
+   //   ClearStatus();
+   }
 	sceptar_hits.clear();
 }
 
+void TSceptar::Copy(TSceptar &rhs) const {
+   //Copies a TSceptar
+  TGRSIDetector::Copy((TGRSIDetector&)rhs);
 
+  ((TSceptar&)rhs).sceptardata     = 0;
+
+  ((TSceptar&)rhs).sceptar_hits        = sceptar_hits;
+  return;                                      
+}                                       
 
 TSceptar& TSceptar::operator=(const TSceptar& rhs) {
-     sceptardata     = 0;
-     sceptar_hits = rhs.sceptar_hits;
-     fSetWave = rhs.fSetWave;
-
-     return *this;
+   rhs.Copy(*this);
+   return *this;
 }
 
-
-void TSceptar::Print(Option_t *opt)	{
-  //Prints out TSceptar members, currently does nothing.
-  printf("not yet written...\n");
-  return;
+void TSceptar::Print(Option_t *opt) const	{
+  //Prints out TSceptar Multiplicity, currently does little.
+	printf("sceptardata = 0x%p\n",(void*) sceptardata);
+  if(sceptardata) sceptardata->Print();
+  printf("%lu sceptar_hits\n",sceptar_hits.size());
 }
 
 
@@ -95,9 +114,14 @@ void TSceptar::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
    TSceptarData::Set();
 }
 
+void TSceptar::PushBackHit(TGRSIDetectorHit *schit) {
+   //Adds a Hit to the list of TSceptar Hits
+   sceptar_hits.push_back(*((TSceptarHit*)schit));
+   return;
+}
 
-void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
-//Builds the GRIFFIN Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
+void TSceptar::BuildHits(TDetectorData *data,Option_t *opt)	{
+//Builds the SCEPTAR Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
 //This is done for both GRIFFIN and it's suppressors.
    TSceptarData *gdata = (TSceptarData*)data;
    if(gdata==0)
@@ -106,22 +130,21 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
-   sceptar_hits.clear();
-   TSceptar::SetBeta(false);
+   //Clear("");
+   sceptar_hits.reserve(gdata->GetMultiplicity());
    
-   for(int i=0;i<gdata->GetMultiplicity();i++)	{
+   for(size_t i=0;i<gdata->GetMultiplicity();i++)	{
       TSceptarHit dethit;
-
-      dethit.SetDetectorNumber(gdata->GetDetNumber(i));
 
       dethit.SetAddress(gdata->GetDetAddress(i));
       
-      dethit.SetEnergy(gdata->GetDetEnergy(i));
+ //     dethit.SetEnergy(gdata->GetDetEnergy(i));
       dethit.SetCharge(gdata->GetDetCharge(i));
 
-      dethit.SetTime(gdata->GetDetTime(i));
+      dethit.SetTimeStamp(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
 
+      //UNCOMMENTED FOR NOW
       if(TSceptar::SetWave()){
          if(gdata->GetDetWave(i).size() == 0) {
             printf("Warning, TSceptar::SetWave() set, but data waveform size is zero!\n");
@@ -129,14 +152,24 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
          dethit.SetWaveform(gdata->GetDetWave(i));
          if(dethit.GetWaveform().size() > 0) {
 //            printf("Analyzing waveform, current cfd = %d\n",dethit.GetCfd());
-            bool analyzed = dethit.AnalyzeWaveform();
+            dethit.AnalyzeWaveform();
 //            printf("%s analyzed waveform, cfd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd());
          }
       }
+		
+      //dethit.SetDetector(gdata->GetDetNumber(i));
    
-      dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
-
-      sceptar_hits.push_back(dethit);
-      TSceptar::SetBeta();
+   //   dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
+   
+      AddHit(&dethit);
    }
 }
+
+TGRSIDetectorHit* TSceptar::GetHit(const Int_t idx){
+   //Gets the TSceptarHit at index idx. 
+   if(idx < GetMultiplicity())
+      return &(sceptar_hits.at(idx));
+   else 
+      return 0;
+}
+

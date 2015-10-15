@@ -60,7 +60,7 @@ void TEnergyCal::SetNucleus(TNucleus* nuc,Option_t *opt){
       printf("Nucleus already exists. Use \"F\" option to overwrite\n");
 
    SetDefaultTitles();
-   this->Sort();
+ //  this->Sort();
 }
 
 void TEnergyCal::AddPoint(Double_t measured, Double_t accepted, Double_t measured_uncertainty, Double_t accepted_uncertainty){
@@ -68,7 +68,7 @@ void TEnergyCal::AddPoint(Double_t measured, Double_t accepted, Double_t measure
    Int_t point = this->GetN();
    TGraphErrors::SetPoint(point,measured,accepted);
    TGraphErrors::SetPointError(point,measured_uncertainty,accepted_uncertainty);
-   this->Sort();
+ //  this->Sort();
 }
 
 Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured){
@@ -79,9 +79,13 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured){
    }
 
    Double_t x,y;
+   Double_t dx,dy;
    this->GetPoint(idx,x,y);
+   dx = GetErrorX(idx);
+   dy = GetErrorY(idx);
    TGraphErrors::SetPoint(idx,measured,y);
-   this->Sort();
+   TGraphErrors::SetPointError(idx,dx,dy);
+ //  this->Sort();
 
    return true;
 }
@@ -109,7 +113,7 @@ Bool_t TEnergyCal::SetPointError(Int_t idx, Double_t measured_uncertainty){
    }
 
    TGraphErrors::SetPointError(idx,measured_uncertainty,GetErrorX(idx));
-   Sort();
+  // Sort();
 
    return true;
 }

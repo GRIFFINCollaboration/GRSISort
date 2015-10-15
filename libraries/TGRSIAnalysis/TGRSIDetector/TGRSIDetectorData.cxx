@@ -19,7 +19,7 @@ TGRSIDetectorData::~TGRSIDetectorData()	{	}
 
 
 
-void TGRSIDetectorData::Print(Option_t *opt) { }
+void TGRSIDetectorData::Print(Option_t *opt) const { }
 
 
 void TGRSIDetectorData::Clear(Option_t *opt) { }

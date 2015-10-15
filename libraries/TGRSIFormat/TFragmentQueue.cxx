@@ -4,7 +4,7 @@
 std::mutex TFragmentQueue::All;
 std::mutex TFragmentQueue::Sorted;
 
-ClassImp(TFragmentQueue);
+ClassImp(TFragmentQueue)
 
 ////////////////////////////////////////////////////////////////
 //                                                            //
@@ -184,12 +184,12 @@ TFragment *TFragmentQueue::Get()	{
 }*/
 
 void TFragmentQueue::Pop()	{	
-//Tage a fragment out of the Queue
+//Take a fragment out of the Queue
 	while(!TFragmentQueue::Sorted.try_lock())	{ 
 		//do nothing
 	}	
 
-	TFragment *frag = (fFragmentQueue.front());	
+	//TObject *frag = (fFragmentQueue.front());	
 	fFragmentQueue.pop();
 	fFragsInQueue--;
 	fragments_out++;
@@ -243,7 +243,7 @@ void TFragmentQueue::CheckStatus()	{
 
 	TFragmentQueue::All.unlock();
 	return;
-};
+}
 
 void TFragmentQueue::StatusUpdate()	{
 //Updates the status of the fragment Queue

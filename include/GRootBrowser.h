@@ -30,28 +30,28 @@ class TGHSplitter;
 
 //_____________________________________________________________________________
 //
-// TBrowserPlugin
+// GBrowserPlugin
 //
 // Helper class used to manage plugins (command or macro to be executed).
 //_____________________________________________________________________________
 
-class TBrowserPlugin : public TNamed
+class GBrowserPlugin : public TNamed
 {
 public:
    Int_t    fTab;             // Tab number
    Int_t    fSubTab;          // Tab element number
    TString  fCommand;         // Command to be executed
 
-   TBrowserPlugin(const char *name, const char *cmd = "", Int_t tab = 1,
+   GBrowserPlugin(const char *name, const char *cmd = "", Int_t tab = 1,
                   Int_t sub = -1) : TNamed(name, cmd), fTab(tab),
       fSubTab(sub), fCommand(cmd) { }
-   virtual ~TBrowserPlugin() {}
+   virtual ~GBrowserPlugin() {}
 
    void     SetTab(Int_t tab) { fTab = tab; }
    void     SetSubTab(Int_t sub) { fSubTab = sub; }
    void     SetCommand(const char *cmd) { fCommand = cmd; }
 
-   ClassDef(TBrowserPlugin, 0)  // basic plugin description class
+   ClassDef(GBrowserPlugin, 0)  // basic plugin description class
 };
 
 class GRootBrowser : public TGMainFrame, public TBrowserImp {

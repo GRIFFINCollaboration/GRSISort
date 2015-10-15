@@ -27,10 +27,12 @@ Int_t TGRSIStats::fHighestNetworkPacket = 0;
 Long_t TGRSIStats::fGoodEvents = 0;
 
 TGRSIStats *TGRSIStats::GetStats(int temp_add) {
-   Class()->IgnoreTObjectStreamer(true);
-  if(fStatsMap->count(temp_add) == 0)
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
+   if(fStatsMap->count(temp_add) == 0)
   	fStatsMap->insert( std::pair<int,TGRSIStats*>(temp_add,new TGRSIStats(temp_add)));
-  return fStatsMap->at(temp_add);
+   return fStatsMap->at(temp_add);
 }
 
 TGRSIStats::TGRSIStats(int temp_add) { 

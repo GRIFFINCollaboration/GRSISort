@@ -12,11 +12,24 @@
 
 ClassImp(TTipHit)
 
-TTipHit::TTipHit()	{	
+TTipHit::TTipHit() {
+   Class()->IgnoreTObjectStreamer(true);
    Clear();
 }
 
-TTipHit::~TTipHit()	{	}
+TTipHit::~TTipHit() { }
+
+TTipHit::TTipHit(const TTipHit &rhs) : TGRSIDetectorHit() {
+   Class()->IgnoreTObjectStreamer(kTRUE);
+   Clear();
+   ((TTipHit&)rhs).Copy(*this);
+}
+
+void TTipHit::Copy(TTipHit &rhs) const {
+   TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
+   ((TTipHit&)rhs).filter  = filter;
+   ((TTipHit&)rhs).fPID     = fPID;
+}                                       
 
 bool TTipHit::InFilter(Int_t wantedfilter) {
    // check if the desired filter is in wanted filter;
@@ -24,23 +37,17 @@ bool TTipHit::InFilter(Int_t wantedfilter) {
    return true;
 }
 
-void TTipHit::Clear(Option_t *opt)	{
-	detector = 0;
-   address = 0xffffffff;
+void TTipHit::Clear(Option_t *opt) {
    filter = 0;
-   charge = -1;
-   cfd    = -1;
-   energy = 0.0;
-   time   = 0;
-
-   position.SetXYZ(0,0,1);
+   fPID   = 0;
+   //position.SetXYZ(0,0,1);
 
   // waveform.clear();
 }
 
-void TTipHit::Print(Option_t *opt)	{
-   printf("Tip Detector: %i\n",detector);
-	printf("Tip hit energy: %.2f\n",GetEnergy());
-	printf("Tip hit time:   %.ld\n",GetTime());
+void TTipHit::Print(Option_t *opt) {
+   printf("Tip Detector: %i\n",GetDetector());
+   printf("Tip hit energy: %.2f\n",GetEnergy());
+   printf("Tip hit time:   %.f\n",GetTime());
 }
 

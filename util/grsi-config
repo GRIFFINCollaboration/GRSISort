@@ -43,10 +43,9 @@ libdir=$GRSISYS/libraries
 incdir=$GRSISYS/include
 utildir=$GRSISYS/etc
 
-
-grsilibs="-lGRSIDetector -lGRSIFormat -lNucleus -lKinematics -lReaction -lSRIM -lBetaDecay -lTGRSIFit -lTCal -lGROOT"
-detlibs="-lTigress -lGriffin -lSharc -lRF -lTriFoil -lCSM -lSceptar -lPaces -lDescant -lTip -lS3 -lSiLi"
-grsimore="-lMidasFormat -lDataParser -lGRSILoop -lTGRSIint -lGRSIRootIO -lAnalysisTreeBuilder"
+grsilibs="-lTGRSIDetector -lTDetector -lTGRSIFormat -lTNucleus -lTKinematics -lTSRIM -lTBetaDecay -lTGRSIFit -lTCal -lGROOT -lTReaction"
+detlibs="-lTTigress -lTGriffin -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescant -lTTip -lTCSM -lTS3 -lTSiLi -lTRF"
+grsimore="-lTMidas -lTDataParser -lTGRSILoop -lTGRSIint -lTGRSIRootIO -lTAnalysisTreeBuilder"
 
 cflags="-std=c++0x -I$incdir"
 
@@ -77,9 +76,9 @@ while test $# -gt 0; do
     --version)
       ### Output the version number.  If GRSIVersion.h can not be found, give up.
       if test -r ${incdir}/GRSIVersion.h; then
-        out="$out GRSI_RELEASE: `sed -n 's,.*GRSI_RELEASE *\"\(.*\)\".*,\1,p' < ${incdir}/RVersion.h`"
+        out="$out `sed -n 's,.*GRSI_RELEASE *\"\(.*\)\".*,\1,p' < ${incdir}/GRSIVersion.h`"
       else
-        echo "cannot read ${incdir}/RVersion.h"
+        echo "cannot read ${incdir}/GRSIVersion.h"
         exit 1
       fi
       ;;
@@ -125,7 +124,7 @@ while test $# -gt 0; do
       ;;
     --help)
       ### Print a helpful message...
-      echo "Usage: `basname$0` [options]"
+      echo "Usage: `basename $0` [options]"
       echo ""
       echo "  --version       Print the current GRSI Version number."
       echo "  --cflags        Print compiler flags and header path."

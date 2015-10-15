@@ -2,10 +2,8 @@
 // TMidasStructs.h
 //
 
-//#ifndef INCLUDE_TMidasBanksH
-//#define INCLUDE_TMidasBanksH
-
-//#include <stdint.h>
+#ifndef INCLUDE_TMidasBanksH
+#define INCLUDE_TMidasBanksH
 
 // This file defines the data structures written
 // into MIDAS .mid files. They define the on-disk
@@ -44,5 +42,4 @@ struct TMidas_BANK32 {
   uint32_t fDataSize;
 };
 
-//#endif
-//end
+#endif

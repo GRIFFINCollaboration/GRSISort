@@ -1,7 +1,7 @@
 #ifndef TS3_H
 #define TS3_H
 
-#include <TGRSIDetector.h>
+#include "TDetector.h"
 
 #ifndef __CINT__
 #include "TS3Data.h"
@@ -12,7 +12,7 @@ class TS3Data;
 #include "TS3Hit.h"
 
 
-class TS3 : public TGRSIDetector {
+class TS3 : public TDetector {
 
   public:
     TS3();
@@ -22,7 +22,7 @@ class TS3 : public TGRSIDetector {
     void Clear(Option_t *opt="");   
     void Print(Option_t *opt="") const;
 
-    virtual void BuildHits(TGRSIDetectorData *data=0,Option_t *opt="");
+    virtual void BuildHits(TDetectorData *data=0,Option_t *opt="");
     virtual void FillData(TFragment*,TChannel*,MNEMONIC*);
 
     TS3Hit *GetS3Hit(int i)    {  return &s3_hits[i];};  

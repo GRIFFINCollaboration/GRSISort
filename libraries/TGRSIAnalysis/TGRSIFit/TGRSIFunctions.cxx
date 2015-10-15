@@ -1,7 +1,7 @@
 #include "TGRSIFunctions.h"
 
 //Without this macro the THtml doc for TGRSIFunctions can't be generated
-NamespaceImp(TGRSIFunctions);
+NamespaceImp(TGRSIFunctions)
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -27,7 +27,7 @@ Double_t TGRSIFunctions::PolyBg(Double_t *x, Double_t *par,Int_t order) {
    }   */
 
    Double_t result = 0.0;
-   for(Int_t i = 0; i<order; i++) {
+   for(Int_t i = 0; i<=order; i++) {
       result += par[i]*TMath::Power(x[0]-par[order+1],i);
    }
    return result;
@@ -66,6 +66,28 @@ Double_t TGRSIFunctions::PhotoPeakBG(Double_t *dim, Double_t *par){
    return Gaus(dim,par) + SkewedGaus(dim,par) + StepFunction(dim,par) + PolyBg(dim,&par[6],2);
 }
 
+
+Double_t TGRSIFunctions::MultiPhotoPeakBG(Double_t *dim, Double_t *par) {
+  // STATIC VARIABLE  (npeaks) must be set before using!!!
+  //
+  // Limits need to be imposed or error states may occour.
+  //
+   //General background.
+   int npeaks = (int)(par[0]+0.5);
+	double result = PolyBg(dim,&par[1],2); // polynomial background. uses par[1->4]
+	for(int i=0;i<npeaks;i++){// par[0] is number of peaks
+		Double_t tmp_par[6];
+  	   tmp_par[0]   = par[6*i+5]; //height of photopeak
+  	   tmp_par[1]   = par[6*i+6]; //Peak Centroid of non skew gaus
+  	   tmp_par[2]   = par[6*i+7]; //standard deviation  of gaussian
+  	   tmp_par[3]   = par[6*i+8]; //"skewedness" of the skewed gaussian
+  	   tmp_par[4]   = par[6*i+9]; //relative height of skewed gaussian
+      tmp_par[5]   = par[6*i+10]; //Size of step in background
+		result += PhotoPeak(dim,tmp_par) + StepFunction(dim,tmp_par);
+	}
+	return result;
+}
+
 Double_t TGRSIFunctions::Gaus(Double_t *dim, Double_t *par){
 //This is a gaussian that has been scaled to match up with Radware photopeak results. 
 //It contains a scaling factor for the relative height of the skewed gaussian to the 
@@ -80,7 +102,7 @@ Double_t TGRSIFunctions::Gaus(Double_t *dim, Double_t *par){
    Double_t height   = par[0]; //height of photopeak
    Double_t c        = par[1]; //Peak Centroid of non skew gaus
    Double_t sigma    = par[2]; //standard deviation of gaussian
-   Double_t R        = par[4]; //relatice height of skewed gaussian
+   Double_t R        = par[4]; //relative height of skewed gaussian
 
    return height*(1.0-R/100.0)*TMath::Gaus(x,c,sigma);
 
@@ -103,6 +125,9 @@ Double_t TGRSIFunctions::SkewedGaus(Double_t *dim, Double_t *par){
    Double_t sigma    = par[2]; //standard deviation  of gaussian
    Double_t beta     = par[3]; //"skewedness" of the skewed gaussian
    Double_t R        = par[4]; //relative height of skewed gaussian
+   if(beta == 0.0){
+      return 0.0;
+   }
 
    return R*height/100.0*(TMath::Exp((x-c)/beta))*(TMath::Erfc(((x-c)/(TMath::Sqrt(2.0)*sigma)) + sigma/(TMath::Sqrt(2.0)*beta)));
 
@@ -220,7 +245,7 @@ Double_t TGRSIFunctions::MultiGausWithBG(Double_t *dim, Double_t *par) {
 
 
 
-Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nChain, Double_t SecondsPerBin){
+Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, UInt_t nChain, Double_t SecondsPerBin){
 //****NOT TESTED****The Bateman equation is the general closed form for a decay chain of nuclei. This functions returns
 //the total activity from a given chain of nuclei.
 //Requires the following parameters:
@@ -240,24 +265,24 @@ Double_t TGRSIFunctions::Bateman(Double_t *dim, Double_t *par, Int_t nChain, Dou
 
 //LOOP OVER ALL NUCLEI
 
-   for(Int_t n=0; n<nChain;n++){
+   for(UInt_t n=0; n<nChain;n++){
       //Calculate this equation for the nth nucleus.
       Double_t firstterm = 1.0;
       //Compute the first multiplication
-      for(Int_t j=0; j<n-1; j++){
+      for(UInt_t j=0; j<n-1; j++){
          firstterm*=par[1+3*j];
       }
       Double_t secondterm = 0.0;
-      for(Int_t i=0; i<n; i++){
-         Double_t sum = 0.0;
-         for(Int_t j=i; j<n; j++){
-            Double_t denom = 1.0;
-            for(Int_t p=i;p<n;p++){
-               if(p!=j){ denom*=par[1+3*p]-par[1+3*j]; } 
-            }
-            sum+=par[0+3*i]/par[1+3*i]*TMath::Exp(-par[1+3*j]*dim[0])/denom; 
-          }
-          secondterm += sum;
+      for(UInt_t i=0; i<n; i++){
+			Double_t sum = 0.0;
+			for(UInt_t j=i; j<n; j++){
+				Double_t denom = 1.0;
+				for(UInt_t p=i;p<n;p++){
+					if(p!=j){ denom*=par[1+3*p]-par[1+3*j]; } 
+				}
+				sum+=par[0+3*i]/par[1+3*i]*TMath::Exp(-par[1+3*j]*dim[0])/denom; 
+			}
+			secondterm += sum;
       }
       par[2+3*n] = par[1+3*n]*firstterm*secondterm;
       totalActivity += par[2+3*n];

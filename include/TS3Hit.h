@@ -7,18 +7,18 @@
 #include "TGRSIDetectorHit.h" 
 
 class TS3Hit : public TGRSIDetectorHit {
-  public:
+   public:
     TS3Hit();
     ~TS3Hit();
 
-    Double_t GetEnergy()       {  return energy;  }
-    Int_t    GetCharge()       {  return charge;  }
-    Long_t   GetTimeStamp()    {  return ts;      }
-    Int_t    GetTime()         {  return time;    }
-    Short_t  GetDetector()     { return detectornumber;  }
+ //   Double_t GetEnergy()       {  return energy;  }
+ //   Int_t    GetCharge()       {  return charge;  }
+ //   Long_t   GetTimeStamp()    {  return ts;      }
+ //   Int_t    GetTime()         {  return time;    }
+ //   Short_t  GetDetectorNumber()     { return detectornumber;  }
     Short_t  GetRingNumber()   { return ring;   }
     Short_t  GetSectorNumber() { return sector; }
-    Double_t GetCFD()          { return cfd;    }
+ //   Double_t GetCFD()          { return cfd;    }
 
   public:
     void Print(Option_t *opt="") const;
@@ -26,25 +26,25 @@ class TS3Hit : public TGRSIDetectorHit {
 
     void SetRingNumber(Short_t rn)     { ring = rn;   }
     void SetSectorNumber(Short_t sn)   { sector = sn; }
-    void SetDetectorNumber(Short_t dn) { detectornumber = dn; }
-    void SetPosition(TVector3 &vec)    { position = vec; }
-    void SetVariables(TFragment &frag) { energy = frag.GetEnergy();
-                                         cfd    = frag.GetCfd();
-                                         charge = frag.GetCharge();
-                                         ts     = frag.GetTimeStamp(); 
-                                         time   = frag.GetZCross(); }
+//    void SetDetectorNumber(Short_t dn) { detectornumber = dn; }
+//    void SetPosition(TVector3 &vec)    { fposition = vec; }
+    void SetVariables(TFragment &frag) { fenergy = frag.GetEnergy();
+                                         fcfd    = frag.GetCfd();
+                                         fcharge = frag.GetCharge();
+                                         SetTimeStamp(frag.GetTimeStamp()); 
+                                         SetTime(frag.GetZCross()); }
  
 
   private:
-    //TVector3 position;  held in base.
+    //TVector3 position;
     Short_t  ring;   //front
     Short_t  sector; //back
-    Short_t  detectornumber;
-    Double_t energy;
-    Double_t cfd;
-    Int_t    charge;
-    Long_t   ts;
-    Int_t    time;
+//    Short_t  detectornumber;
+//   Double_t energy;
+//    Double_t cfd;
+//    Int_t    charge;
+//    Long_t   ts;
+//    Int_t    time;
 
   ClassDef(TS3Hit,2);
 

@@ -29,21 +29,21 @@ class TCSMData;
 #include "TMath.h"
 #include "TVector3.h"
 
-#include "TGRSIDetector.h"
+#include "TDetector.h"
 
 #ifndef PI
 #define PI                       (TMath::Pi())
 #endif
 
-class TCSM :  public TGRSIDetector 	{
+class TCSM :  public TDetector 	{
 	public:
 		TCSM();
-		~TCSM();
+		virtual ~TCSM();
 
 	public: 
 		virtual void Clear(Option_t * = "");		//!
 		virtual void Print(Option_t * = "");		//!
-		void BuildHits(TGRSIDetectorData *cd = 0,  Option_t * = "");			//!
+		void BuildHits(TDetectorData *cd = 0,  Option_t * = "");			//!
 
 		TCSMHit *GetHit(int i)		{return &csm_hits.at(i);}	//->
 		Short_t GetMultiplicity()	{return csm_hits.size();}	//->
