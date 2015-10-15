@@ -37,8 +37,8 @@ void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
 
   TSiLiHit hit;
 
-  for(int i=0;i<sdata->GetMultiplicity();i++)     { 
-     hit.SetSegment(sdata->GetSegment(i));
+  for(UInt_t i=0;i<sdata->GetMultiplicity();i++)     { 
+	  hit.SetSegment(sdata->GetSegment(i));
      TVector3 tmppos = GetPosition(hit.GetSegment());
      hit.SetPosition(tmppos);
      TFragment tmp = sdata->GetFragment(i);

@@ -272,5 +272,5 @@ int TFragment::GetColor(Option_t *opt) const {
         return 3;
    };
    return -1;
-};
+}
 

@@ -10,14 +10,12 @@
 #include "TFragment.h"
 #include "TChannel.h"
 #include "TCrystalHit.h"
-//#include "TTigress.h"
 
 #include "TMath.h"
 #include "TVector3.h"
 #include "TClonesArray.h"
 
 #include "TGRSIDetectorHit.h"
-
 
 class TTigressHit : public TGRSIDetectorHit {
 	public:
@@ -66,14 +64,14 @@ class TTigressHit : public TGRSIDetectorHit {
 
 		/////////////////////////		/////////////////////////////////////
 		//inline int GetDetectorNumber()	     {	return detector;		}			//!
-		       int GetCrystal();	          //{	return crystal;			}		//!
+		int GetCrystal() const;	          //{	return crystal;			}		//!
 		inline int GetInitialHit()		       {	return first_segment;	}			//!
 	
 		inline int GetCharge()			         {	return core.GetCharge();	}		//!
 		inline double GetEnergy()		         {	return core.GetEnergy();	}		//!
 		inline double GetTime()			         {	return core.GetTime();		}		//!
 		inline double GetTimeCFD()           {  return core.GetCfd(); } //!
-      TVector3 GetPosition() const {}
+      TVector3 GetPosition(Double_t dist = 110.0) const; //!
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
 
@@ -107,7 +105,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	public:
 		virtual void Clear(Option_t *opt = "");		                      //!
 		virtual void Copy(TTigressHit&) const;                             //!
-      virtual void Print(Option_t *opt = "") const;		                //!
+      virtual void Print(Option_t *opt = "");       		                //!
 
 	ClassDef(TTigressHit,1)
 };
