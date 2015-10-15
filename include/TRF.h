@@ -6,7 +6,7 @@
 #include <iostream>
 #include <stdio.h>
 
-#include "TGRSIDetector.h"
+#include "TDetector.h"
 
 #include "TFragment.h"
 #ifndef __CINT__
@@ -17,7 +17,7 @@ class TRFFitter;
 
 using namespace std;
 
-class TRF :  public TGRSIDetector {
+class TRF :  public TDetector {
 	
 	public:
 		TRF();
@@ -32,7 +32,7 @@ class TRF :  public TGRSIDetector {
 
 		//bool HasWave() { return !rf_wave.empty(); };
 
-		void BuildHits(TGRSIDetectorData *data=0, Option_t * = "");	//!
+		void BuildHits(TDetectorData *data=0, Option_t * = "");	//!
 		void FillData(TFragment*,TChannel*,MNEMONIC*);	//!
 
 		void Clear(Option_t *opt = ""); 	      //!

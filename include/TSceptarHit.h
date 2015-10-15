@@ -15,7 +15,7 @@
 class TSceptarHit : public TGRSIDetectorHit {
   public:
     TSceptarHit();
-    ~TSceptarHit();
+    virtual ~TSceptarHit();
     TSceptarHit(const TSceptarHit&);
 
   private:
@@ -33,7 +33,7 @@ class TSceptarHit : public TGRSIDetectorHit {
             return;
          }
          size_t length = x.size() - (x.size()%8);
-         waveform.resize(length-8);
+         fwaveform.resize(length-8);
          for(size_t i = 0; i < length; ++i) {
             // reorder so that samples 0-7 are: 7,6,1,0,3,2,5,4
             //                                  0,1,2,3,4,5,6,7
@@ -41,15 +41,15 @@ class TSceptarHit : public TGRSIDetectorHit {
             // 67,01,32,45: shift all by +2, except for the last pair which need to be shifted by -6
             Int_t reordered = i-2;
             reordered = reordered+1-2*(reordered%2);
-            if(reordered >= waveform.size()) {
+            if(reordered >= (Int_t) fwaveform.size()) {
                continue;
             }
             if(reordered%8 < 6) {
                //std::cout<<i<<" => "<<reordered+2<<std::endl;
-               waveform[reordered+2] = x[i];
+               fwaveform[reordered+2] = x[i];
             } else {
                //std::cout<<i<<" => "<<reordered-6<<std::endl;
-               waveform[reordered-6] = x[i];
+               fwaveform[reordered-6] = x[i];
             }
          }
       } //!
@@ -57,8 +57,7 @@ class TSceptarHit : public TGRSIDetectorHit {
 		/////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()    const     { return filter;   }  //!
       TVector3 GetPosition(Double_t dist = 0) const; //!
-      double GetTime(Option_t * opt = "") const; //!
-      inline std::vector<Short_t> GetWaveform() 		{ return waveform; }  //!
+  //    inline std::vector<Short_t> GetWaveform() 		{ return waveform; }  //!
 
       Int_t CalculateCfd(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps); //!
       Int_t CalculateCfdAndMonitor(double attenuation, int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor); //!
@@ -76,7 +75,7 @@ class TSceptarHit : public TGRSIDetectorHit {
 		void Print(Option_t *opt = "") const;		                    //!
       virtual void Copy(TSceptarHit&) const;        //!
 
-	ClassDef(TSceptarHit,1)
+	ClassDef(TSceptarHit,2) //Stores the information for a SceptarHit
 };
 
 #endif

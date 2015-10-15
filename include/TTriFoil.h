@@ -6,7 +6,7 @@
 #include <iostream>
 #include <stdio.h>
 
-#include "TGRSIDetector.h"
+#include "TDetector.h"
 
 #include "TFragment.h"
 #ifndef __CINT__
@@ -17,23 +17,26 @@ class TTriFoilData;
 
 using namespace std;
 
-class TTriFoil :  public TGRSIDetector {
+class TTriFoil :  public TDetector {
 	
 	public:
 		TTriFoil();
-		~TTriFoil();
+		virtual ~TTriFoil();
+      TTriFoil(const TTriFoil& rhs);
 
 		std::vector<Short_t> GetWave() { return tf_wave;	};
-		bool Beam(){return beam;};
-		int TBeam(){return tbeam;};
+		bool Beam() const{return beam;};
+		int TBeam() const {return tbeam;};
 	
-		bool HasWave() { return !tf_wave.empty(); };
+		bool HasWave() const { return !tf_wave.empty(); };
+      time_t GetTimeStamp() const {return timestamp;}
 
-		void BuildHits(TGRSIDetectorData *data=0, Option_t * = "");	//!
+		void BuildHits(TDetectorData *data=0, Option_t * = "");	//!
 		void FillData(TFragment*,TChannel*,MNEMONIC*);	//!
 
 		void Clear(Option_t *opt = ""); 	//!
-		void Print(Option_t *opt = ""); 	//!
+		void Print(Option_t *opt = "") const; 	//!
+      void Copy(TTriFoil &rhs) const;
 
 		
 	

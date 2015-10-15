@@ -87,7 +87,7 @@ Bool_t TCal::SetChannel(const TChannel* chan){
    //Sets the channel being calibrated
    if(!chan){
       Error("SetChannel","TChannel does not exist");
-      printf("%p\n",chan);
+      printf("%p\n", (void*) chan);
       return false;
    }
    //Set our TRef to point at the TChannel
@@ -148,7 +148,7 @@ Bool_t TCal::SetChannel(UInt_t channum){
       return SetChannel(chan);
 }
 
-TChannel* const TCal::GetChannel() const {
+TChannel* TCal::GetChannel() const {
    //Gets the channel being pointed to by the TCal. Returns 0 if no channel
    //is set.
    return (TChannel*)(fchan.GetObject()); //Gets the object pointed at by the TRef and casts it to a TChannel

@@ -13,7 +13,6 @@
 #include "Globals.h"
 #include<cstdlib>
 #include<cstdio>
-#include<stdint.h>
 
 #include <fstream>
 #include <string>

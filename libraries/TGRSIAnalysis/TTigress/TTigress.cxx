@@ -23,7 +23,14 @@ bool TTigress::fSetBGOWave = false;
 
 TTigress::TTigress() : tigdata(0), bgodata(0)	{
    //Class()->IgnoreTObjectStreamer(true);
+   tigress_hits.SetClass("TTigressHit");
+   addback_hits.SetClass("TTigressHit");
    Clear();
+}
+
+TTigress::TTigress(const TTigress& rhs)
+  : TGRSIDetector() {
+   ((TTigress&)rhs).Copy(*this);
 }
 
 TTigress::~TTigress()	{
@@ -31,21 +38,39 @@ TTigress::~TTigress()	{
    if(bgodata) delete bgodata;
 }
 
+void TTigress::Copy(TTigress& rhs) const {
+   TGRSIDetector::Copy((TGRSIDetector&)rhs);
+   rhs.tigdata = 0;
+   rhs.bgodata = 0;
+   tigress_hits.Copy(rhs.tigress_hits);
+   addback_hits.Copy(rhs.addback_hits);
+   //clover_addback_hits.Copy(rhs.clover_addback_hits);
+}
+
 void TTigress::Clear(Option_t *opt)	{
 
 	if(tigdata) tigdata->Clear();
 	if(bgodata) bgodata->Clear();
 
-	tigress_hits.clear();
-	addback_hits.clear();
-	clover_addback_hits.clear();
-
-   fTimeStamp  = -1;
-   fRawBGOHits =  0;
+	tigress_hits.Clear();
+	addback_hits.Clear();
+	//clover_addback_hits.Clear();
 }
 
 
-void TTigress::Print(Option_t *opt)	{
+void TTigress::AddTigressHit(const TTigressHit& temp) { 
+   TTigressHit *newhit = (TTigressHit*)tigress_hits.ConstructedAt(GetMultiplicity());	
+   temp.Copy(*((TTigressHit*)newhit));
+}
+ 
+void TTigress::AddAddBackHit(const TTigressHit& temp) {
+   TTigressHit *newhit = (TTigressHit*)addback_hits.ConstructedAt(GetAddBackMultiplicity());	
+   temp.Copy(*((TTigressHit*)newhit));
+}  
+
+
+
+void TTigress::Print(Option_t *opt)	const {
   //printf("not yet written...\n");
   //printf(DYELLOW "TTigress::beta  =  %.04f" RESET_COLOR  "\n",beta);
   return;
@@ -58,16 +83,6 @@ void TTigress::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 
    if(!tigdata)   
       tigdata = new TTigressData();
-   UShort_t color =5;   
-   if(mnemonic->arraysubposition.compare(0,1,"B")==0) {
-	    color = 0;      
-   } else if(mnemonic->arraysubposition.compare(0,1,"G")==0) {
-	    color = 1;
-   } else if(mnemonic->arraysubposition.compare(0,1,"R")==0) {
-	    color = 2;
-   } else if(mnemonic->arraysubposition.compare(0,1,"W")==0) {
-	    color = 3;
-   } 
    if(mnemonic->subsystem.compare(0,1,"G")==0) { 
 	  	if((mnemonic->segment==0) || (mnemonic->segment==9 ))	{
  				tigdata->SetCore(frag,channel,mnemonic);
@@ -92,10 +107,7 @@ void TTigress::FillBGOData(TFragment *frag, TChannel *channel, MNEMONIC *mnemoni
 	TBGOData::Set();   
 }
 
-
-
-//void	TTigress::BuildHits(TTigressData *tdata,TBGOData *bdata,Option_t *opt)	{
-void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
+void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
    TTigressData *tdata = (TTigressData*)data;
    if(tdata==0)
       tdata = (this->tigdata);
@@ -108,9 +120,7 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 	TCrystalHit temp_crystal;
 
 	//First build the core hits.
-	for(int i=0;i<tdata->GetCoreMultiplicity();i++)	{
-
-      CheckAndSetTimeStamp(tdata->GetCoreTimeStamp(i));
+	for(size_t i=0;i<tdata->GetCoreMultiplicity();i++)	{
 
 		TTigressHit corehit;
 		temp_crystal.Clear();
@@ -120,57 +130,53 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       temp_crystal.SetTime(tdata->GetCoreTime(i));
       temp_crystal.SetCfd(tdata->GetCoreCFD(i));
 
-		if(TTigress::SetCoreWave())	{
-        	temp_crystal.SetWave(tdata->GetCoreWave(i));
-		}
+		//if(TTigress::SetCoreWave())	{
+      //  	temp_crystal.SetWaveForm(tdata->GetCoreWave(i));
+		//}
 		
 		corehit.SetCore(temp_crystal);	
-		corehit.SetDetectorNumber(tdata->GetCloverNumber(i));
-      corehit.SetCrystalNumber(tdata->GetCoreNumber(i));
-
-
-		tigress_hits.push_back(corehit);
+		corehit.SetDetector((UInt_t)tdata->GetCloverNumber(i));
+      corehit.SetCrystal();  //tdata->GetCoreNumber(i));
+		//tigress_hits.push_back(corehit);
+		AddTigressHit(corehit);
 	}
 	
-	for(int i=0;i<tigress_hits.size();i++)	{
-	   for(int j=0;j<tdata->GetSegmentMultiplicity();j++)	{
-	      if((tigress_hits[i].GetDetectorNumber() == tdata->GetSegCloverNumber(j))  && (tigress_hits[i].GetCrystalNumber() == tdata->GetSegCoreNumber(j))) {
-	         tigress_hits[i].CheckFirstHit(tdata->GetSegmentCharge(j),tdata->GetSegmentNumber(j));  // Sets the initial hit.
+	for(int i=0;i<tigress_hits.GetEntries();i++)	{
+	   for(size_t j=0;j<tdata->GetSegmentMultiplicity();j++)	{
+	      if((GetTigressHit(i)->GetDetector() == tdata->GetSegCloverNumber(j))  && (GetTigressHit(i)->GetCrystal() == tdata->GetSegCoreNumber(j))) {
+	         GetTigressHit(i)->CheckFirstHit(tdata->GetSegmentCharge(j),tdata->GetSegmentNumber(j));
 
 				if(!SetSegmentHits()) 
 					continue;
 			
            temp_crystal.Clear();
-           temp_crystal.SetSegmentNumber(tdata->GetSegmentNumber(j));
+           temp_crystal.SetSegment(tdata->GetSegmentNumber(j));
            temp_crystal.SetCharge(tdata->GetSegmentCharge(j));
            temp_crystal.SetEnergy(tdata->GetSegmentEnergy(j));
-           temp_crystal.SetTime(tdata->GetSegmentTime(j));
+           temp_crystal.SetTimeStamp(tdata->GetSegmentTime(j));
            temp_crystal.SetCfd(tdata->GetSegmentCFD(j));
 
-           if(TTigress::SetSegmentWave()) {
-             temp_crystal.SetWave(tdata->GetSegmentWave(j));
-           }
-           tigress_hits.at(i).SetSegment(temp_crystal);
+           //if(TTigress::SetSegmentWave()) {
+           //  temp_crystal.SetWaveForm(tdata->GetSegmentWave(j));
+           //}
+           GetTigressHit(i)->AddSegment(temp_crystal);
         }	
 	   }  // all segments set.  
 
     
     if(TTigress::SetBGOHits() && bdata)  {
-      for(int j=0;j< bdata->GetBGOMultiplicity();j++)  {
-        AddRawBGO();
-        if((tigress_hits[i].GetDetectorNumber() == bdata->GetBGOCloverNumber(j))  && (tigress_hits[i].GetCrystalNumber() == bdata->GetBGOCoreNumber(j))) {
-          tigress_hits[i].GetCore()->SetSuppress();
-          temp_crystal.SetSuppress();
+      for(size_t j=0;j< bdata->GetBGOMultiplicity();j++)  {
+        if((GetTigressHit(i)->GetDetector() == bdata->GetBGOCloverNumber(j))  && (GetTigressHit(i)->GetCrystal() == bdata->GetBGOCoreNumber(j))) {
           temp_crystal.Clear();
-          temp_crystal.SetSegmentNumber(bdata->GetBGOPmNbr(j));
+          temp_crystal.SetSegment(bdata->GetBGOPmNbr(j));
           temp_crystal.SetCharge(bdata->GetBGOCharge(j));
-          //temp_crystal.SetEnergy(bdata->GetBGOEnergy(j));
+          temp_crystal.SetEnergy(bdata->GetBGOEnergy(j));
           temp_crystal.SetTime(bdata->GetBGOTime(j));
           temp_crystal.SetCfd(bdata->GetBGOCFD(j));
-          if(TTigress::SetBGOWave()) {
-            temp_crystal.SetWave(bdata->GetBGOWave(j));
-          }			
-	        tigress_hits.at(i).SetBGO(temp_crystal);	
+          //if(TTigress::SetBGOWave()) {
+          //  temp_crystal.SetWaveForm(bdata->GetBGOWave(j));
+          //}			
+	        GetTigressHit(i)->AddBGO(temp_crystal);	
         }
       }
     }  // all bgo's set.
@@ -183,7 +189,7 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
 	//if(tigress_hits.size()>1){
 		BuildAddBack();
-		BuildCloverAddBack();
+		//BuildCloverAddBack();
 	//}
 }
 
@@ -203,11 +209,11 @@ void	TTigress::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
 
 
-TVector3 TTigress::GetPosition(TTigressHit *hit, int dist)  {
-			return TTigress::GetPosition(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());	
-}
+//TVector3 TTigress::GetPosition(TTigressHit *hit, int dist)  {
+//			return TTigress::GetPosition(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());	
+//}
 
-TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, int dist)	{
+TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist)	{
 
 			TVector3 det_pos;
 			double xx = 0;
@@ -431,7 +437,7 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, int dist)	{
 
 		}
 
-
+/*
 void TTigress::BuildCloverAddBack(Option_t *opt)	{ 
 
 	if(this->tigress_hits.size() == 0)
@@ -469,63 +475,63 @@ void TTigress::BuildCloverAddBack(Option_t *opt)	{
 	}
 
 }
+*/
 
 void TTigress::BuildAddBack(Option_t *opt)	{ 
-  //if(this->tigress_hits.size() == 0)
-  //  return;
-  addback_hits.clear();
+	if(this->tigress_hits.GetEntries() == 0)
+    	return;
 
-  //printf("\t" DRED "Building Addback with %i tigress hits." RESET_COLOR "\n",GetMultiplicity());
-  for(int i = 0; i<GetMultiplicity(); i++)   {
-    bool used = false;
-    //if(use_suppression && tigress_hits.at(i).GetCore()->Suppress())
-    //   continue;
-    for(int j =0; j<addback_hits.size();j++)    {
-      TVector3 res = addback_hits.at(j).GetLastHit() - this->GetTigressHit(i)->GetPosition();
-      int d_time   = abs(addback_hits.at(j).GetTime() - this->GetTigressHit(i)->GetTime());
-      //int det1     = std::get<0>(addback_hits.at(j).GetLastPosition());
-      //int cry1     = std::get<1>(addback_hits.at(j).GetLastPosition());
-      int seg1     = std::get<2>(addback_hits.at(j).GetLastPosition());
-      
-      //int det2     = this->GetTigressHit(i)->GetDetectorNumber(); 
-      //int cry2     = this->GetTigressHit(i)->GetCrystalNumber(); 
-      int seg2     = this->GetTigressHit(i)->GetInitialHit();
+	addback_hits.Clear();
+
+   AddAddBackHit((TTigressHit&)(*(this->GetTigressHit(0))));
+  
+	if(this->GetMultiplicity() == 1) {
+     return;
+	} else{
+
+		//addback_hits.push_back(*(this->GetTigressHit(0)));
+		//addback_hits.At(0)->SumHit((TTigressHit*)addback_hits.At(0));
+      GetAddBackHit(0)->SumHit(GetAddBackHit(0));
 
 
-      //printf("\t\t" DGREEN "addback[loop %i] seg1[%02i %i %i] seg2[%02i %i %i]  res = %.02f  d_time =  %i" RESET_COLOR ,j,det1,cry1,seg1,det2,cry2,seg2,res.Mag(),d_time);
-      if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
-        if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
-          used = true;
-          addback_hits.at(j).Add(this->GetTigressHit(i));
-          break;
-        }
-      } else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{ // front to back
-        if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {     // time gate == 110 ns pos gate == 105mm.
-          used = true;
-          addback_hits.at(j).Add(this->GetTigressHit(i));
-          break;
-        }
-      } 
-      //printf (DBLUE "\t used = %s" RESET_COLOR "\n", used ? "true":"false");
-    }
-    //addback_hits.push_back(*(this->GetTigressHit(i)));
-    //addback_hits.at(0).Add(&(addback_hits.at(0)));
-    if(!used) {
-      addback_hits.push_back(*(this->GetTigressHit(i)));
-      addback_hits.back().Add(&(addback_hits.back()));
-    }
-  }
-  //printf("\t" DYELLOW "Addback Hits Built: %i addback hits." RESET_COLOR "\n",GetAddBackMultiplicity());
-  //printf("--------------------------------------------------------\n");
+		for(int i = 1; i<this->GetMultiplicity(); i++)   {
+		 	bool used = false;
+			 for(int j =0; j<addback_hits.GetEntries();j++)    {
+		 	   TVector3 res = GetAddBackHit(j)->GetLastHit() - GetTigressHit(i)->GetPosition();
+		     	int d_time = abs(GetAddBackHit(j)->GetTime() -  GetTigressHit(i)->GetTime());
+
+				int seg1 = std::get<2>(GetAddBackHit(j)->GetLastPosition());
+				int seg2 = GetTigressHit(i)->GetInitialHit();
+		
+				if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
+				     if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
+		 		        used = true;
+		     		     GetAddBackHit(j)->SumHit(this->GetTigressHit(i));
+		         		break;
+			     	}
+				}
+				else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{ // front to back
+				     if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {     // time gate == 110 ns pos gate == 105mm.
+		 		       used = true;
+		     		    GetAddBackHit(j)->SumHit(this->GetTigressHit(i));
+		             break;
+			     	}
+				}
+
+
+
+
+		 	}
+			 if(!used) {
+            AddAddBackHit(*GetTigressHit(i));
+            GetAddBackHit(addback_hits.GetEntries())->SumHit(GetAddBackHit(addback_hits.GetEntries()));
+		 	   //addback_hits.push_back(*(this->GetTigressHit(i)));
+		     	//addback_hits.back().Add(&(addback_hits.back()));
+			 }
+		}
+
+	}
 }
-
-
-
-
-
-
-
-
 
 		double TTigress::GeBlue_Position[17][9][3] = { 
 		{ { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },

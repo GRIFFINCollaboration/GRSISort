@@ -37,7 +37,7 @@ class TSiLiHit : public TGRSIDetectorHit {
                             }
     
     void SetSegment(Short_t seg)       { segment = seg; }
-    void SetPosition(TVector3 &vec)    { position = vec; }
+    void SetPosition(TVector3 &vec)    { fposition = vec; }
     void SetVariables(TFragment &frag) { charge = frag.GetCharge();
                                          energy = frag.GetEnergy();
                                          ts     = frag.GetTimeStamp();

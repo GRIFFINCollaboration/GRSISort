@@ -47,7 +47,9 @@ TVector3 TSceptar::gPaddlePosition[21] = {
 
 TSceptar::TSceptar() : sceptardata(0)	{
    //Default Constructor
-   //Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    //Class()->AddRule("TSceptar sceptar_hits attributes=NotOwner");
    //Class()->AddRule("TSceptar sceptardata attributes=NotOwner");
    Clear();
@@ -58,12 +60,17 @@ TSceptar::~TSceptar()	{
    if(sceptardata) delete sceptardata;
 }
 
-TSceptar::TSceptar(const TSceptar& rhs) {
+TSceptar::TSceptar(const TSceptar& rhs) : TGRSIDetector() {
+   //Copy Contructor
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
   ((TSceptar&)rhs).Copy(*this);
 }
 
 void TSceptar::Clear(Option_t *opt)	{
-//Clears all of the hits and data
+//Clears all of the hits
+//The Option "all" clears the base class and data.
    if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
       TGRSIDetector::Clear(opt);
       if(sceptardata) sceptardata->Clear();
@@ -73,6 +80,7 @@ void TSceptar::Clear(Option_t *opt)	{
 }
 
 void TSceptar::Copy(TSceptar &rhs) const {
+   //Copies a TSceptar
   TGRSIDetector::Copy((TGRSIDetector&)rhs);
 
   ((TSceptar&)rhs).sceptardata     = 0;
@@ -87,8 +95,8 @@ TSceptar& TSceptar::operator=(const TSceptar& rhs) {
 }
 
 void TSceptar::Print(Option_t *opt) const	{
-  //Prints out TSceptar members, currently does little.
-  printf("sceptardata = 0x%p\n",sceptardata);
+  //Prints out TSceptar Multiplicity, currently does little.
+	printf("sceptardata = 0x%p\n",(void*) sceptardata);
   if(sceptardata) sceptardata->Print();
   printf("%lu sceptar_hits\n",sceptar_hits.size());
 }
@@ -107,11 +115,12 @@ void TSceptar::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 }
 
 void TSceptar::PushBackHit(TGRSIDetectorHit *schit) {
-  sceptar_hits.push_back(*((TSceptarHit*)schit));
-  return;
+   //Adds a Hit to the list of TSceptar Hits
+   sceptar_hits.push_back(*((TSceptarHit*)schit));
+   return;
 }
 
-void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
+void TSceptar::BuildHits(TDetectorData *data,Option_t *opt)	{
 //Builds the SCEPTAR Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
 //This is done for both GRIFFIN and it's suppressors.
    TSceptarData *gdata = (TSceptarData*)data;
@@ -123,9 +132,8 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
 
    //Clear("");
    sceptar_hits.reserve(gdata->GetMultiplicity());
-  // TSceptar::SetBeta(false);
    
-   for(int i=0;i<gdata->GetMultiplicity();i++)	{
+   for(size_t i=0;i<gdata->GetMultiplicity();i++)	{
       TSceptarHit dethit;
 
       dethit.SetAddress(gdata->GetDetAddress(i));
@@ -133,9 +141,10 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
  //     dethit.SetEnergy(gdata->GetDetEnergy(i));
       dethit.SetCharge(gdata->GetDetCharge(i));
 
-      dethit.SetTime(gdata->GetDetTime(i));
+      dethit.SetTimeStamp(gdata->GetDetTime(i));
       dethit.SetCfd(gdata->GetDetCFD(i));
 
+      //UNCOMMENTED FOR NOW
       if(TSceptar::SetWave()){
          if(gdata->GetDetWave(i).size() == 0) {
             printf("Warning, TSceptar::SetWave() set, but data waveform size is zero!\n");
@@ -143,7 +152,7 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
          dethit.SetWaveform(gdata->GetDetWave(i));
          if(dethit.GetWaveform().size() > 0) {
 //            printf("Analyzing waveform, current cfd = %d\n",dethit.GetCfd());
-            bool analyzed = dethit.AnalyzeWaveform();
+            dethit.AnalyzeWaveform();
 //            printf("%s analyzed waveform, cfd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd());
          }
       }
@@ -153,13 +162,14 @@ void TSceptar::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    //   dethit.SetPosition(TSceptar::GetPosition(gdata->GetDetNumber(i)));
    
       AddHit(&dethit);
-//     TSceptar::SetBeta();
    }
 }
 
 TGRSIDetectorHit* TSceptar::GetHit(const Int_t idx){
+   //Gets the TSceptarHit at index idx. 
    if(idx < GetMultiplicity())
       return &(sceptar_hits.at(idx));
    else 
       return 0;
 }
+

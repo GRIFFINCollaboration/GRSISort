@@ -4,7 +4,7 @@
 
 #include <cstdio>
 
-#include <TGRSIDetector.h>
+#include "TDetector.h"
 
 #ifndef __CINT__
 #include "TSiLiData.h"
@@ -14,13 +14,13 @@ class TSiLiData;
 
 #include "TSiLiHit.h"
 
-class TSiLi: public TGRSIDetector  {
+class TSiLi: public TDetector  {
 
   public:
     TSiLi();
     ~TSiLi();
 
-    void BuildHits(TGRSIDetectorData *data, Option_t *opt="");    
+    void BuildHits(TDetectorData *data, Option_t *opt="");    
       void FillData(TFragment*,TChannel*,MNEMONIC*);
 
     void Print(Option_t *opt="") const;

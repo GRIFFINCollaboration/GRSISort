@@ -6,6 +6,18 @@
 
 #include <TGRSIOptions.h>
 
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TGRSIRunInfo                                               //
+//                                                            //
+// This Class is designed to store and run dependent          //
+// information. It is used to store run numbers, existence of //
+// detector systems, reconstruction windows, etc. The         //
+// TGRSIRunInfo is written alongside both the fragment and    //
+// analysis trees.                                            //
+//                                                            //
+////////////////////////////////////////////////////////////////
+
 ClassImp(TGRSIRunInfo)
 
 TGRSIRunInfo *TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();  
@@ -37,16 +49,33 @@ std::string TGRSIRunInfo::fGRSIVersion;
 //int TGRSIRunInfo::fNumberOfTrueSystems = 0;
 
 void TGRSIRunInfo::Streamer(TBuffer &b) {
+   //Streamer for TGRSIRunInfo. Allows us to write all of the run info
+   //to disk like a string. This way there isn't any compatibility issues
+   //between different TGRSIRunInfo classes written by different users.
  UInt_t R__s, R__c;
  if(b.IsReading()) {
    Version_t R__v = b.ReadVersion(&R__s,&R__c); if (R__v) { }
    TObject::Streamer(b);  
    {Int_t  R__int ; b >> R__int;  fRunNumber = R__int;}
    {Int_t  R__int ; b >> R__int;  fSubRunNumber = R__int;}
+   if(R__v>3) {
+     {Double_t  R__double ; b >> R__double;  fRunStart = R__double;}
+     {Double_t  R__double ; b >> R__double;  fRunStop  = R__double;}
+   }
+   if(R__v>4) {
+     {Double_t  R__double ; b >> R__double;  fRunLength = R__double;}
+   }
    if(R__v>2) {
      {Int_t  R__int ; b >> R__int;  fHPGeArrayPosition = R__int;}
-     {Int_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
+	  if(R__v>5) {
+		 {Long_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
+	  } else {
+		 {Int_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
+	  }
      {Double_t  R__double ; b >> R__double;  fAddBackWindow = R__double;}
+   }
+   if(R__v>4) {
+     {Bool_t R__bool; b >> R__bool; fIsMovingWindow = R__bool;}
    }
    {Bool_t R__bool; b >> R__bool; fTigress = R__bool;   }
    {Bool_t R__bool; b >> R__bool; fSharc = R__bool;     }
@@ -80,9 +109,13 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    TObject::Streamer(b);  
    {Int_t R__int = fRunNumber;    b << R__int;}
    {Int_t R__int = fSubRunNumber; b << R__int;}
+   {Double_t R__double = fRunStart;  b << R__double;}
+   {Double_t R__double = fRunStop ;  b << R__double;}
+   {Double_t R__double = fRunLength ;  b << R__double;}
    {Int_t R__int = fHPGeArrayPosition; b << R__int;}
-   {Int_t R__int = fBuildWindow;       b << R__int;}
+   {Long_t R__long = fBuildWindow;       b << R__long;}
    {Double_t R__double = fAddBackWindow;  b << R__double;}
+   {Bool_t R__bool = fIsMovingWindow; b << R__bool;}
    {Bool_t R__bool = fTigress;    b << R__bool;}
    {Bool_t R__bool = fSharc;      b << R__bool;}
    {Bool_t R__bool = fTriFoil;    b << R__bool;}
@@ -110,26 +143,66 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
 
 
 TGRSIRunInfo *TGRSIRunInfo::Get() {
+   //The Getter for the singleton TGRSIRunInfo. This makes it
+   //so there is only even one instance of the run info during
+   //a session and it can be accessed from anywhere during that
+   //session.
    if(!fGRSIRunInfo)
       fGRSIRunInfo = new TGRSIRunInfo();
    return fGRSIRunInfo;
 }
 
-void TGRSIRunInfo::SetInfoFromFile(TGRSIRunInfo *tmp) {
+void TGRSIRunInfo::SetRunInfo(TGRSIRunInfo *tmp) {
+   //Sets the TGRSIRunInfo to the info passes as tmp.
    if(fGRSIRunInfo)
       delete fGRSIRunInfo;
    fGRSIRunInfo = tmp;
 }
 
+Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
+
+   TDirectory *savdir = gDirectory;
+   if(tempf)
+      tempf->cd();
+
+   if (!(gDirectory->GetFile())){
+      printf("File does not exist\n");
+      savdir->cd();
+      return false;
+   }
+
+   tempf = gDirectory->GetFile();
+
+   TList *list =  tempf->GetListOfKeys();
+   TIter iter(list);
+
+   //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
+   while(TKey *key = (TKey*)(iter.Next())) {
+      if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo"))
+         continue;
+      TGRSIRunInfo::SetRunInfo((TGRSIRunInfo*)key->ReadObj());
+      savdir->cd();
+      return true;
+   }
+	savdir->cd();
+
+	return false;
+}
+
 
 TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) { 
-   //if(fNumberOfTrueSystems>0)
-   //   TGRSIRunInfo::Get() = this;
-   //else
-   
+   //Default ctor for TGRSIRunInfo. The default values are:
+   //
+   //fHPGeArrayPosition = 110.0;
+   //fBuildWindow       = 200;  
+   //fAddBackWindow     = 15.0;
+   //fIsMovingWindow    = true;
+
+
    fHPGeArrayPosition = 110.0;
    fBuildWindow       = 200;  
    fAddBackWindow     = 15.0;
+   fIsMovingWindow    = true;
 
    //printf("run info created.\n");
 
@@ -139,30 +212,42 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
 
 TGRSIRunInfo::~TGRSIRunInfo() { }
 
-void TGRSIRunInfo::Print(Option_t *opt) {
-   printf("\tTGRSIRunInfo Status:\n");
-   printf("\t\tRunNumber:    %05i\n",TGRSIRunInfo::Get()->fRunNumber);
-   printf("\t\tSubRunNumber: %03i\n",TGRSIRunInfo::Get()->fSubRunNumber);
-   printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
-   printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
-   printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
-   printf("\t\tTRF:          %s\n", RF() ? "true" : "false");
-   printf("\t\tTSpice:       %s\n", Spice() ? "true" : "false");
-   printf("\t\tTIP:          %s\n", Tip() ? "true" : "false");
-   printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
-   printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
-   printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
-   printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
-   printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
-   printf("\n");
-   printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
-   printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
-   printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
-   printf("\n");
-   printf("\t==============================\n");
+void TGRSIRunInfo::Print(Option_t *opt) const {
+   //Prints the TGRSIRunInfo. Options:
+   // a: Print out more details.
+   if(strchr(opt,'a') != NULL){
+      printf("\tTGRSIRunInfo Status:\n");
+      printf("\t\tRunNumber:    %05i\n",TGRSIRunInfo::Get()->fRunNumber);
+      printf("\t\tSubRunNumber: %03i\n",TGRSIRunInfo::Get()->fSubRunNumber);
+      printf("\t\tRunStart:     %.0f\n",TGRSIRunInfo::Get()->fRunStart);
+      printf("\t\tRunStop:      %.0f\n",TGRSIRunInfo::Get()->fRunStop);
+      printf("\t\tRunLength:    %.0f\n",TGRSIRunInfo::Get()->fRunLength);
+      printf("\t\tTIGRESS:      %s\n", Tigress() ? "true" : "false");
+      printf("\t\tSHARC:        %s\n", Sharc() ? "true" : "false");
+      printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
+      printf("\t\tTIP:          %s\n", Tip() ? "true" : "false");
+      printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
+      printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
+      printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
+      printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
+      printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
+      printf("\n");
+      printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
+      printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
+      printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
+      printf("\n");
+      printf("\t==============================\n");
+   }
+   else{
+      printf("\t\tRunNumber:    %05i\t",TGRSIRunInfo::Get()->fRunNumber);
+      printf("\t\tSubRunNumber: %03i\n",TGRSIRunInfo::Get()->fSubRunNumber);
+   }
 }
 
 void TGRSIRunInfo::Clear(Option_t *opt) {
+   //Clears the TGRSIRunInfo. Currently, there are no available
+   //options.
    
    fTigress = false;
    fSharc = false;
@@ -189,6 +274,7 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
 
 
 void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
+   //Sets the run info. This figures out what systems are available.
 
    printf("In runinfo, found %i channels.\n",TChannel::GetNumberOfChannels());
 
@@ -197,14 +283,12 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    if(subrunnum != -1) 
       SetSubRunNumber(subrunnum);
 
-   int counter = 0;
    std::map<unsigned int,TChannel*>::iterator iter; 
    
    for(iter = TChannel::GetChannelMap()->begin();iter != TChannel::GetChannelMap()->end(); iter++) {
       std::string channelname = iter->second->GetChannelName();
       MNEMONIC mnemonic;
       ParseMNEMONIC(&channelname,&mnemonic);
-     //printf("\t%-04i:\t%s\n",counter++,channelname.c_str());
 
       //  detector system type.
       //  for more info, see: https://www.triumf.info/wiki/tigwiki/index.php/Detector_Nomenclature
@@ -269,10 +353,14 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
 }
 
 
-void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {  }
+void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {
+//Currently does nothing.
+}
 
 
 Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
+   //Read in a run info file. These files have the extension .info.
+   //An example can be found in the "examples" directory.
    std::string infilename;
    infilename.append(filename);
    printf("Reading file: %s\n",filename);
@@ -291,7 +379,7 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
       printf("file is empty.\n");
       return false;
    }
-   char buffer[length];
+   char* buffer = new char[length];
    infile.seekg(0,std::ios::beg);
    infile.read(buffer,length);
 
@@ -302,24 +390,25 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
 }
 
 Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
+   //A helper function to parse the run info file.
 
    std::istringstream infile(inputdata);
    std::string line;
    int linenumber = 0;
 
    //Parse the info file. 
-   while (std::getline(infile, line)) {
+   while(std::getline(infile, line)) {
       linenumber++;
       trim(&line);
-      int comment = line.find("//");
-      if (comment != std::string::npos) {
+      size_t comment = line.find("//");
+      if(comment != std::string::npos) {
          line = line.substr(0, comment);
       }
-      if (!line.length())
+      if(!line.length())
          continue;
 
-      int ntype = line.find(":");
-      if (ntype == std::string::npos) //no seperator, not useful.
+      size_t ntype = line.find(":");
+      if(ntype == std::string::npos) //no seperator, not useful.
         continue;
 
       std::string type = line.substr(0, ntype);
@@ -335,7 +424,11 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
         std::istringstream ss(line);
         long int temp_bw; ss >> temp_bw;
         Get()->SetBuildWindow(temp_bw);
-      } else if(type.compare("ADW")==0 || type.compare("ADDBACKWINDOW")==0 || type.compare("ADDBACK")==0 ) {
+      } else if( type.compare("MW")==0 || type.compare("MOVINGWINDOW")==0) {
+        std::istringstream ss(line);
+        bool temp_mw; ss >> temp_mw;
+        Get()->SetMovingWindow(temp_mw);
+      } else if( type.compare("ABW")==0 || type.compare("ADDBACKWINDOW")==0 || type.compare("ADDBACK")==0 ) {
         std::istringstream ss(line);
         double temp_abw; ss >> temp_abw;
         Get()->SetAddBackWindow(temp_abw);
@@ -353,6 +446,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
    if(strcmp(opt,"q")) {
      printf("parsed %i lines.\n",linenumber);
      printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
+     printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
      printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
      printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
    }
@@ -373,8 +467,16 @@ void TGRSIRunInfo::trim(std::string * line, const std::string & trimChars) {
    return;
 }
 
+Long64_t TGRSIRunInfo::Merge(TCollection *list){
+   //Loop through the TCollection of TGRSISortLists, and add each entry to the original TGRSISort List
+   TIter it(list);
+   //The TCollection will be filled by something like hadd. Each element in the list will be a TGRSISortList from
+   //An individual file that was submitted to hadd.
+   TGRSIRunInfo *runinfo = 0;
 
-
-
-
-
+   while ((runinfo = (TGRSIRunInfo *)it.Next()) != NULL){
+      //Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.    
+      this->Add(runinfo);
+   }
+   return 0;
+}

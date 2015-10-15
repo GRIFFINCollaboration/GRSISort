@@ -20,9 +20,9 @@ using namespace std ;
 #include "TFragment.h"
 #include "TChannel.h"
 
-#include "TGRSIDetectorData.h"
+#include "TDetectorData.h"
 
-class TCSMData : public TGRSIDetectorData  {
+class TCSMData : public TDetectorData  {
 private:
   // CSM
   // Energy
@@ -57,8 +57,8 @@ public:
   
   void Clear(Option_t *opt = ""); //!
   //void Clear(const Option_t*) {};
-  void Print(Option_t *opt = ""); //!
-  void Print(int addr,bool horizontal); //!
+  void Print(Option_t *opt = "") const; //!
+  void Print(int addr,bool horizontal) const; //!
   
   
   static void Set(bool flag=true) { fIsSet=flag; } //!
@@ -75,7 +75,6 @@ public:
   //inline void SetHorizontal_TimeLED(const Int_t &TimeLED)   {fCSM_StripHorizontal_TimeLED.push_back(TimeLED);}			//!
   //inline void SetHorizontal_Time(const Double_t &Time)         {fCSM_StripHorizontal_Time.push_back(Time);}						//!
   //inline void SetHorizontal_Wave(const vector<Short_t> &Wave)    {fCSM_StripHorizontal_Wave.push_back(Wave);}						//!
-
 
   inline void SetVertical_DetectorNbr(const UShort_t &DetNbr){fCSM_StripVertical_DetectorNbr.push_back(DetNbr);}		//!
   inline void SetVertical_DetectorPos(const UShort_t &DetPos){fCSM_StripVertical_DetectorPos.push_back(DetPos);}		//!
@@ -136,7 +135,6 @@ public:
   inline vector<Short_t> GetVertical_Wave(const unsigned int &i) const {return fCSM_StripHorizontal_Fragment.at(i).wavebuffer;} //!
   
   inline TFragment GetiVertical_Fragment(const unsigned int &i)      const {return fCSM_StripVertical_Fragment.at(i);} //!
-
   inline unsigned int GetMultiplicityHorizontal() const {return fCSM_StripHorizontal_DetectorNbr.size();}				//!
   inline unsigned int GetMultiplicityVertical()  const {return fCSM_StripVertical_DetectorNbr.size();}				//!
  

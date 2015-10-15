@@ -371,10 +371,10 @@ void GRootBrowser::CloneBrowser()
    // plugins executed in the current one.
 
    Int_t loop = 1;
-   TBrowserPlugin *plugin = 0;
+   GBrowserPlugin *plugin = 0;
    TBrowser *b = new TBrowser();
    TIter next(&fPlugins);
-   while ((plugin = (TBrowserPlugin *)next())) {
+   while ((plugin = (GBrowserPlugin *)next())) {
       if (loop > fNbInitPlugins)
          b->ExecPlugin(plugin->GetName(), "", plugin->fCommand.Data(), plugin->fTab,
                        plugin->fSubTab);
@@ -538,21 +538,21 @@ Long_t GRootBrowser::ExecPlugin(const char *name, const char *fname,
    // and tab element "subpos".
 
    Long_t retval = 0;
-   TBrowserPlugin *p;
+   GBrowserPlugin *p;
    TString command, pname;
    StartEmbedding(pos, subpos);
    if (cmd && strlen(cmd)) {
       command = cmd;
       if (name) pname = name;
       else pname = TString::Format("Plugin %d", fPlugins.GetSize());
-      p = new TBrowserPlugin(pname.Data(), command.Data(), pos, subpos);
+      p = new GBrowserPlugin(pname.Data(), command.Data(), pos, subpos);
    }
    else if (fname && strlen(fname)) {
       pname = name ? name : gSystem->BaseName(fname);
       Ssiz_t t = pname.Last('.');
       if (t > 0) pname.Remove(t);
       command.Form("gROOT->Macro(\"%s\");", gSystem->UnixPathName(fname));
-      p = new TBrowserPlugin(pname.Data(), command.Data(), pos, subpos);
+      p = new GBrowserPlugin(pname.Data(), command.Data(), pos, subpos);
    }
    else return 0;
    fPlugins.Add(p);
@@ -1021,7 +1021,7 @@ void GRootBrowser::SetTabTitle(const char *title, Int_t pos, Int_t subpos)
 {
    // Set text "title" of Tab "subpos" in TGTab "pos".
 
-   TBrowserPlugin *p = 0;
+   GBrowserPlugin *p = 0;
    TGTab *edit = GetTab(pos);
    if (!edit) return;
    if (subpos == -1)
@@ -1031,7 +1031,7 @@ void GRootBrowser::SetTabTitle(const char *title, Int_t pos, Int_t subpos)
    if (el) {
       el->SetText(new TGString(title));
       edit->Layout();
-      if ((p = (TBrowserPlugin *)fPlugins.FindObject(title)))
+      if ((p = (GBrowserPlugin *)fPlugins.FindObject(title)))
          p->SetName(title);
    }
 }

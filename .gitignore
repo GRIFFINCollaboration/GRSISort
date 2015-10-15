@@ -12,3 +12,11 @@ grsisort
 htmldoc
 .grsi_history
 ./bin*
+bin
+myAnalysis
+examples
+*User*
+.deps
+.nfs*
+G__auto*
+*.log

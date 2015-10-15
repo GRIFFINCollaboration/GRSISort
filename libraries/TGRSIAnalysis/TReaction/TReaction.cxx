@@ -5,7 +5,7 @@
 
 #include<TStyle.h>
 
-ClassImp(TReaction);
+ClassImp(TReaction)
 
 TReaction::TReaction(const char *beam, const char *targ, const char *ejec, const char *reco, double beame, double ex3, bool inverse){
 	

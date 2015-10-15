@@ -17,14 +17,17 @@ ClassImp(TPaces)
 
 bool TPaces::fSetCoreWave = false;
 
-long TPaces::fCycleStart  = 0;
-long TPaces::fLastPPG     = 0;
-
 TPaces::TPaces() : TGRSIDetector(),pacesdata(0) {
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
-TPaces::TPaces(const TPaces& rhs) {
+TPaces::TPaces(const TPaces& rhs) : TGRSIDetector() {
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
   ((TPaces&)rhs).Copy(*this);
 }
 
@@ -35,7 +38,6 @@ void TPaces::Copy(TPaces &rhs) const {
 
   ((TPaces&)rhs).paces_hits          = paces_hits;
   ((TPaces&)rhs).fSetCoreWave        = fSetCoreWave;
-  ((TPaces&)rhs).fPacesBits          = fPacesBits;
   return;                                      
 }                                       
 
@@ -50,7 +52,6 @@ void TPaces::Clear(Option_t *opt)	{
    if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
      TGRSIDetector::Clear(opt);
      if(pacesdata) pacesdata->Clear();
-     ClearStatus();
    }
 	paces_hits.clear();
 }
@@ -58,7 +59,7 @@ void TPaces::Clear(Option_t *opt)	{
 
 void TPaces::Print(Option_t *opt) const {
   //Prints out TPaces members, currently does nothing.
-  printf("pacesdata = 0x%p\n",pacesdata);
+  printf("pacesdata = 0x%p\n",(void*) pacesdata);
   if(pacesdata) pacesdata->Print();
   printf("%lu paces_hits\n",paces_hits.size());
   return;
@@ -96,7 +97,7 @@ TPacesHit* TPaces::GetPacesHit(const int i) {
       return 0;
 }
 
-void TPaces::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
+void TPaces::BuildHits(TDetectorData *data,Option_t *opt)	{
 //Builds the GRIFFIN Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
 //This is done for both GRIFFIN and it's suppressors.
    TPacesData *pdata = (TPacesData*)data;
@@ -109,25 +110,18 @@ void TPaces::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    Clear("");
    paces_hits.reserve(pdata->GetMultiplicity());
 
-   for(int i=0;i<pdata->GetMultiplicity();i++)	{
+   for(size_t i=0;i<pdata->GetMultiplicity();i++)	{
       TPacesHit corehit;
 
       corehit.SetAddress(pdata->GetCoreAddress(i));
-      corehit.SetTime(pdata->GetCoreTime(i));
+      corehit.SetTimeStamp(pdata->GetCoreTime(i));
       corehit.SetCfd(pdata->GetCoreCFD(i));
       corehit.SetCharge(pdata->GetCoreCharge(i));
 
-      if(TPaces::SetCoreWave()){
+ /*     if(TPaces::SetCoreWave()){
          corehit.SetWaveform(pdata->GetCoreWave(i));
       }
- 
-      corehit.SetPPG(pdata->GetPPG(i));
-
-      if((pdata->GetPPG(i) == 0xd000 && pdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
-         fCycleStart = corehit.GetTime();
-      }
-      fLastPPG = pdata->GetPPG(i);
-      //fCycleStartTime = fCycleStart;
+ */
 
       //temp_hits.push_back(corehit);  
       AddHit(&corehit);
@@ -139,3 +133,4 @@ TVector3 TPaces::GetPosition(int DetNbr) {
    //Does not currently contain any positons.
    return TVector3(0,0,1);
 }
+

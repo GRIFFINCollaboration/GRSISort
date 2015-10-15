@@ -1,6 +1,6 @@
 #define TFragmentSelector_cxx
 
-#include "TGRSIOptions.h"
+#include "TGRSIOptions.h" //EDIT: added manually
 
 // The class definition in TFragmentSelector.h has been generated automatically
 // by the ROOT utility TTree::MakeSelector(). This class is derived
@@ -26,7 +26,6 @@
 // Root > T->Process("TFragmentSelector.C+")
 //
 
-
 ///////////////////////////////////////////////////////////////////
 //
 // TFragmentSelector
@@ -42,6 +41,7 @@
 #include <TH2.h>
 #include <TStyle.h>
 
+
 void TFragmentSelector::Begin(TTree * /*tree*/)
 {
    // The Begin() function is called at the start of the query.
@@ -49,6 +49,7 @@ void TFragmentSelector::Begin(TTree * /*tree*/)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
+
 }
 
 void TFragmentSelector::SlaveBegin(TTree * /*tree*/)
@@ -57,7 +58,7 @@ void TFragmentSelector::SlaveBegin(TTree * /*tree*/)
    // When running with PROOF SlaveBegin() is called on each slave server.
    // The tree argument is deprecated (on PROOF 0 is passed).
 
-   #include "UserInitObj.h"
+#include "UserInitObj.h"
    TString option = GetOption();
 
 }
@@ -82,21 +83,17 @@ Bool_t TFragmentSelector::Process(Long64_t entry)
    //
    // The return value is currently not used.
 
+   //EDIT: add code to read channel and include user code
    fChain->GetEntry(entry);
    TChannel *channel = TChannel::GetChannel(fragment->ChannelAddress);
-   if(!channel){
-      return true;   // I think if we don't have a channel at this point (i.e. the channel
-                  // was not defined a name/address/odb; we should drop the fragment.  
-                  // The TSelector by design is made to crunch lots of data, worrying about 
-                  // whether we are dropping good events should have already happen by this stage.  pdb.
-//     channel = new TChannel();
-//     channel->SetAddress(fragment->ChannelAddress);
-//     TChannel::AddChannel(channel);
+   if(!channel) {
+	   return kTRUE;   // I think if we don't have a channel at this point (i.e. the channel
+                      // was not defined a name/address/odb; we should drop the fragment.  
+                      // The TSelector by design is made to crunch lots of data, worrying about 
+                      // whether we are dropping good events should have already happen by this stage.  pdb.
    }
    
-  // if(TChannel::GetNumberOfChannels() != 0 ) 
-	   #include "UserFillObj.h"
-       //  gSystem->CompileMacro("UserFillObj.h");
+#include "UserFillObj.h"
 
    return kTRUE;
 }
@@ -115,26 +112,18 @@ void TFragmentSelector::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
 
+   //EDIT: add to write histograms to file
    char* histsname;
-   if(fsubrunnumber == -1)
-      histsname = Form("hists%05i.root",frunnumber);
+   if(fSubRunNumber == -1)
+      histsname = Form("hists%05i.root",fRunNumber);
    else
-      histsname = Form("hists%05i_%03i.root",frunnumber,fsubrunnumber);
+      histsname = Form("hists%05i_%03i.root",fRunNumber,fSubRunNumber);
 
    TFile f(histsname,"recreate");
    std::string rootfilename = f.GetName();
-//   TGRSIOptions::AddInputRootFile(rootfilename);   this real messess up so library loading... pcb.
-/*
-   if(fsubrunnumber == -1){
-      TFile f(Form("hists%05i.root",frunnumber),"recreate");
-   }
-   else{
-      TFile f(Form("hists%05i_%03i.root",frunnumber,fsubrunnumber),"recreate");
-   }*/
    TIter iter(this->GetOutputList());
    while(TObject *obj =iter.Next()) {
 	if(obj->InheritsFrom("TH1"))
 		obj->Write();
    }
-
 }

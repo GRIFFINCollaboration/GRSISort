@@ -1,125 +1,70 @@
 
+
 #include "TSharcHit.h"
+#include "TSharc.h"
 #include "TChannel.h"
 #include <TClass.h>
 
 ClassImp(TSharcHit)
 
 TSharcHit::TSharcHit()	{	
-   Class()->IgnoreTObjectStreamer(true);
-	Clear();
+#if MAJOR_ROOT_VERSION < 6
+  Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
+  Clear("ALL");
 }
 
 TSharcHit::~TSharcHit()	{	}
 
+TSharcHit::TSharcHit(const TSharcHit &rhs) : TGRSIDetectorHit() {	
+   Class()->IgnoreTObjectStreamer(kTRUE);
+   Clear();
+   ((TSharcHit&)rhs).Copy(*this);
+}
+
+void TSharcHit::Copy(TObject &rhs) const  {
+  //if(!rhs.InheritsFrom("TSharcHit"))
+  //   return;
+  TGRSIDetectorHit::Copy(rhs);
+  ((TGRSIDetectorHit&)backhit).Copy((TObject&)(((TSharcHit&)rhs).backhit));  
+  ((TGRSIDetectorHit&)padhit).Copy((TObject&)(((TSharcHit&)rhs).padhit));  
+
+  ((TSharcHit&)rhs).detectornumber = ((TSharcHit&)*this).detectornumber;
+  ((TSharcHit&)rhs).front_strip    = ((TSharcHit&)*this).front_strip;     
+  ((TSharcHit&)rhs).back_strip     = ((TSharcHit&)*this).back_strip;       
+ 
+}                                       
 
 void TSharcHit::Clear(Option_t *options)	{
 
-	front_strip		=	0;	//
-	front_charge	=	0;	//  
-	back_strip		=	0;	//
-	back_charge		=	0;	//
+  TGRSIDetectorHit::Clear(options); // 
+  backhit.Clear(options);        //
+  padhit.Clear(options);         //
 
-	pad_charge		=	0;	//
-
-	d_energy_front =	0;	//      
-	d_time_front	=	0;	//      
-	d_energy_back	=	0;	//      
-	d_time_back 	=	0;	//      
-	//d_cfd				=	0;	//      
-
-	p_energy			=	0;	//          pad only;
-	p_time			=	0;	//          pad only;
-	//p_cfd				=	0;	//
-	p_address      = 0xffffffff;
-
-	front_address  = 0xffffffff;
-	back_address   = 0xffffffff;
-
-	detectornumber	=	0;	//
-	//position.SetXYZ(0,0,1); // 
+  detectornumber = -1;    //
+  front_strip    = -1;    //
+  back_strip     = -1;    //
 
 }
 
-void TSharcHit::Print(Option_t *options)	{
-			printf(DGREEN "[D/F/B] = %02i\t/%02i\t/%02i " RESET_COLOR "\n",GetDetectorNumber(),GetFrontStrip(),GetBackStrip());
-			printf("Sharc hit charge: %f\t0x%08x\n",(double)front_charge/125.0,front_charge);
-			printf("Sharc hit energy: %f\n",d_energy_front);
-			printf("Sharc hit time:   %f\n",d_time_front);
-			printf( DGREEN "=	=	=	=	=	=	=	" RESET_COLOR "\n");
+void TSharcHit::Print(Option_t *options) const {
+  printf(DGREEN "[D/F/B] = %02i\t/%02i\t/%02i " RESET_COLOR "\n",GetDetectorNumber(),GetFrontStrip(),GetBackStrip());
+  //printf("Sharc hit charge: %02f\n",GetFrontCharge());
+  //printf("Sharc hit energy: %f\n",GetDeltaE());
+  //printf("Sharc hit time:   %f\n",GetDeltaT());
+  //printf( DGREEN "=	=	=	=	=	=	=	" RESET_COLOR "\n");
 }
 
-
-
-Double_t  TSharcHit::GetFrontChgHeight() {
-  int temp_add = back_address;
-  if((0x00f00000&back_address) != 0x00200000) {
-    temp_add += 0x00200000;
-  }
-  TChannel *chan = TChannel::GetChannel(temp_add);
-  if(!chan) {
-    printf("AHHHH, can't find sharc channel with address %d in TChannel\n",temp_add);
-    return front_charge;
-  }
-  return chan->CalibrateENG(front_charge);
+TVector3 TSharcHit::GetPosition() const {
+  return  fposition; // returned from this -> i.e front...
+  //return TSharc::GetPosition(detectornumber,front_strip,back_strip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());  //! 
 }
-
-Double_t  TSharcHit::GetBackChgHeight() {
-  int temp_add = back_address;
-  if((0x00f00000&back_address) != 0x00200000) {
-    temp_add += 0x00200000;
-  }
-  TChannel *chan = TChannel::GetChannel(temp_add);
-  if(!chan) {
-    printf("AHHHH, can't find sharc channel with address %d in TChannel\n",temp_add);
-    return back_charge;
-  }
-  return chan->CalibrateENG(back_charge); //((double)(front_charge)+gRandom->Uniform())/((double)chan->GetIntegration());
-}
-
-
-Double_t  TSharcHit::GetPadChgHeight() {
-  if(!p_address)
-     return 0.0;
-  TChannel *chan = TChannel::GetChannel(p_address);
-  if(!chan) {
-    printf("AHHHH, can't find sharc channel with address %d in TChannel\n",p_address);
-    return pad_charge;
-  }
-  return ((double)(front_charge)+gRandom->Uniform())/((double)chan->GetIntegration());
-}
-
-
-
 
 Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
-	TVector3 posoff; 
-	posoff.SetXYZ(Xoff,Yoff,Zoff);
-   //return (position+posoff).Theta();
-   //FIX
-   return 0.0;
+  TVector3 posoff; 
+  posoff.SetXYZ(Xoff,Yoff,Zoff);
+  return (fposition+posoff).Theta();
 }
-
-Double_t TSharcHit::PadEnergyCal() {
-  TChannel *chan = TChannel::GetChannel(p_address);
-  if(!chan)
-    return 0.0;
-  return chan->CalibrateENG(pad_charge);
-
-}
-
-Double_t TSharcHit::FrontEnergyCal() { //!
-  TChannel *chan = TChannel::GetChannel(front_address);
-//  printf("\n\nchan = %p.\t front_address = %i\n",chan,front_address);
-  if(!chan)
-    chan = TChannel::GetChannelByNumber(front_address);
-  if(!chan)
-    return 0.0;
-    
-  return chan->CalibrateENG(front_charge);
-
-}
-
 
 
 //bool TSharcHit::Compare(TSharcHit *lhs, TSharcHit *rhs)	{
@@ -137,12 +82,35 @@ Double_t TSharcHit::FrontEnergyCal() { //!
 //	return false;
 //}
 
-//void TSharcHit::CalibrateSharcHit(TChannel *chan){
-//	std::string name = chan->name;
-//	if(name.compare(0,3,"PAD")==0)	
-//		p_energy = chan->CalibrateENG((int)pad_charge);
-//	else
-//		d_energy =  chan->CalibrateENG((int)front_charge);
-//}
+
+void TSharcHit::SetFront(const TFragment &frag) { 
+  this->CopyFragment(frag);
+  this->SetPosition(TSharc::GetPosition(detectornumber,front_strip,back_strip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset())); 
+}
+
+void TSharcHit::SetBack(const TFragment &frag) { 
+  backhit.CopyFragment(frag);
+}
+
+void TSharcHit::SetPad(const TFragment &frag) { 
+  padhit.CopyFragment(frag);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -6,6 +6,8 @@
 #include "TF1.h"
 #include "TFitResultPtr.h"
 #include "TFitResult.h"
+#include "Math/Minimizer.h"
+#include "TGraph.h"
 #include <string>
 #include <algorithm>
 
@@ -22,11 +24,13 @@ using namespace TGRSIFunctions;
 ////////////////////////////////////////////////////////////////
 
 class TPeak : public TGRSIFit {
+   friend class TMultiPeak;
  public: 
    //ctors and dtors
    virtual ~TPeak();
    TPeak(const TPeak &copy);
-   TPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t* type="gsc");
+   TPeak(Double_t cent, Double_t xlow, Double_t xhigh);
+   TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background);
    TPeak(); //I might make it so if you call this ctor, the TPeak yells at you since it's a fairly useless call anyway
    
  protected:
@@ -36,7 +40,6 @@ class TPeak : public TGRSIFit {
  public:
    virtual void Copy(TObject &obj) const;
    void SetCentroid(Double_t cent)  { SetParameter("centroid",cent); }
-   void SetType(Option_t *type);
 
    Bool_t Fit(TH1* fithist, Option_t *opt = ""); //Might switch this to TFitResultPtr
   // Bool_t Fit(TH1* fithist = 0);
@@ -59,26 +62,40 @@ class TPeak : public TGRSIFit {
    void SetArea(Double_t a){farea = a;}
    void SetAreaErr(Double_t d_a){fd_area = d_a;}
    void SetArea(Double_t a, Double_t d_a){SetArea(a);SetAreaErr(d_a);}
+   void SetChi2(Double_t chi2)   { fchi2 = chi2;}
+   void SetNdf(Double_t Ndf)     { fNdf  = Ndf; } 
 
  public:
    Bool_t InitParams(TH1 *fithist = 0);
-   TF1* Background() const { return background; } 
+   TF1* Background() const { return fBackground; } 
    void DrawBackground(Option_t *opt = "SAME") const; // *MENU*
-   void DrawResiduals() const; // *MENU*
+   void DrawResiduals(); // *MENU*
+
+   static void SetLogLikelihoodFlag(Bool_t flag = true) { fLogLikelihoodFlag = flag; }
+   static Bool_t GetLogLikelihoodFlag() { return fLogLikelihoodFlag; }
+
+   static Bool_t CompareEnergy(const TPeak &lhs, const TPeak &rhs)  { return lhs.GetCentroid() < rhs.GetCentroid(); }
+   static Bool_t CompareArea(const TPeak &lhs, const TPeak &rhs)    { return lhs.GetArea() < rhs.GetArea(); }
+   static Bool_t CompareEnergy(const TPeak *lhs, const TPeak *rhs)  { return lhs->GetCentroid() < rhs->GetCentroid(); }
+   static Bool_t CompareArea(const TPeak *lhs, const TPeak *rhs)    { return lhs->GetArea() < rhs->GetArea(); }
 
  public:
    virtual void Print(Option_t *opt = "") const;
    const char*  PrintString(Option_t *opt = "") const;
-   virtual void Clear();
+   virtual void Clear(Option_t* opt = "");
 
  private: 
    //Centroid will eventually be read from parameters
    Double_t farea; 
    Double_t fd_area; 
    Double_t fchi2; 
-   Double_t fNdf; 
+   Double_t fNdf;
+   Bool_t fOwnBgFlag;
 
-   TF1* background;
+   static bool fLogLikelihoodFlag; //!
+
+   TF1* fBackground;
+   TGraph* fResiduals;
 
   ClassDef(TPeak,2);
 

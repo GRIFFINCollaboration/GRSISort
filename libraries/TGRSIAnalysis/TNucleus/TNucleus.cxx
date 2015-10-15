@@ -11,7 +11,7 @@
 
 //#define debug
 
-ClassImp(TNucleus);
+ClassImp(TNucleus)
 
 /////////////////////////////////////////////////////////////////
 //
@@ -22,12 +22,12 @@ ClassImp(TNucleus);
 //
 /////////////////////////////////////////////////////////////////
 
-//const char *TNucleus::massfile = "/home/tiguser/packages/GRSISort/libraries/TGRSIAnalysis/TNucleus/SourceData/mass.dat";
+//const char *TNucleus::massfile = "/home/tiguser/packages/GRSISort/libraries/TGRSIAnalysis/SourceData/mass.dat";
 
 static double amu = 931.494043;
 //static double MeV2Kg = 1.77777778e-30;
 
-const char *TNucleus::massfile = "/libraries/TGRSIAnalysis/TNucleus/SourceData/mass.dat";
+const char *TNucleus::massfile = "/libraries/TGRSIAnalysis/SourceData/mass.dat";
 
 
 TNucleus::TNucleus(const char *name){
@@ -132,7 +132,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
   int i = 0,n,z;
   double emass;
   char tmp[256];
-  ifstream mass_file;
+  std::ifstream mass_file;
   mass_file.open(MassFile,std::ios::in);
   while(!mass_file.bad() && !mass_file.eof() && i < 3008){
     mass_file>>n;
@@ -289,11 +289,11 @@ bool TNucleus::SetSourceData() {
       name[0] = name[0]-'A'+'a'; 
    name = name + Form("%i",GetA()) + ".sou";
    std::string path = getenv("GRSISYS");
-	path +=  "/libraries/TGRSIAnalysis/TNucleus/SourceData/";
+	path +=  "/libraries/TGRSIAnalysis/SourceData/";
    path +=  name;
 
    printf("path = %s\n",path.c_str());
-   ifstream sourcefile;
+	std::ifstream sourcefile;
    sourcefile.open(path.c_str());
    if(!sourcefile.is_open()) {
       printf("unable to set source data for %s.\n",GetName());
@@ -306,7 +306,7 @@ bool TNucleus::SetSourceData() {
    int linenumber = 0;
    while(getline(sourcefile,line)) {
       linenumber++;
-      int comment = line.find("//");
+      size_t comment = line.find("//");
       if (comment != std::string::npos) 
          line = line.substr(0, comment);
       if(line.length()==0)
@@ -374,7 +374,7 @@ void TNucleus::Print(Option_t *opt) const{
 
 void TNucleus::WriteSourceFile(std::string outfilename){
    if(outfilename.length() > 0) {
-     ofstream sourceout;
+	  std::ofstream sourceout;
      sourceout.open(outfilename.c_str());
      for(int i=0; i < TransitionList.GetSize(); i++)   {
         std::string transtr = ((TGRSITransition*)(TransitionList.At(i)))->PrintToString();

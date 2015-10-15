@@ -18,15 +18,15 @@
 
 ClassImp(TGriffin)
 
+bool DefaultAddback(TGriffinHit& one, TGriffinHit& two) {
+	return ((one.GetDetector() == two.GetDetector()) &&
+			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
+}
+ 
+std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::fAddback_criterion = DefaultAddback;
 
 bool TGriffin::fSetCoreWave = false;
-//bool TGriffin::fSetBGOHits  = false;
-//bool TGriffin::fSetBGOWave  = false;
 
-//long TGriffin::fCycleStart  = 0;
-long TGriffin::fLastPPG     = 0;
-
-//bool     TGriffin::gCloverPositionSet = false;
 //This seems unnecessary, and why 17?;//  they are static members, and need
                                                                              //  to be defined outside the header
                                                                              //  17 is to have the detectors go from 1-16 
@@ -61,94 +61,73 @@ TVector3 TGriffin::gCloverPosition[17] = {
 
 
 TGriffin::TGriffin() : TGRSIDetector(),grifdata(0) { //  ,bgodata(0)	{
+//Default ctor. Ignores TObjectStreamer in ROOT < 6
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
-TGriffin::TGriffin(const TGriffin& rhs) {
+TGriffin::TGriffin(const TGriffin& rhs) : TGRSIDetector() {
+//Copy ctor. Ignores TObjectStreamer in ROOT < 6
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
   ((TGriffin&)rhs).Copy(*this);
 }
 
 void TGriffin::Copy(TGriffin &rhs) const {
+  //Copy function.
   TGRSIDetector::Copy((TGRSIDetector&)rhs);
 
   ((TGriffin&)rhs).grifdata     = 0;
   //((TGriffin&)rhs).bgodata      = 0;
 
   ((TGriffin&)rhs).griffin_hits        = griffin_hits;
-  //((TGriffin&)rhs).addback_hits        = addback_hits;
-  //((TGriffin&)rhs).addback_clover_hits = addback_clover_hits;
-  //((TGriffin&)rhs).fSetBGOHits         = fSetBGOHits;
+  ((TGriffin&)rhs).fAddback_hits        = fAddback_hits;
+  ((TGriffin&)rhs).fAddback_frags      = fAddback_frags;
   ((TGriffin&)rhs).fSetCoreWave        = fSetCoreWave;
   ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
   ((TGriffin&)rhs).fCycleStart         = fCycleStart;
-   //((TGriffin&)rhs).fSetBGOWave         = fSetBGOWave;
-  //((TGriffin&)rhs).ftapemove           = ftapemove;
-  //((TGriffin&)rhs).fbackground         = fbackground;
-  //((TGriffin&)rhs).fbeamon             = fbeamon;      
-  //((TGriffin&)rhs).fdecay              = fdecay;       
+  ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
+   
+
   return;                                      
 }                                       
 
 TGriffin::~TGriffin()	{
    //Default Destructor
-   if(grifdata) delete grifdata;
+   if(grifdata) {
+      delete grifdata;
+      grifdata = 0;
+   }
    //if(bgodata)  delete bgodata;
 }
 
-//void TGriffin::InitCloverPositions() {
-   ////Initiallizes the HPGe Clover positions as per the wiki <https://www.triumf.info/wiki/tigwiki/index.php/HPGe_Coordinate_Table>
-   //gCloverPosition[0].SetMagThetaPhi(1.0,TMath::DegToRad()*(0.0),TMath::DegToRad()*(0.0));
-//
-   ////Downstream lampshade
-   //gCloverPosition[1].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(67.5));
-   //gCloverPosition[2].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(157.5));
-   //gCloverPosition[3].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(247.5));
-   //gCloverPosition[4].SetMagThetaPhi(1.0,TMath::DegToRad()*(45.0),TMath::DegToRad()*(337.5));
-//
-   ////Corona
-   //gCloverPosition[5].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(22.5));
-   //gCloverPosition[6].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(67.5));
-   //gCloverPosition[7].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(112.5));
-   //gCloverPosition[8].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(157.5));
-   //gCloverPosition[9].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(202.5));
-   //gCloverPosition[10].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(247.5));
-   //gCloverPosition[11].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(292.5));
-   //gCloverPosition[12].SetMagThetaPhi(1.0,TMath::DegToRad()*(90.0),TMath::DegToRad()*(337.5));
-//
-   ////Upstream lampshade
-   //gCloverPosition[13].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(67.5));
-   //gCloverPosition[14].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(157.5));
-   //gCloverPosition[15].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(247.5));
-   //gCloverPosition[16].SetMagThetaPhi(1.0,TMath::DegToRad()*(135.0),TMath::DegToRad()*(337.5));
-      //
-//}
-
 void TGriffin::Clear(Option_t *opt)	{
    //Clears the mother, all of the hits and any stored data
-   //if(!strcmp(opt,"all") {
    if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
-     TGRSIDetector::Clear(opt);
-     if(grifdata) grifdata->Clear();
+      if(grifdata) grifdata->Clear();
 	  //if(bgodata)  bgodata->Clear();
      ClearStatus();
    }
-	griffin_hits.clear();
+   TGRSIDetector::Clear(opt);
+   griffin_hits.clear();
+   fAddback_hits.clear();
+   fAddback_frags.clear();
    fCycleStart = 0;
-	//addback_hits.clear();
-	//addback_clover_hits.clear();
+   //fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
 }
 
 
 void TGriffin::Print(Option_t *opt) const {
   //Prints out TGriffin members, currently does nothing.
-  printf("grifdata = 0x%p\n",grifdata);
+  printf("grifdata = %p\n",(void*) grifdata);
   if(grifdata) grifdata->Print();
   //printf("bgodata  = 0x%p\n",bgodata);
   //if(bgodata) bgodata->Print();
   printf("%lu griffin_hits\n",griffin_hits.size());
   printf("%ld cycle start\n",fCycleStart);
-   //printf("%lu addback_hits\n",addback_hits.size());
-  //printf("%lu addback_clover_hits\n",addback_clover_hits.size());
   return;
 }
 
@@ -161,7 +140,6 @@ void TGriffin::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) 
 //Fills the "Data" structure for a specific channel with TFragment frag.
    if(!frag || !channel || !mnemonic)
       return;
-
    if(!grifdata)   
       grifdata = new TGriffinData();
 
@@ -193,9 +171,11 @@ void TGriffin::PushBackHit(TGRSIDetectorHit *ghit){
    griffin_hits.push_back(*((TGriffinHit*)ghit));
 }
 
+
 TGRSIDetectorHit* TGriffin::GetHit(const Int_t idx) {
    return GetGriffinHit(idx);
 }
+
 
 TGriffinHit* TGriffin::GetGriffinHit(const int i) {
    if(i < GetMultiplicity())
@@ -204,7 +184,51 @@ TGriffinHit* TGriffin::GetGriffinHit(const int i) {
       return 0;
 }
 
-void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
+Int_t TGriffin::GetAddbackMultiplicity() {
+   // Automatically builds the addback hits using the addback_criterion (if the size of the addback_hits vector is zero) and return the number of addback hits.
+   if(griffin_hits.size() == 0) {
+      return 0;
+   }
+	//if the addback has been reset, clear the addback hits
+	if((fGriffinBits & kIsAddbackSet) == 0x0) {
+		fAddback_hits.clear();
+	}
+   if(fAddback_hits.size() == 0) {
+      // use the first griffin hit as starting point for the addback hits
+      fAddback_hits.push_back(griffin_hits[0]);
+      fAddback_frags.push_back(1);
+
+      // loop over remaining griffin hits
+      size_t i, j;
+      for(i = 1; i < griffin_hits.size(); ++i) {
+	      // check for each existing addback hit if this griffin hit should be added
+	      for(j = 0; j < fAddback_hits.size(); ++j) {
+	         if(fAddback_criterion(fAddback_hits[j], griffin_hits[i])) {
+	            fAddback_hits[j].Add(&(griffin_hits[i]));
+               fAddback_frags[j]++;
+	            break;
+	         }
+	      }
+	      if(j == fAddback_hits.size()) {
+	         fAddback_hits.push_back(griffin_hits[i]);
+            fAddback_frags.push_back(1);
+	      }
+      }
+	   SetBitNumber(kIsAddbackSet, true);
+   }
+
+   return fAddback_hits.size();
+}
+
+TGriffinHit* TGriffin::GetAddbackHit(const int i) {
+   if(i < GetAddbackMultiplicity()) {
+      return &fAddback_hits.at(i);
+   } else {
+      return NULL;
+   }
+}
+
+void TGriffin::BuildHits(TDetectorData *data,Option_t *opt)	{
 //Builds the GRIFFIN Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
 //This is done for both GRIFFIN and it's suppressors.
    TGriffinData *gdata = (TGriffinData*)data;
@@ -215,9 +239,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    if(!gdata)
       return;
 
-
-   
-   //griffin_hits.clear();
+   griffin_hits.clear();
    Clear("");
    griffin_hits.reserve(gdata->GetMultiplicity());
 
@@ -228,7 +250,7 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    //printf("=========================================================\n");
    //printf("gdata->GetMultiplicity() = %i\n",gdata->GetMultiplicity());
 
-   for(int i=0;i<gdata->GetMultiplicity();i++)	{
+   for(size_t i=0;i<gdata->GetMultiplicity();i++)	{
       TGriffinHit corehit;
 
       corehit.SetAddress(gdata->GetCoreAddress(i));
@@ -242,25 +264,21 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
       //   corehit.SetChargeLow(gdata->GetCoreCharge(i));
       //}
 
-      corehit.SetTime(gdata->GetCoreTime(i));
+      corehit.SetTimeStamp(gdata->GetCoreTime(i));
       corehit.SetCfd(gdata->GetCoreCFD(i));
       corehit.SetCharge(gdata->GetCoreCharge(i));
-
+      corehit.SetNPileUps((UChar_t)(gdata->GetCoreNbrHits(i)));
+      corehit.SetPUHit((UChar_t)(gdata->GetCorePUHit(i)));
+/*
       if(TGriffin::SetCoreWave()){
          corehit.SetWaveform(gdata->GetCoreWave(i));
       }
-		
+*/		
       //corehit.SetDetectorNumber(gdata->GetCloverNumber(i));
       //corehit.SetCrystalNumber(gdata->GetCoreNumber(i));
    
-      corehit.SetPosition(TGRSIRunInfo::HPGeArrayPosition());
+     // corehit.SetPosition(TGRSIRunInfo::HPGeArrayPosition());
       
-      corehit.SetPPG(gdata->GetPPG(i));
-
-      if((gdata->GetPPG(i) == 0xd000 && gdata->GetPPG(i) != fLastPPG) || fCycleStart == 0.) { //this is a background event
-         fCycleStart = corehit.GetTime();
-      }
-      fLastPPG = gdata->GetPPG(i);
       //fCycleStartTime = fCycleStart;
 
       //temp_hits.push_back(corehit);  
@@ -334,8 +352,6 @@ void TGriffin::BuildHits(TGRSIDetectorData *data,Option_t *opt)	{
    //printf(DGREEN "|||||||||||||||||||||||||||||||||||||||||||||||||||||" RESET_COLOR "\n");
 
    //if(griffin_hits.size()>1)
-//   BuildAddBack();
-//   BuildAddBackClover();
 }
 
 
@@ -380,65 +396,30 @@ TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ) {
 }
 
 
-/*
-void TGriffin::BuildAddBack(Option_t *opt) { 
-   //Builds the addback for the GRIFFIN Event. This is based on a resolution set within the function. This will have to be
-   //tuned in order to make add-back the most efficient. 
-   if(this->griffin_hits.size() == 0)
-      return;
-   //We may have angular correlation add-back algorithms eventaully too.
-   addback_hits.clear();
-   addback_hits.push_back(*(this->GetGriffinHit(0)));
-   //	addback_hits.at(0).Add(&(addback_hits.at(0)));
-
-   for(int i = 1; i<this->GetMultiplicity(); i++) {
-      bool used = false;
-      for(int j =0; j<addback_hits.size();j++) {
-         TVector3 res = addback_hits.at(j).GetPosition() - this->GetGriffinHit(i)->GetPosition();
-
-         int d_time = std::abs(addback_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
-
-         if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {    ///Still need to tune these values!! pcb.
-            used = true;
-            addback_hits.at(j).Add(this->GetGriffinHit(i));
-            break;
-	      }
-      }
-      if(!used) {
-         addback_hits.push_back(*(this->GetGriffinHit(i)));
-        	//addback_hits.back().Add(&(addback_hits.back()));
-      }
-   }
+void TGriffin::ResetAddback() {
+//Used to clear the addback hits. When playing back a tree, this must
+//be called before building the new addback hits, otherwise, a copy of
+//the old addback hits will be stored instead.
+//This should have changed now, we're using the stored griffin bits to reset the addback
+	//unset the addback bit in fGriffinBits
+	SetBitNumber(kIsAddbackSet, false);
+   fAddback_hits.clear();
+   fAddback_frags.clear();
 }
-*/
-/*
-void TGriffin::BuildAddBackClover(Option_t *opt) { 
-   //Builds the addback for the GRIFFIN Event. This is based on a resolution set within the function. This will have to be
-   //tuned in order to make add-back the most efficient. 
-   if(this->griffin_hits.size() == 0)
-      return;
-   //We may have angular correlation add-back algorithms eventaully too.
-   addback_clover_hits.clear();
-   addback_clover_hits.push_back(*(this->GetGriffinHit(0)));
 
-   for(int i = 1; i<this->GetMultiplicity(); i++) {
-      bool used = false;
-      for(int j =0; j<addback_clover_hits.size();j++) {
-//         TVector3 res = addback_hits.at(j).GetPosition() - this->GetGriffinHit(i)->GetPosition();
-         if(addback_clover_hits.at(j).GetDetectorNumber() != griffin_hits.at(i).GetDetectorNumber())
-            continue;
-         int d_time = std::abs(addback_clover_hits.at(j).GetTime() - this->GetGriffinHit(i)->GetTime());
-
-         if(  (d_time < TGRSIRunInfo::AddBackWindow() )  )    {    ///Still need to tune these values!! pcb.
-            used = true;
-            addback_clover_hits.at(j).Add(this->GetGriffinHit(i));
-            break;
-	      }
-      }
-      if(!used) {
-         addback_clover_hits.push_back(*(this->GetGriffinHit(i)));
-      }
-   }
+UShort_t TGriffin::GetNAddbackFrags(size_t idx) const{
+ //Get the number of addback "fragments" contributing to the total addback hit
+ //with index idx.
+  if(idx < fAddback_frags.size())
+      return fAddback_frags.at(idx);   
+   else
+      return 0;
 }
-*/
 
+void TGriffin::SetBitNumber(enum EGriffinBits bit,Bool_t set){
+   //Used to set the flags that are stored in TGriffin.
+   if(set)
+      fGriffinBits |= bit;
+   else
+      fGriffinBits &= (~bit);
+}

@@ -21,7 +21,7 @@ void TRF::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
 }
 
 
-void TRF::BuildHits(TGRSIDetectorData *ddata,Option_t *opt)	{
+void TRF::BuildHits(TDetectorData *ddata,Option_t *opt)	{
    //TRFData *tfdata = (TRFData*)ddata;
    //if(data==0)
    //  tfdata = (this->data);

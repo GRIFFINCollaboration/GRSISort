@@ -61,32 +61,26 @@ void TCSMData::Clear(Option_t *opt)
 }
 
 /////////////////////////
-void TCSMData::Print(Option_t* opt) 
-{
+void TCSMData::Print(Option_t* opt) const {
   printf(DRED "\n Printing All TCSMData\n" RESET_COLOR);
   printf(GREEN "DetNbr  DetPos  StripNbr       Energy        Charge           CFD             LED            Time \n" RESET_COLOR);
-  if(GetMultiplicityHorizontal()>0)
-  {
+  if(GetMultiplicityHorizontal()>0) {
     printf(BLUE "Horizontal:\n" RESET_COLOR);
-    for(int i=0;i<GetMultiplicityHorizontal();i++)
-    {
-      printf(" %2i       %c        %2i     %11.2f  %12i  %12i  %14i  %14.2f\n",GetHorizontal_DetectorNbr(i), GetHorizontal_DetectorPos(i), GetHorizontal_StripNbr(i), GetHorizontal_Energy(i), GetHorizontal_Charge(i), GetHorizontal_TimeCFD(i), GetHorizontal_TimeLED(i), GetHorizontal_Time(i));
+    for(size_t i=0;i<GetMultiplicityHorizontal();i++) {
+      printf(" %2i       %c        %2i     %11.2f  %12f  %12i  %14i  %14.2f\n",GetHorizontal_DetectorNbr(i), GetHorizontal_DetectorPos(i), GetHorizontal_StripNbr(i), GetHorizontal_Energy(i), GetHorizontal_Charge(i), GetHorizontal_TimeCFD(i), GetHorizontal_TimeLED(i), GetHorizontal_Time(i));
       //cout<<GetHorizontal_DetectorNbr(i)<<" "<<char(GetHorizontal_DetectorPos(i))<<" "<<GetHorizontal_StripNbr(i)<<" "<<GetHorizontal_Energy(i)<<" "<<GetHorizontal_Charge(i)<<" "<<GetHorizontal_TimeCFD(i)<<" "<<GetHorizontal_TimeLED(i)<<" "<<GetHorizontal_Time(i)<<endl;
     }
   }
 
-  if(GetMultiplicityVertical()>0)
-  {
+  if(GetMultiplicityVertical()>0) {
     printf(RED "Vertical:\n" RESET_COLOR);
-    for(int i=0;i<GetMultiplicityVertical();i++)
-    {
-      printf(" %2i       %c        %2i     %11.2f  %12i  %12i  %14i  %14.2f\n",GetVertical_DetectorNbr(i), GetVertical_DetectorPos(i), GetVertical_StripNbr(i), GetVertical_Energy(i), GetVertical_Charge(i), GetVertical_TimeCFD(i), GetVertical_TimeLED(i), GetVertical_Time(i));
+    for(size_t i=0;i<GetMultiplicityVertical();i++) {
+      printf(" %2i       %c        %2i     %11.2f  %12f  %12i  %14i  %14.2f\n",GetVertical_DetectorNbr(i), GetVertical_DetectorPos(i), GetVertical_StripNbr(i), GetVertical_Energy(i), GetVertical_Charge(i), GetVertical_TimeCFD(i), GetVertical_TimeLED(i), GetVertical_Time(i));
     }
   }
 }
 
-void TCSMData::Print(int addr, bool horizontal)
-{
+void TCSMData::Print(int addr, bool horizontal) const {
   printf(DRED "\n \tPrinting a single ");
   if(horizontal)
     printf("horizontal");
@@ -95,14 +89,12 @@ void TCSMData::Print(int addr, bool horizontal)
   printf(" event at %2i\n" RESET_COLOR, addr);
   printf(GREEN "\tDetNbr  DetPos  StripNbr       Energy        Charge           CFD             LED            Time \n" RESET_COLOR);
 
-  if(horizontal)
-  {
+  if(horizontal) {
     printf(BLUE "\tHorizontal:\n" RESET_COLOR);
-    printf("\t %2i       %c        %2i     %11.2f  %12i  %12i  %14i  %14.2f\n",GetHorizontal_DetectorNbr(addr), GetHorizontal_DetectorPos(addr), GetHorizontal_StripNbr(addr), GetHorizontal_Energy(addr), GetHorizontal_Charge(addr), GetHorizontal_TimeCFD(addr), GetHorizontal_TimeLED(addr), GetHorizontal_Time(addr));
+    printf("\t %2i       %c        %2i     %11.2f  %12f  %12i  %14i  %14.2f\n",GetHorizontal_DetectorNbr(addr), GetHorizontal_DetectorPos(addr), GetHorizontal_StripNbr(addr), GetHorizontal_Energy(addr), GetHorizontal_Charge(addr), GetHorizontal_TimeCFD(addr), GetHorizontal_TimeLED(addr), GetHorizontal_Time(addr));
   }
-  if(!horizontal)
-  {
+  if(!horizontal) {
     printf(RED "\tVertical:\n" RESET_COLOR);
-    printf("\t %2i       %c        %2i     %11.2f  %12i  %12i  %14i  %14.2f\n",GetVertical_DetectorNbr(addr), GetVertical_DetectorPos(addr), GetVertical_StripNbr(addr), GetVertical_Energy(addr), GetVertical_Charge(addr), GetVertical_TimeCFD(addr), GetVertical_TimeLED(addr), GetVertical_Time(addr));
+    printf("\t %2i       %c        %2i     %11.2f  %12f  %12i  %14i  %14.2f\n",GetVertical_DetectorNbr(addr), GetVertical_DetectorPos(addr), GetVertical_StripNbr(addr), GetVertical_Energy(addr), GetVertical_Charge(addr), GetVertical_TimeCFD(addr), GetVertical_TimeLED(addr), GetVertical_Time(addr));
   }
 }

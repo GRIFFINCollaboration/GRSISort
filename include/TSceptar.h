@@ -32,23 +32,19 @@ class TSceptar : public TGRSIDetector {
 
      static TVector3 GetPosition(int DetNbr)  { return gPaddlePosition[DetNbr];}	//!
 
-     void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = "");           //!
+     void BuildHits(TDetectorData *data =0,Option_t *opt = "");           //!
      void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
 
      TSceptar& operator=(const TSceptar&);  //!
 
    private: 
-     TSceptarData *sceptardata;                                               //!  Used to build GRIFFIN Hits
-     std::vector <TSceptarHit> sceptar_hits;                                  //   The set of crystal hits
-
+     TSceptarData *sceptardata;                                               //!  Used to build SCEPTAR Hits
+     std::vector <TSceptarHit> sceptar_hits;                                  //   The set of sceptar hits
+      
      static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
-
-     bool beta;                                                               //   Is there a sceptar hit?
 
    public:
      static bool SetWave()      { return fSetWave;  }	                        //!
-     void SetBeta(bool flag = true) { beta = flag; }                          //!
-     bool Beta()                {return beta;}                                //!  
 
    private:
      static TVector3 gPaddlePosition[21];                                     //!  Position of each Paddle

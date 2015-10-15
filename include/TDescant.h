@@ -32,7 +32,7 @@ class TDescant : public TGRSIDetector {
 
      static TVector3 GetPosition(int DetNbr)  { return gPosition[DetNbr];}	//!
 
-     void BuildHits(TGRSIDetectorData *data =0,Option_t *opt = "");           //!
+     void BuildHits(TDetectorData *data =0,Option_t *opt = "");           //!
      void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
 
      TDescant& operator=(const TDescant&);  // 
@@ -50,7 +50,7 @@ class TDescant : public TGRSIDetector {
      bool Hit()                {return hit_flag;}                                //!  
      void SetHit(bool flag = true) { hit_flag = flag; }
    private:
-     static TVector3 gPosition[21];                                     //!  Position of each Paddle needs to be updated
+     static TVector3 gPosition[71];                                     //!  Position of each Paddle needs to be updated
 
    public:         
      void Copy(TDescant&) const;                //!

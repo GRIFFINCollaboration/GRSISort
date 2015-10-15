@@ -4,7 +4,9 @@
 ClassImp(TCSMHit)
 
 TCSMHit::TCSMHit()	{	
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
@@ -14,19 +16,19 @@ TCSMHit::~TCSMHit()	{	}
 void TCSMHit::Clear(Option_t *options)	{
 
    hor_d_strip 	= -1;
-   hor_d_charge = 0;
+   hor_d_charge = 0.0;
    hor_d_cfd    = 0.0;
 	
    ver_d_strip  = -1;
-   ver_d_charge	= 0;
+   ver_d_charge	= 0.0;
    ver_d_cfd	= 0.0;      
 	
    hor_e_strip  = -1;
-   hor_e_charge = 0;
+   hor_e_charge = 0.0;
    hor_e_cfd    = 0.0;
 	
    ver_e_strip  = -1;
-   ver_e_charge = 0;
+   ver_e_charge = 0.0;
    ver_e_cfd    = 0.0;      
 
    hor_d_energy = 0.0;   
@@ -261,16 +263,16 @@ bool TCSMHit::IsEmpty()
 {
   bool isempty=0;
   if(hor_d_strip == -1)
-    if(hor_d_charge == 0)
+    if(hor_d_charge < 1)
       if(hor_d_cfd == 0.0)
 	if(ver_d_strip == -1)
-	  if(ver_d_charge == 0)
+	  if(ver_d_charge < 1)
 	    if(ver_d_cfd == 0.0)
 	      if(hor_e_strip == -1)
-		if(hor_e_charge == 0)
+		if(hor_e_charge < 1)
 		  if( hor_e_cfd == 0.0)
 		    if(ver_e_strip == -1)
-		      if(ver_e_charge == 0)
+		      if(ver_e_charge <1.0)
 			if(ver_e_cfd == 0.0)
 			  if(hor_d_energy == 0.0)
 			    if(ver_d_energy == 0.0)

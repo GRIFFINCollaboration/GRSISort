@@ -1,5 +1,6 @@
-#include"TFragment.h"
-#include"TChannel.h"
+#include "TFragment.h"
+#include "TChannel.h"
+#include "TROOT.h"
 #include <iostream>
 
 #include <TClass.h>
@@ -17,7 +18,9 @@ ClassImp(TFragment)
 
 TFragment::TFragment(){
    // Default Constructor
-   Class()->IgnoreTObjectStreamer(true);
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
    Clear();
 }
 
@@ -67,18 +70,26 @@ void TFragment::Clear(Option_t *opt){
    if(!KValue.empty())     //->
    	KValue.clear();      //->
 
+   fPPG = NULL;
 }
 
-double TFragment::GetTimeStamp() const {
+long TFragment::GetTimeStamp() const {
    long time = TimeStampHigh;
    time  = time << 28;
    time |= TimeStampLow & 0x0fffffff;
-   double dtime = double(time)+ gRandom->Uniform();
+   return time;
+}
+
+
+double TFragment::GetTime() const {
+   double dtime = (double)(GetTimeStamp())+ gRandom->Uniform();
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan )//|| Charge.size()<1)
       return dtime;
    return dtime - chan->GetTZero(GetEnergy());
 }
+
+
 
 double TFragment::GetTZero() const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
@@ -95,13 +106,12 @@ long TFragment::GetTimeStamp_ns() {
    return 10*GetTimeStamp() + ns;  
 }
 
-Int_t TFragment::Get4GCfd(int i) { // return a 4G cfd in terms 
+Int_t TFragment::Get4GCfd(size_t i) { // return a 4G cfd in terms 
   if(Cfd.size()==0)                // of 1/256 ns since the trigger
      return -1;
   if(Cfd.size()<i)
      i = Cfd.size()-1;
   return  Cfd.at(i)&0x001fffff;
-
 }
 
 
@@ -121,57 +131,54 @@ double TFragment::GetEnergy() const {
 }
 */
 
-
-Int_t TFragment::GetZCross(int iter)const {
-
-   if((Zc.size()-1)>iter)
-      return 0;
-   return Zc.at(iter);
-
-}
-
-Int_t TFragment::GetCfd(int iter)const {
-   if((Cfd.size()-1)>iter)
-      return 0;
-   return Cfd.at(iter);
-}
-
-
-Int_t TFragment::GetLed(int iter)const {
-   if((Led.size()-1)>iter)
-      return 0;
-   return Led.at(iter);
-}
-
-
-double TFragment::GetEnergy(int i) const {
+double TFragment::GetEnergy(size_t i) const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || !(Charge.size()>i))
       return 0.00;
    if(chan->UseCalFileIntegration()) {
       //printf("I am here\n");
      return chan->CalibrateENG((int)(Charge.at(i)),0);  // this will use the integration value
-                                                        // in the tchannel if it exists.
+                                                        // in the TChannel if it exists.
    }
    if(KValue.size()>i && KValue.at(i)>0)
      return chan->CalibrateENG((int)(Charge.at(i)),(int)KValue.at(i));
    return chan->CalibrateENG((int)(Charge.at(i)));
 }
 
-double TFragment::GetCharge(int i) const {
+Float_t TFragment::GetCharge(size_t i) const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || !(Charge.size()>i))
       return 0.00;
    if(chan->UseCalFileIntegration()) {
-      return ((double)Charge.at(i)+gRandom->Uniform())/((double)chan->GetIntegration());// this will use the integration value
-   }                                                                       // in the tchannel if it exists.
+      return ((Float_t)Charge.at(i)+gRandom->Uniform())/((Float_t)chan->GetIntegration());// this will use the integration value
+   }                                                                                      // in the TChannel if it exists.
    if(KValue.size()>i && KValue.at(i)>0){
-      return ((double)Charge.at(i)+gRandom->Uniform())/((double)KValue.at(i));// this will use the integration value
+      return ((Float_t)Charge.at(i)+gRandom->Uniform())/((Float_t)KValue.at(i));// this will use the integration value
    }
-   return ((double)Charge.at(i)+gRandom->Uniform());// this will use no integration value
+   return ((Float_t)Charge.at(i)+gRandom->Uniform());// this will use no integration value
 }
 
-void TFragment::Print(Option_t *opt)	{
+ULong64_t TFragment::GetTimeInCycle() {
+   if(fPPG == NULL) {
+      fPPG = (TPPG*) gROOT->FindObject("TPPG");
+   }
+   if(fPPG == NULL) {
+      return 0;
+   }
+   return fPPG->GetTimeInCycle(GetTimeStamp());
+}
+
+ULong64_t TFragment::GetCycleNumber() {
+   if(fPPG == NULL) {
+      fPPG = (TPPG*) gROOT->FindObject("TPPG");
+   }
+   if(fPPG == NULL) {
+      return 0;
+   }
+   return fPPG->GetCycleNumber(GetTimeStamp());
+}
+
+void TFragment::Print(Option_t *opt) const {
    //Prints out all fields of the TFragment
 
 
@@ -191,10 +198,10 @@ void TFragment::Print(Option_t *opt)	{
 	   printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetChannelName());
    printf("\tChannel Address: 0x%08x\n", ChannelAddress);
    printf("\tChannel Num:      %i\n", ChannelNumber);
-   printf("\tCharge[%lu]	  ",Charge.size());   for(int x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");
-   printf("\tCFD[%lu]		  ",Cfd.size());      for(int x=0;x<Cfd.size();x++)   {printf( "     0x%08x", Cfd.at(x));} printf("\n");
-   printf("\tZC[%lu]		  ",Zc.size());      for(int x=0;x<Zc.size();x++)   {printf( "     0x%08x", Zc.at(x));} printf("\n");
-   printf("\tLED[%lu]		  ",Led.size());      for(int x=0;x<Led.size();x++)   {printf( "     0x%08x", Led.at(x));} printf("\n");
+   printf("\tCharge[%lu]	  ",Charge.size());   for(size_t x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");
+   printf("\tCFD[%lu]		  ",Cfd.size());      for(size_t x=0;x<Cfd.size();x++)   {printf( "     0x%08x", Cfd.at(x));} printf("\n");
+   printf("\tZC[%lu]		     ",Zc.size());       for(size_t x=0;x<Zc.size();x++)    {printf( "     0x%08x", Zc.at(x));} printf("\n");
+   printf("\tLED[%lu]		  ",Led.size());      for(size_t x=0;x<Led.size();x++)   {printf( "     0x%08x", Led.at(x));} printf("\n");
    printf("\tTimeStamp High: 0x%08x\n", TimeStampHigh);
    printf("\tTimeStamp Low:    0x%08x\n", TimeStampLow);
    //unsigned short temptime = (TimeStampLow & 0x0000ffff) - ((Cfd >> 4) & 0x0000ffff);   //TimeStampLow&0x0000ffff; 
@@ -245,7 +252,8 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
          return true;
    } else 
      return false;
-
+   
+   return false;
 }
 
 int TFragment::GetColor(Option_t *opt) const {

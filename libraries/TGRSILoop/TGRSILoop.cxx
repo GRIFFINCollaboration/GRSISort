@@ -12,6 +12,7 @@
 #include "TEpicsFrag.h"
 
 #include "TFragmentQueue.h"
+#include "TScalerQueue.h"
 #include "TGRSIRootIO.h"
 #include "TGRSIStats.h"
 #include "TGRSIRunInfo.h"
@@ -38,6 +39,7 @@ TGRSILoop::TGRSILoop()   {
 
    fMidasThreadRunning    = false;
    fFillTreeThreadRunning = false;
+   fFillScalerThreadRunning = false;
 
    fFragsSentToTree = 0;
    fFragsReadFromMidas = 0;
@@ -46,6 +48,7 @@ TGRSILoop::TGRSILoop()   {
 
    fMidasThread = 0;
    fFillTreeThread = 0;
+   fFillScalerThread = 0;
    fOdb = 0;
 
    fIamTigress = false;
@@ -75,6 +78,13 @@ void TGRSILoop::EndRun(int transition,int runnumber,int time)     {
       delete fFillTreeThread; fFillTreeThread = 0;
    }
 
+   if(fFillScalerThread) {
+      fFillScalerThread->join();
+      fFillScalerThreadRunning = false;
+      delete fFillScalerThread; 
+		fFillScalerThread = 0;
+   }
+
    //printf("\n\nFragments in que = %i \n\n",TFragmentQueue::GetQueue()->FragsInQueue());
 
    TGRSIRootIO::Get()->CloseRootOutFile();  
@@ -88,13 +98,15 @@ bool TGRSILoop::SortMidas() {
     
     if(TGRSIOptions::GetInputMidas().size()>0)  { //we have offline midas files to sort.
       TMidasFile *mfile = new TMidasFile;
-      for(int x=0;x<TGRSIOptions::GetInputMidas().size();x++) {
+      for(size_t x=0;x<TGRSIOptions::GetInputMidas().size();x++) {
          if(mfile->Open(TGRSIOptions::GetInputMidas().at(x).c_str()))  {
             //std::sting filename = mfile->GetName();
             fMidasThread = new std::thread(&TGRSILoop::ProcessMidasFile,this,mfile);
             fMidasThreadRunning = true;
             fFillTreeThread = new std::thread(&TGRSILoop::FillFragmentTree,this,mfile);
             fFillTreeThreadRunning = true;
+            fFillScalerThread = new std::thread(&TGRSILoop::FillScalerTree,this);
+            fFillScalerThreadRunning = true;
             //printf("\n\nJoining Midas Thread.\n\n");
             fMidasThread->join();
             //printf("\n\nFinished Midas Thread.\n\n");
@@ -149,6 +161,31 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
 
    printf("\n");
    //printf(" \n\n quiting fill tree thread \n\n");
+   return;
+}
+
+void TGRSILoop::FillScalerTree() {
+   fScalersSentToTree = 0;
+   TScalerData* scalerData = 0;
+   while(TScalerQueue::Get()->ScalersInQueue() != 0 || 
+         fMidasThreadRunning) {
+		scalerData = TScalerQueue::Get()->PopScaler();
+		if(scalerData) {
+         TGRSIRootIO::Get()->FillScalerTree(scalerData);
+ 	      delete scalerData;
+         fScalersSentToTree++;
+      }
+
+      if(!fMidasThreadRunning && TScalerQueue::Get()->ScalersInQueue()%5000==0) {
+         printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
+                DBLUE   "%i"   RESET_COLOR
+                "     scalers left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
+                TScalerQueue::Get()->ScalersInQueue(),fScalersSentToTree);
+      }
+   }
+
+
+   printf("\n");
    return;
 }
 
@@ -214,7 +251,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 						printf("using xml file: %s\n",incalfile.c_str());
 						std::ifstream inputxml; inputxml.open(incalfile.c_str()); inputxml.seekg(0,std::ios::end);
 						int length = inputxml.tellg(); inputxml.seekg(0,std::ios::beg);
-						char buffer[length]; inputxml.read(buffer,length);
+						char* buffer = new char[length]; inputxml.read(buffer,length);
 						SetFileOdb(buffer,length);
                   TGRSIRunInfo::SetXMLODBFileName(incalfile.c_str());
                   TGRSIRunInfo::SetXMLODBFileData(buffer);
@@ -228,7 +265,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
                   TGRSIRunInfo::SetXMLODBFileName(incalfile.c_str());
 						std::ifstream inputcal; inputcal.open(incalfile.c_str()); inputcal.seekg(0,std::ios::end);
 						int length = inputcal.tellg(); inputcal.seekg(0,std::ios::beg);
-						char buffer[length]; inputcal.read(buffer,length);
+						char* buffer = new char[length]; inputcal.read(buffer,length);
                   TGRSIRunInfo::SetXMLODBFileData(buffer);
                }
                TGRSIRunInfo::SetRunInfo(midasfile->GetRunNumber(),midasfile->GetSubRunNumber());
@@ -265,7 +302,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile *midasfile) {
 
 
 void TGRSILoop::SetFileOdb(char *data, int size) {
-   //check if we have already set the tchannels....
+   //check if we have already set the TChannels....
    //
    if(fOdb) {
    	delete fOdb;
@@ -345,7 +382,7 @@ void TGRSILoop::SetGRIFFOdb() {
       return;
    }
 
-   for(int x=0;x<address.size();x++) {
+   for(size_t x=0;x<address.size();x++) {
       TChannel *tempchan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
 		if(!tempchan) {
 			tempchan = new TChannel();		
@@ -361,7 +398,7 @@ void TGRSILoop::SetGRIFFOdb() {
       //TChannel::UpdateChannel(tempchan);
       TChannel::AddChannel(tempchan,"overwrite");
    } 
-   printf("\t%i tchannels created.\n",TChannel::GetNumberOfChannels());
+   printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
 
    return;
 }
@@ -437,7 +474,7 @@ void TGRSILoop::SetTIGOdb()  {
       return;
    }
 
-   for(int x=0;x<address.size();x++) {
+   for(size_t x=0;x<address.size();x++) {
       TChannel *tempchan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
 		if(!tempchan)
 			tempchan = new TChannel();		
@@ -507,13 +544,6 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
               break;
            }
            mevent->SetBankList();
-           if((banksize = mevent->LocateBank(NULL,"SCLR",&ptr))>0) {
-             if(!TGRSIRootIO::Get()->GetSCLRTree()) {
-               TSCLRFrag::SetAddressMap(0,0);
-               TGRSIRootIO::Get()->SetUpSCLRTree();
-             }
-	          if(!ProcessSCLR((uint32_t*)ptr, banksize, mevent, mfile)) { }
-           }
            break;
          case 4:
          case 5:
@@ -535,42 +565,27 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent *mevent, TMidasFile *mfile)   {
 void TGRSILoop::Initialize() {   }
 
 void TGRSILoop::Finalize() { 
+   int PPGEvents = TGRSIRootIO::Get()->GetTimesPPGCalled();
    printf("in finalization phase.\n");   
    printf(DMAGENTA "successfully sorted " DBLUE "%0d" DMAGENTA "/" 
           DCYAN "%0d" DMAGENTA "  ---> " DYELLOW " %.2f" DMAGENTA " percent passed." 
-          RESET_COLOR "\n",fFragsSentToTree,fFragsReadFromMidas,((double)fFragsSentToTree/(double)fFragsReadFromMidas)*100.);
-
-//   TIter *iter = TChannel::GetChannelIter();   
-//   while(TChannel *chan = (TChannel*)iter->Next()) {
-//      TGRSIRootIO::Get()->FillChannelTree(chan);
-//      TGRSIRootIO::Get()->GetChannelTree()->GetUserInfo()->Add(chan);
-//   }
-//   TGRSIRootIO::Get()->CloseRootOutFile();
+          RESET_COLOR "\n",fFragsSentToTree+PPGEvents+fScalersSentToTree,fFragsReadFromMidas,((double)(fFragsSentToTree+PPGEvents+fScalersSentToTree)/(double)fFragsReadFromMidas)*100.);
 }
 
 
 bool TGRSILoop::ProcessEPICS(float *ptr,int &dsize,TMidasEvent *mevent,TMidasFile *mfile) { 
    unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
-	 unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
-   int epics_banks = TDataParser::EPIXToScalar(ptr,dsize,mserial,mtime);
+	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
+   //int epics_banks = 
+	TDataParser::EPIXToScalar(ptr,dsize,mserial,mtime);
 
    return true;
 }
 
-bool TGRSILoop::ProcessSCLR(uint32_t *ptr,int &dsize,TMidasEvent *mevent,TMidasFile *mfile) { 
-   unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
-	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
-   int sclr_banks = TDataParser::SCLRToScalar(ptr,dsize,mserial,mtime);
-  return true;
-}
-
-
-
 bool TGRSILoop::ProcessTIGRESS(uint32_t *ptr, int &dsize, TMidasEvent *mevent, TMidasFile *mfile)   {
 	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
 	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
-   int iter=0;
-	int frags = TDataParser::TigressDataToFragment(ptr,dsize,&iter,mserial,mtime);
+	int frags = TDataParser::TigressDataToFragment(ptr,dsize,mserial,mtime);
 	if(frags>-1) {
       fFragsReadFromMidas += frags;
 	   return true;
@@ -587,7 +602,7 @@ bool TGRSILoop::Process8PI(uint32_t stream,uint32_t *ptr, int &dsize, TMidasEven
   
    std::string banklist = mevent->GetBankList();
    int frags = 0;
-   for(int i=0;i<banklist.length();i+=4) {
+   for(size_t i=0;i<banklist.length();i+=4) {
       std::string bankname;
       bankname = banklist.substr(i,4);
       dsize = mevent->LocateBank(0,bankname.c_str(),(void**)&ptr);
@@ -610,61 +625,56 @@ bool TGRSILoop::Process8PI(uint32_t stream,uint32_t *ptr, int &dsize, TMidasEven
 
 
 bool TGRSILoop::ProcessGRIFFIN(uint32_t *ptr, int &dsize, int bank, TMidasEvent *mevent, TMidasFile *mfile)   {
-	unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
-	unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
+   unsigned int mserial=0; if(mevent) mserial = (unsigned int)(mevent->GetSerialNumber());
+   unsigned int mtime=0;   if(mevent) mtime   = (unsigned int)(mevent->GetTimeStamp());
 
-   int iter  = 0;
-	int frags = 0; TDataParser::GriffinDataToFragment(ptr,dsize,&iter,bank,mserial,mtime);
-	while(iter < dsize) {
-     //printf(" iter / dsize = %i / %i \n",iter,dsize);
-	  frags = TDataParser::GriffinDataToFragment(ptr+iter,dsize-iter,&iter,bank,mserial,mtime);
-     fFragsReadFromMidas += 1;//= frags;
-     if(frags>-1)	{
-       //fFragsReadFromMidas += 1;//= frags;
-       //return true;
-     } else {
-       //fFragsReadFromMidas += 1;   // if the midas bank fails, we record info about the fail conversion and try again.  pcb.
-       if(!suppress_error) {       // 
-			if(!TGRSIOptions::LogErrors()) {
-			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
-			   printf(DRED "\nBad things are happening. Failed around datum %i" RESET_COLOR "\n", (iter));// frags));
-	    		   if(mevent)  mevent->Print(Form("a%i",(iter-1)));//frags)-1));
-			   printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
-		   } else {
-				std::string errfilename; 
-				if(mfile) {
-               if(mfile->GetSubRunNumber() != -1)
-                  errfilename.append(Form("error%05i_%03i.log",mfile->GetRunNumber(),mfile->GetSubRunNumber()));
-               else    
-                  errfilename.append(Form("error%05i.log",mfile->GetRunNumber()));
+   //loop over words in event to find fragment header
+   for(int index = 0; index < dsize;) {
+      if(((ptr[index])&0xf0000000) == 0x80000000) {
+         //if we found a fragment header we pass the data to the data parser which returns the number of words read
+         int words = TDataParser::GriffinDataToFragment(&ptr[index],dsize-index,bank,mserial,mtime);
+         if(words>0) {
+            //we successfully read one event with <words> words, so we advance the index by words
+            ++fFragsReadFromMidas;
+            index += words;
+         } else {	       
+            //we failed to read the fragment on word <-words>, so advance the index by -words and we create an error message
+            ++fFragsReadFromMidas;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
+            index -= words;
+            if(!suppress_error) {
+               if(!TGRSIOptions::LogErrors()) {
+                  printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+                  printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", index);
+       	          if(mevent)  mevent->Print(Form("a%i",index-1));
+                  printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+               } else {
+                  std::string errfilename; 
+                  if(mfile) {
+                     if(mfile->GetSubRunNumber() != -1) {
+                        errfilename.append(Form("error%05i_%03i.log",mfile->GetRunNumber(),mfile->GetSubRunNumber()));
+                     } else {
+                        errfilename.append(Form("error%05i.log",mfile->GetRunNumber()));
+                     }
+                  } else {
+                     errfilename.append("error_log.log");
+                  }
+                  FILE* originalstdout = stdout;
+                  FILE *errfileptr = freopen(errfilename.c_str(),"a",stdout);
+                  printf("\n//**********************************************//\n");
+                  if(mevent) mevent->Print("a");
+                  printf("\n//**********************************************//\n");
+                  fclose(errfileptr);
+                  stdout = originalstdout;
+               }
             }
-            else
-					errfilename.append("error_log.log");
-            FILE *errfileptr = freopen(errfilename.c_str(),"a",stdout);
-			   printf("\n//**********************************************//\n");
-				if(mevent) mevent->Print("a");
-			   printf("\n//**********************************************//\n");
-			   fclose(errfileptr);
-		      int fd = open("/dev/tty", O_WRONLY);
-	     		stdout = fdopen(fd, "w");
-			}
-		 }
-       //ok, now we have multiple frags per event - and we know we failed parseing an
-       //midas event. The error has already been logged above, let's check for another 
-       //header and try again...   pcb. (7/5/15).
-       while( ((*(ptr+iter)&0xf0000000)!=0x80000000) && (iter < dsize) ) { iter++; }
-       if(!suppress_error) {       // 
-         if(!TGRSIOptions::LogErrors()) {
-           if(iter <dsize) {
-             printf(DGREEN "Recovered data stream on datum %i" RESET_COLOR "\n",iter);
-           } 
-           printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
          }
-       }
-     }  
+      } else {
+         //this is not a fragment header, so we advance the index
+         ++index;
+      }
    }
+
    return true;
-   //return false;
 }
 
 

@@ -11,45 +11,39 @@ class TCrystalHit : public TGRSIDetectorHit	{
 
 	public:
 		TCrystalHit();
+		TCrystalHit(const TCrystalHit&);
 		virtual ~TCrystalHit();
 
 	private: 
-		int segment;		      //
-		int charge;		         //
+		int segment;		//
+		//int charge;		  //
 
-		double energy;	         //
-		double time;		      //
-		double cfd;		         //
+		double local_energy;	//
+      bool suppress;
+		//double time;		//
+		//double cfd;		  //
 
-      bool   suppress;        //
-
-		std::vector<int> wave;	//!
+		//std::vector<int> wave;	//!
 
 	public:
-		void SetHit() {};
+		//void SetHit() {};
 
-		virtual void Clear(Option_t *opt = "");		//!
-		virtual void Print(Option_t *opt = "");		//!
+		virtual void Clear(Option_t *opt = "");		      //!
+		virtual void Print(Option_t *opt = "") const;		//!
+      virtual void Copy(TCrystalHit&) const;             //!
 
-		inline int    GetSegment()  {   return segment;}       //!
-		inline int    GetCharge()	{	return charge; }	//!		
-		inline double GetEnergy()	{	return energy;	}	//!
-		inline double GetTime()		{	return time;	}	//!
-		inline double GetCfd()		{	return cfd;	}	//!
+		inline int    GetSegment()       { return segment;}   //!
+		inline double GetEnergy() const 	{ return local_energy;	}	//!
 
-      TVector3 GetPosition() const {}
-		inline void SetSegmentNumber(const int &seg) { segment = seg;   }       //!	
-		inline void SetCharge(const int &chg)	{	charge = chg;	}	//!
-		inline void SetEnergy(const double &e)	{	energy = e;	}	//!
-		inline void SetTime(const double &t)	{	time = t;	}	//!
-		inline void SetCfd(const double &c)	{	cfd = c;	}	//!
+      TVector3 GetPosition() const {return TVector3();}
+		inline void SetSegment(const int &seg) { segment = seg;   }       //!
+		inline void SetEnergy(const double &e)	{	local_energy = e;	}	//!
 
       inline void SetSuppress(const bool flag = true) { suppress = flag;} 
       inline bool Suppress() {return suppress;}
 
-		inline void SetWave(const std::vector<int> &w)	{	wave = w;	} //!
-		inline std::vector<int> *GetWave()	{	return &wave;	}	  //!
-
+		//inline void SetWave(const std::vector<int> &w)	{	wave = w;	} //!
+		//inline std::vector<int> *GetWave()	{	return &wave;	}	  //!
 
 	ClassDef(TCrystalHit,1)
 };
