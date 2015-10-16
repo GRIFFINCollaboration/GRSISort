@@ -15,8 +15,6 @@
 class TRFFitter;
 #endif
 
-using namespace std;
-
 class TRF :  public TDetector {
 	
 	public:
