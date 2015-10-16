@@ -3,8 +3,6 @@
 #include "TKinematics.h"
 #include "Globals.h"
 
-using namespace std;
-
 ClassImp(TKinematics)
 
 //////////////////////////////////////////////////////////////////
@@ -173,9 +171,6 @@ void TKinematics::InitKin() {
 
 
 TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part){
-  //cout << "maximum scattering angle: " << GetMaxAngle(fVcm[part])*180./PI  << endl;
-  //cout << "max " << thmax << " min " << thmin << " steps " << (int)((thmax-thmin)/size)+1 << endl;
-
   //double* energy = new double[(int)((thmax-thmin)/size)+1];
   //double* angle = new double[(int)((thmax-thmin)/size)+1];
 
@@ -225,9 +220,6 @@ TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
 
 
 TGraph* TKinematics::Evslab_graph(double thmin, double thmax, double size, int part){
-  //cout << "maximum scattering angle: " << GetMaxAngle(fVcm[part])*180./PI  << endl;
-  //cout << "max " << thmax << " min " << thmin << " steps " << (int)((thmax-thmin)/size)+1 << endl;
-
   //double* energy = new double[(int)((thmax-thmin)/size)+1];
   //double* angle = new double[(int)((thmax-thmin)/size)+1];
 
@@ -298,12 +290,9 @@ TSpline3* TKinematics::Evscm(double thmin, double thmax, double size, int part){
 double TKinematics::GetExcEnergy(TLorentzVector recoil){
 //Gets the excitation energy of the recoil in the CM frame using a 4-vector
   TLorentzVector ejectile;
-  //cout << "-GetBetacm() " << -GetBetacm() << endl;
   recoil.Boost(0,0,-GetBetacm()); //boost to cm system
   
   ejectile.SetVect( -recoil.Vect() ); //pr = -pe
-  //cout << "GetCmEnergy() " << GetCmEnergy() << endl;
-  //cout << "recoil.E() " << recoil.E() << endl;
   ejectile.SetE(GetCmEnergy() - recoil.E()); //Ee=Ecm-Er
   
   ejectile.Boost(0,0,GetBetacm()); //boost to lab system
@@ -402,9 +391,6 @@ void TKinematics::FinalCm(){
 
 //angle of proton in cm system
   if(fParticle[2]==NULL && fParticle[3]==NULL){
-    // cout << "warning: outgoing particles not defined! Assuming elastic scattering" << endl;
-    // cout << "recoil = target" << endl;
-    // cout << "ejectile = projectile" << endl;
     fM[2]=fParticle[1]->GetMass();
     fM[3]=fParticle[0]->GetMass();     
   }
@@ -418,18 +404,6 @@ void TKinematics::FinalCm(){
   fVcm[3]=V_pe(fPcm[3],fEcm[3]);
   fBetacm[2]=-betacm_tm(fTcm[2],fM[2]);
   fBetacm[3]=betacm_tm(fTcm[3],fM[3]);
-
-  /*
-  for(int i=0;i<4;i++){
-    cout << "fBetacm["<<i<<"] = " << fBetacm[i]<< "\t";
-  }
-  cout <<endl;
-  for(int i=0;i<4;i++){
-    cout << "fPcm["<<i<<"] = " << fPcm[i]<< "\t";
-  }
-  cout <<endl;
-  cout << "fBeta_cm = " << fBeta_cm<<endl;
-  */
 }
 void TKinematics::Final(double angle, int part){
 // Calculates the recoil and ejectile energies and momenta in the lab frame
@@ -444,15 +418,11 @@ void TKinematics::Final(double angle, int part){
   fT[2]=T_final(2);
   fT[3]=T_final(3);
   //fP[2]=fGamma_cm*(fPcm[2]+fBeta_cm*fEcm[2]);
-  //cout << "Vr = " << V_pe(fP[2],fE[2]) << endl; 
   //fP[3]=fGamma_cm*(fPcm[3]+fBeta_cm*fEcm[3]);
-  //cout << "Ve = " << V_pe(fP[3],fE[3]) << endl; 
   fP[2]=P_tm(fT[2],fM[2]);
   //fP[2]=fGamma_cm*fPcm[2]*(cos(fThetacm[2])+fBeta_cm/fVcm[2]);
-  //cout << fTheta[2]*180./PI << "\t" << GetTlab(2)  << "\tVr = " << V_pe(fP[2],fE[2]) << "\tPr = " << fP[2] << "\t"; 
   fP[3]=P_tm(fT[3],fM[3]);
   //fP[3]=fGamma_cm*fPcm[3]*(cos(fThetacm[3])+fBeta_cm/fVcm[3]);
-  //cout << fTheta[3]*180./PI << "\t" << GetTlab(3)  << "\tVe = " << V_pe(fP[3],fE[3]) << "\tPe = " << fP[3] << endl; 
   fV[2]=V_pe(fP[2],fE[2]);
   fV[3]=V_pe(fP[3],fE[3]);
 }
@@ -476,14 +446,13 @@ void TKinematics::SetAngles(double angle, int part, bool upper){
     other =2;
   }
   else{
-    cout << " error in TKinematics::SetAngles("<<angle<<", "<<part<<") "<<endl;
-    cout << " part must be 2 or 3 " << endl;
+    std::cout << " error in TKinematics::SetAngles("<<angle<<", "<<part<<") "<<std::endl;
+    std::cout << " part must be 2 or 3 " << std::endl;
     exit(4);
   } 
   fTheta[given]=angle;
   fThetacm[given]=Angle_lab2cm(fVcm[given],fTheta[given]);
   if(given==3&&(fParticle[0]->GetMass()>fParticle[1]->GetMass())){
-    //cout << "inverse kinematics" << endl;
     fThetacm[given]=Angle_lab2cminverse(fVcm[given],fTheta[given],upper);
   }
   fThetacm[other]=PI-fThetacm[given];
@@ -543,11 +512,9 @@ double TKinematics::Angle_lab2cm(double vcm, double angle_lab){
   x = fBeta_cm/vcm;
 
   if(tan_lab>=0){
-    //cout << "tan_lab>=0" << endl;
     return acos( (-x*gtan+sqrt( 1+gtan*(1-x*x) ))/(1+gtan) );
   }
   else{
-    //cout << "tan_lab<0" << endl;
     return acos( (-x*gtan-sqrt( 1+gtan*(1-x*x) ))/(1+gtan) );
   }
 }
@@ -557,7 +524,6 @@ double TKinematics::Angle_lab2cminverse(double vcm, double angle_lab, bool upper
   tan_lab = tan(angle_lab);
   gtan = tan_lab*tan_lab*fGamma_cm*fGamma_cm;
   x = fBeta_cm/vcm;
-  //cout << "angle_lab " << angle_lab*180./TMath::Pi() << endl;
 
   if(upper){
     return acos( (-x*gtan+sqrt( 1+gtan*(1-x*x) ))/(1+gtan) );
@@ -798,7 +764,7 @@ TSpline3* TKinematics::Ruthvslab(double thmin, double thmax, double size, int pa
     if(part==3||part==2)
       angle[i]=thmin+i*size; //angle[i] is in cm system
     else{
-      cout << "error " << endl;
+      std::cout << "error " << std::endl;
       exit(1);
     }
     if(angle[i]>179.99||angle[i]<0.01)
