@@ -26,6 +26,7 @@
 #include "TObject.h"
 #include "Globals.h"
 #include "TCollection.h"
+#include "TTree.h"
 #include "TH1D.h"
 
 #include "TPPG.h"
@@ -63,7 +64,7 @@ class TScalerData : public TObject {
 		 return 0; 
 	}
 
-	Long64_t GetTimeStamp() const { return fTimeStamp; }
+	ULong64_t GetTimeStamp() const { return fTimeStamp; }
 
 	void Print(Option_t *opt = "") const;
 	void Clear(Option_t *opt = "");
@@ -81,26 +82,18 @@ class TScalerData : public TObject {
 
 class TScaler : public TObject {
  public:
-
- public:
-	TScaler();
+	TScaler(bool loadIntoMap = false);
+	TScaler(TTree*, bool loadIntoMap = false);
 	TScaler(const TScaler&);
 	virtual ~TScaler(); 
 
 	void Copy(TObject& rhs) const;
  public: 
-	void AddData(UInt_t address, TScalerData* scaler);
 	std::vector<UInt_t> GetScaler(UInt_t address, ULong64_t time) const;
 	UInt_t GetScaler(UInt_t address, ULong64_t time, size_t index) const;
 	UInt_t GetScalerDifference(UInt_t address, ULong64_t time, size_t index) const;
-	Bool_t MapIsEmpty() const;
-	std::size_t Size() const {return fScalerMap.size();}
-	std::size_t NumberOfScalerReadouts() const;
-	Long64_t Merge(TCollection *list);
-	void Add(const TScaler* scaler);
-	void operator+=(const TScaler& rhs);                           
+	ULong64_t NumberOfScalerReadouts() const { return fEntries; };
    
-	ULong64_t GetTimePeriod();
 	ULong64_t GetTimePeriod(UInt_t address);
 
    std::map<UInt_t, ULong64_t> GetTimePeriodMap() { return fTimePeriod; }
@@ -111,15 +104,20 @@ class TScaler : public TObject {
 	virtual void Clear(Option_t *opt = "");
    using TObject::Draw; //This is to remove hidden overload
 	TH1D* Draw(UInt_t address, size_t index = 0, Option_t *opt = "");
+	TH1D* Draw(UInt_t lowAddress, UInt_t highAddress, size_t index = 0, Option_t *opt = "");
 
  private:
-	std::map<UInt_t, std::map<ULong_t, TScalerData*> > fScalerMap; //a map between addresses and maps between timestamps and scaler data
+	TTree* fTree;
+	TScalerData* fScalerData;
+	Long64_t fEntries;
+	std::map<UInt_t, std::map<ULong64_t, std::vector<UInt_t> > > fScalerMap; //! an address-map of timestamp mapped scaler values
 	std::map<UInt_t, ULong64_t> fTimePeriod; //! a map between addresses and time differences (used to calculate the time period)
 	std::map<UInt_t,std::map<ULong64_t, int> > fNumberOfTimePeriods;//!
-	ULong64_t fTotalTimePeriod;//!
+	ULong64_t fTotalTimePeriod;         //!
 	std::map<ULong64_t,int> fTotalNumberOfTimePeriods;//!
-	TPPG* fPPG; //!
-	std::map<UInt_t, TH1D*> fHist; //!
+	TPPG* fPPG;                         //!
+	std::map<UInt_t, TH1D*> fHist;      //! map to store histograms that have already been drawn
+	std::map<std::pair<UInt_t, UInt_t>, TH1D*> fHistRange; //! map to store histograms for address-ranges
 
 	ClassDef(TScaler,2) //Contains scaler information
 };

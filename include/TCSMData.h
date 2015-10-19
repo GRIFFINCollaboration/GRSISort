@@ -14,7 +14,6 @@
 #include <cstdlib>
 #include <vector>
 //#include <map>
-using namespace std ;
 
 // ROOT
 #include "TFragment.h"
@@ -26,28 +25,28 @@ class TCSMData : public TDetectorData  {
 private:
   // CSM
   // Energy
-  vector<UShort_t>   fCSM_StripHorizontal_DetectorNbr;	//!
-  vector<Char_t>     fCSM_StripHorizontal_DetectorPos;	//!
-  vector<Short_t>    fCSM_StripHorizontal_StripNbr;		//!
-  vector<TFragment>  fCSM_StripHorizontal_Fragment;      //!
-  //vector<Double_t>   fCSM_StripHorizontal_Energy;			//!
-  //vector<Int_t>	   fCSM_StripHorizontal_Charge;			//!
-  //vector<Int_t>      fCSM_StripHorizontal_TimeCFD;			//!
-  //vector<Int_t>      fCSM_StripHorizontal_TimeLED;			//!
-  //vector<Double_t>   fCSM_StripHorizontal_Time;			//!
-  //vector<vector<Short_t> > fCSM_StripHorizontal_Wave;			//!  
+  std::vector<UShort_t>   fCSM_StripHorizontal_DetectorNbr;	//!
+  std::vector<Char_t>     fCSM_StripHorizontal_DetectorPos;	//!
+  std::vector<Short_t>    fCSM_StripHorizontal_StripNbr;		//!
+  std::vector<TFragment>  fCSM_StripHorizontal_Fragment;      //!
+  //std::vector<Double_t>   fCSM_StripHorizontal_Energy;			//!
+  //std::vector<Int_t>	   fCSM_StripHorizontal_Charge;			//!
+  //std::vector<Int_t>      fCSM_StripHorizontal_TimeCFD;			//!
+  //std::vector<Int_t>      fCSM_StripHorizontal_TimeLED;			//!
+  //std::vector<Double_t>   fCSM_StripHorizontal_Time;			//!
+  //std::vector<std::vector<Short_t> > fCSM_StripHorizontal_Wave;			//!  
 
 
-  vector<UShort_t>   fCSM_StripVertical_DetectorNbr;		//!
-  vector<Char_t>     fCSM_StripVertical_DetectorPos;		//!
-  vector<Short_t>    fCSM_StripVertical_StripNbr;			//!
-  vector<TFragment>  fCSM_StripVertical_Fragment;      //!
-  //vector<Double_t>   fCSM_StripVertical_Energy;			   //!
-  //vector<Int_t>	   fCSM_StripVertical_Charge;			   //!
-  //vector<Int_t>      fCSM_StripVertical_TimeCFD;			//!
-  //vector<Int_t>      fCSM_StripVertical_TimeLED;			//!
-  //vector<Double_t>   fCSM_StripVertical_Time;				//!
-  //vector<vector<Short_t> > fCSM_StripVertical_Wave;			//!	
+  std::vector<UShort_t>   fCSM_StripVertical_DetectorNbr;		//!
+  std::vector<Char_t>     fCSM_StripVertical_DetectorPos;		//!
+  std::vector<Short_t>    fCSM_StripVertical_StripNbr;			//!
+  std::vector<TFragment>  fCSM_StripVertical_Fragment;      //!
+  //std::vector<Double_t>   fCSM_StripVertical_Energy;			   //!
+  //std::vector<Int_t>	   fCSM_StripVertical_Charge;			   //!
+  //std::vector<Int_t>      fCSM_StripVertical_TimeCFD;			//!
+  //std::vector<Int_t>      fCSM_StripVertical_TimeLED;			//!
+  //std::vector<Double_t>   fCSM_StripVertical_Time;				//!
+  //std::vector<std::vector<Short_t> > fCSM_StripVertical_Wave;			//!	
 
   static bool fIsSet; //!
 
@@ -74,7 +73,7 @@ public:
   //inline void SetHorizontal_TimeCFD(const Int_t &TimeCFD)   {fCSM_StripHorizontal_TimeCFD.push_back(TimeCFD);}			//!
   //inline void SetHorizontal_TimeLED(const Int_t &TimeLED)   {fCSM_StripHorizontal_TimeLED.push_back(TimeLED);}			//!
   //inline void SetHorizontal_Time(const Double_t &Time)         {fCSM_StripHorizontal_Time.push_back(Time);}						//!
-  //inline void SetHorizontal_Wave(const vector<Short_t> &Wave)    {fCSM_StripHorizontal_Wave.push_back(Wave);}						//!
+  //inline void SetHorizontal_Wave(const std::vector<Short_t> &Wave)    {fCSM_StripHorizontal_Wave.push_back(Wave);}						//!
 
   inline void SetVertical_DetectorNbr(const UShort_t &DetNbr){fCSM_StripVertical_DetectorNbr.push_back(DetNbr);}		//!
   inline void SetVertical_DetectorPos(const UShort_t &DetPos){fCSM_StripVertical_DetectorPos.push_back(DetPos);}		//!
@@ -85,7 +84,7 @@ public:
   //inline void SetVertical_TimeCFD(const Int_t &TimeCFD)   {fCSM_StripVertical_TimeCFD.push_back(TimeCFD);}			//!
   //inline void SetVertical_TimeLED(const Int_t &TimeLED)   {fCSM_StripVertical_TimeLED.push_back(TimeLED);}			//!
   //inline void SetVertical_Time(const Double_t &Time)         {fCSM_StripVertical_Time.push_back(Time);}						//!
-  //inline void SetVertical_Wave(const vector<Short_t> &Wave)    {fCSM_StripVertical_Wave.push_back(Wave);}							//!
+  //inline void SetVertical_Wave(const std::vector<Short_t> &Wave)    {fCSM_StripVertical_Wave.push_back(Wave);}							//!
 
   inline void SetHorizontal(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
     SetHorizontal_DetectorNbr(mnemonic->arrayposition);
@@ -120,7 +119,7 @@ public:
   inline Int_t    GetHorizontal_TimeCFD(const unsigned int &i)     const {return fCSM_StripHorizontal_Fragment.at(i).GetCfd();} //!
   inline Int_t    GetHorizontal_TimeLED(const unsigned int &i)     const {return fCSM_StripHorizontal_Fragment.at(i).GetLed();} //!
   inline Double_t GetHorizontal_Time(const unsigned int &i)        const {return fCSM_StripHorizontal_Fragment.at(i).GetTimeStamp();} //!
-  inline vector<Short_t> GetHorizontal_Wave(const unsigned int &i) const {return fCSM_StripHorizontal_Fragment.at(i).wavebuffer;} //!
+  inline std::vector<Short_t> GetHorizontal_Wave(const unsigned int &i) const {return fCSM_StripHorizontal_Fragment.at(i).wavebuffer;} //!
 
   inline TFragment GetHorizontal_Fragment(const unsigned int &i)      const {return fCSM_StripHorizontal_Fragment.at(i);} //!
 
@@ -132,7 +131,7 @@ public:
   inline Int_t    GetVertical_TimeCFD(const unsigned int &i)     const {return fCSM_StripHorizontal_Fragment.at(i).GetCfd();} //!
   inline Int_t    GetVertical_TimeLED(const unsigned int &i)     const {return fCSM_StripHorizontal_Fragment.at(i).GetLed();} //!
   inline Double_t GetVertical_Time(const unsigned int &i)        const {return fCSM_StripHorizontal_Fragment.at(i).GetTimeStamp();} //!
-  inline vector<Short_t> GetVertical_Wave(const unsigned int &i) const {return fCSM_StripHorizontal_Fragment.at(i).wavebuffer;} //!
+  inline std::vector<Short_t> GetVertical_Wave(const unsigned int &i) const {return fCSM_StripHorizontal_Fragment.at(i).wavebuffer;} //!
   
   inline TFragment GetiVertical_Fragment(const unsigned int &i)      const {return fCSM_StripVertical_Fragment.at(i);} //!
   inline unsigned int GetMultiplicityHorizontal() const {return fCSM_StripHorizontal_DetectorNbr.size();}				//!

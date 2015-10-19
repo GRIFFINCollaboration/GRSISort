@@ -17,8 +17,6 @@
 #define PI                       (TMath::Pi())
 #endif
 
-using namespace std;
-
 class TKinematics : public TNamed {
 public:
   TKinematics(double beame, const char* projectile, const char* target,const char* ejectile = NULL, const char* recoil = NULL, const char *name = "");

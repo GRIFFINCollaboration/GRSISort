@@ -23,8 +23,6 @@ class TBGOData;
 
 #include "TGRSIDetector.h" 
 
-using namespace std;
-
 class TTigress : public TGRSIDetector {
 
 	public:

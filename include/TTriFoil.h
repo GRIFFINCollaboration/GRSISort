@@ -15,8 +15,6 @@
 class TTriFoilData;
 #endif
 
-using namespace std;
-
 class TTriFoil :  public TDetector {
 	
 	public:

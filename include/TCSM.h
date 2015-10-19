@@ -55,14 +55,14 @@ class TCSM :  public TDetector 	{
 	private: 
 		TCSMData *data;                             //!
 		std::vector <TCSMHit> csm_hits;
-		void BuildVH(vector<int> &,vector<int> &,vector<TCSMHit> &,TCSMData*);
-		void BuilddEE(vector<TCSMHit> &,vector<TCSMHit> &,vector<TCSMHit> &);
-		void OldBuilddEE(vector<TCSMHit> &,vector<TCSMHit> &,vector<TCSMHit> &);
-		void MakedEE(vector<TCSMHit> &DHitVec,vector<TCSMHit> &EHitVec,vector<TCSMHit> &BuiltHits);
+		void BuildVH(std::vector<int> &,std::vector<int> &,std::vector<TCSMHit> &,TCSMData*);
+		void BuilddEE(std::vector<TCSMHit> &,std::vector<TCSMHit> &,std::vector<TCSMHit> &);
+		void OldBuilddEE(std::vector<TCSMHit> &,std::vector<TCSMHit> &,std::vector<TCSMHit> &);
+		void MakedEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,std::vector<TCSMHit> &BuiltHits);
 		TCSMHit MakeHit(int, int, TCSMData*);
-		TCSMHit MakeHit(vector<int> &,vector<int> &, TCSMData*);
+		TCSMHit MakeHit(std::vector<int> &,std::vector<int> &, TCSMData*);
 		TCSMHit CombineHits(TCSMHit d_hit,TCSMHit e_hit);
-		void RecoverHit(char, int, TCSMData *, vector<TCSMHit> &);
+		void RecoverHit(char, int, TCSMData *, std::vector<TCSMHit> &);
 		bool AlmostEqual(int, int);
 		bool AlmostEqual(double,double);
 		

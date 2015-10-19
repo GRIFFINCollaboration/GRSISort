@@ -498,7 +498,7 @@ void TTigress::BuildAddBack(Option_t *opt)	{
 		 	bool used = false;
 			 for(int j =0; j<addback_hits.GetEntries();j++)    {
 		 	   TVector3 res = GetAddBackHit(j)->GetLastHit() - GetTigressHit(i)->GetPosition();
-		     	int d_time = abs(GetAddBackHit(j)->GetTime() -  GetTigressHit(i)->GetTime());
+		     	int d_time = std::abs(GetAddBackHit(j)->GetTime() -  GetTigressHit(i)->GetTime());
 
 				int seg1 = std::get<2>(GetAddBackHit(j)->GetLastPosition());
 				int seg2 = GetTigressHit(i)->GetInitialHit();

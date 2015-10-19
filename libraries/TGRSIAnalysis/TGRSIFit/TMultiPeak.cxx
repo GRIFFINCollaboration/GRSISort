@@ -140,9 +140,10 @@ Bool_t TMultiPeak::InitParams(TH1 *fithist){
 
    //We need to initialize parameters for every peak in the fit
    for(int i=0; i<(int)fPeakVec.size();++i){
-      Int_t bin = fithist->GetXaxis()->FindBin(fPeakVec.at(i)->GetCentroid());
+      Double_t centroid = fPeakVec.at(i)->GetCentroid();
+      Int_t bin = fithist->GetXaxis()->FindBin(centroid);
       this->SetParLimits(6*i+5,-fithist->GetBinContent(bin),fithist->GetBinContent(bin)*5.);
-      this->SetParLimits(6*i+6,bin-4,bin+4);
+      this->SetParLimits(6*i+6,centroid-4,centroid+4);
       this->SetParLimits(6*i+7,0.1,xhigh-xlow);//This will be linked to other peaks eventually.
       this->SetParLimits(6*i+8,0.000001,10);
       this->SetParLimits(6*i+9,0.000001,100);
@@ -151,7 +152,7 @@ Bool_t TMultiPeak::InitParams(TH1 *fithist){
 
       //Now set the actual paramter to start the fit from these points
       this->SetParameter(Form("Height_%i",i),fithist->GetBinContent(bin));
-      this->SetParameter(Form("Centroid_%i",i),bin);
+      this->SetParameter(Form("Centroid_%i",i),centroid);
       //  this->SetParameter("sigma",(xhigh-xlow)*0.5); // slightly more robust starting value for sigma -JKS
       //  this->SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
       this->SetParameter(Form("Sigma_%i",i),TMath::Sqrt(9.0 + 4.*GetParameter(Form("Centroid_%i",i))/1000.));
