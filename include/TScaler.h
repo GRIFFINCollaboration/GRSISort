@@ -99,8 +99,6 @@ class TScaler : public TObject {
    std::map<UInt_t, ULong64_t> GetTimePeriodMap() { return fTimePeriod; }
    std::map<UInt_t,std::map<ULong64_t, int> > GetNumberOfTimePeriods() { return fNumberOfTimePeriods; }
 
-	virtual void Print(Option_t *opt, UInt_t address) const;
-   virtual void Print(Option_t *opt = "") const { Print(opt,0); } //This is to remove hidden overload warning
 	virtual void Clear(Option_t *opt = "");
    using TObject::Draw; //This is to remove hidden overload
 	TH1D* Draw(UInt_t address, size_t index = 0, Option_t *opt = "");
