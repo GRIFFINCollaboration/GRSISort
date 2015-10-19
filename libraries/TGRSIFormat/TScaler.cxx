@@ -86,7 +86,18 @@ TScaler::TScaler(const TScaler& rhs) : TObject() {
 }
 
 TScaler::~TScaler(){
-   //Clear();//clear deletes histograms which can cause problems with root assuming ownership of all histograms
+   //Clear() deletes histograms which can cause problems with root assuming ownership of all histograms
+	fTree = NULL;
+	fScalerData = NULL;
+	fEntries = 0;
+   fTimePeriod.clear();
+   fNumberOfTimePeriods.clear();
+   fTotalTimePeriod = 0;
+   fTotalNumberOfTimePeriods.clear();
+	fPPG = NULL;
+	fHist.clear();
+	fHistRange.clear();
+	fScalerMap.clear();
 }
 
 void TScaler::Copy(TObject &obj) const {
@@ -221,18 +232,26 @@ void TScaler::Clear(Option_t *opt){
    fTotalTimePeriod = 0;
    fTotalNumberOfTimePeriods.clear();
 	fPPG = NULL;
-	for(auto addrIt = fHist.begin(); addrIt != fHist.end(); ++addrIt) {
-	  if(addrIt->second != NULL) {
-		 delete (addrIt->second);
-		 addrIt->second = NULL;
-	  }
+ 	for(auto addrIt = fHist.begin(); addrIt != fHist.end(); ++addrIt) {
+		if(addrIt->second != NULL) {
+			delete (addrIt->second);
+			addrIt->second = NULL;
+		}
 	}
 	fHist.clear();
+ 	for(auto addrIt = fHistRange.begin(); addrIt != fHistRange.end(); ++addrIt) {
+		if(addrIt->second != NULL) {
+			delete (addrIt->second);
+			addrIt->second = NULL;
+		}
+	}
+	fHistRange.clear();
 	fScalerMap.clear();
 }
 
 TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
-	///draw scaler differences (i.e. current scaler minus last scaler) vs. time in cycle
+	///Draw scaler differences (i.e. current scaler minus last scaler) vs. time in cycle.
+	///Passing "redraw" as option forces re-drawing of the histogram (e.g. for a different index).
    if(fTree == NULL || fEntries == 0) {
       printf("Empty\n");
 		return NULL;
@@ -256,9 +275,13 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
 	//if the histogram hasn't been created yet or the "redraw" option has been given, we create the histogram
 	Int_t opt_index = opt.Index("redraw");
 	if(fHist[address] == NULL || opt_index >= 0) {
-		int nofBins = fPPG->GetCycleLength()/GetTimePeriod(address);
-		fHist[address] = new TH1D(Form("TScalerHist_%04x",address),Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", (int) index, address, 
-																							 fPPG->GetCycleLength()/1e5/nofBins), nofBins, 0., fPPG->GetCycleLength()/1e5);
+		//we only need to create a new histogram if this is the first time drawing it, if we're just re-drawing we can re-use the existing histogram
+		if(fHist[address] == NULL) {
+			int nofBins = fPPG->GetCycleLength()/GetTimePeriod(address);
+			fHist[address] = new TH1D(Form("TScalerHist_%04x",address),Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", (int) index, address, 
+																								 fPPG->GetCycleLength()/1e5/nofBins), nofBins, 0., fPPG->GetCycleLength()/1e5);
+			//fHist[address]->ResetBit(kMustCleanup);
+		}
 		//we have to skip the first data point in case this is a sub-run 
 		//loop over the remaining scaler data for this address
 		UInt_t previousValue = 0;
@@ -285,6 +308,118 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
 	fHist[address]->Draw(opt);
 
 	return fHist[address];
+}
+
+TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_t *option) {
+	///Draw scaler differences (i.e. current scaler minus last scaler) vs. time in cycle.
+	///Passing "redraw" as option forces re-drawing of the histogram (e.g. for a different index).
+   ///The "single" options creates spectra for all single addresses in the given range (instead of one accumulative spectrum).
+   if(fTree == NULL || fEntries == 0) {
+      printf("Empty\n");
+		return NULL;
+   }
+
+	//try and find the ppg (if we haven't already done so)
+	if(fPPG == NULL) {
+		fPPG = (TPPG*) gROOT->FindObject("TPPG");
+		//if we can't find the ppg we're done here
+		if(fPPG == NULL) {
+			return NULL;
+		}
+	}
+
+	TString opt = option;
+	opt.ToLower();
+	//if the histogram hasn't been created yet or the "redraw" option has been given, we create the histogram
+	Int_t draw_index = opt.Index("redraw");
+	Int_t single_index = opt.Index("single");
+
+	if(single_index < 0) {
+		//draw the whole range of addresses in a single histogram
+		//if the address doesn't exist in the histogram map, insert a null pointer
+		if(fHistRange.find(std::make_pair(lowAddress, highAddress)) == fHistRange.end()) {
+			fHistRange[std::make_pair(lowAddress, highAddress)] = NULL;
+		}
+		if(fHistRange[std::make_pair(lowAddress, highAddress)] == NULL || draw_index >= 0) {
+			int nofBins = fPPG->GetCycleLength()/GetTimePeriod(lowAddress); //the time period should be the same for all channels
+			fHistRange[std::make_pair(lowAddress, highAddress)] = new TH1D(Form("TScalerHist_%04x_%04x",lowAddress,highAddress),
+																								Form("scaler %d vs time in cycle for address 0x%04x - 0x%04x; time in cycle [ms]; counts/%.0f ms",
+																									  (int) index, lowAddress, highAddress, fPPG->GetCycleLength()/1e5/nofBins),
+																								nofBins, 0., fPPG->GetCycleLength()/1e5);
+			//fHistRange[std::make_pair(lowAddress, highAddress)]->ResetBit(kMustCleanup);
+			//we have to skip the first data point in case this is a sub-run 
+			//loop over the remaining scaler data for this address
+			std::map<UInt_t, UInt_t> previousValue; //we could make this a vector, since we know there can only be highAddress-lowAddress+1 different addresses
+			for(Long64_t entry = 0; entry < fEntries; ++entry) {
+				fTree->GetEntry(entry);
+				if(lowAddress <= fScalerData->GetAddress() && fScalerData->GetAddress() <= highAddress) {
+					//fill the difference between the current and the next scaler (if we found a previous value and that one is smaller than the current one)
+					if(previousValue[fScalerData->GetAddress()] != 0 && previousValue[fScalerData->GetAddress()] < fScalerData->GetScaler(index)) {
+						fHistRange[std::make_pair(lowAddress, highAddress)]->Fill(fPPG->GetTimeInCycle(fScalerData->GetTimeStamp())/1e5,fScalerData->GetScaler(index) - previousValue[fScalerData->GetAddress()]);
+					}
+					previousValue[fScalerData->GetAddress()] = fScalerData->GetScaler(index);
+				}
+				if(entry%1000 == 0) {
+					std::cout<<std::setw(3)<<(100*entry)/fEntries<<" % done\r"<<std::flush;
+				}
+			}
+			std::cout<<"100 % done\r"<<std::flush;
+		}
+		//if "redraw" was part of the original options, remove it from the options passed on
+		if(draw_index >= 0) {
+			opt.Remove(draw_index,6);
+		}
+		//if "single" was part of the original options, remove it from the options passed on
+		if(single_index >= 0) {
+			opt.Remove(single_index,6);
+		}
+	
+		fHistRange[std::make_pair(lowAddress, highAddress)]->Draw(opt);
+
+		return fHistRange[std::make_pair(lowAddress, highAddress)];
+	} else {
+		//loop over all addresses and create one histogram for each
+		for(UInt_t address = lowAddress; address <= highAddress; ++address) {
+			//if the address doesn't exist in the histogram map, create a new histogram
+			if(fHist.find(address) == fHist.end()) {
+				int nofBins = fPPG->GetCycleLength()/GetTimePeriod(address);
+				fHist[address] = new TH1D(Form("TScalerHist_%04x",address),Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", (int) index, address, 
+																									 fPPG->GetCycleLength()/1e5/nofBins), nofBins, 0., fPPG->GetCycleLength()/1e5);
+			} else {
+				//if the histogram already exist, reset it
+				fHist[address]->Reset();
+			}
+		}
+		//now we have all histograms, so we loop through the tree (once) and create all that are in the range
+		std::map<UInt_t, UInt_t> previousValue; //we could make this a vector, since we know there can only be highAddress-lowAddress+1 different addresses
+		for(Long64_t entry = 0; entry < fEntries; ++entry) {
+			fTree->GetEntry(entry);
+			if(lowAddress <= fScalerData->GetAddress() && fScalerData->GetAddress() <= highAddress) {
+				//fill the difference between the current and the next scaler (if we found a previous value and that one is smaller than the current one)
+				if(previousValue[fScalerData->GetAddress()] != 0 && previousValue[fScalerData->GetAddress()] < fScalerData->GetScaler(index)) {
+					fHist[fScalerData->GetAddress()]->Fill(fPPG->GetTimeInCycle(fScalerData->GetTimeStamp())/1e5,fScalerData->GetScaler(index) - previousValue[fScalerData->GetAddress()]);
+				}
+				previousValue[fScalerData->GetAddress()] = fScalerData->GetScaler(index);
+			}
+			if(entry%1000 == 0) {
+				std::cout<<std::setw(3)<<(100*entry)/fEntries<<" % done\r"<<std::flush;
+			}
+		}
+		std::cout<<"100 % done\r"<<std::flush;
+		Double_t max = fHist[lowAddress]->GetMaximum();
+		for(UInt_t address = lowAddress+1; address <= highAddress; ++address) {
+			if(max < fHist[address]->GetMaximum()) {
+				max = fHist[address]->GetMaximum();
+			}
+		}
+		fHist[lowAddress]->GetYaxis()->SetRangeUser(0., 1.05*max);
+		fHist[lowAddress]->Draw();
+		for(UInt_t address = lowAddress+1; address <= highAddress; ++address) {
+			fHist[address]->Draw("same");
+		}
+
+		return fHist[lowAddress];
+	}
 }
 
 ULong64_t TScaler::GetTimePeriod(UInt_t address) {

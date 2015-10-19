@@ -101,6 +101,7 @@ class TScaler : public TObject {
 
 	void Clear(Option_t *opt = "");
 	TH1D* Draw(UInt_t address, size_t index = 0, Option_t *opt = "");
+	TH1D* Draw(UInt_t lowAddress, UInt_t highAddress, size_t index = 0, Option_t *opt = "");
 
  private:
 	TTree* fTree;
@@ -109,10 +110,11 @@ class TScaler : public TObject {
 	std::map<UInt_t, std::map<ULong64_t, std::vector<UInt_t> > > fScalerMap; //! an address-map of timestamp mapped scaler values
 	std::map<UInt_t, ULong64_t> fTimePeriod; //! a map between addresses and time differences (used to calculate the time period)
 	std::map<UInt_t,std::map<ULong64_t, int> > fNumberOfTimePeriods;//!
-	ULong64_t fTotalTimePeriod;//!
+	ULong64_t fTotalTimePeriod;         //!
 	std::map<ULong64_t,int> fTotalNumberOfTimePeriods;//!
-	TPPG* fPPG; //!
-	std::map<UInt_t, TH1D*> fHist; //!
+	TPPG* fPPG;                         //!
+	std::map<UInt_t, TH1D*> fHist;      //! map to store histograms that have already been drawn
+	std::map<std::pair<UInt_t, UInt_t>, TH1D*> fHistRange; //! map to store histograms for address-ranges
 
 	ClassDef(TScaler,2) //Contains scaler information
 };
