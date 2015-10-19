@@ -38,12 +38,12 @@ TTigress::~TTigress()	{
    if(bgodata) delete bgodata;
 }
 
-void TTigress::Copy(TTigress& rhs) const {
+void TTigress::Copy(TObject& rhs) const {
    TGRSIDetector::Copy((TGRSIDetector&)rhs);
-   rhs.tigdata = 0;
-   rhs.bgodata = 0;
-   tigress_hits.Copy(rhs.tigress_hits);
-   addback_hits.Copy(rhs.addback_hits);
+   static_cast<TTigress&>(rhs).tigdata = 0;
+   static_cast<TTigress&>(rhs).bgodata = 0;
+   tigress_hits.Copy(static_cast<TTigress&>(rhs).tigress_hits);
+   addback_hits.Copy(static_cast<TTigress&>(rhs).addback_hits);
    //clover_addback_hits.Copy(rhs.clover_addback_hits);
 }
 
@@ -498,7 +498,7 @@ void TTigress::BuildAddBack(Option_t *opt)	{
 		 	bool used = false;
 			 for(int j =0; j<addback_hits.GetEntries();j++)    {
 		 	   TVector3 res = GetAddBackHit(j)->GetLastHit() - GetTigressHit(i)->GetPosition();
-		     	int d_time = abs(GetAddBackHit(j)->GetTime() -  GetTigressHit(i)->GetTime());
+		     	int d_time = std::abs(GetAddBackHit(j)->GetTime() -  GetTigressHit(i)->GetTime());
 
 				int seg1 = std::get<2>(GetAddBackHit(j)->GetLastPosition());
 				int seg2 = GetTigressHit(i)->GetInitialHit();

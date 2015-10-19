@@ -37,8 +37,8 @@ class TGRSIStats : public TObject {
       static std::map<int,TGRSIStats*> *GetMap() { return fStatsMap;}
       static int GetSize() { if(fStatsMap) return fStatsMap->size(); else return 0; }
 
-      int GetAddress() { return fStatAddress; }
-      unsigned long GetDeadTime() {return fDeadTime;}
+      int GetAddress() const { return fStatAddress; }
+      unsigned long GetDeadTime() const {return fDeadTime;}
       void IncDeadTime(int dtime) { fDeadTime += dtime; }
       void IncLostEvent(int lnum = 1) { fLostEvents+=lnum; } 
 
@@ -57,10 +57,10 @@ class TGRSIStats : public TObject {
       static inline Int_t GetHighestNetworkPacket() { return fHighestNetworkPacket; }
       static inline Double_t GetMissingNetworkPackets() { return (fHighestNetworkPacket - fLowestNetworkPacket)/fGoodEvents;}
 
-      static int GetRunTime() {return fHighestMidasTimeStamp - fLowestMidasTimeStamp; }
+      static int GetRunTime() { return fHighestMidasTimeStamp - fLowestMidasTimeStamp; }
 
 
-      virtual void Print(Option_t *opt = "");
+      virtual void Print(Option_t *opt = "") const;
       virtual void Clear(Option_t *opt = "");
 
 

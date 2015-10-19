@@ -394,7 +394,7 @@ TGraph *TReaction::RutherfordVsTheta(double thmin, double thmax, int part, bool 
 }
 
 	
-void TReaction::Print(Option_t *opt) { 
+void TReaction::Print(Option_t *opt) const { 
  
  	std::string pstring;
  	pstring.assign(opt);

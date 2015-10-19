@@ -108,9 +108,9 @@ class TCSMHit : public TGRSIDetectorHit 	{
 		Double_t GetDdE_dx() const 		{return GetDEnergy()/GetDthickness();}
 		Double_t GetDthickness() const;
 
-		TVector3 GetPosition() const	{	return d_position;	 }	//!
-		Double_t GetEnergy() const		{return GetDEnergy() + GetEEnergy();} //!
-		Double_t GetTime() const		{return ver_d_time;} //!
+		TVector3 GetPosition(Double_t dist = 0) const	{	return d_position;	 }	//!
+		Double_t GetEnergy(Option_t *opt = "") const		{ return GetDEnergy() + GetEEnergy();} //!
+		Double_t GetTime(Option_t *opt = "") const		{ return ver_d_time;} //!
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////

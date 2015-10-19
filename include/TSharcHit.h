@@ -78,10 +78,10 @@ class TSharcHit : public TGRSIDetectorHit {
     Float_t    GetBackCharge()         { return GetBack()->GetCharge();   }  //!  //Charge is now stored after integration.
     Float_t    GetPadCharge()          { return GetPad()->GetCharge();    }  //!  //Charge is now stored after integration.
 
-    inline Double_t GetEnergy()             { return GetFront()->GetEnergy() + GetPad()->GetEnergy(); }
-    inline Double_t GetTime()               { return GetFront()->GetTime(); }
+    inline Double_t GetEnergy(Option_t *opt = "") { return GetFront()->GetEnergy() + GetPad()->GetEnergy(); }
+    inline Double_t GetTime(Option_t *opt = "")   { return GetFront()->GetTime(); }
 
-    TVector3 GetPosition() const;
+    TVector3 GetPosition(Double_t dist = 0) const;
    
     Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0) { return GetTheta(Xoff,Yoff,Zoff)*TMath::RadToDeg(); } ; //! 
     Double_t GetTheta(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0); //! 

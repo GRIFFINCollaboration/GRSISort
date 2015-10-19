@@ -55,7 +55,7 @@ void TSharcHit::Print(Option_t *options) const {
   //printf( DGREEN "=	=	=	=	=	=	=	" RESET_COLOR "\n");
 }
 
-TVector3 TSharcHit::GetPosition() const {
+TVector3 TSharcHit::GetPosition(Double_t dist) const {
   return  fposition; // returned from this -> i.e front...
   //return TSharc::GetPosition(detectornumber,front_strip,back_strip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());  //! 
 }

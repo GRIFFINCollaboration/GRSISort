@@ -133,7 +133,7 @@ public:
 					// Frame_Lab -> dSigma/dThetaLab[ThetaLab] 	and 	Frame_Cm -> dSigma/dThetaCm[ThetaCm]
 	TGraph *RutherfordVsTheta(double thmin = 1.0, double thmax = 179.0, int part = 2, bool Frame_Lab = true, bool Units_keV = true);	  
 		
-  void Print(Option_t *opt="");
+  void Print(Option_t *opt="") const;
   void Clear(Option_t *opt="");
   
   void SetExcEnergy(double exc) { SetCmFrame(exc); } 

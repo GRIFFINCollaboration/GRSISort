@@ -155,7 +155,7 @@ void TCSM::Clear(Option_t *option)
   return;
 }
 
-void TCSM::Print(Option_t *option)
+void TCSM::Print(Option_t *option) const
 {
   printf("not yet written...\n");
   return;
@@ -314,7 +314,7 @@ void TCSM::BuildVH(std::vector<int> &vvec,std::vector<int> &hvec,std::vector<TCS
     if( (AlmostEqual(ve1,he1) && AlmostEqual(ve2,he2)) || (AlmostEqual(ve1,he2) && AlmostEqual(ve2,he1)) )
     {
       //I can build both 1,1 and 2,2 or 1,2 and 2,1
-      if(abs(ve1-he1)+abs(ve2-he2) <= abs(ve1-he2)+abs(ve2-he1))
+      if(std::abs(ve1-he1)+std::abs(ve2-he2) <= std::abs(ve1-he2)+std::abs(ve2-he1))
       {
 	//1,1 and 2,2 mimimizes difference
 	hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
@@ -322,7 +322,7 @@ void TCSM::BuildVH(std::vector<int> &vvec,std::vector<int> &hvec,std::vector<TCS
 	hvec.clear();
 	vvec.clear();
       }
-      else if(abs(ve1-he1)+abs(ve2-he2) > abs(ve1-he2)+abs(ve2-he1))
+      else if(std::abs(ve1-he1)+std::abs(ve2-he2) > std::abs(ve1-he2)+std::abs(ve2-he1))
       {
 	//1,2 and 2,1 mimimizes difference
 	hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
@@ -646,7 +646,7 @@ void TCSM::MakedEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,s
     double dt2 = DHitVec.at(1).GetDPosition().Theta();
     double et = EHitVec.at(0).GetEPosition().Theta();
 
-    if( abs(dt1-et) <= abs(dt2-et) ) {
+    if( std::abs(dt1-et) <= std::abs(dt2-et) ) {
       BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
       //BuiltHits.back().Print();
       BuiltHits.push_back(DHitVec.at(1));
@@ -662,7 +662,7 @@ void TCSM::MakedEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,s
     double et1 = EHitVec.at(0).GetEPosition().Theta();
     double et2 = EHitVec.at(0).GetEPosition().Theta();
     
-    if( abs(dt-et1) <= abs(dt-et2) ) {
+    if( std::abs(dt-et1) <= std::abs(dt-et2) ) {
       BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
       //BuiltHits.back().Print();
       BuiltHits.push_back(EHitVec.at(1));
@@ -679,7 +679,7 @@ void TCSM::MakedEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,s
     double et1 = EHitVec.at(0).GetEPosition().Theta();
     double et2 = EHitVec.at(1).GetEPosition().Theta();
 
-    if( abs(dt1-et1)+abs(dt2-et2) <= abs(dt1-et2)+abs(dt2-et1) ) {
+    if( std::abs(dt1-et1)+std::abs(dt2-et2) <= std::abs(dt1-et2)+std::abs(dt2-et1) ) {
       BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
       //BuiltHits.back().Print();
       BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(1)));
@@ -883,7 +883,7 @@ TCSMHit TCSM::CombineHits(TCSMHit d_hit,TCSMHit e_hit)
 
 bool TCSM::AlmostEqual(int val1, int val2)
 {
-  double diff = double(abs(val1 - val2));
+  double diff = double(std::abs(val1 - val2));
   double ave = (val1+val2)/2.;
   double frac = diff/ave;
   return frac < AlmostEqualWindow;
@@ -891,7 +891,7 @@ bool TCSM::AlmostEqual(int val1, int val2)
 
 bool TCSM::AlmostEqual(double val1, double val2)
 {
-  double frac = fabs(val1 - val2)/((val1+val2)/2.);
+  double frac = std::fabs(val1 - val2)/((val1+val2)/2.);
   return frac < AlmostEqualWindow;
 }
 

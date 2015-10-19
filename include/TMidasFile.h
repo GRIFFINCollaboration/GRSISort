@@ -31,6 +31,8 @@ public:
   void Close(); ///< Close input file
   void OutClose(); ///< Close output file
 
+  using TObject::Read;
+  using TObject::Write;
   int  Read(TMidasEvent *event); ///< Read one event from the file
   bool Write(TMidasEvent *event,Option_t *opt =""); ///< Write one event to the output file
 

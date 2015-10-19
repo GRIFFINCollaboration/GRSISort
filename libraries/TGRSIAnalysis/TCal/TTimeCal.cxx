@@ -64,11 +64,12 @@ std::vector<Double_t> TTimeCal::GetParameters() const{
    return fparameters;
 }
 
-Double_t TTimeCal::GetParameter(UInt_t parameter) const{
-   if(parameter < fparameters.size() )
+Double_t TTimeCal::GetParameter(Int_t parameter) const{
+   if(static_cast<size_t>(parameter) < fparameters.size()) 
       return fparameters.at(parameter);
    else{
       Error("Get Parameter","Parameter Does not exist");
       return 0;
    }
 }
+

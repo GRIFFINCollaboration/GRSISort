@@ -42,7 +42,7 @@ class TCSM :  public TDetector 	{
 
 	public: 
 		virtual void Clear(Option_t * = "");		//!
-		virtual void Print(Option_t * = "");		//!
+		virtual void Print(Option_t * = "") const;		//!
 		void BuildHits(TDetectorData *cd = 0,  Option_t * = "");			//!
 
 		TCSMHit *GetHit(int i)		{return &csm_hits.at(i);}	//->

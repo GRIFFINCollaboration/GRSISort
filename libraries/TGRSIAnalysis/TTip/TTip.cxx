@@ -29,12 +29,11 @@ TTip::TTip(const TTip& rhs) : TGRSIDetector() {
   ((TTip&)rhs).Copy(*this);
 }
 
-void TTip::Copy(TTip &rhs) const {
-  TGRSIDetector::Copy((TGRSIDetector&)rhs);
+void TTip::Copy(TObject &rhs) const {
+  TGRSIDetector::Copy(rhs);
 
-  ((TTip&)rhs).tipdata     = 0;
-
-  ((TTip&)rhs).tip_hits        = tip_hits;
+  static_cast<TTip&>(rhs).tipdata   = 0;
+  static_cast<TTip&>(rhs).tip_hits             = tip_hits;
   return;                                      
 }                                       
 
@@ -89,7 +88,7 @@ void TTip::BuildHits(TDetectorData *data,Option_t *opt)	{
    }
 }
 
-void TTip::Print(Option_t *opt) {
+void TTip::Print(Option_t *opt) const {
   //Prints out TSceptar members, currently does little.
   if(tipdata) tipdata->Print();
   printf("%lu tip_hits\n",tip_hits.size());

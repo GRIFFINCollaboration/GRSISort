@@ -36,14 +36,14 @@ class TTipHit : public TGRSIDetectorHit {
 
     inline Int_t    GetFiterPatter()           { return filter;   }  //!
     inline Double_t GetPID()                   { return fPID;      }  //!
-    TVector3 GetPosition() const               { return TVector3();}
+    TVector3 GetPosition(Double_t dist=0) const   { return TVector3();}
 
     bool   InFilter(Int_t);                                         //!
 
   public:
     void Clear(Option_t *opt = "");                        //!
-    void Print(Option_t *opt = "");                        //!
-    virtual void Copy(TTipHit&) const;                     //!
+    void Print(Option_t *opt = "") const;                  //!
+    virtual void Copy(TObject&) const;                     //!
 
     ClassDef(TTipHit,1);
 

@@ -30,12 +30,12 @@ class TCrystalHit : public TGRSIDetectorHit	{
 
 		virtual void Clear(Option_t *opt = "");		      //!
 		virtual void Print(Option_t *opt = "") const;		//!
-      virtual void Copy(TCrystalHit&) const;             //!
+      virtual void Copy(TObject&) const;             //!
 
 		inline int    GetSegment()       { return segment;}   //!
-		inline double GetEnergy() const 	{ return local_energy;	}	//!
+		inline double GetEnergy(Option_t *opt= "") const 	{ return local_energy;	}	//!
 
-      TVector3 GetPosition() const {return TVector3();}
+      TVector3 GetPosition(Double_t dist = 0) const {return TVector3();}
 		inline void SetSegment(const int &seg) { segment = seg;   }       //!
 		inline void SetEnergy(const double &e)	{	local_energy = e;	}	//!
 

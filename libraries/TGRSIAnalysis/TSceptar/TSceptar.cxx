@@ -79,13 +79,13 @@ void TSceptar::Clear(Option_t *opt)	{
 	sceptar_hits.clear();
 }
 
-void TSceptar::Copy(TSceptar &rhs) const {
+void TSceptar::Copy(TObject &rhs) const {
    //Copies a TSceptar
-  TGRSIDetector::Copy((TGRSIDetector&)rhs);
+  TGRSIDetector::Copy(rhs);
 
-  ((TSceptar&)rhs).sceptardata     = 0;
+  static_cast<TSceptar&>(rhs).sceptardata     = 0;
 
-  ((TSceptar&)rhs).sceptar_hits        = sceptar_hits;
+  static_cast<TSceptar&>(rhs).sceptar_hits        = sceptar_hits;
   return;                                      
 }                                       
 

@@ -53,18 +53,18 @@ void TTigressHit::Clear(Option_t *opt) {
 	lasthit.SetXYZ(0,0,0);
 }
 
-void TTigressHit::Copy(TTigressHit &rhs) const {
-  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
-  segment.Copy(rhs.segment);
-  bgo.Copy(rhs.bgo);
-  rhs.crystal = crystal;
-  rhs.first_segment = first_segment;
-  rhs.first_segment_charge = first_segment_charge;
-  lasthit.Copy(rhs.lasthit);
+void TTigressHit::Copy(TObject &rhs) const {
+  TGRSIDetectorHit::Copy(rhs);
+  segment.Copy(static_cast<TTigressHit&>(rhs).segment);
+  bgo.Copy(static_cast<TTigressHit&>(rhs).bgo);
+  (static_cast<TTigressHit&>(rhs)).crystal = crystal;
+  (static_cast<TTigressHit&>(rhs)).first_segment = first_segment;
+  (static_cast<TTigressHit&>(rhs)).first_segment_charge = first_segment_charge;
+  lasthit.Copy(static_cast<TTigressHit&>(rhs).lasthit);
 }
 
 
-void TTigressHit::Print(Option_t *opt)	{
+void TTigressHit::Print(Option_t *opt) const	{
 	printf("Tigress hit energy: %.2f\n",GetEnergy());
 	printf("Tigress hit time:   %.2f\n",GetTime());
 	//printf("Tigress hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
@@ -87,7 +87,7 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs) {
 
 
 void TTigressHit::CheckFirstHit(int charge,int segment) {
-	if(fabs(charge) > first_segment_charge) {
+	if(std::fabs(charge) > first_segment_charge) {
  		first_segment = segment;
 	}
 	return;				

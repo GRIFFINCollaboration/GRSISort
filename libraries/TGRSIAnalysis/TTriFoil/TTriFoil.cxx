@@ -23,13 +23,13 @@ void TTriFoil::Clear(Option_t *opt)	{
    tbeam = 0;
 }
 
-void TTriFoil::Copy(TTriFoil &rhs) const {
-   TDetector::Copy((TDetector&)rhs);
-   ((TTriFoil&)rhs).data      = 0;
-   ((TTriFoil&)rhs).tf_wave    = tf_wave;
-   ((TTriFoil&)rhs).timestamp = timestamp;
-   ((TTriFoil&)rhs).beam      = beam;
-   ((TTriFoil&)rhs).tbeam     = tbeam;
+void TTriFoil::Copy(TObject &rhs) const {
+   TDetector::Copy(rhs);
+   static_cast<TTriFoil&>(rhs).data      = 0;
+   static_cast<TTriFoil&>(rhs).tf_wave    = tf_wave;
+   static_cast<TTriFoil&>(rhs).timestamp = timestamp;
+   static_cast<TTriFoil&>(rhs).beam      = beam;
+   static_cast<TTriFoil&>(rhs).tbeam     = tbeam;
   return;                                      
 }                                       
 

@@ -37,7 +37,7 @@ class TPacesHit : public TGRSIDetectorHit {
 	public:
 		virtual void Clear(Option_t *opt = "");		 //!
 		virtual void Print(Option_t *opt = "") const; //!
-      virtual void Copy(TPacesHit&) const;        //!
+      virtual void Copy(TObject&) const;        //!
 
 	ClassDef(TPacesHit,3);
 };

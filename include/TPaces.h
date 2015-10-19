@@ -54,7 +54,7 @@ class TPaces : public TGRSIDetector {
     // static TVector3 gCloverPosition[17];               //! Position of each HPGe Clover
 
    public:         
-     virtual void Copy(TPaces&) const;                //!
+     virtual void Copy(TObject&) const;                //!
      virtual void Clear(Option_t *opt = "all");		     //!
      virtual void Print(Option_t *opt = "") const;		  //!
 

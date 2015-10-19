@@ -110,21 +110,21 @@ TDescant::~TDescant()	{
    if(descantdata) delete descantdata;
 }
 
-void TDescant::Copy(TDescant &rhs) const {
-  TGRSIDetector::Copy((TGRSIDetector&)rhs);
+void TDescant::Copy(TObject &rhs) const {
+  TGRSIDetector::Copy(rhs);
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 
-  ((TDescant&)rhs).descantdata     = 0;
+  static_cast<TDescant&>(rhs).descantdata     = 0;
 
-  ((TDescant&)rhs).descant_hits        = descant_hits;
-  ((TDescant&)rhs).fSetWave            = fSetWave;
+  static_cast<TDescant&>(rhs).descant_hits        = descant_hits;
+  static_cast<TDescant&>(rhs).fSetWave            = fSetWave;
   return;                                      
 }                                       
 
 TDescant::TDescant(const TDescant& rhs) : TGRSIDetector() {
-  ((TDescant&)rhs).Copy(*this);
+  rhs.Copy(*this);
 }
 
 void TDescant::Clear(Option_t *opt)	{

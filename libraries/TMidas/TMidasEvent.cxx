@@ -43,23 +43,23 @@ TMidasEvent::TMidasEvent()
   fEventHeader.fDataSize     = 0;
 }
 
-void TMidasEvent::Copy(const TMidasEvent& rhs){
+void TMidasEvent::Copy(TObject& rhs) const{
    //Copies the entire TMidasEvent. This includes the bank information.
-  fEventHeader = rhs.fEventHeader;
+  static_cast<TMidasEvent&>(rhs).fEventHeader = fEventHeader;
 
-  fData        = (char*)malloc(fEventHeader.fDataSize);
-  assert(fData);
-  memcpy(fData, rhs.fData, fEventHeader.fDataSize);
-  fAllocatedByUs = true;
+  static_cast<TMidasEvent&>(rhs).fData        = (char*)malloc(static_cast<TMidasEvent&>(rhs).fEventHeader.fDataSize);
+  assert(static_cast<TMidasEvent&>(rhs).fData);
+  memcpy(static_cast<TMidasEvent&>(rhs).fData, fData, static_cast<TMidasEvent&>(rhs).fEventHeader.fDataSize);
+  static_cast<TMidasEvent&>(rhs).fAllocatedByUs = true;
 
-  fBanksN      = rhs.fBanksN;
-  fBankList    = strdup(rhs.fBankList);
-  assert(fBankList);
+  static_cast<TMidasEvent&>(rhs).fBanksN      = fBanksN;
+  static_cast<TMidasEvent&>(rhs).fBankList    = strdup(fBankList);
+  assert(static_cast<TMidasEvent&>(rhs).fBankList);
 }
 
 TMidasEvent::TMidasEvent(const TMidasEvent &rhs) : TObject() {
    //Copy ctor.
-  Copy(rhs);
+  rhs.Copy(*this);
 }
 
 TMidasEvent::~TMidasEvent() {
@@ -70,11 +70,11 @@ TMidasEvent& TMidasEvent::operator=(const TMidasEvent &rhs) {
   if (&rhs != this)
     Clear();
 
-  this->Copy(rhs);
+  rhs.Copy(*this);
   return *this;
 }
 
-void TMidasEvent::Clear() {
+void TMidasEvent::Clear(Option_t *opt) {
    //Clears the TMidasEvent.
   if (fBankList)
     free(fBankList);

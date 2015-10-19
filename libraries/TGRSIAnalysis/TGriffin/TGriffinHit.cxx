@@ -17,18 +17,18 @@ TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{
 TGriffinHit::TGriffinHit(const TGriffinHit &rhs) : TGRSIDetectorHit() {	
    //Copy Ctor. Ignores TObject Streamer in ROOT < 6.
 	Clear();
-   ((TGriffinHit&)rhs).Copy(*this);
+   rhs.Copy(*this);
 }
 
 TGriffinHit::~TGriffinHit()  {	}
 
-void TGriffinHit::Copy(TGriffinHit &rhs) const {
-  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
-  ((TGriffinHit&)rhs).fFilter                = fFilter;
-  ((TGriffinHit&)rhs).fGriffinHitBits        = fGriffinHitBits;
-  ((TGriffinHit&)rhs).fCrystal               = fCrystal;
-  ((TGriffinHit&)rhs).fPPG                   = fPPG;
-  ((TGriffinHit&)rhs).fBremSuppressed_flag   = fBremSuppressed_flag;//! Bremsstrahlung Suppression flag.
+void TGriffinHit::Copy(TObject &rhs) const {
+  TGRSIDetectorHit::Copy(rhs);
+  static_cast<TGriffinHit&>(rhs).fFilter                = fFilter;
+  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = fGriffinHitBits;
+  static_cast<TGriffinHit&>(rhs).fCrystal               = fCrystal;
+  static_cast<TGriffinHit&>(rhs).fPPG                   = fPPG;
+  static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag;//! Bremsstrahlung Suppression flag.
   return;                                      
 }                                       
 

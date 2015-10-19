@@ -81,7 +81,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 	public:
 		virtual void Clear(Option_t *opt = "");		 //!
 		virtual void Print(Option_t *opt = "") const; //!
-      virtual void Copy(TGriffinHit&) const;        //!
+      virtual void Copy(TObject&) const;        //!
 
    private:
       void SetGriffinFlag(enum EGriffinHitBits,Bool_t set);

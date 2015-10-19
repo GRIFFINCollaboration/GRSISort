@@ -34,7 +34,7 @@ class TTriFoil :  public TDetector {
 
 		void Clear(Option_t *opt = ""); 	//!
 		void Print(Option_t *opt = "") const; 	//!
-      void Copy(TTriFoil &rhs) const;
+      void Copy(TObject &rhs) const;
 
 		
 	
