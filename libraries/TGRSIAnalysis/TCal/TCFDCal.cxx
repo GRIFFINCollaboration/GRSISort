@@ -64,8 +64,8 @@ std::vector<Double_t> TCFDCal::GetParameters() const{
    return fparameters;
 }
 
-Double_t TCFDCal::GetParameter(UInt_t parameter) const{
-   if(parameter < fparameters.size() )
+Double_t TCFDCal::GetParameter(Int_t parameter) const{
+   if((size_t)parameter < fparameters.size())
       return fparameters.at(parameter);
    else{
       Error("Get Parameter","Parameter Does not exist");

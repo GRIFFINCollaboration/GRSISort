@@ -17,14 +17,14 @@ TPacesHit::TPacesHit(const TPacesHit &rhs) : TGRSIDetectorHit() {
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 	Clear();
-   ((TPacesHit&)rhs).Copy(*this);
+   rhs.Copy(*this);
 }
 
 TPacesHit::~TPacesHit()  {	}
 
-void TPacesHit::Copy(TPacesHit &rhs) const {
-  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
-  ((TPacesHit&)rhs).filter          = filter;
+void TPacesHit::Copy(TObject &rhs) const {
+  TGRSIDetectorHit::Copy(rhs);
+  static_cast<TPacesHit&>(rhs).filter          = filter;
   return;                                      
 }                                       
 

@@ -48,7 +48,7 @@ class TGainMatch : public TCal {
    Bool_t IsGroupable() const {return false;}
    void WriteToChannel() const;
 
-   void SetNucleus(TNucleus* nuc) { Warning("SetNucleus","Is not used in TGainMatching");} 
+   void SetNucleus(TNucleus* nuc, Option_t *opt = "") { Warning("SetNucleus","Is not used in TGainMatching");} 
    TNucleus* GetNucleus() const { Warning("GetNucleus","Is not used in TGainMatching"); return 0; }
 
    void SetHist(TH1* nuc) { Warning("SetHist","Is not used in TGainMatching");} 

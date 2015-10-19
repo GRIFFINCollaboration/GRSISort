@@ -65,12 +65,12 @@ class TTigressHit : public TGRSIDetectorHit {
 		/////////////////////////		/////////////////////////////////////
 		//inline int GetDetectorNumber()	     {	return detector;		}			//!
 		int GetCrystal() const;	          //{	return crystal;			}		//!
-		inline int GetInitialHit()		       {	return first_segment;	}			//!
+		inline int GetInitialHit()		               {	return first_segment;	}			//!
 	
-		inline int GetCharge()			         {	return core.GetCharge();	}		//!
-		inline double GetEnergy()		         {	return core.GetEnergy();	}		//!
-		inline double GetTime()			         {	return core.GetTime();		}		//!
-		inline double GetTimeCFD()           {  return core.GetCfd(); } //!
+		inline int GetCharge()			                  {	return core.GetCharge();	}		//!
+		inline double GetEnergy(Option_t *opt ="")const	{	return core.GetEnergy();	}		//!
+		inline double GetTime(Option_t *opt ="") const	{	return core.GetTime();		}		//!
+		inline double GetTimeCFD()                      {  return core.GetCfd(); } //!
       TVector3 GetPosition(Double_t dist = 110.0) const; //!
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
@@ -104,8 +104,8 @@ class TTigressHit : public TGRSIDetectorHit {
 
 	public:
 		virtual void Clear(Option_t *opt = "");		                      //!
-		virtual void Copy(TTigressHit&) const;                             //!
-      virtual void Print(Option_t *opt = "");       		                //!
+		virtual void Copy(TObject&) const;                             //!
+      virtual void Print(Option_t *opt = "") const;       		                //!
 
 	ClassDef(TTigressHit,1)
 };

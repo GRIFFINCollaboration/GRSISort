@@ -41,7 +41,7 @@ TScalerQueue::TScalerQueue() {
 TScalerQueue::~TScalerQueue() {	}
 
 
-void TScalerQueue::Print(Option_t *opt) { 
+void TScalerQueue::Print(Option_t *opt) const { 
    ///Print the status of the Scaler Queue
    CheckStatus();   
 }
@@ -146,12 +146,12 @@ TScalerData* TScalerQueue::PopScaler(){
 	}
 }
 
-int TScalerQueue::Size() {
+int TScalerQueue::Size() const {
    //Returns the number of scalers in the Queue
 	return fScalersInQueue;
 }
 
-void TScalerQueue::CheckStatus() {
+void TScalerQueue::CheckStatus() const {
    //Checks the status of the Queue. This is called by the Print() function.
 	while(!TScalerQueue::All.try_lock()) {
 		//do nothing

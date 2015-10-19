@@ -315,7 +315,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
 
    printf("*****  Rough time shifts *******\n");
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      printf("0x%04x:\t %ld\n",mapit->first,correction[mapit->second]);
+      printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
 
@@ -402,7 +402,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    
    printf("*****  Final time shifts *******\n");
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      printf("0x%04x:\t %ld\n",mapit->first,correction[mapit->second]);
+      printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
         

@@ -17,7 +17,7 @@ class TCFDCal : public TCal {
    virtual void WriteToChannel() const;
    virtual void ReadFromChannel();
    virtual std::vector<Double_t> GetParameters() const;
-   virtual Double_t GetParameter(UInt_t parameter) const ;
+   virtual Double_t GetParameter(Int_t parameter) const ;
 
    void AddParameter(Double_t param);
    void SetParameters(std::vector<Double_t> paramvec);

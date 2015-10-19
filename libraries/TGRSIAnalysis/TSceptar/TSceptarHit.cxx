@@ -36,10 +36,10 @@ TSceptarHit::TSceptarHit(const TSceptarHit &rhs) : TGRSIDetectorHit() {
    ((TSceptarHit&)rhs).Copy(*this);
 }
 
-void TSceptarHit::Copy(TSceptarHit &rhs) const {
+void TSceptarHit::Copy(TObject &rhs) const {
    //Copies a TSceptarHit
-  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
-	((TSceptarHit&)rhs).filter = filter;
+  TGRSIDetectorHit::Copy(rhs);
+	static_cast<TSceptarHit&>(rhs).filter = filter;
 }                                       
 
 /*

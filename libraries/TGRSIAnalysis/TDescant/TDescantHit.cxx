@@ -22,16 +22,16 @@ TDescantHit::TDescantHit(const TDescantHit &rhs) : TGRSIDetectorHit() {
    ((TDescantHit&)rhs).Copy(*this);
 }
 
-void TDescantHit::Copy(TDescantHit &rhs) const {
-   TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
+void TDescantHit::Copy(TObject &rhs) const {
+   TGRSIDetectorHit::Copy(rhs);
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-	((TDescantHit&)rhs).filter = filter;
-	((TDescantHit&)rhs).zc = zc;
-	((TDescantHit&)rhs).ccShort = ccShort;
-	((TDescantHit&)rhs).ccLong = ccLong;
-	((TDescantHit&)rhs).psd = psd;
+	static_cast<TDescantHit&>(rhs).filter = filter;
+	static_cast<TDescantHit&>(rhs).zc = zc;
+	static_cast<TDescantHit&>(rhs).ccShort = ccShort;
+	static_cast<TDescantHit&>(rhs).ccLong = ccLong;
+	static_cast<TDescantHit&>(rhs).psd = psd;
    return;
 }
 

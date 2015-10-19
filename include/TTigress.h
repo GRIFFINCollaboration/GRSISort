@@ -99,7 +99,7 @@ class TTigress : public TGRSIDetector {
 	public:         
 		virtual void Clear(Option_t *opt = "");		 //!
 		virtual void Print(Option_t *opt = "") const; //!
-      virtual void Copy(TTigress&) const;           //!
+      virtual void Copy(TObject&) const;           //!
 
    ClassDef(TTigress,3)  // Tigress Physics structure
 

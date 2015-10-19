@@ -76,20 +76,20 @@ TGriffin::TGriffin(const TGriffin& rhs) : TGRSIDetector() {
   ((TGriffin&)rhs).Copy(*this);
 }
 
-void TGriffin::Copy(TGriffin &rhs) const {
+void TGriffin::Copy(TObject &rhs) const {
   //Copy function.
-  TGRSIDetector::Copy((TGRSIDetector&)rhs);
+  TGRSIDetector::Copy(rhs);
 
-  ((TGriffin&)rhs).grifdata     = 0;
-  //((TGriffin&)rhs).bgodata      = 0;
+  static_cast<TGriffin&>(rhs).grifdata     = 0;
+  //static_cast<TGriffin&>(rhs).bgodata      = 0;
 
-  ((TGriffin&)rhs).griffin_hits        = griffin_hits;
-  ((TGriffin&)rhs).fAddback_hits        = fAddback_hits;
-  ((TGriffin&)rhs).fAddback_frags      = fAddback_frags;
-  ((TGriffin&)rhs).fSetCoreWave        = fSetCoreWave;
-  ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
-  ((TGriffin&)rhs).fCycleStart         = fCycleStart;
-  ((TGriffin&)rhs).fGriffinBits        = fGriffinBits;
+  static_cast<TGriffin&>(rhs).griffin_hits        = griffin_hits;
+  static_cast<TGriffin&>(rhs).fAddback_hits        = fAddback_hits;
+  static_cast<TGriffin&>(rhs).fAddback_frags      = fAddback_frags;
+  static_cast<TGriffin&>(rhs).fSetCoreWave        = fSetCoreWave;
+  static_cast<TGriffin&>(rhs).fGriffinBits        = fGriffinBits;
+  static_cast<TGriffin&>(rhs).fCycleStart         = fCycleStart;
+  static_cast<TGriffin&>(rhs).fGriffinBits        = fGriffinBits;
    
 
   return;                                      

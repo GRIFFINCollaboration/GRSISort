@@ -38,12 +38,12 @@ TTigress::~TTigress()	{
    if(bgodata) delete bgodata;
 }
 
-void TTigress::Copy(TTigress& rhs) const {
+void TTigress::Copy(TObject& rhs) const {
    TGRSIDetector::Copy((TGRSIDetector&)rhs);
-   rhs.tigdata = 0;
-   rhs.bgodata = 0;
-   tigress_hits.Copy(rhs.tigress_hits);
-   addback_hits.Copy(rhs.addback_hits);
+   static_cast<TTigress&>(rhs).tigdata = 0;
+   static_cast<TTigress&>(rhs).bgodata = 0;
+   tigress_hits.Copy(static_cast<TTigress&>(rhs).tigress_hits);
+   addback_hits.Copy(static_cast<TTigress&>(rhs).addback_hits);
    //clover_addback_hits.Copy(rhs.clover_addback_hits);
 }
 

@@ -86,7 +86,7 @@ class TDescantHit : public TGRSIDetectorHit {
       bool AnalyzeWaveform();                                          //!
 
 	public:
-      void Copy(TDescantHit&) const;        //!
+      void Copy(TObject&) const;        //!
 		void Clear(Option_t *opt = "");		                    //!
 		void Print(Option_t *opt = "") const;		                    //!
 

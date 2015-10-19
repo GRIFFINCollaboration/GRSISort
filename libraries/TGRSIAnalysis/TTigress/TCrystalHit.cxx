@@ -40,7 +40,7 @@ void TCrystalHit::Print(Option_t *opt)	const {
 	printf("TCrystalHit::Print() not yet written.\n");
 }
 
-void TCrystalHit::Copy(TCrystalHit &rhs) const {
+void TCrystalHit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
   ((TCrystalHit&)rhs).segment = segment;
 }

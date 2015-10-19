@@ -62,11 +62,11 @@ class TScalerQueue : public TObject {
 		void Pop();
 		TScalerData* PopScaler();
 
-		int Size();
+		int Size() const;
 
 		void StartStatusUpdate();
 		void StopStatusUpdate();
-		void CheckStatus();
+		void CheckStatus() const;
 
 		unsigned int GetTotalScalersIn()  { return fTotalScalersIn;}
 		unsigned int GetTotalScalersOut() {	return fTotalScalersOut;}
@@ -74,7 +74,7 @@ class TScalerQueue : public TObject {
 		bool Running() { return !fStop;}
 		void Stop() { fStop = true;}
 
-      void Print(Option_t *opt = "");
+      void Print(Option_t *opt = "") const;
 		void Clear(Option_t *opt = "");
 		
 		ClassDef(TScalerQueue,0); //The Class used to hold scalers when building events

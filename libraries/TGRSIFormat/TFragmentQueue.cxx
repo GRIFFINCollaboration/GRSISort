@@ -53,7 +53,7 @@ TFragmentQueue::TFragmentQueue()	{
 TFragmentQueue::~TFragmentQueue()	{	}
 
 
-void TFragmentQueue::Print(Option_t *opt) { 
+void TFragmentQueue::Print(Option_t *opt) const { 
 //Print the status of the Fragment Queue
    CheckStatus();   
 }
@@ -221,12 +221,12 @@ TFragment *TFragmentQueue::PopFragment(){
 	}
 }	
 
-int TFragmentQueue::Size()	{
+int TFragmentQueue::Size() const	{
 //Returns the number of fragments in the Queue
 	return fFragsInQueue;
 }
 
-void TFragmentQueue::CheckStatus()	{
+void TFragmentQueue::CheckStatus() const	{
 //Checks the status of the Queue. This is called by the Print() function.
 	//std::unique_lock<std::mutex> all(All,std::defer_lock);
 	//all.lock();

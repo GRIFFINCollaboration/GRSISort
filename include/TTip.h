@@ -34,12 +34,12 @@ class TTip : public TGRSIDetector {
 
 	 void BuildHits(TDetectorData *data =0,Option_t *opt = "");           //!
 	 void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
-    void Copy(TTip &rhs) const;
+    void Copy(TObject &rhs) const;
 
     TTip& operator=(const TTip&);  //!
 
     void Clear(Option_t *opt = "");
-    void Print(Option_t *opt = "");
+    void Print(Option_t *opt = "") const;
 
    protected:
      void PushBackHit(TGRSIDetectorHit* tiphit);

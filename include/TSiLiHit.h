@@ -17,12 +17,12 @@ class TSiLiHit : public TGRSIDetectorHit {
     void Clear(Option_t *opt="");
     void Print(Option_t *opt="") const;
 
-    Short_t  GetSegment()      {  return segment; }
-    Double_t GetEnergy()       {  return energy;  }
-    Long_t   GetTimeStamp()    {  return ts;    }
-    Int_t    GetTime()         {  return time;    }
-    Int_t    GetCharge()       {  return charge;  }
-    Double_t GetTimeCFD()      {  return cfd;     }
+    Short_t  GetSegment()                       {  return segment; }
+    Double_t GetEnergy(Option_t *opt = "")      {  return energy;  }
+    ULong_t GetTimeStamp(Option_t *opt = "")const{  return ts;    }
+    Double_t GetTime(Option_t *opt = "")        {  return time;    }
+    Int_t    GetCharge()                        {  return charge;  }
+    Double_t GetTimeCFD()                       {  return cfd;     }
     Int_t GetRing()         {  return segment-(floor((double)segment/12.0)*12);  }
     Int_t GetSector()       {  return 9-floor((double)segment/12.0);     }
     Int_t GetPreamp()       {  Int_t sec=this->GetSector();
@@ -37,6 +37,7 @@ class TSiLiHit : public TGRSIDetectorHit {
                             }
     
     void SetSegment(Short_t seg)       { segment = seg; }
+    using TGRSIDetectorHit::SetPosition; //This is here to fix warnings. Will leave when lean-ness occurs
     void SetPosition(TVector3 &vec)    { fposition = vec; }
     void SetVariables(TFragment &frag) { charge = frag.GetCharge();
                                          energy = frag.GetEnergy();
@@ -50,8 +51,8 @@ class TSiLiHit : public TGRSIDetectorHit {
     Double_t energy;
     Double_t cfd;
     Int_t    charge;
-    Long_t   ts;
-    Int_t    time;
+    ULong_t  ts;
+    Double_t time;
 
   
   ClassDef(TSiLiHit,2);

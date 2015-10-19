@@ -37,8 +37,8 @@ class TMidasEvent : public TObject
   TMidasEvent(const TMidasEvent &); ///< copy constructor
   virtual ~TMidasEvent(); ///< destructor
   TMidasEvent& operator=(const TMidasEvent &); ///< assignement operator
-  void Clear(); ///< clear event for reuse
-  void Copy(const TMidasEvent &); ///< copy helper
+  void Clear(Option_t *opt = ""); ///< clear event for reuse
+  void Copy(TObject &) const; ///< copy helper
   void Print(const char* option = "") const; ///< show all event information
 
   // get event information

@@ -454,7 +454,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
       if(cit->first == TEventTime::GetBestDigitizer())
          printf("0x%04x:\t BEST\n",cit->first);
       else
-         printf("0x%04x:\t %ld\n",cit->first,cit->second);
+         printf("0x%04x:\t %lld\n",cit->first,cit->second);
    }
    printf("********************\n");
 
@@ -547,7 +547,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
       if(cit->first == TEventTime::GetBestDigitizer())
          printf("0x%04x:\t BEST\n",cit->first);
       else
-         printf("0x%04x:\t %ld\n",cit->first,cit->second);
+         printf("0x%04x:\t %lld\n",cit->first,cit->second);
         // printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");

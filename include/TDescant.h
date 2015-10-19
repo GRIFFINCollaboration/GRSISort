@@ -53,7 +53,7 @@ class TDescant : public TGRSIDetector {
      static TVector3 gPosition[71];                                     //!  Position of each Paddle needs to be updated
 
    public:         
-     void Copy(TDescant&) const;                //!
+     void Copy(TObject&) const;                //!
      void Clear(Option_t *opt = "");		//!
      void Print(Option_t *opt = "") const;		//!
 

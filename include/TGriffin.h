@@ -90,7 +90,7 @@ class TGriffin : public TGRSIDetector {
       Bool_t TestBitNumber(enum EGriffinBits bit) const {return (bit & fGriffinBits);}
 
    public:
-      virtual void Copy(TGriffin&) const;                //!
+      virtual void Copy(TObject&) const;                //!
       virtual void Clear(Option_t *opt = "all");		     //!
       virtual void Print(Option_t *opt = "") const;		  //!
       void ResetAddback();		     //!

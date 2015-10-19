@@ -234,7 +234,7 @@ GCanvas *GCanvas::MakeDefCanvas() {
 //}
 
 
-void GCanvas::HandleInput(Int_t event,Int_t x,Int_t y) {
+void GCanvas::HandleInput(EEventType event,Int_t x,Int_t y) {
   //If the below switch breaks. You need to upgrade your version of ROOT
   //Version 5.34.24 works.
 
@@ -244,9 +244,11 @@ void GCanvas::HandleInput(Int_t event,Int_t x,Int_t y) {
     case 0x00000001:
       used = HandleMousePress(event,x,y);
       break;
+    default:
+      break;
   };
   if(!used)
-    TCanvas::HandleInput((EEventType)event,x,y);
+    TCanvas::HandleInput(event,x,y);
   
 
 

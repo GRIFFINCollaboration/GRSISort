@@ -17,6 +17,8 @@ class TEnergyCal : public TCal {
    void WriteToChannel() const;
 
    void AddPoint(Double_t measured, Double_t accepted,Double_t measured_uncertainty = 0.0, Double_t accepted_uncertainty = 0.0);
+   using TGraphErrors::SetPoint;
+   using TGraphErrors::SetPointError;
    Bool_t SetPoint(Int_t idx, Double_t measured);
    Bool_t SetPoint(Int_t idx, TPeak* peak);
    Bool_t SetPointError(Int_t idx, Double_t measured_uncertainty);

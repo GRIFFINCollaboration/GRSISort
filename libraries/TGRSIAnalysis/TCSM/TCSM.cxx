@@ -183,7 +183,7 @@ void TCSM::Clear(Option_t *option)
   return;
 }
 
-void TCSM::Print(Option_t *option)
+void TCSM::Print(Option_t *option) const
 {
   printf("not yet written...\n");
   return;

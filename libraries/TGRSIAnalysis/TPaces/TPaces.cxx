@@ -31,13 +31,13 @@ TPaces::TPaces(const TPaces& rhs) : TGRSIDetector() {
   ((TPaces&)rhs).Copy(*this);
 }
 
-void TPaces::Copy(TPaces &rhs) const {
-  TGRSIDetector::Copy((TGRSIDetector&)rhs);
+void TPaces::Copy(TObject &rhs) const {
+  TGRSIDetector::Copy(rhs);
 
-  ((TPaces&)rhs).pacesdata     = 0;
+  static_cast<TPaces&>(rhs).pacesdata     = 0;
 
-  ((TPaces&)rhs).paces_hits          = paces_hits;
-  ((TPaces&)rhs).fSetCoreWave        = fSetCoreWave;
+  static_cast<TPaces&>(rhs).paces_hits          = paces_hits;
+  static_cast<TPaces&>(rhs).fSetCoreWave        = fSetCoreWave;
   return;                                      
 }                                       
 
