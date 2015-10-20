@@ -104,6 +104,8 @@ class TScaler : public TObject {
 	TH1D* Draw(UInt_t address, size_t index = 0, Option_t *opt = "");
 	TH1D* Draw(UInt_t lowAddress, UInt_t highAddress, size_t index = 0, Option_t *opt = "");
 
+	void ListHistograms();
+
  private:
 	TTree* fTree;
 	TScalerData* fScalerData;

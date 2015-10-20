@@ -41,6 +41,6 @@ void TCrystalHit::Print(Option_t *opt)	const {
 }
 
 void TCrystalHit::Copy(TObject &rhs) const {
-  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
-  ((TCrystalHit&)rhs).segment = segment;
+  TGRSIDetectorHit::Copy(rhs);
+  static_cast<TCrystalHit&>(rhs).segment = segment;
 }

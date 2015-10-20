@@ -65,7 +65,7 @@ TSceptar::TSceptar(const TSceptar& rhs) : TGRSIDetector() {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-  ((TSceptar&)rhs).Copy(*this);
+	rhs.Copy(*this);
 }
 
 void TSceptar::Clear(Option_t *opt)	{
@@ -84,8 +84,8 @@ void TSceptar::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
 
   static_cast<TSceptar&>(rhs).sceptardata     = 0;
+  static_cast<TSceptar&>(rhs).sceptar_hits    = sceptar_hits;
 
-  static_cast<TSceptar&>(rhs).sceptar_hits        = sceptar_hits;
   return;                                      
 }                                       
 
@@ -123,7 +123,7 @@ void TSceptar::PushBackHit(TGRSIDetectorHit *schit) {
 void TSceptar::BuildHits(TDetectorData *data,Option_t *opt)	{
 //Builds the SCEPTAR Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
 //This is done for both GRIFFIN and it's suppressors.
-   TSceptarData *gdata = (TSceptarData*)data;
+   TSceptarData *gdata = static_cast<TSceptarData*>(data);
    if(gdata==0)
       gdata = (this->sceptardata);
 

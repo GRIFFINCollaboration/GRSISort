@@ -107,9 +107,9 @@ void TGRSIRootIO::SetUpScalerTree() {
    fTimesScalerCalled = 0;
    fScalerTree = new TTree("ScalerTree","ScalerTree");
 	fScalerData = NULL;
-   fScalerTree->Bronch("TScalerData","TScalerData",&fScalerData,128000,99);
+   fScalerTree->Branch("TScalerData","TScalerData",&fScalerData);//,128000,99);
+	fScalerTree->BranchRef();
 	printf("Scaler-Tree set up.\n");
-
 }
 
 void TGRSIRootIO::SetUpEpicsTree() {
