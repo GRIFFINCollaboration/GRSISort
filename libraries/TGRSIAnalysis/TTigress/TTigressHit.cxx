@@ -17,19 +17,19 @@ TTigressHit::TTigressHit() {
 TTigressHit::~TTigressHit() {	}
 
 TTigressHit::TTigressHit(const TTigressHit& rhs) : TGRSIDetectorHit() {	
-   ((TGRSIDetectorHit&)rhs).Copy(*this);
+   rhs.Copy(*this);
 }
 
 
 void TTigressHit::AddSegment(TCrystalHit &temp) {
-   TCrystalHit *newhit = (TCrystalHit*)segment.ConstructedAt(GetSegmentMultiplicity());	
-   temp.Copy((TCrystalHit&)(*newhit));
+   TCrystalHit *newhit = static_cast<TCrystalHit*>(segment.ConstructedAt(GetSegmentMultiplicity()));	
+   temp.Copy(*newhit);
 }
 
 
 void TTigressHit::AddBGO(TCrystalHit &temp) {
-   TCrystalHit *newhit = (TCrystalHit*)bgo.ConstructedAt(GetSegmentMultiplicity());	
-   temp.Copy((TCrystalHit&)(*newhit));
+   TCrystalHit *newhit = static_cast<TCrystalHit*>(bgo.ConstructedAt(GetSegmentMultiplicity()));	
+   temp.Copy(*newhit);
 }
 
 

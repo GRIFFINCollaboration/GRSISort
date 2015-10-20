@@ -30,7 +30,7 @@ TTigress::TTigress() : tigdata(0), bgodata(0)	{
 
 TTigress::TTigress(const TTigress& rhs)
   : TGRSIDetector() {
-   ((TTigress&)rhs).Copy(*this);
+   rhs.Copy(*this);
 }
 
 TTigress::~TTigress()	{
@@ -39,7 +39,7 @@ TTigress::~TTigress()	{
 }
 
 void TTigress::Copy(TObject& rhs) const {
-   TGRSIDetector::Copy((TGRSIDetector&)rhs);
+   TGRSIDetector::Copy(rhs);
    static_cast<TTigress&>(rhs).tigdata = 0;
    static_cast<TTigress&>(rhs).bgodata = 0;
    tigress_hits.Copy(static_cast<TTigress&>(rhs).tigress_hits);
@@ -59,13 +59,13 @@ void TTigress::Clear(Option_t *opt)	{
 
 
 void TTigress::AddTigressHit(const TTigressHit& temp) { 
-   TTigressHit *newhit = (TTigressHit*)tigress_hits.ConstructedAt(GetMultiplicity());	
-   temp.Copy(*((TTigressHit*)newhit));
+   TTigressHit *newhit = static_cast<TTigressHit*>(tigress_hits.ConstructedAt(GetMultiplicity()));	
+   temp.Copy(*newhit);
 }
  
 void TTigress::AddAddBackHit(const TTigressHit& temp) {
-   TTigressHit *newhit = (TTigressHit*)addback_hits.ConstructedAt(GetAddBackMultiplicity());	
-   temp.Copy(*((TTigressHit*)newhit));
+   TTigressHit *newhit = static_cast<TTigressHit*>(addback_hits.ConstructedAt(GetAddBackMultiplicity()));	
+   temp.Copy(*newhit);
 }  
 
 
