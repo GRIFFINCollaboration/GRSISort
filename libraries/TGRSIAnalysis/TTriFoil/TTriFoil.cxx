@@ -42,7 +42,7 @@ void TTriFoil::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
 
 TTriFoil::TTriFoil(const TTriFoil& rhs) : TDetector() {
   Class()->IgnoreTObjectStreamer(kTRUE);
-  ((TTriFoil&)rhs).Copy(*this);
+  rhs.Copy(*this);
 }
 
 void TTriFoil::BuildHits(TDetectorData *ddata,Option_t *opt)	{

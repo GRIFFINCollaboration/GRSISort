@@ -33,7 +33,7 @@ TSceptarHit::TSceptarHit(const TSceptarHit &rhs) : TGRSIDetectorHit() {
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
-   ((TSceptarHit&)rhs).Copy(*this);
+   rhs.Copy(*this);
 }
 
 void TSceptarHit::Copy(TObject &rhs) const {

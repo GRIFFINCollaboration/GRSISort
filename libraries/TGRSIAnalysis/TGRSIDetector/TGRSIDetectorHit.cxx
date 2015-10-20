@@ -20,7 +20,7 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int &Address) : TObject() {
   Clear();
   faddress = Address;
   if(!fPPG)
-   fPPG = (TPPG*)gDirectory->Get("TPPG"); //There Might be a better way to do this
+   fPPG = static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
 
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
@@ -28,10 +28,10 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int &Address) : TObject() {
 }
 
 TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs) : TObject() { 
-  //Default Copy constructor
-  ((TGRSIDetectorHit&)rhs).Copy(*this);
-  //((TGriffinHit&)rhs).cfd             = cfd;
-  //rhs.time            = time;
+	//Default Copy constructor
+	rhs.Copy(*this);
+	//((TGriffinHit&)rhs).cfd             = cfd;
+	//rhs.time            = time;
    fPPG = (TPPG*)gDirectory->Get("TPPG"); //There Might be a better way to do this
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
@@ -46,7 +46,7 @@ Double_t TGRSIDetectorHit::GetTime(Option_t *opt) const{
    if(IsTimeSet())
       return ftime;
 
-   Double_t dtime = (Double_t)(GetTimeStamp()) + gRandom->Uniform();
+   Double_t dtime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
    TChannel *chan = GetChannel();
    if(!chan)
       return dtime;
@@ -58,7 +58,7 @@ Double_t TGRSIDetectorHit::GetTime(Option_t *opt) {
    if(IsTimeSet())
       return ftime;
 
-   Double_t dtime = (Double_t)(GetTimeStamp()) + gRandom->Uniform();
+   Double_t dtime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
    TChannel *chan = GetChannel();
    if(!chan)
       return dtime;
