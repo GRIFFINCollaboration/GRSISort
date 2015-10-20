@@ -422,6 +422,49 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
 	}
 }
 
+
+TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime, size_t index, Option_t *option) {
+	///Draw scaler differences (i.e. current scaler minus last scaler) vs. time in cycle.
+	///Passing "redraw" as option forces re-drawing of the histogram (e.g. for a different index).
+   if(fTree == NULL || fEntries == 0) {
+      printf("Empty\n");
+		return NULL;
+   }
+
+	//if the address doesn't exist in the histogram map, insert a null pointer
+	if(fHist.find(address) == fHist.end()) {
+		fHist[address] = NULL;
+	}
+
+	TString opt = option;
+	opt.ToLower();
+	int nofBins = (int)(hightime-lowtime)/GetTimePeriod(address);
+   //This scHist could be leaky as the outside user has ownership of it.
+   TH1D* scHist = new TH1D(Form("TScalerHist_%04x",address),Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", (int) index, address, 
+																								 fPPG->GetCycleLength()/1e5/nofBins), nofBins, 0., fPPG->GetCycleLength()/1e5);
+	//we have to skip the first data point in case this is a sub-run 
+	//loop over the remaining scaler data for this address
+	UInt_t previousValue = 0;
+	for(Long64_t entry = 0; entry < fEntries; ++entry) {
+		fTree->GetEntry(entry);
+		if(fScalerData->GetAddress() == address) {
+			//fill the difference between the current and the next scaler (if we found a previous value and that one is smaller than the current one)
+			if(previousValue != 0 && previousValue < fScalerData->GetScaler(index)) {
+				scHist->Fill(fScalerData->GetTimeStamp(),fScalerData->GetScaler(index) - previousValue);
+			}
+			previousValue = fScalerData->GetScaler(index);
+		}
+		if(entry%1000 == 0) {
+			std::cout<<std::setw(3)<<(100*entry)/fEntries<<" % done\r"<<std::flush;
+		}
+	}
+	std::cout<<"100 % done\r"<<std::flush;
+	
+	scHist->Draw(opt);
+
+	return scHist;
+}
+
 ULong64_t TScaler::GetTimePeriod(UInt_t address) {
    ///Get time period of scaler readouts for address "address" by calculating all time differences and choosing the one that occurs most often.
    ///Returns 0 if the address doesn't exist in the map.
