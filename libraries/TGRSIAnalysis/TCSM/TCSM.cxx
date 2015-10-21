@@ -895,3 +895,12 @@ bool TCSM::AlmostEqual(double val1, double val2)
   return frac < AlmostEqualWindow;
 }
 
+TCSMHit* TCSM::GetCSMHit(const int& i) {
+   try{
+      return &csm_hits.at(i);   
+   }
+   catch (const std::out_of_range& oor){
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+   }
+   return 0;
+}

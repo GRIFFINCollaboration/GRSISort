@@ -45,8 +45,8 @@ class TCSM :  public TDetector 	{
 		virtual void Print(Option_t * = "") const;		//!
 		void BuildHits(TDetectorData *cd = 0,  Option_t * = "");			//!
 
-		TCSMHit *GetHit(int i)		{return &csm_hits.at(i);}	//->
-		Short_t GetMultiplicity()	{return csm_hits.size();}	//->
+		TCSMHit *GetCSMHit(const int& i);	//->
+		Short_t GetMultiplicity() const	{return csm_hits.size();}	//->
 
 	   static TVector3 GetPosition(int detector, char pos, int horizontalstrip, int verticalstrip, double X=0.00, double Y=0.00, double Z=0.00);	//! 
 

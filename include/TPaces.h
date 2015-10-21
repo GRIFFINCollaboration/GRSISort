@@ -30,9 +30,9 @@ class TPaces : public TGRSIDetector {
   public: 
      void BuildHits(TDetectorData *data =0,Option_t *opt = ""); //!
 
-     TPacesHit *GetPacesHit(const int i); //!
-     TGRSIDetectorHit* GetHit(const Int_t idx = 0);
-     Int_t GetMultiplicity() const {return paces_hits.size();}
+     TPacesHit *GetPacesHit(const int& i); //!
+     TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+     Short_t GetMultiplicity() const {return paces_hits.size();}
      
      static TVector3 GetPosition(int DetNbr);		//!
      void FillData(TFragment*,TChannel*,MNEMONIC*); //!

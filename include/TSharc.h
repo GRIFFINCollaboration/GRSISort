@@ -23,8 +23,8 @@ class TSharc : public TGRSIDetector  {
     TSharc(const TSharc& rhs);
 
   public: 
-    TSharcHit        *GetSharcHit(const int i) { return (TSharcHit*)GetHit(i); } ;  
-    TGRSIDetectorHit *GetHit(const int i);
+    TSharcHit        *GetSharcHit(const int& i);  
+    TGRSIDetectorHit *GetHit(const int& i);
     static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);  //! 
     static double GetXOffset()  { return X_offset; }
     static double GetYOffset()  { return Y_offset; }
@@ -33,7 +33,8 @@ class TSharc : public TGRSIDetector  {
     static void   SetXYZOffset(const double x,const double y,const double z) { X_offset =x; Y_offset=y; Z_offset=z; }
 
 
-    int GetSize() { return sharc_hits.size();} //!
+    int GetSize() const { return sharc_hits.size();} //!
+    Short_t GetMultiplicity() const { return sharc_hits.size(); } 
 
     virtual void Copy(TObject&) const;         //!
     virtual void Clear(Option_t * = "");       //!

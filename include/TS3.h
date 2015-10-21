@@ -2,6 +2,7 @@
 #define TS3_H
 
 #include "TDetector.h"
+#include <iostream>
 
 #ifndef __CINT__
 #include "TS3Data.h"
@@ -25,8 +26,8 @@ class TS3 : public TDetector {
     virtual void BuildHits(TDetectorData *data=0,Option_t *opt="");
     virtual void FillData(TFragment*,TChannel*,MNEMONIC*);
 
-    TS3Hit *GetS3Hit(int i)    {  return &s3_hits[i];};  
-    Short_t GetMultiplicity()  {  return s3_hits.size();};
+    TS3Hit *GetS3Hit(const int& i);  
+    Short_t GetMultiplicity()  {  return s3_hits.size();}
 
 
     TVector3 GetPosition(int front, int back);

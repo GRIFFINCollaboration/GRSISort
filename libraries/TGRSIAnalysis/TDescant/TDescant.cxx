@@ -148,16 +148,18 @@ void TDescant::Print(Option_t *opt) const	{
   printf("%lu descant_hits\n",descant_hits.size());
 }
 
-TGRSIDetectorHit* TDescant::GetHit(const Int_t idx){
+TGRSIDetectorHit* TDescant::GetHit(const Int_t& idx){
    return GetDescantHit(idx);
 }
 
-TDescantHit* TDescant::GetDescantHit(const Int_t idx) {
-   if( idx < GetMultiplicity())
-      return &(descant_hits.at(idx));
-   else
-      return 0;
-
+TDescantHit* TDescant::GetDescantHit(const Int_t& i) {
+   try{
+      return &descant_hits.at(i);   
+   }
+   catch (const std::out_of_range& oor){
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+   }
+   return 0;
 }
 
 void TDescant::PushBackHit(TGRSIDetectorHit *deshit) {
