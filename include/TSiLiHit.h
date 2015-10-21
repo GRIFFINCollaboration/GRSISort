@@ -7,7 +7,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 #include "TGRSIDetectorHit.h"
-
+#include "TWaveformAnalyzer.h"
 
 class TSiLiHit : public TGRSIDetectorHit {
   public:
@@ -17,24 +17,16 @@ class TSiLiHit : public TGRSIDetectorHit {
     void Clear(Option_t *opt="");
     void Print(Option_t *opt="") const;
 
-    Short_t  GetSegment()                       {  return segment; }
-    Double_t GetEnergy(Option_t *opt = "")      {  return energy;  }
-    ULong_t GetTimeStamp(Option_t *opt = "")const{  return ts;    }
-    Double_t GetTime(Option_t *opt = "")        {  return time;    }
-    Int_t    GetCharge()                        {  return charge;  }
-    Double_t GetTimeCFD()                       {  return cfd;     }
-    Int_t GetRing()         {  return segment-(floor((double)segment/12.0)*12);  }
-    Int_t GetSector()       {  return 9-floor((double)segment/12.0);     }
-    Int_t GetPreamp()       {  Int_t sec=this->GetSector();
-                                Int_t ring=this->GetRing();
-                                Int_t pre=floor((double)sec/3.0);
-                                sec-=pre*3;
-                                if(sec==2)ring=9-ring;
-                                pre*=2; 
-                                if(ring%2!=0)pre++;
-                                if(pre>1) return 10-pre;
-                                else return 2-pre;
-                            }
+    Short_t  GetSegment()      {  return segment; }
+    Double_t GetEnergy()       {  return energy;  }
+    Long_t   GetTimeStamp()    {  return ts;    }
+    Int_t    GetTime()         {  return time;    }
+    Double_t    GetTimeFit()      {  return time_fit;    }
+    Int_t    GetCharge()       {  return charge;  }
+    Double_t GetTimeCFD()      {  return cfd;     }
+    Int_t GetRing()            {  return 9-(segment/12);  }
+    Int_t GetSector()          {  return segment%12;     }
+    Int_t GetPreamp()          { return ((GetSector()/3)*2)+(((GetSector()%3)+GetRing())%2); }
     
     void SetSegment(Short_t seg)       { segment = seg; }
     using TGRSIDetectorHit::SetPosition; //This is here to fix warnings. Will leave when lean-ness occurs
@@ -43,8 +35,10 @@ class TSiLiHit : public TGRSIDetectorHit {
                                          energy = frag.GetEnergy();
                                          ts     = frag.GetTimeStamp();
                                          time   = frag.GetZCross();
-                                         cfd    = frag.GetCfd(); }
-
+                                         cfd    = frag.GetCfd();
+					 time_fit = fit_time(frag);}
+    Double_t fit_time(TFragment &);
+    
   private:
     //TVector3 position;  //held in base.
     Short_t  segment;
@@ -53,9 +47,10 @@ class TSiLiHit : public TGRSIDetectorHit {
     Int_t    charge;
     ULong_t  ts;
     Double_t time;
+    Double_t    time_fit;
 
   
-  ClassDef(TSiLiHit,2);
+  ClassDef(TSiLiHit,3);
 
 };
 
