@@ -3,6 +3,7 @@
 #include <TRandom.h>
 #include <TMath.h>
 #include <TClass.h>
+#include <stdexcept>
 
 ////////////////////////////////////////////////////////////
 //                    

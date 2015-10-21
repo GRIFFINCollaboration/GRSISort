@@ -1,5 +1,6 @@
 #include <TMath.h>
 #include "TCSM.h"
+#include <stdexcept>
 #define RECOVERHITS 1
 #define SUMHITS 0
 
