@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "TSceptar.h"
 #include <TRandom.h>
