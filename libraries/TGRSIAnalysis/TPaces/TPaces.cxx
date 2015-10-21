@@ -86,15 +86,18 @@ void TPaces::PushBackHit(TGRSIDetectorHit *phit){
    paces_hits.push_back(*((TPacesHit*)phit));
 }
 
-TGRSIDetectorHit* TPaces::GetHit(const Int_t idx) {
+TGRSIDetectorHit* TPaces::GetHit(const Int_t& idx) {
    return GetPacesHit(idx);
 }
 
-TPacesHit* TPaces::GetPacesHit(const int i) {
-   if(i < GetMultiplicity())
+TPacesHit* TPaces::GetPacesHit(const int& i) {
+   try{
       return &paces_hits.at(i);   
-   else
-      return 0;
+   }
+   catch (const std::out_of_range& oor){
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+   }
+   return 0;
 }
 
 void TPaces::BuildHits(TDetectorData *data,Option_t *opt)	{

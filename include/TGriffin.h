@@ -42,9 +42,9 @@ class TGriffin : public TGRSIDetector {
    public:
       void BuildHits(TDetectorData *data =0,Option_t *opt = ""); //!
 
-      TGriffinHit *GetGriffinHit(const int i); //!
-      TGRSIDetectorHit* GetHit(const Int_t idx = 0);
-      Int_t GetMultiplicity() const {return griffin_hits.size();}
+      TGriffinHit *GetGriffinHit(const int& i); //!
+      TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+      Short_t GetMultiplicity() const {return griffin_hits.size();}
 
       static TVector3 GetPosition(int DetNbr ,int CryNbr = 5, double distance = 110.0);		//!
       void FillData(TFragment*,TChannel*,MNEMONIC*); //!

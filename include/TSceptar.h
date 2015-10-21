@@ -25,9 +25,9 @@ class TSceptar : public TGRSIDetector {
      TSceptar(const TSceptar& rhs);
 
   public: 
-     TGRSIDetectorHit* GetHit(const Int_t idx =0);
+     TGRSIDetectorHit* GetHit(const Int_t& idx =0);
      void Copy(TObject &rhs) const;
-     TSceptarHit *GetSceptarHit(int i)        {	return &sceptar_hits[i];   }	//!
+     TSceptarHit *GetSceptarHit(const int& i);	//!
      Short_t GetMultiplicity() const	       {	return sceptar_hits.size();}	//!
 
      static TVector3 GetPosition(int DetNbr)  { return gPaddlePosition[DetNbr];}	//!

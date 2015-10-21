@@ -25,8 +25,8 @@ class TDescant : public TGRSIDetector {
      virtual ~TDescant();
 
   public: 
-     TGRSIDetectorHit* GetHit(const Int_t idx =0);
-     TDescantHit* GetDescantHit(const Int_t idx = 0);
+     TGRSIDetectorHit* GetHit(const Int_t& idx =0);
+     TDescantHit* GetDescantHit(const Int_t& idx = 0);
 
      Short_t GetMultiplicity() const	       {	return descant_hits.size();}	//!
 

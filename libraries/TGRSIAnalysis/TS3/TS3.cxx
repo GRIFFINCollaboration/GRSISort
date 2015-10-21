@@ -96,6 +96,16 @@ TVector3 TS3::GetPosition(int ring, int sector)  {
 
 }
 
+TS3Hit *TS3::GetS3Hit(const int& i) {  
+   try{
+      return &s3_hits.at(i);   
+   }
+   catch (const std::out_of_range& oor){
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+   }
+   return 0;
+}  
+
 void TS3::Print(Option_t *opt) const {
    printf("%s\tnot yet written.\n",__PRETTY_FUNCTION__);
 }

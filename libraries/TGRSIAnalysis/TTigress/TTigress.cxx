@@ -494,7 +494,7 @@ void TTigress::BuildAddBack(Option_t *opt)	{
       GetAddBackHit(0)->SumHit(GetAddBackHit(0));
 
 
-		for(int i = 1; i<this->GetMultiplicity(); i++)   {
+		for(int i = 1; i<(int)(this->GetMultiplicity()); i++)   {
 		 	bool used = false;
 			 for(int j =0; j<addback_hits.GetEntries();j++)    {
 		 	   TVector3 res = GetAddBackHit(j)->GetLastHit() - GetTigressHit(i)->GetPosition();

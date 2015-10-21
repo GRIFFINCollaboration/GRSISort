@@ -1,8 +1,10 @@
-#include <TMath.h>
+#include "TMath.h"
 
 #include "TSharc.h"
+#include <cstdio>
+#include <iostream>
 #include "TSharcData.h"
-#include <TClass.h>
+#include "TClass.h"
 
 
 ClassImp(TSharc)
@@ -242,10 +244,18 @@ TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double
   return (position + position_offset);
 }
 
-TGRSIDetectorHit* TSharc::GetHit(const Int_t idx) {
+TGRSIDetectorHit* TSharc::GetHit(const Int_t& idx) {
    return GetSharcHit(idx);
 }
 
-
+TSharcHit* TSharc::GetSharcHit(const int& i) {
+   try{
+      return &sharc_hits.at(i);   
+   }
+   catch (const std::out_of_range& oor){
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+   }
+   return 0;
+}
 
 
