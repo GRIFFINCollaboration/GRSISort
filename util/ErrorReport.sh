@@ -5,10 +5,11 @@ echo GRSISYS      = $GRSISYS
 echo ROOTSYS      = $ROOTSYS
 
 echo ROOT Version = `root-config --version`
+echo '\nComputer and Path to File that failed: \n'
 
 cd ${GRSISYS}
 echo GRSISort Branch = `git rev-parse --abbrev-ref HEAD`
-echo 'Last Commit: \n' 
+echo '\nLast Commit: ' 
 
 git log -1
 
