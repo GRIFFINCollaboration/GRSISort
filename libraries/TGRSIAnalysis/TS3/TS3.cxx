@@ -1,7 +1,6 @@
 
 
 #include "TS3.h"
-#include <stdexcept>
 #include <TMath.h>
 #include <cmath>
 

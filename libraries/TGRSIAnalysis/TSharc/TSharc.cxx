@@ -1,5 +1,4 @@
 #include "TMath.h"
-#include <stdexcept>
 #include "TSharc.h"
 #include <cstdio>
 #include <iostream>
