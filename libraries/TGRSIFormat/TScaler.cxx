@@ -428,24 +428,18 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
 
 
 TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime, size_t index, Option_t *option) {
-	///Draw scaler differences (i.e. current scaler minus last scaler) vs. time in cycle.
-	///Passing "redraw" as option forces re-drawing of the histogram (e.g. for a different index).
+	///Draw scaler differences (i.e. current scaler minus last scaler) vs. time.
    if(fTree == NULL || fEntries == 0) {
       printf("Empty\n");
 		return NULL;
    }
 
-	//if the address doesn't exist in the histogram map, insert a null pointer
-	if(fHist.find(address) == fHist.end()) {
-		fHist[address] = NULL;
-	}
-
 	TString opt = option;
 	opt.ToLower();
-	int nofBins = (int)(hightime-lowtime)/GetTimePeriod(address);
+	int nofBins = std::abs((int)(1e8*(hightime-lowtime)/GetTimePeriod(address)));
+   std::cout << nofBins << "nofbins" << std::endl;
    //This scHist could be leaky as the outside user has ownership of it.
-   TH1D* scHist = new TH1D(Form("TScalerHist_%04x",address),Form("scaler %d vs time in cycle for address 0x%04x; time in cycle [ms]; counts/%.0f ms", (int) index, address, 
-																								 fPPG->GetCycleLength()/1e5/nofBins), nofBins, 0., fPPG->GetCycleLength()/1e5);
+   TH1D* scHist = new TH1D(Form("TScalerHistRaw_%04x",address),Form("scaler %d vs time for address 0x%04x; time in [ms]; counts/ ms", (int) index, address),nofBins,lowtime, hightime);
 	//we have to skip the first data point in case this is a sub-run 
 	//loop over the remaining scaler data for this address
 	UInt_t previousValue = 0;
@@ -454,7 +448,7 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
 		if(fScalerData->GetAddress() == address) {
 			//fill the difference between the current and the next scaler (if we found a previous value and that one is smaller than the current one)
 			if(previousValue != 0 && previousValue < fScalerData->GetScaler(index)) {
-				scHist->Fill(fScalerData->GetTimeStamp(),fScalerData->GetScaler(index) - previousValue);
+				scHist->Fill(fScalerData->GetTimeStamp()/1e8,fScalerData->GetScaler(index) - previousValue);
 			}
 			previousValue = fScalerData->GetScaler(index);
 		}
