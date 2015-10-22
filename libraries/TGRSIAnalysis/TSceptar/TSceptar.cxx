@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "TSceptar.h"
 #include <TRandom.h>
@@ -165,11 +164,17 @@ void TSceptar::BuildHits(TDetectorData *data,Option_t *opt)	{
    }
 }
 
-TGRSIDetectorHit* TSceptar::GetHit(const Int_t idx){
+TGRSIDetectorHit* TSceptar::GetHit(const Int_t& idx){
    //Gets the TSceptarHit at index idx. 
-   if(idx < GetMultiplicity())
-      return &(sceptar_hits.at(idx));
-   else 
-      return 0;
+   return GetSceptarHit(idx);
 }
 
+TSceptarHit* TSceptar::GetSceptarHit(const int& i) {
+   try{
+      return &sceptar_hits.at(i);   
+   }
+   catch (const std::out_of_range& oor){
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+   }
+   return 0;
+}

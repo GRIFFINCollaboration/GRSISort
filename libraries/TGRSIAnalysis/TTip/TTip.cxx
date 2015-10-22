@@ -94,19 +94,21 @@ void TTip::Print(Option_t *opt) const {
   printf("%lu tip_hits\n",tip_hits.size());
 }
 
-TGRSIDetectorHit* TTip::GetHit(const Int_t idx) {
+TGRSIDetectorHit* TTip::GetHit(const Int_t& idx) {
    return GetTipHit(idx);
 }
 
-
-TTipHit* TTip::GetTipHit(const int i) {
-   if(i < GetMultiplicity())
+TTipHit* TTip::GetTipHit(const int& i) {
+   try{
       return &tip_hits.at(i);   
-   else
-      return 0;
+   }
+   catch (const std::out_of_range& oor){
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+   }
+   return 0;
 }
 
 void TTip::PushBackHit(TGRSIDetectorHit *tiphit) {
-  tip_hits.push_back(*((TTipHit*)tiphit));
+  tip_hits.push_back(*(static_cast<TTipHit*>(tiphit)));
   return;
 }

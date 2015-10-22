@@ -1,5 +1,4 @@
 
-
 #include "TSiLi.h"
 
 ClassImp(TSiLi)
@@ -54,3 +53,13 @@ TVector3 TSiLi::GetPosition(int seg)  {
   position.SetXYZ(0,0,-1);
   return position;
 }
+
+TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {  
+   try{
+      return &sili_hits.at(i);   
+   }
+   catch (const std::out_of_range& oor){
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+   }
+   return 0;
+}  

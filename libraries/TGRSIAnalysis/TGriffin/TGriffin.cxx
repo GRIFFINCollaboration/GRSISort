@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "TGriffin.h"
 #include <TRandom.h>
@@ -172,16 +171,19 @@ void TGriffin::PushBackHit(TGRSIDetectorHit *ghit){
 }
 
 
-TGRSIDetectorHit* TGriffin::GetHit(const Int_t idx) {
+TGRSIDetectorHit* TGriffin::GetHit(const Int_t& idx) {
    return GetGriffinHit(idx);
 }
 
 
-TGriffinHit* TGriffin::GetGriffinHit(const int i) {
-   if(i < GetMultiplicity())
+TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
+   try{
       return &griffin_hits.at(i);   
-   else
-      return 0;
+   }
+   catch (const std::out_of_range& oor){
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+   }
+   return 0;
 }
 
 Int_t TGriffin::GetAddbackMultiplicity() {

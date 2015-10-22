@@ -36,9 +36,11 @@ class TTigress : public TGRSIDetector {
 		void BuildAddBack(Option_t *opt="");	//!
 		//void BuildCloverAddBack(Option_t *opt="");	//!
 
-		TTigressHit *GetTigressHit(const int i) {	return (TTigressHit*)tigress_hits.At(i);	    } //!
-      TGRSIDetectorHit *GetHit(const int i)   { return GetTigressHit(i);       } //!
-		Int_t GetMultiplicity()	                { return tigress_hits.GetEntries(); }	//!
+      //These Getters of hits throw "ROOT Errors"
+		TTigressHit *GetTigressHit(const int& i) {	return (TTigressHit*)tigress_hits.At(i);	    } //!
+      TGRSIDetectorHit *GetHit(const int& i)   { return GetTigressHit(i);       } //!
+		Short_t GetMultiplicity() const	       { return tigress_hits.GetEntries(); }	//!
+//		size_t GetMultiplicity() const	       { return tigress_hits.size(); }	//!
 
 		TTigressHit *GetAddBackHit(int i)   {	return (TTigressHit*)addback_hits.At(i);	       } //!
 		Int_t GetAddBackMultiplicity()	   {	return addback_hits.GetEntries(); }	//!
@@ -65,8 +67,8 @@ class TTigress : public TGRSIDetector {
 		TTigressData *tigdata;        //!
 		TBGOData     *bgodata;        //!
 
-		//std::vector <TTigressHit> tigress_hits;
-		//std::vector <TTigressHit> addback_hits;
+	//	std::vector <TTigressHit> tigress_hits;
+	//	std::vector <TTigressHit> addback_hits;
 		//std::vector <TTigressHit> clover_addback_hits;			
       TClonesArray tigress_hits;
       TClonesArray addback_hits;

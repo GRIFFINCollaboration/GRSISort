@@ -103,6 +103,7 @@ class TScaler : public TObject {
    using TObject::Draw; //This is to remove hidden overload
 	TH1D* Draw(UInt_t address, size_t index = 0, Option_t *opt = "");
 	TH1D* Draw(UInt_t lowAddress, UInt_t highAddress, size_t index = 0, Option_t *opt = "");
+   TH1D* DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime, size_t index = 0, Option_t *opt = "");
 
 	void ListHistograms();
 

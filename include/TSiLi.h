@@ -3,6 +3,7 @@
 #define TSILI_H
 
 #include <cstdio>
+#include <iostream>
 
 #include "TDetector.h"
 
@@ -21,14 +22,14 @@ class TSiLi: public TDetector  {
     ~TSiLi();
 
     void BuildHits(TDetectorData *data, Option_t *opt="");    
-      void FillData(TFragment*,TChannel*,MNEMONIC*);
+    void FillData(TFragment*,TChannel*,MNEMONIC*);
 
     void Print(Option_t *opt="") const;
     void Clear(Option_t *opt="");
     
     
-    int GetMultiplicity()     {  return  sili_hits.size();  }
-    TSiLiHit *GetHit(int i)   {  return  &sili_hits.at(i);  }
+    Short_t GetMultiplicity() const         {  return  sili_hits.size();  }
+    TSiLiHit *GetSiLiHit(const int& i);
 
     TVector3 GetPosition(int segment);
 
