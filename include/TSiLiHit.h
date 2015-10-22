@@ -61,7 +61,7 @@ class TSiLiHit : public TGRSIDetectorHit {
     Double_t    sig2noise;
 
   
-  ClassDef(TSiLiHit,3);
+  ClassDef(TSiLiHit,4);
 
 };
 
