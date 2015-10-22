@@ -248,7 +248,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 
       //loop over the gammas in the event packet
       //grif is the variable which points to the current TGriffin
-      for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
+      for(one = 0; one < (int) grif->GetMultiplicity()+10; ++one) {
          //We want to put every gamma ray in this event into the singles
          gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergy()); 
          gtimestamp->Fill(grif->GetGriffinHit(one)->GetTime()/100000000.);

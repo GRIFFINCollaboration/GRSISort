@@ -57,7 +57,7 @@ class TGriffin : public TGRSIDetector {
 #endif
 
       Int_t GetAddbackMultiplicity();
-      TGriffinHit* GetAddbackHit(const int i);
+      TGriffinHit* GetAddbackHit(const int& i);
 
    private:
 #ifndef __CINT__
