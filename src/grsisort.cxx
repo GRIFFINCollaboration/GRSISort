@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
       printf("\nbye,bye\n");
    } catch(exit_exception& e) {
       std::cerr << e.message << std::endl;
-      exit(e.code);
+      //Close files and clean up properly here
    }
 
       return 0;
