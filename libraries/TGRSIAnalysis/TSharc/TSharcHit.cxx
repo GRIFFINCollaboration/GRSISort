@@ -64,7 +64,7 @@ TVector3 TSharcHit::GetChannelPosition(Double_t dist) const {
 Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
   TVector3 posoff; 
   posoff.SetXYZ(Xoff,Yoff,Zoff);
-  return (fposition+posoff).Theta();
+  return (GetPosition()+posoff).Theta();
 }
 
 

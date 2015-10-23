@@ -132,7 +132,7 @@ class TGRSIDetectorHit : public TObject 	{
       ULong_t  ftimestamp; // Timestamp given to hit
       Double_t ftime;      //! Calibrated Time of the hit
       UInt_t   fdetector;   //! Detector Number
- //     TVector3 fposition;   //! Position of hit detector.
+      TVector3 fposition;   //! Position of hit detector.
       Double_t fenergy;     //! Energy of the Hit.
    //   TRef      parent;   // pointer to the mother class;
       std::vector<Short_t> fwaveform;  //
@@ -142,7 +142,7 @@ class TGRSIDetectorHit : public TObject 	{
 
    protected:
       static TPPG* fPPG;
-      TVector3 fposition;   //! Position of hit detector.
+
    private:
    //flags   
       UChar_t fbitflags;
