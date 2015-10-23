@@ -12,6 +12,7 @@ TS3Hit::~TS3Hit()	{	}
 
 void TS3Hit::Clear(Option_t *opt)	{
    TGRSIDetectorHit::Clear(opt);
+   led            = -1;
    ring           = -1;
    sector         = -1;
 }
