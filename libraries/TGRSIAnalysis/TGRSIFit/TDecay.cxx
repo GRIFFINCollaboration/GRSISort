@@ -1,4 +1,7 @@
 #include "TDecay.h"
+#include "Math/Minimizer.h"
+#include "Math/Factory.h"
+#include "Math/Functor.h"
 
 ClassImp(TSingleDecay)
 ClassImp(TDecayChain)

@@ -12,9 +12,6 @@
 #include <vector>
 #include <stdarg.h>
 #include "TGraph.h"
-#include "Math/Minimizer.h"
-#include "Math/Factory.h"
-#include "Math/Functor.h"
 
 
 ////////////////////////////////////////////////////////////////
