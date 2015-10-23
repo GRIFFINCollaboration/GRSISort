@@ -215,7 +215,7 @@ void TDescant::BuildHits(TDetectorData *data,Option_t *opt)	{
             //printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
          }
          dethit.SetWaveform(gdata->GetDetWave(i));
-         if(dethit.GetWaveform().size() > 0) {
+         if(dethit.GetWaveform()->size() > 0) {
             printf("Analyzing waveform, current cfd = %d, psd = %d\n",dethit.GetCfd(),dethit.GetPsd());
             bool analyzed = dethit.AnalyzeWaveform();
             printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd(),dethit.GetPsd());

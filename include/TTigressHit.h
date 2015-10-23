@@ -71,7 +71,6 @@ class TTigressHit : public TGRSIDetectorHit {
 		inline double GetEnergy(Option_t *opt ="")const	{	return core.GetEnergy();	}		//!
 		inline double GetTime(Option_t *opt ="") const	{	return core.GetTime();		}		//!
 		inline double GetTimeCFD()                      {  return core.GetCfd(); } //!
-      TVector3 GetPosition(Double_t dist = 110.0) const; //!
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
 
@@ -106,6 +105,9 @@ class TTigressHit : public TGRSIDetectorHit {
 		virtual void Clear(Option_t *opt = "");		                      //!
 		virtual void Copy(TObject&) const;                             //!
       virtual void Print(Option_t *opt = "") const;       		                //!
+
+   private:
+    TVector3 GetChannelPosition(Double_t dist=110.0) const;
 
 	ClassDef(TTigressHit,1)
 };

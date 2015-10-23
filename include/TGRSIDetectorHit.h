@@ -80,17 +80,16 @@ class TGRSIDetectorHit : public TObject 	{
       inline void SetCharge(const Float_t &temp_charge)            { fcharge = temp_charge;} //!
   //    inline void SetParent(TGRSIDetector *fParent)               { parent = (TObject*)fParent ; } //!
       virtual inline void SetCfd(const Int_t &x)                  { fcfd    = x;   }                  //!
-      inline void SetWaveform(std::vector<Short_t> x)             { fwaveform = x;    } //!
+      inline void SetWaveform(const std::vector<Short_t> &x)             { fwaveform = x;    } //!
       virtual inline void SetTimeStamp(const ULong_t &x)               { ftimestamp   = x;   }                  //! Maybe make this abstract?
 
       virtual TVector3 SetPosition(Double_t temp_pos = 0);
-      void SetEnergy(double en) { fenergy = en; SetFlag(kIsEnergySet,true);}
-      virtual UInt_t SetDetector(UInt_t det);
-      void SetTime(Double_t time) {ftime = time; SetFlag(kIsTimeSet,true); }
+      void SetEnergy(const double &en) { fenergy = en; SetFlag(kIsEnergySet,true);}
+      virtual UInt_t SetDetector(const UInt_t &det);
+      void SetTime(const Double_t &time) {ftime = time; SetFlag(kIsTimeSet,true); }
 
-      //Abstract methods. These are required in all derived classes
-		virtual TVector3 GetPosition(Double_t dist = 0) const; //!
-      virtual TVector3 GetPosition(Double_t dist = 0);
+		TVector3 GetPosition(Double_t dist = 0) const; //!
+      TVector3 GetPosition(Double_t dist = 0);
       virtual double GetEnergy(Option_t *opt="") const;
       virtual double GetEnergy(Option_t *opt="");
       virtual UInt_t GetDetector() const;
@@ -103,7 +102,7 @@ class TGRSIDetectorHit : public TObject 	{
       inline UInt_t GetAddress()     const                  { return faddress; }         //!
       inline Float_t GetCharge() const                       { return fcharge;} //!
       inline TChannel *GetChannel() const                   { return TChannel::GetChannel(faddress); }  //!
-      inline std::vector<Short_t> GetWaveform() const       { return fwaveform; } //!
+      inline std::vector<Short_t> *GetWaveform()           { return &fwaveform; } //!
     //  inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!
       
       //The PPG is only stored in events that come out of the GRIFFIN DAQ
@@ -111,6 +110,9 @@ class TGRSIDetectorHit : public TObject 	{
       uint16_t GetPPGStatus();
       uint16_t GetCycleTimeStamp() const;
       uint16_t GetCycleTimeStamp();
+
+   private:
+      virtual TVector3 GetChannelPosition(Double_t dist = 0) const { AbstractMethod("GetChannelPosition"); return TVector3(0.0,0.0,0.0); }
 
      // unsigned int GetHighestBitSet(UChar_t flag);
 
@@ -123,25 +125,26 @@ class TGRSIDetectorHit : public TObject 	{
       Bool_t IsTimeSet() const {return (fbitflags & kIsTimeSet); }
       void SetFlag(enum Ebitflag,Bool_t set);
 
-   protected:
+   private:
       UInt_t   faddress;    //address of the the channel in the DAQ.
       Float_t  fcharge;     //charge collected from the hit
       Int_t    fcfd;        // CFD time of the Hit
       ULong_t  ftimestamp; // Timestamp given to hit
       Double_t ftime;      //! Calibrated Time of the hit
       UInt_t   fdetector;   //! Detector Number
-      TVector3 fposition;   //! Position of hit detector.
+ //     TVector3 fposition;   //! Position of hit detector.
       Double_t fenergy;     //! Energy of the Hit.
    //   TRef      parent;   // pointer to the mother class;
-     std::vector<Short_t> fwaveform;  //
+      std::vector<Short_t> fwaveform;  //
       //Bool_t fHitSet;    //!
       uint16_t fPPGStatus; //! 
       ULong_t  fCycleTimeStamp; //!
 
+   protected:
       static TPPG* fPPG;
-
+      TVector3 fposition;   //! Position of hit detector.
+   private:
    //flags   
-   protected:  
       UChar_t fbitflags;
       
       //Bool_t fDetectorSet;//!

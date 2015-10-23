@@ -105,7 +105,7 @@ void TTigressHit::SumHit(TTigressHit *hit) {
 }
 
 
-TVector3 TTigressHit::GetPosition(Double_t dist) const {
+TVector3 TTigressHit::GetChannelPosition(Double_t dist) const {
    //Returns the Position of the crystal of the current Hit.
 	return TTigress::GetPosition(GetDetector(),GetCrystal(),dist);
 }
