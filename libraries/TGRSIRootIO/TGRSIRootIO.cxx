@@ -25,7 +25,8 @@ TGRSIRootIO::TGRSIRootIO() {
   fFragmentTree    = 0;
   fBadFragmentTree =0;
   fEpicsTree    = 0;
-  fScalerTree   = 0;
+  fDeadtimeScalerTree   = 0;
+  fRateScalerTree   = 0;
   fPPG          = 0;
 
   foutfile = 0; //new TFile("test_out.root","recreate");
@@ -99,17 +100,22 @@ void TGRSIRootIO::SetUpPPG() {
 }
 
 
-void TGRSIRootIO::SetUpScalerTree() {
+void TGRSIRootIO::SetUpScalerTrees() {
    if(TGRSIOptions::IgnoreScaler()) 
      return;
    if(foutfile)
       foutfile->cd();
-   fTimesScalerCalled = 0;
-   fScalerTree = new TTree("ScalerTree","ScalerTree");
-	fScalerData = NULL;
-   fScalerTree->Branch("TScalerData","TScalerData",&fScalerData);//,128000,99);
-	fScalerTree->BranchRef();
-	printf("Scaler-Tree set up.\n");
+   fTimesDeadtimeScalerCalled = 0;
+   fDeadtimeScalerTree = new TTree("ScalerTree","ScalerTree");
+	fDeadtimeScalerData = NULL;
+   fDeadtimeScalerTree->Branch("TScalerData","TScalerData",&fDeadtimeScalerData);//,128000,99);
+	fDeadtimeScalerTree->BranchRef();
+   fTimesRateScalerCalled = 0;
+   fRateScalerTree = new TTree("RateScalerTree","RateScalerTree");
+	fRateScalerData = NULL;
+   fRateScalerTree->Branch("TScalerData","TScalerData",&fRateScalerData);//,128000,99);
+	fRateScalerTree->BranchRef();
+	printf("Scaler-Trees set up.\n");
 }
 
 void TGRSIRootIO::SetUpEpicsTree() {
@@ -158,14 +164,24 @@ void TGRSIRootIO::FillPPG(TPPGData* data) {
    ++fTimesPPGCalled;
 }
 
-void TGRSIRootIO::FillScalerTree(TScalerData *scalerData) {
+void TGRSIRootIO::FillDeadtimeScalerTree(TScalerData *scalerData) {
   if(TGRSIOptions::IgnoreScaler()) 
     return;
-   *fScalerData = *scalerData;
-   int bytes =  fScalerTree->Fill();
+   *fDeadtimeScalerData = *scalerData;
+   int bytes =  fDeadtimeScalerTree->Fill();
    if(bytes < 1)
       printf("\n fill failed with bytes = %i\n",bytes);
-   fTimesScalerCalled++;
+   fTimesDeadtimeScalerCalled++;
+}
+
+void TGRSIRootIO::FillRateScalerTree(TScalerData *scalerData) {
+  if(TGRSIOptions::IgnoreScaler()) 
+    return;
+   *fRateScalerData = *scalerData;
+   int bytes =  fRateScalerTree->Fill();
+   if(bytes < 1)
+      printf("\n fill failed with bytes = %i\n",bytes);
+   fTimesRateScalerCalled++;
 }
 
 void TGRSIRootIO::FillEpicsTree(TEpicsFrag *EXfrag) {
@@ -245,13 +261,14 @@ void TGRSIRootIO::FinalizeEpicsTree() {
 	return;
 }
 
-void TGRSIRootIO::FinalizeScalerTree() {
+void TGRSIRootIO::FinalizeScalerTrees() {
   if(TGRSIOptions::IgnoreScaler()) 
     return;
-  if(!fScalerTree || !foutfile)
+  if(!fDeadtimeScalerTree || !fRateScalerTree || !foutfile)
       return;
    foutfile->cd();
-   fScalerTree->Write();
+   if(fDeadtimeScalerTree->GetEntries()>0) fDeadtimeScalerTree->Write();
+   if(fRateScalerTree->GetEntries()>0) fRateScalerTree->Write();
 	return;
 }
 
@@ -276,7 +293,7 @@ bool TGRSIRootIO::SetUpRootOutFile(int runnumber, int subrunnumber) {
    SetUpFragmentTree();
    SetUpBadFragmentTree();
    SetUpPPG();
-	SetUpScalerTree();
+	SetUpScalerTrees();
    SetUpEpicsTree();
 
    return true;
@@ -294,7 +311,7 @@ void TGRSIRootIO::CloseRootOutFile()   {
    
    FinalizeFragmentTree();
    FinalizePPG();
-	FinalizeScalerTree();
+	FinalizeScalerTrees();
    FinalizeEpicsTree();
 
    if(TGRSIRunInfo::GetNumberOfSystems()>0) {

@@ -409,8 +409,8 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
    }
 	//If the event has detector type 15 (0xf) it's a scaler event.
 	if(EventFrag->DetectorType == 0xf) {
-		//a scaler event has 7 words (including header and trailer), make sure we have at least that much left
-		if(size < 7) {
+		//a scaler event (trigger or deadtime) has 8 words (including header and trailer), make sure we have at least that much left
+		if(size < 8) {
 			return -x;
 		}
 		x = GriffinDataToScalerEvent(data, EventFrag->ChannelAddress);
@@ -460,6 +460,10 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
       switch(packet) {
          case 0x80000000: //The 8 packet type is for event headers
                //if this happens, we have "accidentally" found another event.
+               //currently the GRIF-C only sets the master/slave port of the address for the first header (of the corrupt event)
+               //so we want to ignore this corrupt event and the next event which has a wrong address
+               delete EventFrag;
+               return -(x+1);//+1 to ensure we don't read this header as start of a good event
                break;
          case 0xc0000000: //The c packet type is for waveforms
             if(!no_waveforms) 
@@ -536,6 +540,9 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
                   EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
                   EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
                } else {
+                  //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
+                  //so we look for the next trailer and stop there
+                  while((data[x] & 0xf0000000) != 0xe0000000) ++x;
                   return -x;
                }
             }
@@ -853,11 +860,20 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t *data, int address) {
 	  }
 	}
 	//and finally the trailer word with the highest 24 bits of the timestamp
-	if(!SetScalerHighTimeStamp(data[x++],scalerEvent)) {
+   int scalerType = 0;
+	if(!SetScalerHighTimeStamp(data[x++],scalerEvent,scalerType)) {
 		return -x;
 	}
 	
-	TScalerQueue::Get()->Add(scalerEvent);
+   if(scalerType == 0) { //deadtime scaler
+	   TDeadtimeScalerQueue::Get()->Add(scalerEvent);
+   } else if(scalerType == 1) { //rate scaler
+      //the rate scaler has only one real value, the rate
+      scalerEvent->ResizeScaler();
+	   TRateScalerQueue::Get()->Add(scalerEvent);
+   } else { //unknown scaler type
+      return -x;
+   }
 
 	return x;
 }
@@ -878,11 +894,12 @@ bool TDataParser::SetScalerLowTimeStamp(uint32_t value, TScalerData* scalerEvent
    return true;
 }
 
-bool TDataParser::SetScalerHighTimeStamp(uint32_t value, TScalerData* scalerEvent) {
-	if((value>>24) != 0xe0 || (value&0xff) != (scalerEvent->GetLowTimeStamp()>>20)) {
+bool TDataParser::SetScalerHighTimeStamp(uint32_t value, TScalerData* scalerEvent, int& type) {
+	if((value>>28) != 0xe || (value&0xff) != (scalerEvent->GetLowTimeStamp()>>20)) {
 		return false;
 	}
    scalerEvent->SetHighTimeStamp((value>>8) & 0x0000ffff);
+   type = (value>>24 & 0xf);
    return true;
 }
 
