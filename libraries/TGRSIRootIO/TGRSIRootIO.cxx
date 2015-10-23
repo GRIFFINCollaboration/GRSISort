@@ -267,8 +267,8 @@ void TGRSIRootIO::FinalizeScalerTrees() {
   if(!fDeadtimeScalerTree || !fRateScalerTree || !foutfile)
       return;
    foutfile->cd();
-   fDeadtimeScalerTree->Write();
-   fRateScalerTree->Write();
+   if(fDeadtimeScalerTree->GetEntries()>0) fDeadtimeScalerTree->Write();
+   if(fRateScalerTree->GetEntries()>0) fRateScalerTree->Write();
 	return;
 }
 
