@@ -1,8 +1,8 @@
-
 #include <iostream>
 #include "TGriffin.h"
 #include <TRandom.h>
 #include <TMath.h>
+#include "TCint.h"
 
 #include <TGRSIRunInfo.h>
 
@@ -179,10 +179,12 @@ TGRSIDetectorHit* TGriffin::GetHit(const Int_t& idx) {
 
 TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
    try{
-      return &griffin_hits.at(i);   
+      return &(griffin_hits.at(i));   
    }
    catch (const std::out_of_range& oor){
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr << ClassName() << " Hits are out of range: " << oor.what() << std::endl;
+      if(!gInterpreter)
+         throw exit_exception(1);
    }
    return 0;
 }
@@ -223,10 +225,12 @@ Int_t TGriffin::GetAddbackMultiplicity() {
    return fAddback_hits.size();
 }
 
-TGriffinHit* TGriffin::GetAddbackHit(const int i) {
+TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
    if(i < GetAddbackMultiplicity()) {
       return &fAddback_hits.at(i);
    } else {
+      std::cerr << "Addback hits are out of range" << std::endl;
+      throw exit_exception(1);
       return NULL;
    }
 }

@@ -1,7 +1,6 @@
 
 
 #include "TS3.h"
-
 #include <TMath.h>
 #include <cmath>
 
@@ -105,6 +104,7 @@ TS3Hit *TS3::GetS3Hit(const int& i) {
    }
    catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      throw exit_exception(1);
    }
    return 0;
 }  

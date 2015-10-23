@@ -2,7 +2,7 @@
 #define TDETECTOR_H
 
 #include "Globals.h"
-
+#include <stdexcept>
 #include <cstdio>
 #include <vector>
 #include "TVector3.h"

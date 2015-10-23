@@ -51,6 +51,7 @@ class TTigressData : public TGRSIDetectorData {
 		virtual void Print(Option_t *opt = "") const;		//!
 
 		inline void SetCloverNumber(const UShort_t &CloverNumber) {fClover_Nbr.push_back(CloverNumber);  }//!
+		inline void SetCoreTime(const Double_t &CoreTime)		{fCore_Time.push_back(CoreTime);		} //!
 		inline void SetCoreNumber(const UShort_t  &CoreNumber)	 {fCore_Nbr.push_back(CoreNumber);      }	//!
 		inline void SetCoreEnergy(const Double_t  &CoreEnergy)	 {fCore_Eng.push_back(CoreEnergy);      }	//!
 		inline void SetCoreCharge(const Float_t &CoreCharge)	    {fCore_Chg.push_back(CoreCharge);      }	//!
@@ -75,8 +76,8 @@ class TTigressData : public TGRSIDetectorData {
 		inline void SetCore(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
 				if(!frag || !channel || !mnemonic) return;
 
-        if(frag->Charge.size() == 0 || frag->Cfd.size() == 0 || frag->Led.size() == 0 || frag->Zc.size() == 0)
-				  return;
+        		if(frag->Charge.size() == 0 || frag->Cfd.size() == 0 || frag->Led.size() == 0 || frag->Zc.size() == 0)
+			  		return;
 
 				if(mnemonic->outputsensor.compare(0,1,"b")==0) {	return; }  //make this smarter.
 
@@ -104,13 +105,13 @@ class TTigressData : public TGRSIDetectorData {
 //				frag->Print();
 //				printf("energy;  %.02f\n",channel->CalibrateENG(frag->Charge.at(0)));
 //				printf("============================================================\n");
-            SetCoreTimeStamp(frag->GetTimeStamp());
+            	SetCoreTimeStamp(frag->GetTimeStamp());
 
 				SetCoreCharge(frag->Charge.at(0));
 				SetCoreCFD(frag->Cfd.at(0));		
 				SetCoreLED(frag->Led.at(0));		
 			   //SetCoreTime(frag->GetTimeStamp());		
-			//	SetCoreTime(frag->Zc.at(0));		
+				SetCoreTime(frag->Zc.at(0));		
 		}; //! 
 
 

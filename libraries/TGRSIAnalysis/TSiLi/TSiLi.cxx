@@ -1,5 +1,4 @@
 
-
 #include "TSiLi.h"
 
 ClassImp(TSiLi)
@@ -33,7 +32,6 @@ void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
     sdata = this->data;
   if(!sdata)
     return;
-    
 
   TSiLiHit hit;
 
@@ -43,6 +41,7 @@ void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
      hit.SetPosition(tmppos);
      TFragment tmp = sdata->GetFragment(i);
      hit.SetVariables(tmp);
+     hit.SetWavefit(tmp);
   
      sili_hits.push_back(hit);
   }
@@ -64,6 +63,7 @@ TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {
    }
    catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      throw exit_exception(1);
    }
    return 0;
 }  
