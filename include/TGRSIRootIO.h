@@ -33,15 +33,16 @@ class TGRSIRootIO : public TObject {
       TTree *fFragmentTree;
       TTree *fBadFragmentTree;
       TTree *fEpicsTree;
-      TTree *fScalerTree;
+      TTree *fDeadtimeScalerTree;
+      TTree *fRateScalerTree;
       TPPG *fPPG;
-		TScaler* fScaler;
 
       TFile *foutfile;
       int fTimesFillCalled;
       int fTimesBadFillCalled;
       int fTimesPPGCalled;
-      int fTimesScalerCalled;
+      int fTimesDeadtimeScalerCalled;
+      int fTimesRateScalerCalled;
       int fEPICSTimesFillCalled;
 
       std::vector<TFile*> finfiles;
@@ -51,7 +52,8 @@ class TGRSIRootIO : public TObject {
       TEpicsFrag *fEXBufferFrag;
       TChannel   *fBufferChannel;
 
-		TScalerData* fScalerData;
+		TScalerData* fDeadtimeScalerData;
+		TScalerData* fRateScalerData;
 
    public:
       bool SetUpRootOutFile(int,int);
@@ -85,11 +87,14 @@ class TGRSIRootIO : public TObject {
       void FinalizePPG();
       int GetTimesPPGCalled()  { return fTimesPPGCalled;  }
 
-      void SetUpScalerTree();
-      TTree *GetScalerTree()  { return fScalerTree;  }
-      void FillScalerTree(TScalerData*);
-      void FinalizeScalerTree();
-      int GetTimesScalerCalled()  { return fTimesScalerCalled;  }
+      void SetUpScalerTrees();
+      TTree *GetDeadtimeScalerTree()  { return fDeadtimeScalerTree;  }
+      TTree *GetRateScalerTree()  { return fRateScalerTree;  }
+      void FillDeadtimeScalerTree(TScalerData*);
+      void FillRateScalerTree(TScalerData*);
+      void FinalizeScalerTrees();
+      int GetTimesDeadtimeScalerCalled()  { return fTimesDeadtimeScalerCalled;  }
+      int GetTimesRateScalerCalled()  { return fTimesRateScalerCalled;  }
 
       void SetUpEpicsTree();
       TTree *GetEpicsTree()  { return fEpicsTree;  }

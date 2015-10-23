@@ -17,7 +17,6 @@ TScalerData::TScalerData(const TScalerData& rhs) : TObject() {
 }
 
 void TScalerData::Copy(TObject &rhs) const {
-  ((TScalerData&)rhs).fTimeStamp       =  fTimeStamp;      
   ((TScalerData&)rhs).fAddress         =  fAddress;      
   ((TScalerData&)rhs).fScaler          =  fScaler;        
   ((TScalerData&)rhs).fNetworkPacketId =  fNetworkPacketId;        
@@ -25,17 +24,9 @@ void TScalerData::Copy(TObject &rhs) const {
   ((TScalerData&)rhs).fHighTimeStamp   =  fHighTimeStamp;  
 }
 
-void TScalerData::SetTimeStamp() {
-   Long64_t time = GetHighTimeStamp();
-   time  = time << 28;
-   time |= GetLowTimeStamp() & 0x0fffffff;
-   fTimeStamp = time;
-}
-
 void TScalerData::Clear(Option_t* opt) {
 //Clears the TScalerData and leaves it a "junk" state. By junk, I just mean default
 //so that we can tell that this Scaler is no good.
-   fTimeStamp        =  0;
 	fAddress          =  0;
    fLowTimeStamp     =  0;
    fHighTimeStamp    =  0;

@@ -81,7 +81,7 @@ class TDataParser { //: public TObject {
     static bool SetPPGHighTimeStamp(uint32_t,TPPGData*);
 	 static bool SetScalerNetworkPacket(uint32_t, TScalerData*);
 	 static bool SetScalerLowTimeStamp(uint32_t, TScalerData*);
-	 static bool SetScalerHighTimeStamp(uint32_t, TScalerData*);
+	 static bool SetScalerHighTimeStamp(uint32_t, TScalerData*, int&);
 	 static bool SetScalerValue(int, uint32_t, TScalerData*);
 
     static void FillStats(TFragment*);
