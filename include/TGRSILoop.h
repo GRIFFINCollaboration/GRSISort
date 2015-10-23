@@ -48,7 +48,8 @@ class TGRSILoop : public TObject {
       int fFragsReadFromMidas;
       int fFragsSentToTree;
 		int fBadFragsSentToTree;
-		int fScalersSentToTree;
+		int fDeadtimeScalersSentToTree;
+		int fRateScalersSentToTree;
  
    #ifndef __CINT__
       std::thread *fMidasThread;

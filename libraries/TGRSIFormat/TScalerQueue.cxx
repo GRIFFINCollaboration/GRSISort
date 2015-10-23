@@ -1,32 +1,30 @@
 
 #include "TScalerQueue.h"
 
-std::mutex TScalerQueue::All;
-std::mutex TScalerQueue::Sorted;
-
-ClassImp(TScalerQueue)
+std::mutex TDeadtimeScalerQueue::All;
+std::mutex TDeadtimeScalerQueue::Sorted;
 
 ////////////////////////////////////////////////////////////////
 //                                                            //
-// TScalerQueue                                               //
+// TDeadtimeScalerQueue                                       //
 //                                                            //
 // This class is where we store scalers. It is thread-safe    //
 // and returns it's status in order to monitor progress.      //
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TScalerQueue *TScalerQueue::fScalerQueueClassPointer = NULL;
+TDeadtimeScalerQueue *TDeadtimeScalerQueue::fDeadtimeScalerQueueClassPointer = NULL;
 
-TScalerQueue *TScalerQueue::Get() {
+TDeadtimeScalerQueue *TDeadtimeScalerQueue::Get() {
   ///Get a pointer to the global scaler Q. 
-  if(fScalerQueueClassPointer == NULL) {
-	 fScalerQueueClassPointer = new TScalerQueue;
+  if(fDeadtimeScalerQueueClassPointer == NULL) {
+	 fDeadtimeScalerQueueClassPointer = new TDeadtimeScalerQueue;
   }
-  return fScalerQueueClassPointer;
+  return fDeadtimeScalerQueueClassPointer;
 }
 
-TScalerQueue::TScalerQueue() {	
-	fScalerQueueClassPointer = this;
+TDeadtimeScalerQueue::TDeadtimeScalerQueue() {	
+	fDeadtimeScalerQueueClassPointer = this;
 	fScalersInQueue = 0;
 	//When the Global Q is created, start a timer to see how long we are using it.
 	fStopwatch = new TStopwatch();
@@ -38,19 +36,19 @@ TScalerQueue::TScalerQueue() {
 
 }
 
-TScalerQueue::~TScalerQueue() {	}
+TDeadtimeScalerQueue::~TDeadtimeScalerQueue() {	}
 
 
-void TScalerQueue::Print(Option_t *opt) const { 
+void TDeadtimeScalerQueue::Print(Option_t *opt) const { 
    ///Print the status of the Scaler Queue
    CheckStatus();   
 }
 
-void TScalerQueue::Clear(Option_t *opt) {
+void TDeadtimeScalerQueue::Clear(Option_t *opt) {
    ///Clear the entire Queue, Queue counters, and timer.
 	bool locked = false;
-	if(!fScalerQueue.empty()) {
-		while(!TScalerQueue::All.try_lock()) {
+	if(!fDeadtimeScalerQueue.empty()) {
+		while(!TDeadtimeScalerQueue::All.try_lock()) {
 			//do nothing
 		}
 		locked = true;
@@ -58,8 +56,8 @@ void TScalerQueue::Clear(Option_t *opt) {
 
 	if(fScalersInQueue != 0) {
 		printf(RED "\n\tWarning, discarding %i Scalers!" RESET_COLOR "\n", fScalersInQueue); 
-		while(!fScalerQueue.empty()){
-			fScalerQueue.pop();
+		while(!fDeadtimeScalerQueue.empty()){
+			fDeadtimeScalerQueue.pop();
 		}	
 		fScalersInQueue = 0;
 	}
@@ -73,87 +71,87 @@ void TScalerQueue::Clear(Option_t *opt) {
 	fStopwatch->Reset();
 
 	if(locked)
-		TScalerQueue::All.unlock();
+		TDeadtimeScalerQueue::All.unlock();
 	return;
 }
 
 
-void TScalerQueue::StartStatusUpdate() {
+void TDeadtimeScalerQueue::StartStatusUpdate() {
    ///The status thread runs the status update at various intervals to show the progress of the analysis tree.
 	fStatusUpdateOn = true;
 
-	std::thread statusUpdate(&TScalerQueue::StatusUpdate, this);
+	std::thread statusUpdate(&TDeadtimeScalerQueue::StatusUpdate, this);
 	statusUpdate.detach();
 }
 
-void TScalerQueue::StopStatusUpdate() {
+void TDeadtimeScalerQueue::StopStatusUpdate() {
    ///Stops the status update
 	fStatusUpdateOn = false;
 }
 
 
 
-void TScalerQueue::Add(TScalerData* scalerData) {
+void TDeadtimeScalerQueue::Add(TScalerData* scalerData) {
 	///Add a Scaler to the scaler Queue.
 	if(scalerData == NULL) {
 		return;
 	}
 
-	while(!TScalerQueue::Sorted.try_lock()) {
+	while(!TDeadtimeScalerQueue::Sorted.try_lock()) {
 		//do nothing	
 	}
 
-	fScalerQueue.push(scalerData);
+	fDeadtimeScalerQueue.push(scalerData);
 
 	fTotalScalersIn++;
 	fScalersInQueue++;
 	fScalersIn++;
 
-	TScalerQueue::Sorted.unlock();
+	TDeadtimeScalerQueue::Sorted.unlock();
 
 	return;
 }
 
-void TScalerQueue::Pop() {	
+void TDeadtimeScalerQueue::Pop() {	
    //Take a scaler out of the Queue
-	while(!TScalerQueue::Sorted.try_lock()) {
+	while(!TDeadtimeScalerQueue::Sorted.try_lock()) {
 		//do nothing
 	}	
-	fScalerQueue.pop();
+	fDeadtimeScalerQueue.pop();
 	fScalersInQueue--;
 	fScalersOut++;
-	TScalerQueue::Sorted.unlock();
+	TDeadtimeScalerQueue::Sorted.unlock();
 }
 
-TScalerData* TScalerQueue::PopScaler(){
+TScalerData* TDeadtimeScalerQueue::PopScaler(){
    //Take a scaler out of the Queue and return a pointer to it.
-	while(!TScalerQueue::Sorted.try_lock()) {
+	while(!TDeadtimeScalerQueue::Sorted.try_lock()) {
 		//do nothing
 	}
 	if(Size()>0) {	
-		TScalerData* scaler = fScalerQueue.front();
+		TScalerData* scaler = fDeadtimeScalerQueue.front();
 		if(scaler) {
-			fScalerQueue.pop();
+			fDeadtimeScalerQueue.pop();
 			fScalersInQueue--;
 			fScalersOut++;
 			fTotalScalersOut++;
 		}
-		TScalerQueue::Sorted.unlock();
+		TDeadtimeScalerQueue::Sorted.unlock();
 		return scaler;
 	} else {
-		TScalerQueue::Sorted.unlock();
+		TDeadtimeScalerQueue::Sorted.unlock();
 		return 0;
 	}
 }
 
-int TScalerQueue::Size() const {
+int TDeadtimeScalerQueue::Size() const {
    //Returns the number of scalers in the Queue
 	return fScalersInQueue;
 }
 
-void TScalerQueue::CheckStatus() const {
+void TDeadtimeScalerQueue::CheckStatus() const {
    //Checks the status of the Queue. This is called by the Print() function.
-	while(!TScalerQueue::All.try_lock()) {
+	while(!TDeadtimeScalerQueue::All.try_lock()) {
 		//do nothing
 	}
 	
@@ -161,11 +159,11 @@ void TScalerQueue::CheckStatus() const {
 	printf( BLUE   "# Total Scalers put in Q     = %d" RESET_COLOR "\n",fTotalScalersIn);
 	printf( DGREEN "# Total Scalers taken from Q = %d" RESET_COLOR "\n",fTotalScalersOut);
 
-	TScalerQueue::All.unlock();
+	TDeadtimeScalerQueue::All.unlock();
 	return;
 }
 
-void TScalerQueue::StatusUpdate() {
+void TDeadtimeScalerQueue::StatusUpdate() {
    //Updates the status of the scaler Queue
 	float time = 0;
 	float scaler_rate_in = 0;
@@ -175,28 +173,226 @@ void TScalerQueue::StatusUpdate() {
 		time = fStopwatch->RealTime();
 		scaler_rate_in = fScalersIn/time; 
 		scaler_rate_out = fScalersOut/time;
-		while(!TScalerQueue::All.try_lock()){
+		while(!TDeadtimeScalerQueue::All.try_lock()){
 			//do nothing
 		}
 
 		printf(BLUE "\n\tscalers rate in  = %.2f/sec, nqueue = %d\n" RESET_COLOR,scaler_rate_in, Size());
 		printf(DGREEN "\tscalers rate out = %.2f/sec\n" RESET_COLOR,scaler_rate_out);
-		TScalerQueue::All.unlock();
+		TDeadtimeScalerQueue::All.unlock();
 		ResetRateCounter();
 		fStopwatch->Start();
 	}
 }
 
-void TScalerQueue::ResetRateCounter() {
+void TDeadtimeScalerQueue::ResetRateCounter() {
    //Resets the number of scalers in and scalers out counter. This is useful for checking to see if the rate
    //of scaler parsing is changing.
-	while(!TScalerQueue::All.try_lock()) {
+	while(!TDeadtimeScalerQueue::All.try_lock()) {
 		//do nothing
 	}
 
 	fScalersIn	= 0;		
 	fScalersOut	= 0;
-	TScalerQueue::All.unlock();
+	TDeadtimeScalerQueue::All.unlock();
+}
+
+
+
+std::mutex TRateScalerQueue::All;
+std::mutex TRateScalerQueue::Sorted;
+
+////////////////////////////////////////////////////////////////
+//                                                            //
+// TRateScalerQueue                                               //
+//                                                            //
+// This class is where we store scalers. It is thread-safe    //
+// and returns it's status in order to monitor progress.      //
+//                                                            //
+////////////////////////////////////////////////////////////////
+
+TRateScalerQueue *TRateScalerQueue::fRateScalerQueueClassPointer = NULL;
+
+TRateScalerQueue *TRateScalerQueue::Get() {
+  ///Get a pointer to the global scaler Q. 
+  if(fRateScalerQueueClassPointer == NULL) {
+	 fRateScalerQueueClassPointer = new TRateScalerQueue;
+  }
+  return fRateScalerQueueClassPointer;
+}
+
+TRateScalerQueue::TRateScalerQueue() {	
+	fRateScalerQueueClassPointer = this;
+	fScalersInQueue = 0;
+	//When the Global Q is created, start a timer to see how long we are using it.
+	fStopwatch = new TStopwatch();
+	fStopwatch->Start();
+
+	fStop = false;
+
+	Clear();
+
+}
+
+TRateScalerQueue::~TRateScalerQueue() {	}
+
+
+void TRateScalerQueue::Print(Option_t *opt) const { 
+   ///Print the status of the Scaler Queue
+   CheckStatus();   
+}
+
+void TRateScalerQueue::Clear(Option_t *opt) {
+   ///Clear the entire Queue, Queue counters, and timer.
+	bool locked = false;
+	if(!fRateScalerQueue.empty()) {
+		while(!TRateScalerQueue::All.try_lock()) {
+			//do nothing
+		}
+		locked = true;
+	}
+
+	if(fScalersInQueue != 0) {
+		printf(RED "\n\tWarning, discarding %i Scalers!" RESET_COLOR "\n", fScalersInQueue); 
+		while(!fRateScalerQueue.empty()){
+			fRateScalerQueue.pop();
+		}	
+		fScalersInQueue = 0;
+	}
+
+	fScalersIn  = 0;		
+	fScalersOut = 0;
+
+	fTotalScalersIn = 0;
+	fTotalScalersOut = 0;
+
+	fStopwatch->Reset();
+
+	if(locked)
+		TRateScalerQueue::All.unlock();
+	return;
+}
+
+
+void TRateScalerQueue::StartStatusUpdate() {
+   ///The status thread runs the status update at various intervals to show the progress of the analysis tree.
+	fStatusUpdateOn = true;
+
+	std::thread statusUpdate(&TRateScalerQueue::StatusUpdate, this);
+	statusUpdate.detach();
+}
+
+void TRateScalerQueue::StopStatusUpdate() {
+   ///Stops the status update
+	fStatusUpdateOn = false;
+}
+
+
+
+void TRateScalerQueue::Add(TScalerData* scalerData) {
+	///Add a Scaler to the scaler Queue.
+	if(scalerData == NULL) {
+		return;
+	}
+
+	while(!TRateScalerQueue::Sorted.try_lock()) {
+		//do nothing	
+	}
+
+	fRateScalerQueue.push(scalerData);
+
+	fTotalScalersIn++;
+	fScalersInQueue++;
+	fScalersIn++;
+
+	TRateScalerQueue::Sorted.unlock();
+
+	return;
+}
+
+void TRateScalerQueue::Pop() {	
+   //Take a scaler out of the Queue
+	while(!TRateScalerQueue::Sorted.try_lock()) {
+		//do nothing
+	}	
+	fRateScalerQueue.pop();
+	fScalersInQueue--;
+	fScalersOut++;
+	TRateScalerQueue::Sorted.unlock();
+}
+
+TScalerData* TRateScalerQueue::PopScaler(){
+   //Take a scaler out of the Queue and return a pointer to it.
+	while(!TRateScalerQueue::Sorted.try_lock()) {
+		//do nothing
+	}
+	if(Size()>0) {	
+		TScalerData* scaler = fRateScalerQueue.front();
+		if(scaler) {
+			fRateScalerQueue.pop();
+			fScalersInQueue--;
+			fScalersOut++;
+			fTotalScalersOut++;
+		}
+		TRateScalerQueue::Sorted.unlock();
+		return scaler;
+	} else {
+		TRateScalerQueue::Sorted.unlock();
+		return 0;
+	}
+}
+
+int TRateScalerQueue::Size() const {
+   //Returns the number of scalers in the Queue
+	return fScalersInQueue;
+}
+
+void TRateScalerQueue::CheckStatus() const {
+   //Checks the status of the Queue. This is called by the Print() function.
+	while(!TRateScalerQueue::All.try_lock()) {
+		//do nothing
+	}
+	
+	printf( BLUE   "# Scalers currently in Q     = %d" RESET_COLOR "\n",Size());
+	printf( BLUE   "# Total Scalers put in Q     = %d" RESET_COLOR "\n",fTotalScalersIn);
+	printf( DGREEN "# Total Scalers taken from Q = %d" RESET_COLOR "\n",fTotalScalersOut);
+
+	TRateScalerQueue::All.unlock();
+	return;
+}
+
+void TRateScalerQueue::StatusUpdate() {
+   //Updates the status of the scaler Queue
+	float time = 0;
+	float scaler_rate_in = 0;
+	float scaler_rate_out = 0;
+
+	while(fStatusUpdateOn) {
+		time = fStopwatch->RealTime();
+		scaler_rate_in = fScalersIn/time; 
+		scaler_rate_out = fScalersOut/time;
+		while(!TRateScalerQueue::All.try_lock()){
+			//do nothing
+		}
+
+		printf(BLUE "\n\tscalers rate in  = %.2f/sec, nqueue = %d\n" RESET_COLOR,scaler_rate_in, Size());
+		printf(DGREEN "\tscalers rate out = %.2f/sec\n" RESET_COLOR,scaler_rate_out);
+		TRateScalerQueue::All.unlock();
+		ResetRateCounter();
+		fStopwatch->Start();
+	}
+}
+
+void TRateScalerQueue::ResetRateCounter() {
+   //Resets the number of scalers in and scalers out counter. This is useful for checking to see if the rate
+   //of scaler parsing is changing.
+	while(!TRateScalerQueue::All.try_lock()) {
+		//do nothing
+	}
+
+	fScalersIn	= 0;		
+	fScalersOut	= 0;
+	TRateScalerQueue::All.unlock();
 }
 
 
