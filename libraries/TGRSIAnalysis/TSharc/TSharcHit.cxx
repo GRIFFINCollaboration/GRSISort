@@ -55,15 +55,16 @@ void TSharcHit::Print(Option_t *options) const {
   //printf( DGREEN "=	=	=	=	=	=	=	" RESET_COLOR "\n");
 }
 
-TVector3 TSharcHit::GetPosition(Double_t dist) const {
-  return  fposition; // returned from this -> i.e front...
-  //return TSharc::GetPosition(detectornumber,front_strip,back_strip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());  //! 
+TVector3 TSharcHit::GetChannelPosition(Double_t dist) const {
+ // return  fposition; // returned from this -> i.e front...
+   //PC BENDER PLEASE LOOK AT THIS.
+  return TSharc::GetPosition(detectornumber,front_strip,back_strip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());  //! 
 }
 
 Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
   TVector3 posoff; 
   posoff.SetXYZ(Xoff,Yoff,Zoff);
-  return (fposition+posoff).Theta();
+  return (GetPosition()+posoff).Theta();
 }
 
 

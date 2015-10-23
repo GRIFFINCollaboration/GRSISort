@@ -38,7 +38,6 @@ bool TPacesHit::InFilter(Int_t wantedfilter) {
 void TPacesHit::Clear(Option_t *opt)	{
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
    filter          =  0;
-   fdetector       =  0xFFFF;
 }
 
 
@@ -48,6 +47,8 @@ void TPacesHit::Print(Option_t *opt) const	{
 	printf("Paces hit time:   %f\n",GetTime());
 }
 
-TVector3 TPacesHit::GetPosition(Double_t dist) const{
+TVector3 TPacesHit::GetChannelPosition(Double_t dist) const{
+   //This should not be called by a user. Instead use
+   //TGRSIDetectorHit::GetPosition.
 	return TPaces::GetPosition(GetDetector());
 }

@@ -22,7 +22,7 @@
 //
 //  This is the updated sharc-hit storage class, designed to better work with 
 //  the GRSISort Inheritied class method.  A lot has changed, but the main function
-//  stays the same.  Sense two physial wire hits are needed to make one sharc hit,
+//  stays the same.  Since two physial wire hits are needed to make one sharc hit,
 //  and the "front" side will always have better resolution/timing properties, we 
 //  will make the inherited charge/time derive from the front.  So we do not lose the 
 //  back information, the class additionally holds a TGRSIDetector for the back and
@@ -80,8 +80,6 @@ class TSharcHit : public TGRSIDetectorHit {
 
     inline Double_t GetEnergy(Option_t *opt = "") { return GetFront()->GetEnergy() + GetPad()->GetEnergy(); }
     inline Double_t GetTime(Option_t *opt = "")   { return GetFront()->GetTime(); }
-
-    TVector3 GetPosition(Double_t dist = 0) const;
    
     Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0) { return GetTheta(Xoff,Yoff,Zoff)*TMath::RadToDeg(); } ; //! 
     Double_t GetTheta(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0); //! 
@@ -96,6 +94,9 @@ class TSharcHit : public TGRSIDetectorHit {
     void SetFront(const TFragment &frag); //!  
     void SetBack (const TFragment &frag); //!
     void SetPad  (const TFragment &frag); //!
+
+  private:
+      TVector3 GetChannelPosition(Double_t dist = 0) const; //!
     
 
   ClassDef(TSharcHit,6)

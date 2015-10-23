@@ -149,7 +149,7 @@ void TSceptar::BuildHits(TDetectorData *data,Option_t *opt)	{
             printf("Warning, TSceptar::SetWave() set, but data waveform size is zero!\n");
          }
          dethit.SetWaveform(gdata->GetDetWave(i));
-         if(dethit.GetWaveform().size() > 0) {
+         if(dethit.GetWaveform()->size() > 0) {
 //            printf("Analyzing waveform, current cfd = %d\n",dethit.GetCfd());
             dethit.AnalyzeWaveform();
 //            printf("%s analyzed waveform, cfd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd());

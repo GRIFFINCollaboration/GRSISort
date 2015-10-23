@@ -42,6 +42,18 @@ TGRSIDetectorHit::~TGRSIDetectorHit() {
 //Default destructor
 }
 
+void TGRSIDetectorHit::Streamer(TBuffer &R__b)
+{
+   // Stream an object of class TGRSIDetectorHit.
+
+   if (R__b.IsReading()) {
+      R__b.ReadClassBuffer(TGRSIDetectorHit::Class(),this);
+   } else {
+      fbitflags = 0;
+      R__b.WriteClassBuffer(TGRSIDetectorHit::Class(),this);
+   }
+}
+
 Double_t TGRSIDetectorHit::GetTime(Option_t *opt) const{
    if(IsTimeSet())
       return ftime;
@@ -101,19 +113,19 @@ void TGRSIDetectorHit::Copy(TObject &rhs) const {
   //   return;
 
   TObject::Copy(rhs);
-  ((TGRSIDetectorHit&)rhs).faddress         = ((TGRSIDetectorHit&)*this).faddress;
-  ((TGRSIDetectorHit&)rhs).fposition        = ((TGRSIDetectorHit&)*this).fposition;
-  ((TGRSIDetectorHit&)rhs).fwaveform        = ((TGRSIDetectorHit&)*this).fwaveform;
-  ((TGRSIDetectorHit&)rhs).fcfd             = ((TGRSIDetectorHit&)*this).fcfd;
-  ((TGRSIDetectorHit&)rhs).ftimestamp      = ((TGRSIDetectorHit&)*this).ftimestamp;
-  ((TGRSIDetectorHit&)rhs).fcharge          = ((TGRSIDetectorHit&)*this).fcharge;
-  ((TGRSIDetectorHit&)rhs).fdetector        = ((TGRSIDetectorHit&)*this).fdetector;
-  ((TGRSIDetectorHit&)rhs).fenergy          = ((TGRSIDetectorHit&)*this).fenergy;
-  ((TGRSIDetectorHit&)rhs).ftime            = ((TGRSIDetectorHit&)*this).ftime;
-  
-  ((TGRSIDetectorHit&)rhs).fbitflags       = ((TGRSIDetectorHit&)*this).fbitflags;
-  ((TGRSIDetectorHit&)rhs).fPPGStatus      = ((TGRSIDetectorHit&)*this).fPPGStatus;
-  ((TGRSIDetectorHit&)rhs).fCycleTimeStamp = ((TGRSIDetectorHit&)*this).fCycleTimeStamp;
+  static_cast<TGRSIDetectorHit&>(rhs).faddress         = faddress;
+  static_cast<TGRSIDetectorHit&>(rhs).fposition       = fposition;
+  static_cast<TGRSIDetectorHit&>(rhs).fwaveform       = fwaveform;
+  static_cast<TGRSIDetectorHit&>(rhs).fcfd            = fcfd;
+  static_cast<TGRSIDetectorHit&>(rhs).ftimestamp      = ftimestamp;
+  static_cast<TGRSIDetectorHit&>(rhs).fcharge         = fcharge;
+  static_cast<TGRSIDetectorHit&>(rhs).fdetector       = fdetector;
+  static_cast<TGRSIDetectorHit&>(rhs).fenergy         = fenergy;
+  static_cast<TGRSIDetectorHit&>(rhs).ftime           = ftime;
+
+  static_cast<TGRSIDetectorHit&>(rhs).fbitflags       =  fbitflags;
+  static_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      =  fPPGStatus;
+  static_cast<TGRSIDetectorHit&>(rhs).fCycleTimeStamp =  fCycleTimeStamp;
 
 //  ((TGRSIDetectorHit&)rhs).parent  = parent;  
 }
@@ -121,6 +133,7 @@ void TGRSIDetectorHit::Copy(TObject &rhs) const {
 void TGRSIDetectorHit::Print(Option_t *opt) const {
 //General print statement for a TGRSIDetectorHit.
 //Currently prints nothing.
+   fposition.Print();
 }
 
 void TGRSIDetectorHit::Clear(Option_t *opt) {
@@ -168,35 +181,46 @@ UInt_t TGRSIDetectorHit::GetDetector() {
    return SetDetector(mnemonic.arrayposition);
 }
 
-UInt_t TGRSIDetectorHit::SetDetector(UInt_t det) {
+UInt_t TGRSIDetectorHit::SetDetector(const UInt_t &det) {
    fdetector = det;
    SetFlag(kIsDetSet,true);
    return fdetector;
 }
 
 TVector3 TGRSIDetectorHit::SetPosition(Double_t dist) {
-	fposition = TGRSIDetectorHit::GetPosition(dist); //Calls a general Hit GetPosition function
+   //This should not be overridden. It's job is to call the correct 
+   //position for the derived TGRSIDetector object.
+   SetFlag(kIsPositionSet,true);
+	fposition = GetChannelPosition(dist); //Calls a general Hit GetPosition function
    return fposition;
 }
 
 TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
+   //This should not be overridden and instead GetChannelPosition should
+   //be used in the derived class.
    if(IsPosSet())
       return fposition;
 
-   if(IsDetSet())
-      return GetPosition(dist); //Calls the derivative GetPosition function
-
-   return TVector3(0,0,1);
+//   if(IsDetSet())
+   return GetChannelPosition(dist); //Calls the derivative GetPosition function
+   //We must do a check in here to make sure it is returning something reasonable
 
 }
 
 TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
+   //This should not be overridden and instead GetChannelPosition should
+   //be used in the derived class.
   if(IsPosSet())
       return fposition;
 
    if(IsDetSet())
-      return SetPosition(dist); //Calls the derivative GetPosition function
+      return TGRSIDetectorHit::SetPosition(dist); 
 
+   GetDetector();
+   if(IsDetSet())
+      return TGRSIDetectorHit::SetPosition(dist); 
+
+   printf("no position found for current hit\n");
    return TVector3(0,0,1);
 
 }
