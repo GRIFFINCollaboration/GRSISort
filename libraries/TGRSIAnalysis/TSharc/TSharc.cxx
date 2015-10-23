@@ -140,6 +140,8 @@ void  TSharc::BuildHits(TDetectorData *ddata,Option_t *opt)  {
       hit.SetFront(sdata->GetFront_Fragment(i));
       hit.SetBack(sdata->GetBack_Fragment(j));
 
+      hit.SetPosition(TSharc::GetPosition(hit.GetDetectorNumber(),hit.GetFrontStrip(),hit.GetBackStrip()));
+
       this->sharc_hits.push_back(hit);
     }
   }

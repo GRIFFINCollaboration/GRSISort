@@ -58,6 +58,11 @@ void TSharcHit::Print(Option_t *options) const {
 TVector3 TSharcHit::GetChannelPosition(Double_t dist) const {
  // return  fposition; // returned from this -> i.e front...
    //PC BENDER PLEASE LOOK AT THIS.
+   //
+   //this is fine, in all reality this function should not be used in sharc analysis,
+   //the buildhits function now properly sets fPosition in the base class, for finer
+   //position tweaks of the target, one should just use the static function in the 
+   //sharc mother class.   pcb.
   return TSharc::GetPosition(detectornumber,front_strip,back_strip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());  //! 
 }
 
