@@ -14,7 +14,7 @@ void TCFDCal::WriteToChannel() const {
    }
    GetChannel()->DestroyCFDCal();
    printf("\nWriting to channel %d\n",GetChannel()->GetNumber());
-   for(int i=0;i<fparameters.size();i++){
+   for(int i=0;i<(int)fparameters.size();i++){
       printf("p%i = %lf \t",i,fparameters.at(i));
       GetChannel()->AddCFDCoefficient(fparameters.at(i));
    }
@@ -51,7 +51,7 @@ void TCFDCal::Print(Option_t *opt) const{
    else
       printf("Channel Number: NOT SET\n");
 
-   for(int i=0;i<fparameters.size();i++){
+   for(int i=0;i<(int)fparameters.size();i++){
       printf("p%i = %lf \t",i,fparameters.at(i));
    }
 }
@@ -65,7 +65,7 @@ std::vector<Double_t> TCFDCal::GetParameters() const{
 }
 
 Double_t TCFDCal::GetParameter(Int_t parameter) const{
-   if(parameter < fparameters.size() )
+   if((size_t)parameter < fparameters.size())
       return fparameters.at(parameter);
    else{
       Error("Get Parameter","Parameter Does not exist");

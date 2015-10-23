@@ -23,7 +23,7 @@ class TMidasFile : public TObject
 {
 public:
   TMidasFile(); ///< default constructor
-  ~TMidasFile(); ///< destructor
+  virtual ~TMidasFile(); ///< destructor
 
   bool Open(const char* filename); ///< Open input file
   bool OutOpen(const char* filename); ///< Open output file
@@ -31,6 +31,8 @@ public:
   void Close(); ///< Close input file
   void OutClose(); ///< Close output file
 
+  using TObject::Read;
+  using TObject::Write;
   int  Read(TMidasEvent *event); ///< Read one event from the file
   bool Write(TMidasEvent *event,Option_t *opt =""); ///< Write one event to the output file
 
@@ -68,7 +70,7 @@ protected:
   int         fOutFile; ///< open output file descriptor
   void*       fOutGzFile; ///< zlib compressed output file reader
 
-	ClassDef(TMidasFile,0)
+	ClassDef(TMidasFile,0) //Used to open and write Midas Files
 };
 
 #endif // TMidasFile.h

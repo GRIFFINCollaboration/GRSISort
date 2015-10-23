@@ -27,7 +27,7 @@ void TSceptarData::Clear(Option_t *opt)	{
 	fDet_Wave.clear();
 }
 
-void TSceptarData::Print(Option_t *opt)	{
+void TSceptarData::Print(Option_t *opt) const	{
 	// not yet written.
 	printf("not yet written.\n");
 }

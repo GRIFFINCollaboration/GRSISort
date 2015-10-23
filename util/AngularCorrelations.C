@@ -224,7 +224,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
   // std::cout << "A is: " << par[6] <<std::endl;
    Int_t A = par[6];
    //Define the fit function and the range of the fit
-      TF1 *pp = new TF1("photopeak",fitFunction,xp-rw,xp+rw,10);
+   TF1 *pp = new TF1("photopeak",fitFunction,xp-rw,xp+rw,10);
 
    //Name the parameters so it is easy to see what the code is doing
    pp->SetParName(0,"Height");

@@ -6,7 +6,6 @@
 #define TMIDASEVENT_H
 
 #include "Globals.h"
-#include <stdint.h>
 //#include "TMidasStructs.h"
 #include "TMidasEventHeader.h"
 
@@ -36,10 +35,10 @@ class TMidasEvent : public TObject
 
   TMidasEvent(); ///< default constructor
   TMidasEvent(const TMidasEvent &); ///< copy constructor
-  ~TMidasEvent(); ///< destructor
+  virtual ~TMidasEvent(); ///< destructor
   TMidasEvent& operator=(const TMidasEvent &); ///< assignement operator
-  void Clear(); ///< clear event for reuse
-  void Copy(const TMidasEvent &); ///< copy helper
+  void Clear(Option_t *opt = ""); ///< clear event for reuse
+  void Copy(TObject &) const; ///< copy helper
   void Print(const char* option = "") const; ///< show all event information
 
   // get event information
@@ -83,7 +82,7 @@ protected:
   bool fAllocatedByUs; ///< "true" if we own the data buffer
 
 	
-	ClassDef(TMidasEvent,0)
+	ClassDef(TMidasEvent,0) //All of the data contained in a Midas Event
 };
 
 #endif // TMidasEvent.h

@@ -29,26 +29,21 @@ void TTigressData::Clear(Option_t *opt)	{
 	fCore_Time.clear();
 	fCore_TimeStamp.clear();
 
-	for(int x=0;x<fCore_Wave.size();x++)	{
-		fCore_Wave[x].clear();
-	}
 	fCore_Wave.clear();
 
 	fSeg_Clover_Nbr.clear();
 	fSeg_Core_Nbr.clear();
 	fSegment_Nbr.clear();	
 	fSegment_Eng.clear();
+	fSegment_Chg.clear();
 	fSegment_TimeCFD.clear();
 	fSegment_TimeLED.clear();
 	fSegment_Time.clear();
 
-	for(int x=0;x<fSegment_Wave.size();x++)	{
-		fSegment_Wave[x].clear();	
-	}
 	fSegment_Wave.clear();
 }
 
-void TTigressData::Print(Option_t *opt)	{
+void TTigressData::Print(Option_t *opt) const	{
 	// not yet written.
 	printf("not yet written.\n");
 }

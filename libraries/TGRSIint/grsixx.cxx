@@ -61,17 +61,17 @@ static const char *gLeadDevelopers[] = {
    0
 };
 
-static const char *gRootDevelopers[] = {
-   0
-};
-
-static const char *gCintDevelopers[] = {
-   0
-};
-
-static const char *gRootDocumentation[] = {
-   0
-};
+//static const char *gRootDevelopers[] = {
+//   0
+//};
+//
+//static const char *gCintDevelopers[] = {
+//   0
+//};
+//
+//static const char *gRootDocumentation[] = {
+//   0
+//};
 
 static const char *gKeyContributors[] = {
   "V. Bildstein",

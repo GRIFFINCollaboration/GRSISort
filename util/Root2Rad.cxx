@@ -39,6 +39,7 @@
 #include<TClass.h>
 #include<TKey.h>
 #include<TTimeStamp.h>
+#include "THnSparse.h"
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -60,8 +61,9 @@ struct SpeHeader {
 //the value of all bins in int sizes
 //an integer os bin size * 4           ------- number of char in the histogram.
 
-void WriteHist(TH1*,fstream*);
-void WriteMat(TH2*,fstream*);
+void WriteHist(TH1*, std::fstream*);
+void WriteMat(TH2*, std::fstream*);
+void WriteM4b(TH2*, std::fstream*);
 
 int main(int argc, char** argv)	{	
 
@@ -75,7 +77,8 @@ int main(int argc, char** argv)	{
    std::string path = infile->GetName();
    path.erase(path.find_last_of('.'));
 
-   struct stat st = {0};
+   struct stat st = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+   //struct stat st = {0,0,0,0,0,0,0,{0,0},{0,0},{0,0},{0,0},0,0,0,0,0,0,0};
 
    if(stat(path.c_str(),&st)==-1) {
       mkdir(path.c_str(),0755);
@@ -85,7 +88,7 @@ int main(int argc, char** argv)	{
 	//std::string outfilename = infile->GetName();
 	//outfilename.erase(outfilename.find_last_of('.'));
 	//outfilename.append(".spe");
-	//fstream outfile;
+	//std::fstream outfile;
 	//outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
 	
 	TList *keys = infile->GetListOfKeys();
@@ -93,6 +96,7 @@ int main(int argc, char** argv)	{
 	TIter next(keys);
 	TList *histstowrite = new TList();
 	TList *matstowrite = new TList();
+   TList *m4bstowrite = new TList();
 	//int counter = 1;
 	while( TKey *currentkey = (TKey*)next() ) {
 		std::string keytype = currentkey->ReadObj()->IsA()->GetName();
@@ -101,8 +105,21 @@ int main(int argc, char** argv)	{
 			//if((counter-1)%4==0)
 			//	printf("*****************************\n");
 			histstowrite->Add(currentkey->ReadObj());
-		} else if(keytype.compare(0,3,"TH2")==0) {
+      } else if(keytype.compare(0,4,"TH2C")==0 || keytype.compare(0,4,"TH2S")==0){
          matstowrite->Add(currentkey->ReadObj());
+		} else if(keytype.compare(0,3,"TH2")==0) {
+         m4bstowrite->Add(currentkey->ReadObj());
+		} else if(keytype.compare(0,3,"THn")==0) {
+         THnSparse* hist = ((THnSparse*) (currentkey->ReadObj()));
+         if(hist->GetNdimensions() == 1) {
+			   histstowrite->Add(hist->Projection(0));
+         } else if(hist->GetNdimensions() == 2) {
+		      if(keytype.compare(17,1,"C")==0 || keytype.compare(17,1,"S")==0) {
+               matstowrite->Add(hist->Projection(0,1));
+            } else {
+               m4bstowrite->Add(hist->Projection(0,1));
+            }
+         }
       }
 	}
 
@@ -113,7 +130,7 @@ int main(int argc, char** argv)	{
       std::string outfilename = path + "/";
 		outfilename.append(currenthist->GetName());
 		outfilename.append(".spe");
-		fstream outfile;
+		std::fstream outfile;
 		outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
 		WriteHist(currenthist, &outfile);
 		printf("\t%s written to file %s.\n",currenthist->GetName(),outfilename.c_str());
@@ -126,10 +143,23 @@ int main(int argc, char** argv)	{
       std::string outfilename = path + "/";
 		outfilename.append(currentmat->GetName());
 		outfilename.append(".mat");
-		fstream outfile;
+		std::fstream outfile;
 		outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
 		WriteMat(currentmat, &outfile);
 		printf("\t%s written to file %s.\n",currentmat->GetName(),outfilename.c_str());
+		outfile.close();
+	}
+
+
+	TIter nextm4b(m4bstowrite);
+	while( TH2 *currentm4b = (TH2*)nextm4b() ) {
+      std::string outfilename = path + "/";
+		outfilename.append(currentm4b->GetName());
+		outfilename.append(".m4b");
+		std::fstream outfile;
+		outfile.open(outfilename.c_str(), std::ios::out | std::ios::binary);
+		WriteM4b(currentm4b, &outfile);
+		printf("\t%s written to file %s.\n",currentm4b->GetName(),outfilename.c_str());
 		outfile.close();
 	}
 
@@ -139,7 +169,7 @@ int main(int argc, char** argv)	{
 	return 0;
 }
 
-void WriteMat(TH2 *mat, fstream *outfile) {
+void WriteMat(TH2 *mat, std::fstream *outfile) {
    int xbins = mat->GetXaxis()->GetNbins();
    int ybins = mat->GetYaxis()->GetNbins();
    
@@ -163,8 +193,31 @@ void WriteMat(TH2 *mat, fstream *outfile) {
    delete empty;
 }
 
+void WriteM4b(TH2 *mat, std::fstream *outfile) {
+   int xbins = mat->GetXaxis()->GetNbins();
+   int ybins = mat->GetYaxis()->GetNbins();
+   
+	TH1D *empty = new TH1D("empty","empty",4096,0,4096);
 
-void WriteHist(TH1 *hist,fstream *outfile)	{
+   for(int y=1;y<=4096;y++ ) {
+      uint32_t buffer[4096] = {0};
+		TH1D *proj;
+		if(y<=ybins)
+			proj = mat->ProjectionX("proj",y,y);
+		else
+			proj = empty;
+      for(int x=1;x<=4096;x++ ) {
+         if(x<=xbins)
+            buffer[x-1] = (uint32_t)(proj->GetBinContent(x));//    mat->GetBinContent(x,y));
+         else
+            buffer[x-1] = 0;
+      }
+   	outfile->write((char*)(&buffer),sizeof(buffer));	
+   }
+   delete empty;
+}
+
+void WriteHist(TH1 *hist, std::fstream *outfile)	{
 	SpeHeader spehead;
 	spehead.buffsize = 24;
   	strncpy(spehead.label,hist->GetName(),8); 
@@ -207,6 +260,7 @@ void WriteHist(TH1 *hist,fstream *outfile)	{
 
 	return;	
 }
+
 
 
 

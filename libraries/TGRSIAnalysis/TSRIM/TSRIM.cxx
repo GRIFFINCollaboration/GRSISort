@@ -27,8 +27,6 @@ TSRIM::TSRIM(const char *infilename, double emax, double emin, bool printfile)	{
 }
 
 
-TSRIM::~TSRIM()	{	}
-
 void TSRIM::ReadEnergyLossFile(const char *filename, double emax, double emin, bool printfile)	{
 // if Steffen makes a TSRIM file that this thing can't read it's beacuse of mac encoding. 
 //		use dos2unix -c mac d_in_Si.txt in terminal
@@ -50,7 +48,8 @@ void TSRIM::ReadEnergyLossFile(const char *filename, double emax, double emin, b
 	}
 	std::string line;
 	std::string word;
-	double density_scale,temp;
+	double density_scale = 0.;
+	double temp;
 
 	std::vector<double> number_input,dEdX_temp;
 	std::vector<std::string> string_input;
@@ -93,12 +92,12 @@ void TSRIM::ReadEnergyLossFile(const char *filename, double emax, double emin, b
 	}
 
 	if(dEdX_temp.size() >0){
-		if(density_scale==0){
+		if(density_scale == 0.){
 			printf("WARNING: stopping power remains in original units, unable to find scale factor.\n");
-			density_scale=1;
+			density_scale = 1.;
 		}
 			
-		for(int i=0;i<dEdX_temp.size();i++){			
+		for(size_t i=0;i<dEdX_temp.size();i++){			
 			dEdX.push_back(dEdX_temp[i]*density_scale);
 		}
 

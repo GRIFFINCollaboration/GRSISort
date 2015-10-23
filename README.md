@@ -27,12 +27,13 @@ setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:$GRSISYS/libraries
 Warning: compiling in csh has been known to be an issue. Use sh if possible.
 
 
-once complete type `make` in the GRSISort directory
+Once complete type `make` in the GRSISort directory
 
 -----------------------------------------
 Running
 -----------------------------------------
 grsisort will open up a root session in the grsi environment
+
 Commands:
 
 #Unpacking the MIDAS File

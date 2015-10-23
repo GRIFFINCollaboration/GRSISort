@@ -48,7 +48,7 @@ class TCal : public TGraphErrors {
 
    //static TGraphErrors MergeGraphs(TCal *cal,...);
 
-   TChannel* const GetChannel() const;
+   TChannel* GetChannel() const;
    Bool_t SetChannel(const TChannel* chan);
    Bool_t SetChannel(UInt_t channum);
    virtual void Print(Option_t *opt = "") const;

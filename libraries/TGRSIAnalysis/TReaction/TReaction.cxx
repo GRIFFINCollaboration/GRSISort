@@ -5,7 +5,7 @@
 
 #include<TStyle.h>
 
-ClassImp(TReaction);
+ClassImp(TReaction)
 
 TReaction::TReaction(const char *beam, const char *targ, const char *ejec, const char *reco, double beame, double ex3, bool inverse){
 	
@@ -394,7 +394,7 @@ TGraph *TReaction::RutherfordVsTheta(double thmin, double thmax, int part, bool 
 }
 
 	
-void TReaction::Print(Option_t *opt) { 
+void TReaction::Print(Option_t *opt) const { 
  
  	std::string pstring;
  	pstring.assign(opt);

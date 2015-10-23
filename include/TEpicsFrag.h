@@ -4,7 +4,6 @@
 #include "Globals.h"
 
 #include <vector>
-//#include <stdint.h>
 #include <time.h>
 
 #include "Rtypes.h"
@@ -19,7 +18,7 @@
 // TEpicsFrag                                                 //
 //                                                            //
 // This Class should contain all the information found in     //
-// NOT typeid 1 midas events.                                 //
+// NOT typeid 1 midas events. aka Epics (scaler) Events.      //
 //                                                            //
 //                                                            //
 ////////////////////////////////////////////////////////////////
@@ -27,14 +26,14 @@
 class TEpicsFrag : public TObject	{
   public:
     TEpicsFrag(); 
-    ~TEpicsFrag(); 
+    virtual ~TEpicsFrag(); 
 
     time_t   MidasTimeStamp;       //->  Timestamp of the MIDAS event  
     Int_t    MidasId;              //->  MIDAS ID
 
-    std::vector<float>      Data;
-    std::vector<std::string> Name;
-    std::vector<std::string> Unit;
+    std::vector<float>      Data;  //The data in the scaler
+    std::vector<std::string> Name; //The name of hte scaler
+    std::vector<std::string> Unit; //The Scaler unit
 
     int GetSize() { return Data.size(); }
     inline float GetData(const unsigned int &i) { if(i>=Data.size()) return Data.back(); else return Data.at(i); }
@@ -42,47 +41,6 @@ class TEpicsFrag : public TObject	{
     virtual void Clear(Option_t *opt = ""); //!
     virtual void Print(Option_t *opt = "") const; //!
     
-    ClassDef(TEpicsFrag,1);  // Event Fragments
+    ClassDef(TEpicsFrag,1);  // Scaler Fragments
 };
-
-
-
-class TSCLRFrag : public TObject	{
-  public:
-    TSCLRFrag(); 
-    ~TSCLRFrag(); 
-
-    time_t   MidasTimeStamp;       //  Timestamp of the MIDAS event  
-    Int_t    MidasId;              //  MIDAS ID
-
-    static void SetAddressMap(int*,int);           //!  // done once per run.
-    static std::vector<Int_t >      AddressMap; //!
-    
-    std::vector<UInt_t >     Address;
-    std::vector<UInt_t>      Data1;
-    std::vector<UInt_t>      Data2;
-    std::vector<UInt_t>      Data3;
-    std::vector<UInt_t>      Data4;
-
-    int GetSize() { return Data1.size(); }
-    inline UInt_t GetData1(const unsigned int &i) { return Data1.at(i); }
-    inline UInt_t GetData2(const unsigned int &i) { return Data2.at(i); }
-    inline UInt_t GetData3(const unsigned int &i) { return Data3.at(i); }
-    inline UInt_t GetData4(const unsigned int &i) { return Data4.at(i); }
-    
-    virtual void Clear(Option_t *opt = ""); //!
-    virtual void Print(Option_t *opt = "") const; //!
-    virtual void Copy(const TSCLRFrag&); 
-
-    ClassDef(TSCLRFrag,1);  // Event Fragments
-};
-
-
-
-
-
-
-
-
-
 #endif // TEPICSFRAG_H

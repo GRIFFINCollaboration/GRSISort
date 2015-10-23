@@ -480,6 +480,7 @@ TGraphErrors *gr = new TGraphErrors(counter,&new_cosTheta[0],&new_counts[0],&err
   Fit->SetLineWidth(1);
   Fit->SetLineStyle(3);
 
+   list->Add(gr);
 
    printf(" \n\n");
    return list;

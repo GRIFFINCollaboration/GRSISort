@@ -4,9 +4,9 @@
 #define TFRAGMENT_H
 
 #include "Globals.h"
+#include "TPPG.h"
 
 #include <vector>
-//#include <stdint.h>
 #include <time.h>
 
 #include "Rtypes.h"
@@ -28,7 +28,7 @@
 class TFragment : public TObject	{
 public:
    TFragment(); 
-   ~TFragment(); 
+   virtual ~TFragment(); 
 
    time_t   MidasTimeStamp;       //->  Timestamp of the MIDAS event  
    Int_t    MidasId;              //->  MIDAS ID
@@ -38,7 +38,7 @@ public:
 
    Int_t    NetworkPacketNumber;  //->  Network packet number
 
-   Short_t ChannelNumber;         //->  Channel Number
+   Short_t ChannelNumber;         //->  Channel Number    //ryan is going to delete this.
    UInt_t ChannelAddress;         //->  Address of the channel
    std::vector<Int_t> Cfd;        //->  CFD of each pileup hit
    std::vector<Int_t> Zc;         //->  ZC of each pileup hit
@@ -47,7 +47,6 @@ public:
    std::vector<Int_t> Led;        //->  LED of each pileup hit
    std::vector<Int_t> Charge;	    //->  The Integrated Charge 
 
-   //unsigned long TimeStamp;     //->
    Int_t TimeStampLow;            //->  Timestamp low bits
    Int_t TimeStampHigh;           //->  Timestamp high bits
 
@@ -67,29 +66,31 @@ public:
    /// *****************************  ////
 
    std::vector<Short_t>  wavebuffer;//-> waveform words
+
+   TPPG* fPPG; //!
   
-   double GetTimeStamp() const; //!
+   double GetTime()      const; //!
+   long   GetTimeStamp() const; //!
    double GetTZero() const; //!
    const char *GetName() const; //!
-   double GetEnergy(int iter=0)const; //!
-   double GetCharge(int iter=0)const; //!
-   Int_t  GetCfd(int iter=0)const; //!
-   Int_t  GetLed(int iter=0)const; //!
-     
-   
-   
-   
+   double GetEnergy(size_t iter=0)const; //!
+   Float_t GetCharge(size_t iter=0)const; //!
    long GetTimeStamp_ns(); //!
+   ULong64_t GetTimeInCycle(); //!
+   ULong64_t GetCycleNumber(); //!
 
-   Int_t Get4GCfd(int i=0); //!
+   Int_t GetCfd(int iter=0) const { return Cfd.at(iter); }  //!
+   Int_t GetZCross(int iter=0)const { return Zc.at(iter); } //! 
+   Int_t GetLed(int iter=0) const { return Led.at(iter); }  //!
+
+   Int_t Get4GCfd(size_t i=0); //!
 
    bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!
    int  GetColor(Option_t *opt = "") const; //!
    bool HasWave() const { return (wavebuffer.size()>0) ?  true : false; } //!
 
    virtual void	Clear(Option_t *opt = ""); //!
-   using TObject::Print; 
-   virtual void Print(Option_t *opt = ""); //!
+   virtual void Print(Option_t *opt = "") const; //!
    
    bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }

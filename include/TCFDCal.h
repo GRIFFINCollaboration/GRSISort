@@ -10,7 +10,7 @@ class TCFDCal : public TCal {
    TCFDCal(const char* name, const char* title) : TCal(name,title){};
    virtual ~TCFDCal(){}; 
 
- //pure virtual functions  
+	//pure virtual functions  
    virtual Bool_t IsGroupable() const {return false;}
 
  public:

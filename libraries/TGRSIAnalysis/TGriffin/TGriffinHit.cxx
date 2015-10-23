@@ -1,86 +1,36 @@
 
 #include "TGriffin.h"
 #include "TGriffinHit.h"
+#include "Globals.h"
+#include <cmath>
 
 ClassImp(TGriffinHit)
 
-// GRIFFIN detector 1 (0 index) has two sceptar suppressors
-  // SCEPTAR detectors 0 and 1. The detector numbers for those paddles are 1 and 2 respectively
-/*unsigned int TGriffinHit::GriffinSceptarSuppressors_det[16][4];
-
-TGriffinHit::GriffinSceptarSuppressors_det[0][0] = 0;
-TGriffinHit::GriffinSceptarSuppressors_det[0][1] = 1;
-TGriffinHit::GriffinSceptarSuppressors_det[0][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[0][3] = 9999;
-// Next GRIFFIN detector
-TGriffinHit::GriffinSceptarSuppressors_det[1][0] = 2;
-TGriffinHit::GriffinSceptarSuppressors_det[1][1] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[1][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[1][3] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[2][0] = 3;
-TGriffinHit::GriffinSceptarSuppressors_det[2][1] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[2][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[2][3] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[3][0] = 0;
-TGriffinHit::GriffinSceptarSuppressors_det[3][1] = 4;
-TGriffinHit::GriffinSceptarSuppressors_det[3][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[3][3] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[4][0] = 5;
-TGriffinHit::GriffinSceptarSuppressors_det[4][1] = 10;
-TGriffinHit::GriffinSceptarSuppressors_det[4][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[4][3] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[5][0] = 5;
-TGriffinHit::GriffinSceptarSuppressors_det[5][1] = 10;
-TGriffinHit::GriffinSceptarSuppressors_det[5][2] = 6;
-TGriffinHit::GriffinSceptarSuppressors_det[5][3] = 11;
-TGriffinHit::GriffinSceptarSuppressors_det[6][0] = 6;
-TGriffinHit::GriffinSceptarSuppressors_det[6][1] = 11;
-TGriffinHit::GriffinSceptarSuppressors_det[6][2] = 7;
-TGriffinHit::GriffinSceptarSuppressors_det[6][3] = 12;
-TGriffinHit::GriffinSceptarSuppressors_det[7][0] = 7;
-TGriffinHit::GriffinSceptarSuppressors_det[7][1] = 12;
-TGriffinHit::GriffinSceptarSuppressors_det[7][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[7][3] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[8][0] = 7;
-TGriffinHit::GriffinSceptarSuppressors_det[8][1] = 12;
-TGriffinHit::GriffinSceptarSuppressors_det[8][2] = 8;
-TGriffinHit::GriffinSceptarSuppressors_det[8][3] = 13;
-TGriffinHit::GriffinSceptarSuppressors_det[9][0] = 8;
-TGriffinHit::GriffinSceptarSuppressors_det[9][1] = 13;
-TGriffinHit::GriffinSceptarSuppressors_det[9][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[9][3] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[10][0] = 9;
-TGriffinHit::GriffinSceptarSuppressors_det[10][1] = 14;
-TGriffinHit::GriffinSceptarSuppressors_det[10][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[10][3] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[11][0] = 9;
-TGriffinHit::GriffinSceptarSuppressors_det[11][1] = 14;
-TGriffinHit::GriffinSceptarSuppressors_det[11][2] = 5;
-TGriffinHit::GriffinSceptarSuppressors_det[11][3] = 10;
-TGriffinHit::GriffinSceptarSuppressors_det[12][0] = 16;
-TGriffinHit::GriffinSceptarSuppressors_det[12][1] = 15;
-TGriffinHit::GriffinSceptarSuppressors_det[12][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[12][3] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[13][0] = 17;
-TGriffinHit::GriffinSceptarSuppressors_det[13][1] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[13][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[13][3] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[14][0] = 18;
-TGriffinHit::GriffinSceptarSuppressors_det[14][1] = 19;
-TGriffinHit::GriffinSceptarSuppressors_det[14][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[14][3] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[15][0] = 18;
-TGriffinHit::GriffinSceptarSuppressors_det[15][1] = 17;
-TGriffinHit::GriffinSceptarSuppressors_det[15][2] = 9999;
-TGriffinHit::GriffinSceptarSuppressors_det[15][3] = 9999;
-*/
-TGriffinHit::TGriffinHit()	{	
-   //Class()->IgnoreTObjectStreamer(true);
+TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{	
+   //Default Ctor. Ignores TObject Streamer in ROOT < 6.
+#if MAJOR_ROOT_VERSION < 6
+   Class()->IgnoreTObjectStreamer(kTRUE);
+#endif
 	Clear();
 }
 
-TGriffinHit::~TGriffinHit()	{	}
+TGriffinHit::TGriffinHit(const TGriffinHit &rhs) : TGRSIDetectorHit() {	
+   //Copy Ctor. Ignores TObject Streamer in ROOT < 6.
+	Clear();
+   rhs.Copy(*this);
+}
 
+TGriffinHit::~TGriffinHit()  {	}
+
+void TGriffinHit::Copy(TObject &rhs) const {
+  TGRSIDetectorHit::Copy(rhs);
+  static_cast<TGriffinHit&>(rhs).fFilter                = fFilter;
+  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = fGriffinHitBits;
+  static_cast<TGriffinHit&>(rhs).fCrystal               = fCrystal;
+  static_cast<TGriffinHit&>(rhs).fPPG                   = fPPG;
+  static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag;//! Bremsstrahlung Suppression flag.
+  return;                                      
+}                                       
 
 bool TGriffinHit::InFilter(Int_t wantedfilter) {
  // check if the desired filter is in wanted filter;
@@ -90,73 +40,137 @@ bool TGriffinHit::InFilter(Int_t wantedfilter) {
 
 
 void TGriffinHit::Clear(Option_t *opt)	{
+   //Clears the information stored in the TGriffinHit.
+   TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
+   fFilter              =  0;
+   fGriffinHitBits      =  0;
+   fCrystal             =  0xFFFF;
+   fPPG                 =  0;
+   fBremSuppressed_flag = false;
 
-	detector = 0;
-   address = 0xffffffff;
-   
-   crystal  = 5;
-
-   charge_lowgain = -1;
-   charge_highgain = -1;
-
-   filter = 0;
-   ppg = 0;
-
-   cfd    = -1;
-   energy_lowgain = 0.0;
-   energy_highgain = 0.0;
-   time   = 0;
-
-   position.SetXYZ(0,0,1);
-
-	for(int x=0;x<bgo.size();x++)	{
-		bgo[x].Clear();
-	}
-	bgo.clear();
-
-   waveform.clear();
-}
-
-void TGriffinHit::SetPosition(double dist) {
-	position = TGriffin::GetPosition(detector,crystal,dist);
 }
 
 
 void TGriffinHit::Print(Option_t *opt) const	{
-
-   printf("Griffin Detector: %i\n",detector);
-	printf("Griffin Crystal:  %i\n",crystal);
-	printf("Griffin hit energy: %.2f\n",GetEnergyLow());
-	printf("Griffin hit time:   %ld\n",GetTime());
-
-
-   //printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
+   //Prints the Detector Number, Crystal Number, Energy, Time and Angle.
+   printf("Griffin Detector: %i\n",GetDetector());
+	printf("Griffin Crystal:  %i\n",GetCrystal());
+   printf("Griffin Energy:   %lf\n",GetEnergy());
+	printf("Griffin hit time:   %lf\n",GetTime());
+   printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",GetPosition().Theta() *180/(3.141597),GetPosition().Phi() *180/(3.141597));
 }
 
-
-bool TGriffinHit::CompareEnergy(TGriffinHit *lhs, TGriffinHit *rhs)	{
-		return(lhs->GetEnergyLow() > rhs->GetEnergyLow());
+TVector3 TGriffinHit::GetPosition(Double_t dist) const{
+   //Returns the Position of the crystal of the current Hit.
+	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
+UInt_t TGriffinHit::GetCrystal() const { 
+   //Returns the Crystal Number of the Current hit.
+   if(IsCrystalSet())
+      return fCrystal;
 
-void TGriffinHit::Add(TGriffinHit *hit)	{
+   TChannel *chan = GetChannel();
+   if(!chan)
+      return -1;
+   MNEMONIC mnemonic;
+   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+   char color = mnemonic.arraysubposition[0];
+   switch(color) {
+      case 'B':
+         return 0;
+      case 'G':
+         return 1;
+      case 'R':
+         return 2;
+      case 'W':
+         return 3;  
+   };
+   return -1;  
+}
+
+UInt_t TGriffinHit::GetCrystal() {
+   //Returns the Crystal Number of the Current hit.
+   if(IsCrystalSet())
+      return fCrystal;
+
+   TChannel *chan = GetChannel();
+   if(!chan)
+      return -1;
+   MNEMONIC mnemonic;
+   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+   char color = mnemonic.arraysubposition[0];
+   return SetCrystal(color);
+}
+
+UInt_t TGriffinHit::SetCrystal(UInt_t crynum) {
+   fCrystal = crynum;
+   return fCrystal;
+}
+
+UInt_t TGriffinHit::SetCrystal(char color) { 
+   switch(color) {
+      case 'B':
+         fCrystal = 0;
+         break;
+      case 'G':
+         fCrystal = 1;
+         break;
+      case 'R':
+         fCrystal = 2;
+         break;
+      case 'W':
+         fCrystal = 3;  
+         break;
+   };
+   SetFlag(TGRSIDetectorHit::kIsSubDetSet,true);
+   return fCrystal;
+}
+
+bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	{
+   return(lhs->GetEnergy() > rhs->GetEnergy());
+}
+
+void TGriffinHit::Add(const TGriffinHit *hit)	{
+   // add another griffin hit to this one (for addback), 
+   // using the time and position information of the one with the higher energy
    if(!CompareEnergy(this,hit)) {
-      this->cfd    = hit->GetCfd();    
-      this->time   = hit->GetTime();
-      this->position = hit->GetPosition();
+      this->SetCfd(hit->GetCfd());
+      this->SetTime(hit->GetTime());
+      this->SetPosition(hit->GetPosition());
+      this->SetAddress(hit->GetAddress());
    }
-   this->SetChargeLow(0);
-   this->SetChargeHigh(0);
 
-   this->SetEnergyHigh(this->GetEnergyHigh() + hit->GetEnergyHigh());
-   this->SetEnergyLow(this->GetEnergyLow() + hit->GetEnergyLow());
+   this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+   //this has to be done at the very end, otherwise this->GetEnergy() might not work
+   this->SetCharge(0);
 }
 
-Bool_t TGriffinHit::BremSuppressed(TSceptarHit* schit){
- 
-
-   return false;
+void TGriffinHit::SetGriffinFlag(enum EGriffinHitBits flag,Bool_t set){
+   if(set)
+      fGriffinHitBits |= flag;
+   else
+      fGriffinHitBits &= (~flag);
 }
 
+UChar_t TGriffinHit::NPileUps() const {
+   return ((fGriffinHitBits & kTotalPU1) + (fGriffinHitBits & kTotalPU2));
+}
 
+UChar_t TGriffinHit::PUHit() const { 
+   return ((fGriffinHitBits & kPUHit1) + (fGriffinHitBits & kPUHit2)) >> 2; 
+} 
+
+void TGriffinHit::SetNPileUps(UChar_t npileups) {
+   SetGriffinFlag(kTotalPU1,(npileups & kTotalPU1));  
+   SetGriffinFlag(kTotalPU2,(npileups & kTotalPU2));  
+}
+
+void TGriffinHit::SetPUHit(UChar_t puhit) {
+   if(puhit > 3)
+      puhit = 4;
+
+   SetGriffinFlag(kPUHit1,(puhit << 2) & kPUHit1);  
+   SetGriffinFlag(kPUHit2,(puhit << 2) & kPUHit2);  
+}
 

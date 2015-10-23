@@ -7,7 +7,6 @@
 #include <vector>
 #include <string>
 #include <queue>
-#include <stdint.h>
 #ifndef __CINT__
 #define _GLIBCXX_USE_NANOSLEEP 1
    #include <thread>
@@ -25,14 +24,15 @@
 #include "TFragment.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
+#include "TPPG.h"
 
 #include "TTigress.h" 
 #include "TSharc.h"     
 #include "TTriFoil.h"   
 #include "TRF.h"        
 #include "TCSM.h"       
-//#include "TSpice.h"     
-//#include "TS3.h"        
+#include "TSiLi.h"     
+#include "TS3.h"        
 #include "TTip.h"       
    
 #include "TGriffin.h"   
@@ -46,7 +46,7 @@
 //                                                            //
 // TAnalysisTreeBuilder                                       //
 //                                                            //
-// This Class builds events out of TGRSIDetectorHits. These   //
+// This Class builds events out of TDetectorHits. These       //
 // events then get written out to the analysis tree for post  //
 // processing. When a new detector class is added to the code //
 // it must also be added here for coincidence building        //
@@ -54,46 +54,60 @@
 ////////////////////////////////////////////////////////////////
 
 class TEventQueue : public TObject {
-   public:
-      static TEventQueue *Get();
-      static void Add(std::vector<TFragment> *event); 
-      static std::vector<TFragment> *PopEntry();
-      static int Size();
-      virtual ~TEventQueue();
+  public:
+	static TEventQueue *Get();
+	static void Add(std::vector<TFragment> *event); 
+	static std::vector<TFragment> *PopEntry();
+	static int Size();
+	virtual ~TEventQueue() { std::cout << std::endl << "In event queue dstor." << std::endl; }
 
-   private:
-      TEventQueue();
-      static TEventQueue *fPtrToQue;
-      static std::queue<std::vector<TFragment>*> fEventQueue;
-      #ifndef __CINT__
-      static std::mutex m_event;
-      #endif 
-      static bool elock;
-      static void SetLock() {  printf(BLUE "settting event lock" RESET_COLOR  "\n");  elock = true;}
-      static void UnsetLock() {  printf(RED "unsettting event lock" RESET_COLOR  "\n");  elock = false;}
+  private:
+	TEventQueue();
+   TEventQueue(const TEventQueue&) : TObject() { MayNotUse(__PRETTY_FUNCTION__); }
+	void operator=(const TEventQueue&){ MayNotUse(__PRETTY_FUNCTION__); }
+	static TEventQueue *fPtrToQue;
 
-   //ClassDef(TEventQueue,0)
+      
+	void Add_Instance(std::vector<TFragment> *event); 
+	std::vector<TFragment> *PopEntry_Instance();
+	int Size_Instance();
+      
+	std::queue<std::vector<TFragment>*> fEventQueue;
+#ifndef __CINT__
+	std::mutex m_event;
+#endif 
+	bool elock;
+	void SetLock() {  printf(BLUE "settting event lock" RESET_COLOR  "\n");  elock = true;}
+	void UnsetLock() {  printf(RED "unsettting event lock" RESET_COLOR  "\n");  elock = false;}
 
+	ClassDef(TEventQueue,0)
 };
 
-class TWriteQueue : public TObject {
+//class TWriteQueue : public TObject {
+class TWriteQueue {
    public:
       static TWriteQueue *Get();
-      static void Add(std::map<const char*, TGRSIDetector*> *event); 
-      static std::map<const char*, TGRSIDetector*> *PopEntry();
+      static void Add(std::map<std::string, TDetector*> *event); 
+      static std::map<std::string, TDetector*> *PopEntry();
       static int Size();
-      virtual ~TWriteQueue();
+      virtual ~TWriteQueue()  { } //std::cout << std::endl << "In write queue dstor." << std::endl; }
 
    private:
       TWriteQueue();
       static TWriteQueue *fPtrToQue;
-      static std::queue<std::map<const char*, TGRSIDetector*>*> fWriteQueue;
+
+      
+      void Add_Instance(std::map<std::string, TDetector*> *event); 
+      std::map<std::string, TDetector*> *PopEntry_Instance();
+      int Size_Instance();
+      
+      std::queue<std::map<std::string, TDetector*>*> fWriteQueue;
       #ifndef __CINT__
-      static std::mutex m_write;
+      std::mutex m_write;
       #endif
-      static bool wlock;         
-      static void SetLock()   {  wlock = true; }  // printf(BLUE "settting write lock" RESET_COLOR  "\n");    }
-      static void UnsetLock() {  wlock = false;}  // printf(RED "unsettting write lock" RESET_COLOR  "\n");   }
+      bool wlock;         
+      void SetLock()   {  wlock = true; }  // printf(BLUE "settting write lock" RESET_COLOR  "\n");    }
+      void UnsetLock() {  wlock = false;}  // printf(RED "unsettting write lock" RESET_COLOR  "\n");   }
 
 	//ClassDef(TWriteQueue,0)
 
@@ -102,7 +116,8 @@ class TWriteQueue : public TObject {
 class TAnalysisTreeBuilder : public TObject {
 
    public:
-      virtual ~TAnalysisTreeBuilder();
+      //virtual ~TAnalysisTreeBuilder();
+      virtual ~TAnalysisTreeBuilder() { std::cout << std::endl << "In analysis tree builder dstor." << std::endl; }
 
       static TAnalysisTreeBuilder* Get();
       void ProcessEvent();
@@ -120,9 +135,9 @@ class TAnalysisTreeBuilder : public TObject {
       void SetupOutFile();
       void SetupAnalysisTree();
 
-      void FillWriteQueue(std::map<const char*, TGRSIDetector*>*);
+      void FillWriteQueue(std::map<std::string, TDetector*>*);
 
-      void FillAnalysisTree(std::map<const char*, TGRSIDetector*>*);
+      void FillAnalysisTree(std::map<std::string, TDetector*>*);
       void WriteAnalysisTree();
       void CloseAnalysisFile();
 
@@ -130,7 +145,7 @@ class TAnalysisTreeBuilder : public TObject {
 
       void ClearActiveAnalysisTreeBranches();
       void ResetActiveAnalysisTreeBranches();
-		  void BuildActiveAnalysisTreeBranches(std::map<const char*, TGRSIDetector*>*);
+		  void BuildActiveAnalysisTreeBranches(std::map<std::string, TDetector*>*);
 
       void Print(Option_t *opt ="") const;
 
@@ -149,6 +164,7 @@ class TAnalysisTreeBuilder : public TObject {
       TTree  *fCurrentAnalysisTree;
       TFile  *fCurrentAnalysisFile;
       TGRSIRunInfo *fCurrentRunInfo;
+      TPPG *fCurrentPPG;
 
       static long fEntries;
       static int fFragmentsIn;
@@ -174,8 +190,8 @@ class TAnalysisTreeBuilder : public TObject {
       TTriFoil    *triFoil;                                 //A pointer to the TriFoil Mother Class
       TRF         *rf;                                      //A pointer to the TRF Mother Class 
       TCSM        *csm;                                     //A pointer to the CSM Mother Class
-      //TSpice      *spice;  
-      //TS3         *s3;
+      TSiLi       *sili;  
+      TS3         *s3;
       TTip        *tip;    
        
       //GrifAux detectors

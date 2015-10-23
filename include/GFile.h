@@ -7,7 +7,7 @@ class GFile : public TFile {
    public:
       GFile();
       GFile(const char *name,Option_t *opt="",const char *ftitle="",Int_t compress=1);
-      ~GFile();
+      virtual ~GFile();
 
  
    private:

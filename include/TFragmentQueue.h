@@ -68,11 +68,11 @@ class TFragmentQueue : public TObject {
 		void Pop();
 		TFragment *PopFragment();
 
-		int Size();
+		int Size() const;
 
 		void StartStatusUpdate();
 		void StopStatusUpdate();
-		void CheckStatus();
+		void CheckStatus() const;
 
 		unsigned int GetTotalFragsIn() { return fTotalFragsIn;}
 		unsigned int GetTotalFragsOut()	{	return fTotalFragsOut;}
@@ -80,7 +80,7 @@ class TFragmentQueue : public TObject {
 		bool Running() { return !fStop;}
 		void Stop() { fStop = true;}
 
-      void Print(Option_t *opt = "");
+      void Print(Option_t *opt = "") const;
 		void Clear(Option_t *opt = "");
 		
 		ClassDef(TFragmentQueue,0); //The Class used to hold fragments when building events

@@ -24,7 +24,7 @@ using TMath::Sqrt;
 using TMath::TwoPi;
 using TMath::Pi;
 
-ClassImp(TRFFitter);
+ClassImp(TRFFitter)
 
 static const Double_t defaultRfPeriod = 84.8e-9; // [seconds]
 static const Double_t defaultSamplingPeriod = 10e-9; // [seconds]
@@ -214,7 +214,7 @@ void TRFFitter::CalculateDerivative(const vector<TRFFitter::vector_element_t> &w
    derivative[waveform.size() - 2] = -0.5 * waveform[waveform.size() - 3] + 0.5 * waveform[waveform.size() - 1];
    derivative[waveform.size() - 1] = 0.5 * waveform[waveform.size() - 3] - 2.0 * waveform[waveform.size() - 2] + 1.5 * waveform[waveform.size() - 1];
    // and calculate 5-point derivatives in the middle
-   for (int i=2; i < waveform.size() - 2; i++) {
+   for(size_t i=2; i < waveform.size() - 2; i++) {
       derivative[i] = 1.0 / 12.0 * (1 * waveform[i-2] - 8 * waveform[i-1] + 8 * waveform[i+1] - 1 * waveform[i+2]);
    }
 }
@@ -235,7 +235,7 @@ void TRFFitter::CalculateDoubleDerivative(const vector<TRFFitter::vector_element
    doubleDerivative[waveform.size() - 2] = waveform[waveform.size() - 3] - 2 * waveform[waveform.size() - 2] + waveform[waveform.size() - 1];
    doubleDerivative[waveform.size() - 1] = doubleDerivative[waveform.size() - 2];
    // and calculate 5-point double derivatives in the middle
-   for (int i=2; i < waveform.size() - 2; i++) {
+   for(size_t i=2; i < waveform.size() - 2; i++) {
       doubleDerivative[i] = 1.0 / 3.0 * (waveform[i-2] - waveform[i-1] - waveform[i+1] + waveform[i+2]);
       // doubleDerivative[i] = 1.0 / 12.0 * (-waveform[i-2] + 16.0 * waveform[i-1] - 30.0 * waveform[i] + 16 * waveform[i+1] - waveform[i+2]);
    }

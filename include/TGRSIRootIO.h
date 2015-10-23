@@ -15,12 +15,14 @@
 #include "TNucleus.h"
 #include "TKinematics.h"
 #include "TEpicsFrag.h"
+#include "TPPG.h"
+#include "TScaler.h"
 
 class TGRSIRootIO : public TObject {
 
    public:
       static TGRSIRootIO *Get();
-      ~TGRSIRootIO();
+      virtual ~TGRSIRootIO();
    
    private:
       static TGRSIRootIO *fTGRSIRootIO;
@@ -31,23 +33,30 @@ class TGRSIRootIO : public TObject {
       TTree *fFragmentTree;
       TTree *fBadFragmentTree;
       TTree *fEpicsTree;
-      TTree *fSCLRTree;
+      TTree *fDeadtimeScalerTree;
+      TTree *fRateScalerTree;
+      TPPG *fPPG;
+
       TFile *foutfile;
       int fTimesFillCalled;
       int fTimesBadFillCalled;
+      int fTimesPPGCalled;
+      int fTimesDeadtimeScalerCalled;
+      int fTimesRateScalerCalled;
       int fEPICSTimesFillCalled;
-      int fSCLRTimesFillCalled;
 
       std::vector<TFile*> finfiles;
 
       TFragment  *fBufferFrag;
       TFragment  *fBadBufferFrag;
       TEpicsFrag *fEXBufferFrag;
-      TSCLRFrag  *fSBufferFrag;
       TChannel   *fBufferChannel;
 
+		TScalerData* fDeadtimeScalerData;
+		TScalerData* fRateScalerData;
+
    public:
-      void SetUpRootOutFile(int,int);
+      bool SetUpRootOutFile(int,int);
       void CloseRootOutFile(); 
       int GetRunNumber(std::string);
       int GetSubRunNumber(std::string);
@@ -72,17 +81,25 @@ class TGRSIRootIO : public TObject {
       void FillBadFragmentTree(TFragment*);
       void FinalizeBadFragmentTree();
 
+      void SetUpPPG();
+      TPPG *GetPPG()  { return fPPG;  }
+      void FillPPG(TPPGData*);
+      void FinalizePPG();
+      int GetTimesPPGCalled()  { return fTimesPPGCalled;  }
+
+      void SetUpScalerTrees();
+      TTree *GetDeadtimeScalerTree()  { return fDeadtimeScalerTree;  }
+      TTree *GetRateScalerTree()  { return fRateScalerTree;  }
+      void FillDeadtimeScalerTree(TScalerData*);
+      void FillRateScalerTree(TScalerData*);
+      void FinalizeScalerTrees();
+      int GetTimesDeadtimeScalerCalled()  { return fTimesDeadtimeScalerCalled;  }
+      int GetTimesRateScalerCalled()  { return fTimesRateScalerCalled;  }
+
       void SetUpEpicsTree();
       TTree *GetEpicsTree()  { return fEpicsTree;  }
       void FillEpicsTree(TEpicsFrag*);
       void FinalizeEpicsTree();
-
-      void SetUpSCLRTree();
-      TTree *GetSCLRTree()  { return fSCLRTree;  }
-      void FillSCLRTree(TSCLRFrag*);
-      void FinalizeSCLRTree();
-
-
 
       void MakeUserHistsFromFragmentTree();
       void WriteRunStats();

@@ -9,7 +9,7 @@ class TCalManager : public TNamed {
  public: 
    TCalManager();
    TCalManager(const char* classname);
-   ~TCalManager(); 
+   virtual ~TCalManager(); 
 
  public:
    TCal* GetCal(UInt_t channum);
