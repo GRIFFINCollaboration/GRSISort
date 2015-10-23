@@ -23,8 +23,9 @@ class TS3 : public TDetector {
     void Clear(Option_t *opt="");   
     void Print(Option_t *opt="") const;
 
-    virtual void BuildHits(TDetectorData *data=0,Option_t *opt="");
-    virtual void FillData(TFragment*,TChannel*,MNEMONIC*);
+    void BuildHits(TDetectorData *data=0,Option_t *opt="");
+    void FillData(TFragment*,TChannel*,MNEMONIC*);
+	 void BuildHits(TFragment*, MNEMONIC*);
 
     TS3Hit *GetS3Hit(const int& i);  
     Short_t GetMultiplicity()  {  return s3_hits.size();}

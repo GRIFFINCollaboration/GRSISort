@@ -16,38 +16,35 @@ class TTriFoilData;
 #endif
 
 class TTriFoil :  public TDetector {
+  public:
+	TTriFoil();
+	virtual ~TTriFoil();
+	TTriFoil(const TTriFoil& rhs);
+
+	std::vector<Short_t> GetWave() { return tf_wave;	};
+	bool Beam() const{return beam;};
+	int TBeam() const {return tbeam;};
 	
-	public:
-		TTriFoil();
-		virtual ~TTriFoil();
-      TTriFoil(const TTriFoil& rhs);
+	bool HasWave() const { return !tf_wave.empty(); };
+	time_t GetTimeStamp() const {return timestamp;}
 
-		std::vector<Short_t> GetWave() { return tf_wave;	};
-		bool Beam() const{return beam;};
-		int TBeam() const {return tbeam;};
+	void BuildHits(TDetectorData *data=0, Option_t * = "");	//!
+	void FillData(TFragment*,TChannel*,MNEMONIC*);	//!
+	void BuildHits(TFragment*, MNEMONIC*); //!
+
+	void Clear(Option_t *opt = ""); 	//!
+	void Print(Option_t *opt = "") const; 	//!
+	void Copy(TObject &rhs) const;
 	
-		bool HasWave() const { return !tf_wave.empty(); };
-      time_t GetTimeStamp() const {return timestamp;}
+  private:
+	TTriFoilData *data;		//!
 
-		void BuildHits(TDetectorData *data=0, Option_t * = "");	//!
-		void FillData(TFragment*,TChannel*,MNEMONIC*);	//!
-
-		void Clear(Option_t *opt = ""); 	//!
-		void Print(Option_t *opt = "") const; 	//!
-      void Copy(TObject &rhs) const;
-
-		
-	
-	private:
-		TTriFoilData *data;		//!
-
-		std::vector<Short_t> tf_wave;
-		time_t timestamp;
-		bool beam;
-		int tbeam;
+	std::vector<Short_t> tf_wave;
+	time_t timestamp;
+	bool beam;
+	int tbeam;
 		
 	ClassDef(TTriFoil,2)
-
 };
 
 

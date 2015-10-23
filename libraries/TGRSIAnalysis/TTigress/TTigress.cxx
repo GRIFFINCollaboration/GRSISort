@@ -194,6 +194,9 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
 }
 
 
+void TTigress::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+}
+
 //void TTigress::DopplerCorrect(TTigressHit *hit)	{
 //	if(beta != 0.00)	{
 //		double gamma = 1/(sqrt(1-pow(beta,2)));

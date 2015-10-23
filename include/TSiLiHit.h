@@ -42,7 +42,7 @@ class TSiLiHit : public TGRSIDetectorHit {
     void SetVariables(TFragment &frag) { charge = frag.GetCharge();
                                          energy = frag.GetEnergy();
                                          ts     = frag.GetTimeStamp();
-                                         time   = frag.GetZCross();
+                                         time   = frag.GetZc();
                                          cfd    = frag.GetCfd(); }
 
   private:

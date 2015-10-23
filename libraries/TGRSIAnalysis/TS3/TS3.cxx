@@ -75,6 +75,9 @@ void TS3::BuildHits(TDetectorData *data,Option_t *opt)  {
   
 }
 
+void TS3::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+}
+
 TVector3 TS3::GetPosition(int ring, int sector)  {
 
   TVector3 position;

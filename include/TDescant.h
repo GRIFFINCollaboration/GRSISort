@@ -34,6 +34,7 @@ class TDescant : public TGRSIDetector {
 
      void BuildHits(TDetectorData *data =0,Option_t *opt = "");           //!
      void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
+     void BuildHits(TFragment*, MNEMONIC*);           //!
 
      TDescant& operator=(const TDescant&);  // 
 

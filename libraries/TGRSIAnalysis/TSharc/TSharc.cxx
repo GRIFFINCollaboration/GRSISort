@@ -154,6 +154,9 @@ void  TSharc::BuildHits(TDetectorData *ddata,Option_t *opt)  {
 
 }
 
+void TSharc::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+}
+
 void TSharc::RemoveHits(std::vector<TSharcHit> *hits,std::set<int> *to_remove)  {
 
   std::set<int>::reverse_iterator iter;

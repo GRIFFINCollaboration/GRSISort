@@ -51,6 +51,7 @@ class TCSM :  public TDetector 	{
 	   static TVector3 GetPosition(int detector, char pos, int horizontalstrip, int verticalstrip, double X=0.00, double Y=0.00, double Z=0.00);	//! 
 
       void FillData(TFragment*,TChannel*,MNEMONIC*);
+		void BuildHits(TFragment*, MNEMONIC*);
 
 	private: 
 		TCSMData *data;                             //!

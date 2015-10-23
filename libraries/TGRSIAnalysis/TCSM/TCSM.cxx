@@ -7,8 +7,7 @@ ClassImp(TCSM)
 
 int TCSM::fCfdBuildDiff = 5;
 
-TCSM::TCSM() : data(0)
-{
+TCSM::TCSM() : data(0) {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -16,28 +15,22 @@ TCSM::TCSM() : data(0)
   AlmostEqualWindow = .2;
 }
 
-TCSM::~TCSM()
-{
+TCSM::~TCSM() {
   if(data) delete data;
 }
 
-void TCSM::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)
-{
+void TCSM::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
   if(!data)
     data = new TCSMData();
 
-  if(mnemonic->collectedcharge.compare(0,1,"N")==0)    //Horizontal Strips. aka "front"
-  {
+  if(mnemonic->collectedcharge.compare(0,1,"N")==0) {   //Horizontal Strips. aka "front"
     data->SetHorizontal(frag,channel,mnemonic);
-  }
-  else if(mnemonic->collectedcharge.compare(0,1,"P")==0)      //Vertical Strips. aka "back"
-  {
+  } else if(mnemonic->collectedcharge.compare(0,1,"P")==0) {      //Vertical Strips. aka "back"
     data->SetVertical(frag,channel,mnemonic);
   }
 }
 
-void	TCSM::BuildHits(TDetectorData *ddata, Option_t *opt)
-{
+void	TCSM::BuildHits(TDetectorData *ddata, Option_t *opt) {
   TCSMData *cdata = (TCSMData *)ddata;
 
   if(cdata==0)
@@ -143,6 +136,116 @@ void	TCSM::BuildHits(TDetectorData *ddata, Option_t *opt)
   BuildVH(v4d,h4d,D_Hits,cdata);
 
   BuilddEE(D_Hits,E_Hits,csm_hits);
+
+}
+
+
+void	TCSM::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+//   if(mnemonic->subsystem[0] == 'G') {
+//		//set griffin
+//		if(mnemonic->outputsensor[0] == 'B') { return; }  //make this smarter.
+//		
+//		//we're ignoring MidasId, CloverNumber (from mnemomic->arrayposition), and CoreNumber:
+//		//UShort_t CoreNbr=5;
+//		//if(mnemonic->arraysubposition[0] == 'B')
+//		//	CoreNbr=0;
+//		//else if(mnemonic->arraysubposition[0] == 'G')
+//		//	CoreNbr=1;
+//		//else if(mnemonic->arraysubposition[0] == 'R')
+//		//	CoreNbr=2;
+//		//else if(mnemonic->arraysubposition[0] == 'W')
+//		//	CoreNbr=3;
+//   
+//		for(int i = 0; i < frag->Charge.size(); ++i) {
+//			TGriffinHit corehit;
+//			corehit.SetAddress(frag->ChannelAddress);
+//			corehit.SetTime(frag->GetTimeStamp());
+//			corehit.SetCfd(frag->GetCfd(i));
+//			corehit.SetCharge(frag->GetCharge(i));
+//			//check if this is a fragment where we already pulled the pile-up hits apart
+//			if(frag->Charge.size() == 1 && frag->NumberOfHits >= 0 && frag->HitIndex >= 0) {
+//				corehit.SetNPileUps(frag->NumberOfHits);
+//				corehit.SetPUHit(frag->HitIndex);
+//			} else {
+//				corehit.SetNPileUps(frag->Charge.size());
+//				corehit.SetPUHit(i);
+//			}
+//			
+//			AddHit(&corehit);
+//		}
+//	} else if(mnemonic->subsystem[0] == 'S') {
+//		//set BGO
+//   }
+//
+//  if(mnemonic->collectedcharge.compare(0,1,"N")==0) {   //Horizontal Strips. aka "front"
+//    data->SetHorizontal(frag,channel,mnemonic);
+//  } else if(mnemonic->collectedcharge.compare(0,1,"P")==0) {      //Vertical Strips. aka "back"
+//    data->SetVertical(frag,channel,mnemonic);
+//  }
+//
+//  std::string option = opt;
+//  std::vector<TCSMHit> D_Hits;
+//  std::vector<TCSMHit> E_Hits;
+//
+//  std::vector<int> v1d;
+//  std::vector<int> v2d;
+//  std::vector<int> v1e;
+//  std::vector<int> v2e;
+//  std::vector<int> v3d;
+//  std::vector<int> v4d;
+//
+//  std::vector<int> h1d;
+//  std::vector<int> h2d;
+//  std::vector<int> h1e;
+//  std::vector<int> h2e;
+//  std::vector<int> h3d;
+//  std::vector<int> h4d;
+//
+//  for(size_t hiter=0;hiter<cdata->GetMultiplicityHorizontal();hiter++) {
+//	  if(cdata->GetHorizontal_DetectorNbr(hiter)==3)
+//		  h3d.push_back(hiter);
+//	  else if(cdata->GetHorizontal_DetectorNbr(hiter)==4)
+//		  h4d.push_back(hiter);
+//	  else if(cdata->GetHorizontal_DetectorNbr(hiter)==1) {
+//		  if(cdata->GetHorizontal_DetectorPos(hiter)=='D')
+//			  h1d.push_back(hiter);
+//		  else if(cdata->GetHorizontal_DetectorPos(hiter)=='E')
+//			  h1e.push_back(hiter);
+//	  } else if(cdata->GetHorizontal_DetectorNbr(hiter)==2) {
+//		  if(cdata->GetHorizontal_DetectorPos(hiter)=='D')
+//			  h2d.push_back(hiter);
+//		  else if(cdata->GetHorizontal_DetectorPos(hiter)=='E')
+//			  h2e.push_back(hiter);
+//	  }
+//  }
+//
+//  for(size_t viter=0;viter<cdata->GetMultiplicityVertical();viter++) {
+//	  if(cdata->GetVertical_DetectorNbr(viter)==3)
+//		  v3d.push_back(viter);
+//	  else if(cdata->GetVertical_DetectorNbr(viter)==4)
+//		  v4d.push_back(viter);
+//	  else if(cdata->GetVertical_DetectorNbr(viter)==1) {
+//		  if(cdata->GetVertical_DetectorPos(viter)=='D')
+//			  v1d.push_back(viter);
+//		  else if(cdata->GetVertical_DetectorPos(viter)=='E')
+//			  v1e.push_back(viter);
+//	  } else if(cdata->GetVertical_DetectorNbr(viter)==2) {
+//		  if(cdata->GetVertical_DetectorPos(viter)=='D')
+//			  v2d.push_back(viter);
+//		  else if(cdata->GetVertical_DetectorPos(viter)=='E')
+//			  v2e.push_back(viter);
+//	  }
+//  }
+//
+//
+//  BuildVH(v1d,h1d,D_Hits,cdata);
+//  BuildVH(v1e,h1e,E_Hits,cdata);
+//  BuildVH(v2d,h2d,D_Hits,cdata);
+//  BuildVH(v2e,h2e,E_Hits,cdata);
+//  BuildVH(v3d,h3d,D_Hits,cdata);
+//  BuildVH(v4d,h4d,D_Hits,cdata);
+//
+//  BuilddEE(D_Hits,E_Hits,csm_hits);
 
 }
 

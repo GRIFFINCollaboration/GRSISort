@@ -49,6 +49,9 @@ void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
 
 }
 
+void TSiLi::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+}
+
 TVector3 TSiLi::GetPosition(int seg)  {
   TVector3 position;
   position.SetXYZ(0,0,-1);

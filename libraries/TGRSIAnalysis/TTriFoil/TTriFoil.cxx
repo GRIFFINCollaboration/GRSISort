@@ -71,6 +71,9 @@ void TTriFoil::BuildHits(TDetectorData *ddata,Option_t *opt)	{
 
 }
 
+void TTriFoil::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+}
+
 void TTriFoil::Print(Option_t *opt) const { } 
 
 

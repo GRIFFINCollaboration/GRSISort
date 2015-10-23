@@ -23,6 +23,7 @@ class TSiLi: public TDetector  {
 
     void BuildHits(TDetectorData *data, Option_t *opt="");    
     void FillData(TFragment*,TChannel*,MNEMONIC*);
+	 void BuildHits(TFragment*, MNEMONIC*);
 
     void Print(Option_t *opt="") const;
     void Clear(Option_t *opt="");

@@ -165,6 +165,37 @@ void TSceptar::BuildHits(TDetectorData *data,Option_t *opt)	{
    }
 }
 
+void TSceptar::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+//Builds the SCEPTAR Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
+//This is done for both SCEPTAR and it's suppressors.
+	if(!frag || !mnemonic)
+      return;
+
+   Clear("");
+
+	for(size_t i = 0; i < frag->Charge.size(); ++i) {
+	  TSceptarHit hit;
+	  hit.SetAddress(frag->ChannelAddress);
+	  hit.SetTime(frag->GetTimeStamp());
+	  hit.SetCfd(frag->GetCfd(i));
+	  hit.SetCharge(frag->GetCharge(i));
+	  
+      if(TSceptar::SetWave()){
+         if(frag->wavebuffer.size() == 0) {
+            printf("Warning, TSceptar::SetWave() set, but data waveform size is zero!\n");
+         }
+         hit.SetWaveform(frag->wavebuffer);
+         if(hit.GetWaveform().size() > 0) {
+				printf("Analyzing waveform, current cfd = %d\n",hit.GetCfd());
+            bool analyzed = hit.AnalyzeWaveform();
+            printf("%s analyzed waveform, cfd = %d\n",analyzed ? "successfully":"unsuccessfully",hit.GetCfd());
+         }
+      }
+
+	  AddHit(&hit);
+	}
+}
+
 TGRSIDetectorHit* TSceptar::GetHit(const Int_t& idx){
    //Gets the TSceptarHit at index idx. 
    return GetSceptarHit(idx);

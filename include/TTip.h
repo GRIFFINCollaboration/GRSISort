@@ -34,6 +34,7 @@ class TTip : public TGRSIDetector {
 
 	 void BuildHits(TDetectorData *data =0,Option_t *opt = "");           //!
 	 void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
+	 void BuildHits(TFragment*, MNEMONIC*); //!
     void Copy(TObject &rhs) const;
 
     TTip& operator=(const TTip&);  //!

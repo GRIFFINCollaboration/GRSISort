@@ -357,6 +357,50 @@ void TGriffin::BuildHits(TDetectorData *data,Option_t *opt)	{
    //if(griffin_hits.size()>1)
 }
 
+void TGriffin::BuildHits(TFragment* frag, MNEMONIC *mnemonic)	{
+	//Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
+	//This is done for both GRIFFIN and it's suppressors.
+	if(!frag || !mnemonic)
+      return;
+
+   Clear("");
+
+   if(mnemonic->subsystem[0] == 'G') {
+		//set griffin
+		if(mnemonic->outputsensor[0] == 'B') { return; }  //make this smarter.
+		
+		//we're ignoring MidasId, CloverNumber (from mnemomic->arrayposition), and CoreNumber:
+		//UShort_t CoreNbr=5;
+		//if(mnemonic->arraysubposition[0] == 'B')
+		//	CoreNbr=0;
+		//else if(mnemonic->arraysubposition[0] == 'G')
+		//	CoreNbr=1;
+		//else if(mnemonic->arraysubposition[0] == 'R')
+		//	CoreNbr=2;
+		//else if(mnemonic->arraysubposition[0] == 'W')
+		//	CoreNbr=3;
+   
+		for(size_t i = 0; i < frag->Charge.size(); ++i) {
+			TGriffinHit corehit;
+			corehit.SetAddress(frag->ChannelAddress);
+			corehit.SetTime(frag->GetTimeStamp());
+			corehit.SetCfd(frag->GetCfd(i));
+			corehit.SetCharge(frag->GetCharge(i));
+			//check if this is a fragment where we already pulled the pile-up hits apart
+			if(frag->Charge.size() == 1 && frag->NumberOfHits >= 0 && frag->HitIndex >= 0) {
+				corehit.SetNPileUps(frag->NumberOfHits);
+				corehit.SetPUHit(frag->HitIndex);
+			} else {
+				corehit.SetNPileUps(frag->Charge.size());
+				corehit.SetPUHit(i);
+			}
+			
+			AddHit(&corehit);
+		}
+	} else if(mnemonic->subsystem[0] == 'S') {
+		//set BGO
+   }
+}
 
 TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ) {
    //Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.

@@ -32,7 +32,7 @@ class TS3Hit : public TGRSIDetectorHit {
                                          fcfd    = frag.GetCfd();
                                          fcharge = frag.GetCharge();
                                          SetTimeStamp(frag.GetTimeStamp()); 
-                                         SetTime(frag.GetZCross()); }
+                                         SetTime(frag.GetZc()); }
  
 
   private:

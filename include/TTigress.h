@@ -61,6 +61,7 @@ class TTigress : public TGRSIDetector {
 		//TVector3 GetPosition(TTigressHit *,int distance=0);									//!
 
 		void FillData(TFragment*,TChannel*,MNEMONIC*); //!
+		void BuildHits(TFragment*, MNEMONIC*); //!
 		void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
 
 	private: 

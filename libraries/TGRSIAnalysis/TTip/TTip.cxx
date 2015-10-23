@@ -88,6 +88,9 @@ void TTip::BuildHits(TDetectorData *data,Option_t *opt)	{
    }
 }
 
+void TTip::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+}
+
 void TTip::Print(Option_t *opt) const {
   //Prints out TSceptar members, currently does little.
   if(tipdata) tipdata->Print();
