@@ -225,7 +225,7 @@ double  TPulseAnalyzer::get_linear_T0(){
   double b,c,t;
   
   chitmin=LARGECHISQ;
-  kmin=0;
+  //kmin=0;
   
   for(k=T0RANGE/2;k<wpar->thigh-T0RANGE/8;k++){
       //fit line to the baseline
@@ -244,7 +244,7 @@ double  TPulseAnalyzer::get_linear_T0(){
 	  wpar->s0=lpl.intercept;
 	  wpar->s1=lpl.slope;
 	  wpar->s2=0.;
-	  kmin=k;
+	  //kmin=k;
 	}
     }	// end of the loop over k
   b=wpar->s1-wpar->b1;
@@ -329,7 +329,7 @@ double TPulseAnalyzer::get_parabolic_T0(){
   double a,b,c,d,t;
  
   chitmin=LARGECHISQ;
-  kmin=0;
+  //kmin=0;
   for(k=T0RANGE/2;k<wpar->thigh-T0RANGE/2;k++){
       //fit line to the baseline
       fit_line(0,k,&lp);
@@ -346,7 +346,7 @@ double TPulseAnalyzer::get_parabolic_T0(){
 	  wpar->s0=pp.constant;
 	  wpar->s1=pp.linear;
 	  wpar->s2=pp.quadratic;
-	  kmin=k;
+	  //kmin=k;
 	}
     }//end loop through k
 
