@@ -32,7 +32,6 @@ void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
     sdata = this->data;
   if(!sdata)
     return;
-    
 
   TSiLiHit hit;
 
@@ -42,6 +41,7 @@ void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
      hit.SetPosition(tmppos);
      TFragment tmp = sdata->GetFragment(i);
      hit.SetVariables(tmp);
+     hit.SetWavefit(tmp);
   
      sili_hits.push_back(hit);
   }

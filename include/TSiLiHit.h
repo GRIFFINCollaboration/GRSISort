@@ -16,52 +16,52 @@ class TSiLiHit : public TGRSIDetectorHit {
 
     void Clear(Option_t *opt="");
     void Print(Option_t *opt="") const;
-
+    
+    Double_t GetLed()          {  return led;     }
     Short_t  GetSegment()      {  return segment; }
-    Double_t GetEnergy()       {  return energy;  }
-    Long_t   GetTimeStamp()    {  return ts;    }
-    Int_t    GetTime()         {  return time;    }
-    Int_t    GetCharge()       {  return charge;  }
-    Double_t GetTimeCFD()      {  return cfd;     }
-    Double_t GetTimeLED()      {  return led;     }
-    
+    Double_t    GetSig2Noise() {  return sig2noise;}    
+    Int_t GetRing()            {  return ring;      }
+    Int_t GetSector()          {  return sector;   }
+    Int_t GetPreamp()          { return  preamp;   }
     Double_t    GetTimeFit()   {  return time_fit; }
-    Double_t    GetSig2Noise() {  return sig2noise; }    
-    Int_t GetRing()            {  return 9-(segment/12);  }
-    Int_t GetSector()          {  return segment%12;     }
-    Int_t GetPreamp()          { return ((GetSector()/3)*2)+(((GetSector()%3)+GetRing())%2); }
-    
-    void SetSegment(Short_t seg)       { segment = seg; }
-    using TGRSIDetectorHit::SetPosition; //This is here to fix warnings. Will leave when lean-ness occurs
-    void SetPosition(TVector3 &vec)    { fposition = vec; }
-    void SetVariables(TFragment &frag) { charge = frag.GetCharge();
-                                         energy = frag.GetEnergy();
-                                         ts     = frag.GetTimeStamp();
-                                         time   = frag.GetZCross();
-                                         cfd    = frag.GetCfd();
-                                         led    = frag.GetLed();
-					 TPulseAnalyzer pulse(frag,4);
-					 if(pulse.IsSet()){
-						time_fit = pulse.fit_newT0();
-						sig2noise= pulse.get_sig2noise();
-					 }
+
+    void SetSegment(Short_t seg)       { segment = seg; 
+					 ring    = 9-(segment/12);
+					 sector  = segment%12;
+					 preamp  = ((GetSector()/3)*2)+(((GetSector()%3)+GetRing())%2);
 					}
+//     using TGRSIDetectorHit::SetPosition; //This is here to fix warnings. Will leave when lean-ness occurs
+//     void SetPosition(TVector3 &vec)    { fposition = vec; }
+    void SetVariables(TFragment &frag) { 
+					 fenergy = frag.GetEnergy();
+                                         fcfd    = frag.GetCfd();
+                                         fcharge = frag.GetCharge();
+                                         SetTimeStamp(frag.GetTimeStamp()); 
+                                         SetTime(frag.GetZCross()); 
+					 
+					 led    = frag.GetLed();
+				        }
+    void SetWavefit(TFragment &frag)   { 
+						TPulseAnalyzer pulse(frag,4);	    
+						if(pulse.IsSet()){
+							time_fit = pulse.fit_newT0();
+							sig2noise= pulse.get_sig2noise();
+						}
+					}					
+
 //     Double_t fit_time(TFragment &);
     
   private:
     //TVector3 position;  //held in base.
+    Double_t    led;
     Short_t  segment;
-    Double_t energy;
-    Double_t cfd;
-    Double_t led;
-    Int_t    charge;
-    ULong_t  ts;
-    Double_t time;
+    Short_t  ring;
+    Short_t  sector;
+    Short_t  preamp;
     Double_t    time_fit;
     Double_t    sig2noise;
-
   
-  ClassDef(TSiLiHit,4);
+  ClassDef(TSiLiHit,5);
 
 };
 

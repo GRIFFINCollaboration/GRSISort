@@ -16,6 +16,7 @@ class TS3Hit : public TGRSIDetectorHit {
  //   Long_t   GetTimeStamp()    {  return ts;      }
  //   Int_t    GetTime()         {  return time;    }
  //   Short_t  GetDetectorNumber()     { return detectornumber;  }
+    Double_t GetLed()          {  return led;     }
     Short_t  GetRingNumber()   { return ring;   }
     Short_t  GetSectorNumber() { return sector; }
  //   Double_t GetCFD()          { return cfd;    }
@@ -32,11 +33,13 @@ class TS3Hit : public TGRSIDetectorHit {
                                          fcfd    = frag.GetCfd();
                                          fcharge = frag.GetCharge();
                                          SetTimeStamp(frag.GetTimeStamp()); 
-                                         SetTime(frag.GetZCross()); }
+                                         SetTime(frag.GetZCross());
+					 led    = frag.GetLed(); }
  
 
   private:
     //TVector3 position;
+    Double_t    led;
     Short_t  ring;   //front
     Short_t  sector; //back
 //    Short_t  detectornumber;
@@ -46,7 +49,7 @@ class TS3Hit : public TGRSIDetectorHit {
 //    Long_t   ts;
 //    Int_t    time;
 
-  ClassDef(TS3Hit,2);
+  ClassDef(TS3Hit,3);
 
 };
 
