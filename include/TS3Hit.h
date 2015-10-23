@@ -29,9 +29,9 @@ class TS3Hit : public TGRSIDetectorHit {
     void SetSectorNumber(Short_t sn)   { sector = sn; }
 //    void SetDetectorNumber(Short_t dn) { detectornumber = dn; }
 //    void SetPosition(TVector3 &vec)    { fposition = vec; }
-    void SetVariables(TFragment &frag) { fenergy = frag.GetEnergy();
-                                         fcfd    = frag.GetCfd();
-                                         fcharge = frag.GetCharge();
+    void SetVariables(TFragment &frag) { SetEnergy(frag.GetEnergy());
+                                         SetCfd(frag.GetCfd());
+                                         SetCharge(frag.GetCharge());
                                          SetTimeStamp(frag.GetTimeStamp()); 
                                          SetTime(frag.GetZCross());
 					 led    = frag.GetLed(); }
