@@ -85,7 +85,7 @@ class TPulseAnalyzer {
   public:
     TPulseAnalyzer();
     TPulseAnalyzer(TFragment &frag,double=0);
-    ~TPulseAnalyzer();
+    virtual ~TPulseAnalyzer();
     
     void SetData(TFragment &frag,double=0);
     void Clear(Option_t *opt = "");
