@@ -19,6 +19,14 @@ void TSiLiHit::Clear(Option_t *opt)  {
   sig2noise=-1;
 }
 
+void TSiLiHit::SetWavefit(TFragment &frag)   { 
+	TPulseAnalyzer pulse(frag,4);	    
+	if(pulse.IsSet()){
+		time_fit = pulse.fit_newT0();
+		sig2noise= pulse.get_sig2noise();
+	}
+}
+
 
 void TSiLiHit::Print(Option_t *opt) const {
   printf("===============\n");

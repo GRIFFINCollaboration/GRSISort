@@ -488,6 +488,7 @@ void TPulseAnalyzer::get_tmax(){
 	int D=FILTER/2;
 
 	wpar->max=frag->wavebuffer[0];
+	wpar->tmax=0;
 
 	//applies the filter to the waveform
 	//     cout<<" "<<wpar->tmax<<" "<< wpar->max<<flush;
@@ -529,7 +530,7 @@ double TPulseAnalyzer::get_tfrac(double frac,double fraclow, double frachigh)
   f=wpar->baseline+frac*(wpar->max-wpar->baseline);
   flow=wpar->baseline+fraclow*(wpar->max-wpar->baseline);
   fhigh=wpar->baseline+frachigh*(wpar->max-wpar->baseline);
-
+  
   while(frag->wavebuffer[t]>f){
       t--;
       if(t<=4) break;

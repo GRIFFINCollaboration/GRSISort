@@ -40,13 +40,7 @@ class TSiLiHit : public TGRSIDetectorHit {
 					 
 					 led    = frag.GetLed();
 				        }
-    void SetWavefit(TFragment &frag)   { 
-						TPulseAnalyzer pulse(frag,4);	    
-						if(pulse.IsSet()){
-							time_fit = pulse.fit_newT0();
-							sig2noise= pulse.get_sig2noise();
-						}
-					}					
+    void SetWavefit(TFragment&);
 
 //     Double_t fit_time(TFragment &);
     
