@@ -75,7 +75,7 @@ class TGRSIDetectorHit : public TObject 	{
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit *lhs,TGRSIDetectorHit *rhs); //!
 
-      inline void SetPosition(const TVector3& temp_pos)           { fposition = temp_pos; }    //!
+      inline void SetPosition(const TVector3& temp_pos)           { fposition = temp_pos; SetFlag(kIsEnergySet,true); }    //!
       inline void SetAddress(const UInt_t &temp_address)          { faddress = temp_address; } //!
       inline void SetCharge(const Float_t &temp_charge)            { fcharge = temp_charge;} //!
   //    inline void SetParent(TGRSIDetector *fParent)               { parent = (TObject*)fParent ; } //!
