@@ -147,7 +147,7 @@ struct exit_exception : public std::exception
 {
    public:
       exit_exception(int c,const char *msg = "") : code(c), message(msg){}
-      ~exit_exception() {}
+      virtual ~exit_exception() throw() {}
  /*     virtual const char* what() const throw {
          //  LOG(what); // write to log file
          return what.c_str();
