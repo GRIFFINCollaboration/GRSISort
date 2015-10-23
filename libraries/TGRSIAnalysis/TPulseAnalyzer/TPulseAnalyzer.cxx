@@ -476,7 +476,7 @@ void TPulseAnalyzer::get_baseline_fin(){
 		wpar->baselineStDevfin/=wpar->t0;
 		wpar->baselinefin/=wpar->t0; 
 		wpar->baselineStDevfin-=wpar->baselinefin*wpar->baselinefin;
-		wpar->baselineStDevfin=sqrt(abs(wpar->baselineStDevfin)); 
+		wpar->baselineStDevfin=sqrt(std::abs(wpar->baselineStDevfin)); 
 	}
 }
 
