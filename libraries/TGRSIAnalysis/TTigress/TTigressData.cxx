@@ -28,6 +28,7 @@ void TTigressData::Clear(Option_t *opt)	{
 	fCore_TimeLED.clear();
 	fCore_Time.clear();
 	fCore_TimeStamp.clear();
+   fCore_Address.clear();
 
 	fCore_Wave.clear();
 
@@ -39,6 +40,7 @@ void TTigressData::Clear(Option_t *opt)	{
 	fSegment_TimeCFD.clear();
 	fSegment_TimeLED.clear();
 	fSegment_Time.clear();
+   fSegment_Address.clear();
 
 	fSegment_Wave.clear();
 }

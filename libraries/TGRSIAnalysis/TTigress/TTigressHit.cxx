@@ -56,6 +56,7 @@ void TTigressHit::Clear(Option_t *opt) {
 void TTigressHit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
   segment.Copy(static_cast<TTigressHit&>(rhs).segment);
+  core.Copy(static_cast<TTigressHit&>(rhs).core);
   bgo.Copy(static_cast<TTigressHit&>(rhs).bgo);
   (static_cast<TTigressHit&>(rhs)).crystal = crystal;
   (static_cast<TTigressHit&>(rhs)).first_segment = first_segment;
