@@ -41,16 +41,14 @@ class TScalerData : public TObject {
 	
 	void SetAddress(UInt_t address) { fAddress = address; }
 	void SetNetworkPacketId(UInt_t network_id) { fNetworkPacketId = network_id; }
-	void SetLowTimeStamp(UInt_t low_time) { fLowTimeStamp = low_time; SetTimeStamp(); }
-	void SetHighTimeStamp(UInt_t high_time) { fHighTimeStamp = high_time; SetTimeStamp();}
+	void SetLowTimeStamp(UInt_t low_time) { fLowTimeStamp = low_time; }
+	void SetHighTimeStamp(UInt_t high_time) { fHighTimeStamp = high_time; }
 	void SetScaler(size_t index, UInt_t scaler) { 
 		if(index < fScaler.size()) 
 		 fScaler[index] = scaler;
 		else
 		 std::cout<<"Failed to set scaler "<<scaler<<", index "<<index<<" is out of range 0 - "<<fScaler.size()<<std::endl;
 	}
-
-	void SetTimeStamp();
 
 	UInt_t GetAddress() const { return fAddress; }
 	UInt_t GetNetworkPacketId() const { return fNetworkPacketId; }
@@ -64,13 +62,23 @@ class TScalerData : public TObject {
 		 return 0; 
 	}
 
-	ULong64_t GetTimeStamp() const { return fTimeStamp; }
+	ULong64_t GetTimeStamp() const { 
+      ULong64_t time = GetHighTimeStamp();
+      time  = time << 28;
+      time |= GetLowTimeStamp() & 0x0fffffff;
+      return time;
+   }
+
+   void ResizeScaler(size_t newSize = 1) {
+      fScaler.resize(newSize);
+   }
+
 
 	void Print(Option_t *opt = "") const;
 	void Clear(Option_t *opt = "");
 
  private:
-	ULong64_t fTimeStamp;
+	//ULong64_t fTimeStamp;
 	UInt_t fNetworkPacketId;
 	UInt_t fAddress;
 	std::vector<UInt_t> fScaler;

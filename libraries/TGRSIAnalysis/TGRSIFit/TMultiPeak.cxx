@@ -1,5 +1,11 @@
 #include "TMultiPeak.h"
 
+
+#include "Math/Minimizer.h"
+#include "Math/Factory.h"
+#include "Math/Functor.h"
+
+
 ClassImp(TMultiPeak)
 
 Bool_t TMultiPeak::fLogLikelihoodFlag = false;

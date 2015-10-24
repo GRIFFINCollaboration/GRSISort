@@ -27,7 +27,8 @@
 #pragma link C++ class std::map<ULong64_t,TPPGData*>;
 #pragma link C++ class TScaler+;
 #pragma link C++ class TScalerData+;
-#pragma link C++ class TScalerQueue+;
+//#pragma link C++ class TDeadtimeScalerQueue+;
+//#pragma link C++ class TRateScalerQueue+;
 #pragma link C++ class std::map<UInt_t, std::map<ULong64_t, TScalerData*> >;
 #pragma link C++ class std::map<ULong64_t, TScalerData*>;
 

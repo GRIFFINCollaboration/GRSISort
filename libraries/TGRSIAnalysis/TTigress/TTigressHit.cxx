@@ -56,6 +56,7 @@ void TTigressHit::Clear(Option_t *opt) {
 void TTigressHit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
   segment.Copy(static_cast<TTigressHit&>(rhs).segment);
+  core.Copy(static_cast<TTigressHit&>(rhs).core);
   bgo.Copy(static_cast<TTigressHit&>(rhs).bgo);
   (static_cast<TTigressHit&>(rhs)).crystal = crystal;
   (static_cast<TTigressHit&>(rhs)).first_segment = first_segment;
@@ -105,7 +106,7 @@ void TTigressHit::SumHit(TTigressHit *hit) {
 }
 
 
-TVector3 TTigressHit::GetPosition(Double_t dist) const {
+TVector3 TTigressHit::GetChannelPosition(Double_t dist) const {
    //Returns the Position of the crystal of the current Hit.
 	return TTigress::GetPosition(GetDetector(),GetCrystal(),dist);
 }

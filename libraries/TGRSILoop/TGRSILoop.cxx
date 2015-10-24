@@ -165,22 +165,41 @@ void TGRSILoop::FillFragmentTree(TMidasFile *midasfile) {
 }
 
 void TGRSILoop::FillScalerTree() {
-   fScalersSentToTree = 0;
+   fDeadtimeScalersSentToTree = 0;
+   fRateScalersSentToTree = 0;
    TScalerData* scalerData = 0;
-   while(TScalerQueue::Get()->ScalersInQueue() != 0 || 
+   while(TDeadtimeScalerQueue::Get()->ScalersInQueue() != 0 || 
+         TRateScalerQueue::Get()->ScalersInQueue() != 0 || 
          fMidasThreadRunning) {
-		scalerData = TScalerQueue::Get()->PopScaler();
-		if(scalerData) {
-         TGRSIRootIO::Get()->FillScalerTree(scalerData);
- 	      delete scalerData;
-         fScalersSentToTree++;
-      }
+      if(TDeadtimeScalerQueue::Get()->ScalersInQueue() > 0) {
+		   scalerData = TDeadtimeScalerQueue::Get()->PopScaler();
+		   if(scalerData) {
+            TGRSIRootIO::Get()->FillDeadtimeScalerTree(scalerData);
+ 	         delete scalerData;
+            fDeadtimeScalersSentToTree++;
+         }
 
-      if(!fMidasThreadRunning && TScalerQueue::Get()->ScalersInQueue()%5000==0) {
-         printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
-                DBLUE   "%i"   RESET_COLOR
-                "     scalers left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
-                TScalerQueue::Get()->ScalersInQueue(),fScalersSentToTree);
+         if(!fMidasThreadRunning && TDeadtimeScalerQueue::Get()->ScalersInQueue()%5000==0) {
+            printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
+                  DBLUE   "%i"   RESET_COLOR
+                  "     deadtime scalers left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
+                  TDeadtimeScalerQueue::Get()->ScalersInQueue(),fDeadtimeScalersSentToTree);
+         }
+      }
+      if(TRateScalerQueue::Get()->ScalersInQueue() > 0) {
+		   scalerData = TRateScalerQueue::Get()->PopScaler();
+		   if(scalerData) {
+            TGRSIRootIO::Get()->FillRateScalerTree(scalerData);
+ 	         delete scalerData;
+            fRateScalersSentToTree++;
+         }
+
+         if(!fMidasThreadRunning && TRateScalerQueue::Get()->ScalersInQueue()%5000==0) {
+            printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
+                  DBLUE   "%i"   RESET_COLOR
+                  "     rate scalers left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
+                  TRateScalerQueue::Get()->ScalersInQueue(),fRateScalersSentToTree);
+         }
       }
    }
 
@@ -569,7 +588,8 @@ void TGRSILoop::Finalize() {
    printf("in finalization phase.\n");   
    printf(DMAGENTA "successfully sorted " DBLUE "%0d" DMAGENTA "/" 
           DCYAN "%0d" DMAGENTA "  ---> " DYELLOW " %.2f" DMAGENTA " percent passed." 
-          RESET_COLOR "\n",fFragsSentToTree+PPGEvents+fScalersSentToTree,fFragsReadFromMidas,((double)(fFragsSentToTree+PPGEvents+fScalersSentToTree)/(double)fFragsReadFromMidas)*100.);
+          RESET_COLOR "\n",fFragsSentToTree+PPGEvents+fDeadtimeScalersSentToTree+fRateScalersSentToTree,fFragsReadFromMidas,
+          ((double)(fFragsSentToTree+PPGEvents+fDeadtimeScalersSentToTree+fRateScalersSentToTree)/(double)fFragsReadFromMidas)*100.);
 }
 
 
