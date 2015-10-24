@@ -29,7 +29,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		UShort_t first_segment;        
 		Float_t    first_segment_charge; //!
 
-      Double_t fEnergy;
+  //    Double_t fEnergy;
 
 		TCrystalHit core;
 		//std::vector<TCrystalHit> segment;
@@ -50,7 +50,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	public:
       void SetHit() {}
 		/////////////////////////		/////////////////////////////////////
-		void SetCore(TCrystalHit &temp)		  { core = temp;	} 					//!
+		void SetCore(const TCrystalHit &temp)		  { core = temp;	} 					//!
 		void AddSegment(TCrystalHit &temp);	  //{ segment.push_back(temp);	}		//!
 		void AddBGO(TCrystalHit &temp);		  //{ bgo.push_back(temp);	}			//!
 
@@ -67,10 +67,13 @@ class TTigressHit : public TGRSIDetectorHit {
 		int GetCrystal() const;	          //{	return crystal;			}		//!
 		inline int GetInitialHit()		               {	return first_segment;	}			//!
 	
-		inline int GetCharge()			                  {	return core.GetCharge();	}		//!
+		inline Float_t GetCharge()	const	               {  return core.GetCharge();	}		//!
 		inline double GetEnergy(Option_t *opt ="")const	{	return core.GetEnergy();	}		//!
 		inline double GetTime(Option_t *opt ="") const	{	return core.GetTime();		}		//!
-		inline double GetTimeCFD()                      {  return core.GetCfd(); } //!
+		inline double GetTimeCFD() const                {  return core.GetCfd(); } //!
+      inline UInt_t GetAddress() const                {  return core.GetAddress(); }
+      ULong_t GetTimeStamp(Option_t *opt="")   const  {  return core.GetTimeStamp();   }  // Returns a time value to the nearest nanosecond!
+      UInt_t GetDetector()   const                    {  return core.GetDetector();   }  // Returns a time value to the nearest nanosecond!
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
 

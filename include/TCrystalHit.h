@@ -18,7 +18,7 @@ class TCrystalHit : public TGRSIDetectorHit	{
 		int segment;		//
 		//int charge;		  //
 
-		double local_energy;	//
+//		double local_energy;	//
       bool suppress;
 		//double time;		//
 		//double cfd;		  //
@@ -33,11 +33,11 @@ class TCrystalHit : public TGRSIDetectorHit	{
       virtual void Copy(TObject&) const;             //!
 
 		inline int    GetSegment()       { return segment;}   //!
-		inline double GetEnergy(Option_t *opt= "") const 	{ return local_energy;	}	//!
+	//	inline double GetEnergy(Option_t *opt= "") const 	{ return local_energy;	}	//!
 
       TVector3 GetPosition(Double_t dist = 0) const {return TVector3();}
 		inline void SetSegment(const int &seg) { segment = seg;   }       //!
-		inline void SetEnergy(const double &e)	{	local_energy = e;	}	//!
+//		inline void SetEnergy(const double &e)	{	local_energy = e;	}	//!
 
       inline void SetSuppress(const bool flag = true) { suppress = flag;} 
       inline bool Suppress() {return suppress;}
