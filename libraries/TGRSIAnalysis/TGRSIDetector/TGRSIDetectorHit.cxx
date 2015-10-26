@@ -90,7 +90,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt) const {
       printf("no TChannel set for this address\n");
       return 0.00;
    }
-      return chan->CalibrateENG(GetCharge(),chan->GetIntegration());
+      return chan->CalibrateENG(GetCharge());
 }
 
 double TGRSIDetectorHit::GetEnergy(Option_t *opt){
