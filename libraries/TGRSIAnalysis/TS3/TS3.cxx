@@ -75,6 +75,47 @@ void TS3::BuildHits(TDetectorData *data,Option_t *opt)  {
 }
 
 void TS3::BuildHits(TFragment* frag, MNEMONIC* mnemonic) {
+	///this function takes a fragment and either adds it to an existing hit (if it's a ring for a matching sector or vice versa)
+	///or creates a new hit from it
+	for(size_t i = 0; i < s3_hits.size(); ++i) {
+		if(static_cast<UInt_t>(mnemonic->arrayposition) == s3_hits[i].GetDetector()) { //same detector
+			if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front  (ring)
+				//this means we've already found a sector of this detector
+				//so we set the ring number and all other variables from this ring
+				s3_hits[i].SetRingNumber(mnemonic->segment);
+				s3_hits[i].SetVariables(*frag);
+				TVector3 tmppos = GetPosition(s3_hits[i].GetRingNumber(),s3_hits[i].GetSectorNumber());
+				s3_hits[i].SetPosition(tmppos);
+				return; //we've filled the data of the current fragment into the hits so we're done 
+			} else { //back (sector)
+				//this means we've already found a ring of this detector
+				//so we set the sector number from this sector (all other variables are set by the front)
+				s3_hits[i].SetSectorNumber(mnemonic->segment);
+				//s3_hits[i].SetVariables(*frag);
+				TVector3 tmppos = GetPosition(s3_hits[i].GetRingNumber(),s3_hits[i].GetSectorNumber());
+				s3_hits[i].SetPosition(tmppos);
+				return; //we've filled the data of the current fragment into the hits so we're done 
+			}
+		}
+	}
+	//if we reach here we haven't found a detector before so we create a new hit
+  TS3Hit hit;
+  
+  if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front  (ring)
+	  //this means we've already found a sector of this detector
+	  //so we set the ring number and all other variables from this ring
+	  hit.SetRingNumber(mnemonic->segment);
+	  hit.SetVariables(*frag);
+  } else { //back (sector)
+	  //this means we've already found a ring of this detector
+	  //so we set the sector number from this sector (all other variables are set by the front)
+	  hit.SetSectorNumber(mnemonic->segment);
+	  //hit.SetVariables(*frag);
+  }
+
+  s3_hits.push_back(hit);
+
+  return;
 }
 
 TVector3 TS3::GetPosition(int ring, int sector)  {

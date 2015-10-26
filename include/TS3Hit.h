@@ -29,7 +29,7 @@ class TS3Hit : public TGRSIDetectorHit {
     void SetSectorNumber(Short_t sn)   { sector = sn; }
 //    void SetDetectorNumber(Short_t dn) { detectornumber = dn; }
 //    void SetPosition(TVector3 &vec)    { fposition = vec; }
-    void SetVariables(TFragment &frag) { SetEnergy(frag.GetEnergy());
+    void SetVariables(TFragment &frag) { //SetEnergy(frag.GetEnergy()); //It doesn't make sense to set the energy here, it's not saved to file anyways.
                                          SetCfd(frag.GetCfd());
                                          SetCharge(frag.GetCharge());
                                          SetTimeStamp(frag.GetTimeStamp()); 
