@@ -176,7 +176,7 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
           temp_crystal.SetSegment(bdata->GetBGOPmNbr(j));
           temp_crystal.SetCharge(bdata->GetBGOCharge(j));
           //temp_crystal.SetEnergy(bdata->GetBGOEnergy(j));
-          //temp_crystal.SetTime(bdata->GetBGOTime(j));
+          temp_crystal.SetTimeStamp(bdata->GetBGOTime(j));
           temp_crystal.SetCfd(bdata->GetBGOCFD(j));
           temp_crystal.SetAddress(bdata->GetBGOAddress(j));
           //if(TTigress::SetBGOWave()) {
