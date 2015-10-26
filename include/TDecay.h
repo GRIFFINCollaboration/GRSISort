@@ -47,8 +47,6 @@ class TDecayFit : public TF1 {
 
    virtual void Print(Option_t *opt = "") const;
 
-   void CopyInternalParameters(const Int_t& npar, Double_t *par);
-
   private:
    TVirtualDecay* fDecay;//VirtualDecay that made this fit
 
