@@ -128,6 +128,7 @@ class TChannel : public TNamed	{
 	double GetEFFChi2()  { return EFFChi2;} 
 
 	void SetUseCalFileIntegration(bool flag=true) {usecalfileint=flag;}
+   static void SetUseCalFileIntegration(std::string mnemonic,bool flag);
 	bool UseCalFileIntegration() { return usecalfileint; }
 
 	std::vector<Float_t> GetENGCoeff() { return ENGCoefficients;}
