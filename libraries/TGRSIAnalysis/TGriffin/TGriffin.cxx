@@ -184,7 +184,7 @@ TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
    catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " Hits are out of range: " << oor.what() << std::endl;
       if(!gInterpreter)
-         throw exit_exception(1);
+         throw grsi::exit_exception(1);
    }
    return 0;
 }
@@ -230,7 +230,7 @@ TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
       return &fAddback_hits.at(i);
    } else {
       std::cerr << "Addback hits are out of range" << std::endl;
-      throw exit_exception(1);
+      throw grsi::exit_exception(1);
       return NULL;
    }
 }
