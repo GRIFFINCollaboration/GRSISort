@@ -111,7 +111,7 @@ class TTigressData : public TGRSIDetectorData {
 //				printf("============================================================\n");
             	SetCoreTimeStamp(frag->GetTimeStamp());
 
-				SetCoreCharge(frag->Charge.at(0));
+				SetCoreCharge(frag->GetCharge(0));
 				SetCoreCFD(frag->Cfd.at(0));		
 				SetCoreLED(frag->Led.at(0));		
 			   //SetCoreTime(frag->GetTimeStamp());		
@@ -172,7 +172,7 @@ class TTigressData : public TGRSIDetectorData {
 //				printf("energy;  %.02f\n",channel->CalibrateENG(frag->Charge.at(0)));
 //				printf("============================================================\n");
 
-				SetSegmentCharge(frag->Charge.at(0));
+				SetSegmentCharge(frag->GetCharge(0));
 				SetSegmentCFD(frag->Cfd.at(0));		
 				SetSegmentLED(frag->Led.at(0));		
 			 	//SetSegmentTime(frag->GetTimeStamp());		
