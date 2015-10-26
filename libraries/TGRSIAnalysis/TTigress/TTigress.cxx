@@ -128,9 +128,10 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
 
 		temp_crystal.SetAddress(tdata->GetCoreAddress(i));
 		temp_crystal.SetCharge(tdata->GetCoreCharge(i));
-      temp_crystal.SetEnergy(tdata->GetCoreEnergy(i));
-      temp_crystal.SetTime(tdata->GetCoreTime(i));
+      //temp_crystal.SetEnergy(tdata->GetCoreEnergy(i));
+      //temp_crystal.SetTime(tdata->GetCoreTime(i));
       temp_crystal.SetCfd(tdata->GetCoreCFD(i));
+	  temp_crystal.SetTimeStamp(tdata->GetCoreTime(i));
 
 		//if(TTigress::SetCoreWave())	{
       //  	temp_crystal.SetWaveForm(tdata->GetCoreWave(i));
@@ -156,7 +157,7 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
            temp_crystal.SetAddress(tdata->GetSegmentAddress(j));
            temp_crystal.SetSegment(tdata->GetSegmentNumber(j));
            temp_crystal.SetCharge(tdata->GetSegmentCharge(j));
-           temp_crystal.SetEnergy(tdata->GetSegmentEnergy(j));
+           //temp_crystal.SetEnergy(tdata->GetSegmentEnergy(j));
            temp_crystal.SetTimeStamp(tdata->GetSegmentTime(j));
            temp_crystal.SetCfd(tdata->GetSegmentCFD(j));
 
@@ -174,8 +175,8 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
           temp_crystal.Clear();
           temp_crystal.SetSegment(bdata->GetBGOPmNbr(j));
           temp_crystal.SetCharge(bdata->GetBGOCharge(j));
-          temp_crystal.SetEnergy(bdata->GetBGOEnergy(j));
-          temp_crystal.SetTime(bdata->GetBGOTime(j));
+          //temp_crystal.SetEnergy(bdata->GetBGOEnergy(j));
+          temp_crystal.SetTimeStamp(bdata->GetBGOTime(j));
           temp_crystal.SetCfd(bdata->GetBGOCFD(j));
           temp_crystal.SetAddress(bdata->GetBGOAddress(j));
           //if(TTigress::SetBGOWave()) {
