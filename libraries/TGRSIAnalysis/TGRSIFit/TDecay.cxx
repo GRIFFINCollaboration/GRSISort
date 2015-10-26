@@ -9,34 +9,21 @@ ClassImp(TDecayFit)
 ClassImp(TDecay)
 ClassImp(TVirtualDecay)
 
-/*TDecay::TDecay(Double_t tlow, Double_t thigh) : fParent(0), fDaughter(0), fDecayFunc(0), fGeneration(1), fDetectionEfficiency(1.0) {
-   fFirstParent = this;
-   fDecayFunc = new TF1("decayfunc",this,&TDecay::ActivityFunc,0,10,2,"TDecay","ActivityFunc");
-   fDecayFunc->SetParameters(0.0,0.0);
-   fDecayFunc->SetParNames("Intensity","DecayRate");
-   fTotalDecayFunc = new TF1(*fDecayFunc);
-   SetTotalDecayParameters();
-   SetRange(tlow,thigh);
-}*/
-
 UInt_t TSingleDecay::fCounter = 0;
 UInt_t TDecayChain::fChainCounter = 0;
+
+TDecayFit::~TDecayFit(){
+}
 
 void TDecayFit::DrawComponents() const { 
   printf("pointer: %p\n",(void*) fDecay);
    
    printf("Class: %s\n",fDecay->ClassName());
    fDecay->DrawComponents("same");
- //  fDecay->Draw("same");
-//   printf("Is valid: %d\n",fDecay.IsValid());
- //  GetDecay()->Print();
-//   GetDecay()->DrawComponents(); 
 }
 
 void TDecayFit::SetDecay(TVirtualDecay* decay){ 
    fDecay = decay;
-   //fDecayClass = decay->ClassName(); 
- //  decay->Print();
 } 
 
 void TDecayFit::Print(Option_t *opt) const {
@@ -45,15 +32,35 @@ void TDecayFit::Print(Option_t *opt) const {
 }
 
 TVirtualDecay* TDecayFit::GetDecay() const{
-  // return (TVirtualDecay*)(fDecay.GetObject());
-   return 0;
+   return fDecay;
+}
+
+void TDecayFit::Streamer(TBuffer &R__b)
+{
+   // Stream an object of class TDecayFit.
+   if (R__b.IsReading()) {
+      R__b.ReadClassBuffer(TDecayFit::Class(),this);
+   } else {
+      R__b.WriteClassBuffer(TDecayFit::Class(),this);
+   }
+   
 }
 
 void TVirtualDecay::DrawComponents(Option_t* opt ,Bool_t color_flag) {
    Draw(opt);
 }
 
-TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh) : fDetectionEfficiency(1.0), fDecayFunc(0), fParent(0), fDaughter(0), fChainId(-1) {
+void TVirtualDecay::Streamer(TBuffer &R__b)
+{
+   // Stream an object of class TVirtualDecay.
+   if (R__b.IsReading()) {
+      R__b.ReadClassBuffer(TVirtualDecay::Class(),this);
+   } else {
+      R__b.WriteClassBuffer(TVirtualDecay::Class(),this);
+   }
+}
+
+TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh) : fDetectionEfficiency(1.0), fDecayFunc(0), fTotalDecayFunc(0), fParent(0), fDaughter(0), fFirstParent(0), fChainId(-1) {
    if(parent){
       fParent = parent;
       fParent->SetDaughterDecay(this);
@@ -92,7 +99,7 @@ TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh) 
 
 }
 
-TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow, Double_t thigh) : fDetectionEfficiency(1.0), fDecayFunc(0), fParent(0), fDaughter(0), fChainId(-1) {
+TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow, Double_t thigh) : fDetectionEfficiency(1.0), fDecayFunc(0), fTotalDecayFunc(0), fParent(0), fDaughter(0), fFirstParent(0), fChainId(-1) {
    if(parent){
       fParent = parent;
       fParent->SetDaughterDecay(this);
@@ -137,8 +144,11 @@ TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlo
 }
 
 TSingleDecay::~TSingleDecay() {
-   if(fDecayFunc) delete fDecayFunc;
-   if(fTotalDecayFunc) delete fTotalDecayFunc;
+ //  if(fDecayFunc) delete fDecayFunc;
+ //  if(fTotalDecayFunc) delete fTotalDecayFunc;
+
+   fDecayFunc = 0;
+   fTotalDecayFunc = 0;
 }
 
 void TSingleDecay::SetName(const char * name){
@@ -350,7 +360,7 @@ void TSingleDecay::SetRange(Double_t tlow, Double_t thigh){
 }
 
 void TSingleDecay::Print(Option_t *option) const{
-   printf("      Name: %s\n",GetName());
+ //  printf("      Name: %s\n",GetName());
    printf("  Decay Id: %d\n",GetDecayId());
    printf(" Intensity: %lf +/- %lf c/s\n", GetIntensity(), GetIntensityError());
    printf("  HalfLife: %lf +/- %lf s\n", GetHalfLife(), GetHalfLifeError());
@@ -365,15 +375,15 @@ void TSingleDecay::Print(Option_t *option) const{
 }
 
 
-TDecayChain::TDecayChain(){
+TDecayChain::TDecayChain() : fChainFunc(0){
    
 }
 
-TDecayChain::TDecayChain(UInt_t generations){
+TDecayChain::TDecayChain(UInt_t generations) : fChainFunc(0){
    if(!generations)
       generations = 1;
    fDecayChain.clear();
-   TSingleDecay* parent = new TSingleDecay();
+   TSingleDecay* parent = new TSingleDecay(0);
    parent->SetChainId(fChainCounter);
    fDecayChain.push_back(parent);
    for(UInt_t i = 1; i < generations; i++){
@@ -394,7 +404,7 @@ TDecayChain::~TDecayChain() {
 //dtor
    
    //Might have to think about ownership if we allow external decays to be added
-   for(size_t i =0; i<fDecayChain.size(); ++i) delete fDecayChain.at(i);
+ //  for(size_t i =0; i<fDecayChain.size(); ++i) delete fDecayChain.at(i);
 
 }
 
@@ -465,6 +475,7 @@ void TDecayChain::Print(Option_t *option) const {
    printf("Number of Decays in Chain: %lu\n",fDecayChain.size());
    printf("Chain Id %d\n",fDecayChain.at(0)->GetChainId());
    for(size_t i=0; i<fDecayChain.size();++i){
+      printf("decay ptr: %p\n",fDecayChain.at(i));
       fDecayChain.at(i)->Print();
       printf("\n");
    }
@@ -522,8 +533,7 @@ TDecay::TDecay(std::vector<TDecayChain*> chainlist) : fFitFunc(0){
 }
 
 TDecay::~TDecay(){
-   if(fFitFunc)
-      delete fFitFunc;
+ //  if(fFitFunc) delete fFitFunc;
 }
 
 TDecayChain* TDecay::GetChain(UInt_t idx){

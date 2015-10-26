@@ -71,11 +71,17 @@ TDecay *TestDecay(){
    chain->GetDecay(1)->SetHalfLife(6);
    chain2->GetDecay(0)->SetHalfLife(1);
 
+   chain->GetDecay(0)->SetName("name1");
+   chain->GetDecay(1)->SetName("name2");
+   chain2->GetDecay(0)->SetName("name3");
+   
+
    chain->GetDecay(0)->SetIntensity(700);
    chain2->GetDecay(0)->SetIntensity(200);
 
    chain2->GetDecay(0)->SetDecayId(12);
-   chain->GetDecay(1)->SetDecayId(12);
+   chain->GetDecay(1)->SetDecayId(3);
+   
  //  chain2->GetDecay(0)->SetDecayId(1);
 
    
@@ -87,6 +93,11 @@ TDecay *TestDecay(){
  //  decay->SetHalfLife(12,5);
    decay->SetBackground(40);
    decay->SetRange(0,100);
+
+   TFile f("testdecay.root","recreate");
+   decay->SetName("mydecay");
+   decay->Write();
+   f.Close();
 
    return decay;
 }
