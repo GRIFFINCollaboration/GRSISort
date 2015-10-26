@@ -823,10 +823,6 @@ Int_t TChannel::ParseInputData(const char *inputdata,Option_t *opt) {
             } else if(type.compare("INTEGRATION")==0) {
                int tempint; ss>>tempint;
                channel->SetIntegration(tempint);
- 			   if(tempint>0)
-                 channel->SetUseCalFileIntegration(true);
-               else 
-                 channel->SetUseCalFileIntegration(false);
             } else if(type.compare("NUMBER")==0) {
                int tempnum; ss>>tempnum;
                channel->SetNumber(tempnum);
