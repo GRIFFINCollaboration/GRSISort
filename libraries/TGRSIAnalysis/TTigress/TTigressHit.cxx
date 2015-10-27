@@ -61,6 +61,8 @@ void TTigressHit::Copy(TObject &rhs) const {
   (static_cast<TTigressHit&>(rhs)).crystal = crystal;
   (static_cast<TTigressHit&>(rhs)).first_segment = first_segment;
   (static_cast<TTigressHit&>(rhs)).first_segment_charge = first_segment_charge;
+  static_cast<TTigressHit&>(rhs).time_fit		= time_fit;
+  static_cast<TTigressHit&>(rhs).sig2noise		= sig2noise;  
   lasthit.Copy(static_cast<TTigressHit&>(rhs).lasthit);
 }
 
@@ -133,4 +135,12 @@ int TTigressHit::GetCrystal() const {
    };
    return -1;  
 
+}
+
+void TTigressHit::SetWavefit(TFragment &frag)   { 
+	TPulseAnalyzer pulse(frag);	    
+	if(pulse.IsSet()){
+		time_fit = pulse.fit_newT0();
+		sig2noise= pulse.get_sig2noise();
+	}
 }

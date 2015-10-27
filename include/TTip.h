@@ -49,7 +49,7 @@ class TTip : public TGRSIDetector {
     TTipData *tipdata;                                               //!  Used to build TIP Hits
     std::vector <TTipHit> tip_hits;                                  //   The set of detector hits
 
-  private:
+  /*private:
     //  SFU CsI waveform fitting routines.
     typedef struct WaveFormPar {
       //parameters for baseline
@@ -109,7 +109,7 @@ class TTip : public TGRSIDetector {
 
     WaveFormPar GetExclusionZone();
     WaveShapPar GetShape(WaveFormPar&);
-
+	*/
 
   public:
 

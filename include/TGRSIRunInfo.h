@@ -165,6 +165,9 @@ class TGRSIRunInfo : public TObject {
       inline void SetBuildWindow(const long int t_bw)    { fBuildWindow = t_bw; } 
       inline void SetAddBackWindow(const double   t_abw) { fAddBackWindow = t_abw; } 
 
+	  inline void SetWaveformFitting(const bool flag)	 {fWaveformFitting = flag; }
+	  static inline bool IsWaveformFitting()			 {return Get()->fWaveformFitting; }
+
       inline void SetMovingWindow(const bool flag)       {fIsMovingWindow = flag; }
       static inline bool IsMovingWindow()                { return Get()->fIsMovingWindow; }
 
@@ -247,6 +250,8 @@ class TGRSIRunInfo : public TObject {
       double   fAddBackWindow;        // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
       bool     fIsMovingWindow;       // if set to true the event building window moves. Static otherwise.
       
+	  bool 	   fWaveformFitting;	  // If true, waveform fitting with SFU algorithm will be performed
+
       double  fHPGeArrayPosition;        // Position of the HPGe Array (default = 110.0 mm );
   
 

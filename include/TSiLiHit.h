@@ -32,14 +32,12 @@ class TSiLiHit : public TGRSIDetectorHit {
 					}
 //     using TGRSIDetectorHit::SetPosition; //This is here to fix warnings. Will leave when lean-ness occurs
 //     void SetPosition(TVector3 &vec)    { fposition = vec; }
-    void SetVariables(TFragment &frag) { SetEnergy(frag.GetEnergy());
+    void SetVariables(TFragment &frag) { //SetEnergy(frag.GetEnergy());
                                          SetCfd(frag.GetCfd());
                                          SetCharge(frag.GetCharge());
                                          SetTimeStamp(frag.GetTimeStamp()); 
-                                         SetTime(frag.GetZCross());
-					 
-					 led    = frag.GetLed();
-				        }
+                                         //SetTime(frag.GetZCross());
+										 led    = frag.GetLed(); }
     void SetWavefit(TFragment&);
 
 //     Double_t fit_time(TFragment &);
