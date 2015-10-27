@@ -2,9 +2,9 @@
 
 ClassImp(TPulseAnalyzer)
 
-TPulseAnalyzer::TPulseAnalyzer():wpar(0),frag(0){
-	Clear();
-}
+	TPulseAnalyzer::TPulseAnalyzer():wpar(0),frag(0){
+		Clear();
+	}
 TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac):wpar(0),frag(0){
 	Clear();
 	SetData(fragment,noise_fac);
@@ -17,7 +17,7 @@ TPulseAnalyzer::~TPulseAnalyzer(){
 void TPulseAnalyzer::Clear(Option_t *opt)  {
 	if(wpar) delete wpar;
 	wpar=new WaveFormPar;
-	
+
 	set=false;	
 	N=0;
 	FILTER=8;
@@ -29,7 +29,7 @@ void TPulseAnalyzer::Clear(Option_t *opt)  {
 	memset(lineq_vector,0,sizeof(lineq_vector));
 	memset(lineq_solution,0,sizeof(lineq_solution));
 	memset(copy_matrix,0,sizeof(copy_matrix));
-	
+
 }
 
 
@@ -43,7 +43,7 @@ void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac)  {
 		N=fragment.wavebuffer.size();
 		if(N>0)	set=true;
 	}
-	
+
 }
 
 
@@ -75,7 +75,7 @@ long double  TPulseAnalyzer::determinant(int m){
 		j=m-1;
 		while(copy_matrix[m-1][j]==0 && j>=0) j--;
 		if(j<0) 
-		return 0.;
+			return 0.;
 		else for(i=0;i<m;i++){
 			s=copy_matrix[i][m-1];
 			copy_matrix[i][m-1]=copy_matrix[i][j];
@@ -141,76 +141,76 @@ int TPulseAnalyzer::fit_smooth_parabola(int low, int high, double x0, ParPar* pp
 }
 /*================================================================*/
 int TPulseAnalyzer::fit_parabola(int low, int high,ParPar* pp){
-  int i,ndf;
-  double chisq;
-  memset(pp,0,sizeof(ParPar));
-  lineq_dim=3;
-  chisq=0.;
-  ndf=0;
-  for(i=low;i<high;i++){
-      lineq_matrix[0][0]+=1;
-      lineq_matrix[0][1]+=i;
-      lineq_matrix[0][2]+=i*i;
-      lineq_matrix[1][2]+=i*i*i;
-      lineq_matrix[2][2]+=i*i*i*i;
-      lineq_vector[0]+=frag->wavebuffer[i];
-      lineq_vector[1]+=frag->wavebuffer[i]*i;
-      lineq_vector[2]+=frag->wavebuffer[i]*i*i;
-      ndf++;
-      chisq+=frag->wavebuffer[i]*frag->wavebuffer[i];
-    }
-  lineq_matrix[1][0]=lineq_matrix[0][1];
-  lineq_matrix[1][1]=lineq_matrix[0][2];
-  lineq_matrix[2][0]=lineq_matrix[0][2];
-  lineq_matrix[2][1]=lineq_matrix[1][2];
- 
-  if(solve_lin_eq()==0)
-    {
-      pp->chisq=BADCHISQ_MAT;
-      return -1;
-    }else{
-      chisq-=lineq_vector[0]*lineq_solution[0];
-      chisq-=lineq_vector[1]*lineq_solution[1];
-      chisq-=lineq_vector[2]*lineq_solution[2];
-      pp->constant=lineq_solution[0];
-      pp->linear=lineq_solution[1];
-      pp->quadratic=lineq_solution[2];
-      pp->chisq=chisq;
-      pp->ndf=ndf;
-      return 1;
-    }
+	int i,ndf;
+	double chisq;
+	memset(pp,0,sizeof(ParPar));
+	lineq_dim=3;
+	chisq=0.;
+	ndf=0;
+	for(i=low;i<high;i++){
+		lineq_matrix[0][0]+=1;
+		lineq_matrix[0][1]+=i;
+		lineq_matrix[0][2]+=i*i;
+		lineq_matrix[1][2]+=i*i*i;
+		lineq_matrix[2][2]+=i*i*i*i;
+		lineq_vector[0]+=frag->wavebuffer[i];
+		lineq_vector[1]+=frag->wavebuffer[i]*i;
+		lineq_vector[2]+=frag->wavebuffer[i]*i*i;
+		ndf++;
+		chisq+=frag->wavebuffer[i]*frag->wavebuffer[i];
+	}
+	lineq_matrix[1][0]=lineq_matrix[0][1];
+	lineq_matrix[1][1]=lineq_matrix[0][2];
+	lineq_matrix[2][0]=lineq_matrix[0][2];
+	lineq_matrix[2][1]=lineq_matrix[1][2];
+
+	if(solve_lin_eq()==0)
+	{
+		pp->chisq=BADCHISQ_MAT;
+		return -1;
+	}else{
+		chisq-=lineq_vector[0]*lineq_solution[0];
+		chisq-=lineq_vector[1]*lineq_solution[1];
+		chisq-=lineq_vector[2]*lineq_solution[2];
+		pp->constant=lineq_solution[0];
+		pp->linear=lineq_solution[1];
+		pp->quadratic=lineq_solution[2];
+		pp->chisq=chisq;
+		pp->ndf=ndf;
+		return 1;
+	}
 }
 /*================================================================*/
 int TPulseAnalyzer::fit_line(int low, int high,LinePar* lp){
-  int i,ndf;
-  double chisq;
-  memset(lp,0,sizeof(LinePar));
-  lineq_dim=2;
-  chisq=0.;
-  ndf=0;
-  for(i=low;i<high;i++){
-      lineq_matrix[0][0]+=1;
-      lineq_matrix[0][1]+=i;
-      lineq_matrix[1][1]+=i*i;
-      lineq_vector[0]+=frag->wavebuffer[i];
-      lineq_vector[1]+=frag->wavebuffer[i]*i;
-      ndf++;
-      chisq+=frag->wavebuffer[i]*frag->wavebuffer[i];
-   }
-  lineq_matrix[1][0]=lineq_matrix[0][1];
- 
-  if(solve_lin_eq()==0)  {
-      lp->chisq=BADCHISQ_MAT;
-      return -1;
-    }else{
-      chisq-=lineq_vector[0]*lineq_solution[0];
-      chisq-=lineq_vector[1]*lineq_solution[1];
-      lp->slope=lineq_solution[1];
-      lp->intercept=lineq_solution[0];
-      lp->chisq=chisq;
-      lp->ndf=ndf;
-      return 1;
-    }
+	int i,ndf;
+	double chisq;
+	memset(lp,0,sizeof(LinePar));
+	lineq_dim=2;
+	chisq=0.;
+	ndf=0;
+	for(i=low;i<high;i++){
+		lineq_matrix[0][0]+=1;
+		lineq_matrix[0][1]+=i;
+		lineq_matrix[1][1]+=i*i;
+		lineq_vector[0]+=frag->wavebuffer[i];
+		lineq_vector[1]+=frag->wavebuffer[i]*i;
+		ndf++;
+		chisq+=frag->wavebuffer[i]*frag->wavebuffer[i];
+	}
+	lineq_matrix[1][0]=lineq_matrix[0][1];
+
+	if(solve_lin_eq()==0)  {
+		lp->chisq=BADCHISQ_MAT;
+		return -1;
+	}else{
+		chisq-=lineq_vector[0]*lineq_solution[0];
+		chisq-=lineq_vector[1]*lineq_solution[1];
+		lp->slope=lineq_solution[1];
+		lp->intercept=lineq_solution[0];
+		lp->chisq=chisq;
+		lp->ndf=ndf;
+		return 1;
+	}
 }
 /*================================================================*/
 
@@ -219,168 +219,164 @@ int TPulseAnalyzer::fit_line(int low, int high,LinePar* lp){
 /*======================================================*/
 
 double  TPulseAnalyzer::get_linear_T0(){
-  LinePar lp,lpl;
-  int k,kmin;
-  double chit,chitmin;
-  double b,c,t;
-  
-  chitmin=LARGECHISQ;
-  kmin=0;
-  
-  for(k=T0RANGE/2;k<wpar->thigh-T0RANGE/8;k++){
-      //fit line to the baseline
-      fit_line(0,k,&lp);
-  
-      //fit line to the risetime
-      fit_line(k,wpar->thigh,&lpl);
-      
-      
-      chit=lp.chisq+lpl.chisq;
-	  
-      if(chit<chitmin){
-	  chitmin=chit;
-	  wpar->b0=lp.intercept;
-	  wpar->b1=lp.slope;
-	  wpar->s0=lpl.intercept;
-	  wpar->s1=lpl.slope;
-	  wpar->s2=0.;
-	  kmin=k;
-	}
-    }	// end of the loop over k
-  b=wpar->s1-wpar->b1;
-  c=wpar->s0-wpar->b0;
-  t=-c/b;
+	LinePar lp,lpl;
+	int k;
+	double chit,chitmin;
+	double b,c,t;
 
-  wpar->t0=-1;
-  wpar->temin=0;
-  wpar->temax=wpar->thigh;
-   if(t<N&&t>0){
-	wpar->t0=t;
-	wpar->temin=(int)rint(wpar->t0)-2;
-	wpar->temax=(int)rint(wpar->t0)+2;
-	return (double)(chitmin/(wpar->thigh-5));
-   }
-  
-  return BADCHISQ_LIN_T0;
+	chitmin=LARGECHISQ;
+
+	for(k=T0RANGE/2;k<wpar->thigh-T0RANGE/8;k++){
+		//fit line to the baseline
+		fit_line(0,k,&lp);
+
+		//fit line to the risetime
+		fit_line(k,wpar->thigh,&lpl);
+
+
+		chit=lp.chisq+lpl.chisq;
+
+		if(chit<chitmin){
+			chitmin=chit;
+			wpar->b0=lp.intercept;
+			wpar->b1=lp.slope;
+			wpar->s0=lpl.intercept;
+			wpar->s1=lpl.slope;
+			wpar->s2=0.;
+		}
+	}	// end of the loop over k
+	b=wpar->s1-wpar->b1;
+	c=wpar->s0-wpar->b0;
+	t=-c/b;
+
+	wpar->t0=-1;
+	wpar->temin=0;
+	wpar->temax=wpar->thigh;
+	if(t<N&&t>0){
+		wpar->t0=t;
+		wpar->temin=(int)rint(wpar->t0)-2;
+		wpar->temax=(int)rint(wpar->t0)+2;
+		return (double)(chitmin/(wpar->thigh-5));
+	}
+
+	return BADCHISQ_LIN_T0;
 }
 /*================================================================*/
 double  TPulseAnalyzer::get_smooth_T0()
 {
-  ParPar pp,ppmin;
-  int k,kmin;
-  double chit,chitmin;
-  double c,t;
- 
-  memset(&ppmin,0,sizeof(ParPar));
- 
-  chitmin=LARGECHISQ;
-  kmin=0;
-  //corse search first
-  for(k=T0RANGE/2;k<wpar->thigh-T0RANGE/2;k++){
-      fit_smooth_parabola(0,wpar->thigh,(double)k,&pp);
+	ParPar pp,ppmin;
+	int k,kmin;
+	double chit,chitmin;
+	double c,t;
 
-      chit=pp.chisq;
-      if(chit<chitmin)
+	memset(&ppmin,0,sizeof(ParPar));
+
+	chitmin=LARGECHISQ;
+	kmin=0;
+	//corse search first
+	for(k=T0RANGE/2;k<wpar->thigh-T0RANGE/2;k++){
+		fit_smooth_parabola(0,wpar->thigh,(double)k,&pp);
+
+		chit=pp.chisq;
+		if(chit<chitmin)
+		{
+			chitmin=chit;
+			kmin=k;
+		}
+	}	// end of the corse search loop over k
+	c=kmin;
+	chitmin=LARGECHISQ;
+	//fine search next
+	for(t=kmin-1;t<kmin+1;t+=0.1){
+		fit_smooth_parabola(0,wpar->thigh,t,&pp);
+		chit=pp.chisq;
+		if(chit<chitmin){
+			memcpy(&ppmin,&pp,sizeof(ParPar));
+			chitmin=chit;
+			c=t;
+		}
+	}	// end of the fine search loop over k
+
+	memcpy(&pp,&ppmin,sizeof(ParPar));
+	t=c;
+	wpar->s0=pp.constant+pp.quadratic*t*t;
+	wpar->s1=-2.*pp.quadratic*t;
+	wpar->s2=pp.quadratic;
+	wpar->b0=pp.constant;
+	wpar->b1=0.;
+
+	wpar->t0=-1;
+	wpar->temin=0;
+	wpar->temax=wpar->thigh;
+	if(t<N&&t>0)
 	{
-	  chitmin=chit;
-	  kmin=k;
-	}
-    }	// end of the corse search loop over k
-  c=kmin;
-  chitmin=LARGECHISQ;
-  //fine search next
-  for(t=kmin-1;t<kmin+1;t+=0.1){
-      fit_smooth_parabola(0,wpar->thigh,t,&pp);
-      chit=pp.chisq;
-      if(chit<chitmin){
-      	  memcpy(&ppmin,&pp,sizeof(ParPar));
-	  chitmin=chit;
-	  c=t;
-	}
-    }	// end of the fine search loop over k
-
-  memcpy(&pp,&ppmin,sizeof(ParPar));
-  t=c;
-  wpar->s0=pp.constant+pp.quadratic*t*t;
-  wpar->s1=-2.*pp.quadratic*t;
-  wpar->s2=pp.quadratic;
-  wpar->b0=pp.constant;
-  wpar->b1=0.;
-
-  wpar->t0=-1;
-  wpar->temin=0;
-  wpar->temax=wpar->thigh;
-   if(t<N&&t>0)
-      {
-	wpar->t0=t;
-	wpar->temin=(int)rint(wpar->t0)-2;
-	wpar->temax=(int)rint(wpar->t0)+2;
-	return (double)(chitmin/(wpar->thigh-2));
-      } 
-  return BADCHISQ_SMOOTH_T0;
+		wpar->t0=t;
+		wpar->temin=(int)rint(wpar->t0)-2;
+		wpar->temax=(int)rint(wpar->t0)+2;
+		return (double)(chitmin/(wpar->thigh-2));
+	} 
+	return BADCHISQ_SMOOTH_T0;
 }
 /*================================================================*/
 double TPulseAnalyzer::get_parabolic_T0(){
 
-  LinePar lp;
-  ParPar pp;
-  int k,kmin;
-  double chit,chitmin;
-  double a,b,c,d,t;
- 
-  chitmin=LARGECHISQ;
-  kmin=0;
-  for(k=T0RANGE/2;k<wpar->thigh-T0RANGE/2;k++){
-      //fit line to the baseline
-      fit_line(0,k,&lp);
-      
-      //fit parabola to the risetime
-      fit_parabola(k,wpar->thigh,&pp);
-      
-      chit=lp.chisq+pp.chisq;
-      
-      if(chit<chitmin){
-	  chitmin=chit;
-	  wpar->b0=lp.intercept;
-	  wpar->b1=lp.slope;
-	  wpar->s0=pp.constant;
-	  wpar->s1=pp.linear;
-	  wpar->s2=pp.quadratic;
-	  kmin=k;
-	}
-    }//end loop through k
+	LinePar lp;
+	ParPar pp;
+	int k;
+	double chit,chitmin;
+	double a,b,c,d,t;
 
-  
-  a=wpar->s2;
-  b=wpar->s1-wpar->b1;
-  c=wpar->s0-wpar->b0;
-  d=b*b-4*a*c;
-  
-  t=-1.;
-  if(a==0.) t=-c/b;
-  else{
-      if(d>=0){
-	  if(d==0.)t=-0.5*b/a;
-	  else {
-	      d=sqrt(d);
-	      t=0.5*(-b+d)/a;
-	    }
-	}else{
-	  return BADCHISQ_PAR_T0;
-	}
-    }
+	chitmin=LARGECHISQ;
+	for(k=T0RANGE/2;k<wpar->thigh-T0RANGE/2;k++){
+		//fit line to the baseline
+		fit_line(0,k,&lp);
 
-  wpar->t0=-1;
-  wpar->temin=0;
-  wpar->temax=wpar->thigh;
-   if(t<N&&t>0){
-	wpar->t0=t;
-	wpar->temin=(int)rint(wpar->t0)-2;
-	wpar->temax=(int)rint(wpar->t0)+2;
-	return (double)(chitmin/(wpar->thigh-5));
-      } 
-  return BADCHISQ_PAR_T0;
- 	
+		//fit parabola to the risetime
+		fit_parabola(k,wpar->thigh,&pp);
+
+		chit=lp.chisq+pp.chisq;
+
+		if(chit<chitmin){
+			chitmin=chit;
+			wpar->b0=lp.intercept;
+			wpar->b1=lp.slope;
+			wpar->s0=pp.constant;
+			wpar->s1=pp.linear;
+			wpar->s2=pp.quadratic;
+		}
+	}//end loop through k
+
+
+	a=wpar->s2;
+	b=wpar->s1-wpar->b1;
+	c=wpar->s0-wpar->b0;
+	d=b*b-4*a*c;
+
+	t=-1.;
+	if(a==0.) t=-c/b;
+	else{
+		if(d>=0){
+			if(d==0.)t=-0.5*b/a;
+			else {
+				d=sqrt(d);
+				t=0.5*(-b+d)/a;
+			}
+		}else{
+			return BADCHISQ_PAR_T0;
+		}
+	}
+
+	wpar->t0=-1;
+	wpar->temin=0;
+	wpar->temax=wpar->thigh;
+	if(t<N&&t>0){
+		wpar->t0=t;
+		wpar->temin=(int)rint(wpar->t0)-2;
+		wpar->temax=(int)rint(wpar->t0)+2;
+		return (double)(chitmin/(wpar->thigh-5));
+	} 
+	return BADCHISQ_PAR_T0;
+
 }
 
 
@@ -391,9 +387,9 @@ double TPulseAnalyzer::get_parabolic_T0(){
 // Overall function which determins limits and fits the 3 trial functions
 double  TPulseAnalyzer::fit_newT0(){
 	if(!set||N<10)return -1; 
-	
+
 	wpar->t0=-1;
-	
+
 	double chisq[3],chimin;
 	WaveFormPar w[3];
 	size_t swp;
@@ -407,14 +403,14 @@ double  TPulseAnalyzer::fit_newT0(){
 	get_tmax();
 
 	if(wpar->tmax<PIN_BASELINE_RANGE)
-	return BAD_BASELINE_RANGE;
+		return BAD_BASELINE_RANGE;
 
 	get_t30();
 	get_t50();
 	wpar->thigh=wpar->t50;
 
 	for(i=0;i<3;i++)
-	chisq[i]=LARGECHISQ;
+		chisq[i]=LARGECHISQ;
 
 	chisq[0]=get_smooth_T0(); memcpy(&w[0],wpar,swp);	
 	chisq[1]=get_parabolic_T0(); memcpy(&w[1],wpar,swp);	
@@ -429,7 +425,7 @@ double  TPulseAnalyzer::fit_newT0(){
 	}
 
 	if(imin<2)memcpy(wpar,&w[imin],swp);
-	
+
 	get_baseline_fin();
 	return wpar->t0;
 }
@@ -446,12 +442,12 @@ void TPulseAnalyzer::get_baseline(){
 		printf("Terminating program\n");
 		exit(0);
 	}
-  
+
 	for(int i=0;i<wpar->baseline_range;i++){
 		wpar->baseline+=frag->wavebuffer[i];
 		wpar->baselineStDev+=frag->wavebuffer[i]*frag->wavebuffer[i];
 	}
-  
+
 	wpar->baselineStDev/=wpar->baseline_range;
 	wpar->baseline/=wpar->baseline_range; 
 	wpar->baselineStDev-=wpar->baseline*wpar->baseline;
@@ -495,7 +491,7 @@ void TPulseAnalyzer::get_tmax(){
 	for(i=D;i<N-D;i++)	{
 		sum=0;
 		for(j=i-D;j<i+D;j++)
-		sum+=frag->wavebuffer[j];
+			sum+=frag->wavebuffer[j];
 		sum/=FILTER; //the value of the filtered waveform at i
 		if(sum>wpar->max)	{
 			//if the value of the filtered waveform at i is larger than the current maximum, max=value and tmax = i
@@ -509,165 +505,165 @@ void TPulseAnalyzer::get_tmax(){
 /*===========================================================*/
 double TPulseAnalyzer::get_tfrac(double frac,double fraclow, double frachigh)
 {
-  int t;
-  double f,flow,fhigh;
-  int i,imax,imin;
-  long long int a;
-  double p,q,r,d;
+	int t;
+	double f,flow,fhigh;
+	int i,imax,imin;
+	long long int a;
+	double p,q,r,d;
 
-  if(wpar->bflag!=1)    {
-      printf("Baseline not deterimned for the tfraction\n");
-      exit(1);
-    }
+	if(wpar->bflag!=1)    {
+		printf("Baseline not deterimned for the tfraction\n");
+		exit(1);
+	}
 
-  if(wpar->mflag!=1)    {
-      printf("Maximum not deterimned for the tfraction\n");
-      exit(1);
-    }
-    
-  t=wpar->tmax;
-  
-  f=wpar->baseline+frac*(wpar->max-wpar->baseline);
-  flow=wpar->baseline+fraclow*(wpar->max-wpar->baseline);
-  fhigh=wpar->baseline+frachigh*(wpar->max-wpar->baseline);
-  
-  while(frag->wavebuffer[t]>f){
-      t--;
-      if(t<=4) break;
-   }
-  imin=t;
-  while(frag->wavebuffer[imin]>flow){
-      imin--;
-      if(imin<=1) break;
-    }
-  
-  imax=t;
+	if(wpar->mflag!=1)    {
+		printf("Maximum not deterimned for the tfraction\n");
+		exit(1);
+	}
 
-   while(frag->wavebuffer[imax]<fhigh) {
-      imax++;
-      if(imax>=N-1) break;
-    }
+	t=wpar->tmax;
 
-  lineq_dim=3;
+	f=wpar->baseline+frac*(wpar->max-wpar->baseline);
+	flow=wpar->baseline+fraclow*(wpar->max-wpar->baseline);
+	fhigh=wpar->baseline+frachigh*(wpar->max-wpar->baseline);
 
-  i=imax-imin;
-  a=i;
-  lineq_matrix[0][0]=a+1;
-  lineq_matrix[0][1]=0.5*a;
-  lineq_matrix[2][0]=a/6.;
-  lineq_matrix[2][2]=-a/30.;
-  a*=i;
-  lineq_matrix[0][1]+=0.5*a;
-  lineq_matrix[2][0]+=0.5*a;
-  lineq_matrix[2][1]=0.25*a;
-  a*=i;
-  lineq_matrix[2][0]+=a/3.;
-  lineq_matrix[2][1]+=0.5*a;
-  lineq_matrix[2][2]+=a/3.;
-  a*=i;
-  lineq_matrix[2][1]+=0.25*a;
-  lineq_matrix[2][2]+=0.5*a;
-  a*=i;
-  lineq_matrix[2][2]+=0.2*a;
+	while(frag->wavebuffer[t]>f){
+		t--;
+		if(t<=4) break;
+	}
+	imin=t;
+	while(frag->wavebuffer[imin]>flow){
+		imin--;
+		if(imin<=1) break;
+	}
 
-  lineq_matrix[1][0]=lineq_matrix[0][1];
-  lineq_matrix[1][1]=lineq_matrix[2][0];
-  lineq_matrix[0][2]=lineq_matrix[2][0];
-  lineq_matrix[1][2]=lineq_matrix[2][1];
+	imax=t;
 
- for(i=0;i<lineq_dim;i++)
-    lineq_vector[i]=0;
+	while(frag->wavebuffer[imax]<fhigh) {
+		imax++;
+		if(imax>=N-1) break;
+	}
 
-  for(i=imin;i<imax+1;i++)    {
-      a=i-imin;
-      lineq_vector[0]+=frag->wavebuffer[i];
-      lineq_vector[1]+=frag->wavebuffer[i]*a;
-      lineq_vector[2]+=frag->wavebuffer[i]*a*a;
-    }
-     
-    if(solve_lin_eq()==0){
-      return -4;
-    }else{
-    	p=lineq_solution[0]-f;
-    	q=lineq_solution[1];
-    	r=lineq_solution[2];
+	lineq_dim=3;
 
-    	if(r!=0) {
-    	    d=q*q-4*r*p;
-    	    if(d<0){
-		return -5;
-	    }else{
-    		f=-q+sqrt(d);
-    		f*=0.5;
-    		f/=r;
-    		f+=imin;
-    		return f;
-    	      }
-    	  }else{
-    	    if(q!=0){
-    		f=-p/q;
-    		return f;
-    	      }else{
-    	        return -6;
-	      }
-    	  }
-      }
-    return -7;
+	i=imax-imin;
+	a=i;
+	lineq_matrix[0][0]=a+1;
+	lineq_matrix[0][1]=0.5*a;
+	lineq_matrix[2][0]=a/6.;
+	lineq_matrix[2][2]=-a/30.;
+	a*=i;
+	lineq_matrix[0][1]+=0.5*a;
+	lineq_matrix[2][0]+=0.5*a;
+	lineq_matrix[2][1]=0.25*a;
+	a*=i;
+	lineq_matrix[2][0]+=a/3.;
+	lineq_matrix[2][1]+=0.5*a;
+	lineq_matrix[2][2]+=a/3.;
+	a*=i;
+	lineq_matrix[2][1]+=0.25*a;
+	lineq_matrix[2][2]+=0.5*a;
+	a*=i;
+	lineq_matrix[2][2]+=0.2*a;
+
+	lineq_matrix[1][0]=lineq_matrix[0][1];
+	lineq_matrix[1][1]=lineq_matrix[2][0];
+	lineq_matrix[0][2]=lineq_matrix[2][0];
+	lineq_matrix[1][2]=lineq_matrix[2][1];
+
+	for(i=0;i<lineq_dim;i++)
+		lineq_vector[i]=0;
+
+	for(i=imin;i<imax+1;i++)    {
+		a=i-imin;
+		lineq_vector[0]+=frag->wavebuffer[i];
+		lineq_vector[1]+=frag->wavebuffer[i]*a;
+		lineq_vector[2]+=frag->wavebuffer[i]*a*a;
+	}
+
+	if(solve_lin_eq()==0){
+		return -4;
+	}else{
+		p=lineq_solution[0]-f;
+		q=lineq_solution[1];
+		r=lineq_solution[2];
+
+		if(r!=0) {
+			d=q*q-4*r*p;
+			if(d<0){
+				return -5;
+			}else{
+				f=-q+sqrt(d);
+				f*=0.5;
+				f/=r;
+				f+=imin;
+				return f;
+			}
+		}else{
+			if(q!=0){
+				f=-p/q;
+				return f;
+			}else{
+				return -6;
+			}
+		}
+	}
+	return -7;
 }
 
 /* ==================================================== */
 void TPulseAnalyzer::get_t50(){
-  int t;
-  
-  t=get_tfrac(0.5,0.3,0.8);
-  if((t>0)&&(t<MAX_SAMPLES)){
-      wpar->t50_flag=1;
-      wpar->t50=t;
-    } else{
-      wpar->t50_flag=-1;
-      wpar->t50=-1;
-    }
+	int t;
+
+	t=get_tfrac(0.5,0.3,0.8);
+	if((t>0)&&(t<MAX_SAMPLES)){
+		wpar->t50_flag=1;
+		wpar->t50=t;
+	} else{
+		wpar->t50_flag=-1;
+		wpar->t50=-1;
+	}
 }
 /* ==================================================== */
 void TPulseAnalyzer::get_t90(){
-  int t;
-  
-  t=get_tfrac(0.9,0.8,0.98);
-    
-  if((t>0)&&(t<MAX_SAMPLES))    {
-      wpar->t90_flag=1;
-      wpar->t90=t;
-    } else   {
-      wpar->t90_flag=-1;
-      wpar->t90=-1;
-    }
+	int t;
+
+	t=get_tfrac(0.9,0.8,0.98);
+
+	if((t>0)&&(t<MAX_SAMPLES))    {
+		wpar->t90_flag=1;
+		wpar->t90=t;
+	} else   {
+		wpar->t90_flag=-1;
+		wpar->t90=-1;
+	}
 }
 /*===========================================================*/
 void TPulseAnalyzer::get_t10(){
-  int t;
+	int t;
 
-  t=get_tfrac(0.1,0.05,0.2);
+	t=get_tfrac(0.1,0.05,0.2);
 
-  if((t>0)&&(t<MAX_SAMPLES))    {
-      wpar->t10_flag=1;
-      wpar->t10=t;
-    }  else    {
-      wpar->t10_flag=-1;
-      wpar->t10=-1;
-    }
+	if((t>0)&&(t<MAX_SAMPLES))    {
+		wpar->t10_flag=1;
+		wpar->t10=t;
+	}  else    {
+		wpar->t10_flag=-1;
+		wpar->t10=-1;
+	}
 }
 /*===========================================================*/
 void TPulseAnalyzer::get_t30(){
-  int t;
+	int t;
 
-  t=get_tfrac(0.3,0.15,0.45);
-  if((t>0)&&(t<MAX_SAMPLES))    {
-      wpar->t30_flag=1;
-      wpar->t30=t;
-    }  else    {
-      wpar->t30_flag=-1;
-      wpar->t30=-1;
-    }
+	t=get_tfrac(0.3,0.15,0.45);
+	if((t>0)&&(t<MAX_SAMPLES))    {
+		wpar->t30_flag=1;
+		wpar->t30=t;
+	}  else    {
+		wpar->t30_flag=-1;
+		wpar->t30=-1;
+	}
 }
 
 
@@ -752,12 +748,12 @@ double TPulseAnalyzer::get_sig2noise(){
 /*======================================================*/
 void TPulseAnalyzer::print_WavePar()
 {
-  printf("== Currently established waveform parameters ============\n");
-  printf("baseline         : %10.2f\n",wpar->baseline);
-  printf("baseline st. dev.: %10.2f\n",wpar->baselineStDev);
-  printf("max              : %10.2f\n",(double)wpar->max);
-  printf("tmax             : %10.2f\n",(double)wpar->tmax);
-  printf("temin            : %10.2f\n",(double)wpar->temin);
-  printf("temax            : %10.2f\n",(double)wpar->temax);
-  printf("t0               : %10.2f\n",(double)wpar->t0);
+	printf("== Currently established waveform parameters ============\n");
+	printf("baseline         : %10.2f\n",wpar->baseline);
+	printf("baseline st. dev.: %10.2f\n",wpar->baselineStDev);
+	printf("max              : %10.2f\n",(double)wpar->max);
+	printf("tmax             : %10.2f\n",(double)wpar->tmax);
+	printf("temin            : %10.2f\n",(double)wpar->temin);
+	printf("temax            : %10.2f\n",(double)wpar->temax);
+	printf("t0               : %10.2f\n",(double)wpar->t0);
 }
