@@ -107,7 +107,7 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
    }
    TList* list = new TList;
 
-   const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
+   //const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
    //We create some spectra and then add it to the list
    //hit patterns
@@ -142,15 +142,15 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
    Double_t max[4] = {cycleLength,65,1000,2000.};
    Int_t bins[4]= {(Int_t)(cycleLength/10),64,1000,2000};
 
-   TH2F* gammaSinglesCyc;
-   TH2F* gammaSinglesBCyc;
-   TH2F* gammaSinglesBmCyc;
-   THnSparseF* gSinglesCyc_chan; 
-   THnSparseF* gbmatrixCyc_chan; 
-   TH1D* gPUTotalCyc;
-   TH1D* gNPTotalCyc;
-   TH1D* gPUCyc;
-   TH2F* betaSinglesCyc;
+   TH2F* gammaSinglesCyc = NULL;
+   TH2F* gammaSinglesBCyc = NULL;
+   TH2F* gammaSinglesBmCyc = NULL;
+   THnSparseF* gSinglesCyc_chan = NULL;
+   THnSparseF* gbmatrixCyc_chan = NULL;
+   TH1D* gPUTotalCyc = NULL;
+   TH1D* gNPTotalCyc = NULL;
+   TH1D* gPUCyc = NULL;
+   TH2F* betaSinglesCyc = NULL;
 
    if(ppg){
       gPUTotalCyc = new TH1D("gPUTotalCyc","Total Pileup hits as function of time in cycle", cycleLength/10,0,cycleLength); list->Add(gPUTotalCyc);
@@ -218,7 +218,7 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
 
    //tree->LoadBaskets(MEM_SIZE);   
 
-   long entries = tree->GetEntries();
+   //long entries = tree->GetEntries();
    //long entries = 1e6;
    //These are the indices of the two hits being compared
    int one;
@@ -234,7 +234,7 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
    std::vector<long> lastTimeStamp(65,0);
 
    std::cout<<std::fixed<<std::setprecision(1); //This just make outputs not look terrible
-   size_t angIndex;
+   //size_t angIndex;
    if(maxEntries == 0 || maxEntries > tree->GetEntries()) {
       maxEntries = tree->GetEntries();
    }
