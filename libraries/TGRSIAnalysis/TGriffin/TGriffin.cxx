@@ -2,7 +2,7 @@
 #include "TGriffin.h"
 #include <TRandom.h>
 #include <TMath.h>
-#include "TCint.h"
+#include "TInterpreter.h"
 
 #include <TGRSIRunInfo.h>
 

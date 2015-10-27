@@ -475,7 +475,7 @@ void TDecayChain::Print(Option_t *option) const {
    printf("Number of Decays in Chain: %lu\n",fDecayChain.size());
    printf("Chain Id %d\n",fDecayChain.at(0)->GetChainId());
    for(size_t i=0; i<fDecayChain.size();++i){
-      printf("decay ptr: %p\n",fDecayChain.at(i));
+      printf("decay ptr: %p\n",static_cast<void*>(fDecayChain.at(i)));
       fDecayChain.at(i)->Print();
       printf("\n");
    }
