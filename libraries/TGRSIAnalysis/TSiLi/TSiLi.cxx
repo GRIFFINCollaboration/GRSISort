@@ -8,9 +8,6 @@
 ClassImp(TSiLi)
 
 TSiLi::TSiLi() : silidata(0)  {
-// #if MAJOR_ROOT_VERSION < 6
-//    Class()->IgnoreTObjectStreamer(kTRUE);
-// #endif
    Clear();	
 }
 
@@ -20,9 +17,6 @@ TSiLi::~TSiLi()  {
 
 void TSiLi::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
-// #if MAJOR_ROOT_VERSION < 6
-//    Class()->IgnoreTObjectStreamer(kTRUE);
-// #endif
 
   static_cast<TSiLi&>(rhs).silidata     = 0;
   static_cast<TSiLi&>(rhs).sili_hits     = sili_hits;

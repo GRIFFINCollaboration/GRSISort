@@ -18,9 +18,6 @@ double TS3::target_distance;
 
 
 TS3::TS3():s3data(0)  {
-// #if MAJOR_ROOT_VERSION < 6
-//    Class()->IgnoreTObjectStreamer(kTRUE);
-// #endif
    Clear();	
 }
 
@@ -30,9 +27,6 @@ TS3::~TS3()  {
 
 void TS3::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
-// #if MAJOR_ROOT_VERSION < 6
-//    Class()->IgnoreTObjectStreamer(kTRUE);
-// #endif
 
   static_cast<TS3&>(rhs).s3data     = 0;
   static_cast<TS3&>(rhs).s3_hits    = s3_hits;

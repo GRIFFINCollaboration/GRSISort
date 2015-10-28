@@ -38,7 +38,7 @@ class TS3 : public TGRSIDetector {
 
     TS3& operator=(const TS3&);  // 
      
-    Short_t GetMultiplicity()  {  return s3_hits.size();}
+    Short_t GetMultiplicity() const {  return s3_hits.size();}
 
 
     TVector3 GetPosition(int front, int back);
