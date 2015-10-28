@@ -77,6 +77,9 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    if(R__v>4) {
      {Bool_t R__bool; b >> R__bool; fIsMovingWindow = R__bool;}
    }
+   if(R__v>6) {
+     {Bool_t R__bool; b >> R__bool; fWaveformFitting = R__bool;}
+   }
    {Bool_t R__bool; b >> R__bool; fTigress = R__bool;   }
    {Bool_t R__bool; b >> R__bool; fSharc = R__bool;     }
    {Bool_t R__bool; b >> R__bool; fTriFoil = R__bool;   }
@@ -116,6 +119,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Long_t R__long = fBuildWindow;       b << R__long;}
    {Double_t R__double = fAddBackWindow;  b << R__double;}
    {Bool_t R__bool = fIsMovingWindow; b << R__bool;}
+   {Bool_t R__bool = fWaveformFitting; b << R__bool;}
    {Bool_t R__bool = fTigress;    b << R__bool;}
    {Bool_t R__bool = fSharc;      b << R__bool;}
    {Bool_t R__bool = fTriFoil;    b << R__bool;}
