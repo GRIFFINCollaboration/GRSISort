@@ -1,5 +1,6 @@
 
 #include "TSiLi.h"
+#include <TGRSIRunInfo.h>
 
 ClassImp(TSiLi)
 
@@ -41,7 +42,9 @@ void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
      hit.SetPosition(tmppos);
      TFragment tmp = sdata->GetFragment(i);
      hit.SetVariables(tmp);
-     hit.SetWavefit(tmp);
+
+	 if(TGRSIRunInfo::IsWaveformFitting()) 
+     	hit.SetWavefit(tmp);
   
      sili_hits.push_back(hit);
   }
