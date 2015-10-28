@@ -6,6 +6,7 @@
 #include "TMath.h"
 #include "TFitResult.h"
 #include "TFitResultPtr.h"
+#include "TGraph.h"
 #include "TF1.h"
 #include "TH1.h"
 #include "TVirtualFitter.h"
@@ -22,22 +23,22 @@ class TDecayFit : public TF1 {
   public:
    TDecayFit() : TF1(), fDecay(0) {}; 
    //TGRSIFit(const char *name,Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn, xmin, xmax, npar){};
-   TDecayFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1) : TF1(name,formula,xmin,xmax), fDecay(0){ } 
-   TDecayFit(const char* name, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name,xmin,xmax,npar) ,fDecay(0){ }
+   TDecayFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1) : TF1(name,formula,xmin,xmax), fDecay(0){ DefaultGraphs(); } 
+   TDecayFit(const char* name, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name,xmin,xmax,npar) ,fDecay(0){DefaultGraphs();  }
    //TDecayFit(const char* name, void* fcn, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn,xmin,xmax,npar){}
-   TDecayFit(const char* name, ROOT::Math::ParamFunctor f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0) : TF1(name,f,xmin,xmax,npar),fDecay(0){}
+   TDecayFit(const char* name, ROOT::Math::ParamFunctor f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0) : TF1(name,f,xmin,xmax,npar),fDecay(0){DefaultGraphs(); }
    //TDecayFit(const char* name, void* ptr, Double_t xmin, Double_t xmax, Int_t npar, const char* className) : TF1(name,ptr, xmin, xmax, npar, className){ }
 #ifndef __CINT__
-   TDecayFit(const char *name, Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar),fDecay(0){}
-   TDecayFit(const char *name, Double_t (*fcn)(const Double_t *, const Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar),fDecay(0){}
+   TDecayFit(const char *name, Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar),fDecay(0){DefaultGraphs(); }
+   TDecayFit(const char *name, Double_t (*fcn)(const Double_t *, const Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar),fDecay(0){DefaultGraphs(); }
 #endif
    //TDecayFit(const char *name, void *ptr, void *ptr2,Double_t xmin, Double_t xmax, Int_t npar, const char *className, const char *methodName = 0) : TF1(name,ptr,ptr2,xmin,xmax,npar,className,methodName){}
 
    template <class PtrObj, typename MemFn>
-   TDecayFit(const char *name, const  PtrObj& p, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char * className = 0, const char *methodName = 0) : TF1(name,p,memFn,xmin,xmax,npar,className,methodName),fDecay(0) {}
+   TDecayFit(const char *name, const  PtrObj& p, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char * className = 0, const char *methodName = 0) : TF1(name,p,memFn,xmin,xmax,npar,className,methodName),fDecay(0) {DefaultGraphs(); }
 
    template <typename Func>
-   TDecayFit(const char *name, Func f, Double_t xmin, Double_t xmax, Int_t npar, const char *className = 0  ) : TF1(name,f,xmin,xmax,npar,className),fDecay(0) {}
+   TDecayFit(const char *name, Func f, Double_t xmin, Double_t xmax, Int_t npar, const char *className = 0  ) : TF1(name,f,xmin,xmax,npar,className),fDecay(0){DefaultGraphs(); }
    virtual ~TDecayFit();
 
    void SetDecay(TVirtualDecay* decay);
@@ -46,9 +47,17 @@ class TDecayFit : public TF1 {
   // void DrawComponents() const; 
 
    virtual void Print(Option_t *opt = "") const;
+   void UpdateResiduals(TH1* hist);
+   void DrawResiduals(); // *MENU*
+   TGraph* GetResiduals() { return &fResiduals; }
+   TFitResultPtr Fit(TH1* hist, Option_t* opt="");
 
   private:
-   TVirtualDecay* fDecay;//VirtualDecay that made this fit
+   void DefaultGraphs();
+
+  private:
+   TVirtualDecay* fDecay;      //VirtualDecay that made this fit
+   TGraph fResiduals;    //Last histogram fit by this function
 
    ClassDef(TDecayFit,1);  // Extends TF1 for nuclear decays
 };
@@ -220,7 +229,7 @@ class TDecay : public TVirtualDecay {
 
    void Print(Option_t* opt = "") const;
    void PrintMap() const;
-   const TF1* GetFitFunc() { return fFitFunc; }
+   const TDecayFit* GetFitFunc() { return fFitFunc; }
    void SetBackground(Double_t background) { fFitFunc->SetParameter(0,background);}
    Double_t GetBackground() const {return fFitFunc->GetParameter(0); }
    Double_t GetBackgroundError() const {return fFitFunc->GetParError(0); }
@@ -232,6 +241,8 @@ class TDecay : public TVirtualDecay {
    void FixBackground()                         { fFitFunc->FixParameter(0,GetBackground());}
    void SetBackgroundLimits(const Double_t &low, const Double_t &high) { fFitFunc->SetParLimits(0,low,high); }
    void ReleaseBackground()                    { fFitFunc->ReleaseParameter(0);}
+
+   TGraph* GetResiduals() { return fFitFunc->GetResiduals(); }
 
   private:
    void RemakeMap();
