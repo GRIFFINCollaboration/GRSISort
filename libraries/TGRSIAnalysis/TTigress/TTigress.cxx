@@ -128,18 +128,24 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
 
 		temp_crystal.SetAddress(tdata->GetCoreAddress(i));
 		temp_crystal.SetCharge(tdata->GetCoreCharge(i));
-      //temp_crystal.SetEnergy(tdata->GetCoreEnergy(i));
-      //temp_crystal.SetTime(tdata->GetCoreTime(i));
-      temp_crystal.SetCfd(tdata->GetCoreCFD(i));
-	  temp_crystal.SetTimeStamp(tdata->GetCoreTime(i));
+      	//temp_crystal.SetEnergy(tdata->GetCoreEnergy(i));
+      	//temp_crystal.SetTime(tdata->GetCoreTime(i));
+      	temp_crystal.SetCfd(tdata->GetCoreCFD(i));
+	  	temp_crystal.SetTimeStamp(tdata->GetCoreTime(i));
 
 		//if(TTigress::SetCoreWave())	{
-      //  	temp_crystal.SetWaveForm(tdata->GetCoreWave(i));
+      	//  	temp_crystal.SetWaveForm(tdata->GetCoreWave(i));
 		//}
+
+		TFragment tmp = tdata->GetCoreFragment(i);
+
+		if(TGRSIRunInfo::IsWaveformFitting()) 
+			corehit.SetWavefit(tmp);
+		
 		
 		corehit.SetCore(temp_crystal);	
 		corehit.SetDetector((UInt_t)tdata->GetCloverNumber(i));
-      corehit.SetCrystal();  //tdata->GetCoreNumber(i));
+      	corehit.SetCrystal();  //tdata->GetCoreNumber(i));
 
 		//tigress_hits.push_back(corehit);
 		AddTigressHit(corehit);

@@ -3,6 +3,8 @@
 #include <TRandom.h>
 #include <TMath.h>
 #include <TClass.h>
+#include <TGRSIRunInfo.h>
+
 
 ////////////////////////////////////////////////////////////
 //                    
@@ -57,7 +59,7 @@ void TTip::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
    if(!tipdata)   
       tipdata = new TTipData();
 
-   //tipdata->SetDet(frag,channel,mnemonic);
+   tipdata->SetDet(frag,channel,mnemonic);
    TTipData::Set();
 }
 
@@ -75,12 +77,17 @@ void TTip::BuildHits(TDetectorData *data,Option_t *opt)	{
    for(size_t i=0;i<gdata->GetMultiplicity();i++) {
       TTipHit dethit;
 
-      //dethit.SetAddress(gdata->GetDetAddress(i));
+      dethit.SetAddress(gdata->GetTipAddress(i));
       
-      //dethit.SetCharge(gdata->GetDetCharge(i));
+	  TFragment tmp = gdata->GetTipFragment(i);
 
-      //dethit.SetTime(gdata->GetDetTime(i));
-      //dethit.SetCfd(gdata->GetDetCFD(i));
+      dethit.SetVariables(tmp);
+
+	  if(TGRSIRunInfo::IsWaveformFitting()) 
+      	dethit.SetWavefit(tmp);
+
+	  TChannel chan = TChannel::GetChannel(dethit.GetAddress());
+	  dethit.SetUpNumbering(chan);
 
       //dethit.SetPID(gdata->GetPID(i));
 

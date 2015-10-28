@@ -10,6 +10,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 #include "TCrystalHit.h"
+#include "TPulseAnalyzer.h"
 
 #include "TMath.h"
 #include "TVector3.h"
@@ -28,14 +29,17 @@ class TTigressHit : public TGRSIDetectorHit {
 		UInt_t   crystal;              //!
 		UShort_t first_segment;        
 		Float_t    first_segment_charge; //!
+		
+	    Double_t    time_fit;
+	    Double_t    sig2noise;
 
   //    Double_t fEnergy;
 
 		TCrystalHit core;
 		//std::vector<TCrystalHit> segment;
-      TClonesArray segment;
+      	TClonesArray segment;
 		//std::vector<TCrystalHit> bgo;
-      TClonesArray bgo;
+      	TClonesArray bgo;
 
 		//double doppler;
 
@@ -57,7 +61,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		//void SetDetectorNumber(const int &i) { detector = i;	} 				//!
 		void SetCrystal()	                   { crystal = GetCrystal(); SetFlag(TGRSIDetectorHit::kIsSubDetSet,true); }		//!
 		void SetInitalHit(const int &i)		 { first_segment = i; }				//!
-      Bool_t IsCrystalSet() const {return IsSubDetSet();}
+      	Bool_t IsCrystalSet() const {return IsSubDetSet();}
 
 //		void SetPosition(const TVector3 &p)  { position = p;	}					//!
 		//void SetDoppler(const double &d)	   { doppler = d;	}					//!
@@ -71,11 +75,14 @@ class TTigressHit : public TGRSIDetectorHit {
 		inline double GetEnergy(Option_t *opt ="")const	{	return core.GetEnergy();	}		//!
 		inline double GetTime(Option_t *opt ="") const	{	return core.GetTime();		}		//!
 		inline double GetTimeCFD() const                {  return core.GetCfd(); } //!
-      inline UInt_t GetAddress() const                {  return core.GetAddress(); }
-      ULong_t GetTimeStamp(Option_t *opt="")   const  {  return core.GetTimeStamp();   }  // Returns a time value to the nearest nanosecond!
-      UInt_t GetDetector()   const                    {  return core.GetDetector();   }  // Returns a time value to the nearest nanosecond!
+      	inline UInt_t GetAddress() const                {  return core.GetAddress(); }
+      	ULong_t GetTimeStamp(Option_t *opt="")   const  {  return core.GetTimeStamp();   }  // Returns a time value to the nearest nanosecond!
+      	UInt_t GetDetector()   const                    {  return core.GetDetector();   }  // Returns a time value to the nearest nanosecond!
 		//inline double   GetDoppler()	       {	return doppler;				}		//!
 
+    	void SetWavefit(TFragment&);
+		inline Double_t GetSignalToNoise()		   { return sig2noise;	} //!
+		inline Double_t GetFitTime()			   { return time_fit;	} //!
 
 		inline double GetDoppler(double beta,TVector3 *vec=0) { 
 			if(vec==0) {

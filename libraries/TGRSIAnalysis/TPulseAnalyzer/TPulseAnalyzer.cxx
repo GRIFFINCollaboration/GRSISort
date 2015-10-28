@@ -414,7 +414,7 @@ double  TPulseAnalyzer::fit_newT0(){
 
 	chisq[0]=get_smooth_T0(); memcpy(&w[0],wpar,swp);	
 	chisq[1]=get_parabolic_T0(); memcpy(&w[1],wpar,swp);	
-	chisq[2]=get_linear_T0();// memcpy(&w[2],wpar,swp);	
+	chisq[2]=get_linear_T0(); memcpy(&w[2],wpar,swp);	
 
 	chimin=LARGECHISQ;
 	imin=0;

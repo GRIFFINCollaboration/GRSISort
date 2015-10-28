@@ -39,6 +39,8 @@ class TTigressData : public TGRSIDetectorData {
 		std::vector<std::vector<int> > fSegment_Wave;	//!
       std::vector<UInt_t> fSegment_Address; //!
 
+		std::vector<TFragment> fCore_Frag;
+
 		static bool fIsSet; //!
 
 	public:
@@ -61,7 +63,7 @@ class TTigressData : public TGRSIDetectorData {
 		inline void SetCoreLED(const Double_t &CoreTimeLED)	    {fCore_TimeLED.push_back(CoreTimeLED); }	//!	
 		inline void SetCoreTimeStamp(const Long64_t    &CoreTime) {fCore_TimeStamp.push_back(CoreTime);       }	//!
 		inline void SetCoreAddress(const UInt_t    &CoreAddress)  {fCore_Address.push_back(CoreAddress);       }	//!
-      
+      	inline void SetCoreFragment(const TFragment &frag)		 {fCore_Frag.push_back(frag);				}//!
 		
 		inline void SetCoreWave(const std::vector<int> &CoreWave) {fCore_Wave.push_back(CoreWave);} //!
 	
@@ -110,6 +112,8 @@ class TTigressData : public TGRSIDetectorData {
 //				printf("energy;  %.02f\n",channel->CalibrateENG(frag->Charge.at(0)));
 //				printf("============================================================\n");
             	SetCoreTimeStamp(frag->GetTimeStamp());
+
+				SetCoreFragment(*frag);
 
 				SetCoreCharge(frag->GetCharge(0));
 				SetCoreCFD(frag->Cfd.at(0));		
@@ -177,10 +181,11 @@ class TTigressData : public TGRSIDetectorData {
 				SetSegmentLED(frag->Led.at(0));		
 			 	//SetSegmentTime(frag->GetTimeStamp());		
 				SetSegmentTime(frag->Zc.at(0));		
-            SetSegmentAddress(frag->ChannelAddress);
+            	SetSegmentAddress(frag->ChannelAddress);
 		}; 
 
 
+		inline TFragment GetCoreFragment(const unsigned int &i)	{return fCore_Frag.at(i);}
 		inline UShort_t GetCloverNumber(const unsigned int &i)	{return fClover_Nbr.at(i);}	//!
 		inline UShort_t GetCoreNumber(const unsigned int &i)	{return fCore_Nbr.at(i);}	//!
 		inline Double_t GetCoreEnergy(const unsigned int &i)	{return fCore_Eng.at(i);}	//!
