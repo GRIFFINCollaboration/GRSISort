@@ -3,9 +3,36 @@
 
 ClassImp(TSiLiHit)
 
-TSiLiHit::TSiLiHit()  {  }
+TSiLiHit::TSiLiHit()  {
+   Clear();
+}
+
+TSiLiHit::TSiLiHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+	Clear();
+}
 
 TSiLiHit::~TSiLiHit()  {  }
+
+TSiLiHit::TSiLiHit(const TSiLiHit &rhs) : TGRSIDetectorHit() {
+   Clear();
+   ((TSiLiHit&)rhs).Copy(*this);
+}
+
+void TSiLiHit::Copy(TObject &rhs) const {
+   TGRSIDetectorHit::Copy(rhs);
+// #if MAJOR_ROOT_VERSION < 6
+//    Class()->IgnoreTObjectStreamer(kTRUE);
+// #endif
+	static_cast<TSiLiHit&>(rhs).led = led;
+	static_cast<TSiLiHit&>(rhs).ring = ring;
+	static_cast<TSiLiHit&>(rhs).sector = sector;
+	static_cast<TSiLiHit&>(rhs).segment = segment;
+	static_cast<TSiLiHit&>(rhs).preamp = preamp;
+	static_cast<TSiLiHit&>(rhs).time_fit = time_fit;
+	static_cast<TSiLiHit&>(rhs).sig2noise = sig2noise;
+
+   return;
+}
 
 
 void TSiLiHit::Clear(Option_t *opt)  {

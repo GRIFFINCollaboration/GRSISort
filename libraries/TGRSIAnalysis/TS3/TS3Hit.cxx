@@ -7,8 +7,28 @@ ClassImp(TS3Hit)
 TS3Hit::TS3Hit()	{
 	Clear();
 }
+TS3Hit::TS3Hit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+	Clear();
+}
 
 TS3Hit::~TS3Hit()	{	}
+
+TS3Hit::TS3Hit(const TS3Hit &rhs) : TGRSIDetectorHit() {
+   Clear();
+   ((TS3Hit&)rhs).Copy(*this);
+}
+
+void TS3Hit::Copy(TObject &rhs) const {
+   TGRSIDetectorHit::Copy(rhs);
+// #if MAJOR_ROOT_VERSION < 6
+//    Class()->IgnoreTObjectStreamer(kTRUE);
+// #endif
+	static_cast<TS3Hit&>(rhs).led = led;
+	static_cast<TS3Hit&>(rhs).ring = ring;
+	static_cast<TS3Hit&>(rhs).sector = sector;
+   return;
+}
+
 
 void TS3Hit::Clear(Option_t *opt)	{
    TGRSIDetectorHit::Clear(opt);

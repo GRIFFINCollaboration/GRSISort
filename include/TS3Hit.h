@@ -1,6 +1,8 @@
 #ifndef TS3HIT_H
 #define TS3HIT_H
 
+#include "Globals.h"
+
 #include <cstdio>
 #include "TFragment.h"
 #include "TChannel.h"
@@ -9,7 +11,9 @@
 class TS3Hit : public TGRSIDetectorHit {
    public:
     TS3Hit();
-    ~TS3Hit();
+    TS3Hit(TFragment &);
+    virtual ~TS3Hit();
+	 TS3Hit(const TS3Hit&);
 
  //   Double_t GetEnergy()       {  return energy;  }
  //   Int_t    GetCharge()       {  return charge;  }
@@ -22,6 +26,7 @@ class TS3Hit : public TGRSIDetectorHit {
  //   Double_t GetCFD()          { return cfd;    }
 
   public:
+    void Copy(TObject&) const;        //!
     void Print(Option_t *opt="") const;
     void Clear(Option_t *opt="");
 
@@ -30,11 +35,12 @@ class TS3Hit : public TGRSIDetectorHit {
 //    void SetDetectorNumber(Short_t dn) { detectornumber = dn; }
 //    void SetPosition(TVector3 &vec)    { fposition = vec; }
     void SetVariables(TFragment &frag) { //SetEnergy(frag.GetEnergy());
-                                         SetCfd(frag.GetCfd());
-                                         SetCharge(frag.GetCharge());
-                                         SetTimeStamp(frag.GetTimeStamp()); 
+// 					 SetAddress(frag.ChannelAddress);						
+//                                          SetCfd(frag.GetCfd());
+//                                          SetCharge(frag.GetCharge());
+//                                          SetTimeStamp(frag.GetTimeStamp()); 
                                          //SetTime(frag.GetZCross());
-					 					 led    = frag.GetLed(); }
+					 led    = frag.GetLed(); }
  
 
   private:
@@ -49,7 +55,7 @@ class TS3Hit : public TGRSIDetectorHit {
 //    Long_t   ts;
 //    Int_t    time;
 
-  ClassDef(TS3Hit,3);
+  ClassDef(TS3Hit,4);
 
 };
 

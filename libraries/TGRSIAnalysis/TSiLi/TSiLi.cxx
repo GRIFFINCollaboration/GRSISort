@@ -1,60 +1,60 @@
-
+#include <iostream>
 #include "TSiLi.h"
+#include <TRandom.h>
+#include <TMath.h>
+#include <TClass.h>
 #include <TGRSIRunInfo.h>
 
 ClassImp(TSiLi)
 
-TSiLi::TSiLi() : data(0)  {  }
+TSiLi::TSiLi() : silidata(0)  {
+// #if MAJOR_ROOT_VERSION < 6
+//    Class()->IgnoreTObjectStreamer(kTRUE);
+// #endif
+   Clear();	
+}
 
 TSiLi::~TSiLi()  {
-  if(data) delete data;   
+  if(silidata) delete silidata;   
+}
+
+void TSiLi::Copy(TObject &rhs) const {
+  TGRSIDetector::Copy(rhs);
+// #if MAJOR_ROOT_VERSION < 6
+//    Class()->IgnoreTObjectStreamer(kTRUE);
+// #endif
+
+  static_cast<TSiLi&>(rhs).silidata     = 0;
+  static_cast<TSiLi&>(rhs).sili_hits     = sili_hits;
+  return;                                      
+}  
+
+
+TSiLi::TSiLi(const TSiLi& rhs) : TGRSIDetector() {
+  rhs.Copy(*this);
 }
 
 void TSiLi::Clear(Option_t *opt)  {
-  if(data) data->Clear();
-  sili_hits.clear();
+   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+      TGRSIDetector::Clear(opt);
+      if(silidata) silidata->Clear();
+   }
+   sili_hits.clear();
+}
+
+TSiLi& TSiLi::operator=(const TSiLi& rhs) {
+   rhs.Copy(*this);
+   return *this;
 }
 
 void TSiLi::Print(Option_t *opt) const  {  
-  printf("===============\n");
-  printf("not yet written\n");
-  printf("===============\n");
+  printf("silidata = 0x%p\n", (void*) silidata);
+  if(silidata) silidata->Print();
+  printf("%lu sili_hits\n",sili_hits.size());
 }
 
-void TSiLi::FillData(TFragment *frag,TChannel *chan, MNEMONIC *mnem) {
-  if(!data) data = new TSiLiData();
-  data->SetSiLi(frag,chan,mnem);
-}
-
-
-void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
-  TSiLiData *sdata = (TSiLiData*)data;
-  if(!sdata)
-    sdata = this->data;
-  if(!sdata)
-    return;
-
-  TSiLiHit hit;
-
-  for(UInt_t i=0;i<sdata->GetMultiplicity();i++)     { 
-	  hit.SetSegment(sdata->GetSegment(i));
-     TVector3 tmppos = GetPosition(hit.GetSegment());
-     hit.SetPosition(tmppos);
-     TFragment tmp = sdata->GetFragment(i);
-     hit.SetVariables(tmp);
-
-	 if(TGRSIRunInfo::IsWaveformFitting()) 
-     	hit.SetWavefit(tmp);
-  
-     sili_hits.push_back(hit);
-  }
-
-}
-
-TVector3 TSiLi::GetPosition(int seg)  {
-  TVector3 position;
-  position.SetXYZ(0,0,-1);
-  return position;
+TGRSIDetectorHit* TSiLi::GetHit(const Int_t& idx){
+   return GetSiLiHit(idx);
 }
 
 TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {  
@@ -66,4 +66,63 @@ TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {
       throw grsi::exit_exception(1);
    }
    return 0;
-}  
+}   
+
+void TSiLi::PushBackHit(TGRSIDetectorHit *deshit) {
+  sili_hits.push_back(*((TSiLiHit*)deshit));
+  return;
+}
+
+void TSiLi::FillData(TFragment *frag,TChannel *channel, MNEMONIC *mnemonic) {
+   if(!frag || !channel || !mnemonic)
+      return;
+
+   if(!silidata)   
+      silidata = new TSiLiData();
+
+  silidata->SetSiLi(frag,channel,mnemonic);
+  
+  TSiLiData::Set();
+}
+
+
+void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
+  TSiLiData *sdata = (TSiLiData*)data;
+  if(!sdata)
+    sdata = this->silidata;
+  if(!sdata)
+    return;
+
+   Clear("");
+  
+   //sili_hits.reserve(sdata->GetMultiplicity());
+  for(UInt_t i=0;i<sdata->GetMultiplicity();i++)     { 
+	  
+      //Set the base data
+      TFragment tmpfrag = sdata->GetFragment(i);
+      TSiLiHit dethit(tmpfrag);
+      //TSiLiHit dethit;
+      //dethit.CopyFragment(tmpfrag);
+
+      //set the detector unique data
+      dethit.SetSegment(sdata->GetSegment(i));
+      TVector3 tmppos = GetPosition(dethit.GetSegment());
+      dethit.SetPosition(tmppos);
+   
+      //used to set the basic here, now just set the basic that isnt standard (led in this case)
+      dethit.SetVariables(tmpfrag);
+      
+      //do some fits and set that data
+       if(TGRSIRunInfo::IsWaveformFitting()) 
+     	 dethit.SetWavefit(tmpfrag);
+  
+      sili_hits.push_back(dethit);
+  }
+
+}
+
+TVector3 TSiLi::GetPosition(int seg)  {
+  TVector3 position;
+  position.SetXYZ(0,0,-1);
+  return position;
+}

@@ -1,6 +1,8 @@
 #ifndef TSILIHIT_H
 #define TSILIHIT_H
 
+#include "Globals.h"
+
 #include <cstdio>
 #include <utility>
 
@@ -12,8 +14,11 @@
 class TSiLiHit : public TGRSIDetectorHit {
   public:
     TSiLiHit();
-    ~TSiLiHit();
+    TSiLiHit(TFragment &);	
+    virtual ~TSiLiHit();
+	 TSiLiHit(const TSiLiHit&);
 
+    void Copy(TObject&) const;        //!
     void Clear(Option_t *opt="");
     void Print(Option_t *opt="") const;
     
@@ -33,11 +38,12 @@ class TSiLiHit : public TGRSIDetectorHit {
 //     using TGRSIDetectorHit::SetPosition; //This is here to fix warnings. Will leave when lean-ness occurs
 //     void SetPosition(TVector3 &vec)    { fposition = vec; }
     void SetVariables(TFragment &frag) { //SetEnergy(frag.GetEnergy());
-                                         SetCfd(frag.GetCfd());
-                                         SetCharge(frag.GetCharge());
-                                         SetTimeStamp(frag.GetTimeStamp()); 
+// 					 SetAddress(frag.ChannelAddress);	
+//                                          SetCfd(frag.GetCfd());
+//                                          SetCharge(frag.GetCharge());
+//                                          SetTimeStamp(frag.GetTimeStamp()); 
                                          //SetTime(frag.GetZCross());
-										 led    = frag.GetLed(); }
+					  led    = frag.GetLed(); }
     void SetWavefit(TFragment&);
 
 //     Double_t fit_time(TFragment &);
@@ -52,7 +58,7 @@ class TSiLiHit : public TGRSIDetectorHit {
     Double_t    time_fit;
     Double_t    sig2noise;
   
-  ClassDef(TSiLiHit,5);
+  ClassDef(TSiLiHit,6);
 
 };
 

@@ -1,14 +1,16 @@
 #ifndef TS3DATA_H
 #define TS3DATA_H
-
-#include <cstdlib>
-#include <vector>
 #include <map>
 
+#include <cstdlib>
+#include <cstdio>
+#include <vector>
+
+#include "Globals.h"
 #include "TFragment.h"
 #include "TChannel.h"
-#include "TGRSIDetectorData.h"
 
+#include "TGRSIDetectorData.h"
 #include "Rtypes.h"
 
 class TS3Data : public TGRSIDetectorData  {
@@ -21,10 +23,15 @@ class TS3Data : public TGRSIDetectorData  {
     std::vector<UShort_t>  fS3_SectorDetector;
     std::vector<UShort_t>  fS3_SectorNumber;
     std::vector<TFragment> fS3_SectorFragment;
+    
+   static bool fIsSet;      //!
 
   public:
     TS3Data();
     ~TS3Data();
+
+		static void Set(bool flag=true) { fIsSet=flag; } //!
+		static bool IsSet() { return fIsSet; }           //!
 
     void Clear(Option_t *opt = "");
     void Print(Option_t *opt = "") const;
