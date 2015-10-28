@@ -166,9 +166,9 @@ class TSingleDecay : public TVirtualDecay {
    TSingleDecay *fParent;        //Parent Decay
    TSingleDecay *fDaughter;      //Daughter Decay
    TSingleDecay *fFirstParent;   //FirstParent in the decay
-   Int_t fUnId;
-   static UInt_t fCounter;
-   Int_t fChainId;
+   Int_t fUnId;                  //The Unique ID of the Decay
+   static UInt_t fCounter;       //Helps set unique Id's
+   Int_t fChainId;               //The chain that the single decay belongs to
 
  //  static Double_t ExpDecay(Double_t *dim, Double_t par);
 
