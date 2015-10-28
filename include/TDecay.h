@@ -68,7 +68,7 @@ class TVirtualDecay : public TNamed {
    ~TVirtualDecay() {}
 
    virtual void DrawComponents(Option_t * opt = "",Bool_t color_flag = true);
-   void Print(Option_t *opt ="") const = 0;
+   virtual void Print(Option_t *opt ="") const = 0;
 
   private:
    virtual TDecayFit const* GetFitFunction() = 0;
