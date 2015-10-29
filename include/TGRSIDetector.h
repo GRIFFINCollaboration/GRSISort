@@ -43,27 +43,25 @@ class TGRSIDetector : public TDetector	{
 		virtual ~TGRSIDetector();
 
 	public: 
-      //virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
-		virtual void BuildHits(TDetectorData *data=0,Option_t * = "") { AbstractMethod("BuildHits()"); } //! = 0; //!
-		virtual void FillData(TFragment*,TChannel*,MNEMONIC*)         { AbstractMethod("FillData()");  } //! = 0; //!
-		virtual void BuildHits(TFragment*, MNEMONIC*)                 { AbstractMethod("BuildHits()"); } //! = 0; //!
+		//virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
+		virtual void AddFragment(TFragment*, MNEMONIC*)         { AbstractMethod("AddFragment()"); } //! = 0; //!
+		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
-
-      virtual void Copy(TObject&) const;              //!
-      virtual void Clear(Option_t *opt = "");         //!
+		virtual void Copy(TObject&) const;              //!
+		virtual void Clear(Option_t *opt = "");         //!
 		virtual void Print(Option_t *opt = "") const;   //!
 
-      void AddHit(TGRSIDetectorHit *hit,Option_t *opt ="");
-//      virtual void AddHit(TGRSIDetectorHit* hit, Option_t *opt ="") {}        //!
+		void AddHit(TGRSIDetectorHit *hit,Option_t *opt ="");
+		//      virtual void AddHit(TGRSIDetectorHit* hit, Option_t *opt ="") {}        //!
 
-    //  void Init();
+		//  void Init();
 
-   protected:
-      virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
-      //virtual TGRSIDetectorData *GetData() //{ //return data;}
-      //TGRSIDetectorData *data;    //!
+	protected:
+		virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
+		//virtual TGRSIDetectorData *GetData() //{ //return data;}
+		//TGRSIDetectorData *data;    //!
 
-   ClassDef(TGRSIDetector,1) //Abstract class for detector systems 
+		ClassDef(TGRSIDetector,1) //Abstract class for detector systems 
 };
 
 

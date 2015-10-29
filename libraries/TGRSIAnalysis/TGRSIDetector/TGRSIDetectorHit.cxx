@@ -82,18 +82,17 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt) const {
 }
 
 double TGRSIDetectorHit::GetEnergy(Option_t *opt){
-   if(IsEnergySet()){
+   if(IsEnergySet()) {
       return fenergy;
    }
 
    TChannel *chan = GetChannel();
-   if(!chan){
+   if(!chan) {
       printf("no TChannel set for this address\n");
       return 0.00;
    }
-      SetEnergy(chan->CalibrateENG(GetCharge()));
-      return fenergy;
-
+	SetEnergy(chan->CalibrateENG(GetCharge()));
+	return fenergy;
 }
 
 void TGRSIDetectorHit::Copy(TObject &rhs) const {

@@ -1,8 +1,6 @@
 #ifndef TSHARC_H
 #define TSHARC_H
 
-#include "Globals.h"
-
 #include <vector>
 #include <cstdio>
 #include <map>
@@ -11,87 +9,82 @@
 #include "TMath.h"
 #include "TVector3.h"
 
+#include "Globals.h"
 #include "TGRSIDetector.h"
-
 #include "TSharcHit.h"
-class TSharcData;
 
 class TSharc : public TGRSIDetector  {
-  public:
-    TSharc();
-    virtual ~TSharc();
-    TSharc(const TSharc& rhs);
+	public:
+		TSharc();
+		virtual ~TSharc();
+		TSharc(const TSharc& rhs);
 
-  public: 
-    TSharcHit        *GetSharcHit(const int& i);  
-    TGRSIDetectorHit *GetHit(const int& i);
-    static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);  //! 
-    static double GetXOffset()  { return X_offset; }
-    static double GetYOffset()  { return Y_offset; }
-    static double GetZOffset()  { return Z_offset; }
-    static TVector3 GetOffset() { return TVector3(X_offset,Y_offset,Z_offset); } 
-    static void   SetXYZOffset(const double x,const double y,const double z) { X_offset =x; Y_offset=y; Z_offset=z; }
+	public: 
+		TSharcHit        *GetSharcHit(const int& i);  
+		TGRSIDetectorHit *GetHit(const int& i);
+		static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);  //! 
+		static double GetXOffset()  { return X_offset; }
+		static double GetYOffset()  { return Y_offset; }
+		static double GetZOffset()  { return Z_offset; }
+		static TVector3 GetOffset() { return TVector3(X_offset,Y_offset,Z_offset); } 
+		static void   SetXYZOffset(const double x,const double y,const double z) { X_offset =x; Y_offset=y; Z_offset=z; }
 
 
-    int GetSize() const { return sharc_hits.size();} //!
-    Short_t GetMultiplicity() const { return sharc_hits.size(); } 
+		int GetSize() const { return fSharcHits.size();} //!
+		Short_t GetMultiplicity() const { return fSharcHits.size(); } 
 
-    virtual void Copy(TObject&) const;         //!
-    virtual void Clear(Option_t * = "");       //!
-    virtual void Print(Option_t * = "") const; //!
-    
-    TSharc& operator=(const TSharc& rhs)  { if(this!=&rhs) ((TSharc&)rhs).Copy(*this); return *this; }//!
+		virtual void Copy(TObject&) const;         //!
+		virtual void Clear(Option_t * = "");       //!
+		virtual void Print(Option_t * = "") const; //!
 
-    //TSharcData *GetData() { return &data; }  //!
-    void FillData(TFragment*,TChannel*,MNEMONIC*);           //! Collects the fragments to make front/back/pad coinc.
-	 void BuildHits(TFragment*, MNEMONIC*); //!
-    void BuildHits(TDetectorData *sd=0,Option_t * = ""); //! Builds the fragments into sharchits.
+		TSharc& operator=(const TSharc& rhs)  { if(this!=&rhs) rhs.Copy(*this); return *this; }//!
 
-  protected:
-    void PushBackHit(TGRSIDetectorHit* sharchit) { sharc_hits.push_back(*((TSharcHit*)sharchit)); };
-  
-  private:
-    std::vector <TSharcHit> sharc_hits;
-    int  CombineHits(TSharcHit*,TSharcHit*,int,int);        //!
-    void RemoveHits(std::vector<TSharcHit>*,std::set<int>*);  //!
+		void AddFragment(TFragment*, MNEMONIC*); //!
+		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
-  private: 
-    TSharcData *data;    //!
+	protected:
+		void PushBackHit(TGRSIDetectorHit* sharcHit) { fSharcHits.push_back(*(static_cast<TSharcHit*>(sharcHit))); };
 
-    static double X_offset;  //!
-    static double Y_offset;  //!
-    static double Z_offset;  //!
+	private:
+		std::vector <TSharcHit> fSharcHits;
+		int  CombineHits(TSharcHit*,TSharcHit*,int,int);        //!
+		void RemoveHits(std::vector<TSharcHit>*,std::set<int>*);  //!
 
-    // various sharc dimensions set in mm, taken from IOP SHARC white paper
-    static double Xdim; // total X dimension of all boxes
-    static double Ydim; // total Y dimension of all boxes
-    static double Zdim; // total Z dimension of all boxes
-    static double Rdim; // Rmax-Rmin for all QQQs 
-    static double Pdim; // QQQ quadrant angular range (degrees)
-    // BOX dimensions
-    static double XposUB;
-    static double YminUB; 
-    static double ZminUB; 
-    static double XposDB; 
-    static double YminDB; 
-    static double ZminDB; 
-    // QQQ dimensions
-    static double ZposUQ;    
-    static double RminUQ;
-    static double PminUQ; // degrees
-    static double ZposDQ;    
-    static double RminDQ;
-    static double PminDQ; // degrees
-    // segmentation
-    //static const int frontstripslist[16]   ;
-    //static const int backstripslist[16]    ;        
-    //pitches
-    static  double stripFpitch;
-    static  double stripBpitch;
-    static  double ringpitch;
-    static  double segmentpitch; // angular pitch, degrees
+	private: 
+		static double X_offset;  //!
+		static double Y_offset;  //!
+		static double Z_offset;  //!
 
-   ClassDef(TSharc,6)  
+		// various sharc dimensions set in mm, taken from IOP SHARC white paper
+		static double Xdim; // total X dimension of all boxes
+		static double Ydim; // total Y dimension of all boxes
+		static double Zdim; // total Z dimension of all boxes
+		static double Rdim; // Rmax-Rmin for all QQQs 
+		static double Pdim; // QQQ quadrant angular range (degrees)
+		// BOX dimensions
+		static double XposUB;
+		static double YminUB; 
+		static double ZminUB; 
+		static double XposDB; 
+		static double YminDB; 
+		static double ZminDB; 
+		// QQQ dimensions
+		static double ZposUQ;    
+		static double RminUQ;
+		static double PminUQ; // degrees
+		static double ZposDQ;    
+		static double RminDQ;
+		static double PminDQ; // degrees
+		// segmentation
+		//static const int frontstripslist[16]   ;
+		//static const int backstripslist[16]    ;        
+		//pitches
+		static  double stripFpitch;
+		static  double stripBpitch;
+		static  double ringpitch;
+		static  double segmentpitch; // angular pitch, degrees
+
+		ClassDef(TSharc,7)
 };
 
 

@@ -1,50 +1,40 @@
 #ifndef TTRIFOIL_PHASE_H
 #define TTRIFOIL_PHASE_H
 
-
 #include <vector>
 #include <iostream>
 #include <stdio.h>
 
 #include "TDetector.h"
-
 #include "TFragment.h"
-#ifndef __CINT__
-#include "TTriFoilData.h"
-#else
-class TTriFoilData;
-#endif
 
 class TTriFoil :  public TDetector {
-  public:
-	TTriFoil();
-	virtual ~TTriFoil();
-	TTriFoil(const TTriFoil& rhs);
+	public:
+		TTriFoil();
+		virtual ~TTriFoil();
+		TTriFoil(const TTriFoil& rhs);
 
-	std::vector<Short_t> GetWave() { return tf_wave;	};
-	bool Beam() const{return beam;};
-	int TBeam() const {return tbeam;};
-	
-	bool HasWave() const { return !tf_wave.empty(); };
-	time_t GetTimeStamp() const {return timestamp;}
+		std::vector<Short_t> GetWave() { return fTfWave; }
+		bool Beam() const { return fBeam; }
+		int TBeam() const { return fTBeam; }
 
-	void BuildHits(TDetectorData *data=0, Option_t * = "");	//!
-	void FillData(TFragment*,TChannel*,MNEMONIC*);	//!
-	void BuildHits(TFragment*, MNEMONIC*); //!
+		bool HasWave() const { return !fTfWave.empty(); }
+		time_t GetTimeStamp() const { return fTimestamp; }
 
-	void Clear(Option_t *opt = ""); 	//!
-	void Print(Option_t *opt = "") const; 	//!
-	void Copy(TObject &rhs) const;
-	
-  private:
-	TTriFoilData *data;		//!
+		void AddFragment(TFragment*, MNEMONIC*); //!
+		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
-	std::vector<Short_t> tf_wave;
-	time_t timestamp;
-	bool beam;
-	int tbeam;
-		
-	ClassDef(TTriFoil,2)
+		void Clear(Option_t *opt = ""); 	//!
+		void Print(Option_t *opt = "") const; 	//!
+		void Copy(TObject &rhs) const;
+
+	private:
+		std::vector<Short_t> fTfWave;
+		time_t fTimestamp;
+		bool fBeam;
+		int fTBeam;
+
+		ClassDef(TTriFoil,2)
 };
 
 

@@ -748,70 +748,70 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          //We use the MNEMONIC in order to figure out what detector we want to put the set of fragments into
          if(mnemonic.system.compare("TI")==0) {
             if(detectors->find("TI") == detectors->end()) {
-               (*detectors)["TI"] = new TTigress;
+					(*detectors)["TI"] = new TTigress;
             }
-            (*detectors)["TI"]->BuildHits(&(event->at(i)), &mnemonic);
+            (*detectors)["TI"]->AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("SH")==0) {
             if(detectors->find("SH") == detectors->end()) {
                (*detectors)["SH"] = new TSharc;
             }
-            (*detectors)["SH"]->BuildHits(&(event->at(i)), &mnemonic);
+            (*detectors)["SH"]->AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("Tr")==0) {	
             if(detectors->find("Tr") == detectors->end()) {
                (*detectors)["Tr"] = new TTriFoil;
             }
-            (*detectors)["Tr"]->BuildHits(&(event->at(i)), &mnemonic);
+            (*detectors)["Tr"]->AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("RF")==0) {	
             if(detectors->find("RF") == detectors->end()) {
                (*detectors)["RF"] = new TRF;
             }
-            (*detectors)["RF"]->BuildHits(&(event->at(i)), &mnemonic);
+            (*detectors)["RF"]->AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("SP")==0) {
             if(mnemonic.subsystem.compare("I")==0) {
                if(detectors->find("SPI") == detectors->end()) {
                   (*detectors)["SPI"] = new TSiLi;
                }
-               (*detectors)["SPI"]->BuildHits(&(event->at(i)), &mnemonic);
+               (*detectors)["SPI"]->AddFragment(&(event->at(i)), &mnemonic);
             } else {
                if(detectors->find("SPE") == detectors->end()) {
                   (*detectors)["SPE"] = new TS3;
                }
-               (*detectors)["SPE"]->BuildHits(&(event->at(i)), &mnemonic);
+               (*detectors)["SPE"]->AddFragment(&(event->at(i)), &mnemonic);
             }
          } else if(mnemonic.system.compare("CS")==0) {	
             if(detectors->find("CS") == detectors->end()) {
                (*detectors)["CS"] = new TCSM;
             }
-            (*detectors)["CS"]->BuildHits(&(event->at(i)), &mnemonic);
+            (*detectors)["CS"]->AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("GR")==0) {
             if(detectors->find("GR") == detectors->end()) {
                (*detectors)["GR"] = new TGriffin;
             }
-            (*detectors)["GR"]->BuildHits(&(event->at(i)), &mnemonic);
+            (*detectors)["GR"]->AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("SE")==0) {
             if(detectors->find("SE") == detectors->end()) {
                (*detectors)["SE"] = new TSceptar;
             }
-            (*detectors)["SE"]->BuildHits(&(event->at(i)), &mnemonic);
+            (*detectors)["SE"]->AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("PA")==0) {	
             if(detectors->find("PA") == detectors->end()) {
                (*detectors)["PA"] = new TPaces;
             }
-            (*detectors)["PA"]->BuildHits(&(event->at(i)), &mnemonic);
+            (*detectors)["PA"]->AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("DS")==0) {	
             if(detectors->find("DS") == detectors->end()) {
                (*detectors)["DS"] = new TDescant;
             }
-            (*detectors)["DS"]->BuildHits(&(event->at(i)), &mnemonic);
+            (*detectors)["DS"]->AddFragment(&(event->at(i)), &mnemonic);
          //} else if(mnemonic.system.compare("DA")==0) {	
-         //	BuildHits(&(event->at(i)), &mnemonic);
+         //	AddFragment(&(event->at(i)), &mnemonic);
          //} else if(mnemonic.system.compare("ZD")==0) {	
-         //	BuildHits(&(event->at(i)), &mnemonic);
+         //	AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("TP")==0) {	
             if(detectors->find("TP") == detectors->end()) {
                (*detectors)["TP"] = new TTip;
             }
-            (*detectors)["TP"]->BuildHits(&(event->at(i)), &mnemonic);
+            (*detectors)["TP"]->AddFragment(&(event->at(i)), &mnemonic);
          }
       }
 
@@ -820,7 +820,6 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          FillWriteQueue(detectors);
       }
       delete event;
-   
    }
 }
 
