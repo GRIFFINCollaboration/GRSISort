@@ -27,7 +27,7 @@ class TS3 : public TDetector {
     virtual void FillData(TFragment*,TChannel*,MNEMONIC*);
 
     TS3Hit *GetS3Hit(const int& i);  
-    Short_t GetMultiplicity()  {  return s3_hits.size();}
+    Short_t GetMultiplicity() const  {  return s3_hits.size();}
 
 
     TVector3 GetPosition(int front, int back);
