@@ -60,8 +60,10 @@ Double_t TGRSIDetectorHit::GetTime(Option_t *opt) const{
 
    Double_t dtime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
    TChannel *chan = GetChannel();
-   if(!chan)
+   if(!chan){
+      Error("GetTime","No TChannel exists for address %08x",GetAddress());
       return dtime;
+   }
 
    return dtime-chan->GetTZero(GetEnergy());
 }
@@ -72,8 +74,10 @@ Double_t TGRSIDetectorHit::GetTime(Option_t *opt) {
 
    Double_t dtime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
    TChannel *chan = GetChannel();
-   if(!chan)
+   if(!chan){
+      Error("GetTime","No TChannel exists for address %08x",GetAddress());
       return dtime;
+   }
    
    SetTime(dtime-chan->GetTZero(GetEnergy()));
 
@@ -87,7 +91,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt) const {
 
    TChannel *chan = GetChannel();
    if(!chan){
-      printf("no TChannel set for this address\n");
+      Error("GetEnergy","No TChannel exists for address %08x",GetAddress());
       return 0.00;
    }
       return chan->CalibrateENG(GetCharge());
@@ -100,7 +104,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt){
 
    TChannel *chan = GetChannel();
    if(!chan){
-      printf("no TChannel set for this address\n");
+      Error("GetEnergy","No TChannel exists for address %08x",GetAddress());
       return 0.00;
    }
       SetEnergy(chan->CalibrateENG(GetCharge()));
@@ -158,7 +162,7 @@ UInt_t TGRSIDetectorHit::GetDetector() const {
    MNEMONIC mnemonic;
    TChannel *channel = GetChannel();
    if(!channel){
-      Error("SetDetector","No TChannel exists for address %u",GetAddress());
+      Error("GetDetector","No TChannel exists for address %08x",GetAddress());
       return -1;
    }
    ClearMNEMONIC(&mnemonic);
@@ -173,7 +177,7 @@ UInt_t TGRSIDetectorHit::GetDetector() {
    MNEMONIC mnemonic;
    TChannel *channel = GetChannel();
    if(!channel){
-      Error("SetDetector","No TChannel exists for address %u",GetAddress());
+      Error("GetDetector","No TChannel exists for address %u",GetAddress());
       return -1;
    }
    ClearMNEMONIC(&mnemonic);
