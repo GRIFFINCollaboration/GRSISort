@@ -94,7 +94,9 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt) const {
 }
 
 double TGRSIDetectorHit::GetEnergy(Option_t *opt){
+   printf("GetEnergy\n");
    if(IsEnergySet()){
+   printf("GetEnergy is set\n");
       return fenergy;
    }
 
@@ -104,6 +106,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t *opt){
       return 0.00;
    }
       SetEnergy(chan->CalibrateENG(GetCharge()));
+   printf("SetEnergy\n");
       return fenergy;
 
 }
