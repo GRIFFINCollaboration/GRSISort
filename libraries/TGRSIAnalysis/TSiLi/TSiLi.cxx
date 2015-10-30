@@ -98,16 +98,12 @@ void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
       //TSiLiHit dethit;
       //dethit.CopyFragment(tmpfrag);
 
-      //set the detector unique data
-      dethit.SetSegment(sdata->GetSegment(i));
-      TVector3 tmppos = GetPosition(dethit.GetSegment());
-      dethit.SetPosition(tmppos);
-   
       //used to set the basic here, now just set the basic that isnt standard (led in this case)
       dethit.SetVariables(tmpfrag);
       
-      //do some fits and set that data
-       if(TGRSIRunInfo::IsWaveformFitting()) 
+      //set the detector unique data
+      dethit.SetSegment(sdata->GetSegment(i));
+      if(TGRSIRunInfo::IsWaveformFitting()) //do some fits and set that data
      	 dethit.SetWavefit(tmpfrag);
   
       sili_hits.push_back(dethit);

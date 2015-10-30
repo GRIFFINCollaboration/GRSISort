@@ -33,15 +33,16 @@ class TS3 : public TGRSIDetector {
     void Print(Option_t *opt="") const;
     void PushBackHit(TGRSIDetectorHit* deshit);
      
-    void BuildHits(TDetectorData *data=0,Option_t *opt="");
-    void FillData(TFragment*,TChannel*,MNEMONIC*);
-
+//     void BuildHits(TDetectorData *data=0,Option_t *opt="");
+//     void FillData(TFragment*,TChannel*,MNEMONIC*);
     TS3& operator=(const TS3&);  // 
      
-    Short_t GetMultiplicity() const {  return s3_hits.size();}
+    virtual void BuildHits(TDetectorData *data=0,Option_t *opt="");
+    virtual void FillData(TFragment*,TChannel*,MNEMONIC*);
 
+    Short_t GetMultiplicity() const  {  return s3_hits.size();}
 
-    TVector3 GetPosition(int front, int back);
+    static TVector3 GetPosition(int ring, int sector);
 
 
   private:

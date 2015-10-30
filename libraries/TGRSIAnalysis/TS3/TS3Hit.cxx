@@ -1,5 +1,4 @@
-
-
+#include "TS3.h"
 #include "TS3Hit.h"
 
 ClassImp(TS3Hit)
@@ -33,6 +32,9 @@ void TS3Hit::Clear(Option_t *opt)	{
    sector         = -1;
 }
 
+TVector3 TS3Hit::GetChannelPosition(double dist) const {
+	return TS3::GetPosition(GetRing(),GetSector());
+}
 
 void TS3Hit::Print(Option_t *opt) const	{
 	printf("================\n");

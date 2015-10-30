@@ -30,8 +30,8 @@ class TS3Data : public TGRSIDetectorData  {
     TS3Data();
     ~TS3Data();
 
-		static void Set(bool flag=true) { fIsSet=flag; } //!
-		static bool IsSet() { return fIsSet; }           //!
+    static void Set(bool flag=true) { fIsSet=flag; } //!
+    static bool IsSet() { return fIsSet; }           //!
 
     void Clear(Option_t *opt = "");
     void Print(Option_t *opt = "") const;

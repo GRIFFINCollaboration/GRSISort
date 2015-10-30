@@ -15,15 +15,9 @@ class TS3Hit : public TGRSIDetectorHit {
     virtual ~TS3Hit();
 	 TS3Hit(const TS3Hit&);
 
- //   Double_t GetEnergy()       {  return energy;  }
- //   Int_t    GetCharge()       {  return charge;  }
- //   Long_t   GetTimeStamp()    {  return ts;      }
- //   Int_t    GetTime()         {  return time;    }
- //   Short_t  GetDetectorNumber()     { return detectornumber;  }
-    Double_t GetLed()          {  return led;     }
-    Short_t  GetRingNumber()   { return ring;   }
-    Short_t  GetSectorNumber() { return sector; }
- //   Double_t GetCFD()          { return cfd;    }
+    Double_t GetLed()   const  { return led;    }
+    Short_t  GetRing()  const  { return ring;   }
+    Short_t  GetSector() const { return sector; }
 
   public:
     void Copy(TObject&) const;        //!
@@ -32,19 +26,12 @@ class TS3Hit : public TGRSIDetectorHit {
 
     void SetRingNumber(Short_t rn)     { ring = rn;   }
     void SetSectorNumber(Short_t sn)   { sector = sn; }
-//    void SetDetectorNumber(Short_t dn) { detectornumber = dn; }
-//    void SetPosition(TVector3 &vec)    { fposition = vec; }
-    void SetVariables(TFragment &frag) { //SetEnergy(frag.GetEnergy());
-// 					 SetAddress(frag.ChannelAddress);						
-//                                          SetCfd(frag.GetCfd());
-//                                          SetCharge(frag.GetCharge());
-//                                          SetTimeStamp(frag.GetTimeStamp()); 
-                                         //SetTime(frag.GetZCross());
-					 led    = frag.GetLed(); }
+    void SetVariables(TFragment &frag) {  led    = frag.GetLed(); }
  
 
   private:
-    //TVector3 position;
+      TVector3 GetChannelPosition(Double_t dist = 0) const; //!
+    
     Double_t    led;
     Short_t  ring;   //front
     Short_t  sector; //back
@@ -55,7 +42,7 @@ class TS3Hit : public TGRSIDetectorHit {
 //    Long_t   ts;
 //    Int_t    time;
 
-  ClassDef(TS3Hit,4);
+  ClassDef(TS3Hit,5);
 
 };
 

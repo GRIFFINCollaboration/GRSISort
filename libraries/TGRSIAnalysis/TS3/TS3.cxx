@@ -125,18 +125,11 @@ void TS3::BuildHits(TDetectorData *data,Option_t *opt)  {
 	//Set the base data     
         TFragment tmpfrag = sdata->GetRing_Fragment(i);
         TS3Hit dethit(tmpfrag);
-	//TS3Hit dethit;
-        //dethit.CopyFragment(tmpfrag);
 	
-        //set the detector unique data	
+        dethit.SetVariables(tmpfrag);	
+	
         dethit.SetRingNumber(sdata->GetRing_Number(i));
         dethit.SetSectorNumber(sdata->GetSector_Number(j));
-        dethit.SetDetector(sdata->GetRing_Detector(i));
-        TVector3 tmppos = GetPosition(dethit.GetRingNumber(),dethit.GetSectorNumber());
-        dethit.SetPosition(tmppos);
-	
-        //used to set the basic here, now just set the basic that isnt standard (led in this case)
-        dethit.SetVariables(tmpfrag);
 		
         s3_hits.push_back(dethit);
       }

@@ -2,6 +2,27 @@
 #include "Math/Minimizer.h"
 #include "Math/Factory.h"
 #include "Math/Functor.h"
+#include "GCanvas.h"
+
+///////////////////////////////////////////////////////////////////////
+//
+//    TDecay
+//
+// TDecay is a class for fitting halflives during nuclear decay
+// A TDecay consists of multiple TDecayChains, where a TDecayChain
+// is starts at a specific nucleus which has a population before the
+// decay fit takes place. This could be a nucleus with a daughter.
+// One TDecayChain would consist of just the daughter while the
+// the other decay chain would be the parent and daughter. 
+// TDecayChains are made up of multiple TSingleDecays which holds
+// the nucleus specific information such as name, id, halflife and
+// intensity. When any of the above classes are fit to a histogram,
+// they use a TDecayFit. The TDecayFit is a a TF1 with extra information
+// such as the class that was used to create the TDecayFit. Furthermore,
+// the function DrawComponents() can be used to draw the activites of the 
+// individual nuclei involved in the TDecayFit.
+//
+///////////////////////////////////////////////////////////////////////
 
 ClassImp(TSingleDecay)
 ClassImp(TDecayChain)
@@ -15,18 +36,18 @@ UInt_t TDecayChain::fChainCounter = 0;
 TDecayFit::~TDecayFit(){
 }
 
-void TDecayFit::DrawComponents() const { 
-  printf("pointer: %p\n",(void*) fDecay);
-   
-   printf("Class: %s\n",fDecay->ClassName());
-   fDecay->DrawComponents("same");
+void TDecayFit::DrawComponents() const {
+	//This draws the individual components on the current canvas  
+   fDecay->DrawComponents("same"); 	
 }
 
 void TDecayFit::SetDecay(TVirtualDecay* decay){ 
+	// This tells the TDecayFit which TVirtualDecay it belongs to
    fDecay = decay;
 } 
 
 void TDecayFit::Print(Option_t *opt) const {
+	// This prints the parameters of the fit (decay rate, intensities, etc...)
    TF1::Print(opt);
    printf("fDecay = %p\n",(void*) fDecay);
 }
@@ -34,9 +55,18 @@ void TDecayFit::Print(Option_t *opt) const {
 TVirtualDecay* TDecayFit::GetDecay() const{
    return fDecay;
 }
+   
+TFitResultPtr TDecayFit::Fit(TH1* hist,Option_t* opt){
+   if(!hist) return 0;
+   TFitResultPtr tmpres = hist->Fit(this,opt);
+   UpdateResiduals(hist);
+   //Might be able to copy the style over to the new clone for the residuals.
+   //Will take a look at this later
+   this->DrawClone("same");
+   return tmpres;
+}
 
-void TDecayFit::Streamer(TBuffer &R__b)
-{
+void TDecayFit::Streamer(TBuffer &R__b){
    // Stream an object of class TDecayFit.
    if (R__b.IsReading()) {
       R__b.ReadClassBuffer(TDecayFit::Class(),this);
@@ -46,12 +76,59 @@ void TDecayFit::Streamer(TBuffer &R__b)
    
 }
 
-void TVirtualDecay::DrawComponents(Option_t* opt ,Bool_t color_flag) {
-   Draw(opt);
+void TDecayFit::DefaultGraphs() {
+   fResiduals.SetMarkerStyle(20);//Filled circle
+   fResiduals.SetMarkerSize(0.6);
+   fResiduals.SetTitle("Residuals");
 }
 
-void TVirtualDecay::Streamer(TBuffer &R__b)
-{
+void TDecayFit::UpdateResiduals(TH1* hist){
+   const Size_t oldmarker_size = fResiduals.GetMarkerSize();
+   const Color_t oldmarker_color = fResiduals.GetMarkerColor();
+   const Style_t oldmarker_style = fResiduals.GetMarkerStyle();
+   
+   //Clear the data points from the old TGraph
+   for(int i=0; i<fResiduals.GetN();++i){
+      fResiduals.RemovePoint(i);
+   }
+
+   Double_t xlow,xhigh;
+   GetRange(xlow,xhigh);
+   Int_t nbins = hist->GetXaxis()->GetNbins();
+   Double_t res;
+   Double_t bin;
+
+   for(int i =0;i<nbins;++i) {
+      if((hist->GetBinCenter(i) <= xlow) || (hist->GetBinCenter(i) >= xhigh))
+         continue;
+     // This might not be correct for Poisson statistics.
+      res = (hist->GetBinContent(i) - this->Eval(hist->GetBinCenter(i)))/hist->GetBinError(i);///GetHist()->GetBinError(i));// + this->GetParameter("Height") + 10.;
+      bin = hist->GetBinCenter(i);
+      fResiduals.SetPoint(i,bin,res);
+   }
+
+   fResiduals.SetMarkerSize(oldmarker_size);
+   fResiduals.SetMarkerColor(oldmarker_color);
+   fResiduals.SetMarkerStyle(oldmarker_style);
+
+}
+
+void TDecayFit::DrawResiduals(){
+   if(fResiduals.GetN()){
+      new GCanvas;
+      fResiduals.Draw("AP");
+   }
+   else
+      printf("Residuals not set yet\n");
+
+}
+
+void TVirtualDecay::DrawComponents(Option_t* opt ,Bool_t color_flag) {
+   printf("Draw components has not been set in %s \n", ClassName());
+   Draw(Form("same%s",opt));
+}
+
+void TVirtualDecay::Streamer(TBuffer &R__b){
    // Stream an object of class TVirtualDecay.
    if (R__b.IsReading()) {
       R__b.ReadClassBuffer(TVirtualDecay::Class(),this);
@@ -208,7 +285,7 @@ void TSingleDecay::UpdateDecays(){
 }
 
 void TSingleDecay::SetHalfLifeLimits(const Double_t &low, const Double_t &high){
-   if(low == 0 || high ==0)
+   if(low == 0)
       fDecayFunc->SetParLimits(1,std::log(2)/high,1e30);
 
    fDecayFunc->SetParLimits(1,std::log(2)/high,std::log(2)/low);
@@ -227,7 +304,7 @@ void TSingleDecay::SetDecayRateLimits(const Double_t &low, const Double_t &high)
 }
 
 void TSingleDecay::GetHalfLifeLimits(Double_t &low, Double_t &high) const{
-   fDecayFunc->GetParLimits(1,high,low);
+   fDecayFunc->GetParLimits(1,high,low); // This gets the decay rates, not the half-life.
    if(low == 0)
       low = 0.000000000001;
    if(high == 0)
@@ -258,11 +335,13 @@ void TSingleDecay::Draw(Option_t* option){
 }
 
 Double_t TSingleDecay::Eval(Double_t t){
+	// Evaluates the activity at a given time, t
    SetTotalDecayParameters();
    return fTotalDecayFunc->Eval(t);
 }
 
 Double_t TSingleDecay::EvalPar(const Double_t* x, const Double_t* par){
+	// Evaluates the activity at a given time t using parameters par.
    fTotalDecayFunc->InitArgs(x,par);
    return fTotalDecayFunc->EvalPar(x,par);
 }
@@ -280,8 +359,8 @@ Double_t TSingleDecay::ActivityFunc(Double_t *dim, Double_t *par){
    //Compute the first multiplication
    while(curDecay){
       ++gencounter;
-      //par[Generation] gets the activity for that decay since the parameters are stored
-      //as [intensity, act1,act2,...]
+      //par[Generation] gets the decay rate for that decay since the parameters are stored
+      //as [intensity, decayrate1,decayrate2,...]
       result *= par[curDecay->GetGeneration()];
 
       curDecay = curDecay->GetParentDecay();
@@ -290,7 +369,7 @@ Double_t TSingleDecay::ActivityFunc(Double_t *dim, Double_t *par){
          printf("We have Problems!\n");
          return 0.0;
    }
-   //Multiply by the initial intensity of the intial parent.
+   //Multiply by the initial intensity of the initial parent.
    result*=par[0]/par[1];
    //Now we need to deal with the second term
    Double_t sum = 0.0;
@@ -325,9 +404,10 @@ TFitResultPtr TSingleDecay::Fit(TH1* fithist,Option_t *opt) {
    Int_t parCounter = 1;
    TSingleDecay* curDecay = fFirstParent;
    SetTotalDecayParameters();
-   TFitResultPtr fitres = fithist->Fit(fTotalDecayFunc,Form("%sWLRS",opt));
+//   TFitResultPtr fitres = fithist->Fit(fTotalDecayFunc,Form("%sWLRS",opt));
+   TFitResultPtr fitres = fTotalDecayFunc->Fit(fithist,Form("%sWLRS",opt));
    Double_t chi2 = fitres->Chi2();
-   Double_t ndf = fitres->Ndf();
+   Double_t ndf = fitres->Ndf();  // This ndf needs to be changed by a weighted poisson.
 
    printf("Chi2/ndf = %lf\n",chi2/ndf);
 
@@ -446,10 +526,10 @@ void TDecayChain::DrawComponents(Option_t *opt, Bool_t color_flag) {
    SetChainParameters();
    fDecayChain.at(0)->SetMinimum(0);
    fDecayChain.at(0)->SetLineColor(1);
-   fDecayChain.at(0)->Draw();
+   fDecayChain.at(0)->Draw("Same");
    for(size_t i=1; i< fDecayChain.size(); ++i){
       if(color_flag){
-         fDecayChain.at(i)->SetLineColor(i+3);
+         fDecayChain.at(i)->SetLineColor(fDecayChain.at(i)->fUnId);
       }
       fDecayChain.at(i)->Draw(Form("same%s",opt));
     //  fDecayChain.at(i)->SetLineColor(orig_color);
@@ -489,7 +569,8 @@ TFitResultPtr TDecayChain::Fit(TH1* fithist, Option_t* opt) {
    Int_t parCounter = 1;
    TSingleDecay* curDecay = fDecayChain.at(0);
    SetChainParameters();
-   TFitResultPtr fitres = fithist->Fit(fChainFunc,Form("%sWLRS",opt));
+ //  TFitResultPtr fitres = fithist->Fit(fChainFunc,Form("%sWLRS",opt));
+   TFitResultPtr fitres = fChainFunc->Fit(fithist,Form("%sWLRS",opt));
    Double_t chi2 = fitres->Chi2();
    Double_t ndf = fitres->Ndf();
 
@@ -575,8 +656,8 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
    //Int_t parCounter = 1;
    SetParameters();
 
-   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sWLRS0",opt));
-   fFitFunc->DrawClone("same");
+//   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sWLRS0",opt));
+   TFitResultPtr fitres = fFitFunc->Fit(fithist,Form("%sWLRS",opt));
    Double_t chi2 = fitres->Chi2();
    Double_t ndf = fitres->Ndf();
 
@@ -677,13 +758,14 @@ void TDecay::DrawComponents(Option_t *opt, Bool_t color_flag) {
    Double_t low,high;
    fFitFunc->GetRange(low,high);
 
-   Int_t color_counter=1;
    TF1* tmp_comp = new TF1("tmpname",this,&TDecay::ComponentFunc,low,high,1,"TDecay","ComponentFunc");
    for(auto it = fDecayMap.begin(); it != fDecayMap.end(); ++it){
       tmp_comp->SetName(Form("Component_%d",it->first));
       tmp_comp->SetParameter(0,it->first);
-      if(color_counter == kRed || color_counter == kWhite) color_counter++;
-      tmp_comp->SetLineColor(color_counter++);
+      if(it->first == kWhite)
+         tmp_comp->SetLineColor(kOrange);
+      else
+         tmp_comp->SetLineColor(it->first);
       tmp_comp->DrawClone("same");
    }
    delete tmp_comp;

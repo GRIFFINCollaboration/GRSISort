@@ -42,8 +42,9 @@ class TSiLi: public TGRSIDetector  {
     
     Short_t GetMultiplicity() const         {  return  sili_hits.size();  }
 
-    TVector3 GetPosition(int segment);
-
+    static TVector3 GetPosition(int segment);
+   
+    
   private:
     #ifndef __CINT__
     TSiLiData *silidata;    //! 
