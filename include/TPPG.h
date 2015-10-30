@@ -108,7 +108,7 @@ class TPPG : public TObject	{
     const TPPGData* First();
     const TPPGData* Last();
 
-    virtual void Print(Option_t *opt = "") const;
+    virtual void Print(Option_t *opt = "");
     virtual void Clear(Option_t *opt = "");
 
   private:
