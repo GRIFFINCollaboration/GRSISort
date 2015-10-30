@@ -40,8 +40,8 @@ class TS3 : public TGRSIDetector {
     virtual void BuildHits(TDetectorData *data=0,Option_t *opt="");
     virtual void FillData(TFragment*,TChannel*,MNEMONIC*);
 
-    Short_t GetMultiplicity() const  {  return s3_hits.size();}
 
+    Short_t GetMultiplicity() const  {  return s3_hits.size();}
     static TVector3 GetPosition(int ring, int sector);
 
 
