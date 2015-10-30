@@ -1,10 +1,10 @@
-#include "TMath.h"
 #include "TSharc.h"
+
 #include <cstdio>
 #include <iostream>
-#include "TSharcData.h"
-#include "TClass.h"
 
+#include "TClass.h"
+#include "TMath.h"
 
 ClassImp(TSharc)
 

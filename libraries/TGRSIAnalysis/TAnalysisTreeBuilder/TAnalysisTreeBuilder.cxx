@@ -12,9 +12,6 @@
 
 #include <TGRSIOptions.h>
 
-//#include "TSharcData.h"
-
-
 TEventQueue *TEventQueue::fPtrToQue = 0;
 
 TEventQueue::TEventQueue() { }
