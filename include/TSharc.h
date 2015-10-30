@@ -20,14 +20,14 @@ class TSharc : public TGRSIDetector  {
 		TSharc(const TSharc& rhs);
 
 	public: 
-		TSharcHit        *GetSharcHit(const int& i);  
-		TGRSIDetectorHit *GetHit(const int& i);
+		TSharcHit*        GetSharcHit(const int& i);  
+		TGRSIDetectorHit* GetHit(const int& i);
 		static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);  //! 
-		static double GetXOffset()  { return X_offset; }
-		static double GetYOffset()  { return Y_offset; }
-		static double GetZOffset()  { return Z_offset; }
-		static TVector3 GetOffset() { return TVector3(X_offset,Y_offset,Z_offset); } 
-		static void   SetXYZOffset(const double x,const double y,const double z) { X_offset =x; Y_offset=y; Z_offset=z; }
+		static double GetXOffset()  { return fXoffset; }
+		static double GetYOffset()  { return fYoffset; }
+		static double GetZOffset()  { return fZoffset; }
+		static TVector3 GetOffset() { return TVector3(fXoffset,fYoffset,fZoffset); } 
+		static void   SetXYZOffset(const double x,const double y,const double z) { fXoffset =x; fYoffset=y; fZoffset=z; }
 
 
 		int GetSize() const { return fSharcHits.size();} //!
@@ -51,38 +51,38 @@ class TSharc : public TGRSIDetector  {
 		void RemoveHits(std::vector<TSharcHit>*,std::set<int>*);  //!
 
 	private: 
-		static double X_offset;  //!
-		static double Y_offset;  //!
-		static double Z_offset;  //!
+		static double fXoffset;  //!
+		static double fYoffset;  //!
+		static double fZoffset;  //!
 
 		// various sharc dimensions set in mm, taken from IOP SHARC white paper
-		static double Xdim; // total X dimension of all boxes
-		static double Ydim; // total Y dimension of all boxes
-		static double Zdim; // total Z dimension of all boxes
-		static double Rdim; // Rmax-Rmin for all QQQs 
-		static double Pdim; // QQQ quadrant angular range (degrees)
+		static double fXdim; // total X dimension of all boxes
+		static double fYdim; // total Y dimension of all boxes
+		static double fZdim; // total Z dimension of all boxes
+		static double fRdim; // Rmax-Rmin for all QQQs 
+		static double fPdim; // QQQ quadrant angular range (degrees)
 		// BOX dimensions
-		static double XposUB;
-		static double YminUB; 
-		static double ZminUB; 
-		static double XposDB; 
-		static double YminDB; 
-		static double ZminDB; 
+		static double fXposUB;
+		static double fYminUB; 
+		static double fZminUB; 
+		static double fXposDB; 
+		static double fYminDB; 
+		static double fZminDB; 
 		// QQQ dimensions
-		static double ZposUQ;    
-		static double RminUQ;
-		static double PminUQ; // degrees
-		static double ZposDQ;    
-		static double RminDQ;
-		static double PminDQ; // degrees
+		static double fZposUQ;    
+		static double fRminUQ;
+		static double fPminUQ; // degrees
+		static double fZposDQ;    
+		static double fRminDQ;
+		static double fPminDQ; // degrees
 		// segmentation
 		//static const int frontstripslist[16]   ;
 		//static const int backstripslist[16]    ;        
 		//pitches
-		static  double stripFpitch;
-		static  double stripBpitch;
-		static  double ringpitch;
-		static  double segmentpitch; // angular pitch, degrees
+		static  double fStripFPitch;
+		static  double fStripBPitch;
+		static  double fRingPitch;
+		static  double fSegmentPitch; // angular pitch, degrees
 
 		ClassDef(TSharc,7)
 };

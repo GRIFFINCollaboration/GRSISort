@@ -25,6 +25,7 @@ class TTigressData : public TGRSIDetectorData {
 		std::vector<Double_t> fCore_Time;		//!
 		std::vector<Double_t>   fCore_TimeStamp;		//!
 		std::vector<std::vector<int> >fCore_Wave;	//!
+      std::vector<UInt_t> fCore_Address; //!
 
 
 		std::vector<UShort_t> fSeg_Clover_Nbr;		//!
@@ -36,6 +37,9 @@ class TTigressData : public TGRSIDetectorData {
 		std::vector<Double_t> fSegment_TimeLED;		//!
 		std::vector<Double_t> fSegment_Time;		//!
 		std::vector<std::vector<int> > fSegment_Wave;	//!
+      std::vector<UInt_t> fSegment_Address; //!
+
+		std::vector<TFragment> fCore_Frag;
 
 		static bool fIsSet; //!
 
@@ -58,10 +62,12 @@ class TTigressData : public TGRSIDetectorData {
 		inline void SetCoreCFD(const Int_t &CoreTimeCFD)	       {fCore_TimeCFD.push_back(CoreTimeCFD); }	//!	
 		inline void SetCoreLED(const Double_t &CoreTimeLED)	    {fCore_TimeLED.push_back(CoreTimeLED); }	//!	
 		inline void SetCoreTimeStamp(const Long64_t    &CoreTime) {fCore_TimeStamp.push_back(CoreTime);       }	//!
+		inline void SetCoreAddress(const UInt_t    &CoreAddress)  {fCore_Address.push_back(CoreAddress);       }	//!
+      	inline void SetCoreFragment(const TFragment &frag)		 {fCore_Frag.push_back(frag);				}//!
 		
 		inline void SetCoreWave(const std::vector<int> &CoreWave) {fCore_Wave.push_back(CoreWave);} //!
 	
-		inline void SetCore(const UShort_t &CloverNbr, const UShort_t &CoreNbr, const Double_t &CrystalEnergy, const Int_t &CrystalCharge, const Int_t &CrystalTimeCFD,const Double_t &CrystalTimeLED,const Long64_t &CrystalTimeStamp)	{
+		inline void SetCore(const UShort_t &CloverNbr, const UShort_t &CoreNbr, const Double_t &CrystalEnergy, const Int_t &CrystalCharge, const Int_t &CrystalTimeCFD,const Double_t &CrystalTimeLED,const Long64_t &CrystalTimeStamp, const UInt_t &CoreAddress)	{
 
 			SetCloverNumber(CloverNbr);
 			SetCoreNumber(CoreNbr);
@@ -70,6 +76,7 @@ class TTigressData : public TGRSIDetectorData {
 			SetCoreCFD(CrystalTimeCFD);		
 			SetCoreLED(CrystalTimeLED);		
 			SetCoreTimeStamp(CrystalTimeStamp);		
+         SetCoreAddress(CoreAddress);
 
 		}	//!
 
@@ -80,7 +87,6 @@ class TTigressData : public TGRSIDetectorData {
 			  		return;
 
 				if(mnemonic->outputsensor.compare(0,1,"b")==0) {	return; }  //make this smarter.
-
 
 				UShort_t CoreNbr=5;
 				if(mnemonic->arraysubposition.compare(0,1,"B")==0)
@@ -107,11 +113,14 @@ class TTigressData : public TGRSIDetectorData {
 //				printf("============================================================\n");
             	SetCoreTimeStamp(frag->GetTimeStamp());
 
-				SetCoreCharge(frag->Charge.at(0));
+				SetCoreFragment(*frag);
+
+				SetCoreCharge(frag->GetCharge(0));
 				SetCoreCFD(frag->Cfd.at(0));		
 				SetCoreLED(frag->Led.at(0));		
 			   //SetCoreTime(frag->GetTimeStamp());		
 				SetCoreTime(frag->Zc.at(0));		
+            SetCoreAddress(frag->ChannelAddress);
 		}; //! 
 
 
@@ -123,10 +132,11 @@ class TTigressData : public TGRSIDetectorData {
 		inline void SetSegmentCFD(const Int_t &SegmentTimeCFD)	   {fSegment_TimeCFD.push_back(SegmentTimeCFD);}	//!
 		inline void SetSegmentLED(const Double_t &SegmentTimeLED)	{fSegment_TimeLED.push_back(SegmentTimeLED);}	//!
 		inline void SetSegmentTime(const Double_t &SegmentTime)		{fSegment_Time.push_back(SegmentTime);}		//!
+		inline void SetSegmentAddress(const UInt_t &SegmentAddress){fSegment_Address.push_back(SegmentAddress);}		//!
 
 		inline void SetSegmentWave(const std::vector<int> &SegWave)	{fSegment_Wave.push_back(SegWave);}		//!
 
-		inline void SetSegment(const UShort_t &SegCloverNbr, const UShort_t &SegCoreNbr, const UShort_t &SegmentNumber,const Double_t &SegmentEnergy, const Int_t &SegmentCharge, const Int_t &SegmentTimeCFD,const Double_t &SegmentTimeLED,const Double_t &SegmentTime)	{
+		inline void SetSegment(const UShort_t &SegCloverNbr, const UShort_t &SegCoreNbr, const UShort_t &SegmentNumber,const Double_t &SegmentEnergy, const Int_t &SegmentCharge, const Int_t &SegmentTimeCFD,const Double_t &SegmentTimeLED,const Double_t &SegmentTime, const UInt_t &SegmentAddress)	{
 
 			SetSegCloverNumber(SegCloverNbr);
 			SetSegCoreNumber(SegCoreNbr);
@@ -136,6 +146,7 @@ class TTigressData : public TGRSIDetectorData {
 			SetSegmentCFD(SegmentTimeCFD);
 			SetSegmentLED(SegmentTimeLED);
 			SetSegmentTime(SegmentTime);
+         SetSegmentAddress(SegmentAddress);
 		}	//!
 
 		inline void SetSegment(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)	{
@@ -165,14 +176,16 @@ class TTigressData : public TGRSIDetectorData {
 //				printf("energy;  %.02f\n",channel->CalibrateENG(frag->Charge.at(0)));
 //				printf("============================================================\n");
 
-				SetSegmentCharge(frag->Charge.at(0));
+				SetSegmentCharge(frag->GetCharge(0));
 				SetSegmentCFD(frag->Cfd.at(0));		
 				SetSegmentLED(frag->Led.at(0));		
 			 	//SetSegmentTime(frag->GetTimeStamp());		
 				SetSegmentTime(frag->Zc.at(0));		
+            	SetSegmentAddress(frag->ChannelAddress);
 		}; 
 
 
+		inline TFragment GetCoreFragment(const unsigned int &i)	{return fCore_Frag.at(i);}
 		inline UShort_t GetCloverNumber(const unsigned int &i)	{return fClover_Nbr.at(i);}	//!
 		inline UShort_t GetCoreNumber(const unsigned int &i)	{return fCore_Nbr.at(i);}	//!
 		inline Double_t GetCoreEnergy(const unsigned int &i)	{return fCore_Eng.at(i);}	//!
@@ -181,6 +194,7 @@ class TTigressData : public TGRSIDetectorData {
 		inline Double_t GetCoreLED(const unsigned int &i)	{return fCore_TimeLED.at(i);}	//!	
 		inline Double_t GetCoreTime(const unsigned int &i)	{return fCore_Time.at(i);}	//!
 		inline Double_t GetCoreTimeStamp(const unsigned int &i)	{return fCore_TimeStamp.at(i);}	//!
+		inline UInt_t GetCoreAddress(const unsigned int &i)	{return fCore_Address.at(i);}	//!
 
 		inline std::vector<int> GetCoreWave(const unsigned int &i)	{return fCore_Wave.at(i);}	//!
 
@@ -191,7 +205,8 @@ class TTigressData : public TGRSIDetectorData {
 		inline Float_t  GetSegmentCharge(const unsigned int &i)   {return fSegment_Chg.at(i);}	//!
 		inline Int_t    GetSegmentCFD(const unsigned int &i)      {return fSegment_TimeCFD.at(i);}//!
 		inline Double_t GetSegmentLED(const unsigned int &i)      {return fSegment_TimeLED.at(i);}//!
-		inline Double_t GetSegmentTime(const unsigned int &i)	    {return fSegment_Time.at(i);}	//!
+      inline Double_t GetSegmentTime(const unsigned int &i)	    {return fSegment_Time.at(i);}	//!
+		inline UInt_t GetSegmentAddress(const unsigned int &i)	 {return fSegment_Address.at(i);}	//!
 	
 		inline std::vector<int> GetSegmentWave(const unsigned int &i) {return fSegment_Wave.at(i);} //!
 

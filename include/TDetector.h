@@ -11,11 +11,6 @@
 #endif
 
 #include "TObject.h"
-#ifndef __CINT__
-#include "TDetectorData.h"
-#else
-class TDetectorData;
-#endif
 
 #include "TFragment.h"
 #include "TChannel.h"

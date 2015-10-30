@@ -1,14 +1,11 @@
 #ifndef TTIGRESS_H
 #define TTIGRESS_H
 
-
 #include <vector>
 #include <iostream>
 #include <set>
 #include <stdio.h>
 #include <functional>
-
-#include "TTigressHit.h"
 
 #include "TMath.h"
 #include "TVector3.h" 
@@ -16,6 +13,7 @@
 #include "TClonesArray.h"
 
 #include "TGRSIDetector.h" 
+#include "TTigressHit.h"
 
 class TTigress : public TGRSIDetector {
 	public:
@@ -35,9 +33,9 @@ class TTigress : public TGRSIDetector {
 		virtual ~TTigress();
 
 		//These Getters of hits throw "ROOT Errors"
-		TTigressHit *GetTigressHit(const int& i);
-		TGRSIDetectorHit *GetHit(const int& i)   { return GetTigressHit(i);       } //!
-		size_t GetMultiplicity() const	       { return fTigressHits.size(); }	//!
+		TTigressHit* GetTigressHit(const int& i);
+		TGRSIDetectorHit* GetHit(const int& i)   { return GetTigressHit(i);       } //!
+		size_t GetMultiplicity() const	        { return fTigressHits.size(); }	//!
 		static TVector3 GetPosition(int DetNbr ,int CryNbr, int SegNbr, double distance = 110.);		//!
 
 		Int_t GetAddbackMultiplicity();
@@ -52,7 +50,7 @@ class TTigress : public TGRSIDetector {
 
 #ifndef __CINT__
 		void SetAddbackCriterion(std::function<bool(TTigressHit&, TTigressHit&)> criterion) { fAddbackCriterion = criterion; }
-		std::function<bool(TTigressHit&, TTigressHit&)> GetAddbackCriterion() const { return fAddbackCriterion; }
+		std::function<bool(TTigressHit&, TTigressHit&)> GetAddbackCriterion() const         { return fAddbackCriterion; }
 #endif
 
 	private: 
@@ -102,5 +100,3 @@ class TTigress : public TGRSIDetector {
 		ClassDef(TTigress,5)  // Tigress Physics structure
 };
 #endif
-
-

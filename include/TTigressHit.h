@@ -10,6 +10,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 #include "TCrystalHit.h"
+#include "TPulseAnalyzer.h"
 
 #include "TMath.h"
 #include "TVector3.h"
@@ -33,6 +34,9 @@ class TTigressHit : public TGRSIDetectorHit {
 
 	std::vector<TGRSIDetectorHit> fSegments;
 	std::vector<TGRSIDetectorHit> fBgos;
+
+	Double_t    fTimeFit;
+	Double_t    fSig2Noise;
 
 	//double doppler;
 
@@ -60,7 +64,9 @@ class TTigressHit : public TGRSIDetectorHit {
 	int GetCrystal() const;	          //{	return crystal;			}		//!
 	inline int GetInitialHit()		               {	return fFirstSegment;	}			//!
 	
-	TVector3 GetPosition(Double_t dist = 110.0) const; //!
+	void SetWavefit(TFragment&);
+	inline Double_t GetSignalToNoise()	  { return fSig2Noise;	} //!
+	inline Double_t GetFitTime()			  { return fTimeFit;	} //!
 
 	inline double GetDoppler(double beta,TVector3 *vec=0) { 
 		if(vec==0) {
@@ -88,6 +94,10 @@ class TTigressHit : public TGRSIDetectorHit {
 #ifndef __CINT__
 	inline std::tuple<int,int,int> GetLastPosition() {return fLastPos;} //!
 #endif                         
+
+   private:
+    TVector3 GetChannelPosition(Double_t dist=110.0) const;
+
 
   public:
 	virtual void Clear(Option_t *opt = "");		                      //!

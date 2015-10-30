@@ -147,7 +147,7 @@ TDescantHit* TDescant::GetDescantHit(const Int_t& i) {
       return &fDescantHits.at(i);   
    } catch (const std::out_of_range& oor) {
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
-      throw exit_exception(1);
+      throw grsi::exit_exception(1);
    }
    return NULL;
 }
@@ -180,7 +180,7 @@ void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
             //printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
          }
          hit.SetWaveform(frag->wavebuffer);
-         if(hit.GetWaveform().size() > 0) {
+         if(hit.GetWaveform()->size() > 0) {
             printf("Analyzing waveform, current cfd = %d, psd = %d\n",hit.GetCfd(),hit.GetPsd());
             bool analyzed = hit.AnalyzeWaveform();
             printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",hit.GetCfd(),hit.GetPsd());

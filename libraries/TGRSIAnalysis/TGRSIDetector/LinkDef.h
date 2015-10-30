@@ -8,7 +8,7 @@
 
 //#pragma link C++ class std::vector<Short_t>+;
 
-#pragma link C++ class TGRSIDetectorHit+;
+#pragma link C++ class TGRSIDetectorHit-;
 #pragma link C++ class std::vector<TGRSIDetectorHit>+;
 #pragma link C++ class std::vector<TGRSIDetectorHit*>+;
 #pragma link C++ class TGRSIDetector+;

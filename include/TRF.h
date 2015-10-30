@@ -18,14 +18,10 @@ class TRF : public TDetector {
 		TRF();
 		~TRF();
 
-		//std::vector<Short_t> GetWave() { return rf_wave;	};
-
 		Double_t Phase()     { return fPhase; }
 		Double_t Time()      { return fTime; }
 		Long_t   TimeStamp() { return fTimeStamp; }	
 		time_t   MidasTime() { return fMidasTime; }
-
-		//bool HasWave() { return !rf_wave.empty(); };
 
 		void AddFragment(TFragment*, MNEMONIC*);	//!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
@@ -36,7 +32,6 @@ class TRF : public TDetector {
 	private:
 		TRFFitter* fFitter;		            //!
 
-		//std::vector<Short_t> rf_wave;
 		time_t fMidasTime;
 		Long_t fTimeStamp;
 		double fPhase;

@@ -37,6 +37,4 @@ class TTriFoil :  public TDetector {
 		ClassDef(TTriFoil,2)
 };
 
-
-
 #endif

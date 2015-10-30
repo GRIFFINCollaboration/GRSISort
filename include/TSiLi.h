@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include "TDetector.h"
-
 #include "TSiLiHit.h"
 
 class TSiLi: public TDetector  {
@@ -20,7 +19,6 @@ class TSiLi: public TDetector  {
 		void Print(Option_t *opt="") const;
 		void Clear(Option_t *opt="");
 
-
 		Short_t GetMultiplicity() const { return fSiLiHits.size(); }
 		TSiLiHit *GetSiLiHit(const int& i);
 
@@ -29,9 +27,7 @@ class TSiLi: public TDetector  {
 	private:
 		std::vector<TSiLiHit> fSiLiHits;
 
-
 		ClassDef(TSiLi,2);
 };
-
 
 #endif

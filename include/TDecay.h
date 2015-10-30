@@ -6,11 +6,9 @@
 #include "TMath.h"
 #include "TFitResult.h"
 #include "TFitResultPtr.h"
+#include "TGraph.h"
 #include "TF1.h"
 #include "TH1.h"
-#include "Math/Minimizer.h"
-#include "Math/Factory.h"
-#include "Math/Functor.h"
 #include "TVirtualFitter.h"
 
 #include <string>
@@ -23,35 +21,43 @@ class TDecayChain;
 
 class TDecayFit : public TF1 {
   public:
-   TDecayFit() : TF1() {}; 
+   TDecayFit() : TF1(), fDecay(0) {}; 
    //TGRSIFit(const char *name,Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn, xmin, xmax, npar){};
-   TDecayFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1) : TF1(name,formula,xmin,xmax){ } 
-   TDecayFit(const char* name, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name,xmin,xmax,npar) { }
+   TDecayFit(const char* name, const char* formula, Double_t xmin = 0, Double_t xmax = 1) : TF1(name,formula,xmin,xmax), fDecay(0){ DefaultGraphs(); } 
+   TDecayFit(const char* name, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name,xmin,xmax,npar) ,fDecay(0){DefaultGraphs();  }
    //TDecayFit(const char* name, void* fcn, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn,xmin,xmax,npar){}
-   TDecayFit(const char* name, ROOT::Math::ParamFunctor f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0) : TF1(name,f,xmin,xmax,npar){}
+   TDecayFit(const char* name, ROOT::Math::ParamFunctor f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0) : TF1(name,f,xmin,xmax,npar),fDecay(0){DefaultGraphs(); }
    //TDecayFit(const char* name, void* ptr, Double_t xmin, Double_t xmax, Int_t npar, const char* className) : TF1(name,ptr, xmin, xmax, npar, className){ }
 #ifndef __CINT__
-   TDecayFit(const char *name, Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar){}
-   TDecayFit(const char *name, Double_t (*fcn)(const Double_t *, const Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar) {}
+   TDecayFit(const char *name, Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar),fDecay(0){DefaultGraphs(); }
+   TDecayFit(const char *name, Double_t (*fcn)(const Double_t *, const Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar),fDecay(0){DefaultGraphs(); }
 #endif
    //TDecayFit(const char *name, void *ptr, void *ptr2,Double_t xmin, Double_t xmax, Int_t npar, const char *className, const char *methodName = 0) : TF1(name,ptr,ptr2,xmin,xmax,npar,className,methodName){}
 
    template <class PtrObj, typename MemFn>
-   TDecayFit(const char *name, const  PtrObj& p, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char * className = 0, const char *methodName = 0) : TF1(name,p,memFn,xmin,xmax,npar,className,methodName) {}
+   TDecayFit(const char *name, const  PtrObj& p, MemFn memFn, Double_t xmin, Double_t xmax, Int_t npar, const char * className = 0, const char *methodName = 0) : TF1(name,p,memFn,xmin,xmax,npar,className,methodName),fDecay(0) {DefaultGraphs(); }
 
    template <typename Func>
-   TDecayFit(const char *name, Func f, Double_t xmin, Double_t xmax, Int_t npar, const char *className = 0  ) : TF1(name,f,xmin,xmax,npar,className){}
-   virtual ~TDecayFit() {}
+   TDecayFit(const char *name, Func f, Double_t xmin, Double_t xmax, Int_t npar, const char *className = 0  ) : TF1(name,f,xmin,xmax,npar,className),fDecay(0){DefaultGraphs(); }
+   virtual ~TDecayFit();
 
    void SetDecay(TVirtualDecay* decay);
    TVirtualDecay* GetDecay() const;
- //  void DrawComponents() const; // *MENU* 
-   void DrawComponents() const; 
+   void DrawComponents() const; // *MENU* 
+  // void DrawComponents() const; 
 
    virtual void Print(Option_t *opt = "") const;
+   void UpdateResiduals(TH1* hist);
+   void DrawResiduals(); // *MENU*
+   TGraph* GetResiduals() { return &fResiduals; }
+   TFitResultPtr Fit(TH1* hist, Option_t* opt="");
 
   private:
-   TVirtualDecay* fDecay;//!
+   void DefaultGraphs();
+
+  private:
+   TVirtualDecay* fDecay;      //VirtualDecay that made this fit
+   TGraph fResiduals;    //Last histogram fit by this function
 
    ClassDef(TDecayFit,1);  // Extends TF1 for nuclear decays
 };
@@ -62,7 +68,10 @@ class TVirtualDecay : public TNamed {
    ~TVirtualDecay() {}
 
    virtual void DrawComponents(Option_t * opt = "",Bool_t color_flag = true);
-   void Print(Option_t *opt ="") const = 0;
+   virtual void Print(Option_t *opt ="") const = 0;
+
+  private:
+   virtual TDecayFit const* GetFitFunction() = 0;
 
    ClassDef(TVirtualDecay,1) //Abstract Class for TDecayFit
 };
@@ -73,10 +82,10 @@ class TSingleDecay : public TVirtualDecay {
    friend class TDecay;
  //  friend class TDecay;
   public:
-   //TDecay(Double_t tlow, Double_t thigh);
+   TSingleDecay() : fDetectionEfficiency(1.0), fDecayFunc(0), fTotalDecayFunc(0), fParent(0), fDaughter(0), fFirstParent(0), fChainId(-1) {}
    TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow = 0,Double_t thigh = 10);
-   TSingleDecay(TSingleDecay* parent = 0, Double_t tlow = 0, Double_t thigh = 10);
-   virtual ~TSingleDecay();
+   TSingleDecay(TSingleDecay* parent, Double_t tlow = 0, Double_t thigh = 10);
+   virtual ~TSingleDecay(); 
 
   public:
    ///// TF1 Helpers ////
@@ -147,13 +156,16 @@ class TSingleDecay : public TVirtualDecay {
    void Print(Option_t *option = "") const;
 
   private:
+   TDecayFit const* GetFitFunction() { SetTotalDecayParameters(); return fTotalDecayFunc;}
+
+  private:
    UInt_t fGeneration;     //Generation from the primary
    Double_t fDetectionEfficiency; //The probability that this decay can be detected
-   TDecayFit *fDecayFunc;        //!Function describing decay
-   TDecayFit *fTotalDecayFunc;   //!Function used to access other fits
-   TSingleDecay *fParent;        //!Parent Decay
-   TSingleDecay *fDaughter;      //!Daughter Decay
-   TSingleDecay *fFirstParent;   //!FirstParent in the decay
+   TDecayFit *fDecayFunc;        //Function describing decay
+   TDecayFit *fTotalDecayFunc;   //Function used to access other fits
+   TSingleDecay *fParent;        //Parent Decay
+   TSingleDecay *fDaughter;      //Daughter Decay
+   TSingleDecay *fFirstParent;   //FirstParent in the decay
    Int_t fUnId;
    static UInt_t fCounter;
    Int_t fChainId;
@@ -189,10 +201,11 @@ class TDecayChain : public TVirtualDecay {
    void AddToChain(TSingleDecay* decay);
    Double_t ChainActivityFunc(Double_t *dim, Double_t *par);
    static UInt_t fChainCounter;
+   TDecayFit const* GetFitFunction() { SetChainParameters(); return fChainFunc;}
 
   private:
    std::vector<TSingleDecay*> fDecayChain; //The Decays in the Decay Chain
-   TDecayFit* fChainFunc;  //! Function describing the total chain activity
+   TDecayFit* fChainFunc;  // Function describing the total chain activity
    Int_t fChainId;
 
    ClassDef(TDecayChain,1) //Class representing a decay chain
@@ -200,7 +213,7 @@ class TDecayChain : public TVirtualDecay {
 
 class TDecay : public TVirtualDecay {
   public:
-   TDecay() {}
+   TDecay() : fFitFunc(0) {}
    TDecay(std::vector<TDecayChain*> chain);
    virtual ~TDecay();
 
@@ -216,7 +229,7 @@ class TDecay : public TVirtualDecay {
 
    void Print(Option_t* opt = "") const;
    void PrintMap() const;
-   const TF1* GetFitFunc() { return fFitFunc; }
+   const TDecayFit* GetFitFunc() { return fFitFunc; }
    void SetBackground(Double_t background) { fFitFunc->SetParameter(0,background);}
    Double_t GetBackground() const {return fFitFunc->GetParameter(0); }
    Double_t GetBackgroundError() const {return fFitFunc->GetParError(0); }
@@ -229,15 +242,18 @@ class TDecay : public TVirtualDecay {
    void SetBackgroundLimits(const Double_t &low, const Double_t &high) { fFitFunc->SetParLimits(0,low,high); }
    void ReleaseBackground()                    { fFitFunc->ReleaseParameter(0);}
 
+   TGraph* GetResiduals() { return fFitFunc->GetResiduals(); }
+
   private:
    void RemakeMap();
    void SetParameters();
    Double_t ComponentFunc(Double_t *dim, Double_t *par);
+   TDecayFit const* GetFitFunction() { return fFitFunc;}
 
   private:
    std::vector<TDecayChain*> fChainList;
-   TDecayFit* fFitFunc;//!
-   std::map<Int_t, std::vector<TSingleDecay*>> fDecayMap;//!
+   TDecayFit* fFitFunc;
+   std::map<Int_t, std::vector<TSingleDecay*>> fDecayMap;//
 
    ClassDef(TDecay,1) //Contains all decay chains in a fit
 };

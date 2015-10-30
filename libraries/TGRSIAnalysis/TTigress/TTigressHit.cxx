@@ -81,7 +81,7 @@ void TTigressHit::SumHit(TTigressHit *hit) {
 }
 
 
-TVector3 TTigressHit::GetPosition(Double_t dist) const {
+TVector3 TTigressHit::GetChannelPosition(Double_t dist) const {
    //Returns the Position of the crystal of the current Hit.
 	return TTigress::GetPosition(GetDetector(),GetCrystal(),dist);
 }
@@ -107,4 +107,12 @@ int TTigressHit::GetCrystal() const {
 		return 3;  
    };
    return -1;  
+}
+
+void TTigressHit::SetWavefit(TFragment &frag)   { 
+	TPulseAnalyzer pulse(frag);	    
+	if(pulse.IsSet()){
+		fTimeFit   = pulse.fit_newT0();
+		fSig2Noise = pulse.get_sig2noise();
+	}
 }

@@ -19,7 +19,7 @@ class TPaces : public TGRSIDetector {
 		virtual ~TPaces();
 
 	public: 
-		TPacesHit *GetPacesHit(const int& i); //!
+		TPacesHit* GetPacesHit(const int& i); //!
 		TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
 		Short_t GetMultiplicity() const { return fPacesHits.size(); }
 

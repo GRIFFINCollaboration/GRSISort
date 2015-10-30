@@ -42,6 +42,10 @@ class TCSM : public TDetector {
 	private: 
 		std::map<int16_t, std::vector<std::vector<std::vector<std::pair<TFragment, MNEMONIC> > > > > fFragments; //!
 		std::vector<TCSMHit> fCsmHits;
+		double fAlmostEqualWindow;
+
+		static int fCfdBuildDiff; //!   // largest acceptable time difference between events (clock ticks)  (50 ns)
+
 		void BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >&, std::vector<TCSMHit>&);
 		void BuilddEE(std::vector<std::vector<TCSMHit> >&,std::vector<TCSMHit>&);
 		void OldBuilddEE(std::vector<TCSMHit> &,std::vector<TCSMHit> &,std::vector<TCSMHit> &);
@@ -53,12 +57,8 @@ class TCSM : public TDetector {
 		bool AlmostEqual(int, int);
 		bool AlmostEqual(double,double);
 
-		double AlmostEqualWindow;
-
 		//int CombineHits(TCSMHit*,TCSMHit*,int,int);				//!
 		//void RemoveHits(std::vector<TCSMHit>*,std::set<int>*);	//!
-
-		static int fCfdBuildDiff; //!   // largest acceptable time difference between events (clock ticks)  (50 ns)
 
 		ClassDef(TCSM,5)  // CSM Analysis structure
 };

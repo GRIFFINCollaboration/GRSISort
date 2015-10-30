@@ -11,17 +11,16 @@ class TS3 : public TDetector {
 		TS3();
 		~TS3();
 
-	public: 
-		void Clear(Option_t *opt="");   
-		void Print(Option_t *opt="") const;
-
 		void AddFragment(TFragment*, MNEMONIC*);
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
-		TS3Hit *GetS3Hit(const int& i);  
-		Short_t GetMultiplicity()  {  return fS3Hits.size();}
+		TS3Hit* GetS3Hit(const int& i);  
+		Short_t GetMultiplicity() { return fS3Hits.size(); }
 
 		TVector3 GetPosition(int front, int back);
+
+      virtual void Clear(Option_t *opt = "all");		     //!
+      virtual void Print(Option_t *opt = "") const;		  //!
 
 	private:
 		std::vector<TS3Hit> fS3Hits;

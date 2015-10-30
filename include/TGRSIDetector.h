@@ -1,24 +1,13 @@
 #ifndef TGRSIDETECTOR_H
 #define TGRSIDETECTOR_H
 
-#include "Globals.h"
-
 #include <cstdio>
 #include <vector>
-#include "TVector3.h"
-
-#ifndef __CINT__
-#endif
 
 #include "TObject.h"
-#ifndef __CINT__
-#include "TGRSIDetectorData.h"
-#include "TDetectorData.h"
-#else
-class TGRSIDetectorData;
-class TDetectorData;
-#endif
+#include "TVector3.h"
 
+#include "Globals.h"
 #include "TFragment.h"
 #include "TChannel.h"
 #include "TDetector.h"
@@ -30,8 +19,8 @@ class TGRSIDetectorHit;
 // TGRSIDetector                                              //
 //                                                            //
 // This is an abstract class that contains the basic info     //
-// about a detector. This is where the hits are built and
-// the data is filled.
+// about a detector. This is where the hits are built and     //
+// the data is filled.                                        //
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
@@ -45,7 +34,7 @@ class TGRSIDetector : public TDetector	{
 	public: 
 		//virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
 		virtual void AddFragment(TFragment*, MNEMONIC*)         { AbstractMethod("AddFragment()"); } //! = 0; //!
-		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
+		void BuildHits() {}
 
 		virtual void Copy(TObject&) const;              //!
 		virtual void Clear(Option_t *opt = "");         //!
@@ -58,8 +47,6 @@ class TGRSIDetector : public TDetector	{
 
 	protected:
 		virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
-		//virtual TGRSIDetectorData *GetData() //{ //return data;}
-		//TGRSIDetectorData *data;    //!
 
 		ClassDef(TGRSIDetector,1) //Abstract class for detector systems 
 };

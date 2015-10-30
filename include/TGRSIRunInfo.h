@@ -167,6 +167,9 @@ class TGRSIRunInfo : public TObject {
 		inline void SetBufferDuration(const long int t_bd) { fBufferDuration = t_bd; }
 		inline void SetBufferSize(const size_t t_bs)          { fBufferSize = t_bs; }
 
+	  inline void SetWaveformFitting(const bool flag)	 {fWaveformFitting = flag; }
+	  static inline bool IsWaveformFitting()			 {return Get()->fWaveformFitting; }
+
       inline void SetMovingWindow(const bool flag)       {fIsMovingWindow = flag; }
       static inline bool IsMovingWindow()                { return Get()->fIsMovingWindow; }
 
@@ -253,6 +256,8 @@ class TGRSIRunInfo : public TObject {
       long int fBufferDuration;       // GRIFFIN: the minimum length of the sorting buffer (default = 600s (60000000000))
       size_t fBufferSize;             // GRIFFIN: the minimum size of the sorting buffer (default = 1 000 000)
       
+	  bool 	   fWaveformFitting;	  // If true, waveform fitting with SFU algorithm will be performed
+
       double  fHPGeArrayPosition;        // Position of the HPGe Array (default = 110.0 mm );
   
 
@@ -260,7 +265,7 @@ class TGRSIRunInfo : public TObject {
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
-   ClassDef(TGRSIRunInfo,6);  //Contains the run-dependent information.
+   ClassDef(TGRSIRunInfo,7);  //Contains the run-dependent information.
 };
 
 #endif

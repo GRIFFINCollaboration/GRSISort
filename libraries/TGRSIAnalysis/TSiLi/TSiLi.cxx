@@ -1,5 +1,6 @@
 
 #include "TSiLi.h"
+#include <TGRSIRunInfo.h>
 
 ClassImp(TSiLi)
 
@@ -28,8 +29,9 @@ void TSiLi::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
   TVector3 tmppos = GetPosition(mnemonic->segment);
   hit.SetPosition(tmppos);
   hit.SetVariables(*frag);
-  hit.SetWavefit(*frag);
-  
+  if(TGRSIRunInfo::IsWaveformFitting()) 
+	 hit.SetWavefit(*frag);
+
   fSiLiHits.push_back(hit);
 }
 
@@ -45,7 +47,7 @@ TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {
    }
    catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
-      throw exit_exception(1);
+      throw grsi::exit_exception(1);
    }
    return 0;
 }  

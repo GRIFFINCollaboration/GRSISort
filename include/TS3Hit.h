@@ -33,7 +33,7 @@ class TS3Hit : public TGRSIDetectorHit {
                                          SetCfd(frag.GetCfd());
                                          SetCharge(frag.GetCharge());
                                          SetTimeStamp(frag.GetTimeStamp()); 
-                                         SetTime(frag.GetZc());
+                                         //SetTime(frag.GetZc());
 													  led  = frag.GetLed(); }
  
 

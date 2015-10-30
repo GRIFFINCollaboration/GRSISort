@@ -77,6 +77,9 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    if(R__v>4) {
      {Bool_t R__bool; b >> R__bool; fIsMovingWindow = R__bool;}
    }
+   if(R__v>6) {
+     {Bool_t R__bool; b >> R__bool; fWaveformFitting = R__bool;}
+   }
    {Bool_t R__bool; b >> R__bool; fTigress = R__bool;   }
    {Bool_t R__bool; b >> R__bool; fSharc = R__bool;     }
    {Bool_t R__bool; b >> R__bool; fTriFoil = R__bool;   }
@@ -116,6 +119,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Long_t R__long = fBuildWindow;       b << R__long;}
    {Double_t R__double = fAddBackWindow;  b << R__double;}
    {Bool_t R__bool = fIsMovingWindow; b << R__bool;}
+   {Bool_t R__bool = fWaveformFitting; b << R__bool;}
    {Bool_t R__bool = fTigress;    b << R__bool;}
    {Bool_t R__bool = fSharc;      b << R__bool;}
    {Bool_t R__bool = fTriFoil;    b << R__bool;}
@@ -203,6 +207,7 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    fBuildWindow       = 200;  
    fAddBackWindow     = 15.0;
    fIsMovingWindow    = true;
+   fWaveformFitting	  = false;
 
    //printf("run info created.\n");
 
@@ -239,6 +244,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
       printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
       printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
+	  printf(DBLUE"\tWaveform fitting = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
       printf("\n");
       printf("\t==============================\n");
    }
@@ -427,6 +433,10 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
         std::istringstream ss(line);
         long int temp_bw; ss >> temp_bw;
         Get()->SetBuildWindow(temp_bw);
+      } else if( type.compare("WF")==0 || type.compare("WAVEFORMFIT")==0) {
+        std::istringstream ss(line);
+        bool temp_wff; ss >> temp_wff;
+        Get()->SetWaveformFitting(temp_wff);
       } else if( type.compare("MW")==0 || type.compare("MOVINGWINDOW")==0) {
         std::istringstream ss(line);
         bool temp_mw; ss >> temp_mw;
@@ -452,6 +462,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
      printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
      printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
      printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
+     printf(DBLUE"\tWaveform Fitting  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
    }
    return true;
 }

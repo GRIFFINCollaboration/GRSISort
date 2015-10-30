@@ -94,7 +94,7 @@ TS3Hit *TS3::GetS3Hit(const int& i) {
       return &fS3Hits.at(i);   
    } catch (const std::out_of_range& oor) {
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
-      throw exit_exception(1);
+      throw grsi::exit_exception(1);
    }
    return 0;
 }  
@@ -103,7 +103,7 @@ void TS3::Print(Option_t *opt) const {
    printf("%s\tnot yet written.\n",__PRETTY_FUNCTION__);
 }
 
-void TS3::Clear(Option_t *opt)    {
+void TS3::Clear(Option_t *opt) {
   fS3Hits.clear();
 }
 

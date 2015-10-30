@@ -12,7 +12,7 @@ TCSM::TCSM() {
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
   //InitializeSRIMInputs();
-  AlmostEqualWindow = .2;
+  fAlmostEqualWindow = .2;
 }
 
 TCSM::~TCSM() {
@@ -629,12 +629,12 @@ bool TCSM::AlmostEqual(int val1, int val2) {
   double diff = double(std::abs(val1 - val2));
   double ave = (val1+val2)/2.;
   double frac = diff/ave;
-  return frac < AlmostEqualWindow;
+  return frac < fAlmostEqualWindow;
 }
 
 bool TCSM::AlmostEqual(double val1, double val2) {
   double frac = std::fabs(val1 - val2)/((val1+val2)/2.);
-  return frac < AlmostEqualWindow;
+  return frac < fAlmostEqualWindow;
 }
 
 TCSMHit* TCSM::GetCSMHit(const int& i) {

@@ -19,10 +19,10 @@ class TSceptar : public TGRSIDetector {
 	public: 
 		TGRSIDetectorHit* GetHit(const Int_t& idx =0);
 		void Copy(TObject &rhs) const;
-		TSceptarHit *GetSceptarHit(const int& i);	//!
-		Short_t GetMultiplicity() const	       {	return fSceptarHits.size();}	//!
+		TSceptarHit* GetSceptarHit(const int& i);	//!
+		Short_t GetMultiplicity() const	       {	return fSceptarHits.size(); }	      //!
 
-		static TVector3 GetPosition(int DetNbr)  { return gPaddlePosition[DetNbr];}	//!
+		static TVector3 GetPosition(int DetNbr) { return gPaddlePosition[DetNbr]; }	//!
 
 		void AddFragment(TFragment*, MNEMONIC*); //!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
@@ -45,7 +45,7 @@ class TSceptar : public TGRSIDetector {
 		void Print(Option_t *opt = "") const;		//!
 
 	protected:
-		void PushBackHit(TGRSIDetectorHit* schit);
+		void PushBackHit(TGRSIDetectorHit*);
 
 		ClassDef(TSceptar,2)  // Sceptar Physics structure
 };

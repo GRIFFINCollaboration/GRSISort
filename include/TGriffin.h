@@ -1,20 +1,16 @@
 #ifndef TGRIFFIN_H
 #define TGRIFFIN_H
 
-#include "Globals.h"
-
 #include <vector>
 #include <cstdio>
 #include <functional>
 
-#include <TBits.h>
-
-#include "TGriffinHit.h"
+#include "TBits.h"
 #include "TVector3.h"
 
+#include "Globals.h"
 #include "TGriffinHit.h"
 #include "TGRSIDetector.h"
-
 
 class TGriffin : public TGRSIDetector {
 	public:

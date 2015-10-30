@@ -84,7 +84,7 @@ TTigressHit* TTigress::GetTigressHit(const int& i) {
 	} catch(const std::out_of_range& oor) {
 		std::cerr<<ClassName()<<"Hits are out of range: "<<oor.what()<<std::endl;
 		if(!gInterpreter)
-			throw exit_exception(1);
+			throw grsi::exit_exception(1);
 	}
 	return NULL;
 }
@@ -134,7 +134,7 @@ TTigressHit* TTigress::GetAddbackHit(const int& i) {
       return &fAddbackHits.at(i);
    } else {
       std::cerr << "Addback hits are out of range" << std::endl;
-      throw exit_exception(1);
+      throw grsi::exit_exception(1);
       return NULL;
    }
 }
@@ -291,6 +291,60 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist)	{
 	return det_pos;
 }
 
+//void TTigress::BuildAddBack(Option_t *opt)	{ 
+//	if(this->tigress_hits.GetEntries() == 0)
+//    	return;
+//
+//	addback_hits.Clear();
+//   AddAddBackHit((TTigressHit&)(*(this->GetTigressHit(0))));
+//  
+//	if(this->GetMultiplicity() == 1) {
+//     return;
+//	} else{
+//
+//		//addback_hits.push_back(*(this->GetTigressHit(0)));
+//		//addback_hits.At(0)->SumHit((TTigressHit*)addback_hits.At(0));
+//      GetAddBackHit(0)->SumHit(GetAddBackHit(0));
+//
+//		for(int i = 1; i<(int)(this->GetMultiplicity()); i++)   {
+//		 	bool used = false;
+//			 for(int j =0; j<addback_hits.GetEntries();j++)    {
+//		 	   TVector3 res = GetAddBackHit(j)->GetLastHit() - GetTigressHit(i)->GetPosition();
+//		     	int d_time = std::abs(GetAddBackHit(j)->GetTime() -  GetTigressHit(i)->GetTime());
+//
+//				int seg1 = std::get<2>(GetAddBackHit(j)->GetLastPosition());
+//				int seg2 = GetTigressHit(i)->GetInitialHit();
+//		
+//				if( (seg1<5 && seg2<5) || (seg1>4 && seg2>4) )	{   // not front to back
+//				     if( (res.Mag() < 54) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {  // time gate == 110  ns  pos gate == 54mm
+//		 		        used = true;
+//		     		     GetAddBackHit(j)->SumHit(this->GetTigressHit(i));
+//		         		break;
+//			     	}
+//				}
+//				else if( (seg1<5 && seg2>4) || (seg1>4 && seg2<5) )	{ // front to back
+//				     if( (res.Mag() < 105) && (d_time < TGRSIRunInfo::AddBackWindow() ) )    {     // time gate == 110 ns pos gate == 105mm.
+//		 		       used = true;
+//		     		    GetAddBackHit(j)->SumHit(this->GetTigressHit(i));
+//		             break;
+//			     	}
+//				}
+//
+//
+//
+//
+//		 	}
+//			 if(!used) {
+//            AddAddBackHit(*GetTigressHit(i));
+//         //NOT SURE WHY THIS IS HERE (BELOW) COMMENTED OUT BECUASE WE DIDNT THINK IT MADE SENSE.
+//        //    GetAddBackHit(addback_hits.GetEntries())->SumHit(GetAddBackHit(addback_hits.GetEntries()));
+//		 	   //addback_hits.push_back(*(this->GetTigressHit(i)));
+//		     	//addback_hits.back().Add(&(addback_hits.back()));
+//			 }
+//		}
+//
+//	}
+//}
 
 double TTigress::GeBluePosition[17][9][3] = { 
 	{ { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
