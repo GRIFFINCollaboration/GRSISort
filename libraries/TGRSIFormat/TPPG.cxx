@@ -148,17 +148,32 @@ uint16_t TPPG::GetStatus(ULong64_t time) const {
    return (uint16_t)((--(fPPGStatusMap->upper_bound(time)))->second->GetNewPPG());
 }
 
-void TPPG::Print(Option_t *opt) const{
+void TPPG::Print(Option_t *opt) {
    if(MapIsEmpty()) {
       printf("Empty\n");
-   } else{
-      PPGMap_t::iterator ppgit;
-      printf("*****************************\n");
-      printf("           PPG STATUS        \n");
-      printf("*****************************\n");
-      for(ppgit = MapBegin(); ppgit != MapEnd(); ppgit++) {
-         ppgit->second->Print();
-      }
+   } else {
+		if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+			//print all ppg data
+			PPGMap_t::iterator ppgit;
+			printf("*****************************\n");
+			printf("           PPG STATUS        \n");
+			printf("*****************************\n");
+			for(ppgit = MapBegin(); ppgit != MapEnd(); ppgit++) {
+				ppgit->second->Print();
+			}
+		} else {
+			//print only an overview of the ppg
+			//first calculate how often each different status occured
+			std::map<uint16_t, int> status;
+			for(auto it = MapBegin(); it != MapEnd(); ++it) {
+				status[it->second->GetNewPPG()]++;
+			}
+			printf("Cycle length is %lld in 10 ns units = %.3lf seconds.\n", GetCycleLength(), GetCycleLength()/1e8);
+			printf("Got %ld PPG words:\n", fPPGStatusMap->size() - 1);
+			for(auto it = status.begin(); it != status.end(); ++it) {
+				printf("\tfound status 0x%04x %d times\n", it->first, it->second);
+			}
+		}
    }
 }
 
