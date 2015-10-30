@@ -24,56 +24,6 @@ TFragment::TFragment(){
    Clear();
 }
 
-TFragment::TFragment(const TFragment& rhs, int hit) : TObject() {
-  //copy constructor that copies only the requested hit (if hit is in range 0 - Cfd.size()), if hit is negative, it act's as a normal copy constructor
-  
-  //first copy all "normal" data members
-  MidasTimeStamp = rhs.MidasTimeStamp;
-  MidasId = rhs.MidasId;
-  TriggerId = rhs.TriggerId;
-  FragmentId = rhs.FragmentId;
-  TriggerBitPattern = rhs.TriggerBitPattern;
-
-  NetworkPacketNumber = rhs.NetworkPacketNumber;
-
-  ChannelNumber = rhs.ChannelNumber;
-  ChannelAddress = rhs.ChannelAddress;
-
-  TimeStampLow = rhs.TimeStampLow;
-  TimeStampHigh = rhs.TimeStampHigh;
-
-  PPG = rhs.PPG;
-  DeadTime = rhs.DeadTime;
-  NumberOfFilters = rhs.NumberOfFilters;
-  NumberOfPileups = rhs.NumberOfPileups;
-  DataType = rhs.DataType;
-  DetectorType = rhs.DetectorType;
-  ChannelId = rhs.ChannelId;
-
-  KValue = rhs.KValue;
-
-  wavebuffer = rhs.wavebuffer;
-
-  if(hit < 0 || hit >= static_cast<int>(Cfd.size())) {
-	  Cfd = rhs.Cfd;
-	  Zc = rhs.Zc;
-	  ccShort = rhs.ccShort;
-	  ccLong = rhs.ccLong;
-	  Led = rhs.Led;
-	  Charge = rhs.Charge;
-  } else {
-	  Cfd.push_back(rhs.Cfd[hit]);
-	  Zc.push_back(rhs.Zc[hit]);
-	  ccShort.push_back(rhs.ccShort[hit]);
-	  ccLong.push_back(rhs.ccLong[hit]);
-	  Led.push_back(rhs.Led[hit]);
-	  Charge.push_back(rhs.Charge[hit]);
-  }
-
-  NumberOfHits = Cfd.size();
-  HitIndex = hit;
-}
-
 TFragment::~TFragment(){
   // Default destructor does nothing right now
   //Clear();
@@ -148,7 +98,7 @@ double TFragment::GetTZero() const {
    return chan->GetTZero(GetEnergy());
 }
 
-long TFragment::GetTimeStamp_ns() const {
+long TFragment::GetTimeStamp_ns() {
    long ns = 0;
    if(DataType==2 && Cfd.size()>0) {
      ns = (Cfd.at(0) >> 21) & 0xf;
@@ -156,12 +106,12 @@ long TFragment::GetTimeStamp_ns() const {
    return 10*GetTimeStamp() + ns;  
 }
 
-Int_t TFragment::Get4GCfd(size_t i) const { // return a 4G cfd in terms 
+Int_t TFragment::Get4GCfd(size_t i) { // return a 4G cfd in terms 
   if(Cfd.size()==0)                // of 1/256 ns since the trigger
      return -1;
-  if(Cfd.size()<=i)
+  if(Cfd.size()<i)
      i = Cfd.size()-1;
-  return Cfd.at(i)&0x001fffff;
+  return  Cfd.at(i)&0x001fffff;
 }
 
 

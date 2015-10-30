@@ -1,45 +1,52 @@
+
+
+
 #include "TRF.h"
+
 
 ClassImp(TRF)
 
-TRF::TRF() : fFitter(NULL) {
+
+TRF::TRF():data(0) 	{
 	Clear();
 }
 
-TRF::~TRF() {
-	if(fFitter != NULL) { 
-		delete fFitter;
-	}
+TRF::~TRF() { if(data) delete data;	}
+
+void TRF::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
+	if(!data)
+   	data = new TRFFitter();
+	data->FindPhase((TFragment&)(*frag));
+	//TRF::Set();
 }
 
-void TRF::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-	if(fFitter == NULL)
-		fFitter = new TRFFitter();
-	fFitter->FindPhase((TFragment&)(*frag));
-   if(!fFitter->IsSet()) 
+
+void TRF::BuildHits(TDetectorData *ddata,Option_t *opt)	{
+   //TRFData *tfdata = (TRFData*)ddata;
+   //if(data==0)
+   //  tfdata = (this->data);
+   if(!data)
       return;
-   fPhase     = fFitter->GetPhase(); 
-   fMidasTime = fFitter->GetMidasTime();
-   fTimeStamp = fFitter->GetTimeStamp();
-   fTime      = fFitter->GetTime();
+   if(!data->IsSet()) 
+      return;
+   phase     = data->GetPhase(); 
+   midastime = data->GetMidasTime();
+   timestamp = data->GetTimeStamp();
+   time      = data->GetTime();
 }
 
-void TRF::Clear(Option_t *opt) {
-	if(fFitter)
-		fFitter->Clear();
-	
-   fPhase     = -1.0; 
-   fMidasTime =  0.0;
-   fTimeStamp =  0.0;
-   fTime      =  0.0;
+void TRF::Clear(Option_t *opt)	{
+  if(data) data->Clear(); //!
+		
+   phase     = -1.0; 
+   midastime =  0.0;
+   timestamp =  0.0;
+   time      =  0.0;
+
+
 }
 
-void TRF::Print(Option_t *opt) const {
-	printf("phase = %f\n",fPhase);
-	printf("time = %f\n",fTime);
-	printf("timestamp = %ld\n",fTimeStamp);
-	printf("midastime = %ld\n",fMidasTime);
-} 
+void TRF::Print(Option_t *opt) const { } 
 
 
 

@@ -1,5 +1,5 @@
+#include <TMath.h>
 #include "TCSM.h"
-#include "TMath.h"
 #define RECOVERHITS 1
 #define SUMHITS 0
 
@@ -7,446 +7,696 @@ ClassImp(TCSM)
 
 int TCSM::fCfdBuildDiff = 5;
 
-TCSM::TCSM() {
+TCSM::TCSM() : data(0)
+{
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
   //InitializeSRIMInputs();
-  fAlmostEqualWindow = .2;
+  AlmostEqualWindow = .2;
 }
 
-TCSM::~TCSM() {
+TCSM::~TCSM()
+{
+  if(data) delete data;
 }
 
-void	TCSM::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-	///This function just stores the fragments and mnemonics in vectors, separated by detector number and type (horizontal/vertical strip or pad).
-	///The hits themselves are built in the BuildHits function because the way we build them depends on the number of hits.
+void TCSM::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic)
+{
+  if(!data)
+    data = new TCSMData();
 
-	//first index: detector number, second index: 0 = deltaE, 1 = E; third index: 0 = horizontal, 1 = vertical; fourth index: fragments
-	int type = -1;
-	if(mnemonic->arraysubposition.compare(0,1,"D") == 0) {
-		type = 0;
-	} else if(mnemonic->arraysubposition.compare(0,1,"E") == 0) {
-		type = 1;
-	}
-	int orientation = -1;
-	if(mnemonic->collectedcharge.compare(0,1,"N") == 0) {
-		//N =  Horizontal Strips. aka "front"
-		orientation = 0;
-	} else if(mnemonic->collectedcharge.compare(0,1,"P") == 0) {
-		//P = Vertical Strips. aka "back"
-		orientation = 1;
-	}
-	
-	if(type < 0 || orientation < 0) {
-		return;
-	}
-
-	//if this is the first time we got this detector number we make a new vector (of a vector) of fragments
-	if(fFragments.find(mnemonic->arrayposition) == fFragments.end()) {
-		fFragments[mnemonic->arrayposition].resize(2,std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >(2));
-	}
-
-	fFragments[mnemonic->arrayposition][type][orientation].push_back(std::make_pair(*frag,*mnemonic));
+  if(mnemonic->collectedcharge.compare(0,1,"N")==0)    //Horizontal Strips. aka "front"
+  {
+    data->SetHorizontal(frag,channel,mnemonic);
+  }
+  else if(mnemonic->collectedcharge.compare(0,1,"P")==0)      //Vertical Strips. aka "back"
+  {
+    data->SetVertical(frag,channel,mnemonic);
+  }
 }
 
-void TCSM::BuildHits() {
-	///This function takes the fragments that were stored in the successive AddFragment calls and builds hits out of them
-   std::vector<std::vector<TCSMHit> > hits(2);
+void	TCSM::BuildHits(TDetectorData *ddata, Option_t *opt)
+{
+  TCSMData *cdata = (TCSMData *)ddata;
 
-	//first index: detector number, second index: 0 = deltaE, 1 = E; third index: 0 = horizontal, 1 = vertical
-	//loop over all found detectors
-	for(auto detIt = fFragments.begin(); detIt != fFragments.end(); ++detIt) {
-		//loop over all types (only detectors 1/2 should have both D and E, detectors 3/4 should only have D)
-		for(size_t i = 0; i < detIt->second.size(); ++i) {
-			BuildVH(detIt->second.at(i), hits[i]);
-		}
-	} 
-	BuilddEE(hits,fCsmHits);
+  if(cdata==0)
+    cdata = (this->data);
+
+  if(!cdata)
+    return;
+  //  after the data has been taken from the fragement tree, the data
+  //  is stored/correlated breifly in by the tcsmdata class - these
+  //  function takes the data out of tcsmdata, and puts it into the
+  //  the tcsmhits class.  These tcsmhit objects are how we access
+  //  the data stored in the tcsm branch in the analysis tree.
+  //
+  //  pcb.
+  //
+  std::string option = opt;
+  std::vector<TCSMHit> D_Hits;
+  std::vector<TCSMHit> E_Hits;
+
+  /*This is a quick thing to look at my max angle difference
+  std::vector<double> angles;
+
+  angles.push_back(abs(TCSM::GetPosition(1,'D',16,16).Theta()-TCSM::GetPosition(1,'D',16,15).Theta()));
+  angles.push_back(abs(TCSM::GetPosition(1,'D',16,16).Theta()-TCSM::GetPosition(1,'D',15,16).Theta()));
+  angles.push_back(abs(TCSM::GetPosition(2,'E',16,16).Theta()-TCSM::GetPosition(2,'E',16,15).Theta()));
+  angles.push_back(abs(TCSM::GetPosition(2,'E',16,16).Theta()-TCSM::GetPosition(2,'E',15,16).Theta()));
+  angles.push_back(abs(TCSM::GetPosition(4,'D',16,16).Theta()-TCSM::GetPosition(4,'D',16,15).Theta()));
+  angles.push_back(abs(TCSM::GetPosition(4,'D',16,16).Theta()-TCSM::GetPosition(4,'D',15,16).Theta()));
+
+  sort(angles.begin(),angles.end());
+  */
+  
+  std::vector<int> v1d;
+  std::vector<int> v2d;
+  std::vector<int> v1e;
+  std::vector<int> v2e;
+  std::vector<int> v3d;
+  std::vector<int> v4d;
+
+  std::vector<int> h1d;
+  std::vector<int> h2d;
+  std::vector<int> h1e;
+  std::vector<int> h2e;
+  std::vector<int> h3d;
+  std::vector<int> h4d;
+
+  v1d.clear();
+  v2d.clear();
+  v1e.clear();
+  v2e.clear();
+  v3d.clear();
+  v4d.clear();
+  
+  h1d.clear();
+  h2d.clear();
+  h1e.clear();
+  h2e.clear();
+  h3d.clear();
+  h4d.clear();
+
+  for(size_t hiter=0;hiter<cdata->GetMultiplicityHorizontal();hiter++) {
+	  if(cdata->GetHorizontal_DetectorNbr(hiter)==3)
+		  h3d.push_back(hiter);
+	  else if(cdata->GetHorizontal_DetectorNbr(hiter)==4)
+		  h4d.push_back(hiter);
+	  else if(cdata->GetHorizontal_DetectorNbr(hiter)==1) {
+		  if(cdata->GetHorizontal_DetectorPos(hiter)=='D')
+			  h1d.push_back(hiter);
+		  else if(cdata->GetHorizontal_DetectorPos(hiter)=='E')
+			  h1e.push_back(hiter);
+	  } else if(cdata->GetHorizontal_DetectorNbr(hiter)==2) {
+		  if(cdata->GetHorizontal_DetectorPos(hiter)=='D')
+			  h2d.push_back(hiter);
+		  else if(cdata->GetHorizontal_DetectorPos(hiter)=='E')
+			  h2e.push_back(hiter);
+	  }
+  }
+
+  for(size_t viter=0;viter<cdata->GetMultiplicityVertical();viter++) {
+	  if(cdata->GetVertical_DetectorNbr(viter)==3)
+		  v3d.push_back(viter);
+	  else if(cdata->GetVertical_DetectorNbr(viter)==4)
+		  v4d.push_back(viter);
+	  else if(cdata->GetVertical_DetectorNbr(viter)==1) {
+		  if(cdata->GetVertical_DetectorPos(viter)=='D')
+			  v1d.push_back(viter);
+		  else if(cdata->GetVertical_DetectorPos(viter)=='E')
+			  v1e.push_back(viter);
+	  } else if(cdata->GetVertical_DetectorNbr(viter)==2) {
+		  if(cdata->GetVertical_DetectorPos(viter)=='D')
+			  v2d.push_back(viter);
+		  else if(cdata->GetVertical_DetectorPos(viter)=='E')
+			  v2e.push_back(viter);
+	  }
+  }
+
+
+  BuildVH(v1d,h1d,D_Hits,cdata);
+  BuildVH(v1e,h1e,E_Hits,cdata);
+  BuildVH(v2d,h2d,D_Hits,cdata);
+  BuildVH(v2e,h2e,E_Hits,cdata);
+  BuildVH(v3d,h3d,D_Hits,cdata);
+  BuildVH(v4d,h4d,D_Hits,cdata);
+
+  BuilddEE(D_Hits,E_Hits,csm_hits);
+
 }
 
 
-void TCSM::Clear(Option_t *option) {
-  fCsmHits.clear();
+void TCSM::Clear(Option_t *option)
+{
+  if(data) data->Clear();
+
+  csm_hits.clear();
+  return;
 }
 
-void TCSM::Print(Option_t *option) const {
+void TCSM::Print(Option_t *option) const
+{
   printf("not yet written...\n");
+  return;
 }
 
 
-TVector3 TCSM::GetPosition(int detector,char pos, int horizontalstrip, int verticalstrip, double X, double Y, double Z) {
+TVector3 TCSM::GetPosition(int detector,char pos, int horizontalstrip, int verticalstrip, double X, double Y, double Z)
+{
   //horizontal strips collect N charge!
   //vertical strips collect P charge!
-   TVector3 Pos;
-	double SideX = 68;
-	double SideZ = -4.8834;
-	double dEX = 54.9721;
-	double dEZ = 42.948977;
-	double EX = 58.062412;
-	double EZ = 48.09198;
-	double detTheta = 31. * (TMath::Pi()/180.);
-	double x = 0.0,y = 0.0,z = 0.0;
+  TVector3 Pos;
+  double SideX = 68;
+  double SideZ = -4.8834;
+  double dEX = 54.9721;
+  double dEZ = 42.948977;
+  double EX = 58.062412;
+  double EZ = 48.09198;
+  double detTheta = 31. * (TMath::Pi()/180.);
+  double x = 0.0,y = 0.0,z = 0.0;
 
-	if(detector==3&&pos=='D') {
-		//Right Side
-		verticalstrip=15-verticalstrip;
-		x = SideX;
-		z = SideZ + (50./32.)*(2*verticalstrip+1);
-	} else if(detector==4&&pos=='D') {
-		//Left Side
-		x = -SideX;
-		z = SideZ + (50./32.)*(2*verticalstrip+1);
-	} else if(detector==1&&pos=='D') {
-		//Right dE
-		verticalstrip=15-verticalstrip;
-		x = dEX - (50./32.)*cos(detTheta)*(2*verticalstrip+1);
-		z = dEZ + (50./32.)*sin(detTheta)*(2*verticalstrip+1);
-	} else if(detector==2&&pos=='D') {
-		//Left dE
-		x = -dEX + (50./32.)*cos(detTheta)*(2*verticalstrip+1);
-		z = dEZ + (50./32.)*sin(detTheta)*(2*verticalstrip+1);
-	} else if(detector==1&&pos=='E') {
-		//Right E
-		x = EX - (50./32.)*cos(detTheta)*(2*verticalstrip+1);
-		z = EZ + (50./32.)*sin(detTheta)*(2*verticalstrip+1);
-	} else if(detector==2&&pos=='E') {
-		//Left E
-		verticalstrip=15-verticalstrip;
-		x = -EX + (50./32.)*cos(detTheta)*(2*verticalstrip+1);
-		z = EZ + (50./32.)*sin(detTheta)*(2*verticalstrip+1);
-	} else {
-		printf("***Error, unrecognized detector and position combo!***\n");
-	}
+  if(detector==3&&pos=='D')
+  {
+    //Right Side
+    verticalstrip=15-verticalstrip;
+    x = SideX;
+    z = SideZ + (50./32.)*(2*verticalstrip+1);
+  }
+  else if(detector==4&&pos=='D')
+  {
+    //Left Side
+    x = -SideX;
+    z = SideZ + (50./32.)*(2*verticalstrip+1);
+  }
+  else if(detector==1&&pos=='D')
+  {
+    //Right dE
+    verticalstrip=15-verticalstrip;
+    x = dEX - (50./32.)*cos(detTheta)*(2*verticalstrip+1);
+    z = dEZ + (50./32.)*sin(detTheta)*(2*verticalstrip+1);
+  }
+  else if(detector==2&&pos=='D')
+  {
+    //Left dE
+    x = -dEX + (50./32.)*cos(detTheta)*(2*verticalstrip+1);
+    z = dEZ + (50./32.)*sin(detTheta)*(2*verticalstrip+1);
+  }
+  else if(detector==1&&pos=='E')
+  {
+    //Right E
+    x = EX - (50./32.)*cos(detTheta)*(2*verticalstrip+1);
+    z = EZ + (50./32.)*sin(detTheta)*(2*verticalstrip+1);
+  }
+  else if(detector==2&&pos=='E')
+  {
+    //Left E
+    verticalstrip=15-verticalstrip;
+    x = -EX + (50./32.)*cos(detTheta)*(2*verticalstrip+1);
+    z = EZ + (50./32.)*sin(detTheta)*(2*verticalstrip+1);
+  }
+  else
+  {
+    printf("***Error, unrecognized detector and position combo!***\n");
+  }
 
-	y = (50./32.)*(2*horizontalstrip+1) - (50/16.)*8;
-	Pos.SetX(x + X);
-	Pos.SetY(y + Y);
-	Pos.SetZ(z+ Z);
-
-	return Pos;
+  y = (50./32.)*(2*horizontalstrip+1) - (50/16.)*8;
+  Pos.SetX(x + X);
+  Pos.SetY(y + Y);
+  Pos.SetZ(z+ Z);
+  return(Pos);
 }
 
-void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >& strips,std::vector<TCSMHit>& hitVector) {
-	///Build hits from horizontal (index = 0) and vertical (index = 1) strips into the hitVector
-	if(strips[0].size() == 0 && strips[1].size() == 0) {
+void TCSM::BuildVH(std::vector<int> &vvec,std::vector<int> &hvec,std::vector<TCSMHit> &hitvec,TCSMData *cdataVH)
+{  
+  if(vvec.size()==0 && hvec.size()==0)
     return;
-  } else if(strips[0].size() == 1 && strips[1].size() == 0) {
-    RecoverHit('H',strips[0][0],hitVector);
-  } else if(strips[0].size() == 0 && strips[1].size() == 1) {
-    RecoverHit('V',strips[1][0],hitVector);
-  } else if(strips[0].size() == 1 && strips[1].size() == 1) {    
-    hitVector.push_back(MakeHit(strips[0][0],strips[1][0]));
-  } else if(strips[1].size() == 1 && strips[0].size() == 2) {
-		int he1 = strips[0][0].first.GetEnergy();
-		int he2 = strips[0][1].first.GetEnergy();
-		int ve1 = strips[1][0].first.GetEnergy();
-		if(AlmostEqual(ve1,he1+he2) && SUMHITS) {
-			hitVector.push_back(MakeHit(strips[0],strips[1]));
-		} else if(AlmostEqual(ve1,he1)) {
-			hitVector.push_back(MakeHit(strips[0][0],strips[1][0]));
-			RecoverHit('H',strips[0][1],hitVector);
-		} else if(AlmostEqual(ve1,he2)) {
-			hitVector.push_back(MakeHit(strips[0][1],strips[1][0]));
-			RecoverHit('H',strips[0][0],hitVector);
-		}
-	} else if(strips[1].size() == 2 && strips[0].size() == 1) {
-		int he1 = strips[0][0].first.GetEnergy();
-		int ve1 = strips[1][0].first.GetEnergy();
-		int ve2 = strips[1][1].first.GetEnergy();
-		if(AlmostEqual(ve1+ve2,he1) && SUMHITS) {
-			hitVector.push_back(MakeHit(strips[0],strips[1]));
-		} else if(AlmostEqual(ve1,he1)) {
-			hitVector.push_back(MakeHit(strips[0][0],strips[1][0]));
-			RecoverHit('V',strips[1][1],hitVector);
-		} else if(AlmostEqual(ve2,he1)) {
-			hitVector.push_back(MakeHit(strips[0][0],strips[1][1]));
-			RecoverHit('V',strips[1][0],hitVector);
-		}
-	} else if(strips[1].size() == 2 && strips[0].size() == 2) {    
-		int he1 = strips[0][0].first.GetEnergy();
-		int he2 = strips[0][1].first.GetEnergy();
-		int ve1 = strips[1][0].first.GetEnergy();
-		int ve2 = strips[1][1].first.GetEnergy();
-		if( (AlmostEqual(ve1,he1) && AlmostEqual(ve2,he2)) || (AlmostEqual(ve1,he2) && AlmostEqual(ve2,he1))) {
-			//I can build both 1,1 and 2,2 or 1,2 and 2,1
-			if(std::abs(ve1-he1)+std::abs(ve2-he2) <= std::abs(ve1-he2)+std::abs(ve2-he1)) {
-				//1,1 and 2,2 mimimizes difference
-				hitVector.push_back(MakeHit(strips[0][0],strips[1][0]));
-				hitVector.push_back(MakeHit(strips[0][1],strips[1][1]));
-			} else if(std::abs(ve1-he1)+std::abs(ve2-he2) > std::abs(ve1-he2)+std::abs(ve2-he1)) {
-				//1,2 and 2,1 mimimizes difference
-				hitVector.push_back(MakeHit(strips[0][0],strips[1][1]));
-				hitVector.push_back(MakeHit(strips[0][1],strips[1][0]));
-			}
-		} else if( AlmostEqual(ve1,he1) ) {
-			hitVector.push_back(MakeHit(strips[0][0],strips[1][0]));
-		} else if( AlmostEqual(ve2,he1) ) {
-			hitVector.push_back(MakeHit(strips[0][1],strips[1][0]));
-		} else if( AlmostEqual(ve1,he2) ) {
-			hitVector.push_back(MakeHit(strips[0][0],strips[1][1]));
-		} else if( AlmostEqual(ve2,he2) ) {
-			hitVector.push_back(MakeHit(strips[0][1],strips[1][1]));
-		}
-	}
-}
 
-TCSMHit TCSM::MakeHit(std::pair<TFragment, MNEMONIC>& h, std::pair<TFragment, MNEMONIC>& v) {
-   TCSMHit csmHit;
+  else if(vvec.size()==1&&hvec.size()==0)
+  {
+    RecoverHit('V',vvec.at(0),cdataVH,hitvec);
+    vvec.clear();
+  }
 
-	if(h.second.arrayposition != v.second.arrayposition) {
-		std::cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match."<<std::endl;
-	}
-	if(h.second.arraysubposition.c_str()[0] != v.second.arraysubposition.c_str()[0]) {
-		std::cerr<<"\tSomething is wrong, Horizontal and Vertical positions don't match."<<std::endl;
-	}
-
-	
-	if(h.second.arraysubposition[0] == 'D') {
-		csmHit.SetDetectorNumber(h.second.arrayposition);
-		csmHit.SetDHorizontalCharge(h.first.GetCharge());
-		csmHit.SetDVerticalCharge(v.first.GetCharge());
-		csmHit.SetDHorizontalStrip(h.second.segment);
-		csmHit.SetDVerticalStrip(v.second.segment);
-		csmHit.SetDHorizontalCFD(h.first.GetCfd());
-		csmHit.SetDVerticalCFD(v.first.GetCfd());
-		csmHit.SetDHorizontalTime(h.first.GetTimeStamp());
-		csmHit.SetDVerticalTime(v.first.GetTimeStamp());
-		csmHit.SetDHorizontalEnergy(h.first.GetEnergy());
-		csmHit.SetDVerticalEnergy(v.first.GetEnergy());
-		csmHit.SetDPosition(TCSM::GetPosition(h.second.arrayposition,
-														  h.second.arraysubposition[0],
-														  h.second.segment,
-														  v.second.segment));
-	} else if(h.second.arraysubposition.c_str()[0] == 'E') {
-		csmHit.SetDetectorNumber(h.second.arrayposition);
-		csmHit.SetEHorizontalCharge(h.first.GetCharge());
-		csmHit.SetEVerticalCharge(v.first.GetCharge());
-		csmHit.SetEHorizontalStrip(h.second.segment);
-		csmHit.SetEVerticalStrip(v.second.segment);
-		csmHit.SetEHorizontalCFD(h.first.GetCfd());
-		csmHit.SetEVerticalCFD(v.first.GetCfd());
-		csmHit.SetEHorizontalTime(h.first.GetTimeStamp());
-		csmHit.SetEVerticalTime(v.first.GetTimeStamp());
-		csmHit.SetEHorizontalEnergy(h.first.GetEnergy());
-		csmHit.SetEVerticalEnergy(v.first.GetEnergy());
-		csmHit.SetEPosition(TCSM::GetPosition(h.second.arrayposition,
-														  h.second.arraysubposition[0],
-														  h.second.segment,
-														  v.second.segment));
-	}
-
-	return csmHit;
-}
-
-TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >& hhV,std::vector<std::pair<TFragment, MNEMONIC> >& vvV) {
-   TCSMHit csmHit;
-
-	if(hhV.size() == 0 || vvV.size() == 0) {
-		std::cerr<<"\tSomething is wrong, empty vector in MakeHit"<<std::endl;
-	}
-
-	//-------------------- horizontal strips
-	int DetNumH = hhV[0].second.arrayposition;
-	char DetPosH = hhV[0].second.arraysubposition[0];
-	int ChargeH = hhV[0].first.GetCharge();
-	double EnergyH = hhV[0].first.GetEnergy();
-	int biggestH = 0;
-
-	//get accumulative charge/energy and find the strip with the highest charge (why not energy?)
-	for(size_t i = 1; i < hhV.size(); ++i) {
-		if(hhV[i].first.GetCharge() > hhV[biggestH].first.GetCharge()) {
-			biggestH = i;
-		}
-
-		if(hhV[i].second.arrayposition != DetNumH) {
-			std::cerr<<"\tSomething is wrong, Horizontal detector numbers don't match in vector loop."<<std::endl;
-		}
-		if(hhV[i].second.arraysubposition[0] != DetPosH) {
-			std::cerr<<"\tSomething is wrong, Horizontal detector positions don't match in vector loop."<<std::endl;
-		}
- 		ChargeH += hhV[i].first.GetCharge();
- 		EnergyH += hhV[i].first.GetEnergy();
-	}
-
-	int StripH = hhV[biggestH].second.segment;
-	int ConFraH = hhV[biggestH].first.GetCfd();
-	double TimeH = hhV[biggestH].first.GetTimeStamp();
-
-	//-------------------- vertical strips
-	int DetNumV = vvV[0].second.arrayposition;
-	char DetPosV = vvV[0].second.arraysubposition[0];
-	int ChargeV = vvV[0].first.GetCharge();
-	double EnergyV = vvV[0].first.GetEnergy();
-	int biggestV = 0;
-
-	//get accumulative charge/energy and find the strip with the highest charge (why not energy?)
-	for(size_t i = 1; i < vvV.size(); ++i) {
-		if(vvV[i].first.GetCharge() > vvV[biggestV].first.GetCharge()) {
-			biggestV = i;
-		}
-
-		if(vvV[i].second.arrayposition != DetNumV) {
-			std::cerr<<"\tSomething is wrong, Vertical detector numbers don't match in vector loop."<<std::endl;
-		}
-		if(vvV[i].second.arraysubposition[0] != DetPosV) {
-			std::cerr<<"\tSomething is wrong, Vertical detector positions don't match in vector loop."<<std::endl;
-		}
- 		ChargeV += vvV[i].first.GetCharge();
- 		EnergyV += vvV[i].first.GetEnergy();
-	}
-
-	int StripV = vvV[biggestV].second.segment;
-	int ConFraV = vvV[biggestV].first.GetCfd();
-	double TimeV = vvV[biggestV].first.GetTimeStamp();
-
-	if(DetNumH != DetNumV) {
-		std::cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match in vector."<<std::endl;
-	}
-	if(DetPosH != DetPosV) {
-		std::cerr<<"\tSomething is wrong, Horizontal and Vertical positions don't match in vector."<<std::endl;
-	}
+  else if(vvec.size()==0&&hvec.size()==1)
+  {
+    RecoverHit('H',hvec.at(0),cdataVH,hitvec);
+    hvec.clear();
+  }
   
-	if(DetPosH == 'D') {
-		csmHit.SetDetectorNumber(DetNumH);
-		csmHit.SetDHorizontalCharge(ChargeH);
-		csmHit.SetDVerticalCharge(ChargeV);
-		csmHit.SetDHorizontalStrip(StripH);
-		csmHit.SetDVerticalStrip(StripV);
-		csmHit.SetDHorizontalCFD(ConFraH);
-		csmHit.SetDVerticalCFD(ConFraV);
-		csmHit.SetDHorizontalTime(TimeH);
-		csmHit.SetDVerticalTime(TimeV);
-		csmHit.SetDHorizontalEnergy(EnergyH);
-		csmHit.SetDVerticalEnergy(EnergyV);
-		csmHit.SetDPosition(TCSM::GetPosition(DetNumH,
-														  DetPosH,
-														  StripH,
-														  StripV));
-	} else if(DetPosH == 'E') {
-		csmHit.SetDetectorNumber(DetNumH);
-		csmHit.SetEHorizontalCharge(ChargeH);
-		csmHit.SetEVerticalCharge(ChargeV);
-		csmHit.SetEHorizontalStrip(StripH);
-		csmHit.SetEVerticalStrip(StripV);
-		csmHit.SetEHorizontalCFD(ConFraH);
-		csmHit.SetEVerticalCFD(ConFraV);
-		csmHit.SetEHorizontalTime(TimeH);
-		csmHit.SetEVerticalTime(TimeV);
-		csmHit.SetEHorizontalEnergy(EnergyH);
-		csmHit.SetEVerticalEnergy(EnergyV);
-		csmHit.SetEPosition(TCSM::GetPosition(DetNumH,
-														  DetPosH,
-														  StripH,
-														  StripV));
-	}
+  else if(vvec.size()==1&&hvec.size()==1)
+  {    
+    hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+    hvec.clear();
+    vvec.clear();
+  }
 
-	return(csmHit);
-}
+  else if(vvec.size()==1&&hvec.size()==2)
+  {
+    int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
+    int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
+    int he2 = cdataVH->GetHorizontal_Energy(hvec.at(1));
+    if(AlmostEqual(ve1,he1+he2) && SUMHITS)
+    {
+      hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
+      hvec.clear();
+      vvec.clear();
+    }
+    else if(AlmostEqual(ve1,he1))
+    {
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+      RecoverHit('H',hvec.at(1),cdataVH,hitvec);
+      vvec.clear();
+      hvec.clear();
+    }
+    else if(AlmostEqual(ve1,he2))
+    {
+      hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
+      RecoverHit('H',hvec.at(0),cdataVH,hitvec);
+      vvec.clear();
+      hvec.clear();
+    }
+  }
+  
+  else if(vvec.size()==2&&hvec.size()==1)
+  {
+    int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
+    int ve2 = cdataVH->GetVertical_Energy(vvec.at(1));
+    int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
+    if(AlmostEqual(ve1+ve2,he1) && SUMHITS)
+    {
+      hitvec.push_back(MakeHit(hvec,vvec,cdataVH));
+      hvec.clear();
+      vvec.clear();
+    }
+    else if(AlmostEqual(ve1,he1))
+    {
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+      RecoverHit('V',vvec.at(1),cdataVH,hitvec);
+      vvec.clear();
+      hvec.clear();
+    }
+    else if(AlmostEqual(ve2,he1))
+    {
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
+      RecoverHit('V',vvec.at(0),cdataVH,hitvec);
+      vvec.clear();
+      hvec.clear();
+    }
+  }
 
-void TCSM::BuilddEE(std::vector<std::vector<TCSMHit> >& hitVec,std::vector<TCSMHit>& builtHits) {
-   std::vector<TCSMHit> d1;
-	std::vector<TCSMHit> d2;
-	std::vector<TCSMHit> e1;
-	std::vector<TCSMHit> e2;
+  else if(vvec.size()==2&&hvec.size()==2)
+  {    
+    int ve1 = cdataVH->GetVertical_Energy(vvec.at(0));
+    int ve2 = cdataVH->GetVertical_Energy(vvec.at(1));
+    int he1 = cdataVH->GetHorizontal_Energy(hvec.at(0));
+    int he2 = cdataVH->GetHorizontal_Energy(hvec.at(1));
+    if( (AlmostEqual(ve1,he1) && AlmostEqual(ve2,he2)) || (AlmostEqual(ve1,he2) && AlmostEqual(ve2,he1)) )
+    {
+      //I can build both 1,1 and 2,2 or 1,2 and 2,1
+      if(std::abs(ve1-he1)+std::abs(ve2-he2) <= std::abs(ve1-he2)+std::abs(ve2-he1))
+      {
+	//1,1 and 2,2 mimimizes difference
+	hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+	hitvec.push_back(MakeHit(hvec.at(1),vvec.at(1),cdataVH));
+	hvec.clear();
+	vvec.clear();
+      }
+      else if(std::abs(ve1-he1)+std::abs(ve2-he2) > std::abs(ve1-he2)+std::abs(ve2-he1))
+      {
+	//1,2 and 2,1 mimimizes difference
+	hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
+	hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
+	hvec.clear();
+	vvec.clear();
+      }
+    }
+    else if( AlmostEqual(ve1,he1) )
+    {
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(0),cdataVH));
+      hvec.erase(hvec.begin());
+      vvec.erase(vvec.begin());
+    }
+    else if( AlmostEqual(ve2,he1) )
+    {
+      hitvec.push_back(MakeHit(hvec.at(1),vvec.at(0),cdataVH));
+      hvec.erase(hvec.begin());
+      vvec.pop_back();
+    }
+    else if( AlmostEqual(ve1,he2) )
+    {
+      hitvec.push_back(MakeHit(hvec.at(0),vvec.at(1),cdataVH));
+      hvec.pop_back();
+      vvec.erase(vvec.begin());
+    }
+    else if( AlmostEqual(ve2,he2) )
+    {
+      hitvec.push_back(MakeHit(hvec.at(1),vvec.at(1),cdataVH));
+      hvec.pop_back();
+      vvec.pop_back();
+    }
+  }
 
-	for(size_t i = 0; i < hitVec[0].size(); i++) {
-		if(hitVec[0][i].GetDetectorNumber() == 3 || hitVec[0][i].GetDetectorNumber() == 4) { //I am in side detectors
-			//I will never have a pair in the side detector, so go ahead and send it through.
-			builtHits.push_back(hitVec[0][i]);
-		} else if(hitVec[0][i].GetDetectorNumber() == 1) {
-			d1.push_back(hitVec[0][i]);
-		} else if(hitVec[0][i].GetDetectorNumber() == 2) {
-			d2.push_back(hitVec[0][i]);
-		} else {
-			std::cerr<<"  Caution, in BuilddEE detector number in D vector is out of bounds."<<std::endl;
-		}
-	}
-
-	for(size_t i = 0; i < hitVec[1].size(); ++i) {
-		if(hitVec[1][i].GetDetectorNumber() == 1) {
-			e1.push_back(hitVec[1][i]);
-		} else if(hitVec[1][i].GetDetectorNumber() == 2) {
-			e2.push_back(hitVec[1][i]);
-		} else {
-			std::cerr<<"  Caution, in BuilddEE detector number in E vector is out of bounds."<<std::endl;
-		}
-	}
-
-	MakedEE(d1,e1,builtHits);
-	MakedEE(d2,e2,builtHits);
-}
-
-void TCSM::MakedEE(std::vector<TCSMHit>& DHitVec,std::vector<TCSMHit>& EHitVec,std::vector<TCSMHit>& BuiltHits) {
-   if(DHitVec.size()==0 && EHitVec.size()==0)
-		return;
-	else if(DHitVec.size()==1 && EHitVec.size()==0)
-		BuiltHits.push_back(DHitVec.at(0));
-	else if(DHitVec.size()==0 && EHitVec.size()==1)
-		BuiltHits.push_back(EHitVec.at(0));
-	else if(DHitVec.size()==1 && EHitVec.size()==1)
-		BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
-	else if(DHitVec.size()==2 && EHitVec.size()==0) {
-		BuiltHits.push_back(DHitVec.at(0));
-		BuiltHits.push_back(DHitVec.at(1));
-	} else if(DHitVec.size()==0 && EHitVec.size()==2) {
-		BuiltHits.push_back(EHitVec.at(0));
-		BuiltHits.push_back(EHitVec.at(1));
-	} else if(DHitVec.size()==2 && EHitVec.size()==1) {
-		double dt1 = DHitVec.at(0).GetDPosition().Theta();
-		double dt2 = DHitVec.at(1).GetDPosition().Theta();
-		double et = EHitVec.at(0).GetEPosition().Theta();
-
-		if( std::abs(dt1-et) <= std::abs(dt2-et) ) {
-			BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
-			//BuiltHits.back().Print();
-			BuiltHits.push_back(DHitVec.at(1));
-			//BuiltHits.back().Print();
-		} else {
-			BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(0)));
-			//BuiltHits.back().Print();
-			BuiltHits.push_back(DHitVec.at(0));
-			//BuiltHits.back().Print();
-		}
-	} else if(DHitVec.size()==1 && EHitVec.size()==2) {
-		double dt = DHitVec.at(0).GetDPosition().Theta();
-		double et1 = EHitVec.at(0).GetEPosition().Theta();
-		double et2 = EHitVec.at(0).GetEPosition().Theta();
+  /*
+  else if(vvec.size()==3&&hvec.size()==3)
+  {
+    cdataVH->Print();
     
-		if( std::abs(dt-et1) <= std::abs(dt-et2) ) {
-			BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
-			//BuiltHits.back().Print();
-			BuiltHits.push_back(EHitVec.at(1));
-			//BuiltHits.back().Print();
-		} else {
-			BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(1)));
-			//BuiltHits.back().Print();
-			BuiltHits.push_back(EHitVec.at(0));
-			//BuiltHits.back().Print();
-		}
-	} else if(DHitVec.size()==2 && EHitVec.size()==2) {
-		double dt1 = DHitVec.at(0).GetDPosition().Theta();
-		double dt2 = DHitVec.at(1).GetDPosition().Theta();
-		double et1 = EHitVec.at(0).GetEPosition().Theta();
-		double et2 = EHitVec.at(1).GetEPosition().Theta();
+  }
+  else if(vvec.size()==3&&hvec.size()==2)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==2&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==2&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==1&&hvec.size()==3)
+  {
+    cdataVH->Print();
+    
+  }
+  else if(vvec.size()==3&&hvec.size()==1)
+  {
+    cdataVH->Print();
+    
+  }
+  */
+    
+  /*else
+  {
+    std::vector<bool> vertUsed (vvec.size(),false);
+    std::vector<bool> horUsed (hvec.size(),false);
+    for(int vloop = 0; vloop<vvec.size(); vloop++)
+    {
+      if(vertUsed.at(vloop))
+	continue;
+      
+      double VE = cdataVH->GetVertical_Energy(vvec.at(vloop));
+      for(int hloop = 0; hloop<hvec.size(); hloop++)
+      {
+	if(horUsed.at(hloop))
+	  continue;
+	
+	double HE = cdataVH->GetHorizontal_Energy(hvec.at(hloop));
 
-		if( std::abs(dt1-et1)+std::abs(dt2-et2) <= std::abs(dt1-et2)+std::abs(dt2-et1) ) {
-			BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
-			//BuiltHits.back().Print();
-			BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(1)));
-			//BuiltHits.back().Print();
-		} else {
-			BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(1)));
-			//BuiltHits.back().Print();
-			BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(0)));
-			//BuiltHits.back().Print();
-		}
-	} else {
-		std::cout<<"D Size: "<<DHitVec.size()<<" E Size: "<<EHitVec.size()<<std::endl;
+	if(AlmostEqual(VE,HE))
+	{
+	  cdataVH->Print();
+	  hitvec.push_back(MakeHit(hvec.at(hloop),vvec.at(vloop),cdataVH));
+	  hitvec.back().Print();
+	  vertUsed.at(vloop) = true;
+	  horUsed.at(hloop) = true;
 	}
+      }
+    }
+  }*/
+
+
+  
+  //else
+    //cdataVH->Print();
+  
 }
 
-void TCSM::OldBuilddEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,std::vector<TCSMHit> &BuiltHits) {
+
+TCSMHit TCSM::MakeHit(int hh, int vv, TCSMData *cdata)
+{
+  TCSMHit csmhit;
+  csmhit.Clear();
+
+  if(cdata->GetHorizontal_DetectorNbr(hh)!=cdata->GetVertical_DetectorNbr(vv))
+    std::cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match."<<std::endl;
+  if(cdata->GetHorizontal_DetectorPos(hh)!=cdata->GetVertical_DetectorPos(vv))
+    std::cerr<<"\tSomething is wrong, Horizontal and Vertical positions don't match."<<std::endl;
+
+  if(cdata->GetHorizontal_DetectorPos(hh)=='D')
+  {
+    csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(hh));
+    csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(hh));
+    csmhit.SetDVerticalCharge(cdata->GetVertical_Charge(vv));
+    csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(hh));
+    csmhit.SetDVerticalStrip(cdata->GetVertical_StripNbr(vv));
+    csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(hh));
+    csmhit.SetDVerticalCFD(cdata->GetVertical_TimeCFD(vv));
+    csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(hh));
+    csmhit.SetDVerticalTime(cdata->GetVertical_Time(vv));
+    csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(hh));
+    csmhit.SetDVerticalEnergy(cdata->GetVertical_Energy(vv));
+    csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(hh),
+					   cdata->GetHorizontal_DetectorPos(hh),
+					   cdata->GetHorizontal_StripNbr(hh),
+					   cdata->GetVertical_StripNbr(vv)));
+  }
+  else if(cdata->GetHorizontal_DetectorPos(hh)=='E')
+  {
+    csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(hh));
+    csmhit.SetEHorizontalCharge(cdata->GetHorizontal_Charge(hh));
+    csmhit.SetEVerticalCharge(cdata->GetVertical_Charge(vv));
+    csmhit.SetEHorizontalStrip(cdata->GetHorizontal_StripNbr(hh));
+    csmhit.SetEVerticalStrip(cdata->GetVertical_StripNbr(vv));
+    csmhit.SetEHorizontalCFD(cdata->GetHorizontal_TimeCFD(hh));
+    csmhit.SetEVerticalCFD(cdata->GetVertical_TimeCFD(vv));
+    csmhit.SetEHorizontalTime(cdata->GetHorizontal_Time(hh));
+    csmhit.SetEVerticalTime(cdata->GetVertical_Time(vv));
+    csmhit.SetEHorizontalEnergy(cdata->GetHorizontal_Energy(hh));
+    csmhit.SetEVerticalEnergy(cdata->GetVertical_Energy(vv));
+    csmhit.SetEPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(hh),
+					  cdata->GetHorizontal_DetectorPos(hh),
+					  cdata->GetHorizontal_StripNbr(hh),
+					  cdata->GetVertical_StripNbr(vv)));
+  }
+  //if(hh!=0||vv!=0)
+  //csmhit.Print();
+  return(csmhit);
+}
+
+TCSMHit TCSM::MakeHit(std::vector<int> &hhV,std::vector<int> &vvV, TCSMData *cdata)
+{
+  TCSMHit csmhit;
+  csmhit.Clear();
+  if(hhV.size()==0 || vvV.size()==0)
+    std::cerr<<"\tSomething is wrong, empty vector in MakeHit"<<std::endl;
+
+  int DetNumH = cdata->GetHorizontal_DetectorNbr(hhV.at(0));
+  char DetPosH = cdata->GetHorizontal_DetectorPos(hhV.at(0));
+  int ChargeH = 0;
+  int StripH = -1;
+  int ConFraH = 0;
+  double TimeH = 0;
+  double EnergyH = 0;
+  int biggestH = 0;
+
+
+  int DetNumV = cdata->GetVertical_DetectorNbr(vvV.at(0));
+  char DetPosV = cdata->GetVertical_DetectorPos(vvV.at(0));
+  int ChargeV = 0;
+  int StripV = -1;
+  int ConFraV = 0;
+  double TimeV = 0;
+  double EnergyV = 0;
+  int biggestV = 0;
+
+  
+  for(size_t iterH = 0; iterH < hhV.size(); iterH++) {
+	  if(cdata->GetHorizontal_Charge(hhV.at(iterH))>cdata->GetHorizontal_Charge(biggestH))
+		  biggestH = hhV.at(iterH);
+
+	  if(cdata->GetHorizontal_DetectorNbr(hhV.at(iterH))!=DetNumH)
+		  std::cerr<<"\tSomething is wrong, Horizontal detector numbers don't match in vector loop."<<std::endl;
+	  if(cdata->GetHorizontal_DetectorPos(hhV.at(iterH))!=DetPosH)
+		  std::cerr<<"\tSomething is wrong, Horizontal detector positions don't match in vector loop."<<std::endl;
+    
+	  ChargeH += cdata->GetHorizontal_Charge(hhV.at(iterH));
+	  EnergyH += cdata->GetHorizontal_Energy(hhV.at(iterH));
+  }
+
+  StripH = cdata->GetHorizontal_StripNbr(biggestH);
+  ConFraH = cdata->GetHorizontal_TimeCFD(biggestH);
+  TimeH = cdata->GetHorizontal_Time(biggestH);
+
+
+  for(size_t iterV = 0; iterV < vvV.size(); iterV++) {
+	  if(cdata->GetVertical_Charge(vvV.at(iterV))>cdata->GetVertical_Charge(biggestV))
+		  biggestV = vvV.at(iterV);
+    
+	  if(cdata->GetVertical_DetectorNbr(vvV.at(iterV))!=DetNumV)
+		  std::cerr<<"\tSomething is wrong, Vertical detector numbers don't match in vector loop."<<std::endl;
+	  if(cdata->GetVertical_DetectorPos(vvV.at(iterV))!=DetPosV)
+		  std::cerr<<"\tSomething is wrong, Vertical detector positions don't match in vector loop."<<std::endl;
+    
+	  ChargeV += cdata->GetVertical_Charge(vvV.at(iterV));
+	  EnergyV += cdata->GetVertical_Energy(vvV.at(iterV));
+  }
+  
+  StripV = cdata->GetVertical_StripNbr(biggestV);
+  ConFraV = cdata->GetVertical_TimeCFD(biggestV);
+  TimeV = cdata->GetVertical_Time(biggestV);
+
+  
+  if(DetNumH!=DetNumV)
+    std::cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match in vector."<<std::endl;
+  if(DetPosH!=DetPosV)
+    std::cerr<<"\tSomething is wrong, Horizontal and Vertical positions don't match in vector."<<std::endl;
+  
+  if(DetPosH=='D') {
+	  csmhit.SetDetectorNumber(DetNumH);
+	  csmhit.SetDHorizontalCharge(ChargeH);
+	  csmhit.SetDVerticalCharge(ChargeV);
+	  csmhit.SetDHorizontalStrip(StripH);
+	  csmhit.SetDVerticalStrip(StripV);
+	  csmhit.SetDHorizontalCFD(ConFraH);
+	  csmhit.SetDVerticalCFD(ConFraV);
+	  csmhit.SetDHorizontalTime(TimeH);
+	  csmhit.SetDVerticalTime(TimeV);
+	  csmhit.SetDHorizontalEnergy(EnergyH);
+	  csmhit.SetDVerticalEnergy(EnergyV);
+	  csmhit.SetDPosition(TCSM::GetPosition(DetNumH,
+														 DetPosH,
+														 StripH,
+														 StripV));
+  } else if(DetPosH=='E') {
+	  csmhit.SetDetectorNumber(DetNumH);
+	  csmhit.SetEHorizontalCharge(ChargeH);
+	  csmhit.SetEVerticalCharge(ChargeV);
+	  csmhit.SetEHorizontalStrip(StripH);
+	  csmhit.SetEVerticalStrip(StripV);
+	  csmhit.SetEHorizontalCFD(ConFraH);
+	  csmhit.SetEVerticalCFD(ConFraV);
+	  csmhit.SetEHorizontalTime(TimeH);
+	  csmhit.SetEVerticalTime(TimeV);
+	  csmhit.SetEHorizontalEnergy(EnergyH);
+	  csmhit.SetEVerticalEnergy(EnergyV);
+	  csmhit.SetEPosition(TCSM::GetPosition(DetNumH,
+														 DetPosH,
+														 StripH,
+														 StripV));
+  }
+
+  //csmhit.Print();
+  return(csmhit);
+}
+
+void TCSM::BuilddEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,std::vector<TCSMHit> &BuiltHits)
+{
+  std::vector<TCSMHit> d1;
+  std::vector<TCSMHit> d2;
+  std::vector<TCSMHit> e1;
+  std::vector<TCSMHit> e2;
+
+  d1.clear();
+  d2.clear();
+  e1.clear();
+  e2.clear();
+  
+  for(size_t diter=0;diter<DHitVec.size();diter++) {
+    if(DHitVec.at(diter).GetDetectorNumber()==3 || DHitVec.at(diter).GetDetectorNumber()==4) { //I am in side detectors
+      //I will never have a pair in the side detector, so go ahead and send it through.
+      BuiltHits.push_back(DHitVec.at(diter));
+    } else if(DHitVec.at(diter).GetDetectorNumber()==1) {
+      d1.push_back(DHitVec.at(diter));
+	 } else if(DHitVec.at(diter).GetDetectorNumber()==2) {
+      d2.push_back(DHitVec.at(diter));
+    } else {
+      std::cerr<<"  Caution, in BuilddEE detector number in D vector is out of bounds."<<std::endl;
+    }
+  }
+
+  for(size_t eiter=0;eiter<EHitVec.size();eiter++) {
+    if(EHitVec.at(eiter).GetDetectorNumber()==1) {
+      e1.push_back(EHitVec.at(eiter));
+    } else if(EHitVec.at(eiter).GetDetectorNumber()==2) {
+      e2.push_back(EHitVec.at(eiter));
+    } else {
+      std::cerr<<"  Caution, in BuilddEE detector number in E vector is out of bounds."<<std::endl;
+    }
+  }
+
+  MakedEE(d1,e1,BuiltHits);
+  MakedEE(d2,e2,BuiltHits);
+  
+}
+
+void TCSM::MakedEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,std::vector<TCSMHit> &BuiltHits)
+{
+
+  if(DHitVec.size()==0 && EHitVec.size()==0)
+    return;
+  else if(DHitVec.size()==1 && EHitVec.size()==0)
+    BuiltHits.push_back(DHitVec.at(0));
+  else if(DHitVec.size()==0 && EHitVec.size()==1)
+    BuiltHits.push_back(EHitVec.at(0));
+  else if(DHitVec.size()==1 && EHitVec.size()==1)
+    BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+  else if(DHitVec.size()==2 && EHitVec.size()==0) {
+    BuiltHits.push_back(DHitVec.at(0));
+    BuiltHits.push_back(DHitVec.at(1));
+  } else if(DHitVec.size()==0 && EHitVec.size()==2) {
+    BuiltHits.push_back(EHitVec.at(0));
+    BuiltHits.push_back(EHitVec.at(1));
+  } else if(DHitVec.size()==2 && EHitVec.size()==1) {
+    double dt1 = DHitVec.at(0).GetDPosition().Theta();
+    double dt2 = DHitVec.at(1).GetDPosition().Theta();
+    double et = EHitVec.at(0).GetEPosition().Theta();
+
+    if( std::abs(dt1-et) <= std::abs(dt2-et) ) {
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(DHitVec.at(1));
+      //BuiltHits.back().Print();
+    } else {
+      BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(DHitVec.at(0));
+      //BuiltHits.back().Print();
+    }
+  } else if(DHitVec.size()==1 && EHitVec.size()==2) {
+    double dt = DHitVec.at(0).GetDPosition().Theta();
+    double et1 = EHitVec.at(0).GetEPosition().Theta();
+    double et2 = EHitVec.at(0).GetEPosition().Theta();
+    
+    if( std::abs(dt-et1) <= std::abs(dt-et2) ) {
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(EHitVec.at(1));
+      //BuiltHits.back().Print();
+    } else {
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(1)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(EHitVec.at(0));
+      //BuiltHits.back().Print();
+    }
+  } else if(DHitVec.size()==2 && EHitVec.size()==2) {
+    double dt1 = DHitVec.at(0).GetDPosition().Theta();
+    double dt2 = DHitVec.at(1).GetDPosition().Theta();
+    double et1 = EHitVec.at(0).GetEPosition().Theta();
+    double et2 = EHitVec.at(1).GetEPosition().Theta();
+
+    if( std::abs(dt1-et1)+std::abs(dt2-et2) <= std::abs(dt1-et2)+std::abs(dt2-et1) ) {
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(1)));
+      //BuiltHits.back().Print();
+    } else {
+      BuiltHits.push_back(CombineHits(DHitVec.at(0),EHitVec.at(1)));
+      //BuiltHits.back().Print();
+      BuiltHits.push_back(CombineHits(DHitVec.at(1),EHitVec.at(0)));
+      //BuiltHits.back().Print();
+    }
+  } else {
+    std::cout<<"D Size: "<<DHitVec.size()<<" E Size: "<<EHitVec.size()<<std::endl;
+  }
+}
+
+void TCSM::OldBuilddEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,std::vector<TCSMHit> &BuiltHits)
+{
 	bool printbit =0;
 	if(DHitVec.size()==0&&EHitVec.size()==0)//Why am I even here?!
 		return;
@@ -491,7 +741,7 @@ void TCSM::OldBuilddEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitV
 	}
 
 
-	//Send through the stragglers.  This is very permissive, but we trust BuildVH to take care of the riff-raff
+  //Send through the stragglers.  This is very permissive, but we trust BuildVH to take care of the riff-raff
 	for(size_t i=0;i<DHitVec.size();i++) {
 		if(!DUsed.at(i)) {
 			BuiltHits.push_back(DHitVec.at(i));
@@ -512,94 +762,100 @@ void TCSM::OldBuilddEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitV
 	}
 }
 
-void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std::vector<TCSMHit>& hits) {
-   if(!RECOVERHITS) {
-		return;
-	}
+void TCSM::RecoverHit(char orientation, int location, TCSMData *cdata, std::vector<TCSMHit> &hits) {
+  if(!RECOVERHITS)
+    return;
   
-	TCSMHit csmHit;
+  TCSMHit csmhit;
+  csmhit.Clear();
 
-	int detno = hit.second.arrayposition;
-	char pos = hit.second.arraysubposition[0];
-
-	switch(detno) {
-	case 1:
-		return;
-	case 2:
-		if(pos == 'D' && orientation=='V') {//Recover 2DN09, channel 1040
-			csmHit.SetDetectorNumber(detno);
-			csmHit.SetDHorizontalCharge(hit.first.GetCharge());
-			csmHit.SetDVerticalCharge(hit.first.GetCharge());
-			csmHit.SetDHorizontalStrip(9);
-			csmHit.SetDVerticalStrip(hit.second.segment);
-			csmHit.SetDHorizontalCFD(hit.first.GetCfd());
-			csmHit.SetDVerticalCFD(hit.first.GetCfd());
-			csmHit.SetDHorizontalTime(hit.first.GetTimeStamp());
-			csmHit.SetDVerticalTime(hit.first.GetTimeStamp());
-			csmHit.SetDHorizontalEnergy(hit.first.GetEnergy());
-			csmHit.SetDVerticalEnergy(hit.first.GetEnergy());
-			csmHit.SetDPosition(TCSM::GetPosition(detno,
-															  pos,
-															  9,
-															  hit.second.segment));
-		}
-		break;
-	case 3:
-		if(pos=='E') {
-			std::cerr<<"3E in RecoverHit"<<std::endl;
+  int detno=-1;
+  char pos='X';
+  
+  if(orientation=='V') {
+	  pos=char(cdata->GetVertical_DetectorPos(location));
+	  detno=cdata->GetVertical_DetectorNbr(location);
+  } else if(orientation=='H') {
+	  pos=char(cdata->GetHorizontal_DetectorPos(location));
+	  detno=cdata->GetHorizontal_DetectorNbr(location);
+  }
+  
+  if(detno==1)
+	  return;
+  else if(detno==2) {
+	  if(pos=='D' && orientation=='V') {//Recover 2DN09, channel 1040
+		  csmhit.SetDetectorNumber(cdata->GetVertical_DetectorNbr(location));
+		  csmhit.SetDHorizontalCharge(cdata->GetVertical_Charge(location));
+		  csmhit.SetDVerticalCharge(cdata->GetVertical_Charge(location));
+		  csmhit.SetDHorizontalStrip(9);
+		  csmhit.SetDVerticalStrip(cdata->GetVertical_StripNbr(location));
+		  csmhit.SetDHorizontalCFD(cdata->GetVertical_TimeCFD(location));
+		  csmhit.SetDVerticalCFD(cdata->GetVertical_TimeCFD(location));
+		  csmhit.SetDHorizontalTime(cdata->GetVertical_Time(location));
+		  csmhit.SetDVerticalTime(cdata->GetVertical_Time(location));
+		  csmhit.SetDHorizontalEnergy(cdata->GetVertical_Energy(location));
+		  csmhit.SetDVerticalEnergy(cdata->GetVertical_Energy(location));
+		  csmhit.SetDPosition(TCSM::GetPosition(cdata->GetVertical_DetectorNbr(location),
+															 cdata->GetVertical_DetectorPos(location),
+															 9,
+															 cdata->GetVertical_StripNbr(location)));
+	  }
+  }
+  else if(detno==3) {
+	  if(pos=='E') {
+		  std::cerr<<"3E in RecoverHit"<<std::endl;
 		  
-			return;
-		} else if(orientation=='H') {//Recover 3DP11, channel 1145
-			csmHit.SetDetectorNumber(detno);
-			csmHit.SetDHorizontalCharge(hit.first.GetCharge());
-			csmHit.SetDVerticalCharge(hit.first.GetCharge());
-			csmHit.SetDHorizontalStrip(hit.second.segment);
-			csmHit.SetDVerticalStrip(11);
-			csmHit.SetDHorizontalCFD(hit.first.GetCfd());
-			csmHit.SetDVerticalCFD(hit.first.GetCfd());
-			csmHit.SetDHorizontalTime(hit.first.GetTimeStamp());
-			csmHit.SetDVerticalTime(hit.first.GetTimeStamp());
-			csmHit.SetDHorizontalEnergy(hit.first.GetEnergy());
-			csmHit.SetDVerticalEnergy(hit.first.GetEnergy());
-			csmHit.SetDPosition(TCSM::GetPosition(detno,
-															  pos,
-															  hit.second.segment,
-															  11));
-		}
-		break;
-	case 4:
-		if(pos=='E') {
-			std::cerr<<"4E in RecoverHit"<<std::endl;
-			return;
-		} else if(orientation=='H') {//Recover 4DP15, channel 1181
-			csmHit.SetDetectorNumber(detno);
-			csmHit.SetDHorizontalCharge(hit.first.GetCharge());
-			csmHit.SetDVerticalCharge(hit.first.GetCharge());
-			csmHit.SetDHorizontalStrip(hit.second.segment);
-			csmHit.SetDVerticalStrip(15);
-			csmHit.SetDHorizontalCFD(hit.first.GetCfd());
-			csmHit.SetDVerticalCFD(hit.first.GetCfd());
-			csmHit.SetDHorizontalTime(hit.first.GetTimeStamp());
-			csmHit.SetDVerticalTime(hit.first.GetTimeStamp());
-			csmHit.SetDHorizontalEnergy(hit.first.GetEnergy());
-			csmHit.SetDVerticalEnergy(hit.first.GetEnergy());
-			csmHit.SetDPosition(TCSM::GetPosition(detno,
-															  pos,
-															  hit.second.segment,
-															  15));
-		}
-		break;
-	default:
-		std::cerr<<"Something is wrong.  The detector number in recover hit is out of bounds."<<std::endl;
-		return;
-	}
+		  return;
+	  } else if(orientation=='H') {//Recover 3DP11, channel 1145
+		  csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(location));
+		  csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(location));
+		  csmhit.SetDVerticalCharge(cdata->GetHorizontal_Charge(location));
+		  csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(location));
+		  csmhit.SetDVerticalStrip(11);
+		  csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(location));
+		  csmhit.SetDVerticalCFD(cdata->GetHorizontal_TimeCFD(location));
+		  csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(location));
+		  csmhit.SetDVerticalTime(cdata->GetHorizontal_Time(location));
+		  csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(location));
+		  csmhit.SetDVerticalEnergy(cdata->GetHorizontal_Energy(location));
+		  csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(location),
+															 cdata->GetHorizontal_DetectorPos(location),
+															 cdata->GetHorizontal_StripNbr(location),
+															 11));
+	  }
+  } else if(detno==4) {
+    if(pos=='E') {
+      std::cerr<<"4E in RecoverHit"<<std::endl;
+      return;
+    } else if(orientation=='H') {//Recover 4DP15, channel 1181
+		 csmhit.SetDetectorNumber(cdata->GetHorizontal_DetectorNbr(location));
+		 csmhit.SetDHorizontalCharge(cdata->GetHorizontal_Charge(location));
+		 csmhit.SetDVerticalCharge(cdata->GetHorizontal_Charge(location));
+		 csmhit.SetDHorizontalStrip(cdata->GetHorizontal_StripNbr(location));
+		 csmhit.SetDVerticalStrip(15);
+		 csmhit.SetDHorizontalCFD(cdata->GetHorizontal_TimeCFD(location));
+		 csmhit.SetDVerticalCFD(cdata->GetHorizontal_TimeCFD(location));
+		 csmhit.SetDHorizontalTime(cdata->GetHorizontal_Time(location));
+		 csmhit.SetDVerticalTime(cdata->GetHorizontal_Time(location));
+		 csmhit.SetDHorizontalEnergy(cdata->GetHorizontal_Energy(location));
+		 csmhit.SetDVerticalEnergy(cdata->GetHorizontal_Energy(location));
+		 csmhit.SetDPosition(TCSM::GetPosition(cdata->GetHorizontal_DetectorNbr(location),
+															cdata->GetHorizontal_DetectorPos(location),
+															cdata->GetHorizontal_StripNbr(location),
+															15));
+    }
+  } else {
+    std::cerr<<"Something is wrong.  The detector number in recover hit is out of bounds."<<std::endl;
+    return;
+  }
 
-	if(!csmHit.IsEmpty()) {
-		hits.push_back(csmHit);
-	}
+  if(!csmhit.IsEmpty()) {
+    hits.push_back(csmhit);
+  }
 }
 
-TCSMHit TCSM::CombineHits(TCSMHit d_hit,TCSMHit e_hit) {
+TCSMHit TCSM::CombineHits(TCSMHit d_hit,TCSMHit e_hit)
+{
   if(d_hit.GetDetectorNumber()!=e_hit.GetDetectorNumber())
     std::cerr<<"Something is wrong.  In combine hits, the detector numbers don't match"<<std::endl;
 
@@ -625,22 +881,25 @@ TCSMHit TCSM::CombineHits(TCSMHit d_hit,TCSMHit e_hit) {
   
 }
 
-bool TCSM::AlmostEqual(int val1, int val2) {
+bool TCSM::AlmostEqual(int val1, int val2)
+{
   double diff = double(std::abs(val1 - val2));
   double ave = (val1+val2)/2.;
   double frac = diff/ave;
-  return frac < fAlmostEqualWindow;
+  return frac < AlmostEqualWindow;
 }
 
-bool TCSM::AlmostEqual(double val1, double val2) {
+bool TCSM::AlmostEqual(double val1, double val2)
+{
   double frac = std::fabs(val1 - val2)/((val1+val2)/2.);
-  return frac < fAlmostEqualWindow;
+  return frac < AlmostEqualWindow;
 }
 
 TCSMHit* TCSM::GetCSMHit(const int& i) {
-   try {
-      return &fCsmHits.at(i);   
-   } catch (const std::out_of_range& oor) {
+   try{
+      return &csm_hits.at(i);   
+   }
+   catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
    }
    return 0;

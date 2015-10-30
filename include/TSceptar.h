@@ -1,53 +1,64 @@
 #ifndef TSCEPTAR_H
 #define TSCEPTAR_H
 
+#include "Globals.h"
+
 #include <vector>
 #include <cstdio>
 
+#include "TSceptarHit.h"
+#ifndef __CINT__
+#include "TSceptarData.h"
+#else
+class TSceptarData;
+#endif
 #include "TVector3.h" 
 
-#include "Globals.h"
 #include "TGRSIDetector.h" 
-#include "TSceptarHit.h"
+
 
 class TSceptar : public TGRSIDetector {
-	public:
-		TSceptar();
-		virtual ~TSceptar();
-		TSceptar(const TSceptar& rhs);
 
-	public: 
-		TGRSIDetectorHit* GetHit(const Int_t& idx =0);
-		void Copy(TObject &rhs) const;
-		TSceptarHit* GetSceptarHit(const int& i);	//!
-		Short_t GetMultiplicity() const	       {	return fSceptarHits.size(); }	      //!
+  public:
+     TSceptar();
+     virtual ~TSceptar();
+     TSceptar(const TSceptar& rhs);
 
-		static TVector3 GetPosition(int DetNbr) { return gPaddlePosition[DetNbr]; }	//!
+  public: 
+     TGRSIDetectorHit* GetHit(const Int_t& idx =0);
+     void Copy(TObject &rhs) const;
+     TSceptarHit *GetSceptarHit(const int& i);	//!
+     Short_t GetMultiplicity() const	       {	return sceptar_hits.size();}	//!
 
-		void AddFragment(TFragment*, MNEMONIC*); //!
-		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
+     static TVector3 GetPosition(int DetNbr)  { return gPaddlePosition[DetNbr];}	//!
 
-		TSceptar& operator=(const TSceptar&);  //!
+     void BuildHits(TDetectorData *data =0,Option_t *opt = "");           //!
+     void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
 
-	private: 
-		std::vector <TSceptarHit> fSceptarHits;                                  //   The set of sceptar hits
+     TSceptar& operator=(const TSceptar&);  //!
 
-		static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
+   private: 
+     TSceptarData *sceptardata;                                               //!  Used to build SCEPTAR Hits
+     std::vector <TSceptarHit> sceptar_hits;                                  //   The set of sceptar hits
+      
+     static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
 
-	public:
-		static bool SetWave()      { return fSetWave;  }	                        //!
+   public:
+     static bool SetWave()      { return fSetWave;  }	                        //!
 
-	private:
-		static TVector3 gPaddlePosition[21];                                     //!  Position of each Paddle
+   private:
+     static TVector3 gPaddlePosition[21];                                     //!  Position of each Paddle
 
-	public:         
-		void Clear(Option_t *opt = "");		//!
-		void Print(Option_t *opt = "") const;		//!
+   public:         
+     void Clear(Option_t *opt = "");		//!
+     void Print(Option_t *opt = "") const;		//!
 
-	protected:
-		void PushBackHit(TGRSIDetectorHit*);
+   protected:
+     void PushBackHit(TGRSIDetectorHit* schit);
 
-		ClassDef(TSceptar,2)  // Sceptar Physics structure
+   ClassDef(TSceptar,1)  // Sceptar Physics structure
+
+
 };
 
 #endif

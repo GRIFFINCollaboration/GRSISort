@@ -5,10 +5,13 @@
 
 ClassImp(TTigressHit)
 
-TVector3 TTigressHit::fBeam;
+TVector3 TTigressHit::beam;
 
 TTigressHit::TTigressHit() {	
 	Clear();
+   segment.SetClass("TCrystalHit");
+   bgo.SetClass("TCrystalHit");
+   beam.SetXYZ(0,0,1);
 }
 
 TTigressHit::~TTigressHit() {	}
@@ -17,28 +20,50 @@ TTigressHit::TTigressHit(const TTigressHit& rhs) : TGRSIDetectorHit() {
    rhs.Copy(*this);
 }
 
+
+void TTigressHit::AddSegment(TCrystalHit &temp) {
+   TCrystalHit *newhit = static_cast<TCrystalHit*>(segment.ConstructedAt(GetSegmentMultiplicity()));	
+   temp.Copy(*newhit);
+}
+
+
+void TTigressHit::AddBGO(TCrystalHit &temp) {
+   TCrystalHit *newhit = static_cast<TCrystalHit*>(bgo.ConstructedAt(GetSegmentMultiplicity()));	
+   temp.Copy(*newhit);
+}
+
+
+
 void TTigressHit::Clear(Option_t *opt) {
    TGRSIDetectorHit::Clear(opt);
 	//detector = -1;
-	fCrystal  = -1;
-	fFirstSegment = 0;
-	fFirstSegmentCharge = 0.0;
+	crystal  = -1;
+	first_segment = 0;
+	first_segment_charge = 0.0;
+	core.Clear();
+	//for(int x=0;x<segment.size();x++) { 
+	//	segment[x].Clear();
+	//}
+	segment.Clear("C");
+	//for(int x=0;x<bgo.size();x++) {
+	//	bgo[x].Clear();
+	//}
+	bgo.Clear("C");
 
-	fSegments.clear();
-	fBgos.clear();
-
-   fBeam.SetXYZ(0,0,1);
-	fLastHit.SetXYZ(0,0,0);
+	lasthit.SetXYZ(0,0,0);
 }
 
 void TTigressHit::Copy(TObject &rhs) const {
-	TGRSIDetectorHit::Copy(rhs);
-	static_cast<TTigressHit&>(rhs).fSegments             = fSegments;
-	static_cast<TTigressHit&>(rhs).fBgos                 = fBgos;
-	static_cast<TTigressHit&>(rhs).fCrystal              = fCrystal;
-	static_cast<TTigressHit&>(rhs).fFirstSegment         = fFirstSegment;
-	static_cast<TTigressHit&>(rhs).fFirstSegmentCharge   = fFirstSegmentCharge;
-	fLastHit.Copy(static_cast<TTigressHit&>(rhs).fLastHit);
+  TGRSIDetectorHit::Copy(rhs);
+  segment.Copy(static_cast<TTigressHit&>(rhs).segment);
+  core.Copy(static_cast<TTigressHit&>(rhs).core);
+  bgo.Copy(static_cast<TTigressHit&>(rhs).bgo);
+  (static_cast<TTigressHit&>(rhs)).crystal = crystal;
+  (static_cast<TTigressHit&>(rhs)).first_segment = first_segment;
+  (static_cast<TTigressHit&>(rhs)).first_segment_charge = first_segment_charge;
+  static_cast<TTigressHit&>(rhs).time_fit		= time_fit;
+  static_cast<TTigressHit&>(rhs).sig2noise		= sig2noise;  
+  lasthit.Copy(static_cast<TTigressHit&>(rhs).lasthit);
 }
 
 
@@ -52,32 +77,34 @@ void TTigressHit::Print(Option_t *opt) const	{
 bool TTigressHit::Compare(TTigressHit lhs, TTigressHit rhs) {
 	if (lhs.GetDetector() == rhs.GetDetector()) {
 		return(lhs.GetCrystal() < rhs.GetCrystal());
-	} else {
+	}
+	else {
 		return (lhs.GetDetector() < rhs.GetDetector()); 
 	}
 }
 
 
 bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs) {
-	return(lhs.GetEnergy()) > rhs.GetEnergy();
+		return(lhs.GetEnergy()) > rhs.GetEnergy();
 }
 
 
 void TTigressHit::CheckFirstHit(int charge,int segment) {
-	if(std::fabs(charge) > fFirstSegmentCharge) {
- 		fFirstSegment = segment;
+	if(std::fabs(charge) > first_segment_charge) {
+ 		first_segment = segment;
 	}
 	return;				
 }
 
 void TTigressHit::SumHit(TTigressHit *hit) {
 	if(this == hit) {
-		fLastPos = std::make_tuple(GetDetector(),GetCrystal(),GetInitialHit());
+//		lasthit = position;
+		lastpos = std::make_tuple(GetDetector(),GetCrystal(),GetInitialHit());
 		return;
 	}
-	this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
-	this->fLastHit = hit->GetPosition();
-	this->fLastPos = std::make_tuple(hit->GetDetector(),hit->GetCrystal(),hit->GetInitialHit());
+	this->core.SetEnergy(this->GetEnergy() + hit->GetEnergy());
+	this->lasthit = hit->GetPosition();
+	this->lastpos = std::make_tuple(hit->GetDetector(),hit->GetCrystal(),hit->GetInitialHit());
 }
 
 
@@ -88,7 +115,7 @@ TVector3 TTigressHit::GetChannelPosition(Double_t dist) const {
 
 int TTigressHit::GetCrystal() const {
    if(IsCrystalSet())
-      return fCrystal;
+      return crystal;
 
    TChannel *chan = GetChannel();
    if(!chan)
@@ -97,22 +124,23 @@ int TTigressHit::GetCrystal() const {
    ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
    char color = mnemonic.arraysubposition[0];
    switch(color) {
-	case 'B':
-		return 0;
-	case 'G':
-		return 1;
-	case 'R':
-		return 2;
-	case 'W':
-		return 3;  
+      case 'B':
+         return 0;
+      case 'G':
+         return 1;
+      case 'R':
+         return 2;
+      case 'W':
+         return 3;  
    };
    return -1;  
+
 }
 
 void TTigressHit::SetWavefit(TFragment &frag)   { 
 	TPulseAnalyzer pulse(frag);	    
 	if(pulse.IsSet()){
-		fTimeFit   = pulse.fit_newT0();
-		fSig2Noise = pulse.get_sig2noise();
+		time_fit = pulse.fit_newT0();
+		sig2noise= pulse.get_sig2noise();
 	}
 }
