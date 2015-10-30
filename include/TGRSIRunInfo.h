@@ -164,6 +164,8 @@ class TGRSIRunInfo : public TObject {
 
       inline void SetBuildWindow(const long int t_bw)    { fBuildWindow = t_bw; } 
       inline void SetAddBackWindow(const double   t_abw) { fAddBackWindow = t_abw; } 
+		inline void SetBufferDuration(const long int t_bd) { fBufferDuration = t_bd; }
+		inline void SetBufferSize(const size_t t_bs)          { fBufferSize = t_bs; }
 
 	  inline void SetWaveformFitting(const bool flag)	 {fWaveformFitting = flag; }
 	  static inline bool IsWaveformFitting()			 {return Get()->fWaveformFitting; }
@@ -173,6 +175,8 @@ class TGRSIRunInfo : public TObject {
 
       static inline long int BuildWindow()    { return Get()->fBuildWindow; }
       static inline double   AddBackWindow()  { return Get()->fAddBackWindow; }
+		static inline long int BufferDuration() { return Get()->fBufferDuration; }
+		static inline size_t   BufferSize()     { return Get()->fBufferSize; }
 
       inline void SetHPGeArrayPosition(const int arr_pos) { fHPGeArrayPosition = arr_pos; }
       static inline int  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
@@ -249,6 +253,8 @@ class TGRSIRunInfo : public TObject {
       long int fBuildWindow;          // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
       double   fAddBackWindow;        // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
       bool     fIsMovingWindow;       // if set to true the event building window moves. Static otherwise.
+      long int fBufferDuration;       // GRIFFIN: the minimum length of the sorting buffer (default = 600s (60000000000))
+      size_t fBufferSize;             // GRIFFIN: the minimum size of the sorting buffer (default = 1 000 000)
       
 	  bool 	   fWaveformFitting;	  // If true, waveform fitting with SFU algorithm will be performed
 

@@ -319,7 +319,6 @@ double  TPulseAnalyzer::get_smooth_T0()
 }
 /*================================================================*/
 double TPulseAnalyzer::get_parabolic_T0(){
-
 	LinePar lp;
 	ParPar pp;
 	int k;

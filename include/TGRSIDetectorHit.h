@@ -101,8 +101,8 @@ class TGRSIDetectorHit : public TObject 	{
       virtual inline Int_t   GetCfd() const                          {   return fcfd;      }           //!
       virtual inline UInt_t GetAddress()     const                   { return faddress; }         //!
       virtual inline Float_t GetCharge() const                       { return fcharge;} //!
-      inline TChannel *GetChannel() const                            { return TChannel::GetChannel(faddress); }  //!
-      inline std::vector<Short_t> *GetWaveform()                     { return &fwaveform; } //!
+      inline TChannel* GetChannel() const                            { return TChannel::GetChannel(faddress); }  //!
+      inline std::vector<Short_t>* GetWaveform()                     { return &fwaveform; } //!
     //  inline TGRSIDetector *GetParent() const               { return ((TGRSIDetector*)parent.GetObject()); } //!
       
       //The PPG is only stored in events that come out of the GRIFFIN DAQ

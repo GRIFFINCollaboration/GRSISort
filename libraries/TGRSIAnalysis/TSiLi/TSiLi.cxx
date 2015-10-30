@@ -4,15 +4,14 @@
 
 ClassImp(TSiLi)
 
-TSiLi::TSiLi() : data(0)  {  }
+TSiLi::TSiLi() {
+}
 
 TSiLi::~TSiLi()  {
-  if(data) delete data;   
 }
 
 void TSiLi::Clear(Option_t *opt)  {
-  if(data) data->Clear();
-  sili_hits.clear();
+  fSiLiHits.clear();
 }
 
 void TSiLi::Print(Option_t *opt) const  {  
@@ -21,34 +20,19 @@ void TSiLi::Print(Option_t *opt) const  {
   printf("===============\n");
 }
 
-void TSiLi::FillData(TFragment *frag,TChannel *chan, MNEMONIC *mnem) {
-  if(!data) data = new TSiLiData();
-  data->SetSiLi(frag,chan,mnem);
-}
-
-
-void TSiLi::BuildHits(TDetectorData *data,Option_t *opt)  {
-  TSiLiData *sdata = (TSiLiData*)data;
-  if(!sdata)
-    sdata = this->data;
-  if(!sdata)
-    return;
-
-  TSiLiHit hit;
-
-  for(UInt_t i=0;i<sdata->GetMultiplicity();i++)     { 
-	  hit.SetSegment(sdata->GetSegment(i));
-     TVector3 tmppos = GetPosition(hit.GetSegment());
-     hit.SetPosition(tmppos);
-     TFragment tmp = sdata->GetFragment(i);
-     hit.SetVariables(tmp);
-
-	 if(TGRSIRunInfo::IsWaveformFitting()) 
-     	hit.SetWavefit(tmp);
-  
-     sili_hits.push_back(hit);
+void TSiLi::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+  if(frag == NULL || mnemonic == NULL) {
+	 return;
   }
+  TSiLiHit hit;
+  hit.SetSegment(mnemonic->segment);
+  TVector3 tmppos = GetPosition(mnemonic->segment);
+  hit.SetPosition(tmppos);
+  hit.SetVariables(*frag);
+  if(TGRSIRunInfo::IsWaveformFitting()) 
+	 hit.SetWavefit(*frag);
 
+  fSiLiHits.push_back(hit);
 }
 
 TVector3 TSiLi::GetPosition(int seg)  {
@@ -59,7 +43,7 @@ TVector3 TSiLi::GetPosition(int seg)  {
 
 TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {  
    try{
-      return &sili_hits.at(i);   
+      return &fSiLiHits.at(i);   
    }
    catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
