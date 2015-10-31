@@ -8,6 +8,7 @@
 
 #include "TDetector.h"
 
+#include "TPulseAnalyzer.h"
 #include "TFragment.h"
 #ifndef __CINT__
 #include "TRFFitter.h"
@@ -23,10 +24,11 @@ class TRF :  public TDetector {
 
 		//std::vector<Short_t> GetWave() { return rf_wave;	};
 		
-      Double_t Phase()     { return phase; }
-		Double_t Time()      { return time; }
-		Long_t   TimeStamp() { return timestamp; }	
-      time_t   MidasTime() { return midastime; }
+	Double_t Phase()     { return phase; }
+	Double_t PhaseSFU()  { return phasesfu; }
+	Double_t Time()      { return time; }
+	Long_t   TimeStamp() { return timestamp; }	
+	time_t   MidasTime() { return midastime; }
 
 		//bool HasWave() { return !rf_wave.empty(); };
 
@@ -42,12 +44,13 @@ class TRF :  public TDetector {
 		TRFFitter *data;		            //!
 
 		//std::vector<Short_t> rf_wave;
-      time_t midastime;
-      Long_t timestamp;
+		time_t midastime;
+		Long_t timestamp;
 		double phase;
+		double phasesfu;
 		double time;
 		
-	ClassDef(TRF,2)
+	ClassDef(TRF,3)
 
 };
 
