@@ -10,7 +10,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TGRSIDetectorData.h"
 #else
 class TGRSIDetectorData;

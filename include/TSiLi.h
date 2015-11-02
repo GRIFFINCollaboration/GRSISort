@@ -7,7 +7,7 @@
 
 #include "TDetector.h"
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TSiLiData.h"
 #else
 class TSiLiData;
@@ -34,7 +34,7 @@ class TSiLi: public TDetector  {
     TVector3 GetPosition(int segment);
 
   private:
-    #ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
     TSiLiData *data;    //! 
     #endif
     std::vector<TSiLiHit> sili_hits;

@@ -7,11 +7,8 @@
 #include <vector>
 #include "TVector3.h"
 
-#ifndef __CINT__
-#endif
-
 #include "TObject.h"
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TDetectorData.h"
 #else
 class TDetectorData;

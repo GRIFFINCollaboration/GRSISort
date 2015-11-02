@@ -7,11 +7,11 @@
 #include <vector>
 #include "TVector3.h"
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #endif
 
 #include "TObject.h"
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TGRSIDetectorData.h"
 #include "TDetectorData.h"
 #else

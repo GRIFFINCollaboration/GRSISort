@@ -4,7 +4,7 @@
 #include "TDetector.h"
 #include <iostream>
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TS3Data.h"
 #else
 class TS3Data;
