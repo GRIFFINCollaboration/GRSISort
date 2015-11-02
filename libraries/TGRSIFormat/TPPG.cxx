@@ -13,12 +13,12 @@ TPPGData::TPPGData(const TPPGData& rhs) : TObject() {
 }
 
 void TPPGData::Copy(TObject &rhs) const {
-  ((TPPGData&)rhs).ftimestamp        =  ftimestamp;      
-  ((TPPGData&)rhs).fold_ppg          =  fold_ppg;        
-  ((TPPGData&)rhs).fnew_ppg          =  fnew_ppg;                
-  ((TPPGData&)rhs).fNetworkPacketId  =  fNetworkPacketId;
-  ((TPPGData&)rhs).flowtimestamp     =  flowtimestamp;   
-  ((TPPGData&)rhs).fhightimestamp    =  fhightimestamp;  
+  static_cast<TPPGData&>(rhs).ftimestamp        =  ftimestamp;      
+  static_cast<TPPGData&>(rhs).fold_ppg          =  fold_ppg;        
+  static_cast<TPPGData&>(rhs).fnew_ppg          =  fnew_ppg;                
+  static_cast<TPPGData&>(rhs).fNetworkPacketId  =  fNetworkPacketId;
+  static_cast<TPPGData&>(rhs).flowtimestamp     =  flowtimestamp;   
+  static_cast<TPPGData&>(rhs).fhightimestamp    =  fhightimestamp;  
 }
 
 void TPPGData::SetTimeStamp() {
@@ -69,17 +69,17 @@ TPPG::~TPPG() {
 }
 
 void TPPG::Copy(TObject &obj) const {
-  ((TPPG&)obj).Clear();
-   ((TPPG&)obj).fCurrIterator = ((TPPG&)obj).fPPGStatusMap->begin();//might not need this
-   ((TPPG&)obj).fCycleLength =  fCycleLength;
-   ((TPPG&)obj).fNumberOfCycleLengths = fNumberOfCycleLengths;
+  static_cast<TPPG&>(obj).Clear();
+  static_cast<TPPG&>(obj).fCurrIterator = static_cast<TPPG&>(obj).fPPGStatusMap->begin();//might not need this
+  static_cast<TPPG&>(obj).fCycleLength =  fCycleLength;
+  static_cast<TPPG&>(obj).fNumberOfCycleLengths = fNumberOfCycleLengths;
 
    //We want to provide a copy of each of the data in the PPG rather than a copy of th pointer
-   if(((TPPG&)obj).fPPGStatusMap && fPPGStatusMap){
+   if(static_cast<TPPG&>(obj).fPPGStatusMap && fPPGStatusMap) {
       PPGMap_t::iterator ppgit;
-      for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++){
+      for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
          if(ppgit->second){
-            ((TPPG&)obj).AddData(ppgit->second);
+            static_cast<TPPG&>(obj).AddData(ppgit->second);
          }
       }
    }
@@ -96,7 +96,7 @@ Bool_t TPPG::MapIsEmpty() const {
       return false;
 }
 
-void TPPG::AddData(TPPGData* pat){
+void TPPG::AddData(TPPGData* pat) {
 //Adds a PPG status word at a given time in the current run. Makes a copy of the pointer to
 //store in the map.
    fPPGStatusMap->insert(std::make_pair(pat->GetTimeStamp(),new TPPGData(*pat)));
