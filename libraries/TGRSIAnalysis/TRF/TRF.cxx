@@ -18,11 +18,6 @@ void TRF::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
    	data = new TRFFitter();
 	data->FindPhase((TFragment&)(*frag));
 	//TRF::Set();
-	
-	TPulseAnalyzer pulse((TFragment&)(*frag));	    
-	if(pulse.IsSet()){
-		phasesfu = pulse.fit_newT0();
-	}
 }
 
 
@@ -44,7 +39,6 @@ void TRF::Clear(Option_t *opt)	{
   if(data) data->Clear(); //!
 		
    phase     = -1.0; 
-   phasesfu  = -1.0; 
    midastime =  0.0;
    timestamp =  0.0;
    time      =  0.0;

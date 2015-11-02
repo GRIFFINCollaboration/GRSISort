@@ -1,29 +1,22 @@
 #ifndef __SiLiDATA__
 #define __SiLiDATA__
 
-#include <cstdlib>
-#include <cstdio>
-#include <vector>
 
-#include "Globals.h"
 #include "TFragment.h"
 #include "TChannel.h"
-
 #include "TGRSIDetectorData.h"
+
+#include <vector>
+
 class TSiLiData : public TGRSIDetectorData {
 
   private:
-    
     std::vector<UShort_t>  fSiLiSegment;
     std::vector<TFragment> fSiLiFragment;
-		static bool fIsSet;      //!
    
  public:
     TSiLiData();
     ~TSiLiData();
-
-		static void Set(bool flag=true) { fIsSet=flag; } //!
-		static bool IsSet() { return fIsSet; }           //!
 
     void Clear(Option_t *opt = ""); //!
     void Print(Option_t *opt = "") const; //!

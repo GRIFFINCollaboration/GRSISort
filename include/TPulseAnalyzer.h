@@ -12,9 +12,13 @@
 #include <math.h>
 
 //For ROOT
-#include <TH1.h>
-#include <TF1.h>
-#include <TMath.h>
+// #include "TH1.h"
+// #include "TF1.h"
+// #include "TStyle.h"
+// #include "TCanvas.h"
+// #include "TApplication.h"
+// #include "TROOT.h"
+
 
 // Mostly a direct port of SFU code
 // I have stripped out some surplus and encapsulated it, but I havent changed much
@@ -76,13 +80,6 @@ class TPulseAnalyzer {
 		double chisq;
 		double ndf;
 	}ParPar;
-
-	typedef struct
-	{
-	  double A;
-	  double t0;
-	  double C;
-	}SinPar;
 	
 	
   public:
@@ -95,21 +92,16 @@ class TPulseAnalyzer {
     bool IsSet() { return set; }
     
     double    fit_newT0();
-    double    fit_rf(double=2*8.48409);
     double    get_sig2noise();
-    short     good_baseline();
     void      print_WavePar();
-    void      DrawWave();
-    void      DrawT0fit();
-    void      DrawRFFit();
+//     void      display_newT0_fit(TApplication*);
 
   private:
 	  
-       bool   		set;
-int 			N;
-       WaveFormPar*	wpar;
-       SinPar*		spar;
-       TFragment* 	frag;
+       bool   set;
+       WaveFormPar* wpar;
+       int N;
+       TFragment* frag;
 
 	//pulse fitting parameters
 	int FILTER; //integration region for noise reduction (in samples)
@@ -127,7 +119,7 @@ int 			N;
        //internal methods       
 	int solve_lin_eq();
 	long double  determinant(int);
-	
+
 	int      fit_parabola(int,int,ParPar*);
 	int      fit_smooth_parabola(int,int,double,ParPar*);
 	int      fit_line(int,int,LinePar*);
@@ -145,8 +137,6 @@ int 			N;
 	void     get_t50();
 	void     get_t90();       
 
-	double	 get_sin_par(double);
-
 	//bad chi squares for debugging
 	const static int BADCHISQ_SMOOTH_T0=   -1024-2; //smooth_t0 gives bad result
 	const static int BADCHISQ_PAR_T0    =  -1024-3; //parabolic_t0 gives bad result
@@ -157,8 +147,21 @@ int 			N;
 	const static int BAD_BASELINE_RANGE =-1024-11;
 	const static int MAX_SAMPLES= 4096;	
 
-    ClassDef(TPulseAnalyzer,2);
+    ClassDef(TPulseAnalyzer,1);
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
