@@ -28,7 +28,7 @@ class TDecayFit : public TF1 {
    //TDecayFit(const char* name, void* fcn, Double_t xmin, Double_t xmax, Int_t npar) : TF1(name, fcn,xmin,xmax,npar){}
    TDecayFit(const char* name, ROOT::Math::ParamFunctor f, Double_t xmin = 0, Double_t xmax = 1, Int_t npar = 0) : TF1(name,f,xmin,xmax,npar),fDecay(0){DefaultGraphs(); }
    //TDecayFit(const char* name, void* ptr, Double_t xmin, Double_t xmax, Int_t npar, const char* className) : TF1(name,ptr, xmin, xmax, npar, className){ }
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
    TDecayFit(const char *name, Double_t (*fcn)(Double_t *, Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar),fDecay(0){DefaultGraphs(); }
    TDecayFit(const char *name, Double_t (*fcn)(const Double_t *, const Double_t *), Double_t xmin=0, Double_t xmax=1, Int_t npar=0) : TF1(name,fcn,xmin,xmax,npar),fDecay(0){DefaultGraphs(); }
 #endif

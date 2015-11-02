@@ -7,7 +7,7 @@
 #include <cstdio>
 
 #include "TSceptarHit.h"
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TSceptarData.h"
 #else
 class TSceptarData;

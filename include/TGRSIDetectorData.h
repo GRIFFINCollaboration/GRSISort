@@ -1,7 +1,7 @@
 #ifndef TGRSIDetectorDATA_H
 #define TGRSIDetectorDATA_H
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 
 /*****************************************************************************
  *
