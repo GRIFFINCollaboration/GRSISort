@@ -70,7 +70,7 @@ TPPG::~TPPG() {
 
 void TPPG::Copy(TObject &obj) const {
   ((TPPG&)obj).Clear();
-   ((TPPG&)obj).fcurrIterator = ((TPPG&)obj).fPPGStatusMap->begin();//might not need this
+   ((TPPG&)obj).fCurrIterator = ((TPPG&)obj).fPPGStatusMap->begin();//might not need this
    ((TPPG&)obj).fCycleLength =  fCycleLength;
    ((TPPG&)obj).fNumberOfCycleLengths = fNumberOfCycleLengths;
 
@@ -104,7 +104,7 @@ void TPPG::AddData(TPPGData* pat){
    fNumberOfCycleLengths.clear();
 }
 
-ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag){
+ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag) const {
 //Gets the last time that a status was given. If the ppg_pattern kJunk is passed, the 
 //current status at the time "time" is looked for. If exact_flag is false, the bits of "pat" 
 //are looked for and ignore the rest of the bits in the sotred statuses. If "exact_flag" 
@@ -151,7 +151,7 @@ uint16_t TPPG::GetStatus(ULong64_t time) const {
    return (uint16_t)((--(fPPGStatusMap->upper_bound(time)))->second->GetNewPPG());
 }
 
-void TPPG::Print(Option_t *opt) {
+void TPPG::Print(Option_t *opt) const {
    if(MapIsEmpty()) {
       printf("Empty\n");
    } else {
@@ -171,7 +171,23 @@ void TPPG::Print(Option_t *opt) {
 			for(auto it = MapBegin(); it != MapEnd(); ++it) {
 				status[it->second->GetNewPPG()]++;
 			}
-			printf("Cycle length is %lld in 10 ns units = %.3lf seconds.\n", GetCycleLength(), GetCycleLength()/1e8);
+			//can't call non-const GetCycleLength here, so we do the calculation with local variables here
+			PPGMap_t::iterator ppgIt;
+			std::map<ULong64_t, int> numberOfCycleLengths;
+			ULong64_t cycleLength;
+			for(ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt){
+				ULong64_t diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp());
+				numberOfCycleLengths[diff]++;
+			}
+			int counter =0;
+			for(auto it = numberOfCycleLengths.begin(); it != numberOfCycleLengths.end(); ++it){
+				if(it->second > counter) {
+					counter = it->second;
+					cycleLength = it->first;
+				}
+			}
+
+			printf("Cycle length is %lld in 10 ns units = %.3lf seconds.\n", cycleLength, cycleLength/1e8);
 			printf("Got %ld PPG words:\n", fPPGStatusMap->size() - 1);
 			for(auto it = status.begin(); it != status.end(); ++it) {
 				printf("\tfound status 0x%04x %d times\n", it->first, it->second);
@@ -193,7 +209,7 @@ void TPPG::Clear(Option_t *opt){
    fPPGStatusMap->clear();
    //We always add a junk event to keep the code from crashing if we ask for a PPG below the lowest PPG time.
    AddData(new TPPGData);
-   fcurrIterator = fPPGStatusMap->begin();
+   fCurrIterator = fPPGStatusMap->begin();
    fCycleLength = 0;
    fNumberOfCycleLengths.clear();
 }
@@ -282,8 +298,8 @@ bool TPPG::Correct(bool verbose) {
 }
 
 const TPPGData* TPPG::Next() {
-   if(++fcurrIterator != MapEnd()){
-      return fcurrIterator->second;
+   if(++fCurrIterator != MapEnd()){
+      return fCurrIterator->second;
    }
    else{
       printf("Already at last PPG\n");
@@ -292,8 +308,8 @@ const TPPGData* TPPG::Next() {
 }
 
 const TPPGData* TPPG::Previous() {
-   if(fcurrIterator != MapBegin()){
-      return (--fcurrIterator)->second;
+   if(fCurrIterator != MapBegin()){
+      return (--fCurrIterator)->second;
    }
    else{
       printf("Already at first PPG\n");
@@ -302,14 +318,14 @@ const TPPGData* TPPG::Previous() {
 }
 
 const TPPGData* TPPG::Last(){
-   fcurrIterator = MapEnd();
-   --fcurrIterator;
-   return fcurrIterator->second;
+   fCurrIterator = MapEnd();
+   --fCurrIterator;
+   return fCurrIterator->second;
 }
 
 const TPPGData* TPPG::First(){
-   fcurrIterator = MapBegin();
-   return fcurrIterator->second;
+   fCurrIterator = MapBegin();
+   return fCurrIterator->second;
 }
 
 void TPPG::Streamer(TBuffer &R__b)
@@ -318,7 +334,7 @@ void TPPG::Streamer(TBuffer &R__b)
 
    if (R__b.IsReading()) {
       R__b.ReadClassBuffer(TPPG::Class(),this);
-      fcurrIterator = fPPGStatusMap->begin();
+      fCurrIterator = fPPGStatusMap->begin();
    } else {
       R__b.WriteClassBuffer(TPPG::Class(),this);
    }
