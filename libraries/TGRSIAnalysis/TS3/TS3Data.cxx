@@ -11,12 +11,14 @@
 
 
 
+bool TS3Data::fIsSet   = false;
 
 TS3Data::TS3Data()  {  }
 
 TS3Data::~TS3Data()  {  }
      
 void TS3Data::Clear(Option_t *opt)  {
+   fIsSet = false;
 
   fS3_RingDetector.clear();
   fS3_RingNumber.clear();
