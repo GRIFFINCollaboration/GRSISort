@@ -17,6 +17,8 @@ SRC_SUFFIX = cxx
 
 MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
 
+CFLAGS += -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} 
+
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
