@@ -122,7 +122,4 @@ class TTigressHit : public TGRSIDetectorHit {
 	ClassDef(TTigressHit,1)
 };
 
-
-
-
 #endif
