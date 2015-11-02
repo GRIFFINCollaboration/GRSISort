@@ -15,6 +15,8 @@ SRC_SUFFIX = cxx
 
 # EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY
 
+MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
+
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
@@ -132,7 +134,15 @@ find_linkdef = $(shell find $(1) -name "*LinkDef.h")
 # In order for all function names to be unique, rootcint requires unique output names.
 # Therefore, usual wildcard rules are insufficient.
 # Eval is more powerful, but is less convenient to use.
+MacAndRoot6 = false
+
 ifeq ($(PLATFORM),Darwin)
+ifeq ($(MAJOR_ROOT_VERSION),6)
+MacAndRoot6 = true
+endif
+endif
+
+ifeq ($(MacAndRoot6),true)
 define library_template
 .build/$(1)/$(notdir $(1))Dict.cxx: $(1)/LinkDef.h $$(call dict_header_files,$(1)/LinkDef.h)
 	@mkdir -p $$(dir $$@)
