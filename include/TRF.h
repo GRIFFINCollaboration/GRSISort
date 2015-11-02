@@ -25,7 +25,7 @@ class TRF :  public TDetector {
 		//std::vector<Short_t> GetWave() { return rf_wave;	};
 		
 	Double_t Phase()     { return phase; }
-	Double_t PhaseSFU()  { return phasesfu; }
+	//Double_t PhaseSFU()  { return phasesfu; }
 	Double_t Time()      { return time; }
 	Long_t   TimeStamp() { return timestamp; }	
 	time_t   MidasTime() { return midastime; }
@@ -47,10 +47,10 @@ class TRF :  public TDetector {
 		time_t midastime;
 		Long_t timestamp;
 		double phase;
-		double phasesfu;
+		//double phasesfu;
 		double time;
 		
-	ClassDef(TRF,3)
+	ClassDef(TRF,2)
 
 };
 
