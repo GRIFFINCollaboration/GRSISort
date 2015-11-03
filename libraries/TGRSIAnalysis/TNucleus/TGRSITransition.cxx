@@ -1,5 +1,4 @@
-
-#include <TGRSITransition.h>
+#include "TGRSITransition.h"
 
 ClassImp(TGRSITransition)
 
@@ -25,45 +24,43 @@ TGRSITransition::~TGRSITransition() {
 //Default Destructor
 }
 
-void TGRSITransition::Print(Option_t *opt) const {
+void TGRSITransition::Print(Option_t* opt) const {
 //Prints information about the TGRSITransition
    printf("**************************\n");
    printf("TGRSITransition:\n");
-   printf("Energy:    %lf\t+/-%lf\n",fenergy,fenergy_uncertainty);
-   printf("Intensity: %lf\t+/-%lf\n",fintensity,fintensity_uncertainty);
+   printf("Energy:    %lf\t+/-%lf\n",fEnergy,fEnergyUncertainty);
+   printf("Intensity: %lf\t+/-%lf\n",fIntensity,fIntensityUncertainty);
    printf("**************************\n");
-
 }
 
 std::string TGRSITransition::PrintToString(){
 //Writes transitions in a way that is nicer to ourput.
   std::string buffer;
-   buffer.append(Form("%lf\t",fenergy)); 
-   buffer.append(Form("%lf\t",fenergy_uncertainty)); 
-   buffer.append(Form("%lf\t",fintensity)); 
-   buffer.append(Form("%lf\t",fintensity_uncertainty)); 
+   buffer.append(Form("%lf\t",fEnergy)); 
+   buffer.append(Form("%lf\t",fEnergyUncertainty)); 
+   buffer.append(Form("%lf\t",fIntensity)); 
+   buffer.append(Form("%lf\t",fIntensityUncertainty)); 
   return buffer;
-
 }
 
-void TGRSITransition::Clear(Option_t *opt){
+void TGRSITransition::Clear(Option_t* opt){
    //Clears TGRSITransition
-  fenergy                 = 0.0; 
-  fenergy_uncertainty    = 0.0; 
-  fintensity              = 0.0; 
-  fintensity_uncertainty = 0.0;  
+  fEnergy               = 0.; 
+  fEnergyUncertainty    = 0.; 
+  fIntensity            = 0.; 
+  fIntensityUncertainty = 0.;  
 }
 
-int TGRSITransition::Compare(const TObject *obj) const { 
+int TGRSITransition::Compare(const TObject* obj) const { 
 //Compares the intensities of the TGRSITransitions and returns
 //-1 if this >  obj
 //0 if  this == obj
 //1 if  this <  obj
-   if(this->fintensity > ((TGRSITransition*)obj)->fintensity) 
+   if(this->fIntensity > static_cast<const TGRSITransition*>(obj)->fIntensity) 
       return -1;  
-   else if(this->fintensity == ((TGRSITransition*)obj)->fintensity) 
+   else if(this->fIntensity == static_cast<const TGRSITransition*>(obj)->fIntensity) 
       return  0;  
-   else//(this->fintensity < ((TGRSITransition*)obj)->fintensity) 
+   else//(this->fIntensity < static_cast<const TGRSITransition*>(obj)->fIntensity) 
       return  1;  
    printf("%s: Error, intensity neither greater, nor equal, nor smaller than provided intensity!\n",__PRETTY_FUNCTION__);
    return -9;

@@ -1,18 +1,16 @@
 #ifndef TSHARCHIT_H
 #define TSHARCHIT_H
 
-
-#include "Globals.h"
-
 #include <cstdio>
 #include <utility>
 
-//#include "TChannel.h"
 #include "TVector3.h" 
 #include "TObject.h" 
 #include "TRandom.h"
 #include "Rtypes.h"
 #include "TMath.h"
+
+#include "Globals.h"
 #include "TGRSIDetectorHit.h"
 #include "TFragment.h"
 
@@ -37,25 +35,25 @@ class TSharcHit : public TGRSIDetectorHit {
     ~TSharcHit();
   
   private:
-    UShort_t   detectornumber;  //
-    UShort_t   front_strip;     //
-    UShort_t   back_strip;      //
+    UShort_t   fDetectorNumber;  //
+    UShort_t   fFrontStrip;     //
+    UShort_t   fBackStrip;      //
 
-    TGRSIDetectorHit backhit;   //
-    TGRSIDetectorHit padhit;    //
+    TGRSIDetectorHit fBackHit;   //
+    TGRSIDetectorHit fPadHit;    //
 
   public:
     virtual void Copy(TObject &) const;        //!
     virtual void Clear(Option_t* = "");        //!
     virtual void Print(Option_t* = "")  const; //!
     
-    inline UShort_t GetDetectorNumber() const  { return detectornumber;  } //!
-    inline UShort_t GetFrontStrip()     const  {  return  front_strip;  }  //!
-    inline UShort_t GetBackStrip()      const  {  return  back_strip;    }  //!
+    inline UShort_t GetDetectorNumber() const  { return fDetectorNumber;  } //!
+    inline UShort_t GetFrontStrip()     const  { return fFrontStrip;      }  //!
+    inline UShort_t GetBackStrip()      const  { return fBackStrip;       }  //!
 
-    TGRSIDetectorHit *GetFront()  { return this; }
-    TGRSIDetectorHit *GetBack()   { return &backhit; }
-    TGRSIDetectorHit *GetPad()    { return &padhit; }
+    TGRSIDetectorHit* GetFront()  { return this; }
+    TGRSIDetectorHit* GetBack()   { return &fBackHit; }
+    TGRSIDetectorHit* GetPad()    { return &fPadHit; }
 
     inline Double_t GetDeltaE()       { return GetFront()->GetEnergy();  }  //!
     inline Double_t GetDeltaT()       { return GetFront()->GetTime();    }  //!
@@ -72,14 +70,14 @@ class TSharcHit : public TGRSIDetectorHit {
     inline Double_t GetPadE()         { return GetPad()->GetEnergy();    }  //!
     inline Double_t GetPadT()         { return GetPad()->GetTime();      }  //!
 
-    //std::pair<int,int>  GetPixel()  { return std::make_pair(front_strip,back_strip);  }  //!
+    //std::pair<int,int>  GetPixel()  { return std::make_pair(fFrontStrip,fBackStrip);  }  //!
 
     Float_t    GetFrontCharge()        { return GetFront()->GetCharge();  }  //!  //Charge is now stored after integration.
     Float_t    GetBackCharge()         { return GetBack()->GetCharge();   }  //!  //Charge is now stored after integration.
     Float_t    GetPadCharge()          { return GetPad()->GetCharge();    }  //!  //Charge is now stored after integration.
 
-    inline Double_t GetEnergy(Option_t *opt = "") { return GetFront()->GetEnergy() + GetPad()->GetEnergy(); }
-    inline Double_t GetTime(Option_t *opt = "")   { return GetFront()->GetTime(); }
+    inline Double_t GetEnergy(Option_t* opt = "") { return GetFront()->GetEnergy() + GetPad()->GetEnergy(); }
+    inline Double_t GetTime(Option_t* opt = "")   { return GetFront()->GetTime(); }
    
     Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0) { return GetTheta(Xoff,Yoff,Zoff)*TMath::RadToDeg(); } ; //! 
     Double_t GetTheta(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0); //! 
@@ -87,18 +85,17 @@ class TSharcHit : public TGRSIDetectorHit {
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
-    void SetDetectorNumber(const UShort_t &det) { detectornumber = det;   }  //!
-    void SetFrontStrip(const UShort_t &strip)   { front_strip    = strip; }  //!
-    void SetBackStrip(const UShort_t &strip)    { back_strip     = strip; }  //!
+    void SetDetectorNumber(const UShort_t& det) { fDetectorNumber = det;   }  //!
+    void SetFrontStrip(const UShort_t& strip)   { fFrontStrip    = strip; }  //!
+    void SetBackStrip(const UShort_t& strip)    { fBackStrip     = strip; }  //!
 
-    void SetFront(const TFragment &frag); //!  
-    void SetBack (const TFragment &frag); //!
-    void SetPad  (const TFragment &frag); //!
+    void SetFront(const TFragment& frag); //!  
+    void SetBack (const TFragment& frag); //!
+    void SetPad  (const TFragment& frag); //!
 
   private:
       TVector3 GetChannelPosition(Double_t dist = 0) const; //!
     
-
   ClassDef(TSharcHit,6)
 };
 

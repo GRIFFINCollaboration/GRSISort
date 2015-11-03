@@ -8,7 +8,6 @@
 #include "TSiLiHit.h"
 
 class TSiLi: public TDetector  {
-
 	public:
 		TSiLi();
 		~TSiLi();
@@ -29,5 +28,4 @@ class TSiLi: public TDetector  {
 
 		ClassDef(TSiLi,2);
 };
-
 #endif

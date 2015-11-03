@@ -20,8 +20,8 @@ class TTip : public TGRSIDetector {
 		TTip();  
 		TTip(const TTip& rhs);
 
-		TTipHit *GetTipHit(const int& i) ;//!
-		TGRSIDetectorHit *GetHit(const int& i);
+		TTipHit* GetTipHit(const int& i) ;//!
+		TGRSIDetectorHit* GetHit(const int& i);
 		Short_t GetMultiplicity() const         {  return fTipHits.size();}  //!
 
 		void AddFragment(TFragment*, MNEMONIC*); //!
@@ -30,8 +30,8 @@ class TTip : public TGRSIDetector {
 
 		TTip& operator=(const TTip&);  //!
 
-		void Clear(Option_t *opt = "");
-		void Print(Option_t *opt = "") const;
+		void Clear(Option_t* opt = "");
+		void Print(Option_t* opt = "") const;
 
 	protected:
 		void PushBackHit(TGRSIDetectorHit* tiphit);

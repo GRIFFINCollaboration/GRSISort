@@ -49,7 +49,4 @@ class TSceptar : public TGRSIDetector {
 
 		ClassDef(TSceptar,2)  // Sceptar Physics structure
 };
-
 #endif
-
-

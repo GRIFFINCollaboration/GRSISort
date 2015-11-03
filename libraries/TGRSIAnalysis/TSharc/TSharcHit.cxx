@@ -1,9 +1,9 @@
-
-
 #include "TSharcHit.h"
+
+#include "TClass.h"
+
 #include "TSharc.h"
 #include "TChannel.h"
-#include <TClass.h>
 
 ClassImp(TSharcHit)
 
@@ -16,38 +16,33 @@ TSharcHit::TSharcHit()	{
 
 TSharcHit::~TSharcHit()	{	}
 
-TSharcHit::TSharcHit(const TSharcHit &rhs) : TGRSIDetectorHit() {	
+TSharcHit::TSharcHit(const TSharcHit& rhs) : TGRSIDetectorHit() {	
    Class()->IgnoreTObjectStreamer(kTRUE);
    Clear();
-   ((TSharcHit&)rhs).Copy(*this);
+   rhs.Copy(*this);
 }
 
-void TSharcHit::Copy(TObject &rhs) const  {
-  //if(!rhs.InheritsFrom("TSharcHit"))
-  //   return;
+void TSharcHit::Copy(TObject& rhs) const  {
   TGRSIDetectorHit::Copy(rhs);
-  ((TGRSIDetectorHit&)backhit).Copy((TObject&)(((TSharcHit&)rhs).backhit));  
-  ((TGRSIDetectorHit&)padhit).Copy((TObject&)(((TSharcHit&)rhs).padhit));  
+  static_cast<const TGRSIDetectorHit&>(fBackHit).Copy(static_cast<TObject&>(static_cast<TSharcHit&>(rhs).fBackHit));  
+  static_cast<const TGRSIDetectorHit&>(fPadHit).Copy(static_cast<TObject&>(static_cast<TSharcHit&>(rhs).fPadHit));  
 
-  ((TSharcHit&)rhs).detectornumber = ((TSharcHit&)*this).detectornumber;
-  ((TSharcHit&)rhs).front_strip    = ((TSharcHit&)*this).front_strip;     
-  ((TSharcHit&)rhs).back_strip     = ((TSharcHit&)*this).back_strip;       
- 
+  static_cast<TSharcHit&>(rhs).fDetectorNumber = fDetectorNumber;
+  static_cast<TSharcHit&>(rhs).fFrontStrip     = fFrontStrip;     
+  static_cast<TSharcHit&>(rhs).fBackStrip      = fBackStrip;       
 }                                       
 
-void TSharcHit::Clear(Option_t *options)	{
-
+void TSharcHit::Clear(Option_t* options)	{
   TGRSIDetectorHit::Clear(options); // 
-  backhit.Clear(options);        //
-  padhit.Clear(options);         //
+  fBackHit.Clear(options);        //
+  fPadHit.Clear(options);         //
 
-  detectornumber = -1;    //
-  front_strip    = -1;    //
-  back_strip     = -1;    //
-
+  fDetectorNumber = -1;    //
+  fFrontStrip    = -1;    //
+  fBackStrip     = -1;    //
 }
 
-void TSharcHit::Print(Option_t *options) const {
+void TSharcHit::Print(Option_t* options) const {
   printf(DGREEN "[D/F/B] = %02i\t/%02i\t/%02i " RESET_COLOR "\n",GetDetectorNumber(),GetFrontStrip(),GetBackStrip());
   //printf("Sharc hit charge: %02f\n",GetFrontCharge());
   //printf("Sharc hit energy: %f\n",GetDeltaE());
@@ -63,60 +58,24 @@ TVector3 TSharcHit::GetChannelPosition(Double_t dist) const {
    //the buildhits function now properly sets fPosition in the base class, for finer
    //position tweaks of the target, one should just use the static function in the 
    //sharc mother class.   pcb.
-  return TSharc::GetPosition(detectornumber,front_strip,back_strip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());  //! 
+  return TSharc::GetPosition(fDetectorNumber,fFrontStrip,fBackStrip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());  //! 
 }
 
 Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
-  TVector3 posoff; 
-  posoff.SetXYZ(Xoff,Yoff,Zoff);
-  return (GetPosition()+posoff).Theta();
+  TVector3 posOff; 
+  posOff.SetXYZ(Xoff,Yoff,Zoff);
+  return (GetPosition()+posOff).Theta();
 }
 
-
-//bool TSharcHit::Compare(TSharcHit *lhs, TSharcHit *rhs)	{
-//	if(lhs->GetDetectorNumber() < rhs->GetDetectorNumber())	{
-//		if(lhs->GetFrontStrip() < rhs->GetFrontStrip())	{
-//			if(lhs->GetFrontCFD() < rhs->GetFrontCFD())	{
-//				if(lhs->GetBackStrip() < rhs->GetBackStrip())	{
-//					if(lhs->GetBackCFD() < rhs->GetBackCFD())	{
-//						return true;
-//					}
-//				}
-//			}	
-//		}
-//	}
-//	return false;
-//}
-
-
-void TSharcHit::SetFront(const TFragment &frag) { 
-  this->CopyFragment(frag);
-  this->SetPosition(TSharc::GetPosition(detectornumber,front_strip,back_strip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset())); 
+void TSharcHit::SetFront(const TFragment& frag) { 
+  CopyFragment(frag);
+  SetPosition(TSharc::GetPosition(fDetectorNumber,fFrontStrip,fBackStrip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset())); 
 }
 
-void TSharcHit::SetBack(const TFragment &frag) { 
-  backhit.CopyFragment(frag);
+void TSharcHit::SetBack(const TFragment& frag) { 
+  fBackHit.CopyFragment(frag);
 }
 
-void TSharcHit::SetPad(const TFragment &frag) { 
-  padhit.CopyFragment(frag);
+void TSharcHit::SetPad(const TFragment& frag) { 
+  fPadHit.CopyFragment(frag);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

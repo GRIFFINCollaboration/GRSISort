@@ -39,8 +39,8 @@ class TPaces : public TGRSIDetector {
 		static bool SetCoreWave()        { return fSetCoreWave;  }	//!
 
 		virtual void Copy(TObject&) const;                //!
-		virtual void Clear(Option_t *opt = "all");		     //!
-		virtual void Print(Option_t *opt = "") const;		  //!
+		virtual void Clear(Option_t* opt = "all");		     //!
+		virtual void Print(Option_t* opt = "") const;		  //!
 
 	protected:
 		void PushBackHit(TGRSIDetectorHit* phit);

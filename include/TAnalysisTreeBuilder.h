@@ -1,17 +1,15 @@
 #ifndef TAnalysisTreeBuilder_H
 #define TAnalysisTreeBuilder_H
 
-#include "Globals.h"
-
 #include <cstdio>
 #include <vector>
 #include <string>
 #include <queue>
 #ifndef __CINT__
 #define _GLIBCXX_USE_NANOSLEEP 1
-   #include <thread>
-   #include <mutex>
-   #include <chrono>
+#include <thread>
+#include <mutex>
+#include <chrono>
 #endif
 
 #include "TObject.h"
@@ -20,6 +18,8 @@
 #include "TTree.h"
 #include "TChain.h"
 #include "TList.h"
+
+#include "Globals.h"
 
 #include "TFragment.h"
 #include "TChannel.h"
@@ -55,74 +55,68 @@
 
 class TEventQueue : public TObject {
   public:
-	static TEventQueue *Get();
-	static void Add(std::vector<TFragment> *event); 
-	static std::vector<TFragment> *PopEntry();
+	static TEventQueue* Get();
+	static void Add(std::vector<TFragment>* event); 
+	static std::vector<TFragment>* PopEntry();
 	static int Size();
 	virtual ~TEventQueue() { std::cout << std::endl << "In event queue dstor." << std::endl; }
 
   private:
 	TEventQueue();
    TEventQueue(const TEventQueue&) : TObject() { MayNotUse(__PRETTY_FUNCTION__); }
-	void operator=(const TEventQueue&){ MayNotUse(__PRETTY_FUNCTION__); }
-	static TEventQueue *fPtrToQue;
+	void operator=(const TEventQueue&) { MayNotUse(__PRETTY_FUNCTION__); }
+	static TEventQueue* fPtrToQue;
 
       
-	void Add_Instance(std::vector<TFragment> *event); 
-	std::vector<TFragment> *PopEntry_Instance();
-	int Size_Instance();
+	void AddInstance(std::vector<TFragment>* event); 
+	std::vector<TFragment>* PopEntryInstance();
+	int SizeInstance();
       
 	std::queue<std::vector<TFragment>*> fEventQueue;
 #ifndef __CINT__
 	std::mutex m_event;
 #endif 
-	bool elock;
-	void SetLock() {  printf(BLUE "settting event lock" RESET_COLOR  "\n");  elock = true;}
-	void UnsetLock() {  printf(RED "unsettting event lock" RESET_COLOR  "\n");  elock = false;}
+	bool fELock;
+	void SetLock()   { printf(BLUE "settting event lock" RESET_COLOR  "\n");  fELock = true;  }
+	void UnsetLock() { printf(RED "unsettting event lock" RESET_COLOR  "\n"); fELock = false; }
 
 	ClassDef(TEventQueue,0)
 };
 
-//class TWriteQueue : public TObject {
 class TWriteQueue {
    public:
-      static TWriteQueue *Get();
-      static void Add(std::map<std::string, TDetector*> *event); 
-      static std::map<std::string, TDetector*> *PopEntry();
+      static TWriteQueue* Get();
+      static void Add(std::map<std::string, TDetector*>* event); 
+      static std::map<std::string, TDetector*>* PopEntry();
       static int Size();
-      virtual ~TWriteQueue()  { } //std::cout << std::endl << "In write queue dstor." << std::endl; }
+      virtual ~TWriteQueue() { }
 
    private:
       TWriteQueue();
-      static TWriteQueue *fPtrToQue;
+      static TWriteQueue* fPtrToQue;
 
       
-      void Add_Instance(std::map<std::string, TDetector*> *event); 
-      std::map<std::string, TDetector*> *PopEntry_Instance();
-      int Size_Instance();
+      void AddInstance(std::map<std::string, TDetector*>* event); 
+      std::map<std::string, TDetector*>* PopEntryInstance();
+      int SizeInstance();
       
       std::queue<std::map<std::string, TDetector*>*> fWriteQueue;
       #ifndef __CINT__
       std::mutex m_write;
       #endif
-      bool wlock;         
-      void SetLock()   {  wlock = true; }  // printf(BLUE "settting write lock" RESET_COLOR  "\n");    }
-      void UnsetLock() {  wlock = false;}  // printf(RED "unsettting write lock" RESET_COLOR  "\n");   }
-
-	//ClassDef(TWriteQueue,0)
-
+      bool fWLock;         
+      void SetLock()   {  fWLock = true;  }
+      void UnsetLock() {  fWLock = false; }
 };
 
 class TAnalysisTreeBuilder : public TObject {
-
    public:
-      //virtual ~TAnalysisTreeBuilder();
       virtual ~TAnalysisTreeBuilder() { std::cout << std::endl << "In analysis tree builder dstor." << std::endl; }
 
       static TAnalysisTreeBuilder* Get();
       void ProcessEvent();
 
-      void SetUpFragmentChain(TChain *chain);
+      void SetUpFragmentChain(TChain* chain);
       void SetUpFragmentChain(std::vector<std::string>);
       void SetupFragmentTree();
 
@@ -141,11 +135,11 @@ class TAnalysisTreeBuilder : public TObject {
       void WriteAnalysisTree();
       void CloseAnalysisFile();
 
-      void StartMakeAnalysisTree(int argc=1, char **argv=0);
+      void StartMakeAnalysisTree(int argc=1, char** argv=0);
 
       void ClearActiveAnalysisTreeBranches();
       void ResetActiveAnalysisTreeBranches();
-		  void BuildActiveAnalysisTreeBranches(std::map<std::string, TDetector*>*);
+		void BuildActiveAnalysisTreeBranches(std::map<std::string, TDetector*>*);
 
       void Print(Option_t *opt ="") const;
 
@@ -154,17 +148,15 @@ class TAnalysisTreeBuilder : public TObject {
    private:
       TAnalysisTreeBuilder(); 
 
-      static const size_t MEM_SIZE;                      //Sets the minimum amount of memory used to hold the frament tree
-
       static TAnalysisTreeBuilder* fAnalysisTreeBuilder; //Pointer to the AnalysisTreeBuilder
 
-      TChain *fFragmentChain;
-      TTree  *fCurrentFragTree;
-      TFile  *fCurrentFragFile;
-      TTree  *fCurrentAnalysisTree;
-      TFile  *fCurrentAnalysisFile;
-      TGRSIRunInfo *fCurrentRunInfo;
-      TPPG *fCurrentPPG;
+      TChain* fFragmentChain;
+      TTree*  fCurrentFragTree;
+      TFile*  fCurrentFragFile;
+      TTree*  fCurrentAnalysisTree;
+      TFile*  fCurrentAnalysisFile;
+      TGRSIRunInfo* fCurrentRunInfo;
+      TPPG* fCurrentPPG;
 
       static long fEntries;
       static int fFragmentsIn;
@@ -174,40 +166,37 @@ class TAnalysisTreeBuilder : public TObject {
 #ifndef __CINT__
       bool fSortFragmentDone;
       bool fPrintStatus;
-      std::thread *fReadThread;                             //The thread used to read fragments out of the fragment tree
-      std::thread *fProcessThread;                          //The thread used to process and build events
-      std::thread *fWriteThread;                            //The thread used to process the write Queue
-      std::thread *fStatusThread;                           //The thread used to display the status during sorting
+      std::thread* fReadThread;                             //The thread used to read fragments out of the fragment tree
+      std::thread* fProcessThread;                          //The thread used to process and build events
+      std::thread* fWriteThread;                            //The thread used to process the write Queue
+      std::thread* fStatusThread;                           //The thread used to display the status during sorting
 #endif
 
    private:
      
-      TFragment *fCurrentFragPtr;
+      TFragment* fCurrentFragPtr;
 
       //TigAux detectors
-      TTigress    *tigress;                                 //A pointer to the Tigress Mother Class
-      TSharc      *sharc;                                   //A pointer to the Sharc Mother Class
-      TTriFoil    *triFoil;                                 //A pointer to the TriFoil Mother Class
-      TRF         *rf;                                      //A pointer to the TRF Mother Class 
-      TCSM        *csm;                                     //A pointer to the CSM Mother Class
-      TSiLi       *sili;  
-      TS3         *s3;
-      TTip        *tip;    
+      TTigress*    fTigress;                                 //A pointer to the Tigress Mother Class
+      TSharc*      fSharc;                                   //A pointer to the Sharc Mother Class
+      TTriFoil*    fTriFoil;                                 //A pointer to the TriFoil Mother Class
+      TRF*         fRf;                                      //A pointer to the TRF Mother Class 
+      TCSM*        fCsm;                                     //A pointer to the CSM Mother Class
+      TSiLi*       fSiLi;  
+      TS3*         fS3;
+      TTip*        fTip;    
        
       //GrifAux detectors
-      TGriffin    *griffin;                                 //A pointer to the Griffin Mother Class
-      TSceptar    *sceptar;                                 //A pointer to the Sceptar Mother Class
-      TPaces      *paces;                                   //A pointer to the Paces Mother Class
-      //TDante      *dante;  
-      //TZeroDegree *zeroDegree;
+      TGriffin*    fGriffin;                                 //A pointer to the Griffin Mother Class
+      TSceptar*    fSceptar;                                 //A pointer to the Sceptar Mother Class
+      TPaces*      fPaces;                                   //A pointer to the Paces Mother Class
+      //TDante*      fDante;  
+      //TZeroDegree* fZeroDegree;
       
       //Aux Detectors
-      TDescant    *descant;                                 //A pointer to the Descant Mother Class
+      TDescant*    fDescant;                                 //A pointer to the Descant Mother Class
 
 	ClassDef(TAnalysisTreeBuilder,0) //Builds the Analysis Tree out of TFragments
-
 };
 
 #endif
-
-

@@ -7,7 +7,6 @@
 //
 //
 
-
 #ifndef ROOT_GRootCanvas
 #define ROOT_GRootCanvas
 
@@ -26,8 +25,6 @@
 #ifndef ROOT_TGFrame
 #include "TGFrame.h"
 #endif
-
-
 
 class TGCanvas;
 class TGMenuBar;

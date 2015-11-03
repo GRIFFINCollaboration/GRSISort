@@ -1,7 +1,6 @@
+#include "TTigress.h"
 
 #include <iostream>
-
-#include "TTigress.h"
 
 #include "TRandom.h"
 #include "TMath.h"
@@ -11,8 +10,6 @@
 #include "TGRSIRunInfo.h"
 
 ClassImp(TTigress)
-
-//double TTigress::beta = 0.00;
 
 bool TTigress::fSetSegmentHits = false;//true;
 bool TTigress::fSetBGOHits = true;

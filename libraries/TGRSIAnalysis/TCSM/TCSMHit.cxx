@@ -14,36 +14,35 @@ TCSMHit::~TCSMHit()	{	}
 
 
 void TCSMHit::Clear(Option_t *options)	{
+   fHorDStrip 	= -1;
+   fHorDCharge = 0.0;
+   fHorDCfd    = 0.0;
+	
+   fVerDStrip  = -1;
+   fVerDCharge	= 0.0;
+   fVerDCfd	= 0.0;      
+	
+   fHorEStrip  = -1;
+   fHorECharge = 0.0;
+   fHorECfd    = 0.0;
+	
+   fVerEStrip  = -1;
+   fVerECharge = 0.0;
+   fVerECfd    = 0.0;      
 
-   hor_d_strip 	= -1;
-   hor_d_charge = 0.0;
-   hor_d_cfd    = 0.0;
+   fHorDEnergy = 0.0;   
+   fVerDEnergy = 0.0;   
+   fHorDTime   = 0.0;   
+   fVerDTime   = 0.0;   
+   fDPosition.SetXYZ(0,0,1);
 	
-   ver_d_strip  = -1;
-   ver_d_charge	= 0.0;
-   ver_d_cfd	= 0.0;      
-	
-   hor_e_strip  = -1;
-   hor_e_charge = 0.0;
-   hor_e_cfd    = 0.0;
-	
-   ver_e_strip  = -1;
-   ver_e_charge = 0.0;
-   ver_e_cfd    = 0.0;      
+   fHorEEnergy = 0.0;
+   fVerEEnergy = 0.0;
+   fHorETime   = 0.0;
+   fVerETime   = 0.0;
+   fEPosition.SetXYZ(0,0,1);
 
-   hor_d_energy = 0.0;   
-   ver_d_energy = 0.0;   
-   hor_d_time   = 0.0;   
-   ver_d_time   = 0.0;   
-   d_position.SetXYZ(0,0,1);
-	
-   hor_e_energy = 0.0;
-   ver_e_energy = 0.0;
-   hor_e_time   = 0.0;
-   ver_e_time   = 0.0;
-   e_position.SetXYZ(0,0,1);
-
-   detectornumber = 0;	//
+   fDetectorNumber = 0;	//
 }
 
 Double_t TCSMHit::GetDthickness() const
@@ -259,30 +258,12 @@ void TCSMHit::Print(Option_t *options) const	{
   std::cout<<std::endl;
 }
 
-bool TCSMHit::IsEmpty()
-{
-  bool isempty=0;
-  if(hor_d_strip == -1)
-    if(hor_d_charge < 1)
-      if(hor_d_cfd == 0.0)
-	if(ver_d_strip == -1)
-	  if(ver_d_charge < 1)
-	    if(ver_d_cfd == 0.0)
-	      if(hor_e_strip == -1)
-		if(hor_e_charge < 1)
-		  if( hor_e_cfd == 0.0)
-		    if(ver_e_strip == -1)
-		      if(ver_e_charge <1.0)
-			if(ver_e_cfd == 0.0)
-			  if(hor_d_energy == 0.0)
-			    if(ver_d_energy == 0.0)
-			      if(hor_d_time == 0.0)
-				if(ver_d_time == 0.0)
-				  if(hor_e_energy == 0.0)
-				    if(ver_e_energy == 0.0)
-				      if(hor_e_time == 0.0)
-					if(ver_e_time == 0.0)
-					  if(detectornumber == 0)
-					    isempty = 1;
-  return isempty;
+bool TCSMHit::IsEmpty() {
+	return (fHorDStrip == -1 && fHorDCharge < 1. && fHorDCfd == 0. &&
+			  fVerDStrip == -1 && fVerDCharge < 1. && fVerDCfd == 0. && 
+			  fHorEStrip == -1 && fHorECharge < 1. && fHorECfd == 0. && 
+			  fVerEStrip == -1 && fVerECharge < 1. && fVerECfd == 0. &&
+			  fHorDEnergy == 0.0 && fVerDEnergy == 0.0 && fHorDTime == 0.0 && fVerDTime == 0.0 && 
+			  fHorEEnergy == 0.0 && fVerEEnergy == 0.0 && fHorETime == 0.0 && fVerETime == 0.0 && 
+			  fDetectorNumber == 0);
 }

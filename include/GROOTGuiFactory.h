@@ -1,4 +1,3 @@
-
 #ifndef ROOT_GROOTGuiFactory
 #define ROOT_GROOTGuiFactory
 
@@ -25,9 +24,7 @@ class TContextMenu;
 class TControlBarImp;
 class TControlBar;
 
-
 class GROOTGuiFactory : public TGuiFactory {
-
 public:
    GROOTGuiFactory(const char *name = "Root", const char *title = "ROOT GUI Factory");
    virtual ~GROOTGuiFactory() { }

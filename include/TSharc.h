@@ -87,5 +87,4 @@ class TSharc : public TGRSIDetector  {
 		ClassDef(TSharc,7)
 };
 
-
 #endif

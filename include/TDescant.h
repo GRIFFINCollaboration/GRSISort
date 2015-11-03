@@ -46,8 +46,8 @@ class TDescant : public TGRSIDetector {
 
 	public:         
 		void Copy(TObject&) const;                //!
-		void Clear(Option_t *opt = "");		//!
-		void Print(Option_t *opt = "") const;		//!
+		void Clear(Option_t* opt = "");		//!
+		void Print(Option_t* opt = "") const;		//!
 
 		void PushBackHit(TGRSIDetectorHit* deshit);
 

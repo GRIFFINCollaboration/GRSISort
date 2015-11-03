@@ -13,9 +13,6 @@ NamespaceImp(TGRSIFunctions)
 ///////////////////////////////////////////////////////////////////////
 
 
-#define PI 3.14159265
-//TGRSIFunctions::SetNumberOfPeaks(0);
-
 Double_t TGRSIFunctions::PolyBg(Double_t *x, Double_t *par,Int_t order) {
 //Polynomial function of the form SUM(par[i]*(x - shift)^i). The shift is done to match parameters with Radware output. 
 
@@ -68,14 +65,13 @@ Double_t TGRSIFunctions::PhotoPeakBG(Double_t *dim, Double_t *par){
 
 
 Double_t TGRSIFunctions::MultiPhotoPeakBG(Double_t *dim, Double_t *par) {
-  // STATIC VARIABLE  (npeaks) must be set before using!!!
   //
   // Limits need to be imposed or error states may occour.
   //
    //General background.
-   int npeaks = (int)(par[0]+0.5);
+   int nPeaks = (int)(par[0]+0.5);
 	double result = PolyBg(dim,&par[1],2); // polynomial background. uses par[1->4]
-	for(int i=0;i<npeaks;i++){// par[0] is number of peaks
+	for(int i = 0;i < nPeaks; i++){// par[0] is number of peaks
 		Double_t tmp_par[6];
   	   tmp_par[0]   = par[6*i+5]; //height of photopeak
   	   tmp_par[1]   = par[6*i+6]; //Peak Centroid of non skew gaus
@@ -133,7 +129,6 @@ Double_t TGRSIFunctions::SkewedGaus(Double_t *dim, Double_t *par){
 
 }
 Double_t TGRSIFunctions::MultiSkewedGausWithBG(Double_t *dim, Double_t *par) {
-  // STATIC VARIABLE  (npeaks) must be set before using!!!
   // TGRSIFunctions::Set(int num);
   //
   // Limits need to be imposed or error states may occour.
@@ -167,7 +162,6 @@ Double_t TGRSIFunctions::SkewedGaus2(Double_t *x, Double_t *par){
 }
 
 Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t *dim, Double_t *par) {
-  // STATIC VARIABLE  (npeaks) must be set before using!!!
   // TGRSIFunctions::Set(int num);
   //
   // Limits need to be impossed or error states may occour.
@@ -186,7 +180,6 @@ Double_t TGRSIFunctions::MultiSkewedGausWithBG2(Double_t *dim, Double_t *par) {
 
 
 Double_t TGRSIFunctions::LanGaus(Double_t *x, Double_t *pars){
-   // pars = {npeaks, bg_offs, bg_slope, detector_sigma, peak1_ampl, peak1_mean, peak1_width, .... peaki_width}; 
    double dy, y, conv, spec, gaus;
    conv = 0;
 
@@ -198,7 +191,7 @@ Double_t TGRSIFunctions::LanGaus(Double_t *x, Double_t *pars){
     for( int n=0; n<(int)(pars[0]+0.5); n++) // the implementation of landau function should be done using the landau function
       spec +=pars[3*n+4]*TMath::Landau(-y,-pars[3*n+5],pars[3*n+6])/TMath::Landau(0,0,100); // add peaks, dividing by max height of landau
 
-    gaus = TMath::Gaus(-x[0],-y,pars[3])/sqrt(2*PI*pars[3]*pars[3]); // gaus must be normalisd so there is no sigma weighting
+    gaus = TMath::Gaus(-x[0],-y,pars[3])/sqrt(2*TMath::Pi()*pars[3]*pars[3]); // gaus must be normalisd so there is no sigma weighting
     conv += gaus*spec*dy; // now convolve this [integrate the product] with a gaussian centered at x;
   } 
 
@@ -218,14 +211,13 @@ Double_t TGRSIFunctions::LanGausHighRes(Double_t *x, Double_t *pars){ // 5x more
     for( int n=0; n<(int)(pars[0]+0.5); n++)
       spec +=pars[3*n+4]*TMath::Landau(-y,-pars[3*n+5],pars[3*n+6])/TMath::Landau(0,0,100);
 
-    gaus = TMath::Gaus(-x[0],-y,pars[3])/sqrt(2*PI*pars[3]*pars[3]);
+    gaus = TMath::Gaus(-x[0],-y,pars[3])/sqrt(2*TMath::Pi()*pars[3]*pars[3]);
     conv += gaus*spec*dy;
   }
   return conv;
 }
 
 Double_t TGRSIFunctions::MultiGausWithBG(Double_t *dim, Double_t *par) {
-  // STATIC VARIABLE  (npeaks) must be set before using!!!
   // TGRSIFunctions::Set(int num);
   //
   // Limits need to be impossed or error states may occour.

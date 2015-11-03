@@ -19,8 +19,7 @@ class TMidasEvent;
 
 /// Reader for MIDAS .mid files
 
-class TMidasFile : public TObject
-{
+class TMidasFile : public TObject {
 public:
   TMidasFile(); ///< default constructor
   virtual ~TMidasFile(); ///< destructor
@@ -33,10 +32,10 @@ public:
 
   using TObject::Read;
   using TObject::Write;
-  int  Read(TMidasEvent *event); ///< Read one event from the file
-  bool Write(TMidasEvent *event,Option_t *opt =""); ///< Write one event to the output file
+  int  Read(TMidasEvent* event); ///< Read one event from the file
+  bool Write(TMidasEvent* event,Option_t* opt =""); ///< Write one event to the output file
 
-  void FillBuffer(TMidasEvent *event, Option_t *opt=""); //Fill buffer to write out chunks of data
+  void FillBuffer(TMidasEvent* event, Option_t* opt=""); //Fill buffer to write out chunks of data
   bool WriteBuffer();
   //int GetBufferSize() const { return fWriteBuffer.size(); }
 

@@ -19,11 +19,11 @@
 
 class TKinematics : public TNamed {
 public:
-  TKinematics(double beame, const char* projectile, const char* target,const char* ejectile = NULL, const char* recoil = NULL, const char *name = "");
-  TKinematics(const char *beam, const char *targ, const char *ejec, const char *reco, double ebeam, double ex3=0.0, const char *name="");
-  TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char *name = "");
-  TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, const char *name = "");
-  TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam, double ex3, const char *name = "");
+  TKinematics(double beame, const char* projectile, const char* target,const char* ejectile = NULL, const char* recoil = NULL, const char* name = "");
+  TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3=0.0, const char* name="");
+  TKinematics(TNucleus* projectile, TNucleus* target, double eBeam, const char* name = "");
+  TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, const char* name = "");
+  TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, double ex3, const char* name = "");
 
   void Initial();
   void FinalCm();
@@ -40,7 +40,7 @@ public:
 
   TGraph* Evslab_graph(double thmin, double thmax, double size, int part = 2);
 
-  double GetCmEnergy(double ebeam);
+  double GetCmEnergy(double eBeam);
   double GetCmEnergy();
   double GetBeamEnergy(double LabAngle, double LabEnergy);
   double GetMaxAngle(double vcm);
@@ -95,8 +95,8 @@ public:
   //double Sigma_cm2labnew(double vcm, double angle_cm, double sigma_cm);
   double Rutherford(double angle_cm);
 
- // void Print(Option_t *opt="") { }
- // void Clear(Option_t *opt="") { }
+ // void Print(Option_t* opt="") { }
+ // void Clear(Option_t* opt="") { }
     
 private:
 
@@ -132,7 +132,7 @@ private:
   double E_final(int);
   double T_final(int);
   
-  TSpline3 *Cm2LabSpline;
+  TSpline3* Cm2LabSpline;
   void InitKin();
  
   ClassDef(TKinematics,1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments

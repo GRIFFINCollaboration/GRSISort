@@ -12,7 +12,6 @@
 #include "TH1D.h"
 
 class GH1D : public TH1D {
-
    public:
       GH1D(); 
       virtual ~GH1D(); 
@@ -31,14 +30,12 @@ class GH1D : public TH1D {
       void ExecuteEvent(Int_t evnet,Int_t x,Int_t y);
 
    private:
-
       void InitGH1D();
 
       static int fUniqueId;
       static std::map <GH1D*,int> fCurrentHistMap;
       static void AddToMap(GH1D*);
       static void RemoveFromMap(GH1D*);
-
 
       ClassDef(GH1D,1);
 };

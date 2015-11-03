@@ -30,11 +30,11 @@ class TGriffin : public TGRSIDetector {
 		virtual ~TGriffin();
 
 	public:
-		TGriffinHit *GetGriffinHit(const int& i); //!
+		TGriffinHit* GetGriffinHit(const int& i); //!
 		TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
 		Short_t GetMultiplicity() const {return fGriffinHits.size();}
 
-		static TVector3 GetPosition(int DetNbr ,int CryNbr = 5, double distance = 110.0);		//!
+		static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);		//!
 		void AddFragment(TFragment*, MNEMONIC*); //!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
@@ -78,8 +78,8 @@ class TGriffin : public TGRSIDetector {
 
 	public:
 		virtual void Copy(TObject&) const;                //!
-		virtual void Clear(Option_t *opt = "all");		     //!
-		virtual void Print(Option_t *opt = "") const;		  //!
+		virtual void Clear(Option_t* opt = "all");		     //!
+		virtual void Print(Option_t* opt = "") const;		  //!
 		void ResetAddback();		     //!
 		UShort_t GetNAddbackFrags(size_t idx) const;
 

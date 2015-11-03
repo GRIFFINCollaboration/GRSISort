@@ -1,20 +1,20 @@
 #ifndef GROOTOBJECTMANAGER__H
 #define GROOTOBJECTMANAGER__H
 
-#include <TObject.h>
-#include <TList.h>
-#include <TVirtualPad.h>
-
-#include <TDirectoryFile.h>
-#include <TH1.h>
-#include <TH2.h>
-#include <TH3.h>
-#include <TGraph.h>
-
-#include <GCanvas.h>
-
 #include <string>
 #include <map>
+
+#include "TObject.h"
+#include "TList.h"
+#include "TVirtualPad.h"
+
+#include "TDirectoryFile.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "TH3.h"
+#include "TGraph.h"
+
+#include "GCanvas.h"
 
 class GPadObj : public TNamed {
   public:
@@ -59,8 +59,6 @@ class GMemObj : public TNamed {
 
   ClassDef(GMemObj,0)  
 };
-
-
 
 class GRootObjectManager {
   public:

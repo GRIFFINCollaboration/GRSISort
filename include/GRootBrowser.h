@@ -1,13 +1,11 @@
-
 //
 //  Largely! taken from GRootBrowserLite in the Root Software package.  
-//  This class exists becuase I needed to change
+//  This class exists because I needed to change
 //  some of the connections in CreateBrowser() function to
 //  the GRootCanvas class instead of the the TRootCanvas.
 //
 //  pcb.
 //
-
 
 #ifndef ROOT_GRootBrowser
 #define ROOT_GRootBrowser
@@ -35,8 +33,7 @@ class TGHSplitter;
 // Helper class used to manage plugins (command or macro to be executed).
 //_____________________________________________________________________________
 
-class GBrowserPlugin : public TNamed
-{
+class GBrowserPlugin : public TNamed {
 public:
    Int_t    fTab;             // Tab number
    Int_t    fSubTab;          // Tab element number
@@ -60,7 +57,6 @@ private:
    GRootBrowser& operator=(const GRootBrowser&); // Not implemented
 
 protected:
-
    TGLayoutHints     *fLH0, *fLH1, *fLH2, *fLH3;   // Layout hints, part 1
    TGLayoutHints     *fLH4, *fLH5, *fLH6, *fLH7;   // Layout hints, part 2
    TGTab             *fTabLeft;                    // Left Tab

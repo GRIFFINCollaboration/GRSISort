@@ -12,7 +12,7 @@ ClassImp(TCal)
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TCal::TCal(){
+TCal::TCal() {
    //Default constructor
    InitTCal();
 }
@@ -24,20 +24,20 @@ TCal::TCal(const char* name, const char* title) {
    //fgraph->SetNameTitle(name,title);
 }
 
-TCal::~TCal(){
+TCal::~TCal() {
    //Default dtor
-   fnuc = 0;
-   //fgraph = 0;
-   fhist = 0;
+   fNuc = NULL;
+   //fgraph = NULL;
+   fHist = NULL;
 }
 
-TCal::TCal(const TCal &copy) : TGraphErrors(copy){
+TCal::TCal(const TCal& copy) : TGraphErrors(copy) {
    //Copy constructor
    InitTCal();
-   ((TCal&)copy).Copy(*this);
+   copy.Copy(*this);
 }
 
-/*TGraphErrors TCal::MergeGraphs(TCal *cal,...){
+/*TGraphErrors TCal::MergeGraphs(TCal *cal,...) {
    //Probably does not work properly yet
    TGraphErrors ge;
    TList* glist;
@@ -61,118 +61,114 @@ TCal::TCal(const TCal &copy) : TGraphErrors(copy){
    return ge;
 }*/
 
-void TCal::SetNucleus(TNucleus* nuc,Option_t * opt){
+void TCal::SetNucleus(TNucleus* nuc,Option_t * opt) {
    //Sets the nucleus to be calibrated against
-   if(!nuc){
+   if(!nuc) {
       Error("SetNucleus","Nucleus does not exist");
       return;
    }
-   if(fnuc)
-      Warning("SetNucleus","Overwriting nucleus: %s",fnuc->GetName());
-   fnuc = nuc;
+   if(fNuc)
+      Warning("SetNucleus","Overwriting nucleus: %s",fNuc->GetName());
+   fNuc = nuc;
 }
 
-void TCal::Copy(TObject &obj) const{
+void TCal::Copy(TObject &obj) const {
    //Copies the TCal.
-   ((TCal&)obj).fchan = fchan;
+	static_cast<TCal&>(obj).fChan = fChan;
    //Things to make deep copies of
-   if(ffitfunc)   *(((TCal&)obj).ffitfunc)   =  *ffitfunc;
+   if(fFitFunc)
+		*(static_cast<TCal&>(obj).fFitFunc)   =  *fFitFunc;
 
    //Members to make shallow copies of
-                    ((TCal&)obj).fnuc        =  fnuc;
-   TNamed::Copy((TGraphErrors&)obj);
+	static_cast<TCal&>(obj).fNuc        =  fNuc;
+   TNamed::Copy(static_cast<TGraphErrors&>(obj));
 }
 
-Bool_t TCal::SetChannel(const TChannel* chan){
+Bool_t TCal::SetChannel(const TChannel* chan) {
    //Sets the channel being calibrated
-   if(!chan){
+   if(!chan) {
       Error("SetChannel","TChannel does not exist");
       printf("%p\n", (void*) chan);
       return false;
    }
    //Set our TRef to point at the TChannel
-   fchan = (TChannel*)chan;
+   fChan = const_cast<TChannel*>(chan);
    return true;
 }
 
-void TCal::WriteToAllChannels(std::string mnemonic){
+void TCal::WriteToAllChannels(std::string mnemonic) {
    //Writes this calibration to all channels in the current TChannel Map
-   std::map<unsigned int,TChannel*>::iterator mapit;
-   std::map<unsigned int,TChannel*> *chanmap = TChannel::GetChannelMap();
-   TChannel* orig_chan = GetChannel();
-   for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++){
-      if(!mnemonic.size() || !strncmp(mapit->second->GetChannelName(),mnemonic.c_str(),mnemonic.size())){
-         SetChannel(mapit->second);
+   std::map<unsigned int,TChannel*>::iterator mapIt;
+   std::map<unsigned int,TChannel*>* chanMap = TChannel::GetChannelMap();
+   TChannel* origChan = GetChannel();
+   for(mapIt = chanMap->begin(); mapIt != chanMap->end(); mapIt++){
+      if(!mnemonic.size() || !strncmp(mapIt->second->GetChannelName(),mnemonic.c_str(),mnemonic.size())){
+         SetChannel(mapIt->second);
          WriteToChannel();
       }
    }
    printf("\n");
-   if(orig_chan)
-      SetChannel(orig_chan);
+   if(origChan)
+      SetChannel(origChan);
 }
 
-std::vector<Double_t> TCal::GetParameters() const{
+std::vector<Double_t> TCal::GetParameters() const {
    //Returns all of the parameters in the current TCal.
-   std::vector<Double_t> paramlist;
-   if(!GetFitFunction()){
+   std::vector<Double_t> paramList;
+   if(!GetFitFunction()) {
       Error("GetParameters","Function has not been fitted yet");
-      return paramlist;
+      return paramList;
    }
    
-   Int_t nparams = GetFitFunction()->GetNpar();
+   Int_t nParams = GetFitFunction()->GetNpar();
 
-   for(int i=0;i<nparams;i++)
-      paramlist.push_back(GetParameter(i));
+   for(int i = 0; i < nParams; i++)
+      paramList.push_back(GetParameter(i));
 
-   return paramlist;
+   return paramList;
 }
 
-Double_t TCal::GetParameter(Int_t parameter) const{
+Double_t TCal::GetParameter(Int_t parameter) const {
    //Returns the parameter at the index parameter
-   if(!GetFitFunction()){
+   if(!GetFitFunction()) {
       Error("GetParameter","Function have not been fitted yet");
       return 0;
    }
    return GetFitFunction()->GetParameter(parameter); //Root does all of the checking for us.
 }
 
-Bool_t TCal::SetChannel(UInt_t channum){
+Bool_t TCal::SetChannel(UInt_t chanNum) {
    //Sets the channel for the calibration to the channel number channum. Returns 
    //0 if the channel does not exist
-   TChannel *chan = TChannel::GetChannelByNumber(channum);
-   if(!chan){
-      Error("SetChannel","Channel Number %d does not exist in current memory.",channum);
+   TChannel* chan = TChannel::GetChannelByNumber(chanNum);
+   if(!chan) {
+      Error("SetChannel","Channel Number %d does not exist in current memory.",chanNum);
       return false;
-   }
-   else
+   } else {
       return SetChannel(chan);
+	}
 }
 
 TChannel* TCal::GetChannel() const {
    //Gets the channel being pointed to by the TCal. Returns 0 if no channel
    //is set.
-   return (TChannel*)(fchan.GetObject()); //Gets the object pointed at by the TRef and casts it to a TChannel
+   return static_cast<TChannel*>(fChan.GetObject()); //Gets the object pointed at by the TRef and casts it to a TChannel
 }
 
 void TCal::SetHist(TH1* hist) {
 //Sets this histogram pointed to. TCal does NOT take ownership so you cannot delete this
 //histogram as long as you want to access the hist in the TCal/write it out. I will add this
 //functionality if I get annoyed enough with the way it is.
-   fhist = hist;
-
+   fHist = hist;
 }   
 
 void TCal::Clear(Option_t *opt) {
    //Clears the calibration. Does not delete nuclei or channels.
-   fnuc = 0;
-   fchan = 0;
+   fNuc = NULL;
+   fChan = NULL;
    TGraphErrors::Clear();
 }
-/*
-void TCal::Draw(Option_t* chopt){
-   Draw(chopt);
-}
-*/
+
 void TCal::Print(Option_t *opt) const{
    //Prints calibration information
    if(GetChannel())
@@ -181,29 +177,28 @@ void TCal::Print(Option_t *opt) const{
       printf("Channel Number: NOT SET\n");
 
 
-   if(ffitfunc){
-   printf("\n*******************************\n");
-   printf(" Fit:\n");      
-      ffitfunc->Print();
-   printf("\n*******************************\n");   
-   }
-   else
+   if(fFitFunc) {
+		printf("\n*******************************\n");
+		printf(" Fit:\n");      
+      fFitFunc->Print();
+		printf("\n*******************************\n");   
+   } else {
       printf("Parameters: FIT NOT SET\n");
+	}
 
    printf("Nucleus: ");
    if(GetNucleus())
       printf("%s\n",GetNucleus()->GetName());
    else
       printf("NOT SET\n");
-
 }
 
 void TCal::InitTCal() {
    //Initiallizes the TCal.
   /* fgraph = new TGraphErrors;*/
-   ffitfunc = 0;
-   fchan = 0;
-   fnuc = 0;
-   fhist = 0;
+   fFitFunc = NULL;
+   fChan = NULL;
+   fNuc = NULL;
+   fHist = NULL;
    Clear();
 }

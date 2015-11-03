@@ -5,8 +5,6 @@
 #ifndef INCLUDE_TMidasBanksH
 #define INCLUDE_TMidasBanksH
 
-
-
 // This file defines the data structures written
 // into MIDAS .mid files. They define the on-disk
 // data format, they cannot be arbitrarily changed.

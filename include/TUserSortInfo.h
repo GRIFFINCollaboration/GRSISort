@@ -1,14 +1,15 @@
 #ifndef TUSERSORTINFO_H
 #define TUSERSORTINFO_H
 
+#include <map>
+
 #include "TList.h"
 #include "TString.h"
 #include "TCollection.h"
+
 #include "Globals.h"
 #include "TGRSIRunInfo.h"
 #include "TGRSISortInfo.h"
-
-#include <map>
 
 class TUserSortInfo : public TGRSISortInfo {
    public:

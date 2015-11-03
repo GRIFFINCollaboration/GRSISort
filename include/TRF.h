@@ -39,7 +39,4 @@ class TRF : public TDetector {
 
 		ClassDef(TRF,3)
 };
-
-
-
 #endif

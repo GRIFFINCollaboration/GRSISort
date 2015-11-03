@@ -17,7 +17,6 @@
 #include "TScaler.h"
 
 class TDeadtimeScalerQueue : public TObject {
-	
 	public:
 		static TDeadtimeScalerQueue* Get(); //Returns the Queue
 		virtual ~TDeadtimeScalerQueue();
@@ -46,7 +45,6 @@ class TDeadtimeScalerQueue : public TObject {
 		unsigned int fTotalScalersOut;	
 
 		static std::map<int,int> fScalerIdMap;	
-
 
 #ifndef __CINT__
 #ifndef NO_MUTEX
@@ -79,7 +77,6 @@ class TDeadtimeScalerQueue : public TObject {
 };
 
 class TRateScalerQueue : public TObject {
-	
 	public:
 		static TRateScalerQueue* Get(); //Returns the Queue
 		virtual ~TRateScalerQueue();

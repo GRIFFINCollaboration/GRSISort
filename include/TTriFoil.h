@@ -24,8 +24,8 @@ class TTriFoil :  public TDetector {
 		void AddFragment(TFragment*, MNEMONIC*); //!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
-		void Clear(Option_t *opt = ""); 	//!
-		void Print(Option_t *opt = "") const; 	//!
+		void Clear(Option_t* opt = ""); 	//!
+		void Print(Option_t* opt = "") const; 	//!
 		void Copy(TObject &rhs) const;
 
 	private:

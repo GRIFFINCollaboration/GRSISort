@@ -4,16 +4,12 @@
 #include <cstdio>
 #include <cmath>
 
-#include "TFragment.h"
-#include "TChannel.h"
-//#include "TCrystalHit.h"
-
 #include "TVector3.h"
 
-//#include "TSceptarHit.h"
+#include "TFragment.h"
+#include "TChannel.h"
 
 #include "TGRSIDetectorHit.h"
-
 
 class TGriffinHit : public TGRSIDetectorHit {
 	public:
@@ -86,10 +82,6 @@ class TGriffinHit : public TGRSIDetectorHit {
       void SetGriffinFlag(enum EGriffinHitBits,Bool_t set);
 	
       ClassDef(TGriffinHit,5); //Information about a GRIFFIN Hit
-
 };
-
-
-
 
 #endif

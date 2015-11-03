@@ -10,48 +10,48 @@ ClassImp(TEnergyCal)
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TEnergyCal::TEnergyCal(){
+TEnergyCal::TEnergyCal() {
    //Default Constructor
    SetDefaultTitles();
 }
 
-TEnergyCal::~TEnergyCal(){}
+TEnergyCal::~TEnergyCal() {}
 
-void TEnergyCal::SetDefaultTitles(){
+void TEnergyCal::SetDefaultTitles() {
    //Sets the default titles of the TGraph in the TEnergyCal
-   this->SetTitle("Energy Calibration");
-   this->GetYaxis()->SetTitle("Accepted Energy (keV)");
-   this->GetXaxis()->SetTitle("Measured Centroid");
-   this->GetYaxis()->CenterTitle();
-   this->GetXaxis()->CenterTitle();
+   SetTitle("Energy Calibration");
+   GetYaxis()->SetTitle("Accepted Energy (keV)");
+   GetXaxis()->SetTitle("Measured Centroid");
+   GetYaxis()->CenterTitle();
+   GetXaxis()->CenterTitle();
 }
 
 
-std::vector<Double_t> TEnergyCal::GetParameters() const{
+std::vector<Double_t> TEnergyCal::GetParameters() const {
    //WILL NEED TO CHANGE THIS APPROPRIATELY
-   std::vector<Double_t> paramlist;
-   Int_t nparams = this->GetFunction("energy")->GetNpar();
+   std::vector<Double_t> paramList;
+   Int_t nParams = this->GetFunction("energy")->GetNpar();
 
-   for(int i=0;i<nparams;i++)
-      paramlist.push_back(GetParameter(i));
+   for(int i = 0; i < nParams; i++)
+      paramList.push_back(GetParameter(i));
 
-   return paramlist;
+   return paramList;
 }
 
-Double_t TEnergyCal::GetParameter(Int_t parameter) const{
+Double_t TEnergyCal::GetParameter(Int_t parameter) const {
    //WILL NEED TO CHANGE THIS APPROPRIATELY
    return GetFunction("gain")->GetParameter(parameter); //Root does all of the checking for us.
 }
 
-void TEnergyCal::SetNucleus(TNucleus* nuc,Option_t *opt){
+void TEnergyCal::SetNucleus(TNucleus* nuc,Option_t* opt) {
    //Sets the nucleus of the TEnergyCal. This function sets the data points
    //of the TEnergyCal automatically with the provided nucleus
    TString optstr = opt;
    optstr.ToUpper();
-   if(!GetNucleus() || optstr.Contains("F")){ 
+   if(!GetNucleus() || optstr.Contains("F")) { 
       TGraphErrors::Clear();
       TCal::SetNucleus(nuc);
-      for(int i = 0; i< GetNucleus()->NTransitions();i++){
+      for(int i = 0; i< GetNucleus()->NTransitions();i++) {
          TGraphErrors::SetPoint(i,0.0,GetNucleus()->GetTransition(i)->GetEnergy());
          TGraphErrors::SetPointError(i,0.0,GetNucleus()->GetTransition(i)->GetEnergyUncertainty());
       }
@@ -63,24 +63,24 @@ void TEnergyCal::SetNucleus(TNucleus* nuc,Option_t *opt){
  //  this->Sort();
 }
 
-void TEnergyCal::AddPoint(Double_t measured, Double_t accepted, Double_t measured_uncertainty, Double_t accepted_uncertainty){
+void TEnergyCal::AddPoint(Double_t measured, Double_t accepted, Double_t measuredUncertainty, Double_t acceptedUncertainty) {
    //Add a point to the TEnergyCal. The points are sorted by increasing measured centroid.
    Int_t point = this->GetN();
    TGraphErrors::SetPoint(point,measured,accepted);
-   TGraphErrors::SetPointError(point,measured_uncertainty,accepted_uncertainty);
+   TGraphErrors::SetPointError(point,measuredUncertainty,acceptedUncertainty);
  //  this->Sort();
 }
 
-Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured){
+Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured) {
    //Sets the data point at index idx.
-   if(!GetNucleus()){
+   if(!GetNucleus()) {
       printf("No nucleus set yet...\n");
       return false;
    }
 
    Double_t x,y;
    Double_t dx,dy;
-   this->GetPoint(idx,x,y);
+   GetPoint(idx,x,y);
    dx = GetErrorX(idx);
    dy = GetErrorY(idx);
    TGraphErrors::SetPoint(idx,measured,y);
@@ -90,29 +90,27 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured){
    return true;
 }
 
-Bool_t TEnergyCal::SetPoint(Int_t idx, TPeak *peak){
+Bool_t TEnergyCal::SetPoint(Int_t idx, TPeak* peak) {
    //Sets the data point at index idx using the centroid, and sigma of a fitted TPeak.
-   if(!peak){
+   if(!peak) {
       printf("No Peak, pointer is null\n");
       return false;
    }
    Double_t centroid = peak->GetCentroid();
-   Double_t d_centroid = peak->GetCentroidErr();
+   Double_t dCentroid = peak->GetCentroidErr();
 
-   SetPoint(idx,centroid);
-   return SetPointError(idx,d_centroid);
-
-
+   SetPoint(idx, centroid);
+   return SetPointError(idx, dCentroid);
 }
 
-Bool_t TEnergyCal::SetPointError(Int_t idx, Double_t measured_uncertainty){
+Bool_t TEnergyCal::SetPointError(Int_t idx, Double_t measuredUncertainty) {
    //Sets the measured Error of the data point at index idx.
-   if(!GetNucleus()){
+   if(!GetNucleus()) {
       printf("No nucleus set yet...\n");
       return false;
    }
 
-   TGraphErrors::SetPointError(idx,measured_uncertainty,GetErrorX(idx));
+   TGraphErrors::SetPointError(idx,measuredUncertainty,GetErrorX(idx));
   // Sort();
 
    return true;
@@ -120,7 +118,7 @@ Bool_t TEnergyCal::SetPointError(Int_t idx, Double_t measured_uncertainty){
 
 void TEnergyCal::WriteToChannel() const {
    //Write the energy calibration information to the current TChannel.
-   if(!GetChannel()){
+   if(!GetChannel()) {
       Error("WriteToChannel","No Channel Set");
       return;
    }
@@ -132,15 +130,14 @@ void TEnergyCal::WriteToChannel() const {
    GetChannel()->AddENGCoefficient(this->GetParameter(1));
 }
 
-void TEnergyCal::Print(Option_t *opt) const {
+void TEnergyCal::Print(Option_t* opt) const {
    //Print the TEnergyCal information
    TCal::Print();
    TGraphErrors::Print();
 }
 
-void TEnergyCal::Clear(Option_t *opt) {
+void TEnergyCal::Clear(Option_t* opt) {
    //Clear the TEnergyCal and reset the default titles.
    TCal::Clear();
    SetDefaultTitles();
 }
-

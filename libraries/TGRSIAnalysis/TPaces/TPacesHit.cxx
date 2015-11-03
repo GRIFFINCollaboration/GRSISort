@@ -1,4 +1,3 @@
-
 #include "TPaces.h"
 #include "TPacesHit.h"
 #include "Globals.h"
@@ -12,7 +11,7 @@ TPacesHit::TPacesHit() : TGRSIDetectorHit()	{
 	Clear();
 }
 
-TPacesHit::TPacesHit(const TPacesHit &rhs) : TGRSIDetectorHit() {	
+TPacesHit::TPacesHit(const TPacesHit& rhs) : TGRSIDetectorHit() {	
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -22,26 +21,26 @@ TPacesHit::TPacesHit(const TPacesHit &rhs) : TGRSIDetectorHit() {
 
 TPacesHit::~TPacesHit()  {	}
 
-void TPacesHit::Copy(TObject &rhs) const {
-  TGRSIDetectorHit::Copy(rhs);
-  static_cast<TPacesHit&>(rhs).filter          = filter;
-  return;                                      
+void TPacesHit::Copy(TObject& rhs) const {
+   TGRSIDetectorHit::Copy(rhs);
+   static_cast<TPacesHit&>(rhs).fFilter = fFilter;
+   return;                                      
 }                                       
 
 bool TPacesHit::InFilter(Int_t wantedfilter) {
- // check if the desired filter is in wanted filter;
- // return the answer;
- return true;
+   // check if the desired filter is in wanted filter;
+   // return the answer;
+   return true;
 }
 
 
-void TPacesHit::Clear(Option_t *opt)	{
+void TPacesHit::Clear(Option_t* opt)	{
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
-   filter          =  0;
+   fFilter = 0;
 }
 
 
-void TPacesHit::Print(Option_t *opt) const	{
+void TPacesHit::Print(Option_t* opt) const	{
    printf("Paces Detector: %i\n",GetDetector());
    printf("Paces Energy:   %lf\n",GetEnergy());
 	printf("Paces hit time:   %f\n",GetTime());

@@ -1,8 +1,6 @@
 #ifndef TGRSIRUNINFO_H
 #define TGRSIRUNINFO_H
 
-
-
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
  * 
@@ -44,25 +42,18 @@
  *
  *
  */
-
-
-
-
-
-
-#include "Globals.h"
-
 #include <cstdio>
 
-#include <TObject.h>
-#include <TTree.h>
-#include <TFile.h>
-#include <TKey.h>
+#include "TObject.h"
+#include "TTree.h"
+#include "TFile.h"
+#include "TKey.h"
+
+#include "Globals.h"
 
 #include "TChannel.h"
 
 class TGRSIRunInfo : public TObject {
-
    public:
       static TGRSIRunInfo *Get();
       virtual ~TGRSIRunInfo();
@@ -77,11 +68,12 @@ class TGRSIRunInfo : public TObject {
 
       static const char* GetGRSIVersion() { return fGRSIVersion.c_str(); } 
       static void ClearGRSIVersion() { fGRSIVersion.clear(); } 
-      static void SetGRSIVersion(const char *ver) { if(fGRSIVersion.length()!=0)
-                                                    printf( ALERTTEXT "WARNING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n",fGRSIVersion.c_str());
-                                                    else fGRSIVersion.assign(ver); }
-
-
+      static void SetGRSIVersion(const char *ver) { 
+				if(fGRSIVersion.length()!=0)
+					printf( ALERTTEXT "WARNING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n",fGRSIVersion.c_str());
+				else 
+					fGRSIVersion.assign(ver); 
+		}
 
       static void SetRunInfo(int runnum=0,int subrunnum=-1);
       static void SetAnalysisTreeBranches(TTree*);
@@ -159,16 +151,15 @@ class TGRSIRunInfo : public TObject {
       static inline bool Descant()   { return fGRSIRunInfo->fDescant; }
 
       inline void SetRunInfoFileName(const char *fname) {  fRunInfoFileName.assign(fname); }
-      inline void SetRunInfoFile(const char *ffile)     {  fRunInfoFile.assign(ffile); }
+      inline void SetRunInfoFile(const char *fFile)     {  fRunInfoFile.assign(fFile); }
      
-
       inline void SetBuildWindow(const long int t_bw)    { fBuildWindow = t_bw; } 
       inline void SetAddBackWindow(const double   t_abw) { fAddBackWindow = t_abw; } 
 		inline void SetBufferDuration(const long int t_bd) { fBufferDuration = t_bd; }
 		inline void SetBufferSize(const size_t t_bs)          { fBufferSize = t_bs; }
 
-	  inline void SetWaveformFitting(const bool flag)	 {fWaveformFitting = flag; }
-	  static inline bool IsWaveformFitting()			 {return Get()->fWaveformFitting; }
+		inline void SetWaveformFitting(const bool flag)	 {fWaveformFitting = flag; }
+		static inline bool IsWaveformFitting()			 {return Get()->fWaveformFitting; }
 
       inline void SetMovingWindow(const bool flag)       {fIsMovingWindow = flag; }
       static inline bool IsMovingWindow()                { return Get()->fIsMovingWindow; }
@@ -186,7 +177,6 @@ class TGRSIRunInfo : public TObject {
 
    private:
       static TGRSIRunInfo *fGRSIRunInfo; //Static pointer to TGRSIRunInfo
-      //TGRSIRunInfo();
 
       int fRunNumber;                     //The current run number
       int fSubRunNumber;                  //The current sub run number
@@ -256,11 +246,10 @@ class TGRSIRunInfo : public TObject {
       long int fBufferDuration;       // GRIFFIN: the minimum length of the sorting buffer (default = 600s (60000000000))
       size_t fBufferSize;             // GRIFFIN: the minimum size of the sorting buffer (default = 1 000 000)
       
-	  bool 	   fWaveformFitting;	  // If true, waveform fitting with SFU algorithm will be performed
+		bool 	   fWaveformFitting;	  // If true, waveform fitting with SFU algorithm will be performed
 
       double  fHPGeArrayPosition;        // Position of the HPGe Array (default = 110.0 mm );
   
-
    public:
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");

@@ -4,13 +4,11 @@
 #include <cstdio>
 #include <cmath>
 
-#include "TFragment.h"
-#include "TChannel.h"
-#include "TCrystalHit.h"
-#include "TPulseAnalyzer.h"
-
 #include "TVector3.h"
 
+#include "TFragment.h"
+#include "TChannel.h"
+#include "TPulseAnalyzer.h"
 
 #include "TGRSIDetectorHit.h"
 
@@ -21,29 +19,29 @@ class TTipHit : public TGRSIDetectorHit {
     TTipHit(const TTipHit&);
 
   private:
-    Int_t    filter;    // 
+    Int_t    fFilter;    // 
     Double_t fPID;       // 
 
-    Double_t fast_amplitude;
-    Double_t slow_amplitude;
-    Double_t gamma_amplitude;
+    Double_t fFastAmplitude;
+    Double_t fSlowAmplitude;
+    Double_t fGammaAmplitude;
    
-	Int_t	 tip_channel;
+	 Int_t	 fTipChannel;
 
-    Double_t    time_fit;
-    Double_t    sig2noise;
+    Double_t   fTimeFit;
+    Double_t   fSig2Noise;
 
   public:
     /////////////////////////    /////////////////////////////////////
-    inline void SetFilterPattern(const int &x)    { filter   = x; }   //! 
+    inline void SetFilterPattern(const int &x)    { fFilter   = x; }   //! 
     inline void SetPID(Double_t x)                { fPID = x;     }   //!
-	inline void SetTipChannel(const int x)		  { tip_channel = x; } //!
+	 inline void SetTipChannel(const int x)		  { fTipChannel = x; } //!
 
-    inline Int_t    GetFiterPatter()           { return filter;   }  //!
-    inline Double_t GetPID()                   { return fPID;      }  //!
-	inline Double_t GetFitTime()			   { return time_fit;	} //!
-	inline Double_t GetSignalToNoise()		   { return sig2noise;	} //!
-	inline Int_t	GetTipChannel()			   { return tip_channel; } //!
+    inline Int_t    GetFiterPatter()              { return fFilter;     } //!
+    inline Double_t GetPID()                      { return fPID;        } //!
+	 inline Double_t GetFitTime()			           { return fTimeFit;	   } //!
+	 inline Double_t GetSignalToNoise()		        { return fSig2Noise;	} //!
+	 inline Int_t	  GetTipChannel()			        { return fTipChannel; } //!
 
     bool   InFilter(Int_t);                                         //!
 
@@ -51,16 +49,18 @@ class TTipHit : public TGRSIDetectorHit {
                                          SetCharge(frag.GetCharge());
                                          SetTimeStamp(frag.GetTimeStamp()); }
 
-	void SetUpNumbering(TChannel &chan) { MNEMONIC mnemonic;
-										  TChannel *channel = GetChannel();
-										  if(!channel){
-										    Error("SetDetector","No TChannel exists for address %u",GetAddress());
-										    return;
-										  }
-										  ClearMNEMONIC(&mnemonic);
-										  ParseMNEMONIC(channel->GetChannelName(),&mnemonic); 
-										  Int_t tmp = (int16_t)atoi(mnemonic.arraysubposition.c_str()); 
-										  SetTipChannel((Int_t)(10*mnemonic.arrayposition + tmp)); }
+	 void SetUpNumbering(TChannel &chan) { 
+			MNEMONIC mnemonic;
+			TChannel *channel = GetChannel();
+			if(!channel) {
+				Error("SetDetector","No TChannel exists for address %u",GetAddress());
+				return;
+			}
+			ClearMNEMONIC(&mnemonic);
+			ParseMNEMONIC(channel->GetChannelName(), &mnemonic); 
+			Int_t tmp = atoi(mnemonic.arraysubposition.c_str()); 
+			SetTipChannel(10*mnemonic.arrayposition + tmp); 
+	 }
 
     void SetWavefit(TFragment&);
 
@@ -73,7 +73,5 @@ class TTipHit : public TGRSIDetectorHit {
     TVector3 GetChannelPosition(Double_t dist=0) const   { return TVector3();}
 
     ClassDef(TTipHit,1);
-
 };
-
 #endif

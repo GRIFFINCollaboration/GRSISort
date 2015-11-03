@@ -28,12 +28,10 @@ class TCalManager : public TNamed {
 
  private:
    typedef std::map<UInt_t,TCal*> CalMap;
-   CalMap fcalmap;
+   CalMap fCalMap;
    TClass* fClass;
 
-
    ClassDef(TCalManager,1);
-
 };
 
 #endif

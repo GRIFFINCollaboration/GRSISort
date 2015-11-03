@@ -11,46 +11,30 @@ class TS3Hit : public TGRSIDetectorHit {
     TS3Hit();
     ~TS3Hit();
 
- //   Double_t GetEnergy()       {  return energy;  }
- //   Int_t    GetCharge()       {  return charge;  }
- //   Long_t   GetTimeStamp()    {  return ts;      }
- //   Int_t    GetTime()         {  return time;    }
- //   Short_t  GetDetectorNumber()     { return detectornumber;  }
-    Double_t GetLed()          {  return led;     }
-    Short_t  GetRingNumber()   { return ring;   }
-    Short_t  GetSectorNumber() { return sector; }
- //   Double_t GetCFD()          { return cfd;    }
+    Double_t GetLed()          { return fLed;     }
+    Short_t  GetRingNumber()   { return fRing;   }
+    Short_t  GetSectorNumber() { return fSector; }
 
   public:
-    void Print(Option_t *opt="") const;
-    void Clear(Option_t *opt="");
+    void Print(Option_t* opt="") const;
+    void Clear(Option_t* opt="");
 
-    void SetRingNumber(Short_t rn)     { ring = rn;   }
-    void SetSectorNumber(Short_t sn)   { sector = sn; }
-//    void SetDetectorNumber(Short_t dn) { detectornumber = dn; }
-//    void SetPosition(TVector3 &vec)    { fposition = vec; }
-    void SetVariables(TFragment &frag) { //SetEnergy(frag.GetEnergy()); //It doesn't make sense to set the energy here, it's not saved to file anyways.
-                                         SetCfd(frag.GetCfd());
-                                         SetCharge(frag.GetCharge());
-                                         SetTimeStamp(frag.GetTimeStamp()); 
-                                         //SetTime(frag.GetZc());
-													  led  = frag.GetLed(); }
- 
+    void SetRingNumber(Short_t rn)     { fRing = rn;   }
+    void SetSectorNumber(Short_t sn)   { fSector = sn; }
+    void SetVariables(TFragment& frag) { 
+			 SetCfd(frag.GetCfd());
+			 SetCharge(frag.GetCharge());
+			 SetTimeStamp(frag.GetTimeStamp()); 
+			 fLed  = frag.GetLed(); 
+	 }
+	 
 
   private:
-    //TVector3 position;
-    Double_t    led;
-    Short_t  ring;   //front
-    Short_t  sector; //back
-//    Short_t  detectornumber;
-//   Double_t energy;
-//    Double_t cfd;
-//    Int_t    charge;
-//    Long_t   ts;
-//    Int_t    time;
+    Double_t fLed;
+    Short_t  fRing;   //front
+    Short_t  fSector; //back
 
-  ClassDef(TS3Hit,3);
-
+  ClassDef(TS3Hit,4);
 };
 
 #endif

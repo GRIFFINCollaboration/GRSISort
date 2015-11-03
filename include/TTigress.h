@@ -59,8 +59,6 @@ class TTigress : public TGRSIDetector {
 #endif
 		std::vector<TTigressHit> fTigressHits;
 
-		//static double beta;
-
 		static bool fSetSegmentHits;			   //!
 		static bool fSetBGOHits;					//!
 

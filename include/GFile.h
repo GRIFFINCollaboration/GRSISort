@@ -9,7 +9,6 @@ class GFile : public TFile {
       GFile(const char *name,Option_t *opt="",const char *ftitle="",Int_t compress=1);
       virtual ~GFile();
 
- 
    private:
 
       void GFileInit();
@@ -18,5 +17,3 @@ class GFile : public TFile {
 };
 
 #endif
-
-

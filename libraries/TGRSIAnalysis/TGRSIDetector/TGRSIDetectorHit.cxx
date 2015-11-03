@@ -1,6 +1,6 @@
-
 #include "TGRSIDetectorHit.h"
-#include <TClass.h>
+
+#include "TClass.h"
 
 ClassImp(TGRSIDetectorHit)
 
@@ -15,10 +15,10 @@ ClassImp(TGRSIDetectorHit)
 
 TPPG* TGRSIDetectorHit::fPPG = 0;
 
-TGRSIDetectorHit::TGRSIDetectorHit(const int &Address) : TObject() { 
+TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject() { 
   //Default constructor
   Clear();
-  faddress = Address;
+  fAddress = Address;
   if(!fPPG)
    fPPG = static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
 
@@ -30,9 +30,7 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int &Address) : TObject() {
 TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs) : TObject() { 
 	//Default Copy constructor
 	rhs.Copy(*this);
-	//((TGriffinHit&)rhs).cfd             = cfd;
-	//rhs.time            = time;
-   fPPG = (TPPG*)gDirectory->Get("TPPG"); //There Might be a better way to do this
+   fPPG = static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -42,124 +40,117 @@ TGRSIDetectorHit::~TGRSIDetectorHit() {
 //Default destructor
 }
 
-void TGRSIDetectorHit::Streamer(TBuffer &R__b)
-{
+void TGRSIDetectorHit::Streamer(TBuffer& R__b) {
    // Stream an object of class TGRSIDetectorHit.
-
    if (R__b.IsReading()) {
       R__b.ReadClassBuffer(TGRSIDetectorHit::Class(),this);
    } else {
-      fbitflags = 0;
+      fBitflags = 0;
       R__b.WriteClassBuffer(TGRSIDetectorHit::Class(),this);
    }
 }
 
-Double_t TGRSIDetectorHit::GetTime(Option_t *opt) const{
+Double_t TGRSIDetectorHit::GetTime(Option_t* opt) const {
    if(IsTimeSet())
-      return ftime;
+      return fTime;
 
-   Double_t dtime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
-   TChannel *chan = GetChannel();
-   if(!chan){
+   Double_t dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
+   TChannel* chan = GetChannel();
+   if(!chan) {
       Error("GetTime","No TChannel exists for address %08x",GetAddress());
-      return dtime;
+      return dTime;
    }
 
-   return dtime-chan->GetTZero(GetEnergy());
+   return dTime - chan->GetTZero(GetEnergy());
 }
 
-Double_t TGRSIDetectorHit::GetTime(Option_t *opt) {
+Double_t TGRSIDetectorHit::GetTime(Option_t* opt) {
    if(IsTimeSet())
-      return ftime;
+      return fTime;
 
-   Double_t dtime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
-   TChannel *chan = GetChannel();
-   if(!chan){
+   Double_t dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
+   TChannel* chan = GetChannel();
+   if(!chan) {
       Error("GetTime","No TChannel exists for address %08x",GetAddress());
-      return dtime;
+      return dTime;
    }
    
-   SetTime(dtime-chan->GetTZero(GetEnergy()));
+   SetTime(dTime - chan->GetTZero(GetEnergy()));
 
-   return ftime;
+   return fTime;
 }
 
 
-double TGRSIDetectorHit::GetEnergy(Option_t *opt) const {
+double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
    if(IsEnergySet())
-      return fenergy;
+      return fEnergy;
 
-   TChannel *chan = GetChannel();
-   if(!chan){
+   TChannel* chan = GetChannel();
+   if(!chan) {
       Error("GetEnergy","No TChannel exists for address %08x",GetAddress());
-      return 0.00;
+      return 0.;
    }
-      return chan->CalibrateENG(GetCharge());
+	return chan->CalibrateENG(GetCharge());
 }
 
-double TGRSIDetectorHit::GetEnergy(Option_t *opt){
+double TGRSIDetectorHit::GetEnergy(Option_t* opt) {
    if(IsEnergySet()) {
-      return fenergy;
+      return fEnergy;
    }
 
-   TChannel *chan = GetChannel();
+   TChannel* chan = GetChannel();
    if(chan == NULL) {
       Error("GetEnergy","No TChannel exists for address %08x",GetAddress());
       return 0.;
    }
 	SetEnergy(chan->CalibrateENG(GetCharge()));
-	return fenergy;
+	return fEnergy;
 }
 
-void TGRSIDetectorHit::Copy(TObject &rhs) const {
-  //if(!rhs.InheritsFrom("TGRSIDetectorHit")
-  //   return;
-
+void TGRSIDetectorHit::Copy(TObject& rhs) const {
   TObject::Copy(rhs);
-  static_cast<TGRSIDetectorHit&>(rhs).faddress         = faddress;
-  static_cast<TGRSIDetectorHit&>(rhs).fposition       = fposition;
-  static_cast<TGRSIDetectorHit&>(rhs).fwaveform       = fwaveform;
-  static_cast<TGRSIDetectorHit&>(rhs).fcfd            = fcfd;
-  static_cast<TGRSIDetectorHit&>(rhs).ftimestamp      = ftimestamp;
-  static_cast<TGRSIDetectorHit&>(rhs).fcharge         = fcharge;
-  static_cast<TGRSIDetectorHit&>(rhs).fdetector       = fdetector;
-  static_cast<TGRSIDetectorHit&>(rhs).fenergy         = fenergy;
-  static_cast<TGRSIDetectorHit&>(rhs).ftime           = ftime;
+  static_cast<TGRSIDetectorHit&>(rhs).fAddress        = fAddress;
+  static_cast<TGRSIDetectorHit&>(rhs).fPosition       = fPosition;
+  static_cast<TGRSIDetectorHit&>(rhs).fWaveform       = fWaveform;
+  static_cast<TGRSIDetectorHit&>(rhs).fCfd            = fCfd;
+  static_cast<TGRSIDetectorHit&>(rhs).fTimeStamp      = fTimeStamp;
+  static_cast<TGRSIDetectorHit&>(rhs).fCharge         = fCharge;
+  static_cast<TGRSIDetectorHit&>(rhs).fDetector       = fDetector;
+  static_cast<TGRSIDetectorHit&>(rhs).fEnergy         = fEnergy;
+  static_cast<TGRSIDetectorHit&>(rhs).fTime           = fTime;
 
-  static_cast<TGRSIDetectorHit&>(rhs).fbitflags       =  fbitflags;
-  static_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      =  fPPGStatus;
-  static_cast<TGRSIDetectorHit&>(rhs).fCycleTimeStamp =  fCycleTimeStamp;
-
-//  ((TGRSIDetectorHit&)rhs).parent  = parent;  
+  static_cast<TGRSIDetectorHit&>(rhs).fBitflags       = fBitflags;
+  static_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
+  static_cast<TGRSIDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
 }
 
-void TGRSIDetectorHit::Print(Option_t *opt) const {
+void TGRSIDetectorHit::Print(Option_t* opt) const {
 //General print statement for a TGRSIDetectorHit.
 //Currently prints nothing.
-   fposition.Print();
+   fPosition.Print();
 }
 
-void TGRSIDetectorHit::Clear(Option_t *opt) {
+void TGRSIDetectorHit::Clear(Option_t* opt) {
   //General clear statement for a TGRSIDetectorHit.
-  faddress = 0xffffffff;    // -1
-  fposition.SetXYZ(0,0,1);  // unit vector along the beam.
-  fwaveform.clear();        // reset size to zero.
-  fcharge          = 0;
-  fcfd             = -1;
-  ftimestamp            = -1;
-  fdetector        = -1;
-  fenergy          =  0.0;
-  fbitflags = 0;
+  fAddress = 0xffffffff;    // -1
+  fPosition.SetXYZ(0,0,1);  // unit vector along the beam.
+  fWaveform.clear();        // reset size to zero.
+  fCharge         = 0;
+  fCfd            = -1;
+  fTimeStamp      = -1;
+  fDetector       = -1;
+  fEnergy         = 0.;
+  fBitflags       = 0;
   fPPGStatus      = TPPG::kJunk;
   fCycleTimeStamp = 0;
 }
 
 UInt_t TGRSIDetectorHit::GetDetector() const {
    if(IsDetSet())
-     return fdetector;
+     return fDetector;
 
    MNEMONIC mnemonic;
-   TChannel *channel = GetChannel();
+   TChannel* channel = GetChannel();
    if(!channel){
       Error("GetDetector","No TChannel exists for address %08x",GetAddress());
       return -1;
@@ -171,10 +162,10 @@ UInt_t TGRSIDetectorHit::GetDetector() const {
 
 UInt_t TGRSIDetectorHit::GetDetector() {
    if(IsDetSet())
-      return fdetector;
+      return fDetector;
 
    MNEMONIC mnemonic;
-   TChannel *channel = GetChannel();
+   TChannel* channel = GetChannel();
    if(!channel){
       Error("GetDetector","No TChannel exists for address %u",GetAddress());
       return -1;
@@ -184,37 +175,35 @@ UInt_t TGRSIDetectorHit::GetDetector() {
    return SetDetector(mnemonic.arrayposition);
 }
 
-UInt_t TGRSIDetectorHit::SetDetector(const UInt_t &det) {
-   fdetector = det;
+UInt_t TGRSIDetectorHit::SetDetector(const UInt_t& det) {
+   fDetector = det;
    SetFlag(kIsDetSet,true);
-   return fdetector;
+   return fDetector;
 }
 
 TVector3 TGRSIDetectorHit::SetPosition(Double_t dist) {
    //This should not be overridden. It's job is to call the correct 
    //position for the derived TGRSIDetector object.
    SetFlag(kIsPositionSet,true);
-	fposition = GetChannelPosition(dist); //Calls a general Hit GetPosition function
-   return fposition;
+	fPosition = GetChannelPosition(dist); //Calls a general Hit GetPosition function
+   return fPosition;
 }
 
 TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
    //This should not be overridden and instead GetChannelPosition should
    //be used in the derived class.
    if(IsPosSet())
-      return fposition;
+      return fPosition;
 
-//   if(IsDetSet())
    return GetChannelPosition(dist); //Calls the derivative GetPosition function
    //We must do a check in here to make sure it is returning something reasonable
-
 }
 
 TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
    //This should not be overridden and instead GetChannelPosition should
    //be used in the derived class.
   if(IsPosSet())
-      return fposition;
+      return fPosition;
 
    if(IsDetSet())
       return TGRSIDetectorHit::SetPosition(dist); 
@@ -228,7 +217,7 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
 
 }
 
-bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit *lhs, TGRSIDetectorHit *rhs) {
+bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rhs) {
    return (lhs->GetEnergy() > rhs->GetEnergy());
 }
 
@@ -272,23 +261,18 @@ uint16_t TGRSIDetectorHit::GetCycleTimeStamp() {
    return fCycleTimeStamp;
 }
 
-void TGRSIDetectorHit::CopyFragment(const TFragment &frag) {
-  this->faddress  = frag.ChannelAddress;  
-  this->fcharge   = frag.GetCharge();
-  this->fcfd      = frag.GetCfd();
-  this->ftimestamp= frag.GetTimeStamp();
-  this->fposition = TVector3(0,0,1); 
-  this->fenergy   = frag.GetEnergy();
- // this->SetDetector(frag.GetDetector());
+void TGRSIDetectorHit::CopyFragment(const TFragment& frag) {
+  this->fAddress   = frag.ChannelAddress;  
+  this->fCharge    = frag.GetCharge();
+  this->fCfd       = frag.GetCfd();
+  this->fTimeStamp = frag.GetTimeStamp();
+  this->fPosition  = TVector3(0,0,1); 
+  this->fEnergy    = frag.GetEnergy();
 }
 
-void TGRSIDetectorHit::SetFlag(enum Ebitflag flag,Bool_t set){
+void TGRSIDetectorHit::SetFlag(enum Ebitflag flag, Bool_t set){
    if(set)
-      fbitflags |= flag;
+      fBitflags |= flag;
    else
-      fbitflags &= (~flag);
+      fBitflags &= (~flag);
 }
-
-//unsigned int TGRSIDetectorHit::GetHighestBitSet(UChar_t flag){
-//   return std::log2(flag);
-//}

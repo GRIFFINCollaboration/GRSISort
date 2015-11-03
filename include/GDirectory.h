@@ -1,10 +1,9 @@
 #ifndef GROOT_DIRECTORY__H
 #define GROOT_DIRECTORY__H
 
-#include <TDirectory.h>
+#include "TDirectory.h"
 
 class GDirectory : public TDirectory {
-
   public:
     GDirectory() : TDirectory() { }
     GDirectory(const char* name, const char* title, Option_t* option = "", TDirectory* motherDir = 0) : 
@@ -19,8 +18,6 @@ class GDirectory : public TDirectory {
   //private:
 
   ClassDef(GDirectory,1);
-
 };
 
 #endif
-
