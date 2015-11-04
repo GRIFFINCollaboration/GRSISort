@@ -3,7 +3,7 @@
 
 #include <cstdio>
 #include <cmath>
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include <tuple>
 #endif
 
@@ -45,9 +45,9 @@ class TTigressHit : public TGRSIDetectorHit {
 
 		//need to do sudo tracking to build addback.
 		TVector3 lasthit;                //!
-		#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 		std::tuple<int,int,int> lastpos; //!
-		#endif
+#endif
 
       static TVector3 beam;
 
@@ -107,9 +107,9 @@ class TTigressHit : public TGRSIDetectorHit {
 		
 		void SumHit(TTigressHit*);                                        //!
 		TVector3 GetLastHit()	{return lasthit;}                      //!
-		#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 		inline std::tuple<int,int,int> GetLastPosition() {return lastpos;} //!
-		#endif                         
+#endif                         
 
 	public:
 		virtual void Clear(Option_t *opt = "");		                      //!

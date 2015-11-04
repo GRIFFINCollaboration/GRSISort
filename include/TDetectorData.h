@@ -1,7 +1,7 @@
 #ifndef TDetectorDATA_H
 #define TDetectorDATA_H
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 
 /*****************************************************************************
  *

@@ -6,8 +6,7 @@
 #include <vector>
 #include <cstdio>
 
-#include "TSiLiHit.h"
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TSiLiData.h"
 #else
 class TSiLiData;
@@ -16,7 +15,6 @@ class TSiLiData;
 
 #include "TGRSIDetector.h" 
 #include "TObject.h"
-
 
 class TSiLi: public TGRSIDetector  {
 

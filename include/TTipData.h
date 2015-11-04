@@ -1,7 +1,7 @@
 #ifndef TTIPDATA_H
 #define TTIPDATA_H
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 
 #include <cstdlib>
 #include <cstdio>

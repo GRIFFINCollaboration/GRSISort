@@ -7,11 +7,12 @@
 #include <cstdio>
 
 #include "TS3Hit.h"
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TS3Data.h"
 #else
 class TS3Data;
 #endif
+
 #include "TVector3.h" 
 
 #include "TGRSIDetector.h" 
