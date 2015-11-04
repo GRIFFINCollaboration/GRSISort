@@ -19,8 +19,11 @@ bool TTigress::fSetSegmentWave = false;
 bool TTigress::fSetBGOWave = false;
 
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
-   return ((one.GetDetector() == two.GetDetector()) &&
-           (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
+	TVector3 res = one.GetPosition() - two.GetPosition();
+	
+   return ((std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()) &&
+			  ((((one.GetInitialHit() < 5 && two.GetInitialHit() < 5) || (one.GetInitialHit() > 4 && two.GetInitialHit() > 4)) && res.Mag() < 54) ||  //not front to back
+				(((one.GetInitialHit() < 5 && two.GetInitialHit() > 4) || (one.GetInitialHit() > 4 && two.GetInitialHit() < 5)) && res.Mag() < 105))); //    front to back
 }
 
 std::function<bool(TTigressHit&, TTigressHit&)> TTigress::fAddbackCriterion = DefaultAddback;
