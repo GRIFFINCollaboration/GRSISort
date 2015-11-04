@@ -25,7 +25,7 @@ class TRF :  public TDetector {
 	Double_t Time() const     { return timesfu;}
 	Long_t   TimeStamp() const  { return timestamp; }	
 	time_t   MidasTime() const  { return midastime; }
-	Double_t Phase() const      { return (timesfu/period_ns))*TMath::TwoPi(); }
+	Double_t Phase() const      { return (timesfu/period_ns)*TMath::TwoPi(); }
 	
 	
 	void BuildHits(TDetectorData *data=0, Option_t * = "");
