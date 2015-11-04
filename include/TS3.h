@@ -43,7 +43,7 @@ class TS3 : public TGRSIDetector {
 		static double fInnerDiameter;    //!
 		static double fTargetDistance;   //!
 
-		ClassDef(TS3,4)
+		ClassDef(TS3,5)
 };
 
 #endif

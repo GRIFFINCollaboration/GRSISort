@@ -42,7 +42,7 @@ class TS3Hit : public TGRSIDetectorHit {
     Short_t  fRing;   //front
     Short_t  fSector; //back
 
-  ClassDef(TS3Hit,6);
+  ClassDef(TS3Hit,5);
 };
 
 #endif

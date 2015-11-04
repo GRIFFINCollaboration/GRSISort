@@ -53,7 +53,7 @@ void TS3::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 void TS3::BuildHits()  {
   
   for(size_t i = 0; i < fS3_RingFragment.size(); ++i) {
-    for(size_t i = 0; i < fS3_SectorFragment.size(); ++i) {
+    for(size_t j = 0; j < fS3_SectorFragment.size(); ++j) {
 
 	    //mnemonic->arrayposition
       //if(sdata->GetRing_Detector(i) == sdata->GetSector_Detector(j))     {
@@ -63,7 +63,7 @@ void TS3::BuildHits()  {
 	dethit.SetVariables(*fS3_RingFragment[i]);	
 	
         dethit.SetRingNumber(*fS3_RingFragment[i]);
-        dethit.SetSectorNumber(*fS3_SectorFragment[i]);
+        dethit.SetSectorNumber(*fS3_SectorFragment[j]);
 		
         fS3Hits.push_back(dethit);
      // }
