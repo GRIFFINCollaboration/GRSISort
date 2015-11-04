@@ -491,7 +491,9 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    TBranch* branch = fCurrentFragTree->GetBranch("TFragment");
    //Make the fCurrentFragPtr point at the Fragment Tree.
    branch->SetAddress(&fCurrentFragPtr);
-   fCurrentFragTree->LoadBaskets(MEM_SIZE);
+	if(fCurrentRunInfo->Tigress()) {
+	  fCurrentFragTree->LoadBaskets(MEM_SIZE);
+	}
 }
 
 void TAnalysisTreeBuilder::SetupOutFile() {
