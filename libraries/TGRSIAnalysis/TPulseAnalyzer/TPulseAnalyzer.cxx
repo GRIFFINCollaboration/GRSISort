@@ -2,10 +2,10 @@
 
 ClassImp(TPulseAnalyzer)
 
-	TPulseAnalyzer::TPulseAnalyzer():wpar(0),spar(0),frag(0){
+	TPulseAnalyzer::TPulseAnalyzer():wpar(0),spar(0),frag(0),shpar(0){
 		Clear();
 	}
-TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac):wpar(0),spar(0),frag(0){
+TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac):wpar(0),spar(0),frag(0),shpar(0){
 	Clear();
 	SetData(fragment,noise_fac);
 }
@@ -13,14 +13,17 @@ TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac):wpar(0),spa
 TPulseAnalyzer::~TPulseAnalyzer(){
 	if(wpar) delete wpar;
 	if(spar) delete spar;
+	if(shpar) delete shpar;
 }
 
 void TPulseAnalyzer::Clear(Option_t *opt)  {
+	SetCsI(false);
 	set=false;	
 	N=0;
 	FILTER=8;
 	T0RANGE=8;
 	LARGECHISQ=1E111;
+	EPS=0.001;
 
 	lineq_dim=0;
 	memset(lineq_matrix,0,sizeof(lineq_matrix));
@@ -32,6 +35,7 @@ void TPulseAnalyzer::Clear(Option_t *opt)  {
 
 
 void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac)  {
+	SetCsI(false);
 	if(fragment.HasWave()) {
 		if(noise_fac>0){
 			FILTER=8*noise_fac;
@@ -787,7 +791,467 @@ short TPulseAnalyzer::good_baseline(){
 	return 0;
 }
 
+//=====================================================//
+//	CsI functions:
+//=====================================================//
 
+double TPulseAnalyzer::CsIt0(){
+
+	if(CsIIsSet()){
+		return shpar->t[0];
+	}
+	else{
+		if(!set||N<10)return -1.; 
+	
+		if(wpar) delete wpar;
+		wpar=new WaveFormPar;
+		if(shpar) delete shpar;
+		shpar=new ShapePar;
+		//printf("Calculating exclusion zone\n");
+		GetCsIExclusionZone();
+		//printf("Calculating shape\n");
+		int tmpchisq = GetCsIShape();
+	
+		SetCsI();
+		return shpar->t[0];
+
+	}
+	return -1.0;
+
+}
+
+double TPulseAnalyzer::CsIPID(){
+
+	//printf("Fitting for PID\n");
+	if(CsIIsSet()){
+		double f = shpar->am[2];
+		double s = shpar->am[3];
+		double r = s/f*100;
+
+		return r;
+
+	}
+	else{
+		if(!set||N<10)return -1.; 
+	
+		if(wpar) delete wpar;
+		wpar=new WaveFormPar;
+		if(shpar) delete shpar;
+		shpar=new ShapePar;
+
+		shpar->t[1] = 4510;
+		shpar->t[2] = 64.3;
+		shpar->t[3] = 380.0;
+
+		GetCsIExclusionZone();
+		int tmpchisq = GetCsIShape();
+	
+		double f = shpar->am[2];
+		double s = shpar->am[3];
+		double r = s/f*100;
+
+		SetCsI();
+		
+		return r;
+	}
+	return -1.0;
+
+}
+
+int TPulseAnalyzer::GetCsIShape()
+{
+
+  int dim=4;
+
+  long double sum,tau,tau_i,tau_j;
+  int i,j,p,q,d;
+
+  memset(lineq_matrix,0,sizeof(lineq_matrix));
+  memset(lineq_vector,0,sizeof(lineq_vector));
+  memset(lineq_solution,0,sizeof(lineq_solution));
+  
+  /* q is the low limit of the signal section */
+  q=(int)wpar->temax;
+  if(q >= N || q<=0)
+	return -1.;
+ 
+  /* p is the high limit of the baseline section */
+  p=(int)wpar->temin;
+  if(p >= N || p<=0)
+	return -1.;
+  lineq_dim=dim;
+  
+  //initialize amplitudes to 0
+  for(int i=0;i<NSHAPE;i++)
+    shpar->am[i]=0.;
+
+	//printf("N:\t%i\n",N);
+	//printf("p:\t%i\n",p);
+	//printf("lineqdim:\t%i\n",lineq_dim);
+
+  d=N;
+
+  //initialize chi square 0 and ndf = n-k to -k where k=dim
+  shpar->chisq=0.;
+  shpar->ndf=-lineq_dim;
+
+  /**************************************************************************
+  linearized chi square fit is Mu = v where M is a data matrix 
+  u, v are vectors; u is the parameter vector (solution)
+  note that in this formulation, chisq_min = y_i^2-sum(u_iv_i)
+  **************************************************************************/
+
+  //create matrix for linearized fit
+  for(i=1;i<lineq_dim;i++)
+    {
+      tau=GetCsITau(i);
+      tau_i=tau;
+      sum=-((double)q)/tau+log(1.-exp(-((double)(d-q))/tau));
+      sum-=log(1.-exp(-1./tau));
+      lineq_matrix[i][0]=exp(sum);
+      lineq_matrix[0][i]=exp(sum);
+      
+      tau/=2.;
+      sum=-((double)q)/tau+log(1.-exp(-((double)(d-q))/tau));
+      sum-=log(1.-exp(-1./tau));
+      lineq_matrix[i][i]=exp(sum);
+
+      for(j=i+1;j<lineq_dim;j++)
+  	{
+	  tau_j=GetCsITau(j);
+  	  tau=(tau_i*tau_j)/(tau_i+tau_j);
+  	  sum=-((double)q)/tau+log(1.-exp(-((double)(d-q))/tau));
+  	  sum-=log(1.-exp(-1./tau));
+  	  lineq_matrix[i][j]=exp(sum);
+  	  lineq_matrix[j][i]=exp(sum);
+  	}
+      
+    }
+  
+  lineq_vector[0]=0;
+  lineq_matrix[0][0]=0;
+
+  for(j=q;j<N;j++)
+    {
+      lineq_vector[0]+=frag->wavebuffer[j];
+      lineq_matrix[0][0]+=1;
+      shpar->chisq+=frag->wavebuffer[j]*frag->wavebuffer[j];
+      shpar->ndf+=1;
+    }
+  
+  if(lineq_dim >= N)
+	return -1.;
+
+  for(i=1;i<lineq_dim;i++)
+    {
+      tau=GetCsITau(i);
+      lineq_vector[i]=0;
+      for(j=q;j<N;j++)
+  	lineq_vector[i]+=frag->wavebuffer[j]*exp(-(double(j))/tau);
+    }
+  
+
+  for(j=0;j<p;j++)
+    {
+      lineq_vector[0]+=frag->wavebuffer[j];
+      lineq_matrix[0][0]+=1;
+      shpar->chisq+=frag->wavebuffer[j]*frag->wavebuffer[j];
+      shpar->ndf+=1;
+    }
+ 
+  //solve the matrix equation Mu = v -> u = M^(-1)v where M^(-1) is the inverse
+  //of M. note this has no solution if M is not invertable! 
+
+  //error if the matrix cannot be inverted
+  if(solve_lin_eq()==0)
+    	{
+	  //printf("Matrix could not be inverted\n");
+	  shpar->chisq=BADCHISQ_MAT;
+	  shpar->ndf=1;
+	  return BADCHISQ_MAT;
+	}
+  
+  //else try and find t0 and calculate amplitudes
+  else
+    {
+      //see the function comments for find_t0 for details
+	 
+      shpar->t[0]=GetCsIt0();
+      
+      //if t0 is less than 0, return a T0FAIL
+      if(shpar->t[0]<=0)
+	{
+	  //printf("t0 less than/equal to 0\n");
+	  shpar->chisq=BADCHISQ_T0;
+	  shpar->ndf=1;
+	  return BADCHISQ_T0;
+	}
+
+      //calculate amplitudes	       
+      shpar->am[0]=lineq_solution[0];
+
+      for(i=1;i<lineq_dim;i++)
+	{
+	  tau=GetCsITau(i);
+	  shpar->am[i]=lineq_solution[i]*exp(-shpar->t[0]/tau);
+	}
+      //done claculating amplitudes
+ 
+      for(i=0;i<lineq_dim;i++)
+  	shpar->chisq-=lineq_solution[i]*lineq_vector[i];
+
+      if(shpar->chisq<0)
+      	{
+	  shpar->chisq=BADCHISQ_NEG;
+	  shpar->ndf=1;
+	  return BADCHISQ_NEG;
+	}
+
+      for(i=2;i<lineq_dim;i++)
+	shpar->am[i]*=-1;
+
+     }
+   
+  //return BADCHISQ_AMPL if a component amplitude is less than 0
+  for(i=0;i<lineq_dim;i++)
+    if(shpar->am[i]<0)
+      	{
+	  shpar->chisq=BADCHISQ_AMPL;
+	  shpar->ndf=1;
+	  return BADCHISQ_AMPL;
+	}
+
+  shpar->type=dim-2;
+
+  return shpar->chisq;
+}
+
+void TPulseAnalyzer::GetCsIExclusionZone()
+{
+	int i,j;
+	int D=FILTER/2; //filter half width
+	double sum; //sum of waveform across filter
+
+	//initilize the fit parameters for the risetime to 0 for safety
+	wpar->afit=0.;
+	wpar->bfit=0.;
+
+	//make sure the baseline is established prior to finding the exclusion zone
+	wpar->baseline_range=CSI_BASELINE_RANGE;
+	get_baseline();
+
+	//Here we determine the x position temax of the upper limit for the exclusion zone.
+	//find tmax and define baselineMax
+	get_tmax();
+
+	//If tmax is established, continue.
+	if(wpar->mflag==1)
+	{
+		wpar->baselineMax=wpar->baseline+NOISE_LEVEL_CSI;
+
+		//Starting at tmax and working backwards along the waveform get the value of the filtered waveform at i and when the value of the filtered waveform goes below baselineMax, set the upper limit of the exclusion zone temax = i. The exclusion zone cannot be defined in the area of the waveform used to calculate the baseline.
+		for(i=wpar->tmax;i>wpar->baseline_range;i--)
+		{
+			sum=0.;
+			for(j=i-D;j<i+D;j++)
+				sum+=frag->wavebuffer[j];
+			sum/=FILTER;
+			if(sum<wpar->baselineMax)
+			{
+				wpar->temax=i;
+				wpar->teflag=1;
+				break;
+			}
+		}
+
+		if(wpar->temax>wpar->tmax || wpar->temax<wpar->baseline_range)
+			wpar->teflag=0;	
+		//End of the determination of the upper limit of the exclusion zone.
+
+		//Here we determine the x position of the lower limit for the exclusion zone
+		/***** Fitting the risetime *****/
+		if(wpar->teflag==1)
+		{
+			//Set baselineMin
+			wpar->baselineMin=wpar->baseline-NOISE_LEVEL_CSI;
+
+			//Here we fit a line y=ax+b from temax to temax + 3*FILTER and find the intersection with baselineMin. The x coordinate of this intersection becomes temin.
+			//Matrix for the fit
+			memset(lineq_matrix,0,sizeof(lineq_matrix));
+			memset(lineq_vector,0,sizeof(lineq_vector));
+			memset(lineq_solution,0,sizeof(lineq_solution));
+
+			lineq_dim=2;
+			//printf("temax %d temax+3*FILTER %d\n",wpar->temax,wpar->temax+3*FILTER);
+			for(i=wpar->temax;i<=wpar->temax+3*FILTER;i++)
+			{
+				lineq_matrix[0][0]+=1;
+				lineq_matrix[0][1]+=i;
+				lineq_matrix[1][1]+=i*i;
+
+				lineq_vector[0]+=frag->wavebuffer[i];
+				//printf("testing lineq_vector[0] %f\n",lineq_vector[0]);
+
+				lineq_vector[1]+=frag->wavebuffer[i]*i;
+			}
+			lineq_matrix[1][0]=lineq_matrix[0][1];
+
+			//solve_lin_eq returns 0 if the determinant of the matrix is 0 the system is unsolvable. If there is no solution, set temin to the upper limit of the baseline range.
+			if(solve_lin_eq()==0)
+				wpar->temin=wpar->baseline_range;
+			else
+			{
+				wpar->bfit=lineq_solution[0];
+				wpar->afit=lineq_solution[1];
+				//solve baselineMin = afit*x + bfit for x to find the crossing point. If the crossing point is outside the acceptable range, set temin to the upper limit of the baseline range.
+				wpar->temin=(int)floor((wpar->baselineMin-wpar->bfit)/wpar->afit);
+				if(wpar->temin<wpar->baseline_range)
+					wpar->temin=wpar->baseline_range;
+				if(wpar->temin>wpar->temax)
+					wpar->temin=wpar->baseline_range;
+			}
+		}
+	//End of the determination of the lower limit of the exclusion zone.
+	}
+}
+
+double TPulseAnalyzer::GetCsITau(int i)
+{
+
+  if(i==1)
+   return shpar->t[1];
+
+  if(i>=2)
+    if(i<NSHAPE)
+      return shpar->t[i]*shpar->t[1]/(shpar->t[i]+shpar->t[1]);
+
+  return -1.;
+}
+
+double TPulseAnalyzer::GetCsIt0()
+{
+
+  //printf("Calculating t0\n");
+
+  /*************************************************************************
+  This function calculates t0 given the matrix solution from the get_shape.
+  In this case, the fit function is written as follows:
+  
+  f(t) = C + (Af+As)*exp(t0/tRC)*exp(-t/tRC) - Af*exp(t0/tF')*exp(-t/tF')
+           - As*exp(t0/tS')*exp(-t/tS')
+  
+  This can be re-written as:
+
+  f(t) = C' + alpha*exp(-t/tRC) + beta*exp(-t/tF') + gamma*exp(-t/tS')
+
+  Where:
+  C = C'
+  alpha = (Af+As)*exp(t0/tRC)
+  beta  = -Af*exp(t0/tF')
+  gamma = -As*exp(t0/tS')
+
+  Ignoring the constant, we have: 
+
+  f'(t0) = alpha*exp(-t0/tRC) + beta*exp(-t0/tF') + gamma*exp(-t0/tS') = 0
+
+  For t<t0, f'(t)< 0, and for t>t0, f'(t)>0. This function finds the
+  intersection of f'(t) and 0 by linear interpolation from these endpoints.
+  *************************************************************************/
+
+  double fa,fb,fc; //value of the fit function at points a,b,c
+  double ta,tb,tc=0; //corresponding time (x-)axis values
+  double slope; //linear interpolation slope
+  double delta; //checks how close is the interpolated f(t0) is to 0
+  double tau;
+  int i;
+
+  ta=wpar->baseline_range;
+  //ta=wpar->temin;
+  fa=0.;
+  
+  //t0 must be between the baseline and the max
+  //calculates fit value (no constant) at the end of the baseline range
+  //this is the t<t0 point
+  for(i=1;i<lineq_dim;i++)
+    {
+      tau=GetCsITau(i);
+	  //printf("Tau @ 1117:\t%f\n",tau);
+      //printf("i %d tau %f\n",i,tau);
+      //getc(stdin);
+      fa+=lineq_solution[i]*exp(-ta/tau);
+    }
+  
+  tb=wpar->tmax;
+  //tb=wpar->temax;
+  fb=0.;
+  
+  //calculates fit value (no constant) at tmax
+  //this is the t>t0 point
+  for(i=1;i<lineq_dim;i++)
+    {
+      tau=GetCsITau(i);
+	  //printf("Tau @ 1131:\t%f\n",tau);
+      fb+=lineq_solution[i]*exp(-tb/tau);
+    }
+
+    delta=1;
+
+    if( (fa<0) && (fb>0) )
+	{
+	  //keep the interpolation going until you get below epsilon
+	  /* |f(t0) - 0| = |f(t0)|< epsilon */
+	  while(delta>EPS)
+	  { 
+	    slope=-fa/(fb-fa); //interpolation slope for dependent variable t
+
+	      //"reasonable" interpolation slopes
+	      if(slope>0.99)
+	      	slope=0.99;
+
+	      if(slope<0.01)
+	      	slope=0.01;
+	      //its pretty harmless computationally
+
+	      //tc is the estimate for t0
+	      tc=ta+slope*(tb-ta);
+	      fc=0.;
+	      for(i=1;i<lineq_dim;i++)
+		{
+		  tau=GetCsITau(i);
+		  fc+=lineq_solution[i]*exp(-tc/tau);
+		}
+	      
+	      //really should have this, just to be safe
+	      if(fc==0)
+		{
+		  return tc;
+		}
+	      
+	      else if(fc>0)
+	  	{
+	  	  tb=tc;
+	  	  fb=fc; 
+	  	}
+	      else
+	  	{
+	  	  ta=tc;
+	  	  fa=fc; 
+	  	}
+	      delta=fabs(fc);
+	    }
+	}
+      else
+	{
+	  return -1;
+	}
+
+	//printf("tc:\t%f\n",tc);
+
+    //set wpar->t0 here
+    wpar->t0=tc;
+
+    return tc;
+}
 
 void  TPulseAnalyzer::DrawWave(){
 	if(N==0||!set) return;
@@ -843,6 +1307,72 @@ void  TPulseAnalyzer::DrawT0fit(){
 	}
 	return;
 }
+
+
+void TPulseAnalyzer::DrawCsIExclusion(){
+	
+	if(N==0||!set) return;
+
+	DrawWave();
+	if(wpar){
+		TF1 f("base","[0]",0,wpar->baseline_range);
+		TF1 g("basemin","[0]",wpar->temin,wpar->temax);
+		TF1 h("basemax","[0]",wpar->temin,wpar->temax);
+		TF1 r("risetime","[0]*x+[1]",wpar->temin,wpar->temax+3*FILTER);
+		
+		printf("Baseline:\t%f\n",wpar->baseline);
+		printf("Zero crossing:\t%f\n",wpar->t0);
+
+		f.SetParameter(0,wpar->baseline);
+		f.SetLineColor(kGreen);
+
+		g.SetParameter(0,wpar->baselineMin);
+		g.SetLineColor(kBlue);
+
+		h.SetParameter(0,wpar->baselineMax);
+		h.SetLineColor(kBlack);
+
+		r.SetParameter(0,wpar->afit);
+		r.SetParameter(1,wpar->bfit);
+		r.SetLineColor(kRed);		
+
+		f.DrawCopy("same");
+		g.DrawCopy("same");
+		h.DrawCopy("same");
+		r.DrawCopy("same");
+	}
+	return;
+
+}
+
+void TPulseAnalyzer::DrawCsIFit(){
+
+	if(N==0||!set||!CsIIsSet()) return;
+
+	DrawWave();
+	if(wpar){
+		TF1 shape("shape",TGRSIFunctions::CsIFitFunction,0,N,9);
+
+		shape.SetParameter(0,shpar->t[0]);
+		shape.SetParameter(1,shpar->t[1]);
+		shape.SetParameter(2,shpar->t[2]);
+		shape.SetParameter(3,shpar->t[3]);
+		shape.SetParameter(4,shpar->t[4]);
+		shape.SetParameter(5,shpar->am[0]);
+		shape.SetParameter(6,shpar->am[2]);
+		shape.SetParameter(7,shpar->am[3]);
+		shape.SetParameter(8,shpar->am[4]);
+		shape.SetLineColor(kRed);
+
+		printf("t0:\t%f,\ttRC:\t%f,\ttF:\t%f,\ttS:\t%f,\tTGamma:\t%f\n",(double)shpar->t[0],(double)shpar->t[1],(double)shpar->t[2],(double)shpar->t[3],(double)shpar->t[4]);
+		printf("Baseline:\t%f,\tFast:\t%f,\tSlow:\t%f,\tGamma:\t%f\n",(double)shpar->am[0],(double)shpar->am[2],(double)shpar->am[3],(double)shpar->am[4]);
+
+		shape.DrawCopy("same");
+	}
+	return;
+
+}
+
 
 /*======================================================*/
 void TPulseAnalyzer::print_WavePar()
