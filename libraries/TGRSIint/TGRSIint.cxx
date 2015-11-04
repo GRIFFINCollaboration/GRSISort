@@ -96,7 +96,8 @@ void TGRSIint::ApplyOptions() {
       printf("\tfile %s opened as _file%i\n",file->GetName(),x);
       TGRSIRootIO::Get()->LoadRootFile(file);
    }
-   if(TGRSIOptions::GetInputRoot().size() > 0 && !fAutoSort && !fFragmentSort) {
+  // if(TGRSIOptions::GetInputRoot().size() > 0 && !fAutoSort && !fFragmentSort) {
+   if(TGRSIOptions::GetInputRoot().size() > 0 && !fAutoSort) {
       if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
          Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
          printf("Read calibration info for %d channels from \"%s\" FragmentTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str()); 
@@ -106,6 +107,11 @@ void TGRSIint::ApplyOptions() {
          Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
          printf("Read calibration info for %d channels from \"%s\" AnalysisTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
          TGRSIRunInfo::ReadInfoFromFile();
+      }
+      if(TGRSIOptions::GetInputRoot().at(0).find("hists") != std::string::npos){ 
+         Int_t chans_read = ProcessLine("TChannel::ReadCalFromCurrentFile()");    
+         printf("Read calibration info for %d channels from \"%s\" HistFile\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
+        // TGRSIRunInfo::ReadInfoFromFile(); Not implemented yet
       }
    }
 
