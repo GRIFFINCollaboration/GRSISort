@@ -1,16 +1,15 @@
+#include "TAnalysisTreeBuilder.h"
+
+#include "TVirtualIndex.h"
+#include "TTreeIndex.h"
+#include "TSystem.h"
+#include "TStopwatch.h"
 
 #include "Globals.h"
-
-#include <TVirtualIndex.h>
-#include <TTreeIndex.h>
-#include <TSystem.h>
-
-#include "TAnalysisTreeBuilder.h"
 #include "TGRSIOptions.h"
 
-#include <TStopwatch.h>
-
-#include <TGRSIOptions.h>
+//This sets the minimum amount of memory that root can hold a tree in.
+const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)16; // 16 GB
 
 TEventQueue* TEventQueue::fPtrToQue = 0;
 
@@ -294,18 +293,24 @@ void TAnalysisTreeBuilder::SortFragmentChain() {
 void TAnalysisTreeBuilder::SortFragmentTree() {
    ///Sorts the fragment tree based on the TreeIndex major name.
    ///It then puts the fragment into the event Q.
+
+	if(fCurrentFragTree->GetTreeIndex() == NULL) {
+		printf("Error, trying to sort TIGRESS data, but tree index is missing!\n");
+		throw grsi::exit_exception(1);
+	}
+
    long major_min = (long) fCurrentFragTree->GetMinimum(fCurrentFragTree->GetTreeIndex()->GetMajorName());
    if(major_min<0)
       major_min = 0;
    long major_max = (long) fCurrentFragTree->GetMaximum(fCurrentFragTree->GetTreeIndex()->GetMajorName());
 
-   TTreeIndex* index = (TTreeIndex*)fCurrentFragTree->GetTreeIndex();
-   fEntries = index->GetN();
+   TTreeIndex* index = static_cast<TTreeIndex*>(fCurrentFragTree->GetTreeIndex());
+	fEntries = index->GetN();
 
-   for(int j=major_min;j<=major_max;j++) {
+   for(int j = major_min; j <= major_max; j++) {
       std::vector<TFragment>* event = new std::vector<TFragment>;
       int fragno = 1;
-      while(fCurrentFragTree->GetEntryWithIndex(j,fragno++) != -1) {
+      while(fCurrentFragTree->GetEntryWithIndex(j, fragno++) != -1) {
          fFragmentsIn++;
          event->push_back(*fCurrentFragPtr);
       }
@@ -318,7 +323,6 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
    printf("\n");
    fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
    fCurrentFragTree->SetCacheSize(0);
-   return;
 }
 
 
@@ -473,10 +477,21 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    //Intialize the TChannel Information
    InitChannels();
 
+   //Check to see if the fragment tree already has an index set. 
+   //If not and it's not Griffin, build based on the trigger Id.
+   if(!fCurrentFragTree->GetTreeIndex()) {
+      if(fCurrentRunInfo->Tigress()) {
+         printf(DBLUE "Tree Index not found, building index on TriggerId/FragmentId..." RESET_COLOR);  fflush(stdout);
+         fCurrentFragTree->BuildIndex("TriggerId","FragmentId");
+      }
+      printf(DBLUE " done!" RESET_COLOR "\n");
+   }
+
    //Set the branch to point at the Fragment Tree.
    TBranch* branch = fCurrentFragTree->GetBranch("TFragment");
    //Make the fCurrentFragPtr point at the Fragment Tree.
    branch->SetAddress(&fCurrentFragPtr);
+   fCurrentFragTree->LoadBaskets(MEM_SIZE);
 }
 
 void TAnalysisTreeBuilder::SetupOutFile() {

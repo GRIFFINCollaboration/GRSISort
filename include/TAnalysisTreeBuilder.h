@@ -148,6 +148,8 @@ class TAnalysisTreeBuilder : public TObject {
    private:
       TAnalysisTreeBuilder(); 
 
+      static const size_t MEM_SIZE;                      //Sets the minimum amount of memory used to hold the frament tree
+
       static TAnalysisTreeBuilder* fAnalysisTreeBuilder; //Pointer to the AnalysisTreeBuilder
 
       TChain* fFragmentChain;

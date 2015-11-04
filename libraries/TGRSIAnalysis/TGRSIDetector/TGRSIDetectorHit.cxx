@@ -57,7 +57,7 @@ Double_t TGRSIDetectorHit::GetTime(Option_t* opt) const {
    Double_t dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
    TChannel* chan = GetChannel();
    if(!chan) {
-      Error("GetTime","No TChannel exists for address %08x",GetAddress());
+      Error("GetTime","No TChannel exists for address 0x%08x",GetAddress());
       return dTime;
    }
 
@@ -71,7 +71,7 @@ Double_t TGRSIDetectorHit::GetTime(Option_t* opt) {
    Double_t dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
    TChannel* chan = GetChannel();
    if(!chan) {
-      Error("GetTime","No TChannel exists for address %08x",GetAddress());
+      Error("GetTime","No TChannel exists for address 0x%08x",GetAddress());
       return dTime;
    }
    
@@ -87,7 +87,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
 
    TChannel* chan = GetChannel();
    if(!chan) {
-      Error("GetEnergy","No TChannel exists for address %08x",GetAddress());
+      Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
       return 0.;
    }
 	return chan->CalibrateENG(GetCharge());
@@ -100,7 +100,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t* opt) {
 
    TChannel* chan = GetChannel();
    if(chan == NULL) {
-      Error("GetEnergy","No TChannel exists for address %08x",GetAddress());
+      Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
       return 0.;
    }
 	SetEnergy(chan->CalibrateENG(GetCharge()));
@@ -151,8 +151,8 @@ UInt_t TGRSIDetectorHit::GetDetector() const {
 
    MNEMONIC mnemonic;
    TChannel* channel = GetChannel();
-   if(!channel){
-      Error("GetDetector","No TChannel exists for address %08x",GetAddress());
+   if(!channel) {
+		Error("GetDetector","No TChannel exists for address 0x%08x",GetAddress());
       return -1;
    }
    ClearMNEMONIC(&mnemonic);
@@ -166,8 +166,8 @@ UInt_t TGRSIDetectorHit::GetDetector() {
 
    MNEMONIC mnemonic;
    TChannel* channel = GetChannel();
-   if(!channel){
-      Error("GetDetector","No TChannel exists for address %u",GetAddress());
+   if(!channel) {
+		Error("GetDetector","No TChannel exists for address 0x%08x",GetAddress());
       return -1;
    }
    ClearMNEMONIC(&mnemonic);
