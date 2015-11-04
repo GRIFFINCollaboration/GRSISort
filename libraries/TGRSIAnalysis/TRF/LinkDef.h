@@ -1,4 +1,4 @@
-//TRF.h TRFFitter.h
+//TRF.h
 #ifdef __CINT__
 
 #pragma link off all globals;
@@ -7,7 +7,6 @@
 #pragma link C++ nestedclasses;
 
 #pragma link C++ class TRF+;
-#pragma link C++ class TRFFitter+;
 
 #endif
 
