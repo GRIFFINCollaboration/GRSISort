@@ -6,6 +6,7 @@
 #include <iostream>
 #include <stdio.h>
 
+#include "TMath.h"
 #include "TDetector.h"
 #include "TPulseAnalyzer.h"
 
@@ -30,7 +31,7 @@ class TRF :  public TDetector {
 					else return timesfu*-2;
 				    }
 	Double_t Phase() const      { 	
-					if(timesfu>period_ns)
+					if(timesfu>period_ns*0.5)
 					return (1-(timesfu/period_ns))*TMath::TwoPi();
 					else return(timesfu/period_ns)*-TMath::TwoPi();
 				    }

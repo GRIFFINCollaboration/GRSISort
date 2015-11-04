@@ -13,6 +13,7 @@ class TSiLiData;
 #endif
 #include "TVector3.h" 
 
+#include "TSiLiHit.h" 
 #include "TGRSIDetector.h" 
 #include "TObject.h"
 
