@@ -7,50 +7,49 @@
 #include <stdio.h>
 
 #include "TDetector.h"
-
 #include "TPulseAnalyzer.h"
+
 #include "TFragment.h"
-#ifndef __CINT__
-#include "TRFFitter.h"
-#else
-class TRFFitter;
-#endif
+
+static const Double_t period_ns=84.409;
 
 class TRF :  public TDetector {
-	
+		
 	public:
-		TRF();
-		~TRF();
-
-		//std::vector<Short_t> GetWave() { return rf_wave;	};
-		
-	Double_t Phase()     { return phase; }
-	//Double_t PhaseSFU()  { return phasesfu; }
-	Double_t Time()      { return time; }
-	Long_t   TimeStamp() { return timestamp; }	
-	time_t   MidasTime() { return midastime; }
-
-		//bool HasWave() { return !rf_wave.empty(); };
-
-		void BuildHits(TDetectorData *data=0, Option_t * = "");	//!
-		void FillData(TFragment*,TChannel*,MNEMONIC*);	//!
-
-		void Clear(Option_t *opt = ""); 	      //!
-		void Print(Option_t *opt = "") const; 	//!
-
-		
 	
-	private:
-		TRFFitter *data;		            //!
-
-		//std::vector<Short_t> rf_wave;
-		time_t midastime;
-		Long_t timestamp;
-		double phase;
-		//double phasesfu;
-		double time;
+	TRF();
+	TRF(const TRF&);
+	virtual ~TRF();
 		
-	ClassDef(TRF,2)
+	Double_t TimeSFU()const     { return ((timesfu/period_ns)-(int)((timesfu/period_ns)*2.0))*-2*period_ns; }
+	Long_t   TimeStamp() const  { return timestamp; }	
+	time_t   MidasTime() const  { return midastime; }
+	Double_t Time() const       { 
+					if(timesfu>period_ns*0.5)	
+					return (1-(timesfu/period_ns))*2*period_ns;
+					else return timesfu*-2;
+				    }
+	Double_t Phase() const      { 	
+					if(timesfu>period_ns)
+					return (1-(timesfu/period_ns))*TMath::TwoPi();
+					else return(timesfu/period_ns)*-TMath::TwoPi();
+				    }
+	
+	
+	void BuildHits(TDetectorData *data=0, Option_t * = "");
+	void FillData(TFragment*,TChannel*,MNEMONIC*);	
+	
+	void Copy(TObject&) const;
+	void Clear(Option_t *opt = ""); 	 
+	void Print(Option_t *opt = "") const;
+
+	private:
+
+        time_t midastime;
+        Long_t timestamp;
+	double timesfu;
+		
+	ClassDef(TRF,3)
 
 };
 
