@@ -22,7 +22,7 @@ class TRF :  public TDetector {
 	TRF(const TRF&);
 	virtual ~TRF();
 		
-	Double_t Time() const     { return timesfu;}
+	Double_t Time() const     { return time;}
 	Long_t   TimeStamp() const  { return timestamp; }	
 	time_t   MidasTime() const  { return midastime; }
 	Double_t Phase() const      { return (timesfu/period_ns)*TMath::TwoPi(); }
@@ -39,7 +39,7 @@ class TRF :  public TDetector {
 
         time_t midastime;
         Long_t timestamp;
-	double timesfu;
+	double time;
 		
 	ClassDef(TRF,3)
 
