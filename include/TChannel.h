@@ -176,6 +176,7 @@ class TChannel : public TNamed	{
 	void DestroyTIMECal();
 	void DestroyEFFCal();
 
+	static Int_t ReadCalFromCurrentFile(Option_t *opt="overwrite");
 	static Int_t ReadCalFromTree(TTree*,Option_t *opt="overwrite");
 	static Int_t ReadCalFile(const char *filename = "");
 	static Int_t ParseInputData(const char *inputdata = "",Option_t *opt = "");

@@ -126,4 +126,21 @@ void TFragmentSelector::Terminate()
 	if(obj->InheritsFrom("TH1"))
 		obj->Write();
    }
+
+   f.cd();
+	TChannel *chan = TChannel::GetDefaultChannel();//new TChannel(iter->second);
+	if(chan != NULL) {
+      chan->SetNameTitle(Form("TChannels[%i]",TChannel::GetNumberOfChannels()),
+                         Form("%i TChannels.",TChannel::GetNumberOfChannels()));
+                           // using the write command on any TChannel will now write all 
+      chan->WriteToRoot(); // the TChannels to a root file.  additionally reading a TChannel
+                           // from a rootfile will read all the channels saved to it.  TChannels
+                           // are now saved as a text buffer to the root file.  pcb.
+	                        // update. (3/9/2015) the WriteToRoot function should now 
+                           // corretcly save the TChannels even if the came from the odb(i.e. internal 
+                           // data buffer not set.)  pcb.
+   } else {
+		printf("Failed to get default channel, not going to write TChannel information!\n");
+	}
+   
 }

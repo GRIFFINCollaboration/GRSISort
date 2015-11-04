@@ -651,6 +651,29 @@ void TChannel::WriteCalBuffer(Option_t *opt) {
    return;
 }
 
+Int_t TChannel::ReadCalFromCurrentFile(Option_t *opt) {
+
+   if(!gFile)
+      return 0;
+
+   TFile *tempf = gFile->CurrentFile();
+   TList *list =  tempf->GetListOfKeys();
+   TIter iter(list);
+
+   //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
+   while(TKey *key = (TKey*)(iter.Next())) {
+      if(!key || strcmp(key->GetClassName(),"TChannel"))
+         continue;
+      //TObject *  obj = key->ReadObj();
+      //if(obj && !obj->InheritsFrom("TChannel"))
+      //   continue;
+      //TChannel *c = (TChannel*)obj;
+      //TChannel *c = (TChannel*)key->ReadObj();
+		key->ReadObj();
+      return GetNumberOfChannels();
+   }
+     return 0;
+}
 
 Int_t TChannel::ReadCalFromTree(TTree *tree,Option_t *opt) {
 //Reads the TChannel information from a Tree if it has already been written to that Tree.
