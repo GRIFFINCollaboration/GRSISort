@@ -31,8 +31,8 @@ class TS3 : public TGRSIDetector {
 
 	private:
 		std::vector<TS3Hit> fS3Hits;
-		std::vector<TFragment*> fS3_RingFragment;
-		std::vector<TFragment*> fS3_SectorFragment;
+		std::vector<TFragment*> fS3_RingFragment; //! 
+		std::vector<TFragment*> fS3_SectorFragment; //! 
 
 		///for geometery
 		static int fRingNumber;          //!
