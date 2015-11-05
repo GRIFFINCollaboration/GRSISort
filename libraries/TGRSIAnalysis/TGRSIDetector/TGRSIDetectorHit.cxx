@@ -181,6 +181,62 @@ UInt_t TGRSIDetectorHit::SetDetector(const UInt_t& det) {
    return fDetector;
 }
 
+UInt_t TGRSIDetectorHit::GetSegment() const {
+   if(IsSegSet())
+     return fSegment;
+
+   MNEMONIC mnemonic;
+   TChannel *channel = GetChannel();
+   if(!channel){
+      Error("GetSegment","No TChannel exists for address %08x",GetAddress());
+      return -1;
+   }
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+   std::string name = channel->GetChannelName();
+   TString str = name[9];
+   if(str.IsDigit()){
+   	 std::string buf;
+   	 buf.clear(); buf.assign(channel->GetChannelName(),7,3);
+   	 return (uint16_t)atoi(buf.c_str());
+   }
+   else{   
+   	 return mnemonic.segment;
+   }
+   return -1;
+}
+
+UInt_t TGRSIDetectorHit::GetSegment() {
+   if(IsSegSet())
+      return fSegment;
+
+   MNEMONIC mnemonic;
+   TChannel *channel = GetChannel();
+   if(!channel){
+      Error("GetSegment","No TChannel exists for address %u",GetAddress());
+      return -1;
+   }
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+   std::string name = channel->GetChannelName();
+   TString str = name[9];
+   if(str.IsDigit()){
+   	 std::string buf;
+   	 buf.clear(); buf.assign(channel->GetChannelName(),7,3);
+   	 return SetSegment((uint16_t)atoi(buf.c_str()));
+   }
+   else{   
+   	 return SetSegment(mnemonic.segment);
+   }
+   return -1;
+}
+
+UInt_t TGRSIDetectorHit::SetSegment(const UInt_t &seg) {
+   fSegment = seg;
+   SetFlag(kIsSegSet,true);
+   return fSegment;
+}
+
 TVector3 TGRSIDetectorHit::SetPosition(Double_t dist) {
    //This should not be overridden. It's job is to call the correct 
    //position for the derived TGRSIDetector object.
