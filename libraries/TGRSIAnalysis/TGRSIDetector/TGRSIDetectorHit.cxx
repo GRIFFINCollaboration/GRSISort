@@ -120,7 +120,7 @@ void TGRSIDetectorHit::Copy(TObject& rhs) const {
   static_cast<TGRSIDetectorHit&>(rhs).fEnergy         = fEnergy;
   static_cast<TGRSIDetectorHit&>(rhs).fTime           = fTime;
 
-  static_cast<TGRSIDetectorHit&>(rhs).fBitflags       = fBitflags;
+  static_cast<TGRSIDetectorHit&>(rhs).fBitflags       = 0;
   static_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
   static_cast<TGRSIDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
 }
@@ -184,8 +184,8 @@ UInt_t TGRSIDetectorHit::SetDetector(const UInt_t& det) {
 }
 
 Short_t TGRSIDetectorHit::GetSegment() const {
-   //if(IsSegSet())
-   //  return fSegment;
+   if(IsSegSet())
+     return fSegment;
 
    MNEMONIC mnemonic;
    TChannel *channel = GetChannel();
@@ -209,10 +209,10 @@ Short_t TGRSIDetectorHit::GetSegment() const {
 }
 
 Short_t TGRSIDetectorHit::GetSegment() {
-   //if(IsSegSet()){
-   //  printf("Segment set:\t%i\n",fSegment); 
-   // return fSegment;
-   //}
+   if(IsSegSet()){
+     printf("Segment set:\t%i\n",fSegment); 
+	 return fSegment;
+   }
 
    MNEMONIC mnemonic;
    TChannel *channel = GetChannel();
