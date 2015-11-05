@@ -16,6 +16,29 @@ NamespaceImp(TGRSIFunctions)
 #define PI 3.14159265
 //TGRSIFunctions::SetNumberOfPeaks(0);
 
+Double_t TGRSIFunctions::CsIFitFunction(Double_t *i,Double_t *p)
+{
+  Double_t x,s,e;
+
+  /* 
+     p[0]-p[4] are t0, tRC, tF, TS, TGamma
+     p[5]-p[8] are baseline, AF, AS, AGamma
+  */
+
+  x=i[0]-p[0];
+  e=exp(-x/p[1]);
+  if(x<=0) 
+    return p[5];
+  else
+    {   
+      s=p[5];
+      s+=p[6]*(1-exp(-x/p[2]))*e;
+      s+=p[7]*(1-exp(-x/p[3]))*e;
+      s+=p[8]*(1-exp(-x/p[4]))*e;
+      return s;
+    }
+}
+
 Double_t TGRSIFunctions::PolyBg(Double_t *x, Double_t *par,Int_t order) {
 //Polynomial function of the form SUM(par[i]*(x - shift)^i). The shift is done to match parameters with Radware output. 
 
