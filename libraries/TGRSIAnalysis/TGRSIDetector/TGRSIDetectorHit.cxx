@@ -127,7 +127,7 @@ void TGRSIDetectorHit::Copy(TObject &rhs) const {
   static_cast<TGRSIDetectorHit&>(rhs).fenergy         = fenergy;
   static_cast<TGRSIDetectorHit&>(rhs).ftime           = ftime;
 
-  static_cast<TGRSIDetectorHit&>(rhs).fbitflags       =  fbitflags;
+  static_cast<TGRSIDetectorHit&>(rhs).fbitflags       =  0;
   static_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      =  fPPGStatus;
   static_cast<TGRSIDetectorHit&>(rhs).fCycleTimeStamp =  fCycleTimeStamp;
 
