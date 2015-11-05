@@ -26,6 +26,8 @@ class TTipHit : public TGRSIDetectorHit {
     Double_t fSlowAmplitude;
     Double_t fGammaAmplitude;
    
+	bool csi_flag;
+
 	 Int_t	 fTipChannel;
 
     Double_t   fTimeFit;
@@ -43,9 +45,13 @@ class TTipHit : public TGRSIDetectorHit {
 	 inline Double_t GetSignalToNoise()		        { return fSig2Noise;	} //!
 	 inline Int_t	  GetTipChannel()			        { return fTipChannel; } //!
 
+	inline bool IsCsI()							{ return csi_flag; } //!
+	inline void SetCsI(bool flag="true")	    { csi_flag = flag; } //!
+
     bool   InFilter(Int_t);                                         //!
 
-    void SetVariables(TFragment &frag) { SetCfd(frag.GetCfd());
+    void SetVariables(TFragment &frag) { SetAddress(frag.ChannelAddress);
+										 SetCfd(frag.GetCfd());
                                          SetCharge(frag.GetCharge());
                                          SetTimeStamp(frag.GetTimeStamp()); }
 
@@ -63,6 +69,8 @@ class TTipHit : public TGRSIDetectorHit {
 	 }
 
     void SetWavefit(TFragment&);
+
+	void SetPID(TFragment&);
 
   public:
     void Clear(Option_t *opt = "");                        //!
