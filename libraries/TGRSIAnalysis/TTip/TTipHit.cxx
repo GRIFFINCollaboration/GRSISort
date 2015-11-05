@@ -17,6 +17,10 @@ TTipHit::TTipHit() {
    Clear();
 }
 
+TTipHit::TTipHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+	//SetVariables(frag);
+}
+
 TTipHit::~TTipHit() { }
 
 TTipHit::TTipHit(const TTipHit &rhs) : TGRSIDetectorHit() {

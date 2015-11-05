@@ -116,6 +116,7 @@ void TGRSIDetectorHit::Copy(TObject& rhs) const {
   static_cast<TGRSIDetectorHit&>(rhs).fTimeStamp      = fTimeStamp;
   static_cast<TGRSIDetectorHit&>(rhs).fCharge         = fCharge;
   static_cast<TGRSIDetectorHit&>(rhs).fDetector       = fDetector;
+  static_cast<TGRSIDetectorHit&>(rhs).fSegment        = fSegment;
   static_cast<TGRSIDetectorHit&>(rhs).fEnergy         = fEnergy;
   static_cast<TGRSIDetectorHit&>(rhs).fTime           = fTime;
 
@@ -139,6 +140,7 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
   fCfd            = -1;
   fTimeStamp      = -1;
   fDetector       = -1;
+  fSegment		  = -1;
   fEnergy         = 0.;
   fBitflags       = 0;
   fPPGStatus      = TPPG::kJunk;
@@ -181,9 +183,9 @@ UInt_t TGRSIDetectorHit::SetDetector(const UInt_t& det) {
    return fDetector;
 }
 
-UInt_t TGRSIDetectorHit::GetSegment() const {
-   if(IsSegSet())
-     return fSegment;
+Short_t TGRSIDetectorHit::GetSegment() const {
+   //if(IsSegSet())
+   //  return fSegment;
 
    MNEMONIC mnemonic;
    TChannel *channel = GetChannel();
@@ -197,7 +199,7 @@ UInt_t TGRSIDetectorHit::GetSegment() const {
    TString str = name[9];
    if(str.IsDigit()){
    	 std::string buf;
-   	 buf.clear(); buf.assign(channel->GetChannelName(),7,3);
+   	 buf.clear(); buf.assign(name,7,3);
    	 return (uint16_t)atoi(buf.c_str());
    }
    else{   
@@ -206,9 +208,11 @@ UInt_t TGRSIDetectorHit::GetSegment() const {
    return -1;
 }
 
-UInt_t TGRSIDetectorHit::GetSegment() {
-   if(IsSegSet())
-      return fSegment;
+Short_t TGRSIDetectorHit::GetSegment() {
+   //if(IsSegSet()){
+   //  printf("Segment set:\t%i\n",fSegment); 
+   // return fSegment;
+   //}
 
    MNEMONIC mnemonic;
    TChannel *channel = GetChannel();
@@ -222,7 +226,7 @@ UInt_t TGRSIDetectorHit::GetSegment() {
    TString str = name[9];
    if(str.IsDigit()){
    	 std::string buf;
-   	 buf.clear(); buf.assign(channel->GetChannelName(),7,3);
+   	 buf.clear(); buf.assign(name,7,3);
    	 return SetSegment((uint16_t)atoi(buf.c_str()));
    }
    else{   
@@ -231,7 +235,7 @@ UInt_t TGRSIDetectorHit::GetSegment() {
    return -1;
 }
 
-UInt_t TGRSIDetectorHit::SetSegment(const UInt_t &seg) {
+Short_t TGRSIDetectorHit::SetSegment(const Short_t &seg) {
    fSegment = seg;
    SetFlag(kIsSegSet,true);
    return fSegment;

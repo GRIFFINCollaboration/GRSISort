@@ -75,11 +75,11 @@ class TTigressHit : public TGRSIDetectorHit {
 		return tmp;
 	}
 
-	inline int GetSegmentMultiplicity()		           { return fSegments.size(); }	//!
-	inline int GetBGOMultiplicity()			           { return fBgos.size();     }   //!
-	inline TGRSIDetectorHit& GetSegment(const int &i) { return fSegments.at(i);  }   //!
-	inline TGRSIDetectorHit& GetBGO(const int &i)	  { return fBgos.at(i);	     }   //!
-	inline TGRSIDetectorHit& GetCore()                { return *this;	           }   //!
+	inline int GetSegmentMultiplicity()		           			{ return fSegments.size(); }   //!
+	inline int GetBGOMultiplicity()			           			{ return fBgos.size();     }   //!
+	inline TGRSIDetectorHit& GetTigressSegment(const int &i) 	{ return fSegments.at(i);  }   //!
+	inline TGRSIDetectorHit& GetBGO(const int &i)	  			{ return fBgos.at(i);	   }   //!
+	inline TGRSIDetectorHit& GetCore()                			{ return *this;	           }   //!
 
 	void CheckFirstHit(int charge,int segment);								               //!
 

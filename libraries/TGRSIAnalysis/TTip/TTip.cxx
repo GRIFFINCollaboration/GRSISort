@@ -52,9 +52,7 @@ void TTip::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 		return;
 	}
 
-  TTipHit dethit;
-  
-  dethit.SetVariables(*frag);
+  TTipHit dethit(*frag);
   TChannel chan = TChannel::GetChannel(dethit.GetAddress());
   dethit.SetUpNumbering(chan);
 

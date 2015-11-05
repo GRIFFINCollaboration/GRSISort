@@ -15,6 +15,7 @@
 class TTipHit : public TGRSIDetectorHit {
   public:
     TTipHit();
+	TTipHit(TFragment &);	
     virtual ~TTipHit();
     TTipHit(const TTipHit&);
 
@@ -50,10 +51,10 @@ class TTipHit : public TGRSIDetectorHit {
 
     bool   InFilter(Int_t);                                         //!
 
-    void SetVariables(TFragment &frag) { SetAddress(frag.ChannelAddress);
-										 SetCfd(frag.GetCfd());
-                                         SetCharge(frag.GetCharge());
-                                         SetTimeStamp(frag.GetTimeStamp()); }
+    //void SetVariables(TFragment &frag) { SetAddress(frag.ChannelAddress);
+	//									 SetCfd(frag.GetCfd());
+    //                                   SetCharge(frag.GetCharge());
+    //                                     SetTimeStamp(frag.GetTimeStamp()); }
 
 	 void SetUpNumbering(TChannel &chan) { 
 			MNEMONIC mnemonic;
@@ -70,7 +71,7 @@ class TTipHit : public TGRSIDetectorHit {
 
     void SetWavefit(TFragment&);
 
-	void SetPID(TFragment&);
+	//void SetPID(TFragment&);
 
   public:
     void Clear(Option_t *opt = "");                        //!
