@@ -29,7 +29,7 @@ void TSiLiHit::Copy(TObject &rhs) const {
 
 
 void TSiLiHit::SetSegment(TFragment &frag){
-+	TChannel *channel = TChannel::GetChannel(frag.ChannelAddress);
+	TChannel *channel = TChannel::GetChannel(frag.ChannelAddress);
       if(!channel)  return;
       
       char seg[5]; 
