@@ -2,6 +2,7 @@
 #define TPULSE_ANALYZER_H
 
 #include "TFragment.h"
+#include "TGRSIFunctions.h"
 #include <vector>
 #include <TNamed.h>
 #include <Rtypes.h>
@@ -84,6 +85,22 @@ class TPulseAnalyzer {
 	  double C;
 	}SinPar;
 	
+	typedef struct
+	{
+	  double chisq;
+	  int    ndf;
+	  int    type;
+	  long double t[5]; //decay constants for the fits
+	  long double am[5]; //associated aplitudes for the decay constants
+	  double rf[5];
+
+	  //new stuff necessary for compiliation of Kris' waveform analyzer changes
+	  long double chisq_ex;
+	  long double chisq_f;
+	  int    ndf_ex;
+	  int    ndf_f;
+	  
+	}ShapePar;
 	
   public:
     TPulseAnalyzer();
@@ -103,13 +120,20 @@ class TPulseAnalyzer {
     void      DrawT0fit();
     void      DrawRFFit();
 
+	// CsI functions:
+	double    CsIPID();
+	double	  CsIt0();
+	void 	  DrawCsIExclusion();
+	void	  DrawCsIFit();
+
   private:
 	  
        bool   		set;
-int 			N;
+	   int 			N;
        WaveFormPar*	wpar;
        SinPar*		spar;
        TFragment* 	frag;
+	   ShapePar*	shpar;
 
 	//pulse fitting parameters
 	int FILTER; //integration region for noise reduction (in samples)
@@ -122,9 +146,20 @@ int 			N;
 	long double lineq_vector[20];
 	long double lineq_solution[20];
 	long double copy_matrix[20][20];  
+		
+	// CsI functions
+	void GetCsIExclusionZone();	
+	double GetCsITau(int);
+	double GetCsIt0();
+	int GetCsIShape();
 	
-	
-       //internal methods       
+	bool CsISet;
+	double EPS;
+
+	void SetCsI(bool option="true") { CsISet = option; }
+	bool CsIIsSet()				  	{ return CsISet; }
+
+    //internal methods       
 	int solve_lin_eq();
 	long double  determinant(int);
 	
@@ -156,6 +191,14 @@ int 			N;
 	const static int PIN_BASELINE_RANGE=16; //minimum ticks before max for a valid signal
 	const static int BAD_BASELINE_RANGE =-1024-11;
 	const static int MAX_SAMPLES= 4096;	
+
+	const static int CSI_BASELINE_RANGE = 50;
+	const static int NOISE_LEVEL_CSI = 100;
+	const static int NSHAPE = 5;
+
+	const static int BADCHISQ_T0 = -1024-7;
+	const static int BADCHISQ_NEG = -1024-1;
+	const static int BADCHISQ_AMPL = -1024-6;
 
     ClassDef(TPulseAnalyzer,2);
 };
