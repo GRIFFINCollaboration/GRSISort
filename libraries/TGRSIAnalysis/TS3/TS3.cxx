@@ -13,17 +13,27 @@ double TS3::fInnerDiameter;
 double TS3::fTargetDistance;
 
 TS3::TS3() {
-  fRingNumber=24;
-  fSectorNumber=32;
-
-  fOffsetPhi=15*TMath::Pi()/180.; // according to dave.
-  fOuterDiameter=70.;
-  fInnerDiameter=22.;
-  fTargetDistance=21.;
+   Clear();	
 }
 
 TS3::~TS3()  { 
 }
+
+
+TS3& TS3::operator=(const TS3& rhs) {
+   rhs.Copy(*this);
+   return *this;
+}
+
+TS3::TS3(const TS3& rhs) : TGRSIDetector() {
+  rhs.Copy(*this);
+}
+
+void TS3::Copy(TObject &rhs) const {
+  TGRSIDetector::Copy(rhs);
+  static_cast<TS3&>(rhs).fS3Hits    = fS3Hits;
+  return;                                      
+}  
 
 void TS3::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 	///this function takes a fragment and either adds it to an existing hit (if it's a ring for a matching sector or vice versa)
@@ -32,61 +42,68 @@ void TS3::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 		return;
 	}
 
-	for(size_t i = 0; i < fS3Hits.size(); ++i) {
-		if(static_cast<UInt_t>(mnemonic->arrayposition) == fS3Hits[i].GetDetector()) { //same detector
-			if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front  (ring)
-				//this means we've already found a sector of this detector
-				//so we set the ring number and all other variables from this ring
-				fS3Hits[i].SetRingNumber(mnemonic->segment);
-				fS3Hits[i].SetVariables(*frag);
-				TVector3 tmppos = GetPosition(fS3Hits[i].GetRingNumber(),fS3Hits[i].GetSectorNumber());
-				fS3Hits[i].SetPosition(tmppos);
-				return; //we've filled the data of the current fragment into the hits so we're done 
-			} else { //back (sector)
-				//this means we've already found a ring of this detector
-				//so we set the sector number from this sector (all other variables are set by the front)
-				fS3Hits[i].SetSectorNumber(mnemonic->segment);
-				//fS3Hits[i].SetVariables(*frag);
-				TVector3 tmppos = GetPosition(fS3Hits[i].GetRingNumber(),fS3Hits[i].GetSectorNumber());
-				fS3Hits[i].SetPosition(tmppos);
-				return; //we've filled the data of the current fragment into the hits so we're done 
-			}
-		}
-	}
-	//if we reach here we haven't found a detector before so we create a new hit
-  TS3Hit hit;
-  
-  if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front  (ring)
-	  //this means we've already found a sector of this detector
-	  //so we set the ring number and all other variables from this ring
-	  hit.SetRingNumber(mnemonic->segment);
-	  hit.SetVariables(*frag);
-  } else { //back (sector)
-	  //this means we've already found a ring of this detector
-	  //so we set the sector number from this sector (all other variables are set by the front)
-	  hit.SetSectorNumber(mnemonic->segment);
-	  //hit.SetVariables(*frag);
-  }
-
-  fS3Hits.push_back(hit);
+	if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front  (ring)	
+			fS3_RingFragment.push_back(frag);
+	}else{
+			fS3_SectorFragment.push_back(frag);
+	}	
 }
+
+
+void TS3::BuildHits()  {
+  
+  for(size_t i = 0; i < fS3_RingFragment.size(); ++i) {
+    for(size_t j = 0; j < fS3_SectorFragment.size(); ++j) {
+
+	    //mnemonic->arrayposition
+      //if(sdata->GetRing_Detector(i) == sdata->GetSector_Detector(j))     {
+
+        //Set the base data     
+        TS3Hit dethit(*fS3_RingFragment[i]);
+	dethit.SetVariables(*fS3_RingFragment[i]);	
+	
+        dethit.SetRingNumber(*fS3_RingFragment[i]);
+        dethit.SetSectorNumber(*fS3_SectorFragment[j]);
+		
+        fS3Hits.push_back(dethit);
+     // }
+    }
+  }
+  
+  
+  fS3_RingFragment.clear();
+  fS3_SectorFragment.clear();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 TVector3 TS3::GetPosition(int ring, int sector)  {
   TVector3 position;
-
   double ring_width=(fOuterDiameter-fInnerDiameter)*0.5/fRingNumber; // 24 rings   radial width!
   double inner_radius=fInnerDiameter/2.0;
-
-  
   double correctedsector = 6+sector; //moe is currently checking.
-
   double phi     =  2.*TMath::Pi()/fSectorNumber * (correctedsector + 0.5);   //the phi angle....
   double radius =  inner_radius + ring_width * (ring + 0.5) ;
-  
   position.SetMagThetaPhi(sqrt(radius*radius + fTargetDistance*fTargetDistance),atan((radius/fTargetDistance)),phi+fOffsetPhi);
 
-
   return position;
+}
+
+TGRSIDetectorHit* TS3::GetHit(const int& idx){
+   return GetS3Hit(idx);
 }
 
 TS3Hit *TS3::GetS3Hit(const int& i) {  
@@ -99,12 +116,27 @@ TS3Hit *TS3::GetS3Hit(const int& i) {
    return 0;
 }  
 
+void TS3::PushBackHit(TGRSIDetectorHit *deshit) {
+  fS3Hits.push_back(*((TS3Hit*)deshit));
+  return;
+}
+
+
 void TS3::Print(Option_t *opt) const {
    printf("%s\tnot yet written.\n",__PRETTY_FUNCTION__);
 }
 
 void TS3::Clear(Option_t *opt) {
+  TGRSIDetector::Clear(opt);
   fS3Hits.clear();
+  fS3_RingFragment.clear();
+  fS3_SectorFragment.clear();
+  fRingNumber=24;
+  fSectorNumber=32;
+  fOffsetPhi=15*TMath::Pi()/180.; // according to dave.
+  fOuterDiameter=70.;
+  fInnerDiameter=22.;
+  fTargetDistance=21.;
 }
 
 

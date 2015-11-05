@@ -5,40 +5,37 @@
 ClassImp(TSiLi)
 
 TSiLi::TSiLi() {
+   Clear();	
 }
 
 TSiLi::~TSiLi()  {
 }
 
+void TSiLi::Copy(TObject &rhs) const {
+  TGRSIDetector::Copy(rhs);
+  static_cast<TSiLi&>(rhs).fSiLiHits     = fSiLiHits;
+  return;                                      
+} 
+
+TSiLi::TSiLi(const TSiLi& rhs) : TGRSIDetector() {
+  rhs.Copy(*this);
+} 
+
 void TSiLi::Clear(Option_t *opt)  {
   fSiLiHits.clear();
 }
 
+TSiLi& TSiLi::operator=(const TSiLi& rhs) {
+   rhs.Copy(*this);
+   return *this;
+}
+
 void TSiLi::Print(Option_t *opt) const  {  
-  printf("===============\n");
-  printf("not yet written\n");
-  printf("===============\n");
+  printf("%lu sili_hits\n",fSiLiHits.size());
 }
 
-void TSiLi::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-  if(frag == NULL || mnemonic == NULL) {
-	 return;
-  }
-  TSiLiHit hit;
-  hit.SetSegment(mnemonic->segment);
-  TVector3 tmppos = GetPosition(mnemonic->segment);
-  hit.SetPosition(tmppos);
-  hit.SetVariables(*frag);
-  if(TGRSIRunInfo::IsWaveformFitting()) 
-	 hit.SetWavefit(*frag);
-
-  fSiLiHits.push_back(hit);
-}
-
-TVector3 TSiLi::GetPosition(int seg)  {
-  TVector3 position;
-  position.SetXYZ(0,0,-1);
-  return position;
+TGRSIDetectorHit* TSiLi::GetHit(const Int_t& idx){
+   return GetSiLiHit(idx);
 }
 
 TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {  
@@ -51,3 +48,27 @@ TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {
    }
    return 0;
 }  
+
+void TSiLi::PushBackHit(TGRSIDetectorHit *deshit) {
+  fSiLiHits.push_back(*((TSiLiHit*)deshit));
+  return;
+}
+
+void TSiLi::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+  if(frag == NULL || mnemonic == NULL) {
+	 return;
+  }
+
+  TSiLiHit hit(*frag);
+  
+  if(TGRSIRunInfo::IsWaveformFitting())
+	  hit.SetWavefit(*frag);
+    
+  fSiLiHits.push_back(hit);
+}
+
+TVector3 TSiLi::GetPosition(int seg)  {
+  TVector3 position;
+  position.SetXYZ(0,0,-1);
+  return position;
+}

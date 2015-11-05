@@ -4,28 +4,36 @@
 #include <cstdio>
 #include <iostream>
 
-#include "TDetector.h"
+#include "TGRSIDetector.h"
 #include "TSiLiHit.h"
 
-class TSiLi: public TDetector  {
+class TSiLi: public TGRSIDetector  {
 	public:
 		TSiLi();
-		~TSiLi();
+		TSiLi(const TSiLi&);
+		virtual ~TSiLi();
+		
+     
 
 		void AddFragment(TFragment*, MNEMONIC*);
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
+		TSiLi& operator=(const TSiLi&);  // 
+
+		void Copy(TObject&) const;
+		void Clear(Option_t *opt="");   
 		void Print(Option_t *opt="") const;
-		void Clear(Option_t *opt="");
+		void PushBackHit(TGRSIDetectorHit* deshit);
 
 		Short_t GetMultiplicity() const { return fSiLiHits.size(); }
-		TSiLiHit *GetSiLiHit(const int& i);
-
-		TVector3 GetPosition(int segment);
+		TGRSIDetectorHit* GetHit(const Int_t& idx =0);
+		TSiLiHit* GetSiLiHit(const Int_t& idx = 0);
+		
+		static TVector3 GetPosition(int segment);
 
 	private:
 		std::vector<TSiLiHit> fSiLiHits;
 
-		ClassDef(TSiLi,2);
+		ClassDef(TSiLi,5);
 };
 #endif

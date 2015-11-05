@@ -3,27 +3,36 @@
 
 #include <iostream>
 
-#include "TDetector.h"
+#include "TGRSIDetector.h"
 #include "TS3Hit.h"
 
-class TS3 : public TDetector {
+class TS3 : public TGRSIDetector {
 	public:
 		TS3();
-		~TS3();
+		TS3(const TS3&);
+		virtual  ~TS3();
 
-		void AddFragment(TFragment*, MNEMONIC*);
-		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
+		virtual void AddFragment(TFragment*, MNEMONIC*);
+		virtual void BuildHits();
 
+		TGRSIDetectorHit* GetHit(const int& idx =0);
 		TS3Hit* GetS3Hit(const int& i);  
-		Short_t GetMultiplicity() { return fS3Hits.size(); }
+		Short_t GetMultiplicity() const { return fS3Hits.size(); }
+		void PushBackHit(TGRSIDetectorHit* deshit);
 
-		TVector3 GetPosition(int front, int back);
+		static TVector3 GetPosition(int ring, int sector);
 
-      virtual void Clear(Option_t *opt = "all");		     //!
-      virtual void Print(Option_t *opt = "") const;		  //!
+		void Copy(TObject&) const;
+		TS3& operator=(const TS3&);  // 
+		virtual void Clear(Option_t *opt = "all");		     //!
+		virtual void Print(Option_t *opt = "") const;		  //!
+		
+		
 
 	private:
 		std::vector<TS3Hit> fS3Hits;
+		std::vector<TFragment*> fS3_RingFragment; //! 
+		std::vector<TFragment*> fS3_SectorFragment; //! 
 
 		///for geometery
 		static int fRingNumber;          //!
@@ -34,7 +43,7 @@ class TS3 : public TDetector {
 		static double fInnerDiameter;    //!
 		static double fTargetDistance;   //!
 
-		ClassDef(TS3,2)
+		ClassDef(TS3,5)
 };
 
 #endif
