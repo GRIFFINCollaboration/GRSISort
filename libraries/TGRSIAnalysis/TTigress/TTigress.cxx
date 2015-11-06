@@ -139,6 +139,15 @@ TTigressHit* TTigress::GetAddbackHit(const int& i) {
   }
 }
 
+void TTigress::BuildHits(){
+	
+	for(size_t i = 0; i<GetMultiplicity(); i++){
+		if(GetTigressHit(i)->GetCharge() <= 0)
+			DeleteTigressHit(i);
+	}
+
+}
+
 void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
   if(frag == NULL || mnemonic == NULL) {
     return;
