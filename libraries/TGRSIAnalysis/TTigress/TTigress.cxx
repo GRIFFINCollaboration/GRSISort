@@ -215,7 +215,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     corehit.SetAddress(frag->ChannelAddress);
     corehit.SetDetector(mnemonic->arrayposition);
     corehit.SetCrystal(CoreNbr);
-    corehit.AddSegment(temp);
+    corehit.AddBGO(temp);
     fTigressHits.push_back(corehit);
   }
 }
