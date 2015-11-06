@@ -139,6 +139,15 @@ TTigressHit* TTigress::GetAddbackHit(const int& i) {
   }
 }
 
+void TTigress::BuildHits(){
+	
+	for(size_t i = 0; i<GetMultiplicity(); i++){
+		if(GetTigressHit(i)->GetCharge() <= 0)
+			DeleteTigressHit(i);
+	}
+
+}
+
 void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
   if(frag == NULL || mnemonic == NULL) {
     return;
@@ -183,8 +192,9 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
         }
       }
       //reaching here means we haven't found a corresponding core yet so we create a new core and then add this segment to it
+		//printf("Segment issue?\n");
       TTigressHit corehit;
-      corehit.SetAddress(frag->GetAddress());
+      corehit.SetAddress(frag->ChannelAddress);
       corehit.SetDetector(mnemonic->arrayposition);
       corehit.SetCrystal(CoreNbr);
       corehit.AddSegment(temp);
@@ -200,10 +210,12 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       }
     }
     //reaching here means we haven't found a corresponding core yet so we create a new core and then add this BGO to it
+	//printf("BGO issue?\n");
     TTigressHit corehit;
+    corehit.SetAddress(frag->ChannelAddress);
     corehit.SetDetector(mnemonic->arrayposition);
     corehit.SetCrystal(CoreNbr);
-    corehit.AddSegment(temp);
+    corehit.AddBGO(temp);
     fTigressHits.push_back(corehit);
   }
 }
