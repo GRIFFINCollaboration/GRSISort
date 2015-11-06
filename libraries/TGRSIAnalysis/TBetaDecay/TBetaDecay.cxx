@@ -1,15 +1,17 @@
 #include "TBetaDecay.h"
 
+/// \cond CLASSIMP
 ClassImp(TBetaDecay)
+/// \endcond
 
-/////////////////////////////////////////////////////////////////
-//
-// TBetaDecay
-//
-// This class contains information about beta decays to be used
-// in analyses.
-//
 //////////////////////////////////////////////////////////////////
+///
+/// \class TBetaDecay
+///
+/// This class contains information about beta decays to be used
+/// in analyses.
+///
+///////////////////////////////////////////////////////////////////
 
 
 TBetaDecay::TBetaDecay(){}

@@ -10,19 +10,20 @@
  */
 
 
- /////////////////////////////////////////////////////////////////////////
- //                                                                     //
- // TChannel                                                            //
- //                                                                     //
- // The TChannel is designed to hold all non-essential                  // 
- // information of a TFragment (name, energy coeff, etc..)              //
- // that would otherwise clog up the FragmentTree.  The TChannel class  //
- // contains a static map to every channel make retrieval fairly        //
- // easy.  The TChannel class also contains the ability to              //
- // read and write a custom calibration file to set or                  //
- // save the TChannel information.                                      //
- //                                                                     //
- /////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+///
+/// \class TChannel
+///
+/// The TChannel is designed to hold all non-essential
+/// information of a TFragment (name, energy coeff, etc..)
+/// that would otherwise clog up the FragmentTree.  The TChannel class
+/// contains a static map to every channel make retrieval fairly
+/// easy.  The TChannel class also contains the ability to
+/// read and write a custom calibration file to set or
+/// save the TChannel information. Most of the information is read out
+/// of the ODB information in the MIDAS file.
+///
+//////////////////////////////////////////////////////////////////////////
 
 
 #include <string>
@@ -189,7 +190,6 @@ class TChannel : public TNamed	{
 
 	static int WriteToRoot(TFile* fileptr = 0);
 
-  
   private:
 	// the follow is to make the custom streamer 
 	// stuff play nice.  pcb.
@@ -198,6 +198,8 @@ class TChannel : public TNamed	{
 	static void InitChannelInput();
 	static void SaveToSelf(const char*);
 
+/// \cond CLASSIMP
 	ClassDef(TChannel,4) //Contains the Digitizer Information
+/// \endcond
 };
 #endif

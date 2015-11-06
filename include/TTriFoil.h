@@ -21,11 +21,11 @@ class TTriFoil :  public TDetector {
 		bool HasWave() const { return !fTfWave.empty(); }
 		time_t GetTimeStamp() const { return fTimestamp; }
 
-		void AddFragment(TFragment*, MNEMONIC*); //!
+		void AddFragment(TFragment*, MNEMONIC*); //!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
-		void Clear(Option_t* opt = ""); 	//!
-		void Print(Option_t* opt = "") const; 	//!
+		void Clear(Option_t* opt = ""); 	//!<!
+		void Print(Option_t* opt = "") const; 	//!<!
 		void Copy(TObject &rhs) const;
 
 	private:
@@ -34,7 +34,9 @@ class TTriFoil :  public TDetector {
 		bool fBeam;
 		int fTBeam;
 
+/// \cond CLASSIMP
 		ClassDef(TTriFoil,2)
+/// \endcond
 };
 
 #endif

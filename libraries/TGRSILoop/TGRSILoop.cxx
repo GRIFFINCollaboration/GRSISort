@@ -18,7 +18,9 @@
 
 #include "GRSIVersion.h"
 
+/// \cond CLASSIMP
 ClassImp(TGRSILoop)
+/// \endcond
 
 TGRSILoop* TGRSILoop::fTGRSILoop = 0;
 

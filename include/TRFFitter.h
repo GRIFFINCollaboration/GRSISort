@@ -66,7 +66,9 @@ class TRFFitter : public TNamed {
   
     //std::vector<Short_t> waveform;
 
+/// \cond CLASSIMP
    ClassDef(TRFFitter, 0);
+/// \endcond
 };
 
 #endif // __TRF_FITTER_H

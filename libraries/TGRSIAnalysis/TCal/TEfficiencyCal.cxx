@@ -1,6 +1,8 @@
 #include "TEfficiencyCal.h"
 
+/// \cond CLASSIMP
 ClassImp(TEfficiencyCal)
+/// \endcond
 
 TEfficiencyCal::TEfficiencyCal(){
 }

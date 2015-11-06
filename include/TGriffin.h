@@ -1,6 +1,10 @@
 #ifndef TGRIFFIN_H
 #define TGRIFFIN_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <vector>
 #include <cstdio>
 #include <functional>
@@ -30,15 +34,15 @@ class TGriffin : public TGRSIDetector {
 		virtual ~TGriffin();
 
 	public:
-		TGriffinHit* GetGriffinHit(const int& i); //!
+		TGriffinHit* GetGriffinHit(const int& i); //!<!
 		TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
 		Short_t GetMultiplicity() const {return fGriffinHits.size();}
 
-		static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);		//!
-		void AddFragment(TFragment*, MNEMONIC*); //!
+		static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);		//!<!
+		void AddFragment(TFragment*, MNEMONIC*); //!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
-		TGriffin& operator=(const TGriffin&);  //!
+		TGriffin& operator=(const TGriffin&);  //!<!
 
 #ifndef __CINT__
 		void SetAddbackCriterion(std::function<bool(TGriffinHit&, TGriffinHit&)> criterion) { fAddbackCriterion = criterion; }
@@ -54,39 +58,41 @@ class TGriffin : public TGRSIDetector {
 #endif
 		std::vector <TGriffinHit> fGriffinHits; //  The set of crystal hits
 
-		//static bool fSetBGOHits;		            //!  Flag that determines if BGOHits are being measured			 
+		//static bool fSetBGOHits;		            //!<!  Flag that determines if BGOHits are being measured			 
 
-		static bool fSetCoreWave;		         //!  Flag for Waveforms ON/OFF
-		//static bool fSetBGOWave;		            //!  Flag for BGO Waveforms ON/OFF
+		static bool fSetCoreWave;		         //!<!  Flag for Waveforms ON/OFF
+		//static bool fSetBGOWave;		            //!<!  Flag for BGO Waveforms ON/OFF
 
-		long fCycleStart;                //!  The start of the cycle
+		long fCycleStart;                //!<!  The start of the cycle
 		UChar_t fGriffinBits;            // Transient member flags
 
-		std::vector<TGriffinHit> fAddbackHits; //! Used to create addback hits on the fly
-		std::vector<UShort_t> fAddbackFrags; //! Number of crystals involved in creating in the addback hit
+		std::vector<TGriffinHit> fAddbackHits; //!<! Used to create addback hits on the fly
+		std::vector<UShort_t> fAddbackFrags; //!<! Number of crystals involved in creating in the addback hit
 
 	public:
-		static bool SetCoreWave()        { return fSetCoreWave;  }	//!
-		//static bool SetBGOHits()       { return fSetBGOHits;   }	//!
-		//static bool SetBGOWave()	    { return fSetBGOWave;   } //!
+		static bool SetCoreWave()        { return fSetCoreWave;  }	//!<!
+		//static bool SetBGOHits()       { return fSetBGOHits;   }	//!<!
+		//static bool SetBGOWave()	    { return fSetBGOWave;   } //!<!
 
 	private:
-		static TVector3 gCloverPosition[17];               //! Position of each HPGe Clover
-		void ClearStatus() { fGriffinBits = 0; } //!
+		static TVector3 gCloverPosition[17];               //!<! Position of each HPGe Clover
+		void ClearStatus() { fGriffinBits = 0; } //!<!
 		void SetBitNumber(enum EGriffinBits bit,Bool_t set);
 		Bool_t TestBitNumber(enum EGriffinBits bit) const {return (bit & fGriffinBits);}
 
 	public:
-		virtual void Copy(TObject&) const;                //!
-		virtual void Clear(Option_t* opt = "all");		     //!
-		virtual void Print(Option_t* opt = "") const;		  //!
-		void ResetAddback();		     //!
+		virtual void Copy(TObject&) const;                //!<!
+		virtual void Clear(Option_t* opt = "all");		     //!<!
+		virtual void Print(Option_t* opt = "") const;		  //!<!
+		void ResetAddback();		     //!<!
 		UShort_t GetNAddbackFrags(size_t idx) const;
 
 	protected:
 		void PushBackHit(TGRSIDetectorHit* ghit);
 
+/// \cond CLASSIMP
 		ClassDef(TGriffin,3)  // Griffin Physics structure
+/// \endcond
 };
-
+/*! @} */
 #endif

@@ -1,9 +1,14 @@
-//
-// TMidasFile.h.
-//
-
 #ifndef TMIDASFILE_H
 #define TMIDASFILE_H
+
+/////////////////////////////////////////////////////////////////
+///                                                            //
+/// TMidasFile                                                 //
+///                                                            //
+/// This Class is used to read and write MIDAS files in the    //
+/// root framework. It reads and writes TMidasEvents.          //
+///                                                            //
+/////////////////////////////////////////////////////////////////
 
 #include <string>
 
@@ -69,7 +74,9 @@ protected:
   int         fOutFile; ///< open output file descriptor
   void*       fOutGzFile; ///< zlib compressed output file reader
 
+/// \cond CLASSIMP
 	ClassDef(TMidasFile,0) //Used to open and write Midas Files
+/// \endcond
 };
 
 #endif // TMidasFile.h

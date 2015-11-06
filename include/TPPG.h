@@ -10,14 +10,14 @@
  */
 
 
- /////////////////////////////////////////////////////////////////////////
- //                                                                     //
- // TPPG                                                                //
- //                                                                     //
- // The TPPG is designed to hold all of the information about the       //
- // PPG status.
- //
- /////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+///
+/// \class TPPG
+///
+/// The TPPG is designed to hold all of the information about the
+/// PPG status.
+///
+//////////////////////////////////////////////////////////////////////////
 
 
 #include <map>
@@ -63,7 +63,9 @@ class TPPGData : public TObject {
        UInt_t fLowTimeStamp;
        UInt_t fHighTimeStamp;
 
+/// \cond CLASSIMP
     ClassDef(TPPGData,2) //Contains PPG data information
+/// \endcond
 };
 
 class TPPG : public TObject	{
@@ -115,13 +117,15 @@ class TPPG : public TObject	{
   private:
     PPGMap_t::iterator MapBegin() const { return ++(fPPGStatusMap->begin()); }
     PPGMap_t::iterator MapEnd() const   { return fPPGStatusMap->end(); }
-    PPGMap_t::iterator fCurrIterator; //!
+    PPGMap_t::iterator fCurrIterator; //!<!
 
   private:
     PPGMap_t* fPPGStatusMap;
     ULong64_t fCycleLength;
     std::map<ULong64_t, int> fNumberOfCycleLengths;
 
+/// \cond CLASSIMP
     ClassDef(TPPG,2) //Contains PPG information
+/// \endcond
 };
 #endif

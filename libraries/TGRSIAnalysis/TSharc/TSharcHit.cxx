@@ -5,7 +5,9 @@
 #include "TSharc.h"
 #include "TChannel.h"
 
+/// \cond CLASSIMP
 ClassImp(TSharcHit)
+/// \endcond
 
 TSharcHit::TSharcHit()	{	
 #if MAJOR_ROOT_VERSION < 6
@@ -58,7 +60,7 @@ TVector3 TSharcHit::GetChannelPosition(Double_t dist) const {
    //the buildhits function now properly sets fPosition in the base class, for finer
    //position tweaks of the target, one should just use the static function in the 
    //sharc mother class.   pcb.
-  return TSharc::GetPosition(fDetectorNumber,fFrontStrip,fBackStrip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());  //! 
+  return TSharc::GetPosition(fDetectorNumber,fFrontStrip,fBackStrip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());
 }
 
 Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {

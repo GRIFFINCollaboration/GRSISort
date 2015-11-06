@@ -1,7 +1,3 @@
-//
-// TMidasEvent.h
-//
-
 #ifndef TMIDASEVENT_H
 #define TMIDASEVENT_H
 
@@ -9,6 +5,19 @@
 #include "TMidasEventHeader.h"
 
 #include "TObject.h"
+
+/////////////////////////////////////////////////////////////////
+///                                                            //
+/// \class TMidasEvent                                         //
+///                                                            //
+/// Contains the information within a Midas Event. This        //
+/// usually includes a header, midas information such as timestamp
+/// bank id, etc. And the bank data. The bank data is usually
+/// the information supplied by either a scaler or the 
+/// experimental DAQ system.
+///                                                            //
+/////////////////////////////////////////////////////////////////
+
 
 ///
 /// C++ class representing one midas event.
@@ -76,7 +85,9 @@ protected:
    char* fBankList; ///< list of bank names in this event
    bool fAllocatedByUs; ///< "true" if we own the data buffer
 	
+/// \cond CLASSIMP
 	ClassDef(TMidasEvent,0) //All of the data contained in a Midas Event
+/// \endcond
 };
 
 #endif // TMidasEvent.h

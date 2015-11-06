@@ -1,6 +1,10 @@
 #ifndef TS3_H
 #define TS3_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <iostream>
 
 #include "TDetector.h"
@@ -19,22 +23,24 @@ class TS3 : public TDetector {
 
 		TVector3 GetPosition(int front, int back);
 
-      virtual void Clear(Option_t *opt = "all");		     //!
-      virtual void Print(Option_t *opt = "") const;		  //!
+      virtual void Clear(Option_t *opt = "all");		     //!<!
+      virtual void Print(Option_t *opt = "") const;		  //!<!
 
 	private:
 		std::vector<TS3Hit> fS3Hits;
 
 		///for geometery
-		static int fRingNumber;          //!
-		static int fSectorNumber;        //!
+		static int fRingNumber;          //!<!
+		static int fSectorNumber;        //!<!
 
-		static double fOffsetPhi;        //!
-		static double fOuterDiameter;    //!
-		static double fInnerDiameter;    //!
-		static double fTargetDistance;   //!
+		static double fOffsetPhi;        //!<!
+		static double fOuterDiameter;    //!<!
+		static double fInnerDiameter;    //!<!
+		static double fTargetDistance;   //!<!
 
+/// \cond CLASSIMP
 		ClassDef(TS3,2)
+/// \endcond
 };
-
+/*! @} */
 #endif

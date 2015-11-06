@@ -1,6 +1,8 @@
 #include "TTriFoil.h"
 
+/// \cond CLASSIMP
 ClassImp(TTriFoil)
+/// \endcond
 
 TTriFoil::TTriFoil()	{
 	Clear();

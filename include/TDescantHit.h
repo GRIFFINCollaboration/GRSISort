@@ -1,6 +1,10 @@
 #ifndef DESCANTHIT_H
 #define DESCANTHIT_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <cstdio>
 #include <cmath>
 
@@ -26,11 +30,11 @@ class TDescantHit : public TGRSIDetectorHit {
 
   public:
 		/////////////////////////		/////////////////////////////////////
-      inline void SetFilterPattern(const int &x)   { fFilter   = x; }   //! 
-      inline void SetPsd(const int &x)             { fPsd      = x; }   //!
-      inline void SetZc(const int &x)              { fZc       = x; }   //!
-      inline void SetCcShort(const int &x)         { fCcShort  = x; }   //!
-      inline void SetCcLong(const int &x)          { fCcLong   = x; }   //!
+      inline void SetFilterPattern(const int &x)   { fFilter   = x; }   //!<! 
+      inline void SetPsd(const int &x)             { fPsd      = x; }   //!<!
+      inline void SetZc(const int &x)              { fZc       = x; }   //!<!
+      inline void SetCcShort(const int &x)         { fCcShort  = x; }   //!<!
+      inline void SetCcLong(const int &x)          { fCcLong   = x; }   //!<!
 
       inline void SetWaveform(std::vector<Short_t> x) {
          std::vector<Short_t>* waveform = GetWaveform();
@@ -57,36 +61,38 @@ class TDescantHit : public TGRSIDetectorHit {
                waveform->at(reordered-6) = x[i];
             }
          }
-      } //!
+      } //!<!
 
 		/////////////////////////		/////////////////////////////////////
-      inline Int_t    GetFilterPattern()       { return fFilter;   }  //!
-      inline Int_t    GetPsd()                 { return fPsd;      }  //!
-      inline Int_t    GetZc()                  { return fZc;      }  //!
-      inline Int_t    GetCcShort()             { return fCcShort;      }  //!
-      inline Int_t    GetCcLong()              { return fCcLong;      }  //!
+      inline Int_t    GetFilterPattern()       { return fFilter;   }  //!<!
+      inline Int_t    GetPsd()                 { return fPsd;      }  //!<!
+      inline Int_t    GetZc()                  { return fZc;      }  //!<!
+      inline Int_t    GetCcShort()             { return fCcShort;      }  //!<!
+      inline Int_t    GetCcLong()              { return fCcLong;      }  //!<!
 
-      Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, int interpolation_steps); //!
-      Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor); //!
-      std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow); //!
-      std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow); //!
-      std::vector<Int_t> CalculatePartialSum(); //!
-      Int_t CalculatePsd(double fraction, int interpolation_steps); //!
-      Int_t CalculatePsdAndPartialSums(double fraction, int interpolation_steps, std::vector<Int_t>& partialsums); //!
+      Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, int interpolation_steps); //!<!
+      Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, int interpolation_steps, std::vector<Short_t> &monitor); //!<!
+      std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow); //!<!
+      std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow); //!<!
+      std::vector<Int_t> CalculatePartialSum(); //!<!
+      Int_t CalculatePsd(double fraction, int interpolation_steps); //!<!
+      Int_t CalculatePsdAndPartialSums(double fraction, int interpolation_steps, std::vector<Int_t>& partialsums); //!<!
 
-      bool   InFilter(Int_t);                                          //!
+      bool   InFilter(Int_t);                                          //!<!
 
-      bool AnalyzeWaveform();                                          //!
+      bool AnalyzeWaveform();                                          //!<!
 
 	public:
-      void Copy(TObject&) const;        //!
-		void Clear(Option_t *opt = "");		                    //!
-		void Print(Option_t *opt = "") const;		                    //!
+      void Copy(TObject&) const;        //!<!
+		void Clear(Option_t *opt = "");		                    //!<!
+		void Print(Option_t *opt = "") const;		                    //!<!
 
    private:
-      TVector3 GetChannelPosition(Double_t dist = 0) const; //!
+      TVector3 GetChannelPosition(Double_t dist = 0) const; //!<!
 
+/// \cond CLASSIMP
 	ClassDef(TDescantHit,4)
+/// \endcond
 };
-
+/*! @} */
 #endif

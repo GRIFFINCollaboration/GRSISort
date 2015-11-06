@@ -2,7 +2,9 @@
 #include "TPacesHit.h"
 #include "Globals.h"
 
+/// \cond CLASSIMP
 ClassImp(TPacesHit)
+/// \endcond
 
 TPacesHit::TPacesHit() : TGRSIDetectorHit()	{	
 #if MAJOR_ROOT_VERSION < 6

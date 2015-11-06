@@ -61,6 +61,8 @@ class TGRSIStats : public TObject {
       virtual void Print(Option_t* opt = "") const;
       virtual void Clear(Option_t* opt = "");
 
+/// \cond CLASSIMP
    ClassDef(TGRSIStats,1) //A Helper class designed to record stats from each channel
+/// \endcond
 };
 #endif

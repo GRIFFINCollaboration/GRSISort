@@ -17,7 +17,9 @@
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
+/// \cond CLASSIMP
 ClassImp(TEpicsFrag)
+/// \endcond
 
 TEpicsFrag::TEpicsFrag()  {
   //Default Constructor.

@@ -28,7 +28,9 @@ class TEfficiencyCal : public TCal {
  private:
    Double_t fScaleFactor;
    
+/// \cond CLASSIMP
    ClassDef(TEfficiencyCal,1);
+/// \endcond
 
 };
 

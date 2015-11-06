@@ -7,7 +7,9 @@
 #include "TGRSIStats.h"
 #include "TGRSIint.h"
 
+/// \cond CLASSIMP
 ClassImp(TGRSIRootIO)
+/// \endcond
 
 TGRSIRootIO* TGRSIRootIO::fTGRSIRootIO = 0;
 

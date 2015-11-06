@@ -19,7 +19,9 @@
 
 #include <thread>
 
+/// \cond CLASSIMP
 ClassImp(TGRSIint)
+/// \endcond
 
 extern void PopupLogo(bool);
 extern void WaitLogo();

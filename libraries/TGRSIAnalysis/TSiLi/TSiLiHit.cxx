@@ -1,7 +1,9 @@
 #include "TSiLi.h"
 #include "TSiLiHit.h"
 
+/// \cond CLASSIMP
 ClassImp(TSiLiHit)
+/// \endcond
 
 TSiLiHit::TSiLiHit()  {  }
 

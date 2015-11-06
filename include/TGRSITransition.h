@@ -46,7 +46,9 @@ class TGRSITransition : public TObject {
       double fIntensity;              //Intensity of the transition
       double fIntensityUncertainty;   //Uncertainty in the intensity
 
+/// \cond CLASSIMP
    ClassDef(TGRSITransition,1) //Information about a TNucleus transition
+/// \endcond
 };
 
 #endif

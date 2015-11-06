@@ -3,7 +3,9 @@
 #include "TTigressHit.h"
 #include <TClass.h>
 
+/// \cond CLASSIMP
 ClassImp(TTigressHit)
+/// \endcond
 
 TVector3 TTigressHit::fBeam;
 

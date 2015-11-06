@@ -1,6 +1,10 @@
 #ifndef TGRUTH1D_H
 #define TGRUTH1D_H
 
+/** \addtogroup GROOT
+ *  @{
+ */
+
 //  rootcint -f GH1DDict.cxx -c GH1D.h 
 //  g++ -fPIC -c GH1DDict.cxx `root-config --cflags`
 //  g++ -fPIC -c GH1D.cxx `root-config --cflags`
@@ -37,7 +41,9 @@ class GH1D : public TH1D {
       static void AddToMap(GH1D*);
       static void RemoveFromMap(GH1D*);
 
+/// \cond CLASSIMP
       ClassDef(GH1D,1);
+/// \endcond
 };
-
+/*! @} */
 #endif 

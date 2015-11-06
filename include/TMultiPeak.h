@@ -54,7 +54,7 @@ class TMultiPeak : public TGRSIFit {
    virtual const char* PrintString(Option_t* opt = "") const;
 
  private:
-   static bool fLogLikelihoodFlag; //!
+   static bool fLogLikelihoodFlag; //!<!
    std::vector<TPeak*> fPeakVec;
    TF1* fBackground;
 
@@ -62,7 +62,9 @@ class TMultiPeak : public TGRSIFit {
    static Double_t MultiStepBG(Double_t* dim, Double_t* par); 
    static Double_t SinglePeakBG(Double_t* dim, Double_t* par); 
 
+/// \cond CLASSIMP
   ClassDef(TMultiPeak,2);
+/// \endcond
 };
 
 #endif

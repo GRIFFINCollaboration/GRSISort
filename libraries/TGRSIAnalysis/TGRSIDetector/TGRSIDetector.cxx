@@ -2,7 +2,9 @@
 #include "TGRSIDetectorHit.h"
 #include <TClass.h>
 
+/// \cond CLASSIMP
 ClassImp(TGRSIDetector)
+/// \endcond
 
 ////////////////////////////////////////////////////////////////
 //                                                            //

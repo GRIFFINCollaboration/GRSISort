@@ -1,6 +1,10 @@
 #ifndef GTREE__H
 #define GTREE__H
 
+/** \addtogroup GROOT
+ *  @{
+ */
+
 #include "TTree.h"
 
 class GTree : public TTree { 
@@ -12,6 +16,9 @@ class GTree : public TTree {
    private:
       void InitGTree();
 
+/// \cond CLASSIMP
       ClassDef(GTree,1)
+/// \endcond
 };
+/*! @} */
 #endif

@@ -1,6 +1,10 @@
 #ifndef __GFILE_H__
 #define __GFILE_H__
 
+/** \addtogroup GROOT
+ *  @{
+ */
+
 #include "TFile.h"
 
 class GFile : public TFile {
@@ -13,7 +17,9 @@ class GFile : public TFile {
 
       void GFileInit();
 
+/// \cond CLASSIMP
    ClassDef(GFile,1)
+/// \endcond
 };
-
+/*! @} */
 #endif

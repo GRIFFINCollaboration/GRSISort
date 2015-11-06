@@ -1,6 +1,8 @@
 #include "TGRSIFit.h"
 
+/// \cond CLASSIMP
 ClassImp(TGRSIFit)
+/// \endcond
 
 TString TGRSIFit::fDefaultFitType("");
 

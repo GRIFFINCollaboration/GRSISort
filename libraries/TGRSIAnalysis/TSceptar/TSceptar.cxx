@@ -13,7 +13,9 @@
 //
 ////////////////////////////////////////////////////////////
 
+/// \cond CLASSIMP
 ClassImp(TSceptar)
+/// \endcond
 
 
 bool TSceptar::fSetWave = false;

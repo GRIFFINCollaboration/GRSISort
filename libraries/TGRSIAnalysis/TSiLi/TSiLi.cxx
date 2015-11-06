@@ -2,7 +2,9 @@
 #include "TSiLi.h"
 #include <TGRSIRunInfo.h>
 
+/// \cond CLASSIMP
 ClassImp(TSiLi)
+/// \endcond
 
 TSiLi::TSiLi() {
 }

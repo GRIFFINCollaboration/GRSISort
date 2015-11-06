@@ -56,7 +56,9 @@ class TSRIM	{
 	TGraph* GetXvsEGraph() {return fEgetX;};
 	TSpline3* GetEvsXSpline() {return sXgetE;};
 	TSpline3* GetXvsESpline() {return sEgetX;};
+/// \cond CLASSIMP
 	ClassDef(TSRIM,0)
+/// \endcond
 };
 
 #endif

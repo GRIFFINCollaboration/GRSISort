@@ -3,17 +3,9 @@
 #include "TMath.h"
 #include "TDescant.h"
 
-////////////////////////////////////////////////////////////
-//                    
-// TDescant
-//
-// The TDescant class defines the observables and algorithms used
-// when analyzing GRIFFIN data. It includes detector positions,
-// etc. 
-//
-////////////////////////////////////////////////////////////
-
+/// \cond CLASSIMP
 ClassImp(TDescant)
+/// \endcond
 
 bool TDescant::fSetWave = false;
 
@@ -94,7 +86,7 @@ TVector3 TDescant::gPosition[71] = {
 
 
 TDescant::TDescant() {
-   //Default Constructor
+   ///Default Constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -103,7 +95,7 @@ TDescant::TDescant() {
 }
 
 TDescant::~TDescant()	{
-   //Default Destructor
+   ///Default Destructor
 }
 
 void TDescant::Copy(TObject &rhs) const {
@@ -121,7 +113,7 @@ TDescant::TDescant(const TDescant& rhs) : TGRSIDetector() {
 }
 
 void TDescant::Clear(Option_t *opt)	{
-	//Clears all of the hits
+	///Clears all of the hits
    if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
       TGRSIDetector::Clear(opt);
    }
@@ -134,7 +126,7 @@ TDescant& TDescant::operator=(const TDescant& rhs) {
 }
 
 void TDescant::Print(Option_t *opt) const	{
-  //Prints out TDescant members, currently does little.
+  ///Prints out TDescant members, currently does little.
   printf("%lu fDescantHits\n",fDescantHits.size());
 }
 
@@ -153,12 +145,12 @@ TDescantHit* TDescant::GetDescantHit(const Int_t& i) {
 }
 
 void TDescant::PushBackHit(TGRSIDetectorHit *desHit) {
-  fDescantHits.push_back(*((TDescantHit*)desHit));
+  fDescantHits.push_back(*static_cast<TDescantHit*>(desHit));
 }
 
 void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-	//Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
-	//This is done for both DESCANT and it's suppressors.
+	///Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
+	///This is done for both DESCANT and it's suppressors.
 	if(frag == NULL || mnemonic == NULL) {
 		return;
 	}

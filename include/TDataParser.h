@@ -1,6 +1,19 @@
 #ifndef TDATAPARSER_H
 #define TDATAPARSER_H
 
+/////////////////////////////////////////////////////////////////
+///
+/// \class TDataParser
+///
+/// The TDataParser is the DAQ dependent part of GRSISort.
+/// It takes a "DAQ-dependent"-flavoured MIDAS file and
+/// converts it into a generic TFragment that the rest of
+/// GRSISort can deal with. This is where event word masks
+/// are applied, and any changes to the event format must
+/// be implemented.
+///
+/////////////////////////////////////////////////////////////////
+
 #include "Globals.h"
 #include <ctime>
 #include <vector>
@@ -13,9 +26,9 @@
 
 class TDataParser {
   private:
-    static TDataParser* fDataParser;  //A pointer to the global DataParser Class
-    static bool fNoWaveforms;         //The flag to turn wave_forms on or off
-    static bool fRecordStats;         //The flag to turn on stats recording
+    static TDataParser* fDataParser;  ///< A pointer to the global DataParser Class
+    static bool fNoWaveforms;         ///< The flag to turn wave_forms on or off
+    static bool fRecordStats;         ///< The flag to turn on stats recording
 	 static TChannel* gChannel;
     TDataParser();
 	
@@ -26,10 +39,10 @@ class TDataParser {
     static void SetRecordStats(bool temp = true) { fRecordStats = temp; }
 
   private:
-    static const unsigned long fMaxTriggerId; //The last trigger ID Called
-    static unsigned long fLastMidasId;        //The last MIDAS ID in the midas file
-    static unsigned long fLastTriggerId;      //The last Trigged ID in the MIDAS File
-    static unsigned long fLastNetworkPacket;  //The last network packet recieved.
+    static const unsigned long fMaxTriggerId; ///< The last trigger ID Called
+    static unsigned long fLastMidasId;        ///< The last MIDAS ID in the midas file
+    static unsigned long fLastTriggerId;      ///< The last Trigged ID in the MIDAS File
+    static unsigned long fLastNetworkPacket;  ///< The last network packet recieved.
 
     static std::map<int,int> fFragmentIdMap;
 

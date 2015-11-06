@@ -1,6 +1,10 @@
 #ifndef SCEPTARHIT_H
 #define SCEPTARHIT_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <cstdio>
 #include <cmath>
 
@@ -22,7 +26,7 @@ class TSceptarHit : public TGRSIDetectorHit {
    
   public:
 		/////////////////////////		/////////////////////////////////////
-      inline void SetFilterPattern(const int &x)   { fFilter   = x; }   //! 
+      inline void SetFilterPattern(const int &x)   { fFilter   = x; }   //!<! 
 
       inline void SetWaveform(std::vector<Short_t> x) {
          std::vector<Short_t>* waveform = GetWaveform();
@@ -49,28 +53,31 @@ class TSceptarHit : public TGRSIDetectorHit {
                waveform->at(reordered-6) = x[i];
             }
          }
-      } //!
+      } //!<!
 
 		/////////////////////////		/////////////////////////////////////
-      inline Int_t    GetFilterPattern()    const     { return fFilter;   }  //!
+      inline Int_t    GetFilterPattern()    const     { return fFilter;   }  //!<!
 
-      Int_t CalculateCfd(double attenuation, int delay, int halfSmoothingWindow, int interpolationSteps); //!
-      Int_t CalculateCfdAndMonitor(double attenuation, int delay, int halfSmoothingWindow, int interpolationSteps, std::vector<Short_t>& monitor); //!
-      std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfSmoothingWindow); //!
-      std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfSmoothingWindow); //!
+      Int_t CalculateCfd(double attenuation, int delay, int halfSmoothingWindow, int interpolationSteps); //!<!
+      Int_t CalculateCfdAndMonitor(double attenuation, int delay, int halfSmoothingWindow, int interpolationSteps, std::vector<Short_t>& monitor); //!<!
+      std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfSmoothingWindow); //!<!
+      std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfSmoothingWindow); //!<!
 
-      bool   InFilter(Int_t);                                          //!
+      bool   InFilter(Int_t);                                          //!<!
 
-		bool AnalyzeWaveform();                                          //!
+		bool AnalyzeWaveform();                                          //!<!
 
 	public:
-		void Clear(Option_t *opt = "");		                    //!
-		void Print(Option_t *opt = "") const;		                    //!
-      virtual void Copy(TObject&) const;        //!
+		void Clear(Option_t *opt = "");		                    //!<!
+		void Print(Option_t *opt = "") const;		                    //!<!
+      virtual void Copy(TObject&) const;        //!<!
 
    private:
-      TVector3 GetChannelPosition(Double_t dist = 0) const; //!
+      TVector3 GetChannelPosition(Double_t dist = 0) const; //!<!
 
+/// \cond CLASSIMP
 	ClassDef(TSceptarHit,2) //Stores the information for a SceptarHit
+/// \endcond
 };
+/*! @} */
 #endif

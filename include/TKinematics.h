@@ -135,7 +135,9 @@ private:
   TSpline3* Cm2LabSpline;
   void InitKin();
  
+/// \cond CLASSIMP
   ClassDef(TKinematics,1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments
+/// \endcond
  
 };
 #endif

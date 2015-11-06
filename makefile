@@ -1,4 +1,4 @@
-.PHONY: clean all
+.PHONY: clean all docs doxygen
 .SECONDARY:
 .SECONDEXPANSION:
 
@@ -88,8 +88,10 @@ run_and_test =@printf "%b%b%b" " $(3)$(4)$(5)" $(notdir $(2)) "$(NO_COLOR)\r";  
 all: $(EXECUTABLES) $(LIBRARY_OUTPUT) config 
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
-#docs:
-#	doxygen doxygen.config
+docs: doxygen
+
+doxygen:
+	$(MAKE) -C $@
 
 bin/grsisort: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) bin
 	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )

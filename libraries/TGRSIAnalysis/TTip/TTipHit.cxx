@@ -10,7 +10,9 @@
 //
 ////////////////////////////////////////////////////////////
 
+/// \cond CLASSIMP
 ClassImp(TTipHit)
+/// \endcond
 
 TTipHit::TTipHit() {
    Class()->IgnoreTObjectStreamer(true);

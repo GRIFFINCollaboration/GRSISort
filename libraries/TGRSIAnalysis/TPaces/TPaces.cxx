@@ -12,7 +12,9 @@
 //
 ////////////////////////////////////////////////////////////
 
+/// \cond CLASSIMP
 ClassImp(TPaces)
+/// \endcond
 
 bool TPaces::fSetCoreWave = false;
 

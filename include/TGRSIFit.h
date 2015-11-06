@@ -65,7 +65,9 @@ class TGRSIFit : public TF1 {
    virtual void ClearParameters(Option_t* opt = "");
    virtual void CopyParameters(TF1* copy) const;
 
+/// \cond CLASSIMP
    ClassDef(TGRSIFit,0);
+/// \endcond
 };
 
 #endif

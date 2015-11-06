@@ -1,6 +1,10 @@
 #ifndef GRUTCANVAS_H
 #define GRUTCANVAS_H
 
+/** \addtogroup GROOT
+ *  @{
+ */
+
 #include "TROOT.h"
 #include "TCanvas.h"
 #include "TRootCanvas.h"
@@ -22,7 +26,9 @@ class GMarker : public TObject {
 		void Copy(TObject &object) const;
 		bool operator<(const GMarker &rhs) const { return fX < rhs.fX; }
 
+/// \cond CLASSIMP
 		ClassDef(GMarker,0)
+/// \endcond
 };
 
 class GCanvas : public TCanvas {
@@ -56,7 +62,9 @@ class GCanvas : public TCanvas {
 
       void UpdateStatsInfo(int,int);
 
+/// \cond CLASSIMP
       ClassDef(GCanvas,1);
+/// \endcond
 
       static int fLastX;
       static int fLastY;
@@ -105,5 +113,5 @@ class GCanvas : public TCanvas {
       Window_t fCanvasWindowID;
       TRootCanvas* fRootCanvas;
 };
-
+/*! @} */
 #endif

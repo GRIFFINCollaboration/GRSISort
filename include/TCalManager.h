@@ -31,7 +31,9 @@ class TCalManager : public TNamed {
    CalMap fCalMap;
    TClass* fClass;
 
+/// \cond CLASSIMP
    ClassDef(TCalManager,1);
+/// \endcond
 };
 
 #endif

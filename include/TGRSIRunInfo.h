@@ -1,47 +1,51 @@
 #ifndef TGRSIRUNINFO_H
 #define TGRSIRUNINFO_H
 
-/*
- * Author:  P.C. Bender, <pcbend@gmail.com>
- * 
- * Please indicate changes with your initials.
- * 
- *
- */
+/////////////////////////////////////////////////////////////////
+///
+/// \class TGRSIRunInfo
+///
+/// This Class is designed to store and run dependent
+/// information. It is used to store run numbers, existence of
+/// detector systems, reconstruction windows, etc. The
+/// TGRSIRunInfo is written alongside both the fragment and
+/// analysis trees.
+/// 
+/// TGRSIRunInfo designed to be made as the FragmentTree
+/// is created.  Right now, it simple remembers the run and 
+/// subrunnumber and sets which systems are present in the odb.
+/// This information will be used when automatically creating the
+/// AnalysisTree to know which detector branches to create and fill.
+///
+/// Due to some root quarkiness, I have done something a bit strange.
+/// The info is written ok at the end of the fragment tree process.
+/// After reading the TGRSIRunInfo object from a TFile, the static function
+///
+///   TGRSIRunInfo::ReadInfoFromFile(ptr_to_runinfo);
+///
+/// must be called for any of the functions here to work.
+///
+/// Live example:
+/// 
+///~~~
+/// root [1] TGRSIRunInfo *info = (TGRSIRunInfo*)_file0->Get("TGRSIRunInfo")
+/// root [2] TGRSIRunInfo::ReadInfoFromFile(info);
+/// root [3] info->Print()
+///   TGRSIRunInfo Status:
+///   RunNumber:    29038
+///   SubRunNumber: 000
+///   TIGRESS:      true
+///   SHARC:        true
+///   GRIFFIN:      false
+///   SCEPTAR:      false
+///   =====================
+/// root [4] 
+///~~~
+///
+/// \author  P.C. Bender, <pcbend@gmail.com>
+/////////////////////////////////////////////////////////////////
 
-/* 
- * TGRSIRunInfo designed to be made as the FragmentTree
- * is created.  Right now, it simple remembers the run and 
- * subrunnumber and sets which systems are present in the odb.
- * This information will be used when automatically creating the
- * AnalysisTree to know which detector branches to create and fill.
- *
- * Due to some root quarkiness, I have done something a bit strange.
- * The info is written ok at the end of the fragment tree process.
- * After reading the TGRSIRunInfo object from a TFile, the static function
- *
- *   TGRSIRunInfo::ReadInfoFromFile(ptr_to_runinfo);
- *
- * must be called for any of teh functions here to work.
- *
- * Live example:
- 
- root [1] TGRSIRunInfo *info = (TGRSIRunInfo*)_file0->Get("TGRSIRunInfo")
- root [2] TGRSIRunInfo::ReadInfoFromFile(info);
- root [3] info->Print()
-   TGRSIRunInfo Status:
-   RunNumber:    29038
-   SubRunNumber: 000
-   TIGRESS:      true
-   SHARC:        true
-   GRIFFIN:      false
-   SCEPTAR:      false
-   =====================
- root [4] 
 
- *
- *
- */
 #include <cstdio>
 
 #include "TObject.h"
@@ -254,7 +258,9 @@ class TGRSIRunInfo : public TObject {
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
+/// \cond CLASSIMP
    ClassDef(TGRSIRunInfo,7);  //Contains the run-dependent information.
+/// \endcond
 };
 
 #endif

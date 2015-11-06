@@ -33,7 +33,9 @@ class TEnergyCal : public TCal {
 
  private:
    
+/// \cond CLASSIMP
    ClassDef(TEnergyCal,1); //Class used for Energy Calibrations
+/// \endcond
 };
 
 #endif

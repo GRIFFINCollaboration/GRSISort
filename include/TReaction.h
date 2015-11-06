@@ -176,6 +176,8 @@ private:
   double fGLab[2];    
   double fThetaMax[4];  // only nonzero for ejectile and recoil
 
+/// \cond CLASSIMP
   ClassDef(TReaction,1); // Calculates reaction parameters for scattering experiments
+/// \endcond
 };
 #endif

@@ -53,7 +53,9 @@ class TDecayFit : public TF1 {
    TVirtualDecay* fDecay;      //VirtualDecay that made this fit
    TGraph fResiduals;    //Last histogram fit by this function
 
+/// \cond CLASSIMP
    ClassDef(TDecayFit,1);  // Extends TF1 for nuclear decays
+/// \endcond
 };
 
 class TVirtualDecay : public TNamed {
@@ -67,7 +69,9 @@ class TVirtualDecay : public TNamed {
   private:
    virtual TDecayFit const* GetFitFunction() = 0;
 
+/// \cond CLASSIMP
    ClassDef(TVirtualDecay,1) //Abstract Class for TDecayFit
+/// \endcond
 };
 
 class TSingleDecay : public TVirtualDecay {
@@ -165,7 +169,9 @@ class TSingleDecay : public TVirtualDecay {
    static UInt_t fCounter;
    Int_t fChainId;
 
+/// \cond CLASSIMP
    ClassDef(TSingleDecay,1) //Class containing Single Decay information
+/// \endcond
 };
 
 class TDecayChain : public TVirtualDecay {
@@ -201,8 +207,30 @@ class TDecayChain : public TVirtualDecay {
    TDecayFit* fChainFunc;  // Function describing the total chain activity
    Int_t fChainId;
 
+/// \cond CLASSIMP
    ClassDef(TDecayChain,1) //Class representing a decay chain
+/// \endcond
 };
+
+////////////////////////////////////////////////////////////////////////
+///
+/// \class TDecay
+///
+/// TDecay is a class for fitting halflives during nuclear decay
+/// A TDecay consists of multiple TDecayChains, where a TDecayChain
+/// is starts at a specific nucleus which has a population before the
+/// decay fit takes place. This could be a nucleus with a daughter.
+/// One TDecayChain would consist of just the daughter while the
+/// the other decay chain would be the parent and daughter. 
+/// TDecayChains are made up of multiple TSingleDecays which holds
+/// the nucleus specific information such as name, id, halflife and
+/// intensity. When any of the above classes are fit to a histogram,
+/// they use a TDecayFit. The TDecayFit is a a TF1 with extra information
+/// such as the class that was used to create the TDecayFit. Furthermore,
+/// the function DrawComponents() can be used to draw the activites of the 
+/// individual nuclei involved in the TDecayFit.
+///
+////////////////////////////////////////////////////////////////////////
 
 class TDecay : public TVirtualDecay {
   public:
@@ -248,7 +276,9 @@ class TDecay : public TVirtualDecay {
    TDecayFit* fFitFunc;
    std::map<Int_t, std::vector<TSingleDecay*>> fDecayMap;//
 
+/// \cond CLASSIMP
    ClassDef(TDecay,1) //Contains all decay chains in a fit
+/// \endcond
 };
 
 #endif

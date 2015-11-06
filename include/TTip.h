@@ -1,6 +1,10 @@
 #ifndef TTIP_H
 #define TTIP_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <vector>
 #include <cstdio>
 #include <iostream>
@@ -20,15 +24,15 @@ class TTip : public TGRSIDetector {
 		TTip();  
 		TTip(const TTip& rhs);
 
-		TTipHit* GetTipHit(const int& i) ;//!
+		TTipHit* GetTipHit(const int& i) ;//!<!
 		TGRSIDetectorHit* GetHit(const int& i);
-		Short_t GetMultiplicity() const         {  return fTipHits.size();}  //!
+		Short_t GetMultiplicity() const         {  return fTipHits.size();}  //!<!
 
-		void AddFragment(TFragment*, MNEMONIC*); //!
+		void AddFragment(TFragment*, MNEMONIC*); //!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 		void Copy(TObject &rhs) const;
 
-		TTip& operator=(const TTip&);  //!
+		TTip& operator=(const TTip&);  //!<!
 
 		void Clear(Option_t* opt = "");
 		void Print(Option_t* opt = "") const;
@@ -102,7 +106,9 @@ class TTip : public TGRSIDetector {
 
 
 	public:
+/// \cond CLASSIMP
 		ClassDef(TTip,2);
+/// \endcond
 }; 
-
+/*! @} */
 #endif

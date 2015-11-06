@@ -1,6 +1,10 @@
 #ifndef TSILI_H
 #define TSILI_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <cstdio>
 #include <iostream>
 
@@ -26,6 +30,9 @@ class TSiLi: public TDetector  {
 	private:
 		std::vector<TSiLiHit> fSiLiHits;
 
+/// \cond CLASSIMP
 		ClassDef(TSiLi,2);
+/// \endcond
 };
+/*! @} */
 #endif

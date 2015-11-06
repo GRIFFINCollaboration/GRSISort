@@ -20,7 +20,9 @@ class TUserSortInfo : public TGRSISortInfo {
       void Print(Option_t* opt = "") const;
       void Clear(Option_t* opt = "");
 
+/// \cond CLASSIMP
    ClassDef(TUserSortInfo,1);
+/// \endcond
 };
 
 #endif

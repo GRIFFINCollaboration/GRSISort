@@ -24,7 +24,9 @@ using TMath::Sqrt;
 using TMath::TwoPi;
 using TMath::Pi;
 
+/// \cond CLASSIMP
 ClassImp(TRFFitter)
+/// \endcond
 
 static const Double_t defaultRfPeriod = 84.8e-9; // [seconds]
 static const Double_t defaultSamplingPeriod = 10e-9; // [seconds]

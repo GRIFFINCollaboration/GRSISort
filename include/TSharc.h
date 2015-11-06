@@ -1,6 +1,10 @@
 #ifndef TSHARC_H
 #define TSHARC_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <vector>
 #include <cstdio>
 #include <map>
@@ -22,7 +26,7 @@ class TSharc : public TGRSIDetector  {
 	public: 
 		TSharcHit*        GetSharcHit(const int& i);  
 		TGRSIDetectorHit* GetHit(const int& i);
-		static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);  //! 
+		static TVector3 GetPosition(int detector, int frontstrip, int backstrip, double X=0.00, double Y=0.00, double Z=0.00);  //!<! 
 		static double GetXOffset()  { return fXoffset; }
 		static double GetYOffset()  { return fYoffset; }
 		static double GetZOffset()  { return fZoffset; }
@@ -30,16 +34,16 @@ class TSharc : public TGRSIDetector  {
 		static void   SetXYZOffset(const double x,const double y,const double z) { fXoffset =x; fYoffset=y; fZoffset=z; }
 
 
-		int GetSize() const { return fSharcHits.size();} //!
+		int GetSize() const { return fSharcHits.size();} //!<!
 		Short_t GetMultiplicity() const { return fSharcHits.size(); } 
 
-		virtual void Copy(TObject&) const;         //!
-		virtual void Clear(Option_t * = "");       //!
-		virtual void Print(Option_t * = "") const; //!
+		virtual void Copy(TObject&) const;         //!<!
+		virtual void Clear(Option_t * = "");       //!<!
+		virtual void Print(Option_t * = "") const; //!<!
 
-		TSharc& operator=(const TSharc& rhs)  { if(this!=&rhs) rhs.Copy(*this); return *this; }//!
+		TSharc& operator=(const TSharc& rhs)  { if(this!=&rhs) rhs.Copy(*this); return *this; }//!<!
 
-		void AddFragment(TFragment*, MNEMONIC*); //!
+		void AddFragment(TFragment*, MNEMONIC*); //!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
 	protected:
@@ -47,13 +51,13 @@ class TSharc : public TGRSIDetector  {
 
 	private:
 		std::vector <TSharcHit> fSharcHits;
-		int  CombineHits(TSharcHit*,TSharcHit*,int,int);        //!
-		void RemoveHits(std::vector<TSharcHit>*,std::set<int>*);  //!
+		int  CombineHits(TSharcHit*,TSharcHit*,int,int);        //!<!
+		void RemoveHits(std::vector<TSharcHit>*,std::set<int>*);  //!<!
 
 	private: 
-		static double fXoffset;  //!
-		static double fYoffset;  //!
-		static double fZoffset;  //!
+		static double fXoffset;  //!<!
+		static double fYoffset;  //!<!
+		static double fZoffset;  //!<!
 
 		// various sharc dimensions set in mm, taken from IOP SHARC white paper
 		static double fXdim; // total X dimension of all boxes
@@ -84,7 +88,9 @@ class TSharc : public TGRSIDetector  {
 		static  double fRingPitch;
 		static  double fSegmentPitch; // angular pitch, degrees
 
+/// \cond CLASSIMP
 		ClassDef(TSharc,7)
+/// \endcond
 };
-
+/*! @} */
 #endif

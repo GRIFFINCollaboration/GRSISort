@@ -123,7 +123,9 @@ int TWriteQueue::SizeInstance() {
 ///************************************************///
 
 
+/// \cond CLASSIMP
 ClassImp(TAnalysisTreeBuilder)
+/// \endcond
 
 TAnalysisTreeBuilder* TAnalysisTreeBuilder::fAnalysisTreeBuilder = 0;
 
@@ -449,7 +451,7 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
 
    std::string tmpRunInfoFileName = TGRSIRunInfo::Get()->GetRunInfoFileName();
    //Set the run info file to what is stored in the fragment tree
-   fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
+   fCurrentRunInfo  = static_cast<TGRSIRunInfo*>(fCurrentFragFile->Get("TGRSIRunInfo"));
 	if(fCurrentRunInfo == NULL) {
 		printf("Failed to get current run info\n");
 	}
@@ -468,7 +470,7 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
       fCurrentRunInfo->Print("a");
    }
 
-   fCurrentPPG = (TPPG*)fCurrentFragFile->Get("TPPG");
+   fCurrentPPG = static_cast<TPPG*>(fCurrentFragFile->Get("TPPG"));
    if(fCurrentPPG){//We do this because not every run has PPG
       printf("Found PPG data\n");
       if(!fCurrentPPG->Correct())
@@ -630,7 +632,7 @@ void TAnalysisTreeBuilder::WriteAnalysisTree() {
 void TAnalysisTreeBuilder::FillAnalysisTree(std::map<std::string, TDetector*>* detectors) {
    ///Fill the analysis Tree with the built events. Each detector gets its own branch in the analysis tree
    if(!fCurrentAnalysisTree || !detectors) {
-      printf("returned from fill without filling (%p %p)!\n",(void*) fCurrentAnalysisTree, (void*) detectors);   
+		printf("returned from fill without filling (%p %p)!\n", static_cast<void*>(fCurrentAnalysisTree), static_cast<void*>(detectors));
       return;
    }   
    

@@ -28,7 +28,9 @@ class TTimeCal : public TCal {
  private:
    std::vector<Double_t> fParameters;
 
+/// \cond CLASSIMP
    ClassDef(TTimeCal,1);
+/// \endcond
 
 };
 

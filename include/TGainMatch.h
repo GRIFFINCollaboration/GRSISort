@@ -62,7 +62,9 @@ class TGainMatch : public TCal {
    Double_t fGainCoeffs[2];
    Double_t HistCompare(Double_t *x, Double_t *par);
 
+/// \cond CLASSIMP
    ClassDef(TGainMatch,1);
+/// \endcond
 };
 
 #endif

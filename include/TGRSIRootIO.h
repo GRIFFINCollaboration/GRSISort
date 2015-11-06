@@ -97,7 +97,9 @@ class TGRSIRootIO : public TObject {
       void MakeUserHistsFromFragmentTree();
       void WriteRunStats();
 
+/// \cond CLASSIMP
    ClassDef(TGRSIRootIO,0)
+/// \endcond
 };
 
 #endif 

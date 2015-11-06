@@ -3,7 +3,9 @@
 #include "TKinematics.h"
 #include "Globals.h"
 
+/// \cond CLASSIMP
 ClassImp(TKinematics)
+/// \endcond
 
 //////////////////////////////////////////////////////////////////
 //

@@ -1,6 +1,8 @@
 #include "TS3Hit.h"
 
+/// \cond CLASSIMP
 ClassImp(TS3Hit)
+/// \endcond
 
 TS3Hit::TS3Hit()	{
 	Clear();

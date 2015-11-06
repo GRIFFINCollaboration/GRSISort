@@ -1,6 +1,8 @@
 #include "TRF.h"
 
+/// \cond CLASSIMP
 ClassImp(TRF)
+/// \endcond
 
 TRF::TRF() : fFitter(NULL) {
 	Clear();

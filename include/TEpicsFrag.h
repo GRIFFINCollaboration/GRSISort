@@ -42,9 +42,11 @@ class TEpicsFrag : public TObject	{
 			 else return fData[i];
 	 }
 
-    virtual void Clear(Option_t *opt = ""); //!
-    virtual void Print(Option_t *opt = "") const; //!
+    virtual void Clear(Option_t *opt = ""); //!<!
+    virtual void Print(Option_t *opt = "") const; //!<!
     
+/// \cond CLASSIMP
     ClassDef(TEpicsFrag,1);  // Scaler Fragments
+/// \endcond
 };
 #endif // TEPICSFRAG_H

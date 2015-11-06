@@ -2,7 +2,9 @@
 #include <cmath>
 #include "TMath.h"
 
+/// \cond CLASSIMP
 ClassImp(TS3)
+/// \endcond
 
 int    TS3::fRingNumber;
 int    TS3::fSectorNumber;

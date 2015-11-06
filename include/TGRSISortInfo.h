@@ -31,7 +31,9 @@ class TGRSISortList: public TObject {
    private:
       info_map fSortInfoList;
 
+/// \cond CLASSIMP
       ClassDef(TGRSISortList,1);
+/// \endcond
 };
 
 
@@ -60,7 +62,9 @@ class TGRSISortInfo : public TObject {
       UInt_t fDuplicates;
       TString fComment;
 
+/// \cond CLASSIMP
    ClassDef(TGRSISortInfo,1);
+/// \endcond
 };
 
 #endif

@@ -19,7 +19,9 @@ class TGint : public TRint {
       bool HandleTermInput();
       int  TabCompletionHook(char*,int*,ostream&);
 
+/// \cond CLASSIMP
    ClassDef(TGint,0);
+/// \endcond
 };
 
 #endif

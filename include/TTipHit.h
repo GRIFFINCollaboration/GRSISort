@@ -1,6 +1,10 @@
 #ifndef TTIPHIT_H
 #define TTIPHIT_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <cstdio>
 #include <cmath>
 
@@ -33,17 +37,17 @@ class TTipHit : public TGRSIDetectorHit {
 
   public:
     /////////////////////////    /////////////////////////////////////
-    inline void SetFilterPattern(const int &x)    { fFilter   = x; }   //! 
-    inline void SetPID(Double_t x)                { fPID = x;     }   //!
-	 inline void SetTipChannel(const int x)		  { fTipChannel = x; } //!
+    inline void SetFilterPattern(const int &x)    { fFilter   = x; }   //!<! 
+    inline void SetPID(Double_t x)                { fPID = x;     }   //!<!
+	 inline void SetTipChannel(const int x)		  { fTipChannel = x; } //!<!
 
-    inline Int_t    GetFiterPatter()              { return fFilter;     } //!
-    inline Double_t GetPID()                      { return fPID;        } //!
-	 inline Double_t GetFitTime()			           { return fTimeFit;	   } //!
-	 inline Double_t GetSignalToNoise()		        { return fSig2Noise;	} //!
-	 inline Int_t	  GetTipChannel()			        { return fTipChannel; } //!
+    inline Int_t    GetFiterPatter()              { return fFilter;     } //!<!
+    inline Double_t GetPID()                      { return fPID;        } //!<!
+	 inline Double_t GetFitTime()			           { return fTimeFit;	   } //!<!
+	 inline Double_t GetSignalToNoise()		        { return fSig2Noise;	} //!<!
+	 inline Int_t	  GetTipChannel()			        { return fTipChannel; } //!<!
 
-    bool   InFilter(Int_t);                                         //!
+    bool   InFilter(Int_t);                                         //!<!
 
     void SetVariables(TFragment &frag) { SetCfd(frag.GetCfd());
                                          SetCharge(frag.GetCharge());
@@ -65,13 +69,16 @@ class TTipHit : public TGRSIDetectorHit {
     void SetWavefit(TFragment&);
 
   public:
-    void Clear(Option_t *opt = "");                        //!
-    void Print(Option_t *opt = "") const;                  //!
-    virtual void Copy(TObject&) const;                     //!
+    void Clear(Option_t *opt = "");                        //!<!
+    void Print(Option_t *opt = "") const;                  //!<!
+    virtual void Copy(TObject&) const;                     //!<!
 
   private:
     TVector3 GetChannelPosition(Double_t dist=0) const   { return TVector3();}
 
+/// \cond CLASSIMP
     ClassDef(TTipHit,1);
+/// \endcond
 };
+/*! @} */
 #endif

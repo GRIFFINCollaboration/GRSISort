@@ -69,7 +69,9 @@ private:
   double fMassExcess;					// Mass excess (in MeV)
   std::string fSymbol;					// Atomic symbol (ex. Ba, C, O, N)
 
+/// \cond CLASSIMP
 	ClassDef(TNucleus,1);				// Creates a nucleus with corresponding nuclear information
+/// \endcond
 };
 
 

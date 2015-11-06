@@ -18,7 +18,9 @@
 //
 ////////////////////////////////////////////////////////////
 
+/// \cond CLASSIMP
 ClassImp(TGriffin)
+/// \endcond
 
 bool DefaultAddback(TGriffinHit& one, TGriffinHit& two) {
 	return ((one.GetDetector() == two.GetDetector()) &&

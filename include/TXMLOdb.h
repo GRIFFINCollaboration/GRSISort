@@ -44,7 +44,9 @@ class TXMLOdb {
    private:
      static char fTextBuffer[256];
 
+/// \cond CLASSIMP
    ClassDef(TXMLOdb,0)
+/// \endcond
 };
 
 #endif

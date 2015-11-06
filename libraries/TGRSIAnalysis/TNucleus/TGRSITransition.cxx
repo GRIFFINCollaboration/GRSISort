@@ -1,6 +1,8 @@
 #include "TGRSITransition.h"
 
+/// \cond CLASSIMP
 ClassImp(TGRSITransition)
+/// \endcond
 
 ////////////////////////////////////////////////////////////////
 //                                                            //

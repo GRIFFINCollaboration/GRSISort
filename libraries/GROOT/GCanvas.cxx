@@ -35,7 +35,9 @@
 #define kArrowKeyRelease 26
 #endif
 
+/// \cond CLASSIMP
 ClassImp(GMarker)
+/// \endcond
 
 void GMarker::Copy(TObject &object) const {
    TObject::Copy(object);
@@ -1095,18 +1097,18 @@ bool GCanvas::PeakFitQ(GMarker* m1,GMarker* m2) {
 
 
 void GCanvas::SetBackGroundSubtractionType() {
-  // used to set the background subtraction type
-  // used for the p command. Current configurations 
-  // are:
-  //
-  // 0.  No background subtraction.
-  // 1.  Fraction of the total projection. setting a bg level estimates the fraction.
-  // 2.  From marker #3         -> make a subtract gate the same width as the project gate.
-  // 3.  From marker #3 & #4    -> make a suntract gate from maker 3 and 4 the same total widthe as the project gate. Odd numebrs default to marker #4.
-  // 4.  Between marker #3 & #4 -> make a subtract gate between marker 3 and 4. 
-  // 5.  Use marker #1 & #2     -> use the 'b' key to create a subtract projection.  Projection is not drawn but last projection made will be subtracted
-  //                               in the next projection.
-  //
+  /// used to set the background subtraction type
+  /// used for the p command. Current configurations 
+  /// are:
+  ///
+  /// 0.  No background subtraction.
+  /// 1.  Fraction of the total projection. setting a bg level estimates the fraction.
+  /// 2.  From marker #3         -> make a subtract gate the same width as the project gate.
+  /// 3.  From marker #3 & #4    -> make a suntract gate from maker 3 and 4 the same total widthe as the project gate. Odd numebrs default to marker #4.
+  /// 4.  Between marker #3 & #4 -> make a subtract gate between marker 3 and 4. 
+  /// 5.  Use marker #1 & #2     -> use the 'b' key to create a subtract projection.  Projection is not drawn but last projection made will be subtracted
+  ///                               in the next projection.
+  ///
 
   fBGSubtraction_type++;
   //if(fBGSubtraction_type >5)

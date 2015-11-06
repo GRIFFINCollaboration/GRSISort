@@ -1,6 +1,10 @@
 #ifndef TS3HIT_H
 #define TS3HIT_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <cstdio>
 #include "TFragment.h"
 #include "TChannel.h"
@@ -34,7 +38,9 @@ class TS3Hit : public TGRSIDetectorHit {
     Short_t  fRing;   //front
     Short_t  fSector; //back
 
+/// \cond CLASSIMP
   ClassDef(TS3Hit,4);
+/// \endcond
 };
-
+/*! @} */
 #endif

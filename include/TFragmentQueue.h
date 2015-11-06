@@ -77,7 +77,9 @@ class TFragmentQueue : public TObject {
       void Print(Option_t* opt = "") const;
 		void Clear(Option_t* opt = "");
 		
+/// \cond CLASSIMP
 		ClassDef(TFragmentQueue,0); //The Class used to hold fragments when building events
+/// \endcond
 };
 
 #endif

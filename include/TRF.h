@@ -23,20 +23,22 @@ class TRF : public TDetector {
 		Long_t   TimeStamp() { return fTimeStamp; }	
 		time_t   MidasTime() { return fMidasTime; }
 
-		void AddFragment(TFragment*, MNEMONIC*);	//!
+		void AddFragment(TFragment*, MNEMONIC*);	//!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
-		void Clear(Option_t *opt = ""); 	      //!
-		void Print(Option_t *opt = "") const; 	//!
+		void Clear(Option_t *opt = ""); 	      //!<!
+		void Print(Option_t *opt = "") const; 	//!<!
 
 	private:
-		TRFFitter* fFitter;		            //!
+		TRFFitter* fFitter;		            //!<!
 
 		time_t fMidasTime;
 		Long_t fTimeStamp;
 		double fPhase;
 		double fTime;
 
+/// \cond CLASSIMP
 		ClassDef(TRF,3)
+/// \endcond
 };
 #endif

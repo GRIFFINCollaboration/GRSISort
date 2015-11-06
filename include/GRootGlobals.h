@@ -1,6 +1,10 @@
 #ifndef GROOTGLOBALS__H
 #define GROOTGLOBALS__H
 
+/** \addtogroup GROOT
+ *  @{
+ */
+
 #include "TH2.h"
 #include "TH1.h"
 
@@ -18,5 +22,5 @@ bool RemovePeaks(TH1 **hists,unsigned int Nhists=1);
 void Help();
 void Commands();
 void Prompt();
-
+/*! @} */
 #endif

@@ -1,6 +1,10 @@
 #ifndef TSILIHIT_H
 #define TSILIHIT_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <cstdio>
 #include <utility>
 
@@ -48,6 +52,9 @@ class TSiLiHit : public TGRSIDetectorHit {
 		Double_t    fTimeFit;
 		Double_t    fSig2Noise;
 
+/// \cond CLASSIMP
 		ClassDef(TSiLiHit,6);
+/// \endcond
 };
+/*! @} */
 #endif

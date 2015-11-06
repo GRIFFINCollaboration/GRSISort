@@ -38,7 +38,9 @@ class TGRSIServer : public TServerSocket {
       void AcceptConnectionThread();      
       void MonitorConnectionsThread();    
 
+/// \cond CLASSIMP
    ClassDef(TGRSIServer,0)
+/// \endcond
 };
 
 #endif

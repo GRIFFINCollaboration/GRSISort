@@ -3,7 +3,9 @@
 std::mutex TFragmentQueue::All;
 std::mutex TFragmentQueue::Sorted;
 
+/// \cond CLASSIMP
 ClassImp(TFragmentQueue)
+/// \endcond
 
 ////////////////////////////////////////////////////////////////
 //                                                            //

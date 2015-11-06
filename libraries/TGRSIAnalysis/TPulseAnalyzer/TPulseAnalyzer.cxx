@@ -1,41 +1,42 @@
 #include "TPulseAnalyzer.h"
 
+/// \cond CLASSIMP
 ClassImp(TPulseAnalyzer)
+/// \endcond
 
-	TPulseAnalyzer::TPulseAnalyzer():wpar(0),frag(0){
-		Clear();
-	}
-TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac):wpar(0),frag(0){
+TPulseAnalyzer::TPulseAnalyzer() : wpar(0), frag(0) {
+	Clear();
+}
+
+TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac) : wpar(0), frag(0) {
 	Clear();
 	SetData(fragment,noise_fac);
 }
 
-TPulseAnalyzer::~TPulseAnalyzer(){
+TPulseAnalyzer::~TPulseAnalyzer() {
 	if(wpar) delete wpar;
 }
 
-void TPulseAnalyzer::Clear(Option_t *opt)  {
+void TPulseAnalyzer::Clear(Option_t *opt) {
 	if(wpar) delete wpar;
-	wpar=new WaveFormPar;
+	wpar = new WaveFormPar;
 
-	set=false;	
-	N=0;
-	FILTER=8;
-	T0RANGE=8;
-	LARGECHISQ=1E111;
+	set = false;	
+	N = 0;
+	FILTER = 8;
+	T0RANGE = 8;
+	LARGECHISQ = 1E111;
 
-	lineq_dim=0;
+	lineq_dim = 0;
 	memset(lineq_matrix,0,sizeof(lineq_matrix));
 	memset(lineq_vector,0,sizeof(lineq_vector));
 	memset(lineq_solution,0,sizeof(lineq_solution));
 	memset(copy_matrix,0,sizeof(copy_matrix));
-
 }
 
-
-void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac)  {
+void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac) {
 	if(fragment.HasWave()) {
-		if(noise_fac>0){
+		if(noise_fac > 0) {
 			FILTER=8*noise_fac;
 			T0RANGE=8*noise_fac;	
 		}
@@ -43,10 +44,7 @@ void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac)  {
 		N=fragment.wavebuffer.size();
 		if(N>0)	set=true;
 	}
-
 }
-
-
 
 ////////////////////////////////////////
 //	Linear Equation Solver
@@ -54,11 +52,11 @@ void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac)  {
 
 // "Very efficient" apparently, written by Kris S,
 // Solve the currently stored n dimentional linear eqaution
-int TPulseAnalyzer::solve_lin_eq(){
-	memcpy(copy_matrix,lineq_matrix,sizeof(lineq_matrix));
-	long double w=determinant(lineq_dim);
-	if(w==0.)return 0;
-	for(int i=0;i<lineq_dim;i++){
+int TPulseAnalyzer::solve_lin_eq() {
+	memcpy(copy_matrix, lineq_matrix, sizeof(lineq_matrix));
+	long double w = determinant(lineq_dim);
+	if(w == 0.) return 0;
+	for(int i = 0; i < lineq_dim; i++) {
 		memcpy(copy_matrix,lineq_matrix,sizeof(lineq_matrix));
 		memcpy(copy_matrix[i],lineq_vector,sizeof(lineq_vector));
 		lineq_solution[i]=determinant(lineq_dim)/w;
@@ -67,13 +65,13 @@ int TPulseAnalyzer::solve_lin_eq(){
 }
 
 //solve the determinant of the currently stored copy_matrix for dimentions m
-long double  TPulseAnalyzer::determinant(int m){
+long double  TPulseAnalyzer::determinant(int m) {
 	int j,i;
 	long double s;
-	if(m==1) return copy_matrix[0][0];
-	if(copy_matrix[m-1][m-1]==0.)  {
-		j=m-1;
-		while(copy_matrix[m-1][j]==0 && j>=0) j--;
+	if(m == 1) return copy_matrix[0][0];
+	if(copy_matrix[m-1][m-1] == 0.) {
+		j = m-1;
+		while(copy_matrix[m-1][j] == 0 && j >= 0) j--;
 		if(j<0) 
 			return 0.;
 		else for(i=0;i<m;i++){

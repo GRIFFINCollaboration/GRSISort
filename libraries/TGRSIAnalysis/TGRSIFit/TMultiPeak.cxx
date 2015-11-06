@@ -6,7 +6,9 @@
 #include "Math/Functor.h"
 
 
+/// \cond CLASSIMP
 ClassImp(TMultiPeak)
+/// \endcond
 
 Bool_t TMultiPeak::fLogLikelihoodFlag = false;
 
@@ -95,13 +97,13 @@ void TMultiPeak::InitNames(){
 }
 
 
-TMultiPeak::TMultiPeak(const TMultiPeak &copy) : TGRSIFit(), fBackground(0) {
-   ((TMultiPeak&)copy).Copy(*this);
+TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit(), fBackground(0) {
+   copy.Copy(*this);
 }
 
-void TMultiPeak::Copy(TObject &obj) const {
+void TMultiPeak::Copy(TObject& obj) const {
    TGRSIFit::Copy(obj);
-   TMultiPeak *mpobj = (TMultiPeak*)(&obj);
+   TMultiPeak* mpobj = static_cast<TMultiPeak*>(&obj);
    if(!(mpobj->fBackground)) 
       mpobj->fBackground = new TF1(*(fBackground));
    else

@@ -1,6 +1,10 @@
 #ifndef GROOT_DIRECTORY__H
 #define GROOT_DIRECTORY__H
 
+/** \addtogroup GROOT
+ *  @{
+ */
+
 #include "TDirectory.h"
 
 class GDirectory : public TDirectory {
@@ -17,7 +21,9 @@ class GDirectory : public TDirectory {
 
   //private:
 
+/// \cond CLASSIMP
   ClassDef(GDirectory,1);
+/// \endcond
 };
-
+/*! @} */
 #endif

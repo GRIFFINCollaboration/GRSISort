@@ -6,7 +6,9 @@
 #include "TClass.h"
 #include "TMath.h"
 
+/// \cond CLASSIMP
 ClassImp(TSharc)
+/// \endcond
 
 // various sharc dimensions in mm
 

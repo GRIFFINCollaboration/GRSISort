@@ -147,7 +147,9 @@ class TPulseAnalyzer {
 	 const static int BAD_BASELINE_RANGE =-1024-11;
 	 const static int MAX_SAMPLES= 4096;	
 
+/// \cond CLASSIMP
     ClassDef(TPulseAnalyzer,1)
+/// \endcond
 };
 
 

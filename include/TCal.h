@@ -1,6 +1,17 @@
 #ifndef TCAL_H__
 #define TCAL_H__
 
+/////////////////////////////////////////////////////////////////
+///
+/// \class TCal
+///
+/// This is an abstract class that contains the basic info
+/// about a calibration. Calibrations here are TGraphErrors
+/// that are fit, with the resulting fit function being the 
+/// calibrating function.
+///
+/////////////////////////////////////////////////////////////////
+
 #include <map>
 #include <vector>
 #include <utility>
@@ -69,7 +80,9 @@ class TCal : public TGraphErrors {
    TH1* fHist; //Histogram that was fit by the TPeak.
    TNucleus* fNuc; //Nucleus that we are calibrating against
 
+/// \cond CLASSIMP
    ClassDef(TCal,2); //Abstract Class for Calibrations
+/// \endcond
 };
 
 #endif

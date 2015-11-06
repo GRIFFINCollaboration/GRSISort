@@ -28,7 +28,9 @@ class TCFDCal : public TCal {
  private:
    std::vector<Double_t> fParameters;
 
+/// \cond CLASSIMP
    ClassDef(TCFDCal,1);
+/// \endcond
 };
 
 #endif

@@ -12,15 +12,16 @@
 #include "TFragment.h"
 #include "TChannel.h"
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TDetector                                                  //
-//                                                            //
-// This is an abstract class that contains the basic info     //
-// about a detector. This is where the hits are built and
-// the data is filled.
-//                                                            //
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+///
+/// \class TDetector
+///
+/// This is an abstract class that contains the basic info
+/// about a detector. This is where the hits are built and
+/// the data is filled. It's main role is to act as a wrapper
+/// for every other type of detector system.
+///
+/////////////////////////////////////////////////////////////////
 
 
 class TDetector : public TObject	{
@@ -35,14 +36,16 @@ class TDetector : public TObject	{
 		}
 
 	public: 
-		virtual void BuildHits()                                   { AbstractMethod("BuildHits()"); } //! = 0; //!
-		virtual void AddFragment(TFragment*, MNEMONIC*)            { AbstractMethod("AddFragment()"); } //! = 0; //!
+		virtual void BuildHits()                                   { AbstractMethod("BuildHits()"); } //!<!
+		virtual void AddFragment(TFragment*, MNEMONIC*)            { AbstractMethod("AddFragment()"); } //!<!
 
-		virtual void Copy(TObject&) const;              //!
-		virtual void Clear(Option_t* opt = "");         //!
-		virtual void Print(Option_t* opt = "") const;   //!
+		virtual void Copy(TObject&) const;              //!<!
+		virtual void Clear(Option_t* opt = "");         //!<!
+		virtual void Print(Option_t* opt = "") const;   //!<!
 
+/// \cond CLASSIMP
 		ClassDef(TDetector,1) //Abstract class for detector systems 
+/// \endcond
 };
 
 #endif

@@ -87,7 +87,9 @@ class TGRSILoop : public TObject {
       void Clear(Option_t* opt="");
       void Print(Option_t* opt="") const;
 
+/// \cond CLASSIMP
    ClassDef(TGRSILoop,0)
+/// \endcond
 };
 
 #endif

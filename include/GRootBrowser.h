@@ -1,14 +1,9 @@
-//
-//  Largely! taken from GRootBrowserLite in the Root Software package.  
-//  This class exists because I needed to change
-//  some of the connections in CreateBrowser() function to
-//  the GRootCanvas class instead of the the TRootCanvas.
-//
-//  pcb.
-//
-
 #ifndef ROOT_GRootBrowser
 #define ROOT_GRootBrowser
+
+/** \addtogroup GROOT
+ *  @{
+ */
 
 #ifndef ROOT_TGFrame
 #include "TGFrame.h"
@@ -26,12 +21,18 @@ class TGStatusBar;
 class TGVSplitter;
 class TGHSplitter;
 
-//_____________________________________________________________________________
-//
-// GBrowserPlugin
-//
-// Helper class used to manage plugins (command or macro to be executed).
-//_____________________________________________________________________________
+///
+/// \class GBrowserPlugin
+///
+/// Helper class used to manage plugins (command or macro to be executed).
+///
+///  Largely! taken from GRootBrowserLite in the Root Software package.  
+///  This class exists because I needed to change
+///  some of the connections in CreateBrowser() function to
+///  the GRootCanvas class instead of the the TRootCanvas.
+///
+///  pcb.
+///
 
 class GBrowserPlugin : public TNamed {
 public:
@@ -48,7 +49,9 @@ public:
    void     SetSubTab(Int_t sub) { fSubTab = sub; }
    void     SetCommand(const char *cmd) { fCommand = cmd; }
 
+/// \cond CLASSIMP
    ClassDef(GBrowserPlugin, 0)  // basic plugin description class
+/// \endcond
 };
 
 class GRootBrowser : public TGMainFrame, public TBrowserImp {
@@ -57,42 +60,42 @@ private:
    GRootBrowser& operator=(const GRootBrowser&); // Not implemented
 
 protected:
-   TGLayoutHints     *fLH0, *fLH1, *fLH2, *fLH3;   // Layout hints, part 1
-   TGLayoutHints     *fLH4, *fLH5, *fLH6, *fLH7;   // Layout hints, part 2
-   TGTab             *fTabLeft;                    // Left Tab
-   TGTab             *fTabRight;                   // Right Tab
-   TGTab             *fTabBottom;                  // Bottom Tab
-   TGTab             *fEditTab;                    // Tab in "Edit" mode
-   Int_t              fEditPos;                    // Id of tab in "Edit" mode
-   Int_t              fEditSubPos;                 // Id of subtab in "Edit" mode
-   TGVerticalFrame   *fVf;                         // Vertical frame
-   TGHorizontalFrame *fHf;                         // Horizontal frame
-   TGHorizontalFrame *fH1;                         // Horizontal frame
-   TGHorizontalFrame *fH2;                         // Horizontal frame
-   TGVerticalFrame   *fV1;                         // Vertical frame
-   TGVerticalFrame   *fV2;                         // Vertical frame
-   TGVSplitter       *fVSplitter;                  // Vertical splitter
-   TGHSplitter       *fHSplitter;                  // Horizontal splitter
-   TGCompositeFrame  *fEditFrame;                  // Frame in "Edit" mode
-   TGHorizontalFrame *fTopMenuFrame;               // Top menu frame
-   TGHorizontalFrame *fPreMenuFrame;               // First (owned) menu frame
-   TGHorizontalFrame *fMenuFrame;                  // Shared menu frame
-   TGHorizontalFrame *fToolbarFrame;               // Toolbar frame
-   TGMenuBar         *fMenuBar;                    // Main (owned) menu bar
-   TGPopupMenu       *fMenuFile;                   // "File" popup menu
-   TGPopupMenu       *fMenuExecPlugin;             // "Exec Plugin" popup menu
-   TGPopupMenu       *fMenuHelp;                   // "Browser Help" popup menu
-   TGCompositeFrame  *fActMenuBar;                 // Actual (active) menu bar
-   TBrowserImp       *fActBrowser;                 // Actual (active) browser imp
-   TList              fBrowsers;                   // List of (sub)browsers
-   TList              fPlugins;                    // List of plugins
-   TGStatusBar       *fStatusBar;                  // Status bar
-   Int_t              fNbInitPlugins;              // Number of initial plugins (from .rootrc)
-   Int_t              fNbTab[3];                   // Number of tab elements (for each Tab)
-   Int_t              fCrTab[3];                   // Actual (active) tab elements (for each Tab)
-   Int_t              fPid;                        // Current process id
-   Bool_t             fShowCloseTab;               // kTRUE to show close icon on tab elements
-   const TGPicture   *fIconPic;                    // icon picture
+   TGLayoutHints     *fLH0, *fLH1, *fLH2, *fLH3;   ///< Layout hints, part 1
+   TGLayoutHints     *fLH4, *fLH5, *fLH6, *fLH7;   ///< Layout hints, part 2
+   TGTab             *fTabLeft;                    ///< Left Tab
+   TGTab             *fTabRight;                   ///< Right Tab
+   TGTab             *fTabBottom;                  ///< Bottom Tab
+   TGTab             *fEditTab;                    ///< Tab in "Edit" mode
+   Int_t              fEditPos;                    ///< Id of tab in "Edit" mode
+   Int_t              fEditSubPos;                 ///< Id of subtab in "Edit" mode
+   TGVerticalFrame   *fVf;                         ///< Vertical frame
+   TGHorizontalFrame *fHf;                         ///< Horizontal frame
+   TGHorizontalFrame *fH1;                         ///< Horizontal frame
+   TGHorizontalFrame *fH2;                         ///< Horizontal frame
+   TGVerticalFrame   *fV1;                         ///< Vertical frame
+   TGVerticalFrame   *fV2;                         ///< Vertical frame
+   TGVSplitter       *fVSplitter;                  ///< Vertical splitter
+   TGHSplitter       *fHSplitter;                  ///< Horizontal splitter
+   TGCompositeFrame  *fEditFrame;                  ///< Frame in "Edit" mode
+   TGHorizontalFrame *fTopMenuFrame;               ///< Top menu frame
+   TGHorizontalFrame *fPreMenuFrame;               ///< First (owned) menu frame
+   TGHorizontalFrame *fMenuFrame;                  ///< Shared menu frame
+   TGHorizontalFrame *fToolbarFrame;               ///< Toolbar frame
+   TGMenuBar         *fMenuBar;                    ///< Main (owned) menu bar
+   TGPopupMenu       *fMenuFile;                   ///< "File" popup menu
+   TGPopupMenu       *fMenuExecPlugin;             ///< "Exec Plugin" popup menu
+   TGPopupMenu       *fMenuHelp;                   ///< "Browser Help" popup menu
+   TGCompositeFrame  *fActMenuBar;                 ///< Actual (active) menu bar
+   TBrowserImp       *fActBrowser;                 ///< Actual (active) browser imp
+   TList              fBrowsers;                   ///< List of (sub)browsers
+   TList              fPlugins;                    ///< List of plugins
+   TGStatusBar       *fStatusBar;                  ///< Status bar
+   Int_t              fNbInitPlugins;              ///< Number of initial plugins (from .rootrc)
+   Int_t              fNbTab[3];                   ///< Number of tab elements (for each Tab)
+   Int_t              fCrTab[3];                   ///< Actual (active) tab elements (for each Tab)
+   Int_t              fPid;                        ///< Current process id
+   Bool_t             fShowCloseTab;               ///< kTRUE to show close icon on tab elements
+   const TGPicture   *fIconPic;                    ///< icon picture
 
 public:
    enum ENewBrowserMessages {
@@ -134,8 +137,8 @@ public:
    virtual void      CloseTabs();
    void              DoTab(Int_t id);
    void              EventInfo(Int_t event, Int_t px, Int_t py, TObject *selected);
-   TGFrame          *GetActFrame() const { return (TGFrame *)fEditFrame; }
-   TGFrame          *GetToolbarFrame() const { return (TGFrame *)fToolbarFrame; }
+   TGFrame          *GetActFrame() const { return static_cast<TGFrame *>(fEditFrame); }
+   TGFrame          *GetToolbarFrame() const { return static_cast<TGFrame *>(fToolbarFrame); }
    TGStatusBar      *GetStatusBar() const { return fStatusBar; }
    TGTab            *GetTabLeft() const { return fTabLeft; }
    TGTab            *GetTabRight() const { return fTabRight; }
@@ -180,7 +183,9 @@ public:
    static TBrowserImp *NewBrowser(TBrowser *b = 0, const char *title = "ROOT Browser", UInt_t width = 800, UInt_t height = 500, Option_t *opt="");
    static TBrowserImp *NewBrowser(TBrowser *b, const char *title, Int_t x, Int_t y, UInt_t width, UInt_t height, Option_t *opt="");
 
+/// \cond CLASSIMP
    ClassDef(GRootBrowser, 0) // New ROOT Browser
+/// \endcond
 };
-
+/*! @} */
 #endif

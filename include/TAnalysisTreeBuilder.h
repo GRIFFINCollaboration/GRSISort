@@ -42,16 +42,19 @@
 //#include "TZeroDegree.h"
 #include "TDescant.h"
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TAnalysisTreeBuilder                                       //
-//                                                            //
-// This Class builds events out of TDetectorHits. These       //
-// events then get written out to the analysis tree for post  //
-// processing. When a new detector class is added to the code //
-// it must also be added here for coincidence building        //
-//                                                            //
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+///
+/// \class TEventQueue
+///
+/// This Class stores pointers to vectors of TFragments in 
+/// a std::queue. The queue is filled in
+/// TAnalysisTreeBuilder::SortFragmentTree,
+/// TAnalysisTreeBuilder::SortFragmentChain, or
+/// TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp.
+/// The events are taking out of the queue and built into events
+/// in TAnalysisTreeBuilder::ProcessEvent.
+///
+/////////////////////////////////////////////////////////////////
 
 class TEventQueue : public TObject {
   public:
@@ -80,8 +83,22 @@ class TEventQueue : public TObject {
 	void SetLock()   { printf(BLUE "settting event lock" RESET_COLOR  "\n");  fELock = true;  }
 	void UnsetLock() { printf(RED "unsettting event lock" RESET_COLOR  "\n"); fELock = false; }
 
+/// \cond CLASSIMP
 	ClassDef(TEventQueue,0)
+/// \endcond
 };
+
+/////////////////////////////////////////////////////////////////
+///
+/// \class TWriteQueue
+///
+/// This Class stores a map of detector pointers in a std::queue
+/// The queue is filled in TAnalysisTreeBuilder::ProcessEvent via 
+/// TAnalysisTreeBuilder::FillWriteQueue.
+/// The events are taking out of the queue and written to the
+/// AnalysisTree in TAnalysisTreeBuilder::WriteAnalysisTree.
+///
+/////////////////////////////////////////////////////////////////
 
 class TWriteQueue {
    public:
@@ -108,6 +125,17 @@ class TWriteQueue {
       void SetLock()   {  fWLock = true;  }
       void UnsetLock() {  fWLock = false; }
 };
+
+/////////////////////////////////////////////////////////////////
+///
+/// \class TAnalysisTreeBuilder
+///
+/// This Class builds events out of TFragments. These
+/// events then get written out to the analysis tree for post
+/// processing. When a new detector class is added to the code
+/// it must also be added here for coincidence building.
+///
+/////////////////////////////////////////////////////////////////
 
 class TAnalysisTreeBuilder : public TObject {
    public:
@@ -198,7 +226,9 @@ class TAnalysisTreeBuilder : public TObject {
       //Aux Detectors
       TDescant*    fDescant;                                 //A pointer to the Descant Mother Class
 
+/// \cond CLASSIMP
 	ClassDef(TAnalysisTreeBuilder,0) //Builds the Analysis Tree out of TFragments
+/// \endcond
 };
 
 #endif

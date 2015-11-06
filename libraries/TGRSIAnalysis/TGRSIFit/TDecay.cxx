@@ -4,31 +4,13 @@
 #include "Math/Functor.h"
 #include "GCanvas.h"
 
-///////////////////////////////////////////////////////////////////////
-//
-//    TDecay
-//
-// TDecay is a class for fitting halflives during nuclear decay
-// A TDecay consists of multiple TDecayChains, where a TDecayChain
-// is starts at a specific nucleus which has a population before the
-// decay fit takes place. This could be a nucleus with a daughter.
-// One TDecayChain would consist of just the daughter while the
-// the other decay chain would be the parent and daughter. 
-// TDecayChains are made up of multiple TSingleDecays which holds
-// the nucleus specific information such as name, id, halflife and
-// intensity. When any of the above classes are fit to a histogram,
-// they use a TDecayFit. The TDecayFit is a a TF1 with extra information
-// such as the class that was used to create the TDecayFit. Furthermore,
-// the function DrawComponents() can be used to draw the activites of the 
-// individual nuclei involved in the TDecayFit.
-//
-///////////////////////////////////////////////////////////////////////
-
+/// \cond CLASSIMP
 ClassImp(TSingleDecay)
 ClassImp(TDecayChain)
 ClassImp(TDecayFit)
 ClassImp(TDecay)
 ClassImp(TVirtualDecay)
+/// \endcond
 
 UInt_t TSingleDecay::fCounter = 0;
 UInt_t TDecayChain::fChainCounter = 0;
@@ -37,19 +19,19 @@ TDecayFit::~TDecayFit(){
 }
 
 void TDecayFit::DrawComponents() const {
-	//This draws the individual components on the current canvas  
+	///This draws the individual components on the current canvas  
    fDecay->DrawComponents("same"); 	
 }
 
 void TDecayFit::SetDecay(TVirtualDecay* decay){ 
-	// This tells the TDecayFit which TVirtualDecay it belongs to
+	/// This tells the TDecayFit which TVirtualDecay it belongs to
    fDecay = decay;
 } 
 
 void TDecayFit::Print(Option_t *opt) const {
-	// This prints the parameters of the fit (decay rate, intensities, etc...)
+	/// This prints the parameters of the fit (decay rate, intensities, etc...)
    TF1::Print(opt);
-   printf("fDecay = %p\n",(void*) fDecay);
+   printf("fDecay = %p\n", static_cast<void*>(fDecay));
 }
 
 TVirtualDecay* TDecayFit::GetDecay() const{
@@ -67,7 +49,7 @@ TFitResultPtr TDecayFit::Fit(TH1* hist,Option_t* opt){
 }
 
 void TDecayFit::Streamer(TBuffer &R__b){
-   // Stream an object of class TDecayFit.
+   /// Stream an object of class TDecayFit.
    if (R__b.IsReading()) {
       R__b.ReadClassBuffer(TDecayFit::Class(),this);
    } else {
@@ -129,7 +111,7 @@ void TVirtualDecay::DrawComponents(Option_t* opt ,Bool_t color_flag) {
 }
 
 void TVirtualDecay::Streamer(TBuffer &R__b){
-   // Stream an object of class TVirtualDecay.
+   /// Stream an object of class TVirtualDecay.
    if (R__b.IsReading()) {
       R__b.ReadClassBuffer(TVirtualDecay::Class(),this);
    } else {
@@ -235,7 +217,7 @@ void TSingleDecay::SetName(const char * name){
 }
 
 void TSingleDecay::SetTotalDecayParameters() {
-   //Sets the total fit function to know about the other parmaters in the decay chain.
+   ///Sets the total fit function to know about the other parmaters in the decay chain.
    Double_t low_limit,high_limit;
    //We need to include the fact that we have parents and use that TF1 to perform the fit.
    fTotalDecayFunc->SetParameter(0,fFirstParent->GetIntensity());
@@ -258,7 +240,7 @@ void TSingleDecay::SetTotalDecayParameters() {
 }
 
 void TSingleDecay::UpdateDecays(){
-   //Updates the other decays in the chain to know that they have potential updates.
+   ///Updates the other decays in the chain to know that they have potential updates.
    Double_t low_limit,high_limit;
    //The current (this) decay we are on is the one that is assumed to be the most recently changed.
    //We will first update it's total decay function
@@ -335,21 +317,21 @@ void TSingleDecay::Draw(Option_t* option){
 }
 
 Double_t TSingleDecay::Eval(Double_t t){
-	// Evaluates the activity at a given time, t
+	/// Evaluates the activity at a given time, t
    SetTotalDecayParameters();
    return fTotalDecayFunc->Eval(t);
 }
 
 Double_t TSingleDecay::EvalPar(const Double_t* x, const Double_t* par){
-	// Evaluates the activity at a given time t using parameters par.
+	/// Evaluates the activity at a given time t using parameters par.
    fTotalDecayFunc->InitArgs(x,par);
    return fTotalDecayFunc->EvalPar(x,par);
 }
 
 Double_t TSingleDecay::ActivityFunc(Double_t *dim, Double_t *par){
-   //The general function for a decay chain
-   //par[0] is the intensity
-   //par[1*i] is the activity
+   ///The general function for a decay chain
+   ///par[0] is the intensity
+   ///par[1*i] is the activity
    Double_t result = 1.0;
    UInt_t gencounter = 0;
    Double_t tlow,thigh;
@@ -445,13 +427,12 @@ void TSingleDecay::Print(Option_t *option) const{
    printf(" Intensity: %lf +/- %lf c/s\n", GetIntensity(), GetIntensityError());
    printf("  HalfLife: %lf +/- %lf s\n", GetHalfLife(), GetHalfLifeError());
    printf("Efficiency: %lf\n",GetEfficiency());
-   printf("My Address: %p\n",(void*) this);
+   printf("My Address: %p\n", static_cast<const void*>(this));
    if(fParent)
-      printf("Parent Address: %p\n", (void*) fParent);
+		printf("Parent Address: %p\n", static_cast<void*>(fParent));
    if(fDaughter)
-      printf("Daughter Address: %p\n", (void*) fDaughter);
-   printf("First Parent: %p\n", (void*) fFirstParent);
-
+		printf("Daughter Address: %p\n", static_cast<void*>(fDaughter));
+   printf("First Parent: %p\n", static_cast<void*>(fFirstParent));
 }
 
 
@@ -504,7 +485,7 @@ void TDecayChain::SetChainParameters(){
 }
 
 Double_t TDecayChain::ChainActivityFunc(Double_t *dim, Double_t *par){
-   //This fits the total activity caused by the entire chain.
+   ///This fits the total activity caused by the entire chain.
    Double_t result = 0.0;
    for(size_t i=0;i<fDecayChain.size();++i){
       result += GetDecay(i)->EvalPar(dim,par);
@@ -627,7 +608,7 @@ TDecayChain* TDecay::GetChain(UInt_t idx){
 }
 
 Double_t TDecay::DecayFit(Double_t *dim, Double_t *par){
-   //This fits the total activity caused by the entire chain.
+   ///This fits the total activity caused by the entire chain.
    Double_t result = 0.0;
    //Start the fit with flat background;
    result = par[0];
@@ -741,9 +722,9 @@ void TDecay::SetParameters(){
 }
 
 Double_t TDecay::ComponentFunc(Double_t *dim, Double_t *par){
-   //Function for drawing summed components.
+   ///Function for drawing summed components.
    Double_t result = 0;
-   //This function takes 1 parameter, the decay Id.
+   ///This function takes 1 parameter, the decay Id.
    Int_t id = (Int_t)(par[0]);
    auto it = fDecayMap.find(id);
    
@@ -754,7 +735,7 @@ Double_t TDecay::ComponentFunc(Double_t *dim, Double_t *par){
 }
 
 void TDecay::DrawComponents(Option_t *opt, Bool_t color_flag) {
-   //Loop over all of the ids and draw them seperately on the pad
+   ///Loop over all of the ids and draw them seperately on the pad
    Double_t low,high;
    fFitFunc->GetRange(low,high);
 

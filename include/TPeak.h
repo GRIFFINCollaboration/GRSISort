@@ -91,12 +91,14 @@ class TPeak : public TGRSIFit {
    Double_t fNdf;
    Bool_t fOwnBgFlag;
 
-   static bool fLogLikelihoodFlag; //!
+   static bool fLogLikelihoodFlag; //!<!
 
    TF1* fBackground;
    TGraph* fResiduals;
 
+/// \cond CLASSIMP
   ClassDef(TPeak,2);
+/// \endcond
 
 };
 

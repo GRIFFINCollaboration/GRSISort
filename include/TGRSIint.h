@@ -51,7 +51,9 @@ class TGRSIint : public TRint {
       bool fFragmentSort;
       bool fMakeAnalysisTree;
 
+/// \cond CLASSIMP
    ClassDef(TGRSIint,0);
+/// \endcond
 };
 
 class TGRSIInterruptHandler : public TSignalHandler {
