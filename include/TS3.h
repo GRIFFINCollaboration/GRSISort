@@ -42,6 +42,10 @@ class TS3 : public TGRSIDetector {
 		static double fOuterDiameter;    //!
 		static double fInnerDiameter;    //!
 		static double fTargetDistance;   //!
+		
+		static Int_t fFrontBackTime;   //!
+		static double fFrontBackEnergy;   //!
+
 
 		ClassDef(TS3,5)
 };
