@@ -60,7 +60,7 @@ void TS3::BuildHits()  {
 
         //Set the base data     
         TS3Hit dethit(*fS3_RingFragment[i]);
-	dethit.SetVariables(*fS3_RingFragment[i]);	
+		dethit.SetVariables(*fS3_RingFragment[i]);	
 	
         dethit.SetRingNumber(*fS3_RingFragment[i]);
         dethit.SetSectorNumber(*fS3_SectorFragment[j]);
