@@ -184,7 +184,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       }
       //reaching here means we haven't found a corresponding core yet so we create a new core and then add this segment to it
       TTigressHit corehit;
-      corehit.SetAddress(frag->GetAddress());
+      corehit.SetAddress(frag->ChannelAddress);
       corehit.SetDetector(mnemonic->arrayposition);
       corehit.SetCrystal(CoreNbr);
       corehit.AddSegment(temp);
