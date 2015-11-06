@@ -183,6 +183,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
         }
       }
       //reaching here means we haven't found a corresponding core yet so we create a new core and then add this segment to it
+		//printf("Segment issue?\n");
       TTigressHit corehit;
       corehit.SetAddress(frag->ChannelAddress);
       corehit.SetDetector(mnemonic->arrayposition);
@@ -200,7 +201,9 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       }
     }
     //reaching here means we haven't found a corresponding core yet so we create a new core and then add this BGO to it
+	//printf("BGO issue?\n");
     TTigressHit corehit;
+    corehit.SetAddress(frag->ChannelAddress);
     corehit.SetDetector(mnemonic->arrayposition);
     corehit.SetCrystal(CoreNbr);
     corehit.AddSegment(temp);
