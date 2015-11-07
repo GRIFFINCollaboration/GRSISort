@@ -19,6 +19,10 @@ TTipHit::TTipHit() {
    Clear();
 }
 
+TTipHit::TTipHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+	//SetVariables(frag);
+}
+
 TTipHit::~TTipHit() { }
 
 TTipHit::TTipHit(const TTipHit &rhs) : TGRSIDetectorHit() {
@@ -63,3 +67,10 @@ void TTipHit::SetWavefit(TFragment &frag)   {
 	}
 }
 
+//void TTipHit::SetPID(TFragment &frag)	{
+//	TPulseAnalyzer pulse(frag);
+//	if(pulse.IsSet()){
+//		fPID = pulse.CsIPID();
+//		fTimeFit = pulse.CsIt0();
+//	}
+//}

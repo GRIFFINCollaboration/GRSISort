@@ -43,68 +43,6 @@ class TTip : public TGRSIDetector {
 	private:
 		std::vector <TTipHit> fTipHits;                                  //   The set of detector hits
 
-//	private:
-//		//  SFU CsI waveform fitting routines.
-//		typedef struct WaveFormPar {
-//			//parameters for baseline
-//			int    baseline_range;
-//			double baseline; //baseline
-//			double baselineStDev; //baseline variance
-//			int    bflag; //flag for baseline determiniation
-//
-//			//paremeters for exclusion zone
-//			double max; //max value of the filtered waveform 
-//			double tmax; //x position of the max value of the filtered waveform
-//			double baselineMin; //max crossing point for exclusion zone
-//			double baselineMax; //max crossing point for exclusion zone
-//			int    temax; //x position, exclusion zone upper limit
-//			int    temin; //x position, exclusion zone lower limit
-//			double afit,bfit; //parameters for the line which fits risetime above temax
-//			int    mflag; //flag for tmax found
-//			int    teflag; //flag for exclusion zone determined
-//
-//			double t0; //required for compilation of map.c - check that it works
-//			double t0_local;
-//
-//			//new stuff necessary for compiliation of Kris' waveform analyzer changes
-//			double b0;
-//			double b1;
-//			long double s0;
-//			long double s1;
-//			long double s2;
-//			double t90;
-//			double t50;
-//			double t30;
-//			double t10;
-//			double t10t90;
-//			int t10_flag;
-//			int t30_flag;
-//			int t50_flag;
-//			int t90_flag;
-//			int t10t90_flag;
-//			int    thigh;
-//			double sig2noise;
-//		} WaveFormPar;
-//
-//		typedef struct WaveShapPar { 
-//			double chisq;
-//			int    ndf;
-//			int    type;
-//			std::vector<double> t;  //decay constants for the fits
-//			std::vector<double> am; //associated aplitudes for the decay constants
-//			double rf[5];
-//
-//			//new stuff necessary for compiliation of Kris' waveform analyzer changes
-//			long double chisq_ex;
-//			long double chisq_f;
-//			int    ndf_ex;
-//			int    ndf_f;
-//		} WaveShapPar;  
-//
-//		WaveFormPar GetExclusionZone();
-//		WaveShapPar GetShape(WaveFormPar&);
-
-
 	public:
 /// \cond CLASSIMP
 		ClassDef(TTip,2);

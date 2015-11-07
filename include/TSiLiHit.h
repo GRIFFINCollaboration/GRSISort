@@ -16,44 +16,38 @@
 class TSiLiHit : public TGRSIDetectorHit {
 	public:
 		TSiLiHit();
-		~TSiLiHit();
-
+		TSiLiHit(TFragment &);	
+		virtual ~TSiLiHit();
+		TSiLiHit(const TSiLiHit&);
+		
+		void Copy(TObject&) const;        //!
 		void Clear(Option_t *opt="");
 		void Print(Option_t *opt="") const;
 
-		Double_t GetLed()       { return fLed;      }
-		Short_t  GetSegment()   { return fSegment;  }
-		Double_t GetSig2Noise() { return fSig2Noise;}    
-		Int_t    GetRing()      { return fRing;     }
-		Int_t    GetSector()    { return fSector;   }
-		Int_t    GetPreamp()    { return fPreamp;   }
+		Double_t GetLed()      const { return fLed;      }
+		//Short_t  GetSegment()  const { return fSegment;  }
+		Double_t GetSig2Noise()const { return fSig2Noise;}    
+		Int_t GetRing()        const {  return 9-(GetSegment()/12); }
+		Int_t GetSector()      const {  return GetSegment()%12; }
+		Int_t GetPreamp()      const {  return  ((GetSector()/3)*2)+(((GetSector()%3)+GetRing())%2); }
 		Double_t GetTimeFit()   { return fTimeFit;  }
 
-		void SetSegment(Short_t seg) {
-				fSegment = seg; 
-				fRing    = 9-(fSegment/12);
-				fSector  = fSegment%12;
-				fPreamp  = ((GetSector()/3)*2)+(((GetSector()%3)+GetRing())%2);
-		}
-		void SetVariables(TFragment &frag) { 
-				SetCfd(frag.GetCfd());
-				SetCharge(frag.GetCharge());
-				SetTimeStamp(frag.GetTimeStamp()); 
-				fLed    = frag.GetLed();
-		}
+		//void SetSegment(Short_t seg)       { fSegment = seg;	}
+		//void SetSegment(TFragment &frag);
+		void SetVariables(TFragment &frag) { fLed    = frag.GetLed(); }
+							//SetSegment(frag); }
 		void SetWavefit(TFragment&);
 
 	private:
+		TVector3 GetChannelPosition(Double_t dist = 0) const; //!  
+      
 		Double_t    fLed;
-		Short_t  fSegment;
-		Short_t  fRing;
-		Short_t  fSector;
-		Short_t  fPreamp;
+		//UInt_t  	fSegment;
 		Double_t    fTimeFit;
 		Double_t    fSig2Noise;
 
 /// \cond CLASSIMP
-		ClassDef(TSiLiHit,6);
+		ClassDef(TSiLiHit,7);
 /// \endcond
 };
 /*! @} */

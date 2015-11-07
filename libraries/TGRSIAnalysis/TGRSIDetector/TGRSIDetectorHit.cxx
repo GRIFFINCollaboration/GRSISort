@@ -109,10 +109,11 @@ void TGRSIDetectorHit::Copy(TObject& rhs) const {
 	static_cast<TGRSIDetectorHit&>(rhs).fTimeStamp      = fTimeStamp;
 	static_cast<TGRSIDetectorHit&>(rhs).fCharge         = fCharge;
 	static_cast<TGRSIDetectorHit&>(rhs).fDetector       = fDetector;
+   static_cast<TGRSIDetectorHit&>(rhs).fSegment        = fSegment;
 	static_cast<TGRSIDetectorHit&>(rhs).fEnergy         = fEnergy;
 	static_cast<TGRSIDetectorHit&>(rhs).fTime           = fTime;
 
-	static_cast<TGRSIDetectorHit&>(rhs).fBitflags       = fBitflags;
+	static_cast<TGRSIDetectorHit&>(rhs).fBitflags       = 0;
 	static_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
 	static_cast<TGRSIDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
 }
@@ -132,6 +133,7 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
 	fCfd            = -1;
 	fTimeStamp      = -1;
 	fDetector       = -1;
+   fSegment		    = -1;
 	fEnergy         = 0.;
 	fBitflags       = 0;
 	fPPGStatus      = TPPG::kJunk;
@@ -168,10 +170,68 @@ UInt_t TGRSIDetectorHit::GetDetector() {
 	return SetDetector(mnemonic.arrayposition);
 }
 
+Short_t TGRSIDetectorHit::GetSegment() const {
+   if(IsSegSet())
+     return fSegment;
+
+   MNEMONIC mnemonic;
+   TChannel *channel = GetChannel();
+   if(!channel){
+      Error("GetSegment","No TChannel exists for address %08x",GetAddress());
+      return -1;
+   }
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+   std::string name = channel->GetChannelName();
+   TString str = name[9];
+   if(str.IsDigit()){
+   	 std::string buf;
+   	 buf.clear(); buf.assign(name,7,3);
+   	 return (uint16_t)atoi(buf.c_str());
+   }
+   else{   
+   	 return mnemonic.segment;
+   }
+   return -1;
+}
+
+Short_t TGRSIDetectorHit::GetSegment() {
+   if(IsSegSet()){
+     printf("Segment set:\t%i\n",fSegment); 
+	 return fSegment;
+   }
+
+   MNEMONIC mnemonic;
+   TChannel *channel = GetChannel();
+   if(!channel){
+      Error("GetSegment","No TChannel exists for address %u",GetAddress());
+      return -1;
+   }
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+   std::string name = channel->GetChannelName();
+   TString str = name[9];
+   if(str.IsDigit()){
+   	 std::string buf;
+   	 buf.clear(); buf.assign(name,7,3);
+   	 return SetSegment((uint16_t)atoi(buf.c_str()));
+   }
+   else{   
+   	 return SetSegment(mnemonic.segment);
+   }
+   return -1;
+}
+
 UInt_t TGRSIDetectorHit::SetDetector(const UInt_t& det) {
 	fDetector = det;
 	SetFlag(kIsDetSet,true);
 	return fDetector;
+}
+
+Short_t TGRSIDetectorHit::SetSegment(const Short_t &seg) {
+   fSegment = seg;
+   SetFlag(kIsSegSet,true);
+   return fSegment;
 }
 
 TVector3 TGRSIDetectorHit::SetPosition(Double_t dist) {
@@ -207,7 +267,6 @@ TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
 
 	printf("no position found for current hit\n");
 	return TVector3(0,0,1);
-
 }
 
 bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rhs) {

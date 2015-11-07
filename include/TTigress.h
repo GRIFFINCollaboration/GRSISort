@@ -32,6 +32,8 @@ class TTigress : public TGRSIDetector {
 			kBit7         = 1<<7
 		};
 
+		std::vector<std::vector<TFragment*> > SegmentFragments;
+
 		TTigress();
 		TTigress(const TTigress&);
 		virtual ~TTigress();
@@ -42,13 +44,16 @@ class TTigress : public TGRSIDetector {
 		size_t GetMultiplicity() const	        { return fTigressHits.size(); }	//!<!
 		static TVector3 GetPosition(int DetNbr ,int CryNbr, int SegNbr, double distance = 110.);		//!<!
 
+		// Delete tigress hit from vector (for whatever reason)
+		void DeleteTigressHit(const int& i) { fTigressHits.erase(fTigressHits.begin()+i); } 
+
 		Int_t GetAddbackMultiplicity();
 		TTigressHit* GetAddbackHit(const int&);
 		void ResetAddback();		     //!<!
 		UShort_t GetNAddbackFrags(size_t idx) const;
 
 		void AddFragment(TFragment*, MNEMONIC*); //!<!
-		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
+		void BuildHits();
 
 		TTigress& operator=(const TTigress&); //!<!
 

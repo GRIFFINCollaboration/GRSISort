@@ -23,23 +23,23 @@
 
 class TTigressHit : public TGRSIDetectorHit {
   public:
-	TTigressHit();
-	TTigressHit(const TTigressHit&);
-   TTigressHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
-	virtual ~TTigressHit();
+    TTigressHit();
+    TTigressHit(const TTigressHit&);
+    TTigressHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
+    virtual ~TTigressHit();
 
   private:
-	UInt_t   fCrystal;              //!<!
-	UShort_t fFirstSegment;        
-	Float_t  fFirstSegmentCharge; //!<!
+	 UInt_t   fCrystal;              //!<!
+	 UShort_t fFirstSegment;        
+	 Float_t  fFirstSegmentCharge; //!<!
 
-	Double_t fEnergy;
+    Double_t fEnergy;
 
-	std::vector<TGRSIDetectorHit> fSegments;
-	std::vector<TGRSIDetectorHit> fBgos;
+    std::vector<TGRSIDetectorHit> fSegments;
+    std::vector<TGRSIDetectorHit> fBgos;
 
-	Double_t fTimeFit;
-	Double_t fSig2Noise;
+    Double_t fTimeFit;
+    Double_t fSig2Noise;
 
 	//need to do sudo tracking to build addback.
 	TVector3 fLastHit;                //!<!
@@ -47,7 +47,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	std::tuple<int,int,int> fLastPos; //!<!
 #endif
 
-	static TVector3 fBeam;
+    static TVector3 fBeam;            //!
 
   public:
 	void SetHit() {}
@@ -96,7 +96,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	inline std::tuple<int,int,int> GetLastPosition() {return fLastPos;} //!<!
 #endif                         
 
-   private:
+  private:
     TVector3 GetChannelPosition(Double_t dist=110.0) const;
 
   public:
