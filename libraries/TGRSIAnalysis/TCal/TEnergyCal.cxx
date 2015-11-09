@@ -40,7 +40,7 @@ std::vector<Double_t> TEnergyCal::GetParameters() const {
    return paramList;
 }
 
-Double_t TEnergyCal::GetParameter(Int_t parameter) const {
+Double_t TEnergyCal::GetParameter(size_t parameter) const {
    //WILL NEED TO CHANGE THIS APPROPRIATELY
    return GetFunction("gain")->GetParameter(parameter); //Root does all of the checking for us.
 }

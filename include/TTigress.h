@@ -57,13 +57,13 @@ class TTigress : public TGRSIDetector {
 
 		TTigress& operator=(const TTigress&); //!<!
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 		void SetAddbackCriterion(std::function<bool(TTigressHit&, TTigressHit&)> criterion) { fAddbackCriterion = criterion; }
 		std::function<bool(TTigressHit&, TTigressHit&)> GetAddbackCriterion() const         { return fAddbackCriterion; }
 #endif
 
 	private: 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 		static std::function<bool(TTigressHit&, TTigressHit&)> fAddbackCriterion;
 #endif
 		std::vector<TTigressHit> fTigressHits;

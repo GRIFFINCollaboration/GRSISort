@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include <queue>
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #define _GLIBCXX_USE_NANOSLEEP 1
 #include <thread>
 #include <mutex>
@@ -76,7 +76,7 @@ class TEventQueue : public TObject {
 	int SizeInstance();
       
 	std::queue<std::vector<TFragment>*> fEventQueue;
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 	std::mutex m_event;
 #endif 
 	bool fELock;
@@ -118,7 +118,7 @@ class TWriteQueue {
       int SizeInstance();
       
       std::queue<std::map<std::string, TDetector*>*> fWriteQueue;
-      #ifndef __CINT__
+      #if !defined (__CINT__) && !defined (__CLING__)
       std::mutex m_write;
       #endif
       bool fWLock;         
@@ -193,7 +193,7 @@ class TAnalysisTreeBuilder : public TObject {
       static int fAnalysisIn;
       static int fAnalysisOut;
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
       bool fSortFragmentDone;
       bool fPrintStatus;
       std::thread* fReadThread;                             //The thread used to read fragments out of the fragment tree

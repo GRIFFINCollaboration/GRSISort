@@ -7,7 +7,7 @@
 
 #include <cstdio>
 #include <cmath>
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include <tuple>
 #endif
 
@@ -43,7 +43,7 @@ class TTigressHit : public TGRSIDetectorHit {
 
 	//need to do sudo tracking to build addback.
 	TVector3 fLastHit;                //!<!
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 	std::tuple<int,int,int> fLastPos; //!<!
 #endif
 
@@ -81,6 +81,7 @@ class TTigressHit : public TGRSIDetectorHit {
 
 	inline int GetSegmentMultiplicity()		           { return fSegments.size(); }	//!<!
 	inline int GetBGOMultiplicity()			           { return fBgos.size();     }   //!<!
+	using TGRSIDetectorHit::GetSegment;
 	inline TGRSIDetectorHit& GetSegment(const int &i) { return fSegments.at(i);  }   //!<!
 	inline TGRSIDetectorHit& GetBGO(const int &i)	  { return fBgos.at(i);	     }   //!<!
 	inline TGRSIDetectorHit& GetCore()                { return *this;	           }   //!<!
@@ -92,7 +93,7 @@ class TTigressHit : public TGRSIDetectorHit {
 		
 	void SumHit(TTigressHit*);                                      //!<!
 	TVector3 GetLastHit() { return fLastHit; }                      //!<!
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 	inline std::tuple<int,int,int> GetLastPosition() {return fLastPos;} //!<!
 #endif                         
 

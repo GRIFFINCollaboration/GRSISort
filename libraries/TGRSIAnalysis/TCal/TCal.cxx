@@ -96,7 +96,7 @@ std::vector<Double_t> TCal::GetParameters() const {
 	return paramList;
 }
 
-Double_t TCal::GetParameter(Int_t parameter) const {
+Double_t TCal::GetParameter(size_t parameter) const {
 	///Returns the parameter at the index parameter
 	if(!GetFitFunction()) {
 		Error("GetParameter","Function have not been fitted yet");

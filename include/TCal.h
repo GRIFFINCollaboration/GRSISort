@@ -54,7 +54,7 @@ class TCal : public TGraphErrors {
    virtual TF1* GetFitFunction() const { return fFitFunc; } 
    virtual void SetFitFunction(const TF1* func){ fFitFunc = const_cast<TF1*>(func); };
    virtual std::vector<Double_t> GetParameters() const;
-   virtual Double_t GetParameter(Int_t parameter) const;
+   virtual Double_t GetParameter(size_t parameter) const;
 
    TChannel* GetChannel() const;
    Bool_t SetChannel(const TChannel* chan);

@@ -207,7 +207,7 @@ Int_t TDescantHit::CalculatePsd(double fraction, int interpolationSteps) {
 }
 
 Int_t TDescantHit::CalculatePsdAndPartialSums(double fraction, int interpolationSteps, std::vector<Int_t>& partialSums) {
-	Int_t psd;
+	fPsd = 0;
 	std::vector<Short_t> *waveform = GetWaveform();
 	partialSums = CalculatePartialSum();
 	if(partialSums.empty()) {
@@ -225,5 +225,5 @@ Int_t TDescantHit::CalculatePsdAndPartialSums(double fraction, int interpolation
 		}
 	}
 
-	return psd;
+	return fPsd;
 }
