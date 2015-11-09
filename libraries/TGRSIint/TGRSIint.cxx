@@ -94,9 +94,13 @@ void TGRSIint::ApplyOptions() {
       //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
       long error = ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
       if(error <=0) continue;
-      TFile *file = (TFile*)gROOT->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
-      printf("\tfile %s opened as _file%i\n",file->GetName(),x);
-      TGRSIRootIO::Get()->LoadRootFile(file);
+      TFile *file = (TFile*)gROOT->GetListOfFiles()->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
+		if(file != NULL) {
+			printf("\tfile %s opened as _file%i\n",file->GetName(),x);
+			TGRSIRootIO::Get()->LoadRootFile(file);
+		} else {
+			printf("\tfailed to open file '%s' as _file%i (file = %p)\n", TGRSIOptions::GetInputRoot().at(x).c_str(), x, static_cast<void*>(file));
+		}
    }
    if(TGRSIOptions::GetInputRoot().size() > 0 && !fAutoSort && !fFragmentSort) {
       if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
