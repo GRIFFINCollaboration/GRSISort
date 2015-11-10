@@ -33,8 +33,6 @@ class TTigressHit : public TGRSIDetectorHit {
 	 UShort_t fFirstSegment;        
 	 Float_t  fFirstSegmentCharge; //!<!
 
-    Double_t fEnergy;
-
     std::vector<TGRSIDetectorHit> fSegments;
     std::vector<TGRSIDetectorHit> fBgos;
 
