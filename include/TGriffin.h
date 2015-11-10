@@ -44,7 +44,7 @@ class TGriffin : public TGRSIDetector {
 
 		TGriffin& operator=(const TGriffin&);  //!<!
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 		void SetAddbackCriterion(std::function<bool(TGriffinHit&, TGriffinHit&)> criterion) { fAddbackCriterion = criterion; }
 		std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() const { return fAddbackCriterion; }
 #endif
@@ -53,7 +53,7 @@ class TGriffin : public TGRSIDetector {
 		TGriffinHit* GetAddbackHit(const int& i);
 
 	private:
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 		static std::function<bool(TGriffinHit&, TGriffinHit&)> fAddbackCriterion;
 #endif
 		std::vector <TGriffinHit> fGriffinHits; //  The set of crystal hits

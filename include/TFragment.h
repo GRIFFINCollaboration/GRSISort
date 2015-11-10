@@ -12,7 +12,7 @@
 #include "Rtypes.h"
 #include "TObject.h"
 
-//#ifndef __CINT__
+//#if !defined (__CINT__) && !defined (__CLING__)
 //#include "Globals.h"
 //#endif
 
@@ -98,9 +98,8 @@ public:
    virtual void	Clear(Option_t *opt = ""); //!<!
    virtual void Print(Option_t *opt = "") const; //!<!
    
-	bool Compare(const TFragment& rhs)   const { return (GetTimeStamp_ns() < rhs.GetTimeStamp_ns()); }
-   bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
-   bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
+   bool operator<(const TFragment& rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
+   bool operator>(const TFragment& rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 
 /// \cond CLASSIMP
    ClassDef(TFragment,5);  // Event Fragments

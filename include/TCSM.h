@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <map>
 #include <iostream>
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include <tuple>
 #include <iterator>
 #include <algorithm>

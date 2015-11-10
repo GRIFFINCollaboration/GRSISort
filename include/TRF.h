@@ -7,7 +7,7 @@
 
 #include "TFragment.h"
 #include "TDetector.h"
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TRFFitter.h"
 #else
 class TRFFitter;

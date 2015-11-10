@@ -89,7 +89,7 @@ class TPPG : public TObject	{
    public: 
     void AddData(TPPGData* pat);
     uint16_t GetStatus(ULong64_t time) const;
-    ULong64_t GetLastStatusTime(ULong64_t time, ppg_pattern pat = kJunk, bool exact_flag = false );
+    ULong64_t GetLastStatusTime(ULong64_t time, ppg_pattern pat = kJunk, bool exact_flag = false ) const;
     Bool_t MapIsEmpty() const;
     std::size_t PPGSize() const {return fPPGStatusMap->size()- 1;}
     Long64_t Merge(TCollection* list);
@@ -111,7 +111,7 @@ class TPPG : public TObject	{
     const TPPGData* First();
     const TPPGData* Last();
 
-    virtual void Print(Option_t* opt = "");
+    virtual void Print(Option_t* opt = "") const;
     virtual void Clear(Option_t* opt = "");
 
   private:

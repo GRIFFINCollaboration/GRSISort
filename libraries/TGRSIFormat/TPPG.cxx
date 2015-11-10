@@ -104,7 +104,7 @@ void TPPG::AddData(TPPGData* pat) {
 	fNumberOfCycleLengths.clear();
 }
 
-ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag) {
+ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag) const {
 	///Gets the last time that a status was given. If the ppg_pattern kJunk is passed, the 
 	///current status at the time "time" is looked for. If exact_flag is false, the bits of "pat" 
 	///are looked for and ignore the rest of the bits in the sotred statuses. If "exact_flag" 
@@ -149,32 +149,110 @@ uint16_t TPPG::GetStatus(ULong64_t time) const {
 	return (uint16_t)((--(fPPGStatusMap->upper_bound(time)))->second->GetNewPPG());
 }
 
-void TPPG::Print(Option_t *opt) {
+void TPPG::Print(Option_t *opt) const {
 	if(MapIsEmpty()) {
 		printf("Empty\n");
-	} else {
-		if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
-			//print all ppg data
-			PPGMap_t::iterator ppgit;
-			printf("*****************************\n");
-			printf("           PPG STATUS        \n");
-			printf("*****************************\n");
-			for(ppgit = MapBegin(); ppgit != MapEnd(); ppgit++) {
-				ppgit->second->Print();
-			}
-		} else {
-			//print only an overview of the ppg
-			//first calculate how often each different status occured
-			std::map<uint16_t, int> status;
-			for(auto it = MapBegin(); it != MapEnd(); ++it) {
-				status[it->second->GetNewPPG()]++;
-			}
-			printf("Cycle length is %lld in 10 ns units = %.3lf seconds.\n", GetCycleLength(), GetCycleLength()/1e8);
-			printf("Got %ld PPG words:\n", fPPGStatusMap->size() - 1);
-			for(auto it = status.begin(); it != status.end(); ++it) {
-				printf("\tfound status 0x%04x %d times\n", it->first, it->second);
+		return;
+	}
+	if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+		//print all ppg data
+		PPGMap_t::iterator ppgit;
+		printf("*****************************\n");
+		printf("           PPG STATUS        \n");
+		printf("*****************************\n");
+		for(ppgit = MapBegin(); ppgit != MapEnd(); ppgit++) {
+			ppgit->second->Print();
+		}
+		return;
+	} 
+	//print only an overview of the ppg
+	//can't call non-const GetCycleLength here, so we do the calculation with local variables here
+	PPGMap_t::iterator ppgIt;
+	std::map<uint16_t, int> status;                    //to calculate how often each different status occured
+	std::map<ULong64_t, int> numberOfCycleLengths;     //to calculate the length of the whole cycle
+	std::map<ULong64_t, int> numberOfStateLengths[4];  //to calculate the length of each state (tape move, background, beam on, and decay)
+	std::map<int, int> numberOfOffsets;                //to calculate the offset on each timestamp
+	for(ppgIt = MapBegin(); ppgIt != MapEnd(); ++ppgIt) {
+		status[ppgIt->second->GetNewPPG()]++;
+		ULong64_t diff = ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp());
+		numberOfCycleLengths[diff]++;
+		numberOfOffsets[(ppgIt->second->GetTimeStamp())%1000]++; //let's assume our offset is less than 10 us
+		switch(ppgIt->second->GetNewPPG() & 0xf) {
+			case kBackground:
+				diff =  ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), kTapeMove);
+				numberOfStateLengths[0][diff]++;
+				break;
+			case kBeamOn:
+				diff =  ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), kBackground);
+				numberOfStateLengths[1][diff]++;
+				break;
+			case kDecay:
+				diff =  ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), kBeamOn);
+				numberOfStateLengths[2][diff]++;
+				break;
+			case kTapeMove:
+				diff =  ppgIt->second->GetTimeStamp() - GetLastStatusTime(ppgIt->second->GetTimeStamp(), kDecay);
+				numberOfStateLengths[3][diff]++;
+				break;
+			default:
+				break;
+		}
+	}
+	int counter = 0;
+	ULong64_t cycleLength = 0;
+	for(auto it = numberOfCycleLengths.begin(); it != numberOfCycleLengths.end(); ++it) {
+		if(it->second > counter) {
+			counter = it->second;
+			cycleLength = it->first;
+		}
+	}
+	ULong64_t stateLength[4] = {0, 0, 0, 0};
+	for(int i = 0; i < 4; ++i) {
+		counter = 0;
+		for(auto it = numberOfStateLengths[i].begin(); it != numberOfStateLengths[i].end(); ++it) {
+			if(it->second > counter) {
+				counter = it->second;
+				stateLength[i] = it->first;
 			}
 		}
+	}
+	counter =  0;
+	int offset = 0;
+	for(auto it = numberOfOffsets.begin(); it != numberOfOffsets.end(); ++it) {
+		if(it->second > counter) {
+			counter = it->second;
+			offset = it->first;
+		}
+	}
+
+	//the print statement itself
+	printf("Cycle length is %lld in 10 ns units = %.3lf seconds.\n", cycleLength, cycleLength/1e8);
+	printf("Cycle: %.3lf s tape move, %.3lf background, %.3lf beam on, and %.3lf decay\n", stateLength[0]/1e8, stateLength[1]/1e8, stateLength[2]/1e8, stateLength[3]/1e8);
+	printf("Offset is %d\n", offset);
+	printf("Got %ld PPG words:\n", fPPGStatusMap->size() - 1);
+	for(auto it = status.begin(); it != status.end(); ++it) {
+		printf("\tfound status 0x%04x %d times\n", it->first, it->second);
+	}
+
+	//go through all expected ppg words
+	ULong64_t time = offset;
+	auto it = MapEnd();
+	--it;
+	ULong64_t lastTimeStamp = it->second->GetTimeStamp();
+	for(int cycle = 1; time < lastTimeStamp; ++cycle) {
+		if(GetLastStatusTime(time, kTapeMove) != time) {
+			printf("Missing tape move status at %12lld in %d. cycle, last tape move status came at %lld.\n", time, cycle, GetLastStatusTime(time, kTapeMove));
+		}
+		if(GetLastStatusTime(time+cycleLength, kBackground) != time + stateLength[0]) {
+			printf("Missing background status at %12lld in %d. cycle, last background status came at %lld.\n", time + stateLength[0], cycle, GetLastStatusTime(time+cycleLength, kBackground));
+		}
+		if(GetLastStatusTime(time+cycleLength, kBeamOn) != time + stateLength[0] + stateLength[1]) {
+			printf("Missing beam on status at %12lld in %d. cycle, last beam on status came at %lld.\n", time + stateLength[0] + stateLength[1], cycle, GetLastStatusTime(time+cycleLength, kBeamOn));
+		}
+		if(GetLastStatusTime(time+cycleLength, kDecay) != time + stateLength[0] + stateLength[1] + stateLength[2]) {
+			printf("Missing decay status at %12lld in %d. cycle, last decay status came at %lld.\n", time + stateLength[0] + stateLength[1] + stateLength[2], cycle, GetLastStatusTime(time+cycleLength, kDecay));
+		}
+		time += cycleLength;
 	}
 }
 

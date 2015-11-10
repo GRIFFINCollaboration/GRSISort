@@ -5,7 +5,7 @@
 #include <queue>
 #include <map>
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #define _GLIBCXX_USE_NANOSLEEP 1
 #include <thread>
 #include <mutex>
@@ -46,7 +46,7 @@ class TDeadtimeScalerQueue : public TObject {
 
 		static std::map<int,int> fScalerIdMap;	
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #ifndef NO_MUTEX
 	public:
 		static std::mutex All;
@@ -107,7 +107,7 @@ class TRateScalerQueue : public TObject {
 		static std::map<int,int> fScalerIdMap;	
 
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #ifndef NO_MUTEX
 	public:
 		static std::mutex All;

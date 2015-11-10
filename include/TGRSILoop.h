@@ -5,7 +5,7 @@
 #include <string>
 #include <fstream>
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include <thread>
 #endif
 
@@ -49,7 +49,7 @@ class TGRSILoop : public TObject {
 		int fDeadtimeScalersSentToTree;
 		int fRateScalersSentToTree;
  
-   #ifndef __CINT__
+   #if !defined (__CINT__) && !defined (__CLING__)
       std::thread* fMidasThread;
       std::thread* fFillTreeThread;
       std::thread* fFillScalerThread;
