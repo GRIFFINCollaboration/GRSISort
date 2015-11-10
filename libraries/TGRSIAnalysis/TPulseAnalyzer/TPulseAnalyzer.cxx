@@ -4,23 +4,21 @@
 ClassImp(TPulseAnalyzer)
 /// \endcond
 
-TPulseAnalyzer::TPulseAnalyzer() : wpar(0), frag(0) {
+TPulseAnalyzer::TPulseAnalyzer() : wpar(NULL), frag(NULL), spar(NULL) {
 	Clear();
 }
 
-TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac) : wpar(0), frag(0) {
+TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac) : wpar(NULL), frag(NULL), spar(NULL) {
 	Clear();
 	SetData(fragment,noise_fac);
 }
 
 TPulseAnalyzer::~TPulseAnalyzer() {
 	if(wpar) delete wpar;
+	if(spar) delete spar;
 }
 
 void TPulseAnalyzer::Clear(Option_t *opt) {
-	if(wpar) delete wpar;
-	wpar = new WaveFormPar;
-
 	set = false;	
 	N = 0;
 	FILTER = 8;
@@ -96,6 +94,8 @@ int TPulseAnalyzer::fit_smooth_parabola(int low, int high, double x0, ParPar* pp
 	double chisq;
 	double x;
 	memset(pp,0,sizeof(ParPar));
+	memset(lineq_matrix,0,sizeof(lineq_matrix));
+	memset(lineq_vector,0,sizeof(lineq_vector));
 	lineq_dim=2;
 	chisq=0.;
 	ndf=0;
@@ -137,11 +137,82 @@ int TPulseAnalyzer::fit_smooth_parabola(int low, int high, double x0, ParPar* pp
 	}
 	return -1;
 }
+
+////////////////////////////////////////
+//	RF Fit Run Functions
+////////////////////////////////////////
+
+double TPulseAnalyzer::fit_rf(double T)
+{
+	if(!set||N<10) return -1;
+	if(spar) delete spar;
+	spar=new SinPar;
+
+	spar->t0=-1;
+
+	return 5*get_sin_par(T);
+}
+
+////////////////////////////////////////
+//	Waveform Time Fit Run Functions
+////////////////////////////////////////
+
+// Overall function which determins limits and fits the 3 trial functions
+double  TPulseAnalyzer::fit_newT0(){
+	if(!set||N<10)return -1; 
+	
+	if(wpar) delete wpar;
+	wpar=new WaveFormPar;
+	wpar->t0=-1;
+
+	double chisq[3],chimin;
+	WaveFormPar w[3];
+	int  i,imin;
+
+	wpar->baseline_range=T0RANGE; //default only 8 samples!
+	get_baseline();
+	get_tmax();
+	
+	//if(wpar->tmax<PIN_BASELINE_RANGE)
+	//	return -1;
+	
+	if(!good_baseline())return -1;
+
+	get_t30();
+	get_t50();
+	wpar->thigh=wpar->t50;
+	
+	for(i=0;i<3;i++)
+		chisq[i]=LARGECHISQ;
+	
+	size_t swp;
+	swp=sizeof(WaveFormPar);
+	chisq[0]=get_smooth_T0(); memcpy(&w[0],wpar,swp);	
+	chisq[1]=get_parabolic_T0(); memcpy(&w[1],wpar,swp);	
+	chisq[2]=get_linear_T0(); memcpy(&w[2],wpar,swp);	
+
+	chimin=LARGECHISQ;
+	imin=0;
+
+	for(i=0;i<3;i++)if(chisq[i]<chimin&&chisq[i]>0){
+		chimin=chisq[i];
+		imin=i;
+	}
+
+	if(imin<2)memcpy(wpar,&w[imin],swp);
+
+	get_baseline_fin();
+	return wpar->t0;
+}
+/*================================================================*/
+
 /*================================================================*/
 int TPulseAnalyzer::fit_parabola(int low, int high,ParPar* pp){
 	int i,ndf;
 	double chisq;
 	memset(pp,0,sizeof(ParPar));
+	memset(lineq_matrix,0,sizeof(lineq_matrix));
+	memset(lineq_vector,0,sizeof(lineq_vector));
 	lineq_dim=3;
 	chisq=0.;
 	ndf=0;
@@ -183,6 +254,8 @@ int TPulseAnalyzer::fit_line(int low, int high,LinePar* lp){
 	int i,ndf;
 	double chisq;
 	memset(lp,0,sizeof(LinePar));
+	memset(lineq_matrix,0,sizeof(lineq_matrix));
+	memset(lineq_vector,0,sizeof(lineq_vector));
 	lineq_dim=2;
 	chisq=0.;
 	ndf=0;
@@ -377,57 +450,6 @@ double TPulseAnalyzer::get_parabolic_T0(){
 }
 
 
-////////////////////////////////////////
-//	Waveform Time Fit Run Functions
-////////////////////////////////////////
-
-// Overall function which determins limits and fits the 3 trial functions
-double  TPulseAnalyzer::fit_newT0(){
-	if(!set||N<10)return -1; 
-
-	wpar->t0=-1;
-
-	double chisq[3],chimin;
-	WaveFormPar w[3];
-	size_t swp;
-	int  i,imin;
-
-	swp=sizeof(WaveFormPar);
-
-	wpar->baseline_range=T0RANGE; //only 8 samples!
-	get_baseline();
-
-	get_tmax();
-
-	if(wpar->tmax<PIN_BASELINE_RANGE)
-		return BAD_BASELINE_RANGE;
-
-	get_t30();
-	get_t50();
-	wpar->thigh=wpar->t50;
-
-	for(i=0;i<3;i++)
-		chisq[i]=LARGECHISQ;
-
-	chisq[0]=get_smooth_T0(); memcpy(&w[0],wpar,swp);	
-	chisq[1]=get_parabolic_T0(); memcpy(&w[1],wpar,swp);	
-	chisq[2]=get_linear_T0(); memcpy(&w[2],wpar,swp);	
-
-	chimin=LARGECHISQ;
-	imin=0;
-
-	for(i=0;i<3;i++)if(chisq[i]<chimin&&chisq[i]>0){
-		chimin=chisq[i];
-		imin=i;
-	}
-
-	if(imin<2)memcpy(wpar,&w[imin],swp);
-
-	get_baseline_fin();
-	return wpar->t0;
-}
-/*================================================================*/
-
 // Measure the baseline and standard deviation of the waveform, over the tick range specified by wpar->baseline_range
 void TPulseAnalyzer::get_baseline(){
 	wpar->baseline=0.;
@@ -541,6 +563,8 @@ double TPulseAnalyzer::get_tfrac(double frac,double fraclow, double frachigh)
 		if(imax>=N-1) break;
 	}
 
+	memset(lineq_matrix,0,sizeof(lineq_matrix));
+	memset(lineq_vector,0,sizeof(lineq_vector));
 	lineq_dim=3;
 
 	i=imax-imin;
@@ -663,6 +687,67 @@ void TPulseAnalyzer::get_t30(){
 	}
 }
 
+double TPulseAnalyzer::get_sin_par(double T)
+{
+  int i;
+  double s,sn,snm,s2,s2n,s2nm,c,cn,cnm,c2,c2n,c2nm,w;
+  memset(lineq_matrix,0,sizeof(lineq_matrix));
+  memset(lineq_vector,0,sizeof(lineq_vector));
+  lineq_dim=3;
+
+  w=2*TMath::Pi()/T;
+
+  s=sin(w);
+  sn=sin(N*w);
+  snm=sin((N-1)*w);
+  s2=sin(2*w);
+  s2n=sin(2*N*w);
+  s2nm=sin(2*(N-1)*w);
+
+  c=cos(w);
+  cn=cos(N*w);
+  cnm=cos((N-1)*w);
+  c2=cos(2*w);
+  c2n=cos(2*N*w);
+  c2nm=cos(2*(N-1)*w);
+ 
+  lineq_matrix[0][0]=0.5*N-0.25*(1-c2-c2n+c2nm)/(1-c2);
+  lineq_matrix[0][1]=0.25*(s2+s2nm-s2n)/(1-c2);
+  lineq_matrix[1][0]=lineq_matrix[0][1];
+  lineq_matrix[0][2]=0.5*(s+snm-sn)/(1-c);
+  lineq_matrix[2][0]=lineq_matrix[0][2];
+  lineq_matrix[1][1]=0.5*N+0.25*(1-c2-c2n+c2nm)/(1-c2);
+  lineq_matrix[1][2]=0.5*(1-c-cn+cnm)/(1-c);
+  lineq_matrix[2][1]=lineq_matrix[1][2];
+  lineq_matrix[2][2]=N;
+
+  for(i=0;i<lineq_dim;i++)
+    lineq_vector[i]=0;
+  
+  for(i=0;i<N;i++)
+    {
+      lineq_vector[0]+=frag->wavebuffer[i]*sin(w*i);
+      lineq_vector[1]+=frag->wavebuffer[i]*cos(w*i);
+      lineq_vector[2]+=frag->wavebuffer[i];
+    }
+  if(solve_lin_eq()==0)
+    {
+      //      printf("No solution for chi^2 fit of sin wave parameters \n");
+      return 0;
+    }
+  spar->A=sqrt(lineq_solution[0]*lineq_solution[0]+lineq_solution[1]*lineq_solution[1]);
+  spar->C=lineq_solution[2];
+ 
+  s=-lineq_solution[1]/spar->A;
+  c=lineq_solution[0]/spar->A;
+
+  if(s>=0)
+    spar->t0=acos(c)*T/(2*TMath::Pi());
+  else
+    spar->t0=(1-acos(c)/(2*TMath::Pi()))*T;
+  
+  return spar->t0;
+}
 
 /*======================================================*/
 // void TPulseAnalyzer::get_sig2noise(){ if(N==0)return;
@@ -675,7 +760,7 @@ void TPulseAnalyzer::get_t30(){
 // }
 /*======================================================*/
 double TPulseAnalyzer::get_sig2noise(){
-	if(set){
+	if(set&&wpar){
 		if(wpar->t0>0){
 			return (wpar->max-wpar->baselinefin)/wpar->baselineStDevfin;
 		}
@@ -683,64 +768,72 @@ double TPulseAnalyzer::get_sig2noise(){
 	return -1;
 }
 
+short TPulseAnalyzer::good_baseline(){
+	if(set&&wpar){
+		if(wpar->tmax<T0RANGE)return 0;			
+		if((wpar->max-wpar->baseline)<(wpar->baseline-frag->wavebuffer[0])*10)return 0;
+		if((wpar->max-frag->wavebuffer[T0RANGE])<(frag->wavebuffer[T0RANGE]-wpar->baseline)*4)return 0;
+		return 1;
+	}
+	return 0;
+}
 
 
 
+void  TPulseAnalyzer::DrawWave(){
+	if(N==0||!set) return;
+	TH1I h("Waveform",frag->GetName(),N,0,N); 
+	for(Int_t i=0;i<N;i++)
+	   h.SetBinContent(i+1,frag->wavebuffer[i]);
+	h.DrawCopy();
+}
 
+void TPulseAnalyzer::DrawRFFit(){
 
+	if(N==0 || !set) return;
+	
+	DrawWave();
+	
+	if(spar){
+		TF1 f("fit","[2] + [0]*sin(6.283185307 * (x - [1])/(2*8.48409))",0,N);
 
-// // 		//ONLY FOR DATA WITH PEAK SIZE > 30, ROUGHLY
-// // 		//ONLY IF RISE IS NOT IN FIRST 30 CHANNELS (large noise can fool this simple check)
-// // 		if(frag.wavebuffer[frag.wavebuffer.size()-1]-frag.wavebuffer[0]>30&&
-// // 		frag.wavebuffer[30]-frag.wavebuffer[0]<frag.wavebuffer[frag.wavebuffer.size()-1]-frag.wavebuffer[30]){
+		f.SetParameter(0,spar->A);
+		f.SetParameter(1,spar->t0);
+		f.SetParameter(2,spar->C);
 
+		f.DrawCopy("same");
 
+		printf("t0:\t%f, A:\t%f, O:\t%f\n",spar->t0,spar->A,spar->C);
+	}
+	return;
+}
 
+void  TPulseAnalyzer::DrawT0fit(){
+	
+	if(N==0||!set) return;
 
+	DrawWave();
 
+	if(wpar){
+		TF1 g("fit","[0]+[1]*x",0,wpar->temax);
+		TF1 f("fit","[0]+[1]*x+[2]*x*x",wpar->temin,wpar->thigh);
+		
+		g.SetParameter(0,wpar->b0);
+		g.SetParameter(1,wpar->b1);
+		g.SetLineColor(kRed);
 
-
-
-
-
-/*================================================================*/
-
-// void  TPulseAnalyzer::display_newT0_fit( TApplication* theApp){ if(N==0) return;
-// 
-//   TH1D *h=new TH1D("Waveform","Waveform",N,0,N); 
-//   h->Reset();
-//   for(Int_t i=0;i<N;i++)
-//     h->Fill(i,frag->wavebuffer[i]);
-// 
-// //   TCanvas *c=(TCanvas*)gROOT->FindObject("WaveformFit");
-// //   if(c!=NULL) delete c;
-// //   c = new TCanvas("WaveformFit", "WaveformFit",10,10, 700, 500);
-//   
-// 
-//   TF1* g=new TF1("fit","[0]+[1]*x",0,wpar->temax);
-//   TF1* f=new TF1("fit","[0]+[1]*x+[2]*x*x",wpar->temin,wpar->thigh);
-//  
-//   g->SetParameter(0,wpar->b0);
-//   g->SetParameter(1,wpar->b1);
-//   g->SetLineColor(kRed);
-//   g->Draw("same");
-// 
-//   f->SetParameter(0,wpar->s0);
-//   f->SetParameter(1,wpar->s1);
-//   f->SetParameter(2,wpar->s2);
-//   //f->SetLineWidth(2);
-//   f->SetLineColor(8);
-//   f->Draw("same");
-//   
-//   h->GetListOfFunctions()->Add(f->Clone());
-//   h->GetListOfFunctions()->Add(g->Clone());
-//   h->DrawCopy();
-//   
-//   //theApp->Run(kTRUE); 	      
-//   h->Delete();
-//   f->Delete();
-//   g->Delete();
-// }
+		f.SetParameter(0,wpar->s0);
+		f.SetParameter(1,wpar->s1);
+		f.SetParameter(2,wpar->s2);
+		f.SetLineColor(8);
+		
+		f.DrawCopy("same");
+		g.DrawCopy("same");
+		
+		printf("t0:\t%f\n",wpar->t0);
+	}
+	return;
+}
 
 /*======================================================*/
 void TPulseAnalyzer::print_WavePar()

@@ -11,13 +11,9 @@
 #include <string.h>
 #include <math.h>
 
-//For ROOT
-// #include "TH1.h"
-// #include "TF1.h"
-// #include "TStyle.h"
-// #include "TCanvas.h"
-// #include "TApplication.h"
-// #include "TROOT.h"
+#include "TH1.h"
+#include "TF1.h"
+#include "TMath.h"
 
 
 // Mostly a direct port of SFU code
@@ -80,6 +76,12 @@ class TPulseAnalyzer {
 		double chisq;
 		double ndf;
 	} ParPar;
+
+	typedef struct SinPar{
+		double A;
+		double t0;
+		double C;
+	} SinPar;
 	
 	
   public:
@@ -92,9 +94,13 @@ class TPulseAnalyzer {
     bool IsSet() { return set; }
     
     double    fit_newT0();
+	 double    fit_rf(double=2*8.48409);
     double    get_sig2noise();
+	 short     good_baseline();
     void      print_WavePar();
-//     void      display_newT0_fit(TApplication*);
+	 void      DrawWave();
+	 void      DrawT0fit();
+	 void      DrawRFFit();
 
   private:
 	  
@@ -102,6 +108,7 @@ class TPulseAnalyzer {
 	 WaveFormPar* wpar;
 	 int N;
 	 TFragment* frag;
+	 SinPar*		spar;
 
 	 //pulse fitting parameters
 	 int FILTER; //integration region for noise reduction (in samples)
@@ -137,6 +144,8 @@ class TPulseAnalyzer {
 	 void     get_t50();
 	 void     get_t90();       
 
+	 double	 get_sin_par(double);
+
 	 //bad chi squares for debugging
 	 const static int BADCHISQ_SMOOTH_T0=   -1024-2; //smooth_t0 gives bad result
 	 const static int BADCHISQ_PAR_T0    =  -1024-3; //parabolic_t0 gives bad result
@@ -148,7 +157,7 @@ class TPulseAnalyzer {
 	 const static int MAX_SAMPLES= 4096;	
 
 /// \cond CLASSIMP
-    ClassDef(TPulseAnalyzer,1)
+    ClassDef(TPulseAnalyzer,2)
 /// \endcond
 };
 
