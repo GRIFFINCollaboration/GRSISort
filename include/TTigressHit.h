@@ -45,7 +45,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	std::tuple<int,int,int> fLastPos; //!<!
 #endif
 
-    static TVector3 fBeam;            //!
+    static TVector3 fBeam;            //!<!
 
   public:
 	void SetHit() {}
