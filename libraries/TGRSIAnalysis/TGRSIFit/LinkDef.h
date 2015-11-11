@@ -1,4 +1,4 @@
-//TGRSIFit.h TGRSIFunctions.h TMultiPeak.h TPeak.h TDecay.h 
+//TGRSIFit.h TGRSIFunctions.h TMultiPeak.h TPeak.h TDecay.h TLMFitter.h
 
 #ifdef __CINT__
 
@@ -21,6 +21,8 @@
 #pragma link C++ class TDecay+;
 #pragma link C++ class TVirtualDecay-;
 #pragma link C++ class std::map<Int_t, std::vector<TSingleDecay*>>+;
+
+#pragma link C++ class TLMFitter+;
 
 #endif
 
