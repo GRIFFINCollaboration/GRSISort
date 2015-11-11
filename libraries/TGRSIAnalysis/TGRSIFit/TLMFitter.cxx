@@ -22,7 +22,7 @@ ClassImp(TLMFitter);
 /*******************************************************************/
 
 /* Function Subroutine-***Put fitting function here***-------------*/
-void TLMFitter::funcs(const DP &x, Vec_IO_DP &a, DP &y, Vec_O_DP &dyda)
+void TLMFitter::funcs(const double &x, Vec_IO_double &a, double &y, Vec_O_double &dyda)
 {
    for(int i=0; i<a.size();++i){
       fFunction->SetParameter(i,a[i]);
@@ -37,9 +37,9 @@ void TLMFitter::Fit(TH1* hist, TF1* func){
    double alamda, chisq, ochisq;
 
 	int ma = func->GetNpar();  /* This is the number of parameters in fit function */
-	Mat_O_DP alpha(ma,ma), covar(ma,ma);
+	Mat_O_double alpha(ma,ma), covar(ma,ma);
    Vec_BOOL ia(ma);
-   Vec_O_DP a(ma), dyda(ma);
+   Vec_O_double a(ma), dyda(ma);
 
    fFunction = func;
    fHist = hist;
@@ -70,7 +70,7 @@ void TLMFitter::Fit(TH1* hist, TF1* func){
    bin_max = hist->FindBin(func_range_max);
 
    nBins = bin_max - bin_min;
-   Vec_DP x(nBins), y(nBins), sig(nBins), yfit(nBins), W(nBins), v(nBins);
+   Vec_double x(nBins), y(nBins), sig(nBins), yfit(nBins), W(nBins), v(nBins);
    
    std::cout << "Setting bin values..." << std::endl;
    std::cout << "Range is " << bin_min << " to " << bin_max << std::endl;
@@ -128,8 +128,8 @@ void TLMFitter::Fit(TH1* hist, TF1* func){
 /*******************************************************************/
 /*  Integrator                                                     */
 /*******************************************************************/
-int TLMFitter::integrator(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_I_DP &W,
-			   Vec_IO_DP &a, Vec_DP &dyda, int chisqnumber, const double &bin_width, Vec_DP &yfit, const int &bin)
+int TLMFitter::integrator(Vec_I_double &x, Vec_I_double &y, Vec_double &sig, Vec_I_double &W,
+			   Vec_IO_double &a, Vec_double &dyda, int chisqnumber, const double &bin_width, Vec_double &yfit, const int &bin)
 {
    //Integrates the function within each bin
    int ma = a.size();
@@ -137,7 +137,7 @@ int TLMFitter::integrator(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_I_DP &W,
 	double ynew = 0;  
 	double xstart = x[bin]; //This is the start of the bin
    double ymod;
-   Vec_DP z(fIntegrationSteps), temp(dyda.size());
+   Vec_double z(fIntegrationSteps), temp(dyda.size());
 	
 	for(int k=0; k<fIntegrationSteps; ++k)
 	{  
@@ -196,34 +196,34 @@ int TLMFitter::integrator(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_I_DP &W,
 /*  mrqmin                                                         */
 /*******************************************************************/
 
-void TLMFitter::mrqmin(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
-				 Vec_I_BOOL &ia, Mat_O_DP &covar, Mat_O_DP &alpha, DP &chisq, Vec_I_DP &W,
-				 DP &alamda)
+void TLMFitter::mrqmin(Vec_I_double &x, Vec_I_double &y, Vec_double &sig, Vec_IO_double &a,
+				 Vec_I_BOOL &ia, Mat_O_double &covar, Mat_O_double &alpha, double &chisq, Vec_I_double &W,
+				 double &alamda)
 {
 	static int mfit;
-	static DP ochisq;
+	static double ochisq;
 	int j,k,l;
    static double chisqexp;
 	
 	int ma=a.size();
-	static Mat_DP *oneda_p;
-	static Vec_DP *atry_p,*beta_p,*da_p;
+	static Mat_double *oneda_p;
+	static Vec_double *atry_p,*beta_p,*da_p;
 	if (alamda < 0.0) {  //Initialization
-		atry_p = new Vec_DP(ma);
-		beta_p = new Vec_DP(ma);
-		da_p = new Vec_DP(ma);
+		atry_p = new Vec_double(ma);
+		beta_p = new Vec_double(ma);
+		da_p = new Vec_double(ma);
 		mfit=0;
 		for (j=0;j<ma;j++)
 			if (ia[j]) mfit++;
-		oneda_p = new Mat_DP(mfit,1);
+		oneda_p = new Mat_double(mfit,1);
 		alamda=0.001;
 		mrqcof(x,y,sig,a,ia,alpha,*beta_p,chisq,W,chisqexp);
 		ochisq=chisq;
 		for (j=0;j<ma;j++) (*atry_p)[j]=a[j];
 	}
-	Mat_DP &oneda=*oneda_p;
-	Vec_DP &atry=*atry_p,&beta=*beta_p,&da=*da_p;
-	Mat_DP temp(mfit,mfit);
+	Mat_double &oneda=*oneda_p;
+	Vec_double &atry=*atry_p,&beta=*beta_p,&da=*da_p;
+	Mat_double temp(mfit,mfit);
 	//After linearized fitting matrix, by augmenting diagonal elements
    for (j=0;j<mfit;j++) {  
       for (k=0;k<mfit;k++) covar[j][k]=alpha[j][k];
@@ -266,19 +266,19 @@ void TLMFitter::mrqmin(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
 /*  mrqcof                                                         */
 /*******************************************************************/
 
-void TLMFitter::mrqcof(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
-				Vec_I_BOOL &ia, Mat_O_DP &alpha, Vec_O_DP &beta, DP &chisq, Vec_I_DP &W,
-				DP &chisqexp)
+void TLMFitter::mrqcof(Vec_I_double &x, Vec_I_double &y, Vec_double &sig, Vec_IO_double &a,
+				Vec_I_BOOL &ia, Mat_O_double &alpha, Vec_O_double &beta, double &chisq, Vec_I_double &W,
+				double &chisqexp)
 {
 	int i=0,j,k,l,m,mfit=0;
-	DP wt,sig2i,dy;
+	double wt,sig2i,dy;
 
    chisqexp = 0.0;
 	
 	int ndata=x.size();
 	int ma=a.size();
-	Vec_DP dyda(ma);
-   Vec_DP yfit(ndata);
+	Vec_double dyda(ma);
+   Vec_double yfit(ndata);
 	for (j=0;j<ma;j++)
 		if (ia[j]) mfit++;
 	for (j=0;j<mfit;j++) {     //Initialize (symmetric) alpha, beta.
@@ -359,7 +359,7 @@ void TLMFitter::mrqcof(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
 /*******************************************************************/
 /*  covsrt                                                         */
 /*******************************************************************/
-void TLMFitter::covsrt(Mat_IO_DP &covar, Vec_I_BOOL &ia, const int mfit)
+void TLMFitter::covsrt(Mat_IO_double &covar, Vec_I_BOOL &ia, const int mfit)
 {
    //Rearranges the covariance matrix covar in the order of all ma parameters
 	int i,j,k;
@@ -382,11 +382,11 @@ void TLMFitter::covsrt(Mat_IO_DP &covar, Vec_I_BOOL &ia, const int mfit)
 /*  gaussj                                                         */
 /*******************************************************************/
 
-void TLMFitter::gaussj(Mat_IO_DP &a, Mat_IO_DP &b)
+void TLMFitter::gaussj(Mat_IO_double &a, Mat_IO_double &b)
 {
    //Matrix solver
 	int i,icol,irow,j,k,l,ll;
-	DP big,dum,pivinv;
+	double big,dum,pivinv;
 	
 	int n=a.nrows();
 	int m=b.ncols();

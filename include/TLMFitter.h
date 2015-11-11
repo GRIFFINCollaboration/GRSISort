@@ -27,8 +27,6 @@
 ////////////////////////////////////////////////////////////////
 // Vector Types
 
-typedef double DP;
-
 //Overloaded complex operations to handle mixed float and double
 //This takes care of e.g. 1.0/z, z complex<float>
 
@@ -377,14 +375,14 @@ typedef NRVec<unsigned long> Vec_ULNG, Vec_O_ULNG, Vec_IO_ULNG;
 typedef const NRVec<float> Vec_I_SP;
 typedef NRVec<float> Vec_SP, Vec_O_SP, Vec_IO_SP;
 
-typedef const NRVec<DP> Vec_I_DP;
-typedef NRVec<DP> Vec_DP, Vec_O_DP, Vec_IO_DP;
+typedef const NRVec<double> Vec_I_double;
+typedef NRVec<double> Vec_double, Vec_O_double, Vec_IO_double;
 
 typedef const NRVec<std::complex<float> > Vec_I_CPLX_SP;
 typedef NRVec<std::complex<float> > Vec_CPLX_SP, Vec_O_CPLX_SP, Vec_IO_CPLX_SP;
 
-typedef const NRVec<std::complex<DP> > Vec_I_CPLX_DP;
-typedef NRVec<std::complex<DP> > Vec_CPLX_DP, Vec_O_CPLX_DP, Vec_IO_CPLX_DP;
+typedef const NRVec<std::complex<double> > Vec_I_CPLX_double;
+typedef NRVec<std::complex<double> > Vec_CPLX_double, Vec_O_CPLX_double, Vec_IO_CPLX_double;
 
 // Matrix Types
 
@@ -412,24 +410,24 @@ typedef NRMat<unsigned long> Mat_ULNG, Mat_O_ULNG, Mat_IO_ULNG;
 typedef const NRMat<float> Mat_I_SP;
 typedef NRMat<float> Mat_SP, Mat_O_SP, Mat_IO_SP;
 
-typedef const NRMat<DP> Mat_I_DP;
-typedef NRMat<DP> Mat_DP, Mat_O_DP, Mat_IO_DP;
+typedef const NRMat<double> Mat_I_double;
+typedef NRMat<double> Mat_double, Mat_O_double, Mat_IO_double;
 
 typedef const NRMat<std::complex<float> > Mat_I_CPLX_SP;
 typedef NRMat<std::complex<float> > Mat_CPLX_SP, Mat_O_CPLX_SP, Mat_IO_CPLX_SP;
 
-typedef const NRMat<std::complex<DP> > Mat_I_CPLX_DP;
-typedef NRMat<std::complex<DP> > Mat_CPLX_DP, Mat_O_CPLX_DP, Mat_IO_CPLX_DP;
+typedef const NRMat<std::complex<double> > Mat_I_CPLX_double;
+typedef NRMat<std::complex<double> > Mat_CPLX_double, Mat_O_CPLX_double, Mat_IO_CPLX_double;
 
 // 3D Matrix Types
 
-typedef const NRMat3d<DP> Mat3D_I_DP;
-typedef NRMat3d<DP> Mat3D_DP, Mat3D_O_DP, Mat3D_IO_DP;
+typedef const NRMat3d<double> Mat3D_I_double;
+typedef NRMat3d<double> Mat3D_double, Mat3D_O_double, Mat3D_IO_double;
 
 // Miscellaneous Types
 
 typedef NRVec<unsigned long *> Vec_ULNG_p;
-typedef NRVec<NRMat<DP> *> Vec_Mat_DP_p;
+typedef NRVec<NRMat<double> *> Vec_Mat_double_p;
 typedef NRVec<std::fstream *> Vec_FSTREAM_p;
 
 
@@ -497,7 +495,6 @@ class TLMFitter : public TObject{
       int fRangeMin;
       int fRangeMax;
 
-      typedef double DP;
    public:
       template <class T> class NRVec;
       template <class T> class NRMat;
@@ -517,18 +514,18 @@ class TLMFitter : public TObject{
 		   exit(1);
 	   }
    
-      void funcs(const DP &x, Vec_IO_DP &a, DP &y, Vec_O_DP &dyda);
-      void mrqmin(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
-            Vec_I_BOOL &ia, Mat_O_DP &covar, Mat_O_DP &alpha, DP &chisq, Vec_I_DP &W,
-            DP &alamda);
+      void funcs(const double &x, Vec_IO_double &a, double &y, Vec_O_double &dyda);
+      void mrqmin(Vec_I_double &x, Vec_I_double &y, Vec_double &sig, Vec_IO_double &a,
+            Vec_I_BOOL &ia, Mat_O_double &covar, Mat_O_double &alpha, double &chisq, Vec_I_double &W,
+            double &alamda);
 
-      void mrqcof(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
-            Vec_I_BOOL &ia, Mat_O_DP &alpha, Vec_O_DP &beta, DP &chisq, Vec_I_DP &W,
-               DP &chisqexp);
-      void gaussj(Mat_IO_DP &a, Mat_IO_DP &b);
-      void covsrt(Mat_IO_DP &covar, Vec_I_BOOL &ia, const int mfit);
-      int  integrator(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_I_DP &W,
-			   Vec_IO_DP &a, Vec_DP &dyda, int chisqnumber, const double &bin_width, Vec_DP &yfit, const int &bin);
+      void mrqcof(Vec_I_double &x, Vec_I_double &y, Vec_double &sig, Vec_IO_double &a,
+            Vec_I_BOOL &ia, Mat_O_double &alpha, Vec_O_double &beta, double &chisq, Vec_I_double &W,
+               double &chisqexp);
+      void gaussj(Mat_IO_double &a, Mat_IO_double &b);
+      void covsrt(Mat_IO_double &covar, Vec_I_BOOL &ia, const int mfit);
+      int  integrator(Vec_I_double &x, Vec_I_double &y, Vec_double &sig, Vec_I_double &W,
+			   Vec_IO_double &a, Vec_double &dyda, int chisqnumber, const double &bin_width, Vec_double &yfit, const int &bin);
 
    public:
 
