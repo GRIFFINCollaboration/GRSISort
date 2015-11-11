@@ -55,24 +55,27 @@ template <class T>
 NRVec<T>::NRVec() : nn(0), v(0) {}
 
 template <class T>
-NRVec<T>::NRVec(int n) : nn(n), v(new T[n]) {}
+NRVec<T>::NRVec(int n) : nn(n), v(new T[n]()) {
+   for(int i=0; i<n; ++i)
+      v[i] = 0.0;
+}
 
 template <class T>
-NRVec<T>::NRVec(const T& a, int n) : nn(n), v(new T[n])
+NRVec<T>::NRVec(const T& a, int n) : nn(n), v(new T[n]())
 {
 	for(int i=0; i<n; i++)
 		v[i] = a;
 }
 
 template <class T>
-NRVec<T>::NRVec(const T *a, int n) : nn(n), v(new T[n])
+NRVec<T>::NRVec(const T *a, int n) : nn(n), v(new T[n]())
 {
 	for(int i=0; i<n; i++)
 		v[i] = *a++;
 }
 
 template <class T>
-NRVec<T>::NRVec(const NRVec<T> &rhs) : nn(rhs.nn), v(new T[nn])
+NRVec<T>::NRVec(const NRVec<T> &rhs) : nn(rhs.nn), v(new T[nn]())
 {
 	for(int i=0; i<nn; i++)
 		v[i] = rhs[i];
@@ -155,18 +158,24 @@ template <class T>
 NRMat<T>::NRMat() : nn(0), mm(0), v(0) {}
 
 template <class T>
-NRMat<T>::NRMat(int n, int m) : nn(n), mm(m), v(new T*[n])
+NRMat<T>::NRMat(int n, int m) : nn(n), mm(m), v(new T*[n]())
 {
-	v[0] = new T[m*n];
+	v[0] = new T[m*n]();
 	for (int i=1; i< n; i++)
 		v[i] = v[i-1] + m;
+
+   for(int i=0; i<n;++i){
+      for(int j=0;j<m;++j){
+         v[i][j] = 0.0;
+      }
+   }
 }
 
 template <class T>
-NRMat<T>::NRMat(const T &a, int n, int m) : nn(n), mm(m), v(new T*[n])
+NRMat<T>::NRMat(const T &a, int n, int m) : nn(n), mm(m), v(new T*[n]())
 {
 	int i,j;
-	v[0] = new T[m*n];
+	v[0] = new T[m*n]();
 	for (i=1; i< n; i++)
 		v[i] = v[i-1] + m;
 	for (i=0; i< n; i++)
@@ -175,10 +184,10 @@ NRMat<T>::NRMat(const T &a, int n, int m) : nn(n), mm(m), v(new T*[n])
 }
 
 template <class T>
-NRMat<T>::NRMat(const T *a, int n, int m) : nn(n), mm(m), v(new T*[n])
+NRMat<T>::NRMat(const T *a, int n, int m) : nn(n), mm(m), v(new T*[n]())
 {
 	int i,j;
-	v[0] = new T[m*n];
+	v[0] = new T[m*n]();
 	for (i=1; i< n; i++)
 		v[i] = v[i-1] + m;
 	for (i=0; i< n; i++)
@@ -187,10 +196,10 @@ NRMat<T>::NRMat(const T *a, int n, int m) : nn(n), mm(m), v(new T*[n])
 }
 
 template <class T>
-NRMat<T>::NRMat(const NRMat &rhs) : nn(rhs.nn), mm(rhs.mm), v(new T*[nn])
+NRMat<T>::NRMat(const NRMat &rhs) : nn(rhs.nn), mm(rhs.mm), v(new T*[nn]())
 {
 	int i,j;
-	v[0] = new T[mm*nn];
+	v[0] = new T[mm*nn]();
 	for (i=1; i< nn; i++)
 		v[i] = v[i-1] + mm;
 	for (i=0; i< nn; i++)
@@ -477,7 +486,7 @@ inline const std::complex<float> operator/(const std::complex<float> &a,
 
 class TLMFitter : public TObject{
    public:
-      TLMFitter(): fIntegrationSteps(1000), fInitChi2Number(3){};
+      TLMFitter(): fIntegrationSteps(100), fInitChi2Number(3){};
       ~TLMFitter(){};
 
    private:
@@ -485,6 +494,8 @@ class TLMFitter : public TObject{
       TH1* fHist;
       TF1* fFunction;
       int fInitChi2Number;
+      int fRangeMin;
+      int fRangeMax;
 
       typedef double DP;
    public:
@@ -495,13 +506,15 @@ class TLMFitter : public TObject{
       void Fit(TH1* hist, TF1* function);
 
    protected:
+      void SetFitterRange(int min, int max) {fRangeMin = min; fRangeMax = max;}
+
 	   inline void nrerror(const std::string error_text)
-	   // Numerical Recipes standard error handler
+	    //Numerical Recipes standard error handler
 	   {
-		   //cerr << "Numerical Recipes run-time error..." << endl;
-		   //cerr << error_text << endl;
-		   //cerr << "...now exiting to system..." << endl;
-		   //exit(1);
+         std::cerr << "Numerical Recipes run-time error..." << std::endl;
+         std::cerr << error_text << std::endl;
+         std::cerr << "...now exiting to system..." << std::endl;
+		   exit(1);
 	   }
    
       void funcs(const DP &x, Vec_IO_DP &a, DP &y, Vec_O_DP &dyda);

@@ -3,6 +3,7 @@
 #include "Math/Factory.h"
 #include "Math/Functor.h"
 #include "GCanvas.h"
+#include "TLMFitter.h"
 
 ///////////////////////////////////////////////////////////////////////
 //
@@ -648,6 +649,10 @@ Double_t TDecay::DecayFit(Double_t *dim, Double_t *par){
 }
 
 TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
+   //Use the option "G" to use Geoff's Levenberg-Marquardt algorithm to fit.
+   TString opt1 = opt;
+   opt1.ToUpper();
+      
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
    TVirtualFitter::SetPrecision(1.0e-10);
    TVirtualFitter::SetMaxIterations(10000);
@@ -657,11 +662,19 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
    SetParameters();
 
 //   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sWLRS0",opt));
-   TFitResultPtr fitres = fFitFunc->Fit(fithist,Form("%sWLRS",opt));
-   Double_t chi2 = fitres->Chi2();
-   Double_t ndf = fitres->Ndf();
 
-   printf("Chi2/ndf = %lf\n",chi2/ndf);
+   TFitResultPtr fitres;
+   if(opt1.Contains("G")){
+      //Fit using LMFitter..Doesn't do residuals yet
+      TLMFitter fitter;
+      fitter.Fit(fithist,fFitFunc);
+   }
+   else{
+      fitres = fFitFunc->Fit(fithist,Form("%sIWLRS",opt));
+      Double_t chi2 = fitres->Chi2();
+      Double_t ndf = fitres->Ndf();
+      printf("Chi2/ndf = %lf\n",chi2/ndf);
+   }
 
    //Now Tell the decays about the results
    for(size_t i=0; i<fChainList.size(); ++i){

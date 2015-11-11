@@ -4,8 +4,6 @@
 
 ClassImp(TLMFitter);
 
-/* DIM is the size of the matrices and DIMM is the last bin to fit */
-
 /* DEFINITIONS */
 /*******************************************************************/
 /* alamda = parameter switches between curve and gradient method   */
@@ -34,39 +32,12 @@ void TLMFitter::funcs(const DP &x, Vec_IO_DP &a, DP &y, Vec_O_DP &dyda)
    }
    y = fFunction->Eval(x);
 }
-/* Main program----------------------------------------------------*/
 
-/*Reads in the binary data and uses subroutines from Num.Recipes   */
 void TLMFitter::Fit(TH1* hist, TF1* func){
-//	char fname1[100], fname2[100], fname3[100], flog[100], fout[100], fruns[100];
-//	char text[100], yfits[100], ydatfile[100], flag, flagtemp,suppress, answer;
-//	double x[DIMM+1], y[DIMM+1], v[DIMM+1], W[DIMM+1], junk;
-//	double ynew, fit[DIMM+1], z[ITER+1], xstart[DIMM+1], ymod;
-//	double yfit[DIMM+1], vsumold[DIMM+1];
-//	double sumnew[DIMM+1], sumold[DIMM+1], vsumnew[DIMM+1];
-//	double bg, thalf1, thalf2, thalf3;
-//	double intens2, intens3;
-//	double BIN, DEAD1;
-//	unsigned long int buffer1[DIM+1], buffer2[DIM+1], sumdatan, sum;
-//	double channel1[DIMM+1], channel2[DIMM+1];
-//	int i, j, k, w, l, u, p, n, q, ndata, run_num, sumdatao, events, chopstep;
-//	int initchisqnumber, chisqnumber, cycles, good, cycbeg, cycend, chopstart, chop_runs, cloop;
-//	int total_runs, chop, chopend, loop, mfit, closed;
-//	char run_number;
-//	double sig[DIMM+1], chisqstart, lamdastart;
-//	FILE *ifp1, *ifp2, *ifp3, *ofp1, *ofp2, *ofpydata, *ofpyfit;
-//	
-//	/* NUMERICAL RECIPES DEFINITIONS (needed for mrqmin subroutine)  */
    double alamda, chisq, ochisq;
 
 	int ma = func->GetNpar();  /* This is the number of parameters in fit function */
-   int nBins = hist->GetNbinsX();
-//	double *alamda, da, *chisq, a[ma+1], beta[DIMM+1];
-//	double dyda[ma+1];
 	Mat_O_DP alpha(ma,ma), covar(ma,ma);
-//	static double *atry;
-//	int ia[ma+1];
-   Vec_DP x(nBins), y(nBins), sig(nBins), yfit(nBins), W(nBins), v(nBins);
    Vec_BOOL ia(ma);
    Vec_O_DP a(ma), dyda(ma);
 
@@ -74,6 +45,7 @@ void TLMFitter::Fit(TH1* hist, TF1* func){
    fHist = hist;
 
    //Sets whether parameters are fixed or free.
+   std::cout << "Setting the parameters..." << std::endl;
    for(int i=0; i<func->GetNpar();++i){
       Double_t min,max;
       a[i] = func->GetParameter(i);
@@ -87,70 +59,61 @@ void TLMFitter::Fit(TH1* hist, TF1* func){
          }
       }
       ia[i] = true;
-
    }
-
-   for(int i=0; i<hist->GetNbinsX();++i){
-      x[i] = hist->GetXaxis()->GetBinCenter(i);
-      y[i] = hist->GetBinContent(i);
-      v[i] = hist->GetBinError(i)*hist->GetBinError(i);
-
-      W[i] = y[i]/v[i];
-   }
-
-	/* Go to integrator to begin obtain yfit with these guesses */
+   for(int i=0;i<ma;++i) std::cout << "par[" << i << "] = " <<  fFunction->GetParameter(i) << std::endl;
    double func_range_min, func_range_max;
+   int bin_min, bin_max,nBins;
    func->GetRange(func_range_min,func_range_max);
+   std::cout << "function range: " << func_range_min <<  " to " << func_range_max << std::endl;
+   SetFitterRange(func_range_min,func_range_max);
+   bin_min = hist->FindBin(func_range_min);
+   bin_max = hist->FindBin(func_range_max);
 
-   for(int iter=0;iter<1000;++iter){
-      alamda = -1;
-      mrqmin(x,y,sig,a,ia,covar,alpha,chisq,W,alamda);
-      int k = 1;
-      int itst = 0;
-      while(true){
-         std::cout << std::endl << "Iteration #" << std::setw(3) << k;
-         std::cout << std::setw(18) << "chi-squared:" << std::setw(13) << chisq;
-         std::cout << std::setw(11) << "alamda:" << std::setw(10) << alamda << std::endl;
-         fFunction->Print();
-         std::cout << std::endl;
-         ++k;
-         ochisq = chisq;
-         mrqmin(x,y,sig,a,ia,covar,alpha,chisq,W,alamda);
-         std::fabs(ochisq-chisq) < 0.1 ? itst++ : itst =0;
-         if(itst<4) continue;
-         alamda = 0.0;
-         mrqmin(x,y,sig,a,ia,covar,alpha,chisq,W,alamda);
-         std::cout << "Uncertainties:" << std::endl;
-         for(int i=0; i<ma; ++i) std::cout << std::setw(9) << sqrt(covar[i][i]);
-         std::cout << std::endl;
-         break;
-      }
+   nBins = bin_max - bin_min;
+   Vec_DP x(nBins), y(nBins), sig(nBins), yfit(nBins), W(nBins), v(nBins);
+   
+   std::cout << "Setting bin values..." << std::endl;
+   std::cout << "Range is " << bin_min << " to " << bin_max << std::endl;
+   for(int i=0; i<hist->GetNbinsX();++i){
+      x[i] = hist->GetXaxis()->GetBinUpEdge(i+1);
+      y[i] = hist->GetBinContent(i+1);
+      v[i] = hist->GetBinError(i+1)*hist->GetBinError(i+1);
+      if(v[i] == 0)
+         W[i] = 1.0;
+      else
+         W[i] = y[i]/v[i];
    }
-/*	for(int q=func_range_min; q<func_range_max; q++)
-	{
-	   chisqnumber = integrator(x,y,sig,W,a,dyda,chisqnumber,bin_width,yfit,q);
-	}*/
-//			
-//			ndata=DIMM-chop;                 /* ndata is # of data points  */
-//			chisqstart = 0.0;
-//			lamdastart = -1.0;
-//			chisq = &chisqstart;
-//			alamda = &lamdastart;
-//			/* Modified mrqmin algorithm */
-//			printf("Now Fitting MCS %c\n",run_number);
-//			printf("Chop: %d to %d\n",chop,DIMM);
-//			mrqmin(x,y,sig,ndata,a,ia,ma,covar,alpha,chisq,funcs,alamda,
-//				   ofp1,BIN,n,u,ofp2,W,chisqnumber,chop,chopend,yfit,flag,ofpyfit,run_number,p,initchisqnumber);
-//			
-//			fclose(ofpyfit);
-//			fclose(ofp1);
-//			fclose(ofp2);
-//			
-//		}/* end of loop over chop files */
-//		
-//	}/* End of loop over all run_numbers */
-//	fclose(ifp3);
-//	printf("END OF RUN \n");
+
+   alamda = -1;
+   mrqmin(x,y,sig,a,ia,covar,alpha,chisq,W,alamda);
+   std::cout << "out of mrqmin" << std::endl;
+   int k = 1;
+   int itst = 0;
+   while(true){
+      std::cout << std::endl << "Iteration #" << std::setw(3) << k;
+      std::cout << std::setw(18) << "chi-squared:" << std::setw(13) << chisq;
+      std::cout << std::setw(11) << "alamda:" << std::setw(10) << alamda << std::endl;
+      for(int i=0;i<ma;++i) std::cout << "par[" << i << "] = " <<  fFunction->GetParameter(i) << std::endl;
+      std::cout << std::endl;
+      ++k;
+      ochisq = chisq;
+      mrqmin(x,y,sig,a,ia,covar,alpha,chisq,W,alamda);
+      std::fabs(ochisq-chisq) < 0.0001 ? itst++ : itst =0;
+      if(itst<10) continue;
+      alamda = 0.0;
+      mrqmin(x,y,sig,a,ia,covar,alpha,chisq,W,alamda);
+      std::cout << "Uncertainties:" << std::endl;
+      for(int i=0; i<ma; ++i) std::cout << " " << std::sqrt(covar[i][i]);
+      std::cout << std::endl;
+      break;
+   }
+   std::cout << "Chis2/ndf: " << chisq << std::endl;
+   
+   //Feed the parameters back into the function.
+   for(int i=0; i<ma; ++i){
+      fFunction->SetParameter(i,a[i]);
+      fFunction->SetParError(i,std::sqrt(covar[i][i]));
+   }
 }
 /*******************************************************************/
 /*                                                                 */
@@ -162,10 +125,6 @@ void TLMFitter::Fit(TH1* hist, TF1* func){
 /* gaussj - row reduces alpha and beta to send to covsrt           */
 /*                                                                 */
 /*******************************************************************/
-
-
-
-
 /*******************************************************************/
 /*  Integrator                                                     */
 /*******************************************************************/
@@ -183,15 +142,18 @@ int TLMFitter::integrator(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_I_DP &W,
 	for(int k=0; k<fIntegrationSteps; ++k)
 	{  
       //Find the y value at different integration stpes along the bin
-		z[k] = xstart + (double)(k)*bin_width/(double)fIntegrationSteps;
+		//z[k] = xstart + (double)(k)*bin_width/(double)fIntegrationSteps;
+		z[k] = xstart + (double)(k)/(double)fIntegrationSteps;
 		funcs(z[k],a,ymod,dyda);
 		for(int i=0; i<ma; ++i)
 		{  
          //Integrates the gradient of the functon within the bin
-			temp[i] += bin_width/(double)fIntegrationSteps*dyda[i];
+			temp[i] += 1./(double)fIntegrationSteps*dyda[i];
+			//temp[i] += bin_width/(double)fIntegrationSteps*dyda[i];
 		}
       //integrates the y of the function
-		ynew += bin_width/(double)fIntegrationSteps*ymod;
+		//ynew += bin_width/(double)fIntegrationSteps*ymod;
+		ynew += 1./(double)fIntegrationSteps*ymod;
 	}
    //Sets the actual variables to the "temporary" variables used for integration
 	for(int i=0; i<ma; ++i)
@@ -241,7 +203,7 @@ void TLMFitter::mrqmin(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
 	static int mfit;
 	static DP ochisq;
 	int j,k,l;
-   double chisqexp;
+   static double chisqexp;
 	
 	int ma=a.size();
 	static Mat_DP *oneda_p;
@@ -286,7 +248,6 @@ void TLMFitter::mrqmin(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
 		if (ia[l]) atry[l]=a[l]+da[j++];
    }
 	mrqcof(x,y,sig,atry,ia,covar,da,chisq,W,chisqexp);
-
 	if (chisq < ochisq) {   //Success, accept the new solution
 		alamda *= 0.1;
 		ochisq=chisq;
@@ -309,7 +270,7 @@ void TLMFitter::mrqcof(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
 				Vec_I_BOOL &ia, Mat_O_DP &alpha, Vec_O_DP &beta, DP &chisq, Vec_I_DP &W,
 				DP &chisqexp)
 {
-	int i,j,k,l,m,mfit=0;
+	int i=0,j,k,l,m,mfit=0;
 	DP wt,sig2i,dy;
 
    chisqexp = 0.0;
@@ -325,8 +286,7 @@ void TLMFitter::mrqcof(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
 		beta[j]=0.0;
 	}
 	chisq=0.0;
-
-	for (i=0;i<ndata;i++) {    //Summation loop over all data.
+	for (i=fRangeMin;i<fRangeMax;++i) {    //Summation loop over all data.
       int chisqnumber = integrator(x,y,sig,W,a,dyda,fInitChi2Number,fHist->GetXaxis()->GetBinWidth(1),yfit,i);
 		//funcs(x[i],a,ymod,dyda); Integrator does this instead
 		sig2i=1.0/(sig[i]*sig[i]);
@@ -339,18 +299,18 @@ void TLMFitter::mrqcof(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
 				for (k=0,m=0;m<l+1;m++){
 					if (ia[m]){ 
                   if(chisqnumber == 0){ //least squares
-                     alpha[j][++k] += wt*dyda[m]*(1.0+dy/yfit[i])*(1.0+dy/yfit[i])*W[i];
+                     alpha[j][k++] += wt*dyda[m]*(1.0+dy/yfit[i])*(1.0+dy/yfit[i])*W[i];
                   }
                   else{
-                     alpha[j][++k] += wt*dyda[m]*W[i];
+                     alpha[j][k++] += wt*dyda[m]*W[i];
                   }
                }
             }
             if(chisqnumber ==0){ //Least squares
-               beta[j] += dy*wt*(1.0+dy/(2.0*yfit[i]))*W[i];
+               beta[j++] += dy*wt*(1.0+dy/(2.0*yfit[i]))*W[i];
             }
             else{
-               beta[j] += dy*wt*W[i];
+               beta[j++] += dy*wt*W[i];
             }
          }
          //Now find the correct chi^2 based on the different versions of chisquared
@@ -368,25 +328,25 @@ void TLMFitter::mrqcof(Vec_I_DP &x, Vec_I_DP &y, Vec_DP &sig, Vec_IO_DP &a,
             
             //approximation to expectation value of ml chi squared
 			   if(yfit[i] < 4.2){
-				   chisqexp += -2.0*yfit[i]*log(yfit[i])
-				   +pow(yfit[i],2.0)*log(4.0)
-				   -pow(yfit[i],3.0)*log(4.0/3.0)
-				   +(1.0/3.0)*pow(yfit[i],4.0)*log(32.0/27.0)
-				   -(1.0/12.0)*pow(yfit[i],5.0)*log(4096.0/3645.0)
-				   +1442.633448*pow(yfit[i],6.0)/pow(10.0,6.0)
-				   -1782.46047*pow(yfit[i],7.0)/pow(10.0,7.0)
-				   +1588.98494*pow(yfit[i],8.0)/pow(10.0,8.0)
-				   -716.19428*pow(yfit[i],9.0)/pow(10.0,9.0);
+				   chisqexp += -2.0*yfit[i]*std::log(yfit[i])
+				   +std::pow(yfit[i],2.0)*std::log(4.0)
+				   -std::pow(yfit[i],3.0)*std::log(4.0/3.0)
+				   +(1.0/3.0)*std::pow(yfit[i],4.0)*std::log(32.0/27.0)
+				   -(1.0/12.0)*std::pow(yfit[i],5.0)*std::log(4096.0/3645.0)
+				   +1442.633448*std::pow(yfit[i],6.0)/std::pow(10.0,6.0)
+				   -1782.46047*std::pow(yfit[i],7.0)/std::pow(10.0,7.0)
+				   +1588.98494*std::pow(yfit[i],8.0)/std::pow(10.0,8.0)
+				   -716.19428*std::pow(yfit[i],9.0)/std::pow(10.0,9.0);
 		      }
 		      else
 		      {
-			      chisqexp += 1.0 + 1.0/(6.0*yfit[i])+1.0/(6.0*pow(yfit[i],2.0))
-			      + 19.0/(60.0*pow(yfit[i],3.0))
-			      + 9.0/(10.0*pow(yfit[i],4.0))
-			      - 31.9385/pow(yfit[i],5.0)
-			      + 741.3189/pow(yfit[i],6.0)
-			      - 3928.1260/pow(yfit[i],7.0)
-			      + 6158.3381/pow(yfit[i],8.0);
+			      chisqexp += 1.0 + 1.0/(6.0*yfit[i])+1.0/(6.0*std::pow(yfit[i],2.0))
+			      + 19.0/(60.0*std::pow(yfit[i],3.0))
+			      + 9.0/(10.0*std::pow(yfit[i],4.0))
+			      - 31.9385/std::pow(yfit[i],5.0)
+			      + 741.3189/std::pow(yfit[i],6.0)
+			      - 3928.1260/std::pow(yfit[i],7.0)
+			      + 6158.3381/std::pow(yfit[i],8.0);
 		      }
          }//end of chi2 3
       }
@@ -430,6 +390,7 @@ void TLMFitter::gaussj(Mat_IO_DP &a, Mat_IO_DP &b)
 	
 	int n=a.nrows();
 	int m=b.ncols();
+
 	Vec_INT indxc(n),indxr(n),ipiv(n);
 	for (j=0;j<n;j++) ipiv[j]=0;
 	for (i=0;i<n;i++) {
@@ -438,8 +399,8 @@ void TLMFitter::gaussj(Mat_IO_DP &a, Mat_IO_DP &b)
 			if (ipiv[j] != 1)
 				for (k=0;k<n;k++) {
 					if (ipiv[k] == 0) {
-						if (fabs(a[j][k]) >= big) {
-							big=fabs(a[j][k]);
+						if (std::fabs(a[j][k]) >= big) {
+							big=std::fabs(a[j][k]);
 							irow=j;
 							icol=k;
 						}
@@ -452,10 +413,12 @@ void TLMFitter::gaussj(Mat_IO_DP &a, Mat_IO_DP &b)
 		}
 		indxr[i]=irow;
 		indxc[i]=icol;
-		if (a[icol][icol] == 0.0) nrerror("gaussj: Singular Matrix");
+		if (a[icol][icol] == 0.0) { 
+         nrerror("gaussj: Singular Matrix");
+      }
 		pivinv=1.0/a[icol][icol];
 		a[icol][icol]=1.0;
-		for (l=0;l<n;l++) a[icol][l] *= pivinv;
+		for (l=0;l<n;l++) a[icol][l] *= pivinv; 
 		for (l=0;l<m;l++) b[icol][l] *= pivinv;
 		for (ll=0;ll<n;ll++)
 			if (ll != icol) {
