@@ -33,6 +33,9 @@ class TDiagnostics : public TObject {
 		std::map<Short_t, Long_t> fNumberOfGoodFragments;  ///< map of number of good fragments per detector type
 		std::map<Short_t, Long_t> fNumberOfBadFragments;   ///< map of number of bad fragments per detector type
 
+		std::map<Short_t, UInt_t> fMinChannelId;           ///< map of minimum channel id per channel number
+		std::map<Short_t, UInt_t> fMaxChannelId;           ///< map of maximum channel id per channel number
+
 		//ppg diagnostics
 		ULong64_t fPPGCycleLength;
 	

@@ -29,7 +29,7 @@ void TDiagnostics::GoodFragment(TFragment* frag) {
 
 	Short_t channelNumber = frag->ChannelNumber;
 	UInt_t channelId = frag->ChannelId;
-	Long_t triggerId = frag->TriggerId;
+	//Long_t triggerId = frag->TriggerId;
 	//check if this channel has been found before
 	if(fMinChannelId.find(channelNumber) == fMinChannelId.end()) {
 		fMinChannelId[channelNumber] = channelId;
