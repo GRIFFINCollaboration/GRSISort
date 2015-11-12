@@ -1009,20 +1009,14 @@ dl.section dd {
 }
 
 
-#grsilogo
-{
-	text-align: center;
-	vertical-align: bottom;
-	border-collapse: separate;
-	align:right;
-	background-color:#005baa;
-}
- 
 #projectlogo
 {
-	text-align: center;
-	vertical-align: bottom;
+	/*text-align: center;*/
+	vertical-align: top;
 	border-collapse: separate;
+	float:left;
+	height:151px;
+	width:118px;
 	background-color:#005baa;
 }
  
@@ -1030,6 +1024,31 @@ dl.section dd {
 { 
 	border: 0px none;
 	white-space:nowrap;
+}
+ 
+#grsilogo
+{
+	vertical-align: top;
+	border-collapse: separate;
+	float:right;
+	height:151px;
+	width:233px;
+	background-color:#005baa;
+}
+ 
+#grsilogo img
+{ 
+	border: 0px none;
+	white-space:nowrap;
+}
+
+#projecttitle
+{
+	display: flex;
+	flex-direction: column;
+	flex-basis: auto;
+	flex-grow: 1;
+	min-width: 430px;
 }
  
 #projectname
@@ -1044,13 +1063,13 @@ dl.section dd {
     
 #projectauthor
 {
+	flex: 1;
 	font: 150% Tahoma, Arial,sans-serif;
 	margin: 0px;
 	padding: 0px;
 	color:white;
 	background-color:#005baa;
 	text-align:center;
-	height:100%;
 }
 
 #projectbrief
@@ -1060,7 +1079,6 @@ dl.section dd {
 	padding: 0px;
 	color:white;
 	background-color:#005baa;
-	width:100%;
 }
 
 #projectnumber
@@ -1074,10 +1092,13 @@ dl.section dd {
 
 #titlearea
 {
+	display: flex;
+	flex-direction: row;
 	padding: 0px;
 	margin: 0px;
 	width: 100%;
-	border-bottom: 1px solid #5373B4;
+	border-bottom: 1px solid #005baa;
+	height:151px;
 }
 
 .image

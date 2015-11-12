@@ -17,6 +17,7 @@
 #include "TEpicsFrag.h"
 #include "TPPG.h"
 #include "TScaler.h"
+#include "TDiagnostics.h"
 
 class TGRSIRootIO : public TObject {
    public:
@@ -35,6 +36,7 @@ class TGRSIRootIO : public TObject {
       TTree* fDeadtimeScalerTree;
       TTree* fRateScalerTree;
       TPPG* fPPG;
+      TDiagnostics* fDiagnostics;
 
       TFile* fOutFile;
       int fTimesFillCalled;
@@ -93,6 +95,10 @@ class TGRSIRootIO : public TObject {
       TTree* GetEpicsTree()  { return fEpicsTree;  }
       void FillEpicsTree(TEpicsFrag*);
       void FinalizeEpicsTree();
+
+      void SetUpDiagnostics();
+      TDiagnostics* GetDiagnostics()  { return fDiagnostics;  }
+      void FinalizeDiagnostics();
 
       void MakeUserHistsFromFragmentTree();
       void WriteRunStats();

@@ -10,6 +10,7 @@
 
 #include "TEpicsFrag.h"
 #include "TGRSIRootIO.h"
+#include "TDiagnostics.h"
 
 #include "Rtypes.h"
 
@@ -355,6 +356,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 	int x = 0;  
 	if(!SetGRIFHeader(data[x++],EventFrag,bank)) {
 		printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n",data[0]);
+		TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-1); //we failed to get a good header, so we don't know which detector type this fragment would've belonged to
 		delete EventFrag;
 		return -x;
 	}
@@ -394,6 +396,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 	//The channel trigger ID is in an unstable state right now and is not
 	//always written to the midas file
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
+		TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 		delete EventFrag;
 		return -x;
 	}
@@ -405,6 +408,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 	}
 
 	if(!SetGRIFTimeStampLow(data[x++],EventFrag)) {
+		TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 		delete EventFrag;
 		return -x;
 	}
@@ -419,6 +423,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 				//if this happens, we have "accidentally" found another event.
 				//currently the GRIF-C only sets the master/slave port of the address for the first header (of the corrupt event)
 				//so we want to ignore this corrupt event and the next event which has a wrong address
+				TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 				delete EventFrag;
 				return -(x+1);//+1 to ensure we don't read this header as start of a good event
 				break;
@@ -459,15 +464,18 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 					if(fRecordStats)
 						FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
+					TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag->DetectorType);
 					return x;
 				} else  {
 					TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
+					TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 					return -x;
 				}
 				break;
 			case 0xf0000000:
 				switch(bank){
 					case 1: // header format from before May 2015 experiments
+						TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 						delete EventFrag;
 						return -x;
 						break;
@@ -478,6 +486,8 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 							dword = *(data+x);
 							SetGRIFPsd(dword, EventFrag);
 						} else {
+							TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
+							delete EventFrag;
 							return -x;
 						}
 						break;
@@ -500,6 +510,8 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 						//these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
 						//so we look for the next trailer and stop there
 						while((data[x] & 0xf0000000) != 0xe0000000) ++x;
+						TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
+						delete EventFrag;
 						return -x;
 					}
 				}
@@ -508,6 +520,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 	}
 
 	TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
+	TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 	return -x;
 }
 
@@ -707,7 +720,7 @@ int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, int bank, unsig
 	//The Network packet number is for debugging and is not always written to
 	//the midas file.
 	if(SetPPGNetworkPacket(data[x],ppgEvent)){ // The network packet placement is not yet stable.
-		x++;
+		++x;
 	}
 
 	if(SetNewPPGPattern(data[x],ppgEvent)) {
@@ -738,8 +751,10 @@ int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, int bank, unsig
 			case 0xe0000000:
 				if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
 					TGRSIRootIO::Get()->FillPPG(ppgEvent);
+					TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(-2); //use detector type -2 for PPG
 					return x;
 				} else  {
+					TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-2); //use detector type -2 for PPG
 					return -x;
 				}
 				break;
@@ -747,6 +762,7 @@ int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, int bank, unsig
 	}
 	delete ppgEvent;
 	//No trailer found
+	TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-2); //use detector type -2 for PPG
 	return -x;
 }
 
@@ -798,17 +814,20 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t* data, int address) {
 
 	//we expect a word starting with 0xa containing the 28 lowest bits of the timestamp
 	if(!SetScalerLowTimeStamp(data[x++],scalerEvent)) {
+		TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
 		return -x;
 	}
 	//followed by four scaler words (32 bits each)
 	for(int i = 0; i < 4; ++i) {
 		if(!SetScalerValue(i, data[x++], scalerEvent)) {
+			TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
 			return -x;
 		}
 	}
 	//and finally the trailer word with the highest 24 bits of the timestamp
 	int scalerType = 0;
 	if(!SetScalerHighTimeStamp(data[x++],scalerEvent,scalerType)) {
+		TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
 		return -x;
 	}
 
@@ -819,9 +838,11 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t* data, int address) {
 		scalerEvent->ResizeScaler();
 		TRateScalerQueue::Get()->Add(scalerEvent);
 	} else { //unknown scaler type
+		TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
 		return -x;
 	}
 
+	TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(-3); //use detector type -3 for scaler data
 	return x;
 }
 
