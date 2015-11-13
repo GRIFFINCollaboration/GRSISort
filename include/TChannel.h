@@ -106,7 +106,7 @@ class TChannel : public TNamed	{
 	inline void SetChannelName(const char *tmpname)  {channelname.assign(tmpname);} 
 	inline void SetNumber(int tmpnum)	              {number = tmpnum; UpdateChannelNumberMap();}
 	inline void SetIntegration(int tmpint)	        {integration = tmpint;}
-   static void SetIntegration(std::string mnemonic,bool flag);
+   static void SetIntegration(std::string mnemonic,int tmpint);
 	inline void SetStream(int tmpstream)	           {stream = tmpstream;}
 	inline void SetUserInfoNumber(int tempinfo)      {userinfonumber = tempinfo;}
 	inline void SetDigitizerType(const char *tmpstr) {digitizertype.assign(tmpstr);}
