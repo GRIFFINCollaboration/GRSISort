@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <iostream>
 
-ClassImp(TLMFitter);
+ClassImp(TLMFitter)
 
 /* DEFINITIONS */
 /*******************************************************************/
@@ -385,7 +385,7 @@ void TLMFitter::covsrt(Mat_IO_double &covar, Vec_I_BOOL &ia, const int mfit)
 void TLMFitter::gaussj(Mat_IO_double &a, Mat_IO_double &b)
 {
    //Matrix solver
-	int i,icol,irow,j,k,l,ll;
+	int i =0,icol=0,irow=0,j=0,k=0,l=0,ll=0;
 	double big,dum,pivinv;
 	
 	int n=a.nrows();
