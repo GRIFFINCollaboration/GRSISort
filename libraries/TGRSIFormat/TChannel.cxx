@@ -486,6 +486,19 @@ void TChannel::SetUseCalFileIntegration(std::string mnemonic,bool flag){
    }
 }
 
+void TChannel::SetIntegration(std::string mnemonic,bool flag){
+   //Writes this CalFile to all channels in the current TChannel Map 
+   //That starts with the mnemonic. Use "" to write to ALL channels
+   //WARNING: This is case sensitive!
+   std::map<unsigned int,TChannel*>::iterator mapit;
+   std::map<unsigned int,TChannel*> *chanmap = TChannel::GetChannelMap();
+   for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++){
+      if(!mnemonic.size() || !strncmp(mapit->second->GetChannelName(),mnemonic.c_str(),mnemonic.size())){
+         mapit->second->SetIntegration(flag);
+      }
+   }
+}
+
 void TChannel::Print(Option_t *opt) const {
    //Prints out the current TChannel.
    std::cout <<  channelname << "\t{\n";  //,channelname.c_str();
