@@ -15,6 +15,10 @@ SRC_SUFFIX = cxx
 
 # EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY
 
+MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
+
+CFLAGS += -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} 
+
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
@@ -82,6 +86,7 @@ run_and_test =@printf "%b%b%b" " $(3)$(4)$(5)" $(notdir $(2)) "$(NO_COLOR)\r";  
                 rm -f $(2).log $(2).error
 
 all: $(EXECUTABLES) $(LIBRARY_OUTPUT) config 
+	@find .build users -name "*.pcm" -exec cp {} libraries/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
 #docs:
@@ -107,7 +112,6 @@ bin:
 
 config:
 	@cp util/grsi-config bin/
-	@find .build/ users/ -name "*.pcm" -exec cp {} libraries/ \;
 
 # Functions for determining the files included in a library.
 # All src files in the library directory are included.
@@ -157,6 +161,7 @@ clean:
 	@-$(RM) -rf .build
 	@-$(RM) -rf bin
 	@-$(RM) -f $(LIBRARY_OUTPUT)
+	@-$(RM) -f libraries/*.pcm
 
 cleaner: clean
 	@printf "\nEven more clean up\n\n"

@@ -10,7 +10,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TGRSIDetectorData.h"
 #else
 class TGRSIDetectorData;
@@ -39,6 +39,7 @@ class TBGOData : public TGRSIDetectorData	{
 		std::vector<Int_t>    fBGO_TimeCFD;		//!The CFD time of the hit in the BGO
 		std::vector<Double_t> fBGO_TimeLED;		//!The LED time of the hit in the BGO
 		std::vector<Double_t> fBGO_Time;		//!The time stamp of the hit in the BGO
+      std::vector<UInt_t> fBGO_Address;   //!
 
 		std::vector<std::vector<int> > fBGO_Wave;	//!The waveform collected by the BGO
 
@@ -63,10 +64,11 @@ class TBGOData : public TGRSIDetectorData	{
 		inline void SetBGOCFD(const Int_t &BGOTimeCFD)   		{fBGO_TimeCFD.push_back(BGOTimeCFD);}	//!
 		inline void SetBGOLED(const Double_t &BGOTimeLED)		{fBGO_TimeLED.push_back(BGOTimeLED);}	//!
 		inline void SetBGOTime(const Double_t &BGOTime)			{fBGO_Time.push_back(BGOTime);}		//!
+      inline void SetBGOAddress(const UInt_t &BGOAddress)   {fBGO_Address.push_back(BGOAddress);} 
 
 		inline void SetBGOWave(const std::vector<int> &BGOWave)		{fBGO_Wave.push_back(BGOWave);}		//!
 
-		inline void SetBGO(const UShort_t &BGOCloverNbr, const UShort_t &BGOCrystalNbr, const UShort_t &BGOPmNbr, const Int_t &BGOCharge, const Double_t &BGOEnergy, const Int_t &BGOTimeCFD, const Double_t &BGOTimeLED, const Double_t &BGOTime = 0)	{
+		inline void SetBGO(const UShort_t &BGOCloverNbr, const UShort_t &BGOCrystalNbr, const UShort_t &BGOPmNbr, const Int_t &BGOCharge, const Double_t &BGOEnergy, const Int_t &BGOTimeCFD, const Double_t &BGOTimeLED, const Double_t &BGOTime = 0, const UInt_t &BGOAddress = -1)	{
 			SetBGOCloverNbr(BGOCloverNbr);
 			SetBGOCrystalNbr(BGOCrystalNbr);
 			SetBGOPmNbr(BGOPmNbr);
@@ -75,6 +77,7 @@ class TBGOData : public TGRSIDetectorData	{
 			SetBGOCFD(BGOTimeCFD);
 			SetBGOLED(BGOTimeLED);
 			SetBGOTime(BGOTime);
+         SetBGOAddress(BGOAddress);
 		};	//!
 
 		inline void SetBGO(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
@@ -105,6 +108,7 @@ class TBGOData : public TGRSIDetectorData	{
 			SetBGOCFD(frag->Cfd.at(0));
 			SetBGOLED(frag->Led.at(0));
 			SetBGOTime(frag->Zc.at(0));
+         SetBGOAddress(frag->ChannelAddress);
 		};	
 		
 		/////////////////////           GETTERS           ////////////////////////
@@ -116,6 +120,7 @@ class TBGOData : public TGRSIDetectorData	{
 		inline Int_t    GetBGOCFD(const unsigned int &i)     {return fBGO_TimeCFD.at(i);}	//!
 		inline Double_t GetBGOLED(const unsigned int &i)     {return fBGO_TimeLED.at(i);}	//!
 		inline Double_t GetBGOTime(const unsigned int &i)    	 {return fBGO_Time.at(i);}	//!
+      inline UInt_t GetBGOAddress(const unsigned int &i)    {return fBGO_Address.at(i);}
 
 		inline std::vector<int> GetBGOWave(const unsigned int &i) {return fBGO_Wave.at(i);}	//!
 

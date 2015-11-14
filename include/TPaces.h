@@ -9,7 +9,7 @@
 #include <TBits.h>
 
 #include "TPacesHit.h"
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TPacesData.h"
 #else
 class TPacesData;

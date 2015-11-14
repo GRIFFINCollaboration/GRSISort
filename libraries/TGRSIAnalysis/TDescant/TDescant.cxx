@@ -157,7 +157,7 @@ TDescantHit* TDescant::GetDescantHit(const Int_t& i) {
    }
    catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
-      throw exit_exception(1);
+      throw grsi::exit_exception(1);
    }
    return 0;
 }
@@ -215,7 +215,7 @@ void TDescant::BuildHits(TDetectorData *data,Option_t *opt)	{
             //printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
          }
          dethit.SetWaveform(gdata->GetDetWave(i));
-         if(dethit.GetWaveform().size() > 0) {
+         if(dethit.GetWaveform()->size() > 0) {
             printf("Analyzing waveform, current cfd = %d, psd = %d\n",dethit.GetCfd(),dethit.GetPsd());
             bool analyzed = dethit.AnalyzeWaveform();
             printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd(),dethit.GetPsd());

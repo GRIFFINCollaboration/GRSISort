@@ -43,8 +43,6 @@ class TGriffinHit : public TGRSIDetectorHit {
 		/////////////////////////  Setters	/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { fFilter = x;   }                  //! 
 
-      TVector3 GetPosition(Double_t dist = 110.0) const; //!
-
 		/////////////////////////  Getters	/////////////////////////////////////
       inline Int_t    GetFilterPattern() const         {   return fFilter;   }          //!
 
@@ -84,6 +82,7 @@ class TGriffinHit : public TGRSIDetectorHit {
       virtual void Copy(TObject&) const;        //!
 
    private:
+      TVector3 GetChannelPosition(Double_t dist = 110.0) const; //!
       void SetGriffinFlag(enum EGriffinHitBits,Bool_t set);
 	
       ClassDef(TGriffinHit,5); //Information about a GRIFFIN Hit

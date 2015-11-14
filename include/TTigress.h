@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #include "TTigressHit.h"
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TTigressData.h"
 #include "TBGOData.h"
 #else

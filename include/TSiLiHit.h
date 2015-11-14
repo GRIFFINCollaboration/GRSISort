@@ -1,6 +1,8 @@
 #ifndef TSILIHIT_H
 #define TSILIHIT_H
 
+#include "Globals.h"
+
 #include <cstdio>
 #include <utility>
 
@@ -12,49 +14,44 @@
 class TSiLiHit : public TGRSIDetectorHit {
   public:
     TSiLiHit();
-    ~TSiLiHit();
+    TSiLiHit(TFragment &);	
+    virtual ~TSiLiHit();
+	 TSiLiHit(const TSiLiHit&);
 
+    void Copy(TObject&) const;        //!
     void Clear(Option_t *opt="");
     void Print(Option_t *opt="") const;
     
-    Double_t GetLed()          {  return led;     }
-    Short_t  GetSegment()      {  return segment; }
-    Double_t    GetSig2Noise() {  return sig2noise;}    
-    Int_t GetRing()            {  return ring;      }
-    Int_t GetSector()          {  return sector;   }
-    Int_t GetPreamp()          { return  preamp;   }
-    Double_t    GetTimeFit()   {  return time_fit; }
+    Double_t GetLed()      const {  return led;     }
+    Short_t  GetSegment()  const {  return segment; }
+    Double_t GetSig2Noise()const {  return sig2noise;}    
+    Int_t GetRing()        const {  return 9-(segment/12); }
+    Int_t GetSector()      const {  return segment%12; }
+    Int_t GetPreamp()      const {  return  ((GetSector()/3)*2)+(((GetSector()%3)+GetRing())%2); }
+    Double_t  GetTimeFit() const {  return time_fit; }
 
-    void SetSegment(Short_t seg)       { segment = seg; 
-					 ring    = 9-(segment/12);
-					 sector  = segment%12;
-					 preamp  = ((GetSector()/3)*2)+(((GetSector()%3)+GetRing())%2);
-					}
+    void SetSegment(Short_t seg)       { segment = seg;	}
 //     using TGRSIDetectorHit::SetPosition; //This is here to fix warnings. Will leave when lean-ness occurs
 //     void SetPosition(TVector3 &vec)    { fposition = vec; }
-    void SetVariables(TFragment &frag) { SetEnergy(frag.GetEnergy());
-                                         SetCfd(frag.GetCfd());
-                                         SetCharge(frag.GetCharge());
-                                         SetTimeStamp(frag.GetTimeStamp()); 
-                                         SetTime(frag.GetZCross());
-					 
-					 led    = frag.GetLed();
-				        }
+    void SetVariables(TFragment &frag) { //SetEnergy(frag.GetEnergy());
+// 					 SetAddress(frag.ChannelAddress);	
+//                                          SetCfd(frag.GetCfd());
+//                                          SetCharge(frag.GetCharge());
+//                                          SetTimeStamp(frag.GetTimeStamp()); 
+                                         //SetTime(frag.GetZCross());
+					  led    = frag.GetLed(); }
     void SetWavefit(TFragment&);
-
-//     Double_t fit_time(TFragment &);
     
   private:
+      TVector3 GetChannelPosition(Double_t dist = 0) const; //!  
+	  
     //TVector3 position;  //held in base.
     Double_t    led;
     Short_t  segment;
-    Short_t  ring;
-    Short_t  sector;
-    Short_t  preamp;
     Double_t    time_fit;
     Double_t    sig2noise;
   
-  ClassDef(TSiLiHit,5);
+  ClassDef(TSiLiHit,7);
 
 };
 

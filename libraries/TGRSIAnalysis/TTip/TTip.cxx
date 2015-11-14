@@ -3,6 +3,8 @@
 #include <TRandom.h>
 #include <TMath.h>
 #include <TClass.h>
+#include <TGRSIRunInfo.h>
+
 
 ////////////////////////////////////////////////////////////
 //                    
@@ -57,7 +59,7 @@ void TTip::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
    if(!tipdata)   
       tipdata = new TTipData();
 
-   //tipdata->SetDet(frag,channel,mnemonic);
+   tipdata->SetDet(frag,channel,mnemonic);
    TTipData::Set();
 }
 
@@ -75,14 +77,20 @@ void TTip::BuildHits(TDetectorData *data,Option_t *opt)	{
    for(size_t i=0;i<gdata->GetMultiplicity();i++) {
       TTipHit dethit;
 
-      //dethit.SetAddress(gdata->GetDetAddress(i));
+      dethit.SetAddress(gdata->GetTipAddress(i));
       
-      //dethit.SetCharge(gdata->GetDetCharge(i));
+	  TFragment tmp = gdata->GetTipFragment(i);
 
-      //dethit.SetTime(gdata->GetDetTime(i));
-      //dethit.SetCfd(gdata->GetDetCFD(i));
+      dethit.SetVariables(tmp);
 
-      //dethit.SetPID(gdata->GetPID(i));
+	  TChannel chan = TChannel::GetChannel(dethit.GetAddress());
+	  dethit.SetUpNumbering(chan); // Need to do this before PID
+
+	  // Only fit what is needed to speed things up
+	  if(TGRSIRunInfo::IsWaveformFitting() && !dethit.IsCsI()) // If we're doing wavefitting, but with an S3 or the PIN diode array, we'll just use the regular t0 fitter
+      	dethit.SetWavefit(tmp);
+	  else if(TGRSIRunInfo::IsWaveformFitting() && dethit.IsCsI())  // If we're doing wavefitting with the CsI wall OR the CsI ball, we'll use the proper CsI fitting algorithm
+		dethit.SetPID(tmp);
 
       tip_hits.push_back(dethit);
    }
@@ -104,7 +112,7 @@ TTipHit* TTip::GetTipHit(const int& i) {
    }
    catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
-      throw exit_exception(1);
+      throw grsi::exit_exception(1);
    }
    return 0;
 }

@@ -1,6 +1,8 @@
 #include "TPeak.h"
 #include "TGraph.h"
 
+#include "Math/Minimizer.h"
+
 ClassImp(TPeak)
 
 Bool_t TPeak::fLogLikelihoodFlag = true;

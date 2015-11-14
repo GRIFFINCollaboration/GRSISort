@@ -25,7 +25,7 @@ TGriffinHit::~TGriffinHit()  {	}
 void TGriffinHit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
   static_cast<TGriffinHit&>(rhs).fFilter                = fFilter;
-  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = fGriffinHitBits;
+  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = 0;
   static_cast<TGriffinHit&>(rhs).fCrystal               = fCrystal;
   static_cast<TGriffinHit&>(rhs).fPPG                   = fPPG;
   static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag;//! Bremsstrahlung Suppression flag.
@@ -60,7 +60,7 @@ void TGriffinHit::Print(Option_t *opt) const	{
    printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",GetPosition().Theta() *180/(3.141597),GetPosition().Phi() *180/(3.141597));
 }
 
-TVector3 TGriffinHit::GetPosition(Double_t dist) const{
+TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
    //Returns the Position of the crystal of the current Hit.
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }

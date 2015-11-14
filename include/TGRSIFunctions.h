@@ -30,6 +30,8 @@ namespace TGRSIFunctions {
    Double_t SkewedGaus2(Double_t *dim, Double_t *par);
    Double_t MultiSkewedGausWithBG2(Double_t *dim, Double_t *par);
 
+// CSI FIT FUNCTION
+   Double_t CsIFitFunction(Double_t *i,Double_t *p);
 
 	 static int  npeaks = 0;
 	 static int  GetNumberOfPeaks() { return npeaks;}

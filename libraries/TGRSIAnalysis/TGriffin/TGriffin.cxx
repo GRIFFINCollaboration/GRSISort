@@ -2,7 +2,7 @@
 #include "TGriffin.h"
 #include <TRandom.h>
 #include <TMath.h>
-#include "TCint.h"
+#include "TInterpreter.h"
 
 #include <TGRSIRunInfo.h>
 
@@ -87,9 +87,8 @@ void TGriffin::Copy(TObject &rhs) const {
   static_cast<TGriffin&>(rhs).fAddback_hits        = fAddback_hits;
   static_cast<TGriffin&>(rhs).fAddback_frags      = fAddback_frags;
   static_cast<TGriffin&>(rhs).fSetCoreWave        = fSetCoreWave;
-  static_cast<TGriffin&>(rhs).fGriffinBits        = fGriffinBits;
   static_cast<TGriffin&>(rhs).fCycleStart         = fCycleStart;
-  static_cast<TGriffin&>(rhs).fGriffinBits        = fGriffinBits;
+  static_cast<TGriffin&>(rhs).fGriffinBits        = 0;
    
 
   return;                                      
@@ -184,7 +183,7 @@ TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
    catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " Hits are out of range: " << oor.what() << std::endl;
       if(!gInterpreter)
-         throw exit_exception(1);
+         throw grsi::exit_exception(1);
    }
    return 0;
 }
@@ -230,7 +229,7 @@ TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
       return &fAddback_hits.at(i);
    } else {
       std::cerr << "Addback hits are out of range" << std::endl;
-      throw exit_exception(1);
+      throw grsi::exit_exception(1);
       return NULL;
    }
 }
@@ -276,6 +275,7 @@ void TGriffin::BuildHits(TDetectorData *data,Option_t *opt)	{
       corehit.SetCharge(gdata->GetCoreCharge(i));
       corehit.SetNPileUps((UChar_t)(gdata->GetCoreNbrHits(i)));
       corehit.SetPUHit((UChar_t)(gdata->GetCorePUHit(i)));
+      corehit.SetEnergy(100);
 /*
       if(TGriffin::SetCoreWave()){
          corehit.SetWaveform(gdata->GetCoreWave(i));

@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
       input->Run("true");
       //Be polite when you leave.
       printf("\nbye,bye\n");
-   } catch(exit_exception& e) {
+   } catch(grsi::exit_exception& e) {
       std::cerr << e.message << std::endl;
       //Close files and clean up properly here
    }

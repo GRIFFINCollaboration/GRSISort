@@ -1,11 +1,11 @@
-
-
+#include <iostream>
 #include "TS3.h"
+#include <TRandom.h>
 #include <TMath.h>
-#include <cmath>
+#include <TClass.h>
+#include <TGRSIRunInfo.h>
 
 ClassImp(TS3)
-
 
 int    TS3::ring_number;
 int    TS3::sector_number;
@@ -17,8 +17,35 @@ double TS3::target_distance;
 
 
 
+TS3::TS3():s3data(0)  {
+   Clear();	
+}
 
-TS3::TS3():data(0)  {
+TS3::~TS3()  { 
+  if(s3data) delete s3data;   
+}
+
+void TS3::Copy(TObject &rhs) const {
+  TGRSIDetector::Copy(rhs);
+
+  static_cast<TS3&>(rhs).s3data     = 0;
+  static_cast<TS3&>(rhs).s3_hits    = s3_hits;
+  return;                                      
+}  
+
+TS3::TS3(const TS3& rhs) : TGRSIDetector() {
+  rhs.Copy(*this);
+}
+
+
+void TS3::Clear(Option_t *opt)    {
+   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+      TGRSIDetector::Clear(opt);
+      if(s3data) s3data->Clear();
+   }
+
+  s3_hits.clear();
+  
   ring_number=24;
   sector_number=32;
 
@@ -28,20 +55,53 @@ TS3::TS3():data(0)  {
   target_distance=21.;
 }
 
-TS3::~TS3()  { 
-  if(data) delete data;   
+TS3& TS3::operator=(const TS3& rhs) {
+   rhs.Copy(*this);
+   return *this;
+}
+
+
+void TS3::Print(Option_t *opt) const {
+  printf("s3data = 0x%p\n", (void*) s3data);
+  if(s3data) s3data->Print();
+  printf("%lu s3_hits\n",s3_hits.size());
+}
+
+
+TGRSIDetectorHit* TS3::GetHit(const Int_t& idx){
+   return GetS3Hit(idx);
+}
+
+TS3Hit *TS3::GetS3Hit(const int& i) {  
+   try{
+      return &s3_hits.at(i);   
+   }
+   catch (const std::out_of_range& oor){
+      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      throw grsi::exit_exception(1);
+   }
+   return 0;
+}  
+
+void TS3::PushBackHit(TGRSIDetectorHit *deshit) {
+  s3_hits.push_back(*((TS3Hit*)deshit));
+  return;
 }
 
 
 void TS3::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
-  if(!data)
-     data = new TS3Data();
+   if(!frag || !channel || !mnemonic)
+      return;
+
+   if(!s3data)   
+      s3data = new TS3Data();
+
   if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front  (ring)
-    data->SetRing(frag,channel,mnemonic);
+    s3data->SetRing(frag,channel,mnemonic);
   } else {
-    data->SetSector(frag,channel,mnemonic);
+    s3data->SetSector(frag,channel,mnemonic);
   }
-  //TS3Data::Set();
+  TS3Data::Set();
 }
 
 
@@ -49,25 +109,29 @@ void TS3::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
 void TS3::BuildHits(TDetectorData *data,Option_t *opt)  {
   TS3Data *sdata = (TS3Data*)data;
   if(sdata==0)
-     sdata = this->data;
+     sdata = this->s3data;
   if(!sdata)
      return;
 
-  TS3Hit hit;
+   Clear("");
+  
+   //s3_hits.reserve(sdata->GetMultiplicity());
   
   for(int i=0;i<sdata->GetRingMultiplicity();i++)     { 
     for(int j=0;j<sdata->GetSectorMultiplicity();j++)    { 
+	   
       if(sdata->GetRing_Detector(i) == sdata->GetSector_Detector(j))     {
-        hit.SetRingNumber(sdata->GetRing_Number(i));
-        hit.SetSectorNumber(sdata->GetSector_Number(j));
-        hit.SetDetector(sdata->GetRing_Detector(i));
+	      
+	//Set the base data     
         TFragment tmpfrag = sdata->GetRing_Fragment(i);
-        
-        hit.SetVariables(tmpfrag);
-        TVector3 tmppos = GetPosition(hit.GetRingNumber(),hit.GetSectorNumber());
-        hit.SetPosition(tmppos);
-        s3_hits.push_back(hit);
-
+        TS3Hit dethit(tmpfrag);
+	
+        dethit.SetVariables(tmpfrag);	
+	
+        dethit.SetRingNumber(sdata->GetRing_Number(i));
+        dethit.SetSectorNumber(sdata->GetSector_Number(j));
+		
+        s3_hits.push_back(dethit);
       }
     }
   }
@@ -94,26 +158,4 @@ TVector3 TS3::GetPosition(int ring, int sector)  {
 
 
 }
-
-TS3Hit *TS3::GetS3Hit(const int& i) {  
-   try{
-      return &s3_hits.at(i);   
-   }
-   catch (const std::out_of_range& oor){
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
-      throw exit_exception(1);
-   }
-   return 0;
-}  
-
-void TS3::Print(Option_t *opt) const {
-   printf("%s\tnot yet written.\n",__PRETTY_FUNCTION__);
-}
-
-void TS3::Clear(Option_t *opt)    {
-  if(data) data->Clear();
-  s3_hits.clear();
-
-}
-
 

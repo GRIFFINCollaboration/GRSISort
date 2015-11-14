@@ -16,7 +16,7 @@ TCrystalHit::TCrystalHit(): suppress(false)	{
 TCrystalHit::TCrystalHit(const TCrystalHit &rhs)
   : TGRSIDetectorHit() {
    //Class()->IgnoreTObjectStreamer(true);
-   ((TCrystalHit&)rhs).Copy(*this);
+   rhs.Copy(*this);
 
 }
 

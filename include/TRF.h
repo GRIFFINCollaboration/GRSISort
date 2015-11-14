@@ -6,48 +6,42 @@
 #include <iostream>
 #include <stdio.h>
 
+#include "TMath.h"
 #include "TDetector.h"
+#include "TPulseAnalyzer.h"
 
 #include "TFragment.h"
-#ifndef __CINT__
-#include "TRFFitter.h"
-#else
-class TRFFitter;
-#endif
+
+static const Double_t period_ns=84.409;
 
 class TRF :  public TDetector {
-	
+		
 	public:
-		TRF();
-		~TRF();
-
-		//std::vector<Short_t> GetWave() { return rf_wave;	};
-		
-      Double_t Phase()     { return phase; }
-		Double_t Time()      { return time; }
-		Long_t   TimeStamp() { return timestamp; }	
-      time_t   MidasTime() { return midastime; }
-
-		//bool HasWave() { return !rf_wave.empty(); };
-
-		void BuildHits(TDetectorData *data=0, Option_t * = "");	//!
-		void FillData(TFragment*,TChannel*,MNEMONIC*);	//!
-
-		void Clear(Option_t *opt = ""); 	      //!
-		void Print(Option_t *opt = "") const; 	//!
-
-		
 	
-	private:
-		TRFFitter *data;		            //!
-
-		//std::vector<Short_t> rf_wave;
-      time_t midastime;
-      Long_t timestamp;
-		double phase;
-		double time;
+	TRF();
+	TRF(const TRF&);
+	virtual ~TRF();
 		
-	ClassDef(TRF,2)
+	Double_t Time() const     { return time;}
+	Long_t   TimeStamp() const  { return timestamp; }	
+	time_t   MidasTime() const  { return midastime; }
+	Double_t Phase() const      { return (time/period_ns)*TMath::TwoPi(); }
+	
+	
+	void BuildHits(TDetectorData *data=0, Option_t * = "");
+	void FillData(TFragment*,TChannel*,MNEMONIC*);	
+	
+	void Copy(TObject&) const;
+	void Clear(Option_t *opt = ""); 	 
+	void Print(Option_t *opt = "") const;
+
+	private:
+
+        time_t midastime;
+        Long_t timestamp;
+	double time;
+		
+	ClassDef(TRF,3)
 
 };
 

@@ -71,6 +71,7 @@ void TTigress::AddAddBackHit(const TTigressHit& temp) {
 
 
 void TTigress::Print(Option_t *opt)	const {
+   printf("Tigress Hits: %d\n",GetMultiplicity());
   //printf("not yet written...\n");
   //printf(DYELLOW "TTigress::beta  =  %.04f" RESET_COLOR  "\n",beta);
   return;
@@ -125,18 +126,27 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
 		TTigressHit corehit;
 		temp_crystal.Clear();
 
+		temp_crystal.SetAddress(tdata->GetCoreAddress(i));
 		temp_crystal.SetCharge(tdata->GetCoreCharge(i));
-      temp_crystal.SetEnergy(tdata->GetCoreEnergy(i));
-      temp_crystal.SetTime(tdata->GetCoreTime(i));
-      temp_crystal.SetCfd(tdata->GetCoreCFD(i));
+      	//temp_crystal.SetEnergy(tdata->GetCoreEnergy(i));
+      	//temp_crystal.SetTime(tdata->GetCoreTime(i));
+      	temp_crystal.SetCfd(tdata->GetCoreCFD(i));
+	  	temp_crystal.SetTimeStamp(tdata->GetCoreTime(i));
 
 		//if(TTigress::SetCoreWave())	{
-      //  	temp_crystal.SetWaveForm(tdata->GetCoreWave(i));
+      	//  	temp_crystal.SetWaveForm(tdata->GetCoreWave(i));
 		//}
+
+		TFragment tmp = tdata->GetCoreFragment(i);
+
+		if(TGRSIRunInfo::IsWaveformFitting()) 
+			corehit.SetWavefit(tmp);
+		
 		
 		corehit.SetCore(temp_crystal);	
 		corehit.SetDetector((UInt_t)tdata->GetCloverNumber(i));
-      corehit.SetCrystal();  //tdata->GetCoreNumber(i));
+      	corehit.SetCrystal();  //tdata->GetCoreNumber(i));
+
 		//tigress_hits.push_back(corehit);
 		AddTigressHit(corehit);
 	}
@@ -150,9 +160,10 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
 					continue;
 			
            temp_crystal.Clear();
+           temp_crystal.SetAddress(tdata->GetSegmentAddress(j));
            temp_crystal.SetSegment(tdata->GetSegmentNumber(j));
            temp_crystal.SetCharge(tdata->GetSegmentCharge(j));
-           temp_crystal.SetEnergy(tdata->GetSegmentEnergy(j));
+           //temp_crystal.SetEnergy(tdata->GetSegmentEnergy(j));
            temp_crystal.SetTimeStamp(tdata->GetSegmentTime(j));
            temp_crystal.SetCfd(tdata->GetSegmentCFD(j));
 
@@ -170,9 +181,10 @@ void	TTigress::BuildHits(TDetectorData *data,Option_t *opt)	{
           temp_crystal.Clear();
           temp_crystal.SetSegment(bdata->GetBGOPmNbr(j));
           temp_crystal.SetCharge(bdata->GetBGOCharge(j));
-          temp_crystal.SetEnergy(bdata->GetBGOEnergy(j));
-          temp_crystal.SetTime(bdata->GetBGOTime(j));
+          //temp_crystal.SetEnergy(bdata->GetBGOEnergy(j));
+          temp_crystal.SetTimeStamp(bdata->GetBGOTime(j));
           temp_crystal.SetCfd(bdata->GetBGOCFD(j));
+          temp_crystal.SetAddress(bdata->GetBGOAddress(j));
           //if(TTigress::SetBGOWave()) {
           //  temp_crystal.SetWaveForm(bdata->GetBGOWave(j));
           //}			
@@ -482,7 +494,6 @@ void TTigress::BuildAddBack(Option_t *opt)	{
     	return;
 
 	addback_hits.Clear();
-
    AddAddBackHit((TTigressHit&)(*(this->GetTigressHit(0))));
   
 	if(this->GetMultiplicity() == 1) {
@@ -492,7 +503,6 @@ void TTigress::BuildAddBack(Option_t *opt)	{
 		//addback_hits.push_back(*(this->GetTigressHit(0)));
 		//addback_hits.At(0)->SumHit((TTigressHit*)addback_hits.At(0));
       GetAddBackHit(0)->SumHit(GetAddBackHit(0));
-
 
 		for(int i = 1; i<(int)(this->GetMultiplicity()); i++)   {
 		 	bool used = false;
@@ -524,7 +534,8 @@ void TTigress::BuildAddBack(Option_t *opt)	{
 		 	}
 			 if(!used) {
             AddAddBackHit(*GetTigressHit(i));
-            GetAddBackHit(addback_hits.GetEntries())->SumHit(GetAddBackHit(addback_hits.GetEntries()));
+         //NOT SURE WHY THIS IS HERE (BELOW) COMMENTED OUT BECUASE WE DIDNT THINK IT MADE SENSE.
+        //    GetAddBackHit(addback_hits.GetEntries())->SumHit(GetAddBackHit(addback_hits.GetEntries()));
 		 	   //addback_hits.push_back(*(this->GetTigressHit(i)));
 		     	//addback_hits.back().Add(&(addback_hits.back()));
 			 }

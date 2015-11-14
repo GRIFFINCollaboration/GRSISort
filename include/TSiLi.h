@@ -1,47 +1,57 @@
-
 #ifndef TSILI_H
 #define TSILI_H
 
+#include "Globals.h"
+
+#include <vector>
 #include <cstdio>
-#include <iostream>
 
-#include "TDetector.h"
-
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TSiLiData.h"
 #else
 class TSiLiData;
 #endif
+#include "TVector3.h" 
 
-#include "TSiLiHit.h"
+#include "TSiLiHit.h" 
+#include "TGRSIDetector.h" 
+#include "TObject.h"
 
-class TSiLi: public TDetector  {
+class TSiLi: public TGRSIDetector  {
 
   public:
     TSiLi();
-    ~TSiLi();
+    TSiLi(const TSiLi&);
+    virtual ~TSiLi();
+    
+    TGRSIDetectorHit* GetHit(const Int_t& idx =0);
+    TSiLiHit* GetSiLiHit(const Int_t& idx = 0);
+     
 
-    void BuildHits(TDetectorData *data, Option_t *opt="");    
+    void BuildHits(TDetectorData *data=0, Option_t *opt="");    
     void FillData(TFragment*,TChannel*,MNEMONIC*);
 
+    TSiLi& operator=(const TSiLi&);  // 
+
+    void Copy(TObject&) const;
+    void Clear(Option_t *opt="");   
     void Print(Option_t *opt="") const;
-    void Clear(Option_t *opt="");
+    void PushBackHit(TGRSIDetectorHit* deshit);
     
     
     Short_t GetMultiplicity() const         {  return  sili_hits.size();  }
-    TSiLiHit *GetSiLiHit(const int& i);
 
-    TVector3 GetPosition(int segment);
-
+    static TVector3 GetPosition(int segment);
+   
+    
   private:
     #ifndef __CINT__
-    TSiLiData *data;    //! 
+    TSiLiData *silidata;    //! 
     #endif
     std::vector<TSiLiHit> sili_hits;
 
 
-  ClassDef(TSiLi,2);
-  
+  ClassDef(TSiLi,3);
 };
 
 

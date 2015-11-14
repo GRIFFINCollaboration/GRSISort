@@ -20,19 +20,15 @@ TTigressHit::TTigressHit(const TTigressHit& rhs) : TGRSIDetectorHit() {
    rhs.Copy(*this);
 }
 
-
 void TTigressHit::AddSegment(TCrystalHit &temp) {
    TCrystalHit *newhit = static_cast<TCrystalHit*>(segment.ConstructedAt(GetSegmentMultiplicity()));	
    temp.Copy(*newhit);
 }
 
-
 void TTigressHit::AddBGO(TCrystalHit &temp) {
    TCrystalHit *newhit = static_cast<TCrystalHit*>(bgo.ConstructedAt(GetSegmentMultiplicity()));	
    temp.Copy(*newhit);
 }
-
-
 
 void TTigressHit::Clear(Option_t *opt) {
    TGRSIDetectorHit::Clear(opt);
@@ -56,20 +52,21 @@ void TTigressHit::Clear(Option_t *opt) {
 void TTigressHit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
   segment.Copy(static_cast<TTigressHit&>(rhs).segment);
+  core.Copy(static_cast<TTigressHit&>(rhs).core);
   bgo.Copy(static_cast<TTigressHit&>(rhs).bgo);
-  (static_cast<TTigressHit&>(rhs)).crystal = crystal;
-  (static_cast<TTigressHit&>(rhs)).first_segment = first_segment;
-  (static_cast<TTigressHit&>(rhs)).first_segment_charge = first_segment_charge;
+  static_cast<TTigressHit&>(rhs).crystal = crystal;
+  static_cast<TTigressHit&>(rhs).first_segment = first_segment;
+  static_cast<TTigressHit&>(rhs).first_segment_charge = first_segment_charge;
+  static_cast<TTigressHit&>(rhs).time_fit		= time_fit;
+  static_cast<TTigressHit&>(rhs).sig2noise		= sig2noise;  
   lasthit.Copy(static_cast<TTigressHit&>(rhs).lasthit);
 }
-
 
 void TTigressHit::Print(Option_t *opt) const	{
 	printf("Tigress hit energy: %.2f\n",GetEnergy());
 	printf("Tigress hit time:   %.2f\n",GetTime());
 	//printf("Tigress hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
 }
-
 
 bool TTigressHit::Compare(TTigressHit lhs, TTigressHit rhs) {
 	if (lhs.GetDetector() == rhs.GetDetector()) {
@@ -105,7 +102,7 @@ void TTigressHit::SumHit(TTigressHit *hit) {
 }
 
 
-TVector3 TTigressHit::GetPosition(Double_t dist) const {
+TVector3 TTigressHit::GetChannelPosition(Double_t dist) const {
    //Returns the Position of the crystal of the current Hit.
 	return TTigress::GetPosition(GetDetector(),GetCrystal(),dist);
 }
@@ -132,4 +129,12 @@ int TTigressHit::GetCrystal() const {
    };
    return -1;  
 
+}
+
+void TTigressHit::SetWavefit(TFragment &frag)   { 
+	TPulseAnalyzer pulse(frag);	    
+	if(pulse.IsSet()){
+		time_fit = pulse.fit_newT0();
+		sig2noise= pulse.get_sig2noise();
+	}
 }

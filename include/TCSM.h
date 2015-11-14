@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <map>
 #include <iostream>
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include <tuple>
 #include <iterator>
 #include <algorithm>
@@ -19,7 +19,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TCSMData.h"
 #else
 class TCSMData;

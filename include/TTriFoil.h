@@ -9,7 +9,7 @@
 #include "TDetector.h"
 
 #include "TFragment.h"
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TTriFoilData.h"
 #else
 class TTriFoilData;

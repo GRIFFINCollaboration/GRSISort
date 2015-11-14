@@ -5,7 +5,7 @@
 #include <queue>
 #include <map>
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #define _GLIBCXX_USE_NANOSLEEP 1
 #include <thread>
 #include <mutex>
@@ -50,7 +50,7 @@ class TFragmentQueue : public TObject {
 		static std::map<int,int> fragment_id_map;	
 
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #ifndef NO_MUTEX
 	public:
 		static std::mutex All;

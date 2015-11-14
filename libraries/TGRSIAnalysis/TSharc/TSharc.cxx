@@ -140,6 +140,8 @@ void  TSharc::BuildHits(TDetectorData *ddata,Option_t *opt)  {
       hit.SetFront(sdata->GetFront_Fragment(i));
       hit.SetBack(sdata->GetBack_Fragment(j));
 
+      hit.SetPosition(TSharc::GetPosition(hit.GetDetectorNumber(),hit.GetFrontStrip(),hit.GetBackStrip()));
+
       this->sharc_hits.push_back(hit);
     }
   }
@@ -253,7 +255,7 @@ TSharcHit* TSharc::GetSharcHit(const int& i) {
    }
    catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
-      throw exit_exception(1);
+      throw grsi::exit_exception(1);
    }
    return 0;
 }

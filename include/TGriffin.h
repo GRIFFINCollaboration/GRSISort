@@ -10,7 +10,7 @@
 #include <TBits.h>
 
 #include "TGriffinHit.h"
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include "TGriffinData.h"
 #else
 class TGriffinData;
@@ -51,7 +51,7 @@ class TGriffin : public TGRSIDetector {
 
       TGriffin& operator=(const TGriffin&);  //!
       
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
       void SetAddbackCriterion(std::function<bool(TGriffinHit&, TGriffinHit&)> criterion) { fAddback_criterion = criterion; }
       std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() const { return fAddback_criterion; }
 #endif
@@ -60,7 +60,7 @@ class TGriffin : public TGRSIDetector {
       TGriffinHit* GetAddbackHit(const int& i);
 
    private:
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
       static std::function<bool(TGriffinHit&, TGriffinHit&)> fAddback_criterion;
 #endif
       TGriffinData *grifdata;                 //!  Used to build GRIFFIN Hits
