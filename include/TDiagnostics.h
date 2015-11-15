@@ -18,6 +18,7 @@
 #include <map>
 
 #include "TObject.h"
+#include "TH1F.h"
 
 #include "TPPG.h"
 #include "TFragment.h"
@@ -36,8 +37,18 @@ class TDiagnostics : public TObject {
 		std::map<Short_t, UInt_t> fMinChannelId;           ///< map of minimum channel id per channel number
 		std::map<Short_t, UInt_t> fMaxChannelId;           ///< map of maximum channel id per channel number
 
+		std::map<Short_t, Long_t> fNumberOfHits;           ///< map of number of hits per channel number
+
+		Int_t fMinNetworkPacketNumber;                     ///< minimum network packet id
+		Int_t fMaxNetworkPacketNumber;                     ///< maximum network packet id
+
+		Long_t fNumberOfNetworkPackets;
+
 		//ppg diagnostics
 		ULong64_t fPPGCycleLength;
+
+		//
+		TH1F* fIdHist;                                     ///< histogram of event survival
 	
 	public:
 		//"setter" functions
@@ -57,6 +68,7 @@ class TDiagnostics : public TObject {
 		void Copy(TObject&) const;
 		void Clear(Option_t* opt = "all");
 		void Print(Option_t* opt = "") const;
+		void Draw(Option_t* opt = "");
 
 /// \cond CLASSIMP
 	ClassDef(TDiagnostics,1);

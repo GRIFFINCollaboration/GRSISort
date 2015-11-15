@@ -464,7 +464,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 					if(fRecordStats)
 						FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
-					TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag->DetectorType);
+					TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
 					return x;
 				} else  {
 					TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
