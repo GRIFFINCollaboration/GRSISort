@@ -115,14 +115,15 @@ class TGRSIDetectorHit : public TObject 	{
       virtual TVector3 GetChannelPosition(Double_t dist = 0) const { AbstractMethod("GetChannelPosition"); return TVector3(0.0,0.0,0.0); }
 
      // unsigned int GetHighestBitSet(UChar_t flag);
-
-   protected:
+   public:
       Bool_t IsDetSet() const {return (fbitflags & kIsDetSet);}
       Bool_t IsPosSet() const {return (fbitflags & kIsPositionSet);}
       Bool_t IsEnergySet() const {return (fbitflags & kIsEnergySet);} 
       Bool_t IsSubDetSet() const {return (fbitflags & kIsSubDetSet);}
       Bool_t IsPPGSet() const {return (fbitflags & kIsPPGSet);}
       Bool_t IsTimeSet() const {return (fbitflags & kIsTimeSet); }
+
+   protected:
       void SetFlag(enum Ebitflag,Bool_t set);
 
    private:

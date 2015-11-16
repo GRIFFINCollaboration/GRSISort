@@ -83,13 +83,14 @@ void TTip::BuildHits(TDetectorData *data,Option_t *opt)	{
 
       dethit.SetVariables(tmp);
 
-	  if(TGRSIRunInfo::IsWaveformFitting()) 
-      	dethit.SetWavefit(tmp);
-
 	  TChannel chan = TChannel::GetChannel(dethit.GetAddress());
-	  dethit.SetUpNumbering(chan);
+	  dethit.SetUpNumbering(chan); // Need to do this before PID
 
-      //dethit.SetPID(gdata->GetPID(i));
+	  // Only fit what is needed to speed things up
+	  if(TGRSIRunInfo::IsWaveformFitting() && !dethit.IsCsI()) // If we're doing wavefitting, but with an S3 or the PIN diode array, we'll just use the regular t0 fitter
+      	dethit.SetWavefit(tmp);
+	  else if(TGRSIRunInfo::IsWaveformFitting() && dethit.IsCsI())  // If we're doing wavefitting with the CsI wall OR the CsI ball, we'll use the proper CsI fitting algorithm
+		dethit.SetPID(tmp);
 
       tip_hits.push_back(dethit);
    }

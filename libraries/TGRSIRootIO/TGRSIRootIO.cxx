@@ -378,7 +378,12 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
 
    TProofLite *proof = (TProofLite*)TProofLite::Open("");
    proof->ClearCache();
-   proof->Exec("gSystem->Load(\"libTGRSIFormat.so\")");
+  // proof->Exec("gSystem->Load(\"libTGRSIFormat.so\")");
+   const char* pPath = getenv("GRSISYS");
+   gSystem->AddDynamicPath(pPath);
+   proof->Exec(Form("gSystem->Load(\"%s/libraries/libTGRSIFormat.so\")",pPath));
+  // printf("%s\n",pPath);
+  // printf("%d\n",gSystem->Load(Form("%s/libraries/libTGRSIFormat.so",pPath)));
    proof->SetProgressDialog(TGRSIOptions::ProgressDialog());
    //Going to get run number from file name. This will allow us to chain->chop off the subrun numbers
 

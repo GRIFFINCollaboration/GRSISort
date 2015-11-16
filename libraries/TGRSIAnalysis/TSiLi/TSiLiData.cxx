@@ -20,6 +20,7 @@
 
 #include "TSiLiData.h"
 
+bool TSiLiData::fIsSet   = false;
 
 TSiLiData::TSiLiData()
 {
@@ -32,6 +33,7 @@ TSiLiData::~TSiLiData() {}
 
 void TSiLiData::Clear(Option_t *opt)
 {
+       fIsSet = false;
 
 	fSiLiSegment.clear();
 	fSiLiFragment.clear();

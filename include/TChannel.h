@@ -106,6 +106,7 @@ class TChannel : public TNamed	{
 	inline void SetChannelName(const char *tmpname)  {channelname.assign(tmpname);} 
 	inline void SetNumber(int tmpnum)	              {number = tmpnum; UpdateChannelNumberMap();}
 	inline void SetIntegration(int tmpint)	        {integration = tmpint;}
+   static void SetIntegration(std::string mnemonic,int tmpint);
 	inline void SetStream(int tmpstream)	           {stream = tmpstream;}
 	inline void SetUserInfoNumber(int tempinfo)      {userinfonumber = tempinfo;}
 	inline void SetDigitizerType(const char *tmpstr) {digitizertype.assign(tmpstr);}
@@ -176,6 +177,7 @@ class TChannel : public TNamed	{
 	void DestroyTIMECal();
 	void DestroyEFFCal();
 
+	static Int_t ReadCalFromCurrentFile(Option_t *opt="overwrite");
 	static Int_t ReadCalFromTree(TTree*,Option_t *opt="overwrite");
 	static Int_t ReadCalFile(const char *filename = "");
 	static Int_t ParseInputData(const char *inputdata = "",Option_t *opt = "");

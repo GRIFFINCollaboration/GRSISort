@@ -87,9 +87,8 @@ void TGriffin::Copy(TObject &rhs) const {
   static_cast<TGriffin&>(rhs).fAddback_hits        = fAddback_hits;
   static_cast<TGriffin&>(rhs).fAddback_frags      = fAddback_frags;
   static_cast<TGriffin&>(rhs).fSetCoreWave        = fSetCoreWave;
-  static_cast<TGriffin&>(rhs).fGriffinBits        = fGriffinBits;
   static_cast<TGriffin&>(rhs).fCycleStart         = fCycleStart;
-  static_cast<TGriffin&>(rhs).fGriffinBits        = fGriffinBits;
+  static_cast<TGriffin&>(rhs).fGriffinBits        = 0;
    
 
   return;                                      
@@ -276,6 +275,7 @@ void TGriffin::BuildHits(TDetectorData *data,Option_t *opt)	{
       corehit.SetCharge(gdata->GetCoreCharge(i));
       corehit.SetNPileUps((UChar_t)(gdata->GetCoreNbrHits(i)));
       corehit.SetPUHit((UChar_t)(gdata->GetCorePUHit(i)));
+      corehit.SetEnergy(100);
 /*
       if(TGriffin::SetCoreWave()){
          corehit.SetWaveform(gdata->GetCoreWave(i));
