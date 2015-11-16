@@ -257,7 +257,7 @@ void TGriffin::BuildHits(TDetectorData *data,Option_t *opt)	{
    //printf("=========================================================\n");
    //printf("gdata->GetMultiplicity() = %i\n",gdata->GetMultiplicity());
 
-   for(size_t i=0;i<gdata->GetMultiplicity();i++)	{
+   for(unsigned int i=0;i<gdata->GetMultiplicity();i++)	{
       TGriffinHit corehit;
 
       corehit.SetAddress(gdata->GetCoreAddress(i));
