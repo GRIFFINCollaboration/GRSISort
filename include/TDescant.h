@@ -30,7 +30,7 @@ class TDescant : public TGRSIDetector {
 
      Short_t GetMultiplicity() const	       {	return descant_hits.size();}	//!
 
-     static TVector3 GetPosition(int DetNbr)  { return gPosition[DetNbr];}	//!
+     static TVector3 GetPosition(int DetNbr, double dist=222);	//!
 
      void BuildHits(TDetectorData *data =0,Option_t *opt = "");           //!
      void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
@@ -50,8 +50,7 @@ class TDescant : public TGRSIDetector {
      bool Hit()                {return hit_flag;}                                //!  
      void SetHit(bool flag = true) { hit_flag = flag; }
    private:
-     static TVector3 gPosition[71];                                     //!  Position of each Paddle needs to be updated
-
+     static TVector3 gPosition[2][71];                                     //!
    public:         
      void Copy(TObject&) const;                //!
      void Clear(Option_t *opt = "");		//!

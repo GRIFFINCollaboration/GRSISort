@@ -158,15 +158,15 @@ class TGRSIRunInfo : public TObject {
       static inline bool ZeroDegree(){ return fGRSIRunInfo->fZeroDegree; }
       static inline bool Descant()   { return fGRSIRunInfo->fDescant; }
 
-      inline void SetRunInfoFileName(const char *fname) {  fRunInfoFileName.assign(fname); }
-      inline void SetRunInfoFile(const char *ffile)     {  fRunInfoFile.assign(ffile); }
+      inline void SetRunInfoFileName(const char *fname)  {  fRunInfoFileName.assign(fname); }
+      inline void SetRunInfoFile(const char *ffile)      {  fRunInfoFile.assign(ffile); }
      
 
       inline void SetBuildWindow(const long int t_bw)    { fBuildWindow = t_bw; } 
       inline void SetAddBackWindow(const double   t_abw) { fAddBackWindow = t_abw; } 
 
-	  inline void SetWaveformFitting(const bool flag)	 {fWaveformFitting = flag; }
-	  static inline bool IsWaveformFitting()			 {return Get()->fWaveformFitting; }
+      inline void SetWaveformFitting(const bool flag)    {fWaveformFitting = flag; }
+      static inline bool IsWaveformFitting()             {return Get()->fWaveformFitting; }
 
       inline void SetMovingWindow(const bool flag)       {fIsMovingWindow = flag; }
       static inline bool IsMovingWindow()                { return Get()->fIsMovingWindow; }
@@ -176,6 +176,9 @@ class TGRSIRunInfo : public TObject {
 
       inline void SetHPGeArrayPosition(const int arr_pos) { fHPGeArrayPosition = arr_pos; }
       static inline int  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
+   
+      static inline void SetDescantAncillary(bool flag = true) { fGRSIRunInfo->fDescantAncillary = flag; }
+      static inline bool DescantAncillary()                    { return fGRSIRunInfo->fDescantAncillary; }
 
       Long64_t Merge(TCollection *list);
       void Add(TGRSIRunInfo* runinfo) { fRunStart = 0.; fRunStop = 0.; fRunLength += runinfo->RunLength(); }
@@ -246,20 +249,20 @@ class TGRSIRunInfo : public TObject {
       std::string fRunInfoFile;     //The contents of the run info file
 	   static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 
-      long int fBuildWindow;          // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
-      double   fAddBackWindow;        // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
-      bool     fIsMovingWindow;       // if set to true the event building window moves. Static otherwise.
-      
-	  bool 	   fWaveformFitting;	  // If true, waveform fitting with SFU algorithm will be performed
+      long int fBuildWindow;        // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
+      double   fAddBackWindow;      // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
+      bool     fIsMovingWindow;     // if set to true the event building window moves. Static otherwise.
 
-      double  fHPGeArrayPosition;        // Position of the HPGe Array (default = 110.0 mm );
-  
+      bool 	   fWaveformFitting;    // If true, waveform fitting with SFU algorithm will be performed
+
+      double   fHPGeArrayPosition;  // Position of the HPGe Array (default = 110.0 mm );
+      bool     fDescantAncillary;   // Descant is in the ancillary detector locations
 
    public:
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
-   ClassDef(TGRSIRunInfo,7);  //Contains the run-dependent information.
+   ClassDef(TGRSIRunInfo,8);  //Contains the run-dependent information.
 };
 
 #endif
