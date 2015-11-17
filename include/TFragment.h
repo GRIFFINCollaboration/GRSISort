@@ -12,7 +12,7 @@
 #include "Rtypes.h"
 #include "TObject.h"
 
-//#ifndef __CINT__
+//#if !defined (__CINT__) && !defined (__CLING__)
 //#include "Globals.h"
 //#endif
 
@@ -28,6 +28,7 @@
 class TFragment : public TObject	{
 public:
    TFragment(); 
+	TFragment(const TFragment&, int hit = -1); //copy constructor that only copies the requested hit (if hit is in range 0 - Cfd.size())
    virtual ~TFragment(); 
 
    time_t   MidasTimeStamp;       //->  Timestamp of the MIDAS event  
@@ -67,34 +68,41 @@ public:
 
    std::vector<Short_t>  wavebuffer;//-> waveform words
 
-   TPPG* fPPG; //!
+   TPPG* fPPG; //!<!
+
+	int NumberOfHits;            //!<! transient member to count the number of pile-up hits in the original fragment
+	int HitIndex;                //!<! transient member indicating which pile-up hit this is in the original fragment
   
-   double GetTime()      const; //!
-   long   GetTimeStamp() const; //!
-   double GetTZero() const; //!
-   const char *GetName() const; //!
-   double GetEnergy(size_t iter=0)const; //!
-   Float_t GetCharge(size_t iter=0)const; //!
-   long GetTimeStamp_ns(); //!
-   ULong64_t GetTimeInCycle(); //!
-   ULong64_t GetCycleNumber(); //!
+   double GetTime()      const; //!<!
+   long   GetTimeStamp() const; //!<!
+   double GetTZero() const; //!<!
+   const char *GetName() const; //!<!
+   double GetEnergy(size_t iter=0)const; //!<!
+   Float_t GetCharge(size_t iter=0)const; //!<!
+   long GetTimeStamp_ns() const; //!<!
+   ULong64_t GetTimeInCycle(); //!<!
+   ULong64_t GetCycleNumber(); //!<!
 
-   Int_t GetCfd(int iter=0) const { return Cfd.at(iter); }  //!
-   Int_t GetZCross(int iter=0)const { return Zc.at(iter); } //! 
-   Int_t GetLed(int iter=0) const { return Led.at(iter); }  //!
+   Int_t GetCfd(int iter=0) const { return Cfd.at(iter); }  //!<!
+   Int_t GetZc(int iter=0) const  { return Zc.at(iter); } //!<! 
+   Int_t GetLed(int iter=0) const { return Led.at(iter); }  //!<!
+   Int_t GetCcShort(int iter=0) const { return ccShort.at(iter); }  //!<!
+   Int_t GetCcLong(int iter=0) const { return ccLong.at(iter); }  //!<!
 
-   Int_t Get4GCfd(size_t i=0); //!
+   Int_t Get4GCfd(size_t i=0) const; //!<!
 
-   bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!
-   int  GetColor(Option_t *opt = "") const; //!
-   bool HasWave() const { return (wavebuffer.size()>0) ?  true : false; } //!
+   bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!<!
+   int  GetColor(Option_t *opt = "") const; //!<!
+   bool HasWave() const { return (wavebuffer.size()>0) ?  true : false; } //!<!
 
-   virtual void	Clear(Option_t *opt = ""); //!
-   virtual void Print(Option_t *opt = "") const; //!
+   virtual void	Clear(Option_t *opt = ""); //!<!
+   virtual void Print(Option_t *opt = "") const; //!<!
    
-   bool operator<(const TFragment &rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
-   bool operator>(const TFragment &rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
+   bool operator<(const TFragment& rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
+   bool operator>(const TFragment& rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 
+/// \cond CLASSIMP
    ClassDef(TFragment,5);  // Event Fragments
+/// \endcond
 };
 #endif // TFRAGMENT_H

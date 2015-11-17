@@ -1,6 +1,10 @@
 #ifndef TGRUTH1D_H
 #define TGRUTH1D_H
 
+/** \addtogroup GROOT
+ *  @{
+ */
+
 //  rootcint -f GH1DDict.cxx -c GH1D.h 
 //  g++ -fPIC -c GH1DDict.cxx `root-config --cflags`
 //  g++ -fPIC -c GH1D.cxx `root-config --cflags`
@@ -12,7 +16,6 @@
 #include "TH1D.h"
 
 class GH1D : public TH1D {
-
    public:
       GH1D(); 
       virtual ~GH1D(); 
@@ -31,7 +34,6 @@ class GH1D : public TH1D {
       void ExecuteEvent(Int_t evnet,Int_t x,Int_t y);
 
    private:
-
       void InitGH1D();
 
       static int fUniqueId;
@@ -39,8 +41,9 @@ class GH1D : public TH1D {
       static void AddToMap(GH1D*);
       static void RemoveFromMap(GH1D*);
 
-
+/// \cond CLASSIMP
       ClassDef(GH1D,1);
+/// \endcond
 };
-
+/*! @} */
 #endif 

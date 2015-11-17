@@ -1,7 +1,9 @@
 
 #include "GChain.h"
 
+/// \cond CLASSIMP
 ClassImp(GChain)
+/// \endcond
 
 GChain::GChain()
       :TChain() {  InitGChain();  }

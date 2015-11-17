@@ -1,4 +1,4 @@
-.PHONY: clean all
+.PHONY: clean all docs doxygen
 .SECONDARY:
 .SECONDEXPANSION:
 
@@ -89,8 +89,10 @@ all: $(EXECUTABLES) $(LIBRARY_OUTPUT) config
 	@find .build users -name "*.pcm" -exec cp {} libraries/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
-#docs:
-#	doxygen doxygen.config
+docs: doxygen
+
+doxygen:
+	$(MAKE) -C $@
 
 bin/grsisort: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) bin
 	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )

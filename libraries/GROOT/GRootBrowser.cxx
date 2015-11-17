@@ -9,46 +9,46 @@
 
 
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// GRootBrowser                                                         //
-//                                                                      //
-// This class creates a ROOT object browser, constitued by three main   //
-// tabs.                                                                //
-//                                                                      //
-// All tabs can 'swallow' frames, thanks to the new method:             //
-//   ExecPlugin(const char *name = 0, const char *fname = 0,            //
-//              const char *cmd = 0, Int_t pos = kRight,                //
-//              Int_t subpos = -1)                                      //
-// allowing to select plugins (can be a macro or a command)             //
-// to be executed, and where to embed the frame created by              //
-// the plugin (tab and tab element). Examples:                          //
-//                                                                      //
-// create a new browser:                                                //
-// TBrowser b;                                                          //
-//                                                                      //
-// create a new TCanvas in a new top right tab element:                 //
-// b.ExecPlugin("Canvas", 0, "new TCanvas()");                          //
-//                                                                      //
-// create a new top right tab element embedding the                     //
-// TGMainFrame created by the macro 'myMacro.C':                        //
-// b.ExecPlugin("MyPlugin", "myMacro.C");                               //
-//                                                                      //
-// create a new bottom tab element embedding the                        //
-// TGMainFrame created by the macro 'myMacro.C':                        //
-// b.ExecPlugin("MyPlugin", "myMacro.C", 0, GRootBrowser::kBottom);     //
-//                                                                      //
-// this browser implementation can be selected via the env              //
-// 'Browser.Name' in .rootrc, (GRootBrowser or GRootBrowserLite)        //
-// the default being GRootBrowserLite (old browser)                     //
-// a list of options (plugins) for the new GRootBrowser is also         //
-// specified via the env 'Browser.Options' in .rootrc, the default      //
-// being: FECI                                                          //
-// Here is the list of available options:                               //
-// F: File browser E: Text Editor H: HTML browser C: Canvas I: I/O      //
-// redirection P: Proof G: GL viewer                                    //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///
+/// \class GRootBrowser
+///
+/// This class creates a ROOT object browser, constitued by three main
+/// tabs.
+///
+/// All tabs can 'swallow' frames, thanks to the new method:
+///   ExecPlugin(const char *name = 0, const char *fname = 0,
+///              const char *cmd = 0, Int_t pos = kRight,
+///              Int_t subpos = -1)
+/// allowing to select plugins (can be a macro or a command)
+/// to be executed, and where to embed the frame created by
+/// the plugin (tab and tab element). Examples:
+///
+/// create a new browser:
+/// TBrowser b;
+///
+/// create a new TCanvas in a new top right tab element:
+/// b.ExecPlugin("Canvas", 0, "new TCanvas()");
+///
+/// create a new top right tab element embedding the
+/// TGMainFrame created by the macro 'myMacro.C':
+/// b.ExecPlugin("MyPlugin", "myMacro.C");
+///
+/// create a new bottom tab element embedding the
+/// TGMainFrame created by the macro 'myMacro.C':
+/// b.ExecPlugin("MyPlugin", "myMacro.C", 0, GRootBrowser::kBottom);
+///
+/// this browser implementation can be selected via the env
+/// 'Browser.Name' in .rootrc, (GRootBrowser or GRootBrowserLite)
+/// the default being GRootBrowserLite (old browser)
+/// a list of options (plugins) for the new GRootBrowser is also
+/// specified via the env 'Browser.Options' in .rootrc, the default
+/// being: FECI
+/// Here is the list of available options:
+/// F: File browser E: Text Editor H: HTML browser C: Canvas I: I/O
+/// redirection P: Proof G: GL viewer
+///
+///////////////////////////////////////////////////////////////////////////
 
 #include "TROOT.h"
 #include "TSystem.h"
@@ -103,14 +103,16 @@ static const char *gPluginFileTypes[] = {
 // The main ROOT object browser.
 //_____________________________________________________________________________
 
+/// \cond CLASSIMP
 ClassImp(GRootBrowser)
+/// \endcond
 
 //______________________________________________________________________________
 GRootBrowser::GRootBrowser(TBrowser *b, const char *name, UInt_t width,
                            UInt_t height, Option_t *opt, Bool_t initshow) :
    TGMainFrame(gClient->GetDefaultRoot(), width, height), TBrowserImp(b)
 {
-   // Create browser with a specified width and height.
+   /// Create browser with a specified width and height.
 
    fShowCloseTab = kTRUE;
    fActBrowser = 0;
@@ -133,7 +135,7 @@ GRootBrowser::GRootBrowser(TBrowser *b, const char *name, Int_t x, Int_t y,
                            Bool_t initshow) :
    TGMainFrame(gClient->GetDefaultRoot(), width, height), TBrowserImp(b)
 {
-   // Create browser with a specified width and height and at position x, y.
+   /// Create browser with a specified width and height and at position x, y.
 
    fShowCloseTab = kTRUE;
    fActBrowser = 0;
@@ -156,7 +158,7 @@ GRootBrowser::GRootBrowser(TBrowser *b, const char *name, Int_t x, Int_t y,
 void GRootBrowser::CreateBrowser(const char *name)
 {
 
-   // Create the actual interface.
+   /// Create the actual interface.
 
    fVf = new TGVerticalFrame(this, 100, 100);
 
@@ -305,7 +307,7 @@ void GRootBrowser::CreateBrowser(const char *name)
 //______________________________________________________________________________
 GRootBrowser::~GRootBrowser()
 {
-   // Clean up all widgets, frames and layouthints that were used
+   /// Clean up all widgets, frames and layouthints that were used
 
    if (fIconPic) gClient->FreePicture(fIconPic);
    delete fLH0;
@@ -341,10 +343,10 @@ GRootBrowser::~GRootBrowser()
 //______________________________________________________________________________
 void GRootBrowser::Add(TObject *obj, const char *name, Int_t check)
 {
-   // Add items to the actual browser. This function has to be called
-   // by the Browse() member function of objects when they are
-   // called by a browser. If check < 0 (default) no check box is drawn,
-   // if 0 then unchecked checkbox is added, if 1 checked checkbox is added.
+   /// Add items to the actual browser. This function has to be called
+   /// by the Browse() member function of objects when they are
+   /// called by a browser. If check < 0 (default) no check box is drawn,
+   /// if 0 then unchecked checkbox is added, if 1 checked checkbox is added.
 
    if (obj->InheritsFrom("TObjectSpy"))
       return;
@@ -355,9 +357,9 @@ void GRootBrowser::Add(TObject *obj, const char *name, Int_t check)
 //______________________________________________________________________________
 void GRootBrowser::BrowseObj(TObject *obj)
 {
-   // Browse object. This, in turn, will trigger the calling of
-   // GRootBrowser::Add() which will fill the IconBox and the tree.
-   // Emits signal "BrowseObj(TObject*)".
+   /// Browse object. This, in turn, will trigger the calling of
+   /// GRootBrowser::Add() which will fill the IconBox and the tree.
+   /// Emits signal "BrowseObj(TObject*)".
 
    if (fActBrowser)
       fActBrowser->BrowseObj(obj);
@@ -367,8 +369,8 @@ void GRootBrowser::BrowseObj(TObject *obj)
 //______________________________________________________________________________
 void GRootBrowser::CloneBrowser()
 {
-   // Clone the browser. A new Browser will be created, with the same
-   // plugins executed in the current one.
+   /// Clone the browser. A new Browser will be created, with the same
+   /// plugins executed in the current one.
 
    Int_t loop = 1;
    GBrowserPlugin *plugin = 0;
@@ -385,7 +387,7 @@ void GRootBrowser::CloneBrowser()
 //______________________________________________________________________________
 void GRootBrowser::CloseTab(Int_t id)
 {
-   // Remove tab element id from right tab.
+   /// Remove tab element id from right tab.
 
    RemoveTab(kRight, id);
 }
@@ -393,7 +395,7 @@ void GRootBrowser::CloseTab(Int_t id)
 //______________________________________________________________________________
 void GRootBrowser::CloseTabs()
 {
-   // Properly close the mainframes embedded in the different tabs
+   /// Properly close the mainframes embedded in the different tabs
 
    TGFrameElement *el;
    TGCompositeFrame *container;
@@ -487,7 +489,7 @@ void GRootBrowser::CloseTabs()
 //______________________________________________________________________________
 void GRootBrowser::CloseWindow()
 {
-   // Called when window is closed via the window manager.
+   /// Called when window is closed via the window manager.
 
    TQObject::Disconnect("TCanvas", "ProcessedEvent(Int_t,Int_t,Int_t,TObject*)",
                         this, "EventInfo(Int_t, Int_t, Int_t, TObject*)");
@@ -498,7 +500,7 @@ void GRootBrowser::CloseWindow()
 //______________________________________________________________________________
 void GRootBrowser::DoTab(Int_t id)
 {
-   // Handle Tab navigation.
+   /// Handle Tab navigation.
 
    TGTab *sender = (TGTab *)gTQSender;
    if ((sender) && (sender == fTabRight)) {
@@ -509,7 +511,7 @@ void GRootBrowser::DoTab(Int_t id)
 //______________________________________________________________________________
 void GRootBrowser::EventInfo(Int_t event, Int_t px, Int_t py, TObject *selected)
 {
-   // Display a tooltip with infos about the primitive below the cursor.
+   /// Display a tooltip with infos about the primitive below the cursor.
 
    const Int_t kTMAX=256;
    static char atext[kTMAX];
@@ -534,8 +536,8 @@ void GRootBrowser::EventInfo(Int_t event, Int_t px, Int_t py, TObject *selected)
 Long_t GRootBrowser::ExecPlugin(const char *name, const char *fname,
                                 const char *cmd, Int_t pos, Int_t subpos)
 {
-   // Execute a macro and embed the created frame in the tab "pos"
-   // and tab element "subpos".
+   /// Execute a macro and embed the created frame in the tab "pos"
+   /// and tab element "subpos".
 
    Long_t retval = 0;
    GBrowserPlugin *p;
@@ -569,7 +571,7 @@ Long_t GRootBrowser::ExecPlugin(const char *name, const char *fname,
 //______________________________________________________________________________
 Option_t *GRootBrowser::GetDrawOption() const
 {
-   // Returns drawing option.
+   /// Returns drawing option.
 
    if (fActBrowser)
       return fActBrowser->GetDrawOption();
@@ -579,7 +581,7 @@ Option_t *GRootBrowser::GetDrawOption() const
 //______________________________________________________________________________
 TGTab* GRootBrowser::GetTab(Int_t pos) const
 {
-   // Returns the TGTab at position pos.
+   /// Returns the TGTab at position pos.
 
    switch (pos) {
       case kLeft:   return fTabLeft;
@@ -592,7 +594,7 @@ TGTab* GRootBrowser::GetTab(Int_t pos) const
 //______________________________________________________________________________
 Bool_t GRootBrowser::HandleKey(Event_t *event)
 {
-   // Handle keyboard events.
+   /// Handle keyboard events.
 
    char   input[10];
    UInt_t keysym;
@@ -656,7 +658,7 @@ Bool_t GRootBrowser::HandleKey(Event_t *event)
 //______________________________________________________________________________
 void GRootBrowser::HandleMenu(Int_t id)
 {
-   // Handle menu entries events.
+   /// Handle menu entries events.
 
    TRootHelpDialog *hd;
    TString cmd;
@@ -820,14 +822,16 @@ void GRootBrowser::HandleMenu(Int_t id)
 //______________________________________________________________________________
 void GRootBrowser::InitPlugins(Option_t *opt)
 {
-   // Initialize default plugins. Could be also of the form:
-   // StartEmbedding(0);
-   // TPluginHandler *ph;
-   // ph = gROOT->GetPluginManager()->FindHandler("TGClassBrowser");
-   // if (ph && ph->LoadPlugin() != -1) {
-   //    ph->ExecPlugin(3, gClient->GetRoot(), 200, 500);
-   // }
-   // StopEmbedding();
+   /// Initialize default plugins. Could be also of the form:
+   ///~~~
+   /// StartEmbedding(0);
+   /// TPluginHandler *ph;
+   /// ph = gROOT->GetPluginManager()->FindHandler("TGClassBrowser");
+   /// if (ph && ph->LoadPlugin() != -1) {
+   ///    ph->ExecPlugin(3, gClient->GetRoot(), 200, 500);
+   /// }
+   /// StopEmbedding();
+   ///~~~
 
    TString cmd;
 
@@ -903,7 +907,7 @@ void GRootBrowser::InitPlugins(Option_t *opt)
 //______________________________________________________________________________
 void GRootBrowser::ReallyDelete()
 {
-   // Really delete the browser and the this GUI.
+   /// Really delete the browser and the this GUI.
 
    gInterpreter->DeleteGlobal(fBrowser);
    delete fBrowser;    // will in turn delete this object
@@ -912,7 +916,7 @@ void GRootBrowser::ReallyDelete()
 //______________________________________________________________________________
 void GRootBrowser::RecursiveRemove(TObject *obj)
 {
-   // Recursively remove object from browser.
+   /// Recursively remove object from browser.
 
    if (fActBrowser)
       fActBrowser->RecursiveRemove(obj);
@@ -921,7 +925,7 @@ void GRootBrowser::RecursiveRemove(TObject *obj)
 //______________________________________________________________________________
 void GRootBrowser::RecursiveReparent(TGPopupMenu *popup)
 {
-   // Recursively reparent TGPopupMenu to gClient->GetDefaultRoot().
+   /// Recursively reparent TGPopupMenu to gClient->GetDefaultRoot().
 
    TGMenuEntry *entry = 0;
    TIter next(popup->GetListOfEntries());
@@ -936,7 +940,7 @@ void GRootBrowser::RecursiveReparent(TGPopupMenu *popup)
 //______________________________________________________________________________
 void GRootBrowser::Refresh(Bool_t force)
 {
-   // Refresh the actual browser contents.
+   /// Refresh the actual browser contents.
 
    if (fActBrowser)
       fActBrowser->Refresh(force);
@@ -945,7 +949,7 @@ void GRootBrowser::Refresh(Bool_t force)
 //______________________________________________________________________________
 void GRootBrowser::RemoveTab(Int_t pos, Int_t subpos)
 {
-   // Remove tab element "subpos" from tab "pos".
+   /// Remove tab element "subpos" from tab "pos".
 
    TGTab *edit = 0;
    switch (pos) {
@@ -1003,7 +1007,7 @@ void GRootBrowser::RemoveTab(Int_t pos, Int_t subpos)
 //______________________________________________________________________________
 void GRootBrowser::SetTab(Int_t pos, Int_t subpos)
 {
-   // Switch to Tab "subpos" in TGTab "pos".
+   /// Switch to Tab "subpos" in TGTab "pos".
 
    TGTab *tab = GetTab(pos);
    if (subpos == -1)
@@ -1019,7 +1023,7 @@ void GRootBrowser::SetTab(Int_t pos, Int_t subpos)
 //______________________________________________________________________________
 void GRootBrowser::SetTabTitle(const char *title, Int_t pos, Int_t subpos)
 {
-   // Set text "title" of Tab "subpos" in TGTab "pos".
+   /// Set text "title" of Tab "subpos" in TGTab "pos".
 
    GBrowserPlugin *p = 0;
    TGTab *edit = GetTab(pos);
@@ -1039,7 +1043,7 @@ void GRootBrowser::SetTabTitle(const char *title, Int_t pos, Int_t subpos)
 //______________________________________________________________________________
 void GRootBrowser::SetStatusText(const char* txt, Int_t col)
 {
-   // Set text in culumn col in status bar.
+   /// Set text in culumn col in status bar.
 
    fStatusBar->SetText(txt, col);
 }
@@ -1047,7 +1051,7 @@ void GRootBrowser::SetStatusText(const char* txt, Int_t col)
 //______________________________________________________________________________
 void GRootBrowser::ShowMenu(TGCompositeFrame *menu)
 {
-   // Show the selected frame's menu and hide previous one.
+   /// Show the selected frame's menu and hide previous one.
 
    TGFrameElement *el = 0;
    // temporary solution until I find a proper way to handle
@@ -1076,7 +1080,7 @@ void GRootBrowser::ShowMenu(TGCompositeFrame *menu)
 //______________________________________________________________________________
 void GRootBrowser::StartEmbedding(Int_t pos, Int_t subpos)
 {
-   // Start embedding external frame in the tab "pos" and tab element "subpos".
+   /// Start embedding external frame in the tab "pos" and tab element "subpos".
 
    fEditTab = GetTab(pos);
    if (!fEditTab) return;
@@ -1110,7 +1114,7 @@ void GRootBrowser::StartEmbedding(Int_t pos, Int_t subpos)
 //______________________________________________________________________________
 void GRootBrowser::StopEmbedding(const char *name, TGLayoutHints *layout)
 {
-   // Stop embedding external frame in the current editable frame.
+   /// Stop embedding external frame in the current editable frame.
 
    if (fEditFrame != 0) {
       fEditFrame->SetEditable(kFALSE);
@@ -1141,8 +1145,8 @@ void GRootBrowser::StopEmbedding(const char *name, TGLayoutHints *layout)
 //______________________________________________________________________________
 void GRootBrowser::SwitchMenus(TGCompositeFrame  *from)
 {
-   // Move the menu from original frame to our TGMenuFrame, or display the
-   // menu associated to the current tab.
+   /// Move the menu from original frame to our TGMenuFrame, or display the
+   /// menu associated to the current tab.
 
    if (from == 0)
       return;
@@ -1210,7 +1214,7 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame  *from)
 //______________________________________________________________________________
 void GRootBrowser::DoubleClicked(TObject *obj)
 {
-   // Emits signal when double clicking on icon.
+   /// Emits signal when double clicking on icon.
 
    Emit("DoubleClicked(TObject*)", (Long_t)obj);
 }
@@ -1218,7 +1222,7 @@ void GRootBrowser::DoubleClicked(TObject *obj)
 //______________________________________________________________________________
 void GRootBrowser::Checked(TObject *obj, Bool_t checked)
 {
-   // Emits signal when double clicking on icon.
+   /// Emits signal when double clicking on icon.
 
    Long_t args[2];
 
@@ -1231,7 +1235,7 @@ void GRootBrowser::Checked(TObject *obj, Bool_t checked)
 //______________________________________________________________________________
 void GRootBrowser::ExecuteDefaultAction(TObject *obj)
 {
-   // Emits signal "ExecuteDefaultAction(TObject*)".
+   /// Emits signal "ExecuteDefaultAction(TObject*)".
 
    Emit("ExecuteDefaultAction(TObject*)", (Long_t)obj);
 }
@@ -1242,8 +1246,8 @@ TBrowserImp *GRootBrowser::NewBrowser(TBrowser *b, const char *title,
                                       UInt_t width, UInt_t height,
                                       Option_t *opt)
 {
-   // static contructor returning TBrowserImp,
-   // as needed by the plugin mechanism.
+   /// static contructor returning TBrowserImp,
+   /// as needed by the plugin mechanism.
 
    GRootBrowser *browser = new GRootBrowser(b, title, width, height, opt);
    return (TBrowserImp *)browser;
@@ -1254,8 +1258,8 @@ TBrowserImp *GRootBrowser::NewBrowser(TBrowser *b, const char *title, Int_t x,
                                       Int_t y, UInt_t width, UInt_t height,
                                       Option_t *opt)
 {
-   // static contructor returning TBrowserImp,
-   // as needed by the plugin mechanism.
+   /// static contructor returning TBrowserImp,
+   /// as needed by the plugin mechanism.
 
    GRootBrowser *browser = new GRootBrowser(b, title, x, y, width, height, opt);
    return (TBrowserImp *)browser;

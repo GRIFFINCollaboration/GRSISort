@@ -12,20 +12,9 @@
 
 #include "TMidasEvent.h"
 
+/// \cond CLASSIMP
 ClassImp(TMidasEvent)
-
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TMidasEvent                                                //
-//                                                            //
-// Contains the information within a Midas Event. This        //
-// usually includes a header, midas information such as timestamp
-// bank id, etc. And the bank data. The bank data is usually
-// the information supplied by either a scaler or the 
-// experimental DAQ system.
-//                                                            //
-////////////////////////////////////////////////////////////////
-
+/// \endcond
 
 TMidasEvent::TMidasEvent()
 {
@@ -164,15 +153,14 @@ int TMidasEvent::LocateBank(const void *unused, const char *name, void **pdata) 
 static const unsigned TID_SIZE[] = {0, 1, 1, 1, 2, 2, 4, 4, 4, 4, 8, 1, 0, 0, 0, 0, 0};
 static const unsigned TID_MAX = (sizeof(TID_SIZE)/sizeof(TID_SIZE[0]));
 
+/// Find a data bank.
+/// \param [in] name Name of the data bank to look for.
+/// \param [out] bklen Number of array elements in this bank.
+/// \param [out] bktype Bank data type (MIDAS TID_xxx).
+/// \param [out] pdata Pointer to bank data, Returns NULL if bank not found.
+/// \returns 1 if bank found, 0 otherwise.
+///
 int TMidasEvent::FindBank(const char* name, int *bklen, int *bktype, void **pdata) const {
-  /// Find a data bank.
-  /// \param [in] name Name of the data bank to look for.
-  /// \param [out] bklen Number of array elements in this bank.
-  /// \param [out] bktype Bank data type (MIDAS TID_xxx).
-  /// \param [out] pdata Pointer to bank data, Returns NULL if bank not found.
-  /// \returns 1 if bank found, 0 otherwise.
-  ///
-
   const TMidas_BANK_HEADER *pbkh = (const TMidas_BANK_HEADER*)fData; 
   TMidas_BANK *pbk;
   //uint32_t dname;
