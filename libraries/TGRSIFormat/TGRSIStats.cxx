@@ -2,7 +2,9 @@
 #include "TGRSIStats.h"
 #include "TChannel.h"
 
+/// \cond CLASSIMP
 ClassImp(TGRSIStats)
+/// \endcond
 
 ////////////////////////////////////////////////////////////////
 //                                                            //

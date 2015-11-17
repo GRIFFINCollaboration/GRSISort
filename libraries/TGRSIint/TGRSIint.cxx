@@ -1,5 +1,3 @@
-
-
 #include "TGRSIint.h"
 #include "TGRSILoop.h"
 
@@ -19,7 +17,9 @@
 
 #include <thread>
 
+/// \cond CLASSIMP
 ClassImp(TGRSIint)
+/// \endcond
 
 extern void PopupLogo(bool);
 extern void WaitLogo();
@@ -92,7 +92,7 @@ void TGRSIint::ApplyOptions() {
       //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
       long error = ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
       if(error <=0) continue;
-		TFile *file = (TFile*)gROOT->GetListOfFiles()->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
+      TFile *file = (TFile*)gROOT->GetListOfFiles()->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
 		if(file != NULL) {
 			printf("\tfile %s opened as _file%i\n",file->GetName(),x);
 			TGRSIRootIO::Get()->LoadRootFile(file);

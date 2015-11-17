@@ -21,29 +21,26 @@
 #include "TSocket.h"
 #include "TMessage.h"
 
-
 class TGRSIServer : public TServerSocket {
-
    public:
-      static TGRSIServer *instance(int port=9099);
+      static TGRSIServer* instance(int port=9099);
       virtual ~TGRSIServer();
       
       void StopServer() { if(fRunning) fRunning = false; }
 
-
    private:
-      static TGRSIServer *fGRSIServer;
+      static TGRSIServer* fGRSIServer;
       TGRSIServer(int port);
       bool fRunning;
 
-
-      TMonitor *fMonitor;
+      TMonitor* fMonitor;
 
       void AcceptConnectionThread();      
       void MonitorConnectionsThread();    
 
+/// \cond CLASSIMP
    ClassDef(TGRSIServer,0)
-
+/// \endcond
 };
 
 #endif

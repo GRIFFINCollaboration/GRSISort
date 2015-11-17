@@ -1,10 +1,13 @@
 #ifndef GROOT_DIRECTORY__H
 #define GROOT_DIRECTORY__H
 
-#include <TDirectory.h>
+/** \addtogroup GROOT
+ *  @{
+ */
+
+#include "TDirectory.h"
 
 class GDirectory : public TDirectory {
-
   public:
     GDirectory() : TDirectory() { }
     GDirectory(const char* name, const char* title, Option_t* option = "", TDirectory* motherDir = 0) : 
@@ -18,9 +21,9 @@ class GDirectory : public TDirectory {
 
   //private:
 
+/// \cond CLASSIMP
   ClassDef(GDirectory,1);
-
+/// \endcond
 };
-
+/*! @} */
 #endif
-

@@ -1,12 +1,14 @@
-#include "TMath.h"
 #include "TSharc.h"
+
 #include <cstdio>
 #include <iostream>
-#include "TSharcData.h"
+
 #include "TClass.h"
+#include "TMath.h"
 
-
+/// \cond CLASSIMP
 ClassImp(TSharc)
+/// \endcond
 
 // various sharc dimensions in mm
 
@@ -26,27 +28,27 @@ ClassImp(TSharc)
 //==========================================================================//
 //==========================================================================//
 
-double TSharc::X_offset    = +0.00; // 
-double TSharc::Y_offset    = +0.00; // 
-double TSharc::Z_offset    = +0.00; // 
+double TSharc::fXoffset    = +0.00; // 
+double TSharc::fYoffset    = +0.00; // 
+double TSharc::fZoffset    = +0.00; // 
 
-double TSharc::Xdim        = +72.0; // total X dimension of all boxes
-double TSharc::Ydim        = +72.0; // total Y dimension of all boxes
-double TSharc::Zdim        = +48.0; // total Z dimension of all boxes
-double TSharc::Rdim        = +32.0; // Rmax-Rmin for all QQQs 
-double TSharc::Pdim        = +81.6; // QQQ quadrant angular range (degrees)
-double TSharc::XposUB      = +42.5;
-double TSharc::YminUB      = -36.0;
-double TSharc::ZminUB      = -5.00;
-double TSharc::XposDB      = +40.5;
-double TSharc::YminDB      = -36.0;
-double TSharc::ZminDB      = +9.00;
-double TSharc::ZposUQ      = -66.5;
-double TSharc::RminUQ      = +9.00;
-double TSharc::PminUQ      = +2.00; // degrees
-double TSharc::ZposDQ      = +74.5;
-double TSharc::RminDQ      = +9.00;
-double TSharc::PminDQ      = +6.40; // degrees
+double TSharc::fXdim       = +72.0; // total X dimension of all boxes
+double TSharc::fYdim       = +72.0; // total Y dimension of all boxes
+double TSharc::fZdim       = +48.0; // total Z dimension of all boxes
+double TSharc::fRdim       = +32.0; // Rmax-Rmin for all QQQs 
+double TSharc::fPdim       = +81.6; // QQQ quadrant angular range (degrees)
+double TSharc::fXposUB     = +42.5;
+double TSharc::fYminUB     = -36.0;
+double TSharc::fZminUB     = -5.00;
+double TSharc::fXposDB     = +40.5;
+double TSharc::fYminDB     = -36.0;
+double TSharc::fZminDB     = +9.00;
+double TSharc::fZposUQ     = -66.5;
+double TSharc::fRminUQ     = +9.00;
+double TSharc::fPminUQ     = +2.00; // degrees
+double TSharc::fZposDQ     = +74.5;
+double TSharc::fRminDQ     = +9.00;
+double TSharc::fPminDQ     = +6.40; // degrees
 
 //const int TSharc::frontstripslist[16]     = {16,16,16,16,  24,24,24,24,  24,24,24,24,  16,16,16,16};
 //const int TSharc::backstripslist[16]      = {24,24,24,24,  48,48,48,48,  48,48,48,48,  24,24,24,24};    
@@ -55,14 +57,14 @@ double TSharc::PminDQ      = +6.40; // degrees
 //const double TSharc::backpitchlist[16]    = {TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48,  1.0,1.0,1.0,1.0,  1.0,1.0,1.0,1.0,  TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48,TMath::Pi()/48}; 
 // QQQ back pitches are angles
 //
-double TSharc::stripFpitch          = TSharc::Ydim / 24.0;  //TSharc::frontstripslist[5]; // 72.0/24 = 3.0 mm
-double TSharc::ringpitch            = TSharc::Rdim / 16.0;  //TSharc::frontstripslist[1]; // 32.0/16 = 2.0 mm
-double TSharc::stripBpitch          = TSharc::Zdim / 48.0;  //TSharc::backstripslist[5] ; // 48.0/48 = 1.0 mm
-double TSharc::segmentpitch         = TSharc::Pdim / 24.0;  //TSharc::backstripslist[1] ; // 81.6/24 = 3.4 degrees (angular pitch)
+double TSharc::fStripFPitch          = TSharc::fYdim / 24.0;  //TSharc::frontstripslist[5]; // 72.0/24 = 3.0 mm
+double TSharc::fRingPitch            = TSharc::fRdim / 16.0;  //TSharc::frontstripslist[1]; // 32.0/16 = 2.0 mm
+double TSharc::fStripBPitch          = TSharc::fZdim / 48.0;  //TSharc::backstripslist[5] ; // 48.0/48 = 1.0 mm
+double TSharc::fSegmentPitch         = TSharc::fPdim / 24.0;  //TSharc::backstripslist[1] ; // 81.6/24 = 3.4 degrees (angular pitch)
 
 // The dimensions are described for a single detector of each type UQ,UB,DB,DQ, and all other detectors can be calculated by rotating this
 
-TSharc::TSharc() : data(0)  {
+TSharc::TSharc() {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -70,111 +72,96 @@ TSharc::TSharc() : data(0)  {
 }
 
 TSharc::~TSharc()  {
-  if(data) delete data;
 }
 
 TSharc::TSharc(const TSharc& rhs) : TGRSIDetector() {
   Class()->IgnoreTObjectStreamer(kTRUE);
   Clear("ALL");
-  ((TSharc&)rhs).Copy(*this);
+  rhs.Copy(*this);
 }
 
-
-void TSharc::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
-   if(!data)
-      data = new TSharcData();
-   if(mnemonic->arraysubposition.compare(0,1,"E")==0) {//PAD
-      data->SetPad(frag,channel,mnemonic);
-   } else if(mnemonic->arraysubposition.compare(0,1,"D")==0) {//not a PAD
-    if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front
-      data->SetFront(frag,channel,mnemonic);
-    } else {  //back
-      data->SetBack(frag,channel,mnemonic);
-    }
-  }
-  TSharcData::Set();
+void TSharc::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+	//mnemonic->arraysubposition.compare(0,1,"?"): E = PAD, D = not a PAD
+	//mnemonic->collectedcharge.compare(0,1,"?"): P = front, else(N) = back
+	if(frag == NULL || mnemonic == NULL) {
+		return;
+	}
+	
+	if(mnemonic->arraysubposition.compare(0,1,"D") == 0) {
+		bool front = (mnemonic->collectedcharge.compare(0,1,"P") == 0);
+		//see if we already have this detector
+		for(size_t i = 0; i < fSharcHits.size(); ++i) {
+			if(fSharcHits[i].GetDetectorNumber() != mnemonic->arrayposition) {
+				continue;
+			}
+			if(front) {
+				//In the original any data with more/less than one front and one back entry was skipped.
+				//We could check here whether the front charge has already been set and remove the whole hit if that's the case (same goes for the back charge).
+				//We would also need to check at the very end whether both front and back have been set.
+				if(TMath::Abs(fSharcHits[i].GetBackCharge() - frag->GetCharge()) > 6000) { //naive charge cut keeps >99.9% of data.
+					//in the original code this fragment would just be ignored, so we return here, i.e. do the same
+					return;
+				}
+				//front strip
+				fSharcHits[i].SetFrontStrip(mnemonic->segment);
+				fSharcHits[i].SetFront(*frag);
+				return;
+			} else {
+				if(TMath::Abs(fSharcHits[i].GetFrontCharge() - frag->GetCharge()) > 6000) { //naive charge cut keeps >99.9% of data.
+					//in the original code this fragment would just be ignored, so we return here, i.e. do the same
+					return;
+				}
+				//back strip
+				fSharcHits[i].SetBackStrip(mnemonic->segment);
+				fSharcHits[i].SetBack(*frag);
+				return;
+			}
+		}
+		//reaching here means we haven't found this detector before so we create a new hit
+		TSharcHit hit; 
+		hit.SetDetectorNumber(mnemonic->arrayposition);
+		if(front) {
+			//front strip
+			hit.SetFrontStrip(mnemonic->segment);
+			hit.SetFront(*frag);
+		} else {
+			//back strip
+			hit.SetBackStrip(mnemonic->segment);
+			hit.SetBack(*frag);
+		}
+	} else if(mnemonic->arraysubposition.compare(0,1,"E") == 0) {
+		//pad
+		//see if we already have this detector
+		for(size_t i = 0; i < fSharcHits.size(); ++i) {
+			if(fSharcHits[i].GetDetectorNumber() != mnemonic->arrayposition) {
+				continue;
+			}
+			fSharcHits.at(i).SetPad(*frag);
+			return;
+		}
+		//reaching here means we haven't found this detector before so we create a new hit
+		TSharcHit hit; 
+		hit.SetDetectorNumber(mnemonic->arrayposition);
+		hit.SetPad(*frag);
+	}
 }
 
-void  TSharc::BuildHits(TDetectorData *ddata,Option_t *opt)  {
-   TSharcData *sdata = (TSharcData*)ddata;
-   if(sdata==0)
-     sdata = (this->data); 
-  if(!sdata)
-    return;
-
-
-  //  after the data has been taken from the fragement tree, the data
-  //  is stored/correlated breifly in by the tsharcdata class - these 
-  //  function takes the data out of tsharcdata, and puts it into the 
-  //  the tsharchits class.  These tsharchit objects are how we access
-  //  the data stored in the tsharc branch in the analysis tree. 
-  //
-  //  pcb.
-  //
-  //int fCfdBuildDiff = 5; // largest acceptable time difference between events (clock ticks)  (50 ns)
-
-	//printf("Building Hits!. options = %s\n",opt);
-
-
-	//printf("frontsize = %i   |  backsize = %i  \n",sdata->GetMultiplicityFront(),sdata->GetMultiplicityBack());
-
-  if((sdata->GetSizeFront()!=1) || (sdata->GetSizeBack()!=1) )   ///need to remove this soon and replaces with time gates in the loops below
-    return;                                                      /// !!! pcb. and add better building condition.
-    
-
-  //printf("Building sharc hits.\n");
-  for(size_t i=0;i<sdata->GetSizeFront();i++)  {  
-    for(size_t j=0;j<sdata->GetSizeBack();j++)  {  
-      if(sdata->GetFront_DetectorNbr(i) != sdata->GetBack_DetectorNbr(j)) {
-        continue;
-      }
-      if(std::abs(sdata->GetFront_Charge(i) - sdata->GetBack_Charge(j)) > 6000)//naive charge cut keeps >99.9% of data.
-        continue;
-
-      TSharcHit hit; 
-
-      hit.SetDetectorNumber(sdata->GetFront_DetectorNbr(i));        
-      hit.SetFrontStrip(sdata->GetFront_StripNbr(i));
-      hit.SetBackStrip(sdata->GetBack_StripNbr(j));
-
-      hit.SetFront(sdata->GetFront_Fragment(i));
-      hit.SetBack(sdata->GetBack_Fragment(j));
-
-      hit.SetPosition(TSharc::GetPosition(hit.GetDetectorNumber(),hit.GetFrontStrip(),hit.GetBackStrip()));
-
-      this->sharc_hits.push_back(hit);
-    }
-  }
-  for(size_t k=0;k<sdata->GetSizePad();k++)  {  
-    for(size_t l=0;l<sharc_hits.size();l++)  {
-      if(sdata->GetPad_DetectorNbr(k) != sharc_hits.at(l).GetDetectorNumber())
-        continue;
-      sharc_hits.at(l).SetPad(sdata->GetPad_Fragment(k)); 
-    }
-  }
-
+void TSharc::RemoveHits(std::vector<TSharcHit>* hits,std::set<int>* to_remove) {
+	for(auto iter = to_remove->rbegin(); iter != to_remove->rend(); ++iter) {
+		if(*iter == -1)
+			continue;
+		hits->erase(hits->begin()+*iter);
+	}
 }
 
-void TSharc::RemoveHits(std::vector<TSharcHit> *hits,std::set<int> *to_remove)  {
-
-  std::set<int>::reverse_iterator iter;
-  for(iter= to_remove->rbegin(); iter != to_remove->rend(); iter++)  {
-    if(*iter == -1)
-      continue;
-    hits->erase(hits->begin()+*iter);
-
-  }
-}
-
-void TSharc::Clear(Option_t *option)  {
+void TSharc::Clear(Option_t *option) {
   TGRSIDetector::Clear(option);
-  if(data) data->Clear();
-    sharc_hits.clear();
+  fSharcHits.clear();
   
   if(!strcmp(option,"ALL")) { 
-    X_offset = 0.00;
-    Y_offset = 0.00;
-    Z_offset = 0.00;
+    fXoffset = 0.00;
+    fYoffset = 0.00;
+    fZoffset = 0.00;
   }
   return;
 }
@@ -187,18 +174,15 @@ void TSharc::Print(Option_t *option) const  {
 void TSharc::Copy(TObject &rhs) const {
   //if(!rhs.InheritsFrom("TSharc"))
   //  return;
-  TGRSIDetector::Copy((TObject&)rhs);
+  TGRSIDetector::Copy(rhs);
 
-  ((TSharc&)rhs).sharc_hits = ((TSharc&)*this).sharc_hits;
-  ((TSharc&)rhs).data     = 0;                        //((TSharc&)rhs).data;    
-  ((TSharc&)rhs).X_offset = ((TSharc&)*this).X_offset;
-  ((TSharc&)rhs).Y_offset = ((TSharc&)*this).Y_offset;
-  ((TSharc&)rhs).Z_offset = ((TSharc&)*this).Z_offset;
-  return;                                      
-}                                       
+  static_cast<TSharc&>(rhs).fSharcHits = fSharcHits;
+  static_cast<TSharc&>(rhs).fXoffset   = fXoffset;
+  static_cast<TSharc&>(rhs).fYoffset   = fYoffset;
+  static_cast<TSharc&>(rhs).fZoffset   = fZoffset;
+}
 
-
-TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double X, double Y, double Z)  {
+TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double X, double Y, double Z) {
   int FrontDet = detector;
   int FrontStr = frontstrip;
   //int BackDet  = detector;
@@ -214,30 +198,30 @@ TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double
 
   if(FrontDet>=5 && FrontDet<=8){ //forward box
     nrots = FrontDet-4;                                // edited to make box 5 on the ceiling.  assuming rotaing ccw around the +z axis!!
-    x = XposDB;                                                                      // ?? x stays the same. first detector is aways defined in the y-z plane.
-    y = - (YminDB + (FrontStr+0.5)*stripFpitch);       // [(-36.0) - (+36.0)]        // ?? add minus sign, reversve the order of the strips on the ds section.
-    z = ZminDB + (BackStr+0.5)*stripBpitch;            // [(+9.0) - (+57.0)]    
+    x = fXposDB;                                                                      // ?? x stays the same. first detector is aways defined in the y-z plane.
+    y = - (fYminDB + (FrontStr+0.5)*fStripFPitch);       // [(-36.0) - (+36.0)]        // ?? add minus sign, reversve the order of the strips on the ds section.
+    z = fZminDB + (BackStr+0.5)*fStripBPitch;            // [(+9.0) - (+57.0)]    
     position.SetXYZ(x,y,z);
   }
   else if(FrontDet>=9 && FrontDet<=12){ //backward box
     nrots = FrontDet-8;                                             // edited to make box 5 on the ceiling.  assuming rotaing ccw around the +z axis!!
-    x = XposUB;                                             
-    y = YminUB + (FrontStr+0.5)*stripFpitch;           // [(-36.0) - (+36.0)] 
-    z = ZminUB - (BackStr+0.5)*stripBpitch;            // [(-5.0) - (-53.0)]
+    x = fXposUB;                                             
+    y = fYminUB + (FrontStr+0.5)*fStripFPitch;           // [(-36.0) - (+36.0)] 
+    z = fZminUB - (BackStr+0.5)*fStripBPitch;            // [(-5.0) - (-53.0)]
     position.SetXYZ(x,y,z);
   }
   else if(FrontDet>=13){ // backward (upstream) QQQ
     nrots = FrontDet-13;
-    double z = ZposUQ;
-    double rho = RminUQ + (FrontStr+0.5)*ringpitch;    // [(+9.0) - (+41.0)] 
-    double phi = (PminUQ + (BackStr+0.5)*segmentpitch)*TMath::Pi()/180.0;  // [(+2.0) - (+83.6)] 
+    double z = fZposUQ;
+    double rho = fRminUQ + (FrontStr+0.5)*fRingPitch;    // [(+9.0) - (+41.0)] 
+    double phi = (fPminUQ + (BackStr+0.5)*fSegmentPitch)*TMath::Pi()/180.0;  // [(+2.0) - (+83.6)] 
     position.SetXYZ(rho*TMath::Sin(phi),rho*TMath::Cos(phi),z);   
   }
   else if(FrontDet<=4){ // forward (downstream) QQQ
     nrots = FrontDet-1;
-    double z = ZposDQ;
-    double rho = RminDQ + (FrontStr+0.5)*ringpitch;    // [(+9.0) - (+41.0)] 
-    double phi = (PminDQ + (BackStr+0.5)*segmentpitch)*TMath::Pi()/180.0;  // [(+6.4) - (+88.0)] 
+    double z = fZposDQ;
+    double rho = fRminDQ + (FrontStr+0.5)*fRingPitch;    // [(+9.0) - (+41.0)] 
+    double phi = (fPminDQ + (BackStr+0.5)*fSegmentPitch)*TMath::Pi()/180.0;  // [(+6.4) - (+88.0)] 
     position.SetXYZ(rho*TMath::Sin(phi),rho*TMath::Cos(phi),z);    
   }  
 
@@ -251,7 +235,7 @@ TGRSIDetectorHit* TSharc::GetHit(const Int_t& idx) {
 
 TSharcHit* TSharc::GetSharcHit(const int& i) {
    try{
-      return &sharc_hits.at(i);   
+      return &fSharcHits.at(i);   
    }
    catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;

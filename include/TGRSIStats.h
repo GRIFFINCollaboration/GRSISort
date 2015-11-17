@@ -2,9 +2,8 @@
 #define TGRSISTATS_H
 
 #include <map>
+
 #include "TObject.h"
-
-
 
 class TGRSIStats : public TObject {
    public:
@@ -13,11 +12,11 @@ class TGRSIStats : public TObject {
    private:
       TGRSIStats(int);
    public:
-      static TGRSIStats *GetStats(int temp_address); 
+      static TGRSIStats* GetStats(int tempAddress); 
       static int GetNumberOfStats() { return fStatsMap->size(); }  
 
    private:
-     static std::map<int,TGRSIStats*> *fStatsMap; //A Map of channel number to a set of stats
+     static std::map<int,TGRSIStats*>* fStatsMap; //A Map of channel number to a set of stats
      static time_t fLowestMidasTimeStamp;         //The lowest midas time stamp recorded during a sub-run
      static time_t fHighestMidasTimeStamp;        //This highest midas time stamp recorded during a sub-run
 
@@ -34,17 +33,17 @@ class TGRSIStats : public TObject {
 
    public:
       virtual ~TGRSIStats();
-      static std::map<int,TGRSIStats*> *GetMap() { return fStatsMap;}
+      static std::map<int,TGRSIStats*>* GetMap() { return fStatsMap;}
       static int GetSize() { if(fStatsMap) return fStatsMap->size(); else return 0; }
 
       int GetAddress() const { return fStatAddress; }
       unsigned long GetDeadTime() const {return fDeadTime;}
-      void IncDeadTime(int dtime) { fDeadTime += dtime; }
-      void IncLostEvent(int lnum = 1) { fLostEvents+=lnum; } 
+      void IncDeadTime(int dTime) { fDeadTime += dTime; }
+      void IncLostEvent(int lNum = 1) { fLostEvents += lNum; } 
 
-      void SetLastChannelId(int last) { fLastChannelIdSeen = last;  }
+      void SetLastChannelId(int last) { fLastChannelIdSeen = last; }
 
-      static void IncGoodEvents(){ fGoodEvents++;}
+      static void IncGoodEvents() { fGoodEvents++; }
 
       static inline void SetLowestMidasTimeStamp(time_t low) { fLowestMidasTimeStamp = low; }
       static inline void SetHighestMidasTimeStamp(time_t high) { fHighestMidasTimeStamp = high; }
@@ -59,14 +58,11 @@ class TGRSIStats : public TObject {
 
       static int GetRunTime() { return fHighestMidasTimeStamp - fLowestMidasTimeStamp; }
 
+      virtual void Print(Option_t* opt = "") const;
+      virtual void Clear(Option_t* opt = "");
 
-      virtual void Print(Option_t *opt = "") const;
-      virtual void Clear(Option_t *opt = "");
-
-
-
+/// \cond CLASSIMP
    ClassDef(TGRSIStats,1) //A Helper class designed to record stats from each channel
+/// \endcond
 };
-
-
 #endif

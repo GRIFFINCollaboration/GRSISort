@@ -1,20 +1,24 @@
 #ifndef GROOTOBJECTMANAGER__H
 #define GROOTOBJECTMANAGER__H
 
-#include <TObject.h>
-#include <TList.h>
-#include <TVirtualPad.h>
-
-#include <TDirectoryFile.h>
-#include <TH1.h>
-#include <TH2.h>
-#include <TH3.h>
-#include <TGraph.h>
-
-#include <GCanvas.h>
+/** \addtogroup GROOT
+ *  @{
+ */
 
 #include <string>
 #include <map>
+
+#include "TObject.h"
+#include "TList.h"
+#include "TVirtualPad.h"
+
+#include "TDirectoryFile.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "TH3.h"
+#include "TGraph.h"
+
+#include "GCanvas.h"
 
 class GPadObj : public TNamed {
   public:
@@ -30,7 +34,9 @@ class GPadObj : public TNamed {
 	//std::vector<std::string> fSource;
 	std::string  fOption;
 	
+/// \cond CLASSIMP
    ClassDef(GPadObj,0)
+/// \endcond
 };
 
 class GMemObj : public TNamed {
@@ -57,10 +63,10 @@ class GMemObj : public TNamed {
    std::string fOption;
    std::string fObjName;
 
+/// \cond CLASSIMP
   ClassDef(GMemObj,0)  
+/// \endcond
 };
-
-
 
 class GRootObjectManager {
   public:
@@ -117,7 +123,9 @@ class GRootObjectManager {
 	static void ExtractObjects(TCollection*);
 	static void ExtractObjectsFromFile(TDirectoryFile *file);
 
+/// \cond CLASSIMP
 	ClassDef(GRootObjectManager,0)
+/// \endcond
 };
-
+/*! @} */
 #endif

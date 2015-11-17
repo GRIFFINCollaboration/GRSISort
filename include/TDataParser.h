@@ -1,6 +1,19 @@
 #ifndef TDATAPARSER_H
 #define TDATAPARSER_H
 
+/////////////////////////////////////////////////////////////////
+///
+/// \class TDataParser
+///
+/// The TDataParser is the DAQ dependent part of GRSISort.
+/// It takes a "DAQ-dependent"-flavoured MIDAS file and
+/// converts it into a generic TFragment that the rest of
+/// GRSISort can deal with. This is where event word masks
+/// are applied, and any changes to the event format must
+/// be implemented.
+///
+/////////////////////////////////////////////////////////////////
+
 #include "Globals.h"
 #include <ctime>
 #include <vector>
@@ -11,45 +24,40 @@
 #include "TPPG.h"
 #include "TScaler.h"
 
-//#include "TObject.h"
-
-class TDataParser { //: public TObject { 
-
+class TDataParser {
   private:
-    static TDataParser *fDataParser;  //A pointer to the global DataParser Class
-    static bool no_waveforms;         //The flag to turn wave_forms on or off
-    static bool record_stats;         //The flag to turn on stats recording
-	 static TChannel *gChannel;
+    static TDataParser* fDataParser;  ///< A pointer to the global DataParser Class
+    static bool fNoWaveforms;         ///< The flag to turn wave_forms on or off
+    static bool fRecordStats;         ///< The flag to turn on stats recording
+	 static TChannel* gChannel;
     TDataParser();
 	
   public:
     ~TDataParser();
-    static TDataParser *instance();    //returns the global TDataParser Object
-    static void SetNoWaveForms(bool temp = true) {no_waveforms = temp;}
-    static void SetRecordStats(bool temp = true) {record_stats = temp;}      
+    static TDataParser* instance();    //returns the global TDataParser Object
+    static void SetNoWaveForms(bool temp = true) { fNoWaveforms = temp; }
+    static void SetRecordStats(bool temp = true) { fRecordStats = temp; }
 
   private:
-    static const unsigned long fgMaxTriggerId; //The last trigger ID Called
-    static unsigned long fgLastMidasId;        //The last MIDAS ID in the midas file
-    static unsigned long fgLastTriggerId;      //The last Trigged ID in the MIDAS File
-    static unsigned long fgLastNetworkPacket;  //The last network packet recieved.
+    static const unsigned long fMaxTriggerId; ///< The last trigger ID Called
+    static unsigned long fLastMidasId;        ///< The last MIDAS ID in the midas file
+    static unsigned long fLastTriggerId;      ///< The last Trigged ID in the MIDAS File
+    static unsigned long fLastNetworkPacket;  ///< The last network packet recieved.
 
-    static std::map<int,int> fragment_id_map;
-
+    static std::map<int,int> fFragmentIdMap;
 
   public:
-    //static std::vector<TFragment*> TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
-    static int TigressDataToFragment(uint32_t *data, int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
-    static int GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasserialnumber = 0, time_t midastime = 0);
-    static int GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsigned int midasserialnumber=0, time_t midastime=0); 
+    static int TigressDataToFragment(uint32_t *data, int size,unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+    static int GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+    static int GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsigned int midasSerialNumber=0, time_t midasTime=0); 
 	 static int GriffinDataToScalerEvent(uint32_t *data, int address);
    
-    static int EPIXToScalar(float *data,int size,unsigned int midasserialnumber = 0,time_t midastime = 0);
-    static int SCLRToScalar(uint32_t *data,int size,unsigned int midasserialnumber = 0,time_t midastime = 0);
+    static int EPIXToScalar(float *data,int size,unsigned int midasSerialNumber = 0,time_t midasTime = 0);
+    static int SCLRToScalar(uint32_t *data,int size,unsigned int midasSerialNumber = 0,time_t midasTime = 0);
 	 static int EightPIDataToFragment(uint32_t stream,uint32_t* data,
-                                     int size,unsigned int midasserialnumber = 0, time_t midastime = 0);
+                                     int size,unsigned int midasSerialNumber = 0, time_t midasTime = 0);
     static int FifoToFragment(unsigned short *data,int size,bool zerobuffer=false,
-                              unsigned int midasserialnumber=0, time_t midastime=0); 
+                              unsigned int midasSerialNumber=0, time_t midasTime=0); 
 
 
   private:
@@ -85,9 +93,6 @@ class TDataParser { //: public TObject {
 	 static bool SetScalerValue(int, uint32_t, TScalerData*);
 
     static void FillStats(TFragment*);
-
-    //ClassDef(TDataParser,0); //Parses the MIDAS files into DAQ-dependent TFragments. 
-
 };
 
 #endif

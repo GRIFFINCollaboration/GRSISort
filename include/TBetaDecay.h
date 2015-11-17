@@ -17,14 +17,15 @@ public:
   virtual ~TBetaDecay();
 
 public:
-  TNucleus *GetParent() const {return fparent;} 
+  TNucleus* GetParent() const { return fParent; } 
 
 private:
 
-  Bool_t fparent_allocated; //true if TNucleus was instantiated in TBetaDecay
-  TNucleus *fparent;        //The parent nucleus beta decaying
+  Bool_t fParentAllocated;  ///< true if TNucleus was instantiated in TBetaDecay
+  TNucleus* fParent;        ///< The parent nucleus beta decaying
 
+/// \cond CLASSIMP
   ClassDef(TBetaDecay,1);   //Information about beta decays
- 
+/// \endcond
 };
 #endif
