@@ -749,14 +749,14 @@ int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, int bank, unsig
 				SetPPGHighTimeStamp(value,ppgEvent);
 				break;
 			case 0xe0000000:
-				if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
+				//if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
 					TGRSIRootIO::Get()->FillPPG(ppgEvent);
 					TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(-2); //use detector type -2 for PPG
 					return x;
-				} else  {
-					TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-2); //use detector type -2 for PPG
-					return -x;
-				}
+				//} else  {
+				//	TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-2); //use detector type -2 for PPG
+				//	return -x;
+				//}
 				break;
 		};
 	}
