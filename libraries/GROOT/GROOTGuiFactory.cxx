@@ -9,15 +9,6 @@
  * For the list of contributors see $ROOTSYS/README/CREDITS.             *
  *************************************************************************/
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// GROOTGuiFactory                                                      //
-//                                                                      //
-// This class is a factory for ROOT GUI components. It overrides        //
-// the member functions of the ABS TGuiFactory.                         //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
 #include "GROOTGuiFactory.h"
 #include "TRootApplication.h"
 
@@ -33,20 +24,22 @@
 
 #include "GCanvas.h"
 
+/// \cond CLASSIMP
 ClassImp(GROOTGuiFactory)
+/// \endcond
 
 //______________________________________________________________________________
 GROOTGuiFactory::GROOTGuiFactory(const char *name, const char *title)
    : TGuiFactory(name, title)
 {
-   // GROOTGuiFactory ctor.
+   /// GROOTGuiFactory ctor.
 }
 
 //______________________________________________________________________________
 TApplicationImp *GROOTGuiFactory::CreateApplicationImp(const char *classname,
                       Int_t *argc, char **argv)
 {
-   // Create a ROOT native GUI version of TApplicationImp
+   /// Create a ROOT native GUI version of TApplicationImp
 
    TRootApplication *app = new TRootApplication(classname, argc, argv);
    if (!app->Client()) {
@@ -60,7 +53,7 @@ TApplicationImp *GROOTGuiFactory::CreateApplicationImp(const char *classname,
 TCanvasImp *GROOTGuiFactory::CreateCanvasImp(TCanvas *c, const char *title,
                                              UInt_t width, UInt_t height)
 {
-   // Create a ROOT native GUI version of TCanvasImp
+   /// Create a ROOT native GUI version of TCanvasImp
    printf("Created a GRootCanvas.\n");
    //GRootObjectManager::Instance()->AddCanvas(c);
    //return new GRootCanvas(c, title, width, height);i
@@ -76,7 +69,7 @@ TCanvasImp *GROOTGuiFactory::CreateCanvasImp(TCanvas *c, const char *title,
 TCanvasImp *GROOTGuiFactory::CreateCanvasImp(TCanvas *c, const char *title,
                                   Int_t x, Int_t y, UInt_t width, UInt_t height)
 {
-   // Create a ROOT native GUI version of TCanvasImp
+   /// Create a ROOT native GUI version of TCanvasImp
    printf("Created a GRootCanvas.\n");
    //GRootObjectManager::Instance()->AddCanvas(c);
    //return new GRootCanvas(c, title, x, y, width, height);
@@ -92,7 +85,7 @@ TBrowserImp *GROOTGuiFactory::CreateBrowserImp(TBrowser *b, const char *title,
                                                UInt_t width, UInt_t height, 
                                                Option_t *opt)
 {
-   // Create a ROOT native GUI version of TBrowserImp
+   /// Create a ROOT native GUI version of TBrowserImp
 
    //TString browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
    TString browserVersion(gEnv->GetValue("Browser.Name", "GRootBrowser"));
@@ -129,7 +122,7 @@ TBrowserImp *GROOTGuiFactory::CreateBrowserImp(TBrowser *b, const char *title,
                                                Int_t x, Int_t y, UInt_t width, 
                                                UInt_t height, Option_t *opt)
 {
-   // Create a ROOT native GUI version of TBrowserImp
+   /// Create a ROOT native GUI version of TBrowserImp
 
    TString browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
    TPluginHandler *ph = gROOT->GetPluginManager()->FindHandler("TBrowserImp", 
@@ -152,7 +145,7 @@ TBrowserImp *GROOTGuiFactory::CreateBrowserImp(TBrowser *b, const char *title,
 TContextMenuImp *GROOTGuiFactory::CreateContextMenuImp(TContextMenu *c,
                                              const char *name, const char *)
 {
-   // Create a ROOT native GUI version of TContextMenuImp
+   /// Create a ROOT native GUI version of TContextMenuImp
 
    return new TRootContextMenu(c, name);
 }
@@ -160,7 +153,7 @@ TContextMenuImp *GROOTGuiFactory::CreateContextMenuImp(TContextMenu *c,
 //______________________________________________________________________________
 TControlBarImp *GROOTGuiFactory::CreateControlBarImp(TControlBar *c, const char *title)
 {
-   // Create a ROOT native GUI version of TControlBarImp
+   /// Create a ROOT native GUI version of TControlBarImp
 
    return new TRootControlBar(c, title);
 }
@@ -169,7 +162,7 @@ TControlBarImp *GROOTGuiFactory::CreateControlBarImp(TControlBar *c, const char 
 TControlBarImp *GROOTGuiFactory::CreateControlBarImp(TControlBar *c, const char *title,
                                                      Int_t x, Int_t y)
 {
-   // Create a ROOT native GUI version of TControlBarImp
+   /// Create a ROOT native GUI version of TControlBarImp
 
    return new TRootControlBar(c, title, x, y);
 }

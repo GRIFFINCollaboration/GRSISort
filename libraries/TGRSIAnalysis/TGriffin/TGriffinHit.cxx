@@ -4,7 +4,9 @@
 #include "Globals.h"
 #include <cmath>
 
+/// \cond CLASSIMP
 ClassImp(TGriffinHit)
+/// \endcond
 
 TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{	
    //Default Ctor. Ignores TObject Streamer in ROOT < 6.
@@ -17,18 +19,18 @@ TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{
 TGriffinHit::TGriffinHit(const TGriffinHit &rhs) : TGRSIDetectorHit() {	
    //Copy Ctor. Ignores TObject Streamer in ROOT < 6.
 	Clear();
-   ((TGriffinHit&)rhs).Copy(*this);
+   rhs.Copy(*this);
 }
 
 TGriffinHit::~TGriffinHit()  {	}
 
-void TGriffinHit::Copy(TGriffinHit &rhs) const {
-  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)rhs);
-  ((TGriffinHit&)rhs).fFilter                = fFilter;
-  ((TGriffinHit&)rhs).fGriffinHitBits        = fGriffinHitBits;
-  ((TGriffinHit&)rhs).fCrystal               = fCrystal;
-  ((TGriffinHit&)rhs).fPPG                   = fPPG;
-  ((TGriffinHit&)rhs).fBremSuppressed_flag   = fBremSuppressed_flag;//! Bremsstrahlung Suppression flag.
+void TGriffinHit::Copy(TObject &rhs) const {
+  TGRSIDetectorHit::Copy(rhs);
+  static_cast<TGriffinHit&>(rhs).fFilter                = fFilter;
+  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = 0;
+  static_cast<TGriffinHit&>(rhs).fCrystal               = fCrystal;
+  static_cast<TGriffinHit&>(rhs).fPPG                   = fPPG;
+  static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag; // Bremsstrahlung Suppression flag.
   return;                                      
 }                                       
 
@@ -60,7 +62,7 @@ void TGriffinHit::Print(Option_t *opt) const	{
    printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",GetPosition().Theta() *180/(3.141597),GetPosition().Phi() *180/(3.141597));
 }
 
-TVector3 TGriffinHit::GetPosition(Double_t dist) const{
+TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
    //Returns the Position of the crystal of the current Hit.
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }

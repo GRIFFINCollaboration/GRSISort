@@ -2,7 +2,9 @@
 #include "TGRSIStats.h"
 #include "TChannel.h"
 
+/// \cond CLASSIMP
 ClassImp(TGRSIStats)
+/// \endcond
 
 ////////////////////////////////////////////////////////////////
 //                                                            //
@@ -42,7 +44,7 @@ TGRSIStats::TGRSIStats(int temp_add) {
 
 TGRSIStats::~TGRSIStats() { }
 
-void TGRSIStats::Print(Option_t *opt) {
+void TGRSIStats::Print(Option_t *opt) const {
 //Prints the stats for the current channel.
 	printf( "Channel %i|%s deadtime = %f seconds\n",TChannel::GetChannel(GetAddress())->GetNumber(),TChannel::GetChannel(GetAddress())->GetChannelName(),GetDeadTime()*10*10E-9   );
 }

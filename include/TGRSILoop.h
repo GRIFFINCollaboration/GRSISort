@@ -5,9 +5,11 @@
 #include <string>
 #include <fstream>
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include <thread>
 #endif
+
+#include "TObject.h"
 
 #include "TGRSIint.h"
 #include "TMidasFile.h"
@@ -16,24 +18,20 @@
 #include "TChannel.h"
 #include "Globals.h"
 
-#include "TObject.h"
-
-
 class TGRSILoop : public TObject {
-   
    public:
-      static TGRSILoop *Get();
+      static TGRSILoop* Get();
       virtual ~TGRSILoop();
 
    private:
-      static TGRSILoop *fTGRSILoop;
-      static bool suppress_error;
+      static TGRSILoop* fTGRSILoop;
+      static bool fSuppressError;
       TGRSILoop();
 
    public:
       void Initialize();
-      void BeginRun(int transition,int runnumber, int time);
-      void EndRun(int transition,int runnumber, int time);
+      void BeginRun(int transition, int runnumber, int time);
+      void EndRun(int transition, int runnumber, int time);
       void Finalize();
 
    private:
@@ -43,17 +41,18 @@ class TGRSILoop : public TObject {
       bool fIamTigress;
       bool fIamGriffin;
 
-      TXMLOdb *fOdb;
+      TXMLOdb* fOdb;
 
       int fFragsReadFromMidas;
       int fFragsSentToTree;
 		int fBadFragsSentToTree;
-		int fScalersSentToTree;
+		int fDeadtimeScalersSentToTree;
+		int fRateScalersSentToTree;
  
-   #ifndef __CINT__
-      std::thread *fMidasThread;
-      std::thread *fFillTreeThread;
-      std::thread *fFillScalerThread;
+   #if !defined (__CINT__) && !defined (__CLING__)
+      std::thread* fMidasThread;
+      std::thread* fFillTreeThread;
+      std::thread* fFillScalerThread;
    #endif
 
    public:
@@ -61,7 +60,7 @@ class TGRSILoop : public TObject {
       bool fFillTreeThreadRunning;
       bool fFillScalerThreadRunning;
       
-      void SetSuppressError(bool temp = true) { suppress_error = temp; } 
+      void SetSuppressError(bool temp = true) { fSuppressError = temp; } 
       bool IsOnline()   { return !fOffline;  }
       bool IsOffline()  { return fOffline;   }
 
@@ -69,26 +68,28 @@ class TGRSILoop : public TObject {
       void ProcessMidasFile(TMidasFile*);
       void FillFragmentTree(TMidasFile*);
       void FillScalerTree();
-      bool ProcessMidasEvent(TMidasEvent*,TMidasFile *mfile=0);
-      bool ProcessTIGRESS(uint32_t *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0); 
-      bool ProcessGRIFFIN(uint32_t *ptr,int &dsize,int bank,TMidasEvent *mevent=0,TMidasFile *mfile=0); 
-      bool Process8PI(uint32_t stream,uint32_t *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0);
-      bool ProcessEPICS(float *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0);
-      //bool ProcessEPICS(double *ptr,int &dsize,TMidasEvent *mevent=0,TMidasFile *mfile=0);
+      bool ProcessMidasEvent(TMidasEvent*,TMidasFile* mFile=0);
+      bool ProcessTIGRESS(uint32_t* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0); 
+      bool ProcessGRIFFIN(uint32_t* ptr,int& dSize,int bank,TMidasEvent* mEvent=0,TMidasFile* mFile=0); 
+      bool Process8PI(uint32_t stream,uint32_t* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0);
+      bool ProcessEPICS(float* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0);
+      //bool ProcessEPICS(double* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0);
 
-      void SetFileOdb(char *data,int size);
+      void SetFileOdb(char* data,int size);
       void SetTIGOdb();
       void SetGRIFFOdb();
 
       int GetFragsSentToTree()    { return fFragsSentToTree; }
       int GetFragsReadFromMidas() { return fFragsReadFromMidas; }
 
-      static bool GetSuppressError() { return suppress_error; } 
+      static bool GetSuppressError() { return fSuppressError; } 
 
-      void Clear(Option_t *opt="");
-      void Print(Option_t *opt="") const;
+      void Clear(Option_t* opt="");
+      void Print(Option_t* opt="") const;
 
+/// \cond CLASSIMP
    ClassDef(TGRSILoop,0)
+/// \endcond
 };
 
 #endif

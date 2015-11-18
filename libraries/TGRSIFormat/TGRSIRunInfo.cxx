@@ -1,4 +1,3 @@
-
 #include "TGRSIRunInfo.h"
 
 #include <fstream>
@@ -6,19 +5,9 @@
 
 #include <TGRSIOptions.h>
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TGRSIRunInfo                                               //
-//                                                            //
-// This Class is designed to store and run dependent          //
-// information. It is used to store run numbers, existence of //
-// detector systems, reconstruction windows, etc. The         //
-// TGRSIRunInfo is written alongside both the fragment and    //
-// analysis trees.                                            //
-//                                                            //
-////////////////////////////////////////////////////////////////
-
+/// \cond CLASSIMP
 ClassImp(TGRSIRunInfo)
+/// \endcond
 
 TGRSIRunInfo *TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();  
       
@@ -77,6 +66,9 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    if(R__v>4) {
      {Bool_t R__bool; b >> R__bool; fIsMovingWindow = R__bool;}
    }
+   if(R__v>6) {
+     {Bool_t R__bool; b >> R__bool; fWaveformFitting = R__bool;}
+   }
    {Bool_t R__bool; b >> R__bool; fTigress = R__bool;   }
    {Bool_t R__bool; b >> R__bool; fSharc = R__bool;     }
    {Bool_t R__bool; b >> R__bool; fTriFoil = R__bool;   }
@@ -116,6 +108,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Long_t R__long = fBuildWindow;       b << R__long;}
    {Double_t R__double = fAddBackWindow;  b << R__double;}
    {Bool_t R__bool = fIsMovingWindow; b << R__bool;}
+   {Bool_t R__bool = fWaveformFitting; b << R__bool;}
    {Bool_t R__bool = fTigress;    b << R__bool;}
    {Bool_t R__bool = fSharc;      b << R__bool;}
    {Bool_t R__bool = fTriFoil;    b << R__bool;}
@@ -176,11 +169,10 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
    TList *list =  tempf->GetListOfKeys();
    TIter iter(list);
 
-   //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
-   while(TKey *key = (TKey*)(iter.Next())) {
+   while(TKey *key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo"))
          continue;
-      TGRSIRunInfo::SetRunInfo((TGRSIRunInfo*)key->ReadObj());
+      TGRSIRunInfo::SetRunInfo(static_cast<TGRSIRunInfo*>(key->ReadObj()));
       savdir->cd();
       return true;
    }
@@ -203,6 +195,7 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    fBuildWindow       = 200;  
    fAddBackWindow     = 15.0;
    fIsMovingWindow    = true;
+   fWaveformFitting	  = false;
 
    //printf("run info created.\n");
 
@@ -227,6 +220,9 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf("\t\tTRIFOIL:      %s\n", TriFoil() ? "true" : "false");
       printf("\t\tTIP:          %s\n", Tip() ? "true" : "false");
       printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
+      printf("\t\tSPICE:        %s\n", Spice() ? "true" : "false");
+      printf("\t\tS3:           %s\n", S3() ? "true" : "false");
+      printf("\t\tRF:           %s\n", RF() ? "true" : "false");
       printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
       printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
       printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
@@ -236,6 +232,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
       printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
       printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
+	  printf(DBLUE"\tWaveform fitting = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
       printf("\n");
       printf("\t==============================\n");
    }
@@ -352,11 +349,9 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    //TGRSIRunInfo::Get()->Print();
 }
 
-
 void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {
 //Currently does nothing.
 }
-
 
 Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
    //Read in a run info file. These files have the extension .info.
@@ -386,7 +381,7 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
    Get()->SetRunInfoFileName(filename);
    Get()->SetRunInfoFile(buffer);
    
-   return ParseInputData((const char*)buffer); 
+   return ParseInputData(const_cast<const char*>(buffer));
 }
 
 Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
@@ -424,6 +419,10 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
         std::istringstream ss(line);
         long int temp_bw; ss >> temp_bw;
         Get()->SetBuildWindow(temp_bw);
+      } else if( type.compare("WF")==0 || type.compare("WAVEFORMFIT")==0) {
+        std::istringstream ss(line);
+        bool temp_wff; ss >> temp_wff;
+        Get()->SetWaveformFitting(temp_wff);
       } else if( type.compare("MW")==0 || type.compare("MOVINGWINDOW")==0) {
         std::istringstream ss(line);
         bool temp_mw; ss >> temp_mw;
@@ -449,6 +448,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
      printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
      printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
      printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
+     printf(DBLUE"\tWaveform Fitting  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
    }
    return true;
 }
@@ -474,7 +474,7 @@ Long64_t TGRSIRunInfo::Merge(TCollection *list){
    //An individual file that was submitted to hadd.
    TGRSIRunInfo *runinfo = 0;
 
-   while ((runinfo = (TGRSIRunInfo *)it.Next()) != NULL){
+   while ((runinfo = static_cast<TGRSIRunInfo*>(it.Next())) != NULL){
       //Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.    
       this->Add(runinfo);
    }

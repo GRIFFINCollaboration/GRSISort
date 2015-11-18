@@ -1,13 +1,15 @@
 #ifndef TCSM_H
 #define TCSM_H
 
-#include "Globals.h"
+/** \addtogroup Detectors
+ *  @{
+ */
 
 #include <vector>
 #include <cstdio>
 #include <map>
 #include <iostream>
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #include <tuple>
 #include <iterator>
 #include <algorithm>
@@ -15,68 +17,56 @@
 #include <utility>
 #include <set>
 
-
-#include "TFragment.h"
-#include "TChannel.h"
-
-#ifndef __CINT__
-#include "TCSMData.h"
-#else
-class TCSMData;
-#endif
-#include "TCSMHit.h"
-
 #include "TMath.h"
 #include "TVector3.h"
 
+#include "Globals.h"
+#include "TFragment.h"
+#include "TChannel.h"
 #include "TDetector.h"
+#include "TCSMHit.h"
 
-#ifndef PI
-#define PI                       (TMath::Pi())
-#endif
-
-class TCSM :  public TDetector 	{
+class TCSM : public TDetector {
 	public:
 		TCSM();
 		virtual ~TCSM();
 
 	public: 
-		virtual void Clear(Option_t * = "");		//!
-		virtual void Print(Option_t * = "");		//!
-		void BuildHits(TDetectorData *cd = 0,  Option_t * = "");			//!
+		virtual void Clear(Option_t * = "");
+		virtual void Print(Option_t * = "") const;
 
-		TCSMHit *GetHit(int i)		{return &csm_hits.at(i);}	//->
-		Short_t GetMultiplicity()	{return csm_hits.size();}	//->
+		TCSMHit *GetCSMHit(const int& i);	//->
+		Short_t GetMultiplicity() const	{return fCsmHits.size();}	//->
 
-	   static TVector3 GetPosition(int detector, char pos, int horizontalstrip, int verticalstrip, double X=0.00, double Y=0.00, double Z=0.00);	//! 
+		static TVector3 GetPosition(int detector, char pos, int horizontalstrip, int verticalstrip, double X=0.00, double Y=0.00, double Z=0.00);
 
-      void FillData(TFragment*,TChannel*,MNEMONIC*);
+		void AddFragment(TFragment*, MNEMONIC*);
+		void BuildHits();
 
 	private: 
-		TCSMData *data;                             //!
-		std::vector <TCSMHit> csm_hits;
-		void BuildVH(std::vector<int> &,std::vector<int> &,std::vector<TCSMHit> &,TCSMData*);
-		void BuilddEE(std::vector<TCSMHit> &,std::vector<TCSMHit> &,std::vector<TCSMHit> &);
+		std::map<int16_t, std::vector<std::vector<std::vector<std::pair<TFragment, MNEMONIC> > > > > fFragments; //!<!
+		std::vector<TCSMHit> fCsmHits;
+		double fAlmostEqualWindow;
+
+		static int fCfdBuildDiff; //!<! largest acceptable time difference between events (clock ticks)  (50 ns)
+
+		void BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >&, std::vector<TCSMHit>&);
+		void BuilddEE(std::vector<std::vector<TCSMHit> >&,std::vector<TCSMHit>&);
 		void OldBuilddEE(std::vector<TCSMHit> &,std::vector<TCSMHit> &,std::vector<TCSMHit> &);
 		void MakedEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,std::vector<TCSMHit> &BuiltHits);
-		TCSMHit MakeHit(int, int, TCSMData*);
-		TCSMHit MakeHit(std::vector<int> &,std::vector<int> &, TCSMData*);
-		TCSMHit CombineHits(TCSMHit d_hit,TCSMHit e_hit);
-		void RecoverHit(char, int, TCSMData *, std::vector<TCSMHit> &);
+		TCSMHit MakeHit(std::pair<TFragment, MNEMONIC>&, std::pair<TFragment, MNEMONIC>&);
+		TCSMHit MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >&,std::vector<std::pair<TFragment, MNEMONIC> >&);
+		TCSMHit CombineHits(TCSMHit, TCSMHit);
+		void RecoverHit(char, std::pair<TFragment, MNEMONIC>&, std::vector<TCSMHit>&);
 		bool AlmostEqual(int, int);
 		bool AlmostEqual(double,double);
-		
-		
-		double AlmostEqualWindow;
 
-		//int CombineHits(TCSMHit*,TCSMHit*,int,int);				//!
-		//void RemoveHits(std::vector<TCSMHit>*,std::set<int>*);	//!
+		//int CombineHits(TCSMHit*,TCSMHit*,int,int);				//!<!
+		//void RemoveHits(std::vector<TCSMHit>*,std::set<int>*);	//!<!
 
-		static int fCfdBuildDiff; //!   // largest acceptable time difference between events (clock ticks)  (50 ns)
-
-        
-   ClassDef(TCSM,3)  // CSM Analysis structure
+/// \cond CLASSIMP
+		ClassDef(TCSM,5)  // CSM Analysis structure
+/// \endcond
 };
-
-
+/*! @} */
 #endif

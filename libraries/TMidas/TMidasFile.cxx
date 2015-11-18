@@ -1,7 +1,3 @@
-//
-//  TMidasFile.cxx.
-//
-
 #include <stdio.h>
 #include <cstring>
 #include <sys/types.h>
@@ -18,16 +14,9 @@
 #include "TMidasFile.h"
 #include "TMidasEvent.h"
 
+/// \cond CLASSIMP
 ClassImp(TMidasFile)
-
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TMidasFile                                                 //
-//                                                            //
-// This Class is used to read and write MIDAS files in the    //
-// root framework. It reads and writes TMidasEvents.          //
-//                                                            //
-////////////////////////////////////////////////////////////////
+/// \endcond
 
 TMidasFile::TMidasFile()
 {
@@ -65,25 +54,25 @@ static int hasSuffix(const char*name,const char*suffix)
   return (s-name)+strlen(suffix) == strlen(name);
 }
 
+/// Open a midas .mid file with given file name.
+///
+/// Remote files can be accessed using these special file names:
+/// - pipein://command - read data produced by given command, see examples below
+/// - ssh://username\@hostname/path/file.mid - read remote file through an ssh pipe
+/// - ssh://username\@hostname/path/file.mid.gz and file.mid.bz2 - same for compressed files
+/// - dccp://path/file.mid (also file.mid.gz and file.mid.bz2) - read data from dcache, requires dccp in the PATH
+///
+/// Examples:
+/// - ./event_dump.exe /ladd/data9/t2km11/data/run02696.mid.gz - read normal compressed file
+/// - ./event_dump.exe ssh://ladd09//ladd/data9/t2km11/data/run02696.mid.gz - read compressed file through ssh to ladd09 (note double "/")
+/// - ./event_dump.exe pipein://"cat /ladd/data9/t2km11/data/run02696.mid.gz | gzip -dc" - read data piped from a command or script (note quotes)
+/// - ./event_dump.exe pipein://"gzip -dc /ladd/data9/t2km11/data/run02696.mid.gz" - another way to read compressed files
+/// - ./event_dump.exe dccp:///pnfs/triumf.ca/data/t2km11/aug2008/run02837.mid.gz - read file directly from a dcache pool (note triple "/")
+///
+/// \param[in] filename The file to open.
+/// \returns "true" for succes, "false" for error, use GetLastError() to see why
 bool TMidasFile::Open(const char *filename)
 {
-  /// Open a midas .mid file with given file name.
-  ///
-  /// Remote files can be accessed using these special file names:
-  /// - pipein://command - read data produced by given command, see examples below
-  /// - ssh://username\@hostname/path/file.mid - read remote file through an ssh pipe
-  /// - ssh://username\@hostname/path/file.mid.gz and file.mid.bz2 - same for compressed files
-  /// - dccp://path/file.mid (also file.mid.gz and file.mid.bz2) - read data from dcache, requires dccp in the PATH
-  ///
-  /// Examples:
-  /// - ./event_dump.exe /ladd/data9/t2km11/data/run02696.mid.gz - read normal compressed file
-  /// - ./event_dump.exe ssh://ladd09//ladd/data9/t2km11/data/run02696.mid.gz - read compressed file through ssh to ladd09 (note double "/")
-  /// - ./event_dump.exe pipein://"cat /ladd/data9/t2km11/data/run02696.mid.gz | gzip -dc" - read data piped from a command or script (note quotes)
-  /// - ./event_dump.exe pipein://"gzip -dc /ladd/data9/t2km11/data/run02696.mid.gz" - another way to read compressed files
-  /// - ./event_dump.exe dccp:///pnfs/triumf.ca/data/t2km11/aug2008/run02837.mid.gz - read file directly from a dcache pool (note triple "/")
-  ///
-  /// \param [in] filename The file to open.
-  /// \returns "true" for succes, "false" for error, use GetLastError() to see why
 
   if (fFile > 0)
     Close();
@@ -297,13 +286,13 @@ static int readpipe(int fd, char* buf, int length)
   return count;
 }
 
+/// \param [in] midasEvent Pointer to an empty TMidasEvent 
+/// \returns "true" for success, "false" for failure, see GetLastError() to see why
+///
+///  EDITED FROM THE ORIGINAL TO RETURN TOTAL SUCESSFULLY BYTES READ INSTEAD OF TRUE/FALSE,  PCB
+///
 int TMidasFile::Read(TMidasEvent *midasEvent)
 {
-  /// \param [in] midasEvent Pointer to an empty TMidasEvent 
-  /// \returns "true" for success, "false" for failure, see GetLastError() to see why
-
-  ///  EDITED FROM THE ORIGINAL TO RETURN TOTAL SUCESSFULLY BYTES READ INSTEAD OF TRUE/FALSE,  PCB
-
   midasEvent->Clear();
 
   int rd = 0;

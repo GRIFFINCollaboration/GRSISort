@@ -11,9 +11,9 @@
 
 class TGainMatch : public TCal {
  public: 
-   TGainMatch():fhist(0) { }
-   TGainMatch(const char* name, const char* title) : TCal(name,title){Clear();}
-   virtual ~TGainMatch(){} 
+   TGainMatch(): fHist(0) {}
+   TGainMatch(const char* name, const char* title) : TCal(name,title) { Clear(); }
+   virtual ~TGainMatch() {} 
 
    TGainMatch(const TGainMatch &copy);
 
@@ -28,7 +28,7 @@ class TGainMatch : public TCal {
    static Bool_t FineMatchFastAll(TCalManager* cm, TH2 *mat1, TPeak* peak1, TH2 *hist2, TPeak* peak2);
    static Bool_t FineMatchFastAll(TCalManager* cm, TH2 *mat, TPeak* peak1, TPeak* peak2);
 
-   static Bool_t FineMatchAll(TCalManager* cm, TH2 *charge_mat, TH2* eng_mat, Int_t testchan, Double_t energy1, Double_t energy2, Int_t low_range=100, Int_t high_range = 600);
+   static Bool_t FineMatchAll(TCalManager* cm, TH2 *chargeMat, TH2* engMat, Int_t testchan, Double_t energy1, Double_t energy2, Int_t low_range=100, Int_t high_range = 600);
 
    static Bool_t AlignAll(TCalManager*cm, TH1* hist, TH2* mat, Int_t low_range = 100, Int_t high_range = 600); 
 
@@ -38,7 +38,7 @@ class TGainMatch : public TCal {
    Bool_t FineMatchFast(TH1 *hist1, Double_t energy1, Double_t energy2, Int_t channelNum = 9999);
    Bool_t FineMatchFast(TH1 *hist1, Double_t energy1, TH1 *hist2, Double_t energy2, Int_t channelNum = 9999);
 
-   Bool_t FineMatch(TH1 *energy_hist, TH1* test_hist, TH1* charge_hist, Double_t energy1, Double_t energy2, Int_t low_range = 100, Int_t high_range = 600, Int_t channelNum = 9999);
+   Bool_t FineMatch(TH1 *energyHist, TH1* testHist, TH1* chargeHist, Double_t energy1, Double_t energy2, Int_t low_range = 100, Int_t high_range = 600, Int_t channelNum = 9999);
  
    Bool_t Align(TH1* testhist, TH1* hist,Int_t low_range = 100, Int_t high_range = 600);
 
@@ -48,23 +48,23 @@ class TGainMatch : public TCal {
    Bool_t IsGroupable() const {return false;}
    void WriteToChannel() const;
 
-   void SetNucleus(TNucleus* nuc) { Warning("SetNucleus","Is not used in TGainMatching");} 
+   void SetNucleus(TNucleus* nuc, Option_t *opt = "") { Warning("SetNucleus","Is not used in TGainMatching");} 
    TNucleus* GetNucleus() const { Warning("GetNucleus","Is not used in TGainMatching"); return 0; }
 
    void SetHist(TH1* nuc) { Warning("SetHist","Is not used in TGainMatching");} 
    TH1* GetHist() const { Warning("GetHist","Is not used in TGainMatching"); return 0; }
 
  private:
-   Bool_t fcoarse_match;
-   Bool_t faligned;
-   TH1* fhist;
-   Double_t fAlign_coeffs[2];
-   Double_t fGain_coeffs[2];
+   Bool_t fCoarseMatch;
+   Bool_t fAligned;
+   TH1*   fHist;
+   Double_t fAlignCoeffs[2];
+   Double_t fGainCoeffs[2];
    Double_t HistCompare(Double_t *x, Double_t *par);
- //  Double_t HistCompare(const Double_t *xx);
 
+/// \cond CLASSIMP
    ClassDef(TGainMatch,1);
-
+/// \endcond
 };
 
 #endif

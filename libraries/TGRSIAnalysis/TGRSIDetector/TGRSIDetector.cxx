@@ -1,10 +1,10 @@
-
-
 #include "TGRSIDetector.h"
 #include "TGRSIDetectorHit.h"
 #include <TClass.h>
 
+/// \cond CLASSIMP
 ClassImp(TGRSIDetector)
+/// \endcond
 
 ////////////////////////////////////////////////////////////////
 //                                                            //
@@ -25,8 +25,8 @@ TGRSIDetector::TGRSIDetector() : TDetector(){
 
 TGRSIDetector::TGRSIDetector(const TGRSIDetector& rhs) : TDetector() {
    //Default Copy constructor.
-  //Class()->IgnoreTObjectStreamer(kTRUE);
-   ((TGRSIDetector&)rhs).Copy(*this);
+	//Class()->IgnoreTObjectStreamer(kTRUE);
+	rhs.Copy(*this);
 }
 
 TGRSIDetector::~TGRSIDetector() {
@@ -43,7 +43,7 @@ void TGRSIDetector::AddHit(TGRSIDetectorHit *hit,Option_t *opt) {
 void TGRSIDetector::Copy(TObject &rhs) const {
   //if(!rhs.InheritsFrom("TGRSIDetector"))
   //   return;
-  TObject::Copy((TObject&)rhs);
+  TObject::Copy(rhs);
   
 }
 

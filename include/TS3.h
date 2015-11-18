@@ -1,51 +1,56 @@
 #ifndef TS3_H
 #define TS3_H
 
-#include "TDetector.h"
+/** \addtogroup Detectors
+ *  @{
+ */
 
-#ifndef __CINT__
-#include "TS3Data.h"
-#else
-class TS3Data;
-#endif
+#include <iostream>
 
+#include "TGRSIDetector.h"
 #include "TS3Hit.h"
 
+class TS3 : public TGRSIDetector {
+	public:
+		TS3();
+		TS3(const TS3&);
+		virtual  ~TS3();
 
-class TS3 : public TDetector {
+		virtual void AddFragment(TFragment*, MNEMONIC*);
+		virtual void BuildHits();
 
-  public:
-    TS3();
-    ~TS3();
+		TGRSIDetectorHit* GetHit(const int& idx =0);
+		TS3Hit* GetS3Hit(const int& i);  
+		Short_t GetMultiplicity() const { return fS3Hits.size(); }
+		void PushBackHit(TGRSIDetectorHit* deshit);
 
-  public: 
-    void Clear(Option_t *opt="");   
-    void Print(Option_t *opt="") const;
+		static TVector3 GetPosition(int ring, int sector);
 
-    virtual void BuildHits(TDetectorData *data=0,Option_t *opt="");
-    virtual void FillData(TFragment*,TChannel*,MNEMONIC*);
+		void Copy(TObject&) const;
+		TS3& operator=(const TS3&);  // 
+      virtual void Clear(Option_t *opt = "all");		     //!<!
+      virtual void Print(Option_t *opt = "") const;		  //!<!
+		
+	private:
+		std::vector<TS3Hit> fS3Hits;
+		std::vector<TFragment*> fS3_RingFragment; //! 
+		std::vector<TFragment*> fS3_SectorFragment; //! 
 
-    TS3Hit *GetS3Hit(int i)    {  return &s3_hits[i];};  
-    Short_t GetMultiplicity()  {  return s3_hits.size();};
+		///for geometery
+		static int fRingNumber;          //!<!
+		static int fSectorNumber;        //!<!
 
+		static double fOffsetPhi;        //!<!
+		static double fOuterDiameter;    //!<!
+		static double fInnerDiameter;    //!<!
+		static double fTargetDistance;   //!<!
 
-    TVector3 GetPosition(int front, int back);
+		static Int_t fFrontBackTime;   //!
+		static double fFrontBackEnergy;   //!
 
-
-  private:
-    TS3Data *data; //!
-    std::vector<TS3Hit> s3_hits;
-
-    ///for geometery
-    static int ring_number;          //!
-    static int sector_number;        //!
-
-    static double offset_phi;        //!
-    static double outer_diameter;    //!
-    static double inner_diameter;    //!
-    static double target_distance;   //!
-
-  ClassDef(TS3,2)
+/// \cond CLASSIMP
+		ClassDef(TS3,3)
+/// \endcond
 };
-
+/*! @} */
 #endif

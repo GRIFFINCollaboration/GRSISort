@@ -62,6 +62,7 @@ typedef char int8_t;
 #include <stdint.h> 
 #endif
 
+#include <stdexcept>
 #include <string>
 #include <cstdio>
 #include <cstdlib>
@@ -142,4 +143,19 @@ static void ClearMNEMONIC(MNEMONIC *mnemonic) {
 
 const std::string &ProgramName(void);
 
+namespace grsi{
+   struct exit_exception : public std::exception
+   {
+      public:
+         exit_exception(int c,const char *msg = "") : code(c), message(msg){}
+         virtual ~exit_exception() throw() {}
+ /*     virtual const char* what() const throw {
+         //  LOG(what); // write to log file
+         return what.c_str();
+      }*/
+
+         const int code;
+         const char* message;
+   };
+}
 #endif

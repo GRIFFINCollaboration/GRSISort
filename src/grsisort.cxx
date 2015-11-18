@@ -4,6 +4,8 @@
 #include <string>
 #include <sys/stat.h>
 #include <netdb.h>
+#include <stdexcept>
+#include <iostream>
 
 #include "TEnv.h"
 #include "TPluginManager.h"
@@ -49,21 +51,26 @@ static void SetDisplay();
 
 
 int main(int argc, char **argv) {
-   //Find the grsisort environment variable so that we can read in .grsirc
-   SetDisplay();
-   SetGRSIEnv();
-   SetGRSIPluginHandlers();
-   TGRSIint *input = 0;
+   try{
+      //Find the grsisort environment variable so that we can read in .grsirc
+      SetDisplay();
+      SetGRSIEnv();
+      SetGRSIPluginHandlers();
+      TGRSIint *input = 0;
    
-   //Create an instance of the grsi interpreter so that we can run root-like interpretive mode
-   input = TGRSIint::instance(argc,argv);
-   //input->GetOptions(&argc,argv);
-   //Run the code!
-   input->Run("true");
-   //Be polite when you leave.
-   printf("\nbye,bye\n");
+      //Create an instance of the grsi interpreter so that we can run root-like interpretive mode
+      input = TGRSIint::instance(argc,argv);
+      //input->GetOptions(&argc,argv);
+      //Run the code!
+      input->Run("true");
+      //Be polite when you leave.
+      printf("\nbye,bye\n");
+   } catch(grsi::exit_exception& e) {
+      std::cerr << e.message << std::endl;
+      //Close files and clean up properly here
+   }
 
-   return 0;
+      return 0;
 }
 
 

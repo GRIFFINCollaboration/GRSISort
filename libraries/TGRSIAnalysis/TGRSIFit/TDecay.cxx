@@ -1,56 +1,126 @@
 #include "TDecay.h"
+#include "Math/Minimizer.h"
+#include "Math/Factory.h"
+#include "Math/Functor.h"
+#include "GCanvas.h"
+#include "TLMFitter.h"
 
+/// \cond CLASSIMP
 ClassImp(TSingleDecay)
 ClassImp(TDecayChain)
 ClassImp(TDecayFit)
 ClassImp(TDecay)
 ClassImp(TVirtualDecay)
-
-/*TDecay::TDecay(Double_t tlow, Double_t thigh) : fParent(0), fDaughter(0), fDecayFunc(0), fGeneration(1), fDetectionEfficiency(1.0) {
-   fFirstParent = this;
-   fDecayFunc = new TF1("decayfunc",this,&TDecay::ActivityFunc,0,10,2,"TDecay","ActivityFunc");
-   fDecayFunc->SetParameters(0.0,0.0);
-   fDecayFunc->SetParNames("Intensity","DecayRate");
-   fTotalDecayFunc = new TF1(*fDecayFunc);
-   SetTotalDecayParameters();
-   SetRange(tlow,thigh);
-}*/
+/// \endcond
 
 UInt_t TSingleDecay::fCounter = 0;
 UInt_t TDecayChain::fChainCounter = 0;
 
-void TDecayFit::DrawComponents() const { 
-  printf("pointer: %p\n",(void*) fDecay);
-   
-   printf("Class: %s\n",fDecay->ClassName());
-   fDecay->DrawComponents("same");
- //  fDecay->Draw("same");
-//   printf("Is valid: %d\n",fDecay.IsValid());
- //  GetDecay()->Print();
-//   GetDecay()->DrawComponents(); 
+TDecayFit::~TDecayFit(){
+}
+
+void TDecayFit::DrawComponents() const {
+	///This draws the individual components on the current canvas  
+   fDecay->DrawComponents("same"); 	
 }
 
 void TDecayFit::SetDecay(TVirtualDecay* decay){ 
+	/// This tells the TDecayFit which TVirtualDecay it belongs to
    fDecay = decay;
-   //fDecayClass = decay->ClassName(); 
- //  decay->Print();
 } 
 
 void TDecayFit::Print(Option_t *opt) const {
+	/// This prints the parameters of the fit (decay rate, intensities, etc...)
    TF1::Print(opt);
-   printf("fDecay = %p\n",(void*) fDecay);
+   printf("fDecay = %p\n", static_cast<void*>(fDecay));
 }
 
 TVirtualDecay* TDecayFit::GetDecay() const{
-  // return (TVirtualDecay*)(fDecay.GetObject());
-   return 0;
+   return fDecay;
+}
+   
+TFitResultPtr TDecayFit::Fit(TH1* hist,Option_t* opt){
+   if(!hist) return 0;
+   TFitResultPtr tmpres = hist->Fit(this,opt);
+   UpdateResiduals(hist);
+   //Might be able to copy the style over to the new clone for the residuals.
+   //Will take a look at this later
+   this->DrawClone("same");
+   return tmpres;
+}
+
+void TDecayFit::Streamer(TBuffer &R__b){
+   /// Stream an object of class TDecayFit.
+   if (R__b.IsReading()) {
+      R__b.ReadClassBuffer(TDecayFit::Class(),this);
+   } else {
+      R__b.WriteClassBuffer(TDecayFit::Class(),this);
+   }
+   
+}
+
+void TDecayFit::DefaultGraphs() {
+   fResiduals.SetMarkerStyle(20);//Filled circle
+   fResiduals.SetMarkerSize(0.6);
+   fResiduals.SetTitle("Residuals");
+}
+
+void TDecayFit::UpdateResiduals(TH1* hist){
+   const Size_t oldmarker_size = fResiduals.GetMarkerSize();
+   const Color_t oldmarker_color = fResiduals.GetMarkerColor();
+   const Style_t oldmarker_style = fResiduals.GetMarkerStyle();
+   
+   //Clear the data points from the old TGraph
+   for(int i=0; i<fResiduals.GetN();++i){
+      fResiduals.RemovePoint(i);
+   }
+
+   Double_t xlow,xhigh;
+   GetRange(xlow,xhigh);
+   Int_t nbins = hist->GetXaxis()->GetNbins();
+   Double_t res;
+   Double_t bin;
+
+   for(int i =0;i<nbins;++i) {
+      if((hist->GetBinCenter(i) <= xlow) || (hist->GetBinCenter(i) >= xhigh))
+         continue;
+     // This might not be correct for Poisson statistics.
+      res = (hist->GetBinContent(i) - this->Eval(hist->GetBinCenter(i)))/hist->GetBinError(i);///GetHist()->GetBinError(i));// + this->GetParameter("Height") + 10.;
+      bin = hist->GetBinCenter(i);
+      fResiduals.SetPoint(i,bin,res);
+   }
+
+   fResiduals.SetMarkerSize(oldmarker_size);
+   fResiduals.SetMarkerColor(oldmarker_color);
+   fResiduals.SetMarkerStyle(oldmarker_style);
+
+}
+
+void TDecayFit::DrawResiduals(){
+   if(fResiduals.GetN()){
+      new GCanvas;
+      fResiduals.Draw("AP");
+   }
+   else
+      printf("Residuals not set yet\n");
+
 }
 
 void TVirtualDecay::DrawComponents(Option_t* opt ,Bool_t color_flag) {
-   Draw(opt);
+   printf("Draw components has not been set in %s \n", ClassName());
+   Draw(Form("same%s",opt));
 }
 
-TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh) : fDetectionEfficiency(1.0), fDecayFunc(0), fParent(0), fDaughter(0), fChainId(-1) {
+void TVirtualDecay::Streamer(TBuffer &R__b){
+   /// Stream an object of class TVirtualDecay.
+   if (R__b.IsReading()) {
+      R__b.ReadClassBuffer(TVirtualDecay::Class(),this);
+   } else {
+      R__b.WriteClassBuffer(TVirtualDecay::Class(),this);
+   }
+}
+
+TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh) : fDetectionEfficiency(1.0), fDecayFunc(0), fTotalDecayFunc(0), fParent(0), fDaughter(0), fFirstParent(0), fChainId(-1) {
    if(parent){
       fParent = parent;
       fParent->SetDaughterDecay(this);
@@ -89,7 +159,7 @@ TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh) 
 
 }
 
-TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow, Double_t thigh) : fDetectionEfficiency(1.0), fDecayFunc(0), fParent(0), fDaughter(0), fChainId(-1) {
+TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow, Double_t thigh) : fDetectionEfficiency(1.0), fDecayFunc(0), fTotalDecayFunc(0), fParent(0), fDaughter(0), fFirstParent(0), fChainId(-1) {
    if(parent){
       fParent = parent;
       fParent->SetDaughterDecay(this);
@@ -134,8 +204,11 @@ TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlo
 }
 
 TSingleDecay::~TSingleDecay() {
-   if(fDecayFunc) delete fDecayFunc;
-   if(fTotalDecayFunc) delete fTotalDecayFunc;
+ //  if(fDecayFunc) delete fDecayFunc;
+ //  if(fTotalDecayFunc) delete fTotalDecayFunc;
+
+   fDecayFunc = 0;
+   fTotalDecayFunc = 0;
 }
 
 void TSingleDecay::SetName(const char * name){
@@ -145,7 +218,7 @@ void TSingleDecay::SetName(const char * name){
 }
 
 void TSingleDecay::SetTotalDecayParameters() {
-   //Sets the total fit function to know about the other parmaters in the decay chain.
+   ///Sets the total fit function to know about the other parmaters in the decay chain.
    Double_t low_limit,high_limit;
    //We need to include the fact that we have parents and use that TF1 to perform the fit.
    fTotalDecayFunc->SetParameter(0,fFirstParent->GetIntensity());
@@ -168,7 +241,7 @@ void TSingleDecay::SetTotalDecayParameters() {
 }
 
 void TSingleDecay::UpdateDecays(){
-   //Updates the other decays in the chain to know that they have potential updates.
+   ///Updates the other decays in the chain to know that they have potential updates.
    Double_t low_limit,high_limit;
    //The current (this) decay we are on is the one that is assumed to be the most recently changed.
    //We will first update it's total decay function
@@ -195,7 +268,7 @@ void TSingleDecay::UpdateDecays(){
 }
 
 void TSingleDecay::SetHalfLifeLimits(const Double_t &low, const Double_t &high){
-   if(low == 0 || high ==0)
+   if(low == 0)
       fDecayFunc->SetParLimits(1,std::log(2)/high,1e30);
 
    fDecayFunc->SetParLimits(1,std::log(2)/high,std::log(2)/low);
@@ -214,7 +287,7 @@ void TSingleDecay::SetDecayRateLimits(const Double_t &low, const Double_t &high)
 }
 
 void TSingleDecay::GetHalfLifeLimits(Double_t &low, Double_t &high) const{
-   fDecayFunc->GetParLimits(1,high,low);
+   fDecayFunc->GetParLimits(1,high,low); // This gets the decay rates, not the half-life.
    if(low == 0)
       low = 0.000000000001;
    if(high == 0)
@@ -245,19 +318,21 @@ void TSingleDecay::Draw(Option_t* option){
 }
 
 Double_t TSingleDecay::Eval(Double_t t){
+	/// Evaluates the activity at a given time, t
    SetTotalDecayParameters();
    return fTotalDecayFunc->Eval(t);
 }
 
 Double_t TSingleDecay::EvalPar(const Double_t* x, const Double_t* par){
+	/// Evaluates the activity at a given time t using parameters par.
    fTotalDecayFunc->InitArgs(x,par);
    return fTotalDecayFunc->EvalPar(x,par);
 }
 
 Double_t TSingleDecay::ActivityFunc(Double_t *dim, Double_t *par){
-   //The general function for a decay chain
-   //par[0] is the intensity
-   //par[1*i] is the activity
+   ///The general function for a decay chain
+   ///par[0] is the intensity
+   ///par[1*i] is the activity
    Double_t result = 1.0;
    UInt_t gencounter = 0;
    Double_t tlow,thigh;
@@ -267,8 +342,8 @@ Double_t TSingleDecay::ActivityFunc(Double_t *dim, Double_t *par){
    //Compute the first multiplication
    while(curDecay){
       ++gencounter;
-      //par[Generation] gets the activity for that decay since the parameters are stored
-      //as [intensity, act1,act2,...]
+      //par[Generation] gets the decay rate for that decay since the parameters are stored
+      //as [intensity, decayrate1,decayrate2,...]
       result *= par[curDecay->GetGeneration()];
 
       curDecay = curDecay->GetParentDecay();
@@ -277,7 +352,7 @@ Double_t TSingleDecay::ActivityFunc(Double_t *dim, Double_t *par){
          printf("We have Problems!\n");
          return 0.0;
    }
-   //Multiply by the initial intensity of the intial parent.
+   //Multiply by the initial intensity of the initial parent.
    result*=par[0]/par[1];
    //Now we need to deal with the second term
    Double_t sum = 0.0;
@@ -312,9 +387,10 @@ TFitResultPtr TSingleDecay::Fit(TH1* fithist,Option_t *opt) {
    Int_t parCounter = 1;
    TSingleDecay* curDecay = fFirstParent;
    SetTotalDecayParameters();
-   TFitResultPtr fitres = fithist->Fit(fTotalDecayFunc,Form("%sWLRS",opt));
+//   TFitResultPtr fitres = fithist->Fit(fTotalDecayFunc,Form("%sWLRS",opt));
+   TFitResultPtr fitres = fTotalDecayFunc->Fit(fithist,Form("%sWLRS",opt));
    Double_t chi2 = fitres->Chi2();
-   Double_t ndf = fitres->Ndf();
+   Double_t ndf = fitres->Ndf();  // This ndf needs to be changed by a weighted poisson.
 
    printf("Chi2/ndf = %lf\n",chi2/ndf);
 
@@ -347,30 +423,29 @@ void TSingleDecay::SetRange(Double_t tlow, Double_t thigh){
 }
 
 void TSingleDecay::Print(Option_t *option) const{
-   printf("      Name: %s\n",GetName());
+ //  printf("      Name: %s\n",GetName());
    printf("  Decay Id: %d\n",GetDecayId());
    printf(" Intensity: %lf +/- %lf c/s\n", GetIntensity(), GetIntensityError());
    printf("  HalfLife: %lf +/- %lf s\n", GetHalfLife(), GetHalfLifeError());
    printf("Efficiency: %lf\n",GetEfficiency());
-   printf("My Address: %p\n",(void*) this);
+   printf("My Address: %p\n", static_cast<const void*>(this));
    if(fParent)
-      printf("Parent Address: %p\n", (void*) fParent);
+		printf("Parent Address: %p\n", static_cast<void*>(fParent));
    if(fDaughter)
-      printf("Daughter Address: %p\n", (void*) fDaughter);
-   printf("First Parent: %p\n", (void*) fFirstParent);
-
+		printf("Daughter Address: %p\n", static_cast<void*>(fDaughter));
+   printf("First Parent: %p\n", static_cast<void*>(fFirstParent));
 }
 
 
-TDecayChain::TDecayChain(){
+TDecayChain::TDecayChain() : fChainFunc(0){
    
 }
 
-TDecayChain::TDecayChain(UInt_t generations){
+TDecayChain::TDecayChain(UInt_t generations) : fChainFunc(0){
    if(!generations)
       generations = 1;
    fDecayChain.clear();
-   TSingleDecay* parent = new TSingleDecay();
+   TSingleDecay* parent = new TSingleDecay(0);
    parent->SetChainId(fChainCounter);
    fDecayChain.push_back(parent);
    for(UInt_t i = 1; i < generations; i++){
@@ -391,7 +466,7 @@ TDecayChain::~TDecayChain() {
 //dtor
    
    //Might have to think about ownership if we allow external decays to be added
-   for(size_t i =0; i<fDecayChain.size(); ++i) delete fDecayChain.at(i);
+ //  for(size_t i =0; i<fDecayChain.size(); ++i) delete fDecayChain.at(i);
 
 }
 
@@ -411,7 +486,7 @@ void TDecayChain::SetChainParameters(){
 }
 
 Double_t TDecayChain::ChainActivityFunc(Double_t *dim, Double_t *par){
-   //This fits the total activity caused by the entire chain.
+   ///This fits the total activity caused by the entire chain.
    Double_t result = 0.0;
    for(size_t i=0;i<fDecayChain.size();++i){
       result += GetDecay(i)->EvalPar(dim,par);
@@ -433,10 +508,10 @@ void TDecayChain::DrawComponents(Option_t *opt, Bool_t color_flag) {
    SetChainParameters();
    fDecayChain.at(0)->SetMinimum(0);
    fDecayChain.at(0)->SetLineColor(1);
-   fDecayChain.at(0)->Draw();
+   fDecayChain.at(0)->Draw("Same");
    for(size_t i=1; i< fDecayChain.size(); ++i){
       if(color_flag){
-         fDecayChain.at(i)->SetLineColor(i+3);
+         fDecayChain.at(i)->SetLineColor(fDecayChain.at(i)->fUnId);
       }
       fDecayChain.at(i)->Draw(Form("same%s",opt));
     //  fDecayChain.at(i)->SetLineColor(orig_color);
@@ -462,6 +537,7 @@ void TDecayChain::Print(Option_t *option) const {
    printf("Number of Decays in Chain: %lu\n",fDecayChain.size());
    printf("Chain Id %d\n",fDecayChain.at(0)->GetChainId());
    for(size_t i=0; i<fDecayChain.size();++i){
+      printf("decay ptr: %p\n",static_cast<void*>(fDecayChain.at(i)));
       fDecayChain.at(i)->Print();
       printf("\n");
    }
@@ -475,7 +551,8 @@ TFitResultPtr TDecayChain::Fit(TH1* fithist, Option_t* opt) {
    Int_t parCounter = 1;
    TSingleDecay* curDecay = fDecayChain.at(0);
    SetChainParameters();
-   TFitResultPtr fitres = fithist->Fit(fChainFunc,Form("%sWLRS",opt));
+ //  TFitResultPtr fitres = fithist->Fit(fChainFunc,Form("%sWLRS",opt));
+   TFitResultPtr fitres = fChainFunc->Fit(fithist,Form("%sWLRS",opt));
    Double_t chi2 = fitres->Chi2();
    Double_t ndf = fitres->Ndf();
 
@@ -519,8 +596,7 @@ TDecay::TDecay(std::vector<TDecayChain*> chainlist) : fFitFunc(0){
 }
 
 TDecay::~TDecay(){
-   if(fFitFunc)
-      delete fFitFunc;
+ //  if(fFitFunc) delete fFitFunc;
 }
 
 TDecayChain* TDecay::GetChain(UInt_t idx){
@@ -533,7 +609,7 @@ TDecayChain* TDecay::GetChain(UInt_t idx){
 }
 
 Double_t TDecay::DecayFit(Double_t *dim, Double_t *par){
-   //This fits the total activity caused by the entire chain.
+   ///This fits the total activity caused by the entire chain.
    Double_t result = 0.0;
    //Start the fit with flat background;
    result = par[0];
@@ -554,6 +630,10 @@ Double_t TDecay::DecayFit(Double_t *dim, Double_t *par){
 }
 
 TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
+   //Use the option "G" to use Geoff's Levenberg-Marquardt algorithm to fit.
+   TString opt1 = opt;
+   opt1.ToUpper();
+      
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
    TVirtualFitter::SetPrecision(1.0e-10);
    TVirtualFitter::SetMaxIterations(10000);
@@ -562,12 +642,20 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
    //Int_t parCounter = 1;
    SetParameters();
 
-   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sWLRS0",opt));
-   fFitFunc->DrawClone("same");
-   Double_t chi2 = fitres->Chi2();
-   Double_t ndf = fitres->Ndf();
+//   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sWLRS0",opt));
 
-   printf("Chi2/ndf = %lf\n",chi2/ndf);
+   TFitResultPtr fitres;
+   if(opt1.Contains("G")){
+      //Fit using LMFitter..Doesn't do residuals yet
+      TLMFitter fitter;
+      fitter.Fit(fithist,fFitFunc);
+   }
+   else{
+      fitres = fFitFunc->Fit(fithist,Form("%sIWLRS",opt));
+      Double_t chi2 = fitres->Chi2();
+      Double_t ndf = fitres->Ndf();
+      printf("Chi2/ndf = %lf\n",chi2/ndf);
+   }
 
    //Now Tell the decays about the results
    for(size_t i=0; i<fChainList.size(); ++i){
@@ -647,9 +735,9 @@ void TDecay::SetParameters(){
 }
 
 Double_t TDecay::ComponentFunc(Double_t *dim, Double_t *par){
-   //Function for drawing summed components.
+   ///Function for drawing summed components.
    Double_t result = 0;
-   //This function takes 1 parameter, the decay Id.
+   ///This function takes 1 parameter, the decay Id.
    Int_t id = (Int_t)(par[0]);
    auto it = fDecayMap.find(id);
    
@@ -660,17 +748,18 @@ Double_t TDecay::ComponentFunc(Double_t *dim, Double_t *par){
 }
 
 void TDecay::DrawComponents(Option_t *opt, Bool_t color_flag) {
-   //Loop over all of the ids and draw them seperately on the pad
+   ///Loop over all of the ids and draw them seperately on the pad
    Double_t low,high;
    fFitFunc->GetRange(low,high);
 
-   Int_t color_counter=1;
    TF1* tmp_comp = new TF1("tmpname",this,&TDecay::ComponentFunc,low,high,1,"TDecay","ComponentFunc");
    for(auto it = fDecayMap.begin(); it != fDecayMap.end(); ++it){
       tmp_comp->SetName(Form("Component_%d",it->first));
       tmp_comp->SetParameter(0,it->first);
-      if(color_counter == kRed || color_counter == kWhite) color_counter++;
-      tmp_comp->SetLineColor(color_counter++);
+      if(it->first == kWhite)
+         tmp_comp->SetLineColor(kOrange);
+      else
+         tmp_comp->SetLineColor(it->first);
       tmp_comp->DrawClone("same");
    }
    delete tmp_comp;
