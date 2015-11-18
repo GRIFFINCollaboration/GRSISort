@@ -20,7 +20,7 @@
 
 /////////////////////////////////////////////////////////////////////////
 //
-//  TSharcHit, the leaner method.
+//  \class TSharcHit, the leaner method.
 //
 //  This is the updated sharc-hit storage class, designed to better work with 
 //  the GRSISort Inheritied class method.  A lot has changed, but the main function

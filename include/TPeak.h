@@ -14,14 +14,14 @@
 
 using namespace TGRSIFunctions;
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TPeak                                                      //
-//                                                            //
-// This Class is used to represent fitted data that is        //
-// Gaussian like in nature (ie centroid and area).            //
-//                                                            //
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+///
+/// \class TPeak
+///
+/// This Class is used to represent fitted data that is
+/// Gaussian like in nature (ie centroid and area).
+///
+/////////////////////////////////////////////////////////////////
 
 class TPeak : public TGRSIFit {
    friend class TMultiPeak;

@@ -13,15 +13,14 @@
 //#include "Globals.h"
 //#endif
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TEpicsFrag                                                 //
-//                                                            //
-// This Class should contain all the information found in     //
-// NOT typeid 1 midas events. aka Epics (scaler) Events.      //
-//                                                            //
-//                                                            //
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+///
+/// \class TEpicsFrag
+///
+/// This Class should contain all the information found in
+/// NOT typeid 1 midas events. aka Epics (scaler) Events.
+///
+/////////////////////////////////////////////////////////////////
 
 class TEpicsFrag : public TObject	{
   public:

@@ -15,14 +15,14 @@
 #include "TGRSIFit.h"
 #include "TPeak.h"
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TMultiPeak                                                 //
-//                                                            //
-// This Class is used to represent fitted data that is        //
-// Gaussian like in nature (ie centroid and area).            //
-//                                                            //
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+///
+/// \class TMultiPeak
+///
+/// This Class is used to represent fitted data that is
+/// Gaussian like in nature (ie centroid and area).
+///
+/////////////////////////////////////////////////////////////////
 
 class TMultiPeak : public TGRSIFit {
  public: 

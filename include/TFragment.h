@@ -12,18 +12,14 @@
 #include "Rtypes.h"
 #include "TObject.h"
 
-//#if !defined (__CINT__) && !defined (__CLING__)
-//#include "Globals.h"
-//#endif
-
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TFragment                                                  //
-//                                                            //
-// This Class contains all of the information in an event     //
-// fragment                                                   //
-//                                                            //
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+///
+/// \class TFragment
+///
+/// This Class contains all of the information in an event
+/// fragment
+///
+/////////////////////////////////////////////////////////////////
 
 class TFragment : public TObject	{
 public:
