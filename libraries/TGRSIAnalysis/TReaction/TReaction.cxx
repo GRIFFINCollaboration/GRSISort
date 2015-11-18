@@ -257,6 +257,8 @@ double TReaction::ConvertOmegaCmToLab(double theta_cm, int part){
 	
 // the way to test this function is to use the known 4*cos(theta_lab) for elastics
 	double x = fCmV/fVCm[part];
+	if(fInverse)
+		theta_cm=PI-theta_cm;
 	double val1 = pow(pow(sin(theta_cm),2) + pow(fCmG*(x+cos(theta_cm)),2),1.5);
 	double val2 = (fCmG*(1+x*cos(theta_cm)));
 	
