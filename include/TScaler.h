@@ -11,14 +11,14 @@
  */
 
 
-/////////////////////////////////////////////////////////////////////////
-//                                                                     //
-// TScaler                                                             //
-//                                                                     //
-// The TScaler is designed to hold all of the information about the    //
-// scaler status.                                                      //
-//                                                                     //
-/////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+///
+/// \class TScaler
+///
+/// The TScaler is designed to hold all of the information about the
+/// scaler status.
+///
+//////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
 #include <map>

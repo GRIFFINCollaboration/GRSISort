@@ -19,13 +19,13 @@
 class TGRSIDetectorHit;
 
 /////////////////////////////////////////////////////////////////
-///                                                            //
-/// TGRSIDetector                                              //
-///                                                            //
-/// This is an abstract class that contains the basic info     //
-/// about a detector. This is where the hits are built and     //
-/// the data is filled.                                        //
-///                                                            //
+///
+/// \class TGRSIDetector
+///
+/// This is an abstract class that contains the basic info
+/// about a detector. This is where the hits are built and
+/// the data is filled.
+///
 /////////////////////////////////////////////////////////////////
 
 

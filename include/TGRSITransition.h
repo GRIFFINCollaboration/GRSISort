@@ -6,15 +6,15 @@
 #include "TClass.h"
 #include "TObject.h"
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TGRSITransition                                            //
-//                                                            //
-// This Class contains the information about a nuclear 
-// transition. These transitions are a part of a TNucleus
-// and are typically set within the TNucleus framework
-//                                                            //
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+///
+/// \class TGRSITransition
+///
+/// This Class contains the information about a nuclear 
+/// transition. These transitions are a part of a TNucleus
+/// and are typically set within the TNucleus framework
+///
+/////////////////////////////////////////////////////////////////
 
 class TGRSITransition : public TObject {
    friend class TNucleus;

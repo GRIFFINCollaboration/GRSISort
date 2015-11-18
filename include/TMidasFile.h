@@ -2,12 +2,12 @@
 #define TMIDASFILE_H
 
 /////////////////////////////////////////////////////////////////
-///                                                            //
-/// TMidasFile                                                 //
-///                                                            //
-/// This Class is used to read and write MIDAS files in the    //
-/// root framework. It reads and writes TMidasEvents.          //
-///                                                            //
+///
+/// \class TMidasFile
+///
+/// This Class is used to read and write MIDAS files in the
+/// root framework. It reads and writes TMidasEvents.
+///
 /////////////////////////////////////////////////////////////////
 
 #include <string>
