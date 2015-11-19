@@ -201,8 +201,6 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
 	fBufferSize        = 1000000;
 	fBufferDuration    = 60000000000;
 
-   //printf("run info created.\n");
-
    Clear();
 }
 

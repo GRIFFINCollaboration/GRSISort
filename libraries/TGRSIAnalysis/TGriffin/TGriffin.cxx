@@ -89,7 +89,7 @@ void TGriffin::Copy(TObject &rhs) const {
   static_cast<TGriffin&>(rhs).fAddbackFrags      = fAddbackFrags;
   static_cast<TGriffin&>(rhs).fSetCoreWave       = fSetCoreWave;
   static_cast<TGriffin&>(rhs).fCycleStart        = fCycleStart;
-  static_cast<TGriffin&>(rhs).fGriffinBits       = fGriffinBits;
+  static_cast<TGriffin&>(rhs).fGriffinBits       = 0;
 }                                       
 
 TGriffin::~TGriffin()	{
@@ -196,8 +196,6 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 		return;
 	}
 
-   Clear("");
-
    if(mnemonic->subsystem[0] == 'G') {
 		//set griffin
 		if(mnemonic->outputsensor[0] == 'B') { return; }  //make this smarter.
@@ -216,11 +214,11 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 		for(size_t i = 0; i < frag->Charge.size(); ++i) {
 			TGriffinHit corehit;
 			corehit.SetAddress(frag->ChannelAddress);
-			corehit.SetTime(frag->GetTimeStamp());
+			corehit.SetTimeStamp(frag->GetTimeStamp());
 			corehit.SetCfd(frag->GetCfd(i));
 			corehit.SetCharge(frag->GetCharge(i));
 			//check if this is a fragment where we already pulled the pile-up hits apart
-			if(frag->Charge.size() == 1 && frag->NumberOfHits >= 0 && frag->HitIndex >= 0) {
+			if((frag->Charge.size() == 1) && (frag->NumberOfHits >= 0) && (frag->HitIndex >= 0)) {
 				corehit.SetNPileUps(frag->NumberOfHits);
 				corehit.SetPUHit(frag->HitIndex);
 			} else {
