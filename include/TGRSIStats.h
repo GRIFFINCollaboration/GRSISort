@@ -1,6 +1,10 @@
 #ifndef TGRSISTATS_H
 #define TGRSISTATS_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <map>
 
 #include "TObject.h"
@@ -65,4 +69,5 @@ class TGRSIStats : public TObject {
    ClassDef(TGRSIStats,1) //A Helper class designed to record stats from each channel
 /// \endcond
 };
+/*! @} */
 #endif

@@ -1,6 +1,10 @@
 #ifndef TDATAPARSER_H
 #define TDATAPARSER_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 /////////////////////////////////////////////////////////////////
 ///
 /// \class TDataParser
@@ -94,5 +98,5 @@ class TDataParser {
 
     static void FillStats(TFragment*);
 };
-
+/*! @} */
 #endif

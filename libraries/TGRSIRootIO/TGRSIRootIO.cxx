@@ -46,6 +46,7 @@ void TGRSIRootIO::SetUpFragmentTree() {
 	fFragmentTree = new TTree("FragmentTree","FragmentTree");
 	fBufferFrag = 0;
 	fFragmentTree->Bronch("TFragment","TFragment",&fBufferFrag,128000,99);
+	//fFragmentTree->BranchRef();
 	printf("FragmentTree set up.\n");
 }
 
@@ -113,6 +114,7 @@ void TGRSIRootIO::SetUpEpicsTree() {
 	fEpicsTree = new TTree("EpicsTree","EpicsTree");
 	fEXBufferFrag = 0;
 	fEpicsTree->Bronch("TEpicsFrag","TEpicsFrag",&fEXBufferFrag,128000,99);
+	fEpicsTree->BranchRef();
 	printf("EPICS-Tree set up.\n");
 }
 

@@ -1,7 +1,8 @@
+#include "TTigressHit.h"
+
+#include "TClass.h"
 
 #include "TTigress.h"
-#include "TTigressHit.h"
-#include <TClass.h>
 
 /// \cond CLASSIMP
 ClassImp(TTigressHit)

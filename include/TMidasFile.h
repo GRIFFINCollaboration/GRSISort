@@ -1,6 +1,10 @@
 #ifndef TMIDASFILE_H
 #define TMIDASFILE_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 /////////////////////////////////////////////////////////////////
 ///
 /// \class TMidasFile
@@ -78,5 +82,5 @@ protected:
 	ClassDef(TMidasFile,0) //Used to open and write Midas Files
 /// \endcond
 };
-
+/*! @} */
 #endif // TMidasFile.h

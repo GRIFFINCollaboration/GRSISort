@@ -1,6 +1,10 @@
 #ifndef TSRIMMANAGER_H
 #define TSRIMMANAGER_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include<vector>
 #include<string>
 #include<fstream>
@@ -60,5 +64,5 @@ class TSRIM	{
 	ClassDef(TSRIM,0)
 /// \endcond
 };
-
+/*! @} */
 #endif

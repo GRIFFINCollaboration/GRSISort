@@ -1,6 +1,10 @@
 #ifndef TCHANNEL_H
 #define TCHANNEL_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
  * 
@@ -203,4 +207,5 @@ class TChannel : public TNamed	{
 	ClassDef(TChannel,4) //Contains the Digitizer Information
 /// \endcond
 };
+/*! @} */
 #endif

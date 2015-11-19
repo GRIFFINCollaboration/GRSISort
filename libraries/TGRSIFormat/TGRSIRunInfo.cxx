@@ -183,24 +183,27 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
 
 
 TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) { 
-   //Default ctor for TGRSIRunInfo. The default values are:
-   //
-   //fHPGeArrayPosition = 110.0;
-   //fBuildWindow       = 200;  
-   //fAddBackWindow     = 15.0;
-   //fIsMovingWindow    = true;
-
+	///Default ctor for TGRSIRunInfo. The default values are:
+   ///
+   ///fHPGeArrayPosition = 110.0;
+   ///fBuildWindow       = 200;  
+   ///fAddBackWindow     = 15.0;
+   ///fIsMovingWindow    = true;
+   ///fWaveformFitting	 = false;
+	///fBufferSize        = 1000000;
+	///fBufferDuration    = 60000000000;
 
    fHPGeArrayPosition = 110.0;
    fBuildWindow       = 200;  
    fAddBackWindow     = 15.0;
    fIsMovingWindow    = true;
-   fWaveformFitting	  = false;
+   fWaveformFitting	 = false;
+	fBufferSize        = 1000000;
+	fBufferDuration    = 60000000000;
 
    //printf("run info created.\n");
 
    Clear();
-
 }
 
 TGRSIRunInfo::~TGRSIRunInfo() { }

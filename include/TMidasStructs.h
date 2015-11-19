@@ -5,6 +5,10 @@
 #ifndef INCLUDE_TMidasBanksH
 #define INCLUDE_TMidasBanksH
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 // This file defines the data structures written
 // into MIDAS .mid files. They define the on-disk
 // data format, they cannot be arbitrarily changed.
@@ -41,5 +45,5 @@ struct TMidas_BANK32 {
   uint32_t fType;     ///< type of data (see midas.h TID_xxx)
   uint32_t fDataSize;
 };
-
+/*! @} */
 #endif

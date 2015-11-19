@@ -1,6 +1,10 @@
 #ifndef TGRSIFUNCTIONS_H
 #define TGRSIFUNCTIONS_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -37,5 +41,5 @@ namespace TGRSIFunctions {
    Double_t DeadTimeCorrect(Double_t *dim, Double_t deadtime, Double_t binWidth = 1.0);
    Double_t DeadTimeAffect(Double_t function, Double_t deadtime, Double_t binWidth = 1.0);
 }
-
+/*! @} */
 #endif

@@ -1,6 +1,10 @@
 #ifndef TMULTIPEAK_H
 #define TMULTIPEAK_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <string>
 #include <algorithm>
 #include <vector>
@@ -66,5 +70,5 @@ class TMultiPeak : public TGRSIFit {
   ClassDef(TMultiPeak,2);
 /// \endcond
 };
-
+/*! @} */
 #endif

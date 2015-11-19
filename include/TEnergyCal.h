@@ -1,6 +1,10 @@
 #ifndef TENERGYCAL_H__
 #define TENERGYCAL_H__
 
+/** \addtogroup Calibration
+ *  @{
+ */
+
 #include "TCal.h"
 #include "TPeak.h"
 #include "TSpectrum.h"
@@ -37,5 +41,5 @@ class TEnergyCal : public TCal {
    ClassDef(TEnergyCal,1); //Class used for Energy Calibrations
 /// \endcond
 };
-
+/*! @} */
 #endif

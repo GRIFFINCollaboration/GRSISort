@@ -1,6 +1,10 @@
 #ifndef TKINEMATICS_H
 #define TKINEMATICS_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -140,4 +144,5 @@ private:
 /// \endcond
  
 };
+/*! @} */
 #endif

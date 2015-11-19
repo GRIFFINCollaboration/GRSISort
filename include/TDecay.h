@@ -2,6 +2,10 @@
 #ifndef TDECAY_H
 #define TDECAY_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <string>
 
 #include "TNamed.h"
@@ -280,5 +284,5 @@ class TDecay : public TVirtualDecay {
    ClassDef(TDecay,1) //Contains all decay chains in a fit
 /// \endcond
 };
-
+/*! @} */
 #endif
