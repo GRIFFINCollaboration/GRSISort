@@ -409,7 +409,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 		event = new std::vector<TFragment>;
 		auto it = sortedFragments.begin();
 		for(; it != sortedFragments.end(); ++it) {
-			if(it->GetTimeStamp() - firstTimeStamp <= TGRSIRunInfo::BuildWindow()) {
+			if((it->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
 				event->push_back(*it);
 				if(TGRSIRunInfo::IsMovingWindow()){
 					firstTimeStamp = it->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
