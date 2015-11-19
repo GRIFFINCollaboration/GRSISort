@@ -358,7 +358,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 		//pull the different pile-up hits apart and put the into the sorted buffer as different fragments
 		for(size_t hit = 0; hit < currentFrag->Cfd.size(); ++hit) {
 			try {
-				sortedFragments.insert(TFragment(*currentFrag, hit));
+				sortedFragments.emplace(*currentFrag, hit);
 			} catch (std::bad_alloc& e) {
 				//failed to insert the fragment, check overall size of the multiset
 				if(sortedFragments.size() < TGRSIRunInfo::BufferSize()) {
