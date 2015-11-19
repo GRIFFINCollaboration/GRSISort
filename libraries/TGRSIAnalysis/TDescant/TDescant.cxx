@@ -220,10 +220,10 @@ void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
             hit.SetWaveform(frag->wavebuffer);
          }
          if(hit.GetWaveform()->size() > 0) {
-//          printf("Analyzing waveform, current cfd = %d, psd = %d\n",dethit.GetCfd(),dethit.GetPsd());
+//          printf("Analyzing waveform, current cfd = %d, psd = %d\n",hit.GetCfd(),hit.GetPsd());
             hit.AnalyzeWaveform();
 //          bool analyzed = hit.AnalyzeWaveform();
-//          printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",dethit.GetCfd(),dethit.GetPsd());
+//          printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",hit.GetCfd(),hit.GetPsd());
          }
       }
 

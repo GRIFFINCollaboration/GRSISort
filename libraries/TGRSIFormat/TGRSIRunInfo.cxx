@@ -94,7 +94,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
      {TString R__str; R__str.Streamer(b); fRunInfoFile.assign(R__str.Data()); }
      //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
    }
-    if(R__v > 7){
+    if(R__v > 8){
     {Bool_t R__bool; b >> R__bool; fDescantAncillary = R__bool;   }
     }
    fGRSIRunInfo = this;
