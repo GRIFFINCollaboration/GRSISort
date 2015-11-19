@@ -1,6 +1,10 @@
 #ifndef TBETADECAY_H
 #define TBETADECAY_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -28,4 +32,5 @@ private:
   ClassDef(TBetaDecay,1);   //Information about beta decays
 /// \endcond
 };
+/*! @} */
 #endif

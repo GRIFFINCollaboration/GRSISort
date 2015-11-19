@@ -1,6 +1,10 @@
 #ifndef TPPG_H
 #define TPPG_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 /*
  * Author:  R.Dunlop, <rdunlop@uoguelph.ca>
  * 
@@ -128,4 +132,5 @@ class TPPG : public TObject	{
     ClassDef(TPPG,2) //Contains PPG information
 /// \endcond
 };
+/*! @} */
 #endif

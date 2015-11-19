@@ -1,6 +1,10 @@
 #ifndef TDIAGNOSTICS_H
 #define TDIAGNOSTICS_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 ////////////////////////////////////////////////////////////////////////////////
 ///
 /// \class TDiagnostics
@@ -74,4 +78,5 @@ class TDiagnostics : public TObject {
 	ClassDef(TDiagnostics,1);
 /// \endcond
 };
+/*! @} */
 #endif

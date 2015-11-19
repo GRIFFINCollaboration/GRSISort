@@ -1,6 +1,10 @@
 #ifndef TGRSIRUNINFO_H
 #define TGRSIRUNINFO_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 /////////////////////////////////////////////////////////////////
 ///
 /// \class TGRSIRunInfo
@@ -27,7 +31,7 @@
 ///
 /// Live example:
 /// 
-///~~~
+/// \code
 /// root [1] TGRSIRunInfo *info = (TGRSIRunInfo*)_file0->Get("TGRSIRunInfo")
 /// root [2] TGRSIRunInfo::ReadInfoFromFile(info);
 /// root [3] info->Print()
@@ -40,7 +44,7 @@
 ///   SCEPTAR:      false
 ///   =====================
 /// root [4] 
-///~~~
+/// \endcode
 ///
 /// \author  P.C. Bender, <pcbend@gmail.com>
 /////////////////////////////////////////////////////////////////
@@ -262,5 +266,5 @@ class TGRSIRunInfo : public TObject {
    ClassDef(TGRSIRunInfo,7);  //Contains the run-dependent information.
 /// \endcond
 };
-
+/*! @} */
 #endif

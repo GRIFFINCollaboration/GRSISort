@@ -1,6 +1,10 @@
 #ifndef TGAINMATCH_H__
 #define TGAINMATCH_H__
 
+/** \addtogroup Calibration
+ *  @{
+ */
+
 #include "TCal.h"
 #include "TCalManager.h"
 #include "TPeak.h"
@@ -66,5 +70,5 @@ class TGainMatch : public TCal {
    ClassDef(TGainMatch,1);
 /// \endcond
 };
-
+/*! @} */
 #endif

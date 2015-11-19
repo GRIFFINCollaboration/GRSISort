@@ -1,6 +1,10 @@
 #ifndef TGRSIFIT_H
 #define TGRSIFIT_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include "TGRSIFunctions.h"
 #include "TObject.h"
 #include "TH1.h"
@@ -18,8 +22,6 @@
 #include "TRef.h"
 #include "TString.h"
 #include "Globals.h"
-
-using namespace TGRSIFunctions;
 
 class TGRSIFit : public TF1 {
  public:
@@ -69,5 +71,5 @@ class TGRSIFit : public TF1 {
    ClassDef(TGRSIFit,0);
 /// \endcond
 };
-
+/*! @} */
 #endif

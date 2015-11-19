@@ -1,5 +1,10 @@
 #ifndef TGRSISERVER_H
 #define TGRSISERVER_H
+
+/** \addtogroup Sorting
+ *  @{
+ */
+
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
  * 
@@ -8,13 +13,15 @@
  *
 */
 
-
-/* 
- * A class to allow 'things' to communicate
- * with GRSISort in a somewhat nice convenient and 
- * friendly way.
- *
-*/ 
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TGRSIServer
+///
+/// A class to allow 'things' to communicate
+/// with GRSISort in a somewhat nice convenient and 
+/// friendly way.
+///
+////////////////////////////////////////////////////////////////////////////////
 
 #include "TServerSocket.h"
 #include "TMonitor.h"
@@ -42,5 +49,5 @@ class TGRSIServer : public TServerSocket {
    ClassDef(TGRSIServer,0)
 /// \endcond
 };
-
+/*! @} */
 #endif

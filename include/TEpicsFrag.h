@@ -1,6 +1,10 @@
 #ifndef TEPICSFRAG_H
 #define TEPICSFRAG_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include "Globals.h"
 
 #include <vector>
@@ -48,4 +52,5 @@ class TEpicsFrag : public TObject	{
     ClassDef(TEpicsFrag,1);  // Scaler Fragments
 /// \endcond
 };
+/*! @} */
 #endif // TEPICSFRAG_H

@@ -1,6 +1,10 @@
 #ifndef TEFFICIENCYCAL_H__
 #define TEFFICIENCYCAL_H__
 
+/** \addtogroup Calibration
+ *  @{
+ */
+
 #include "TCal.h"
 #include "TPeak.h"
 #include "TSpectrum.h"
@@ -33,5 +37,5 @@ class TEfficiencyCal : public TCal {
 /// \endcond
 
 };
-
+/*! @} */
 #endif

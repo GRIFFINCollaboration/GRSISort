@@ -1,24 +1,18 @@
 #ifndef TMIDASEVENT_H
 #define TMIDASEVENT_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include "Globals.h"
 #include "TMidasEventHeader.h"
 
 #include "TObject.h"
 
 /////////////////////////////////////////////////////////////////
-///                                                            //
-/// \class TMidasEvent                                         //
-///                                                            //
-/// Contains the information within a Midas Event. This        //
-/// usually includes a header, midas information such as timestamp
-/// bank id, etc. And the bank data. The bank data is usually
-/// the information supplied by either a scaler or the 
-/// experimental DAQ system.
-///                                                            //
-/////////////////////////////////////////////////////////////////
-
-
+///
+/// \class TMidasEvent
 ///
 /// C++ class representing one midas event.
 ///
@@ -27,6 +21,13 @@
 /// them from a midas shared memory buffer or by
 /// receiving them through the mserver
 ///
+/// Contains the information within a Midas Event. This
+/// usually includes a header, midas information such as timestamp
+/// bank id, etc. And the bank data. The bank data is usually
+/// the information supplied by either a scaler or the 
+/// experimental DAQ system.
+///
+/////////////////////////////////////////////////////////////////
 
 /// MIDAS event
 
@@ -89,5 +90,5 @@ protected:
 	ClassDef(TMidasEvent,0) //All of the data contained in a Midas Event
 /// \endcond
 };
-
+/*! @} */
 #endif // TMidasEvent.h

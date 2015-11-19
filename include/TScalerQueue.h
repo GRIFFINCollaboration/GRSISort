@@ -1,6 +1,10 @@
 #ifndef TTIGSCALERQUEUE_H
 #define TTIGSCALERQUEUE_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <stdio.h>
 #include <queue>
 #include <map>
@@ -136,5 +140,5 @@ class TRateScalerQueue : public TObject {
       void Print(Option_t *opt = "") const;
 		void Clear(Option_t *opt = "");
 };
-
+/*! @} */
 #endif

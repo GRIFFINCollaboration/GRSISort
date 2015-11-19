@@ -1,6 +1,10 @@
 #ifndef TNUCLEUS_H
 #define TNUCLEUS_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <iostream>
 #include <math.h>
 #include <string.h>
@@ -73,8 +77,6 @@ private:
 	ClassDef(TNucleus,1);				// Creates a nucleus with corresponding nuclear information
 /// \endcond
 };
-
-
-
+/*! @} */
 #endif
 
