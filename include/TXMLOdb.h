@@ -1,6 +1,10 @@
 #ifndef TXMLODB_H
 #define TXMLODB_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 // Access ODB info from an XML ODB dump at either the begining of a run
 // or from a seperate file.
 // 
@@ -48,5 +52,5 @@ class TXMLOdb {
    ClassDef(TXMLOdb,0)
 /// \endcond
 };
-
+/*! @} */
 #endif

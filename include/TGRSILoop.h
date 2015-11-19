@@ -1,6 +1,10 @@
 #ifndef TGRSILOOP_H
 #define TGRSILOOP_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <cstdio>
 #include <string>
 #include <fstream>
@@ -91,5 +95,5 @@ class TGRSILoop : public TObject {
    ClassDef(TGRSILoop,0)
 /// \endcond
 };
-
+/*! @} */
 #endif

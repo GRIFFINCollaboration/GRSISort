@@ -1,6 +1,10 @@
 #ifndef TPEAK_H
 #define TPEAK_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <string>
 #include <algorithm>
 
@@ -101,5 +105,5 @@ class TPeak : public TGRSIFit {
 /// \endcond
 
 };
-
+/*! @} */
 #endif

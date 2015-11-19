@@ -1,12 +1,20 @@
-//////////////////////////////////////////////////////////
-// This class has been automatically generated on
-// Fri Jul 24 10:50:00 2015 by ROOT version 5.34/24
-// from TTree FragmentTree/FragmentTree
-// found on file: fragment03771_000.root
-//////////////////////////////////////////////////////////
-
 #ifndef TFragmentSelector_h
 #define TFragmentSelector_h
+
+/** \addtogroup Sorting
+ *  @{
+ */
+
+///////////////////////////////////////////////////////////
+///
+/// \class TFragmentSelector
+///
+/// This class has been automatically generated on
+/// Fri Jul 24 10:50:00 2015 by ROOT version 5.34/24
+/// from TTree FragmentTree/FragmentTree
+/// found on file: fragment03771_000.root
+///
+///////////////////////////////////////////////////////////
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -86,5 +94,5 @@ Bool_t TFragmentSelector::Notify()
 
    return kTRUE;
 }
-
+/*! @} */
 #endif // #ifdef TFragmentSelector_cxx

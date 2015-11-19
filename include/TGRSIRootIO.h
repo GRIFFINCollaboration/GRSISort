@@ -1,6 +1,10 @@
 #ifndef TGRSIROOTIO_H
 #define TGRSIROOTIO_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <cstdio>
 
 #include "TTree.h"
@@ -107,5 +111,5 @@ class TGRSIRootIO : public TObject {
    ClassDef(TGRSIRootIO,0)
 /// \endcond
 };
-
+/*! @} */
 #endif 

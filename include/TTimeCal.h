@@ -1,6 +1,10 @@
 #ifndef TTIMECAL_H__
 #define TTIMECAL_H__
 
+/** \addtogroup Calibration
+ *  @{
+ */
+
 #include "TCal.h"
 
 class TTimeCal : public TCal {
@@ -33,5 +37,5 @@ class TTimeCal : public TCal {
 /// \endcond
 
 };
-
+/*! @} */
 #endif

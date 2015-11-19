@@ -1,6 +1,10 @@
 #ifndef TDETECTOR_H
 #define TDETECTOR_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <stdexcept>
 #include <cstdio>
 #include <vector>
@@ -47,5 +51,5 @@ class TDetector : public TObject	{
 		ClassDef(TDetector,1) //Abstract class for detector systems 
 /// \endcond
 };
-
+/*! @} */
 #endif

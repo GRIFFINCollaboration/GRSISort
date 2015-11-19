@@ -10,6 +10,10 @@
 #ifndef INCLUDE_VirtualOdb_H
 #define INCLUDE_VirtualOdb_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 /// Interface class for ODB access
 #if __APPLE__ 
 //#include <_types/_uint8_t.h> 
@@ -50,6 +54,6 @@ class VirtualOdb {
   /// Destructor has to be virtual
   virtual ~VirtualOdb() { /* empty */ }; // dtor
 };
-
+/*! @} */
 #endif
 // end

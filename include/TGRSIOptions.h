@@ -1,6 +1,10 @@
 #ifndef TGRSIOPTIONS_H
 #define TGRSIOPTIONS_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <cstdio>
 #include <string>
 
@@ -92,5 +96,5 @@ namespace TGRSIOptions {
       void AddInputOdbFile(std::string &input);   
       void AddMacroFile(std::string &input);   
 }
-
+/*! @} */
 #endif

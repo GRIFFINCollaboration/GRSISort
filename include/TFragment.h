@@ -1,5 +1,9 @@
 // Author: Peter C. Bender    06/14
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #ifndef TFRAGMENT_H
 #define TFRAGMENT_H
 
@@ -101,4 +105,5 @@ public:
    ClassDef(TFragment,5);  // Event Fragments
 /// \endcond
 };
+/*! @} */
 #endif // TFRAGMENT_H
