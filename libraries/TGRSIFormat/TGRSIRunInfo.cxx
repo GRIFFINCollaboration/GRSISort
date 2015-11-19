@@ -196,7 +196,7 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    fAddBackWindow     = 15.0;
    fIsMovingWindow    = true;
    fWaveformFitting	  = false;
-
+   fBufferSize        = 1000000;
    //printf("run info created.\n");
 
    Clear();

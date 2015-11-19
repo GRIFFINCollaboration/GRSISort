@@ -88,8 +88,6 @@ void TPaces::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 		return;
 	}
 
-   Clear("");
-
 	for(size_t i = 0; i < frag->Charge.size(); ++i) {
 	  TPacesHit hit;
 	  hit.SetAddress(frag->ChannelAddress);
