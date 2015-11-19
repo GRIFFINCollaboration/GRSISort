@@ -196,8 +196,6 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 		return;
 	}
 
-   Clear("");
-
    if(mnemonic->subsystem[0] == 'G') {
 		//set griffin
 		if(mnemonic->outputsensor[0] == 'B') { return; }  //make this smarter.
@@ -220,7 +218,7 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 			corehit.SetCfd(frag->GetCfd(i));
 			corehit.SetCharge(frag->GetCharge(i));
 			//check if this is a fragment where we already pulled the pile-up hits apart
-			if(frag->Charge.size() == 1 && frag->NumberOfHits >= 0 && frag->HitIndex >= 0) {
+			if((frag->Charge.size() == 1) && (frag->NumberOfHits >= 0) && (frag->HitIndex >= 0)) {
 				corehit.SetNPileUps(frag->NumberOfHits);
 				corehit.SetPUHit(frag->HitIndex);
 			} else {
