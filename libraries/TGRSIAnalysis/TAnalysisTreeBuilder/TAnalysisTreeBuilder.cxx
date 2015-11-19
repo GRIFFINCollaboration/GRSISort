@@ -365,7 +365,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 				} else {
 					//Wait and try inserting again. If that fails as well we can't do anything else, so we don't catch exceptions here
 					std::this_thread::sleep_for(std::chrono::milliseconds(100));
-					sortedFragments.insert(TFragment(*currentFrag, hit));					
+					sortedFragments.insert(TFragment(*currentFrag, hit));		
 				}
 			}
 		}
@@ -377,14 +377,14 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
  		long firstTimeStamp = (*(sortedFragments.begin())).GetTimeStamp();
 		long lastTimeStamp = (*(std::prev(sortedFragments.end()))).GetTimeStamp();
 		if(//(lastTimeStamp - firstTimeStamp > TGRSIRunInfo::BufferDuration()) ||
-			(sortedFragments.size() > TGRSIRunInfo::BufferSize() && (lastTimeStamp - firstTimeStamp > TGRSIRunInfo::BuildWindow()))) {
+			((sortedFragments.size() > TGRSIRunInfo::BufferSize()) && ((lastTimeStamp - firstTimeStamp) > TGRSIRunInfo::BuildWindow()))) {
 			//We are now in a situation where we think that no more fragments will be read that will end up at the beginning of the multiset.
 			//So we can put everything that is in the BuildWindow of the first fragment into our built event.
 			//For this we loop through the fragments in the multiset, put them into the new event vector, and once the time difference is larger than BuildWindow,
 			//we put the event into the queue, erase the fragments from the multiset, and stop the loop.
 			event = new std::vector<TFragment>;
 			for(auto it = sortedFragments.begin(); it != sortedFragments.end(); ++it) {
-				if(it->GetTimeStamp() - firstTimeStamp <= TGRSIRunInfo::BuildWindow()) {
+				if((it->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
 					event->push_back(*it);
 					if(TGRSIRunInfo::IsMovingWindow()){
 						firstTimeStamp = it->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
@@ -409,7 +409,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 		event = new std::vector<TFragment>;
 		auto it = sortedFragments.begin();
 		for(; it != sortedFragments.end(); ++it) {
-			if(it->GetTimeStamp() - firstTimeStamp <= TGRSIRunInfo::BuildWindow()) {
+			if((it->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
 				event->push_back(*it);
 				if(TGRSIRunInfo::IsMovingWindow()){
 					firstTimeStamp = it->GetTimeStamp(); //THIS IS FOR MOVING WINDOW

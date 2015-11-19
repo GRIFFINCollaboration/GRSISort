@@ -203,6 +203,8 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
 
    fDescantAncillary = false;
 
+   fBufferSize        = 1000000;
+
    //printf("run info created.\n");
    
    Clear();
