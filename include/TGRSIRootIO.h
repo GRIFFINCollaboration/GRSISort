@@ -17,27 +17,28 @@
 #include "TEpicsFrag.h"
 #include "TPPG.h"
 #include "TScaler.h"
+#include "TDiagnostics.h"
 
 class TGRSIRootIO : public TObject {
-
    public:
-      static TGRSIRootIO *Get();
+      static TGRSIRootIO* Get();
       virtual ~TGRSIRootIO();
    
    private:
-      static TGRSIRootIO *fTGRSIRootIO;
+      static TGRSIRootIO* fTGRSIRootIO;
       TGRSIRootIO();
 
    private:
-      //TTree *fTChannelTree;
-      TTree *fFragmentTree;
-      TTree *fBadFragmentTree;
-      TTree *fEpicsTree;
-      TTree *fDeadtimeScalerTree;
-      TTree *fRateScalerTree;
-      TPPG *fPPG;
+      //TTree* fTChannelTree;
+      TTree* fFragmentTree;
+      TTree* fBadFragmentTree;
+      TTree* fEpicsTree;
+      TTree* fDeadtimeScalerTree;
+      TTree* fRateScalerTree;
+      TPPG* fPPG;
+      TDiagnostics* fDiagnostics;
 
-      TFile *foutfile;
+      TFile* fOutFile;
       int fTimesFillCalled;
       int fTimesBadFillCalled;
       int fTimesPPGCalled;
@@ -45,12 +46,12 @@ class TGRSIRootIO : public TObject {
       int fTimesRateScalerCalled;
       int fEPICSTimesFillCalled;
 
-      std::vector<TFile*> finfiles;
+      std::vector<TFile*> fInFiles;
 
-      TFragment  *fBufferFrag;
-      TFragment  *fBadBufferFrag;
-      TEpicsFrag *fEXBufferFrag;
-      TChannel   *fBufferChannel;
+      TFragment*  fBufferFrag;
+      TFragment*  fBadBufferFrag;
+      TEpicsFrag* fEXBufferFrag;
+      TChannel*   fBufferChannel;
 
 		TScalerData* fDeadtimeScalerData;
 		TScalerData* fRateScalerData;
@@ -63,33 +64,27 @@ class TGRSIRootIO : public TObject {
 
       void LoadRootFile(TFile*);
       
-
-      TFile *GetRootOutFile()  { return foutfile;   }  
-
-//      void SetUpChannelTree();
-//      TTree *GetChannelTree()  { return fTChannelTree;  }
-//      void FillChannelTree(TChannel*);
-//      void FinalizeChannelTree();
+      TFile* GetRootOutFile()  { return fOutFile;   }  
 
       void SetUpFragmentTree();
-      TTree *GetFragmentTree()  { return fFragmentTree;  }
+      TTree* GetFragmentTree()  { return fFragmentTree;  }
       void FillFragmentTree(TFragment*);
       void FinalizeFragmentTree();
 
       void SetUpBadFragmentTree();
-      TTree *GetBadFragmentTree()  { return fBadFragmentTree;  }
+      TTree* GetBadFragmentTree()  { return fBadFragmentTree;  }
       void FillBadFragmentTree(TFragment*);
       void FinalizeBadFragmentTree();
 
       void SetUpPPG();
-      TPPG *GetPPG()  { return fPPG;  }
+      TPPG* GetPPG()  { return fPPG;  }
       void FillPPG(TPPGData*);
       void FinalizePPG();
       int GetTimesPPGCalled()  { return fTimesPPGCalled;  }
 
       void SetUpScalerTrees();
-      TTree *GetDeadtimeScalerTree()  { return fDeadtimeScalerTree;  }
-      TTree *GetRateScalerTree()  { return fRateScalerTree;  }
+      TTree* GetDeadtimeScalerTree()  { return fDeadtimeScalerTree;  }
+      TTree* GetRateScalerTree()  { return fRateScalerTree;  }
       void FillDeadtimeScalerTree(TScalerData*);
       void FillRateScalerTree(TScalerData*);
       void FinalizeScalerTrees();
@@ -97,17 +92,20 @@ class TGRSIRootIO : public TObject {
       int GetTimesRateScalerCalled()  { return fTimesRateScalerCalled;  }
 
       void SetUpEpicsTree();
-      TTree *GetEpicsTree()  { return fEpicsTree;  }
+      TTree* GetEpicsTree()  { return fEpicsTree;  }
       void FillEpicsTree(TEpicsFrag*);
       void FinalizeEpicsTree();
 
+      void SetUpDiagnostics();
+      TDiagnostics* GetDiagnostics()  { return fDiagnostics;  }
+      void FinalizeDiagnostics();
+
       void MakeUserHistsFromFragmentTree();
       void WriteRunStats();
-		//void StartMakeAnalysisTree();
-		//void MakeAnalysisTree(std::vector<std::string>);//int argc, char **argv);
 
+/// \cond CLASSIMP
    ClassDef(TGRSIRootIO,0)
-
+/// \endcond
 };
 
 #endif 

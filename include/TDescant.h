@@ -1,68 +1,71 @@
 #ifndef TDESCANT_H
 #define TDESCANT_H
 
-#include "Globals.h"
+/** \addtogroup Detectors
+ *  @{
+ */
+
+/////////////////////////////////////////////////////////////
+///                    
+/// \class TDescant
+///
+/// The TDescant class defines the observables and algorithms used
+/// when analyzing GRIFFIN data. It includes detector positions,
+/// etc. 
+///
+/////////////////////////////////////////////////////////////
 
 #include <vector>
 #include <cstdio>
 
-#include "TDescantHit.h"
-#if !defined (__CINT__) && !defined (__CLING__)
-#include "TDescantData.h"
-#else
-class TDescantData;
-#endif
 #include "TVector3.h" 
 
+#include "Globals.h"
 #include "TGRSIDetector.h" 
-
+#include "TDescantHit.h"
 
 class TDescant : public TGRSIDetector {
+	public:
+		TDescant();
+		TDescant(const TDescant&);
+		virtual ~TDescant();
 
-  public:
-     TDescant();
-     TDescant(const TDescant&);
-     virtual ~TDescant();
+	public: 
+		TGRSIDetectorHit* GetHit(const Int_t& idx =0);
+		TDescantHit* GetDescantHit(const Int_t& idx = 0);
 
-  public: 
-     TGRSIDetectorHit* GetHit(const Int_t& idx =0);
-     TDescantHit* GetDescantHit(const Int_t& idx = 0);
+		Short_t GetMultiplicity() const	       {	return fDescantHits.size(); }	//!<!
 
-     Short_t GetMultiplicity() const	       {	return descant_hits.size();}	//!
+      static TVector3 GetPosition(int DetNbr, double dist=222);	//!<!
 
-     static TVector3 GetPosition(int DetNbr, double dist=222);	//!
+      void AddFragment(TFragment*, MNEMONIC*);           //!<!
+		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
-     void BuildHits(TDetectorData *data =0,Option_t *opt = "");           //!
-     void FillData(TFragment*,TChannel*,MNEMONIC*);                           //!
+		TDescant& operator=(const TDescant&);  // 
 
-     TDescant& operator=(const TDescant&);  // 
+	private: 
+		std::vector<TDescantHit> fDescantHits;                                  ///<  The set of crystal hits
+		static bool fSetWave;		                                             ///<  Flag for Waveforms ON/OFF
+		bool fHitFlag;                                                          ///<   Is there a Descant hit?
 
-   private: 
-     TDescantData *descantdata;                                               //!  Used to build DESCANT Hits
-     std::vector <TDescantHit> descant_hits;                                  //   The set of crystal hits
-
-     static bool fSetWave;		                                                //  Flag for Waveforms ON/OFF
-
-     bool hit_flag;                                                               //   Is there a Descant hit?
-
+	public:
+		static bool SetWave()      { return fSetWave;  }	                     //!<!
+		bool Hit()                {return fHitFlag;}                            //!<!  
+		void SetHit(bool flag = true) { fHitFlag = flag; }
+	private:
+		static TVector3 gPosition[2][71];                                          //!<!
    public:
-     static bool SetWave()      { return fSetWave;  }	                        //!
-     bool Hit()                {return hit_flag;}                                //!  
-     void SetHit(bool flag = true) { hit_flag = flag; }
-   private:
-     static TVector3 gPosition[2][71];                                     //!
-   public:         
-     void Copy(TObject&) const;                //!
-     void Clear(Option_t *opt = "");		//!
-     void Print(Option_t *opt = "") const;		//!
+      void Copy(TObject&) const;                                              //!<!
+      void Clear(Option_t* opt = "");                                         //!<!
+      void Print(Option_t* opt = "") const;                                   //!<!
 
-     void PushBackHit(TGRSIDetectorHit* deshit);
+      void PushBackHit(TGRSIDetectorHit* deshit);
 
-     ClassDef(TDescant,1)  // Descant Physics structure
-
-
+/// \cond CLASSIMP
+		ClassDef(TDescant,1)  // Descant Physics structure
+/// \endcond
 };
-
+/*! @} */
 #endif
 
 

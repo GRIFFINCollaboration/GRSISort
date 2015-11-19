@@ -2,8 +2,12 @@
 
 #include <iostream>
 
+/// \cond CLASSIMP
 ClassImp(TGRSISortInfo)
+/// \endcond
+/// \cond CLASSIMP
 ClassImp(TGRSISortList)
+/// \endcond
 
 Bool_t TGRSISortList::AddSortInfo(TGRSISortInfo *info, Option_t *opt){
    TString opt1 = opt;

@@ -1,8 +1,12 @@
 #ifndef GROOTGLOBALS__H
 #define GROOTGLOBALS__H
 
-#include <TH2.h>
-#include <TH1.h>
+/** \addtogroup GROOT
+ *  @{
+ */
+
+#include "TH2.h"
+#include "TH1.h"
 
 TH1D *ProjectionX(TH2 *mat,int lowbin=0,int highbin=-1); /*MENU*/
 TH1D *ProjectionY(TH2 *mat,int lowbin=0,int highbin=-1); /*MENU*/
@@ -18,5 +22,5 @@ bool RemovePeaks(TH1 **hists,unsigned int Nhists=1);
 void Help();
 void Commands();
 void Prompt();
-
+/*! @} */
 #endif

@@ -7,8 +7,6 @@
 //
 //
 
-
-
 #ifndef INCLUDE_VirtualOdb_H
 #define INCLUDE_VirtualOdb_H
 
@@ -25,8 +23,7 @@
 
 class TXMLNode;
 
-class VirtualOdb
-{
+class VirtualOdb {
   public:
   // ODB functions
 
@@ -56,4 +53,3 @@ class VirtualOdb
 
 #endif
 // end
-

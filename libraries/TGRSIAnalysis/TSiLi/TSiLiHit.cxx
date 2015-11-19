@@ -1,13 +1,15 @@
 #include "TSiLi.h"
 #include "TSiLiHit.h"
 
+/// \cond CLASSIMP
 ClassImp(TSiLiHit)
+/// \endcond
 
-TSiLiHit::TSiLiHit()  {
-   Clear();
+TSiLiHit::TSiLiHit()  {    Clear(); }
+
+TSiLiHit::TSiLiHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+	SetVariables(frag);
 }
-
-TSiLiHit::TSiLiHit(TFragment &frag)	: TGRSIDetectorHit(frag) {}
 
 TSiLiHit::~TSiLiHit()  {  }
 
@@ -19,28 +21,39 @@ TSiLiHit::TSiLiHit(const TSiLiHit &rhs) : TGRSIDetectorHit() {
 void TSiLiHit::Copy(TObject &rhs) const {
    TGRSIDetectorHit::Copy(rhs);
 
-	static_cast<TSiLiHit&>(rhs).led = led;
-	static_cast<TSiLiHit&>(rhs).segment = segment;
-	static_cast<TSiLiHit&>(rhs).time_fit = time_fit;
-	static_cast<TSiLiHit&>(rhs).sig2noise = sig2noise;
+	static_cast<TSiLiHit&>(rhs).fLed = fLed;
+	//static_cast<TSiLiHit&>(rhs).fSegment = fSegment;
+	static_cast<TSiLiHit&>(rhs).fTimeFit = fTimeFit;
+	static_cast<TSiLiHit&>(rhs).fSig2Noise = fSig2Noise;
 
    return;
 }
 
 
+/*void TSiLiHit::SetSegment(TFragment &frag){
+	TChannel *channel = TChannel::GetChannel(frag.ChannelAddress);
+      if(!channel)  return;
+      
+      char seg[5]; 
+      strncpy(seg,channel->GetChannelName()+7,3);
+      fSegment=strtol(seg, NULL, 16);
+}*/
+
+
+
 void TSiLiHit::Clear(Option_t *opt)  {
    TGRSIDetectorHit::Clear(opt);
-  led     = -1;
-  segment = -1;
-  time_fit =-1;
-  sig2noise=-1;
+	fLed       = -1;
+	//fSegment   = -1;
+	fTimeFit   = -1;
+	fSig2Noise = -1;
 }
 
 void TSiLiHit::SetWavefit(TFragment &frag)   { 
 	TPulseAnalyzer pulse(frag,4);	    
 	if(pulse.IsSet()){
-		time_fit = pulse.fit_newT0();
-		sig2noise= pulse.get_sig2noise();
+		fTimeFit = pulse.fit_newT0();
+		fSig2Noise = pulse.get_sig2noise();
 	}
 }
 
@@ -50,7 +63,7 @@ TVector3 TSiLiHit::GetChannelPosition(double dist) const {
 
 
 void TSiLiHit::Print(Option_t *opt) const {
-  printf("===============\n");
-  printf("not yet written\n");
-  printf("===============\n");
+	printf("===============\n");
+	printf("not yet written\n");
+	printf("===============\n");
 }

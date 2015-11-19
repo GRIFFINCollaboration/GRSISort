@@ -9,17 +9,16 @@
 #include <fstream>
 #include <string>
 
-#include "TGRSITransition.h"
-
 #include "TObject.h"
 #include "TNamed.h"
 #include "TList.h"
 
-class TNucleus : public TNamed{
+#include "TGRSITransition.h"
 
+class TNucleus : public TNamed {
  private:
-  static const char *grsipath;
-  static const char *massfile; //The massfile to be used, which includes Z, N, atomic symbol, and mass excess
+  static const char* grsipath;
+  static const char* massfile; //The massfile to be used, which includes Z, N, atomic symbol, and mass excess
   //static std::string masspath;
 
  public:
@@ -30,9 +29,9 @@ class TNucleus : public TNamed{
 
   virtual ~TNucleus();
 	
-  //static void SetMassFile(const char *tmp = NULL);// {massfile = tmp;} //Sets the mass file to be used
+  //static void SetMassFile(const char* tmp = NULL);// {massfile = tmp;} //Sets the mass file to be used
 
-  static const char* SortName(const char *name);
+  static const char* SortName(const char* name);
   void SetZ(int);					// Sets the Z (# of protons) of the nucleus
   void SetN(int);					// Sets the N (# of neutrons) of the nucleus
   void SetMassExcess(double);  				// Sets the mass excess of the nucleus (in MeV)
@@ -47,9 +46,9 @@ class TNucleus : public TNamed{
   const char* GetSymbol() const{return fSymbol.c_str();}	// Gets the atomic symbol of the nucleus
 
   void AddTransition(Double_t energy, Double_t intensity, Double_t energy_uncertainty = 0.0, Double_t intensity_uncertainty = 0.0);
-  void AddTransition(TGRSITransition *tran);
+  void AddTransition(TGRSITransition* tran);
   Bool_t RemoveTransition(Int_t idx);
-  TGRSITransition *GetTransition(Int_t idx);
+  TGRSITransition* GetTransition(Int_t idx);
 
   Int_t NTransitions() const { return TransitionList.GetSize();};
  
@@ -59,7 +58,7 @@ class TNucleus : public TNamed{
   TList TransitionList;
   bool SetSourceData();
 
-  void Print(Option_t *opt = "") const;
+  void Print(Option_t* opt = "") const;
   void WriteSourceFile(std::string outfilename = "");
 
 private:
@@ -70,7 +69,9 @@ private:
   double fMassExcess;					// Mass excess (in MeV)
   std::string fSymbol;					// Atomic symbol (ex. Ba, C, O, N)
 
+/// \cond CLASSIMP
 	ClassDef(TNucleus,1);				// Creates a nucleus with corresponding nuclear information
+/// \endcond
 };
 
 
