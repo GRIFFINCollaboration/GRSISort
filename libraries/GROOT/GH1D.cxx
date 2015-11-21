@@ -1,20 +1,19 @@
-
-#include <TPad.h>
-#include <TString.h>
-#include <TList.h>
-#include <TBox.h>
-
 #include "GH1D.h"
-#include "GCanvas.h"
 
+#include "TPad.h"
+#include "TString.h"
+#include "TList.h"
+#include "TBox.h"
+
+#include "GCanvas.h"
 #include "Globals.h"
 
 int GH1D::fUniqueId = 0;
-std::map <GH1D*,int> GH1D::fCurrentHistMap;
+std::map<GH1D*,int> GH1D::fCurrentHistMap;
 
-
-GH1D::GH1D() 
-      :TH1D() {  InitGH1D();  }
+GH1D::GH1D() : TH1D() {
+	InitGH1D();
+}
 
 GH1D::~GH1D() { 
    RemoveFromMap(this);   

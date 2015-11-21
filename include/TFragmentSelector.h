@@ -1,12 +1,20 @@
-//////////////////////////////////////////////////////////
-// This class has been automatically generated on
-// Fri Jul 24 10:50:00 2015 by ROOT version 5.34/24
-// from TTree FragmentTree/FragmentTree
-// found on file: fragment03771_000.root
-//////////////////////////////////////////////////////////
-
 #ifndef TFragmentSelector_h
 #define TFragmentSelector_h
+
+/** \addtogroup Sorting
+ *  @{
+ */
+
+///////////////////////////////////////////////////////////
+///
+/// \class TFragmentSelector
+///
+/// This class has been automatically generated on
+/// Fri Jul 24 10:50:00 2015 by ROOT version 5.34/24
+/// from TTree FragmentTree/FragmentTree
+/// found on file: fragment03771_000.root
+///
+///////////////////////////////////////////////////////////
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -21,7 +29,7 @@
 
 class TFragmentSelector : public TSelector {
 public :
-   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
+   TTree          *fChain;   //!<!pointer to the analyzed TTree or TChain
 
    // Declaration of leaf types - EDIT: we use just the fragment itself, not it's members individually
 	TFragment       *fragment;
@@ -50,7 +58,9 @@ private:
 	int fRunNumber;    //The current run number
 	int fSubRunNumber; //The current subrun number
 
+/// \cond CLASSIMP
    ClassDef(TFragmentSelector,0);
+/// \endcond
 };
 
 #endif
@@ -84,5 +94,5 @@ Bool_t TFragmentSelector::Notify()
 
    return kTRUE;
 }
-
+/*! @} */
 #endif // #ifdef TFragmentSelector_cxx

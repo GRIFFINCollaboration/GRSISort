@@ -4,7 +4,9 @@
 #include "Globals.h"
 #include <cmath>
 
+/// \cond CLASSIMP
 ClassImp(TGriffinHit)
+/// \endcond
 
 TGriffinHit::TGriffinHit():TGRSIDetectorHit()	{	
    //Default Ctor. Ignores TObject Streamer in ROOT < 6.
@@ -25,10 +27,10 @@ TGriffinHit::~TGriffinHit()  {	}
 void TGriffinHit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
   static_cast<TGriffinHit&>(rhs).fFilter                = fFilter;
-  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = 0;
+  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = fGriffinHitBits;
   static_cast<TGriffinHit&>(rhs).fCrystal               = fCrystal;
   static_cast<TGriffinHit&>(rhs).fPPG                   = fPPG;
-  static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag;//! Bremsstrahlung Suppression flag.
+  static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag; // Bremsstrahlung Suppression flag.
   return;                                      
 }                                       
 

@@ -1,36 +1,38 @@
 #include "TTimeCal.h"
 
+/// \cond CLASSIMP
 ClassImp(TTimeCal)
+/// \endcond
 
 void TTimeCal::Clear(Option_t *opt) {
-   fparameters.clear();
+   fParameters.clear();
    TCal::Clear(opt);
 }
 
 void TTimeCal::WriteToChannel() const {
-   if(!GetChannel()){
+   if(!GetChannel()) {
       Error("WriteToChannel","No Channel Set");
       return;
    }
    GetChannel()->DestroyTIMECal();
    printf("\nWriting to channel %d\n",GetChannel()->GetNumber());
-   for(int i=0;i<(int)fparameters.size();i++){
-      printf("p%i = %lf \t",i,fparameters.at(i));
-      GetChannel()->AddTIMECoefficient(fparameters.at(i));
+   for(int i = 0; i < static_cast<int>(fParameters.size()); i++) {
+      printf("p%i = %lf \t", i, fParameters[i]);
+      GetChannel()->AddTIMECoefficient(fParameters[i]);
    }
 }
 
-void TTimeCal::AddParameter(Double_t param){
-   fparameters.push_back(param);
+void TTimeCal::AddParameter(Double_t param) {
+   fParameters.push_back(param);
 }
 
-void TTimeCal::SetParameters(std::vector<Double_t> paramvec){
-   fparameters = paramvec;
+void TTimeCal::SetParameters(std::vector<Double_t> paramVec) {
+   fParameters = paramVec;
 }
 
-void TTimeCal::SetParameter(Int_t idx, Double_t param){
+void TTimeCal::SetParameter(Int_t idx, Double_t param) {
 /*   try {
-	   fparameters.at(idx) = param;
+	   fParameters.at(idx) = param;
    } 
    catch(const std::out_of_range& oor) {
       Error("SetParameter","Parameter %d does not exist yet",idx);
@@ -38,36 +40,35 @@ void TTimeCal::SetParameter(Int_t idx, Double_t param){
 }
 
 void TTimeCal::ReadFromChannel() {
-   if(!GetChannel()){
+   if(!GetChannel()) {
       Error("ReadFromChannel","No Channel Set");
       return;
    }
-   fparameters = GetChannel()->GetTIMECoeff();
+   fParameters = GetChannel()->GetTIMECoeff();
 }
 
-void TTimeCal::Print(Option_t *opt) const{
+void TTimeCal::Print(Option_t *opt) const {
    if(GetChannel())
       printf("Channel Number: %u\n",GetChannel()->GetNumber());
    else
       printf("Channel Number: NOT SET\n");
 
-   for(int i=0;i<(int)fparameters.size();i++){
-      printf("p%i = %lf \t",i,fparameters.at(i));
+   for(int i = 0; i < static_cast<int>(fParameters.size()); i++) {
+      printf("p%i = %lf \t",i,fParameters[i]);
    }
 }
 
-std::vector<Double_t> TTimeCal::GetParameters() const{
-  
-   if(!fparameters.size())
+std::vector<Double_t> TTimeCal::GetParameters() const {
+   if(!fParameters.size())
       Error("GetParameters","No Parameters Set");
 
-   return fparameters;
+   return fParameters;
 }
 
-Double_t TTimeCal::GetParameter(Int_t parameter) const{
-   if(static_cast<size_t>(parameter) < fparameters.size()) 
-      return fparameters.at(parameter);
-   else{
+Double_t TTimeCal::GetParameter(size_t parameter) const {
+   if(parameter < fParameters.size()) 
+      return fParameters[parameter];
+   else {
       Error("Get Parameter","Parameter Does not exist");
       return 0;
    }

@@ -7,10 +7,12 @@
 //
 //
 
-
-
 #ifndef INCLUDE_VirtualOdb_H
 #define INCLUDE_VirtualOdb_H
+
+/** \addtogroup Sorting
+ *  @{
+ */
 
 /// Interface class for ODB access
 #if __APPLE__ 
@@ -25,8 +27,7 @@
 
 class TXMLNode;
 
-class VirtualOdb
-{
+class VirtualOdb {
   public:
   // ODB functions
 
@@ -53,7 +54,6 @@ class VirtualOdb
   /// Destructor has to be virtual
   virtual ~VirtualOdb() { /* empty */ }; // dtor
 };
-
+/*! @} */
 #endif
 // end
-

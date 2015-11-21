@@ -1,6 +1,10 @@
 #ifndef TTIGSCALERQUEUE_H
 #define TTIGSCALERQUEUE_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <stdio.h>
 #include <queue>
 #include <map>
@@ -17,7 +21,6 @@
 #include "TScaler.h"
 
 class TDeadtimeScalerQueue : public TObject {
-	
 	public:
 		static TDeadtimeScalerQueue* Get(); //Returns the Queue
 		virtual ~TDeadtimeScalerQueue();
@@ -46,7 +49,6 @@ class TDeadtimeScalerQueue : public TObject {
 		unsigned int fTotalScalersOut;	
 
 		static std::map<int,int> fScalerIdMap;	
-
 
 #if !defined (__CINT__) && !defined (__CLING__)
 #ifndef NO_MUTEX
@@ -79,7 +81,6 @@ class TDeadtimeScalerQueue : public TObject {
 };
 
 class TRateScalerQueue : public TObject {
-	
 	public:
 		static TRateScalerQueue* Get(); //Returns the Queue
 		virtual ~TRateScalerQueue();
@@ -139,5 +140,5 @@ class TRateScalerQueue : public TObject {
       void Print(Option_t *opt = "") const;
 		void Clear(Option_t *opt = "");
 };
-
+/*! @} */
 #endif
