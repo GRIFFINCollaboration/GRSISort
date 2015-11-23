@@ -273,7 +273,7 @@ void TGriffin::BuildHits(TDetectorData *data,Option_t *opt)	{
       corehit.SetTimeStamp(gdata->GetCoreTime(i));
       corehit.SetCfd(gdata->GetCoreCFD(i));
       corehit.SetCharge(gdata->GetCoreCharge(i));
-      corehit.SetNPileUps((UChar_t)(gdata->GetCoreNbrHits(i)));
+      corehit.SetNPileUps((UChar_t)(gdata->GetCoreNbrHits(i) -1));
       corehit.SetPUHit((UChar_t)(gdata->GetCorePUHit(i)));
       corehit.SetEnergy(100);
 /*
