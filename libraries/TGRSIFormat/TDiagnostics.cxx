@@ -92,7 +92,7 @@ void TDiagnostics::GoodFragment(TFragment* frag) {
 	}
 }
 
-void TDiagnostics::Read(TPPG* ppg) {
+void TDiagnostics::ReadPPG(TPPG* ppg) {
 	///store different TPPG diagnostics like cycle length, length of each state, offset, how often each state was found
 	if(ppg == NULL) return;
 	fPPGCycleLength = ppg->GetCycleLength();

@@ -60,7 +60,7 @@ class TDiagnostics : public TObject {
 		void GoodFragment(Short_t detType) { fNumberOfGoodFragments[detType]++; }
 		void BadFragment(Short_t detType)  { fNumberOfBadFragments[detType]++; }
 
-		void Read(TPPG*);
+		void ReadPPG(TPPG*);
 
 		//getter functions
 		Long_t NumberOfGoodFragments(Short_t detType) { if(fNumberOfGoodFragments.find(detType) != fNumberOfGoodFragments.end()) return fNumberOfGoodFragments[detType]; return 0; }
