@@ -219,10 +219,10 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 			corehit.SetCharge(frag->GetCharge(i));
 			//check if this is a fragment where we already pulled the pile-up hits apart
 			if((frag->Charge.size() == 1) && (frag->NumberOfHits >= 0) && (frag->HitIndex >= 0)) {
-				corehit.SetNPileUps(frag->NumberOfHits);
+				corehit.SetNPileUps(frag->NumberOfHits-1);//We subtract 1 in order to start counter from 0
 				corehit.SetPUHit(frag->HitIndex);
 			} else {
-				corehit.SetNPileUps(frag->Charge.size());
+				corehit.SetNPileUps(frag->Charge.size()-1);//We subtract 1 in order to start counter from 0
 				corehit.SetPUHit(i);
 			}
 			
