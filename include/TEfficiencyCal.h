@@ -1,6 +1,10 @@
 #ifndef TEFFICIENCYCAL_H__
 #define TEFFICIENCYCAL_H__
 
+/** \addtogroup Calibration
+ *  @{
+ */
+
 #include "TCal.h"
 #include "TPeak.h"
 #include "TSpectrum.h"
@@ -15,7 +19,7 @@ class TEfficiencyCal : public TCal {
 
  public:
    void Copy(TObject &obj) const;
-   void AddPoint(Double_t energy, Double_t area, Double_t d_energy=0.0, Double_t d_area=0.0);
+   void AddPoint(Double_t energy, Double_t area, Double_t dEnergy=0.0, Double_t dArea=0.0);
    void AddPoint(TPeak *peak);
 
    void Clear(Option_t *opt = "");
@@ -23,13 +27,15 @@ class TEfficiencyCal : public TCal {
 
    Bool_t IsGroupable() const {return true;}
 
-   void ScaleGraph(Double_t scale_factor);
+   void ScaleGraph(Double_t scaleFactor);
 
  private:
-   Double_t fscale_factor;
+   Double_t fScaleFactor;
    
+/// \cond CLASSIMP
    ClassDef(TEfficiencyCal,1);
+/// \endcond
 
 };
-
+/*! @} */
 #endif

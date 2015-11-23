@@ -1,7 +1,8 @@
-
 #include "GTree.h"
 
+/// \cond CLASSIMP
 ClassImp(GTree)
+/// \endcond
 
 GTree::GTree()
       :TTree() {  InitGTree();  }
@@ -11,12 +12,5 @@ GTree::GTree(const char* name, const char* title, Int_t splitlevel)
      
 GTree::~GTree()  {  }
 
-
-
-
 void GTree::InitGTree() {  }
-
-
-
-
 

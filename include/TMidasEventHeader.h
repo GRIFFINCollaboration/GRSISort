@@ -5,6 +5,10 @@
 #ifndef INCLUDE_TMidasEventHeader_H
 #define INCLUDE_TMidasEventHeader_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 
 
 // This file defines the data structures written
@@ -20,7 +24,6 @@ struct TMidas_EVENT_HEADER {
   uint32_t fTimeStamp;    ///< event timestamp in seconds
   uint32_t fDataSize;     ///< event size in bytes
 };
-
-
+/*! @} */
 #endif
 //end

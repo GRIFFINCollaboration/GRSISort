@@ -1,11 +1,14 @@
 #include "TPulseAnalyzer.h"
 
+/// \cond CLASSIMP
 ClassImp(TPulseAnalyzer)
+/// \endcond
 
-	TPulseAnalyzer::TPulseAnalyzer():wpar(0),spar(0),frag(0),shpar(0){
-		Clear();
-	}
-TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac):wpar(0),spar(0),frag(0),shpar(0){
+TPulseAnalyzer::TPulseAnalyzer() : wpar(NULL), frag(NULL), spar(NULL) {
+	Clear();
+}
+
+TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac) : wpar(NULL), frag(NULL), spar(NULL) {
 	Clear();
 	SetData(fragment,noise_fac);
 }
@@ -16,28 +19,26 @@ TPulseAnalyzer::~TPulseAnalyzer(){
 	if(shpar) delete shpar;
 }
 
-void TPulseAnalyzer::Clear(Option_t *opt)  {
+void TPulseAnalyzer::Clear(Option_t *opt) {
 	SetCsI(false);
-	set=false;	
-	N=0;
-	FILTER=8;
-	T0RANGE=8;
-	LARGECHISQ=1E111;
+	set = false;	
+	N = 0;
+	FILTER = 8;
+	T0RANGE = 8;
+	LARGECHISQ = 1E111;
 	EPS=0.001;
 
-	lineq_dim=0;
+	lineq_dim = 0;
 	memset(lineq_matrix,0,sizeof(lineq_matrix));
 	memset(lineq_vector,0,sizeof(lineq_vector));
 	memset(lineq_solution,0,sizeof(lineq_solution));
 	memset(copy_matrix,0,sizeof(copy_matrix));
-
 }
 
-
-void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac)  {
+void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac) {
 	SetCsI(false);
 	if(fragment.HasWave()) {
-		if(noise_fac>0){
+		if(noise_fac > 0) {
 			FILTER=8*noise_fac;
 			T0RANGE=8*noise_fac;	
 		}
@@ -45,9 +46,7 @@ void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac)  {
 		N=fragment.wavebuffer.size();
 		if(N>0)	set=true;
 	}
-
 }
-
 
 ////////////////////////////////////////
 //	Linear Equation Solver
@@ -55,11 +54,11 @@ void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac)  {
 
 // "Very efficient" apparently, written by Kris S,
 // Solve the currently stored n dimentional linear eqaution
-int TPulseAnalyzer::solve_lin_eq(){
-	memcpy(copy_matrix,lineq_matrix,sizeof(lineq_matrix));
-	long double w=determinant(lineq_dim);
-	if(w==0.)return 0;
-	for(int i=0;i<lineq_dim;i++){
+int TPulseAnalyzer::solve_lin_eq() {
+	memcpy(copy_matrix, lineq_matrix, sizeof(lineq_matrix));
+	long double w = determinant(lineq_dim);
+	if(w == 0.) return 0;
+	for(int i = 0; i < lineq_dim; i++) {
 		memcpy(copy_matrix,lineq_matrix,sizeof(lineq_matrix));
 		memcpy(copy_matrix[i],lineq_vector,sizeof(lineq_vector));
 		lineq_solution[i]=determinant(lineq_dim)/w;
@@ -68,13 +67,13 @@ int TPulseAnalyzer::solve_lin_eq(){
 }
 
 //solve the determinant of the currently stored copy_matrix for dimentions m
-long double  TPulseAnalyzer::determinant(int m){
+long double  TPulseAnalyzer::determinant(int m) {
 	int j,i;
 	long double s;
-	if(m==1) return copy_matrix[0][0];
-	if(copy_matrix[m-1][m-1]==0.)  {
-		j=m-1;
-		while(copy_matrix[m-1][j]==0 && j>=0) j--;
+	if(m == 1) return copy_matrix[0][0];
+	if(copy_matrix[m-1][m-1] == 0.) {
+		j = m-1;
+		while(copy_matrix[m-1][j] == 0 && j >= 0) j--;
 		if(j<0) 
 			return 0.;
 		else for(i=0;i<m;i++){
@@ -143,8 +142,6 @@ int TPulseAnalyzer::fit_smooth_parabola(int low, int high, double x0, ParPar* pp
 	return -1;
 }
 
-
-
 ////////////////////////////////////////
 //	RF Fit Run Functions
 ////////////////////////////////////////
@@ -159,7 +156,6 @@ double TPulseAnalyzer::fit_rf(double T)
 
 	return 5*get_sin_par(T);
 }
-
 
 ////////////////////////////////////////
 //	Waveform Time Fit Run Functions
@@ -460,8 +456,6 @@ double TPulseAnalyzer::get_parabolic_T0(){
 
 }
 
-
-
 // Measure the baseline and standard deviation of the waveform, over the tick range specified by wpar->baseline_range
 void TPulseAnalyzer::get_baseline(){
 	wpar->baseline=0.;
@@ -699,7 +693,6 @@ void TPulseAnalyzer::get_t30(){
 	}
 }
 
-
 double TPulseAnalyzer::get_sin_par(double T)
 {
   int i;
@@ -796,7 +789,6 @@ short TPulseAnalyzer::good_baseline(){
 //=====================================================//
 
 double TPulseAnalyzer::CsIt0(){
-
 	if(CsIIsSet()){
 		return shpar->t[0];
 	}
@@ -810,14 +802,11 @@ double TPulseAnalyzer::CsIt0(){
 		//printf("Calculating exclusion zone\n");
 		GetCsIExclusionZone();
 		//printf("Calculating shape\n");
-		int tmpchisq = GetCsIShape();
-	
+
 		SetCsI();
 		return shpar->t[0];
-
 	}
 	return -1.0;
-
 }
 
 double TPulseAnalyzer::CsIPID(){
@@ -844,7 +833,6 @@ double TPulseAnalyzer::CsIPID(){
 		shpar->t[3] = 380.0;
 
 		GetCsIExclusionZone();
-		int tmpchisq = GetCsIShape();
 	
 		double f = shpar->am[2];
 		double s = shpar->am[3];
@@ -1372,7 +1360,6 @@ void TPulseAnalyzer::DrawCsIFit(){
 	return;
 
 }
-
 
 /*======================================================*/
 void TPulseAnalyzer::print_WavePar()

@@ -1,7 +1,9 @@
 
 #include "GFile.h"
 
+/// \cond CLASSIMP
 ClassImp(GFile)
+/// \endcond
 
 GFile::GFile() : TFile() {
   GFileInit();

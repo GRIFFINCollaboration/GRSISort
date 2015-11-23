@@ -1,6 +1,10 @@
 #ifndef TPULSE_ANALYZER_H
 #define TPULSE_ANALYZER_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include "TFragment.h"
 #include "TGRSIFunctions.h"
 #include <vector>
@@ -12,14 +16,18 @@
 #include <string.h>
 #include <math.h>
 
-//For ROOT
-#include <TH1.h>
-#include <TF1.h>
-#include <TMath.h>
+#include "TH1.h"
+#include "TF1.h"
+#include "TMath.h"
 
-// Mostly a direct port of SFU code
-// I have stripped out some surplus and encapsulated it, but I havent changed much
-// I'm sure there is more that can be stripped and reformated but it is working currently.
+////////////////////////////////////////////////////////////////////////////////
+/// \class TPulseAnalyzer
+///
+/// Mostly a direct port of SFU code
+/// I have stripped out some surplus and encapsulated it, but I havent changed much
+/// I'm sure there is more that can be stripped and reformated but it is working currently.
+///
+////////////////////////////////////////////////////////////////////////////////
 
 class TPulseAnalyzer {
   private:
@@ -61,14 +69,14 @@ class TPulseAnalyzer {
 		int t10t90_flag;
 		int    thigh;
 		double sig2noise;
-	}WaveFormPar;
+	} WaveFormPar;
 
 	typedef struct LinePar{
 		double slope;
 		double intercept;
 		double chisq;
 		double ndf;
-	}LinePar;
+	} LinePar;
 	
 	typedef struct ParPar{
 		double constant;
@@ -76,14 +84,13 @@ class TPulseAnalyzer {
 		double quadratic;
 		double chisq;
 		double ndf;
-	}ParPar;
+	} ParPar;
 
-	typedef struct
-	{
-	  double A;
-	  double t0;
-	  double C;
-	}SinPar;
+	typedef struct SinPar{
+		double A;
+		double t0;
+		double C;
+	} SinPar;
 	
 	typedef struct
 	{
@@ -112,98 +119,96 @@ class TPulseAnalyzer {
     bool IsSet() { return set; }
     
     double    fit_newT0();
-    double    fit_rf(double=2*8.48409);
+	 double    fit_rf(double=2*8.48409);
     double    get_sig2noise();
-    short     good_baseline();
+	 short     good_baseline();
     void      print_WavePar();
-    void      DrawWave();
-    void      DrawT0fit();
-    void      DrawRFFit();
+	 void      DrawWave();
+	 void      DrawT0fit();
+	 void      DrawRFFit();
 
-	// CsI functions:
-	double    CsIPID();
-	double	  CsIt0();
-	void 	  DrawCsIExclusion();
-	void	  DrawCsIFit();
+	 // CsI functions:
+	 double    CsIPID();
+	 double	  CsIt0();
+	 void 	  DrawCsIExclusion();
+	 void	  DrawCsIFit();
 
   private:
-	  
-       bool   		set;
-	   int 			N;
-       WaveFormPar*	wpar;
-       SinPar*		spar;
-       TFragment* 	frag;
-	   ShapePar*	shpar;
+	 bool   set;
+	 WaveFormPar* wpar;
+	 int N;
+	 TFragment* frag;
+	 SinPar*		spar;
+	 ShapePar*	shpar;
 
-	//pulse fitting parameters
-	int FILTER; //integration region for noise reduction (in samples)
-	int T0RANGE; //tick range over which baseline is calulated
-	double LARGECHISQ;       
+	 //pulse fitting parameters
+	 int FILTER; //integration region for noise reduction (in samples)
+	 int T0RANGE; //tick range over which baseline is calulated
+	 double LARGECHISQ;       
 	
-	//linear equation dataholders
-	int  lineq_dim;
-	long double lineq_matrix[20][20];
-	long double lineq_vector[20];
-	long double lineq_solution[20];
-	long double copy_matrix[20][20];  
-		
-	// CsI functions
-	void GetCsIExclusionZone();	
-	double GetCsITau(int);
-	double GetCsIt0();
-	int GetCsIShape();
+	 //linear equation dataholders
+	 int  lineq_dim;
+	 long double lineq_matrix[20][20];
+	 long double lineq_vector[20];
+	 long double lineq_solution[20];
+	 long double copy_matrix[20][20];  
 	
-	bool CsISet;
-	double EPS;
-
-	void SetCsI(bool option="true") { CsISet = option; }
-	bool CsIIsSet()				  	{ return CsISet; }
-
-    //internal methods       
-	int solve_lin_eq();
-	long double  determinant(int);
+	 // CsI functions
+	 void GetCsIExclusionZone();	
+	 double GetCsITau(int);
+	 double GetCsIt0();
+	 int GetCsIShape();
 	
-	int      fit_parabola(int,int,ParPar*);
-	int      fit_smooth_parabola(int,int,double,ParPar*);
-	int      fit_line(int,int,LinePar*);
-	double   get_linear_T0();
-	double   get_parabolic_T0();
-	double   get_smooth_T0();
+	 bool CsISet;
+	 double EPS;
 
-	void      get_baseline();
-	void      get_baseline_fin();
-	void      get_tmax();
+	 void SetCsI(bool option="true") { CsISet = option; }
+	 bool CsIIsSet()				  	   { return CsISet; }
+	
+	 //internal methods       
+	 int solve_lin_eq();
+	 long double  determinant(int);
 
-	double   get_tfrac(double,double,double);
-	void     get_t10();
-	void     get_t30();
-	void     get_t50();
-	void     get_t90();       
+	 int      fit_parabola(int,int,ParPar*);
+	 int      fit_smooth_parabola(int,int,double,ParPar*);
+	 int      fit_line(int,int,LinePar*);
+	 double   get_linear_T0();
+	 double   get_parabolic_T0();
+	 double   get_smooth_T0();
 
-	double	 get_sin_par(double);
+	 void      get_baseline();
+	 void      get_baseline_fin();
+	 void      get_tmax();
 
-	//bad chi squares for debugging
-	const static int BADCHISQ_SMOOTH_T0=   -1024-2; //smooth_t0 gives bad result
-	const static int BADCHISQ_PAR_T0    =  -1024-3; //parabolic_t0 gives bad result
-	const static int BADCHISQ_LIN_T0     = -1024-4; //linear_t0 gives bad result
-	const static int BADCHISQ_MAT         =-1024-5; //matrix for fit is not invertable
-	//new definitions for Kris' changes to the waveform analyzer
-	const static int PIN_BASELINE_RANGE=16; //minimum ticks before max for a valid signal
-	const static int BAD_BASELINE_RANGE =-1024-11;
-	const static int MAX_SAMPLES= 4096;	
+	 double   get_tfrac(double,double,double);
+	 void     get_t10();
+	 void     get_t30();
+	 void     get_t50();
+	 void     get_t90();       
 
-	const static int CSI_BASELINE_RANGE = 50;
-	const static int NOISE_LEVEL_CSI = 100;
-	const static int NSHAPE = 5;
+	 double	 get_sin_par(double);
 
-	const static int BADCHISQ_T0 = -1024-7;
-	const static int BADCHISQ_NEG = -1024-1;
-	const static int BADCHISQ_AMPL = -1024-6;
+	 //bad chi squares for debugging
+	 const static int BADCHISQ_SMOOTH_T0=   -1024-2; //smooth_t0 gives bad result
+	 const static int BADCHISQ_PAR_T0    =  -1024-3; //parabolic_t0 gives bad result
+	 const static int BADCHISQ_LIN_T0     = -1024-4; //linear_t0 gives bad result
+	 const static int BADCHISQ_MAT         =-1024-5; //matrix for fit is not invertable
+	 //new definitions for Kris' changes to the waveform analyzer
+	 const static int PIN_BASELINE_RANGE=16; //minimum ticks before max for a valid signal
+	 const static int BAD_BASELINE_RANGE =-1024-11;
+	 const static int MAX_SAMPLES= 4096;	
 
-    ClassDef(TPulseAnalyzer,2);
+	 const static int CSI_BASELINE_RANGE = 50;
+	 const static int NOISE_LEVEL_CSI = 100;
+	 const static int NSHAPE = 5;
+
+	 const static int BADCHISQ_T0 = -1024-7;
+	 const static int BADCHISQ_NEG = -1024-1;
+	 const static int BADCHISQ_AMPL = -1024-6;
+
+/// \cond CLASSIMP
+    ClassDef(TPulseAnalyzer,2)
+/// \endcond
 };
-
-
-
-
+/*! @} */
 #endif

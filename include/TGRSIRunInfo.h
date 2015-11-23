@@ -1,68 +1,67 @@
 #ifndef TGRSIRUNINFO_H
 #define TGRSIRUNINFO_H
 
-
-
-/*
- * Author:  P.C. Bender, <pcbend@gmail.com>
- * 
- * Please indicate changes with your initials.
- * 
- *
+/** \addtogroup Sorting
+ *  @{
  */
 
-/* 
- * TGRSIRunInfo designed to be made as the FragmentTree
- * is created.  Right now, it simple remembers the run and 
- * subrunnumber and sets which systems are present in the odb.
- * This information will be used when automatically creating the
- * AnalysisTree to know which detector branches to create and fill.
- *
- * Due to some root quarkiness, I have done something a bit strange.
- * The info is written ok at the end of the fragment tree process.
- * After reading the TGRSIRunInfo object from a TFile, the static function
- *
- *   TGRSIRunInfo::ReadInfoFromFile(ptr_to_runinfo);
- *
- * must be called for any of teh functions here to work.
- *
- * Live example:
- 
- root [1] TGRSIRunInfo *info = (TGRSIRunInfo*)_file0->Get("TGRSIRunInfo")
- root [2] TGRSIRunInfo::ReadInfoFromFile(info);
- root [3] info->Print()
-   TGRSIRunInfo Status:
-   RunNumber:    29038
-   SubRunNumber: 000
-   TIGRESS:      true
-   SHARC:        true
-   GRIFFIN:      false
-   SCEPTAR:      false
-   =====================
- root [4] 
+/////////////////////////////////////////////////////////////////
+///
+/// \class TGRSIRunInfo
+///
+/// This Class is designed to store and run dependent
+/// information. It is used to store run numbers, existence of
+/// detector systems, reconstruction windows, etc. The
+/// TGRSIRunInfo is written alongside both the fragment and
+/// analysis trees.
+/// 
+/// TGRSIRunInfo designed to be made as the FragmentTree
+/// is created.  Right now, it simple remembers the run and 
+/// subrunnumber and sets which systems are present in the odb.
+/// This information will be used when automatically creating the
+/// AnalysisTree to know which detector branches to create and fill.
+///
+/// Due to some root quarkiness, I have done something a bit strange.
+/// The info is written ok at the end of the fragment tree process.
+/// After reading the TGRSIRunInfo object from a TFile, the static function
+///
+///   TGRSIRunInfo::ReadInfoFromFile(ptr_to_runinfo);
+///
+/// must be called for any of the functions here to work.
+///
+/// Live example:
+/// 
+/// \code
+/// root [1] TGRSIRunInfo *info = (TGRSIRunInfo*)_file0->Get("TGRSIRunInfo")
+/// root [2] TGRSIRunInfo::ReadInfoFromFile(info);
+/// root [3] info->Print()
+///   TGRSIRunInfo Status:
+///   RunNumber:    29038
+///   SubRunNumber: 000
+///   TIGRESS:      true
+///   SHARC:        true
+///   GRIFFIN:      false
+///   SCEPTAR:      false
+///   =====================
+/// root [4] 
+/// \endcode
+///
+/// \author  P.C. Bender, <pcbend@gmail.com>
+/////////////////////////////////////////////////////////////////
 
- *
- *
- */
-
-
-
-
-
-
-#include "Globals.h"
 
 #include <cstdio>
 
-#include <TObject.h>
-#include <TTree.h>
-#include <TFile.h>
-#include <TKey.h>
+#include "TObject.h"
+#include "TTree.h"
+#include "TFile.h"
+#include "TKey.h"
+
+#include "Globals.h"
 
 #include "TChannel.h"
 
 class TGRSIRunInfo : public TObject {
-
    public:
       static TGRSIRunInfo *Get();
       virtual ~TGRSIRunInfo();
@@ -77,11 +76,12 @@ class TGRSIRunInfo : public TObject {
 
       static const char* GetGRSIVersion() { return fGRSIVersion.c_str(); } 
       static void ClearGRSIVersion() { fGRSIVersion.clear(); } 
-      static void SetGRSIVersion(const char *ver) { if(fGRSIVersion.length()!=0)
-                                                    printf( ALERTTEXT "WARNING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n",fGRSIVersion.c_str());
-                                                    else fGRSIVersion.assign(ver); }
-
-
+      static void SetGRSIVersion(const char *ver) { 
+				if(fGRSIVersion.length()!=0)
+					printf( ALERTTEXT "WARNING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n",fGRSIVersion.c_str());
+				else 
+					fGRSIVersion.assign(ver); 
+		}
 
       static void SetRunInfo(int runnum=0,int subrunnum=-1);
       static void SetAnalysisTreeBranches(TTree*);
@@ -159,20 +159,23 @@ class TGRSIRunInfo : public TObject {
       static inline bool Descant()   { return fGRSIRunInfo->fDescant; }
 
       inline void SetRunInfoFileName(const char *fname) {  fRunInfoFileName.assign(fname); }
-      inline void SetRunInfoFile(const char *ffile)     {  fRunInfoFile.assign(ffile); }
+      inline void SetRunInfoFile(const char *fFile)     {  fRunInfoFile.assign(fFile); }
      
-
       inline void SetBuildWindow(const long int t_bw)    { fBuildWindow = t_bw; } 
       inline void SetAddBackWindow(const double   t_abw) { fAddBackWindow = t_abw; } 
+		inline void SetBufferDuration(const long int t_bd) { fBufferDuration = t_bd; }
+		inline void SetBufferSize(const size_t t_bs)          { fBufferSize = t_bs; }
 
-	  inline void SetWaveformFitting(const bool flag)	 {fWaveformFitting = flag; }
-	  static inline bool IsWaveformFitting()			 {return Get()->fWaveformFitting; }
+		inline void SetWaveformFitting(const bool flag)	 {fWaveformFitting = flag; }
+		static inline bool IsWaveformFitting()			 {return Get()->fWaveformFitting; }
 
       inline void SetMovingWindow(const bool flag)       {fIsMovingWindow = flag; }
       static inline bool IsMovingWindow()                { return Get()->fIsMovingWindow; }
 
       static inline long int BuildWindow()    { return Get()->fBuildWindow; }
       static inline double   AddBackWindow()  { return Get()->fAddBackWindow; }
+		static inline long int BufferDuration() { return Get()->fBufferDuration; }
+		static inline size_t   BufferSize()     { return Get()->fBufferSize; }
 
       inline void SetHPGeArrayPosition(const int arr_pos) { fHPGeArrayPosition = arr_pos; }
       static inline int  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
@@ -182,7 +185,6 @@ class TGRSIRunInfo : public TObject {
 
    private:
       static TGRSIRunInfo *fGRSIRunInfo; //Static pointer to TGRSIRunInfo
-      //TGRSIRunInfo();
 
       int fRunNumber;                     //The current run number
       int fSubRunNumber;                  //The current sub run number
@@ -249,17 +251,20 @@ class TGRSIRunInfo : public TObject {
       long int fBuildWindow;          // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
       double   fAddBackWindow;        // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
       bool     fIsMovingWindow;       // if set to true the event building window moves. Static otherwise.
+      long int fBufferDuration;       // GRIFFIN: the minimum length of the sorting buffer (default = 600s (60000000000))
+      size_t fBufferSize;             // GRIFFIN: the minimum size of the sorting buffer (default = 1 000 000)
       
-	  bool 	   fWaveformFitting;	  // If true, waveform fitting with SFU algorithm will be performed
+		bool 	   fWaveformFitting;	  // If true, waveform fitting with SFU algorithm will be performed
 
       double  fHPGeArrayPosition;        // Position of the HPGe Array (default = 110.0 mm );
   
-
    public:
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
+/// \cond CLASSIMP
    ClassDef(TGRSIRunInfo,7);  //Contains the run-dependent information.
+/// \endcond
 };
-
+/*! @} */
 #endif

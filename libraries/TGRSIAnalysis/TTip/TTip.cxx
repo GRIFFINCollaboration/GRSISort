@@ -1,10 +1,12 @@
-#include <iostream>
 #include "TTip.h"
-#include <TRandom.h>
-#include <TMath.h>
-#include <TClass.h>
-#include <TGRSIRunInfo.h>
 
+#include <iostream>
+
+#include "TRandom.h"
+#include "TMath.h"
+#include "TClass.h"
+
+#include "TGRSIRunInfo.h"
 
 ////////////////////////////////////////////////////////////
 //                    
@@ -16,34 +18,30 @@
 //
 ////////////////////////////////////////////////////////////
 
+/// \cond CLASSIMP
 ClassImp(TTip)
+/// \endcond
 
-TTip::TTip() : tipdata(0) {   
+TTip::TTip() {   
 }
 
 TTip::~TTip() {
    //Default Destructor
-   if(tipdata) delete tipdata;
 }
 
 TTip::TTip(const TTip& rhs) : TGRSIDetector() {
   Class()->IgnoreTObjectStreamer(kTRUE);
-  ((TTip&)rhs).Copy(*this);
+  rhs.Copy(*this);
 }
 
 void TTip::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
-
-  static_cast<TTip&>(rhs).tipdata   = 0;
-  static_cast<TTip&>(rhs).tip_hits             = tip_hits;
-  return;                                      
+  static_cast<TTip&>(rhs).fTipHits             = fTipHits;
 }                                       
 
 void TTip::Clear(Option_t *opt) {
-//Clears all of the hits and data
-   if(tipdata) tipdata->Clear();
-
-   tip_hits.clear();
+  ///Clears all of the hits
+   fTipHits.clear();
 }
 
 TTip& TTip::operator=(const TTip& rhs) {
@@ -51,55 +49,26 @@ TTip& TTip::operator=(const TTip& rhs) {
    return *this;
 }
 
-void TTip::FillData(TFragment *frag, TChannel *channel, MNEMONIC *mnemonic) {
-//Fills the "Data" structure for a specific channel with TFragment frag.
-   if(!frag || !channel || !mnemonic)
-      return;
+void TTip::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+	if(frag == NULL || mnemonic == NULL) {
+		return;
+	}
 
-   if(!tipdata)   
-      tipdata = new TTipData();
+  TTipHit dethit(*frag);
+  TChannel chan = TChannel::GetChannel(dethit.GetAddress());
+  dethit.SetUpNumbering(chan);
 
-   tipdata->SetDet(frag,channel,mnemonic);
-   TTipData::Set();
-}
+  if(TGRSIRunInfo::IsWaveformFitting()) // && !dethit.IsCsI())
+	dethit.SetWavefit(*frag);
+  //else if(TGRSIRunInfo::IsWaveformFitting() && =dethit.IsCsI()) 	   
+	//dethit.SetPID(*frag);
 
-void TTip::BuildHits(TDetectorData *data,Option_t *opt)	{
-//Builds the TIP Hits from the "data" structure. Basically, loops through the data for and event and sets observables. 
-   TTipData *gdata = (TTipData*)data;
-   if(gdata==0)
-      gdata = (this->tipdata);
-
-   if(!gdata)
-      return;
-
-   tip_hits.clear();
-   
-   for(size_t i=0;i<gdata->GetMultiplicity();i++) {
-      TTipHit dethit;
-
-      dethit.SetAddress(gdata->GetTipAddress(i));
-      
-	  TFragment tmp = gdata->GetTipFragment(i);
-
-      dethit.SetVariables(tmp);
-
-	  TChannel chan = TChannel::GetChannel(dethit.GetAddress());
-	  dethit.SetUpNumbering(chan); // Need to do this before PID
-
-	  // Only fit what is needed to speed things up
-	  if(TGRSIRunInfo::IsWaveformFitting() && !dethit.IsCsI()) // If we're doing wavefitting, but with an S3 or the PIN diode array, we'll just use the regular t0 fitter
-      	dethit.SetWavefit(tmp);
-	  else if(TGRSIRunInfo::IsWaveformFitting() && dethit.IsCsI())  // If we're doing wavefitting with the CsI wall OR the CsI ball, we'll use the proper CsI fitting algorithm
-		dethit.SetPID(tmp);
-
-      tip_hits.push_back(dethit);
-   }
+  fTipHits.push_back(dethit);
 }
 
 void TTip::Print(Option_t *opt) const {
   //Prints out TSceptar members, currently does little.
-  if(tipdata) tipdata->Print();
-  printf("%lu tip_hits\n",tip_hits.size());
+  printf("%lu fTipHits\n",fTipHits.size());
 }
 
 TGRSIDetectorHit* TTip::GetHit(const Int_t& idx) {
@@ -107,10 +76,9 @@ TGRSIDetectorHit* TTip::GetHit(const Int_t& idx) {
 }
 
 TTipHit* TTip::GetTipHit(const int& i) {
-   try{
-      return &tip_hits.at(i);   
-   }
-   catch (const std::out_of_range& oor){
+   try {
+      return &fTipHits.at(i);   
+   } catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }
@@ -118,6 +86,6 @@ TTipHit* TTip::GetTipHit(const int& i) {
 }
 
 void TTip::PushBackHit(TGRSIDetectorHit *tiphit) {
-  tip_hits.push_back(*(static_cast<TTipHit*>(tiphit)));
+  fTipHits.push_back(*(static_cast<TTipHit*>(tiphit)));
   return;
 }

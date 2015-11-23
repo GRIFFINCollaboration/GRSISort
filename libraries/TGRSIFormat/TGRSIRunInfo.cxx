@@ -1,4 +1,3 @@
-
 #include "TGRSIRunInfo.h"
 
 #include <fstream>
@@ -6,19 +5,9 @@
 
 #include <TGRSIOptions.h>
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TGRSIRunInfo                                               //
-//                                                            //
-// This Class is designed to store and run dependent          //
-// information. It is used to store run numbers, existence of //
-// detector systems, reconstruction windows, etc. The         //
-// TGRSIRunInfo is written alongside both the fragment and    //
-// analysis trees.                                            //
-//                                                            //
-////////////////////////////////////////////////////////////////
-
+/// \cond CLASSIMP
 ClassImp(TGRSIRunInfo)
+/// \endcond
 
 TGRSIRunInfo *TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();  
       
@@ -180,11 +169,10 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
    TList *list =  tempf->GetListOfKeys();
    TIter iter(list);
 
-   //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
-   while(TKey *key = (TKey*)(iter.Next())) {
+   while(TKey *key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo"))
          continue;
-      TGRSIRunInfo::SetRunInfo((TGRSIRunInfo*)key->ReadObj());
+      TGRSIRunInfo::SetRunInfo(static_cast<TGRSIRunInfo*>(key->ReadObj()));
       savdir->cd();
       return true;
    }
@@ -195,24 +183,25 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
 
 
 TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) { 
-   //Default ctor for TGRSIRunInfo. The default values are:
-   //
-   //fHPGeArrayPosition = 110.0;
-   //fBuildWindow       = 200;  
-   //fAddBackWindow     = 15.0;
-   //fIsMovingWindow    = true;
-
+	///Default ctor for TGRSIRunInfo. The default values are:
+   ///
+   ///fHPGeArrayPosition = 110.0;
+   ///fBuildWindow       = 200;  
+   ///fAddBackWindow     = 15.0;
+   ///fIsMovingWindow    = true;
+   ///fWaveformFitting	 = false;
+	///fBufferSize        = 1000000;
+	///fBufferDuration    = 60000000000;
 
    fHPGeArrayPosition = 110.0;
    fBuildWindow       = 200;  
    fAddBackWindow     = 15.0;
    fIsMovingWindow    = true;
-   fWaveformFitting	  = false;
-
-   //printf("run info created.\n");
+   fWaveformFitting	 = false;
+	fBufferSize        = 1000000;
+	fBufferDuration    = 60000000000;
 
    Clear();
-
 }
 
 TGRSIRunInfo::~TGRSIRunInfo() { }
@@ -361,11 +350,9 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    //TGRSIRunInfo::Get()->Print();
 }
 
-
 void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {
 //Currently does nothing.
 }
-
 
 Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
    //Read in a run info file. These files have the extension .info.
@@ -395,7 +382,7 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
    Get()->SetRunInfoFileName(filename);
    Get()->SetRunInfoFile(buffer);
    
-   return ParseInputData((const char*)buffer); 
+   return ParseInputData(const_cast<const char*>(buffer));
 }
 
 Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
@@ -488,7 +475,7 @@ Long64_t TGRSIRunInfo::Merge(TCollection *list){
    //An individual file that was submitted to hadd.
    TGRSIRunInfo *runinfo = 0;
 
-   while ((runinfo = (TGRSIRunInfo *)it.Next()) != NULL){
+   while ((runinfo = static_cast<TGRSIRunInfo*>(it.Next())) != NULL){
       //Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.    
       this->Add(runinfo);
    }

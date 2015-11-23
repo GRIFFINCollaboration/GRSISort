@@ -1,66 +1,56 @@
 #ifndef TS3_H
 #define TS3_H
 
-#include "Globals.h"
+/** \addtogroup Detectors
+ *  @{
+ */
 
-#include <vector>
-#include <cstdio>
+#include <iostream>
 
+#include "TGRSIDetector.h"
 #include "TS3Hit.h"
-#if !defined (__CINT__) && !defined (__CLING__)
-#include "TS3Data.h"
-#else
-class TS3Data;
-#endif
-
-#include "TVector3.h" 
-
-#include "TGRSIDetector.h" 
-#include "TObject.h"
-
 
 class TS3 : public TGRSIDetector {
+	public:
+		TS3();
+		TS3(const TS3&);
+		virtual  ~TS3();
 
-  public:
-    TS3();
-    TS3(const TS3&);
-    virtual  ~TS3();
-    
-    TGRSIDetectorHit* GetHit(const Int_t& idx =0);
-    TS3Hit* GetS3Hit(const Int_t& idx = 0);
-    
-    void Copy(TObject&) const;
-    void Clear(Option_t *opt="");   
-    void Print(Option_t *opt="") const;
-    void PushBackHit(TGRSIDetectorHit* deshit);
-     
-//     void BuildHits(TDetectorData *data=0,Option_t *opt="");
-//     void FillData(TFragment*,TChannel*,MNEMONIC*);
-    TS3& operator=(const TS3&);  // 
-     
-    virtual void BuildHits(TDetectorData *data=0,Option_t *opt="");
-    virtual void FillData(TFragment*,TChannel*,MNEMONIC*);
+		virtual void AddFragment(TFragment*, MNEMONIC*);
+		virtual void BuildHits();
 
+		TGRSIDetectorHit* GetHit(const int& idx =0);
+		TS3Hit* GetS3Hit(const int& i);  
+		Short_t GetMultiplicity() const { return fS3Hits.size(); }
+		void PushBackHit(TGRSIDetectorHit* deshit);
 
-    Short_t GetMultiplicity() const  {  return s3_hits.size();}
-    static TVector3 GetPosition(int ring, int sector);
+		static TVector3 GetPosition(int ring, int sector);
 
+		void Copy(TObject&) const;
+		TS3& operator=(const TS3&);  // 
+      virtual void Clear(Option_t *opt = "all");		     //!<!
+      virtual void Print(Option_t *opt = "") const;		  //!<!
+		
+	private:
+		std::vector<TS3Hit> fS3Hits;
+		std::vector<TFragment*> fS3_RingFragment; //! 
+		std::vector<TFragment*> fS3_SectorFragment; //! 
 
-  private:
-    TS3Data *s3data; //!
-    std::vector<TS3Hit> s3_hits;
+		///for geometery
+		static int fRingNumber;          //!<!
+		static int fSectorNumber;        //!<!
 
-    ///for geometery
-    static int ring_number;          //!
-    static int sector_number;        //!
+		static double fOffsetPhi;        //!<!
+		static double fOuterDiameter;    //!<!
+		static double fInnerDiameter;    //!<!
+		static double fTargetDistance;   //!<!
 
-    static double offset_phi;        //!
-    static double outer_diameter;    //!
-    static double inner_diameter;    //!
-    static double target_distance;   //!
+		static Int_t fFrontBackTime;   //!
+		static double fFrontBackEnergy;   //!
 
-
-  ClassDef(TS3,3)
+/// \cond CLASSIMP
+		ClassDef(TS3,3)
+/// \endcond
 };
-
+/*! @} */
 #endif

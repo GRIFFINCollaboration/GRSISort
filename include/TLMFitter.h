@@ -3,6 +3,10 @@
 #ifndef TLMFITTER_H
 #define TLMFITTER_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include "Globals.h"
 
 #include <vector>
@@ -15,16 +19,17 @@
 #include "TH1.h"
 #include "TF1.h"
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TLMFitter                                                  //
-//                                                            //
-// This Class can be used to fit weighted-poisson distributed //
-// data. It is originally from Numerical recipes, and adapted //
-// by G.F Grinyer. It is based on the non-linear 
-// Levenberg-Marquardt minimization algorithm.
-//                                                            //
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+///
+/// \class TLMFitter
+///
+/// This Class can be used to fit weighted-poisson distributed
+/// data. It is originally from Numerical recipes, and adapted
+/// by G.F Grinyer. It is based on the non-linear 
+/// Levenberg-Marquardt minimization algorithm.
+///
+/////////////////////////////////////////////////////////////////
+
 // Vector Types
 
 //Overloaded complex operations to handle mixed float and double
@@ -531,5 +536,5 @@ class TLMFitter : public TObject{
 
    ClassDef(TLMFitter,1);
 };
-
+/*! @} */
 #endif // TLMFitter_H

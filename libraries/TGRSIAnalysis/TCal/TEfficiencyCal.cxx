@@ -1,32 +1,35 @@
 #include "TEfficiencyCal.h"
 
+/// \cond CLASSIMP
 ClassImp(TEfficiencyCal)
+/// \endcond
 
 TEfficiencyCal::TEfficiencyCal(){
 }
 
 TEfficiencyCal::~TEfficiencyCal(){}
 
-TEfficiencyCal::TEfficiencyCal(const TEfficiencyCal &copy) : TCal(copy){
-   ((TEfficiencyCal&)copy).Copy(*this);
+TEfficiencyCal::TEfficiencyCal(const TEfficiencyCal& copy) : TCal(copy) {
+   copy.Copy(*this);
 }
 
-void TEfficiencyCal::Copy(TObject &obj) const{
-   ((TEfficiencyCal&)obj).fscale_factor = fscale_factor; 
+void TEfficiencyCal::Copy(TObject& obj) const {
+	static_cast<TEfficiencyCal&>(obj).fScaleFactor = fScaleFactor; 
    TCal::Copy(obj);
 }
 
-void TEfficiencyCal::ScaleGraph(Double_t scale_factor){
+void TEfficiencyCal::ScaleGraph(Double_t scaleFactor) {
    if(!GetN()){
       Error("ScaleGraph","Graph does not exist");
       return;
    }
-   for(int i=0;i<GetN();i++){ 
-      GetY()[i] *= scale_factor;
-      GetEY()[i] *=scale_factor;
+
+   for(int i = 0; i < GetN(); i++){ 
+      GetY()[i]  *= scaleFactor;
+      GetEY()[i] *= scaleFactor;
    }
 
-   fscale_factor = scale_factor;
+   fScaleFactor = scaleFactor;
 }
 
 void TEfficiencyCal::AddPoint(TPeak* peak){
@@ -37,25 +40,24 @@ void TEfficiencyCal::AddPoint(TPeak* peak){
    AddPoint(peak->GetCentroid(),peak->GetArea(),peak->GetCentroidErr(),peak->GetAreaErr());
 }
 
-void TEfficiencyCal::AddPoint(Double_t energy, Double_t area, Double_t d_energy, Double_t d_area){
+void TEfficiencyCal::AddPoint(Double_t energy, Double_t area, Double_t dEnergy, Double_t dArea){
    if(!GetNucleus()){
       Error("AddPoint", "No nucleus set");
       return;
    }
-//Will eventually write a method that doesn't need a nucleus
+	//Will eventually write a method that doesn't need a nucleus
 
-   Double_t efficiency,d_efficiency;
+   Double_t efficiency,dEfficiency;
    Double_t intensity = 1.0;//nuc;
 
    efficiency = area/intensity;
- 	d_efficiency = d_area/intensity;
-   //d_efficiency = efficiency*TMath::Sqrt(TMath::Power(d_efficiency/efficiency,2.0) + TMath::Power(d_area/area,2.0));
+ 	dEfficiency = dArea/intensity;
+   //dEfficiency = efficiency*TMath::Sqrt(TMath::Power(dEfficiency/efficiency,2.0) + TMath::Power(dArea/area,2.0));
 
    SetPoint(GetN(), energy, efficiency);
-   SetPointError(GetN()-1,d_energy,d_efficiency);
+   SetPointError(GetN()-1,dEnergy,dEfficiency);
 
    Sort(); //This keeps the points in order of energy;
-
 }
 
 
@@ -64,7 +66,7 @@ void TEfficiencyCal::Print(Option_t *opt) const {
 }
 
 void TEfficiencyCal::Clear(Option_t *opt) {
-   fscale_factor = 1.0;
+   fScaleFactor = 1.0;
    TCal::Clear();
 }
 

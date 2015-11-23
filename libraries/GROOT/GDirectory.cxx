@@ -5,7 +5,9 @@
 
 #include <GDirectory.h>
 
+/// \cond CLASSIMP
 ClassImp(GDirectory)
+/// \endcond
 
 //GDirectory::GDirectory() { }
 
