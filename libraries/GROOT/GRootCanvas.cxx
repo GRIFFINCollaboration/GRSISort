@@ -633,7 +633,9 @@ GRootCanvas::~GRootCanvas()
       delete fMainFrame;
       delete fMainFrameLayout;
       delete fToolBarSep;
+#if MAJOR_ROOT_VERSION < 6
       delete fToolDock;
+#endif
       delete fToolBarLayout;
       delete fHorizontal1;
       delete fHorizontal1Layout;
