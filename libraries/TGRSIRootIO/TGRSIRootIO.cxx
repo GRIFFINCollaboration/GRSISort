@@ -69,6 +69,7 @@ void TGRSIRootIO::SetUpPPG() {
 	fTimesPPGCalled = 0;
 	if(TGRSIRunInfo::SubRunNumber() <= 0) {
 		fPPG = new TPPG;
+		printf("PPG set up.\n");
 	} else {
 		TFile* prevSubRun = new TFile(Form("fragment%05d_%03d.root",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
 		if(prevSubRun->IsOpen()) {
@@ -77,11 +78,13 @@ void TGRSIRootIO::SetUpPPG() {
 			} else {
 				printf("Error, could not find PPG in file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
 				fPPG = new TPPG;
+				printf("PPG set up.\n");
 			}
 			prevSubRun->Close();
 		} else {
 			printf("Error, could not find file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
 			fPPG = new TPPG;
+			printf("PPG set up.\n");
 		}
 	}
 }
@@ -247,7 +250,7 @@ void TGRSIRootIO::FinalizeDiagnostics() {
 	if(!fDiagnostics || !fOutFile)
 		return;
 	fOutFile->cd();
-	fDiagnostics->Read(fPPG); //this function checks itself whether fPPG is NULL or not
+	fDiagnostics->ReadPPG(fPPG); //this function checks itself whether fPPG is NULL or not
 	printf("Writing Diagnostics\n");
 	fDiagnostics->Write("TDiagnostics",TObject::kSingleKey);
 }

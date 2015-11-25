@@ -169,8 +169,8 @@ void TGriffinHit::SetNPileUps(UChar_t npileups) {
 }
 
 void TGriffinHit::SetPUHit(UChar_t puhit) {
-   if(puhit > 3)
-      puhit = 4;
+   if(puhit > 2)
+      puhit = 3;
 
    SetGriffinFlag(kPUHit1,(puhit << 2) & kPUHit1);  
    SetGriffinFlag(kPUHit2,(puhit << 2) & kPUHit2);  
