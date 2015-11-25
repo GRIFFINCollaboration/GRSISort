@@ -233,8 +233,8 @@ void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 TVector3 TDescant::GetPosition(int DetNbr, double dist) {
    //Gets the position vector for detector DetNbr
    //dist is only used when detectors are in the ancillary positions.
-   bool ancillary = TGRSIRunInfo::DescantAncillary();
-   if( TGRSIRunInfo::DescantAncillary()) {
+
+   if(TGRSIRunInfo::DescantAncillary()) {
       if(DetNbr>8) {
          return TVector3(0,0,1);
       }
