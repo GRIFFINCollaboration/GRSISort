@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <climits>
 
 #include "Globals.h"
 #include "TDescant.h"
