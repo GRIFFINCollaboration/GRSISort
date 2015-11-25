@@ -53,7 +53,8 @@ class TDescant : public TGRSIDetector {
       bool Hit()                {return fHitFlag;}                            //!<!
       void SetHit(bool flag = true) { fHitFlag = flag; }
    private:
-      static TVector3 gPosition[2][71];                                          //!<!
+      static TVector3 gPosition[71];                                          //!<!
+      static TVector3 gAncillaryPosition[9];                                          //!<!
    public:
       void Copy(TObject&) const;                                              //!<!
       void Clear(Option_t* opt = "");                                         //!<!
