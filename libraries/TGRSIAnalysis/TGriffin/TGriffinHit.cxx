@@ -155,12 +155,12 @@ void TGriffinHit::SetGriffinFlag(enum EGriffinHitBits flag,Bool_t set){
       fGriffinHitBits &= (~flag);
 }
 
-UChar_t TGriffinHit::NPileUps() const {
-   return ((fGriffinHitBits & kTotalPU1) + (fGriffinHitBits & kTotalPU2));
+UShort_t TGriffinHit::NPileUps() const {
+   return static_cast<UShort_t>(((fGriffinHitBits & kTotalPU1) + (fGriffinHitBits & kTotalPU2)));
 }
 
-UChar_t TGriffinHit::PUHit() const { 
-   return ((fGriffinHitBits & kPUHit1) + (fGriffinHitBits & kPUHit2)) >> 2; 
+UShort_t TGriffinHit::PUHit() const { 
+   return static_cast<UShort_t>(((fGriffinHitBits & kPUHit1) + (fGriffinHitBits & kPUHit2)) >> 2); 
 } 
 
 void TGriffinHit::SetNPileUps(UChar_t npileups) {
