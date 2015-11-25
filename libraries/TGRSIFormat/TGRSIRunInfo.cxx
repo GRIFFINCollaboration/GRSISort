@@ -94,6 +94,9 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
      {TString R__str; R__str.Streamer(b); fRunInfoFile.assign(R__str.Data()); }
      //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
    }
+    if(R__v > 8){
+    {Bool_t R__bool; b >> R__bool; fDescantAncillary = R__bool;   }
+    }
    fGRSIRunInfo = this;
    b.CheckByteCount(R__s,R__c,TGRSIRunInfo::IsA());
  } else {
@@ -130,6 +133,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {TString R__str(fMinorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data()); }//; R__str = fMinorIndex.c_str();      R__str.Streamer(b);}
    {TString R__str(fRunInfoFileName.c_str()); R__str.Streamer(b);   }//; R__str = fRunInfoFileName.c_str(); R__str.Streamer(b);}
    {TString R__str(fRunInfoFile.c_str());     R__str.Streamer(b);   }//; R__str = fRunInfoFile.c_str();     R__str.Streamer(b);}
+   {Bool_t R__bool = fDescantAncillary;    b << R__bool;}
    b.SetByteCount(R__c,true);
  }
 }
@@ -201,6 +205,10 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
 	fBufferSize        = 1000000;
 	fBufferDuration    = 60000000000;
 
+   fDescantAncillary = false;
+
+   //printf("run info created.\n");
+   
    Clear();
 }
 
@@ -233,7 +241,8 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
       printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
       printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
-	  printf(DBLUE"\tWaveform fitting = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tWaveform fitting = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tDESCANT in ancillary positions = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::DescantAncillary() ? "TRUE" : "FALSE");
       printf("\n");
       printf("\t==============================\n");
    }
@@ -262,12 +271,12 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
    fDante = false;
    fZeroDegree = false;
    fDescant = false;
-
+   
    fMajorIndex.assign("");  
    fMinorIndex.assign("");  
 
    fNumberOfTrueSystems = 0;
-   
+
 }
 
 
@@ -440,6 +449,10 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
         std::istringstream ss(line);
         double temp_int; ss >> temp_int;
         Get()->SetHPGeArrayPosition(temp_int);
+      } else if( type.compare("DESCANTANCILLARY") == 0) {
+         std::istringstream ss(line);
+         int temp_int; ss >> temp_int;
+         Get()->SetDescantAncillary(temp_int);
       }
    }
 
