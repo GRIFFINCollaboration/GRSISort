@@ -5,7 +5,6 @@
 
 #include "TFragmentQueue.h"
 #include "TScalerQueue.h"
-#include "TGRSIStats.h"
 #include "TGRSILoop.h"
 
 #include "TEpicsFrag.h"
@@ -16,7 +15,7 @@
 
 TDataParser* TDataParser::fDataParser = 0;
 bool TDataParser::fNoWaveforms = false;
-bool TDataParser::fRecordStats = false;
+bool TDataParser::fRecordDiag = true;
 
 const unsigned long TDataParser::fMaxTriggerId = 1024 * 1024 * 16; // 24 bits internally
 
@@ -461,14 +460,12 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 					//   EventFrag->AcceptedChannelId = 0;
 					//}
 
-					if(fRecordStats)
-						FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
-					TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
+					if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
 					return x;
 				} else  {
 					TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
-					TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
+					if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 					return -x;
 				}
 				break;
@@ -680,37 +677,6 @@ bool TDataParser::SetGRIFPsd(uint32_t value, TFragment* frag) {
 	frag->Zc.push_back(value & 0x003fffff);
 	frag->ccLong.back() |=  ((value & 0x7fe00000) >> 12);//21 bits from zero crossing minus 9 lower bits
 	return true;
-}
-
-void TDataParser::FillStats(TFragment* frag) {
-	///Takes a TFragment and records statistics for it's channel address.
-	///The statistics recorded currently include:
-	///          The total deadtime for the channel
-	///          The lowest MIDAS Time stamp
-	///          The highest MIDAS Time stamp
-	TGRSIStats* stat = TGRSIStats::GetStats(frag->ChannelAddress); //get the stats for the specific channel
-	stat->IncDeadTime(frag->DeadTime); //Increments the deadtime for the specific channel.
-
-	TGRSIStats::IncGoodEvents(); //Since we made it to this stage, we have a good event and should increment the good event counter
-	//If this event contains either the lowest (or highest) time stamp recorded so far we should increment the 
-	//lowest (or highest) time stamp in the stats. This allows us to determine the total run length.
-	if( (frag->MidasTimeStamp < TGRSIStats::GetLowestMidasTimeStamp()) ||
-			(TGRSIStats::GetLowestMidasTimeStamp() == 0)) {
-		TGRSIStats::SetLowestMidasTimeStamp(frag->MidasTimeStamp);
-	} else if (frag->MidasTimeStamp > TGRSIStats::GetHighestMidasTimeStamp()) {
-		TGRSIStats::SetHighestMidasTimeStamp(frag->MidasTimeStamp);
-	}
-	//If this event contains the lowest (or highest) recorded packet number recorded so far we should increment the
-	// lowest (or highest) network packet in the stats. This allows us to determine whe total number of network 
-	//packets created.
-	if( (frag->NetworkPacketNumber < TGRSIStats::GetLowestNetworkPacket()) ||
-			(TGRSIStats::GetLowestNetworkPacket() == 0)) {
-		TGRSIStats::SetLowestNetworkPacket(frag->NetworkPacketNumber);
-	} else if (frag->NetworkPacketNumber > TGRSIStats::GetHighestNetworkPacket()) {
-		TGRSIStats::SetHighestNetworkPacket(frag->NetworkPacketNumber);
-	}
-
-	return;
 }
 
 int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, int bank, unsigned int midasSerialNumber, time_t midasTime) {
