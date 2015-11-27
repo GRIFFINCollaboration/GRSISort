@@ -8,16 +8,6 @@
 
 #include "TGRSIRunInfo.h"
 
-////////////////////////////////////////////////////////////
-//                    
-// TTip
-//
-// The TTip class defines the observables and algorithms used
-// when analyzing TIP data. It includes detector positions,
-// etc. 
-//
-////////////////////////////////////////////////////////////
-
 /// \cond CLASSIMP
 ClassImp(TTip)
 /// \endcond
@@ -67,7 +57,7 @@ void TTip::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 }
 
 void TTip::Print(Option_t *opt) const {
-  //Prints out TSceptar members, currently does little.
+  ///Prints out TTip members, currently only prints the multiplicity.
   printf("%lu fTipHits\n",fTipHits.size());
 }
 

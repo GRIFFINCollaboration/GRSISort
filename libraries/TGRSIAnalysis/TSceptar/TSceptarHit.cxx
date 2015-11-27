@@ -11,15 +11,6 @@
 ClassImp(TSceptarHit)
 /// \endcond
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TSceptarHit                                                //
-//                                                            //
-// This is class that contains the information about a sceptar//
-// hit. This class is used to find energy, time, etc.         //
-//                                                            //
-////////////////////////////////////////////////////////////////
-
 TSceptarHit::TSceptarHit()	{
    //Default Constructor
 #if MAJOR_ROOT_VERSION < 6

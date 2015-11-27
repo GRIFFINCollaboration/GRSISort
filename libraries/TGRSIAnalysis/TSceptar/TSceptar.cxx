@@ -3,16 +3,6 @@
 #include <TRandom.h>
 #include <TMath.h>
 
-////////////////////////////////////////////////////////////
-//
-// TSceptar
-//
-// The TSceptar class defines the observables and algorithms used
-// when analyzing GRIFFIN data. It includes detector positions,
-// etc.
-//
-////////////////////////////////////////////////////////////
-
 /// \cond CLASSIMP
 ClassImp(TSceptar)
 /// \endcond

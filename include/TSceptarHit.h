@@ -5,6 +5,15 @@
  *  @{
  */
 
+/////////////////////////////////////////////////////////////////
+///
+/// \class TSceptarHit
+///
+/// This is class that contains the information about a sceptar
+/// hit. This class is used to find energy, time, etc.
+///
+/////////////////////////////////////////////////////////////////
+
 #include <cstdio>
 #include <cmath>
 
