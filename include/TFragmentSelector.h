@@ -62,10 +62,14 @@ private:
    ClassDef(TFragmentSelector,0);
 /// \endcond
 };
-
+/*! @} */
 #endif
 
 #ifdef TFragmentSelector_cxx
+/** \addtogroup Sorting
+ *  @{
+ */
+
 void TFragmentSelector::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize

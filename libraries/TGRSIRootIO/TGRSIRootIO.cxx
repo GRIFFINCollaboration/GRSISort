@@ -4,7 +4,6 @@
 
 #include "TGRSIOptions.h"
 #include "TGRSIRunInfo.h"
-#include "TGRSIStats.h"
 #include "TGRSIint.h"
 
 /// \cond CLASSIMP
@@ -251,8 +250,11 @@ void TGRSIRootIO::FinalizeDiagnostics() {
 		return;
 	fOutFile->cd();
 	fDiagnostics->ReadPPG(fPPG); //this function checks itself whether fPPG is NULL or not
-	printf("Writing Diagnostics\n");
+	printf("Writing Diagnostics to root file.\n");
 	fDiagnostics->Write("TDiagnostics",TObject::kSingleKey);
+	if(TGRSIOptions::WriteDiagnostics()) {
+	  fDiagnostics->WriteToFile(Form("stats%05i_%03i.log", TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber()));
+	}
 }
 
 bool TGRSIRootIO::SetUpRootOutFile(int runNumber, int subRunNumber) {
@@ -306,10 +308,6 @@ void TGRSIRootIO::CloseRootOutFile()   {
 		TGRSIRunInfo::Get()->SetRunLength(fFragmentTree->GetMaximum("MidasTimeStamp") - fFragmentTree->GetMinimum("MidasTimeStamp"));
 		printf("set run start to %.0f, and stop to %.0f (run length %.0f)\n",TGRSIRunInfo::Get()->RunStart(),TGRSIRunInfo::Get()->RunStop(),TGRSIRunInfo::Get()->RunLength());
 		TGRSIRunInfo::Get()->Write();
-	}
-
-	if(TGRSIStats::GetSize() > 0) {
-		TGRSIRootIO::Get()->WriteRunStats();
 	}
 
 	fOutFile->Close();
@@ -393,32 +391,4 @@ int TGRSIRootIO::GetSubRunNumber(std::string fileName)	{
 		return atoi(temp.c_str());
 	}
 	return -1;
-}
-
-void TGRSIRootIO::WriteRunStats(){
-	printf("entering writing\n");
-	if(!fOutFile)
-		return;
-	printf("actually writing\n");
-	TGRSIStats* stats = 0;
-	TTree* fStatsTree = new TTree("StatsTree","StatsTree");
-	fStatsTree->Bronch("TGRSIStats","TGRSIStats",&stats);
-
-	std::map<int,TGRSIStats*>::iterator iter;
-	std::ofstream statsOut;
-	statsOut.open(Form("stats%05i_%03i.log",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
-	statsOut << "\nRun time to the nearest second = " << TGRSIStats::GetRunTime()  << std::endl << std::endl;
-	for(iter = TGRSIStats::GetMap()->begin();iter!=TGRSIStats::GetMap()->end();iter++) {
-		int tmp_add = iter->second->GetAddress();
-		TChannel* chan = TChannel::GetChannel(tmp_add);
-		if(!chan)
-			continue;
-		stats = iter->second;
-		fStatsTree->Fill();
-		statsOut << "0x"<< std::hex <<  stats->GetAddress() << std::dec  << "\t" <<  chan->GetChannelName() << "\tDeadtime: " << ((float)(stats->GetDeadTime()))*(1E-9) << " seconds." << std::endl;
-	}
-	TGRSIStats::GetMap()->clear();
-	statsOut <<  std::endl;
-	statsOut.close();
-	fStatsTree->Write();
 }

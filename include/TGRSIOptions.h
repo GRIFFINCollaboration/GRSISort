@@ -33,7 +33,7 @@ namespace TGRSIOptions {
 		extern bool fIgnoreScaler;
 		extern bool fIgnoreEpics;
       extern bool fWriteBadFrags;
-
+		extern bool fWriteDiagnostics;
       }
       std::string GetHostName();
       std::string GetExptName();
@@ -86,6 +86,9 @@ namespace TGRSIOptions {
 
       void SetWriteBadFrags(bool flag=true);
       bool WriteBadFrags();
+
+      void SetWriteDiagnostics(bool flag=true); 
+      bool WriteDiagnostics();                  
 
       void SetHostName(std::string &host);
       void SetExptName(std::string &expt); 

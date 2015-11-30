@@ -34,7 +34,7 @@ class TDiagnostics : public TObject {
 		~TDiagnostics();
 
 	private:
-		//fragment tree diagnostics
+		//fragment tree diagnostics (should these all be static?)
 		std::map<Short_t, Long_t> fNumberOfGoodFragments;  ///< map of number of good fragments per detector type
 		std::map<Short_t, Long_t> fNumberOfBadFragments;   ///< map of number of bad fragments per detector type
 
@@ -42,6 +42,13 @@ class TDiagnostics : public TObject {
 		std::map<Short_t, UInt_t> fMaxChannelId;           ///< map of maximum channel id per channel number
 
 		std::map<Short_t, Long_t> fNumberOfHits;           ///< map of number of hits per channel number
+
+		std::map<Short_t, long> fDeadTime;                 ///< map of deadtime per channel number
+		std::map<Short_t, long> fMinTimeStamp;             ///< map of minimum timestamp per channel number
+		std::map<Short_t, long> fMaxTimeStamp;             ///< map of maximum timestamp per channel number
+
+		time_t fMinMidasTimeStamp;                         ///< minimum midas timestamp
+		time_t fMaxMidasTimeStamp;                         ///< maximum midas timestamp
 
 		Int_t fMinNetworkPacketNumber;                     ///< minimum network packet id
 		Int_t fMaxNetworkPacketNumber;                     ///< maximum network packet id
@@ -69,6 +76,8 @@ class TDiagnostics : public TObject {
 		ULong64_t PPGCycleLength() { return fPPGCycleLength; }
 
 		//other functions
+		void WriteToFile(const char*) const;
+		
 		void Copy(TObject&) const;
 		void Clear(Option_t* opt = "all");
 		void Print(Option_t* opt = "") const;

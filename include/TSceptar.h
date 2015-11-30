@@ -5,6 +5,16 @@
  *  @{
  */
 
+/////////////////////////////////////////////////////////////
+///
+/// \class TSceptar
+///
+/// The TSceptar class defines the observables and algorithms used
+/// when analyzing GRIFFIN data. It includes detector positions,
+/// etc.
+///
+/////////////////////////////////////////////////////////////
+
 #include <vector>
 #include <cstdio>
 

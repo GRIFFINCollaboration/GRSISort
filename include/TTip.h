@@ -5,6 +5,16 @@
  *  @{
  */
 
+/////////////////////////////////////////////////////////////
+///                    
+/// \class TTip
+///
+/// The TTip class defines the observables and algorithms used
+/// when analyzing TIP data. It includes detector positions,
+/// etc. 
+///
+/////////////////////////////////////////////////////////////
+
 #include <vector>
 #include <cstdio>
 #include <iostream>

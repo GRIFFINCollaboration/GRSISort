@@ -236,6 +236,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
       printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
       printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
+      printf("\t\tZDS:          %s\n", ZeroDegree() ? "true" : "false");
       printf("\n");
       printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
       printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
