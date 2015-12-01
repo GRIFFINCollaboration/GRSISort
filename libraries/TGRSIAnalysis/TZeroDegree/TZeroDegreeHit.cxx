@@ -1,17 +1,17 @@
-#include "TSceptarHit.h"
+#include "TZeroDegreeHit.h"
 
 #include <iostream>
 #include <algorithm>
 #include <climits>
 
 #include "Globals.h"
-#include "TSceptar.h"
+#include "TZeroDegree.h"
 
 /// \cond CLASSIMP
-ClassImp(TSceptarHit)
+ClassImp(TZeroDegreeHit)
 /// \endcond
 
-TSceptarHit::TSceptarHit()	{
+TZeroDegreeHit::TZeroDegreeHit()	{
    //Default Constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
@@ -19,9 +19,9 @@ TSceptarHit::TSceptarHit()	{
    Clear();
 }
 
-TSceptarHit::~TSceptarHit()	{	}
+TZeroDegreeHit::~TZeroDegreeHit()	{	}
 
-TSceptarHit::TSceptarHit(const TSceptarHit &rhs) : TGRSIDetectorHit() {
+TZeroDegreeHit::TZeroDegreeHit(const TZeroDegreeHit &rhs) : TGRSIDetectorHit() {
    //Copy Constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
@@ -30,43 +30,43 @@ TSceptarHit::TSceptarHit(const TSceptarHit &rhs) : TGRSIDetectorHit() {
    rhs.Copy(*this);
 }
 
-void TSceptarHit::Copy(TObject &rhs) const {
-   //Copies a TSceptarHit
+void TZeroDegreeHit::Copy(TObject &rhs) const {
+  ///Copies a TZeroDegreeHit
    TGRSIDetectorHit::Copy(rhs);
-   static_cast<TSceptarHit&>(rhs).fFilter = fFilter;
+   static_cast<TZeroDegreeHit&>(rhs).fFilter = fFilter;
 }
 
-TVector3 TSceptarHit::GetChannelPosition(double dist) const {
-   //Gets the position of the current TSceptarHit
-   //This position returns is of the center of the paddle
-   //This should not be called externally, only TGRSIDetector::GetPosition should be
-   return TSceptar::GetPosition(GetDetector());
+TVector3 TZeroDegreeHit::GetChannelPosition(double dist) const {
+   ///Gets the position of the current TZeroDegreeHit
+   ///This position returns is of the center of the paddle
+   ///This should not be called externally, only TGRSIDetector::GetPosition should be
+   return TZeroDegree::GetPosition(dist);
 }
 
-bool TSceptarHit::InFilter(Int_t wantedfilter) {
-   // check if the desired filter is in wanted filter;
-   // return the answer;
+bool TZeroDegreeHit::InFilter(Int_t wantedfilter) {
+	/// check if the desired filter is in wanted filter;
+   /// return the answer;
    return true;
 }
 
-void TSceptarHit::Clear(Option_t *opt)	{
-   //Clears the SceptarHit
+void TZeroDegreeHit::Clear(Option_t *opt)	{
+   ///Clears the ZeroDegreeHit
    fFilter = 0;
    TGRSIDetectorHit::Clear();
 }
 
-void TSceptarHit::Print(Option_t *opt) const	{
-   //Prints the SceptarHit. Returns:
-   //Detector
-   //Energy
-   //Time
-   printf("Sceptar Detector: %i\n",GetDetector());
-   printf("Sceptar hit energy: %.2f\n",GetEnergy());
-   printf("Sceptar hit time:   %.lf\n",GetTime());
+void TZeroDegreeHit::Print(Option_t *opt) const	{
+   ////Prints the ZeroDegreeHit. Returns:
+   ////Detector
+   ////Energy
+   ////Time
+   printf("ZeroDegree Detector: %i\n",GetDetector());
+   printf("ZeroDegree hit energy: %.2f\n",GetEnergy());
+   printf("ZeroDegree hit time:   %.lf\n",GetTime());
 }
 
-bool TSceptarHit::AnalyzeWaveform() {
-   //Calculates the cfd time from the waveform
+bool TZeroDegreeHit::AnalyzeWaveform() {
+   ///Calculates the cfd time from the waveform
    bool error = false;
    std::vector<Short_t> *waveform = GetWaveform();
    if(waveform->empty()) {
@@ -98,15 +98,15 @@ bool TSceptarHit::AnalyzeWaveform() {
    return !error;
 }
 
-Int_t TSceptarHit::CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolationSteps) {
-   //Used when calculating the CFD from the waveform
+Int_t TZeroDegreeHit::CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolationSteps) {
+   ///Used when calculating the CFD from the waveform
    std::vector<Short_t> monitor;
    
    return CalculateCfdAndMonitor(attenuation, delay, halfsmoothingwindow, interpolationSteps, monitor);
 }
 
-Int_t TSceptarHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolationSteps, std::vector<Short_t> &monitor) {
-   //Used when calculating the CFD from the waveform
+Int_t TZeroDegreeHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolationSteps, std::vector<Short_t> &monitor) {
+   ///Used when calculating the CFD from the waveform
    
    Short_t monitormax = 0;
    std::vector<Short_t> *waveform = GetWaveform();
@@ -124,7 +124,7 @@ Int_t TSceptarHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay
    if((unsigned int)waveform->size() > delay+1) {
       
       if(halfsmoothingwindow > 0) {
-         smoothedWaveform = TSceptarHit::CalculateSmoothedWaveform(halfsmoothingwindow);
+         smoothedWaveform = TZeroDegreeHit::CalculateSmoothedWaveform(halfsmoothingwindow);
       } else {
          smoothedWaveform = *waveform;
       }
@@ -163,8 +163,8 @@ Int_t TSceptarHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay
    
 }
 
-std::vector<Short_t> TSceptarHit::CalculateSmoothedWaveform(unsigned int halfsmoothingwindow) {
-   //Used when calculating the CFD from the waveform
+std::vector<Short_t> TZeroDegreeHit::CalculateSmoothedWaveform(unsigned int halfsmoothingwindow) {
+   ///Used when calculating the CFD from the waveform
    
    std::vector<Short_t> *waveform = GetWaveform();
    if(waveform->empty()) {
@@ -182,8 +182,8 @@ std::vector<Short_t> TSceptarHit::CalculateSmoothedWaveform(unsigned int halfsmo
    return smoothedWaveform;
 }
 
-std::vector<Short_t> TSceptarHit::CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow) {
-   //Used when calculating the CFD from the waveform
+std::vector<Short_t> TZeroDegreeHit::CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow) {
+   ///Used when calculating the CFD from the waveform
    
    std::vector<Short_t> *waveform = GetWaveform();
    
@@ -194,7 +194,7 @@ std::vector<Short_t> TSceptarHit::CalculateCfdMonitor(double attenuation, int de
    std::vector<Short_t> smoothedWaveform;
    
    if(halfsmoothingwindow > 0) {
-      smoothedWaveform = TSceptarHit::CalculateSmoothedWaveform(halfsmoothingwindow);
+      smoothedWaveform = TZeroDegreeHit::CalculateSmoothedWaveform(halfsmoothingwindow);
    }
    else{
       smoothedWaveform = *waveform;

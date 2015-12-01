@@ -1,5 +1,5 @@
-#ifndef SCEPTARHIT_H
-#define SCEPTARHIT_H
+#ifndef ZERODEGREEHIT_H
+#define ZERODEGREEHIT_H
 
 /** \addtogroup Detectors
  *  @{
@@ -7,9 +7,9 @@
 
 /////////////////////////////////////////////////////////////////
 ///
-/// \class TSceptarHit
+/// TZeroDegreeHit
 ///
-/// This is class that contains the information about a sceptar
+/// This is class that contains the information about a ZDS
 /// hit. This class is used to find energy, time, etc.
 ///
 /////////////////////////////////////////////////////////////////
@@ -24,11 +24,11 @@
 
 #include "TGRSIDetectorHit.h"
 
-class TSceptarHit : public TGRSIDetectorHit {
+class TZeroDegreeHit : public TGRSIDetectorHit {
    public:
-      TSceptarHit();
-      virtual ~TSceptarHit();
-      TSceptarHit(const TSceptarHit&);
+      TZeroDegreeHit();
+      virtual ~TZeroDegreeHit();
+      TZeroDegreeHit(const TZeroDegreeHit&);
       
    private:
       Int_t    fFilter;
@@ -36,11 +36,6 @@ class TSceptarHit : public TGRSIDetectorHit {
    public:
       /////////////////////////		/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { fFilter   = x; }   //!<!
-      
-      inline void SetWaveform(std::vector<Short_t> x) {
-         std::vector<Short_t> *waveform = GetWaveform();
-         *waveform=x;
-      } //!<!
       
       /////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()    const     { return fFilter;   }  //!<!
@@ -50,7 +45,7 @@ class TSceptarHit : public TGRSIDetectorHit {
       std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow); //!<!
       std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow); //!<!
       
-      bool   InFilter(Int_t);                                          //!<!
+      bool InFilter(Int_t);                                            //!<!
       
       bool AnalyzeWaveform();                                          //!<!
       
@@ -63,7 +58,7 @@ class TSceptarHit : public TGRSIDetectorHit {
       TVector3 GetChannelPosition(Double_t dist = 0) const; //!<!
       
       /// \cond CLASSIMP
-      ClassDef(TSceptarHit,2) //Stores the information for a SceptarHit
+      ClassDef(TZeroDegreeHit,2) //Stores the information for a ZeroDegreeHit
       /// \endcond
 };
 /*! @} */

@@ -76,8 +76,8 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
    //Coincidence Parameters
    Double_t ggTlow = 0.;   //Times are in 10's of ns
    Double_t ggThigh = 40.;
-   Double_t gbTlow =  -15.;
-   Double_t gbThigh = 10.;
+   Double_t gbTlow =  -10.;//was -15.
+   Double_t gbThigh = 20.;//was 10.
 
    Double_t ggBGlow = 100.;
    Double_t ggBGhigh = 175.;
@@ -138,13 +138,17 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
    TH2F* ggbmatrixOff = new TH2F("ggbmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOff);
    TH2D* bSingles_hp = new TH2D("bSingles_hp", "#beta Energy vs Channel", 10000,0,10000, 20,1,21); list->Add(bSingles_hp);
 
-   Double_t min[4] = {0,1,0,0};
+   Double_t min[4] = {0,0,0,0};
    Double_t max[4] = {cycleLength,65,1000,2000.};
-   Int_t bins[4]= {(Int_t)(cycleLength/10),64,1000,2000};
+   Int_t bins[4]= {(Int_t)(cycleLength/10),65,1000,2000};
+   Double_t pMin[4] = {0,0,0,0};
+   Double_t pMax[4] = {cycleLength,65,1000,2.};
+   Int_t pBins[4]= {(Int_t)(cycleLength/10),65,1000,2};
 
    TH2F* gammaSinglesCyc = NULL;
    TH2F* gammaSinglesBCyc = NULL;
    TH2F* gammaSinglesBmCyc = NULL;
+   THnSparseF* pileup = NULL;
    THnSparseF* gSinglesCyc_chan = NULL;
    THnSparseF* gbmatrixCyc_chan = NULL;
    TH1D* gPUTotalCyc = NULL;
@@ -156,7 +160,8 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
       gPUTotalCyc = new TH1D("gPUTotalCyc","Total Pileup hits as function of time in cycle", cycleLength/10,0,cycleLength); list->Add(gPUTotalCyc);
       gNPTotalCyc = new TH1D("gNPTotalCyc","Total not Piled-up hits as function of time in cycle", cycleLength/10,0,cycleLength); list->Add(gNPTotalCyc);
       gPUCyc = new TH1D("gPUCyc","Pileup events as function of time in cycle", cycleLength/10,0,cycleLength); list->Add(gPUCyc);
-      gSinglesCyc_chan = new THnSparseF("gSinglesCyc_chan","#gamma singles vs. channel vs. Time in cycle",3,bins,min,max); list->Add(gSinglesCyc_chan);
+      pileup = new THnSparseF("pileup","Pileup events vs. channel vs. cycle vs. Time in cycle",4,pBins,pMin,pMax); list->Add(pileup);
+      gSinglesCyc_chan = new THnSparseF("gSinglesCyc_chan","#gamma singles vs. channel vs. Time in cycle vs Energy",4,bins,min,max); list->Add(gSinglesCyc_chan);
       gbmatrixCyc_chan = new THnSparseF("gbmatrixCyc_chan","#gamma singles vs. channel vs. Time in cycle vs Energy",4,bins,min,max); list->Add(gbmatrixCyc_chan);
       gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
       gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
@@ -265,8 +270,18 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
             time = time%ppg->GetCycleLength();
             //gammaSinglesCyc->Fill((time - ppg->GetLastStatusTime(time, TPPG::kTapeMove))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
             gammaSinglesCyc->Fill(time/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
-            Double_t fillval[3] = {((ppg->GetTimeInCycle(grif->GetHit(one)->GetTime()))/1e5),(Double_t)(grif->GetGriffinHit(one)->GetArrayNumber()), (Double_t)((ppg->GetCycleNumber((grif->GetHit(one)->GetTime()))))};
+            Double_t fillval[4] = {((ppg->GetTimeInCycle(grif->GetHit(one)->GetTime()))/1e5),(Double_t)(grif->GetGriffinHit(one)->GetArrayNumber()), (Double_t)((ppg->GetCycleNumber((grif->GetHit(one)->GetTime())))), grif->GetGriffinHit(one)->GetEnergy()};
             gSinglesCyc_chan->Fill(fillval); 
+            if(grif->GetGriffinHit(one)->GetArrayNumber() != 26) {
+               if(grif->GetGriffinHit(one)->PUHit() == 1)  {
+                  if(grif->GetGriffinHit(one)->NPileUps() == 1) {
+                     fillval[3] = 0;
+                  } else {
+                     fillval[3] = 1;
+                  }
+                  pileup->Fill(fillval); 
+               }
+            }
          }
          if(grif->GetGriffinHit(one)->GetArrayNumber() < lastTimeStamp.size()) {
             if(lastTimeStamp.at(grif->GetGriffinHit(one)->GetArrayNumber()) > 0) {
@@ -479,6 +494,7 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
       }
 
    }
+   //various background subtractions
    ggmatrixt->Scale(-ggBGScale);
    ggmatrixt->Add(ggmatrix);
 
@@ -496,6 +512,137 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
 
    gammaAddbackBt->Scale(-gbBGScale);
    gammaAddbackBt->Add(gammaAddbackB);
+
+   //create a gSinglesCyc_chan matrix without bad cycles
+   THnSparseF* gSinglesCyc_chan_corr = (THnSparseF*) gSinglesCyc_chan->Clone("gSinglesCyc_chan_corr");
+   THnSparseF* pileup_corr = (THnSparseF*) pileup->Clone("pileup_corr");
+   //set energy cut (this also cuts the pulser)
+   gSinglesCyc_chan->GetAxis(3)->SetRangeUser(1800.,1813.);
+   //try and determine the good cycles (without any cut)
+   TH1D* cyc = gSinglesCyc_chan->Projection(2,"A");
+   //for later subruns remove the first bin (there might be crappy data in there)
+   if(runInfo->SubRunNumber() != 0) {
+      cyc->SetBinContent(1,0);
+   }
+   int nofCycles = 0;
+   int sum = cyc->GetBinContent(1);
+   for(int i = 2; i < cyc->GetNbinsX(); ++i) {
+      if(cyc->GetBinContent(i) > 0) {
+         ++nofCycles;
+         sum += cyc->GetBinContent(i);
+      }
+   }
+   float average = ((float) sum)/nofCycles;
+   Int_t* coord = new Int_t[4];
+   int removed = 0;
+   std::vector<int> badCycles;
+   bool last = true;
+   int lastGoodCycle = 0;
+   for(int i = cyc->GetNbinsX(); i >= 2; --i) {
+      if(last && cyc->GetBinContent(i) > 0) {
+         std::cout<<"Removing last cycle "<<i<<": average = "<<average<<", cycle = "<<cyc->GetBinContent(i)<<std::endl;
+         removed += cyc->GetBinContent(i);
+         --nofCycles;
+         cyc->SetBinContent(i,0);
+         last = false;
+         continue;
+      }
+      if(cyc->GetBinContent(i) > 0 && lastGoodCycle == 0) {
+         lastGoodCycle = i;
+         break;
+      }
+   }
+   bool first = true;
+   int firstGoodCycle = 0;
+   if(runInfo->SubRunNumber() == 0) {
+      first = false;
+      firstGoodCycle = 1;
+   }
+   for(int i = 1; i <= cyc->GetNbinsX(); ++i) {
+      if(i == 1 && runInfo->SubRunNumber() != 0) {
+         continue;
+      }
+      if(first && cyc->GetBinContent(i) > 0) {
+         std::cout<<"Removing first cycle "<<i<<": average = "<<average<<", cycle = "<<cyc->GetBinContent(i)<<std::endl;
+         removed += cyc->GetBinContent(i);
+         --nofCycles;
+         cyc->SetBinContent(i,0);
+         first = false;
+         continue;
+      }
+      if(cyc->GetBinContent(i) > 1.5*average) {
+         std::cout<<badCycles.size()<<". bad cycle "<<i<<": average = "<<average<<", cycle = "<<cyc->GetBinContent(i)<<std::endl;
+         removed += cyc->GetBinContent(i);
+         --nofCycles;
+         cyc->SetBinContent(i,0);
+         badCycles.push_back(i);
+         //check if this was our last good cycle
+         if(i == lastGoodCycle) {
+            //if this was the last good cycle, we remove this cycle from the list of bad cycles
+            badCycles.resize(badCycles.size()-1);
+            for(int j = 1; j < i; ++j) {
+               //check if this was the first good cycle
+               if(i-j == firstGoodCycle || badCycles.size() == 0) {
+                  lastGoodCycle = i-j;
+                  break;
+               }
+               //make certain that this wasn't also a bad cycle (we can skip that last bad cycle because that was this one)
+               for(size_t k = 0; k < badCycles.size() - 1; ++k) {
+                  if(badCycles[k] != i-j) {
+                     lastGoodCycle = i-j;
+                     break;
+                  }
+               }
+            }
+         }
+         continue;
+      }
+      if(cyc->GetBinContent(i) > 0 && firstGoodCycle == 0) {
+         firstGoodCycle = i;
+      }
+   }
+   std::cout<<"removed "<<removed<<" counts (from "<<sum<<" counts), changes average from "<<average;
+   average = ((float)(sum-removed))/nofCycles;
+   std::cout<<" to "<<average<<std::endl;
+   for(int i = 1; i <= cyc->GetNbinsX(); ++i) {
+      if(cyc->GetBinContent(i) > 0) {
+         if(cyc->GetBinContent(i) < 0.5*average || cyc->GetBinContent(i) > 1.5*average) {
+            badCycles.push_back(i);
+            std::cout<<badCycles.size()<<". bad cycle "<<i<<": average = "<<average<<", cycle = "<<cyc->GetBinContent(i)<<std::endl;
+         }
+      }
+   }
+   bool* goodCycle = new bool[cyc->GetNbinsX()];
+   for(int i = 0; i < cyc->GetNbinsX(); ++i) {
+      if(i >= firstGoodCycle && i <= lastGoodCycle) {
+         goodCycle[i] = true;
+      } else {
+         goodCycle[i] = false;
+      }
+   }
+   std::cout<<"good cycles: "<<firstGoodCycle<<" - "<<lastGoodCycle<<" minus cycles ";
+
+   for(size_t i = 0; i < badCycles.size(); ++i) {
+      std::cout<<badCycles[i];
+      if(i < badCycles.size()-1) {
+         std::cout<<", ";
+      }
+      goodCycle[badCycles[i]] = false;
+   }
+
+   std::cout<<std::endl;
+   for(Long64_t bin = 0; bin < gSinglesCyc_chan_corr->GetNbins(); ++bin) {
+      if(gSinglesCyc_chan_corr->GetBinContent(bin, coord) > 0 && !goodCycle[coord[2]]) {
+         gSinglesCyc_chan_corr->SetBinContent(bin,0);
+      }
+   }
+   list->Add(gSinglesCyc_chan_corr);
+   for(Long64_t bin = 0; bin < pileup_corr->GetNbins(); ++bin) {
+      if(pileup_corr->GetBinContent(bin, coord) > 0 && !goodCycle[coord[2]]) {
+         pileup_corr->SetBinContent(bin,0);
+      }
+   }
+   list->Add(pileup_corr);
 
    std::cout << "creating histograms done after " << w->RealTime() << " seconds" << std::endl;
    w->Continue();
@@ -569,7 +716,7 @@ int main(int argc, char **argv) {
       }
       int runnumber = runInfo->RunNumber();
       int subrunnumber = runInfo->SubRunNumber();
-      outfile = new TFile(Form("matrix%05d_%03d.root",runnumber,subrunnumber),"recreate");
+      outfile = new TFile(Form("cycle%05d_%03d.root",runnumber,subrunnumber),"recreate");
    }
    else
    {

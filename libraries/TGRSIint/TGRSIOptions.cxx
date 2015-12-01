@@ -6,28 +6,29 @@ NamespaceImp(TGRSIOptions)
 //using namespace TGRSIOptions::priv;
 
 namespace TGRSIOptions {
-  bool fLogErrors = false;
-  bool fUseMidFileOdb = true;
-  bool fMakeAnalysisTree = false;
-  bool fProgressDialog = true;
-  bool fWorkHarder = false;
-  bool fReadingMaterial = false;
-  bool fIgnoreFileOdb  = false;
-  bool fIgnoreScaler   = false;
-  bool fIgnoreEpics    = false;
-  bool fIgnoreSCLR     = false;
-  bool fCloseAfterSort = false;
-  bool fWriteBadFrags  = false;
+	bool fLogErrors = false;
+	bool fUseMidFileOdb = true;
+	bool fMakeAnalysisTree = false;
+	bool fProgressDialog = true;
+	bool fWorkHarder = false;
+	bool fReadingMaterial = false;
+	bool fIgnoreFileOdb  = false;
+	bool fIgnoreScaler   = false;
+	bool fIgnoreEpics    = false;
+	bool fIgnoreSCLR     = false;
+	bool fCloseAfterSort = false;
+	bool fWriteBadFrags  = false;
+	bool fWriteDiagnostics = false;
 
-  std::string fExptName;
-  std::string fHostName;
+	std::string fExptName;
+	std::string fHostName;
   
-  std::vector<std::string> fInputMidasFile;
-  std::vector<std::string> fInputRootFile;
-  std::vector<std::string> fInputOdbFile;
-  std::vector<std::string> fInputCalFile;
-  std::vector<std::string> fExternalRunInfo;
-  std::vector<std::string> fMacroFile;
+	std::vector<std::string> fInputMidasFile;
+	std::vector<std::string> fInputRootFile;
+	std::vector<std::string> fInputOdbFile;
+	std::vector<std::string> fInputCalFile;
+	std::vector<std::string> fExternalRunInfo;
+	std::vector<std::string> fMacroFile;
 
 	std::string GetHostName() { return fHostName; }
 
@@ -101,6 +102,9 @@ namespace TGRSIOptions {
 
 	void SetWriteBadFrags(bool flag)  { fWriteBadFrags=flag; }
 	bool WriteBadFrags()              { return fWriteBadFrags; }
+
+	void SetWriteDiagnostics(bool flag) { fWriteDiagnostics=flag; }
+	bool WriteDiagnostics()             { return fWriteDiagnostics; }
 
 
 	void AddInputRootFile(std::string& input)  {  fInputRootFile.push_back(input);  }

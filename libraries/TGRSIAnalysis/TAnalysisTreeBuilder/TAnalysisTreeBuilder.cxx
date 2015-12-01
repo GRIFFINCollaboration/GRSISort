@@ -171,7 +171,7 @@ TAnalysisTreeBuilder::TAnalysisTreeBuilder() {
    fPaces   = 0;//new TPaces;
    fDescant = 0;//new TDescant;
    //fDante->Clear();
-   //fZerodegree->Clear();
+   fZeroDegree = 0;
 
 }
 
@@ -358,7 +358,8 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 		//pull the different pile-up hits apart and put the into the sorted buffer as different fragments
 		for(size_t hit = 0; hit < currentFrag->Cfd.size(); ++hit) {
 			try {
-				sortedFragments.emplace(*currentFrag, hit);
+				sortedFragments.insert(TFragment(*currentFrag, hit));
+				//sortedFragments.emplace(*currentFrag, hit);
 			} catch (std::bad_alloc& e) {
 				//failed to insert the fragment, check overall size of the multiset
 				if(sortedFragments.size() < TGRSIRunInfo::BufferSize()) {
@@ -549,7 +550,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    if(info->Sceptar())   { tree->Branch("TSceptar",&fSceptar); }//, basketSize); }
    if(info->Paces())     { tree->Branch("TPaces",&fPaces); }//, basketSize); } 
    //if(info->Dante())     { tree->Branch("TDante",&fDante); }//, basketSize); } 
-   //if(info->ZeroDegree()){ tree->Branch("TZeroDegree",&fZerodegree); }//, basketSize); } 
+   if(info->ZeroDegree()){ tree->Branch("TZeroDegree",&fZeroDegree); }//, basketSize); } 
    if(info->Descant())   { tree->Branch("TDescant",&fDescant); }//, basketSize);
 
    printf("created AnalysisTree\n");
@@ -572,7 +573,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    if(info->Sceptar())   { fSceptar->Clear(); }
    if(info->Paces())     { fPaces->Clear(); } 
    //if(info->Dante())     { fDante->Clear(); } 
-   //if(info->ZeroDegree()){ fZerodegree->Clear(); } 
+   if(info->ZeroDegree()){ fZeroDegree->Clear(); } 
    if(info->Descant())   { fDescant->Clear();}
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
@@ -595,7 +596,7 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
    if(info->Sceptar())   { fSceptar = 0; }
    if(info->Paces())     { fPaces = 0; } 
    //if(info->Dante())     { fDante->Clear(); } 
-   //if(info->ZeroDegree()){ fZerodegree->Clear(); } 
+   if(info->ZeroDegree()){ fZeroDegree->Clear(); } 
    if(info->Descant())   { fDescant = 0; }
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
@@ -667,6 +668,8 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<std::string, TDetector*>* d
          fDescant = static_cast<TDescant*>(det->second);
       } else if(det->first.compare(0,2,"PA") == 0) {
          fPaces = static_cast<TPaces*>(det->second);
+      } else if(det->first.compare(0,2,"ZD") == 0) {
+         fZeroDegree = static_cast<TZeroDegree*>(det->second);
       } else if(det->first.compare(0,2,"TP") == 0) {
          fTip = static_cast<TTip*>(det->second);
       } 
@@ -811,8 +814,11 @@ void TAnalysisTreeBuilder::ProcessEvent() {
             (*detectors)["DS"]->AddFragment(&(event->at(i)), &mnemonic);
          //} else if(mnemonic.system.compare("DA")==0) {	
          //	AddFragment(&(event->at(i)), &mnemonic);
-         //} else if(mnemonic.system.compare("ZD")==0) {	
-         //	AddFragment(&(event->at(i)), &mnemonic);
+         } else if(mnemonic.system.compare("ZD")==0) {	
+            if(detectors->find("ZD") == detectors->end()) {
+               (*detectors)["ZD"] = new TZeroDegree;
+            }
+            (*detectors)["ZD"]->AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("TP")==0) {	
             if(detectors->find("TP") == detectors->end()) {
                (*detectors)["TP"] = new TTip;

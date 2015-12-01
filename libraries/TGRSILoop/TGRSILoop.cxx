@@ -13,7 +13,6 @@
 #include "TFragmentQueue.h"
 #include "TScalerQueue.h"
 #include "TGRSIRootIO.h"
-#include "TGRSIStats.h"
 #include "TGRSIRunInfo.h"
 
 #include "GRSIVersion.h"

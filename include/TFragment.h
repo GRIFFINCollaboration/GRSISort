@@ -83,11 +83,15 @@ public:
    ULong64_t GetTimeInCycle(); //!<!
    ULong64_t GetCycleNumber(); //!<!
 
+	time_t GetMidasTimeStamp() const { return MidasTimeStamp; }  //!<!
+	Short_t GetChannelNumber() const { return ChannelNumber; }  //!<!
    Int_t GetCfd(int iter=0) const { return Cfd.at(iter); }  //!<!
    Int_t GetZc(int iter=0) const  { return Zc.at(iter); } //!<! 
    Int_t GetLed(int iter=0) const { return Led.at(iter); }  //!<!
    Int_t GetCcShort(int iter=0) const { return ccShort.at(iter); }  //!<!
    Int_t GetCcLong(int iter=0) const { return ccLong.at(iter); }  //!<!
+	UShort_t GetDeadTime() const { return DeadTime; }  //!<!
+	UInt_t GetChannelId() const { return ChannelId; }  //!<!
 
    Int_t Get4GCfd(size_t i=0) const; //!<!
 
