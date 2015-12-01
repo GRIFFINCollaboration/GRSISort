@@ -402,7 +402,7 @@ int TDataParser::GriffinDataToFragment(uint32_t *data, int size, int bank, unsig
       return -x;
    }
 
-   //Changed on 11 Aug 2015 by RD to include PPG events. If the event has DataType 3 and address 0xFFFF, it is a PPG event.
+   //Changed on 11 Aug 2015 by RD to include PPG events. If the event has DataType 4 and address 0xFFFF, it is a PPG event.
    if(EventFrag->DataType == 4 && EventFrag->ChannelAddress == 0xFFFF){
       delete EventFrag;
       return GriffinDataToPPGEvent(data,size,midasserialnumber,midastime);
@@ -788,12 +788,13 @@ int TDataParser::GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsig
             SetPPGHighTimeStamp(value,ppgEvent);
             break;
          case 0xe0000000:
-            if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
+            //if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
                TGRSIRootIO::Get()->FillPPG(ppgEvent);
                return x;
-            } else  {
-               return -x;
-            }
+            //} else  {
+            //   printf("Discarding PPG 0x%04x != 0x%04x\n",value & 0xFFFF,ppgEvent->GetNewPPG());
+            //   return -x;
+            //}
             break;
       };
    }

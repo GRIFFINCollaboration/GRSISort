@@ -81,6 +81,7 @@ void TGRSIRootIO::SetUpPPG() {
       foutfile->cd();
    fTimesPPGCalled = 0;
    if(TGRSIRunInfo::SubRunNumber() <= 0) {
+      printf("PPG set up.\n");
       fPPG = new TPPG;
    } else {
       TFile* prev_sub_run = new TFile(Form("fragment%05d_%03d.root",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
@@ -90,11 +91,13 @@ void TGRSIRootIO::SetUpPPG() {
          } else {
             printf("Error, could not find PPG in file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
             fPPG = new TPPG;
+            printf("PPG set up.\n");
          }
          prev_sub_run->Close();
       } else {
          printf("Error, could not find file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
          fPPG = new TPPG;
+         printf("PPG set up.\n");
       }
    }
 }
