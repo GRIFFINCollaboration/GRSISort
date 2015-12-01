@@ -126,6 +126,12 @@ void TGRSIRootIO::SetUpDiagnostics() {
 	fDiagnostics = new TDiagnostics;
 }
 
+TDiagnostics* TGRSIRootIO::GetDiagnostics(){
+	if (!fDiagnostics)
+		SetUpDiagnostics();
+	return fDiagnostics;
+}
+
 void TGRSIRootIO::FillFragmentTree(TFragment* frag) {
 	// if(!fFragmentTree)
 	//    return;
