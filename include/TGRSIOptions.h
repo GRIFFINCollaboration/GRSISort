@@ -1,20 +1,19 @@
 #ifndef TGRSIOPTIONS_H
 #define TGRSIOPTIONS_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <cstdio>
 #include <string>
 
 #include "TObject.h"
 
 namespace TGRSIOptions {
-
-      //TGRSIOptions();
-   
-     // virtual ~TGRSIOptions();
-
     namespace priv{
-      extern std::string fhostname;
-      extern std::string fexptname;
+      extern std::string fHostName;
+      extern std::string fExptName;
       
       extern std::vector<std::string> fInputRootFile;
       extern std::vector<std::string> fInputMidasFile;
@@ -34,7 +33,7 @@ namespace TGRSIOptions {
 		extern bool fIgnoreScaler;
 		extern bool fIgnoreEpics;
       extern bool fWriteBadFrags;
-
+		extern bool fWriteDiagnostics;
       }
       std::string GetHostName();
       std::string GetExptName();
@@ -45,10 +44,8 @@ namespace TGRSIOptions {
       std::vector<std::string> GetInputOdb();   
       std::vector<std::string> GetMacroFile();   
 
-
-
-		const char *GetXMLODBFile(int runnumber=0,int subrunnumber=-1);
-      const char *GetCalFile(int runnumber=0,int subrunnumber=-1);
+		const char *GetXMLODBFile(int runNumber=0,int subRunNumber=-1);
+      const char *GetCalFile(int runNumber=0,int subRunNumber=-1);
 
       void AddExternalRunInfo(std::string);
       void SetExternalRunInfo();
@@ -90,6 +87,9 @@ namespace TGRSIOptions {
       void SetWriteBadFrags(bool flag=true);
       bool WriteBadFrags();
 
+      void SetWriteDiagnostics(bool flag=true); 
+      bool WriteDiagnostics();                  
+
       void SetHostName(std::string &host);
       void SetExptName(std::string &expt); 
       
@@ -98,12 +98,6 @@ namespace TGRSIOptions {
       void AddInputCalFile(std::string &input);   
       void AddInputOdbFile(std::string &input);   
       void AddMacroFile(std::string &input);   
-
-      
-      //void Print(Option_t *opt = "") const;
-      //void Clear(Option_t *opt = "");
 }
-
+/*! @} */
 #endif
-
-

@@ -1,6 +1,10 @@
 #ifndef TCALMANAGER_H__
 #define TCALMANAGER_H__
 
+/** \addtogroup Calibration
+ *  @{
+ */
+
 #include "TCal.h"
 #include "TNamed.h"
 #include "TClass.h"
@@ -28,12 +32,12 @@ class TCalManager : public TNamed {
 
  private:
    typedef std::map<UInt_t,TCal*> CalMap;
-   CalMap fcalmap;
+   CalMap fCalMap;
    TClass* fClass;
 
-
+/// \cond CLASSIMP
    ClassDef(TCalManager,1);
-
+/// \endcond
 };
-
+/*! @} */
 #endif

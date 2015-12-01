@@ -4,8 +4,10 @@
 
 #include "TROOT.h"
 
+/// \cond CLASSIMP
 ClassImp(TScalerData)
 ClassImp(TScaler)
+/// \endcond
 
 TScalerData::TScalerData(){
    Clear();
@@ -13,20 +15,19 @@ TScalerData::TScalerData(){
 }
 
 TScalerData::TScalerData(const TScalerData& rhs) : TObject() {
-  ((TScalerData&)rhs).Copy(*this);
+   rhs.Copy(*this);
 }
 
 void TScalerData::Copy(TObject &rhs) const {
-  ((TScalerData&)rhs).fAddress         =  fAddress;      
-  ((TScalerData&)rhs).fScaler          =  fScaler;        
-  ((TScalerData&)rhs).fNetworkPacketId =  fNetworkPacketId;        
-  ((TScalerData&)rhs).fLowTimeStamp    =  fLowTimeStamp;   
-  ((TScalerData&)rhs).fHighTimeStamp   =  fHighTimeStamp;  
+   static_cast<TScalerData&>(rhs).fAddress         =  fAddress;      
+	static_cast<TScalerData&>(rhs).fScaler          =  fScaler;        
+	static_cast<TScalerData&>(rhs).fNetworkPacketId =  fNetworkPacketId;        
+	static_cast<TScalerData&>(rhs).fLowTimeStamp    =  fLowTimeStamp;   
+	static_cast<TScalerData&>(rhs).fHighTimeStamp   =  fHighTimeStamp;  
 }
 
 void TScalerData::Clear(Option_t* opt) {
-//Clears the TScalerData and leaves it a "junk" state. By junk, I just mean default
-//so that we can tell that this Scaler is no good.
+	///Clears the TScalerData.
 	fAddress          =  0;
    fLowTimeStamp     =  0;
    fHighTimeStamp    =  0;
@@ -43,8 +44,10 @@ void TScalerData::Print(Option_t* opt) const {
 }
 
 TScaler::TScaler(bool loadIntoMap) {
+	///This constructor tries to find the "ScalerTree" and uses it (if requested) to load the scaler data into the map.
+	///\param[in] loadIntoMap Flag telling TScaler to load all scaler data into fScalerMap.
    this->Clear();
-	fTree = (TTree*) gROOT->FindObject("ScalerTree");
+	fTree = static_cast<TTree*>(gROOT->FindObject("ScalerTree"));
 	if(fTree != NULL) {
 		fEntries = fTree->GetEntries();
 		fTree->SetBranchAddress("TScalerData", &fScalerData);
@@ -254,7 +257,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
 	}
 	//try and find the ppg (if we haven't already done so)
 	if(fPPG == NULL) {
-		fPPG = (TPPG*) gROOT->FindObject("TPPG");
+		fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
 		//if we can't find the ppg we're done here
 		if(fPPG == NULL) {
 			return NULL;
@@ -313,7 +316,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
 
 	//try and find the ppg (if we haven't already done so)
 	if(fPPG == NULL) {
-		fPPG = (TPPG*) gROOT->FindObject("TPPG");
+		fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
 		//if we can't find the ppg we're done here
 		if(fPPG == NULL) {
 			return NULL;

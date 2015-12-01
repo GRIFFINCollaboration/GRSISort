@@ -1,6 +1,10 @@
 #ifndef TS3HIT_H
 #define TS3HIT_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <cstdio>
 #include "TFragment.h"
 #include "TChannel.h"
@@ -9,48 +13,42 @@
 class TS3Hit : public TGRSIDetectorHit {
    public:
     TS3Hit();
-    ~TS3Hit();
+    TS3Hit(TFragment &);
+    virtual ~TS3Hit();
+    TS3Hit(const TS3Hit&);
 
- //   Double_t GetEnergy()       {  return energy;  }
- //   Int_t    GetCharge()       {  return charge;  }
- //   Long_t   GetTimeStamp()    {  return ts;      }
- //   Int_t    GetTime()         {  return time;    }
- //   Short_t  GetDetectorNumber()     { return detectornumber;  }
-    Double_t GetLed()          {  return led;     }
-    Short_t  GetRingNumber()   { return ring;   }
-    Short_t  GetSectorNumber() { return sector; }
- //   Double_t GetCFD()          { return cfd;    }
+    Double_t GetLed()   const  { return fLed;    }
+    Short_t  GetRing()  const  { return fRing;   }
+    Short_t  GetSector() const { return fSector; }
 
   public:
-    void Print(Option_t *opt="") const;
-    void Clear(Option_t *opt="");
+    void Copy(TObject&) const;        //!
+    void Print(Option_t* opt="") const;
+    void Clear(Option_t* opt="");
 
-    void SetRingNumber(Short_t rn)     { ring = rn;   }
-    void SetSectorNumber(Short_t sn)   { sector = sn; }
-//    void SetDetectorNumber(Short_t dn) { detectornumber = dn; }
-//    void SetPosition(TVector3 &vec)    { fposition = vec; }
-    void SetVariables(TFragment &frag) { SetEnergy(frag.GetEnergy());
-                                         SetCfd(frag.GetCfd());
-                                         SetCharge(frag.GetCharge());
-                                         SetTimeStamp(frag.GetTimeStamp()); 
-                                         SetTime(frag.GetZCross());
-					 led    = frag.GetLed(); }
- 
+    void SetVariables(TFragment &frag) {  fLed    = frag.GetLed(); }
+    void SetRingNumber(Short_t rn)     { fRing = rn;   }
+    void SetSectorNumber(Short_t sn)   { fSector = sn; }
+    
+    void SetRingNumber(TFragment &frag)     { fRing = GetMnemonicSegment(frag);   }
+    void SetSectorNumber(TFragment &frag)   { fSector =GetMnemonicSegment(frag) ; }
+    
+    Short_t GetMnemonicSegment(TFragment &frag);//could be added to TGRSIDetectorHit base class
+	 
 
   private:
-    //TVector3 position;
-    Double_t    led;
-    Short_t  ring;   //front
-    Short_t  sector; //back
-//    Short_t  detectornumber;
-//   Double_t energy;
-//    Double_t cfd;
-//    Int_t    charge;
-//    Long_t   ts;
-//    Int_t    time;
+     TVector3 GetChannelPosition(Double_t dist = 0) const; //!
+      
+      
+      
+      
+    Double_t fLed;
+    Short_t  fRing;   //front
+    Short_t  fSector; //back
 
-  ClassDef(TS3Hit,3);
-
+/// \cond CLASSIMP
+  ClassDef(TS3Hit,4);
+/// \endcond
 };
-
+/*! @} */
 #endif

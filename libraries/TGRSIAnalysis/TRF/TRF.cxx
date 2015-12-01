@@ -1,54 +1,50 @@
-
-
-
 #include "TRF.h"
 
-
+/// \cond CLASSIMP
 ClassImp(TRF)
+/// \endcond
 
+Double_t    TRF::fPeriod;
 
-TRF::TRF():data(0) 	{
+TRF::TRF() {
 	Clear();
 }
 
-TRF::~TRF() { if(data) delete data;	}
+void TRF::Copy(TObject &rhs) const {
+  TDetector::Copy(rhs);
+  static_cast<TRF&>(rhs).fMidasTime     = fMidasTime;
+  static_cast<TRF&>(rhs).fTimeStamp     = fTimeStamp;
+  static_cast<TRF&>(rhs).fTime    = fTime;
+  return;                                      
+}  
 
-void TRF::FillData(TFragment *frag,TChannel *channel,MNEMONIC *mnemonic) {
-	if(!data)
-   	data = new TRFFitter();
-	data->FindPhase((TFragment&)(*frag));
-	//TRF::Set();
+TRF::TRF(const TRF& rhs) : TDetector() {
+  rhs.Copy(*this);
 }
 
-
-void TRF::BuildHits(TDetectorData *ddata,Option_t *opt)	{
-   //TRFData *tfdata = (TRFData*)ddata;
-   //if(data==0)
-   //  tfdata = (this->data);
-   if(!data)
-      return;
-   if(!data->IsSet()) 
-      return;
-   phase     = data->GetPhase(); 
-   midastime = data->GetMidasTime();
-   timestamp = data->GetTimeStamp();
-   time      = data->GetTime();
+TRF::~TRF() {
 }
 
-void TRF::Clear(Option_t *opt)	{
-  if(data) data->Clear(); //!
-		
-   phase     = -1.0; 
-   midastime =  0.0;
-   timestamp =  0.0;
-   time      =  0.0;
-
-
+void TRF::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+	TPulseAnalyzer pulse((TFragment&)(*frag));	    
+	if(pulse.IsSet()){
+		fTime = pulse.fit_rf(fPeriod*0.2);//period taken in half ticks... for reasons
+		fMidasTime = frag->MidasTimeStamp;
+		fTimeStamp = frag->GetTimeStamp();		
+	}
 }
 
-void TRF::Print(Option_t *opt) const { } 
+void TRF::Clear(Option_t *opt) {
+	fMidasTime =  0.0;
+	fTimeStamp =  0.0;
+	fTime   =  0.0;
+	
+	fPeriod = 84.409;
+}
 
-
-
-
+void TRF::Print(Option_t *opt) const {
+	printf("time = %f\n",fTime);
+	printf("timestamp = %ld\n",fTimeStamp);
+	printf("midastime = %ld\n",fMidasTime);
+} 
 

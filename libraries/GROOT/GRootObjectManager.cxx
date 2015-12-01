@@ -1,14 +1,14 @@
+#include "TROOT.h"
+#include "TFolder.h"
+#include "TClass.h"
+#include "TKey.h"
+#include "TString.h"
 
-#include <TROOT.h>
-#include <TFolder.h>
-#include <TClass.h>
-#include <TKey.h>
-#include <TString.h>
+#include "GRootObjectManager.h"
 
-#include <GRootObjectManager.h>
-//#include <TCanvas.h>
-
+/// \cond CLASSIMP
 ClassImp(GPadObj)
+/// \endcond
 
 GPadObj::GPadObj(TObject*obj,Int_t pnum, Option_t *opt) {
   SetName(Form("%s_%s",obj->GetName(),"padobj"));
@@ -21,7 +21,9 @@ GPadObj::GPadObj(TObject*obj,Int_t pnum, Option_t *opt) {
 GPadObj::~GPadObj() { fObject=0; }
 
 
+/// \cond CLASSIMP
 ClassImp(GMemObj)
+/// \endcond
 
 GMemObj::GMemObj(TObject *obj,TObject *par,TFile *file,Option_t *opt) {
   SetName(Form("%s_%s",obj->GetName(),"memobj")); 
@@ -48,7 +50,9 @@ void GMemObj::Copy(TObject &object) const {
 
 
 
+/// \cond CLASSIMP
 ClassImp(GRootObjectManager)
+/// \endcond
 
 
 GRootObjectManager *GRootObjectManager::fGRootObjectManager = 0;
@@ -191,10 +195,10 @@ bool GRootObjectManager::SetFile(TObject *object,TFile *file) {
 
 
 TH1 *GRootObjectManager::GetNext1D(TObject *object) {
-  //Returns the next TH1 currently managed from
-  //from the key object. If no object is passed,
-  //returns the first TH1 from the beginning of 
-  //the map.
+  ///Returns the next TH1 currently managed from
+  ///from the key object. If no object is passed,
+  ///returns the first TH1 from the beginning of 
+  ///the map.
   
   if(fObjectsMap->GetSize()<2)
      return 0;
@@ -234,10 +238,10 @@ TH1 *GRootObjectManager::GetNext1D(TObject *object) {
 
 
 TH1 *GRootObjectManager::GetLast1D(TObject *object) {
-  //Returns the last TH1 currently managed from
-  //from the key object. If no object is passed,
-  //returns the first TH1 from the beginning of 
-  //the map.
+  ///Returns the last TH1 currently managed from
+  ///from the key object. If no object is passed,
+  ///returns the first TH1 from the beginning of 
+  ///the map.
 
   if(fObjectsMap->GetSize()<2)
      return 0;

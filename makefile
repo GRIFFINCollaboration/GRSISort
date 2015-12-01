@@ -1,4 +1,4 @@
-.PHONY: clean all
+.PHONY: clean all docs doxygen
 .SECONDARY:
 .SECONDEXPANSION:
 
@@ -15,12 +15,16 @@ SRC_SUFFIX = cxx
 
 # EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY
 
+MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
+
+CFLAGS += -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} 
+
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
 CFLAGS     += -I/opt/X11/include -Qunused-arguments
 CPP        = clang++
-SHAREDSWITCH = -Qunused-arguments -shared -undefined dynamic_lookup -dynamiclib -install_name,'@executable_path/../libraries/$$@'# NO ENDING SPACE
+SHAREDSWITCH = -Qunused-arguments -shared -undefined dynamic_lookup -dynamiclib -Wl,-install_name,'@executable_path/../libraries/'# NO ENDING SPACE
 else
 export __LINUX__:= 1
 CPP        = g++
@@ -82,10 +86,13 @@ run_and_test =@printf "%b%b%b" " $(3)$(4)$(5)" $(notdir $(2)) "$(NO_COLOR)\r";  
                 rm -f $(2).log $(2).error
 
 all: $(EXECUTABLES) $(LIBRARY_OUTPUT) config 
+	@find .build users -name "*.pcm" -exec cp {} libraries/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
-#docs:
-#	doxygen doxygen.config
+docs: doxygen
+
+doxygen:
+	$(MAKE) -C $@
 
 bin/grsisort: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) bin
 	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
@@ -107,7 +114,6 @@ bin:
 
 config:
 	@cp util/grsi-config bin/
-	@find .build/ users/ -name "*.pcm" -exec cp {} libraries/ \;
 
 # Functions for determining the files included in a library.
 # All src files in the library directory are included.
@@ -157,6 +163,8 @@ clean:
 	@-$(RM) -rf .build
 	@-$(RM) -rf bin
 	@-$(RM) -f $(LIBRARY_OUTPUT)
+	@-$(RM) -f libraries/*.pcm
+	@-$(RM) -f libraries/*.dSYM
 
 cleaner: clean
 	@printf "\nEven more clean up\n\n"

@@ -1,6 +1,10 @@
 #ifndef TGRSIFUNCTIONS_H
 #define TGRSIFUNCTIONS_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -30,15 +34,12 @@ namespace TGRSIFunctions {
    Double_t SkewedGaus2(Double_t *dim, Double_t *par);
    Double_t MultiSkewedGausWithBG2(Double_t *dim, Double_t *par);
 
-
-	 static int  npeaks = 0;
-	 static int  GetNumberOfPeaks() { return npeaks;}
-	 static void SetNumberOfPeaks(int tmp) { npeaks = tmp;}
+// CSI FIT FUNCTION
+   Double_t CsIFitFunction(Double_t *i,Double_t *p);
 
 //Common corrections
    Double_t DeadTimeCorrect(Double_t *dim, Double_t deadtime, Double_t binWidth = 1.0);
    Double_t DeadTimeAffect(Double_t function, Double_t deadtime, Double_t binWidth = 1.0);
-
 }
-
+/*! @} */
 #endif

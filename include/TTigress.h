@@ -1,20 +1,15 @@
 #ifndef TTIGRESS_H
 #define TTIGRESS_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
 
 #include <vector>
 #include <iostream>
 #include <set>
 #include <stdio.h>
-
-#include "TTigressHit.h"
-#ifndef __CINT__
-#include "TTigressData.h"
-#include "TBGOData.h"
-#else
-class TTigressData;
-class TBGOData;
-#endif
+#include <functional>
 
 #include "TMath.h"
 #include "TVector3.h" 
@@ -22,97 +17,96 @@ class TBGOData;
 #include "TClonesArray.h"
 
 #include "TGRSIDetector.h" 
+#include "TTigressHit.h"
 
 class TTigress : public TGRSIDetector {
-
 	public:
+		enum ETigressBits {
+			kIsAddbackSet = 1<<0,
+			kBit1         = 1<<1,
+			kBit2         = 1<<2,
+			kBit3         = 1<<3,
+			kBit4         = 1<<4,
+			kBit5         = 1<<5,
+			kBit6         = 1<<6,
+			kBit7         = 1<<7
+		};
+
+		std::vector<std::vector<TFragment*> > SegmentFragments;
+
 		TTigress();
-      TTigress(const TTigress&);
+		TTigress(const TTigress&);
 		virtual ~TTigress();
 
-	public: 
-      void BuildHits(TDetectorData *data =0,Option_t *opt = ""); //!
-		//void BuildHits(TTigressData *data = 0,TBGOData *bdata = 0,Option_t *opt="");	//!
-		void BuildAddBack(Option_t *opt="");	//!
-		//void BuildCloverAddBack(Option_t *opt="");	//!
+		//These Getters of hits throw "ROOT Errors"
+		TTigressHit* GetTigressHit(const int& i);
+		TGRSIDetectorHit* GetHit(const int& i)   { return GetTigressHit(i);       } //!<!
+		size_t GetMultiplicity() const	        { return fTigressHits.size(); }	//!<!
+		static TVector3 GetPosition(int DetNbr ,int CryNbr, int SegNbr, double distance = 110.);		//!<!
 
-      //These Getters of hits throw "ROOT Errors"
-		TTigressHit *GetTigressHit(const int& i) {	return (TTigressHit*)tigress_hits.At(i);	    } //!
-      TGRSIDetectorHit *GetHit(const int& i)   { return GetTigressHit(i);       } //!
-		Short_t GetMultiplicity() const	       { return tigress_hits.GetEntries(); }	//!
-//		size_t GetMultiplicity() const	       { return tigress_hits.size(); }	//!
+		// Delete tigress hit from vector (for whatever reason)
+		void DeleteTigressHit(const int& i) { fTigressHits.erase(fTigressHits.begin()+i); } 
 
-		TTigressHit *GetAddBackHit(int i)   {	return (TTigressHit*)addback_hits.At(i);	       } //!
-		Int_t GetAddBackMultiplicity()	   {	return addback_hits.GetEntries(); }	//!
+		Int_t GetAddbackMultiplicity();
+		TTigressHit* GetAddbackHit(const int&);
+		void ResetAddback();		     //!<!
+		UShort_t GetNAddbackFrags(size_t idx) const;
 
-		//TTigressHit *GetCloverAddBackHit(int i) { return clover_addback_hits.At(i);     } //!
-		//Int_t GetCloverAddBackMultiplicity()    { return clover_addback_hits.GetEntries(); } //!
+		void AddFragment(TFragment*, MNEMONIC*); //!<!
+		void BuildHits();
 
-      void AddTigressHit(const TTigressHit&); 
-      void AddAddBackHit(const TTigressHit&); 
-      //void AddCloverAddBackHit(const TTigressHit&); 
+		TTigress& operator=(const TTigress&); //!<!
 
-      void PushBackHit(TGRSIDetectorHit* hit) { }
-
-		//static void   SetBeta(double b) 		{	TTigress::beta = b;	} 		//!
-		//static void   DopplerCorrect(TTigressHit *);							//!
-
-		static TVector3 GetPosition(int DetNbr ,int CryNbr, int SegNbr, double distance = 110.);		//!
-		//TVector3 GetPosition(TTigressHit *,int distance=0);									//!
-
-		void FillData(TFragment*,TChannel*,MNEMONIC*); //!
-		void FillBGOData(TFragment*,TChannel*,MNEMONIC*); //!
-
-	private: 
-		TTigressData *tigdata;        //!
-		TBGOData     *bgodata;        //!
-
-	//	std::vector <TTigressHit> tigress_hits;
-	//	std::vector <TTigressHit> addback_hits;
-		//std::vector <TTigressHit> clover_addback_hits;			
-      TClonesArray tigress_hits;
-      TClonesArray addback_hits;
-      //TClonesArray clover_addback_hits;
-
-		//static double beta;
-
-		static bool fSetSegmentHits;			   //!
-		static bool fSetBGOHits;					//!
-		
-		static bool fSetCoreWave;					//!
-		static bool fSetSegmentWave;			   //!
-		static bool fSetBGOWave;					//!
-
-    	static double GeBlue_Position[17][9][3];	//!	detector segment XYZ
-		static double GeGreen_Position[17][9][3];	//!
-		static double GeRed_Position[17][9][3];	//!
-		static double GeWhite_Position[17][9][3];	//!
-
-	public:
-		static bool SetSegmentHits() 	 { return fSetSegmentHits;	}	//!
-		static bool SetBGOHits()     	 { return fSetBGOHits;	    }	//!
-
-		static bool SetCoreWave()    { return fSetCoreWave;	    }	//!
-		static bool SetSegmentWave() { return fSetSegmentWave;  }	//!
-		static bool SetBGOWave()	 { return fSetBGOWave;		}     //!
-
-	public:         
-		virtual void Clear(Option_t *opt = "");		 //!
-		virtual void Print(Option_t *opt = "") const; //!
-      virtual void Copy(TObject&) const;           //!
-
-   ClassDef(TTigress,3)  // Tigress Physics structure
-
-
-};
-
-
-
-
-
-
-
-
+#if !defined (__CINT__) && !defined (__CLING__)
+		void SetAddbackCriterion(std::function<bool(TTigressHit&, TTigressHit&)> criterion) { fAddbackCriterion = criterion; }
+		std::function<bool(TTigressHit&, TTigressHit&)> GetAddbackCriterion() const         { return fAddbackCriterion; }
 #endif
 
+	private: 
+#if !defined (__CINT__) && !defined (__CLING__)
+		static std::function<bool(TTigressHit&, TTigressHit&)> fAddbackCriterion;
+#endif
+		std::vector<TTigressHit> fTigressHits;
 
+		static bool fSetSegmentHits;			   //!<!
+		static bool fSetBGOHits;					//!<!
+
+		static bool fSetCoreWave;					//!<!
+		static bool fSetSegmentWave;			   //!<!
+		static bool fSetBGOWave;					//!<!
+
+		static double GeBluePosition[17][9][3];	//!<!	detector segment XYZ
+		static double GeGreenPosition[17][9][3];	//!<!
+		static double GeRedPosition[17][9][3];	//!<!
+		static double GeWhitePosition[17][9][3];	//!<!
+
+		UChar_t fTigressBits;                  // flags for transient members
+		void ClearStatus() { fTigressBits = 0; }
+		void SetBitNumber(enum ETigressBits bit,Bool_t set);
+		Bool_t TestBitNumber(enum ETigressBits bit) const {return (bit & fTigressBits);}
+
+		std::vector<TTigressHit> fAddbackHits; //!<! Used to create addback hits on the fly
+		std::vector<UShort_t> fAddbackFrags; //!<! Number of crystals involved in creating in the addback hit
+
+	public:
+		static bool SetSegmentHits() 	 { return fSetSegmentHits;	}	//!<!
+		static bool SetBGOHits()     	 { return fSetBGOHits;	    }	//!<!
+
+		static bool SetCoreWave()    { return fSetCoreWave;	    }	//!<!
+		static bool SetSegmentWave() { return fSetSegmentWave;  }	//!<!
+		static bool SetBGOWave()	 { return fSetBGOWave;		}     //!<!
+
+	public:         
+		virtual void Clear(Option_t *opt = "");		 //!<!
+		virtual void Print(Option_t *opt = "") const; //!<!
+		virtual void Copy(TObject&) const;           //!<!
+
+	protected:
+		void PushBackHit(TGRSIDetectorHit* ghit);
+
+/// \cond CLASSIMP
+		ClassDef(TTigress,5)  // Tigress Physics structure
+/// \endcond
+};
+/*! @} */
+#endif

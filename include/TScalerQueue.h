@@ -1,11 +1,15 @@
 #ifndef TTIGSCALERQUEUE_H
 #define TTIGSCALERQUEUE_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <stdio.h>
 #include <queue>
 #include <map>
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #define _GLIBCXX_USE_NANOSLEEP 1
 #include <thread>
 #include <mutex>
@@ -17,7 +21,6 @@
 #include "TScaler.h"
 
 class TDeadtimeScalerQueue : public TObject {
-	
 	public:
 		static TDeadtimeScalerQueue* Get(); //Returns the Queue
 		virtual ~TDeadtimeScalerQueue();
@@ -47,8 +50,7 @@ class TDeadtimeScalerQueue : public TObject {
 
 		static std::map<int,int> fScalerIdMap;	
 
-
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #ifndef NO_MUTEX
 	public:
 		static std::mutex All;
@@ -79,7 +81,6 @@ class TDeadtimeScalerQueue : public TObject {
 };
 
 class TRateScalerQueue : public TObject {
-	
 	public:
 		static TRateScalerQueue* Get(); //Returns the Queue
 		virtual ~TRateScalerQueue();
@@ -110,7 +111,7 @@ class TRateScalerQueue : public TObject {
 		static std::map<int,int> fScalerIdMap;	
 
 
-#ifndef __CINT__
+#if !defined (__CINT__) && !defined (__CLING__)
 #ifndef NO_MUTEX
 	public:
 		static std::mutex All;
@@ -139,5 +140,5 @@ class TRateScalerQueue : public TObject {
       void Print(Option_t *opt = "") const;
 		void Clear(Option_t *opt = "");
 };
-
+/*! @} */
 #endif

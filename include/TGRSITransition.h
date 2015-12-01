@@ -1,20 +1,24 @@
 #ifndef TGRSITRANSITION_H
 #define TGRSITRANSITION_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <cstdio>
 
 #include "TClass.h"
 #include "TObject.h"
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TGRSITransition                                            //
-//                                                            //
-// This Class contains the information about a nuclear 
-// transition. These transitions are a part of a TNucleus
-// and are typically set within the TNucleus framework
-//                                                            //
-////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+///
+/// \class TGRSITransition
+///
+/// This Class contains the information about a nuclear 
+/// transition. These transitions are a part of a TNucleus
+/// and are typically set within the TNucleus framework
+///
+/////////////////////////////////////////////////////////////////
 
 class TGRSITransition : public TObject {
    friend class TNucleus;
@@ -23,31 +27,32 @@ class TGRSITransition : public TObject {
       virtual ~TGRSITransition();
 
       bool IsSortable() const { return true; }
-      int Compare(const TObject *obj) const;
+      int Compare(const TObject* obj) const;
 
-      void SetEnergy(double &tmpenergy){fenergy = tmpenergy;}
-      void SetEnergyUncertainty(double &tmperror){ fenergy_uncertainty = tmperror;}
-      void SetIntensity(double &tmpintens){fintensity = tmpintens;}
-      void SetIntensityUncertainty(double &tmpinterror){ fintensity_uncertainty = tmpinterror;}
+      void SetEnergy(double &tmpenergy) {fEnergy = tmpenergy;}
+      void SetEnergyUncertainty(double &tmperror){ fEnergyUncertainty = tmperror;}
+      void SetIntensity(double &tmpintens){fIntensity = tmpintens;}
+      void SetIntensityUncertainty(double &tmpinterror){ fIntensityUncertainty = tmpinterror;}
 
-      double GetEnergy() const {return fenergy;}
-      double GetEnergyUncertainty() const {return fenergy_uncertainty;}
-      double GetIntensity() const {return fintensity;}
-      double GetIntensityUncertainty() const {return fintensity_uncertainty;}
+      double GetEnergy() const {return fEnergy;}
+      double GetEnergyUncertainty() const {return fEnergyUncertainty;}
+      double GetIntensity() const {return fIntensity;}
+      double GetIntensityUncertainty() const {return fIntensityUncertainty;}
 
-      void Clear(Option_t *opt = "");
-      void Print(Option_t *opt = "") const;
+      void Clear(Option_t* opt = "");
+      void Print(Option_t* opt = "") const;
 
       std::string PrintToString();
 
    protected:
-      double fenergy;                  //Energy of the transition
-      double fenergy_uncertainty;      //Uncertainty in the energy of the transition
-      double fintensity;               //Intensity of the transition
-      double fintensity_uncertainty;   //Uncertainty in the intensity
+      double fEnergy;                 //Energy of the transition
+      double fEnergyUncertainty;      //Uncertainty in the energy of the transition
+      double fIntensity;              //Intensity of the transition
+      double fIntensityUncertainty;   //Uncertainty in the intensity
 
+/// \cond CLASSIMP
    ClassDef(TGRSITransition,1) //Information about a TNucleus transition
+/// \endcond
 };
-
+/*! @} */
 #endif
-

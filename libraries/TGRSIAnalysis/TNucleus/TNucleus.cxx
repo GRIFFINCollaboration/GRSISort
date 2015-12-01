@@ -11,7 +11,9 @@
 
 //#define debug
 
+/// \cond CLASSIMP
 ClassImp(TNucleus)
+/// \endcond
 
 /////////////////////////////////////////////////////////////////
 //
@@ -313,12 +315,12 @@ bool TNucleus::SetSourceData() {
          continue;
       TGRSITransition *tran = new TGRSITransition; 
       std::stringstream ss(line);
-      ss >> tran->fenergy;
-      ss >> tran->fenergy_uncertainty;
-      ss >> tran->fintensity;
-      ss >> tran->fintensity_uncertainty;
+      ss >> tran->fEnergy;
+      ss >> tran->fEnergyUncertainty;
+      ss >> tran->fIntensity;
+      ss >> tran->fIntensityUncertainty;
       TransitionList.Add(tran);
-    //  printf("eng: %.02f\tinten: %.02f\n",((TGRSITransition*)TransitionList.Last())->fenergy,((TGRSITransition*)TransitionList.Last())->fintensity);
+    //  printf("eng: %.02f\tinten: %.02f\n",((TGRSITransition*)TransitionList.Last())->fEnergy,((TGRSITransition*)TransitionList.Last())->fIntensity);
    }                                                                                                         
 
    printf("Found %d Transitions for %s\n",TransitionList.GetSize(),GetName());
@@ -326,12 +328,12 @@ bool TNucleus::SetSourceData() {
 
 }
 
-void TNucleus::AddTransition(Double_t energy, Double_t intensity, Double_t energy_uncertainty, Double_t intensity_uncertainty){
+void TNucleus::AddTransition(Double_t energy, Double_t intensity, Double_t energyUncertainty, Double_t intensityUncertainty){
    TGRSITransition * tran = new TGRSITransition;
-   tran->fenergy = energy;
-   tran->fenergy_uncertainty = energy_uncertainty;
-   tran->fintensity = intensity;
-   tran->fintensity_uncertainty = intensity_uncertainty;
+   tran->fEnergy = energy;
+   tran->fEnergyUncertainty = energyUncertainty;
+   tran->fIntensity = intensity;
+   tran->fIntensityUncertainty = intensityUncertainty;
 
    AddTransition(tran);
 }
@@ -342,10 +344,10 @@ void TNucleus::AddTransition(TGRSITransition* tran){
 
 Bool_t TNucleus::RemoveTransition(Int_t idx){
    TGRSITransition *tran;
-   tran = (TGRSITransition*)TransitionList.RemoveAt(idx);
+   tran = static_cast<TGRSITransition*>(TransitionList.RemoveAt(idx));
    if(tran){
       printf("Removed transition: ");
-      printf("%d\t eng: %.02f\tinten: %.02f\n",idx,tran->fenergy,tran->fintensity);
+      printf("%d\t eng: %.02f\tinten: %.02f\n",idx,tran->fEnergy,tran->fIntensity);
       delete tran;
       return true;
    }
@@ -356,7 +358,7 @@ Bool_t TNucleus::RemoveTransition(Int_t idx){
 }
 
 TGRSITransition* TNucleus::GetTransition(Int_t idx){
-   TGRSITransition *tran = (TGRSITransition*)TransitionList.At(idx);
+   TGRSITransition *tran = static_cast<TGRSITransition*>(TransitionList.At(idx));
    if(!tran)
       printf("Out of Range\n");
 
@@ -367,7 +369,7 @@ void TNucleus::Print(Option_t *opt) const{
 //Prints out the Name of the nucleus, as well as the numerated transition list
    printf("Nucleus: %s\n",GetName());
    for(int i =0; i< TransitionList.GetSize();i++){
-      printf("%d\t eng: %.02f\tinten: %.02f\n",i,((TGRSITransition*)TransitionList.At(i))->fenergy,((TGRSITransition*)TransitionList.At(i))->fintensity);
+      printf("%d\t eng: %.02f\tinten: %.02f\n",i,static_cast<TGRSITransition*>(TransitionList.At(i))->fEnergy,static_cast<TGRSITransition*>(TransitionList.At(i))->fIntensity);
 
    }
 }
@@ -377,7 +379,7 @@ void TNucleus::WriteSourceFile(std::string outfilename){
 	  std::ofstream sourceout;
      sourceout.open(outfilename.c_str());
      for(int i=0; i < TransitionList.GetSize(); i++)   {
-        std::string transtr = ((TGRSITransition*)(TransitionList.At(i)))->PrintToString();
+        std::string transtr = static_cast<TGRSITransition*>(TransitionList.At(i))->PrintToString();
         sourceout << transtr.c_str();
         sourceout << std::endl;
      }

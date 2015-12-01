@@ -18,6 +18,7 @@
 #include "TPolyMarker.h"
 #include "TStopwatch.h"
 #include "TSystem.h"
+#include "TGRSIRootIO.h"
 
 #include<TMidasFile.h>
 #include<TMidasEvent.h>
@@ -26,6 +27,7 @@
 
 #include <iostream>
 #include <fstream>
+
 
 Bool_t SplitMezz = false;
 
@@ -455,7 +457,11 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
       if(cit->first == TEventTime::GetBestDigitizer())
          printf("0x%04x:\t BEST\n",cit->first);
       else
-         printf("0x%04x:\t %lld\n",cit->first,cit->second);
+#ifdef OS_DARWIN
+			printf("0x%04x:\t %lld\n",cit->first,cit->second);
+#else
+		   printf("0x%04x:\t %ld\n",cit->first,cit->second);
+#endif
    }
    printf("********************\n");
 
@@ -548,7 +554,11 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
       if(cit->first == TEventTime::GetBestDigitizer())
          printf("0x%04x:\t BEST\n",cit->first);
       else
-         printf("0x%04x:\t %lld\n",cit->first,cit->second);
+#ifdef OS_DARWIN
+			printf("0x%04x:\t %lld\n",cit->first,cit->second);
+#else
+		   printf("0x%04x:\t %ld\n",cit->first,cit->second);
+#endif
         // printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
    }
    printf("********************\n");
@@ -876,6 +886,8 @@ int main(int argc, char **argv) {
       nDigitizers = CorrectionFile(runnumber);
    }
 
+   TGRSIRootIO::Get()->SetUpDiagnostics();
+   
    if(!nDigitizers){
       GFile *outfile = new GFile(filename,"RECREATE");
       std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;

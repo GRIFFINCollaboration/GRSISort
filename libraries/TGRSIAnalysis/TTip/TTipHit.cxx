@@ -10,11 +10,17 @@
 //
 ////////////////////////////////////////////////////////////
 
+/// \cond CLASSIMP
 ClassImp(TTipHit)
+/// \endcond
 
 TTipHit::TTipHit() {
    Class()->IgnoreTObjectStreamer(true);
    Clear();
+}
+
+TTipHit::TTipHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+	//SetVariables(frag);
 }
 
 TTipHit::~TTipHit() { }
@@ -27,8 +33,11 @@ TTipHit::TTipHit(const TTipHit &rhs) : TGRSIDetectorHit() {
 
 void TTipHit::Copy(TObject &rhs) const {
    TGRSIDetectorHit::Copy(rhs);
-   static_cast<TTipHit&>(rhs).filter  = filter;
-   static_cast<TTipHit&>(rhs).fPID     = fPID;
+   static_cast<TTipHit&>(rhs).fFilter  		= fFilter;
+   static_cast<TTipHit&>(rhs).fPID     		= fPID;
+   static_cast<TTipHit&>(rhs).fTipChannel 	= fTipChannel;
+   static_cast<TTipHit&>(rhs).fTimeFit		   = fTimeFit;
+   static_cast<TTipHit&>(rhs).fSig2Noise		= fSig2Noise;
 }                                       
 
 bool TTipHit::InFilter(Int_t wantedfilter) {
@@ -38,11 +47,10 @@ bool TTipHit::InFilter(Int_t wantedfilter) {
 }
 
 void TTipHit::Clear(Option_t *opt) {
-   filter = 0;
-   fPID   = 0;
-   //position.SetXYZ(0,0,1);
-
-  // waveform.clear();
+   fFilter 		= 0;
+   fPID   		= 0;
+   fTipChannel	= 0;
+   fTimeFit		= 0;
 }
 
 void TTipHit::Print(Option_t *opt) const {
@@ -51,3 +59,18 @@ void TTipHit::Print(Option_t *opt) const {
    printf("Tip hit time:   %.f\n",GetTime());
 }
 
+void TTipHit::SetWavefit(TFragment &frag)   { 
+	TPulseAnalyzer pulse(frag);	    
+	if(pulse.IsSet()){
+		fTimeFit   = pulse.fit_newT0();
+		fSig2Noise = pulse.get_sig2noise();
+	}
+}
+
+//void TTipHit::SetPID(TFragment &frag)	{
+//	TPulseAnalyzer pulse(frag);
+//	if(pulse.IsSet()){
+//		fPID = pulse.CsIPID();
+//		fTimeFit = pulse.CsIt0();
+//	}
+//}

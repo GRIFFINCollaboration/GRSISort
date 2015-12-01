@@ -1,4 +1,4 @@
-// TFragment.h TChannel.h TGRSIRunInfo.h TGRSISortInfo.h TGRSIStats.h TFragmentQueue.h TFragmentSelector.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h
+// TFragment.h TChannel.h TGRSIRunInfo.h TGRSISortInfo.h TFragmentQueue.h TFragmentSelector.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TDiagnostics.h
 
 #ifdef __CINT__
 
@@ -19,7 +19,6 @@
 #pragma link C++ class TGRSISortInfo+;
 #pragma link C++ class TGRSISortList+;
 
-#pragma link C++ class TGRSIStats+;
 #pragma link C++ class TFragmentQueue+;
 #pragma link C++ class TFragmentSelector+;
 #pragma link C++ class TPPG-;
@@ -27,10 +26,9 @@
 #pragma link C++ class std::map<ULong64_t,TPPGData*>;
 #pragma link C++ class TScaler+;
 #pragma link C++ class TScalerData+;
-//#pragma link C++ class TDeadtimeScalerQueue+;
-//#pragma link C++ class TRateScalerQueue+;
 #pragma link C++ class std::map<UInt_t, std::map<ULong64_t, TScalerData*> >;
 #pragma link C++ class std::map<ULong64_t, TScalerData*>;
+#pragma link C++ class TDiagnostics+;
 
 #endif
 
