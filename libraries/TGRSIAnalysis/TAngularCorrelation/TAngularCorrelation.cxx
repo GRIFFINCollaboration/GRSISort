@@ -1,3 +1,6 @@
+/** \class TAngularCorrelation
+ * An angular correlation class
+ **/
 #include <TAngularCorrelation.h>
 #include "TVector3.h"
 #include <sys/stat.h>
@@ -7,11 +10,37 @@
 ClassImp(TAngularCorrelation)
 /// \endcond
 
+////////////////////////////////////////////////////////////////////////////////
+/// Angular correlation default constructor
+///
 TAngularCorrelation::TAngularCorrelation() {
-   // do nothing
+   f2DSlice = 0;
+   fIndexCorrelation = 0;
 }
 
-TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t max, Bool_t fold = kTRUE, Bool_t group = kTRUE){
+////////////////////////////////////////////////////////////////////////////////
+/// Angular correlation default destructor
+///
+TAngularCorrelation::~TAngularCorrelation() {
+   delete f2DSlice;
+   delete fIndexCorrelation;
+   fPeaks.clear();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Create energy-gated 2D histogram of energy vs. angular index
+///
+/// \param[in] hst Three-dimensional histogram of angular index vs. energy vs. energy
+/// \param[in] min Minimum of energy gate
+/// \param[in] max Maximum of energy gate
+/// \param[in] fold Switch for turning folding on
+/// \param[in] group Switch for turning grouping on (not yet implemented)
+///
+/// Projects out the events with one energy between min and max
+/// X-axis of returned histogram is second energy
+/// Y-axis of returned histogram is angular index
+
+TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t max, Bool_t fold = kFALSE, Bool_t group = kFALSE){
    // identify the axes (angular index, energy, energy)
    // TODO: make this smart
    int indexaxis = 0;
@@ -34,8 +63,18 @@ TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t 
    return f2DSlice;
 }
 
-//TODO: make IntegralSlicesX and IntegralSlicesY, both derived from this - add an option for slicing axis
+////////////////////////////////////////////////////////////////////////////////
+/// Create 1D histogram of counts vs. angular index
+///
+/// \param[in] hst Two-dimensional histogram of angular index vs. energy
+/// \param[in] min Minimum of energy gate
+/// \param[in] max Maximum of energy gate
+///
+/// For each bin (angular index), projects out the total number of events within
+/// some energy range (given by min and max).
+
 TH1D* TAngularCorrelation::IntegralSlices(TH2* hst, Double_t min, Double_t max){
+//TODO: make IntegralSlicesX and IntegralSlicesY, both derived from this - add an option for slicing axis
    // set the range on the energy axis (x)
    hst->GetXaxis()->SetRangeUser(min,max);
 
@@ -43,15 +82,31 @@ TH1D* TAngularCorrelation::IntegralSlices(TH2* hst, Double_t min, Double_t max){
    hst->Sumw2();
 
    // project counts to angular index axis
-   fIndexCorrelations = hst->ProjectionY();
+   fIndexCorrelation = hst->ProjectionY();
 
-   return fIndexCorrelations;
+   return fIndexCorrelation;
 }
 
-//TODO: This entire function
+////////////////////////////////////////////////////////////////////////////////
+/// Create 1D histogram of counts vs. angular index
+///
+/// \param[in] hst Two-dimensional histogram of angular index vs. energy
+/// \param[in] peak TPeak template used to fit one dimensional histograms
+///
+/// For each bin (angular index), fits one-dimensional projection with given TPeak
+/// and returns a TH1D with x-axis of angular index and a y-axis of TPeak area for
+/// that angular index.
+
 TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak){
-   return fIndexCorrelations;
+//TODO: This entire function
+   return fIndexCorrelation;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+/// Creates graph of counts vs. cos(theta) from histogram of counts vs. angular index
+///
+/// \param[in] hst One-dimensional histogram of angular index vs. counts
+///
 
 TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst) {
    TGraphAsymmErrors* graph = new TGraphAsymmErrors();
@@ -81,15 +136,34 @@ TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst) {
    return graph;
 }
 
-//TODO: This entire function
+////////////////////////////////////////////////////////////////////////////////
+/// Checks that maps are consistent with each other
+///
+
 Bool_t TAngularCorrelation::CheckMaps(){
    Bool_t result = kTRUE; // result to return
+
+   if (fAngleMap.size()!=fWeights.size()) {
+      printf("fAngleMap and fWeights do not have the same size.\n");
+      printf("fAngleMap size is: %i\n",(Int_t) fAngleMap.size());
+      printf("fWeights size is: %i\n",(Int_t) fWeights.size());
+      result = kFALSE;
+   }
    return result;
 }
 
-//TODO: This entire function
+////////////////////////////////////////////////////////////////////////////////
+/// Prints map used to construct angular indices
 void TAngularCorrelation::PrintIndexMap() {
-   // do nothing
+   Int_t size = fAngleMap.size();
+
+   printf("-----------------------------------------------------\n");
+   printf("|| Array number 1 | Array number 2 | Angular index ||\n");
+   for (Int_t i=0;i<size;i++)
+   {
+      for (Int_t j=0;j<size;j++)
+         printf("|| %i | %i | %i ||\n",i,j,GetAngularIndex(i,j));
+   }
    return;
 }
 
@@ -100,17 +174,11 @@ void TAngularCorrelation::PrintAngleMap() {
    printf("||  Angular index  |  Opening angle  ||\n");
    for (Int_t i=0;i<size;i++) {
       //TODO: fix the formatting in this printf statement
-      printf("||  %i  | %f ||\n",i,fAngleMap[i]);
+      printf("||  %i  | %f ||\n",i,GetAngleFromIndex(i));
    }
    printf("---------------------------------------\n");
 
    return;
-}
-
-// TODO: This entire function
-Int_t TAngularCorrelation::GetAngularIndex(Int_t arraynum1, Int_t arraynum2) {
-   Int_t index=-1; // index to return
-   return index;
 }
 
 // TODO: Generalize this so input is vector of detectors and vector of distances
@@ -128,7 +196,7 @@ Int_t TAngularCorrelation::GenerateIndexMaps(Int_t distance=110) {
                TVector3 positiontwo = TGriffin::GetPosition(k,l,distance); // distance is in mm, usually 110, 145, or 160
                Double_t angle = positionone.Angle(positiontwo); // in radians
                Bool_t alreadyclaimed = kFALSE;
-               for (Int_t m=0;m<fAngleMap.size();m++)
+               for (Int_t m=0;m<(Int_t)fAngleMap.size();m++)
                {
                   if (abs(angle-fAngleMap[m])<0.00005)
                   {
@@ -161,7 +229,7 @@ Int_t TAngularCorrelation::GenerateIndexMaps(Int_t distance=110) {
                TVector3 positionone = TGriffin::GetPosition(i,j,distance);
                TVector3 positiontwo = TGriffin::GetPosition(k,l,distance);
                double angle = positionone.Angle(positiontwo); // in radians
-               for (int m=0;m<fAngleMap.size();m++)
+               for (int m=0;m<size;m++)
                {
                   if (abs(angle-fAngleMap[m])<0.00005)
                   {
