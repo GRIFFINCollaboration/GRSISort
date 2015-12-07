@@ -8,9 +8,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cmath>
 
 #include "TMath.h"
 #include "TROOT.h"
+#include "Math/SpecFuncMathMore.h"
 
 namespace TGRSIFunctions {
 
@@ -40,6 +42,9 @@ namespace TGRSIFunctions {
 //Common corrections
    Double_t DeadTimeCorrect(Double_t *dim, Double_t deadtime, Double_t binWidth = 1.0);
    Double_t DeadTimeAffect(Double_t function, Double_t deadtime, Double_t binWidth = 1.0);
+
+//Angular correlation fitting
+   Double_t LegendrePolynomial(Double_t *x,Double_t *par);
 }
 /*! @} */
 #endif

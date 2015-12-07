@@ -57,7 +57,7 @@ INCLUDES  := $(addprefix -I$(PWD)/,$(INCLUDES))
 CFLAGS    += $(shell root-config --cflags)
 CFLAGS    += -MMD $(INCLUDES)
 LINKFLAGS += -Llibraries $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../libraries
-LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lXMLParser -lXMLIO -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof
+LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lXMLParser -lXMLIO -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof -lMathMore
 LINKFLAGS := $(LINKFLAGS_PREFIX) $(LINKFLAGS) $(LINKFLAGS_SUFFIX) $(CFLAGS)
 
 ROOT_LIBFLAGS := $(shell root-config --cflags --glibs)
