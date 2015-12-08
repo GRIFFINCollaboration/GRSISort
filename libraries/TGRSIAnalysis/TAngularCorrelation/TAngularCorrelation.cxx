@@ -1,10 +1,12 @@
 /** \class TAngularCorrelation
  * An angular correlation class
  **/
+#include <cstdio>
 #include <TAngularCorrelation.h>
 #include "TVector3.h"
 #include <sys/stat.h>
 #include "TGriffin.h"
+#include "TMath.h"
 
 /// \cond CLASSIMP
 ClassImp(TAngularCorrelation)
@@ -13,18 +15,20 @@ ClassImp(TAngularCorrelation)
 ////////////////////////////////////////////////////////////////////////////////
 /// Angular correlation default constructor
 ///
-TAngularCorrelation::TAngularCorrelation() {
+TAngularCorrelation::TAngularCorrelation()
+{
    f2DSlice = 0;
    fIndexCorrelation = 0;
+   fIndexMapSize = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Angular correlation default destructor
 ///
-TAngularCorrelation::~TAngularCorrelation() {
+TAngularCorrelation::~TAngularCorrelation()
+{
    delete f2DSlice;
    delete fIndexCorrelation;
-   fPeaks.clear();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +44,8 @@ TAngularCorrelation::~TAngularCorrelation() {
 /// X-axis of returned histogram is second energy
 /// Y-axis of returned histogram is angular index
 
-TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t max, Bool_t fold = kFALSE, Bool_t group = kFALSE){
+TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t max, Bool_t fold = kFALSE, Bool_t group = kFALSE)
+{
    // identify the axes (angular index, energy, energy)
    // TODO: make this smart
    int indexaxis = 0;
@@ -73,7 +78,8 @@ TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t 
 /// For each bin (angular index), projects out the total number of events within
 /// some energy range (given by min and max).
 
-TH1D* TAngularCorrelation::IntegralSlices(TH2* hst, Double_t min, Double_t max){
+TH1D* TAngularCorrelation::IntegralSlices(TH2* hst, Double_t min, Double_t max)
+{
 //TODO: make IntegralSlicesX and IntegralSlicesY, both derived from this - add an option for slicing axis
    // set the range on the energy axis (x)
    hst->GetXaxis()->SetRangeUser(min,max);
@@ -97,7 +103,8 @@ TH1D* TAngularCorrelation::IntegralSlices(TH2* hst, Double_t min, Double_t max){
 /// and returns a TH1D with x-axis of angular index and a y-axis of TPeak area for
 /// that angular index.
 
-TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak){
+TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak)
+{
 //TODO: This entire function
    return fIndexCorrelation;
 }
@@ -108,7 +115,8 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak){
 /// \param[in] hst One-dimensional histogram of angular index vs. counts
 ///
 
-TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst) {
+TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst)
+{
    TGraphAsymmErrors* graph = new TGraphAsymmErrors();
    
    Int_t n = hst->GetNbinsX();
@@ -137,10 +145,31 @@ TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// Get angular index from two array numbers
+/// 
+/// \param[in] arraynum1 first array number
+/// \param[in] arraynum2 second array number
+///
+
+Int_t TAngularCorrelation::GetAngularIndex(Int_t arraynum1, Int_t arraynum2)
+{
+   if (arraynum1>=fIndexMapSize || arraynum2>=fIndexMapSize) {
+      printf("Error: One or more array numbers is larger than the size of fIndexMap.\n");
+      return -1;
+   }
+   // Array numbers start counting at 1
+   // Indices of this array start at 0
+   Int_t index1 = arraynum1-1;
+   Int_t index2 = arraynum2-1;
+   return fIndexMap[index1][index2];
+}
+
+////////////////////////////////////////////////////////////////////////////////
 /// Checks that maps are consistent with each other
 ///
 
-Bool_t TAngularCorrelation::CheckMaps(){
+Bool_t TAngularCorrelation::CheckMaps()
+{
    Bool_t result = kTRUE; // result to return
 
    if (fAngleMap.size()!=fWeights.size()) {
@@ -154,24 +183,65 @@ Bool_t TAngularCorrelation::CheckMaps(){
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Prints map used to construct angular indices
-void TAngularCorrelation::PrintIndexMap() {
+///
+
+void TAngularCorrelation::PrintIndexMap()
+{
    Int_t size = fAngleMap.size();
 
    printf("-----------------------------------------------------\n");
    printf("|| Array number 1 | Array number 2 | Angular index ||\n");
-   for (Int_t i=0;i<size;i++)
+   for (Int_t i=1;i<size;i++)
    {
-      for (Int_t j=0;j<size;j++)
+      for (Int_t j=1;j<size;j++) {
+         if (GetAngularIndex(i,j)==-1) continue;
+         //TODO: fix the formatting in this printf statement
          printf("|| %i | %i | %i ||\n",i,j,GetAngularIndex(i,j));
+      }
    }
    return;
 }
 
-void TAngularCorrelation::PrintAngleMap() {
+////////////////////////////////////////////////////////////////////////////////
+/// Prints map of angular index vs. opening angle vs. weight
+///
+
+void TAngularCorrelation::PrintWeights()
+{
+   Int_t size = fAngleMap.size();
+   Int_t weight_size = fWeights.size();
+   if (size==0) {
+      printf("The angle map hasn't been created yet.\n");
+      printf("Therefore, can't print.\n");
+      return;
+   }
+   if (weight_size==0) {
+      printf("The weights haven't been calculated yet.\n");
+      printf("Therefore, can't print.\n");
+      return;
+   }
+
+   printf("---------------------------------------\n");
+   printf("||  Angular index  |  Opening angle (rad)  |  Weight  ||\n");
+   for (Int_t i=0;i<size;i++) {
+      //TODO: fix the formatting in this printf statement
+      printf("||  %i  | %f | %f ||\n",i,GetAngleFromIndex(i),GetWeightFromIndex(i));
+   }
+   printf("---------------------------------------\n");
+
+   return;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Prints map of angular index vs. opening angle
+///
+
+void TAngularCorrelation::PrintAngleMap()
+{
    Int_t size = fAngleMap.size();
 
    printf("---------------------------------------\n");
-   printf("||  Angular index  |  Opening angle  ||\n");
+   printf("||  Angular index  |  Opening angle (rad)  ||\n");
    for (Int_t i=0;i<size;i++) {
       //TODO: fix the formatting in this printf statement
       printf("||  %i  | %f ||\n",i,GetAngleFromIndex(i));
@@ -181,68 +251,262 @@ void TAngularCorrelation::PrintAngleMap() {
    return;
 }
 
-// TODO: Generalize this so input is vector of detectors and vector of distances
-Int_t TAngularCorrelation::GenerateIndexMaps(Int_t distance=110) {
+////////////////////////////////////////////////////////////////////////////////
+/// Creates map of angular index vs. opening angle.
+///
+/// \param[in] arraynumbers Vector of array numbers used in this experiment
+/// \param[in] distances Vector of detector distances for those array numbers
+///
 
-   for (Int_t i=1;i<=16;i++) // detector one
-   {
-      for (Int_t j=0;j<4;j++) // crystal one
-      {
-         for (Int_t k=1;k<=16;k++) // detector two
-         {
-            for (Int_t l=0;l<4;l++) // crystal two
+std::vector<Double_t> TAngularCorrelation::GenerateAngleMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances)
+{
+
+   std::vector<Double_t> map; // vector to return
+
+   // basic consistency check
+   const Int_t size = arraynumbers.size();
+   if (size!=(Int_t)distances.size()) {
+      printf("Lengths of array number and distance vectors are inconsistent.\n");
+      printf("Array number vector size: %i\n",size);
+      printf("Distance vector size: %i\n",(Int_t)distances.size());
+   }
+
+   // loop through array numbers (a list of crystals in the array)
+   for (Int_t i=0;i<size;i++) {
+      // identify detector and crystal numbers
+      Int_t detector1 = (arraynumbers[i]-1)/4 + 1;
+      Int_t crystal1 = (arraynumbers[i]-1)%4;
+      // now we will loop through all *unique* combinations
+      // we can start from j=i here, because j<i will only produce duplicates
+      for (Int_t j=i;j<size;j++) {
+         // identify detector and crystal numbers
+         Int_t detector2 = (arraynumbers[j]-1)/4 + 1;
+         Int_t crystal2 = (arraynumbers[j]-1)%4;
+         TVector3 positionone = TGriffin::GetPosition(detector1,crystal1,distances[i]); // distance is in mm, usually 110, 145, or 160
+         TVector3 positiontwo = TGriffin::GetPosition(detector2,crystal2,distances[j]); // distance is in mm, usually 110, 145, or 160
+         Double_t angle = positionone.Angle(positiontwo); // in radians
+         Bool_t alreadyclaimed = kFALSE;
+         for (Int_t m=0;m<(Int_t)map.size();m++) {
+            if (TMath::Abs(angle-map[m])<0.00005)
             {
-               TVector3 positionone = TGriffin::GetPosition(i,j,distance); // distance is in mm, usually 110, 145, or 160
-               TVector3 positiontwo = TGriffin::GetPosition(k,l,distance); // distance is in mm, usually 110, 145, or 160
-               Double_t angle = positionone.Angle(positiontwo); // in radians
-               Bool_t alreadyclaimed = kFALSE;
-               for (Int_t m=0;m<(Int_t)fAngleMap.size();m++)
-               {
-                  if (abs(angle-fAngleMap[m])<0.00005)
-                  {
-                     alreadyclaimed = kTRUE;
-                     break;
-                  }
-               } // map size loop
-               if (!alreadyclaimed) fAngleMap.push_back(angle);
-            } // crystal two loop
-         } // detector two loop
-      } // crystal one loop
-   } // detector one loop
+               alreadyclaimed = kTRUE;
+               break;
+            }
+         }
+         if (!alreadyclaimed) map.push_back(angle);
+      }
+   }
 
-   Int_t size = fAngleMap.size();
-   printf("Angular index to angle map has %i elements.\n",size);
-   std::sort(fAngleMap.begin(),fAngleMap.end());
+   // sort the map
+   std::sort(map.begin(),map.end());
 
-   fIndexMap = 0;
-   fIndexMap = new Int_t*[size];
-
-   for (int i=1;i<=16;i++) // detector one
-   {
-      for (int j=0;j<4;j++) // crystal one
-      {
-         fIndexMap[4*(i-1)+j+1] = new int[size];
-         for (int k=1;k<=16;k++) // detector two
-         {
-            for (int l=0;l<4;l++) // crystal two
-            {
-               TVector3 positionone = TGriffin::GetPosition(i,j,distance);
-               TVector3 positiontwo = TGriffin::GetPosition(k,l,distance);
-               double angle = positionone.Angle(positiontwo); // in radians
-               for (int m=0;m<size;m++)
-               {
-                  if (abs(angle-fAngleMap[m])<0.00005)
-                  {
-                     fIndexMap[4*(i-1)+j+1][4*(k-1)+l+1] = m;
-                     break;
-                  }
-               } // map size loop
-            } // crystal two loop
-         } // detector two loop
-      } // crystal one loop
-   } // detector one loop
-
-   return size;
+   return map;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// Creates map of weights vs. angular index
+///
+/// \param[in] arraynumbers Vector of array numbers used in this experiment
+/// \param[in] distances Vector of detector distances for those array numbers
+/// \param[in] indexmap Index map (probably created with GenerateIndexMap
+///
 
+std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, Int_t** &indexmap)
+{
+   std::vector<Int_t> weights; // vector to return
+
+   // get array number size
+   Int_t size = arraynumbers.size();
+
+   // find maximum array number
+   Int_t max = 0;
+   for (Int_t i=0;i<size;i++) {
+      if (arraynumbers[i]>max) max = arraynumbers[i];
+   }
+   
+   // initialize vector
+   for (Int_t i=0;i<max;i++) {
+      weights.push_back(0);
+   }
+
+   // loop through array numbers (a list of crystals in the array)
+   for (Int_t i=0;i<size;i++) {
+      if (arraynumbers[i]<1 || arraynumbers[i]>64) {
+         printf("%i is not a good array number.\n",arraynumbers[i]);
+         printf("Skipping... you'll probably get some errors.\n");
+         continue;
+      }
+      // here, we want all combinations for the indices, so we start from j=0
+      for (Int_t j=0;j<size;j++) {
+         Int_t index = indexmap[i][j];
+         Int_t old_weight = weights[index];
+         Int_t new_weight = old_weight+1;
+         weights[index] = new_weight;
+      }
+   }
+
+   return weights;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Creates map of angle pair vs. angular index
+///
+/// \param[in] arraynumbers Vector of array numbers used in this experiment
+/// \param[in] distances Vector of detector distances for those array numbers
+/// \param[in] anglemap Angle map (probably created with GenerateAngleMap
+///
+
+Int_t** TAngularCorrelation::GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap)
+{
+
+   // get array number size
+   Int_t size = arraynumbers.size();
+
+   // find maximum array number
+   Int_t max = 0;
+   for (Int_t i=0;i<size;i++) {
+      if (arraynumbers[i]>max) max = arraynumbers[i];
+   }
+   
+   // initialize array
+   Int_t** indexmap = 0;
+   indexmap = new Int_t*[max];
+   for (Int_t i=0;i<max;i++) {
+      indexmap[i] = new Int_t[max];
+      for (Int_t j=0;j<max;j++) {
+         indexmap[i][j] = -1;
+      }
+   }
+
+   // get angle map size
+   Int_t mapsize = anglemap.size();
+
+   // loop through array numbers (a list of crystals in the array)
+   for (Int_t i=0;i<size;i++) {
+      if (arraynumbers[i]<1 || arraynumbers[i]>64) {
+         printf("%i is not a good array number.\n",arraynumbers[i]);
+         printf("Skipping... you'll probably get some errors.\n");
+         continue;
+      }
+
+      // identify detector and crystal numbers
+      Int_t detector1 = (arraynumbers[i]-1)/4 + 1;
+      Int_t crystal1 = (arraynumbers[i]-1)%4;
+      TVector3 positionone = TGriffin::GetPosition(detector1,crystal1,distances[i]); // distance is in mm, usually 110, 145, or 160
+
+      // here, we want all combinations for the indices, so we start from j=0
+      for (Int_t j=0;j<size;j++) {
+         // identify detector and crystal numbers
+         Int_t detector2 = (arraynumbers[j]-1)/4 + 1;
+         Int_t crystal2 = (arraynumbers[j]-1)%4;
+         TVector3 positiontwo = TGriffin::GetPosition(detector2,crystal2,distances[j]); // distance is in mm, usually 110, 145, or 160
+         Double_t angle = positionone.Angle(positiontwo); // in radians
+         for (Int_t m=0;m<mapsize;m++) {
+            if (TMath::Abs(angle-anglemap[m])<0.00005)
+            {
+               Int_t index1 = arraynumbers[i]-1;
+               Int_t index2 = arraynumbers[j]-1;
+               indexmap[index1][index2] = m;
+               break;
+            }
+         }
+      }
+   }
+
+   return indexmap;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Creates maps of angle pair vs. angular index and angular index vs. opening angle.
+///
+/// \param[in] arraynumbers Vector of array numbers used in this experiment
+/// \param[in] distances Vector of detector distances for those array numbers
+///
+
+Int_t TAngularCorrelation::GenerateMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances)
+{
+   // basic consistency check
+   const Int_t size = arraynumbers.size();
+   if (size!=(Int_t)distances.size()) {
+      printf("Lengths of array number and distance vectors are inconsistent.\n");
+      printf("Array number vector size: %i\n",size);
+      printf("Distance vector size: %i\n",(Int_t)distances.size());
+   }
+
+   // clear vector map
+   fAngleMap.clear();
+
+   // find maximum array number (which will be the index map size)
+   fIndexMapSize = 0;
+   for (Int_t i=0;i<size;i++) {
+      if (arraynumbers[i]>fIndexMapSize) fIndexMapSize = arraynumbers[i];
+   }
+
+   // generate maps
+   fAngleMap = GenerateAngleMap(arraynumbers,distances);
+   fNumIndices = fAngleMap.size();
+   fIndexMap = GenerateIndexMap(arraynumbers,distances,fAngleMap);
+   fWeights = GenerateWeights(arraynumbers,distances,fIndexMap);
+
+   return fNumIndices;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Creates maps for typical GRIFFIN configurations
+///
+/// \param[in] detectors number of detectors
+/// \param[in] distance distance of detectors (in mm)
+///
+/// 16 detectors: full array
+/// 15 detectors: full array less detector 13
+/// 12 detectors: upstream lampshade and corona, detectors 5-16
+/// 11 detectors: upstream lampshade and corona, less detector 13
+/// 8 detectors: corona only
+/// For more detailed configurations, please use GenerateMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances)
+
+Int_t TAngularCorrelation::GenerateMaps(Int_t detectors, Int_t distance)
+{
+   std::vector<Int_t> array_numbers;
+   std::vector<Int_t> distances;
+
+   if (detectors==16) {
+      printf("Generating maps for full array setup.\n");
+      for (Int_t i=1;i<=64;i++) {
+         array_numbers.push_back(i);
+         distances.push_back(distance);
+      }
+   } else if (detectors==15) {
+      printf("Generating maps for full array setup, less detector 13.\n");
+      for (Int_t i=1;i<=64;i++) {
+         if (i>=49 && i<=52) continue; // no detector 13
+         array_numbers.push_back(i);
+         distances.push_back(distance);
+      }
+   } else if (detectors==12) {
+      printf("Generating maps for detectors 5-16.\n");
+      for (Int_t i=17;i<=64;i++) {
+         array_numbers.push_back(i);
+         distances.push_back(distance);
+      }
+   } else if (detectors==11) {
+      printf("Generating maps for detectors 5-16, less detector 13.\n");
+      for (Int_t i=17;i<=64;i++) {
+         if (i>=49 && i<=52) continue; // no detector 13
+         array_numbers.push_back(i);
+         distances.push_back(distance);
+      }
+   } else if (detectors==8) {
+      printf("Generating maps for the corona only, detectors 5-12.\n");
+      for (Int_t i=17;i<=48;i++) {
+         array_numbers.push_back(i);
+         distances.push_back(distance);
+      }
+   } else {
+      printf("This option isn't coded. Please use the more general GenerateMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances)function.\n");
+      return 0;
+   }
+
+   Int_t val = GenerateMaps(array_numbers,distances);
+
+   return val;
+}

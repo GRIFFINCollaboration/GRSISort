@@ -53,12 +53,14 @@ class TAngularCorrelation : public TObject {
       Bool_t CheckMaps(); // checks to make sure fIndexMap, fAngleMap, and fWeights are consistent 
       void PrintIndexMap(); // print the map
       void PrintAngleMap(); // print the map
+      void PrintWeights(); // print the map
       //Int_t SetAngleMap(Double_t* angles); // sets the angles in the map, with an array of angles, where the angular index is determined by the index of the array element
       //Int_t SetWeights(Int_t* weights); // input is weight array itself
       static std::vector<Double_t> GenerateAngleMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances);
       static Int_t** GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap);
       static std::vector<Int_t> GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, Int_t** &indexmap); // with input of array number array (crystals that were present in data collection), generates the weights for each angular index (no input generates weights for 16 detectors)
-      Int_t GenerateMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances); // not sure what kind of input we need for something other than the default
+      Int_t GenerateMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances);
+      Int_t GenerateMaps(Int_t detectors, Int_t distance);
    
 /// \cond CLASSIMP
    ClassDef(TAngularCorrelation,0)
