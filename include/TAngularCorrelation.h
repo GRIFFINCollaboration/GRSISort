@@ -20,11 +20,11 @@ class TAngularCorrelation : public TObject {
       TH2D* f2DSlice; /// 2D histogram of angular index vs. gamma energy
       TH1D* fIndexCorrelation; /// 1D plot of counts vs. angular index
       std::vector<TPeak*> fPeaks; /// array of TPeaks used to create fIndexCorrelations
-      Int_t** fIndexMap; /// 2D array correlating array number pairs with angular index
+      Int_t** fIndexMap; /// 2D square array correlating array number pairs with angular index
+      Int_t fNumIndices; // number of angular indices
+      Int_t fIndexMapSize; /// size of fIndexMap
       std::vector<Double_t> fAngleMap; /// array correlating angular index with opening angle
       std::vector<Int_t> fWeights; /// array correlating angular index with weight (number of detector pairs at that index)
-      //TODO: Figure out how to do the group map
-      //static map fGroupMap; // a map specifying how grouping will occur
 
    public:
       virtual ~TAngularCorrelation();
@@ -34,7 +34,7 @@ class TAngularCorrelation : public TObject {
       TH2D* Get2DSlice() { return f2DSlice; }
       TH1D* GetIndexCorrelation() { return fIndexCorrelation; }
       TPeak* GetPeak(Int_t index) { return fPeaks[index]; }
-      Int_t GetAngularIndex(Int_t arraynum1, Int_t arraynum2) { return fIndexMap[arraynum1][arraynum2]; } // returns the angular index for a pair of detectors
+      Int_t GetAngularIndex(Int_t arraynum1, Int_t arraynum2); // returns the angular index for a pair of detectors
       Double_t GetAngleFromIndex(Int_t index) { return fAngleMap[index]; } // returns the opening angle for a specific angular index
       Double_t GetWeightFromIndex(Int_t index) { return fWeights[index]; } // returns the weight for a specific angular index
 
@@ -54,10 +54,11 @@ class TAngularCorrelation : public TObject {
       void PrintIndexMap(); // print the map
       void PrintAngleMap(); // print the map
       //Int_t SetAngleMap(Double_t* angles); // sets the angles in the map, with an array of angles, where the angular index is determined by the index of the array element
-      //Int_t GenerateWeights(Int_t* detectors); // with input of array number array (crystals that were present in data collection), generates the weights for each angular index (no input generates weights for 16 detectors)
       //Int_t SetWeights(Int_t* weights); // input is weight array itself
-      Int_t GenerateIndexMaps(Int_t distance); // not sure what kind of input we need for something other than the default
-      //Int_t GenerateGroupingMap(); // not sure how this function is going to work
+      static std::vector<Double_t> GenerateAngleMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances);
+      static Int_t** GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap);
+      static std::vector<Int_t> GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, Int_t** &indexmap); // with input of array number array (crystals that were present in data collection), generates the weights for each angular index (no input generates weights for 16 detectors)
+      Int_t GenerateMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances); // not sure what kind of input we need for something other than the default
    
 /// \cond CLASSIMP
    ClassDef(TAngularCorrelation,0)
