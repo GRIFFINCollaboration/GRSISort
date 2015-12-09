@@ -67,6 +67,11 @@ class TTigressHit : public TGRSIDetectorHit {
 	inline Double_t GetSignalToNoise()	  { return fSig2Noise;	} //!<!
 	inline Double_t GetFitTime()			  { return fTimeFit;	} //!<!
 
+	int GetTigressNumber()	{	
+														int number = 4*(GetDetector()-1) + GetCrystal(); 
+														return number;
+													}
+
 	inline double GetDoppler(double beta, TVector3 *vec=0) { 
 		if(vec==0) {
 			vec = &fBeam;

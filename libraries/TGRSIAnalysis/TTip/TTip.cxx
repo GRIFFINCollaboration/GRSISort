@@ -58,10 +58,10 @@ void TTip::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
   TChannel chan = TChannel::GetChannel(dethit.GetAddress());
   dethit.SetUpNumbering(chan);
 
-  if(TGRSIRunInfo::IsWaveformFitting()) // && !dethit.IsCsI())
-	dethit.SetWavefit(*frag);
-  //else if(TGRSIRunInfo::IsWaveformFitting() && =dethit.IsCsI()) 	   
-	//dethit.SetPID(*frag);
+  if(TGRSIRunInfo::IsWaveformFitting() && !dethit.IsCsI())
+		dethit.SetWavefit(*frag);
+  else if(TGRSIRunInfo::IsWaveformFitting() && dethit.IsCsI()) 	   
+		dethit.SetPID(*frag);
 
   fTipHits.push_back(dethit);
 }
