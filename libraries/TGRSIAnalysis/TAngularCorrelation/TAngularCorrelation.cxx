@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include "TGriffin.h"
 #include "TMath.h"
+#include "TCanvas.h"
 
 /// \cond CLASSIMP
 ClassImp(TAngularCorrelation)
@@ -103,9 +104,90 @@ TH1D* TAngularCorrelation::IntegralSlices(TH2* hst, Double_t min, Double_t max)
 /// and returns a TH1D with x-axis of angular index and a y-axis of TPeak area for
 /// that angular index.
 
-TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak)
+TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization = kTRUE)
 {
-//TODO: This entire function
+   ///////////////////////////////////////////////////////
+   // Set-up histograms
+   // ////////////////////////////////////////////////////
+
+   // pull angular index limits from hst
+   // assumes that angular index is y-axis and energy is x-axis
+   Int_t indexmin = (Int_t) hst->GetYaxis()->GetXmin();
+   Int_t indexmax = (Int_t) hst->GetYaxis()->GetXmax();
+   const Int_t indexbins = indexmax-indexmin;
+
+   // pull name from hst, modify for 1D hst
+   const Char_t* hst2dname = hst->GetName();
+   const Char_t* hst2dtitle = hst->GetTitle();
+   const Char_t* hst1dname = Form("%s_%ikeV",hst2dname,(Int_t)peak->GetCentroid());
+   const Char_t* hst1dtitle = Form("%s-%ikeV",hst2dtitle,(Int_t)peak->GetCentroid());
+
+   // initialize histogram to return
+   TH1D* newhst = new TH1D(hst1dname,hst1dtitle,indexbins,indexmin,indexmax);
+
+   // calculate errors on hst (if not already calculated)
+   hst->Sumw2();
+
+   // set the range on the energy axis (x)
+   // this isn't strictly necessary, but it will make the histograms smaller
+   // and visually, easier to see in the diagnostic.
+   Double_t minenergy,maxenergy;
+   peak->GetRange(minenergy,maxenergy);
+   Double_t difference = maxenergy-minenergy;
+   minenergy = minenergy-0.5*difference;
+   maxenergy = maxenergy+0.5*difference;
+   hst->GetXaxis()->SetRangeUser(minenergy,maxenergy);
+
+   ///////////////////////////////////////////////////////
+   // Fitting and visualization
+   ///////////////////////////////////////////////////////
+
+   std::vector<TCanvas*> c;
+   std::vector<TH1D*> slices;
+
+   // loop over the indices
+   for (Int_t i=1;i<=indexmax-indexmin;i++) {
+      Int_t index = hst->GetYaxis()->GetBinLowEdge(i);
+      // find the correct pad
+      Int_t canvas = (i-1)/16;
+      Int_t pad = (i-1)%16;
+      if (pad==0) {
+         TCanvas* temp = new TCanvas(Form("c%i",canvas),Form("c%i",canvas),800,800);
+         temp->Divide(4,4);
+         c.push_back(temp);
+      }
+      // go to canvas pad
+      c[canvas]->cd(pad+1);
+      // pull individual slice
+      TH1D* temphst = hst->ProjectionY(Form("%s_proj%i",hst2dname,index),i,i);
+      slices.push_back(temphst);
+      slices[i-1]->Draw("pe1");
+
+      // rename TPeak
+      peak->SetName(Form("%s_proj%i_peak",hst2dname,index));
+
+      // fit TPeak
+      peak->Fit(slices[i-1]);
+
+      // assign TPeak to fPeaks array
+      this->SetPeak(index,(TPeak*) slices[i-1]->GetFunction(Form("%s_proj%i_peak",hst2dname,index)));
+
+      // extract area
+      Double_t area = ((TPeak*) this->GetPeak(index))->GetArea();
+      Double_t area_err = ((TPeak*) this->GetPeak(index))->GetAreaErr();
+
+      // fill histogram with area
+      newhst->SetBinContent(i,area);
+      newhst->SetBinError(i,area_err);
+   }
+
+   ///////////////////////////////////////////////////////
+   // Clean-up
+   ///////////////////////////////////////////////////////
+
+   // assign histogram to fIndexCorrelation
+   fIndexCorrelation = newhst;
+
    return fIndexCorrelation;
 }
 
@@ -463,6 +545,7 @@ Int_t TAngularCorrelation::GenerateMaps(std::vector<Int_t> &arraynumbers, std::v
 /// 11 detectors: upstream lampshade and corona, less detector 13
 /// 8 detectors: corona only
 /// For more detailed configurations, please use GenerateMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances)
+///
 
 Int_t TAngularCorrelation::GenerateMaps(Int_t detectors, Int_t distance)
 {
