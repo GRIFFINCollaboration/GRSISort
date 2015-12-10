@@ -19,7 +19,11 @@ class TAngularCorrelation : public TObject {
    private:
       TH2D* f2DSlice; /// 2D histogram of angular index vs. gamma energy
       TH1D* fIndexCorrelation; /// 1D plot of counts vs. angular index
-      std::map<int,TPeak*> fPeaks; /// array of TPeaks used to create fIndexCorrelations
+      TH1D* fChi2; /// 1D plot of chi^2 vs. angular index
+      TH1D* fCentroid; /// 1D plot of centroid vs. angular index
+      TH1D* fFWHM; /// 1D plot of FWHM vs. angular index
+      std::map<Int_t,TPeak*> fPeaks; /// array of TPeaks used to create fIndexCorrelations
+      std::map<Int_t,TH1D*> f1DSlices; /// array of 1D histograms used to create fIndexCorrelations
       Int_t** fIndexMap; /// 2D square array correlating array number pairs with angular index
       Int_t fNumIndices; // number of angular indices
       Int_t fIndexMapSize; /// size of fIndexMap
@@ -33,25 +37,35 @@ class TAngularCorrelation : public TObject {
       // getters
       TH2D* Get2DSlice() { return f2DSlice; }
       TH1D* GetIndexCorrelation() { return fIndexCorrelation; }
-      TPeak* GetPeak(Int_t index) { return fPeaks[index]; }
+      TH1D* GetChi2Hst() { return fChi2; }
+      TH1D* GetCentroidHst() { return fCentroid; }
+      TH1D* GetFWHMHst() { return fFWHM; }
+      TPeak* GetPeak(Int_t index);
+      TH1D* Get1DSlice(Int_t index) { return f1DSlices[index]; }
       Int_t GetAngularIndex(Int_t arraynum1, Int_t arraynum2); // returns the angular index for a pair of detectors
       //TODO: move the next function to implementation file and check if in range
       Double_t GetAngleFromIndex(Int_t index) { return fAngleMap[index]; } // returns the opening angle for a specific angular index
       //TODO: move the next function to implementation file and check if in range
       Double_t GetWeightFromIndex(Int_t index) { return fWeights[index]; } // returns the weight for a specific angular index
+      Int_t GetWeightsSize() { return fWeights.size();}
 
       // simple setters
       void Set2DSlice(TH2D* hst) { f2DSlice = hst; }
       void SetIndexCorrelation(TH1D* hst) { fIndexCorrelation = fIndexCorrelation; }
       //TODO: move the next function to implementation file and update fIndexCorrelation
       void SetPeak(Int_t index, TPeak* peak) { fPeaks[index] = peak; }
+      void Set1DSlice(Int_t index, TH1D* slice) { f1DSlices[index] = slice; }
 
       TH2D* Create2DSlice(THnSparse* hst, Double_t min, Double_t max, Bool_t folded, Bool_t grouping);
       TH1D* IntegralSlices(TH2* hst, Double_t min, Double_t max);
       TH1D* FitSlices(TH2* hst,TPeak* peak,Bool_t visualization);
+      TH1D* DivideByWeights(TH1* hst);
+      void DivideByWeights();
+      void UpdatePeak(Int_t index,TPeak* peak);
       TGraphAsymmErrors* CreateGraphFromHst(TH1* hst);
       TGraphAsymmErrors* CreateGraphFromHst() { return CreateGraphFromHst(fIndexCorrelation); }
-      //void UpdateIndexCorrelation();
+      void UpdateIndexCorrelation();
+      void UpdateDiagnostics();
 
       // map functions
       Bool_t CheckMaps(); // checks to make sure fIndexMap, fAngleMap, and fWeights are consistent 
