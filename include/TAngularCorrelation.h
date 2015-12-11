@@ -25,10 +25,12 @@ class TAngularCorrelation : public TObject {
       std::map<Int_t,TPeak*> fPeaks; /// array of TPeaks used to create fIndexCorrelations
       std::map<Int_t,TH1D*> f1DSlices; /// array of 1D histograms used to create fIndexCorrelations
       Int_t** fIndexMap; /// 2D square array correlating array number pairs with angular index
-      Int_t fNumIndices; // number of angular indices
+      Int_t fNumIndices; /// number of angular indices
       Int_t fIndexMapSize; /// size of fIndexMap
       std::vector<Double_t> fAngleMap; /// array correlating angular index with opening angle
       std::vector<Int_t> fWeights; /// array correlating angular index with weight (number of detector pairs at that index)
+      Bool_t fFolded; /// switch to indicate a folded correlation
+      Bool_t fGrouped; /// switch to indicated a grouped correlation
 
    public:
       virtual ~TAngularCorrelation();

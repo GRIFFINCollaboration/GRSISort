@@ -22,6 +22,8 @@ TAngularCorrelation::TAngularCorrelation()
    f2DSlice = 0;
    fIndexCorrelation = 0;
    fIndexMapSize = 0;
+   fFolded = kFALSE;
+   fGrouped = kFALSE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -84,7 +86,10 @@ TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t 
 
    // TODO: folding
    if (fold) {
-      // do nothing
+      // set kFolded bool
+      // check for angle map calculated
+      // fold f2DSlice
+      // compare cos theta of angular indices
    }
    // TODO: grouping
    if (group) {
