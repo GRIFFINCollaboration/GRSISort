@@ -175,11 +175,15 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       for(size_t i = 0; i < fTigressHits.size(); ++i)	{
         if((GetTigressHit(i)->GetDetector() == static_cast<UInt_t>(mnemonic->arrayposition))  && (GetTigressHit(i)->GetCrystal() == CoreNbr)) {
           GetTigressHit(i)->CopyFragment(*frag);
+					if(TGRSIRunInfo::IsWaveformFitting())
+						GetTigressHit(i)->SetWavefit(*frag);
           return;
         }
       }
       //if we reach here, this is a new core, so we create it from the fragment and add it
       TTigressHit corehit(*frag);
+			if(TGRSIRunInfo::IsWaveformFitting())
+				corehit.SetWavefit(*frag);
       fTigressHits.push_back(corehit);
     } else {                         
       TGRSIDetectorHit temp(*frag);

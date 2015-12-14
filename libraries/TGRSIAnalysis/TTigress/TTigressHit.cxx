@@ -26,6 +26,7 @@ void TTigressHit::Clear(Option_t *opt) {
   fCrystal  = -1;
   fFirstSegment = 0;
   fFirstSegmentCharge = 0.0;
+  fTimeFit = 0;
 
   fSegments.clear();
   fBgos.clear();
@@ -36,6 +37,7 @@ void TTigressHit::Clear(Option_t *opt) {
 
 void TTigressHit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
+  static_cast<TTigressHit&>(rhs).fTimeFit              = fTimeFit;
   static_cast<TTigressHit&>(rhs).fSegments             = fSegments;
   static_cast<TTigressHit&>(rhs).fBgos                 = fBgos;
   static_cast<TTigressHit&>(rhs).fCrystal              = fCrystal;
@@ -110,6 +112,43 @@ int TTigressHit::GetCrystal() const {
       return 3;  
   };
   return -1;  
+}
+
+int TTigressHit::GetCrystal() {
+  if(IsCrystalSet())
+    return fCrystal;
+
+  TChannel *chan = GetChannel();
+  if(!chan)
+    return -1;
+  MNEMONIC mnemonic;
+  ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+  char color = mnemonic.arraysubposition[0];
+  return SetCrystal(color);  
+}
+
+int TTigressHit::SetCrystal(int crynum) {
+   fCrystal = crynum;
+   return fCrystal;
+}
+
+int TTigressHit::SetCrystal(char color) { 
+   switch(color) {
+      case 'B':
+         fCrystal = 0;
+         break;
+      case 'G':
+         fCrystal = 1;
+         break;
+      case 'R':
+         fCrystal = 2;
+         break;
+      case 'W':
+         fCrystal = 3;  
+         break;
+   };
+   SetFlag(TGRSIDetectorHit::kIsSubDetSet,true);
+   return fCrystal;
 }
 
 void TTigressHit::SetWavefit(TFragment &frag)   { 

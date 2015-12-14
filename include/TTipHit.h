@@ -71,11 +71,13 @@ class TTipHit : public TGRSIDetectorHit {
 			ParseMNEMONIC(channel->GetChannelName(), &mnemonic); 
 			Int_t tmp = atoi(mnemonic.arraysubposition.c_str()); 
 			SetTipChannel(10*mnemonic.arrayposition + tmp); 
+			if(mnemonic.subsystem.compare(0,1,"W")==0)
+				SetCsI();
 	 }
 
     void SetWavefit(TFragment&);
 
-	//void SetPID(TFragment&);
+		void SetPID(TFragment&);
 
   public:
     void Clear(Option_t *opt = "");                        //!<!

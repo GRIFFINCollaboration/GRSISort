@@ -4,11 +4,11 @@
 ClassImp(TPulseAnalyzer)
 /// \endcond
 
-TPulseAnalyzer::TPulseAnalyzer() : wpar(NULL), frag(NULL), spar(NULL) {
+TPulseAnalyzer::TPulseAnalyzer() : wpar(NULL), frag(NULL), spar(NULL), shpar(NULL) {
 	Clear();
 }
 
-TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac) : wpar(NULL), frag(NULL), spar(NULL) {
+TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac) : wpar(NULL), frag(NULL), spar(NULL), shpar(NULL) {
 	Clear();
 	SetData(fragment,noise_fac);
 }
@@ -801,6 +801,7 @@ double TPulseAnalyzer::CsIt0(){
 		shpar=new ShapePar;
 		//printf("Calculating exclusion zone\n");
 		GetCsIExclusionZone();
+		int tmpchisq = GetCsIShape();
 		//printf("Calculating shape\n");
 
 		SetCsI();
@@ -833,6 +834,7 @@ double TPulseAnalyzer::CsIPID(){
 		shpar->t[3] = 380.0;
 
 		GetCsIExclusionZone();
+		int tmpchisq = GetCsIShape();
 	
 		double f = shpar->am[2];
 		double s = shpar->am[3];
