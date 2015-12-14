@@ -54,20 +54,21 @@ class TTigressHit : public TGRSIDetectorHit {
 	void AddSegment(TGRSIDetectorHit& seg) 	  { fSegments.push_back(seg);	}	//!<!
 	void AddBGO(TGRSIDetectorHit& bgo) 		     { fBgos.push_back(bgo);	}	   //!<!
 
-	void SetCrystal()	                   { fCrystal = GetCrystal(); SetFlag(TGRSIDetectorHit::kIsSubDetSet,true); }		//!<!
-	void SetCrystal(UShort_t crystal)    { fCrystal = crystal;      SetFlag(TGRSIDetectorHit::kIsSubDetSet,true); }		//!<!
+  int SetCrystal(char color);
+  int SetCrystal(int crynum);
 	void SetInitalHit(const int &i)		 { fFirstSegment = i; }				//!<!
 	Bool_t IsCrystalSet() const          { return IsSubDetSet();}
 
 	/////////////////////////		/////////////////////////////////////
 	int GetCrystal() const;	          //{	return crystal;			}		//!<!
+	int GetCrystal();
 	inline int GetInitialHit()		               {	return fFirstSegment;	}			//!<!
 	
 	void SetWavefit(TFragment&);
 	inline Double_t GetSignalToNoise()	  { return fSig2Noise;	} //!<!
 	inline Double_t GetFitTime()			  { return fTimeFit;	} //!<!
 
-	int GetTigressNumber()	{	
+	int GetArrayNumber()	{	
 														int number = 4*(GetDetector()-1) + GetCrystal(); 
 														return number;
 													}

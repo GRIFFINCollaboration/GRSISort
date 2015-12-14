@@ -114,6 +114,43 @@ int TTigressHit::GetCrystal() const {
   return -1;  
 }
 
+int TTigressHit::GetCrystal() {
+  if(IsCrystalSet())
+    return fCrystal;
+
+  TChannel *chan = GetChannel();
+  if(!chan)
+    return -1;
+  MNEMONIC mnemonic;
+  ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+  char color = mnemonic.arraysubposition[0];
+  return SetCrystal(color);  
+}
+
+int TTigressHit::SetCrystal(int crynum) {
+   fCrystal = crynum;
+   return fCrystal;
+}
+
+int TTigressHit::SetCrystal(char color) { 
+   switch(color) {
+      case 'B':
+         fCrystal = 0;
+         break;
+      case 'G':
+         fCrystal = 1;
+         break;
+      case 'R':
+         fCrystal = 2;
+         break;
+      case 'W':
+         fCrystal = 3;  
+         break;
+   };
+   SetFlag(TGRSIDetectorHit::kIsSubDetSet,true);
+   return fCrystal;
+}
+
 void TTigressHit::SetWavefit(TFragment &frag)   { 
   TPulseAnalyzer pulse(frag);	    
   if(pulse.IsSet()){
