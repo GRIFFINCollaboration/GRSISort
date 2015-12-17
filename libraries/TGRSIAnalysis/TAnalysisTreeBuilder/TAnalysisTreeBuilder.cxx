@@ -595,8 +595,8 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
    if(info->Griffin())   { fGriffin = 0; }
    if(info->Sceptar())   { fSceptar = 0; }
    if(info->Paces())     { fPaces = 0; } 
-   //if(info->Dante())     { fDante->Clear(); } 
-   if(info->ZeroDegree()){ fZeroDegree->Clear(); } 
+   //if(info->Dante())     { fDante = 0; } 
+   if(info->ZeroDegree()){ fZeroDegree = 0; } 
    if(info->Descant())   { fDescant = 0; }
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
