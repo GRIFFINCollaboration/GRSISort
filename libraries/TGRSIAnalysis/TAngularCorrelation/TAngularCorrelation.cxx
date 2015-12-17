@@ -210,11 +210,11 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       if (!fitresult) continue; // if fit failed, continue on to next index
 
       // assign TPeak to fPeaks array
-      this->SetPeak(index,(TPeak*) temphst->GetFunction(Form("%s_proj%i_peak",hst2dname,index)));
+      this->SetPeak(index,static_cast<TPeak*>(temphst->GetFunction(Form("%s_proj%i_peak",hst2dname,index))));
 
       // extract area
-      Double_t area = ((TPeak*) this->GetPeak(index))->GetArea();
-      Double_t area_err = ((TPeak*) this->GetPeak(index))->GetAreaErr();
+      Double_t area = static_cast<TPeak*>(this->GetPeak(index))->GetArea();
+      Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
 
       // fill histogram with area
       newhst->SetBinContent(i,area);
@@ -242,12 +242,12 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       Int_t bin = newhst->FindBin(index);
 
       // extract pertinent values from TPeaks
-      Double_t chi2 = ((TPeak*) this->GetPeak(index))->GetChisquare();
-      Double_t NDF = (Double_t) ((TPeak*) this->GetPeak(index))->GetNDF();
-      Double_t centroid = ((TPeak*) this->GetPeak(index))->GetCentroid();
-      Double_t centroid_err = ((TPeak*) this->GetPeak(index))->GetCentroidErr();
-      Double_t fwhm = ((TPeak*) this->GetPeak(index))->GetFWHM();
-      Double_t fwhm_err = ((TPeak*) this->GetPeak(index))->GetFWHMErr();
+      Double_t chi2 = static_cast<TPeak*>(this->GetPeak(index))->GetChisquare();
+      Double_t NDF = (Double_t) static_cast<TPeak*>(this->GetPeak(index))->GetNDF();
+      Double_t centroid = static_cast<TPeak*>(this->GetPeak(index))->GetCentroid();
+      Double_t centroid_err = static_cast<TPeak*>(this->GetPeak(index))->GetCentroidErr();
+      Double_t fwhm = static_cast<TPeak*>(this->GetPeak(index))->GetFWHM();
+      Double_t fwhm_err = static_cast<TPeak*>(this->GetPeak(index))->GetFWHMErr();
 
       // fill histogram with values
       chi2hst->SetBinContent(bin,chi2/NDF);
@@ -704,12 +704,12 @@ void TAngularCorrelation::UpdateIndexCorrelation()
       Int_t bin = ((TH1D*) this->GetIndexCorrelation())->FindBin(index);
 
       // extract area
-      Double_t area = ((TPeak*) this->GetPeak(index))->GetArea();
-      Double_t area_err = ((TPeak*) this->GetPeak(index))->GetAreaErr();
+      Double_t area = static_cast<TPeak*>(this->GetPeak(index))->GetArea();
+      Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
 
       // fill histogram with area
-      ((TH1D*)this->GetIndexCorrelation())->SetBinContent(bin,area);
-      ((TH1D*)this->GetIndexCorrelation())->SetBinError(bin,area_err);
+      static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinContent(bin,area);
+      static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinError(bin,area_err);
    }
 
    return;
@@ -727,19 +727,19 @@ void TAngularCorrelation::UpdateDiagnostics()
       Int_t bin = ((TH1D*) this->GetIndexCorrelation())->FindBin(index);
 
       // extract pertinent values from TPeaks
-      Double_t chi2 = ((TPeak*) this->GetPeak(index))->GetChisquare();
-      Double_t NDF = (Double_t) ((TPeak*) this->GetPeak(index))->GetNDF();
-      Double_t centroid = ((TPeak*) this->GetPeak(index))->GetCentroid();
-      Double_t centroid_err = ((TPeak*) this->GetPeak(index))->GetCentroidErr();
-      Double_t fwhm = ((TPeak*) this->GetPeak(index))->GetFWHM();
-      Double_t fwhm_err = ((TPeak*) this->GetPeak(index))->GetFWHMErr();
+      Double_t chi2 = static_cast<TPeak*>(this->GetPeak(index))->GetChisquare();
+      Double_t NDF = (Double_t)static_cast<TPeak*>(this->GetPeak(index))->GetNDF();
+      Double_t centroid = static_cast<TPeak*>(this->GetPeak(index))->GetCentroid();
+      Double_t centroid_err = static_cast<TPeak*>(this->GetPeak(index))->GetCentroidErr();
+      Double_t fwhm = static_cast<TPeak*>(this->GetPeak(index))->GetFWHM();
+      Double_t fwhm_err = static_cast<TPeak*>(this->GetPeak(index))->GetFWHMErr();
 
       // fill histogram with values
-      ((TH1D*)this->GetChi2Hst())->SetBinContent(bin,chi2/NDF);
-      ((TH1D*)this->GetCentroidHst())->SetBinContent(bin,centroid);
-      ((TH1D*)this->GetCentroidHst())->SetBinError(bin,centroid_err);
-      ((TH1D*)this->GetFWHMHst())->SetBinContent(bin,fwhm);
-      ((TH1D*)this->GetFWHMHst())->SetBinError(bin,fwhm_err);
+      static_cast<TH1D*>(this->GetChi2Hst())->SetBinContent(bin,chi2/NDF);
+      static_cast<TH1D*>(this->GetCentroidHst())->SetBinContent(bin,centroid);
+      static_cast<TH1D*>(this->GetCentroidHst())->SetBinError(bin,centroid_err);
+      static_cast<TH1D*>(this->GetFWHMHst())->SetBinContent(bin,fwhm);
+      static_cast<TH1D*>(this->GetFWHMHst())->SetBinError(bin,fwhm_err);
    }
 
    return;
