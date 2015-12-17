@@ -24,7 +24,7 @@ class TAngularCorrelation : public TObject {
       TH1D* fFWHM; /// 1D plot of FWHM vs. angular index
       std::map<Int_t,TPeak*> fPeaks; /// array of TPeaks used to create fIndexCorrelations
       std::map<Int_t,TH1D*> f1DSlices; /// array of 1D histograms used to create fIndexCorrelations
-      Int_t** fIndexMap; /// 2D square array correlating array number pairs with angular index
+      std::map<Int_t,std::map<Int_t,Int_t>> fIndexMap; /// 2D square array correlating array number pairs with angular index
       Int_t fNumIndices; /// number of angular indices
       Int_t fIndexMapSize; /// size of fIndexMap
       std::vector<Double_t> fAngleMap; /// array correlating angular index with opening angle
@@ -77,8 +77,8 @@ class TAngularCorrelation : public TObject {
       //Int_t SetAngleMap(Double_t* angles); // sets the angles in the map, with an array of angles, where the angular index is determined by the index of the array element
       //Int_t SetWeights(Int_t* weights); // input is weight array itself
       static std::vector<Double_t> GenerateAngleMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances);
-      static Int_t** GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap);
-      static std::vector<Int_t> GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, Int_t** &indexmap); // with input of array number array (crystals that were present in data collection), generates the weights for each angular index (no input generates weights for 16 detectors)
+      static std::map<Int_t,std::map<Int_t,Int_t>> GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap);
+      static std::vector<Int_t> GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::map<Int_t,std::map<Int_t,Int_t>> &indexmap); // with input of array number array (crystals that were present in data collection), generates the weights for each angular index (no input generates weights for 16 detectors)
       Int_t GenerateMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances);
       Int_t GenerateMaps(Int_t detectors, Int_t distance);
    

@@ -329,15 +329,21 @@ TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst)
 
 Int_t TAngularCorrelation::GetAngularIndex(Int_t arraynum1, Int_t arraynum2)
 {
-   if (arraynum1>=fIndexMapSize || arraynum2>=fIndexMapSize) {
-      printf("Error: One or more array numbers is larger than the size of fIndexMap.\n");
+   if (arraynum1==0 || arraynum2==0) {
+      printf("Array numbers usually begin at 1 - unless you have programmed\n");
+      printf("it differently explicitly, don't trust this output.\n");
+   }
+   if (fIndexMap.count(arraynum1)==0) {
+      printf("Error: array number %i is not present in the index map.\n",arraynum1);
+      return -1;
+   }
+   if (fIndexMap[arraynum1].count(arraynum2)==0) {
+      printf("Error: element [%i][%i] is not present in the index map.\n",arraynum1,arraynum2);
       return -1;
    }
    // Array numbers start counting at 1
    // Indices of this array start at 0
-   Int_t index1 = arraynum1-1;
-   Int_t index2 = arraynum2-1;
-   return fIndexMap[index1][index2];
+   return fIndexMap[arraynum1][arraynum2];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -363,14 +369,14 @@ Bool_t TAngularCorrelation::CheckMaps()
 
 void TAngularCorrelation::PrintIndexMap()
 {
-   Int_t size = fAngleMap.size();
+   Int_t size = fIndexMapSize;
 
-   for (Int_t i=1;i<size;i++)
+   for (Int_t i=1;i<=size;i++)
    {
       printf("-----------------------------------------------------\n");
       printf("|| Array number 1 | Array number 2 | Angular index ||\n");
       printf("-----------------------------------------------------\n");
-      for (Int_t j=1;j<size;j++) {
+      for (Int_t j=1;j<=size;j++) {
          if (GetAngularIndex(i,j)==-1) continue;
          printf("|| %-14i | %-14i | %-13i ||\n",i,j,GetAngularIndex(i,j));
       }
@@ -490,7 +496,7 @@ std::vector<Double_t> TAngularCorrelation::GenerateAngleMap(std::vector<Int_t> &
 /// The indices for the index map start from zero, so when using array numbers
 /// (which start from one) as input for those indices, you need to subtract one.
 
-std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, Int_t** &indexmap)
+std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::map<Int_t,std::map<Int_t,Int_t>> &indexmap)
 {
    std::vector<Int_t> weights; // vector to return
 
@@ -537,26 +543,13 @@ std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arra
 /// \param[in] anglemap Angle map (probably created with GenerateAngleMap
 ///
 
-Int_t** TAngularCorrelation::GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap)
+std::map<Int_t,std::map<Int_t,Int_t>> TAngularCorrelation::GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap)
 {
-   // get array number size
-   Int_t size = arraynumbers.size();
+   // initialize map
+   std::map<Int_t,std::map<Int_t,Int_t>> indexmap;
 
-   // find maximum array number
-   Int_t max = 0;
-   for (Int_t i=0;i<size;i++) {
-      if (arraynumbers[i]>max) max = arraynumbers[i];
-   }
-   
-   // initialize array
-   Int_t** indexmap = 0;
-   indexmap = new Int_t*[max];
-   for (Int_t i=0;i<max;i++) {
-      indexmap[i] = new Int_t[max];
-      for (Int_t j=0;j<max;j++) {
-         indexmap[i][j] = -1;
-      }
-   }
+   // get arraynumbers size
+   Int_t size = arraynumbers.size();
 
    // get angle map size
    Int_t mapsize = anglemap.size();
@@ -584,8 +577,9 @@ Int_t** TAngularCorrelation::GenerateIndexMap(std::vector<Int_t> &arraynumbers, 
          for (Int_t m=0;m<mapsize;m++) {
             if (TMath::Abs(angle-anglemap[m])<0.00005)
             {
-               Int_t index1 = arraynumbers[i]-1;
-               Int_t index2 = arraynumbers[j]-1;
+               Int_t index1 = arraynumbers[i];
+               Int_t index2 = arraynumbers[j];
+               if (index1==0 || index2==0) printf("found array number of zero?\n");
                indexmap[index1][index2] = m;
                break;
             }
