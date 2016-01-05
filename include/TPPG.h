@@ -1,6 +1,8 @@
 #ifndef TPPG_H
 #define TPPG_H
 
+#include "TBuffer.h"
+
 /** \addtogroup Sorting
  *  @{
  */
