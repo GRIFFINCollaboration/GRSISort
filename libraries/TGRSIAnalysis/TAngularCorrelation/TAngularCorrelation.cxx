@@ -100,6 +100,149 @@ TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// Create energy-gated 2D histogram of energy vs. angular index
+///
+/// \param[in] hstarray TObjArray of TH2 energy vs. energy plots for each angular index
+/// \param[in] min Minimum of energy gate
+/// \param[in] max Maximum of energy gate
+/// \param[in] fold Switch for turning folding on
+/// \param[in] group Switch for turning grouping on (not yet implemented)
+///
+/// Assumes that the index of the TObjArray is the angular index
+///
+/// Projects out the events with one energy between min and max
+/// X-axis of returned histogram is second energy
+/// Y-axis of returned histogram is angular index
+
+TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Double_t max, Bool_t fold = kFALSE, Bool_t group = kFALSE)
+{
+   // identify the type of histograms included in the array
+   // a TH2D will need to be projected differently than a THnSparse array
+   Bool_t sparse = kFALSE; // true if the array has THnSparse histograms
+   Bool_t hst2d = kFALSE; // true if the array has some kind of TH2 histogram
+   TIter next(hstarray);
+   TObject* obj;
+   while((obj=next())) {
+      // TH2 loop
+      if (obj->InheritsFrom("TH2")) {
+         // if there have been no sparse histograms found
+         if (!sparse) {
+            hst2d = kTRUE;
+         }
+         else {
+            printf("found both THnSparse and TH2 in array.\n");
+            printf("currently, Create2DSlice only deals with one.\n");
+            printf("Bailing out.\n");
+            return 0;
+         }
+      } else if (obj->InheritsFrom("THnSparse")) {
+         // if there have been no sparse histograms found
+         if (!hst2d) {
+            sparse = kTRUE;
+         }
+         else {
+            printf("found both THnSparse and TH2 in array.\n");
+            printf("currently, Create2DSlice only deals with one.\n");
+            printf("Bailing out.\n");
+            return 0;
+         }
+      }
+      else {
+         printf("Element is neither THnSparse or TH2.\n");
+         printf("Bailing.\n");
+      }
+   }
+
+   // if the array is neither, bail out
+   if (!sparse && !hst2d) {
+      printf("Can't identify the type of object in the array.\n");
+      printf("Returning without slicing.\n");
+      return 0;
+   }
+
+   // get axis properties
+   Int_t elements = hstarray->GetEntries();
+   Int_t bins = 0;
+   Int_t xmin = 0;
+   Int_t xmax = 0;
+   const Char_t *name = 0;
+   const Char_t *title = 0;
+   if (sparse) {
+      THnSparse* firsthst = (THnSparse*) hstarray->At(0);
+      bins = firsthst->GetAxis(0)->GetNbins();
+      xmin = firsthst->GetAxis(0)->GetBinLowEdge(1);
+      xmax = firsthst->GetAxis(0)->GetBinUpEdge(bins);
+      name = firsthst->GetName();
+      title = firsthst->GetTitle();
+   }
+   else if (hst2d) {
+      TH2* firsthst = (TH2*) hstarray->At(0);
+      bins = firsthst->GetXaxis()->GetNbins();
+      xmin = firsthst->GetXaxis()->GetBinLowEdge(1);
+      xmax = firsthst->GetXaxis()->GetBinUpEdge(bins);
+      name = firsthst->GetName();
+      title = firsthst->GetTitle();
+   }
+
+   // create the empty histogram
+   TH2D* newslice = new TH2D(Form("%s_%i_%i",name,Int_t(min),Int_t(max)),Form("%s, E_{#gamma 1}=[%.1f,%.1f)",title,min,max),bins,xmin,xmax,elements,0,elements);
+
+   // iterate over the array of 2D gamma-gamma matrices
+   for (Int_t i=0;i<elements;i++) {
+      
+      // slice this particular matrix
+      TH1D* tempslice = 0;
+      // sparse option
+      if (sparse) {
+         THnSparse* thishst = (THnSparse*) hstarray->At(i);
+         thishst->GetAxis(0)->SetRangeUser(min,max);
+         tempslice = (TH1D*) thishst->Projection(1,"e"); // the "e" option pushes appropriate errors
+      }
+      // TH2 option
+      else if (hst2d) {
+         TH2* thishst = (TH2*) hstarray->At(i);
+         thishst->GetXaxis()->SetRangeUser(min,max);
+         tempslice = thishst->ProjectionY();
+      }
+
+      // save histogram values
+      Double_t *xvalues = new Double_t[bins];
+      Double_t *yvalues = new Double_t[bins];
+      Double_t *weights = new Double_t[bins];
+      for (Int_t j=1;j<=bins;j++) {
+         xvalues[j-1] = tempslice->GetBinCenter(j);
+         yvalues[j-1] = i;
+         weights[j-1] = tempslice->GetBinContent(j);
+      }
+
+      // fill the 2D histogram with those values
+      newslice->FillN(bins,xvalues,yvalues,weights);
+
+      // cleanup
+      delete tempslice;
+      delete [] xvalues;
+      delete [] yvalues;
+      delete [] weights;
+   }
+
+   // TODO: folding
+   if (fold) {
+      // set kFolded bool
+      // check for angle map calculated
+      // fold f2DSlice
+      // compare cos theta of angular indices
+   }
+   // TODO: grouping
+   if (group) {
+      // do nothing
+   }
+
+   f2DSlice = newslice;
+   
+   return f2DSlice;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 /// Create 1D histogram of counts vs. angular index
 ///
 /// \param[in] hst Two-dimensional histogram of angular index vs. energy
@@ -525,7 +668,7 @@ std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arra
       }
       // here, we want all combinations for the indices, so we start from j=0
       for (Int_t j=0;j<size;j++) {
-         Int_t index = indexmap[arraynumbers[i]-1][arraynumbers[j]-1];
+         Int_t index = indexmap[arraynumbers[i]][arraynumbers[j]];
          Int_t old_weight = weights[index];
          Int_t new_weight = old_weight+1;
          weights[index] = new_weight;
@@ -702,6 +845,7 @@ void TAngularCorrelation::UpdateIndexCorrelation()
       Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
 
       // fill histogram with area
+      printf("Filling bin %i (index %i) with area %f.\n",bin,index,area);
       static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinContent(bin,area);
       static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinError(bin,area_err);
    }
@@ -748,8 +892,14 @@ void TAngularCorrelation::UpdateDiagnostics()
 void TAngularCorrelation::UpdatePeak(Int_t index,TPeak* peak)
 {
    new TCanvas(Form("peak%iupdate",index),Form("Peak %i update",index),200,200);
+   TH1D* temphst = this->Get1DSlice(index);
+   const Char_t *name = temphst->GetListOfFunctions()->At(0)->GetName();
+   peak->SetName(name);
+   printf("renaming peak to %s\n",name);
    peak->Fit(this->Get1DSlice(index),"Q");
    this->SetPeak(index,peak);
+   printf("this->SetPeak(%i,peak);\n",index);
+   this->SetPeak(index,static_cast<TPeak*>(temphst->GetFunction(name)));
    UpdateIndexCorrelation();
    UpdateDiagnostics();
    return;

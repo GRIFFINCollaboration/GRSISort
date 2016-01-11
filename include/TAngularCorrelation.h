@@ -58,7 +58,9 @@ class TAngularCorrelation : public TObject {
       void SetPeak(Int_t index, TPeak* peak) { fPeaks[index] = peak; }
       void Set1DSlice(Int_t index, TH1D* slice) { f1DSlices[index] = slice; }
 
+      // functions that do most of the work
       TH2D* Create2DSlice(THnSparse* hst, Double_t min, Double_t max, Bool_t folded, Bool_t grouping);
+      TH2D* Create2DSlice(TObjArray* hst, Double_t min, Double_t max, Bool_t folded, Bool_t grouping);
       TH1D* IntegralSlices(TH2* hst, Double_t min, Double_t max);
       TH1D* FitSlices(TH2* hst,TPeak* peak,Bool_t visualization);
       TH1D* DivideByWeights(TH1* hst);
