@@ -53,7 +53,7 @@ class TAngularCorrelation : public TObject {
 
       // simple setters
       void Set2DSlice(TH2D* hst) { f2DSlice = hst; }
-      void SetIndexCorrelation(TH1D* hst) { fIndexCorrelation = fIndexCorrelation; }
+      void SetIndexCorrelation(TH1D* hst) { } //fIndexCorrelation = fIndexCorrelation; }
       //TODO: move the next function to implementation file and update fIndexCorrelation
       void SetPeak(Int_t index, TPeak* peak) { fPeaks[index] = peak; }
       void Set1DSlice(Int_t index, TH1D* slice) { f1DSlices[index] = slice; }
