@@ -611,11 +611,11 @@ bool TDataParser::SetGRIFNetworkPacket(uint32_t value, TFragment* frag) {
 	if( (value &0xf0000000) != 0xd0000000) {
 		return false;
 	}
-	if( (value&0x0f000000) == 0x0f000000) {
+	if( (value&0x0f000000) == 0x0f000000 && frag->NetworkPacketNumber>0 ) {
 		// descant zero crossing time.
 		frag->Zc.push_back( value & 0x00ffffff);
 	} else {
-		frag->NetworkPacketNumber = value & 0x00ffffff;
+		frag->NetworkPacketNumber = value & 0x0fffffff;
 		//   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
 	}
 	return true;
