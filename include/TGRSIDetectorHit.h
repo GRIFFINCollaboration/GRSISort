@@ -96,8 +96,8 @@ class TGRSIDetectorHit : public TObject 	{
       virtual double GetEnergy(Option_t* opt="");
       virtual UInt_t GetDetector() const;
 		virtual Short_t GetSegment() const;	
-      virtual ULong_t GetTimeStamp(Option_t* opt="")   const     { return fTimeStamp;   }  // Returns a time value to the nearest nanosecond!
-      virtual Double_t GetTime(Option_t* opt = "") const;
+      virtual ULong_t GetTimeStamp(Option_t* opt="")   const     { return fTimeStamp;   }
+      virtual Double_t GetTime(Option_t* opt = "") const;  ///< Returns a time value to the nearest nanosecond!
       virtual Double_t GetTime(Option_t* opt = "");
       virtual UInt_t GetDetector();
 		virtual Short_t GetSegment();
@@ -126,17 +126,19 @@ class TGRSIDetectorHit : public TObject 	{
 		Bool_t IsSegSet() const	 { return (fBitflags & kIsSegSet); }
       void SetFlag(enum Ebitflag,Bool_t set);
 
-   private:
+   protected:
       UInt_t   fAddress;    ///< address of the the channel in the DAQ.
       Float_t  fCharge;     ///< charge collected from the hit
       Int_t    fCfd;        ///< CFD time of the Hit
       ULong_t  fTimeStamp;  ///< Timestamp given to hit
+      std::vector<Short_t> fWaveform;  ///<
+
+	private:
       Double_t fTime;       //!<! Calibrated Time of the hit
       UInt_t   fDetector;   //!<! Detector Number
 		Short_t  fSegment;	 //!<! Segment number
       TVector3 fPosition;   //!<! Position of hit detector.
       Double_t fEnergy;     //!<! Energy of the Hit.
-      std::vector<Short_t> fWaveform;  ///<
       uint16_t fPPGStatus;  //!<! 
       ULong_t  fCycleTimeStamp; //!<!
 

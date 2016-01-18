@@ -801,7 +801,7 @@ double TPulseAnalyzer::CsIt0(){
 		shpar=new ShapePar;
 		//printf("Calculating exclusion zone\n");
 		GetCsIExclusionZone();
-		int tmpchisq = GetCsIShape();
+		//int tmpchisq = GetCsIShape();
 		//printf("Calculating shape\n");
 
 		SetCsI();
@@ -834,7 +834,7 @@ double TPulseAnalyzer::CsIPID(){
 		shpar->t[3] = 380.0;
 
 		GetCsIExclusionZone();
-		int tmpchisq = GetCsIShape();
+		//int tmpchisq = GetCsIShape();
 	
 		double f = shpar->am[2];
 		double s = shpar->am[3];
