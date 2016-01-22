@@ -70,6 +70,7 @@ class TAngularCorrelation : public TObject {
       TGraphAsymmErrors* CreateGraphFromHst() { return CreateGraphFromHst(fIndexCorrelation); }
       void UpdateIndexCorrelation();
       void UpdateDiagnostics();
+      void DisplayDiagnostics(TCanvas* c_diag);
 
       // map functions
       Bool_t CheckMaps(); // checks to make sure fIndexMap, fAngleMap, and fWeights are consistent 
