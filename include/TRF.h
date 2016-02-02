@@ -1,6 +1,10 @@
 #ifndef TRF_PHASE_H
 #define TRF_PHASE_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <vector>
 #include <iostream>
 #include <stdio.h>
@@ -40,4 +44,5 @@ class TRF : public TDetector {
 		ClassDef(TRF,4)
 /// \endcond
 };
+/*! @} */
 #endif

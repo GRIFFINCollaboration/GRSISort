@@ -1,6 +1,10 @@
 #ifndef TUSERSORTINFO_H
 #define TUSERSORTINFO_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <map>
 
 #include "TList.h"
@@ -24,5 +28,5 @@ class TUserSortInfo : public TGRSISortInfo {
    ClassDef(TUserSortInfo,1);
 /// \endcond
 };
-
+/*! @} */
 #endif

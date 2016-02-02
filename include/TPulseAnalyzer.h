@@ -1,6 +1,10 @@
 #ifndef TPULSE_ANALYZER_H
 #define TPULSE_ANALYZER_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include "TFragment.h"
 #include "TGRSIFunctions.h"
 #include <vector>
@@ -16,9 +20,14 @@
 #include "TF1.h"
 #include "TMath.h"
 
-// Mostly a direct port of SFU code
-// I have stripped out some surplus and encapsulated it, but I havent changed much
-// I'm sure there is more that can be stripped and reformated but it is working currently.
+////////////////////////////////////////////////////////////////////////////////
+/// \class TPulseAnalyzer
+///
+/// Mostly a direct port of SFU code
+/// I have stripped out some surplus and encapsulated it, but I havent changed much
+/// I'm sure there is more that can be stripped and reformated but it is working currently.
+///
+////////////////////////////////////////////////////////////////////////////////
 
 class TPulseAnalyzer {
   private:
@@ -201,4 +210,5 @@ class TPulseAnalyzer {
     ClassDef(TPulseAnalyzer,2)
 /// \endcond
 };
+/*! @} */
 #endif

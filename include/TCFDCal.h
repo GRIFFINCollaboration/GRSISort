@@ -1,6 +1,10 @@
 #ifndef TCFDCAL_H__
 #define TCFDCAL_H__
 
+/** \addtogroup Calibration
+ *  @{
+ */
+
 #include "TCal.h"
 
 class TCFDCal : public TCal {
@@ -32,5 +36,5 @@ class TCFDCal : public TCal {
    ClassDef(TCFDCal,1);
 /// \endcond
 };
-
+/*! @} */
 #endif

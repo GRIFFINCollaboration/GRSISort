@@ -1,6 +1,10 @@
 #ifndef TTIGFRAGMENTQUEUE_H
 #define TTIGFRAGMENTQUEUE_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <stdio.h>
 #include <queue>
 #include <map>
@@ -81,5 +85,5 @@ class TFragmentQueue : public TObject {
 		ClassDef(TFragmentQueue,0); //The Class used to hold fragments when building events
 /// \endcond
 };
-
+/*! @} */
 #endif

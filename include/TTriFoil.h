@@ -1,6 +1,10 @@
 #ifndef TTRIFOIL_PHASE_H
 #define TTRIFOIL_PHASE_H
 
+/** \addtogroup Detectors
+ *  @{
+ */
+
 #include <vector>
 #include <iostream>
 #include <stdio.h>
@@ -38,5 +42,5 @@ class TTriFoil :  public TDetector {
 		ClassDef(TTriFoil,2)
 /// \endcond
 };
-
+/*! @} */
 #endif

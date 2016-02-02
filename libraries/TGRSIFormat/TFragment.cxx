@@ -52,8 +52,6 @@ TFragment::TFragment(const TFragment& rhs, int hit) : TObject() {
   DetectorType = rhs.DetectorType;
   ChannelId = rhs.ChannelId;
 
-  KValue = rhs.KValue;
-
   wavebuffer = rhs.wavebuffer;
 
   if(hit < 0 || hit >= static_cast<int>(Cfd.size())) {
@@ -63,6 +61,7 @@ TFragment::TFragment(const TFragment& rhs, int hit) : TObject() {
 	  ccLong = rhs.ccLong;
 	  Led = rhs.Led;
 	  Charge = rhs.Charge;
+	  KValue = rhs.KValue;
   } else {
 	  Cfd.push_back(rhs.Cfd[hit]);
 	  Zc.push_back(rhs.Zc[hit]);
@@ -70,6 +69,7 @@ TFragment::TFragment(const TFragment& rhs, int hit) : TObject() {
 	  ccLong.push_back(rhs.ccLong[hit]);
 	  Led.push_back(rhs.Led[hit]);
 	  Charge.push_back(rhs.Charge[hit]);
+	  KValue.push_back(rhs.KValue[hit]);
   }
 
   NumberOfHits = Cfd.size();

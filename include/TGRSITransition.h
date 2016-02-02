@@ -1,6 +1,10 @@
 #ifndef TGRSITRANSITION_H
 #define TGRSITRANSITION_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <cstdio>
 
 #include "TClass.h"
@@ -50,5 +54,5 @@ class TGRSITransition : public TObject {
    ClassDef(TGRSITransition,1) //Information about a TNucleus transition
 /// \endcond
 };
-
+/*! @} */
 #endif

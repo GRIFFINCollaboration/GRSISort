@@ -4,7 +4,6 @@
 
 #include "TGRSIOptions.h"
 #include "TGRSIRunInfo.h"
-#include "TGRSIStats.h"
 #include "TGRSIint.h"
 
 /// \cond CLASSIMP
@@ -46,6 +45,7 @@ void TGRSIRootIO::SetUpFragmentTree() {
 	fFragmentTree = new TTree("FragmentTree","FragmentTree");
 	fBufferFrag = 0;
 	fFragmentTree->Bronch("TFragment","TFragment",&fBufferFrag,128000,99);
+	//fFragmentTree->BranchRef();
 	printf("FragmentTree set up.\n");
 }
 
@@ -68,6 +68,7 @@ void TGRSIRootIO::SetUpPPG() {
 	fTimesPPGCalled = 0;
 	if(TGRSIRunInfo::SubRunNumber() <= 0) {
 		fPPG = new TPPG;
+		printf("PPG set up.\n");
 	} else {
 		TFile* prevSubRun = new TFile(Form("fragment%05d_%03d.root",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
 		if(prevSubRun->IsOpen()) {
@@ -76,11 +77,13 @@ void TGRSIRootIO::SetUpPPG() {
 			} else {
 				printf("Error, could not find PPG in file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
 				fPPG = new TPPG;
+				printf("PPG set up.\n");
 			}
 			prevSubRun->Close();
 		} else {
 			printf("Error, could not find file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber());
 			fPPG = new TPPG;
+			printf("PPG set up.\n");
 		}
 	}
 }
@@ -113,6 +116,7 @@ void TGRSIRootIO::SetUpEpicsTree() {
 	fEpicsTree = new TTree("EpicsTree","EpicsTree");
 	fEXBufferFrag = 0;
 	fEpicsTree->Bronch("TEpicsFrag","TEpicsFrag",&fEXBufferFrag,128000,99);
+	fEpicsTree->BranchRef();
 	printf("EPICS-Tree set up.\n");
 }
 
@@ -120,6 +124,12 @@ void TGRSIRootIO::SetUpDiagnostics() {
 	if(fOutFile)
 		fOutFile->cd();
 	fDiagnostics = new TDiagnostics;
+}
+
+TDiagnostics* TGRSIRootIO::GetDiagnostics(){
+	if (!fDiagnostics)
+		SetUpDiagnostics();
+	return fDiagnostics;
 }
 
 void TGRSIRootIO::FillFragmentTree(TFragment* frag) {
@@ -245,9 +255,12 @@ void TGRSIRootIO::FinalizeDiagnostics() {
 	if(!fDiagnostics || !fOutFile)
 		return;
 	fOutFile->cd();
-	fDiagnostics->Read(fPPG); //this function checks itself whether fPPG is NULL or not
-	printf("Writing Diagnostics\n");
+	fDiagnostics->ReadPPG(fPPG); //this function checks itself whether fPPG is NULL or not
+	printf("Writing Diagnostics to root file.\n");
 	fDiagnostics->Write("TDiagnostics",TObject::kSingleKey);
+	if(TGRSIOptions::WriteDiagnostics()) {
+	  fDiagnostics->WriteToFile(Form("stats%05i_%03i.log", TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber()));
+	}
 }
 
 bool TGRSIRootIO::SetUpRootOutFile(int runNumber, int subRunNumber) {
@@ -301,10 +314,6 @@ void TGRSIRootIO::CloseRootOutFile()   {
 		TGRSIRunInfo::Get()->SetRunLength(fFragmentTree->GetMaximum("MidasTimeStamp") - fFragmentTree->GetMinimum("MidasTimeStamp"));
 		printf("set run start to %.0f, and stop to %.0f (run length %.0f)\n",TGRSIRunInfo::Get()->RunStart(),TGRSIRunInfo::Get()->RunStop(),TGRSIRunInfo::Get()->RunLength());
 		TGRSIRunInfo::Get()->Write();
-	}
-
-	if(TGRSIStats::GetSize() > 0) {
-		TGRSIRootIO::Get()->WriteRunStats();
 	}
 
 	fOutFile->Close();
@@ -388,32 +397,4 @@ int TGRSIRootIO::GetSubRunNumber(std::string fileName)	{
 		return atoi(temp.c_str());
 	}
 	return -1;
-}
-
-void TGRSIRootIO::WriteRunStats(){
-	printf("entering writing\n");
-	if(!fOutFile)
-		return;
-	printf("actually writing\n");
-	TGRSIStats* stats = 0;
-	TTree* fStatsTree = new TTree("StatsTree","StatsTree");
-	fStatsTree->Bronch("TGRSIStats","TGRSIStats",&stats);
-
-	std::map<int,TGRSIStats*>::iterator iter;
-	std::ofstream statsOut;
-	statsOut.open(Form("stats%05i_%03i.log",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()));
-	statsOut << "\nRun time to the nearest second = " << TGRSIStats::GetRunTime()  << std::endl << std::endl;
-	for(iter = TGRSIStats::GetMap()->begin();iter!=TGRSIStats::GetMap()->end();iter++) {
-		int tmp_add = iter->second->GetAddress();
-		TChannel* chan = TChannel::GetChannel(tmp_add);
-		if(!chan)
-			continue;
-		stats = iter->second;
-		fStatsTree->Fill();
-		statsOut << "0x"<< std::hex <<  stats->GetAddress() << std::dec  << "\t" <<  chan->GetChannelName() << "\tDeadtime: " << ((float)(stats->GetDeadTime()))*(1E-9) << " seconds." << std::endl;
-	}
-	TGRSIStats::GetMap()->clear();
-	statsOut <<  std::endl;
-	statsOut.close();
-	fStatsTree->Write();
 }

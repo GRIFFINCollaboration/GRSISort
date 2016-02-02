@@ -18,6 +18,7 @@
 #include "TPolyMarker.h"
 #include "TStopwatch.h"
 #include "TSystem.h"
+#include "TGRSIRootIO.h"
 
 #include<TMidasFile.h>
 #include<TMidasEvent.h>
@@ -26,6 +27,7 @@
 
 #include <iostream>
 #include <fstream>
+
 
 Bool_t SplitMezz = false;
 
@@ -107,18 +109,19 @@ class TEventTime {
          if(!(digset.find(Digitizer())->second)){
             digset.find(Digitizer())->second = true;
             if(GetTimeStamp() < lowest_time){
-  /*             if(Digitizer() == 0x0000 ||
+               if(Digitizer() == 0x0000 ||
                   Digitizer() == 0x0100 ||
                   Digitizer() == 0x0200 ||
+                  Digitizer() == 0x0300 ||
                   Digitizer() == 0x1000 ||
                   Digitizer() == 0x1200 ||
                   Digitizer() == 0x1100 ||
                   Digitizer() == 0x1300){
-     */             lowest_time = GetTimeStamp();
+                  lowest_time = GetTimeStamp();
                   best_dig = Digitizer();
                   if(timemidas < low_timemidas)
                      low_timemidas = timemidas;
-           //    }
+               }
             }
          }
       }
@@ -883,6 +886,8 @@ int main(int argc, char **argv) {
       nDigitizers = CorrectionFile(runnumber);
    }
 
+   TGRSIRootIO::Get()->SetUpDiagnostics();
+   
    if(!nDigitizers){
       GFile *outfile = new GFile(filename,"RECREATE");
       std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;

@@ -1,6 +1,10 @@
 #ifndef TSCALER_H
 #define TSCALER_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 /*
  * Author:  V. Bildstein, <vbildste@uoguelph.ca>
  * 
@@ -132,4 +136,5 @@ class TScaler : public TObject {
 	ClassDef(TScaler,2) //Contains scaler information
 /// \endcond
 };
+/*! @} */
 #endif

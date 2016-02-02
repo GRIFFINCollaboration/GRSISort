@@ -5,7 +5,6 @@
 
 #include "TFragmentQueue.h"
 #include "TScalerQueue.h"
-#include "TGRSIStats.h"
 #include "TGRSILoop.h"
 
 #include "TEpicsFrag.h"
@@ -16,7 +15,7 @@
 
 TDataParser* TDataParser::fDataParser = 0;
 bool TDataParser::fNoWaveforms = false;
-bool TDataParser::fRecordStats = false;
+bool TDataParser::fRecordDiag = true;
 
 const unsigned long TDataParser::fMaxTriggerId = 1024 * 1024 * 16; // 24 bits internally
 
@@ -360,9 +359,8 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 		delete EventFrag;
 		return -x;
 	}
-
-	//Changed on 11 Aug 2015 by RD to include PPG events. If the event has DataType 3 and address 0xFFFF, it is a PPG event.
-	if(EventFrag->DataType == 4 && EventFrag->ChannelAddress == 0xFFFF){
+	//Changed on 11 Aug 2015 by RD to include PPG events. If the event has DataType 4 and address 0xFFFF, it is a PPG event.
+   if(EventFrag->DataType == 4 && EventFrag->ChannelAddress == 0xFFFF){
 		delete EventFrag;
 		return GriffinDataToPPGEvent(data,size,midasSerialNumber,midasTime);
 	}
@@ -461,14 +459,12 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 					//   EventFrag->AcceptedChannelId = 0;
 					//}
 
-					if(fRecordStats)
-						FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
-					TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
+					if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
 					return x;
 				} else  {
 					TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
-					TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
+					if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 					return -x;
 				}
 				break;
@@ -615,11 +611,11 @@ bool TDataParser::SetGRIFNetworkPacket(uint32_t value, TFragment* frag) {
 	if( (value &0xf0000000) != 0xd0000000) {
 		return false;
 	}
-	if( (value&0x0f000000) == 0x0f000000) {
+	if( (value&0x0f000000) == 0x0f000000 && frag->NetworkPacketNumber>0 ) {
 		// descant zero crossing time.
 		frag->Zc.push_back( value & 0x00ffffff);
 	} else {
-		frag->NetworkPacketNumber = value & 0x00ffffff;
+		frag->NetworkPacketNumber = value & 0x0fffffff;
 		//   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
 	}
 	return true;
@@ -682,37 +678,6 @@ bool TDataParser::SetGRIFPsd(uint32_t value, TFragment* frag) {
 	return true;
 }
 
-void TDataParser::FillStats(TFragment* frag) {
-	///Takes a TFragment and records statistics for it's channel address.
-	///The statistics recorded currently include:
-	///          The total deadtime for the channel
-	///          The lowest MIDAS Time stamp
-	///          The highest MIDAS Time stamp
-	TGRSIStats* stat = TGRSIStats::GetStats(frag->ChannelAddress); //get the stats for the specific channel
-	stat->IncDeadTime(frag->DeadTime); //Increments the deadtime for the specific channel.
-
-	TGRSIStats::IncGoodEvents(); //Since we made it to this stage, we have a good event and should increment the good event counter
-	//If this event contains either the lowest (or highest) time stamp recorded so far we should increment the 
-	//lowest (or highest) time stamp in the stats. This allows us to determine the total run length.
-	if( (frag->MidasTimeStamp < TGRSIStats::GetLowestMidasTimeStamp()) ||
-			(TGRSIStats::GetLowestMidasTimeStamp() == 0)) {
-		TGRSIStats::SetLowestMidasTimeStamp(frag->MidasTimeStamp);
-	} else if (frag->MidasTimeStamp > TGRSIStats::GetHighestMidasTimeStamp()) {
-		TGRSIStats::SetHighestMidasTimeStamp(frag->MidasTimeStamp);
-	}
-	//If this event contains the lowest (or highest) recorded packet number recorded so far we should increment the
-	// lowest (or highest) network packet in the stats. This allows us to determine whe total number of network 
-	//packets created.
-	if( (frag->NetworkPacketNumber < TGRSIStats::GetLowestNetworkPacket()) ||
-			(TGRSIStats::GetLowestNetworkPacket() == 0)) {
-		TGRSIStats::SetLowestNetworkPacket(frag->NetworkPacketNumber);
-	} else if (frag->NetworkPacketNumber > TGRSIStats::GetHighestNetworkPacket()) {
-		TGRSIStats::SetHighestNetworkPacket(frag->NetworkPacketNumber);
-	}
-
-	return;
-}
-
 int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, int bank, unsigned int midasSerialNumber, time_t midasTime) {
 	TPPGData* ppgEvent = new TPPGData;
 	int  x = 1; //We have already read the header so we can skip the 0th word.
@@ -722,32 +687,31 @@ int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, int bank, unsig
 	if(SetPPGNetworkPacket(data[x],ppgEvent)){ // The network packet placement is not yet stable.
 		++x;
 	}
+   if(SetNewPPGPattern(data[x],ppgEvent)) {
+      ++x;
+   } 
 
-	if(SetNewPPGPattern(data[x],ppgEvent)) {
-		++x;
-	} 
+   for(;x<size;x++) {
+      uint32_t dword  = *(data+x);
+      uint32_t packet = dword & 0xf0000000;
+      uint32_t value  = dword & 0x0fffffff; 
 
-	for(;x<size;x++) {
-		uint32_t dword  = *(data+x);
-		uint32_t packet = dword & 0xf0000000;
-		uint32_t value  = dword & 0x0fffffff; 
-
-		switch(packet) {
-			case 0x80000000: //The 8 packet type is for event headers
-				//if this happens, we have "accidentally" found another event.
-				return -x;
-			case 0x90000000: //The b packet type contains the dead-time word
-				SetOldPPGPattern(value,ppgEvent);
-				break;
-			case 0xd0000000: 
-				SetPPGNetworkPacket(dword,ppgEvent); // The network packet placement is not yet stable.
-				break;              
-			case 0xa0000000:
-				SetPPGLowTimeStamp(value,ppgEvent);
-				break;
-			case 0xb0000000:
-				SetPPGHighTimeStamp(value,ppgEvent);
-				break;
+      switch(packet) {
+         case 0x80000000: //The 8 packet type is for event headers
+               //if this happens, we have "accidentally" found another event.
+               return -x;
+         case 0x90000000: //The b packet type contains the dead-time word
+            SetOldPPGPattern(value,ppgEvent);
+            break;
+         case 0xd0000000: 
+            SetPPGNetworkPacket(dword,ppgEvent); // The network packet placement is not yet stable.
+            break;              
+         case 0xa0000000:
+            SetPPGLowTimeStamp(value,ppgEvent);
+            break;
+         case 0xb0000000:
+            SetPPGHighTimeStamp(value,ppgEvent);
+            break;
 			case 0xe0000000:
 				//if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
 					TGRSIRootIO::Get()->FillPPG(ppgEvent);

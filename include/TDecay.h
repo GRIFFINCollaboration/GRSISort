@@ -2,6 +2,10 @@
 #ifndef TDECAY_H
 #define TDECAY_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include <string>
 
 #include "TNamed.h"
@@ -160,14 +164,14 @@ class TSingleDecay : public TVirtualDecay {
   private:
    UInt_t fGeneration;     //Generation from the primary
    Double_t fDetectionEfficiency; //The probability that this decay can be detected
-   TDecayFit* fDecayFunc;        //Function describing decay
-   TDecayFit* fTotalDecayFunc;   //Function used to access other fits
-   TSingleDecay* fParent;        //Parent Decay
-   TSingleDecay* fDaughter;      //Daughter Decay
-   TSingleDecay* fFirstParent;   //FirstParent in the decay
-   Int_t fUnId;
-   static UInt_t fCounter;
-   Int_t fChainId;
+   TDecayFit *fDecayFunc;        //Function describing decay
+   TDecayFit *fTotalDecayFunc;   //Function used to access other fits
+   TSingleDecay *fParent;        //Parent Decay
+   TSingleDecay *fDaughter;      //Daughter Decay
+   TSingleDecay *fFirstParent;   //FirstParent in the decay
+   Int_t fUnId;                  //The Unique ID of the Decay
+   static UInt_t fCounter;       //Helps set unique Id's
+   Int_t fChainId;               //The chain that the single decay belongs to
 
 /// \cond CLASSIMP
    ClassDef(TSingleDecay,1) //Class containing Single Decay information
@@ -280,5 +284,5 @@ class TDecay : public TVirtualDecay {
    ClassDef(TDecay,1) //Contains all decay chains in a fit
 /// \endcond
 };
-
+/*! @} */
 #endif

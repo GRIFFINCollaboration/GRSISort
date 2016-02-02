@@ -45,7 +45,9 @@ TFitResultPtr TDecayFit::Fit(TH1* hist,Option_t* opt){
    UpdateResiduals(hist);
    //Might be able to copy the style over to the new clone for the residuals.
    //Will take a look at this later
-   this->DrawClone("same");
+   //fDecay->Update();
+   //this->DrawClone("same");
+   this->Draw("same");
    return tmpres;
 }
 
@@ -252,12 +254,14 @@ void TSingleDecay::UpdateDecays(){
       GetDecayFunc()->GetParLimits(0,low_limit,high_limit);
       curDecay->fTotalDecayFunc->SetParameter(0,GetIntensity());
       curDecay->fTotalDecayFunc->SetParLimits(0,low_limit,high_limit);
+     // curDecay->fDecayFunc->SetParameter(0,GetIntensity());
+     // curDecay->fDecayFunc->SetParLimits(0,low_limit,high_limit);
       curDecay->fDecayFunc->SetParameter(0,GetIntensity());
       curDecay->fDecayFunc->SetParLimits(0,low_limit,high_limit);
-
-      curDecay->fTotalDecayFunc->SetParameter(0,GetIntensity());
       fDecayFunc->GetParLimits(0,low_limit,high_limit);
       curDecay->fTotalDecayFunc->SetParLimits(0,low_limit,high_limit);
+
+      curDecay->fTotalDecayFunc->SetParameter(0,GetIntensity());
 
       curDecay->fTotalDecayFunc->SetParameter(GetGeneration(),GetDecayRate());
       fDecayFunc->GetParLimits(1,low_limit,high_limit);
@@ -643,7 +647,6 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
    SetParameters();
 
 //   TFitResultPtr fitres = fithist->Fit(fFitFunc,Form("%sWLRS0",opt));
-
    TFitResultPtr fitres;
    if(opt1.Contains("G")){
       //Fit using LMFitter..Doesn't do residuals yet
@@ -666,8 +669,8 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
          par_num = fFitFunc->GetParNumber(Form("DecayRate_DecayId%d",fChainList.at(i)->GetDecay(j)->GetDecayId() ));
          fChainList.at(i)->GetDecay(j)->SetDecayRate(fFitFunc->GetParameter(par_num));
          fChainList.at(i)->GetDecay(j)->SetDecayRateError(fFitFunc->GetParError(par_num));
-         fChainList.at(i)->GetDecay(j)->UpdateDecays();
       }
+      fChainList.at(i)->GetDecay(0)->UpdateDecays();
       fChainList.at(i)->SetChainParameters();
    }
 
@@ -819,7 +822,7 @@ void TDecay::SetDecayRateLimits(Int_t Id, Double_t low, Double_t high){
 void TDecay::Print(Option_t *opt) const{
    printf("Background: %lf +/- %lf\n\n", GetBackground(),GetBackgroundError());
    for(auto it = fDecayMap.begin(); it!=fDecayMap.end();++it){
-      printf("ID: %u\n",it->first);
+      printf("ID: %u Name: %s\n",it->first,it->second.at(0)->GetName());
       it->second.at(0)->Print();
       printf("\n");
    }

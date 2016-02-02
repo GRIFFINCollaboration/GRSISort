@@ -27,7 +27,7 @@ TGriffinHit::~TGriffinHit()  {	}
 void TGriffinHit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
   static_cast<TGriffinHit&>(rhs).fFilter                = fFilter;
-  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = 0;
+  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = fGriffinHitBits;
   static_cast<TGriffinHit&>(rhs).fCrystal               = fCrystal;
   static_cast<TGriffinHit&>(rhs).fPPG                   = fPPG;
   static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag; // Bremsstrahlung Suppression flag.
@@ -155,12 +155,12 @@ void TGriffinHit::SetGriffinFlag(enum EGriffinHitBits flag,Bool_t set){
       fGriffinHitBits &= (~flag);
 }
 
-UChar_t TGriffinHit::NPileUps() const {
-   return ((fGriffinHitBits & kTotalPU1) + (fGriffinHitBits & kTotalPU2));
+UShort_t TGriffinHit::NPileUps() const {
+   return static_cast<UShort_t>(((fGriffinHitBits & kTotalPU1) + (fGriffinHitBits & kTotalPU2)));
 }
 
-UChar_t TGriffinHit::PUHit() const { 
-   return ((fGriffinHitBits & kPUHit1) + (fGriffinHitBits & kPUHit2)) >> 2; 
+UShort_t TGriffinHit::PUHit() const { 
+   return static_cast<UShort_t>(((fGriffinHitBits & kPUHit1) + (fGriffinHitBits & kPUHit2)) >> 2); 
 } 
 
 void TGriffinHit::SetNPileUps(UChar_t npileups) {
@@ -169,8 +169,8 @@ void TGriffinHit::SetNPileUps(UChar_t npileups) {
 }
 
 void TGriffinHit::SetPUHit(UChar_t puhit) {
-   if(puhit > 3)
-      puhit = 4;
+   if(puhit > 2)
+      puhit = 3;
 
    SetGriffinFlag(kPUHit1,(puhit << 2) & kPUHit1);  
    SetGriffinFlag(kPUHit2,(puhit << 2) & kPUHit2);  

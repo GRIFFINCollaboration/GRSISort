@@ -1,6 +1,10 @@
 #ifndef TCAL_H__
 #define TCAL_H__
 
+/** \addtogroup Calibration
+ *  @{
+ */
+
 /////////////////////////////////////////////////////////////////
 ///
 /// \class TCal
@@ -84,5 +88,5 @@ class TCal : public TGraphErrors {
    ClassDef(TCal,2); //Abstract Class for Calibrations
 /// \endcond
 };
-
+/*! @} */
 #endif

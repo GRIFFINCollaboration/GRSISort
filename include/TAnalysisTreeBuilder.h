@@ -1,6 +1,10 @@
 #ifndef TAnalysisTreeBuilder_H
 #define TAnalysisTreeBuilder_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <cstdio>
 #include <vector>
 #include <string>
@@ -39,7 +43,7 @@
 #include "TSceptar.h"   
 #include "TPaces.h"   
 //#include "TDante.h"     
-//#include "TZeroDegree.h"
+#include "TZeroDegree.h"
 #include "TDescant.h"
 
 /////////////////////////////////////////////////////////////////
@@ -176,9 +180,9 @@ class TAnalysisTreeBuilder : public TObject {
    private:
       TAnalysisTreeBuilder(); 
 
-      static const size_t MEM_SIZE;                      //Sets the minimum amount of memory used to hold the frament tree
+      static const size_t MEM_SIZE;                         ///< Sets the minimum amount of memory used to hold the frament tree
 
-      static TAnalysisTreeBuilder* fAnalysisTreeBuilder; //Pointer to the AnalysisTreeBuilder
+      static TAnalysisTreeBuilder* fAnalysisTreeBuilder;    ///< Pointer to the AnalysisTreeBuilder
 
       TChain* fFragmentChain;
       TTree*  fCurrentFragTree;
@@ -192,14 +196,16 @@ class TAnalysisTreeBuilder : public TObject {
       static int fFragmentsIn;
       static int fAnalysisIn;
       static int fAnalysisOut;
+      static double fLastStatusTime;                        ///< the run time the last time a status was created
+      static int fLastAnalysisOut;                          ///< number of built events the last time a status was created
 
 #if !defined (__CINT__) && !defined (__CLING__)
       bool fSortFragmentDone;
       bool fPrintStatus;
-      std::thread* fReadThread;                             //The thread used to read fragments out of the fragment tree
-      std::thread* fProcessThread;                          //The thread used to process and build events
-      std::thread* fWriteThread;                            //The thread used to process the write Queue
-      std::thread* fStatusThread;                           //The thread used to display the status during sorting
+      std::thread* fReadThread;                             ///< The thread used to read fragments out of the fragment tree
+      std::thread* fProcessThread;                          ///< The thread used to process and build events
+      std::thread* fWriteThread;                            ///< The thread used to process the write Queue
+      std::thread* fStatusThread;                           ///< The thread used to display the status during sorting
 #endif
 
    private:
@@ -207,28 +213,28 @@ class TAnalysisTreeBuilder : public TObject {
       TFragment* fCurrentFragPtr;
 
       //TigAux detectors
-      TTigress*    fTigress;                                 //A pointer to the Tigress Mother Class
-      TSharc*      fSharc;                                   //A pointer to the Sharc Mother Class
-      TTriFoil*    fTriFoil;                                 //A pointer to the TriFoil Mother Class
-      TRF*         fRf;                                      //A pointer to the TRF Mother Class 
-      TCSM*        fCsm;                                     //A pointer to the CSM Mother Class
+      TTigress*    fTigress;                                 ///< A pointer to the Tigress Mother Class
+      TSharc*      fSharc;                                   ///< A pointer to the Sharc Mother Class
+      TTriFoil*    fTriFoil;                                 ///< A pointer to the TriFoil Mother Class
+      TRF*         fRf;                                      ///< A pointer to the TRF Mother Class 
+      TCSM*        fCsm;                                     ///< A pointer to the CSM Mother Class
       TSiLi*       fSiLi;  
       TS3*         fS3;
       TTip*        fTip;    
        
       //GrifAux detectors
-      TGriffin*    fGriffin;                                 //A pointer to the Griffin Mother Class
-      TSceptar*    fSceptar;                                 //A pointer to the Sceptar Mother Class
-      TPaces*      fPaces;                                   //A pointer to the Paces Mother Class
+      TGriffin*    fGriffin;                                 ///< A pointer to the Griffin Mother Class
+      TSceptar*    fSceptar;                                 ///< A pointer to the Sceptar Mother Class
+      TPaces*      fPaces;                                   ///< A pointer to the Paces Mother Class
       //TDante*      fDante;  
-      //TZeroDegree* fZeroDegree;
+      TZeroDegree* fZeroDegree;                              ///< A pointer to the ZeroDegree mother class
       
       //Aux Detectors
-      TDescant*    fDescant;                                 //A pointer to the Descant Mother Class
+      TDescant*    fDescant;                                 ///< A pointer to the Descant Mother Class
 
 /// \cond CLASSIMP
 	ClassDef(TAnalysisTreeBuilder,0) //Builds the Analysis Tree out of TFragments
 /// \endcond
 };
-
+/*! @} */
 #endif

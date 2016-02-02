@@ -1,6 +1,10 @@
 #ifndef TGRSIINT_H
 #define TGRSIINT_H
 
+/** \addtogroup GROOT
+ *  @{
+ */
+
 #include <cstdio>
 #include <string>
 
@@ -61,5 +65,5 @@ class TGRSIInterruptHandler : public TSignalHandler {
       TGRSIInterruptHandler():TSignalHandler(kSigInterrupt,false) { }
       bool Notify();
 };
-
+/*! @} */
 #endif

@@ -1,6 +1,10 @@
 #ifndef TGINT_H
 #define TGINT_H
 
+/** \addtogroup GROOT
+ *  @{
+ */
+
 #include "TRint.h"
 
 class TGint : public TRint {
@@ -23,5 +27,5 @@ class TGint : public TRint {
    ClassDef(TGint,0);
 /// \endcond
 };
-
+/*! @} */
 #endif

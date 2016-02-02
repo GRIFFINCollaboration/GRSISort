@@ -3,6 +3,10 @@
 #ifndef TLMFITTER_H
 #define TLMFITTER_H
 
+/** \addtogroup Fitting Fitting & Analysis
+ *  @{
+ */
+
 #include "Globals.h"
 
 #include <vector>
@@ -532,5 +536,5 @@ class TLMFitter : public TObject{
 
    ClassDef(TLMFitter,1);
 };
-
+/*! @} */
 #endif // TLMFitter_H

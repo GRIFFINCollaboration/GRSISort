@@ -1,6 +1,10 @@
 #ifndef TDATAPARSER_H
 #define TDATAPARSER_H
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 /////////////////////////////////////////////////////////////////
 ///
 /// \class TDataParser
@@ -28,7 +32,7 @@ class TDataParser {
   private:
     static TDataParser* fDataParser;  ///< A pointer to the global DataParser Class
     static bool fNoWaveforms;         ///< The flag to turn wave_forms on or off
-    static bool fRecordStats;         ///< The flag to turn on stats recording
+    static bool fRecordDiag;         ///< The flag to turn on diagnostics recording
 	 static TChannel* gChannel;
     TDataParser();
 	
@@ -36,7 +40,7 @@ class TDataParser {
     ~TDataParser();
     static TDataParser* instance();    //returns the global TDataParser Object
     static void SetNoWaveForms(bool temp = true) { fNoWaveforms = temp; }
-    static void SetRecordStats(bool temp = true) { fRecordStats = temp; }
+    static void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
 
   private:
     static const unsigned long fMaxTriggerId; ///< The last trigger ID Called
@@ -91,8 +95,6 @@ class TDataParser {
 	 static bool SetScalerLowTimeStamp(uint32_t, TScalerData*);
 	 static bool SetScalerHighTimeStamp(uint32_t, TScalerData*, int&);
 	 static bool SetScalerValue(int, uint32_t, TScalerData*);
-
-    static void FillStats(TFragment*);
 };
-
+/*! @} */
 #endif

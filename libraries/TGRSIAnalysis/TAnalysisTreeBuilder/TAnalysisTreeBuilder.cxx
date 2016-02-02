@@ -130,10 +130,12 @@ ClassImp(TAnalysisTreeBuilder)
 TAnalysisTreeBuilder* TAnalysisTreeBuilder::fAnalysisTreeBuilder = 0;
 
 //Reset the statistics of the analysis tree builder
-long TAnalysisTreeBuilder::fEntries     = 0;
-int  TAnalysisTreeBuilder::fFragmentsIn = 0;
-int  TAnalysisTreeBuilder::fAnalysisIn  = 0;
-int  TAnalysisTreeBuilder::fAnalysisOut = 0;
+long   TAnalysisTreeBuilder::fEntries     = 0;
+int    TAnalysisTreeBuilder::fFragmentsIn = 0;
+int    TAnalysisTreeBuilder::fAnalysisIn  = 0;
+int    TAnalysisTreeBuilder::fAnalysisOut = 0;
+double TAnalysisTreeBuilder::fLastStatusTime = 0.;
+int    TAnalysisTreeBuilder::fLastAnalysisOut = 0;
 
 
 TAnalysisTreeBuilder* TAnalysisTreeBuilder::Get() {
@@ -169,7 +171,7 @@ TAnalysisTreeBuilder::TAnalysisTreeBuilder() {
    fPaces   = 0;//new TPaces;
    fDescant = 0;//new TDescant;
    //fDante->Clear();
-   //fZerodegree->Clear();
+   fZeroDegree = 0;
 
 }
 
@@ -357,6 +359,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 		for(size_t hit = 0; hit < currentFrag->Cfd.size(); ++hit) {
 			try {
 				sortedFragments.insert(TFragment(*currentFrag, hit));
+				//sortedFragments.emplace(*currentFrag, hit);
 			} catch (std::bad_alloc& e) {
 				//failed to insert the fragment, check overall size of the multiset
 				if(sortedFragments.size() < TGRSIRunInfo::BufferSize()) {
@@ -365,7 +368,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 				} else {
 					//Wait and try inserting again. If that fails as well we can't do anything else, so we don't catch exceptions here
 					std::this_thread::sleep_for(std::chrono::milliseconds(100));
-					sortedFragments.insert(TFragment(*currentFrag, hit));					
+					sortedFragments.insert(TFragment(*currentFrag, hit));		
 				}
 			}
 		}
@@ -377,14 +380,14 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
  		long firstTimeStamp = (*(sortedFragments.begin())).GetTimeStamp();
 		long lastTimeStamp = (*(std::prev(sortedFragments.end()))).GetTimeStamp();
 		if(//(lastTimeStamp - firstTimeStamp > TGRSIRunInfo::BufferDuration()) ||
-			(sortedFragments.size() > TGRSIRunInfo::BufferSize() && (lastTimeStamp - firstTimeStamp > TGRSIRunInfo::BuildWindow()))) {
+			((sortedFragments.size() > TGRSIRunInfo::BufferSize()) && ((lastTimeStamp - firstTimeStamp) > TGRSIRunInfo::BuildWindow()))) {
 			//We are now in a situation where we think that no more fragments will be read that will end up at the beginning of the multiset.
 			//So we can put everything that is in the BuildWindow of the first fragment into our built event.
 			//For this we loop through the fragments in the multiset, put them into the new event vector, and once the time difference is larger than BuildWindow,
 			//we put the event into the queue, erase the fragments from the multiset, and stop the loop.
 			event = new std::vector<TFragment>;
 			for(auto it = sortedFragments.begin(); it != sortedFragments.end(); ++it) {
-				if(it->GetTimeStamp() - firstTimeStamp <= TGRSIRunInfo::BuildWindow()) {
+				if((it->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
 					event->push_back(*it);
 					if(TGRSIRunInfo::IsMovingWindow()){
 						firstTimeStamp = it->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
@@ -409,7 +412,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 		event = new std::vector<TFragment>;
 		auto it = sortedFragments.begin();
 		for(; it != sortedFragments.end(); ++it) {
-			if(it->GetTimeStamp() - firstTimeStamp <= TGRSIRunInfo::BuildWindow()) {
+			if((it->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
 				event->push_back(*it);
 				if(TGRSIRunInfo::IsMovingWindow()){
 					firstTimeStamp = it->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
@@ -547,7 +550,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    if(info->Sceptar())   { tree->Branch("TSceptar",&fSceptar); }//, basketSize); }
    if(info->Paces())     { tree->Branch("TPaces",&fPaces); }//, basketSize); } 
    //if(info->Dante())     { tree->Branch("TDante",&fDante); }//, basketSize); } 
-   //if(info->ZeroDegree()){ tree->Branch("TZeroDegree",&fZerodegree); }//, basketSize); } 
+   if(info->ZeroDegree()){ tree->Branch("TZeroDegree",&fZeroDegree); }//, basketSize); } 
    if(info->Descant())   { tree->Branch("TDescant",&fDescant); }//, basketSize);
 
    printf("created AnalysisTree\n");
@@ -570,7 +573,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    if(info->Sceptar())   { fSceptar->Clear(); }
    if(info->Paces())     { fPaces->Clear(); } 
    //if(info->Dante())     { fDante->Clear(); } 
-   //if(info->ZeroDegree()){ fZerodegree->Clear(); } 
+   if(info->ZeroDegree()){ fZeroDegree->Clear(); } 
    if(info->Descant())   { fDescant->Clear();}
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
@@ -592,8 +595,8 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
    if(info->Griffin())   { fGriffin = 0; }
    if(info->Sceptar())   { fSceptar = 0; }
    if(info->Paces())     { fPaces = 0; } 
-   //if(info->Dante())     { fDante->Clear(); } 
-   //if(info->ZeroDegree()){ fZerodegree->Clear(); } 
+   //if(info->Dante())     { fDante = 0; } 
+   if(info->ZeroDegree()){ fZeroDegree = 0; } 
    if(info->Descant())   { fDescant = 0; }
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
@@ -665,6 +668,8 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<std::string, TDetector*>* d
          fDescant = static_cast<TDescant*>(det->second);
       } else if(det->first.compare(0,2,"PA") == 0) {
          fPaces = static_cast<TPaces*>(det->second);
+      } else if(det->first.compare(0,2,"ZD") == 0) {
+         fZeroDegree = static_cast<TZeroDegree*>(det->second);
       } else if(det->first.compare(0,2,"TP") == 0) {
          fTip = static_cast<TTip*>(det->second);
       } 
@@ -809,8 +814,11 @@ void TAnalysisTreeBuilder::ProcessEvent() {
             (*detectors)["DS"]->AddFragment(&(event->at(i)), &mnemonic);
          //} else if(mnemonic.system.compare("DA")==0) {	
          //	AddFragment(&(event->at(i)), &mnemonic);
-         //} else if(mnemonic.system.compare("ZD")==0) {	
-         //	AddFragment(&(event->at(i)), &mnemonic);
+         } else if(mnemonic.system.compare("ZD")==0) {	
+            if(detectors->find("ZD") == detectors->end()) {
+               (*detectors)["ZD"] = new TZeroDegree;
+            }
+            (*detectors)["ZD"]->AddFragment(&(event->at(i)), &mnemonic);
          } else if(mnemonic.system.compare("TP")==0) {	
             if(detectors->find("TP") == detectors->end()) {
                (*detectors)["TP"] = new TTip;
@@ -848,17 +856,20 @@ void TAnalysisTreeBuilder::Status() {
    while(fPrintStatus) {
       if(!sortingDone) {
          printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
-                DGREEN "   write speed: %9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
-					 (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, fAnalysisIn > 0 ? (100.*fAnalysisOut)/fAnalysisIn:0., fAnalysisOut/w.RealTime(), w.RealTime());
+                DGREEN "   write speed: %9.1f/%9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
+					 (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, fAnalysisIn > 0 ? (100.*fAnalysisOut)/fAnalysisIn:0., fAnalysisOut/w.RealTime(), 
+					 (fAnalysisOut - fLastAnalysisOut)/(w.RealTime() - fLastStatusTime), w.RealTime());
       } else {
          if(fAnalysisOut > 0) {
             printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
-                   DGREEN "   write speed: %9.1f built events/second." RESET_COLOR "  %3.1f seconds, %.1f seconds remaining." SHOW_CURSOR "\r",
-                  (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime(), ((double)(fAnalysisIn-fAnalysisOut))/fAnalysisOut*w.RealTime());
+                   DGREEN "   write speed: %9.1f/%9.1f built events/second." RESET_COLOR "  %3.1f seconds, %.1f seconds remaining." SHOW_CURSOR "\r",
+						 (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), 
+						 (fAnalysisOut - fLastAnalysisOut)/(w.RealTime() - fLastStatusTime), w.RealTime(), ((double)(fAnalysisIn-fAnalysisOut))/fAnalysisOut*w.RealTime());
          } else {
             printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
-                   DGREEN "   write speed: %9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
-                  (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime());
+                   DGREEN "   write speed: %9.1f/%9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
+						 (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), 
+						 (fAnalysisOut - fLastAnalysisOut)/(w.RealTime() - fLastStatusTime), w.RealTime());
          }
       }
       //we insert a newline (thus preserving the last status), if we just finished getting all fragment, or finished removing fragments from the event queue
@@ -870,6 +881,8 @@ void TAnalysisTreeBuilder::Status() {
          printf("\n");
          sortingDone = true;
       }
+		fLastAnalysisOut = fAnalysisOut;
+		fLastStatusTime = w.RealTime();
       w.Continue(); 
       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
    }

@@ -1,6 +1,10 @@
 #ifndef TCALMANAGER_H__
 #define TCALMANAGER_H__
 
+/** \addtogroup Calibration
+ *  @{
+ */
+
 #include "TCal.h"
 #include "TNamed.h"
 #include "TClass.h"
@@ -35,5 +39,5 @@ class TCalManager : public TNamed {
    ClassDef(TCalManager,1);
 /// \endcond
 };
-
+/*! @} */
 #endif
