@@ -178,17 +178,23 @@ double TReaction::AnalysisBeta(double ekin, int part){
 	return sqrt(pow(ekin,2)+2*fM[part]*ekin)/(ekin+fM[part]);
 }
 
-// THIS IS ACTUALLY MOTT SCATTERING
+// THIS IS ACTUALLY MOTT SCATTERING (RELATIVISTIC RUTHERFORD)
+// taken from http://www7b.biglobe.ne.jp/~kcy05t/rathef.html (eqn. 61)
+// alpha obtained from http://www.pas.rochester.edu/~cline/Gosia/Gosia_Manual_20120510.pdf
 double TReaction::GetRutherfordCm(double theta_cm, int part, bool Units_mb){
-  static const double alpha = 0.359994;
+  static const double alpha = 1.29596;//0.359994;
 	double scale = 1;
-	if(Units_mb)
-		scale = 0.1;  
-		
-  double a = pow(alpha*fNuc[0]->GetZ()*fNuc[1]->GetZ()/(fPLab[0]*fVLab[0]),2)*scale;
-  double b = 1 - pow(fVLab[0]*sin(theta_cm/2),2);
-  return a*b/pow(sin(theta_cm/2),4); // ?
-  
+	if(!Units_mb)
+		scale = 0.1; // fm^2 = 10^-30 m^2, mb = 10^-31 m^2  
+	// motion is described in lab frame (so TLab instead of TCm) because
+	// Rutherford scattering approximates lab frame == cm frame
+		/*
+  double a = pow(fNuc[0]->GetZ()*fNuc[1]->GetZ()/(fPCm[0]*fVCm[0]/2),2);
+  double b = 1 - pow(fVCm[0]*sin(theta_cm/2),2);
+  return scale*alpha*a*b/pow(sin(theta_cm/2),4); // ?
+  */
+  double a = pow(fNuc[0]->GetZ()*fNuc[1]->GetZ()/fTLab[0],2);
+  return scale*alpha*a/pow(sin(theta_cm/2),4); // ?  
 }
 
 double TReaction::GetRutherfordLab(double theta_lab, int part, bool Units_mb){
@@ -375,7 +381,7 @@ TGraph *TReaction::RutherfordVsTheta(double thmin, double thmax, int part, bool 
 	const char *frame = Form("%s",Frame_Lab?"Lab":"Cm");
 	
 	g->SetName(Form("%s_RutherfordVsTheta%s",GetName(),frame));
-	g->SetTitle(Form("Rutherford cross section for %s; Theta_{%s} [deg]; dSigma / dOmega_{%s} [%s]",GetName(),frame,frame,Units_mb?"mb":"fm^2"));
+	g->SetTitle(Form("Rutherford cross section for %s; Theta_{%s} [deg]; dSigma / dOmega_{%s} [%s/sr]",GetName(),frame,frame,Units_mb?"mb":"fm^2"));
 	
 	double theta, R;	
 	

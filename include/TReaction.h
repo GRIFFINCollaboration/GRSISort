@@ -41,7 +41,7 @@
 // T = kinetic energy
 // V = magnitude of velocity (=beta)
 // P = magnitude of momentum
-// G = gamma factor (=[1-V^2]-0.5)
+// G = gamma factor (=[1-V^2]^-0.5)
 //
 // * An excitation energy can be included in the final state heavy recoil nucleus using ex3
 //			in the reaction initialisation or by using SetExcEnergy(exc)
@@ -131,7 +131,7 @@ public:
 					// Frame_Lab -> dOmegaCm/dOmegaLab[ThetaLab] 	and 	Frame_Cm -> dOmegaLab/dOmegaCm[ThetaCm]
   TGraph *OmegaVsTheta(double thmin = 0.0, double thmax = 180.0, int part = 2, bool Frame_Lab = true); 
 					// Frame_Lab -> dSigma/dThetaLab[ThetaLab] 	and 	Frame_Cm -> dSigma/dThetaCm[ThetaCm]
-	TGraph *RutherfordVsTheta(double thmin = 1.0, double thmax = 179.0, int part = 2, bool Frame_Lab = true, bool Units_keV = true);	  
+	TGraph *RutherfordVsTheta(double thmin = 1.0, double thmax = 179.0, int part = 2, bool Frame_Lab = true, bool Units_mbSr = true);	  
 		
   void Print(Option_t *opt="") const;
   void Clear(Option_t *opt="");
