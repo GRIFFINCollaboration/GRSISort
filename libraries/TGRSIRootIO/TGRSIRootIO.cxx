@@ -43,7 +43,7 @@ void TGRSIRootIO::SetUpFragmentTree() {
 		fOutFile->cd();
 	fTimesFillCalled = 0;
 	fFragmentTree = new TTree("FragmentTree","FragmentTree");
-	fBufferFrag = 0;
+	fBufferFrag = NULL;
 	fFragmentTree->Bronch("TFragment","TFragment",&fBufferFrag,128000,99);
 	//fFragmentTree->BranchRef();
 	printf("FragmentTree set up.\n");

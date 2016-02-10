@@ -21,30 +21,14 @@ TSiLiHit::TSiLiHit(const TSiLiHit &rhs) : TGRSIDetectorHit() {
 void TSiLiHit::Copy(TObject &rhs) const {
    TGRSIDetectorHit::Copy(rhs);
 
-	static_cast<TSiLiHit&>(rhs).fLed = fLed;
-	//static_cast<TSiLiHit&>(rhs).fSegment = fSegment;
 	static_cast<TSiLiHit&>(rhs).fTimeFit = fTimeFit;
 	static_cast<TSiLiHit&>(rhs).fSig2Noise = fSig2Noise;
 
    return;
 }
 
-
-/*void TSiLiHit::SetSegment(TFragment &frag){
-	TChannel *channel = TChannel::GetChannel(frag.ChannelAddress);
-      if(!channel)  return;
-      
-      char seg[5]; 
-      strncpy(seg,channel->GetChannelName()+7,3);
-      fSegment=strtol(seg, NULL, 16);
-}*/
-
-
-
 void TSiLiHit::Clear(Option_t *opt)  {
    TGRSIDetectorHit::Clear(opt);
-	fLed       = -1;
-	//fSegment   = -1;
 	fTimeFit   = -1;
 	fSig2Noise = -1;
 }
@@ -60,7 +44,6 @@ void TSiLiHit::SetWavefit(TFragment &frag)   {
 TVector3 TSiLiHit::GetChannelPosition(double dist) const {
 	return TSiLi::GetPosition(GetSegment());
 }
-
 
 void TSiLiHit::Print(Option_t *opt) const {
 	printf("===============\n");

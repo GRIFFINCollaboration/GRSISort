@@ -165,6 +165,8 @@ clean:
 	@-$(RM) -f $(LIBRARY_OUTPUT)
 	@-$(RM) -f libraries/*.pcm
 	@-$(RM) -f libraries/*.dSYM
+	@-$(RM) -f users/*.o
+	@-$(RM) -f users/*.so
 
 cleaner: clean
 	@printf "\nEven more clean up\n\n"

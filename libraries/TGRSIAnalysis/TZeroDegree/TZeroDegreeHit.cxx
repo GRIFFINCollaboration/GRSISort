@@ -65,6 +65,11 @@ void TZeroDegreeHit::Print(Option_t *opt) const	{
    printf("ZeroDegree hit time:   %.lf\n",GetTime());
 }
 
+Double_t TZeroDegreeHit::GetTime() const {
+  ///returns time using the remainder (difference between 100 MHz timestamp and 125 MHz clock of FPGA), and the CFD word
+  return 10.*fTimeStamp + GetRemainder() + (GetCfd() + gRandom->Uniform())/256.;
+}
+
 bool TZeroDegreeHit::AnalyzeWaveform() {
    ///Calculates the cfd time from the waveform
    bool error = false;

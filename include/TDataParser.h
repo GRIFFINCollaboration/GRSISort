@@ -50,6 +50,11 @@ class TDataParser {
 
     static std::map<int,int> fFragmentIdMap;
 
+	 static int fCfdsRead;
+	 static int fLedsRead;
+	 static int fChargesRead;
+	 static int fKValuesRead;
+
   public:
     static int TigressDataToFragment(uint32_t *data, int size,unsigned int midasSerialNumber = 0, time_t midasTime = 0);
     static int GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasSerialNumber = 0, time_t midasTime = 0);

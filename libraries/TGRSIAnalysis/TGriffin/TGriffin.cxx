@@ -211,18 +211,17 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 		//else if(mnemonic->arraysubposition[0] == 'W')
 		//	CoreNbr=3;
    
-		for(size_t i = 0; i < frag->Charge.size(); ++i) {
+		for(size_t i = 0; i < frag->GetNumberOfCharges(); ++i) {
 			TGriffinHit corehit;
-			corehit.SetAddress(frag->ChannelAddress);
+			corehit.SetAddress(frag->GetChannelAddress());
 			corehit.SetTimeStamp(frag->GetTimeStamp());
 			corehit.SetCfd(frag->GetCfd(i));
 			corehit.SetCharge(frag->GetCharge(i));
+			corehit.SetNPileUps(frag->GetNumberOfPileups()-1);//We subtract 1 in order to start counter from 0
 			//check if this is a fragment where we already pulled the pile-up hits apart
-			if((frag->Charge.size() == 1) && (frag->NumberOfHits >= 0) && (frag->HitIndex >= 0)) {
-				corehit.SetNPileUps(frag->NumberOfHits-1);//We subtract 1 in order to start counter from 0
-				corehit.SetPUHit(frag->HitIndex);
+			if((frag->GetNumberOfPileups() == 1) && (frag->GetHitIndex() >= 0)) {
+				corehit.SetPUHit(frag->GetHitIndex());
 			} else {
-				corehit.SetNPileUps(frag->Charge.size()-1);//We subtract 1 in order to start counter from 0
 				corehit.SetPUHit(i);
 			}
 			

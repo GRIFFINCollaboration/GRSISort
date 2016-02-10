@@ -356,7 +356,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       fFragmentsIn++;//Now that we have read a new entry, we need to increment our counter
 
 		//pull the different pile-up hits apart and put the into the sorted buffer as different fragments
-		for(size_t hit = 0; hit < currentFrag->Cfd.size(); ++hit) {
+		for(size_t hit = 0; hit < currentFrag->GetNumberOfCharges(); ++hit) {
 			try {
 				sortedFragments.insert(TFragment(*currentFrag, hit));
 				//sortedFragments.emplace(*currentFrag, hit);
@@ -748,7 +748,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
       MNEMONIC mnemonic;
       std::map<std::string, TDetector*>* detectors = new std::map<std::string, TDetector*>;
       for(size_t i=0;i<event->size();i++) {
-         TChannel* channel = TChannel::GetChannel(event->at(i).ChannelAddress);
+			TChannel* channel = TChannel::GetChannel(event->at(i).GetChannelAddress());
          if(!channel)
             continue;
          ClearMNEMONIC(&mnemonic);

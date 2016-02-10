@@ -8,7 +8,7 @@ ClassImp(TZeroDegree)
 /// \endcond
 
 
-bool TZeroDegree::fSetWave = false;
+bool TZeroDegree::fSetWave = true;
 
 TZeroDegree::TZeroDegree() {
    //Default Constructor
@@ -67,18 +67,18 @@ void TZeroDegree::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       return;
    }
    
-   for(size_t i = 0; i < frag->Charge.size(); ++i) {
+   for(size_t i = 0; i < frag->GetNumberOfCharges(); ++i) {
       TZeroDegreeHit hit;
-      hit.SetAddress(frag->ChannelAddress);
+      hit.SetAddress(frag->GetChannelAddress());
       hit.SetTimeStamp(frag->GetTimeStamp());
       hit.SetCfd(frag->GetCfd(i));
       hit.SetCharge(frag->GetCharge(i));
       
       if(TZeroDegree::SetWave()){
-         if(frag->wavebuffer.size() == 0) {
+         if(frag->GetWavebufferSize() == 0) {
             printf("Warning, TZeroDegree::SetWave() set, but data waveform size is zero!\n");
          } else {
-            hit.SetWaveform(frag->wavebuffer);
+            hit.SetWaveform(frag->GetWavebuffer());
          }
          if(hit.GetWaveform()->size() > 0) {
             hit.AnalyzeWaveform();

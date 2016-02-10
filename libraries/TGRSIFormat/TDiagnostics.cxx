@@ -79,12 +79,12 @@ void TDiagnostics::Print(Option_t* opt) const {
 
 void TDiagnostics::GoodFragment(TFragment* frag) {
 	///increment the counter of good fragments for this detector type and check if any trigger ids have been lost
-	fNumberOfGoodFragments[frag->DetectorType]++;
+	fNumberOfGoodFragments[frag->GetDetectorType()]++;
 
 	Short_t channelNumber = frag->GetChannelNumber();
 	UInt_t channelId = frag->GetChannelId();
 	long timeStamp = frag->GetTimeStamp();
-	//Long_t triggerId = frag->TriggerId;
+	//Long_t triggerId = frag->GetTriggerId();
 	//check if this is a new minimum/maximum of the channel id
 	if(fMinChannelId.find(channelNumber) == fMinChannelId.end()) { //check if this channel has been found before
 		fMinChannelId[channelNumber] = channelId;
@@ -105,13 +105,13 @@ void TDiagnostics::GoodFragment(TFragment* frag) {
 	++fNumberOfHits[channelNumber];
 
 	//check if this is a new minimum/maximum network packet id
-	if(frag->NetworkPacketNumber > 0) {
+	if(frag->GetNetworkPacketNumber() > 0) {
 		++fNumberOfNetworkPackets;
-		if(frag->NetworkPacketNumber < fMinNetworkPacketNumber) {
-			fMinNetworkPacketNumber = frag->NetworkPacketNumber;
+		if(frag->GetNetworkPacketNumber() < fMinNetworkPacketNumber) {
+			fMinNetworkPacketNumber = frag->GetNetworkPacketNumber();
 		}
-		if(frag->NetworkPacketNumber > fMaxNetworkPacketNumber) {
-			fMaxNetworkPacketNumber = frag->NetworkPacketNumber;
+		if(frag->GetNetworkPacketNumber() > fMaxNetworkPacketNumber) {
+			fMaxNetworkPacketNumber = frag->GetNetworkPacketNumber();
 		}
 	}
 	//increment the dead time and set per channel min/max timestamps

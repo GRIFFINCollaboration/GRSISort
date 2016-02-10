@@ -1,4 +1,4 @@
-// TFragment.h TChannel.h TGRSIRunInfo.h TGRSISortInfo.h TFragmentQueue.h TFragmentSelector.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TDiagnostics.h
+// TFragment.h TOldFragment.h TNewFragment.h TChannel.h TGRSIRunInfo.h TGRSISortInfo.h TFragmentQueue.h TFragmentSelector.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TDiagnostics.h
 
 #ifdef __CINT__
 
@@ -12,6 +12,8 @@
 //#pragma link C++ class std::vector<UShort_t>+;
 
 #pragma link C++ class TFragment+;
+#pragma link C++ class TOldFragment+;
+#pragma link C++ class TNewFragment+;
 
 #pragma link C++ class TEpicsFrag+;
 #pragma link C++ class TChannel-;

@@ -13,12 +13,10 @@
 
 #include <vector>
 
-
 TFile        *fCurrentFragFile = 0;
 TTree        *fCurrentFragTree = 0;
 TFragment    *fCurrentFragPtr  = 0;
 TGRSIRunInfo *fCurrentRunInfo = 0;
-
 
 const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
@@ -26,10 +24,8 @@ TH2F *cfdhist  = new TH2F("cfd_eng","cfd_eng",120,-20,100,4000,0,4000);
 TH2F *timehist_walk = new TH2F("time_eng_walk","time_eng_walk",120,-20,100,4000,0,4000);
 TH2F *timehist = new TH2F("time_eng","time_eng",120,-20,100,4000,0,4000);
 
-
 TH2F *timehist_walk2 = new TH2F("eng_time_walk","eng_time_walk",4000,0,4000,120,-20,100);
 TH2F *timehist2      = new TH2F("eng_teng","eng_time",4000,0,4000,120,-20,100);
-
 
 void ProcessEvent(std::vector<TFragment> *event) {
   if(event->size()<2)
@@ -39,27 +35,22 @@ void ProcessEvent(std::vector<TFragment> *event) {
     for(size_t y=x+1;y<event->size();y++) {
       if( ((event->at(x).GetEnergy()>1330.0) &&  (event->at(x).GetEnergy()<1335.0)) || 
           ((event->at(y).GetEnergy()>1330.0) &&  (event->at(y).GetEnergy()<1335.0))  )  {
-      int timediff      = abs(event->at(x).TimeStampLow-event->at(y).TimeStampLow);
-      float timediff_walk = fabs((float)(event->at(x).GetTimeStamp()-event->at(y).GetTimeStamp()));
-      int cfddiff  = abs(event->at(x).Cfd.at(0)-event->at(y).Cfd.at(0));
-      timehist->Fill(timediff,event->at(x).GetEnergy());
-      timehist->Fill(timediff,event->at(y).GetEnergy());
-      cfdhist->Fill(cfddiff,event->at(x).GetEnergy());
-      timehist_walk->Fill(timediff_walk,event->at(x).GetEnergy());
-      timehist_walk->Fill(timediff_walk,event->at(y).GetEnergy());
+			int timediff      = abs(event->at(x).GetTimeStampLow()-event->at(y).GetTimeStampLow());
+			float timediff_walk = fabs((float)(event->at(x).GetTimeStamp()-event->at(y).GetTimeStamp()));
+			int cfddiff  = abs(event->at(x).GetCfd(0)-event->at(y).GetCfd(0));
+			timehist->Fill(timediff,event->at(x).GetEnergy());
+			timehist->Fill(timediff,event->at(y).GetEnergy());
+			cfdhist->Fill(cfddiff,event->at(x).GetEnergy());
+			timehist_walk->Fill(timediff_walk,event->at(x).GetEnergy());
+			timehist_walk->Fill(timediff_walk,event->at(y).GetEnergy());
 
-
-      timehist2->Fill(event->at(x).GetEnergy(),timediff);
-      timehist2->Fill(event->at(y).GetEnergy(),timediff);
-      timehist_walk2->Fill(event->at(x).GetEnergy(),timediff_walk);
-      timehist_walk2->Fill(event->at(y).GetEnergy(),timediff_walk);
-
-
+			timehist2->Fill(event->at(x).GetEnergy(),timediff);
+			timehist2->Fill(event->at(y).GetEnergy(),timediff);
+			timehist_walk2->Fill(event->at(x).GetEnergy(),timediff_walk);
+			timehist_walk2->Fill(event->at(y).GetEnergy(),timediff_walk);
       }
     }
   }
-
-
 }
 
 void WriteHist() {
@@ -69,10 +60,7 @@ void WriteHist() {
   timehist2->Write();
   timehist_walk2->Write();
   cfdhist->Write();
-
 }
-
-
 
 void InitChannels() {
    //Initializes the channels from a cal file on the command line when 
@@ -91,9 +79,6 @@ void InitChannels() {
 
    printf("AnalysisTreeBuilder:  read in %i TChannels.\n", TChannel::GetNumberOfChannels());
 }  
-
-
-
 
 void SetupFragmentTree() {
    //Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
@@ -141,7 +126,6 @@ void SetupFragmentTree() {
    printf(DRED "\t MEM_SIZE = %zd" RESET_COLOR  "\n", MEM_SIZE);
    return;
 }
-
 
 int main(int argc, char **argv) {
 

@@ -43,7 +43,7 @@ void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac) {
 			T0RANGE=8*noise_fac;	
 		}
 		frag=&fragment;
-		N=fragment.wavebuffer.size();
+		N=fragment.GetWavebufferSize();
 		if(N>0)	set=true;
 	}
 }
@@ -107,9 +107,9 @@ int TPulseAnalyzer::fit_smooth_parabola(int low, int high, double x0, ParPar* pp
 
 	for(i=low;i<k;i++){
 		lineq_matrix[0][0]+=1;
-		lineq_vector[0]+=frag->wavebuffer[i];
+		lineq_vector[0]+=frag->GetWavebuffer(i);
 		ndf++;
-		chisq+=frag->wavebuffer[i]*frag->wavebuffer[i];
+		chisq+=frag->GetWavebuffer(i)*frag->GetWavebuffer(i);
 	}
 
 	for(i=k;i<high;i++){
@@ -117,10 +117,10 @@ int TPulseAnalyzer::fit_smooth_parabola(int low, int high, double x0, ParPar* pp
 		lineq_matrix[0][0]+=1;
 		lineq_matrix[0][1]+=x;
 		lineq_matrix[1][1]+=x*x;
-		lineq_vector[0]+=frag->wavebuffer[i];
-		lineq_vector[1]+=frag->wavebuffer[i]*x;
+		lineq_vector[0]+=frag->GetWavebuffer(i);
+		lineq_vector[1]+=frag->GetWavebuffer(i)*x;
 		ndf++;
-		chisq+=frag->wavebuffer[i]*frag->wavebuffer[i];
+		chisq+=frag->GetWavebuffer(i)*frag->GetWavebuffer(i);
 	}
 	lineq_matrix[1][0]=lineq_matrix[0][1];
 
@@ -226,11 +226,11 @@ int TPulseAnalyzer::fit_parabola(int low, int high,ParPar* pp){
 		lineq_matrix[0][2]+=i*i;
 		lineq_matrix[1][2]+=i*i*i;
 		lineq_matrix[2][2]+=i*i*i*i;
-		lineq_vector[0]+=frag->wavebuffer[i];
-		lineq_vector[1]+=frag->wavebuffer[i]*i;
-		lineq_vector[2]+=frag->wavebuffer[i]*i*i;
+		lineq_vector[0]+=frag->GetWavebuffer(i);
+		lineq_vector[1]+=frag->GetWavebuffer(i)*i;
+		lineq_vector[2]+=frag->GetWavebuffer(i)*i*i;
 		ndf++;
-		chisq+=frag->wavebuffer[i]*frag->wavebuffer[i];
+		chisq+=frag->GetWavebuffer(i)*frag->GetWavebuffer(i);
 	}
 	lineq_matrix[1][0]=lineq_matrix[0][1];
 	lineq_matrix[1][1]=lineq_matrix[0][2];
@@ -267,10 +267,10 @@ int TPulseAnalyzer::fit_line(int low, int high,LinePar* lp){
 		lineq_matrix[0][0]+=1;
 		lineq_matrix[0][1]+=i;
 		lineq_matrix[1][1]+=i*i;
-		lineq_vector[0]+=frag->wavebuffer[i];
-		lineq_vector[1]+=frag->wavebuffer[i]*i;
+		lineq_vector[0]+=frag->GetWavebuffer(i);
+		lineq_vector[1]+=frag->GetWavebuffer(i)*i;
 		ndf++;
-		chisq+=frag->wavebuffer[i]*frag->wavebuffer[i];
+		chisq+=frag->GetWavebuffer(i)*frag->GetWavebuffer(i);
 	}
 	lineq_matrix[1][0]=lineq_matrix[0][1];
 
@@ -469,8 +469,8 @@ void TPulseAnalyzer::get_baseline(){
 	}
 
 	for(int i=0;i<wpar->baseline_range;i++){
-		wpar->baseline+=frag->wavebuffer[i];
-		wpar->baselineStDev+=frag->wavebuffer[i]*frag->wavebuffer[i];
+		wpar->baseline+=frag->GetWavebuffer(i);
+		wpar->baselineStDev+=frag->GetWavebuffer(i)*frag->GetWavebuffer(i);
 	}
 
 	wpar->baselineStDev/=wpar->baseline_range;
@@ -490,8 +490,8 @@ void TPulseAnalyzer::get_baseline_fin(){
 	//error if waveform length N is shorter than baseline range
 	if(N>wpar->t0&&wpar->t0>0){
 		for(int i=0;i<wpar->t0;i++){
-			wpar->baselinefin+=frag->wavebuffer[i];
-			wpar->baselineStDevfin+=frag->wavebuffer[i]*frag->wavebuffer[i];
+			wpar->baselinefin+=frag->GetWavebuffer(i);
+			wpar->baselineStDevfin+=frag->GetWavebuffer(i)*frag->GetWavebuffer(i);
 		}
 
 		wpar->baselineStDevfin/=wpar->t0;
@@ -508,7 +508,7 @@ void TPulseAnalyzer::get_tmax(){
 	int i,j,sum;
 	int D=FILTER/2;
 
-	wpar->max=frag->wavebuffer[0];
+	wpar->max=frag->GetWavebuffer(0);
 	wpar->tmax=0;
 
 	//applies the filter to the waveform
@@ -516,7 +516,7 @@ void TPulseAnalyzer::get_tmax(){
 	for(i=D;i<N-D;i++)	{
 		sum=0;
 		for(j=i-D;j<i+D;j++)
-			sum+=frag->wavebuffer[j];
+			sum+=frag->GetWavebuffer(j);
 		sum/=FILTER; //the value of the filtered waveform at i
 		if(sum>wpar->max)	{
 			//if the value of the filtered waveform at i is larger than the current maximum, max=value and tmax = i
@@ -552,19 +552,19 @@ double TPulseAnalyzer::get_tfrac(double frac,double fraclow, double frachigh)
 	flow=wpar->baseline+fraclow*(wpar->max-wpar->baseline);
 	fhigh=wpar->baseline+frachigh*(wpar->max-wpar->baseline);
 
-	while(frag->wavebuffer[t]>f){
+	while(frag->GetWavebuffer(t)>f){
 		t--;
 		if(t<=4) break;
 	}
 	imin=t;
-	while(frag->wavebuffer[imin]>flow){
+	while(frag->GetWavebuffer(imin)>flow){
 		imin--;
 		if(imin<=1) break;
 	}
 
 	imax=t;
 
-	while(frag->wavebuffer[imax]<fhigh) {
+	while(frag->GetWavebuffer(imax)<fhigh) {
 		imax++;
 		if(imax>=N-1) break;
 	}
@@ -603,9 +603,9 @@ double TPulseAnalyzer::get_tfrac(double frac,double fraclow, double frachigh)
 
 	for(i=imin;i<imax+1;i++)    {
 		a=i-imin;
-		lineq_vector[0]+=frag->wavebuffer[i];
-		lineq_vector[1]+=frag->wavebuffer[i]*a;
-		lineq_vector[2]+=frag->wavebuffer[i]*a*a;
+		lineq_vector[0]+=frag->GetWavebuffer(i);
+		lineq_vector[1]+=frag->GetWavebuffer(i)*a;
+		lineq_vector[2]+=frag->GetWavebuffer(i)*a*a;
 	}
 
 	if(solve_lin_eq()==0){
@@ -732,9 +732,9 @@ double TPulseAnalyzer::get_sin_par(double T)
   
   for(i=0;i<N;i++)
     {
-      lineq_vector[0]+=frag->wavebuffer[i]*sin(w*i);
-      lineq_vector[1]+=frag->wavebuffer[i]*cos(w*i);
-      lineq_vector[2]+=frag->wavebuffer[i];
+      lineq_vector[0]+=frag->GetWavebuffer(i)*sin(w*i);
+      lineq_vector[1]+=frag->GetWavebuffer(i)*cos(w*i);
+      lineq_vector[2]+=frag->GetWavebuffer(i);
     }
   if(solve_lin_eq()==0)
     {
@@ -777,8 +777,8 @@ double TPulseAnalyzer::get_sig2noise(){
 short TPulseAnalyzer::good_baseline(){
 	if(set&&wpar){
 		if(wpar->tmax<T0RANGE)return 0;			
-		if((wpar->max-wpar->baseline)<(wpar->baseline-frag->wavebuffer[0])*10)return 0;
-		if((wpar->max-frag->wavebuffer[T0RANGE])<(frag->wavebuffer[T0RANGE]-wpar->baseline)*4)return 0;
+		if((wpar->max-wpar->baseline)<(wpar->baseline-frag->GetWavebuffer(0))*10)return 0;
+		if((wpar->max-frag->GetWavebuffer(T0RANGE))<(frag->GetWavebuffer(T0RANGE)-wpar->baseline)*4)return 0;
 		return 1;
 	}
 	return 0;
@@ -923,9 +923,9 @@ int TPulseAnalyzer::GetCsIShape()
 
   for(j=q;j<N;j++)
     {
-      lineq_vector[0]+=frag->wavebuffer[j];
+      lineq_vector[0]+=frag->GetWavebuffer(j);
       lineq_matrix[0][0]+=1;
-      shpar->chisq+=frag->wavebuffer[j]*frag->wavebuffer[j];
+      shpar->chisq+=frag->GetWavebuffer(j)*frag->GetWavebuffer(j);
       shpar->ndf+=1;
     }
   
@@ -937,15 +937,15 @@ int TPulseAnalyzer::GetCsIShape()
       tau=GetCsITau(i);
       lineq_vector[i]=0;
       for(j=q;j<N;j++)
-  	lineq_vector[i]+=frag->wavebuffer[j]*exp(-(double(j))/tau);
+  	lineq_vector[i]+=frag->GetWavebuffer(j)*exp(-(double(j))/tau);
     }
   
 
   for(j=0;j<p;j++)
     {
-      lineq_vector[0]+=frag->wavebuffer[j];
+      lineq_vector[0]+=frag->GetWavebuffer(j);
       lineq_matrix[0][0]+=1;
-      shpar->chisq+=frag->wavebuffer[j]*frag->wavebuffer[j];
+      shpar->chisq+=frag->GetWavebuffer(j)*frag->GetWavebuffer(j);
       shpar->ndf+=1;
     }
  
@@ -1044,7 +1044,7 @@ void TPulseAnalyzer::GetCsIExclusionZone()
 		{
 			sum=0.;
 			for(j=i-D;j<i+D;j++)
-				sum+=frag->wavebuffer[j];
+				sum+=frag->GetWavebuffer(j);
 			sum/=FILTER;
 			if(sum<wpar->baselineMax)
 			{
@@ -1079,10 +1079,10 @@ void TPulseAnalyzer::GetCsIExclusionZone()
 				lineq_matrix[0][1]+=i;
 				lineq_matrix[1][1]+=i*i;
 
-				lineq_vector[0]+=frag->wavebuffer[i];
+				lineq_vector[0]+=frag->GetWavebuffer(i);
 				//printf("testing lineq_vector[0] %f\n",lineq_vector[0]);
 
-				lineq_vector[1]+=frag->wavebuffer[i]*i;
+				lineq_vector[1]+=frag->GetWavebuffer(i)*i;
 			}
 			lineq_matrix[1][0]=lineq_matrix[0][1];
 
@@ -1247,7 +1247,7 @@ void  TPulseAnalyzer::DrawWave(){
 	if(N==0||!set) return;
 	TH1I h("Waveform",frag->GetName(),N,0,N); 
 	for(Int_t i=0;i<N;i++)
-	   h.SetBinContent(i+1,frag->wavebuffer[i]);
+	   h.SetBinContent(i+1,frag->GetWavebuffer(i));
 	h.DrawCopy();
 }
 

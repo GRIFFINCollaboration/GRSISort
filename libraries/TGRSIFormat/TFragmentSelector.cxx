@@ -85,7 +85,7 @@ Bool_t TFragmentSelector::Process(Long64_t entry)
 
    //EDIT: add code to read channel and include user code
    fChain->GetEntry(entry);
-   TChannel *channel = TChannel::GetChannel(fragment->ChannelAddress);
+   TChannel *channel = TChannel::GetChannel(fragment->GetChannelAddress());
    if(!channel) {
 	   return kTRUE;   // I think if we don't have a channel at this point (i.e. the channel
                       // was not defined a name/address/odb; we should drop the fragment.  

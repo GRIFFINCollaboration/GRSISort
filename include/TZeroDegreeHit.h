@@ -17,7 +17,6 @@
 #include <cstdio>
 #include <cmath>
 
-#include "TFragment.h"
 #include "TChannel.h"
 
 #include "TVector3.h"
@@ -36,6 +35,11 @@ class TZeroDegreeHit : public TGRSIDetectorHit {
    public:
       /////////////////////////		/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { fFilter   = x; }   //!<!
+      
+      /////////////////////////	replacing some TGRSIDetectorHit functions	/////////////////////////////////////
+		inline Int_t   GetCfd() const                          { return fCfd&0x001fffff;}           //!<!
+		inline Int_t   GetRemainder() const                    { return fCfd>>21;}           //!<!
+		Double_t GetTime() const;
       
       /////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()    const     { return fFilter;   }  //!<!

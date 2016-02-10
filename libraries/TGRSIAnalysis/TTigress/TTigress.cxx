@@ -167,7 +167,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 
   if(mnemonic->subsystem.compare(0,1,"G")==0) { 
     if((mnemonic->segment==0) || (mnemonic->segment==9 ))	{
-      if(frag->Charge.size() == 0 || frag->Cfd.size() == 0 || frag->Led.size() == 0 || frag->Zc.size() == 0)
+      if(frag->GetNumberOfCharges() == 0)
         return;
       if(mnemonic->outputsensor.compare(0,1,"b")==0) {	return; }  //make this smarter.
       //loop over existing hits to see if this core was already created by a previously found segment
@@ -200,7 +200,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       //reaching here means we haven't found a corresponding core yet so we create a new core and then add this segment to it
 		//printf("Segment issue?\n");
       TTigressHit corehit;
-      corehit.SetAddress(frag->ChannelAddress);
+      corehit.SetAddress(frag->GetChannelAddress());
       corehit.SetDetector(mnemonic->arrayposition);
       corehit.SetCrystal(CoreNbr);
       corehit.AddSegment(temp);
@@ -218,7 +218,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     //reaching here means we haven't found a corresponding core yet so we create a new core and then add this BGO to it
 	//printf("BGO issue?\n");
     TTigressHit corehit;
-    corehit.SetAddress(frag->ChannelAddress);
+    corehit.SetAddress(frag->GetChannelAddress());
     corehit.SetDetector(mnemonic->arrayposition);
     corehit.SetCrystal(CoreNbr);
     corehit.AddBGO(temp);

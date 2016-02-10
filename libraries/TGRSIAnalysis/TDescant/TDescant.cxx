@@ -9,7 +9,7 @@
 ClassImp(TDescant)
 /// \endcond
 
-bool TDescant::fSetWave = false;
+bool TDescant::fSetWave = true;
 
 TVector3 TDescant::gPosition[71] = {
    //Descant positions from James' Thesis
@@ -173,18 +173,18 @@ void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       return;
    }
    
-   for(size_t i = 0; i < frag->Charge.size(); ++i) {
+   for(size_t i = 0; i < frag->GetNumberOfCharges(); ++i) {
       TDescantHit hit;
-      hit.SetAddress(frag->ChannelAddress);
+      hit.SetAddress(frag->GetChannelAddress());
       hit.SetTimeStamp(frag->GetTimeStamp());
       hit.SetCfd(frag->GetCfd(i));
       hit.SetCharge(frag->GetCharge(i));
-      hit.SetZc(frag->GetZc(i));
-      hit.SetCcShort(frag->GetCcShort(i));
-      hit.SetCcLong(frag->GetCcLong(i));
+      hit.SetZc(frag->GetZc());
+      hit.SetCcShort(frag->GetCcShort());
+      hit.SetCcLong(frag->GetCcLong());
       
       if(TDescant::SetWave()){
-         if(frag->wavebuffer.size() == 0) {
+         if(frag->GetWavebufferSize() == 0) {
             //printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
          }
          if(0) {
@@ -193,7 +193,7 @@ void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
             //All pairs of samples are swapped.
             //The first two samples are also delayed by 8.
             //We choose to throw out the first 2 samples (junk) and the last 6 samples (convience)
-            x = frag->wavebuffer;
+            x = frag->GetWavebuffer();
             size_t length = x.size() - (x.size()%8);
             Short_t temp;
             
@@ -216,13 +216,13 @@ void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
             hit.SetWaveform(x);
          }
          else {
-            hit.SetWaveform(frag->wavebuffer);
+            hit.SetWaveform(frag->GetWavebuffer());
          }
          if(hit.GetWaveform()->size() > 0) {
-            //          printf("Analyzing waveform, current cfd = %d, psd = %d\n",hit.GetCfd(),hit.GetPsd());
-            hit.AnalyzeWaveform();
-            //          bool analyzed = hit.AnalyzeWaveform();
-            //          printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",hit.GetCfd(),hit.GetPsd());
+				//printf("Analyzing waveform, current cfd = %d, psd = %d\n",hit.GetCfd(),hit.GetPsd());
+				hit.AnalyzeWaveform();
+				//bool analyzed = hit.AnalyzeWaveform();
+				//printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",hit.GetCfd(),hit.GetPsd());
          }
       }
       
