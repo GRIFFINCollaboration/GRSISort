@@ -459,12 +459,12 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 					//   EventFrag->AcceptedChannelId = 0;
 					//}
 
-					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
 					if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
+					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
 					return x;
 				} else  {
-					TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
 					if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
+					TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
 					return -x;
 				}
 				break;
