@@ -79,7 +79,7 @@ class TDataParser {
     static bool SetTIGTriggerID(uint32_t, TFragment*);
     static bool SetTIGTimeStamp(uint32_t*, TFragment*);
 
-    static bool SetGRIFHeader(uint32_t,TFragment*,int);
+    static bool SetGRIFHeader(uint32_t,TFragment*&,int);
     static bool SetGRIFMasterFilterId(uint32_t,TFragment*);
     static bool SetGRIFMasterFilterPattern(uint32_t,TFragment*);
     static bool SetGRIFChannelTriggerId(uint32_t,TFragment*);  

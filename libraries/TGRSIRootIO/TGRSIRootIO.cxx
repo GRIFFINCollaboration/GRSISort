@@ -1,6 +1,8 @@
 #include "TGRSIRootIO.h"
 
 #include "TFragmentQueue.h"
+#include "TOldFragment.h"
+#include "TNewFragment.h"
 
 #include "TGRSIOptions.h"
 #include "TGRSIRunInfo.h"
@@ -11,8 +13,9 @@ ClassImp(TGRSIRootIO)
 /// \endcond
 
 TGRSIRootIO* TGRSIRootIO::fTGRSIRootIO = 0;
+bool TGRSIRootIO::fOldFragment = false;
 
-TGRSIRootIO* TGRSIRootIO::Get()  {
+TGRSIRootIO* TGRSIRootIO::Get() {
 	if(!fTGRSIRootIO)
 		fTGRSIRootIO = new TGRSIRootIO;
 	return fTGRSIRootIO;
@@ -44,7 +47,11 @@ void TGRSIRootIO::SetUpFragmentTree() {
 	fTimesFillCalled = 0;
 	fFragmentTree = new TTree("FragmentTree","FragmentTree");
 	fBufferFrag = NULL;
-	fFragmentTree->Bronch("TFragment","TFragment",&fBufferFrag,128000,99);
+	if(fOldFragment) {
+     fFragmentTree->Bronch("TFragment","TOldFragment",static_cast<void*>(&fBufferFrag),128000,99);
+	} else {
+	  fFragmentTree->Bronch("TFragment","TNewFragment",&fBufferFrag,128000,99);
+	}
 	//fFragmentTree->BranchRef();
 	printf("FragmentTree set up.\n");
 }
@@ -58,7 +65,11 @@ void TGRSIRootIO::SetUpBadFragmentTree() {
 	fTimesBadFillCalled = 0;
 	fBadFragmentTree = new TTree("BadFragmentTree","BadFragmentTree");
 	fBadBufferFrag = 0;
-	fBadFragmentTree->Bronch("TFragment","TFragment",&fBadBufferFrag,128000,99);
+	if(fOldFragment) {
+ 	  fBadFragmentTree->Bronch("TFragment","TOldFragment",&fBadBufferFrag,128000,99);
+	} else {
+	  fBadFragmentTree->Bronch("TFragment","TNewFragment",&fBadBufferFrag,128000,99);
+	}
 	printf("BadFragmentTree set up.\n");
 }
 
@@ -135,13 +146,17 @@ TDiagnostics* TGRSIRootIO::GetDiagnostics(){
 void TGRSIRootIO::FillFragmentTree(TFragment* frag) {
 	// if(!fFragmentTree)
 	//    return;
-	*fBufferFrag = *frag;
+	//the (double) casting is necessary so that the copy constructor of the "real" class is being used, not the virtual one of TFragment
+	if(fOldFragment) {
+      *static_cast<TOldFragment*>(fBufferFrag) = *static_cast<TOldFragment*>(frag);
+   } else {
+      *static_cast<TNewFragment*>(fBufferFrag) = *static_cast<TNewFragment*>(frag);
+   }
 	int bytes =  fFragmentTree->Fill();
 	if(bytes < 1)
 		printf("\n fill failed with bytes = %i\n",bytes);
 	fTimesFillCalled++;
 }
-
 
 void TGRSIRootIO::FillBadFragmentTree(TFragment* frag) {
 	if(!TGRSIOptions::WriteBadFrags())

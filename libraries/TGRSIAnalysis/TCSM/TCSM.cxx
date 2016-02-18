@@ -46,10 +46,10 @@ void TCSM::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 
 	//if this is the first time we got this detector number we make a new vector (of a vector) of fragments
 	if(fFragments.find(mnemonic->arrayposition) == fFragments.end()) {
-		fFragments[mnemonic->arrayposition].resize(2,std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >(2));
+		fFragments[mnemonic->arrayposition].resize(2,std::vector<std::vector<std::pair<TFragment*, MNEMONIC> > >(2));
 	}
 
-	fFragments[mnemonic->arrayposition][type][orientation].push_back(std::make_pair(*frag,*mnemonic));
+	fFragments[mnemonic->arrayposition][type][orientation].push_back(std::make_pair(frag,*mnemonic));
 }
 
 void TCSM::BuildHits() {
@@ -129,7 +129,7 @@ TVector3 TCSM::GetPosition(int detector,char pos, int horizontalstrip, int verti
 	return Pos;
 }
 
-void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >& strips,std::vector<TCSMHit>& hitVector) {
+void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment*, MNEMONIC> > >& strips,std::vector<TCSMHit>& hitVector) {
 	///Build hits from horizontal (index = 0) and vertical (index = 1) strips into the hitVector
 	if(strips[0].size() == 0 && strips[1].size() == 0) {
 		return;
@@ -140,9 +140,9 @@ void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >& s
 	} else if(strips[0].size() == 1 && strips[1].size() == 1) {    
 		hitVector.push_back(MakeHit(strips[0][0],strips[1][0]));
 	} else if(strips[1].size() == 1 && strips[0].size() == 2) {
-		int he1 = strips[0][0].first.GetEnergy();
-		int he2 = strips[0][1].first.GetEnergy();
-		int ve1 = strips[1][0].first.GetEnergy();
+		int he1 = strips[0][0].first->GetEnergy();
+		int he2 = strips[0][1].first->GetEnergy();
+		int ve1 = strips[1][0].first->GetEnergy();
 		if(AlmostEqual(ve1,he1+he2) && SUMHITS) {
 			hitVector.push_back(MakeHit(strips[0],strips[1]));
 		} else if(AlmostEqual(ve1,he1)) {
@@ -153,9 +153,9 @@ void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >& s
 			RecoverHit('H',strips[0][0],hitVector);
 		}
 	} else if(strips[1].size() == 2 && strips[0].size() == 1) {
-		int he1 = strips[0][0].first.GetEnergy();
-		int ve1 = strips[1][0].first.GetEnergy();
-		int ve2 = strips[1][1].first.GetEnergy();
+		int he1 = strips[0][0].first->GetEnergy();
+		int ve1 = strips[1][0].first->GetEnergy();
+		int ve2 = strips[1][1].first->GetEnergy();
 		if(AlmostEqual(ve1+ve2,he1) && SUMHITS) {
 			hitVector.push_back(MakeHit(strips[0],strips[1]));
 		} else if(AlmostEqual(ve1,he1)) {
@@ -166,10 +166,10 @@ void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >& s
 			RecoverHit('V',strips[1][0],hitVector);
 		}
 	} else if(strips[1].size() == 2 && strips[0].size() == 2) {    
-		int he1 = strips[0][0].first.GetEnergy();
-		int he2 = strips[0][1].first.GetEnergy();
-		int ve1 = strips[1][0].first.GetEnergy();
-		int ve2 = strips[1][1].first.GetEnergy();
+		int he1 = strips[0][0].first->GetEnergy();
+		int he2 = strips[0][1].first->GetEnergy();
+		int ve1 = strips[1][0].first->GetEnergy();
+		int ve2 = strips[1][1].first->GetEnergy();
 		if( (AlmostEqual(ve1,he1) && AlmostEqual(ve2,he2)) || (AlmostEqual(ve1,he2) && AlmostEqual(ve2,he1))) {
 			//I can build both 1,1 and 2,2 or 1,2 and 2,1
 			if(std::abs(ve1-he1)+std::abs(ve2-he2) <= std::abs(ve1-he2)+std::abs(ve2-he1)) {
@@ -193,7 +193,7 @@ void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >& s
 	}
 }
 
-TCSMHit TCSM::MakeHit(std::pair<TFragment, MNEMONIC>& h, std::pair<TFragment, MNEMONIC>& v) {
+TCSMHit TCSM::MakeHit(std::pair<TFragment*, MNEMONIC>& h, std::pair<TFragment*, MNEMONIC>& v) {
 	TCSMHit csmHit;
 
 	if(h.second.arrayposition != v.second.arrayposition) {
@@ -206,32 +206,32 @@ TCSMHit TCSM::MakeHit(std::pair<TFragment, MNEMONIC>& h, std::pair<TFragment, MN
 
 	if(h.second.arraysubposition[0] == 'D') {
 		csmHit.SetDetectorNumber(h.second.arrayposition);
-		csmHit.SetDHorizontalCharge(h.first.GetCharge());
-		csmHit.SetDVerticalCharge(v.first.GetCharge());
+		csmHit.SetDHorizontalCharge(h.first->GetCharge());
+		csmHit.SetDVerticalCharge(v.first->GetCharge());
 		csmHit.SetDHorizontalStrip(h.second.segment);
 		csmHit.SetDVerticalStrip(v.second.segment);
-		csmHit.SetDHorizontalCFD(h.first.GetCfd());
-		csmHit.SetDVerticalCFD(v.first.GetCfd());
-		csmHit.SetDHorizontalTime(h.first.GetTimeStamp());
-		csmHit.SetDVerticalTime(v.first.GetTimeStamp());
-		csmHit.SetDHorizontalEnergy(h.first.GetEnergy());
-		csmHit.SetDVerticalEnergy(v.first.GetEnergy());
+		csmHit.SetDHorizontalCFD(h.first->GetCfd());
+		csmHit.SetDVerticalCFD(v.first->GetCfd());
+		csmHit.SetDHorizontalTime(h.first->GetTimeStamp());
+		csmHit.SetDVerticalTime(v.first->GetTimeStamp());
+		csmHit.SetDHorizontalEnergy(h.first->GetEnergy());
+		csmHit.SetDVerticalEnergy(v.first->GetEnergy());
 		csmHit.SetDPosition(TCSM::GetPosition(h.second.arrayposition,
 					h.second.arraysubposition[0],
 					h.second.segment,
 					v.second.segment));
 	} else if(h.second.arraysubposition.c_str()[0] == 'E') {
 		csmHit.SetDetectorNumber(h.second.arrayposition);
-		csmHit.SetEHorizontalCharge(h.first.GetCharge());
-		csmHit.SetEVerticalCharge(v.first.GetCharge());
+		csmHit.SetEHorizontalCharge(h.first->GetCharge());
+		csmHit.SetEVerticalCharge(v.first->GetCharge());
 		csmHit.SetEHorizontalStrip(h.second.segment);
 		csmHit.SetEVerticalStrip(v.second.segment);
-		csmHit.SetEHorizontalCFD(h.first.GetCfd());
-		csmHit.SetEVerticalCFD(v.first.GetCfd());
-		csmHit.SetEHorizontalTime(h.first.GetTimeStamp());
-		csmHit.SetEVerticalTime(v.first.GetTimeStamp());
-		csmHit.SetEHorizontalEnergy(h.first.GetEnergy());
-		csmHit.SetEVerticalEnergy(v.first.GetEnergy());
+		csmHit.SetEHorizontalCFD(h.first->GetCfd());
+		csmHit.SetEVerticalCFD(v.first->GetCfd());
+		csmHit.SetEHorizontalTime(h.first->GetTimeStamp());
+		csmHit.SetEVerticalTime(v.first->GetTimeStamp());
+		csmHit.SetEHorizontalEnergy(h.first->GetEnergy());
+		csmHit.SetEVerticalEnergy(v.first->GetEnergy());
 		csmHit.SetEPosition(TCSM::GetPosition(h.second.arrayposition,
 					h.second.arraysubposition[0],
 					h.second.segment,
@@ -241,7 +241,7 @@ TCSMHit TCSM::MakeHit(std::pair<TFragment, MNEMONIC>& h, std::pair<TFragment, MN
 	return csmHit;
 }
 
-TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >& hhV,std::vector<std::pair<TFragment, MNEMONIC> >& vvV) {
+TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment*, MNEMONIC> >& hhV,std::vector<std::pair<TFragment*, MNEMONIC> >& vvV) {
 	TCSMHit csmHit;
 
 	if(hhV.size() == 0 || vvV.size() == 0) {
@@ -251,13 +251,13 @@ TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >& hhV,std::vec
 	//-------------------- horizontal strips
 	int DetNumH = hhV[0].second.arrayposition;
 	char DetPosH = hhV[0].second.arraysubposition[0];
-	int ChargeH = hhV[0].first.GetCharge();
-	double EnergyH = hhV[0].first.GetEnergy();
+	int ChargeH = hhV[0].first->GetCharge();
+	double EnergyH = hhV[0].first->GetEnergy();
 	int biggestH = 0;
 
 	//get accumulative charge/energy and find the strip with the highest charge (why not energy?)
 	for(size_t i = 1; i < hhV.size(); ++i) {
-		if(hhV[i].first.GetCharge() > hhV[biggestH].first.GetCharge()) {
+		if(hhV[i].first->GetCharge() > hhV[biggestH].first->GetCharge()) {
 			biggestH = i;
 		}
 
@@ -267,24 +267,24 @@ TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >& hhV,std::vec
 		if(hhV[i].second.arraysubposition[0] != DetPosH) {
 			std::cerr<<"\tSomething is wrong, Horizontal detector positions don't match in vector loop."<<std::endl;
 		}
-		ChargeH += hhV[i].first.GetCharge();
-		EnergyH += hhV[i].first.GetEnergy();
+		ChargeH += hhV[i].first->GetCharge();
+		EnergyH += hhV[i].first->GetEnergy();
 	}
 
 	int StripH = hhV[biggestH].second.segment;
-	int ConFraH = hhV[biggestH].first.GetCfd();
-	double TimeH = hhV[biggestH].first.GetTimeStamp();
+	int ConFraH = hhV[biggestH].first->GetCfd();
+	double TimeH = hhV[biggestH].first->GetTimeStamp();
 
 	//-------------------- vertical strips
 	int DetNumV = vvV[0].second.arrayposition;
 	char DetPosV = vvV[0].second.arraysubposition[0];
-	int ChargeV = vvV[0].first.GetCharge();
-	double EnergyV = vvV[0].first.GetEnergy();
+	int ChargeV = vvV[0].first->GetCharge();
+	double EnergyV = vvV[0].first->GetEnergy();
 	int biggestV = 0;
 
 	//get accumulative charge/energy and find the strip with the highest charge (why not energy?)
 	for(size_t i = 1; i < vvV.size(); ++i) {
-		if(vvV[i].first.GetCharge() > vvV[biggestV].first.GetCharge()) {
+		if(vvV[i].first->GetCharge() > vvV[biggestV].first->GetCharge()) {
 			biggestV = i;
 		}
 
@@ -294,13 +294,13 @@ TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >& hhV,std::vec
 		if(vvV[i].second.arraysubposition[0] != DetPosV) {
 			std::cerr<<"\tSomething is wrong, Vertical detector positions don't match in vector loop."<<std::endl;
 		}
-		ChargeV += vvV[i].first.GetCharge();
-		EnergyV += vvV[i].first.GetEnergy();
+		ChargeV += vvV[i].first->GetCharge();
+		EnergyV += vvV[i].first->GetEnergy();
 	}
 
 	int StripV = vvV[biggestV].second.segment;
-	int ConFraV = vvV[biggestV].first.GetCfd();
-	double TimeV = vvV[biggestV].first.GetTimeStamp();
+	int ConFraV = vvV[biggestV].first->GetCfd();
+	double TimeV = vvV[biggestV].first->GetTimeStamp();
 
 	if(DetNumH != DetNumV) {
 		std::cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match in vector."<<std::endl;
@@ -514,7 +514,7 @@ void TCSM::OldBuilddEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitV
 	}
 }
 
-void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std::vector<TCSMHit>& hits) {
+void TCSM::RecoverHit(char orientation, std::pair<TFragment*, MNEMONIC>& hit, std::vector<TCSMHit>& hits) {
 	if(!RECOVERHITS) {
 		return;
 	}
@@ -530,16 +530,16 @@ void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std
 		case 2:
 			if(pos == 'D' && orientation=='V') {//Recover 2DN09, channel 1040
 				csmHit.SetDetectorNumber(detno);
-				csmHit.SetDHorizontalCharge(hit.first.GetCharge());
-				csmHit.SetDVerticalCharge(hit.first.GetCharge());
+				csmHit.SetDHorizontalCharge(hit.first->GetCharge());
+				csmHit.SetDVerticalCharge(hit.first->GetCharge());
 				csmHit.SetDHorizontalStrip(9);
 				csmHit.SetDVerticalStrip(hit.second.segment);
-				csmHit.SetDHorizontalCFD(hit.first.GetCfd());
-				csmHit.SetDVerticalCFD(hit.first.GetCfd());
-				csmHit.SetDHorizontalTime(hit.first.GetTimeStamp());
-				csmHit.SetDVerticalTime(hit.first.GetTimeStamp());
-				csmHit.SetDHorizontalEnergy(hit.first.GetEnergy());
-				csmHit.SetDVerticalEnergy(hit.first.GetEnergy());
+				csmHit.SetDHorizontalCFD(hit.first->GetCfd());
+				csmHit.SetDVerticalCFD(hit.first->GetCfd());
+				csmHit.SetDHorizontalTime(hit.first->GetTimeStamp());
+				csmHit.SetDVerticalTime(hit.first->GetTimeStamp());
+				csmHit.SetDHorizontalEnergy(hit.first->GetEnergy());
+				csmHit.SetDVerticalEnergy(hit.first->GetEnergy());
 				csmHit.SetDPosition(TCSM::GetPosition(detno,
 							pos,
 							9,
@@ -553,16 +553,16 @@ void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std
 				return;
 			} else if(orientation=='H') {//Recover 3DP11, channel 1145
 				csmHit.SetDetectorNumber(detno);
-				csmHit.SetDHorizontalCharge(hit.first.GetCharge());
-				csmHit.SetDVerticalCharge(hit.first.GetCharge());
+				csmHit.SetDHorizontalCharge(hit.first->GetCharge());
+				csmHit.SetDVerticalCharge(hit.first->GetCharge());
 				csmHit.SetDHorizontalStrip(hit.second.segment);
 				csmHit.SetDVerticalStrip(11);
-				csmHit.SetDHorizontalCFD(hit.first.GetCfd());
-				csmHit.SetDVerticalCFD(hit.first.GetCfd());
-				csmHit.SetDHorizontalTime(hit.first.GetTimeStamp());
-				csmHit.SetDVerticalTime(hit.first.GetTimeStamp());
-				csmHit.SetDHorizontalEnergy(hit.first.GetEnergy());
-				csmHit.SetDVerticalEnergy(hit.first.GetEnergy());
+				csmHit.SetDHorizontalCFD(hit.first->GetCfd());
+				csmHit.SetDVerticalCFD(hit.first->GetCfd());
+				csmHit.SetDHorizontalTime(hit.first->GetTimeStamp());
+				csmHit.SetDVerticalTime(hit.first->GetTimeStamp());
+				csmHit.SetDHorizontalEnergy(hit.first->GetEnergy());
+				csmHit.SetDVerticalEnergy(hit.first->GetEnergy());
 				csmHit.SetDPosition(TCSM::GetPosition(detno,
 							pos,
 							hit.second.segment,
@@ -575,16 +575,16 @@ void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std
 				return;
 			} else if(orientation=='H') {//Recover 4DP15, channel 1181
 				csmHit.SetDetectorNumber(detno);
-				csmHit.SetDHorizontalCharge(hit.first.GetCharge());
-				csmHit.SetDVerticalCharge(hit.first.GetCharge());
+				csmHit.SetDHorizontalCharge(hit.first->GetCharge());
+				csmHit.SetDVerticalCharge(hit.first->GetCharge());
 				csmHit.SetDHorizontalStrip(hit.second.segment);
 				csmHit.SetDVerticalStrip(15);
-				csmHit.SetDHorizontalCFD(hit.first.GetCfd());
-				csmHit.SetDVerticalCFD(hit.first.GetCfd());
-				csmHit.SetDHorizontalTime(hit.first.GetTimeStamp());
-				csmHit.SetDVerticalTime(hit.first.GetTimeStamp());
-				csmHit.SetDHorizontalEnergy(hit.first.GetEnergy());
-				csmHit.SetDVerticalEnergy(hit.first.GetEnergy());
+				csmHit.SetDHorizontalCFD(hit.first->GetCfd());
+				csmHit.SetDVerticalCFD(hit.first->GetCfd());
+				csmHit.SetDHorizontalTime(hit.first->GetTimeStamp());
+				csmHit.SetDVerticalTime(hit.first->GetTimeStamp());
+				csmHit.SetDHorizontalEnergy(hit.first->GetEnergy());
+				csmHit.SetDVerticalEnergy(hit.first->GetEnergy());
 				csmHit.SetDPosition(TCSM::GetPosition(detno,
 							pos,
 							hit.second.segment,

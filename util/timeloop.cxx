@@ -27,27 +27,27 @@ TH2F *timehist = new TH2F("time_eng","time_eng",120,-20,100,4000,0,4000);
 TH2F *timehist_walk2 = new TH2F("eng_time_walk","eng_time_walk",4000,0,4000,120,-20,100);
 TH2F *timehist2      = new TH2F("eng_teng","eng_time",4000,0,4000,120,-20,100);
 
-void ProcessEvent(std::vector<TFragment> *event) {
+void ProcessEvent(std::vector<TFragment*> *event) {
   if(event->size()<2)
      return;
   
   for(size_t x=0;x<event->size();x++) {
     for(size_t y=x+1;y<event->size();y++) {
-      if( ((event->at(x).GetEnergy()>1330.0) &&  (event->at(x).GetEnergy()<1335.0)) || 
-          ((event->at(y).GetEnergy()>1330.0) &&  (event->at(y).GetEnergy()<1335.0))  )  {
-			int timediff      = abs(event->at(x).GetTimeStampLow()-event->at(y).GetTimeStampLow());
-			float timediff_walk = fabs((float)(event->at(x).GetTimeStamp()-event->at(y).GetTimeStamp()));
-			int cfddiff  = abs(event->at(x).GetCfd(0)-event->at(y).GetCfd(0));
-			timehist->Fill(timediff,event->at(x).GetEnergy());
-			timehist->Fill(timediff,event->at(y).GetEnergy());
-			cfdhist->Fill(cfddiff,event->at(x).GetEnergy());
-			timehist_walk->Fill(timediff_walk,event->at(x).GetEnergy());
-			timehist_walk->Fill(timediff_walk,event->at(y).GetEnergy());
+      if( ((event->at(x)->GetEnergy()>1330.0) &&  (event->at(x)->GetEnergy()<1335.0)) || 
+          ((event->at(y)->GetEnergy()>1330.0) &&  (event->at(y)->GetEnergy()<1335.0))  )  {
+			int timediff      = abs(event->at(x)->GetTimeStampLow()-event->at(y)->GetTimeStampLow());
+			float timediff_walk = fabs((float)(event->at(x)->GetTimeStamp()-event->at(y)->GetTimeStamp()));
+			int cfddiff  = abs(event->at(x)->GetCfd(0)-event->at(y)->GetCfd(0));
+			timehist->Fill(timediff,event->at(x)->GetEnergy());
+			timehist->Fill(timediff,event->at(y)->GetEnergy());
+			cfdhist->Fill(cfddiff,event->at(x)->GetEnergy());
+			timehist_walk->Fill(timediff_walk,event->at(x)->GetEnergy());
+			timehist_walk->Fill(timediff_walk,event->at(y)->GetEnergy());
 
-			timehist2->Fill(event->at(x).GetEnergy(),timediff);
-			timehist2->Fill(event->at(y).GetEnergy(),timediff);
-			timehist_walk2->Fill(event->at(x).GetEnergy(),timediff_walk);
-			timehist_walk2->Fill(event->at(y).GetEnergy(),timediff_walk);
+			timehist2->Fill(event->at(x)->GetEnergy(),timediff);
+			timehist2->Fill(event->at(y)->GetEnergy(),timediff);
+			timehist_walk2->Fill(event->at(x)->GetEnergy(),timediff_walk);
+			timehist_walk2->Fill(event->at(y)->GetEnergy(),timediff_walk);
       }
     }
   }
@@ -157,8 +157,8 @@ int main(int argc, char **argv) {
    //We set the buildevent flag to false by default. When the time gate closes we change this to true
    //to tell the code to build the event and send it to be written to the analysis tree.
    //bool buildevent = false;
-   std::vector<TFragment> *event = new std::vector<TFragment>;//(1,*currentFrag);
-   event->push_back(*currentFrag);
+   std::vector<TFragment*> *event = new std::vector<TFragment*>;//(1,*currentFrag);
+   event->push_back(currentFrag);
 
    fFragmentsIn++; //Increment the number of fragments that have been read
    
@@ -204,7 +204,7 @@ int main(int argc, char **argv) {
         firstTimeStamp = currentFrag->GetTimeStamp();
       }
 
-      event->push_back(*currentFrag);
+      event->push_back(currentFrag);
   
      if((x%15000)==0) {
         printf("   on %i / %i          \r",x,fEntries);

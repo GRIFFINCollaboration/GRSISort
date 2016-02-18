@@ -84,7 +84,7 @@ void TDiagnostics::GoodFragment(TFragment* frag) {
 	Short_t channelNumber = frag->GetChannelNumber();
 	UInt_t channelId = frag->GetChannelId();
 	long timeStamp = frag->GetTimeStamp();
-	//Long_t triggerId = frag->GetTriggerId();
+	time_t midasTimeStamp = frag->GetMidasTimeStamp();
 	//check if this is a new minimum/maximum of the channel id
 	if(fMinChannelId.find(channelNumber) == fMinChannelId.end()) { //check if this channel has been found before
 		fMinChannelId[channelNumber] = channelId;
@@ -129,11 +129,11 @@ void TDiagnostics::GoodFragment(TFragment* frag) {
 		}
 	}
 	
-	if(fMinMidasTimeStamp == 0 || frag->GetMidasTimeStamp() < fMinMidasTimeStamp) {
-	  fMinMidasTimeStamp = frag->GetMidasTimeStamp();
+	if(fMinMidasTimeStamp == 0 || midasTimeStamp < fMinMidasTimeStamp) {
+	  fMinMidasTimeStamp = midasTimeStamp;
 	}
-	if(fMaxMidasTimeStamp == 0 || frag->GetMidasTimeStamp() > fMaxMidasTimeStamp) {
-	  fMaxMidasTimeStamp = frag->GetMidasTimeStamp();
+	if(fMaxMidasTimeStamp == 0 || midasTimeStamp > fMaxMidasTimeStamp) {
+	  fMaxMidasTimeStamp = midasTimeStamp;
 	}
 }
 

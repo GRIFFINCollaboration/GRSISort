@@ -218,13 +218,8 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 			corehit.SetCfd(frag->GetCfd(i));
 			corehit.SetCharge(frag->GetCharge(i));
 			corehit.SetNPileUps(frag->GetNumberOfPileups()-1);//We subtract 1 in order to start counter from 0
-			//check if this is a fragment where we already pulled the pile-up hits apart
-			if((frag->GetNumberOfPileups() == 1) && (frag->GetHitIndex() >= 0)) {
-				corehit.SetPUHit(frag->GetHitIndex());
-			} else {
-				corehit.SetPUHit(i);
-			}
-			
+			corehit.SetPUHit(i);
+
 			AddHit(&corehit);
 		}
 	} else if(mnemonic->subsystem[0] == 'S') {

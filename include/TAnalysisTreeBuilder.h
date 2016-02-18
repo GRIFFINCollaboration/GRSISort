@@ -63,8 +63,8 @@
 class TEventQueue : public TObject {
   public:
 	static TEventQueue* Get();
-	static void Add(std::vector<TFragment>* event); 
-	static std::vector<TFragment>* PopEntry();
+	static void Add(std::vector<TFragment*>* event); 
+	static std::vector<TFragment*>* PopEntry();
 	static int Size();
 	virtual ~TEventQueue() { std::cout << std::endl << "In event queue dstor." << std::endl; }
 
@@ -75,11 +75,11 @@ class TEventQueue : public TObject {
 	static TEventQueue* fPtrToQue;
 
       
-	void AddInstance(std::vector<TFragment>* event); 
-	std::vector<TFragment>* PopEntryInstance();
+	void AddInstance(std::vector<TFragment*>* event); 
+	std::vector<TFragment*>* PopEntryInstance();
 	int SizeInstance();
       
-	std::queue<std::vector<TFragment>*> fEventQueue;
+	std::queue<std::vector<TFragment*>*> fEventQueue;
 #if !defined (__CINT__) && !defined (__CLING__)
 	std::mutex m_event;
 #endif 

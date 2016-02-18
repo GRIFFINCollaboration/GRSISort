@@ -44,20 +44,20 @@ class TCSM : public TDetector {
 		void BuildHits();
 
 	private: 
-		std::map<int16_t, std::vector<std::vector<std::vector<std::pair<TFragment, MNEMONIC> > > > > fFragments; //!<!
+		std::map<int16_t, std::vector<std::vector<std::vector<std::pair<TFragment*, MNEMONIC> > > > > fFragments; //!<!
 		std::vector<TCSMHit> fCsmHits;
 		double fAlmostEqualWindow;
 
 		static int fCfdBuildDiff; //!<! largest acceptable time difference between events (clock ticks)  (50 ns)
 
-		void BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >&, std::vector<TCSMHit>&);
+		void BuildVH(std::vector<std::vector<std::pair<TFragment*, MNEMONIC> > >&, std::vector<TCSMHit>&);
 		void BuilddEE(std::vector<std::vector<TCSMHit> >&,std::vector<TCSMHit>&);
 		void OldBuilddEE(std::vector<TCSMHit> &,std::vector<TCSMHit> &,std::vector<TCSMHit> &);
 		void MakedEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,std::vector<TCSMHit> &BuiltHits);
-		TCSMHit MakeHit(std::pair<TFragment, MNEMONIC>&, std::pair<TFragment, MNEMONIC>&);
-		TCSMHit MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >&,std::vector<std::pair<TFragment, MNEMONIC> >&);
+		TCSMHit MakeHit(std::pair<TFragment*, MNEMONIC>&, std::pair<TFragment*, MNEMONIC>&);
+		TCSMHit MakeHit(std::vector<std::pair<TFragment*, MNEMONIC> >&,std::vector<std::pair<TFragment*, MNEMONIC> >&);
 		TCSMHit CombineHits(TCSMHit, TCSMHit);
-		void RecoverHit(char, std::pair<TFragment, MNEMONIC>&, std::vector<TCSMHit>&);
+		void RecoverHit(char, std::pair<TFragment*, MNEMONIC>&, std::vector<TCSMHit>&);
 		bool AlmostEqual(int, int);
 		bool AlmostEqual(double,double);
 

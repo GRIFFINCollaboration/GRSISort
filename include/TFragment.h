@@ -29,79 +29,81 @@
 class TFragment : public TObject	{
 public:
    TFragment() {};
-	TFragment(const TFragment&, int hit = -1) : TObject() {}; ///<copy constructor that only copies the requested hit (if hit is in range 0 - Cfd.size())
-   virtual ~TFragment() {};
+	TFragment(const TFragment&) : TObject() {} ///<copy constructor
+   virtual ~TFragment() {}
 
 	//////////////////// basic setter functions ////////////////////
 
-	virtual void SetAcceptedChannelId(UShort_t value)         {}
-	virtual void SetCcLong(Int_t value)                       {}
-	virtual void SetCcShort(Int_t value)                      {}
-	virtual void SetCfd(Int_t value, Int_t iter = 0)          {}
-	virtual void SetChannelAddress(UInt_t value)              {}
-	virtual void SetChannelId(UInt_t value)                   {}
-	virtual void SetDataType(UShort_t value)                  {}
-	virtual void SetDeadTime(UShort_t value)                  {}
-	virtual void SetDetectorType(UShort_t value)              {}
-	virtual void SetIntLength(UShort_t value, Int_t iter = 0) {}
-	virtual void SetMidasId(time_t value)                     {}
-	virtual void SetMidasTimeStamp(time_t value)              {}
-	virtual void SetNetworkPacketNumber(Int_t value)          {}
-	virtual void SetNumberOfFilters(UShort_t value)           {}
-	virtual void SetNumberOfPileups(UShort_t value)           {}
-	virtual void SetPPGWord(UShort_t value)                   {}
-	virtual void SetPulseHeight(Int_t value, Int_t iter = 0)  {}
-	virtual void SetTimeStampHigh(Int_t value)                {}
-	virtual void SetTimeStampLow(Int_t value)                 {}
-	virtual void SetTriggerBitPattern(Int_t value)            {}
-	virtual void SetTriggerId(Long_t value)                   {}
-	virtual void SetWavebuffer(Short_t value)                 {}
-	virtual void SetZc(Int_t value)                           {}
+	virtual void SetAcceptedChannelId(UShort_t value)         = 0;
+	virtual void SetCcLong(Int_t value)                       = 0;
+	virtual void SetCcShort(Int_t value)                      = 0;
+	virtual void SetCfd(Int_t value, Int_t iter = 0)          = 0;
+	virtual void SetChannelAddress(UInt_t value)              = 0;
+	virtual void SetChannelId(UInt_t value)                   = 0;
+	virtual void SetDataType(UShort_t value)                  = 0;
+	virtual void SetDeadTime(UShort_t value)                  = 0;
+	virtual void SetDetectorType(UShort_t value)              = 0;
+	virtual void SetIntLength(UShort_t value, Int_t iter = 0) = 0;
+	virtual void SetMidasId(time_t value)                     = 0;
+	virtual void SetMidasTimeStamp(time_t value)              = 0;
+	virtual void SetNetworkPacketNumber(Int_t value)          = 0;
+	virtual void SetNumberOfFilters(UShort_t value)           = 0;
+	virtual void SetNumberOfPileups(UShort_t value)           = 0;
+	virtual void SetNumberOfWords(UShort_t value)             = 0;
+	virtual void SetPPGWord(UShort_t value)                   = 0;
+	virtual void SetPulseHeight(Int_t value, Int_t iter = 0)  = 0;
+	virtual void SetTimeStampHigh(Int_t value)                = 0;
+	virtual void SetTimeStampLow(Int_t value)                 = 0;
+	virtual void SetTriggerBitPattern(Int_t value)            = 0;
+	virtual void SetTriggerId(Long_t value)                   = 0;
+	virtual void SetWavebuffer(Short_t value)                 = 0;
+	virtual void SetZc(Int_t value)                           = 0;
 
 	//////////////////// basic getter functions ////////////////////
 
-	virtual UShort_t GetAcceptedChannelId() const       { return 0; }
-	virtual Int_t GetCcLong() const                     { return 0; }
-	virtual Int_t GetCcShort() const                    { return 0; }
-	virtual Int_t GetCfd(Int_t iter = 0) const          { return 0; }
-   virtual UInt_t GetChannelAddress() const            { return 0; }
-	virtual UInt_t GetChannelId() const                 { return 0; }
-   virtual UShort_t GetDataType() const                { return 0; }
-	virtual UShort_t GetDeadTime() const                { return 0; }
-   virtual UShort_t GetDetectorType() const            { return 0; }
-	virtual Short_t GetHitIndex() const                 { return 0; }
-   virtual UShort_t GetIntLength(Int_t iter = 0) const { return 0; }
-	virtual Int_t  GetMidasId() const                   { return 0; }
-	virtual time_t GetMidasTimeStamp() const            { return 0; }
-   virtual Int_t  GetNetworkPacketNumber() const       { return 0; }
-   virtual size_t GetNumberOfFilters() const           { return 0; }
-   virtual size_t GetNumberOfPileups() const           { return 0; }
-	virtual UShort_t GetPPGWord() const                 { return 0; }
-	virtual Int_t GetPulseHeight(Int_t iter = 0) const  { return 0; }
-	virtual Int_t  GetTimeStampHigh() const             { return 0; }
-   virtual Int_t  GetTimeStampLow() const              { return 0; }
-	virtual Int_t  GetTriggerBitPattern() const         { return 0; }
-	virtual Long_t GetTriggerId(size_t iter = 0) const  { return 0; }
-	virtual std::vector<Short_t> GetWavebuffer() const  { return std::vector<Short_t>(); }
-	virtual Short_t GetWavebuffer(size_t iter) const    { return 0; }
-	virtual size_t GetWavebufferSize() const            { return 0; }
-   virtual Int_t GetZc() const                         { return 0; }
+	virtual UShort_t GetAcceptedChannelId() const       = 0;
+	virtual Int_t GetCcLong() const                     = 0;
+	virtual Int_t GetCcShort() const                    = 0;
+	virtual Int_t GetCfd(Int_t iter = 0) const          = 0;
+   virtual UInt_t GetChannelAddress() const            = 0;
+	virtual UInt_t GetChannelId() const                 = 0;
+   virtual UShort_t GetDataType() const                = 0;
+	virtual UShort_t GetDeadTime() const                = 0;
+   virtual UShort_t GetDetectorType() const            = 0;
+   virtual UShort_t GetIntLength(Int_t iter = 0) const = 0;
+	virtual Int_t  GetMidasId() const                   = 0;
+	virtual time_t GetMidasTimeStamp() const            = 0;
+   virtual Int_t  GetNetworkPacketNumber() const       = 0;
+   virtual Short_t GetNumberOfFilters() const          = 0;
+	virtual Int_t GetNumberOfHits() const               = 0;
+   virtual Short_t GetNumberOfPileups() const          = 0;
+   virtual Short_t GetNumberOfWords() const            = 0;
+	virtual UShort_t GetPPGWord() const                 = 0;
+	virtual Int_t GetPulseHeight(Int_t iter = 0) const  = 0;
+	virtual Int_t  GetTimeStampHigh() const             = 0;
+   virtual Int_t  GetTimeStampLow() const              = 0;
+	virtual Int_t  GetTriggerBitPattern() const         = 0;
+	virtual Long_t GetTriggerId(size_t iter = 0) const  = 0;
+	virtual std::vector<Short_t> GetWavebuffer() const  = 0;
+	virtual Short_t GetWavebuffer(size_t iter) const    = 0;
+	virtual size_t GetWavebufferSize() const            = 0;
+   virtual Int_t GetZc() const                         = 0;
 
 	//////////////////// advanced getter functions ////////////////////
 
-	virtual Short_t GetChannelNumber() const            { return 0; }
-	virtual TPPG*  GetPPG() const                       { return NULL; }
-	virtual double GetTime() const                      { return 0.; }
-	virtual long   GetTimeStamp() const                 { return 0; }
-	virtual double GetTZero() const                     { return 0.; }
-	virtual const char* GetName() const                 { return ""; }
-	virtual double GetEnergy(Int_t iter = 0) const      { return 0.; }
-   virtual Float_t GetCharge(Int_t iter = 0) const     { return 0.; }
-	virtual long GetTimeStamp_ns() const                { return 0; }
-	virtual ULong64_t GetTimeInCycle()                  { return 0; }
-	virtual ULong64_t GetCycleNumber()                  { return 0; }
-   virtual size_t GetNumberOfCharges()                 { return 0; }
-	virtual Int_t Get4GCfd(Int_t i = 0) const           { return 0; }
+	virtual Short_t GetChannelNumber() const            = 0;
+	virtual TPPG*  GetPPG()                             = 0;
+	virtual double GetTime() const                      = 0;
+	virtual long   GetTimeStamp() const                 = 0;
+	virtual double GetTZero() const                     = 0;
+	virtual const char* GetName() const                 = 0;
+	virtual double GetEnergy(Int_t iter = 0) const      = 0;
+   virtual Float_t GetCharge(Int_t iter = 0) const     = 0;
+	virtual long GetTimeStamp_ns() const                = 0;
+	virtual ULong64_t GetTimeInCycle()                  = 0;
+	virtual ULong64_t GetCycleNumber()                  = 0;
+   virtual size_t GetNumberOfCharges()                 = 0;
+	virtual Int_t Get4GCfd(Int_t i = 0) const           = 0;
 
 	//////////////////// misc. functions ////////////////////
 	virtual bool IsDetector(const char *prefix, Option_t *opt = "CA") const { return false; }
@@ -118,5 +120,10 @@ public:
    ClassDef(TFragment,6);  // Event Fragments
 /// \endcond
 };
+
+template<class T> struct PointerLess {
+	bool operator()(T* lhs, T* rhs) { return *lhs < *rhs; }
+};
+
 /*! @} */
 #endif // TFRAGMENT_H

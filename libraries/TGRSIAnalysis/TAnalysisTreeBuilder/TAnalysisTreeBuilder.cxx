@@ -4,9 +4,13 @@
 #include "TTreeIndex.h"
 #include "TSystem.h"
 #include "TStopwatch.h"
+#include "TBranchElement.h"
 
 #include "Globals.h"
 #include "TGRSIOptions.h"
+#include "TGRSIRootIO.h"
+#include "TOldFragment.h"
+#include "TNewFragment.h"
 
 //This sets the minimum amount of memory that root can hold a tree in.
 const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)16; // 16 GB
@@ -21,11 +25,11 @@ TEventQueue* TEventQueue::Get() {
    return fPtrToQue;
 }
 
-void TEventQueue::Add(std::vector<TFragment>* event) {
+void TEventQueue::Add(std::vector<TFragment*>* event) {
   Get()->AddInstance(event);
 }
 
-std::vector<TFragment>* TEventQueue::PopEntry() {
+std::vector<TFragment*>* TEventQueue::PopEntry() {
   return Get()->PopEntryInstance();
 }
 
@@ -33,7 +37,7 @@ int TEventQueue::Size() {
   return Get()->SizeInstance();
 }
 
-void TEventQueue::AddInstance(std::vector<TFragment>* event) {
+void TEventQueue::AddInstance(std::vector<TFragment*>* event) {
    ///Thread-safe method for adding events to the event queue. 
    m_event.lock();
    fEventQueue.push(event);
@@ -42,9 +46,9 @@ void TEventQueue::AddInstance(std::vector<TFragment>* event) {
    return;
 }
 
-std::vector<TFragment>* TEventQueue::PopEntryInstance() {
+std::vector<TFragment*>* TEventQueue::PopEntryInstance() {
 	///Thread-safe method for taking an event out of the event queue
-   std::vector<TFragment>* temp;
+   std::vector<TFragment*>* temp;
    m_event.lock();
    temp = fEventQueue.front();
    fEventQueue.pop();
@@ -187,9 +191,7 @@ void TAnalysisTreeBuilder::StartMakeAnalysisTree(int argc, char** argv) {
       return;
    }
    SortFragmentChain();   
-
 }
-
 
 void TAnalysisTreeBuilder::InitChannels() {
    ///Initializes the channels from a cal file on the command line when 
@@ -213,8 +215,6 @@ void TAnalysisTreeBuilder::InitChannels() {
    }
    printf("AnalysisTreeBuilder:  read in %i TChannels.\n", TChannel::GetNumberOfChannels());
 }  
-
-
 
 void TAnalysisTreeBuilder::SetUpFragmentChain(std::vector<std::string> infiles) {
    ///Makes a TChain of all of the fragments input on the command line. This may not work as
@@ -312,11 +312,11 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
 	fEntries = index->GetN();
 
    for(int j = major_min; j <= major_max; j++) {
-      std::vector<TFragment>* event = new std::vector<TFragment>;
+      std::vector<TFragment*>* event = new std::vector<TFragment*>;
       int fragno = 1;
       while(fCurrentFragTree->GetEntryWithIndex(j, fragno++) != -1) {
          fFragmentsIn++;
-         event->push_back(*fCurrentFragPtr);
+         event->push_back(fCurrentFragPtr);
       }
       if(event->empty()) {
          delete event;
@@ -329,11 +329,20 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
    fCurrentFragTree->SetCacheSize(0);
 }
 
-
 void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    ///Suprisingly, sorts the fragment tree by times stamps.
    ///It then takes the sorted fragments and puts them into the eventQ.
    TFragment* currentFrag = 0;
+
+	bool oldFragment = false;
+	TObjArray* branches = fCurrentFragTree->GetListOfBranches();
+	if(branches->GetEntries() != 1) {
+		printf("Error, found no/more than one branch in %s: %d\n", fCurrentFragTree->GetName(), branches->GetEntries());
+		exit(0);
+	}
+	if(strcmp(static_cast<TBranchElement*>(branches->At(0))->GetClassName(),TOldFragment::Class()->GetName()) == 0) {
+		oldFragment = true;
+	}
 
    //Find the TFragment branch of the tree
    fCurrentFragTree->SetBranchAddress("TFragment",&currentFrag);
@@ -341,9 +350,9 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    fEntries = fCurrentFragTree->GetEntries();
 
    //this vector holds all fragments of one built event and get's passed to the event queue
-   std::vector<TFragment>* event = NULL;
+   std::vector<TFragment*>* event = NULL;
 	//this multiset is used to sort the fragments we're reading sequentially (but not necessarily time-ordered) from the tree
-	std::multiset<TFragment,std::less<TFragment> > sortedFragments;//less is the default ordering option, could be left out
+	std::multiset<TFragment*,PointerLess<TFragment> > sortedFragments;//less is the default ordering option, could be left out
 
    //loop over all of the fragments in the tree 
    for(int x = 0; x < fEntries; ++x) {
@@ -355,20 +364,25 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       }
       fFragmentsIn++;//Now that we have read a new entry, we need to increment our counter
 
-		//pull the different pile-up hits apart and put the into the sorted buffer as different fragments
-		for(size_t hit = 0; hit < currentFrag->GetNumberOfCharges(); ++hit) {
-			try {
-				sortedFragments.insert(TFragment(*currentFrag, hit));
-				//sortedFragments.emplace(*currentFrag, hit);
-			} catch (std::bad_alloc& e) {
-				//failed to insert the fragment, check overall size of the multiset
-				if(sortedFragments.size() < TGRSIRunInfo::BufferSize()) {
-					printf(BG_RED WHITE "Ran out of memory trying to insert the %dth fragment into the multiset, minimum requested size of multiset is %d, aborting!" RESET_COLOR "\n", (int) sortedFragments.size(), (int) TGRSIRunInfo::BufferSize());
-					abort();
+		try {
+			if(oldFragment) {
+				sortedFragments.insert(static_cast<TOldFragment*>(currentFrag)->Clone());
+			} else {
+				sortedFragments.insert(static_cast<TNewFragment*>(currentFrag)->Clone());
+			}
+			//sortedFragments.emplace(currentFrag);
+		} catch (std::bad_alloc& e) {
+			//failed to insert the fragment, check overall size of the multiset
+			if(sortedFragments.size() < TGRSIRunInfo::BufferSize()) {
+				printf(BG_RED WHITE "Ran out of memory trying to insert the %dth fragment into the multiset, minimum requested size of multiset is %d, aborting!" RESET_COLOR "\n", (int) sortedFragments.size(), (int) TGRSIRunInfo::BufferSize());
+				abort();
+			} else {
+				//Wait and try inserting again. If that fails as well we can't do anything else, so we don't catch exceptions here
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+				if(oldFragment) {
+					sortedFragments.insert(static_cast<TOldFragment*>(currentFrag)->Clone());
 				} else {
-					//Wait and try inserting again. If that fails as well we can't do anything else, so we don't catch exceptions here
-					std::this_thread::sleep_for(std::chrono::milliseconds(100));
-					sortedFragments.insert(TFragment(*currentFrag, hit));		
+					sortedFragments.insert(static_cast<TNewFragment*>(currentFrag)->Clone());
 				}
 			}
 		}
@@ -377,20 +391,20 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 		///difference between the first and the last fragment is larger than a 
 		///given value, or if the size of the multiset is above a given threshold
 		///and the first and last of the fragments are at least BuildWindow apart.
- 		long firstTimeStamp = (*(sortedFragments.begin())).GetTimeStamp();
-		long lastTimeStamp = (*(std::prev(sortedFragments.end()))).GetTimeStamp();
+ 		long firstTimeStamp = (*(sortedFragments.begin()))->GetTimeStamp();
+		long lastTimeStamp = (*(std::prev(sortedFragments.end())))->GetTimeStamp();
 		if(//(lastTimeStamp - firstTimeStamp > TGRSIRunInfo::BufferDuration()) ||
 			((sortedFragments.size() > TGRSIRunInfo::BufferSize()) && ((lastTimeStamp - firstTimeStamp) > TGRSIRunInfo::BuildWindow()))) {
 			//We are now in a situation where we think that no more fragments will be read that will end up at the beginning of the multiset.
 			//So we can put everything that is in the BuildWindow of the first fragment into our built event.
 			//For this we loop through the fragments in the multiset, put them into the new event vector, and once the time difference is larger than BuildWindow,
 			//we put the event into the queue, erase the fragments from the multiset, and stop the loop.
-			event = new std::vector<TFragment>;
+			event = new std::vector<TFragment*>;
 			for(auto it = sortedFragments.begin(); it != sortedFragments.end(); ++it) {
-				if((it->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
+				if(((*it)->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
 					event->push_back(*it);
 					if(TGRSIRunInfo::IsMovingWindow()){
-						firstTimeStamp = it->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
+						firstTimeStamp = (*it)->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
 					}
 				} else {
 					//Add the event to the event Q.
@@ -408,14 +422,14 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 
    //In case we have fragments left after all of the fragments have been processed, we add them to the queue now.
 	while(!sortedFragments.empty()) {
- 		long firstTimeStamp = (*(sortedFragments.begin())).GetTimeStamp();
-		event = new std::vector<TFragment>;
+ 		long firstTimeStamp = (*(sortedFragments.begin()))->GetTimeStamp();
+		event = new std::vector<TFragment*>;
 		auto it = sortedFragments.begin();
 		for(; it != sortedFragments.end(); ++it) {
-			if((it->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
+			if(((*it)->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
 				event->push_back(*it);
 				if(TGRSIRunInfo::IsMovingWindow()){
-					firstTimeStamp = it->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
+					firstTimeStamp = (*it)->GetTimeStamp(); //THIS IS FOR MOVING WINDOW
 				}
 			} else {
 				//Add the event to the event Q.
@@ -440,9 +454,6 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    fCurrentFragTree->SetCacheSize(0);
    return;
 }
-
-
-
 
 void TAnalysisTreeBuilder::SetupFragmentTree() {
    ///Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
@@ -577,7 +588,6 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    if(info->Descant())   { fDescant->Clear();}
    //printf("ClearActiveAnalysisTreeBranches done\n");
 }
-
 
 void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
    ///Clears the current analysis tree branches.
@@ -744,11 +754,11 @@ void TAnalysisTreeBuilder::ProcessEvent() {
       }
       
       //We need to pull the event out of the Event Q
-      std::vector<TFragment>* event = TEventQueue::PopEntry();
+      std::vector<TFragment*>* event = TEventQueue::PopEntry();
       MNEMONIC mnemonic;
       std::map<std::string, TDetector*>* detectors = new std::map<std::string, TDetector*>;
-      for(size_t i=0;i<event->size();i++) {
-			TChannel* channel = TChannel::GetChannel(event->at(i).GetChannelAddress());
+      for(size_t i = 0; i < event->size(); i++) {
+			TChannel* channel = TChannel::GetChannel(event->at(i)->GetChannelAddress());
          if(!channel)
             continue;
          ClearMNEMONIC(&mnemonic);
@@ -759,71 +769,71 @@ void TAnalysisTreeBuilder::ProcessEvent() {
             if(detectors->find("TI") == detectors->end()) {
 					(*detectors)["TI"] = new TTigress;
             }
-            (*detectors)["TI"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["TI"]->AddFragment(event->at(i), &mnemonic);
          } else if(mnemonic.system.compare("SH")==0) {
             if(detectors->find("SH") == detectors->end()) {
                (*detectors)["SH"] = new TSharc;
             }
-            (*detectors)["SH"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["SH"]->AddFragment(event->at(i), &mnemonic);
          } else if(mnemonic.system.compare("Tr")==0) {	
             if(detectors->find("Tr") == detectors->end()) {
                (*detectors)["Tr"] = new TTriFoil;
             }
-            (*detectors)["Tr"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["Tr"]->AddFragment(event->at(i), &mnemonic);
          } else if(mnemonic.system.compare("RF")==0) {	
             if(detectors->find("RF") == detectors->end()) {
                (*detectors)["RF"] = new TRF;
             }
-            (*detectors)["RF"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["RF"]->AddFragment(event->at(i), &mnemonic);
          } else if(mnemonic.system.compare("SP")==0) {
             if(mnemonic.subsystem.compare("I")==0) {
                if(detectors->find("SPI") == detectors->end()) {
                   (*detectors)["SPI"] = new TSiLi;
                }
-               (*detectors)["SPI"]->AddFragment(&(event->at(i)), &mnemonic);
+               (*detectors)["SPI"]->AddFragment(event->at(i), &mnemonic);
             } else {
                if(detectors->find("SPE") == detectors->end()) {
                   (*detectors)["SPE"] = new TS3;
                }
-               (*detectors)["SPE"]->AddFragment(&(event->at(i)), &mnemonic);
+               (*detectors)["SPE"]->AddFragment(event->at(i), &mnemonic);
             }
          } else if(mnemonic.system.compare("CS")==0) {	
             if(detectors->find("CS") == detectors->end()) {
                (*detectors)["CS"] = new TCSM;
             }
-            (*detectors)["CS"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["CS"]->AddFragment(event->at(i), &mnemonic);
          } else if(mnemonic.system.compare("GR")==0) {
             if(detectors->find("GR") == detectors->end()) {
                (*detectors)["GR"] = new TGriffin;
             }
-            (*detectors)["GR"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["GR"]->AddFragment(event->at(i), &mnemonic);
          } else if(mnemonic.system.compare("SE")==0) {
             if(detectors->find("SE") == detectors->end()) {
                (*detectors)["SE"] = new TSceptar;
             }
-            (*detectors)["SE"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["SE"]->AddFragment(event->at(i), &mnemonic);
          } else if(mnemonic.system.compare("PA")==0) {	
             if(detectors->find("PA") == detectors->end()) {
                (*detectors)["PA"] = new TPaces;
             }
-            (*detectors)["PA"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["PA"]->AddFragment(event->at(i), &mnemonic);
          } else if(mnemonic.system.compare("DS")==0) {	
             if(detectors->find("DS") == detectors->end()) {
                (*detectors)["DS"] = new TDescant;
             }
-            (*detectors)["DS"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["DS"]->AddFragment(event->at(i), &mnemonic);
          //} else if(mnemonic.system.compare("DA")==0) {	
-         //	AddFragment(&(event->at(i)), &mnemonic);
+         //	AddFragment(event->at(i), &mnemonic);
          } else if(mnemonic.system.compare("ZD")==0) {	
             if(detectors->find("ZD") == detectors->end()) {
                (*detectors)["ZD"] = new TZeroDegree;
             }
-            (*detectors)["ZD"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["ZD"]->AddFragment(event->at(i), &mnemonic);
          } else if(mnemonic.system.compare("TP")==0) {	
             if(detectors->find("TP") == detectors->end()) {
                (*detectors)["TP"] = new TTip;
             }
-            (*detectors)["TP"]->AddFragment(&(event->at(i)), &mnemonic);
+            (*detectors)["TP"]->AddFragment(event->at(i), &mnemonic);
          }
       }
 

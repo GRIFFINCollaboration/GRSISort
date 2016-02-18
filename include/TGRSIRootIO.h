@@ -13,6 +13,8 @@
 #include "TProofLite.h"
 
 #include "TFragmentSelector.h"
+#include "TOldFragment.h"
+#include "TNewFragment.h"
 
 #include "Globals.h"
 #include "TChannel.h"
@@ -60,6 +62,8 @@ class TGRSIRootIO : public TObject {
 		TScalerData* fDeadtimeScalerData;
 		TScalerData* fRateScalerData;
 
+		static bool fOldFragment;
+
    public:
       bool SetUpRootOutFile(int,int);
       void CloseRootOutFile(); 
@@ -105,6 +109,9 @@ class TGRSIRootIO : public TObject {
       void FinalizeDiagnostics();
 
       void MakeUserHistsFromFragmentTree();
+
+		void SetOldFragment(bool value) { fOldFragment = value; }
+		bool GetOldFragment() { return fOldFragment; }
 
 /// \cond CLASSIMP
    ClassDef(TGRSIRootIO,0)

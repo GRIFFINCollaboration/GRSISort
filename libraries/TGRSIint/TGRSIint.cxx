@@ -319,43 +319,47 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
 			}
 		} else if (sargv[0] == '-' && sargv[1] == '-') { //word length options.
 			std::string temp = sargv.substr(2);
-			if(temp.compare("no_waveforms")==0) {
+			if(temp.compare("no-waveforms") == 0 || temp.compare("no_waveforms") == 0) {
 				printf(DBLUE  "    no waveform option set, no waveforms will be in the output tree." RESET_COLOR "\n"); 
 				TDataParser::SetNoWaveForms(true);
-			} else if(temp.compare("no_record_diag")==0) { 
+			} else if(temp.compare("no-record-diag") == 0 || temp.compare("no_record_diag") == 0) { 
 				printf(DBLUE "     not recording run diagnostics." RESET_COLOR "\n");
 				TDataParser::SetRecordDiag(false);
-			} else if(temp.compare("write_diag")==0) { 
+			} else if(temp.compare("write-diag") == 0 || temp.compare("write_diag") == 0) { 
 				printf(DBLUE "     writing run diagnostics to separte .log file." RESET_COLOR "\n");
 				TGRSIOptions::SetWriteDiagnostics(false);
-			} else if((temp.compare("suppress_error")==0) ||  (temp.compare("suppress_errors")==0)){
+			} else if(temp.find("suppress-error") == 0 || temp.find("suppress_error") == 0) {//by using find trailing s are accepted (as are any other trailing characters)
 				printf(DBLUE "     suppressing loop error statements." RESET_COLOR "\n");
 				TGRSILoop::Get()->SetSuppressError(true);
-			} else if(temp.compare("log_errors")==0) {
+			} else if(temp.compare("log-errors") == 0 || temp.compare("log_errors") == 0) {
 				printf(DBLUE "     sending parsing errors to file." RESET_COLOR "\n");
 				TGRSIOptions::SetLogErrors(true);
-			} else if(temp.compare("work_harder")==0) {
+			} else if(temp.compare("work-harder") == 0 || temp.compare("work_harder") == 0) {
 				printf(DBLUE "     running a macro with .x after making fragment/analysistree." RESET_COLOR "\n");
 				TGRSIOptions::SetWorkHarder(true);
-			} else if(temp.compare("reading_material")==0) {
+			} else if(temp.compare("reading-material") == 0 || temp.compare("reading_material") == 0) {
 				printf(DBLUE"      now providing reading material while you wait." RESET_COLOR "\n");
 				TGRSIOptions::SetReadingMaterial(true);
-			} else if(temp.compare("no_speed")==0) {
+			} else if(temp.compare("no-speed") == 0 || temp.compare("no_speed") == 0) {
 				printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
 				TGRSIOptions::SetProgressDialog(false);
-			} else if((temp.compare("bad_frags")==0)     || (temp.compare("write_bad_frags")==0) ||
-					(temp.compare("bad_fragments")==0) || (temp.compare("write_bad_fragments")==0)) {
+			} else if((temp.compare("bad-frags") == 0)     || (temp.compare("write-bad-frags") == 0) ||
+					    (temp.compare("bad-fragments") == 0) || (temp.compare("write-bad-fragments") == 0) ||
+						 (temp.compare("bad_frags") == 0)     || (temp.compare("write_bad_frags") == 0) ||
+					    (temp.compare("bad_fragments") == 0) || (temp.compare("write_bad_fragments") == 0)) {
 				printf(DBLUE "    failed fragements being written to BadFragmentTree." RESET_COLOR "\n");
 				TGRSIOptions::SetWriteBadFrags(true);
-			} else if(temp.compare("help")==0) {
+			} else if(temp.compare("help") == 0) {
 				fPrintHelp = true;
-			} else if(temp.compare("ignore_odb")==0) { 
+			} else if(temp.compare("ignore-odb") == 0 || temp.compare("ignore_odb") == 0) { 
 				// useful when dealing with midas file that have corrupt odbs in them .
 				TGRSIOptions::SetIgnoreFileOdb(true);          
-			} else if(temp.compare("ignore_epics")==0) { 
+			} else if(temp.compare("ignore-epics") == 0 || temp.compare("ignore_epics") == 0) { 
 				TGRSIOptions::SetIgnoreEpics(true);          
-			} else if(temp.compare("ignore_scaler")==0) { 
+			} else if(temp.compare("ignore-scaler") == 0 || temp.compare("ignore_scaler") == 0) { 
 				TGRSIOptions::SetIgnoreScaler(true);          
+			} else if(temp.compare("old-fragment") == 0 || temp.compare("old_fragment") == 0) {
+				TGRSIRootIO::Get()->SetOldFragment(true);
 			} else {
 				printf(DBLUE  "    option: " DYELLOW "%s " DBLUE "passed but not understood." RESET_COLOR "\n",temp.c_str());
 			}
@@ -411,39 +415,39 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
 	//first search for extensions.
 	std::string ext = filename.substr(filename.find_last_of('.')+1);
 	//printf("\text = %s\n",ext.c_str());
-	if(ext.compare("root")==0 && filesize > 0) {
+	if(ext.compare("root") == 0 && filesize > 0) {
 		//printf("\tFound root file: %s\n",filename.c_str());
 		//fInputRootFile->push_back(filename);
 		TGRSIOptions::AddInputRootFile(filename);
 		return true;
-	} else if((ext.compare("mid")==0 || ext.compare("bz2")==0) && filesize > 0) {
+	} else if((ext.compare("mid") == 0 || ext.compare("bz2") == 0) && filesize > 0) {
 		//printf("\tFound midas file: %s\n",filename.c_str());
 		//fInputMidasFile->push_back(filename);
 		TGRSIOptions::AddInputMidasFile(filename);
 		fAutoSort = true;
 		return true;
-	} else if(ext.compare("cal")==0 && filesize > 0) { 
+	} else if(ext.compare("cal") == 0 && filesize > 0) { 
 		//printf("\tFound custom calibration file: %s\n",filename.c_str());
 		//fInputCalFile->push_back(filename);
 		TGRSIOptions::AddInputCalFile(filename);
 		return true;
-	} else if(ext.compare("info")==0 && filesize > 0) { 
+	} else if(ext.compare("info") == 0 && filesize > 0) { 
 		if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
 			return true;
 		else {
 			printf("Problem reading run-info file %s\n",filename.c_str());
 			return false;
 		}
-	} else if(ext.compare("xml")==0 && filesize > 0) { 
+	} else if(ext.compare("xml") == 0 && filesize > 0) { 
 		//fInputOdbFile->push_back(filename);
 		TGRSIOptions::AddInputOdbFile(filename);
 		//printf("\tFound xml odb file: %s\n",filename.c_str());
 		return true;
-	} else if(ext.compare("odb")==0 && filesize > 0) { 
+	} else if(ext.compare("odb") == 0 && filesize > 0) { 
 		//printf("\tFound c-like odb file: %s\n",filename.c_str());
 		printf("c-like odb structures can't be read yet.\n");
 		return false;
-	} else if((ext.compare("c")==0) || (ext.compare("C")==0) || (ext.compare("c+")==0) || (ext.compare("C+")==0)) {
+	} else if((ext.compare("c") == 0) || (ext.compare("C") == 0) || (ext.compare("c+") == 0) || (ext.compare("C+") == 0)) {
 		//scripts are the only files that don't have to exist, they may also be found in the macro-paths
 		TGRSIOptions::AddMacroFile(filename);
 		return true;

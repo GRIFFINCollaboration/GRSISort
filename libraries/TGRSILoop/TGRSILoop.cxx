@@ -507,26 +507,19 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent* mEvent, TMidasFile* mFile)   {
          case 1:
             mEvent->SetBankList();
             if((banksize = mEvent->LocateBank(NULL,"WFDN",&ptr))>0) {
-	            if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mEvent, mFile)) { }
-                              //(unsigned int)(mEvent->GetSerialNumber()),
-                              //(unsigned int)(mEvent->GetTimeStamp()))) { }
-            }
-            else if((banksize = mEvent->LocateBank(NULL,"GRF1",&ptr))>0) {
-               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,1, mEvent, mFile)) { }
-			      //(unsigned int)(mEvent->GetSerialNumber()),
-			      //(unsigned int)(mEvent->GetTimeStamp()))) { }
-            }
-            else if((banksize = mEvent->LocateBank(NULL,"GRF2",&ptr))>0) {
-               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,2, mEvent, mFile)) { }
-            }
-            else if( (banksize = mEvent->LocateBank(NULL,"FME0",&ptr))>0) {
-               if(!Process8PI(0,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
+	            if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mEvent, mFile)) {}
+            } else if((banksize = mEvent->LocateBank(NULL,"GRF1",&ptr))>0) {
+               if(!ProcessGRIFFIN((uint32_t*)ptr, banksize, 1, mEvent, mFile)) {}
+            } else if((banksize = mEvent->LocateBank(NULL,"GRF2",&ptr))>0) {
+               if(!ProcessGRIFFIN((uint32_t*)ptr, banksize, 2, mEvent, mFile)) {}
+            } else if( (banksize = mEvent->LocateBank(NULL,"FME0",&ptr))>0) {
+               if(!Process8PI(0,(uint32_t*)ptr, banksize, mEvent, mFile)) {}
             } else if( (banksize = mEvent->LocateBank(NULL,"FME1",&ptr))>0) {
-               if(!Process8PI(1,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
+               if(!Process8PI(1,(uint32_t*)ptr, banksize, mEvent, mFile)) {}
             } else if( (banksize = mEvent->LocateBank(NULL,"FME2",&ptr))>0) {
-               if(!Process8PI(2,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
+               if(!Process8PI(2,(uint32_t*)ptr, banksize, mEvent, mFile)) {}
             } else if( (banksize = mEvent->LocateBank(NULL,"FME3",&ptr))>0) {
-               if(!Process8PI(3,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
+               if(!Process8PI(3,(uint32_t*)ptr, banksize, mEvent, mFile)) {}
             }
             break;
          case 2:
@@ -540,12 +533,8 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent* mEvent, TMidasFile* mFile)   {
             mEvent->SetBankList();
             if((banksize = mEvent->LocateBank(NULL,"MSRD",&ptr))>0) {
 	            if(!ProcessEPICS((float*)ptr, banksize, mEvent, mFile)) { }
-                              //(unsigned int)(mEvent->GetSerialNumber()),
-                              //(unsigned int)(mEvent->GetTimeStamp()))) { }
             }
-
-            
-      };
+      }
    }
    catch(const std::bad_alloc&) {   }
    return true;
