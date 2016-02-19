@@ -841,6 +841,13 @@ void TAnalysisTreeBuilder::ProcessEvent() {
          BuildActiveAnalysisTreeBranches(detectors);
          FillWriteQueue(detectors);
       }
+		//at this point we don't need the fragments any more
+      //they were either used directly in the AddFragment method or
+		//by the BuildHits method called within BuildActiveTreeBranches
+      for(auto it = event->begin(); it != event->end(); ++it) {
+			delete *it;
+		}
+		
       delete event;
    }
 }
