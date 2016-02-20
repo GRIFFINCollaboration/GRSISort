@@ -304,8 +304,8 @@ Bool_t TMultiPeak::Fit(TH1* fithist,Option_t *opt){
       Double_t xlow,xhigh;
       Double_t int_low, int_high; 
       this->GetRange(xlow,xhigh);
-      int_low = xlow - 5.*width; // making the integration bounds a bit smaller, but still large enough. -JKS
-      int_high = xhigh + 5.*width;
+      int_low = xlow - 10.*width; // making the integration bounds a bit smaller, but still large enough. -JKS
+      int_high = xhigh + 10.*width;
 
       //Make a function that does not include the background
       //Intgrate the background.
