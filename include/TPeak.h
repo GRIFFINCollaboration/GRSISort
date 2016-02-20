@@ -53,6 +53,10 @@ class TPeak : public TGRSIFit {
    Double_t GetAreaErr() const      { return fDArea; }
    Double_t GetFWHM() const         { return GetParameter("sigma")*2.3548;}
    Double_t GetFWHMErr() const      { return GetParError(GetParNumber("sigma"))*2.3548;}
+   Double_t GetIntegralArea(); 
+   Double_t GetIntegralArea(Double_t int_low, Double_t int_high); 
+   Double_t GetIntegralAreaErr(); 
+   Double_t GetIntegralAreaErr(Double_t int_low, Double_t int_high); 
 /*
    Double_t Fit(Option_t* opt = "");
    Double_t Fit(TH1* hist, Option_t* opt = "");
@@ -73,6 +77,8 @@ class TPeak : public TGRSIFit {
    TF1* Background() const { return fBackground; } 
    void DrawBackground(Option_t* opt = "SAME") const; // *MENU*
    void DrawResiduals(); // *MENU*
+   void CheckArea();
+   void CheckArea(Double_t int_low, Double_t int_high);
 
    static void SetLogLikelihoodFlag(Bool_t flag = true) { fLogLikelihoodFlag = flag; }
    static Bool_t GetLogLikelihoodFlag() { return fLogLikelihoodFlag; }
