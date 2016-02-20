@@ -351,6 +351,7 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       // fit TPeak
       Bool_t fitresult = peak->Fit(temphst,"Q");
       if (!fitresult) continue; // if fit failed, continue on to next index
+      if (visualization) peak->Background()->Draw("same");
 
       // assign TPeak to fPeaks array
       this->SetPeak(index,static_cast<TPeak*>(temphst->GetFunction(Form("%s_proj%i_peak",hst2dname,index))));
@@ -805,8 +806,10 @@ void TAngularCorrelation::UpdateIndexCorrelation()
       Int_t bin = ((TH1D*) this->GetIndexCorrelation())->FindBin(index);
 
       // extract area
-      Double_t area = static_cast<TPeak*>(this->GetPeak(index))->GetArea();
-      Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
+      TPeak* peak = static_cast<TPeak*>(this->GetPeak(index));
+      if (!peak) return;
+      Double_t area = peak->GetArea();
+      Double_t area_err = peak->GetAreaErr();
 
       // fill histogram with area
       static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinContent(bin,area);
@@ -828,12 +831,14 @@ void TAngularCorrelation::UpdateDiagnostics()
       Int_t bin = ((TH1D*) this->GetIndexCorrelation())->FindBin(index);
 
       // extract pertinent values from TPeaks
-      Double_t chi2 = static_cast<TPeak*>(this->GetPeak(index))->GetChisquare();
-      Double_t NDF = (Double_t)static_cast<TPeak*>(this->GetPeak(index))->GetNDF();
-      Double_t centroid = static_cast<TPeak*>(this->GetPeak(index))->GetCentroid();
-      Double_t centroid_err = static_cast<TPeak*>(this->GetPeak(index))->GetCentroidErr();
-      Double_t fwhm = static_cast<TPeak*>(this->GetPeak(index))->GetFWHM();
-      Double_t fwhm_err = static_cast<TPeak*>(this->GetPeak(index))->GetFWHMErr();
+      TPeak* peak = static_cast<TPeak*>(this->GetPeak(index));
+      if (!peak) return;
+      Double_t chi2 = peak->GetChisquare();
+      Double_t NDF = (Double_t)peak->GetNDF();
+      Double_t centroid = peak->GetCentroid();
+      Double_t centroid_err = peak->GetCentroidErr();
+      Double_t fwhm = peak->GetFWHM();
+      Double_t fwhm_err = peak->GetFWHMErr();
 
       // fill histogram with values
       static_cast<TH1D*>(this->GetChi2Hst())->SetBinContent(bin,chi2/NDF);
@@ -871,7 +876,7 @@ void TAngularCorrelation::UpdatePeak(Int_t index,TPeak* peak)
 
    // fit peak
    peak->SetName(name);
-   peak->Fit(this->Get1DSlice(index),"Q");
+   peak->Fit(this->Get1DSlice(index),"");
 
    // push new peak
    this->SetPeak(index,static_cast<TPeak*>(temphst->GetFunction(name)));
