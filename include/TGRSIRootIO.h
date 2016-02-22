@@ -63,6 +63,8 @@ class TGRSIRootIO : public TObject {
 		TScalerData* fRateScalerData;
 
 		static bool fOldFragment;
+		static bool fDescant;
+		Int_t fDescantData[3];
 
    public:
       bool SetUpRootOutFile(int,int);
@@ -112,6 +114,9 @@ class TGRSIRootIO : public TObject {
 
 		void SetOldFragment(bool value) { fOldFragment = value; }
 		bool GetOldFragment() { return fOldFragment; }
+
+		void SetDescant(bool value) { fDescant = value; }
+		bool GetDescant() { return fDescant; }
 
 /// \cond CLASSIMP
    ClassDef(TGRSIRootIO,0)

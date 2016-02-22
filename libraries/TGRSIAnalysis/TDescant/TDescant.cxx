@@ -9,7 +9,7 @@
 ClassImp(TDescant)
 /// \endcond
 
-bool TDescant::fSetWave = true;
+bool TDescant::fSetWave = false;
 
 TVector3 TDescant::gPosition[71] = {
    //Descant positions from James' Thesis

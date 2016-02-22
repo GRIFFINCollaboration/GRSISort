@@ -360,6 +360,8 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
 				TGRSIOptions::SetIgnoreScaler(true);          
 			} else if(temp.compare("old-fragment") == 0 || temp.compare("old_fragment") == 0) {
 				TGRSIRootIO::Get()->SetOldFragment(true);
+			} else if(temp.compare("descant") == 0) {
+				TGRSIRootIO::Get()->SetDescant(true);
 			} else {
 				printf(DBLUE  "    option: " DYELLOW "%s " DBLUE "passed but not understood." RESET_COLOR "\n",temp.c_str());
 			}

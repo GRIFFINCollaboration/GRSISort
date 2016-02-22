@@ -333,11 +333,12 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    ///Suprisingly, sorts the fragment tree by times stamps.
    ///It then takes the sorted fragments and puts them into the eventQ.
    TFragment* currentFrag = 0;
+	Int_t descantData[3];
 
 	bool oldFragment = false;
 	TObjArray* branches = fCurrentFragTree->GetListOfBranches();
-	if(branches->GetEntries() != 1) {
-		printf("Error, found no/more than one branch in %s: %d\n", fCurrentFragTree->GetName(), branches->GetEntries());
+	if(branches->GetEntries() != 1 && branches->GetEntries() != 2) {
+		printf("Error, found no/more than one or two branches in %s: %d\n", fCurrentFragTree->GetName(), branches->GetEntries());
 		exit(0);
 	}
 	if(strcmp(static_cast<TBranchElement*>(branches->At(0))->GetClassName(),TOldFragment::Class()->GetName()) == 0) {
@@ -346,6 +347,9 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 
    //Find the TFragment branch of the tree
    fCurrentFragTree->SetBranchAddress("TFragment",&currentFrag);
+	if(branches->GetEntries() == 2) {
+	  fCurrentFragTree->SetBranchAddress("DescantData", &descantData);
+	}
 
    fEntries = fCurrentFragTree->GetEntries();
 
@@ -363,6 +367,12 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
          continue;
       }
       fFragmentsIn++;//Now that we have read a new entry, we need to increment our counter
+
+		if(branches->GetEntries() == 2) {
+		  currentFrag->SetZc(descantData[0]);
+		  currentFrag->SetCcShort(descantData[1]);
+		  currentFrag->SetCcLong(descantData[2]);
+		}
 
 		try {
 			if(oldFragment) {

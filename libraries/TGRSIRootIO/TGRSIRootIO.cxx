@@ -14,6 +14,7 @@ ClassImp(TGRSIRootIO)
 
 TGRSIRootIO* TGRSIRootIO::fTGRSIRootIO = 0;
 bool TGRSIRootIO::fOldFragment = false;
+bool TGRSIRootIO::fDescant = false;
 
 TGRSIRootIO* TGRSIRootIO::Get() {
 	if(!fTGRSIRootIO)
@@ -48,9 +49,12 @@ void TGRSIRootIO::SetUpFragmentTree() {
 	fFragmentTree = new TTree("FragmentTree","FragmentTree");
 	fBufferFrag = NULL;
 	if(fOldFragment) {
-     fFragmentTree->Bronch("TFragment","TOldFragment",static_cast<void*>(&fBufferFrag),128000,99);
+     fFragmentTree->Bronch("TFragment","TOldFragment",&fBufferFrag,128000,99);
 	} else {
 	  fFragmentTree->Bronch("TFragment","TNewFragment",&fBufferFrag,128000,99);
+	}
+	if(fDescant) {
+	  fFragmentTree->Branch("DescantData", &fDescantData, "Zc/I:CcShort/I:ccLong/I", 128000);
 	}
 	//fFragmentTree->BranchRef();
 	printf("FragmentTree set up.\n");
@@ -152,6 +156,12 @@ void TGRSIRootIO::FillFragmentTree(TFragment* frag) {
    } else {
       *static_cast<TNewFragment*>(fBufferFrag) = *static_cast<TNewFragment*>(frag);
    }
+	if(fDescant) {
+	  fDescantData[0] = frag->GetZc();
+	  fDescantData[1] = frag->GetCcShort();
+	  fDescantData[2] = frag->GetCcLong();
+	  //std::cout<<"Descant data: "<<fDescantData[0]<<", "<<fDescantData[1]<<", "<<fDescantData[2]<<"/"<<frag->GetZc()<<", "<<frag->GetCcShort()<<", "<<frag->GetCcLong()<<std::endl;
+	}
 	int bytes =  fFragmentTree->Fill();
 	if(bytes < 1)
 		printf("\n fill failed with bytes = %i\n",bytes);
