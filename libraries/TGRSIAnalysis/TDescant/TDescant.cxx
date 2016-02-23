@@ -9,8 +9,6 @@
 ClassImp(TDescant)
 /// \endcond
 
-bool TDescant::fSetWave = false;
-
 TVector3 TDescant::gPosition[71] = {
    //Descant positions from James' Thesis
    TVector3(   0.0,    0.0,    1.0),
@@ -122,7 +120,6 @@ void TDescant::Copy(TObject &rhs) const {
 #endif
    
    static_cast<TDescant&>(rhs).fDescantHits        = fDescantHits;
-   static_cast<TDescant&>(rhs).fSetWave            = fSetWave;
 }
 
 TDescant::TDescant(const TDescant& rhs) : TGRSIDetector() {
@@ -183,7 +180,7 @@ void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       hit.SetCcShort(frag->GetCcShort());
       hit.SetCcLong(frag->GetCcLong());
       
-      if(TDescant::SetWave()){
+      if(TGRSIRunInfo::Get()->AnalyzeDescantWaveforms()){
          if(frag->GetWavebufferSize() == 0) {
             //printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
          }
@@ -214,8 +211,7 @@ void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
                x.resize(length-8);
             }
             hit.SetWaveform(x);
-         }
-         else {
+         } else {
             hit.SetWaveform(frag->GetWavebuffer());
          }
          if(hit.GetWaveform()->size() > 0) {

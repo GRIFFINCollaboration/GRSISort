@@ -73,44 +73,49 @@ TOldFragment::~TOldFragment() {
 }
 
 TOldFragment& TOldFragment::operator=(const TOldFragment& rhs) {
-	//first copy all "normal" data members
-	fMidasTimeStamp = rhs.fMidasTimeStamp;
-	fTriggerId = rhs.fTriggerId;
-	fMidasId = rhs.fMidasId;
-	fTriggerBitPattern = rhs.fTriggerBitPattern;
-	fNetworkPacketNumber = rhs.fNetworkPacketNumber;
+	//check for self-assignment, this could actually screw up the data because we first clear all data
+	// and then copy the cleared data
+	if(this != &rhs) {
+		Clear();
+		//first copy all "normal" data members
+		fMidasTimeStamp = rhs.fMidasTimeStamp;
+		fTriggerId = rhs.fTriggerId;
+		fMidasId = rhs.fMidasId;
+		fTriggerBitPattern = rhs.fTriggerBitPattern;
+		fNetworkPacketNumber = rhs.fNetworkPacketNumber;
 
-	fTimeStampLow = rhs.fTimeStampLow;
-	fTimeStampHigh = rhs.fTimeStampHigh;
-	fChannelAddress = rhs.fChannelAddress;
-	fChannelId = rhs.fChannelId;
-	fAcceptedChannelId = rhs.fAcceptedChannelId;
+		fTimeStampLow = rhs.fTimeStampLow;
+		fTimeStampHigh = rhs.fTimeStampHigh;
+		fChannelAddress = rhs.fChannelAddress;
+		fChannelId = rhs.fChannelId;
+		fAcceptedChannelId = rhs.fAcceptedChannelId;
 
-	fDeadTime = rhs.fDeadTime;
-	fDataType = rhs.fDataType;
-	fDetectorType = rhs.fDetectorType;
-	fWavebuffer = rhs.fWavebuffer;
+		fDeadTime = rhs.fDeadTime;
+		fDataType = rhs.fDataType;
+		fDetectorType = rhs.fDetectorType;
+		fWavebuffer = rhs.fWavebuffer;
 
-	//copy transient data members
-	fPPG = rhs.fPPG;
-	fNumberOfFilters = rhs.fNumberOfFilters;
-	fZc = rhs.fZc;
-	fCcShort = rhs.fCcShort;
-	fCcLong = rhs.fCcLong;
+		//copy transient data members
+		fPPG = rhs.fPPG;
+		fNumberOfFilters = rhs.fNumberOfFilters;
+		fZc = rhs.fZc;
+		fCcShort = rhs.fCcShort;
+		fCcLong = rhs.fCcLong;
 
-	fNumberOfPileups = rhs.fNumberOfPileups;
-	fNumberOfHits = fNumberOfPileups+1;//number of pile-ups doesn't count the first hit
-	if(fNumberOfHits <= 0) {
-		printf("Error, got a fragment with no hits:\n");
-		rhs.Print();
-	} else {
-		fCfd = new Int_t[fNumberOfHits];
-		fPulseHeight = new Int_t[fNumberOfHits];
-		fIntLength = new UShort_t[fNumberOfHits];
-		for(int i = 0; i < fNumberOfHits; ++i) {
-			fCfd[i] = rhs.fCfd[i];
-			fPulseHeight[i] = rhs.fPulseHeight[i];
-			fIntLength[i] = rhs.fIntLength[i];
+		fNumberOfPileups = rhs.fNumberOfPileups;
+		fNumberOfHits = fNumberOfPileups+1;//number of pile-ups doesn't count the first hit
+		if(fNumberOfHits <= 0) {
+			printf("Error, got a fragment with no hits:\n");
+			rhs.Print();
+		} else {
+			fCfd = new Int_t[fNumberOfHits];
+			fPulseHeight = new Int_t[fNumberOfHits];
+			fIntLength = new UShort_t[fNumberOfHits];
+			for(int i = 0; i < fNumberOfHits; ++i) {
+				fCfd[i] = rhs.fCfd[i];
+				fPulseHeight[i] = rhs.fPulseHeight[i];
+				fIntLength[i] = rhs.fIntLength[i];
+			}
 		}
 	}
 

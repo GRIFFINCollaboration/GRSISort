@@ -515,7 +515,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 				if((packet & 0x80000000) == 0x00000000) {
 					//check that there is another word and that it is also a charge/cfd word
 					if(x+1 < size && (*(data+x+1) & 0x80000000) == 0x0) {
-						if(hit >= EventFrag->GetNumberOfHits()) {
+						if(hit >= EventFrag->GetNumberOfHits() && !TGRSILoop::GetSuppressError()) {
 							printf("found additional hit %d when number of hits should be %d\n", hit, EventFrag->GetNumberOfHits());
 						}
 						UShort_t tmp = (*(data+x) & 0x7c000000) >> 21;

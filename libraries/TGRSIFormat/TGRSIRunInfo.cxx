@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 #include <TGRSIOptions.h>
 
@@ -97,6 +98,10 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
     if(R__v > 8){
     {Bool_t R__bool; b >> R__bool; fDescantAncillary = R__bool;   }
     }
+    if(R__v > 9){
+		 {Bool_t R__bool; b >> R__bool; fAnalyzeDescantWaveforms = R__bool;   }
+		 {Bool_t R__bool; b >> R__bool; fStoreDescantWaveforms = R__bool;   }
+    }
    fGRSIRunInfo = this;
    b.CheckByteCount(R__s,R__c,TGRSIRunInfo::IsA());
  } else {
@@ -133,7 +138,9 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {TString R__str(fMinorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data()); }//; R__str = fMinorIndex.c_str();      R__str.Streamer(b);}
    {TString R__str(fRunInfoFileName.c_str()); R__str.Streamer(b);   }//; R__str = fRunInfoFileName.c_str(); R__str.Streamer(b);}
    {TString R__str(fRunInfoFile.c_str());     R__str.Streamer(b);   }//; R__str = fRunInfoFile.c_str();     R__str.Streamer(b);}
-   {Bool_t R__bool = fDescantAncillary;    b << R__bool;}
+   {Bool_t R__bool = fDescantAncillary;        b << R__bool;}
+	{Bool_t R__bool = fAnalyzeDescantWaveforms; b << R__bool;}
+	{Bool_t R__bool = fStoreDescantWaveforms;   b << R__bool;}
    b.SetByteCount(R__c,true);
  }
 }
@@ -365,8 +372,8 @@ void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {
 }
 
 Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
-   //Read in a run info file. These files have the extension .info.
-   //An example can be found in the "examples" directory.
+   ///Read in a run info file. These files have the extension .info.
+   ///An example can be found in the "examples" directory.
    std::string infilename;
    infilename.append(filename);
    printf("Reading file: %s\n",filename);
@@ -396,7 +403,7 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
 }
 
 Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
-   //A helper function to parse the run info file.
+   ///A helper function to parse the run info file.
 
    std::istringstream infile(inputdata);
    std::string line;
@@ -408,7 +415,8 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
       trim(&line);
       size_t comment = line.find("//");
       if(comment != std::string::npos) {
-         line = line.substr(0, comment);
+		  //line = line.substr(0, comment);
+		  line.erase(comment);
       }
       if(!line.length())
          continue;
@@ -418,42 +426,42 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
         continue;
 
       std::string type = line.substr(0, ntype);
-      line = line.substr(ntype + 1, line.length());
+      //line = line.substr(ntype + 1, line.length());
+		line.erase(0,ntype+1);
       trim(&line);
-      int j = 0;
-      while (type[j]) {
-        char c = *(type.c_str() + j);
-        c = toupper(c);
-        type[j++] = c;
-      }
+		std::transform(type.begin(), type.end(), type.begin(), toupper);
       if( type.compare("BW")==0 || type.compare("BUILDWINDOW")==0 ) {     
-        std::istringstream ss(line);
-        long int temp_bw; ss >> temp_bw;
-        Get()->SetBuildWindow(temp_bw);
+			std::istringstream ss(line);
+			long int temp_bw; ss >> temp_bw;
+			Get()->SetBuildWindow(temp_bw);
       } else if( type.compare("WF")==0 || type.compare("WAVEFORMFIT")==0) {
-        std::istringstream ss(line);
-        bool temp_wff; ss >> temp_wff;
-        Get()->SetWaveformFitting(temp_wff);
+			std::istringstream ss(line);
+			bool temp_wff; ss >> temp_wff;
+			Get()->SetWaveformFitting(temp_wff);
       } else if( type.compare("MW")==0 || type.compare("MOVINGWINDOW")==0) {
-        std::istringstream ss(line);
-        bool temp_mw; ss >> temp_mw;
-        Get()->SetMovingWindow(temp_mw);
+			std::istringstream ss(line);
+			bool temp_mw; ss >> temp_mw;
+			Get()->SetMovingWindow(temp_mw);
       } else if( type.compare("ABW")==0 || type.compare("ADDBACKWINDOW")==0 || type.compare("ADDBACK")==0 ) {
-        std::istringstream ss(line);
-        double temp_abw; ss >> temp_abw;
-        Get()->SetAddBackWindow(temp_abw);
+			std::istringstream ss(line);
+			double temp_abw; ss >> temp_abw;
+			Get()->SetAddBackWindow(temp_abw);
       } else if( type.compare("CAL")==0 || type.compare("CALFILE")==0 ) {
-        TGRSIOptions::AddInputCalFile(line);
+			TGRSIOptions::AddInputCalFile(line);
       } else if( type.compare("MID")==0 || type.compare("MIDAS")==0 || type.compare("MIDASFILE")==0 ) {
-        TGRSIOptions::AddInputMidasFile(line);
+			TGRSIOptions::AddInputMidasFile(line);
       } else if( type.compare("ARRAYPOS")==0 || type.compare("HPGEPOS")==0) {
-        std::istringstream ss(line);
-        double temp_int; ss >> temp_int;
-        Get()->SetHPGeArrayPosition(temp_int);
+			std::istringstream ss(line);
+			double temp_int; ss >> temp_int;
+			Get()->SetHPGeArrayPosition(temp_int);
       } else if( type.compare("DESCANTANCILLARY") == 0) {
          std::istringstream ss(line);
          int temp_int; ss >> temp_int;
          Get()->SetDescantAncillary(temp_int);
+		} else if(type.find("ANALYZEDESCANTWAVEFORM") == 0 || type.find("ANALYSEDESCANTWAVEFORM") == 0) { //find accepts any and all trailing characters
+			Get()->SetAnalyzeDescantWaveforms(true);
+		} else if(type.find("STOREDESCANTWAVEFORM") == 0) {
+			Get()->SetStoreDescantWaveforms(true);
       }
    }
 
@@ -469,17 +477,20 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
 }
 
 
-void TGRSIRunInfo::trim(std::string * line, const std::string & trimChars) {
-//Removes the the string "trimCars" from  the string 'line'
-   if (line->length() == 0)
+void TGRSIRunInfo::trim(std::string* line, const std::string & trimChars) {
+	///Removes the the string "trimCars" from  the string 'line'
+   if(line->length() == 0)
       return;
    std::size_t found = line->find_first_not_of(trimChars);
-   if (found != std::string::npos)
-      *line = line->substr(found, line->length());
+   if(found != std::string::npos) {
+      //*line = line->substr(found, line->length());
+		line->erase(0,found);
+	}
    found = line->find_last_not_of(trimChars);
-   if (found != std::string::npos)
-      *line = line->substr(0, found + 1);
-   return;
+   if(found != std::string::npos) {
+      //*line = line->substr(0, found + 1);
+		line->erase(found+1);
+	}
 }
 
 Long64_t TGRSIRunInfo::Merge(TCollection *list){

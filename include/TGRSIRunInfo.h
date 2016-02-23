@@ -183,6 +183,12 @@ class TGRSIRunInfo : public TObject {
       static inline void SetDescantAncillary(bool flag = true) { fGRSIRunInfo->fDescantAncillary = flag; }
       static inline bool DescantAncillary()                    { return fGRSIRunInfo->fDescantAncillary; }
 
+		static void SetAnalyzeDescantWaveforms(bool flag = true) { fGRSIRunInfo->fAnalyzeDescantWaveforms = flag; }
+		static bool AnalyzeDescantWaveforms()                    { return fGRSIRunInfo->fAnalyzeDescantWaveforms; }
+
+		static void SetStoreDescantWaveforms(bool flag = true) { fGRSIRunInfo->fStoreDescantWaveforms = flag; }
+		static bool StoreDescantWaveforms()                    { return fGRSIRunInfo->fStoreDescantWaveforms; }
+
       Long64_t Merge(TCollection *list);
       void Add(TGRSIRunInfo* runinfo) { fRunStart = 0.; fRunStop = 0.; fRunLength += runinfo->RunLength(); }
 
@@ -251,24 +257,27 @@ class TGRSIRunInfo : public TObject {
       std::string fRunInfoFile;     //The contents of the run info file
 	   static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 
-      long int fBuildWindow;        // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
-      double   fAddBackWindow;      // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
-      bool     fIsMovingWindow;     // if set to true the event building window moves. Static otherwise.
+      long int fBuildWindow;             ///< if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
+      double   fAddBackWindow;           ///< Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
+      bool     fIsMovingWindow;          ///< if set to true the event building window moves. Static otherwise.
+												     
+      long int fBufferDuration;          ///< GRIFFIN: the minimum length of the sorting buffer (default = 600s (60000000000))
+      size_t   fBufferSize;              ///< GRIFFIN: the minimum size of the sorting buffer (default = 1 000 000)
+												     
+      bool 	   fWaveformFitting;         ///< If true, waveform fitting with SFU algorithm will be performed
+												     
+      double   fHPGeArrayPosition;       ///< Position of the HPGe Array (default = 110.0 mm );
+      bool     fDescantAncillary;        ///< Descant is in the ancillary detector locations
 
-      long int fBufferDuration;     // GRIFFIN: the minimum length of the sorting buffer (default = 600s (60000000000))
-      size_t   fBufferSize;           // GRIFFIN: the minimum size of the sorting buffer (default = 1 000 000)
-
-      bool 	   fWaveformFitting;    // If true, waveform fitting with SFU algorithm will be performed
-
-      double   fHPGeArrayPosition;  // Position of the HPGe Array (default = 110.0 mm );
-      bool     fDescantAncillary;   // Descant is in the ancillary detector locations
+		bool     fAnalyzeDescantWaveforms; ///< analyze waveforms of descant detectors (if saved to fragment tree) when building the analysis tree
+		bool     fStoreDescantWaveforms;   ///< store analyzed waveforms of descant detectors when building the analysis tree
 
    public:
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
 /// \cond CLASSIMP
-   ClassDef(TGRSIRunInfo,9);  //Contains the run-dependent information.
+   ClassDef(TGRSIRunInfo,10);  //Contains the run-dependent information.
 /// \endcond
 };
 /*! @} */

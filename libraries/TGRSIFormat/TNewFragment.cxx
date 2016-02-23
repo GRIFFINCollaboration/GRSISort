@@ -56,6 +56,7 @@ TNewFragment::~TNewFragment() {
 }
 
 TNewFragment& TNewFragment::operator=(const TNewFragment& rhs) {
+	//we can simply copy all data members, so we don't need to worry about self-assignment
 	//first copy all "normal" data members
 	fMidasTimeStamp = rhs.fMidasTimeStamp;
 	fTriggerId = rhs.fTriggerId;

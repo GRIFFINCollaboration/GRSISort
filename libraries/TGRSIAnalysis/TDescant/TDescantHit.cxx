@@ -6,6 +6,7 @@
 
 #include "Globals.h"
 #include "TDescant.h"
+#include "TGRSIRunInfo.h"
 
 /// \cond CLASSIMP
 ClassImp(TDescantHit)
@@ -178,6 +179,15 @@ bool TDescantHit::AnalyzeWaveform() {
    if(fPsd < 0) {
       error = true;
    }
+
+	if(!TGRSIRunInfo::Get()->StoreDescantWaveforms()) {
+		fMonitor.clear();
+		fPartialSum.clear();
+		fDiffWaveform.clear();
+		fDiffIntWaveform.clear();
+		fShapedWaveform.clear();
+		fPsdMonitor.clear();
+	}
    
    return !error;
 }

@@ -45,13 +45,11 @@ class TDescant : public TGRSIDetector {
       
    private:
       std::vector<TDescantHit> fDescantHits;                                  ///<  The set of crystal hits
-      static bool fSetWave;		                                             ///<  Flag for Waveforms ON/OFF
       bool fHitFlag;                                                          ///<   Is there a Descant hit?
       
    public:
-      static bool SetWave()      { return fSetWave;  }	                     //!<!
-      bool Hit()                {return fHitFlag;}                            //!<!
-      void SetHit(bool flag = true) { fHitFlag = flag; }
+      bool Hit()                      { return fHitFlag; }                       //!<!
+      void SetHit(bool flag = true)   { fHitFlag = flag; }
    private:
       static TVector3 gPosition[71];                                          //!<!
       static TVector3 gAncillaryPosition[9];                                          //!<!
