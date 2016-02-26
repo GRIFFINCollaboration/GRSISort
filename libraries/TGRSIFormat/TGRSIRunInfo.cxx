@@ -251,6 +251,8 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
       printf(DBLUE"\tWaveform fitting = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
       printf(DBLUE"\tDESCANT in ancillary positions = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::DescantAncillary() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tAnalyzing DESCANT waveforms = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::AnalyzeDescantWaveforms() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tStoring analyzed DESCANT waveforms = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::StoreDescantWaveforms() ? "TRUE" : "FALSE");
       printf("\n");
       printf("\t==============================\n");
    }
@@ -284,7 +286,10 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
    fMinorIndex.assign("");  
 
    fNumberOfTrueSystems = 0;
-
+	
+	fAnalyzeDescantWaveforms = false;
+	fStoreDescantWaveforms = false;
+	fOldFragments = false;
 }
 
 
@@ -462,6 +467,10 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
 			Get()->SetAnalyzeDescantWaveforms(true);
 		} else if(type.find("STOREDESCANTWAVEFORM") == 0) {
 			Get()->SetStoreDescantWaveforms(true);
+		} else if(type.find("OLDFRAGMENT") == 0) {
+			Get()->SetOldFragments(true);
+		} else if(type.compare("DESCANT") == 0) {
+			Get()->SetDescant(true);
       }
    }
 
@@ -478,7 +487,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
 
 
 void TGRSIRunInfo::trim(std::string* line, const std::string & trimChars) {
-	///Removes the the string "trimCars" from  the string 'line'
+	///Removes characters from the string "trimCars" from  the string 'line'
    if(line->length() == 0)
       return;
    std::size_t found = line->find_first_not_of(trimChars);
@@ -493,7 +502,7 @@ void TGRSIRunInfo::trim(std::string* line, const std::string & trimChars) {
 	}
 }
 
-Long64_t TGRSIRunInfo::Merge(TCollection *list){
+Long64_t TGRSIRunInfo::Merge(TCollection *list) {
    //Loop through the TCollection of TGRSISortLists, and add each entry to the original TGRSISort List
    TIter it(list);
    //The TCollection will be filled by something like hadd. Each element in the list will be a TGRSISortList from

@@ -189,6 +189,9 @@ class TGRSIRunInfo : public TObject {
 		static void SetStoreDescantWaveforms(bool flag = true) { fGRSIRunInfo->fStoreDescantWaveforms = flag; }
 		static bool StoreDescantWaveforms()                    { return fGRSIRunInfo->fStoreDescantWaveforms; }
 
+		static void SetOldFragments(bool flag = true) { fGRSIRunInfo->fOldFragments = flag; }
+		static bool OldFragments()                    { return fGRSIRunInfo->fOldFragments; }
+
       Long64_t Merge(TCollection *list);
       void Add(TGRSIRunInfo* runinfo) { fRunStart = 0.; fRunStop = 0.; fRunLength += runinfo->RunLength(); }
 
@@ -271,6 +274,8 @@ class TGRSIRunInfo : public TObject {
 
 		bool     fAnalyzeDescantWaveforms; ///< analyze waveforms of descant detectors (if saved to fragment tree) when building the analysis tree
 		bool     fStoreDescantWaveforms;   ///< store analyzed waveforms of descant detectors when building the analysis tree
+
+		bool     fOldFragments;            ///< use TOldFragment to store data
 
    public:
       void Print(Option_t *opt = "") const;

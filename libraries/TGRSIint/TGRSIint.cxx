@@ -359,9 +359,9 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
 			} else if(temp.compare("ignore-scaler") == 0 || temp.compare("ignore_scaler") == 0) { 
 				TGRSIOptions::SetIgnoreScaler(true);          
 			} else if(temp.compare("old-fragment") == 0 || temp.compare("old_fragment") == 0) {
-				TGRSIRootIO::Get()->SetOldFragment(true);
+				TGRSIRunInfo::Get()->SetOldFragments(true);
 			} else if(temp.compare("descant") == 0) {
-				TGRSIRootIO::Get()->SetDescant(true);
+				TGRSIRunInfo::Get()->SetDescant(true);
 			} else {
 				printf(DBLUE  "    option: " DYELLOW "%s " DBLUE "passed but not understood." RESET_COLOR "\n",temp.c_str());
 			}

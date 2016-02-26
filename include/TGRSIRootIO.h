@@ -62,8 +62,6 @@ class TGRSIRootIO : public TObject {
 		TScalerData* fDeadtimeScalerData;
 		TScalerData* fRateScalerData;
 
-		static bool fOldFragment;
-		static bool fDescant;
 		Int_t fDescantData[3];
 
    public:
@@ -111,12 +109,6 @@ class TGRSIRootIO : public TObject {
       void FinalizeDiagnostics();
 
       void MakeUserHistsFromFragmentTree();
-
-		void SetOldFragment(bool value) { fOldFragment = value; }
-		bool GetOldFragment() { return fOldFragment; }
-
-		void SetDescant(bool value) { fDescant = value; }
-		bool GetDescant() { return fDescant; }
 
 /// \cond CLASSIMP
    ClassDef(TGRSIRootIO,0)

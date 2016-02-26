@@ -13,8 +13,6 @@ ClassImp(TGRSIRootIO)
 /// \endcond
 
 TGRSIRootIO* TGRSIRootIO::fTGRSIRootIO = 0;
-bool TGRSIRootIO::fOldFragment = false;
-bool TGRSIRootIO::fDescant = false;
 
 TGRSIRootIO* TGRSIRootIO::Get() {
 	if(!fTGRSIRootIO)
@@ -48,12 +46,12 @@ void TGRSIRootIO::SetUpFragmentTree() {
 	fTimesFillCalled = 0;
 	fFragmentTree = new TTree("FragmentTree","FragmentTree");
 	fBufferFrag = NULL;
-	if(fOldFragment) {
+	if(TGRSIRunInfo::Get()->OldFragments()) {
      fFragmentTree->Bronch("TFragment","TOldFragment",&fBufferFrag,128000,99);
 	} else {
 	  fFragmentTree->Bronch("TFragment","TNewFragment",&fBufferFrag,128000,99);
 	}
-	if(fDescant) {
+	if(TGRSIRunInfo::Get()->Descant()) {
 	  fFragmentTree->Branch("DescantData", &fDescantData, "Zc/I:CcShort/I:ccLong/I", 128000);
 	}
 	//fFragmentTree->BranchRef();
@@ -69,7 +67,7 @@ void TGRSIRootIO::SetUpBadFragmentTree() {
 	fTimesBadFillCalled = 0;
 	fBadFragmentTree = new TTree("BadFragmentTree","BadFragmentTree");
 	fBadBufferFrag = 0;
-	if(fOldFragment) {
+	if(TGRSIRunInfo::Get()->OldFragments()) {
  	  fBadFragmentTree->Bronch("TFragment","TOldFragment",&fBadBufferFrag,128000,99);
 	} else {
 	  fBadFragmentTree->Bronch("TFragment","TNewFragment",&fBadBufferFrag,128000,99);
@@ -151,12 +149,12 @@ void TGRSIRootIO::FillFragmentTree(TFragment* frag) {
 	// if(!fFragmentTree)
 	//    return;
 	//the (double) casting is necessary so that the copy constructor of the "real" class is being used, not the virtual one of TFragment
-	if(fOldFragment) {
+	if(TGRSIRunInfo::Get()->OldFragments()) {
       *static_cast<TOldFragment*>(fBufferFrag) = *static_cast<TOldFragment*>(frag);
    } else {
       *static_cast<TNewFragment*>(fBufferFrag) = *static_cast<TNewFragment*>(frag);
    }
-	if(fDescant) {
+	if(TGRSIRunInfo::Get()->Descant()) {
 	  fDescantData[0] = frag->GetZc();
 	  fDescantData[1] = frag->GetCcShort();
 	  fDescantData[2] = frag->GetCcLong();
