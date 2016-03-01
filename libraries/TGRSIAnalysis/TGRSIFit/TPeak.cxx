@@ -549,9 +549,9 @@ void TPeak::CheckArea(Double_t int_low, Double_t int_high) {
    // now print properties
    printf("TPeak integral: 	      %lf +/- %lf \n", fArea, fDArea);
    printf("Histogram - BG integral:        %lf +/- %lf \n", peakarea,peakerr);
-   if (abs(peakarea-fArea)<(fDArea+peakerr)) printf (DGREEN "Areas are consistent.\n" RESET_COLOR);
-   else if (abs(peakarea-fArea)<2*(fDArea+peakerr)) (DYELLOW "Areas are consistent within 2 sigma.\n" RESET_COLOR);
-   else printf (DRED "Areas are inconsistent.\n" RESET_COLOR);
+   if (abs(peakarea-fArea)<(fDArea+peakerr)) printf(DGREEN "Areas are consistent.\n" RESET_COLOR);
+   else if (abs(peakarea-fArea)<2*(fDArea+peakerr)) printf(DYELLOW "Areas are consistent within 2 sigma.\n" RESET_COLOR);
+   else printf(DRED "Areas are inconsistent.\n" RESET_COLOR);
    
    return;
 }
@@ -573,9 +573,9 @@ void TPeak::CheckArea() {
    // now print properties
    printf("TPeak integral: 	      %lf +/- %lf \n", fArea, fDArea);
    printf("Histogram - BG integral:        %lf +/- %lf \n", peakarea,peakerr);
-   if (abs(peakarea-fArea)<(fDArea+peakerr)) printf (DGREEN "Areas are consistent.\n" RESET_COLOR);
-   else if (abs(peakarea-fArea)<2*(fDArea+peakerr)) (DYELLOW "Areas are consistent within 2 sigma.\n" RESET_COLOR);
-   else printf (DRED "Areas are inconsistent.\n" RESET_COLOR);
+   if (abs(peakarea-fArea)<(fDArea+peakerr)) printf(DGREEN "Areas are consistent.\n" RESET_COLOR);
+   else if (abs(peakarea-fArea)<2*(fDArea+peakerr)) printf(DYELLOW "Areas are consistent within 2 sigma.\n" RESET_COLOR);
+   else printf(DRED "Areas are inconsistent.\n" RESET_COLOR);
    
    return;
 }
