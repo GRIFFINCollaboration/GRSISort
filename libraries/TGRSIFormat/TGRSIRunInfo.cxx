@@ -77,6 +77,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Bool_t R__bool; b >> R__bool; fSpice = R__bool;     }
    {Bool_t R__bool; b >> R__bool; fTip = R__bool;       }
    {Bool_t R__bool; b >> R__bool; fS3 = R__bool;        }
+	 {Bool_t R__bool; b >> R__bool; fBambino = R__bool;		}
                                               
    {Bool_t R__bool; b >> R__bool; fGriffin = R__bool;   }
    {Bool_t R__bool; b >> R__bool; fSceptar = R__bool;   }
@@ -120,6 +121,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
    {Bool_t R__bool = fSpice;      b << R__bool;}
    {Bool_t R__bool = fTip;        b << R__bool;}
    {Bool_t R__bool = fS3;         b << R__bool;}
+	 {Bool_t R__bool = fBambino;	  b << R__bool;}
    
    {Bool_t R__bool = fGriffin;    b << R__bool;}
    {Bool_t R__bool = fSceptar;    b << R__bool;}
@@ -231,6 +233,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf("\t\tCSM:          %s\n", CSM() ? "true" : "false");
       printf("\t\tSPICE:        %s\n", Spice() ? "true" : "false");
       printf("\t\tS3:           %s\n", S3() ? "true" : "false");
+			printf("\t\tBAMBINO:      %s\n", Bambino() ? "true" : "false");
       printf("\t\tRF:           %s\n", RF() ? "true" : "false");
       printf("\t\tGRIFFIN:      %s\n", Griffin() ? "true" : "false");
       printf("\t\tSCEPTAR:      %s\n", Sceptar() ? "true" : "false");
@@ -265,6 +268,7 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
    fSpice = false;
    fTip = false;
    fS3 = false;
+	 fBambino = false;
    
    fGriffin = false;
    fSceptar = false;
@@ -344,7 +348,10 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
       } else if(system.compare("DS")==0) {
          if(!Descant()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
          SetDescant();
-      }
+      } else if(system.compare("BA")==0) {
+				 if(!Bambino()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
+				 SetBambino();
+			}
    }
    if(Tigress()) {
      Get()->fMajorIndex.assign("TriggerId");

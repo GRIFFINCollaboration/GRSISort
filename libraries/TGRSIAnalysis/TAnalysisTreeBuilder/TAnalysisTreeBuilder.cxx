@@ -545,6 +545,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
    if(info->CSM())       { tree->Branch("TCSM",&fCsm); }//, basketSize); } 
    if(info->Spice())     { tree->Branch("TSiLi",&fSiLi); tree->Branch("TS3",&fS3); }//, basketSize); } 
    if(info->Tip())       { tree->Branch("TTip",&fTip); }//, basketSize); } 
+	 if(info->Bambino())	 { tree->Branch("TS3",&fS3); }
 
    if(info->Griffin())   { tree->Branch("TGriffin",&fGriffin); }//, basketSize); }
    if(info->Sceptar())   { tree->Branch("TSceptar",&fSceptar); }//, basketSize); }
@@ -568,6 +569,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
    if(info->RF())        { fRf->Clear(); } 
    if(info->CSM())       { fCsm->Clear(); }
    if(info->Spice())     { fSiLi->Clear(); fS3->Clear(); } 
+	 if(info->Bambino())	 { fS3->Clear(); }
    if(info->Tip())       { fTip->Clear(); } 
    if(info->Griffin())   { fGriffin->Clear(); }
    if(info->Sceptar())   { fSceptar->Clear(); }
@@ -591,6 +593,7 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
    if(info->RF())        { fRf = 0;  } 
    if(info->CSM())       { fCsm = 0; }
    if(info->Spice())     { fSiLi = 0; fS3 = 0; } 
+   if(info->Bambino())   { fS3 = 0; } 
    if(info->Tip())       { fTip = 0; } 
    if(info->Griffin())   { fGriffin = 0; }
    if(info->Sceptar())   { fSceptar = 0; }
@@ -660,7 +663,9 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<std::string, TDetector*>* d
          fSiLi = static_cast<TSiLi*>(det->second);
       } else if(det->first.compare(0,3,"SPE") == 0) {
          fS3   = static_cast<TS3*>(det->second);
-      } else if(det->first.compare(0,2,"GR") == 0) {
+      } else if(det->first.compare(0,2,"BA") == 0) {
+				 fS3	 = static_cast<TS3*>(det->second);
+			} else if(det->first.compare(0,2,"GR") == 0) {
          fGriffin = static_cast<TGriffin*>(det->second);
       } else if(det->first.compare(0,2,"SE") == 0) {
          fSceptar = static_cast<TSceptar*>(det->second);
@@ -814,7 +819,12 @@ void TAnalysisTreeBuilder::ProcessEvent() {
             (*detectors)["DS"]->AddFragment(&(event->at(i)), &mnemonic);
          //} else if(mnemonic.system.compare("DA")==0) {	
          //	AddFragment(&(event->at(i)), &mnemonic);
-         } else if(mnemonic.system.compare("ZD")==0) {	
+         } else if(mnemonic.system.compare("BA")==0) {
+            if(detectors->find("BA") == detectors->end()) {
+               (*detectors)["BA"] = new TS3;
+            }
+            (*detectors)["BA"]->AddFragment(&(event->at(i)), &mnemonic);							
+				 } else if(mnemonic.system.compare("ZD")==0) {	
             if(detectors->find("ZD") == detectors->end()) {
                (*detectors)["ZD"] = new TZeroDegree;
             }

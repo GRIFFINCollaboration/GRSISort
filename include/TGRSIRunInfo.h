@@ -114,6 +114,7 @@ class TGRSIRunInfo : public TObject {
       static inline void SetSpice(bool flag = true)       { fGRSIRunInfo->fSpice = flag; }
       static inline void SetS3(bool flag = true)          { fGRSIRunInfo->fS3 = flag;  }
       static inline void SetTip(bool flag = true)         { fGRSIRunInfo->fTip = flag; }
+			static inline void SetBambino(bool flag = true)			{ fGRSIRunInfo->fBambino = flag; }
 
       static inline void SetGriffin(bool flag = true)     { fGRSIRunInfo->fGriffin = flag; }
       static inline void SetSceptar(bool flag = true)     { fGRSIRunInfo->fSceptar = flag; }
@@ -148,6 +149,7 @@ class TGRSIRunInfo : public TObject {
       static inline bool RF()        { return fGRSIRunInfo->fRf; }
       static inline bool CSM()       { return fGRSIRunInfo->fCSM; }
       static inline bool Spice()     { return fGRSIRunInfo->fSpice; }
+			static inline bool Bambino()	 { return fGRSIRunInfo->fBambino; }
       static inline bool Tip()       { return fGRSIRunInfo->fTip; }
       static inline bool S3()        { return fGRSIRunInfo->fS3; }
 
@@ -226,6 +228,7 @@ class TGRSIRunInfo : public TObject {
       bool fSpice;      //flag for Spice on/off
       bool fTip;        //flag for Tip on/off
       bool fS3;         //flag for S3 on/off
+			bool fBambino;		//flag for Bambino on/off
 
       bool fGriffin;    //flag for Griffin on/off
       bool fSceptar;    //flag for Sceptar on/off
