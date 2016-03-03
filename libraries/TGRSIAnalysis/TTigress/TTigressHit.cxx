@@ -8,8 +8,6 @@
 ClassImp(TTigressHit)
 /// \endcond
 
-TVector3 TTigressHit::fBeam;
-
 TTigressHit::TTigressHit() {	
   Clear();
 }
@@ -31,7 +29,6 @@ void TTigressHit::Clear(Option_t *opt) {
   fSegments.clear();
   fBgos.clear();
 
-  fBeam.SetXYZ(0,0,1);
   fLastHit.SetXYZ(0,0,0);
 }
 

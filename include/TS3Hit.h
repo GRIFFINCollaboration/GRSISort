@@ -18,12 +18,10 @@ class TS3Hit : public TGRSIDetectorHit {
     virtual ~TS3Hit();
     TS3Hit(const TS3Hit&);
 
-    static TVector3 fBeam;            //!<!
-
     Double_t GetLed()   const  { return fLed;    }
     Short_t  GetRing()  const  { return fRing;   }
     Short_t  GetSector() const { return fSector; }
-		Bool_t	 GetIsDownstream() const { return fDownstream; }
+		Bool_t	 GetIsDownstream() const { return fIsDownstream; }
 
   public:
     void Copy(TObject&) const;        //!
@@ -42,7 +40,8 @@ class TS3Hit : public TGRSIDetectorHit {
 	 
 		Double_t GetTheta(double offset=0, TVector3 *vec=0) {
 			if(vec==0) {
-				vec = &fBeam;
+				vec = new TVector3();
+				vec->SetXYZ(0,0,1);
 			}
 			return TMath::Pi() - TMath::Cos(this->GetChannelPosition(offset).Angle(*vec));
 		}

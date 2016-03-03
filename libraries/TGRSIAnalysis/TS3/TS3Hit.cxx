@@ -5,8 +5,6 @@
 ClassImp(TS3Hit)
 /// \endcond
 
-TVector3 TS3Hit::fBeam;
-
 TS3Hit::TS3Hit()	{
 	Clear();
 }
@@ -37,7 +35,6 @@ void TS3Hit::Clear(Option_t *opt)	{
    fRing           = -1;
    fSector         = -1;
 	 fIsDownstream		 = false;
-   fBeam.SetXYZ(0,0,1);
 }
 
 Short_t TS3Hit::GetMnemonicSegment(TFragment &frag){//could be added to TGRSIDetectorHit base class
