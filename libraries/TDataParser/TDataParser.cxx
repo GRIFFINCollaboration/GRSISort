@@ -57,13 +57,13 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
 	if(!SetTIGTriggerID(dword,EventFrag)) {
 		delete EventFrag;
 		printf(RED "Setting TriggerId (0x%08x) failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",dword,midasSerialNumber);
-		return NumFragsFound;  
+		return -x;  
 	}
 	x+=1;
 	if(!SetTIGTimeStamp((data+x),EventFrag)) { 
-		delete EventFrag;
+		delete EventFrag;	
 		printf(RED "Setting TimeStamp failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",midasSerialNumber);
-		return NumFragsFound;
+		return -x;
 	}
 	//int temp_charge =  0;
 	int temp_led    =  0;
@@ -320,21 +320,20 @@ bool TDataParser::SetTIGTimeStamp(uint32_t* data,TFragment* currentFrag ) {
 		//currentFrag->SetTimeStamp();
 		return true;
 	}
-
-
+	
 	x+=1;
 	time[3] = *(data +x);
 	if((time[3] & 0xf0000000) != 0xa0000000) {  
-		printf("here 2?\n");
+		printf("here 2?\tx = %i\t0x%08x\n",x,time[3]);
 		return false;
 	}
 	x+=1;
 	time[4] = *(data +x);
 	if((time[4] & 0xf0000000) != 0xa0000000) {  
-		printf("here 3?\n");
+		printf("here 3?\tx = %i\t0x%08x\n",x,time[4]);
 		return false;
 	}
-
+	
 	return true;
 }
 
