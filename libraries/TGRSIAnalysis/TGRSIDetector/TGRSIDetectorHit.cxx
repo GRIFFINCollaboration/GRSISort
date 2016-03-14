@@ -8,6 +8,8 @@ ClassImp(TGRSIDetectorHit)
 
 TPPG* TGRSIDetectorHit::fPPG = 0;
 
+TVector3 TGRSIDetectorHit::fBeamDirection(0,0,1);
+
 TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject() { 
 	///Default constructor
 	Clear();

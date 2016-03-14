@@ -112,6 +112,8 @@ class TGRSIDetectorHit : public TObject 	{
       uint16_t GetPPGStatus();
       uint16_t GetCycleTimeStamp() const;
       uint16_t GetCycleTimeStamp();
+      
+      static TVector3 *GetBeamDirection() { return &fBeamDirection; }
 
    private:
       virtual TVector3 GetChannelPosition(Double_t dist = 0) const { AbstractMethod("GetChannelPosition"); return TVector3(0., 0., 0.); }
@@ -148,6 +150,8 @@ class TGRSIDetectorHit : public TObject 	{
    private:
    //flags   
       UChar_t fBitflags;
+      
+      static TVector3 fBeamDirection; //!
 
 /// \cond CLASSIMP
 	ClassDef(TGRSIDetectorHit,7) //Stores the information for a detector hit

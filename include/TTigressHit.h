@@ -73,8 +73,7 @@ class TTigressHit : public TGRSIDetectorHit {
 
 	inline double GetDoppler(double beta, TVector3 *vec=0) { 
 		if(vec==0) {
-			vec = new TVector3();
-			vec->SetXYZ(0,0,1);
+			vec = GetBeamDirection();
 		}
 		double tmp = 0;
 		double gamma = 1/(sqrt(1-pow(beta,2)));
