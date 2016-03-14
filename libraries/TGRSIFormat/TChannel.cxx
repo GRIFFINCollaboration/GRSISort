@@ -69,6 +69,7 @@ TChannel::TChannel(TChannel* chan) {
 
   this->SetDetectorNumber(chan->GetDetectorNumber());
 	this->SetSegmentNumber(chan->GetSegmentNumber());
+	this->SetCrystalNumber(chan->GetCrystalNumber());
 }
 
 
@@ -163,6 +164,7 @@ void TChannel::OverWriteChannel(TChannel* chan){
   
   this->SetDetectorNumber(chan->GetDetectorNumber());
 	this->SetSegmentNumber(chan->GetSegmentNumber());
+	this->SetCrystalNumber(chan->GetCrystalNumber());
 	return;
 }
 
@@ -206,10 +208,12 @@ void TChannel::AppendChannel(TChannel* chan){
 	if(chan->UseCalFileIntegration())
 		this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
   
-  if(chan->GetDetectorNumber()>0)
+  if(chan->GetDetectorNumber()>-1)
     this->SetDetectorNumber(chan->GetDetectorNumber());
-  if(chan->GetSegmentNumber()>0)
+  if(chan->GetSegmentNumber()>-1)
   	this->SetSegmentNumber(chan->GetSegmentNumber());
+  if(chan->GetCrystalNumber()>-1)
+  	this->SetCrystalNumber(chan->GetCrystalNumber());
 
 	return;
 }
@@ -252,6 +256,7 @@ void TChannel::Clear(Option_t* opt){
 
   fDetectorNumber    = -1;
   fSegmentNumber     = -1;
+  fCrystalNumber     = -1;
 
 	fENGCoefficients.clear();
 	fCFDCoefficients.clear();
@@ -1048,7 +1053,7 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 }
 
 int TChannel::GetDetectorNumber() const {
-	if(fDetectorNumber>0) //||fDetectorNumber==0x0fffffff)
+	if(fDetectorNumber>-1) //||fDetectorNumber==0x0fffffff)
 		return fDetectorNumber;
 
 	MNEMONIC mnemonic;
@@ -1059,7 +1064,7 @@ int TChannel::GetDetectorNumber() const {
 }
 
 int TChannel::GetSegmentNumber() const {
-   if(fSegmentNumber>0)
+   if(fSegmentNumber>-1)
      return fSegmentNumber;
 
    MNEMONIC mnemonic;
@@ -1078,5 +1083,33 @@ int TChannel::GetSegmentNumber() const {
    return fSegmentNumber;
 }
 
+int TChannel::GetCrystalNumber() const {
+  if(fCrystalNumber>-1)
+    return fCrystalNumber;
 
+  MNEMONIC mnemonic;
+  ParseMNEMONIC(GetChannelName(),&mnemonic);
+  char color = mnemonic.arraysubposition[0];
+  switch(color) {
+    case 'B':
+      fCrystalNumber = 0;
+      break;
+    case 'G':
+      fCrystalNumber = 1;
+      break;
+    case 'R':
+      fCrystalNumber = 2;
+      break;
+    case 'W':
+      fCrystalNumber = 3;  
+      break;
+    default:
+      fCrystalNumber = 5;
+      break;
+  };
+  
+  //printf("%s: %c\t%i\n",__PRETTY_FUNCTION__,color,fCrystalNumber);
+  return fCrystalNumber;  
+
+}
 

@@ -81,6 +81,7 @@ class TChannel : public TNamed	{
       mutable int   fDetectorNumber;
       mutable int   fSegmentNumber;
 
+      mutable int   fCrystalNumber; 
 
 
       std::vector<Float_t> fENGCoefficients;  //Energy calibration coeffs (low to high order)
@@ -123,9 +124,11 @@ class TChannel : public TNamed	{
 
       void SetDetectorNumber(int tempint)   { fDetectorNumber = tempint; }
       void SetSegmentNumber(int tempint)    { fSegmentNumber = tempint; }
+      void SetCrystalNumber(int tempint)    { fCrystalNumber = tempint; }
       
       int GetDetectorNumber() const; 
       int GetSegmentNumber()  const;  
+      int GetCrystalNumber()  const;  
 
       int	GetNumber()		          { return fNumber;  }
       unsigned int	GetAddress()    { return fAddress; }

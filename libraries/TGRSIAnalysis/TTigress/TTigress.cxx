@@ -202,7 +202,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       TTigressHit corehit;
       corehit.SetAddress(frag->ChannelAddress);
       //corehit.SetDetector(mnemonic->arrayposition);
-      corehit.SetCrystal(CoreNbr);
+      //corehit.SetCrystal(CoreNbr);
       corehit.AddSegment(temp);
       fTigressHits.push_back(corehit);
     }
@@ -220,7 +220,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     TTigressHit corehit;
     corehit.SetAddress(frag->ChannelAddress);
     //corehit.SetDetector(mnemonic->arrayposition);
-    corehit.SetCrystal(CoreNbr);
+    //corehit.SetCrystal(CoreNbr);
     corehit.AddBGO(temp);
     fTigressHits.push_back(corehit);
   }

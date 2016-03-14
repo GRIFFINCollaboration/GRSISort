@@ -52,14 +52,14 @@ class TTigressHit : public TGRSIDetectorHit {
 	void AddSegment(TGRSIDetectorHit& seg) 	  { fSegments.push_back(seg);	}	//!<!
 	void AddBGO(TGRSIDetectorHit& bgo) 		     { fBgos.push_back(bgo);	}	   //!<!
 
-  int SetCrystal(char color);
-  int SetCrystal(int crynum);
+  //int SetCrystal(char color);
+  //int SetCrystal(int crynum);
 	void SetInitalHit(const int &i)		 { fFirstSegment = i; }				//!<!
-	Bool_t IsCrystalSet() const          { return IsSubDetSet();}
+	//Bool_t IsCrystalSet() const          { return IsSubDetSet();}
 
 	/////////////////////////		/////////////////////////////////////
 	int GetCrystal() const;	          //{	return crystal;			}		//!<!
-	int GetCrystal();
+	//int GetCrystal();
 	inline int GetInitialHit()		               {	return fFirstSegment;	}			//!<!
 	
 	void SetWavefit(TFragment&);

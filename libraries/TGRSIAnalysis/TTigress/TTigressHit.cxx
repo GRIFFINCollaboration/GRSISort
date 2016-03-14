@@ -89,28 +89,29 @@ TVector3 TTigressHit::GetChannelPosition(Double_t dist) const {
 }
 
 int TTigressHit::GetCrystal() const {
-  if(IsCrystalSet())
-    return fCrystal;
+  //if(IsCrystalSet())
+  //  return fCrystal;
 
   TChannel *chan = GetChannel();
   if(!chan)
     return -1;
-  MNEMONIC mnemonic;
-  ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-  char color = mnemonic.arraysubposition[0];
-  switch(color) {
-    case 'B':
-      return 0;
-    case 'G':
-      return 1;
-    case 'R':
-      return 2;
-    case 'W':
-      return 3;  
-  };
-  return -1;  
+  return chan->GetCrystalNumber();
+  //MNEMONIC mnemonic;
+  //ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
+  //char color = mnemonic.arraysubposition[0];
+  //switch(color) {
+  //  case 'B':
+  //    return 0;
+  //  case 'G':
+  //    return 1;
+  //  case 'R':
+  //    return 2;
+  //  case 'W':
+  //    return 3;  
+  //};
+  //return -1;  
 }
-
+/*
 int TTigressHit::GetCrystal() {
   if(IsCrystalSet())
     return fCrystal;
@@ -123,12 +124,14 @@ int TTigressHit::GetCrystal() {
   char color = mnemonic.arraysubposition[0];
   return SetCrystal(color);  
 }
-
+*/
+/*
 int TTigressHit::SetCrystal(int crynum) {
    fCrystal = crynum;
    return fCrystal;
 }
-
+*/
+/*
 int TTigressHit::SetCrystal(char color) { 
    switch(color) {
       case 'B':
@@ -147,6 +150,7 @@ int TTigressHit::SetCrystal(char color) {
    SetFlag(TGRSIDetectorHit::kIsSubDetSet,true);
    return fCrystal;
 }
+*/
 
 void TTigressHit::SetWavefit(TFragment &frag)   { 
   TPulseAnalyzer pulse(frag);	    
