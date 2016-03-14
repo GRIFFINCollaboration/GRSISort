@@ -201,7 +201,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 		//printf("Segment issue?\n");
       TTigressHit corehit;
       corehit.SetAddress(frag->ChannelAddress);
-      corehit.SetDetector(mnemonic->arrayposition);
+      //corehit.SetDetector(mnemonic->arrayposition);
       corehit.SetCrystal(CoreNbr);
       corehit.AddSegment(temp);
       fTigressHits.push_back(corehit);
@@ -219,7 +219,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 	//printf("BGO issue?\n");
     TTigressHit corehit;
     corehit.SetAddress(frag->ChannelAddress);
-    corehit.SetDetector(mnemonic->arrayposition);
+    //corehit.SetDetector(mnemonic->arrayposition);
     corehit.SetCrystal(CoreNbr);
     corehit.AddBGO(temp);
     fTigressHits.push_back(corehit);

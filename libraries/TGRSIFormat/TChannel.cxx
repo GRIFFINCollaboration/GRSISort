@@ -66,6 +66,9 @@ TChannel::TChannel(TChannel* chan) {
 	this->SetTIMEChi2(chan->GetTIMEChi2());
 	this->SetEFFChi2(chan->GetEFFChi2());
 	this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
+
+  this->SetDetectorNumber(chan->GetDetectorNumber());
+	this->SetSegmentNumber(chan->GetSegmentNumber());
 }
 
 
@@ -157,6 +160,9 @@ void TChannel::OverWriteChannel(TChannel* chan){
 	this->SetEFFChi2(chan->GetEFFChi2());
 
 	this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
+  
+  this->SetDetectorNumber(chan->GetDetectorNumber());
+	this->SetSegmentNumber(chan->GetSegmentNumber());
 	return;
 }
 
@@ -199,6 +205,11 @@ void TChannel::AppendChannel(TChannel* chan){
 
 	if(chan->UseCalFileIntegration())
 		this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
+  
+  if(chan->GetDetectorNumber()>0)
+    this->SetDetectorNumber(chan->GetDetectorNumber());
+  if(chan->GetSegmentNumber()>0)
+  	this->SetSegmentNumber(chan->GetSegmentNumber());
 
 	return;
 }
@@ -238,6 +249,9 @@ void TChannel::Clear(Option_t* opt){
 	fUserInfoNumber    =  0xffffffff;
 	fUseCalFileInt     =  false;
 	SetName("DefaultTChannel");
+
+  fDetectorNumber    = -1;
+  fSegmentNumber     = -1;
 
 	fENGCoefficients.clear();
 	fCFDCoefficients.clear();
@@ -1031,5 +1045,38 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 		}
 		savdir->cd();//Go back to original gDirectory
 		return GetNumberOfChannels();
-	}
+}
+
+int TChannel::GetDetectorNumber() const {
+	if(fDetectorNumber>0) //||fDetectorNumber==0x0fffffff)
+		return fDetectorNumber;
+
+	MNEMONIC mnemonic;
+	ClearMNEMONIC(&mnemonic);
+	ParseMNEMONIC(GetChannelName(),&mnemonic);
+  fDetectorNumber = (int32_t)mnemonic.arrayposition;
+  return fDetectorNumber;
+}
+
+int TChannel::GetSegmentNumber() const {
+   if(fSegmentNumber>0)
+     return fSegmentNumber;
+
+   MNEMONIC mnemonic;
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(GetChannelName(),&mnemonic);
+   std::string name = GetChannelName();
+   TString str = name[9];
+   if(str.IsDigit()){
+   	 std::string buf;
+   	 buf.clear(); buf.assign(name,7,3);
+   	 fSegmentNumber = (int32_t)atoi(buf.c_str());
+   }
+   else{   
+   	 fSegmentNumber = (int32_t)mnemonic.segment;
+   }
+   return fSegmentNumber;
+}
+
+
 
