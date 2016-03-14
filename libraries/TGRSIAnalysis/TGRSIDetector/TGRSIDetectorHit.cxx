@@ -126,6 +126,15 @@ void TGRSIDetectorHit::Print(Option_t* opt) const {
 	fPosition.Print();
 }
 
+const char *TGRSIDetectorHit::GetName() const { 
+  TChannel *channel = TChannel::GetChannel(fAddress);
+  if(!channel)
+     return Class()->ClassName();
+  else
+     return channel->GetChannelName();
+}
+
+
 void TGRSIDetectorHit::Clear(Option_t* opt) {
 	///General clear statement for a TGRSIDetectorHit.
 	fAddress = 0xffffffff;    // -1

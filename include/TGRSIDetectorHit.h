@@ -72,7 +72,9 @@ class TGRSIDetectorHit : public TObject 	{
 	public:
       virtual void Copy(TObject&) const;              //!<!
       virtual void Clear(Option_t* opt = "");         //!<!
-      virtual void Print(Option_t* opt = "") const;	//!<!
+      virtual void Print(Option_t* opt = "") const;	  //!<!
+      virtual const char *GetName() const;                   //!<!
+
       static bool CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rhs);
       //We need a common function for all detectors in here
 		//static bool Compare(TGRSIDetectorHit* lhs,TGRSIDetectorHit* rhs); //!<!
