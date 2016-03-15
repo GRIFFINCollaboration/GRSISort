@@ -13,7 +13,7 @@
 ClassImp(TTigress)
 /// \endcond
 
-bool TTigress::fSetSegmentHits = false;//true;
+bool TTigress::fSetSegmentHits = true;  // these are need to doppler shift properly.  
 bool TTigress::fSetBGOHits = true;
 
 bool TTigress::fSetCoreWave = false;
@@ -158,18 +158,6 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
   TChannel *channel = TChannel::GetChannel(frag->GetAddress());
 
 
-  //Int_t CoreNbr=channel->GetCrystalNumber();
-  /*
-  if(mnemonic->arraysubposition.compare(0,1,"B")==0)
-    CoreNbr=0;
-  else if(mnemonic->arraysubposition.compare(0,1,"G")==0)
-    CoreNbr=1;
-  else if(mnemonic->arraysubposition.compare(0,1,"R")==0)
-    CoreNbr=2;
-  else if(mnemonic->arraysubposition.compare(0,1,"W")==0)
-    CoreNbr=3;
-  */
-
   if((mnemonic->subsystem.compare(0,1,"G")==0) && (channel->GetSegmentNumber()==0 || channel->GetSegmentNumber()==9) ) { // it is a core
     //if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
     //  return;
@@ -180,7 +168,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       TTigressHit *hit = GetTigressHit(i);
       if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
         //if(hit->Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
-        if(channel->GetSegmentNumber()==9 || mnemonic->outputsensor.compare(0,1,"b")==0) {
+        if(channel->GetSegmentNumber()==9 || mnemonic->outputsensor.compare(0,1,"b")!=0) {
           // uncommenting the lines below will replace the core with the 
           // tig10 core copy if it is found.
           //
