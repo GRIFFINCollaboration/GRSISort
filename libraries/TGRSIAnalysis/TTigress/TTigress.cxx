@@ -206,6 +206,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     corehit.SetAddress( (frag->ChannelAddress) );  // the above only works if tigress is it's 'normal' setup
     corehit.AddSegment(temp);
     fTigressHits.push_back(corehit);
+    return;
   } else if(SetBGOHits() && mnemonic->subsystem.compare(0,1,"S")==0) {
     TGRSIDetectorHit temp(*frag);
     for(size_t i = 0; i < fTigressHits.size(); ++i)	{
