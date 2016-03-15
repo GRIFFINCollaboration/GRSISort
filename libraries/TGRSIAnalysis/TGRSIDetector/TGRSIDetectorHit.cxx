@@ -337,6 +337,11 @@ void TGRSIDetectorHit::CopyFragment(const TFragment& frag) {
 	this->fEnergy    = frag.GetEnergy();
 }
 
+void TGRSIDetectorHit::CopyWaveform(const TFragment &frag) {
+  if(frag.HasWave())
+    SetWaveform(frag.wavebuffer); 
+}
+
 void TGRSIDetectorHit::SetFlag(enum Ebitflag flag, Bool_t set){
 	if(set)
 		fBitflags |= flag;

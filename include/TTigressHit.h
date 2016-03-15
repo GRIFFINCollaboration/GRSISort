@@ -63,6 +63,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	inline int GetInitialHit()		               {	return fFirstSegment;	}			//!<!
 	
 	void SetWavefit(TFragment&);
+	void SetWavefit();
 	inline Double_t GetSignalToNoise()	  { return fSig2Noise;	} //!<!
 	inline Double_t GetFitTime()			  { return fTimeFit;	} //!<!
 
@@ -81,14 +82,18 @@ class TTigressHit : public TGRSIDetectorHit {
 		return tmp;
 	}
 
-	inline int GetSegmentMultiplicity()		         { return fSegments.size(); }	//!<!
-	inline int GetNSegments()		                   { return fSegments.size(); }	//!<!
-	inline int GetBGOMultiplicity()			           { return fBgos.size();     }   //!<!
-	inline int GetNBGOs()			                     { return fBgos.size();     }   //!<!
+	int GetSegmentMultiplicity()		  const      { return fSegments.size(); }	//!<!
+	int GetNSegments()		            const      { return fSegments.size(); }	//!<!
+	int GetBGOMultiplicity()			    const      { return fBgos.size();     }   //!<!
+	int GetNBGOs()			              const      { return fBgos.size();     }   //!<!
 	using TGRSIDetectorHit::GetSegment;
-	inline TGRSIDetectorHit& GetSegment(const int &i) { return fSegments.at(i);  }   //!<!
-	inline TGRSIDetectorHit& GetBGO(const int &i)	  { return fBgos.at(i);	     }   //!<!
-	inline TGRSIDetectorHit& GetCore()                { return *this;	           }   //!<!
+	TGRSIDetectorHit& GetSegment(int &i)       { return fSegments.at(i);  }   //!<!
+	TGRSIDetectorHit& GetBGO( int &i)	         { return fBgos.at(i);	     }   //!<!
+	TGRSIDetectorHit& GetCore()                { return *this;	           }   //!<!
+	
+  TGRSIDetectorHit GetSegment(int &i) const { return fSegments.at(i);  }   //!<!
+	TGRSIDetectorHit GetBGO( int &i)	   const { return fBgos.at(i);	     }   //!<!
+	TGRSIDetectorHit GetCore()          const { return *this;	           }   //!<!
 
 	void CheckFirstHit(int charge,int segment);								               //!<!
 

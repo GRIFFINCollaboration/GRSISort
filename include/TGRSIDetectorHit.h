@@ -65,6 +65,7 @@ class TGRSIDetectorHit : public TObject 	{
       TGRSIDetectorHit(const TGRSIDetectorHit&);
       TGRSIDetectorHit(const TFragment& frag)      { Class()->IgnoreTObjectStreamer(); this->CopyFragment(frag); }
       void CopyFragment(const TFragment&);
+      void CopyWaveform(const TFragment&);
       virtual ~TGRSIDetectorHit();
 
       static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
@@ -74,6 +75,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual void Clear(Option_t* opt = "");         //!<!
       virtual void Print(Option_t* opt = "") const;	  //!<!
       virtual const char *GetName() const;                   //!<!
+      virtual bool HasWave() const { return (fWaveform.size()>0) ?  true : false; } //!<!
 
       static bool CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rhs);
       //We need a common function for all detectors in here
@@ -121,7 +123,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual TVector3 GetChannelPosition(Double_t dist = 0) const { AbstractMethod("GetChannelPosition"); return TVector3(0., 0., 0.); }
 
    protected:
-      //Bool_t IsDetSet() const    { return (fBitflags & kIsDetSet); }
+     //Bool_t IsDetSet() const    { return (fBitflags & kIsDetSet); }
       Bool_t IsPosSet() const    { return (fBitflags & kIsPositionSet); }
       Bool_t IsEnergySet() const { return (fBitflags & kIsEnergySet); }
       Bool_t IsSubDetSet() const { return (fBitflags & kIsSubDetSet); }
