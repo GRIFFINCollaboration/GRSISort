@@ -82,6 +82,8 @@ class TTigressHit : public TGRSIDetectorHit {
 		return tmp;
 	}
 
+
+
 	int GetSegmentMultiplicity()		  const      { return fSegments.size(); }	//!<!
 	int GetNSegments()		            const      { return fSegments.size(); }	//!<!
 	int GetBGOMultiplicity()			    const      { return fBgos.size();     }   //!<!

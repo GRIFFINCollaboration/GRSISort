@@ -155,6 +155,7 @@ void TTigress::BuildHits(){
   //erasing elements of a vector in a loop is a bit tricker... pcb.
   std::vector<TTigressHit>::iterator it;
   for( it=fTigressHits.begin();it!=fTigressHits.end();) {
+    double largestsegment = 0.0;
     if((it->GetCharge()/125.0)<5)  {
        if(it->GetNBGOs()>0 && it->GetNSegments()<1) {  //bgo fired with no core.
          it = fTigressHits.erase(it);
@@ -162,6 +163,13 @@ void TTigress::BuildHits(){
        }
     }
     //it->Print("all");
+    for(int y=0;y<it->GetNSegments();y++) {
+      if(it->GetSegment(y).GetCharge() > largestsegment) {
+        it->SetInitalHit(it->GetSegment(y).GetSegment());
+        largestsegment = it->GetSegment(y).GetCharge();
+      }
+    }  
+		it->SetPosition(TTigress::GetPosition(it->GetDetector(),it->GetCrystal(),it->GetSegment()));
     if(it->HasWave() &&TGRSIRunInfo::IsWaveformFitting() ) // this should really be moved to the grsioptions...  pcb.
       it->SetWavefit();
     it++;
