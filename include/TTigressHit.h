@@ -50,7 +50,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	/////////////////////////		/////////////////////////////////////
 	void SetCore(TGRSIDetectorHit& core)		  { Copy(core);	} 					//!<!
 	void AddSegment(TGRSIDetectorHit& seg) 	  { fSegments.push_back(seg);	}	//!<!
-	void AddBGO(TGRSIDetectorHit& bgo) 		     { fBgos.push_back(bgo);	}	   //!<!
+	void AddBGO(TGRSIDetectorHit& bgo) 		    { fBgos.push_back(bgo);	}	   //!<!
 
   //int SetCrystal(char color);
   //int SetCrystal(int crynum);

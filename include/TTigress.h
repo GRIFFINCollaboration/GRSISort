@@ -45,7 +45,7 @@ class TTigress : public TGRSIDetector {
 		static TVector3 GetPosition(int DetNbr ,int CryNbr, int SegNbr, double distance = 110.);		//!<!
 
 		// Delete tigress hit from vector (for whatever reason)
-		void DeleteTigressHit(const int& i) { fTigressHits.erase(fTigressHits.begin()+i); } 
+		//void DeleteTigressHit(const int& i) { fTigressHits.erase(fTigressHits.begin()+i); } 
 
 		Int_t GetAddbackMultiplicity();
 		TTigressHit* GetAddbackHit(const int&);

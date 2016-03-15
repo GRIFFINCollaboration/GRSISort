@@ -143,10 +143,23 @@ TTigressHit* TTigress::GetAddbackHit(const int& i) {
 
 void TTigress::BuildHits(){
 	
-	for(size_t i = 0; i<GetMultiplicity(); i++){
-		if(GetTigressHit(i)->GetCharge() <= 0)
-			DeleteTigressHit(i);
-	}
+	//for(size_t i = 0; i<GetMultiplicity(); i++){
+	//	if(GetTigressHit(i)->GetCharge() <= 0.5)
+	//		//DeleteTigressHit(i);
+	//}
+  //erasing elements of a vector in a loop is a bit tricker... pcb.
+  std::set<std::pair<int,int> >;
+  std::vector<TTigressHit>::iterator it;
+  for( it=fTigressHits.begin();it!=fTigressHits.end();) {
+    if((it->GetCharge()/125.0)<10)  {
+       it = fTigressHits.erase(it);
+       continue;
+    }
+    else if(((it->GetAddress()&0x0000000f)==0x00000009) && it->GetNSegments()==8) {
+      it->SetAddress(it->GetAddress()&0xfffffff0);
+    }
+    it++;
+  }
 
 }
 
@@ -197,7 +210,8 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     for(size_t i = 0; i < fTigressHits.size(); ++i)	{
       TTigressHit *hit = GetTigressHit(i);
       if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
-        GetTigressHit(i)->AddSegment(temp);
+        hit->AddSegment(temp);
+        //printf(" I found a core !\t%i\n",hit->GetNSegments()); fflush(stdout);
         return;
       }
     }
@@ -206,6 +220,10 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     corehit.SetAddress( (frag->ChannelAddress) );  // the above only works if tigress is it's 'normal' setup
     corehit.AddSegment(temp);
     fTigressHits.push_back(corehit);
+    //if(fTigressHits.size()>100) {
+    //   printf("size is large!\t%i\n",fTigressHits.size());
+    //   fflush(stdout);
+    //}
     return;
   } else if(SetBGOHits() && mnemonic->subsystem.compare(0,1,"S")==0) {
     TGRSIDetectorHit temp(*frag);
