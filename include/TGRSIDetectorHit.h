@@ -96,8 +96,8 @@ class TGRSIDetectorHit : public TObject 	{
       TVector3 GetPosition(Double_t dist = 0);
       virtual double GetEnergy(Option_t* opt="") const;
       virtual double GetEnergy(Option_t* opt="");
-      virtual UInt_t GetDetector() const;
-      virtual Short_t GetSegment() const;	
+      virtual Int_t  GetDetector() const;
+      virtual Int_t  GetSegment() const;	
       virtual ULong_t GetTimeStamp(Option_t* opt="")   const     { return fTimeStamp;   }
       virtual Double_t GetTime(Option_t* opt = "") const;  ///< Returns a time value to the nearest nanosecond!
       virtual Double_t GetTime(Option_t* opt = "");

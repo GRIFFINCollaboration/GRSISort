@@ -151,7 +151,7 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
 	fCycleTimeStamp = 0;
 }
 
-UInt_t TGRSIDetectorHit::GetDetector() const {
+Int_t TGRSIDetectorHit::GetDetector() const {
   
 	//if(IsDetSet())
 	//	return fDetector;
@@ -183,7 +183,7 @@ UInt_t TGRSIDetectorHit::GetDetector() {
 	return SetDetector(mnemonic.arrayposition);
 }
 */
-Short_t TGRSIDetectorHit::GetSegment() const {
+Int_t TGRSIDetectorHit::GetSegment() const {
    //if(IsSegSet())
    //  return fSegment;
 

@@ -72,7 +72,8 @@ public:
 
 	int NumberOfHits;            //!<! transient member to count the number of pile-up hits in the original fragment
 	int HitIndex;                //!<! transient member indicating which pile-up hit this is in the original fragment
-  
+ 
+   UInt_t GetAddress()   const { return ChannelAddress; }
    double GetTime()      const; //!<!
    long   GetTimeStamp() const; //!<!
    double GetTZero() const; //!<!
