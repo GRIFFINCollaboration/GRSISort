@@ -33,6 +33,11 @@ std::function<bool(TTigressHit&, TTigressHit&)> TTigress::fAddbackCriterion = De
 TTigress::TTigress() : TGRSIDetector() {
   //Class()->IgnoreTObjectStreamer(true);
   Clear();
+ 
+  SetBitNumber(TTigress::kSetCoreWave);
+  SetBitNumber(TTigress::kSetSegWave,0);
+  SetBitNumber(TTigress::kSetBGOWave,0);
+
 }
 
 TTigress::TTigress(const TTigress& rhs) : TGRSIDetector() {
@@ -148,16 +153,17 @@ void TTigress::BuildHits(){
 	//		//DeleteTigressHit(i);
 	//}
   //erasing elements of a vector in a loop is a bit tricker... pcb.
-  std::set<std::pair<int,int> >;
   std::vector<TTigressHit>::iterator it;
   for( it=fTigressHits.begin();it!=fTigressHits.end();) {
-    if((it->GetCharge()/125.0)<10)  {
-       it = fTigressHits.erase(it);
-       continue;
+    if((it->GetCharge()/125.0)<5)  {
+       if(it->GetNBGOs()>0 && it->GetNSegments()<1) {  //bgo fired with no core.
+         it = fTigressHits.erase(it);
+         continue;
+       }
     }
-    else if(((it->GetAddress()&0x0000000f)==0x00000009) && it->GetNSegments()==8) {
-      it->SetAddress(it->GetAddress()&0xfffffff0);
-    }
+    //it->Print("all");
+    if(it->HasWave() &&TGRSIRunInfo::IsWaveformFitting() ) // this should really be moved to the grsioptions...  pcb.
+      it->SetWavefit();
     it++;
   }
 
@@ -170,6 +176,8 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 
   TChannel *channel = TChannel::GetChannel(frag->GetAddress());
 
+  //printf("%s %s called.\n",__PRETTY_FUNCTION__,channel->GetChannelName());
+  //fflush(stdout);
 
   if((mnemonic->subsystem.compare(0,1,"G")==0) && (channel->GetSegmentNumber()==0 || channel->GetSegmentNumber()==9) ) { // it is a core
     //if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
@@ -181,26 +189,26 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       TTigressHit *hit = GetTigressHit(i);
       if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
         //if(hit->Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
-        if(channel->GetSegmentNumber()==9 || mnemonic->outputsensor.compare(0,1,"b")!=0) {
-          // uncommenting the lines below will replace the core with the 
-          // tig10 core copy if it is found.
-          //
-          //GetTigressHit(i)->CopyFragment(*frag);
-					//if(TGRSIRunInfo::IsWaveformFitting())  // this should really be moved to the grsioptions...  pcb.
-					//	GetTigressHit(i)->SetWavefit(*frag);
-          return;            
+        if(mnemonic->outputsensor.compare(0,1,"b")==0) {
+          if(hit->GetName()[9] == 'a') {
+            return;
+          } else  {
+            hit->CopyFragment(*frag);
+            if(TestBitNumber(kSetCoreWave))
+              hit->CopyWaveform(*frag);
+            return;
+          }
         } else {
-          corehit.CopyFragment(*frag);
-	        if(TGRSIRunInfo::IsWaveformFitting()) // this should really be moved to the grsioptions...  pcb.
-	  	      corehit.SetWavefit(*frag);
-          fTigressHits.push_back(corehit);
+          hit->CopyFragment(*frag);
+          if(TestBitNumber(kSetCoreWave))
+             hit->CopyWaveform(*frag);
           return;
         }
       }
     }
     corehit.CopyFragment(*frag);
-	  if(TGRSIRunInfo::IsWaveformFitting()) // this should really be moved to the grsioptions...  pcb.
-	    corehit.SetWavefit(*frag);
+    if(TestBitNumber(kSetCoreWave))
+      corehit.CopyWaveform(*frag);
     fTigressHits.push_back(corehit);
     return;
   } else if(mnemonic->subsystem.compare(0,1,"G")==0) { // its ge but its not a core...
@@ -210,6 +218,8 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     for(size_t i = 0; i < fTigressHits.size(); ++i)	{
       TTigressHit *hit = GetTigressHit(i);
       if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
+        if(TestBitNumber(kSetSegWave))         
+          temp.CopyWaveform(*frag);
         hit->AddSegment(temp);
         //printf(" I found a core !\t%i\n",hit->GetNSegments()); fflush(stdout);
         return;
@@ -218,6 +228,8 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     TTigressHit corehit;
     //corehit.SetAddress( (frag->ChannelAddress&0xfffffff0) );  // fake it till you make it.
     corehit.SetAddress( (frag->ChannelAddress) );  // the above only works if tigress is it's 'normal' setup
+    if(TestBitNumber(kSetSegWave))         
+       temp.CopyWaveform(*frag);
     corehit.AddSegment(temp);
     fTigressHits.push_back(corehit);
     //if(fTigressHits.size()>100) {
@@ -230,12 +242,16 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     for(size_t i = 0; i < fTigressHits.size(); ++i)	{
       TTigressHit *hit = GetTigressHit(i);
       if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
+        if(TestBitNumber(kSetBGOWave))         
+          temp.CopyWaveform(*frag);
         GetTigressHit(i)->AddBGO(temp);
         return;
       }
     }
     TTigressHit corehit;
     corehit.SetAddress(frag->ChannelAddress);  // this makes me uncomfortable, though I have no slick solution.
+    if(TestBitNumber(kSetBGOWave))         
+      temp.CopyWaveform(*frag);
     corehit.AddBGO(temp);
     fTigressHits.push_back(corehit);
     return;

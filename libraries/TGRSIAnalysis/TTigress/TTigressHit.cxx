@@ -45,9 +45,21 @@ void TTigressHit::Copy(TObject &rhs) const {
 
 
 void TTigressHit::Print(Option_t *opt) const	{
-  printf("Tigress hit energy: %.2f\n",GetEnergy());
-  printf("Tigress hit time:   %.2f\n",GetTime());
-  //printf("Tigress hit TV3 theta: %.2f\tphi%.2f\n",position.Theta() *180/(3.141597),position.Phi() *180/(3.141597));
+  TString sopt(opt);
+  printf("==== TigressHit @ 0x%p\n ====",(void*)this);
+  printf("\t%s\n",GetName());
+  printf("\tCharge: %.2f\n",GetCharge());
+  printf("\tEnergy: %.2f\n",GetEnergy());
+  printf("\tTime:   %.2f\n",GetTime());
+  printf("\thit contains %i segments.\n",GetNSegments());
+  if(sopt.Contains("all")) {
+     printf("Name           Charge\n");
+    for(int x=0;x<GetNSegments();x++) {
+      printf("\t\t%s  |   %.2f\n",GetSegment(x).GetName(),GetSegment(x).GetCharge());
+    }
+    GetPosition().Print();
+  }
+  printf("============================\n");
 }
 
 
@@ -154,6 +166,14 @@ int TTigressHit::SetCrystal(char color) {
 
 void TTigressHit::SetWavefit(TFragment &frag)   { 
   TPulseAnalyzer pulse(frag);	    
+  if(pulse.IsSet()){
+    fTimeFit   = pulse.fit_newT0();
+    fSig2Noise = pulse.get_sig2noise();
+  }
+}
+
+void TTigressHit::SetWavefit()   { 
+  TPulseAnalyzer pulse(*GetWaveform(),0,GetName());	    
   if(pulse.IsSet()){
     fTimeFit   = pulse.fit_newT0();
     fSig2Noise = pulse.get_sig2noise();

@@ -112,9 +112,11 @@ class TPulseAnalyzer {
   public:
     TPulseAnalyzer();
     TPulseAnalyzer(TFragment &frag,double=0);
+    TPulseAnalyzer(std::vector<Short_t> &wave,double=0,std::string name="");
     virtual ~TPulseAnalyzer();
     
     void SetData(TFragment &frag,double=0);
+    void SetData(std::vector<Short_t> &wave,double=0);
     void Clear(Option_t *opt = "");
     bool IsSet() { return set; }
     
@@ -137,9 +139,12 @@ class TPulseAnalyzer {
 	 bool   set;
 	 WaveFormPar* wpar;
 	 int N;
-	 TFragment* frag;
+	 //TFragment* frag;
+   std::vector<Short_t> wavebuffer;
 	 SinPar*		spar;
 	 ShapePar*	shpar;
+
+   std::string fName;
 
 	 //pulse fitting parameters
 	 int FILTER; //integration region for noise reduction (in samples)
