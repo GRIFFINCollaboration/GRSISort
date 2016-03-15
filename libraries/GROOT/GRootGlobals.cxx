@@ -15,6 +15,7 @@
 #include <TExec.h>
 #include <TKey.h>
 #include <TObject.h>
+#include <TClass.h>
 
 #include <GRootObjectManager.h>
 
@@ -284,6 +285,23 @@ bool RemovePeaks(TH1 **hists, unsigned int Nhists)
 	return true;
    */
 }
+
+TH1 *GrabHist() {
+ //return the histogram from the current canvas
+ TH1 *hist=0;
+ if(!gPad)
+    return hist;
+ TIter iter(gPad->GetListOfPrimitives());
+ while(TObject *obj = iter.Next()) {
+   if(obj->InheritsFrom(TH1::Class())) {
+     hist = (TH1*)obj;
+     break;
+   }
+ }
+ return hist;
+}
+
+
 
 void Prompt()   { Getlinem(EGetLineMode::kInit,((TRint*)gApplication)->GetPrompt()); }
 
