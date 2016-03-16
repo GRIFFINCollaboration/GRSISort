@@ -55,6 +55,8 @@ class TDataParser {
 	 static int fChargesRead;
 	 static int fKValuesRead;
 
+	 static bool fFragmentHasWaveform;
+
   public:
     static int TigressDataToFragment(uint32_t *data, int size,unsigned int midasSerialNumber = 0, time_t midasTime = 0);
     static int GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
@@ -80,8 +82,8 @@ class TDataParser {
     static bool SetTIGTimeStamp(uint32_t*, TVirtualFragment*);
 
     static bool SetGRIFHeader(uint32_t,TVirtualFragment*&,int);
+    static bool SetGRIFMasterFilterPattern(uint32_t,TVirtualFragment*,int);
     static bool SetGRIFMasterFilterId(uint32_t,TVirtualFragment*);
-    static bool SetGRIFMasterFilterPattern(uint32_t,TVirtualFragment*);
     static bool SetGRIFChannelTriggerId(uint32_t,TVirtualFragment*);  
     static bool SetGRIFTimeStampLow(uint32_t,TVirtualFragment*);
     static bool SetGRIFNetworkPacket(uint32_t,TVirtualFragment*);

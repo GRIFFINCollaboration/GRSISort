@@ -31,6 +31,8 @@ int TDataParser::fLedsRead = 0;
 int TDataParser::fChargesRead = 0;
 int TDataParser::fKValuesRead = 0;
 
+bool TDataParser::fFragmentHasWaveform = false;
+
 TChannel* TDataParser::gChannel = new TChannel;
 
 /// \cond CLASSIMP
@@ -360,6 +362,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 	fLedsRead = 0;
 	fChargesRead = 0;
 	fKValuesRead = 0;
+	fFragmentHasWaveform = false;
 
 	int x = 0;  
 	if(!SetGRIFHeader(data[x++],EventFrag,bank)) {
@@ -397,7 +400,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 
 	//The master Filter Pattern is in an unstable state right now and is not
 	//always written to the midas file
-	if(SetGRIFMasterFilterPattern(data[x],EventFrag)) {
+	if(SetGRIFMasterFilterPattern(data[x], EventFrag, bank)) {
 		x++;
 	} 
 
@@ -524,7 +527,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 							printf("found additional hit %d when number of hits should be %d\n", hit, EventFrag->GetNumberOfHits());
 						}
 						UShort_t tmp = (*(data+x) & 0x7c000000) >> 21;
-						EventFrag->SetPulseHeight(*(data+x) & 0x03ffffff, hit);
+						EventFrag->SetPulseHeight((*(data+x) & 0x03ffffff) | (((*(data+x) & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0), hit); //extend the sign bit of 26bit charge word
 						++x;
 						EventFrag->SetIntLength(tmp | (*(data+x) & 0x7c000000) >> 26, hit);
 						EventFrag->SetCfd(*(data+x) & 0x03ffffff, hit);
@@ -606,6 +609,22 @@ bool TDataParser::SetGRIFHeader(uint32_t value,TVirtualFragment*& frag,int bank)
 	return true;
 }
 
+bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TVirtualFragment* frag, int bank) {
+	///Sets the Griffin Master Filter Pattern
+	if( (value &0xc0000000) != 0x00000000) {
+		return false;
+	}
+	frag->SetTriggerBitPattern((value & 0x3fff0000) >> 16); // bit shift included by JKS
+	if(bank < 3) {
+	  frag->SetPPGWord(value & 0x0000ffff);//This is due to new GRIFFIN data format
+	} else {
+	  frag->SetTriggerBitPattern(value >> 16);
+	  frag->SetNumberOfPileups(value & 0x1f);
+	  fFragmentHasWaveform = ((value & 0xffff) == 0x8000);
+	}
+	return true;
+}
+
 bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TVirtualFragment* frag) {
 	///Sets the Griffin master filter ID and PPG
 	if( (value &0x80000000) != 0x00000000) {
@@ -613,16 +632,6 @@ bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TVirtualFragment* frag) {
 	}
 
 	frag->SetTriggerId(value & 0x7FFFFFFF);  //REAL
-	return true;
-}
-
-bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TVirtualFragment* frag) {
-	///Sets the Griffin Master Filter Pattern
-	if( (value &0xc0000000) != 0x00000000) {
-		return false;
-	}
-	frag->SetTriggerBitPattern((value & 0x3fff0000) >> 16); // bit shift included by JKS
-	frag->SetPPGWord(value & 0x0000ffff);//This is due to new GRIFFIN data format
 	return true;
 }
 
