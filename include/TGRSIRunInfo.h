@@ -137,7 +137,7 @@ class TGRSIRunInfo : public TObject {
       static const char* GetRunInfoFileName() { return fGRSIRunInfo->fRunInfoFileName.c_str(); }
       static const char* GetRunInfoFileData() { return fGRSIRunInfo->fRunInfoFile.c_str(); }
 
-      static Bool_t  ReadInfoFile(const char *filename = "");
+      static Bool_t  ReadInfoFile(std::string& filename);
       static Bool_t  ParseInputData(const char *inputdata = "",Option_t *opt = "q");
 
       static inline int  GetNumberOfSystems() { return fGRSIRunInfo->fNumberOfTrueSystems; }
@@ -158,7 +158,7 @@ class TGRSIRunInfo : public TObject {
       static inline bool ZeroDegree(){ return fGRSIRunInfo->fZeroDegree; }
       static inline bool Descant()   { return fGRSIRunInfo->fDescant; }
 
-      inline void SetRunInfoFileName(const char *fname)  {  fRunInfoFileName.assign(fname); }
+      inline void SetRunInfoFileName(std::string& fname) {  fRunInfoFileName = fname; }
       inline void SetRunInfoFile(const char *ffile)      {  fRunInfoFile.assign(ffile); }
    
       inline void SetBuildWindow(const long int t_bw)    { fBuildWindow = t_bw; } 

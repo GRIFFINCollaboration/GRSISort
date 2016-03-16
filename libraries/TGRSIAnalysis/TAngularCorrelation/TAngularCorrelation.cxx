@@ -351,6 +351,7 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       // fit TPeak
       Bool_t fitresult = peak->Fit(temphst,"Q");
       if (!fitresult) continue; // if fit failed, continue on to next index
+      if (visualization) peak->Background()->Draw("same");
 
       // assign TPeak to fPeaks array
       this->SetPeak(index,static_cast<TPeak*>(temphst->GetFunction(Form("%s_proj%i_peak",hst2dname,index))));
@@ -369,61 +370,25 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
    ///////////////////////////////////////////////////////
 
    // initialize canvas
-   TCanvas* c_diag = new TCanvas("c_diag",Form("Diagnostics for fitting %i keV peak",(Int_t)peak->GetCentroid()),800,800);
-   c_diag->Divide(2,2);
-
-   // plot index correlation
-   c_diag->cd(1);
-   newhst->Draw();
+   TCanvas* c_diag = new TCanvas(Form("c_diag_%i",(Int_t)peak->GetCentroid()),Form("Diagnostics for fitting %i keV peak",(Int_t)peak->GetCentroid()),800,800);
 
    // create plots for chi^2, centroid, and fwhm
    TH1D* chi2hst = new TH1D(Form("%s_chi2",hst1dname),Form("%s: #chi^{2};Angular index;#chi^{2}/NDF value",newhst->GetTitle()),indexbins,indexmin,indexmax);
    TH1D* centroidhst = new TH1D(Form("%s_centroid",hst1dname),Form("%s: Peak centroid;Angular index;Peak centroid (keV)",newhst->GetTitle()),indexbins,indexmin,indexmax);
    TH1D* fwhmhst = new TH1D(Form("%s_fwhm",hst1dname),Form("%s: FWHM;Angular index;FWHM (keV)",newhst->GetTitle()),indexbins,indexmin,indexmax);
-   for (std::map<Int_t,TPeak*>::iterator it=fPeaks.begin(); it!=fPeaks.end(); ++it) {
-      Int_t index = it->first;
-      Int_t bin = newhst->FindBin(index);
-
-      // extract pertinent values from TPeaks
-      Double_t chi2 = static_cast<TPeak*>(this->GetPeak(index))->GetChisquare();
-      Double_t NDF = (Double_t) static_cast<TPeak*>(this->GetPeak(index))->GetNDF();
-      Double_t centroid = static_cast<TPeak*>(this->GetPeak(index))->GetCentroid();
-      Double_t centroid_err = static_cast<TPeak*>(this->GetPeak(index))->GetCentroidErr();
-      Double_t fwhm = static_cast<TPeak*>(this->GetPeak(index))->GetFWHM();
-      Double_t fwhm_err = static_cast<TPeak*>(this->GetPeak(index))->GetFWHMErr();
-
-      // fill histogram with values
-      chi2hst->SetBinContent(bin,chi2/NDF);
-      centroidhst->SetBinContent(bin,centroid);
-      centroidhst->SetBinError(bin,centroid_err);
-      fwhmhst->SetBinContent(bin,fwhm);
-      fwhmhst->SetBinError(bin,fwhm_err);
-   }
-
-   // format the diagnostic plots
-   newhst->SetStats(0);
-   chi2hst->SetStats(0);
-   centroidhst->SetStats(0);
-   fwhmhst->SetStats(0);
-   chi2hst->SetMarkerStyle(4);
-
-   // plot chi^2, centroid, and FWHM
-   c_diag->cd(2);
-   chi2hst->Draw("p");
-   c_diag->cd(3);
-   centroidhst->Draw();
-   c_diag->cd(4);
-   fwhmhst->Draw();
-
-   ///////////////////////////////////////////////////////
-   // Clean-up
-   ///////////////////////////////////////////////////////
 
    // assign histogram to fIndexCorrelation
    fIndexCorrelation = newhst;
    fChi2 = chi2hst;
    fCentroid = centroidhst;
    fFWHM = fwhmhst;
+
+   this->UpdateDiagnostics();
+   this->DisplayDiagnostics(c_diag);
+
+   ///////////////////////////////////////////////////////
+   // Clean-up
+   ///////////////////////////////////////////////////////
 
    return fIndexCorrelation;
 }
@@ -841,11 +806,12 @@ void TAngularCorrelation::UpdateIndexCorrelation()
       Int_t bin = ((TH1D*) this->GetIndexCorrelation())->FindBin(index);
 
       // extract area
-      Double_t area = static_cast<TPeak*>(this->GetPeak(index))->GetArea();
-      Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
+      TPeak* peak = static_cast<TPeak*>(this->GetPeak(index));
+      if (!peak) return;
+      Double_t area = peak->GetArea();
+      Double_t area_err = peak->GetAreaErr();
 
       // fill histogram with area
-      printf("Filling bin %i (index %i) with area %f.\n",bin,index,area);
       static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinContent(bin,area);
       static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinError(bin,area_err);
    }
@@ -865,12 +831,14 @@ void TAngularCorrelation::UpdateDiagnostics()
       Int_t bin = ((TH1D*) this->GetIndexCorrelation())->FindBin(index);
 
       // extract pertinent values from TPeaks
-      Double_t chi2 = static_cast<TPeak*>(this->GetPeak(index))->GetChisquare();
-      Double_t NDF = (Double_t)static_cast<TPeak*>(this->GetPeak(index))->GetNDF();
-      Double_t centroid = static_cast<TPeak*>(this->GetPeak(index))->GetCentroid();
-      Double_t centroid_err = static_cast<TPeak*>(this->GetPeak(index))->GetCentroidErr();
-      Double_t fwhm = static_cast<TPeak*>(this->GetPeak(index))->GetFWHM();
-      Double_t fwhm_err = static_cast<TPeak*>(this->GetPeak(index))->GetFWHMErr();
+      TPeak* peak = static_cast<TPeak*>(this->GetPeak(index));
+      if (!peak) return;
+      Double_t chi2 = peak->GetChisquare();
+      Double_t NDF = (Double_t)peak->GetNDF();
+      Double_t centroid = peak->GetCentroid();
+      Double_t centroid_err = peak->GetCentroidErr();
+      Double_t fwhm = peak->GetFWHM();
+      Double_t fwhm_err = peak->GetFWHMErr();
 
       // fill histogram with values
       static_cast<TH1D*>(this->GetChi2Hst())->SetBinContent(bin,chi2/NDF);
@@ -891,17 +859,30 @@ void TAngularCorrelation::UpdateDiagnostics()
 
 void TAngularCorrelation::UpdatePeak(Int_t index,TPeak* peak)
 {
+   // create canvas
    new TCanvas(Form("peak%iupdate",index),Form("Peak %i update",index),200,200);
+
+   // get histogram
    TH1D* temphst = this->Get1DSlice(index);
    const Char_t *name = temphst->GetListOfFunctions()->At(0)->GetName();
+
+   // adjust range
+   Double_t minenergy,maxenergy;
+   peak->GetRange(minenergy,maxenergy);
+   Double_t difference = maxenergy-minenergy;
+   minenergy = minenergy-0.5*difference;
+   maxenergy = maxenergy+0.5*difference;
+   temphst->GetXaxis()->SetRangeUser(minenergy,maxenergy);
+
+   // fit peak
    peak->SetName(name);
-   printf("renaming peak to %s\n",name);
-   peak->Fit(this->Get1DSlice(index),"Q");
-   this->SetPeak(index,peak);
-   printf("this->SetPeak(%i,peak);\n",index);
+   peak->Fit(this->Get1DSlice(index),"");
+
+   // push new peak
    this->SetPeak(index,static_cast<TPeak*>(temphst->GetFunction(name)));
    UpdateIndexCorrelation();
    UpdateDiagnostics();
+
    return;
 }
 
@@ -972,5 +953,44 @@ void TAngularCorrelation::DivideByWeights()
 {
    TH1D* hst = DivideByWeights(fIndexCorrelation);
    if (hst!=0x0) fIndexCorrelation=hst;
+   return;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Displays diagnostics based on peak array
+///
+
+void TAngularCorrelation::DisplayDiagnostics(TCanvas* c_diag)
+{
+   if (c_diag == 0) {
+      c_diag = new TCanvas(Form("c_diag_%s",this->GetName()),Form("Diagnostics from %s",this->GetName()),800,800);
+   }
+
+   // divide canvas
+   c_diag->Divide(2,2);
+
+   // pull plots for index correlation, chi^2, centroid, and fwhm
+   TH1D* indexhst = this->GetIndexCorrelation();
+   TH1D* chi2hst = this->GetChi2Hst();
+   TH1D* centroidhst = this->GetCentroidHst();
+   TH1D* fwhmhst = this->GetFWHMHst();
+
+   // format the diagnostic plots
+   indexhst->SetStats(0);
+   chi2hst->SetStats(0);
+   centroidhst->SetStats(0);
+   fwhmhst->SetStats(0);
+   chi2hst->SetMarkerStyle(4);
+
+   // plot chi^2, centroid, and FWHM
+   c_diag->cd(1);
+   indexhst->Draw();
+   c_diag->cd(2);
+   chi2hst->Draw("p");
+   c_diag->cd(3);
+   centroidhst->Draw();
+   c_diag->cd(4);
+   fwhmhst->Draw();
+
    return;
 }

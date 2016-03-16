@@ -9,6 +9,8 @@
 ClassImp(TOldFragment)
 /// \endcond
 
+//long TOldFragment::nofFragments = 0;
+
 TOldFragment::TOldFragment() {
    // Default Constructor
 #if MAJOR_ROOT_VERSION < 6
@@ -67,9 +69,9 @@ TOldFragment::TOldFragment(const TOldFragment& rhs) : TFragment() {
 
 TOldFragment::~TOldFragment() {
 	// Default destructor does nothing right now
-	if(fCfd != NULL) delete fCfd;
-	if(fPulseHeight != NULL) delete fPulseHeight;
-	if(fIntLength != NULL) delete fIntLength;
+	if(fCfd != NULL) delete[] fCfd;
+	if(fPulseHeight != NULL) delete[] fPulseHeight;
+	if(fIntLength != NULL) delete[] fIntLength;
 }
 
 TOldFragment& TOldFragment::operator=(const TOldFragment& rhs) {
@@ -148,16 +150,17 @@ void TOldFragment::Clear(Option_t *opt) {
 	fCcLong = 0;
 
 	fNumberOfPileups = 0;
+	fNumberOfHits = 0;
 	if(fCfd != NULL) {
-		delete fCfd;
+		delete[] fCfd;
 		fCfd = NULL;
 	}
 	if(fPulseHeight != NULL) {
-		delete fPulseHeight;
+		delete[] fPulseHeight;
 		fPulseHeight = NULL;
 	}
 	if(fIntLength != NULL) {
-		delete fIntLength;
+		delete[] fIntLength;
 		fIntLength = NULL;
 	}
 

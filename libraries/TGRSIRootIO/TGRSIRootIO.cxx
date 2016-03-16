@@ -332,9 +332,9 @@ void TGRSIRootIO::CloseRootOutFile()   {
 	if(TGRSIRunInfo::GetNumberOfSystems()>0) {
 		printf(DMAGENTA " Writing RunInfo with " DYELLOW "%i " DMAGENTA " systems to file." RESET_COLOR "\n",TGRSIRunInfo::GetNumberOfSystems());
 		//get run start and stop (in seconds) from the fragment tree
-		TGRSIRunInfo::Get()->SetRunStart(fFragmentTree->GetMinimum("MidasTimeStamp"));
-		TGRSIRunInfo::Get()->SetRunStop( fFragmentTree->GetMaximum("MidasTimeStamp"));
-		TGRSIRunInfo::Get()->SetRunLength(fFragmentTree->GetMaximum("MidasTimeStamp") - fFragmentTree->GetMinimum("MidasTimeStamp"));
+		TGRSIRunInfo::Get()->SetRunStart(fFragmentTree->GetMinimum("fMidasTimeStamp"));
+		TGRSIRunInfo::Get()->SetRunStop( fFragmentTree->GetMaximum("fMidasTimeStamp"));
+		TGRSIRunInfo::Get()->SetRunLength(fFragmentTree->GetMaximum("fMidasTimeStamp") - fFragmentTree->GetMinimum("fMidasTimeStamp"));
 		printf("set run start to %.0f, and stop to %.0f (run length %.0f)\n",TGRSIRunInfo::Get()->RunStart(),TGRSIRunInfo::Get()->RunStop(),TGRSIRunInfo::Get()->RunLength());
 		TGRSIRunInfo::Get()->Write();
 	}

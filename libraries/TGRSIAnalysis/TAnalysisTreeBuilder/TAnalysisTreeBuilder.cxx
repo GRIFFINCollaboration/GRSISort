@@ -487,7 +487,7 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    }
    else{
       printf("Reading from Run info: %s\n",tmpRunInfoFileName.c_str());
-      fCurrentRunInfo->ReadInfoFile(tmpRunInfoFileName.c_str());
+      fCurrentRunInfo->ReadInfoFile(tmpRunInfoFileName);
    }
    if(fCurrentRunInfo) {
    //   TGRSIRunInfo::ReadInfoFromFile(fCurrentRunInfo);

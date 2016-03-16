@@ -46,7 +46,7 @@ namespace TGRSIOptions {
 
 	void SetExternalRunInfo() {
 		if(ExternalRunInfo())
-			if(!TGRSIRunInfo::ReadInfoFile(fExternalRunInfo.at(0).c_str())) 
+			if(!TGRSIRunInfo::ReadInfoFile(fExternalRunInfo.at(0))) 
 				printf("Problem reading run-info file %s\n",fExternalRunInfo.at(0).c_str());
 	}
 

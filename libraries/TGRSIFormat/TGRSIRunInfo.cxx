@@ -3,8 +3,9 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
-#include <TGRSIOptions.h>
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TGRSIRunInfo)
@@ -376,17 +377,15 @@ void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {
 //Currently does nothing.
 }
 
-Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
+Bool_t TGRSIRunInfo::ReadInfoFile(std::string& filename) {
    ///Read in a run info file. These files have the extension .info.
    ///An example can be found in the "examples" directory.
-   std::string infilename;
-   infilename.append(filename);
-   printf("Reading file: %s\n",filename);
-   if(infilename.length()==0)
+   printf("Reading file: %s\n",filename.c_str());
+   if(filename.length()==0)
       return false;
 
    std::ifstream infile;
-   infile.open(infilename.c_str());
+   infile.open(filename.c_str());
    if (!infile) {
       printf("could not open file.\n");
       return false;

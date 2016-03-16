@@ -97,11 +97,16 @@ public:
 	void SetNetworkPacketNumber(Int_t value) { fNetworkPacketNumber = value; }
 	void SetNumberOfFilters(UShort_t value) { fNumberOfFilters = value; }
 	void SetNumberOfPileups(UShort_t value) { 
-		fNumberOfPileups = value; 
+		fNumberOfPileups = value;
+		if(fNumberOfHits != 0) printf("Warning, replacing %d number of hits with %d\n", fNumberOfHits, fNumberOfPileups+1);
 		fNumberOfHits = fNumberOfPileups+1;//number of pile-ups doesn't count the first hit
+		if(fCfd != NULL) delete[] fCfd;
 		fCfd = new Int_t[fNumberOfHits]();
+		if(fPulseHeight != NULL) delete[] fPulseHeight;
 		fPulseHeight = new Int_t[fNumberOfHits]();
+		if(fIntLength != NULL) delete[] fIntLength;
 		fIntLength = new UShort_t[fNumberOfHits]();
+		//printf("Changed fragment %ld to %d hits, %p, %p, %p\n", fragId, fNumberOfHits, static_cast<void*>(fCfd), static_cast<void*>(fIntLength), static_cast<void*>(fPulseHeight));
 	}
 	void SetNumberOfWords(UShort_t value) { std::cerr<<"Error, "<<__PRETTY_FUNCTION__<<" called, TOldFragment shouldn't have a number of words."<<std::endl; }
 	void SetPPGWord(UShort_t value) { fPPGWord = value; }

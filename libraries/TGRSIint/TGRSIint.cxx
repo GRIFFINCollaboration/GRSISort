@@ -434,7 +434,7 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
 		TGRSIOptions::AddInputCalFile(filename);
 		return true;
 	} else if(ext.compare("info") == 0 && filesize > 0) { 
-		if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
+		if(TGRSIRunInfo::ReadInfoFile(filename))
 			return true;
 		else {
 			printf("Problem reading run-info file %s\n",filename.c_str());
