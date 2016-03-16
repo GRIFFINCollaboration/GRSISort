@@ -19,7 +19,7 @@ TTipHit::TTipHit() {
    Clear();
 }
 
-TTipHit::TTipHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+TTipHit::TTipHit(TVirtualFragment &frag)	: TGRSIDetectorHit(frag) {
 	//SetVariables(frag);
 }
 
@@ -59,7 +59,7 @@ void TTipHit::Print(Option_t *opt) const {
    printf("Tip hit time:   %.f\n",GetTime());
 }
 
-void TTipHit::SetWavefit(TFragment &frag)   { 
+void TTipHit::SetWavefit(TVirtualFragment &frag)   { 
 	TPulseAnalyzer pulse(frag);	    
 	if(pulse.IsSet()){
 		fTimeFit   = pulse.fit_newT0();
@@ -67,7 +67,7 @@ void TTipHit::SetWavefit(TFragment &frag)   {
 	}
 }
 
-void TTipHit::SetPID(TFragment &frag)	{
+void TTipHit::SetPID(TVirtualFragment &frag)	{
 	TPulseAnalyzer pulse(frag);
 	if(pulse.IsSet()){
 		fPID = pulse.CsIPID();

@@ -16,7 +16,7 @@
 
 #include "Globals.h"
 #include "TGRSIDetectorHit.h"
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 
 /////////////////////////////////////////////////////////////////////////
 //
@@ -93,9 +93,9 @@ class TSharcHit : public TGRSIDetectorHit {
     void SetFrontStrip(const UShort_t& strip)   { fFrontStrip    = strip; }  //!<!
     void SetBackStrip(const UShort_t& strip)    { fBackStrip     = strip; }  //!<!
 
-    void SetFront(const TFragment& frag); //!<!  
-    void SetBack (const TFragment& frag); //!<!
-    void SetPad  (const TFragment& frag); //!<!
+    void SetFront(const TVirtualFragment& frag); //!<!  
+    void SetBack (const TVirtualFragment& frag); //!<!
+    void SetPad  (const TVirtualFragment& frag); //!<!
 
   private:
       TVector3 GetChannelPosition(Double_t dist = 0) const; //!<!

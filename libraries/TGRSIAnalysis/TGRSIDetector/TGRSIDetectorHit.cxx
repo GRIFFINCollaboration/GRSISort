@@ -313,7 +313,7 @@ uint16_t TGRSIDetectorHit::GetCycleTimeStamp() {
 	return fCycleTimeStamp;
 }
 
-void TGRSIDetectorHit::CopyFragment(const TFragment& frag) {
+void TGRSIDetectorHit::CopyFragment(const TVirtualFragment& frag) {
 	this->fAddress   = frag.GetChannelAddress();  
 	this->fCharge    = frag.GetCharge();
 	this->fCfd       = frag.GetCfd();

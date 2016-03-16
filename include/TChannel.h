@@ -19,7 +19,7 @@
 /// \class TChannel
 ///
 /// The TChannel is designed to hold all non-essential
-/// information of a TFragment (name, energy coeff, etc..)
+/// information of a TVirtualFragment (name, energy coeff, etc..)
 /// that would otherwise clog up the FragmentTree.  The TChannel class
 /// contains a static map to every channel make retrieval fairly
 /// easy.  The TChannel class also contains the ability to
@@ -40,7 +40,7 @@
 #include "TList.h"
 #include "TTree.h"
 
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "Globals.h"
 
 class TChannel : public TNamed	{
@@ -155,7 +155,7 @@ class TChannel : public TNamed	{
 	inline void SetTIMEChi2(double temp) { fTIMEChi2 = temp; }
 	inline void SetEFFChi2(double temp)  { fEFFChi2 = temp; } 
 
-	//void CalibrateFragment(TFragment*);
+	//void CalibrateFragment(TVirtualFragment*);
 
 	Float_t CalibrateENG(Float_t);
 	Float_t CalibrateENG(int,int integration=0);

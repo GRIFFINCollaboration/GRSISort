@@ -17,7 +17,7 @@
 #include <cstdio>
 #include <cmath>
 
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TChannel.h"
 
 #include "TVector3.h"

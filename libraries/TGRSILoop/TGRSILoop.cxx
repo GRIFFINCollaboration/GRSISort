@@ -120,7 +120,7 @@ bool TGRSILoop::SortMidas() {
 void TGRSILoop::FillFragmentTree(TMidasFile* midasfile) {
    fFragsSentToTree = 0;
    fBadFragsSentToTree = 0;
-   TFragment* frag = 0;
+   TVirtualFragment* frag = 0;
    while(TFragmentQueue::GetQueue()->FragsInQueue() !=0      || 
          TFragmentQueue::GetQueue("BAD")->FragsInQueue() !=0 ||
          fMidasThreadRunning) {

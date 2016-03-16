@@ -8,7 +8,7 @@
 #include <cstdio>
 #include <utility>
 
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TChannel.h"
 #include "TGRSIDetectorHit.h"
 #include "TPulseAnalyzer.h"
@@ -16,7 +16,7 @@
 class TSiLiHit : public TGRSIDetectorHit {
 	public:
 		TSiLiHit();
-		TSiLiHit(TFragment &);	
+		TSiLiHit(TVirtualFragment &);	
 		virtual ~TSiLiHit();
 		TSiLiHit(const TSiLiHit&);
 		
@@ -30,8 +30,8 @@ class TSiLiHit : public TGRSIDetectorHit {
 		Int_t GetPreamp()      const {  return  ((GetSector()/3)*2)+(((GetSector()%3)+GetRing())%2); }
 		Double_t GetTimeFit()   { return fTimeFit;  }
 
-		void SetVariables(TFragment &frag) { }
-		void SetWavefit(TFragment&);
+		void SetVariables(TVirtualFragment &frag) { }
+		void SetWavefit(TVirtualFragment&);
 
 	private:
 		TVector3 GetChannelPosition(Double_t dist = 0) const; //!  

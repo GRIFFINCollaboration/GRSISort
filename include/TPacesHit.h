@@ -10,7 +10,7 @@
 
 #include "TVector3.h"
 
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TChannel.h"
 
 #include "TGRSIDetectorHit.h"

@@ -13,7 +13,7 @@
 #include "TObject.h"
 
 #include "Globals.h"
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TChannel.h"
 
 /////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ class TDetector : public TObject	{
 
 	public: 
 		virtual void BuildHits()                                   { AbstractMethod("BuildHits()"); } //!<!
-		virtual void AddFragment(TFragment*, MNEMONIC*)            { AbstractMethod("AddFragment()"); } //!<!
+		virtual void AddFragment(TVirtualFragment*, MNEMONIC*)            { AbstractMethod("AddFragment()"); } //!<!
 
 		virtual void Copy(TObject&) const;              //!<!
 		virtual void Clear(Option_t* opt = "");         //!<!

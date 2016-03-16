@@ -39,7 +39,7 @@ TTip& TTip::operator=(const TTip& rhs) {
    return *this;
 }
 
-void TTip::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+void TTip::AddFragment(TVirtualFragment* frag, MNEMONIC* mnemonic) {
 	if(frag == NULL || mnemonic == NULL) {
 		return;
 	}

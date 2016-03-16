@@ -10,7 +10,7 @@
 
 #include "TVector3.h"
 
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TChannel.h"
 #include "TPulseAnalyzer.h"
 
@@ -19,7 +19,7 @@
 class TTipHit : public TGRSIDetectorHit {
   public:
     TTipHit();
-	TTipHit(TFragment &);	
+	TTipHit(TVirtualFragment &);	
     virtual ~TTipHit();
     TTipHit(const TTipHit&);
 
@@ -55,7 +55,7 @@ class TTipHit : public TGRSIDetectorHit {
 
     bool   InFilter(Int_t);                                         //!<!
 
-    //void SetVariables(TFragment &frag) { SetAddress(frag.ChannelAddress);
+    //void SetVariables(TVirtualFragment &frag) { SetAddress(frag.ChannelAddress);
 	//									 SetCfd(frag.GetCfd());
     //                                   SetCharge(frag.GetCharge());
     //                                     SetTimeStamp(frag.GetTimeStamp()); }
@@ -75,9 +75,9 @@ class TTipHit : public TGRSIDetectorHit {
 				SetCsI();
 	 }
 
-    void SetWavefit(TFragment&);
+    void SetWavefit(TVirtualFragment&);
 
-		void SetPID(TFragment&);
+		void SetPID(TVirtualFragment&);
 
   public:
     void Clear(Option_t *opt = "");                        //!<!

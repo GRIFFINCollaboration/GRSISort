@@ -189,8 +189,8 @@ TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
    }
 }
 
-void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
-	//Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the hits for an event and sets observables. 
+void TGriffin::AddFragment(TVirtualFragment* frag, MNEMONIC *mnemonic)	{
+	//Builds the GRIFFIN Hits directly from the TVirtualFragment. Basically, loops through the hits for an event and sets observables. 
 	//This is done for both GRIFFIN and it's suppressors.
 	if(frag == NULL || mnemonic == NULL) {
 		return;

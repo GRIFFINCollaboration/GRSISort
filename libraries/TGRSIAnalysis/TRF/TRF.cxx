@@ -25,8 +25,8 @@ TRF::TRF(const TRF& rhs) : TDetector() {
 TRF::~TRF() {
 }
 
-void TRF::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-	TPulseAnalyzer pulse((TFragment&)(*frag));	    
+void TRF::AddFragment(TVirtualFragment* frag, MNEMONIC* mnemonic) {
+	TPulseAnalyzer pulse((TVirtualFragment&)(*frag));	    
 	if(pulse.IsSet()){
 		fTime = pulse.fit_rf(fPeriod*0.2);//period taken in half ticks... for reasons
 		fMidasTime = frag->GetMidasTimeStamp();

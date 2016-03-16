@@ -22,7 +22,7 @@ TOldFragment::TOldFragment() {
    Clear();
 }
 
-TOldFragment::TOldFragment(const TOldFragment& rhs) : TFragment() {
+TOldFragment::TOldFragment(const TOldFragment& rhs) : TVirtualFragment() {
 	//copy constructor
   
 	//first copy all "normal" data members

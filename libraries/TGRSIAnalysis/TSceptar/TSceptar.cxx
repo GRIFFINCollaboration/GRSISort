@@ -89,8 +89,8 @@ void TSceptar::PushBackHit(TGRSIDetectorHit *scHit) {
    fSceptarHits.push_back(*(static_cast<TSceptarHit*>(scHit)));
 }
 
-void TSceptar::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-   //Builds the SCEPTAR Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
+void TSceptar::AddFragment(TVirtualFragment* frag, MNEMONIC* mnemonic) {
+   //Builds the SCEPTAR Hits directly from the TVirtualFragment. Basically, loops through the data for an event and sets observables.
    //This is done for both SCEPTAR and it's suppressors.
    if(frag == NULL || mnemonic == NULL) {
       return;

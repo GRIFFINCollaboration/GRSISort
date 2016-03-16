@@ -150,7 +150,7 @@ void TTigress::BuildHits(){
 
 }
 
-void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+void TTigress::AddFragment(TVirtualFragment* frag, MNEMONIC* mnemonic) {
   if(frag == NULL || mnemonic == NULL) {
     return;
   }

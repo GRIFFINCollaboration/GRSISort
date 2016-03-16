@@ -19,7 +19,7 @@ class TSiLi: public TGRSIDetector  {
 		
      
 
-		void AddFragment(TFragment*, MNEMONIC*);
+		void AddFragment(TVirtualFragment*, MNEMONIC*);
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
 		TSiLi& operator=(const TSiLi&);  // 

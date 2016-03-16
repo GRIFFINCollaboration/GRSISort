@@ -12,7 +12,7 @@
 #include "TVector3.h"
 
 #include "Globals.h"
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TChannel.h"
 #include "TDetector.h"
 
@@ -37,7 +37,7 @@ class TGRSIDetector : public TDetector	{
 
 	public: 
 		//virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
-		virtual void AddFragment(TFragment*, MNEMONIC*)         { AbstractMethod("AddFragment()"); } //!<! = 0; //!
+		virtual void AddFragment(TVirtualFragment*, MNEMONIC*)         { AbstractMethod("AddFragment()"); } //!<! = 0; //!
 		void BuildHits() {}
 
 		virtual void Copy(TObject&) const;              //!<!

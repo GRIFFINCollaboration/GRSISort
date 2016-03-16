@@ -30,10 +30,10 @@
 //
 // TFragmentSelector
 //
-// TFragmentSelector uses PROOF to process TFragments into user defined
+// TFragmentSelector uses PROOF to process TVirtualFragments into user defined
 // histograms (as well as a TAnalysisTree?). The User defined histograms are
 // intialized in users/UserInitObj.h and filled in users/UserFillObj.h
-// PROOF allows for parrallel processing of TFragments.
+// PROOF allows for parrallel processing of TVirtualFragments.
 //
 /////////////////////////////////////////////////////////////////////
 

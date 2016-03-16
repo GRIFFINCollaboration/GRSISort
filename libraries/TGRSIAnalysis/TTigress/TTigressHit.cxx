@@ -151,7 +151,7 @@ int TTigressHit::SetCrystal(char color) {
    return fCrystal;
 }
 
-void TTigressHit::SetWavefit(TFragment &frag)   { 
+void TTigressHit::SetWavefit(TVirtualFragment &frag)   { 
   TPulseAnalyzer pulse(frag);	    
   if(pulse.IsSet()){
     fTimeFit   = pulse.fit_newT0();

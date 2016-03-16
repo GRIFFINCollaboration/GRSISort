@@ -5,7 +5,7 @@
  *  @{
  */
 
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TGRSIFunctions.h"
 #include <vector>
 #include <TNamed.h>
@@ -111,10 +111,10 @@ class TPulseAnalyzer {
 	
   public:
     TPulseAnalyzer();
-    TPulseAnalyzer(TFragment &frag,double=0);
+    TPulseAnalyzer(TVirtualFragment &frag,double=0);
     virtual ~TPulseAnalyzer();
     
-    void SetData(TFragment &frag,double=0);
+    void SetData(TVirtualFragment &frag,double=0);
     void Clear(Option_t *opt = "");
     bool IsSet() { return set; }
     
@@ -137,7 +137,7 @@ class TPulseAnalyzer {
 	 bool   set;
 	 WaveFormPar* wpar;
 	 int N;
-	 TFragment* frag;
+	 TVirtualFragment* frag;
 	 SinPar*		spar;
 	 ShapePar*	shpar;
 

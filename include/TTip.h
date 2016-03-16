@@ -38,7 +38,7 @@ class TTip : public TGRSIDetector {
 		TGRSIDetectorHit* GetHit(const int& i);
 		Short_t GetMultiplicity() const         {  return fTipHits.size();}  //!<!
 
-		void AddFragment(TFragment*, MNEMONIC*); //!<!
+		void AddFragment(TVirtualFragment*, MNEMONIC*); //!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 		void Copy(TObject &rhs) const;
 

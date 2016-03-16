@@ -40,7 +40,7 @@ void TS3::Copy(TObject &rhs) const {
   return;                                      
 }  
 
-void TS3::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+void TS3::AddFragment(TVirtualFragment* frag, MNEMONIC* mnemonic) {
 	///This function just stores the fragments in vectors, separated by detector type (front/back strip).
 	if(frag == NULL || mnemonic == NULL) {
 		return;
@@ -75,7 +75,7 @@ void TS3::BuildHits()  {
 //     }
 //   }	
 	
-// We are going to want energies sereral times and TFragment calibrates on every call
+// We are going to want energies sereral times and TVirtualFragment calibrates on every call
 // So build a quick vector to save on repeat calulations
 std::vector<double> EneR,EneS;
 for(size_t i = 0; i < fS3_RingFragment.size(); ++i) EneR.push_back(fS3_RingFragment[i]->GetEnergy());

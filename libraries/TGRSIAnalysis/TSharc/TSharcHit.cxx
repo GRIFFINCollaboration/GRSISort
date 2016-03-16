@@ -69,15 +69,15 @@ Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
   return (GetPosition()+posOff).Theta();
 }
 
-void TSharcHit::SetFront(const TFragment& frag) { 
+void TSharcHit::SetFront(const TVirtualFragment& frag) { 
   CopyFragment(frag);
   SetPosition(TSharc::GetPosition(fDetectorNumber,fFrontStrip,fBackStrip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset())); 
 }
 
-void TSharcHit::SetBack(const TFragment& frag) { 
+void TSharcHit::SetBack(const TVirtualFragment& frag) { 
   fBackHit.CopyFragment(frag);
 }
 
-void TSharcHit::SetPad(const TFragment& frag) { 
+void TSharcHit::SetPad(const TVirtualFragment& frag) { 
   fPadHit.CopyFragment(frag);
 }

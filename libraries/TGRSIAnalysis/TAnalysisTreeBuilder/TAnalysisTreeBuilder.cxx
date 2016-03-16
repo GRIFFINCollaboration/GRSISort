@@ -10,7 +10,7 @@
 #include "TGRSIOptions.h"
 #include "TGRSIRootIO.h"
 #include "TOldFragment.h"
-#include "TNewFragment.h"
+#include "TFragment.h"
 
 //This sets the minimum amount of memory that root can hold a tree in.
 const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)16; // 16 GB
@@ -25,11 +25,11 @@ TEventQueue* TEventQueue::Get() {
    return fPtrToQue;
 }
 
-void TEventQueue::Add(std::vector<TFragment*>* event) {
+void TEventQueue::Add(std::vector<TVirtualFragment*>* event) {
   Get()->AddInstance(event);
 }
 
-std::vector<TFragment*>* TEventQueue::PopEntry() {
+std::vector<TVirtualFragment*>* TEventQueue::PopEntry() {
   return Get()->PopEntryInstance();
 }
 
@@ -37,7 +37,7 @@ int TEventQueue::Size() {
   return Get()->SizeInstance();
 }
 
-void TEventQueue::AddInstance(std::vector<TFragment*>* event) {
+void TEventQueue::AddInstance(std::vector<TVirtualFragment*>* event) {
    ///Thread-safe method for adding events to the event queue. 
    m_event.lock();
    fEventQueue.push(event);
@@ -46,9 +46,9 @@ void TEventQueue::AddInstance(std::vector<TFragment*>* event) {
    return;
 }
 
-std::vector<TFragment*>* TEventQueue::PopEntryInstance() {
+std::vector<TVirtualFragment*>* TEventQueue::PopEntryInstance() {
 	///Thread-safe method for taking an event out of the event queue
-   std::vector<TFragment*>* temp;
+   std::vector<TVirtualFragment*>* temp;
    m_event.lock();
    temp = fEventQueue.front();
    fEventQueue.pop();
@@ -312,7 +312,7 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
 	fEntries = index->GetN();
 
    for(int j = major_min; j <= major_max; j++) {
-      std::vector<TFragment*>* event = new std::vector<TFragment*>;
+      std::vector<TVirtualFragment*>* event = new std::vector<TVirtualFragment*>;
       int fragno = 1;
       while(fCurrentFragTree->GetEntryWithIndex(j, fragno++) != -1) {
          fFragmentsIn++;
@@ -325,14 +325,14 @@ void TAnalysisTreeBuilder::SortFragmentTree() {
       }
    }
    printf("\n");
-   fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
+   fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TVirtualFragment"),true);
    fCurrentFragTree->SetCacheSize(0);
 }
 
 void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    ///Suprisingly, sorts the fragment tree by times stamps.
    ///It then takes the sorted fragments and puts them into the eventQ.
-   TFragment* currentFrag = 0;
+   TVirtualFragment* currentFrag = 0;
 	Int_t descantData[3];
 
 	bool oldFragment = false;
@@ -345,8 +345,8 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 		oldFragment = true;
 	}
 
-   //Find the TFragment branch of the tree
-   fCurrentFragTree->SetBranchAddress("TFragment",&currentFrag);
+   //Find the TVirtualFragment branch of the tree
+   fCurrentFragTree->SetBranchAddress("TVirtualFragment",&currentFrag);
 	if(branches->GetEntries() == 2) {
 	  fCurrentFragTree->SetBranchAddress("DescantData", &descantData);
 	}
@@ -354,9 +354,9 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    fEntries = fCurrentFragTree->GetEntries();
 
    //this vector holds all fragments of one built event and get's passed to the event queue
-   std::vector<TFragment*>* event = NULL;
+   std::vector<TVirtualFragment*>* event = NULL;
 	//this multiset is used to sort the fragments we're reading sequentially (but not necessarily time-ordered) from the tree
-	std::multiset<TFragment*,PointerLess<TFragment> > sortedFragments;//less is the default ordering option, could be left out
+	std::multiset<TVirtualFragment*,PointerLess<TVirtualFragment> > sortedFragments;//less is the default ordering option, could be left out
 
    //loop over all of the fragments in the tree 
    for(int x = 0; x < fEntries; ++x) {
@@ -378,7 +378,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 			if(oldFragment) {
 				sortedFragments.insert(static_cast<TOldFragment*>(currentFrag)->Clone());
 			} else {
-				sortedFragments.insert(static_cast<TNewFragment*>(currentFrag)->Clone());
+				sortedFragments.insert(static_cast<TFragment*>(currentFrag)->Clone());
 			}
 			//sortedFragments.emplace(currentFrag);
 		} catch (std::bad_alloc& e) {
@@ -392,7 +392,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 				if(oldFragment) {
 					sortedFragments.insert(static_cast<TOldFragment*>(currentFrag)->Clone());
 				} else {
-					sortedFragments.insert(static_cast<TNewFragment*>(currentFrag)->Clone());
+					sortedFragments.insert(static_cast<TFragment*>(currentFrag)->Clone());
 				}
 			}
 		}
@@ -409,7 +409,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 			//So we can put everything that is in the BuildWindow of the first fragment into our built event.
 			//For this we loop through the fragments in the multiset, put them into the new event vector, and once the time difference is larger than BuildWindow,
 			//we put the event into the queue, erase the fragments from the multiset, and stop the loop.
-			event = new std::vector<TFragment*>;
+			event = new std::vector<TVirtualFragment*>;
 			for(auto it = sortedFragments.begin(); it != sortedFragments.end(); ++it) {
 				if(((*it)->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
 					event->push_back(*it);
@@ -433,7 +433,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
    //In case we have fragments left after all of the fragments have been processed, we add them to the queue now.
 	while(!sortedFragments.empty()) {
  		long firstTimeStamp = (*(sortedFragments.begin()))->GetTimeStamp();
-		event = new std::vector<TFragment*>;
+		event = new std::vector<TVirtualFragment*>;
 		auto it = sortedFragments.begin();
 		for(; it != sortedFragments.end(); ++it) {
 			if(((*it)->GetTimeStamp() - firstTimeStamp) <= TGRSIRunInfo::BuildWindow()) {
@@ -459,8 +459,8 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 		}
 	}//while sortedFragments isn't empty
    
-   //Drop the TFragmentBranch from the Cache so we aren't still holding it in memory
-   fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TFragment"),true);
+   //Drop the TVirtualFragmentBranch from the Cache so we aren't still holding it in memory
+   fCurrentFragTree->DropBranchFromCache(fCurrentFragTree->GetBranch("TVirtualFragment"),true);
    fCurrentFragTree->SetCacheSize(0);
    return;
 }
@@ -514,7 +514,7 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
    }
 
    //Set the branch to point at the Fragment Tree.
-   TBranch* branch = fCurrentFragTree->GetBranch("TFragment");
+   TBranch* branch = fCurrentFragTree->GetBranch("TVirtualFragment");
    //Make the fCurrentFragPtr point at the Fragment Tree.
    branch->SetAddress(&fCurrentFragPtr);
 	if(fCurrentRunInfo->Tigress()) {
@@ -764,7 +764,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
       }
       
       //We need to pull the event out of the Event Q
-      std::vector<TFragment*>* event = TEventQueue::PopEntry();
+      std::vector<TVirtualFragment*>* event = TEventQueue::PopEntry();
       MNEMONIC mnemonic;
       std::map<std::string, TDetector*>* detectors = new std::map<std::string, TDetector*>;
       for(size_t i = 0; i < event->size(); i++) {

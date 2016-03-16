@@ -77,7 +77,7 @@ void TDiagnostics::Print(Option_t* opt) const {
 	}
 }
 
-void TDiagnostics::GoodFragment(TFragment* frag) {
+void TDiagnostics::GoodFragment(TVirtualFragment* frag) {
 	///increment the counter of good fragments for this detector type and check if any trigger ids have been lost
 	fNumberOfGoodFragments[frag->GetDetectorType()]++;
 

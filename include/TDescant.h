@@ -38,7 +38,7 @@ class TDescant : public TGRSIDetector {
       
       static TVector3 GetPosition(int DetNbr, double dist=222);	//!<!
       
-      void AddFragment(TFragment*, MNEMONIC*);           //!<!
+      void AddFragment(TVirtualFragment*, MNEMONIC*);           //!<!
       void BuildHits() {} //no need to build any hits, everything already done in AddFragment
       
       TDescant& operator=(const TDescant&);  //

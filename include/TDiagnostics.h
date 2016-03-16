@@ -25,7 +25,7 @@
 #include "TH1F.h"
 
 #include "TPPG.h"
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 
 class TDiagnostics : public TObject {
 	public:
@@ -63,7 +63,7 @@ class TDiagnostics : public TObject {
 	
 	public:
 		//"setter" functions
-		void GoodFragment(TFragment*);
+		void GoodFragment(TVirtualFragment*);
 		void GoodFragment(Short_t detType) { fNumberOfGoodFragments[detType]++; }
 		void BadFragment(Short_t detType)  { fNumberOfBadFragments[detType]++; }
 

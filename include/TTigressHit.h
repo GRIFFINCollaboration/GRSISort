@@ -15,7 +15,7 @@
 #include "TVector3.h"
 #include "TClonesArray.h"
 
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TChannel.h"
 #include "TPulseAnalyzer.h"
 
@@ -25,7 +25,7 @@ class TTigressHit : public TGRSIDetectorHit {
   public:
     TTigressHit();
     TTigressHit(const TTigressHit&);
-    TTigressHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
+    TTigressHit(const TVirtualFragment& frag) : TGRSIDetectorHit(frag) {}
     virtual ~TTigressHit();
 
   private:
@@ -64,7 +64,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	int GetCrystal();
 	inline int GetInitialHit()		               {	return fFirstSegment;	}			//!<!
 	
-	void SetWavefit(TFragment&);
+	void SetWavefit(TVirtualFragment&);
 	inline Double_t GetSignalToNoise()	  { return fSig2Noise;	} //!<!
 	inline Double_t GetFitTime()			  { return fTimeFit;	} //!<!
 

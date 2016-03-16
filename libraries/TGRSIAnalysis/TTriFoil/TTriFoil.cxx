@@ -34,7 +34,7 @@ TTriFoil::TTriFoil(const TTriFoil& rhs) : TDetector() {
   rhs.Copy(*this);
 }
 
-void TTriFoil::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+void TTriFoil::AddFragment(TVirtualFragment* frag, MNEMONIC* mnemonic) {
 	if(frag == NULL || mnemonic == NULL) {
 		return;
 	}

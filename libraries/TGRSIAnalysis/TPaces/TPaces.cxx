@@ -81,8 +81,8 @@ TPacesHit* TPaces::GetPacesHit(const int& i) {
    return NULL;
 }
 
-void TPaces::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-  //Builds the PACES Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
+void TPaces::AddFragment(TVirtualFragment* frag, MNEMONIC* mnemonic) {
+  //Builds the PACES Hits directly from the TVirtualFragment. Basically, loops through the data for an event and sets observables. 
   //This is done for both PACES and it's suppressors.
 	if(frag == NULL || mnemonic == NULL) {
 		return;

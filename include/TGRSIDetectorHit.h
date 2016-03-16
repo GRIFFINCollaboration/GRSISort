@@ -63,8 +63,8 @@ class TGRSIDetectorHit : public TObject 	{
 	public:
 		TGRSIDetectorHit(const int& Address=0xffffffff);
 		TGRSIDetectorHit(const TGRSIDetectorHit&);
-	   TGRSIDetectorHit(const TFragment& frag)      { Class()->IgnoreTObjectStreamer(); this->CopyFragment(frag); }
-      void CopyFragment(const TFragment&);
+	   TGRSIDetectorHit(const TVirtualFragment& frag)      { Class()->IgnoreTObjectStreamer(); this->CopyFragment(frag); }
+      void CopyFragment(const TVirtualFragment&);
       virtual ~TGRSIDetectorHit();
 
       static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }

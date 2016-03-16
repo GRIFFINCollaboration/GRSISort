@@ -10,7 +10,7 @@
 #include <stdio.h>
 
 #include "TDetector.h"
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 
 class TTriFoil :  public TDetector {
 	public:
@@ -25,7 +25,7 @@ class TTriFoil :  public TDetector {
 		bool HasWave() const { return !fTfWave.empty(); }
 		time_t GetTimeStamp() const { return fTimestamp; }
 
-		void AddFragment(TFragment*, MNEMONIC*); //!<!
+		void AddFragment(TVirtualFragment*, MNEMONIC*); //!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
 		void Clear(Option_t* opt = ""); 	//!<!

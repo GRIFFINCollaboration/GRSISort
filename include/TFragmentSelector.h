@@ -22,7 +22,7 @@
 #include <TSelector.h>
 
 // Header file for the classes stored in the TTree if any.
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TChannel.h" //EDIT: added manually
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -32,7 +32,7 @@ public :
    TTree          *fChain;   //!<!pointer to the analyzed TTree or TChain
 
    // Declaration of leaf types - EDIT: we use just the fragment itself, not it's members individually
-	TFragment       *fragment;
+	TVirtualFragment       *fragment;
 
 	//EDIT: add run and subrun numbers
    TFragmentSelector(int runNumber = 0, int subRunNumber = 0, TTree * /*tree*/ = 0) : fChain(0),fragment(0) { 
@@ -83,7 +83,7 @@ void TFragmentSelector::Init(TTree *tree)
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
-   fChain->SetBranchAddress("TFragment", &fragment);
+   fChain->SetBranchAddress("TVirtualFragment", &fragment);
 	//start by reading the calibrations from tree
 	TChannel::ReadCalFromTree(tree);
 }

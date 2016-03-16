@@ -80,7 +80,7 @@ TSharc::TSharc(const TSharc& rhs) : TGRSIDetector() {
   rhs.Copy(*this);
 }
 
-void TSharc::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+void TSharc::AddFragment(TVirtualFragment* frag, MNEMONIC* mnemonic) {
 	//mnemonic->arraysubposition.compare(0,1,"?"): E = PAD, D = not a PAD
 	//mnemonic->collectedcharge.compare(0,1,"?"): P = front, else(N) = back
 	if(frag == NULL || mnemonic == NULL) {

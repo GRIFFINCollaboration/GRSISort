@@ -100,7 +100,7 @@ void TFragmentQueue::StopStatusUpdate()	{
 	fStatusUpdateOn = false;
 }
 
-void TFragmentQueue::Add(TFragment* frag)	{
+void TFragmentQueue::Add(TVirtualFragment* frag)	{
 //Add a Fragment to the fragment Queue.
 
     //when we move to multithreaded parsing, these three lines will 
@@ -133,13 +133,13 @@ void TFragmentQueue::Pop()	{
 	TFragmentQueue::Sorted.unlock();
 }
 
-TFragment* TFragmentQueue::PopFragment(){
+TVirtualFragment* TFragmentQueue::PopFragment(){
 //Take a fragment out of the Queue and return a pointer to it.
 	while(!TFragmentQueue::Sorted.try_lock())	{
 		//do nothing
 	}
 	if(Size()>0) {	
-		TFragment* frag = fFragmentQueue.front();
+		TVirtualFragment* frag = fFragmentQueue.front();
 		if(frag)	{
 			fFragmentQueue.pop();
 			fFragsInQueue--;

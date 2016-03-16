@@ -8,7 +8,7 @@ ClassImp(TS3Hit)
 TS3Hit::TS3Hit()	{
 	Clear();
 }
-TS3Hit::TS3Hit(TFragment &frag)	: TGRSIDetectorHit(frag) {}
+TS3Hit::TS3Hit(TVirtualFragment &frag)	: TGRSIDetectorHit(frag) {}
 
 TS3Hit::~TS3Hit()	{}
 
@@ -33,7 +33,7 @@ void TS3Hit::Clear(Option_t *opt)	{
    fSector         = -1;
 }
 
-Short_t TS3Hit::GetMnemonicSegment(TFragment &frag){//could be added to TGRSIDetectorHit base class
+Short_t TS3Hit::GetMnemonicSegment(TVirtualFragment &frag){//could be added to TGRSIDetectorHit base class
 	MNEMONIC mnemonic;
 	TChannel *channel = TChannel::GetChannel(frag.GetChannelAddress());
 	if(!channel){

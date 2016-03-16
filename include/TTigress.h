@@ -32,7 +32,7 @@ class TTigress : public TGRSIDetector {
 			kBit7         = 1<<7
 		};
 
-		std::vector<std::vector<TFragment*> > SegmentFragments;
+		std::vector<std::vector<TVirtualFragment*> > SegmentFragments;
 
 		TTigress();
 		TTigress(const TTigress&);
@@ -52,7 +52,7 @@ class TTigress : public TGRSIDetector {
 		void ResetAddback();		     //!<!
 		UShort_t GetNAddbackFrags(size_t idx) const;
 
-		void AddFragment(TFragment*, MNEMONIC*); //!<!
+		void AddFragment(TVirtualFragment*, MNEMONIC*); //!<!
 		void BuildHits();
 
 		TTigress& operator=(const TTigress&); //!<!

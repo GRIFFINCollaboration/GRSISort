@@ -8,7 +8,7 @@ TPulseAnalyzer::TPulseAnalyzer() : wpar(NULL), frag(NULL), spar(NULL), shpar(NUL
 	Clear();
 }
 
-TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac) : wpar(NULL), frag(NULL), spar(NULL), shpar(NULL) {
+TPulseAnalyzer::TPulseAnalyzer(TVirtualFragment &fragment,double noise_fac) : wpar(NULL), frag(NULL), spar(NULL), shpar(NULL) {
 	Clear();
 	SetData(fragment,noise_fac);
 }
@@ -35,7 +35,7 @@ void TPulseAnalyzer::Clear(Option_t *opt) {
 	memset(copy_matrix,0,sizeof(copy_matrix));
 }
 
-void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac) {
+void TPulseAnalyzer::SetData(TVirtualFragment &fragment,double noise_fac) {
 	SetCsI(false);
 	if(fragment.HasWave()) {
 		if(noise_fac > 0) {

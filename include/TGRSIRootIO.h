@@ -14,7 +14,7 @@
 
 #include "TFragmentSelector.h"
 #include "TOldFragment.h"
-#include "TNewFragment.h"
+#include "TFragment.h"
 
 #include "Globals.h"
 #include "TChannel.h"
@@ -54,8 +54,8 @@ class TGRSIRootIO : public TObject {
 
       std::vector<TFile*> fInFiles;
 
-      TFragment*  fBufferFrag;
-      TFragment*  fBadBufferFrag;
+      TVirtualFragment*  fBufferFrag;
+      TVirtualFragment*  fBadBufferFrag;
       TEpicsFrag* fEXBufferFrag;
       TChannel*   fBufferChannel;
 
@@ -76,12 +76,12 @@ class TGRSIRootIO : public TObject {
 
       void SetUpFragmentTree();
       TTree* GetFragmentTree()  { return fFragmentTree;  }
-      void FillFragmentTree(TFragment*);
+      void FillFragmentTree(TVirtualFragment*);
       void FinalizeFragmentTree();
 
       void SetUpBadFragmentTree();
       TTree* GetBadFragmentTree()  { return fBadFragmentTree;  }
-      void FillBadFragmentTree(TFragment*);
+      void FillBadFragmentTree(TVirtualFragment*);
       void FinalizeBadFragmentTree();
 
       void SetUpPPG();

@@ -6,14 +6,14 @@
  */
 
 #include <cstdio>
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TChannel.h"
 #include "TGRSIDetectorHit.h" 
 
 class TS3Hit : public TGRSIDetectorHit {
 public:
 	TS3Hit();
-	TS3Hit(TFragment &);
+	TS3Hit(TVirtualFragment &);
 	virtual ~TS3Hit();
 	TS3Hit(const TS3Hit&);
 	
@@ -25,14 +25,14 @@ public:
 	void Print(Option_t* opt="") const;
 	void Clear(Option_t* opt="");
 	
-	void SetVariables(TFragment &frag) {}
+	void SetVariables(TVirtualFragment &frag) {}
 	void SetRingNumber(Short_t rn)     { fRing = rn;   }
 	void SetSectorNumber(Short_t sn)   { fSector = sn; }
    
-	void SetRingNumber(TFragment &frag)     { fRing = GetMnemonicSegment(frag);   }
-	void SetSectorNumber(TFragment &frag)   { fSector =GetMnemonicSegment(frag) ; }
+	void SetRingNumber(TVirtualFragment &frag)     { fRing = GetMnemonicSegment(frag);   }
+	void SetSectorNumber(TVirtualFragment &frag)   { fSector =GetMnemonicSegment(frag) ; }
    
-	Short_t GetMnemonicSegment(TFragment &frag);//could be added to TGRSIDetectorHit base class
+	Short_t GetMnemonicSegment(TVirtualFragment &frag);//could be added to TGRSIDetectorHit base class
 	
 private:
 	TVector3 GetChannelPosition(Double_t dist = 0) const; //!

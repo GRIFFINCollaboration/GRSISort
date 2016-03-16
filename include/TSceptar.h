@@ -38,7 +38,7 @@ class TSceptar : public TGRSIDetector {
       
       static TVector3 GetPosition(int DetNbr) { return gPaddlePosition[DetNbr]; }	//!<!
       
-      void AddFragment(TFragment*, MNEMONIC*); //!<!
+      void AddFragment(TVirtualFragment*, MNEMONIC*); //!<!
       void BuildHits() {} //no need to build any hits, everything already done in AddFragment
       
       TSceptar& operator=(const TSceptar&);  //!<!

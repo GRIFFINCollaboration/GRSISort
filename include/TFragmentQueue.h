@@ -18,7 +18,7 @@
 #include "TObjArray.h"
 #include "TStopwatch.h"
 
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 
 class TFragmentQueue : public TObject {
 	public:
@@ -33,7 +33,7 @@ class TFragmentQueue : public TObject {
       TFragmentQueue();
 	
 
-		std::queue<TFragment*> fFragmentQueue; //The fragment Queue
+		std::queue<TVirtualFragment*> fFragmentQueue; //The fragment Queue
 		int fFragsInQueue;	//The current number of fragments in the Q
 
 		void StatusUpdate();
@@ -61,10 +61,10 @@ class TFragmentQueue : public TObject {
 #endif
 
 	public:
-		void Add(TFragment*);
+		void Add(TVirtualFragment*);
 	
 		void Pop();
-		TFragment* PopFragment();
+		TVirtualFragment* PopFragment();
 
 		int Size() const;
 

@@ -16,7 +16,7 @@
 
 #include "Rtypes.h"
 #include "TObject.h"
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 
 /////////////////////////////////////////////////////////////////
 ///
@@ -28,7 +28,7 @@
 ///
 /////////////////////////////////////////////////////////////////
 
-class TOldFragment : public TFragment {
+class TOldFragment : public TVirtualFragment {
 public:
    TOldFragment(); 
 	TOldFragment(const TOldFragment&); ///<copy constructor

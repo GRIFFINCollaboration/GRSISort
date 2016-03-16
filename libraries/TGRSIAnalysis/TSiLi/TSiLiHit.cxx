@@ -7,7 +7,7 @@ ClassImp(TSiLiHit)
 
 TSiLiHit::TSiLiHit()  {    Clear(); }
 
-TSiLiHit::TSiLiHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+TSiLiHit::TSiLiHit(TVirtualFragment &frag)	: TGRSIDetectorHit(frag) {
 	SetVariables(frag);
 }
 
@@ -33,7 +33,7 @@ void TSiLiHit::Clear(Option_t *opt)  {
 	fSig2Noise = -1;
 }
 
-void TSiLiHit::SetWavefit(TFragment &frag)   { 
+void TSiLiHit::SetWavefit(TVirtualFragment &frag)   { 
 	TPulseAnalyzer pulse(frag,4);	    
 	if(pulse.IsSet()){
 		fTimeFit = pulse.fit_newT0();

@@ -11,7 +11,7 @@
 ///
 /// The TDataParser is the DAQ dependent part of GRSISort.
 /// It takes a "DAQ-dependent"-flavoured MIDAS file and
-/// converts it into a generic TFragment that the rest of
+/// converts it into a generic TVirtualFragment that the rest of
 /// GRSISort can deal with. This is where event word masks
 /// are applied, and any changes to the event format must
 /// be implemented.
@@ -24,7 +24,7 @@
 #include <map>
 
 #include "TChannel.h"
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TPPG.h"
 #include "TScaler.h"
 
@@ -70,26 +70,26 @@ class TDataParser {
 
 
   private:
-    static void SetTIGWave(uint32_t, TFragment*);
-    static void SetTIGAddress(uint32_t, TFragment*);
-    static void SetTIGCfd(uint32_t, TFragment*);
-    static void SetTIGCharge(uint32_t, TFragment*);
-    static void SetTIGLed(uint32_t, TFragment*);
+    static void SetTIGWave(uint32_t, TVirtualFragment*);
+    static void SetTIGAddress(uint32_t, TVirtualFragment*);
+    static void SetTIGCfd(uint32_t, TVirtualFragment*);
+    static void SetTIGCharge(uint32_t, TVirtualFragment*);
+    static void SetTIGLed(uint32_t, TVirtualFragment*);
 
-    static bool SetTIGTriggerID(uint32_t, TFragment*);
-    static bool SetTIGTimeStamp(uint32_t*, TFragment*);
+    static bool SetTIGTriggerID(uint32_t, TVirtualFragment*);
+    static bool SetTIGTimeStamp(uint32_t*, TVirtualFragment*);
 
-    static bool SetGRIFHeader(uint32_t,TFragment*&,int);
-    static bool SetGRIFMasterFilterId(uint32_t,TFragment*);
-    static bool SetGRIFMasterFilterPattern(uint32_t,TFragment*);
-    static bool SetGRIFChannelTriggerId(uint32_t,TFragment*);  
-    static bool SetGRIFTimeStampLow(uint32_t,TFragment*);
-    static bool SetGRIFNetworkPacket(uint32_t,TFragment*);
-    static bool SetGRIFCc(uint32_t, TFragment*);
-    static bool SetGRIFPsd(uint32_t, TFragment*);
+    static bool SetGRIFHeader(uint32_t,TVirtualFragment*&,int);
+    static bool SetGRIFMasterFilterId(uint32_t,TVirtualFragment*);
+    static bool SetGRIFMasterFilterPattern(uint32_t,TVirtualFragment*);
+    static bool SetGRIFChannelTriggerId(uint32_t,TVirtualFragment*);  
+    static bool SetGRIFTimeStampLow(uint32_t,TVirtualFragment*);
+    static bool SetGRIFNetworkPacket(uint32_t,TVirtualFragment*);
+    static bool SetGRIFCc(uint32_t, TVirtualFragment*);
+    static bool SetGRIFPsd(uint32_t, TVirtualFragment*);
 
-    static bool SetGRIFWaveForm(uint32_t,TFragment*);
-    static bool SetGRIFDeadTime(uint32_t,TFragment*);
+    static bool SetGRIFWaveForm(uint32_t,TVirtualFragment*);
+    static bool SetGRIFDeadTime(uint32_t,TVirtualFragment*);
 
     static bool SetNewPPGPattern(uint32_t,TPPGData*);
     static bool SetOldPPGPattern(uint32_t,TPPGData*);

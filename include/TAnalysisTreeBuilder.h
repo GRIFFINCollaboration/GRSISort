@@ -25,7 +25,7 @@
 
 #include "Globals.h"
 
-#include "TFragment.h"
+#include "TVirtualFragment.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
 #include "TPPG.h"
@@ -50,7 +50,7 @@
 ///
 /// \class TEventQueue
 ///
-/// This Class stores pointers to vectors of TFragments in 
+/// This Class stores pointers to vectors of TVirtualFragments in 
 /// a std::queue. The queue is filled in
 /// TAnalysisTreeBuilder::SortFragmentTree,
 /// TAnalysisTreeBuilder::SortFragmentChain, or
@@ -63,8 +63,8 @@
 class TEventQueue : public TObject {
   public:
 	static TEventQueue* Get();
-	static void Add(std::vector<TFragment*>* event); 
-	static std::vector<TFragment*>* PopEntry();
+	static void Add(std::vector<TVirtualFragment*>* event); 
+	static std::vector<TVirtualFragment*>* PopEntry();
 	static int Size();
 	virtual ~TEventQueue() { std::cout << std::endl << "In event queue dstor." << std::endl; }
 
@@ -75,11 +75,11 @@ class TEventQueue : public TObject {
 	static TEventQueue* fPtrToQue;
 
       
-	void AddInstance(std::vector<TFragment*>* event); 
-	std::vector<TFragment*>* PopEntryInstance();
+	void AddInstance(std::vector<TVirtualFragment*>* event); 
+	std::vector<TVirtualFragment*>* PopEntryInstance();
 	int SizeInstance();
       
-	std::queue<std::vector<TFragment*>*> fEventQueue;
+	std::queue<std::vector<TVirtualFragment*>*> fEventQueue;
 #if !defined (__CINT__) && !defined (__CLING__)
 	std::mutex m_event;
 #endif 
@@ -134,7 +134,7 @@ class TWriteQueue {
 ///
 /// \class TAnalysisTreeBuilder
 ///
-/// This Class builds events out of TFragments. These
+/// This Class builds events out of TVirtualFragments. These
 /// events then get written out to the analysis tree for post
 /// processing. When a new detector class is added to the code
 /// it must also be added here for coincidence building.
@@ -210,7 +210,7 @@ class TAnalysisTreeBuilder : public TObject {
 
    private:
      
-      TFragment* fCurrentFragPtr;
+      TVirtualFragment* fCurrentFragPtr;
 
       //TigAux detectors
       TTigress*    fTigress;                                 ///< A pointer to the Tigress Mother Class
@@ -233,7 +233,7 @@ class TAnalysisTreeBuilder : public TObject {
       TDescant*    fDescant;                                 ///< A pointer to the Descant Mother Class
 
 /// \cond CLASSIMP
-	ClassDef(TAnalysisTreeBuilder,0) //Builds the Analysis Tree out of TFragments
+	ClassDef(TAnalysisTreeBuilder,0) //Builds the Analysis Tree out of TVirtualFragments
 /// \endcond
 };
 /*! @} */

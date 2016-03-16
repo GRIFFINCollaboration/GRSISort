@@ -38,7 +38,7 @@ class TZeroDegree : public TGRSIDetector {
       
       static TVector3 GetPosition(double dist) { return TVector3(0,0,dist); }	//!<!
       
-      void AddFragment(TFragment*, MNEMONIC*); //!<!
+      void AddFragment(TVirtualFragment*, MNEMONIC*); //!<!
       void BuildHits() {} //no need to build any hits, everything already done in AddFragment
       
       TZeroDegree& operator=(const TZeroDegree&);  //!<!
