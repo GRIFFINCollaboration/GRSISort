@@ -526,11 +526,16 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 						if(hit >= EventFrag->GetNumberOfHits() && !TGRSILoop::GetSuppressError()) {
 							printf("found additional hit %d when number of hits should be %d\n", hit, EventFrag->GetNumberOfHits());
 						}
-						UShort_t tmp = (*(data+x) & 0x7c000000) >> 21;
+						UShort_t tmp = (*(data+x) & 0x7c000000);
 						EventFrag->SetPulseHeight((*(data+x) & 0x03ffffff) | (((*(data+x) & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0), hit); //extend the sign bit of 26bit charge word
 						++x;
-						EventFrag->SetIntLength(tmp | (*(data+x) & 0x7c000000) >> 26, hit);
-						EventFrag->SetCfd(*(data+x) & 0x03ffffff, hit);
+						if(bank < 3) { //experiments before 2016
+						  EventFrag->SetIntLength((tmp >> 21) | (*(data+x) & 0x7c000000) >> 26, hit); //21 = 26 minus space for 5 low bits
+						  EventFrag->SetCfd(*(data+x) & 0x03ffffff, hit);
+						} else {
+						  EventFrag->SetIntLength((tmp >> 17) | (*(data+x) & 0x7fc00000) >> 22, hit); //17 = 26 minus space for 9 low bits
+						  EventFrag->SetCfd(*(data+x) & 0x003fffff, hit);
+						}
 						++hit;
 					} else {
 						//these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
