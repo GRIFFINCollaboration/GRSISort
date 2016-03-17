@@ -66,22 +66,22 @@ class TGRSIRunInfo : public TObject {
       static TGRSIRunInfo *Get();
       virtual ~TGRSIRunInfo();
       TGRSIRunInfo();   // This should not be used.
-                        // root forces me have this here instead 
-                        // of a private class member in 
-                        // order to write this class to a tree.
-                        // pcb.
-      
+      // root forces me have this here instead 
+      // of a private class member in 
+      // order to write this class to a tree.
+      // pcb.
+
       static void SetRunInfo(TGRSIRunInfo *temp);
       static Bool_t ReadInfoFromFile(TFile *tempf = 0);
 
       static const char* GetGRSIVersion() { return fGRSIVersion.c_str(); } 
       static void ClearGRSIVersion() { fGRSIVersion.clear(); } 
       static void SetGRSIVersion(const char *ver) { 
-				if(fGRSIVersion.length()!=0)
-					printf( ALERTTEXT "WARNING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n",fGRSIVersion.c_str());
-				else 
-					fGRSIVersion.assign(ver); 
-		}
+         if(fGRSIVersion.length()!=0)
+            printf( ALERTTEXT "WARNING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n",fGRSIVersion.c_str());
+         else 
+            fGRSIVersion.assign(ver); 
+      }
 
       static void SetRunInfo(int runnum=0,int subrunnum=-1);
       static void SetAnalysisTreeBranches(TTree*);
@@ -114,6 +114,7 @@ class TGRSIRunInfo : public TObject {
       static inline void SetSpice(bool flag = true)       { fGRSIRunInfo->fSpice = flag; }
       static inline void SetS3(bool flag = true)          { fGRSIRunInfo->fS3 = flag;  }
       static inline void SetTip(bool flag = true)         { fGRSIRunInfo->fTip = flag; }
+      static inline void SetBambino(bool flag = true)			{ fGRSIRunInfo->fBambino = flag; }
 
       static inline void SetGriffin(bool flag = true)     { fGRSIRunInfo->fGriffin = flag; }
       static inline void SetSceptar(bool flag = true)     { fGRSIRunInfo->fSceptar = flag; }
@@ -148,6 +149,7 @@ class TGRSIRunInfo : public TObject {
       static inline bool RF()        { return fGRSIRunInfo->fRf; }
       static inline bool CSM()       { return fGRSIRunInfo->fCSM; }
       static inline bool Spice()     { return fGRSIRunInfo->fSpice; }
+      static inline bool Bambino()	 { return fGRSIRunInfo->fBambino; }
       static inline bool Tip()       { return fGRSIRunInfo->fTip; }
       static inline bool S3()        { return fGRSIRunInfo->fS3; }
 
@@ -160,11 +162,11 @@ class TGRSIRunInfo : public TObject {
 
       inline void SetRunInfoFileName(const char *fname)  {  fRunInfoFileName.assign(fname); }
       inline void SetRunInfoFile(const char *ffile)      {  fRunInfoFile.assign(ffile); }
-   
+
       inline void SetBuildWindow(const long int t_bw)    { fBuildWindow = t_bw; } 
       inline void SetAddBackWindow(const double   t_abw) { fAddBackWindow = t_abw; } 
-		inline void SetBufferDuration(const long int t_bd) { fBufferDuration = t_bd; }
-		inline void SetBufferSize(const size_t t_bs)          { fBufferSize = t_bs; }
+      inline void SetBufferDuration(const long int t_bd) { fBufferDuration = t_bd; }
+      inline void SetBufferSize(const size_t t_bs)          { fBufferSize = t_bs; }
 
       inline void SetWaveformFitting(const bool flag)    {fWaveformFitting = flag; }
       static inline bool IsWaveformFitting()             {return Get()->fWaveformFitting; }
@@ -173,13 +175,13 @@ class TGRSIRunInfo : public TObject {
       static inline bool IsMovingWindow()                { return Get()->fIsMovingWindow; }
 
       static inline long int BuildWindow()    { return Get()->fBuildWindow; }
-      static inline double   AddBackWindow()  { return Get()->fAddBackWindow; }
-		static inline long int BufferDuration() { return Get()->fBufferDuration; }
-		static inline size_t   BufferSize()     { return Get()->fBufferSize; }
+      static inline double   AddBackWindow()  { if(Get()->fAddBackWindow<1) return 15.0; return Get()->fAddBackWindow; }
+      static inline long int BufferDuration() { return Get()->fBufferDuration; }
+      static inline size_t   BufferSize()     { return Get()->fBufferSize; }
 
       inline void SetHPGeArrayPosition(const int arr_pos) { fHPGeArrayPosition = arr_pos; }
       static inline int  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
-   
+
       static inline void SetDescantAncillary(bool flag = true) { fGRSIRunInfo->fDescantAncillary = flag; }
       static inline bool DescantAncillary()                    { return fGRSIRunInfo->fDescantAncillary; }
 
@@ -226,6 +228,7 @@ class TGRSIRunInfo : public TObject {
       bool fSpice;      //flag for Spice on/off
       bool fTip;        //flag for Tip on/off
       bool fS3;         //flag for S3 on/off
+      bool fBambino;		//flag for Bambino on/off
 
       bool fGriffin;    //flag for Griffin on/off
       bool fSceptar;    //flag for Sceptar on/off
@@ -249,7 +252,7 @@ class TGRSIRunInfo : public TObject {
 
       std::string fRunInfoFileName; //The name of the Run info file
       std::string fRunInfoFile;     //The contents of the run info file
-	   static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
+      static void trim(std::string *, const std::string & trimChars = " \f\n\r\t\v");
 
       long int fBuildWindow;        // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
       double   fAddBackWindow;      // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
@@ -267,9 +270,9 @@ class TGRSIRunInfo : public TObject {
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
-/// \cond CLASSIMP
-   ClassDef(TGRSIRunInfo,9);  //Contains the run-dependent information.
-/// \endcond
+      /// \cond CLASSIMP
+      ClassDef(TGRSIRunInfo,9);  //Contains the run-dependent information.
+      /// \endcond
 };
 /*! @} */
 #endif

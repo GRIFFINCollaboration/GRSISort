@@ -45,26 +45,25 @@ class TTigressHit : public TGRSIDetectorHit {
 	std::tuple<int,int,int> fLastPos; //!<!
 #endif
 
-    static TVector3 fBeam;            //!<!
-
   public:
 	void SetHit() {}
 	/////////////////////////		/////////////////////////////////////
 	void SetCore(TGRSIDetectorHit& core)		  { Copy(core);	} 					//!<!
 	void AddSegment(TGRSIDetectorHit& seg) 	  { fSegments.push_back(seg);	}	//!<!
-	void AddBGO(TGRSIDetectorHit& bgo) 		     { fBgos.push_back(bgo);	}	   //!<!
+	void AddBGO(TGRSIDetectorHit& bgo) 		    { fBgos.push_back(bgo);	}	   //!<!
 
-  int SetCrystal(char color);
-  int SetCrystal(int crynum);
+  //int SetCrystal(char color);
+  //int SetCrystal(int crynum);
 	void SetInitalHit(const int &i)		 { fFirstSegment = i; }				//!<!
-	Bool_t IsCrystalSet() const          { return IsSubDetSet();}
+	//Bool_t IsCrystalSet() const          { return IsSubDetSet();}
 
 	/////////////////////////		/////////////////////////////////////
 	int GetCrystal() const;	          //{	return crystal;			}		//!<!
-	int GetCrystal();
-	inline int GetInitialHit()		               {	return fFirstSegment;	}			//!<!
+	//int GetCrystal();
+	int GetInitialHit() const           {	return fFirstSegment;	}			//!<!
 	
 	void SetWavefit(TFragment&);
+	void SetWavefit();
 	inline Double_t GetSignalToNoise()	  { return fSig2Noise;	} //!<!
 	inline Double_t GetFitTime()			  { return fTimeFit;	} //!<!
 
@@ -75,7 +74,7 @@ class TTigressHit : public TGRSIDetectorHit {
 
 	inline double GetDoppler(double beta, TVector3 *vec=0) { 
 		if(vec==0) {
-			vec = &fBeam;
+			vec = GetBeamDirection();
 		}
 		double tmp = 0;
 		double gamma = 1/(sqrt(1-pow(beta,2)));
@@ -83,12 +82,20 @@ class TTigressHit : public TGRSIDetectorHit {
 		return tmp;
 	}
 
-	inline int GetSegmentMultiplicity()		           { return fSegments.size(); }	//!<!
-	inline int GetBGOMultiplicity()			           { return fBgos.size();     }   //!<!
+
+
+	int GetSegmentMultiplicity()		  const      { return fSegments.size(); }	//!<!
+	int GetNSegments()		            const      { return fSegments.size(); }	//!<!
+	int GetBGOMultiplicity()			    const      { return fBgos.size();     }   //!<!
+	int GetNBGOs()			              const      { return fBgos.size();     }   //!<!
 	using TGRSIDetectorHit::GetSegment;
-	inline TGRSIDetectorHit& GetSegment(const int &i) { return fSegments.at(i);  }   //!<!
-	inline TGRSIDetectorHit& GetBGO(const int &i)	  { return fBgos.at(i);	     }   //!<!
-	inline TGRSIDetectorHit& GetCore()                { return *this;	           }   //!<!
+	TGRSIDetectorHit& GetSegment(int &i)       { return fSegments.at(i);  }   //!<!
+	TGRSIDetectorHit& GetBGO( int &i)	         { return fBgos.at(i);	     }   //!<!
+	TGRSIDetectorHit& GetCore()                { return *this;	           }   //!<!
+	
+  TGRSIDetectorHit GetSegment(int &i) const { return fSegments.at(i);  }   //!<!
+	TGRSIDetectorHit GetBGO( int &i)	   const { return fBgos.at(i);	     }   //!<!
+	TGRSIDetectorHit GetCore()          const { return *this;	           }   //!<!
 
 	void CheckFirstHit(int charge,int segment);								               //!<!
 

@@ -1,6 +1,6 @@
 # GRSISort
 
-A lean, mean, sorting machine. 
+A lean, mean, sorting machine.    
 
 **For Update Information** Please Join the [Analysis_User](https://github.com/orgs/GRIFFINCollaboration/teams/analysis_users) team 
 

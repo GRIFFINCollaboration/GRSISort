@@ -49,8 +49,11 @@ class TGRSIDetector : public TDetector	{
 
 		//  void Init();
 
+
 	protected:
 		virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
+
+  private:
 
 /// \cond CLASSIMP
 		ClassDef(TGRSIDetector,1) //Abstract class for detector systems 
