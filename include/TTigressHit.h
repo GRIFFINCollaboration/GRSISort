@@ -60,7 +60,7 @@ class TTigressHit : public TGRSIDetectorHit {
 	/////////////////////////		/////////////////////////////////////
 	int GetCrystal() const;	          //{	return crystal;			}		//!<!
 	//int GetCrystal();
-	inline int GetInitialHit()		               {	return fFirstSegment;	}			//!<!
+	int GetInitialHit() const           {	return fFirstSegment;	}			//!<!
 	
 	void SetWavefit(TFragment&);
 	void SetWavefit();

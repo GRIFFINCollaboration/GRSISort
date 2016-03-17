@@ -22,8 +22,8 @@ bool TTigress::fSetBGOWave = false;
 
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
   TVector3 res = one.GetPosition() - two.GetPosition();
-
-  return ((std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()) &&
+                        // GetTime is in ns;  AddbackWindow is in 10's of ns.
+  return ((std::abs(one.GetTime() - two.GetTime()) < (TGRSIRunInfo::AddBackWindow()*10.0)) &&
       ((((one.GetInitialHit() < 5 && two.GetInitialHit() < 5) || (one.GetInitialHit() > 4 && two.GetInitialHit() > 4)) && res.Mag() < 54) ||  //not front to back
        (((one.GetInitialHit() < 5 && two.GetInitialHit() > 4) || (one.GetInitialHit() > 4 && two.GetInitialHit() < 5)) && res.Mag() < 105))); //    front to back
 }
@@ -73,6 +73,9 @@ void TTigress::Clear(Option_t *opt)	{
 
 void TTigress::Print(Option_t *opt)	const {
   printf("%lu tigress hits\n",fTigressHits.size());
+  for(unsigned int i=0;i<GetMultiplicity();i++) 
+     fTigressHits.at(i).Print(opt);
+
   return;
 }
 
@@ -169,7 +172,7 @@ void TTigress::BuildHits(){
         largestsegment = it->GetSegment(y).GetCharge();
       }
     }  
-		it->SetPosition(TTigress::GetPosition(it->GetDetector(),it->GetCrystal(),it->GetSegment()));
+		//it->SetPosition(TTigress::GetPosition(it->GetDetector(),it->GetCrystal(),it->GetSegment()));
     if(it->HasWave() &&TGRSIRunInfo::IsWaveformFitting() ) // this should really be moved to the grsioptions...  pcb.
       it->SetWavefit();
     it++;

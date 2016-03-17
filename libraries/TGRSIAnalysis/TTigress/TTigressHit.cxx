@@ -51,7 +51,9 @@ void TTigressHit::Print(Option_t *opt) const	{
   printf("\tCharge: %.2f\n",GetCharge());
   printf("\tEnergy: %.2f\n",GetEnergy());
   printf("\tTime:   %.2f\n",GetTime());
+  std::cout <<"\tTime:   "<< GetTimeStamp() <<"\n";
   printf("\thit contains %i segments.\n",GetNSegments());
+  printf("\tintial segment: %i\n",GetInitialHit());
   if(sopt.Contains("all")) {
      printf("Name           Charge\n");
     for(int x=0;x<GetNSegments();x++) {
@@ -97,7 +99,7 @@ void TTigressHit::SumHit(TTigressHit *hit) {
 
 TVector3 TTigressHit::GetChannelPosition(Double_t dist) const {
   //Returns the Position of the crystal of the current Hit.
-  return TTigress::GetPosition(GetDetector(),GetCrystal(),dist);
+  return TTigress::GetPosition(GetDetector(),GetCrystal(),GetInitialHit(),dist);
 }
 
 int TTigressHit::GetCrystal() const {
