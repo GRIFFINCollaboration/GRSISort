@@ -494,38 +494,41 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
 TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst, Bool_t fold, Bool_t group)
 {
    TGraphAsymmErrors* graph = new TGraphAsymmErrors();
-if(!fold && !group){
-   Int_t check = fAngleMap.size();
-           if(check == 0){
-              printf("Angles have not been assigned. \n");
-              printf("Therefore cannot create graph. \n");
-              return 0;
-            }
+
+   if(!fold && !group){
+      Int_t check = fAngleMap.size();
+      if(check == 0){
+      printf("Angles have not been assigned. \n");
+      printf("Therefore cannot create graph. \n");
+      return 0;
+      }
   }
-if(fold && !group){
-   Int_t check = fFoldedAngles.size();
-           if(check == 0){
-              printf("Folded Angles have not been assigned. \n");
-              printf("Therefore cannot create graph. \n");
-              return 0;
-            }
+
+   if(fold && !group){
+      Int_t check = fFoldedAngles.size();
+      if(check == 0){
+         printf("Folded Angles have not been assigned. \n");
+         printf("Therefore cannot create graph. \n");
+         return 0;
+      }
   }
-if(!fold && group){
-   Int_t check = fGroupAngles.size();
-           if(check == 0){
-              printf("Grouped Angles have not been assigned. \n");
-              printf("Therefore cannot create graph. \n");
-              return 0;
-            }
+   if(!fold && group){
+      Int_t check = fGroupAngles.size();
+      if(check == 0){
+         printf("Grouped Angles have not been assigned. \n");
+         printf("Therefore cannot create graph. \n");
+         return 0;
+      }
   }
-if(fold && group){
-   Int_t check = fFoldedGroupAngles.size();
-           if(check == 0){
-              printf("Folded group angles have not been assigned. \n");
-              printf("Therefore cannot create graph. \n");
-              return 0;
-            }
+   if(fold && group){
+      Int_t check = fFoldedGroupAngles.size();
+      if(check == 0){
+         printf("Folded group angles have not been assigned. \n");
+         printf("Therefore cannot create graph. \n");
+         return 0;
+         }
   }
+   
    Int_t n = hst->GetNbinsX();
    
    for (Int_t i=1;i<=n;i++) { // bin number loop
@@ -535,10 +538,10 @@ if(fold && group){
 
       // get associated angle
       Double_t angle=0;
-      if(!fold & !group) angle = fAngleMap[index];
-      else if(fold & !group) angle = fFoldedAngles[index];
-      else if(!fold & group) angle = fGroupAngles[index];
-      else if(fold & group)  angle = fFoldedGroupAngles[index];
+      if(!fold && !group) angle = fAngleMap[index];
+      else if(fold && !group) angle = fFoldedAngles[index];
+      else if(!fold && group) angle = fGroupAngles[index];
+      else if(fold && group)  angle = fFoldedGroupAngles[index];
 
       // get counts and error
       Double_t y = hst->GetBinContent(i);
@@ -587,17 +590,42 @@ Int_t TAngularCorrelation::GetAngularIndex(Int_t arraynum1, Int_t arraynum2)
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Checks that maps are consistent with each other
-///
+///need to input whether the angles are folded, grouped, or folded and grouped
 
-Bool_t TAngularCorrelation::CheckMaps()
+Bool_t TAngularCorrelation::CheckMaps(Bool_t fold, Bool_t group)
 {
    Bool_t result = kTRUE; // result to return
-
-   if (fAngleMap.size()!=fWeights.size()) {
-      printf("fAngleMap and fWeights do not have the same size.\n");
-      printf("fAngleMap size is: %i\n",(Int_t) fAngleMap.size());
-      printf("fWeights size is: %i\n",(Int_t) fWeights.size());
-      result = kFALSE;
+   if(!fold && !group){
+      if (fAngleMap.size()!=fWeights.size()) {
+         printf("fAngleMap and fWeights do not have the same size.\n");
+         printf("fAngleMap size is: %i\n",(Int_t) fAngleMap.size());
+         printf("fWeights size is: %i\n",(Int_t) fWeights.size());
+         result = kFALSE;
+      }
+   }
+   if(fold && !group){
+      if (fFoldedAngles.size()!=fFoldedAngularWeights.size()) {
+         printf("fFoldedAngles and fFoldedAngularWeights do not have the same size.\n");
+         printf("fFoldedAngle size is: %i\n",(Int_t) fFoldedAngles.size());
+         printf("fFoldedAngularWeights size is: %i\n",(Int_t) fFoldedAngularWeights.size());
+         result = kFALSE;
+      }
+   }
+   if(!fold && group){
+      if (fGroupAngles.size()!=fGroupWeights.size()) {
+         printf("fGroupAngles and fGroupWeights do not have the same size.\n");
+         printf("fGroupAngles size is: %i\n",(Int_t) fGroupAngles.size());
+         printf("fGroupWeights size is: %i\n",(Int_t) fGroupWeights.size());
+         result = kFALSE;
+      }
+   }
+   if(fold && group){
+      if (fFoldedGroupAngles.size()!=fFoldedGroupWeights.size()) {
+         printf("fFoldedGroupAngles and fFoldedGroupWeights do not have the same size.\n");
+         printf("fFoldedGroupAngles size is: %i\n",(Int_t) fFoldedGroupAngles.size());
+         printf("fFoldedGroupWeights size is: %i\n",(Int_t) fFoldedGroupWeights.size());
+         result = kFALSE;
+      }
    }
    return result;
 }
@@ -609,11 +637,11 @@ Bool_t TAngularCorrelation::CheckMaps()
 void TAngularCorrelation::PrintIndexMap()
 {
    Int_t size = fIndexMapSize;
-     if(size == 0){
+   if(size == 0){
       printf("Indexes have not been assigned yet.\n");
       printf("Therefore cannot print map.\n");
       return;
-      }
+   }
 
    for (Int_t i=1;i<=size;i++)
    {
@@ -637,12 +665,13 @@ void TAngularCorrelation::PrintWeights()
 {
    Int_t size = fAngleMap.size();
    Int_t weight_size = fWeights.size();
-   if (size==0) {
+   if(size==0) {
       printf("The angle map hasn't been created yet.\n");
       printf("Therefore, can't print.\n");
       return;
    }
-   if (weight_size==0) {
+
+   if(weight_size==0) {
       printf("The weights haven't been calculated yet.\n");
       printf("Therefore, can't print.\n");
       return;
@@ -746,18 +775,23 @@ void TAngularCorrelation::PrintAngleMap()
 void TAngularCorrelation::PrintFoldedAngleMap()
 {
    Int_t size = fFoldedAngles.size();
+   Int_t weight_size = fFoldedAngularWeights.size();
 
    if(size == 0){
       printf("Folded angles have not been assigned yet.\n");
       printf("Therefore cannot print map.\n");
       return;
       }
-
-  printf("--------------------------------------------------------\n");
-   printf("||  Fold     |     cos(angle)   |        Weights     ||\n");
+    if(weight_size == 0){
+     printf("Weights have not been generated yet.\n");
+     printf("Therefore cannot print map.\n");
+     return;
+     }
+   printf("--------------------------------------------------------\n");
+   printf("||  Fold     |     Angle(RAD)   |        Weights     ||\n");
    printf("--------------------------------------------------------\n");
    for (Int_t i=0;i<size;i++) {
-      printf("||  %-7i  |  %15.4f  |  %-15.4f  ||\n",i,GetFoldedAngleFromIndex(i),GetFoldedAngleWeightsFromIndex(i));
+      printf("||  %-7i  |  %15.4f  |  %-15.4f  ||\n",i,GetFoldedAngleFromIndex(i),GetFoldedAngleWeightFromIndex(i));
    }
    printf("--------------------------------------------------------\n");
 
@@ -772,24 +806,51 @@ void TAngularCorrelation::PrintFoldedAngleMap()
 void TAngularCorrelation::PrintFoldedGroupAngleMap()
 {
    Int_t size = fFoldedGroupAngles.size();
+   Int_t weight_size = fFoldedGroupWeights.size();
 
    if(size == 0){
      printf("Folded angles have not been assigned yet.\n");
      printf("Therefore cannot print map.\n");
      return;
      }
+    if(weight_size == 0){
+     printf("Weights have not been generated yet.\n");
+     printf("Therefore cannot print map.\n");
+     return;
+     }
 
    printf("--------------------------------------------------------\n");
-   printf("||  Fold     |     cos(angle)   |       Weights       ||\n");
+   printf("||  Fold     |     Angle(RAD)   |       Weights       ||\n");
    printf("--------------------------------------------------------\n");
    for (Int_t i=0;i<size;i++) {
-      printf("||  %-7i  |  %15.4f  |  %-15.4f  ||\n",i,GetFoldedGroupAngleFromIndex(i),GetFoldedGroupWeightsFromIndex(i));
+      printf("||  %-7i  |  %15.4f  |  %-15.4f  ||\n",i,GetFoldedGroupAngleFromIndex(i),GetFoldedGroupWeightFromIndex(i));
    }
    printf("--------------------------------------------------------\n");
 
    return;
 }
+////////////////////////////////////////////////////////////////////////////////
+/// Prints map of angular index vs. Folded Index
 
+void TAngularCorrelation::PrintFoldedAngularIndexes()
+{
+   Int_t size = fFoldedAngularIndexes.size();
+    if(size == 0){
+      printf("Folded angles have not been assigned yet.\n");
+      printf("Therefore cannot print map.\n");
+      return;
+      }
+
+   printf("---------------------------------------------\n");
+   printf("||  Angular index  |  Folded Index  ||\n");
+   printf("---------------------------------------------\n");
+   for (Int_t i=0;i<size;i++) {
+      printf("||  %-13i  |  %-19.4f  ||\n",i,GetFoldedAngularIndex(i));
+   }
+   printf("---------------------------------------------\n");
+
+   return;
+}
 ////////////////////////////////////////////////////////////////////////////////
 /// Prints map of angular index vs. Folded Index
 
@@ -868,12 +929,14 @@ std::vector<Double_t> TAngularCorrelation::GenerateAngleMap(std::vector<Int_t> &
 ////////////////////////////////////////////////////////////////////////////////
 /// Creates map of weights vs. angular index
 ///
-/// \param[in] arraynumbers Vector of array numbers used in this experiment
+/// \param[in] arraynumbers Vector of array numbers used in this experiment 
 /// \param[in] distances Vector of detector distances for those array numbers
 /// \param[in] indexmap Index map (probably created with GenerateIndexMap)
 ///
 /// The indices for the index map start from zero, so when using array numbers
 /// (which start from one) as input for those indices, you need to subtract one.
+///
+///This function is called by GenerateMaps()
 
 std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::map<Int_t,std::map<Int_t,Int_t>> &indexmap)
 {
@@ -914,18 +977,16 @@ std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arra
    return weights;
 }
 ////////////////////////////////////////////////////////////////////////////////
-/// Creates map of group weights vs. angular index
+/// Creates map of modified weights vs. angular index
 ///
-/// \param[in] arraynumbers Vector of array numbers used in this experiment
-/// \param[in] distances Vector of detector distances for those array numbers
-/// \param[in] indexmap Index map (probably created with GenerateIndexMap)
-///
-/// The indices for the index map start from zero, so when using array numbers
-/// (which start from one) as input for those indices, you need to subtract one.
+/// \param[in] index Vector (can be either group vector (AssignGroups()) or fold vector(GenerateFoldedAngles())
+/// \param[in] weight vector (created by GenerateWeights() or GenerateModifiedWeights(groups)
+/// 
+///This function is called by GenerateMaps() and GenerateGroupMaps()
 
-std::vector<Int_t> TAngularCorrelation::GenerateGroupWeights(std::vector<Int_t> &group, std::vector<Int_t> &weights)
+std::vector<Int_t> TAngularCorrelation::GenerateModifiedWeights(std::vector<Int_t> &index, std::vector<Int_t> &weights)
 {
-   std::vector<Int_t> groupweights; // vector to return
+   std::vector<Int_t> modifiedweights; // vector to return
   
 
    // get weights size
@@ -935,73 +996,30 @@ std::vector<Int_t> TAngularCorrelation::GenerateGroupWeights(std::vector<Int_t> 
    // find number of groups
    Int_t max = 0;
    for (Int_t i=0;i<size;i++) {
-       if (group[i]>max) max = group[i];
+       if (index[i]>max) max = index[i];
     }
   
    //declare group array and fill with zeros
-   Int_t groupArray[max];
+   Int_t tempArray[max];
      for(Int_t i=0; i<=max; i++){
-         groupArray[i]=0;
+         tempArray[i]=0;
       }
 
   //iterate over angular index to look for same groups 
    for (Int_t i=0; i<size; i++){
-        Int_t thisgroup = group[i];
-        groupArray[thisgroup] = groupArray[thisgroup] + weights[i]; 
+        Int_t thisIndex = index[i];
+        tempArray[thisIndex] = tempArray[thisIndex] + weights[i]; 
     }
   
    // initialize vector
    for (Int_t i=0;i<=max;i++) {
-      groupweights.push_back(groupArray[i]);
+      modifiedweights.push_back(tempArray[i]);
    }
    
   
-  return groupweights;
+  return modifiedweights;
 }
-////////////////////////////////////////////////////////////////////////////////
-/// Creates map of folded weights vs. folds
-///
-/// \param[in] 
-/// \param[in] 
-/// \param[in] 
-///
-/// The indices for the index map start from zero, so when using array numbers
-/// (which start from one) as input for those indices, you need to subtract one.
 
-std::vector<Int_t> TAngularCorrelation::GenerateFoldedWeights(std::vector<Int_t> &folds, std::vector<Int_t> &weights)
-{
-   std::vector<Int_t> foldweights; // vector to return
-  
-
-   // get weights size
-   Int_t size = weights.size();
-
-   
-   // find number of angles
-   Int_t max = 0;
-   for (Int_t i=0;i<size;i++) {
-        if (folds[i]>max) max = folds[i];
-   }
-  
-   //declare group array and fill with zeros
-   Int_t foldArray[max];
-   for(Int_t i=0; i<=max; i++){
-       foldArray[i]=0;
-   }
-
-   //iterate over angular index to look for same groups 
-   for (Int_t i=0; i<size; i++){
-        Int_t thisfold = folds[i];
-       foldArray[thisfold] = foldArray[thisfold] + weights[i];  
-   }
-  
-   // initialize vector
-   for (Int_t i=0;i<=max;i++) {
-     foldweights.push_back(foldArray[i]);
-   }
-
-   return foldweights;
-}
 ////////////////////////////////////////////////////////////////////////////////
 /// Creates map of angle pair vs. angular index
 ///
@@ -1009,7 +1027,8 @@ std::vector<Int_t> TAngularCorrelation::GenerateFoldedWeights(std::vector<Int_t>
 /// \param[in] distances Vector of detector distances for those array numbers
 /// \param[in] anglemap Angle map (probably created with GenerateAngleMap
 ///
-
+///This function is called by GenerateMaps()
+///
 std::map<Int_t,std::map<Int_t,Int_t>> TAngularCorrelation::GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap)
 {
    // initialize map
@@ -1059,19 +1078,29 @@ std::map<Int_t,std::map<Int_t,Int_t>> TAngularCorrelation::GenerateIndexMap(std:
 ////////////////////////////////////////
 /// Assign Groups for Angular Indexes
 ///
-/// \param[in] group vector of assigned groups for angular indexes
-/// \param[in] anglemap
+/// \param[in] group vector of assigned groups for angular indexes (this is user input)
+/// \param[in] anglemap(this is generated by GenerateAngleMap())
+///
+///This function is called by GenerateGroupMaps()
+///
 
 std::vector<Int_t> TAngularCorrelation::AssignGroups(std::vector<Int_t> &group, std::vector<Double_t> &anglemap)
 {
    std::vector<Int_t> groups; // vector to return
 
    // get number of group entries
-  Int_t size = group.size();
+   Int_t size = group.size();
+   Int_t angle_size = anglemap.size();
 
-// basic consistency check
-  if (size!=(Int_t) anglemap.size()) {     
- } 
+   //basic consistency check
+   if(size!=(Int_t) angle_size) { 
+      if(size <  angle_size){
+         printf("not all angles have been assigned a group.\n");  
+      }
+      if(size > angle_size){
+         printf("not all groups have been assigned an angle.\n");
+      }
+   } 
    
    // initialize group vector
    for (Int_t i=0;i<size;i++) {
@@ -1081,10 +1110,13 @@ std::vector<Int_t> TAngularCorrelation::AssignGroups(std::vector<Int_t> &group, 
    return groups;
 }
 ////////////////////////////////////////
-/// Assign average angles for groups
+/// Assign angles for groups
 ///
-/// \param[in] groupangle vector as assigned by user
-/// \param[in] groupweights vector for consistancy check
+/// \param[in] groupangle vector (user input)
+/// \param[in] groupweights vector for consistancy check(from GenerateGroupWeights())
+///
+///This function is called by GenerateGroupMaps()
+///
 
 std::vector<Double_t> TAngularCorrelation::AssignGroupAngles(std::vector<Double_t> &groupangles, std::vector<Int_t> &groupweights)
 {
@@ -1107,10 +1139,12 @@ std::vector<Double_t> TAngularCorrelation::AssignGroupAngles(std::vector<Double_
 }
 ////////////////////////////////////////
 /// Generate Folded Angles
-///gives Cos(RADIAN) angles out for each folded index
+///gives angles out for each folded index in radians
 ///
 /// \param[in] anglemap (can be for grouped or ungrouped anglular indexes)
-
+///
+///This function is called by GenerateMaps() and GenerateGroupMaps()
+///
 
 std::vector<Double_t> TAngularCorrelation::GenerateFoldedAngles(std::vector<Double_t> &anglemap)
 {
@@ -1146,38 +1180,41 @@ std::vector<Double_t> TAngularCorrelation::GenerateFoldedAngles(std::vector<Doub
         Bool_t alreadyclaimed = kFALSE;
 
       for (Int_t m=0; m<folds.size(); m++) {  
-           if(TMath::Abs(fold_angle-folds[m])<0.00005){//look for duplicated angles in the fold array 
+           if(TMath::Abs(fold_angle-cos(folds[m]))<0.00005){//look for duplicated angles in the fold array 
            alreadyclaimed = kTRUE;
            break;
           }
        }
-     if (!alreadyclaimed){
-         folds.push_back(fold_angle); 
-        
-       } 
+      if(!alreadyclaimed){
+         Double_t rad_angle = acos(fold_angle);
+         folds.push_back(rad_angle); 
+      } 
      
             
   }
-  
-  
+
   std::sort(folds.begin(),folds.end()); 
 
    return folds;
 }
 
 ////////////////////////////////////////
-/// Assign Groups for Angular Indexes
+/// Generated Folded Indexes
 ///
-/// \param[in] group vector of assigned groups for angular indexes
-/// \param[in] anglemap
+/// \param[in] folds vector of the folded angles (created by GenerateFoldedAngles())
+/// \param[in] anglemap(created by GenerateAngleMap() (for un-grouped indexes) or by AssignGroupAngles() (for grouped indexes))
+///
+///This function is called by GenerateMaps() and by GenerateGroupMaps()
+///
 
 std::vector<Int_t> TAngularCorrelation::GenerateFoldedIndexes(std::vector<Double_t> &folds, std::vector<Double_t> &anglemap)
 {
    std::vector<Int_t> fold_indexes; // vector to return
 
   // get sizes of fold and angle vectors
-  Int_t fold_size = folds.size();
-  Int_t angle_size = anglemap.size();
+   Int_t fold_size = folds.size();
+   printf("size is %i\n", fold_size);
+   Int_t angle_size = anglemap.size();
 
   // itterate through angle map to find abs(cos(angle)
    for(Int_t i=0;i<angle_size;i++) {
@@ -1186,8 +1223,9 @@ std::vector<Int_t> TAngularCorrelation::GenerateFoldedIndexes(std::vector<Double
     
       //itterate through folds
       for(Int_t j=0; j<fold_size; j++){
-         Double_t fold_angle = folds[j];
-         if(TMath::Abs(fold_angle-cos_angle)<0.00005){//compare abs(cos(angle)) to fold_Angles to find matches
+         Double_t rad_angle = folds[j];
+         Double_t fold_angle = cos(rad_angle);
+         if(TMath::Abs(fold_angle-cos_angle)<0.0005){//compare abs(cos(angle)) to fold_Angles to find matches
             fold_indexes.push_back(j);//assign folds 
             }
          }
@@ -1229,17 +1267,19 @@ Int_t TAngularCorrelation::GenerateMaps(std::vector<Int_t> &arraynumbers, std::v
    fWeights = GenerateWeights(arraynumbers,distances,fIndexMap);
    fFoldedAngles = GenerateFoldedAngles(fAngleMap);
    fFoldedAngularIndexes = GenerateFoldedIndexes(fFoldedAngles, fAngleMap);
-   fFoldedAngularWeights = GenerateFoldedWeights(fFoldedAngularIndexes, fWeights);
+   fFoldedAngularWeights = GenerateModifiedWeights(fFoldedAngularIndexes, fWeights);
 
    return fNumIndices;
 }
 ////////////////////////////////////////////////////////////////////////////////
-/// Creates maps of angle pair vs. angular index and angular index vs. opening angle and group assignment vs. angular index.
+/// Creates maps for Grouped Angular Indexes
+///Including group angle versus group index and angular index versus group index
 ///
 /// \param[in] arraynumbers Vector of array numbers used in this experiment
 /// \param[in] distances Vector of detector distances for those array numbers
+/// \param[in] group Vector (user input)
+/// \param[in] groupangles Vector (user input)
 ///
-
 Int_t TAngularCorrelation::GenerateGroupMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Int_t> &group, std::vector<Double_t> &groupangles)
 {
    // basic consistency check
@@ -1265,11 +1305,11 @@ Int_t TAngularCorrelation::GenerateGroupMaps(std::vector<Int_t> &arraynumbers, s
    fIndexMap = GenerateIndexMap(arraynumbers,distances,fAngleMap);
    fWeights = GenerateWeights(arraynumbers,distances,fIndexMap);
    fGroups = AssignGroups(group, fAngleMap);
-   fGroupWeights = GenerateGroupWeights(group, fWeights);
+   fGroupWeights = GenerateModifiedWeights(group, fWeights);
    fGroupAngles = AssignGroupAngles(groupangles, fGroupWeights);
    fFoldedGroupAngles = GenerateFoldedAngles(fGroupAngles);
    fFoldedGroupIndexes = GenerateFoldedIndexes(fFoldedGroupAngles, fGroupAngles);
-   fFoldedGroupWeights = GenerateFoldedWeights(fFoldedGroupIndexes, fGroupWeights);
+   fFoldedGroupWeights = GenerateModifiedWeights(fFoldedGroupIndexes, fGroupWeights);
    return fNumIndices;
 }
 
@@ -1334,7 +1374,7 @@ Int_t TAngularCorrelation::GenerateMaps(Int_t detectors, Int_t distance)
 
    return val;
 }
-
+////////////////////////////////////////////////////////////////////
 /// Updates index correlation based on peak array
 ///
 
@@ -1469,34 +1509,101 @@ TPeak* TAngularCorrelation::GetPeak(Int_t index)
 /// \param[in] hst histogram
 ///
 
-TH1D* TAngularCorrelation::DivideByWeights(TH1* hst)
+TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
 {
-   Int_t size = this->GetGroupWeightsSize();
+   if(!fold && !group){
+      Int_t size = this->GetWeightsSize();
 
-   // consistency/stability checks
-   if (size==0) {
-      printf("You haven't created the weights yet. Please use the GenerateMaps function to do so.\n");
-      return 0x0;
-   }
-   if (size!=hst->GetNbinsX()) {
-      printf("Warning: size of weights array is different than number of bins in %s\n",hst->GetName());
-   }
-
-   // this loop is just for checking to make sure all indices are in the weight vector
-   for (Int_t i=1;i<=hst->GetNbinsX();i++) {
-      Int_t index = hst->GetBinLowEdge(i);
-      if (index>=size) {
-         printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
+     // consistency/stability checks
+      if(size==0) {
+         printf("You haven't created the weights yet. Please use the GenerateMaps function to do so.\n");
          return 0x0;
       }
-   }  
+      if (size!=hst->GetNbinsX()) {
+         printf("Warning: size of weights array is different than number of bins in %s\n",hst->GetName());
+      }
+      // this loop is just for checking to make sure all indices are in the weight vector
+      for(Int_t i=1;i<=hst->GetNbinsX();i++) {
+         Int_t index = hst->GetBinLowEdge(i);
+         if (index>=size) {
+            printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
+            return 0x0;
+         }
+      }  
+  }
 
+   if(fold && !group){
+      Int_t size = this->GetFoldedAngularWeightsSize();
+
+     // consistency/stability checks
+      if(size==0) {
+         printf("You haven't created the weights yet. Please use the GenerateMaps function to do so.\n");
+         return 0x0;
+      }
+      if (size!=hst->GetNbinsX()) {
+         printf("Warning: size of weights array is different than number of bins in %s\n",hst->GetName());
+      }
+   
+   // this loop is just for checking to make sure all indices are in the weight vector
+      for(Int_t i=1;i<=hst->GetNbinsX();i++) {
+         Int_t index = hst->GetBinLowEdge(i);
+         if (index>=size) {
+            printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
+            return 0x0;
+         }
+      }  
+  }
+   if(!fold && group){
+      Int_t size = this->GetGroupWeightsSize();
+
+     // consistency/stability checks
+      if(size==0) {
+         printf("You haven't created the weights yet. Please use the GenerateGroupMaps function to do so.\n");
+         return 0x0;
+      }
+      if (size!=hst->GetNbinsX()) {
+         printf("Warning: size of weights array is different than number of bins in %s\n",hst->GetName());
+      }
+   // this loop is just for checking to make sure all indices are in the weight vector
+      for(Int_t i=1;i<=hst->GetNbinsX();i++) {
+         Int_t index = hst->GetBinLowEdge(i);
+         if (index>=size) {
+            printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
+            return 0x0;
+         }
+      }  
+  }
+   if(fold && group){
+      Int_t size = this->GetFoldedGroupWeightsSize();
+
+     // consistency/stability checks
+      if(size==0) {
+         printf("You haven't created the weights yet. Please use the GenerateGroupMaps function to do so.\n");
+         return 0x0;
+      }
+      if (size!=hst->GetNbinsX()) {
+         printf("Warning: size of weights array is different than number of bins in %s\n",hst->GetName());
+      }
+    // this loop is just for checking to make sure all indices are in the weight vector
+      for(Int_t i=1;i<=hst->GetNbinsX();i++) {
+         Int_t index = hst->GetBinLowEdge(i);
+         if (index>=size) {
+            printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
+            return 0x0;
+         }
+      }  
+  }
    // now that we're satisified everything is kosher, divide the bins.
-   for (Int_t i=1;i<=hst->GetNbinsX();i++) {
+   for(Int_t i=1;i<=hst->GetNbinsX();i++) {
       Int_t index = hst->GetBinLowEdge(i);
+      Double_t found_weight = 0;
+      if(!fold && !group) found_weight = this->GetWeightFromIndex(index);
+      if(fold && !group) found_weight = this->GetFoldedAngleWeightFromIndex(index);
+      if(!fold && group) found_weight = this->GetGroupWeightFromIndex(index);
+      if(fold && group) found_weight = this->GetFoldedGroupWeightFromIndex(index);  
       Double_t content = hst->GetBinContent(i);
       Double_t error = hst->GetBinError(i);
-      Double_t weight = this->GetGroupWeightFromIndex(index);
+      Double_t weight = found_weight;
       Double_t newcontent = content/weight;
       Double_t newerror = error/weight;
       hst->SetBinContent(i,newcontent);
@@ -1510,13 +1617,15 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst)
 /// Divides index correlation by weights listed in weight array
 ///
 
-void TAngularCorrelation::DivideByWeights()
+/*void TAngularCorrelation::DivideByWeights()
 {
    TH1D* hst = DivideByWeights(fIndexCorrelation);
+   Bool_t fold = kFALSE;
+   Bool_t group = kFALSE;
    if (hst!=0x0) fIndexCorrelation=hst;
    return;
 }
-
+*///not sure how to get this function to work with the new bool's added
 ////////////////////////////////////////////////////////////////////////////////
 /// Displays diagnostics based on peak array
 ///

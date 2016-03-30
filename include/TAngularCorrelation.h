@@ -64,13 +64,14 @@ class TAngularCorrelation : public TObject {
       Double_t GetGroupAngleFromIndex(Int_t index) { return fGroupAngles[index]; } // returns the average angle for each group
       Double_t GetFoldedAngleFromIndex(Int_t index) { return fFoldedAngles[index]; } // returns the folded angle value for each angular index
       Double_t GetFoldedAngularIndex(Int_t index) { return fFoldedAngularIndexes[index]; } // returns the folded index for each angular index
-      Double_t GetFoldedAngleWeightsFromIndex(Int_t index) { return fFoldedAngularWeights[index]; } //returns the weight for each folded angle
+      Double_t GetFoldedAngleWeightFromIndex(Int_t index) { return fFoldedAngularWeights[index]; } //returns the weight for each folded angle
       Double_t GetFoldedGroupAngleFromIndex(Int_t index) { return fFoldedGroupAngles[index]; } // returns the average angle for each group 
       Double_t GetFoldedGroupIndex(Int_t index) { return fFoldedGroupIndexes[index]; } // returns the folded index value for each group index
-       Double_t GetFoldedGroupWeightsFromIndex(Int_t index) { return fFoldedGroupWeights[index]; } // returns the weight for each folded group
+      Double_t GetFoldedGroupWeightFromIndex(Int_t index) { return fFoldedGroupWeights[index]; } // returns the weight for each folded group
       Int_t GetWeightsSize() { return fWeights.size();}
       Int_t GetGroupWeightsSize() { return fGroupWeights.size();}
-
+      Int_t GetFoldedAngularWeightsSize() {return fFoldedAngularWeights.size();}
+      Int_t GetFoldedGroupWeightsSize() {return fFoldedGroupWeights.size();}
       // simple setters
       void Set2DSlice(TH2D* hst) { f2DSlice = hst; }
       void SetIndexCorrelation(TH1D* hst) { } //fIndexCorrelation = fIndexCorrelation; }
@@ -83,18 +84,18 @@ class TAngularCorrelation : public TObject {
       TH2D* Create2DSlice(TObjArray* hst, Double_t min, Double_t max, Bool_t fold, Bool_t group);
       TH1D* IntegralSlices(TH2* hst, Double_t min, Double_t max);
       TH1D* FitSlices(TH2* hst,TPeak* peak,Bool_t visualization);
-      TH1D* DivideByWeights(TH1* hst);
-      void DivideByWeights();
+      TH1D* DivideByWeights(TH1* hst, Bool_t fold, Bool_t group);
+     // void DivideByWeights();
       void UpdatePeak(Int_t index,TPeak* peak);
       void ScaleSingleIndex(TH1* hst, Int_t index, Int_t factor);
       TGraphAsymmErrors* CreateGraphFromHst(TH1* hst, Bool_t fold, Bool_t group);
-    //  TGraphAsymmErrors* CreateGraphFromHst() { return CreateGraphFromHst(fIndexCorrelation); }
+      TGraphAsymmErrors* CreateGraphFromHst() { return CreateGraphFromHst(fIndexCorrelation, kFALSE, kFALSE); }
       void UpdateIndexCorrelation();
       void UpdateDiagnostics();
       void DisplayDiagnostics(TCanvas* c_diag);
 
       // map functions
-      Bool_t CheckMaps(); // checks to make sure fIndexMap, fAngleMap, and fWeights are consistent 
+      Bool_t CheckMaps(Bool_t fold, Bool_t group); // checks to make sure fIndexMap, fAngleMap, and fWeights are consistent 
       void PrintIndexMap(); // print the map
       void PrintAngleMap(); // print the map
       void PrintWeights(); // print the map
@@ -110,8 +111,7 @@ class TAngularCorrelation : public TObject {
       static std::vector<Double_t> GenerateAngleMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances);
       static std::map<Int_t,std::map<Int_t,Int_t>> GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap);
       static std::vector<Int_t> GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::map<Int_t,std::map<Int_t,Int_t>> &indexmap); // with input of array number array (crystals that were present in data collection), generates the weights for each angular index (no input generates weights for 16 detectors)
-static std::vector<Int_t> GenerateGroupWeights(std::vector<Int_t> &group, std::vector<Int_t> &weights);
-static std::vector<Int_t> GenerateFoldedWeights(std::vector<Int_t> &folds, std::vector<Int_t> &weights);
+      static std::vector<Int_t> GenerateModifiedWeights(std::vector<Int_t> &index, std::vector<Int_t> &weights);
       Int_t GenerateGroupMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Int_t> &group, std::vector<Double_t> &groupangles);
       Int_t GenerateMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances);
       Int_t GenerateMaps(Int_t detectors, Int_t distance);
