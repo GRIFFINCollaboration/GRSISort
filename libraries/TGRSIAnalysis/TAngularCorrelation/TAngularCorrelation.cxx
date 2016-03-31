@@ -550,8 +550,7 @@ TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst, Bool_t fold
 
       // fill graph with point
       Int_t graphn = graph->GetN();
-      if(!fold) graph->SetPoint(graphn,TMath::Cos(angle),y);
-      else if(fold) graph->SetPoint(graphn,angle,y);
+      graph->SetPoint(graphn,TMath::Cos(angle),y);
       graph->SetPointError(graphn,0,0,yerr,yerr);
    } // bin number loop end
 
@@ -1213,7 +1212,6 @@ std::vector<Int_t> TAngularCorrelation::GenerateFoldedIndexes(std::vector<Double
 
   // get sizes of fold and angle vectors
    Int_t fold_size = folds.size();
-   printf("size is %i\n", fold_size);
    Int_t angle_size = anglemap.size();
 
   // itterate through angle map to find abs(cos(angle)
