@@ -29,9 +29,9 @@ void TSharcHit::Copy(TObject& rhs) const  {
   static_cast<const TGRSIDetectorHit&>(fBackHit).Copy(static_cast<TObject&>(static_cast<TSharcHit&>(rhs).fBackHit));  
   static_cast<const TGRSIDetectorHit&>(fPadHit).Copy(static_cast<TObject&>(static_cast<TSharcHit&>(rhs).fPadHit));  
 
-  static_cast<TSharcHit&>(rhs).fDetectorNumber = fDetectorNumber;
-  static_cast<TSharcHit&>(rhs).fFrontStrip     = fFrontStrip;     
-  static_cast<TSharcHit&>(rhs).fBackStrip      = fBackStrip;       
+  //static_cast<TSharcHit&>(rhs).fDetectorNumber = fDetectorNumber;
+  //static_cast<TSharcHit&>(rhs).fFrontStrip     = fFrontStrip;     
+  //static_cast<TSharcHit&>(rhs).fBackStrip      = fBackStrip;       
 }                                       
 
 void TSharcHit::Clear(Option_t* options)	{
@@ -39,13 +39,13 @@ void TSharcHit::Clear(Option_t* options)	{
   fBackHit.Clear(options);        //
   fPadHit.Clear(options);         //
 
-  fDetectorNumber = -1;    //
-  fFrontStrip    = -1;    //
-  fBackStrip     = -1;    //
+  //fDetectorNumber = -1;    //
+  //fFrontStrip    = -1;    //
+  //fBackStrip     = -1;    //
 }
 
 void TSharcHit::Print(Option_t* options) const {
-  printf(DGREEN "[D/F/B] = %02i\t/%02i\t/%02i " RESET_COLOR "\n",GetDetectorNumber(),GetFrontStrip(),GetBackStrip());
+  printf(DGREEN "[D/F/B] = %02i\t/%02i\t/%02i " RESET_COLOR "\n",GetDetector(),GetFrontStrip(),GetBackStrip());
   //printf("Sharc hit charge: %02f\n",GetFrontCharge());
   //printf("Sharc hit energy: %f\n",GetDeltaE());
   //printf("Sharc hit time:   %f\n",GetDeltaT());
@@ -60,8 +60,14 @@ TVector3 TSharcHit::GetChannelPosition(Double_t dist) const {
    //the buildhits function now properly sets fPosition in the base class, for finer
    //position tweaks of the target, one should just use the static function in the 
    //sharc mother class.   pcb.
-  return TSharc::GetPosition(fDetectorNumber,fFrontStrip,fBackStrip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());
+
+  return TSharc::GetPosition(TGRSIDetectorHit::GetDetector(),
+                             TGRSIDetectorHit::GetSegment(),
+                             GetBack().GetSegment(),
+                             TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());
+  //return TSharc::GetPosition(fDetectorNumber,fFrontStrip,fBackStrip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());
 }
+
 
 Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
   TVector3 posOff; 
@@ -69,9 +75,14 @@ Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
   return (GetPosition()+posOff).Theta();
 }
 
+
+
 void TSharcHit::SetFront(const TFragment& frag) { 
   CopyFragment(frag);
-  SetPosition(TSharc::GetPosition(fDetectorNumber,fFrontStrip,fBackStrip,TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset())); 
+  //SetPosition(TSharc::GetPosition(TGRSIDetector::GetDetector(),
+  //                           TGRSIDetector::GetSegment(),
+  //                           GetBack()->GetSegment(),
+  //                           TSharc::GetXOffset(),TSharc::GetYOffset(),TSharc::GetZOffset());
 }
 
 void TSharcHit::SetBack(const TFragment& frag) { 

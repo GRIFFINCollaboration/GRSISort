@@ -417,6 +417,19 @@ Float_t TChannel::CalibrateENG(Float_t charge) {
 	return cal_chg;
 }
 
+double TChannel::CalibrateENG(double charge) {
+	///Returns the calibrated energy. The polynomial energy calibration formula is 
+	///applied to get the calibrated energy. This function does not use the 
+	///integration parameter.
+	if(fENGCoefficients.size() == 0)
+		return charge;
+	double cal_chg = fENGCoefficients[0];
+	for(size_t i = 1; i < fENGCoefficients.size(); i++){
+		cal_chg += fENGCoefficients[i]*  pow((charge),i);
+	}
+	return cal_chg;
+}
+
 double TChannel::CalibrateCFD(int cfd) {
 	///Calibrates the CFD properly.
 	return CalibrateCFD((double)cfd+gRandom->Uniform());

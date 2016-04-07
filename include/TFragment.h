@@ -102,7 +102,13 @@ public:
 
    virtual void	Clear(Option_t *opt = ""); //!<!
    virtual void Print(Option_t *opt = "") const; //!<!
-   
+  
+   virtual Int_t  GetDetector() const; //!<!
+   virtual Int_t  GetSegment() const;	 //!<!
+
+
+
+
    bool operator<(const TFragment& rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment& rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 

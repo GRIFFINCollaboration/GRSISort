@@ -170,6 +170,7 @@ class TChannel : public TNamed	{
 
       //void CalibrateFragment(TFragment*);
 
+      double  CalibrateENG(double);
       Float_t CalibrateENG(Float_t);
       Float_t CalibrateENG(int,int integration=0);
 

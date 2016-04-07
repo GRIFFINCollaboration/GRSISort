@@ -187,13 +187,13 @@ double TFragment::GetEnergy(size_t i) const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || !(Charge.size()>i))
       return 0.00;
-   if(chan->UseCalFileIntegration()) {
+   if(KValue.size()>i && KValue.at(i)>0) {
+     return chan->CalibrateENG((int)(Charge.at(i)),(int)KValue.at(i));
+   } else if(chan->UseCalFileIntegration()) {
       //printf("I am here\n");
      return chan->CalibrateENG((int)(Charge.at(i)),0);  // this will use the integration value
                                                         // in the TChannel if it exists.
    }
-   if(KValue.size()>i && KValue.at(i)>0)
-     return chan->CalibrateENG((int)(Charge.at(i)),(int)KValue.at(i));
    return chan->CalibrateENG((int)(Charge.at(i)));
 }
 
@@ -201,12 +201,11 @@ Float_t TFragment::GetCharge(size_t i) const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan || !(Charge.size()>i))
       return 0.00;
-   if(chan->UseCalFileIntegration()) {
-      return ((Float_t)Charge.at(i)+gRandom->Uniform())/((Float_t)chan->GetIntegration());// this will use the integration value
-   }                                                                                      // in the TChannel if it exists.
    if(KValue.size()>i && KValue.at(i)>0){
       return ((Float_t)Charge.at(i)+gRandom->Uniform())/((Float_t)KValue.at(i));// this will use the integration value
-   }
+   } else if(chan->UseCalFileIntegration()) {
+      return ((Float_t)Charge.at(i)+gRandom->Uniform())/((Float_t)chan->GetIntegration());// this will use the integration value
+   }                                                                                      // in the TChannel if it exists.
    return ((Float_t)Charge.at(i)+gRandom->Uniform());// this will use no integration value
 }
 
@@ -325,4 +324,33 @@ int TFragment::GetColor(Option_t *opt) const {
    };
    return -1;
 }
+
+
+int TFragment::GetDetector() const {
+	TChannel* channel = TChannel::GetChannel(ChannelAddress);
+	if(!channel) {
+		fprintf (stderr,"%s, failed to find channel for address 0x%08x",__PRETTY_FUNCTION__,GetAddress());
+		return -1;
+	}
+	//ClearMNEMONIC(&mnemonic);
+	//ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+  return channel->GetDetectorNumber(); //mnemonic.arrayposition;
+}
+
+int TFragment::GetSegment() const {
+	TChannel* channel = TChannel::GetChannel(ChannelAddress);
+	if(!channel) {
+		fprintf (stderr,"%s, failed to find channel for address 0x%08x",__PRETTY_FUNCTION__,GetAddress());
+		return -1;
+	}
+	//ClearMNEMONIC(&mnemonic);
+	//ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+  return channel->GetSegmentNumber(); //mnemonic.arrayposition;
+}
+
+
+
+
+
+
 
