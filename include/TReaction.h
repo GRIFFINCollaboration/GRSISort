@@ -61,7 +61,8 @@ public:
 	void InitReaction();
 	
 	// returns reaction input parameters
-	TNucleus *GetNucleus(int part) {	return fNuc[part];}	
+  const char *GetNameFull() { return Form("%s @ %.3f MeV/u",this->GetName(),fTLab[0]/fNuc[0]->GetA()); }
+  TNucleus *GetNucleus(int part) {	return fNuc[part];}	
 	double GetM(int part)			{  return fM[part];				}	
 	double GetExc()  					{  return fExc; 			    }
 	double GetQVal()  				{  return fQVal; 			    }

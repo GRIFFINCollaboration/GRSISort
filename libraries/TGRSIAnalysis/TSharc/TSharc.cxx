@@ -44,9 +44,11 @@ double TSharc::fXposDB     = +40.5;
 double TSharc::fYminDB     = -36.0;
 double TSharc::fZminDB     = +9.00;
 double TSharc::fZposUQ     = -66.5;
+double TSharc::fRmaxUQ     = +41.00;
 double TSharc::fRminUQ     = +9.00;
 double TSharc::fPminUQ     = +2.00; // degrees
 double TSharc::fZposDQ     = +74.5;
+double TSharc::fRmaxDQ     = +41.00;
 double TSharc::fRminDQ     = +9.00;
 double TSharc::fPminDQ     = +6.40; // degrees
 
@@ -80,70 +82,63 @@ TSharc::TSharc(const TSharc& rhs) : TGRSIDetector() {
   rhs.Copy(*this);
 }
 
+
+
 void TSharc::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-	//mnemonic->arraysubposition.compare(0,1,"?"): E = PAD, D = not a PAD
-	//mnemonic->collectedcharge.compare(0,1,"?"): P = front, else(N) = back
 	if(frag == NULL || mnemonic == NULL) {
 		return;
 	}
-	
 	if(mnemonic->arraysubposition.compare(0,1,"D") == 0) {
-		bool front = (mnemonic->collectedcharge.compare(0,1,"P") == 0);
-		//see if we already have this detector
-		for(size_t i = 0; i < fSharcHits.size(); ++i) {
-			if(fSharcHits[i].GetDetectorNumber() != mnemonic->arrayposition) {
-				continue;
-			}
-			if(front) {
-				//In the original any data with more/less than one front and one back entry was skipped.
-				//We could check here whether the front charge has already been set and remove the whole hit if that's the case (same goes for the back charge).
-				//We would also need to check at the very end whether both front and back have been set.
-				if(TMath::Abs(fSharcHits[i].GetBackCharge() - frag->GetCharge()) > 6000) { //naive charge cut keeps >99.9% of data.
-					//in the original code this fragment would just be ignored, so we return here, i.e. do the same
-					return;
-				}
-				//front strip
-				fSharcHits[i].SetFrontStrip(mnemonic->segment);
-				fSharcHits[i].SetFront(*frag);
-				return;
-			} else {
-				if(TMath::Abs(fSharcHits[i].GetFrontCharge() - frag->GetCharge()) > 6000) { //naive charge cut keeps >99.9% of data.
-					//in the original code this fragment would just be ignored, so we return here, i.e. do the same
-					return;
-				}
-				//back strip
-				fSharcHits[i].SetBackStrip(mnemonic->segment);
-				fSharcHits[i].SetBack(*frag);
-				return;
-			}
-		}
-		//reaching here means we haven't found this detector before so we create a new hit
-		TSharcHit hit; 
-		hit.SetDetectorNumber(mnemonic->arrayposition);
-		if(front) {
-			//front strip
-			hit.SetFrontStrip(mnemonic->segment);
-			hit.SetFront(*frag);
-		} else {
-			//back strip
-			hit.SetBackStrip(mnemonic->segment);
-			hit.SetBack(*frag);
-		}
-	} else if(mnemonic->arraysubposition.compare(0,1,"E") == 0) {
-		//pad
-		//see if we already have this detector
-		for(size_t i = 0; i < fSharcHits.size(); ++i) {
-			if(fSharcHits[i].GetDetectorNumber() != mnemonic->arrayposition) {
-				continue;
-			}
-			fSharcHits.at(i).SetPad(*frag);
-			return;
-		}
-		//reaching here means we haven't found this detector before so we create a new hit
-		TSharcHit hit; 
-		hit.SetDetectorNumber(mnemonic->arrayposition);
-		hit.SetPad(*frag);
-	}
+		if(mnemonic->collectedcharge.compare(0,1,"P") == 0) {
+      fFrontFragments.push_back(*frag);
+    } else {
+      fBackFragments.push_back(*frag);
+    }
+  } else if(mnemonic->arraysubposition.compare(0,1,"E") == 0) {
+    fPadFragments.push_back(*frag);
+  }
+}
+
+
+
+void TSharc::BuildHits() {
+  std::vector<TFragment>::iterator front;
+  std::vector<TFragment>::iterator back;
+  std::vector<TFragment>::iterator pad;
+  for(front=fFrontFragments.begin();front!=fFrontFragments.end();) {
+    bool front_used = false;
+    bool back_used  = false;
+    for(back=fBackFragments.begin();back!=fBackFragments.end();back++) {
+			if(front->GetDetector()==back->GetDetector()) {
+				if(TMath::Abs(front->GetCharge() - back->GetCharge()) <  6000) { 
+           //time gate ?
+           front_used = true;
+           back_used  = true;
+           break;
+        }
+      }
+    }
+    if(front_used && back_used) {
+      TSharcHit hit;
+      hit.SetFront(*front);
+      hit.SetBack(*back);
+      fSharcHits.push_back(hit);
+      front = fFrontFragments.erase(front);
+              fBackFragments.erase(back);
+    } else {
+      front++;
+    }
+  }
+  
+  for(size_t i=0;i<fSharcHits.size();i++) {
+    for(pad=fPadFragments.begin();pad!=fPadFragments.end();pad++) {
+	    if(fSharcHits.at(i).GetDetector() == pad->GetDetector()) {
+        fSharcHits.at(i).SetPad(*pad);
+        pad = fPadFragments.erase(pad);
+        break;
+      }
+    }
+  }
 }
 
 void TSharc::RemoveHits(std::vector<TSharcHit>* hits,std::set<int>* to_remove) {
@@ -158,6 +153,10 @@ void TSharc::Clear(Option_t *option) {
   TGRSIDetector::Clear(option);
   fSharcHits.clear();
   
+	fFrontFragments.clear(); //! 
+	fBackFragments.clear();  //! 
+	fPadFragments.clear();  //! 
+    
   if(!strcmp(option,"ALL")) { 
     fXoffset = 0.00;
     fYoffset = 0.00;
@@ -213,14 +212,14 @@ TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double
   else if(FrontDet>=13){ // backward (upstream) QQQ
     nrots = FrontDet-13;
     double z = fZposUQ;
-    double rho = fRminUQ + (FrontStr+0.5)*fRingPitch;    // [(+9.0) - (+41.0)] 
+    double rho = fRmaxUQ - (FrontStr+0.5)*fRingPitch;    // [(+9.0) - (+41.0)] 
     double phi = (fPminUQ + (BackStr+0.5)*fSegmentPitch)*TMath::Pi()/180.0;  // [(+2.0) - (+83.6)] 
     position.SetXYZ(rho*TMath::Sin(phi),rho*TMath::Cos(phi),z);   
   }
   else if(FrontDet<=4){ // forward (downstream) QQQ
     nrots = FrontDet-1;
     double z = fZposDQ;
-    double rho = fRminDQ + (FrontStr+0.5)*fRingPitch;    // [(+9.0) - (+41.0)] 
+    double rho = fRmaxDQ - (FrontStr+0.5)*fRingPitch;    // [(+9.0) - (+41.0)] 
     double phi = (fPminDQ + (BackStr+0.5)*fSegmentPitch)*TMath::Pi()/180.0;  // [(+6.4) - (+88.0)] 
     position.SetXYZ(rho*TMath::Sin(phi),rho*TMath::Cos(phi),z);    
   }  
