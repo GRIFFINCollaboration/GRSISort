@@ -18,6 +18,7 @@
 class TAngularCorrelation : public TObject {
    private:
       TH2D* f2DSlice; /// 2D histogram of angular index vs. gamma energy
+      TH2D* fModSlice; //2D histogram that is grouped, folded, or grouped and folded
       TH1D* fIndexCorrelation; /// 1D plot of counts vs. angular index
       TH1D* fChi2; /// 1D plot of chi^2 vs. angular index
       TH1D* fCentroid; /// 1D plot of centroid vs. angular index
@@ -82,6 +83,7 @@ class TAngularCorrelation : public TObject {
       // functions that do most of the work
       TH2D* Create2DSlice(THnSparse* hst, Double_t min, Double_t max, Bool_t fold, Bool_t group);
       TH2D* Create2DSlice(TObjArray* hst, Double_t min, Double_t max, Bool_t fold, Bool_t group);
+      TH2D* Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group);
       TH1D* IntegralSlices(TH2* hst, Double_t min, Double_t max);
       TH1D* FitSlices(TH2* hst,TPeak* peak,Bool_t visualization);
       TH1D* DivideByWeights(TH1* hst, Bool_t fold, Bool_t group);

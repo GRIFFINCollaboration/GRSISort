@@ -20,6 +20,7 @@ ClassImp(TAngularCorrelation)
 TAngularCorrelation::TAngularCorrelation()
 {
    f2DSlice = 0; //the 2Dslices made from Create2DSlices
+   fModSlice = 0;
    fIndexCorrelation = 0;// used the 1D histograms for a specific energy ranged used for FitSlices
    fIndexMapSize = 0; //number of indexes, never called in making the histograms
    fFolded = kFALSE; //not set yet
@@ -32,6 +33,7 @@ TAngularCorrelation::TAngularCorrelation()
 TAngularCorrelation::~TAngularCorrelation()
 {
    delete f2DSlice;
+   delete fModSlice;
    delete fIndexCorrelation;
 }
 
@@ -333,7 +335,168 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
      return f2DSlice;
    
 }
+TH2D* TAngularCorrelation::Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group)
+{
+   if(!fold&&!group){
+      printf("No folding or grouping selected.\n");
+      printf("Returning 2D slice.\n");
+      return 0;
+   }
+    ////consistancy check to make sure angle maps exist for folding
+   if(fold){
+         Int_t size = 0;
+         if(!group) size = fFoldedAngles.size();
+         else if(group) size = fFoldedGroupAngles.size();
+         if(size==0){
+            printf("Angle map has not been created yet.\n");
+            printf("Therefore cannot fold indexes.\n");
+            return 0;
+         }
+         printf("The indexes will be folded. \n");
+   }
+    ////consistancy check group assignments
+   if(group){
+      Int_t group_numbers = fGroups.size();  
+      Int_t angle_numbers = fAngleMap.size();
+     
+    //check for index map
+      if(angle_numbers == 0){
+         printf("Angle Map has not been defined yet.\n");
+         printf("Need Angle Map to assign groups. \n");
+         printf("Bailing out. \n");
+         return 0;
+      } 
+      //check for group assignments
+      if(group_numbers == 0){
+         printf("Groups have not been assigned yet.\n");
+         printf("Cannot group Angular Indexes. \n");
+         printf("Bailing out. \n");
+         return 0;
+      }
+       //consistancy check
+      if(group_numbers != angle_numbers){
+         if(group_numbers < angle_numbers){
+            printf("Not all angular indexes have been assigned a group. \n");
+            printf("Bailing out.\n");
+            return 0;
+         }
+         if(group_numbers > angle_numbers){
+            printf("Too many groups have been assigned, not enough angular indexes. \n");
+            printf("Bailing out. \n");
+            return 0;
+         }
+      }
+  
+      printf("Angular indexes will be grouped. \n");
+   }
+    //make the folded 2D slice
+   if(fold && !group){
+      Int_t bins = hst->GetNbinsY();
+      Int_t xmin = hst->GetXaxis()->GetBinLowEdge(1);
+      Int_t xmax = hst->GetXaxis()->GetBinUpEdge(bins);
+      Int_t ybins = fFoldedAngles.size();
+      const Char_t* hst2dname = hst->GetName();
+      const Char_t* hst2dtitle = hst->GetTitle(); 
+      
+      TH2D* foldslice = new TH2D(Form("%s_folded",hst2dname),Form("%s_folded",hst2dtitle),bins,xmin,xmax,ybins,0,ybins );//defines folded slice
 
+      for(Int_t i=0; i<bins; i++){
+         TH1D* tempfoldedslice=0;
+         tempfoldedslice = hst->ProjectionX("", i, i);
+         Double_t *foldedx = new Double_t[bins];
+         Double_t *foldedy = new Double_t[bins];
+         Double_t *content = new Double_t[bins];
+
+         for(Int_t j=1; j<=bins; j++){
+            foldedy[j-1] = GetFoldedAngularIndex(i);//gets folded indexes            
+            foldedx[j-1] = tempfoldedslice->GetBinCenter(j);
+            content[j-1] = tempfoldedslice->GetBinContent(j); 
+          } 
+              
+         foldslice->FillN(bins, foldedx, foldedy, content); 
+                  
+         // cleanup
+         delete tempfoldedslice;
+         delete [] foldedx;
+         delete [] foldedy;
+         delete [] content;
+      }  
+      foldslice = fModSlice;
+   }
+   //make grouped 2DSlice
+   if(group){
+      Int_t bins = hst->GetNbinsY();
+      Int_t xmin = hst->GetXaxis()->GetBinLowEdge(1);
+      Int_t xmax = hst->GetXaxis()->GetBinUpEdge(bins);
+      Int_t ybins = fGroupWeights.size();
+      const Char_t* hst2dname = hst->GetName();
+      const Char_t* hst2dtitle = hst->GetTitle();      
+   
+      TH2D* groupslice =  new TH2D(Form("%s_grouped",hst2dname),Form("%s_grouped",hst2dtitle),bins,xmin,xmax,ybins,0,ybins );//defines grouped slice
+
+      for(Int_t i=0; i<bins; i++){
+         TH1D* tempfoldedslice=0;
+         tempfoldedslice = hst->ProjectionX("", i, i);
+         Double_t *foldedx = new Double_t[bins];
+         Double_t *foldedy = new Double_t[bins];
+         Double_t *content = new Double_t[bins];
+
+         for(Int_t j=1; j<=bins; j++){
+             foldedy[j-1] = GetGroupFromIndex(i);//gets group indexes            
+             foldedx[j-1] = tempfoldedslice->GetBinCenter(j);
+             content[j-1] = tempfoldedslice->GetBinContent(j); 
+         } 
+              
+         groupslice->FillN(bins, foldedx, foldedy, content); 
+                  
+          // cleanup
+          delete tempfoldedslice;
+          delete [] foldedx;
+          delete [] foldedy;
+          delete [] content;
+      }
+      //return the grouped slice if folding is not selected
+      if(!fold){
+         groupslice = fModSlice;
+         return fModSlice;
+      } 
+      //if folding is selected for group indexes
+      if(fold){
+         Int_t folded_bins = groupslice->GetNbinsY();
+         Int_t folded_xmin = groupslice->GetXaxis()->GetBinLowEdge(1);
+         Int_t folded_xmax = groupslice->GetXaxis()->GetBinUpEdge(bins);
+         Int_t folded_ybins=fFoldedGroupAngles.size();
+         const Char_t* folded_hst2dname = groupslice->GetName();
+         const Char_t* folded_hst2dtitle = groupslice->GetTitle(); 
+
+         TH2D* foldedgroupslice = new TH2D(Form("%s_folded",folded_hst2dname),Form("%s_folded",folded_hst2dtitle),folded_bins,folded_xmin,folded_xmax,folded_ybins,0,folded_ybins );//defines folded-group slice
+   
+         for(Int_t i=0; i<folded_bins; i++){
+         TH1D* tempfoldedslice=0;
+         tempfoldedslice= groupslice->ProjectionX("",i,i);
+         Double_t *foldedx = new Double_t[folded_bins];
+         Double_t *foldedy = new Double_t[folded_bins];
+         Double_t *content = new Double_t[folded_bins];
+
+            for(Int_t j=1; j<=folded_bins; j++){
+               foldedy[j-1] = GetFoldedGroupIndex(i);//gets folded indexes            
+               foldedx[j-1] = tempfoldedslice->GetBinCenter(j);
+               content[j-1] = tempfoldedslice->GetBinContent(j); 
+            } 
+              
+            foldedgroupslice->FillN(bins, foldedx, foldedy, content); 
+                  
+         // cleanup
+            delete tempfoldedslice;
+            delete [] foldedx;
+            delete [] foldedy;
+            delete [] content;
+         }  
+         foldedgroupslice = fModSlice;     
+      }
+   } 
+   return fModSlice;   
+}
 ////////////////////////////////////////////////////////////////////////////////
 /// Create 1D histogram of counts vs. angular index
 ///
@@ -434,7 +597,7 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       if (visualization) this->Get1DSlice(index)->Draw("pe1");
      
       // if there are too few counts, continue on (you can fit it manually later)
-      if (temphst->Integral()<100) continue;
+      if (temphst->Integral()<50) continue;
 
       // rename TPeak
       peak->SetName(Form("%s_proj%i_peak",hst2dname,index));
@@ -450,7 +613,7 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       // extract area
       Double_t area = static_cast<TPeak*>(this->GetPeak(index))->GetArea();
       Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
-        //Double_t area_err = sqrt(area);
+       //Double_t area_err = sqrt(area);
 
       // fill histogram with area
       newhst->SetBinContent(i,area);
@@ -1456,7 +1619,7 @@ void TAngularCorrelation::UpdateDiagnostics()
 /// \param[in] index angular index
 /// \param[in] peak Tpeak to be used for fitting
 
-void TAngularCorrelation::UpdatePeak(Int_t index,TPeak* peak)
+void TAngularCorrelation::UpdatePeak(Int_t index,TPeak* peak)//sometimes this function will cause grsisort to crash when I try to re-fit a bad peak, we should add in a safe-gaurd to make the function return if the peak cannot be re-fit
 {
    // create canvas
    new TCanvas(Form("peak%iupdate",index),Form("Peak %i update",index),200,200);
