@@ -119,6 +119,7 @@ class TAngularCorrelation : public TObject {
       void PrintModifiedIndexMap(); // prints a map between angular and modified indices
       void PrintModifiedAngleMap(); // prints a map of angles for the modified indices
       void PrintModifiedWeights(); // prints a map of modified weights
+      void PrintModifiedConditions(); // prints the current folding and grouping conditions
 
       //-----------------------------------------------------
       //TODO: Eliminate these
@@ -138,6 +139,7 @@ class TAngularCorrelation : public TObject {
       Int_t GenerateMaps(Int_t detectors, Int_t distance);
       Bool_t CheckGroups(std::vector<Int_t> &group);
       Bool_t CheckGroupAngles(std::vector<Double_t> &groupangles);
+      Bool_t CheckModifiedHistogram(TH1* hst); // checks to make sure histogram is consistent with current settings
       Int_t AssignGroupMaps(std::vector<Int_t> &group, std::vector<Double_t> &groupangles);
       Int_t GenerateGroupMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Int_t> &group, std::vector<Double_t> &groupangles);
       static std::vector<Int_t> GenerateFoldedIndices(std::vector<Double_t> &folds, std::vector<Double_t> &anglemap); 
@@ -146,14 +148,8 @@ class TAngularCorrelation : public TObject {
       std::vector<Double_t> GenerateModifiedAngles(Bool_t fold, Bool_t group);
       std::vector<Int_t> GenerateModifiedWeights(std::vector<Int_t> &index, std::vector<Int_t> &weights);
       void ClearModifiedMaps();
-
       Int_t GenerateModifiedMaps(Bool_t fold, Bool_t group);
 
-      //-----------------------------------------------------
-      //TODO: Eliminate these
-      //-----------------------------------------------------
-     
-     
 /// \cond CLASSIMP
    ClassDef(TAngularCorrelation,1)
 /// \endcond

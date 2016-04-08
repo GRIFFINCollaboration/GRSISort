@@ -1708,6 +1708,48 @@ TPeak* TAngularCorrelation::GetPeak(Int_t index)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// Compares 1D histogram to current AC modified settings
+///
+/// \param[in] hst histogram
+///
+Bool_t TAngularCorrelation::CheckModifiedHistogram(TH1* hst)
+{
+   Int_t hstbins = hst->GetNbinsX();
+   Int_t modindices = GetNumModIndices();
+
+   if (hstbins!=modindices) {
+      printf("The histogram %s does not have the same number of bins as the current settings.\n",hst->GetName());
+      printf("Bins in the histogram: %i\n",hstbins);
+      printf("Number of modified indices: %i\n\n",modindices);
+      PrintModifiedConditions();
+      return kFALSE;
+   }
+
+   return kTRUE;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Prints current folding and grouping settings
+///
+void TAngularCorrelation::PrintModifiedConditions()
+{
+   printf("Current modification conditions:\n");
+   if (fFolded) {
+      printf("Folded: yes\n");
+   }
+   else {
+      printf("Folded: no\n");
+   }
+   if (fGrouped) {
+      printf("Grouped: yes\n");
+   }
+   else {
+      printf("Grouped: no\n");
+   }
+   return;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 /// Divides histogram by weights listed in weight array
 ///
 /// \param[in] hst histogram
@@ -1715,6 +1757,15 @@ TPeak* TAngularCorrelation::GetPeak(Int_t index)
 
 TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
 {
+
+   // compare fold and group
+   if (fold == fFolded && group == fGrouped) {
+      // do nothing
+   }
+   else {
+      GenerateModifiedMaps(fold, group);
+   }
+
    if(!fold && !group){
       Int_t size = this->GetWeightsSize();
 
@@ -1733,78 +1784,33 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
             printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
             return 0x0;
          }
-      }  
-  }
-
-   if(fold && !group){
-      Int_t size = this->GetFoldedAngularWeightsSize();
-
-     // consistency/stability checks
-      if(size==0) {
-         printf("You haven't created the weights yet. Please use the GenerateMaps function to do so.\n");
+      }
+   }
+   else {
+      if (CheckModifiedHistogram(hst)) {
+         // do nothing
+      }
+      else {
          return 0x0;
       }
-      if (size!=hst->GetNbinsX()) {
-         printf("Warning: size of weights array is different than number of bins in %s\n",hst->GetName());
-      }
-   
-   // this loop is just for checking to make sure all indices are in the weight vector
-      for(Int_t i=1;i<=hst->GetNbinsX();i++) {
-         Int_t index = hst->GetBinLowEdge(i);
-         if (index>=size) {
-            printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
-            return 0x0;
-         }
-      }  
-  }
-   if(!fold && group){
-      Int_t size = this->GetGroupWeightsSize();
 
-     // consistency/stability checks
-      if(size==0) {
-         printf("You haven't created the weights yet. Please use the GenerateGroupMaps function to do so.\n");
+      // check that the weights array is the same size
+      if (static_cast<Int_t>(fModifiedWeights.size()) == hst->GetNbinsX()) {
+         // do nothing
+      }
+      else {
+         printf("Weights array size is not the same as the number of bins.\n");
+         printf("Returning from DivideByWeights without dividing.");
          return 0x0;
       }
-      if (size!=hst->GetNbinsX()) {
-         printf("Warning: size of weights array is different than number of bins in %s\n",hst->GetName());
-      }
-   // this loop is just for checking to make sure all indices are in the weight vector
-      for(Int_t i=1;i<=hst->GetNbinsX();i++) {
-         Int_t index = hst->GetBinLowEdge(i);
-         if (index>=size) {
-            printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
-            return 0x0;
-         }
-      }  
-  }
-   if(fold && group){
-      Int_t size = this->GetFoldedGroupWeightsSize();
+   }
 
-     // consistency/stability checks
-      if(size==0) {
-         printf("You haven't created the weights yet. Please use the GenerateGroupMaps function to do so.\n");
-         return 0x0;
-      }
-      if (size!=hst->GetNbinsX()) {
-         printf("Warning: size of weights array is different than number of bins in %s\n",hst->GetName());
-      }
-    // this loop is just for checking to make sure all indices are in the weight vector
-      for(Int_t i=1;i<=hst->GetNbinsX();i++) {
-         Int_t index = hst->GetBinLowEdge(i);
-         if (index>=size) {
-            printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
-            return 0x0;
-         }
-      }  
-  }
    // now that we're satisified everything is kosher, divide the bins.
    for(Int_t i=1;i<=hst->GetNbinsX();i++) {
       Int_t index = hst->GetBinLowEdge(i);
       Double_t found_weight = 0;
       if(!fold && !group) found_weight = this->GetWeightFromIndex(index);
-      if(fold && !group) found_weight = this->GetFoldedAngleWeightFromIndex(index);
-      if(!fold && group) found_weight = this->GetGroupWeightFromIndex(index);
-      if(fold && group) found_weight = this->GetFoldedGroupWeightFromIndex(index);  
+      else found_weight = this->GetModifiedWeight(index);
       Double_t content = hst->GetBinContent(i);
       Double_t error = hst->GetBinError(i);
       Double_t weight = found_weight;
