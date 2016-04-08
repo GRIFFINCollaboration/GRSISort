@@ -41,7 +41,7 @@ class TAngularCorrelation : public TObject {
       std::vector<Int_t>fFoldedGroupIndexes; //array correlating group index with a folded index
       std::vector<Int_t> fFoldedGroupWeights; /// array correlating Group Index with a Folded Index 
       Bool_t fFolded; /// switch to indicate a folded correlation
-      Bool_t fGrouped; /// switch to indicated a grouped correlation
+      Bool_t fGrouped; /// switch to indicate a grouped correlation
 
    public:
       virtual ~TAngularCorrelation();
@@ -60,15 +60,15 @@ class TAngularCorrelation : public TObject {
       Double_t GetAngleFromIndex(Int_t index) { return fAngleMap[index]; } // returns the opening angle for a specific angular index
       //TODO: move the next function to implementation file and check if in range
       Double_t GetWeightFromIndex(Int_t index) { return fWeights[index]; } // returns the weight for a specific angular index
-      Double_t GetGroupFromIndex(Int_t index) { return fGroups[index]; } // returns the assigned group for a specific angular index
-      Double_t GetGroupWeightFromIndex(Int_t index) { return fGroupWeights[index]; }//returns the determined weight for each group
+      Int_t GetGroupFromIndex(Int_t index) { return fGroups[index]; } // returns the assigned group for a specific angular index
+      Int_t GetGroupWeightFromIndex(Int_t index) { return fGroupWeights[index]; }//returns the determined weight for each group
       Double_t GetGroupAngleFromIndex(Int_t index) { return fGroupAngles[index]; } // returns the average angle for each group
       Double_t GetFoldedAngleFromIndex(Int_t index) { return fFoldedAngles[index]; } // returns the folded angle value for each angular index
-      Double_t GetFoldedAngularIndex(Int_t index) { return fFoldedAngularIndexes[index]; } // returns the folded index for each angular index
-      Double_t GetFoldedAngleWeightFromIndex(Int_t index) { return fFoldedAngularWeights[index]; } //returns the weight for each folded angle
+      Int_t GetFoldedAngularIndex(Int_t index) { return fFoldedAngularIndexes[index]; } // returns the folded index for each angular index
+      Int_t GetFoldedAngleWeightFromIndex(Int_t index) { return fFoldedAngularWeights[index]; } //returns the weight for each folded angle
       Double_t GetFoldedGroupAngleFromIndex(Int_t index) { return fFoldedGroupAngles[index]; } // returns the average angle for each group 
-      Double_t GetFoldedGroupIndex(Int_t index) { return fFoldedGroupIndexes[index]; } // returns the folded index value for each group index
-      Double_t GetFoldedGroupWeightFromIndex(Int_t index) { return fFoldedGroupWeights[index]; } // returns the weight for each folded group
+      Int_t GetFoldedGroupIndex(Int_t index) { return fFoldedGroupIndexes[index]; } // returns the folded index value for each group index
+      Int_t GetFoldedGroupWeightFromIndex(Int_t index) { return fFoldedGroupWeights[index]; } // returns the weight for each folded group
       Int_t GetWeightsSize() { return fWeights.size();}
       Int_t GetGroupWeightsSize() { return fGroupWeights.size();}
       Int_t GetFoldedAngularWeightsSize() {return fFoldedAngularWeights.size();}
