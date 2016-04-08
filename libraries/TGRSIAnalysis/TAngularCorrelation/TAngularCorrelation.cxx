@@ -173,8 +173,20 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
       title = firsthst->GetTitle();
    }
    Int_t ybins = elements;
-         
-   TH2D* newslice = new TH2D(Form("%s_%i_%i_",name,Int_t(min),Int_t(max)),Form("%s, E_{#gamma 1}=[%.1f,%.1f)",title,min,max),bins,xmin,xmax,ybins,0,ybins);
+
+   Int_t iteration = 0;
+   TH2D* newslice;
+   if (gFile->Get(Form("%s_%i_%i",name,Int_t(min),Int_t(max)))==0x0) {
+      newslice = new TH2D(Form("%s_%i_%i",name,Int_t(min),Int_t(max)),Form("%s, E_{#gamma 1}=[%.1f,%.1f)",title,min,max),bins,xmin,xmax,ybins,0,ybins);
+   }
+   else {
+      while (iteration<10) {
+         if (gFile->Get(Form("%s_%i_%i_%i",name,Int_t(min),Int_t(max),iteration))==0x0) break;
+         else ++iteration;
+      }
+      newslice = new TH2D(Form("%s_%i_%i_%i",name,Int_t(min),Int_t(max),iteration),Form("%s, E_{#gamma 1}=[%.1f,%.1f)",title,min,max),bins,xmin,xmax,ybins,0,ybins);
+   }
+
    // iterate over the array of 2D gamma-gamma matrices
    for (Int_t i=0;i<elements;i++) {//takes slice and itterates through all indexes
       // slice this particular matrix
@@ -212,6 +224,7 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
    }
    
    TH2D* finalslice = this->Modify2DSlice(newslice,fold,group);
+   if (fold || group) delete newslice;
 
    return finalslice;
    
@@ -221,21 +234,17 @@ TH2D* TAngularCorrelation::Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group)
 {
    if(!fold && !group){
       printf("No folding or grouping selected.\n");
-      printf("Returning 2D slice.\n");
-      return 0;
+      printf("Returning unmodified 2D slice.\n");
+      return static_cast<TH2D*>(hst);
    }
 
-   ////consistancy check to make sure angle maps exist for folding
-   if(fold){
-      Int_t size = 0;
-      if(!group) size = fFoldedAngles.size();
-      else if(group) size = fFoldedGroupAngles.size();
-      if(size==0){
-         printf("Angle map has not been created yet.\n");
-         printf("Therefore cannot fold indexes.\n");
-         return 0;
-      }
-      printf("The indexes will be folded. \n");
+   // if desired settings are the same as current settings, then continue on
+   // else, change the settings and make new maps.
+   if (fold == fFolded && group == fGrouped){
+      // do nothing
+   }
+   else {
+      GenerateModifiedMaps(fold,group);
    }
 
     ////consistency check group assignments
@@ -270,8 +279,6 @@ TH2D* TAngularCorrelation::Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group)
             return 0;
          }
       }
-  
-      printf("Angular indexes will be grouped. \n");
    }
 
    // get x-axis parameters
@@ -285,86 +292,53 @@ TH2D* TAngularCorrelation::Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group)
 
    // get number of y-bins
    Int_t ybins = hst->GetNbinsY();
-   Int_t newybins = hst->GetNbinsY();
+   Int_t newybins = GetNumModIndices();
 
-   // create unfolded histogram
-   TH2D* unfolded_slice = 0;
-
-   // if it's grouped, do the grouping now
-   if (group) {
-      newybins = fGroupWeights.size();
-      unfolded_slice =  new TH2D(Form("%s_grouped",hst2dname),Form("%s_grouped",hst2dtitle),bins,xmin,xmax,newybins,0,newybins);//defines grouped slice
-      for(Int_t i=0; i<ybins; i++){ // y-axis bin loop
-         TH1D* tempslice=0;
-         tempslice = hst->ProjectionX("", i+1, i+1);
-
-         Double_t x,y,oldcontent,newcontent,olderror,newerror;
-         Int_t bin;
-         y = GetGroupFromIndex(i);
-         for(Int_t j=1; j<=bins; j++){ // x-axis bin loop
-            x = tempslice->GetBinCenter(j);
-            bin = unfolded_slice->FindBin(x,y);
-            newcontent = tempslice->GetBinContent(j); //number of counts
-            oldcontent = unfolded_slice->GetBinContent(bin);
-            newerror = tempslice->GetBinError(j);
-            olderror = unfolded_slice->GetBinError(bin);
-            unfolded_slice->SetBinContent(bin,oldcontent+newcontent);
-            unfolded_slice->SetBinError(bin,sqrt(pow(newerror,2)+pow(olderror,2)));
-         } // end x-axis bin loop
-
-         // cleanup
-         delete tempslice;
-      } // end y-axis bin loop
+   // initialize the histogram
+   TH2D* modified_slice;
+   if (group &! fold) {
+      modified_slice =  new TH2D(Form("%s_grouped",hst2dname),Form("%s_grouped",hst2dtitle),bins,xmin,xmax,newybins,0,newybins);//defines slice
+   }
+   else if (fold &! group) {
+      modified_slice =  new TH2D(Form("%s_folded",hst2dname),Form("%s_folded",hst2dtitle),bins,xmin,xmax,newybins,0,newybins);//defines slice
+   }
+   else if (fold && group) {
+      modified_slice =  new TH2D(Form("%s_grouped_folded",hst2dname),Form("%s_grouped_folded",hst2dtitle),bins,xmin,xmax,newybins,0,newybins);//defines slice
    }
    else {
-      unfolded_slice = static_cast<TH2D*> (hst);
+      modified_slice =  new TH2D(Form("%s_unknown",hst2dname),Form("%s_unknown",hst2dtitle),bins,xmin,xmax,newybins,0,newybins);//defines slice
    }
 
-   // if we aren't folded, return the grouped, unfolded histogram now
-   if (!fold) {
-      return unfolded_slice;
-   }
-
-   // make the folded 2D slice
-   // get histogram name and title
-   const Char_t* unfoldedname = unfolded_slice->GetName();
-   const Char_t* unfoldedtitle = unfolded_slice->GetTitle();
-   if (group) {
-      newybins = fFoldedGroupAngles.size();
-   }
-   else {
-      newybins = fFoldedAngles.size();
-   }
-   TH2D* folded_slice = new TH2D(Form("%s_folded",unfoldedname),Form("%s_folded",unfoldedtitle),bins,xmin,xmax,newybins,0,newybins); //defines folded slice
-
+   // loop through the original 2D histograms y-axis...
    for(Int_t i=0; i<ybins; i++){ // y-axis bin loop
       TH1D* tempslice=0;
-      tempslice = unfolded_slice->ProjectionX("", i+1, i+1);
+      tempslice = hst->ProjectionX("", i+1, i+1);
 
       Double_t x,y,oldcontent,newcontent,olderror,newerror;
       Int_t bin;
-      if (group) {
-         y = GetFoldedGroupIndex(i);
-      }
-      else {
-         y = GetFoldedAngularIndex(i);
-      }
-      for(Int_t j=1; j<=bins; j++){
+      // figure out the new index
+      y = GetModifiedIndex(i);
+      // now loop through the energy axis...
+      for(Int_t j=1; j<=bins; j++){ // x-axis bin loop
          x = tempslice->GetBinCenter(j);
-         bin = folded_slice->FindBin(x,y);
+         bin = modified_slice->FindBin(x,y);
+         // pull out the new content / error
          newcontent = tempslice->GetBinContent(j); //number of counts
-         oldcontent = folded_slice->GetBinContent(bin);
          newerror = tempslice->GetBinError(j);
-         olderror = folded_slice->GetBinError(bin);
-         folded_slice->SetBinContent(bin,oldcontent+newcontent);
-         folded_slice->SetBinError(bin,sqrt(pow(newerror,2)+pow(olderror,2)));
-      }
+         // pull out the old content / error
+         oldcontent = modified_slice->GetBinContent(bin);
+         olderror = modified_slice->GetBinError(bin);
+         // re-set new 2D histogram bin with combined value
+         modified_slice->SetBinContent(bin,oldcontent+newcontent);
+         modified_slice->SetBinError(bin,sqrt(pow(newerror,2)+pow(olderror,2)));
+      } // end x-axis bin loop
 
       // cleanup
       delete tempslice;
-   }
 
-   return folded_slice;   
+   } // end y-axis bin loop
+
+   return modified_slice;   
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -737,13 +711,13 @@ void TAngularCorrelation::PrintGroupIndexMap()
       return;
    }
 
-   printf("---------------------------------------\n");
+   printf("-------------------------------------\n");
    printf("||  Angular index  |  Group index  ||\n");
-   printf("---------------------------------------\n");
+   printf("-------------------------------------\n");
    for (Int_t i=0;i<size;i++) {
       printf("||  %13i  |  %11i  ||\n",i,GetGroupFromIndex(i));
    }
-   printf("--------------------------------------------------------\n");
+   printf("-------------------------------------\n");
 
    return;
 }
@@ -1165,6 +1139,19 @@ Int_t TAngularCorrelation::GetNumGroups()
 }
 
 ////////////////////////////////////////
+/// Returns the number of groups
+///
+
+Int_t TAngularCorrelation::GetNumModIndices()
+{
+   Int_t max = 0;
+   for (Int_t i=0;i<static_cast<Int_t>(fModifiedIndices.size());i++) {
+      if (fModifiedIndices[i]>max) max = fModifiedIndices[i];
+   }
+   return max+1;
+}
+
+////////////////////////////////////////
 /// Check angles for groups
 ///
 /// \param[in] groupangle vector (user input)
@@ -1556,6 +1543,19 @@ std::vector<Double_t> TAngularCorrelation::GenerateModifiedAngles(Bool_t fold, B
    }
 
    ClearModifiedMaps();
+   printf("Changing modification conditions to:\n");
+   if (fold) {
+      printf("Folded: yes\n");
+   }
+   else {
+      printf("Folded: no\n");
+   }
+   if (group) {
+      printf("Grouped: yes\n");
+   }
+   else {
+      printf("Grouped: no\n");
+   }
    fFolded = fold;
    fGrouped = group;
 

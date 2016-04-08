@@ -69,6 +69,7 @@ class TAngularCorrelation : public TObject {
       Int_t GetModifiedWeight(Int_t modindex) { return fModifiedWeights[modindex]; } // returns in the weight from the modified index
       Double_t GetModifiedAngleFromIndex(Int_t modindex) { return fModifiedAngles[modindex]; } // returns the angle from the modified index
       Int_t GetNumGroups(); // returns the number of groups assigned
+      Int_t GetNumModIndices(); // returns the number of modified indices
 
       //-----------------------------------------------------
       //TODO: Eliminate these
