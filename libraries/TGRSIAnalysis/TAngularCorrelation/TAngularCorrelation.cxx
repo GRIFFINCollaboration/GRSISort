@@ -19,8 +19,6 @@ ClassImp(TAngularCorrelation)
 ///
 TAngularCorrelation::TAngularCorrelation()
 {
-   f2DSlice = 0; //the 2Dslices made from Create2DSlices
-   fModSlice = 0;
    fIndexCorrelation = 0;// used the 1D histograms for a specific energy ranged used for FitSlices
    fIndexMapSize = 0; //number of indexes, never called in making the histograms
    fFolded = kFALSE; //not set yet
@@ -32,8 +30,6 @@ TAngularCorrelation::TAngularCorrelation()
 ///
 TAngularCorrelation::~TAngularCorrelation()
 {
-   delete f2DSlice;
-   delete fModSlice;
    delete fIndexCorrelation;
 }
 
@@ -82,27 +78,13 @@ TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t 
 
    // project the THnSparse
    hst->GetAxis(energy1axis)->SetRangeUser(min,max);
-   f2DSlice = (TH2D*) hst->Projection(indexaxis,energy2axis,"e"); // the "e" option pushes appropriate errors
-   f2DSlice->SetName(Form("%s_proj_%i",hst->GetName(),(Int_t)((max+min)/2)));
-   f2DSlice->SetTitle(Form("%s: %i keV",hst->GetTitle(),(Int_t)((max+min)/2)));
+   TH2D* tempslice = (TH2D*) hst->Projection(indexaxis,energy2axis,"e"); // the "e" option pushes appropriate errors
+   tempslice->SetName(Form("%s_proj_%i",hst->GetName(),(Int_t)((max+min)/2)));
+   tempslice->SetTitle(Form("%s: %i keV",hst->GetTitle(),(Int_t)((max+min)/2)));
 
-   // TODO: folding
-   if (fold) {
-      printf("not working\n");
-      // set kFolded bool
-      // check for angle map calculated
-      // fold f2DSlice
-      // compare cos theta of angular indices
-   }
-   // TODO: grouping
-   if (group) {
-   
-      // set kGrouped bool
-      // check for groups-print statment for if they are not found
-      // bin projected indexes into assigned groups
-   }
-   
-   return f2DSlice;
+   TH2D* slice2d = this->Modify2DSlice(tempslice,fold,group);
+
+   return slice2d;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -229,15 +211,9 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
       delete tempslice;
    }
    
-   TH2D* finalslice = 0;
-   if (fold || group) {
-      finalslice = this->Modify2DSlice(newslice,fold,group);
-   }
-   else {
-      finalslice = newslice;
-   }
-   f2DSlice = finalslice;
-   return newslice;
+   TH2D* finalslice = this->Modify2DSlice(newslice,fold,group);
+
+   return finalslice;
    
 }
 
@@ -346,7 +322,6 @@ TH2D* TAngularCorrelation::Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group)
 
    // if we aren't folded, return the grouped, unfolded histogram now
    if (!fold) {
-      fModSlice = unfolded_slice;
       return unfolded_slice;
    }
 
@@ -389,7 +364,6 @@ TH2D* TAngularCorrelation::Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group)
       delete tempslice;
    }
 
-   fModSlice = folded_slice;
    return folded_slice;   
 }
 

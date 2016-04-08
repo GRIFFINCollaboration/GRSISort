@@ -17,8 +17,6 @@
 
 class TAngularCorrelation : public TObject {
    private:
-      TH2D* f2DSlice; /// 2D histogram of angular index vs. gamma energy
-      TH2D* fModSlice; //2D histogram that is grouped, folded, or grouped and folded
       TH1D* fIndexCorrelation; /// 1D plot of counts vs. angular index
       TH1D* fChi2; /// 1D plot of chi^2 vs. angular index
       TH1D* fCentroid; /// 1D plot of centroid vs. angular index
@@ -31,24 +29,29 @@ class TAngularCorrelation : public TObject {
       Int_t fGroupSize; /// size of Group indexes
       std::vector<Double_t> fAngleMap; /// array correlating angular index with opening angle
       std::vector<Int_t> fWeights; /// array correlating angular index with weight (number of detector pairs at that index)
+      std::vector<Int_t> fGroups; /// array correlating angular index with group assignment 
+      std::vector<Double_t> fGroupAngles; /// array correlating group assignment with their average angles
+      Bool_t fFolded; /// switch to indicate a folded correlation
+      Bool_t fGrouped; /// switch to indicate a grouped correlation
+      std::vector<Int_t> fModifiedAngularIndices; // array correlating angular index with modified index
+      std::vector<Int_t> fModifiedWeights; // array correlating modified index with weights
+      std::vector<Double_t> fModifiedAngles; // array correlating modified index with angles
+
       std::vector<Double_t> fFoldedAngles; /// array correlating Anglular Index with a Folded Index 
       std::vector<Int_t> fFoldedAngularIndexes; /// array correlating angular index with a folded index 
-      std::vector<Int_t> fFoldedAngularWeights; /// array correlating Group Index with a Folded Index 
-      std::vector<Int_t> fGroups; /// array correlating angular index with group assignment 
+      std::vector<Int_t> fFoldedAngularWeights; /// array correlating Group Index with a Folded Index
+
       std::vector<Int_t> fGroupWeights; /// array correlating group assignment with weight 
-      std::vector<Double_t> fGroupAngles; /// array correlating group assignment with their average angles
+
       std::vector<Double_t> fFoldedGroupAngles; /// array correlating Group Index with a Folded angle 
       std::vector<Int_t>fFoldedGroupIndexes; //array correlating group index with a folded index
       std::vector<Int_t> fFoldedGroupWeights; /// array correlating Group Index with a Folded Index 
-      Bool_t fFolded; /// switch to indicate a folded correlation
-      Bool_t fGrouped; /// switch to indicate a grouped correlation
 
    public:
       virtual ~TAngularCorrelation();
       TAngularCorrelation();
 
       // getters
-      TH2D* Get2DSlice() { return f2DSlice; }
       TH1D* GetIndexCorrelation() { return fIndexCorrelation; }
       TH1D* GetChi2Hst() { return fChi2; }
       TH1D* GetCentroidHst() { return fCentroid; }
@@ -74,7 +77,6 @@ class TAngularCorrelation : public TObject {
       Int_t GetFoldedAngularWeightsSize() {return fFoldedAngularWeights.size();}
       Int_t GetFoldedGroupWeightsSize() {return fFoldedGroupWeights.size();}
       // simple setters
-      void Set2DSlice(TH2D* hst) { f2DSlice = hst; }
       void SetIndexCorrelation(TH1D* hst) { } //fIndexCorrelation = fIndexCorrelation; }
       //TODO: move the next function to implementation file and update fIndexCorrelation
       void SetPeak(Int_t index, TPeak* peak) { fPeaks[index] = peak; }
@@ -124,7 +126,7 @@ class TAngularCorrelation : public TObject {
      
      
 /// \cond CLASSIMP
-   ClassDef(TAngularCorrelation,0)
+   ClassDef(TAngularCorrelation,1)
 /// \endcond
 };
 /*! @} */
