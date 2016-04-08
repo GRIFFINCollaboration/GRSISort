@@ -26,26 +26,26 @@ class TAngularCorrelation : public TObject {
       std::map<Int_t,std::map<Int_t,Int_t>> fIndexMap; /// 2D square array correlating array number pairs with angular index
       Int_t fNumIndices; /// number of angular indices
       Int_t fIndexMapSize; /// size of fIndexMap
-      Int_t fGroupSize; /// size of Group indexes
       std::vector<Double_t> fAngleMap; /// array correlating angular index with opening angle
       std::vector<Int_t> fWeights; /// array correlating angular index with weight (number of detector pairs at that index)
       std::vector<Int_t> fGroups; /// array correlating angular index with group assignment 
       std::vector<Double_t> fGroupAngles; /// array correlating group assignment with their average angles
       Bool_t fFolded; /// switch to indicate a folded correlation
       Bool_t fGrouped; /// switch to indicate a grouped correlation
-      std::vector<Int_t> fModifiedAngularIndices; // array correlating angular index with modified index
+      std::vector<Int_t> fModifiedIndices; // array correlating angular index with modified index
       std::vector<Int_t> fModifiedWeights; // array correlating modified index with weights
       std::vector<Double_t> fModifiedAngles; // array correlating modified index with angles
 
+      //-----------------------------------------------------
+      //TODO: Eliminate these
       std::vector<Double_t> fFoldedAngles; /// array correlating Anglular Index with a Folded Index 
       std::vector<Int_t> fFoldedAngularIndexes; /// array correlating angular index with a folded index 
       std::vector<Int_t> fFoldedAngularWeights; /// array correlating Group Index with a Folded Index
-
       std::vector<Int_t> fGroupWeights; /// array correlating group assignment with weight 
-
       std::vector<Double_t> fFoldedGroupAngles; /// array correlating Group Index with a Folded angle 
       std::vector<Int_t>fFoldedGroupIndexes; //array correlating group index with a folded index
       std::vector<Int_t> fFoldedGroupWeights; /// array correlating Group Index with a Folded Index 
+      //-----------------------------------------------------
 
    public:
       virtual ~TAngularCorrelation();
@@ -64,20 +64,30 @@ class TAngularCorrelation : public TObject {
       //TODO: move the next function to implementation file and check if in range
       Double_t GetWeightFromIndex(Int_t index) { return fWeights[index]; } // returns the weight for a specific angular index
       Int_t GetGroupFromIndex(Int_t index) { return fGroups[index]; } // returns the assigned group for a specific angular index
+      Double_t GetGroupAngleFromIndex(Int_t gindex) { return fGroupAngles[gindex]; } // returns the angle for each group index
+      Int_t GetModifiedIndex(Int_t index) { return fModifiedIndices[index]; } // returns the modified index from the angular index
+      Int_t GetModifiedWeight(Int_t modindex) { return fModifiedWeights[modindex]; } // returns in the weight from the modified index
+      Double_t GetModifiedAngleFromIndex(Int_t modindex) { return fModifiedAngles[modindex]; } // returns the angle from the modified index
+      Int_t GetNumGroups(); // returns the number of groups assigned
+
+      //-----------------------------------------------------
+      //TODO: Eliminate these
       Int_t GetGroupWeightFromIndex(Int_t index) { return fGroupWeights[index]; }//returns the determined weight for each group
-      Double_t GetGroupAngleFromIndex(Int_t index) { return fGroupAngles[index]; } // returns the average angle for each group
       Double_t GetFoldedAngleFromIndex(Int_t index) { return fFoldedAngles[index]; } // returns the folded angle value for each angular index
       Int_t GetFoldedAngularIndex(Int_t index) { return fFoldedAngularIndexes[index]; } // returns the folded index for each angular index
       Int_t GetFoldedAngleWeightFromIndex(Int_t index) { return fFoldedAngularWeights[index]; } //returns the weight for each folded angle
       Double_t GetFoldedGroupAngleFromIndex(Int_t index) { return fFoldedGroupAngles[index]; } // returns the average angle for each group 
       Int_t GetFoldedGroupIndex(Int_t index) { return fFoldedGroupIndexes[index]; } // returns the folded index value for each group index
       Int_t GetFoldedGroupWeightFromIndex(Int_t index) { return fFoldedGroupWeights[index]; } // returns the weight for each folded group
+      //-----------------------------------------------------
+
       Int_t GetWeightsSize() { return fWeights.size();}
       Int_t GetGroupWeightsSize() { return fGroupWeights.size();}
       Int_t GetFoldedAngularWeightsSize() {return fFoldedAngularWeights.size();}
       Int_t GetFoldedGroupWeightsSize() {return fFoldedGroupWeights.size();}
+
       // simple setters
-      void SetIndexCorrelation(TH1D* hst) { } //fIndexCorrelation = fIndexCorrelation; }
+      void SetIndexCorrelation(TH1D* hst) { fIndexCorrelation = hst; }
       //TODO: move the next function to implementation file and update fIndexCorrelation
       void SetPeak(Int_t index, TPeak* peak) { fPeaks[index] = peak; }
       void Set1DSlice(Int_t index, TH1D* slice) { f1DSlices[index] = slice; }
@@ -103,26 +113,44 @@ class TAngularCorrelation : public TObject {
       void PrintIndexMap(); // print the map
       void PrintAngleMap(); // print the map
       void PrintWeights(); // print the map
+      void PrintGroupIndexMap(); // print the map
+      void PrintGroupAngleMap(); // print the group angle map
+      void PrintModifiedIndexMap(); // prints a map between angular and modified indices
+      void PrintModifiedAngleMap(); // prints a map of angles for the modified indices
+      void PrintModifiedWeights(); // prints a map of modified weights
+
+      //-----------------------------------------------------
+      //TODO: Eliminate these
       void PrintFoldedAngleMap(); // print the map
       void PrintFoldedAngularIndexes(); // print the map
-      void PrintGroups(); // print the map
       void PrintGroupIndexes(); // print the map
       void PrintFoldedGroupAngleMap(); //print the map
       void PrintFoldedGroupIndexes(); // print the map
+      //-----------------------------------------------------
       
       //Int_t SetAngleMap(Double_t* angles); // sets the angles in the map, with an array of angles, where the angular index is determined by the index of the array element
       //Int_t SetWeights(Int_t* weights); // input is weight array itself
       static std::vector<Double_t> GenerateAngleMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances);
       static std::map<Int_t,std::map<Int_t,Int_t>> GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap);
       static std::vector<Int_t> GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::map<Int_t,std::map<Int_t,Int_t>> &indexmap); // with input of array number array (crystals that were present in data collection), generates the weights for each angular index (no input generates weights for 16 detectors)
-      static std::vector<Int_t> GenerateModifiedWeights(std::vector<Int_t> &index, std::vector<Int_t> &weights);
-      Int_t GenerateGroupMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Int_t> &group, std::vector<Double_t> &groupangles);
       Int_t GenerateMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances);
       Int_t GenerateMaps(Int_t detectors, Int_t distance);
-      static std::vector<Int_t> AssignGroups(std::vector<Int_t> &group, std::vector<Double_t> &anglemap);
-      static std::vector<Int_t> GenerateFoldedIndexes(std::vector<Double_t> &folds, std::vector<Double_t> &anglemap); 
-      static std::vector<Double_t>AssignGroupAngles(std::vector<Double_t> &groupangles, std::vector<Int_t> &groupweights);
-      static std::vector<Double_t>GenerateFoldedAngles(std::vector<Double_t> &anglemap);
+      Bool_t CheckGroups(std::vector<Int_t> &group);
+      Bool_t CheckGroupAngles(std::vector<Double_t> &groupangles);
+      Int_t AssignGroupMaps(std::vector<Int_t> &group, std::vector<Double_t> &groupangles);
+      Int_t GenerateGroupMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Int_t> &group, std::vector<Double_t> &groupangles);
+      static std::vector<Int_t> GenerateFoldedIndices(std::vector<Double_t> &folds, std::vector<Double_t> &anglemap); 
+      static std::vector<Double_t> GenerateFoldedAngles(std::vector<Double_t> &anglemap);
+      std::vector<Int_t> GenerateModifiedIndices(Bool_t fold, Bool_t group);
+      std::vector<Double_t> GenerateModifiedAngles(Bool_t fold, Bool_t group);
+      std::vector<Int_t> GenerateModifiedWeights(std::vector<Int_t> &index, std::vector<Int_t> &weights);
+      void ClearModifiedMaps();
+
+      Int_t GenerateModifiedMaps(Bool_t fold, Bool_t group);
+
+      //-----------------------------------------------------
+      //TODO: Eliminate these
+      //-----------------------------------------------------
      
      
 /// \cond CLASSIMP

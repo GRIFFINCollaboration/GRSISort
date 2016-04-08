@@ -722,7 +722,7 @@ void TAngularCorrelation::PrintWeights()
 /// Prints map of angular index vs. opening angle vs. group
 ///
 
-void TAngularCorrelation::PrintGroupIndexes()
+void TAngularCorrelation::PrintGroupIndexMap()
 {
    Int_t size = fAngleMap.size();
    Int_t group_size = fGroups.size();
@@ -737,41 +737,42 @@ void TAngularCorrelation::PrintGroupIndexes()
       return;
    }
 
-   printf("--------------------------------------------------------\n");
-   printf("||  Angular index  |  Opening angle (rad)  |  Group   ||\n");
-   printf("--------------------------------------------------------\n");
+   printf("---------------------------------------\n");
+   printf("||  Angular index  |  Group index  ||\n");
+   printf("---------------------------------------\n");
    for (Int_t i=0;i<size;i++) {
-      printf("||  %-13i  |  %-19.4f  |  %-6i  ||\n",i,GetAngleFromIndex(i),GetGroupFromIndex(i));
+      printf("||  %13i  |  %11i  ||\n",i,GetGroupFromIndex(i));
    }
    printf("--------------------------------------------------------\n");
 
    return;
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 /// Prints map of group vs. group weight vs. average group angle
 ///
 
-void TAngularCorrelation::PrintGroups()
+void TAngularCorrelation::PrintGroupAngleMap()
 {
-  Int_t size = fGroupWeights.size();
-  Int_t angle_size = fGroupAngles.size();
-  if (size==0){
-      printf("The group weights haven't been determined yet. \n");
+   Int_t size = GetNumGroups();
+   Int_t angle_size = fGroupAngles.size();
+   if (size==0){
+      printf("The number of groups haven't been determined yet. \n");
       printf("Therefore, can't print.\n");
       return;
-    }
- if (angle_size==0){
-      printf("The group haven't been assigned yet. \n");
-      printf("Therefore, can't print.\n");
-      return;
-    }
-   printf("--------------------------------------------------------\n");
-   printf("||  Group     |     Weight     |  Average Angle (rad) ||\n");
-   printf("--------------------------------------------------------\n");
-   for (Int_t i=0;i<size;i++) {
-      printf("||  %-8i  |  %13i  |  %-17.4f  ||\n",i,GetGroupWeightFromIndex(i),GetGroupAngleFromIndex(i));
    }
-   printf("--------------------------------------------------------\n");
+   if (angle_size==0){
+      printf("The angles haven't been assigned yet. \n");
+      printf("Therefore, can't print.\n");
+      return;
+   }
+   printf("-----------------------------------\n");
+   printf("||  Group index  |  Angle (rad)  ||\n");
+   printf("-----------------------------------\n");
+   for (Int_t i=0;i<size;i++) {
+      printf("||  %11i  |  %12.4f  ||\n",i,GetGroupAngleFromIndex(i));
+   }
+   printf("-----------------------------------\n");
 
    return;
 }
@@ -799,36 +800,62 @@ void TAngularCorrelation::PrintAngleMap()
 
    return;
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 /// Prints map of Folded index vs. opening angle
 ///
 
-void TAngularCorrelation::PrintFoldedAngleMap()
+void TAngularCorrelation::PrintModifiedAngleMap()
 {
-   Int_t size = fFoldedAngles.size();
-   Int_t weight_size = fFoldedAngularWeights.size();
+   Int_t size = fModifiedAngles.size();
 
    if(size == 0){
       printf("Folded angles have not been assigned yet.\n");
       printf("Therefore cannot print map.\n");
       return;
-      }
-    if(weight_size == 0){
-     printf("Weights have not been generated yet.\n");
-     printf("Therefore cannot print map.\n");
-     return;
-     }
-   printf("--------------------------------------------------------\n");
-   printf("||  Fold     |     Angle(RAD)   |        Weights     ||\n");
-   printf("--------------------------------------------------------\n");
-   for (Int_t i=0;i<size;i++) {
-      printf("||  %-7i  |  %15.4f  |  %-15i  ||\n",i,GetFoldedAngleFromIndex(i),GetFoldedAngleWeightFromIndex(i));
    }
-   printf("--------------------------------------------------------\n");
+
+   printf("--------------------------------------\n");
+   printf("||  Modified index  |  Angle (rad)  ||\n");
+   printf("--------------------------------------\n");
+   for (Int_t i=0;i<size;i++) {
+      printf("||  %14i  |  %11.4f  ||\n",i,GetModifiedAngleFromIndex(i));
+   }
+   printf("--------------------------------------\n");
 
    return;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// Prints map of Folded index vs. opening angle
+///
+
+void TAngularCorrelation::PrintModifiedWeights()
+{
+   Int_t size = fModifiedAngles.size();
+   Int_t weight_size = fModifiedWeights.size();
+
+   if(size == 0){
+      printf("Modified angles have not been assigned yet.\n");
+      printf("Therefore cannot print map.\n");
+      return;
+   }
+   if(weight_size == 0){
+      printf("Modified weights have not been generated yet.\n");
+      printf("Therefore cannot print map.\n");
+      return;
+   }
+
+   printf("-------------------------------------------------\n");
+   printf("||  Modified index  |  Angle (rad)  |  Weight  ||\n");
+   printf("-------------------------------------------------\n");
+   for (Int_t i=0;i<size;i++) {
+      printf("||  %14i  |  %11.4f  |  %6i  ||\n",i,GetModifiedAngleFromIndex(i),GetModifiedWeight(i));
+   }
+   printf("-------------------------------------------------\n");
+
+   return;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Prints map of Folded index vs. opening angle
@@ -863,22 +890,22 @@ void TAngularCorrelation::PrintFoldedGroupAngleMap()
 ////////////////////////////////////////////////////////////////////////////////
 /// Prints map of angular index vs. Folded Index
 
-void TAngularCorrelation::PrintFoldedAngularIndexes()
+void TAngularCorrelation::PrintModifiedIndexMap()
 {
-   Int_t size = fFoldedAngularIndexes.size();
-    if(size == 0){
-      printf("Folded angles have not been assigned yet.\n");
+   Int_t size = fModifiedIndices.size();
+   if(size == 0){
+      printf("Modified indices have not been assigned yet.\n");
       printf("Therefore cannot print map.\n");
       return;
-      }
-
-   printf("---------------------------------------------\n");
-   printf("||  Angular index  |  Folded Index  ||\n");
-   printf("---------------------------------------------\n");
-   for (Int_t i=0;i<size;i++) {
-      printf("||  %-13i  |  %-19i  ||\n",i,GetFoldedAngularIndex(i));
    }
-   printf("---------------------------------------------\n");
+
+   printf("----------------------------------------\n");
+   printf("||  Angular index  |  Modified index  ||\n");
+   printf("----------------------------------------\n");
+   for (Int_t i=0;i<size;i++) {
+      printf("||  %13i  |  %14i  ||\n",i,GetModifiedIndex(i));
+   }
+   printf("----------------------------------------\n");
 
    return;
 }
@@ -1007,41 +1034,40 @@ std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arra
 
    return weights;
 }
+
 ////////////////////////////////////////////////////////////////////////////////
-/// Creates map of modified weights vs. angular index
+/// Creates map of modified weights vs. modified index
 ///
-/// \param[in] index Vector (can be either group vector (AssignGroups()) or fold vector(GenerateFoldedAngles())
-/// \param[in] weight vector (created by GenerateWeights() or GenerateModifiedWeights(groups)
+/// \param[in] modindices vector that converts angular index to modified index
+/// \param[in] weight vector of weights for angular index
 /// 
 ///This function is called by GenerateMaps() and GenerateGroupMaps()
 
-std::vector<Int_t> TAngularCorrelation::GenerateModifiedWeights(std::vector<Int_t> &index, std::vector<Int_t> &weights)
+std::vector<Int_t> TAngularCorrelation::GenerateModifiedWeights(std::vector<Int_t> &modindices, std::vector<Int_t> &weights)
 {
    std::vector<Int_t> modifiedweights; // vector to return
-  
 
    // get weights size
    Int_t size = weights.size();
 
-   
-   // find number of groups
+   // find total number of modified indices
    Int_t max = 0;
    for (Int_t i=0;i<size;i++) {
-       if (index[i]>max) max = index[i];
-    }
+      if (modindices[i]>max) max = modindices[i];
+   }
 
    //fill modifiedweights with zeros
-   for(Int_t i=0; i<=max; i++){
+   for(Int_t i=0; i<=max; i++) {
       modifiedweights.push_back(0);
    }
 
-  //iterate over angular index to look for same groups 
-   for (Int_t i=0; i<size; i++){
-        Int_t thisIndex = index[i];
-        modifiedweights[thisIndex] = modifiedweights[thisIndex] + weights[i]; 
-    }
-  
-  return modifiedweights;
+   //iterate over angular modindices to look for same groups 
+   for (Int_t i=0; i<size; i++) {
+      Int_t thisIndex = modindices[i];
+      modifiedweights[thisIndex] = modifiedweights[thisIndex] + weights[i]; 
+   }
+
+   return modifiedweights;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1099,42 +1125,47 @@ std::map<Int_t,std::map<Int_t,Int_t>> TAngularCorrelation::GenerateIndexMap(std:
 
    return indexmap;
 }
+
 ////////////////////////////////////////
-/// Assign Groups for Angular Indexes
+/// Check Groups for Angular Indexes
 ///
 /// \param[in] group vector of assigned groups for angular indexes (this is user input)
-/// \param[in] anglemap(this is generated by GenerateAngleMap())
 ///
 ///This function is called by GenerateGroupMaps()
 ///
 
-std::vector<Int_t> TAngularCorrelation::AssignGroups(std::vector<Int_t> &group, std::vector<Double_t> &anglemap)
+Bool_t TAngularCorrelation::CheckGroups(std::vector<Int_t> &group)
 {
-   std::vector<Int_t> groups; // vector to return
 
    // get number of group entries
    Int_t size = group.size();
-   Int_t angle_size = anglemap.size();
 
    //basic consistency check
-   if(size!=(Int_t) angle_size) { 
-      if(size <  angle_size){
-         printf("not all angles have been assigned a group.\n");  
-      }
-      if(size > angle_size){
-         printf("not all groups have been assigned an angle.\n");
-      }
+   if(size!=fNumIndices) { 
+      printf("The group list is inconsistent with the number of angular indices.\n");
+      printf("Number of groups: %i\n",size);
+      printf("Number of angular indices: %i\n",fNumIndices);
+      return kFALSE;
    } 
    
-   // initialize group vector
-   for (Int_t i=0;i<size;i++) {
-      groups.push_back(group[i]);
-   }
-
-   return groups;
+   return kTRUE;
 }
+
 ////////////////////////////////////////
-/// Assign angles for groups
+/// Returns the number of groups
+///
+
+Int_t TAngularCorrelation::GetNumGroups()
+{
+   Int_t max = 0;
+   for (Int_t i=0;i<static_cast<Int_t>(fGroups.size());i++) {
+      if (fGroups[i]>max) max = fGroups[i];
+   }
+   return max+1;
+}
+
+////////////////////////////////////////
+/// Check angles for groups
 ///
 /// \param[in] groupangle vector (user input)
 /// \param[in] groupweights vector for consistancy check(from GenerateGroupWeights())
@@ -1142,24 +1173,21 @@ std::vector<Int_t> TAngularCorrelation::AssignGroups(std::vector<Int_t> &group, 
 ///This function is called by GenerateGroupMaps()
 ///
 
-std::vector<Double_t> TAngularCorrelation::AssignGroupAngles(std::vector<Double_t> &groupangles, std::vector<Int_t> &groupweights)
+Bool_t TAngularCorrelation::CheckGroupAngles(std::vector<Double_t> &groupangles)
 {
    std::vector<Double_t> groupangle; // vector to return
 
    // get number of group entries
    Int_t size = groupangles.size();
+   Int_t numgroups = GetNumGroups();
 
    // basic consistency check
-   if(size!=(Int_t) groupweights.size()) {
-      printf("Not all groups have been assigned an angle.\n");   
+   if(size!=numgroups) {
+      printf("Not all groups have been assigned an angle.\n");
+      return kFALSE;
    } 
    
-   // initialize group vector
-   for(Int_t i=0;i<size;i++) {
-       groupangle.push_back(groupangles[i]);
-   }
-
-   return groupangle;
+   return kTRUE;
 }
 ////////////////////////////////////////
 /// Generate Folded Angles
@@ -1176,7 +1204,6 @@ std::vector<Double_t> TAngularCorrelation::GenerateFoldedAngles(std::vector<Doub
 
    // get size
    Int_t size = anglemap.size();
-   printf("anglemap.size()==%i\n",size);
 
    //consistancy check
    if(size == 0){
@@ -1220,13 +1247,13 @@ std::vector<Double_t> TAngularCorrelation::GenerateFoldedAngles(std::vector<Doub
 ////////////////////////////////////////
 /// Generated Folded Indexes
 ///
-/// \param[in] folds vector of the folded angles (created by GenerateFoldedAngles())
-/// \param[in] anglemap(created by GenerateAngleMap() (for un-grouped indexes) or by AssignGroupAngles() (for grouped indexes))
+/// \param[in] folds vector of the folded angles
+/// \param[in] anglemap vector of the unfolded angles
 ///
 ///This function is called by GenerateMaps() and by GenerateGroupMaps()
 ///
 
-std::vector<Int_t> TAngularCorrelation::GenerateFoldedIndexes(std::vector<Double_t> &folds, std::vector<Double_t> &anglemap)
+std::vector<Int_t> TAngularCorrelation::GenerateFoldedIndices(std::vector<Double_t> &folds, std::vector<Double_t> &anglemap)
 {
    std::vector<Int_t> fold_indexes; // vector to return
 
@@ -1249,7 +1276,6 @@ std::vector<Int_t> TAngularCorrelation::GenerateFoldedIndexes(std::vector<Double
          }
       }
    }
- 
 
    return fold_indexes;
 }
@@ -1284,12 +1310,34 @@ Int_t TAngularCorrelation::GenerateMaps(std::vector<Int_t> &arraynumbers, std::v
    fNumIndices = fAngleMap.size();
    fIndexMap = GenerateIndexMap(arraynumbers,distances,fAngleMap);
    fWeights = GenerateWeights(arraynumbers,distances,fIndexMap);
-   fFoldedAngles = GenerateFoldedAngles(fAngleMap);
-   fFoldedAngularIndexes = GenerateFoldedIndexes(fFoldedAngles, fAngleMap);
-   fFoldedAngularWeights = GenerateModifiedWeights(fFoldedAngularIndexes, fWeights);
 
    return fNumIndices;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+/// Creates maps for modified indices with some combination of folding or grouping
+///
+/// \param[in] fold 
+/// \param[in] group
+///
+Int_t TAngularCorrelation::GenerateModifiedMaps(Bool_t fold, Bool_t group)
+{
+   if (group) {
+      if (static_cast<Int_t>(fGroups.size())!=fNumIndices) {
+         printf("The groups are not set up properly.\n");
+         printf("Cannot create grouped maps.\n");
+         printf("Please use AssignGroupMaps first.\n");
+         return 0;
+      }
+   }
+   fModifiedAngles = GenerateModifiedAngles(fold,group);
+   Int_t size = fModifiedAngles.size();
+   fModifiedIndices = GenerateModifiedIndices(fold,group);
+   fModifiedWeights = GenerateModifiedWeights(fModifiedIndices,fWeights);
+
+   return size;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 /// Creates maps for Grouped Angular Indexes
 ///Including group angle versus group index and angular index versus group index
@@ -1323,15 +1371,29 @@ Int_t TAngularCorrelation::GenerateGroupMaps(std::vector<Int_t> &arraynumbers, s
    fNumIndices = fAngleMap.size();
    fIndexMap = GenerateIndexMap(arraynumbers,distances,fAngleMap);
    fWeights = GenerateWeights(arraynumbers,distances,fIndexMap);
-   fGroups = AssignGroups(group, fAngleMap);
-   fGroupWeights = GenerateModifiedWeights(group, fWeights);
-   fGroupAngles = AssignGroupAngles(groupangles, fGroupWeights);
-   fFoldedGroupAngles = GenerateFoldedAngles(fGroupAngles);
-   fFoldedGroupIndexes = GenerateFoldedIndexes(fFoldedGroupAngles, fGroupAngles);
-   fFoldedGroupWeights = GenerateModifiedWeights(fFoldedGroupIndexes, fGroupWeights);
+   AssignGroupMaps(group,groupangles);
+//   fGroupWeights = GenerateModifiedWeights(group, fWeights);
+//   fFoldedGroupAngles = GenerateFoldedAngles(fGroupAngles);
+//   fFoldedGroupIndexes = GenerateFoldedIndices(fFoldedGroupAngles, fGroupAngles);
+//   fFoldedGroupWeights = GenerateModifiedWeights(fFoldedGroupIndexes, fGroupWeights);
    return fNumIndices;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// Assigns maps for Grouped Angular Indexes
+///Including group angle versus group index and angular index versus group index
+///
+/// \param[in] group Vector (user input)
+/// \param[in] groupangles Vector (user input)
+///
+
+Int_t TAngularCorrelation::AssignGroupMaps(std::vector<Int_t> &group, std::vector<Double_t> &groupangles)
+{
+   // generate maps
+   if (CheckGroups(group)) fGroups = group;
+   if (CheckGroupAngles(groupangles)) fGroupAngles = groupangles;
+   return GetNumGroups();
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Creates maps for typical GRIFFIN configurations
@@ -1393,6 +1455,127 @@ Int_t TAngularCorrelation::GenerateMaps(Int_t detectors, Int_t distance)
 
    return val;
 }
+
+////////////////////////////////////////////////////////////////////
+/// Generates modified indices
+///
+/// \param[in] fold boolean indicating whether or not to fold the indices
+/// \param[in] group boolean indicating whether or not to group the indices
+
+std::vector<Int_t> TAngularCorrelation::GenerateModifiedIndices(Bool_t fold, Bool_t group)
+{
+   std::vector<Int_t> modindices;
+
+   if (fNumIndices==0) {
+      printf("You haven't set any angular indices yet.\n");
+      printf("Returning empty vector from GenerateModifiedIndices.\n");
+      return modindices;
+   }
+   // make sure the modified angles are set appropriately
+   if (fold!=fFolded || group!=fGrouped) {
+      printf("Please call GenerateModifiedAngles before calling GenerateModifiedIndices.\n");
+      printf("Returning empty vector from GenerateModifiedIndices.\n");
+      return modindices;
+   }
+
+   if (group) {
+      if (static_cast<Int_t>(fGroups.size())!=fNumIndices) {
+         printf("The groups are not set up properly.\n");
+         printf("Returning empty vector from GenerateModifiedIndices.\n");
+         return modindices;
+      }
+   }
+
+
+   if (!group && (!fold)) {
+      // well then why are you doing this in the first place?
+      // do nothing
+   }
+   else if (!fold && group) {
+      modindices = fGroups;
+   }
+   else if (fold && group) {
+      // group angles won't be directly comparable to the normal angle map
+      // so we have to make another, temporary one.
+      std::vector<Double_t> groupedangles;
+      for (Int_t i=0;i<fNumIndices;i++) {
+         Int_t thisgroup = fGroups[i];
+         Double_t thisangle = fGroupAngles[thisgroup];
+         groupedangles.push_back(thisangle);
+      }
+      modindices = GenerateFoldedIndices(fModifiedAngles,groupedangles);
+   }
+   else if (fold) {
+      modindices = GenerateFoldedIndices(fModifiedAngles,fAngleMap);
+   }
+
+   return modindices;
+}
+
+////////////////////////////////////////////////////////////////////
+/// Clears the modified arrays
+///
+
+void TAngularCorrelation::ClearModifiedMaps()
+{
+   fModifiedIndices.clear();
+   fModifiedAngles.clear();
+   fModifiedWeights.clear();
+   return;
+}
+
+////////////////////////////////////////////////////////////////////
+/// Generates modified angles
+///
+/// \param[in] fold boolean indicating whether or not to fold the indices
+/// \param[in] group boolean indicating whether or not to group the indices
+
+std::vector<Double_t> TAngularCorrelation::GenerateModifiedAngles(Bool_t fold, Bool_t group)
+{
+   std::vector<Double_t> modangles;
+
+   // checking to see that we have regular indices
+   if (fNumIndices==0) {
+      printf("You haven't set any angular indices yet.\n");
+      printf("Aborting.\n");
+      return modangles;
+   }
+
+   // checking for groups set up
+   if (static_cast<Int_t>(fGroups.size())!=fNumIndices) {
+      printf("The groups are not set up properly.\n");
+      printf("Returning empty vector from GenerateModifiedAngles.\n");
+      return modangles;
+   }
+
+   // checking for group angle setup
+   if (group && static_cast<Int_t>(fGroupAngles.size())!=GetNumGroups()) {
+      printf("Group angles aren't set up properly.\n");
+      printf("Returning empty vector from GenerateModifiedAngles.\n");
+      return modangles;
+   }
+
+   ClearModifiedMaps();
+   fFolded = fold;
+   fGrouped = group;
+
+   if (!group && (!fold)) {
+      // well then why are you doing this in the first place?
+      // do nothing
+   }
+   else if (!fold && group) {
+      modangles = fGroupAngles;
+   }
+   else if (fold &! group) {
+      modangles = GenerateFoldedAngles(fAngleMap);
+   }
+   else if (fold && group) {
+      modangles = GenerateFoldedAngles(fGroupAngles);
+   }
+
+   return modangles;
+}
+
 ////////////////////////////////////////////////////////////////////
 /// Updates index correlation based on peak array
 ///
@@ -1417,6 +1600,8 @@ void TAngularCorrelation::UpdateIndexCorrelation()
 
    return;
 }
+
+////////////////////////////////////////////////////////////////////
 /// Updates index correlation based on peak array
 ///
 
