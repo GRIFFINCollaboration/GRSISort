@@ -603,27 +603,11 @@ Bool_t TAngularCorrelation::CheckMaps(Bool_t fold, Bool_t group)
          result = kFALSE;
       }
    }
-   if(fold && !group){
-      if (fFoldedAngles.size()!=fFoldedAngularWeights.size()) {
-         printf("fFoldedAngles and fFoldedAngularWeights do not have the same size.\n");
-         printf("fFoldedAngle size is: %i\n",(Int_t) fFoldedAngles.size());
-         printf("fFoldedAngularWeights size is: %i\n",(Int_t) fFoldedAngularWeights.size());
-         result = kFALSE;
-      }
-   }
-   if(!fold && group){
-      if (fGroupAngles.size()!=fGroupWeights.size()) {
-         printf("fGroupAngles and fGroupWeights do not have the same size.\n");
-         printf("fGroupAngles size is: %i\n",(Int_t) fGroupAngles.size());
-         printf("fGroupWeights size is: %i\n",(Int_t) fGroupWeights.size());
-         result = kFALSE;
-      }
-   }
-   if(fold && group){
-      if (fFoldedGroupAngles.size()!=fFoldedGroupWeights.size()) {
-         printf("fFoldedGroupAngles and fFoldedGroupWeights do not have the same size.\n");
-         printf("fFoldedGroupAngles size is: %i\n",(Int_t) fFoldedGroupAngles.size());
-         printf("fFoldedGroupWeights size is: %i\n",(Int_t) fFoldedGroupWeights.size());
+   else {
+      if (fModifiedAngles.size()!=fModifiedWeights.size()) {
+         printf("fModifiedAngles and fModifiedWeights do not have the same size.\n");
+         printf("fModifiedAngles size is: %i\n",(Int_t) fModifiedAngles.size());
+         printf("fModifiedWeights size is: %i\n",(Int_t) fModifiedWeights.size());
          result = kFALSE;
       }
    }
@@ -827,36 +811,6 @@ void TAngularCorrelation::PrintModifiedWeights()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Prints map of Folded index vs. opening angle
-///
-
-void TAngularCorrelation::PrintFoldedGroupAngleMap()
-{
-   Int_t size = fFoldedGroupAngles.size();
-   Int_t weight_size = fFoldedGroupWeights.size();
-
-   if(size == 0){
-     printf("Folded angles have not been assigned yet.\n");
-     printf("Therefore cannot print map.\n");
-     return;
-     }
-    if(weight_size == 0){
-     printf("Weights have not been generated yet.\n");
-     printf("Therefore cannot print map.\n");
-     return;
-     }
-
-   printf("--------------------------------------------------------\n");
-   printf("||  Fold     |     Angle(RAD)   |       Weights       ||\n");
-   printf("--------------------------------------------------------\n");
-   for (Int_t i=0;i<size;i++) {
-      printf("||  %-7i  |  %15.4f  |  %-15i  ||\n",i,GetFoldedGroupAngleFromIndex(i),GetFoldedGroupWeightFromIndex(i));
-   }
-   printf("--------------------------------------------------------\n");
-
-   return;
-}
-////////////////////////////////////////////////////////////////////////////////
 /// Prints map of angular index vs. Folded Index
 
 void TAngularCorrelation::PrintModifiedIndexMap()
@@ -875,28 +829,6 @@ void TAngularCorrelation::PrintModifiedIndexMap()
       printf("||  %13i  |  %14i  ||\n",i,GetModifiedIndex(i));
    }
    printf("----------------------------------------\n");
-
-   return;
-}
-////////////////////////////////////////////////////////////////////////////////
-/// Prints map of angular index vs. Folded Index
-
-void TAngularCorrelation::PrintFoldedGroupIndexes()
-{
-   Int_t size = fFoldedGroupIndexes.size();
-    if(size == 0){
-      printf("Folded angles have not been assigned yet.\n");
-      printf("Therefore cannot print map.\n");
-      return;
-      }
-
-   printf("---------------------------------------------\n");
-   printf("||  Angular index  |  Folded Index  ||\n");
-   printf("---------------------------------------------\n");
-   for (Int_t i=0;i<size;i++) {
-      printf("||  %-13i  |  %-19i  ||\n",i,GetFoldedGroupIndex(i));
-   }
-   printf("---------------------------------------------\n");
 
    return;
 }
@@ -1171,6 +1103,7 @@ Bool_t TAngularCorrelation::CheckGroupAngles(std::vector<Double_t> &groupangles)
    
    return kTRUE;
 }
+
 ////////////////////////////////////////
 /// Generate Folded Angles
 ///gives angles out for each folded index in radians
