@@ -499,42 +499,39 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
 
 TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst, Bool_t fold, Bool_t group)
 {
-   TGraphAsymmErrors* graph = new TGraphAsymmErrors();
-
    if(!fold && !group){
       Int_t check = fAngleMap.size();
       if(check == 0){
-      printf("Angles have not been assigned. \n");
-      printf("Therefore cannot create graph. \n");
-      return 0;
+         printf("Angles have not been assigned. \n");
+         printf("Therefore cannot create graph. \n");
+         return 0;
       }
-  }
+   }
+   else {
+      // compare fold and group
+      if (fold == fFolded && group == fGrouped) {
+         // do nothing
+      }
+      else {
+         GenerateModifiedMaps(fold, group);
+      }
 
-   if(fold && !group){
-      Int_t check = fFoldedAngles.size();
+      Int_t check = fModifiedAngles.size();
       if(check == 0){
-         printf("Folded Angles have not been assigned. \n");
+         printf("Modified angles have not been assigned. \n");
          printf("Therefore cannot create graph. \n");
          return 0;
       }
-  }
-   if(!fold && group){
-      Int_t check = fGroupAngles.size();
-      if(check == 0){
-         printf("Grouped Angles have not been assigned. \n");
-         printf("Therefore cannot create graph. \n");
+
+      if (CheckModifiedHistogram(hst)) {
+         // do nothing
+      }
+      else {
          return 0;
       }
-  }
-   if(fold && group){
-      Int_t check = fFoldedGroupAngles.size();
-      if(check == 0){
-         printf("Folded group angles have not been assigned. \n");
-         printf("Therefore cannot create graph. \n");
-         return 0;
-         }
-  }
-   
+   }
+
+   TGraphAsymmErrors* graph = new TGraphAsymmErrors();
    Int_t n = hst->GetNbinsX();
    
    for (Int_t i=1;i<=n;i++) { // bin number loop
@@ -545,9 +542,7 @@ TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst, Bool_t fold
       // get associated angle
       Double_t angle=0;
       if(!fold && !group) angle = fAngleMap[index];
-      else if(fold && !group) angle = fFoldedAngles[index];
-      else if(!fold && group) angle = fGroupAngles[index];
-      else if(fold && group)  angle = fFoldedGroupAngles[index];
+      else angle = fModifiedAngles[index];
 
       // get counts and error
       Double_t y = hst->GetBinContent(i);
@@ -1758,14 +1753,6 @@ void TAngularCorrelation::PrintModifiedConditions()
 TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
 {
 
-   // compare fold and group
-   if (fold == fFolded && group == fGrouped) {
-      // do nothing
-   }
-   else {
-      GenerateModifiedMaps(fold, group);
-   }
-
    if(!fold && !group){
       Int_t size = this->GetWeightsSize();
 
@@ -1787,6 +1774,14 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
       }
    }
    else {
+      // compare fold and group
+      if (fold == fFolded && group == fGrouped) {
+         // do nothing
+      }
+      else {
+         GenerateModifiedMaps(fold, group);
+      }
+
       if (CheckModifiedHistogram(hst)) {
          // do nothing
       }
@@ -1807,10 +1802,11 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
 
    // now that we're satisified everything is kosher, divide the bins.
    for(Int_t i=1;i<=hst->GetNbinsX();i++) {
+      printf("\t%i\n",i);
       Int_t index = hst->GetBinLowEdge(i);
-      Double_t found_weight = 0;
-      if(!fold && !group) found_weight = this->GetWeightFromIndex(index);
-      else found_weight = this->GetModifiedWeight(index);
+      Int_t found_weight = 0;
+      if(!fold && !group) found_weight = GetWeightFromIndex(index);
+      else found_weight = GetModifiedWeight(index);
       Double_t content = hst->GetBinContent(i);
       Double_t error = hst->GetBinError(i);
       Double_t weight = found_weight;
@@ -1822,23 +1818,6 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
 
    return (TH1D*) hst;
 }
-
-////////////////////////////////////////////////////////////////////////////////
-/// Divides index correlation by weights listed in weight array
-///
-
-/*void TAngularCorrelation::DivideByWeights()
-{
-   TH1D* hst = DivideByWeights(fIndexCorrelation);
-   Bool_t fold = kFALSE;
-   Bool_t group = kFALSE;
-   if (hst!=0x0) fIndexCorrelation=hst;
-   return;
-}
-*///not sure how to get this function to work with the new bool's added
-////////////////////////////////////////////////////////////////////////////////
-/// Displays diagnostics based on peak array
-///
 
 void TAngularCorrelation::DisplayDiagnostics(TCanvas* c_diag)
 {
