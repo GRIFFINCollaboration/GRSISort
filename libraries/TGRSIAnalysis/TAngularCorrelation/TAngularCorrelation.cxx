@@ -19,10 +19,11 @@ ClassImp(TAngularCorrelation)
 ///
 TAngularCorrelation::TAngularCorrelation()
 {
-   fIndexCorrelation = 0;// used the 1D histograms for a specific energy ranged used for FitSlices
-   fIndexMapSize = 0; //number of indexes, never called in making the histograms
-   fFolded = kFALSE; //not set yet
-   fGrouped = kFALSE; //not set yet
+   f2DSlice = 0;
+   fIndexCorrelation = 0;
+   fIndexMapSize = 0;
+   fFolded = kFALSE;
+   fGrouped = kFALSE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -30,6 +31,7 @@ TAngularCorrelation::TAngularCorrelation()
 ///
 TAngularCorrelation::~TAngularCorrelation()
 {
+   delete f2DSlice;
    delete fIndexCorrelation;
 }
 
@@ -44,7 +46,7 @@ TAngularCorrelation::~TAngularCorrelation()
 ///
 /// Projects out the events with one energy between min and max
 /// X-axis of returned histogram is second energy
-/// Y-axis of returned histogram is angular index (or the group number if group = kTRUE)
+/// Y-axis of returned histogram is angular index
 
 TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t max, Bool_t fold = kFALSE, Bool_t group = kFALSE)
 {
@@ -53,24 +55,24 @@ TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t 
    Int_t indexaxis,energy1axis,energy2axis;
    Double_t xmin[3];
    Double_t xmax[3];
-   for (Int_t i=0;i<3;i++) {//goes through all three dimensions of THnSparse and finds the min and max values
+   for (Int_t i=0;i<3;i++) {
       xmin[i] = hst->GetAxis(i)->GetXmin();
       xmax[i] = hst->GetAxis(i)->GetXmax();
-   }//then look for matching axis since energy axis should be the same
-   if (xmin[0] == xmin[1] && xmax[0] == xmax[1]) {//are 0 and 1 the same? then axis 2 is the index axis
+   }
+   if (xmin[0] == xmin[1] && xmax[0] == xmax[1]) {
       indexaxis = 2;
       energy1axis = 0;
       energy2axis = 1;
-   } else if (xmin[1] == xmin[2] && xmax[1] == xmax[2]) {//are 1 and 2 the same? then axis 0 is the index axis
+   } else if (xmin[1] == xmin[2] && xmax[1] == xmax[2]) {
       indexaxis = 0;
       energy1axis = 1;
       energy2axis = 2;
-   } else if (xmin[2] == xmin[0] && xmax[2] == xmax[0]) {//are 0 and 2 the same? then axis 1 is the index axis
+   } else if (xmin[2] == xmin[0] && xmax[2] == xmax[0]) {
       indexaxis = 1;
       energy1axis = 0;
       energy2axis = 2;
    } else {
-      printf("Can't identify energy axes. Assuming index axis is axis 0.\n");//no two axis are the same
+      printf("Can't identify energy axes. Assuming index axis is axis 0.\n");
       indexaxis = 0;
       energy1axis = 1;
       energy2axis = 2;
@@ -78,13 +80,23 @@ TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t 
 
    // project the THnSparse
    hst->GetAxis(energy1axis)->SetRangeUser(min,max);
-   TH2D* tempslice = (TH2D*) hst->Projection(indexaxis,energy2axis,"e"); // the "e" option pushes appropriate errors
-   tempslice->SetName(Form("%s_proj_%i",hst->GetName(),(Int_t)((max+min)/2)));
-   tempslice->SetTitle(Form("%s: %i keV",hst->GetTitle(),(Int_t)((max+min)/2)));
+   f2DSlice = (TH2D*) hst->Projection(indexaxis,energy2axis,"e"); // the "e" option pushes appropriate errors
+   f2DSlice->SetName(Form("%s_proj_%i",hst->GetName(),(Int_t)((max+min)/2)));
+   f2DSlice->SetTitle(Form("%s: %i keV",hst->GetTitle(),(Int_t)((max+min)/2)));
 
-   TH2D* slice2d = this->Modify2DSlice(tempslice,fold,group);
-
-   return slice2d;
+   // TODO: folding
+   if (fold) {
+      // set kFolded bool
+      // check for angle map calculated
+      // fold f2DSlice
+      // compare cos theta of angular indices
+   }
+   // TODO: grouping
+   if (group) {
+      // do nothing
+   }
+   
+   return f2DSlice;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +118,6 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
 {
    // identify the type of histograms included in the array
    // a TH2D will need to be projected differently than a THnSparse array
-   
    Bool_t sparse = kFALSE; // true if the array has THnSparse histograms
    Bool_t hst2d = kFALSE; // true if the array has some kind of TH2 histogram
    TIter next(hstarray);
@@ -141,7 +152,7 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
          printf("Bailing.\n");
       }
    }
-   
+
    // if the array is neither, bail out
    if (!sparse && !hst2d) {
       printf("Can't identify the type of object in the array.\n");
@@ -172,23 +183,13 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
       name = firsthst->GetName();
       title = firsthst->GetTitle();
    }
-   Int_t ybins = elements;
 
-   Int_t iteration = 0;
-   TH2D* newslice;
-   if (gFile->Get(Form("%s_%i_%i",name,Int_t(min),Int_t(max)))==0x0) {
-      newslice = new TH2D(Form("%s_%i_%i",name,Int_t(min),Int_t(max)),Form("%s, E_{#gamma 1}=[%.1f,%.1f)",title,min,max),bins,xmin,xmax,ybins,0,ybins);
-   }
-   else {
-      while (iteration<10) {
-         if (gFile->Get(Form("%s_%i_%i_%i",name,Int_t(min),Int_t(max),iteration))==0x0) break;
-         else ++iteration;
-      }
-      newslice = new TH2D(Form("%s_%i_%i_%i",name,Int_t(min),Int_t(max),iteration),Form("%s, E_{#gamma 1}=[%.1f,%.1f)",title,min,max),bins,xmin,xmax,ybins,0,ybins);
-   }
+   // create the empty histogram
+   TH2D* newslice = new TH2D(Form("%s_%i_%i",name,Int_t(min),Int_t(max)),Form("%s, E_{#gamma 1}=[%.1f,%.1f)",title,min,max),bins,xmin,xmax,elements,0,elements);
 
    // iterate over the array of 2D gamma-gamma matrices
-   for (Int_t i=0;i<elements;i++) {//takes slice and itterates through all indexes
+   for (Int_t i=0;i<elements;i++) {
+      
       // slice this particular matrix
       TH1D* tempslice = 0;
       // sparse option
@@ -199,146 +200,46 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
       }
       // TH2 option
       else if (hst2d) {
-         TH2* thishst = (TH2*) hstarray->At(i);//itterating through all the indexes
+         TH2* thishst = (TH2*) hstarray->At(i);
          thishst->GetXaxis()->SetRangeUser(min,max);
-         tempslice = thishst->ProjectionY();//projecting result of gate into temporary slice
+         tempslice = thishst->ProjectionY();
       }
-   
-      // iterate through the appropriate bins, transfer values, and take care of error appropriately
-      Double_t x,y,oldcontent,newcontent,olderror,newerror;
-      Int_t bin;
-      y = i;
+
+      // save histogram values
+      Double_t *xvalues = new Double_t[bins];
+      Double_t *yvalues = new Double_t[bins];
+      Double_t *weights = new Double_t[bins];
       for (Int_t j=1;j<=bins;j++) {
-         x = tempslice->GetBinCenter(j); //energy
-         bin = newslice->FindBin(x,y);
-         newcontent = tempslice->GetBinContent(j); //number of counts
-         oldcontent = newslice->GetBinContent(bin);
-         newerror = tempslice->GetBinError(j);
-         olderror = newslice->GetBinError(bin);
-         newslice->SetBinContent(bin,oldcontent+newcontent);
-         newslice->SetBinError(bin,sqrt(pow(newerror,2)+pow(olderror,2)));
+         xvalues[j-1] = tempslice->GetBinCenter(j);
+         yvalues[j-1] = i;
+         weights[j-1] = tempslice->GetBinContent(j);
       }
-   
+
+      // fill the 2D histogram with those values
+      newslice->FillN(bins,xvalues,yvalues,weights);
+
       // cleanup
       delete tempslice;
-   }
-   
-   TH2D* finalslice = this->Modify2DSlice(newslice,fold,group);
-   if (fold || group) delete newslice;
-
-   return finalslice;
-   
-}
-
-TH2D* TAngularCorrelation::Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group)
-{
-   if(!fold && !group){
-      printf("No folding or grouping selected.\n");
-      printf("Returning unmodified 2D slice.\n");
-      return static_cast<TH2D*>(hst);
+      delete [] xvalues;
+      delete [] yvalues;
+      delete [] weights;
    }
 
-   // if desired settings are the same as current settings, then continue on
-   // else, change the settings and make new maps.
-   if (fold == fFolded && group == fGrouped){
+   // TODO: folding
+   if (fold) {
+      // set kFolded bool
+      // check for angle map calculated
+      // fold f2DSlice
+      // compare cos theta of angular indices
+   }
+   // TODO: grouping
+   if (group) {
       // do nothing
    }
-   else {
-      GenerateModifiedMaps(fold,group);
-   }
 
-    ////consistency check group assignments
-   if(group) {
-      Int_t group_numbers = fGroups.size();  
-      Int_t angle_numbers = fAngleMap.size();
-     
-      //check for index map
-      if(angle_numbers == 0){
-         printf("Angle Map has not been defined yet.\n");
-         printf("Need Angle Map to assign groups. \n");
-         printf("Bailing out. \n");
-         return 0;
-      } 
-      //check for group assignments
-      if(group_numbers == 0){
-         printf("Groups have not been assigned yet.\n");
-         printf("Cannot group Angular Indexes. \n");
-         printf("Bailing out. \n");
-         return 0;
-      }
-       //consistency check
-      if(group_numbers != angle_numbers){
-         if(group_numbers < angle_numbers){
-            printf("Not all angular indexes have been assigned a group. \n");
-            printf("Bailing out.\n");
-            return 0;
-         }
-         if(group_numbers > angle_numbers){
-            printf("Too many groups have been assigned, not enough angular indexes. \n");
-            printf("Bailing out. \n");
-            return 0;
-         }
-      }
-   }
-
-   // get x-axis parameters
-   Int_t bins = hst->GetNbinsX();
-   Int_t xmin = hst->GetXaxis()->GetBinLowEdge(1);
-   Int_t xmax = hst->GetXaxis()->GetBinUpEdge(bins);
-
-   // get histogram name and title
-   const Char_t* hst2dname = hst->GetName();
-   const Char_t* hst2dtitle = hst->GetTitle(); 
-
-   // get number of y-bins
-   Int_t ybins = hst->GetNbinsY();
-   Int_t newybins = GetNumModIndices();
-
-   // initialize the histogram
-   TH2D* modified_slice;
-   if (group &! fold) {
-      modified_slice =  new TH2D(Form("%s_grouped",hst2dname),Form("%s_grouped",hst2dtitle),bins,xmin,xmax,newybins,0,newybins);//defines slice
-   }
-   else if (fold &! group) {
-      modified_slice =  new TH2D(Form("%s_folded",hst2dname),Form("%s_folded",hst2dtitle),bins,xmin,xmax,newybins,0,newybins);//defines slice
-   }
-   else if (fold && group) {
-      modified_slice =  new TH2D(Form("%s_grouped_folded",hst2dname),Form("%s_grouped_folded",hst2dtitle),bins,xmin,xmax,newybins,0,newybins);//defines slice
-   }
-   else {
-      modified_slice =  new TH2D(Form("%s_unknown",hst2dname),Form("%s_unknown",hst2dtitle),bins,xmin,xmax,newybins,0,newybins);//defines slice
-   }
-
-   // loop through the original 2D histograms y-axis...
-   for(Int_t i=0; i<ybins; i++){ // y-axis bin loop
-      TH1D* tempslice=0;
-      tempslice = hst->ProjectionX("", i+1, i+1);
-
-      Double_t x,y,oldcontent,newcontent,olderror,newerror;
-      Int_t bin;
-      // figure out the new index
-      y = GetModifiedIndex(i);
-      // now loop through the energy axis...
-      for(Int_t j=1; j<=bins; j++){ // x-axis bin loop
-         x = tempslice->GetBinCenter(j);
-         bin = modified_slice->FindBin(x,y);
-         // pull out the new content / error
-         newcontent = tempslice->GetBinContent(j); //number of counts
-         newerror = tempslice->GetBinError(j);
-         // pull out the old content / error
-         oldcontent = modified_slice->GetBinContent(bin);
-         olderror = modified_slice->GetBinError(bin);
-         // re-set new 2D histogram bin with combined value
-         modified_slice->SetBinContent(bin,oldcontent+newcontent);
-         modified_slice->SetBinError(bin,sqrt(pow(newerror,2)+pow(olderror,2)));
-      } // end x-axis bin loop
-
-      // cleanup
-      delete tempslice;
-
-   } // end y-axis bin loop
-
-   return modified_slice;   
+   f2DSlice = newslice;
+   
+   return f2DSlice;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -418,6 +319,7 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
    // loop over the indices
    for (Int_t i=1;i<=indexmax-indexmin;i++) {
       Int_t index = hst->GetYaxis()->GetBinLowEdge(i);
+
       if (visualization) {
          // find the correct pad
          Int_t canvas = (i-1)/16;
@@ -439,9 +341,9 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
 
       // draw the slice to canvas
       if (visualization) this->Get1DSlice(index)->Draw("pe1");
-     
+
       // if there are too few counts, continue on (you can fit it manually later)
-      if (temphst->Integral()<50) continue;
+      if (temphst->Integral()<100) continue;
 
       // rename TPeak
       peak->SetName(Form("%s_proj%i_peak",hst2dname,index));
@@ -497,52 +399,17 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
 /// \param[in] hst One-dimensional histogram of angular index vs. counts
 ///
 
-TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst, Bool_t fold, Bool_t group)
+TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst)
 {
-   if(!fold && !group){
-      Int_t check = fAngleMap.size();
-      if(check == 0){
-         printf("Angles have not been assigned. \n");
-         printf("Therefore cannot create graph. \n");
-         return 0;
-      }
-   }
-   else {
-      // compare fold and group
-      if (fold == fFolded && group == fGrouped) {
-         // do nothing
-      }
-      else {
-         GenerateModifiedMaps(fold, group);
-      }
-
-      Int_t check = fModifiedAngles.size();
-      if(check == 0){
-         printf("Modified angles have not been assigned. \n");
-         printf("Therefore cannot create graph. \n");
-         return 0;
-      }
-
-      if (CheckModifiedHistogram(hst)) {
-         // do nothing
-      }
-      else {
-         return 0;
-      }
-   }
-
    TGraphAsymmErrors* graph = new TGraphAsymmErrors();
-   Int_t n = hst->GetNbinsX();
    
+   Int_t n = hst->GetNbinsX();
    for (Int_t i=1;i<=n;i++) { // bin number loop
-       
       // get index number
       Int_t index = hst->GetXaxis()->GetBinLowEdge(i);
 
       // get associated angle
-      Double_t angle=0;
-      if(!fold && !group) angle = fAngleMap[index];
-      else angle = fModifiedAngles[index];
+      Double_t angle = fAngleMap[index];
 
       // get counts and error
       Double_t y = hst->GetBinContent(i);
@@ -568,7 +435,6 @@ TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst, Bool_t fold
 /// \param[in] arraynum2 second array number
 ///
 
-
 Int_t TAngularCorrelation::GetAngularIndex(Int_t arraynum1, Int_t arraynum2)
 {
    if (arraynum1==0 || arraynum2==0) {
@@ -590,26 +456,17 @@ Int_t TAngularCorrelation::GetAngularIndex(Int_t arraynum1, Int_t arraynum2)
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Checks that maps are consistent with each other
-///need to input whether the angles are folded, grouped, or folded and grouped
+///
 
-Bool_t TAngularCorrelation::CheckMaps(Bool_t fold, Bool_t group)
+Bool_t TAngularCorrelation::CheckMaps()
 {
    Bool_t result = kTRUE; // result to return
-   if(!fold && !group){
-      if (fAngleMap.size()!=fWeights.size()) {
-         printf("fAngleMap and fWeights do not have the same size.\n");
-         printf("fAngleMap size is: %i\n",(Int_t) fAngleMap.size());
-         printf("fWeights size is: %i\n",(Int_t) fWeights.size());
-         result = kFALSE;
-      }
-   }
-   else {
-      if (fModifiedAngles.size()!=fModifiedWeights.size()) {
-         printf("fModifiedAngles and fModifiedWeights do not have the same size.\n");
-         printf("fModifiedAngles size is: %i\n",(Int_t) fModifiedAngles.size());
-         printf("fModifiedWeights size is: %i\n",(Int_t) fModifiedWeights.size());
-         result = kFALSE;
-      }
+
+   if (fAngleMap.size()!=fWeights.size()) {
+      printf("fAngleMap and fWeights do not have the same size.\n");
+      printf("fAngleMap size is: %i\n",(Int_t) fAngleMap.size());
+      printf("fWeights size is: %i\n",(Int_t) fWeights.size());
+      result = kFALSE;
    }
    return result;
 }
@@ -621,11 +478,6 @@ Bool_t TAngularCorrelation::CheckMaps(Bool_t fold, Bool_t group)
 void TAngularCorrelation::PrintIndexMap()
 {
    Int_t size = fIndexMapSize;
-   if(size == 0){
-      printf("Indexes have not been assigned yet.\n");
-      printf("Therefore cannot print map.\n");
-      return;
-   }
 
    for (Int_t i=1;i<=size;i++)
    {
@@ -649,13 +501,12 @@ void TAngularCorrelation::PrintWeights()
 {
    Int_t size = fAngleMap.size();
    Int_t weight_size = fWeights.size();
-   if(size==0) {
+   if (size==0) {
       printf("The angle map hasn't been created yet.\n");
       printf("Therefore, can't print.\n");
       return;
    }
-
-   if(weight_size==0) {
+   if (weight_size==0) {
       printf("The weights haven't been calculated yet.\n");
       printf("Therefore, can't print.\n");
       return;
@@ -671,64 +522,6 @@ void TAngularCorrelation::PrintWeights()
 
    return;
 }
-////////////////////////////////////////////////////////////////////////////////
-/// Prints map of angular index vs. opening angle vs. group
-///
-
-void TAngularCorrelation::PrintGroupIndexMap()
-{
-   Int_t size = fAngleMap.size();
-   Int_t group_size = fGroups.size();
-   if (size==0) {
-      printf("The angle map hasn't been created yet.\n");
-      printf("Therefore, can't print.\n");
-      return;
-   }
-   if (group_size==0) {
-      printf("The groups haven't been assigned yet.\n");
-      printf("Therefore, can't print.\n");
-      return;
-   }
-
-   printf("-------------------------------------\n");
-   printf("||  Angular index  |  Group index  ||\n");
-   printf("-------------------------------------\n");
-   for (Int_t i=0;i<size;i++) {
-      printf("||  %13i  |  %11i  ||\n",i,GetGroupFromIndex(i));
-   }
-   printf("-------------------------------------\n");
-
-   return;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// Prints map of group vs. group weight vs. average group angle
-///
-
-void TAngularCorrelation::PrintGroupAngleMap()
-{
-   Int_t size = GetNumGroups();
-   Int_t angle_size = fGroupAngles.size();
-   if (size==0){
-      printf("The number of groups haven't been determined yet. \n");
-      printf("Therefore, can't print.\n");
-      return;
-   }
-   if (angle_size==0){
-      printf("The angles haven't been assigned yet. \n");
-      printf("Therefore, can't print.\n");
-      return;
-   }
-   printf("-----------------------------------\n");
-   printf("||  Group index  |  Angle (rad)  ||\n");
-   printf("-----------------------------------\n");
-   for (Int_t i=0;i<size;i++) {
-      printf("||  %11i  |  %12.4f  ||\n",i,GetGroupAngleFromIndex(i));
-   }
-   printf("-----------------------------------\n");
-
-   return;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Prints map of angular index vs. opening angle
@@ -737,11 +530,6 @@ void TAngularCorrelation::PrintGroupAngleMap()
 void TAngularCorrelation::PrintAngleMap()
 {
    Int_t size = fAngleMap.size();
-     if(size == 0){
-      printf("Folded angles have not been assigned yet.\n");
-      printf("Therefore cannot print map.\n");
-      return;
-      }
 
    printf("---------------------------------------------\n");
    printf("||  Angular index  |  Opening angle (rad)  ||\n");
@@ -750,85 +538,6 @@ void TAngularCorrelation::PrintAngleMap()
       printf("||  %-13i  |  %-19.4f  ||\n",i,GetAngleFromIndex(i));
    }
    printf("---------------------------------------------\n");
-
-   return;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// Prints map of Folded index vs. opening angle
-///
-
-void TAngularCorrelation::PrintModifiedAngleMap()
-{
-   Int_t size = fModifiedAngles.size();
-
-   if(size == 0){
-      printf("Folded angles have not been assigned yet.\n");
-      printf("Therefore cannot print map.\n");
-      return;
-   }
-
-   printf("--------------------------------------\n");
-   printf("||  Modified index  |  Angle (rad)  ||\n");
-   printf("--------------------------------------\n");
-   for (Int_t i=0;i<size;i++) {
-      printf("||  %14i  |  %11.4f  ||\n",i,GetModifiedAngleFromIndex(i));
-   }
-   printf("--------------------------------------\n");
-
-   return;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// Prints map of Folded index vs. opening angle
-///
-
-void TAngularCorrelation::PrintModifiedWeights()
-{
-   Int_t size = fModifiedAngles.size();
-   Int_t weight_size = fModifiedWeights.size();
-
-   if(size == 0){
-      printf("Modified angles have not been assigned yet.\n");
-      printf("Therefore cannot print map.\n");
-      return;
-   }
-   if(weight_size == 0){
-      printf("Modified weights have not been generated yet.\n");
-      printf("Therefore cannot print map.\n");
-      return;
-   }
-
-   printf("-------------------------------------------------\n");
-   printf("||  Modified index  |  Angle (rad)  |  Weight  ||\n");
-   printf("-------------------------------------------------\n");
-   for (Int_t i=0;i<size;i++) {
-      printf("||  %14i  |  %11.4f  |  %6i  ||\n",i,GetModifiedAngleFromIndex(i),GetModifiedWeight(i));
-   }
-   printf("-------------------------------------------------\n");
-
-   return;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// Prints map of angular index vs. Folded Index
-
-void TAngularCorrelation::PrintModifiedIndexMap()
-{
-   Int_t size = fModifiedIndices.size();
-   if(size == 0){
-      printf("Modified indices have not been assigned yet.\n");
-      printf("Therefore cannot print map.\n");
-      return;
-   }
-
-   printf("----------------------------------------\n");
-   printf("||  Angular index  |  Modified index  ||\n");
-   printf("----------------------------------------\n");
-   for (Int_t i=0;i<size;i++) {
-      printf("||  %13i  |  %14i  ||\n",i,GetModifiedIndex(i));
-   }
-   printf("----------------------------------------\n");
 
    return;
 }
@@ -888,14 +597,12 @@ std::vector<Double_t> TAngularCorrelation::GenerateAngleMap(std::vector<Int_t> &
 ////////////////////////////////////////////////////////////////////////////////
 /// Creates map of weights vs. angular index
 ///
-/// \param[in] arraynumbers Vector of array numbers used in this experiment 
+/// \param[in] arraynumbers Vector of array numbers used in this experiment
 /// \param[in] distances Vector of detector distances for those array numbers
 /// \param[in] indexmap Index map (probably created with GenerateIndexMap)
 ///
 /// The indices for the index map start from zero, so when using array numbers
 /// (which start from one) as input for those indices, you need to subtract one.
-///
-///This function is called by GenerateMaps()
 
 std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::map<Int_t,std::map<Int_t,Int_t>> &indexmap)
 {
@@ -937,49 +644,13 @@ std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arra
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Creates map of modified weights vs. modified index
-///
-/// \param[in] modindices vector that converts angular index to modified index
-/// \param[in] weight vector of weights for angular index
-/// 
-///This function is called by GenerateMaps() and GenerateGroupMaps()
-
-std::vector<Int_t> TAngularCorrelation::GenerateModifiedWeights(std::vector<Int_t> &modindices, std::vector<Int_t> &weights)
-{
-   std::vector<Int_t> modifiedweights; // vector to return
-
-   // get weights size
-   Int_t size = weights.size();
-
-   // find total number of modified indices
-   Int_t max = 0;
-   for (Int_t i=0;i<size;i++) {
-      if (modindices[i]>max) max = modindices[i];
-   }
-
-   //fill modifiedweights with zeros
-   for(Int_t i=0; i<=max; i++) {
-      modifiedweights.push_back(0);
-   }
-
-   //iterate over angular modindices to look for same groups 
-   for (Int_t i=0; i<size; i++) {
-      Int_t thisIndex = modindices[i];
-      modifiedweights[thisIndex] = modifiedweights[thisIndex] + weights[i]; 
-   }
-
-   return modifiedweights;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 /// Creates map of angle pair vs. angular index
 ///
 /// \param[in] arraynumbers Vector of array numbers used in this experiment
 /// \param[in] distances Vector of detector distances for those array numbers
 /// \param[in] anglemap Angle map (probably created with GenerateAngleMap
 ///
-///This function is called by GenerateMaps()
-///
+
 std::map<Int_t,std::map<Int_t,Int_t>> TAngularCorrelation::GenerateIndexMap(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Double_t> &anglemap)
 {
    // initialize map
@@ -1027,173 +698,6 @@ std::map<Int_t,std::map<Int_t,Int_t>> TAngularCorrelation::GenerateIndexMap(std:
    return indexmap;
 }
 
-////////////////////////////////////////
-/// Check Groups for Angular Indexes
-///
-/// \param[in] group vector of assigned groups for angular indexes (this is user input)
-///
-///This function is called by GenerateGroupMaps()
-///
-
-Bool_t TAngularCorrelation::CheckGroups(std::vector<Int_t> &group)
-{
-
-   // get number of group entries
-   Int_t size = group.size();
-
-   //basic consistency check
-   if(size!=fNumIndices) { 
-      printf("The group list is inconsistent with the number of angular indices.\n");
-      printf("Number of groups: %i\n",size);
-      printf("Number of angular indices: %i\n",fNumIndices);
-      return kFALSE;
-   } 
-   
-   return kTRUE;
-}
-
-////////////////////////////////////////
-/// Returns the number of groups
-///
-
-Int_t TAngularCorrelation::GetNumGroups()
-{
-   Int_t max = 0;
-   for (Int_t i=0;i<static_cast<Int_t>(fGroups.size());i++) {
-      if (fGroups[i]>max) max = fGroups[i];
-   }
-   return max+1;
-}
-
-////////////////////////////////////////
-/// Returns the number of groups
-///
-
-Int_t TAngularCorrelation::GetNumModIndices()
-{
-   Int_t max = 0;
-   for (Int_t i=0;i<static_cast<Int_t>(fModifiedIndices.size());i++) {
-      if (fModifiedIndices[i]>max) max = fModifiedIndices[i];
-   }
-   return max+1;
-}
-
-////////////////////////////////////////
-/// Check angles for groups
-///
-/// \param[in] groupangle vector (user input)
-/// \param[in] groupweights vector for consistancy check(from GenerateGroupWeights())
-///
-///This function is called by GenerateGroupMaps()
-///
-
-Bool_t TAngularCorrelation::CheckGroupAngles(std::vector<Double_t> &groupangles)
-{
-   std::vector<Double_t> groupangle; // vector to return
-
-   // get number of group entries
-   Int_t size = groupangles.size();
-   Int_t numgroups = GetNumGroups();
-
-   // basic consistency check
-   if(size!=numgroups) {
-      printf("Not all groups have been assigned an angle.\n");
-      return kFALSE;
-   } 
-   
-   return kTRUE;
-}
-
-////////////////////////////////////////
-/// Generate Folded Angles
-///gives angles out for each folded index in radians
-///
-/// \param[in] anglemap (can be for grouped or ungrouped anglular indexes)
-///
-///This function is called by GenerateMaps() and GenerateGroupMaps()
-///
-
-std::vector<Double_t> TAngularCorrelation::GenerateFoldedAngles(std::vector<Double_t> &anglemap)
-{
-   std::vector<Double_t> folds; // vector to return
-
-   // get size
-   Int_t size = anglemap.size();
-
-   //consistancy check
-   if(size == 0){
-      printf("Angles have not been assigned yet. \n");
-      printf("Therefore cannot fold indexes. \n");
-      return folds;
-   }
-
-   //declare fold array and fill with zeros
-   std::vector<Double_t> foldArray;
-   for(Int_t i=0; i<size; i++){
-      foldArray.push_back(0);
-   }
-
-  //fill fold array with angle values
-     for (Int_t i=0; i<size; i++){
-         foldArray[i] = anglemap[i];
-      }
-  
-   // Iterate through fold array
-   for(Int_t i=0; i<size; i++){
-      Double_t fold_angle = foldArray[i];
-      Bool_t alreadyclaimed = kFALSE;
-
-      for (Int_t m=0; m < static_cast<Int_t>(folds.size()); m++) {
-         if(TMath::Abs(TMath::Sin(fold_angle)-TMath::Sin(folds[m]))<0.000005) {//look for duplicated angles in the fold array 
-            alreadyclaimed = kTRUE;
-            break;
-         }
-      }
-      if(!alreadyclaimed){
-         folds.push_back(fold_angle); 
-      } 
-  }
-
-  std::sort(folds.begin(),folds.end()); 
-
-   return folds;
-}
-
-////////////////////////////////////////
-/// Generated Folded Indexes
-///
-/// \param[in] folds vector of the folded angles
-/// \param[in] anglemap vector of the unfolded angles
-///
-///This function is called by GenerateMaps() and by GenerateGroupMaps()
-///
-
-std::vector<Int_t> TAngularCorrelation::GenerateFoldedIndices(std::vector<Double_t> &folds, std::vector<Double_t> &anglemap)
-{
-   std::vector<Int_t> fold_indexes; // vector to return
-
-  // get sizes of fold and angle vectors
-   Int_t fold_size = folds.size();
-   Int_t angle_size = anglemap.size();
-
-  // itterate through angle map to find abs(cos(angle)
-   for(Int_t i=0;i<angle_size;i++) {
-      Double_t angle = anglemap[i];
-      Double_t sin_angle = TMath::Sin(angle);
-    
-      //itterate through folds
-      for(Int_t j=0; j<fold_size; j++){
-         Double_t rad_angle = folds[j];
-         Double_t fold_angle = TMath::Sin(rad_angle);
-         if(TMath::Abs(fold_angle-sin_angle)<0.000005){//compare abs(cos(angle)) to fold_Angles to find matches
-            fold_indexes.push_back(j);//assign folds
-            break;
-         }
-      }
-   }
-
-   return fold_indexes;
-}
 ////////////////////////////////////////////////////////////////////////////////
 /// Creates maps of angle pair vs. angular index and angular index vs. opening angle.
 ///
@@ -1230,87 +734,6 @@ Int_t TAngularCorrelation::GenerateMaps(std::vector<Int_t> &arraynumbers, std::v
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Creates maps for modified indices with some combination of folding or grouping
-///
-/// \param[in] fold 
-/// \param[in] group
-///
-Int_t TAngularCorrelation::GenerateModifiedMaps(Bool_t fold, Bool_t group)
-{
-   if (group) {
-      if (static_cast<Int_t>(fGroups.size())!=fNumIndices) {
-         printf("The groups are not set up properly.\n");
-         printf("Cannot create grouped maps.\n");
-         printf("Please use AssignGroupMaps first.\n");
-         return 0;
-      }
-   }
-   fModifiedAngles = GenerateModifiedAngles(fold,group);
-   Int_t size = fModifiedAngles.size();
-   fModifiedIndices = GenerateModifiedIndices(fold,group);
-   fModifiedWeights = GenerateModifiedWeights(fModifiedIndices,fWeights);
-
-   return size;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// Creates maps for Grouped Angular Indexes
-///Including group angle versus group index and angular index versus group index
-///
-/// \param[in] arraynumbers Vector of array numbers used in this experiment
-/// \param[in] distances Vector of detector distances for those array numbers
-/// \param[in] group Vector (user input)
-/// \param[in] groupangles Vector (user input)
-///
-Int_t TAngularCorrelation::GenerateGroupMaps(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::vector<Int_t> &group, std::vector<Double_t> &groupangles)
-{
-   // basic consistency check
-   const Int_t size = arraynumbers.size();
-   if (size!=(Int_t)distances.size()) {
-      printf("Lengths of array number and distance vectors are inconsistent.\n");
-      printf("Array number vector size: %i\n",size);
-      printf("Distance vector size: %i\n",(Int_t)distances.size());
-   }
-
-   // clear vector map
-   fAngleMap.clear();
-
-   // find maximum array number (which will be the index map size)
-   fIndexMapSize = 0;
-   for (Int_t i=0;i<size;i++) {
-      if (arraynumbers[i]>fIndexMapSize) fIndexMapSize = arraynumbers[i];
-   }
-
-   // generate maps
-   fAngleMap = GenerateAngleMap(arraynumbers,distances);
-   fNumIndices = fAngleMap.size();
-   fIndexMap = GenerateIndexMap(arraynumbers,distances,fAngleMap);
-   fWeights = GenerateWeights(arraynumbers,distances,fIndexMap);
-   AssignGroupMaps(group,groupangles);
-//   fGroupWeights = GenerateModifiedWeights(group, fWeights);
-//   fFoldedGroupAngles = GenerateFoldedAngles(fGroupAngles);
-//   fFoldedGroupIndexes = GenerateFoldedIndices(fFoldedGroupAngles, fGroupAngles);
-//   fFoldedGroupWeights = GenerateModifiedWeights(fFoldedGroupIndexes, fGroupWeights);
-   return fNumIndices;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// Assigns maps for Grouped Angular Indexes
-///Including group angle versus group index and angular index versus group index
-///
-/// \param[in] group Vector (user input)
-/// \param[in] groupangles Vector (user input)
-///
-
-Int_t TAngularCorrelation::AssignGroupMaps(std::vector<Int_t> &group, std::vector<Double_t> &groupangles)
-{
-   // generate maps
-   if (CheckGroups(group)) fGroups = group;
-   if (CheckGroupAngles(groupangles)) fGroupAngles = groupangles;
-   return GetNumGroups();
-}
-
-////////////////////////////////////////////////////////////////////////////////
 /// Creates maps for typical GRIFFIN configurations
 ///
 /// \param[in] detectors number of detectors
@@ -1328,7 +751,7 @@ Int_t TAngularCorrelation::GenerateMaps(Int_t detectors, Int_t distance)
 {
    std::vector<Int_t> array_numbers;
    std::vector<Int_t> distances;
-   
+
    if (detectors==16) {
       printf("Generating maps for full array setup.\n");
       for (Int_t i=1;i<=64;i++) {
@@ -1371,140 +794,7 @@ Int_t TAngularCorrelation::GenerateMaps(Int_t detectors, Int_t distance)
    return val;
 }
 
-////////////////////////////////////////////////////////////////////
-/// Generates modified indices
-///
-/// \param[in] fold boolean indicating whether or not to fold the indices
-/// \param[in] group boolean indicating whether or not to group the indices
-
-std::vector<Int_t> TAngularCorrelation::GenerateModifiedIndices(Bool_t fold, Bool_t group)
-{
-   std::vector<Int_t> modindices;
-
-   if (fNumIndices==0) {
-      printf("You haven't set any angular indices yet.\n");
-      printf("Returning empty vector from GenerateModifiedIndices.\n");
-      return modindices;
-   }
-   // make sure the modified angles are set appropriately
-   if (fold!=fFolded || group!=fGrouped) {
-      printf("Please call GenerateModifiedAngles before calling GenerateModifiedIndices.\n");
-      printf("Returning empty vector from GenerateModifiedIndices.\n");
-      return modindices;
-   }
-
-   if (group) {
-      if (static_cast<Int_t>(fGroups.size())!=fNumIndices) {
-         printf("The groups are not set up properly.\n");
-         printf("Returning empty vector from GenerateModifiedIndices.\n");
-         return modindices;
-      }
-   }
-
-
-   if (!group && (!fold)) {
-      // well then why are you doing this in the first place?
-      // do nothing
-   }
-   else if (!fold && group) {
-      modindices = fGroups;
-   }
-   else if (fold && group) {
-      // group angles won't be directly comparable to the normal angle map
-      // so we have to make another, temporary one.
-      std::vector<Double_t> groupedangles;
-      for (Int_t i=0;i<fNumIndices;i++) {
-         Int_t thisgroup = fGroups[i];
-         Double_t thisangle = fGroupAngles[thisgroup];
-         groupedangles.push_back(thisangle);
-      }
-      modindices = GenerateFoldedIndices(fModifiedAngles,groupedangles);
-   }
-   else if (fold) {
-      modindices = GenerateFoldedIndices(fModifiedAngles,fAngleMap);
-   }
-
-   return modindices;
-}
-
-////////////////////////////////////////////////////////////////////
-/// Clears the modified arrays
-///
-
-void TAngularCorrelation::ClearModifiedMaps()
-{
-   fModifiedIndices.clear();
-   fModifiedAngles.clear();
-   fModifiedWeights.clear();
-   return;
-}
-
-////////////////////////////////////////////////////////////////////
-/// Generates modified angles
-///
-/// \param[in] fold boolean indicating whether or not to fold the indices
-/// \param[in] group boolean indicating whether or not to group the indices
-
-std::vector<Double_t> TAngularCorrelation::GenerateModifiedAngles(Bool_t fold, Bool_t group)
-{
-   std::vector<Double_t> modangles;
-
-   // checking to see that we have regular indices
-   if (fNumIndices==0) {
-      printf("You haven't set any angular indices yet.\n");
-      printf("Aborting.\n");
-      return modangles;
-   }
-
-   // checking for groups set up
-   if (static_cast<Int_t>(fGroups.size())!=fNumIndices) {
-      printf("The groups are not set up properly.\n");
-      printf("Returning empty vector from GenerateModifiedAngles.\n");
-      return modangles;
-   }
-
-   // checking for group angle setup
-   if (group && static_cast<Int_t>(fGroupAngles.size())!=GetNumGroups()) {
-      printf("Group angles aren't set up properly.\n");
-      printf("Returning empty vector from GenerateModifiedAngles.\n");
-      return modangles;
-   }
-
-   ClearModifiedMaps();
-   printf("Changing modification conditions to:\n");
-   if (fold) {
-      printf("Folded: yes\n");
-   }
-   else {
-      printf("Folded: no\n");
-   }
-   if (group) {
-      printf("Grouped: yes\n");
-   }
-   else {
-      printf("Grouped: no\n");
-   }
-   fFolded = fold;
-   fGrouped = group;
-
-   if (!group && (!fold)) {
-      // well then why are you doing this in the first place?
-      // do nothing
-   }
-   else if (!fold && group) {
-      modangles = fGroupAngles;
-   }
-   else if (fold &! group) {
-      modangles = GenerateFoldedAngles(fAngleMap);
-   }
-   else if (fold && group) {
-      modangles = GenerateFoldedAngles(fGroupAngles);
-   }
-
-   return modangles;
-}
-
-////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /// Updates index correlation based on peak array
 ///
 
@@ -1529,29 +819,6 @@ void TAngularCorrelation::UpdateIndexCorrelation()
    return;
 }
 
-////////////////////////////////////////////////////////////////////
-/// Updates index correlation based on peak array
-///
-
-void TAngularCorrelation::ScaleSingleIndex(TH1* hst, Int_t index, Int_t factor)
-{
-   
-   // get old values
-   Double_t old_value = hst->GetBinContent(index);
-   Double_t old_error = hst->GetBinError(index);
-  
-   //set new values
-   Double_t new_value = old_value * factor;
-   printf("old value is %f multiplied by %i is %f\n", old_value, factor, new_value);
-   Double_t new_area_err = old_error * factor;
-
-   // fill histogram with new values
-    hst->SetBinContent(index,new_value);
-    hst->SetBinError(index,new_area_err);
-   
-
-   return;
-}
 ////////////////////////////////////////////////////////////////////////////////
 /// Updates diagnostics based on peak array
 ///
@@ -1590,10 +857,10 @@ void TAngularCorrelation::UpdateDiagnostics()
 /// \param[in] index angular index
 /// \param[in] peak Tpeak to be used for fitting
 
-void TAngularCorrelation::UpdatePeak(Int_t index,TPeak* peak)//sometimes this function will cause grsisort to crash when I try to re-fit a bad peak, we should add in a safe-gaurd to make the function return if the peak cannot be re-fit
+void TAngularCorrelation::UpdatePeak(Int_t index,TPeak* peak)
 {
    // create canvas
-   new TCanvas(Form("peak%iupdate",index),Form("Peak %i update",index),400,400);
+   new TCanvas(Form("peak%iupdate",index),Form("Peak %i update",index),200,200);
 
    // get histogram
    TH1D* temphst = this->Get1DSlice(index);
@@ -1636,113 +903,39 @@ TPeak* TAngularCorrelation::GetPeak(Int_t index)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Compares 1D histogram to current AC modified settings
-///
-/// \param[in] hst histogram
-///
-Bool_t TAngularCorrelation::CheckModifiedHistogram(TH1* hst)
-{
-   Int_t hstbins = hst->GetNbinsX();
-   Int_t modindices = GetNumModIndices();
-
-   if (hstbins!=modindices) {
-      printf("The histogram %s does not have the same number of bins as the current settings.\n",hst->GetName());
-      printf("Bins in the histogram: %i\n",hstbins);
-      printf("Number of modified indices: %i\n\n",modindices);
-      PrintModifiedConditions();
-      return kFALSE;
-   }
-
-   return kTRUE;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// Prints current folding and grouping settings
-///
-void TAngularCorrelation::PrintModifiedConditions()
-{
-   printf("Current modification conditions:\n");
-   if (fFolded) {
-      printf("Folded: yes\n");
-   }
-   else {
-      printf("Folded: no\n");
-   }
-   if (fGrouped) {
-      printf("Grouped: yes\n");
-   }
-   else {
-      printf("Grouped: no\n");
-   }
-   return;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 /// Divides histogram by weights listed in weight array
 ///
 /// \param[in] hst histogram
 ///
 
-TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
+TH1D* TAngularCorrelation::DivideByWeights(TH1* hst)
 {
+   Int_t size = this->GetWeightsSize();
 
-   if(!fold && !group){
-      Int_t size = this->GetWeightsSize();
-
-     // consistency/stability checks
-      if(size==0) {
-         printf("You haven't created the weights yet. Please use the GenerateMaps function to do so.\n");
-         return 0x0;
-      }
-      if (size!=hst->GetNbinsX()) {
-         printf("Warning: size of weights array is different than number of bins in %s\n",hst->GetName());
-      }
-      // this loop is just for checking to make sure all indices are in the weight vector
-      for(Int_t i=1;i<=hst->GetNbinsX();i++) {
-         Int_t index = hst->GetBinLowEdge(i);
-         if (index>=size) {
-            printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
-            return 0x0;
-         }
-      }
+   // consistency/stability checks
+   if (size==0) {
+      printf("You haven't created the weights yet. Please use the GenerateMaps function to do so.\n");
+      return 0x0;
    }
-   else {
-      // compare fold and group
-      if (fold == fFolded && group == fGrouped) {
-         // do nothing
-      }
-      else {
-         GenerateModifiedMaps(fold, group);
-      }
-
-      if (CheckModifiedHistogram(hst)) {
-         // do nothing
-      }
-      else {
-         return 0x0;
-      }
-
-      // check that the weights array is the same size
-      if (static_cast<Int_t>(fModifiedWeights.size()) == hst->GetNbinsX()) {
-         // do nothing
-      }
-      else {
-         printf("Weights array size is not the same as the number of bins.\n");
-         printf("Returning from DivideByWeights without dividing.");
-         return 0x0;
-      }
+   if (size!=hst->GetNbinsX()) {
+      printf("Warning: size of weights array is different than number of bins in %s\n",hst->GetName());
    }
+
+   // this loop is just for checking to make sure all indices are in the weight vector
+   for (Int_t i=1;i<=hst->GetNbinsX();i++) {
+      Int_t index = hst->GetBinLowEdge(i);
+      if (index>=size) {
+         printf("Indices in histogram %s go beyond size of weights array. Aborting.\n",hst->GetName());
+         return 0x0;
+      }
+   }  
 
    // now that we're satisified everything is kosher, divide the bins.
-   for(Int_t i=1;i<=hst->GetNbinsX();i++) {
-      printf("\t%i\n",i);
+   for (Int_t i=1;i<=hst->GetNbinsX();i++) {
       Int_t index = hst->GetBinLowEdge(i);
-      Int_t found_weight = 0;
-      if(!fold && !group) found_weight = GetWeightFromIndex(index);
-      else found_weight = GetModifiedWeight(index);
       Double_t content = hst->GetBinContent(i);
       Double_t error = hst->GetBinError(i);
-      Double_t weight = found_weight;
+      Double_t weight = this->GetWeightFromIndex(index);
       Double_t newcontent = content/weight;
       Double_t newerror = error/weight;
       hst->SetBinContent(i,newcontent);
@@ -1751,6 +944,21 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
 
    return (TH1D*) hst;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+/// Divides index correlation by weights listed in weight array
+///
+
+void TAngularCorrelation::DivideByWeights()
+{
+   TH1D* hst = DivideByWeights(fIndexCorrelation);
+   if (hst!=0x0) fIndexCorrelation=hst;
+   return;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Displays diagnostics based on peak array
+///
 
 void TAngularCorrelation::DisplayDiagnostics(TCanvas* c_diag)
 {
@@ -1783,7 +991,6 @@ void TAngularCorrelation::DisplayDiagnostics(TCanvas* c_diag)
    centroidhst->Draw();
    c_diag->cd(4);
    fwhmhst->Draw();
-   
 
    return;
 }
