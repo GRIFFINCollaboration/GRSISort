@@ -447,9 +447,11 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       peak->SetName(Form("%s_proj%i_peak",hst2dname,index));
 
       // fit TPeak
-      Bool_t fitresult = peak->Fit(temphst,"Q");
+      Bool_t fitresult = kFALSE;
+      if (visualization) fitresult = peak->Fit(temphst,"Q");
+      else fitresult = peak->Fit(temphst,"Q0");
       if (!fitresult) continue; // if fit failed, continue on to next index
-      if (visualization) peak->Background()->Draw("same");
+      if (visualization) static_cast<TPeak*>(temphst->GetListOfFunctions()->Last())->Background()->Draw("same");
 
       // assign TPeak to fPeaks array
       this->SetPeak(index,static_cast<TPeak*>(temphst->GetFunction(Form("%s_proj%i_peak",hst2dname,index))));
@@ -457,6 +459,7 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       // extract area
       Double_t area = static_cast<TPeak*>(this->GetPeak(index))->GetArea();
       Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
+      if (area_err<TMath::Sqrt(area)) area_err = TMath::Sqrt(area);
 
       // fill histogram with area
       newhst->SetBinContent(i,area);
@@ -1520,6 +1523,7 @@ void TAngularCorrelation::UpdateIndexCorrelation()
       if (!peak) return;
       Double_t area = peak->GetArea();
       Double_t area_err = peak->GetAreaErr();
+      if (area_err<TMath::Sqrt(area)) area_err = TMath::Sqrt(area);
 
       // fill histogram with area
       static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinContent(bin,area);
@@ -1597,7 +1601,6 @@ void TAngularCorrelation::UpdatePeak(Int_t index,TPeak* peak)//sometimes this fu
 
    // get histogram
    TH1D* temphst = this->Get1DSlice(index);
-   const Char_t *name = temphst->GetListOfFunctions()->At(0)->GetName();
 
    // adjust range
    Double_t minenergy,maxenergy;
@@ -1608,11 +1611,12 @@ void TAngularCorrelation::UpdatePeak(Int_t index,TPeak* peak)//sometimes this fu
    temphst->GetXaxis()->SetRangeUser(minenergy,maxenergy);
 
    // fit peak
-   peak->SetName(name);
+   //peak->SetName(name);
    peak->Fit(this->Get1DSlice(index),"");
+   TPeak* hstpeak = static_cast<TPeak*>(temphst->GetListOfFunctions()->Last());
 
    // push new peak
-   this->SetPeak(index,static_cast<TPeak*>(temphst->GetFunction(name)));
+   this->SetPeak(index,hstpeak);
    UpdateIndexCorrelation();
    UpdateDiagnostics();
 
