@@ -459,7 +459,11 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       // extract area
       Double_t area = static_cast<TPeak*>(this->GetPeak(index))->GetArea();
       Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
-      if (area_err<TMath::Sqrt(area)) area_err = TMath::Sqrt(area);
+      if (area_err<TMath::Sqrt(area)) {
+         printf("Area error was less than the square root of the area.\n");
+         printf("This means something is wrong; using square root of area for area error.\n");
+         area_err = TMath::Sqrt(area);
+      }
 
       // fill histogram with area
       newhst->SetBinContent(i,area);
@@ -1523,7 +1527,11 @@ void TAngularCorrelation::UpdateIndexCorrelation()
       if (!peak) return;
       Double_t area = peak->GetArea();
       Double_t area_err = peak->GetAreaErr();
-      if (area_err<TMath::Sqrt(area)) area_err = TMath::Sqrt(area);
+      if (area_err<TMath::Sqrt(area)) {
+         printf("Area error was less than the square root of the area.\n");
+         printf("This means something is wrong; using square root of area for area error.\n");
+         area_err = TMath::Sqrt(area);
+      }
 
       // fill histogram with area
       static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinContent(bin,area);
