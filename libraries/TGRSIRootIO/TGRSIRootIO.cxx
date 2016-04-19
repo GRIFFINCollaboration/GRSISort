@@ -47,9 +47,9 @@ void TGRSIRootIO::SetUpFragmentTree() {
 	fFragmentTree = new TTree("FragmentTree","FragmentTree");
 	fBufferFrag = NULL;
 	if(TGRSIRunInfo::Get()->OldFragments()) {
-     fFragmentTree->Bronch("TVirtualFragment","TOldFragment",&fBufferFrag,128000,99);
+     fFragmentTree->Bronch("TFragment","TOldFragment",&fBufferFrag,128000,99);
 	} else {
-	  fFragmentTree->Bronch("TVirtualFragment","TFragment",&fBufferFrag,128000,99);
+	  fFragmentTree->Bronch("TFragment","TFragment",&fBufferFrag,128000,99);
 	}
 	if(TGRSIRunInfo::Get()->Descant()) {
 	  fFragmentTree->Branch("DescantData", &fDescantData, "Zc/I:CcShort/I:ccLong/I", 128000);
@@ -68,9 +68,9 @@ void TGRSIRootIO::SetUpBadFragmentTree() {
 	fBadFragmentTree = new TTree("BadFragmentTree","BadFragmentTree");
 	fBadBufferFrag = 0;
 	if(TGRSIRunInfo::Get()->OldFragments()) {
- 	  fBadFragmentTree->Bronch("TVirtualFragment","TOldFragment",&fBadBufferFrag,128000,99);
+ 	  fBadFragmentTree->Bronch("TFragment","TOldFragment",&fBadBufferFrag,128000,99);
 	} else {
-	  fBadFragmentTree->Bronch("TVirtualFragment","TFragment",&fBadBufferFrag,128000,99);
+	  fBadFragmentTree->Bronch("TFragment","TFragment",&fBadBufferFrag,128000,99);
 	}
 	printf("BadFragmentTree set up.\n");
 }
