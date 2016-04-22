@@ -24,7 +24,7 @@ export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
 CFLAGS     += -I/opt/X11/include -Qunused-arguments
 CPP        = clang++
-SHAREDSWITCH = -Qunused-arguments -shared -undefined dynamic_lookup -dynamiclib -install_name,'@executable_path/../libraries/$$@'# NO ENDING SPACE
+SHAREDSWITCH = -Qunused-arguments -shared -undefined dynamic_lookup -dynamiclib -Wl,-install_name,'@executable_path/../libraries/'# NO ENDING SPACE
 else
 export __LINUX__:= 1
 CPP        = g++
@@ -57,7 +57,7 @@ INCLUDES  := $(addprefix -I$(PWD)/,$(INCLUDES))
 CFLAGS    += $(shell root-config --cflags)
 CFLAGS    += -MMD $(INCLUDES)
 LINKFLAGS += -Llibraries $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../libraries
-LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lXMLParser -lXMLIO -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof
+LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lXMLParser -lXMLIO -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof -lMathMore
 LINKFLAGS := $(LINKFLAGS_PREFIX) $(LINKFLAGS) $(LINKFLAGS_SUFFIX) $(CFLAGS)
 
 ROOT_LIBFLAGS := $(shell root-config --cflags --glibs)
@@ -164,6 +164,7 @@ clean:
 	@-$(RM) -rf bin
 	@-$(RM) -f $(LIBRARY_OUTPUT)
 	@-$(RM) -f libraries/*.pcm
+	@-$(RM) -f libraries/*.dSYM
 
 cleaner: clean
 	@printf "\nEven more clean up\n\n"

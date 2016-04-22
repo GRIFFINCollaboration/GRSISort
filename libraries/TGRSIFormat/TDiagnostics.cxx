@@ -1,5 +1,9 @@
 #include "TDiagnostics.h"
 
+#include <fstream>
+
+#include "TChannel.h"
+
 TDiagnostics::TDiagnostics() : TObject() {
 	fIdHist = NULL;
 	Clear();
@@ -20,6 +24,11 @@ void TDiagnostics::Copy(TObject& obj) const {
 	static_cast<TDiagnostics&>(obj).fNumberOfBadFragments = fNumberOfBadFragments;
 	static_cast<TDiagnostics&>(obj).fMinChannelId = fMinChannelId;
 	static_cast<TDiagnostics&>(obj).fMaxChannelId = fMaxChannelId;
+	static_cast<TDiagnostics&>(obj).fDeadTime = fDeadTime;
+	static_cast<TDiagnostics&>(obj).fMinTimeStamp = fMinTimeStamp;
+	static_cast<TDiagnostics&>(obj).fMaxTimeStamp = fMaxTimeStamp;
+	static_cast<TDiagnostics&>(obj).fMinMidasTimeStamp = fMinMidasTimeStamp;
+	static_cast<TDiagnostics&>(obj).fMaxMidasTimeStamp = fMaxMidasTimeStamp;
 	static_cast<TDiagnostics&>(obj).fMinNetworkPacketNumber = fMinNetworkPacketNumber;
 	static_cast<TDiagnostics&>(obj).fMaxNetworkPacketNumber = fMaxNetworkPacketNumber;
 	static_cast<TDiagnostics&>(obj).fNumberOfNetworkPackets = fNumberOfNetworkPackets;
@@ -34,14 +43,20 @@ void TDiagnostics::Clear(Option_t* opt) {
 	fNumberOfBadFragments.clear();
 	fMinChannelId.clear();
 	fMaxChannelId.clear();
-	fMinNetworkPacketNumber = 0x7fffffff;
+	fDeadTime.clear();
+	fMinTimeStamp.clear();
+	fMaxTimeStamp.clear();
+	fMinMidasTimeStamp = 0;
+	fMaxMidasTimeStamp = 0;
+	fMinNetworkPacketNumber = 0x7fffffff; // just a large number
 	fMaxNetworkPacketNumber = 0;
 	fNumberOfNetworkPackets = 0;
 	fNumberOfHits.clear();
 }
 
 void TDiagnostics::Print(Option_t* opt) const {
-	std::cout<<"PPG cycle is "<<fPPGCycleLength/1e5<<" ms long."<<std::endl
+	std::cout<<"Total run time of this (sub-)run is "<<fMaxMidasTimeStamp-fMinMidasTimeStamp<<" s"<<std::endl
+				<<"PPG cycle is "<<fPPGCycleLength/1e5<<" ms long."<<std::endl
 				<<"Found "<<fNumberOfNetworkPackets<<" network packets in range "<<fMinNetworkPacketNumber<<" - "<<fMaxNetworkPacketNumber<<" => "<<100.*fNumberOfNetworkPackets/(fMaxNetworkPacketNumber-fMinNetworkPacketNumber+1.)<<" % packet survival."<<std::endl;
 	for(auto it = fNumberOfGoodFragments.begin(); it != fNumberOfGoodFragments.end(); ++it) {
 		std::cout<<"detector type "<<std::setw(2)<<it->first<<": "<<std::setw(12)<<it->second<<" good, ";
@@ -52,14 +67,23 @@ void TDiagnostics::Print(Option_t* opt) const {
 		}
 		std::cout<<" bad fragments."<<std::endl;
 	}
+	for(auto it = fDeadTime.begin(); it != fDeadTime.end(); ++it) {
+	  std::cout<<"channel 0x"<<std::hex<<std::setw(4)<<std::setfill('0')<<it->first<<std::dec<<std::setfill(' ')<<": "<<it->second/1e5<<" ms deadtime out of ";
+		if(fMinTimeStamp.find(it->first) == fMinTimeStamp.end() || fMaxTimeStamp.find(it->first) == fMaxTimeStamp.end()) {
+		  std::cout<<"nonexisting channel???"<<std::endl;
+		} else {
+		  std::cout<<std::setw(12)<<(fMaxTimeStamp.at(it->first)-fMinTimeStamp.at(it->first))/1e5<<" ms = "<<(100.*it->second)/(fMaxTimeStamp.at(it->first)-fMinTimeStamp.at(it->first))<<" %"<<std::endl;
+		}
+	}
 }
 
 void TDiagnostics::GoodFragment(TFragment* frag) {
 	///increment the counter of good fragments for this detector type and check if any trigger ids have been lost
 	fNumberOfGoodFragments[frag->DetectorType]++;
 
-	Short_t channelNumber = frag->ChannelNumber;
-	UInt_t channelId = frag->ChannelId;
+	Short_t channelNumber = frag->GetChannelNumber();
+	UInt_t channelId = frag->GetChannelId();
+	long timeStamp = frag->GetTimeStamp();
 	//Long_t triggerId = frag->TriggerId;
 	//check if this is a new minimum/maximum of the channel id
 	if(fMinChannelId.find(channelNumber) == fMinChannelId.end()) { //check if this channel has been found before
@@ -90,9 +114,30 @@ void TDiagnostics::GoodFragment(TFragment* frag) {
 			fMaxNetworkPacketNumber = frag->NetworkPacketNumber;
 		}
 	}
+	//increment the dead time and set per channel min/max timestamps
+	if(fDeadTime.find(channelNumber) == fDeadTime.end()) {
+	  fDeadTime[channelNumber] = frag->GetDeadTime();
+	  fMinTimeStamp[channelNumber] = timeStamp;
+	  fMaxTimeStamp[channelNumber] = timeStamp;
+	} else {
+	  fDeadTime[channelNumber] += frag->GetDeadTime();
+	  if(timeStamp < fMinTimeStamp[channelNumber]) {
+			fMinTimeStamp[channelNumber] = timeStamp;
+		}
+		if(timeStamp > fMaxTimeStamp[channelNumber]) {
+			fMaxTimeStamp[channelNumber] = timeStamp;
+		}
+	}
+	
+	if(fMinMidasTimeStamp == 0 || frag->GetMidasTimeStamp() < fMinMidasTimeStamp) {
+	  fMinMidasTimeStamp = frag->GetMidasTimeStamp();
+	}
+	if(fMaxMidasTimeStamp == 0 || frag->GetMidasTimeStamp() > fMaxMidasTimeStamp) {
+	  fMaxMidasTimeStamp = frag->GetMidasTimeStamp();
+	}
 }
 
-void TDiagnostics::Read(TPPG* ppg) {
+void TDiagnostics::ReadPPG(TPPG* ppg) {
 	///store different TPPG diagnostics like cycle length, length of each state, offset, how often each state was found
 	if(ppg == NULL) return;
 	fPPGCycleLength = ppg->GetCycleLength();
@@ -122,4 +167,19 @@ void TDiagnostics::Draw(Option_t* opt) {
 	}
 
 	fIdHist->Draw(opt);
+}
+
+void TDiagnostics::WriteToFile(const char* fileName) const {
+	std::ofstream statsOut(fileName);
+	statsOut<<std::endl
+			  <<"Run time to the nearest second = "<<fMaxMidasTimeStamp-fMinMidasTimeStamp<<std::endl
+			  <<std::endl;
+	for(auto it = fDeadTime.begin(); it != fDeadTime.end(); ++it) {
+		TChannel* chan = TChannel::GetChannel(it->first);
+		if(!chan)
+			continue;
+		statsOut<<"0x"<<std::hex<<it->first<<std::dec<<":\t"<<chan->GetChannelName()<<"\tdead time: "<<static_cast<float>(it->second)/1e8<<" seconds."<<std::endl;
+	}
+	statsOut<<std::endl;
+	statsOut.close();
 }

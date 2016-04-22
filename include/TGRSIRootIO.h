@@ -101,11 +101,10 @@ class TGRSIRootIO : public TObject {
       void FinalizeEpicsTree();
 
       void SetUpDiagnostics();
-      TDiagnostics* GetDiagnostics()  { return fDiagnostics;  }
+      TDiagnostics* GetDiagnostics();
       void FinalizeDiagnostics();
 
       void MakeUserHistsFromFragmentTree();
-      void WriteRunStats();
 
 /// \cond CLASSIMP
    ClassDef(TGRSIRootIO,0)

@@ -19,6 +19,8 @@ int  PeakSearch(TH1 *hst,double sigma=2.0,double thresh=0.01,Option_t *opt = "")
 bool ShowPeaks(TH1 **hists,unsigned int Nhists=1);
 bool RemovePeaks(TH1 **hists,unsigned int Nhists=1);
 
+TH1 *GrabHist();
+
 void Help();
 void Commands();
 void Prompt();

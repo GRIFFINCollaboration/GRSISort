@@ -14,11 +14,15 @@ Rint.TabComColor: magenta
 
 
 #default root variables form the grsi enviorment
-Canvas.MoveOpaque: true
+Canvas.MoveOpaque: false
+Canvas.ResizeOpaque: false
 Canvas.ShowEventStatus: true
 #Canvas.ShowToolBar: true
 
 
 Browser.Name: GRootBrowser
+
+Gui.IconPath:      $(GRSISYS)/icons:$(ROOTSYS)/icons
+Gui.MimeTypeFile:  $(GRSISYS)/.grsi.mimes
 
 

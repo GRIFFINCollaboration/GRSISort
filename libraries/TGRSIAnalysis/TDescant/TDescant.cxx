@@ -2,6 +2,8 @@
 #include "TRandom.h"
 #include "TMath.h"
 #include "TDescant.h"
+#include <TGRSIRunInfo.h>
+#include <climits>
 
 /// \cond CLASSIMP
 ClassImp(TDescant)
@@ -9,8 +11,8 @@ ClassImp(TDescant)
 
 bool TDescant::fSetWave = false;
 
-TVector3 TDescant::gPosition[71] = { 
-   //Sceptar positions from James' Thesis
+TVector3 TDescant::gPosition[71] = {
+   //Descant positions from James' Thesis
    TVector3(   0.0,    0.0,    1.0),
    TVector3(  98.6,    0.0,  490.2),
    TVector3(  30.5,   93.8,  490.2),
@@ -83,6 +85,21 @@ TVector3 TDescant::gPosition[71] = {
    TVector3( 377.5, -198.5,  260.9),
    TVector3( 424.8,  -93.8,  246.5)
 };
+TVector3 TDescant::gAncillaryPosition[9] = {
+   //Ancillary detector locations from Evan.
+   TVector3(TMath::Sin(TMath::DegToRad()*(0.0))*TMath::Cos(TMath::DegToRad()*(0.0)), TMath::Sin(TMath::DegToRad()*(0.0))*TMath::Sin(TMath::DegToRad()*(0.0)), TMath::Cos(TMath::DegToRad()*(0.0))),
+   //Downstream detectors
+   TVector3(TMath::Sin(TMath::DegToRad()*(54.73561))*TMath::Cos(TMath::DegToRad()*(22.5)), TMath::Sin(TMath::DegToRad()*(54.73561))*TMath::Sin(TMath::DegToRad()*(22.5)), TMath::Cos(TMath::DegToRad()*(54.73561))),
+   TVector3(TMath::Sin(TMath::DegToRad()*(54.73561))*TMath::Cos(TMath::DegToRad()*(112.5)), TMath::Sin(TMath::DegToRad()*(54.73561))*TMath::Sin(TMath::DegToRad()*(112.5)), TMath::Cos(TMath::DegToRad()*(54.73561))),
+   TVector3(TMath::Sin(TMath::DegToRad()*(54.73561))*TMath::Cos(TMath::DegToRad()*(202.5)), TMath::Sin(TMath::DegToRad()*(54.73561))*TMath::Sin(TMath::DegToRad()*(202.5)), TMath::Cos(TMath::DegToRad()*(54.73561))),
+   TVector3(TMath::Sin(TMath::DegToRad()*(54.73561))*TMath::Cos(TMath::DegToRad()*(292.5)), TMath::Sin(TMath::DegToRad()*(54.73561))*TMath::Sin(TMath::DegToRad()*(292.5)), TMath::Cos(TMath::DegToRad()*(54.73561))),
+   
+   //Upstream detectors
+   TVector3(TMath::Sin(TMath::DegToRad()*(125.2644))*TMath::Cos(TMath::DegToRad()*(22.5)), TMath::Sin(TMath::DegToRad()*(125.2644))*TMath::Sin(TMath::DegToRad()*(22.5)), TMath::Cos(TMath::DegToRad()*(125.2644))),
+   TVector3(TMath::Sin(TMath::DegToRad()*(125.2644))*TMath::Cos(TMath::DegToRad()*(112.5)), TMath::Sin(TMath::DegToRad()*(125.2644))*TMath::Sin(TMath::DegToRad()*(112.5)), TMath::Cos(TMath::DegToRad()*(125.2644))),
+   TVector3(TMath::Sin(TMath::DegToRad()*(125.2644))*TMath::Cos(TMath::DegToRad()*(202.5)), TMath::Sin(TMath::DegToRad()*(125.2644))*TMath::Sin(TMath::DegToRad()*(202.5)), TMath::Cos(TMath::DegToRad()*(125.2644))),
+   TVector3(TMath::Sin(TMath::DegToRad()*(125.2644))*TMath::Cos(TMath::DegToRad()*(292.5)), TMath::Sin(TMath::DegToRad()*(125.2644))*TMath::Sin(TMath::DegToRad()*(292.5)), TMath::Cos(TMath::DegToRad()*(125.2644)))
+};
 
 
 TDescant::TDescant() {
@@ -99,25 +116,25 @@ TDescant::~TDescant()	{
 }
 
 void TDescant::Copy(TObject &rhs) const {
-	TGRSIDetector::Copy(rhs);
+   TGRSIDetector::Copy(rhs);
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-
-	static_cast<TDescant&>(rhs).fDescantHits        = fDescantHits;
-	static_cast<TDescant&>(rhs).fSetWave            = fSetWave;
-}                                       
+   
+   static_cast<TDescant&>(rhs).fDescantHits        = fDescantHits;
+   static_cast<TDescant&>(rhs).fSetWave            = fSetWave;
+}
 
 TDescant::TDescant(const TDescant& rhs) : TGRSIDetector() {
-	rhs.Copy(*this);
+   rhs.Copy(*this);
 }
 
 void TDescant::Clear(Option_t *opt)	{
-	///Clears all of the hits
+   ///Clears all of the hits
    if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
       TGRSIDetector::Clear(opt);
    }
-	fDescantHits.clear();
+   fDescantHits.clear();
 }
 
 TDescant& TDescant::operator=(const TDescant& rhs) {
@@ -126,8 +143,8 @@ TDescant& TDescant::operator=(const TDescant& rhs) {
 }
 
 void TDescant::Print(Option_t *opt) const	{
-  ///Prints out TDescant members, currently does little.
-  printf("%lu fDescantHits\n",fDescantHits.size());
+   ///Prints out TDescant members, currently does little.
+   printf("%lu fDescantHits\n",fDescantHits.size());
 }
 
 TGRSIDetectorHit* TDescant::GetHit(const Int_t& idx){
@@ -136,8 +153,9 @@ TGRSIDetectorHit* TDescant::GetHit(const Int_t& idx){
 
 TDescantHit* TDescant::GetDescantHit(const Int_t& i) {
    try {
-      return &fDescantHits.at(i);   
-   } catch (const std::out_of_range& oor) {
+      return &fDescantHits.at(i);
+   }
+   catch (const std::out_of_range& oor){
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }
@@ -145,39 +163,91 @@ TDescantHit* TDescant::GetDescantHit(const Int_t& i) {
 }
 
 void TDescant::PushBackHit(TGRSIDetectorHit *desHit) {
-  fDescantHits.push_back(*static_cast<TDescantHit*>(desHit));
+   fDescantHits.push_back(*static_cast<TDescantHit*>(desHit));
 }
 
 void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-	///Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
-	///This is done for both DESCANT and it's suppressors.
-	if(frag == NULL || mnemonic == NULL) {
-		return;
-	}
-
-	for(size_t i = 0; i < frag->Charge.size(); ++i) {
-	  TDescantHit hit;
-	  hit.SetAddress(frag->ChannelAddress);
-	  hit.SetTimeStamp(frag->GetTimeStamp());
-	  hit.SetCfd(frag->GetCfd(i));
-	  hit.SetCharge(frag->GetCharge(i));
-	  hit.SetZc(frag->GetZc(i));
-	  hit.SetCcShort(frag->GetCcShort(i));
-	  hit.SetCcLong(frag->GetCcLong(i));
-	  
+   ///Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
+   ///This is done for both DESCANT and it's suppressors.
+   if(frag == NULL || mnemonic == NULL) {
+      return;
+   }
+   
+   for(size_t i = 0; i < frag->Charge.size(); ++i) {
+      TDescantHit hit;
+      hit.SetAddress(frag->ChannelAddress);
+      hit.SetTimeStamp(frag->GetTimeStamp());
+      hit.SetCfd(frag->GetCfd(i));
+      hit.SetCharge(frag->GetCharge(i));
+      hit.SetZc(frag->GetZc(i));
+      hit.SetCcShort(frag->GetCcShort(i));
+      hit.SetCcLong(frag->GetCcLong(i));
+      
       if(TDescant::SetWave()){
          if(frag->wavebuffer.size() == 0) {
             //printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
          }
-         hit.SetWaveform(frag->wavebuffer);
+         if(0) {
+            std::vector<Short_t> x;
+            //Need to reorder waveform data for S1507 data from December 2014
+            //All pairs of samples are swapped.
+            //The first two samples are also delayed by 8.
+            //We choose to throw out the first 2 samples (junk) and the last 6 samples (convience)
+            x = frag->wavebuffer;
+            size_t length = x.size() - (x.size()%8);
+            Short_t temp;
+            
+            if(length > 8) {
+               for(size_t i = 0; i < length-8; i+=8) {
+                  x[i] = x[i+9];
+                  x[i+1] = x[i+8];
+                  temp = x[i+2];
+                  x[i+2] = x[i+3];
+                  x[i+3] = temp;
+                  temp = x[i+4];
+                  x[i+4] = x[i+5];
+                  x[i+5] = temp;
+                  temp = x[i+6];
+                  x[i+6] = x[i+7];
+                  x[i+7] = temp;
+               }
+               x.resize(length-8);
+            }
+            hit.SetWaveform(x);
+         }
+         else {
+            hit.SetWaveform(frag->wavebuffer);
+         }
          if(hit.GetWaveform()->size() > 0) {
-            printf("Analyzing waveform, current cfd = %d, psd = %d\n",hit.GetCfd(),hit.GetPsd());
-            bool analyzed = hit.AnalyzeWaveform();
-            printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",hit.GetCfd(),hit.GetPsd());
+            //          printf("Analyzing waveform, current cfd = %d, psd = %d\n",hit.GetCfd(),hit.GetPsd());
+            hit.AnalyzeWaveform();
+            //          bool analyzed = hit.AnalyzeWaveform();
+            //          printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",hit.GetCfd(),hit.GetPsd());
          }
       }
-
-	  AddHit(&hit);
-	}
+      
+      AddHit(&hit);
+   }
 }
 
+TVector3 TDescant::GetPosition(int DetNbr, double dist) {
+   //Gets the position vector for detector DetNbr
+   //dist is only used when detectors are in the ancillary positions.
+
+   if(TGRSIRunInfo::DescantAncillary()) {
+      if(DetNbr>8) {
+         return TVector3(0,0,1);
+      }
+      TVector3 temp_pos(gAncillaryPosition[DetNbr]);
+      temp_pos.SetMag(dist);
+      return temp_pos;
+   }
+   else {
+      if(DetNbr>70) {
+         return TVector3(0,0,1);
+      }
+      return gPosition[DetNbr];
+   }
+   
+   
+}

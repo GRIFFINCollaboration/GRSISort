@@ -5,7 +5,6 @@
 
 #include "TFragmentQueue.h"
 #include "TScalerQueue.h"
-#include "TGRSIStats.h"
 #include "TGRSILoop.h"
 
 #include "TEpicsFrag.h"
@@ -16,7 +15,7 @@
 
 TDataParser* TDataParser::fDataParser = 0;
 bool TDataParser::fNoWaveforms = false;
-bool TDataParser::fRecordStats = false;
+bool TDataParser::fRecordDiag = true;
 
 const unsigned long TDataParser::fMaxTriggerId = 1024 * 1024 * 16; // 24 bits internally
 
@@ -58,13 +57,16 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
 	if(!SetTIGTriggerID(dword,EventFrag)) {
 		delete EventFrag;
 		printf(RED "Setting TriggerId (0x%08x) failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",dword,midasSerialNumber);
-		return NumFragsFound;  
+		return -x;  
 	}
 	x+=1;
+
+  //There can be a tigger bit pattern between the header and the time !   pcb.
+
 	if(!SetTIGTimeStamp((data+x),EventFrag)) { 
-		delete EventFrag;
-		printf(RED "Setting TimeStamp failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",midasSerialNumber);
-		return NumFragsFound;
+		delete EventFrag;	
+		printf(RED "%i Setting TimeStamp failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",x,midasSerialNumber);
+		return -x;
 	}
 	//int temp_charge =  0;
 	int temp_led    =  0;
@@ -286,57 +288,76 @@ bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment* currentFrag) {
 
 bool TDataParser::SetTIGTimeStamp(uint32_t* data,TFragment* currentFrag ) {
 	///Sets the Timestamp of a Tigress Event
-	for(int x=0;x<10;x++) {
+	for(int x=0;x<10;x++) { //finds the timestamp.
 		data = data + 1;
-		//printf(DBLUE "data for x = %i  |  0x%08x  |  0x%08x  |  0x%08x" RESET_COLOR "\n",x,*data,(*data)>>28,0xa);
 		if(((*data)>>28)==0xa) {
-			//printf(DRED "data for x = %i |  0x%08x" RESET_COLOR "\n",x,*data);
 			break;
 		}
 	}
+  
+ //printf("\n\n\ndata = 0x%08x\n\n\n",*data);  fflush(stdout);
+
 	if(!((*data&0xf0000000) == 0xa0000000)) { 
 		printf("here 0?\t0x%08x\n",*data);
 		return false;
 	}
 	//printf("data = 0x%08x\n",*data);
 
-	int time[5];
+	unsigned int time[5] = {0};  // tigress can report up to 5 valid timestamp words
 	int x = 0;
 
-	time[0] = *(data + x);  //printf("time[0] = 0x%08x\n",time[0]);
-	x += 1;
-	time[1] =   *(data + x);   //& 0x0fffffff;
-	//printf("time[1] = 0x%08x\n",time[1]);
-	if( (time[1] & 0xf0000000) != 0xa0000000) {
-		printf("here 1?\tx = %i\t0x%08x\n",x,time[1]);
-		return false;
-		//break;
-	} 
-	x+=1;
-	time[2] = *(data +x);
-	if((time[2] & 0xf0000000) != 0xa0000000) {
-		// this is ok, it always happens for tig64s.
-		currentFrag->TimeStampLow = time[0] & 0x00ffffff;
-		currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
-		//currentFrag->SetTimeStamp();
-		return true;
-	}
+  while((*(data+x)&0xf0000000)==0xa0000000) {
+    time[x] = *(data+x);
+    x+=1;
+    if(x==5)
+       break;
+  }
 
+  switch(x) {
+    case 1: //bad.
+      break;
+    case 2: //minimum number of good a's
+      if(time[0]!=time[1]) { // tig64's only have two, both second hex's are 0s. also some times tig10s.
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
+        return true;
+      }
+      break;
+    case 3:
+      if(time[0]==time[1] && time[0]!=time[2]) {
+        if( ((time[0]&0x0f000000)!=0x00000000) && ((time[2]&0x0f000000)!=0x01000000) )
+           break;
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[2] & 0x00ffffff;
+      } else if(time[0]!=time[1] && time[1]==time[2]) {
+        if( ((time[0]&0x0f000000)!=0x00000000) && ((time[1]&0x0f000000)!=0x01000000) )
+           break;
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
+      } else { // assume the third if the counter.
+        //if( ((time[0]&0x0f000000)!=0x00000000) && ((time[1]&0x0f000000)!=0x01000000) )
+        //   break;
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
+      }
+      return true;
+    case 4:
+    case 5:  
+      if(time[0]==time[1] && time[2]==time[3]) {
+        if( ((time[0]&0x0f000000)!=0x00000000) && ((time[2]&0x0f000000)!=0x01000000) )
+           break;
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
+      } else {
+        if( ((time[0]&0x0f000000)!=0x00000000) && ((time[1]&0x0f000000)!=0x01000000) )
+           break;
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
+      }
+      return true; 
+   };
 
-	x+=1;
-	time[3] = *(data +x);
-	if((time[3] & 0xf0000000) != 0xa0000000) {  
-		printf("here 2?\n");
-		return false;
-	}
-	x+=1;
-	time[4] = *(data +x);
-	if((time[4] & 0xf0000000) != 0xa0000000) {  
-		printf("here 3?\n");
-		return false;
-	}
-
-	return true;
+	return false;
 }
 
 /////////////***************************************************************/////////////
@@ -360,9 +381,8 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 		delete EventFrag;
 		return -x;
 	}
-
-	//Changed on 11 Aug 2015 by RD to include PPG events. If the event has DataType 3 and address 0xFFFF, it is a PPG event.
-	if(EventFrag->DataType == 4 && EventFrag->ChannelAddress == 0xFFFF){
+	//Changed on 11 Aug 2015 by RD to include PPG events. If the event has DataType 4 and address 0xFFFF, it is a PPG event.
+   if(EventFrag->DataType == 4 && EventFrag->ChannelAddress == 0xFFFF){
 		delete EventFrag;
 		return GriffinDataToPPGEvent(data,size,midasSerialNumber,midasTime);
 	}
@@ -461,14 +481,12 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 					//   EventFrag->AcceptedChannelId = 0;
 					//}
 
-					if(fRecordStats)
-						FillStats(EventFrag); //we fill dead-time and run time stats from the fragment
+					if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
-					TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
 					return x;
 				} else  {
+					if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 					TFragmentQueue::GetQueue("BAD")->Add(EventFrag);
-					TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 					return -x;
 				}
 				break;
@@ -615,11 +633,11 @@ bool TDataParser::SetGRIFNetworkPacket(uint32_t value, TFragment* frag) {
 	if( (value &0xf0000000) != 0xd0000000) {
 		return false;
 	}
-	if( (value&0x0f000000) == 0x0f000000) {
+	if( (value&0x0f000000) == 0x0f000000 && frag->NetworkPacketNumber>0 ) {
 		// descant zero crossing time.
 		frag->Zc.push_back( value & 0x00ffffff);
 	} else {
-		frag->NetworkPacketNumber = value & 0x00ffffff;
+		frag->NetworkPacketNumber = value & 0x0fffffff;
 		//   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
 	}
 	return true;
@@ -682,37 +700,6 @@ bool TDataParser::SetGRIFPsd(uint32_t value, TFragment* frag) {
 	return true;
 }
 
-void TDataParser::FillStats(TFragment* frag) {
-	///Takes a TFragment and records statistics for it's channel address.
-	///The statistics recorded currently include:
-	///          The total deadtime for the channel
-	///          The lowest MIDAS Time stamp
-	///          The highest MIDAS Time stamp
-	TGRSIStats* stat = TGRSIStats::GetStats(frag->ChannelAddress); //get the stats for the specific channel
-	stat->IncDeadTime(frag->DeadTime); //Increments the deadtime for the specific channel.
-
-	TGRSIStats::IncGoodEvents(); //Since we made it to this stage, we have a good event and should increment the good event counter
-	//If this event contains either the lowest (or highest) time stamp recorded so far we should increment the 
-	//lowest (or highest) time stamp in the stats. This allows us to determine the total run length.
-	if( (frag->MidasTimeStamp < TGRSIStats::GetLowestMidasTimeStamp()) ||
-			(TGRSIStats::GetLowestMidasTimeStamp() == 0)) {
-		TGRSIStats::SetLowestMidasTimeStamp(frag->MidasTimeStamp);
-	} else if (frag->MidasTimeStamp > TGRSIStats::GetHighestMidasTimeStamp()) {
-		TGRSIStats::SetHighestMidasTimeStamp(frag->MidasTimeStamp);
-	}
-	//If this event contains the lowest (or highest) recorded packet number recorded so far we should increment the
-	// lowest (or highest) network packet in the stats. This allows us to determine whe total number of network 
-	//packets created.
-	if( (frag->NetworkPacketNumber < TGRSIStats::GetLowestNetworkPacket()) ||
-			(TGRSIStats::GetLowestNetworkPacket() == 0)) {
-		TGRSIStats::SetLowestNetworkPacket(frag->NetworkPacketNumber);
-	} else if (frag->NetworkPacketNumber > TGRSIStats::GetHighestNetworkPacket()) {
-		TGRSIStats::SetHighestNetworkPacket(frag->NetworkPacketNumber);
-	}
-
-	return;
-}
-
 int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, int bank, unsigned int midasSerialNumber, time_t midasTime) {
 	TPPGData* ppgEvent = new TPPGData;
 	int  x = 1; //We have already read the header so we can skip the 0th word.
@@ -722,32 +709,31 @@ int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, int bank, unsig
 	if(SetPPGNetworkPacket(data[x],ppgEvent)){ // The network packet placement is not yet stable.
 		++x;
 	}
+   if(SetNewPPGPattern(data[x],ppgEvent)) {
+      ++x;
+   } 
 
-	if(SetNewPPGPattern(data[x],ppgEvent)) {
-		++x;
-	} 
+   for(;x<size;x++) {
+      uint32_t dword  = *(data+x);
+      uint32_t packet = dword & 0xf0000000;
+      uint32_t value  = dword & 0x0fffffff; 
 
-	for(;x<size;x++) {
-		uint32_t dword  = *(data+x);
-		uint32_t packet = dword & 0xf0000000;
-		uint32_t value  = dword & 0x0fffffff; 
-
-		switch(packet) {
-			case 0x80000000: //The 8 packet type is for event headers
-				//if this happens, we have "accidentally" found another event.
-				return -x;
-			case 0x90000000: //The b packet type contains the dead-time word
-				SetOldPPGPattern(value,ppgEvent);
-				break;
-			case 0xd0000000: 
-				SetPPGNetworkPacket(dword,ppgEvent); // The network packet placement is not yet stable.
-				break;              
-			case 0xa0000000:
-				SetPPGLowTimeStamp(value,ppgEvent);
-				break;
-			case 0xb0000000:
-				SetPPGHighTimeStamp(value,ppgEvent);
-				break;
+      switch(packet) {
+         case 0x80000000: //The 8 packet type is for event headers
+               //if this happens, we have "accidentally" found another event.
+               return -x;
+         case 0x90000000: //The b packet type contains the dead-time word
+            SetOldPPGPattern(value,ppgEvent);
+            break;
+         case 0xd0000000: 
+            SetPPGNetworkPacket(dword,ppgEvent); // The network packet placement is not yet stable.
+            break;              
+         case 0xa0000000:
+            SetPPGLowTimeStamp(value,ppgEvent);
+            break;
+         case 0xb0000000:
+            SetPPGHighTimeStamp(value,ppgEvent);
+            break;
 			case 0xe0000000:
 				//if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
 					TGRSIRootIO::Get()->FillPPG(ppgEvent);

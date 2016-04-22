@@ -12,6 +12,7 @@
 #include "Globals.h"
 #include "GRSIVersion.h"
 
+#include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
 //#include <pstream.h>
 
@@ -57,9 +58,25 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
     //  SetPrompt( DYELLOW "GRSI [%d] " RESET_COLOR);
       SetPrompt("GRSI [%d] ");
       PrintHelp(fPrintHelp);
+      std::string grsipath = getenv("GRSISYS");
+      gInterpreter->AddIncludePath(Form("%s/include",grsipath.c_str()));
+      LoadExtraClasses();
       ApplyOptions();
 }
 
+void TGRSIint::LoadExtraClasses() {
+  // we should move to make this a loop over the entire libs directory... pcb.
+  gROOT->LoadClass("TTigress");
+  gROOT->LoadClass("TTigressHit");
+  gROOT->LoadClass("TSharc");
+  gROOT->LoadClass("TSharcHit");
+  gROOT->LoadClass("TGriffin");
+  gROOT->LoadClass("TGriffinHit");
+
+  gROOT->LoadClass("TNucleus");
+  gROOT->LoadClass("TReaction");
+  gROOT->LoadClass("TSRIM");
+}
 
 void TGRSIint::InitFlags() {
    fAutoSort = false;
@@ -322,9 +339,12 @@ void TGRSIint::GetOptions(int *argc, char **argv) {
 			if(temp.compare("no_waveforms")==0) {
 				printf(DBLUE  "    no waveform option set, no waveforms will be in the output tree." RESET_COLOR "\n"); 
 				TDataParser::SetNoWaveForms(true);
-			} else if(temp.compare("record_stats")==0) { 
-				printf(DBLUE "     recording run stats to log file." RESET_COLOR "\n");
-				TDataParser::SetRecordStats(true);
+			} else if(temp.compare("no_record_diag")==0) { 
+				printf(DBLUE "     not recording run diagnostics." RESET_COLOR "\n");
+				TDataParser::SetRecordDiag(false);
+			} else if(temp.compare("write_diag")==0) { 
+				printf(DBLUE "     writing run diagnostics to separte .log file." RESET_COLOR "\n");
+				TGRSIOptions::SetWriteDiagnostics(false);
 			} else if((temp.compare("suppress_error")==0) ||  (temp.compare("suppress_errors")==0)){
 				printf(DBLUE "     suppressing loop error statements." RESET_COLOR "\n");
 				TGRSILoop::Get()->SetSuppressError(true);

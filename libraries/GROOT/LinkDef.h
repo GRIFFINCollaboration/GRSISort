@@ -21,6 +21,8 @@
 #pragma link C++ function ProjectionX(TH2*,double,double);
 #pragma link C++ function ProjectionY(TH2*,double,double);
 
+#pragma link C++ function GrabHist();
+
 #pragma link C++ function PeakSearch(TH1*,double);
 #pragma link C++ function Prompt();
 #pragma link C++ function SaveAll(const char*,Option_t*);

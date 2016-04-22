@@ -9,6 +9,7 @@
 
 #include "TGRSIDetector.h"
 #include "TS3Hit.h"
+#include "TChannel.h"
 
 class TS3 : public TGRSIDetector {
 	public:
@@ -24,7 +25,9 @@ class TS3 : public TGRSIDetector {
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
 		void PushBackHit(TGRSIDetectorHit* deshit);
 
-		static TVector3 GetPosition(int ring, int sector);
+		static TVector3 GetPosition(int ring, int sector, bool downstream, double offset);
+
+		void SetTargetDistance(double dist)	{ fTargetDistance = dist; }
 
 		void Copy(TObject&) const;
 		TS3& operator=(const TS3&);  // 

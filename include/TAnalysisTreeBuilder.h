@@ -43,7 +43,7 @@
 #include "TSceptar.h"   
 #include "TPaces.h"   
 //#include "TDante.h"     
-//#include "TZeroDegree.h"
+#include "TZeroDegree.h"
 #include "TDescant.h"
 
 /////////////////////////////////////////////////////////////////
@@ -227,7 +227,7 @@ class TAnalysisTreeBuilder : public TObject {
       TSceptar*    fSceptar;                                 ///< A pointer to the Sceptar Mother Class
       TPaces*      fPaces;                                   ///< A pointer to the Paces Mother Class
       //TDante*      fDante;  
-      //TZeroDegree* fZeroDegree;
+      TZeroDegree* fZeroDegree;                              ///< A pointer to the ZeroDegree mother class
       
       //Aux Detectors
       TDescant*    fDescant;                                 ///< A pointer to the Descant Mother Class

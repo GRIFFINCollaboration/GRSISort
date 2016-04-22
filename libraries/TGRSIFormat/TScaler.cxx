@@ -27,8 +27,7 @@ void TScalerData::Copy(TObject &rhs) const {
 }
 
 void TScalerData::Clear(Option_t* opt) {
-//Clears the TScalerData and leaves it a "junk" state. By junk, I just mean default
-//so that we can tell that this Scaler is no good.
+	///Clears the TScalerData.
 	fAddress          =  0;
    fLowTimeStamp     =  0;
    fHighTimeStamp    =  0;
@@ -45,6 +44,8 @@ void TScalerData::Print(Option_t* opt) const {
 }
 
 TScaler::TScaler(bool loadIntoMap) {
+	///This constructor tries to find the "ScalerTree" and uses it (if requested) to load the scaler data into the map.
+	///\param[in] loadIntoMap Flag telling TScaler to load all scaler data into fScalerMap.
    this->Clear();
 	fTree = static_cast<TTree*>(gROOT->FindObject("ScalerTree"));
 	if(fTree != NULL) {

@@ -194,14 +194,15 @@ Bool_t TPeak::InitParams(TH1* fitHist) {
    Int_t binlow = fitHist->GetXaxis()->FindBin(xlow);
    Int_t binhigh = fitHist->GetXaxis()->FindBin(xhigh);
    //Double_t binWidth = fitHist->GetBinWidth(bin);
+   SetParLimits(0,0,fitHist->GetMaximum());
    SetParLimits(1,xlow,xhigh);
    SetParLimits(2,0.1,(xhigh-xlow)); // sigma should be less than the window width - JKS
    SetParLimits(3,0.000001,10);
    SetParLimits(4,0.000001,100); // this is a percentage. no reason for it to go to 500% - JKS
    //Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
+   SetParLimits(5,0.0,1.0E2);
    SetParLimits(6,0.0,fitHist->GetBinContent(bin)*100.);
    SetParLimits(9,xlow,xhigh);
-   SetParLimits(5,0.0,1.0E2);
 
    if(!fitHist && GetHist()) 
       fitHist = GetHist();
@@ -310,8 +311,8 @@ Bool_t TPeak::Fit(TH1* fitHist,Option_t* opt) {
    Double_t xlow,xhigh;
    Double_t int_low, int_high; 
    GetRange(xlow,xhigh);
-   int_low = xlow - 5.*width; // making the integration bounds a bit smaller, but still large enough. -JKS
-   int_high = xhigh + 5.*width;
+   int_low = xlow - 10.*width; // making the integration bounds a bit smaller, but still large enough. -JKS
+   int_high = xhigh + 10.*width;
 
    //Make a function that does not include the background
    //Intgrate the background.
@@ -430,4 +431,151 @@ void TPeak::DrawResiduals() {
 
    delete[] res;
    delete[] bin;
+}
+
+Double_t TPeak::GetIntegralArea() {
+   if(!GetHist()) {
+      printf("No hist set\n");
+      return 0;
+   }
+   if(fChi2<0.000000001) {
+      printf("No fit performed\n");
+      return 0;
+   }
+
+   Double_t width = GetParameter("sigma");
+   Double_t xlow,xhigh;
+   Double_t int_low, int_high; 
+   GetRange(xlow,xhigh);
+   int_low = xlow - 10.*width; // making the integration bounds a bit smaller, but still large enough. -JKS
+   int_high = xhigh + 10.*width;
+   return GetIntegralArea(int_low,int_high);
+}
+
+Double_t TPeak::GetIntegralArea(Double_t int_low, Double_t int_high) {
+   if(!GetHist()) {
+      printf("No hist set\n");
+      return 0;
+   }
+   if(fChi2<0.000000001) {
+      printf("No fit performed\n");
+      return 0;
+   }
+
+   // pull appropriate properties from peak and histogram
+   TH1* hist = GetHist();
+
+   // use those properties to integrate the histogram
+   Int_t binlow = hist->FindBin(int_low);
+   Int_t binhigh = hist->FindBin(int_high);
+   Double_t binWidth = hist->GetBinWidth(binlow);
+   Double_t hist_integral = hist->Integral(binlow,binhigh);
+   Double_t xlow = hist->GetXaxis()->GetBinLowEdge(binlow);
+   Double_t xhigh = hist->GetXaxis()->GetBinUpEdge(binhigh);
+
+   // ... and then integrate the background
+   Double_t bg_area = (this->Background()->Integral(xlow,xhigh))/binWidth;
+
+   // calculate the peak area and error
+   Double_t peakarea = hist_integral - bg_area;
+
+   return peakarea;
+}
+
+Double_t TPeak::GetIntegralAreaErr(Double_t int_low, Double_t int_high) {
+   if(!GetHist()) {
+      printf("No hist set\n");
+      return 0;
+   }
+   if(fChi2<0.000000001) {
+      printf("No fit performed\n");
+      return 0;
+   }
+
+   // pull appropriate properties from peak and histogram
+   TH1* hist = GetHist();
+
+   // use those properties to integrate the histogram
+   Int_t binlow = hist->FindBin(int_low);
+   Int_t binhigh = hist->FindBin(int_high);
+   Double_t binWidth = hist->GetBinWidth(binlow);
+   Double_t hist_integral = hist->Integral(binlow,binhigh);
+   Double_t xlow = hist->GetXaxis()->GetBinLowEdge(binlow);
+   Double_t xhigh = hist->GetXaxis()->GetBinUpEdge(binhigh);
+
+   // ... and then integrate the background
+   Double_t bg_area = (this->Background()->Integral(xlow,xhigh))/binWidth;
+
+   // calculate the peak error
+   Double_t peakerr = sqrt(hist_integral+bg_area);
+
+   return peakerr;
+
+}
+
+Double_t TPeak::GetIntegralAreaErr() {
+   if(!GetHist()) {
+      printf("No hist set\n");
+      return 0;
+   }
+   if(fChi2<0.000000001) {
+      printf("No fit performed\n");
+      return 0;
+   }
+
+   Double_t width = GetParameter("sigma");
+   Double_t xlow,xhigh;
+   Double_t int_low, int_high; 
+   GetRange(xlow,xhigh);
+   int_low = xlow - 10.*width; // making the integration bounds a bit smaller, but still large enough. -JKS
+   int_high = xhigh + 10.*width;
+   return GetIntegralAreaErr(int_low,int_high);
+}
+
+void TPeak::CheckArea(Double_t int_low, Double_t int_high) {
+   if(!GetHist()) {
+      printf("No hist set\n");
+      return;
+   }
+   if(fChi2<0.000000001) {
+      printf("No fit performed\n");
+      return;
+   }
+
+   // calculate the peak area and error
+   Double_t peakarea = GetIntegralArea(int_low,int_high);
+   Double_t peakerr = GetIntegralAreaErr(int_low,int_high);
+
+   // now print properties
+   printf("TPeak integral: 	      %lf +/- %lf \n", fArea, fDArea);
+   printf("Histogram - BG integral:        %lf +/- %lf \n", peakarea,peakerr);
+   if (abs(peakarea-fArea)<(fDArea+peakerr)) printf(DGREEN "Areas are consistent.\n" RESET_COLOR);
+   else if (abs(peakarea-fArea)<2*(fDArea+peakerr)) printf(DYELLOW "Areas are consistent within 2 sigma.\n" RESET_COLOR);
+   else printf (DRED "Areas are inconsistent.\n" RESET_COLOR);
+   
+   return;
+}
+
+void TPeak::CheckArea() {
+   if(!GetHist()) {
+      printf("No hist set\n");
+      return;
+   }
+   if(fChi2<0.000000001) {
+      printf("No fit performed\n");
+      return;
+   }
+
+   // calculate the peak area and error
+   Double_t peakarea = GetIntegralArea();
+   Double_t peakerr = GetIntegralAreaErr();
+
+   // now print properties
+   printf("TPeak integral: 	      %lf +/- %lf \n", fArea, fDArea);
+   printf("Histogram - BG integral:        %lf +/- %lf \n", peakarea,peakerr);
+   if (abs(peakarea-fArea)<(fDArea+peakerr)) printf(DGREEN "Areas are consistent.\n" RESET_COLOR);
+   else if (abs(peakarea-fArea)<2*(fDArea+peakerr)) printf(DYELLOW "Areas are consistent within 2 sigma.\n" RESET_COLOR);
+   else printf(DRED "Areas are inconsistent.\n" RESET_COLOR);
+   
+   return;
 }

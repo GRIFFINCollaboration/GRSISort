@@ -22,14 +22,14 @@
 class TTigress : public TGRSIDetector {
 	public:
 		enum ETigressBits {
-			kIsAddbackSet = 1<<0,
-			kBit1         = 1<<1,
-			kBit2         = 1<<2,
-			kBit3         = 1<<3,
-			kBit4         = 1<<4,
-			kBit5         = 1<<5,
-			kBit6         = 1<<6,
-			kBit7         = 1<<7
+			kIsAddbackSet = BIT(0),
+			kBit1         = BIT(1),
+			kBit2         = BIT(2),
+			kBit3         = BIT(3),
+			kBit4         = BIT(4),
+			kSetCoreWave  = BIT(5),
+			kSetSegWave   = BIT(6),
+			kSetBGOWave   = BIT(7)
 		};
 
 		std::vector<std::vector<TFragment*> > SegmentFragments;
@@ -45,7 +45,7 @@ class TTigress : public TGRSIDetector {
 		static TVector3 GetPosition(int DetNbr ,int CryNbr, int SegNbr, double distance = 110.);		//!<!
 
 		// Delete tigress hit from vector (for whatever reason)
-		void DeleteTigressHit(const int& i) { fTigressHits.erase(fTigressHits.begin()+i); } 
+		//void DeleteTigressHit(const int& i) { fTigressHits.erase(fTigressHits.begin()+i); } 
 
 		Int_t GetAddbackMultiplicity();
 		TTigressHit* GetAddbackHit(const int&);
@@ -82,7 +82,7 @@ class TTigress : public TGRSIDetector {
 
 		UChar_t fTigressBits;                  // flags for transient members
 		void ClearStatus() { fTigressBits = 0; }
-		void SetBitNumber(enum ETigressBits bit,Bool_t set);
+		void SetBitNumber(enum ETigressBits bit,Bool_t set=true);
 		Bool_t TestBitNumber(enum ETigressBits bit) const {return (bit & fTigressBits);}
 
 		std::vector<TTigressHit> fAddbackHits; //!<! Used to create addback hits on the fly

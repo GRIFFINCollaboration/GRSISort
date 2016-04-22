@@ -67,10 +67,10 @@ void TTipHit::SetWavefit(TFragment &frag)   {
 	}
 }
 
-//void TTipHit::SetPID(TFragment &frag)	{
-//	TPulseAnalyzer pulse(frag);
-//	if(pulse.IsSet()){
-//		fPID = pulse.CsIPID();
-//		fTimeFit = pulse.CsIt0();
-//	}
-//}
+void TTipHit::SetPID(TFragment &frag)	{
+	TPulseAnalyzer pulse(frag);
+	if(pulse.IsSet()){
+		fPID = pulse.CsIPID();
+		fTimeFit = pulse.CsIt0();
+	}
+}

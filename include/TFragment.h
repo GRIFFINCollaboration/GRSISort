@@ -72,7 +72,8 @@ public:
 
 	int NumberOfHits;            //!<! transient member to count the number of pile-up hits in the original fragment
 	int HitIndex;                //!<! transient member indicating which pile-up hit this is in the original fragment
-  
+ 
+   UInt_t GetAddress()   const { return ChannelAddress; }
    double GetTime()      const; //!<!
    long   GetTimeStamp() const; //!<!
    double GetTZero() const; //!<!
@@ -83,11 +84,15 @@ public:
    ULong64_t GetTimeInCycle(); //!<!
    ULong64_t GetCycleNumber(); //!<!
 
-   Int_t GetCfd(int iter=0) const { return Cfd.at(iter); }  //!<!
-   Int_t GetZc(int iter=0) const  { return Zc.at(iter); } //!<! 
-   Int_t GetLed(int iter=0) const { return Led.at(iter); }  //!<!
-   Int_t GetCcShort(int iter=0) const { return ccShort.at(iter); }  //!<!
-   Int_t GetCcLong(int iter=0) const { return ccLong.at(iter); }  //!<!
+	time_t GetMidasTimeStamp() const { return MidasTimeStamp; }  //!<!
+	Short_t GetChannelNumber() const { return ChannelNumber; }  //!<!
+   Int_t GetCfd(size_t iter=0) const { return Cfd.at(iter); }  //!<!
+   Int_t GetZc(size_t iter=0) const  { if(iter < Zc.size()) return Zc.at(iter); return 0; } //!<! 
+   Int_t GetLed(size_t iter=0) const { return Led.at(iter); }  //!<!
+   Int_t GetCcShort(size_t iter=0) const { if(iter < ccShort.size()) return ccShort.at(iter); return 0; }  //!<!
+   Int_t GetCcLong(size_t iter=0) const { if(iter < ccLong.size()) return ccLong.at(iter); return 0; }  //!<!
+	UShort_t GetDeadTime() const { return DeadTime; }  //!<!
+	UInt_t GetChannelId() const { return ChannelId; }  //!<!
 
    Int_t Get4GCfd(size_t i=0) const; //!<!
 
@@ -97,7 +102,13 @@ public:
 
    virtual void	Clear(Option_t *opt = ""); //!<!
    virtual void Print(Option_t *opt = "") const; //!<!
-   
+  
+   virtual Int_t  GetDetector() const; //!<!
+   virtual Int_t  GetSegment() const;	 //!<!
+
+
+
+
    bool operator<(const TFragment& rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment& rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 

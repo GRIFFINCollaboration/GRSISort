@@ -80,6 +80,9 @@
 #include "HelpText.h"
 #include "Getline.h"
 
+#include "TChannel.h"
+#include "TKey.h"
+
 #ifdef WIN32
 #include <TWin32SplashThread.h>
 #endif
@@ -350,6 +353,11 @@ void GRootBrowser::Add(TObject *obj, const char *name, Int_t check)
 
    if (obj->InheritsFrom("TObjectSpy"))
       return;
+   if(obj->InheritsFrom("TKey")) {
+     if(strcmp(((TKey*)obj)->GetClassName(),"TChannel")==0) {
+       ((TKey*)obj)->ReadObj();
+     }
+   }
    if (fActBrowser)
       fActBrowser->Add(obj, name, check);
 }
@@ -1215,7 +1223,6 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame  *from)
 void GRootBrowser::DoubleClicked(TObject *obj)
 {
    /// Emits signal when double clicking on icon.
-
    Emit("DoubleClicked(TObject*)", (Long_t)obj);
 }
 
@@ -1236,7 +1243,6 @@ void GRootBrowser::Checked(TObject *obj, Bool_t checked)
 void GRootBrowser::ExecuteDefaultAction(TObject *obj)
 {
    /// Emits signal "ExecuteDefaultAction(TObject*)".
-
    Emit("ExecuteDefaultAction(TObject*)", (Long_t)obj);
 }
 
