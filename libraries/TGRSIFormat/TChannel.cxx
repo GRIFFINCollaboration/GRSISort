@@ -66,6 +66,10 @@ TChannel::TChannel(TChannel* chan) {
 	this->SetTIMEChi2(chan->GetTIMEChi2());
 	this->SetEFFChi2(chan->GetEFFChi2());
 	this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
+
+  this->SetDetectorNumber(chan->GetDetectorNumber());
+	this->SetSegmentNumber(chan->GetSegmentNumber());
+	this->SetCrystalNumber(chan->GetCrystalNumber());
 }
 
 
@@ -157,6 +161,10 @@ void TChannel::OverWriteChannel(TChannel* chan){
 	this->SetEFFChi2(chan->GetEFFChi2());
 
 	this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
+  
+  this->SetDetectorNumber(chan->GetDetectorNumber());
+	this->SetSegmentNumber(chan->GetSegmentNumber());
+	this->SetCrystalNumber(chan->GetCrystalNumber());
 	return;
 }
 
@@ -199,6 +207,13 @@ void TChannel::AppendChannel(TChannel* chan){
 
 	if(chan->UseCalFileIntegration())
 		this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
+  
+  if(chan->GetDetectorNumber()>-1)
+    this->SetDetectorNumber(chan->GetDetectorNumber());
+  if(chan->GetSegmentNumber()>-1)
+  	this->SetSegmentNumber(chan->GetSegmentNumber());
+  if(chan->GetCrystalNumber()>-1)
+  	this->SetCrystalNumber(chan->GetCrystalNumber());
 
 	return;
 }
@@ -238,6 +253,10 @@ void TChannel::Clear(Option_t* opt){
 	fUserInfoNumber    =  0xffffffff;
 	fUseCalFileInt     =  false;
 	SetName("DefaultTChannel");
+
+  fDetectorNumber    = -1;
+  fSegmentNumber     = -1;
+  fCrystalNumber     = -1;
 
 	fENGCoefficients.clear();
 	fCFDCoefficients.clear();
@@ -392,6 +411,19 @@ Float_t TChannel::CalibrateENG(Float_t charge) {
 	if(fENGCoefficients.size() == 0)
 		return charge;
 	Float_t cal_chg = fENGCoefficients[0];
+	for(size_t i = 1; i < fENGCoefficients.size(); i++){
+		cal_chg += fENGCoefficients[i]*  pow((charge),i);
+	}
+	return cal_chg;
+}
+
+double TChannel::CalibrateENG(double charge) {
+	///Returns the calibrated energy. The polynomial energy calibration formula is 
+	///applied to get the calibrated energy. This function does not use the 
+	///integration parameter.
+	if(fENGCoefficients.size() == 0)
+		return charge;
+	double cal_chg = fENGCoefficients[0];
 	for(size_t i = 1; i < fENGCoefficients.size(); i++){
 		cal_chg += fENGCoefficients[i]*  pow((charge),i);
 	}
@@ -844,6 +876,7 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 					} else if(type.compare("INTEGRATION")==0) {
 						int tempint; ss>>tempint;
 						channel->SetIntegration(tempint);
+						channel->SetUseCalFileIntegration(true);
 					} else if(type.compare("NUMBER")==0) {
 						int tempnum; ss>>tempnum;
 						channel->SetNumber(tempnum);
@@ -1030,5 +1063,66 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 		}
 		savdir->cd();//Go back to original gDirectory
 		return GetNumberOfChannels();
-	}
+}
+
+int TChannel::GetDetectorNumber() const {
+	if(fDetectorNumber>-1) //||fDetectorNumber==0x0fffffff)
+		return fDetectorNumber;
+
+	MNEMONIC mnemonic;
+	ClearMNEMONIC(&mnemonic);
+	ParseMNEMONIC(GetChannelName(),&mnemonic);
+  fDetectorNumber = (int32_t)mnemonic.arrayposition;
+  return fDetectorNumber;
+}
+
+int TChannel::GetSegmentNumber() const {
+   if(fSegmentNumber>-1)
+     return fSegmentNumber;
+
+   MNEMONIC mnemonic;
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(GetChannelName(),&mnemonic);
+   std::string name = GetChannelName();
+   TString str = name[9];
+   if(str.IsDigit()){
+   	 std::string buf;
+   	 buf.clear(); buf.assign(name,7,3);
+   	 fSegmentNumber = (int32_t)atoi(buf.c_str());
+   }
+   else{   
+   	 fSegmentNumber = (int32_t)mnemonic.segment;
+   }
+   return fSegmentNumber;
+}
+
+int TChannel::GetCrystalNumber() const {
+  if(fCrystalNumber>-1)
+    return fCrystalNumber;
+
+  MNEMONIC mnemonic;
+  ParseMNEMONIC(GetChannelName(),&mnemonic);
+  char color = mnemonic.arraysubposition[0];
+  switch(color) {
+    case 'B':
+      fCrystalNumber = 0;
+      break;
+    case 'G':
+      fCrystalNumber = 1;
+      break;
+    case 'R':
+      fCrystalNumber = 2;
+      break;
+    case 'W':
+      fCrystalNumber = 3;  
+      break;
+    default:
+      fCrystalNumber = 5;
+      break;
+  };
+  
+  //printf("%s: %c\t%i\n",__PRETTY_FUNCTION__,color,fCrystalNumber);
+  return fCrystalNumber;  
+
+}
 

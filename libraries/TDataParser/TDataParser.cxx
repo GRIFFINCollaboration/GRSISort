@@ -57,13 +57,16 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
 	if(!SetTIGTriggerID(dword,EventFrag)) {
 		delete EventFrag;
 		printf(RED "Setting TriggerId (0x%08x) failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",dword,midasSerialNumber);
-		return NumFragsFound;  
+		return -x;  
 	}
 	x+=1;
+
+  //There can be a tigger bit pattern between the header and the time !   pcb.
+
 	if(!SetTIGTimeStamp((data+x),EventFrag)) { 
-		delete EventFrag;
-		printf(RED "Setting TimeStamp failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",midasSerialNumber);
-		return NumFragsFound;
+		delete EventFrag;	
+		printf(RED "%i Setting TimeStamp failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",x,midasSerialNumber);
+		return -x;
 	}
 	//int temp_charge =  0;
 	int temp_led    =  0;
@@ -285,57 +288,76 @@ bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment* currentFrag) {
 
 bool TDataParser::SetTIGTimeStamp(uint32_t* data,TFragment* currentFrag ) {
 	///Sets the Timestamp of a Tigress Event
-	for(int x=0;x<10;x++) {
+	for(int x=0;x<10;x++) { //finds the timestamp.
 		data = data + 1;
-		//printf(DBLUE "data for x = %i  |  0x%08x  |  0x%08x  |  0x%08x" RESET_COLOR "\n",x,*data,(*data)>>28,0xa);
 		if(((*data)>>28)==0xa) {
-			//printf(DRED "data for x = %i |  0x%08x" RESET_COLOR "\n",x,*data);
 			break;
 		}
 	}
+  
+ //printf("\n\n\ndata = 0x%08x\n\n\n",*data);  fflush(stdout);
+
 	if(!((*data&0xf0000000) == 0xa0000000)) { 
 		printf("here 0?\t0x%08x\n",*data);
 		return false;
 	}
 	//printf("data = 0x%08x\n",*data);
 
-	int time[5];
+	unsigned int time[5] = {0};  // tigress can report up to 5 valid timestamp words
 	int x = 0;
 
-	time[0] = *(data + x);  //printf("time[0] = 0x%08x\n",time[0]);
-	x += 1;
-	time[1] =   *(data + x);   //& 0x0fffffff;
-	//printf("time[1] = 0x%08x\n",time[1]);
-	if( (time[1] & 0xf0000000) != 0xa0000000) {
-		printf("here 1?\tx = %i\t0x%08x\n",x,time[1]);
-		return false;
-		//break;
-	} 
-	x+=1;
-	time[2] = *(data +x);
-	if((time[2] & 0xf0000000) != 0xa0000000) {
-		// this is ok, it always happens for tig64s.
-		currentFrag->TimeStampLow = time[0] & 0x00ffffff;
-		currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
-		//currentFrag->SetTimeStamp();
-		return true;
-	}
+  while((*(data+x)&0xf0000000)==0xa0000000) {
+    time[x] = *(data+x);
+    x+=1;
+    if(x==5)
+       break;
+  }
 
+  switch(x) {
+    case 1: //bad.
+      break;
+    case 2: //minimum number of good a's
+      if(time[0]!=time[1]) { // tig64's only have two, both second hex's are 0s. also some times tig10s.
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
+        return true;
+      }
+      break;
+    case 3:
+      if(time[0]==time[1] && time[0]!=time[2]) {
+        if( ((time[0]&0x0f000000)!=0x00000000) && ((time[2]&0x0f000000)!=0x01000000) )
+           break;
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[2] & 0x00ffffff;
+      } else if(time[0]!=time[1] && time[1]==time[2]) {
+        if( ((time[0]&0x0f000000)!=0x00000000) && ((time[1]&0x0f000000)!=0x01000000) )
+           break;
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
+      } else { // assume the third if the counter.
+        //if( ((time[0]&0x0f000000)!=0x00000000) && ((time[1]&0x0f000000)!=0x01000000) )
+        //   break;
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
+      }
+      return true;
+    case 4:
+    case 5:  
+      if(time[0]==time[1] && time[2]==time[3]) {
+        if( ((time[0]&0x0f000000)!=0x00000000) && ((time[2]&0x0f000000)!=0x01000000) )
+           break;
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
+      } else {
+        if( ((time[0]&0x0f000000)!=0x00000000) && ((time[1]&0x0f000000)!=0x01000000) )
+           break;
+	      currentFrag->TimeStampLow = time[0] & 0x00ffffff;
+        currentFrag->TimeStampHigh = time[1] & 0x00ffffff;
+      }
+      return true; 
+   };
 
-	x+=1;
-	time[3] = *(data +x);
-	if((time[3] & 0xf0000000) != 0xa0000000) {  
-		printf("here 2?\n");
-		return false;
-	}
-	x+=1;
-	time[4] = *(data +x);
-	if((time[4] & 0xf0000000) != 0xa0000000) {  
-		printf("here 3?\n");
-		return false;
-	}
-
-	return true;
+	return false;
 }
 
 /////////////***************************************************************/////////////

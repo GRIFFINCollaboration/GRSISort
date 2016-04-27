@@ -44,7 +44,8 @@ class TSharc : public TGRSIDetector  {
 		TSharc& operator=(const TSharc& rhs)  { if(this!=&rhs) rhs.Copy(*this); return *this; }//!<!
 
 		void AddFragment(TFragment*, MNEMONIC*); //!<!
-		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
+		void BuildHits();   //no need to build any hits, everything already done in AddFragment;  
+                        //we still need to build hits as one hit is composed of multiple fragments.  pcb.
 
 	protected:
 		void PushBackHit(TGRSIDetectorHit* sharcHit) { fSharcHits.push_back(*(static_cast<TSharcHit*>(sharcHit))); };
@@ -53,6 +54,11 @@ class TSharc : public TGRSIDetector  {
 		std::vector <TSharcHit> fSharcHits;
 		int  CombineHits(TSharcHit*,TSharcHit*,int,int);        //!<!
 		void RemoveHits(std::vector<TSharcHit>*,std::set<int>*);  //!<!
+
+		std::vector<TFragment> fFrontFragments; //! 
+		std::vector<TFragment> fBackFragments;  //! 
+		std::vector<TFragment> fPadFragments;  //! 
+
 
 	private: 
 		static double fXoffset;  //!<!
@@ -74,9 +80,11 @@ class TSharc : public TGRSIDetector  {
 		static double fZminDB; 
 		// QQQ dimensions
 		static double fZposUQ;    
+		static double fRmaxUQ;
 		static double fRminUQ;
 		static double fPminUQ; // degrees
 		static double fZposDQ;    
+		static double fRmaxDQ;
 		static double fRminDQ;
 		static double fPminDQ; // degrees
 		// segmentation

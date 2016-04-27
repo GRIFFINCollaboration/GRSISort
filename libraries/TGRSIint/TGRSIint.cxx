@@ -12,6 +12,7 @@
 #include "Globals.h"
 #include "GRSIVersion.h"
 
+#include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
 //#include <pstream.h>
 
@@ -57,9 +58,25 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
     //  SetPrompt( DYELLOW "GRSI [%d] " RESET_COLOR);
       SetPrompt("GRSI [%d] ");
       PrintHelp(fPrintHelp);
+      std::string grsipath = getenv("GRSISYS");
+      gInterpreter->AddIncludePath(Form("%s/include",grsipath.c_str()));
+      LoadExtraClasses();
       ApplyOptions();
 }
 
+void TGRSIint::LoadExtraClasses() {
+  // we should move to make this a loop over the entire libs directory... pcb.
+  gROOT->LoadClass("TTigress");
+  gROOT->LoadClass("TTigressHit");
+  gROOT->LoadClass("TSharc");
+  gROOT->LoadClass("TSharcHit");
+  gROOT->LoadClass("TGriffin");
+  gROOT->LoadClass("TGriffinHit");
+
+  gROOT->LoadClass("TNucleus");
+  gROOT->LoadClass("TReaction");
+  gROOT->LoadClass("TSRIM");
+}
 
 void TGRSIint::InitFlags() {
    fAutoSort = false;
