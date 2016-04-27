@@ -304,10 +304,12 @@ void TGRSILoop::ProcessMidasFile(TMidasFile* midasFile) {
             break;
       };
       if((currentEventNumber%5000)== 0) {
-         if(!TGRSIOptions::CloseAfterSort())
-            gSystem->ProcessEvents();
+			if(!TGRSIOptions::CloseAfterSort()) {
+				gSystem->ProcessEvents();
+			}
          printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r",
 					 currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
+			fflush(stdout);
          w.Continue();
       }
    }
