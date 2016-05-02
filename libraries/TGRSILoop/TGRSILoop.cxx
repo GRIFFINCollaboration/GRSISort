@@ -25,6 +25,8 @@ TGRSILoop* TGRSILoop::fTGRSILoop = 0;
 
 bool TGRSILoop::fSuppressError = false;
 
+std::mutex TGRSILoop::fMutex;
+
 TGRSILoop* TGRSILoop::Get() {
    if(!fTGRSILoop)
       fTGRSILoop = new TGRSILoop();
@@ -126,14 +128,22 @@ void TGRSILoop::FillFragmentTree(TMidasFile* midasfile) {
          fMidasThreadRunning) {
       frag = TFragmentQueue::GetQueue("GOOD")->PopFragment();
       if(frag) {
+		   while(!fMutex.try_lock()) {
+				//do nothing
+			}
          TGRSIRootIO::Get()->FillFragmentTree(frag);
+			fMutex.unlock();
  	      delete frag;
          fFragsSentToTree++;
       }
 
       frag = TFragmentQueue::GetQueue("BAD")->PopFragment();
       if(frag) {
+		   while(!fMutex.try_lock()) {
+				//do nothing
+			}
          TGRSIRootIO::Get()->FillBadFragmentTree(frag);
+			fMutex.unlock();
          delete frag;
          fBadFragsSentToTree++;
       } 
@@ -160,7 +170,11 @@ void TGRSILoop::FillScalerTree() {
       if(TDeadtimeScalerQueue::Get()->ScalersInQueue() > 0) {
 		   scalerData = TDeadtimeScalerQueue::Get()->PopScaler();
 		   if(scalerData) {
+				while(!fMutex.try_lock()) {
+					//do nothing
+				}
             TGRSIRootIO::Get()->FillDeadtimeScalerTree(scalerData);
+				fMutex.unlock();
  	         delete scalerData;
             fDeadtimeScalersSentToTree++;
          }
@@ -175,7 +189,11 @@ void TGRSILoop::FillScalerTree() {
       if(TRateScalerQueue::Get()->ScalersInQueue() > 0) {
 		   scalerData = TRateScalerQueue::Get()->PopScaler();
 		   if(scalerData) {
+				while(!fMutex.try_lock()) {
+					//do nothing
+				}
             TGRSIRootIO::Get()->FillRateScalerTree(scalerData);
+				fMutex.unlock();
  	         delete scalerData;
             fRateScalersSentToTree++;
          }
