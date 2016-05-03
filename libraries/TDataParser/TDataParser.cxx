@@ -527,7 +527,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 					} else {
 						//these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
 						//so we look for the next trailer and stop there
-						while((data[x] & 0xf0000000) != 0xe0000000) ++x;
+						while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
 						TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 						delete EventFrag;
 						return -x;
