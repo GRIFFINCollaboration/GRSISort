@@ -23,7 +23,6 @@ class TS3Hit : public TGRSIDetectorHit {
     Short_t  GetRing()  const  { return fRing;   }
     Short_t  GetSector() const { return fSector; }
 		Bool_t	 GetIsDownstream() const { return fIsDownstream; }
-		Double_t GetSectorE()									 	const { return fSectorE; 	}
 
     Double_t   fTimeFit;
     Double_t   fSig2Noise;
@@ -40,7 +39,6 @@ class TS3Hit : public TGRSIDetectorHit {
     void SetRingNumber(Short_t rn)     			{ fRing = rn;   }
     void SetSectorNumber(Short_t sn)   			{ fSector = sn; }
 		void SetIsDownstream(Bool_t dwnstrm) 		{ fIsDownstream = dwnstrm; }
-		void SetSectorE(Double_t E)							{ fSectorE = E; }
     
     void SetRingNumber(TFragment &frag)     { fRing = GetMnemonicSegment(frag);   	}
     void SetSectorNumber(TFragment &frag)   { fSector = GetMnemonicSegment(frag) ; 	}
@@ -68,8 +66,6 @@ class TS3Hit : public TGRSIDetectorHit {
 
   private:
 
-		Double_t fSectorE;
-      
     Bool_t 	 fIsDownstream; // Downstream check
     Double_t fLed;
     Short_t  fRing;   //front
