@@ -142,15 +142,6 @@ void TS3::BuildPixels(){
 
 						UsedRing[i]=true;
 						UsedSector[j]=true;
-					
-						//Now we have "used" these parts of hits the are removed
-						//This is a relatively cheap operation because fragment vectors are pointers.
-						//fS3_SectorFragment.erase(fS3_SectorFragment.begin() + j);
-						//EneS.erase(EneS.begin() + j);
-						//fS3_RingFragment.erase(fS3_RingFragment.begin() + i);
-						//EneR.erase(EneR.begin() + i);
-						//j=fS3_SectorFragment.size();
-						//i--;
 					}
 				}
 			}
@@ -189,7 +180,7 @@ void TS3::BuildPixels(){
 									(EneS[j]+EneS[k])*fFrontBackEnergy<EneR[i]){  //if time is good check energy
 
 									//Now we have accepted a good event, build it
-									TS3Hit dethit = fS3SectorHits[j]; // Ring defines all data sector just gives position
+									TS3Hit dethit = fS3SectorHits[j]; // Sector now defines all data ring just gives position
 									dethit.SetRingNumber(fS3RingHits[i].GetRing());
 									if(TGRSIRunInfo::IsWaveformFitting()){
 										dethit.SetTimeFit(fS3SectorHits[j].GetFitTime());
@@ -198,7 +189,7 @@ void TS3::BuildPixels(){
 									fS3Hits.push_back(dethit);
 
 									//Now we have accepted a good event, build it
-									TS3Hit dethitB = fS3SectorHits[k]; // Ring defines all data sector just gives position
+									TS3Hit dethitB = fS3SectorHits[k]; // Sector now defines all data ring just gives position
 									dethitB.SetRingNumber(fS3RingHits[i].GetRing());
 									if(TGRSIRunInfo::IsWaveformFitting()){
 										dethitB.SetTimeFit(fS3SectorHits[k].GetFitTime());
