@@ -45,7 +45,7 @@ void TS3::Copy(TObject &rhs) const {
 }  
 
 void TS3::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-	///This function just stores the fragments in vectors, separated by detector type (front/back strip).
+	///This function creates TS3Hits for each fragment and stores them in separate front and back vectors
 	if(frag == NULL || mnemonic == NULL) {
 		return;
 	}
@@ -89,6 +89,8 @@ void TS3::BuildHits()  {
 }
 
 Int_t TS3::GetPixelMultiplicity(){
+	// Creates a vector of TS3Hits based on front/back coincidences
+	// Returns the size of the resultant vector
 
 	BuildPixels();
 	
@@ -97,6 +99,10 @@ Int_t TS3::GetPixelMultiplicity(){
 }
 
 void TS3::BuildPixels(){
+	// Constructs the front/back coincidences to create pixels based on energy and time differences
+	// Energy and time differences can be changed using the SetFrontBackEnergy and SetFrontBackTime functions
+	// Shared rings and sectors can be constructed, by default they are not. 
+	// To enable shared hits, use SetMultiHit function
 
 
 	if(fS3RingHits.size()==0 || fS3SectorHits.size()==0)

@@ -28,8 +28,8 @@ class TS3 : public TGRSIDetector {
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
 		void PushBackHit(TGRSIDetectorHit* deshit);
 
-		bool MultiHit()										{ return fMultHit;	 }
-		void SetMultiHit(bool flag=true)	{ fMultHit = flag;	 }
+		bool MultiHit()										{ return fMultHit;	 } // Get allow shared hits
+		void SetMultiHit(bool flag=true)	{ fMultHit = flag; SetPixels(false);	 } // Set allow shared hits
 
 		bool PixelsSet()									{ return fPixelsSet; }
 		void SetPixels(bool flag=true) 		{ fPixelsSet = flag; }
