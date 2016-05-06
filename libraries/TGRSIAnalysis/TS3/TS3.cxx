@@ -101,7 +101,7 @@ void TS3::BuildPixels(){
 
 	if(fS3RingHits.size()==0 || fS3SectorHits.size()==0)
 		return;
-  //if the addback has been reset, clear the addback hits
+  //if the pixels have been reset, clear the addback hits
   if(!PixelsSet())
     fS3Hits.clear();
   if(fS3Hits.size() == 0) {
@@ -342,7 +342,7 @@ void TS3::Clear(Option_t *opt) {
   fTargetDistance=31.;
   
   fFrontBackTime=75;   
-  fFrontBackEnergy=0.1; 
+  fFrontBackEnergy=0.9; 
 	fPixelsSet = false;
 	fMultHit = false;
 }
