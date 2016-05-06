@@ -21,7 +21,8 @@ class TS3 : public TGRSIDetector {
 		virtual void BuildHits();
 
 		Int_t GetPixelMultiplicity();
-		void	SetFrontBackEnergy(double de)	{ fFrontBackEnergy = de; SetPixels(false); }
+		void	SetFrontBackEnergy(double de)	{ fFrontBackEnergy = de; SetPixels(false); } // Set fractional allowed energy difference
+		void	SetFrontBackTime(int time)		{ fFrontBackTime = time; SetPixels(false); } // Set absolute allow time difference
 
 		TGRSIDetectorHit* GetHit(const int& idx =0);
 		TS3Hit* GetS3Hit(const int& i);  
