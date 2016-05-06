@@ -40,7 +40,6 @@ void TS3::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
   static_cast<TS3&>(rhs).fS3RingHits    	= fS3RingHits;
   static_cast<TS3&>(rhs).fS3SectorHits    = fS3SectorHits;
-	static_cast<TS3&>(rhs).fPixelsSet				= fPixelsSet;
   return;                                      
 }  
 
@@ -84,6 +83,13 @@ void TS3::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 	}	
 }
 
+void TS3::SetBitNumber(enum ES3Bits bit,Bool_t set){
+  //Used to set the flags that are stored in TTigress.
+  if(set)
+    fS3Bits |= bit;
+  else
+    fS3Bits &= (~bit);
+}
 
 void TS3::BuildHits()  {
 }
@@ -108,7 +114,7 @@ void TS3::BuildPixels(){
 	if(fS3RingHits.size()==0 || fS3SectorHits.size()==0)
 		return;
   //if the pixels have been reset, clear the pixel hits
-  if(!PixelsSet())
+  if((fS3Bits & kPixelsSet) == 0x0)
     fS3Hits.clear();
   if(fS3Hits.size() == 0) {
 		
@@ -153,7 +159,7 @@ void TS3::BuildPixels(){
 			}
 		}
 	
-		if(MultiHit()){
+		if((fS3Bits & kMultHit) == 0x1){
 		
 			int ringcount = 0;
 			int sectorcount = 0;
@@ -273,9 +279,8 @@ void TS3::BuildPixels(){
 			}
 
 		}
-		
 
-		SetPixels();
+		SetBitNumber(kPixelsSet, true);
 	}
 
 }
@@ -340,8 +345,8 @@ void TS3::Clear(Option_t *opt) {
   
   fFrontBackTime=75;   
   fFrontBackEnergy=0.9; 
-	fPixelsSet = false;
-	fMultHit = false;
+	SetPixels(false);
+	SetMultiHit(false);
 }
 
 

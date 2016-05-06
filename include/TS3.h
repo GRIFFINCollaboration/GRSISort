@@ -13,6 +13,19 @@
 
 class TS3 : public TGRSIDetector {
 	public:
+
+		enum ES3Bits {
+			kPixelsSet 		= BIT(0),
+			kMultHit      = BIT(1),
+			kBit2         = BIT(2),
+			kBit3         = BIT(3),
+			kBit4         = BIT(4),
+			kBit5  				= BIT(5),
+			kBit6   			= BIT(6),
+			kBit7   			= BIT(7)
+		};
+
+
 		TS3();
 		TS3(const TS3&);
 		virtual  ~TS3();
@@ -29,11 +42,11 @@ class TS3 : public TGRSIDetector {
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
 		void PushBackHit(TGRSIDetectorHit* deshit);
 
-		bool MultiHit()										{ return fMultHit;	 } // Get allow shared hits
-		void SetMultiHit(bool flag=true)	{ fMultHit = flag; SetPixels(false);	 } // Set allow shared hits
+		bool MultiHit()										{ return TestBitNumber(kMultHit);	 } // Get allow shared hits
+		void SetMultiHit(bool flag=true)	{ SetBitNumber(kMultHit, flag); SetPixels(false);	 } // Set allow shared hits
 
-		bool PixelsSet()									{ return fPixelsSet; }
-		void SetPixels(bool flag=true) 		{ fPixelsSet = flag; }
+		bool PixelsSet()									{ return TestBitNumber(kPixelsSet); }
+		void SetPixels(bool flag=true) 		{ SetBitNumber(kPixelsSet, flag); }
 		void BuildPixels();
 
 		static TVector3 GetPosition(int ring, int sector, bool downstream, double offset);
@@ -51,8 +64,13 @@ class TS3 : public TGRSIDetector {
 		std::vector<TFragment*> fS3_RingFragment; //! 
 		std::vector<TFragment*> fS3_SectorFragment; //! 
 
-		bool fPixelsSet;
-		bool fMultHit;
+		//bool fPixelsSet;
+		//bool fMultHit;
+
+		UChar_t fS3Bits;                  // flags for transient members
+		void ClearStatus() { fS3Bits = 0; }
+		void SetBitNumber(enum ES3Bits bit,Bool_t set=true);
+		Bool_t TestBitNumber(enum ES3Bits bit) const {return (bit & fS3Bits);}
 	
 		///for geometery
 		static int fRingNumber;          //!<!
