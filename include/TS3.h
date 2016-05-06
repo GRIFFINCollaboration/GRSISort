@@ -20,10 +20,20 @@ class TS3 : public TGRSIDetector {
 		virtual void AddFragment(TFragment*, MNEMONIC*);
 		virtual void BuildHits();
 
+		Int_t GetPixelMultiplicity();
+		void	SetFrontBackEnergy(double de)	{ fFrontBackEnergy = de; SetPixels(false); }
+
 		TGRSIDetectorHit* GetHit(const int& idx =0);
 		TS3Hit* GetS3Hit(const int& i);  
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
 		void PushBackHit(TGRSIDetectorHit* deshit);
+
+		bool MultiHit()										{ return fMultHit;	 }
+		void SetMultiHit(bool flag=true)	{ fMultHit = flag;	 }
+
+		bool PixelsSet()									{ return fPixelsSet; }
+		void SetPixels(bool flag=true) 		{ fPixelsSet = flag; }
+		void BuildPixels();
 
 		static TVector3 GetPosition(int ring, int sector, bool downstream, double offset);
 
@@ -35,10 +45,14 @@ class TS3 : public TGRSIDetector {
       virtual void Print(Option_t *opt = "") const;		  //!<!
 		
 	private:
-		std::vector<TS3Hit> fS3Hits;
+		std::vector<TS3Hit> fS3Hits; //!<!
+		std::vector<TS3Hit> fS3RingHits, fS3SectorHits;
 		std::vector<TFragment*> fS3_RingFragment; //! 
 		std::vector<TFragment*> fS3_SectorFragment; //! 
 
+		bool fPixelsSet;
+		bool fMultHit;
+	
 		///for geometery
 		static int fRingNumber;          //!<!
 		static int fSectorNumber;        //!<!

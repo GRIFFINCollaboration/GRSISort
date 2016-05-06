@@ -2,6 +2,8 @@
 #include <cmath>
 #include "TMath.h"
 
+#include "TGRSIRunInfo.h"
+
 /// \cond CLASSIMP
 ClassImp(TS3)
 /// \endcond
@@ -36,7 +38,9 @@ TS3::TS3(const TS3& rhs) : TGRSIDetector() {
 
 void TS3::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
-  static_cast<TS3&>(rhs).fS3Hits    = fS3Hits;
+  static_cast<TS3&>(rhs).fS3RingHits    	= fS3RingHits;
+  static_cast<TS3&>(rhs).fS3SectorHits    = fS3SectorHits;
+	static_cast<TS3&>(rhs).fPixelsSet				= fPixelsSet;
   return;                                      
 }  
 
@@ -46,224 +50,238 @@ void TS3::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 		return;
 	}
 
+	bool IsDownstream = false;		
 	if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front  (ring)	
-			fS3_RingFragment.push_back(frag);
+			TS3Hit dethit(*frag);
+			dethit.SetVariables(*frag);	
+			dethit.SetRingNumber(*frag);
+			dethit.SetSectorNumber(0);
+			if(mnemonic->arrayposition == 0 || mnemonic->arrayposition == 2)
+				IsDownstream = true;
+			else if(mnemonic->arrayposition == 1)
+				IsDownstream = false;
+			else
+				IsDownstream = true; // In case of incorrect value, we assume downstream
+			dethit.SetIsDownstream(IsDownstream);
+			if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
+				dethit.SetWavefit(*frag);
+			fS3RingHits.push_back(dethit);
 	}else{
-			fS3_SectorFragment.push_back(frag);
+			TS3Hit dethit(*frag);
+			dethit.SetVariables(*frag);	
+			dethit.SetRingNumber(0);
+			dethit.SetSectorNumber(*frag);
+			if(mnemonic->arrayposition == 0 || mnemonic->arrayposition == 2)
+				IsDownstream = true;
+			else if(mnemonic->arrayposition == 1)
+				IsDownstream = false;
+			else
+				IsDownstream = true; // In case of incorrect value, we assume downstream
+			dethit.SetIsDownstream(IsDownstream);
+			if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
+				dethit.SetWavefit(*frag);
+			fS3SectorHits.push_back(dethit);
 	}	
 }
 
 
 void TS3::BuildHits()  {
-	///This function takes the fragments that were stored in the successive AddFragment calls and builds hits out of them
-  
-//old method
-// for(size_t i = 0; i < fS3_RingFragment.size(); ++i) {
-//     for(size_t j = 0; j < fS3_SectorFragment.size(); ++j) {
-//       //mnemonic->arrayposition
-//       //if(sdata->GetRing_Detector(i) == sdata->GetSector_Detector(j))     {
-//         //Set the base data     
-//         TS3Hit dethit(*fS3_RingFragment[i]);
-// 	dethit.SetVariables(*fS3_RingFragment[i]);	
-// 	
-//         dethit.SetRingNumber(*fS3_RingFragment[i]);
-//         dethit.SetSectorNumber(*fS3_SectorFragment[j]);
-// 		
-//         fS3Hits.push_back(dethit);
-//      // }
-//     }
-//   }	
-	
-	// We are going to want energies sereral times and TFragment calibrates on every call
-	// So build a quick vector to save on repeat calulations
-	std::vector<double> EneR,EneS;
-	for(size_t i = 0; i < fS3_RingFragment.size(); ++i) EneR.push_back(fS3_RingFragment[i]->GetEnergy());
-	for(size_t j = 0; j < fS3_SectorFragment.size(); ++j)  EneS.push_back(fS3_SectorFragment[j]->GetEnergy());
-	
-	bool IsDownstream = false;		
-
-	//new	
-	///Loop over two vectors and build energy+time matching hits
-	for(size_t i = 0; i < fS3_RingFragment.size(); ++i) {
-		for(size_t j = 0; j < fS3_SectorFragment.size(); ++j) {      
-	
-			// First of all, check that the two events correspond to the same detector - i.e. both are upstream or downstream
-			MNEMONIC mnemonic_ring, mnemonic_sector;
-			TChannel *channel_ring = TChannel::GetChannel(fS3_RingFragment[i]->ChannelAddress);
-			TChannel *channel_sector = TChannel::GetChannel(fS3_SectorFragment[j]->ChannelAddress);
-			ClearMNEMONIC(&mnemonic_ring);
-			ClearMNEMONIC(&mnemonic_sector);
-			ParseMNEMONIC(channel_ring->GetChannelName(),&mnemonic_ring);
-			ParseMNEMONIC(channel_sector->GetChannelName(),&mnemonic_sector);
-			if(mnemonic_ring.arrayposition != mnemonic_sector.arrayposition)
-				continue;
-			else if(mnemonic_ring.arrayposition == 0 || mnemonic_ring.arrayposition == 2)
-				IsDownstream = true;
-			else if(mnemonic_ring.arrayposition == 1)
-				IsDownstream = false;
-			else
-				IsDownstream = true; // In case of incorrect value, we assume downstream
-			
-
-			if(abs(fS3_RingFragment[i]->GetCfd()-fS3_SectorFragment[j]->GetCfd()) < fFrontBackTime){ // check time
-				if(EneR[i]*fFrontBackEnergy<EneS[j]&&
-					EneS[j]*fFrontBackEnergy<EneR[i]){  //if time is good check energy
-
-					//Now we have accepted a good event, build it
-					TS3Hit dethit(*fS3_RingFragment[i]); // Ring defines all data sector just gives position
-					dethit.SetVariables(*fS3_RingFragment[i]);	
-					dethit.SetRingNumber(*fS3_RingFragment[i]);
-					dethit.SetSectorNumber(*fS3_SectorFragment[j]);
-					dethit.SetIsDownstream(IsDownstream);
-					fS3Hits.push_back(dethit);
-					
-					//Now we have "used" these parts of hits the are removed
-					//This is a relatively cheap operation because fragment vectors are pointers.
-					fS3_SectorFragment.erase(fS3_SectorFragment.begin() + j);
-					EneS.erase(EneS.begin() + j);
-					fS3_RingFragment.erase(fS3_RingFragment.begin() + i);
-					EneR.erase(EneR.begin() + i);
-					j=fS3_SectorFragment.size();
-					i--;
-				}
-			}
-		}
-	}
-	
-	
-	///If we have parts of hit left here they are possibly a shared strip hit not easy singles
-	if(fS3_SectorFragment.size()>1||fS3_RingFragment.size()>1){
-		
-	//Shared Ring loop
-	for(size_t i = 0; i < fS3_RingFragment.size(); ++i) {
-		for(size_t j = 0; j < fS3_SectorFragment.size(); ++j) {   
-			for(size_t k = j+1; k < fS3_SectorFragment.size(); ++k) {  
-
-				// First of all, check that the two events correspond to the same detector - i.e. both are upstream or downstream
-				MNEMONIC mnemonic_ring, mnemonic_sector1, mnemonic_sector2;
-				TChannel *channel_ring = TChannel::GetChannel(fS3_RingFragment[i]->ChannelAddress);
-				TChannel *channel_sector1 = TChannel::GetChannel(fS3_SectorFragment[j]->ChannelAddress);
-				TChannel *channel_sector2 = TChannel::GetChannel(fS3_SectorFragment[k]->ChannelAddress);
-				ClearMNEMONIC(&mnemonic_ring);
-				ClearMNEMONIC(&mnemonic_sector1);
-				ClearMNEMONIC(&mnemonic_sector2);
-				ParseMNEMONIC(channel_ring->GetChannelName(),&mnemonic_ring);
-				ParseMNEMONIC(channel_sector1->GetChannelName(),&mnemonic_sector1);
-				ParseMNEMONIC(channel_sector2->GetChannelName(),&mnemonic_sector2);
-				if((mnemonic_ring.arrayposition != mnemonic_sector1.arrayposition) || (mnemonic_sector1.arrayposition != mnemonic_sector2.arrayposition) || (mnemonic_ring.arrayposition != mnemonic_sector2.arrayposition))
-					continue;
-				else if(mnemonic_ring.arrayposition == 0 || mnemonic_ring.arrayposition == 2)
-					IsDownstream = true;
-				else if(mnemonic_ring.arrayposition == 1)
-					IsDownstream = false;
-				else
-					IsDownstream = true; // In case of incorrect value, we assume downstream
-		
-				if(abs(fS3_RingFragment[i]->GetCfd()-fS3_SectorFragment[j]->GetCfd()) < fFrontBackTime
-					&& abs(fS3_RingFragment[i]->GetCfd()-fS3_SectorFragment[k]->GetCfd()) < fFrontBackTime){ // check time
-					if(EneR[i]*fFrontBackEnergy<(EneS[j]+EneS[k])&&
-						(EneS[j]+EneS[k])*fFrontBackEnergy<EneR[i]){  //if time is good check energy
-							
-						//Now we have accepted a shared ring event, build them
-						TS3Hit dethit(*fS3_SectorFragment[j]); // Now we have to use the sector data
-						dethit.SetVariables(*fS3_SectorFragment[j]);	
-						dethit.SetRingNumber(*fS3_RingFragment[i]);
-						dethit.SetSectorNumber(*fS3_SectorFragment[j]);
-						dethit.SetIsDownstream(IsDownstream);
-						fS3Hits.push_back(dethit);
-					
-						TS3Hit dethitB(*fS3_SectorFragment[k]); // Now we have to use the sector data
-						dethitB.SetVariables(*fS3_SectorFragment[k]);	
-						dethitB.SetRingNumber(*fS3_RingFragment[i]);
-						dethitB.SetSectorNumber(*fS3_SectorFragment[k]);
-						dethitB.SetIsDownstream(IsDownstream);
-						fS3Hits.push_back(dethitB);
-								
-						//Now we have "used" these parts of hits the are removes
-						//This is a relatively cheap operation because fragment vectors are pointers.
-						fS3_SectorFragment.erase(fS3_SectorFragment.begin() + k);//Make sure to delete the later element first
-						EneS.erase(EneS.begin() + k);
-						fS3_SectorFragment.erase(fS3_SectorFragment.begin() + j);
-						EneS.erase(EneS.begin() + j);
-						fS3_RingFragment.erase(fS3_RingFragment.begin() + i);
-						EneR.erase(EneR.begin() + i);
-						k=fS3_SectorFragment.size();
-						j=fS3_SectorFragment.size();
-						i--;
-					}
-				}
-			}
-		}
-	} //End Shared Ring loop
-	//IF we STILL have events left	 
-	//Shared Sector loop
-	for(size_t i = 0; i < fS3_SectorFragment.size(); ++i) {
-		for(size_t j = 0; j < fS3_RingFragment.size(); ++j) {   
-			for(size_t k = j+1; k < fS3_RingFragment.size(); ++k) {  
-
-				// First of all, check that the two events correspond to the same detector - i.e. both are upstream or downstream
-				MNEMONIC mnemonic_ring1, mnemonic_ring2, mnemonic_sector;
-				TChannel *channel_ring1 = TChannel::GetChannel(fS3_RingFragment[j]->ChannelAddress);
-				TChannel *channel_ring2 = TChannel::GetChannel(fS3_RingFragment[k]->ChannelAddress);
-				TChannel *channel_sector = TChannel::GetChannel(fS3_SectorFragment[i]->ChannelAddress);
-				ClearMNEMONIC(&mnemonic_ring1);
-				ClearMNEMONIC(&mnemonic_ring2);
-				ClearMNEMONIC(&mnemonic_sector);
-				ParseMNEMONIC(channel_ring1->GetChannelName(),&mnemonic_ring1);
-				ParseMNEMONIC(channel_ring2->GetChannelName(),&mnemonic_ring2);
-				ParseMNEMONIC(channel_sector->GetChannelName(),&mnemonic_sector);
-				if((mnemonic_ring1.arrayposition != mnemonic_sector.arrayposition) || (mnemonic_ring1.arrayposition != mnemonic_ring2.arrayposition) || (mnemonic_ring2.arrayposition != mnemonic_sector.arrayposition))
-					continue;
-				else if(mnemonic_ring1.arrayposition == 0 || mnemonic_ring1.arrayposition == 2)
-					IsDownstream = true;
-				else if(mnemonic_ring1.arrayposition == 1)
-					IsDownstream = false;
-				else
-					IsDownstream = true;
-		
-				if(abs(fS3_SectorFragment[i]->GetCfd()-fS3_RingFragment[j]->GetCfd()) < fFrontBackTime
-					&& abs(fS3_SectorFragment[i]->GetCfd()-fS3_RingFragment[k]->GetCfd()) < fFrontBackTime){ //first check time
-					if(EneS[i]*fFrontBackEnergy<(EneR[j]+EneR[k])&&
-						(EneR[j]+EneR[k])*fFrontBackEnergy<EneS[i]){  //if time is good check energy
-							
-						//Now we have accepted a shared sector event, build them
-						TS3Hit dethit(*fS3_RingFragment[j]); // Ring defines all data sector just gives position
-						dethit.SetVariables(*fS3_RingFragment[j]);	
-						dethit.SetRingNumber(*fS3_RingFragment[j]);
-						dethit.SetSectorNumber(*fS3_SectorFragment[i]);
-						dethit.SetIsDownstream(IsDownstream);
-						fS3Hits.push_back(dethit);
-					
-						TS3Hit dethitB(*fS3_RingFragment[k]); // Ring defines all data sector just gives position
-						dethitB.SetVariables(*fS3_RingFragment[k]);	
-						dethitB.SetRingNumber(*fS3_RingFragment[k]);
-						dethitB.SetSectorNumber(*fS3_SectorFragment[i]);
-						dethitB.SetIsDownstream(IsDownstream);
-						fS3Hits.push_back(dethitB);
-						
-						//Now we have "used" these parts of hits the are removes
-						fS3_RingFragment.erase(fS3_RingFragment.begin() + k);//Make sure to delete the later element first
-						EneR.erase(EneR.begin() + k);
-						fS3_RingFragment.erase(fS3_RingFragment.begin() + j);
-						EneR.erase(EneR.begin() + j);
-						fS3_SectorFragment.erase(fS3_SectorFragment.begin() + i);
-						EneS.erase(EneS.begin() + i);
-						k=fS3_RingFragment.size();
-						j=fS3_RingFragment.size();
-						i--;
-					}
-				}
-			}
-		}
-	} //End Shared Sector loop
-  }//End Shared Strip Loop
-
-	
-  //If there are any used hit parts clear 'em
-  fS3_RingFragment.clear();
-  fS3_SectorFragment.clear();
 }
 
+Int_t TS3::GetPixelMultiplicity(){
+
+	BuildPixels();
+	
+	return fS3Hits.size();
+
+}
+
+void TS3::BuildPixels(){
+
+
+	if(fS3RingHits.size()==0 || fS3SectorHits.size()==0)
+		return;
+  //if the addback has been reset, clear the addback hits
+  if(!PixelsSet())
+    fS3Hits.clear();
+  if(fS3Hits.size() == 0) {
+		
+
+		// We are going to want energies sereral times and TFragment calibrates on every call
+		// So build a quick vector to save on repeat calulations
+		std::vector<double> EneR,EneS;
+		std::vector<bool> UsedRing, UsedSector;
+		for(size_t i = 0; i < fS3RingHits.size(); ++i){
+			EneR.push_back(fS3RingHits[i].GetEnergy());
+			UsedRing.push_back(false);
+		}
+		for(size_t j = 0; j < fS3SectorHits.size(); ++j){
+			EneS.push_back(fS3SectorHits[j].GetEnergy());
+			UsedSector.push_back(false);
+		}
+	
+
+		//new	
+		///Loop over two vectors and build energy+time matching hits
+		for(size_t i = 0; i < fS3RingHits.size(); ++i) {
+			for(size_t j = 0; j < fS3SectorHits.size(); ++j) {      
+			
+
+				if(abs(fS3RingHits[i].GetCfd()-fS3SectorHits[j].GetCfd()) < fFrontBackTime){ // check time
+					if(EneR[i]*fFrontBackEnergy<EneS[j]&&
+						EneS[j]*fFrontBackEnergy<EneR[i]){  //if time is good check energy
+
+						//Now we have accepted a good event, build it
+						TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position
+						dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
+						if(TGRSIRunInfo::IsWaveformFitting()){
+							dethit.SetTimeFit(fS3RingHits[i].GetFitTime());
+							dethit.SetSig2Noise(fS3RingHits[i].GetSignalToNoise());
+						}
+						fS3Hits.push_back(dethit);
+
+						UsedRing[i]=true;
+						UsedSector[j]=true;
+					
+						//Now we have "used" these parts of hits the are removed
+						//This is a relatively cheap operation because fragment vectors are pointers.
+						//fS3_SectorFragment.erase(fS3_SectorFragment.begin() + j);
+						//EneS.erase(EneS.begin() + j);
+						//fS3_RingFragment.erase(fS3_RingFragment.begin() + i);
+						//EneR.erase(EneR.begin() + i);
+						//j=fS3_SectorFragment.size();
+						//i--;
+					}
+				}
+			}
+		}
+	
+		if(MultiHit()){
+		
+			int ringcount = 0;
+			int sectorcount = 0;
+			for(unsigned int i=0;i<UsedRing.size();i++)
+				if(!UsedRing.at(i))
+					ringcount++;
+
+			for(unsigned int i=0;i<UsedSector.size();i++)
+				if(!UsedSector.at(i))
+					sectorcount++;
+
+		
+			///If we have parts of hit left here they are possibly a shared strip hit not easy singles
+			if(ringcount>1||sectorcount>1){
+		
+				//Shared Ring loop
+				for(size_t i = 0; i < fS3RingHits.size(); ++i) {
+					if(UsedRing.at(i))
+						continue;
+					for(size_t j = 0; j < fS3SectorHits.size(); ++j) { 
+						if(UsedSector.at(j))
+							continue;  
+						for(size_t k = j+1; k < fS3SectorHits.size(); ++k) {  
+							if(UsedSector.at(k))
+								continue;  
+		
+							if(abs(fS3RingHits[i].GetCfd()-fS3SectorHits[j].GetCfd()) < fFrontBackTime
+								&& abs(fS3RingHits[i].GetCfd()-fS3SectorHits[k].GetCfd()) < fFrontBackTime){ // check time
+								if(EneR[i]*fFrontBackEnergy<(EneS[j]+EneS[k])&&
+									(EneS[j]+EneS[k])*fFrontBackEnergy<EneR[i]){  //if time is good check energy
+
+									//Now we have accepted a good event, build it
+									TS3Hit dethit = fS3SectorHits[j]; // Ring defines all data sector just gives position
+									dethit.SetRingNumber(fS3RingHits[i].GetRing());
+									if(TGRSIRunInfo::IsWaveformFitting()){
+										dethit.SetTimeFit(fS3SectorHits[j].GetFitTime());
+										dethit.SetSig2Noise(fS3SectorHits[j].GetSignalToNoise());
+									}
+									fS3Hits.push_back(dethit);
+
+									//Now we have accepted a good event, build it
+									TS3Hit dethitB = fS3SectorHits[k]; // Ring defines all data sector just gives position
+									dethitB.SetRingNumber(fS3RingHits[i].GetRing());
+									if(TGRSIRunInfo::IsWaveformFitting()){
+										dethitB.SetTimeFit(fS3SectorHits[k].GetFitTime());
+										dethitB.SetSig2Noise(fS3SectorHits[k].GetSignalToNoise());
+									}
+									fS3Hits.push_back(dethitB);
+
+									UsedRing[i]=true;
+									UsedSector[j]=true;
+									UsedSector[k]=true;
+								}
+							}
+						}
+					}
+				} //End Shared Ring loop
+			} 
+
+
+			ringcount = 0;
+			sectorcount = 0;
+			for(unsigned int i=0;i<UsedRing.size();i++)
+				if(!UsedRing.at(i))
+					ringcount++;
+
+			for(unsigned int i=0;i<UsedSector.size();i++)
+				if(!UsedSector.at(i))
+					sectorcount++;
+
+			if(ringcount>1||sectorcount>1){
+
+				//Shared Sector loop
+				for(size_t i = 0; i < fS3SectorHits.size(); ++i) {
+					if(UsedSector.at(i))
+						continue;
+					for(size_t j = 0; j < fS3RingHits.size(); ++j) {
+						if(UsedRing.at(j))
+							continue;   
+						for(size_t k = j+1; k < fS3RingHits.size(); ++k) {  
+						if(UsedRing.at(k))
+							continue;
+		
+							if(abs(fS3SectorHits[i].GetCfd()-fS3RingHits[j].GetCfd()) < fFrontBackTime
+								&& abs(fS3SectorHits[i].GetCfd()-fS3RingHits[k].GetCfd()) < fFrontBackTime){ //first check time
+								if(EneS[i]*fFrontBackEnergy<(EneR[j]+EneR[k])&&
+									(EneR[j]+EneR[k])*fFrontBackEnergy<EneS[i]){  //if time is good check energy
+							
+									//Now we have accepted a good event, build it
+									TS3Hit dethit = fS3RingHits[j]; // Ring defines all data sector just gives position
+									dethit.SetSectorNumber(fS3SectorHits[i].GetSector());
+									if(TGRSIRunInfo::IsWaveformFitting()){
+										dethit.SetTimeFit(fS3RingHits[j].GetFitTime());
+										dethit.SetSig2Noise(fS3RingHits[j].GetSignalToNoise());
+									}
+									fS3Hits.push_back(dethit);
+
+									//Now we have accepted a good event, build it
+									TS3Hit dethitB = fS3RingHits[k]; // Ring defines all data sector just gives position
+									dethitB.SetSectorNumber(fS3SectorHits[i].GetSector());
+									if(TGRSIRunInfo::IsWaveformFitting()){
+										dethitB.SetTimeFit(fS3RingHits[k].GetFitTime());
+										dethitB.SetSig2Noise(fS3RingHits[k].GetSignalToNoise());
+									}
+									fS3Hits.push_back(dethitB);
+
+									UsedRing[i]=true;
+									UsedSector[j]=true;
+									UsedSector[k]=true;
+
+								}
+							}
+						}
+					}
+				} //End Shared Sector loop
+
+			}
+
+		}
+		
+
+		SetPixels();
+	}
+
+}
 
 TVector3 TS3::GetPosition(int ring, int sector, bool downstream, double offset)  {
   TVector3 position;
@@ -290,13 +308,13 @@ TGRSIDetectorHit* TS3::GetHit(const int& idx){
 }
 
 TS3Hit *TS3::GetS3Hit(const int& i) {  
-   try {
-      return &fS3Hits.at(i);   
-   } catch (const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
-      throw grsi::exit_exception(1);
-   }
-   return 0;
+  if(i < GetPixelMultiplicity()) {
+    return &fS3Hits.at(i);
+  } else {
+    std::cerr << "S3 pixel hits are out of range" << std::endl;
+    throw grsi::exit_exception(1);
+    return NULL;
+  }
 }  
 
 void TS3::PushBackHit(TGRSIDetectorHit *deshit) {
@@ -312,6 +330,8 @@ void TS3::Print(Option_t *opt) const {
 void TS3::Clear(Option_t *opt) {
   TGRSIDetector::Clear(opt);
   fS3Hits.clear();
+	fS3RingHits.clear();
+	fS3SectorHits.clear();
   fS3_RingFragment.clear();
   fS3_SectorFragment.clear();
   fRingNumber=24;
@@ -319,10 +339,12 @@ void TS3::Clear(Option_t *opt) {
   fOffsetPhi=15*TMath::Pi()/180.; // according to dave.
   fOuterDiameter=70.;
   fInnerDiameter=22.;
-  fTargetDistance=21.;
+  fTargetDistance=31.;
   
   fFrontBackTime=75;   
-  fFrontBackEnergy=0.9; 
+  fFrontBackEnergy=0.1; 
+	fPixelsSet = false;
+	fMultHit = false;
 }
 
 

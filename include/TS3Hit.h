@@ -9,6 +9,7 @@
 #include "TFragment.h"
 #include "TChannel.h"
 #include "TMath.h"
+#include "TPulseAnalyzer.h"
 #include "TGRSIDetectorHit.h" 
 
 class TS3Hit : public TGRSIDetectorHit {
@@ -22,33 +23,52 @@ class TS3Hit : public TGRSIDetectorHit {
     Short_t  GetRing()  const  { return fRing;   }
     Short_t  GetSector() const { return fSector; }
 		Bool_t	 GetIsDownstream() const { return fIsDownstream; }
+		Double_t GetSectorE()									 	const { return fSectorE; 	}
+
+    Double_t   fTimeFit;
+    Double_t   fSig2Noise;
 
   public:
     void Copy(TObject&) const;        //!
     void Print(Option_t* opt="") const;
     void Clear(Option_t* opt="");
 
-    void SetVariables(TFragment &frag) {  fLed    = frag.GetLed(); }
-    void SetRingNumber(Short_t rn)     { fRing = rn;   }
-    void SetSectorNumber(Short_t sn)   { fSector = sn; }
-		void SetIsDownstream(Bool_t dwnstrm) 	{ fIsDownstream = dwnstrm; }
+		inline Double_t GetFitTime()			           { return fTimeFit;	   } //!<!
+		inline Double_t GetSignalToNoise()		        { return fSig2Noise;	} //!<!
+
+    void SetVariables(TFragment &frag) 			{ fLed    = frag.GetLed(); }
+    void SetRingNumber(Short_t rn)     			{ fRing = rn;   }
+    void SetSectorNumber(Short_t sn)   			{ fSector = sn; }
+		void SetIsDownstream(Bool_t dwnstrm) 		{ fIsDownstream = dwnstrm; }
+		void SetSectorE(Double_t E)							{ fSectorE = E; }
     
-    void SetRingNumber(TFragment &frag)     { fRing = GetMnemonicSegment(frag);   }
-    void SetSectorNumber(TFragment &frag)   { fSector =GetMnemonicSegment(frag) ; }
+    void SetRingNumber(TFragment &frag)     { fRing = GetMnemonicSegment(frag);   	}
+    void SetSectorNumber(TFragment &frag)   { fSector = GetMnemonicSegment(frag) ; 	}
+    void SetSectorNumber(int n)   					{ fSector = n ; 												}
+    void SetRingNumber(int n)   						{ fRing 	= n ; 												}
     
+    void SetWavefit(TFragment&);
+		void SetTimeFit(Double_t time)					{ fTimeFit = time;											}
+		void SetSig2Noise(Double_t sig2noise)		{ fSig2Noise = sig2noise;								}
+
     Short_t GetMnemonicSegment(TFragment &frag);//could be added to TGRSIDetectorHit base class
-	 
+	
+		Double_t GetPhi(double offset=0) {
+			return this->GetChannelPosition(offset).Phi();
+		}
+
 		Double_t GetTheta(double offset=0, TVector3 *vec=0) {
 			if(vec==0) {
 				vec = new TVector3();
 				vec->SetXYZ(0,0,1);
 			}
-			return TMath::Pi() - TMath::Cos(this->GetChannelPosition(offset).Angle(*vec));
+			return this->GetChannelPosition(offset).Angle(*vec);
 		}
+    TVector3 GetChannelPosition(Double_t offset = 0, Double_t dist = 0) const; //!
 
   private:
-     TVector3 GetChannelPosition(Double_t offset = 0, Double_t dist = 0) const; //!
 
+		Double_t fSectorE;
       
     Bool_t 	 fIsDownstream; // Downstream check
     Double_t fLed;
