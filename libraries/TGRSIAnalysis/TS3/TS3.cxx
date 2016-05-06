@@ -101,7 +101,7 @@ void TS3::BuildPixels(){
 
 	if(fS3RingHits.size()==0 || fS3SectorHits.size()==0)
 		return;
-  //if the pixels have been reset, clear the addback hits
+  //if the pixels have been reset, clear the pixel hits
   if(!PixelsSet())
     fS3Hits.clear();
   if(fS3Hits.size() == 0) {
