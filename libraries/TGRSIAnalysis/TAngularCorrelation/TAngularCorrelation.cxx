@@ -78,7 +78,7 @@ TH2D* TAngularCorrelation::Create2DSlice(THnSparse *hst, Double_t min, Double_t 
 
    // project the THnSparse
    hst->GetAxis(energy1axis)->SetRangeUser(min,max);
-   TH2D* tempslice = (TH2D*) hst->Projection(indexaxis,energy2axis,"e"); // the "e" option pushes appropriate errors
+   TH2D* tempslice = (TH2D*) hst->Projection(indexaxis,energy2axis,"eo"); // the "e" option pushes appropriate errors
    tempslice->SetName(Form("%s_proj_%i",hst->GetName(),(Int_t)((max+min)/2)));
    tempslice->SetTitle(Form("%s: %i keV",hst->GetTitle(),(Int_t)((max+min)/2)));
 
@@ -195,7 +195,7 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
       if (sparse) {
          THnSparse* thishst = (THnSparse*) hstarray->At(i);
          thishst->GetAxis(0)->SetRangeUser(min,max);
-         tempslice = (TH1D*) thishst->Projection(1,"e"); // the "e" option pushes appropriate errors
+         tempslice = (TH1D*) thishst->Projection(1,"oe"); // the "e" option pushes appropriate errors, the "o" makes the projection correct
       }
       // TH2 option
       else if (hst2d) {
@@ -460,9 +460,12 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       Double_t area = static_cast<TPeak*>(this->GetPeak(index))->GetArea();
       Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
       if (area_err<TMath::Sqrt(area)) {
+         Double_t chi2 = peak->GetChisquare();
+         Double_t ndf = peak->GetNDF();
+         Double_t scale = TMath::Sqrt(chi2/ndf);
          printf("Area error was less than the square root of the area.\n");
-         printf("This means something is wrong; using square root of area for area error.\n");
-         area_err = TMath::Sqrt(area);
+         printf("This means something is wrong; using scaled square root of area for area error.\n");
+         area_err = TMath::Sqrt(area)*scale;
       }
 
       // fill histogram with area
@@ -478,6 +481,8 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
    TCanvas* c_diag = new TCanvas(Form("c_diag_%i",(Int_t)peak->GetCentroid()),Form("Diagnostics for fitting %i keV peak",(Int_t)peak->GetCentroid()),800,800);
 
    // create plots for chi^2, centroid, and fwhm
+   hst2dname = hst->GetName();
+   hst1dname = Form("%s_%ikeV",hst2dname,(Int_t)peak->GetCentroid());
    TH1D* chi2hst = new TH1D(Form("%s_chi2",hst1dname),Form("%s: #chi^{2};Angular index;#chi^{2}/NDF value",newhst->GetTitle()),indexbins,indexmin,indexmax);
    TH1D* centroidhst = new TH1D(Form("%s_centroid",hst1dname),Form("%s: Peak centroid;Angular index;Peak centroid (keV)",newhst->GetTitle()),indexbins,indexmin,indexmax);
    TH1D* fwhmhst = new TH1D(Form("%s_fwhm",hst1dname),Form("%s: FWHM;Angular index;FWHM (keV)",newhst->GetTitle()),indexbins,indexmin,indexmax);
@@ -1528,9 +1533,12 @@ void TAngularCorrelation::UpdateIndexCorrelation()
       Double_t area = peak->GetArea();
       Double_t area_err = peak->GetAreaErr();
       if (area_err<TMath::Sqrt(area)) {
+         Double_t chi2 = peak->GetChisquare();
+         Double_t ndf = peak->GetNDF();
+         Double_t scale = TMath::Sqrt(chi2/ndf);
          printf("Area error was less than the square root of the area.\n");
-         printf("This means something is wrong; using square root of area for area error.\n");
-         area_err = TMath::Sqrt(area);
+         printf("This means something is wrong; using scaled square root of area for area error.\n");
+         area_err = TMath::Sqrt(area)*scale;
       }
 
       // fill histogram with area
@@ -1549,8 +1557,8 @@ void TAngularCorrelation::ScaleSingleIndex(TH1* hst, Int_t index, Int_t factor)
 {
    
    // get old values
-   Double_t old_value = hst->GetBinContent(index);
-   Double_t old_error = hst->GetBinError(index);
+   Double_t old_value = hst->GetBinContent(index+1);
+   Double_t old_error = hst->GetBinError(index+1);
   
    //set new values
    Double_t new_value = old_value * factor;
@@ -1558,8 +1566,8 @@ void TAngularCorrelation::ScaleSingleIndex(TH1* hst, Int_t index, Int_t factor)
    Double_t new_area_err = old_error * factor;
 
    // fill histogram with new values
-    hst->SetBinContent(index,new_value);
-    hst->SetBinError(index,new_area_err);
+    hst->SetBinContent(index+1,new_value);
+    hst->SetBinError(index+1,new_area_err);
    
 
    return;
