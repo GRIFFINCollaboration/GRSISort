@@ -459,11 +459,11 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       // extract area
       Double_t area = static_cast<TPeak*>(this->GetPeak(index))->GetArea();
       Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
-      if (area_err<TMath::Sqrt(area)) {
-         Double_t chi2 = peak->GetChisquare();
-         Double_t ndf = peak->GetNDF();
-         Double_t scale = TMath::Sqrt(chi2/ndf);
-         printf("Area error was less than the square root of the area.\n");
+      Double_t chi2 = peak->GetChisquare();
+      Double_t ndf = peak->GetNDF();
+      Double_t scale = TMath::Max(1.0,TMath::Sqrt(chi2/ndf));
+      if (area_err<scale*TMath::Sqrt(area)) {
+         printf("Area error was less than the scaled square root of the area.\n");
          printf("This means something is wrong; using scaled square root of area for area error.\n");
          area_err = TMath::Sqrt(area)*scale;
       }
@@ -1532,11 +1532,11 @@ void TAngularCorrelation::UpdateIndexCorrelation()
       if (!peak) return;
       Double_t area = peak->GetArea();
       Double_t area_err = peak->GetAreaErr();
-      if (area_err<TMath::Sqrt(area)) {
-         Double_t chi2 = peak->GetChisquare();
-         Double_t ndf = peak->GetNDF();
-         Double_t scale = TMath::Sqrt(chi2/ndf);
-         printf("Area error was less than the square root of the area.\n");
+      Double_t chi2 = peak->GetChisquare();
+      Double_t ndf = peak->GetNDF();
+      Double_t scale = TMath::Max(1.0,TMath::Sqrt(chi2/ndf));
+      if (area_err<scale*TMath::Sqrt(area)) {
+         printf("Area error was less than the scaled square root of the area.\n");
          printf("This means something is wrong; using scaled square root of area for area error.\n");
          area_err = TMath::Sqrt(area)*scale;
       }
@@ -1553,7 +1553,7 @@ void TAngularCorrelation::UpdateIndexCorrelation()
 /// Updates index correlation based on peak array
 ///
 
-void TAngularCorrelation::ScaleSingleIndex(TH1* hst, Int_t index, Int_t factor)
+void TAngularCorrelation::ScaleSingleIndex(TH1* hst, Int_t index, Double_t factor)
 {
    
    // get old values
@@ -1562,7 +1562,7 @@ void TAngularCorrelation::ScaleSingleIndex(TH1* hst, Int_t index, Int_t factor)
   
    //set new values
    Double_t new_value = old_value * factor;
-   printf("old value is %f multiplied by %i is %f\n", old_value, factor, new_value);
+   printf("old value is %f multiplied by %f is %f\n", old_value, factor, new_value);
    Double_t new_area_err = old_error * factor;
 
    // fill histogram with new values
