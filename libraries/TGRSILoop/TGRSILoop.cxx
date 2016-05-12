@@ -539,6 +539,9 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent* mEvent, TMidasFile* mFile)   {
             else if((banksize = mEvent->LocateBank(NULL,"GRF2",&ptr))>0) {
                if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,2, mEvent, mFile)) { }
             }
+	         else if((banksize = mEvent->LocateBank(NULL,"GRF3",&ptr))>0) {
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,3, mEvent, mFile)) { }
+            }
             else if( (banksize = mEvent->LocateBank(NULL,"FME0",&ptr))>0) {
                if(!Process8PI(0,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
             } else if( (banksize = mEvent->LocateBank(NULL,"FME1",&ptr))>0) {
