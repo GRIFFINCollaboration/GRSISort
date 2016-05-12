@@ -498,12 +498,12 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 			case 0xf0000000:
 				switch(bank){
 					case 1: // header format from before May 2015 experiments
+					case 3: // header format beginning January 2016
 						TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 						delete EventFrag;
 						return -x;
 						break;
-					case 2:
-					case 3:
+					case 2: // header format from before May 2015 experiments (0xf denoted a psd-word from a 4G)
 						if(x+1 < size) {
 							SetGRIFCc(value, EventFrag);
 							++x;
@@ -515,7 +515,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 							return -x;
 						}
 						break;
-					
 					default:
 						printf("This bank not yet defined.\n");
 						break;
