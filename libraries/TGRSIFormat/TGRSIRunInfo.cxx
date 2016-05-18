@@ -200,8 +200,8 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    ///fBufferDuration    = 60000000000;
 
    fHPGeArrayPosition = 110.0;
-   fBuildWindow       = 200;  
-   fAddBackWindow     = 15.0;
+   fBuildWindow       = 2000;  
+   fAddBackWindow     = 150.0;
    fIsMovingWindow    = true;
    fWaveformFitting	 = false;
    fBufferSize        = 1000000;
