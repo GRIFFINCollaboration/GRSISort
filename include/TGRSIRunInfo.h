@@ -174,7 +174,7 @@ class TGRSIRunInfo : public TObject {
       inline void SetMovingWindow(const bool flag)       {fIsMovingWindow = flag; }
       static inline bool IsMovingWindow()                { return Get()->fIsMovingWindow; }
 
-      static inline long int BuildWindow()    { return Get()->fBuildWindow; }
+      static inline long int BuildWindow()    { return Get()->fBuildWindow/10; }
       static inline double   AddBackWindow()  { if(Get()->fAddBackWindow<1) return 15.0; return Get()->fAddBackWindow; }
       static inline long int BufferDuration() { return Get()->fBufferDuration; }
       static inline size_t   BufferSize()     { return Get()->fBufferSize; }
