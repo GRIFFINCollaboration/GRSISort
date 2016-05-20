@@ -530,7 +530,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 							case 1:
 							case 2:
 								EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 21 );
-								EventFrag->Charge.push_back((*(data+x) & 0x03ffffff));
+								EventFrag->Charge.push_back(((data[x]>>25) & 0x1) ? ((*(data+x) & 0x03ffffff) | 0xfc00000) : (*(data+x) & 0x03ffffff));
 								++x;
 								EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
 								EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
@@ -538,7 +538,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 							
 							case 3:
 								EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 17 );	//upper
-								EventFrag->Charge.push_back((*(data+x) & 0x03ffffff));
+								EventFrag->Charge.push_back(((data[x]>>25) & 0x1) ? ((*(data+x) & 0x03ffffff) | 0xfc00000) : (*(data+x) & 0x03ffffff));
 								++x;
 								EventFrag->KValue.back() |= (*(data+x) & 0x7fc00000) >> 22;		//lower
 								EventFrag->Cfd.push_back( (*(data+x) & 0x003fffff));
