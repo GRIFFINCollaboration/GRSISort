@@ -95,9 +95,9 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 
    Double_t bgStart  =  1.5e8;
    Double_t bgEnd    =  3.5e8;
-   Double_t onStart  =  3.5e8;
-   Double_t onEnd    = 14.0e8;
-   Double_t offStart = 14.5e8;
+   Double_t onStart  =  4.0e8;
+   Double_t onEnd    = 11.0e8;
+   Double_t offStart = 11.1e8;
    Double_t offEnd   = 15.5e8;
 
    if(w == NULL) {
@@ -140,11 +140,13 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TH2F* gammaSinglesBCyc = NULL;
    TH2F* gammaSinglesBmCyc = NULL;
    TH2F* betaSinglesCyc = NULL;
+   TH1F* bCycle = NULL;
    if(ppg){
       gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
       gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
       gammaSinglesBmCyc = new TH2F("gammaSinglesBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBmCyc);
       betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,1000,0,1000); list->Add(betaSinglesCyc);
+   bCycle = new TH1F("bCycle", "#beta Cycle", cycleLength/10.,0,cycleLength); list->Add(bCycle);  
    }
    //addback spectra
    TH1D* gammaAddback = new TH1D("gammaAddback","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
@@ -291,6 +293,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
             btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
             if(ppg && !plotted_flag){//Fill on first hit only.
+               bCycle->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTime()))/1e5));
                betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTime()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTime()))); 
                //  betaSinglesCyc->Fill((((ULong64_t)(scep->GetHit(b)->GetTime()))%(ppg->GetCycleLength()))/1e5,(scep->GetHit(b)->GetTime())/(ppg->GetCycleLength())); 
                plotted_flag = true;

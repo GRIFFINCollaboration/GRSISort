@@ -224,9 +224,13 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    }
    //TH2F** angCorr_coinc_Binned = new TH2F*[angleCombinations.size()+1];
    THnSparseF** angCorr_coinc_Binned = new THnSparseF*[angleCombinations.size()+1];
+   THnSparseF** CrossTalk_SC = new THnSparseF*[angleCombinations.size()+1];   
+   THnSparseF** No_CrossTalk_SC = new THnSparseF*[angleCombinations.size()+1];
    THnSparseF** angCorr_coinc_Binned_bg = new THnSparseF*[angleCombinations.size()+1];
    THnSparseF** angCorr_coinc_Binned_uncorr = new THnSparseF*[angleCombinations.size()+1];
    for(int i = 0; i < (int) angleCombinations.size()+1; ++i) {
+       CrossTalk_SC[i] = new THnSparseF(Form("CrossTalk_%d",i), Form("Cross talk between neighbouring detectors at %1F",angleCombinations[i].first), 2,bins, min,max); list->Add(CrossTalk_SC[i]);
+       No_CrossTalk_SC[i] = new THnSparseF(Form("No_CrossTalk_%d",i), Form("Cross talk between non-neighbouring detectors at %1F",angleCombinations[i].first), 2,bins, min,max); list->Add(No_CrossTalk_SC[i]);
       //  angCorr_coinc_Binned[i] = new TH2F(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), 1500, xBins, 1500, yBins); list->Add(angCorr_coinc_Binned[i]);
       // angCorr_coinc_Binned[i] = new TH2F(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), nofBins, low, high,nofBins,low,high); list->Add(angCorr_coinc_Binned[i]);
       angCorr_coinc_Binned[i] = new THnSparseF(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), 2,bins, min,max); list->Add(angCorr_coinc_Binned[i]);
