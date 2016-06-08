@@ -65,7 +65,6 @@ void TGriffinHit::Print(Option_t *opt) const	{
 TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
 
    //Returns the Position of the crystal of the current Hit.
-   //We use dist = 0 for the TGRSIRunInfo set distance.
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 

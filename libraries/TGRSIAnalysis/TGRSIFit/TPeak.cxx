@@ -228,7 +228,7 @@ Bool_t TPeak::InitParams(TH1* fitHist) {
    SetParameter("B",(fitHist->GetBinContent(binlow) - fitHist->GetBinContent(binhigh))/(xlow-xhigh));
    SetParameter("C",0.0000);
    SetParameter("bg_offset",GetParameter("centroid"));
-   FixParameter(8,0.00);
+//   FixParameter(8,0.00);
    FixParameter(3,GetParameter("beta"));
    FixParameter(4,0.00);
    SetInitialized();
