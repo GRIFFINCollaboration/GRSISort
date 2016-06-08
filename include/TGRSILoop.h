@@ -10,7 +10,9 @@
 #include <fstream>
 
 #if !defined (__CINT__) && !defined (__CLING__)
+#define _GLIBCXX_USE_NANOSLEEP 1
 #include <thread>
+#include <mutex>
 #endif
 
 #include "TObject.h"
@@ -57,6 +59,8 @@ class TGRSILoop : public TObject {
       std::thread* fMidasThread;
       std::thread* fFillTreeThread;
       std::thread* fFillScalerThread;
+
+		static std::mutex fMutex;
    #endif
 
    public:

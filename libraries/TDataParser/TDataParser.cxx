@@ -144,7 +144,7 @@ void TDataParser::SetTIGWave(uint32_t value,TFragment* currentFrag) {
 	///Sets the waveform for a Tigress event.
 
 	//if(!currentFrag->wavebuffer)
-	//   currentFrag->wavebuffer = new std::vector<short>;
+	   //currentFrag->wavebuffer = new std::vector<short>;
 	if(currentFrag->wavebuffer.size() > (100000) ) {printf("number of wave samples found is to great\n"); return;}       
 	if (value & 0x00002000) {
 		int temp =  value & 0x00003fff;
@@ -389,7 +389,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 	//If the event has detector type 15 (0xf) it's a scaler event.
 	if(EventFrag->DetectorType == 0xf) {
 		//a scaler event (trigger or deadtime) has 8 words (including header and trailer), make sure we have at least that much left
-		if(size < 8) {
+		if(size < 7) {
 			return -x;
 		}
 		x = GriffinDataToScalerEvent(data, EventFrag->ChannelAddress);
@@ -405,14 +405,19 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 
 	//The master Filter Pattern is in an unstable state right now and is not
 	//always written to the midas file
-	if(SetGRIFMasterFilterPattern(data[x],EventFrag)) {
+	if(SetGRIFMasterFilterPattern(data[x],EventFrag,bank)) {
 		x++;
 	} 
 
-	if(SetGRIFMasterFilterId(data[x],EventFrag)) {
-		x++;
+	uint32_t dword  = *(data+x);			//we made a temporary fix here (JKS/MB 22-Jan-2016)
+	uint32_t packet = dword & 0x80000000;
+	while (packet==0) {
+		if(SetGRIFMasterFilterId(data[x],EventFrag)) {
+			x++;
+		}
+		dword  = *(data+x);
+		packet = dword & 0x80000000;
 	}
-
 	//The channel trigger ID is in an unstable state right now and is not
 	//always written to the midas file
 	if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
@@ -493,11 +498,12 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 			case 0xf0000000:
 				switch(bank){
 					case 1: // header format from before May 2015 experiments
+					case 3: // header format beginning January 2016
 						TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 						delete EventFrag;
 						return -x;
 						break;
-					case 2:
+					case 2: // header format from before May 2015 experiments (0xf denoted a psd-word from a 4G)
 						if(x+1 < size) {
 							SetGRIFCc(value, EventFrag);
 							++x;
@@ -519,15 +525,30 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 				if((packet & 0x80000000) == 0x00000000) {
 					//check that there is another word and that it is also a charge/cfd word
 					if(x+1 < size &&  (*(data+x+1) & 0x80000000) == 0x0) {
-						EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 21 );
-						EventFrag->Charge.push_back((*(data+x) & 0x03ffffff));
-						++x;
-						EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
-						EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
+
+						switch(bank){
+							case 1:
+							case 2:
+								EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 21 );
+								EventFrag->Charge.push_back(((data[x]>>25) & 0x1) ? ((*(data+x) & 0x03ffffff) | 0xfc000000) : (*(data+x) & 0x03ffffff));
+								++x;
+								EventFrag->KValue.back() |= (*(data+x) & 0x7c000000) >> 26;
+								EventFrag->Cfd.push_back( (*(data+x) & 0x03ffffff));
+								break;
+							
+							case 3:
+								EventFrag->KValue.push_back( (*(data+x) & 0x7c000000) >> 17 );	//upper
+								EventFrag->Charge.push_back(((data[x]>>25) & 0x1) ? ((*(data+x) & 0x03ffffff) | 0xfc000000) : (*(data+x) & 0x03ffffff));
+								++x;
+								EventFrag->KValue.back() |= (*(data+x) & 0x7fc00000) >> 22;		//lower
+								EventFrag->Cfd.push_back( (*(data+x) & 0x003fffff));
+								break;			
+						}
+
 					} else {
 						//these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
 						//so we look for the next trailer and stop there
-						while((data[x] & 0xf0000000) != 0xe0000000) ++x;
+						while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
 						TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->DetectorType);
 						delete EventFrag;
 						return -x;
@@ -582,6 +603,22 @@ bool TDataParser::SetGRIFHeader(uint32_t value,TFragment* frag,int bank) {
 			// if(frag-DetectorType==2)
 			//    frag->ChannelAddress += 0x8000;
 			break;
+
+		case 3:		//MB edit - for new event data format (January 2016)
+			//Sets: 
+			//     The Data Type
+         //     Word Count
+			//     Channel Address
+			//     Detector Type
+			if( (value&0xf0000000) != 0x80000000) {
+				return false;
+			}
+			frag->DataType        =  (value &0x0e000000)>> 25;		
+			frag->ChannelAddress  =  (value &0x000ffff0)>> 4;		
+			frag->DetectorType    =  (value &0x0000000f);
+
+			break;
+
 		default:
 			printf("This bank not yet defined.\n");
 			break;
@@ -608,13 +645,22 @@ bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment* frag) {
 	return true;
 }
 
-bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment* frag) {
+bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment* frag,int bank) {
 	///Sets the Griffin Master Filter Pattern
 	if( (value &0xc0000000) != 0x00000000) {
 		return false;
 	}
-	frag->TriggerBitPattern = (value & 0x3fff0000) >> 16; // bit shift included by JKS
-	frag->PPG = value & 0x0000ffff;//This is due to new GRIFFIN data format
+	switch(bank){
+	
+		case 1:
+		case 2:
+			frag->TriggerBitPattern = (value & 0x3fff0000) >> 16; // bit shift included by JKS
+			frag->PPG = value & 0x0000ffff;//This is due to new GRIFFIN data format
+		
+		case 3:
+			frag->TriggerBitPattern = (value & 0x3fff0000) >> 16; // bit shift included by JKS
+			frag->NumberOfPileups = (value & 0x0000001f);	//
+	}
 	return true;
 }
 
@@ -655,22 +701,24 @@ bool TDataParser::SetGRIFTimeStampLow(uint32_t value, TFragment* frag) {
 
 bool TDataParser::SetGRIFWaveForm(uint32_t value,TFragment* currentFrag) {
 	///Sets the Griffin waveform if record_waveform is set to true
-	if(currentFrag->wavebuffer.size() > (100000) ) {printf("number of wave samples found is to great\n"); return false;}       
-	if (value & 0x00002000) {
+	if(currentFrag->wavebuffer.size() > (100000) ) {printf("number of wave samples found is to great\n"); return false;}
+	if (value & 0x00002000) {	//sample 1
 		int temp =  value & 0x00003fff;
 		temp = ~temp;
 		temp = (temp & 0x00001fff) + 1;
 		currentFrag->wavebuffer.push_back((int16_t)-temp); //eventfragment->SamplesFound++;
 	} else {
-		currentFrag->wavebuffer.push_back((int16_t)(value & 0x00001fff)); //eventfragment->SamplesFound++;
+		//currentFrag->wavebuffer.push_back((int16_t)(value & 0x00001fff)); //eventfragment->SamplesFound++;
+		currentFrag->wavebuffer.push_back((int16_t)(value & 0x00003fff)); //eventfragment->SamplesFound++;
 	}
-	if ((value >> 14) & 0x00002000) {
+	if ((value >> 14) & 0x00002000) {	//sample 2
 		int temp =  (value >> 14) & 0x00003fff;
 		temp = ~temp;
 		temp = (temp & 0x00001fff) + 1;
 		currentFrag->wavebuffer.push_back((int16_t)-temp); //eventfragment->SamplesFound++;
 	} else {
-		currentFrag->wavebuffer.push_back((int16_t)((value >> 14) & 0x00001fff) ); //eventfragment->SamplesFound++;
+		//currentFrag->wavebuffer.push_back((int16_t)((value >> 14) & 0x00001fff) ); //eventfragment->SamplesFound++;
+		currentFrag->wavebuffer.push_back((int16_t)((value >> 14) & 0x00003fff) ); //eventfragment->SamplesFound++;
 	}
 	return true;
 }

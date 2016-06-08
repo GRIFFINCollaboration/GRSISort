@@ -25,6 +25,8 @@ TGRSILoop* TGRSILoop::fTGRSILoop = 0;
 
 bool TGRSILoop::fSuppressError = false;
 
+std::mutex TGRSILoop::fMutex;
+
 TGRSILoop* TGRSILoop::Get() {
    if(!fTGRSILoop)
       fTGRSILoop = new TGRSILoop();
@@ -126,14 +128,22 @@ void TGRSILoop::FillFragmentTree(TMidasFile* midasfile) {
          fMidasThreadRunning) {
       frag = TFragmentQueue::GetQueue("GOOD")->PopFragment();
       if(frag) {
+		   while(!fMutex.try_lock()) {
+				//do nothing
+			}
          TGRSIRootIO::Get()->FillFragmentTree(frag);
+			fMutex.unlock();
  	      delete frag;
          fFragsSentToTree++;
       }
 
       frag = TFragmentQueue::GetQueue("BAD")->PopFragment();
       if(frag) {
+		   while(!fMutex.try_lock()) {
+				//do nothing
+			}
          TGRSIRootIO::Get()->FillBadFragmentTree(frag);
+			fMutex.unlock();
          delete frag;
          fBadFragsSentToTree++;
       } 
@@ -160,8 +170,12 @@ void TGRSILoop::FillScalerTree() {
       if(TDeadtimeScalerQueue::Get()->ScalersInQueue() > 0) {
 		   scalerData = TDeadtimeScalerQueue::Get()->PopScaler();
 		   if(scalerData) {
-            TGRSIRootIO::Get()->FillDeadtimeScalerTree(scalerData);
- 	         delete scalerData;
+				while(!fMutex.try_lock()) {
+					//do nothing
+				}
+				TGRSIRootIO::Get()->FillDeadtimeScalerTree(scalerData);
+				fMutex.unlock();
+				delete scalerData;
             fDeadtimeScalersSentToTree++;
          }
 
@@ -175,7 +189,11 @@ void TGRSILoop::FillScalerTree() {
       if(TRateScalerQueue::Get()->ScalersInQueue() > 0) {
 		   scalerData = TRateScalerQueue::Get()->PopScaler();
 		   if(scalerData) {
+				while(!fMutex.try_lock()) {
+					//do nothing
+				}
             TGRSIRootIO::Get()->FillRateScalerTree(scalerData);
+				fMutex.unlock();
  	         delete scalerData;
             fRateScalersSentToTree++;
          }
@@ -286,10 +304,12 @@ void TGRSILoop::ProcessMidasFile(TMidasFile* midasFile) {
             break;
       };
       if((currentEventNumber%5000)== 0) {
-         if(!TGRSIOptions::CloseAfterSort())
-            gSystem->ProcessEvents();
+			if(!TGRSIOptions::CloseAfterSort()) {
+				gSystem->ProcessEvents();
+			}
          printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r",
 					 currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
+			fflush(stdout);
          w.Continue();
       }
    }
@@ -518,6 +538,9 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent* mEvent, TMidasFile* mFile)   {
             }
             else if((banksize = mEvent->LocateBank(NULL,"GRF2",&ptr))>0) {
                if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,2, mEvent, mFile)) { }
+            }
+	         else if((banksize = mEvent->LocateBank(NULL,"GRF3",&ptr))>0) {
+               if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,3, mEvent, mFile)) { }
             }
             else if( (banksize = mEvent->LocateBank(NULL,"FME0",&ptr))>0) {
                if(!Process8PI(0,(uint32_t*)ptr,banksize,mEvent,mFile)) {}

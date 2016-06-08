@@ -28,7 +28,6 @@ void TS3Hit::Copy(TObject &rhs) const {
    return;
 }
 
-
 void TS3Hit::Clear(Option_t *opt)	{
    TGRSIDetectorHit::Clear(opt);
    fLed            = -1;
@@ -49,6 +48,13 @@ Short_t TS3Hit::GetMnemonicSegment(TFragment &frag){//could be added to TGRSIDet
 	return mnemonic.segment;
 }
 
+void TS3Hit::SetWavefit(TFragment &frag)   { 
+	TPulseAnalyzer pulse(frag);	    
+	if(pulse.IsSet()){
+		fTimeFit   = pulse.fit_newT0();
+		fSig2Noise = pulse.get_sig2noise();
+	}
+}
 
 TVector3 TS3Hit::GetChannelPosition(double offset, double dist) const {
 	return TS3::GetPosition(GetRing(),GetSector(),this->GetIsDownstream(),offset);

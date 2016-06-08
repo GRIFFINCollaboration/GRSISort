@@ -3,14 +3,14 @@
 /////////////////////////////////////
 
 
-//The event building time, 10ns units. 
-BuildWindow: 200     // 2useconds
+//The event building time, 1 ns units. 
+BuildWindow: 2000     // 2useconds
 
 //Set Moving Window (1) or Static Window (0)/
 MovingWindow: 1
 
-//The Addback event window, 10ns units.
-AddBackWindow: 15.0  // 150.0 nseconds
+//The Addback event window, 1 ns units.
+AddBackWindow: 150.0  // 150.0 nseconds
 
 //The Array position in mm.
 HPGePos:       110.0 // 110.0 mm 

@@ -200,8 +200,8 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    ///fBufferDuration    = 60000000000;
 
    fHPGeArrayPosition = 110.0;
-   fBuildWindow       = 200;  
-   fAddBackWindow     = 15.0;
+   fBuildWindow       = 2000;  
+   fAddBackWindow     = 150.0;
    fIsMovingWindow    = true;
    fWaveformFitting	 = false;
    fBufferSize        = 1000000;
@@ -241,10 +241,10 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
       printf("\t\tZDS:          %s\n", ZeroDegree() ? "true" : "false");
       printf("\n");
-      printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
-      printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
-      printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
-      printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
+      printf(DBLUE"\tBuild Window (10 ns) = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
+      printf(DBLUE"\tMoving Window = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tAddBack Window (ns) = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
+      printf(DBLUE"\tArray Position (mm) = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
       printf(DBLUE"\tWaveform fitting = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
       printf(DBLUE"\tDESCANT in ancillary positions = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::DescantAncillary() ? "TRUE" : "FALSE");
       printf("\n");
@@ -466,10 +466,10 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
 
    if(strcmp(opt,"q")) {
       printf("parsed %i lines.\n",linenumber);
-      printf(DBLUE"\tBuild Window   = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
-      printf(DBLUE"\tMoving Window  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
-      printf(DBLUE"\tAddBack Window = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
-      printf(DBLUE"\tArray Position = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
+      printf(DBLUE"\tBuild Window (10 ns) = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
+      printf(DBLUE"\tMoving Window = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tAddBack Window (ns) = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
+      printf(DBLUE"\tArray Position (mm) = " DRED "%i"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
       printf(DBLUE"\tWaveform Fitting  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
    }
    return true;
