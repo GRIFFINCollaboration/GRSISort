@@ -55,7 +55,7 @@ ClassImp(TGRSIRunInfo)
             {Double_t  R__double ; b >> R__double;  fRunLength = R__double;}
          }
          if(R__v>2) {
-            {Int_t  R__int ; b >> R__int;  fHPGeArrayPosition = R__int;}
+            {Int_t  R__int ; b >> R__double;  fHPGeArrayPosition = R__double;}
             if(R__v>5) {
                {Long_t  R__int ; b >> R__int;  fBuildWindow = R__int;}
             } else {
@@ -108,7 +108,7 @@ ClassImp(TGRSIRunInfo)
          {Double_t R__double = fRunStart;  b << R__double;}
          {Double_t R__double = fRunStop ;  b << R__double;}
          {Double_t R__double = fRunLength ;  b << R__double;}
-         {Int_t R__int = fHPGeArrayPosition; b << R__int;}
+         {Double_t R__double = fHPGeArrayPosition; b << R__double;}
          {Long_t R__long = fBuildWindow;       b << R__long;}
          {Double_t R__double = fAddBackWindow;  b << R__double;}
          {Bool_t R__bool = fIsMovingWindow; b << R__bool;}
