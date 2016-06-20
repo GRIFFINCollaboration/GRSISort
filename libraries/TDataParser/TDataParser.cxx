@@ -486,6 +486,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 					//   EventFrag->AcceptedChannelId = 0;
 					//}
 
+               //This is for Bruno's testing
+               if(EventFrag->GetAddress() == 526){
+                  long time_stamp = EventFrag->GetTimeStamp();
+                  long new_time_stamp = time_stamp + 250;
+	               EventFrag->TimeStampLow = new_time_stamp & 0x0fffffff;
+	               EventFrag->TimeStampHigh = (new_time_stamp >> 28) &  0x00003fff;
+               }
+
 					if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
 					TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
 					return x;
