@@ -179,8 +179,8 @@ class TGRSIRunInfo : public TObject {
       static inline long int BufferDuration() { return Get()->fBufferDuration; }
       static inline size_t   BufferSize()     { return Get()->fBufferSize; }
 
-      inline void SetHPGeArrayPosition(const int arr_pos) { fHPGeArrayPosition = arr_pos; }
-      static inline int  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
+      inline void SetHPGeArrayPosition(const double arr_pos) { fHPGeArrayPosition = arr_pos; }
+      static inline double  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
 
       static inline void SetDescantAncillary(bool flag = true) { fGRSIRunInfo->fDescantAncillary = flag; }
       static inline bool DescantAncillary()                    { return fGRSIRunInfo->fDescantAncillary; }

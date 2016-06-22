@@ -31,6 +31,8 @@ void TLMFitter::funcs(const double &x, Vec_IO_double &a, double &y, Vec_O_double
       dyda[i] = fFunction->GradientPar(i,&x);
    }
    y = fFunction->Eval(x);
+  // std::cout << "y: " << y << " x: " << x << std::endl; 
+
 }
 
 void TLMFitter::Fit(TH1* hist, TF1* func){
@@ -69,13 +71,14 @@ void TLMFitter::Fit(TH1* hist, TF1* func){
    bin_min = hist->FindBin(func_range_min);
    bin_max = hist->FindBin(func_range_max);
 
-   nBins = bin_max - bin_min;
+   nBins = hist->GetNbinsX();//bin_max - bin_min;
+   //nBins = bin_max - bin_min;
    Vec_double x(nBins), y(nBins), sig(nBins), yfit(nBins), W(nBins), v(nBins);
    
    std::cout << "Setting bin values..." << std::endl;
    std::cout << "Range is " << bin_min << " to " << bin_max << std::endl;
    for(int i=0; i<hist->GetNbinsX();++i){
-      x[i] = hist->GetXaxis()->GetBinUpEdge(i+1);
+      x[i] = hist->GetXaxis()->GetBinUpEdge(i+1)*hist->GetXaxis()->GetBinWidth(1);
       y[i] = hist->GetBinContent(i+1);
       v[i] = hist->GetBinError(i+1)*hist->GetBinError(i+1);
       if(v[i] == 0)
@@ -136,7 +139,7 @@ int TLMFitter::integrator(Vec_I_double &x, Vec_I_double &y, Vec_double &sig, Vec
 //	int i, j, k;
 	double ynew = 0;  
 	double xstart = x[bin]; //This is the start of the bin
-   double ymod;
+   double ymod = 0;
    Vec_double z(fIntegrationSteps), temp(dyda.size());
 	
 	for(int k=0; k<fIntegrationSteps; ++k)
@@ -153,7 +156,7 @@ int TLMFitter::integrator(Vec_I_double &x, Vec_I_double &y, Vec_double &sig, Vec
 		}
       //integrates the y of the function
 		//ynew += bin_width/(double)fIntegrationSteps*ymod;
-		ynew += 1./(double)fIntegrationSteps*ymod;
+   	ynew += 1./(double)fIntegrationSteps*ymod;
 	}
    //Sets the actual variables to the "temporary" variables used for integration
 	for(int i=0; i<ma; ++i)
