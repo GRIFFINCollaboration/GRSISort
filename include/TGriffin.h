@@ -81,6 +81,13 @@ class TGriffin : public TGRSIDetector {
 		void SetBitNumber(enum EGriffinBits bit,Bool_t set);
 		Bool_t TestBitNumber(enum EGriffinBits bit) const {return (bit & fGriffinBits);}
 
+      //Cross-Talk stuff
+   public:
+      static const Double_t gStrongCT[2];   //!<!
+      static const Double_t gWeakCT[2]; //!<!
+      static const Double_t gCrossTalkPar[2][4][4]; //!<! 
+      static Double_t CTCorrectedEnergy(const TGriffinHit* const energy_to_correct, const TGriffinHit* const other_energy, Bool_t time_constraint = true);
+
 	public:
 		virtual void Copy(TObject&) const;                //!<!
 		virtual void Clear(Option_t* opt = "all");		     //!<!

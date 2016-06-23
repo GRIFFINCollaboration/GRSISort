@@ -63,6 +63,12 @@ TVector3 TGriffin::gCloverPosition[17] = {
    TVector3(TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Cos(TMath::DegToRad()*(337.5)), TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Sin(TMath::DegToRad()*(337.5)), TMath::Cos(TMath::DegToRad()*(135.0)))
 };
 
+//Cross Talk stuff
+const Double_t TGriffin::gStrongCT[2] = { -0.02674, -0.000977 }; //This is for the 0-1 and 2-3 combination
+const Double_t TGriffin::gWeakCT[2]   = { 0.005663, - 0.00028014};
+const Double_t TGriffin::gCrossTalkPar[2][4][4] = {
+   { {0.0, gStrongCT[0], gWeakCT[0], gWeakCT[0]}, {gStrongCT[0], 0.0, gWeakCT[0], gWeakCT[0]}, {gWeakCT[0], gWeakCT[0], 0.0, gStrongCT[0]}, {gWeakCT[0], gWeakCT[0], gStrongCT[0], 0.0}},
+   { {0.0, gStrongCT[1], gWeakCT[1], gWeakCT[1]}, {gStrongCT[1], 0.0, gWeakCT[1], gWeakCT[1]}, {gWeakCT[1], gWeakCT[1], 0.0, gStrongCT[1]}, {gWeakCT[1], gWeakCT[1], gStrongCT[1], 0.0}}};
 
 TGriffin::TGriffin() : TGRSIDetector() {
 //Default ctor. Ignores TObjectStreamer in ROOT < 6
@@ -299,4 +305,24 @@ void TGriffin::SetBitNumber(enum EGriffinBits bit,Bool_t set){
       fGriffinBits |= bit;
    else
       fGriffinBits &= (~bit);
+}
+
+Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, const TGriffinHit* const other_hit, Bool_t time_constraint){
+   if(!hit_to_correct || !other_hit){
+      printf("One of the hits is invalid in TGriffin::CTCorrectedEnergy\n");
+      return 0;
+   }
+
+   if(time_constraint){
+      //Figure out if this passes the selected window
+      if(false) //placeholder
+         return hit_to_correct->GetEnergy();
+   }
+
+   if(hit_to_correct->GetDetector() != other_hit->GetDetector() ){
+      return hit_to_correct->GetEnergy();
+   }
+
+   return hit_to_correct->GetEnergy() + gCrossTalkPar[0][hit_to_correct->GetCrystal()][other_hit->GetCrystal()] + gCrossTalkPar[1][hit_to_correct->GetCrystal()][other_hit->GetCrystal()]*other_hit->GetEnergy();
+
 }
