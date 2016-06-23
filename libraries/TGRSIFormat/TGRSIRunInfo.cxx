@@ -289,7 +289,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    //Sets the run info. This figures out what systems are available.
 
    printf("In runinfo, found %i channels.\n",TChannel::GetNumberOfChannels());
-
+   printf("I'm called now %d %d\n",runnum, subrunnum);
    if(runnum != 0)
       SetRunNumber(runnum);
    if(subrunnum != -1) 
