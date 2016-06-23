@@ -73,6 +73,7 @@ void TGRSIRootIO::SetUpPPG() {
 		TFile* prevSubRun = new TFile(Form("fragment%05d_%03d.root",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()-1));
 		if(prevSubRun->IsOpen()) {
 			if(prevSubRun->Get("TPPG") != NULL) {
+            printf("Found previous PPG data from run %s\n",prevSubRun->GetName());
 				fPPG = (TPPG*) (prevSubRun->Get("TPPG")->Clone());
 			} else {
 				printf("Error, could not find PPG in file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()-1);
