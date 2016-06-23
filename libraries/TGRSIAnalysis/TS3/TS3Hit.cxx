@@ -60,6 +60,10 @@ TVector3 TS3Hit::GetChannelPosition(double offset, double dist) const {
 	return TS3::GetPosition(GetRing(),GetSector(),this->GetIsDownstream(),offset);
 }
 
+TVector3 TS3Hit::GetChannelPosition(double offset) const {
+   return GetChannelPosition(offset,0.0);
+}
+
 void TS3Hit::Print(Option_t *opt) const	{
 	printf("================\n");
 	printf("not yet written.\n");
