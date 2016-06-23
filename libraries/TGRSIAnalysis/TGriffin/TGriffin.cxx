@@ -226,11 +226,11 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 				corehit.SetPUHit(i);
 			}
 
-         //RYAN HACK
+    /*     //RYAN HACK
          if(frag->KValue.at(i) < 700){
             corehit.SetNPileUps(1);
             corehit.SetPUHit(1);
-         }
+         }*/
 			
 			AddHit(&corehit);
 		}
