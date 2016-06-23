@@ -287,7 +287,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile* midasFile) {
 						char* buffer = new char[length]; inputCal.read(buffer,length);
                   TGRSIRunInfo::SetXMLODBFileData(buffer);
                }
- //              TGRSIRunInfo::SetRunInfo(midasFile->GetRunNumber(),midasFile->GetSubRunNumber());
+               TGRSIRunInfo::SetRunInfo(midasFile->GetRunNumber(),midasFile->GetSubRunNumber());
                TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
             }
             break;
