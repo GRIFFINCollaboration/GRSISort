@@ -279,7 +279,8 @@ bool TGRSIRootIO::SetUpRootOutFile(int runNumber, int subRunNumber) {
 	if(!fOutFile->IsOpen()) {
 		return false;
 	}
-   TGRSIRunInfo::SetRunInfo(runNumber,subRunNumber);
+   TGRSIRunInfo::SetRunNumber(runNumber);
+   TGRSIRunInfo::SetSubRunNumber(subRunNumber);
 	SetUpFragmentTree();
 	SetUpBadFragmentTree();
 	SetUpPPG();
