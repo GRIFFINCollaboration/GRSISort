@@ -225,6 +225,12 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 				corehit.SetNPileUps(frag->Charge.size()-1);//We subtract 1 in order to start counter from 0
 				corehit.SetPUHit(i);
 			}
+
+    /*     //RYAN HACK
+         if(frag->KValue.at(i) < 700){
+            corehit.SetNPileUps(1);
+            corehit.SetPUHit(1);
+         }*/
 			
 			AddHit(&corehit);
 		}

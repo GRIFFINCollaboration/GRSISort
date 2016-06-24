@@ -62,7 +62,8 @@ class TS3Hit : public TGRSIDetectorHit {
 			}
 			return this->GetChannelPosition(offset).Angle(*vec);
 		}
-    TVector3 GetChannelPosition(Double_t offset = 0, Double_t dist = 0) const; //!
+    TVector3 GetChannelPosition(Double_t offset, Double_t dist) const; //!
+    TVector3 GetChannelPosition(Double_t offset = 0) const; //!
 
   private:
 

@@ -654,7 +654,7 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
       fitter.Fit(fithist,fFitFunc);
    }
    else{
-      fitres = fFitFunc->Fit(fithist,Form("%sIWLRS",opt));
+      fitres = fFitFunc->Fit(fithist,Form("%sRIS",opt));
       Double_t chi2 = fitres->Chi2();
       Double_t ndf = fitres->Ndf();
       printf("Chi2/ndf = %lf\n",chi2/ndf);
@@ -674,16 +674,6 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt) {
       fChainList.at(i)->SetChainParameters();
    }
 
-/*
-   //Now copy the fits back to the appropriate nuclei.
-   curDecay->SetIntensity(fChainFunc->GetParameter(0)); curDecay->SetIntensityError(fChainFunc->GetParError(0));
-   //Now we need to set the parameters for each of the parents
-   while(curDecay){
-      curDecay->SetDecayRate(fChainFunc->GetParameter(parCounter)); curDecay->SetDecayRateError(fChainFunc->GetParError(parCounter));
-      curDecay = curDecay->GetDaughterDecay();
-      ++parCounter;
-   }
-   */
    return fitres;
 
 }

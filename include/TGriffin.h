@@ -15,6 +15,7 @@
 #include "Globals.h"
 #include "TGriffinHit.h"
 #include "TGRSIDetector.h"
+#include "TGRSIRunInfo.h"
 
 class TGriffin : public TGRSIDetector {
 	public:
@@ -38,7 +39,7 @@ class TGriffin : public TGRSIDetector {
 		TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
 		Short_t GetMultiplicity() const {return fGriffinHits.size();}
 
-		static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);		//!<!
+		static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = TGRSIRunInfo::HPGeArrayPosition());		//!<!
 		void AddFragment(TFragment*, MNEMONIC*); //!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
