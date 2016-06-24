@@ -177,3 +177,12 @@ void TGriffinHit::SetPUHit(UChar_t puhit) {
    SetGriffinFlag(kPUHit2,(puhit << 2) & kPUHit2);  
 }
 
+Double_t TGriffinHit::GetNoCTEnergy(Option_t* opt) const{
+	TChannel* chan = GetChannel();
+	if(!chan) {
+		Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
+		return 0.;
+	}
+	return chan->CalibrateENG(GetCharge());
+}
+

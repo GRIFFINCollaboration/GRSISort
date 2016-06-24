@@ -140,6 +140,10 @@ TGRSIDetectorHit* TGriffin::GetHit(const Int_t& idx) {
 
 TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
    try {
+      if(!IsCrossTalkSet()){
+         //Calculate Cross Talk on each hit
+         FixCrossTalk();
+      }
       return &(fGriffinHits.at(i));   
    } catch (const std::out_of_range& oor) {
       std::cerr << ClassName() << " Hits are out of range: " << oor.what() << std::endl;
@@ -323,6 +327,27 @@ Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, co
       return hit_to_correct->GetEnergy();
    }
 
-   return hit_to_correct->GetEnergy() + gCrossTalkPar[0][hit_to_correct->GetCrystal()][other_hit->GetCrystal()] + gCrossTalkPar[1][hit_to_correct->GetCrystal()][other_hit->GetCrystal()]*other_hit->GetEnergy();
+   return hit_to_correct->GetEnergy() + gCrossTalkPar[0][hit_to_correct->GetCrystal()][other_hit->GetCrystal()] + gCrossTalkPar[1][hit_to_correct->GetCrystal()][other_hit->GetCrystal()]*other_hit->GetNoCTEnergy();
+
+}
+
+Bool_t TGriffin::IsCrossTalkSet() const{
+   return (fGriffinBits & kIsCrossTalkSet);
+}
+
+void TGriffin::FixCrossTalk() {
+   
+   if(fGriffinHits.size() < 2) {
+      SetBitNumber(kIsCrossTalkSet,true);
+      return;
+   }
+   size_t i, j;
+   for(i = 0; i < fGriffinHits.size(); ++i) {
+	   for(j = i+1; j < fGriffinHits.size(); ++j) {
+         fGriffinHits[i].SetEnergy(TGriffin::CTCorrectedEnergy(&(fGriffinHits[i]),&(fGriffinHits[j])));
+         fGriffinHits[j].SetEnergy(TGriffin::CTCorrectedEnergy(&(fGriffinHits[j]),&(fGriffinHits[i])));
+      }
+   }
+   SetBitNumber(kIsCrossTalkSet,true);
 
 }
