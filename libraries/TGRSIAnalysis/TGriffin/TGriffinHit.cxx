@@ -3,6 +3,7 @@
 #include "TGriffinHit.h"
 #include "Globals.h"
 #include <cmath>
+#include <iostream>
 
 /// \cond CLASSIMP
 ClassImp(TGriffinHit)
@@ -143,7 +144,6 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
       this->SetPosition(hit->GetPosition());
       this->SetAddress(hit->GetAddress());
    }
-
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
    //this has to be done at the very end, otherwise this->GetEnergy() might not work
    this->SetCharge(0);
