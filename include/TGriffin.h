@@ -94,6 +94,7 @@ class TGriffin : public TGRSIDetector {
 		virtual void Copy(TObject&) const;                //!<!
 		virtual void Clear(Option_t* opt = "all");		     //!<!
 		virtual void Print(Option_t* opt = "") const;		  //!<!
+      void ResetFlags();
 		void ResetAddback();		     //!<!
 		UShort_t GetNAddbackFrags(size_t idx) const;
 

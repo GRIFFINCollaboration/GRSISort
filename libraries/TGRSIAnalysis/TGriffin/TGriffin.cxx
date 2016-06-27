@@ -299,6 +299,11 @@ TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ) {
 
 }
 
+void TGriffin::ResetFlags(){
+   fGriffinBits = 0;
+}
+
+
 void TGriffin::ResetAddback() {
 //Used to clear the addback hits. When playing back a tree, this must
 //be called before building the new addback hits, otherwise, a copy of
