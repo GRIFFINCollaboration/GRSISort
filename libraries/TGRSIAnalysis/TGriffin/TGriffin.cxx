@@ -306,6 +306,7 @@ void TGriffin::ResetAddback() {
 //This should have changed now, we're using the stored griffin bits to reset the addback
 	//unset the addback bit in fGriffinBits
 	SetBitNumber(kIsAddbackSet, false);
+   SetBitNumber(kIsCrossTalkSet,false);
    fAddbackHits.clear();
    fAddbackFrags.clear();
 }
