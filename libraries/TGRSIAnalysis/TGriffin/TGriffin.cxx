@@ -347,7 +347,7 @@ Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, co
 
    if(time_constraint){
       //Figure out if this passes the selected window
-      if(TMath::Abs(other_hit->GetTime() - hit_to_correct->GetTime()) < TGRSIRunInfo::AddBackWindow()) //placeholder
+      if(TMath::Abs(other_hit->GetTime() - hit_to_correct->GetTime()) > TGRSIRunInfo::AddBackWindow()) //placeholder
          return hit_to_correct->GetEnergy();
    }
 

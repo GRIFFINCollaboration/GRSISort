@@ -157,7 +157,7 @@ TGRSIRunInfo *TGRSIRunInfo::Get() {
 
 void TGRSIRunInfo::SetRunInfo(TGRSIRunInfo *tmp) {
    //Sets the TGRSIRunInfo to the info passes as tmp.
-   if(fGRSIRunInfo)
+   if(fGRSIRunInfo && (fGRSIRunInfo != tmp))
       delete fGRSIRunInfo;
    fGRSIRunInfo = tmp;
 }
@@ -178,7 +178,7 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
 
    TList *list =  tempf->GetListOfKeys();
    TIter iter(list);
-
+   printf("Reading Info from file: %s\n",tempf->GetName());
    while(TKey *key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo"))
          continue;
@@ -287,6 +287,7 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
    fMinorIndex.assign("");  
 
    fNumberOfTrueSystems = 0;
+   fIsCorrectingCrossTalk  = true;
 
 }
 
@@ -515,7 +516,9 @@ Long64_t TGRSIRunInfo::Merge(TCollection *list){
 
 void TGRSIRunInfo::SetCorrectCrossTalk(const bool flag, Option_t *opt) {
    fIsCorrectingCrossTalk = flag; 
-   if(TString(opt).Contains("q",TString::ECaseCompare::kIgnoreCase)) {
+   TString opt1 = opt;
+   opt1.ToUpper();
+   if(opt1.Contains("Q")){
       return;
    }
       
