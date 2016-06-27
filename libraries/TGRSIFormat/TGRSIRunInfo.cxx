@@ -98,6 +98,9 @@ ClassImp(TGRSIRunInfo)
          if(R__v > 8){
             {Bool_t R__bool; b >> R__bool; fDescantAncillary = R__bool;   }
          }
+         if(R__v > 9){
+            {Bool_t R__bool; b >> R__bool; fIsCorrectingCrossTalk = R__bool;   }
+         }
          fGRSIRunInfo = this;
          b.CheckByteCount(R__s,R__c,TGRSIRunInfo::IsA());
       } else {
@@ -207,7 +210,8 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    fBufferSize        = 1000000;
    fBufferDuration    = 60000000000;
 
-   fDescantAncillary = false;
+   fDescantAncillary       = false;
+   fIsCorrectingCrossTalk  = true;
 
    //printf("run info created.\n");
 
@@ -247,6 +251,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf(DBLUE"\tArray Position (mm) = " DRED "%.01f"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
       printf(DBLUE"\tWaveform fitting = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
       printf(DBLUE"\tDESCANT in ancillary positions = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::DescantAncillary() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tGRIFFIN Corrected for Cross-talk = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::IsCorrectingCrossTalk() ? "TRUE" : "FALSE");
       printf("\n");
       printf("\t==============================\n");
    }
@@ -460,6 +465,10 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
          std::istringstream ss(line);
          int temp_int; ss >> temp_int;
          Get()->SetDescantAncillary(temp_int);
+      } else if( type.compare("CROSSTALK") == 0) {
+         std::istringstream ss(line);
+         bool temp_ct; ss >> temp_ct;
+         Get()->SetCorrectCrossTalk(temp_ct);
       }
    }
 
@@ -470,6 +479,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
       printf(DBLUE"\tAddBack Window (ns) = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
       printf(DBLUE"\tArray Position (mm) = " DRED "%lf"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
       printf(DBLUE"\tWaveform Fitting  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tCorrecting Cross-talk  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsCorrectingCrossTalk() ? "TRUE" : "FALSE");
    }
    return true;
 }

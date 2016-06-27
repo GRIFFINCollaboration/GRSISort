@@ -57,6 +57,9 @@ class TGriffinHit : public TGRSIDetectorHit {
       UInt_t SetCrystal(char color);
       UInt_t SetCrystal(UInt_t crynum);
       Bool_t IsCrystalSet() const {return IsSubDetSet();}
+      Double_t GetNoCTEnergy(Option_t *opt = "") const;
+      Double_t GetEnergy(Option_t *opt = "") const;
+      Double_t GetEnergy(Option_t *opt = "");
 
       UShort_t NPileUps() const; 
       UShort_t PUHit() const;    

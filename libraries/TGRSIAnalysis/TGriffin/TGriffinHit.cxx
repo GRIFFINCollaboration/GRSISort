@@ -3,6 +3,7 @@
 #include "TGriffinHit.h"
 #include "Globals.h"
 #include <cmath>
+#include <iostream>
 
 /// \cond CLASSIMP
 ClassImp(TGriffinHit)
@@ -143,7 +144,6 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
       this->SetPosition(hit->GetPosition());
       this->SetAddress(hit->GetAddress());
    }
-
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
    //this has to be done at the very end, otherwise this->GetEnergy() might not work
    this->SetCharge(0);
@@ -177,3 +177,27 @@ void TGriffinHit::SetPUHit(UChar_t puhit) {
    SetGriffinFlag(kPUHit2,(puhit << 2) & kPUHit2);  
 }
 
+Double_t TGriffinHit::GetNoCTEnergy(Option_t* opt) const{
+	TChannel* chan = GetChannel();
+	if(!chan) {
+		Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
+		return 0.;
+	}
+	return chan->CalibrateENG(GetCharge());
+}
+
+Double_t TGriffinHit::GetEnergy(Option_t* opt) const{
+   if(!(TGRSIRunInfo::Get()->IsCorrectingCrossTalk())){
+      return GetNoCTEnergy(opt);
+   }
+
+   return TGRSIDetectorHit::GetEnergy(opt);
+}
+
+Double_t TGriffinHit::GetEnergy(Option_t* opt){
+   if(!(TGRSIRunInfo::Get()->IsCorrectingCrossTalk())){
+      return GetNoCTEnergy(opt);
+   }
+
+   return TGRSIDetectorHit::GetEnergy(opt);
+}
