@@ -141,7 +141,7 @@ TGRSIDetectorHit* TGriffin::GetHit(const Int_t& idx) {
 
 TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
    try {
-      if(!IsCrossTalkSet()){
+      if(!IsCrossTalkSet() && TGRSIRunInfo::Get()->IsCorrectingCrossTalk()){
          //Calculate Cross Talk on each hit
          FixCrossTalk();
       }
@@ -156,7 +156,7 @@ TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
 
 Int_t TGriffin::GetAddbackMultiplicity() {
    // Automatically builds the addback hits using the fAddbackCriterion (if the size of the fAddbackHits vector is zero) and return the number of addback hits.
-   if(!IsCrossTalkSet()){
+   if(!IsCrossTalkSet() && TGRSIRunInfo::Get()->IsCorrectingCrossTalk()){
       //Calculate Cross Talk on each hit
       FixCrossTalk();
    }
@@ -202,7 +202,7 @@ Int_t TGriffin::GetAddbackMultiplicity() {
 }
 
 TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
-   if(!IsCrossTalkSet()){
+   if(!IsCrossTalkSet() && TGRSIRunInfo::Get()->IsCorrectingCrossTalk()){
       //Calculate Cross Talk on each hit
       FixCrossTalk();
    }
@@ -335,7 +335,7 @@ Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, co
 
    if(time_constraint){
       //Figure out if this passes the selected window
-      if(false) //placeholder
+      if(TMath::Abs(other_hit->GetTime() - hit_to_correct->GetTime()) < TGRSIRunInfo::AddBackWindow()) //placeholder
          return hit_to_correct->GetEnergy();
    }
 

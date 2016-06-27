@@ -186,3 +186,18 @@ Double_t TGriffinHit::GetNoCTEnergy(Option_t* opt) const{
 	return chan->CalibrateENG(GetCharge());
 }
 
+Double_t TGriffinHit::GetEnergy(Option_t* opt) const{
+   if(!(TGRSIRunInfo::Get()->IsCorrectingCrossTalk())){
+      return GetNoCTEnergy(opt);
+   }
+
+   return TGRSIDetectorHit::GetEnergy(opt);
+}
+
+Double_t TGriffinHit::GetEnergy(Option_t* opt){
+   if(!(TGRSIRunInfo::Get()->IsCorrectingCrossTalk())){
+      return GetNoCTEnergy(opt);
+   }
+
+   return TGRSIDetectorHit::GetEnergy(opt);
+}
