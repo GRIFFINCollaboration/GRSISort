@@ -468,7 +468,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
       } else if( type.compare("CROSSTALK") == 0) {
          std::istringstream ss(line);
          bool temp_ct; ss >> temp_ct;
-         Get()->SetCorrectCrossTalk(temp_ct);
+         Get()->SetCorrectCrossTalk(temp_ct,"q");
       }
    }
 
@@ -510,4 +510,13 @@ Long64_t TGRSIRunInfo::Merge(TCollection *list){
       this->Add(runinfo);
    }
    return 0;
+}
+
+void TGRSIRunInfo::SetCorrectCrossTalk(const bool flag, Option_t *opt) {
+   fIsCorrectingCrossTalk = flag; 
+   if(TString(opt).Contains("q",TString::ECaseCompare::kIgnoreCase)) {
+      return;
+   }
+      
+      printf("Please call TGriffin::ResetFlags() on current event to avoid bugs\n");
 }

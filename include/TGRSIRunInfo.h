@@ -174,7 +174,7 @@ class TGRSIRunInfo : public TObject {
       inline void SetMovingWindow(const bool flag)       {fIsMovingWindow = flag; }
       static inline bool IsMovingWindow()                { return Get()->fIsMovingWindow; }
 
-      inline void SetCorrectCrossTalk(const bool flag)   {fIsCorrectingCrossTalk = flag;}
+      inline void SetCorrectCrossTalk(const bool flag,Option_t* opt=""); 
       static inline bool IsCorrectingCrossTalk()         { return Get()->fIsCorrectingCrossTalk; }
 
       static inline long int BuildWindow()    { return Get()->fBuildWindow/10; }
