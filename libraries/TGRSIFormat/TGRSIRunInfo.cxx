@@ -139,6 +139,7 @@ ClassImp(TGRSIRunInfo)
 {TString R__str(fRunInfoFileName.c_str()); R__str.Streamer(b);   }//; R__str = fRunInfoFileName.c_str(); R__str.Streamer(b);}
 {TString R__str(fRunInfoFile.c_str());     R__str.Streamer(b);   }//; R__str = fRunInfoFile.c_str();     R__str.Streamer(b);}
 {Bool_t R__bool = fDescantAncillary;    b << R__bool;}
+         {Bool_t R__bool = fIsCorrectingCrossTalk; b<< R__bool;   }
 b.SetByteCount(R__c,true);
 }
 }
