@@ -129,7 +129,10 @@ long TFragment::GetTimeStamp() const {
    long time = TimeStampHigh;
    time  = time << 28;
    time |= TimeStampLow & 0x0fffffff;
-   return time;
+   TChannel *chan = TChannel::GetChannel(ChannelAddress);
+   if(!chan)
+      return time;
+   return time - chan->GetTimeOffset();;
 }
 
 
