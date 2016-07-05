@@ -37,7 +37,7 @@ class TTAC : public TGRSIDetector {
       Short_t GetMultiplicity() const	       {	return fTACHits.size(); }	      //!<!
       
       void AddFragment(TFragment*, MNEMONIC*); //!<!
-      void BuildHits() {} //no need to build any hits, everything already done in AddFragment
+      void BuildHits() {};  //no need to build any hits, everything already done in AddFragment
       
       TTAC& operator=(const TTAC&);  //!<!
       

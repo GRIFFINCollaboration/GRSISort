@@ -51,7 +51,7 @@ class TTACHit : public TGRSIDetectorHit {
       TVector3 GetChannelPosition(Double_t dist = 0) const; //!<!
       
       /// \cond CLASSIMP
-      ClassDef(TTACHit,2) //Stores the information for a TACrHit
+      ClassDef(TTACHit,1) //Stores the information for a TACrHit
       /// \endcond
 };
 /*! @} */

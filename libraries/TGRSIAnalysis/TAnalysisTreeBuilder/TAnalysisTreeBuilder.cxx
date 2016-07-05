@@ -170,7 +170,8 @@ TAnalysisTreeBuilder::TAnalysisTreeBuilder() {
   fSceptar = 0;//new TSceptar;
   fPaces   = 0;//new TPaces;
   fDescant = 0;//new TDescant;
-  //fDante->Clear();
+  fLaBr = 0;
+  fTAC = 0;
   fZeroDegree = 0;
 
 }
@@ -552,7 +553,7 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
   if(info->Griffin())   { tree->Branch("TGriffin",&fGriffin); }//, basketSize); }
   if(info->Sceptar())   { tree->Branch("TSceptar",&fSceptar); }//, basketSize); }
   if(info->Paces())     { tree->Branch("TPaces",&fPaces); }//, basketSize); } 
-  //if(info->Dante())     { tree->Branch("TDante",&fDante); }//, basketSize); } 
+  if(info->Dante())     { tree->Branch("TLaBr",&fLaBr); tree->Branch("TTAC",&fTAC); }//, basketSize); } 
   if(info->ZeroDegree()){ tree->Branch("TZeroDegree",&fZeroDegree); }//, basketSize); } 
   if(info->Descant())   { tree->Branch("TDescant",&fDescant); }//, basketSize);
 
@@ -576,7 +577,7 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
   if(info->Griffin())   { fGriffin->Clear(); }
   if(info->Sceptar())   { fSceptar->Clear(); }
   if(info->Paces())     { fPaces->Clear(); } 
-  //if(info->Dante())     { fDante->Clear(); } 
+  if(info->Dante())     { fLaBr->Clear(); fTAC->Clear(); } 
   if(info->ZeroDegree()){ fZeroDegree->Clear(); } 
   if(info->Descant())   { fDescant->Clear();}
   //printf("ClearActiveAnalysisTreeBranches done\n");
@@ -600,7 +601,7 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
   if(info->Griffin())   { fGriffin = 0; }
   if(info->Sceptar())   { fSceptar = 0; }
   if(info->Paces())     { fPaces = 0; } 
-  //if(info->Dante())     { fDante = 0; } 
+  if(info->Dante())     { fLaBr = 0; fTAC = 0; } 
   if(info->ZeroDegree()){ fZeroDegree = 0; } 
   if(info->Descant())   { fDescant = 0; }
   //printf("ClearActiveAnalysisTreeBranches done\n");
@@ -677,6 +678,10 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<std::string, TDetector*>* d
       fPaces = static_cast<TPaces*>(det->second);
     } else if(det->first.compare(0,2,"ZD") == 0) {
       fZeroDegree = static_cast<TZeroDegree*>(det->second);
+    } else if(det->first.compare(0,2,"DAN") == 0) {
+      fLaBr = static_cast<TLaBr*>(det->second);
+    } else if(det->first.compare(0,2,"DAT") == 0) {
+      fTAC = static_cast<TTAC*>(det->second);
     } else if(det->first.compare(0,2,"TP") == 0) {
       fTip = static_cast<TTip*>(det->second);
     } 
@@ -819,8 +824,19 @@ void TAnalysisTreeBuilder::ProcessEvent() {
           (*detectors)["DS"] = new TDescant;
         }
         (*detectors)["DS"]->AddFragment(&(event->at(i)), &mnemonic);
-        //} else if(mnemonic.system.compare("DA")==0) {	
-        //	AddFragment(&(event->at(i)), &mnemonic);
+      } else if(mnemonic.system.compare("DA")==0) {
+         if(mnemonic.subsystem.compare("N")==0) {
+            if(detectors->find("DAN") == detectors->end()) {
+               (*detectors)["DAN"] = new TLaBr;
+            }
+            (*detectors)["DAN"]->AddFragment(&(event->at(i)),&mnemonic);
+         } 
+         else {
+            if(detectors->find("DAT") == detectors->end()) {
+               (*detectors)["DAT"] = new TTAC;
+            }
+            (*detectors)["DAT"]->AddFragment(&(event->at(i)),&mnemonic);
+         }
     } else if(mnemonic.system.compare("BA")==0) {
       if(detectors->find("BA") == detectors->end()) {
         (*detectors)["BA"] = new TS3;
