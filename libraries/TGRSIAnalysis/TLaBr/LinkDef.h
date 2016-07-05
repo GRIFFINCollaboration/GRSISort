@@ -8,7 +8,7 @@
 
 
 #pragma link C++ class TLaBrHit+;
-#pragma link C++ class std::vector<TSLaBrHit>+;
+#pragma link C++ class std::vector<TLaBrHit>+;
 #pragma link C++ class TLaBr+;
 
 #endif
