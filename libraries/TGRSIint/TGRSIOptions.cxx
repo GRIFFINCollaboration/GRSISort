@@ -35,11 +35,12 @@ namespace TGRSIOptions {
 
 	std::string GetExptName() { return fExptName; }
 
-	std::vector<std::string> GetInputRoot()  {  return fInputRootFile;  }
-	std::vector<std::string> GetInputMidas() {  return fInputMidasFile; }
-	std::vector<std::string> GetInputCal()   {  return fInputCalFile;   }
-	std::vector<std::string> GetInputOdb()   {  return fInputOdbFile;   }
-	std::vector<std::string> GetMacroFile()  {  return fMacroFile;      }
+	std::vector<std::string> GetInputRoot()         {  return fInputRootFile;  }
+	std::vector<std::string> GetInputMidas()        {  return fInputMidasFile; }
+	std::vector<std::string> GetInputCal()          {  return fInputCalFile;   }
+	std::vector<std::string> GetInputOdb()          {  return fInputOdbFile;   }
+	std::vector<std::string> GetMacroFile()         {  return fMacroFile;      }
+   std::vector<std::string> GetExternalRunInfo()   {  return fExternalRunInfo;}
 
 
 	void AddExternalRunInfo(std::string file) { fExternalRunInfo.push_back(file); }
