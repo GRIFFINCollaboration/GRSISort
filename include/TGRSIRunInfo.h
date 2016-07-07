@@ -188,6 +188,11 @@ class TGRSIRunInfo : public TObject {
       Long64_t Merge(TCollection *list);
       void Add(TGRSIRunInfo* runinfo) { fRunStart = 0.; fRunStop = 0.; fRunLength += runinfo->RunLength(); }
 
+      void PrintBadCycles() const;
+      void AddBadCycle(int cycle_num);
+      void RemoveBadCycle(int cycle);
+      bool IsBadCycle(int cycle) const;
+
    private:
       static TGRSIRunInfo *fGRSIRunInfo; //Static pointer to TGRSIRunInfo
 
@@ -265,13 +270,16 @@ class TGRSIRunInfo : public TObject {
 
       double   fHPGeArrayPosition;  // Position of the HPGe Array (default = 110.0 mm );
       bool     fDescantAncillary;   // Descant is in the ancillary detector locations
+      
+      unsigned int fBadCycleListSize;
+      std::vector<int> fBadCycleList; //List of bad cycles to be used for cycle rejection
 
    public:
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
       /// \cond CLASSIMP
-      ClassDef(TGRSIRunInfo,9);  //Contains the run-dependent information.
+      ClassDef(TGRSIRunInfo,10);  //Contains the run-dependent information.
       /// \endcond
 };
 /*! @} */

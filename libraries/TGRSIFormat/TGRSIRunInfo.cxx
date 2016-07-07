@@ -2,6 +2,8 @@
 
 #include <fstream>
 #include <sstream>
+#include <algorithm>
+#include <iostream>
 
 #include <TGRSIOptions.h>
 
@@ -37,7 +39,7 @@ ClassImp(TGRSIRunInfo)
 
    //int TGRSIRunInfo::fNumberOfTrueSystems = 0;
 
-   void TGRSIRunInfo::Streamer(TBuffer &b) {
+void TGRSIRunInfo::Streamer(TBuffer &b) {
       //Streamer for TGRSIRunInfo. Allows us to write all of the run info
       //to disk like a string. This way there isn't any compatibility issues
       //between different TGRSIRunInfo classes written by different users.
@@ -98,6 +100,12 @@ ClassImp(TGRSIRunInfo)
          if(R__v > 8){
             {Bool_t R__bool; b >> R__bool; fDescantAncillary = R__bool;   }
          }
+         if(R__v > 9){
+            {UInt_t R__uint; b >> R__uint; fBadCycleListSize = R__uint;   }
+            for(UInt_t i =0; i< fBadCycleList.size(); ++i){
+               Int_t R__int; b >> R__int; AddBadCycle(R__int);
+            }
+         }
          fGRSIRunInfo = this;
          b.CheckByteCount(R__s,R__c,TGRSIRunInfo::IsA());
       } else {
@@ -132,11 +140,15 @@ ClassImp(TGRSIRunInfo)
          //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
          //printf("fMinorIndex = %s\n",fMinorIndex.c_str());
          {TString R__str(fMajorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data());  }//; R__str = fMajorIndex.c_str();      R__str.Streamer(b);}
-{TString R__str(fMinorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data()); }//; R__str = fMinorIndex.c_str();      R__str.Streamer(b);}
-{TString R__str(fRunInfoFileName.c_str()); R__str.Streamer(b);   }//; R__str = fRunInfoFileName.c_str(); R__str.Streamer(b);}
-{TString R__str(fRunInfoFile.c_str());     R__str.Streamer(b);   }//; R__str = fRunInfoFile.c_str();     R__str.Streamer(b);}
-{Bool_t R__bool = fDescantAncillary;    b << R__bool;}
-b.SetByteCount(R__c,true);
+         {TString R__str(fMinorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data()); }//; R__str = fMinorIndex.c_str();      R__str.Streamer(b);}
+         {TString R__str(fRunInfoFileName.c_str()); R__str.Streamer(b);   }//; R__str = fRunInfoFileName.c_str(); R__str.Streamer(b);}
+         {TString R__str(fRunInfoFile.c_str());     R__str.Streamer(b);   }//; R__str = fRunInfoFile.c_str();     R__str.Streamer(b);}
+         {Bool_t R__bool = fDescantAncillary;    b << R__bool;}
+         {UInt_t R__uint = fBadCycleListSize; b << R__uint;   }
+         for(UInt_t i =0; i< fBadCycleList.size(); ++i){
+            Int_t R__int = fBadCycleList.at(i); b<<R__int;
+         }
+         b.SetByteCount(R__c,true);
 }
 }
 
@@ -153,7 +165,7 @@ TGRSIRunInfo *TGRSIRunInfo::Get() {
 
 void TGRSIRunInfo::SetRunInfo(TGRSIRunInfo *tmp) {
    //Sets the TGRSIRunInfo to the info passes as tmp.
-   if(fGRSIRunInfo)
+   if(fGRSIRunInfo && (tmp != fGRSIRunInfo))
       delete fGRSIRunInfo;
    fGRSIRunInfo = tmp;
 }
@@ -208,6 +220,8 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    fBufferDuration    = 60000000000;
 
    fDescantAncillary = false;
+   fBadCycleList.clear();
+   fBadCycleListSize = 0;
 
    //printf("run info created.\n");
 
@@ -281,6 +295,8 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
    fMinorIndex.assign("");  
 
    fNumberOfTrueSystems = 0;
+   fBadCycleList.clear();
+   fBadCycleListSize = 0;
 
 }
 
@@ -460,6 +476,10 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
          std::istringstream ss(line);
          int temp_int; ss >> temp_int;
          Get()->SetDescantAncillary(temp_int);
+      } else if(type.compare("BADCYCLE")==0) {
+         std::istringstream ss(line);
+			int tmp_int;
+			while (ss >> tmp_int) {   Get()->AddBadCycle(tmp_int); }
       }
    }
 
@@ -500,4 +520,40 @@ Long64_t TGRSIRunInfo::Merge(TCollection *list){
       this->Add(runinfo);
    }
    return 0;
+}
+
+void TGRSIRunInfo::PrintBadCycles() const {
+   std::cout << "Bad Cycles:\t";
+   if(!fBadCycleList.size()){
+      std::cout << "NONE" << std::endl;
+   }
+   else{
+      for(auto it = fBadCycleList.begin(); it != fBadCycleList.end(); ++it){
+         std::cout << " " << *it;
+      }
+   std::cout << std::endl;
+   }
+}
+
+void TGRSIRunInfo::AddBadCycle(int bad_cycle){
+//   auto bad_cycle_it = std::binary_(fBadCycleList.begin(), fBadCycleList.end(),bad_cycle);
+ /*  if(bad_cycle_it == fBadCycleList.end()){
+      fBadCycleList.push_back(bad_cycle);
+      std::sort(fBadCycleList.begin(), fBadCycleList.end());
+   }*/
+   if(!(std::binary_search(fBadCycleList.begin(), fBadCycleList.end(), bad_cycle))){
+      fBadCycleList.push_back(bad_cycle);
+      std::sort(fBadCycleList.begin(), fBadCycleList.end());
+   }
+   fBadCycleListSize = fBadCycleList.size();
+}
+
+void TGRSIRunInfo::RemoveBadCycle(int cycle){
+   fBadCycleList.erase(std::remove(fBadCycleList.begin(), fBadCycleList.end(), cycle), fBadCycleList.end());
+   std::sort(fBadCycleList.begin(), fBadCycleList.end());
+   fBadCycleListSize = fBadCycleList.size();
+}
+
+bool TGRSIRunInfo::IsBadCycle(int cycle) const{
+   return std::binary_search(fBadCycleList.begin(), fBadCycleList.end(), cycle);
 }

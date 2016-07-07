@@ -43,6 +43,7 @@ namespace TGRSIOptions {
       std::vector<std::string> GetInputCal();   
       std::vector<std::string> GetInputOdb();   
       std::vector<std::string> GetMacroFile();   
+      std::vector<std::string> GetExternalRunInfo();
 
 		const char *GetXMLODBFile(int runNumber=0,int subRunNumber=-1);
       const char *GetCalFile(int runNumber=0,int subRunNumber=-1);
