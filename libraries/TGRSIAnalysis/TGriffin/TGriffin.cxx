@@ -24,7 +24,7 @@ ClassImp(TGriffin)
 
 bool DefaultAddback(TGriffinHit& one, TGriffinHit& two) {
    return ((one.GetDetector() == two.GetDetector()) &&
-			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
+			  (TMath::Abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
 }
  
 std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::fAddbackCriterion = DefaultAddback;
@@ -105,9 +105,9 @@ TGriffin::~TGriffin()	{
 
 void TGriffin::Clear(Option_t *opt)	{
    //Clears the mother, and all of the hits
-   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+ //  if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
      ClearStatus();
-   }
+ //  }
    TGRSIDetector::Clear(opt);
    fGriffinHits.clear();
    fAddbackHits.clear();
@@ -141,8 +141,7 @@ TGRSIDetectorHit* TGriffin::GetHit(const Int_t& idx) {
 
 TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
    try {
-      if(!IsCrossTalkSet() && TGRSIRunInfo::Get()->IsCorrectingCrossTalk()){
-         //Calculate Cross Talk on each hit
+      if(!IsCrossTalkSet()){
          FixCrossTalk();
       }
       return &(fGriffinHits.at(i));   
@@ -154,9 +153,9 @@ TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
    return NULL;
 }
 
-Int_t TGriffin::GetAddbackMultiplicity() {
+Short_t TGriffin::GetAddbackMultiplicity() {
    // Automatically builds the addback hits using the fAddbackCriterion (if the size of the fAddbackHits vector is zero) and return the number of addback hits.
-   if(!IsCrossTalkSet() && TGRSIRunInfo::Get()->IsCorrectingCrossTalk()){
+   if(!IsCrossTalkSet()){
       //Calculate Cross Talk on each hit
       FixCrossTalk();
    }
@@ -170,6 +169,7 @@ Int_t TGriffin::GetAddbackMultiplicity() {
    if(fAddbackHits.size() == 0) {
       fAddbackHits.reserve(sizeof(TGriffinHit)*fGriffinHits.size());
       // use the first griffin hit as starting point for the addback hits
+    //  fAddbackHits.push_back(fGriffinHits[0]);
       fAddbackHits.push_back(*(GetGriffinHit(0)));
       //Energy isn't copied, so need to fix Cross talk
       fAddbackHits.at(0).SetEnergy(GetGriffinHit(0)->GetEnergy());
@@ -182,12 +182,14 @@ Int_t TGriffin::GetAddbackMultiplicity() {
 	      for(j = 0; j < fAddbackHits.size(); ++j) {
             if(fAddbackCriterion(fAddbackHits[j], fGriffinHits[i])) {
 	            fAddbackHits[j].Add(GetGriffinHit(i));
+	            //fAddbackHits[j].Add(&(fGriffinHits[i]));
                fAddbackFrags[j]++;
 	            break;
 	         }
 	      }
 	      if(j == (fAddbackHits.size())) {
-	         fAddbackHits.push_back(fGriffinHits[i]);
+	         //fAddbackHits.push_back(fGriffinHits[i]);
+	         fAddbackHits.push_back(*(GetGriffinHit(i)));
             //Energy isn't copied, so need to fix Cross talk
             //Might be able to this this a different way.
             fAddbackHits.at(j).SetEnergy(GetGriffinHit(i)->GetEnergy());
@@ -202,10 +204,6 @@ Int_t TGriffin::GetAddbackMultiplicity() {
 }
 
 TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
-   if(!IsCrossTalkSet() && TGRSIRunInfo::Get()->IsCorrectingCrossTalk()){
-      //Calculate Cross Talk on each hit
-      FixCrossTalk();
-   }
    if(i < GetAddbackMultiplicity()) {
       return &fAddbackHits.at(i);
    } else {
@@ -364,16 +362,20 @@ Bool_t TGriffin::IsCrossTalkSet() const{
 }
 
 void TGriffin::FixCrossTalk() {
-   
    if(fGriffinHits.size() < 2) {
       SetBitNumber(kIsCrossTalkSet,true);
       return;
    }
-   size_t i, j;
-   for(i = 0; i < fGriffinHits.size(); ++i) {
-	   for(j = i+1; j < fGriffinHits.size(); ++j) {
-         fGriffinHits[i].SetEnergy(TGriffin::CTCorrectedEnergy(&(fGriffinHits[i]),&(fGriffinHits[j])));
-         fGriffinHits[j].SetEnergy(TGriffin::CTCorrectedEnergy(&(fGriffinHits[j]),&(fGriffinHits[i])));
+   for(size_t i=0; i<fGriffinHits.size(); ++i)
+      fGriffinHits[i].ClearEnergy();
+
+   if(TGRSIRunInfo::Get()->IsCorrectingCrossTalk()){
+      size_t i, j;
+      for(i = 0; i < fGriffinHits.size(); ++i) {
+	      for(j = i+1; j < fGriffinHits.size(); ++j) {
+            fGriffinHits[i].SetEnergy(TGriffin::CTCorrectedEnergy(&(fGriffinHits[i]),&(fGriffinHits[j])));
+            fGriffinHits[j].SetEnergy(TGriffin::CTCorrectedEnergy(&(fGriffinHits[j]),&(fGriffinHits[i])));
+         }
       }
    }
    SetBitNumber(kIsCrossTalkSet,true);

@@ -50,7 +50,7 @@ class TGriffin : public TGRSIDetector {
 		std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() const { return fAddbackCriterion; }
 #endif
 
-		Int_t GetAddbackMultiplicity();
+		Short_t GetAddbackMultiplicity();
 		TGriffinHit* GetAddbackHit(const int& i);
 
 	private:

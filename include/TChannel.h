@@ -82,7 +82,7 @@ class TChannel : public TNamed	{
       mutable int   fSegmentNumber;
 
       mutable int   fCrystalNumber; 
-
+      double        fTimeOffset;
 
       std::vector<Float_t> fENGCoefficients;  //Energy calibration coeffs (low to high order)
       double fENGChi2;                       //Chi2 of the energy calibration
@@ -121,6 +121,7 @@ class TChannel : public TNamed	{
       inline void SetUserInfoNumber(int tempinfo)      { fUserInfoNumber = tempinfo; }
       inline void SetDigitizerType(const char* tmpstr) { fDigitizerType.assign(tmpstr); }
       inline void SetTypeName(std::string tmpstr)      { fTypeName = tmpstr; }
+      inline void SetTimeOffset(double tmpto)          { fTimeOffset = tmpto; }
 
       void SetDetectorNumber(int tempint)   { fDetectorNumber = tempint; }
       void SetSegmentNumber(int tempint)    { fSegmentNumber = tempint; }
@@ -137,6 +138,7 @@ class TChannel : public TNamed	{
       int GetUserInfoNumber()        { return fUserInfoNumber;}
       const char* GetChannelName()  const { return fChannelName.c_str(); }
       const char* GetDigitizerType() { return fDigitizerType.c_str(); }
+      double GetTimeOffset()         { return fTimeOffset; }
       //write the rest of the gettters/setters...
 
       double GetENGChi2()  { return fENGChi2; }

@@ -117,6 +117,8 @@ class TGRSIDetectorHit : public TObject 	{
       uint16_t GetCycleTimeStamp() const;
       uint16_t GetCycleTimeStamp();
 
+      void ClearEnergy() { SetEnergy(0.0); SetFlag(kIsEnergySet,false); }
+
       static TVector3 *GetBeamDirection() { return &fBeamDirection; }
 
    private:

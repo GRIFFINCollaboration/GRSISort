@@ -70,6 +70,7 @@ TChannel::TChannel(TChannel* chan) {
   this->SetDetectorNumber(chan->GetDetectorNumber());
 	this->SetSegmentNumber(chan->GetSegmentNumber());
 	this->SetCrystalNumber(chan->GetCrystalNumber());
+   this->SetTimeOffset(chan->GetTimeOffset());
 }
 
 
@@ -165,6 +166,7 @@ void TChannel::OverWriteChannel(TChannel* chan){
   this->SetDetectorNumber(chan->GetDetectorNumber());
 	this->SetSegmentNumber(chan->GetSegmentNumber());
 	this->SetCrystalNumber(chan->GetCrystalNumber());
+   this->SetTimeOffset(chan->GetTimeOffset());
 	return;
 }
 
@@ -182,6 +184,8 @@ void TChannel::AppendChannel(TChannel* chan){
 		this->SetChannelName(chan->GetChannelName());
 	if(strlen(chan->GetDigitizerType())>0)
 		this->SetDigitizerType(chan->GetDigitizerType());
+   if(chan->GetTimeOffset() != 0.0)
+      this->SetTimeOffset(chan->GetTimeOffset());
 
 	if(chan->GetENGCoeff().size()>0)
 		this->SetENGCoefficients(chan->GetENGCoeff());
@@ -257,6 +261,7 @@ void TChannel::Clear(Option_t* opt){
   fDetectorNumber    = -1;
   fSegmentNumber     = -1;
   fCrystalNumber     = -1;
+  fTimeOffset        = 0.0;
 
 	fENGCoefficients.clear();
 	fCFDCoefficients.clear();
@@ -529,6 +534,7 @@ void TChannel::Print(Option_t* opt) const {
 	std::cout <<  "Address:   0x" << std::hex << std::setw(8) << fAddress << std::dec << "\n";
 	std::cout << std::setfill(' ');
 	std::cout <<  "Digitizer: " << fDigitizerType << "\n"; 
+	std::cout <<  "TimeOffset: " << fTimeOffset << "\n"; 
 	std::cout <<  "EngCoeff:  "  ;
 	for(size_t x=0;x<fENGCoefficients.size();x++)
 		std::cout <<  fENGCoefficients.at(x) << "\t";
@@ -565,6 +571,7 @@ std::string TChannel::PrintToString(Option_t* opt) {
 		buffer.append(Form("%f\t",fENGCoefficients.at(x)));
 	buffer.append("\n");
 	buffer.append(Form("Integration: %d\n",fIntegration));
+	buffer.append(Form("TimeOffset: %lf\n",fTimeOffset));
 	buffer.append(Form("ENGChi2:     %f\n",fENGChi2));
 	buffer.append("EffCoeff:  ");
 	for(size_t x=0;x<fEFFCoefficients.size();x++)
@@ -880,6 +887,9 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 					} else if(type.compare("NUMBER")==0) {
 						int tempnum; ss>>tempnum;
 						channel->SetNumber(tempnum);
+					} else if(type.compare("TIMEOFFSET")==0) {
+						int tempoff; ss>>tempoff;
+						channel->SetTimeOffset(tempoff);
 					} else if(type.compare("STREAM")==0) {
 						int tempstream; ss>>tempstream;
 						channel->SetStream(tempstream);

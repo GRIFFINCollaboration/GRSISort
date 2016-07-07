@@ -129,7 +129,7 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag
 					return ppg_it->first;
 				}
 			} else{
-				printf("pat %x, ppg_it->first %lu, ppg_it->second->GetNewPPG() %x\n",pat,ppg_it->first,ppg_it->second->GetNewPPG());
+			//	printf("pat %x, ppg_it->first %lu, ppg_it->second->GetNewPPG() %x\n",pat,ppg_it->first,ppg_it->second->GetNewPPG());
 				if(pat & ppg_it->second->GetNewPPG()) {
 					return ppg_it->first;
 				}
