@@ -101,6 +101,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
             {Bool_t R__bool; b >> R__bool; fDescantAncillary = R__bool;   }
          }
          if(R__v > 9){
+            {Bool_t R__bool; b >> R__bool; fIsCorrectingCrossTalk = R__bool;   }
             {UInt_t R__uint; b >> R__uint; fBadCycleListSize = R__uint;   }
             for(UInt_t i =0; i< fBadCycleList.size(); ++i){
                Int_t R__int; b >> R__int; AddBadCycle(R__int);
@@ -140,6 +141,12 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
          //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
          //printf("fMinorIndex = %s\n",fMinorIndex.c_str());
          {TString R__str(fMajorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data());  }//; R__str = fMajorIndex.c_str();      R__str.Streamer(b);}
+{TString R__str(fMinorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data()); }//; R__str = fMinorIndex.c_str();      R__str.Streamer(b);}
+{TString R__str(fRunInfoFileName.c_str()); R__str.Streamer(b);   }//; R__str = fRunInfoFileName.c_str(); R__str.Streamer(b);}
+{TString R__str(fRunInfoFile.c_str());     R__str.Streamer(b);   }//; R__str = fRunInfoFile.c_str();     R__str.Streamer(b);}
+{Bool_t R__bool = fDescantAncillary;    b << R__bool;}
+         {Bool_t R__bool = fIsCorrectingCrossTalk; b<< R__bool;   }
+b.SetByteCount(R__c,true);
          {TString R__str(fMinorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data()); }//; R__str = fMinorIndex.c_str();      R__str.Streamer(b);}
          {TString R__str(fRunInfoFileName.c_str()); R__str.Streamer(b);   }//; R__str = fRunInfoFileName.c_str(); R__str.Streamer(b);}
          {TString R__str(fRunInfoFile.c_str());     R__str.Streamer(b);   }//; R__str = fRunInfoFile.c_str();     R__str.Streamer(b);}
@@ -186,7 +193,7 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
 
    TList *list =  tempf->GetListOfKeys();
    TIter iter(list);
-
+   printf("Reading Info from file: %s\n",tempf->GetName());
    while(TKey *key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo"))
          continue;
@@ -219,7 +226,8 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    fBufferSize        = 1000000;
    fBufferDuration    = 60000000000;
 
-   fDescantAncillary = false;
+   fDescantAncillary       = false;
+   fIsCorrectingCrossTalk  = true;
    fBadCycleList.clear();
    fBadCycleListSize = 0;
 
@@ -261,6 +269,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf(DBLUE"\tArray Position (mm) = " DRED "%.01f"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
       printf(DBLUE"\tWaveform fitting = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
       printf(DBLUE"\tDESCANT in ancillary positions = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::DescantAncillary() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tGRIFFIN Corrected for Cross-talk = " DRED "%s"  RESET_COLOR "\n",TGRSIRunInfo::IsCorrectingCrossTalk() ? "TRUE" : "FALSE");
       printf("\n");
       printf("\t==============================\n");
    }
@@ -295,6 +304,7 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
    fMinorIndex.assign("");  
 
    fNumberOfTrueSystems = 0;
+   fIsCorrectingCrossTalk  = true;
    fBadCycleList.clear();
    fBadCycleListSize = 0;
 
@@ -476,6 +486,10 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
          std::istringstream ss(line);
          int temp_int; ss >> temp_int;
          Get()->SetDescantAncillary(temp_int);
+      } else if( type.compare("CROSSTALK") == 0) {
+         std::istringstream ss(line);
+         bool temp_ct; ss >> temp_ct;
+         Get()->SetCorrectCrossTalk(temp_ct,"q");
       } else if(type.compare("BADCYCLE")==0) {
          std::istringstream ss(line);
 			int tmp_int;
@@ -490,6 +504,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
       printf(DBLUE"\tAddBack Window (ns) = " DRED "%.01f" RESET_COLOR "\n",TGRSIRunInfo::AddBackWindow());
       printf(DBLUE"\tArray Position (mm) = " DRED "%lf"    RESET_COLOR "\n",TGRSIRunInfo::HPGeArrayPosition());
       printf(DBLUE"\tWaveform Fitting  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
+      printf(DBLUE"\tCorrecting Cross-talk  = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsCorrectingCrossTalk() ? "TRUE" : "FALSE");
    }
    return true;
 }
@@ -520,6 +535,18 @@ Long64_t TGRSIRunInfo::Merge(TCollection *list){
       this->Add(runinfo);
    }
    return 0;
+}
+
+void TGRSIRunInfo::SetCorrectCrossTalk(const bool flag, Option_t *opt) {
+   fIsCorrectingCrossTalk = flag; 
+   TString opt1 = opt;
+   opt1.ToUpper();
+   if(opt1.Contains("Q")){
+      return;
+   }
+      
+      printf("Please call TGriffin::ResetFlags() on current event to avoid bugs\n");
+
 }
 
 void TGRSIRunInfo::PrintBadCycles() const {

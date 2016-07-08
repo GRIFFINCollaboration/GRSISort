@@ -174,6 +174,9 @@ class TGRSIRunInfo : public TObject {
       inline void SetMovingWindow(const bool flag)       {fIsMovingWindow = flag; }
       static inline bool IsMovingWindow()                { return Get()->fIsMovingWindow; }
 
+      void SetCorrectCrossTalk(const bool flag, Option_t *opt = ""); 
+      static inline bool IsCorrectingCrossTalk()         { return Get()->fIsCorrectingCrossTalk; }
+
       static inline long int BuildWindow()    { return Get()->fBuildWindow/10; }
       static inline double   AddBackWindow()  { if(Get()->fAddBackWindow<1) return 15.0; return Get()->fAddBackWindow; }
       static inline long int BufferDuration() { return Get()->fBufferDuration; }
@@ -262,6 +265,7 @@ class TGRSIRunInfo : public TObject {
       long int fBuildWindow;        // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
       double   fAddBackWindow;      // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
       bool     fIsMovingWindow;     // if set to true the event building window moves. Static otherwise.
+      bool     fIsCorrectingCrossTalk;// True if we are correcting for cross-talk in GRIFFIN at analysis-level
 
       long int fBufferDuration;     // GRIFFIN: the minimum length of the sorting buffer (default = 600s (60000000000))
       size_t   fBufferSize;           // GRIFFIN: the minimum size of the sorting buffer (default = 1 000 000)
