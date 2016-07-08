@@ -276,7 +276,7 @@ class TGRSIRunInfo : public TObject {
       bool     fDescantAncillary;   // Descant is in the ancillary detector locations
       
       unsigned int fBadCycleListSize;
-      std::vector<int> fBadCycleList; //List of bad cycles to be used for cycle rejection
+      std::vector<int> fBadCycleList;  //!<!List of bad cycles to be used for cycle rejection
 
    public:
       void Print(Option_t *opt = "") const;
