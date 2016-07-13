@@ -257,6 +257,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf("\t\tPACES:        %s\n", Paces() ? "true" : "false");
       printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
       printf("\t\tZDS:          %s\n", ZeroDegree() ? "true" : "false");
+      printf("\t\tDANTE:        %s\n", Dante() ? "true" : "false");
       printf("\n");
       printf(DBLUE"\tBuild Window (10 ns) = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
       printf(DBLUE"\tMoving Window = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
@@ -579,3 +580,34 @@ void TGRSIRunInfo::RemoveBadCycle(int cycle){
 bool TGRSIRunInfo::IsBadCycle(int cycle) const{
    return std::binary_search(fBadCycleList.begin(), fBadCycleList.end(), cycle);
 }
+
+bool TGRSIRunInfo::WriteToRoot(TFile* fileptr) {
+	///Writes Info File information to the tree
+	//Maintain old gDirectory info
+   bool bool2return = true;
+	TDirectory* savdir = gDirectory;
+
+	if(!fileptr)
+		fileptr = gDirectory->GetFile();
+	fileptr->cd();
+	std::string oldoption = std::string(fileptr->GetOption());
+	if(oldoption == "READ") {
+		fileptr->ReOpen("UPDATE");
+	}
+	if(!gDirectory){
+		printf("No file opened to write to.\n");
+      bool2return = false;
+   }
+   else{
+      Get()->Write();
+   }
+
+	if(oldoption == "READ") {
+		printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
+		fileptr->ReOpen("READ");
+	}
+	savdir->cd();//Go back to original gDirectory
+
+   return bool2return;
+}
+
