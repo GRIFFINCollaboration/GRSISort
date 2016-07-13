@@ -282,6 +282,8 @@ class TGRSIRunInfo : public TObject {
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
+      static bool WriteToRoot(TFile* fileptr = 0);
+
       /// \cond CLASSIMP
       ClassDef(TGRSIRunInfo,10);  //Contains the run-dependent information.
       /// \endcond
