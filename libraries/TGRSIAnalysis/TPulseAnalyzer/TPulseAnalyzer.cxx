@@ -808,6 +808,14 @@ short TPulseAnalyzer::good_baseline(){
 //	CsI functions:
 //=====================================================//
 
+int TPulseAnalyzer::GetCsIChiSq(){
+	if(CsIIsSet()){
+		return shpar->chisq;
+	}
+	else
+		return -1;
+}
+
 double TPulseAnalyzer::CsIt0(){
 	if(CsIIsSet()){
 		return shpar->t[0];
@@ -822,14 +830,10 @@ double TPulseAnalyzer::CsIt0(){
 		//printf("Calculating exclusion zone\n");
 		GetCsIExclusionZone();
 		int tmpchisq = GetCsIShape();
-		//printf("Calculating shape\n");
-
-		if(tmpchisq > 0){	
+		if(tmpchisq >= 0){
 			SetCsI();
 			return shpar->t[0];
 		}
-		else
-			return -1.;
 	}
 	return -1.0;
 }
@@ -859,22 +863,20 @@ double TPulseAnalyzer::CsIPID(){
 
 		GetCsIExclusionZone();
 		int tmpchisq = GetCsIShape();
+		if(tmpchisq >= 0){
+			double f;
+			double s;
+			double r;
 
-		double f;
-		double s;
-		double r;
-
-		if(tmpchisq>0){
 			f = shpar->am[2];
 			s = shpar->am[3];
 			r = s/f*100;
 
 			SetCsI();
-		
+	
 			return r;
 		}
-		else
-			return -1.;
+
 	}
 	return -1.0;
 
@@ -894,13 +896,17 @@ int TPulseAnalyzer::GetCsIShape()
   
   /* q is the low limit of the signal section */
   q=(int)wpar->temax;
-  if(q >= N || q<=0)
-	return -1.;
+  if(q >= N || q<=0){
+		shpar->chisq=-1;
+		return -1.;
+	}
  
   /* p is the high limit of the baseline section */
   p=(int)wpar->temin;
-  if(p >= N || p<=0)
-	return -1.;
+  if(p >= N || p<=0){
+		shpar->chisq=-1;
+		return -1.;
+	}
   lineq_dim=dim;
   
   //initialize amplitudes to 0
@@ -925,30 +931,30 @@ int TPulseAnalyzer::GetCsIShape()
 
   //create matrix for linearized fit
   for(i=1;i<lineq_dim;i++)
-    {
-      tau=GetCsITau(i);
-      tau_i=tau;
-      sum=-((double)q)/tau+log(1.-exp(-((double)(d-q))/tau));
-      sum-=log(1.-exp(-1./tau));
-      lineq_matrix[i][0]=exp(sum);
-      lineq_matrix[0][i]=exp(sum);
-      
-      tau/=2.;
-      sum=-((double)q)/tau+log(1.-exp(-((double)(d-q))/tau));
-      sum-=log(1.-exp(-1./tau));
-      lineq_matrix[i][i]=exp(sum);
+  {
+		tau=GetCsITau(i);
+		tau_i=tau;
+		sum=-((double)q)/tau+log(1.-exp(-((double)(d-q))/tau));
+		sum-=log(1.-exp(-1./tau));
+		lineq_matrix[i][0]=exp(sum);
+		lineq_matrix[0][i]=exp(sum);
+		
+		tau/=2.;
+		sum=-((double)q)/tau+log(1.-exp(-((double)(d-q))/tau));
+		sum-=log(1.-exp(-1./tau));
+		lineq_matrix[i][i]=exp(sum);
 
-      for(j=i+1;j<lineq_dim;j++)
-  	{
-	  tau_j=GetCsITau(j);
-  	  tau=(tau_i*tau_j)/(tau_i+tau_j);
-  	  sum=-((double)q)/tau+log(1.-exp(-((double)(d-q))/tau));
-  	  sum-=log(1.-exp(-1./tau));
-  	  lineq_matrix[i][j]=exp(sum);
-  	  lineq_matrix[j][i]=exp(sum);
-  	}
+		for(j=i+1;j<lineq_dim;j++)
+		{
+			tau_j=GetCsITau(j);
+			tau=(tau_i*tau_j)/(tau_i+tau_j);
+			sum=-((double)q)/tau+log(1.-exp(-((double)(d-q))/tau));
+			sum-=log(1.-exp(-1./tau));
+			lineq_matrix[i][j]=exp(sum);
+			lineq_matrix[j][i]=exp(sum);
+		}
       
-    }
+  }
   
   lineq_vector[0]=0;
   lineq_matrix[0][0]=0;
@@ -961,8 +967,10 @@ int TPulseAnalyzer::GetCsIShape()
       shpar->ndf+=1;
     }
   
-  if(lineq_dim >= N)
-	return -1.;
+  if(lineq_dim >= N){
+		shpar->chisq=-1;
+		return -1.;
+	}
 
   for(i=1;i<lineq_dim;i++)
     {
@@ -986,62 +994,53 @@ int TPulseAnalyzer::GetCsIShape()
 
   //error if the matrix cannot be inverted
   if(solve_lin_eq()==0)
-    	{
+	{
 	  //printf("Matrix could not be inverted\n");
 	  shpar->chisq=BADCHISQ_MAT;
 	  shpar->ndf=1;
+
 	  return BADCHISQ_MAT;
 	}
-  
-  //else try and find t0 and calculate amplitudes
-  else
-    {
-      //see the function comments for find_t0 for details
-	 
-      shpar->t[0]=GetCsIt0();
-      
-      //if t0 is less than 0, return a T0FAIL
-      if(shpar->t[0]<=0)
-	{
-	  //printf("t0 less than/equal to 0\n");
-	  shpar->chisq=BADCHISQ_T0;
-	  shpar->ndf=1;
-	  return BADCHISQ_T0;
-	}
-
-      //calculate amplitudes	       
-      shpar->am[0]=lineq_solution[0];
-
-      for(i=1;i<lineq_dim;i++)
-	{
-	  tau=GetCsITau(i);
-	  shpar->am[i]=lineq_solution[i]*exp(-shpar->t[0]/tau);
-	}
-      //done claculating amplitudes
+  else  //else try and find t0 and calculate amplitudes
+  {
+    //see the function comments for find_t0 for details
  
-      for(i=0;i<lineq_dim;i++)
-  	shpar->chisq-=lineq_solution[i]*lineq_vector[i];
+    shpar->t[0]=GetCsIt0();
+    
+    //if t0 is less than 0, return a T0FAIL
+    if(shpar->t[0]<=0)
+		{
+			//printf("t0 less than/equal to 0\n");
+			shpar->chisq=BADCHISQ_T0;
+			shpar->ndf=1;
+			return BADCHISQ_T0;
+		}
 
-      if(shpar->chisq<0)
-      	{
-	  shpar->chisq=BADCHISQ_NEG;
-	  shpar->ndf=1;
-	  return BADCHISQ_NEG;
+    //calculate amplitudes	       
+    shpar->am[0]=lineq_solution[0];
+
+    for(i=1;i<lineq_dim;i++)
+		{
+			tau=GetCsITau(i);
+			shpar->am[i]=lineq_solution[i]*exp(-shpar->t[0]/tau);
+		}
+    //done calculating amplitudes
+
+    for(i=0;i<lineq_dim;i++)
+			shpar->chisq-=lineq_solution[i]*lineq_vector[i];
+
+	  if(shpar->chisq<0)
+  	{
+			shpar->chisq=BADCHISQ_NEG;
+			shpar->ndf=1;
+			return BADCHISQ_NEG;
+		}
+
+    for(i=2;i<lineq_dim;i++)
+			shpar->am[i]*=-1;
+
 	}
 
-      for(i=2;i<lineq_dim;i++)
-	shpar->am[i]*=-1;
-
-     }
-   
-  //return BADCHISQ_AMPL if a component amplitude is less than 0
-  for(i=0;i<lineq_dim;i++)
-    if(shpar->am[i]<0)
-      	{
-	  shpar->chisq=BADCHISQ_AMPL;
-	  shpar->ndf=1;
-	  return BADCHISQ_AMPL;
-	}
 
   shpar->type=dim-2;
 

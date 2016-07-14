@@ -134,6 +134,7 @@ class TPulseAnalyzer {
 	 double	  CsIt0();
 	 void 	  DrawCsIExclusion();
 	 void	  DrawCsIFit();
+	 int 		GetCsIChiSq();	
 
   private:
 	 bool   set;
