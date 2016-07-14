@@ -27,7 +27,7 @@ using namespace std;
 #include "TCanvas.h"
 #include "TPad.h"
 #include "TFile.h"
-#include "TFileIter.h"
+//#include "TFileIter.h"
 #include "TKey.h"
 #include "TTree.h"
 #include "TH2F.h"
@@ -42,14 +42,10 @@ using namespace std;
 #include "TSceptar.h"
 #endif
 
-void 
-Printaddress(int *channel);
-void
-MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nsclr, int& ncycle, double *rate, int *channel, int& index, int* trun, double& thresh);
-void
-CheckFile(const char*& fname);
-void 
-DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen, int& ncycle, int *trun, double& eor, const char*& hname, const char*& iname, const char*& jname, const char*& kname, const char*& lname, const char*& mname, const char*& nname, int& nscaler);
+void Printaddress(int *channel);
+void MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nsclr, int& ncycle, double *rate, int *channel, int& index, int* trun, double& thresh);
+void CheckFile(const char*& fname);
+void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen, int& ncycle, int *trun, double& eor, const char*& hname, const char*& iname, const char*& jname, const char*& kname, const char*& lname, const char*& mname, const char*& nname, int& nscaler);
 
 int main(int argc, char* argv[]) {
     	TApplication theApp("Analysis", &argc, argv);
@@ -83,8 +79,8 @@ int main(int argc, char* argv[]) {
 	int nds=0; 
 	int nscaler=0;
 	int len = 70;							
-  	char line[len];
-	char odb[len];	
+  	char* line = new char[len];
+	char* odb = new char[len];	
 	//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
 	if (not (filelist.is_open())) {	
     		std::cerr << "Failed to open filelist. Check path. " << std::endl;
@@ -133,10 +129,10 @@ int main(int argc, char* argv[]) {
       		getline(InFile,odbline);
       		posa=odbline.find(starttime);
 		posb=odbline.find(stoptime);
-      			if(posa!=string::npos && odbline.size()>sub){
+		if(posa!=string::npos && odbline.size()>static_cast<size_t>(sub)){
 				odbline = odbline.substr(sub);			
 				tstart = std::stoi (odbline,nullptr,10);
-        		} else if(posb!=string::npos && odbline.size()>(sub-1)){
+        		} else if(posb!=string::npos && odbline.size()>static_cast<size_t>(sub-1)){
 				odbline = odbline.substr((sub-1));			
 				tend = std::stoi (odbline,nullptr,10);
         		}
@@ -161,8 +157,8 @@ int main(int argc, char* argv[]) {
 			nds+=1;
 		}
 		counter++;
-		*q++;
-		*td++;
+		q++; //these two lines had a de-reference which makes no sense (and makes the compiler complain)
+		td++;//unless this was meant to increment the value the pointers are pointing to (in which case it should read (*q)++); VB
 		tstart=tend=0;
 	}
 	q=&freq[0];
@@ -178,21 +174,21 @@ int main(int argc, char* argv[]) {
 
   	return EXIT_SUCCESS;
 }
-void Printaddress(int *channel){
+
+void Printaddress(int *channel) {
 	   printf(DBLUE "Addresses with both source and pulser inputs:" RESET_COLOR "\n");
     	for(int i=0;i<10;++i)     {
        	printf(DBLUE "%04x " RESET_COLOR ,*channel);
-       	*channel++;
+       	channel++;
      	}
 	printf("\n");
 }
-void
-MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nsclr, int& ncycle, double *rate, int *channel, int& index, int* trun, double& thresh){
 
+void MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nsclr, int& ncycle, double *rate, int *channel, int& index, int* trun, double& thresh) {
   int nsc = nsclr;
 
   //define spectra
-  TH1D *grif[nsc];
+  TH1D** grif = new TH1D*[nsc];
   //define file pointer
   TFile *vs;
 
@@ -207,7 +203,7 @@ MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nsclr, in
     while (j<nsc) {
     grif[j] = new TH1D(Form("grif%d_0x%04x_%d",prog,*channel,index),Form("Address 0x%04x, scaler %i vs time in cycle; time [s]; counts/%d s",*channel,index,ncycle),nofBins,0.,*trun);
 	j++;	
-	*channel++;
+	channel++; //used to have a de-reference, see comments above; VB
 	}
 
    TScalerData* scaler = 0;
@@ -225,12 +221,12 @@ MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nsclr, in
 	}
     //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*
 	for(int i=0;i<nsc;i++){
-		*channel--;
+		channel--; //used to have a de-reference, see comments above; VB
 	}
 		while (k<nsc){
 			for (Long64_t j=0;j<nentries;j++) {
 			maple->GetEntry(j);
-				if(scaler->GetAddress()==*channel){
+			if(scaler->GetAddress()==static_cast<UInt_t>(*channel)){
 				xaxis = (scaler->GetTimeStamp()/1e8);		
 					//we check both the value of the scaler and the timestamp (ts difference should be = readout time)
 					if(prev != 0 && prev < scaler->GetScaler(index) && (xaxis-xpast)<=(double(ncycle)+clk)) {
@@ -242,7 +238,7 @@ MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nsclr, in
 				}
 			}
 		k++;
-		*channel++;
+		channel++;
 		prev=xpast=0;
 		}
 	
@@ -255,8 +251,8 @@ MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nsclr, in
     //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*
   return;
 }
-void
-CheckFile(const char*& fname){
+
+void CheckFile(const char*& fname) {
   TFile f(fname);
   if (f.IsZombie()) {
   printf("\n");
@@ -268,8 +264,8 @@ CheckFile(const char*& fname){
   }
 return;
 }
-void
-DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen, int& ncycle, int *trun, double& eor, const char*& hname, const char*& iname, const char*& jname, const char*& kname, const char*& lname, const char*& mname, const char*& nname, int& nscaler){
+
+void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen, int& ncycle, int *trun, double& eor, const char*& hname, const char*& iname, const char*& jname, const char*& kname, const char*& lname, const char*& mname, const char*& nname, int& nscaler) {
   
   TFile *vs = new TFile(fname,"read");
   ofstream ofile;
@@ -294,7 +290,7 @@ DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen
   TFile f(fname);
   TIter next(f.GetListOfKeys());
   TKey *key;
-  TH1D *spec[nfile*(nsc*nscaler)];
+  TH1D** spec = new TH1D*[nfile*(nsc*nscaler)];
  
   //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~USER EDITABLE
   //limits for deadtime matrices [us]
@@ -331,14 +327,17 @@ DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen
         int minb = 0; double lbd; double ubd; double rmax=0; int flag=0;
 	double z = 0; double y = 0; double v = 0; double dz = 0; double dv = 0; double d2z = 0;
 	int fbin = 10; double max=0; double dlim=0; int nt=0; int ord=0; 
-	int sref; int pref; int ppg[numpat][2]; int chop=2;	//'chop'= ignore first/last two bins of each pattern
+	int sref = 0;
+	int pref = 0;
+	int chop=2;	//'chop'= ignore first/last two bins of each pattern
+	int** ppg = new int*[numpat]; for(int i = 0; i < numpat; ++i) { ppg[i] = new int[2]; };
 	//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*find PPG transition boundaries
 	//run through and find boundaries (pulser on/off etc.)
 	//'ord' defines increase (1) or decrease (0) in rate	
 	int xbins = *trun;
-	double trans[xbins][3];
-	double freq[fbin][2];
-	int bnd[numpat][2];
+	double** trans = new double*[xbins]; for(int i = 0; i < xbins; ++i) { trans[i] = new double[3]; };
+	double** freq = new double*[fbin]; for(int i = 0; i < fbin; ++i) { freq[i] = new double[2]; };
+	int** bnd = new int*[numpat]; for(int i = 0; i < numpat; ++i) { bnd[i] = new int[2]; };
 	//initialise the bnd matrix (prevents the program from hanging up later!)
 		for(int i=0; i<numpat; i++){
 			bnd[i][0]=0; 
@@ -488,7 +487,8 @@ DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen
 	rrand = (wrand/nrand);	//mean
 	//diagnostic spectrum (dspec) parameters
 	int lim1 = rrand-(0.5*dlim*rrand); int lim2 = rrand+(0.5*dlim*rrand);
-	int dsbin = (lim2-lim1)/20; int dspec[dsbin][2];
+	int dsbin = (lim2-lim1)/20;
+	int** dspec = new int*[dsbin]; for(int i = 0; i < dsbin; ++i) { dspec[i] = new int[2]; };
 	for (int i=0; i<dsbin; i++){
 		dspec[i][0]=lim1+(i*((lim2-lim1)/dsbin));
 		dspec[i][1]=0;
@@ -572,7 +572,7 @@ DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen
 	//diagnostic spectrum (dspec) parameters (re-define for source+pulser)
 	lim1 = lbd-(2.0*abs(rcmin-lbd)); lim2 = ubd+(2.0*abs(rcmin-ubd));
 	//std::cout<<lim1<<"\t"<<lim2<<"\t"<<rcmin<<endl;
-	dsbin = (lim2-lim1)/20; dspec[dsbin][2];
+	dsbin = (lim2-lim1)/20; //dspec[dsbin][2]; What was this statement supposed to do? It has no effect; VB
 	for (int i=0; i<dsbin; i++){
 		dspec[i][0]=lim1+(i*((lim2-lim1)/dsbin));
 		dspec[i][1]=0;
@@ -611,9 +611,16 @@ DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen
 	double a1=abs(rcmin-ubd); double a2=abs(rcmin-lbd);
 	double maxa = std::max(a1,a2);
 	double uhi = (1.5*maxa); double ulo = -uhi; double du = (uhi-ulo)/1e3; double u=ulo;
-	int itr = 0; int umin; double w1; double x1; double x2; int nrow=int((uhi-ulo)/du);
+	int itr = 0; 
+	int umin = 0; 
+	double w1;
+	double x1;
+	double x2;
+	int nrow=int((uhi-ulo)/du);
 	double w2 = pow((pow(sdrand,2)),2)/((2.*pow(sdrand,2)));	//const.
-	minl=-1e6; double array[nrow][2]; double sigm; double sigp; double lnl;
+	minl=-1e6; 
+	double** array = new double*[nrow]; for(int i = 0; i < nrow; ++i) { array[i] = new double[2]; } 
+	double sigm; double sigp; double lnl;
 
 		while(itr<nrow){			
 			if(itr==0){
@@ -669,8 +676,11 @@ DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen
 	//Idea: now that the error boundaries are known for rrand, rcmin and (rcmin-rrand), generate a random number
 	//which chooses a value within these boundaries - the resulting tau is plotted and the range gives the error in tau  
 
-	int iter=1e4, bin=10; double tempa, tempb; double var1, var2, var3; double l1, l2, m1=0, m2=1e6, n1=0, n2=1e6;
-	int wbin = 40; int wrow=0, wsize=int(pow(wbin,2)); double randcheck[bin][2], randtau[iter][2], wspec[wsize][3];
+	int iter=1e4, bin=10; double tempa, tempb; double var1, var2, var3; double l1, l2;
+	int wbin = 40; int wrow=0, wsize=int(pow(wbin,2)); 
+	double** randcheck = new double*[bin]; for(int i = 0; i < bin; ++i) { randcheck[i] = new double[2]; } 
+	double** randtau = new double*[iter]; for(int i = 0; i < iter; ++i) { randtau[i] = new double[2]; } 
+	double** wspec = new double*[wsize]; for(int i = 0; i < wsize; ++i) { wspec[i] = new double[3]; } 
 	int flagc=0; int binsize=3;
 
 	//Check the "randomness" of the random number generator **RCHECK**
@@ -727,13 +737,12 @@ DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen
 	//printf(DMAGENTA "(comb-rand)= %f, sigp= %f, sigm= %f, rand= %f, sdrand= %f" RESET_COLOR "\n",(rcmin-rrand),sigp,sigm,rrand,sdrand);
 	//~*~*~*~*~*~*~*~*~*~*~*~~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~
 	//Determine final error bounds using wspec matrix
-	double gmax=0, hmax=0, tmax=0; double erbp=0, erbm=0, erfp=0, erfm=0;
+	double gmax=0, hmax=0; double erbp=0, erbm=0, erfp=0, erfm=0;
 	double frmin=1e6, frmax=0, srmin=1e6, srmax=0;
 
 	for(int i=0; i<wsize; i++){
 		if(wspec[i][2]>gmax){
 			gmax=wspec[i][2];
-			tmax=wspec[i][1];
 			hmax=(gmax/2);
 		}		
 	}
@@ -793,20 +802,20 @@ DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen
 		fprintf(rng, "\n");
 	}*/
 	//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~PRINT FINAL RESULTS TO FILE
-	fprintf(deadtime, "%s\t%i\t%.1f\t%.1f\t%.2f\t%.1f\t%.2f\t%.2f\t %.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f",sname,(cnt%nsc),((*rate)/1e3),(rrand/1e3),(sdrand/1e3),(rcmin/1e3),(abs(rcmin-ubd)/1e3),(abs(rcmin-lbd)/1e3),tau,erbp,erbm,erfp,erfm,eprop,"\n");
+	fprintf(deadtime, "%s\t%i\t%.1f\t%.1f\t%.2f\t%.1f\t%.2f\t%.2f\t %.1f\t%.1f\t%.1f\t%.1f\t%.1f\t%.1f\n",sname,(cnt%nsc),((*rate)/1e3),(rrand/1e3),(sdrand/1e3),(rcmin/1e3),(abs(rcmin-ubd)/1e3),(abs(rcmin-lbd)/1e3),tau,erbp,erbm,erfp,erfm,eprop);
 	fprintf(deadtime, "\n");	
 	//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~**~*~*~*~*~*~*
 		cnt ++;
 		//change pulser rate and runtime accordingly for each file
 		if(cnt%(nsc*nscaler)==0){	
-			*rate++;
-			*trun++;
+			rate++; //used to have a de-reference, see comments above; VB
+			trun++; //used to have a de-reference, see comments above; VB
 		}
 		//change limits accordingly for each scaler in each file
 		if(cnt%(nsc)==0) {
 			for(int i=0;i<2;i++){
-				*lowrtau++;	
-				*upprtau++;
+				lowrtau++; //used to have a de-reference, see comments above; VB
+				upprtau++; //used to have a de-reference, see comments above; VB
 			}
 		}
 		if(cnt%(nsc)==0 && cnt%(nsc*nscaler)==0){	
