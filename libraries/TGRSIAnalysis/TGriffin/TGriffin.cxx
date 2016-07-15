@@ -23,8 +23,8 @@ ClassImp(TGriffin)
 /// \endcond
 
 bool DefaultAddback(TGriffinHit& one, TGriffinHit& two) {
-	return ((one.GetDetector() == two.GetDetector()) &&
-			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
+   return ((one.GetDetector() == two.GetDetector()) &&
+			  (TMath::Abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
 }
  
 std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::fAddbackCriterion = DefaultAddback;
@@ -63,6 +63,12 @@ TVector3 TGriffin::gCloverPosition[17] = {
    TVector3(TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Cos(TMath::DegToRad()*(337.5)), TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Sin(TMath::DegToRad()*(337.5)), TMath::Cos(TMath::DegToRad()*(135.0)))
 };
 
+//Cross Talk stuff
+const Double_t TGriffin::gStrongCT[2] = { -0.02674, -0.000977 }; //This is for the 0-1 and 2-3 combination
+const Double_t TGriffin::gWeakCT[2]   = { 0.005663, - 0.00028014};
+const Double_t TGriffin::gCrossTalkPar[2][4][4] = {
+   { {0.0, gStrongCT[0], gWeakCT[0], gWeakCT[0]}, {gStrongCT[0], 0.0, gWeakCT[0], gWeakCT[0]}, {gWeakCT[0], gWeakCT[0], 0.0, gStrongCT[0]}, {gWeakCT[0], gWeakCT[0], gStrongCT[0], 0.0}},
+   { {0.0, gStrongCT[1], gWeakCT[1], gWeakCT[1]}, {gStrongCT[1], 0.0, gWeakCT[1], gWeakCT[1]}, {gWeakCT[1], gWeakCT[1], 0.0, gStrongCT[1]}, {gWeakCT[1], gWeakCT[1], gStrongCT[1], 0.0}}};
 
 TGriffin::TGriffin() : TGRSIDetector() {
 //Default ctor. Ignores TObjectStreamer in ROOT < 6
@@ -90,6 +96,7 @@ void TGriffin::Copy(TObject &rhs) const {
   static_cast<TGriffin&>(rhs).fSetCoreWave       = fSetCoreWave;
   static_cast<TGriffin&>(rhs).fCycleStart        = fCycleStart;
   static_cast<TGriffin&>(rhs).fGriffinBits       = 0;
+
 }                                       
 
 TGriffin::~TGriffin()	{
@@ -98,9 +105,9 @@ TGriffin::~TGriffin()	{
 
 void TGriffin::Clear(Option_t *opt)	{
    //Clears the mother, and all of the hits
-   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+ //  if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
      ClearStatus();
-   }
+ //  }
    TGRSIDetector::Clear(opt);
    fGriffinHits.clear();
    fAddbackHits.clear();
@@ -134,6 +141,9 @@ TGRSIDetectorHit* TGriffin::GetHit(const Int_t& idx) {
 
 TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
    try {
+      if(!IsCrossTalkSet()){
+         FixCrossTalk();
+      }
       return &(fGriffinHits.at(i));   
    } catch (const std::out_of_range& oor) {
       std::cerr << ClassName() << " Hits are out of range: " << oor.what() << std::endl;
@@ -143,8 +153,12 @@ TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
    return NULL;
 }
 
-Int_t TGriffin::GetAddbackMultiplicity() {
+Short_t TGriffin::GetAddbackMultiplicity() {
    // Automatically builds the addback hits using the fAddbackCriterion (if the size of the fAddbackHits vector is zero) and return the number of addback hits.
+   if(!IsCrossTalkSet()){
+      //Calculate Cross Talk on each hit
+      FixCrossTalk();
+   }
    if(fGriffinHits.size() == 0) {
       return 0;
    }
@@ -153,8 +167,12 @@ Int_t TGriffin::GetAddbackMultiplicity() {
 		fAddbackHits.clear();
 	}
    if(fAddbackHits.size() == 0) {
+      fAddbackHits.reserve(sizeof(TGriffinHit)*fGriffinHits.size());
       // use the first griffin hit as starting point for the addback hits
-      fAddbackHits.push_back(fGriffinHits[0]);
+    //  fAddbackHits.push_back(fGriffinHits[0]);
+      fAddbackHits.push_back(*(GetGriffinHit(0)));
+      //Energy isn't copied, so need to fix Cross talk
+      fAddbackHits.at(0).SetEnergy(GetGriffinHit(0)->GetEnergy());
       fAddbackFrags.push_back(1);
 
       // loop over remaining griffin hits
@@ -162,17 +180,23 @@ Int_t TGriffin::GetAddbackMultiplicity() {
       for(i = 1; i < fGriffinHits.size(); ++i) {
 	      // check for each existing addback hit if this griffin hit should be added
 	      for(j = 0; j < fAddbackHits.size(); ++j) {
-	         if(fAddbackCriterion(fAddbackHits[j], fGriffinHits[i])) {
-	            fAddbackHits[j].Add(&(fGriffinHits[i]));
+            if(fAddbackCriterion(fAddbackHits[j], fGriffinHits[i])) {
+	            fAddbackHits[j].Add(GetGriffinHit(i));
+	            //fAddbackHits[j].Add(&(fGriffinHits[i]));
                fAddbackFrags[j]++;
 	            break;
 	         }
 	      }
-	      if(j == fAddbackHits.size()) {
-	         fAddbackHits.push_back(fGriffinHits[i]);
+	      if(j == (fAddbackHits.size())) {
+	         //fAddbackHits.push_back(fGriffinHits[i]);
+	         fAddbackHits.push_back(*(GetGriffinHit(i)));
+            //Energy isn't copied, so need to fix Cross talk
+            //Might be able to this this a different way.
+            fAddbackHits.at(j).SetEnergy(GetGriffinHit(i)->GetEnergy());
             fAddbackFrags.push_back(1);
 	      }
       }
+      fAddbackHits.resize(fAddbackHits.size());
 	   SetBitNumber(kIsAddbackSet, true);
    }
 
@@ -225,6 +249,12 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 				corehit.SetNPileUps(frag->Charge.size()-1);//We subtract 1 in order to start counter from 0
 				corehit.SetPUHit(i);
 			}
+
+    /*     //RYAN HACK
+         if(frag->KValue.at(i) < 700){
+            corehit.SetNPileUps(1);
+            corehit.SetPUHit(1);
+         }*/
 			
 			AddHit(&corehit);
 		}
@@ -273,6 +303,11 @@ TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ) {
 
 }
 
+void TGriffin::ResetFlags(){
+   fGriffinBits = 0;
+}
+
+
 void TGriffin::ResetAddback() {
 //Used to clear the addback hits. When playing back a tree, this must
 //be called before building the new addback hits, otherwise, a copy of
@@ -280,6 +315,7 @@ void TGriffin::ResetAddback() {
 //This should have changed now, we're using the stored griffin bits to reset the addback
 	//unset the addback bit in fGriffinBits
 	SetBitNumber(kIsAddbackSet, false);
+   SetBitNumber(kIsCrossTalkSet,false);
    fAddbackHits.clear();
    fAddbackFrags.clear();
 }
@@ -299,4 +335,49 @@ void TGriffin::SetBitNumber(enum EGriffinBits bit,Bool_t set){
       fGriffinBits |= bit;
    else
       fGriffinBits &= (~bit);
+}
+
+Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, const TGriffinHit* const other_hit, Bool_t time_constraint){
+   if(!hit_to_correct || !other_hit){
+      printf("One of the hits is invalid in TGriffin::CTCorrectedEnergy\n");
+      return 0;
+   }
+
+   if(time_constraint){
+      //Figure out if this passes the selected window
+      if(TMath::Abs(other_hit->GetTime() - hit_to_correct->GetTime()) > TGRSIRunInfo::AddBackWindow()) //placeholder
+         return hit_to_correct->GetEnergy();
+   }
+
+   if(hit_to_correct->GetDetector() != other_hit->GetDetector() ){
+      return hit_to_correct->GetEnergy();
+   }
+
+   return hit_to_correct->GetEnergy() - (gCrossTalkPar[0][hit_to_correct->GetCrystal()][other_hit->GetCrystal()] + gCrossTalkPar[1][hit_to_correct->GetCrystal()][other_hit->GetCrystal()]*other_hit->GetNoCTEnergy());
+
+}
+
+Bool_t TGriffin::IsCrossTalkSet() const{
+   return (fGriffinBits & kIsCrossTalkSet);
+}
+
+void TGriffin::FixCrossTalk() {
+   if(fGriffinHits.size() < 2) {
+      SetBitNumber(kIsCrossTalkSet,true);
+      return;
+   }
+   for(size_t i=0; i<fGriffinHits.size(); ++i)
+      fGriffinHits[i].ClearEnergy();
+
+   if(TGRSIRunInfo::Get()->IsCorrectingCrossTalk()){
+      size_t i, j;
+      for(i = 0; i < fGriffinHits.size(); ++i) {
+	      for(j = i+1; j < fGriffinHits.size(); ++j) {
+            fGriffinHits[i].SetEnergy(TGriffin::CTCorrectedEnergy(&(fGriffinHits[i]),&(fGriffinHits[j])));
+            fGriffinHits[j].SetEnergy(TGriffin::CTCorrectedEnergy(&(fGriffinHits[j]),&(fGriffinHits[i])));
+         }
+      }
+   }
+   SetBitNumber(kIsCrossTalkSet,true);
+
 }

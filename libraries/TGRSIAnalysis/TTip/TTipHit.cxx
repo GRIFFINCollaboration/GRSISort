@@ -38,6 +38,7 @@ void TTipHit::Copy(TObject &rhs) const {
    static_cast<TTipHit&>(rhs).fTipChannel 	= fTipChannel;
    static_cast<TTipHit&>(rhs).fTimeFit		   = fTimeFit;
    static_cast<TTipHit&>(rhs).fSig2Noise		= fSig2Noise;
+	 static_cast<TTipHit&>(rhs).fChiSq				= fChiSq;
 }                                       
 
 bool TTipHit::InFilter(Int_t wantedfilter) {
@@ -72,5 +73,6 @@ void TTipHit::SetPID(TFragment &frag)	{
 	if(pulse.IsSet()){
 		fPID = pulse.CsIPID();
 		fTimeFit = pulse.CsIt0();
+		fChiSq = pulse.GetCsIChiSq();
 	}
 }

@@ -14,6 +14,7 @@
 #include "TChannel.h"
 
 #include "TGRSIDetectorHit.h"
+#include "TGRSIRunInfo.h"
 
 class TGriffinHit : public TGRSIDetectorHit {
 	public:
@@ -56,6 +57,7 @@ class TGriffinHit : public TGRSIDetectorHit {
       UInt_t SetCrystal(char color);
       UInt_t SetCrystal(UInt_t crynum);
       Bool_t IsCrystalSet() const {return IsSubDetSet();}
+      Double_t GetNoCTEnergy(Option_t *opt = "") const;
 
       UShort_t NPileUps() const; 
       UShort_t PUHit() const;    
@@ -82,7 +84,7 @@ class TGriffinHit : public TGRSIDetectorHit {
       virtual void Copy(TObject&) const;        //!<!
 
    private:
-      TVector3 GetChannelPosition(Double_t dist = 110.0) const; //!<!
+      TVector3 GetChannelPosition(Double_t dist = TGRSIRunInfo::HPGeArrayPosition()) const; //!<!
       void SetGriffinFlag(enum EGriffinHitBits,Bool_t set);
 	
 /// \cond CLASSIMP

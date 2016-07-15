@@ -135,6 +135,11 @@ void TGRSIint::ApplyOptions() {
 			// TGRSIRunInfo::ReadInfoFromFile(); Not implemented yet
 		}
 	}
+   if(TGRSIOptions::ExternalRunInfo()){
+      for(size_t i=0; i<TGRSIOptions::GetExternalRunInfo().size();++i){
+         TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions::GetExternalRunInfo().at(i).c_str());
+      }
+   }
 
 	if(TGRSIOptions::GetInputCal().size() > 0){
 		for(size_t i =0; i<TGRSIOptions::GetInputCal().size();++i){
@@ -445,12 +450,14 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
 		TGRSIOptions::AddInputCalFile(filename);
 		return true;
 	} else if(ext.compare("info")==0 && filesize > 0) { 
-		if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
+		/*if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
 			return true;
 		else {
 			printf("Problem reading run-info file %s\n",filename.c_str());
 			return false;
-		}
+		}*/
+      TGRSIOptions::AddExternalRunInfo(filename);
+      return true;
 	} else if(ext.compare("xml")==0 && filesize > 0) { 
 		//fInputOdbFile->push_back(filename);
 		TGRSIOptions::AddInputOdbFile(filename);

@@ -80,6 +80,11 @@ class TTigress : public TGRSIDetector {
 		static double GeRedPosition[17][9][3];	//!<!
 		static double GeWhitePosition[17][9][3];	//!<!
 
+		static double GeBluePositionBack[17][9][3];	//!<!	detector segment XYZ
+		static double GeGreenPositionBack[17][9][3];	//!<!
+		static double GeRedPositionBack[17][9][3];	//!<!
+		static double GeWhitePositionBack[17][9][3];	//!<!
+
 		UChar_t fTigressBits;                  // flags for transient members
 		void ClearStatus() { fTigressBits = 0; }
 		void SetBitNumber(enum ETigressBits bit,Bool_t set=true);

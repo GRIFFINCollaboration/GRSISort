@@ -174,19 +174,27 @@ class TGRSIRunInfo : public TObject {
       inline void SetMovingWindow(const bool flag)       {fIsMovingWindow = flag; }
       static inline bool IsMovingWindow()                { return Get()->fIsMovingWindow; }
 
+      void SetCorrectCrossTalk(const bool flag, Option_t *opt = ""); 
+      static inline bool IsCorrectingCrossTalk()         { return Get()->fIsCorrectingCrossTalk; }
+
       static inline long int BuildWindow()    { return Get()->fBuildWindow/10; }
       static inline double   AddBackWindow()  { if(Get()->fAddBackWindow<1) return 15.0; return Get()->fAddBackWindow; }
       static inline long int BufferDuration() { return Get()->fBufferDuration; }
       static inline size_t   BufferSize()     { return Get()->fBufferSize; }
 
-      inline void SetHPGeArrayPosition(const int arr_pos) { fHPGeArrayPosition = arr_pos; }
-      static inline int  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
+      inline void SetHPGeArrayPosition(const double arr_pos) { fHPGeArrayPosition = arr_pos; }
+      static inline double  HPGeArrayPosition()  { return Get()->fHPGeArrayPosition; }
 
       static inline void SetDescantAncillary(bool flag = true) { fGRSIRunInfo->fDescantAncillary = flag; }
       static inline bool DescantAncillary()                    { return fGRSIRunInfo->fDescantAncillary; }
 
       Long64_t Merge(TCollection *list);
       void Add(TGRSIRunInfo* runinfo) { fRunStart = 0.; fRunStop = 0.; fRunLength += runinfo->RunLength(); }
+
+      void PrintBadCycles() const;
+      void AddBadCycle(int cycle_num);
+      void RemoveBadCycle(int cycle);
+      bool IsBadCycle(int cycle) const;
 
    private:
       static TGRSIRunInfo *fGRSIRunInfo; //Static pointer to TGRSIRunInfo
@@ -257,6 +265,7 @@ class TGRSIRunInfo : public TObject {
       long int fBuildWindow;        // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
       double   fAddBackWindow;      // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
       bool     fIsMovingWindow;     // if set to true the event building window moves. Static otherwise.
+      bool     fIsCorrectingCrossTalk;// True if we are correcting for cross-talk in GRIFFIN at analysis-level
 
       long int fBufferDuration;     // GRIFFIN: the minimum length of the sorting buffer (default = 600s (60000000000))
       size_t   fBufferSize;           // GRIFFIN: the minimum size of the sorting buffer (default = 1 000 000)
@@ -265,13 +274,18 @@ class TGRSIRunInfo : public TObject {
 
       double   fHPGeArrayPosition;  // Position of the HPGe Array (default = 110.0 mm );
       bool     fDescantAncillary;   // Descant is in the ancillary detector locations
+      
+      unsigned int fBadCycleListSize;
+      std::vector<int> fBadCycleList;  //!<!List of bad cycles to be used for cycle rejection
 
    public:
       void Print(Option_t *opt = "") const;
       void Clear(Option_t *opt = "");
 
+      static bool WriteToRoot(TFile* fileptr = 0);
+
       /// \cond CLASSIMP
-      ClassDef(TGRSIRunInfo,9);  //Contains the run-dependent information.
+      ClassDef(TGRSIRunInfo,10);  //Contains the run-dependent information.
       /// \endcond
 };
 /*! @} */

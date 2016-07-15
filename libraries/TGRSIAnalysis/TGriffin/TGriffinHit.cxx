@@ -3,6 +3,7 @@
 #include "TGriffinHit.h"
 #include "Globals.h"
 #include <cmath>
+#include <iostream>
 
 /// \cond CLASSIMP
 ClassImp(TGriffinHit)
@@ -63,6 +64,7 @@ void TGriffinHit::Print(Option_t *opt) const	{
 }
 
 TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
+
    //Returns the Position of the crystal of the current Hit.
 	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
@@ -142,7 +144,6 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
       this->SetPosition(hit->GetPosition());
       this->SetAddress(hit->GetAddress());
    }
-
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
    //this has to be done at the very end, otherwise this->GetEnergy() might not work
    this->SetCharge(0);
@@ -174,5 +175,14 @@ void TGriffinHit::SetPUHit(UChar_t puhit) {
 
    SetGriffinFlag(kPUHit1,(puhit << 2) & kPUHit1);  
    SetGriffinFlag(kPUHit2,(puhit << 2) & kPUHit2);  
+}
+
+Double_t TGriffinHit::GetNoCTEnergy(Option_t* opt) const{
+	TChannel* chan = GetChannel();
+	if(!chan) {
+		Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
+		return 0.;
+	}
+	return chan->CalibrateENG(GetCharge());
 }
 

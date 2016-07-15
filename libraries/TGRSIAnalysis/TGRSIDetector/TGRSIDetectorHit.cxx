@@ -1,6 +1,7 @@
 #include "TGRSIDetectorHit.h"
 
 #include "TClass.h"
+#include <iostream>
 
 /// \cond CLASSIMP
 ClassImp(TGRSIDetectorHit)
@@ -75,7 +76,6 @@ Double_t TGRSIDetectorHit::GetTime(Option_t* opt) {
 	return fTime;
 }
 
-
 double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
 	if(IsEnergySet())
 		return fEnergy;
@@ -118,6 +118,7 @@ void TGRSIDetectorHit::Copy(TObject& rhs) const {
 	static_cast<TGRSIDetectorHit&>(rhs).fBitflags       = 0;
 	static_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
 	static_cast<TGRSIDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
+
 }
 
 void TGRSIDetectorHit::Print(Option_t* opt) const {

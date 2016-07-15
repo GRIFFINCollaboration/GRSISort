@@ -15,18 +15,19 @@
 #include "Globals.h"
 #include "TGriffinHit.h"
 #include "TGRSIDetector.h"
+#include "TGRSIRunInfo.h"
 
 class TGriffin : public TGRSIDetector {
 	public:
 		enum EGriffinBits {
-			kIsAddbackSet = 1<<0,
-			kBit1         = 1<<1,
-			kBit2         = 1<<2,
-			kBit3         = 1<<3,
-			kBit4         = 1<<4,
-			kBit5         = 1<<5,
-			kBit6         = 1<<6,
-			kBit7         = 1<<7
+			kIsAddbackSet     = 1<<0,
+			kIsCrossTalkSet   = 1<<1,
+			kBit2             = 1<<2,
+			kBit3             = 1<<3,
+			kBit4             = 1<<4,
+			kBit5             = 1<<5,
+			kBit6             = 1<<6,
+			kBit7             = 1<<7
 		};
 
 		TGriffin();
@@ -38,7 +39,7 @@ class TGriffin : public TGRSIDetector {
 		TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
 		Short_t GetMultiplicity() const {return fGriffinHits.size();}
 
-		static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);		//!<!
+		static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = TGRSIRunInfo::HPGeArrayPosition());		//!<!
 		void AddFragment(TFragment*, MNEMONIC*); //!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
@@ -49,7 +50,7 @@ class TGriffin : public TGRSIDetector {
 		std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() const { return fAddbackCriterion; }
 #endif
 
-		Int_t GetAddbackMultiplicity();
+		Short_t GetAddbackMultiplicity();
 		TGriffinHit* GetAddbackHit(const int& i);
 
 	private:
@@ -80,10 +81,20 @@ class TGriffin : public TGRSIDetector {
 		void SetBitNumber(enum EGriffinBits bit,Bool_t set);
 		Bool_t TestBitNumber(enum EGriffinBits bit) const {return (bit & fGriffinBits);}
 
+      //Cross-Talk stuff
+   public:
+      static const Double_t gStrongCT[2];   //!<!
+      static const Double_t gWeakCT[2]; //!<!
+      static const Double_t gCrossTalkPar[2][4][4]; //!<! 
+      static Double_t CTCorrectedEnergy(const TGriffinHit* const energy_to_correct, const TGriffinHit* const other_energy, Bool_t time_constraint = true);
+      Bool_t IsCrossTalkSet() const;
+      void FixCrossTalk();
+
 	public:
 		virtual void Copy(TObject&) const;                //!<!
 		virtual void Clear(Option_t* opt = "all");		     //!<!
 		virtual void Print(Option_t* opt = "") const;		  //!<!
+      void ResetFlags();
 		void ResetAddback();		     //!<!
 		UShort_t GetNAddbackFrags(size_t idx) const;
 
