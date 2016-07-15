@@ -636,9 +636,6 @@ void TChannel::WriteCalFile(std::string outfilename) {
 		}
 	}
 
-
-
-
 	/*
 		FILE* c_outputfile;
 		if(outfilename.length()>0) {

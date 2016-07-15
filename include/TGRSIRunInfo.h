@@ -283,6 +283,8 @@ class TGRSIRunInfo : public TObject {
       void Clear(Option_t *opt = "");
 
       static bool WriteToRoot(TFile* fileptr = 0);
+      static bool WriteInfoFile(std::string filename);
+      std::string PrintToString(Option_t *opt ="");
 
       /// \cond CLASSIMP
       ClassDef(TGRSIRunInfo,10);  //Contains the run-dependent information.

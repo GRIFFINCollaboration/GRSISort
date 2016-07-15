@@ -611,3 +611,62 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr) {
    return bool2return;
 }
 
+bool TGRSIRunInfo::WriteInfoFile(std::string filename) {
+
+	if(filename.length()>0) {
+		std::ofstream infoout;
+		infoout.open(filename.c_str());
+		std::string infostr = Get()->PrintToString();
+		infoout << infostr.c_str();
+		infoout << std::endl;
+	   infoout << std::endl;
+	   infoout.close();
+	} else {  
+      printf("Please enter a file name\n");
+      return false;
+	}
+   
+   return true;
+}
+
+std::string TGRSIRunInfo::PrintToString(Option_t* opt) {
+	std::string buffer;
+	buffer.append("//The event building time, 10 ns units.\n");
+   buffer.append(Form("BuildWindow: %ld\n", Get()->BuildWindow()));
+   buffer.append("\n\n");
+	buffer.append("//The Addback event window, 10 ns units.\n");
+   buffer.append(Form("AddBackWindow: %lf\n", Get()->AddBackWindow()));
+   buffer.append("\n\n");
+	buffer.append("//The Array Position in mm.\n");
+   buffer.append(Form("HPGePos: %lf\n", Get()->HPGeArrayPosition()));
+   buffer.append("\n\n");
+   if(Get()->IsWaveformFitting()){
+	   buffer.append("//Waveforms being Fit.\n");
+      buffer.append(Form("WaveFormFit: %d\n", 1));
+      buffer.append("\n\n");
+   }
+   if(!(Get()->IsMovingWindow())){
+	   buffer.append("//Using a moving BuildWindow.\n");
+      buffer.append(Form("MovingWindow: %d\n", 0));
+      buffer.append("\n\n");
+   }
+   if(Get()->DescantAncillary()){
+	   buffer.append("//Is DESCANT in Ancillary positions?.\n");
+      buffer.append(Form("DescantAncillary: %d\n", 1));
+      buffer.append("\n\n");
+   }
+	buffer.append("//Correcting for Cross Talk? (Only available in GRIFFIN).\n");
+   buffer.append(Form("CrossTalk: %d\n", Get()->IsCorrectingCrossTalk()));
+   buffer.append("\n\n");
+   if(fBadCycleList.size()){
+	   buffer.append("//A List of bad cycles.\n");
+      buffer.append("BadCycle:");
+      for(auto it = fBadCycleList.begin(); it != fBadCycleList.end(); ++it){
+         buffer.append(Form(" %d",*it));
+      }
+      buffer.append("\n\n");
+   }
+
+	return buffer;
+}
+
