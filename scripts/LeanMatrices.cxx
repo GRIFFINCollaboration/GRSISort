@@ -141,13 +141,15 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TH2F* gammaSinglesBmCyc = NULL;
    TH2F* betaSinglesCyc = NULL;
    TH1F* bCycle = NULL;
+   TH1F* badPPGbCycle = NULL;
    if(ppg){
       gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
       gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
       gammaSinglesBmCyc = new TH2F("gammaSinglesBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBmCyc);
       betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,1000,0,1000); list->Add(betaSinglesCyc);
    bCycle = new TH1F("bCycle", "#beta Cycle", cycleLength/10.,0,cycleLength); list->Add(bCycle);  
-   }
+   badPPGbCycle = new TH1F("badPPGbCycle", "bad PPG #beta Cycle", cycleLength/10.,0,cycleLength); list->Add(badPPGbCycle);  
+    }
    //addback spectra
    TH1D* gammaAddback = new TH1D("gammaAddback","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
    TH1D* gammaAddbackB = new TH1D("gammaAddbackB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaAddbackB);
@@ -292,7 +294,9 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
             btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
+               badPPGbCycle->Fill(((ULong64_t)(((scep->GetHit(b)->GetTime())/1e6)-((scep->GetHit(b)->GetTime())/1e6)/15500)));
             if(ppg && !plotted_flag){//Fill on first hit only.
+              // badPPGbCycle->Fill(((ULong64_t)(((scep->GetHit(b)->GetTime())/1e5)-((scep->GetHit(b)->GetTime())/1e5)*ppg->GetCycleNumber(scep->GetHit(b)->GetTime())/1e5)));
                bCycle->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTime()))/1e5));
                betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTime()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTime()))); 
                //  betaSinglesCyc->Fill((((ULong64_t)(scep->GetHit(b)->GetTime()))%(ppg->GetCycleLength()))/1e5,(scep->GetHit(b)->GetTime())/(ppg->GetCycleLength())); 
