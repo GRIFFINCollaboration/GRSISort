@@ -68,17 +68,21 @@ void TGriffinHit::Print(Option_t *opt) const	{
    printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",GetPosition().Theta() *180/(3.141597),GetPosition().Phi() *180/(3.141597));
 }
 
-TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
-   //Returns the Position of the crystal of the current Hit.
-	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
+TVector3 TGriffinHit::GetPosition(double dist) const {
+  return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
-UInt_t TGriffinHit::GetCrystal() const { 
+TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
+  //Returns the Position of the crystal of the current Hit.
+  return GetPosition(dist);
+}
+
+//UInt_t TGriffinHit::GetCrystal() const { 
    //Returns the Crystal Number of the Current hit.
-   TChannel *chan = GetChannel();
-   if(!chan)
-      return -1;
-   return chan->GetCrystalNumber();
+//   TChannel *chan = GetChannel();
+//   if(!chan)
+//      return -1;
+//   return chan->GetCrystalNumber();
    /*
    MNEMONIC mnemonic;
    ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
@@ -95,7 +99,7 @@ UInt_t TGriffinHit::GetCrystal() const {
    };
    return -1;  
    */
-}
+//}
 
 bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	{
    return(lhs->GetEnergy() > rhs->GetEnergy());

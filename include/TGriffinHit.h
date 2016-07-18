@@ -52,7 +52,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 
 
     /////////////////////////  TChannel Helpers /////////////////////////////////////
-    UInt_t GetCrystal()  const;//!<!
+    //UInt_t GetCrystal()  const;//!<!
     //UInt_t GetCrystal();
     //UInt_t SetCrystal(char color);
     //UInt_t SetCrystal(UInt_t crynum);
@@ -82,6 +82,7 @@ class TGriffinHit : public TGRSIDetectorHit {
     virtual void Print(Option_t *opt = "") const; //!<!
     virtual void Copy(TObject&) const;        //!<!
 
+    TVector3 GetPosition(double dist = 110.) const; //!<!
   private:
     TVector3 GetChannelPosition(Double_t dist = 110.0) const; //!<!
     void SetGriffinFlag(enum EGriffinHitBits,Bool_t set);
