@@ -12,7 +12,7 @@
 #include "TFile.h"
 #include "TProofLite.h"
 
-#include "TFragmentSelector.h"
+//#include "TFragmentSelector.h"
 
 #include "Globals.h"
 #include "TChannel.h"
@@ -104,7 +104,7 @@ class TGRSIRootIO : public TObject {
       TDiagnostics* GetDiagnostics();
       void FinalizeDiagnostics();
 
-      void MakeUserHistsFromFragmentTree();
+      //void MakeUserHistsFromFragmentTree();
 
 /// \cond CLASSIMP
    ClassDef(TGRSIRootIO,0)

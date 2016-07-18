@@ -322,7 +322,7 @@ void TGRSIRootIO::CloseRootOutFile()   {
 	fOutFile = 0;
 }
 
-
+/*
 void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
 	int runNumber =0; //This is where hists run number problem is happening
 	int subRunNumber=0; //Might have to make these vectors?
@@ -356,7 +356,7 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
 
 	chain->Delete();
 }
-
+*/
 
 int TGRSIRootIO::GetRunNumber(std::string fileName) {
 	if(fileName.length()==0) {

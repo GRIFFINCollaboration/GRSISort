@@ -38,7 +38,7 @@ void TS3Hit::Clear(Option_t *opt)	{
 
 Short_t TS3Hit::GetMnemonicSegment(TFragment &frag){//could be added to TGRSIDetectorHit base class
 	MNEMONIC mnemonic;
-	TChannel *channel = TChannel::GetChannel(frag.ChannelAddress);
+	TChannel *channel = TChannel::GetChannel(frag.GetAddress());
 	if(!channel){
 		Error("SetDetector","No TChannel exists for address %u",GetAddress());
 		return 0;

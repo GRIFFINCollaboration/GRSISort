@@ -22,6 +22,12 @@ TGriffinHit::TGriffinHit(const TGriffinHit &rhs) : TGRSIDetectorHit() {
    rhs.Copy(*this);
 }
 
+TGriffinHit::TGriffinHit(const TFragment &frag) : TGRSIDetectorHit(frag) {
+  SetNPileUps(frag.NumberOfHits);
+}
+
+
+
 TGriffinHit::~TGriffinHit()  {	}
 
 void TGriffinHit::Copy(TObject &rhs) const {
@@ -62,19 +68,22 @@ void TGriffinHit::Print(Option_t *opt) const	{
    printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",GetPosition().Theta() *180/(3.141597),GetPosition().Phi() *180/(3.141597));
 }
 
-TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
-   //Returns the Position of the crystal of the current Hit.
-	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
+TVector3 TGriffinHit::GetPosition(double dist) const {
+  return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
-UInt_t TGriffinHit::GetCrystal() const { 
-   //Returns the Crystal Number of the Current hit.
-   if(IsCrystalSet())
-      return fCrystal;
+TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
+  //Returns the Position of the crystal of the current Hit.
+  return GetPosition(dist);
+}
 
-   TChannel *chan = GetChannel();
-   if(!chan)
-      return -1;
+//UInt_t TGriffinHit::GetCrystal() const { 
+   //Returns the Crystal Number of the Current hit.
+//   TChannel *chan = GetChannel();
+//   if(!chan)
+//      return -1;
+//   return chan->GetCrystalNumber();
+   /*
    MNEMONIC mnemonic;
    ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
    char color = mnemonic.arraysubposition[0];
@@ -89,45 +98,8 @@ UInt_t TGriffinHit::GetCrystal() const {
          return 3;  
    };
    return -1;  
-}
-
-UInt_t TGriffinHit::GetCrystal() {
-   //Returns the Crystal Number of the Current hit.
-   if(IsCrystalSet())
-      return fCrystal;
-
-   TChannel *chan = GetChannel();
-   if(!chan)
-      return -1;
-   MNEMONIC mnemonic;
-   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-   char color = mnemonic.arraysubposition[0];
-   return SetCrystal(color);
-}
-
-UInt_t TGriffinHit::SetCrystal(UInt_t crynum) {
-   fCrystal = crynum;
-   return fCrystal;
-}
-
-UInt_t TGriffinHit::SetCrystal(char color) { 
-   switch(color) {
-      case 'B':
-         fCrystal = 0;
-         break;
-      case 'G':
-         fCrystal = 1;
-         break;
-      case 'R':
-         fCrystal = 2;
-         break;
-      case 'W':
-         fCrystal = 3;  
-         break;
-   };
-   SetFlag(TGRSIDetectorHit::kIsSubDetSet,true);
-   return fCrystal;
-}
+   */
+//}
 
 bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	{
    return(lhs->GetEnergy() > rhs->GetEnergy());
@@ -139,7 +111,7 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
    if(!CompareEnergy(this,hit)) {
       this->SetCfd(hit->GetCfd());
       this->SetTime(hit->GetTime());
-      this->SetPosition(hit->GetPosition());
+      //this->SetPosition(hit->GetPosition());
       this->SetAddress(hit->GetAddress());
    }
 

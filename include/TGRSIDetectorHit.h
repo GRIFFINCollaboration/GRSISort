@@ -47,69 +47,83 @@ class TGRSIDetectorHit : public TObject 	{
 
    // 
    public:
-      enum Ebitflag {
-         kIsDetSet      = 1<<0,  //same as BIT(0);
-         kIsEnergySet   = 1<<1,
-         kIsPositionSet = 1<<2,
-         kIsSubDetSet   = 1<<3,
-         kIsPPGSet      = 1<<4,
-         kIsTimeSet     = 1<<5,
-         kIsSegSet      = 1<<6,
-         kBit7          = 1<<7,
-         kIsAllSet      = 0xFF
+      enum EBitFlag {
+         kIsEnergySet   = BIT(0),  //same as BIT(0);
+         kBit1          = BIT(1),
+         kBit2          = BIT(2),
+         kBit3          = BIT(3),
+         kIsPPGSet      = BIT(4),
+         kIsTimeSet     = BIT(5),
+         kBit6          = BIT(6),
+         kBit7          = BIT(7),
+         kBit8          = BIT(8),
+         //reserved for derived class.
+         kBit9          = BIT(9),
+         kBit10         = BIT(10),
+         kBit11         = BIT(11),
+         kBit12         = BIT(12),
+         kBit13         = BIT(13),
+         kBit14         = BIT(14),
+         kBit15         = BIT(15),
+         kBase          = BIT(9),
+         kIsAllSet      = 0xFFFF
       };
 
 
    public:
       TGRSIDetectorHit(const int& Address=0xffffffff);
-      TGRSIDetectorHit(const TGRSIDetectorHit&);
-      TGRSIDetectorHit(const TFragment& frag)      { Class()->IgnoreTObjectStreamer(); this->CopyFragment(frag); }
-      void CopyFragment(const TFragment&);
-      void CopyWaveform(const TFragment&);
+      TGRSIDetectorHit(const TGRSIDetectorHit&, bool copywave=true);
+      //TGRSIDetectorHit(const TFragment& frag) { Class()->IgnoreTObjectStreamer(); this->CopyFragment(frag); }
+      //void CopyFragment(const TFragment&);
+      //void CopyWaveform(const TFragment&);
       virtual ~TGRSIDetectorHit();
 
       static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
 
+      bool operator<(const TGRSIDetectorHit &rhs) const { return GetEnergy()>GetEnergy();} //sorts large->small
+
+
    public:
-      virtual void Copy(TObject&) const;              //!<!
-      virtual void Clear(Option_t* opt = "");         //!<!
-      virtual void Print(Option_t* opt = "") const;	  //!<!
-      virtual const char *GetName() const;                   //!<!
+      virtual void Copy(TObject&) const;                //!<!
+      virtual void Copy(TObject&,bool copywave) const;  //!<!
+      virtual void CopyWave(TGRSIDetectorHit&)  const;  //!<!
+      virtual void Clear(Option_t* opt = "");           //!<!
+      virtual void Print(Option_t* opt = "") const;     //!<!
       virtual bool HasWave() const { return (fWaveform.size()>0) ?  true : false; } //!<!
 
       static bool CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rhs);
       //We need a common function for all detectors in here
       //static bool Compare(TGRSIDetectorHit* lhs,TGRSIDetectorHit* rhs); //!<!
 
-      inline void SetPosition(const TVector3& temp_pos)           { fPosition = temp_pos; SetFlag(kIsPositionSet,true); }    //!<!
-      inline void SetAddress(const UInt_t& temp_address)          { fAddress = temp_address; } //!<!
-      inline void SetCharge(const Float_t& temp_charge)           { fCharge = temp_charge; }   //!<!
-      //virtual Short_t SetSegment(const Short_t &seg);
-      virtual inline void SetCfd(const Int_t& x)                  { fCfd    = x; }             //!<!
-      inline void SetWaveform(const std::vector<Short_t>& x)      { fWaveform = x; }           //!<!
-      virtual inline void SetTimeStamp(const ULong_t& x)          { fTimeStamp   = x; }        //!<! Maybe make this abstract?
+      void SetAddress(const UInt_t& temp_address)       { fAddress = temp_address; } //!<!
+      void SetKValue(const UShort_t& temp_kval)         { fKValue = temp_kval;   }   //!<!
+      void SetCharge(const Float_t& temp_charge)        { fCharge = temp_charge; }   //!<!
+      virtual void SetCfd(const Int_t& x)               { fCfd    = x; }             //!<!
+      void SetWaveform(const std::vector<Short_t>& x)   { fWaveform = x; }           //!<!
+      virtual void SetTimeStamp(const ULong_t& x)       { fTimeStamp   = x; }        //!<! 
+      virtual void AppendTimeStamp(const ULong_t& x)    { fTimeStamp   += x; }       //!<! 
 
-      virtual TVector3 SetPosition(Double_t temp_pos = 0);
-      void SetEnergy(const double& en) { fEnergy = en; SetFlag(kIsEnergySet,true);}
-      //virtual UInt_t SetDetector(const UInt_t& det);
-      void SetTime(const Double_t& time) {fTime = time; SetFlag(kIsTimeSet,true); }
+      void SetEnergy(const double& en) { fEnergy = en; SetBit(kIsEnergySet,true);}
+      void SetTime(const Double_t& time) {fTime = time; SetBit(kIsTimeSet,true); }
 
-      TVector3 GetPosition(Double_t dist = 0) const; //!<!
-      TVector3 GetPosition(Double_t dist = 0);
-      virtual double GetEnergy(Option_t* opt="") const;
-      virtual double GetEnergy(Option_t* opt="");
-      virtual Int_t  GetDetector() const;
-      virtual Int_t  GetSegment() const;	
-      virtual ULong_t GetTimeStamp(Option_t* opt="")   const     { return fTimeStamp;   }
-      virtual Double_t GetTime(Option_t* opt = "") const;  ///< Returns a time value to the nearest nanosecond!
-      virtual Double_t GetTime(Option_t* opt = "");
-      //virtual UInt_t GetDetector();
-      //virtual Short_t GetSegment();
-      virtual inline Int_t   GetCfd() const                          { return fCfd;}           //!<!
-      virtual inline UInt_t GetAddress()     const                   { return fAddress; }      //!<!
-      virtual inline Float_t GetCharge() const                       { return fCharge;}        //!<!
-      inline TChannel* GetChannel() const                            { return TChannel::GetChannel(fAddress); }  //!<!
-      inline std::vector<Short_t>* GetWaveform()                     { return &fWaveform; }    //!<!
+      //TVector3 GetPosition(Double_t dist = 0)        const; //!<!
+      virtual double GetEnergy(Option_t* opt="")     const;
+      virtual ULong_t GetTimeStamp(Option_t* opt="") const   { return fTimeStamp;   }
+      virtual Double_t GetTime(Option_t* opt = "")   const;  ///< Returns a time value to the nearest nanosecond!
+      virtual Int_t   GetCfd()    const      { return fCfd;}                 //!<!
+      virtual UInt_t GetAddress() const      { return fAddress; }            //!<!
+      virtual Int_t  GetCharge()  const      ;                               //!<!
+      virtual Float_t Charge()    const      { return fCharge; }             //!<!
+      virtual UShort_t GetKValue()const      { return fKValue; }             //!<!
+      TChannel* GetChannel()      const      { return TChannel::GetChannel(fAddress); }  //!<!
+      std::vector<Short_t>* GetWaveform()    { return &fWaveform; }          //!<!
+
+      //stored in the tchannel (things common to all hits of this address)
+      virtual Int_t  GetDetector()  const; //!<!
+      virtual Int_t  GetSegment()   const; //!<!	
+      virtual Int_t  GetCrystal()   const; //!<!
+      virtual const char *GetName() const; //!<!
+
 
       //The PPG is only stored in events that come out of the GRIFFIN DAQ
       uint16_t GetPPGStatus() const;
@@ -123,29 +137,27 @@ class TGRSIDetectorHit : public TObject 	{
       virtual TVector3 GetChannelPosition(Double_t dist = 0) const { AbstractMethod("GetChannelPosition"); return TVector3(0., 0., 0.); }
 
    protected:
-     //Bool_t IsDetSet() const    { return (fBitflags & kIsDetSet); }
-      Bool_t IsPosSet() const    { return (fBitflags & kIsPositionSet); }
       Bool_t IsEnergySet() const { return (fBitflags & kIsEnergySet); }
-      Bool_t IsSubDetSet() const { return (fBitflags & kIsSubDetSet); }
-      Bool_t IsPPGSet() const    { return (fBitflags & kIsPPGSet); }
-      Bool_t IsTimeSet() const   { return (fBitflags & kIsTimeSet); }
-      //Bool_t IsSegSet() const	 { return (fBitflags & kIsSegSet); }
-      void SetFlag(enum Ebitflag,Bool_t set);
+      Bool_t IsTimeSet()   const { return (fBitflags & kIsTimeSet); }
+      Bool_t IsPPGSet()    const { return (fBitflags & kIsPPGSet); }
+
+      void SetBit(enum EBitFlag,Bool_t set=true);
+      bool TestBit(enum EBitFlag flag) const { return fBitflags & flag; }
+
 
    protected:
       UInt_t   fAddress;    ///< address of the the channel in the DAQ.
       Float_t  fCharge;     ///< charge collected from the hit
+      UShort_t fKValue;     ///< integration value.
       Int_t    fCfd;        ///< CFD time of the Hit
       ULong_t  fTimeStamp;  ///< Timestamp given to hit
       std::vector<Short_t> fWaveform;  ///<
 
    private:
-      Double_t fTime;       //!<! Calibrated Time of the hit
-      //UInt_t   fDetector;   //!<! Detector Number
-      //Short_t  fSegment;	  //!<! Segment number
-      TVector3 fPosition;   //!<! Position of hit detector.
-      Double_t fEnergy;     //!<! Energy of the Hit.
-      uint16_t fPPGStatus;  //!<! 
+      Double_t fTime;           //!<! Calibrated Time of the hit
+      TVector3 fPosition;       //!<! Position of hit detector.
+      Double_t fEnergy;         //!<! Energy of the Hit.
+      uint16_t fPPGStatus;      //!<! 
       ULong_t  fCycleTimeStamp; //!<!
 
    protected:
@@ -153,13 +165,13 @@ class TGRSIDetectorHit : public TObject 	{
 
    private:
       //flags   
-      UChar_t fBitflags;
-
+      UShort_t fBitflags;
+      
       static TVector3 fBeamDirection; //!
 
       /// \cond CLASSIMP
-      ClassDef(TGRSIDetectorHit,7) //Stores the information for a detector hit
-         /// \endcond
+      ClassDef(TGRSIDetectorHit,8) //Stores the information for a detector hit
+      /// \endcond
 };
 /*! @} */
 #endif

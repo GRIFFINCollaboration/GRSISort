@@ -142,8 +142,8 @@ void TGRSIint::ApplyOptions() {
 		}
 	}
 
-	if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
-		TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
+	//if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
+	//	TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
 
 	if(TGRSIOptions::WorkHarder()) {
 		for(size_t x=0;x<TGRSIOptions::GetMacroFile().size();x++) {

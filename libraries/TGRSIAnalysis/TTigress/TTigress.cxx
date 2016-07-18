@@ -11,7 +11,7 @@
 
 /// \cond CLASSIMP
 ClassImp(TTigress)
-/// \endcond
+  /// \endcond
 
 bool TTigress::fSetSegmentHits = true;  // these are need to doppler shift properly.  
 bool TTigress::fSetBGOHits = true;
@@ -21,11 +21,17 @@ bool TTigress::fSetSegmentWave = false;
 bool TTigress::fSetBGOWave = false;
 
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
-  TVector3 res = one.GetPosition() - two.GetPosition();
-                        // GetTime is in ns;  AddbackWindow is in 10's of ns.
+  double res = (one.GetLastPosition() - two.GetPosition()).Mag();
+  int one_seg  = one.GetSegmentVec().back().GetSegment();
+  int two_seg  = two.GetSegmentVec().front().GetSegment();
+  // GetTime is in ns;  AddbackWindow is in 10's of ns.
   return ((std::abs(one.GetTime() - two.GetTime()) < (TGRSIRunInfo::AddBackWindow()*10.0)) &&
-      ((((one.GetInitialHit() < 5 && two.GetInitialHit() < 5) || (one.GetInitialHit() > 4 && two.GetInitialHit() > 4)) && res.Mag() < 54) ||  //not front to back
-       (((one.GetInitialHit() < 5 && two.GetInitialHit() > 4) || (one.GetInitialHit() > 4 && two.GetInitialHit() < 5)) && res.Mag() < 105))); //    front to back
+      ((((one_seg < 5 && two_seg < 5) 
+         || (one_seg > 4 && two_seg > 4)) 
+        && res < 54) ||  //not front to back
+       (((one_seg < 5 && two_seg > 4) 
+         || (one_seg > 4 && two_seg < 5)) 
+        && res < 105))); //    front to back
 }
 
 std::function<bool(TTigressHit&, TTigressHit&)> TTigress::fAddbackCriterion = DefaultAddback;
@@ -33,10 +39,10 @@ std::function<bool(TTigressHit&, TTigressHit&)> TTigress::fAddbackCriterion = De
 TTigress::TTigress() : TGRSIDetector() {
   //Class()->IgnoreTObjectStreamer(true);
   Clear();
- 
-  SetBitNumber(TTigress::kSetCoreWave);
-  SetBitNumber(TTigress::kSetSegWave,0);
-  SetBitNumber(TTigress::kSetBGOWave,0);
+
+  SetBit(TTigress::kSetCoreWave);
+  SetBit(TTigress::kSetSegWave,0);
+  SetBit(TTigress::kSetBGOWave,0);
 
 }
 
@@ -52,15 +58,15 @@ void TTigress::Copy(TObject& rhs) const {
   static_cast<TTigress&>(rhs).fTigressHits    = fTigressHits;
   static_cast<TTigress&>(rhs).fAddbackHits    = fAddbackHits;
   static_cast<TTigress&>(rhs).fAddbackFrags   = fAddbackFrags;
-  static_cast<TTigress&>(rhs).fTigressBits    = 0;
-  static_cast<TTigress&>(rhs).fSetSegmentHits = fSetSegmentHits;	
-  static_cast<TTigress&>(rhs).fSetBGOHits     = fSetBGOHits;	
-  static_cast<TTigress&>(rhs).fSetCoreWave    = fSetCoreWave;	
-  static_cast<TTigress&>(rhs).fSetSegmentWave = fSetSegmentWave;	
-  static_cast<TTigress&>(rhs).fSetBGOWave     = fSetBGOWave;	
+  //static_cast<TTigress&>(rhs).fTigressBits    = 0;
+  //static_cast<TTigress&>(rhs).fSetSegmentHits = fSetSegmentHits;  
+  //static_cast<TTigress&>(rhs).fSetBGOHits     = fSetBGOHits;  
+  //static_cast<TTigress&>(rhs).fSetCoreWave    = fSetCoreWave;  
+  //static_cast<TTigress&>(rhs).fSetSegmentWave = fSetSegmentWave;  
+  //static_cast<TTigress&>(rhs).fSetBGOWave     = fSetBGOWave;  
 }
 
-void TTigress::Clear(Option_t *opt)	{
+void TTigress::Clear(Option_t *opt)  {
   //Clears the mother, and all of the hits
   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
     ClearStatus();
@@ -69,12 +75,24 @@ void TTigress::Clear(Option_t *opt)	{
   fTigressHits.clear();
   fAddbackHits.clear();
   fAddbackFrags.clear();
+  SetBit(TTigress::kAddbackSet,false);
 }
 
-void TTigress::Print(Option_t *opt)	const {
+void TTigress::ClearStatus() {
+  SetBit(TGRSIDetectorHit::kBase + BIT(1),false);
+  SetBit(TGRSIDetectorHit::kBase + BIT(2),false);
+  SetBit(TGRSIDetectorHit::kBase + BIT(3),false);
+  SetBit(TGRSIDetectorHit::kBase + BIT(4),false);
+  SetBit(TGRSIDetectorHit::kBase + BIT(5),false);
+  SetBit(TGRSIDetectorHit::kBase + BIT(6),false);
+  SetBit(TGRSIDetectorHit::kBase + BIT(7),false);
+}
+
+
+void TTigress::Print(Option_t *opt)  const {
   printf("%lu tigress hits\n",fTigressHits.size());
   for(unsigned int i=0;i<GetMultiplicity();i++) 
-     fTigressHits.at(i).Print(opt);
+    fTigressHits.at(i).Print(opt);
 
   return;
 }
@@ -88,7 +106,8 @@ void TTigress::PushBackHit(TGRSIDetectorHit *ghit){
   fTigressHits.push_back(*static_cast<TTigressHit*>(ghit));
 }
 
-TTigressHit* TTigress::GetTigressHit(const int& i) {
+//TTigressHit &TTigress::GetTigressHit(int i) {
+  /*
   try {
     return &(fTigressHits.at(i));
   } catch(const std::out_of_range& oor) {
@@ -97,42 +116,45 @@ TTigressHit* TTigress::GetTigressHit(const int& i) {
       throw grsi::exit_exception(1);
   }
   return NULL;
-}
+  */
+//}
 
 Int_t TTigress::GetAddbackMultiplicity() {
-  // Automatically builds the addback hits using the addback_criterion (if the size of the addback_hits vector is zero) and return the number of addback hits.
+  // Automatically builds the addback hits using the addback_criterion 
+  // (if the size of the addback_hits vector is zero) and return the number of addback hits.
   if(fTigressHits.size() == 0) {
     return 0;
   }
   //if the addback has been reset, clear the addback hits
-  if((fTigressBits & kIsAddbackSet) == 0x0) {
+  if(!TestBit(kAddbackSet)) {
     fAddbackHits.clear();
+  } else {
+    return fAddbackHits.size(); 
   }
-  if(fAddbackHits.size() == 0) {
-    // use the first tigress hit as starting point for the addback hits
-    fAddbackHits.push_back(fTigressHits[0]);
-    fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
-    fAddbackFrags.push_back(1);
+    
+  // use the first tigress hit as starting point for the addback hits
+  fAddbackHits.push_back(fTigressHits[0]);
+  fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
+  fAddbackFrags.push_back(1);
 
-    // loop over remaining tigress hits
-    size_t i, j;
-    for(i = 1; i < fTigressHits.size(); ++i) {
-      // check for each existing addback hit if this tigress hit should be added
-      for(j = 0; j < fAddbackHits.size(); ++j) {
-        if(fAddbackCriterion(fAddbackHits[j], fTigressHits[i])) {
-          fAddbackHits[j].SumHit(&(fTigressHits[i]));
-          fAddbackFrags[j]++;
-          break;
-        }
-      }
-      if(j == fAddbackHits.size()) {
-        fAddbackHits.push_back(fTigressHits[i]);
-        fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
-        fAddbackFrags.push_back(1);
+  // loop over remaining tigress hits
+  size_t i, j;
+  for(i = 1; i < fTigressHits.size(); ++i) {
+    // check for each existing addback hit if this tigress hit should be added
+    for(j = 0; j < fAddbackHits.size(); ++j) {
+      if(fAddbackCriterion(fAddbackHits[j], fTigressHits[i])) {
+        fAddbackHits[j].SumHit(&(fTigressHits[i]));
+        fAddbackFrags[j]++;
+        break;
       }
     }
-    SetBitNumber(kIsAddbackSet, true);
+    if(j == fAddbackHits.size()) {
+      fAddbackHits.push_back(fTigressHits[i]);
+      fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
+      fAddbackFrags.push_back(1);
+    }
   }
+  SetBit(kAddbackSet, true);
 
   return fAddbackHits.size();
 }
@@ -150,35 +172,30 @@ TTigressHit* TTigress::GetAddbackHit(const int& i) {
 }
 
 void TTigress::BuildHits(){
-	
-	//for(size_t i = 0; i<GetMultiplicity(); i++){
-	//	if(GetTigressHit(i)->GetCharge() <= 0.5)
-	//		//DeleteTigressHit(i);
-	//}
+
+  //for(size_t i = 0; i<GetMultiplicity(); i++){
+  //  if(GetTigressHit(i)->GetCharge() <= 0.5)
+  //    //DeleteTigressHit(i);
+  //}
   //erasing elements of a vector in a loop is a bit tricker... pcb.
   std::vector<TTigressHit>::iterator it;
   for( it=fTigressHits.begin();it!=fTigressHits.end();) {
-    double largestsegment = 0.0;
     if((it->GetCharge()/125.0)<5)  {
-       if(it->GetNBGOs()>0 && it->GetNSegments()<1) {  //bgo fired with no core.
-         it = fTigressHits.erase(it);
-         continue;
-       }
+      if(it->GetNBGOs()>0 && it->GetNSegments()<1) {  //bgo fired with no core.
+        it = fTigressHits.erase(it);
+        continue;
+      }
     }
     //it->Print("all");
-    for(int y=0;y<it->GetNSegments();y++) {
-      if(it->GetSegment(y).GetCharge() > largestsegment) {
-        it->SetInitalHit(it->GetSegment(y).GetSegment());
-        largestsegment = it->GetSegment(y).GetCharge();
-      }
-    }  
-		//it->SetPosition(TTigress::GetPosition(it->GetDetector(),it->GetCrystal(),it->GetSegment()));
-    if(it->HasWave() &&TGRSIRunInfo::IsWaveformFitting() ) // this should really be moved to the grsioptions...  pcb.
+    it->SortSegments();
+
+    if(it->HasWave() &&TGRSIRunInfo::IsWaveformFitting() ) 
       it->SetWavefit();
     it++;
   }
-
+  std::sort(fTigressHits.begin(),fTigressHits.end());
 }
+
 
 void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
   if(frag == NULL || mnemonic == NULL) {
@@ -190,57 +207,59 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
   //printf("%s %s called.\n",__PRETTY_FUNCTION__,channel->GetChannelName());
   //fflush(stdout);
 
-  if((mnemonic->subsystem.compare(0,1,"G")==0) && (channel->GetSegmentNumber()==0 || channel->GetSegmentNumber()==9) ) { // it is a core
-    //if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
-    //  return;
+  if((mnemonic->subsystem.compare(0,1,"G")==0) && 
+     (channel->GetSegmentNumber()==0 || 
+      channel->GetSegmentNumber()==9) ) { // it is a core
     TTigressHit corehit; //(*frag);
     //loop over existing hits to see if this core was already created by a previously found segment
     //of course this means if we have a core in "coincidence" with itself we will overwrite the first hit
-    for(size_t i = 0; i < fTigressHits.size(); ++i)	{
-      TTigressHit *hit = GetTigressHit(i);
-      if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
-        //if(hit->Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
+    for(size_t i = 0; i < fTigressHits.size(); ++i)  {
+      TTigressHit *hit = &fTigressHits[i]; //GetTigressHit(i);
+      if((hit->GetDetector() == channel->GetDetectorNumber()) && 
+          (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
+          //if(hit->Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   
+          //// sanity check, it has a good energy and time (cfd or led).
         if(mnemonic->outputsensor.compare(0,1,"b")==0) {
           if(hit->GetName()[9] == 'a') {
             return;
           } else  {
             hit->CopyFragment(*frag);
-            if(TestBitNumber(kSetCoreWave))
-              hit->CopyWaveform(*frag);
+            if(TestBit(kSetCoreWave))
+              hit->CopyWave(*frag);
             return;
           }
         } else {
           hit->CopyFragment(*frag);
-          if(TestBitNumber(kSetCoreWave))
-             hit->CopyWaveform(*frag);
+          if(TestBit(kSetCoreWave))
+            hit->CopyWave(*frag);
           return;
         }
       }
     }
     corehit.CopyFragment(*frag);
-    if(TestBitNumber(kSetCoreWave))
-      corehit.CopyWaveform(*frag);
+    if(TestBit(kSetCoreWave))
+      corehit.CopyWave(*frag);
     fTigressHits.push_back(corehit);
     return;
   } else if(mnemonic->subsystem.compare(0,1,"G")==0) { // its ge but its not a core...
-    if(!SetSegmentHits()) 
-      return;
+    //if(!TestBit(SetSegments) 
+    //  return;
     TGRSIDetectorHit temp(*frag);
-    for(size_t i = 0; i < fTigressHits.size(); ++i)	{
-      TTigressHit *hit = GetTigressHit(i);
-      if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
-        if(TestBitNumber(kSetSegWave))         
-          temp.CopyWaveform(*frag);
+    for(size_t i = 0; i < fTigressHits.size(); ++i)  {
+      TTigressHit *hit = &fTigressHits[i]; //GetTigressHit(i);
+      if((hit->GetDetector() == channel->GetDetectorNumber()) && 
+         (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
+        if(TestBit(kSetSegWave))         
+          temp.CopyWave(*frag);
         hit->AddSegment(temp);
         //printf(" I found a core !\t%i\n",hit->GetNSegments()); fflush(stdout);
         return;
       }
     }
     TTigressHit corehit;
-    //corehit.SetAddress( (frag->ChannelAddress&0xfffffff0) );  // fake it till you make it.
-    corehit.SetAddress( (frag->ChannelAddress) );  // the above only works if tigress is it's 'normal' setup
-    if(TestBitNumber(kSetSegWave))         
-       temp.CopyWaveform(*frag);
+    corehit.SetAddress( (frag->GetAddress()) );  // fake it till you make it 
+    if(TestBit(kSetSegWave))         
+      temp.CopyWave(*frag);
     corehit.AddSegment(temp);
     fTigressHits.push_back(corehit);
     //if(fTigressHits.size()>100) {
@@ -248,29 +267,29 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     //   fflush(stdout);
     //}
     return;
-  } else if(SetBGOHits() && mnemonic->subsystem.compare(0,1,"S")==0) {
+  } else if(TestBit(kSetBGOs) && mnemonic->subsystem.compare(0,1,"S")==0) {
     TGRSIDetectorHit temp(*frag);
-    for(size_t i = 0; i < fTigressHits.size(); ++i)	{
-      TTigressHit *hit = GetTigressHit(i);
-      if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
-        if(TestBitNumber(kSetBGOWave))         
-          temp.CopyWaveform(*frag);
-        GetTigressHit(i)->AddBGO(temp);
+    for(size_t i = 0; i < fTigressHits.size(); ++i)  {
+      TTigressHit *hit = &fTigressHits[i]; //GetTigressHit(i);
+      if((hit->GetDetector() == channel->GetDetectorNumber()) && 
+         (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
+        if(TestBit(kSetBGOWave))         
+          temp.CopyWave(*frag);
+        hit->AddBGO(temp);
         return;
       }
     }
     TTigressHit corehit;
-    corehit.SetAddress(frag->ChannelAddress);  // this makes me uncomfortable, though I have no slick solution.
-    if(TestBitNumber(kSetBGOWave))         
-      temp.CopyWaveform(*frag);
+    corehit.SetAddress(frag->GetAddress());  // this makes me uncomfortable, though I have no slick solution.
+    if(TestBit(kSetBGOWave))         
+      temp.CopyWave(*frag);
     corehit.AddBGO(temp);
     fTigressHits.push_back(corehit);
     return;
   }
   //if not suprress errors;
-  frag->Print();
   printf(ALERTTEXT "failed to build!" RESET_COLOR "\n");
-
+  frag->Print();
   return;
 }
 
@@ -281,7 +300,7 @@ void TTigress::ResetAddback() {
   ///be called before building the new addback hits, otherwise, a copy of
   ///the old addback hits will be stored instead.
   ///This should have changed now, we're using the stored tigress bits to reset the addback
-  SetBitNumber(kIsAddbackSet, false);
+  SetBit(kAddbackSet, false);
   fAddbackHits.clear();
   fAddbackFrags.clear();
 }
@@ -295,34 +314,27 @@ UShort_t TTigress::GetNAddbackFrags(size_t idx) const{
     return 0;
 }
 
-void TTigress::SetBitNumber(enum ETigressBits bit,Bool_t set){
-  //Used to set the flags that are stored in TTigress.
-  if(set)
-    fTigressBits |= bit;
-  else
-    fTigressBits &= (~bit);
+
+//void TTigress::DopplerCorrect(TTigressHit *hit)  {
+//  if(beta != 0.00)  {
+//    double gamma = 1/(sqrt(1-pow(beta,2)));
+//    double tmp = hit->GetEnergy()*gamma *(1 - beta*hit->GetPosition().CosTheta());
+
+//    hit->SetDoppler(tmp);
+//  }
+//  else {
+//    printf(DRED "\n\tWARNING!  Try to Doppler correct before setting beta!" RESET_COLOR "\n");
+//  }
+//}
+
+
+
+
+TVector3 TTigress::GetPosition(const TTigressHit &hit, double dist)  {
+  return TTigress::GetPosition(hit.GetDetector(),hit.GetCrystal(),hit.GetFirstSeg(),dist);
 }
 
-//void TTigress::DopplerCorrect(TTigressHit *hit)	{
-//	if(beta != 0.00)	{
-//		double gamma = 1/(sqrt(1-pow(beta,2)));
-//		double tmp = hit->GetEnergy()*gamma *(1 - beta*hit->GetPosition().CosTheta());
-
-//		hit->SetDoppler(tmp);
-//	}
-//	else {
-//		printf(DRED "\n\tWARNING!  Try to Doppler correct before setting beta!" RESET_COLOR "\n");
-//	}
-//}
-
-
-
-
-//TVector3 TTigress::GetPosition(TTigressHit *hit, int dist)  {
-//			return TTigress::GetPosition(hit->GetDetectorNumber(),hit->GetCrystalNumber(),hit->GetInitialHit());	
-//}
-
-TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist)	{
+TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist)  {
   TVector3 det_pos;
   double xx = 0;
   double yy = 0;
@@ -330,7 +342,7 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist)	{
 
   //printf("xx = %f\nyy = %f\n zz = %f\n",GeBluePosition[DetNbr][SegNbr][0],GeBluePosition[DetNbr][SegNbr][1],GeBluePosition[DetNbr][SegNbr][2]);
 
-  switch(CryNbr)	{
+  switch(CryNbr)  {
     case -1:
       break;
     case 0:

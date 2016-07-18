@@ -39,8 +39,8 @@ void TTriFoil::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 		return;
 	}
 	
-	if(!(frag->wavebuffer.empty())) {
-		fTfWave = frag->wavebuffer;
+	if(!(frag->GetWaveform()->empty())) {
+		fTfWave = *(frag->GetWaveform());
 	}
 	//fTimestamp = frag->GetTimeStamp();
 	int max = 0;

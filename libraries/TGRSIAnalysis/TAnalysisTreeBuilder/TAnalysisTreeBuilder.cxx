@@ -755,7 +755,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
     MNEMONIC mnemonic;
     std::map<std::string, TDetector*>* detectors = new std::map<std::string, TDetector*>;
     for(size_t i=0;i<event->size();i++) {
-      TChannel* channel = TChannel::GetChannel(event->at(i).ChannelAddress);
+      TChannel* channel = TChannel::GetChannel(event->at(i).GetAddress());
       if(!channel)
         continue;
       ClearMNEMONIC(&mnemonic);
