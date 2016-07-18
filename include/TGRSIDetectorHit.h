@@ -58,13 +58,13 @@ class TGRSIDetectorHit : public TObject 	{
          kBit7          = BIT(7),
          kBit8          = BIT(8),
          //reserved for derived class.
-         kBit9          = BIT(9),
-         kBit10         = BIT(10),
-         kBit11         = BIT(11),
-         kBit12         = BIT(12),
-         kBit13         = BIT(13),
-         kBit14         = BIT(14),
-         kBit15         = BIT(15),
+         kDetHitBit0    = BIT(9),
+         kDetHitBit1    = BIT(10),
+         kDetHitBit2    = BIT(11),
+         kDetHitBit3    = BIT(12),
+         kDetHitBit4    = BIT(13),
+         kDetHitBit5    = BIT(14),
+         kDetHitBit6    = BIT(15),
          kBase          = BIT(9),
          kIsAllSet      = 0xFFFF
       };

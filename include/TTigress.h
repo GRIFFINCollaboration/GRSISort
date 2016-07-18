@@ -22,13 +22,13 @@
 class TTigress : public TGRSIDetector {
   public:
     enum ETigressBits {
-      kAddbackSet   = TGRSIDetectorHit::kBase + BIT(0),
-      kSetBGOs      = TGRSIDetectorHit::kBase + BIT(1),
-      kBit3         = TGRSIDetectorHit::kBase + BIT(2),
-      kBit4         = TGRSIDetectorHit::kBase + BIT(3),
-      kSetBGOWave   = TGRSIDetectorHit::kBase + BIT(4),
-      kSetCoreWave  = TGRSIDetectorHit::kBase + BIT(5),
-      kSetSegWave   = TGRSIDetectorHit::kBase + BIT(6),
+      kAddbackSet   = TGRSIDetectorHit::kDetHitBit0,
+      kSetBGOs      = TGRSIDetectorHit::kDetHitBit1,
+      kBit3         = TGRSIDetectorHit::kDetHitBit2,
+      kBit4         = TGRSIDetectorHit::kDetHitBit3,
+      kSetBGOWave   = TGRSIDetectorHit::kDetHitBit4,
+      kSetCoreWave  = TGRSIDetectorHit::kDetHitBit5,
+      kSetSegWave   = TGRSIDetectorHit::kDetHitBit6
     };
 
     std::vector<std::vector<TFragment*> > SegmentFragments;
