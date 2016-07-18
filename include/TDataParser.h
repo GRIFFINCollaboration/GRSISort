@@ -69,9 +69,12 @@ class TDataParser {
     static int FifoToFragment(unsigned short *data,int size,bool zerobuffer=false,
                               unsigned int midasSerialNumber=0, time_t midasTime=0); 
 
+
+
   private:
     //utility
     static void DeleteAll(std::vector<TFragment*>*);
+    static void GRIFNormalizeFrags(std::vector<TFragment*> *Frags);
 
   private:
     static void SetTIGWave(uint32_t, TFragment*);
