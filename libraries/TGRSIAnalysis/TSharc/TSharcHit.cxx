@@ -78,7 +78,8 @@ Double_t TSharcHit::GetTheta(double Xoff, double Yoff, double Zoff) {
 
 
 void TSharcHit::SetFront(const TFragment& frag) { 
-  CopyFragment(frag);
+  frag.Copy(*this);
+  //Copy(frag);
   //SetPosition(TSharc::GetPosition(TGRSIDetector::GetDetector(),
   //                           TGRSIDetector::GetSegment(),
   //                           GetBack()->GetSegment(),
@@ -86,9 +87,11 @@ void TSharcHit::SetFront(const TFragment& frag) {
 }
 
 void TSharcHit::SetBack(const TFragment& frag) { 
-  fBackHit.CopyFragment(frag);
+  frag.Copy(fBackHit);
+  //fBackHit.Copy(frag);
 }
 
 void TSharcHit::SetPad(const TFragment& frag) { 
-  fPadHit.CopyFragment(frag);
+  frag.Copy(fPadHit);
+  //fPadHit.Copy(frag);
 }

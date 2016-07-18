@@ -24,80 +24,82 @@
 #include "TChannel.h"
 #include "Globals.h"
 
+#include "TDataParser.h"
+
 class TGRSILoop : public TObject {
-   public:
-      static TGRSILoop* Get();
-      virtual ~TGRSILoop();
+  public:
+    static TGRSILoop* Get();
+    virtual ~TGRSILoop();
 
-   private:
-      static TGRSILoop* fTGRSILoop;
-      static bool fSuppressError;
-      TGRSILoop();
+  private:
+    static TGRSILoop* fTGRSILoop;
+    static bool fSuppressError;
+    TGRSILoop();
 
-   public:
-      void Initialize();
-      void BeginRun(int transition, int runnumber, int time);
-      void EndRun(int transition, int runnumber, int time);
-      void Finalize();
+  public:
+    void Initialize();
+    void BeginRun(int transition, int runnumber, int time);
+    void EndRun(int transition, int runnumber, int time);
+    void Finalize();
 
-   private:
-      bool fTestMode;
-      bool fOffline;   
+  private:
+    bool fTestMode;
+    bool fOffline;   
 
-      bool fIamTigress;
-      bool fIamGriffin;
+    bool fIamTigress;
+    bool fIamGriffin;
 
-      TXMLOdb* fOdb;
+    TXMLOdb* fOdb;
 
-      int fFragsReadFromMidas;
-      int fFragsSentToTree;
-		int fBadFragsSentToTree;
-		int fDeadtimeScalersSentToTree;
-		int fRateScalersSentToTree;
- 
-   #if !defined (__CINT__) && !defined (__CLING__)
-      std::thread* fMidasThread;
-      std::thread* fFillTreeThread;
-      std::thread* fFillScalerThread;
+    int fFragsReadFromMidas;
+    int fFragsSentToTree;
+    int fBadFragsSentToTree;
+    int fDeadtimeScalersSentToTree;
+    int fRateScalersSentToTree;
 
-		static std::mutex fMutex;
-   #endif
+#if !defined (__CINT__) && !defined (__CLING__)
+    std::thread* fMidasThread;
+    std::thread* fFillTreeThread;
+    std::thread* fFillScalerThread;
 
-   public:
-      bool fMidasThreadRunning;
-      bool fFillTreeThreadRunning;
-      bool fFillScalerThreadRunning;
-      
-      void SetSuppressError(bool temp = true) { fSuppressError = temp; } 
-      bool IsOnline()   { return !fOffline;  }
-      bool IsOffline()  { return fOffline;   }
+    static std::mutex fMutex;
+#endif
 
-      bool SortMidas();
-      void ProcessMidasFile(TMidasFile*);
-      void FillFragmentTree(TMidasFile*);
-      void FillScalerTree();
-      bool ProcessMidasEvent(TMidasEvent*,TMidasFile* mFile=0);
-      bool ProcessTIGRESS(uint32_t* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0); 
-      bool ProcessGRIFFIN(uint32_t* ptr,int& dSize,int bank,TMidasEvent* mEvent=0,TMidasFile* mFile=0); 
-      bool Process8PI(uint32_t stream,uint32_t* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0);
-      bool ProcessEPICS(float* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0);
-      //bool ProcessEPICS(double* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0);
+  public:
+    bool fMidasThreadRunning;
+    bool fFillTreeThreadRunning;
+    bool fFillScalerThreadRunning;
 
-      void SetFileOdb(char* data,int size);
-      void SetTIGOdb();
-      void SetGRIFFOdb();
+    void SetSuppressError(bool temp = true) { fSuppressError = temp; } 
+    bool IsOnline()   { return !fOffline;  }
+    bool IsOffline()  { return fOffline;   }
 
-      int GetFragsSentToTree()    { return fFragsSentToTree; }
-      int GetFragsReadFromMidas() { return fFragsReadFromMidas; }
+    bool SortMidas();
+    void ProcessMidasFile(TMidasFile*);
+    void FillFragmentTree(TMidasFile*);
+    void FillScalerTree();
+    bool ProcessMidasEvent(TMidasEvent*,TMidasFile* mFile=0);
+    bool ProcessTIGRESS(uint32_t* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0); 
+    bool ProcessGRIFFIN(uint32_t* ptr,int& dSize,TDataParser::EBank,TMidasEvent* mEvent=0,TMidasFile* mFile=0); 
+    bool Process8PI(uint32_t stream,uint32_t* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0);
+    bool ProcessEPICS(float* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0);
+    //bool ProcessEPICS(double* ptr,int& dSize,TMidasEvent* mEvent=0,TMidasFile* mFile=0);
 
-      static bool GetSuppressError() { return fSuppressError; } 
+    void SetFileOdb(char* data,int size);
+    void SetTIGOdb();
+    void SetGRIFFOdb();
 
-      void Clear(Option_t* opt="");
-      void Print(Option_t* opt="") const;
+    int GetFragsSentToTree()    { return fFragsSentToTree; }
+    int GetFragsReadFromMidas() { return fFragsReadFromMidas; }
 
-/// \cond CLASSIMP
-   ClassDef(TGRSILoop,0)
-/// \endcond
+    static bool GetSuppressError() { return fSuppressError; } 
+
+    void Clear(Option_t* opt="");
+    void Print(Option_t* opt="") const;
+
+    /// \cond CLASSIMP
+    ClassDef(TGRSILoop,0)
+      /// \endcond
 };
 /*! @} */
 #endif

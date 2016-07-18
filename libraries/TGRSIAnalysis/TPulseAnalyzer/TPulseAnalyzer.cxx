@@ -48,7 +48,7 @@ void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac) {
 			T0RANGE=8*noise_fac;	
 		}
 		//frag=&fragment;
-		wavebuffer=fragment.wavebuffer;
+		wavebuffer=*(fragment.GetWaveform());
 		N=wavebuffer.size();
 		if(N>0)	set=true;
 	}
