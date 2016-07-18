@@ -42,10 +42,6 @@ class TFragment : public TGRSIDetectorHit	{
     Int_t  ccShort;
     Int_t  ccLong; 
     Int_t  Led;    
-    UShort_t  KValue;    //-> KValue for each pileup hit
-
-    Int_t TimeStampLow;            //->  Timestamp low bits
-    Int_t TimeStampHigh;           //->  Timestamp high bits
 
     /// Added to combine Grif Fragment  ////
 
@@ -59,31 +55,26 @@ class TFragment : public TGRSIDetectorHit	{
     //UInt_t AcceptedChannelId;    //-> Accepted threshold crossing counter for a channel
 
     /// *****************************  ////
-    void SetKValue(UShort_t val)  { KValue = val; }
     void SetZc(Int_t val)         { Zc     = val; }
-
-
-    std::vector<Short_t>  wavebuffer;//-> waveform words
 
     TPPG* fPPG; //!<!
 
     int NumberOfHits;  //!<! transient member to count the number of pile-up hits in the original fragment
-    int HitIndex;      //!<! transient member indicating which pile-up hit this is in the original fragment
+    int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment
 
     double GetTZero() const; //!<!
-    long GetTimeStamp_ns() const; //!<!
+    Long_t GetTimeStamp_ns() const; //!<!
     ULong64_t GetTimeInCycle(); //!<!
     ULong64_t GetCycleNumber(); //!<!
 
     time_t GetMidasTimeStamp()      const { return MidasTimeStamp; }  //!<!
-    //Short_t GetChannelNumber()      const { return ChannelNumber; }  //!<!
+    Int_t  GetChannelNumber()      const { TChannel *c=GetChannel();if(c) return c->GetNumber(); return -1; }  //!<!
     Int_t GetZc()                   const { return Zc; } //!<! 
     Int_t GetLed()                  const { return Led; }  //!<!
     Int_t GetCcShort()              const { return ccShort; }  //!<!
     Int_t GetCcLong()               const { return ccLong; }  //!<!
-    UShort_t GetKValue()            const { return KValue; }  //!<! 
     UShort_t GetDeadTime()          const { return DeadTime; }  //!<!
-    //UInt_t GetChannelId()           const { return ChannelId; }  //!<!
+    UInt_t GetChannelId()           const { return ChannelId; }  //!<!
 
     Int_t Get4GCfd(size_t i=0) const; //!<!
 
