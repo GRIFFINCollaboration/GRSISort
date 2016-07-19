@@ -214,7 +214,7 @@ Float_t TFragment::GetCharge(size_t i) const {
 
 ULong64_t TFragment::GetTimeInCycle() {
    if(fPPG == NULL) {
-		fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+		fPPG = TPPG::Get();//static_cast<TPPG*>(gROOT->FindObject("TPPG"));
    }
    if(fPPG == NULL) {
       return 0;
@@ -224,7 +224,7 @@ ULong64_t TFragment::GetTimeInCycle() {
 
 ULong64_t TFragment::GetCycleNumber() {
    if(fPPG == NULL) {
-		fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+		fPPG = TPPG::Get();//static_cast<TPPG*>(gROOT->FindObject("TPPG"));
    }
    if(fPPG == NULL) {
       return 0;
