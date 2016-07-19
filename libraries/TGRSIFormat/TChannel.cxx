@@ -382,7 +382,7 @@ void TChannel::DestroyCalibrations()   {
 	DestroyEFFCal();
 }
 
-Float_t TChannel::CalibrateENG(int charge,int temp_int) {
+double TChannel::CalibrateENG(int charge,int temp_int) {
 	///Returns the calibrated energy of the channel when a charge is passed to it. 
 	///This is done by first adding a random number between 0 and 1 to the charge
 	///bin. This is then taken and divided by the integration parameter. The 
@@ -401,20 +401,27 @@ Float_t TChannel::CalibrateENG(int charge,int temp_int) {
 
 	//We need to add a random number between 0 and 1 before calibrating to avoid
 	//binning issues.
-	return CalibrateENG(((Float_t)charge+(Float_t)(gRandom->Uniform())) / (Float_t)temp_int);
+	return CalibrateENG(((double)charge + gRandom->Uniform()) / (double)temp_int);
 }
 
-Float_t TChannel::CalibrateENG(Float_t charge) {
-	///Returns the calibrated energy. The polynomial energy calibration formula is 
-	///applied to get the calibrated energy. This function does not use the 
-	///integration parameter.
-	if(fENGCoefficients.size() == 0)
-		return charge;
-	Float_t cal_chg = fENGCoefficients[0];
-	for(size_t i = 1; i < fENGCoefficients.size(); i++){
-		cal_chg += fENGCoefficients[i]*  pow((charge),i);
-	}
-	return cal_chg;
+
+double TChannel::CalibrateENG(double charge,int temp_int) {
+	///Returns the calibrated energy of the channel when a charge is passed to it. 
+	///This is divided by the integration parameter. The 
+	///polynomial energy calibration formula is then applied to get the calibrated
+	///energy.
+	if(charge==0) 
+		return 0.0000;
+
+	//int temp_int = 1; //125.0;
+	if(temp_int==0) {
+		if(fIntegration != 0)
+			temp_int = (int)fIntegration;  //the 4 is the dis. 
+		else
+			temp_int = 1;
+	} 
+
+	return CalibrateENG(((double)charge) / (double)temp_int);
 }
 
 double TChannel::CalibrateENG(double charge) {

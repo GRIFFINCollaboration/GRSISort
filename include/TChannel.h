@@ -167,9 +167,9 @@ class TChannel : public TNamed	{
       inline void SetTIMEChi2(double temp) { fTIMEChi2 = temp; }
       inline void SetEFFChi2(double temp)  { fEFFChi2 = temp; } 
 
-      double  CalibrateENG(double);
-      Float_t CalibrateENG(Float_t);
-      Float_t CalibrateENG(int,int integration=0);
+      double CalibrateENG(double);
+      double CalibrateENG(double, int integration);
+      double CalibrateENG(int,int integration=0);
 
       double CalibrateCFD(double);
       double CalibrateCFD(int);
