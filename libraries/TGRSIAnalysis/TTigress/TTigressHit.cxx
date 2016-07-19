@@ -23,7 +23,8 @@ TTigressHit::TTigressHit(const TFragment &frag) : TGRSIDetectorHit(frag) {
 }
 
 void TTigressHit::CopyFragment(const TFragment &frag) {
-  TGRSIDetectorHit::Copy((TGRSIDetectorHit&)frag,false);
+  //TGRSIDetectorHit::Copy((TGRSIDetectorHit&)frag,false);
+  frag.Copy(*this);
 }
 
 

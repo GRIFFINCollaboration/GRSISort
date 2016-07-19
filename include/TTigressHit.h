@@ -47,9 +47,9 @@ class TTigressHit : public TGRSIDetectorHit {
   public:
     void SetHit() {}
     /////////////////////////    /////////////////////////////////////
-    void SetCore(TGRSIDetectorHit& core)      { Copy(core);  }               //!<!
-    void AddSegment(TGRSIDetectorHit& seg)    { fSegments.push_back(seg);  } //!<!
-    void AddBGO(TGRSIDetectorHit& bgo)        { fBgos.push_back(bgo);  }     //!<!
+    void SetCore(const TTigressHit& core)           { core.Copy(*this);  }               //!<!
+    void AddSegment(const TGRSIDetectorHit& seg)    { fSegments.push_back(seg);  } //!<!
+    void AddBGO(const TGRSIDetectorHit& bgo)        { fBgos.push_back(bgo);  }     //!<!
     //void SetInitalHit(const int &i)     { fFirstSegment = i; }        //!<!
 
     /////////////////////////    /////////////////////////////////////

@@ -41,6 +41,7 @@ TTigress::TTigress() : TGRSIDetector() {
   Clear();
 
   SetBit(TTigress::kSetCoreWave);
+  SetBit(TTigress::kSetBGOs,1);
   SetBit(TTigress::kSetSegWave,0);
   SetBit(TTigress::kSetBGOWave,0);
 
@@ -187,13 +188,15 @@ void TTigress::BuildHits(){
       }
     }
     //it->Print("all");
-    it->SortSegments();
+    if(it->GetNSegments()>1)
+      it->SortSegments();
 
     if(it->HasWave() &&TGRSIRunInfo::IsWaveformFitting() ) 
       it->SetWavefit();
     it++;
   }
-  std::sort(fTigressHits.begin(),fTigressHits.end());
+  if(fTigressHits.size()>1)  
+    std::sort(fTigressHits.begin(),fTigressHits.end());
 }
 
 
@@ -206,6 +209,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 
   //printf("%s %s called.\n",__PRETTY_FUNCTION__,channel->GetChannelName());
   //fflush(stdout);
+  ///frag->Print("all");
 
   if((mnemonic->subsystem.compare(0,1,"G")==0) && 
      (channel->GetSegmentNumber()==0 || 

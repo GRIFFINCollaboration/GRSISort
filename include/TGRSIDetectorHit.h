@@ -80,7 +80,7 @@ class TGRSIDetectorHit : public TObject 	{
 
       static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
 
-      bool operator<(const TGRSIDetectorHit &rhs) const { return GetEnergy()>GetEnergy();} //sorts large->small
+      bool operator<(const TGRSIDetectorHit &rhs) const { return GetEnergy() > rhs.GetEnergy();} //sorts large->small
 
 
    public:
