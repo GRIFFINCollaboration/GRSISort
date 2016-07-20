@@ -158,7 +158,6 @@ class TAnalysisTreeBuilder : public TObject {
       void SortFragmentTree();
       void SortFragmentTreeByTimeStamp();
 
-      void InitChannels();
 
       void SetupOutFile();
       void SetupAnalysisTree();
@@ -181,6 +180,9 @@ class TAnalysisTreeBuilder : public TObject {
 
    private:
       TAnalysisTreeBuilder(); 
+      void InitChannels();
+      void LoadPPG();
+      void LoadRunInfo();
 
       static const size_t MEM_SIZE;                         ///< Sets the minimum amount of memory used to hold the frament tree
 

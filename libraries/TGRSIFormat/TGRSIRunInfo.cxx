@@ -188,7 +188,7 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
 
    TList *list =  tempf->GetListOfKeys();
    TIter iter(list);
-   printf("Reading Info from file: %s\n",tempf->GetName());
+   printf("Reading Info from file:" CYAN " %s" RESET_COLOR "\n",tempf->GetName());
    while(TKey *key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo"))
          continue;
@@ -397,9 +397,11 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
    //An example can be found in the "examples" directory.
    std::string infilename;
    infilename.append(filename);
-   printf("Reading file: %s\n",filename);
-   if(infilename.length()==0)
+   printf("Reading info from file:" CYAN " %s" RESET_COLOR "\n",filename);
+   if(infilename.length()==0){
+      printf("Bad file name length\n");
       return false;
+   }
 
    std::ifstream infile;
    infile.open(infilename.c_str());
@@ -602,6 +604,7 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr) {
       Get()->Write();
    }
 
+   printf("Writing Run Information to %s\n",gDirectory->GetFile()->GetName());
 	if(oldoption == "READ") {
 		printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
 		fileptr->ReOpen("READ");
