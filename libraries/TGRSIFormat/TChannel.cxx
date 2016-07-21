@@ -76,8 +76,8 @@ TChannel::TChannel(TChannel* chan) {
 
 
 void TChannel::InitChannelInput() {
-	int channels_found = ParseInputData(fFileData.c_str()); 
-	printf("Successfully read %i TChannels from File\n",channels_found);  
+	int channels_found = ParseInputData(fFileData.c_str(),"q"); 
+	printf("Successfully read %i TChannels from" CYAN " %s" RESET_COLOR "\n",channels_found,gFile->GetName());  
 	return;
 }
 
@@ -636,9 +636,6 @@ void TChannel::WriteCalFile(std::string outfilename) {
 		}
 	}
 
-
-
-
 	/*
 		FILE* c_outputfile;
 		if(outfilename.length()>0) {
@@ -749,6 +746,7 @@ Int_t TChannel::ReadCalFile(const char* filename) {
 	if(infilename.length()==0)
 		return -1;
 
+   printf("Reading from calibration file:" CYAN " %s" RESET_COLOR ".....",filename); 
 	std::ifstream infile;
 	infile.open(infilename.c_str());
 	if (!infile) {

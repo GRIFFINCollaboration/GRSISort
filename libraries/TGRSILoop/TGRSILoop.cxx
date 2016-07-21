@@ -280,15 +280,28 @@ void TGRSILoop::ProcessMidasFile(TMidasFile* midasFile) {
                inCalFile.clear();
 					inCalFile.assign(TGRSIOptions::GetCalFile(midasFile->GetRunNumber(),midasFile->GetSubRunNumber()));
 					if(inCalFile.length()>0) {
-						TChannel::ReadCalFile(inCalFile.c_str());
+						//TChannel::ReadCalFile(inCalFile.c_str());
+                  //Not really sure if this is how we want teh next stuff to work anymore
                   TGRSIRunInfo::SetXMLODBFileName(inCalFile.c_str());
 						std::ifstream inputCal; inputCal.open(inCalFile.c_str()); inputCal.seekg(0,std::ios::end);
 						int length = inputCal.tellg(); inputCal.seekg(0,std::ios::beg);
 						char* buffer = new char[length]; inputCal.read(buffer,length);
                   TGRSIRunInfo::SetXMLODBFileData(buffer);
                }
+               //Read the external Calibration data.
+	            if(TGRSIOptions::GetInputCal().size() > 0){
+		            for(size_t i =0; i<TGRSIOptions::GetInputCal().size();++i){
+			            TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
+		            }
+	            }
                TGRSIRunInfo::SetRunInfo(midasFile->GetRunNumber(),midasFile->GetSubRunNumber());
                TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
+               //Now we read external RunInfo information.
+               if(TGRSIOptions::ExternalRunInfo()){
+                  for(size_t i=0; i<TGRSIOptions::GetExternalRunInfo().size();++i){
+                     TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions::GetExternalRunInfo().at(i).c_str());
+                  }
+               }
             }
             break;
          case 0x8001:

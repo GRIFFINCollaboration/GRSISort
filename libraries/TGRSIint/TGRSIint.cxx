@@ -97,56 +97,62 @@ void TGRSIint::ApplyOptions() {
       fnews.detach();
    }
 
-
    if(fAutoSort){
+     //Since MIDAS gets much of it's channel and info information out of the ODB, we must read that information
+     //during "SortMidas." This means that we have to be able to access the channel and info information in
+     //the SortMidas stage and not directly here.
      TGRSILoop::Get()->SortMidas();
    }
    //bool foundCal = false;
    if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0) { 
+      //At this point we sort a fragment tree into an analysis tree if MakeAnalysysTree returns true.
+      //We want to read all the info and channel information at this point that we can, but overwrite the tree's
+      //channels and information if we need to
       TAnalysisTreeBuilder::Get()->StartMakeAnalysisTree();
    }
+
+   //Now we want to open any root files that may have been created or input on the command line to be able to
+   //play with unless the -q command has been called.
    for(int x=0;x<(int)(TGRSIOptions::GetInputRoot().size());x++) {
-      //printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
-      long error = ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
-      if(error <=0) continue;
+      ///printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
+   //   printf("made it here");
+    //  TFile *tmpfile = new TFile(TGRSIOptions::GetInputRoot().at(x).c_str(),"read");
+     // tmpfile->SetName(Form("_file%d",x));
+     // if(tmpfile->IsOpen())
+       //  std::cout << "Read file " << tmpfile->GetName() << std::endl;
+      ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
       TFile *file = (TFile*)gROOT->GetListOfFiles()->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
-		if(file != NULL) {
+      if((file != NULL) && file->IsOpen()){
 			printf("\tfile %s opened as _file%i\n",file->GetName(),x);
 			TGRSIRootIO::Get()->LoadRootFile(file);
+         TChannel::ReadCalFromCurrentFile();
+         TGRSIRunInfo::Get()->ReadInfoFromFile();
 		} else {
 			printf("\tfailed to open file '%s' as _file%i (file = %p)\n", TGRSIOptions::GetInputRoot().at(x).c_str(), x, static_cast<void*>(file));
 		}
 	}
-	// if(TGRSIOptions::GetInputRoot().size() > 0 && !fAutoSort && !fFragmentSort) {
-	if(TGRSIOptions::GetInputRoot().size() > 0 && !fAutoSort) {
-		if(TGRSIOptions::GetInputRoot().at(0).find("fragment") != std::string::npos){
-			Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(FragmentTree)");
-			printf("Read calibration info for %d channels from \"%s\" FragmentTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str()); 
-			TGRSIRunInfo::ReadInfoFromFile();
-		}   
-		if(TGRSIOptions::GetInputRoot().at(0).find("analysis") != std::string::npos){ 
-			Int_t chans_read = ProcessLine("TChannel::ReadCalFromTree(AnalysisTree)");    
-			printf("Read calibration info for %d channels from \"%s\" AnalysisTree\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
-			TGRSIRunInfo::ReadInfoFromFile();
-		}
-		if(TGRSIOptions::GetInputRoot().at(0).find("hists") != std::string::npos){ 
-			Int_t chans_read = ProcessLine("TChannel::ReadCalFromCurrentFile()");    
-			printf("Read calibration info for %d channels from \"%s\" HistFile\n",chans_read,TGRSIOptions::GetInputRoot().at(0).c_str());
-			// TGRSIRunInfo::ReadInfoFromFile(); Not implemented yet
-		}
-	}
-   if(TGRSIOptions::ExternalRunInfo()){
-      for(size_t i=0; i<TGRSIOptions::GetExternalRunInfo().size();++i){
-         TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions::GetExternalRunInfo().at(i).c_str());
+   //This is called if we are loading root files without sorting anything
+	if(TGRSIOptions::GetInputRoot().size() > 0 && !fAutoSort && !fFragmentSort && !TGRSIOptions::MakeAnalysisTree()) {
+      
+      //Read external calibration and run info files.
+      if(TGRSIOptions::ExternalRunInfo()){
+         for(size_t i=0; i<TGRSIOptions::GetExternalRunInfo().size();++i){
+            TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions::GetExternalRunInfo().at(i).c_str());
+         }
       }
+
+	   if(TGRSIOptions::GetInputCal().size() > 0){
+		   for(size_t i =0; i<TGRSIOptions::GetInputCal().size();++i){
+		   	TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
+		   }
+      }
+      //Run info and calibration might not be what user wants if multiple fragment and analysis files read
+      //simultaneously. We should wanr them loudly.
+      if(TGRSIOptions::GetInputRoot().size() > 1){
+         printf(DRED "Multiple root files loaded, check run info and calibration!\n" RESET_COLOR);
+      }
+	   
    }
-
-	if(TGRSIOptions::GetInputCal().size() > 0){
-		for(size_t i =0; i<TGRSIOptions::GetInputCal().size();++i){
-			TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
-		}
-	}
-
 	if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
 		TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
 

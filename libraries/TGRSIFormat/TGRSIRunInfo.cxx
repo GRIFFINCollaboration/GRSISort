@@ -188,7 +188,7 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
 
    TList *list =  tempf->GetListOfKeys();
    TIter iter(list);
-   printf("Reading Info from file: %s\n",tempf->GetName());
+   printf("Reading Info from file:" CYAN " %s" RESET_COLOR "\n",tempf->GetName());
    while(TKey *key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo"))
          continue;
@@ -397,9 +397,11 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char *filename) {
    //An example can be found in the "examples" directory.
    std::string infilename;
    infilename.append(filename);
-   printf("Reading file: %s\n",filename);
-   if(infilename.length()==0)
+   printf("Reading info from file:" CYAN " %s" RESET_COLOR "\n",filename);
+   if(infilename.length()==0){
+      printf("Bad file name length\n");
       return false;
+   }
 
    std::ifstream infile;
    infile.open(infilename.c_str());
@@ -602,6 +604,7 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr) {
       Get()->Write();
    }
 
+   printf("Writing Run Information to %s\n",gDirectory->GetFile()->GetName());
 	if(oldoption == "READ") {
 		printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
 		fileptr->ReOpen("READ");
@@ -609,5 +612,64 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr) {
 	savdir->cd();//Go back to original gDirectory
 
    return bool2return;
+}
+
+bool TGRSIRunInfo::WriteInfoFile(std::string filename) {
+
+	if(filename.length()>0) {
+		std::ofstream infoout;
+		infoout.open(filename.c_str());
+		std::string infostr = Get()->PrintToString();
+		infoout << infostr.c_str();
+		infoout << std::endl;
+	   infoout << std::endl;
+	   infoout.close();
+	} else {  
+      printf("Please enter a file name\n");
+      return false;
+	}
+   
+   return true;
+}
+
+std::string TGRSIRunInfo::PrintToString(Option_t* opt) {
+	std::string buffer;
+	buffer.append("//The event building time, 10 ns units.\n");
+   buffer.append(Form("BuildWindow: %ld\n", Get()->BuildWindow()));
+   buffer.append("\n\n");
+	buffer.append("//The Addback event window, 10 ns units.\n");
+   buffer.append(Form("AddBackWindow: %lf\n", Get()->AddBackWindow()));
+   buffer.append("\n\n");
+	buffer.append("//The Array Position in mm.\n");
+   buffer.append(Form("HPGePos: %lf\n", Get()->HPGeArrayPosition()));
+   buffer.append("\n\n");
+   if(Get()->IsWaveformFitting()){
+	   buffer.append("//Waveforms being Fit.\n");
+      buffer.append(Form("WaveFormFit: %d\n", 1));
+      buffer.append("\n\n");
+   }
+   if(!(Get()->IsMovingWindow())){
+	   buffer.append("//Using a moving BuildWindow.\n");
+      buffer.append(Form("MovingWindow: %d\n", 0));
+      buffer.append("\n\n");
+   }
+   if(Get()->DescantAncillary()){
+	   buffer.append("//Is DESCANT in Ancillary positions?.\n");
+      buffer.append(Form("DescantAncillary: %d\n", 1));
+      buffer.append("\n\n");
+   }
+	buffer.append("//Correcting for Cross Talk? (Only available in GRIFFIN).\n");
+   buffer.append(Form("CrossTalk: %d\n", Get()->IsCorrectingCrossTalk()));
+   buffer.append("\n\n");
+   if(fBadCycleList.size()){
+	   buffer.append("//A List of bad cycles.\n");
+      buffer.append("BadCycle:");
+      for(auto it = fBadCycleList.begin(); it != fBadCycleList.end(); ++it){
+         buffer.append(Form(" %d",*it));
+      }
+      buffer.append("\n\n");
+   }
+
+	return buffer;
 }
 

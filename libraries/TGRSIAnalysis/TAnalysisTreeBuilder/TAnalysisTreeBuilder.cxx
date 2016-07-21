@@ -444,8 +444,33 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
   return;
 }
 
+void TAnalysisTreeBuilder::LoadRunInfo(){
+  if(TGRSIRunInfo::ReadInfoFromFile(fCurrentFragFile)>0){
+     fCurrentRunInfo = TGRSIRunInfo::Get();
+  }
+  else{
+    printf(DRED "Failed to get current run info, using defaults\n" RESET_COLOR);
+  }
 
+  //overwrite the relevent information using the loaded info file.
+  //First check if there was a file
+  if(TGRSIOptions::ExternalRunInfo()){
+     for(size_t i=0; i<TGRSIOptions::GetExternalRunInfo().size();++i){
+        TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions::GetExternalRunInfo().at(i).c_str());
+     }
+  }
+  
+  fCurrentRunInfo->Print("a");
+}
 
+void TAnalysisTreeBuilder::LoadPPG(){
+  fCurrentPPG = static_cast<TPPG*>(fCurrentFragFile->Get("TPPG"));
+  if(fCurrentPPG){//We do this because not every run has PPG
+    printf("Found PPG data\n");
+    if(!fCurrentPPG->Correct())
+      printf("Errors in PPG that could not be corrected\n");
+  }
+}
 
 void TAnalysisTreeBuilder::SetupFragmentTree() {
   ///Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
@@ -454,34 +479,10 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
     printf("Failed to get current fragment file\n");
     return;
   }
+   
+  LoadRunInfo();
+  LoadPPG();
 
-  std::string tmpRunInfoFileName = TGRSIRunInfo::Get()->GetRunInfoFileName();
-  //Set the run info file to what is stored in the fragment tree
-  fCurrentRunInfo  = static_cast<TGRSIRunInfo*>(fCurrentFragFile->Get("TGRSIRunInfo"));
-  if(fCurrentRunInfo == NULL) {
-    printf("Failed to get current run info\n");
-  }
-
-  //overwrite the relevent information using the loaded info file.
-  //First check if there was a file
-  if((tmpRunInfoFileName.length()<1)){
-    //This does nothing
-  }
-  else{
-    printf("Reading from Run info: %s\n",tmpRunInfoFileName.c_str());
-    fCurrentRunInfo->ReadInfoFile(tmpRunInfoFileName.c_str());
-  }
-  if(fCurrentRunInfo) {
-    //   TGRSIRunInfo::ReadInfoFromFile(fCurrentRunInfo);
-    fCurrentRunInfo->Print("a");
-  }
-
-  fCurrentPPG = static_cast<TPPG*>(fCurrentFragFile->Get("TPPG"));
-  if(fCurrentPPG){//We do this because not every run has PPG
-    printf("Found PPG data\n");
-    if(!fCurrentPPG->Correct())
-      printf("Errors in PPG that could not be corrected\n");
-  }
   //Intialize the TChannel Information
   InitChannels();
 
@@ -728,7 +729,7 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
     printf("Failed to get default channel, not going to write TChannel information!\n");
   }
 
-  fCurrentRunInfo->Write();
+  fCurrentRunInfo->WriteToRoot();
   if(fCurrentPPG){
     printf("Writing PPG Data\n");
     fCurrentPPG->Write("TPPG",TObject::kSingleKey);

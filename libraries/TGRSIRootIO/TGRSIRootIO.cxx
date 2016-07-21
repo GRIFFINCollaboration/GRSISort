@@ -211,6 +211,7 @@ void TGRSIRootIO::FinalizeFragmentTree() {
 	} else {
 		printf("Failed to get default channel, not going to write TChannel information!\n");
 	}
+   TGRSIRunInfo::WriteToRoot();
 
 	fOutFile->cd();
 	fFragmentTree->AutoSave(); //Write();
