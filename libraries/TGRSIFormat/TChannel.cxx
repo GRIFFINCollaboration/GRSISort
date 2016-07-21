@@ -13,6 +13,21 @@
 
 #include "TFile.h"
 #include "TKey.h"
+#include "TGriffin.h"
+#include "TSceptar.h"
+#include "TTigress.h"
+#include "TTip.h"
+#include "TTAC.h"
+#include "TLaBr.h"
+#include "TSharc.h"
+#include "TCSM.h"
+#include "TTriFoil.h"
+#include "TRF.h"
+#include "TS3.h"
+#include "TPaces.h"
+#include "TDescant.h"
+#include "TZeroDegree.h"
+#include "TSiLi.h"
 
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
@@ -34,7 +49,7 @@ std::string TChannel::fFileData;
 
 TChannel::TChannel() { Clear(); }  //default constructor need to write to root file.
 
-TChannel::~TChannel(){}
+TChannel::~TChannel(){ }
 
 TChannel::TChannel(const char* tempName) {
 	Clear();
@@ -67,10 +82,11 @@ TChannel::TChannel(TChannel* chan) {
 	this->SetEFFChi2(chan->GetEFFChi2());
 	this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
 
-  this->SetDetectorNumber(chan->GetDetectorNumber());
+   this->SetDetectorNumber(chan->GetDetectorNumber());
 	this->SetSegmentNumber(chan->GetSegmentNumber());
 	this->SetCrystalNumber(chan->GetCrystalNumber());
    this->SetTimeOffset(chan->GetTimeOffset());
+   this->SetClassType(chan->GetClassType());
 }
 
 
@@ -80,7 +96,6 @@ void TChannel::InitChannelInput() {
 	printf("Successfully read %i TChannels from" CYAN " %s" RESET_COLOR "\n",channels_found,gFile->GetName());  
 	return;
 }
-
 
 bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
 	///Compares the names of the two TChannels. Returns true if the names are the
@@ -163,10 +178,11 @@ void TChannel::OverWriteChannel(TChannel* chan){
 
 	this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
   
-  this->SetDetectorNumber(chan->GetDetectorNumber());
+   this->SetDetectorNumber(chan->GetDetectorNumber());
 	this->SetSegmentNumber(chan->GetSegmentNumber());
 	this->SetCrystalNumber(chan->GetCrystalNumber());
    this->SetTimeOffset(chan->GetTimeOffset());
+   this->SetClassType(chan->GetClassType());
 	return;
 }
 
@@ -219,6 +235,8 @@ void TChannel::AppendChannel(TChannel* chan){
   if(chan->GetCrystalNumber()>-1)
   	this->SetCrystalNumber(chan->GetCrystalNumber());
 
+  this->SetClassType(chan->GetClassType());
+
 	return;
 }
 
@@ -268,6 +286,8 @@ void TChannel::Clear(Option_t* opt){
 	fLEDCoefficients.clear();
 	fTIMECoefficients.clear();
 	fEFFCoefficients.clear();
+
+   fClassType = NULL;
 }
 
 TChannel* TChannel::GetChannel(unsigned int temp_address) {
@@ -528,6 +548,12 @@ void TChannel::SetIntegration(std::string mnemonic,int tmpint){
 void TChannel::Print(Option_t* opt) const {
 	///Prints out the current TChannel.
 	std::cout <<  fChannelName << "\t{\n";  //,channelname.c_str();
+   std::cout << "Type:      ";
+   if(GetClassType())
+      std::cout << GetClassType()->GetName()<<std::endl;
+   else
+      std::cout << "None" << std::endl;
+
 	std::cout <<  "Name:      " << fChannelName << "\n";
 	std::cout <<  "Number:    " << fNumber << "\n";
 	std::cout << std::setfill('0');
@@ -556,12 +582,18 @@ void TChannel::Print(Option_t* opt) const {
 		std::cout << "FileInt: " << fUseCalFileInt << "\n";
 	std::cout << "}\n";
 	std::cout << "//====================================//\n";
+
 }
 
 std::string TChannel::PrintToString(Option_t* opt) {
 	std::string buffer;
 	buffer.append("\n");
 	buffer.append(fChannelName); buffer.append("\t{\n");  //,channelname.c_str();
+   std::cout << "Type:      ";
+   if(GetClassType())
+      std::cout << GetClassType()->GetName()<<std::endl;
+   else
+      std::cout << "None" << std::endl;
 	buffer.append("Name:      "); buffer.append(fChannelName); buffer.append("\n");
 	buffer.append(Form("Number:    %d\n",fNumber));
 	buffer.append(Form("Address:   0x%08x\n",fAddress));
@@ -949,7 +981,6 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 					}
 				}
 			}
-
 		}
 		if(strcmp(opt,"q"))
 			printf("parsed %i lines.\n",linenumber);
@@ -1082,6 +1113,55 @@ int TChannel::GetDetectorNumber() const {
 	ParseMNEMONIC(GetChannelName(),&mnemonic);
   fDetectorNumber = (int32_t)mnemonic.arrayposition;
   return fDetectorNumber;
+}
+
+TClass* TChannel::GetClassType() const {
+	if(fClassType != NULL)
+		return fClassType;
+
+   MNEMONIC mnemonic;
+   ClearMNEMONIC(&mnemonic);
+   ParseMNEMONIC(GetChannelName(),&mnemonic);
+
+   if(mnemonic.system.compare("TI")==0) {
+      fClassType = TTigress::Class();
+   } else if (mnemonic.system.compare("SH")==0) {
+      fClassType = TSharc::Class();
+   } else if(mnemonic.system.compare("Tr")==0) {	
+      fClassType = TTriFoil::Class();
+   } else if(mnemonic.system.compare("RF")==0) {	
+      fClassType = TRF::Class();
+   } else if(mnemonic.system.compare("SP")==0) {
+        if(mnemonic.subsystem.compare("I")==0) {
+            fClassType = TSiLi::Class();
+        } else {
+            fClassType = TS3::Class();
+        }
+   } else if(mnemonic.system.compare("CS")==0) {	
+      fClassType = TCSM::Class();
+   } else if(mnemonic.system.compare("GR")==0) {
+      fClassType = TGriffin::Class();
+   } else if(mnemonic.system.compare("SE")==0) {
+      fClassType = TSceptar::Class();
+   } else if(mnemonic.system.compare("PA")==0) {	
+      fClassType = TPaces::Class();
+   } else if(mnemonic.system.compare("DS")==0) {	
+      fClassType = TDescant::Class();
+   } else if(mnemonic.system.compare("DA")==0) {
+         if(mnemonic.collectedcharge.compare("N")==0) {
+            fClassType = TLaBr::Class();
+         } else {
+            fClassType = TTAC::Class();
+         }
+   } else if(mnemonic.system.compare("BA")==0) {
+        fClassType = TS3::Class();
+   } else if(mnemonic.system.compare("ZD")==0) {	
+        fClassType = TZeroDegree::Class();
+   } else if(mnemonic.system.compare("TP")==0) {	
+        fClassType = TTip::Class();
+   }
+    
+   return fClassType;
 }
 
 int TChannel::GetSegmentNumber() const {
