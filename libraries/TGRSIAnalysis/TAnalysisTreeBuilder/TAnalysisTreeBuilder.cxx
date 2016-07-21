@@ -679,9 +679,9 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<std::string, TDetector*>* d
       fPaces = static_cast<TPaces*>(det->second);
     } else if(det->first.compare(0,2,"ZD") == 0) {
       fZeroDegree = static_cast<TZeroDegree*>(det->second);
-    } else if(det->first.compare(0,2,"DAN") == 0) {
+    } else if(det->first.compare(0,3,"DAN") == 0) {
       fLaBr = static_cast<TLaBr*>(det->second);
-    } else if(det->first.compare(0,2,"DAT") == 0) {
+    } else if(det->first.compare(0,3,"DAT") == 0) {
       fTAC = static_cast<TTAC*>(det->second);
     } else if(det->first.compare(0,2,"TP") == 0) {
       fTip = static_cast<TTip*>(det->second);
@@ -826,7 +826,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
         }
         (*detectors)["DS"]->AddFragment(&(event->at(i)), &mnemonic);
       } else if(mnemonic.system.compare("DA")==0) {
-         if(mnemonic.subsystem.compare("N")==0) {
+         if(mnemonic.collectedcharge.compare("N")==0) {
             if(detectors->find("DAN") == detectors->end()) {
                (*detectors)["DAN"] = new TLaBr;
             }
