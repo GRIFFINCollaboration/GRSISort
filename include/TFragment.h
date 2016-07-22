@@ -11,6 +11,7 @@
 #include "TGRSIDetectorHit.h"
 #include "TPPG.h"
 
+#include <iostream>
 #include <vector>
 #include <time.h>
 
@@ -27,73 +28,107 @@
 
 class TFragment : public TGRSIDetectorHit	{
   public:
-    TFragment(); 
-    TFragment(const TFragment&); 
-    virtual ~TFragment(); 
+   TFragment(); 
+   TFragment(const TFragment&); 
+   virtual ~TFragment(); 
 
-    time_t   MidasTimeStamp;       //->  Timestamp of the MIDAS event  
-    Int_t    MidasId;              //->  MIDAS ID
-    Long_t   TriggerId;            //->  MasterFilterID in Griffin DAQ  
-    Int_t    FragmentId;           //->  Channel Trigger ID
-    Int_t    TriggerBitPattern;	 //->  MasterFilterPattern in Griffin DAQ
-    Int_t    NetworkPacketNumber;  //->  Network packet number
+   //////////////////// basic setter functions ////////////////////
 
-    Int_t  Zc;     
-    Int_t  ccShort;
-    Int_t  ccLong; 
-    Int_t  Led;    
+	void SetAcceptedChannelId(UShort_t value)  { fAcceptedChannelId = value; }
+	void SetCcLong(Int_t value)                { fCcLong = value; }
+	void SetCcShort(Int_t value)               { fCcShort = value; }
+	void SetChannelId(UInt_t value)            { fChannelId = value; }
+	void SetModuleType(UShort_t value)         { fModuleType = value; }
+	void SetDeadTime(UShort_t value)           { fDeadTime = value; }
+	void SetDetectorType(UShort_t value)       { fDetectorType = value; }
+	void SetMidasId(Int_t value)               { fMidasId = value; }
+	void SetFragmentId(Int_t value)            { fFragmentId = value; }
+	void SetMidasTimeStamp(time_t value)       { fMidasTimeStamp = value; }
+	void SetNetworkPacketNumber(Int_t value)   { fNetworkPacketNumber = value; }
+	void SetNumberOfFilters(UShort_t value)    { std::cerr<<"Error, "<<__PRETTY_FUNCTION__<<" called, TFragment shouldn't have a number of filters."<<std::endl; }
+	void SetNumberOfPileups(UShort_t value)    { fNumberOfPileups = value; }
+	void SetNumberOfWords(UShort_t value)      { fNumberOfWords = value; }
+	void SetTriggerBitPattern(Int_t value)     { fTriggerBitPattern = value; }
+	void SetTriggerId(Long_t value)            { fTriggerId.push_back(value); }
+	void SetZc(Int_t value)                    { fZc = value; }
 
-    /// Added to combine Grif Fragment  ////
+	//////////////////// basic getter functions ////////////////////
 
-    UInt_t PPG;                    //-> Programmable pattern generator value
-    UShort_t DeadTime;	           //-> Deadtime from trigger
-    UShort_t NumberOfFilters;      //-> Number of filter patterns passed
-    UShort_t NumberOfPileups;      //-> Number of piled up hits 1-3
-    UShort_t DataType;             //-> 
-    UShort_t DetectorType;         //-> Detector Type (PACES,HPGe, etc)
-    UInt_t ChannelId;              //-> Threshold crossing counter for a channel
-    //UInt_t AcceptedChannelId;    //-> Accepted threshold crossing counter for a channel
+	UShort_t GetAcceptedChannelId() const      { return fAcceptedChannelId; }
+	Int_t    GetCcLong() const                 { return fCcLong; }
+	Int_t    GetCcShort() const                { return fCcShort; }
+	UInt_t   GetChannelId() const              { return fChannelId; }
+   UShort_t GetModuleType() const             { return fModuleType; }
+	UShort_t GetDeadTime() const               { return fDeadTime; }
+   UShort_t GetDetectorType() const           { return fDetectorType; }
+	Int_t    GetMidasId() const                { return fMidasId; }
+	Int_t    GetFragmentId() const             { return fFragmentId; }
+	time_t   GetMidasTimeStamp() const         { return fMidasTimeStamp; }
+   Int_t    GetNetworkPacketNumber() const    { return fNetworkPacketNumber; }
+   UShort_t GetNumberOfFilters() const        { return fNumberOfWords-9; }
+	Int_t    GetNumberOfHits() const           { return 1; }
+   UShort_t GetNumberOfPileups() const        { return fNumberOfPileups; }
+   UShort_t GetNumberOfWords() const          { return fNumberOfWords; }
+	Int_t    GetTriggerBitPattern() const      { return fTriggerBitPattern; }
+	Long_t   GetTriggerId(size_t iter=0) const { if(iter < fTriggerId.size()) return fTriggerId[iter]; return 0; }
+   Int_t    GetZc() const                     { return fZc; }
+	
+	//////////////////// advanced getter functions ////////////////////
 
-    /// *****************************  ////
-    void SetZc(Int_t val)         { Zc     = val; }
+	Short_t GetChannelNumber() const;
+	TPPG*  GetPPG();
+	double GetTime() const;
+	double GetTZero() const;
+	long GetTimeStamp_ns() const;
+	ULong64_t GetTimeInCycle();
+	ULong64_t GetCycleNumber();
+   size_t GetNumberOfCharges() { return 1; }
+	Int_t Get4GCfd() const;
 
-    TPPG* fPPG; //!<!
+	//////////////////// misc. functions ////////////////////
+	bool IsDetector(const char *prefix, Option_t *opt = "CA") const;
 
-    int NumberOfHits;  //!<! transient member to count the number of pile-up hits in the original fragment
-    int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment
+   void Clear(Option_t *opt = "");
+   void Print(Option_t *opt = "") const;
 
-    double GetTZero() const; //!<!
-    Long_t GetTimeStamp_ns() const; //!<!
-    ULong64_t GetTimeInCycle(); //!<!
-    ULong64_t GetCycleNumber(); //!<!
+	TFragment* Clone(const char* name = "");
+   
+   bool operator<(const TFragment& rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
+   bool operator>(const TFragment& rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 
-    time_t GetMidasTimeStamp()      const { return MidasTimeStamp; }  //!<!
-    Int_t  GetChannelNumber()      const { TChannel *c=GetChannel();if(c) return c->GetNumber(); return -1; }  //!<!
-    Int_t GetZc()                   const { return Zc; } //!<! 
-    Int_t GetLed()                  const { return Led; }  //!<!
-    Int_t GetCcShort()              const { return ccShort; }  //!<!
-    Int_t GetCcLong()               const { return ccLong; }  //!<!
-    UShort_t GetDeadTime()          const { return DeadTime; }  //!<!
-    UInt_t GetChannelId()           const { return ChannelId; }  //!<!
+  private:
+   //////////////////// data members, sorted by size (as far as possible) to reduce padding ////////////////////
+   time_t   fMidasTimeStamp;          //-> Timestamp of the MIDAS event  
+   Int_t    fMidasId;                 //-> MIDAS ID
+   Int_t    fFragmentId;              //-> Channel Trigger ID ??? not needed anymore ???
+   Int_t    fTriggerBitPattern;	     //-> MasterFilterPattern in Griffin DAQ
+   Int_t    fNetworkPacketNumber;     //-> Network packet number
+   UInt_t   fChannelId;               //-> Threshold crossing counter for a channel
+   UInt_t   fAcceptedChannelId;       //-> Accepted threshold crossing counter for a channel
 
-    Int_t Get4GCfd(size_t i=0) const; //!<!
+   /// Added to combine Grif Fragment  ////
 
-    bool IsDetector(const char *prefix, Option_t *opt = "CA") const; //!<!
-    //int  GetColor(Option_t *opt = "") const; //!<!
-    //bool HasWave() const { return (wavebuffer.size()>0) ?  true : false; } //!<!
+   UShort_t fDeadTime;	              //-> Deadtime from trigger
+   UShort_t fModuleType;              //-> Data Type (GRIF-16, 4G, etc.)
+   UShort_t fDetectorType;            //-> Detector Type (PACES,HPGe, etc.)
+   UShort_t fNumberOfPileups;         //-> Number of piled up hits 1-3
 
-    virtual void Clear(Option_t *opt = ""); //!<!
-    virtual void Print(Option_t *opt = "") const; //!<!
+   std::vector<Long_t>   fTriggerId;  //->  MasterFilterID in Griffin DAQ  
 
-    //virtual Int_t GetDetector() const; //!<!
-    //virtual Int_t GetSegment() const;	 //!<!
+	//////////////////// transient members ////////////////////
+   TPPG* fPPG;                        //!<! Programmable pattern generator value
 
-    bool operator<(const TFragment& rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
-    bool operator>(const TFragment& rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
+   Int_t    fZc;                      //!<! Zero-crossing value from 4G (saved in separate branch)
+   Int_t    fCcShort;                 //!<! Short integration over waveform peak from 4G (saved in separate branch)
+   Int_t    fCcLong;                  //!<! Long integration over waveform tail from 4G (saved in separate branch)
+   UShort_t fNumberOfWords;           //!<! Number of non-waveform words in fragment ; since this is not saved to file, why have it as a member at all???
 
-    /// \cond CLASSIMP
-    ClassDef(TFragment,6);  // Event Fragments
-    /// \endcond
+   //int NumberOfHits;  //!<! transient member to count the number of pile-up hits in the original fragment
+   //int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment
+
+   /// \cond CLASSIMP
+   ClassDef(TFragment,6);  // Event Fragments
+   /// \endcond
 };
 /*! @} */
 #endif // TFRAGMENT_H
