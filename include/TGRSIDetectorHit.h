@@ -81,7 +81,7 @@ class TGRSIDetectorHit : public TObject 	{
       //We need a common function for all detectors in here
       //static bool Compare(TGRSIDetectorHit* lhs,TGRSIDetectorHit* rhs); //!<!
 
-      inline void SetPosition(const TVector3& temp_pos)           { fPosition = temp_pos; SetFlag(kIsPositionSet,true); }    //!<!
+      inline void SetPosition(const TVector3& temp_pos) const     { fPosition = temp_pos; SetFlag(kIsPositionSet,true); }    //!<!
       inline void SetAddress(const UInt_t& temp_address)          { fAddress = temp_address; } //!<!
       inline void SetCharge(const Float_t& temp_charge)           { fCharge = temp_charge; }   //!<!
       //virtual Short_t SetSegment(const Short_t &seg);
@@ -89,20 +89,17 @@ class TGRSIDetectorHit : public TObject 	{
       inline void SetWaveform(const std::vector<Short_t>& x)      { fWaveform = x; }           //!<!
       virtual inline void SetTimeStamp(const ULong_t& x)          { fTimeStamp   = x; }        //!<! Maybe make this abstract?
 
-      virtual TVector3 SetPosition(Double_t temp_pos = 0);
-      void SetEnergy(const double& en) { fEnergy = en; SetFlag(kIsEnergySet,true);}
+      virtual TVector3 SetPosition(Double_t temp_pos = 0) const;
+      void SetEnergy(const double& en) const { fEnergy = en; SetFlag(kIsEnergySet,true);}
       //virtual UInt_t SetDetector(const UInt_t& det);
-      void SetTime(const Double_t& time) {fTime = time; SetFlag(kIsTimeSet,true); }
+      void SetTime(const Double_t& time) const {fTime = time; SetFlag(kIsTimeSet,true); }
 
       TVector3 GetPosition(Double_t dist = 0) const; //!<!
-      TVector3 GetPosition(Double_t dist = 0);
       virtual double GetEnergy(Option_t* opt="") const;
-      virtual double GetEnergy(Option_t* opt="");
       virtual Int_t  GetDetector() const;
       virtual Int_t  GetSegment() const;	
       virtual ULong_t GetTimeStamp(Option_t* opt="")   const     { return fTimeStamp;   }
       virtual Double_t GetTime(Option_t* opt = "") const;  ///< Returns a time value to the nearest nanosecond!
-      virtual Double_t GetTime(Option_t* opt = "");
       //virtual UInt_t GetDetector();
       //virtual Short_t GetSegment();
       virtual inline Int_t   GetCfd() const                          { return fCfd;}           //!<!
@@ -113,9 +110,7 @@ class TGRSIDetectorHit : public TObject 	{
 
       //The PPG is only stored in events that come out of the GRIFFIN DAQ
       uint16_t GetPPGStatus() const;
-      uint16_t GetPPGStatus();
       uint16_t GetCycleTimeStamp() const;
-      uint16_t GetCycleTimeStamp();
 
       void ClearEnergy() { SetEnergy(0.0); SetFlag(kIsEnergySet,false); }
 
@@ -132,7 +127,7 @@ class TGRSIDetectorHit : public TObject 	{
       Bool_t IsPPGSet() const    { return (fBitflags & kIsPPGSet); }
       Bool_t IsTimeSet() const   { return (fBitflags & kIsTimeSet); }
       //Bool_t IsSegSet() const	 { return (fBitflags & kIsSegSet); }
-      void SetFlag(enum Ebitflag,Bool_t set);
+      void SetFlag(enum Ebitflag,Bool_t set) const;
 
    protected:
       UInt_t   fAddress;    ///< address of the the channel in the DAQ.
@@ -142,20 +137,20 @@ class TGRSIDetectorHit : public TObject 	{
       std::vector<Short_t> fWaveform;  ///<
 
    private:
-      Double_t fTime;       //!<! Calibrated Time of the hit
+      mutable Double_t fTime;       //!<! Calibrated Time of the hit
       //UInt_t   fDetector;   //!<! Detector Number
       //Short_t  fSegment;	  //!<! Segment number
-      TVector3 fPosition;   //!<! Position of hit detector.
-      Double_t fEnergy;     //!<! Energy of the Hit.
-      uint16_t fPPGStatus;  //!<! 
-      ULong_t  fCycleTimeStamp; //!<!
+      mutable TVector3 fPosition;   //!<! Position of hit detector.
+      mutable Double_t fEnergy;     //!<! Energy of the Hit.
+      mutable uint16_t fPPGStatus;  //!<! 
+      mutable ULong_t  fCycleTimeStamp; //!<!
 
    protected:
       static TPPG* fPPG;
 
    private:
       //flags   
-      UChar_t fBitflags;
+      mutable UChar_t fBitflags;
 
       static TVector3 fBeamDirection; //!
 
