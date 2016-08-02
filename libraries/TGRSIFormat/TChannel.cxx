@@ -589,11 +589,11 @@ std::string TChannel::PrintToString(Option_t* opt) {
 	std::string buffer;
 	buffer.append("\n");
 	buffer.append(fChannelName); buffer.append("\t{\n");  //,channelname.c_str();
-   std::cout << "Type:      ";
+   buffer.append("Type:      ");
    if(GetClassType())
-      std::cout << GetClassType()->GetName()<<std::endl;
+      buffer.append(Form("%s\n",GetClassType()->GetName()));
    else
-      std::cout << "None" << std::endl;
+      buffer.append("None\n");
 	buffer.append("Name:      "); buffer.append(fChannelName); buffer.append("\n");
 	buffer.append(Form("Number:    %d\n",fNumber));
 	buffer.append(Form("Address:   0x%08x\n",fAddress));

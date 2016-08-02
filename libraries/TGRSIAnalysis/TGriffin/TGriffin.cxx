@@ -220,7 +220,7 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 		return;
 	}
 
-   if(mnemonic->subsystem[0] == 'G') {
+  // if(mnemonic->subsystem[0] == 'G') {
 		//set griffin
 		if(mnemonic->outputsensor[0] == 'B') { return; }  //make this smarter.
 		
@@ -234,7 +234,6 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 		//	CoreNbr=2;
 		//else if(mnemonic->arraysubposition[0] == 'W')
 		//	CoreNbr=3;
-   
 		for(size_t i = 0; i < frag->Charge.size(); ++i) {
 			TGriffinHit corehit;
 			corehit.SetAddress(frag->ChannelAddress);
@@ -258,9 +257,9 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 			
 			AddHit(&corehit);
 		}
-	} else if(mnemonic->subsystem[0] == 'S') {
+	//} else if(mnemonic->subsystem[0] == 'S') {
 		//set BGO
-   }
+  // }
 }
 
 TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ) {

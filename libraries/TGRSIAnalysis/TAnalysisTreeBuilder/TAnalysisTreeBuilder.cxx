@@ -74,11 +74,11 @@ TWriteQueue* TWriteQueue::Get() {
   return fPtrToQue;
 }
 
-void TWriteQueue::Add(std::map<std::string, TDetector*>* event) {
+void TWriteQueue::Add(std::map<TClass*, TDetector*>* event) {
   Get()->AddInstance(event);
 }
 
-std::map<std::string, TDetector*>* TWriteQueue::PopEntry() {
+std::map<TClass*, TDetector*>* TWriteQueue::PopEntry() {
   return Get()->PopEntryInstance();
 }
 
@@ -86,7 +86,7 @@ int TWriteQueue::Size() {
   return Get()->SizeInstance();
 }
 
-void TWriteQueue::AddInstance(std::map<std::string, TDetector*>* event) {
+void TWriteQueue::AddInstance(std::map<TClass*, TDetector*>* event) {
   ///Thread-safe method for adding to the event queue
   m_write.lock();
   fWriteQueue.push(event);
@@ -94,9 +94,9 @@ void TWriteQueue::AddInstance(std::map<std::string, TDetector*>* event) {
   return;
 }
 
-std::map<std::string, TDetector*>* TWriteQueue::PopEntryInstance() {
+std::map<TClass*, TDetector*>* TWriteQueue::PopEntryInstance() {
   ///Thread safe method for taking an event out of the write queue
-  std::map<std::string, TDetector*>* temp;
+  std::map<TClass*, TDetector*>* temp;
   m_write.lock();
   temp = fWriteQueue.front();
   fWriteQueue.pop();
@@ -608,7 +608,7 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
   //printf("ClearActiveAnalysisTreeBranches done\n");
 }
 
-void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<std::string, TDetector*>* detectors) {
+void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<TClass*, TDetector*>* detectors) {
   ///Build the hits in each of the detectors.
   if(!fCurrentAnalysisFile || !fCurrentRunInfo)
     return;
@@ -618,7 +618,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<std::string,
   }
 }
 
-void TAnalysisTreeBuilder::FillWriteQueue(std::map<std::string, TDetector*>* detectors) {
+void TAnalysisTreeBuilder::FillWriteQueue(std::map<TClass*, TDetector*>* detectors) {
   ///Fill the write Q with the built hits in each of the detectors.
   fAnalysisIn++;
   TWriteQueue::Add(detectors);
@@ -632,14 +632,14 @@ void TAnalysisTreeBuilder::WriteAnalysisTree() {
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
       continue;
     }
-    std::map<std::string, TDetector*>* detectors = TWriteQueue::PopEntry();
+    std::map<TClass*, TDetector*>* detectors = TWriteQueue::PopEntry();
     fAnalysisOut++;
 
     FillAnalysisTree(detectors);
   }
 }
 
-void TAnalysisTreeBuilder::FillAnalysisTree(std::map<std::string, TDetector*>* detectors) {
+void TAnalysisTreeBuilder::FillAnalysisTree(std::map<TClass*, TDetector*>* detectors) {
   ///Fill the analysis Tree with the built events. Each detector gets its own branch in the analysis tree
   if(!fCurrentAnalysisTree || !detectors) {
     printf("returned from fill without filling (%p %p)!\n", static_cast<void*>(fCurrentAnalysisTree), static_cast<void*>(detectors));
@@ -652,38 +652,37 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<std::string, TDetector*>* d
 
 
   //Fill the detector map with TDetector classes if the mnemonic of the detector is in the map.
+  //This can probably made better with a map of class to branch. Will potentially add later RD
   for(auto det = detectors->begin(); det != detectors->end(); det++) {
-    if(det->first.compare(0,2,"TI") == 0) {
+    if(det->first == TTigress::Class()) {
       fTigress = static_cast<TTigress*>(det->second);
-    } else if(det->first.compare(0,2,"SH") == 0) {
+    } else if(det->first == TSharc::Class()) {
       fSharc = static_cast<TSharc*>(det->second);
-    } else if(det->first.compare(0,2,"TR") == 0) {
+    } else if(det->first == TTriFoil::Class()) {
       fTriFoil = static_cast<TTriFoil*>(det->second);
-    } else if(det->first.compare(0,2,"RF") == 0) {
+    } else if(det->first == TRF::Class()) {
       fRf = static_cast<TRF*>(det->second);
-    } else if(det->first.compare(0,2,"CS") == 0) {
+    } else if(det->first == TCSM::Class()) {
       fCsm = static_cast<TCSM*>(det->second);
-    } else if(det->first.compare(0,3,"SPI") == 0) {
+    } else if(det->first == TSiLi::Class()) {
       fSiLi = static_cast<TSiLi*>(det->second);
-    } else if(det->first.compare(0,3,"SPE") == 0) {
+    } else if(det->first == TS3::Class()) {
       fS3   = static_cast<TS3*>(det->second);
-    } else if(det->first.compare(0,2,"BA") == 0) {
-      fS3	 = static_cast<TS3*>(det->second);
-    } else if(det->first.compare(0,2,"GR") == 0) {
+    } else if(det->first == TGriffin::Class()) {
       fGriffin = static_cast<TGriffin*>(det->second);
-    } else if(det->first.compare(0,2,"SE") == 0) {
+    } else if(det->first == TSceptar::Class()) {
       fSceptar = static_cast<TSceptar*>(det->second);
-    } else if(det->first.compare(0,2,"DS") == 0) {
+    } else if(det->first == TDescant::Class()) {
       fDescant = static_cast<TDescant*>(det->second);
-    } else if(det->first.compare(0,2,"PA") == 0) {
+    } else if(det->first == TPaces::Class()) {
       fPaces = static_cast<TPaces*>(det->second);
-    } else if(det->first.compare(0,2,"ZD") == 0) {
+    } else if(det->first == TZeroDegree::Class()) {
       fZeroDegree = static_cast<TZeroDegree*>(det->second);
-    } else if(det->first.compare(0,3,"DAN") == 0) {
+    } else if(det->first == TLaBr::Class()) {
       fLaBr = static_cast<TLaBr*>(det->second);
-    } else if(det->first.compare(0,3,"DAT") == 0) {
+    } else if(det->first == TTAC::Class()) {
       fTAC = static_cast<TTAC*>(det->second);
-    } else if(det->first.compare(0,2,"TP") == 0) {
+    } else if(det->first == TTip::Class()) {
       fTip = static_cast<TTip*>(det->second);
     } 
   }
@@ -759,101 +758,25 @@ void TAnalysisTreeBuilder::ProcessEvent() {
     //We need to pull the event out of the Event Q
     std::vector<TFragment>* event = TEventQueue::PopEntry();
     MNEMONIC mnemonic;
-    std::map<std::string, TDetector*>* detectors = new std::map<std::string, TDetector*>;
-    for(size_t i=0;i<event->size();i++) {
-      TChannel* channel = TChannel::GetChannel(event->at(i).ChannelAddress);
+    std::map<TClass*, TDetector*>* detectors = new std::map<TClass*, TDetector*>;
+    for(auto it = event->begin(); it != event->end();++it) {
+      TChannel* channel = TChannel::GetChannel(it->ChannelAddress);
       if(!channel)
         continue;
-      ClearMNEMONIC(&mnemonic);
-      ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
+   /*   ClearMNEMONIC(&mnemonic);
+      ParseMNEMONIC(channel->GetChannelName(),&mnemonic);*/
+      TClass* detClass = channel->GetClassType();
+      if(!detClass)
+         continue;
 
-      //We use the MNEMONIC in order to figure out what detector we want to put the set of fragments into
-      if(mnemonic.system.compare("TI")==0) {
-        if(detectors->find("TI") == detectors->end()) {
-          (*detectors)["TI"] = new TTigress;
-        }
-        (*detectors)["TI"]->AddFragment(&(event->at(i)), &mnemonic);
-      } else if(mnemonic.system.compare("SH")==0) {
-        if(detectors->find("SH") == detectors->end()) {
-          (*detectors)["SH"] = new TSharc;
-        }
-        (*detectors)["SH"]->AddFragment(&(event->at(i)), &mnemonic);
-      } else if(mnemonic.system.compare("Tr")==0) {	
-        if(detectors->find("Tr") == detectors->end()) {
-          (*detectors)["Tr"] = new TTriFoil;
-        }
-        (*detectors)["Tr"]->AddFragment(&(event->at(i)), &mnemonic);
-      } else if(mnemonic.system.compare("RF")==0) {	
-        if(detectors->find("RF") == detectors->end()) {
-          (*detectors)["RF"] = new TRF;
-        }
-        (*detectors)["RF"]->AddFragment(&(event->at(i)), &mnemonic);
-      } else if(mnemonic.system.compare("SP")==0) {
-        if(mnemonic.subsystem.compare("I")==0) {
-          if(detectors->find("SPI") == detectors->end()) {
-            (*detectors)["SPI"] = new TSiLi;
-          }
-          (*detectors)["SPI"]->AddFragment(&(event->at(i)), &mnemonic);
-        } else {
-          if(detectors->find("SPE") == detectors->end()) {
-            (*detectors)["SPE"] = new TS3;
-          }
-          (*detectors)["SPE"]->AddFragment(&(event->at(i)), &mnemonic);
-        }
-      } else if(mnemonic.system.compare("CS")==0) {	
-        if(detectors->find("CS") == detectors->end()) {
-          (*detectors)["CS"] = new TCSM;
-        }
-        (*detectors)["CS"]->AddFragment(&(event->at(i)), &mnemonic);
-      } else if(mnemonic.system.compare("GR")==0) {
-        if(detectors->find("GR") == detectors->end()) {
-          (*detectors)["GR"] = new TGriffin;
-        }
-        (*detectors)["GR"]->AddFragment(&(event->at(i)), &mnemonic);
-      } else if(mnemonic.system.compare("SE")==0) {
-        if(detectors->find("SE") == detectors->end()) {
-          (*detectors)["SE"] = new TSceptar;
-        }
-        (*detectors)["SE"]->AddFragment(&(event->at(i)), &mnemonic);
-      } else if(mnemonic.system.compare("PA")==0) {	
-        if(detectors->find("PA") == detectors->end()) {
-          (*detectors)["PA"] = new TPaces;
-        }
-        (*detectors)["PA"]->AddFragment(&(event->at(i)), &mnemonic);
-      } else if(mnemonic.system.compare("DS")==0) {	
-        if(detectors->find("DS") == detectors->end()) {
-          (*detectors)["DS"] = new TDescant;
-        }
-        (*detectors)["DS"]->AddFragment(&(event->at(i)), &mnemonic);
-      } else if(mnemonic.system.compare("DA")==0) {
-         if(mnemonic.collectedcharge.compare("N")==0) {
-            if(detectors->find("DAN") == detectors->end()) {
-               (*detectors)["DAN"] = new TLaBr;
-            }
-            (*detectors)["DAN"]->AddFragment(&(event->at(i)),&mnemonic);
-         } 
-         else {
-            if(detectors->find("DAT") == detectors->end()) {
-               (*detectors)["DAT"] = new TTAC;
-            }
-            (*detectors)["DAT"]->AddFragment(&(event->at(i)),&mnemonic);
-         }
-    } else if(mnemonic.system.compare("BA")==0) {
-      if(detectors->find("BA") == detectors->end()) {
-        (*detectors)["BA"] = new TS3;
+      //std::pair<std::map<TClass*,TDetector*>::iterator,bool> newDetIt;//Would like a way to "auto" this
+      //There are multiple find statements here which I am going to try to get rid of.
+      auto detIt = detectors->find(detClass);
+      if(detIt == detectors->end()){
+        detIt = detectors->insert(std::pair<TClass*,TDetector*>(detClass,static_cast<TDetector*>(detClass->New()))).first;
       }
-      (*detectors)["BA"]->AddFragment(&(event->at(i)), &mnemonic);							
-    } else if(mnemonic.system.compare("ZD")==0) {	
-      if(detectors->find("ZD") == detectors->end()) {
-        (*detectors)["ZD"] = new TZeroDegree;
-      }
-      (*detectors)["ZD"]->AddFragment(&(event->at(i)), &mnemonic);
-    } else if(mnemonic.system.compare("TP")==0) {	
-      if(detectors->find("TP") == detectors->end()) {
-        (*detectors)["TP"] = new TTip;
-      }
-      (*detectors)["TP"]->AddFragment(&(event->at(i)), &mnemonic);
-    }
+      detIt->second->AddFragment(&(*it),&mnemonic);
+
     }
 
     if(!detectors->empty()) {
