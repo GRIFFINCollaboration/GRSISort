@@ -58,38 +58,12 @@ Double_t TGRSIDetectorHit::GetTime(Option_t* opt) const {
 		return 10.*dTime;
 	}
 
-	return 10.*(dTime - chan->GetTZero(GetEnergy()));
-}
-
-Double_t TGRSIDetectorHit::GetTime(Option_t* opt) {
-	if(IsTimeSet())
-		return fTime;
-
-	Double_t dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
-	TChannel* chan = GetChannel();
-	if(!chan) {
-		Error("GetTime","No TChannel exists for address 0x%08x",GetAddress());
-		return 10.*dTime;
-	}
-
 	SetTime(10.*(dTime - chan->GetTZero(GetEnergy())));
 
 	return fTime;
 }
 
 double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
-	if(IsEnergySet())
-		return fEnergy;
-
-	TChannel* chan = GetChannel();
-	if(!chan) {
-		Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
-		return 0.;
-	}
-	return chan->CalibrateENG(GetCharge());
-}
-
-double TGRSIDetectorHit::GetEnergy(Option_t* opt) {
 	if(IsEnergySet()) {
 		return fEnergy;
 	}
@@ -251,7 +225,7 @@ Short_t TGRSIDetectorHit::SetSegment(const Short_t &seg) {
    return fSegment;
 }
 */
-TVector3 TGRSIDetectorHit::SetPosition(Double_t dist) {
+TVector3 TGRSIDetectorHit::SetPosition(Double_t dist) const {
 	///This should not be overridden. It's job is to call the correct 
 	///position for the derived TGRSIDetector object.
 	SetFlag(kIsPositionSet,true);
@@ -259,17 +233,7 @@ TVector3 TGRSIDetectorHit::SetPosition(Double_t dist) {
 	return fPosition;
 }
 
-TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
-	///This should not be overridden and instead GetChannelPosition should
-	///be used in the derived class.
-	if(IsPosSet())
-		return fPosition;
-
-	return GetChannelPosition(dist); //Calls the derivative GetPosition function
-	//We must do a check in here to make sure it is returning something reasonable
-}
-
-TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
+TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const {
 	///This should not be overridden and instead GetChannelPosition should
 	///be used in the derived class.
 	if(IsPosSet())
@@ -294,13 +258,6 @@ uint16_t TGRSIDetectorHit::GetPPGStatus() const {
 	if(IsPPGSet())
 		return fPPGStatus;
 
-	return TPPG::kJunk;
-}
-
-uint16_t TGRSIDetectorHit::GetPPGStatus() {
-	if(IsPPGSet())
-		return fPPGStatus;
-
 	if(!fPPG)
 		return TPPG::kJunk;
 
@@ -311,13 +268,6 @@ uint16_t TGRSIDetectorHit::GetPPGStatus() {
 }
 
 uint16_t TGRSIDetectorHit::GetCycleTimeStamp() const {
-	if(IsPPGSet())
-		return fCycleTimeStamp;
-
-	return 0;
-}
-
-uint16_t TGRSIDetectorHit::GetCycleTimeStamp() {
 	if(IsPPGSet())
 		return fCycleTimeStamp;
 
@@ -344,7 +294,7 @@ void TGRSIDetectorHit::CopyWaveform(const TFragment &frag) {
     SetWaveform(frag.wavebuffer); 
 }
 
-void TGRSIDetectorHit::SetFlag(enum Ebitflag flag, Bool_t set){
+void TGRSIDetectorHit::SetFlag(enum Ebitflag flag, Bool_t set) const{
 	if(set)
 		fBitflags |= flag;
 	else
