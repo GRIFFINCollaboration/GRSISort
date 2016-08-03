@@ -29,7 +29,7 @@ class TFragmentMap {
 	public:
 	TFragmentMap() {};
 	~TFragmentMap() {};
-	void Add(TFragment*, std::vector<Int_t>, std::vector<UShort_t>);
+	bool Add(TFragment*, std::vector<Int_t>, std::vector<UShort_t>);
 	
 	private:
 #ifndef __CINT__
