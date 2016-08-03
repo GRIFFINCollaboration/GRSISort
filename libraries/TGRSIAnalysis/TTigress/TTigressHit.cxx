@@ -27,7 +27,6 @@ void TTigressHit::Clear(Option_t *opt) {
   fTimeFit = 0;
 
   fSegments.clear();
-  fBgos.clear();
 
   fLastHit.SetXYZ(0,0,0);
 }
@@ -36,7 +35,6 @@ void TTigressHit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
   static_cast<TTigressHit&>(rhs).fTimeFit              = fTimeFit;
   static_cast<TTigressHit&>(rhs).fSegments             = fSegments;
-  static_cast<TTigressHit&>(rhs).fBgos                 = fBgos;
   static_cast<TTigressHit&>(rhs).fCrystal              = fCrystal;
   static_cast<TTigressHit&>(rhs).fFirstSegment         = fFirstSegment;
   static_cast<TTigressHit&>(rhs).fFirstSegmentCharge   = fFirstSegmentCharge;
