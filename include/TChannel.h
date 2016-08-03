@@ -39,6 +39,7 @@
 #include "TRandom.h"
 #include "TList.h"
 #include "TTree.h"
+#include "TClass.h"
 
 #include "TFragment.h"
 #include "Globals.h"
@@ -68,21 +69,22 @@ class TChannel : public TNamed	{
       static TChannel* GetDefaultChannel();
 
    private:
-      unsigned int	fAddress;                                 //The address of the digitizer
-      int		        fIntegration;                             //The charge integration setting
-      std::string   fChannelName;                             //The name of the channel (MNEMONIC)
-      std::string   fTypeName;
-      std::string   fDigitizerType;
-      int 	        fNumber;
-      int		        fStream;
-      int           fUserInfoNumber;
-      bool          fUseCalFileInt;
+      unsigned int	   fAddress;                                 //The address of the digitizer
+      int		         fIntegration;                             //The charge integration setting
+      std::string       fChannelName;                             //The name of the channel (MNEMONIC)
+      std::string       fTypeName;
+      std::string       fDigitizerType;
+      int 	            fNumber;
+      int		         fStream;
+      int               fUserInfoNumber;
+      bool              fUseCalFileInt;
 
-      mutable int   fDetectorNumber;
-      mutable int   fSegmentNumber;
+      mutable int       fDetectorNumber;
+      mutable int       fSegmentNumber;
 
-      mutable int   fCrystalNumber; 
-      double        fTimeOffset;
+      mutable int       fCrystalNumber; 
+      double            fTimeOffset;
+      mutable TClass*   fClassType;          //!<! TGRSIDetector Type that this channel represents
 
       std::vector<Float_t> fENGCoefficients;  //Energy calibration coeffs (low to high order)
       double fENGChi2;                       //Chi2 of the energy calibration
@@ -94,6 +96,8 @@ class TChannel : public TNamed	{
       double fTIMEChi2;                      //Chi2 of the Time calibration
       std::vector<double> fEFFCoefficients;  //Efficiency calibration coeffs (low to high order)
       double fEFFChi2;                       //Chi2 of Efficiency calibration
+
+      void SetClassType(TClass* classType)               { fClassType = classType; }
 
       static std::map<unsigned int,TChannel*>* fChannelMap; //A map to all of the channels based on address
       static std::map<int,TChannel*>* fChannelNumberMap;    //A map of TChannels based on channel number
@@ -130,6 +134,7 @@ class TChannel : public TNamed	{
       int GetDetectorNumber() const; 
       int GetSegmentNumber()  const;  
       int GetCrystalNumber()  const;  
+      TClass* GetClassType() const;
 
       int	GetNumber()		          { return fNumber;  }
       unsigned int	GetAddress()    { return fAddress; }

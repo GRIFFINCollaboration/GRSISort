@@ -16,12 +16,17 @@
 #include <chrono>
 #endif
 
+#include <map>
+#include <iostream>
+#include <utility>
+
 #include "TObject.h"
 #include "TFile.h"
 #include "TMemFile.h"
 #include "TTree.h"
 #include "TChain.h"
 #include "TList.h"
+#include "TClass.h"
 
 #include "Globals.h"
 
@@ -109,8 +114,8 @@ class TEventQueue : public TObject {
 class TWriteQueue {
    public:
       static TWriteQueue* Get();
-      static void Add(std::map<std::string, TDetector*>* event); 
-      static std::map<std::string, TDetector*>* PopEntry();
+      static void Add(std::map<TClass*, TDetector*>* event); 
+      static std::map<TClass*, TDetector*>* PopEntry();
       static int Size();
       virtual ~TWriteQueue() { }
 
@@ -119,11 +124,11 @@ class TWriteQueue {
       static TWriteQueue* fPtrToQue;
 
       
-      void AddInstance(std::map<std::string, TDetector*>* event); 
-      std::map<std::string, TDetector*>* PopEntryInstance();
+      void AddInstance(std::map<TClass*, TDetector*>* event); 
+      std::map<TClass*, TDetector*>* PopEntryInstance();
       int SizeInstance();
       
-      std::queue<std::map<std::string, TDetector*>*> fWriteQueue;
+      std::queue<std::map<TClass*, TDetector*>*> fWriteQueue;
 #if !defined (__CINT__) && !defined (__CLING__)
       std::mutex m_write;
 #endif
@@ -162,9 +167,9 @@ class TAnalysisTreeBuilder : public TObject {
       void SetupOutFile();
       void SetupAnalysisTree();
 
-      void FillWriteQueue(std::map<std::string, TDetector*>*);
+      void FillWriteQueue(std::map<TClass*, TDetector*>*);
 
-      void FillAnalysisTree(std::map<std::string, TDetector*>*);
+      void FillAnalysisTree(std::map<TClass*, TDetector*>*);
       void WriteAnalysisTree();
       void CloseAnalysisFile();
 
@@ -172,7 +177,7 @@ class TAnalysisTreeBuilder : public TObject {
 
       void ClearActiveAnalysisTreeBranches();
       void ResetActiveAnalysisTreeBranches();
-		void BuildActiveAnalysisTreeBranches(std::map<std::string, TDetector*>*);
+		void BuildActiveAnalysisTreeBranches(std::map<TClass*, TDetector*>*);
 
       void Print(Option_t *opt ="") const;
 
