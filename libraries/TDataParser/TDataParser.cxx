@@ -27,6 +27,8 @@ bool TDataParser::fFragmentHasWaveform = false;
 
 TChannel* TDataParser::gChannel = new TChannel;
 
+TFragmentMap TDataParser::fFragmentMap;
+
 /// \cond CLASSIMP
 //ClassImp(TDataParser)
 /// \endcond
@@ -483,7 +485,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 							return -x;
 						}
 						EventFrag->SetCfd(tmpCfd[0]);
-						//fFragmentMap->Add(EventFrag, tmpCharge, tmpIntLength);
+						fFragmentMap.Add(EventFrag, tmpCharge, tmpIntLength);
 					} else {
 						if(tmpCharge.size() != tmpIntLength.size() || tmpCharge.size() != tmpCfd.size()) {
 							if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());

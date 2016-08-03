@@ -30,6 +30,7 @@
 #include "TFragment.h"
 #include "TPPG.h"
 #include "TScaler.h"
+#include "TFragmentMap.h"
 
 class TDataParser {
   private:
@@ -56,6 +57,8 @@ class TDataParser {
 
     static std::map<int,int> fFragmentIdMap;
 	 static bool fFragmentHasWaveform;
+
+	 static TFragmentMap fFragmentMap;
 
   public:
     static int TigressDataToFragment(uint32_t *data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
