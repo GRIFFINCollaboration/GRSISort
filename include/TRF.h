@@ -26,7 +26,7 @@ class TRF : public TDetector {
 		Long_t   TimeStamp() const { return fTimeStamp; }	
 		time_t   MidasTime() const { return fMidasTime; }
 
-		void AddFragment(TFragment*, MNEMONIC*);	//!<!
+		void AddFragment(TFragment*, TChannel*);	//!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
 		void Copy(TObject&) const;

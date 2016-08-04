@@ -211,17 +211,15 @@ void TTigress::BuildHits(){
 
 }
 
-void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-  if(frag == NULL || mnemonic == NULL) {
+void TTigress::AddFragment(TFragment* frag, TChannel* chan) {
+  if(frag == NULL || chan == NULL) {
     return;
   }
-
-  TChannel *channel = TChannel::GetChannel(frag->GetAddress());
 
   //printf("%s %s called.\n",__PRETTY_FUNCTION__,channel->GetChannelName());
   //fflush(stdout);
 
-  if((mnemonic->subsystem.compare(0,1,"G")==0) && (channel->GetSegmentNumber()==0 || channel->GetSegmentNumber()==9) ) { // it is a core
+  if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) && (chan->GetSegmentNumber()==0 || chan->GetSegmentNumber()==9) ) { // it is a core
     //if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
     //  return;
     TTigressHit corehit; //(*frag);
@@ -229,9 +227,9 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     //of course this means if we have a core in "coincidence" with itself we will overwrite the first hit
     for(size_t i = 0; i < fTigressHits.size(); ++i)	{
       TTigressHit *hit = GetTigressHit(i);
-      if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
+      if((hit->GetDetector() == chan->GetDetectorNumber()) && (hit->GetCrystal() == chan->GetCrystalNumber())) { //we have a match;
         //if(hit->Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
-        if(mnemonic->outputsensor.compare(0,1,"b")==0) {
+        if(chan->GetMnemonic()->outputsensor.compare(0,1,"b")==0) {
           if(hit->GetName()[9] == 'a') {
             return;
           } else  {
@@ -253,13 +251,13 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
       corehit.CopyWaveform(*frag);
     fTigressHits.push_back(corehit);
     return;
-  } else if(mnemonic->subsystem.compare(0,1,"G")==0) { // its ge but its not a core...
+  } else if(chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) { // its ge but its not a core...
     if(!SetSegmentHits()) 
       return;
     TGRSIDetectorHit temp(*frag);
     for(size_t i = 0; i < fTigressHits.size(); ++i)	{
       TTigressHit *hit = GetTigressHit(i);
-      if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
+      if((hit->GetDetector() == chan->GetDetectorNumber()) && (hit->GetCrystal() == chan->GetCrystalNumber())) { //we have a match;
         if(TestBitNumber(kSetSegWave))         
           temp.CopyWaveform(*frag);
         hit->AddSegment(temp);
@@ -279,7 +277,7 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     //   fflush(stdout);
     //}
     return;
-  } else if(SetBGOHits() && mnemonic->subsystem.compare(0,1,"S")==0) {
+  } else if(SetBGOHits() && chan->GetMnemonic()->subsystem.compare(0,1,"S")==0) {
     TBgoHit temp(*frag);
     fBgos.push_back(temp);
     return;

@@ -148,7 +148,7 @@ void TGRSILoop::FillFragmentTree(TMidasFile* midasfile) {
          fBadFragsSentToTree++;
       } 
 
-      if(!fMidasThreadRunning && TFragmentQueue::GetQueue()->FragsInQueue()%5000==0) {
+      if(!fMidasThreadRunning && TFragmentQueue::GetQueue()->FragsInQueue()%250000==0) {
          printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
                 DBLUE   "%i"   RESET_COLOR
                 "     frags left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
@@ -316,7 +316,7 @@ void TGRSILoop::ProcessMidasFile(TMidasFile* midasFile) {
             ProcessMidasEvent(&fMidasEvent,midasFile);
             break;
       };
-      if((currentEventNumber%5000)== 0) {
+      if((currentEventNumber%50000)== 0) {
 			if(!TGRSIOptions::CloseAfterSort()) {
 				gSystem->ProcessEvents();
 			}

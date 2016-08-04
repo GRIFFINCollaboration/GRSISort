@@ -43,21 +43,21 @@ void TS3::Copy(TObject &rhs) const {
   return;                                      
 }  
 
-void TS3::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+void TS3::AddFragment(TFragment* frag, TChannel* chan) {
 	///This function creates TS3Hits for each fragment and stores them in separate front and back vectors
-	if(frag == NULL || mnemonic == NULL) {
+	if(frag == NULL || chan == NULL) {
 		return;
 	}
 
 	bool IsDownstream = false;		
-	if(mnemonic->collectedcharge.compare(0,1,"N")==0) { // ring	
+	if(chan->GetMnemonic()->collectedcharge.compare(0,1,"N")==0) { // ring	
 			TS3Hit dethit(*frag);
 			dethit.SetVariables(*frag);	
 			dethit.SetRingNumber(*frag);
 			dethit.SetSectorNumber(0);
-			if(mnemonic->arrayposition == 0 || mnemonic->arrayposition == 2)
+			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
 				IsDownstream = true;
-			else if(mnemonic->arrayposition == 1)
+			else if(chan->GetMnemonic()->arrayposition == 1)
 				IsDownstream = false;
 			else
 				IsDownstream = true; // In case of incorrect value, we assume downstream
@@ -70,9 +70,9 @@ void TS3::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 			dethit.SetVariables(*frag);	
 			dethit.SetRingNumber(0);
 			dethit.SetSectorNumber(*frag);
-			if(mnemonic->arrayposition == 0 || mnemonic->arrayposition == 2)
+			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
 				IsDownstream = true;
-			else if(mnemonic->arrayposition == 1)
+			else if(chan->GetMnemonic()->arrayposition == 1)
 				IsDownstream = false;
 			else
 				IsDownstream = true; // In case of incorrect value, we assume downstream

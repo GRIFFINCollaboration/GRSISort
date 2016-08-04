@@ -85,6 +85,8 @@ class TChannel : public TNamed	{
       mutable int       fCrystalNumber; 
       double            fTimeOffset;
       mutable TClass*   fClassType;          //!<! TGRSIDetector Type that this channel represents
+	   MNEMONIC          fMnemonic;
+
 
       std::vector<Float_t> fENGCoefficients;  //Energy calibration coeffs (low to high order)
       double fENGChi2;                       //Chi2 of the energy calibration
@@ -116,6 +118,7 @@ class TChannel : public TNamed	{
 
 
    public:
+      void SetName(const char* tmpName);
       void SetAddress(unsigned int tmpadd);
       inline void SetChannelName(const char* tmpname)  { fChannelName.assign(tmpname); }
       inline void SetNumber(int tmpnum)	             { fNumber = tmpnum; UpdateChannelNumberMap(); }
@@ -135,6 +138,7 @@ class TChannel : public TNamed	{
       int GetSegmentNumber()  const;  
       int GetCrystalNumber()  const;  
       TClass* GetClassType() const;
+      const MNEMONIC* GetMnemonic() const  { return &fMnemonic; }
 
       int	GetNumber()		          { return fNumber;  }
       unsigned int	GetAddress()    { return fAddress; }

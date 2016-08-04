@@ -347,6 +347,10 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
   std::multiset<TFragment,std::less<TFragment> > sortedFragments;//less is the default ordering option, could be left out
 
   //loop over all of the fragments in the tree 
+  int factor = 0;
+  int newfactor = 0;
+  short int counter = 0;
+  bool testing = kFALSE;
   for(int x = 0; x < fEntries; ++x) {
     if(fCurrentFragTree->GetEntry(x) == -1 ) {
       //GetEntry Reads all branches of entry and returns total number of bytes read.
@@ -358,6 +362,30 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
 
     //pull the different pile-up hits apart and put the into the sorted buffer as different fragments
     //for(size_t hit = 0; hit < currentFrag->Cfd.size(); ++hit) {  //fragment inserted twice; pcb.
+
+    //THIS IS ADDED BY RYAN FOR WEIRD TIMESTAMP ROLL OVERS
+    if (!testing && currentFrag->TimeStampHigh>=510) ++counter;
+          // open testing period
+    if (!testing && counter==10) {
+      testing = kTRUE;
+      newfactor = factor+1;
+      counter = 0;
+    }
+    if (testing && currentFrag->TimeStampHigh>=2 && currentFrag->TimeStampHigh<10) ++counter;
+         // close testing period
+    if (counter==10 && testing) {
+      testing = kFALSE;
+      factor = newfactor;
+      counter = 0;
+    }
+          
+    // testing for timestamp rollover
+    if (testing && currentFrag->TimeStampHigh<10){
+      currentFrag->TimeStampHigh = currentFrag->TimeStampHigh+512*newfactor;
+    } else {
+      currentFrag->TimeStampHigh = currentFrag->TimeStampHigh+512*factor;
+    }
+
       try {
         //sortedFragments.insert(TFragment(*currentFrag, hit));  
         sortedFragments.insert(*currentFrag);     //only insert the fragment once.  pcb
@@ -651,7 +679,7 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<TClass*, TDetector*>* detec
   ResetActiveAnalysisTreeBranches();	
 
 
-  //Fill the detector map with TDetector classes if the mnemonic of the detector is in the map.
+  //Fill the detector map with TDetector classes if the class of the detector is in the map.
   //This can probably made better with a map of class to branch. Will potentially add later RD
   for(auto det = detectors->begin(); det != detectors->end(); det++) {
     if(det->first == TTigress::Class()) {
@@ -757,14 +785,12 @@ void TAnalysisTreeBuilder::ProcessEvent() {
 
     //We need to pull the event out of the Event Q
     std::vector<TFragment>* event = TEventQueue::PopEntry();
-    MNEMONIC mnemonic;
     std::map<TClass*, TDetector*>* detectors = new std::map<TClass*, TDetector*>;
     for(auto it = event->begin(); it != event->end();++it) {
       TChannel* channel = TChannel::GetChannel(it->ChannelAddress);
       if(!channel)
         continue;
-   /*   ClearMNEMONIC(&mnemonic);
-      ParseMNEMONIC(channel->GetChannelName(),&mnemonic);*/
+      
       TClass* detClass = channel->GetClassType();
       if(!detClass)
          continue;
@@ -775,7 +801,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
       if(detIt == detectors->end()){
         detIt = detectors->insert(std::pair<TClass*,TDetector*>(detClass,static_cast<TDetector*>(detClass->New()))).first;
       }
-      detIt->second->AddFragment(&(*it),&mnemonic);
+      detIt->second->AddFragment(&(*it),channel);
 
     }
 

@@ -61,7 +61,7 @@ class TTigress : public TGRSIDetector {
 		void SetDoSuppression(bool flag = true);
 		UShort_t GetNAddbackFrags(size_t idx) const;
 
-		void AddFragment(TFragment*, MNEMONIC*); //!<!
+		void AddFragment(TFragment*, TChannel*); //!<!
 		void BuildHits();
 
 		TTigress& operator=(const TTigress&); //!<!

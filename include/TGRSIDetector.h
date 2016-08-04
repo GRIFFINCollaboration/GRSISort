@@ -37,7 +37,7 @@ class TGRSIDetector : public TDetector	{
 
 	public: 
 		//virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
-		virtual void AddFragment(TFragment*,MNEMONIC*)         { AbstractMethod("AddFragment()"); } //!<! = 0; //!
+		virtual void AddFragment(TFragment*,TChannel*)         { AbstractMethod("AddFragment()"); } //!<! = 0; //!
 		virtual void BuildHits() {}
 
 		virtual void Copy(TObject&) const;              //!<!
