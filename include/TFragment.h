@@ -77,7 +77,6 @@ class TFragment : public TGRSIDetectorHit	{
 
 	Short_t GetChannelNumber() const;
 	TPPG*  GetPPG();
-	double GetTime() const;
 	double GetTZero() const;
 	long GetTimeStamp_ns() const;
 	ULong64_t GetTimeInCycle();
@@ -91,7 +90,7 @@ class TFragment : public TGRSIDetectorHit	{
    void Clear(Option_t *opt = "");
    void Print(Option_t *opt = "") const;
 
-	TFragment* Clone(const char* name = "");
+	TObject* Clone(const char* name = "") const;
    
    bool operator<(const TFragment& rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment& rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }

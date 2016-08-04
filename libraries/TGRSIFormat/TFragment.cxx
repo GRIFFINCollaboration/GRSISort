@@ -72,18 +72,10 @@ void TFragment::Clear(Option_t *opt){
    fNumberOfWords       = 0; 
 }
 
-TFragment* TFragment::Clone(const char* name) {
+TObject* TFragment::Clone(const char* name) const {
    TFragment* result = new TFragment;
    *result = *this;
    return result;
-}
-
-double TFragment::GetTime() const {
-	double dtime = (double)(GetTimeStamp())+ gRandom->Uniform();
-	TChannel* chan = TChannel::GetChannel(fAddress);
-	if(!chan )
-		return dtime;
-	return dtime - chan->GetTZero(GetEnergy());
 }
 
 double TFragment::GetTZero() const {

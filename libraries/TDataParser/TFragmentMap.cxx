@@ -28,21 +28,24 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<U
   // now we can loop over the stored fragments and the current fragment and calculate all charges
   switch(nofFrags) {
   case 2: // only one option: (2, 1)
+  {
 	  if(charge.size() != 1) {
 		  return false;
 	  }
-	  Fragment* firstFrag = std::get<0>((*(range.first)).second);
-	  std::vector<Int_t> c = std::get<1>((*(range.first)).second);
+	  TFragment* firstFrag = std::get<0>((*(range.first)).second);
+	  // get all integration lengths
 	  std::vector<UShort_t> k2 = std::get<2>((*(range.first)).second);
-	  c.push_back(charge[0]);
 	  k2.push_back(integrationLength[0]);
+	  // we need the actual charges, not the integrated ones, so we calculate them now
+	  std::vector<Float_t> c;
+	  for(size_t i = 0; i < std::get<1>((*(range.first)).second).size(); ++i) { c.push_back((std::get<1>((*(range.first)).second)[i] + gRandom->Uniform())/k2[i]); }
+	  c.push_back((charge[0] + gRandom->Uniform())/integrationLength[0]);
 	  //all k's are needed squared so we square all elements of k
-	  for(auto it = k2.begin; it != k2.end(); ++it) { (*it) = (*it)*(*it); }
+	  for(auto it = k2.begin(); it != k2.end(); ++it) { (*it) = (*it)*(*it); }
 	  firstFrag->SetCharge((k2[0]*(c[0]*k2[1]+c[0]*k2[2]-c[2]*k2[2])+c[1]*k2[1]*k2[2])/(k2[0]+(k2[1]+k2[2])+k2[1]*k2[2]));
 	  frag->SetCharge((k2[0]*(c[2]*k2[0] + (c[2]+c[1]-c[0])*k2[2]))/(k2[0]+(k2[1]+k2[2])+k2[1]*k2[2]));
-	  // these calculations were done assuming c[0] = x1, c[1] = x1+x2, c[2] = x2, with x1, x2 being the real charges
-	  // but we actually have the integrated charges here
 	  break;
+  }
   case 3: // two options: (3, 1, 1), (2, 2, 1)
 	  break;
   case 4: // five options: (4, 1, 1, 1), (3, 2, 1, 1), (3, 1, 2, 1), (2, 3, 1, 1), (2, 2, 2, 1)
