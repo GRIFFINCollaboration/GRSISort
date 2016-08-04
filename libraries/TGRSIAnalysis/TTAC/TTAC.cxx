@@ -58,10 +58,10 @@ void TTAC::PushBackHit(TGRSIDetectorHit *laHit) {
    fTACHits.push_back(*(static_cast<TTACHit*>(laHit)));
 }
 
-void TTAC::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+void TTAC::AddFragment(TFragment* frag, TChannel* chan) {
    //Builds the TAC Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
    //This should be done for both TAC and it's suppressors.
-   if(frag == NULL || mnemonic == NULL) {
+   if(frag == NULL || chan == NULL) {
       return;
    }
    

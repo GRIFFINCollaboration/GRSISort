@@ -41,7 +41,7 @@ class TDetector : public TObject	{
 
 	public: 
 		virtual void BuildHits()                                   { AbstractMethod("BuildHits()"); } //!<!
-		virtual void AddFragment(TFragment*, MNEMONIC*)            { AbstractMethod("AddFragment()"); } //!<!
+		virtual void AddFragment(TFragment*, TChannel*)            { AbstractMethod("AddFragment()"); } //!<!
 
 		virtual void Copy(TObject&) const;              //!<!
 		virtual void Clear(Option_t* opt = "");         //!<!

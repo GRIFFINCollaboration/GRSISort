@@ -320,12 +320,10 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
 
    for(iter = TChannel::GetChannelMap()->begin();iter != TChannel::GetChannelMap()->end(); iter++) {
       std::string channelname = iter->second->GetChannelName();
-      MNEMONIC mnemonic;
-      ParseMNEMONIC(&channelname,&mnemonic);
 
       //  detector system type.
       //  for more info, see: https://www.triumf.info/wiki/tigwiki/index.php/Detector_Nomenclature
-      std::string system = mnemonic.system;
+      std::string system = iter->second->GetMnemonic()->system;
       if(system.compare("TI")==0) {
          //printf("this is working,found tigress.\n");
          if(!Tigress()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 

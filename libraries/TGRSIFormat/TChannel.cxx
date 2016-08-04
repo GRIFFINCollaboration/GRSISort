@@ -54,7 +54,6 @@ TChannel::~TChannel(){ }
 TChannel::TChannel(const char* tempName) {
 	Clear();
 	SetName(tempName);
-	fChannelName = tempName;
 }
 
 
@@ -65,7 +64,8 @@ TChannel::TChannel(TChannel* chan) {
 	this->SetNumber(chan->GetNumber());
 	this->SetStream(chan->GetStream());
 	this->SetUserInfoNumber(chan->GetUserInfoNumber());
-	this->SetName(chan->GetName());
+	this->SetName(chan->GetName()); //SetName also sets the mnemonic
+
 	this->SetChannelName(chan->GetChannelName());
 	this->SetDigitizerType(chan->GetDigitizerType());
 
@@ -89,7 +89,12 @@ TChannel::TChannel(TChannel* chan) {
    this->SetClassType(chan->GetClassType());
 }
 
-
+void TChannel::SetName(const char* tmpName){
+   TNamed::SetName(tmpName);
+   fChannelName = tmpName;
+	ClearMNEMONIC(&fMnemonic);
+	ParseMNEMONIC(GetChannelName(),&fMnemonic);
+}
 
 void TChannel::InitChannelInput() {
 	int channels_found = ParseInputData(fFileData.c_str(),"q"); 
@@ -163,6 +168,7 @@ void TChannel::OverWriteChannel(TChannel* chan){
 	this->SetUserInfoNumber(chan->GetUserInfoNumber());
 	this->SetChannelName(chan->GetChannelName());
 	this->SetDigitizerType(chan->GetDigitizerType());
+   this->SetName(chan->GetName());
 
 	this->SetENGCoefficients(chan->GetENGCoeff());
 	this->SetCFDCoefficients(chan->GetCFDCoeff());
@@ -197,7 +203,7 @@ void TChannel::AppendChannel(TChannel* chan){
 	if(chan->GetUserInfoNumber()!=0 && chan->GetUserInfoNumber()!=-1)
 		this->SetUserInfoNumber(chan->GetUserInfoNumber());
 	if(strlen(chan->GetChannelName())>0)
-		this->SetChannelName(chan->GetChannelName());
+		this->SetName(chan->GetName());
 	if(strlen(chan->GetDigitizerType())>0)
 		this->SetDigitizerType(chan->GetDigitizerType());
    if(chan->GetTimeOffset() != 0.0)
@@ -882,7 +888,7 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 				brace_open = true;
 				name = line.substr(0, openbrace).c_str();
 				channel = new TChannel("");//GetChannel(0);
-				channel->SetChannelName(name.c_str());
+				channel->SetName(name.c_str());
 			}
 			//*************************************//
 			if(brace_open) {
@@ -900,7 +906,7 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 					}
 					//printf("type = %s\n",type.c_str());
 					if(type.compare("NAME")==0) {
-						channel->SetChannelName(line.c_str());
+						channel->SetName(line.c_str());
 					} else if(type.compare("ADDRESS")==0) {
 						unsigned int tempadd =0; ss>>tempadd;
 						if(tempadd == 0) { //maybe it is in hex...
@@ -1108,10 +1114,7 @@ int TChannel::GetDetectorNumber() const {
 	if(fDetectorNumber>-1) //||fDetectorNumber==0x0fffffff)
 		return fDetectorNumber;
 
-	MNEMONIC mnemonic;
-	ClearMNEMONIC(&mnemonic);
-	ParseMNEMONIC(GetChannelName(),&mnemonic);
-  fDetectorNumber = (int32_t)mnemonic.arrayposition;
+  fDetectorNumber = (int32_t)fMnemonic.arrayposition;
   return fDetectorNumber;
 }
 
@@ -1119,45 +1122,41 @@ TClass* TChannel::GetClassType() const {
 	if(fClassType != NULL)
 		return fClassType;
 
-   MNEMONIC mnemonic;
-   ClearMNEMONIC(&mnemonic);
-   ParseMNEMONIC(GetChannelName(),&mnemonic);
-
-   if(mnemonic.system.compare("TI")==0) {
+   if(fMnemonic.system.compare("TI")==0) {
       fClassType = TTigress::Class();
-   } else if (mnemonic.system.compare("SH")==0) {
+   } else if (fMnemonic.system.compare("SH")==0) {
       fClassType = TSharc::Class();
-   } else if(mnemonic.system.compare("Tr")==0) {	
+   } else if(fMnemonic.system.compare("Tr")==0) {	
       fClassType = TTriFoil::Class();
-   } else if(mnemonic.system.compare("RF")==0) {	
+   } else if(fMnemonic.system.compare("RF")==0) {	
       fClassType = TRF::Class();
-   } else if(mnemonic.system.compare("SP")==0) {
-        if(mnemonic.subsystem.compare("I")==0) {
+   } else if(fMnemonic.system.compare("SP")==0) {
+        if(fMnemonic.subsystem.compare("I")==0) {
             fClassType = TSiLi::Class();
         } else {
             fClassType = TS3::Class();
         }
-   } else if(mnemonic.system.compare("CS")==0) {	
+   } else if(fMnemonic.system.compare("CS")==0) {	
       fClassType = TCSM::Class();
-   } else if(mnemonic.system.compare("GR")==0) {
+   } else if(fMnemonic.system.compare("GR")==0) {
       fClassType = TGriffin::Class();
-   } else if(mnemonic.system.compare("SE")==0) {
+   } else if(fMnemonic.system.compare("SE")==0) {
       fClassType = TSceptar::Class();
-   } else if(mnemonic.system.compare("PA")==0) {	
+   } else if(fMnemonic.system.compare("PA")==0) {	
       fClassType = TPaces::Class();
-   } else if(mnemonic.system.compare("DS")==0) {	
+   } else if(fMnemonic.system.compare("DS")==0) {	
       fClassType = TDescant::Class();
-   } else if(mnemonic.system.compare("DA")==0) {
-         if(mnemonic.collectedcharge.compare("N")==0) {
+   } else if(fMnemonic.system.compare("DA")==0) {
+         if(fMnemonic.collectedcharge.compare("N")==0) {
             fClassType = TLaBr::Class();
          } else {
             fClassType = TTAC::Class();
          }
-   } else if(mnemonic.system.compare("BA")==0) {
+   } else if(fMnemonic.system.compare("BA")==0) {
         fClassType = TS3::Class();
-   } else if(mnemonic.system.compare("ZD")==0) {	
+   } else if(fMnemonic.system.compare("ZD")==0) {	
         fClassType = TZeroDegree::Class();
-   } else if(mnemonic.system.compare("TP")==0) {	
+   } else if(fMnemonic.system.compare("TP")==0) {	
         fClassType = TTip::Class();
    }
     
@@ -1168,9 +1167,6 @@ int TChannel::GetSegmentNumber() const {
    if(fSegmentNumber>-1)
      return fSegmentNumber;
 
-   MNEMONIC mnemonic;
-   ClearMNEMONIC(&mnemonic);
-   ParseMNEMONIC(GetChannelName(),&mnemonic);
    std::string name = GetChannelName();
    TString str = name[9];
    if(str.IsDigit()){
@@ -1179,7 +1175,7 @@ int TChannel::GetSegmentNumber() const {
    	 fSegmentNumber = (int32_t)atoi(buf.c_str());
    }
    else{   
-   	 fSegmentNumber = (int32_t)mnemonic.segment;
+   	 fSegmentNumber = (int32_t)fMnemonic.segment;
    }
    return fSegmentNumber;
 }
@@ -1188,9 +1184,7 @@ int TChannel::GetCrystalNumber() const {
   if(fCrystalNumber>-1)
     return fCrystalNumber;
 
-  MNEMONIC mnemonic;
-  ParseMNEMONIC(GetChannelName(),&mnemonic);
-  char color = mnemonic.arraysubposition[0];
+  char color = fMnemonic.arraysubposition[0];
   switch(color) {
     case 'B':
       fCrystalNumber = 0;

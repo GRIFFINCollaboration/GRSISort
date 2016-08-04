@@ -28,7 +28,7 @@ class TPaces : public TGRSIDetector {
 		Short_t GetMultiplicity() const { return fPacesHits.size(); }
 
 		static TVector3 GetPosition(int DetNbr);		//!<!
-		void AddFragment(TFragment*, MNEMONIC*); //!<!
+		void AddFragment(TFragment*, TChannel*); //!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
 		TPaces& operator=(const TPaces&);  //!<! 

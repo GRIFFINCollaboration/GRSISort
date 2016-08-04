@@ -84,17 +84,17 @@ TSharc::TSharc(const TSharc& rhs) : TGRSIDetector() {
 
 
 
-void TSharc::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-	if(frag == NULL || mnemonic == NULL) {
+void TSharc::AddFragment(TFragment* frag, TChannel* chan) {
+	if(frag == NULL || chan == NULL) {
 		return;
 	}
-	if(mnemonic->arraysubposition.compare(0,1,"D") == 0) {
-		if(mnemonic->collectedcharge.compare(0,1,"P") == 0) {
+	if(chan->GetMnemonic()->arraysubposition.compare(0,1,"D") == 0) {
+		if(chan->GetMnemonic()->collectedcharge.compare(0,1,"P") == 0) {
       fFrontFragments.push_back(*frag);
     } else {
       fBackFragments.push_back(*frag);
     }
-  } else if(mnemonic->arraysubposition.compare(0,1,"E") == 0) {
+  } else if(chan->GetMnemonic()->arraysubposition.compare(0,1,"E") == 0) {
     fPadFragments.push_back(*frag);
   }
 }

@@ -43,7 +43,7 @@ class TSharc : public TGRSIDetector  {
 
 		TSharc& operator=(const TSharc& rhs)  { if(this!=&rhs) rhs.Copy(*this); return *this; }//!<!
 
-		void AddFragment(TFragment*, MNEMONIC*); //!<!
+		void AddFragment(TFragment*, TChannel*); //!<!
 		void BuildHits();   //no need to build any hits, everything already done in AddFragment;  
                         //we still need to build hits as one hit is composed of multiple fragments.  pcb.
 

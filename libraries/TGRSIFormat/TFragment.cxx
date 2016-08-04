@@ -335,8 +335,6 @@ int TFragment::GetDetector() const {
 		fprintf (stderr,"%s, failed to find channel for address 0x%08x",__PRETTY_FUNCTION__,GetAddress());
 		return -1;
 	}
-	//ClearMNEMONIC(&mnemonic);
-	//ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
   return channel->GetDetectorNumber(); //mnemonic.arrayposition;
 }
 
@@ -346,9 +344,7 @@ int TFragment::GetSegment() const {
 		fprintf (stderr,"%s, failed to find channel for address 0x%08x",__PRETTY_FUNCTION__,GetAddress());
 		return -1;
 	}
-	//ClearMNEMONIC(&mnemonic);
-	//ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
-  return channel->GetSegmentNumber(); //mnemonic.arrayposition;
+   return channel->GetSegmentNumber(); //mnemonic.arrayposition;
 }
 
 
