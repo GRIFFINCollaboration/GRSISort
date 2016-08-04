@@ -34,7 +34,6 @@ class TTigressHit : public TGRSIDetectorHit {
 	 Float_t  fFirstSegmentCharge; //!<!
 
     std::vector<TGRSIDetectorHit> fSegments;
-    std::vector<TGRSIDetectorHit> fBgos;
 
     Double_t fTimeFit;
     Double_t fSig2Noise;
@@ -50,7 +49,6 @@ class TTigressHit : public TGRSIDetectorHit {
 	/////////////////////////		/////////////////////////////////////
 	void SetCore(TGRSIDetectorHit& core)		  { Copy(core);	} 					//!<!
 	void AddSegment(TGRSIDetectorHit& seg) 	  { fSegments.push_back(seg);	}	//!<!
-	void AddBGO(TGRSIDetectorHit& bgo) 		    { fBgos.push_back(bgo);	}	   //!<!
 
   //int SetCrystal(char color);
   //int SetCrystal(int crynum);
@@ -86,15 +84,11 @@ class TTigressHit : public TGRSIDetectorHit {
 
 	int GetSegmentMultiplicity()		  const      { return fSegments.size(); }	//!<!
 	int GetNSegments()		            const      { return fSegments.size(); }	//!<!
-	int GetBGOMultiplicity()			    const      { return fBgos.size();     }   //!<!
-	int GetNBGOs()			              const      { return fBgos.size();     }   //!<!
 	using TGRSIDetectorHit::GetSegment;
 	TGRSIDetectorHit& GetSegment(int &i)       { return fSegments.at(i);  }   //!<!
-	TGRSIDetectorHit& GetBGO( int &i)	         { return fBgos.at(i);	     }   //!<!
 	TGRSIDetectorHit& GetCore()                { return *this;	           }   //!<!
 	
   TGRSIDetectorHit GetSegment(int &i) const { return fSegments.at(i);  }   //!<!
-	TGRSIDetectorHit GetBGO( int &i)	   const { return fBgos.at(i);	     }   //!<!
 	TGRSIDetectorHit GetCore()          const { return *this;	           }   //!<!
 
 	void CheckFirstHit(int charge,int segment);								               //!<!

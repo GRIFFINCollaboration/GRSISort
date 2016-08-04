@@ -50,7 +50,7 @@ void TS3::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 	}
 
 	bool IsDownstream = false;		
-	if(mnemonic->collectedcharge.compare(0,1,"P")==0) { //front  (ring)	
+	if(mnemonic->collectedcharge.compare(0,1,"N")==0) { // ring	
 			TS3Hit dethit(*frag);
 			dethit.SetVariables(*frag);	
 			dethit.SetRingNumber(*frag);

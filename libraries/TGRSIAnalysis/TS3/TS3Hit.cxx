@@ -25,6 +25,8 @@ void TS3Hit::Copy(TObject &rhs) const {
 	 static_cast<TS3Hit&>(rhs).fRing = fRing;
 	 static_cast<TS3Hit&>(rhs).fSector = fSector;
 	 static_cast<TS3Hit&>(rhs).fIsDownstream = fIsDownstream;
+   static_cast<TS3Hit&>(rhs).fTimeFit		   = fTimeFit;
+   static_cast<TS3Hit&>(rhs).fSig2Noise		= fSig2Noise;
    return;
 }
 

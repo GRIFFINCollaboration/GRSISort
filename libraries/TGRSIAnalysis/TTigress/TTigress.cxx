@@ -30,6 +30,14 @@ bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
 
 std::function<bool(TTigressHit&, TTigressHit&)> TTigress::fAddbackCriterion = DefaultAddback;
 
+bool DefaultSuppression(TTigressHit& tig, TBgoHit& bgo) {
+	Int_t dCfd = tig.GetCfd() - bgo.GetCfd();
+  return ((dCfd > -400 && dCfd < -80) && (tig.GetDetector() == bgo.GetDetector()) && (bgo.GetCharge()>100.) &&
+					TTigress::BGOSuppression[tig.GetCrystal()][bgo.GetCrystal()][bgo.GetSegment()-1]);
+}
+
+std::function<bool(TTigressHit&, TBgoHit&)> TTigress::fSuppressionCriterion = DefaultSuppression;
+
 TTigress::TTigress() : TGRSIDetector() {
   //Class()->IgnoreTObjectStreamer(true);
   Clear();
@@ -58,6 +66,7 @@ void TTigress::Copy(TObject& rhs) const {
   static_cast<TTigress&>(rhs).fSetCoreWave    = fSetCoreWave;	
   static_cast<TTigress&>(rhs).fSetSegmentWave = fSetSegmentWave;	
   static_cast<TTigress&>(rhs).fSetBGOWave     = fSetBGOWave;	
+	static_cast<TTigress&>(rhs).fBgos        		= fBgos;
 }
 
 void TTigress::Clear(Option_t *opt)	{
@@ -69,6 +78,8 @@ void TTigress::Clear(Option_t *opt)	{
   fTigressHits.clear();
   fAddbackHits.clear();
   fAddbackFrags.clear();
+  fBgos.clear();
+	SetDoSuppression();
 }
 
 void TTigress::Print(Option_t *opt)	const {
@@ -109,24 +120,44 @@ Int_t TTigress::GetAddbackMultiplicity() {
     fAddbackHits.clear();
   }
   if(fAddbackHits.size() == 0) {
+    size_t i, j;
+
+		std::vector<TTigressHit> temphits;
+		if((fTigressBits & kSuppression) != 0x0){		
+			for(i = 0; i < fTigressHits.size(); i++){
+				bool supp = false;
+				for(j = 0; j < fBgos.size(); j++){
+					if( fSuppressionCriterion(fTigressHits[i], fBgos[j]) ){
+						supp = true;
+						continue;
+					}
+				}
+				if(!supp)
+					temphits.push_back(fTigressHits[i]);
+			}		
+		}
+		else
+			temphits = fTigressHits;
+
+		if(temphits.size() == 0)
+			return 0;
     // use the first tigress hit as starting point for the addback hits
-    fAddbackHits.push_back(fTigressHits[0]);
+    fAddbackHits.push_back(temphits[0]);
     fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
     fAddbackFrags.push_back(1);
 
     // loop over remaining tigress hits
-    size_t i, j;
-    for(i = 1; i < fTigressHits.size(); ++i) {
+    for(i = 1; i < temphits.size(); ++i) {
       // check for each existing addback hit if this tigress hit should be added
       for(j = 0; j < fAddbackHits.size(); ++j) {
-        if(fAddbackCriterion(fAddbackHits[j], fTigressHits[i])) {
-          fAddbackHits[j].SumHit(&(fTigressHits[i]));
+        if(fAddbackCriterion(fAddbackHits[j], temphits[i])) {
+          fAddbackHits[j].SumHit(&(temphits[i]));
           fAddbackFrags[j]++;
           break;
         }
       }
       if(j == fAddbackHits.size()) {
-        fAddbackHits.push_back(fTigressHits[i]);
+        fAddbackHits.push_back(temphits[i]);
         fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
         fAddbackFrags.push_back(1);
       }
@@ -159,12 +190,12 @@ void TTigress::BuildHits(){
   std::vector<TTigressHit>::iterator it;
   for( it=fTigressHits.begin();it!=fTigressHits.end();) {
     double largestsegment = 0.0;
-    if((it->GetCharge()/125.0)<5)  {
-       if(it->GetNBGOs()>0 && it->GetNSegments()<1) {  //bgo fired with no core.
-         it = fTigressHits.erase(it);
-         continue;
-       }
-    }
+    //if((it->GetCharge()/125.0)<5)  {
+    //   if(it->GetNBGOs()>0 && it->GetNSegments()<1) {  //bgo fired with no core.
+    //     it = fTigressHits.erase(it);
+    //     continue;
+    //   }
+    //}
     //it->Print("all");
     for(int y=0;y<it->GetNSegments();y++) {
       if(it->GetSegment(y).GetCharge() > largestsegment) {
@@ -249,22 +280,8 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
     //}
     return;
   } else if(SetBGOHits() && mnemonic->subsystem.compare(0,1,"S")==0) {
-    TGRSIDetectorHit temp(*frag);
-    for(size_t i = 0; i < fTigressHits.size(); ++i)	{
-      TTigressHit *hit = GetTigressHit(i);
-      if((hit->GetDetector() == channel->GetDetectorNumber()) && (hit->GetCrystal() == channel->GetCrystalNumber())) { //we have a match;
-        if(TestBitNumber(kSetBGOWave))         
-          temp.CopyWaveform(*frag);
-        GetTigressHit(i)->AddBGO(temp);
-        return;
-      }
-    }
-    TTigressHit corehit;
-    corehit.SetAddress(frag->ChannelAddress);  // this makes me uncomfortable, though I have no slick solution.
-    if(TestBitNumber(kSetBGOWave))         
-      temp.CopyWaveform(*frag);
-    corehit.AddBGO(temp);
-    fTigressHits.push_back(corehit);
+    TBgoHit temp(*frag);
+    fBgos.push_back(temp);
     return;
   }
   //if not suprress errors;
@@ -274,7 +291,12 @@ void TTigress::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
   return;
 }
 
+void TTigress::SetDoSuppression(bool flag){
 
+	SetBitNumber(kSuppression,flag);
+	ResetAddback();
+
+}
 
 void TTigress::ResetAddback() {
   ///Used to clear the addback hits. When playing back a tree, this must
@@ -559,6 +581,32 @@ double TTigress::GeWhitePositionBack[17][9][3] = {
 {{35.72,-157.13,-120.47},{21.03,-146.94,-91.76},{43.08,-137.53,-92.04},{36.28,-123.41,-108.51},{14.90,-131.15,-108.72},{30.52,-179.50,-120.24},{54.17,-169.87,-120.06},{47.34,-152.78,-138.43},{23.38,-162.90,-138.29}}
 };
 
+bool TTigress::BGOSuppression[4][4][5] = {
+{	
+{		true, true, true, true, true }, 
+{		true, false, false, false, false },
+{		false, false, false, false, false },
+{		false, false, false, false, true  }
+},
+{
+{		false, false, false, false, true },	
+{		true, true, true, true, true }, 
+{		true, false, false, false, false },
+{		false, false, false, false, false } 
+},
+{	
+{		false, false, false, false, false },
+{		false, false, false, false, true }, 
+{		true, true, true, true, true }, 
+{		true, false, false, false, false }
+},
+{	
+{		true, false, false, false, false },
+{		false, false, false, false, false },
+{		false, false, false, false, true },
+{		true, true, true, true, true } 
+}
+};
 
 
 
