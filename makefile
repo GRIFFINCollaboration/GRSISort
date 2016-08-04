@@ -7,10 +7,10 @@ PLATFORM:=$(shell uname)
 # EDIT THIS SECTION
 
 INCLUDES   = include users
-CFLAGS     = -g -std=c++0x -O3 -Wall -Wextra -pedantic -Wno-unused-parameter  -Wno-unused-function
+CFLAGS     = -g -std=c++11 -O3 -Wall -Wextra -pedantic -Wno-unused-parameter  -Wno-unused-function
 #-Wall -Wextra -pedantic -Wno-unused-parameter
 LINKFLAGS_PREFIX  =
-LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm -std=c++0x
+LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm -std=c++11
 SRC_SUFFIX = cxx
 
 # EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY

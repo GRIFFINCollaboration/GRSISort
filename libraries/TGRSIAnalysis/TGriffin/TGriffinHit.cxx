@@ -23,7 +23,7 @@ TGriffinHit::TGriffinHit(const TGriffinHit &rhs) : TGRSIDetectorHit() {
 }
 
 TGriffinHit::TGriffinHit(const TFragment &frag) : TGRSIDetectorHit(frag) {
-  SetNPileUps(frag.NumberOfHits);
+  SetNPileUps(frag.GetNumberOfPileups());
 }
 
 

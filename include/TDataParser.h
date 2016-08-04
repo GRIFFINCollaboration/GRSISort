@@ -30,6 +30,7 @@
 #include "TFragment.h"
 #include "TPPG.h"
 #include "TScaler.h"
+#include "TFragmentMap.h"
 
 class TDataParser {
   private:
@@ -46,7 +47,7 @@ class TDataParser {
     static void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
 
     //ENUM(EBank, char, kWFDN,kGRF1,kGRF2,kGRF3,kFME0,kFME1,kFME2,kFME3);
-    enum EBank { kWFDN,kGRF1,kGRF2,kGRF3,kFME0,kFME1,kFME2,kFME3 };
+    enum EBank { kWFDN,kGRF1,kGRF2,kGRF3,kGRF4,kFME0,kFME1,kFME2,kFME3 };
 
   private:
     static const unsigned long fMaxTriggerId; ///< The last trigger ID Called
@@ -55,21 +56,22 @@ class TDataParser {
     static unsigned long fLastNetworkPacket;  ///< The last network packet recieved.
 
     static std::map<int,int> fFragmentIdMap;
+	 static bool fFragmentHasWaveform;
+
+	 static TFragmentMap fFragmentMap;
 
   public:
-    static int TigressDataToFragment(uint32_t *data, int size,unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+    static int TigressDataToFragment(uint32_t *data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
     static int GriffinDataToFragment(uint32_t *data, int size, EBank bank, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
-    static int GriffinDataToPPGEvent(uint32_t *data, int size, EBank bank, unsigned int midasSerialNumber=0, time_t midasTime=0); 
+    static int GriffinDataToPPGEvent(uint32_t *data, int size, unsigned int midasSerialNumber=0, time_t midasTime=0); 
     static int GriffinDataToScalerEvent(uint32_t *data, int address);
 
-    static int EPIXToScalar(float *data,int size,unsigned int midasSerialNumber = 0,time_t midasTime = 0);
-    static int SCLRToScalar(uint32_t *data,int size,unsigned int midasSerialNumber = 0,time_t midasTime = 0);
-    static int EightPIDataToFragment(uint32_t stream,uint32_t* data,
-                                     int size,unsigned int midasSerialNumber = 0, time_t midasTime = 0);
-    static int FifoToFragment(unsigned short *data,int size,bool zerobuffer=false,
+    static int EPIXToScalar(float *data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+    static int SCLRToScalar(uint32_t *data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+    static int EightPIDataToFragment(uint32_t stream, uint32_t* data,
+                                     int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+    static int FifoToFragment(unsigned short *data, int size, bool zerobuffer=false,
                               unsigned int midasSerialNumber=0, time_t midasTime=0); 
-
-
 
   private:
     //utility
@@ -86,28 +88,15 @@ class TDataParser {
     static bool SetTIGTriggerID(uint32_t, TFragment*);
     static bool SetTIGTimeStamp(uint32_t*, TFragment*);
 
-    static bool SetGRIFMasterFilterId(uint32_t,TFragment*);
-    static bool SetGRIFChannelTriggerId(uint32_t,TFragment*);  
-    static bool SetGRIFTimeStampLow(uint32_t,TFragment*);
-    static void SetGRIFWave(uint32_t,TFragment*);
-    static bool SetGRIFNetworkPacket(uint32_t,TFragment*);
+    static bool SetGRIFHeader(uint32_t, TFragment*, EBank);
+    static bool SetGRIFMasterFilterPattern(uint32_t, TFragment*, EBank);
+    static bool SetGRIFMasterFilterId(uint32_t, TFragment*);
+    static bool SetGRIFChannelTriggerId(uint32_t, TFragment*);  
+    static bool SetGRIFTimeStampLow(uint32_t, TFragment*);
+    static bool SetGRIFNetworkPacket(uint32_t, TFragment*);
 
-
-    static bool SetGRIFPsd(uint32_t, std::vector<TFragment*>*);
-    static bool SetGRIFCc(uint32_t, std::vector<TFragment*>*);
-    static bool SetGRIFZc(uint32_t, std::vector<TFragment*>*); 
-    static bool SetGRIFCcShort(uint32_t, std::vector<TFragment*>*);
-    static bool SetGRIFCcLong(uint32_t, std::vector<TFragment*>*);
-    static bool AppendGRIFCcLong(uint32_t,uint32_t, std::vector<TFragment*>*);
-
-    static bool SetGRIFMasterFilterPattern(uint32_t,EBank,TFragment*);
-    static bool SetGRIFHeader(uint32_t,EBank,TFragment*);
-
-    static bool SetGRIFKValue(uint32_t, std::vector<TFragment*>*);  
-    static bool SetGRIFCfd(uint32_t, std::vector<TFragment*>*);     
-    static bool SetGRIFCharge(uint32_t, std::vector<TFragment*>*);  
-    
-    //static bool SetGRIFLed(uint32_t,EBank, std::vector<TFragment*>*);     
+    static bool SetGRIFPsd(uint32_t, TFragment*);
+    static bool SetGRIFCc(uint32_t, TFragment*);
 
     static bool SetGRIFWaveForm(uint32_t,TFragment*);
     static bool SetGRIFDeadTime(uint32_t,TFragment*);

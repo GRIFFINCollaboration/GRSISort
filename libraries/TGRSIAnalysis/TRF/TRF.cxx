@@ -29,7 +29,7 @@ void TRF::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 	TPulseAnalyzer pulse((TFragment&)(*frag));	    
 	if(pulse.IsSet()){
 		fTime = pulse.fit_rf(fPeriod*0.2);//period taken in half ticks... for reasons
-		fMidasTime = frag->MidasTimeStamp;
+		fMidasTime = frag->GetMidasTimeStamp();
 		fTimeStamp = frag->GetTimeStamp();		
 	}
 }
