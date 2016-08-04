@@ -25,6 +25,8 @@ void TS3Hit::Copy(TObject &rhs) const {
 	 static_cast<TS3Hit&>(rhs).fRing = fRing;
 	 static_cast<TS3Hit&>(rhs).fSector = fSector;
 	 static_cast<TS3Hit&>(rhs).fIsDownstream = fIsDownstream;
+   static_cast<TS3Hit&>(rhs).fTimeFit		   = fTimeFit;
+   static_cast<TS3Hit&>(rhs).fSig2Noise		= fSig2Noise;
    return;
 }
 
@@ -37,15 +39,12 @@ void TS3Hit::Clear(Option_t *opt)	{
 }
 
 Short_t TS3Hit::GetMnemonicSegment(TFragment &frag){//could be added to TGRSIDetectorHit base class
-	MNEMONIC mnemonic;
 	TChannel *channel = TChannel::GetChannel(frag.ChannelAddress);
 	if(!channel){
 		Error("SetDetector","No TChannel exists for address %u",GetAddress());
 		return 0;
 	}
-	ClearMNEMONIC(&mnemonic);
-	ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
-	return mnemonic.segment;
+	return channel->GetMnemonic()->segment;
 }
 
 void TS3Hit::SetWavefit(TFragment &frag)   { 

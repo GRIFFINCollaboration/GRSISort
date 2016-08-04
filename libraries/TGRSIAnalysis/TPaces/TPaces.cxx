@@ -81,10 +81,10 @@ TPacesHit* TPaces::GetPacesHit(const int& i) {
    return NULL;
 }
 
-void TPaces::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+void TPaces::AddFragment(TFragment* frag, TChannel* chan) {
   //Builds the PACES Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
   //This is done for both PACES and it's suppressors.
-	if(frag == NULL || mnemonic == NULL) {
+	if(frag == NULL || chan == NULL) {
 		return;
 	}
 

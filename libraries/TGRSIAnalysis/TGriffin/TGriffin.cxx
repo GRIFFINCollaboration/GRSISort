@@ -213,28 +213,17 @@ TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
    }
 }
 
-void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
+void TGriffin::AddFragment(TFragment* frag, TChannel *chan)	{
 	//Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the hits for an event and sets observables. 
 	//This is done for both GRIFFIN and it's suppressors.
-	if(frag == NULL || mnemonic == NULL) {
+	if(frag == NULL || chan == NULL) {
 		return;
 	}
 
-   if(mnemonic->subsystem[0] == 'G') {
+  // if(mnemonic->subsystem[0] == 'G') {
 		//set griffin
-		if(mnemonic->outputsensor[0] == 'B') { return; }  //make this smarter.
+		if(chan->GetMnemonic()->outputsensor[0] == 'B') { return; }  //make this smarter.
 		
-		//we're ignoring MidasId, CloverNumber (from mnemomic->arrayposition), and CoreNumber:
-		//UShort_t CoreNbr=5;
-		//if(mnemonic->arraysubposition[0] == 'B')
-		//	CoreNbr=0;
-		//else if(mnemonic->arraysubposition[0] == 'G')
-		//	CoreNbr=1;
-		//else if(mnemonic->arraysubposition[0] == 'R')
-		//	CoreNbr=2;
-		//else if(mnemonic->arraysubposition[0] == 'W')
-		//	CoreNbr=3;
-   
 		for(size_t i = 0; i < frag->Charge.size(); ++i) {
 			TGriffinHit corehit;
 			corehit.SetAddress(frag->ChannelAddress);
@@ -258,9 +247,9 @@ void TGriffin::AddFragment(TFragment* frag, MNEMONIC *mnemonic)	{
 			
 			AddHit(&corehit);
 		}
-	} else if(mnemonic->subsystem[0] == 'S') {
+	//} else if(mnemonic->subsystem[0] == 'S') {
 		//set BGO
-   }
+  // }
 }
 
 TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ) {

@@ -18,12 +18,13 @@
 
 #include "TGRSIDetector.h" 
 #include "TTigressHit.h"
+#include "TBgoHit.h"
 
 class TTigress : public TGRSIDetector {
 	public:
 		enum ETigressBits {
 			kIsAddbackSet = BIT(0),
-			kBit1         = BIT(1),
+			kSuppression  = BIT(1),
 			kBit2         = BIT(2),
 			kBit3         = BIT(3),
 			kBit4         = BIT(4),
@@ -31,6 +32,13 @@ class TTigress : public TGRSIDetector {
 			kSetSegWave   = BIT(6),
 			kSetBGOWave   = BIT(7)
 		};
+
+    std::vector<TBgoHit> fBgos;
+		void AddBGO(TBgoHit& bgo) 		    { fBgos.push_back(bgo);	}	   //!<!
+		int GetBGOMultiplicity()			    const      { return fBgos.size();     }   //!<!
+		int GetNBGOs()			              const      { return fBgos.size();     }   //!<!
+		TBgoHit GetBGO( int &i)	   const { return fBgos.at(i);	     }   //!<!
+		TBgoHit& GetBGO( int &i)	         { return fBgos.at(i);	     }   //!<!
 
 		std::vector<std::vector<TFragment*> > SegmentFragments;
 
@@ -50,9 +58,10 @@ class TTigress : public TGRSIDetector {
 		Int_t GetAddbackMultiplicity();
 		TTigressHit* GetAddbackHit(const int&);
 		void ResetAddback();		     //!<!
+		void SetDoSuppression(bool flag = true);
 		UShort_t GetNAddbackFrags(size_t idx) const;
 
-		void AddFragment(TFragment*, MNEMONIC*); //!<!
+		void AddFragment(TFragment*, TChannel*); //!<!
 		void BuildHits();
 
 		TTigress& operator=(const TTigress&); //!<!
@@ -60,11 +69,16 @@ class TTigress : public TGRSIDetector {
 #if !defined (__CINT__) && !defined (__CLING__)
 		void SetAddbackCriterion(std::function<bool(TTigressHit&, TTigressHit&)> criterion) { fAddbackCriterion = criterion; }
 		std::function<bool(TTigressHit&, TTigressHit&)> GetAddbackCriterion() const         { return fAddbackCriterion; }
+
+		void SetSuppressionCriterion(std::function<bool(TTigressHit&, TBgoHit&)> criterion) { fSuppressionCriterion = criterion; }
+		std::function<bool(TTigressHit&, TBgoHit&)> GetSuppressionCriterion() const     { return fSuppressionCriterion; }
 #endif
 
 	private: 
 #if !defined (__CINT__) && !defined (__CLING__)
 		static std::function<bool(TTigressHit&, TTigressHit&)> fAddbackCriterion;
+
+		static std::function<bool(TTigressHit&, TBgoHit&)> fSuppressionCriterion;
 #endif
 		std::vector<TTigressHit> fTigressHits;
 
@@ -100,6 +114,7 @@ class TTigress : public TGRSIDetector {
 		static bool SetCoreWave()    { return fSetCoreWave;	    }	//!<!
 		static bool SetSegmentWave() { return fSetSegmentWave;  }	//!<!
 		static bool SetBGOWave()	 { return fSetBGOWave;		}     //!<!
+		static bool BGOSuppression[4][4][5]; //!<!
 
 	public:         
 		virtual void Clear(Option_t *opt = "");		 //!<!

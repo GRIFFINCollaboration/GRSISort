@@ -77,9 +77,8 @@ UInt_t TGriffinHit::GetCrystal() const {
    TChannel *chan = GetChannel();
    if(!chan)
       return -1;
-   MNEMONIC mnemonic;
-   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-   char color = mnemonic.arraysubposition[0];
+
+   char color = chan->GetMnemonic()->arraysubposition[0];
    switch(color) {
       case 'B':
          return 0;
@@ -101,9 +100,8 @@ UInt_t TGriffinHit::GetCrystal() {
    TChannel *chan = GetChannel();
    if(!chan)
       return -1;
-   MNEMONIC mnemonic;
-   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-   char color = mnemonic.arraysubposition[0];
+
+   char color = chan->GetMnemonic()->arraysubposition[0];
    return SetCrystal(color);
 }
 

@@ -40,7 +40,7 @@ class TGriffin : public TGRSIDetector {
 		Short_t GetMultiplicity() const {return fGriffinHits.size();}
 
 		static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = TGRSIRunInfo::HPGeArrayPosition());		//!<!
-		void AddFragment(TFragment*, MNEMONIC*); //!<!
+		void AddFragment(TFragment*, TChannel*); //!<!
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
 		TGriffin& operator=(const TGriffin&);  //!<!

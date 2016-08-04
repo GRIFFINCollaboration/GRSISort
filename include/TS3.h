@@ -30,7 +30,7 @@ class TS3 : public TGRSIDetector {
 		TS3(const TS3&);
 		virtual  ~TS3();
 
-		virtual void AddFragment(TFragment*, MNEMONIC*);
+		virtual void AddFragment(TFragment*, TChannel*);
 		virtual void BuildHits();
 
 		Short_t GetRingMultiplicity() 	const { return fS3RingHits.size()		; }

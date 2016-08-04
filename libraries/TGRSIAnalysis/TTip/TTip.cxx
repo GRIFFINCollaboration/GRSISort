@@ -39,13 +39,12 @@ TTip& TTip::operator=(const TTip& rhs) {
    return *this;
 }
 
-void TTip::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-	if(frag == NULL || mnemonic == NULL) {
+void TTip::AddFragment(TFragment* frag, TChannel* chan) {
+	if(frag == NULL || chan == NULL) {
 		return;
 	}
 
   TTipHit dethit(*frag);
-  TChannel chan = TChannel::GetChannel(dethit.GetAddress());
   dethit.SetUpNumbering(chan);
 
   if(TGRSIRunInfo::IsWaveformFitting() && !dethit.IsCsI())

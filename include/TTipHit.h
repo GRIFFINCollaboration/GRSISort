@@ -63,18 +63,15 @@ class TTipHit : public TGRSIDetectorHit {
     //                                   SetCharge(frag.GetCharge());
     //                                     SetTimeStamp(frag.GetTimeStamp()); }
 
-	 void SetUpNumbering(TChannel &chan) { 
-			MNEMONIC mnemonic;
+	 void SetUpNumbering(TChannel *chan) { 
 			TChannel *channel = GetChannel();
 			if(!channel) {
 				Error("SetDetector","No TChannel exists for address %u",GetAddress());
 				return;
 			}
-			ClearMNEMONIC(&mnemonic);
-			ParseMNEMONIC(channel->GetChannelName(), &mnemonic); 
-			Int_t tmp = atoi(mnemonic.arraysubposition.c_str()); 
-			SetTipChannel(10*mnemonic.arrayposition + tmp); 
-			if(mnemonic.subsystem.compare(0,1,"W")==0)
+			Int_t tmp = atoi(channel->GetMnemonic()->arraysubposition.c_str()); 
+			SetTipChannel(10*channel->GetMnemonic()->arrayposition + tmp); 
+			if(channel->GetMnemonic()->subsystem.compare(0,1,"W")==0)
 				SetCsI();
 	 }
 

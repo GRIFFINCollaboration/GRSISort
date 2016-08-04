@@ -20,22 +20,22 @@ TCSM::TCSM() {
 TCSM::~TCSM() {
 }
 
-void TCSM::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+void TCSM::AddFragment(TFragment* frag, TChannel* chan) {
 	///This function just stores the fragments and mnemonics in vectors, separated by detector number and type (horizontal/vertical strip or pad).
 	///The hits themselves are built in the BuildHits function because the way we build them depends on the number of hits.
 
 	//first index: detector number, second index: 0 = deltaE, 1 = E; third index: 0 = horizontal, 1 = vertical; fourth index: fragments
 	int type = -1;
-	if(mnemonic->arraysubposition.compare(0,1,"D") == 0) {
+	if(chan->GetMnemonic()->arraysubposition.compare(0,1,"D") == 0) {
 		type = 0;
-	} else if(mnemonic->arraysubposition.compare(0,1,"E") == 0) {
+	} else if(chan->GetMnemonic()->arraysubposition.compare(0,1,"E") == 0) {
 		type = 1;
 	}
 	int orientation = -1;
-	if(mnemonic->collectedcharge.compare(0,1,"N") == 0) {
+	if(chan->GetMnemonic()->collectedcharge.compare(0,1,"N") == 0) {
 		//N =  Horizontal Strips. aka "front"
 		orientation = 0;
-	} else if(mnemonic->collectedcharge.compare(0,1,"P") == 0) {
+	} else if(chan->GetMnemonic()->collectedcharge.compare(0,1,"P") == 0) {
 		//P = Vertical Strips. aka "back"
 		orientation = 1;
 	}
@@ -45,11 +45,11 @@ void TCSM::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
 	}
 
 	//if this is the first time we got this detector number we make a new vector (of a vector) of fragments
-	if(fFragments.find(mnemonic->arrayposition) == fFragments.end()) {
-		fFragments[mnemonic->arrayposition].resize(2,std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >(2));
+	if(fFragments.find(chan->GetMnemonic()->arrayposition) == fFragments.end()) {
+		fFragments[chan->GetMnemonic()->arrayposition].resize(2,std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >(2));
 	}
 
-	fFragments[mnemonic->arrayposition][type][orientation].push_back(std::make_pair(*frag,*mnemonic));
+	fFragments[chan->GetMnemonic()->arrayposition][type][orientation].push_back(std::make_pair(*frag,*(chan->GetMnemonic())));
 }
 
 void TCSM::BuildHits() {
