@@ -473,9 +473,10 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 					}
 
 					//the way we insert the fragment(s) depends on the module type and bank:
+					//for module type 1 & bank GRF4, we can't insert the fragments yet, we need to put them in a separate queue
 					//for module type 2 (4G, all banks) and module type 1 & bank GRF3 we set the single charge, cfd, and IntLength, and insert the fragment
 					//for module type 1 & banks GRF1/GRF2 we loop over the charge, cfd, and IntLengths, and insert the (multiple) fragment(s)
-					//for module type 1 & bank GRF4, we can't insert the fragments yet, we need to put them in a separate queue
+					//the last two cases can be treated the same since the second case will just have a single length charge, cfd, and IntLengths
 
 					//the first two cases can be treated the same way, so we only need to check for the third case
 					if(EventFrag->GetModuleType() == 1 && bank == kGRF4) {
@@ -497,8 +498,9 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 							EventFrag->SetKValue(tmpIntLength[h]);
 							EventFrag->SetCfd(tmpCfd[h]);
 							if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
-							TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
+							TFragmentQueue::GetQueue("GOOD")->Add(new TFragment(*EventFrag));
 						}
+						delete EventFrag;
 						return x;
 					}
 				} else  {

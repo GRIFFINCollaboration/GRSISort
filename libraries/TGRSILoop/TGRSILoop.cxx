@@ -123,7 +123,7 @@ void TGRSILoop::FillFragmentTree(TMidasFile* midasfile) {
   fFragsSentToTree = 0;
   fBadFragsSentToTree = 0;
   TFragment* frag = 0;
-  while(TFragmentQueue::GetQueue()->FragsInQueue() !=0      || 
+  while(TFragmentQueue::GetQueue("GOOD")->FragsInQueue() !=0      || 
       TFragmentQueue::GetQueue("BAD")->FragsInQueue() !=0 ||
       fMidasThreadRunning) {
     frag = TFragmentQueue::GetQueue("GOOD")->PopFragment();
@@ -541,6 +541,9 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent* mEvent, TMidasFile* mFile)   {
         }
         else if((banksize = mEvent->LocateBank(NULL,"GRF3",&ptr))>0) {
           if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF3, mEvent, mFile)) { }
+        }
+        else if((banksize = mEvent->LocateBank(NULL,"GRF4",&ptr))>0) {
+          if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF4, mEvent, mFile)) { }
         }
         else if( (banksize = mEvent->LocateBank(NULL,"FME0",&ptr))>0) {
           if(!Process8PI(0,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
