@@ -151,7 +151,7 @@ void TFragment::Print(Option_t *opt) const {
   printf("TriggerBit:  0x%08x\n", TriggerBitPattern);
   printf("NetworkPacketNumber: %i\n", NetworkPacketNumber);
   if(chan) {
-    printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetChannelName());
+    printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetName());
     printf("\tChannel Num:      %i\n",GetChannelNumber());
   }
   printf("\tChannel Address: 0x%08x\n", GetAddress());

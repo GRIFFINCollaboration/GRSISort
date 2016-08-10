@@ -81,9 +81,9 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
           TChannel* chan = TChannel::GetChannel(EventFrag->GetAddress());
           if(!fNoWaveforms)
             SetTIGWave(value,EventFrag);
-          if(chan && strncmp("Tr",chan->GetChannelName(),2)==0) { 
+          if(chan && strncmp("Tr",chan->GetName(),2)==0) { 
             SetTIGWave(value,EventFrag);
-          } else if(chan && strncmp("RF",chan->GetChannelName(),2)==0) { 
+          } else if(chan && strncmp("RF",chan->GetName(),2)==0) { 
             SetTIGWave(value,EventFrag);
           }
         }  

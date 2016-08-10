@@ -133,7 +133,7 @@ const char *TGRSIDetectorHit::GetName() const {
   if(!channel)
      return Class()->ClassName();
   else
-     return channel->GetChannelName();
+     return channel->GetName();
 }
 
 

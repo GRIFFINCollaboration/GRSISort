@@ -19,19 +19,19 @@
 
 /// \cond CLASSIMP
 ClassImp(TGRSILoop)
-  /// \endcond
+/// \endcond
 
-  TGRSILoop* TGRSILoop::fTGRSILoop = 0;
+TGRSILoop* TGRSILoop::fTGRSILoop = 0;
 
-  bool TGRSILoop::fSuppressError = false;
+bool TGRSILoop::fSuppressError = false;
 
-  std::mutex TGRSILoop::fMutex;
+std::mutex TGRSILoop::fMutex;
 
-  TGRSILoop* TGRSILoop::Get() {
-    if(!fTGRSILoop)
-      fTGRSILoop = new TGRSILoop();
-    return fTGRSILoop;
-  }
+TGRSILoop* TGRSILoop::Get() {
+  if(!fTGRSILoop)
+    fTGRSILoop = new TGRSILoop();
+  return fTGRSILoop;
+}
 
 TGRSILoop::TGRSILoop() {
   //intiallize flags
@@ -124,8 +124,8 @@ void TGRSILoop::FillFragmentTree(TMidasFile* midasfile) {
   fBadFragsSentToTree = 0;
   TFragment* frag = 0;
   while(TFragmentQueue::GetQueue()->FragsInQueue() !=0      || 
-      TFragmentQueue::GetQueue("BAD")->FragsInQueue() !=0 ||
-      fMidasThreadRunning) {
+	TFragmentQueue::GetQueue("BAD")->FragsInQueue() !=0 ||
+	fMidasThreadRunning) {
     frag = TFragmentQueue::GetQueue("GOOD")->PopFragment();
     if(frag) {
       while(!fMutex.try_lock()) {
@@ -150,9 +150,9 @@ void TGRSILoop::FillFragmentTree(TMidasFile* midasfile) {
 
     if(!fMidasThreadRunning && TFragmentQueue::GetQueue()->FragsInQueue()%5000==0) {
       printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
-          DBLUE   "%i"   RESET_COLOR
-          "     frags left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
-          TFragmentQueue::GetQueue()->FragsInQueue(),fFragsSentToTree);
+	     DBLUE   "%i"   RESET_COLOR
+	     "     frags left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
+	     TFragmentQueue::GetQueue()->FragsInQueue(),fFragsSentToTree);
     }
   }
 
@@ -165,8 +165,8 @@ void TGRSILoop::FillScalerTree() {
   fRateScalersSentToTree = 0;
   TScalerData* scalerData = 0;
   while(TDeadtimeScalerQueue::Get()->ScalersInQueue() != 0 || 
-      TRateScalerQueue::Get()->ScalersInQueue() != 0 || 
-      fMidasThreadRunning) {
+	TRateScalerQueue::Get()->ScalersInQueue() != 0 || 
+	fMidasThreadRunning) {
     if(TDeadtimeScalerQueue::Get()->ScalersInQueue() > 0) {
       scalerData = TDeadtimeScalerQueue::Get()->PopScaler();
       if(scalerData) {
@@ -181,9 +181,9 @@ void TGRSILoop::FillScalerTree() {
 
       if(!fMidasThreadRunning && TDeadtimeScalerQueue::Get()->ScalersInQueue()%5000==0) {
         printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
-            DBLUE   "%i"   RESET_COLOR
-            "     deadtime scalers left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
-            TDeadtimeScalerQueue::Get()->ScalersInQueue(),fDeadtimeScalersSentToTree);
+	       DBLUE   "%i"   RESET_COLOR
+	       "     deadtime scalers left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
+	       TDeadtimeScalerQueue::Get()->ScalersInQueue(),fDeadtimeScalersSentToTree);
       }
     }
     if(TRateScalerQueue::Get()->ScalersInQueue() > 0) {
@@ -200,9 +200,9 @@ void TGRSILoop::FillScalerTree() {
 
       if(!fMidasThreadRunning && TRateScalerQueue::Get()->ScalersInQueue()%5000==0) {
         printf(DYELLOW HIDE_CURSOR " \t%i" RESET_COLOR "/"
-            DBLUE   "%i"   RESET_COLOR
-            "     rate scalers left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
-            TRateScalerQueue::Get()->ScalersInQueue(),fRateScalersSentToTree);
+	       DBLUE   "%i"   RESET_COLOR
+	       "     rate scalers left to write to tree/frags written to tree.        " SHOW_CURSOR "\r",
+	       TRateScalerQueue::Get()->ScalersInQueue(),fRateScalersSentToTree);
       }
     }
   }
@@ -253,82 +253,86 @@ void TGRSILoop::ProcessMidasFile(TMidasFile* midasFile) {
       } else { 
         printf(DMAGENTA "\tfile: %s ended on unknown state." RESET_COLOR "\n",midasFile->GetFilename());
       }
+      break;
+    } else {
       bytesRead += bytes;
       int eventId = fMidasEvent.GetEventId();
       switch(eventId)   {
-         case 0x8000: {
-               printf( DGREEN );
-               fMidasEvent.Print();
-               printf( RESET_COLOR );
-               BeginRun(0,0,0);
+      case 0x8000: {
+	printf( DGREEN );
+	fMidasEvent.Print();
+	printf( RESET_COLOR );
+	BeginRun(0,0,0);
 
-               std::string inCalFile;
-               inCalFile.assign(TGRSIOptions::GetXMLODBFile(midasFile->GetRunNumber(),midasFile->GetSubRunNumber()));
-               if(inCalFile.length()>0) {
-						printf("using xml file: %s\n",inCalFile.c_str());
-						std::ifstream inputxml; inputxml.open(inCalFile.c_str()); inputxml.seekg(0,std::ios::end);
-						int length = inputxml.tellg(); inputxml.seekg(0,std::ios::beg);
-						char* buffer = new char[length]; inputxml.read(buffer,length);
-						SetFileOdb(buffer,length);
-                  TGRSIRunInfo::SetXMLODBFileName(inCalFile.c_str());
-                  TGRSIRunInfo::SetXMLODBFileData(buffer);
-               } else {
-	            	SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
-					}
-               inCalFile.clear();
-					inCalFile.assign(TGRSIOptions::GetCalFile(midasFile->GetRunNumber(),midasFile->GetSubRunNumber()));
-					if(inCalFile.length()>0) {
-						//TChannel::ReadCalFile(inCalFile.c_str());
-                  //Not really sure if this is how we want teh next stuff to work anymore
-                  TGRSIRunInfo::SetXMLODBFileName(inCalFile.c_str());
-						std::ifstream inputCal; inputCal.open(inCalFile.c_str()); inputCal.seekg(0,std::ios::end);
-						int length = inputCal.tellg(); inputCal.seekg(0,std::ios::beg);
-						char* buffer = new char[length]; inputCal.read(buffer,length);
-                  TGRSIRunInfo::SetXMLODBFileData(buffer);
-               }
-               //Read the external Calibration data.
-	            if(TGRSIOptions::GetInputCal().size() > 0){
-		            for(size_t i =0; i<TGRSIOptions::GetInputCal().size();++i){
-			            TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
-		            }
-	            }
-               TGRSIRunInfo::SetRunInfo(midasFile->GetRunNumber(),midasFile->GetSubRunNumber());
-               TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
-               //Now we read external RunInfo information.
-               if(TGRSIOptions::ExternalRunInfo()){
-                  for(size_t i=0; i<TGRSIOptions::GetExternalRunInfo().size();++i){
-                     TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions::GetExternalRunInfo().at(i).c_str());
-                  }
-               }
-            }
-            break;
-         case 0x8001:
-            printf(" Processing event %i have processed %.2fMB/%.2fMB => %.1f MB/s\n",currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
-            w.Continue();
-            printf( DRED );
-            fMidasEvent.Print();
-            printf( RESET_COLOR );
-            EndRun(0,0,0);
-            break;
-         default:
-            ProcessMidasEvent(&fMidasEvent,midasFile);
-            break;
+	std::string inCalFile;
+	inCalFile.assign(TGRSIOptions::GetXMLODBFile(midasFile->GetRunNumber(),midasFile->GetSubRunNumber()));
+	if(inCalFile.length()>0) {
+	  printf("using xml file: %s\n",inCalFile.c_str());
+	  std::ifstream inputxml; inputxml.open(inCalFile.c_str()); inputxml.seekg(0,std::ios::end);
+	  int length = inputxml.tellg(); inputxml.seekg(0,std::ios::beg);
+	  char* buffer = new char[length]; inputxml.read(buffer,length);
+	  SetFileOdb(buffer,length);
+	  TGRSIRunInfo::SetXMLODBFileName(inCalFile.c_str());
+	  TGRSIRunInfo::SetXMLODBFileData(buffer);
+	} else {
+	  SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
+	}
+	inCalFile.clear();
+	inCalFile.assign(TGRSIOptions::GetCalFile(midasFile->GetRunNumber(),midasFile->GetSubRunNumber()));
+	if(inCalFile.length()>0) {
+	  //TChannel::ReadCalFile(inCalFile.c_str());
+	  //Not really sure if this is how we want teh next stuff to work anymore
+	  TGRSIRunInfo::SetXMLODBFileName(inCalFile.c_str());
+	  std::ifstream inputCal; inputCal.open(inCalFile.c_str()); inputCal.seekg(0,std::ios::end);
+	  int length = inputCal.tellg(); inputCal.seekg(0,std::ios::beg);
+	  char* buffer = new char[length]; inputCal.read(buffer,length);
+	  TGRSIRunInfo::SetXMLODBFileData(buffer);
+	}
+	//Read the external Calibration data.
+	if(TGRSIOptions::GetInputCal().size() > 0){
+	  for(size_t i =0; i<TGRSIOptions::GetInputCal().size();++i){
+	    TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
+	  }
+	}
+	TGRSIRunInfo::SetRunInfo(midasFile->GetRunNumber(),midasFile->GetSubRunNumber());
+	TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
+	//Now we read external RunInfo information.
+	if(TGRSIOptions::ExternalRunInfo()){
+	  for(size_t i=0; i<TGRSIOptions::GetExternalRunInfo().size();++i){
+	    TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions::GetExternalRunInfo().at(i).c_str());
+	  }
+	}
+      }
+	break;
+      case 0x8001:
+	printf(" Processing event %i have processed %.2fMB/%.2fMB => %.1f MB/s\n",currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
+	w.Continue();
+	printf( DRED );
+	fMidasEvent.Print();
+	printf( RESET_COLOR );
+	EndRun(0,0,0);
+	break;
+      default:
+	ProcessMidasEvent(&fMidasEvent,midasFile);
+	break;
       };
       if((currentEventNumber%50000)== 0) {
-			if(!TGRSIOptions::CloseAfterSort()) {
-				gSystem->ProcessEvents();
-			}
-         printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r",
-					 currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
-			fflush(stdout);
-         w.Continue();
+	if(!TGRSIOptions::CloseAfterSort()) {
+	  gSystem->ProcessEvents();
+	}
+	printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r",
+	       currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
+	fflush(stdout);
+	w.Continue();
       }
-      printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r",
-          currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
-      fflush(stdout);
-      w.Continue();
+
     }
   }
+
+  printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\n",
+	 currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
+  fflush(stdout);
+  w.Continue();
 
   Finalize();
   return;
@@ -413,7 +417,7 @@ void TGRSILoop::SetGRIFFOdb() {
     if(!tempChan) {
       tempChan = new TChannel();    
     }    
-    tempChan->SetChannelName(names.at(x).c_str());
+    tempChan->SetName(names.at(x).c_str());
     tempChan->SetAddress(address.at(x));
     tempChan->SetNumber(x);
     //printf("temp chan(%s) number set to: %i\n",tempChan->GetChannelName(),tempChan->GetNumber());
@@ -504,7 +508,7 @@ void TGRSILoop::SetTIGOdb()  {
     TChannel* tempChan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
     if(!tempChan)
       tempChan = new TChannel();    
-    if(x<names.size()) { tempChan->SetChannelName(names.at(x).c_str()); }
+    if(x<names.size()) { tempChan->SetName(names.at(x).c_str()); }
     //printf("address: 0x%08x\n",address.at(x));
     tempChan->SetAddress(address.at(x));
     tempChan->SetNumber(x);
@@ -540,48 +544,48 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent* mEvent, TMidasFile* mFile)   {
   void* ptr;
   try {
     switch(mEvent->GetEventId())  {
-      case 1:
-        mEvent->SetBankList();
-        if((banksize = mEvent->LocateBank(NULL,"WFDN",&ptr))>0) {
-          if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mEvent, mFile)) { }
-          //(unsigned int)(mEvent->GetSerialNumber()),
-          //(unsigned int)(mEvent->GetTimeStamp()))) { }
-        }
-        else if((banksize = mEvent->LocateBank(NULL,"GRF1",&ptr))>0) {
-          if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF1, mEvent, mFile)) { }
-          //(unsigned int)(mEvent->GetSerialNumber()),
-          //(unsigned int)(mEvent->GetTimeStamp()))) { }
-        }
-        else if((banksize = mEvent->LocateBank(NULL,"GRF2",&ptr))>0) {
-          if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF2, mEvent, mFile)) { }
-        }
-        else if((banksize = mEvent->LocateBank(NULL,"GRF3",&ptr))>0) {
-          if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF3, mEvent, mFile)) { }
-        }
-        else if( (banksize = mEvent->LocateBank(NULL,"FME0",&ptr))>0) {
-          if(!Process8PI(0,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
-        } else if( (banksize = mEvent->LocateBank(NULL,"FME1",&ptr))>0) {
-          if(!Process8PI(1,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
-        } else if( (banksize = mEvent->LocateBank(NULL,"FME2",&ptr))>0) {
-          if(!Process8PI(2,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
-        } else if( (banksize = mEvent->LocateBank(NULL,"FME3",&ptr))>0) {
-          if(!Process8PI(3,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
-        }
-        break;
-      case 2:
-        if(!fIamGriffin) {
-          break;
-        }
-        mEvent->SetBankList();
-        break;
-      case 4:
-      case 5:
-        mEvent->SetBankList();
-        if((banksize = mEvent->LocateBank(NULL,"MSRD",&ptr))>0) {
-          if(!ProcessEPICS((float*)ptr, banksize, mEvent, mFile)) { }
-          //(unsigned int)(mEvent->GetSerialNumber()),
-          //(unsigned int)(mEvent->GetTimeStamp()))) { }
-        }
+    case 1:
+      mEvent->SetBankList();
+      if((banksize = mEvent->LocateBank(NULL,"WFDN",&ptr))>0) {
+	if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mEvent, mFile)) { }
+	//(unsigned int)(mEvent->GetSerialNumber()),
+	//(unsigned int)(mEvent->GetTimeStamp()))) { }
+      }
+      else if((banksize = mEvent->LocateBank(NULL,"GRF1",&ptr))>0) {
+	if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF1, mEvent, mFile)) { }
+	//(unsigned int)(mEvent->GetSerialNumber()),
+	//(unsigned int)(mEvent->GetTimeStamp()))) { }
+      }
+      else if((banksize = mEvent->LocateBank(NULL,"GRF2",&ptr))>0) {
+	if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF2, mEvent, mFile)) { }
+      }
+      else if((banksize = mEvent->LocateBank(NULL,"GRF3",&ptr))>0) {
+	if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF3, mEvent, mFile)) { }
+      }
+      else if( (banksize = mEvent->LocateBank(NULL,"FME0",&ptr))>0) {
+	if(!Process8PI(0,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
+      } else if( (banksize = mEvent->LocateBank(NULL,"FME1",&ptr))>0) {
+	if(!Process8PI(1,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
+      } else if( (banksize = mEvent->LocateBank(NULL,"FME2",&ptr))>0) {
+	if(!Process8PI(2,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
+      } else if( (banksize = mEvent->LocateBank(NULL,"FME3",&ptr))>0) {
+	if(!Process8PI(3,(uint32_t*)ptr,banksize,mEvent,mFile)) {}
+      }
+      break;
+    case 2:
+      if(!fIamGriffin) {
+	break;
+      }
+      mEvent->SetBankList();
+      break;
+    case 4:
+    case 5:
+      mEvent->SetBankList();
+      if((banksize = mEvent->LocateBank(NULL,"MSRD",&ptr))>0) {
+	if(!ProcessEPICS((float*)ptr, banksize, mEvent, mFile)) { }
+	//(unsigned int)(mEvent->GetSerialNumber()),
+	//(unsigned int)(mEvent->GetTimeStamp()))) { }
+      }
 
 
     };
@@ -598,9 +602,9 @@ void TGRSILoop::Finalize() {
   int PPGEvents = TGRSIRootIO::Get()->GetTimesPPGCalled();
   printf("in finalization phase.\n");   
   printf(DMAGENTA "successfully sorted " DBLUE "%0d" DMAGENTA "/" 
-      DCYAN "%0d" DMAGENTA "  ---> " DYELLOW " %.2f" DMAGENTA " percent passed." 
-      RESET_COLOR "\n",fFragsSentToTree+PPGEvents+fDeadtimeScalersSentToTree+fRateScalersSentToTree,fFragsReadFromMidas,
-      ((double)(fFragsSentToTree+PPGEvents+fDeadtimeScalersSentToTree+fRateScalersSentToTree)/(double)fFragsReadFromMidas)*100.);
+	 DCYAN "%0d" DMAGENTA "  ---> " DYELLOW " %.2f" DMAGENTA " percent passed." 
+	 RESET_COLOR "\n",fFragsSentToTree+PPGEvents+fDeadtimeScalersSentToTree+fRateScalersSentToTree,fFragsReadFromMidas,
+	 ((double)(fFragsSentToTree+PPGEvents+fDeadtimeScalersSentToTree+fRateScalersSentToTree)/(double)fFragsReadFromMidas)*100.);
 }
 
 
