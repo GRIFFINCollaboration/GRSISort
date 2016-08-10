@@ -85,11 +85,13 @@ TSharc::TSharc(const TSharc& rhs) : TGRSIDetector() {
 
 
 void TSharc::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-	if(frag == NULL || mnemonic == NULL) {
-		return;
-	}
-	if(mnemonic->arraysubposition.compare(0,1,"D") == 0) {
-		if(mnemonic->collectedcharge.compare(0,1,"P") == 0) {
+  if(frag == NULL || mnemonic == NULL) {
+    return;
+  }
+  if(mnemonic->arraysubposition.compare(0,1,"D") == 0) {
+    if(mnemonic->collectedcharge.compare(0,1,"P") == 0) {
+      if(frag->GetDetector()==11 && frag->GetSegment()==16)
+        return;
       fFrontFragments.push_back(*frag);
     } else {
       fBackFragments.push_back(*frag);
@@ -109,8 +111,8 @@ void TSharc::BuildHits() {
     bool front_used = false;
     bool back_used  = false;
     for(back=fBackFragments.begin();back!=fBackFragments.end();back++) {
-			if(front->GetDetector()==back->GetDetector()) {
-				if(TMath::Abs(front->GetCharge() - back->GetCharge()) <  6000) { 
+      if(front->GetDetector()==back->GetDetector()) {
+        if(TMath::Abs(front->GetCharge() - back->GetCharge()) <  6000) { 
            //time gate ?
            front_used = true;
            back_used  = true;
@@ -124,7 +126,7 @@ void TSharc::BuildHits() {
       hit.SetBack(*back);
       fSharcHits.push_back(hit);
       front = fFrontFragments.erase(front);
-              fBackFragments.erase(back);
+      back  = fBackFragments.erase(back);
     } else {
       front++;
     }
@@ -132,7 +134,7 @@ void TSharc::BuildHits() {
   
   for(size_t i=0;i<fSharcHits.size();i++) {
     for(pad=fPadFragments.begin();pad!=fPadFragments.end();pad++) {
-	    if(fSharcHits.at(i).GetDetector() == pad->GetDetector()) {
+      if(fSharcHits.at(i).GetDetector() == pad->GetDetector()) {
         fSharcHits.at(i).SetPad(*pad);
         pad = fPadFragments.erase(pad);
         break;
@@ -142,20 +144,20 @@ void TSharc::BuildHits() {
 }
 
 void TSharc::RemoveHits(std::vector<TSharcHit>* hits,std::set<int>* to_remove) {
-	for(auto iter = to_remove->rbegin(); iter != to_remove->rend(); ++iter) {
-		if(*iter == -1)
-			continue;
-		hits->erase(hits->begin()+*iter);
-	}
+  for(auto iter = to_remove->rbegin(); iter != to_remove->rend(); ++iter) {
+    if(*iter == -1)
+      continue;
+    hits->erase(hits->begin()+*iter);
+  }
 }
 
 void TSharc::Clear(Option_t *option) {
   TGRSIDetector::Clear(option);
   fSharcHits.clear();
   
-	fFrontFragments.clear(); //! 
-	fBackFragments.clear();  //! 
-	fPadFragments.clear();  //! 
+  fFrontFragments.clear(); //! 
+  fBackFragments.clear();  //! 
+  fPadFragments.clear();  //! 
     
   if(!strcmp(option,"ALL")) { 
     fXoffset = 0.00;
