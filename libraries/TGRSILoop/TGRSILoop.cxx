@@ -571,6 +571,7 @@ bool TGRSILoop::ProcessMidasEvent(TMidasEvent* mEvent, TMidasFile* mFile)   {
     };
   }
   catch(const std::bad_alloc&) {   }
+  //printf("I AM HERE!\n");fflush(stdout);
   return true;
 
 }
@@ -600,7 +601,7 @@ bool TGRSILoop::ProcessTIGRESS(uint32_t* ptr, int& dSize, TMidasEvent* mEvent, T
   unsigned int mserial=0; if(mEvent) mserial = (unsigned int)(mEvent->GetSerialNumber());
   unsigned int mtime=0;   if(mEvent) mtime   = (unsigned int)(mEvent->GetTimeStamp());
   int frags = TDataParser::TigressDataToFragment(ptr,dSize,mserial,mtime);
-  if(frags>-1) {
+  if(frags>0) {
     fFragsReadFromMidas += frags;
     return true;
   } else  {
