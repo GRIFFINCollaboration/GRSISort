@@ -719,11 +719,13 @@ Int_t TChannel::ReadCalFromCurrentFile(Option_t* opt) {
 
 Int_t TChannel::ReadCalFromTree(TTree* tree,Option_t* opt) {
 	///Reads the TChannel information from a Tree if it has already been written to that Tree.
-	if(!tree)
-		return 0;
-	TFile* tempf = tree->GetCurrentFile();
-	TList* list =  tempf->GetListOfKeys();
-	TIter iter(list);
+   if(!tree)
+   	return 0;
+   TFile* tempf = tree->GetCurrentFile();
+   printf("tempf = 0x%08x\n",tempf); fflush(stdout);
+   TList* list =  tempf->GetListOfKeys();
+   printf("list = 0x%08x\n",list);   fflush(stdout);
+   TIter iter(list);
 
    //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
    while(TKey *key = (TKey*)(iter.Next())) {

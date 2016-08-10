@@ -180,6 +180,7 @@ Int_t TGRSIDetectorHit::GetSegment() const {
       Error("GetSegment","No TChannel exists for address %08x",GetAddress());
       return -1;
    }
+  return channel->GetSegmentNumber();
 }
 
 Int_t TGRSIDetectorHit::GetCrystal() const {
