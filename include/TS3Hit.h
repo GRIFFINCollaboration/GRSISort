@@ -49,7 +49,7 @@ class TS3Hit : public TGRSIDetectorHit {
 		void SetTimeFit(Double_t time)					{ fTimeFit = time;											}
 		void SetSig2Noise(Double_t sig2noise)		{ fSig2Noise = sig2noise;								}
 
-    Short_t GetMnemonicSegment(TFragment &frag);//could be added to TGRSIDetectorHit base class
+    Short_t GetMnemonicSegment(TFragment &frag);	//could be added to TGRSIDetectorHit base class
 	
 		Double_t GetPhi(double offset=0) {
 			return this->GetChannelPosition(offset).Phi();
@@ -62,7 +62,8 @@ class TS3Hit : public TGRSIDetectorHit {
 			}
 			return this->GetChannelPosition(offset).Angle(*vec);
 		}
-    TVector3 GetChannelPosition(Double_t offset = 0, Double_t dist = 0) const; //!
+    TVector3 GetChannelPosition(Double_t offset, Double_t dist) const; //!
+    TVector3 GetChannelPosition(Double_t offset = 0) const; //!
 
   private:
 

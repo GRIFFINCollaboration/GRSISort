@@ -127,9 +127,9 @@ class TGRSIDetectorHit : public TObject 	{
 
       //The PPG is only stored in events that come out of the GRIFFIN DAQ
       uint16_t GetPPGStatus() const;
-      uint16_t GetPPGStatus();
       uint16_t GetCycleTimeStamp() const;
-      uint16_t GetCycleTimeStamp();
+
+      void ClearEnergy() { SetEnergy(0.0); SetBit(kIsEnergySet,false); }
 
       static TVector3 *GetBeamDirection() { return &fBeamDirection; }
 
@@ -141,9 +141,8 @@ class TGRSIDetectorHit : public TObject 	{
       Bool_t IsTimeSet()   const { return (fBitflags & kIsTimeSet); }
       Bool_t IsPPGSet()    const { return (fBitflags & kIsPPGSet); }
 
-      void SetBit(enum EBitFlag,Bool_t set=true);
+      void SetBit(enum EBitFlag,Bool_t set=true) const; //const here is dirty
       bool TestBit(enum EBitFlag flag) const { return fBitflags & flag; }
-
 
    protected:
       UInt_t   fAddress;    ///< address of the the channel in the DAQ.
@@ -154,23 +153,24 @@ class TGRSIDetectorHit : public TObject 	{
       std::vector<Short_t> fWaveform;  ///<
 
    private:
-      Double_t fTime;           //!<! Calibrated Time of the hit
-      TVector3 fPosition;       //!<! Position of hit detector.
-      Double_t fEnergy;         //!<! Energy of the Hit.
-      uint16_t fPPGStatus;      //!<! 
-      ULong_t  fCycleTimeStamp; //!<!
+      mutable Double_t fTime;       //!<! Calibrated Time of the hit
+      //UInt_t   fDetector;   //!<! Detector Number
+      //Short_t  fSegment;	  //!<! Segment number
+      mutable TVector3 fPosition;   //!<! Position of hit detector.
+      mutable Double_t fEnergy;     //!<! Energy of the Hit.
+      mutable uint16_t fPPGStatus;  //!<! 
+      mutable ULong_t  fCycleTimeStamp; //!<!
 
    protected:
       static TPPG* fPPG;
 
    private:
       //flags   
-      UShort_t fBitflags;
-      
+      mutable UChar_t fBitflags;
       static TVector3 fBeamDirection; //!
 
       /// \cond CLASSIMP
-      ClassDef(TGRSIDetectorHit,8) //Stores the information for a detector hit
+      ClassDef(TGRSIDetectorHit,9) //Stores the information for a detector hit
       /// \endcond
 };
 /*! @} */

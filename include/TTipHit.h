@@ -26,10 +26,11 @@ class TTipHit : public TGRSIDetectorHit {
   private:
     Int_t    fFilter;    // 
     Double_t fPID;       // 
+		Int_t		 fChiSq;
 
-    Double_t fFastAmplitude;
-    Double_t fSlowAmplitude;
-    Double_t fGammaAmplitude;
+    //Double_t fFastAmplitude;
+    //Double_t fSlowAmplitude;
+    //Double_t fGammaAmplitude;
    
 	bool csi_flag;
 
@@ -46,12 +47,14 @@ class TTipHit : public TGRSIDetectorHit {
 
     inline Int_t    GetFiterPatter()              { return fFilter;     } //!<!
     inline Double_t GetPID()                      { return fPID;        } //!<!
+		inline Int_t		GetFitChiSq()									{ return fChiSq;			} //!<!
 	 inline Double_t GetFitTime()			           { return fTimeFit;	   } //!<!
 	 inline Double_t GetSignalToNoise()		        { return fSig2Noise;	} //!<!
 	 inline Int_t	  GetTipChannel()			        { return fTipChannel; } //!<!
 
 	 inline bool IsCsI()									  { return csi_flag; } //!<!
 	 inline void SetCsI(bool flag="true")	        { csi_flag = flag; } //!<!
+	 inline void SetFitChiSq(int chisq)						{ fChiSq = chisq; }	//!<!
 
     bool   InFilter(Int_t);                                         //!<!
 
@@ -60,18 +63,15 @@ class TTipHit : public TGRSIDetectorHit {
     //                                   SetCharge(frag.GetCharge());
     //                                     SetTimeStamp(frag.GetTimeStamp()); }
 
-	 void SetUpNumbering(TChannel &chan) { 
-			MNEMONIC mnemonic;
+	 void SetUpNumbering(TChannel *chan) { 
 			TChannel *channel = GetChannel();
 			if(!channel) {
 				Error("SetDetector","No TChannel exists for address %u",GetAddress());
 				return;
 			}
-			ClearMNEMONIC(&mnemonic);
-			ParseMNEMONIC(channel->GetChannelName(), &mnemonic); 
-			Int_t tmp = atoi(mnemonic.arraysubposition.c_str()); 
-			SetTipChannel(10*mnemonic.arrayposition + tmp); 
-			if(mnemonic.subsystem.compare(0,1,"W")==0)
+			Int_t tmp = atoi(channel->GetMnemonic()->arraysubposition.c_str()); 
+			SetTipChannel(10*channel->GetMnemonic()->arrayposition + tmp); 
+			if(channel->GetMnemonic()->subsystem.compare(0,1,"W")==0)
 				SetCsI();
 	 }
 

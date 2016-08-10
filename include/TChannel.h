@@ -39,6 +39,7 @@
 #include "TRandom.h"
 #include "TList.h"
 #include "TTree.h"
+#include "TClass.h"
 
 #include "Globals.h"
 
@@ -67,20 +68,23 @@ class TChannel : public TNamed	{
       static TChannel* GetDefaultChannel();
 
    private:
-      unsigned int	fAddress;                                 //The address of the digitizer
-      int		        fIntegration;                             //The charge integration setting
-      std::string   fChannelName;                             //The name of the channel (MNEMONIC)
-      std::string   fTypeName;
-      std::string   fDigitizerType;
-      int 	        fNumber;
-      int		        fStream;
-      int           fUserInfoNumber;
-      bool          fUseCalFileInt;
+      unsigned int	   fAddress;                                 //The address of the digitizer
+      int		         fIntegration;                             //The charge integration setting
+      std::string       fChannelName;                             //The name of the channel (MNEMONIC)
+      std::string       fTypeName;
+      std::string       fDigitizerType;
+      int 	            fNumber;
+      int		         fStream;
+      int               fUserInfoNumber;
+      bool              fUseCalFileInt;
 
-      mutable int   fDetectorNumber;
-      mutable int   fSegmentNumber;
+      mutable int       fDetectorNumber;
+      mutable int       fSegmentNumber;
 
-      mutable int   fCrystalNumber; 
+      mutable int       fCrystalNumber; 
+      double            fTimeOffset;
+      mutable TClass*   fClassType;          //!<! TGRSIDetector Type that this channel represents
+	   MNEMONIC          fMnemonic;
 
 
       std::vector<Float_t> fENGCoefficients;  //Energy calibration coeffs (low to high order)
@@ -93,6 +97,8 @@ class TChannel : public TNamed	{
       double fTIMEChi2;                      //Chi2 of the Time calibration
       std::vector<double> fEFFCoefficients;  //Efficiency calibration coeffs (low to high order)
       double fEFFChi2;                       //Chi2 of Efficiency calibration
+
+      void SetClassType(TClass* classType)               { fClassType = classType; }
 
       static std::map<unsigned int,TChannel*>* fChannelMap; //A map to all of the channels based on address
       static std::map<int,TChannel*>* fChannelNumberMap;    //A map of TChannels based on channel number
@@ -111,6 +117,7 @@ class TChannel : public TNamed	{
 
 
    public:
+      void SetName(const char* tmpName);
       void SetAddress(unsigned int tmpadd);
       inline void SetChannelName(const char* tmpname)  { fChannelName.assign(tmpname); }
       inline void SetNumber(int tmpnum)	             { fNumber = tmpnum; UpdateChannelNumberMap(); }
@@ -120,6 +127,7 @@ class TChannel : public TNamed	{
       inline void SetUserInfoNumber(int tempinfo)      { fUserInfoNumber = tempinfo; }
       inline void SetDigitizerType(const char* tmpstr) { fDigitizerType.assign(tmpstr); }
       inline void SetTypeName(std::string tmpstr)      { fTypeName = tmpstr; }
+      inline void SetTimeOffset(double tmpto)          { fTimeOffset = tmpto; }
 
       void SetDetectorNumber(int tempint)   { fDetectorNumber = tempint; }
       void SetSegmentNumber(int tempint)    { fSegmentNumber = tempint; }
@@ -128,6 +136,8 @@ class TChannel : public TNamed	{
       int GetDetectorNumber() const; 
       int GetSegmentNumber()  const;  
       int GetCrystalNumber()  const;  
+      TClass* GetClassType() const;
+      const MNEMONIC* GetMnemonic() const  { return &fMnemonic; }
 
       int	GetNumber()		          { return fNumber;  }
       unsigned int	GetAddress()    { return fAddress; }
@@ -136,6 +146,7 @@ class TChannel : public TNamed	{
       int GetUserInfoNumber()        { return fUserInfoNumber;}
       const char* GetChannelName()  const { return fChannelName.c_str(); }
       const char* GetDigitizerType() { return fDigitizerType.c_str(); }
+      double GetTimeOffset()         { return fTimeOffset; }
       //write the rest of the gettters/setters...
 
       double GetENGChi2()  { return fENGChi2; }

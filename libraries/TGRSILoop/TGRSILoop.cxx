@@ -253,59 +253,75 @@ void TGRSILoop::ProcessMidasFile(TMidasFile* midasFile) {
       } else { 
         printf(DMAGENTA "\tfile: %s ended on unknown state." RESET_COLOR "\n",midasFile->GetFilename());
       }
-      break;
-    }
-    bytesRead += bytes;
-    int eventId = fMidasEvent.GetEventId();
-    switch(eventId)   {
-      case 0x8000: {
-                     printf( DGREEN );
-                     fMidasEvent.Print();
-                     printf( RESET_COLOR );
-                     BeginRun(0,0,0);
+      bytesRead += bytes;
+      int eventId = fMidasEvent.GetEventId();
+      switch(eventId)   {
+         case 0x8000: {
+               printf( DGREEN );
+               fMidasEvent.Print();
+               printf( RESET_COLOR );
+               BeginRun(0,0,0);
 
-                     std::string inCalFile;
-                     inCalFile.assign(TGRSIOptions::GetXMLODBFile(midasFile->GetRunNumber(),midasFile->GetSubRunNumber()));
-                     if(inCalFile.length()>0) {
-                       printf("using xml file: %s\n",inCalFile.c_str());
-                       std::ifstream inputxml; inputxml.open(inCalFile.c_str()); inputxml.seekg(0,std::ios::end);
-                       int length = inputxml.tellg(); inputxml.seekg(0,std::ios::beg);
-                       char* buffer = new char[length]; inputxml.read(buffer,length);
-                       SetFileOdb(buffer,length);
-                       TGRSIRunInfo::SetXMLODBFileName(inCalFile.c_str());
-                       TGRSIRunInfo::SetXMLODBFileData(buffer);
-                     } else {
-                       SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
-                     }
-                     inCalFile.clear();
-                     inCalFile.assign(TGRSIOptions::GetCalFile(midasFile->GetRunNumber(),midasFile->GetSubRunNumber()));
-                     if(inCalFile.length()>0) {
-                       TChannel::ReadCalFile(inCalFile.c_str());
-                       TGRSIRunInfo::SetXMLODBFileName(inCalFile.c_str());
-                       std::ifstream inputCal; inputCal.open(inCalFile.c_str()); inputCal.seekg(0,std::ios::end);
-                       int length = inputCal.tellg(); inputCal.seekg(0,std::ios::beg);
-                       char* buffer = new char[length]; inputCal.read(buffer,length);
-                       TGRSIRunInfo::SetXMLODBFileData(buffer);
-                     }
-                     TGRSIRunInfo::SetRunInfo(midasFile->GetRunNumber(),midasFile->GetSubRunNumber());
-                     TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
-                   }
-                   break;
-      case 0x8001:
-                   printf(" Processing event %i have processed %.2fMB/%.2fMB => %.1f MB/s\n",currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
-                   w.Continue();
-                   printf( DRED );
-                   fMidasEvent.Print();
-                   printf( RESET_COLOR );
-                   EndRun(0,0,0);
-                   break;
-      default:
-                   ProcessMidasEvent(&fMidasEvent,midasFile);
-                   break;
-    };
-    if((currentEventNumber%5000)== 0) {
-      if(!TGRSIOptions::CloseAfterSort()) {
-        gSystem->ProcessEvents();
+               std::string inCalFile;
+               inCalFile.assign(TGRSIOptions::GetXMLODBFile(midasFile->GetRunNumber(),midasFile->GetSubRunNumber()));
+               if(inCalFile.length()>0) {
+						printf("using xml file: %s\n",inCalFile.c_str());
+						std::ifstream inputxml; inputxml.open(inCalFile.c_str()); inputxml.seekg(0,std::ios::end);
+						int length = inputxml.tellg(); inputxml.seekg(0,std::ios::beg);
+						char* buffer = new char[length]; inputxml.read(buffer,length);
+						SetFileOdb(buffer,length);
+                  TGRSIRunInfo::SetXMLODBFileName(inCalFile.c_str());
+                  TGRSIRunInfo::SetXMLODBFileData(buffer);
+               } else {
+	            	SetFileOdb(fMidasEvent.GetData(),fMidasEvent.GetDataSize());
+					}
+               inCalFile.clear();
+					inCalFile.assign(TGRSIOptions::GetCalFile(midasFile->GetRunNumber(),midasFile->GetSubRunNumber()));
+					if(inCalFile.length()>0) {
+						//TChannel::ReadCalFile(inCalFile.c_str());
+                  //Not really sure if this is how we want teh next stuff to work anymore
+                  TGRSIRunInfo::SetXMLODBFileName(inCalFile.c_str());
+						std::ifstream inputCal; inputCal.open(inCalFile.c_str()); inputCal.seekg(0,std::ios::end);
+						int length = inputCal.tellg(); inputCal.seekg(0,std::ios::beg);
+						char* buffer = new char[length]; inputCal.read(buffer,length);
+                  TGRSIRunInfo::SetXMLODBFileData(buffer);
+               }
+               //Read the external Calibration data.
+	            if(TGRSIOptions::GetInputCal().size() > 0){
+		            for(size_t i =0; i<TGRSIOptions::GetInputCal().size();++i){
+			            TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
+		            }
+	            }
+               TGRSIRunInfo::SetRunInfo(midasFile->GetRunNumber(),midasFile->GetSubRunNumber());
+               TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
+               //Now we read external RunInfo information.
+               if(TGRSIOptions::ExternalRunInfo()){
+                  for(size_t i=0; i<TGRSIOptions::GetExternalRunInfo().size();++i){
+                     TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions::GetExternalRunInfo().at(i).c_str());
+                  }
+               }
+            }
+            break;
+         case 0x8001:
+            printf(" Processing event %i have processed %.2fMB/%.2fMB => %.1f MB/s\n",currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
+            w.Continue();
+            printf( DRED );
+            fMidasEvent.Print();
+            printf( RESET_COLOR );
+            EndRun(0,0,0);
+            break;
+         default:
+            ProcessMidasEvent(&fMidasEvent,midasFile);
+            break;
+      };
+      if((currentEventNumber%50000)== 0) {
+			if(!TGRSIOptions::CloseAfterSort()) {
+				gSystem->ProcessEvents();
+			}
+         printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r",
+					 currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());
+			fflush(stdout);
+         w.Continue();
       }
       printf(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB => %.1f MB/s              " SHOW_CURSOR "\r",
           currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0),(bytesRead/1000000.0)/w.RealTime());

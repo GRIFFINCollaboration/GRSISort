@@ -49,7 +49,6 @@ class TGRSIDetector : public TDetector	{
 
     //  void Init();
 
-
   protected:
     virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
 

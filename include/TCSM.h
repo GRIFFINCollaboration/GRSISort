@@ -40,7 +40,7 @@ class TCSM : public TDetector {
 
 		static TVector3 GetPosition(int detector, char pos, int horizontalstrip, int verticalstrip, double X=0.00, double Y=0.00, double Z=0.00);
 
-		void AddFragment(TFragment*, MNEMONIC*);
+		void AddFragment(TFragment*, TChannel*);
 		void BuildHits();
 
 	private: 

@@ -15,18 +15,19 @@
 #include "Globals.h"
 #include "TGriffinHit.h"
 #include "TGRSIDetector.h"
+#include "TGRSIRunInfo.h"
 
 class TGriffin : public TGRSIDetector {
   public:
     enum EGriffinBits {
-      kIsAddbackSet = 1<<0,
-      kBit1         = 1<<1,
-      kBit2         = 1<<2,
-      kBit3         = 1<<3,
-      kBit4         = 1<<4,
-      kBit5         = 1<<5,
-      kBit6         = 1<<6,
-      kBit7         = 1<<7
+      kIsAddbackSet	= 1<<0,
+      kIsCrossTalkSet   = 1<<1,
+      kBit2		= 1<<2,
+      kBit3		= 1<<3,
+      kBit4		= 1<<4,
+      kBit5		= 1<<5,
+      kBit6		= 1<<6,
+      kBit7		= 1<<7
     };
 
     TGriffin();
@@ -38,8 +39,8 @@ class TGriffin : public TGRSIDetector {
     TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
     Short_t GetMultiplicity() const {return fGriffinHits.size();}
 
-    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);		//!<!
-    void AddFragment(TFragment*, MNEMONIC*); //!<!
+    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);    //!<!
+    void AddFragment(TFragment* frag, TChannel* chan); //!<!
     void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
     TGriffin& operator=(const TGriffin&);  //!<!
@@ -58,10 +59,10 @@ class TGriffin : public TGRSIDetector {
 #endif
     std::vector <TGriffinHit> fGriffinHits; //  The set of crystal hits
 
-    //static bool fSetBGOHits;		            //!<!  Flag that determines if BGOHits are being measured			 
+    //static bool fSetBGOHits;                //!<!  Flag that determines if BGOHits are being measured       
 
-    static bool fSetCoreWave;		         //!<!  Flag for Waveforms ON/OFF
-    //static bool fSetBGOWave;		            //!<!  Flag for BGO Waveforms ON/OFF
+    static bool fSetCoreWave;             //!<!  Flag for Waveforms ON/OFF
+    //static bool fSetBGOWave;                //!<!  Flag for BGO Waveforms ON/OFF
 
     long fCycleStart;                //!<!  The start of the cycle
     UChar_t fGriffinBits;            // Transient member flags
@@ -70,9 +71,9 @@ class TGriffin : public TGRSIDetector {
     std::vector<UShort_t> fAddbackFrags; //!<! Number of crystals involved in creating in the addback hit
 
   public:
-    static bool SetCoreWave()        { return fSetCoreWave;  }	//!<!
-    //static bool SetBGOHits()       { return fSetBGOHits;   }	//!<!
-    //static bool SetBGOWave()	    { return fSetBGOWave;   } //!<!
+    static bool SetCoreWave()        { return fSetCoreWave;  }  //!<!
+    //static bool SetBGOHits()       { return fSetBGOHits;   }  //!<!
+    //static bool SetBGOWave()      { return fSetBGOWave;   } //!<!
 
   private:
     static TVector3 gCloverPosition[17];               //!<! Position of each HPGe Clover
@@ -80,18 +81,28 @@ class TGriffin : public TGRSIDetector {
     void SetBitNumber(enum EGriffinBits bit,Bool_t set);
     Bool_t TestBitNumber(enum EGriffinBits bit) const {return (bit & fGriffinBits);}
 
+      //Cross-Talk stuff
+   public:
+      static const Double_t gStrongCT[2];   //!<!
+      static const Double_t gWeakCT[2]; //!<!
+      static const Double_t gCrossTalkPar[2][4][4]; //!<! 
+      static Double_t CTCorrectedEnergy(const TGriffinHit* const energy_to_correct, const TGriffinHit* const other_energy, Bool_t time_constraint = true);
+      Bool_t IsCrossTalkSet() const;
+      void FixCrossTalk();
+
   public:
     virtual void Copy(TObject&) const;                //!<!
-    virtual void Clear(Option_t* opt = "all");		     //!<!
-    virtual void Print(Option_t* opt = "") const;		  //!<!
-    void ResetAddback();		     //!<!
+    virtual void Clear(Option_t* opt = "all");         //!<!
+    virtual void Print(Option_t* opt = "") const;      //!<!
+    void ResetFlags();
+    void ResetAddback();         //!<!
     UShort_t GetNAddbackFrags(size_t idx) const;
 
   protected:
     void PushBackHit(TGRSIDetectorHit* ghit);
 
     /// \cond CLASSIMP
-    ClassDef(TGriffin,3)  // Griffin Physics structure
+    ClassDef(TGriffin,4)  // Griffin Physics structure
       /// \endcond
 };
 /*! @} */

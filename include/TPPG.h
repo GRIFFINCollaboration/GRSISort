@@ -87,6 +87,8 @@ class TPPG : public TObject	{
 
    typedef std::map<ULong_t,TPPGData*> PPGMap_t;
   public:
+	 static TPPG* Get();
+
     TPPG();
 	 TPPG(const TPPG&);
     virtual ~TPPG();
@@ -121,11 +123,11 @@ class TPPG : public TObject	{
     virtual void Clear(Option_t* opt = "");
 
   private:
+    static TPPG* fPPG;       //< static pointer to TPPG
     PPGMap_t::iterator MapBegin() const { return ++(fPPGStatusMap->begin()); }
     PPGMap_t::iterator MapEnd() const   { return fPPGStatusMap->end(); }
     PPGMap_t::iterator fCurrIterator; //!<!
 
-  private:
     PPGMap_t* fPPGStatusMap;
     ULong64_t fCycleLength;
     std::map<ULong64_t, int> fNumberOfCycleLengths;

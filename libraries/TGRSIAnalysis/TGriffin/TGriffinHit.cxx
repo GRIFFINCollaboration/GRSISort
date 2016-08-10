@@ -3,6 +3,7 @@
 #include "TGriffinHit.h"
 #include "Globals.h"
 #include <cmath>
+#include <iostream>
 
 /// \cond CLASSIMP
 ClassImp(TGriffinHit)
@@ -77,29 +78,42 @@ TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
   return GetPosition(dist);
 }
 
-//UInt_t TGriffinHit::GetCrystal() const { 
-   //Returns the Crystal Number of the Current hit.
-//   TChannel *chan = GetChannel();
-//   if(!chan)
-//      return -1;
-//   return chan->GetCrystalNumber();
-   /*
-   MNEMONIC mnemonic;
-   ParseMNEMONIC(chan->GetChannelName(),&mnemonic);
-   char color = mnemonic.arraysubposition[0];
-   switch(color) {
-      case 'B':
-         return 0;
-      case 'G':
-         return 1;
-      case 'R':
-         return 2;
-      case 'W':
-         return 3;  
-   };
-   return -1;  
-   */
-//}
+// UInt_t TGriffinHit::GetCrystal() {
+//    //Returns the Crystal Number of the Current hit.
+//    if(IsCrystalSet())
+//       return fCrystal;
+
+//    TChannel *chan = GetChannel();
+//    if(!chan)
+//       return -1;
+
+//    char color = chan->GetMnemonic()->arraysubposition[0];
+//    return SetCrystal(color);
+// }
+
+// UInt_t TGriffinHit::SetCrystal(UInt_t crynum) {
+//    fCrystal = crynum;
+//    return fCrystal;
+// }
+
+// UInt_t TGriffinHit::SetCrystal(char color) { 
+//    switch(color) {
+//       case 'B':
+//          fCrystal = 0;
+//          break;
+//       case 'G':
+//          fCrystal = 1;
+//          break;
+//       case 'R':
+//          fCrystal = 2;
+//          break;
+//       case 'W':
+//          fCrystal = 3;  
+//          break;
+//    };
+//    SetBit(TGRSIDetectorHit::kIsSubDetSet,true);
+//    return fCrystal;
+// }
 
 bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	{
    return(lhs->GetEnergy() > rhs->GetEnergy());
@@ -114,7 +128,6 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
       //this->SetPosition(hit->GetPosition());
       this->SetAddress(hit->GetAddress());
    }
-
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
    //this has to be done at the very end, otherwise this->GetEnergy() might not work
    this->SetCharge(0);
@@ -146,5 +159,14 @@ void TGriffinHit::SetPUHit(UChar_t puhit) {
 
    SetGriffinFlag(kPUHit1,(puhit << 2) & kPUHit1);  
    SetGriffinFlag(kPUHit2,(puhit << 2) & kPUHit2);  
+}
+
+Double_t TGriffinHit::GetNoCTEnergy(Option_t* opt) const{
+  TChannel* chan = GetChannel();
+  if(!chan) {
+    Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
+    return 0.;
+  }
+  return chan->CalibrateENG(Charge());
 }
 

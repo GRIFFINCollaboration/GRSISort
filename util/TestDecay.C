@@ -89,36 +89,39 @@ TDecay *TestDecay(){
    std::vector<TDecayChain *> list;
    list.push_back(chain);
    list.push_back(chain2);
-   TDecay *decay = new TDecay(list);
+   TDecay *mydecay = new TDecay(list);
 
  //  decay->SetHalfLife(12,5);
-   decay->SetBackground(40);
-   decay->SetRange(0,100);
+   mydecay->SetBackground(40);
+   mydecay->SetRange(0,100);
 
    TFile f("testdecay.root","recreate");
-   decay->SetName("mydecay");
-   decay->Write();
+   mydecay->SetName("mydecay");
+   mydecay->Write();
    f.Close();
 
-   return decay;
+   return mydecay;
 }
 
 TDecay *GenDecay(){
-   TDecayChain *chain = new TDecayChain(1);
-//   TDecayChain *chain2 = new TDecayChain(1);
+   TDecayChain *chain = new TDecayChain(3);
+   TDecayChain *chain2 = new TDecayChain(1);
 
-   chain->GetDecay(0)->SetHalfLife(5);
-   chain->GetDecay(0)->SetDecayId(1);
-//   chain2->GetDecay(0)->SetHalfLife(1);
-//   chain2->GetDecay(0)->SetDecayId(2);
-//   chain->GetDecay(0)->SetDecayRate(log(2)/5);
+   chain->GetDecay(0)->SetHalfLife(6);
+   chain->GetDecay(0)->SetDecayId(kBlack);
+   chain->GetDecay(1)->SetHalfLife(2);
+   chain->GetDecay(1)->SetDecayId(kBlue);
+   chain->GetDecay(2)->SetDecayId(kGreen);
+   chain->GetDecay(2)->SetHalfLife(10);
+   //   chain->GetDecay(0)->SetDecayRate(log(2)/5);
 //   chain2->GetDecay(0)->SetDecayRate(log(2)/1);
 
- //  chain->GetDecay(1)->SetHalfLife(15);
-//   chain2->GetDecay(0)->SetHalfLife(6);
+   //chain->GetDecay(1)->SetHalfLife();
+   chain2->GetDecay(0)->SetDecayId(kBlue);
+ //  chain2->GetDecay(0)->SetHalfLife(7);
 
    chain->GetDecay(0)->SetIntensity(100);
-//   chain2->GetDecay(0)->SetIntensity(20);
+   chain2->GetDecay(0)->SetIntensity(20);
 //   chain2->GetDecay(0)->SetIntensity(10);
 
  //  chain2->GetDecay(0)->SetDecayId(12);
@@ -127,19 +130,20 @@ TDecay *GenDecay(){
 
    std::vector<TDecayChain *> list;
    list.push_back(chain);
-//   list.push_back(chain2);
-   TDecay *decay = new TDecay(list);
+   list.push_back(chain2);
+   TDecay *mydecay = new TDecay(list);
 //   decay->SetHalfLifeLimits(1,4,6);
 
   // decay->SetHalfLife(12,10);
-   decay->SetBackground(10);
-   decay->SetRange(0,100);
+   mydecay->SetBackground(10);
+   mydecay->SetRange(0,100);
+   mydecay->Print();
 
-   return decay;
+   return mydecay;
 }
 
 TH1F* TestFullFit(Int_t nPoints=100000){
-   TDecay *decay = GenDecay();
+   TDecay *mydecay = GenDecay();
    TH1F* decay_curve = (TH1F*)(gROOT->Get("decay_curve"));
    TH1F* tmp_curve = (TH1F*)(gROOT->Get("tmp_curve"));
    if(decay_curve) delete decay_curve;
@@ -148,20 +152,20 @@ TH1F* TestFullFit(Int_t nPoints=100000){
    //for(int i =0;i<nPoints;++i){
      // decay_curve->Fill(decay->GetFitFunc()->GetRandom());
  //  }
-   decay_curve->FillRandom(decay->GetFitFunc()->GetName(),nPoints);
+   decay_curve->FillRandom(mydecay->GetFitFunc()->GetName(),nPoints);
  //  decay_curve->FillRandom("tmpfit2",nPoints);
    decay_curve->Draw();
    printf("creating fitter\n");
-   decay->SetRange(0,99);
-   decay->Print();
-   decay->GetChain(0)->GetDecay(0)->SetIntensity(700);
- //  decay->GetChain(1)->GetDecay(0)->SetIntensity(100);
+   mydecay->SetRange(0,99);
+   mydecay->Print();
+   mydecay->GetChain(0)->GetDecay(0)->SetIntensity(400);
+   mydecay->GetChain(1)->GetDecay(0)->SetIntensity(20);
  //  decay->SetParameters();
    decay_curve->Draw();
  //  TLMFitter *fitter = new TLMFitter;
  //  fitter->Fit(decay_curve,decay->GetFunc());
   // delete fitter;
-   decay->Fit(decay_curve);
+   mydecay->Fit(decay_curve,"V");
    return (TH1F*)(decay_curve->Clone("tmp_curve"));
   // return decay_curve;
 
@@ -181,7 +185,7 @@ TDecay * TestFileDecay(TFile* file){
 
 //   TLMFitter *fitter = new TLMFitter;
 //   fitter->Fit(decay_curve,decay->GetFunc());
-   decay->Fit(decay_curve,"G");
+   decay->Fit(decay_curve);
    return decay;
 
 

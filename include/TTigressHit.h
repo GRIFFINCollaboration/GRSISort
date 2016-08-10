@@ -33,23 +33,23 @@ class TTigressHit : public TGRSIDetectorHit {
     //Float_t  fFirstSegmentCharge; //!<!
 
     std::vector<TGRSIDetectorHit> fSegments;
-    std::vector<TGRSIDetectorHit> fBgos;
 
+    bool fBgoFired;
     Float_t fTimeFit;
     Float_t fSig2Noise;
 
-    //need to do sudo tracking to build addback.
-    TVector3 fLastHit;                //!<!
-#if !defined (__CINT__) && !defined (__CLING__)
-    std::tuple<int,int,int> fLastPos; //!<!
-#endif
+/*     //need to do sudo tracking to build addback. */
+/*     TVector3 fLastHit;                //!<! */
+/* #if !defined (__CINT__) && !defined (__CLING__) */
+/*     std::tuple<int,int,int> fLastPos; //!<! */
+/* #endif */
 
   public:
     void SetHit() {}
     /////////////////////////    /////////////////////////////////////
     void SetCore(const TTigressHit& core)           { core.Copy(*this);  }               //!<!
     void AddSegment(const TGRSIDetectorHit& seg)    { fSegments.push_back(seg);  } //!<!
-    void AddBGO(const TGRSIDetectorHit& bgo)        { fBgos.push_back(bgo);  }     //!<!
+    //    void AddBGO(const TGRSIDetectorHit& bgo)        { fBgos.push_back(bgo);  }     //!<!
     //void SetInitalHit(const int &i)     { fFirstSegment = i; }        //!<!
 
     /////////////////////////    /////////////////////////////////////
@@ -75,18 +75,21 @@ class TTigressHit : public TGRSIDetectorHit {
       tmp = this->GetEnergy()*gamma *(1 - beta*TMath::Cos(this->GetPosition().Angle(*vec)));
       return tmp;
     }
+
+    bool BGOFired() const { return fBgoFired; }
+    void SetBGOFired(bool fired) { fBgoFired = fired;}
   
     int GetSegmentMultiplicity()        const { return fSegments.size(); }  //!<!
     int GetNSegments()                  const { return fSegments.size(); }  //!<!
-    int GetBGOMultiplicity()            const { return fBgos.size();     }  //!<!
-    int GetNBGOs()                      const { return fBgos.size();     }  //!<!
+    /* int GetBGOMultiplicity()            const { return fBgos.size();     }  //!<! */
+    /* int GetNBGOs()                      const { return fBgos.size();     }  //!<! */
 
     const TGRSIDetectorHit& GetSegment(int i) const { return fSegments.at(i);  }  //!<!
-    const TGRSIDetectorHit& GetBGO(int i)     const { return fBgos.at(i);      }  //!<!
+    /* const TGRSIDetectorHit& GetBGO(int i)     const { return fBgos.at(i);      }  //!<! */
     const TGRSIDetectorHit& GetCore()         const { return *this;            }  //!<!
     
     const std::vector<TGRSIDetectorHit>& GetSegmentVec() const { return fSegments; }
-    const std::vector<TGRSIDetectorHit>& GetBGOVec()     const { return fBgos; }
+    /* const std::vector<TGRSIDetectorHit>& GetBGOVec()     const { return fBgos; } */
 
     int GetFirstSeg() const { if(fSegments.size()>0) return fSegments.front().GetSegment(); return -1; }
     int GetLastSeg()  const { if(fSegments.size()>0) return fSegments.back().GetSegment(); return -1; }
@@ -98,6 +101,7 @@ class TTigressHit : public TGRSIDetectorHit {
 
     TVector3 GetPosition(Double_t dist=110.0) const; 
     TVector3 GetLastPosition(Double_t dist=110.0) const;
+
   private:
     TVector3 GetChannelPosition(Double_t dist=110.0) const { return GetPosition(dist); }
 
@@ -109,7 +113,7 @@ class TTigressHit : public TGRSIDetectorHit {
     void SortSegments() { std::sort(fSegments.begin(),fSegments.end()); } //!<!
 
     /// \cond CLASSIMP
-    ClassDef(TTigressHit,3)
+    ClassDef(TTigressHit,4)
       /// \endcond
 };
 /*! @} */

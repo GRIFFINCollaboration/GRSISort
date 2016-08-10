@@ -35,8 +35,8 @@ void TTigressHit::Clear(Option_t *opt) {
   fTimeFit   = 0.0;
   fSig2Noise = 0.0;
 
+  fBgoFired = false;
   fSegments.clear();
-  fBgos.clear();
   //fLastHit.SetXYZ(0,0,0);
 }
 
@@ -44,7 +44,8 @@ void TTigressHit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
   static_cast<TTigressHit&>(rhs).fTimeFit              = fTimeFit;
   static_cast<TTigressHit&>(rhs).fSegments             = fSegments;
-  static_cast<TTigressHit&>(rhs).fBgos                 = fBgos;
+  static_cast<TTigressHit&>(rhs).fBgoFired             = fBgoFired;
+
   //static_cast<TTigressHit&>(rhs).fCrystal              = fCrystal;
   //static_cast<TTigressHit&>(rhs).fFirstSegment         = fFirstSegment;
   //static_cast<TTigressHit&>(rhs).fFirstSegmentCharge   = fFirstSegmentCharge;
@@ -68,6 +69,7 @@ void TTigressHit::Print(Option_t *opt) const	{
   printf("\tCharge: %i\n",GetCharge());
   printf("\tEnergy: %.2f\n",GetEnergy());
   printf("\tTime:   %.2f\n",GetTime());
+  printf("\tBGO Fired: %s\n",BGOFired() ? "true" : "false");
   std::cout <<"\tTime:   "<< GetTimeStamp() <<"\n";
   printf("\thit contains %i segments.\n",GetNSegments());
   //printf("\tintial segment: %i\n",GetInitialHit());
@@ -111,6 +113,9 @@ void TTigressHit::SumHit(TTigressHit *hit) {
   this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
   for(int x =0;x<hit->GetNSegments();x++) {
     this->AddSegment((hit->fSegments[x]));
+  }
+  if(hit->BGOFired()) {
+    SetBGOFired(true);
   }
   //this->fLastHit = hit->GetPosition();
   //this->fLastPos = std::make_tuple(hit->GetDetector(),hit->GetCrystal(),hit->GetInitialHit());

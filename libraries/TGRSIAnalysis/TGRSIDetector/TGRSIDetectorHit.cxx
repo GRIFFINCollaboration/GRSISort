@@ -1,6 +1,7 @@
 #include "TGRSIDetectorHit.h"
 
 #include "TClass.h"
+#include <iostream>
 
 /// \cond CLASSIMP
 ClassImp(TGRSIDetectorHit)
@@ -15,7 +16,7 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject() {
   Clear();
   fAddress = Address;
   if(!fPPG)
-    fPPG = static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
+    fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
 
 #if MAJOR_ROOT_VERSION < 6
   Class()->IgnoreTObjectStreamer(kTRUE);
@@ -29,7 +30,8 @@ TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) :
     rhs.CopyWave(*this);
   }
 
-  fPPG = static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
+  if(!fPPG)
+    fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
 #if MAJOR_ROOT_VERSION < 6
   Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -75,7 +77,6 @@ int TGRSIDetectorHit::GetCharge() const {
   }                                                               // in the TChannel if it exists.
   return std::floor(Charge());// this will use no integration value
 }
-
 
 double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
   if(TestBit(kIsEnergySet))
@@ -171,10 +172,6 @@ Int_t TGRSIDetectorHit::GetDetector() const {
 }
 
 Int_t TGRSIDetectorHit::GetSegment() const {
-   //if(IsSegSet())
-   //  return fSegment;
-
-   //MNEMONIC mnemonic;
    TChannel *channel = GetChannel();
    if(!channel){
       Error("GetSegment","No TChannel exists for address %08x",GetAddress());
@@ -237,6 +234,8 @@ Short_t TGRSIDetectorHit::SetSegment(const Short_t &seg) {
 //  printf("no position found for current hit\n");
 //  return *GetBeamDirection();  //TVector3(0,0,1);
 //}
+//    return channel->GetSegmentNumber(); //mnemonic.arrayposition;
+// }
 
 
 bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rhs) {
@@ -244,13 +243,6 @@ bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rh
 }
 
 uint16_t TGRSIDetectorHit::GetPPGStatus() const {
-  if(IsPPGSet())
-    return fPPGStatus;
-
-  return TPPG::kJunk;
-}
-
-uint16_t TGRSIDetectorHit::GetPPGStatus() {
   if(IsPPGSet())
     return fPPGStatus;
 
@@ -264,13 +256,6 @@ uint16_t TGRSIDetectorHit::GetPPGStatus() {
 }
 
 uint16_t TGRSIDetectorHit::GetCycleTimeStamp() const {
-  if(IsPPGSet())
-    return fCycleTimeStamp;
-
-  return 0;
-}
-
-uint16_t TGRSIDetectorHit::GetCycleTimeStamp() {
   if(IsPPGSet())
     return fCycleTimeStamp;
 
@@ -297,7 +282,8 @@ uint16_t TGRSIDetectorHit::GetCycleTimeStamp() {
 //    SetWaveform(frag.wavebuffer); 
 //}
 
-void TGRSIDetectorHit::SetBit(enum EBitFlag flag, Bool_t set){
+// const here is rather dirty
+void TGRSIDetectorHit::SetBit(enum EBitFlag flag, Bool_t set) const {
   if(set)
     fBitflags |= flag;
   else

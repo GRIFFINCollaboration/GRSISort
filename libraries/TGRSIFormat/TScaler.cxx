@@ -257,7 +257,7 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t *option) {
 	}
 	//try and find the ppg (if we haven't already done so)
 	if(fPPG == NULL) {
-		fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+		fPPG = TPPG::Get();//static_cast<TPPG*>(gROOT->FindObject("TPPG"));
 		//if we can't find the ppg we're done here
 		if(fPPG == NULL) {
 			return NULL;
@@ -316,7 +316,7 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
 
 	//try and find the ppg (if we haven't already done so)
 	if(fPPG == NULL) {
-		fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+		fPPG = TPPG::Get();//static_cast<TPPG*>(gROOT->FindObject("TPPG"));
 		//if we can't find the ppg we're done here
 		if(fPPG == NULL) {
 			return NULL;

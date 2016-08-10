@@ -15,8 +15,8 @@
 
 class TGainMatch : public TCal {
  public: 
-   TGainMatch(): fHist(0) {}
-   TGainMatch(const char* name, const char* title) : TCal(name,title) { Clear(); }
+   TGainMatch(): fHist(0), fCoarseRange(gDefaultCoarseRange)  {}
+   TGainMatch(const char* name, const char* title) : TCal(name,title), fCoarseRange(gDefaultCoarseRange)  { Clear(); }
    virtual ~TGainMatch() {} 
 
    TGainMatch(const TGainMatch &copy);
@@ -58,13 +58,21 @@ class TGainMatch : public TCal {
    void SetHist(TH1* nuc) { Warning("SetHist","Is not used in TGainMatching");} 
    TH1* GetHist() const { Warning("GetHist","Is not used in TGainMatching"); return 0; }
 
+   void SetCoarseRange(Double_t coarseRange) { fCoarseRange = coarseRange; }
+   Double_t GetCoarseRange() const { return fCoarseRange; }
+   static void SetDefaultCoarseRange(Double_t coarseRange) { printf("All new TGainMatch objects will have their range set to %lf\n",coarseRange); gDefaultCoarseRange = coarseRange; }
+   static Double_t GetDefaultCoarseRange() { return gDefaultCoarseRange; }
+
  private:
    Bool_t fCoarseMatch;
    Bool_t fAligned;
    TH1*   fHist;
    Double_t fAlignCoeffs[2];
    Double_t fGainCoeffs[2];
+   Double_t fCoarseRange;
    Double_t HistCompare(Double_t *x, Double_t *par);
+
+   static Double_t gDefaultCoarseRange;
 
 /// \cond CLASSIMP
    ClassDef(TGainMatch,1);

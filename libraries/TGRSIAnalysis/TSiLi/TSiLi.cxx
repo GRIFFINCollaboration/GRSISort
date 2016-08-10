@@ -56,8 +56,8 @@ void TSiLi::PushBackHit(TGRSIDetectorHit *deshit) {
   return;
 }
 
-void TSiLi::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
-  if(frag == NULL || mnemonic == NULL) {
+void TSiLi::AddFragment(TFragment* frag, TChannel* chan) {
+  if(frag == NULL || chan == NULL) {
 	 return;
   }
 

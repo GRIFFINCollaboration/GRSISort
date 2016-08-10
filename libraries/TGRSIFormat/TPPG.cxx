@@ -1,9 +1,14 @@
 #include "TPPG.h"
 
+//#include <iostream>
+#include "TDirectory.h"
+
 /// \cond CLASSIMP
 ClassImp(TPPGData)
 ClassImp(TPPG)
 /// \endcond
+
+TPPG* TPPG::fPPG = NULL;
 
 TPPGData::TPPGData() {
 	Clear();
@@ -47,11 +52,13 @@ void TPPGData::Print(Option_t* opt) const{
 TPPG::TPPG() {
 	fPPGStatusMap = new PPGMap_t;
 	this->Clear();
+	//std::cout<<"default constructor called on "<<this<<std::endl;
 }
 
 TPPG::TPPG(const TPPG& rhs) : TObject() {
 	fPPGStatusMap = new PPGMap_t;
 	rhs.Copy(*this);
+	//std::cout<<"copy constructor called on "<<this<<" from "<<&rhs<<std::endl;
 }
 
 TPPG::~TPPG() {
@@ -67,6 +74,20 @@ TPPG::~TPPG() {
 		delete fPPGStatusMap;
 	}
 	fPPGStatusMap = 0;
+	//std::cout<<"destructor called on "<<this<<std::endl;
+}
+
+TPPG* TPPG::Get() {
+	//The getter for the singleton TPPG. Unfortunately ROOT doesn't allow true 
+	//singletons, so one should take care to always use this method and not
+	//the constructor.
+	if(fPPG == NULL) {
+		fPPG = static_cast<TPPG*>(gDirectory->Get("TPPG"));
+		if(fPPG == NULL) {
+			fPPG = new TPPG();
+		}
+	}
+	return fPPG;
 }
 
 void TPPG::Copy(TObject &obj) const {
@@ -129,7 +150,7 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag
 					return ppg_it->first;
 				}
 			} else{
-				printf("pat %x, ppg_it->first %lu, ppg_it->second->GetNewPPG() %x\n",pat,ppg_it->first,ppg_it->second->GetNewPPG());
+			//	printf("pat %x, ppg_it->first %lu, ppg_it->second->GetNewPPG() %x\n",pat,ppg_it->first,ppg_it->second->GetNewPPG());
 				if(pat & ppg_it->second->GetNewPPG()) {
 					return ppg_it->first;
 				}

@@ -74,13 +74,13 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 
    //Coincidence Parameters
    Double_t ggTlow = 0.;   //Times are in 10's of ns
-   Double_t ggThigh = 40.;
-   Double_t gbTlow =  -15.;
-   Double_t gbThigh = 10.;
+   Double_t ggThigh = 400.;
+   Double_t gbTlow =  -150.;
+   Double_t gbThigh = 100.;
 
-   Double_t ggBGlow = 100.;
-   Double_t ggBGhigh = 175.;
-   Double_t gbBGlow = -160.;
+   Double_t ggBGlow = 1000.;
+   Double_t ggBGhigh = 1750.;
+   Double_t gbBGlow = -1600.;
    Double_t gbBGhigh = 0.;
    Double_t ggBGScale = (ggThigh - ggTlow)/(ggBGhigh - ggBGlow);
    Double_t gbBGScale = (gbThigh - gbTlow)/(gbBGhigh - gbBGlow);

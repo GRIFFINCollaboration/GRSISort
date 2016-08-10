@@ -166,10 +166,10 @@ void TDescant::PushBackHit(TGRSIDetectorHit *desHit) {
    fDescantHits.push_back(*static_cast<TDescantHit*>(desHit));
 }
 
-void TDescant::AddFragment(TFragment* frag, MNEMONIC* mnemonic) {
+void TDescant::AddFragment(TFragment* frag, TChannel* chan) {
    ///Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
    ///This is done for both DESCANT and it's suppressors.
-   if(frag == NULL || mnemonic == NULL) {
+   if(frag == NULL || chan == NULL) {
       return;
    }
    

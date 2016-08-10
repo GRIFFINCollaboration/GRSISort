@@ -13,13 +13,17 @@
 ClassImp(TGainMatch)
 /// \endcond
 
-TGainMatch::TGainMatch(const TGainMatch &copy) : TCal(copy) {
+Double_t TGainMatch::gDefaultCoarseRange = 40.;
+
+TGainMatch::TGainMatch(const TGainMatch &copy) : TCal(copy), fCoarseRange(gDefaultCoarseRange) {
   fHist = 0;
+  std::cout << "THIS ---> " << fCoarseRange << std::endl;
   copy.Copy(*this);
 }
 
 void TGainMatch::Copy(TObject &obj) const{
-	static_cast<TGainMatch&>(obj).fCoarseMatch = fCoarseMatch; 
+	static_cast<TGainMatch&>(obj).fCoarseMatch = fCoarseMatch;
+   static_cast<TGainMatch&>(obj).fCoarseRange = fCoarseRange;
    TCal::Copy(obj);
 }
 
@@ -107,7 +111,7 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
 
    //We now want to create a peak for each one we found (2) and fit them.
    for(int x=0; x<2; x++) {
-      TPeak tmpPeak(foundBin[x],foundBin[x] - 10./binWidth, foundBin[x] + 10./binWidth);
+      TPeak tmpPeak(foundBin[x],foundBin[x] - fCoarseRange/binWidth, foundBin[x] + fCoarseRange/binWidth);
       tmpPeak.SetName(Form("GM_Cent_%lf",foundBin[x]));//Change the name of the TPeak to know it's origin
       tmpPeak.Fit(hist,"+");
       SetPoint(x,tmpPeak.GetParameter("centroid"),engVec[x]);

@@ -67,6 +67,7 @@ class TGRSIRootIO : public TObject {
       int GetSubRunNumber(std::string);
 
       void LoadRootFile(TFile*);
+      std::vector<TFile*> GetFileList() { return fInFiles; }
       
       TFile* GetRootOutFile()  { return fOutFile;   }  
 

@@ -14,6 +14,7 @@
 #include "TChannel.h"
 
 #include "TGRSIDetectorHit.h"
+#include "TGRSIRunInfo.h"
 
 class TGriffinHit : public TGRSIDetectorHit {
   public:
@@ -46,6 +47,7 @@ class TGriffinHit : public TGRSIDetectorHit {
 
     /////////////////////////  Getters	/////////////////////////////////////
     inline Int_t    GetFilterPattern() const         {   return fFilter;   }          //!<!
+    Double_t GetNoCTEnergy(Option_t* opt = "") const;
 
     /////////////////////////  Recommended Functions/////////////////////////
 
@@ -88,7 +90,7 @@ class TGriffinHit : public TGRSIDetectorHit {
     void SetGriffinFlag(enum EGriffinHitBits,Bool_t set);
 
     /// \cond CLASSIMP
-    ClassDef(TGriffinHit,5); //Information about a GRIFFIN Hit
+    ClassDef(TGriffinHit,6); //Information about a GRIFFIN Hit
     /// \endcond
 };
 /*! @} */

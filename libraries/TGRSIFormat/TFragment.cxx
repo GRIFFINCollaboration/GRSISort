@@ -114,23 +114,24 @@ Int_t TFragment::Get4GCfd(size_t i) const { // return a 4G cfd in terms
 
 
 ULong64_t TFragment::GetTimeInCycle() {
-  if(fPPG == NULL) {
-    fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
-  }
-  if(fPPG == NULL) {
-    return 0;
-  }
-  return fPPG->GetTimeInCycle(GetTimeStamp());
+
+   if(fPPG == NULL) {
+		fPPG = TPPG::Get();//static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+   }
+   if(fPPG == NULL) {
+      return 0;
+   }
+   return fPPG->GetTimeInCycle(GetTimeStamp());
 }
 
 ULong64_t TFragment::GetCycleNumber() {
-  if(fPPG == NULL) {
-    fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
-  }
-  if(fPPG == NULL) {
-    return 0;
-  }
-  return fPPG->GetCycleNumber(GetTimeStamp());
+   if(fPPG == NULL) {
+		fPPG = TPPG::Get();//static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+   }
+   if(fPPG == NULL) {
+      return 0;
+   }
+   return fPPG->GetCycleNumber(GetTimeStamp());
 }
 
 void TFragment::Print(Option_t *opt) const {
@@ -210,13 +211,3 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
 
   return false;
 }
-
-
-
-
-
-
-
-
-
-
