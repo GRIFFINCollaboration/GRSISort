@@ -55,6 +55,7 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
 
   if(!SetTIGTriggerID(dword,EventFrag)) {
     delete EventFrag;
+    EventFrag = 0;
     printf(RED "Setting TriggerId (0x%08x) failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",dword,midasSerialNumber);
     return -x;  
   }
@@ -64,6 +65,7 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
 
   if(!SetTIGTimeStamp((data+x),EventFrag)) { 
     delete EventFrag;  
+    EventFrag = 0;
     printf(RED "%i Setting TimeStamp failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",x,midasSerialNumber);
     return -x;
   }
@@ -95,16 +97,26 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
         ///check whether the fragment is 'good'
         TFragmentQueue::GetQueue("GOOD")->Add(EventFrag);
         NumFragsFound++;
-        if( (*(data+x+1) & 0xf0000000) != 0xe0000000) {
+        return NumFragsFound;
+
+        /*
+        if( ((*(data+x+1)) & 0xf0000000) == 0xe0000000) {
           TFragment* transferfrag = EventFrag;
           EventFrag = new TFragment;
           EventFrag->MidasTimeStamp = transferfrag->MidasTimeStamp;
           EventFrag->MidasId        = transferfrag->MidasId;           
           EventFrag->TriggerId      = transferfrag->TriggerId;     
+          //printf("transferfrag = 0x%08x\n",transferfrag); fflush(stdout);
+          //printf("transferfrag->GetTimeStamp() = %lu\n",transferfrag->GetTimeStamp()); fflush(stdout);
           EventFrag->SetTimeStamp(transferfrag->GetTimeStamp());
+          //printf("EventFrag: = 0x%08x\n",EventFrag); fflush(stdout);
+          //printf("EventFrag->GetTimeStamp() = %lu\n",EventFrag->GetTimeStamp()); fflush(stdout);
         }
-        else
-          EventFrag = 0;
+        */
+        //else {
+        //  delete EventFrag;
+        //  EventFrag = 0;
+        //}
         break;
       case 0x5: // raw charge evaluation.
         SetTIGCharge(value,EventFrag);
@@ -119,8 +131,12 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
         SetTIGAddress(value,EventFrag);
         break;
       case 0xe: // this ends the bank!
-        if(EventFrag)
+        if(EventFrag) {
+          //printf("this is never called\n"); fflush(stdout);
           delete EventFrag;
+          EventFrag = 0;
+          return -x;
+        }
         break;
       case 0xf:
         break;
@@ -309,7 +325,7 @@ bool TDataParser::SetTIGTimeStamp(uint32_t* data,TFragment* currentFrag ) {
       if(time[0]!=time[1]) { // tig64's only have two, both second hex's are 0s. also some times tig10s.
        timestamplow = time[0] & 0x00ffffff;
        timestamphigh = time[1] & 0x00ffffff;
-        //return true;
+       //return true;
       }
       break;
     case 3:
@@ -347,7 +363,7 @@ bool TDataParser::SetTIGTimeStamp(uint32_t* data,TFragment* currentFrag ) {
       break;
       //return true; 
   };
-  if(timestamplow>0 && timestamphigh>0) {
+  if(timestamplow>-1 && timestamphigh>-1)   {
    currentFrag->SetTimeStamp((timestamphigh << 24) + timestamplow);
    return true;
   }
