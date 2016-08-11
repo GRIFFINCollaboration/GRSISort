@@ -29,12 +29,12 @@ class TFragmentMap {
 	public:
 	TFragmentMap() {};
 	~TFragmentMap() {};
-	bool Add(TFragment*, std::vector<Int_t>, std::vector<UShort_t>);
+	bool Add(TFragment*, std::vector<Int_t>, std::vector<Short_t>);
 	
 	private:
-	void Solve(std::vector<TFragment*>, std::vector<Float_t>, std::vector<UShort_t>, int situation = -1);
+	void Solve(std::vector<TFragment*>, std::vector<Float_t>, std::vector<Long_t>, int situation = -1);
 #ifndef __CINT__
-	std::multimap<UInt_t, std::tuple<TFragment*, std::vector<Int_t>, std::vector<UShort_t> > > fMap;
+	std::multimap<UInt_t, std::tuple<TFragment*, std::vector<Int_t>, std::vector<Short_t> > > fMap;
 #endif
 };
 /*! @} */

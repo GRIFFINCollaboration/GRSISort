@@ -96,7 +96,7 @@ class TGRSIDetectorHit : public TObject 	{
       //static bool Compare(TGRSIDetectorHit* lhs,TGRSIDetectorHit* rhs); //!<!
 
       void SetAddress(const UInt_t& temp_address)       { fAddress = temp_address; } //!<!
-      void SetKValue(const UShort_t& temp_kval)         { fKValue = temp_kval;   }   //!<!
+      void SetKValue(const Short_t& temp_kval)          { fKValue = temp_kval;   }   //!<!
       void SetCharge(const Float_t& temp_charge)        { fCharge = temp_charge; }   //!<!
       virtual void SetCfd(const Int_t& x)               { fCfd    = x; }             //!<!
       void SetWaveform(const std::vector<Short_t>& x)   { fWaveform = x; }           //!<!
@@ -114,7 +114,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual UInt_t GetAddress() const      { return fAddress; }            //!<!
       virtual Int_t  GetCharge()  const      ;                               //!<!
       virtual Float_t Charge()    const      { return fCharge; }             //!<!
-      virtual UShort_t GetKValue()const      { return fKValue; }             //!<!
+      virtual Short_t GetKValue() const      { return fKValue; }             //!<!
       TChannel* GetChannel()      const      { return TChannel::GetChannel(fAddress); }  //!<!
       std::vector<Short_t>* GetWaveform()    { return &fWaveform; }          //!<!
 
@@ -148,7 +148,7 @@ class TGRSIDetectorHit : public TObject 	{
    protected:
       UInt_t   fAddress;    ///< address of the the channel in the DAQ.
       Float_t  fCharge;     ///< charge collected from the hit
-      UShort_t fKValue;     ///< integration value.
+      Short_t fKValue;      ///< integration value.
       Int_t    fCfd;        ///< CFD time of the Hit
       Long_t   fTimeStamp;  ///< Timestamp given to hit
       std::vector<Short_t> fWaveform;  ///<
