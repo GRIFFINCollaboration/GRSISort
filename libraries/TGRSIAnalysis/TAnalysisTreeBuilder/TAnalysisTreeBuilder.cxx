@@ -74,11 +74,11 @@ TWriteQueue* TWriteQueue::Get() {
   return fPtrToQue;
 }
 
-void TWriteQueue::Add(std::map<TClass*, TDetector*>* event) {
+void TWriteQueue::Add(std::map<int, TDetector*>* event) {
   Get()->AddInstance(event);
 }
 
-std::map<TClass*, TDetector*>* TWriteQueue::PopEntry() {
+std::map<int, TDetector*>* TWriteQueue::PopEntry() {
   return Get()->PopEntryInstance();
 }
 
@@ -86,7 +86,7 @@ int TWriteQueue::Size() {
   return Get()->SizeInstance();
 }
 
-void TWriteQueue::AddInstance(std::map<TClass*, TDetector*>* event) {
+void TWriteQueue::AddInstance(std::map<int, TDetector*>* event) {
   ///Thread-safe method for adding to the event queue
   m_write.lock();
   fWriteQueue.push(event);
@@ -94,9 +94,9 @@ void TWriteQueue::AddInstance(std::map<TClass*, TDetector*>* event) {
   return;
 }
 
-std::map<TClass*, TDetector*>* TWriteQueue::PopEntryInstance() {
+std::map<int, TDetector*>* TWriteQueue::PopEntryInstance() {
   ///Thread safe method for taking an event out of the write queue
-  std::map<TClass*, TDetector*>* temp;
+  std::map<int, TDetector*>* temp;
   m_write.lock();
   temp = fWriteQueue.front();
   fWriteQueue.pop();
@@ -636,7 +636,7 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
   //printf("ClearActiveAnalysisTreeBranches done\n");
 }
 
-void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<TClass*, TDetector*>* detectors) {
+void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<int, TDetector*>* detectors) {
   ///Build the hits in each of the detectors.
   if(!fCurrentAnalysisFile || !fCurrentRunInfo)
     return;
@@ -646,7 +646,7 @@ void TAnalysisTreeBuilder::BuildActiveAnalysisTreeBranches(std::map<TClass*, TDe
   }
 }
 
-void TAnalysisTreeBuilder::FillWriteQueue(std::map<TClass*, TDetector*>* detectors) {
+void TAnalysisTreeBuilder::FillWriteQueue(std::map<int, TDetector*>* detectors) {
   ///Fill the write Q with the built hits in each of the detectors.
   fAnalysisIn++;
   TWriteQueue::Add(detectors);
@@ -660,14 +660,14 @@ void TAnalysisTreeBuilder::WriteAnalysisTree() {
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
       continue;
     }
-    std::map<TClass*, TDetector*>* detectors = TWriteQueue::PopEntry();
+    std::map<int, TDetector*>* detectors = TWriteQueue::PopEntry();
     fAnalysisOut++;
 
     FillAnalysisTree(detectors);
   }
 }
 
-void TAnalysisTreeBuilder::FillAnalysisTree(std::map<TClass*, TDetector*>* detectors) {
+void TAnalysisTreeBuilder::FillAnalysisTree(std::map<int, TDetector*>* detectors) {
   ///Fill the analysis Tree with the built events. Each detector gets its own branch in the analysis tree
   if(!fCurrentAnalysisTree || !detectors) {
     printf("returned from fill without filling (%p %p)!\n", static_cast<void*>(fCurrentAnalysisTree), static_cast<void*>(detectors));
@@ -680,40 +680,56 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<TClass*, TDetector*>* detec
 
 
   //Fill the detector map with TDetector classes if the class of the detector is in the map.
-  //This can probably made better with a map of class to branch. Will potentially add later RD
   for(auto det = detectors->begin(); det != detectors->end(); det++) {
-    if(det->first == TTigress::Class()) {
-      fTigress = static_cast<TTigress*>(det->second);
-    } else if(det->first == TSharc::Class()) {
-      fSharc = static_cast<TSharc*>(det->second);
-    } else if(det->first == TTriFoil::Class()) {
-      fTriFoil = static_cast<TTriFoil*>(det->second);
-    } else if(det->first == TRF::Class()) {
-      fRf = static_cast<TRF*>(det->second);
-    } else if(det->first == TCSM::Class()) {
-      fCsm = static_cast<TCSM*>(det->second);
-    } else if(det->first == TSiLi::Class()) {
-      fSiLi = static_cast<TSiLi*>(det->second);
-    } else if(det->first == TS3::Class()) {
-      fS3   = static_cast<TS3*>(det->second);
-    } else if(det->first == TGriffin::Class()) {
-      fGriffin = static_cast<TGriffin*>(det->second);
-    } else if(det->first == TSceptar::Class()) {
-      fSceptar = static_cast<TSceptar*>(det->second);
-    } else if(det->first == TDescant::Class()) {
-      fDescant = static_cast<TDescant*>(det->second);
-    } else if(det->first == TPaces::Class()) {
-      fPaces = static_cast<TPaces*>(det->second);
-    } else if(det->first == TZeroDegree::Class()) {
-      fZeroDegree = static_cast<TZeroDegree*>(det->second);
-    } else if(det->first == TLaBr::Class()) {
-      fLaBr = static_cast<TLaBr*>(det->second);
-    } else if(det->first == TTAC::Class()) {
-      fTAC = static_cast<TTAC*>(det->second);
-    } else if(det->first == TTip::Class()) {
-      fTip = static_cast<TTip*>(det->second);
-    } 
+      switch(det->first){
+         case MNEMONIC::kTigress:
+            fTigress = static_cast<TTigress*>(det->second);
+            break;
+         case MNEMONIC::kSharc:
+            fSharc = static_cast<TSharc*>(det->second);
+            break;
+         case MNEMONIC::kTriFoil:
+            fTriFoil = static_cast<TTriFoil*>(det->second);
+            break;
+         case MNEMONIC::kRF:
+            fRf = static_cast<TRF*>(det->second);
+            break;
+         case MNEMONIC::kSiLi:
+            fSiLi = static_cast<TSiLi*>(det->second);
+            break;
+         case MNEMONIC::kS3:
+            fS3   = static_cast<TS3*>(det->second);
+            break;
+         case MNEMONIC::kCSM:
+            fCsm = static_cast<TCSM*>(det->second);
+            break;
+         case MNEMONIC::kGriffin:
+            fGriffin = static_cast<TGriffin*>(det->second);
+            break;
+         case MNEMONIC::kSceptar:
+            fSceptar = static_cast<TSceptar*>(det->second);
+            break;
+         case MNEMONIC::kPaces:
+            fPaces = static_cast<TPaces*>(det->second);
+            break;
+         case MNEMONIC::kDescant:
+            fDescant = static_cast<TDescant*>(det->second);
+            break;
+         case MNEMONIC::kLaBr:
+            fLaBr = static_cast<TLaBr*>(det->second);
+            break;
+         case MNEMONIC::kTAC:
+            fTAC = static_cast<TTAC*>(det->second);
+            break;
+         case MNEMONIC::kZeroDegree:
+            fZeroDegree = static_cast<TZeroDegree*>(det->second);
+            break;
+         case MNEMONIC::kTip:
+            fTip = static_cast<TTip*>(det->second);
+            break;
+   };
   }
+
   fCurrentAnalysisTree->Fill();
 
   //ClearActiveAnalysisTreeBranches();	
@@ -785,21 +801,25 @@ void TAnalysisTreeBuilder::ProcessEvent() {
 
     //We need to pull the event out of the Event Q
     std::vector<TFragment>* event = TEventQueue::PopEntry();
-    std::map<TClass*, TDetector*>* detectors = new std::map<TClass*, TDetector*>;
+    std::map<int, TDetector*>* detectors = new std::map<int, TDetector*>;
     for(auto it = event->begin(); it != event->end();++it) {
       TChannel* channel = TChannel::GetChannel(it->ChannelAddress);
       if(!channel)
         continue;
       
+      int systemIndex = channel->GetMnemonic()->System();
+      if(systemIndex == MNEMONIC::kClear)
+         continue;
+
       TClass* detClass = channel->GetClassType();
       if(!detClass)
          continue;
 
       //std::pair<std::map<TClass*,TDetector*>::iterator,bool> newDetIt;//Would like a way to "auto" this
       //There are multiple find statements here which I am going to try to get rid of.
-      auto detIt = detectors->find(detClass);
+      auto detIt = detectors->find(systemIndex);
       if(detIt == detectors->end()){
-        detIt = detectors->insert(std::pair<TClass*,TDetector*>(detClass,static_cast<TDetector*>(detClass->New()))).first;
+        detIt = detectors->insert(std::pair<int,TDetector*>(systemIndex,static_cast<TDetector*>(detClass->New()))).first;
       }
       detIt->second->AddFragment(&(*it),channel);
 

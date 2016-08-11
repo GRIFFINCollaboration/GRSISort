@@ -114,8 +114,8 @@ class TEventQueue : public TObject {
 class TWriteQueue {
    public:
       static TWriteQueue* Get();
-      static void Add(std::map<TClass*, TDetector*>* event); 
-      static std::map<TClass*, TDetector*>* PopEntry();
+      static void Add(std::map<int, TDetector*>* event); 
+      static std::map<int, TDetector*>* PopEntry();
       static int Size();
       virtual ~TWriteQueue() { }
 
@@ -124,11 +124,11 @@ class TWriteQueue {
       static TWriteQueue* fPtrToQue;
 
       
-      void AddInstance(std::map<TClass*, TDetector*>* event); 
-      std::map<TClass*, TDetector*>* PopEntryInstance();
+      void AddInstance(std::map<int, TDetector*>* event); 
+      std::map<int, TDetector*>* PopEntryInstance();
       int SizeInstance();
       
-      std::queue<std::map<TClass*, TDetector*>*> fWriteQueue;
+      std::queue<std::map<int, TDetector*>*> fWriteQueue;
 #if !defined (__CINT__) && !defined (__CLING__)
       std::mutex m_write;
 #endif
@@ -167,9 +167,9 @@ class TAnalysisTreeBuilder : public TObject {
       void SetupOutFile();
       void SetupAnalysisTree();
 
-      void FillWriteQueue(std::map<TClass*, TDetector*>*);
+      void FillWriteQueue(std::map<int, TDetector*>*);
 
-      void FillAnalysisTree(std::map<TClass*, TDetector*>*);
+      void FillAnalysisTree(std::map<int, TDetector*>*);
       void WriteAnalysisTree();
       void CloseAnalysisFile();
 
@@ -177,7 +177,7 @@ class TAnalysisTreeBuilder : public TObject {
 
       void ClearActiveAnalysisTreeBranches();
       void ResetActiveAnalysisTreeBranches();
-		void BuildActiveAnalysisTreeBranches(std::map<TClass*, TDetector*>*);
+		void BuildActiveAnalysisTreeBranches(std::map<int, TDetector*>*);
 
       void Print(Option_t *opt ="") const;
 
