@@ -92,8 +92,8 @@ TChannel::TChannel(TChannel* chan) {
 void TChannel::SetName(const char* tmpName){
    TNamed::SetName(tmpName);
    fChannelName = tmpName;
-	ClearMNEMONIC(&fMnemonic);
-	ParseMNEMONIC(GetChannelName(),&fMnemonic);
+	fMnemonic.Clear();
+   fMnemonic.Parse(GetChannelName());
 }
 
 void TChannel::InitChannelInput() {
@@ -1122,44 +1122,56 @@ TClass* TChannel::GetClassType() const {
 	if(fClassType != NULL)
 		return fClassType;
 
-   if(fMnemonic.system.compare("TI")==0) {
-      fClassType = TTigress::Class();
-   } else if (fMnemonic.system.compare("SH")==0) {
-      fClassType = TSharc::Class();
-   } else if(fMnemonic.system.compare("Tr")==0) {	
-      fClassType = TTriFoil::Class();
-   } else if(fMnemonic.system.compare("RF")==0) {	
-      fClassType = TRF::Class();
-   } else if(fMnemonic.system.compare("SP")==0) {
-        if(fMnemonic.subsystem.compare("I")==0) {
-            fClassType = TSiLi::Class();
-        } else {
-            fClassType = TS3::Class();
-        }
-   } else if(fMnemonic.system.compare("CS")==0) {	
-      fClassType = TCSM::Class();
-   } else if(fMnemonic.system.compare("GR")==0) {
-      fClassType = TGriffin::Class();
-   } else if(fMnemonic.system.compare("SE")==0) {
-      fClassType = TSceptar::Class();
-   } else if(fMnemonic.system.compare("PA")==0) {	
-      fClassType = TPaces::Class();
-   } else if(fMnemonic.system.compare("DS")==0) {	
-      fClassType = TDescant::Class();
-   } else if(fMnemonic.system.compare("DA")==0) {
-         if(fMnemonic.collectedcharge.compare("N")==0) {
-            fClassType = TLaBr::Class();
-         } else {
-            fClassType = TTAC::Class();
-         }
-   } else if(fMnemonic.system.compare("BA")==0) {
-        fClassType = TS3::Class();
-   } else if(fMnemonic.system.compare("ZD")==0) {	
-        fClassType = TZeroDegree::Class();
-   } else if(fMnemonic.system.compare("TP")==0) {	
-        fClassType = TTip::Class();
-   }
-    
+   switch(fMnemonic.System()){
+      case MNEMONIC::kTigress:
+         fClassType = TTigress::Class();
+         break;
+      case MNEMONIC::kSharc:
+         fClassType = TSharc::Class();
+         break;
+      case MNEMONIC::kTriFoil:
+         fClassType = TTriFoil::Class();
+         break;
+      case MNEMONIC::kRF:
+         fClassType = TRF::Class();
+         break;
+      case MNEMONIC::kSiLi:
+         fClassType = TSiLi::Class();
+         break;
+      case MNEMONIC::kS3:
+         fClassType = TS3::Class();
+         break;
+      case MNEMONIC::kCSM:
+         fClassType = TCSM::Class();
+         break;
+      case MNEMONIC::kGriffin:
+         fClassType = TGriffin::Class();
+         break;
+      case MNEMONIC::kSceptar:
+         fClassType = TSceptar::Class();
+         break;
+      case MNEMONIC::kPaces:
+         fClassType = TPaces::Class();
+         break;
+      case MNEMONIC::kDescant:
+         fClassType = TDescant::Class();
+         break;
+      case MNEMONIC::kLaBr:
+         fClassType = TLaBr::Class();
+         break;
+      case MNEMONIC::kTAC:
+         fClassType = TTAC::Class();
+         break;
+      case MNEMONIC::kZeroDegree:
+         fClassType = TZeroDegree::Class();
+         break;
+      case MNEMONIC::kTip:
+         fClassType = TTip::Class();
+         break;
+      default:
+         fClassType = NULL;
+   };
+
    return fClassType;
 }
 
@@ -1184,18 +1196,17 @@ int TChannel::GetCrystalNumber() const {
   if(fCrystalNumber>-1)
     return fCrystalNumber;
 
-  char color = fMnemonic.arraysubposition[0];
-  switch(color) {
-    case 'B':
+  switch(fMnemonic.ArraySubPosition()) {
+     case MNEMONIC::kB:
       fCrystalNumber = 0;
       break;
-    case 'G':
+     case MNEMONIC::kG:
       fCrystalNumber = 1;
       break;
-    case 'R':
+     case MNEMONIC::kR:
       fCrystalNumber = 2;
       break;
-    case 'W':
+     case MNEMONIC::kW:
       fCrystalNumber = 3;  
       break;
     default:
