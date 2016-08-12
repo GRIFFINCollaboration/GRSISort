@@ -178,7 +178,7 @@ void TDiagnostics::WriteToFile(const char* fileName) const {
 		TChannel* chan = TChannel::GetChannel(it->first);
 		if(!chan)
 			continue;
-		statsOut<<"0x"<<std::hex<<it->first<<std::dec<<":\t"<<chan->GetChannelName()<<"\tdead time: "<<static_cast<float>(it->second)/1e8<<" seconds."<<std::endl;
+		statsOut<<"0x"<<std::hex<<it->first<<std::dec<<":\t"<<chan->GetName()<<"\tdead time: "<<static_cast<float>(it->second)/1e8<<" seconds."<<std::endl;
 	}
 	statsOut<<std::endl;
 	statsOut.close();

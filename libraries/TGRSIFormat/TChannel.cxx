@@ -66,7 +66,6 @@ TChannel::TChannel(TChannel* chan) {
 	this->SetUserInfoNumber(chan->GetUserInfoNumber());
 	this->SetName(chan->GetName()); //SetName also sets the mnemonic
 
-	this->SetChannelName(chan->GetChannelName());
 	this->SetDigitizerType(chan->GetDigitizerType());
 
 	this->SetENGCoefficients(chan->GetENGCoeff());
@@ -91,9 +90,8 @@ TChannel::TChannel(TChannel* chan) {
 
 void TChannel::SetName(const char* tmpName){
    TNamed::SetName(tmpName);
-   fChannelName = tmpName;
 	fMnemonic.Clear();
-   fMnemonic.Parse(GetChannelName());
+   fMnemonic.Parse(GetName());
 }
 
 void TChannel::InitChannelInput() {
@@ -105,9 +103,9 @@ void TChannel::InitChannelInput() {
 bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
 	///Compares the names of the two TChannels. Returns true if the names are the
 	///same, false if different.
-	std::string namea; namea.assign(((TChannel)chana).GetChannelName());
+	std::string namea; namea.assign(((TChannel)chana).GetName());
 
-	if(namea.compare(((TChannel)chanb).GetChannelName()) < 0) return true;
+	if(namea.compare(((TChannel)chanb).GetName()) < 0) return true;
 	else return false;
 }
 
@@ -166,7 +164,6 @@ void TChannel::OverWriteChannel(TChannel* chan){
 	this->SetNumber(chan->GetNumber());
 	this->SetStream(chan->GetStream());
 	this->SetUserInfoNumber(chan->GetUserInfoNumber());
-	this->SetChannelName(chan->GetChannelName());
 	this->SetDigitizerType(chan->GetDigitizerType());
    this->SetName(chan->GetName());
 
@@ -202,7 +199,7 @@ void TChannel::AppendChannel(TChannel* chan){
 		this->SetStream(chan->GetStream());
 	if(chan->GetUserInfoNumber()!=0 && chan->GetUserInfoNumber()!=-1)
 		this->SetUserInfoNumber(chan->GetUserInfoNumber());
-	if(strlen(chan->GetChannelName())>0)
+	if(strlen(chan->GetName())>0)
 		this->SetName(chan->GetName());
 	if(strlen(chan->GetDigitizerType())>0)
 		this->SetDigitizerType(chan->GetDigitizerType());
@@ -338,7 +335,7 @@ TChannel* TChannel::FindChannelByName(const char* ccName){
 	std::map < unsigned int, TChannel*  >::iterator iter;    
 	for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++) {
 		chan = iter->second;
-		std::string channelName = chan->GetChannelName();
+		std::string channelName = chan->GetName();
 		if(channelName.compare(0,name.length(),name)==0)
 			break;
 		chan = NULL;
@@ -532,7 +529,7 @@ void TChannel::SetUseCalFileIntegration(std::string mnemonic,bool flag){
 	std::map<unsigned int,TChannel*>::iterator mapit;
 	std::map<unsigned int,TChannel*>* chanmap = TChannel::GetChannelMap();
 	for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++){
-		if(!mnemonic.size() || !strncmp(mapit->second->GetChannelName(),mnemonic.c_str(),mnemonic.size())){
+		if(!mnemonic.size() || !strncmp(mapit->second->GetName(),mnemonic.c_str(),mnemonic.size())){
 			mapit->second->SetUseCalFileIntegration(flag);
 		}
 	}
@@ -545,7 +542,7 @@ void TChannel::SetIntegration(std::string mnemonic,int tmpint){
    std::map<unsigned int,TChannel*>::iterator mapit;
    std::map<unsigned int,TChannel*> *chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++){
-      if(!mnemonic.size() || !strncmp(mapit->second->GetChannelName(),mnemonic.c_str(),mnemonic.size())){
+      if(!mnemonic.size() || !strncmp(mapit->second->GetName(),mnemonic.c_str(),mnemonic.size())){
          mapit->second->SetIntegration(tmpint);
       }
    }
@@ -553,14 +550,14 @@ void TChannel::SetIntegration(std::string mnemonic,int tmpint){
 
 void TChannel::Print(Option_t* opt) const {
 	///Prints out the current TChannel.
-	std::cout <<  fChannelName << "\t{\n";  //,channelname.c_str();
+	std::cout <<  GetName() << "\t{\n";  //,channelname.c_str();
    std::cout << "Type:      ";
    if(GetClassType())
       std::cout << GetClassType()->GetName()<<std::endl;
    else
       std::cout << "None" << std::endl;
 
-	std::cout <<  "Name:      " << fChannelName << "\n";
+	std::cout <<  "Name:      " << GetName() << "\n";
 	std::cout <<  "Number:    " << fNumber << "\n";
 	std::cout << std::setfill('0');
 	std::cout <<  "Address:   0x" << std::hex << std::setw(8) << fAddress << std::dec << "\n";
@@ -594,13 +591,13 @@ void TChannel::Print(Option_t* opt) const {
 std::string TChannel::PrintToString(Option_t* opt) {
 	std::string buffer;
 	buffer.append("\n");
-	buffer.append(fChannelName); buffer.append("\t{\n");  //,channelname.c_str();
+	buffer.append(GetName()); buffer.append("\t{\n");  //,channelname.c_str();
    buffer.append("Type:      ");
    if(GetClassType())
       buffer.append(Form("%s\n",GetClassType()->GetName()));
    else
       buffer.append("None\n");
-	buffer.append("Name:      "); buffer.append(fChannelName); buffer.append("\n");
+	buffer.append("Name:      "); buffer.append(GetName()); buffer.append("\n");
 	buffer.append(Form("Number:    %d\n",fNumber));
 	buffer.append(Form("Address:   0x%08x\n",fAddress));
 	buffer.append(Form("Digitizer: %s\n",fDigitizerType.c_str())); 
@@ -1179,7 +1176,7 @@ int TChannel::GetSegmentNumber() const {
    if(fSegmentNumber>-1)
      return fSegmentNumber;
 
-   std::string name = GetChannelName();
+   std::string name = GetName();
    TString str = name[9];
    if(str.IsDigit()){
    	 std::string buf;

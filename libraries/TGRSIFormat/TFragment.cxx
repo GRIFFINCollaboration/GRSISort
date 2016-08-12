@@ -174,7 +174,7 @@ const char *TFragment::GetName() const {
    TChannel *chan = TChannel::GetChannel(ChannelAddress);
    if(!chan)
       return "";
-   return chan->GetChannelName();
+   return chan->GetName();
 }
 
 /*
@@ -249,7 +249,7 @@ void TFragment::Print(Option_t *opt) const {
    printf("TriggerBit:	0x%08x\n", TriggerBitPattern);
    printf("NetworkPacketNumber: %i\n", NetworkPacketNumber);
    if(chan)
-	   printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetChannelName());
+	   printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetName());
    printf("\tChannel Address: 0x%08x\n", ChannelAddress);
    printf("\tChannel Num:      %i\n", ChannelNumber);
    printf("\tCharge[%lu]	  ",Charge.size());   for(size_t x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");

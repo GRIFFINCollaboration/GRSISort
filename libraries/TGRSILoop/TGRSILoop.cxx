@@ -410,7 +410,7 @@ void TGRSILoop::SetGRIFFOdb() {
 		if(!tempChan) {
 			tempChan = new TChannel();		
 		}		
-      tempChan->SetChannelName(names.at(x).c_str());
+      tempChan->SetName(names.at(x).c_str());
       tempChan->SetAddress(address.at(x));
       tempChan->SetNumber(x);
       //printf("temp chan(%s) number set to: %i\n",tempChan->GetChannelName(),tempChan->GetNumber());
@@ -501,7 +501,7 @@ void TGRSILoop::SetTIGOdb()  {
       TChannel* tempChan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
 		if(!tempChan)
 			tempChan = new TChannel();		
-      if(x<names.size()) { tempChan->SetChannelName(names.at(x).c_str()); }
+      if(x<names.size()) { tempChan->SetName(names.at(x).c_str()); }
 		//printf("address: 0x%08x\n",address.at(x));
       tempChan->SetAddress(address.at(x));
       tempChan->SetNumber(x);
