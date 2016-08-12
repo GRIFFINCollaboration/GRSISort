@@ -1,16 +1,15 @@
 #include "TGRSIint.h"
 #include "TGRSILoop.h"
 
-#include "TGRSIOptions.h"
-
-#include "TGRSIRootIO.h"
-#include "TDataParser.h"
-#include "TAnalysisTreeBuilder.h"
-#include "Getline.h"
-#include "GROOTGuiFactory.h"
-
-#include "Globals.h"
+#include "GRootGuiFactory.h"
 #include "GRSIVersion.h"
+#include "Getline.h"
+#include "Globals.h"
+#include "TAnalysisTreeBuilder.h"
+#include "TDataParser.h"
+#include "TGRSIOptions.h"
+#include "TGRSIOptions2.h"
+#include "TGRSIRootIO.h"
 
 #include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
@@ -41,7 +40,7 @@ TGRSIint *TGRSIint::instance(int argc,char** argv, void *options, int numOptions
    return fTGRSIint;
 }
 
-TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t noLogo,const char *appClassName) 
+TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t noLogo,const char *appClassName)
       :TRint(appClassName, &argc, argv, options, numOptions,noLogo) {
 
       fGRSIEnv = gEnv;
@@ -53,11 +52,12 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
       ih->Add();
 
       InitFlags();
+      TGRSIOptions2::Get(argc,argv);
       GetOptions(&argc,argv);
-      PrintLogo(fPrintLogo);
+      PrintLogo(TGRSIOptions2::Get()->ShowLogo());
     //  SetPrompt( DYELLOW "GRSI [%d] " RESET_COLOR);
       SetPrompt("GRSI [%d] ");
-      PrintHelp(fPrintHelp);
+      //PrintHelp(TGRSIOptions2::Get()->ShowedHelp());
       std::string grsipath = getenv("GRSISYS");
       gInterpreter->AddIncludePath(Form("%s/include",grsipath.c_str()));
       LoadExtraClasses();
@@ -79,32 +79,33 @@ void TGRSIint::LoadExtraClasses() {
 }
 
 void TGRSIint::InitFlags() {
-   fAutoSort = false;
-   fFragmentSort = false;
-   fMakeAnalysisTree = false;
+   // fAutoSort = false;
+   // fFragmentSort = false;
+   // fMakeAnalysisTree = false;
 
 //   if(fGRSIEnv) fGRSIEnv->Delete();
 }
 
 void TGRSIint::ApplyOptions() {
-   
-   if(!false) { // this will be change to something like, if(!ClassicRoot) 
+
+   if(!false) { // this will be change to something like, if(!ClassicRoot)
       LoadGROOTGraphics();
    }
 
-   if(TGRSIOptions::ReadingMaterial()) {
+   if(TGRSIOptions2::Get()->ReadingMaterial()) {
       std::thread fnews = std::thread(ReadTheNews);
       fnews.detach();
    }
 
-   if(fAutoSort){
+   if(TGRSIOptions2::Get()->SortRaw() && TGRSIOptions2::Get()->InputMidasFiles().size()!=0) {
+     //TGRSIOptions2::Get()->GetAutoSort()){
      //Since MIDAS gets much of it's channel and info information out of the ODB, we must read that information
      //during "SortMidas." This means that we have to be able to access the channel and info information in
      //the SortMidas stage and not directly here.
      TGRSILoop::Get()->SortMidas();
    }
    //bool foundCal = false;
-   if(TGRSIOptions::MakeAnalysisTree() && TGRSIOptions::GetInputRoot().size()!=0) { 
+   if(TGRSIOptions2::Get()->MakeAnalysisTree() && TGRSIOptions2::Get()->RootInputFiles().size()!=0) {
       //At this point we sort a fragment tree into an analysis tree if MakeAnalysysTree returns true.
       //We want to read all the info and channel information at this point that we can, but overwrite the tree's
       //channels and information if we need to
@@ -113,58 +114,61 @@ void TGRSIint::ApplyOptions() {
 
    //Now we want to open any root files that may have been created or input on the command line to be able to
    //play with unless the -q command has been called.
-   for(int x=0;x<(int)(TGRSIOptions::GetInputRoot().size());x++) {
-      ///printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions::GetInputRoot().at(x).c_str());
+   for(int x=0;x<(int)(TGRSIOptions2::Get()->RootInputFiles().size());x++) {
+      ///printf("TFile *_file%i = new TFile(\"%s\",\"read\")\n",x,TGRSIOptions2::Get()->RootInputFiles().at(x).c_str());
    //   printf("made it here");
-    //  TFile *tmpfile = new TFile(TGRSIOptions::GetInputRoot().at(x).c_str(),"read");
+    //  TFile *tmpfile = new TFile(TGRSIOptions2::Get()->RootInputFiles().at(x).c_str(),"read");
      // tmpfile->SetName(Form("_file%d",x));
      // if(tmpfile->IsOpen())
        //  std::cout << "Read file " << tmpfile->GetName() << std::endl;
-      ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions::GetInputRoot().at(x).c_str()));
-      TFile *file = (TFile*)gROOT->GetListOfFiles()->FindObject(TGRSIOptions::GetInputRoot().at(x).c_str());
+      ProcessLine(Form("TFile *_file%i = new TFile(\"%s\",\"read\");",x,TGRSIOptions2::Get()->RootInputFiles().at(x).c_str()));
+      TFile *file = (TFile*)gROOT->GetListOfFiles()->FindObject(TGRSIOptions2::Get()->RootInputFiles().at(x).c_str());
       if((file != NULL) && file->IsOpen()){
       printf("\tfile %s opened as _file%i\n",file->GetName(),x);
       TGRSIRootIO::Get()->LoadRootFile(file);
          TChannel::ReadCalFromCurrentFile();
          TGRSIRunInfo::Get()->ReadInfoFromFile();
     } else {
-      printf("\tfailed to open file '%s' as _file%i (file = %p)\n", TGRSIOptions::GetInputRoot().at(x).c_str(), x, static_cast<void*>(file));
+      printf("\tfailed to open file '%s' as _file%i (file = %p)\n", TGRSIOptions2::Get()->RootInputFiles().at(x).c_str(), x, static_cast<void*>(file));
     }
   }
    //This is called if we are loading root files without sorting anything
-  if(TGRSIOptions::GetInputRoot().size() > 0 && !fAutoSort && !fFragmentSort && !TGRSIOptions::MakeAnalysisTree()) {
-      
+  if(TGRSIOptions2::Get()->RootInputFiles().size() > 0 && 
+     !TGRSIOptions2::Get()->SortRaw() && 
+     //!fFragmentSort && 
+     !TGRSIOptions2::Get()->MakeAnalysisTree()) {
+
       //Read external calibration and run info files.
-      if(TGRSIOptions::ExternalRunInfo()){
-         for(size_t i=0; i<TGRSIOptions::GetExternalRunInfo().size();++i){
-            TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions::GetExternalRunInfo().at(i).c_str());
+      if(TGRSIOptions2::Get()->ExternalRunInfo().size()!=0){
+         for(size_t i=0; i<TGRSIOptions2::Get()->ExternalRunInfo().size();++i){
+            TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions2::Get()->ExternalRunInfo().at(i).c_str());
          }
       }
 
-     if(TGRSIOptions::GetInputCal().size() > 0){
-       for(size_t i =0; i<TGRSIOptions::GetInputCal().size();++i){
-         TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(i).c_str());
+     if(TGRSIOptions2::Get()->CalInputFiles().size() > 0){
+       for(size_t i =0; i<TGRSIOptions2::Get()->CalInputFiles().size();++i){
+         TChannel::ReadCalFile(TGRSIOptions2::Get()->CalInputFiles().at(i).c_str());
        }
       }
       //Run info and calibration might not be what user wants if multiple fragment and analysis files read
       //simultaneously. We should wanr them loudly.
-      if(TGRSIOptions::GetInputRoot().size() > 1){
+      if(TGRSIOptions2::Get()->RootInputFiles().size() > 1){
          printf(DRED "Multiple root files loaded, check run info and calibration!\n" RESET_COLOR);
       }
-     
+
    }
-  //if(fFragmentSort && TGRSIOptions::GetInputRoot().size()!=0)
+  //if(fFragmentSort && TGRSIOptions2::Get()->RootInputFiles().size()!=0)
   //  TGRSIRootIO::Get()->MakeUserHistsFromFragmentTree();
 
-  if(TGRSIOptions::WorkHarder()) {
-    for(size_t x=0;x<TGRSIOptions::GetMacroFile().size();x++) {
-      gROOT->Macro(TGRSIOptions::GetMacroFile().at(x).c_str());  
-      // gROOT->ProcessLineSync(Form(".x %s",TGRSIOptions::GetMacroFile().at(x).c_str()));
+  if(TGRSIOptions2::Get()->WorkHarder()) {
+    for(size_t x=0;x<TGRSIOptions2::Get()->MacroInputFiles().size();x++) {
+      gROOT->Macro(TGRSIOptions2::Get()->MacroInputFiles().at(x).c_str());
+      // gROOT->ProcessLineSync(Form(".x %s",TGRSIOptions2::Get()->GetMacroFile().at(x).c_str()));
     }
   }
 
 
-  if(TGRSIOptions::CloseAfterSort())
+  if(TGRSIOptions2::Get()->CloseAfterSort())
     gApplication->Terminate();
 }
 
@@ -225,13 +229,13 @@ void TGRSIint::PrintLogo(bool print) {
 #endif
 
     const unsigned int width = reflength + (reflength % 2);
-    printf("\t*%s*\n", std::string(width,'*').c_str());   
+    printf("\t*%s*\n", std::string(width,'*').c_str());
     printf("\t*%*s%*s*\n",width/2+4,"GRSI Sort", width/2-4, "");
     printf("\t*%*s%*s*\n",width/2+12,"a remake of GRSI SPOON", width/2-12, "");
     printf("\t*%*s%*s*\n",width/2+reflength/2, ref.c_str(), width/2-reflength/2, "");
     printf("\t*%*s%*s*\n",width/2+14,"A lean, mean sorting machine", width/2-14, "");
     printf("\t*%*s%*s*\n",width/2+9,"version " GRSI_RELEASE, width/2-9, "");
-    printf("\t*%s*\n", std::string(width,'*').c_str());   
+    printf("\t*%s*\n", std::string(width,'*').c_str());
 
     std::thread drawlogo(&TGRSIint::DrawLogo,this);
     drawlogo.detach();
@@ -243,179 +247,179 @@ void TGRSIint::DrawLogo() {
   WaitLogo();
 }
 
-void TGRSIint::GetOptions(int *argc, char **argv) {
+// void TGRSIint::GetOptions(int *argc, char **argv) {
 
-  static char null[1] = { "" };
+//   static char null[1] = { "" };
 
-  fPrintLogo = true;
-  fPrintHelp = false;
+//   fPrintLogo = true;
+//   fPrintHelp = false;
 
-  if(!argc)
-    return;
+//   if(!argc)
+//     return;
 
-  std::string pwd ="";
+//   std::string pwd ="";
 
-  for (int i = 1; i < *argc; i++) {        //HELP!
-    std::string sargv = argv[i];
-    if(sargv.length()<2) {
-      // one char is not enough to be an option.
-      if(sargv[0] == '-') 
-        printf(DBLUE "   found option flag '-' not immediately followed by an option." RESET_COLOR "\n");
-      else   
-        printf(DBLUE "   stand alone option %s not understood, skipping." RESET_COLOR "\n", sargv.c_str());
-    }
-    if (!strcmp(argv[i],"-?") || !strncmp(argv[i], "--help", 6)) {
-      fPrintHelp = true;
-    } else if(!strcmp(argv[i],"-h") || !strcmp(argv[i],"-H")) { 
-      if(sargv.length()==2) {
-        i++; 
-        if(i >= *argc) {
-          printf(DBLUE "   -h flag given with no host name!" RESET_COLOR "\n");
-          break;
-        }
-        sargv.assign(argv[i]);
-        if(sargv[0] == '-' || sargv[0] == '+') {
-          i--;
-          printf(DRED "     invalid host name: %s; ignoring." RESET_COLOR  "\n",sargv.c_str());
-          break;
-        } 
-      } else {
-        sargv = sargv.substr(2);
-      }  
-      TGRSIOptions::SetHostName(sargv);      
-      printf(DYELLOW "host: %s" RESET_COLOR "\n",sargv.c_str());
-      break;
-    } else if(!strcmp(argv[i],"-e") || !strcmp(argv[i],"-E")) {
-      if(sargv.length()==2) {
-        i++; 
-        if(i >= *argc) {
-          printf(DBLUE "   -e flag given with no expt name!" RESET_COLOR "\n");
-          break;
-        }
-        sargv.assign(argv[i]);
-        if(sargv[0] == '-' || sargv[0] == '+') {
-          i--;
-          printf(DRED "     invalid host expt: %s; ignoring." RESET_COLOR  "\n",sargv.c_str());
-          break;
-        } 
-      } else {
-        sargv = sargv.substr(2);
-      }
-      TGRSIOptions::SetExptName(sargv);      
-      printf(DYELLOW "experiment: %s" RESET_COLOR "\n",sargv.c_str());
-      break;
-    } else if (sargv[0] == '-' && sargv[1] != '-') { //single char options.
-      sargv = sargv.substr(1);  //drop the minus;
-      int defaultcounter = 0;
-      for(size_t c=0;c<sargv.length();c++) {
-        char key = sargv[c];
-        switch(toupper(key)) {
-          case 'A':
-            printf(DBLUE "Attempting to make analysis trees." RESET_COLOR "\n");
-            TGRSIOptions::SetMakeAnalysisTree();
-            break;
-          case 'Q':
-            printf(DBLUE "Closing after Sort." RESET_COLOR "\n");
-            TGRSIOptions::SetCloseAfterSort();
-            break;
-          case 'L':
-            fPrintLogo = false;       
-            //argv[i] = null;
-            break;
-          case 'S':
-            printf(DBLUE "SORT!!" RESET_COLOR "\n");
-            fFragmentSort = true;
-            break;
-          case 'H':
-            printf(DBLUE "Option \"h\" found in list, but must be followed by host name; skipping!\n" RESET_COLOR);
-            break;
-          case 'E':
-            printf(DBLUE "Option \"e\" found in list, but must be followed by experiment name; skipping!\n" RESET_COLOR);
-            break;
-          default:
-            printf(DBLUE "   option %c found but not understood, skipping." RESET_COLOR "\n", sargv[c]);
-            defaultcounter++;
-            if(defaultcounter>1) {
-              printf("Perhaps you are trying to use a word length argument?\n");
-              printf("if so, use -- in front of the word instead\n.");
-              fPrintHelp = true;
-              c = sargv.length() + 1;
-              i = *argc + 1;   
-            }   
-            break;
-        }
-      }
-    } else if (sargv[0] == '-' && sargv[1] == '-') { //word length options.
-      std::string temp = sargv.substr(2);
-      if(temp.compare("no_waveforms")==0) {
-        printf(DBLUE  "    no waveform option set, no waveforms will be in the output tree." RESET_COLOR "\n"); 
-        TDataParser::SetNoWaveForms(true);
-      } else if(temp.compare("no_record_diag")==0) { 
-        printf(DBLUE "     not recording run diagnostics." RESET_COLOR "\n");
-        TDataParser::SetRecordDiag(false);
-      } else if(temp.compare("write_diag")==0) { 
-        printf(DBLUE "     writing run diagnostics to separte .log file." RESET_COLOR "\n");
-        TGRSIOptions::SetWriteDiagnostics(false);
-      } else if((temp.compare("suppress_error")==0) ||  (temp.compare("suppress_errors")==0)){
-        printf(DBLUE "     suppressing loop error statements." RESET_COLOR "\n");
-        TGRSILoop::Get()->SetSuppressError(true);
-      } else if(temp.compare("log_errors")==0) {
-        printf(DBLUE "     sending parsing errors to file." RESET_COLOR "\n");
-        TGRSIOptions::SetLogErrors(true);
-      } else if(temp.compare("work_harder")==0) {
-        printf(DBLUE "     running a macro with .x after making fragment/analysistree." RESET_COLOR "\n");
-        TGRSIOptions::SetWorkHarder(true);
-      } else if(temp.compare("reading_material")==0) {
-        printf(DBLUE"      now providing reading material while you wait." RESET_COLOR "\n");
-        TGRSIOptions::SetReadingMaterial(true);
-      } else if(temp.compare("no_speed")==0) {
-        printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
-        TGRSIOptions::SetProgressDialog(false);
-      } else if((temp.compare("bad_frags")==0)     || (temp.compare("write_bad_frags")==0) ||
-          (temp.compare("bad_fragments")==0) || (temp.compare("write_bad_fragments")==0)) {
-        printf(DBLUE "    failed fragements being written to BadFragmentTree." RESET_COLOR "\n");
-        TGRSIOptions::SetWriteBadFrags(true);
-      } else if(temp.compare("help")==0) {
-        fPrintHelp = true;
-      } else if(temp.compare("ignore_odb")==0) { 
-        // useful when dealing with midas file that have corrupt odbs in them .
-        TGRSIOptions::SetIgnoreFileOdb(true);          
-      } else if(temp.compare("ignore_epics")==0) { 
-        TGRSIOptions::SetIgnoreEpics(true);          
-      } else if(temp.compare("ignore_scaler")==0) { 
-        TGRSIOptions::SetIgnoreScaler(true);          
-      } else {
-        printf(DBLUE  "    option: " DYELLOW "%s " DBLUE "passed but not understood." RESET_COLOR "\n",temp.c_str());
-      }
-    } else if (sargv[0] != '-' && sargv[0] != '+') { //files and directories!
-      long size;
-      long id, flags, modtime;
-      char *dir = gSystem->ExpandPathName(argv[i]);
-      if (!gSystem->GetPathInfo(dir, &id, &size, &flags, &modtime)) {   
-        if ((flags & 2)) {                                                      
-          //I am not sur what to do with directorys right now.                           
-          //if (pwd == "") {
-          pwd = argv[i]; 
-          argv[i]= null;
-          //} 
-          printf("\tOption %s is a directory, ignoring for now.\n",pwd.c_str());
-        } else if (size > 0) {
-          // if file add to list of files to be processed
-          FileAutoDetect(argv[i],size);
-          argv[i] = null;
-        } else {
-          printf("file %s has size 0, skipping\n", dir);
-        }
-      } else {
-        //file does not exist... complain to the user about this
-        if(!FileAutoDetect(argv[i],-1)) {
-          printf(DRED "File %s does not exist, ignoring it!" RESET_COLOR "\n",argv[i]);
-        }
-        argv[i] = null;
-      }   
-    }
-  } 
-}
+//   for (int i = 1; i < *argc; i++) {        //HELP!
+//     std::string sargv = argv[i];
+//     if(sargv.length()<2) {
+//       // one char is not enough to be an option.
+//       if(sargv[0] == '-')
+//         printf(DBLUE "   found option flag '-' not immediately followed by an option." RESET_COLOR "\n");
+//       else
+//         printf(DBLUE "   stand alone option %s not understood, skipping." RESET_COLOR "\n", sargv.c_str());
+//     }
+//     if (!strcmp(argv[i],"-?") || !strncmp(argv[i], "--help", 6)) {
+//       fPrintHelp = true;
+//     } else if(!strcmp(argv[i],"-h") || !strcmp(argv[i],"-H")) {
+//       if(sargv.length()==2) {
+//         i++;
+//         if(i >= *argc) {
+//           printf(DBLUE "   -h flag given with no host name!" RESET_COLOR "\n");
+//           break;
+//         }
+//         sargv.assign(argv[i]);
+//         if(sargv[0] == '-' || sargv[0] == '+') {
+//           i--;
+//           printf(DRED "     invalid host name: %s; ignoring." RESET_COLOR  "\n",sargv.c_str());
+//           break;
+//         }
+//       } else {
+//         sargv = sargv.substr(2);
+//       }
+//       TGRSIOptions::SetHostName(sargv);
+//       printf(DYELLOW "host: %s" RESET_COLOR "\n",sargv.c_str());
+//       break;
+//     } else if(!strcmp(argv[i],"-e") || !strcmp(argv[i],"-E")) {
+//       if(sargv.length()==2) {
+//         i++;
+//         if(i >= *argc) {
+//           printf(DBLUE "   -e flag given with no expt name!" RESET_COLOR "\n");
+//           break;
+//         }
+//         sargv.assign(argv[i]);
+//         if(sargv[0] == '-' || sargv[0] == '+') {
+//           i--;
+//           printf(DRED "     invalid host expt: %s; ignoring." RESET_COLOR  "\n",sargv.c_str());
+//           break;
+//         }
+//       } else {
+//         sargv = sargv.substr(2);
+//       }
+//       TGRSIOptions::SetExptName(sargv);
+//       printf(DYELLOW "experiment: %s" RESET_COLOR "\n",sargv.c_str());
+//       break;
+//     } else if (sargv[0] == '-' && sargv[1] != '-') { //single char options.
+//       sargv = sargv.substr(1);  //drop the minus;
+//       int defaultcounter = 0;
+//       for(size_t c=0;c<sargv.length();c++) {
+//         char key = sargv[c];
+//         switch(toupper(key)) {
+//           case 'A':
+//             printf(DBLUE "Attempting to make analysis trees." RESET_COLOR "\n");
+//             TGRSIOptions::SetMakeAnalysisTree();
+//             break;
+//           case 'Q':
+//             printf(DBLUE "Closing after Sort." RESET_COLOR "\n");
+//             TGRSIOptions::SetCloseAfterSort();
+//             break;
+//           case 'L':
+//             fPrintLogo = false;
+//             //argv[i] = null;
+//             break;
+//           case 'S':
+//             printf(DBLUE "SORT!!" RESET_COLOR "\n");
+//             fFragmentSort = true;
+//             break;
+//           case 'H':
+//             printf(DBLUE "Option \"h\" found in list, but must be followed by host name; skipping!\n" RESET_COLOR);
+//             break;
+//           case 'E':
+//             printf(DBLUE "Option \"e\" found in list, but must be followed by experiment name; skipping!\n" RESET_COLOR);
+//             break;
+//           default:
+//             printf(DBLUE "   option %c found but not understood, skipping." RESET_COLOR "\n", sargv[c]);
+//             defaultcounter++;
+//             if(defaultcounter>1) {
+//               printf("Perhaps you are trying to use a word length argument?\n");
+//               printf("if so, use -- in front of the word instead\n.");
+//               fPrintHelp = true;
+//               c = sargv.length() + 1;
+//               i = *argc + 1;
+//             }
+//             break;
+//         }
+//       }
+//     } else if (sargv[0] == '-' && sargv[1] == '-') { //word length options.
+//       std::string temp = sargv.substr(2);
+//       if(temp.compare("no_waveforms")==0) {
+//         printf(DBLUE  "    no waveform option set, no waveforms will be in the output tree." RESET_COLOR "\n");
+//         TDataParser::SetNoWaveForms(true);
+//       } else if(temp.compare("no_record_diag")==0) {
+//         printf(DBLUE "     not recording run diagnostics." RESET_COLOR "\n");
+//         TDataParser::SetRecordDiag(false);
+//       } else if(temp.compare("write_diag")==0) {
+//         printf(DBLUE "     writing run diagnostics to separte .log file." RESET_COLOR "\n");
+//         TGRSIOptions::SetWriteDiagnostics(false);
+//       } else if((temp.compare("suppress_error")==0) ||  (temp.compare("suppress_errors")==0)){
+//         printf(DBLUE "     suppressing loop error statements." RESET_COLOR "\n");
+//         TGRSILoop::Get()->SetSuppressError(true);
+//       } else if(temp.compare("log_errors")==0) {
+//         printf(DBLUE "     sending parsing errors to file." RESET_COLOR "\n");
+//         TGRSIOptions::SetLogErrors(true);
+//       } else if(temp.compare("work_harder")==0) {
+//         printf(DBLUE "     running a macro with .x after making fragment/analysistree." RESET_COLOR "\n");
+//         TGRSIOptions::SetWorkHarder(true);
+//       } else if(temp.compare("reading_material")==0) {
+//         printf(DBLUE"      now providing reading material while you wait." RESET_COLOR "\n");
+//         TGRSIOptions::SetReadingMaterial(true);
+//       } else if(temp.compare("no_speed")==0) {
+//         printf(DBLUE "    not opening the PROOF speedometer." RESET_COLOR "\n");
+//         TGRSIOptions::SetProgressDialog(false);
+//       } else if((temp.compare("bad_frags")==0)     || (temp.compare("write_bad_frags")==0) ||
+//           (temp.compare("bad_fragments")==0) || (temp.compare("write_bad_fragments")==0)) {
+//         printf(DBLUE "    failed fragements being written to BadFragmentTree." RESET_COLOR "\n");
+//         TGRSIOptions::SetWriteBadFrags(true);
+//       } else if(temp.compare("help")==0) {
+//         fPrintHelp = true;
+//       } else if(temp.compare("ignore_odb")==0) {
+//         // useful when dealing with midas file that have corrupt odbs in them .
+//         TGRSIOptions::SetIgnoreFileOdb(true);
+//       } else if(temp.compare("ignore_epics")==0) {
+//         TGRSIOptions::SetIgnoreEpics(true);
+//       } else if(temp.compare("ignore_scaler")==0) {
+//         TGRSIOptions::SetIgnoreScaler(true);
+//       } else {
+//         printf(DBLUE  "    option: " DYELLOW "%s " DBLUE "passed but not understood." RESET_COLOR "\n",temp.c_str());
+//       }
+//     } else if (sargv[0] != '-' && sargv[0] != '+') { //files and directories!
+//       long size;
+//       long id, flags, modtime;
+//       char *dir = gSystem->ExpandPathName(argv[i]);
+//       if (!gSystem->GetPathInfo(dir, &id, &size, &flags, &modtime)) {
+//         if ((flags & 2)) {
+//           //I am not sur what to do with directorys right now.
+//           //if (pwd == "") {
+//           pwd = argv[i];
+//           argv[i]= null;
+//           //}
+//           printf("\tOption %s is a directory, ignoring for now.\n",pwd.c_str());
+//         } else if (size > 0) {
+//           // if file add to list of files to be processed
+//           FileAutoDetect(argv[i],size);
+//           argv[i] = null;
+//         } else {
+//           printf("file %s has size 0, skipping\n", dir);
+//         }
+//       } else {
+//         //file does not exist... complain to the user about this
+//         if(!FileAutoDetect(argv[i],-1)) {
+//           printf(DRED "File %s does not exist, ignoring it!" RESET_COLOR "\n",argv[i]);
+//         }
+//         argv[i] = null;
+//       }
+//     }
+//   }
+// }
 
 
 
@@ -423,7 +427,7 @@ void TGRSIint::LoadGROOTGraphics() {
   if (gROOT->IsBatch()) return;
   // force Canvas to load, this ensures global GUI Factory ptr exists.
   gROOT->LoadClass("TCanvas", "Gpad");
-  gGuiFactory =  new GROOTGuiFactory();  
+  gGuiFactory =  new GRootGuiFactory();
 }
 
 
@@ -435,6 +439,7 @@ void TGRSIint::PrintHelp(bool print) {
   return;
 }
 
+/*
 bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
   //first search for extensions.
   std::string ext = filename.substr(filename.find_last_of('.')+1);
@@ -450,26 +455,20 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
     TGRSIOptions::AddInputMidasFile(filename);
     fAutoSort = true;
     return true;
-  } else if(ext.compare("cal")==0 && filesize > 0) { 
+  } else if(ext.compare("cal")==0 && filesize > 0) {
     //printf("\tFound custom calibration file: %s\n",filename.c_str());
     //fInputCalFile->push_back(filename);
     TGRSIOptions::AddInputCalFile(filename);
     return true;
-  } else if(ext.compare("info")==0 && filesize > 0) { 
-    /*if(TGRSIRunInfo::ReadInfoFile(filename.c_str()))
-      return true;
-    else {
-      printf("Problem reading run-info file %s\n",filename.c_str());
-      return false;
-    }*/
+  } else if(ext.compare("info")==0 && filesize > 0) {
       TGRSIOptions::AddExternalRunInfo(filename);
       return true;
-  } else if(ext.compare("xml")==0 && filesize > 0) { 
+  } else if(ext.compare("xml")==0 && filesize > 0) {
     //fInputOdbFile->push_back(filename);
     TGRSIOptions::AddInputOdbFile(filename);
     //printf("\tFound xml odb file: %s\n",filename.c_str());
     return true;
-  } else if(ext.compare("odb")==0 && filesize > 0) { 
+  } else if(ext.compare("odb")==0 && filesize > 0) {
     //printf("\tFound c-like odb file: %s\n",filename.c_str());
     printf("c-like odb structures can't be read yet.\n");
     return false;
@@ -483,7 +482,7 @@ bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
   }
   return false;
 }
-
+*/
 
 bool TGRSIInterruptHandler::Notify() {
   static int abort_times =0;

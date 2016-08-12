@@ -1,4 +1,4 @@
-.PHONY: clean all docs doxygen
+.PHONY: clean all extras docs doxygen
 .SECONDARY:
 .SECONDEXPANSION:
 
@@ -17,14 +17,14 @@ SRC_SUFFIX = cxx
 
 MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
 
-CFLAGS += -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION} 
+CFLAGS += -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION}
 
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
 CFLAGS     += -I/opt/X11/include -Qunused-arguments
 CPP        = clang++
-SHAREDSWITCH = -Qunused-arguments -shared -undefined dynamic_lookup -dynamiclib -Wl,-install_name,'@executable_path/../libraries/'# NO ENDING SPACE
+SHAREDSWITCH = -Qunused-arguments -shared -undefined dynamic_lookup -dynamiclib -Wl,-install_name,'@executable_path/../lib/'# NO ENDING SPACE
 else
 export __LINUX__:= 1
 CPP        = g++
@@ -45,19 +45,20 @@ NO_COLOR=\033[m
 OK_STRING="[OK]"
 ERROR_STRING="[ERROR]"
 WARN_STRING="[WARNING]"
-COM_STRING="Compiling"
-BLD_STRING="Building\ "
+COM_STRING= "Compiling"
+BLD_STRING= "Building\ "
+COPY_STRING="Copying\ \ "
 FIN_STRING="Finished Building"
 
-LIBRARY_DIRS   := $(shell find libraries/* -type d 2> /dev/null | grep -v SourceData)
+LIBRARY_DIRS   := $(shell find libraries/* -type d -links 2 2> /dev/null | grep -v SourceData)
 LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
-LIBRARY_OUTPUT := $(patsubst %,libraries/lib%.so,$(LIBRARY_NAMES))
+LIBRARY_OUTPUT := $(patsubst %,lib/lib%.so,$(LIBRARY_NAMES))
 
 INCLUDES  := $(addprefix -I$(PWD)/,$(INCLUDES))
 CFLAGS    += $(shell root-config --cflags)
-CFLAGS    += -MMD $(INCLUDES)
-LINKFLAGS += -Llibraries $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../libraries
-LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lXMLParser -lXMLIO -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof -lMathMore
+CFLAGS    += -MMD -MP $(INCLUDES)
+LINKFLAGS += -Llib $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../lib
+LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lPyROOT -lMinuit -lXMLParser -lXMLIO -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof -lMathMore
 LINKFLAGS := $(LINKFLAGS_PREFIX) $(LINKFLAGS) $(LINKFLAGS_SUFFIX) $(CFLAGS)
 
 ROOT_LIBFLAGS := $(shell root-config --cflags --glibs)
@@ -70,6 +71,12 @@ MAIN_O_FILES    := $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(wildcard src/*.$(SRC_
 EXE_O_FILES     := $(UTIL_O_FILES) $(SANDBOX_O_FILES) $(SCRIPT_O_FILES) $(ANALYSIS_O_FILES)
 EXECUTABLES     := $(patsubst %.o,bin/%,$(notdir $(EXE_O_FILES))) bin/grsisort
 
+HISTOGRAM_SO    := $(patsubst histos/%.$(SRC_SUFFIX),lib/lib%.so,$(wildcard histos/*.$(SRC_SUFFIX)))
+FILTER_SO    := $(patsubst filters/%.$(SRC_SUFFIX),lib/lib%.so,$(wildcard filters/*.$(SRC_SUFFIX)))
+
+ifdef VERBOSE
+run_and_test = @echo $(1) && $(1);
+else
 run_and_test =@printf "%b%b%b" " $(3)$(4)$(5)" $(notdir $(2)) "$(NO_COLOR)\r";  \
                 $(1) 2> $(2).log || touch $(2).error; \
                 if test -e $(2).error; then \
@@ -84,9 +91,10 @@ run_and_test =@printf "%b%b%b" " $(3)$(4)$(5)" $(notdir $(2)) "$(NO_COLOR)\r";  
                       printf "%b%-60s%b%s%b" "$(3)$(4)$(5)" $(notdir $(2)) "$(OK_COLOR)" "$(OK_STRING)" "$(NO_COLOR)\n"   ; \
                 fi; \
                 rm -f $(2).log $(2).error
+endif
 
-all: $(EXECUTABLES) $(LIBRARY_OUTPUT) config 
-	@find .build users -name "*.pcm" -exec cp {} libraries/ \;
+all: include/GVersion.h $(EXECUTABLES) $(LIBRARY_OUTPUT) config $(HISTOGRAM_SO) $(FILTER_SO)
+	@find .build users -name "*.pcm" -exec cp {} lib/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
 docs: doxygen
@@ -109,8 +117,17 @@ bin/%: .build/scripts/%.o | $(LIBRARY_OUTPUT) bin
 bin/%: .build/myAnalysis/%.o | $(LIBRARY_OUTPUT) bin
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-bin:
+bin lib:
 	@mkdir -p $@
+
+include/GVersion.h: .git/HEAD .git/index util/gen_version.sh
+	$(call run_and_test,util/gen_version.sh,$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
+
+lib/lib%.so: .build/histos/%.o | lib
+	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
+
+lib/lib%.so: .build/filters/%.o | lib
+	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
 config:
 	@cp util/grsi-config bin/
@@ -125,21 +142,21 @@ lib_o_files     = $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(call lib_src_files,$(1
 lib_linkdef     = $(wildcard $(call libdir,$(1))/LinkDef.h)
 lib_dictionary  = $(patsubst %/LinkDef.h,.build/%/LibDictionary.o,$(call lib_linkdef,$(1)))
 
-libraries/lib%.so: $$(call lib_o_files,%) $$(call lib_dictionary,%)
+lib/lib%.so: $$(call lib_o_files,%) $$(call lib_dictionary,%) | lib
 	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
 .build/%.o: %.$(SRC_SUFFIX)
 	@mkdir -p $(dir $@)
 	$(call run_and_test,$(CPP) -fPIC -c $< -o $@ $(CFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell head -n 1 $(1) 2> /dev/null)))
+dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell head $(1) -n 1 2> /dev/null)))
 find_linkdef = $(shell find $(1) -name "*LinkDef.h")
 
 # In order for all function names to be unique, rootcint requires unique output names.
 # Therefore, usual wildcard rules are insufficient.
 # Eval is more powerful, but is less convenient to use.
 define library_template
-.build/$(1)/$(notdir $(1))Dict.cxx: $(1)/LinkDef.h $$(call dict_header_files,$(1)/LinkDef.h)
+.build/$(1)/$(notdir $(1))Dict.cxx: $(1)/LinkDef.h $$(call dict_header_files,$(1)/LinkDef.h) 
 	@mkdir -p $$(dir $$@)
 	$$(call run_and_test,rootcint -f $$@ -c $$(INCLUDES) -p $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
 
@@ -159,12 +176,8 @@ html: all
 	@$(RM) tempfile.out
 
 clean:
-	@printf "\nCleaning up\n\n"
-	@-$(RM) -rf .build
-	@-$(RM) -rf bin
-	@-$(RM) -f $(LIBRARY_OUTPUT)
-	@-$(RM) -f libraries/*.pcm
-	@-$(RM) -f libraries/*.dSYM
+	@printf "\n$(WARN_COLOR)Cleaning up$(NO_COLOR)\n\n"
+	@-$(RM) -rf .build bin lib include/GVersion.h
 
 cleaner: clean
 	@printf "\nEven more clean up\n\n"

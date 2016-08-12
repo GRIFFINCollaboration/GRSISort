@@ -7,6 +7,7 @@
 
 #include "Globals.h"
 #include "TGRSIOptions.h"
+#include "TGRSIOptions2.h"
 
 //This sets the minimum amount of memory that root can hold a tree in.
 const size_t TAnalysisTreeBuilder::MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)16; // 16 GB
@@ -34,7 +35,7 @@ int TEventQueue::Size() {
 }
 
 void TEventQueue::AddInstance(std::vector<TFragment>* event) {
-  ///Thread-safe method for adding events to the event queue. 
+  ///Thread-safe method for adding events to the event queue.
   m_event.lock();
   fEventQueue.push(event);
   m_event.unlock();
@@ -183,17 +184,17 @@ void TAnalysisTreeBuilder::StartMakeAnalysisTree(int argc, char** argv) {
   ///Sets up a fragment chain from the list of fragment files sent to
   ///grsisort. This fragment chain then gets sorted by timestamp.
   if(argc==1) {
-    SetUpFragmentChain(TGRSIOptions::GetInputRoot());
+    SetUpFragmentChain(TGRSIOptions2::Get()->RootInputFiles());
   } else {
     return;
   }
-  SortFragmentChain();   
+  SortFragmentChain();
 
 }
 
 
 void TAnalysisTreeBuilder::InitChannels() {
-  ///Initializes the channels from a cal file on the command line when 
+  ///Initializes the channels from a cal file on the command line when
   ///grsisort is started. If no cal file is input on the command line
   ///grsisort attempts to read the calibration from the fragment tree
   ///if it exists.
@@ -202,18 +203,16 @@ void TAnalysisTreeBuilder::InitChannels() {
     return;
 
   //Delete channels from memory incase there is something in there still
-  TChannel::DeleteAllChannels(); 
+  TChannel::DeleteAllChannels();
   //Try to read the calibration data from the fragment tree
   TChannel::ReadCalFromTree(fCurrentFragTree);
 
   //If we find an input cal file, we overwrite what the tree calibration is with that cal file
-  if(!TGRSIOptions::GetInputCal().empty()) {
-    for(size_t x = 0; x < TGRSIOptions::GetInputCal().size(); ++x) {
-      TChannel::ReadCalFile(TGRSIOptions::GetInputCal().at(x).c_str());
-    }
+  for(auto& calfile : TGRSIOptions2::Get()->CalInputFiles()) {
+    TChannel::ReadCalFile(calfile.c_str());
   }
   printf("AnalysisTreeBuilder:  read in %i TChannels.\n", TChannel::GetNumberOfChannels());
-}  
+}
 
 
 
@@ -222,7 +221,7 @@ void TAnalysisTreeBuilder::SetUpFragmentChain(std::vector<std::string> infiles) 
   ///desired for the Griffin DAQ. In this case histograms should be summed during post
   ///processing.
   TChain* chain = new TChain("FragmentTree");
-  for(size_t x = 0; x < infiles.size(); ++x) 
+  for(size_t x = 0; x < infiles.size(); ++x)
     chain->Add(infiles.at(x).c_str());
   SetUpFragmentChain(chain);
 
@@ -233,7 +232,7 @@ void TAnalysisTreeBuilder::SetUpFragmentChain(TChain* chain) {
   if(fFragmentChain)
     delete fFragmentChain;
   fFragmentChain = chain;
-  fFragmentChain->CanDeleteRefs(true); 
+  fFragmentChain->CanDeleteRefs(true);
 }
 
 void TAnalysisTreeBuilder::SortFragmentChain() {
@@ -346,7 +345,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
   //this multiset is used to sort the fragments we're reading sequentially (but not necessarily time-ordered) from the tree
   std::multiset<TFragment,std::less<TFragment> > sortedFragments;//less is the default ordering option, could be left out
 
-  //loop over all of the fragments in the tree 
+  //loop over all of the fragments in the tree
   int factor = 0;
   int newfactor = 0;
   short int counter = 0;
@@ -378,7 +377,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
       factor = newfactor;
       counter = 0;
     }
-          
+
     // // testing for timestamp rollover
     // if (testing && currentFrag->TimeStampHigh<10){
     //   currentFrag->TimeStampHigh = currentFrag->TimeStampHigh+512*newfactor;
@@ -387,7 +386,7 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
     // }
 
       try {
-        //sortedFragments.insert(TFragment(*currentFrag, hit));  
+        //sortedFragments.insert(TFragment(*currentFrag, hit));
         sortedFragments.insert(*currentFrag);     //only insert the fragment once.  pcb
         //sortedFragments.emplace(*currentFrag, hit);
       } catch (std::bad_alloc& e) {
@@ -398,14 +397,14 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
         } else {
           //Wait and try inserting again. If that fails as well we can't do anything else, so we don't catch exceptions here
           std::this_thread::sleep_for(std::chrono::milliseconds(100));
-          //sortedFragments.insert(TFragment(*currentFrag, hit));		
+          //sortedFragments.insert(TFragment(*currentFrag, hit));
           sortedFragments.insert(*currentFrag);		//only insert the fragment once.  pcb
         }
       }
     //}
 
-    ///We start putting fragments into a build event when either the time 
-    ///difference between the first and the last fragment is larger than a 
+    ///We start putting fragments into a build event when either the time
+    ///difference between the first and the last fragment is larger than a
     ///given value, or if the size of the multiset is above a given threshold
     ///and the first and last of the fragments are at least BuildWindow apart.
     long firstTimeStamp = (*(sortedFragments.begin())).GetTimeStamp();
@@ -482,12 +481,10 @@ void TAnalysisTreeBuilder::LoadRunInfo(){
 
   //overwrite the relevent information using the loaded info file.
   //First check if there was a file
-  if(TGRSIOptions::ExternalRunInfo()){
-     for(size_t i=0; i<TGRSIOptions::GetExternalRunInfo().size();++i){
-        TGRSIRunInfo::Get()->ReadInfoFile(TGRSIOptions::GetExternalRunInfo().at(i).c_str());
-     }
+  for(auto& ext_run_info : TGRSIOptions2::Get()->ExternalRunInfo()) {
+    TGRSIRunInfo::Get()->ReadInfoFile(ext_run_info.c_str());
   }
-  
+
   fCurrentRunInfo->Print("a");
 }
 
@@ -507,14 +504,14 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
     printf("Failed to get current fragment file\n");
     return;
   }
-   
+
   LoadRunInfo();
   LoadPPG();
 
   //Intialize the TChannel Information
   InitChannels();
 
-  //Check to see if the fragment tree already has an index set. 
+  //Check to see if the fragment tree already has an index set.
   //If not and it's not Griffin, build based on the trigger Id.
   if(!fCurrentFragTree->GetTreeIndex()) {
     if(fCurrentRunInfo->Tigress()) {
@@ -542,9 +539,9 @@ void TAnalysisTreeBuilder::SetupOutFile() {
     outFileName = Form("analysis%05i.root",fCurrentRunInfo->RunNumber());
   else
     outFileName = Form("analysis%05i_%03i.root",fCurrentRunInfo->RunNumber(),fCurrentRunInfo->SubRunNumber());
-  //We add the output analysis file to the "input root files" in case we want to do something with that file after we finish 
+  //We add the output analysis file to the "input root files" in case we want to do something with that file after we finish
   //sorting it.
-  TGRSIOptions::AddInputRootFile(outFileName);
+  //TGRSIOptions::AddInputRootFile(outFileName);
   if(fCurrentAnalysisFile)
     delete fCurrentAnalysisFile;
   fCurrentAnalysisFile = new TFile(outFileName.c_str(),"recreate");
@@ -552,7 +549,7 @@ void TAnalysisTreeBuilder::SetupOutFile() {
   printf("created output file: %s\n",fCurrentAnalysisFile->GetName());
 }
 
-void TAnalysisTreeBuilder::SetupAnalysisTree() { 
+void TAnalysisTreeBuilder::SetupAnalysisTree() {
   ///Sets up the analysis tree by creating branches of the available detector systems. The available detector systems
   ///are set in the RunInfo of the fragment tree. When the analysis tree sorting begins, an output is created on screen
   ///that tells you which detector systems were found in the RunInfo.
@@ -570,20 +567,20 @@ void TAnalysisTreeBuilder::SetupAnalysisTree() {
 
   //Set new branches in the analysis tree if the run info in the fragment tree says the detectors are in the data stream
   //int basketSize = 128000;
-  if(info->Tigress())   { tree->Branch("TTigress",&fTigress); }//, basketSize); } 
-  if(info->Sharc())     { tree->Branch("TSharc",&fSharc); }//, basketSize); } 
-  if(info->TriFoil())   { tree->Branch("TTriFoil",&fTriFoil); }//, basketSize); } 
-  if(info->RF())        { tree->Branch("TRF",&fRf); }//, basketSize); } 
-  if(info->CSM())       { tree->Branch("TCSM",&fCsm); }//, basketSize); } 
-  if(info->Spice())     { tree->Branch("TSiLi",&fSiLi); tree->Branch("TS3",&fS3); }//, basketSize); } 
-  if(info->Tip())       { tree->Branch("TTip",&fTip); }//, basketSize); } 
+  if(info->Tigress())   { tree->Branch("TTigress",&fTigress); }//, basketSize); }
+  if(info->Sharc())     { tree->Branch("TSharc",&fSharc); }//, basketSize); }
+  if(info->TriFoil())   { tree->Branch("TTriFoil",&fTriFoil); }//, basketSize); }
+  if(info->RF())        { tree->Branch("TRF",&fRf); }//, basketSize); }
+  if(info->CSM())       { tree->Branch("TCSM",&fCsm); }//, basketSize); }
+  if(info->Spice())     { tree->Branch("TSiLi",&fSiLi); tree->Branch("TS3",&fS3); }//, basketSize); }
+  if(info->Tip())       { tree->Branch("TTip",&fTip); }//, basketSize); }
   if(info->Bambino())	 { tree->Branch("TS3",&fS3); }
 
   if(info->Griffin())   { tree->Branch("TGriffin",&fGriffin); }//, basketSize); }
   if(info->Sceptar())   { tree->Branch("TSceptar",&fSceptar); }//, basketSize); }
-  if(info->Paces())     { tree->Branch("TPaces",&fPaces); }//, basketSize); } 
-  if(info->Dante())     { tree->Branch("TLaBr",&fLaBr); tree->Branch("TTAC",&fTAC); }//, basketSize); } 
-  if(info->ZeroDegree()){ tree->Branch("TZeroDegree",&fZeroDegree); }//, basketSize); } 
+  if(info->Paces())     { tree->Branch("TPaces",&fPaces); }//, basketSize); }
+  if(info->Dante())     { tree->Branch("TLaBr",&fLaBr); tree->Branch("TTAC",&fTAC); }//, basketSize); }
+  if(info->ZeroDegree()){ tree->Branch("TZeroDegree",&fZeroDegree); }//, basketSize); }
   if(info->Descant())   { tree->Branch("TDescant",&fDescant); }//, basketSize);
 
   printf("created AnalysisTree\n");
@@ -598,16 +595,16 @@ void TAnalysisTreeBuilder::ClearActiveAnalysisTreeBranches() {
   if(info->Tigress())   { fTigress->Clear(); }
   if(info->Sharc())     { fSharc->Clear(); }
   if(info->TriFoil())   { fTriFoil->Clear(); }
-  if(info->RF())        { fRf->Clear(); } 
+  if(info->RF())        { fRf->Clear(); }
   if(info->CSM())       { fCsm->Clear(); }
-  if(info->Spice())     { fSiLi->Clear(); fS3->Clear(); } 
+  if(info->Spice())     { fSiLi->Clear(); fS3->Clear(); }
   if(info->Bambino())	 { fS3->Clear(); }
-  if(info->Tip())       { fTip->Clear(); } 
+  if(info->Tip())       { fTip->Clear(); }
   if(info->Griffin())   { fGriffin->Clear(); }
   if(info->Sceptar())   { fSceptar->Clear(); }
-  if(info->Paces())     { fPaces->Clear(); } 
-  if(info->Dante())     { fLaBr->Clear(); fTAC->Clear(); } 
-  if(info->ZeroDegree()){ fZeroDegree->Clear(); } 
+  if(info->Paces())     { fPaces->Clear(); }
+  if(info->Dante())     { fLaBr->Clear(); fTAC->Clear(); }
+  if(info->ZeroDegree()){ fZeroDegree->Clear(); }
   if(info->Descant())   { fDescant->Clear();}
   //printf("ClearActiveAnalysisTreeBranches done\n");
 }
@@ -622,16 +619,16 @@ void TAnalysisTreeBuilder::ResetActiveAnalysisTreeBranches() {
   if(info->Tigress())   { fTigress = 0; }
   if(info->Sharc())     { fSharc = 0; }
   if(info->TriFoil())   { fTriFoil = 0; }
-  if(info->RF())        { fRf = 0;  } 
+  if(info->RF())        { fRf = 0;  }
   if(info->CSM())       { fCsm = 0; }
-  if(info->Spice())     { fSiLi = 0; fS3 = 0; } 
-  if(info->Bambino())   { fS3 = 0; } 
-  if(info->Tip())       { fTip = 0; } 
+  if(info->Spice())     { fSiLi = 0; fS3 = 0; }
+  if(info->Bambino())   { fS3 = 0; }
+  if(info->Tip())       { fTip = 0; }
   if(info->Griffin())   { fGriffin = 0; }
   if(info->Sceptar())   { fSceptar = 0; }
-  if(info->Paces())     { fPaces = 0; } 
-  if(info->Dante())     { fLaBr = 0; fTAC = 0; } 
-  if(info->ZeroDegree()){ fZeroDegree = 0; } 
+  if(info->Paces())     { fPaces = 0; }
+  if(info->Dante())     { fLaBr = 0; fTAC = 0; }
+  if(info->ZeroDegree()){ fZeroDegree = 0; }
   if(info->Descant())   { fDescant = 0; }
   //printf("ClearActiveAnalysisTreeBranches done\n");
 }
@@ -672,11 +669,11 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<TClass*, TDetector*>* detec
   if(!fCurrentAnalysisTree || !detectors) {
     printf("returned from fill without filling (%p %p)!\n", static_cast<void*>(fCurrentAnalysisTree), static_cast<void*>(detectors));
     return;
-  }   
+  }
 
   // clear branches
-  //ClearActiveAnalysisTreeBranches();	
-  ResetActiveAnalysisTreeBranches();	
+  //ClearActiveAnalysisTreeBranches();
+  ResetActiveAnalysisTreeBranches();
 
 
   //Fill the detector map with TDetector classes if the class of the detector is in the map.
@@ -712,11 +709,11 @@ void TAnalysisTreeBuilder::FillAnalysisTree(std::map<TClass*, TDetector*>* detec
       fTAC = static_cast<TTAC*>(det->second);
     } else if(det->first == TTip::Class()) {
       fTip = static_cast<TTip*>(det->second);
-    } 
+    }
   }
   fCurrentAnalysisTree->Fill();
 
-  //ClearActiveAnalysisTreeBranches();	
+  //ClearActiveAnalysisTreeBranches();
   //Zero the detectors in the detector map
   for(auto det = detectors->begin(); det != detectors->end(); det++) {
     delete det->second;
@@ -745,12 +742,12 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
   if(chan != NULL) {
     chan->SetNameTitle(Form("TChannels[%i]",TChannel::GetNumberOfChannels()),
         Form("%i TChannels.",TChannel::GetNumberOfChannels()));
-    // using the write command on any TChannel will now write all 
+    // using the write command on any TChannel will now write all
     chan->WriteToRoot(); // the TChannels to a root file.  additionally reading a TChannel
     // from a rootfile will read all the channels saved to it.  TChannels
     // are now saved as a text buffer to the root file.  pcb.
-    // update. (3/9/2015) the WriteToRoot function should now 
-    // corretcly save the TChannels even if the came from the odb(i.e. internal 
+    // update. (3/9/2015) the WriteToRoot function should now
+    // corretcly save the TChannels even if the came from the odb(i.e. internal
     // data buffer not set.)  pcb.
   } else {
     printf("Failed to get default channel, not going to write TChannel information!\n");
@@ -778,9 +775,9 @@ void TAnalysisTreeBuilder::ProcessEvent() {
   ///Process the event. We do this by filling a map of the detectors, and put the hits into the appropriate detector class.
   ///This is important because different detector systems will need different experimental data/conditions to be set.
   while(TEventQueue::Size() > 0 || !fSortFragmentDone) {
-    if(TEventQueue::Size() == 0) { 
+    if(TEventQueue::Size() == 0) {
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
-      continue; 
+      continue;
     }
 
     //We need to pull the event out of the Event Q
@@ -791,7 +788,7 @@ void TAnalysisTreeBuilder::ProcessEvent() {
       TChannel* channel = TChannel::GetChannel(it->GetAddress());
       if(!channel)
         continue;
-      
+
       TClass* detClass = channel->GetClassType();
       if(!detClass)
          continue;
@@ -821,7 +818,7 @@ void TAnalysisTreeBuilder::Print(Option_t* opt) const {
   printf(DMAGENTA " fSortFragmentDone         = %s" RESET_COLOR "\n",fSortFragmentDone ? "true":"false");
   printf(DYELLOW  " TEventQueue::Size()       = %i" RESET_COLOR "\n",TEventQueue::Size());
   printf(DBLUE    " TWriteQueue::Size()       = %i" RESET_COLOR "\n",TWriteQueue::Size());
-  printf(DGREEN   " fFragmentsIn/fAnalysisOut = %i / %i" RESET_COLOR "\n",fFragmentsIn,fAnalysisOut);  
+  printf(DGREEN   " fFragmentsIn/fAnalysisOut = %i / %i" RESET_COLOR "\n",fFragmentsIn,fAnalysisOut);
   printf(GREEN    " std::thread::hardware_concurrency = %u" RESET_COLOR "\n",std::thread::hardware_concurrency());
   printf(DMAGENTA " ==========================================" RESET_COLOR "\n");
 }
@@ -834,20 +831,20 @@ void TAnalysisTreeBuilder::Status() {
   bool sortingDone = false;
   while(fPrintStatus) {
     if(!sortingDone) {
-      printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
+      printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%,"
           DGREEN "   write speed: %9.1f/%9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
-          (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, fAnalysisIn > 0 ? (100.*fAnalysisOut)/fAnalysisIn:0., fAnalysisOut/w.RealTime(), 
+          (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, fAnalysisIn > 0 ? (100.*fAnalysisOut)/fAnalysisIn:0., fAnalysisOut/w.RealTime(),
           (fAnalysisOut - fLastAnalysisOut)/(w.RealTime() - fLastStatusTime), w.RealTime());
     } else {
       if(fAnalysisOut > 0) {
-        printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
+        printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%,"
             DGREEN "   write speed: %9.1f/%9.1f built events/second." RESET_COLOR "  %3.1f seconds, %.1f seconds remaining." SHOW_CURSOR "\r",
-            (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), 
+            (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(),
             (fAnalysisOut - fLastAnalysisOut)/(w.RealTime() - fLastStatusTime), w.RealTime(), ((double)(fAnalysisIn-fAnalysisOut))/fAnalysisOut*w.RealTime());
       } else {
-        printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
+        printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%,"
             DGREEN "   write speed: %9.1f/%9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
-            (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), 
+            (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(),
             (fAnalysisOut - fLastAnalysisOut)/(w.RealTime() - fLastStatusTime), w.RealTime());
       }
     }
@@ -862,15 +859,15 @@ void TAnalysisTreeBuilder::Status() {
     }
     fLastAnalysisOut = fAnalysisOut;
     fLastStatusTime = w.RealTime();
-    w.Continue(); 
+    w.Continue();
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   }
   if(fAnalysisOut > 0) {
-    printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
+    printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%,"
         DGREEN "   write speed: %9.1f built events/second." RESET_COLOR "  %.1f seconds, %.1f seconds remaining." SHOW_CURSOR "\r",
         (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime(), ((double)(fAnalysisIn-fAnalysisOut))/fAnalysisOut*w.RealTime());
   } else {
-    printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%," 
+    printf(DYELLOW HIDE_CURSOR "Fragments: %.1f %%," DBLUE "   %9i built events," DRED "   written: %9i = %.1f %%,"
         DGREEN "   write speed: %9.1f built events/second." RESET_COLOR " %3.1f seconds." SHOW_CURSOR "\r",
         (100.*fFragmentsIn)/fEntries, fAnalysisIn, fAnalysisOut, (100.*fAnalysisOut)/fAnalysisIn, fAnalysisOut/w.RealTime(), w.RealTime());
   }
