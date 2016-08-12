@@ -16,8 +16,6 @@ class TSiLi: public TGRSIDetector  {
 		TSiLi();
 		TSiLi(const TSiLi&);
 		virtual ~TSiLi();
-		
-     
 
 		void AddFragment(TFragment*, TChannel*);
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment

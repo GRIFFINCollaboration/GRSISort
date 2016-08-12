@@ -96,25 +96,25 @@ class TGRSIDetectorHit : public TObject 	{
       //static bool Compare(TGRSIDetectorHit* lhs,TGRSIDetectorHit* rhs); //!<!
 
       void SetAddress(const UInt_t& temp_address)       { fAddress = temp_address; } //!<!
-      void SetKValue(const UShort_t& temp_kval)         { fKValue = temp_kval;   }   //!<!
+      void SetKValue(const Short_t& temp_kval)          { fKValue = temp_kval;   }   //!<!
       void SetCharge(const Float_t& temp_charge)        { fCharge = temp_charge; }   //!<!
       virtual void SetCfd(const Int_t& x)               { fCfd    = x; }             //!<!
       void SetWaveform(const std::vector<Short_t>& x)   { fWaveform = x; }           //!<!
-      virtual void SetTimeStamp(const ULong_t& x)       { fTimeStamp   = x; }        //!<! 
-      virtual void AppendTimeStamp(const ULong_t& x)    { fTimeStamp   += x; }       //!<! 
+      virtual void SetTimeStamp(const Long_t& x)        { fTimeStamp   = x; }        //!<! 
+      virtual void AppendTimeStamp(const Long_t& x)     { fTimeStamp   += x; }       //!<! 
 
       void SetEnergy(const double& en) { fEnergy = en; SetBit(kIsEnergySet,true);}
       void SetTime(const Double_t& time) {fTime = time; SetBit(kIsTimeSet,true); }
 
       //TVector3 GetPosition(Double_t dist = 0)        const; //!<!
       virtual double GetEnergy(Option_t* opt="")     const;
-      virtual ULong_t GetTimeStamp(Option_t* opt="") const   { return fTimeStamp;   }
+      virtual Long_t GetTimeStamp(Option_t* opt="") const   { return fTimeStamp;   }
       virtual Double_t GetTime(Option_t* opt = "")   const;  ///< Returns a time value to the nearest nanosecond!
       virtual Int_t   GetCfd()    const      { return fCfd;}                 //!<!
       virtual UInt_t GetAddress() const      { return fAddress; }            //!<!
       virtual Int_t  GetCharge()  const      ;                               //!<!
       virtual Float_t Charge()    const      { return fCharge; }             //!<!
-      virtual UShort_t GetKValue()const      { return fKValue; }             //!<!
+      virtual Short_t GetKValue() const      { return fKValue; }             //!<!
       TChannel* GetChannel()      const      { return TChannel::GetChannel(fAddress); }  //!<!
       std::vector<Short_t>* GetWaveform()    { return &fWaveform; }          //!<!
 
@@ -147,9 +147,9 @@ class TGRSIDetectorHit : public TObject 	{
    protected:
       UInt_t   fAddress;    ///< address of the the channel in the DAQ.
       Float_t  fCharge;     ///< charge collected from the hit
-      UShort_t fKValue;     ///< integration value.
+      Short_t fKValue;      ///< integration value.
       Int_t    fCfd;        ///< CFD time of the Hit
-      ULong_t  fTimeStamp;  ///< Timestamp given to hit
+      Long_t   fTimeStamp;  ///< Timestamp given to hit
       std::vector<Short_t> fWaveform;  ///<
 
    private:

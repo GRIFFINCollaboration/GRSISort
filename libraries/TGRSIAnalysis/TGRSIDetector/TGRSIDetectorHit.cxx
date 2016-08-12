@@ -11,7 +11,7 @@ TPPG* TGRSIDetectorHit::fPPG = 0;
 
 TVector3 TGRSIDetectorHit::fBeamDirection(0,0,1);
 
-TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject() { 
+TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject() {
   ///Default constructor
   Clear();
   fAddress = Address;
@@ -23,10 +23,10 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject() {
 #endif
 }
 
-TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) : TObject() { 
+TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) : TObject() {
   ///Default Copy constructor
   rhs.Copy(*this);
-  if(copywave) { 
+  if(copywave) {
     rhs.CopyWave(*this);
   }
 
@@ -66,7 +66,7 @@ Double_t TGRSIDetectorHit::GetTime(Option_t* opt) const {
 }
 
 
-int TGRSIDetectorHit::GetCharge() const { 
+int TGRSIDetectorHit::GetCharge() const {
   TChannel *chan = GetChannel();
   if(!chan )
     return std::floor(Charge());
@@ -128,7 +128,7 @@ void TGRSIDetectorHit::Print(Option_t* opt) const {
   fPosition.Print();
 }
 
-const char *TGRSIDetectorHit::GetName() const { 
+const char *TGRSIDetectorHit::GetName() const {
   TChannel *channel = TChannel::GetChannel(fAddress);
   if(!channel)
      return Class()->ClassName();
@@ -155,7 +155,7 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
 }
 
 Int_t TGRSIDetectorHit::GetDetector() const {
-  
+
   //if(IsDetSet())
   //  return fDetector;
 
@@ -168,7 +168,7 @@ Int_t TGRSIDetectorHit::GetDetector() const {
   //ClearMNEMONIC(&mnemonic);
   //ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
   return channel->GetDetectorNumber(); //mnemonic.arrayposition;
-  
+
 }
 
 Int_t TGRSIDetectorHit::GetSegment() const {
@@ -182,7 +182,7 @@ Int_t TGRSIDetectorHit::GetSegment() const {
 
 Int_t TGRSIDetectorHit::GetCrystal() const {
   TChannel *channel = GetChannel();
-  if(channel) 
+  if(channel)
     return channel->GetCrystalNumber();
   return -1;
 }
@@ -201,7 +201,7 @@ Short_t TGRSIDetectorHit::SetSegment(const Short_t &seg) {
 }
 */
 //TVector3 TGRSIDetectorHit::SetPosition(Double_t dist) {
-  ///This should not be overridden. It's job is to call the correct 
+  ///This should not be overridden. It's job is to call the correct
   ///position for the derived TGRSIDetector object.
 //  SetFlag(kIsPositionSet,true);
 //  fPosition = GetChannelPosition(dist); //Calls a general Hit GetPosition function
@@ -225,11 +225,11 @@ Short_t TGRSIDetectorHit::SetSegment(const Short_t &seg) {
 //    return fPosition;
 
 //  if(GetDetector()>0)
-//    return TGRSIDetectorHit::SetPosition(dist); 
+//    return TGRSIDetectorHit::SetPosition(dist);
 
   //GetDetector();
   //if(IsDetSet())
-  //  return TGRSIDetectorHit::SetPosition(dist); 
+  //  return TGRSIDetectorHit::SetPosition(dist);
 
 //  printf("no position found for current hit\n");
 //  return *GetBeamDirection();  //TVector3(0,0,1);
@@ -269,17 +269,17 @@ uint16_t TGRSIDetectorHit::GetCycleTimeStamp() const {
 }
 
 //void TGRSIDetectorHit::CopyFragment(const TFragment& frag) {
-//  this->fAddress   = frag.ChannelAddress;  
+//  this->fAddress   = frag.ChannelAddress;
 //  this->fCharge    = frag.GetCharge();
 //  this->fCfd       = frag.GetCfd();
 //  this->fTimeStamp = frag.GetTimeStamp();
-//  this->fPosition  = TVector3(0,0,1); 
+//  this->fPosition  = TVector3(0,0,1);
 //  this->fEnergy    = frag.GetEnergy();
 //}
 
 //void TGRSIDetectorHit::CopyWaveform(const TFragment &frag) {
 //  if(frag.HasWave())
-//    SetWaveform(frag.wavebuffer); 
+//    SetWaveform(frag.wavebuffer);
 //}
 
 // const here is rather dirty

@@ -407,8 +407,8 @@ void TAnalysisTreeBuilder::SortFragmentTreeByTimeStamp() {
     ///difference between the first and the last fragment is larger than a
     ///given value, or if the size of the multiset is above a given threshold
     ///and the first and last of the fragments are at least BuildWindow apart.
-    long firstTimeStamp = (*(sortedFragments.begin())).GetTimeStamp();
-    long lastTimeStamp = (*(std::prev(sortedFragments.end()))).GetTimeStamp();
+    Long_t firstTimeStamp = (*(sortedFragments.begin())).GetTimeStamp();
+    Long_t lastTimeStamp = (*(std::prev(sortedFragments.end()))).GetTimeStamp();
     if(//(lastTimeStamp - firstTimeStamp > TGRSIRunInfo::BufferDuration()) ||
         ((sortedFragments.size() > TGRSIRunInfo::BufferSize()) && ((lastTimeStamp - firstTimeStamp) > TGRSIRunInfo::BuildWindow()))) {
       //We are now in a situation where we think that no more fragments will be read that will end up at the beginning of the multiset.
