@@ -49,6 +49,7 @@ public:
   using TObject::Read;
   using TObject::Write;
   int  Read(TMidasEvent* event); ///< Read one event from the file
+  int  Read(TMidasEvent& event) { return Read(&event); } ///< Read one event from the file
   bool Write(TMidasEvent* event,Option_t* opt =""); ///< Write one event to the output file
 
   void FillBuffer(TMidasEvent* event, Option_t* opt=""); //Fill buffer to write out chunks of data
