@@ -13,58 +13,73 @@
 #include "TRint.h"
 #include "TList.h"
 #include "TEnv.h"
+#include "TFile.h"
 
 #include "Globals.h"
+#include "TMidasFile.h"
 
 class TGRSIint : public TRint {
-   private:
-      TGRSIint(int argc, char **argv,void *options = 0,
-					int numOptions = 0, bool noLogo = false, const char *appClassName = "grsisort") ;
+private:
+  TGRSIint(int argc, char **argv,void *options = 0,
+           int numOptions = 0, bool noLogo = false, const char *appClassName = "grsisort") ;
 
-      static TEnv* fGRSIEnv;
+  static TEnv* fGRSIEnv;
 
-   public:
-      static TGRSIint* fTGRSIint;
-      static TGRSIint* instance(int argc = 0, char** argv = 0, void* options = 0,
-                             int numOptions = -1, bool noLogo = false, const char* appClassName = "grsisort");
+public:
+  static TGRSIint* fTGRSIint;
+  static TGRSIint* instance(int argc = 0, char** argv = 0, void* options = 0,
+                            int numOptions = -1, bool noLogo = false, const char* appClassName = "grsisort");
 
-      virtual ~TGRSIint();
+  virtual ~TGRSIint();
 
-      //void GetOptions(int* argc,char** argv);
-      void PrintHelp(bool);
-      void PrintLogo(bool);
-      bool HandleTermInput();
-      int  TabCompletionHook(char*,int*,std::ostream&);
+  //void GetOptions(int* argc,char** argv);
+  void PrintHelp(bool);
+  void PrintLogo(bool);
+  bool HandleTermInput();
+  int  TabCompletionHook(char*,int*,std::ostream&);
 
-      static TEnv* GetEnv() { return fGRSIEnv; }
+  TFile* OpenRootFile(const std::string& filename, Option_t* opt="read");
+  TMidasFile* OpenMidasFile(const std::string& filename);
+  void RunMacroFile(const std::string& filename);
 
-      Long_t ProcessLine(const char* line,Bool_t sync=kFALSE,Int_t* error=0);
+  void Terminate(Int_t exit_status = 0);
 
-   private:
-      //bool FileAutoDetect(std::string fileName, long fileSize);
-      void InitFlags();
-      void ApplyOptions();
-      void DrawLogo();
-      void LoadGROOTGraphics();
-      void LoadExtraClasses();
+  static TEnv* GetEnv() { return fGRSIEnv; }
 
-   private:
+  Long_t ProcessLine(const char* line,Bool_t sync=kFALSE,Int_t* error=0);
+
+private:
+  void SetupPipeline();
+  void LoopUntilDone();
+  //bool FileAutoDetect(std::string fileName, long fileSize);
+  void InitFlags();
+  void ApplyOptions();
+  void DrawLogo();
+  void LoadGROOTGraphics();
+  void LoadExtraClasses();
+
+private:
   //bool fPrintLogo;
-      // bool fPrintHelp;
+  // bool fPrintHelp;
 
-      // bool fAutoSort;
-      // bool fFragmentSort;
-      // bool fMakeAnalysisTree;
+  // bool fAutoSort;
+  // bool fFragmentSort;
+  // bool fMakeAnalysisTree;
+  bool fAllowedToTerminate;
+  int fRootFilesOpened;
+  int fMidasFilesOpened;
+
+  std::vector<TMidasFile*> fMidasFiles;
 
 /// \cond CLASSIMP
-   ClassDef(TGRSIint,0);
+  ClassDef(TGRSIint,0);
 /// \endcond
 };
 
 class TGRSIInterruptHandler : public TSignalHandler {
-   public:
-      TGRSIInterruptHandler():TSignalHandler(kSigInterrupt,false) { }
-      bool Notify();
+public:
+  TGRSIInterruptHandler():TSignalHandler(kSigInterrupt,false) { }
+  bool Notify();
 };
 /*! @} */
 #endif

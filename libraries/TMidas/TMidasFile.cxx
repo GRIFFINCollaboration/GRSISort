@@ -37,6 +37,19 @@ TMidasFile::TMidasFile()
   fDoByteSwap = *(char*)(&endian) != 0x78;
 }
 
+TMidasFile::TMidasFile(const char* filename, EOpenType open_type)
+  : TMidasFile() {
+  switch(open_type) {
+    case kRead:
+      Open(filename);
+      break;
+
+    case kWrite:
+      OutOpen(filename);
+      break;
+  }
+}
+
 TMidasFile::~TMidasFile()
 {
    //Default dtor. It closes the read in midas file as well as the output midas file.
@@ -197,6 +210,8 @@ bool TMidasFile::Open(const char *filename)
         }
     }
 
+  Read(&fFirstEvent);
+
   return true;
 }
 
@@ -211,21 +226,21 @@ bool TMidasFile::OutOpen(const char *filename)
 
   if (fOutFile > 0)
     OutClose();
-  
+
   fOutFilename = filename;
-  
+
   printf ("Attempting normal open of file %s\n", filename);
   //fOutFile = open(filename, O_CREAT |  O_WRONLY | O_LARGEFILE , S_IRUSR| S_IWUSR | S_IRGRP | S_IROTH );
   //fOutFile = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY | O_LARGEFILE, 0644);
   fOutFile = open (filename, O_WRONLY | O_CREAT | O_TRUNC | O_LARGEFILE, 0644);
-  
+
   if (fOutFile <= 0)
     {
       fLastErrno = errno;
       fLastError.assign(std::strerror(errno));
       return false;
     }
-  
+
   printf("Opened output file %s ; return fOutFile is %i\n",filename,fOutFile);
 
   if (hasSuffix(filename, ".gz"))
@@ -242,7 +257,7 @@ bool TMidasFile::OutOpen(const char *filename)
 	  return false;
 	}
       printf("Opened gz file successfully\n");
-      if (1) 
+      if (1)
 	{
 	  if (gzsetparams(*(gzFile*)fOutGzFile, 1, Z_DEFAULT_STRATEGY) != Z_OK) {
 	    printf("Cannot set gzparams\n");
@@ -250,7 +265,7 @@ bool TMidasFile::OutOpen(const char *filename)
 	    fLastError.assign("zlib gzsetparams() error");
 	    return false;
 	  }
-	  printf("setparams for gz file successfully\n");  
+	  printf("setparams for gz file successfully\n");
 	}
 #else
       fLastErrno = -1;
@@ -286,7 +301,7 @@ static int readpipe(int fd, char* buf, int length)
   return count;
 }
 
-/// \param [in] midasEvent Pointer to an empty TMidasEvent 
+/// \param [in] midasEvent Pointer to an empty TMidasEvent
 /// \returns "true" for success, "false" for failure, see GetLastError() to see why
 ///
 ///  EDITED FROM THE ORIGINAL TO RETURN TOTAL SUCESSFULLY BYTES READ INSTEAD OF TRUE/FALSE,  PCB
@@ -324,7 +339,7 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
     midasEvent->SwapBytesEventHeader();
    }
   if (!midasEvent->IsGoodSize())
-    { 
+    {
       fLastErrno = -1;
       fLastError.assign("Invalid event size");
       return 0;
@@ -352,9 +367,9 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
 }
 
 void TMidasFile::FillBuffer(TMidasEvent *midasEvent, Option_t *opt){
-//Fills A buffer to be written to a midas file.   
+//Fills A buffer to be written to a midas file.
 
-   
+
    //Not the prettiest way to do this but it works.
    //It seems to be filling in the wrong order of bits, but this does it correctly
    //There is a byte swap happening at some point in this process. Might have to put something
@@ -369,21 +384,21 @@ void TMidasFile::FillBuffer(TMidasEvent *midasEvent, Option_t *opt){
    fWriteBuffer.push_back((char)((midasEvent->GetSerialNumber() >> 8) & 0xFF));
    fWriteBuffer.push_back((char)((midasEvent->GetSerialNumber() >> 16) & 0xFF));
    fWriteBuffer.push_back((char)(midasEvent->GetSerialNumber() >> 24));
-  
+
    fWriteBuffer.push_back((char)(midasEvent->GetTimeStamp() & 0xFF));
    fWriteBuffer.push_back((char)((midasEvent->GetTimeStamp() >> 8) & 0xFF));
    fWriteBuffer.push_back((char)((midasEvent->GetTimeStamp() >> 16) & 0xFF));
    fWriteBuffer.push_back((char)(midasEvent->GetTimeStamp() >> 24));
-   
+
    fWriteBuffer.push_back((char)(midasEvent->GetDataSize() & 0xFF));
    fWriteBuffer.push_back((char)((midasEvent->GetDataSize() >> 8) & 0xFF));
    fWriteBuffer.push_back((char)((midasEvent->GetDataSize() >> 16) & 0xFF));
    fWriteBuffer.push_back((char)(midasEvent->GetDataSize() >> 24));
- 
+
    for(size_t i=0; i<midasEvent->GetDataSize();i++){
       fWriteBuffer.push_back(midasEvent->GetData()[i]);
    }
-  
+
    fCurrentBufferSize += midasEvent->GetDataSize() + sizeof(TMidas_EVENT_HEADER);
 
    if(fWriteBuffer.size() >  fMaxBufferSize)
@@ -393,7 +408,7 @@ void TMidasFile::FillBuffer(TMidasEvent *midasEvent, Option_t *opt){
 bool TMidasFile::WriteBuffer(){
    //Writes a buffer of TMidasEvents to the output file.
    int wr = -2;
- 
+
    if (fOutGzFile){
       #ifdef HAVE_ZLIB
          wr = gzwrite(*(gzFile*)fOutGzFile, fWriteBuffer.data(), fCurrentBufferSize);
@@ -429,7 +444,7 @@ bool TMidasFile::Write(TMidasEvent *midasEvent,Option_t *opt)
     printf("TMidasFile: error on write event header, return %i, size requested %lu\n",wr,sizeof(TMidas_EVENT_HEADER));
     return false;
   }
- 
+
   if(strncmp(opt,"q",1)!=0)
     printf("Written event header to outfile , return is %i\n",wr);
 
@@ -456,7 +471,7 @@ void TMidasFile::SetMaxBufferSize(int maxsize) {
 
 void TMidasFile::Close()
 {
-   //Closes the input midas file. Use OutClose() to close the output 
+   //Closes the input midas file. Use OutClose() to close the output
    //Midas File.
   if (fPoFile)
     pclose((FILE*)fPoFile);

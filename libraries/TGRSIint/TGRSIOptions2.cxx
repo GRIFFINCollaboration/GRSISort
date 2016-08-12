@@ -37,11 +37,13 @@ void TGRSIOptions2::Clear(Option_t* opt) {
   fInputWinFiles.clear();
   input_ring = "";
 
-  output_file = "";
+  output_fragment_file = "";
+  output_analysis_file = "";
   output_filtered_file = "";
   output_histogram_file = "";
 
-  compiled_histogram_file = "";
+  fragment_histogram_lib = "";
+  analysis_histogram_lib = "";
   compiled_filter_file = "";
 
   options_file.clear();
@@ -88,10 +90,8 @@ void TGRSIOptions2::Print(Option_t* opt) const { }
 
 void TGRSIOptions2::Load(int argc, char** argv) {
   Clear();
-  compiled_histogram_file = gEnv->GetValue("GRSI.HistLib","");
-  if(compiled_histogram_file.length() == 0){
-    compiled_histogram_file = std::string(getenv("GRSISYS")) + "/libraries/libMakeHistos.so";
-  }
+  fragment_histogram_lib = gEnv->GetValue("GRSI.FragmentHistLib","");
+  analysis_histogram_lib = gEnv->GetValue("GRSI.AnalysisHistLib","");
 
   // Load default TChannels, if specified.
   {
@@ -118,8 +118,17 @@ void TGRSIOptions2::Load(int argc, char** argv) {
 
   parser.default_option(&input_files)
     .description("Input file(s)");
+  parser.option("output-fragment-tree", &output_fragment_file)
+    .description("Filename of output fragment tree");
+  parser.option("output-analysis-tree", &output_analysis_file)
+    .description("Filename of output analysis tree");
+
+
   parser.option("a", &fMakeAnalysisTree)
     .description("Make the analysis tree");
+  parser.option("H histos", &fMakeHistos)
+    .description("attempt to run events through MakeHisto lib.");
+
   parser.option("q quit", &fCloseAfterSort)
     .description("Run in batch mode");
   parser.option("l no-logo", &fShowLogo)
@@ -150,8 +159,6 @@ void TGRSIOptions2::Load(int argc, char** argv) {
   //   .description("Output file for histograms");
   // parser.option("r ring",&input_ring)
   //   .description("Input ring source (host/ringname).  Requires --format to be specified.");
-  // parser.option("H histos", &fMakeHistos)
-  //   .description("attempt to run events through MakeHisto lib.")
   //   .default_value(false);
   // parser.option("n no-sort", &fSortRaw)
   //   .description("Load raw data files without sorting")
@@ -259,8 +266,10 @@ kFileType TGRSIOptions2::DetermineFileType(const std::string& filename) const{
     return kFileType::GUI_HIST_FILE;
   } else if (ext == "so") {
     DynamicLibrary lib(filename);
-    if(lib.GetSymbol("MakeHistograms")) {
-      return kFileType::COMPILED_HISTOGRAMS;
+    if(lib.GetSymbol("MakeFragmentHistograms")) {
+      return kFileType::COMPILED_FRAGMENT_HISTOGRAMS;
+    } else if(lib.GetSymbol("MakeAnalysisHistograms")) {
+      return kFileType::COMPILED_ANALYSIS_HISTOGRAMS;
     } else if (lib.GetSymbol("FilterCondition")) {
       return kFileType::COMPILED_FILTER;
     } else {
@@ -303,8 +312,12 @@ bool TGRSIOptions2::FileAutoDetect(const std::string& filename) {
       fInputCalFiles.push_back(filename);
       return true;
 
-    case kFileType::COMPILED_HISTOGRAMS:
-      compiled_histogram_file = filename;
+    case kFileType::COMPILED_FRAGMENT_HISTOGRAMS:
+      fragment_histogram_lib = filename;
+      return true;
+
+    case kFileType::COMPILED_ANALYSIS_HISTOGRAMS:
+      analysis_histogram_lib = filename;
       return true;
 
     case kFileType::COMPILED_FILTER:

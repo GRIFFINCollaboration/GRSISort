@@ -34,14 +34,8 @@
 //#include <TGRUTInt.h>
 #include <GNotifier.h>
 
-TChain *gChain = new TChain("EventTree");//NULL;
-
-class TempThing{
-public:
-  TempThing() {
-    gChain->SetNotify(GNotifier::Get());
-  }
-} temp_thing;
+TChain* gFragment = NULL;
+TChain* gAnalysis = NULL;
 
 
 

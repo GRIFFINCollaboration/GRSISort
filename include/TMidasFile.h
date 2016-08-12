@@ -1,6 +1,7 @@
 #ifndef TMIDASFILE_H
 #define TMIDASFILE_H
 
+
 /** \addtogroup Sorting
  *  @{
  */
@@ -16,21 +17,27 @@
 
 #include <string>
 
-#ifdef __APPLE__ 
-	#include <_types/_uint32_t.h> 
-#else 
-	#include <stdint.h> 
+#ifdef __APPLE__
+	#include <_types/_uint32_t.h>
+#else
+	#include <stdint.h>
 #endif
 
 #include "TObject.h"
 
-class TMidasEvent;
+#include "TMidasEvent.h"
 
 /// Reader for MIDAS .mid files
 
 class TMidasFile : public TObject {
 public:
+  enum EOpenType {
+    kRead,
+    kWrite
+  };
+
   TMidasFile(); ///< default constructor
+  TMidasFile(const char* filename, EOpenType open_type = kRead);
   virtual ~TMidasFile(); ///< destructor
 
   bool Open(const char* filename); ///< Open input file
@@ -52,12 +59,15 @@ public:
   int         GetLastErrno() const { return fLastErrno; }         ///< Get error value for the last file error
   const char* GetLastError() const { return fLastError.c_str(); } ///< Get error text for the last file error
 
+  TMidasEvent& GetFirstEvent() { return fFirstEvent; }
+
   int	GetRunNumber();
   int	GetSubRunNumber();
 
   void SetMaxBufferSize(int maxsize);
 
 protected:
+  TMidasEvent fFirstEvent;
 
   std::string fFilename; ///< name of the currently open file
   std::string fOutFilename; ///< name of the currently open file

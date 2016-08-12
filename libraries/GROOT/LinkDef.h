@@ -41,6 +41,8 @@
 #pragma link C++ enum kBackgroundSubtraction;
 #pragma link C++ function AddOffset;
 
+#pragma link C++ global gFragment;
+#pragma link C++ global gAnalysis;
 
 #pragma link C++ class GPopup+;
 

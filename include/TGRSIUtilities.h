@@ -10,8 +10,8 @@
 bool file_exists(const char *filename);
 bool all_files_exist(const std::vector<std::string>& filenames);
 
-std::string get_short_filename(std::string filename);
-std::string get_run_number(std::string input);
+int GetRunNumber(std::string);
+int GetSubRunNumber(std::string);
 
 inline size_t FindFileSize(const char* fname) {
   std::ifstream temp;

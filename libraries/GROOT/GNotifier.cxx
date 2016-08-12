@@ -22,8 +22,8 @@ GNotifier::~GNotifier() { }
 bool GNotifier::Notify() {
   // Loads the GValues from the current file of the chain.
   // Does not overwrite parameters set by hand, or by a .val file.
-  TFile *f = gChain->GetCurrentFile();
-  f->Get("GValue");
+  // TFile *f = gChain->GetCurrentFile();
+  // f->Get("GValue");
 
   for(auto& callback : callbacks){
     callback();

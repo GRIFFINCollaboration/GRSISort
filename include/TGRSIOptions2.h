@@ -26,11 +26,16 @@ public:
   const std::vector<std::string>& WinInputFiles()   { return fInputWinFiles;   }
   const std::vector<std::string>& MacroInputFiles() { return fMacroFiles;      }
 
-  const std::string& OutputFile()                   { return output_file; }
+  const std::string& OutputFragmentFile() { return output_fragment_file; }
+  const std::string& OutputAnalysisFile() { return output_analysis_file; }
+
+
   const std::string& OutputFilteredFile()        { return output_filtered_file; }
-  const std::string& OutputHistogramFile()          { return output_histogram_file; }
+  const std::string& OutputFragmentHistogramFile(){ return output_histogram_file; }
+  const std::string& OutputAnalysisHistogramFile(){ return output_histogram_file; }
   std::string InputRing() { return input_ring; }
-  std::string CompiledHistogramFile() { return compiled_histogram_file; }
+  std::string FragmentHistogramLib() { return fragment_histogram_lib; }
+  std::string AnalysisHistogramLib() { return analysis_histogram_lib; }
   std::string CompiledFilterFile() { return compiled_filter_file; }
 
   const std::vector<std::string>& OptionFiles() { return options_file; }
@@ -100,11 +105,13 @@ private:
   std::vector<std::string> fInputWinFiles;
   std::string input_ring;
 
-  std::string output_file;
+  std::string output_fragment_file;
+  std::string output_analysis_file;
   std::string output_filtered_file;
   std::string output_histogram_file;
 
-  std::string compiled_histogram_file;
+  std::string fragment_histogram_lib;
+  std::string analysis_histogram_lib;
   std::string compiled_filter_file;
 
   std::vector<std::string> options_file;

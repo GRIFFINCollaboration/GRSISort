@@ -25,37 +25,44 @@ bool all_files_exist(const std::vector<std::string>& filenames) {
   return true;
 }
 
-std::string get_short_filename(std::string filename) {
-  std::string run_num = get_run_number(filename);
-  size_t position = filename.find_last_of("/",filename.find(run_num));
-  if(position == std::string::npos) {
-    return filename;
-  } else {
-    return filename.substr(position + 1);
-  }
+
+
+int GetRunNumber(std::string fileName) {
+	if(fileName.length()==0) {
+		return 0;
+	}
+	std::size_t found = fileName.rfind(".root");
+	if(found == std::string::npos) {
+		return 0;
+	}
+	std::size_t found2 = fileName.rfind('-');
+	//printf("found 2 = %i\n",found2);
+
+	if(found2 == std::string::npos)
+		found2 = fileName.rfind('_');
+	std::string temp;
+	if(found2 == std::string::npos || fileName.compare(found2+4,5,".root") !=0 ) {
+		temp = fileName.substr(found-5,5);
+	}
+	else {
+		temp = fileName.substr(found-9,5);
+	}
+	return atoi(temp.c_str());
 }
 
-std::string get_run_number(std::string input) {
-  TPRegexp re(
-    "(" // Begin capturing group.  This will hold the final return value
-       "([0-9]+(-|_))?" //One or more digits, followed by a dash or an underscore.  This section may be omitted.
-       "[0-9]+" //Followed by one or more digits
-    ")" // End capturing group.
-    "[^0-9]*$" // With no other digits before the end of the filename
-  );
-  TObjArray* matches = re.MatchS(input.c_str());
+int GetSubRunNumber(std::string fileName)	{
+	if(fileName.length()==0)
+		return -1;
 
-  std::string output;
-  //std::cout << " matches->GetEntriesFast() = " << matches->GetEntriesFast() << std::endl;
-  //for(int x=0;x<matches->GetEntriesFast();x++)
-  //  std::cout << x << "\t" << ((TObjString*)matches->At(x))->GetString() << std::endl;
-
-  if(matches->GetEntriesFast() >= 2){
-    // Return a std::vector<std::string> ?
-    // No, that would be too simple, too type-safe, and too memory-safe for ROOT.
-    output = ((TObjString*)matches->At(1))->GetString();
-  }
-  delete matches;
-
-  return output;
+	std::size_t found = fileName.rfind("-");
+	if(found != std::string::npos) {
+		std::string temp = fileName.substr(found+1,3);
+		return atoi(temp.c_str());
+	}
+	found = fileName.rfind("_");
+	if(found != std::string::npos) {
+		std::string temp = fileName.substr(found+1,3);
+		return atoi(temp.c_str());
+	}
+	return -1;
 }
