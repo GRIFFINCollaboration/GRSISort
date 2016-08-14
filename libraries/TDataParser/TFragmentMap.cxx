@@ -10,6 +10,15 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 		frag->SetCharge(charge[0]);
 		frag->SetKValue(integrationLength[0]);
 		//std::cout<<"address "<<frag->GetAddress()<<": added single fragment "<<frag<<std::endl;
+		//if(integrationLength[0] != 600) {
+		//	std::cout<<"single fragment (address 0x"<<std::hex<<frag->GetAddress()<<std::dec<<") with integration length "<<integrationLength[0]<<", # pileups "<<frag->GetNumberOfPileups()<<std::endl;
+		//	if(frag->GetNumberOfPileups() > 1) {
+		//		std::cout<<"have fragments:"<<std::endl;
+		//		for(auto it = fMap.begin(); it != fMap.end(); ++it) {
+		//			std::cout<<"\t0x"<<std::hex<<std::get<0>((*it).second)->GetAddress()<<std::dec<<": "<<std::get<0>((*it).second)->GetNumberOfPileups()<<std::endl;
+		//		}
+		//	}
+		//}
 		TFragmentQueue::GetQueue("GOOD")->Add(frag);
 		return true;
 	}
@@ -94,24 +103,24 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 						frags[1]->SetCharge(charge[0]);
 						frags[0]->SetKValue(1);
 						frags[1]->SetKValue(1);
-						frags[0]->SetNumberOfPileups(-20);
-						frags[1]->SetNumberOfPileups(-20);
+						frags[0]->SetNumberOfPileups(-200);
+						frags[1]->SetNumberOfPileups(-201);
 						break;
 					case 1: // dropped e0+e1, so only e0 and e1 are left
 						frags[0]->SetCharge(c[0]);
 						frags[1]->SetCharge(charge[0]/integrationLength[0]);
 						frags[0]->SetKValue(1);
 						frags[1]->SetKValue(1);
-						frags[0]->SetNumberOfPileups(-20);
-						frags[1]->SetNumberOfPileups(-20);
+						frags[0]->SetNumberOfPileups(-200);
+						frags[1]->SetNumberOfPileups(-201);
 						break;
 					case 2: // dropped e1, so only e0 and e0+e1 are left
 						frags[0]->SetCharge(c[0]);
 						frags[1]->SetCharge(c[1]-c[0]);
 						frags[0]->SetKValue(1);
 						frags[1]->SetKValue(1);
-						frags[0]->SetNumberOfPileups(-20);
-						frags[1]->SetNumberOfPileups(-20);
+						frags[0]->SetNumberOfPileups(-200);
+						frags[1]->SetNumberOfPileups(-201);
 						break;
 					default: // dropped none
 						c.push_back((charge[0] + gRandom->Uniform())/integrationLength[0]);
@@ -240,10 +249,10 @@ void TFragmentMap::Solve(std::vector<TFragment*> frag, std::vector<Float_t> c, s
 			frag[0]->SetKValue(1);
 			frag[1]->SetKValue(1);
 			frag[0]->SetNumberOfPileups(-2);
-			frag[1]->SetNumberOfPileups(-2);
-			std::cout<<"2: charges "<<c[0]<<", "<<c[1]<<", "<<c[2]<<" and squared int. lengths "<<k2[0]<<", "<<k2[1]<<", "<<k2[2]<<" => "<<frag[0]->GetCharge()<<", "<<frag[1]->GetCharge()<<std::endl;
-			std::cout<<"\t("<<(c[0]*(k2[0]*k2[1]+k2[0]*k2[2])+(c[1]-c[2])*k2[1]*k2[2])/(k2[0]*k2[1]+k2[0]*k2[2]+k2[1]*k2[2])<<", "<<(c[2]*(k2[0]*k2[2]+k2[1]*k2[2])+(c[1]-c[0])*k2[0]*k2[1])/(k2[0]*k2[1]+k2[0]*k2[2]+k2[1]*k2[2])<<" = "<<(c[0]*(k2[0]*k2[1]+k2[0]*k2[2])+(c[1]-c[2])*k2[1]*k2[2])<<"/"<<(k2[0]*k2[1]+k2[0]*k2[2]+k2[1]*k2[2])<<" = ("<<c[0]*(k2[0]*k2[1]+k2[0]*k2[2])<<"+"<<(c[1]-c[2])*k2[1]*k2[2]<<")/("<<k2[0]*k2[1]<<"+"<<k2[0]*k2[2]<<"+"<<k2[1]*k2[2]<<"))"<<std::endl;
-			std::cout<<"pileups = "<<frag[0]->GetNumberOfPileups()<<", "<<frag[1]->GetNumberOfPileups()<<std::endl;
+			frag[1]->SetNumberOfPileups(-20);
+			//std::cout<<"2: charges "<<c[0]<<", "<<c[1]<<", "<<c[2]<<" and squared int. lengths "<<k2[0]<<", "<<k2[1]<<", "<<k2[2]<<" => "<<frag[0]->GetCharge()<<", "<<frag[1]->GetCharge()<<std::endl;
+			//std::cout<<"\t("<<(c[0]*(k2[0]*k2[1]+k2[0]*k2[2])+(c[1]-c[2])*k2[1]*k2[2])/(k2[0]*k2[1]+k2[0]*k2[2]+k2[1]*k2[2])<<", "<<(c[2]*(k2[0]*k2[2]+k2[1]*k2[2])+(c[1]-c[0])*k2[0]*k2[1])/(k2[0]*k2[1]+k2[0]*k2[2]+k2[1]*k2[2])<<" = "<<(c[0]*(k2[0]*k2[1]+k2[0]*k2[2])+(c[1]-c[2])*k2[1]*k2[2])<<"/"<<(k2[0]*k2[1]+k2[0]*k2[2]+k2[1]*k2[2])<<" = ("<<c[0]*(k2[0]*k2[1]+k2[0]*k2[2])<<"+"<<(c[1]-c[2])*k2[1]*k2[2]<<")/("<<k2[0]*k2[1]<<"+"<<k2[0]*k2[2]<<"+"<<k2[1]*k2[2]<<"))"<<std::endl;
+			//std::cout<<"pileups = "<<frag[0]->GetNumberOfPileups()<<", "<<frag[1]->GetNumberOfPileups()<<std::endl;
 			break;
 		case 3:
 			if(situation == 3) { //(3, 1, 1)
@@ -259,9 +268,9 @@ void TFragmentMap::Solve(std::vector<TFragment*> frag, std::vector<Float_t> c, s
 			frag[1]->SetKValue(1);
 			frag[2]->SetKValue(1);
 			frag[0]->SetNumberOfPileups(-3);
-			frag[1]->SetNumberOfPileups(-3);
-			frag[2]->SetNumberOfPileups(-3);
-			std::cout<<"3, situation "<<situation<<": charges "<<c[0]<<", "<<c[1]<<", "<<c[2]<<", "<<c[3]<<", "<<c[4]<<" and squared int. lengths "<<k2[0]<<", "<<k2[1]<<", "<<k2[2]<<", "<<k2[3]<<", "<<k2[4]<<" => "<<frag[0]->GetCharge()<<", "<<frag[1]->GetCharge()<<", "<<frag[2]->GetCharge()<<std::endl;
+			frag[1]->SetNumberOfPileups(-30);
+			frag[2]->SetNumberOfPileups(-31);
+			//std::cout<<"3, situation "<<situation<<": charges "<<c[0]<<", "<<c[1]<<", "<<c[2]<<", "<<c[3]<<", "<<c[4]<<" and squared int. lengths "<<k2[0]<<", "<<k2[1]<<", "<<k2[2]<<", "<<k2[3]<<", "<<k2[4]<<" => "<<frag[0]->GetCharge()<<", "<<frag[1]->GetCharge()<<", "<<frag[2]->GetCharge()<<std::endl;
 			break;
 	}
 }
