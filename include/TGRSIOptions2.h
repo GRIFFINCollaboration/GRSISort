@@ -43,6 +43,8 @@ public:
   int BuildWindow() const { return fBuildWindow; }
   bool RecordDialog() const { return fRecordDialog; }
 
+  bool SuppressErrors() const { return fSuppressErrors; }
+
   bool CloseAfterSort()     const { return fCloseAfterSort; }
 
   bool LogErrors()          const { return fLogErrors;        }
@@ -121,6 +123,7 @@ private:
   bool fCloseAfterSort;
   bool fLogErrors;
   bool fUseMidFileOdb;
+  bool fSuppressErrors;
 
   bool fMakeAnalysisTree;
   bool fProgressDialog;

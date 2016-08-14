@@ -42,8 +42,8 @@ void TMidasEvent::Copy(TObject& rhs) const{
   static_cast<TMidasEvent&>(rhs).fAllocatedByUs = true;
 
   static_cast<TMidasEvent&>(rhs).fBanksN      = fBanksN;
-  static_cast<TMidasEvent&>(rhs).fBankList    = strdup(fBankList);
-  assert(static_cast<TMidasEvent&>(rhs).fBankList);
+  //if(fBankList) static_cast<TMidasEvent&>(rhs).fBankList    = strdup(fBankList);
+  //assert(static_cast<TMidasEvent&>(rhs).fBankList);
 }
 
 TMidasEvent::TMidasEvent(const TMidasEvent &rhs) : TObject() {

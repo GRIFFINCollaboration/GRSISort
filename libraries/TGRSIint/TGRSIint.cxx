@@ -12,6 +12,14 @@
 #include "TGRSIRootIO.h"
 #include "TGRSIUtilities.h"
 #include "GValue.h"
+#include "StoppableThread.h"
+
+#include "TDataLoop.h"
+#include "TUnpackingLoop.h"
+#include "TFragmentChainLoop.h"
+#include "TFragHistLoop.h"
+#include "TFragWriteLoop.h"
+#include "TTerminalLoop.h"
 
 #include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
@@ -401,7 +409,7 @@ void TGRSIint::SetupFragmentPipeline() {
 
   bool sort_fragment_tree = (has_input_fragment_tree &&
                              (write_fragment_histograms ||
-                              write_analysis_histograms ||
+                              //write_analysis_histograms ||
                               opt->SortRoot() ||
                               opt->MakeAnalysisTree() ||
                               opt->OutputAnalysisFile().length()>0) );
@@ -472,7 +480,7 @@ void TGRSIint::SetupFragmentPipeline() {
   // std::cout << "output_analysis_root_file: " << output_analysis_root_file << std::endl;
   // std::cout << "output_analysis_histogram_file: " << output_analysis_histogram_file << std::endl;
 
-  if(!sort_raw && !sort_fragment_tree && !sort_analysis_tree) {
+  if(!sort_raw && !sort_fragment_tree /*&& !sort_analysis_tree*/) {
     return;
   }
 
@@ -480,16 +488,20 @@ void TGRSIint::SetupFragmentPipeline() {
   // Everything involving the fragment tree
   std::shared_ptr<ThreadsafeQueue<TFragment*> > current_queue = nullptr;
   if(sort_raw) {
-    fDataLoop = TDataLoop::Get("1_input_loop",fMidasFiles);
-    fDataLoop->SetSelfStopping(self_stopping);
+    if(fMidasFiles.size() > 1) {
+      std::cerr << "I'm going to ignore all but first .mid" << std::endl;
+    }
 
-    TBuildingLoop* build_loop = TBuildingLoop::Get("2_build_loop");
-    build_loop->InputQueue() = fDataLoop->OutputQueue();
-    current_queue = build_loop->OutputQueue();
+    TDataLoop* data_loop = TDataLoop::Get("1_input_loop",fMidasFiles[0]);
+    data_loop->SetSelfStopping(self_stopping);
+
+    TUnpackingLoop* unpack_loop = TUnpackingLoop::Get("2_unpack_loop");
+    unpack_loop->InputQueue() = data_loop->OutputQueue();
+    current_queue = unpack_loop->GoodOutputQueue();
   } else if (sort_fragment_tree) {
-    fFragmentChainLoop = TChainLoop::Get("1_chain_loop", gFragment);
-    fFragmentChainLoop->SetSelfStopping(self_stopping);
-    current_queue = fFragmentChainLoop->OutputQueue();
+    auto loop = TFragmentChainLoop::Get("1_chain_loop", gFragment);
+    loop->SetSelfStopping(self_stopping);
+    current_queue = loop->OutputQueue();
   }
 
   if(write_fragment_histograms) {
@@ -505,10 +517,11 @@ void TGRSIint::SetupFragmentPipeline() {
   }
 
   {
-    TFragTerminalLoop* loop = TFragTerminalLoop::Get("4_frag_term_loop");
+    auto loop = TTerminalLoop<TFragment>::Get("4_frag_term_loop");
     loop->InputQueue() = current_queue;
   }
 
+  StoppableThread::ResumeAll();
 
 
 

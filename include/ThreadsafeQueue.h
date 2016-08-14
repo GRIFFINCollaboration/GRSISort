@@ -12,8 +12,6 @@
 #include <queue>
 #endif
 
-#include "TRawEvent.h"
-
 class TDetector;
 
 template<typename T>
@@ -95,7 +93,8 @@ int ThreadsafeQueue<T>::Pop(T& output, int millisecond_wait) {
   items_in_queue--;
 
   can_push.notify_one();
-  return ObjectSize(output);
+  return 1;
+  //return ObjectSize(output);
 }
 
 template<typename T>

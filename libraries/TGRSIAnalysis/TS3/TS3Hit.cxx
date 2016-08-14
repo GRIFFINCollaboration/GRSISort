@@ -21,7 +21,7 @@ TS3Hit::TS3Hit(const TS3Hit &rhs) : TGRSIDetectorHit() {
 void TS3Hit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
 
-  static_cast<TS3Hit&>(rhs).fLed          = fLed;
+  //static_cast<TS3Hit&>(rhs).fLed          = fLed;
   static_cast<TS3Hit&>(rhs).fRing         = fRing;
   static_cast<TS3Hit&>(rhs).fSector       = fSector;
   static_cast<TS3Hit&>(rhs).fIsDownstream = fIsDownstream;

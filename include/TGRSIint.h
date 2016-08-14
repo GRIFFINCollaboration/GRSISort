@@ -49,8 +49,8 @@ public:
   Long_t ProcessLine(const char* line,Bool_t sync=kFALSE,Int_t* error=0);
 
 private:
-  void SetupPipeline();
-  void LoopUntilDone();
+  void SetupFragmentPipeline();
+  void FragmentLoopUntilDone();
   //bool FileAutoDetect(std::string fileName, long fileSize);
   void InitFlags();
   void ApplyOptions();

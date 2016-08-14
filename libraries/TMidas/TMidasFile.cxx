@@ -1,3 +1,4 @@
+#include <fstream>
 #include <stdio.h>
 #include <cstring>
 #include <sys/types.h>
@@ -10,6 +11,8 @@
 #ifdef HAVE_ZLIB
 #include <zlib.h>
 #endif
+
+#include "TString.h"
 
 #include "TMidasFile.h"
 #include "TMidasEvent.h"
@@ -34,6 +37,10 @@ TMidasFile::TMidasFile()
 
   fMaxBufferSize = 1E6;
 
+  currentEventNumber = 0;
+  bytesRead = 0;
+  filesize = 0;
+
   fDoByteSwap = *(char*)(&endian) != 0x78;
 }
 
@@ -55,6 +62,11 @@ TMidasFile::~TMidasFile()
    //Default dtor. It closes the read in midas file as well as the output midas file.
   Close();
   OutClose();
+}
+
+std::string TMidasFile::Status(bool long_file_description) {
+  return Form(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB              " SHOW_CURSOR "\r",
+              currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0));
 }
 
 static int hasSuffix(const char*name,const char*suffix)
@@ -93,6 +105,12 @@ bool TMidasFile::Open(const char *filename)
   fFilename = filename;
 
   std::string pipe;
+
+
+  std::ifstream in(GetFilename(), std::ifstream::in | std::ifstream::binary);
+  in.seekg(0, std::ifstream::end);
+  filesize = in.tellg();
+  in.close();
 
   // Do we need these?
   //signal(SIGPIPE,SIG_IGN); // crash if reading from closed pipe
@@ -363,7 +381,10 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
 
   midasEvent->SwapBytes(false);
 
-  return rd + rd_head;
+  size_t bytes_read = rd + rd_head;
+  this->bytesRead += bytes_read;
+
+  return bytes_read;
 }
 
 void TMidasFile::FillBuffer(TMidasEvent *midasEvent, Option_t *opt){

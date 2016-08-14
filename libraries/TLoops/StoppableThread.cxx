@@ -3,11 +3,12 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 #include <TString.h>
 
 #include "TDataLoop.h"
-#include "TChainLoop.h"
+#include "TFragmentChainLoop.h"
 
 std::map<std::string,StoppableThread*> StoppableThread::fthreadmap;
 bool StoppableThread::status_thread_on = false;
@@ -67,7 +68,7 @@ std::string StoppableThread::Status() {
 void StoppableThread::StopAll() {
   for(auto& elem : fthreadmap){
     TDataLoop* data_loop = dynamic_cast<TDataLoop*>(elem.second);
-    TChainLoop* chain_loop = dynamic_cast<TChainLoop*>(elem.second);
+    TFragmentChainLoop* chain_loop = dynamic_cast<TFragmentChainLoop*>(elem.second);
     if(data_loop || chain_loop){
       std::cout << "Stopping thread " << elem.first << std::endl;
       elem.second->Stop();

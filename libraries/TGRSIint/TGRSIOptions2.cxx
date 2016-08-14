@@ -149,6 +149,7 @@ void TGRSIOptions2::Load(int argc, char** argv) {
   parser.option("ignore-odb", &fIgnoreFileOdb);
   parser.option("ignore-epics", &fIgnoreEpics);
   parser.option("ignore-scaler", &fIgnoreScaler);
+  parser.option("suppress-errors", &fSuppressErrors);
 
 
   // parser.option("o output", &output_file)

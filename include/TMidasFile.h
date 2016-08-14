@@ -51,6 +51,7 @@ public:
   int  Read(TMidasEvent* event); ///< Read one event from the file
   int  Read(TMidasEvent& event) { return Read(&event); } ///< Read one event from the file
   bool Write(TMidasEvent* event,Option_t* opt =""); ///< Write one event to the output file
+  std::string Status(bool long_file_description = true);
 
   void FillBuffer(TMidasEvent* event, Option_t* opt=""); //Fill buffer to write out chunks of data
   bool WriteBuffer();
@@ -80,6 +81,10 @@ protected:
   int         fLastErrno; ///< errno from the last operation
   std::string fLastError; ///< error string from last errno
 protected:
+  int currentEventNumber;
+  size_t bytesRead;
+  size_t filesize;
+
 
   bool fDoByteSwap; ///< "true" if file has to be byteswapped
 

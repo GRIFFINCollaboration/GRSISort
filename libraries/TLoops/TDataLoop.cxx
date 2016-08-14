@@ -4,9 +4,9 @@
 #include <thread>
 #include <utility>
 
-#include "TGRUTOptions.h"
-#include "TRawSource.h"
+#include "TGRSIOptions2.h"
 #include "TString.h"
+#include "TMidasFile.h"
 
 
 TDataLoop::TDataLoop(std::string name,TMidasFile* source)
@@ -43,8 +43,9 @@ void TDataLoop::ReplaceSource(TMidasFile* new_source) {
 }
 
 void TDataLoop::ResetSource() {
-  std::lock_guard<std::mutex> lock(source_mutex);
-  source->Reset();
+  std::cerr << "Reset not implemented for TMidasFile" << std::endl;
+  // std::lock_guard<std::mutex> lock(source_mutex);
+  // source->Reset();
 }
 
 void TDataLoop::OnEnd() {
@@ -76,5 +77,5 @@ bool TDataLoop::Iteration() {
 }
 
 std::string TDataLoop::Status() {
-  return source->Status(TGRUTOptions::Get()->LongFileDescription());
+  return source->Status(TGRSIOptions2::Get()->LongFileDescription());
 }
