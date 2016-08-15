@@ -74,9 +74,9 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 
    //Coincidence Parameters
    Double_t ggTlow = 0.;   //Times are in 10's of ns
-   Double_t ggThigh = 400.;
-   Double_t gbTlow =  -150.;
-   Double_t gbThigh = 100.;
+   Double_t ggThigh = 4000.;
+   Double_t gbTlow =  -400.;
+   Double_t gbThigh = 40.;
 
    Double_t ggBGlow = 1000.;
    Double_t ggBGhigh = 1750.;
@@ -85,7 +85,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    Double_t ggBGScale = (ggThigh - ggTlow)/(ggBGhigh - ggBGlow);
    Double_t gbBGScale = (gbThigh - gbTlow)/(gbBGhigh - gbBGlow);
 
-   Double_t betaThres = 800.;
+   Double_t betaThres = 80.;
 
    //this is in ms
    Double_t cycleLength = 15000;
@@ -226,7 +226,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    for(entry = 1; entry < maxEntries; ++entry) { //Only loop over the set number of entries
       //I'm starting at entry 1 because of the weird high stamp of 4.
       tree->GetEntry(entry);
-
+/*
 		if(runInfo->SubRunNumber() > 21) {
 		  //in run 04921 we got a wrap-around of the timestamp within subrun 22
 		  //so from subrun 22 on we add 2^42 to each timestamp that is less than 2^41
@@ -243,7 +243,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 			 }
 		  }
 		}
-
+*/
       grif->ResetAddback();
 
       //loop over the gammas in the event packet
@@ -260,9 +260,9 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
          }
          if(grif->GetGriffinHit(one)->GetArrayNumber() < lastTimeStamp.size()) {
             if(lastTimeStamp.at(grif->GetGriffinHit(one)->GetArrayNumber()) > 0) {
-               gTimeDiff->Fill(grif->GetHit(one)->GetTimeStamp() - lastTimeStamp.at(grif->GetGriffinHit(one)->GetArrayNumber()), grif->GetGriffinHit(one)->GetArrayNumber());
+               gTimeDiff->Fill(grif->GetHit(one)->GetTime() - lastTimeStamp.at(grif->GetGriffinHit(one)->GetArrayNumber()), grif->GetGriffinHit(one)->GetArrayNumber());
             }
-            lastTimeStamp.at(grif->GetGriffinHit(one)->GetArrayNumber()) = grif->GetHit(one)->GetTimeStamp();
+            lastTimeStamp.at(grif->GetGriffinHit(one)->GetArrayNumber()) = grif->GetHit(one)->GetTime();
          }
          //We now want to loop over any other gammas in this packet
          for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
@@ -291,7 +291,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
             btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
             if(ppg && !plotted_flag){//Fill on first hit only.
-               betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTime()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTime()))); 
+               betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTimeStamp()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTimeStamp()))); 
                //  betaSinglesCyc->Fill((((ULong64_t)(scep->GetHit(b)->GetTime()))%(ppg->GetCycleLength()))/1e5,(scep->GetHit(b)->GetTime())/(ppg->GetCycleLength())); 
                plotted_flag = true;
             }
@@ -324,7 +324,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                   if(!found) {
                      gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergy());
                      if(ppg)
-                        gammaSinglesBCyc->Fill(ppg->GetTimeInCycle((ULong64_t)(grif->GetHit(one)->GetTime()))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
+                        gammaSinglesBCyc->Fill(ppg->GetTimeInCycle((ULong64_t)(grif->GetHit(one)->GetTimeStamp()))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
                   }
                   gammaSinglesB_hp->Fill(grif->GetGriffinHit(one)->GetEnergy(),scep->GetSceptarHit(b)->GetDetector());
                   grifscep_hp->Fill(grif->GetGriffinHit(one)->GetArrayNumber(),scep->GetSceptarHit(b)->GetDetector());
@@ -425,7 +425,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                   if(!found) {
                      gammaAddbackB->Fill(grif->GetAddbackHit(one)->GetEnergy());
                      if(ppg)
-                        gammaAddbackBCyc->Fill(ppg->GetTimeInCycle((ULong64_t)(grif->GetAddbackHit(one)->GetTime()))/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
+                        gammaAddbackBCyc->Fill(ppg->GetTimeInCycle((ULong64_t)(grif->GetAddbackHit(one)->GetTimeStamp()))/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
                   }
                   gammaAddbackB_hp->Fill(grif->GetAddbackHit(one)->GetEnergy(),scep->GetSceptarHit(b)->GetDetector());
                   //Now we want to loop over gamma rays if they are in coincidence.

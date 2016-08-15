@@ -319,7 +319,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    std::map<unsigned int,TChannel*>::iterator iter; 
 
    for(iter = TChannel::GetChannelMap()->begin();iter != TChannel::GetChannelMap()->end(); iter++) {
-      std::string channelname = iter->second->GetName();
+      std::string channelname = iter->second->GetChannelName();
 
       //  detector system type.
       //  for more info, see: https://www.triumf.info/wiki/tigwiki/index.php/Detector_Nomenclature

@@ -70,7 +70,7 @@ void TCal::WriteToAllChannels(std::string mnemonic) {
 	std::map<unsigned int,TChannel*>* chanMap = TChannel::GetChannelMap();
 	TChannel* origChan = GetChannel();
 	for(mapIt = chanMap->begin(); mapIt != chanMap->end(); mapIt++){
-		if(!mnemonic.size() || !strncmp(mapIt->second->GetName(),mnemonic.c_str(),mnemonic.size())){
+		if(!mnemonic.size() || !strncmp(mapIt->second->GetChannelName(),mnemonic.c_str(),mnemonic.size())){
 			SetChannel(mapIt->second);
 			WriteToChannel();
 		}

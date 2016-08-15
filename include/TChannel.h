@@ -71,6 +71,7 @@ class TChannel : public TNamed	{
    private:
       unsigned int	   fAddress;                                 //The address of the digitizer
       int		         fIntegration;                             //The charge integration setting
+      std::string       fChannelName;                             //The name of hte channel (MNEMONIC)
       std::string       fTypeName;
       std::string       fDigitizerType;
       int 	            fNumber;
@@ -119,6 +120,7 @@ class TChannel : public TNamed	{
    public:
       void SetName(const char* tmpName);
       void SetAddress(unsigned int tmpadd);
+      void SetChannelName(const char* tmpname); 
       inline void SetNumber(int tmpnum)	             { fNumber = tmpnum; UpdateChannelNumberMap(); }
       inline void SetIntegration(int tmpint)	          { fIntegration = tmpint; }
       static void SetIntegration(std::string mnemonic,int tmpint);
@@ -144,6 +146,7 @@ class TChannel : public TNamed	{
       int GetStream()                { return fStream; }
       int GetUserInfoNumber()        { return fUserInfoNumber;}
       const char* GetDigitizerType() { return fDigitizerType.c_str(); }
+      const char* GetChannelName() const {return fChannelName.c_str(); }
       double GetTimeOffset()         { return fTimeOffset; }
       //write the rest of the gettters/setters...
 
