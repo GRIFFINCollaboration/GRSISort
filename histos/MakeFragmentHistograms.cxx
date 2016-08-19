@@ -2,7 +2,7 @@
 #include "TFragment.h"
 
 extern "C"
-void MakeFragmentHistograms(TRuntimeObjects& obj) {
+void MakeFragmentHistograms(TRuntimeObjects& obj) {  
   TFragment* frag = obj.GetFragment();
 
   obj.FillHistogram("x",

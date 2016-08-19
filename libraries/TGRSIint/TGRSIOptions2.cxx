@@ -128,6 +128,8 @@ void TGRSIOptions2::Load(int argc, char** argv) {
     .description("Make the analysis tree");
   parser.option("H histos", &fMakeHistos)
     .description("attempt to run events through MakeHisto lib.");
+  parser.option("g start-gui", &fStartGui)
+    .description("Start the gui at program start");
 
   parser.option("q quit", &fCloseAfterSort)
     .description("Run in batch mode");

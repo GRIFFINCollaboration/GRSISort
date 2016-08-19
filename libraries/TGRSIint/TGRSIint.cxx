@@ -20,6 +20,7 @@
 #include "TFragHistLoop.h"
 #include "TFragWriteLoop.h"
 #include "TTerminalLoop.h"
+#include "GRootCommands.h"
 
 #include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
@@ -153,6 +154,10 @@ void TGRSIint::ApplyOptions() {
 
    for(auto& filename : opt->MacroInputFiles()){
      RunMacroFile(filename);
+   }
+
+   if(opt->StartGui()) {
+     StartGUI();
    }
 
    if(opt->CloseAfterSort()){

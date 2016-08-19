@@ -42,6 +42,7 @@ public:
 
   int BuildWindow() const { return fBuildWindow; }
   bool RecordDialog() const { return fRecordDialog; }
+  bool StartGui() const { return fStartGui; }
 
   bool SuppressErrors() const { return fSuppressErrors; }
 
@@ -68,7 +69,6 @@ public:
   bool SortRaw()            const { return fSortRaw; }
   bool SortRoot()           const { return fSortRoot; }
   bool ExtractWaves()       const { return fExtractWaves;  }
-  bool StartGUI()           const { return fStartGui; }
   bool MakeHistos()         const { return fMakeHistos; }
   bool SortMultiple()       const { return fSortMultiple; }
 
@@ -86,9 +86,6 @@ public:
   std::string GenerateOutputFilename(const std::vector<std::string>& filename);
 
   bool LongFileDescription() const { return fLongFileDescription; }
-
-
-  void SetStartGUI(bool flag=true) { fStartGui=flag; }
 
 private:
   TGRSIOptions2(int argc, char** argv);
