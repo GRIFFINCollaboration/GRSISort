@@ -12,6 +12,7 @@
 #include "TGRSIint.h"
 
 #include "GRSIVersion.h"
+#include "TThread.h"
 
 #ifdef __APPLE__
 #define HAVE_UTMPX_H
@@ -52,6 +53,9 @@ static void SetDisplay();
 
 int main(int argc, char **argv) {
    try{
+     TThread::Initialize();
+     TObject::SetObjectStat(false);
+     
       //Find the grsisort environment variable so that we can read in .grsirc
       SetDisplay();
       SetGRSIEnv();
