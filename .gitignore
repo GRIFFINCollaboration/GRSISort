@@ -22,3 +22,5 @@ G__auto*
 *.log
 include/GVersion.h
 .grsi_thread
+*.pyc
+__pycache__

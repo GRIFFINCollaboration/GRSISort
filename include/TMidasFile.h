@@ -70,7 +70,7 @@ public:
 
 protected:
   void ReadMoreBytes(size_t bytes);
-  
+
   TMidasEvent fFirstEvent;
 
   std::string fFilename; ///< name of the currently open file

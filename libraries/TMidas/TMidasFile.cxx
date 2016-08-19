@@ -175,10 +175,9 @@ bool TMidasFile::Open(const char *filename)
       pipe = "bzip2 -dc ";
       pipe += filename;
     }
-  else{
-     pipe = "cat ";
-     pipe+=filename;
-  }
+  // Note: We cannot use "cat" in a similar way to offload, and must open it directly.
+  //       "cat" ends immediately on end-of-file, making live histograms impossible.
+  //       "tail -fn +1" has the opposite problem, and will never end, stalling in read().
 
   if (pipe.length() > 0)
     {
@@ -381,6 +380,7 @@ void TMidasFile::ReadMoreBytes(size_t bytes) {
 #endif
   } else {
     rd = readpipe(fFile, fReadBuffer.data() + initial_size, bytes);
+    //rd = read(fFile, fReadBuffer.data() + initial_size, bytes);
   }
 
   fReadBuffer.resize(initial_size + rd);
@@ -511,6 +511,7 @@ void TMidasFile::Close()
 #endif
   if (fFile > 0)
     close(fFile);
+
   fFile = -1;
   fFilename = "";
 }

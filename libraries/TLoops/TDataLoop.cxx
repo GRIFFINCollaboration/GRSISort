@@ -17,6 +17,9 @@ TDataLoop::TDataLoop(std::string name,TMidasFile* source)
 
   SetFileOdb(source->GetFirstEvent().GetData(),
 	     source->GetFirstEvent().GetDataSize());
+  for(auto cal_filename : TGRSIOptions2::Get()->CalInputFiles()) {
+    TChannel::ReadCalFile(cal_filename.c_str());
+  }
 }
 
 TDataLoop::~TDataLoop(){
@@ -40,7 +43,7 @@ void TDataLoop::SetFileOdb(char* data, int size) {
    if(fOdb) {
    	delete fOdb;
 	   fOdb = 0;
-   } 
+   }
 
    if(TGRSIOptions2::Get()->IgnoreFileOdb()) {
       printf(DYELLOW "\tskipping odb information stored in file.\n" RESET_COLOR);
@@ -76,9 +79,9 @@ void TDataLoop::SetFileOdb(char* data, int size) {
 }
 
 void TDataLoop::SetGRIFFOdb() {
-   std::string path = "/DAQ/MSC"; 
+   std::string path = "/DAQ/MSC";
    printf("using GRIFFIN path to analyzer info: %s...\n",path.c_str());
-   
+
    std::string temp = path; temp.append("/MSC");
    TXMLNode* node = fOdb->FindPath(temp.c_str());
    std::vector<int> address = fOdb->ReadIntArray(node);
@@ -94,7 +97,7 @@ void TDataLoop::SetGRIFFOdb() {
    temp = path; temp.append("/gain");
    node = fOdb->FindPath(temp.c_str());
    std::vector<double> gains = fOdb->ReadDoubleArray(node);
-   
+
    temp = path; temp.append("/offset");
    node = fOdb->FindPath(temp.c_str());
    std::vector<double> offsets = fOdb->ReadDoubleArray(node);
@@ -110,26 +113,26 @@ void TDataLoop::SetGRIFFOdb() {
    for(size_t x=0;x<address.size();x++) {
       TChannel* tempChan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
 		if(!tempChan) {
-			tempChan = new TChannel();		
-		}		
+			tempChan = new TChannel();
+		}
       tempChan->SetName(names.at(x).c_str());
       tempChan->SetAddress(address.at(x));
       tempChan->SetNumber(x);
       //printf("temp chan(%s) number set to: %i\n",tempChan->GetChannelName(),tempChan->GetNumber());
-      
+
       tempChan->SetUserInfoNumber(x);
       tempChan->AddENGCoefficient(offsets.at(x));
       tempChan->AddENGCoefficient(gains.at(x));
       //TChannel::UpdateChannel(tempChan);
       TChannel::AddChannel(tempChan,"overwrite");
-   } 
+   }
    printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
 
    return;
 }
 
 void TDataLoop::SetTIGOdb()  {
-  
+
    std::string typepath = "/Equipment/Trigger/settings/Detector Settings";
    std::map<int,std::pair<std::string,std::string> >typemap;
    TXMLNode* typenode = fOdb->FindPath(typepath.c_str());
@@ -157,9 +160,9 @@ void TDataLoop::SetTIGOdb()  {
             break;
          typechild = typechild->GetNextNode();
       }
- 
+
    }
-   
+
    std::string path = "/Analyzer/Shared Parameters/Config";
 	TXMLNode* test = fOdb->FindPath(path.c_str());
 	if(!test)
@@ -181,7 +184,7 @@ void TDataLoop::SetTIGOdb()  {
    temp = path; temp.append("/g");
    node = fOdb->FindPath(temp.c_str());
    std::vector<double> gains = fOdb->ReadDoubleArray(node);
-   
+
    temp = path; temp.append("/o");
    node = fOdb->FindPath(temp.c_str());
    std::vector<double> offsets = fOdb->ReadDoubleArray(node);
@@ -202,7 +205,7 @@ void TDataLoop::SetTIGOdb()  {
    for(size_t x=0;x<address.size();x++) {
       TChannel* tempChan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
 		if(!tempChan)
-			tempChan = new TChannel();		
+			tempChan = new TChannel();
       if(x<names.size()) { tempChan->SetName(names.at(x).c_str()); }
 		//printf("address: 0x%08x\n",address.at(x));
       tempChan->SetAddress(address.at(x));
@@ -217,7 +220,7 @@ void TDataLoop::SetTIGOdb()  {
          else if(strcmp(tempChan->GetDigitizerType(),"Tig10")==0)
             temp_integration = 125;
       }
-      tempChan->SetIntegration(temp_integration);      
+      tempChan->SetIntegration(temp_integration);
       tempChan->SetUserInfoNumber(x);
       tempChan->AddENGCoefficient(offsets.at(x));
       tempChan->AddENGCoefficient(gains.at(x));
@@ -226,7 +229,7 @@ void TDataLoop::SetTIGOdb()  {
       //TChannel* temp2 = TChannel::GetChannel(address.at(x));
       //temp2->Print();
 			//printf("NumberofChannels: %i\n",TChannel::GetNumberOfChannels());
-   } 
+   }
    printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
    return;
 }
