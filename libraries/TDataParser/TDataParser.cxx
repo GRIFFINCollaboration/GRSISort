@@ -687,7 +687,8 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 						}
 						//for descant types (6,10,11) there are two more words for banks > GRF2 (bank GRF2 used 0xf packet and bank GRF1 never had descant)
 						if(bank > kGRF2 && (EventFrag->GetDetectorType() == 6 || EventFrag->GetDetectorType() == 10 || EventFrag->GetDetectorType() == 11)) {
-							if(x+1 < size) {
+							++x;
+							if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
 								SetGRIFCc(value, EventFrag);
 								++x;
 								dword = data[x];
