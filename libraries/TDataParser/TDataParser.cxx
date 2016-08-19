@@ -382,7 +382,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, int bank, unsig
 		return -x;
 	}
 	//Changed on 11 Aug 2015 by RD to include PPG events. If the event has DataType 4 and address 0xFFFF, it is a PPG event.
-   if(EventFrag->DataType == 4 && EventFrag->ChannelAddress == 0xFFFF){
+   if(EventFrag->DataType == 1 && EventFrag->ChannelAddress == 0xFFFF){
 		delete EventFrag;
 		return GriffinDataToPPGEvent(data,size,midasSerialNumber,midasTime);
 	}
