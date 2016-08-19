@@ -60,7 +60,7 @@ bool TDataLoop::Iteration() {
     bytes_read = source->Read(evt);
   }
 
-  if(bytes_read < 0 && fSelfStopping){
+  if(bytes_read <= 0 && fSelfStopping){
     // Error, and no point in trying again.
     printf("finished sorting all input.\n");
     return false;
@@ -70,6 +70,7 @@ bool TDataLoop::Iteration() {
     return true;
   } else {
     // Nothing returned this time, but I might get something next time.
+    printf("data_loop sleeping, bytes = %d\n",bytes_read);
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     return true;
   }

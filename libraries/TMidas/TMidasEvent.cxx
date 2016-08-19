@@ -18,7 +18,7 @@ ClassImp(TMidasEvent)
 
 TMidasEvent::TMidasEvent()
 {
-   //Default constructor
+  //Default constructor
   fData = NULL;
   fAllocatedByUs = false;
 
@@ -42,6 +42,7 @@ void TMidasEvent::Copy(TObject& rhs) const{
   static_cast<TMidasEvent&>(rhs).fAllocatedByUs = true;
 
   static_cast<TMidasEvent&>(rhs).fBanksN      = fBanksN;
+  static_cast<TMidasEvent&>(rhs).fBankList    = NULL;
   //if(fBankList) static_cast<TMidasEvent&>(rhs).fBankList    = strdup(fBankList);
   //assert(static_cast<TMidasEvent&>(rhs).fBankList);
 }
@@ -140,7 +141,7 @@ int TMidasEvent::LocateBank(const void *unused, const char *name, void **pdata) 
   int bktype, bklen;
 
   int status = FindBank(name, &bklen, &bktype, pdata);
-  
+
   if (!status)
     {
       *pdata = NULL;
@@ -161,7 +162,7 @@ static const unsigned TID_MAX = (sizeof(TID_SIZE)/sizeof(TID_SIZE[0]));
 /// \returns 1 if bank found, 0 otherwise.
 ///
 int TMidasEvent::FindBank(const char* name, int *bklen, int *bktype, void **pdata) const {
-  const TMidas_BANK_HEADER *pbkh = (const TMidas_BANK_HEADER*)fData; 
+  const TMidas_BANK_HEADER *pbkh = (const TMidas_BANK_HEADER*)fData;
   TMidas_BANK *pbk;
   //uint32_t dname;
 
@@ -198,12 +199,12 @@ int TMidasEvent::FindBank(const char* name, int *bklen, int *bktype, void **pdat
 	  name[1]==pbk32->fName[1] &&
 	  name[2]==pbk32->fName[2] &&
 	  name[3]==pbk32->fName[3]) {
-	
+
 	if (TID_SIZE[pbk32->fType & 0xFF] == 0)
 	  *bklen = pbk32->fDataSize;
 	else
 	  *bklen = pbk32->fDataSize / TID_SIZE[pbk32->fType & 0xFF];
-	
+
 	*bktype = pbk32->fType;
 	return 1;
       }
@@ -239,7 +240,7 @@ void TMidasEvent::Print(const char *option) const {
   /// \param [in] option If 'a' (for "all") then the raw data will be
   /// printed out too.
   ///
-  
+
   time_t t = (time_t)fEventHeader.fTimeStamp;
 
   printf("Event start:\n");
@@ -270,7 +271,7 @@ void TMidasEvent::Print(const char *option) const {
 	  int bankType = 0;
 	  void *pdata = 0;
 	  int found = FindBank(&fBankList[i], &bankLength, &bankType, &pdata);
-	  
+
 	  printf("Bank %c%c%c%c, length %6d, type %2d\n",
 		 fBankList[i], fBankList[i+1], fBankList[i+2], fBankList[i+3],
 		 bankLength, bankType);
@@ -279,7 +280,7 @@ void TMidasEvent::Print(const char *option) const {
 	  if(strlen(option)>1) {
 		highlight = atoi(option+1);
 		//printf("highlight = %i\n",highlight);
-	  }	
+	  }
 
 
 	  if (option[0] == 'a' && found)

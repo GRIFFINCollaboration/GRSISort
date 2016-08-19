@@ -383,6 +383,7 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
 
   size_t bytes_read = rd + rd_head;
   this->bytesRead += bytes_read;
+  this->currentEventNumber++;
 
   return bytes_read;
 }

@@ -49,9 +49,11 @@ TEnv *TGRSIint::fGRSIEnv = NULL;
 void ReadTheNews(void);
 
 TGRSIint *TGRSIint::instance(int argc,char** argv, void *options, int numOptions, bool noLogo, const char *appClassName) {
-   if(!fTGRSIint)
-      fTGRSIint = new TGRSIint(argc,argv,options,numOptions,true,appClassName);
-   return fTGRSIint;
+  if(!fTGRSIint) {
+    fTGRSIint = new TGRSIint(argc,argv,options,numOptions,true,appClassName);
+    fTGRSIint->ApplyOptions();
+  }
+  return fTGRSIint;
 }
 
 TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t noLogo,const char *appClassName)
@@ -74,7 +76,7 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
       std::string grsipath = getenv("GRSISYS");
       gInterpreter->AddIncludePath(Form("%s/include",grsipath.c_str()));
       //LoadExtraClasses();
-      ApplyOptions();
+      //ApplyOptions();
 }
 
 void TGRSIint::LoadExtraClasses() {
@@ -190,7 +192,8 @@ void TGRSIint::Terminate(Int_t status){
   if(!fAllowedToTerminate){
     return;
   }
-  // StoppableThread::StopAll();
+
+  StoppableThread::StopAll();
 
   //if(GUIIsRunning()){
   //  TPython::Exec("on_close()");
