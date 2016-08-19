@@ -81,6 +81,8 @@ private:
   TFragmentMap fFragmentMap;
 
 public:
+  void Push(ThreadsafeQueue<TFragment*>& queue, TFragment* frag);
+
   int TigressDataToFragment(uint32_t *data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
   int GriffinDataToFragment(uint32_t *data, int size, EBank bank, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
   int GriffinDataToPPGEvent(uint32_t *data, int size, unsigned int midasSerialNumber=0, time_t midasTime=0);

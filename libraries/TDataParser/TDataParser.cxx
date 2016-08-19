@@ -87,7 +87,7 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
         //SetTIGCharge(temp_charge,EventFrag);
         SetTIGLed(temp_led,EventFrag);
         ///check whether the fragment is 'good'
-        good_output_queue->Push(EventFrag);
+        Push(*good_output_queue, EventFrag);
         NumFragsFound++;
         return NumFragsFound;
 
@@ -500,7 +500,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
           if(EventFrag->GetModuleType() == 1 && bank == kGRF4) {
             if(tmpCfd.size() != 1) {
               if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
-              bad_output_queue->Push(EventFrag);
+              Push(*bad_output_queue,EventFrag);
               return -x;
             }
             EventFrag->SetCfd(tmpCfd[0]);
@@ -509,7 +509,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
           } else {
             if(tmpCharge.size() != tmpIntLength.size() || tmpCharge.size() != tmpCfd.size()) {
               if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
-              bad_output_queue->Push(EventFrag);
+              Push(*bad_output_queue,EventFrag);
               return -x;
             }
             for(size_t h = 0; h < tmpCharge.size(); ++h) {
@@ -517,14 +517,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
               EventFrag->SetKValue(tmpIntLength[h]);
               EventFrag->SetCfd(tmpCfd[h]);
               if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
-              good_output_queue->Push(new TFragment(*EventFrag));
+              Push(*good_output_queue,new TFragment(*EventFrag));
             }
             delete EventFrag;
             return x;
           }
         } else  {
           if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
-          bad_output_queue->Push(EventFrag);
+          Push(*bad_output_queue,EventFrag);
           return -x;
         }
         break;
@@ -728,7 +728,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
   }//for(;x<size;x++)
 
   TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
-  bad_output_queue->Push(EventFrag);
+  Push(*bad_output_queue,EventFrag);
   return -x;
 }
 
@@ -1216,6 +1216,12 @@ int TDataParser::FifoToFragment(unsigned short* data,int size,bool zerobuffer,
   //	good_output_queue->Add(EventFrag);
   //
   return 1;
+}
+
+void TDataParser::Push(ThreadsafeQueue<TFragment*>& queue, TFragment* frag) {
+  frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
+  fFragmentIdMap[frag->GetTriggerId()]++;
+  queue.Push(frag);
 }
 
 /////////////***************************************************************/////////////
