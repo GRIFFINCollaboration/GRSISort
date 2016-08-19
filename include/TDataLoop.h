@@ -15,6 +15,7 @@
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"
 #include "TMidasEvent.h"
+#include "TXMLOdb.h"
 
 class TMidasFile;
 
@@ -51,6 +52,12 @@ private:
   TDataLoop();
   TDataLoop(const TDataLoop& other);
   TDataLoop& operator=(const TDataLoop& other);
+
+  TXMLOdb* fOdb;
+
+  void SetFileOdb(char* data, int size);
+  void SetTIGOdb();
+  void SetGRIFFOdb();
 
   TMidasFile* source;
 

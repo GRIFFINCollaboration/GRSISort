@@ -156,8 +156,11 @@ void TGRSIRootIO::FillBadFragmentTree(TFragment* frag) {
 
 void TGRSIRootIO::FillPPG(TPPGData* data) {
 	//Set PPG Stuff here
-	fPPG->AddData(data);
-	++fTimesPPGCalled;
+  if(!fPPG) {
+    SetUpPPG();
+  }
+  fPPG->AddData(data);
+  ++fTimesPPGCalled;
 }
 
 void TGRSIRootIO::FillDeadtimeScalerTree(TScalerData* scalerData) {
