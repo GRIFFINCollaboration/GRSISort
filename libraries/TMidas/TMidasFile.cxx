@@ -1,3 +1,4 @@
+#include <iostream>
 #include <fstream>
 #include <stdio.h>
 #include <cstring>
@@ -326,66 +327,71 @@ static int readpipe(int fd, char* buf, int length)
 ///
 int TMidasFile::Read(TMidasEvent *midasEvent)
 {
+  if(fReadBuffer.size() < sizeof(TMidas_EVENT_HEADER)) {
+    ReadMoreBytes(sizeof(TMidas_EVENT_HEADER) - fReadBuffer.size());
+  }
+
+  if(fReadBuffer.size() < sizeof(TMidas_EVENT_HEADER)) {
+    return 0;
+  }
+
   midasEvent->Clear();
-
-  int rd = 0;
-  int rd_head = 0;
-  if (fGzFile)
-#ifdef HAVE_ZLIB
-    rd_head = gzread(*(gzFile*)fGzFile, (char*)midasEvent->GetEventHeader(), sizeof(TMidas_EVENT_HEADER));
-#else
-    assert(!"Cannot get here");
-#endif
-  else
-    rd_head = readpipe(fFile, (char*)midasEvent->GetEventHeader(), sizeof(TMidas_EVENT_HEADER));
-
-  if (rd_head == 0)
-    {
-      fLastErrno = 0;
-      fLastError.assign("EOF");
-      return 0;
-    }
-  else if (rd_head != sizeof(TMidas_EVENT_HEADER))
-    {
-      fLastErrno = errno;
-      fLastError.assign(std::strerror(errno));
-      return 0;
-    }
-
+  memcpy((char*)midasEvent->GetEventHeader(),fReadBuffer.data(),sizeof(TMidas_EVENT_HEADER));
   if (fDoByteSwap){
     printf("Swapping bytes\n");
     midasEvent->SwapBytesEventHeader();
-   }
-  if (!midasEvent->IsGoodSize())
-    {
-      fLastErrno = -1;
-      fLastError.assign("Invalid event size");
-      return 0;
-    }
+  }
+  if (!midasEvent->IsGoodSize()) {
+    fLastErrno = -1;
+    fLastError.assign("Invalid event size");
+    return 0;
+  }
 
-  if (fGzFile)
+  size_t event_size = midasEvent->GetDataSize();
+  size_t total_size = sizeof(TMidas_EVENT_HEADER) + event_size;
+
+  if(fReadBuffer.size() < total_size) {
+    ReadMoreBytes(total_size - fReadBuffer.size());
+  }
+
+  if(fReadBuffer.size() < total_size) {
+    return 0;
+  }
+
+  memcpy(midasEvent->GetData(), fReadBuffer.data() + sizeof(TMidas_EVENT_HEADER), event_size);
+  midasEvent->SwapBytes(false);
+
+  size_t bytes_read = fReadBuffer.size();
+  this->bytesRead += bytes_read;
+  this->currentEventNumber++;
+  fReadBuffer.clear();
+
+  return bytes_read;
+}
+
+void TMidasFile::ReadMoreBytes(size_t bytes) {
+  size_t initial_size = fReadBuffer.size();
+  fReadBuffer.resize(initial_size + bytes);
+  int rd = 0;
+  if (fGzFile) {
 #ifdef HAVE_ZLIB
-    rd = gzread(*(gzFile*)fGzFile, midasEvent->GetData(), midasEvent->GetDataSize());
+    rd = gzread(*(gzFile*)fGzFile, fReadBuffer.data() + initial_size, bytes);
 #else
     assert(!"Cannot get here");
 #endif
-  else
-    rd = readpipe(fFile, midasEvent->GetData(), midasEvent->GetDataSize());
+  } else {
+    rd = readpipe(fFile, fReadBuffer.data() + initial_size, bytes);
+  }
 
-  if (rd != (int)midasEvent->GetDataSize())
-    {
-      fLastErrno = errno;
-      fLastError.assign(std::strerror(errno));
-      return 0;
-    }
+  fReadBuffer.resize(initial_size + rd);
 
-  midasEvent->SwapBytes(false);
-
-  size_t bytes_read = rd + rd_head;
-  this->bytesRead += bytes_read;
-  this->currentEventNumber++;
-
-  return bytes_read;
+  if (rd == 0) {
+    fLastErrno = 0;
+    fLastError.assign("EOF");
+  } else if (rd != bytes) {
+    fLastErrno = errno;
+    fLastError.assign(std::strerror(errno));
+  }
 }
 
 void TMidasFile::FillBuffer(TMidasEvent *midasEvent, Option_t *opt){

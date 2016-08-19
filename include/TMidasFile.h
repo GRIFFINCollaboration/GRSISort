@@ -69,6 +69,8 @@ public:
   void SetMaxBufferSize(int maxsize);
 
 protected:
+  void ReadMoreBytes(size_t bytes);
+  
   TMidasEvent fFirstEvent;
 
   std::string fFilename; ///< name of the currently open file
@@ -77,6 +79,8 @@ protected:
   std::vector<char> fWriteBuffer;
   uint32_t fCurrentBufferSize;
   uint32_t fMaxBufferSize;
+
+  std::vector<char> fReadBuffer;
 
   int         fLastErrno; ///< errno from the last operation
   std::string fLastError; ///< error string from last errno
