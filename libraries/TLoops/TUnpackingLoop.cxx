@@ -47,7 +47,9 @@ bool TUnpackingLoop::Iteration(){
   if(error<0) {
     if(input_queue->IsFinished()){
       // Source is dead, push the last event and stop.
-      parser.GoodOutputQueue()->SetFinished();
+      GoodOutputQueue()->SetFinished();
+      BadOutputQueue()->SetFinished();
+      ScalerOutputQueue()->SetFinished();
       return false;
     } else {
       // Wait for the source to give more data.

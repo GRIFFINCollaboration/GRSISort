@@ -78,7 +78,7 @@ int ThreadsafeQueue<T>::Push(T obj) {
 template<typename T>
 int ThreadsafeQueue<T>::Pop(T& output, int millisecond_wait) {
   std::unique_lock<std::mutex> lock(mutex);
-  if(!queue.size()){
+  if(!queue.size() && millisecond_wait){
     can_pop.wait_for(lock, std::chrono::milliseconds(millisecond_wait));
   }
 

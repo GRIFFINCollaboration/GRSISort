@@ -490,6 +490,8 @@ void TGRSIint::SetupFragmentPipeline() {
 
   // Everything involving the fragment tree
   std::shared_ptr<ThreadsafeQueue<TFragment*> > current_queue = nullptr;
+  std::shared_ptr<ThreadsafeQueue<TFragment*> > bad_queue = nullptr;
+  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> > scaler_queue = nullptr;
   if(sort_raw) {
     if(fMidasFiles.size() > 1) {
       std::cerr << "I'm going to ignore all but first .mid" << std::endl;
@@ -501,6 +503,8 @@ void TGRSIint::SetupFragmentPipeline() {
     TUnpackingLoop* unpack_loop = TUnpackingLoop::Get("2_unpack_loop");
     unpack_loop->InputQueue() = data_loop->OutputQueue();
     current_queue = unpack_loop->GoodOutputQueue();
+    scaler_queue = unpack_loop->ScalerOutputQueue();
+    bad_queue = unpack_loop->BadOutputQueue();
   } else if (sort_fragment_tree) {
     auto loop = TFragmentChainLoop::Get("1_chain_loop", gFragment);
     loop->SetSelfStopping(self_stopping);
@@ -514,85 +518,35 @@ void TGRSIint::SetupFragmentPipeline() {
   }
 
   if(write_fragment_root_tree) {
-    TFragWriteLoop* loop = TFragWriteLoop::Get("3_frag_write_loop");
+    TFragWriteLoop* loop = TFragWriteLoop::Get("3_frag_write_loop",output_fragment_root_file);
     loop->InputQueue() = current_queue;
     current_queue = loop->OutputQueue();
+    if(scaler_queue) {
+      loop->ScalerInputQueue() = scaler_queue;
+      scaler_queue = nullptr;
+    }
   }
 
-  {
+  // For each leftover queue, terminate if still exists.
+  if(current_queue) {
     auto loop = TTerminalLoop<TFragment>::Get("4_frag_term_loop");
     loop->InputQueue() = current_queue;
+    current_queue = nullptr;
+  }
+
+  if(scaler_queue) {
+    auto loop = TTerminalLoop<TEpicsFrag>::Get("5_scaler_term_loop");
+    loop->InputQueue() = scaler_queue;
+    scaler_queue = nullptr;
+  }
+
+  if(bad_queue) {
+    auto loop = TTerminalLoop<TFragment>::Get("6_bad_frag_term_loop");
+    loop->InputQueue() = bad_queue;
+    bad_queue = nullptr;
   }
 
   StoppableThread::ResumeAll();
-
-
-
-
-  // // Now, start setting stuff up
-
-  // std::vector<TFile*> cuts_files;
-  // for(auto filename : opt->CutsInputFiles()) {
-  //   TFile* tfile = OpenRootFile(filename);
-  //   cuts_files.push_back(tfile);
-  // }
-
-  // // No need to set up all the loops if we are just opening the interpreter.
-  // if(!sort_raw && !sort_tree) {
-  //   return;
-  // }
-
-  // std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> > current_queue = nullptr;
-
-  // //next most important thing, if given a raw file && NOT told to not sort!
-  // if(sort_raw) {
-  //   TRawEventSource* source = OpenRawSource();
-  //   fDataLoop = TDataLoop::Get("1_input_loop",source);
-  //   fDataLoop->SetSelfStopping(self_stopping);
-
-  //   TBuildingLoop* build_loop = TBuildingLoop::Get("2_build_loop");
-  //   build_loop->SetBuildWindow(opt->BuildWindow());
-  //   build_loop->InputQueue() = fDataLoop->OutputQueue();
-
-  //   TUnpackingLoop* unpack_loop = TUnpackingLoop::Get("3_unpack");
-  //   unpack_loop->InputQueue() = build_loop->OutputQueue();
-  //   current_queue = unpack_loop->OutputQueue();
-
-  // } else if(sort_tree) {
-  //   fChainLoop = TChainLoop::Get("1_chain_loop",gChain);
-  //   fChainLoop->SetSelfStopping(self_stopping);
-  //   current_queue = fChainLoop->OutputQueue();
-  // }
-
-  // if(filter_data) {
-  //   TFilterLoop* filter_loop = TFilterLoop::Get("4_filter_loop");
-  //   if(raw_filtered_output) {
-  //     filter_loop->OpenRawOutputFile(opt->OutputFilteredFile());
-  //   }
-  //   filter_loop->InputQueue() = current_queue;
-  //   current_queue = filter_loop->OutputQueue();
-  // }
-
-  // if(write_root_tree) {
-  //   TWriteLoop* write_loop = TWriteLoop::Get("5_write_loop", output_root_file);
-  //   write_loop->InputQueue() = current_queue;
-  //   current_queue = write_loop->OutputQueue();
-  // }
-
-  // if(write_histograms) {
-  //   fHistogramLoop = THistogramLoop::Get("6_hist_loop");
-  //   fHistogramLoop->SetOutputFilename(output_hist_file);
-  //   for(auto cut_file : cuts_files) {
-  //     fHistogramLoop->AddCutFile(cut_file);
-  //   }
-  //   fHistogramLoop->InputQueue() = current_queue;
-  //   current_queue = fHistogramLoop->OutputQueue();
-  // }
-
-  // TTerminalLoop* terminal_loop = TTerminalLoop::Get("7_terminal_loop");
-  // terminal_loop->InputQueue() = current_queue;
-
-  // StoppableThread::ResumeAll();
 }
 
 void TGRSIint::RunMacroFile(const std::string& filename){

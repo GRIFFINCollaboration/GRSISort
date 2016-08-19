@@ -9,6 +9,7 @@
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"
 #include "TFragment.h"
+#include "TEpicsFrag.h"
 
 class TFragWriteLoop : public StoppableThread {
 public:
@@ -18,6 +19,7 @@ public:
 
 #ifndef __CINT__
   std::shared_ptr<ThreadsafeQueue<TFragment*> >& InputQueue() { return input_queue; }
+  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> >& ScalerInputQueue() { return scaler_input_queue; }
   std::shared_ptr<ThreadsafeQueue<TFragment*> >& OutputQueue() { return output_queue; }
 #endif
 
@@ -25,9 +27,9 @@ public:
 
   void Write();
 
-  size_t GetItemsPushed()  { return items_handled; }
-  size_t GetItemsPopped()  { return 0; }
-  size_t GetItemsCurrent() { return 0;      }
+  size_t GetItemsPushed()  { return output_queue->ItemsPushed(); }
+  size_t GetItemsPopped()  { return output_queue->ItemsPopped(); }
+  size_t GetItemsCurrent() { return output_queue->Size(); }
   size_t GetRate()         { return 0; }
 
 protected:
@@ -36,15 +38,21 @@ protected:
 private:
   TFragWriteLoop(std::string name, std::string output_file);
   void WriteEvent(TFragment& event);
+  void WriteScaler(TEpicsFrag& scaler);
 
-  TFragment** address;
   TFile* output_file;
+
+  TFragment** event_address;
   TTree* event_tree;
+
+  TEpicsFrag** scaler_address;
+  TTree* scaler_tree;
 
   size_t items_handled;
 
 #ifndef __CINT__
   std::shared_ptr<ThreadsafeQueue<TFragment*> > input_queue;
+  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> > scaler_input_queue;
   std::shared_ptr<ThreadsafeQueue<TFragment*> > output_queue;
 #endif
 
