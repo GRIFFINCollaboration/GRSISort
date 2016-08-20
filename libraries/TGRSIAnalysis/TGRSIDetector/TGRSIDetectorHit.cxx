@@ -187,6 +187,13 @@ Int_t TGRSIDetectorHit::GetCrystal() const {
   return -1;
 }
 
+Int_t TGRSIDetectorHit::GetArrayNumber() const {
+  TChannel *channel = GetChannel();
+  if(channel) {
+    return GetDetector()*4 + GetCrystal();
+  }
+  return -1;
+}
 /*
 UInt_t TGRSIDetectorHit::SetDetector(const UInt_t& det) {
   fDetector = det;
