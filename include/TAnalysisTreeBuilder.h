@@ -35,19 +35,19 @@
 #include "TGRSIRunInfo.h"
 #include "TPPG.h"
 
-#include "TTigress.h" 
-#include "TSharc.h"     
-#include "TTriFoil.h"   
-#include "TRF.h"        
-#include "TCSM.h"       
-#include "TSiLi.h"     
-#include "TS3.h"        
-#include "TTip.h"       
-   
-#include "TGriffin.h"   
-#include "TSceptar.h"   
-#include "TPaces.h"   
-//#include "TDante.h"     
+#include "TTigress.h"
+#include "TSharc.h"
+#include "TTriFoil.h"
+#include "TRF.h"
+#include "TCSM.h"
+#include "TSiLi.h"
+#include "TS3.h"
+#include "TTip.h"
+
+#include "TGriffin.h"
+#include "TSceptar.h"
+#include "TPaces.h"
+//#include "TDante.h"
 #include "TLaBr.h"
 #include "TTAC.h"
 #include "TZeroDegree.h"
@@ -57,7 +57,7 @@
 ///
 /// \class TEventQueue
 ///
-/// This Class stores pointers to vectors of TFragments in 
+/// This Class stores pointers to vectors of TFragments in
 /// a std::queue. The queue is filled in
 /// TAnalysisTreeBuilder::SortFragmentTree,
 /// TAnalysisTreeBuilder::SortFragmentChain, or
@@ -70,7 +70,7 @@
 class TEventQueue : public TObject {
   public:
 	static TEventQueue* Get();
-	static void Add(std::vector<TFragment>* event); 
+	static void Add(std::vector<TFragment>* event);
 	static std::vector<TFragment>* PopEntry();
 	static int Size();
 	virtual ~TEventQueue() { std::cout << std::endl << "In event queue dstor." << std::endl; }
@@ -81,15 +81,15 @@ class TEventQueue : public TObject {
 	void operator=(const TEventQueue&) { MayNotUse(__PRETTY_FUNCTION__); }
 	static TEventQueue* fPtrToQue;
 
-      
-	void AddInstance(std::vector<TFragment>* event); 
+
+	void AddInstance(std::vector<TFragment>* event);
 	std::vector<TFragment>* PopEntryInstance();
 	int SizeInstance();
-      
+
 	std::queue<std::vector<TFragment>*> fEventQueue;
 #if !defined (__CINT__) && !defined (__CLING__)
 	std::mutex m_event;
-#endif 
+#endif
 	bool fELock;
 	void SetLock()   { printf(BLUE "settting event lock" RESET_COLOR  "\n");  fELock = true;  }
 	void UnsetLock() { printf(RED "unsettting event lock" RESET_COLOR  "\n"); fELock = false; }
@@ -104,7 +104,7 @@ class TEventQueue : public TObject {
 /// \class TWriteQueue
 ///
 /// This Class stores a map of detector pointers in a std::queue
-/// The queue is filled in TAnalysisTreeBuilder::ProcessEvent via 
+/// The queue is filled in TAnalysisTreeBuilder::ProcessEvent via
 /// TAnalysisTreeBuilder::FillWriteQueue.
 /// The events are taking out of the queue and written to the
 /// AnalysisTree in TAnalysisTreeBuilder::WriteAnalysisTree.
@@ -114,7 +114,7 @@ class TEventQueue : public TObject {
 class TWriteQueue {
    public:
       static TWriteQueue* Get();
-      static void Add(std::map<TClass*, TDetector*>* event); 
+      static void Add(std::map<TClass*, TDetector*>* event);
       static std::map<TClass*, TDetector*>* PopEntry();
       static int Size();
       virtual ~TWriteQueue() { }
@@ -123,16 +123,16 @@ class TWriteQueue {
       TWriteQueue();
       static TWriteQueue* fPtrToQue;
 
-      
-      void AddInstance(std::map<TClass*, TDetector*>* event); 
+
+      void AddInstance(std::map<TClass*, TDetector*>* event);
       std::map<TClass*, TDetector*>* PopEntryInstance();
       int SizeInstance();
-      
+
       std::queue<std::map<TClass*, TDetector*>*> fWriteQueue;
 #if !defined (__CINT__) && !defined (__CLING__)
       std::mutex m_write;
 #endif
-      bool fWLock;         
+      bool fWLock;
       void SetLock()   {  fWLock = true;  }
       void UnsetLock() {  fWLock = false; }
 };
@@ -174,6 +174,7 @@ class TAnalysisTreeBuilder : public TObject {
       void CloseAnalysisFile();
 
       void StartMakeAnalysisTree(int argc=1, char** argv=0);
+      void StartMakeAnalysisTree(TChain* chain);
 
       void ClearActiveAnalysisTreeBranches();
       void ResetActiveAnalysisTreeBranches();
@@ -184,7 +185,7 @@ class TAnalysisTreeBuilder : public TObject {
       void Status();
 
    private:
-      TAnalysisTreeBuilder(); 
+      TAnalysisTreeBuilder();
       void InitChannels();
       void LoadPPG();
       void LoadRunInfo();
@@ -218,27 +219,27 @@ class TAnalysisTreeBuilder : public TObject {
 #endif
 
    private:
-     
+
       TFragment* fCurrentFragPtr;
 
       //TigAux detectors
       TTigress*    fTigress;                                 ///< A pointer to the Tigress Mother Class
       TSharc*      fSharc;                                   ///< A pointer to the Sharc Mother Class
       TTriFoil*    fTriFoil;                                 ///< A pointer to the TriFoil Mother Class
-      TRF*         fRf;                                      ///< A pointer to the TRF Mother Class 
+      TRF*         fRf;                                      ///< A pointer to the TRF Mother Class
       TCSM*        fCsm;                                     ///< A pointer to the CSM Mother Class
-      TSiLi*       fSiLi;  
+      TSiLi*       fSiLi;
       TS3*         fS3;
-      TTip*        fTip;    
-       
+      TTip*        fTip;
+
       //GrifAux detectors
       TGriffin*    fGriffin;                                 ///< A pointer to the Griffin Mother Class
       TSceptar*    fSceptar;                                 ///< A pointer to the Sceptar Mother Class
       TPaces*      fPaces;                                   ///< A pointer to the Paces Mother Class
-      TLaBr*       fLaBr; 
+      TLaBr*       fLaBr;
       TTAC*        fTAC;
       TZeroDegree* fZeroDegree;                              ///< A pointer to the ZeroDegree mother class
-      
+
       //Aux Detectors
       TDescant*    fDescant;                                 ///< A pointer to the Descant Mother Class
 

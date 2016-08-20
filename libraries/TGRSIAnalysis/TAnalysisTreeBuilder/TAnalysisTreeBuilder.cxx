@@ -192,6 +192,15 @@ void TAnalysisTreeBuilder::StartMakeAnalysisTree(int argc, char** argv) {
 
 }
 
+void TAnalysisTreeBuilder::StartMakeAnalysisTree(TChain* chain) {
+  std::vector<std::string> input_files;
+  for(TObject* obj : *chain->GetListOfFiles()) {
+    input_files.push_back(obj->GetTitle());
+  }
+  SetUpFragmentChain(input_files);
+  SortFragmentChain();
+}
+
 
 void TAnalysisTreeBuilder::InitChannels() {
   ///Initializes the channels from a cal file on the command line when
@@ -516,7 +525,7 @@ void TAnalysisTreeBuilder::SetupFragmentTree() {
   if(!fCurrentFragTree->GetTreeIndex()) {
     if(fCurrentRunInfo->Tigress()) {
       printf(DBLUE "Tree Index not found, building index on TriggerId/FragmentId..." RESET_COLOR);  fflush(stdout);
-      fCurrentFragTree->BuildIndex("TriggerId","FragmentId");
+      fCurrentFragTree->BuildIndex("fTriggerId","fFragmentId");
     }
     printf(DBLUE " done!" RESET_COLOR "\n");
   }
@@ -761,8 +770,9 @@ void TAnalysisTreeBuilder::CloseAnalysisFile() {
   //TChannel::DeleteAllChannels();
 
   fCurrentAnalysisFile->cd();
-  if(fCurrentAnalysisTree)
-    fCurrentAnalysisTree->Write();
+  if(fCurrentAnalysisTree) {
+    fCurrentAnalysisTree->Write(fCurrentAnalysisTree->GetName(), TObject::kOverwrite);
+  }
   fCurrentAnalysisFile->Close();
 
   fCurrentAnalysisTree = 0;

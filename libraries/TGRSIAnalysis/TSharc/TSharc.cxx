@@ -91,8 +91,10 @@ void TSharc::AddFragment(TFragment* frag, TChannel* chan) {
       
       // if(frag->GetDetector()==11 && frag->GetSegment()==16)
       //   return;
+      //printf("FRONT:  %s\n",frag->GetName());
       fFrontFragments.push_back(*frag);
     } else {
+      //printf("BACK:  %s\n",frag->GetName());
       fBackFragments.push_back(*frag);
     }
   } else if(chan->GetMnemonic()->arraysubposition.compare(0,1,"E") == 0) {
@@ -106,6 +108,9 @@ void TSharc::BuildHits() {
   std::vector<TFragment>::iterator front;
   std::vector<TFragment>::iterator back;
   std::vector<TFragment>::iterator pad;
+  //static int total;
+  //printf("\t%i:  front = %i; back = %i\n",total++,fFrontFragments.size(),fBackFragments.size()); fflush(stdout);
+
   for(front=fFrontFragments.begin();front!=fFrontFragments.end();) {
     bool front_used = false;
     bool back_used  = false;
@@ -140,6 +145,8 @@ void TSharc::BuildHits() {
       }
     }
   }
+  //printf(DRED "built %i sharc hits!" RESET_COLOR "\n",fSharcHits.size()); fflush(stdout);
+
 }
 
 void TSharc::RemoveHits(std::vector<TSharcHit>* hits,std::set<int>* to_remove) {

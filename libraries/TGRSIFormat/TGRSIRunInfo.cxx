@@ -584,34 +584,34 @@ bool TGRSIRunInfo::IsBadCycle(int cycle) const{
 }
 
 bool TGRSIRunInfo::WriteToRoot(TFile* fileptr) {
-	///Writes Info File information to the tree
-	//Maintain old gDirectory info
-   bool bool2return = true;
-	TDirectory* savdir = gDirectory;
+  ///Writes Info File information to the tree
+  //Maintain old gDirectory info
+  bool bool2return = true;
+  TDirectory* savdir = gDirectory;
 
-	if(!fileptr)
-		fileptr = gDirectory->GetFile();
-	fileptr->cd();
-	std::string oldoption = std::string(fileptr->GetOption());
-	if(oldoption == "READ") {
-		fileptr->ReOpen("UPDATE");
-	}
-	if(!gDirectory){
-		printf("No file opened to write to.\n");
-      bool2return = false;
-   }
-   else{
-      Get()->Write();
-   }
+  if(!fileptr)
+    fileptr = gDirectory->GetFile();
+  fileptr->cd();
+  std::string oldoption = std::string(fileptr->GetOption());
+  if(oldoption == "READ") {
+    fileptr->ReOpen("UPDATE");
+  }
+  if(!gDirectory){
+    printf("No file opened to write to.\n");
+    bool2return = false;
+  }
+  else{
+    Get()->Write();
+  }
 
-   printf("Writing Run Information to %s\n",gDirectory->GetFile()->GetName());
-	if(oldoption == "READ") {
-		printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
-		fileptr->ReOpen("READ");
-	}
-	savdir->cd();//Go back to original gDirectory
+  printf("Writing Run Information to %s\n",gDirectory->GetFile()->GetName());
+  if(oldoption == "READ") {
+    printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
+    fileptr->ReOpen("READ");
+  }
+  savdir->cd();//Go back to original gDirectory
 
-   return bool2return;
+  return bool2return;
 }
 
 bool TGRSIRunInfo::WriteInfoFile(std::string filename) {

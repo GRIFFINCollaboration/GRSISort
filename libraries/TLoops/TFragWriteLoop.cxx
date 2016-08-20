@@ -8,6 +8,7 @@
 
 #include "GValue.h"
 #include "TChannel.h"
+#include "TGRSIRunInfo.h"
 
 TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string output_filename){
   if(name.length()==0){
@@ -61,10 +62,15 @@ TFragWriteLoop::~TFragWriteLoop() {
     output_file->cd();
     event_tree->Write(event_tree->GetName(), TObject::kOverwrite);
     scaler_tree->Write(scaler_tree->GetName(), TObject::kOverwrite);
-    if(GValue::Size())
+    if(GValue::Size()) {
       GValue::Get()->Write();
-    if(TChannel::GetNumberOfChannels())
+    }
+
+    if(TChannel::GetNumberOfChannels()) {
       TChannel::GetDefaultChannel()->Write();
+    }
+
+    TGRSIRunInfo::Get()->WriteToRoot(output_file);
 
     output_file->Close();
     output_file->Delete();

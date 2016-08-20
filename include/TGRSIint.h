@@ -50,7 +50,8 @@ public:
 
 private:
   void SetupFragmentPipeline();
-  void FragmentLoopUntilDone();
+  void SetupAnalysisPipeline();
+  void LoopUntilDone();
   //bool FileAutoDetect(std::string fileName, long fileSize);
   void InitFlags();
   void ApplyOptions();
@@ -68,6 +69,7 @@ private:
   bool fAllowedToTerminate;
   int fRootFilesOpened;
   int fMidasFilesOpened;
+  std::string fNewFragmentFile;
 
   std::vector<TMidasFile*> fMidasFiles;
 

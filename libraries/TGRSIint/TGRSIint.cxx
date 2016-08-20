@@ -21,6 +21,7 @@
 #include "TFragWriteLoop.h"
 #include "TTerminalLoop.h"
 #include "GRootCommands.h"
+#include "TGRSIRunInfo.h"
 
 #include "TInterpreter.h"
 #include "TGHtmlBrowser.h"
@@ -142,6 +143,12 @@ void TGRSIint::ApplyOptions() {
    for(auto cal_filename : opt->CalInputFiles()) {
      TChannel::ReadCalFile(cal_filename.c_str());
    }
+   if(fMidasFiles.size()) {
+     TGRSIRunInfo::Get()->SetRunInfo(fMidasFiles[0]->GetRunNumber(),
+                                     fMidasFiles[0]->GetSubRunNumber());
+   } else {
+     TGRSIRunInfo::Get()->SetRunInfo(0,0);
+   }
    for(auto val_filename : opt->ValInputFiles()) {
      GValue::ReadValFile(val_filename.c_str());
    }
@@ -161,14 +168,27 @@ void TGRSIint::ApplyOptions() {
    }
 
    if(opt->CloseAfterSort()){
-     FragmentLoopUntilDone();
+     LoopUntilDone();
+     // Clears out threads, saves everything.
+     StoppableThread::StopAll();
+
+     // If the fragment pipeline made a new root file,
+     //   we want to use it in the analysis pipeline.
+     if(fNewFragmentFile.length()) {
+       OpenRootFile(fNewFragmentFile);
+     }
+
+     // Can't start the analysis pipeline in online mode,
+     //   because it requires sorting of entire fragment tree.
+     SetupAnalysisPipeline();
+     LoopUntilDone();
+
      int exit_status = missing_raw_file ? 1 : 0;
      this->Terminate(exit_status);
    }
 }
 
-void TGRSIint::FragmentLoopUntilDone() {
-  // TODO: Pull in all the stoppablethread stop.
+void TGRSIint::LoopUntilDone() {
   while(StoppableThread::AnyThreadRunning()){
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -358,6 +378,9 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt){
   //   //TPython::Bind(file,"tdir");
   //   //ProcessLine("TPython::Exec(\"window.AddDirectory(tdir)\");");
   // }
+
+  TGRSIRunInfo::ReadInfoFromFile();
+
   return file;
 }
 
@@ -404,32 +427,16 @@ void TGRSIint::SetupFragmentPipeline() {
                     !missing_raw_file &&
                     opt->SortRaw() );
 
-  //bool has_explicit_root_output = opt->OutputFile().length();
-//  bool filter_data = opt->CompiledFilterFile().length();
-//  bool raw_filtered_output = opt->OutputFilteredFile().length();
-
   bool has_input_fragment_tree = gFragment;
   bool has_input_analysis_tree = gAnalysis;
   bool write_fragment_histograms = (opt->MakeHistos() &&
                                     opt->FragmentHistogramLib().length()>0);
-  // bool write_analysis_histograms = (opt->MakeHistos() &&
-  //                                   opt->AnalysisHistogramLib().length()>0);
 
   bool sort_fragment_tree = (has_input_fragment_tree &&
                              (write_fragment_histograms ||
-                              //write_analysis_histograms ||
-                              opt->SortRoot() ||
-                              opt->MakeAnalysisTree() ||
-                              opt->OutputAnalysisFile().length()>0) );
-
-  // bool sort_analysis_tree = (has_input_analysis_tree &&
-  //                            !sort_fragment_tree &&
-  //                            (write_analysis_histograms || opt->SortRoot() ) );
+                              opt->SortRoot() ));
 
   bool write_fragment_root_tree = sort_raw;
-  // bool write_analysis_root_tree = ((sort_fragment_tree || sort_raw) &&
-  //                                  opt->MakeAnalysisTree() );
-  //bool write_analysis_root_tree = sort_fragment;
 
   std::string output_fragment_root_file = "";
   if(opt->OutputFragmentFile().length()) {
@@ -449,46 +456,18 @@ void TGRSIint::SetupFragmentPipeline() {
                                           GetSubRunNumber(output_fragment_root_file));
   }
 
-  // std::string output_analysis_root_file = "temp_analysis_tree.root";
-  // if(opt->OutputAnalysisFile().length()) {
-  //   output_analysis_root_file = opt->OutputAnalysisFile();
-  // } else if(output_fragment_root_file.length() > 0) {
-  //   output_analysis_root_file = Form("analysis%05i_%03i.root",
-  //                                    GetRunNumber(output_fragment_root_file),
-  //                                    GetSubRunNumber(output_fragment_root_file));
-  // } else if(sort_fragment_tree) {
-  //   output_analysis_root_file = Form("analysis%05i_%03i.root",
-  //                                    GetRunNumber(gFragment->GetListOfFiles()->At(0)->GetTitle()),
-  //                                    GetSubRunNumber(gFragment->GetListOfFiles()->At(0)->GetTitle()));
-  // }
+  // std::cout << "Missing Raw File: " << missing_raw_file << std::endl;
+  // std::cout << "has_raw_file : " << has_raw_file  << std::endl;
+  // std::cout << "self_stopping: " << self_stopping << std::endl;
+  // std::cout << "sort_raw: " << sort_raw << std::endl;
+  // std::cout << "has_input_fragment_tree: " << has_input_fragment_tree << std::endl;
+  // std::cout << "sort_fragment_tree: " << sort_fragment_tree << std::endl;
+  // std::cout << "write_fragment_root_tree: " << write_fragment_root_tree << std::endl;
+  // std::cout << "write_fragment_histograms: " << write_fragment_histograms << std::endl;
+  // std::cout << "output_fragment_root_file: " << output_fragment_root_file << std::endl;
+  // std::cout << "output_fragment_histogram_file: " << output_fragment_histogram_file << std::endl;
 
-  // std::string output_analysis_histogram_file = "";
-  // if(opt->OutputAnalysisHistogramFile().length()) {
-  //   output_analysis_histogram_file = opt->OutputAnalysisHistogramFile();
-  // } else if(output_analysis_root_file.length() > 0) {
-  //   output_analysis_histogram_file = Form("hist_analysis%05i_%03i.root",
-  //                                         GetRunNumber(output_analysis_root_file),
-  //                                         GetSubRunNumber(output_analysis_root_file));
-  // }
-
-  std::cout << "Missing Raw File: " << missing_raw_file << std::endl;
-  std::cout << "has_raw_file : " << has_raw_file  << std::endl;
-  std::cout << "self_stopping: " << self_stopping << std::endl;
-  std::cout << "sort_raw: " << sort_raw << std::endl;
-  std::cout << "has_input_fragment_tree: " << has_input_fragment_tree << std::endl;
-  // std::cout << "has_input_analysis_tree: " << has_input_analysis_tree << std::endl;
-  std::cout << "sort_fragment_tree: " << sort_fragment_tree << std::endl;
-  // std::cout << "sort_analysis_tree: " << sort_analysis_tree << std::endl;
-  std::cout << "write_fragment_root_tree: " << write_fragment_root_tree << std::endl;
-  std::cout << "write_fragment_histograms: " << write_fragment_histograms << std::endl;
-  // std::cout << "write_analysis_root_tree: " << write_analysis_root_tree << std::endl;
-  // std::cout << "write_analysis_histograms: " << write_analysis_histograms << std::endl;
-  std::cout << "output_fragment_root_file: " << output_fragment_root_file << std::endl;
-  std::cout << "output_fragment_histogram_file: " << output_fragment_histogram_file << std::endl;
-  // std::cout << "output_analysis_root_file: " << output_analysis_root_file << std::endl;
-  // std::cout << "output_analysis_histogram_file: " << output_analysis_histogram_file << std::endl;
-
-  if(!sort_raw && !sort_fragment_tree /*&& !sort_analysis_tree*/) {
+  if(!sort_raw && !sort_fragment_tree) {
     return;
   }
 
@@ -524,6 +503,7 @@ void TGRSIint::SetupFragmentPipeline() {
 
   if(write_fragment_root_tree) {
     TFragWriteLoop* loop = TFragWriteLoop::Get("3_frag_write_loop",output_fragment_root_file);
+    fNewFragmentFile = output_fragment_root_file;
     loop->InputQueue() = current_queue;
     current_queue = loop->OutputQueue();
     if(scaler_queue) {
@@ -552,6 +532,71 @@ void TGRSIint::SetupFragmentPipeline() {
   }
 
   StoppableThread::ResumeAll();
+}
+
+void TGRSIint::SetupAnalysisPipeline() {
+  TAnalysisTreeBuilder::Get()->StartMakeAnalysisTree(gFragment);
+
+  // All this will be useful later, when the analysis pipeline is done as a pipeline.
+  // TGRSIOptions2* opt = TGRSIOptions2::Get();
+
+  // // Determining which parts of the pipeline need to be set up.
+
+  // bool self_stopping = opt->CloseAfterSort();
+
+  // //bool has_explicit_root_output = opt->OutputFile().length();
+  // //bool filter_data = opt->CompiledFilterFile().length();
+  // //bool raw_filtered_output = opt->OutputFilteredFile().length();
+
+  // bool has_input_fragment_tree = gFragment;
+  // bool has_input_analysis_tree = gAnalysis;
+  // bool write_analysis_histograms = (opt->MakeHistos() &&
+  //                                   opt->AnalysisHistogramLib().length()>0);
+
+  // bool sort_fragment_tree = (has_input_fragment_tree &&
+  //                            (write_analysis_histograms ||
+  //                             opt->SortRoot() ||
+  //                             opt->MakeAnalysisTree() ||
+  //                             opt->OutputAnalysisFile().length()>0) );
+
+  // bool sort_analysis_tree = (has_input_analysis_tree &&
+  //                            !sort_fragment_tree &&
+  //                            (write_analysis_histograms || opt->SortRoot() ) );
+
+  // bool write_analysis_root_tree = sort_fragment_tree;
+
+  // std::string output_analysis_root_file = "";
+  // if(opt->OutputAnalysisFile().length()) {
+  //   output_analysis_root_file = opt->OutputAnalysisFile();
+  // } else if(fMidasFiles.size() >= 1) {
+  //   output_analysis_root_file = Form("analysis%05i_%03i.root",
+  //                                    fMidasFiles[0]->GetRunNumber(),
+  //                                    fMidasFiles[0]->GetSubRunNumber());
+  // }
+
+  // std::string output_analysis_histogram_file = "";
+  // if(opt->OutputAnalysisHistogramFile().length()) {
+  //   output_analysis_histogram_file = opt->OutputAnalysisHistogramFile();
+  // } else if(output_analysis_root_file.length() > 0) {
+  //   output_analysis_histogram_file = Form("hist_analysis%05i_%03i.root",
+  //                                         GetRunNumber(output_analysis_root_file),
+  //                                         GetSubRunNumber(output_analysis_root_file));
+  // }
+
+  // std::cout << "self_stopping: " << self_stopping << std::endl;
+  // std::cout << "has_input_fragment_tree: " << has_input_fragment_tree << std::endl;
+  // std::cout << "has_input_analysis_tree: " << has_input_analysis_tree << std::endl;
+  // std::cout << "sort_fragment_tree: " << sort_fragment_tree << std::endl;
+  // std::cout << "sort_analysis_tree: " << sort_analysis_tree << std::endl;
+  // std::cout << "write_analysis_root_tree: " << write_analysis_root_tree << std::endl;
+  // std::cout << "write_analysis_histograms: " << write_analysis_histograms << std::endl;
+  // std::cout << "output_analysis_root_file: " << output_analysis_root_file << std::endl;
+  // std::cout << "output_analysis_histogram_file: " << output_analysis_histogram_file << std::endl;
+
+  // // If we're going to set up this pipeline, must loop over either the fragment tree or the analysis tree.
+  // if(!sort_analysis_tree && !sort_fragment_tree) {
+  //   return;
+  // }
 }
 
 void TGRSIint::RunMacroFile(const std::string& filename){
