@@ -380,7 +380,6 @@ void TMidasFile::ReadMoreBytes(size_t bytes) {
 #endif
   } else {
     rd = readpipe(fFile, fReadBuffer.data() + initial_size, bytes);
-    //rd = read(fFile, fReadBuffer.data() + initial_size, bytes);
   }
 
   fReadBuffer.resize(initial_size + rd);
