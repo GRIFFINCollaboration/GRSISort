@@ -83,7 +83,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
     return fEnergy;
   TChannel* chan = GetChannel();
   if(!chan) {
-    Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
+    //Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
     return Charge();
   }
   if(fKValue >0) {

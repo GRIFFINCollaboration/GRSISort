@@ -159,6 +159,9 @@ public:
   void SetFragment(TFragment* frag) { this->frag = frag; }
   void SetDetectors(TUnpackedEvent *det) { detectors = det; }
 
+  void SetDirectory(TDirectory* dir) { directory = dir; }
+  TDirectory* GetDirectory() const { return directory; }
+
 private:
   static std::map<std::string,TRuntimeObjects*> fRuntimeMap;
   TUnpackedEvent *detectors;

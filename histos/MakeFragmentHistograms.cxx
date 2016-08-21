@@ -2,6 +2,8 @@
 #include "TFragment.h"
 #include "TSceptar.h"
 #include "TChannel.h"
+#include "TTigress.h"
+#include "TSharc.h"
 
 extern "C"
 void MakeFragmentHistograms(TRuntimeObjects& obj) {
@@ -36,6 +38,19 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
 	      	           70,0,70, frag->GetArrayNumber(),
 		           10000, 0, 30000, frag->GetCharge());
       }
+    }
+  }
+}
+
+extern "C"
+void MakeAnalysisHistograms(TRuntimeObjects& obj) {
+  TSharc* sharc = obj.GetDetector<TSharc>();
+  if(sharc){
+    for(Int_t i=0; i<sharc->GetSize(); i++){
+
+      obj.FillHistogram("phi_theta",
+                        200, -10, 190,  sharc->GetSharcHit(i)->GetTheta()*180.0/3.14159,
+                        400, -200, 200, sharc->GetSharcHit(i)->GetPosition().Phi()*180.0/3.14159);
     }
   }
 }

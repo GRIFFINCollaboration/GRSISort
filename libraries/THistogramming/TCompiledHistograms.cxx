@@ -141,6 +141,7 @@ void TCompiledHistograms::Fill(TFragment& frag) {
 
   TPreserveGDirectory preserve;
   default_directory->cd();
+  obj.SetDirectory(default_directory);
 
   obj.SetFragment(&frag);
   func(obj);

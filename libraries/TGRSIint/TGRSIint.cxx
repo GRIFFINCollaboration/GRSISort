@@ -520,6 +520,34 @@ void TGRSIint::SetupPipeline() {
   }
 
 
+  // std::cout << "missing_raw_file: " << missing_raw_file << std::endl;
+  // std::cout << "has_raw_file: " << has_raw_file << std::endl;
+  // std::cout << "has_input_fragment_tree: " << has_input_fragment_tree << std::endl;
+  // std::cout << "has_input_analysis_tree: " << has_input_analysis_tree << std::endl;
+  // std::cout << "able_to_write_fragment_histograms: " << able_to_write_fragment_histograms << std::endl;
+  // std::cout << "able_to_write_fragment_tree: " << able_to_write_fragment_tree << std::endl;
+  // std::cout << "able_to_write_analysis_histograms: " << able_to_write_analysis_histograms << std::endl;
+  // std::cout << "able_to_write_analysis_tree: " << able_to_write_analysis_tree << std::endl;
+  // std::cout << "write_fragment_histograms: " << write_fragment_histograms << std::endl;
+  // std::cout << "write_fragment_tree: " << write_fragment_tree << std::endl;
+  // std::cout << "write_analysis_histograms: " << write_analysis_histograms << std::endl;
+  // std::cout << "write_analysis_tree: " << write_analysis_tree << std::endl;
+  // std::cout << "self_stopping: " << self_stopping << std::endl;
+  // std::cout << "read_from_raw: " << read_from_raw << std::endl;
+  // std::cout << "read_from_fragment_tree: " << read_from_fragment_tree << std::endl;
+  // std::cout << "generate_analysis_data: " << generate_analysis_data << std::endl;
+  // std::cout << "read_from_analysis_tree: " << read_from_analysis_tree << std::endl;
+  // std::cout << "event_build_mode: " << event_build_mode << std::endl;
+  // std::cout << "run_number: " << run_number << std::endl;
+  // std::cout << "sub_run_number: " << sub_run_number << std::endl;
+  // std::cout << "output_fragment_tree_filename: " << output_fragment_tree_filename << std::endl;
+  // std::cout << "output_fragment_hist_filename: " << output_fragment_hist_filename << std::endl;
+  // std::cout << "output_analysis_tree_filename: " << output_analysis_tree_filename << std::endl;
+  // std::cout << "output_analysis_hist_filename: " << output_analysis_hist_filename << std::endl;
+
+  if(read_from_analysis_tree) {
+    std::cerr << "Reading from analysis tree not currently supported" << std::endl;
+  }
 
   ////////////////////////////////////////////////////
   ////////////  Setting up the loops  ////////////////

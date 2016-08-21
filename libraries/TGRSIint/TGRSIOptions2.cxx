@@ -133,6 +133,8 @@ void TGRSIOptions2::Load(int argc, char** argv) {
   parser.option("sort-depth",&fSortDepth)
     .description("Number of events to hold when sorting by time/trigger_id")
     .default_value(50000);
+  parser.option("s sort", &fSortRoot)
+    .description("Attempt to loop through root files.");
 
   parser.option("q quit", &fCloseAfterSort)
     .description("Run in batch mode");
@@ -172,8 +174,6 @@ void TGRSIOptions2::Load(int argc, char** argv) {
   // parser.option("m sort-multiple", &fSortMultiple)
   //   .description("If passed multiple raw data files, treat them as one file.")
   //   .default_value(false);
-  // parser.option("s sort", &fSortRoot)
-  //   .description("Attempt to loop through root files.")
   //   .default_value(false);
   // parser.option("t time-sort", &fTimeSortInput)
   //   .description("Reorder raw events by time");
@@ -271,17 +271,7 @@ kFileType TGRSIOptions2::DetermineFileType(const std::string& filename) const{
   } else if (ext == "hist") {
     return kFileType::GUI_HIST_FILE;
   } else if (ext == "so") {
-    DynamicLibrary lib(filename);
-    if(lib.GetSymbol("MakeFragmentHistograms")) {
-      return kFileType::COMPILED_FRAGMENT_HISTOGRAMS;
-    } else if(lib.GetSymbol("MakeAnalysisHistograms")) {
-      return kFileType::COMPILED_ANALYSIS_HISTOGRAMS;
-    } else if (lib.GetSymbol("FilterCondition")) {
-      return kFileType::COMPILED_FILTER;
-    } else {
-      std::cerr << filename << " did not contain MakeHistograms() or FilterCondition()" << std::endl;
-      return kFileType::UNKNOWN_FILETYPE;
-    }
+    return kFileType::COMPILED_SHARED_LIBRARY;
   } else if (ext == "info") {
     return kFileType::CONFIG_FILE;
   } else if (ext == "val"){
@@ -318,17 +308,24 @@ bool TGRSIOptions2::FileAutoDetect(const std::string& filename) {
       fInputCalFiles.push_back(filename);
       return true;
 
-    case kFileType::COMPILED_FRAGMENT_HISTOGRAMS:
-      fragment_histogram_lib = filename;
-      return true;
+    case kFileType::COMPILED_SHARED_LIBRARY: {
 
-    case kFileType::COMPILED_ANALYSIS_HISTOGRAMS:
-      analysis_histogram_lib = filename;
+      bool used = false;
+      DynamicLibrary lib(filename);
+      if(lib.GetSymbol("MakeFragmentHistograms")) {
+        fragment_histogram_lib = filename;
+        used = true;
+      }
+      if(lib.GetSymbol("MakeAnalysisHistograms")) {
+        analysis_histogram_lib = filename;
+        used = true;
+      }
+      if(!used) {
+        std::cerr << filename << " did not contain MakeFragmentHistograms() or MakeAnalysisHistograms()"
+                  << std::endl;
+      }
       return true;
-
-    case kFileType::COMPILED_FILTER:
-      compiled_filter_file = filename;
-      return true;
+    }
 
     case kFileType::GVALUE:
       fInputValFiles.push_back(filename);
