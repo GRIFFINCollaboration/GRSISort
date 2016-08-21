@@ -92,24 +92,23 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
         NumFragsFound++;
         return NumFragsFound;
 
-        /*
-          if( ((*(data+x+1)) & 0xf0000000) == 0xe0000000) {
+        
+	if( ((*(data+x+1)) & 0xf0000000) == 0xe0000000) {
           TFragment* transferfrag = EventFrag;
           EventFrag = new TFragment;
-          EventFrag->MidasTimeStamp = transferfrag->MidasTimeStamp;
-          EventFrag->MidasId        = transferfrag->MidasId;
-          EventFrag->TriggerId      = transferfrag->TriggerId;
+          EventFrag->SetMidasTimeStamp(transferfrag->GetMidasTimeStamp());
+	  EventFrag->SetMidasId(transferfrag->GetMidasId());
+	  EventFrag->SetTriggerId(transferfrag->GetTriggerId());
           //printf("transferfrag = 0x%08x\n",transferfrag); fflush(stdout);
           //printf("transferfrag->GetTimeStamp() = %lu\n",transferfrag->GetTimeStamp()); fflush(stdout);
           EventFrag->SetTimeStamp(transferfrag->GetTimeStamp());
           //printf("EventFrag: = 0x%08x\n",EventFrag); fflush(stdout);
           //printf("EventFrag->GetTimeStamp() = %lu\n",EventFrag->GetTimeStamp()); fflush(stdout);
-          }
-        */
-        //else {
-        //  delete EventFrag;
-        //  EventFrag = 0;
-        //}
+	}
+        else {
+	  delete EventFrag;
+	  EventFrag = 0;
+        }
         break;
       case 0x5: // raw charge evaluation.
         SetTIGCharge(value,EventFrag);
@@ -138,7 +137,6 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
     }
   }
   return NumFragsFound;
-
 }
 
 void TDataParser::SetTIGAddress(uint32_t value,TFragment* currentFrag) {
@@ -154,6 +152,7 @@ void TDataParser::SetTIGWave(uint32_t value,TFragment* currentFrag) {
     printf("number of wave samples found is to great\n");
     return;
   }
+
   if (value & 0x00002000) {
     int temp =  value & 0x00003fff;
     temp = ~temp;
@@ -161,6 +160,7 @@ void TDataParser::SetTIGWave(uint32_t value,TFragment* currentFrag) {
     currentFrag->GetWaveform()->push_back((int16_t)-temp);
   } else {
     currentFrag->GetWaveform()->push_back((int16_t)(value & 0x00001fff));
+
   }
   if ((value >> 14) & 0x00002000) {
     int temp =  (value >> 14) & 0x00003fff;
@@ -177,44 +177,46 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment* currentFrag) {
   ///Sets the CFD of a Tigress Event.
 
   //currentFragment->SlowRiseTime = value & 0x08000000;
-  currentFrag->SetCfd(int32_t(value & 0x07ffffff));
+  currentFrag->SetCfd( int32_t(value & 0x07ffffff));
   //std::string dig_type = "";//"Tig64";
-  //TChannel* chan = TChannel::GetChannel(currentFrag->GetAddress());
-  //if(!chan)
-  //	chan = gChannel;
-  //std::string dig_type = (chan)->GetDigitizerType();
+  TChannel* chan = TChannel::GetChannel(currentFrag->GetAddress());
+  if(!chan)
+    chan = gChannel;
+  std::string dig_type = (chan)->GetDigitizerType();
 
-  //// remove vernier for now and calculate the time to the trigger
-  //int32_t tsBits  = 0;
-  //int32_t cfdBits = 0;
-  //if ( dig_type.compare(0,5,"Tig10")==0) {
-  //	cfdBits = (currentFrag->GetCfd() >> 4);
-  //	tsBits  = currentFrag->GetTimeStampLow() & 0x007fffff;
-  //	// probably should check that there hasn't been any wrap around here
-  //	//currentFrag->TimeToTrig = tsBits - cfdBits;
-  //	currentFrag->SetZc(tsBits - cfdBits);
-  //} else if ( dig_type.compare(0,5,"Tig64")==0 ) {
-  //	//currentFrag->TimeToTrig = (currentFrag->Cfd.back() >> 5);
-  //	cfdBits	= (currentFrag->Cfd.back() >> 4) & 0x003fffff;
-  //	//tsBits  = currentFrag->TimeStampLow & 0x0000ffff; //0x003fffff;
-  //	currentFrag->Zc.push_back(abs(cfdBits)&0x000fffff);
+  // Zero-crossing now transient, why bother calculating it.
+  // // remove vernier for now and calculate the time to the trigger
+  // int32_t tsBits  = 0;
+  // int32_t cfdBits = 0;
+  // if ( dig_type.compare(0,5,"Tig10")==0) {
+  //   cfdBits = (currentFrag->GetCfd() >> 4);
+  //   tsBits  = currentFrag->GetTimeStamp() & 0x007fffff;
+  //   // probably should check that there hasn't been any wrap around here
+  //   //currentFrag->TimeToTrig = tsBits - cfdBits;
+  //   currentFrag->Zc.push_back(tsBits - cfdBits);
+  // } else if ( dig_type.compare(0,5,"Tig64")==0 ) {
+  //   //currentFrag->TimeToTrig = (currentFrag->Cfd.back() >> 5);
+  //   cfdBits	= (currentFrag->Cfd.back() >> 4) & 0x003fffff;
+  //   //tsBits  = currentFrag->TimeStampLow & 0x0000ffff; //0x003fffff;
+  //   currentFrag->Zc.push_back(abs(cfdBits)&0x000fffff);
 
-  //	//currentFrag->Print();
-  //	//printf("\n------------------------------\n\n\n");
-  //} else {
-  //	cfdBits = (currentFrag->Cfd.back() >> 4);
-  //	tsBits  = currentFrag->TimeStampLow & 0x007fffff;
-  //	currentFrag->Zc.push_back(tsBits - cfdBits);
-  //	//printf(DYELLOW "Address: 0x%08x | " RESET_COLOR); (TChannel::GetChannel(currentFrag->ChannelAddress))->Print();
-  //	//printf("CFD obtained without knowing digitizer type with midas Id = %d!\n",currentFrag->MidasId );
-  //}
+  //   //currentFrag->Print();
+  //   //printf("\n------------------------------\n\n\n");
+  // } else {
+  //   cfdBits = (currentFrag->Cfd.back() >> 4);
+  //   tsBits  = currentFrag->TimeStampLow & 0x007fffff;
+  //   currentFrag->Zc.push_back(tsBits - cfdBits);
+  //   //printf(DYELLOW "Address: 0x%08x | " RESET_COLOR); (TChannel::GetChannel(currentFrag->ChannelAddress))->Print();
+  //   //printf("CFD obtained without knowing digitizer type with midas Id = %d!\n",currentFrag->MidasId );
+  // }
   return;
 }
 
 void TDataParser::SetTIGLed(uint32_t value, TFragment* currentFrag) {
   ///Sets the LED of a Tigress event.
-  //	currentFrag->Led.push_back( int32_t(value & 0x07ffffff) );
-  //	return;
+  // No longer used anywhere
+  //  currentFrag->SetLed( int32_t(value & 0x07ffffff) );
+  return;
 }
 
 void TDataParser::SetTIGCharge(uint32_t value, TFragment* currentFragment) {
@@ -390,7 +392,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 
   //Changed on 11 Aug 2015 by RD to include PPG events. If the event has ModuleType 4 and address 0xFFFF, it is a PPG event.
   //if(EventFrag->GetModuleType() == 4 && EventFrag->GetAddress() == 0xFFFF){
-  if(EventFrag->GetModuleType() == 1 && EventFrag->GetAddress() == 0xFFFF){
+  if((EventFrag->GetModuleType() == 1 || EventFrag->GetModuleType() == 4) && EventFrag->GetAddress() == 0xFFFF){
     delete EventFrag;
     return GriffinDataToPPGEvent(data,size,midasSerialNumber,midasTime);
   }

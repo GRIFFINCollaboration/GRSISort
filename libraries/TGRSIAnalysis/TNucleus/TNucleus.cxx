@@ -300,7 +300,6 @@ double TNucleus::GetRadius() const{
 }
 
 /*
-<<<<<<< HEAD
    bool TNucleus::SetSourceData() {
 
    std::string name = GetSymbol();
@@ -345,28 +344,6 @@ double TNucleus::GetRadius() const{
 
 printf("Found %d Transitions for %s\n",TransitionList.GetSize(),GetName());
 return true;
-=======
-  bool TNucleus::SetSourceData() {
-
-  std::string name = GetSymbol();
-  if(name.length()==0)
-  return false;
-
-  if(name[0]<='Z' && name[0]>='A')
-  name[0] = name[0]-'A'+'a';
-  name = name + Form("%i",GetA()) + ".sou";
-  std::string path = getenv("GRSISYS");
-  path +=  "/libraries/TGRSIAnalysis/SourceData/";
-  path +=  name;
-
-  printf("path = %s\n",path.c_str());
-  std::ifstream sourcefile;
-  sourcefile.open(path.c_str());
-  if(!sourcefile.is_open()) {
-  printf("unable to set source data for %s.\n",GetName());
-  return false;
-  }
->>>>>>> 5aa7f5e5225d24f8b01a7ffcc333c50eff387814
 
   TransitionList.Clear();
 

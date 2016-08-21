@@ -323,54 +323,69 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
 
       //  detector system type.
       //  for more info, see: https://www.triumf.info/wiki/tigwiki/index.php/Detector_Nomenclature
-      std::string system = iter->second->GetMnemonic()->system;
-      if(system.compare("TI")==0) {
-         //printf("this is working,found tigress.\n");
-         if(!Tigress()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetTigress();
-      } else if(system.compare("SH")==0) {
-         //printf("this is working,found sharc.\n");
-         if(!Sharc()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetSharc();
-      } else if(system.compare("Tr")==0) {
-         if(!TriFoil()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetTriFoil();
-      } else if(system.compare("RF")==0) {
-         if(!RF()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetRF();
-      } else if(system.compare("CS")==0) {
-         if(!CSM()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetCSM();
-      } else if(system.compare("SP")==0) {
-         if(!Spice()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetSpice();
-         if(!S3()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetS3();
-      } else if(system.compare("TP")==0) {
-         if(!Tip()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetTip();
-      } else if(system.compare("GR")==0) {
-         if(!Griffin()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetGriffin();
-      } else if(system.compare("SE")==0) {
-         if(!Sceptar()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetSceptar();
-      } else if(system.compare("PA")==0) {
-         if(!Paces()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetPaces();
-      } else if(system.compare("DA")==0) {
-         if(!Dante()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetDante();
-      } else if(system.compare("ZD")==0) {
-         if(!ZeroDegree()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetZeroDegree();
-      } else if(system.compare("DS")==0) {
-         if(!Descant()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetDescant();
-      } else if(system.compare("BA")==0) {
-         if(!Bambino()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
-         SetBambino();
-      }
+      switch(iter->second->GetMnemonic()->System()){
+         case MNEMONIC::kTigress:
+            if(!Tigress()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetTigress(); 
+            break;
+         case MNEMONIC::kSharc:
+            if(!Sharc()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetSharc();
+            break;
+         case MNEMONIC::kTriFoil:
+            if(!TriFoil()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetTriFoil();
+            break;
+         case MNEMONIC::kRF:
+            if(!RF()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetRF();
+            break;
+         case MNEMONIC::kCSM:
+            if(!CSM()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetCSM();
+            break;
+         case MNEMONIC::kTip:
+            if(!Tip()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetTip();
+            break;
+         case MNEMONIC::kGriffin:
+            if(!Griffin()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetGriffin();
+            break;
+         case MNEMONIC::kSceptar:
+            if(!Sceptar()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetSceptar();
+            break;
+         case MNEMONIC::kPaces:
+            if(!Paces()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetPaces();
+            break;
+         case MNEMONIC::kLaBr:
+            if(!Dante()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetDante();
+            break;
+         case MNEMONIC::kZeroDegree:
+            if(!ZeroDegree()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetZeroDegree();
+            break;
+         case MNEMONIC::kDescant:
+            if(!Descant()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetDescant();
+            break;
+         default:
+            std::string system = iter->second->GetMnemonic()->system;
+            if(!Spice() && !S3()){
+               if(system.compare("SP")==0) {
+                  if(!Spice()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+                  SetSpice();
+                  if(!S3()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
+                  SetS3();
+               }
+            } else if (!Bambino()){
+               if(system.compare("BA")==0) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;}
+               SetBambino();
+            }
+      };
    }
    if(Tigress()) {
       Get()->fMajorIndex.assign("TriggerId");

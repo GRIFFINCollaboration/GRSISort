@@ -131,6 +131,19 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
    //this has to be done at the very end, otherwise this->GetEnergy() might not work
    this->SetCharge(0);
+   //Add all of the pileups.This should be changed when the max number of pileups changes
+   if((this->NPileUps() + hit->NPileUps()) < 4){
+      this->SetNPileUps(this->NPileUps() + hit->NPileUps());
+   }  
+   else{
+      this->SetNPileUps(3);
+   }
+   if((this->PUHit() + hit->PUHit()) < 4){
+      this->SetPUHit(this->PUHit() + hit->PUHit());
+   }  
+   else{
+      this->SetPUHit(3);
+   }
 }
 
 void TGriffinHit::SetGriffinFlag(enum EGriffinHitBits flag,Bool_t set){
