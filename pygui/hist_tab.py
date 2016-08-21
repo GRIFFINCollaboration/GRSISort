@@ -100,7 +100,8 @@ class HistTab(object):
             objname = obj.GetName()
 
         if (isinstance(obj, ROOT.TKey) and
-            not issubclass(getattr(ROOT, obj.GetClassName()), ROOT.TH1)):
+            not issubclass(getattr(ROOT, obj.GetClassName()), ROOT.TH1) and
+            not issubclass(getattr(ROOT, obj.GetClassName()), ROOT.TChannel)):
             obj = obj.ReadObj()
 
         if (isinstance(obj, ROOT.TTree) or
