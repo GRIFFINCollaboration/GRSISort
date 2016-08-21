@@ -31,8 +31,8 @@ public:
 
 
   const std::string& OutputFilteredFile()        { return output_filtered_file; }
-  const std::string& OutputFragmentHistogramFile(){ return output_histogram_file; }
-  const std::string& OutputAnalysisHistogramFile(){ return output_histogram_file; }
+  const std::string& OutputFragmentHistogramFile(){ return output_fragment_histogram_file; }
+  const std::string& OutputAnalysisHistogramFile(){ return output_analysis_histogram_file; }
   std::string InputRing() { return input_ring; }
   std::string FragmentHistogramLib() { return fragment_histogram_lib; }
   std::string AnalysisHistogramLib() { return analysis_histogram_lib; }
@@ -107,7 +107,8 @@ private:
   std::string output_fragment_file;
   std::string output_analysis_file;
   std::string output_filtered_file;
-  std::string output_histogram_file;
+  std::string output_fragment_histogram_file;
+  std::string output_analysis_histogram_file;
 
   std::string fragment_histogram_lib;
   std::string analysis_histogram_lib;

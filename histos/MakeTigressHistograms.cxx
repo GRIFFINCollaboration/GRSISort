@@ -25,10 +25,6 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
     obj.FillHistogram("channel_energy",
 		      2000, 0, 2000, frag->GetChannelNumber(),
 		      5000, 0, 50000, frag->GetEnergy());
-    if(chan->GetClassType() == TSceptar::Class()){
-      obj.FillHistogram("sceptar_charge",
-                      4000,0,4000, frag->GetCharge());
-    }
     obj.FillHistogram("channel_ts",
                       2000, 0, 2000, frag->GetChannelNumber(),
                       3600, 0, 3600, frag->GetMidasTimeStamp()-first_timestamp);
@@ -41,11 +37,9 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
 	      	           70,0,70, frag->GetArrayNumber(),
 		           10000, 0, 30000, frag->GetCharge());
       }
-    }else{
-      
     }
     int sharc_m = frag->GetSharcMesyBoard();
-    
+
     //printf("address = 0x%08x\n",frag->GetAddress());
     //printf("sharc_m = %i\ni\n",sharc_m); fflush(stdout);
     if(sharc_m>-1) {
@@ -63,18 +57,19 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
   if(sharc){
     for(Int_t i=0; i<sharc->GetSize(); i++){
 
-      obj.FillHistogram("phi_theta",
-                         200, -10, 190,  sharc->GetSharcHit(i)->GetTheta()*180.0/3.14159,
-                         400, -200, 200, sharc->GetSharcHit(i)->GetPosition().Phi()*180.0/3.14159);
-      obj.FillHistogram("energy_theta",
-                         200, -10, 190,  sharc->GetSharcHit(i)->GetTheta()*180.0/3.14159,
-                         5000, 0, 50000, sharc->GetSharcHit(i)->GetEnergy());
-      obj.FillHistogram("deltaE_padE",
-                         5000, 0, 50000, sharc->GetSharcHit(i)->GetPadE(),
-			 1000, 0, 10000, sharc->GetSharcHit(i)->GetDeltaE());
-      obj.FillHistogram("deltaE_E",
-                         5000, 0, 50000, sharc->GetSharcHit(i)->GetEnergy(),
-			 1000, 0, 10000, sharc->GetSharcHit(i)->GetDeltaE());
+      obj.FillHistogram("sharc_diag", "phi_theta",
+                        200, -10, 190,  sharc->GetSharcHit(i)->GetTheta()*180.0/3.14159,
+                        400, -200, 200, sharc->GetSharcHit(i)->GetPosition().Phi()*180.0/3.14159);
+      obj.FillHistogram("sharc_diag", "energy_theta",
+                        200, -10, 190,  sharc->GetSharcHit(i)->GetTheta()*180.0/3.14159,
+                        5000, 0, 50000, sharc->GetSharcHit(i)->GetEnergy());
+      obj.FillHistogram("sharc_diag", "detnum",
+                        20, 0, 20, sharc->GetSharcHit(i)->GetDetector());
+
+      obj.FillHistogram("sharc_diag", Form("front_back_%02d",sharc->GetSharcHit(i)->GetDetector()),
+                        60, 0, 60, sharc->GetSharcHit(i)->GetFrontStrip(),
+                        60, 0, 60, sharc->GetSharcHit(i)->GetBackStrip());
+
     }
   }
 }

@@ -138,6 +138,9 @@ void TEventBuildingLoop::CheckTriggerIdCondition(TFragment* frag) {
   if(trigger_id < current_trigger_id) {
     std::cerr << "Sorting depth of " << sorting_depth << " was insufficient.\n"
               << "Not all events were built correctly" << std::endl;
+    std::cerr << "Trigger id #" << trigger_id << " was incorrectly sorted before "
+              << "trigger id #" << current_trigger_id << std::endl;
+    std::cerr << "Please increase sort depth with --sort-depth=N" << std::endl;
   }
 
   if(trigger_id != current_trigger_id) {

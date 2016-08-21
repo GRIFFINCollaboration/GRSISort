@@ -40,7 +40,8 @@ void TGRSIOptions2::Clear(Option_t* opt) {
   output_fragment_file = "";
   output_analysis_file = "";
   output_filtered_file = "";
-  output_histogram_file = "";
+  output_fragment_histogram_file = "";
+  output_analysis_histogram_file = "";
 
   fragment_histogram_lib = "";
   analysis_histogram_lib = "";
@@ -121,6 +122,10 @@ void TGRSIOptions2::Load(int argc, char** argv) {
     .description("Filename of output fragment tree");
   parser.option("output-analysis-tree", &output_analysis_file)
     .description("Filename of output analysis tree");
+  parser.option("output-fragment-hists", &output_fragment_histogram_file)
+    .description("Filename of output fragment hists");
+  parser.option("output-analysis-hists", &output_analysis_histogram_file)
+    .description("Filename of output analysis hists");
 
 
   parser.option("a", &fMakeAnalysisTree)
@@ -132,7 +137,7 @@ void TGRSIOptions2::Load(int argc, char** argv) {
 
   parser.option("sort-depth",&fSortDepth)
     .description("Number of events to hold when sorting by time/trigger_id")
-    .default_value(50000);
+    .default_value(200000);
   parser.option("s sort", &fSortRoot)
     .description("Attempt to loop through root files.");
 
@@ -232,8 +237,12 @@ void TGRSIOptions2::Load(int argc, char** argv) {
     fShouldExit = true;
   }
 
-  if(output_histogram_file.length()>0 &&
-     output_histogram_file != "none") {
+  if(output_fragment_histogram_file.length()>0 &&
+     output_fragment_histogram_file != "none") {
+    fMakeHistos = true;
+  }
+  if(output_analysis_histogram_file.length()>0 &&
+     output_analysis_histogram_file != "none") {
     fMakeHistos = true;
   }
 
