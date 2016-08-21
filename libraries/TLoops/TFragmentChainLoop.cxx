@@ -55,6 +55,7 @@ int TFragmentChainLoop::SetupChain() {
   }
 
   address = new TFragment*;
+  *address = NULL;
   input_chain->SetBranchAddress("TFragment",address);
   return 0;
 }
@@ -83,7 +84,7 @@ bool TFragmentChainLoop::Iteration() {
   }
 
   TFragment* frag = new TFragment;
-  address = &frag;
+  *address = frag;
   input_chain->GetEntry(fEntriesRead++);
   output_queue->Push(frag);
   return true;
