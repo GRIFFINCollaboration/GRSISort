@@ -7,111 +7,95 @@
 
 /// \cond CLASSIMP
 ClassImp(TFragment)
-  /// \endcond
+/// \endcond
 
-  ////////////////////////////////////////////////////////////////
-  //                                                            //
-  // TFragment                                                  //
-  //                                                            //
-  // This Class contains all of the information in an event     //
-  // fragment                                                   //
-  //                                                            //
-  ////////////////////////////////////////////////////////////////
-
-  TFragment::TFragment(){
-    // Default Constructor
+TFragment::TFragment() {
+   // Default Constructor
 #if MAJOR_ROOT_VERSION < 6
-    Class()->IgnoreTObjectStreamer(kTRUE);
+   Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-    Clear();
-  }
+   Clear();
+}
 
 TFragment::TFragment(const TFragment& rhs) : TGRSIDetectorHit(rhs) {
+   //first copy all "normal" data members
+   fMidasTimeStamp = rhs.fMidasTimeStamp;
+   fMidasId = rhs.fMidasId;
+   fFragmentId = rhs.fFragmentId;
+   fTriggerBitPattern = rhs.fTriggerBitPattern;
+   fNetworkPacketNumber = rhs.fNetworkPacketNumber;
+   fChannelId     = rhs.fChannelId;
+   fAcceptedChannelId     = rhs.fAcceptedChannelId;
 
-  //first copy all "normal" data members
-  MidasTimeStamp = rhs.MidasTimeStamp;
-  MidasId = rhs.MidasId;
-  TriggerId = rhs.TriggerId;
-  FragmentId = rhs.FragmentId;
-  TriggerBitPattern = rhs.TriggerBitPattern;
+   fDeadTime = rhs.fDeadTime;
+   fModuleType = rhs.fModuleType;
+   fDetectorType  = rhs.fDetectorType;
+   fNumberOfPileups = rhs.fNumberOfPileups;
 
-  NetworkPacketNumber = rhs.NetworkPacketNumber;
+   fTriggerId = rhs.fTriggerId;
 
-  PPG = rhs.PPG;
-  DeadTime = rhs.DeadTime;
-  NumberOfFilters = rhs.NumberOfFilters;
-  NumberOfPileups = rhs.NumberOfPileups;
-  DataType = rhs.DataType;
-  DetectorType  = rhs.DetectorType;
-  ChannelId     = rhs.ChannelId;
-
-  //if(hit < 0 || hit >= static_cast<int>(Cfd.size())) {
-  Zc = rhs.Zc;
-  ccShort = rhs.ccShort;
-  ccLong = rhs.ccLong;
-  Led = rhs.Led;
-
-  //NumberOfHits = Cfd.size();
-  //HitIndex = hit;
+   //copy transient data members
+   fPPG = rhs.fPPG;
+   fZc = rhs.fZc;
+   fCcShort = rhs.fCcShort;
+   fCcLong = rhs.fCcLong;
+   fNumberOfWords = rhs.fNumberOfWords;
 }
 
 TFragment::~TFragment(){
-  // Default destructor does nothing right now
-  //Clear();
+   // Default destructor does nothing right now
 }
 
 void TFragment::Clear(Option_t *opt){  
-  // Clears all fields of the TFragment
-  TGRSIDetectorHit::Clear(opt);
-  MidasTimeStamp    = 0;
-  MidasId           = 0;
+   // Clears all fields of the TFragment
+   TGRSIDetectorHit::Clear(opt);
 
-  TriggerId         = 0;
-  FragmentId        = 0;
-  TriggerBitPattern = 0;
+   fMidasTimeStamp      = 0;
+   fMidasId             = 0;
+   fFragmentId          = 0;
+   fTriggerBitPattern   = 0;
+   fNetworkPacketNumber = 0;
+   fChannelId           = 0; 
+   fAcceptedChannelId   = 0; 
 
-  NetworkPacketNumber = 0;
+   fDeadTime            = 0; 
+   fModuleType            = 0; 
+   fDetectorType        = 0; 
+   fNumberOfPileups     = 0; 
 
-  Zc        = -1;
-  ccShort   = -1;
-  ccLong    = -1;
-  Led       = -1;
+   fTriggerId.clear();
 
-  PPG                = 0; 
-  DeadTime           = 0; 
-  NumberOfFilters    = 0; 
-  NumberOfPileups    = 0; 
-  DataType           = 0; 
-  DetectorType       = 0; 
-  ChannelId          = 0; 
-
-  fPPG = NULL;
+   fPPG                 = NULL;
+   fZc                  = 0;
+   fCcShort             = 0;
+   fCcLong              = 0;
+   fNumberOfWords       = 0; 
 }
 
+TObject* TFragment::Clone(const char* name) const {
+   TFragment* result = new TFragment;
+   *result = *this;
+   return result;
+}
 
 double TFragment::GetTZero() const {
   TChannel *chan = GetChannel();
-  if(!chan )//|| Charge.size()<1)
+  if(!chan)
     return 0.000;
   return chan->GetTZero(GetEnergy());
 }
 
 long TFragment::GetTimeStamp_ns() const {
   long ns = 0;
-  if(DataType==2) { //&& Cfd.size()>0) {
+  if(fModuleType==2) {
     ns = (GetCfd() >> 21) & 0xf;
   }
   return 10*GetTimeStamp() + ns;  
 }
 
-Int_t TFragment::Get4GCfd(size_t i) const { // return a 4G cfd in terms 
-  //if(Cfd.size()==0)                // of 1/256 ns since the trigger
-  //   return -1;
-  //if(Cfd.size()<=i)
-  //   i = Cfd.size()-1;
+Int_t TFragment::Get4GCfd() const { // return a 4G cfd in terms of 1/256 ns since the trigger
   return GetCfd()&0x001fffff;
 }
-
 
 ULong64_t TFragment::GetTimeInCycle() {
   if(fPPG == NULL) {
@@ -133,43 +117,47 @@ ULong64_t TFragment::GetCycleNumber() {
   return fPPG->GetCycleNumber(GetTimeStamp());
 }
 
+Short_t TFragment::GetChannelNumber() const {
+	TChannel* chan = TChannel::GetChannel(fAddress);
+   if(!chan ) return 0;
+   return chan->GetNumber();
+}
+
+TPPG* TFragment::GetPPG() {
+	if(fPPG == NULL) {
+		fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+	}
+	return fPPG;
+}
+
 void TFragment::Print(Option_t *opt) const {
   //Prints out all fields of the TFragment
 
-
   TChannel *chan = GetChannel();
-  //printf("%s Event at  %i:\n", chan->GetDigitizerType().c_str(), MidasId);
   char buff[20];
-  ctime(&MidasTimeStamp);
-  struct tm * timeinfo = localtime(&MidasTimeStamp);
+  ctime(&fMidasTimeStamp);
+  struct tm * timeinfo = localtime(&fMidasTimeStamp);
   strftime(buff,20,"%b %d %H:%M:%S",timeinfo);
   printf("MidasTimeStamp: %s\n",buff);
-  printf("MidasId      %i\n", MidasId);
-  printf("TriggerId:   %lu\n", TriggerId);
-  printf("FragmentId:   %i\n", FragmentId);
-  printf("TriggerBit:  0x%08x\n", TriggerBitPattern);
-  printf("NetworkPacketNumber: %i\n", NetworkPacketNumber);
+  printf("MidasId      %i\n", fMidasId);
+  printf("\tTriggerId[%lu]	  ",fTriggerId.size()); for(size_t x=0;x<fTriggerId.size();x++){printf( "     0x%08lx", fTriggerId[x]);} printf("\n");
+  printf("FragmentId:   %i\n", fFragmentId);
+  printf("TriggerBit:  0x%08x\n", fTriggerBitPattern);
+  printf("NetworkPacketNumber: %i\n", fNetworkPacketNumber);
   if(chan) {
     printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetChannelName());
     printf("\tChannel Num:      %i\n",GetChannelNumber());
   }
   printf("\tChannel Address: 0x%08x\n", GetAddress());
-  printf("\tCharge:          0x%08x\n ",   GetCharge());
+  printf("\tCharge:          0x%08x\n ",   static_cast<Int_t>(GetCharge()));
   printf("\tCFD:             0x%08x\n ",   GetCfd());
-  printf("\tZC:              0x%08x\n ",   Zc);   
-  printf("\tLED:             0x%08x\n ",   Led);   
+  printf("\tZC:              0x%08x\n ",   fZc);   
   printf("\tTimeStamp:       %lu\n", GetTimeStamp());
-  //unsigned short temptime = (TimeStampLow & 0x0000ffff) - ((Cfd >> 4) & 0x0000ffff);   //TimeStampLow&0x0000ffff; 
-  //printf("\ttime from timestamp(to the nearest 10ns):    0x%04x\t%ins\n", temptime, temptime * 10);
   if(HasWave())
     printf("Has a wave form stored.\n");
   else
     printf("Does Not have a wave form stored.\n");
-
 }
-
-
-
 
 bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
   //Checks to see if the current fragment constains the same "prefix", for example "GRG"
@@ -210,13 +198,3 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
 
   return false;
 }
-
-
-
-
-
-
-
-
-
-
