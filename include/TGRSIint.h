@@ -5,6 +5,10 @@
  *  @{
  */
 
+#ifndef __CINT__
+#include <thread>
+#endif
+
 #include <cstdio>
 #include <string>
 
@@ -48,9 +52,10 @@ public:
 
   Long_t ProcessLine(const char* line,Bool_t sync=kFALSE,Int_t* error=0);
 
+  void DelayedProcessLine_Action();
+
 private:
-  void SetupFragmentPipeline();
-  void SetupAnalysisPipeline();
+  void SetupPipeline();
   void LoopUntilDone();
   //bool FileAutoDetect(std::string fileName, long fileSize);
   void InitFlags();
@@ -59,6 +64,13 @@ private:
   void LoadGROOTGraphics();
   void LoadExtraClasses();
 
+  Long_t DelayedProcessLine(std::string message);
+
+  TTimer* fKeepAliveTimer;
+#ifndef __CINT__
+  std::thread::id main_thread_id;
+#endif
+
 private:
   //bool fPrintLogo;
   // bool fPrintHelp;
@@ -66,6 +78,7 @@ private:
   // bool fAutoSort;
   // bool fFragmentSort;
   // bool fMakeAnalysisTree;
+  bool fIsTabComplete;
   bool fAllowedToTerminate;
   int fRootFilesOpened;
   int fMidasFilesOpened;

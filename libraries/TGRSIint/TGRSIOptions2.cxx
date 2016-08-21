@@ -77,7 +77,6 @@ void TGRSIOptions2::Clear(Option_t* opt) {
   fSortMultiple = false;
 
   fTimeSortInput = false;
-  fTimeSortDepth = false;
 
   fBuildWindow = false;
 
@@ -130,6 +129,10 @@ void TGRSIOptions2::Load(int argc, char** argv) {
     .description("attempt to run events through MakeHisto lib.");
   parser.option("g start-gui", &fStartGui)
     .description("Start the gui at program start");
+
+  parser.option("sort-depth",&fSortDepth)
+    .description("Number of events to hold when sorting by time/trigger_id")
+    .default_value(50000);
 
   parser.option("q quit", &fCloseAfterSort)
     .description("Run in batch mode");

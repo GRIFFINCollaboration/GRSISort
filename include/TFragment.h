@@ -95,6 +95,9 @@ class TFragment : public TGRSIDetectorHit	{
    bool operator<(const TFragment& rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment& rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
 
+
+   Int_t   GetSharcMesyBoard() const;
+
   private:
    //////////////////// data members, sorted by size (as far as possible) to reduce padding ////////////////////
    time_t   fMidasTimeStamp;          //-> Timestamp of the MIDAS event  

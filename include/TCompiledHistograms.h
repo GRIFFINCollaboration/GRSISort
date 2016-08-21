@@ -14,16 +14,18 @@
 #include "TRuntimeObjects.h"
 
 #include "TFragment.h"
+#include "TUnpackedEvent.h"
 
 class TFile;
 
 class TCompiledHistograms : public TObject {
 public:
   TCompiledHistograms();
-  TCompiledHistograms(std::string libname);
+  TCompiledHistograms(std::string libname, std::string func_name);
 
-  void Load(std::string libname);
+  void Load(std::string libname, std::string func_name);
   void Fill(TFragment& fragment);
+  void Fill(TUnpackedEvent& unpacked);
   void Reload();
 
   std::string GetLibraryName() const { return libname; }
@@ -47,6 +49,7 @@ private:
   bool file_exists();
 
   std::string libname;
+  std::string func_name;
 #ifndef __CINT__
   std::shared_ptr<DynamicLibrary> library;
   std::mutex mutex;

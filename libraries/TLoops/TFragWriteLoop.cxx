@@ -9,6 +9,8 @@
 #include "GValue.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
+#include "TThread.h"
+#include "TTreeFillMutex.h"
 
 TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string output_filename){
   if(name.length()==0){
@@ -42,6 +44,8 @@ TFragWriteLoop::TFragWriteLoop(std::string name, std::string output_filename)
   *scaler_address = NULL;
 
   if(output_filename != "/dev/null"){
+    TThread::Lock();
+
     //TPreserveGDirectory preserve;
     output_file = new TFile(output_filename.c_str(),"RECREATE");
 
@@ -50,6 +54,8 @@ TFragWriteLoop::TFragWriteLoop(std::string name, std::string output_filename)
 
     scaler_tree = new TTree("EpicsTree","EpicsTree");
     scaler_tree->Branch("TEpicsFrag",scaler_address);
+
+    TThread::UnLock();
   }
 
 }
@@ -140,6 +146,7 @@ void TFragWriteLoop::Write() {
 void TFragWriteLoop::WriteEvent(TFragment& event) {
   if(event_tree){
     *event_address = &event;
+    std::lock_guard<std::mutex> lock(ttree_fill_mutex);
     event_tree->Fill();
     *event_address = NULL;
   }
@@ -148,6 +155,7 @@ void TFragWriteLoop::WriteEvent(TFragment& event) {
 void TFragWriteLoop::WriteScaler(TEpicsFrag& scaler) {
   if(scaler_tree){
     *scaler_address = &scaler;
+    std::lock_guard<std::mutex> lock(ttree_fill_mutex);
     scaler_tree->Fill();
     *scaler_address = NULL;
   }

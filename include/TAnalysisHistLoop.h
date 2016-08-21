@@ -1,23 +1,24 @@
-#ifndef _TFRAGHISTOGRAMLOOP_H_
-#define _TFRAGHISTOGRAMLOOP_H_
+#ifndef _TANALYSISHISTOGRAMLOOP_H_
+#define _TANALYSISHISTOGRAMLOOP_H_
 
 #include <string>
 
 #include "StoppableThread.h"
 #include "TCompiledHistograms.h"
 #include "ThreadsafeQueue.h"
+#include "TUnpackedEvent.h"
 
 class TFile;
 
-class TFragHistLoop : public StoppableThread {
+class TAnalysisHistLoop : public StoppableThread {
 public:
-  static TFragHistLoop* Get(std::string name="");
+  static TAnalysisHistLoop* Get(std::string name="");
 
-  ~TFragHistLoop();
+  ~TAnalysisHistLoop();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> >& InputQueue() { return input_queue; }
-  std::shared_ptr<ThreadsafeQueue<TFragment*> >& OutputQueue() { return output_queue; }
+  std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> >& InputQueue() { return input_queue; }
+  std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> >& OutputQueue() { return output_queue; }
 #endif
 
   void SetOutputFilename(const std::string& name);
@@ -45,7 +46,7 @@ protected:
   bool Iteration();
 
 private:
-  TFragHistLoop(std::string name);
+  TAnalysisHistLoop(std::string name);
 
   TCompiledHistograms compiled_histograms;
 
@@ -56,11 +57,11 @@ private:
   std::string output_filename;
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > input_queue;
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > output_queue;
+  std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> > input_queue;
+  std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> > output_queue;
 #endif
 
-  ClassDef(TFragHistLoop,0);
+  ClassDef(TAnalysisHistLoop,0);
 };
 
 #endif /* _THISTOGRAMLOOP_H_ */

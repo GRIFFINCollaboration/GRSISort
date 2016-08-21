@@ -20,20 +20,21 @@
 typedef void* __attribute__((__may_alias__)) void_alias;
 
 TCompiledHistograms::TCompiledHistograms()
-  : libname(""), library(nullptr), func(nullptr),
+  : libname(""), func_name(""), library(nullptr), func(nullptr),
     last_modified(0), last_checked(0), check_every(5),
     default_directory(0),obj(&objects, &gates, cut_files) { }
 
-TCompiledHistograms::TCompiledHistograms(std::string input_lib)
+TCompiledHistograms::TCompiledHistograms(std::string input_lib, std::string func_name)
   : TCompiledHistograms() {
 
+  this->func_name = func_name;
   libname = input_lib;
   library = std::make_shared<DynamicLibrary>(libname.c_str(), true);
   // Casting required to keep gcc from complaining.
-  *(void_alias*)(&func) = library->GetSymbol("MakeFragmentHistograms");
+  *(void_alias*)(&func) = library->GetSymbol(func_name.c_str());
 
   if(!func){
-    std::cout << "Could not find MakeFragmentHistograms() inside "
+    std::cout << "Could not find " << func_name << "() inside "
               <<"\"" << input_lib << "\"" << std::endl;
   }
   last_modified = get_timestamp();
@@ -104,15 +105,15 @@ void TCompiledHistograms::Write() {
   //variables.Write();
 }
 
-void TCompiledHistograms::Load(std::string libname) {
-  TCompiledHistograms other(libname);
+void TCompiledHistograms::Load(std::string libname, std::string func_name) {
+  TCompiledHistograms other(libname, func_name);
   swap_lib(other);
 }
 
 void TCompiledHistograms::Reload() {
   if (file_exists() &&
       get_timestamp() > last_modified) {
-    TCompiledHistograms other(libname);
+    TCompiledHistograms other(libname,func_name);
     swap_lib(other);
   }
   last_checked = time(NULL);
@@ -120,6 +121,7 @@ void TCompiledHistograms::Reload() {
 
 void TCompiledHistograms::swap_lib(TCompiledHistograms& other) {
   std::swap(libname, other.libname);
+  std::swap(func_name, other.func_name);
   std::swap(library, other.library);
   std::swap(func, other.func);
   std::swap(last_modified, other.last_modified);
@@ -143,6 +145,24 @@ void TCompiledHistograms::Fill(TFragment& frag) {
   obj.SetFragment(&frag);
   func(obj);
   obj.SetFragment(NULL);
+}
+
+void TCompiledHistograms::Fill(TUnpackedEvent& detectors) {
+  std::lock_guard<std::mutex> lock(mutex);
+  if(time(NULL) > last_checked + check_every){
+    Reload();
+  }
+
+  if(!library || !func || !default_directory){
+    return;
+  }
+
+  TPreserveGDirectory preserve;
+  default_directory->cd();
+
+  obj.SetDetectors(&detectors);
+  func(obj);
+  obj.SetDetectors(NULL);
 }
 
 void TCompiledHistograms::AddCutFile(TFile* cut_file) {

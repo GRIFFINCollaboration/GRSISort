@@ -1,4 +1,4 @@
-#include "TFragHistLoop.h"
+#include "TAnalysisHistLoop.h"
 
 #include "TFile.h"
 
@@ -8,30 +8,30 @@
 #include "GValue.h"
 #include "TChannel.h"
 
-TFragHistLoop * TFragHistLoop::Get(std::string name) {
+TAnalysisHistLoop * TAnalysisHistLoop::Get(std::string name) {
   if(name.length()==0)
     name = "histo_loop";
-  TFragHistLoop *loop = dynamic_cast<TFragHistLoop*>(StoppableThread::Get(name));
+  TAnalysisHistLoop *loop = dynamic_cast<TAnalysisHistLoop*>(StoppableThread::Get(name));
   if(!loop)
-    loop = new TFragHistLoop(name);
+    loop = new TAnalysisHistLoop(name);
   return loop;
 }
 
-TFragHistLoop::TFragHistLoop(std::string name)
+TAnalysisHistLoop::TAnalysisHistLoop(std::string name)
   : StoppableThread(name),
     output_file(0), output_filename("last.root"),
-    input_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
-    output_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()) {
-  LoadLibrary(TGRSIOptions2::Get()->FragmentHistogramLib());
+    input_queue(std::make_shared<ThreadsafeQueue<TUnpackedEvent*> >()),
+    output_queue(std::make_shared<ThreadsafeQueue<TUnpackedEvent*> >()) {
+  LoadLibrary(TGRSIOptions2::Get()->AnalysisHistogramLib());
 }
 
-TFragHistLoop::~TFragHistLoop() {
+TAnalysisHistLoop::~TAnalysisHistLoop() {
   CloseFile();
 }
 
-void TFragHistLoop::ClearQueue() {
+void TAnalysisHistLoop::ClearQueue() {
   while(input_queue->Size()){
-    TFragment* event = NULL;
+    TUnpackedEvent* event = NULL;
     input_queue->Pop(event);
     if(event){
       delete event;
@@ -39,7 +39,7 @@ void TFragHistLoop::ClearQueue() {
   }
 
   while(output_queue->Size()){
-    TFragment* event = NULL;
+    TUnpackedEvent* event = NULL;
     output_queue->Pop(event);
     if(event){
       delete event;
@@ -47,8 +47,8 @@ void TFragHistLoop::ClearQueue() {
   }
 }
 
-bool TFragHistLoop::Iteration() {
-  TFragment* event = NULL;
+bool TAnalysisHistLoop::Iteration() {
+  TUnpackedEvent* event = NULL;
   input_queue->Pop(event);
 
   if(event) {
@@ -70,18 +70,18 @@ bool TFragHistLoop::Iteration() {
   }
 }
 
-void TFragHistLoop::ClearHistograms() {
+void TAnalysisHistLoop::ClearHistograms() {
   compiled_histograms.ClearHistograms();
 }
 
-void TFragHistLoop::OpenFile() {
+void TAnalysisHistLoop::OpenFile() {
   TPreserveGDirectory preserve;
   output_file = TGRSIint::instance()->OpenRootFile(output_filename,
                                                    "RECREATEONLINE");
   compiled_histograms.SetDefaultDirectory(output_file);
 }
 
-void TFragHistLoop::CloseFile() {
+void TAnalysisHistLoop::CloseFile() {
   Write();
 
   if(output_file){
@@ -91,7 +91,7 @@ void TFragHistLoop::CloseFile() {
   }
 }
 
-void TFragHistLoop::Write() {
+void TAnalysisHistLoop::Write() {
   if(GetOutputFilename() == "/dev/null") {
     return;
   }
@@ -112,30 +112,30 @@ void TFragHistLoop::Write() {
   }
 }
 
-void TFragHistLoop::LoadLibrary(std::string library) {
-  compiled_histograms.Load(library, "MakeFragmentHistograms");
+void TAnalysisHistLoop::LoadLibrary(std::string library) {
+  compiled_histograms.Load(library, "MakeAnalysisHistograms");
 }
 
-std::string TFragHistLoop::GetLibraryName() const {
+std::string TAnalysisHistLoop::GetLibraryName() const {
   return compiled_histograms.GetLibraryName();
 }
 
-TList* TFragHistLoop::GetObjects() {
+TList* TAnalysisHistLoop::GetObjects() {
   return compiled_histograms.GetObjects();
 }
 
-TList* TFragHistLoop::GetGates() {
+TList* TAnalysisHistLoop::GetGates() {
   return compiled_histograms.GetGates();
 }
 
-void TFragHistLoop::SetOutputFilename(const std::string& name){
+void TAnalysisHistLoop::SetOutputFilename(const std::string& name){
   output_filename = name;
 }
 
-std::string TFragHistLoop::GetOutputFilename() const {
+std::string TAnalysisHistLoop::GetOutputFilename() const {
   return output_filename;
 }
 
-void TFragHistLoop::AddCutFile(TFile* cut_file) {
+void TAnalysisHistLoop::AddCutFile(TFile* cut_file) {
   compiled_histograms.AddCutFile(cut_file);
 }

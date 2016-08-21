@@ -1,4 +1,4 @@
-// TFragHistLoop.h TCompiledHistograms.h TRuntimeObjects.h
+// TFragHistLoop.h TCompiledHistograms.h TRuntimeObjects.h TAnalysisHistLoop.h
 
 #ifdef __CINT__
 
@@ -10,5 +10,6 @@
 #pragma link C++ class TCompiledHistograms+;
 #pragma link C++ class TRuntimeObjects+;
 #pragma link C++ class TFragHistLoop+;
+#pragma link C++ class TAnalysisHistLoop+;
 
 #endif

@@ -445,6 +445,14 @@ bool GUIIsRunning() {
   return gui_is_running;
 }
 
+void AddFileToGUI(TFile* file) {
+  // Pass the TFile to the python GUI.
+  if(file && GUIIsRunning()){
+    TPython::Bind(file,"tdir");
+    gROOT->ProcessLine("TPython::Exec(\"window.AddDirectory(tdir)\");");
+  }
+}
+
 
 
 TH2 *AddOffset(TH2 *mat,double offset,EAxis axis) {

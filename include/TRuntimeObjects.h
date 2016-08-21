@@ -9,6 +9,7 @@
 #include "TList.h"
 
 #include "TFragment.h"
+#include "TUnpackedEvent.h"
 
 class TH1;
 class TH2;
@@ -41,11 +42,11 @@ public:
                   TDirectory* directory=NULL,
                   const char *name="default");
 
-  // /// Returns a pointer to the detector of type T
-  // template<typename T>
-  // T* GetDetector(){
-  //   return detectors->GetDetector<T>();
-  // }
+  /// Returns a pointer to the detector of type T
+  template<typename T>
+  T* GetDetector(){
+    return detectors->GetDetector<T>();
+  }
 
   TFragment* GetFragment() { return frag; }
 
@@ -156,11 +157,11 @@ public:
   static TRuntimeObjects *Get(std::string name="default") { if(fRuntimeMap.count(name)) return fRuntimeMap.at(name); return 0; }
 
   void SetFragment(TFragment* frag) { this->frag = frag; }
-  //void SetDetectors(TUnpackedEvent *det) { detectors = det; }
+  void SetDetectors(TUnpackedEvent *det) { detectors = det; }
 
 private:
   static std::map<std::string,TRuntimeObjects*> fRuntimeMap;
-  //TUnpackedEvent *detectors;
+  TUnpackedEvent *detectors;
   TFragment* frag;
   TList* objects;
   TList* gates;

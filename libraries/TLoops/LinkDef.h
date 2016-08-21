@@ -1,4 +1,4 @@
-// TDataLoop.h TUnpackingLoop.h StoppableThread.h TFragWriteLoop.h TFragmentChainLoop.h TTerminalLoop.h TFragment.h
+// TDataLoop.h TUnpackingLoop.h StoppableThread.h TFragWriteLoop.h TFragmentChainLoop.h TTerminalLoop.h TFragment.h TEventBuildingLoop.h TDetBuildingLoop.h TAnalysisWriteLoop.h
 
 #ifdef __CINT__
 
@@ -14,5 +14,9 @@
 #pragma link C++ class TUnpackingLoop+;
 #pragma link C++ class TFragWriteLoop+;
 #pragma link C++ class TFragmentChainLoop+;
+
+#pragma link C++ class TEventBuildingLoop+;
+#pragma link C++ class TDetBuildingLoop+;
+#pragma link C++ class TAnalysisWriteLoop+;
 
 #endif

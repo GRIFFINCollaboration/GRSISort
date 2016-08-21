@@ -199,3 +199,25 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
 
   return false;
 }
+
+
+Int_t TFragment::GetSharcMesyBoard() const {
+  int slave   = (fAddress & 0x00f00000) >> 20;
+  int port    = (fAddress & 0x00000f00) >> 8;
+  int channel = (fAddress & 0x000000ff);
+  
+  //printf("slave = 0x%08x    port = 0x%08x  channel = 0x%08x\n",slave,port,channel);
+
+  if(slave!=0x1 && slave!=0x2)
+    return -1;
+  if(channel==0x1f) {
+    return (slave-1)*16 + (port-1)*2 + 1;
+  } else if(channel==0x3f) {
+    return (slave-1)*16 + (port-1)*2 + 2;
+  }
+  return -1;
+}
+
+
+
+

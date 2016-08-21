@@ -76,7 +76,7 @@ public:
   bool IsOnline()           const { return fIsOnline; }
 
   bool TimeSortInput()      const { return fTimeSortInput; }
-  int TimeSortDepth()       const { return fTimeSortDepth; }
+  int SortDepth()           const { return fSortDepth; }
 
   bool ShouldExitImmediately() const { return fShouldExit; }
 
@@ -146,7 +146,7 @@ private:
   bool fSortMultiple;
 
   bool fTimeSortInput;
-  int fTimeSortDepth;
+  int fSortDepth;
 
   int fBuildWindow;
 
