@@ -30,7 +30,13 @@ public:
   ~GH2I();
 
   virtual void Draw(Option_t *opt="");
+
+#if MAJOR_ROOT_VERSION < 6
   TH1 *DrawCopy(Option_t *opt="") const;
+#else
+  TH1 *DrawCopy(Option_t *opt="",const char *name_postfix="_copy") const;
+#endif
+
   TH1 *DrawNormalized(Option_t *opt="",Double_t norm=1) const;
 
   virtual void Clear(Option_t *opt="");

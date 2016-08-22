@@ -64,7 +64,7 @@ public:
 
   //void ProcessEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
   //void CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
-  void HandleInput(Int_t event,Int_t x,Int_t y);
+  void HandleInput(int event,Int_t x,Int_t y);
   void Draw(Option_t *opt="");
 
   static GCanvas *MakeDefCanvas();
