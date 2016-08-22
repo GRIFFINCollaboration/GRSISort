@@ -386,7 +386,7 @@ GCanvas *GCanvas::MakeDefCanvas() {
 //}
 
 
-void GCanvas::HandleInput(EEventType event,Int_t x,Int_t y) {
+void GCanvas::HandleInput(int event,Int_t x,Int_t y) {
   //If the below switch breaks. You need to upgrade your version of ROOT
   //Version 5.34.24 works. //older version should work now too pcb (8/2015)
   bool used = false;
