@@ -29,7 +29,7 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
                       2000, 0, 2000, frag->GetChannelNumber(),
                       3600, 0, 3600, frag->GetMidasTimeStamp()-first_timestamp);
     if(frag->GetChannelNumber()<1199) {
-      if(frag->GetSegment()==0) {
+      if(frag->GetSegment()==0 && (frag->GetChannelNumber()%10)==0) {
         obj.FillHistogram("hpge","core_energy",
 	      	           70,0,70, frag->GetArrayNumber(),
 		           8000, 0, 4000, frag->GetEnergy());
@@ -54,6 +54,11 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
 extern "C"
 void MakeAnalysisHistograms(TRuntimeObjects& obj) {
   TSharc* sharc = obj.GetDetector<TSharc>();
+  TTigress* tigress = obj.GetDetector<TTigress>();
+
+  obj.FillHistogram("detectors_present",
+                    4, 0, 4, bool(sharc) + 2*bool(tigress));
+
   if(sharc){
     for(Int_t i=0; i<sharc->GetSize(); i++){
 
