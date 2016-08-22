@@ -31,7 +31,7 @@ static double amu = 931.494043;
 //static double MeV2Kg = 1.77777778e-30;
 
 std::string& TNucleus::massfile(){
-  static std::string output = std::string(getenv("GRUTSYS")) + "/libraries/SourceData/mass.dat";
+  static std::string output = std::string(getenv("GRSISYS")) + "/libraries/SourceData/mass.dat";
   return output;
 }
 //const char *TNucleus::massfile = mfile.c_str();
@@ -419,7 +419,7 @@ void TNucleus::Print(Option_t *opt) const{
   int counter =0;
   while(TTransition *tran = (TTransition*)next()) {
     printf("\t%i\t",counter++);
-    tran->Print(); 
+    tran->Print();
   }
 }
 
@@ -445,7 +445,7 @@ bool TNucleus::LoadTransitionFile(){
   filename = std::string(getenv("GRUTSYS")) + "/libraries/SourceData/";
   std::string symbol = this->GetSymbol();
   std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::tolower);
-  filename.append(symbol.c_str());          
+  filename.append(symbol.c_str());
   filename.append(std::to_string(this->GetA()));
   filename.append(".sou");
 
@@ -456,9 +456,9 @@ bool TNucleus::LoadTransitionFile(){
     return false;
   }
   //printf("found %s\n",filename.c_str());
-  
+
   std::string line;
- 
+
   while(getline(transfile,line)) {
     //printf("%i\t%s\n",counter++,line.c_str());
     if(!line.compare(0,2,"//"))
@@ -485,7 +485,7 @@ bool TNucleus::LoadTransitionFile(){
     }
     AddTransition(tran);
   }
-   
+
   return true;
 
 }
