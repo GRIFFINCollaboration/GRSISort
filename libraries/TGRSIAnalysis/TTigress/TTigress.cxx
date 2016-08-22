@@ -210,7 +210,7 @@ void TTigress::AddFragment(TFragment* frag, TChannel* chan) {
   ///frag->Print("all");
 
   if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) &&
-     (chan->GetSegmentNumber()==0 || chan->GetSegmentNumber()==9) ) { // it is a core
+     (chan->GetSegment()==0 || chan->GetSegment()==9) ) { // it is a core
     //if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
     //  return;
     TTigressHit corehit; //(*frag);

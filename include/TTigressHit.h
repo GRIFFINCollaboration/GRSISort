@@ -61,7 +61,7 @@ class TTigressHit : public TGRSIDetectorHit {
     Double_t GetSignalToNoise() const  { return fSig2Noise;  } //!<!
     Double_t GetFitTime()       const  { return fTimeFit;   }  //!<!
 
-    int GetArrayNumber()  {  
+    UShort_t GetArrayNumber() const  {  
       int number = 4*(GetDetector()-1) + GetCrystal(); 
       return number;
     }
@@ -84,7 +84,7 @@ class TTigressHit : public TGRSIDetectorHit {
     /* int GetBGOMultiplicity()            const { return fBgos.size();     }  //!<! */
     /* int GetNBGOs()                      const { return fBgos.size();     }  //!<! */
 
-    const TGRSIDetectorHit& GetSegment(int i) const { return fSegments.at(i);  }  //!<!
+    const TGRSIDetectorHit& GetSegmentHit(int i) const { return fSegments.at(i);  }  //!<!
     /* const TGRSIDetectorHit& GetBGO(int i)     const { return fBgos.at(i);      }  //!<! */
     const TGRSIDetectorHit& GetCore()         const { return *this;            }  //!<!
     
