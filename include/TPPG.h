@@ -59,7 +59,7 @@ class TPPGData : public TObject {
 
        void Print(Option_t* opt = "") const;
        void Clear(Option_t* opt = "");
-       
+
 
     private:
        ULong64_t fTimeStamp;
@@ -94,6 +94,13 @@ class TPPG : public TObject	{
     virtual ~TPPG();
 
     void Copy(TObject& rhs) const;
+    void Setup();
+    Int_t Write(const char *name=0, Int_t option=0, Int_t bufsize=0) {
+      return ((const TPPG*)this)->Write(name, option, bufsize);
+    }
+    Int_t Write(const char *name=0, Int_t option=0, Int_t bufsize=0) const;
+
+    
    public: 
     void AddData(TPPGData* pat);
     uint16_t GetStatus(ULong64_t time) const;

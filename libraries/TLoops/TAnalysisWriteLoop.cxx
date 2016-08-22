@@ -49,20 +49,8 @@ TAnalysisWriteLoop::~TAnalysisWriteLoop() {
     delete elem.second;
   }
 
-  if(output_file){
-    output_file->cd();
-    event_tree->Write(event_tree->GetName(), TObject::kOverwrite);
-    if(GValue::Size()) {
-      GValue::Get()->Write();
-    }
-    if(TChannel::GetNumberOfChannels()) {
-      TChannel::GetDefaultChannel()->Write();
-    }
-    TGRSIRunInfo::Get()->WriteToRoot(output_file);
+  Write();
 
-    output_file->Close();
-    output_file->Delete();
-  }
 }
 
 void TAnalysisWriteLoop::ClearQueue() {
@@ -101,10 +89,22 @@ bool TAnalysisWriteLoop::Iteration() {
 }
 
 void TAnalysisWriteLoop::Write() {
+
   if(output_file){
-    //TPreserveGDirectory preserve;
     output_file->cd();
-    event_tree->Write();
+
+    event_tree->Write(event_tree->GetName(), TObject::kOverwrite);
+    if(GValue::Size()) {
+      GValue::Get()->Write();
+    }
+    if(TChannel::GetNumberOfChannels()) {
+      TChannel::GetDefaultChannel()->Write();
+    }
+    TGRSIRunInfo::Get()->WriteToRoot(output_file);
+    TPPG::Get()->Write();
+
+    output_file->Close();
+    output_file->Delete();
   }
 }
 

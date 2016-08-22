@@ -64,23 +64,7 @@ TFragWriteLoop::~TFragWriteLoop() {
   delete event_address;
   delete scaler_address;
 
-  if(output_file){
-    output_file->cd();
-    event_tree->Write(event_tree->GetName(), TObject::kOverwrite);
-    scaler_tree->Write(scaler_tree->GetName(), TObject::kOverwrite);
-    if(GValue::Size()) {
-      GValue::Get()->Write();
-    }
-
-    if(TChannel::GetNumberOfChannels()) {
-      TChannel::GetDefaultChannel()->Write();
-    }
-
-    TGRSIRunInfo::Get()->WriteToRoot(output_file);
-
-    output_file->Close();
-    output_file->Delete();
-  }
+  Write();
 }
 
 void TFragWriteLoop::ClearQueue() {
@@ -136,10 +120,22 @@ bool TFragWriteLoop::Iteration() {
 
 void TFragWriteLoop::Write() {
   if(output_file){
-    //TPreserveGDirectory preserve;
     output_file->cd();
     event_tree->Write(event_tree->GetName(), TObject::kOverwrite);
     scaler_tree->Write(scaler_tree->GetName(), TObject::kOverwrite);
+    if(GValue::Size()) {
+      GValue::Get()->Write();
+    }
+
+    if(TChannel::GetNumberOfChannels()) {
+      TChannel::GetDefaultChannel()->Write();
+    }
+
+    TGRSIRunInfo::Get()->WriteToRoot(output_file);
+    TPPG::Get()->Write();
+
+    output_file->Close();
+    output_file->Delete();
   }
 }
 

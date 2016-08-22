@@ -24,6 +24,7 @@
 #include "TFragmentChainLoop.h"
 #include "TTerminalLoop.h"
 #include "TUnpackingLoop.h"
+#include "TPPG.h"
 
 
 #include "GRootCommands.h"
@@ -156,6 +157,7 @@ void TGRSIint::ApplyOptions() {
    } else {
      TGRSIRunInfo::Get()->SetRunInfo(0,0);
    }
+   TPPG::Get()->Setup();
    for(auto val_filename : opt->ValInputFiles()) {
      GValue::ReadValFile(val_filename.c_str());
    }

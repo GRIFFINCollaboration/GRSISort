@@ -937,7 +937,7 @@ int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, unsigned int mi
         break;
       case 0xe0000000:
         //if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
-        TGRSIRootIO::Get()->FillPPG(ppgEvent);
+	TPPG::Get()->AddData(ppgEvent);
         TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(-2); //use detector type -2 for PPG
         return x;
         //} else  {

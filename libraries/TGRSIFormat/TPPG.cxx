@@ -3,6 +3,8 @@
 //#include <iostream>
 #include "TDirectory.h"
 
+#include "TGRSIRunInfo.h"
+
 /// \cond CLASSIMP
 ClassImp(TPPGData)
 ClassImp(TPPG)
@@ -293,6 +295,37 @@ void TPPG::Clear(Option_t *opt) {
 	fCurrIterator = fPPGStatusMap->begin();
 	fCycleLength = 0;
 	fNumberOfCycleLengths.clear();
+}
+
+Int_t TPPG::Write(const char* name, Int_t option, Int_t bufsize) const {
+  if(PPGSize()) {
+    printf("Writing PPG\n");
+    return TObject::Write("TPPG", TObject::kSingleKey);
+  }
+}
+
+void TPPG::Setup() {
+  if(TGRSIRunInfo::Tigress() || TGRSIRunInfo::Sharc()) {
+    return;
+  }
+  
+  if (TGRSIRunInfo::SubRunNumber() > 0) {
+    TFile* prevSubRun = new TFile(Form("fragment%05d_%03d.root",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()-1));
+    if(prevSubRun->IsOpen()) {
+      TPPG* prev_ppg = (TPPG*) prevSubRun->Get("TPPG");
+      if(prev_ppg) {
+	prev_ppg->Copy(*this);
+	printf("Found previous PPG data from run %s\n",prevSubRun->GetName());
+      } else {
+	printf("Error, could not find PPG in file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()-1);
+	printf("PPG set up.\n");
+      }
+      prevSubRun->Close();
+    } else {
+      printf("Error, could not find file fragment%05d_%03d.root, not adding previous PPG data\n",TGRSIRunInfo::RunNumber(),TGRSIRunInfo::SubRunNumber()-1);
+      printf("PPG set up.\n");
+    }
+  }
 }
 
 bool TPPG::Correct(bool verbose) {
