@@ -132,7 +132,7 @@ class MainWindow(object):
                            text='Load Root File',fg="black",bg="goldenrod",
                            command=self.LoadRootFile)
         button.pack(side=tk.LEFT)
-        
+
         button = tk.Button(frame,
                            text='Load Window File',fg="black",bg="goldenrod",
                            command=self.LoadWindowFile)
@@ -273,6 +273,9 @@ class MainWindow(object):
         self.dummy.Start(-1, True)
 
     def _PickIcon(self, obj):
+        if not obj:
+            return ''
+
         # If this is a TKey, look up the icon for the thing it points to.
         if isinstance(obj, ROOT.TKey):
             cls = ROOT.TClass(obj.GetClassName())
