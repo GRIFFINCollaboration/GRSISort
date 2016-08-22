@@ -29,7 +29,7 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
                       2000, 0, 2000, frag->GetChannelNumber(),
                       3600, 0, 3600, frag->GetMidasTimeStamp()-first_timestamp);
     if(frag->GetChannelNumber()<1199) {
-      if(frag->GetSegment()==0) {
+      if(frag->GetSegment()==0 && (frag->GetChannelNumber()%10)==0) {
         obj.FillHistogram("hpge","core_energy",
 	      	           70,0,70, frag->GetArrayNumber(),
 		           8000, 0, 4000, frag->GetEnergy());
