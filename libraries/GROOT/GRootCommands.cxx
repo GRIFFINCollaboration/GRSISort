@@ -424,6 +424,7 @@ namespace {
   bool gui_is_running = false;
 }
 
+#ifdef HAS_CORRECT_PYTHON_VERSION
 void StartGUI() {
   std::string   script_filename = Form("%s/pygui/grut-view.py",getenv("GRSISYS"));
   std::ifstream script(script_filename);
@@ -440,17 +441,25 @@ void StartGUI() {
     gROOT->ProcessLine("TPython::Exec(\"window.AddDirectory(tdir)\");");
   }
 }
+#else
+void StartGUI() {
+  std::cout << "Cannot start gui, requires ROOT compiled against python 2.7" << std::endl;
+}
+#endif
+
 
 bool GUIIsRunning() {
   return gui_is_running;
 }
 
 void AddFileToGUI(TFile* file) {
+  #ifdef HAS_CORRECT_PYTHON_VERSION
   // Pass the TFile to the python GUI.
   if(file && GUIIsRunning()){
     TPython::Bind(file,"tdir");
     gROOT->ProcessLine("TPython::Exec(\"window.AddDirectory(tdir)\");");
   }
+  #endif
 }
 
 

@@ -16,8 +16,12 @@ SRC_SUFFIX = cxx
 # EVERYTHING PAST HERE SHOULD WORK AUTOMATICALLY
 
 MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
+ROOT_PYTHON_VERSION=$(shell root-config --python-version)
 
 CFLAGS += -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION}
+ifeq ($(ROOT_PYTHON_VERSION),2.7)
+  CFLAGS += -DHAS_CORRECT_PYTHON_VERSION
+endif
 
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
