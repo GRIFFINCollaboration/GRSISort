@@ -1,6 +1,21 @@
 #!/bin/bash
 
-script_dir=$(dirname $(readlink -f "$0"))
+#[[ `uname` == 'Darwin' ]] && {
+#   which greadlink gsed gzcat > /dev/null && {
+#      unalias readlink sed zcat
+#alias readlink=greadlink sed=gsed zcat=gzcat
+#   } || {
+#         echo 'ERROR: GNU utils required for Mac. You may use homebrew to install them: brew install coreutils gnu-sed'
+#         exit 1
+#   }
+#}
+
+if [ `uname` == 'Darwin' ]; then
+   script_dir=$(dirname $(greadlink -f "$0"))
+else
+   script_dir=$(dirname $(readlink -f "$0"))
+fi
+      
 include_file="$script_dir"/../include/GVersion.h
 
 release_commit=$(git describe --abbrev=0 --match="v*")
