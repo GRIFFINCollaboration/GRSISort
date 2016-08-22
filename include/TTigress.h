@@ -73,7 +73,7 @@ class TTigress : public TGRSIDetector {
 
     TTigress& operator=(const TTigress&); //!<!
 
-#if !defined (__CINT__)
+#if !defined (__CINT__) && !defined (__CLING__)
     void SetAddbackCriterion(std::function<bool(TTigressHit&, TTigressHit&)> criterion) {
       fAddbackCriterion = criterion;
     }
