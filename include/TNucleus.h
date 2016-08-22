@@ -78,7 +78,7 @@ class TNucleus : public TNamed{
 
  private:
    
-  void SetName();
+  void SetName(const char* c = "");
   
    int fA; 						// Number of nucleons (Z + N)
    int fN;						// Number of neutrons (N)

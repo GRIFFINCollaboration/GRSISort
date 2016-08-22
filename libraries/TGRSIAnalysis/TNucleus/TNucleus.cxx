@@ -182,7 +182,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
 //  fA = aval;
 //}
 
-void TNucleus::SetName() {
+void TNucleus::SetName(const char* c) {
   std::string name = this->GetSymbol();
   name.append(std::to_string(this->GetA()));
   TNamed::SetName(name.c_str());
