@@ -132,7 +132,7 @@ class MainWindow(object):
                            text='Load Root File',fg="black",bg="goldenrod",
                            command=self.LoadRootFile)
         button.pack(side=tk.LEFT)
-        
+
         button = tk.Button(frame,
                            text='Load Window File',fg="black",bg="goldenrod",
                            command=self.LoadWindowFile)
@@ -273,6 +273,9 @@ class MainWindow(object):
         self.dummy.Start(-1, True)
 
     def _PickIcon(self, obj):
+        if not obj:
+            return ''
+
         # If this is a TKey, look up the icon for the thing it points to.
         if isinstance(obj, ROOT.TKey):
             cls = ROOT.TClass(obj.GetClassName())
@@ -444,10 +447,10 @@ class MainWindow(object):
         update_tcanvases()
 
     def ResetAllHistograms(self):
-        ROOT.TGRUTint.instance().ResetAllHistograms()
+        ROOT.TGRSIint.instance().ResetAllHistograms()
 
     def ResortDataFile(self):
-        ROOT.TGRUTint.instance().ResortDataFile()
+        ROOT.TGRSIint.instance().ResortDataFile()
 
     def _draw_single(self,hist,color=1,nselected=1):
         canvas_exists = bool(filter(None,self.canvases))
@@ -518,7 +521,7 @@ class MainWindow(object):
         if not filename:
             return
 
-        ROOT.TGRUTint.instance().LoadRawFile(filename)
+        ROOT.TGRSIint.instance().LoadRawFile(filename)
 
     def LoadRootFile(self,filename=None):
         #print "In py LoadRooFile " + filename
@@ -529,7 +532,7 @@ class MainWindow(object):
             return
 
         filename = os.path.abspath(filename)
-        tfile = ROOT.TGRUTint.instance().OpenRootFile(filename)
+        tfile = ROOT.TGRSIint.instance().OpenRootFile(filename)
         if tfile:
             self.files[filename] = tfile
             self.hist_tab.Insert(tfile)

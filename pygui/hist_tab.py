@@ -9,6 +9,8 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 from .util import unpack_tdirectory, update_tcanvases, TKeyDict
 
+shown = 0
+
 class HistTab(object):
 
     def __init__(self, main, frame):
@@ -32,7 +34,8 @@ class HistTab(object):
         self.treeview.bind("<Double-1>", self.OnHistClick)
 
     def AddActiveDirectory(self, tdir):
-        if tdir.GetName() not in [d.GetName() for d in self.active_dirs]:
+        #if tdir.GetName() not in [d.GetName() for d in self.active_dirs]:
+        if tdir not in self.active_dirs:
             self.active_dirs.append(tdir)
 
     def OnHistClick(self,event):
@@ -166,12 +169,16 @@ class HistTab(object):
 
     def CheckOnlineHists(self):
         for tdir in self.active_dirs:
+            name = tdir.GetName()
+            if name == '/dev/null':
+                name = tdir.GetTitle()
+
             if tdir.GetList():
                 self.Insert(tdir.GetList(),
-                            objname=tdir.GetName(), icon=self.main.icons['tfile'])
+                            objname=name, icon=self.main.icons['tfile'])
             if tdir.GetListOfKeys():
                 self.Insert(tdir.GetListOfKeys(),
-                            objname=tdir.GetName(), icon=self.main.icons['tfile'])
+                            objname=name, icon=self.main.icons['tfile'])
 
         if self._requires_resort:
             self.Resort()

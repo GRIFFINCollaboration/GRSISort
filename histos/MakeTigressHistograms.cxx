@@ -54,6 +54,11 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
 extern "C"
 void MakeAnalysisHistograms(TRuntimeObjects& obj) {
   TSharc* sharc = obj.GetDetector<TSharc>();
+  TTigress* tigress = obj.GetDetector<TTigress>();
+
+  obj.FillHistogram("detectors_present",
+                    4, 0, 4, bool(sharc) + 2*bool(tigress));
+
   if(sharc){
     for(Int_t i=0; i<sharc->GetSize(); i++){
 

@@ -160,6 +160,7 @@ void TCompiledHistograms::Fill(TUnpackedEvent& detectors) {
 
   TPreserveGDirectory preserve;
   default_directory->cd();
+  obj.SetDirectory(default_directory);
 
   obj.SetDetectors(&detectors);
   func(obj);
