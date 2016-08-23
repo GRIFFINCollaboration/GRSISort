@@ -33,7 +33,7 @@ public:
   virtual void Draw(Option_t *opt="");
   virtual void Draw(TCutG*);
 
-#if MAJOR_ROO_VERSION < 6
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
   TH1 *DrawCopy(Option_t *opt="") const;
 #else
   TH1 *DrawCopy(Option_t *opt="", const char *name_postfix="_copy") const;

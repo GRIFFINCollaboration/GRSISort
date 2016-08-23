@@ -36,10 +36,10 @@ public:
   size_t GetRate()         { return 0; }
 
   void SetBuildWindow(long clock_ticks) { build_window = clock_ticks; }
-  long GetBuildWindow() const { return build_window; }
+  unsigned long GetBuildWindow() const { return build_window; }
 
   void SetSortDepth(int num_events) { sorting_depth = num_events; }
-  int GetSortDepth() const { return sorting_depth; }
+  unsigned int GetSortDepth() const { return sorting_depth; }
 
 
 private:
@@ -57,7 +57,7 @@ private:
 #endif
 
   EBuildMode build_mode;
-  int sorting_depth;
+  unsigned int sorting_depth;
   long build_window;
 
   std::vector<TFragment*> next_event;
