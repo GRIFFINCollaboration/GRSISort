@@ -88,9 +88,13 @@ void GH2D::Draw(TCutG *cut) {
 }
 
 
-
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
 TH1 *GH2D::DrawCopy(Option_t *opt) const {
   TH1 *h = TH2D::DrawCopy(opt);
+#else
+TH1 *GH2D::DrawCopy(Option_t *opt,const char* name_postfix) const {
+#endif
+   TH1 *h = TH2D::DrawCopy(opt,name_postfix);
   if(gPad) {
     gPad->Update();
     gPad->GetFrame()->SetBit(TBox::kCannotMove);

@@ -53,20 +53,19 @@ private:
   TDataLoop(const TDataLoop& other);
   TDataLoop& operator=(const TDataLoop& other);
 
-  TXMLOdb* fOdb;
-
-  void SetFileOdb(char* data, int size);
-  void SetTIGOdb();
-  void SetGRIFFOdb();
-
   TMidasFile* source;
-
   bool fSelfStopping;
 
 #ifndef __CINT__
   std::shared_ptr<ThreadsafeQueue<TMidasEvent> > output_queue;
   std::mutex source_mutex;
 #endif
+
+  TXMLOdb* fOdb;
+
+  void SetFileOdb(char* data, int size);
+  void SetTIGOdb();
+  void SetGRIFFOdb();
 
   ClassDef(TDataLoop, 0);
 };

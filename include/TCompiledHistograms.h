@@ -40,7 +40,7 @@ public:
 
   void AddCutFile(TFile* cut_file);
 
-  void Write();
+  Int_t Write(const char* name=0, Int_t option=0, Int_t bufsize=0);
 
 
 private:

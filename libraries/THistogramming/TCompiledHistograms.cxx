@@ -78,7 +78,7 @@ bool TCompiledHistograms::file_exists() {
   return infile.is_open();
 }
 
-void TCompiledHistograms::Write() {
+Int_t TCompiledHistograms::Write(const char* name, Int_t option, Int_t bufsize) {
   objects.Sort();
 
   TIter next(&objects);
@@ -102,6 +102,7 @@ void TCompiledHistograms::Write() {
   //  objects.Write();
   TPreserveGDirectory preserve;
   gDirectory->mkdir("variables")->cd();
+  return 1;
   //variables.Write();
 }
 

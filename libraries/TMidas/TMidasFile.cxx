@@ -375,7 +375,7 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
 void TMidasFile::ReadMoreBytes(size_t bytes) {
   size_t initial_size = fReadBuffer.size();
   fReadBuffer.resize(initial_size + bytes);
-  int rd = 0;
+  size_t rd = 0;
   if (fGzFile) {
 #ifdef HAVE_ZLIB
     rd = gzread(*(gzFile*)fGzFile, fReadBuffer.data() + initial_size, bytes);

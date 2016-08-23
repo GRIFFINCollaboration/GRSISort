@@ -302,6 +302,8 @@ Int_t TPPG::Write(const char* name, Int_t option, Int_t bufsize) const {
     printf("Writing PPG\n");
     return TObject::Write("TPPG", TObject::kSingleKey);
   }
+
+  return 0;
 }
 
 void TPPG::Setup() {
