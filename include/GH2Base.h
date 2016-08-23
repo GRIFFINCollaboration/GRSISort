@@ -84,19 +84,19 @@ public:
   class iterator {
   public:
   iterator(GH2Base* mat, bool at_end = false)
-    : mat(mat), first(mat->GetNext(NULL)), curr(at_end ? NULL : first) { }
+    : fMat(mat), fFirst(mat->GetNext(NULL)), fCurr(at_end ? NULL : fFirst) { }
 
     GH1D& operator*() const {
-      return *curr;
+      return *fCurr;
     }
     GH1D* operator->() const {
-      return curr;
+      return fCurr;
     }
 
     // prefix increment
     iterator& operator++() {
-      curr = mat->GetNext(curr);
-      if(curr==first) { curr = 0; }
+      fCurr = fMat->GetNext(fCurr);
+      if(fCurr==fFirst) { fCurr = 0; }
      return *this;
     }
 
@@ -108,18 +108,18 @@ public:
     }
 
     bool operator==(const iterator& b) const {
-      return (mat==b.mat &&
-  	      first==b.first &&
-  	      curr==b.curr);
+      return (fMat==b.fMat &&
+  	      fFirst==b.fFirst &&
+  	      fCurr==b.fCurr);
     }
     bool operator!=(const iterator& b) const {
       return !(*this == b);
     }
 
   private:
-    GH2Base* mat;
-    GH1D* first;
-    GH1D* curr;
+    GH2Base* fMat;
+    GH1D* fFirst;
+    GH1D* fCurr;
   };
 
   iterator begin() { return iterator(this, false); }

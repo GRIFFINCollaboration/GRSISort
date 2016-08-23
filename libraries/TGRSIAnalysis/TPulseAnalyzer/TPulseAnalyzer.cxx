@@ -88,21 +88,20 @@ int TPulseAnalyzer::solve_lin_eq() {
 
 //solve the determinant of the currently stored copy_matrix for dimentions m
 long double  TPulseAnalyzer::determinant(int m) {
-	int j,i;
 	long double s;
 	if(m == 1) return copy_matrix[0][0];
 	if(copy_matrix[m-1][m-1] == 0.) {
-		j = m-1;
+		int j = m-1;
 		while(copy_matrix[m-1][j] == 0 && j >= 0) j--;
 		if(j<0) 
 			return 0.;
-		else for(i=0;i<m;i++){
+		else for(int i=0;i<m;i++){
 			s=copy_matrix[i][m-1];
 			copy_matrix[i][m-1]=copy_matrix[i][j];
 			copy_matrix[i][j]=s;
 		}
 	}
-	for(j=m-2;j>=0;j--)
+	for(int j=m-2;j>=0;j--)
 		for(int i=0;i<m;i++)
 			copy_matrix[i][j]-=copy_matrix[i][m-1]/copy_matrix[m-1][m-1]*copy_matrix[m-1][j];
 	return copy_matrix[m-1][m-1]*determinant(m-1);
@@ -888,7 +887,7 @@ int TPulseAnalyzer::GetCsIShape()
   int dim=4;
 
   long double sum,tau,tau_i,tau_j;
-  int i,j,p,q,d;
+  int p,q,d;
 
   memset(lineq_matrix,0,sizeof(lineq_matrix));
   memset(lineq_vector,0,sizeof(lineq_vector));
@@ -930,7 +929,7 @@ int TPulseAnalyzer::GetCsIShape()
   **************************************************************************/
 
   //create matrix for linearized fit
-  for(i=1;i<lineq_dim;i++)
+  for(int i=1;i<lineq_dim;i++)
   {
 		tau=GetCsITau(i);
 		tau_i=tau;
@@ -944,7 +943,7 @@ int TPulseAnalyzer::GetCsIShape()
 		sum-=log(1.-exp(-1./tau));
 		lineq_matrix[i][i]=exp(sum);
 
-		for(j=i+1;j<lineq_dim;j++)
+		for(int j=i+1;j<lineq_dim;j++)
 		{
 			tau_j=GetCsITau(j);
 			tau=(tau_i*tau_j)/(tau_i+tau_j);
@@ -959,7 +958,7 @@ int TPulseAnalyzer::GetCsIShape()
   lineq_vector[0]=0;
   lineq_matrix[0][0]=0;
 
-  for(j=q;j<N;j++)
+  for(int j=q;j<N;j++)
     {
       lineq_vector[0]+=wavebuffer[j];
       lineq_matrix[0][0]+=1;
@@ -972,16 +971,16 @@ int TPulseAnalyzer::GetCsIShape()
 		return -1.;
 	}
 
-  for(i=1;i<lineq_dim;i++)
+  for(int i=1;i<lineq_dim;i++)
     {
       tau=GetCsITau(i);
       lineq_vector[i]=0;
-      for(j=q;j<N;j++)
+      for(int j=q;j<N;j++)
   	lineq_vector[i]+=wavebuffer[j]*exp(-(double(j))/tau);
     }
   
 
-  for(j=0;j<p;j++)
+  for(int j=0;j<p;j++)
     {
       lineq_vector[0]+=wavebuffer[j];
       lineq_matrix[0][0]+=1;
@@ -1019,14 +1018,14 @@ int TPulseAnalyzer::GetCsIShape()
     //calculate amplitudes	       
     shpar->am[0]=lineq_solution[0];
 
-    for(i=1;i<lineq_dim;i++)
+    for(int i=1;i<lineq_dim;i++)
 		{
 			tau=GetCsITau(i);
 			shpar->am[i]=lineq_solution[i]*exp(-shpar->t[0]/tau);
 		}
     //done calculating amplitudes
 
-    for(i=0;i<lineq_dim;i++)
+    for(int i=0;i<lineq_dim;i++)
 			shpar->chisq-=lineq_solution[i]*lineq_vector[i];
 
 	  if(shpar->chisq<0)
@@ -1036,7 +1035,7 @@ int TPulseAnalyzer::GetCsIShape()
 			return BADCHISQ_NEG;
 		}
 
-    for(i=2;i<lineq_dim;i++)
+    for(int i=2;i<lineq_dim;i++)
 			shpar->am[i]*=-1;
 
 	}
