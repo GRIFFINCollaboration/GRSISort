@@ -28,7 +28,7 @@ public:
   std::shared_ptr<ThreadsafeQueue<TMidasEvent> >& OutputQueue() { return output_queue; }
 #endif
 
-  const TMidasFile& GetSource() const { return *source; }
+  const TMidasFile& GetSource() const { return *fSource; }
 
   std::string Status();
   virtual void ClearQueue();
@@ -53,7 +53,7 @@ private:
   TDataLoop(const TDataLoop& other);
   TDataLoop& operator=(const TDataLoop& other);
 
-  TMidasFile* source;
+  TMidasFile* fSource;
   bool fSelfStopping;
 
 #ifndef __CINT__

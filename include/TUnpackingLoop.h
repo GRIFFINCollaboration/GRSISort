@@ -43,6 +43,10 @@ public:
   size_t GetRate()         { return 0; }
 
 private:
+#ifndef __CINT__
+  std::shared_ptr<ThreadsafeQueue<TMidasEvent> > input_queue;
+#endif
+  
   TDataParser parser;
   long fFragsReadFromMidas;
 
@@ -55,9 +59,6 @@ private:
   bool ProcessTIGRESS(uint32_t* ptr,int& dSize,TMidasEvent* mEvent);
   bool ProcessGRIFFIN(uint32_t* ptr,int& dSize,TDataParser::EBank bank, TMidasEvent* mEvent);
 
-#ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TMidasEvent> > input_queue;
-#endif
 
   ClassDef(TUnpackingLoop, 0);
 };
