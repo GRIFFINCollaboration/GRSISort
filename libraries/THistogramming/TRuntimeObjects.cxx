@@ -58,7 +58,9 @@ TH1* TRuntimeObjects::FillHistogram(const char* name,
   TH1* hist = (TH1*) GetObjects().FindObject(name);
   if(!hist){
     hist = new GH1D(name,name,bins,low,high);
-    if(fDirectory) hist->SetDirectory(fDirectory);
+    if(fDirectory) {
+      hist->SetDirectory(fDirectory);
+    }
     GetObjects().Add(hist);
   }
   if(!(std::isnan(value))) {

@@ -93,8 +93,8 @@ TH1 *GH2D::DrawCopy(Option_t *opt) const {
   TH1 *h = TH2D::DrawCopy(opt);
 #else
 TH1 *GH2D::DrawCopy(Option_t *opt,const char* name_postfix) const {
-#endif
    TH1 *h = TH2D::DrawCopy(opt,name_postfix);
+#endif
   if(gPad) {
     gPad->Update();
     gPad->GetFrame()->SetBit(TBox::kCannotMove);

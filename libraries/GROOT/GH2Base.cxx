@@ -5,6 +5,7 @@
 #include <TDirectory.h>
 
 #include "GH1D.h"
+#include "SuppressTH1GDirectory.h"
 
 ClassImp(GH2Base)
 
@@ -44,6 +45,8 @@ GH1D* GH2Base::Projection_Background(int axis,
   TH1D* bg_proj = NULL;
 
   double xlow,xhigh,bg_xlow,bg_xhigh;
+
+  SuppressTH1GDirectory sup;
 
   if(axis==0){
     xlow     = GetTH2()->GetXaxis()->GetBinLowEdge(firstbin);
@@ -110,13 +113,17 @@ GH1D* GH2Base::GH2ProjectionX(const char* name,
   if(actual_name == "_px"){
     if(total)
       actual_name = title;
-    else 
+    else
       actual_name  = Form("%s_projx_%d_%d",GetTH2()->GetName(),firstbin,lastbin);
   }
 
-  TH1D* proj = GetTH2()->ProjectionX("temp", firstbin, lastbin, option);
-  GH1D* output = new GH1D(*proj);
-  proj->Delete();
+  GH1D* output = NULL;
+  {
+    SuppressTH1GDirectory sup;
+    TH1D* proj = GetTH2()->ProjectionX("temp", firstbin, lastbin, option);
+    output = new GH1D(*proj);
+    proj->Delete();
+  }
 
   output->SetName(actual_name.c_str());
   output->SetTitle(title.c_str());
@@ -165,14 +172,19 @@ GH1D* GH2Base::GH2ProjectionY(const char* name,
   if(actual_name == "_py"){
     if(total)
       actual_name = title;
-    else 
+    else
       actual_name  = Form("%s_projy_%d_%d",GetTH2()->GetName(),firstbin,lastbin);
-      
+
   }
 
-  TH1D* proj = GetTH2()->ProjectionY("temp", firstbin, lastbin, option);
-  GH1D* output = new GH1D(*proj);
-  proj->Delete();
+  GH1D* output = NULL;
+  {
+    SuppressTH1GDirectory sup;
+    TH1D* proj = GetTH2()->ProjectionY("temp", firstbin, lastbin, option);
+    output = new GH1D(*proj);
+    proj->Delete();
+  }
+
   output->SetName(actual_name.c_str());
   output->SetTitle(title.c_str());
   output->SetParent(GetTH2());
@@ -269,14 +281,14 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr,bool DrawEmpty) {
   GH1D *g =0;
   int start_bin = binnum;
   switch(fSummaryDirection) {
-    case kXDirection: 
+    case kXDirection:
       while(true) {
         std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
 	g = (GH1D*)fSummaryProjections->FindObject(hist_name.c_str());
 	if(g && g->Integral() > 0) {
 	  return g;
 	}
-	
+
         g = GH2ProjectionY(hist_name.c_str(),binnum,binnum,"",DrawEmpty);
         if(g && g->Integral()>0)
           return g;
@@ -288,15 +300,15 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr,bool DrawEmpty) {
         }
       }
       break;
-    case kYDirection: 
+    case kYDirection:
       while(true) {
         std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
-	
+
 	g = (GH1D*)fSummaryProjections->FindObject(hist_name.c_str());
 	if(g && g->Integral() > 0) {
 	  return g;
 	}
-	
+
         g = GH2ProjectionX(hist_name.c_str(),binnum,binnum,"",DrawEmpty);
         if(g && g->Integral()>0)
           return g;
@@ -342,7 +354,7 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr,bool DrawEmpty) {
 
   int start_bin = binnum;
   switch(fSummaryDirection) {
-    case kXDirection: 
+    case kXDirection:
       while(true) {
         //std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
          std::string hist_name2 = Form("%s_%d",GetTH2()->GetName(),binnum);
@@ -357,7 +369,7 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr,bool DrawEmpty) {
         }
       }
       break;
-    case kYDirection: 
+    case kYDirection:
       while(true) {
         //std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
          std::string hist_name2 = Form("%s_%d",GetTH2()->GetName(),binnum);
@@ -385,7 +397,7 @@ GH1D* GH2Base::SummaryProject(int binnum,bool DrawEmpty) {
   if(obj) {
     return (GH1D*)obj;
   }
-  
+
   int start_bin = binnum;
   int max_binnum;
 
@@ -413,10 +425,10 @@ GH1D* GH2Base::SummaryProject(int binnum,bool DrawEmpty) {
 /*
 void GH2I::Streamer(TBuffer &b) {
   if(b.IsReading()) {
-    Version_t v = b.ReadVersion(); 
+    Version_t v = b.ReadVersion();
     TH2I::Streamer(b);
     TDirectory *current = gDirectory;
-    if(TDirectory::Cd(Form("%s_projections",this->GetName()))) { 
+    if(TDirectory::Cd(Form("%s_projections",this->GetName()))) {
       TList *list = gDirectory->GetList();
       TIter iter(list);
       while(TObject *obj = iter.Next()) {
@@ -424,7 +436,7 @@ void GH2I::Streamer(TBuffer &b) {
           GH1D *h = new GH1D(*obj);
           h->SetParent(this);
           fProjections.Add(h);
-        }  
+        }
       }
     }
     current->cd();

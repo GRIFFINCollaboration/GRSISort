@@ -18,7 +18,7 @@ GSnapshot::GSnapshot(const char* snapshot_dir) {
   } else if(gEnv->Defined("GRUT.SnapshotDir")) {
     fSnapshotDir = gEnv->GetValue("GRUT.SnapshotDir","");
   } else {
-    fSnapshotDir = Form("%s/snapshot",getenv("GRUTSYS"));
+    fSnapshotDir = Form("%s/snapshot",getenv("GRSISYS"));
   }
 
   // True from AccessPathName() means file does not exist.

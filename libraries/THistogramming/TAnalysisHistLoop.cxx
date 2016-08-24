@@ -78,6 +78,7 @@ void TAnalysisHistLoop::OpenFile() {
   TPreserveGDirectory preserve;
   output_file = TGRSIint::instance()->OpenRootFile(output_filename,
                                                    "RECREATEONLINE");
+  output_file->SetTitle("Analysis Histograms");
   compiled_histograms.SetDefaultDirectory(output_file);
 }
 
