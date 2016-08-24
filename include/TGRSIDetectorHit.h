@@ -94,7 +94,7 @@ class TGRSIDetectorHit : public TObject 	{
       //virtual UInt_t SetDetector(const UInt_t& det);
       void SetTime(const Double_t& time) {fTime = time; SetFlag(kIsTimeSet,true); }
 
-      TVector3 GetPosition(Double_t dist = 0) const; //!<!
+      TVector3 GetPosition(Double_t dist = 110.0) const; //!<!
       TVector3 GetPosition(Double_t dist = 0);
       virtual double GetEnergy(Option_t* opt="") const;
       virtual double GetEnergy(Option_t* opt="");
