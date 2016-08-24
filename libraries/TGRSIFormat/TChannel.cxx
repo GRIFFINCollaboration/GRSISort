@@ -102,9 +102,9 @@ void TChannel::InitChannelInput() {
 bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
 	///Compares the names of the two TChannels. Returns true if the names are the
 	///same, false if different.
-	std::string namea; namea.assign(((TChannel)chana).GetName());
+	std::string namea; namea.assign(static_cast<TChannel>(chana).GetName());
 
-	if(namea.compare(((TChannel)chanb).GetName()) < 0) return true;
+	if(namea.compare(static_cast<TChannel>(chanb).GetName()) < 0) return true;
 	else return false;
 }
 
@@ -290,13 +290,13 @@ void TChannel::Clear(Option_t* opt){
 	fTIMECoefficients.clear();
 	fEFFCoefficients.clear();
 
-   fClassType = NULL;
+   fClassType = nullptr;
 }
 
 TChannel* TChannel::GetChannel(unsigned int temp_address) {
 	///Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
 
-	TChannel* chan = 0;
+	TChannel* chan = nullptr;
 	//    if(temp_address == 0 || temp_address == 0xffffffff) {//default (NULL) address, return 0;
 	//	      return chan;
 	//    }
@@ -312,7 +312,7 @@ TChannel* TChannel::GetChannelByNumber(int temp_num) {
 	// We should just always update this map before we use it
 	UpdateChannelNumberMap();
 	//    }
-	TChannel* chan  = 0;
+	TChannel* chan  = nullptr;
 	try {
 		chan = fChannelNumberMap->at(temp_num);
 	} 
@@ -324,7 +324,7 @@ TChannel* TChannel::GetChannelByNumber(int temp_num) {
 
 TChannel* TChannel::FindChannelByName(const char* ccName){
 	///Finds the TChannel by the name of the channel 
-	TChannel* chan = NULL;
+	TChannel* chan = nullptr;
 	if(!ccName)
 		return chan;
 
@@ -834,7 +834,7 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 
 	std::istringstream infile(inputdata);
 
-	TChannel* channel = 0;
+	TChannel* channel = nullptr;
 
 	std::string line;
 	int linenumber = 0;
@@ -1033,6 +1033,7 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 	}
 
 	int TChannel::WriteToRoot(TFile* fileptr) {
+      printf( DRED "I am here\n" RESET_COLOR);
 		///Writes Cal File information to the tree
 		TChannel* c = GetDefaultChannel(); 
 		//Maintain old gDirectory info
@@ -1124,7 +1125,7 @@ int TChannel::GetDetectorNumber() const {
 }
 
 TClass* TChannel::GetClassType() const {
-	if(fClassType != NULL)
+	if(fClassType != nullptr)
 		return fClassType;
 
    switch(fMnemonic.System()){
@@ -1174,7 +1175,7 @@ TClass* TChannel::GetClassType() const {
          fClassType = TTip::Class();
          break;
       default:
-         fClassType = NULL;
+         fClassType = nullptr;
    };
 
    return fClassType;

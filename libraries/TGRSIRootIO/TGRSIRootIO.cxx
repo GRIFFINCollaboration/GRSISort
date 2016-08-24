@@ -201,7 +201,7 @@ void TGRSIRootIO::FinalizeFragmentTree() {
 
 	fOutFile->cd();
 	TChannel* chan = TChannel::GetDefaultChannel();
-	if(chan != NULL) {
+	if(chan != nullptr) {
 		chan->SetNameTitle(Form("TChannels[%i]",TChannel::GetNumberOfChannels()),
 				Form("%i TChannels.",TChannel::GetNumberOfChannels()));
 		// using the write command on any TChannel will now write all
@@ -297,8 +297,6 @@ bool TGRSIRootIO::SetUpRootOutFile(int runNumber, int subRunNumber) {
 }
 
 void TGRSIRootIO::CloseRootOutFile()   {
-
-
 	if(!fOutFile)
 		return;
 	fOutFile->cd();
