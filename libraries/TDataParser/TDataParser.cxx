@@ -748,7 +748,7 @@ bool TDataParser::SetGRIFHeader(uint32_t value, TFragment* frag, EBank bank) {
       if( (value&0xf0000000) != 0x80000000) {
         return false;
       }
-      frag->SetNumberOfFilters((value &0x0f000000)>> 24);
+      //frag->SetNumberOfFilters((value &0x0f000000)>> 24);
       frag->SetModuleType((value &0x00e00000)>> 21);
       frag->SetNumberOfPileups((value &0x001c0000)>> 18);
       frag->SetAddress((value &0x0003fff0)>> 4);
@@ -769,7 +769,7 @@ bool TDataParser::SetGRIFHeader(uint32_t value, TFragment* frag, EBank bank) {
       }
       frag->SetNumberOfPileups((value &0x0c000000)>> 26);
       frag->SetModuleType((value &0x03800000)>> 23);
-      frag->SetNumberOfFilters((value &0x00700000)>> 20);
+      //frag->SetNumberOfFilters((value &0x00700000)>> 20);
       frag->SetAddress((value &0x000ffff0)>> 4);
       frag->SetDetectorType((value &0x0000000f));
 

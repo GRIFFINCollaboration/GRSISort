@@ -6,26 +6,26 @@ class combinations {
   class iterator {
   public:    
     iterator(std::vector<double>& points, size_t n, bool at_beginning)
-      : points(points), points_used(points.size()), past_end(false) {
+      : fPoints(points), fPoints_used(fPoints.size()), fPast_end(false) {
       if(at_beginning) {
-	std::fill(points_used.begin(), points_used.begin() + n, true);
+	std::fill(fPoints_used.begin(), fPoints_used.begin() + n, true);
       } else {
-	past_end = true;
+	fPast_end = true;
       }
     }
 
     std::vector<double> operator*() const {
       std::vector<double> values;
-      for(size_t i = 0; i<points_used.size(); i++) {
-	if(points_used[i]) {
-	  values.push_back(points[i]);
+      for(size_t i = 0; i<fPoints_used.size(); i++) {
+	if(fPoints_used[i]) {
+	  values.push_back(fPoints[i]);
 	}
       }
       return values;
     }
 
     iterator& operator++() {
-      past_end = !std::prev_permutation(points_used.begin(), points_used.end());
+      fPast_end = !std::prev_permutation(fPoints_used.begin(), fPoints_used.end());
       return *this;
     }
 
@@ -36,16 +36,16 @@ class combinations {
     }
 
     bool operator==(const iterator& other) const {
-      if(&points != &other.points ||
-	 points_used.size() != other.points_used.size()) {
+      if(&fPoints != &other.fPoints ||
+	 fPoints_used.size() != other.fPoints_used.size()) {
 	return false;
       }
-      if(past_end && other.past_end) {
+      if(fPast_end && other.fPast_end) {
 	return true;
       }
       
-      for(size_t i = 0; i<points_used.size(); i++) {
-	if(points_used[i] != other.points_used[i]) {
+      for(size_t i = 0; i<fPoints_used.size(); i++) {
+	if(fPoints_used[i] != other.fPoints_used[i]) {
 	  return false;
 	}
       }
@@ -58,25 +58,25 @@ class combinations {
     }
     
   private:
-    std::vector<double>& points;
-    std::vector<bool> points_used;
-    bool past_end;
+    std::vector<double>& fPoints;
+    std::vector<bool> fPoints_used;
+    bool fPast_end;
   };
   
   combinations(std::vector<double>& points, size_t n)
-    : points(points), n(n) { }
+    : fPoints(points), fN(n) { }
 
   iterator begin() const {
-    return iterator(points, n, true);
+    return iterator(fPoints, fN, true);
   }
 
   iterator end() const {
-    return iterator(points, n, false);
+    return iterator(fPoints, fN, false);
   }
   
  private:
-  std::vector<double>& points;
-  size_t n;
+  std::vector<double>& fPoints;
+  size_t fN;
 };
 
 #endif

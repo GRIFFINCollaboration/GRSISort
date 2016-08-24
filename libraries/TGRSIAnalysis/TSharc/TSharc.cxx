@@ -195,9 +195,6 @@ TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double
   //int BackDet  = detector;
   int BackStr  = backstrip;
   int nrots = 0; // allows us to rotate into correct position
-  double x = 0;
-  double y = 0;
-  double z = 0;
 
   TVector3 position;
   TVector3 position_offset;
@@ -205,16 +202,16 @@ TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double
 
   if(FrontDet>=5 && FrontDet<=8){ //forward box
     nrots = FrontDet-4;                                // edited to make box 5 on the ceiling.  assuming rotaing ccw around the +z axis!!
-    x = fXposDB;                                                                      // ?? x stays the same. first detector is aways defined in the y-z plane.
-    y = - (fYminDB + (FrontStr+0.5)*fStripFPitch);       // [(-36.0) - (+36.0)]        // ?? add minus sign, reversve the order of the strips on the ds section.
-    z = fZminDB + (BackStr+0.5)*fStripBPitch;            // [(+9.0) - (+57.0)]    
+    double x = fXposDB;                                                                      // ?? x stays the same. first detector is aways defined in the y-z plane.
+    double y = - (fYminDB + (FrontStr+0.5)*fStripFPitch);       // [(-36.0) - (+36.0)]        // ?? add minus sign, reversve the order of the strips on the ds section.
+    double z = fZminDB + (BackStr+0.5)*fStripBPitch;            // [(+9.0) - (+57.0)]    
     position.SetXYZ(x,y,z);
   }
   else if(FrontDet>=9 && FrontDet<=12){ //backward box
     nrots = FrontDet-8;                                             // edited to make box 5 on the ceiling.  assuming rotaing ccw around the +z axis!!
-    x = fXposUB;                                             
-    y = fYminUB + (FrontStr+0.5)*fStripFPitch;           // [(-36.0) - (+36.0)] 
-    z = fZminUB - (BackStr+0.5)*fStripBPitch;            // [(-5.0) - (-53.0)]
+    double x = fXposUB;                                             
+    double y = fYminUB + (FrontStr+0.5)*fStripFPitch;           // [(-36.0) - (+36.0)] 
+    double z = fZminUB - (BackStr+0.5)*fStripBPitch;            // [(-5.0) - (-53.0)]
     position.SetXYZ(x,y,z);
   }
   else if(FrontDet>=13){ // backward (upstream) QQQ

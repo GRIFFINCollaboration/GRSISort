@@ -20,31 +20,31 @@
 typedef void* __attribute__((__may_alias__)) void_alias;
 
 TCompiledHistograms::TCompiledHistograms()
-  : libname(""), func_name(""), library(nullptr), func(nullptr),
-    last_modified(0), last_checked(0), check_every(5),
-    default_directory(0),obj(&objects, &gates, cut_files) { }
+  : fLibname(""), fFunc_name(""), fLibrary(nullptr), fFunc(nullptr),
+    fLast_modified(0), fLast_checked(0), fCheck_every(5),
+    fDefault_directory(0),fObj(&fObjects, &fGates, fCut_files) { }
 
 TCompiledHistograms::TCompiledHistograms(std::string input_lib, std::string func_name)
   : TCompiledHistograms() {
 
-  this->func_name = func_name;
-  libname = input_lib;
-  library = std::make_shared<DynamicLibrary>(libname.c_str(), true);
+  this->fFunc_name = func_name;
+  fLibname = input_lib;
+  fLibrary = std::make_shared<DynamicLibrary>(fLibname.c_str(), true);
   // Casting required to keep gcc from complaining.
-  *(void_alias*)(&func) = library->GetSymbol(func_name.c_str());
+  *(void_alias*)(&fFunc) = fLibrary->GetSymbol(fFunc_name.c_str());
 
-  if(!func){
-    std::cout << "Could not find " << func_name << "() inside "
+  if(!fFunc){
+    std::cout << "Could not find " << fFunc_name << "() inside "
               <<"\"" << input_lib << "\"" << std::endl;
   }
-  last_modified = get_timestamp();
-  last_checked = time(NULL);
+  fLast_modified = get_timestamp();
+  fLast_checked = time(NULL);
 }
 
 void TCompiledHistograms::ClearHistograms() {
-  std::lock_guard<std::mutex> lock(mutex);
+  std::lock_guard<std::mutex> lock(fMutex);
 
-  TIter next(&objects);
+  TIter next(&fObjects);
   TObject* obj;
   while((obj = next())){
     if(obj->InheritsFrom(TH1::Class())){
@@ -69,19 +69,19 @@ void TCompiledHistograms::ClearHistograms() {
 
 time_t TCompiledHistograms::get_timestamp() {
   struct stat buf;
-  stat(libname.c_str(), &buf);
+  stat(fLibname.c_str(), &buf);
   return buf.st_mtime;
 }
 
 bool TCompiledHistograms::file_exists() {
-  std::ifstream infile(libname);
+  std::ifstream infile(fLibname);
   return infile.is_open();
 }
 
 Int_t TCompiledHistograms::Write(const char* name, Int_t option, Int_t bufsize) {
-  objects.Sort();
+  fObjects.Sort();
 
-  TIter next(&objects);
+  TIter next(&fObjects);
   TObject *obj;
   while((obj=next())){
     if(obj->InheritsFrom(TDirectory::Class())){
@@ -113,72 +113,72 @@ void TCompiledHistograms::Load(std::string libname, std::string func_name) {
 
 void TCompiledHistograms::Reload() {
   if (file_exists() &&
-      get_timestamp() > last_modified) {
-    TCompiledHistograms other(libname,func_name);
+      get_timestamp() > fLast_modified) {
+    TCompiledHistograms other(fLibname,fFunc_name);
     swap_lib(other);
   }
-  last_checked = time(NULL);
+  fLast_checked = time(NULL);
 }
 
 void TCompiledHistograms::swap_lib(TCompiledHistograms& other) {
-  std::swap(libname, other.libname);
-  std::swap(func_name, other.func_name);
-  std::swap(library, other.library);
-  std::swap(func, other.func);
-  std::swap(last_modified, other.last_modified);
-  std::swap(last_checked, other.last_checked);
-  std::swap(check_every, other.check_every);
+  std::swap(fLibname, other.fLibname);
+  std::swap(fFunc_name, other.fFunc_name);
+  std::swap(fLibrary, other.fLibrary);
+  std::swap(fFunc, other.fFunc);
+  std::swap(fLast_modified, other.fLast_modified);
+  std::swap(fLast_checked, other.fLast_checked);
+  std::swap(fCheck_every, other.fCheck_every);
 }
 
 void TCompiledHistograms::Fill(TFragment& frag) {
-  std::lock_guard<std::mutex> lock(mutex);
-  if(time(NULL) > last_checked + check_every){
+  std::lock_guard<std::mutex> lock(fMutex);
+  if(time(NULL) > fLast_checked + fCheck_every){
     Reload();
   }
 
-  if(!library || !func || !default_directory){
+  if(!fLibrary || !fFunc || !fDefault_directory){
     return;
   }
 
   TPreserveGDirectory preserve;
-  default_directory->cd();
-  obj.SetDirectory(default_directory);
+  fDefault_directory->cd();
+  fObj.SetDirectory(fDefault_directory);
 
-  obj.SetFragment(&frag);
-  func(obj);
-  obj.SetFragment(NULL);
+  fObj.SetFragment(&frag);
+  fFunc(fObj);
+  fObj.SetFragment(NULL);
 }
 
 void TCompiledHistograms::Fill(TUnpackedEvent& detectors) {
-  std::lock_guard<std::mutex> lock(mutex);
-  if(time(NULL) > last_checked + check_every){
+  std::lock_guard<std::mutex> lock(fMutex);
+  if(time(NULL) > fLast_checked + fCheck_every){
     Reload();
   }
 
-  if(!library || !func || !default_directory){
+  if(!fLibrary || !fFunc || !fDefault_directory){
     return;
   }
 
   TPreserveGDirectory preserve;
-  default_directory->cd();
-  obj.SetDirectory(default_directory);
+  fDefault_directory->cd();
+  fObj.SetDirectory(fDefault_directory);
 
-  obj.SetDetectors(&detectors);
-  func(obj);
-  obj.SetDetectors(NULL);
+  fObj.SetDetectors(&detectors);
+  fFunc(fObj);
+  fObj.SetDetectors(NULL);
 }
 
 void TCompiledHistograms::AddCutFile(TFile* cut_file) {
   if(cut_file) {
-    cut_files.push_back(cut_file);
+    fCut_files.push_back(cut_file);
   }
 }
 
 void TCompiledHistograms::SetDefaultDirectory(TDirectory* dir) {
-  default_directory = dir;
+  fDefault_directory = dir;
 
   TObject* obj = NULL;
-  TIter next(&objects);
+  TIter next(&fObjects);
   while((obj = next())) {
     TH1* hist = dynamic_cast<TH1*>(obj);
     if(hist) {

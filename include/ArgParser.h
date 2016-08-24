@@ -179,82 +179,82 @@ template<typename T>
 class ArgParseConfigT : public ArgParseConfig<T> {
 public:
   ArgParseConfigT(std::string flag, T* output_location)
-    : ArgParseConfig<T>(flag), output_location(output_location) { }
+    : ArgParseConfig<T>(flag), fOutput_location(output_location) { }
 
   virtual ArgParseConfig<T>& default_value(T value){
-    *output_location = value;
+    *fOutput_location = value;
     return *this;
   }
 
   virtual void parse_item(const std::vector<std::string>& arguments){
     std::stringstream ss(arguments[0]);
-    ss >> *output_location;
+    ss >> *fOutput_location;
   }
 
   virtual int num_arguments() const { return 1; }
 
 
 private:
-  T* output_location;
+  T* fOutput_location;
 };
 
 template<>
 class ArgParseConfigT<bool> : public ArgParseConfig<bool> {
 public:
   ArgParseConfigT(std::string flag, bool* output_location)
-    : ArgParseConfig<bool>(flag), output_location(output_location),
-      stored_default_value(false) {
-    *output_location = stored_default_value;
+    : ArgParseConfig<bool>(flag), fOutput_location(output_location),
+      fStored_default_value(false) {
+    *fOutput_location = fStored_default_value;
   }
 
   virtual ArgParseConfig<bool>& default_value(bool value){
-    *output_location = value;
-    stored_default_value = value;
+    *fOutput_location = value;
+    fStored_default_value = value;
     return *this;
   }
 
   virtual void parse_item(const std::vector<std::string>& arguments){
     if(arguments.size() == 0){
-      *output_location = !stored_default_value;
+      *fOutput_location = !fStored_default_value;
     } else {
       std::stringstream ss(arguments[0]);
-      ss >> *output_location;
+      ss >> *fOutput_location;
     }
   }
 
   virtual int num_arguments() const { return 0; }
 
 private:
-  bool* output_location;
-  bool stored_default_value;
+  bool* fOutput_location;
+  bool fStored_default_value;
 };
 
 template<typename T>
 class ArgParseConfigT<std::vector<T> > : public ArgParseConfig<std::vector<T> > {
 public:
   ArgParseConfigT(std::string flag, std::vector<T>* output_location)
-    : ArgParseConfig<std::vector<T> >(flag), output_location(output_location),
-      num_arguments_expected(-1) { }
+    : ArgParseConfig<std::vector<T> >(flag), fOutput_location(output_location),
+      fNum_arguments_expected(-1) { }
 
   virtual void parse_item(const std::vector<std::string>& arguments){
     for(auto arg : arguments){
       std::stringstream ss(arg);
       T val;
       ss >> val;
-      output_location->push_back(val);
+      fOutput_location->push_back(val);
     }
   }
 
-  virtual int num_arguments() const { return num_arguments_expected; }
+  virtual int num_arguments() const { return fNum_arguments_expected; }
 
   virtual ArgParseConfig<std::vector<T> >& default_value(std::vector<T> value){
-    *output_location = value;
+    *fOutput_location = value;
     return *this;
   }
 
 private:
-  std::vector<T>* output_location;
-  int num_arguments_expected;
+  std::vector<T>* fOutput_location;
+  int fNum_arguments_expected;
 };
 
 class ArgParser {
@@ -320,9 +320,9 @@ public:
 
       std::vector<std::string> args;
       std::stringstream ss(remainder);
-      std::string arg;
-      while(ss >> arg){
-        args.push_back(arg);
+      std::string tmparg;
+      while(ss >> tmparg){
+        args.push_back(tmparg);
       }
 
       if(has_colon){
@@ -400,9 +400,9 @@ private:
     if(item.num_arguments() == 0){
       // Each character is a boolean flag
       for(unsigned int ichar=1; ichar<arg.length(); ichar++){
-        std::string flag = "-" + arg.substr(ichar,1);
+        std::string tmpflag = "-" + arg.substr(ichar,1);
         std::vector<std::string> flag_args;
-        get_item(flag).parse(flag, flag_args);
+        get_item(tmpflag).parse(tmpflag, flag_args);
       }
     } else {
       if(arg.length() == 2){

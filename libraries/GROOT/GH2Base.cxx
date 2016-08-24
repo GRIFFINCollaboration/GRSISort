@@ -356,8 +356,9 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr,bool DrawEmpty) {
   switch(fSummaryDirection) {
     case kXDirection:
       while(true) {
-        std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
-        GH1D *g = GH2ProjectionY(hist_name.c_str(),binnum,binnum,"",DrawEmpty);
+        //std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
+         std::string hist_name2 = Form("%s_%d",GetTH2()->GetName(),binnum);
+        GH1D *g = GH2ProjectionY(hist_name2.c_str(),binnum,binnum,"",DrawEmpty);
         if(g && g->Integral()>0)
           return g;
         binnum--;
@@ -370,8 +371,9 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr,bool DrawEmpty) {
       break;
     case kYDirection:
       while(true) {
-        std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
-        GH1D *g = GH2ProjectionX(hist_name.c_str(),binnum,binnum,"",DrawEmpty);
+        //std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
+         std::string hist_name2 = Form("%s_%d",GetTH2()->GetName(),binnum);
+        GH1D *g = GH2ProjectionX(hist_name2.c_str(),binnum,binnum,"",DrawEmpty);
         if(g && g->Integral()>0)
           return g;
         binnum--;
