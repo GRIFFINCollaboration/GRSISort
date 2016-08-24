@@ -1033,7 +1033,6 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 	}
 
 	int TChannel::WriteToRoot(TFile* fileptr) {
-      printf( DRED "I am here\n" RESET_COLOR);
 		///Writes Cal File information to the tree
 		TChannel* c = GetDefaultChannel(); 
 		//Maintain old gDirectory info
