@@ -478,7 +478,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
         // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
         // change should be backward-compatible
         if((value & 0x3fff) == (EventFrag->GetChannelId() & 0x3fff)){
-          if(!TGRSIOptions2::Get()->SuppressErrors() && EventFrag->GetModuleType() == 2 && bank < kGRF3) {
+          if(!TGRSIOptions2::Get()->SuppressErrors() && (EventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
             // check whether the nios finished and if so whether it finished with an error
             if(((value>>14) & 0x1) == 0x1) {
               if(((value>>16) & 0xff) != 0) {
@@ -487,7 +487,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             }
           }
 
-          if(EventFrag->GetModuleType() == 1 || bank > kGRF2) { //4Gs have this only for banks newer than GRF2
+          if((EventFrag->GetModuleType() == 1) || (bank > kGRF2)) { //4Gs have this only for banks newer than GRF2
             EventFrag->SetAcceptedChannelId((value>>14) & 0x3fff);
           } else {
             EventFrag->SetAcceptedChannelId(0);
@@ -570,14 +570,15 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
               case kGRF1: //bank's 1&2 have n*2 words with (5 high bits IntLength, 26 Charge)(5 low bits IntLength, 26 Cfd)
               case kGRF2:
                 //read all pairs of charge/cfd words
-                while((data[x] & 0x80000000) == 0x00000000 && x+1 < size) {
+                while(((data[x] & 0x80000000) == 0x00000000) && (x+1 < size)) {
                   //check if the next word is also a charge/cfd word
                   if((data[x+1] & 0x80000000) == 0x0) {
-                    Short_t tmp = (data[x] & 0x7c000000);
+                    UInt_t tmp = (data[x] & 0x7c000000);
                     tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0)); //extend the sign bit of 26bit charge word
                     ++x;
-                    tmpIntLength.push_back((tmp >> 21) | (data[x] & 0x7c000000) >> 26); //21 = 26 minus space for 5 low bits
+                    tmpIntLength.push_back((tmp >> 21) | ((data[x] & 0x7c000000) >> 26)); //21 = 26 minus space for 5 low bits
                     tmpCfd.push_back(data[x] & 0x03ffffff);
+                    break;
                   } else {
                     //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
                     //so we look for the next trailer and stop there
@@ -591,10 +592,11 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
               case kGRF3: //bank 3 has 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
                 if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
                   Short_t tmp = (data[x] & 0x7c000000);
-                  tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0)); //extend the sign bit of 26bit charge word
+                 tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0)); //extend the sign bit of 26bit charge word
                   ++x;
-                  tmpIntLength.push_back((tmp >> 17) | (data[x] & 0x7fc00000) >> 22); //17 = 26 minus space for 9 low bits
+                  tmpIntLength.push_back((tmp >> 17) | ((data[x] & 0x7fc00000) >> 22)); //17 = 26 minus space for 9 low bits
                   tmpCfd.push_back(data[x] & 0x003fffff);
+                    break;
                 } else {
                   //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
                   //so we look for the next trailer and stop there

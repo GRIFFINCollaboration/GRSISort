@@ -46,7 +46,7 @@ public:
   void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
 
   //ENUM(EBank, char, kWFDN,kGRF1,kGRF2,kGRF3,kFME0,kFME1,kFME2,kFME3);
-  enum EBank { kWFDN,kGRF1,kGRF2,kGRF3,kGRF4,kFME0,kFME1,kFME2,kFME3 };
+  enum EBank { kWFDN=0,kGRF1=1,kGRF2=2,kGRF3=3,kGRF4=4,kFME0=5,kFME1=6,kFME2=7,kFME3=8 };
 
 #ifndef __CINT__
   std::shared_ptr<ThreadsafeQueue<TFragment*> >&

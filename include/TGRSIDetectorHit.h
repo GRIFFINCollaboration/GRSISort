@@ -149,7 +149,7 @@ class TGRSIDetectorHit : public TObject 	{
    protected:
       UInt_t   fAddress;    ///< address of the the channel in the DAQ.
       Float_t  fCharge;     ///< charge collected from the hit
-      Short_t fKValue;      ///< integration value.
+      Short_t  fKValue;      ///< integration value.
       Int_t    fCfd;        ///< CFD time of the Hit
       Long_t   fTimeStamp;  ///< Timestamp given to hit
       std::vector<Short_t> fWaveform;  ///<
