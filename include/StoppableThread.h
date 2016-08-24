@@ -14,6 +14,7 @@
 
 class StoppableThread {
 public:
+  static void SendStop();
   static void StopAll();
   static bool AnyThreadRunning();
   static std::string AnyThreadStatus();

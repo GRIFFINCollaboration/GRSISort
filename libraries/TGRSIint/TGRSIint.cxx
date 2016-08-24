@@ -213,6 +213,8 @@ void TGRSIint::Terminate(Int_t status){
     return;
   }
 
+  StoppableThread::SendStop();
+  LoopUntilDone();
   StoppableThread::StopAll();
 
   //if(GUIIsRunning()){
