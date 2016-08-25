@@ -543,8 +543,8 @@ bool GCanvas::HandleMouseShiftPress(Int_t event,Int_t x,Int_t y) {
         new GCanvas();
         //options.Append("HIST");
         hists.at(0)->DrawCopy(options.Data());
-        for(unsigned int x=1;x<hists.size();x++)
-          hists.at(x)->DrawCopy("same");
+        for(unsigned int i=1;i<hists.size();i++)
+          hists[i]->DrawCopy("same");
       }
       return true;
     case 2:

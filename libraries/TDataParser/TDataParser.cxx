@@ -19,14 +19,14 @@
 /// \endcond
 
 TDataParser::TDataParser()
-  : good_output_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
-    bad_output_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
-    scaler_output_queue(std::make_shared<ThreadsafeQueue<TEpicsFrag*> >()),
+  : fGoodOutputQueue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
+    fBadOutputQueue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
+    fScalerOutputQueue(std::make_shared<ThreadsafeQueue<TEpicsFrag*> >()),
     fNoWaveforms(false), fRecordDiag(true),
     fMaxTriggerId(1024*1024*16),
     fLastMidasId(0), fLastTriggerId(0), fLastNetworkPacket(0),
     fFragmentHasWaveform(false),
-    fFragmentMap(good_output_queue, bad_output_queue) {
+    fFragmentMap(fGoodOutputQueue, fBadOutputQueue) {
   gChannel = new TChannel;
 }
 
@@ -88,7 +88,7 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
         //SetTIGCharge(temp_charge,EventFrag);
         SetTIGLed(temp_led,EventFrag);
         ///check whether the fragment is 'good'
-        Push(*good_output_queue, EventFrag);
+        Push(*fGoodOutputQueue, EventFrag);
         NumFragsFound++;
         return NumFragsFound;
 
@@ -503,7 +503,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
           if(EventFrag->GetModuleType() == 1 && bank == kGRF4) {
             if(tmpCfd.size() != 1) {
               if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
-              Push(*bad_output_queue,EventFrag);
+              Push(*fBadOutputQueue,EventFrag);
               return -x;
             }
             EventFrag->SetCfd(tmpCfd[0]);
@@ -512,7 +512,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
           } else {
             if(tmpCharge.size() != tmpIntLength.size() || tmpCharge.size() != tmpCfd.size()) {
               if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
-              Push(*bad_output_queue,EventFrag);
+              Push(*fBadOutputQueue,EventFrag);
               return -x;
             }
             for(size_t h = 0; h < tmpCharge.size(); ++h) {
@@ -520,14 +520,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
               EventFrag->SetKValue(tmpIntLength[h]);
               EventFrag->SetCfd(tmpCfd[h]);
               if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(EventFrag);
-              Push(*good_output_queue,new TFragment(*EventFrag));
+              Push(*fGoodOutputQueue,new TFragment(*EventFrag));
             }
             delete EventFrag;
             return x;
           }
         } else  {
           if(fRecordDiag) TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
-          Push(*bad_output_queue,EventFrag);
+          Push(*fBadOutputQueue,EventFrag);
           return -x;
         }
         break;
@@ -569,31 +569,28 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             switch(bank) { //the GRIF-16 data format depends on the bank number
               case kGRF1: //bank's 1&2 have n*2 words with (5 high bits IntLength, 26 Charge)(5 low bits IntLength, 26 Cfd)
               case kGRF2:
-                //read all pairs of charge/cfd words
-                while((data[x] & 0x80000000) == 0x00000000 && x+1 < size) {
-                  //check if the next word is also a charge/cfd word
-                  if((data[x+1] & 0x80000000) == 0x0) {
-                    Short_t tmp = (data[x] & 0x7c000000);
-                    tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0)); //extend the sign bit of 26bit charge word
-                    ++x;
-                    tmpIntLength.push_back((tmp >> 21) | (data[x] & 0x7c000000) >> 26); //21 = 26 minus space for 5 low bits
-                    tmpCfd.push_back(data[x] & 0x03ffffff);
-                  } else {
-                    //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
-                    //so we look for the next trailer and stop there
-                    while((data[x] & 0xf0000000) != 0xe0000000) ++x;
-                    TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
-                    delete EventFrag;
-                    return -x;
-                  }
-                }
+                //read this pair of charge/cfd words, check if the next word is also a charge/cfd word
+					 if(((data[x] & 0x80000000) == 0x00000000) && x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
+						Short_t tmp = (data[x] & 0x7c000000) >> 21; //21 = 26 minus space for 5 low bits
+						tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0)); //extend the sign bit of 26bit charge word
+						++x;
+						tmpIntLength.push_back(tmp | ((data[x] & 0x7c000000) >> 26));
+						tmpCfd.push_back(data[x] & 0x03ffffff);
+					 } else {
+						//these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
+						//so we look for the next trailer and stop there
+						while((data[x] & 0xf0000000) != 0xe0000000) ++x;
+						TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
+						delete EventFrag;
+						return -x;
+					 }
                 break;
               case kGRF3: //bank 3 has 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
                 if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
-                  Short_t tmp = (data[x] & 0x7c000000);
+                  Short_t tmp = (data[x] & 0x7c000000) >> 17; //17 = 26 minus space for 9 low bits
                   tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0)); //extend the sign bit of 26bit charge word
                   ++x;
-                  tmpIntLength.push_back((tmp >> 17) | (data[x] & 0x7fc00000) >> 22); //17 = 26 minus space for 9 low bits
+                  tmpIntLength.push_back(tmp | ((data[x] & 0x7fc00000) >> 22));
                   tmpCfd.push_back(data[x] & 0x003fffff);
                 } else {
                   //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
@@ -732,7 +729,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
   }//for(;x<size;x++)
 
   TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
-  Push(*bad_output_queue,EventFrag);
+  Push(*fBadOutputQueue,EventFrag);
   return -x;
 }
 
@@ -1119,7 +1116,7 @@ int TDataParser::EightPIDataToFragment(uint32_t stream,uint32_t* data,
 
 
 
-  //good_output_queue->Add(EventFrag);
+  //fGoodOutputQueue->Add(EventFrag);
   //return NumFragsFound;
   return 1;
 }
@@ -1217,7 +1214,7 @@ int TDataParser::FifoToFragment(unsigned short* data,int size,bool zerobuffer,
   //	EventFrag->Print();
   //
   //
-  //	good_output_queue->Add(EventFrag);
+  //	fGoodOutputQueue->Add(EventFrag);
   //
   return 1;
 }
@@ -1248,6 +1245,6 @@ int TDataParser::EPIXToScalar(float* data,int size,unsigned int midasSerialNumbe
     EXfrag->fData.push_back(data[x]);
   }
 
-  scaler_output_queue->Push(EXfrag);
+  fScalerOutputQueue->Push(EXfrag);
   return NumFragsFound;
 }
