@@ -91,8 +91,11 @@ class TTigressHit : public TGRSIDetectorHit {
     const std::vector<TGRSIDetectorHit>& GetSegmentVec() const { return fSegments; }
     /* const std::vector<TGRSIDetectorHit>& GetBGOVec()     const { return fBgos; } */
 
-    int GetFirstSeg() const { if(fSegments.size()>0) return fSegments.front().GetSegment(); return -1; }
-    int GetLastSeg()  const { if(fSegments.size()>0) return fSegments.back().GetSegment(); return -1; }
+    /* modified by Momiyama and Niikura on Aug. 23, 2016 */
+    /* int GetFirstSeg() const { if(fSegments.size()>0) return fSegments.front().GetSegment(); return -1; } */
+    /* int GetLastSeg()  const { if(fSegments.size()>0) return fSegments.back().GetSegment(); return -1; } */
+    int GetFirstSeg() const { if(fSegments.size()>0) return fSegments.front().GetSegment(); return 0; }
+    int GetLastSeg()  const { if(fSegments.size()>0) return fSegments.back().GetSegment(); return 0; }
 
     static bool Compare(TTigressHit lhs, TTigressHit rhs);        //!<!
     static bool CompareEnergy(TTigressHit lhs, TTigressHit rhs);  //!<!

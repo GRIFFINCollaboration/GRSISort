@@ -190,7 +190,7 @@ Int_t TGRSIDetectorHit::GetCrystal() const {
 Int_t TGRSIDetectorHit::GetArrayNumber() const {
   TChannel *channel = GetChannel();
   if(channel) {
-    return GetDetector()*4 + GetCrystal();
+    return (GetDetector()-1)*4 + GetCrystal();
   }
   return -1;
 }
