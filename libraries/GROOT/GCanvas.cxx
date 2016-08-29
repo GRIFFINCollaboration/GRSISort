@@ -386,26 +386,26 @@ GCanvas *GCanvas::MakeDefCanvas() {
 //}
 
 
-void GCanvas::HandleInput(Int_t event,Int_t x,Int_t y) {
+void GCanvas::HandleInput(int event,Int_t x,Int_t y) {
   //If the below switch breaks. You need to upgrade your version of ROOT
   //Version 5.34.24 works. //older version should work now too pcb (8/2015)
   bool used = false;
   //printf("event = 0x%08x\t x = 0x%08x\t y = 0x%08x \n",event,x,y);
   switch(event) {
-    case 0x00000001: //single click
-    case 0x0000003d: //double click
+    case kButton1Down: //single click
+    case kButton1Double: //double click
       used = HandleMousePress(event,x,y);
       break;
-    case 0x00000007: //shift-click
+    case kButton1Shift: //shift-click
       used = HandleMouseShiftPress(event,x,y);
       break;
-    case 0x0000009:  //control-click
+    case 9:  //control-click
       used = HandleMouseControlPress(event,x,y);
       break;
 
   };
   if(!used)
-    TCanvas::HandleInput((EEventType)event,x,y);
+    TCanvas::HandleInput(static_cast<EEventType>(event),x,y);
   return;
 }
 

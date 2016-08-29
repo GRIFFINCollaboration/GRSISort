@@ -45,18 +45,18 @@ public:
   /// Returns a pointer to the detector of type T
   template<typename T>
   T* GetDetector(){
-    return detectors->GetDetector<T>();
+    return fDetectors->GetDetector<T>();
   }
 
-  TFragment* GetFragment() { return frag; }
+  TFragment* GetFragment() { return fFrag; }
 
   TCutG* GetCut(const std::string& name);
 
   TList& GetObjects();
   TList& GetGates();
 
-  TList* GetObjectsPtr()    { return objects;   }
-  TList* GetGatesPtr()      { return gates;     }
+  TList* GetObjectsPtr()    { return fObjects;   }
+  TList* GetGatesPtr()      { return fGates;     }
 
 
   TH1* FillHistogram(const char* name,
@@ -156,21 +156,21 @@ public:
 
   static TRuntimeObjects *Get(std::string name="default") { if(fRuntimeMap.count(name)) return fRuntimeMap.at(name); return 0; }
 
-  void SetFragment(TFragment* frag) { this->frag = frag; }
-  void SetDetectors(TUnpackedEvent *det) { detectors = det; }
+  void SetFragment(TFragment* frag) { this->fFrag = frag; }
+  void SetDetectors(TUnpackedEvent *det) { fDetectors = det; }
 
-  void SetDirectory(TDirectory* dir) { directory = dir; }
-  TDirectory* GetDirectory() const { return directory; }
+  void SetDirectory(TDirectory* dir) { fDirectory = dir; }
+  TDirectory* GetDirectory() const { return fDirectory; }
 
 private:
   static std::map<std::string,TRuntimeObjects*> fRuntimeMap;
-  TUnpackedEvent *detectors;
-  TFragment* frag;
-  TList* objects;
-  TList* gates;
-  std::vector<TFile*>& cut_files;
+  TUnpackedEvent *fDetectors;
+  TFragment* fFrag;
+  TList* fObjects;
+  TList* fGates;
+  std::vector<TFile*>& fCut_files;
 
-  TDirectory* directory;
+  TDirectory* fDirectory;
 
 
 

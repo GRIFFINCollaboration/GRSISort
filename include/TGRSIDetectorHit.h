@@ -123,7 +123,9 @@ class TGRSIDetectorHit : public TObject 	{
       virtual Int_t  GetSegment()   const; //!<!	
       virtual Int_t  GetCrystal()   const; //!<!
       virtual const char *GetName() const; //!<!
-      virtual Int_t  GetArrayNumber() const; //!<!
+      virtual UShort_t  GetArrayNumber() const; //!<!
+
+      //virtual void GetSegment() const; 
 
       //The PPG is only stored in events that come out of the GRIFFIN DAQ
       uint16_t GetPPGStatus() const;

@@ -22,10 +22,10 @@ std::map<std::string,TRuntimeObjects*> TRuntimeObjects::fRuntimeMap;
 TRuntimeObjects::TRuntimeObjects(TFragment* frag, TList* objects, TList *gates,
                                  std::vector<TFile*>& cut_files,
                                  TDirectory* directory,const char *name)
-  : frag(frag), //detectors(NULL),
-    objects(objects), gates(gates),
-    cut_files(cut_files),
-    directory(directory) {
+  : fFrag(frag), //detectors(NULL),
+    fObjects(objects), fGates(gates),
+    fCut_files(cut_files),
+    fDirectory(directory) {
   SetName(name);
   fRuntimeMap.insert(std::make_pair(name,this));
 }
@@ -43,10 +43,10 @@ TRuntimeObjects::TRuntimeObjects(TFragment* frag, TList* objects, TList *gates,
 TRuntimeObjects::TRuntimeObjects(TList* objects, TList *gates,
                                  std::vector<TFile*>& cut_files,
                                  TDirectory* directory,const char *name)
-  : frag(NULL), //detectors(0),
-    objects(objects), gates(gates),
-    cut_files(cut_files),
-    directory(directory) {
+  : fFrag(NULL), //detectors(0),
+    fObjects(objects), fGates(gates),
+    fCut_files(cut_files),
+    fDirectory(directory) {
   SetName(name);
   fRuntimeMap.insert(std::make_pair(name,this));
 }
@@ -58,8 +58,8 @@ TH1* TRuntimeObjects::FillHistogram(const char* name,
   TH1* hist = (TH1*) GetObjects().FindObject(name);
   if(!hist){
     hist = new GH1D(name,name,bins,low,high);
-    if(directory) {
-      hist->SetDirectory(directory);
+    if(fDirectory) {
+      hist->SetDirectory(fDirectory);
     }
     GetObjects().Add(hist);
   }
@@ -78,7 +78,7 @@ TH2* TRuntimeObjects::FillHistogram(const char* name,
     hist = new GH2D(name,name,
                     Xbins, Xlow, Xhigh,
                     Ybins, Ylow, Yhigh);
-    if(directory) hist->SetDirectory(directory);
+    if(fDirectory) hist->SetDirectory(fDirectory);
     GetObjects().Add(hist);
   }
   if(!std::isnan(Xvalue) && !std::isnan(Yvalue)) {
@@ -94,7 +94,7 @@ TProfile* TRuntimeObjects::FillProfileHist(const char* name,
   if(!prof){
     prof = new TProfile(name,name,
 			Xbins,Xlow,Xhigh);
-    if(directory) prof->SetDirectory(directory);
+    if(fDirectory) prof->SetDirectory(fDirectory);
     GetObjects().Add(prof);
   }
   if(!(std::isnan(Xvalue)))
@@ -111,7 +111,7 @@ TH2* TRuntimeObjects::FillHistogramSym(const char* name,
     hist = new GH2D(name,name,
                             Xbins, Xlow, Xhigh,
                             Ybins, Ylow, Yhigh);
-    if(directory) hist->SetDirectory(directory);
+    if(fDirectory) hist->SetDirectory(fDirectory);
     GetObjects().Add(hist);
   }
 
@@ -281,15 +281,15 @@ TDirectory* TRuntimeObjects::FillHistogramSym(const char* dirname,const char* na
 //-------------------------------------------------------------------------
 
 TList& TRuntimeObjects::GetObjects() {
-  return *objects;
+  return *fObjects;
 }
 
 TList& TRuntimeObjects::GetGates() {
-  return *gates;
+  return *fGates;
 }
 
 TCutG* TRuntimeObjects::GetCut(const std::string& name) {
-  for(auto& tfile : cut_files) {
+  for(auto& tfile : fCut_files) {
     TObject* obj = tfile->Get(name.c_str());
     if(obj) {
       TCutG* cut = dynamic_cast<TCutG*>(obj);

@@ -57,7 +57,7 @@ TVector3 TTigressHit::GetPosition(double dist) const {
 }
 
 TVector3 TTigressHit::GetLastPosition(double dist) const {
-  const TGRSIDetectorHit &seg = GetSegment(GetNSegments()-1);
+  const TGRSIDetectorHit &seg = GetSegmentHit(GetNSegments()-1);
   return TTigress::GetPosition(seg.GetDetector(),seg.GetCrystal(),seg.GetSegment(),dist);  
 }
 
@@ -76,7 +76,7 @@ void TTigressHit::Print(Option_t *opt) const	{
   if(sopt.Contains("all")) {
      printf("Name           Charge\n");
     for(int x=0;x<GetNSegments();x++) {
-      printf("\t\t%s  |   %i\n",GetSegment(x).GetName(),GetSegment(x).GetCharge());
+      printf("\t\t%s  |   %i\n",GetSegmentHit(x).GetName(),GetSegmentHit(x).GetCharge());
     }
     GetPosition().Print();
   }

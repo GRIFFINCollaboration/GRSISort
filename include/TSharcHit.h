@@ -59,32 +59,32 @@ class TSharcHit : public TGRSIDetectorHit {
     TGRSIDetectorHit GetBack()  const { return fBackHit; }
     TGRSIDetectorHit GetPad()   const { return fPadHit; }
 
-    inline Double_t GetDeltaE()       { return TGRSIDetectorHit::GetEnergy();  }  //!<!
-    inline Double_t GetDeltaT()       { return TGRSIDetectorHit::GetTime();    }  //!<!
+    inline Double_t GetDeltaE() const       { return TGRSIDetectorHit::GetEnergy();  }  //!<!
+    inline Double_t GetDeltaT() const       { return TGRSIDetectorHit::GetTime();    }  //!<!
 
-    inline Double_t GetDeltaFrontE()  { return TGRSIDetectorHit::GetEnergy(); }  //!<!
-    inline Double_t GetDeltaFrontT()  { return TGRSIDetectorHit::GetTime();   }  //!<!
-    inline Double_t GetDeltaBackE()   { return GetBack().GetEnergy();  }  //!<!
-    inline Double_t GetDeltaBackT()   { return GetBack().GetTime();    }  //!<!
+    inline Double_t GetDeltaFrontE() const  { return TGRSIDetectorHit::GetEnergy(); }  //!<!
+    inline Double_t GetDeltaFrontT() const  { return TGRSIDetectorHit::GetTime();   }  //!<!
+    inline Double_t GetDeltaBackE() const   { return GetBack().GetEnergy();  }  //!<!
+    inline Double_t GetDeltaBackT() const   { return GetBack().GetTime();    }  //!<!
 
-    inline Int_t GetFrontAddress()    { return TGRSIDetectorHit::GetAddress(); }  //!<!
-    inline Int_t GetBackAddress()     { return GetBack().GetAddress();  }  //!<!
-    inline Int_t GetPadAddress()      { return GetPad().GetAddress();   }  //!<!
+    inline Int_t GetFrontAddress() const    { return TGRSIDetectorHit::GetAddress(); }  //!<!
+    inline Int_t GetBackAddress() const     { return GetBack().GetAddress();  }  //!<!
+    inline Int_t GetPadAddress() const      { return GetPad().GetAddress();   }  //!<!
 
-    inline Double_t GetPadE()         { return GetPad().GetEnergy();    }  //!<!
-    inline Double_t GetPadT()         { return GetPad().GetTime();      }  //!<!
+    inline Double_t GetPadE() const         { return GetPad().GetEnergy();    }  //!<!
+    inline Double_t GetPadT() const         { return GetPad().GetTime();      }  //!<!
 
     //std::pair<int,int>  GetPixel()  { return std::make_pair(fFrontStrip,fBackStrip);  }  //!<!
 
-    Float_t    GetFrontCharge()        { return TGRSIDetectorHit::GetCharge();  }  //!<!  //Charge is now stored after integration.
-    Float_t    GetBackCharge()         { return GetBack().GetCharge();   }  //!<!  //Charge is now stored after integration.
-    Float_t    GetPadCharge()          { return GetPad().GetCharge();    }  //!<!  //Charge is now stored after integration.
+    Float_t    GetFrontCharge() const       { return TGRSIDetectorHit::GetCharge();  }  //!<!  //Charge is now stored after integration.
+    Float_t    GetBackCharge() const        { return GetBack().GetCharge();   }  //!<!  //Charge is now stored after integration.
+    Float_t    GetPadCharge() const         { return GetPad().GetCharge();    }  //!<!  //Charge is now stored after integration.
 
-    inline Double_t GetEnergy(Option_t* opt = "") { if(GetPadAddress()!=-1) 
+    inline Double_t GetEnergy(Option_t* opt = "") const { if(GetPadAddress()!=-1) 
                                                       return TGRSIDetectorHit::GetEnergy() + GetPad().GetEnergy(); 
                                                     return TGRSIDetectorHit::GetEnergy(); 
                                                   }
-    inline Double_t GetTime(Option_t* opt = "")   { return TGRSIDetectorHit::GetTime(); }
+    inline Double_t GetTime(Option_t* opt = "") const   { return TGRSIDetectorHit::GetTime(); }
    
     Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0) { return GetTheta(Xoff,Yoff,Zoff)*TMath::RadToDeg(); } ; //!<! 
     Double_t GetTheta(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0); //!<! 

@@ -7,7 +7,7 @@ PLATFORM:=$(shell uname)
 # EDIT THIS SECTION
 
 INCLUDES   = include users
-CFLAGS     = -g -std=c++11 -O3 -Wall -Wextra -pedantic -Wno-unused-parameter  -Wno-unused-function
+CFLAGS     = -g -std=c++11 -O3 -Wall -Wextra -pedantic -Wno-unused-parameter  -Wno-unused-function -Wshadow
 #-Wall -Wextra -pedantic -Wno-unused-parameter
 LINKFLAGS_PREFIX  =
 LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm -std=c++11
@@ -29,12 +29,18 @@ CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
 CFLAGS     += -I/opt/X11/include -Qunused-arguments
 CPP        = clang++
 SHAREDSWITCH = -Qunused-arguments -shared -undefined dynamic_lookup -dynamiclib -Wl,-install_name,'@executable_path/../lib/'# NO ENDING SPACE
+HEAD=ghead
+FIND=gfind
+LIBRARY_DIRS   := $(shell $(FIND) libraries/* -type d)
 else
 export __LINUX__:= 1
 CPP        = g++
 CFLAGS     += -Wl,--no-as-needed
 LINKFLAGS_PREFIX += -Wl,--no-as-needed
 SHAREDSWITCH = -shared -Wl,-soname,# NO ENDING SPACE
+HEAD=head
+FIND=find
+LIBRARY_DIRS   := $(shell $(FIND) libraries/* -type d -links 2 2> /dev/null | grep -v SourceData)
 endif
 
 COM_COLOR=\033[0;34m
@@ -54,7 +60,6 @@ BLD_STRING= "Building\ "
 COPY_STRING="Copying\ \ "
 FIN_STRING="Finished Building"
 
-LIBRARY_DIRS   := $(shell find libraries/* -type d -links 2 2> /dev/null | grep -v SourceData)
 LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
 LIBRARY_OUTPUT := $(patsubst %,lib/lib%.so,$(LIBRARY_NAMES))
 
@@ -98,7 +103,7 @@ run_and_test =@printf "%b%b%b" " $(3)$(4)$(5)" $(notdir $(2)) "$(NO_COLOR)\r";  
 endif
 
 all: include/GVersion.h $(EXECUTABLES) $(LIBRARY_OUTPUT) config $(HISTOGRAM_SO) $(FILTER_SO)
-	@find .build users -name "*.pcm" -exec cp {} lib/ \;
+	@$(FIND) .build users -name "*.pcm" -exec cp {} lib/ \;
 	@printf "$(OK_COLOR)Compilation successful, $(WARN_COLOR)woohoo!$(NO_COLOR)\n"
 
 docs: doxygen
@@ -140,8 +145,8 @@ config:
 # All src files in the library directory are included.
 # If a LinkDef.h file is present in the library directory,
 #    a dictionary file will also be generated and added to the library.
-libdir          = $(shell find libraries -name $(1) -type d)
-lib_src_files   = $(shell find $(call libdir,$(1)) -name "*.$(SRC_SUFFIX)")
+libdir          = $(shell $(FIND) libraries -name $(1) -type d)
+lib_src_files   = $(shell $(FIND) $(call libdir,$(1)) -name "*.$(SRC_SUFFIX)")
 lib_o_files     = $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(call lib_src_files,$(1)))
 lib_linkdef     = $(wildcard $(call libdir,$(1))/LinkDef.h)
 lib_dictionary  = $(patsubst %/LinkDef.h,.build/%/LibDictionary.o,$(call lib_linkdef,$(1)))
@@ -153,8 +158,8 @@ lib/lib%.so: $$(call lib_o_files,%) $$(call lib_dictionary,%) | lib
 	@mkdir -p $(dir $@)
 	$(call run_and_test,$(CPP) -fPIC -c $< -o $@ $(CFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell head $(1) -n 1 2> /dev/null)))
-find_linkdef = $(shell find $(1) -name "*LinkDef.h")
+dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell $(HEAD) $(1) -n 1 2> /dev/null)))
+find_linkdef = $(shell $(FIND) $(1) -name "*LinkDef.h")
 
 # In order for all function names to be unique, rootcint requires unique output names.
 # Therefore, usual wildcard rules are insufficient.
@@ -170,7 +175,7 @@ endef
 
 $(foreach lib,$(LIBRARY_DIRS),$(eval $(call library_template,$(lib))))
 
--include $(shell find .build -name '*.d' 2> /dev/null)
+-include $(shell $(FIND) .build -name '*.d' 2> /dev/null)
 
 html: all
 	@printf " ${COM_COLOR}Building      ${OBJ_COLOR} HTML Documentation ${NO_COLOR}\n"
@@ -182,6 +187,8 @@ html: all
 clean:
 	@printf "\n$(WARN_COLOR)Cleaning up$(NO_COLOR)\n\n"
 	@-$(RM) -rf .build bin lib include/GVersion.h
+	@-$(RM) -rf libraries/*.so libraries/*.pcm #this is here for cleaning up libraries from pre GRSI 3.0
+
 
 cleaner: clean
 	@printf "\nEven more clean up\n\n"

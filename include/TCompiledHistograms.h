@@ -28,19 +28,19 @@ public:
   void Fill(TUnpackedEvent& unpacked);
   void Reload();
 
-  std::string GetLibraryName() const { return libname; }
+  std::string GetLibraryName() const { return fLibname; }
 
   void SetDefaultDirectory(TDirectory* dir);
-  TDirectory* GetDefaultDirectory() { return default_directory; }
+  TDirectory* GetDefaultDirectory() { return fDefault_directory; }
 
   void ClearHistograms();
 
-  TList* GetObjects()   { return &objects;   }
-  TList* GetGates()     { return &gates;     }
+  TList* GetObjects()   { return &fObjects;   }
+  TList* GetGates()     { return &fGates;     }
 
   void AddCutFile(TFile* cut_file);
 
-  void Write();
+  Int_t Write(const char* name=0, Int_t option=0, Int_t bufsize=0);
 
 
 private:
@@ -48,25 +48,25 @@ private:
   time_t get_timestamp();
   bool file_exists();
 
-  std::string libname;
-  std::string func_name;
+  std::string fLibname;
+  std::string fFunc_name;
 #ifndef __CINT__
-  std::shared_ptr<DynamicLibrary> library;
-  std::mutex mutex;
+  std::shared_ptr<DynamicLibrary> fLibrary;
+  std::mutex fMutex;
 #endif
-  void (*func)(TRuntimeObjects&);
-  time_t last_modified;
-  time_t last_checked;
+  void (*fFunc)(TRuntimeObjects&);
+  time_t fLast_modified;
+  time_t fLast_checked;
 
-  int check_every;
+  int fCheck_every;
 
-  TList objects;
-  TList gates;
-  std::vector<TFile*> cut_files;
+  TList fObjects;
+  TList fGates;
+  std::vector<TFile*> fCut_files;
 
-  TDirectory* default_directory;
+  TDirectory* fDefault_directory;
 
-  TRuntimeObjects obj;
+  TRuntimeObjects fObj;
 
   ClassDef(TCompiledHistograms, 0);
 };

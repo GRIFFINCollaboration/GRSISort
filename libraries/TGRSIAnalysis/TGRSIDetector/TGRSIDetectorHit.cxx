@@ -180,6 +180,14 @@ Int_t TGRSIDetectorHit::GetSegment() const {
   return channel->GetSegmentNumber();
 }
 
+/*void TGRSIDetectorHit::GetSegment() const { 
+   static bool been_warned = 0; 
+   if(!been_warned) { 
+      Warning(DRED "GetSegment()" RESET_COLOR,DRED "Has been moved to GetSegmentNumber" RESET_COLOR); 
+      been_warned = true;
+   } 
+}*/
+
 Int_t TGRSIDetectorHit::GetCrystal() const {
   TChannel *channel = GetChannel();
   if(channel)
@@ -187,7 +195,7 @@ Int_t TGRSIDetectorHit::GetCrystal() const {
   return -1;
 }
 
-Int_t TGRSIDetectorHit::GetArrayNumber() const {
+UShort_t TGRSIDetectorHit::GetArrayNumber() const {
   TChannel *channel = GetChannel();
   if(channel) {
     return (GetDetector()-1)*4 + GetCrystal();

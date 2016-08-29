@@ -106,14 +106,20 @@ void GH1D::Draw(Option_t* opt) {
   }
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
 TH1 *GH1D::DrawCopy(Option_t *opt) const {
   TH1 *h = TH1D::DrawCopy(opt);
+#else
+TH1 *GH1D::DrawCopy(Option_t *opt,const char* name_postfix) const {
+  TH1 *h = TH1D::DrawCopy(opt,name_postfix);
+#endif
   if(gPad) {
     gPad->Update();
     gPad->GetFrame()->SetBit(TBox::kCannotMove);
   }
   return h;
 }
+
 
 TH1 *GH1D::DrawNormalized(Option_t *opt,Double_t norm) const {
   TH1 *h = TH1D::DrawNormalized(opt,norm);
@@ -216,7 +222,7 @@ GH1D *GH1D::Project(int bins) {
   double ymax = GetMinimum();
   double ymin = GetMaximum();
   if(bins==-1) {
-    bins = abs(ymax-ymin);
+    bins = (int)(std::abs(ymax-ymin));
     if(bins<1)
       bins=100;
   }

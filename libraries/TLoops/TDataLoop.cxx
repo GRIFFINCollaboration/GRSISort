@@ -11,7 +11,7 @@
 
 TDataLoop::TDataLoop(std::string name,TMidasFile* source)
   : StoppableThread(name),
-    source(source), fSelfStopping(true),
+    fSource(source), fSelfStopping(true),
     output_queue(std::make_shared<ThreadsafeQueue<TMidasEvent> >()),
     fOdb(0) {
 
@@ -244,7 +244,7 @@ void TDataLoop::ClearQueue() {
 void TDataLoop::ReplaceSource(TMidasFile* new_source) {
   std::lock_guard<std::mutex> lock(source_mutex);
   //delete source;
-  source = new_source;
+  fSource = new_source;
 }
 
 void TDataLoop::ResetSource() {
@@ -262,7 +262,7 @@ bool TDataLoop::Iteration() {
   int bytes_read;
   {
     std::lock_guard<std::mutex> lock(source_mutex);
-    bytes_read = source->Read(evt);
+    bytes_read = fSource->Read(evt);
   }
 
   if(bytes_read <= 0 && fSelfStopping){
@@ -282,5 +282,5 @@ bool TDataLoop::Iteration() {
 }
 
 std::string TDataLoop::Status() {
-  return source->Status(TGRSIOptions2::Get()->LongFileDescription());
+  return fSource->Status(TGRSIOptions2::Get()->LongFileDescription());
 }

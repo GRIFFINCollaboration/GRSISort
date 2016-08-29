@@ -6,7 +6,7 @@
 
 TFragmentMap::TFragmentMap(std::shared_ptr<ThreadsafeQueue<TFragment*> >& good_output_queue,
 			   std::shared_ptr<ThreadsafeQueue<TFragment*> >& bad_output_queue)
-  : good_output_queue(good_output_queue), bad_output_queue(bad_output_queue) { }
+  : fGood_output_queue(good_output_queue), fBad_output_queue(bad_output_queue) { }
 
 bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<Short_t> integrationLength) {
 	// a single fragment with just one charge/integration length can be directly put into the queue
@@ -23,7 +23,7 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 		//		}
 		//	}
 		//}
-		good_output_queue->Push(frag);
+		fGood_output_queue->Push(frag);
 		return true;
 	}
 	// check if this is the last fragment needed
@@ -72,7 +72,6 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 				k2.push_back(integrationLength[0]);
 				// create and fill the vector of all charges
 				// we need the actual charges, not the integrated ones, so we calculate them now
-				std::vector<Float_t> c;
 				int dropped = -1;
 				for(size_t i = 0; i < std::get<1>((*(range.first)).second).size(); ++i) { 
 					if(k2[i] > 0) {
@@ -159,7 +158,6 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 				k2.push_back(integrationLength[0]);
 				// create and fill the vector of all charges
 				// we need the actual charges, not the integrated ones, so we calculate them now
-				std::vector<Float_t> c;
 				std::vector<int> dropped;
 				for(size_t i = 0; i < std::get<1>((*(range.first)).second).size(); ++i) { 
 					if(k2[i] > 0) {
@@ -234,10 +232,10 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 	// add all fragments to queue
 	//int i = 0;
 	for(auto it = range.first; it != range.second; ++it) {
-		good_output_queue->Push(std::get<0>((*it).second));
+		fGood_output_queue->Push(std::get<0>((*it).second));
 		//std::cout<<"Added "<<++i<<". fragment "<<std::get<0>((*it).second)<<std::endl;
 	}
-	good_output_queue->Push(frag);
+	fGood_output_queue->Push(frag);
 	//std::cout<<"address "<<frag->GetAddress()<<": added last fragment "<<frag<<std::endl;
 	// remove these fragments from the map
 	fMap.erase(range.first, range.second);

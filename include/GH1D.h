@@ -36,7 +36,13 @@ public:
   void Print(Option_t* opt="") const;
   void Copy(TObject& obj) const;
   void Draw(Option_t* opt="");
+
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
   TH1 *DrawCopy(Option_t *opt="") const;
+#else
+  TH1 *DrawCopy(Option_t *opt="",const char* name_postfix="copy") const;
+#endif
+
   TH1 *DrawNormalized(Option_t *opt="",Double_t norm=1) const;
 
   bool WriteDatFile(const char *outFile);

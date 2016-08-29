@@ -79,8 +79,13 @@ void GH2I::Draw(Option_t *opt) {
   }
 }
 
+#if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
 TH1 *GH2I::DrawCopy(Option_t *opt) const {
   TH1 *h = TH2I::DrawCopy(opt);
+#else
+TH1 *GH2I::DrawCopy(Option_t *opt,const char *name_postfix) const {
+  TH1 *h = TH2I::DrawCopy(opt,name_postfix);
+#endif
   if(gPad) {
     gPad->Update();
     gPad->GetFrame()->SetBit(TBox::kCannotMove);

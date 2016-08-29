@@ -936,11 +936,11 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 						int tempstream; ss>>tempstream;
 						channel->SetStream(tempstream);
 					} else if(type.compare("DIGITIZER")==0) {
-						int j=0;
-						while (type[j]) {
+						int k=0;
+						while (type[k]) {
 							char c =* (type.c_str() + j);
 							c = toupper(c);
-							type[j++] = c;
+							type[k++] = c;
 						}
 						channel->SetDigitizerType(line.c_str());
 					} else if(type.compare("ENGCHI2")==0) {
@@ -1072,9 +1072,9 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 				continue;
 			if(!found) {
 				found = true;
-				TChannel* c = static_cast<TChannel*>(key->ReadObj());
-				mastername.assign(c->GetName());
-				mastertitle.assign(c->GetTitle());
+				TChannel* ch = static_cast<TChannel*>(key->ReadObj());
+				mastername.assign(ch->GetName());
+				mastertitle.assign(ch->GetTitle());
 			}
 			std::string cname = key->ReadObj()->GetName();
 			//TFile* f = gDirectory->GetFile();
