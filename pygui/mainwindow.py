@@ -100,7 +100,7 @@ class MainWindow(object):
         self.window.tk.call('wm','iconphoto',self.window._w,img)
 
     def _load_default_style(self):
-        style = ROOT.TStyle("GRUTStyle","")
+        style = ROOT.TStyle("GRSIStyle","")
         style.SetOptStat(1001111)
         style.SetPalette(1)
         style.SetTitleColor(ROOT.kBlue)
@@ -110,7 +110,7 @@ class MainWindow(object):
         style.SetOptFit(1111)
         style.SetPadBorderSize(1)
         style.SetPadBorderMode(1)
-        ROOT.gROOT.SetStyle("GRUTStyle")
+        ROOT.gROOT.SetStyle("GRSIStyle")
         ROOT.gROOT.ForceStyle()
 
 

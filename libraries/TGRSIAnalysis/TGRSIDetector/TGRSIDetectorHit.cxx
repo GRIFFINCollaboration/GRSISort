@@ -98,7 +98,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
 void TGRSIDetectorHit::Copy(TObject& rhs) const {
   TObject::Copy(rhs);
   static_cast<TGRSIDetectorHit&>(rhs).fAddress        = fAddress;
-  static_cast<TGRSIDetectorHit&>(rhs).fPosition       = fPosition;
+  //static_cast<TGRSIDetectorHit&>(rhs).fPosition       = fPosition;
   static_cast<TGRSIDetectorHit&>(rhs).fCfd            = fCfd;
   static_cast<TGRSIDetectorHit&>(rhs).fTimeStamp      = fTimeStamp;
   static_cast<TGRSIDetectorHit&>(rhs).fCharge         = fCharge;

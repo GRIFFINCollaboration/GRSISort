@@ -31,7 +31,7 @@ static double amu = 931.494043;
 //static double MeV2Kg = 1.77777778e-30;
 
 std::string& TNucleus::massfile(){
-  static std::string output = std::string(getenv("GRSISYS")) + "/libraries/SourceData/mass.dat";
+  static std::string output = std::string(getenv("GRSISYS")) + "/libraries/TGRSIAnalysis/SourceData/mass.dat";
   return output;
 }
 //const char *TNucleus::massfile = mfile.c_str();
@@ -115,7 +115,7 @@ TNucleus::TNucleus(const char *name){
   SetName();
   //SetName(element.c_str());
   //SetSourceData();
-  this->LoadTransitionFile();
+  //this->LoadTransitionFile();
 }
 /*
  */

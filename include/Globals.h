@@ -166,7 +166,7 @@ struct MNEMONIC {
       fSystem = kTigress;
    } else if (system.compare("SH")==0) {
       fSystem = kSharc;
-   } else if(system.compare("Tr")==0) {	
+   } else if(system.compare("TR")==0) {	
       fSystem = kTriFoil;
    } else if(system.compare("RF")==0) {	
       fSystem = kRF;

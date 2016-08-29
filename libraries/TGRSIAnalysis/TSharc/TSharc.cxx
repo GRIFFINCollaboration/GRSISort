@@ -86,6 +86,10 @@ void TSharc::AddFragment(TFragment* frag, TChannel* chan) {
   if(frag == NULL || chan == NULL) {
     return;
   }
+  if(GetMidasTimestamp() == -1) {
+    SetMidasTimestamp(frag->GetMidasTimeStamp());
+  }
+
   if(chan->GetMnemonic()->arraysubposition.compare(0,1,"D") == 0) {
     if(chan->GetMnemonic()->collectedcharge.compare(0,1,"P") == 0) {
       
@@ -116,7 +120,8 @@ void TSharc::BuildHits() {
     bool back_used  = false;
     for(back=fBackFragments.begin();back!=fBackFragments.end();back++) {
       if(front->GetDetector()==back->GetDetector()) {
-        if(TMath::Abs(front->GetCharge() - back->GetCharge()) <  6000) { 
+        if((TMath::Abs(front->GetCharge() - back->GetCharge()) <  6000) ){ // || 
+	   //(front->GetDetector()==5 && (front->GetSegment()%2)!=0))  { 
            //time gate ?
            front_used = true;
            back_used  = true;
