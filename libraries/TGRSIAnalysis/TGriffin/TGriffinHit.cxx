@@ -23,6 +23,12 @@ TGriffinHit::TGriffinHit(const TGriffinHit &rhs) : TGRSIDetectorHit() {
    rhs.Copy(*this);
 }
 
+TGriffinHit::TGriffinHit(const TFragment &frag) : TGRSIDetectorHit(frag) {
+  SetNPileUps(frag.GetNumberOfPileups());
+}
+
+
+
 TGriffinHit::~TGriffinHit()  {	}
 
 void TGriffinHit::Copy(TObject &rhs) const {
@@ -63,71 +69,50 @@ void TGriffinHit::Print(Option_t *opt) const	{
    printf("Griffin hit TV3 theta: %.2f\tphi%.2f\n",GetPosition().Theta() *180/(3.141597),GetPosition().Phi() *180/(3.141597));
 }
 
-TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
-
-   //Returns the Position of the crystal of the current Hit.
-	return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
+TVector3 TGriffinHit::GetPosition(double dist) const {
+  return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
-UInt_t TGriffinHit::GetCrystal() const { 
-   //Returns the Crystal Number of the Current hit.
-   if(IsCrystalSet())
-      return fCrystal;
-
-   TChannel *chan = GetChannel();
-   if(!chan)
-      return -1;
-
-   char color = chan->GetMnemonic()->arraysubposition[0];
-   switch(color) {
-      case 'B':
-         return 0;
-      case 'G':
-         return 1;
-      case 'R':
-         return 2;
-      case 'W':
-         return 3;  
-   };
-   return -1;  
+TVector3 TGriffinHit::GetPosition() const {
+  return GetPosition(GetDefaultDistance());
 }
 
-UInt_t TGriffinHit::GetCrystal() {
-   //Returns the Crystal Number of the Current hit.
-   if(IsCrystalSet())
-      return fCrystal;
+// UInt_t TGriffinHit::GetCrystal() {
+//    //Returns the Crystal Number of the Current hit.
+//    if(IsCrystalSet())
+//       return fCrystal;
 
-   TChannel *chan = GetChannel();
-   if(!chan)
-      return -1;
+//    TChannel *chan = GetChannel();
+//    if(!chan)
+//       return -1;
 
-   char color = chan->GetMnemonic()->arraysubposition[0];
-   return SetCrystal(color);
-}
+//    char color = chan->GetMnemonic()->arraysubposition[0];
+//    return SetCrystal(color);
+// }
 
-UInt_t TGriffinHit::SetCrystal(UInt_t crynum) {
-   fCrystal = crynum;
-   return fCrystal;
-}
+// UInt_t TGriffinHit::SetCrystal(UInt_t crynum) {
+//    fCrystal = crynum;
+//    return fCrystal;
+// }
 
-UInt_t TGriffinHit::SetCrystal(char color) { 
-   switch(color) {
-      case 'B':
-         fCrystal = 0;
-         break;
-      case 'G':
-         fCrystal = 1;
-         break;
-      case 'R':
-         fCrystal = 2;
-         break;
-      case 'W':
-         fCrystal = 3;  
-         break;
-   };
-   SetFlag(TGRSIDetectorHit::kIsSubDetSet,true);
-   return fCrystal;
-}
+// UInt_t TGriffinHit::SetCrystal(char color) { 
+//    switch(color) {
+//       case 'B':
+//          fCrystal = 0;
+//          break;
+//       case 'G':
+//          fCrystal = 1;
+//          break;
+//       case 'R':
+//          fCrystal = 2;
+//          break;
+//       case 'W':
+//          fCrystal = 3;  
+//          break;
+//    };
+//    SetBit(TGRSIDetectorHit::kIsSubDetSet,true);
+//    return fCrystal;
+// }
 
 bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	{
    return(lhs->GetEnergy() > rhs->GetEnergy());
@@ -139,12 +124,25 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
    if(!CompareEnergy(this,hit)) {
       this->SetCfd(hit->GetCfd());
       this->SetTime(hit->GetTime());
-      this->SetPosition(hit->GetPosition());
+      //this->SetPosition(hit->GetPosition());
       this->SetAddress(hit->GetAddress());
    }
    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
    //this has to be done at the very end, otherwise this->GetEnergy() might not work
    this->SetCharge(0);
+   //Add all of the pileups.This should be changed when the max number of pileups changes
+   if((this->NPileUps() + hit->NPileUps()) < 4){
+      this->SetNPileUps(this->NPileUps() + hit->NPileUps());
+   }  
+   else{
+      this->SetNPileUps(3);
+   }
+   if((this->PUHit() + hit->PUHit()) < 4){
+      this->SetPUHit(this->PUHit() + hit->PUHit());
+   }  
+   else{
+      this->SetPUHit(3);
+   }
 }
 
 void TGriffinHit::SetGriffinFlag(enum EGriffinHitBits flag,Bool_t set){
@@ -176,11 +174,11 @@ void TGriffinHit::SetPUHit(UChar_t puhit) {
 }
 
 Double_t TGriffinHit::GetNoCTEnergy(Option_t* opt) const{
-	TChannel* chan = GetChannel();
-	if(!chan) {
-		Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
-		return 0.;
-	}
-	return chan->CalibrateENG(GetCharge());
+  TChannel* chan = GetChannel();
+  if(!chan) {
+    Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
+    return 0.;
+  }
+  return chan->CalibrateENG(Charge());
 }
 

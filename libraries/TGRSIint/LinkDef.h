@@ -1,4 +1,4 @@
-//TGRSIOptions.h TGRSIint.h 
+//TGRSIOptions.h TGRSIOptions2.h TGRSIint.h
 
 #ifdef __CINT__
 
@@ -8,6 +8,7 @@
 #pragma link C++ nestedclasses;
 
 #pragma link C++ class TGRSIOptions+;
+#pragma link C++ class TGRSIOptions2+;
 #pragma link C++ class TGRSIint+;
 
 #endif

@@ -18,83 +18,120 @@
 ///
 /////////////////////////////////////////////////////////////////
 
+
 #include "Globals.h"
 #include <ctime>
 #include <vector>
 #include <map>
 
+#ifndef __CINT__
+#include <memory>
+#endif
+
+//#include <enum_string.h>
+
 #include "TChannel.h"
 #include "TFragment.h"
 #include "TPPG.h"
 #include "TScaler.h"
+#include "TFragmentMap.h"
+#include "ThreadsafeQueue.h"
+#include "TEpicsFrag.h"
 
 class TDataParser {
-  private:
-    static TDataParser* fDataParser;  ///< A pointer to the global DataParser Class
-    static bool fNoWaveforms;         ///< The flag to turn wave_forms on or off
-    static bool fRecordDiag;         ///< The flag to turn on diagnostics recording
-	 static TChannel* gChannel;
-    TDataParser();
-	
-  public:
-    ~TDataParser();
-    static TDataParser* instance();    //returns the global TDataParser Object
-    static void SetNoWaveForms(bool temp = true) { fNoWaveforms = temp; }
-    static void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
+public:
+  TDataParser();
+  ~TDataParser();
+  void SetNoWaveForms(bool temp = true) { fNoWaveforms = temp; }
+  void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
 
-  private:
-    static const unsigned long fMaxTriggerId; ///< The last trigger ID Called
-    static unsigned long fLastMidasId;        ///< The last MIDAS ID in the midas file
-    static unsigned long fLastTriggerId;      ///< The last Trigged ID in the MIDAS File
-    static unsigned long fLastNetworkPacket;  ///< The last network packet recieved.
+  //ENUM(EBank, char, kWFDN,kGRF1,kGRF2,kGRF3,kFME0,kFME1,kFME2,kFME3);
+  enum EBank { kWFDN=0,kGRF1=1,kGRF2=2,kGRF3=3,kGRF4=4,kFME0=5,kFME1=6,kFME2=7,kFME3=8 };
 
-    static std::map<int,int> fFragmentIdMap;
+#ifndef __CINT__
+  std::shared_ptr<ThreadsafeQueue<TFragment*> >&
+  GoodOutputQueue() { return good_output_queue; }
 
-  public:
-    static int TigressDataToFragment(uint32_t *data, int size,unsigned int midasSerialNumber = 0, time_t midasTime = 0);
-    static int GriffinDataToFragment(uint32_t *data, int size, int bank, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
-    static int GriffinDataToPPGEvent(uint32_t *data, int size, int bank, unsigned int midasSerialNumber=0, time_t midasTime=0); 
-	 static int GriffinDataToScalerEvent(uint32_t *data, int address);
-   
-    static int EPIXToScalar(float *data,int size,unsigned int midasSerialNumber = 0,time_t midasTime = 0);
-    static int SCLRToScalar(uint32_t *data,int size,unsigned int midasSerialNumber = 0,time_t midasTime = 0);
-	 static int EightPIDataToFragment(uint32_t stream,uint32_t* data,
-                                     int size,unsigned int midasSerialNumber = 0, time_t midasTime = 0);
-    static int FifoToFragment(unsigned short *data,int size,bool zerobuffer=false,
-                              unsigned int midasSerialNumber=0, time_t midasTime=0); 
+  std::shared_ptr<ThreadsafeQueue<TFragment*> >&
+  BadOutputQueue() { return bad_output_queue; }
 
+  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> >&
+  ScalerOutputQueue() { return scaler_output_queue; }
+#endif
 
-  private:
-    static void SetTIGWave(uint32_t, TFragment*);
-    static void SetTIGAddress(uint32_t, TFragment*);
-    static void SetTIGCfd(uint32_t, TFragment*);
-    static void SetTIGCharge(uint32_t, TFragment*);
-    static void SetTIGLed(uint32_t, TFragment*);
+private:
+#ifndef __CINT__
+  std::shared_ptr<ThreadsafeQueue<TFragment*> > good_output_queue;
+  std::shared_ptr<ThreadsafeQueue<TFragment*> > bad_output_queue;
+  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> > scaler_output_queue;
+#endif
 
-    static bool SetTIGTriggerID(uint32_t, TFragment*);
-    static bool SetTIGTimeStamp(uint32_t*, TFragment*);
+  bool fNoWaveforms;         ///< The flag to turn wave_forms on or off
+  bool fRecordDiag;         ///< The flag to turn on diagnostics recording
+  TChannel* gChannel;
 
-    static bool SetGRIFHeader(uint32_t,TFragment*,int);
-    static bool SetGRIFMasterFilterId(uint32_t,TFragment*);
-    static bool SetGRIFMasterFilterPattern(uint32_t,TFragment*,int);
-    static bool SetGRIFChannelTriggerId(uint32_t,TFragment*);  
-    static bool SetGRIFTimeStampLow(uint32_t,TFragment*);
-    static bool SetGRIFNetworkPacket(uint32_t,TFragment*);
-    static bool SetGRIFCc(uint32_t, TFragment*);
-    static bool SetGRIFPsd(uint32_t, TFragment*);
+  const unsigned long fMaxTriggerId; ///< The last trigger ID Called
+  unsigned long fLastMidasId;        ///< The last MIDAS ID in the midas file
+  unsigned long fLastTriggerId;      ///< The last Trigged ID in the MIDAS File
+  unsigned long fLastNetworkPacket;  ///< The last network packet recieved.
 
-    static bool SetGRIFWaveForm(uint32_t,TFragment*);
-    static bool SetGRIFDeadTime(uint32_t,TFragment*);
+  std::map<int,int> fFragmentIdMap;
+  bool fFragmentHasWaveform;
 
-    static bool SetNewPPGPattern(uint32_t,TPPGData*);
-    static bool SetOldPPGPattern(uint32_t,TPPGData*);
-    static bool SetPPGNetworkPacket(uint32_t,TPPGData*);
-    static bool SetPPGLowTimeStamp(uint32_t,TPPGData*);
-    static bool SetPPGHighTimeStamp(uint32_t,TPPGData*);
-	 static bool SetScalerNetworkPacket(uint32_t, TScalerData*);
-	 static bool SetScalerLowTimeStamp(uint32_t, TScalerData*);
-	 static bool SetScalerHighTimeStamp(uint32_t, TScalerData*, int&);
-	 static bool SetScalerValue(int, uint32_t, TScalerData*);
+  TFragmentMap fFragmentMap;
+
+public:
+  void Push(ThreadsafeQueue<TFragment*>& queue, TFragment* frag);
+
+  int TigressDataToFragment(uint32_t *data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+  int GriffinDataToFragment(uint32_t *data, int size, EBank bank, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+  int GriffinDataToPPGEvent(uint32_t *data, int size, unsigned int midasSerialNumber=0, time_t midasTime=0);
+  int GriffinDataToScalerEvent(uint32_t *data, int address);
+
+  int EPIXToScalar(float *data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+  int SCLRToScalar(uint32_t *data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+  int EightPIDataToFragment(uint32_t stream, uint32_t* data,
+                            int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
+  int FifoToFragment(unsigned short *data, int size, bool zerobuffer=false,
+                     unsigned int midasSerialNumber=0, time_t midasTime=0);
+
+private:
+  //utility
+  void DeleteAll(std::vector<TFragment*>*);
+  void GRIFNormalizeFrags(std::vector<TFragment*> *Frags);
+
+private:
+  void SetTIGWave(uint32_t, TFragment*);
+  void SetTIGAddress(uint32_t, TFragment*);
+  void SetTIGCfd(uint32_t, TFragment*);
+  void SetTIGCharge(uint32_t, TFragment*);
+  void SetTIGLed(uint32_t, TFragment*);
+
+  bool SetTIGTriggerID(uint32_t, TFragment*);
+  bool SetTIGTimeStamp(uint32_t*, TFragment*);
+
+  bool SetGRIFHeader(uint32_t, TFragment*, EBank);
+  bool SetGRIFMasterFilterPattern(uint32_t, TFragment*, EBank);
+  bool SetGRIFMasterFilterId(uint32_t, TFragment*);
+  bool SetGRIFChannelTriggerId(uint32_t, TFragment*);
+  bool SetGRIFTimeStampLow(uint32_t, TFragment*);
+  bool SetGRIFNetworkPacket(uint32_t, TFragment*);
+
+  bool SetGRIFPsd(uint32_t, TFragment*);
+  bool SetGRIFCc(uint32_t, TFragment*);
+
+  bool SetGRIFWaveForm(uint32_t,TFragment*);
+  bool SetGRIFDeadTime(uint32_t,TFragment*);
+
+  bool SetNewPPGPattern(uint32_t,TPPGData*);
+  bool SetOldPPGPattern(uint32_t,TPPGData*);
+  bool SetPPGNetworkPacket(uint32_t,TPPGData*);
+  bool SetPPGLowTimeStamp(uint32_t,TPPGData*);
+  bool SetPPGHighTimeStamp(uint32_t,TPPGData*);
+  bool SetScalerNetworkPacket(uint32_t, TScalerData*);
+  bool SetScalerLowTimeStamp(uint32_t, TScalerData*);
+  bool SetScalerHighTimeStamp(uint32_t, TScalerData*, int&);
+  bool SetScalerValue(int, uint32_t, TScalerData*);
 };
 /*! @} */
 #endif

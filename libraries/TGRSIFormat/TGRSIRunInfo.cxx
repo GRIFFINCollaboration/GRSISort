@@ -11,7 +11,7 @@
 ClassImp(TGRSIRunInfo)
    /// \endcond
 
-   TGRSIRunInfo *TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();  
+   TGRSIRunInfo *TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();
 
    std::string TGRSIRunInfo::fGRSIVersion;
 
@@ -46,7 +46,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
       UInt_t R__s, R__c;
       if(b.IsReading()) {
          Version_t R__v = b.ReadVersion(&R__s,&R__c); if (R__v) { }
-         TObject::Streamer(b);  
+         TObject::Streamer(b);
          {Int_t  R__int ; b >> R__int;  fRunNumber = R__int;}
          {Int_t  R__int ; b >> R__int;  fSubRunNumber = R__int;}
          if(R__v>3) {
@@ -87,7 +87,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
          {Bool_t R__bool; b >> R__bool; fDante = R__bool;     }
          {Bool_t R__bool; b >> R__bool; fZeroDegree = R__bool;}
          {Bool_t R__bool; b >> R__bool; fDescant = R__bool;   }
-         {TString R__str; R__str.Streamer(b); fMajorIndex.assign(R__str.Data()); } 
+         {TString R__str; R__str.Streamer(b); fMajorIndex.assign(R__str.Data()); }
          //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
          {TString R__str; R__str.Streamer(b); fMinorIndex.assign(R__str.Data()); }
          //printf("fMinorIndex = %s\n",fMinorIndex.c_str());
@@ -111,7 +111,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
          b.CheckByteCount(R__s,R__c,TGRSIRunInfo::IsA());
       } else {
          R__c = b.WriteVersion(TGRSIRunInfo::IsA(),true);
-         TObject::Streamer(b);  
+         TObject::Streamer(b);
          {Int_t R__int = fRunNumber;    b << R__int;}
          {Int_t R__int = fSubRunNumber; b << R__int;}
          {Double_t R__double = fRunStart;  b << R__double;}
@@ -202,11 +202,11 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
 }
 
 
-TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) { 
+TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    ///Default ctor for TGRSIRunInfo. The default values are:
    ///
    ///fHPGeArrayPosition = 110.0;
-   ///fBuildWindow       = 200;  
+   ///fBuildWindow       = 200;
    ///fAddBackWindow     = 15.0;
    ///fIsMovingWindow    = true;
    ///fWaveformFitting	 = false;
@@ -214,7 +214,7 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0),fSubRunNumber(-1) {
    ///fBufferDuration    = 60000000000;
 
    fHPGeArrayPosition = 110.0;
-   fBuildWindow       = 2000;  
+   fBuildWindow       = 2000;
    fAddBackWindow     = 150.0;
    fIsMovingWindow    = true;
    fWaveformFitting	 = false;
@@ -296,8 +296,8 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
    fZeroDegree = false;
    fDescant = false;
 
-   fMajorIndex.assign("");  
-   fMinorIndex.assign("");  
+   fMajorIndex.assign("");
+   fMinorIndex.assign("");
 
    fNumberOfTrueSystems = 0;
    fIsCorrectingCrossTalk  = true;
@@ -313,13 +313,13 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    printf("In runinfo, found %i channels.\n",TChannel::GetNumberOfChannels());
    if(runnum != 0)
       SetRunNumber(runnum);
-   if(subrunnum != -1) 
+   if(subrunnum != -1)
       SetSubRunNumber(subrunnum);
 
-   std::map<unsigned int,TChannel*>::iterator iter; 
+   std::map<unsigned int,TChannel*>::iterator iter;
 
    for(iter = TChannel::GetChannelMap()->begin();iter != TChannel::GetChannelMap()->end(); iter++) {
-      std::string channelname = iter->second->GetChannelName();
+      std::string channelname = iter->second->GetName();
 
       //  detector system type.
       //  for more info, see: https://www.triumf.info/wiki/tigwiki/index.php/Detector_Nomenclature
@@ -398,7 +398,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    if(Get()->fRunInfoFile.length())
       ParseInputData(Get()->fRunInfoFile.c_str());
 
-   //TGRSIRunInfo::Get()->Print();
+   //   TGRSIRunInfo::Get()->Print("a");
 }
 
 void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {
@@ -445,7 +445,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
    std::string line;
    int linenumber = 0;
 
-   //Parse the info file. 
+   //Parse the info file.
    while(std::getline(infile, line)) {
       linenumber++;
       trim(&line);
@@ -469,7 +469,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
          c = toupper(c);
          type[j++] = c;
       }
-      if( type.compare("BW")==0 || type.compare("BUILDWINDOW")==0 ) {     
+      if( type.compare("BW")==0 || type.compare("BUILDWINDOW")==0 ) {
          std::istringstream ss(line);
          long int temp_bw; ss >> temp_bw;
          Get()->SetBuildWindow(temp_bw);
@@ -486,9 +486,11 @@ Bool_t TGRSIRunInfo::ParseInputData(const char *inputdata,Option_t *opt) {
          double temp_abw; ss >> temp_abw;
          Get()->SetAddBackWindow(temp_abw);
       } else if( type.compare("CAL")==0 || type.compare("CALFILE")==0 ) {
-         TGRSIOptions::AddInputCalFile(line);
+        // TODO Make this work again, using priorities
+        //TGRSIOptions::AddInputCalFile(line);
       } else if( type.compare("MID")==0 || type.compare("MIDAS")==0 || type.compare("MIDASFILE")==0 ) {
-         TGRSIOptions::AddInputMidasFile(line);
+        // TODO Make this work again, using priorities
+        // TGRSIOptions::AddInputMidasFile(line);
       } else if( type.compare("ARRAYPOS")==0 || type.compare("HPGEPOS")==0) {
          std::istringstream ss(line);
          double temp_double; ss >> temp_double;
@@ -542,20 +544,20 @@ Long64_t TGRSIRunInfo::Merge(TCollection *list){
    TGRSIRunInfo *runinfo = 0;
 
    while ((runinfo = static_cast<TGRSIRunInfo*>(it.Next())) != NULL){
-      //Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.    
+      //Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.
       this->Add(runinfo);
    }
    return 0;
 }
 
 void TGRSIRunInfo::SetCorrectCrossTalk(const bool flag, Option_t *opt) {
-   fIsCorrectingCrossTalk = flag; 
+   fIsCorrectingCrossTalk = flag;
    TString opt1 = opt;
    opt1.ToUpper();
    if(opt1.Contains("Q")){
       return;
    }
-      
+
       printf("Please call TGriffin::ResetFlags() on current event to avoid bugs\n");
 
 }
@@ -597,34 +599,34 @@ bool TGRSIRunInfo::IsBadCycle(int cycle) const{
 }
 
 bool TGRSIRunInfo::WriteToRoot(TFile* fileptr) {
-	///Writes Info File information to the tree
-	//Maintain old gDirectory info
-   bool bool2return = true;
-	TDirectory* savdir = gDirectory;
+  ///Writes Info File information to the tree
+  //Maintain old gDirectory info
+  bool bool2return = true;
+  TDirectory* savdir = gDirectory;
 
-	if(!fileptr)
-		fileptr = gDirectory->GetFile();
-	fileptr->cd();
-	std::string oldoption = std::string(fileptr->GetOption());
-	if(oldoption == "READ") {
-		fileptr->ReOpen("UPDATE");
-	}
-	if(!gDirectory){
-		printf("No file opened to write to.\n");
-      bool2return = false;
-   }
-   else{
-      Get()->Write();
-   }
+  if(!fileptr)
+    fileptr = gDirectory->GetFile();
+  fileptr->cd();
+  std::string oldoption = std::string(fileptr->GetOption());
+  if(oldoption == "READ") {
+    fileptr->ReOpen("UPDATE");
+  }
+  if(!gDirectory){
+    printf("No file opened to write to.\n");
+    bool2return = false;
+  }
+  else{
+    Get()->Write();
+  }
 
-   printf("Writing Run Information to %s\n",gDirectory->GetFile()->GetName());
-	if(oldoption == "READ") {
-		printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
-		fileptr->ReOpen("READ");
-	}
-	savdir->cd();//Go back to original gDirectory
+  printf("Writing Run Information to %s\n",gDirectory->GetFile()->GetName());
+  if(oldoption == "READ") {
+    printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
+    fileptr->ReOpen("READ");
+  }
+  savdir->cd();//Go back to original gDirectory
 
-   return bool2return;
+  return bool2return;
 }
 
 bool TGRSIRunInfo::WriteInfoFile(std::string filename) {
@@ -637,11 +639,11 @@ bool TGRSIRunInfo::WriteInfoFile(std::string filename) {
 		infoout << std::endl;
 	   infoout << std::endl;
 	   infoout.close();
-	} else {  
+	} else {
       printf("Please enter a file name\n");
       return false;
 	}
-   
+
    return true;
 }
 

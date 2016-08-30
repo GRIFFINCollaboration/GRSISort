@@ -65,7 +65,6 @@ TChannel::TChannel(TChannel* chan) {
 	this->SetStream(chan->GetStream());
 	this->SetUserInfoNumber(chan->GetUserInfoNumber());
 	this->SetName(chan->GetName()); //SetName also sets the mnemonic
-   this->SetChannelName(chan->GetChannelName());
 	this->SetDigitizerType(chan->GetDigitizerType());
 
 	this->SetENGCoefficients(chan->GetENGCoeff());
@@ -90,13 +89,8 @@ TChannel::TChannel(TChannel* chan) {
 
 void TChannel::SetName(const char* tmpName){
    TNamed::SetName(tmpName);
-   SetChannelName(tmpName);
-}
-
-void TChannel::SetChannelName(const char* tmpname)  { 
-   fChannelName.assign(tmpname); 
-	fMnemonic.Clear();
-   fMnemonic.Parse(GetChannelName());
+   fMnemonic.Clear();
+   fMnemonic.Parse(GetName());
 }
 
 void TChannel::InitChannelInput() {
@@ -108,9 +102,9 @@ void TChannel::InitChannelInput() {
 bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
 	///Compares the names of the two TChannels. Returns true if the names are the
 	///same, false if different.
-	std::string namea; namea.assign(((TChannel)chana).GetChannelName());
+	std::string namea; namea.assign(static_cast<TChannel>(chana).GetName());
 
-	if(namea.compare(((TChannel)chanb).GetChannelName()) < 0) return true;
+	if(namea.compare(static_cast<TChannel>(chanb).GetName()) < 0) return true;
 	else return false;
 }
 
@@ -204,9 +198,9 @@ void TChannel::AppendChannel(TChannel* chan){
 		this->SetStream(chan->GetStream());
 	if(chan->GetUserInfoNumber()!=0 && chan->GetUserInfoNumber()!=-1)
 		this->SetUserInfoNumber(chan->GetUserInfoNumber());
-	if(strlen(chan->GetChannelName())>0){
-		this->SetName(chan->GetName());
-   }
+	if(strlen(chan->GetName())>0) {
+	  this->SetName(chan->GetName());
+	}
 	if(strlen(chan->GetDigitizerType())>0)
 		this->SetDigitizerType(chan->GetDigitizerType());
    if(chan->GetTimeOffset() != 0.0)
@@ -296,13 +290,13 @@ void TChannel::Clear(Option_t* opt){
 	fTIMECoefficients.clear();
 	fEFFCoefficients.clear();
 
-   fClassType = NULL;
+   fClassType = nullptr;
 }
 
 TChannel* TChannel::GetChannel(unsigned int temp_address) {
 	///Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
 
-	TChannel* chan = 0;
+	TChannel* chan = nullptr;
 	//    if(temp_address == 0 || temp_address == 0xffffffff) {//default (NULL) address, return 0;
 	//	      return chan;
 	//    }
@@ -318,7 +312,7 @@ TChannel* TChannel::GetChannelByNumber(int temp_num) {
 	// We should just always update this map before we use it
 	UpdateChannelNumberMap();
 	//    }
-	TChannel* chan  = 0;
+	TChannel* chan  = nullptr;
 	try {
 		chan = fChannelNumberMap->at(temp_num);
 	} 
@@ -330,7 +324,7 @@ TChannel* TChannel::GetChannelByNumber(int temp_num) {
 
 TChannel* TChannel::FindChannelByName(const char* ccName){
 	///Finds the TChannel by the name of the channel 
-	TChannel* chan = NULL;
+	TChannel* chan = nullptr;
 	if(!ccName)
 		return chan;
 
@@ -341,7 +335,7 @@ TChannel* TChannel::FindChannelByName(const char* ccName){
 	std::map < unsigned int, TChannel*  >::iterator iter;    
 	for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++) {
 		chan = iter->second;
-		std::string channelName = chan->GetChannelName();
+		std::string channelName = chan->GetName();
 		if(channelName.compare(0,name.length(),name)==0)
 			break;
 		chan = NULL;
@@ -416,7 +410,7 @@ void TChannel::DestroyCalibrations()   {
 	DestroyEFFCal();
 }
 
-Float_t TChannel::CalibrateENG(int charge,int temp_int) {
+double TChannel::CalibrateENG(int charge,int temp_int) {
 	///Returns the calibrated energy of the channel when a charge is passed to it. 
 	///This is done by first adding a random number between 0 and 1 to the charge
 	///bin. This is then taken and divided by the integration parameter. The 
@@ -435,20 +429,27 @@ Float_t TChannel::CalibrateENG(int charge,int temp_int) {
 
 	//We need to add a random number between 0 and 1 before calibrating to avoid
 	//binning issues.
-	return CalibrateENG(((Float_t)charge+(Float_t)(gRandom->Uniform())) / (Float_t)temp_int);
+	return CalibrateENG(((double)charge + gRandom->Uniform()) / (double)temp_int);
 }
 
-Float_t TChannel::CalibrateENG(Float_t charge) {
-	///Returns the calibrated energy. The polynomial energy calibration formula is 
-	///applied to get the calibrated energy. This function does not use the 
-	///integration parameter.
-	if(fENGCoefficients.size() == 0)
-		return charge;
-	Float_t cal_chg = fENGCoefficients[0];
-	for(size_t i = 1; i < fENGCoefficients.size(); i++){
-		cal_chg += fENGCoefficients[i]*  pow((charge),i);
-	}
-	return cal_chg;
+
+double TChannel::CalibrateENG(double charge,int temp_int) {
+	///Returns the calibrated energy of the channel when a charge is passed to it. 
+	///This is divided by the integration parameter. The 
+	///polynomial energy calibration formula is then applied to get the calibrated
+	///energy.
+	if(charge==0) 
+		return 0.0000;
+
+	//int temp_int = 1; //125.0;
+	if(temp_int==0) {
+		if(fIntegration != 0)
+			temp_int = (int)fIntegration;  //the 4 is the dis. 
+		else
+			temp_int = 1;
+	} 
+
+	return CalibrateENG(((double)charge) / (double)temp_int);
 }
 
 double TChannel::CalibrateENG(double charge) {
@@ -535,7 +536,7 @@ void TChannel::SetUseCalFileIntegration(std::string mnemonic,bool flag){
 	std::map<unsigned int,TChannel*>::iterator mapit;
 	std::map<unsigned int,TChannel*>* chanmap = TChannel::GetChannelMap();
 	for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++){
-		if(!mnemonic.size() || !strncmp(mapit->second->GetChannelName(),mnemonic.c_str(),mnemonic.size())){
+		if(!mnemonic.size() || !strncmp(mapit->second->GetName(),mnemonic.c_str(),mnemonic.size())){
 			mapit->second->SetUseCalFileIntegration(flag);
 		}
 	}
@@ -548,7 +549,7 @@ void TChannel::SetIntegration(std::string mnemonic,int tmpint){
    std::map<unsigned int,TChannel*>::iterator mapit;
    std::map<unsigned int,TChannel*> *chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++){
-      if(!mnemonic.size() || !strncmp(mapit->second->GetChannelName(),mnemonic.c_str(),mnemonic.size())){
+      if(!mnemonic.size() || !strncmp(mapit->second->GetName(),mnemonic.c_str(),mnemonic.size())){
          mapit->second->SetIntegration(tmpint);
       }
    }
@@ -556,83 +557,84 @@ void TChannel::SetIntegration(std::string mnemonic,int tmpint){
 
 void TChannel::Print(Option_t* opt) const {
 	///Prints out the current TChannel.
-	std::cout <<  fChannelName << "\t{\n";  //,channelname.c_str();
+  std::cout <<  GetName() << "\t{\n";  //,channelname.c_str();
    std::cout << "Type:      ";
    if(GetClassType())
       std::cout << GetClassType()->GetName()<<std::endl;
    else
       std::cout << "None" << std::endl;
 
-	std::cout <<  "Name:      " << fChannelName << "\n";
-	std::cout <<  "Number:    " << fNumber << "\n";
-	std::cout << std::setfill('0');
-	std::cout <<  "Address:   0x" << std::hex << std::setw(8) << fAddress << std::dec << "\n";
-	std::cout << std::setfill(' ');
-	std::cout <<  "Digitizer: " << fDigitizerType << "\n"; 
-	std::cout <<  "TimeOffset: " << fTimeOffset << "\n"; 
-	std::cout <<  "EngCoeff:  "  ;
-	for(size_t x=0;x<fENGCoefficients.size();x++)
-		std::cout <<  fENGCoefficients.at(x) << "\t";
-	std::cout <<  "\n";
-	std::cout <<  "Integration: " << fIntegration << "\n";
-	std::cout <<  "ENGChi2:   " << fENGChi2 << "\n";
-	std::cout <<  "EffCoeff:  "  ;
-	for(size_t x=0;x<fEFFCoefficients.size();x++ )
-		std::cout << fEFFCoefficients.at(x) << "\t" ;
-	std::cout << "\n";
-	std::cout << "EFFChi2:   " << fEFFChi2 << "\n" ;
-	if(fTIMECoefficients.size() > 0) {
-		std::cout<< "TIMECoeff: " ;
-		for(size_t x=0;x<fTIMECoefficients.size();x++)
-			std::cout << fTIMECoefficients.at(x) << "\t";
-		std::cout << "\n";
-	}
-	if(fUseCalFileInt) 
-		std::cout << "FileInt: " << fUseCalFileInt << "\n";
-	std::cout << "}\n";
-	std::cout << "//====================================//\n";
+   std::cout <<  "Name:      " << GetName() << "\n";
+   std::cout <<  "Number:    " << fNumber << "\n";
+   std::cout << std::setfill('0');
+   std::cout <<  "Address:   0x" << std::hex << std::setw(8) << fAddress << std::dec << "\n";
+   std::cout << std::setfill(' ');
+   std::cout <<  "Digitizer: " << fDigitizerType << "\n"; 
+   std::cout <<  "TimeOffset: " << fTimeOffset << "\n"; 
+   std::cout <<  "EngCoeff:  "  ;
+   for(size_t x=0;x<fENGCoefficients.size();x++)
+     std::cout <<  fENGCoefficients.at(x) << "\t";
+   std::cout <<  "\n";
+   std::cout <<  "Integration: " << fIntegration << "\n";
+   std::cout <<  "ENGChi2:   " << fENGChi2 << "\n";
+   std::cout <<  "EffCoeff:  "  ;
+   for(size_t x=0;x<fEFFCoefficients.size();x++ )
+     std::cout << fEFFCoefficients.at(x) << "\t" ;
+   std::cout << "\n";
+   std::cout << "EFFChi2:   " << fEFFChi2 << "\n" ;
+   if(fTIMECoefficients.size() > 0) {
+     std::cout<< "TIMECoeff: " ;
+     for(size_t x=0;x<fTIMECoefficients.size();x++)
+       std::cout << fTIMECoefficients.at(x) << "\t";
+     std::cout << "\n";
+   }
+   if(fUseCalFileInt) 
+     std::cout << "FileInt: " << fUseCalFileInt << "\n";
+   std::cout << "}\n";
+   std::cout << "//====================================//\n";
 
 }
 
 std::string TChannel::PrintToString(Option_t* opt) {
 	std::string buffer;
 	buffer.append("\n");
-	buffer.append(fChannelName); buffer.append("\t{\n");  //,channelname.c_str();
+	buffer.append(GetName()); buffer.append("\t{\n");  //,channelname.c_str();
    buffer.append("Type:      ");
    if(GetClassType())
       buffer.append(Form("%s\n",GetClassType()->GetName()));
    else
       buffer.append("None\n");
-	buffer.append("Name:      "); buffer.append(fChannelName); buffer.append("\n");
-	buffer.append(Form("Number:    %d\n",fNumber));
-	buffer.append(Form("Address:   0x%08x\n",fAddress));
-	buffer.append(Form("Digitizer: %s\n",fDigitizerType.c_str())); 
-	buffer.append("EngCoeff:  ");
-	for(size_t x=0;x<fENGCoefficients.size();x++)
-		buffer.append(Form("%f\t",fENGCoefficients.at(x)));
-	buffer.append("\n");
-	buffer.append(Form("Integration: %d\n",fIntegration));
-	buffer.append(Form("TimeOffset: %lf\n",fTimeOffset));
-	buffer.append(Form("ENGChi2:     %f\n",fENGChi2));
-	buffer.append("EffCoeff:  ");
-	for(size_t x=0;x<fEFFCoefficients.size();x++)
-		buffer.append(Form("%f\t",fEFFCoefficients.at(x)));
-	buffer.append("\n");
-	buffer.append(Form("EFFChi2:   %f\n",fEFFChi2));
-	if(fTIMECoefficients.size() > 0) {
-		buffer.append("TIMECoeff:  ");
-		for(size_t x=0;x<fTIMECoefficients.size();x++)
-			buffer.append(Form("%f\t",fTIMECoefficients.at(x)));
-		buffer.append("\n");
-	}
-	if(fUseCalFileInt){ 
-		buffer.append(Form("FileInt: %d\n",(int)fUseCalFileInt));
-	}
-	buffer.append("}\n");
+   
+   buffer.append("Name:      "); buffer.append(GetName()); buffer.append("\n");
+   buffer.append(Form("Number:    %d\n",fNumber));
+   buffer.append(Form("Address:   0x%08x\n",fAddress));
+   buffer.append(Form("Digitizer: %s\n",fDigitizerType.c_str())); 
+   buffer.append("EngCoeff:  ");
+   for(size_t x=0;x<fENGCoefficients.size();x++)
+     buffer.append(Form("%f\t",fENGCoefficients.at(x)));
+   buffer.append("\n");
+   buffer.append(Form("Integration: %d\n",fIntegration));
+   buffer.append(Form("TimeOffset: %lf\n",fTimeOffset));
+   buffer.append(Form("ENGChi2:     %f\n",fENGChi2));
+   buffer.append("EffCoeff:  ");
+   for(size_t x=0;x<fEFFCoefficients.size();x++)
+     buffer.append(Form("%f\t",fEFFCoefficients.at(x)));
+   buffer.append("\n");
+   buffer.append(Form("EFFChi2:   %f\n",fEFFChi2));
+   if(fTIMECoefficients.size() > 0) {
+     buffer.append("TIMECoeff:  ");
+     for(size_t x=0;x<fTIMECoefficients.size();x++)
+       buffer.append(Form("%f\t",fTIMECoefficients.at(x)));
+     buffer.append("\n");
+   }
+   if(fUseCalFileInt){ 
+     buffer.append(Form("FileInt: %d\n",(int)fUseCalFileInt));
+   }
+   buffer.append("}\n");
 
-	buffer.append("//====================================//\n");
+   buffer.append("//====================================//\n");
 
-	return buffer;
+   return buffer;
 }
 
 void TChannel::WriteCalFile(std::string outfilename) {
@@ -757,11 +759,12 @@ Int_t TChannel::ReadCalFromCurrentFile(Option_t* opt) {
 
 Int_t TChannel::ReadCalFromTree(TTree* tree,Option_t* opt) {
 	///Reads the TChannel information from a Tree if it has already been written to that Tree.
-	if(!tree)
-		return 0;
-	TFile* tempf = tree->GetCurrentFile();
-	TList* list =  tempf->GetListOfKeys();
-	TIter iter(list);
+   if(!tree)
+   	return 0;
+
+   TFile* tempf = tree->GetCurrentFile();
+   TList* list =  tempf->GetListOfKeys();
+   TIter iter(list);
 
    //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
    while(TKey *key = (TKey*)(iter.Next())) {
@@ -831,7 +834,7 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 
 	std::istringstream infile(inputdata);
 
-	TChannel* channel = 0;
+	TChannel* channel = nullptr;
 
 	std::string line;
 	int linenumber = 0;
@@ -933,11 +936,11 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 						int tempstream; ss>>tempstream;
 						channel->SetStream(tempstream);
 					} else if(type.compare("DIGITIZER")==0) {
-						int j=0;
-						while (type[j]) {
+						int k=0;
+						while (type[k]) {
 							char c =* (type.c_str() + j);
 							c = toupper(c);
-							type[j++] = c;
+							type[k++] = c;
 						}
 						channel->SetDigitizerType(line.c_str());
 					} else if(type.compare("ENGCHI2")==0) {
@@ -1069,9 +1072,9 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 				continue;
 			if(!found) {
 				found = true;
-				TChannel* c = static_cast<TChannel*>(key->ReadObj());
-				mastername.assign(c->GetName());
-				mastertitle.assign(c->GetTitle());
+				TChannel* ch = static_cast<TChannel*>(key->ReadObj());
+				mastername.assign(ch->GetName());
+				mastertitle.assign(ch->GetTitle());
 			}
 			std::string cname = key->ReadObj()->GetName();
 			//TFile* f = gDirectory->GetFile();
@@ -1121,7 +1124,7 @@ int TChannel::GetDetectorNumber() const {
 }
 
 TClass* TChannel::GetClassType() const {
-	if(fClassType != NULL)
+	if(fClassType != nullptr)
 		return fClassType;
 
    switch(fMnemonic.System()){
@@ -1171,7 +1174,7 @@ TClass* TChannel::GetClassType() const {
          fClassType = TTip::Class();
          break;
       default:
-         fClassType = NULL;
+         fClassType = nullptr;
    };
 
    return fClassType;
@@ -1181,7 +1184,7 @@ int TChannel::GetSegmentNumber() const {
    if(fSegmentNumber>-1)
      return fSegmentNumber;
 
-   std::string name = GetChannelName();
+   std::string name = GetName();
    TString str = name[9];
    if(str.IsDigit()){
    	 std::string buf;

@@ -88,15 +88,15 @@ void TPaces::AddFragment(TFragment* frag, TChannel* chan) {
 		return;
 	}
 
-	for(size_t i = 0; i < frag->Charge.size(); ++i) {
+	//for(size_t i = 0; i < frag->Charge.size(); ++i) {
 	  TPacesHit hit;
-	  hit.SetAddress(frag->ChannelAddress);
+	  hit.SetAddress(frag->GetAddress());
 	  hit.SetTimeStamp(frag->GetTimeStamp());
-	  hit.SetCfd(frag->GetCfd(i));
-	  hit.SetCharge(frag->GetCharge(i));
+	  hit.SetCfd(frag->GetCfd());
+	  hit.SetCharge(frag->GetCharge());
 	  
 	  AddHit(&hit);
-	}
+	//}
 }
 
 TVector3 TPaces::GetPosition(int DetNbr) {

@@ -52,7 +52,6 @@ void TS3::AddFragment(TFragment* frag, TChannel* chan) {
 	bool IsDownstream = false;		
 	if(chan->GetMnemonic()->collectedcharge.compare(0,1,"N")==0) { // ring	
 			TS3Hit dethit(*frag);
-			dethit.SetVariables(*frag);	
 			dethit.SetRingNumber(*frag);
 			dethit.SetSectorNumber(0);
 			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
@@ -65,9 +64,8 @@ void TS3::AddFragment(TFragment* frag, TChannel* chan) {
 			if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
 				dethit.SetWavefit(*frag);
 			fS3RingHits.push_back(dethit);
-	}else{
+	} else {
 			TS3Hit dethit(*frag);
-			dethit.SetVariables(*frag);	
 			dethit.SetRingNumber(0);
 			dethit.SetSectorNumber(*frag);
 			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)

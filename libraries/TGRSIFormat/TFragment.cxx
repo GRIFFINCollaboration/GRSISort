@@ -9,16 +9,7 @@
 ClassImp(TFragment)
 /// \endcond
 
-////////////////////////////////////////////////////////////////
-//                                                            //
-// TFragment                                                  //
-//                                                            //
-// This Class contains all of the information in an event     //
-// fragment                                                   //
-//                                                            //
-////////////////////////////////////////////////////////////////
-
-TFragment::TFragment(){
+TFragment::TFragment() {
    // Default Constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
@@ -26,193 +17,88 @@ TFragment::TFragment(){
    Clear();
 }
 
-TFragment::TFragment(const TFragment& rhs, int hit) : TObject() {
-  //copy constructor that copies only the requested hit (if hit is in range 0 - Cfd.size()), if hit is negative, it act's as a normal copy constructor
-  
-  //first copy all "normal" data members
-  MidasTimeStamp = rhs.MidasTimeStamp;
-  MidasId = rhs.MidasId;
-  TriggerId = rhs.TriggerId;
-  FragmentId = rhs.FragmentId;
-  TriggerBitPattern = rhs.TriggerBitPattern;
+TFragment::TFragment(const TFragment& rhs) : TGRSIDetectorHit(rhs) {
+   //first copy all "normal" data members
+   fMidasTimeStamp = rhs.fMidasTimeStamp;
+   fMidasId = rhs.fMidasId;
+   fFragmentId = rhs.fFragmentId;
+   fTriggerBitPattern = rhs.fTriggerBitPattern;
+   fNetworkPacketNumber = rhs.fNetworkPacketNumber;
+   fChannelId     = rhs.fChannelId;
+   fAcceptedChannelId     = rhs.fAcceptedChannelId;
 
-  NetworkPacketNumber = rhs.NetworkPacketNumber;
+   fDeadTime = rhs.fDeadTime;
+   fModuleType = rhs.fModuleType;
+   fDetectorType  = rhs.fDetectorType;
+   fNumberOfPileups = rhs.fNumberOfPileups;
 
-  ChannelNumber = rhs.ChannelNumber;
-  ChannelAddress = rhs.ChannelAddress;
+   fTriggerId = rhs.fTriggerId;
 
-  TimeStampLow = rhs.TimeStampLow;
-  TimeStampHigh = rhs.TimeStampHigh;
-
-  PPG = rhs.PPG;
-  DeadTime = rhs.DeadTime;
-  NumberOfFilters = rhs.NumberOfFilters;
-  NumberOfPileups = rhs.NumberOfPileups;
-  DataType = rhs.DataType;
-  DetectorType = rhs.DetectorType;
-  ChannelId = rhs.ChannelId;
-
-  wavebuffer = rhs.wavebuffer;
-
-  if(hit < 0 || hit >= static_cast<int>(Cfd.size())) {
-	  Cfd = rhs.Cfd;
-	  Zc = rhs.Zc;
-	  ccShort = rhs.ccShort;
-	  ccLong = rhs.ccLong;
-	  Led = rhs.Led;
-	  Charge = rhs.Charge;
-	  KValue = rhs.KValue;
-  } else {
-	  Cfd.push_back(rhs.Cfd[hit]);
-	  Zc.push_back(rhs.Zc[hit]);
-	  ccShort.push_back(rhs.ccShort[hit]);
-	  ccLong.push_back(rhs.ccLong[hit]);
-	  Led.push_back(rhs.Led[hit]);
-	  Charge.push_back(rhs.Charge[hit]);
-	  KValue.push_back(rhs.KValue[hit]);
-  }
-
-  NumberOfHits = Cfd.size();
-  HitIndex = hit;
+   //copy transient data members
+   fPPG = rhs.fPPG;
+   fZc = rhs.fZc;
+   fCcShort = rhs.fCcShort;
+   fCcLong = rhs.fCcLong;
+   fNumberOfWords = rhs.fNumberOfWords;
 }
 
 TFragment::~TFragment(){
-  // Default destructor does nothing right now
-  //Clear();
+   // Default destructor does nothing right now
 }
 
 void TFragment::Clear(Option_t *opt){  
    // Clears all fields of the TFragment
-   MidasTimeStamp    = 0;
-   MidasId           = 0;
+   TGRSIDetectorHit::Clear(opt);
 
-   TriggerId         = 0;
-   FragmentId        = 0;
-   TriggerBitPattern = 0;
+   fMidasTimeStamp      = 0;
+   fMidasId             = 0;
+   fFragmentId          = 0;
+   fTriggerBitPattern   = 0;
+   fNetworkPacketNumber = 0;
+   fChannelId           = 0; 
+   fAcceptedChannelId   = 0; 
 
-   NetworkPacketNumber = 0;
+   fDeadTime            = 0; 
+   fModuleType            = 0; 
+   fDetectorType        = 0; 
+   fNumberOfPileups     = 0; 
 
-   ChannelAddress    = -1;
-   Cfd.clear();//              = -1;
-   Zc.clear();//              = -1;
-   ccShort.clear();//
-   ccLong.clear();//
-   Led.clear();//               = -1;
-   Charge.clear();//            = -1;
-  
-   //TimeStamp         = -1;
-   TimeStampLow  = 0;
-   TimeStampHigh = 0;
+   fTriggerId.clear();
 
-
-   PPG                = 0; 
-   DeadTime           = 0; 
-   NumberOfFilters    = 0; 
-   NumberOfPileups    = 0; 
-   DataType           = 0; 
-   DetectorType       = 0; 
-   ChannelId          = 0; 
-   //AcceptedChannelId  = 0; 
-
-
-
-   if(!wavebuffer.empty())
-      wavebuffer.clear();
-
-   if(!KValue.empty())     //->
-   	KValue.clear();      //->
-
-   fPPG = NULL;
+   fPPG                 = NULL;
+   fZc                  = 0;
+   fCcShort             = 0;
+   fCcLong              = 0;
+   fNumberOfWords       = 0; 
 }
 
-long TFragment::GetTimeStamp() const {
-   long time = TimeStampHigh;
-   time  = time << 28;
-   time |= TimeStampLow & 0x0fffffff;
-   TChannel *chan = TChannel::GetChannel(ChannelAddress);
-   if(!chan)
-      return time;
-   return time - chan->GetTimeOffset();;
+TObject* TFragment::Clone(const char* name) const {
+   TFragment* result = new TFragment;
+   *result = *this;
+   return result;
 }
-
-
-double TFragment::GetTime() const {
-   double dtime = (double)(GetTimeStamp())+ gRandom->Uniform();
-   TChannel *chan = TChannel::GetChannel(ChannelAddress);
-   if(!chan )//|| Charge.size()<1)
-      return dtime;
-   return dtime - chan->GetTZero(GetEnergy());
-}
-
-
 
 double TFragment::GetTZero() const {
-   TChannel *chan = TChannel::GetChannel(ChannelAddress);
-   if(!chan )//|| Charge.size()<1)
-      return 0.000;
-   return chan->GetTZero(GetEnergy());
+  TChannel *chan = GetChannel();
+  if(!chan)
+    return 0.000;
+  return chan->GetTZero(GetEnergy());
 }
 
 long TFragment::GetTimeStamp_ns() const {
-   long ns = 0;
-   if(DataType==2 && Cfd.size()>0) {
-     ns = (Cfd.at(0) >> 21) & 0xf;
-   }
-   return 10*GetTimeStamp() + ns;  
+  long ns = 0;
+  if(fModuleType==2) {
+    ns = (GetCfd() >> 21) & 0xf;
+  }
+  return 10*GetTimeStamp() + ns;  
 }
 
-Int_t TFragment::Get4GCfd(size_t i) const { // return a 4G cfd in terms 
-  if(Cfd.size()==0)                // of 1/256 ns since the trigger
-     return -1;
-  if(Cfd.size()<=i)
-     i = Cfd.size()-1;
-  return Cfd.at(i)&0x001fffff;
-}
-
-
-const char *TFragment::GetName() const {
-   TChannel *chan = TChannel::GetChannel(ChannelAddress);
-   if(!chan)
-      return "";
-   return chan->GetChannelName();
-}
-
-/*
-double TFragment::GetEnergy() const {
-   TChannel *chan = TChannel::GetChannel(ChannelAddress);
-   if(!chan || Charge.size()<1)
-      return 0.00;
-   return chan->CalibrateENG((int)(Charge.at(0)));
-}
-*/
-
-double TFragment::GetEnergy(size_t i) const {
-   TChannel *chan = TChannel::GetChannel(ChannelAddress);
-   if(!chan || !(Charge.size()>i))
-      return 0.00;
-   if(KValue.size()>i && KValue.at(i)>0) {
-     return chan->CalibrateENG((int)(Charge.at(i)),(int)KValue.at(i));
-   } else if(chan->UseCalFileIntegration()) {
-      //printf("I am here\n");
-     return chan->CalibrateENG((int)(Charge.at(i)),0);  // this will use the integration value
-                                                        // in the TChannel if it exists.
-   }
-   return chan->CalibrateENG((int)(Charge.at(i)));
-}
-
-Float_t TFragment::GetCharge(size_t i) const {
-   TChannel *chan = TChannel::GetChannel(ChannelAddress);
-   if(!chan || !(Charge.size()>i))
-      return 0.00;
-   if(KValue.size()>i && KValue.at(i)>0){
-      return ((Float_t)Charge.at(i)+gRandom->Uniform())/((Float_t)KValue.at(i));// this will use the integration value
-   } else if(chan->UseCalFileIntegration()) {
-      return ((Float_t)Charge.at(i)+gRandom->Uniform())/((Float_t)chan->GetIntegration());// this will use the integration value
-   }                                                                                      // in the TChannel if it exists.
-   return ((Float_t)Charge.at(i)+gRandom->Uniform());// this will use no integration value
+Int_t TFragment::Get4GCfd() const { // return a 4G cfd in terms of 1/256 ns since the trigger
+  return GetCfd()&0x001fffff;
 }
 
 ULong64_t TFragment::GetTimeInCycle() {
+
    if(fPPG == NULL) {
 		fPPG = TPPG::Get();//static_cast<TPPG*>(gROOT->FindObject("TPPG"));
    }
@@ -232,123 +118,105 @@ ULong64_t TFragment::GetCycleNumber() {
    return fPPG->GetCycleNumber(GetTimeStamp());
 }
 
-void TFragment::Print(Option_t *opt) const {
-   //Prints out all fields of the TFragment
-
-
-   TChannel *chan = TChannel::GetChannel(this->ChannelAddress);
-   //printf("%s Event at	%i:\n", chan->GetDigitizerType().c_str(), MidasId);
-   char buff[20];
-   ctime(&MidasTimeStamp);
-   struct tm * timeinfo = localtime(&MidasTimeStamp);
-   strftime(buff,20,"%b %d %H:%M:%S",timeinfo);
-   printf("MidasTimeStamp: %s\n",buff);
-   printf("MidasId    	%i\n", MidasId);
-   printf("TriggerId: 	%lu\n", TriggerId);
-   printf("FragmentId:   %i\n", FragmentId);
-   printf("TriggerBit:	0x%08x\n", TriggerBitPattern);
-   printf("NetworkPacketNumber: %i\n", NetworkPacketNumber);
-   if(chan)
-	   printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetChannelName());
-   printf("\tChannel Address: 0x%08x\n", ChannelAddress);
-   printf("\tChannel Num:      %i\n", ChannelNumber);
-   printf("\tCharge[%lu]	  ",Charge.size());   for(size_t x=0;x<Charge.size();x++){printf( "     0x%08x", Charge.at(x));} printf("\n");
-   printf("\tCFD[%lu]		  ",Cfd.size());      for(size_t x=0;x<Cfd.size();x++)   {printf( "     0x%08x", Cfd.at(x));} printf("\n");
-   printf("\tZC[%lu]		     ",Zc.size());       for(size_t x=0;x<Zc.size();x++)    {printf( "     0x%08x", Zc.at(x));} printf("\n");
-   printf("\tLED[%lu]		  ",Led.size());      for(size_t x=0;x<Led.size();x++)   {printf( "     0x%08x", Led.at(x));} printf("\n");
-   printf("\tTimeStamp High: 0x%08x\n", TimeStampHigh);
-   printf("\tTimeStamp Low:    0x%08x\n", TimeStampLow);
-   //unsigned short temptime = (TimeStampLow & 0x0000ffff) - ((Cfd >> 4) & 0x0000ffff);   //TimeStampLow&0x0000ffff; 
-   //printf("\ttime from timestamp(to the nearest 10ns):    0x%04x\t%ins\n", temptime, temptime * 10);
-   if (!wavebuffer.empty())
-      printf("Has a wave form stored.\n");
-   else
-      printf("Does Not have a wave form stored.\n");
-
+Short_t TFragment::GetChannelNumber() const {
+	TChannel* chan = TChannel::GetChannel(fAddress);
+   if(!chan ) return 0;
+   return chan->GetNumber();
 }
 
+TPPG* TFragment::GetPPG() {
+	if(fPPG == NULL) {
+		fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
+	}
+	return fPPG;
+}
 
+void TFragment::Print(Option_t *opt) const {
+  //Prints out all fields of the TFragment
 
+  TChannel *chan = GetChannel();
+  char buff[20];
+  ctime(&fMidasTimeStamp);
+  struct tm * timeinfo = localtime(&fMidasTimeStamp);
+  strftime(buff,20,"%b %d %H:%M:%S",timeinfo);
+  printf("MidasTimeStamp: %s\n",buff);
+  printf("MidasId      %i\n", fMidasId);
+  printf("\tTriggerId[%lu]	  ",fTriggerId.size()); for(size_t x=0;x<fTriggerId.size();x++){printf( "     0x%08lx", fTriggerId[x]);} printf("\n");
+  printf("FragmentId:   %i\n", fFragmentId);
+  printf("TriggerBit:  0x%08x\n", fTriggerBitPattern);
+  printf("NetworkPacketNumber: %i\n", fNetworkPacketNumber);
+  if(chan) {
+    printf("Channel: %i\tName: %s\n", chan->GetNumber(), chan->GetName());
+    printf("\tChannel Num:      %i\n",GetChannelNumber());
+  }
+  printf("\tChannel Address: 0x%08x\n", GetAddress());
+  printf("\tCharge:          0x%08x\n ",   static_cast<Int_t>(GetCharge()));
+  printf("\tCFD:             0x%08x\n ",   GetCfd());
+  printf("\tZC:              0x%08x\n ",   fZc);   
+  printf("\tTimeStamp:       %lu\n", GetTimeStamp());
+  if(HasWave())
+    printf("Has a wave form stored.\n");
+  else
+    printf("Does Not have a wave form stored.\n");
+}
 
 bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
-   //Checks to see if the current fragment constains the same "prefix", for example "GRG"
-   //The option determines whether the channel should be:
-   // - C : The core of a segmented detector
-   // - S : The segments of a segmented detector
-   // - A : Low gain output of a detector
-   // - B : High gain output of a detectora
-   // If C or S are not given, default to C
-   // If A or B are not given, default to A
-   //Note that multiple options add to the output, so "CAB" would return the core with both high and low gain
-   //One should eventually add N,P,T options as well.
-   std::string pre = prefix;
-   TString option = opt;
-   std::string channame = this->GetName();
-   if(channame.length()<9)
-      return false;
+  //Checks to see if the current fragment constains the same "prefix", for example "GRG"
+  //The option determines whether the channel should be:
+  // - C : The core of a segmented detector
+  // - S : The segments of a segmented detector
+  // - A : Low gain output of a detector
+  // - B : High gain output of a detectora
+  // If C or S are not given, default to C
+  // If A or B are not given, default to A
+  //Note that multiple options add to the output, so "CAB" would return the core with both high and low gain
+  //One should eventually add N,P,T options as well.
+  std::string pre = prefix;
+  TString option = opt;
+  std::string channame = this->GetName();
+  if(channame.length()<9)
+    return false;
 
-   option.ToUpper();
-   //Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs to be done
-   //Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then checks
-   //for conditions.
-   if(!channame.compare(0,pre.length(),pre)) {     //channame.BeginsWith(pre)){
-      if(option.Length()<1) //no option.
-         return true;
-      if(channame.length()>8) {
-        if(option.Contains("B") && (std::toupper(channame[9])==std::toupper('B')))
-          return true;
-        else if(option.Contains("A") && (std::toupper(channame[9])==std::toupper('A')))
-          return true;
-      }
-      if(option.Contains("C") && !channame.compare(7,2,"00"))
+  option.ToUpper();
+  //Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs to be done
+  //Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then checks
+  //for conditions.
+  if(!channame.compare(0,pre.length(),pre)) {     //channame.BeginsWith(pre)){
+    if(option.Length()<1) //no option.
+      return true;
+    if(channame.length()>8) {
+      if(option.Contains("B") && (std::toupper(channame[9])==std::toupper('B')))
         return true;
-      else if(option.Contains("S") && channame.compare(7,2,"00"))
-         return true;
-   } else 
-     return false;
-   
-   return false;
-}
+      else if(option.Contains("A") && (std::toupper(channame[9])==std::toupper('A')))
+        return true;
+    }
+    if(option.Contains("C") && !channame.compare(7,2,"00"))
+      return true;
+    else if(option.Contains("S") && channame.compare(7,2,"00"))
+      return true;
+  } else 
+    return false;
 
-int TFragment::GetColor(Option_t *opt) const {
-   std::string channame = this->GetName();
-   if(channame.length()<9)
-      return false;
-   char color = channame[5];
-   switch(color) {
-      case 'B':
-        return 0;
-      case 'G':
-        return 1;
-      case 'R':
-        return 2;
-      case 'W':
-        return 3;
-   };
-   return -1;
+  return false;
 }
 
 
-int TFragment::GetDetector() const {
-	TChannel* channel = TChannel::GetChannel(ChannelAddress);
-	if(!channel) {
-		fprintf (stderr,"%s, failed to find channel for address 0x%08x",__PRETTY_FUNCTION__,GetAddress());
-		return -1;
-	}
-  return channel->GetDetectorNumber(); //mnemonic.arrayposition;
+Int_t TFragment::GetSharcMesyBoard() const {
+  int slave   = (fAddress & 0x00f00000) >> 20;
+  int port    = (fAddress & 0x00000f00) >> 8;
+  int channel = (fAddress & 0x000000ff);
+  
+  //printf("slave = 0x%08x    port = 0x%08x  channel = 0x%08x\n",slave,port,channel);
+
+  if(slave!=0x1 && slave!=0x2)
+    return -1;
+  if(channel==0x1f) {
+    return (slave-1)*16 + (port-1)*2 + 1;
+  } else if(channel==0x3f) {
+    return (slave-1)*16 + (port-1)*2 + 2;
+  }
+  return -1;
 }
-
-int TFragment::GetSegment() const {
-	TChannel* channel = TChannel::GetChannel(ChannelAddress);
-	if(!channel) {
-		fprintf (stderr,"%s, failed to find channel for address 0x%08x",__PRETTY_FUNCTION__,GetAddress());
-		return -1;
-	}
-   return channel->GetSegmentNumber(); //mnemonic.arrayposition;
-}
-
-
-
 
 
 

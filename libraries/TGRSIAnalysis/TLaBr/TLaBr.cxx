@@ -79,15 +79,15 @@ void TLaBr::AddFragment(TFragment* frag, TChannel* chan) {
       return;
    }
    
-   for(size_t i = 0; i < frag->Charge.size(); ++i) {
-      TLaBrHit hit;
-      hit.SetAddress(frag->ChannelAddress);
-      hit.SetTimeStamp(frag->GetTimeStamp());
-      hit.SetCfd(frag->GetCfd(i));
-      hit.SetCharge(frag->GetCharge(i));
+   //   for(size_t i = 0; i < frag->Charge.size(); ++i) {
+   TLaBrHit hit;
+   hit.SetAddress(frag->GetAddress());
+   hit.SetTimeStamp(frag->GetTimeStamp());
+   hit.SetCfd(frag->GetCfd());
+   hit.SetCharge(frag->Charge());
       
-      AddHit(&hit);
-   }
+   AddHit(&hit);
+      //   }
 }
 
 TGRSIDetectorHit* TLaBr::GetHit(const Int_t& idx){

@@ -8,7 +8,6 @@ ClassImp(TSiLiHit)
 TSiLiHit::TSiLiHit()  {    Clear(); }
 
 TSiLiHit::TSiLiHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
-	SetVariables(frag);
 }
 
 TSiLiHit::~TSiLiHit()  {  }
@@ -21,7 +20,6 @@ TSiLiHit::TSiLiHit(const TSiLiHit &rhs) : TGRSIDetectorHit() {
 void TSiLiHit::Copy(TObject &rhs) const {
    TGRSIDetectorHit::Copy(rhs);
 
-	static_cast<TSiLiHit&>(rhs).fLed = fLed;
 	//static_cast<TSiLiHit&>(rhs).fSegment = fSegment;
 	static_cast<TSiLiHit&>(rhs).fTimeFit = fTimeFit;
 	static_cast<TSiLiHit&>(rhs).fSig2Noise = fSig2Noise;
@@ -43,7 +41,6 @@ void TSiLiHit::Copy(TObject &rhs) const {
 
 void TSiLiHit::Clear(Option_t *opt)  {
    TGRSIDetectorHit::Clear(opt);
-	fLed       = -1;
 	//fSegment   = -1;
 	fTimeFit   = -1;
 	fSig2Noise = -1;
@@ -57,10 +54,13 @@ void TSiLiHit::SetWavefit(TFragment &frag)   {
 	}
 }
 
-TVector3 TSiLiHit::GetChannelPosition(double dist) const {
+TVector3 TSiLiHit::GetPosition(double dist) const {
 	return TSiLi::GetPosition(GetSegment());
 }
 
+TVector3 TSiLiHit::GetPosition() const {
+	return GetPosition(GetDefaultDistance());
+}
 
 void TSiLiHit::Print(Option_t *opt) const {
 	printf("===============\n");

@@ -67,18 +67,18 @@ void TZeroDegree::AddFragment(TFragment* frag, TChannel* chan) {
       return;
    }
    
-   for(size_t i = 0; i < frag->Charge.size(); ++i) {
+   //for(size_t i = 0; i < frag->Charge.size(); ++i) {
       TZeroDegreeHit hit;
-      hit.SetAddress(frag->ChannelAddress);
+      hit.SetAddress(frag->GetTimeStamp());
       hit.SetTimeStamp(frag->GetTimeStamp());
-      hit.SetCfd(frag->GetCfd(i));
-      hit.SetCharge(frag->GetCharge(i));
+      hit.SetCfd(frag->GetCfd());
+      hit.SetCharge(frag->GetCharge());
       
       if(TZeroDegree::SetWave()){
-         if(frag->wavebuffer.size() == 0) {
+         if(frag->GetWaveform()->size() == 0) {
             printf("Warning, TZeroDegree::SetWave() set, but data waveform size is zero!\n");
          } else {
-            hit.SetWaveform(frag->wavebuffer);
+            hit.CopyWave(*frag);
          }
          if(hit.GetWaveform()->size() > 0) {
             hit.AnalyzeWaveform();
@@ -86,7 +86,7 @@ void TZeroDegree::AddFragment(TFragment* frag, TChannel* chan) {
       }
       
       AddHit(&hit);
-   }
+   //}
 }
 
 TGRSIDetectorHit* TZeroDegree::GetHit(const Int_t& idx){

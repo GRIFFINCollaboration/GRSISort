@@ -105,8 +105,8 @@ void TFragmentQueue::Add(TFragment* frag)	{
 
     //when we move to multithreaded parsing, these three lines will 
     //need to move inside the lock.  pcb.
-	fFragmentIdMap[frag->TriggerId]++;
-	frag->FragmentId = fFragmentIdMap[frag->TriggerId];
+	fFragmentIdMap[frag->GetTriggerId()]++;
+	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
 		
 	while(!TFragmentQueue::Sorted.try_lock())	{
 		//do nothing	

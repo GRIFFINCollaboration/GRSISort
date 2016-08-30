@@ -19,7 +19,7 @@
 /// \class TChannel
 ///
 /// The TChannel is designed to hold all non-essential
-/// information of a TFragment (name, energy coeff, etc..)
+/// information of a TFragment (now the same as a hit; name, energy coeff, etc..)
 /// that would otherwise clog up the FragmentTree.  The TChannel class
 /// contains a static map to every channel make retrieval fairly
 /// easy.  The TChannel class also contains the ability to
@@ -41,7 +41,6 @@
 #include "TTree.h"
 #include "TClass.h"
 
-#include "TFragment.h"
 #include "Globals.h"
 
 class TChannel : public TNamed	{
@@ -71,7 +70,6 @@ class TChannel : public TNamed	{
    private:
       unsigned int	   fAddress;                                 //The address of the digitizer
       int		         fIntegration;                             //The charge integration setting
-      std::string       fChannelName;                             //The name of hte channel (MNEMONIC)
       std::string       fTypeName;
       std::string       fDigitizerType;
       int 	            fNumber;
@@ -120,7 +118,6 @@ class TChannel : public TNamed	{
    public:
       void SetName(const char* tmpName);
       void SetAddress(unsigned int tmpadd);
-      void SetChannelName(const char* tmpname); 
       inline void SetNumber(int tmpnum)	             { fNumber = tmpnum; UpdateChannelNumberMap(); }
       inline void SetIntegration(int tmpint)	          { fIntegration = tmpint; }
       static void SetIntegration(std::string mnemonic,int tmpint);
@@ -146,7 +143,6 @@ class TChannel : public TNamed	{
       int GetStream()                { return fStream; }
       int GetUserInfoNumber()        { return fUserInfoNumber;}
       const char* GetDigitizerType() { return fDigitizerType.c_str(); }
-      const char* GetChannelName() const {return fChannelName.c_str(); }
       double GetTimeOffset()         { return fTimeOffset; }
       //write the rest of the gettters/setters...
 
@@ -179,11 +175,9 @@ class TChannel : public TNamed	{
       inline void SetTIMEChi2(double temp) { fTIMEChi2 = temp; }
       inline void SetEFFChi2(double temp)  { fEFFChi2 = temp; } 
 
-      //void CalibrateFragment(TFragment*);
-
-      double  CalibrateENG(double);
-      Float_t CalibrateENG(Float_t);
-      Float_t CalibrateENG(int,int integration=0);
+      double CalibrateENG(double);
+      double CalibrateENG(double, int integration);
+      double CalibrateENG(int,int integration=0);
 
       double CalibrateCFD(double);
       double CalibrateCFD(int);

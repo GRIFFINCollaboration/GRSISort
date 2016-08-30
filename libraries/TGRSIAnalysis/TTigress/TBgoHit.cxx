@@ -31,7 +31,7 @@ void TBgoHit::Print(Option_t *opt) const	{
   TString sopt(opt);
   printf("==== BgoHit @ 0x%p\n ====",(void*)this);
   printf("\t%s\n",GetName());
-  printf("\tCharge: %.2f\n",GetCharge());
+  printf("\tCharge: %.2f\n",Charge());
   printf("\tTime:   %.2f\n",GetTime());
   std::cout <<"\tTime:   "<< GetTimeStamp() <<"\n";
   printf("============================\n");

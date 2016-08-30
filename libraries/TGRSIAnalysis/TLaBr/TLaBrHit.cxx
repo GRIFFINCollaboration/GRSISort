@@ -36,10 +36,14 @@ void TLaBrHit::Copy(TObject &rhs) const {
    static_cast<TLaBrHit&>(rhs).fFilter = fFilter;
 }
 
-TVector3 TLaBrHit::GetChannelPosition(double dist) const {
+TVector3 TLaBrHit::GetPosition(double dist) const {
    //Gets the position of the current TLaBrHit
-   //This should not be called externally, only TGRSIDetector::GetPosition should be
    return TLaBr::GetPosition(GetDetector());
+}
+
+TVector3 TLaBrHit::GetPosition() const {
+   //Gets the position of the current TLaBrHit
+   return GetPosition(GetDefaultDistance());
 }
 
 bool TLaBrHit::InFilter(Int_t wantedfilter) {
