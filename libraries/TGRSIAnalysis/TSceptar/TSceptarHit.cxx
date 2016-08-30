@@ -36,11 +36,14 @@ void TSceptarHit::Copy(TObject &rhs) const {
    static_cast<TSceptarHit&>(rhs).fFilter = fFilter;
 }
 
-TVector3 TSceptarHit::GetChannelPosition(double dist) const {
+TVector3 TSceptarHit::GetPosition(double dist) const {
    //Gets the position of the current TSceptarHit
-   //This position returns is of the center of the paddle
-   //This should not be called externally, only TGRSIDetector::GetPosition should be
    return TSceptar::GetPosition(GetDetector());
+}
+
+TVector3 TSceptarHit::GetPosition() const {
+   //Gets the position of the current TSceptarHit
+   return GetPosition(GetDefaultDistance());
 }
 
 bool TSceptarHit::InFilter(Int_t wantedfilter) {

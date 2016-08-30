@@ -54,8 +54,7 @@ class TZeroDegreeHit : public TGRSIDetectorHit {
       void Print(Option_t *opt = "") const;		                    //!<!
       virtual void Copy(TObject&) const;        //!<!
       
-   private:
-      TVector3 GetChannelPosition(Double_t dist = 0) const; //!<!
+      //Position Not written for ZeroDegree Yet
       
       /// \cond CLASSIMP
       ClassDef(TZeroDegreeHit,2) //Stores the information for a ZeroDegreeHit

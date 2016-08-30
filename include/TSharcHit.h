@@ -99,11 +99,12 @@ class TSharcHit : public TGRSIDetectorHit {
     void SetFront(const TFragment& frag); //!<!  
     void SetBack (const TFragment& frag); //!<!
     void SetPad  (const TFragment& frag); //!<!
-      
-    TVector3 GetPosition() const { return GetChannelPosition(); } //!<!
+ 
+    TVector3 GetPosition(Double_t dist) const; //!<!
+    TVector3 GetPosition() const; //!<!
 
   private:
-      TVector3 GetChannelPosition(Double_t dist = 0) const; //!<!
+    Double_t GetDefaultDistance() const { return 0.; };
     
 /// \cond CLASSIMP
   ClassDef(TSharcHit,6)

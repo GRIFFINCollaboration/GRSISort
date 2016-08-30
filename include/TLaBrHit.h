@@ -46,9 +46,11 @@ class TLaBrHit : public TGRSIDetectorHit {
       void Clear(Option_t *opt = "");		                    //!<!
       void Print(Option_t *opt = "") const;		                    //!<!
       virtual void Copy(TObject&) const;        //!<!
+      TVector3 GetPosition(Double_t dist) const;
+      TVector3 GetPosition() const;
       
    private:
-      TVector3 GetChannelPosition(Double_t dist = 0) const; //!<!
+      Double_t GetDefaultDistance() const { return 0.; } //This needs to be updated
       
       /// \cond CLASSIMP
       ClassDef(TLaBrHit,2) //Stores the information for a LaBrrHit
