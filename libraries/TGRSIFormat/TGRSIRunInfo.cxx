@@ -650,7 +650,7 @@ std::string TGRSIRunInfo::PrintToString(Option_t* opt) {
 	buffer.append("//The event building time, 10 ns units.\n");
    buffer.append(Form("BuildWindow: %ld\n", Get()->BuildWindow()));
    buffer.append("\n\n");
-	buffer.append("//The Addback event window, 10 ns units.\n");
+	buffer.append("//The Addback event window, ns units.\n");
    buffer.append(Form("AddBackWindow: %lf\n", Get()->AddBackWindow()));
    buffer.append("\n\n");
 	buffer.append("//The Array Position in mm.\n");
