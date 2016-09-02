@@ -84,9 +84,6 @@ class TTipHit : public TGRSIDetectorHit {
     void Print(Option_t *opt = "") const;                  //!<!
     virtual void Copy(TObject&) const;                     //!<!
 
-  private:
-    TVector3 GetChannelPosition(Double_t dist=0) const   { return TVector3();}
-
 /// \cond CLASSIMP
     ClassDef(TTipHit,1);
 /// \endcond

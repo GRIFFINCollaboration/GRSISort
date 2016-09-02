@@ -106,7 +106,8 @@ class TGRSIDetectorHit : public TObject 	{
       void SetEnergy(const double& en) { fEnergy = en; SetBit(kIsEnergySet,true);}
       void SetTime(const Double_t& time) {fTime = time; SetBit(kIsTimeSet,true); }
 
-      //TVector3 GetPosition(Double_t dist = 0)        const; //!<!
+      virtual TVector3 GetPosition(Double_t dist)    const { return TVector3(0.,0.,0.); } //!<!
+      virtual TVector3 GetPosition()    const { return TVector3(0.,0.,0.); } //!<!
       virtual double GetEnergy(Option_t* opt="")     const;
       virtual Long_t GetTimeStamp(Option_t* opt="") const   { return fTimeStamp;   }
       virtual Double_t GetTime(Option_t* opt = "")   const;  ///< Returns a time value to the nearest nanosecond!
@@ -136,7 +137,7 @@ class TGRSIDetectorHit : public TObject 	{
       static TVector3 *GetBeamDirection() { return &fBeamDirection; }
 
    private:
-      virtual TVector3 GetChannelPosition(Double_t dist = 0) const { AbstractMethod("GetChannelPosition"); return TVector3(0., 0., 0.); }
+ //     virtual TVector3 GetChannelPosition(Double_t dist) const { AbstractMethod("GetChannelPosition"); return TVector3(0., 0., 0.); }
 
    protected:
       Bool_t IsEnergySet() const { return (fBitflags & kIsEnergySet); }
@@ -149,7 +150,7 @@ class TGRSIDetectorHit : public TObject 	{
    protected:
       UInt_t   fAddress;    ///< address of the the channel in the DAQ.
       Float_t  fCharge;     ///< charge collected from the hit
-      Short_t fKValue;      ///< integration value.
+      Short_t  fKValue;      ///< integration value.
       Int_t    fCfd;        ///< CFD time of the Hit
       Long_t   fTimeStamp;  ///< Timestamp given to hit
       std::vector<Short_t> fWaveform;  ///<
@@ -158,7 +159,7 @@ class TGRSIDetectorHit : public TObject 	{
       mutable Double_t fTime;       //!<! Calibrated Time of the hit
       //UInt_t   fDetector;   //!<! Detector Number
       //Short_t  fSegment;	  //!<! Segment number
-      mutable TVector3 fPosition;   //!<! Position of hit detector.
+     // mutable TVector3 fPosition;   //!<! Position of hit detector.
       mutable Double_t fEnergy;     //!<! Energy of the Hit.
       mutable uint16_t fPPGStatus;  //!<! 
       mutable ULong_t  fCycleTimeStamp; //!<!

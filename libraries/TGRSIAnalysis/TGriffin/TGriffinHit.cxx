@@ -73,9 +73,8 @@ TVector3 TGriffinHit::GetPosition(double dist) const {
   return TGriffin::GetPosition(GetDetector(),GetCrystal(),dist);
 }
 
-TVector3 TGriffinHit::GetChannelPosition(Double_t dist) const{
-  //Returns the Position of the crystal of the current Hit.
-  return GetPosition(dist);
+TVector3 TGriffinHit::GetPosition() const {
+  return GetPosition(GetDefaultDistance());
 }
 
 // UInt_t TGriffinHit::GetCrystal() {

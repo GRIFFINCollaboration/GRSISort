@@ -128,7 +128,8 @@ void TFragWriteLoop::Write() {
     }
 
     if(TChannel::GetNumberOfChannels()) {
-      TChannel::GetDefaultChannel()->Write();
+      //TChannel::GetDefaultChannel()->Write();
+      TChannel::WriteToRoot();
     }
 
     TGRSIRunInfo::Get()->WriteToRoot(output_file);

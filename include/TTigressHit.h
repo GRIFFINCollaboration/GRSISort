@@ -99,11 +99,13 @@ class TTigressHit : public TGRSIDetectorHit {
 
     void SumHit(TTigressHit*);                                    //!<!
 
-    TVector3 GetPosition(Double_t dist=110.0) const; 
-    TVector3 GetLastPosition(Double_t dist=110.0) const;
+    TVector3 GetPosition(Double_t dist) const; 
+    TVector3 GetPosition() const; 
+    TVector3 GetLastPosition(Double_t dist) const;
+    TVector3 GetLastPosition() const;
 
   private:
-    TVector3 GetChannelPosition(Double_t dist=110.0) const { return GetPosition(dist); }
+    Double_t GetDefaultDistance() const { return 110.; }
 
   public:
     virtual void Clear(Option_t *opt = "");                        //!<!

@@ -53,6 +53,8 @@ class TSceptarHit : public TGRSIDetectorHit {
       bool   InFilter(Int_t);                                          //!<!
       
       bool AnalyzeWaveform();                                          //!<!
+      TVector3 GetPosition(Double_t dist) const; //!<!
+      TVector3 GetPosition() const; //!<!
       
    public:
       void Clear(Option_t *opt = "");		                    //!<!
@@ -60,7 +62,7 @@ class TSceptarHit : public TGRSIDetectorHit {
       virtual void Copy(TObject&) const;        //!<!
       
    private:
-      TVector3 GetChannelPosition(Double_t dist = 0) const; //!<!
+      Double_t GetDefaultDistance() const { return 0.0; }
       
       /// \cond CLASSIMP
       ClassDef(TSceptarHit,2) //Stores the information for a SceptarHit
