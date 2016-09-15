@@ -39,9 +39,9 @@ void ProcessEvent(std::vector<TFragment> *event) {
     for(size_t y=x+1;y<event->size();y++) {
       if( ((event->at(x).GetEnergy()>1330.0) &&  (event->at(x).GetEnergy()<1335.0)) || 
           ((event->at(y).GetEnergy()>1330.0) &&  (event->at(y).GetEnergy()<1335.0))  )  {
-      int timediff      = abs(event->at(x).TimeStampLow-event->at(y).TimeStampLow);
-      float timediff_walk = fabs((float)(event->at(x).GetTimeStamp()-event->at(y).GetTimeStamp()));
-      int cfddiff  = abs(event->at(x).Cfd.at(0)-event->at(y).Cfd.at(0));
+      long timediff      = std::abs(event->at(x).GetTimeStamp()-event->at(y).GetTimeStamp());
+      float timediff_walk = std::fabs((float)(event->at(x).GetTimeStamp()-event->at(y).GetTimeStamp()));
+      int cfddiff  = abs(event->at(x).GetCfd()-event->at(y).GetCfd());
       timehist->Fill(timediff,event->at(x).GetEnergy());
       timehist->Fill(timediff,event->at(y).GetEnergy());
       cfdhist->Fill(cfddiff,event->at(x).GetEnergy());

@@ -430,7 +430,7 @@ int main(int argc, char **argv) {
    TMidasFile *infile  = new TMidasFile;
    infile->Open(argv[1]);
 
-   GFile *outfile = new GFile("outfile.root","RECREATE");
+   TFile *outfile = new TFile("outfile.root","RECREATE");
 
    std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
    std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;
