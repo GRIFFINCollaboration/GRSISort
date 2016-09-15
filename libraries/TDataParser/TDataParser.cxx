@@ -478,7 +478,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
         // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
         // change should be backward-compatible
         if((value & 0x3fff) == (EventFrag->GetChannelId() & 0x3fff)){
-          if(!TGRSIOptions2::Get()->SuppressErrors() && EventFrag->GetModuleType() == 2 && bank < kGRF3) {
+          if(!TGRSIOptions2::Get()->SuppressErrors() && (EventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
             // check whether the nios finished and if so whether it finished with an error
             if(((value>>14) & 0x1) == 0x1) {
               if(((value>>16) & 0xff) != 0) {
@@ -487,7 +487,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             }
           }
 
-          if(EventFrag->GetModuleType() == 1 || bank > kGRF2) { //4Gs have this only for banks newer than GRF2
+          if((EventFrag->GetModuleType() == 1) || (bank > kGRF2)) { //4Gs have this only for banks newer than GRF2
             EventFrag->SetAcceptedChannelId((value>>14) & 0x3fff);
           } else {
             EventFrag->SetAcceptedChannelId(0);
@@ -592,6 +592,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   ++x;
                   tmpIntLength.push_back(tmp | ((data[x] & 0x7fc00000) >> 22));
                   tmpCfd.push_back(data[x] & 0x003fffff);
+                    break;
                 } else {
                   //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
                   //so we look for the next trailer and stop there

@@ -48,8 +48,10 @@ void TPacesHit::Print(Option_t* opt) const	{
 	printf("Paces hit time:   %f\n",GetTime());
 }
 
-TVector3 TPacesHit::GetChannelPosition(Double_t dist) const{
-   //This should not be called by a user. Instead use
-   //TGRSIDetectorHit::GetPosition.
+TVector3 TPacesHit::GetPosition(Double_t dist) const{
 	return TPaces::GetPosition(GetDetector());
+}
+
+TVector3 TPacesHit::GetPosition() const{
+	return GetPosition(GetDefaultDistance());
 }

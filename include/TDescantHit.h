@@ -60,13 +60,16 @@ class TDescantHit : public TGRSIDetectorHit {
       
       bool AnalyzeWaveform();                                          //!<!
       
+      TVector3 GetPosition(Double_t dist) const; //!<!
+      TVector3 GetPosition() const; //!<!
+
    public:
       void Copy(TObject&) const;        //!<!
       void Clear(Option_t *opt = "");		                    //!<!
       void Print(Option_t *opt = "") const;		                    //!<!
       
    private:
-      TVector3 GetChannelPosition(Double_t dist = 222) const; //!<!
+      Double_t GetDefaultDistance() const { return 222.; }
       
       /// \cond CLASSIMP
       ClassDef(TDescantHit,4)

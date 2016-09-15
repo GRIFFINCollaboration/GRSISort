@@ -3,7 +3,7 @@
 
 #include"TMidasFile.h"
 #include"TMidasEvent.h"
-#include"GFile.h"
+#include"TFile.h"
 #include"TFragment.h"
 #include"TTree.h"
 #include"TSpectrum.h"
@@ -247,7 +247,7 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    //Do checks on the event
 	unsigned int mserial=0; if(event) mserial = (unsigned int)(event->GetSerialNumber());
 	unsigned int mtime=0;   if(event) mtime   = event->GetTimeStamp();
-
+   TDataParser parser;
    while(infile->Read(event)>0 && eventQ->size()<total_events) {
       switch(event->GetEventId()) {
          case 0x8000:
@@ -272,7 +272,7 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
                banksize = event->LocateBank(NULL,"GRF1",&ptr);
 
             if(banksize>0) {
-               int frags = TDataParser::GriffinDataToFragment((uint32_t*)(ptr),banksize,2,mserial,mtime);
+               int frags = parser.GriffinDataToFragment((uint32_t*)(ptr),banksize,TDataParser::kGRF2,mserial,mtime);
                if(frags > -1){
                   events_read++;
                   if((subrun > 0) || (events_read > event_start))
@@ -784,7 +784,7 @@ void WriteCorrectionFile(int runnumber){
 //I think I can directly write the map, but I was having a bit of trouble, so I'm using this Tree hack
    char filename[64];
    sprintf(filename,"corrections%05i.root",runnumber); 
-   GFile *corrfile = new GFile(filename,"RECREATE");
+   TFile *corrfile = new TFile(filename,"RECREATE");
 
    //Just going to make a corrections map for now...it should be a map throughout....
 
@@ -810,7 +810,7 @@ int CorrectionFile(int runnumber){
 //I think I can directly write the map, but I was having a bit of trouble, so I'm using this Tree hack
    char filename[64];
    sprintf(filename,"corrections%05i.root",runnumber); 
-   GFile *corrfile = new GFile(filename,"READ");
+   TFile *corrfile = new TFile(filename,"READ");
    if(!(corrfile->IsOpen())){
       delete corrfile;
       return 0;
@@ -889,7 +889,7 @@ int main(int argc, char **argv) {
    TGRSIRootIO::Get()->SetUpDiagnostics();
    
    if(!nDigitizers){
-      GFile *outfile = new GFile(filename,"RECREATE");
+      TFile *outfile = new TFile(filename,"RECREATE");
       std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;
       QueueEvents(midfile,eventQ);
       std::cout << "Number of Digitizers Found: " << TEventTime::digmap.size() << std::endl;

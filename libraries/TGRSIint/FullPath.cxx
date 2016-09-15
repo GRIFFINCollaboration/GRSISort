@@ -1,6 +1,6 @@
 #include "FullPath.h"
 
-#ifdef __linux__
+//#ifdef __linux__
 
 #include <stdlib.h>
 #include <limits.h>
@@ -15,7 +15,7 @@ std::string full_path(const std::string& path){
     return "";
   }
 }
-#endif
+//#endif
 
 
 // TODO: Make a windows version.

@@ -39,9 +39,11 @@ class TPacesHit : public TGRSIDetectorHit {
 		virtual void Clear(Option_t *opt = "");		 //!<!
 		virtual void Print(Option_t *opt = "") const; //!<!
       virtual void Copy(TObject&) const;        //!<!
+      TVector3 GetPosition(Double_t dist) const; //!<!
+      TVector3 GetPosition() const; //!<!
 
    private:
-      TVector3 GetChannelPosition(Double_t dist = 0) const; //!<!
+      Double_t GetDefaultDistance() const { return 0.0; }
 
 /// \cond CLASSIMP
 	ClassDef(TPacesHit,3);

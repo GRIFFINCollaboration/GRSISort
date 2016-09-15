@@ -98,7 +98,7 @@ double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
 void TGRSIDetectorHit::Copy(TObject& rhs) const {
   TObject::Copy(rhs);
   static_cast<TGRSIDetectorHit&>(rhs).fAddress        = fAddress;
-  static_cast<TGRSIDetectorHit&>(rhs).fPosition       = fPosition;
+//  static_cast<TGRSIDetectorHit&>(rhs).fPosition       = fPosition;
   static_cast<TGRSIDetectorHit&>(rhs).fCfd            = fCfd;
   static_cast<TGRSIDetectorHit&>(rhs).fTimeStamp      = fTimeStamp;
   static_cast<TGRSIDetectorHit&>(rhs).fCharge         = fCharge;
@@ -125,7 +125,7 @@ void TGRSIDetectorHit::Copy(TObject& rhs,bool copywave) const {
 void TGRSIDetectorHit::Print(Option_t* opt) const {
   ///General print statement for a TGRSIDetectorHit.
   ///Currently prints nothing.
-  fPosition.Print();
+  //fPosition.Print();
 }
 
 const char *TGRSIDetectorHit::GetName() const {
@@ -140,7 +140,7 @@ const char *TGRSIDetectorHit::GetName() const {
 void TGRSIDetectorHit::Clear(Option_t* opt) {
   ///General clear statement for a TGRSIDetectorHit.
   fAddress = 0xffffffff;    // -1
-  fPosition.SetXYZ(0,0,1);  // unit vector along the beam.
+  //fPosition.SetXYZ(0,0,1);  // unit vector along the beam.
   fWaveform.clear();        // reset size to zero.
   fCharge         = 0;
   fKValue         =0;
@@ -236,11 +236,11 @@ Short_t TGRSIDetectorHit::SetSegment(const Short_t &seg) {
 //TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
   ///This should not be overridden and instead GetChannelPosition should
   ///be used in the derived class.
-//  if(IsPosSet())
-//    return fPosition;
+  //if(IsPosSet())
+  //  return fPosition;
 
-//  if(GetDetector()>0)
-//    return TGRSIDetectorHit::SetPosition(dist);
+  //if(GetDetector()>0)
+  //  return TGRSIDetectorHit::SetPosition(dist);
 
   //GetDetector();
   //if(IsDetSet())

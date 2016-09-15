@@ -54,8 +54,16 @@ void TS3Hit::SetWavefit(TFragment &frag)   {
 	}
 }
 
-TVector3 TS3Hit::GetChannelPosition(double offset, double dist) const {
+TVector3 TS3Hit::GetPosition(double offset, double dist) const {
 	return TS3::GetPosition(GetRing(),GetSector(),this->GetIsDownstream(),offset);
+}
+
+TVector3 TS3Hit::GetPosition(double offset) const {
+	return TS3::GetPosition(GetRing(),GetSector(),this->GetIsDownstream(),GetDefaultOffset());
+}
+
+TVector3 TS3Hit::GetPosition() const {
+	return TS3::GetPosition(GetRing(),GetSector(),this->GetIsDownstream(),GetDefaultOffset());
 }
 
 void TS3Hit::Print(Option_t *opt) const	{

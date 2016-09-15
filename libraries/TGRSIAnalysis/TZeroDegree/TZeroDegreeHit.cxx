@@ -36,13 +36,6 @@ void TZeroDegreeHit::Copy(TObject &rhs) const {
    static_cast<TZeroDegreeHit&>(rhs).fFilter = fFilter;
 }
 
-TVector3 TZeroDegreeHit::GetChannelPosition(double dist) const {
-   ///Gets the position of the current TZeroDegreeHit
-   ///This position returns is of the center of the paddle
-   ///This should not be called externally, only TGRSIDetector::GetPosition should be
-   return TZeroDegree::GetPosition(dist);
-}
-
 bool TZeroDegreeHit::InFilter(Int_t wantedfilter) {
 	/// check if the desired filter is in wanted filter;
    /// return the answer;

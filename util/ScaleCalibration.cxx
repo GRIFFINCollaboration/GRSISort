@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
       chanlist.push_back(newchan);
       
       if(mnemonic != ""){
-         std::string channame = newchan->GetChannelName();
+         std::string channame = newchan->GetName();
 
          //Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs to be done
          //Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then checks

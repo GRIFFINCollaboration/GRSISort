@@ -37,10 +37,13 @@ void TDescantHit::Copy(TObject &rhs) const {
    static_cast<TDescantHit&>(rhs).fPsd     = fPsd;
 }
 
-TVector3 TDescantHit::GetChannelPosition(double dist) const {
-   ///This should not be called by the user. Instead use
+TVector3 TDescantHit::GetPosition(double dist) const {
    ///TGRSIDetectorHit::GetPosition
-   return TDescant::GetPosition(GetDetector());
+   return TDescant::GetPosition(GetDetector(),dist);
+}
+
+TVector3 TDescantHit::GetPosition() const {
+   return TDescant::GetPosition(GetDetector(),GetDefaultDistance());
 }
 
 bool TDescantHit::InFilter(Int_t wantedfilter) {
