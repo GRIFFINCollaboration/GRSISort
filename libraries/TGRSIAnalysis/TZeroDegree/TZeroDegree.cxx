@@ -1,7 +1,10 @@
 #include <iostream>
+
+#include "TRandom.h"
+#include "TMath.h"
+
 #include "TZeroDegree.h"
-#include <TRandom.h>
-#include <TMath.h>
+#include "TGRSIOptions2.h"
 
 /// \cond CLASSIMP
 ClassImp(TZeroDegree)
@@ -67,26 +70,25 @@ void TZeroDegree::AddFragment(TFragment* frag, TChannel* chan) {
       return;
    }
    
-   //for(size_t i = 0; i < frag->Charge.size(); ++i) {
-      TZeroDegreeHit hit;
-      hit.SetAddress(frag->GetTimeStamp());
-      hit.SetTimeStamp(frag->GetTimeStamp());
-      hit.SetCfd(frag->GetCfd());
-      hit.SetCharge(frag->GetCharge());
+	TZeroDegreeHit hit;
+	hit.SetAddress(frag->GetAddress());
+	hit.SetTimeStamp(frag->GetTimeStamp());
+	hit.SetCfd(frag->GetCfd());
+	hit.SetCharge(frag->GetCharge());
       
-      if(TZeroDegree::SetWave()){
-         if(frag->GetWaveform()->size() == 0) {
-            printf("Warning, TZeroDegree::SetWave() set, but data waveform size is zero!\n");
-         } else {
-            hit.CopyWave(*frag);
-         }
-         if(hit.GetWaveform()->size() > 0) {
-            hit.AnalyzeWaveform();
-         }
-      }
+	//if(TZeroDegree::SetWave()){
+	if(TGRSIOptions2::Get()->ExtractWaves()) {
+		if(frag->GetWaveform()->size() == 0) {
+			printf("Warning, TZeroDegree::SetWave() set, but data waveform size is zero!\n");
+		} else {
+			frag->CopyWave(hit);
+		}
+		if(hit.GetWaveform()->size() > 0) {
+			hit.AnalyzeWaveform();
+		}
+	}
       
-      AddHit(&hit);
-   //}
+	AddHit(&hit);
 }
 
 TGRSIDetectorHit* TZeroDegree::GetHit(const Int_t& idx){
