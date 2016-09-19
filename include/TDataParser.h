@@ -50,20 +50,20 @@ public:
 
 #ifndef __CINT__
   std::shared_ptr<ThreadsafeQueue<TFragment*> >&
-  GoodOutputQueue() { return good_output_queue; }
+  GoodOutputQueue() { return fGoodOutputQueue; }
 
   std::shared_ptr<ThreadsafeQueue<TFragment*> >&
-  BadOutputQueue() { return bad_output_queue; }
+  BadOutputQueue() { return fBadOutputQueue; }
 
   std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> >&
-  ScalerOutputQueue() { return scaler_output_queue; }
+  ScalerOutputQueue() { return fScalerOutputQueue; }
 #endif
 
 private:
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > good_output_queue;
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > bad_output_queue;
-  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> > scaler_output_queue;
+  std::shared_ptr<ThreadsafeQueue<TFragment*> > fGoodOutputQueue;
+  std::shared_ptr<ThreadsafeQueue<TFragment*> > fBadOutputQueue;
+  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> > fScalerOutputQueue;
 #endif
 
   bool fNoWaveforms;         ///< The flag to turn wave_forms on or off

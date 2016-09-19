@@ -46,7 +46,7 @@ void Commands() { printf("this is a list of useful commands.\n");}
 void Prompt() { Getlinem(EGetLineMode::kInit,((TRint*)gApplication)->GetPrompt()); }
 
 void Version() {
-  system(Form("%s/bin/grutinizer-config --version", getenv("GRUTSYS")));
+  system(Form("%s/bin/grsi-config --version", getenv("GRSISYS")));
 }
 
 bool GetProjection(GH2D *hist,double low, double high, double bg_low,double bg_high){

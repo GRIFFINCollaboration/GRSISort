@@ -193,62 +193,62 @@ void MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nscl
   TFile *vs;
 
   //make spectra
-    TFile *rf = new TFile(filename,"read");
-    TTree *maple = (TTree*)rf->Get("ScalerTree");							//Scaler data
+  TFile *rf = new TFile(filename,"read");
+  TTree *maple = (TTree*)rf->Get("ScalerTree");							//Scaler data
 
-    int nofBins = *trun/ncycle;
-    double xaxis = 0; double yaxis = 0; double prev = 0; double xpast=0;
-    int j = 0; int k = 0; double clk = 20e-9;	//2 clock tics (20ns)
+  int nofBins = *trun/ncycle;
+  double xaxis = 0; double yaxis = 0; double prev = 0; double xpast=0;
+  int j = 0; int k = 0; double clk = 20e-9;	//2 clock tics (20ns)
     
-    while (j<nsc) {
+  while (j<nsc) {
     grif[j] = new TH1D(Form("grif%d_0x%04x_%d",prog,*channel,index),Form("Address 0x%04x, scaler %i vs time in cycle; time [s]; counts/%d s",*channel,index,ncycle),nofBins,0.,*trun);
-	j++;	
-	channel++; //used to have a de-reference, see comments above; VB
-	}
+	 j++;	
+	 channel++; //used to have a de-reference, see comments above; VB
+  }
 
-   TScalerData* scaler = 0;
-   TScaler(maple).Clear();
-   maple->SetBranchAddress("TScalerData", &scaler); 	
-   Long64_t nentries = maple->GetEntries();
-
+  TScalerData* scaler = 0;
+  TScaler(maple).Clear();
+  maple->SetBranchAddress("TScalerData", &scaler); 	
+  Long64_t nentries = maple->GetEntries();
+  
+  //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*
+  //Build histograms directly from trees
     //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*
-    //Build histograms directly from trees
-    //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*
-    	if (prog==0 && index==0) {	
-		vs = new TFile(fname,"recreate");
-	} else {
-		vs = new TFile(fname,"update");
-	}
-    //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*
-	for(int i=0;i<nsc;i++){
-		channel--; //used to have a de-reference, see comments above; VB
-	}
-		while (k<nsc){
-			for (Long64_t j=0;j<nentries;j++) {
-			maple->GetEntry(j);
-			if(scaler->GetAddress()==static_cast<UInt_t>(*channel)){
-				xaxis = (scaler->GetTimeStamp()/1e8);		
-					//we check both the value of the scaler and the timestamp (ts difference should be = readout time)
-					if(prev != 0 && prev < scaler->GetScaler(index) && (xaxis-xpast)<=(double(ncycle)+clk)) {
-						yaxis = (scaler->GetScaler(index)-prev);
-						grif[k]->Fill(xaxis,yaxis);
-					}
-				prev = scaler->GetScaler(index);
-				xpast=xaxis;
-				}
-			}
-		k++;
-		channel++;
-		prev=xpast=0;
+  if (prog==0 && index==0) {	
+	 vs = new TFile(fname,"recreate");
+  } else {
+	 vs = new TFile(fname,"update");
+  }
+  //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*
+  for(int i=0;i<nsc;i++){
+	 channel--; //used to have a de-reference, see comments above; VB
+  }
+  while(k<nsc){
+	 for(Long64_t e=0;e<nentries;e++) {
+		maple->GetEntry(e);
+		if(scaler->GetAddress()==static_cast<UInt_t>(*channel)){
+		  xaxis = (scaler->GetTimeStamp()/1e8);		
+		  //we check both the value of the scaler and the timestamp (ts difference should be = readout time)
+		  if(prev != 0 && prev < scaler->GetScaler(index) && (xaxis-xpast)<=(double(ncycle)+clk)) {
+			 yaxis = (scaler->GetScaler(index)-prev);
+			 grif[k]->Fill(xaxis,yaxis);
+		  }
+		  prev = scaler->GetScaler(index);
+		  xpast=xaxis;
 		}
+	 }
+	 k++;
+	 channel++;
+	 prev=xpast=0;
+  }
 	
-    printf(DGREEN "Created histograms for scaler %i : file = %s" RESET_COLOR "\n",index,filename);
-    //write hists
-    for (int i=0; i<nsc; i++) {
-    	grif[i]->Write();
-    }	
-    vs->Close();
-    //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*
+  printf(DGREEN "Created histograms for scaler %i : file = %s" RESET_COLOR "\n",index,filename);
+  //write hists
+  for (int i=0; i<nsc; i++) {
+	 grif[i]->Write();
+  }	
+  vs->Close();
+  //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*
   return;
 }
 
@@ -740,14 +740,14 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
 	double gmax=0, hmax=0; double erbp=0, erbm=0, erfp=0, erfm=0;
 	double frmin=1e6, frmax=0, srmin=1e6, srmax=0;
 
-	for(int i=0; i<wsize; i++){
+	for(i=0; i<wsize; i++){
 		if(wspec[i][2]>gmax){
 			gmax=wspec[i][2];
 			hmax=(gmax/2);
 		}		
 	}
 	//calculate max/min range (select above half the height of 'peak')
-	for(int i=0; i<wsize; i++){
+	for(i=0; i<wsize; i++){
 		if(wspec[i][1]>srmax && wspec[i][2]>hmax){
 			srmax=wspec[i][1];
 		}
@@ -756,7 +756,7 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
 		}
 	}
 	//calculate max/min range (only select above zero)
-	for(int i=0; i<wsize; i++){
+	for(i=0; i<wsize; i++){
 		if(wspec[i][1]>frmax && wspec[i][2]>0){
 			frmax=wspec[i][1];
 		}
@@ -784,7 +784,7 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
 	//}
 	//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~WIDTH HISTOGRAM
 	if(cnt%nsc==0){
-		for (int i=0; i<wsize; i++){
+		for(i=0; i<wsize; i++){
 				fprintf(randw, "%.2f \t %.2f \t %.2f", wspec[i][0], wspec[i][1], wspec[i][2]);
 				fprintf(randw, "\n");
 		}
@@ -794,7 +794,7 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
 	//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~RCHECK HISTOGRAM
 	//print random number generator results to file for a single spectrum
 	/*if(cnt%nsc==0){
-		for (int i=0; i<bin; i++){
+		for (i=0; i<bin; i++){
 			fprintf(rng, "%f \t %f", randcheck[i][0], randcheck[i][1]);
 			fprintf(rng, "\n");
 		}
@@ -813,7 +813,7 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
 		}
 		//change limits accordingly for each scaler in each file
 		if(cnt%(nsc)==0) {
-			for(int i=0;i<2;i++){
+			for(i=0;i<2;i++){
 				lowrtau++; //used to have a de-reference, see comments above; VB
 				upprtau++; //used to have a de-reference, see comments above; VB
 			}

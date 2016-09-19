@@ -49,12 +49,13 @@ class TDescant : public TGRSIDetector {
       bool fHitFlag;                                                          ///<   Is there a Descant hit?
       
    public:
-      static bool SetWave()      { return fSetWave;  }	                     //!<!
-      bool Hit()                {return fHitFlag;}                            //!<!
-      void SetHit(bool flag = true) { fHitFlag = flag; }
+      static bool SetWave()          { return fSetWave; }                     //!<!
+      void SetWave(bool flag)        { fSetWave = flag; }                     //!<!
+      bool Hit()                     { return fHitFlag; }                     //!<!
+      void SetHit(bool flag = true)  { fHitFlag = flag; }                     //!<!
    private:
       static TVector3 gPosition[71];                                          //!<!
-      static TVector3 gAncillaryPosition[9];                                          //!<!
+      static TVector3 gAncillaryPosition[9];                                  //!<!
    public:
       void Copy(TObject&) const;                                              //!<!
       void Clear(Option_t* opt = "");                                         //!<!

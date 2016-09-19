@@ -86,7 +86,44 @@ void TGRSIOptions2::Clear(Option_t* opt) {
   fLongFileDescription = false;
 }
 
-void TGRSIOptions2::Print(Option_t* opt) const { }
+void TGRSIOptions2::Print(Option_t* opt) const { 
+  std::cout<<"fCloseAfterSort: "<<fCloseAfterSort<<std::endl
+			  <<"fLogErrors: "<<fLogErrors<<std::endl
+			  <<"fUseMidFileOdb: "<<fUseMidFileOdb<<std::endl
+			  <<"fSuppressErrors: "<<fSuppressErrors<<std::endl
+			  <<std::endl
+			  <<"fMakeAnalysisTree: "<<fMakeAnalysisTree<<std::endl
+			  <<"fProgressDialog: "<<fProgressDialog<<std::endl
+			  <<"fWorkHarder: "<<fWorkHarder<<std::endl
+			  <<"fReadingMaterial;: "<<fReadingMaterial<<std::endl
+			  <<"fIgnoreFileOdb: "<<fIgnoreFileOdb<<std::endl
+			  <<"fRecordDialog: "<<fRecordDialog<<std::endl
+			  <<std::endl
+			  <<"fIgnoreScaler: "<<fIgnoreScaler<<std::endl
+			  <<"fIgnoreEpics: "<<fIgnoreEpics<<std::endl
+			  <<"fWriteBadFrags: "<<fWriteBadFrags<<std::endl
+			  <<"fWriteDiagnostics: "<<fWriteDiagnostics<<std::endl
+			  <<std::endl
+			  <<"fShowedVersion: "<<fShowedVersion<<std::endl
+			  <<"fHelp: "<<fHelp<<std::endl
+			  <<"fShowLogo: "<<fShowLogo<<std::endl
+			  <<"fSortRaw: "<<fSortRaw<<std::endl
+			  <<"fSortRoot: "<<fSortRoot<<std::endl
+			  <<"fExtractWaves;: "<<fExtractWaves<<std::endl
+			  <<"fIsOnline: "<<fIsOnline<<std::endl
+			  <<"fStartGui: "<<fStartGui<<std::endl
+			  <<"fMakeHistos: "<<fMakeHistos<<std::endl
+			  <<"fSortMultiple: "<<fSortMultiple<<std::endl
+			  <<std::endl
+			  <<"fTimeSortInput: "<<fTimeSortInput<<std::endl
+			  <<"fSortDepth: "<<fSortDepth<<std::endl
+			  <<std::endl
+			  <<"fBuildWindow: "<<fBuildWindow<<std::endl
+			  <<std::endl
+			  <<"fShouldExit: "<<fShouldExit<<std::endl
+			  <<std::endl
+			  <<"fLongFileDescription: "<<fLongFileDescription<<std::endl;
+}
 
 void TGRSIOptions2::Load(int argc, char** argv) {
   Clear();
@@ -161,8 +198,7 @@ void TGRSIOptions2::Load(int argc, char** argv) {
   parser.option("ignore-odb", &fIgnoreFileOdb);
   parser.option("ignore-epics", &fIgnoreEpics);
   parser.option("ignore-scaler", &fIgnoreScaler);
-  parser.option("suppress-errors", &fSuppressErrors);
-
+  parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors);
 
   // parser.option("o output", &output_file)
   //   .description("Root output file");
@@ -205,9 +241,9 @@ void TGRSIOptions2::Load(int argc, char** argv) {
   for(int i=0; i<argc; i++){
     std::string filename = argv[i];
     if(DetermineFileType(filename) == kFileType::CONFIG_FILE){
-      try{
+      try {
         parser.parse_file(filename);
-      } catch (ParseError& e){
+      } catch (ParseError& e) {
         std::cerr << "ERROR: " << e.what() << "\n"
                   << parser << std::endl;
         fShouldExit = true;
