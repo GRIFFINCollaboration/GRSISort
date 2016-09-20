@@ -37,11 +37,6 @@ class TSceptarHit : public TGRSIDetectorHit {
       /////////////////////////		/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { fFilter   = x; }   //!<!
       
-      inline void SetWaveform(std::vector<Short_t> x) {
-         std::vector<Short_t> *waveform = GetWaveform();
-         *waveform=x;
-      } //!<!
-      
       /////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()    const     { return fFilter;   }  //!<!
       

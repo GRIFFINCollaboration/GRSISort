@@ -111,14 +111,14 @@ void TGRSIDetectorHit::Copy(TObject& rhs) const {
   static_cast<TGRSIDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
 }
 
-void TGRSIDetectorHit::CopyWave(TGRSIDetectorHit &rhs) const {
-  rhs.fWaveform       = fWaveform;
+void TGRSIDetectorHit::CopyWave(TObject &rhs) const {
+  static_cast<TGRSIDetectorHit&>(rhs).fWaveform       = fWaveform;
 }
 
 void TGRSIDetectorHit::Copy(TObject& rhs,bool copywave) const {
   Copy(rhs);
   if(copywave)
-    CopyWave(static_cast<TGRSIDetectorHit&>(rhs));
+    CopyWave(rhs);
 }
 
 

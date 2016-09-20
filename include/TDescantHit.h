@@ -36,11 +36,6 @@ class TDescantHit : public TGRSIDetectorHit {
       inline void SetCcShort(const int &x)         { fCcShort  = x; }   //!<!
       inline void SetCcLong(const int &x)          { fCcLong   = x; }   //!<!
       
-      inline void SetWaveform(std::vector<Short_t> x) {
-         std::vector<Short_t> *waveform = GetWaveform();
-         *waveform=x;
-      }  //!<!
-      
       /////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()       { return fFilter;   }  //!<!
       inline Int_t    GetPsd()                 { return fPsd;      }  //!<!

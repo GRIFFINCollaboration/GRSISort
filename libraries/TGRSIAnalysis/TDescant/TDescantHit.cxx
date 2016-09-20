@@ -6,6 +6,7 @@
 
 #include "Globals.h"
 #include "TDescant.h"
+#include "TGRSIOptions2.h"
 
 /// \cond CLASSIMP
 ClassImp(TDescantHit)
@@ -27,6 +28,9 @@ TDescantHit::TDescantHit(const TDescantHit &rhs) : TGRSIDetectorHit() {
 
 void TDescantHit::Copy(TObject &rhs) const {
    TGRSIDetectorHit::Copy(rhs);
+	if(TGRSIOptions2::Get()->ExtractWaves()) {
+	  TGRSIDetectorHit::CopyWave(rhs);
+	}
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif

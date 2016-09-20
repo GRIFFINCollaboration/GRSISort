@@ -86,7 +86,7 @@ class TGRSIDetectorHit : public TObject 	{
    public:
       virtual void Copy(TObject&) const;                //!<!
       virtual void Copy(TObject&,bool copywave) const;  //!<!
-      virtual void CopyWave(TGRSIDetectorHit&)  const;  //!<!
+      virtual void CopyWave(TObject&)  const;  //!<!
       virtual void Clear(Option_t* opt = "");           //!<!
       virtual void Print(Option_t* opt = "") const;     //!<!
       virtual bool HasWave() const { return (fWaveform.size()>0) ?  true : false; } //!<!
