@@ -25,6 +25,9 @@ class TDescantDebug : public TObject {
       void Clear(Option_t *opt = "");
 	private:
 		std::vector<short> fCfdMonitor;
+      /// \cond CLASSIMP
+      ClassDef(TDescantDebug,1)
+      /// \endcond
 };
 /*! @} */
 #endif

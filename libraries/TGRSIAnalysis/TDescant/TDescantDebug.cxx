@@ -1,5 +1,9 @@
 #include "TDescantDebug.h"
 
+/// \cond CLASSIMP
+ClassImp(TDescantDebug)
+/// \endcond
+
 TDescantDebug::TDescantDebug() {
 }
 
