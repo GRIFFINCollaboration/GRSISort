@@ -72,6 +72,7 @@ public:
   bool MakeHistos()         const { return fMakeHistos; }
   bool SortMultiple()       const { return fSortMultiple; }
 
+  bool Debug()              const { return fDebug; }
 
   bool IsOnline()           const { return fIsOnline; }
 
@@ -145,6 +146,7 @@ private:
   bool fStartGui;
   bool fMakeHistos;
   bool fSortMultiple;
+  bool fDebug;
 
   bool fTimeSortInput;
   int fSortDepth;

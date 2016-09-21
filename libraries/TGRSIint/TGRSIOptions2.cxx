@@ -76,6 +76,7 @@ void TGRSIOptions2::Clear(Option_t* opt) {
   fStartGui = false;
   fMakeHistos = false;
   fSortMultiple = false;
+  fDebug = false;
 
   fTimeSortInput = false;
 
@@ -114,6 +115,7 @@ void TGRSIOptions2::Print(Option_t* opt) const {
 			  <<"fStartGui: "<<fStartGui<<std::endl
 			  <<"fMakeHistos: "<<fMakeHistos<<std::endl
 			  <<"fSortMultiple: "<<fSortMultiple<<std::endl
+			  <<"fDebug;: "<<fDebug<<std::endl
 			  <<std::endl
 			  <<"fTimeSortInput: "<<fTimeSortInput<<std::endl
 			  <<"fSortDepth: "<<fSortDepth<<std::endl
@@ -187,6 +189,9 @@ void TGRSIOptions2::Load(int argc, char** argv) {
     .description("Show this help message");
   parser.option("w extract-waves",&fExtractWaves)
     .description("Extract wave forms to data class when available.")
+    .default_value(false);
+  parser.option("d debug",&fDebug)
+    .description("Write debug information to output/file, e.g. enables writing of TDescantDebug at analysis stage.")
     .default_value(false);
   parser.option("no-record-dialog", &fRecordDialog)
     .description("Dump stuff to screen");

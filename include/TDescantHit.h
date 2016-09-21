@@ -14,6 +14,7 @@
 #include "TChannel.h"
 
 #include "TGRSIDetectorHit.h"
+#include "TDescantDebug.h"
 
 class TDescantHit : public TGRSIDetectorHit {
    public:
@@ -27,6 +28,7 @@ class TDescantHit : public TGRSIDetectorHit {
       Int_t    fZc;
       Int_t    fCcShort;
       Int_t    fCcLong;
+		TDescantDebug* fDebugData;
       
    public:
       /////////////////////////		/////////////////////////////////////
