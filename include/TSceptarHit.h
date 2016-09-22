@@ -16,6 +16,7 @@
 
 #include <cstdio>
 #include <cmath>
+#include <vector>
 
 #include "TFragment.h"
 #include "TChannel.h"

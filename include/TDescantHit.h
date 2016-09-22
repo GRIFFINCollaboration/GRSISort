@@ -7,6 +7,7 @@
 
 #include <cstdio>
 #include <cmath>
+#include <vector>
 
 #include "TVector3.h"
 
@@ -14,7 +15,6 @@
 #include "TChannel.h"
 
 #include "TGRSIDetectorHit.h"
-#include "TDescantDebug.h"
 
 class TDescantHit : public TGRSIDetectorHit {
    public:
@@ -28,7 +28,7 @@ class TDescantHit : public TGRSIDetectorHit {
       Int_t    fZc;
       Int_t    fCcShort;
       Int_t    fCcLong;
-		TDescantDebug* fDebugData;
+		std::vector<short> fCfdMonitor;
       
    public:
       /////////////////////////		/////////////////////////////////////
@@ -44,6 +44,7 @@ class TDescantHit : public TGRSIDetectorHit {
       inline Int_t    GetZc()                  { return fZc;      }  //!<!
       inline Int_t    GetCcShort()             { return fCcShort;      }  //!<!
       inline Int_t    GetCcLong()              { return fCcLong;      }  //!<!
+		inline std::vector<short>& GetCfdMonitor() { return fCfdMonitor; }
       
       Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps); //!<!
       Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps, std::vector<Short_t> &monitor); //!<!
@@ -69,7 +70,7 @@ class TDescantHit : public TGRSIDetectorHit {
       Double_t GetDefaultDistance() const { return 222.; }
       
       /// \cond CLASSIMP
-      ClassDef(TDescantHit,4)
+      ClassDef(TDescantHit,5)
       /// \endcond
 };
 /*! @} */

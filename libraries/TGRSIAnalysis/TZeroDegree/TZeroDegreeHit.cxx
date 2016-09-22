@@ -38,6 +38,7 @@ void TZeroDegreeHit::Copy(TObject &rhs) const {
 	  TGRSIDetectorHit::CopyWave(rhs);
 	}
    static_cast<TZeroDegreeHit&>(rhs).fFilter = fFilter;
+   static_cast<TZeroDegreeHit&>(rhs).fCfdMonitor = fCfdMonitor;
 }
 
 bool TZeroDegreeHit::InFilter(Int_t wantedfilter) {
@@ -50,6 +51,7 @@ void TZeroDegreeHit::Clear(Option_t *opt)	{
    ///Clears the ZeroDegreeHit
    fFilter = 0;
    TGRSIDetectorHit::Clear();
+	fCfdMonitor.clear();
 }
 
 void TZeroDegreeHit::Print(Option_t *opt) const	{
@@ -155,6 +157,10 @@ Int_t TZeroDegreeHit::CalculateCfdAndMonitor(double attenuation, unsigned int de
    } else {
       monitor.resize(0);
    }
+   
+	if(TGRSIOptions2::Get()->Debug()) {
+		fCfdMonitor = monitor;
+	}
    
    return cfd;
    

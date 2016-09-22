@@ -16,11 +16,6 @@ TDescantHit::TDescantHit()	{
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-	if(TGRSIOptions2::Get()->Debug()) {
-		fDebugData = new TDescantDebug;
-	} else {
-		fDebugData = NULL;
-	}
    Clear();
 }
 
@@ -39,12 +34,12 @@ void TDescantHit::Copy(TObject &rhs) const {
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-   static_cast<TDescantHit&>(rhs).fFilter    = fFilter;
-   static_cast<TDescantHit&>(rhs).fZc        = fZc;
-   static_cast<TDescantHit&>(rhs).fCcShort   = fCcShort;
-   static_cast<TDescantHit&>(rhs).fCcLong    = fCcLong;
-   static_cast<TDescantHit&>(rhs).fPsd       = fPsd;
-   static_cast<TDescantHit&>(rhs).fDebugData = fDebugData;
+   static_cast<TDescantHit&>(rhs).fFilter     = fFilter;
+   static_cast<TDescantHit&>(rhs).fZc         = fZc;
+   static_cast<TDescantHit&>(rhs).fCcShort    = fCcShort;
+   static_cast<TDescantHit&>(rhs).fCcLong     = fCcLong;
+   static_cast<TDescantHit&>(rhs).fPsd        = fPsd;
+   static_cast<TDescantHit&>(rhs).fCfdMonitor = fCfdMonitor;
 }
 
 TVector3 TDescantHit::GetPosition(double dist) const {
@@ -68,10 +63,8 @@ void TDescantHit::Clear(Option_t *opt)	{
    fZc      = 0;
    fCcShort = 0;
    fCcLong  = 0;
+	fCfdMonitor.clear();
    TGRSIDetectorHit::Clear();
-	if(fDebugData != NULL) {
-		fDebugData->Clear();
-	}
 }
 
 void TDescantHit::Print(Option_t *opt) const	{
@@ -182,6 +175,10 @@ Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay
    } else {
       monitor.resize(0);
    }
+
+	if(TGRSIOptions2::Get()->Debug()) {
+		fCfdMonitor = monitor;
+	}
    
    return cfd;
 }
