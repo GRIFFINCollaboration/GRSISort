@@ -63,7 +63,7 @@ void TTriFoil::AddFragment(TFragment* frag, TChannel* chan) {
 		max = fTfWave[i];
 		imax = i;
 	}
-	if(max!=0 && imax!=0 && std::abs(imax - i)>15){
+	if(max!=0 && imax!=0 && (i - imax)>15){
 		fTBeam.push_back(imax);
 		max = 0;
 		imax = 0;

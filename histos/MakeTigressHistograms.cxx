@@ -83,8 +83,10 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
   static long first_ana_timestamp = 0;
 
   if(tf) {
-    if(tf->TBeam()>5) 
-      obj.FillHistogram("TBeam",500,0,500,tf->TBeam());
+    for(int x=0; x<tf->NTBeam();x++) {
+    if(tf->TBeam(x)>5) 
+      obj.FillHistogram("TBeam",500,0,500,tf->TBeam(x));
+  }
   }
 
   if(tigress){
@@ -112,20 +114,21 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
 
       TSharcHit *shit = sharc->GetSharcHit(i);
     
-    if(tf) {
-      if(tf->TBeam()>5 && shit->GetDetector() < 9) {
-        obj.FillHistogram("TBeam_GatedDownStream",500,0,500,tf->TBeam());
-      } else {
-        obj.FillHistogram("TBeam_GatedUpStream",500,0,500,tf->TBeam());
-      }
-      if((tf->TBeam()>5) && (shit->GetDetector() < 9)  && (shit->GetEnergy() >1000)) 
-        obj.FillHistogram("TBeam_GatedDownStreamAndEnergy",500,0,500,tf->TBeam());
-      else if( shit->GetEnergy()>1000 ) { 
-        obj.FillHistogram("TBeam_GatedUpStreamAndEnergy",500,0,500,tf->TBeam());
+   //for(int x=0; x<tf->NTBeam();x++) {
+   //if(tf) {
+   //  if(tf->TBeam(x)>5 && shit->GetDetector() < 9) {
+   //    obj.FillHistogram("TBeam_GatedDownStream",500,0,500,tf->TBeam(x));
+   //  } else {
+   //    obj.FillHistogram("TBeam_GatedUpStream",500,0,500,tf->TBeam(x));
+   //  }
+   //  if((tf->TBeam(x)>5) && (shit->GetDetector() < 9)  && (shit->GetEnergy() >1000)) 
+   //    obj.FillHistogram("TBeam_GatedDownStreamAndEnergy",500,0,500,tf->TBeam(x));
+   //  else if( shit->GetEnergy()>1000 ) { 
+   //    obj.FillHistogram("TBeam_GatedUpStreamAndEnergy",500,0,500,tf->TBeam(x));
 
-      }
-    }
-
+   //  }
+   //}
+   //}
       obj.FillHistogram("sharc_diag", "phi_theta",
 			200, -10, 190,  shit->GetTheta()*180.0/3.14159,
 			400, -200, 200, shit->GetPosition().Phi()*180.0/3.14159);

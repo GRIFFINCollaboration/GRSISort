@@ -22,7 +22,10 @@ class TTriFoil :  public TDetector {
     bool Beam() const { return fBeam; }
     int NTBeam() const { return fTBeam.size(); }
     //int TBeam() const { return TBeam(0); }
-    int TBeam(int n=0) const { return fTBeam.at(n); }
+    int TBeam(unsigned int n=0) const { 	if(n<fTBeam.size()) 
+					return fTBeam.at(n);
+				else
+					return -1; }
 
     bool HasWave() const { return !fTfWave.empty(); }
     time_t GetTimeStamp() const { return fTimestamp; }

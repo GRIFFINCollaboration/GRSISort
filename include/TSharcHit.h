@@ -59,6 +59,9 @@ class TSharcHit : public TGRSIDetectorHit {
     TGRSIDetectorHit GetBack()  const { return fBackHit; }
     TGRSIDetectorHit GetPad()   const { return fPadHit; }
 
+    Double_t GetSomeTime() const { return GetCfd()-GetBack().GetCfd() + ((GetBackStrip()%24) * 157.6) - (GetFrontStrip()*157.6); }
+
+
     inline Double_t GetDeltaE() const       { return TGRSIDetectorHit::GetEnergy();  }  //!<!
     inline Double_t GetDeltaT() const       { return TGRSIDetectorHit::GetTime();    }  //!<!
 

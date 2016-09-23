@@ -78,7 +78,9 @@ class TTigressHit : public TGRSIDetectorHit {
 
     bool BGOFired() const { return fBgoFired; }
     void SetBGOFired(bool fired) { fBgoFired = fired;}
-  
+ 
+    int GetTimeToTrigger() { return (fTimeStamp&0x7fffff)-(fCfd>>4); }
+
     int GetSegmentMultiplicity()        const { return fSegments.size(); }  //!<!
     int GetNSegments()                  const { return fSegments.size(); }  //!<!
     /* int GetBGOMultiplicity()            const { return fBgos.size();     }  //!<! */
