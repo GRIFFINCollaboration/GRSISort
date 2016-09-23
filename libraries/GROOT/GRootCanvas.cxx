@@ -635,7 +635,9 @@ GRootCanvas::~GRootCanvas()
       delete fMainFrame;
       delete fMainFrameLayout;
       delete fToolBarSep;
+#ifndef __APPLE__
       delete fToolDock;
+#endif
       delete fToolBarLayout;
       delete fHorizontal1;
       delete fHorizontal1Layout;

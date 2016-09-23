@@ -31,9 +31,11 @@ class TSiLiHit : public TGRSIDetectorHit {
 		Double_t GetTimeFit()   { return fTimeFit;  }
 
 		void SetWavefit(TFragment&);
+		TVector3 GetPosition(Double_t dist) const; //!  
+		TVector3 GetPosition() const; //!  
 
 	private:
-		TVector3 GetChannelPosition(Double_t dist = 0) const; //!  
+      Double_t GetDefaultDistance() const { return 0.0; }
       
 		Double_t    fTimeFit;
 		Double_t    fSig2Noise;

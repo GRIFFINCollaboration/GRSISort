@@ -56,11 +56,18 @@ TVector3 TTigressHit::GetPosition(double dist) const {
   return TTigress::GetPosition(*this,dist);  
 }
 
+TVector3 TTigressHit::GetPosition() const {
+  return GetPosition(GetDefaultDistance());  
+}
+
 TVector3 TTigressHit::GetLastPosition(double dist) const {
   const TGRSIDetectorHit &seg = GetSegmentHit(GetNSegments()-1);
   return TTigress::GetPosition(seg.GetDetector(),seg.GetCrystal(),seg.GetSegment(),dist);  
 }
 
+TVector3 TTigressHit::GetLastPosition() const {
+  return GetPosition(GetDefaultDistance());  
+}
 
 void TTigressHit::Print(Option_t *opt) const	{
   TString sopt(opt);

@@ -22,7 +22,7 @@ TUnpackingLoop *TUnpackingLoop::Get(std::string name) {
 TUnpackingLoop::TUnpackingLoop(std::string name)
   : StoppableThread(name),
     input_queue(std::make_shared<ThreadsafeQueue<TMidasEvent> >()),
-    fFragsReadFromMidas(0) {
+	 fFragsReadFromMidas(0) {
 }
 
 TUnpackingLoop::~TUnpackingLoop() { }
@@ -33,7 +33,7 @@ void TUnpackingLoop::ClearQueue() {
     input_queue->Pop(single_event);
   }
 
-  TFragment* frag;
+  TFragment* frag = NULL;
   while(parser.GoodOutputQueue()->Size()){
     parser.GoodOutputQueue()->Pop(frag);
     delete frag;

@@ -36,11 +36,6 @@ void TTACHit::Copy(TObject &rhs) const {
    static_cast<TTACHit&>(rhs).fFilter = fFilter;
 }
 
-TVector3 TTACHit::GetChannelPosition(double dist) const {
-   //There is no position for the TTAC's. This returns a null vector.
-   return TVector3(0., 0., 0.); 
-}
-
 bool TTACHit::InFilter(Int_t wantedfilter) {
    // check if the desired filter is in wanted filter;
    // return the answer;

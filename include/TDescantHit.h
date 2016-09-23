@@ -7,6 +7,7 @@
 
 #include <cstdio>
 #include <cmath>
+#include <vector>
 
 #include "TVector3.h"
 
@@ -27,6 +28,7 @@ class TDescantHit : public TGRSIDetectorHit {
       Int_t    fZc;
       Int_t    fCcShort;
       Int_t    fCcLong;
+		std::vector<short> fCfdMonitor;
       
    public:
       /////////////////////////		/////////////////////////////////////
@@ -36,17 +38,13 @@ class TDescantHit : public TGRSIDetectorHit {
       inline void SetCcShort(const int &x)         { fCcShort  = x; }   //!<!
       inline void SetCcLong(const int &x)          { fCcLong   = x; }   //!<!
       
-      inline void SetWaveform(std::vector<Short_t> x) {
-         std::vector<Short_t> *waveform = GetWaveform();
-         *waveform=x;
-      }  //!<!
-      
       /////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()       { return fFilter;   }  //!<!
       inline Int_t    GetPsd()                 { return fPsd;      }  //!<!
       inline Int_t    GetZc()                  { return fZc;      }  //!<!
       inline Int_t    GetCcShort()             { return fCcShort;      }  //!<!
       inline Int_t    GetCcLong()              { return fCcLong;      }  //!<!
+		inline std::vector<short>& GetCfdMonitor() { return fCfdMonitor; }
       
       Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps); //!<!
       Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps, std::vector<Short_t> &monitor); //!<!
@@ -60,16 +58,19 @@ class TDescantHit : public TGRSIDetectorHit {
       
       bool AnalyzeWaveform();                                          //!<!
       
+      TVector3 GetPosition(Double_t dist) const; //!<!
+      TVector3 GetPosition() const; //!<!
+
    public:
       void Copy(TObject&) const;        //!<!
       void Clear(Option_t *opt = "");		                    //!<!
       void Print(Option_t *opt = "") const;		                    //!<!
       
    private:
-      TVector3 GetChannelPosition(Double_t dist = 222) const; //!<!
+      Double_t GetDefaultDistance() const { return 222.; }
       
       /// \cond CLASSIMP
-      ClassDef(TDescantHit,4)
+      ClassDef(TDescantHit,5)
       /// \endcond
 };
 /*! @} */

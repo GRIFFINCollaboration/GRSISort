@@ -11,6 +11,8 @@
 #include "TGRSIRunInfo.h"
 #include "TTreeFillMutex.h"
 
+#include "TDescant.h"
+
 TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output_filename){
   if(name.length()==0){
     name = "write_loop";
@@ -98,7 +100,7 @@ void TAnalysisWriteLoop::Write() {
       GValue::Get()->Write();
     }
     if(TChannel::GetNumberOfChannels()) {
-      TChannel::GetDefaultChannel()->Write();
+      TChannel::WriteToRoot();
     }
     TGRSIRunInfo::Get()->WriteToRoot(output_file);
     TPPG::Get()->Write();
@@ -170,6 +172,11 @@ void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event) {
         AddBranch(cls);
         *det_map.at(cls) = det;
       }
+		//if(cls == TDescant::Class()) {
+		//	for(int i = 0; i < static_cast<TDescant*>(det)->GetMultiplicity(); ++i) {
+		//		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == NULL ? " has no debug data": " has debug data")<<std::endl;
+		//	}
+		//}
     }
 
     // Fill

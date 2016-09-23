@@ -6,6 +6,7 @@
 
 #include "Globals.h"
 #include "TZeroDegree.h"
+#include "TGRSIOptions2.h"
 
 /// \cond CLASSIMP
 ClassImp(TZeroDegreeHit)
@@ -33,14 +34,11 @@ TZeroDegreeHit::TZeroDegreeHit(const TZeroDegreeHit &rhs) : TGRSIDetectorHit() {
 void TZeroDegreeHit::Copy(TObject &rhs) const {
   ///Copies a TZeroDegreeHit
    TGRSIDetectorHit::Copy(rhs);
+	if(TGRSIOptions2::Get()->ExtractWaves()) {
+	  TGRSIDetectorHit::CopyWave(rhs);
+	}
    static_cast<TZeroDegreeHit&>(rhs).fFilter = fFilter;
-}
-
-TVector3 TZeroDegreeHit::GetChannelPosition(double dist) const {
-   ///Gets the position of the current TZeroDegreeHit
-   ///This position returns is of the center of the paddle
-   ///This should not be called externally, only TGRSIDetector::GetPosition should be
-   return TZeroDegree::GetPosition(dist);
+   static_cast<TZeroDegreeHit&>(rhs).fCfdMonitor = fCfdMonitor;
 }
 
 bool TZeroDegreeHit::InFilter(Int_t wantedfilter) {
@@ -53,6 +51,7 @@ void TZeroDegreeHit::Clear(Option_t *opt)	{
    ///Clears the ZeroDegreeHit
    fFilter = 0;
    TGRSIDetectorHit::Clear();
+	fCfdMonitor.clear();
 }
 
 void TZeroDegreeHit::Print(Option_t *opt) const	{
@@ -78,7 +77,7 @@ bool TZeroDegreeHit::AnalyzeWaveform() {
    
    // all timing algorithms use interpolation with this many steps between two samples (all times are stored as integers)
    unsigned int interpolationSteps = 256;
-   int delay = 8;
+   int delay = 2;
    double attenuation = 24./64.;
    int halfsmoothingwindow = 0; //2*halfsmoothingwindow + 1 = number of samples in moving window.
    
@@ -93,7 +92,7 @@ bool TZeroDegreeHit::AnalyzeWaveform() {
       (*waveform)[i] -= baselineCorrections[i%8];
    }
    
-   this->SetCfd(CalculateCfd(attenuation, delay, halfsmoothingwindow, interpolationSteps));
+   SetCfd(CalculateCfd(attenuation, delay, halfsmoothingwindow, interpolationSteps));
    
    return !error;
 }
@@ -158,6 +157,10 @@ Int_t TZeroDegreeHit::CalculateCfdAndMonitor(double attenuation, unsigned int de
    } else {
       monitor.resize(0);
    }
+   
+	if(TGRSIOptions2::Get()->Debug()) {
+		fCfdMonitor = monitor;
+	}
    
    return cfd;
    

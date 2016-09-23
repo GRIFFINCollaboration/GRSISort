@@ -84,10 +84,12 @@ class TGriffinHit : public TGRSIDetectorHit {
     virtual void Print(Option_t *opt = "") const; //!<!
     virtual void Copy(TObject&) const;        //!<!
 
-    TVector3 GetPosition(double dist = 110.) const; //!<!
+    TVector3 GetPosition(double dist) const; //!<!
+    TVector3 GetPosition() const;
+
   private:
-    TVector3 GetChannelPosition(Double_t dist = 110.0) const; //!<!
     void SetGriffinFlag(enum EGriffinHitBits,Bool_t set);
+    Double_t GetDefaultDistance() const { return 110.; }
 
     /// \cond CLASSIMP
     ClassDef(TGriffinHit,6); //Information about a GRIFFIN Hit

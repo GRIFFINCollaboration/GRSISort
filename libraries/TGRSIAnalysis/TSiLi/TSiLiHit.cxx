@@ -54,10 +54,13 @@ void TSiLiHit::SetWavefit(TFragment &frag)   {
 	}
 }
 
-TVector3 TSiLiHit::GetChannelPosition(double dist) const {
+TVector3 TSiLiHit::GetPosition(double dist) const {
 	return TSiLi::GetPosition(GetSegment());
 }
 
+TVector3 TSiLiHit::GetPosition() const {
+	return GetPosition(GetDefaultDistance());
+}
 
 void TSiLiHit::Print(Option_t *opt) const {
 	printf("===============\n");

@@ -6,6 +6,7 @@
 
 #include "Globals.h"
 #include "TSceptar.h"
+#include "TGRSIOptions2.h"
 
 /// \cond CLASSIMP
 ClassImp(TSceptarHit)
@@ -36,11 +37,14 @@ void TSceptarHit::Copy(TObject &rhs) const {
    static_cast<TSceptarHit&>(rhs).fFilter = fFilter;
 }
 
-TVector3 TSceptarHit::GetChannelPosition(double dist) const {
+TVector3 TSceptarHit::GetPosition(double dist) const {
    //Gets the position of the current TSceptarHit
-   //This position returns is of the center of the paddle
-   //This should not be called externally, only TGRSIDetector::GetPosition should be
    return TSceptar::GetPosition(GetDetector());
+}
+
+TVector3 TSceptarHit::GetPosition() const {
+   //Gets the position of the current TSceptarHit
+   return GetPosition(GetDefaultDistance());
 }
 
 bool TSceptarHit::InFilter(Int_t wantedfilter) {
@@ -93,7 +97,7 @@ bool TSceptarHit::AnalyzeWaveform() {
       (*waveform)[i] -= baselineCorrections[i%8];
    }
    
-   this->SetCfd(CalculateCfd(attenuation, delay, halfsmoothingwindow, interpolationSteps));
+   SetCfd(CalculateCfd(attenuation, delay, halfsmoothingwindow, interpolationSteps));
    
    return !error;
 }
@@ -158,7 +162,7 @@ Int_t TSceptarHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay
    } else {
       monitor.resize(0);
    }
-   
+
    return cfd;
    
 }

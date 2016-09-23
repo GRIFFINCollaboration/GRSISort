@@ -46,24 +46,24 @@ public:
   void SetRecordDiag(bool temp = true) { fRecordDiag = temp; }
 
   //ENUM(EBank, char, kWFDN,kGRF1,kGRF2,kGRF3,kFME0,kFME1,kFME2,kFME3);
-  enum EBank { kWFDN,kGRF1,kGRF2,kGRF3,kGRF4,kFME0,kFME1,kFME2,kFME3 };
+  enum EBank { kWFDN=0,kGRF1=1,kGRF2=2,kGRF3=3,kGRF4=4,kFME0=5,kFME1=6,kFME2=7,kFME3=8 };
 
 #ifndef __CINT__
   std::shared_ptr<ThreadsafeQueue<TFragment*> >&
-  GoodOutputQueue() { return good_output_queue; }
+  GoodOutputQueue() { return fGoodOutputQueue; }
 
   std::shared_ptr<ThreadsafeQueue<TFragment*> >&
-  BadOutputQueue() { return bad_output_queue; }
+  BadOutputQueue() { return fBadOutputQueue; }
 
   std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> >&
-  ScalerOutputQueue() { return scaler_output_queue; }
+  ScalerOutputQueue() { return fScalerOutputQueue; }
 #endif
 
 private:
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > good_output_queue;
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > bad_output_queue;
-  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> > scaler_output_queue;
+  std::shared_ptr<ThreadsafeQueue<TFragment*> > fGoodOutputQueue;
+  std::shared_ptr<ThreadsafeQueue<TFragment*> > fBadOutputQueue;
+  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> > fScalerOutputQueue;
 #endif
 
   bool fNoWaveforms;         ///< The flag to turn wave_forms on or off
