@@ -32,6 +32,7 @@ class TZeroDegreeHit : public TGRSIDetectorHit {
       
    private:
       Int_t    fFilter;
+		std::vector<short> fCfdMonitor;
       
    public:
       /////////////////////////		/////////////////////////////////////
@@ -39,6 +40,7 @@ class TZeroDegreeHit : public TGRSIDetectorHit {
       
       /////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()    const     { return fFilter;   }  //!<!
+		inline std::vector<short>& GetCfdMonitor() { return fCfdMonitor; }
       
       Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps); //!<!
       Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps, std::vector<Short_t> &monitor); //!<!
@@ -57,7 +59,7 @@ class TZeroDegreeHit : public TGRSIDetectorHit {
       //Position Not written for ZeroDegree Yet
       
       /// \cond CLASSIMP
-      ClassDef(TZeroDegreeHit,2) //Stores the information for a ZeroDegreeHit
+      ClassDef(TZeroDegreeHit,3) //Stores the information for a ZeroDegreeHit
       /// \endcond
 };
 /*! @} */

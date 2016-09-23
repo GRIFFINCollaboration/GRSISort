@@ -6,6 +6,7 @@
 
 #include "Globals.h"
 #include "TDescant.h"
+#include "TGRSIOptions2.h"
 
 /// \cond CLASSIMP
 ClassImp(TDescantHit)
@@ -27,14 +28,18 @@ TDescantHit::TDescantHit(const TDescantHit &rhs) : TGRSIDetectorHit() {
 
 void TDescantHit::Copy(TObject &rhs) const {
    TGRSIDetectorHit::Copy(rhs);
+	if(TGRSIOptions2::Get()->ExtractWaves()) {
+	  TGRSIDetectorHit::CopyWave(rhs);
+	}
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-   static_cast<TDescantHit&>(rhs).fFilter  = fFilter;
-   static_cast<TDescantHit&>(rhs).fZc      = fZc;
-   static_cast<TDescantHit&>(rhs).fCcShort = fCcShort;
-   static_cast<TDescantHit&>(rhs).fCcLong  = fCcLong;
-   static_cast<TDescantHit&>(rhs).fPsd     = fPsd;
+   static_cast<TDescantHit&>(rhs).fFilter     = fFilter;
+   static_cast<TDescantHit&>(rhs).fZc         = fZc;
+   static_cast<TDescantHit&>(rhs).fCcShort    = fCcShort;
+   static_cast<TDescantHit&>(rhs).fCcLong     = fCcLong;
+   static_cast<TDescantHit&>(rhs).fPsd        = fPsd;
+   static_cast<TDescantHit&>(rhs).fCfdMonitor = fCfdMonitor;
 }
 
 TVector3 TDescantHit::GetPosition(double dist) const {
@@ -58,6 +63,7 @@ void TDescantHit::Clear(Option_t *opt)	{
    fZc      = 0;
    fCcShort = 0;
    fCcLong  = 0;
+	fCfdMonitor.clear();
    TGRSIDetectorHit::Clear();
 }
 
@@ -94,7 +100,7 @@ bool TDescantHit::AnalyzeWaveform() {
       (*waveform)[i] -= baselineCorrections[i%8];
    }
    
-   this->SetCfd(CalculateCfd(attenuation, delay, halfSmoothingWindow, interpolationSteps));
+   SetCfd(CalculateCfd(attenuation, delay, halfSmoothingWindow, interpolationSteps));
    
    // PSD
    // time to zero-crossing algorithm: time when sum reaches n% of the total sum minus the cfd time
@@ -169,6 +175,10 @@ Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay
    } else {
       monitor.resize(0);
    }
+
+	if(TGRSIOptions2::Get()->Debug()) {
+		fCfdMonitor = monitor;
+	}
    
    return cfd;
 }

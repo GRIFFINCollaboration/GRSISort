@@ -1,4 +1,4 @@
-//TDescant.h TDescantHit.h 
+//TDescant.h TDescantHit.h
 #ifdef __CINT__
 
 #pragma link off all globals;
@@ -12,8 +12,4 @@
 #pragma link C++ class TDescant+;
 
 #endif
-
-
-
-
 

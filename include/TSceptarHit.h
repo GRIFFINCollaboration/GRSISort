@@ -16,6 +16,7 @@
 
 #include <cstdio>
 #include <cmath>
+#include <vector>
 
 #include "TFragment.h"
 #include "TChannel.h"
@@ -36,11 +37,6 @@ class TSceptarHit : public TGRSIDetectorHit {
    public:
       /////////////////////////		/////////////////////////////////////
       inline void SetFilterPattern(const int &x)   { fFilter   = x; }   //!<!
-      
-      inline void SetWaveform(std::vector<Short_t> x) {
-         std::vector<Short_t> *waveform = GetWaveform();
-         *waveform=x;
-      } //!<!
       
       /////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()    const     { return fFilter;   }  //!<!

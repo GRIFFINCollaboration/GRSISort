@@ -6,6 +6,7 @@
 
 #include "Globals.h"
 #include "TSceptar.h"
+#include "TGRSIOptions2.h"
 
 /// \cond CLASSIMP
 ClassImp(TSceptarHit)
@@ -96,7 +97,7 @@ bool TSceptarHit::AnalyzeWaveform() {
       (*waveform)[i] -= baselineCorrections[i%8];
    }
    
-   this->SetCfd(CalculateCfd(attenuation, delay, halfsmoothingwindow, interpolationSteps));
+   SetCfd(CalculateCfd(attenuation, delay, halfsmoothingwindow, interpolationSteps));
    
    return !error;
 }
@@ -161,7 +162,7 @@ Int_t TSceptarHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay
    } else {
       monitor.resize(0);
    }
-   
+
    return cfd;
    
 }

@@ -40,7 +40,7 @@ LINKFLAGS_PREFIX += -Wl,--no-as-needed
 SHAREDSWITCH = -shared -Wl,-soname,# NO ENDING SPACE
 HEAD=head
 FIND=find
-LIBRARY_DIRS   := $(shell $(FIND) libraries/* -type d -links 2 2> /dev/null | grep -v SourceData)
+LIBRARY_DIRS   := $(shell $(FIND) libraries/* -type d -links 2 2> /dev/null | grep -v SourceData | grep -v StoppingPowers)
 endif
 
 COM_COLOR=\033[0;34m
