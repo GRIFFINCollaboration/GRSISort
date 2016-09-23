@@ -204,6 +204,9 @@ void TTigress::AddFragment(TFragment* frag, TChannel* chan) {
   if(frag == NULL || chan == NULL) {
     return;
   }
+  if(GetMidasTimestamp()==-1) {
+    SetMidasTimestamp(frag->GetMidasTimeStamp());
+  }
 
   //printf("%s %s called.\n",__PRETTY_FUNCTION__,channel->GetChannelName());
   //fflush(stdout);

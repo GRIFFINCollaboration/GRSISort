@@ -88,27 +88,30 @@ int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int mida
         //SetTIGCharge(temp_charge,EventFrag);
         SetTIGLed(temp_led,EventFrag);
         ///check whether the fragment is 'good'
-        Push(*fGoodOutputQueue, EventFrag);
-        NumFragsFound++;
-        return NumFragsFound;
 
-        
-	if( ((*(data+x+1)) & 0xf0000000) == 0xe0000000) {
+	if( ((*(data+x+1)) & 0xf0000000) != 0xe0000000) {
           TFragment* transferfrag = EventFrag;
           EventFrag = new TFragment;
           EventFrag->SetMidasTimeStamp(transferfrag->GetMidasTimeStamp());
 	  EventFrag->SetMidasId(transferfrag->GetMidasId());
 	  EventFrag->SetTriggerId(transferfrag->GetTriggerId());
-          //printf("transferfrag = 0x%08x\n",transferfrag); fflush(stdout);
-          //printf("transferfrag->GetTimeStamp() = %lu\n",transferfrag->GetTimeStamp()); fflush(stdout);
           EventFrag->SetTimeStamp(transferfrag->GetTimeStamp());
-          //printf("EventFrag: = 0x%08x\n",EventFrag); fflush(stdout);
-          //printf("EventFrag->GetTimeStamp() = %lu\n",EventFrag->GetTimeStamp()); fflush(stdout);
+
+          Push(*fGoodOutputQueue, transferfrag);
+          NumFragsFound++;
+
+          // printf("transferfrag = 0x%08x\n",transferfrag); fflush(stdout);
+          // printf("transferfrag->GetTimeStamp() = %lu\n",transferfrag->GetTimeStamp()); fflush(stdout);
+          // printf("EventFrag: = 0x%08x\n",EventFrag); fflush(stdout);
+          // printf("EventFrag->GetTimeStamp() = %lu\n",EventFrag->GetTimeStamp()); fflush(stdout);
 	}
         else {
-	  delete EventFrag;
+          Push(*fGoodOutputQueue, EventFrag);
+          NumFragsFound++;
 	  EventFrag = 0;
+          return NumFragsFound;
         }
+
         break;
       case 0x5: // raw charge evaluation.
         SetTIGCharge(value,EventFrag);
