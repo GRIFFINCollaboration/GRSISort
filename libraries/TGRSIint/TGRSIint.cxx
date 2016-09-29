@@ -373,8 +373,8 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt){
         file->Get("GValue");
       }
       // TODO: Once the run info can read itself from a string.
-      // if(file->FindObjectAny("TGRSIRunInfo")){
-      //   file->Get("TGRSIRunInfo");
+       //if(file->FindObjectAny("TGRSIRunInfo")){
+       //  file->Get("TGRSIRunInfo");
       // }
 
       fRootFilesOpened++;
@@ -428,8 +428,8 @@ void TGRSIint::SetupPipeline() {
 
   // Which input files do we have
   bool has_raw_file = opt->InputMidasFiles().size() && opt->SortRaw() && !missing_raw_file;
-  bool has_input_fragment_tree = gFragment && opt->SortRoot();
-  bool has_input_analysis_tree = gAnalysis && opt->SortRoot();
+  bool has_input_fragment_tree = gFragment;// && opt->SortRoot();
+  bool has_input_analysis_tree = gAnalysis;// && opt->SortRoot();
 
   // Which output files are could possibly be made
   bool able_to_write_fragment_histograms = ((has_raw_file || has_input_fragment_tree) &&
@@ -583,7 +583,6 @@ void TGRSIint::SetupPipeline() {
     scaler_queue = unpack_loop->ScalerOutputQueue();
     bad_queue = unpack_loop->BadOutputQueue();
   }
-
   // If needed, read from the fragment tree
   if (read_from_fragment_tree) {
     auto loop = TFragmentChainLoop::Get("1_chain_loop", gFragment);

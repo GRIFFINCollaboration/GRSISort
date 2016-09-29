@@ -22,7 +22,7 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
     input_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
     output_queue(std::make_shared<ThreadsafeQueue<std::vector<TFragment*> > >()),
     build_mode(mode), sorting_depth(10000),
-    build_window(1000) {
+    build_window(200) {
 
   switch(build_mode) {
     case kTimestamp:
