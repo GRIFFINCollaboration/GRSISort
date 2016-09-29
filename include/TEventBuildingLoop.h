@@ -35,8 +35,8 @@ public:
   size_t GetItemsCurrent() { return output_queue->Size();        }
   size_t GetRate()         { return 0; }
 
-  void SetBuildWindow(long clock_ticks) { build_window = clock_ticks; }
-  unsigned long GetBuildWindow() const { return build_window; }
+  void SetBuildWindow(long clock_ticks) { fBuild_window = clock_ticks; }
+  unsigned long GetBuildWindow() const { return fBuild_window; }
 
   void SetSortDepth(int num_events) { sorting_depth = num_events; }
   unsigned int GetSortDepth() const { return sorting_depth; }
@@ -58,7 +58,7 @@ private:
 
   EBuildMode build_mode;
   unsigned int sorting_depth;
-  long build_window;
+  long fBuild_window;
 
   std::vector<TFragment*> next_event;
 

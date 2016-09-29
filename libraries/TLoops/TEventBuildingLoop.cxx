@@ -22,7 +22,7 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
     input_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
     output_queue(std::make_shared<ThreadsafeQueue<std::vector<TFragment*> > >()),
     build_mode(mode), sorting_depth(10000),
-    build_window(200) {
+    fBuild_window(200) {
 
   switch(build_mode) {
     case kTimestamp:
@@ -118,12 +118,12 @@ void TEventBuildingLoop::CheckTimestampCondition(TFragment* frag) {
                       timestamp);
 
   if(timestamp < event_start) {
-    std::cerr << "Sorting depth of " << sorting_depth << " was insufficient.\n"
+    std::cerr << "Sorting depth of " << sorting_depth << " was insufficient. timestamp: " << timestamp << " Last: " << event_start << " \n"
               << "Not all events were built correctly" << std::endl;
   }
 
-  if(timestamp > event_start + build_window ||
-     timestamp < event_start - build_window) {
+  if(timestamp > event_start + fBuild_window ||
+     timestamp < event_start - fBuild_window) {
     output_queue->Push(next_event);
     next_event.clear();
   }
