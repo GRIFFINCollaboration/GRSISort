@@ -4,7 +4,7 @@
 #include "TMath.h"
 
 #include "TZeroDegree.h"
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TZeroDegree)
@@ -77,7 +77,7 @@ void TZeroDegree::AddFragment(TFragment* frag, TChannel* chan) {
 	hit.SetCharge(frag->GetCharge());
       
 	//if(TZeroDegree::SetWave()){
-	if(TGRSIOptions2::Get()->ExtractWaves()) {
+	if(TGRSIOptions::Get()->ExtractWaves()) {
 		if(frag->GetWaveform()->size() == 0) {
 			printf("Warning, TZeroDegree::SetWave() set, but data waveform size is zero!\n");
 		} else {

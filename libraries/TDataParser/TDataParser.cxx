@@ -4,7 +4,7 @@
 #include "Globals.h"
 
 #include "TScalerQueue.h"
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 
 #include "TEpicsFrag.h"
 #include "TGRSIRootIO.h"
@@ -481,7 +481,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
         // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
         // change should be backward-compatible
         if((value & 0x3fff) == (EventFrag->GetChannelId() & 0x3fff)){
-          if(!TGRSIOptions2::Get()->SuppressErrors() && (EventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
+          if(!TGRSIOptions::Get()->SuppressErrors() && (EventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
             // check whether the nios finished and if so whether it finished with an error
             if(((value>>14) & 0x1) == 0x1) {
               if(((value>>16) & 0xff) != 0) {
@@ -682,7 +682,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                 }
                 break;
               default:
-                if(!TGRSIOptions2::Get()->SuppressErrors()) {
+                if(!TGRSIOptions::Get()->SuppressErrors()) {
                   printf(DRED "Error, back type %d not implemented yet" RESET_COLOR "\n", bank);
                 }
                 delete EventFrag;
@@ -722,7 +722,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 				}
 				break;
 			 default:
-				if(!TGRSIOptions2::Get()->SuppressErrors()) {
+				if(!TGRSIOptions::Get()->SuppressErrors()) {
 					printf(DRED "Error, module type %d not implemented yet" RESET_COLOR "\n", EventFrag->GetModuleType());
 				}
 				delete EventFrag;

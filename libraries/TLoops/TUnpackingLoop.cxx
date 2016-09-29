@@ -3,7 +3,7 @@
 #include <chrono>
 #include <thread>
 
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 
 ClassImp(TUnpackingLoop)
 
@@ -132,7 +132,7 @@ bool TUnpackingLoop::ProcessTIGRESS(uint32_t* ptr, int& dSize, TMidasEvent* mEve
     return true;
   } else  {
     fFragsReadFromMidas += 1;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
-    if(!TGRSIOptions2::Get()->SuppressErrors() && mEvent) {
+    if(!TGRSIOptions::Get()->SuppressErrors() && mEvent) {
       mEvent->Print(Form("a%i",(-1*frags)-1));
     }
     return false;
@@ -157,8 +157,8 @@ bool TUnpackingLoop::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBan
         //we failed to read the fragment on word <-words>, so advance the index by -words and we create an error message
         ++fFragsReadFromMidas;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
         index -= words;
-        if(!TGRSIOptions2::Get()->SuppressErrors()) {
-          if(!TGRSIOptions2::Get()->LogErrors()) {
+        if(!TGRSIOptions::Get()->SuppressErrors()) {
+          if(!TGRSIOptions::Get()->LogErrors()) {
             printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
             printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", index);
             if(mEvent)  mEvent->Print(Form("a%i",index-1));

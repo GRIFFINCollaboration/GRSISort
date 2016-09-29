@@ -2,7 +2,7 @@
 
 #include "TFragmentQueue.h"
 
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 #include "TGRSIRunInfo.h"
 #include "TGRSIint.h"
 
@@ -51,7 +51,7 @@ void TGRSIRootIO::SetUpFragmentTree() {
 
 
 void TGRSIRootIO::SetUpBadFragmentTree() {
-	if(!TGRSIOptions2::Get()->WriteBadFrags())
+	if(!TGRSIOptions::Get()->WriteBadFrags())
 		return;
 	if(fOutFile)
 		fOutFile->cd();
@@ -91,7 +91,7 @@ void TGRSIRootIO::SetUpPPG() {
 
 
 void TGRSIRootIO::SetUpScalerTrees() {
-	if(TGRSIOptions2::Get()->IgnoreScaler())
+	if(TGRSIOptions::Get()->IgnoreScaler())
 		return;
 	if(fOutFile)
 		fOutFile->cd();
@@ -109,7 +109,7 @@ void TGRSIRootIO::SetUpScalerTrees() {
 }
 
 void TGRSIRootIO::SetUpEpicsTree() {
-	if(TGRSIOptions2::Get()->IgnoreEpics())
+	if(TGRSIOptions::Get()->IgnoreEpics())
 		return;
 	if(fOutFile)
 		fOutFile->cd();
@@ -145,7 +145,7 @@ void TGRSIRootIO::FillFragmentTree(TFragment* frag) {
 
 
 void TGRSIRootIO::FillBadFragmentTree(TFragment* frag) {
-	if(!TGRSIOptions2::Get()->WriteBadFrags())
+	if(!TGRSIOptions::Get()->WriteBadFrags())
 		return;
 	*fBadBufferFrag = *frag;
 	int bytes =  fBadFragmentTree->Fill();
@@ -164,7 +164,7 @@ void TGRSIRootIO::FillPPG(TPPGData* data) {
 }
 
 void TGRSIRootIO::FillDeadtimeScalerTree(TScalerData* scalerData) {
-	if(TGRSIOptions2::Get()->IgnoreScaler())
+	if(TGRSIOptions::Get()->IgnoreScaler())
 		return;
 	*fDeadtimeScalerData = *scalerData;
 	int bytes =  fDeadtimeScalerTree->Fill();
@@ -174,7 +174,7 @@ void TGRSIRootIO::FillDeadtimeScalerTree(TScalerData* scalerData) {
 }
 
 void TGRSIRootIO::FillRateScalerTree(TScalerData* scalerData) {
-	if(TGRSIOptions2::Get()->IgnoreScaler())
+	if(TGRSIOptions::Get()->IgnoreScaler())
 		return;
 	*fRateScalerData = *scalerData;
 	int bytes =  fRateScalerTree->Fill();
@@ -184,7 +184,7 @@ void TGRSIRootIO::FillRateScalerTree(TScalerData* scalerData) {
 }
 
 void TGRSIRootIO::FillEpicsTree(TEpicsFrag* EXfrag) {
-	if(TGRSIOptions2::Get()->IgnoreEpics())
+	if(TGRSIOptions::Get()->IgnoreEpics())
 		return;
 	if(!fEpicsTree)
 		return;
@@ -238,7 +238,7 @@ void TGRSIRootIO::FinalizePPG() {
 }
 
 void TGRSIRootIO::FinalizeEpicsTree() {
-	if(TGRSIOptions2::Get()->IgnoreEpics())
+	if(TGRSIOptions::Get()->IgnoreEpics())
 		return;
 	if(!fEpicsTree || !fOutFile)
 		return;
@@ -247,7 +247,7 @@ void TGRSIRootIO::FinalizeEpicsTree() {
 }
 
 void TGRSIRootIO::FinalizeScalerTrees() {
-	if(TGRSIOptions2::Get()->IgnoreScaler())
+	if(TGRSIOptions::Get()->IgnoreScaler())
 		return;
 	if(!fDeadtimeScalerTree || !fRateScalerTree || !fOutFile)
 		return;
@@ -263,7 +263,7 @@ void TGRSIRootIO::FinalizeDiagnostics() {
 	fDiagnostics->ReadPPG(fPPG); //this function checks itself whether fPPG is NULL or not
 	printf("Writing Diagnostics to root file.\n");
 	fDiagnostics->Write("TDiagnostics",TObject::kSingleKey);
-	if(TGRSIOptions2::Get()->WriteDiagnostics()) {
+	if(TGRSIOptions::Get()->WriteDiagnostics()) {
 	  fDiagnostics->WriteToFile(Form("stats%05i_%03i.log", TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber()));
 	}
 }
@@ -278,7 +278,7 @@ bool TGRSIRootIO::SetUpRootOutFile(int runNumber, int subRunNumber) {
 	//Add the fileName to the possible root files so that it can be auto sorted.
 	//If there are no -s or -a flags these extra names do not matter
 	std::string tempName(fileName);
-	//TGRSIOptions2::Get()->AddInputRootFile(tempName);
+	//TGRSIOptions::Get()->AddInputRootFile(tempName);
 	fOutFile = new TFile(fileName,"recreate");
 
 	if(!fOutFile->IsOpen()) {
@@ -301,7 +301,7 @@ void TGRSIRootIO::CloseRootOutFile()   {
 		return;
 	fOutFile->cd();
 	printf(DMAGENTA "\n Fill tree called " DYELLOW "%i " DMAGENTA "times.\n" RESET_COLOR, fTimesFillCalled);
-	if(TGRSIOptions2::Get()->WriteBadFrags())
+	if(TGRSIOptions::Get()->WriteBadFrags())
 		printf(DRED "   Fill bad tree called " DYELLOW "%i " DRED "times.\n" RESET_COLOR, fTimesBadFillCalled);
 
 	FinalizeFragmentTree();
@@ -333,13 +333,13 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
 
 	TChain* chain = new TChain("FragmentTree");
 
-	for(size_t x=0;x<TGRSIOptions2::Get()->GetInputRoot().size();x++) {
-		TFile f(TGRSIOptions2::Get()->GetInputRoot().at(x).c_str(),"read");
-		chain->Add(TGRSIOptions2::Get()->GetInputRoot().at(x).c_str());
+	for(size_t x=0;x<TGRSIOptions::Get()->GetInputRoot().size();x++) {
+		TFile f(TGRSIOptions::Get()->GetInputRoot().at(x).c_str(),"read");
+		chain->Add(TGRSIOptions::Get()->GetInputRoot().at(x).c_str());
 		f.Close();
 	}
 
-	const char* firstFileName = TGRSIOptions2::Get()->GetInputRoot().at(0).c_str();
+	const char* firstFileName = TGRSIOptions::Get()->GetInputRoot().at(0).c_str();
 	runNumber    = GetRunNumber(firstFileName);
 	subRunNumber = GetSubRunNumber(firstFileName);
 
@@ -351,7 +351,7 @@ void TGRSIRootIO::MakeUserHistsFromFragmentTree() {
    proof->Exec(Form("gSystem->Load(\"%s/libraries/libTGRSIFormat.so\")",pPath));
   // printf("%s\n",pPath);
   // printf("%d\n",gSystem->Load(Form("%s/libraries/libTGRSIFormat.so",pPath)));
-   proof->SetProgressDialog(TGRSIOptions2::Get()->ProgressDialog());
+   proof->SetProgressDialog(TGRSIOptions::Get()->ProgressDialog());
    //Going to get run number from file name. This will allow us to chain->chop off the subrun numbers
 
 	chain->SetProof();

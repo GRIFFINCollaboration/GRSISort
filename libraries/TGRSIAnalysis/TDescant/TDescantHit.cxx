@@ -6,7 +6,7 @@
 
 #include "Globals.h"
 #include "TDescant.h"
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 #include "TChannel.h"
 
 /// \cond CLASSIMP
@@ -29,7 +29,7 @@ TDescantHit::TDescantHit(const TDescantHit &rhs) : TGRSIDetectorHit() {
 
 void TDescantHit::Copy(TObject &rhs) const {
    TGRSIDetectorHit::Copy(rhs);
-	if(TGRSIOptions2::Get()->ExtractWaves()) {
+	if(TGRSIOptions::Get()->ExtractWaves()) {
 	  TGRSIDetectorHit::CopyWave(rhs);
 	}
 #if MAJOR_ROOT_VERSION < 6
@@ -200,7 +200,7 @@ Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay
 		monitor.resize(0);
 	}
 
-	if(TGRSIOptions2::Get()->Debug()) {
+	if(TGRSIOptions::Get()->Debug()) {
 		fCfdMonitor = monitor;
 	}
 
@@ -269,7 +269,9 @@ std::vector<Int_t> TDescantHit::CalculatePartialSum() {
 		}
 	}
 
-	fPartialSum = partialSums;
+	if(TGRSIOptions::Get()->Debug()) {
+		fPartialSum = partialSums;
+	}
 
 	return partialSums;
 }
