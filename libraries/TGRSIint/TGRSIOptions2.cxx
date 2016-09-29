@@ -226,9 +226,9 @@ void TGRSIOptions2::Load(int argc, char** argv) {
   // parser.option("time-sort-depth",&fTimeSortDepth)
   //   .description("Number of events to hold when time sorting")
   //   .default_value(100000);
-  // parser.option("build-window", &fBuildWindow)
-  //   .description("Build window, timestamp units")
-  //   .default_value(1000);
+  parser.option("build-window", &fBuildWindow)
+     .description("Build window, timestamp units")
+     .default_value(200);
   // parser.option("long-file-description", &fLongFileDescription)
   //   .description("Show full path to file in status messages")
   //   .default_value(false);

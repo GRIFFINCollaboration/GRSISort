@@ -226,6 +226,9 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    for(entry = 1; entry < maxEntries; ++entry) { //Only loop over the set number of entries
       //I'm starting at entry 1 because of the weird high stamp of 4.
       tree->GetEntry(entry);
+      if(entry == 1) {
+         TChannel::ReadCalFromTree(tree);
+      }
 /*
 		if(runInfo->SubRunNumber() > 21) {
 		  //in run 04921 we got a wrap-around of the timestamp within subrun 22

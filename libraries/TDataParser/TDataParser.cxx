@@ -246,7 +246,7 @@ void TDataParser::SetTIGCharge(uint32_t value, TFragment* currentFragment) {
     else
       charge = ( ((int32_t)value & 0x03ffffff));
   }
-  currentFragment->SetCharge(charge + gRandom->Uniform());
+  currentFragment->SetCharge(charge);
 }
 
 bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment* currentFrag) {
@@ -693,10 +693,10 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
           case 2:
             //the 4G data format depends on the detector type, but the first two words are always the same
             if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
-              Short_t tmp = (data[x] & 0x7c000000);
+              Short_t tmp = (data[x] & 0x7c000000) >> 21; //21 = 26 minus space for 5 low bits
               tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0)); //extend the sign bit of 26bit charge word
               ++x;
-              tmpIntLength.push_back((tmp >> 21) | (data[x] & 0x7c000000) >> 26); //21 = 26 minus space for 5 low bits
+              tmpIntLength.push_back(tmp | ((data[x] & 0x7c000000) >> 26));
               tmpCfd.push_back(data[x] & 0x03ffffff);
             } else {
               //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
@@ -708,28 +708,28 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             }
             //for descant types (6,10,11) there are two more words for banks > GRF2 (bank GRF2 used 0xf packet and bank GRF1 never had descant)
             if(bank > kGRF2 && (EventFrag->GetDetectorType() == 6 || EventFrag->GetDetectorType() == 10 || EventFrag->GetDetectorType() == 11)) {
-	      ++x;
-	      if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
-                SetGRIFCc(value, EventFrag);
-                ++x;
-                dword = data[x];
-                SetGRIFPsd(dword, EventFrag);
-              } else {
-                TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
-                delete EventFrag;
-                return -x;
-              }
-            }
-            break;
-          default:
-            if(!TGRSIOptions2::Get()->SuppressErrors()) {
-              printf(DRED "Error, module type %d not implemented yet" RESET_COLOR "\n", EventFrag->GetModuleType());
-            }
-            delete EventFrag;
-            return -x;
-        }//switch(EventFrag->GetModuleType())
-        break;
-    }//switch(packet)
+					++x;
+					if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
+						SetGRIFCc(value, EventFrag);
+						++x;
+						dword = data[x];
+						SetGRIFPsd(dword, EventFrag);
+					} else {
+						TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
+						delete EventFrag;
+						return -x;
+					}
+				}
+				break;
+			 default:
+				if(!TGRSIOptions2::Get()->SuppressErrors()) {
+					printf(DRED "Error, module type %d not implemented yet" RESET_COLOR "\n", EventFrag->GetModuleType());
+				}
+				delete EventFrag;
+				return -x;
+		  }//switch(EventFrag->GetModuleType())
+		  break;
+	 }//switch(packet)
   }//for(;x<size;x++)
 
   TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(EventFrag->GetDetectorType());
@@ -738,330 +738,330 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 }
 
 bool TDataParser::SetGRIFHeader(uint32_t value, TFragment* frag, EBank bank) {
-  switch(bank){
-    case kGRF1: // header format from before May 2015 experiments
-      //Sets:
-      //     The number of filters
-      //     The Data Type
-      //     Number of Pileups
-      //     Channel Address
-      //     Detector Type
-      if( (value&0xf0000000) != 0x80000000) {
-        return false;
-      }
-      //frag->SetNumberOfFilters((value &0x0f000000)>> 24);
-      frag->SetModuleType((value &0x00e00000)>> 21);
-      frag->SetNumberOfPileups((value &0x001c0000)>> 18);
-      frag->SetAddress((value &0x0003fff0)>> 4);
-      frag->SetDetectorType((value &0x0000000f));
+	switch(bank){
+		case kGRF1: // header format from before May 2015 experiments
+			//Sets:
+			//     The number of filters
+			//     The Data Type
+			//     Number of Pileups
+			//     Channel Address
+			//     Detector Type
+			if( (value&0xf0000000) != 0x80000000) {
+				return false;
+			}
+			//frag->SetNumberOfFilters((value &0x0f000000)>> 24);
+			frag->SetModuleType((value &0x00e00000)>> 21);
+			frag->SetNumberOfPileups((value &0x001c0000)>> 18);
+			frag->SetAddress((value &0x0003fff0)>> 4);
+			frag->SetDetectorType((value &0x0000000f));
 
-      // if(frag-DetectorType==2)
-      //    frag->ChannelAddress += 0x8000;
-      break;
-    case kGRF2:
-      //Sets:
-      //     The number of filters
-      //     The Data Type
-      //     Number of Pileups
-      //     Channel Address
-      //     Detector Type
-      if( (value&0xf0000000) != 0x80000000) {
-        return false;
-      }
-      frag->SetNumberOfPileups((value &0x0c000000)>> 26);
-      frag->SetModuleType((value &0x03800000)>> 23);
-      //frag->SetNumberOfFilters((value &0x00700000)>> 20);
-      frag->SetAddress((value &0x000ffff0)>> 4);
-      frag->SetDetectorType((value &0x0000000f));
+			// if(frag-DetectorType==2)
+			//    frag->ChannelAddress += 0x8000;
+			break;
+		case kGRF2:
+			//Sets:
+			//     The number of filters
+			//     The Data Type
+			//     Number of Pileups
+			//     Channel Address
+			//     Detector Type
+			if( (value&0xf0000000) != 0x80000000) {
+				return false;
+			}
+			frag->SetNumberOfPileups((value &0x0c000000)>> 26);
+			frag->SetModuleType((value &0x03800000)>> 23);
+			//frag->SetNumberOfFilters((value &0x00700000)>> 20);
+			frag->SetAddress((value &0x000ffff0)>> 4);
+			frag->SetDetectorType((value &0x0000000f));
 
-      break;
-    case kGRF3:
-    case kGRF4:
-      if( (value&0xf0000000) != 0x80000000) {
-        return false;
-      }
-      frag->SetModuleType((value &0x0e000000)>> 25);
-      frag->SetNumberOfWords((value &0x01f00000)>> 20);
-      frag->SetAddress((value &0x000ffff0)>> 4);
-      frag->SetDetectorType((value &0x0000000f));
+			break;
+		case kGRF3:
+		case kGRF4:
+			if( (value&0xf0000000) != 0x80000000) {
+				return false;
+			}
+			frag->SetModuleType((value &0x0e000000)>> 25);
+			frag->SetNumberOfWords((value &0x01f00000)>> 20);
+			frag->SetAddress((value &0x000ffff0)>> 4);
+			frag->SetDetectorType((value &0x0000000f));
 
-      break;
-    default:
-      printf("This bank not yet defined.\n");
-      return false;
-  }
+			break;
+		default:
+			printf("This bank not yet defined.\n");
+			return false;
+	}
 
-  return true;
+	return true;
 }
 
 bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment* frag, EBank bank) {
-  ///Sets the Griffin Master Filter Pattern
-  if( (value &0xc0000000) != 0x00000000) {
-    return false;
-  }
-  switch(bank) {
-    case kGRF1:
-    case kGRF2:
-      frag->SetTriggerBitPattern(value >> 16);
-      //frag->SetPPGWord(value & 0x0000ffff);//This is due to new GRIFFIN data format
-      break;
-    case kGRF3:
-    case kGRF4:
-      frag->SetTriggerBitPattern(value >> 16);
-      frag->SetNumberOfPileups(value & 0x1f);
-      fFragmentHasWaveform = ((value & 0x8000) == 0x8000);
-      break;
-    default:
-      return false;
-  }
-  return true;
+	///Sets the Griffin Master Filter Pattern
+	if( (value &0xc0000000) != 0x00000000) {
+		return false;
+	}
+	switch(bank) {
+		case kGRF1:
+		case kGRF2:
+			frag->SetTriggerBitPattern(value >> 16);
+			//frag->SetPPGWord(value & 0x0000ffff);//This is due to new GRIFFIN data format
+			break;
+		case kGRF3:
+		case kGRF4:
+			frag->SetTriggerBitPattern(value >> 16);
+			frag->SetNumberOfPileups(value & 0x1f);
+			fFragmentHasWaveform = ((value & 0x8000) == 0x8000);
+			break;
+		default:
+			return false;
+	}
+	return true;
 }
 
 bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment* frag) {
-  ///Sets the Griffin master filter ID and PPG
-  if( (value &0x80000000) != 0x00000000) {
-    return false;
-  }
+	///Sets the Griffin master filter ID and PPG
+	if( (value &0x80000000) != 0x00000000) {
+		return false;
+	}
 
-  frag->SetTriggerId(value & 0x7FFFFFFF);  //REAL
-  return true;
+	frag->SetTriggerId(value & 0x7FFFFFFF);  //REAL
+	return true;
 }
 
 bool TDataParser::SetGRIFChannelTriggerId(uint32_t value, TFragment* frag) {
-  ///Sets the Griffin Channel Trigger ID
-  if( (value &0xf0000000) != 0x90000000) {
-    return false;
-  }
-  frag->SetChannelId(value & 0x0fffffff);
-  return true;
+	///Sets the Griffin Channel Trigger ID
+	if( (value &0xf0000000) != 0x90000000) {
+		return false;
+	}
+	frag->SetChannelId(value & 0x0fffffff);
+	return true;
 }
 
 bool TDataParser::SetGRIFNetworkPacket(uint32_t value, TFragment* frag) {
-  ///Ignores the network packet number (for now)
-  if( (value &0xf0000000) != 0xd0000000) {
-    return false;
-  }
-  if( (value&0x0f000000) == 0x0f000000 && frag->GetNetworkPacketNumber() > 0 ) {
-    if(frag->GetZc() != 0) {
-      return false;
-    }
-    // descant zero crossing time.
-    frag->SetZc(value & 0x00ffffff);
-  } else {
-    frag->SetNetworkPacketNumber(value & 0x0fffffff);
-  }
-  return true;
+	///Ignores the network packet number (for now)
+	if( (value &0xf0000000) != 0xd0000000) {
+		return false;
+	}
+	if( (value&0x0f000000) == 0x0f000000 && frag->GetNetworkPacketNumber() > 0 ) {
+		if(frag->GetZc() != 0) {
+			return false;
+		}
+		// descant zero crossing time.
+		frag->SetZc(value & 0x00ffffff);
+	} else {
+		frag->SetNetworkPacketNumber(value & 0x0fffffff);
+	}
+	return true;
 }
 
 bool TDataParser::SetGRIFTimeStampLow(uint32_t value, TFragment* frag) {
-  ///Sets the lower 28 bits of the griffin time stamp
-  if( (value &0xf0000000) != 0xa0000000) {
-    return false;
-  }
-  //we always get the lower 28 bits first
-  frag->SetTimeStamp(value & 0x0fffffff);
-  return true;
+	///Sets the lower 28 bits of the griffin time stamp
+	if( (value &0xf0000000) != 0xa0000000) {
+		return false;
+	}
+	//we always get the lower 28 bits first
+	frag->SetTimeStamp(value & 0x0fffffff);
+	return true;
 }
 
 bool TDataParser::SetGRIFWaveForm(uint32_t value,TFragment* frag) {
-  ///Sets the Griffin waveform if record_waveform is set to true
-  if(frag->GetWaveform()->size() > (100000) ) {printf("number of wave samples found is to great\n"); return false;}
+	///Sets the Griffin waveform if record_waveform is set to true
+	if(frag->GetWaveform()->size() > (100000) ) {printf("number of wave samples found is to great\n"); return false;}
 
-  //to go from a 14-bit signed number to a 16-bit signed number, we simply set the two highest bits if the sign bit is set
-  frag->GetWaveform()->push_back((value & 0x2000) ? static_cast<int16_t>((value & 0x3fff) | 0xc000) : static_cast<int16_t>(value & 0x3fff));
-  value = value >> 14;
-  frag->GetWaveform()->push_back((value & 0x2000) ? static_cast<int16_t>((value & 0x3fff) | 0xc000) : static_cast<int16_t>(value & 0x3fff));
+	//to go from a 14-bit signed number to a 16-bit signed number, we simply set the two highest bits if the sign bit is set
+	frag->GetWaveform()->push_back((value & 0x2000) ? static_cast<int16_t>((value & 0x3fff) | 0xc000) : static_cast<int16_t>(value & 0x3fff));
+	value = value >> 14;
+	frag->GetWaveform()->push_back((value & 0x2000) ? static_cast<int16_t>((value & 0x3fff) | 0xc000) : static_cast<int16_t>(value & 0x3fff));
 
-  return true;
+	return true;
 }
 
 bool TDataParser::SetGRIFDeadTime(uint32_t value, TFragment* frag) {
-  ///Sets the Griffin deadtime and the upper 14 bits of the timestamp
-  frag->SetDeadTime((value & 0x0fffc000) >> 14);
-  frag->AppendTimeStamp(static_cast<long>(value &  0x00003fff)<<28);
-  return true;
+	///Sets the Griffin deadtime and the upper 14 bits of the timestamp
+	frag->SetDeadTime((value & 0x0fffc000) >> 14);
+	frag->AppendTimeStamp(static_cast<long>(value &  0x00003fff)<<28);
+	return true;
 }
 
 bool TDataParser::SetGRIFCc(uint32_t value, TFragment* frag) {
-  ///set the short integration and the lower 9 bits of the long integration
-  if(frag->GetCcShort() != 0 || frag->GetCcLong() != 0) {
-    return false;
-  }
-  frag->SetCcShort(value & 0x7ffff);
-  frag->SetCcLong(value >> 19);
-  return true;
+	///set the short integration and the lower 9 bits of the long integration
+	if(frag->GetCcShort() != 0 || frag->GetCcLong() != 0) {
+		return false;
+	}
+	frag->SetCcShort(value & 0x7ffff);
+	frag->SetCcLong(value >> 19);
+	return true;
 }
 
 bool TDataParser::SetGRIFPsd(uint32_t value, TFragment* frag) {
-  ///set the zero crossing and the higher 10 bits of the long integration
-  if(frag->GetZc() != 0) { //low bits of ccLong have already been set
-    return false;
-  }
-  frag->SetZc(value & 0x003fffff);
-  frag->SetCcLong(frag->GetCcLong() | ((value & 0x7fe00000) >> 12));//21 bits from zero crossing minus 9 lower bits
-  return true;
+	///set the zero crossing and the higher 10 bits of the long integration
+	if(frag->GetZc() != 0) { //low bits of ccLong have already been set
+		return false;
+	}
+	frag->SetZc(value & 0x003fffff);
+	frag->SetCcLong(frag->GetCcLong() | ((value & 0x7fe00000) >> 12));//21 bits from zero crossing minus 9 lower bits
+	return true;
 }
 
 int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, unsigned int midasSerialNumber, time_t midasTime) {
-  TPPGData* ppgEvent = new TPPGData;
-  int  x = 1; //We have already read the header so we can skip the 0th word.
+	TPPGData* ppgEvent = new TPPGData;
+	int  x = 1; //We have already read the header so we can skip the 0th word.
 
-  //The Network packet number is for debugging and is not always written to
-  //the midas file.
-  if(SetPPGNetworkPacket(data[x],ppgEvent)){ // The network packet placement is not yet stable.
-    ++x;
-  }
-  if(SetNewPPGPattern(data[x],ppgEvent)) {
-    ++x;
-  }
+	//The Network packet number is for debugging and is not always written to
+	//the midas file.
+	if(SetPPGNetworkPacket(data[x],ppgEvent)){ // The network packet placement is not yet stable.
+		++x;
+	}
+	if(SetNewPPGPattern(data[x],ppgEvent)) {
+		++x;
+	}
 
-  for(;x<size;x++) {
-    uint32_t dword  = data[x];
-    uint32_t packet = dword & 0xf0000000;
-    uint32_t value  = dword & 0x0fffffff;
+	for(;x<size;x++) {
+		uint32_t dword  = data[x];
+		uint32_t packet = dword & 0xf0000000;
+		uint32_t value  = dword & 0x0fffffff;
 
-    switch(packet) {
-      case 0x80000000: //The 8 packet type is for event headers
-        //if this happens, we have "accidentally" found another event.
-        return -x;
-      case 0x90000000: //The b packet type contains the dead-time word
-        SetOldPPGPattern(value,ppgEvent);
-        break;
-      case 0xd0000000:
-        SetPPGNetworkPacket(dword,ppgEvent); // The network packet placement is not yet stable.
-        break;
-      case 0xa0000000:
-        SetPPGLowTimeStamp(value,ppgEvent);
-        break;
-      case 0xb0000000:
-        SetPPGHighTimeStamp(value,ppgEvent);
-        break;
-      case 0xe0000000:
-        //if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
-	TPPG::Get()->AddData(ppgEvent);
-        TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(-2); //use detector type -2 for PPG
-        return x;
-        //} else  {
-        //	TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-2); //use detector type -2 for PPG
-        //	return -x;
-        //}
-        break;
-    };
-  }
-  delete ppgEvent;
-  //No trailer found
-  TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-2); //use detector type -2 for PPG
-  return -x;
+		switch(packet) {
+			case 0x80000000: //The 8 packet type is for event headers
+				//if this happens, we have "accidentally" found another event.
+				return -x;
+			case 0x90000000: //The b packet type contains the dead-time word
+				SetOldPPGPattern(value,ppgEvent);
+				break;
+			case 0xd0000000:
+				SetPPGNetworkPacket(dword,ppgEvent); // The network packet placement is not yet stable.
+				break;
+			case 0xa0000000:
+				SetPPGLowTimeStamp(value,ppgEvent);
+				break;
+			case 0xb0000000:
+				SetPPGHighTimeStamp(value,ppgEvent);
+				break;
+			case 0xe0000000:
+				//if((value & 0xFFFF) == (ppgEvent->GetNewPPG())){
+				TPPG::Get()->AddData(ppgEvent);
+				TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(-2); //use detector type -2 for PPG
+				return x;
+				//} else  {
+				//	TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-2); //use detector type -2 for PPG
+				//	return -x;
+				//}
+				break;
+		};
+	}
+	delete ppgEvent;
+	//No trailer found
+	TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-2); //use detector type -2 for PPG
+	return -x;
 }
 
 bool TDataParser::SetNewPPGPattern(uint32_t value, TPPGData* ppgevent){
-  if( (value &0xf0000000) != 0x00000000) {
-    return false;
-  }
-  ppgevent->SetNewPPG(value & 0x0fffffff);
-  return true;
+	if( (value &0xf0000000) != 0x00000000) {
+		return false;
+	}
+	ppgevent->SetNewPPG(value & 0x0fffffff);
+	return true;
 }
 
 bool TDataParser::SetOldPPGPattern(uint32_t value, TPPGData* ppgevent){
-  ppgevent->SetOldPPG(value & 0x0fffffff);
-  return true;
+	ppgevent->SetOldPPG(value & 0x0fffffff);
+	return true;
 }
 
 bool TDataParser::SetPPGNetworkPacket(uint32_t value, TPPGData* ppgevent) {
-  //Ignores the network packet number (for now)
-  //   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
-  if( (value &0xf0000000) != 0xd0000000) {
-    return false;
-  } else {
-    ppgevent->SetNetworkPacketId(value & 0x00ffffff);
-    //   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
-  }
-  return true;
+	//Ignores the network packet number (for now)
+	//   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
+	if( (value &0xf0000000) != 0xd0000000) {
+		return false;
+	} else {
+		ppgevent->SetNetworkPacketId(value & 0x00ffffff);
+		//   printf("value = 0x%08x    |   frag->NetworkPacketNumber = %i   \n",value,frag->NetworkPacketNumber);
+	}
+	return true;
 }
 
 bool TDataParser::SetPPGLowTimeStamp(uint32_t value, TPPGData* ppgevent){
-  ppgevent->SetLowTimeStamp(value & 0x0fffffff);
-  return true;
+	ppgevent->SetLowTimeStamp(value & 0x0fffffff);
+	return true;
 }
 
 bool TDataParser::SetPPGHighTimeStamp(uint32_t value, TPPGData* ppgevent){
-  ppgevent->SetHighTimeStamp(value & 0x0fffffff);
-  return true;
+	ppgevent->SetHighTimeStamp(value & 0x0fffffff);
+	return true;
 }
 
 int TDataParser::GriffinDataToScalerEvent(uint32_t* data, int address) {
-  TScalerData* scalerEvent = new TScalerData;
-  scalerEvent->SetAddress(address);
-  int  x = 1; //We have already read the header so we can skip the 0th word.
+	TScalerData* scalerEvent = new TScalerData;
+	scalerEvent->SetAddress(address);
+	int  x = 1; //We have already read the header so we can skip the 0th word.
 
-  //we expect a word starting with 0xd containing the network packet id
-  //this is a different format than the others because it will not always be in the scaler word
-  if(SetScalerNetworkPacket(data[x],scalerEvent)) {
-    x++;
-  }
+	//we expect a word starting with 0xd containing the network packet id
+	//this is a different format than the others because it will not always be in the scaler word
+	if(SetScalerNetworkPacket(data[x],scalerEvent)) {
+		x++;
+	}
 
-  //we expect a word starting with 0xa containing the 28 lowest bits of the timestamp
-  if(!SetScalerLowTimeStamp(data[x++],scalerEvent)) {
-    TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
-    return -x;
-  }
-  //followed by four scaler words (32 bits each)
-  for(int i = 0; i < 4; ++i) {
-    if(!SetScalerValue(i, data[x++], scalerEvent)) {
-      TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
-      return -x;
-    }
-  }
-  //and finally the trailer word with the highest 24 bits of the timestamp
-  int scalerType = 0;
-  if(!SetScalerHighTimeStamp(data[x++],scalerEvent,scalerType)) {
-    TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
-    return -x;
-  }
+	//we expect a word starting with 0xa containing the 28 lowest bits of the timestamp
+	if(!SetScalerLowTimeStamp(data[x++],scalerEvent)) {
+		TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
+		return -x;
+	}
+	//followed by four scaler words (32 bits each)
+	for(int i = 0; i < 4; ++i) {
+		if(!SetScalerValue(i, data[x++], scalerEvent)) {
+			TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
+			return -x;
+		}
+	}
+	//and finally the trailer word with the highest 24 bits of the timestamp
+	int scalerType = 0;
+	if(!SetScalerHighTimeStamp(data[x++],scalerEvent,scalerType)) {
+		TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
+		return -x;
+	}
 
-  if(scalerType == 0) { //deadtime scaler
-    TDeadtimeScalerQueue::Get()->Add(scalerEvent);
-  } else if(scalerType == 1) { //rate scaler
-    //the rate scaler has only one real value, the rate
-    scalerEvent->ResizeScaler();
-    TRateScalerQueue::Get()->Add(scalerEvent);
-  } else { //unknown scaler type
-    TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
-    return -x;
-  }
+	if(scalerType == 0) { //deadtime scaler
+		TDeadtimeScalerQueue::Get()->Add(scalerEvent);
+	} else if(scalerType == 1) { //rate scaler
+		//the rate scaler has only one real value, the rate
+		scalerEvent->ResizeScaler();
+		TRateScalerQueue::Get()->Add(scalerEvent);
+	} else { //unknown scaler type
+		TGRSIRootIO::Get()->GetDiagnostics()->BadFragment(-3); //use detector type -3 for scaler data
+		return -x;
+	}
 
-  TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(-3); //use detector type -3 for scaler data
-  return x;
+	TGRSIRootIO::Get()->GetDiagnostics()->GoodFragment(-3); //use detector type -3 for scaler data
+	return x;
 }
 
 bool TDataParser::SetScalerNetworkPacket(uint32_t value, TScalerData* scalerEvent) {
-  if((value>>28) != 0xd) {
-    return false;
-  }
-  scalerEvent->SetNetworkPacketId(value & 0x0fffffff);
-  return true;
+	if((value>>28) != 0xd) {
+		return false;
+	}
+	scalerEvent->SetNetworkPacketId(value & 0x0fffffff);
+	return true;
 }
 
 bool TDataParser::SetScalerLowTimeStamp(uint32_t value, TScalerData* scalerEvent) {
-  if((value>>28) != 0xa) {
-    return false;
-  }
-  scalerEvent->SetLowTimeStamp(value & 0x0fffffff);
-  return true;
+	if((value>>28) != 0xa) {
+		return false;
+	}
+	scalerEvent->SetLowTimeStamp(value & 0x0fffffff);
+	return true;
 }
 
 bool TDataParser::SetScalerHighTimeStamp(uint32_t value, TScalerData* scalerEvent, int& type) {
-  if((value>>28) != 0xe || (value&0xff) != (scalerEvent->GetLowTimeStamp()>>20)) {
-    return false;
-  }
-  scalerEvent->SetHighTimeStamp((value>>8) & 0x0000ffff);
-  type = (value>>24 & 0xf);
-  return true;
+	if((value>>28) != 0xe || (value&0xff) != (scalerEvent->GetLowTimeStamp()>>20)) {
+		return false;
+	}
+	scalerEvent->SetHighTimeStamp((value>>8) & 0x0000ffff);
+	type = (value>>24 & 0xf);
+	return true;
 }
 
 bool TDataParser::SetScalerValue(int index, uint32_t value, TScalerData* scalerEvent) {
-  scalerEvent->SetScaler(index, value);
-  return true;
+	scalerEvent->SetScaler(index, value);
+	return true;
 }
 
 /////////////***************************************************************/////////////
@@ -1072,161 +1072,161 @@ bool TDataParser::SetScalerValue(int index, uint32_t value, TScalerData* scalerE
 /////////////***************************************************************/////////////
 
 int TDataParser::EightPIDataToFragment(uint32_t stream,uint32_t* data,
-                                       int size,unsigned int midasSerialNumber, time_t midasTime) {
+		int size,unsigned int midasSerialNumber, time_t midasTime) {
 
-  int NumFragsFound = 0;
-  //TFragment* EventFrag = new TFragment();
-  //EventFrag->MidasTimeStamp = midasTime;
-  //EventFrag->MidasId = midasSerialNumber;
-
-
-  for(int i=0;i<size;i++) {
-    if( (data[i]==0xff06) || (data[i]==0xff16) ) { //found a fifo...
-      i+=1; //lets get the next int.
-      int fifowords =  data[i] & 0x00001fff;
-      i+=1;
-      int fifoserial = data[i] & 0x000000ff;
-      i+=1;
-      if(stream == 0)
-        printf(DBLUE "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
-      else if(stream == 1)
-        printf(DGREEN "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
-      else if(stream == 2)
-        printf(DRED "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
-      else if(stream == 3)
-        printf(DYELLOW "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
-      //at this point am looking at the actual fera bank.
-      //   ->convert to an arry of shorts.
-      //   ->iterate
-      bool extrafifo = false;
-      unsigned short* words = reinterpret_cast<unsigned short*>(data+i);
-      if(fifowords%2!=0) {
-        fifowords += 1;
-        extrafifo = true;
-      }
-      printf(DMAGENTA "i = %i    2*size =  %i   fifowords  = %i  " RESET_COLOR  "\n",i,2*size,fifowords);
-
-      for(int j=0;j<fifowords;j+=2) {
-        unsigned short temp = words[j];
-        words[j] = words[j+1];
-        words[j+1] = temp;
-      }
+	int NumFragsFound = 0;
+	//TFragment* EventFrag = new TFragment();
+	//EventFrag->MidasTimeStamp = midasTime;
+	//EventFrag->MidasId = midasSerialNumber;
 
 
-      NumFragsFound += FifoToFragment(words,fifowords,extrafifo,midasSerialNumber,midasTime);
-      i+= (fifowords/2);
-    }
-  }
+	for(int i=0;i<size;i++) {
+		if( (data[i]==0xff06) || (data[i]==0xff16) ) { //found a fifo...
+			i+=1; //lets get the next int.
+			int fifowords =  data[i] & 0x00001fff;
+			i+=1;
+			int fifoserial = data[i] & 0x000000ff;
+			i+=1;
+			if(stream == 0)
+				printf(DBLUE "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
+			else if(stream == 1)
+				printf(DGREEN "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
+			else if(stream == 2)
+				printf(DRED "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
+			else if(stream == 3)
+				printf(DYELLOW "%i  GOOD FIFO,      fifowords = %i      fifoserial = %i   " RESET_COLOR  "\n",stream,fifowords,fifoserial);
+			//at this point am looking at the actual fera bank.
+			//   ->convert to an arry of shorts.
+			//   ->iterate
+			bool extrafifo = false;
+			unsigned short* words = reinterpret_cast<unsigned short*>(data+i);
+			if(fifowords%2!=0) {
+				fifowords += 1;
+				extrafifo = true;
+			}
+			printf(DMAGENTA "i = %i    2*size =  %i   fifowords  = %i  " RESET_COLOR  "\n",i,2*size,fifowords);
+
+			for(int j=0;j<fifowords;j+=2) {
+				unsigned short temp = words[j];
+				words[j] = words[j+1];
+				words[j+1] = temp;
+			}
+
+
+			NumFragsFound += FifoToFragment(words,fifowords,extrafifo,midasSerialNumber,midasTime);
+			i+= (fifowords/2);
+		}
+	}
 
 
 
-  //fGoodOutputQueue->Add(EventFrag);
-  //return NumFragsFound;
-  return 1;
+	//fGoodOutputQueue->Add(EventFrag);
+	//return NumFragsFound;
+	return 1;
 }
 
 int TDataParser::FifoToFragment(unsigned short* data,int size,bool zerobuffer,
-                                unsigned int midasSerialNumber, time_t midasTime) {
-  //
-  //	if(size<10) //this is too short to be anything useful
-  //		return 0;
-  //
-  //	TFragment* EventFrag = new TFragment();
-  //	EventFrag->MidasTimeStamp = midasTime;
-  //	EventFrag->MidasId = midasSerialNumber;
-  //
-  //
-  //	printf("\t");
-  //	for(int j=0;j<size;j++) {
-  //		if(j!=0 && (j%8==0))
-  //			printf("\n\t");
-  //		printf("0x%04x ",data[j]);
-  //	}
-  //	printf("\n\n");
-  //
-  //	unsigned short type;
-  //	unsigned short value,value2;
-  //
-  //	int ulm = 0;
-  //	if(zerobuffer)
-  //		ulm = size-9;
-  //	else
-  //		ulm = size-8;
-  //	type = data[ulm];
-  //	if((type &0xfff0) != 0xff20) { //not a ulm, bad things are happening.
-  //		if(EventFrag) delete EventFrag;
-  //		printf("here??   ulm = %i   0x%04x  \n",ulm,type);
-  //		return 0;
-  //	} else {
-  //		EventFrag->DetectorType = (type&0x000f);
-  //		value = data[ulm+1];
-  //		EventFrag->PPG = (value&0x3ff);
-  //		EventFrag->TriggerBitPattern = (value&0xf000)>>11;
-  //		EventFrag->TimeStampLow  = data[ulm+2]*65536 +data[ulm+3];
-  //		EventFrag->TimeStampHigh = data[ulm+4]*65536 +data[ulm+5];
-  //		EventFrag->TriggerId     = data[ulm+6]*65536 +data[ulm+7];
-  //	}
-  //	size = ulm;  //only look at what is left.
-  //	for(int x=0;x<size;x++) {
-  //		type  = data[x]; // & 0x80f0;
-  //		printf("type = 0x%04x  ||  type&0x80f0 = 0x%04x\n",type,(type&0x80f0));
-  //		switch(type & 0x80f0) {
-  //			case 0x8010:  // Lecroy 3377
-  //				value = data[x+1];  //this is just so I can start the loop...
-  //				x++;
-  //				while(((value&0x8000)==0) && x<size) {
-  //					value  = data[x]; x+=1;
-  //					value2 = data[x]; x+=1;
-  //					if((value&0x7c00) != (value2&0x7c00))
-  //						printf("TIME MISMATCH!  bad things are happening.\n");
-  //					int temp = ((value&0x7c00)>>10) << 16;
-  //					temp += ((value&0x00ff) << 8) + (value2&0x00ff);
-  //					//printf("size = %i | ulm = %i | x = %i  | temp = 0x%08x \n",size,ulm,x,temp);
-  //					EventFrag->Cfd.push_back(temp);
-  //				}
-  //				printf(DGREEN "ENDED TDC LOOP  data[%i] = 0x%04x" RESET_COLOR "\n",x,data[x]);
-  //				break;
-  //			case 0x8040:
-  //			case 0x8050: // Ortect AD114 single channel ?
-  //			case 0x8060:
-  //				value = data[++x];
-  //				if(EventFrag->DetectorType==0) {
-  //					int temp = (type&0x001f) << 16;
-  //					temp += value&0x3fff;
-  //					//printf("temp = %08x\n",temp);
-  //					EventFrag->PulseHeight.push_back(temp);
-  //					EventFrag->ChannelNumber = 0;
-  //					//EventFrag->ChannelNumber  = (type&0x001f); //clear as mud.
-  //					//EventFrag->ChannelAddress = 0x0000 + EventFrag->ChannelNumber;
-  //					//EventFrag->PulseHeight.push_back(value&0x3fff);
-  //				} else if (EventFrag->DetectorType==3){
-  //					int temp = (type&0x001f) << 16;
-  //					temp += value&0x3fff;
-  //					//printf("temp = %08x\n",temp);
-  //					EventFrag->PulseHeight.push_back(temp);
-  //					EventFrag->ChannelNumber = 3;
-  //					//EventFrag->ChannelNumber  = (type&0x001f); //clear as mud.
-  //					//EventFrag->ChannelAddress = 0x3000 + EventFrag->ChannelNumber;
-  //					//EventFrag->PulseHeight.push_back(value&0x3fff);
-  //				}
-  //				//printf("value = 0x%04x\n",value);
-  //				break;
-  //
-  //
-  //		};
-  //	}
-  //	EventFrag->Print();
-  //
-  //
-  //	fGoodOutputQueue->Add(EventFrag);
-  //
-  return 1;
+		unsigned int midasSerialNumber, time_t midasTime) {
+	//
+	//	if(size<10) //this is too short to be anything useful
+	//		return 0;
+	//
+	//	TFragment* EventFrag = new TFragment();
+	//	EventFrag->MidasTimeStamp = midasTime;
+	//	EventFrag->MidasId = midasSerialNumber;
+	//
+	//
+	//	printf("\t");
+	//	for(int j=0;j<size;j++) {
+	//		if(j!=0 && (j%8==0))
+	//			printf("\n\t");
+	//		printf("0x%04x ",data[j]);
+	//	}
+	//	printf("\n\n");
+	//
+	//	unsigned short type;
+	//	unsigned short value,value2;
+	//
+	//	int ulm = 0;
+	//	if(zerobuffer)
+	//		ulm = size-9;
+	//	else
+	//		ulm = size-8;
+	//	type = data[ulm];
+	//	if((type &0xfff0) != 0xff20) { //not a ulm, bad things are happening.
+	//		if(EventFrag) delete EventFrag;
+	//		printf("here??   ulm = %i   0x%04x  \n",ulm,type);
+	//		return 0;
+	//	} else {
+	//		EventFrag->DetectorType = (type&0x000f);
+	//		value = data[ulm+1];
+	//		EventFrag->PPG = (value&0x3ff);
+	//		EventFrag->TriggerBitPattern = (value&0xf000)>>11;
+	//		EventFrag->TimeStampLow  = data[ulm+2]*65536 +data[ulm+3];
+	//		EventFrag->TimeStampHigh = data[ulm+4]*65536 +data[ulm+5];
+	//		EventFrag->TriggerId     = data[ulm+6]*65536 +data[ulm+7];
+	//	}
+	//	size = ulm;  //only look at what is left.
+	//	for(int x=0;x<size;x++) {
+	//		type  = data[x]; // & 0x80f0;
+	//		printf("type = 0x%04x  ||  type&0x80f0 = 0x%04x\n",type,(type&0x80f0));
+	//		switch(type & 0x80f0) {
+	//			case 0x8010:  // Lecroy 3377
+	//				value = data[x+1];  //this is just so I can start the loop...
+	//				x++;
+	//				while(((value&0x8000)==0) && x<size) {
+	//					value  = data[x]; x+=1;
+	//					value2 = data[x]; x+=1;
+	//					if((value&0x7c00) != (value2&0x7c00))
+	//						printf("TIME MISMATCH!  bad things are happening.\n");
+	//					int temp = ((value&0x7c00)>>10) << 16;
+	//					temp += ((value&0x00ff) << 8) + (value2&0x00ff);
+	//					//printf("size = %i | ulm = %i | x = %i  | temp = 0x%08x \n",size,ulm,x,temp);
+	//					EventFrag->Cfd.push_back(temp);
+	//				}
+	//				printf(DGREEN "ENDED TDC LOOP  data[%i] = 0x%04x" RESET_COLOR "\n",x,data[x]);
+	//				break;
+	//			case 0x8040:
+	//			case 0x8050: // Ortect AD114 single channel ?
+	//			case 0x8060:
+	//				value = data[++x];
+	//				if(EventFrag->DetectorType==0) {
+	//					int temp = (type&0x001f) << 16;
+	//					temp += value&0x3fff;
+	//					//printf("temp = %08x\n",temp);
+	//					EventFrag->PulseHeight.push_back(temp);
+	//					EventFrag->ChannelNumber = 0;
+	//					//EventFrag->ChannelNumber  = (type&0x001f); //clear as mud.
+	//					//EventFrag->ChannelAddress = 0x0000 + EventFrag->ChannelNumber;
+	//					//EventFrag->PulseHeight.push_back(value&0x3fff);
+	//				} else if (EventFrag->DetectorType==3){
+	//					int temp = (type&0x001f) << 16;
+	//					temp += value&0x3fff;
+	//					//printf("temp = %08x\n",temp);
+	//					EventFrag->PulseHeight.push_back(temp);
+	//					EventFrag->ChannelNumber = 3;
+	//					//EventFrag->ChannelNumber  = (type&0x001f); //clear as mud.
+	//					//EventFrag->ChannelAddress = 0x3000 + EventFrag->ChannelNumber;
+	//					//EventFrag->PulseHeight.push_back(value&0x3fff);
+	//				}
+	//				//printf("value = 0x%04x\n",value);
+	//				break;
+	//
+	//
+	//		};
+	//	}
+	//	EventFrag->Print();
+	//
+	//
+	//	fGoodOutputQueue->Add(EventFrag);
+	//
+	return 1;
 }
 
 void TDataParser::Push(ThreadsafeQueue<TFragment*>& queue, TFragment* frag) {
-  frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
-  fFragmentIdMap[frag->GetTriggerId()]++;
-  queue.Push(frag);
+	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
+	fFragmentIdMap[frag->GetTriggerId()]++;
+	queue.Push(frag);
 }
 
 /////////////***************************************************************/////////////
@@ -1238,17 +1238,17 @@ void TDataParser::Push(ThreadsafeQueue<TFragment*>& queue, TFragment* frag) {
 
 
 int TDataParser::EPIXToScalar(float* data,int size,unsigned int midasSerialNumber,time_t midasTime) {
-  int NumFragsFound = 1;
-  TEpicsFrag* EXfrag = new TEpicsFrag;
+	int NumFragsFound = 1;
+	TEpicsFrag* EXfrag = new TEpicsFrag;
 
-  EXfrag->fMidasTimeStamp = midasTime;
-  EXfrag->fMidasId        = midasSerialNumber;
+	EXfrag->fMidasTimeStamp = midasTime;
+	EXfrag->fMidasId        = midasSerialNumber;
 
 
-  for(int x=0;x<size;x++) {
-    EXfrag->fData.push_back(data[x]);
-  }
+	for(int x=0;x<size;x++) {
+		EXfrag->fData.push_back(data[x]);
+	}
 
-  fScalerOutputQueue->Push(EXfrag);
-  return NumFragsFound;
+	fScalerOutputQueue->Push(EXfrag);
+	return NumFragsFound;
 }

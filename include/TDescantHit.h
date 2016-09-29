@@ -29,6 +29,7 @@ class TDescantHit : public TGRSIDetectorHit {
       Int_t    fCcShort;
       Int_t    fCcLong;
 		std::vector<short> fCfdMonitor;
+		std::vector<int> fPartialSum;
       
    public:
       /////////////////////////		/////////////////////////////////////
@@ -38,6 +39,9 @@ class TDescantHit : public TGRSIDetectorHit {
       inline void SetCcShort(const int &x)         { fCcShort  = x; }   //!<!
       inline void SetCcLong(const int &x)          { fCcLong   = x; }   //!<!
       
+		//4G 26bit CFD word: 4 bit timestamp remainder, 22 bit actual cfd word
+      //inline void SetCfd(const Int_t& x)           { fCfd    = (fCfd & 0x70000000) | (x & 0x1fffffff); }             //!<!
+
       /////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()       { return fFilter;   }  //!<!
       inline Int_t    GetPsd()                 { return fPsd;      }  //!<!
@@ -45,7 +49,12 @@ class TDescantHit : public TGRSIDetectorHit {
       inline Int_t    GetCcShort()             { return fCcShort;      }  //!<!
       inline Int_t    GetCcLong()              { return fCcLong;      }  //!<!
 		inline std::vector<short>& GetCfdMonitor() { return fCfdMonitor; }
-      
+		inline std::vector<int>& GetPartialSum() { return fPartialSum; }
+
+      Int_t GetCfd() const;
+		Int_t GetRemainder() const;
+      Double_t GetTime(Option_t* opt = "") const;  ///< Returns a time value to the nearest nanosecond!
+
       Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps); //!<!
       Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps, std::vector<Short_t> &monitor); //!<!
       std::vector<Short_t> CalculateCfdMonitor(double attenuation, unsigned int delay, unsigned int halfSmoothingWindow); //!<!

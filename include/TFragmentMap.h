@@ -7,14 +7,11 @@
 
 /////////////////////////////////////////////////////////////////
 ///
-/// \class TDataParser
+/// \class TFragmentMap
 ///
-/// The TDataParser is the DAQ dependent part of GRSISort.
-/// It takes a "DAQ-dependent"-flavoured MIDAS file and
-/// converts it into a generic TFragment that the rest of
-/// GRSISort can deal with. This is where event word masks
-/// are applied, and any changes to the event format must
-/// be implemented.
+/// The TFragmentMap calculates the charges of piled-up hits.
+/// In the newest GRIFFIN data (starting with tests in 2016), piled-up hits
+/// have 2*n-1 integrated charges reported, for the different integration areas.
 ///
 /////////////////////////////////////////////////////////////////
 
