@@ -1,7 +1,8 @@
 #include "TGRSIDetectorHit.h"
 
-#include "TClass.h"
 #include <iostream>
+
+#include "TClass.h"
 
 /// \cond CLASSIMP
 ClassImp(TGRSIDetectorHit)

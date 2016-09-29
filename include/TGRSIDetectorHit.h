@@ -98,6 +98,7 @@ class TGRSIDetectorHit : public TObject 	{
       void SetAddress(const UInt_t& temp_address)       { fAddress = temp_address; } //!<!
       void SetKValue(const Short_t& temp_kval)          { fKValue = temp_kval;   }   //!<!
       void SetCharge(const Float_t& temp_charge)        { fCharge = temp_charge; }   //!<!
+      void SetCharge(const Int_t& temp_charge)          { fCharge = temp_charge + gRandom->Uniform(); }   //!<!
       virtual void SetCfd(const Int_t& x)               { fCfd    = x; }             //!<!
       void SetWaveform(const std::vector<Short_t>& x)   { fWaveform = x; }           //!<!
       virtual void SetTimeStamp(const Long_t& x)        { fTimeStamp   = x; }        //!<! 

@@ -7,6 +7,7 @@
 #include "Globals.h"
 #include "TZeroDegree.h"
 #include "TGRSIOptions2.h"
+#include "TChannel.h"
 
 /// \cond CLASSIMP
 ClassImp(TZeroDegreeHit)
@@ -39,6 +40,7 @@ void TZeroDegreeHit::Copy(TObject &rhs) const {
 	}
    static_cast<TZeroDegreeHit&>(rhs).fFilter = fFilter;
    static_cast<TZeroDegreeHit&>(rhs).fCfdMonitor = fCfdMonitor;
+   static_cast<TZeroDegreeHit&>(rhs).fPartialSum = fPartialSum;
 }
 
 bool TZeroDegreeHit::InFilter(Int_t wantedfilter) {
@@ -47,11 +49,34 @@ bool TZeroDegreeHit::InFilter(Int_t wantedfilter) {
    return true;
 }
 
+Int_t TZeroDegreeHit::GetCfd() const {
+	/// special function for TZeroDegreeHit to return CFD after mapping out the high bits
+	/// which are the remainder between the 125 MHz data and the 100 MHz timestamp clock
+	return fCfd & 0x3fffff;
+}
+
+Int_t TZeroDegreeHit::GetRemainder() const {
+	/// returns the remainder between 100 MHz/10ns timestamp and 125 MHz/8 ns data in ns
+	return fCfd>>22;
+}
+
+Double_t TZeroDegreeHit::GetTime(Option_t* opt) const {
+  Double_t dTime = GetTimeStamp()*10.+GetRemainder()+(GetCfd() + gRandom->Uniform())/256.;
+  TChannel* chan = GetChannel();
+  if(!chan) {
+    Error("GetTime","No TChannel exists for address 0x%08x",GetAddress());
+    return dTime;
+  }
+
+  return dTime - 10.*(chan->GetTZero(GetEnergy()));
+}
+
 void TZeroDegreeHit::Clear(Option_t *opt)	{
    ///Clears the ZeroDegreeHit
    fFilter = 0;
    TGRSIDetectorHit::Clear();
 	fCfdMonitor.clear();
+	fPartialSum.clear();
 }
 
 void TZeroDegreeHit::Print(Option_t *opt) const	{
@@ -94,6 +119,8 @@ bool TZeroDegreeHit::AnalyzeWaveform() {
    
    SetCfd(CalculateCfd(attenuation, delay, halfsmoothingwindow, interpolationSteps));
    
+	SetCharge(CalculatePartialSum().back());
+
    return !error;
 }
 
@@ -162,6 +189,10 @@ Int_t TZeroDegreeHit::CalculateCfdAndMonitor(double attenuation, unsigned int de
 		fCfdMonitor = monitor;
 	}
    
+	// correct for remainder between the 100MHz timestamp and the 125MHz start of the waveform
+	// we save this in the upper bits, otherwise we can't correct the waveform themselves
+	cfd = (cfd & 0x3fffff) | (fCfd & 0x7c00000);
+   
    return cfd;
    
 }
@@ -211,3 +242,25 @@ std::vector<Short_t> TZeroDegreeHit::CalculateCfdMonitor(double attenuation, int
    
    return monitor;
 }
+
+std::vector<Int_t> TZeroDegreeHit::CalculatePartialSum() {
+
+	std::vector<Short_t> *waveform = GetWaveform();
+	if(waveform->empty()) {
+		return std::vector<Int_t>(); //Error!
+	}
+
+	std::vector<Int_t> partialSums(waveform->size(), 0);
+
+	if(waveform->size() > 0) {
+		partialSums[0] = waveform->at(0);
+		for(size_t i = 1; i < waveform->size(); ++i) {
+			partialSums[i] = partialSums[i-1] + (*waveform)[i];
+		}
+	}
+
+	fPartialSum = partialSums;
+
+	return partialSums;
+}
+

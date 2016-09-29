@@ -33,6 +33,7 @@ class TZeroDegreeHit : public TGRSIDetectorHit {
    private:
       Int_t    fFilter;
 		std::vector<short> fCfdMonitor;
+		std::vector<int> fPartialSum;
       
    public:
       /////////////////////////		/////////////////////////////////////
@@ -41,11 +42,17 @@ class TZeroDegreeHit : public TGRSIDetectorHit {
       /////////////////////////		/////////////////////////////////////
       inline Int_t    GetFilterPattern()    const     { return fFilter;   }  //!<!
 		inline std::vector<short>& GetCfdMonitor() { return fCfdMonitor; }
+		inline std::vector<int>& GetPartialSum() { return fPartialSum; }
       
+      Int_t GetCfd() const;
+		Int_t GetRemainder() const;
+      Double_t GetTime(Option_t* opt = "") const;  ///< Returns a time value to the nearest nanosecond!
+
       Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps); //!<!
       Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps, std::vector<Short_t> &monitor); //!<!
       std::vector<Short_t> CalculateCfdMonitor(double attenuation, int delay, int halfsmoothingwindow); //!<!
       std::vector<Short_t> CalculateSmoothedWaveform(unsigned int halfsmoothingwindow); //!<!
+      std::vector<Int_t> CalculatePartialSum(); //!<!
       
       bool InFilter(Int_t);                                            //!<!
       
