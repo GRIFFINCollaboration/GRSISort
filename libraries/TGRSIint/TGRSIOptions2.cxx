@@ -80,7 +80,7 @@ void TGRSIOptions2::Clear(Option_t* opt) {
 
   fTimeSortInput = false;
 
-  fBuildWindow = false;
+  fBuildWindow = 200;
 
   fShouldExit = false;
 
