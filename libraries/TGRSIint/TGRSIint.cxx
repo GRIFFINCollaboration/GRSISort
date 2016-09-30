@@ -7,7 +7,7 @@
 #include "Globals.h"
 #include "TDataParser.h"
 #include "TGRSIOptions.h"
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 #include "TGRSIRootIO.h"
 #include "TGRSIUtilities.h"
 #include "GValue.h"
@@ -79,10 +79,10 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
       ih->Add();
 
       InitFlags();
-      TGRSIOptions2::Get(argc,argv);
-      PrintLogo(TGRSIOptions2::Get()->ShowLogo());
+      TGRSIOptions::Get(argc,argv);
+      PrintLogo(TGRSIOptions::Get()->ShowLogo());
       SetPrompt("GRSI [%d] ");
-      //PrintHelp(TGRSIOptions2::Get()->ShowedHelp());
+      //PrintHelp(TGRSIOptions::Get()->ShowedHelp());
       std::string grsipath = getenv("GRSISYS");
       gInterpreter->AddIncludePath(Form("%s/include",grsipath.c_str()));
       //LoadExtraClasses();
@@ -112,7 +112,7 @@ void TGRSIint::InitFlags() {
 }
 
 void TGRSIint::ApplyOptions() {
-  TGRSIOptions2* opt = TGRSIOptions2::Get();
+  TGRSIOptions* opt = TGRSIOptions::Get();
 
   bool missing_raw_file = !all_files_exist(opt->InputMidasFiles());
 
@@ -414,7 +414,7 @@ TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename) {
 }
 
 void TGRSIint::SetupPipeline() {
-  TGRSIOptions2* opt = TGRSIOptions2::Get();
+  TGRSIOptions* opt = TGRSIOptions::Get();
 
   // Determining which parts of the pipeline need to be set up.
 
