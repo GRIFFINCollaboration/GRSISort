@@ -575,7 +575,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                 //read this pair of charge/cfd words, check if the next word is also a charge/cfd word
 					 if(((data[x] & 0x80000000) == 0x00000000) && x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
 						Short_t tmp = (data[x] & 0x7c000000) >> 21; //21 = 26 minus space for 5 low bits
-						tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0)); //extend the sign bit of 26bit charge word
+						tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xfc000000 : 0x0)); //extend the sign bit of 26bit charge word
 						++x;
 						tmpIntLength.push_back(tmp | ((data[x] & 0x7c000000) >> 26));
 						tmpCfd.push_back(data[x] & 0x03ffffff);
@@ -591,7 +591,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
               case kGRF3: //bank 3 has 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
                 if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
                   Short_t tmp = (data[x] & 0x7c000000) >> 17; //17 = 26 minus space for 9 low bits
-                  tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0)); //extend the sign bit of 26bit charge word
+                  tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xfc000000 : 0x0)); //extend the sign bit of 26bit charge word
                   ++x;
                   tmpIntLength.push_back(tmp | ((data[x] & 0x7fc00000) >> 22));
                   tmpCfd.push_back(data[x] & 0x003fffff);
@@ -613,7 +613,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
                     tmpCharge.push_back(std::numeric_limits<int>::max());
                   } else {
-                    tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
+                    tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
                   }
                   //std::cout<<"0x"<<std::hex<<data[x]<<": charge = 0x"<<tmpCharge.back()<<", k = "<<tmp<<std::endl;
                   ++x;
@@ -630,7 +630,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                     if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
                       tmpCharge.push_back(std::numeric_limits<int>::max());
                     } else {
-                      tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
+                      tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
                     }
                     //std::cout<<"found 4 words (0x"<<std::hex<<tmpCharge.back()<<"/0x"<<tmpIntLength.back()<<"/0x"<<tmpCfd.back()<<std::dec<<")"<<std::endl;
                     //check if we have two more words (XI & XIII) with (14 IntLength4, 2 reserved, 14 IntLength3)(31 Charge3); x has already been incremented thrice!
@@ -642,7 +642,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                       if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
                         tmpCharge.push_back(std::numeric_limits<int>::max());
                       } else {
-                        tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
+                        tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
                       }
                       //check if we have one final word with (31 Charge4), otherwise remove the last integration length (IntLength4)
                       if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
@@ -650,7 +650,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                         if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
                           tmpCharge.push_back(std::numeric_limits<int>::max());
                         } else {
-                          tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
+                          tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
                         }
                       } else {
                         tmpIntLength.pop_back();
@@ -694,7 +694,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             //the 4G data format depends on the detector type, but the first two words are always the same
             if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
               Short_t tmp = (data[x] & 0x7c000000) >> 21; //21 = 26 minus space for 5 low bits
-              tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xf8000000 : 0x0)); //extend the sign bit of 26bit charge word
+              tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xfc000000 : 0x0)); //extend the sign bit of 26bit charge word
               ++x;
               tmpIntLength.push_back(tmp | ((data[x] & 0x7c000000) >> 26));
               tmpCfd.push_back(data[x] & 0x03ffffff);
