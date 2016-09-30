@@ -4,7 +4,7 @@
 #include <thread>
 #include <utility>
 
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 #include "TString.h"
 #include "TMidasFile.h"
 #include "TChannel.h"
@@ -17,7 +17,7 @@ TDataLoop::TDataLoop(std::string name,TMidasFile* source)
 
   SetFileOdb(source->GetFirstEvent().GetData(),
 	     source->GetFirstEvent().GetDataSize());
-  for(auto cal_filename : TGRSIOptions2::Get()->CalInputFiles()) {
+  for(auto cal_filename : TGRSIOptions::Get()->CalInputFiles()) {
     TChannel::ReadCalFile(cal_filename.c_str());
   }
 }
@@ -45,7 +45,7 @@ void TDataLoop::SetFileOdb(char* data, int size) {
 	   fOdb = 0;
    }
 
-   if(TGRSIOptions2::Get()->IgnoreFileOdb()) {
+   if(TGRSIOptions::Get()->IgnoreFileOdb()) {
       printf(DYELLOW "\tskipping odb information stored in file.\n" RESET_COLOR);
       return;
    }
@@ -282,5 +282,5 @@ bool TDataLoop::Iteration() {
 }
 
 std::string TDataLoop::Status() {
-  return fSource->Status(TGRSIOptions2::Get()->LongFileDescription());
+  return fSource->Status(TGRSIOptions::Get()->LongFileDescription());
 }

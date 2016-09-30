@@ -6,7 +6,7 @@
 
 #include "TDescant.h"
 #include "TGRSIRunInfo.h"
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TDescant)
@@ -186,7 +186,7 @@ void TDescant::AddFragment(TFragment* frag, TChannel* chan) {
 	hit.SetCcLong(frag->GetCcLong());
       
 	//if(TDescant::SetWave()) {
-	if(TGRSIOptions2::Get()->ExtractWaves()) {
+	if(TGRSIOptions::Get()->ExtractWaves()) {
 		if(frag->GetWaveform()->size() == 0) {
 			//printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
 		}

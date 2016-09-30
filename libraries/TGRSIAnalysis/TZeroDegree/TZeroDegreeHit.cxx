@@ -6,7 +6,7 @@
 
 #include "Globals.h"
 #include "TZeroDegree.h"
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 #include "TChannel.h"
 
 /// \cond CLASSIMP
@@ -35,7 +35,7 @@ TZeroDegreeHit::TZeroDegreeHit(const TZeroDegreeHit &rhs) : TGRSIDetectorHit() {
 void TZeroDegreeHit::Copy(TObject &rhs) const {
   ///Copies a TZeroDegreeHit
    TGRSIDetectorHit::Copy(rhs);
-	if(TGRSIOptions2::Get()->ExtractWaves()) {
+	if(TGRSIOptions::Get()->ExtractWaves()) {
 	  TGRSIDetectorHit::CopyWave(rhs);
 	}
    static_cast<TZeroDegreeHit&>(rhs).fFilter = fFilter;
@@ -185,7 +185,7 @@ Int_t TZeroDegreeHit::CalculateCfdAndMonitor(double attenuation, unsigned int de
       monitor.resize(0);
    }
    
-	if(TGRSIOptions2::Get()->Debug()) {
+	if(TGRSIOptions::Get()->Debug()) {
 		fCfdMonitor = monitor;
 	}
    
@@ -259,7 +259,9 @@ std::vector<Int_t> TZeroDegreeHit::CalculatePartialSum() {
 		}
 	}
 
-	fPartialSum = partialSums;
+	if(TGRSIOptions::Get()->Debug()) {
+		fPartialSum = partialSums;
+	}
 
 	return partialSums;
 }

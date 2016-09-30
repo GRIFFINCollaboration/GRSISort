@@ -6,7 +6,7 @@
 
 #include "Globals.h"
 #include "TSceptar.h"
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TSceptarHit)

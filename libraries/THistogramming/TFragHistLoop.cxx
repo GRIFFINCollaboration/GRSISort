@@ -3,7 +3,7 @@
 #include "TFile.h"
 
 #include "TGRSIint.h"
-#include "TGRSIOptions2.h"
+#include "TGRSIOptions.h"
 #include "TPreserveGDirectory.h"
 #include "GValue.h"
 #include "TChannel.h"
@@ -22,7 +22,7 @@ TFragHistLoop::TFragHistLoop(std::string name)
     output_file(0), output_filename("last.root"),
     input_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
     output_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()) {
-  LoadLibrary(TGRSIOptions2::Get()->FragmentHistogramLib());
+  LoadLibrary(TGRSIOptions::Get()->FragmentHistogramLib());
 }
 
 TFragHistLoop::~TFragHistLoop() {
