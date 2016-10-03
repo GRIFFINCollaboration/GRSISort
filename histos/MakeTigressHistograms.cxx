@@ -27,10 +27,10 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
   }
   static long first_timestamp = 0;
   if(frag && chan) {
-    if(!first_timestamp) {
+ /*   if(!first_timestamp) {
       first_timestamp = frag->GetMidasTimeStamp();
     }
-
+*/
     obj.FillHistogram("channel",
 		      2500, 0, 2500, frag->GetChannelNumber());
     obj.FillHistogram("channel_charge",
@@ -43,12 +43,12 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
       obj.FillHistogram("sceptar_charge",
 			4000, 0, 4000, frag->GetCharge());
     }
-    obj.FillHistogram("channel_ts_shortRuns",
+/*    obj.FillHistogram("channel_ts_shortRuns",
 		      2500, 0, 2500, frag->GetChannelNumber(),
-		      1000, 0, 1000, frag->GetMidasTimeStamp()-first_timestamp);
-    obj.FillHistogram("channel_ts_longRuns",
+		      1000, 0, 1000, frag->GetMidasTimeStamp()-first_timestamp);*/
+/*    obj.FillHistogram("channel_ts_longRuns",
 		      2000, 0, 2000, frag->GetChannelNumber(),
-		      5000, 0, 50000, frag->GetMidasTimeStamp()-first_timestamp);
+		      5000, 0, 50000, frag->GetMidasTimeStamp()-first_timestamp);*/
     if(frag->GetChannelNumber()<1199) {
       if(frag->GetSegment()==0) {
         obj.FillHistogram("hpge","core_energy",
@@ -90,9 +90,9 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
   }
 
   if(tigress){
-    if(!first_ana_timestamp) {
+/*    if(!first_ana_timestamp) {
       first_ana_timestamp = tigress->GetMidasTimestamp();
-    }
+    }*/
     for(UInt_t i=0; i<tigress->GetMultiplicity(); i++){
       obj.FillHistogram("gamma_energy",
 			4000, 1, 2001, tigress->GetTigressHit(i).GetEnergy());
@@ -102,9 +102,9 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
   }
 
   if(sharc){
-    if(!first_ana_timestamp) {
+/*    if(!first_ana_timestamp) {
       first_ana_timestamp = sharc->GetMidasTimestamp();
-    }
+    }*/
   
 
     obj.FillHistogram("sharc_size",10,0,10,sharc->GetSize());
@@ -307,7 +307,7 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
         }
       }
       //beam intensity and target stability diagnostics
-      if(prot && prot->IsInside(shit->GetPadE(),shit->GetDeltaE())) { 
+ /*     if(prot && prot->IsInside(shit->GetPadE(),shit->GetDeltaE())) { 
         obj.FillHistogram("beamdiag", "Nprotons", 500,0,5000, sharc->GetMidasTimestamp()-first_ana_timestamp);
       }
       if(trit && trit->IsInside(shit->GetPadE(),shit->GetDeltaE())) { 
@@ -315,7 +315,7 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
       }
       if(tita && tita->IsInside(shit->GetThetaDeg(),shit->GetDeltaE())) { 
         obj.FillHistogram("beamdiag", "Ntitaniums", 500,0,5000, sharc->GetMidasTimestamp()-first_ana_timestamp);
-      }
+      }*/
     }
   }
 }

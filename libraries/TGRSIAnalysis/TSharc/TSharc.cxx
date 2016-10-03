@@ -87,10 +87,10 @@ void TSharc::AddFragment(TFragment* frag, TChannel* chan) {
   if(frag == NULL || chan == NULL) {
     return;
   }
-  if(GetMidasTimestamp() == -1) {
+/*  if(GetMidasTimestamp() == -1) {
     SetMidasTimestamp(frag->GetMidasTimeStamp());
   }
-
+*/
   if(chan->GetMnemonic()->arraysubposition.compare(0,1,"D") == 0) {
     if(chan->GetMnemonic()->collectedcharge.compare(0,1,"P") == 0) {
       
