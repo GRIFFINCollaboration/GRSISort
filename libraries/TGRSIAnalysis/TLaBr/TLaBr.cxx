@@ -85,6 +85,7 @@ void TLaBr::AddFragment(TFragment* frag, TChannel* chan) {
    hit.SetTimeStamp(frag->GetTimeStamp());
    hit.SetCfd(frag->GetCfd());
    hit.SetCharge(frag->Charge());
+	hit.SetKValue(frag->GetKValue());
       
    AddHit(&hit);
       //   }
