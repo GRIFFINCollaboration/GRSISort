@@ -39,7 +39,7 @@ fi
 
 
 bindir=$GRSISYS/bin
-libdir=$GRSISYS/libraries
+libdir=$GRSISYS/lib
 incdir=$GRSISYS/include
 utildir=$GRSISYS/etc
 
@@ -48,8 +48,6 @@ detlibs="-lTTigress -lTGriffin -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescan
 grsimore="-lTMidas -lTDataParser -lTGRSILoop -lTGRSIint -lTGRSIRootIO -lTLoops -lTHistogramming -lMakeAnalysisHistograms -lMakeGriffinFragmentHistograms -lMakeTigressHistograms"
 
 cflags="-std=c++0x -I$incdir"
-
-
 
 usage="\
 Usage: grsi-config [--version] [--cflags] [--libs] [--all-libs] [--help]"
@@ -111,7 +109,7 @@ while test $# -gt 0; do
       if test "x$libsout" = "xyes" ; then
         out=$"$out $grsimore "
       else
-        out=$"$out -L${libdir} $grsilibs $detlibs $grsimore -lXMLParser -lXMLIO -lX11 -lXpm -lProof -lGuiHtml "
+        out=$"$out -L${libdir} $grsilibs $detlibs $grsimore -lXMLParser -lXMLIO -lX11 -lXpm -lProof -lGuiHtml -lMinuit -lPyROOT -lSpectrum -lMathMore "
       fi
       ;;
     --root)
