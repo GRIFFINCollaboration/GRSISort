@@ -49,15 +49,15 @@ class TGRSIDetector : public TDetector	{
 
     //  void Init();
 
-    virtual void   SetMidasTimestamp(Long_t time) { fMidasTimestamp = time; }
-    virtual Long_t GetMidasTimestamp() const { return fMidasTimestamp; }
+    //virtual void   SetMidasTimestamp(Long_t time) { fMidasTimestamp = time; }
+    //virtual Long_t GetMidasTimestamp() const { return fMidasTimestamp; }
 
   protected:
     virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
     
   private:
     
-    Long_t fMidasTimestamp;
+    //Long_t fMidasTimestamp;
 
     /// \cond CLASSIMP
     ClassDef(TGRSIDetector,1) //Abstract class for detector systems 

@@ -85,15 +85,15 @@ double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
   TChannel* chan = GetChannel();
   if(!chan) {
     //Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
-    return Charge();
+    return SetEnergy((Double_t)(Charge()));
   }
   if(fKValue >0) {
-    return chan->CalibrateENG(Charge(),(int)fKValue);
+    return SetEnergy(chan->CalibrateENG(Charge(),(int)fKValue));
   } else if(chan->UseCalFileIntegration()) {
-    return chan->CalibrateENG(Charge(),0);  // this will use the integration value
+    return SetEnergy(chan->CalibrateENG(Charge(),0));  // this will use the integration value
                                             // in the TChannel if it exists.
   }
-  return chan->CalibrateENG(Charge());
+  return SetEnergy(chan->CalibrateENG(Charge()));
 }
 
 void TGRSIDetectorHit::Copy(TObject& rhs) const {

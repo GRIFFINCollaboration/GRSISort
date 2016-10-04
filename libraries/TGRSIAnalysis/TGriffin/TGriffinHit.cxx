@@ -179,6 +179,6 @@ Double_t TGriffinHit::GetNoCTEnergy(Option_t* opt) const{
     Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
     return 0.;
   }
-  return chan->CalibrateENG(Charge());
+  return chan->CalibrateENG(Charge(),GetKValue());
 }
 

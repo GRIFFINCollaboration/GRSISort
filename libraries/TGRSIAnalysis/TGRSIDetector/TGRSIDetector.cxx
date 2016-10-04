@@ -58,7 +58,7 @@ void TGRSIDetector::Print(Option_t *opt) const {
 
 void TGRSIDetector::Clear(Option_t *opt) {
 // Default clear statement for TGRSIDetector. 
-  fMidasTimestamp = -1;
+  //fMidasTimestamp = -1;
 }
 
 

@@ -24,7 +24,7 @@ ClassImp(TGriffin)
 
 bool DefaultAddback(TGriffinHit& one, TGriffinHit& two) {
   return ((one.GetDetector() == two.GetDetector()) &&
-	  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
+	  (std::fabs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
 }
 
 std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::fAddbackCriterion = DefaultAddback;
@@ -320,7 +320,6 @@ Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, co
    if(hit_to_correct->GetDetector() != other_hit->GetDetector() ){
       return hit_to_correct->GetEnergy();
    }
-
    return hit_to_correct->GetEnergy() - (gCrossTalkPar[0][hit_to_correct->GetCrystal()][other_hit->GetCrystal()] + gCrossTalkPar[1][hit_to_correct->GetCrystal()][other_hit->GetCrystal()]*other_hit->GetNoCTEnergy());
 
 }
