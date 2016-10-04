@@ -14,6 +14,7 @@ htmldoc
 ./bin*
 bin
 myAnalysis
+Sandbox
 examples
 *User*
 .deps
@@ -24,3 +25,4 @@ include/GVersion.h
 .grsi_thread
 *.pyc
 __pycache__
+grsi_logon.C
