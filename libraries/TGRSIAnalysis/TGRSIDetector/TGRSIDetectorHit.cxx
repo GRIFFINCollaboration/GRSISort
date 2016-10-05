@@ -261,7 +261,8 @@ bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rh
 Long_t TGRSIDetectorHit::GetTimeStamp(Option_t* opt) const  { 
    TChannel* tmpChan = GetChannel();
    if(!tmpChan){
-      return fTimeStamp - chan->GetTimeOffset();   
+      return fTimeStamp - tmpChan->GetTimeOffset();   
+   }
 
    return fTimeStamp;   
 }
