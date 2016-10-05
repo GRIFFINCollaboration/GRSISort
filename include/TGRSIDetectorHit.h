@@ -110,7 +110,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual TVector3 GetPosition(Double_t dist)    const { return TVector3(0.,0.,0.); } //!<!
       virtual TVector3 GetPosition()    const { return TVector3(0.,0.,0.); } //!<!
       virtual double GetEnergy(Option_t* opt="")     const;
-      virtual Long_t GetTimeStamp(Option_t* opt="") const   { return fTimeStamp;   }
+      virtual Long_t GetTimeStamp(Option_t* opt="") const;
       virtual Double_t GetTime(Option_t* opt = "")   const;  ///< Returns a time value to the nearest nanosecond!
       virtual Int_t   GetCfd()    const      { return fCfd;}                 //!<!
       virtual UInt_t GetAddress() const      { return fAddress; }            //!<!
