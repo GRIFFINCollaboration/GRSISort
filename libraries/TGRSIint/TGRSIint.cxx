@@ -176,10 +176,10 @@ void TGRSIint::ApplyOptions() {
      StartGUI();
    }
 
+	LoopUntilDone();
    if(opt->CloseAfterSort()){
-     LoopUntilDone();
      int exit_status = missing_raw_file ? 1 : 0;
-     this->Terminate(exit_status);
+     Terminate(exit_status);
    }
 }
 
