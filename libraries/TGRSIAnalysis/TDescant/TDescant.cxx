@@ -166,10 +166,11 @@ TDescantHit* TDescant::GetDescantHit(const Int_t& i) {
 }
 
 void TDescant::PushBackHit(TGRSIDetectorHit *desHit) {
+//TODO: FIX THIS FOR WAVEFORMS 
    fDescantHits.push_back(*static_cast<TDescantHit*>(desHit));
 }
 
-void TDescant::AddFragment(TFragment* frag, TChannel* chan) {
+/*void TDescant::AddFragment(TFragment* frag, TChannel* chan) {
    ///Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
    ///This is done for both DESCANT and it's suppressors.
    if(frag == NULL || chan == NULL) {
@@ -229,7 +230,7 @@ void TDescant::AddFragment(TFragment* frag, TChannel* chan) {
 	}
       
 	AddHit(&hit);
-}
+}*/
 
 TVector3 TDescant::GetPosition(int DetNbr, double dist) {
    //Gets the position vector for detector DetNbr

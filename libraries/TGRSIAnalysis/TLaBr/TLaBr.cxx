@@ -72,7 +72,7 @@ void TLaBr::PushBackHit(TGRSIDetectorHit *laHit) {
    fLaBrHits.push_back(*(static_cast<TLaBrHit*>(laHit)));
 }
 
-void TLaBr::AddFragment(TFragment* frag, TChannel* chan) {
+/*void TLaBr::AddFragment(TFragment* frag, TChannel* chan) {
    //Builds the LaBr Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
    //This should be done for both LaBr and it's suppressors.
    if(frag == NULL || chan == NULL) {
@@ -89,7 +89,7 @@ void TLaBr::AddFragment(TFragment* frag, TChannel* chan) {
       
    AddHit(&hit);
       //   }
-}
+}*/
 
 TGRSIDetectorHit* TLaBr::GetHit(const Int_t& idx){
    //Gets the TLaBrHit at index idx.

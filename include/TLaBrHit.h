@@ -29,6 +29,7 @@ class TLaBrHit : public TGRSIDetectorHit {
       TLaBrHit();
       virtual ~TLaBrHit();
       TLaBrHit(const TLaBrHit&);
+      TLaBrHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
       
    private:
       Int_t    fFilter;

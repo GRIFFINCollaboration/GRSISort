@@ -30,6 +30,7 @@ class TSceptarHit : public TGRSIDetectorHit {
       TSceptarHit();
       virtual ~TSceptarHit();
       TSceptarHit(const TSceptarHit&);
+      TSceptarHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
       
    private:
       Int_t    fFilter;

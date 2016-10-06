@@ -47,7 +47,6 @@ void TGRSIDetector::Copy(TObject &rhs) const {
   //if(!rhs.InheritsFrom("TGRSIDetector"))
   //   return;
   TObject::Copy(rhs);
-  
 }
 
 
@@ -61,5 +60,9 @@ void TGRSIDetector::Clear(Option_t *opt) {
   //fMidasTimestamp = -1;
 }
 
+void TGRSIDetector::AddFragment(TFragment *frag, TChannel* chan){
+   TGRSIDetectorHit *hit = CreateHit(frag); //Creates a hit of the detector type.
+   PushBackHit(hit); //Calls the detector dependent push_back function. These are defined in the derived classes.
+}
 
 

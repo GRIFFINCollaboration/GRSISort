@@ -37,8 +37,9 @@ class TGRSIDetector : public TDetector	{
 
   public: 
     //virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
-    virtual void AddFragment(TFragment*, TChannel*)         { AbstractMethod("AddFragment()"); } //!<! = 0; //!
+    virtual void AddFragment(TFragment*, TChannel*); //!<! = 0; //!
     virtual void BuildHits() {}
+    virtual TGRSIDetectorHit* CreateHit(TFragment* frag,TChannel* chan = 0) { return 0; }
 
     virtual void Copy(TObject&) const;              //!<!
     virtual void Clear(Option_t *opt = "");         //!<!
@@ -54,7 +55,7 @@ class TGRSIDetector : public TDetector	{
 
   protected:
     virtual void PushBackHit(TGRSIDetectorHit* hit) = 0;
-    
+    void CopyFragment(TFragment *frag);
   private:
     
     //Long_t fMidasTimestamp;

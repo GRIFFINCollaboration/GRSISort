@@ -86,9 +86,10 @@ void TSceptar::Print(Option_t *opt) const	{
 
 void TSceptar::PushBackHit(TGRSIDetectorHit *scHit) {
    //Adds a Hit to the list of TSceptar Hits
+   
    fSceptarHits.push_back(*(static_cast<TSceptarHit*>(scHit)));
 }
-
+/*
 void TSceptar::AddFragment(TFragment* frag, TChannel* chan) {
    //Builds the SCEPTAR Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
    //This is done for both SCEPTAR and it's suppressors.
@@ -147,7 +148,7 @@ void TSceptar::AddFragment(TFragment* frag, TChannel* chan) {
       
       AddHit(&hit);
    //}
-}
+}*/
 
 TGRSIDetectorHit* TSceptar::GetHit(const Int_t& idx){
    //Gets the TSceptarHit at index idx.

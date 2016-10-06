@@ -36,8 +36,9 @@ class TTAC : public TGRSIDetector {
       TTACHit* GetTACHit(const int& i);	//!<!
       Short_t GetMultiplicity() const	       {	return fTACHits.size(); }	      //!<!
       
-      void AddFragment(TFragment*, TChannel*); //!<!
+     // void AddFragment(TFragment*, TChannel*); //!<!
       void BuildHits() {};  //no need to build any hits, everything already done in AddFragment
+      TGRSIDetectorHit * CreateHit(TFragment* frag,TChannel* chan = 0) { return new TTACHit(*frag); } 
       
       TTAC& operator=(const TTAC&);  //!<!
       

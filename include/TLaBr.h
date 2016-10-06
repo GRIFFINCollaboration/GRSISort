@@ -38,8 +38,9 @@ class TLaBr : public TGRSIDetector {
       
       static TVector3 GetPosition(int DetNbr) { return gPosition[DetNbr]; }	//!<!
       
-      void AddFragment(TFragment*, TChannel*); //!<!
+     // void AddFragment(TFragment*, TChannel*); //!<!
       void BuildHits() {} //no need to build any hits, everything already done in AddFragment
+      TGRSIDetectorHit * CreateHit(TFragment* frag, TChannel* chan) { return new TLaBrHit(*frag); }
       
       TLaBr& operator=(const TLaBr&);  //!<!
       

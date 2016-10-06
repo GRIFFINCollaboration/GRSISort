@@ -64,7 +64,7 @@ void TZeroDegree::PushBackHit(TGRSIDetectorHit *scHit) {
    fZeroDegreeHits.push_back(*(static_cast<TZeroDegreeHit*>(scHit)));
 }
 
-void TZeroDegree::AddFragment(TFragment* frag, TChannel* chan) {
+/*void TZeroDegree::AddFragment(TFragment* frag, TChannel* chan) {
    ///Builds the ZDS Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
    if(frag == NULL || chan == NULL) {
       return;
@@ -89,7 +89,7 @@ void TZeroDegree::AddFragment(TFragment* frag, TChannel* chan) {
 	}
       
 	AddHit(&hit);
-}
+}*/
 
 TGRSIDetectorHit* TZeroDegree::GetHit(const Int_t& idx){
    //Gets the TZeroDegreeHit at index idx.

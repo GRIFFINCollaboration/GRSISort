@@ -130,7 +130,30 @@ TGriffin& TGriffin::operator=(const TGriffin& rhs) {
 }
 
 void TGriffin::PushBackHit(TGRSIDetectorHit *ghit){
-  fGriffinHits.push_back(*static_cast<TGriffinHit*>(ghit));
+  //Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the hits for an event and sets observables. 
+  //This is done for both GRIFFIN and it's suppressors.
+
+   //TODO: Maybe overload the the pushback function to push back into the appropriate vector
+ //  if(ghit->Class() == TGriffinHit::Class()){
+      //std::cout << ghit->Class() << " "  << TGriffinHit::Class() << std::endl; throw grsi::exit_exception(1);
+      fGriffinHits.push_back(*static_cast<TGriffinHit*>(ghit));
+  // }
+   /* if(chan->GetMnemonic()->outputsensor[0] == 'B') { return; }  //make this smarter.
+
+    TGriffinHit corehit(*frag);
+    //corehit.SetAddress(frag->GetAddress());
+    //corehit.SetTimeStamp(frag->GetTimeStamp());
+    //corehit.SetCfd(frag->GetCfd());
+    //corehit.SetCharge(frag->GetCharge());
+    //check if this is a fragment where we already pulled the pile-up hits apart
+    //if((frag->Charge.size() == 1) && (frag->NumberOfHits >= 0) && (frag->HitIndex >= 0)) {
+    //corehit.SetNPileUps(frag->NumberOfHits);//We subtract 1 in order to start counter from 0
+    //corehit.SetPUHit(frag->HitIndex);
+    AddHit(&corehit);
+    //}
+  } else if(chan->GetMnemonic()->subsystem[0] == 'S') {
+    //set BGO
+  }*/
 }
 
 
@@ -204,7 +227,7 @@ TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
   }
 }
 
-void TGriffin::AddFragment(TFragment* frag, TChannel* chan) {
+/*void TGriffin::AddFragment(TFragment* frag, TChannel* chan) {
   //Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the hits for an event and sets observables. 
   //This is done for both GRIFFIN and it's suppressors.
   if(frag == NULL || chan == NULL) {
@@ -229,7 +252,7 @@ void TGriffin::AddFragment(TFragment* frag, TChannel* chan) {
   } else if(chan->GetMnemonic()->subsystem[0] == 'S') {
     //set BGO
   }
-}
+}*/
 
 TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ) {
   //Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.

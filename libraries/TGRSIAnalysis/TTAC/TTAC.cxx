@@ -54,10 +54,10 @@ void TTAC::Print(Option_t *opt) const	{
 }
 
 void TTAC::PushBackHit(TGRSIDetectorHit *laHit) {
-   //Adds a Hit to the list of TTAC Hits
+   //Adds a Hit to the list of TTAC Hit
    fTACHits.push_back(*(static_cast<TTACHit*>(laHit)));
 }
-
+/*
 void TTAC::AddFragment(TFragment* frag, TChannel* chan) {
    //Builds the TAC Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
    //This should be done for both TAC and it's suppressors.
@@ -75,7 +75,7 @@ void TTAC::AddFragment(TFragment* frag, TChannel* chan) {
    AddHit(&hit);
       //   }
 }
-
+*/
 TGRSIDetectorHit* TTAC::GetHit(const Int_t& idx){
    //Gets the TTACHit at index idx.
    return GetTACHit(idx);
