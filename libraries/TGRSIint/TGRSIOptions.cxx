@@ -226,6 +226,10 @@ void TGRSIOptions::Load(int argc, char** argv) {
   // parser.option("time-sort-depth",&fTimeSortDepth)
   //   .description("Number of events to hold when time sorting")
   //   .default_value(100000);
+  parser.option("addback-window", &fAddbackWindow)
+     .description("Addback window, time in ns")
+     .default_value(300);
+     
   parser.option("build-window", &fBuildWindow)
      .description("Build window, timestamp units")
      .default_value(200);
