@@ -29,7 +29,7 @@ class TZeroDegreeHit : public TGRSIDetectorHit {
       TZeroDegreeHit();
       virtual ~TZeroDegreeHit();
       TZeroDegreeHit(const TZeroDegreeHit&);
-      TZeroDegreeHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
+      TZeroDegreeHit(TFragment& frag);
       
    private:
       Int_t    fFilter;

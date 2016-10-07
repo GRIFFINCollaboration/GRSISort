@@ -63,8 +63,9 @@ TPaces& TPaces::operator=(const TPaces& rhs) {
 	return *this;
 }
 
-void TPaces::PushBackHit(TGRSIDetectorHit *pHit){
-   fPacesHits.push_back(*(static_cast<TPacesHit*>(pHit)));
+void TPaces::AddFragment(TFragment* frag, TChannel *chan){
+   TPacesHit hit(*frag);
+   fPacesHits.push_back(std::move(hit));
 }
 
 TGRSIDetectorHit* TPaces::GetHit(const Int_t& idx) {
@@ -79,24 +80,6 @@ TPacesHit* TPaces::GetPacesHit(const int& i) {
       throw grsi::exit_exception(1);
    }
    return NULL;
-}
-
-void TPaces::AddFragment(TFragment* frag, TChannel* chan) {
-  //Builds the PACES Hits directly from the TFragment. Basically, loops through the data for an event and sets observables. 
-  //This is done for both PACES and it's suppressors.
-	if(frag == NULL || chan == NULL) {
-		return;
-	}
-
-	//for(size_t i = 0; i < frag->Charge.size(); ++i) {
-	  TPacesHit hit;
-	  hit.SetAddress(frag->GetAddress());
-	  hit.SetTimeStamp(frag->GetTimeStamp());
-	  hit.SetCfd(frag->GetCfd());
-	  hit.SetCharge(frag->GetCharge());
-	  
-	  AddHit(&hit);
-	//}
 }
 
 TVector3 TPaces::GetPosition(int DetNbr) {

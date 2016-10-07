@@ -23,6 +23,19 @@ TZeroDegreeHit::TZeroDegreeHit()	{
 
 TZeroDegreeHit::~TZeroDegreeHit()	{	}
 
+TZeroDegreeHit::TZeroDegreeHit(TFragment &frag) : TGRSIDetectorHit(frag) {
+	if(TGRSIOptions::Get()->ExtractWaves()) {
+		if(frag.GetWaveform()->size() == 0) {
+			printf("Warning, TZeroDegree::SetWave() set, but data waveform size is zero!\n");
+		} else {
+			frag.CopyWave(*this);
+		}
+		if(GetWaveform()->size() > 0) {
+			AnalyzeWaveform();
+		}
+	}
+}
+
 TZeroDegreeHit::TZeroDegreeHit(const TZeroDegreeHit &rhs) : TGRSIDetectorHit() {
    //Copy Constructor
 #if MAJOR_ROOT_VERSION < 6

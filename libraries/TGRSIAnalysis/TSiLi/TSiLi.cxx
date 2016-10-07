@@ -51,22 +51,13 @@ TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {
    return 0;
 }  
 
-void TSiLi::PushBackHit(TGRSIDetectorHit *deshit) {
-  fSiLiHits.push_back(*((TSiLiHit*)deshit));
-  return;
-}
-
 void TSiLi::AddFragment(TFragment* frag, TChannel* chan) {
   if(frag == NULL || chan == NULL) {
 	 return;
   }
 
-  TSiLiHit hit(*frag);
-  
-  if(TGRSIRunInfo::IsWaveformFitting())
-	  hit.SetWavefit(*frag);
-    
-  fSiLiHits.push_back(hit);
+  TSiLiHit hit(*frag);//Waveform fitting happens in ctor now
+  fSiLiHits.push_back(std::move(hit));
 }
 
 TVector3 TSiLi::GetPosition(int seg)  {

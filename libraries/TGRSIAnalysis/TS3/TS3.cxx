@@ -49,9 +49,44 @@ void TS3::AddFragment(TFragment* frag, TChannel* chan) {
 		return;
 	}
 
-	bool IsDownstream = false;		
+   TS3Hit dethit(*frag);
+
+	bool IsDownstream = false;	
+   //preferably channel would be pushed to the ctor as well and all of this would be done in the ctor
+   if(chan->GetMnemonic()->CollectedCharge() == MNEMONIC::kN){
+		dethit.SetRingNumber(*frag);
+		dethit.SetSectorNumber(0);
+		if(chan->GetMnemonic()->ArrayPosition() == 0 || chan->GetMnemonic()->ArrayPosition() == 2)
+			IsDownstream = true;
+		else if(chan->GetMnemonic()->ArrayPosition() == 1)
+			IsDownstream = false;
+		else
+			IsDownstream = true; // In case of incorrect value, we assume downstream
+		
+      dethit.SetIsDownstream(IsDownstream);
+		if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
+			dethit.SetWavefit(*frag);
+
+		fS3RingHits.push_back(std::move(dethit));
+   }
+   else {
+		dethit.SetRingNumber(0);
+		dethit.SetSectorNumber(*frag);
+		if(chan->GetMnemonic()->ArrayPosition() == 0 || chan->GetMnemonic()->ArrayPosition() == 2)
+			IsDownstream = true;
+		else if(chan->GetMnemonic()->ArrayPosition() == 1)
+			IsDownstream = false;
+		else
+			IsDownstream = true; // In case of incorrect value, we assume downstream
+		
+      dethit.SetIsDownstream(IsDownstream);
+		if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
+			dethit.SetWavefit(*frag);
+		
+      fS3SectorHits.push_back(std::move(dethit));
+	}	
+/*
 	if(chan->GetMnemonic()->collectedcharge.compare(0,1,"N")==0) { // ring	
-			TS3Hit dethit(*frag);
 			dethit.SetRingNumber(*frag);
 			dethit.SetSectorNumber(0);
 			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
@@ -65,7 +100,6 @@ void TS3::AddFragment(TFragment* frag, TChannel* chan) {
 				dethit.SetWavefit(*frag);
 			fS3RingHits.push_back(dethit);
 	} else {
-			TS3Hit dethit(*frag);
 			dethit.SetRingNumber(0);
 			dethit.SetSectorNumber(*frag);
 			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
@@ -78,7 +112,7 @@ void TS3::AddFragment(TFragment* frag, TChannel* chan) {
 			if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
 				dethit.SetWavefit(*frag);
 			fS3SectorHits.push_back(dethit);
-	}	
+	}	*/
 }
 
 void TS3::SetBitNumber(enum ES3Bits bit,Bool_t set){
@@ -87,9 +121,6 @@ void TS3::SetBitNumber(enum ES3Bits bit,Bool_t set){
     fS3Bits |= bit;
   else
     fS3Bits &= (~bit);
-}
-
-void TS3::BuildHits()  {
 }
 
 Int_t TS3::GetPixelMultiplicity(){
@@ -317,11 +348,11 @@ TS3Hit *TS3::GetS3Hit(const int& i) {
   }
 }  
 
-void TS3::PushBackHit(TGRSIDetectorHit *deshit) {
+/*void TS3::PushBackHit(TGRSIDetectorHit *deshit) {
   fS3Hits.push_back(*((TS3Hit*)deshit));
   return;
 }
-
+*/
 
 void TS3::Print(Option_t *opt) const {
    printf("%s\tnot yet written.\n",__PRETTY_FUNCTION__);

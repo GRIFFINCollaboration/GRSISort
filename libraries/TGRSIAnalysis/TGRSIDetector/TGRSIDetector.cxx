@@ -36,13 +36,6 @@ TGRSIDetector::~TGRSIDetector() {
 //Default Destructor.
 }
 
-
-void TGRSIDetector::AddHit(TGRSIDetectorHit *hit,Option_t *opt) {
-   // hit->SetParent(this); 
-  PushBackHit(hit);
-  return;
-}
-
 void TGRSIDetector::Copy(TObject &rhs) const {
   //if(!rhs.InheritsFrom("TGRSIDetector"))
   //   return;
@@ -59,10 +52,4 @@ void TGRSIDetector::Clear(Option_t *opt) {
 // Default clear statement for TGRSIDetector. 
   //fMidasTimestamp = -1;
 }
-
-void TGRSIDetector::AddFragment(TFragment *frag, TChannel* chan){
-   TGRSIDetectorHit *hit = CreateHit(frag); //Creates a hit of the detector type.
-   PushBackHit(hit); //Calls the detector dependent push_back function. These are defined in the derived classes.
-}
-
 

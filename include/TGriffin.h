@@ -40,9 +40,7 @@ class TGriffin : public TGRSIDetector {
     Short_t GetMultiplicity() const {return fGriffinHits.size();}
 
     static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);    //!<!
-    //void AddFragment(TFragment* frag, TChannel* chan); //!<!
-    void BuildHits() {} //no need to build any hits, everything already done in AddFragment
-    TGRSIDetectorHit * CreateHit(TFragment* frag,TChannel*chan = 0) { return new TGriffinHit(*frag); }
+    void AddFragment(TFragment* frag, TChannel* chan); //!<!
 
     TGriffin& operator=(const TGriffin&);  //!<!
 
@@ -98,9 +96,6 @@ class TGriffin : public TGRSIDetector {
     void ResetFlags();
     void ResetAddback();         //!<!
     UShort_t GetNAddbackFrags(size_t idx) const;
-
-  protected:
-    void PushBackHit(TGRSIDetectorHit* ghit);
 
     /// \cond CLASSIMP
     ClassDef(TGriffin,4)  // Griffin Physics structure

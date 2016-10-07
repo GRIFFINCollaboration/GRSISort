@@ -19,6 +19,7 @@ class TPacesHit : public TGRSIDetectorHit {
 	public:
 		TPacesHit();
 		TPacesHit(const TPacesHit&);
+      TPacesHit(const TFragment& frag) : TGRSIDetectorHit(frag) {} 
 		virtual ~TPacesHit();
 
 	private:

@@ -165,72 +165,16 @@ TDescantHit* TDescant::GetDescantHit(const Int_t& i) {
    return NULL;
 }
 
-void TDescant::PushBackHit(TGRSIDetectorHit *desHit) {
-//TODO: FIX THIS FOR WAVEFORMS 
-   fDescantHits.push_back(*static_cast<TDescantHit*>(desHit));
-}
-
-/*void TDescant::AddFragment(TFragment* frag, TChannel* chan) {
+void TDescant::AddFragment(TFragment* frag, TChannel* chan) {
    ///Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
    ///This is done for both DESCANT and it's suppressors.
    if(frag == NULL || chan == NULL) {
       return;
    }
    
-	TDescantHit hit;
-	hit.SetAddress(frag->GetAddress());
-	hit.SetTimeStamp(frag->GetTimeStamp());
-	hit.SetCfd(frag->GetCfd());
-	hit.SetCharge(frag->GetCharge());
-	hit.SetZc(frag->GetZc());
-	hit.SetCcShort(frag->GetCcShort());
-	hit.SetCcLong(frag->GetCcLong());
-      
-	//if(TDescant::SetWave()) {
-	if(TGRSIOptions::Get()->ExtractWaves()) {
-		if(frag->GetWaveform()->size() == 0) {
-			//printf("Warning, TDescant::SetWave() set, but data waveform size is zero!\n");
-		}
-		if(0) {
-			std::vector<Short_t> x;
-			//Need to reorder waveform data for S1507 data from December 2014
-			//All pairs of samples are swapped.
-			//The first two samples are also delayed by 8.
-			//We choose to throw out the first 2 samples (junk) and the last 6 samples (convience)
-			x = *(frag->GetWaveform());
-			size_t length = x.size() - (x.size()%8);
-			Short_t temp;
-            
-			if(length > 8) {
-				for(size_t i = 0; i < length-8; i+=8) {
-					x[i] = x[i+9];
-					x[i+1] = x[i+8];
-					temp = x[i+2];
-					x[i+2] = x[i+3];
-					x[i+3] = temp;
-					temp = x[i+4];
-					x[i+4] = x[i+5];
-					x[i+5] = temp;
-					temp = x[i+6];
-					x[i+6] = x[i+7];
-					x[i+7] = temp;
-				}
-				x.resize(length-8);
-			}
-			hit.SetWaveform(x);
-		} else {
-			frag->CopyWave(hit);
-		}
-		if(hit.GetWaveform()->size() > 0) {
-			//printf("Analyzing waveform, current cfd = %d, psd = %d\n",hit.GetCfd(),hit.GetPsd());
-			hit.AnalyzeWaveform();
-			//          bool analyzed = hit.AnalyzeWaveform();
-			//          printf("%s analyzed waveform, cfd = %d, psd = %d\n",analyzed ? "successfully":"unsuccessfully",hit.GetCfd(),hit.GetPsd());
-		}
-	}
-      
-	AddHit(&hit);
-}*/
+	TDescantHit hit(*frag);
+   fDescantHits.push_back(std::move(hit));    
+}
 
 TVector3 TDescant::GetPosition(int DetNbr, double dist) {
    //Gets the position vector for detector DetNbr

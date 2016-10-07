@@ -53,10 +53,11 @@ void TTAC::Print(Option_t *opt) const	{
    printf("%lu fTACHits\n",fTACHits.size());
 }
 
-void TTAC::PushBackHit(TGRSIDetectorHit *laHit) {
-   //Adds a Hit to the list of TTAC Hit
-   fTACHits.push_back(*(static_cast<TTACHit*>(laHit)));
+void TTAC::AddFragment(TFragment* frag, TChannel* chan) {
+   TTACHit hit(*frag);
+   fTACHits.push_back(std::move(hit));
 }
+
 /*
 void TTAC::AddFragment(TFragment* frag, TChannel* chan) {
    //Builds the TAC Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.

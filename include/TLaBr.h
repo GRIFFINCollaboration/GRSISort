@@ -35,12 +35,9 @@ class TLaBr : public TGRSIDetector {
       void Copy(TObject &rhs) const;
       TLaBrHit* GetLaBrHit(const int& i);	//!<!
       Short_t GetMultiplicity() const	       {	return fLaBrHits.size(); }	      //!<!
+      void AddFragment(TFragment *frag, TChannel *chan);
       
       static TVector3 GetPosition(int DetNbr) { return gPosition[DetNbr]; }	//!<!
-      
-     // void AddFragment(TFragment*, TChannel*); //!<!
-      void BuildHits() {} //no need to build any hits, everything already done in AddFragment
-      TGRSIDetectorHit * CreateHit(TFragment* frag, TChannel* chan) { return new TLaBrHit(*frag); }
       
       TLaBr& operator=(const TLaBr&);  //!<!
       
@@ -53,9 +50,6 @@ class TLaBr : public TGRSIDetector {
    public:
       void Clear(Option_t *opt = "");		//!<!
       void Print(Option_t *opt = "") const;		//!<!
-      
-   protected:
-      void PushBackHit(TGRSIDetectorHit*);
       
       /// \cond CLASSIMP
       ClassDef(TLaBr,1)  // LaBr Physics structure

@@ -47,9 +47,6 @@ class TSharc : public TGRSIDetector  {
     void BuildHits();   //no need to build any hits, everything already done in AddFragment;  
     //we still need to build hits as one hit is composed of multiple fragments.  pcb.
 
-  protected:
-    void PushBackHit(TGRSIDetectorHit* sharcHit) { fSharcHits.push_back(*(static_cast<TSharcHit*>(sharcHit))); };
-
   private:
     std::vector <TSharcHit> fSharcHits;
     int  CombineHits(TSharcHit*,TSharcHit*,int,int);        //!<!

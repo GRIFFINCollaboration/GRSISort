@@ -10,6 +10,7 @@
 
 #include "TGRSIDetector.h"
 #include "TSiLiHit.h"
+#include "TGRSIRunInfo.h"
 
 class TSiLi: public TGRSIDetector  {
 	public:
@@ -18,14 +19,12 @@ class TSiLi: public TGRSIDetector  {
 		virtual ~TSiLi();
 
 		void AddFragment(TFragment*, TChannel*);
-		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
 		TSiLi& operator=(const TSiLi&);  // 
 
 		void Copy(TObject&) const;
 		void Clear(Option_t *opt="");   
 		void Print(Option_t *opt="") const;
-		void PushBackHit(TGRSIDetectorHit* deshit);
 
 		Short_t GetMultiplicity() const { return fSiLiHits.size(); }
 		TGRSIDetectorHit* GetHit(const Int_t& idx =0);

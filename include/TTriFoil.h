@@ -31,7 +31,6 @@ class TTriFoil :  public TDetector {
     time_t GetTimeStamp() const { return fTimestamp; }
 
     void AddFragment(TFragment*, TChannel*); //!<!
-    void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
     void Clear(Option_t* opt = "");   //!<!
     void Print(Option_t* opt = "") const;   //!<!
