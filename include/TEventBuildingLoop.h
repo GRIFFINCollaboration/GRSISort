@@ -22,24 +22,24 @@ public:
   virtual ~TEventBuildingLoop();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> >& InputQueue() { return input_queue; }
-  std::shared_ptr<ThreadsafeQueue<std::vector<TFragment*> > >& OutputQueue() { return output_queue; }
+  std::shared_ptr<ThreadsafeQueue<TFragment*> >& InputQueue() { return fInputQueue; }
+  std::shared_ptr<ThreadsafeQueue<std::vector<TFragment*> > >& OutputQueue() { return fOutputQueue; }
 #endif
 
   bool Iteration();
 
   virtual void ClearQueue();
 
-  size_t GetItemsPushed()  { return output_queue->ItemsPushed(); }
-  size_t GetItemsPopped()  { return output_queue->ItemsPopped(); }
-  size_t GetItemsCurrent() { return output_queue->Size();        }
+  size_t GetItemsPushed()  { return fOutputQueue->ItemsPushed(); }
+  size_t GetItemsPopped()  { return fOutputQueue->ItemsPopped(); }
+  size_t GetItemsCurrent() { return fOutputQueue->Size();        }
   size_t GetRate()         { return 0; }
 
-  void SetBuildWindow(long clock_ticks) { fBuild_window = clock_ticks; }
-  unsigned long GetBuildWindow() const { return fBuild_window; }
+  void SetBuildWindow(long clock_ticks) { fBuildWindow = clock_ticks; }
+  unsigned long GetBuildWindow() const { return fBuildWindow; }
 
-  void SetSortDepth(int num_events) { sorting_depth = num_events; }
-  unsigned int GetSortDepth() const { return sorting_depth; }
+  void SetSortDepth(int num_events) { fSortingDepth = num_events; }
+  unsigned int GetSortDepth() const { return fSortingDepth; }
 
 
 private:
@@ -52,19 +52,20 @@ private:
   void CheckTriggerIdCondition(TFragment*);
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > input_queue;
-  std::shared_ptr<ThreadsafeQueue<std::vector<TFragment*> > > output_queue;
+  std::shared_ptr<ThreadsafeQueue<TFragment*> > fInputQueue;
+  std::shared_ptr<ThreadsafeQueue<std::vector<TFragment*> > > fOutputQueue;
 #endif
 
-  EBuildMode build_mode;
-  unsigned int sorting_depth;
-  long fBuild_window;
+  EBuildMode fBuildMode;
+  unsigned int fSortingDepth;
+  long fBuildWindow;
+  bool fPreviousSortingDepthError;
 
-  std::vector<TFragment*> next_event;
+  std::vector<TFragment*> fNextEvent;
 
 #ifndef __CINT__
   std::multiset<TFragment*,
-                std::function<bool(TFragment*,TFragment*)> > ordered;
+                std::function<bool(TFragment*,TFragment*)> > fOrdered;
 #endif
 
   ClassDef(TEventBuildingLoop, 0);
