@@ -87,6 +87,8 @@ bool TUnpackingLoop::ProcessMidasEvent(TMidasEvent* mEvent)   {
 					if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF3, mEvent)) { }
 				} else if((banksize = mEvent->LocateBank(NULL,"GRF4",&ptr))>0) {
 					if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF4, mEvent)) { }
+				} else if(!TGRSIOptions::Get()->SuppressErrors()) {
+					printf(DRED "\nUnknown bank in midas event #%d" RESET_COLOR "\n", mEvent->GetSerialNumber());
 				}
 				break;
 			case 2:
