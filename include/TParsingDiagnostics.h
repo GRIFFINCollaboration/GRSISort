@@ -7,7 +7,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
-/// \class TDiagnostics
+/// \class TParsingDiagnostics
 /// 
 /// This class gathers various diagnostics calculated during the sorting from
 /// a midas file to a fragment tree and analysis tree and provides convenient
@@ -27,11 +27,17 @@
 #include "TPPG.h"
 #include "TFragment.h"
 
-class TDiagnostics : public TObject {
+class TParsingDiagnostics : public TObject {
 	public:
-		TDiagnostics();
-		TDiagnostics(const TDiagnostics&);
-		~TDiagnostics();
+		TParsingDiagnostics();
+		TParsingDiagnostics(const TParsingDiagnostics&);
+		~TParsingDiagnostics();
+		static TParsingDiagnostics* Get() {
+			if(fParsingDiagnostics == NULL) {
+				fParsingDiagnostics = new TParsingDiagnostics;
+			}
+			return fParsingDiagnostics;
+		}
 
 	private:
 		//fragment tree diagnostics (should these all be static?)
@@ -60,6 +66,8 @@ class TDiagnostics : public TObject {
 
 		//
 		TH1F* fIdHist;                                     ///< histogram of event survival
+
+		static TParsingDiagnostics* fParsingDiagnostics;
 	
 	public:
 		//"setter" functions
@@ -84,7 +92,7 @@ class TDiagnostics : public TObject {
 		void Draw(Option_t* opt = "");
 
 /// \cond CLASSIMP
-	ClassDef(TDiagnostics,1);
+	ClassDef(TParsingDiagnostics,1);
 /// \endcond
 };
 /*! @} */
