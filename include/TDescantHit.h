@@ -21,6 +21,7 @@ class TDescantHit : public TGRSIDetectorHit {
       TDescantHit();
       virtual ~TDescantHit();
       TDescantHit(const TDescantHit&);
+      TDescantHit(TFragment& frag);
       
    private:
       Int_t    fFilter;

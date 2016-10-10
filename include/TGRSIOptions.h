@@ -152,6 +152,7 @@ private:
   int fSortDepth;
 
   int fBuildWindow;
+  int fAddbackWindow;
 
   bool fShouldExit;
 

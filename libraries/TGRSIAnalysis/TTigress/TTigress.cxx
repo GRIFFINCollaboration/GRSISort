@@ -97,10 +97,6 @@ TTigress& TTigress::operator=(const TTigress& rhs) {
   return *this;
 }
 
-void TTigress::PushBackHit(TGRSIDetectorHit *ghit){
-  fTigressHits.push_back(*static_cast<TTigressHit*>(ghit));
-}
-
 //TTigressHit &TTigress::GetTigressHit(int i) {
   /*
   try {

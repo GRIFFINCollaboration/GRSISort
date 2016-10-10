@@ -257,6 +257,7 @@ struct MNEMONIC {
   int ArraySubPosition() const { return fArraySubPosition; }
   int CollectedCharge() const { return fCollectedCharge; }
   int OutputSensor() const { return fOutputSensor; } 
+  int ArrayPosition() const {return arrayposition; }
 	
   void Print() const{
       printf("======MNEMONIC ======\n");

@@ -129,15 +129,10 @@ TGriffin& TGriffin::operator=(const TGriffin& rhs) {
   return *this;
 }
 
-void TGriffin::PushBackHit(TGRSIDetectorHit *ghit){
-  fGriffinHits.push_back(*static_cast<TGriffinHit*>(ghit));
-}
-
 
 TGRSIDetectorHit* TGriffin::GetHit(const Int_t& idx) {
   return GetGriffinHit(idx);
 }
-
 
 TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
   try {
@@ -211,24 +206,18 @@ void TGriffin::AddFragment(TFragment* frag, TChannel* chan) {
     return;
   }
 
-  if(chan->GetMnemonic()->subsystem[0] == 'G') {
+  switch(chan->GetMnemonic()->SubSystem()){
+      case MNEMONIC::kG :
+         TGriffinHit geHit(*frag);
+         fGriffinHits.push_back(std::move(geHit));
+         break;
+ //     case MNEMONIC::kS :
+      //do supressor stuff
+   //      break;
+  };
+//  if(chan->GetMnemonic()->SubSystem() == MNEMONIC::kG ) {
     //set griffin
-    if(chan->GetMnemonic()->outputsensor[0] == 'B') { return; }  //make this smarter.
-
-    TGriffinHit corehit(*frag);
-    //corehit.SetAddress(frag->GetAddress());
-    //corehit.SetTimeStamp(frag->GetTimeStamp());
-    //corehit.SetCfd(frag->GetCfd());
-    //corehit.SetCharge(frag->GetCharge());
-    //check if this is a fragment where we already pulled the pile-up hits apart
-    //if((frag->Charge.size() == 1) && (frag->NumberOfHits >= 0) && (frag->HitIndex >= 0)) {
-    //corehit.SetNPileUps(frag->NumberOfHits);//We subtract 1 in order to start counter from 0
-    //corehit.SetPUHit(frag->HitIndex);
-    AddHit(&corehit);
-    //}
-  } else if(chan->GetMnemonic()->subsystem[0] == 'S') {
-    //set BGO
-  }
+//    if(chan->GetMnemonic()->outputsensor[0] == 'B') { return; }  //make this smarter.
 }
 
 TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ) {

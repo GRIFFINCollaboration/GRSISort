@@ -6,6 +6,7 @@
 #include <TVirtualIndex.h>
 #include <TTreeIndex.h>
 #include <TH2.h>
+#include <TH3.h>
 
 #include "TFragment.h"
 #include "TChannel.h"
@@ -25,7 +26,8 @@ const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 G
 
 TH2F *cfdhist  = new TH2F("cfd_eng","cfd_eng",120,-20,100,4000,0,4000); 
 TH2F *timehist_walk = new TH2F("time_eng_walk","time_eng_walk",120,-20,100,4000,0,4000); 
-TH2F *timehist = new TH2F("time_eng","time_eng",120,-20,100,4000,0,4000); 
+TH2F *timehist = new TH2F("time_eng","time_eng",400,-200,200,4000,0,4000); 
+TH2F *timehist_nogate = new TH2F("time_eng_nogate","time_eng_nogate",400,-200,200,4000,0,4000); 
 
 TH2F *timehist_walk_bg = new TH2F("time_eng_walk_bg","time_eng_walk_bg",120,-20,100,4000,0,4000); 
 TH2F *timehist_bg = new TH2F("time_eng_bg","time_eng_bg",120,-20,100,4000,0,4000); 
@@ -49,11 +51,25 @@ TH2F *timehist_no0 = new TH2F("time_eng_no0","time_eng_no0",120,-20,100,4000,0,4
 TH2F *timehist_walk_beta = new TH2F("time_eng_walk_beta","time_eng_walk_beta",120,-20,100,4000,0,4000); 
 TH2F *timehist_beta = new TH2F("time_eng_beta","time_eng_beta",120,-20,100,4000,0,4000); 
 
+
+TH3F *timehist_chan = new TH3F("time_engd_chan","time_engd_chan",120,-20,100,2000,0,2000,64,0,64); 
+TH3F *timehist_chan2 = new TH3F("time_engd_chan2","time_engd_chan2",120,-20,100,2000,0,2000,64,0,64); 
+TH3F *timehist_det = new TH3F("time_engd_det","time_engd_det",120,-20,100,2000,0,2000,17,0,17); 
+TH3F *timehist_det2 = new TH3F("time_engd_det2","time_engd_det2",120,-20,100,2000,0,2000,17,0,17); 
+
+TH2F *kValueChan    = new TH2F("kValueChan","kValueChan",800,0,800,65,0,65);
+TH2F *kValueTDiff   = new TH2F("kValueTDiff","kValueTDiff",400,-200,200,800,0,800);
+TH2F *kValueTDiff_samechan   = new TH2F("kValueTDiff_samechan","kValueTDiff_samechan",400,-200,200,800,0,800);
+TH2F *kValueTDiff_nogate   = new TH2F("kValueTDiff_nogate","kValueTDiff_nogate",400,-200,200,800,0,800);
+
 void ProcessEvent(std::vector<TFragment> *event) {
   if(event->size()<2)
      return;
   
   for(size_t x=0;x<event->size();x++) {
+     if(event->at(x).GetDetectorType() == 0){
+         kValueChan->Fill(event->at(x).GetKValue(),event->at(x).GetCrystal()+(event->at(x).GetDetector()-1)*4);
+     }
     for(size_t y=0;y<event->size();y++) {
       if(x==y) continue;
       long timediff      = (event->at(y).GetTimeStamp()-event->at(x).GetTimeStamp());
@@ -71,9 +87,20 @@ void ProcessEvent(std::vector<TFragment> *event) {
       }
 
       if((event->at(x).GetDetectorType() == 0) && (event->at(y).GetDetectorType() == 0)){
+            timehist_nogate->Fill(timediff,event->at(y).GetEnergy());
+            kValueTDiff_nogate->Fill(timediff,event->at(y).GetKValue());
          if(event->at(x).GetEnergy()>1330.0){
             timehist->Fill(timediff,event->at(y).GetEnergy());
             timehist_walk->Fill(timediff_walk,event->at(y).GetEnergy());
+            timehist_chan->Fill(timediff,event->at(y).GetEnergy(),event->at(x).GetCrystal()+(event->at(y).GetDetector()-1)*4);
+            timehist_chan2->Fill(timediff,event->at(y).GetEnergy(),event->at(y).GetCrystal()+(event->at(x).GetDetector()-1)*4);
+            timehist_det->Fill(timediff,event->at(y).GetEnergy(),event->at(y).GetDetector());
+            timehist_det2->Fill(timediff,event->at(y).GetEnergy(),event->at(x).GetDetector());
+            kValueTDiff->Fill(timediff,event->at(y).GetKValue());
+            if(event->at(y).GetAddress() == event->at(x).GetAddress()){
+               kValueTDiff_samechan->Fill(timediff,event->at(y).GetKValue());
+            }
+
 
             if((event->at(x).GetAddress() != 0) && (event->at(y).GetAddress() !=0)){
                timehist_no0->Fill(timediff,event->at(y).GetEnergy());
@@ -110,6 +137,8 @@ void WriteHist() {
    TFile file("junk.root","recreate");
 timehist_walk->Write();
 timehist->Write();
+   
+timehist_nogate->Write();
 
 timehist_walk_bg->Write();
 timehist_bg->Write();
@@ -132,6 +161,16 @@ timehist2->Write();
 
 timehist_beta->Write();
 timehist_walk_beta->Write();
+
+timehist_chan->Write(); 
+timehist_chan2->Write(); 
+timehist_det->Write(); 
+timehist_det2->Write(); 
+
+kValueChan->Write();
+kValueTDiff->Write();
+kValueTDiff_samechan->Write();
+kValueTDiff_nogate->Write();
 }
 
 

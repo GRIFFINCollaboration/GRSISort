@@ -8,6 +8,10 @@ ClassImp(TSiLiHit)
 TSiLiHit::TSiLiHit()  {    Clear(); }
 
 TSiLiHit::TSiLiHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+  
+  if(TGRSIRunInfo::IsWaveformFitting())
+	  SetWavefit(frag);
+    
 }
 
 TSiLiHit::~TSiLiHit()  {  }

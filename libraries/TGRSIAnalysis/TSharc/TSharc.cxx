@@ -91,20 +91,23 @@ void TSharc::AddFragment(TFragment* frag, TChannel* chan) {
     SetMidasTimestamp(frag->GetMidasTimeStamp());
   }
 */
-  if(chan->GetMnemonic()->arraysubposition.compare(0,1,"D") == 0) {
-    if(chan->GetMnemonic()->collectedcharge.compare(0,1,"P") == 0) {
-      
+  switch(chan->GetMnemonic()->ArraySubPosition()){
+      case MNEMONIC::kD :
+         if(chan->GetMnemonic()->CollectedCharge() == MNEMONIC::kP){
+            fFrontFragments.push_back(*frag);
+         }
+         else {
+            fBackFragments.push_back(*frag);
+         }
+         break;
+      case MNEMONIC::kE :
+         fPadFragments.push_back(*frag);
+         break;
+  };
+
       // if(frag->GetDetector()==11 && frag->GetSegment()==16)
       //   return;
       //printf("FRONT:  %s\n",frag->GetName());
-      fFrontFragments.push_back(*frag);
-    } else {
-      //printf("BACK:  %s\n",frag->GetName());
-      fBackFragments.push_back(*frag);
-    }
-  } else if(chan->GetMnemonic()->arraysubposition.compare(0,1,"E") == 0) {
-    fPadFragments.push_back(*frag);
-  }
 }
 
 
@@ -134,7 +137,7 @@ void TSharc::BuildHits() {
       TSharcHit hit;
       hit.SetFront(*front);
       hit.SetBack(*back);
-      fSharcHits.push_back(hit);
+      fSharcHits.push_back(hit);//TODO: consider using std::move here
       front = fFrontFragments.erase(front);
       back  = fBackFragments.erase(back);
     } else {

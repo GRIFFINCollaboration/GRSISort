@@ -31,7 +31,6 @@ class TS3 : public TGRSIDetector {
 		virtual  ~TS3();
 
 		virtual void AddFragment(TFragment*, TChannel*);
-		virtual void BuildHits();
 
 		Short_t GetRingMultiplicity() 	const { return fS3RingHits.size()		; }
 		Short_t GetSectorMultiplicity() const { return fS3SectorHits.size()	; }
@@ -43,7 +42,6 @@ class TS3 : public TGRSIDetector {
 		TGRSIDetectorHit* GetHit(const int& idx =0);
 		TS3Hit* GetS3Hit(const int& i);  
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
-		void PushBackHit(TGRSIDetectorHit* deshit);
 
 		bool MultiHit()										{ return TestBitNumber(kMultHit);	 } // Get allow shared hits
 		void SetMultiHit(bool flag=true)	{ SetBitNumber(kMultHit, flag); SetPixels(false);	 } // Set allow shared hits

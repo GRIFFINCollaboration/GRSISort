@@ -37,7 +37,6 @@ class TTAC : public TGRSIDetector {
       Short_t GetMultiplicity() const	       {	return fTACHits.size(); }	      //!<!
       
       void AddFragment(TFragment*, TChannel*); //!<!
-      void BuildHits() {};  //no need to build any hits, everything already done in AddFragment
       
       TTAC& operator=(const TTAC&);  //!<!
       
@@ -47,9 +46,6 @@ class TTAC : public TGRSIDetector {
    public:
       void Clear(Option_t *opt = "");		//!<!
       void Print(Option_t *opt = "") const;		//!<!
-      
-   protected:
-      void PushBackHit(TGRSIDetectorHit*);
       
       /// \cond CLASSIMP
       ClassDef(TTAC,1)  // TAC Physics structure

@@ -134,9 +134,6 @@ class TTigress : public TGRSIDetector {
     virtual void Print(Option_t *opt = "") const; //!<!
     virtual void Copy(TObject&) const;           //!<!
 
-  protected:
-    void PushBackHit(TGRSIDetectorHit* ghit);
-
 /// \cond CLASSIMP
     ClassDef(TTigress,7)  // Tigress Physics structure
 /// \endcond

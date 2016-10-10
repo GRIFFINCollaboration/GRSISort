@@ -39,7 +39,6 @@ class TZeroDegree : public TGRSIDetector {
       static TVector3 GetPosition(double dist) { return TVector3(0,0,dist); }	//!<!
       
       void AddFragment(TFragment*, TChannel*); //!<!
-      void BuildHits() {} //no need to build any hits, everything already done in AddFragment
       
       TZeroDegree& operator=(const TZeroDegree&);  //!<!
       
@@ -54,9 +53,6 @@ class TZeroDegree : public TGRSIDetector {
    public:
       void Clear(Option_t *opt = "");		//!<!
       void Print(Option_t *opt = "") const;		//!<!
-      
-   protected:
-      void PushBackHit(TGRSIDetectorHit*);
       
       /// \cond CLASSIMP
       ClassDef(TZeroDegree,2)  // ZeroDegree Physics structure

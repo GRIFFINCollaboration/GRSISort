@@ -46,9 +46,6 @@ class TSharc : public TGRSIDetector  {
     void AddFragment(TFragment*, TChannel*); //!<!
     void BuildHits();
 
-  protected:
-    void PushBackHit(TGRSIDetectorHit* sharcHit) { fSharcHits.push_back(*(static_cast<TSharcHit*>(sharcHit))); };
-
   private:
     std::vector <TSharcHit> fSharcHits;
     int  CombineHits(TSharcHit*,TSharcHit*,int,int);        //!<!
