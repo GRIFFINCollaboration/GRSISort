@@ -149,114 +149,115 @@ TGriffinHit* TGriffin::GetGriffinHit(const int& i) {
 }
 
 Int_t TGriffin::GetAddbackMultiplicity() {
-  // Automatically builds the addback hits using the fAddbackCriterion (if the size of the fAddbackHits vector is zero) and return the number of addback hits.
-  if(!IsCrossTalkSet()){
-    //Calculate Cross Talk on each hit
-    FixCrossTalk();
-  }
-  if(fGriffinHits.size() == 0) {
-    return 0;
-  }
-  //if the addback has been reset, clear the addback hits
-  if((fGriffinBits & kIsAddbackSet) == 0x0) {
-    fAddbackHits.clear();
-  }
-  if(fAddbackHits.size() == 0) {
-    // use the first griffin hit as starting point for the addback hits
-    fAddbackHits.push_back(fGriffinHits[0]);
-    fAddbackFrags.push_back(1);
+   // Automatically builds the addback hits using the fAddbackCriterion (if the size of the fAddbackHits vector is zero) and return the number of addback hits.
+   if(!IsCrossTalkSet()){
+      //Calculate Cross Talk on each hit
+      FixCrossTalk();
+   }
+   if(fGriffinHits.size() == 0) {
+      return 0;
+   }
+   //if the addback has been reset, clear the addback hits
+   if((fGriffinBits & kIsAddbackSet) == 0x0) {
+      fAddbackHits.clear();
+   }
+   if(fAddbackHits.size() == 0) {
+      // use the first griffin hit as starting point for the addback hits
+      fAddbackHits.push_back(fGriffinHits[0]);
+      fAddbackFrags.push_back(1);
 
-    // loop over remaining griffin hits
-    size_t i, j;
-    for(i = 1; i < fGriffinHits.size(); ++i) {
-      // check for each existing addback hit if this griffin hit should be added
-      for(j = 0; j < fAddbackHits.size(); ++j) {
-        if(fAddbackCriterion(fAddbackHits[j], fGriffinHits[i])) {
-          fAddbackHits[j].Add(&(fGriffinHits[i]));
-          fAddbackFrags[j]++;
-          break;
-        }
+      // loop over remaining griffin hits
+      size_t i, j;
+      for(i = 1; i < fGriffinHits.size(); ++i) {
+         // check for each existing addback hit if this griffin hit should be added
+         for(j = 0; j < fAddbackHits.size(); ++j) {
+            if(fAddbackCriterion(fAddbackHits[j], fGriffinHits[i])) {
+               fAddbackHits[j].Add(&(fGriffinHits[i]));
+               fAddbackFrags[j]++;
+               break;
+            }
+         }
+         if(j == fAddbackHits.size()) {
+            fAddbackHits.push_back(fGriffinHits[i]);
+            fAddbackFrags.push_back(1);
+         }
       }
-      if(j == fAddbackHits.size()) {
-        fAddbackHits.push_back(fGriffinHits[i]);
-        fAddbackFrags.push_back(1);
-      }
-    }
-    SetBitNumber(kIsAddbackSet, true);
-  }
+      SetBitNumber(kIsAddbackSet, true);
+   }
 
 
-  return fAddbackHits.size();
+   return fAddbackHits.size();
 }
 
 TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
-  if(i < GetAddbackMultiplicity()) {
-    return &fAddbackHits.at(i);
-  } else {
-    std::cerr << "Addback hits are out of range" << std::endl;
-    throw grsi::exit_exception(1);
-    return NULL;
-  }
+   if(i < GetAddbackMultiplicity()) {
+      return &fAddbackHits.at(i);
+   } else {
+      std::cerr << "Addback hits are out of range" << std::endl;
+      throw grsi::exit_exception(1);
+      return NULL;
+   }
 }
 
 void TGriffin::AddFragment(TFragment* frag, TChannel* chan) {
-  //Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the hits for an event and sets observables. 
-  //This is done for both GRIFFIN and it's suppressors.
-  if(frag == NULL || chan == NULL) {
-    return;
-  }
+   //Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the hits for an event and sets observables. 
+   //This is done for both GRIFFIN and it's suppressors.
+   if(frag == NULL || chan == NULL) {
+      return;
+   }
+   if(chan->GetMnemonic()->OutputSensor() == MNEMONIC::kB) { return; }  //make this smarter.
 
-  switch(chan->GetMnemonic()->SubSystem()){
+   switch(chan->GetMnemonic()->SubSystem()){
       case MNEMONIC::kG :
          TGriffinHit geHit(*frag);
          fGriffinHits.push_back(std::move(geHit));
          break;
- //     case MNEMONIC::kS :
-      //do supressor stuff
-   //      break;
-  };
-//  if(chan->GetMnemonic()->SubSystem() == MNEMONIC::kG ) {
-    //set griffin
-//    if(chan->GetMnemonic()->outputsensor[0] == 'B') { return; }  //make this smarter.
+         //     case MNEMONIC::kS :
+         //do supressor stuff
+         //      break;
+   };
+   //  if(chan->GetMnemonic()->SubSystem() == MNEMONIC::kG ) {
+   //set griffin
+   //    if(chan->GetMnemonic()->outputsensor[0] == 'B') { return; }  //make this smarter.
 }
 
 TVector3 TGriffin::GetPosition(int DetNbr,int CryNbr, double dist ) {
-  //Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
-  //This is calculated to the most likely interaction point within the crystal.
-  if(DetNbr>16)
-    return TVector3(0,0,1);
+   //Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
+   //This is calculated to the most likely interaction point within the crystal.
+   if(DetNbr>16)
+      return TVector3(0,0,1);
 
-  TVector3 temp_pos(gCloverPosition[DetNbr]);
+   TVector3 temp_pos(gCloverPosition[DetNbr]);
 
-  //Interaction points may eventually be set externally. May make these members of each crystal, or pass from waveforms.
-  Double_t cp = 26.0; //Crystal Center Point  mm.
-  Double_t id = 45.0;//45.0;  //Crystal interaction depth mm.
-  //Set Theta's of the center of each DETECTOR face
-  ////Define one Detector position
-  TVector3 shift;
-  switch(CryNbr) {
-    case 0:
-      shift.SetXYZ(-cp,cp,id);
-      break;
-    case 1:
-      shift.SetXYZ(cp,cp,id);
-      break;
-    case 2:
-      shift.SetXYZ(cp,-cp,id);
-      break;
-    case 3:
-      shift.SetXYZ(-cp,-cp,id);
-      break;
-    default:
-      shift.SetXYZ(0,0,1);
-      break;
-  };
-  shift.RotateY(temp_pos.Theta());
-  shift.RotateZ(temp_pos.Phi());
+   //Interaction points may eventually be set externally. May make these members of each crystal, or pass from waveforms.
+   Double_t cp = 26.0; //Crystal Center Point  mm.
+   Double_t id = 45.0;//45.0;  //Crystal interaction depth mm.
+   //Set Theta's of the center of each DETECTOR face
+   ////Define one Detector position
+   TVector3 shift;
+   switch(CryNbr) {
+      case 0:
+         shift.SetXYZ(-cp,cp,id);
+         break;
+      case 1:
+         shift.SetXYZ(cp,cp,id);
+         break;
+      case 2:
+         shift.SetXYZ(cp,-cp,id);
+         break;
+      case 3:
+         shift.SetXYZ(-cp,-cp,id);
+         break;
+      default:
+         shift.SetXYZ(0,0,1);
+         break;
+   };
+   shift.RotateY(temp_pos.Theta());
+   shift.RotateZ(temp_pos.Phi());
 
-  temp_pos.SetMag(dist);
+   temp_pos.SetMag(dist);
 
-  return (temp_pos + shift);
+   return (temp_pos + shift);
 
 }
 
@@ -266,32 +267,32 @@ void TGriffin::ResetFlags(){
 
 
 void TGriffin::ResetAddback() {
-  //Used to clear the addback hits. When playing back a tree, this must
-  //be called before building the new addback hits, otherwise, a copy of
-  //the old addback hits will be stored instead.
-  //This should have changed now, we're using the stored griffin bits to reset the addback
-  //unset the addback bit in fGriffinBits
-  SetBitNumber(kIsAddbackSet, false);
-  SetBitNumber(kIsCrossTalkSet,false);
-  fAddbackHits.clear();
-  fAddbackFrags.clear();
+   //Used to clear the addback hits. When playing back a tree, this must
+   //be called before building the new addback hits, otherwise, a copy of
+   //the old addback hits will be stored instead.
+   //This should have changed now, we're using the stored griffin bits to reset the addback
+   //unset the addback bit in fGriffinBits
+   SetBitNumber(kIsAddbackSet, false);
+   SetBitNumber(kIsCrossTalkSet,false);
+   fAddbackHits.clear();
+   fAddbackFrags.clear();
 }
 
 UShort_t TGriffin::GetNAddbackFrags(size_t idx) const{
-  //Get the number of addback "fragments" contributing to the total addback hit
-  //with index idx.
-  if(idx < fAddbackFrags.size())
-    return fAddbackFrags.at(idx);   
-  else
-    return 0;
+   //Get the number of addback "fragments" contributing to the total addback hit
+   //with index idx.
+   if(idx < fAddbackFrags.size())
+      return fAddbackFrags.at(idx);   
+   else
+      return 0;
 }
 
 void TGriffin::SetBitNumber(enum EGriffinBits bit,Bool_t set){
-  //Used to set the flags that are stored in TGriffin.
-  if(set)
-    fGriffinBits |= bit;
-  else
-    fGriffinBits &= (~bit);
+   //Used to set the flags that are stored in TGriffin.
+   if(set)
+      fGriffinBits |= bit;
+   else
+      fGriffinBits &= (~bit);
 }
 
 Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, const TGriffinHit* const other_hit, Bool_t time_constraint){
@@ -328,7 +329,7 @@ void TGriffin::FixCrossTalk() {
    if(TGRSIRunInfo::Get()->IsCorrectingCrossTalk()){
       size_t i, j;
       for(i = 0; i < fGriffinHits.size(); ++i) {
-	      for(j = i+1; j < fGriffinHits.size(); ++j) {
+         for(j = i+1; j < fGriffinHits.size(); ++j) {
             fGriffinHits[i].SetEnergy(TGriffin::CTCorrectedEnergy(&(fGriffinHits[i]),&(fGriffinHits[j])));
             fGriffinHits[j].SetEnergy(TGriffin::CTCorrectedEnergy(&(fGriffinHits[j]),&(fGriffinHits[i])));
          }

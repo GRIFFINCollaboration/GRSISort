@@ -347,23 +347,31 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt){
       if(file->FindObjectAny("FragmentTree")) {
         if(!gFragment) {
           // TODO: Once we have a notifier set up
-          gFragment = new TChain("FragmentTree");
+          gFragment = new TChain("FragmentChain");
           //gFragment->SetNotify(GrutNotifier::Get());
         }
         printf("file %s added to gFragment.\n",file->GetName());
-        gFragment->Add(file->GetName());
+#if MAJOR_ROOT_VERSION < 6
+        gFragment->AddFile(file->GetName(),TChain::kBigNumber, "FragmentTree");
+#else
+        gFragment->AddFile(file->GetName(),TTree::kMaxEntries, "FragmentTree");
+#endif
       }
 
 
-      // If FragmentTree exists, add the file to the chain.
+      // If AnalysisTree exists, add the file to the chain.
       if(file->FindObjectAny("AnalysisTree")) {
         if(!gAnalysis) {
-          gAnalysis = new TChain("AnalysisTree");
+          gAnalysis = new TChain("AnalysisChain");
           // TODO: Once we have a notifier set up
           //gAnalysis->SetNotify(GrutNotifier::Get());
         }
         printf("file %s added to gAnalysis.\n",file->GetName());
-        gAnalysis->Add(file->GetName());
+#if MAJOR_ROOT_VERSION < 6
+        gAnalysis->AddFile(file->GetName(),TChain::kBigNumber, "AnalysisTree");
+#else
+        gAnalysis->AddFile(file->GetName(),TTree::kMaxEntries, "AnalysisTree");
+#endif
       }
 
       if(file->FindObjectAny("TChannel")){
