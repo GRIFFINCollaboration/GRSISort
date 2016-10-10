@@ -69,9 +69,9 @@ class TTipHit : public TGRSIDetectorHit {
 				Error("SetDetector","No TChannel exists for address %u",GetAddress());
 				return;
 			}
-			Int_t tmp = atoi(channel->GetMnemonic()->arraysubposition.c_str()); 
-			SetTipChannel(10*channel->GetMnemonic()->arrayposition + tmp); 
-			if(channel->GetMnemonic()->subsystem.compare(0,1,"W")==0)
+			Int_t tmp = atoi(channel->GetMnemonic()->ArraySubPositionString().c_str()); 
+			SetTipChannel(10*channel->GetMnemonic()->ArrayPosition() + tmp); 
+			if(channel->GetMnemonic()->SubSystemString().compare(0,1,"W")==0)
 				SetCsI();
 	 }
 

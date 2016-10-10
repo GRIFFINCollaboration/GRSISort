@@ -43,7 +43,7 @@ Short_t TS3Hit::GetMnemonicSegment(TFragment &frag){//could be added to TGRSIDet
 		Error("SetDetector","No TChannel exists for address %u",GetAddress());
 		return 0;
 	}
-	return channel->GetMnemonic()->segment;
+	return channel->GetMnemonic()->Segment();
 }
 
 void TS3Hit::SetWavefit(TFragment &frag)   {

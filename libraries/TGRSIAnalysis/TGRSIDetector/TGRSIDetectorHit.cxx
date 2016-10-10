@@ -157,17 +157,11 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
 
 Int_t TGRSIDetectorHit::GetDetector() const {
 
-  //if(IsDetSet())
-  //  return fDetector;
-
-  //MNEMONIC mnemonic;
   TChannel* channel = GetChannel();
   if(!channel) {
     Error("GetDetector","No TChannel exists for address 0x%08x",GetAddress());
     return -1;
   }
-  //ClearMNEMONIC(&mnemonic);
-  //ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
   return channel->GetDetectorNumber(); //mnemonic.arrayposition;
 
 }

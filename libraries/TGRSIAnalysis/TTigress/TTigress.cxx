@@ -208,7 +208,8 @@ void TTigress::AddFragment(TFragment* frag, TChannel* chan) {
   //fflush(stdout);
   ///frag->Print("all");
 
-  if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) &&
+ // if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) &&
+  if((chan->GetMnemonic()->SubSystem() == TMnemonic::kG) &&
      (chan->GetSegmentNumber()==0 || chan->GetSegmentNumber()==9) ) { // it is a core
     //if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
     //  return;
@@ -220,7 +221,8 @@ void TTigress::AddFragment(TFragment* frag, TChannel* chan) {
       if((hit.GetDetector() == chan->GetDetectorNumber()) &&
 	 (hit.GetCrystal() == chan->GetCrystalNumber())) { //we have a match;
         //if(hit.Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
-        if(chan->GetMnemonic()->outputsensor.compare(0,1,"b")==0) {
+        //if(chan->GetMnemonic()->outputsensor.compare(0,1,"b")==0) {
+        if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kB) {
           if(hit.GetName()[9] == 'a') {
             return;
           } else  {
@@ -242,7 +244,8 @@ void TTigress::AddFragment(TFragment* frag, TChannel* chan) {
       corehit.CopyWave(*frag);
     fTigressHits.push_back(corehit);
     return;
-  } else if(chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) { // its ge but its not a core...
+  //} else if(chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) { // its ge but its not a core...
+  } else if(chan->GetMnemonic()->SubSystem() == TMnemonic::kG) { // its ge but its not a core...
     TGRSIDetectorHit temp(*frag);
     for(size_t i = 0; i < fTigressHits.size(); ++i)	{
       TTigressHit& hit = GetTigressHit(i);
@@ -266,7 +269,8 @@ void TTigress::AddFragment(TFragment* frag, TChannel* chan) {
     //   fflush(stdout);
     //}
     return;
-  } else if(chan->GetMnemonic()->subsystem.compare(0,1,"S")==0) {
+ // } else if(chan->GetMnemonic()->subsystem.compare(0,1,"S")==0) {
+  } else if(chan->GetMnemonic()->SubSystem() == TMnemonic::kS) {
     TBgoHit temp(*frag);
     fBgos.push_back(temp);
     return;
