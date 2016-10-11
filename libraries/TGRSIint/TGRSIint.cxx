@@ -23,7 +23,7 @@
 #include "TTerminalLoop.h"
 #include "TUnpackingLoop.h"
 #include "TPPG.h"
-
+#include "TSortingDiagnostics.h"
 
 #include "GRootCommands.h"
 #include "TGRSIRunInfo.h"
@@ -212,6 +212,10 @@ void TGRSIint::Terminate(Int_t status){
   }
 
   StoppableThread::StopAll();
+
+  if(TSortingDiagnostics::Get()->NumberOfFragmentsOutOfOrder() > 0) {
+	  std::cerr<<DRED<<TSortingDiagnostics::Get()->NumberOfFragmentsOutOfOrder()<<" fragments were out of order!"<<RESET_COLOR<<std::endl;
+  }
 
   //if(GUIIsRunning()){
   //  TPython::Exec("on_close()");

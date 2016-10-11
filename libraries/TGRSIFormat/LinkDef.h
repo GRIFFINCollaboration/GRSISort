@@ -1,4 +1,4 @@
-// TFragment.h TChannel.h TGRSIRunInfo.h TGRSISortInfo.h TFragmentQueue.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h
+// TFragment.h TChannel.h TGRSIRunInfo.h TGRSISortInfo.h TFragmentQueue.h TPPG.h TEpicsFrag.h TScaler.h TScalerQueue.h TParsingDiagnostics.h TGRSIUtilities.h TMnemonic.h TSortingDiagnostics.h
 
 #ifdef __CINT__
 
@@ -29,6 +29,7 @@
 #pragma link C++ class std::map<UInt_t, std::map<ULong64_t, TScalerData*> >;
 #pragma link C++ class std::map<ULong64_t, TScalerData*>;
 #pragma link C++ class TParsingDiagnostics+;
+#pragma link C++ class TSortingDiagnostics+;
 #pragma link C++ class TMnemonic;
 
 #pragma link C++ function GetRunNumber;
