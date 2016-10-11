@@ -178,7 +178,7 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
     return false;
 
   option.ToUpper();
-  //Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs to be done
+  //Could also do everything below with TMnemonic. This limits the amount of string processing that needs to be done
   //Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then checks
   //for conditions.
   if(!channame.compare(0,pre.length(),pre)) {     //channame.BeginsWith(pre)){

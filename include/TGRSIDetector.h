@@ -58,8 +58,8 @@ class TGRSIDetector : public TDetector	{
     //Long_t fMidasTimestamp;
 
     /// \cond CLASSIMP
-    ClassDef(TGRSIDetector,1) //Abstract class for detector systems 
-      /// \endcond
+	 ClassDef(TGRSIDetector,1) //Abstract class for detector systems 
+	 /// \endcond
 };
 /*! @} */
 #endif

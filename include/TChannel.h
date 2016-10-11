@@ -40,7 +40,7 @@
 #include "TList.h"
 #include "TTree.h"
 #include "TClass.h"
-
+#include "TMnemonic.h"
 #include "Globals.h"
 
 class TChannel : public TNamed	{
@@ -83,7 +83,7 @@ class TChannel : public TNamed	{
       mutable int       fCrystalNumber; 
       double            fTimeOffset;
       mutable TClass*   fClassType;          //!<! TGRSIDetector Type that this channel represents
-	   MNEMONIC          fMnemonic;
+	   TMnemonic         fMnemonic;
 
 
       std::vector<Float_t> fENGCoefficients;  //Energy calibration coeffs (low to high order)
@@ -135,7 +135,7 @@ class TChannel : public TNamed	{
       int GetSegmentNumber()  const;  
       int GetCrystalNumber()  const;  
       TClass* GetClassType() const;
-      const MNEMONIC* GetMnemonic() const  { return &fMnemonic; }
+      const TMnemonic* GetMnemonic() const  { return &fMnemonic; }
 
       int	GetNumber()		          { return fNumber;  }
       unsigned int	GetAddress()    { return fAddress; }

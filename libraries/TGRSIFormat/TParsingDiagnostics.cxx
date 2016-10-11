@@ -1,41 +1,43 @@
-#include "TDiagnostics.h"
+#include "TParsingDiagnostics.h"
 
 #include <fstream>
 
 #include "TChannel.h"
 
-TDiagnostics::TDiagnostics() : TObject() {
+TParsingDiagnostics* TParsingDiagnostics::fParsingDiagnostics = NULL;
+
+TParsingDiagnostics::TParsingDiagnostics() : TObject() {
 	fIdHist = NULL;
 	Clear();
 }
 
-TDiagnostics::TDiagnostics(const TDiagnostics& rhs) : TObject() {
+TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics& rhs) : TObject() {
 	fIdHist = NULL;
 	Clear();
 }
 
-TDiagnostics::~TDiagnostics() {
+TParsingDiagnostics::~TParsingDiagnostics() {
 	if(fIdHist != NULL) delete fIdHist;
 }
 
-void TDiagnostics::Copy(TObject& obj) const {
-	static_cast<TDiagnostics&>(obj).fPPGCycleLength = fPPGCycleLength;
-	static_cast<TDiagnostics&>(obj).fNumberOfGoodFragments = fNumberOfGoodFragments;
-	static_cast<TDiagnostics&>(obj).fNumberOfBadFragments = fNumberOfBadFragments;
-	static_cast<TDiagnostics&>(obj).fMinChannelId = fMinChannelId;
-	static_cast<TDiagnostics&>(obj).fMaxChannelId = fMaxChannelId;
-	static_cast<TDiagnostics&>(obj).fDeadTime = fDeadTime;
-	static_cast<TDiagnostics&>(obj).fMinTimeStamp = fMinTimeStamp;
-	static_cast<TDiagnostics&>(obj).fMaxTimeStamp = fMaxTimeStamp;
-	static_cast<TDiagnostics&>(obj).fMinMidasTimeStamp = fMinMidasTimeStamp;
-	static_cast<TDiagnostics&>(obj).fMaxMidasTimeStamp = fMaxMidasTimeStamp;
-	static_cast<TDiagnostics&>(obj).fMinNetworkPacketNumber = fMinNetworkPacketNumber;
-	static_cast<TDiagnostics&>(obj).fMaxNetworkPacketNumber = fMaxNetworkPacketNumber;
-	static_cast<TDiagnostics&>(obj).fNumberOfNetworkPackets = fNumberOfNetworkPackets;
-	static_cast<TDiagnostics&>(obj).fNumberOfHits = fNumberOfHits;
+void TParsingDiagnostics::Copy(TObject& obj) const {
+	static_cast<TParsingDiagnostics&>(obj).fPPGCycleLength = fPPGCycleLength;
+	static_cast<TParsingDiagnostics&>(obj).fNumberOfGoodFragments = fNumberOfGoodFragments;
+	static_cast<TParsingDiagnostics&>(obj).fNumberOfBadFragments = fNumberOfBadFragments;
+	static_cast<TParsingDiagnostics&>(obj).fMinChannelId = fMinChannelId;
+	static_cast<TParsingDiagnostics&>(obj).fMaxChannelId = fMaxChannelId;
+	static_cast<TParsingDiagnostics&>(obj).fDeadTime = fDeadTime;
+	static_cast<TParsingDiagnostics&>(obj).fMinTimeStamp = fMinTimeStamp;
+	static_cast<TParsingDiagnostics&>(obj).fMaxTimeStamp = fMaxTimeStamp;
+	static_cast<TParsingDiagnostics&>(obj).fMinMidasTimeStamp = fMinMidasTimeStamp;
+	static_cast<TParsingDiagnostics&>(obj).fMaxMidasTimeStamp = fMaxMidasTimeStamp;
+	static_cast<TParsingDiagnostics&>(obj).fMinNetworkPacketNumber = fMinNetworkPacketNumber;
+	static_cast<TParsingDiagnostics&>(obj).fMaxNetworkPacketNumber = fMaxNetworkPacketNumber;
+	static_cast<TParsingDiagnostics&>(obj).fNumberOfNetworkPackets = fNumberOfNetworkPackets;
+	static_cast<TParsingDiagnostics&>(obj).fNumberOfHits = fNumberOfHits;
 }
 
-void TDiagnostics::Clear(Option_t* opt) {
+void TParsingDiagnostics::Clear(Option_t* opt) {
 	if(fIdHist != NULL) delete fIdHist;
 	fIdHist = NULL;
 	fPPGCycleLength = 0;
@@ -54,7 +56,7 @@ void TDiagnostics::Clear(Option_t* opt) {
 	fNumberOfHits.clear();
 }
 
-void TDiagnostics::Print(Option_t* opt) const {
+void TParsingDiagnostics::Print(Option_t* opt) const {
 	std::cout<<"Total run time of this (sub-)run is "<<fMaxMidasTimeStamp-fMinMidasTimeStamp<<" s"<<std::endl
 				<<"PPG cycle is "<<fPPGCycleLength/1e5<<" ms long."<<std::endl
 				<<"Found "<<fNumberOfNetworkPackets<<" network packets in range "<<fMinNetworkPacketNumber<<" - "<<fMaxNetworkPacketNumber<<" => "<<100.*fNumberOfNetworkPackets/(fMaxNetworkPacketNumber-fMinNetworkPacketNumber+1.)<<" % packet survival."<<std::endl;
@@ -77,7 +79,7 @@ void TDiagnostics::Print(Option_t* opt) const {
 	}
 }
 
-void TDiagnostics::GoodFragment(TFragment* frag) {
+void TParsingDiagnostics::GoodFragment(TFragment* frag) {
 	///increment the counter of good fragments for this detector type and check if any trigger ids have been lost
 	fNumberOfGoodFragments[frag->GetDetectorType()]++;
 
@@ -137,14 +139,14 @@ void TDiagnostics::GoodFragment(TFragment* frag) {
 	}
 }
 
-void TDiagnostics::ReadPPG(TPPG* ppg) {
+void TParsingDiagnostics::ReadPPG(TPPG* ppg) {
 	///store different TPPG diagnostics like cycle length, length of each state, offset, how often each state was found
 	if(ppg == NULL) return;
 	fPPGCycleLength = ppg->GetCycleLength();
 	
 }
 
-void TDiagnostics::Draw(Option_t* opt) {
+void TParsingDiagnostics::Draw(Option_t* opt) {
 	Short_t minChannel = fNumberOfHits.begin()->first;
 	Short_t maxChannel = std::prev(fNumberOfHits.end())->first;
 
@@ -169,7 +171,7 @@ void TDiagnostics::Draw(Option_t* opt) {
 	fIdHist->Draw(opt);
 }
 
-void TDiagnostics::WriteToFile(const char* fileName) const {
+void TParsingDiagnostics::WriteToFile(const char* fileName) const {
 	std::ofstream statsOut(fileName);
 	statsOut<<std::endl
 			  <<"Run time to the nearest second = "<<fMaxMidasTimeStamp-fMinMidasTimeStamp<<std::endl

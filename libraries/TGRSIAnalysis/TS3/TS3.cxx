@@ -1,4 +1,6 @@
 #include "TS3.h"
+#include "TMnemonic.h"
+
 #include <cmath>
 #include "TMath.h"
 
@@ -53,7 +55,7 @@ void TS3::AddFragment(TFragment* frag, TChannel* chan) {
 
 	bool IsDownstream = false;	
    //preferably channel would be pushed to the ctor as well and all of this would be done in the ctor
-   if(chan->GetMnemonic()->CollectedCharge() == MNEMONIC::kN){
+   if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kN){
 		dethit.SetRingNumber(*frag);
 		dethit.SetSectorNumber(0);
 		if(chan->GetMnemonic()->ArrayPosition() == 0 || chan->GetMnemonic()->ArrayPosition() == 2)

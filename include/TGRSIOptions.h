@@ -41,6 +41,8 @@ public:
   const std::vector<std::string>& OptionFiles() { return options_file; }
 
   int BuildWindow() const { return fBuildWindow; }
+  int AddbackWindow() const { return fAddbackWindow; }
+  bool StaticWindow() const { return fStaticWindow; }
   bool RecordDialog() const { return fRecordDialog; }
   bool StartGui() const { return fStartGui; }
 
@@ -153,6 +155,7 @@ private:
 
   int fBuildWindow;
   int fAddbackWindow;
+  bool fStaticWindow;
 
   bool fShouldExit;
 

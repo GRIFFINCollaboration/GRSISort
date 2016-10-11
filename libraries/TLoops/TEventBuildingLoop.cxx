@@ -1,5 +1,8 @@
 #include "TEventBuildingLoop.h"
 
+#include "TGRSIOptions.h"
+#include "TSortingDiagnostics.h"
+
 #include <chrono>
 #include <thread>
 
@@ -114,10 +117,11 @@ void TEventBuildingLoop::CheckBuildCondition(TFragment* frag) {
 void TEventBuildingLoop::CheckTimestampCondition(TFragment* frag) {
 	long timestamp = frag->GetTimeStamp();
 	long event_start = (fNextEvent.size() ?
-			fNextEvent[0]->GetTimeStamp() :
+			( TGRSIOptions::Get()->StaticWindow() ? fNextEvent[0]->GetTimeStamp() : fNextEvent.back()->GetTimeStamp() ) :
 			timestamp);
 
 	if(timestamp < event_start) {
+		TSortingDiagnostics::Get()->OutOfOrder(timestamp, event_start);
 		if(!fPreviousSortingDepthError) {
 			std::cerr << "Sorting depth of " << fSortingDepth << " was insufficient. timestamp: " << timestamp << " Last: " << event_start << " \n"
 				<< "Not all events were built correctly" << std::endl;
@@ -139,6 +143,7 @@ void TEventBuildingLoop::CheckTriggerIdCondition(TFragment* frag) {
 			trigger_id);
 
 	if(trigger_id < current_trigger_id) {
+		TSortingDiagnostics::Get()->OutOfOrder(trigger_id, current_trigger_id);
 		if(!fPreviousSortingDepthError) {
 			std::cerr << "Sorting depth of " << fSortingDepth << " was insufficient.\n"
 				<< "Not all events were built correctly" << std::endl;

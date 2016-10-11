@@ -1,4 +1,5 @@
 #include "TSharc.h"
+#include "TMnemonic.h"
 
 #include <cstdio>
 #include <iostream>
@@ -92,15 +93,15 @@ void TSharc::AddFragment(TFragment* frag, TChannel* chan) {
   }
 */
   switch(chan->GetMnemonic()->ArraySubPosition()){
-      case MNEMONIC::kD :
-         if(chan->GetMnemonic()->CollectedCharge() == MNEMONIC::kP){
+      case TMnemonic::kD :
+         if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kP){
             fFrontFragments.push_back(*frag);
          }
          else {
             fBackFragments.push_back(*frag);
          }
          break;
-      case MNEMONIC::kE :
+      case TMnemonic::kE :
          fPadFragments.push_back(*frag);
          break;
   };

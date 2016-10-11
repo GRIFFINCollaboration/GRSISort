@@ -5,6 +5,7 @@
 #include "TRandom.h"
 #include "TMath.h"
 #include "TInterpreter.h"
+#include "TMnemonic.h"
 
 #include "TGRSIRunInfo.h"
 
@@ -205,18 +206,18 @@ void TGriffin::AddFragment(TFragment* frag, TChannel* chan) {
    if(frag == NULL || chan == NULL) {
       return;
    }
-   if(chan->GetMnemonic()->OutputSensor() == MNEMONIC::kB) { return; }  //make this smarter.
+   if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kB) { return; }  //make this smarter.
 
    switch(chan->GetMnemonic()->SubSystem()){
-      case MNEMONIC::kG :
+      case TMnemonic::kG :
          TGriffinHit geHit(*frag);
          fGriffinHits.push_back(std::move(geHit));
          break;
-         //     case MNEMONIC::kS :
+         //     case TMnemonic::kS :
          //do supressor stuff
          //      break;
    };
-   //  if(chan->GetMnemonic()->SubSystem() == MNEMONIC::kG ) {
+   //  if(chan->GetMnemonic()->SubSystem() == TMnemonic::kG ) {
    //set griffin
    //    if(chan->GetMnemonic()->outputsensor[0] == 'B') { return; }  //make this smarter.
 }

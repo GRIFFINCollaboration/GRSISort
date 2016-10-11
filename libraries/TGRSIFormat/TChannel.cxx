@@ -1119,7 +1119,7 @@ int TChannel::GetDetectorNumber() const {
 	if(fDetectorNumber>-1) //||fDetectorNumber==0x0fffffff)
 		return fDetectorNumber;
 
-  fDetectorNumber = (int32_t)fMnemonic.arrayposition;
+  fDetectorNumber = (int32_t)fMnemonic.ArrayPosition();
   return fDetectorNumber;
 }
 
@@ -1128,49 +1128,49 @@ TClass* TChannel::GetClassType() const {
 		return fClassType;
 
    switch(fMnemonic.System()){
-      case MNEMONIC::kTigress:
+      case TMnemonic::kTigress:
          fClassType = TTigress::Class();
          break;
-      case MNEMONIC::kSharc:
+      case TMnemonic::kSharc:
          fClassType = TSharc::Class();
          break;
-      case MNEMONIC::kTriFoil:
+      case TMnemonic::kTriFoil:
          fClassType = TTriFoil::Class();
          break;
-      case MNEMONIC::kRF:
+      case TMnemonic::kRF:
          fClassType = TRF::Class();
          break;
-      case MNEMONIC::kSiLi:
+      case TMnemonic::kSiLi:
          fClassType = TSiLi::Class();
          break;
-      case MNEMONIC::kS3:
+      case TMnemonic::kS3:
          fClassType = TS3::Class();
          break;
-      case MNEMONIC::kCSM:
+      case TMnemonic::kCSM:
          fClassType = TCSM::Class();
          break;
-      case MNEMONIC::kGriffin:
+      case TMnemonic::kGriffin:
          fClassType = TGriffin::Class();
          break;
-      case MNEMONIC::kSceptar:
+      case TMnemonic::kSceptar:
          fClassType = TSceptar::Class();
          break;
-      case MNEMONIC::kPaces:
+      case TMnemonic::kPaces:
          fClassType = TPaces::Class();
          break;
-      case MNEMONIC::kDescant:
+      case TMnemonic::kDescant:
          fClassType = TDescant::Class();
          break;
-      case MNEMONIC::kLaBr:
+      case TMnemonic::kLaBr:
          fClassType = TLaBr::Class();
          break;
-      case MNEMONIC::kTAC:
+      case TMnemonic::kTAC:
          fClassType = TTAC::Class();
          break;
-      case MNEMONIC::kZeroDegree:
+      case TMnemonic::kZeroDegree:
          fClassType = TZeroDegree::Class();
          break;
-      case MNEMONIC::kTip:
+      case TMnemonic::kTip:
          fClassType = TTip::Class();
          break;
       default:
@@ -1192,7 +1192,7 @@ int TChannel::GetSegmentNumber() const {
    	 fSegmentNumber = (int32_t)atoi(buf.c_str());
    }
    else{   
-   	 fSegmentNumber = (int32_t)fMnemonic.segment;
+   	 fSegmentNumber = (int32_t)fMnemonic.Segment();
    }
    return fSegmentNumber;
 }
@@ -1202,16 +1202,16 @@ int TChannel::GetCrystalNumber() const {
     return fCrystalNumber;
 
   switch(fMnemonic.ArraySubPosition()) {
-     case MNEMONIC::kB:
+     case TMnemonic::kB:
       fCrystalNumber = 0;
       break;
-     case MNEMONIC::kG:
+     case TMnemonic::kG:
       fCrystalNumber = 1;
       break;
-     case MNEMONIC::kR:
+     case TMnemonic::kR:
       fCrystalNumber = 2;
       break;
-     case MNEMONIC::kW:
+     case TMnemonic::kW:
       fCrystalNumber = 3;  
       break;
     default:

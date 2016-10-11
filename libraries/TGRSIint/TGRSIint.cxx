@@ -1,5 +1,4 @@
 #include "TGRSIint.h"
-#include "TGRSILoop.h"
 
 #include "GRootGuiFactory.h"
 #include "GRSIVersion.h"
@@ -7,8 +6,6 @@
 #include "Globals.h"
 #include "TDataParser.h"
 #include "TGRSIOptions.h"
-#include "TGRSIOptions.h"
-#include "TGRSIRootIO.h"
 #include "TGRSIUtilities.h"
 #include "GValue.h"
 #include "TROOT.h"
@@ -25,7 +22,7 @@
 #include "TTerminalLoop.h"
 #include "TUnpackingLoop.h"
 #include "TPPG.h"
-
+#include "TSortingDiagnostics.h"
 
 #include "GRootCommands.h"
 #include "TGRSIRunInfo.h"
@@ -214,6 +211,10 @@ void TGRSIint::Terminate(Int_t status){
   }
 
   StoppableThread::StopAll();
+
+  if(TSortingDiagnostics::Get()->NumberOfFragmentsOutOfOrder() > 0) {
+	  std::cerr<<DRED<<TSortingDiagnostics::Get()->NumberOfFragmentsOutOfOrder()<<" fragments were out of order!"<<RESET_COLOR<<std::endl;
+  }
 
   //if(GUIIsRunning()){
   //  TPython::Exec("on_close()");
