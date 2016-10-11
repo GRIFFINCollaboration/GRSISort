@@ -1,5 +1,4 @@
 #include "TGRSIint.h"
-#include "TGRSILoop.h"
 
 #include "GRootGuiFactory.h"
 #include "GRSIVersion.h"

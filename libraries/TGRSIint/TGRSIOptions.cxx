@@ -81,6 +81,8 @@ void TGRSIOptions::Clear(Option_t* opt) {
   fTimeSortInput = false;
 
   fBuildWindow = 200;
+  fAddbackWindow = 300;
+  fStaticWindow = false;
 
   fShouldExit = false;
 
@@ -121,6 +123,8 @@ void TGRSIOptions::Print(Option_t* opt) const {
 			  <<"fSortDepth: "<<fSortDepth<<std::endl
 			  <<std::endl
 			  <<"fBuildWindow: "<<fBuildWindow<<std::endl
+			  <<"fAddbackWindow: "<<fAddbackWindow<<std::endl
+			  <<"fStaticWindow: "<<fStaticWindow<<std::endl
 			  <<std::endl
 			  <<"fShouldExit: "<<fShouldExit<<std::endl
 			  <<std::endl
@@ -226,13 +230,16 @@ void TGRSIOptions::Load(int argc, char** argv) {
   // parser.option("time-sort-depth",&fTimeSortDepth)
   //   .description("Number of events to hold when time sorting")
   //   .default_value(100000);
-  parser.option("addback-window", &fAddbackWindow)
-     .description("Addback window, time in ns")
-     .default_value(300);
-     
   parser.option("build-window", &fBuildWindow)
      .description("Build window, timestamp units")
      .default_value(200);
+  parser.option("addback-window", &fAddbackWindow)
+     .description("Addback window, time in ns")
+     .default_value(300);
+  parser.option("static-window", &fStaticWindow)
+     .description("use static window for event building")
+     .default_value(false);
+     
   // parser.option("long-file-description", &fLongFileDescription)
   //   .description("Show full path to file in status messages")
   //   .default_value(false);

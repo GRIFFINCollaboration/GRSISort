@@ -1,5 +1,6 @@
 #include "TEventBuildingLoop.h"
 
+#include "TGRSIOptions.h"
 #include "TSortingDiagnostics.h"
 
 #include <chrono>
@@ -116,7 +117,7 @@ void TEventBuildingLoop::CheckBuildCondition(TFragment* frag) {
 void TEventBuildingLoop::CheckTimestampCondition(TFragment* frag) {
 	long timestamp = frag->GetTimeStamp();
 	long event_start = (fNextEvent.size() ?
-			fNextEvent[0]->GetTimeStamp() :
+			( TGRSIOptions::Get()->StaticWindow() ? fNextEvent[0]->GetTimeStamp() : fNextEvent.back()->GetTimeStamp() ) :
 			timestamp);
 
 	if(timestamp < event_start) {
