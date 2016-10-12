@@ -41,6 +41,7 @@ class TFragment : public TGRSIDetectorHit	{
 	void SetModuleType(UShort_t value)         { fModuleType = value; }
 	void SetDeadTime(UShort_t value)           { fDeadTime = value; }
 	void SetDetectorType(UShort_t value)       { fDetectorType = value; }
+	void SetEntryNumber(Long64_t value)        { fEntryNumber = value; }
 	void SetMidasId(Int_t value)               { fMidasId = value; }
 	void SetFragmentId(Int_t value)            { fFragmentId = value; }
 	void SetMidasTimeStamp(time_t value)       { fMidasTimeStamp = value; }
@@ -58,6 +59,7 @@ class TFragment : public TGRSIDetectorHit	{
 	Int_t    GetCcLong() const                 { return fCcLong; }
 	Int_t    GetCcShort() const                { return fCcShort; }
 	UInt_t   GetChannelId() const              { return fChannelId; }
+	Long64_t GetEntryNumber() const            { return fEntryNumber; }
    UShort_t GetModuleType() const             { return fModuleType; }
 	UShort_t GetDeadTime() const               { return fDeadTime; }
    UShort_t GetDetectorType() const           { return fDetectorType; }
@@ -120,6 +122,7 @@ class TFragment : public TGRSIDetectorHit	{
 	//////////////////// transient members ////////////////////
    TPPG* fPPG;                        //!<! Programmable pattern generator value
 
+	Long64_t fEntryNumber;             //!<! Entry number in fragment tree
    Int_t    fZc;                      //!<! Zero-crossing value from 4G (saved in separate branch)
    Int_t    fCcShort;                 //!<! Short integration over waveform peak from 4G (saved in separate branch)
    Int_t    fCcLong;                  //!<! Long integration over waveform tail from 4G (saved in separate branch)
