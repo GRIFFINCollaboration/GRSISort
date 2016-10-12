@@ -9,6 +9,7 @@
 class TMnemonic : public TObject {
    public:
 		TMnemonic() :fClassType(NULL) {}
+		TMnemonic(const char* name) : TMnemonic() { Parse(name); }
 		~TMnemonic() {}
 
 	private:
