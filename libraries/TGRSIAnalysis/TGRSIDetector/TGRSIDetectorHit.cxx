@@ -52,7 +52,7 @@ void TGRSIDetectorHit::Streamer(TBuffer& R__b) {
   }
 }
 
-Double_t TGRSIDetectorHit::GetTime(Option_t* opt) const {
+Double_t TGRSIDetectorHit::GetTime(const UInt_t& correction_flag,Option_t* opt) const {
   if(IsTimeSet())
     return fTime;
 

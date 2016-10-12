@@ -69,6 +69,14 @@ class TGRSIDetectorHit : public TObject 	{
          kIsAllSet      = 0xFFFF
       };
 
+		enum ETimeFlag {
+			kNone          = BIT(0),
+			kCFD           = BIT(1),
+			kWalk          = BIT(2),
+			kOffset        = BIT(3),
+			kAll           = 0xFFFF
+		};
+
 
    public:
       TGRSIDetectorHit(const int& Address=0xffffffff);
@@ -112,7 +120,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual double GetEnergy(Option_t* opt="")     const;
       virtual Long_t GetTimeStamp(Option_t* opt="") const;
       Long_t GetRawTimeStamp(Option_t* opt="") const { return fTimeStamp; }
-      virtual Double_t GetTime(Option_t* opt = "")   const;  ///< Returns a time value to the nearest nanosecond!
+      virtual Double_t GetTime(const UInt_t& correct_flag = kAll, Option_t* opt = "")   const;  ///< Returns a time value to the nearest nanosecond!
       virtual Int_t   GetCfd()    const      { return fCfd;}                 //!<!
       virtual UInt_t GetAddress() const      { return fAddress; }            //!<!
       virtual Int_t  GetCharge()  const      ;                               //!<!
