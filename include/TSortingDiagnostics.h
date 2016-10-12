@@ -41,16 +41,22 @@ class TSortingDiagnostics : public TObject {
 
 	private:
 		//analysis tree diagnostics (should these all be static?)
-		std::map<long, long> fFragmentsOutOfOrder;
+		std::map<long, std::pair<long, long> > fFragmentsOutOfOrder;
+		long fMaxEntryDiff;
 
 		static TSortingDiagnostics* fSortingDiagnostics;
 	
 	public:
 		//"setter" functions
-		void OutOfOrder(long newFrag, long oldFrag) { fFragmentsOutOfOrder[oldFrag] = oldFrag - newFrag; }
+		void OutOfOrder(long newFrag, long oldFrag, long entryDiff) { 
+			fFragmentsOutOfOrder[oldFrag] = std::make_pair(oldFrag - newFrag, entryDiff);
+			if(entryDiff > fMaxEntryDiff) fMaxEntryDiff = entryDiff;
+		}
 
 		//getter functions
 		size_t NumberOfFragmentsOutOfOrder() const { return fFragmentsOutOfOrder.size(); }
+		std::map<long, std::pair<long, long> > FragmentsOutOfOrder() { return fFragmentsOutOfOrder; }
+		long MaxEntryDiff() const { return fMaxEntryDiff; }
 
 		//other functions
 		void WriteToFile(const char*) const;
