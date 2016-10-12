@@ -4,10 +4,11 @@
 #include <string>
 #include "TObject.h"
 #include "Globals.h"
+#include "TClass.h"
 
 class TMnemonic : public TObject {
    public:
-		TMnemonic() {}
+		TMnemonic() :fClassType(NULL) {}
 		~TMnemonic() {}
 
 	private:
@@ -24,6 +25,8 @@ class TMnemonic : public TObject {
 		int fArraySubPosition;
 		int fCollectedCharge;
 		int fOutputSensor;
+
+      mutable TClass*   fClassType;          //!<! TGRSIDetector Type that this mnemonic represents
 	
 	public:
 	//standard C++ makes these enumerations global to the class. ie, the name of the enumeration
@@ -53,6 +56,10 @@ class TMnemonic : public TObject {
 		void Parse(const char *name);
 
 		void SetRFMNEMONIC(std::string *name);
+
+      void SetClassType(TClass* classType)               { fClassType = classType; }
+      TClass* GetClassType() const;
+
 
 		void Print(Option_t *opt="") const;
 		void Clear(Option_t *opt=""); 

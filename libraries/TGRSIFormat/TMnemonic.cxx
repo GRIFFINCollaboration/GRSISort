@@ -1,5 +1,23 @@
 #include "TMnemonic.h"
 
+//Detector dependent includes
+#include "TGriffin.h"
+#include "TSceptar.h"
+#include "TTigress.h"
+#include "TTip.h"
+#include "TTAC.h"
+#include "TLaBr.h"
+#include "TSharc.h"
+#include "TCSM.h"
+#include "TTriFoil.h"
+#include "TRF.h"
+#include "TS3.h"
+#include "TPaces.h"
+#include "TDescant.h"
+#include "TZeroDegree.h"
+#include "TSiLi.h"
+
+
 ClassImp(TMnemonic)
 
 void TMnemonic::Clear(Option_t *opt) {
@@ -183,3 +201,59 @@ void TMnemonic::Print(Option_t * opt) const{
 	return;
 }
 
+TClass* TMnemonic::GetClassType() const {
+	if(fClassType != nullptr)
+		return fClassType;
+
+   switch(System()){
+      case TMnemonic::kTigress:
+         fClassType = TTigress::Class();
+         break;
+      case TMnemonic::kSharc:
+         fClassType = TSharc::Class();
+         break;
+      case TMnemonic::kTriFoil:
+         fClassType = TTriFoil::Class();
+         break;
+      case TMnemonic::kRF:
+         fClassType = TRF::Class();
+         break;
+      case TMnemonic::kSiLi:
+         fClassType = TSiLi::Class();
+         break;
+      case TMnemonic::kS3:
+         fClassType = TS3::Class();
+         break;
+      case TMnemonic::kCSM:
+         fClassType = TCSM::Class();
+         break;
+      case TMnemonic::kGriffin:
+         fClassType = TGriffin::Class();
+         break;
+      case TMnemonic::kSceptar:
+         fClassType = TSceptar::Class();
+         break;
+      case TMnemonic::kPaces:
+         fClassType = TPaces::Class();
+         break;
+      case TMnemonic::kDescant:
+         fClassType = TDescant::Class();
+         break;
+      case TMnemonic::kLaBr:
+         fClassType = TLaBr::Class();
+         break;
+      case TMnemonic::kTAC:
+         fClassType = TTAC::Class();
+         break;
+      case TMnemonic::kZeroDegree:
+         fClassType = TZeroDegree::Class();
+         break;
+      case TMnemonic::kTip:
+         fClassType = TTip::Class();
+         break;
+      default:
+         fClassType = nullptr;
+   };
+
+   return fClassType;
+}
