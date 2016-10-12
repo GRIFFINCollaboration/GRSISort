@@ -212,8 +212,8 @@ void TGRSIint::Terminate(Int_t status){
 
   StoppableThread::StopAll();
 
-  if(TSortingDiagnostics::Get()->NumberOfFragmentsOutOfOrder() > 0) {
-	  std::cerr<<DRED<<TSortingDiagnostics::Get()->NumberOfFragmentsOutOfOrder()<<" fragments were out of order!"<<RESET_COLOR<<std::endl;
+  if(TGRSIOptions::Get()->MakeAnalysisTree()) {
+	  TSortingDiagnostics::Get()->Print("error");
   }
 
   //if(GUIIsRunning()){
