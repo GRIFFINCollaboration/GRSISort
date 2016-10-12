@@ -119,9 +119,10 @@ void TEventBuildingLoop::CheckTimestampCondition(TFragment* frag) {
 	long event_start = (fNextEvent.size() ?
 			( TGRSIOptions::Get()->StaticWindow() ? fNextEvent[0]->GetTimeStamp() : fNextEvent.back()->GetTimeStamp() ) :
 			timestamp);
+	long entryDiff = (fNextEvent.size() ? frag->GetEntryNumber() - (TGRSIOptions::Get()->StaticWindow() ? fNextEvent[0]->GetEntryNumber() : fNextEvent.back()->GetEntryNumber()) : 0);
 
 	if(timestamp < event_start) {
-		TSortingDiagnostics::Get()->OutOfOrder(timestamp, event_start);
+		TSortingDiagnostics::Get()->OutOfOrder(timestamp, event_start, entryDiff);
 		if(!fPreviousSortingDepthError) {
 			std::cerr << "Sorting depth of " << fSortingDepth << " was insufficient. timestamp: " << timestamp << " Last: " << event_start << " \n"
 				<< "Not all events were built correctly" << std::endl;
@@ -141,9 +142,10 @@ void TEventBuildingLoop::CheckTriggerIdCondition(TFragment* frag) {
 	long current_trigger_id = (fNextEvent.size() ?
 			fNextEvent[0]->GetTriggerId() :
 			trigger_id);
+	long entryDiff = (fNextEvent.size() ? frag->GetEntryNumber() - fNextEvent[0]->GetEntryNumber() : 0);
 
 	if(trigger_id < current_trigger_id) {
-		TSortingDiagnostics::Get()->OutOfOrder(trigger_id, current_trigger_id);
+		TSortingDiagnostics::Get()->OutOfOrder(trigger_id, current_trigger_id, entryDiff);
 		if(!fPreviousSortingDepthError) {
 			std::cerr << "Sorting depth of " << fSortingDepth << " was insufficient.\n"
 				<< "Not all events were built correctly" << std::endl;

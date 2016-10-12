@@ -624,7 +624,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   if(x+2 < size && (data[x+1] & 0x80000000) == 0x0 && (data[x+2] & 0x80000000) == 0x0) {
                     ++x;
                     tmpIntLength.push_back((data[x] & 0x3fff) | (((data[x] & 0x2000) == 0x2000) ? 0xc000 : 0x0));
-                    EventFrag->SetNumberOfPileups((data[x] >> 16) & 0xff);
+                    //EventFrag->SetNumberOfPileups((data[x] >> 16) & 0xff);
                     ++x;
                     if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
                       tmpCharge.push_back(std::numeric_limits<int>::max());

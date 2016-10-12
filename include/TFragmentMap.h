@@ -39,6 +39,7 @@ class TFragmentMap {
 	
 	private:
 	void Solve(std::vector<TFragment*>, std::vector<Float_t>, std::vector<Long_t>, int situation = -1);
+	static bool fDebug;
 #ifndef __CINT__
 	std::multimap<UInt_t, std::tuple<TFragment*, std::vector<Int_t>, std::vector<Short_t> > > fMap;
 	std::shared_ptr<ThreadsafeQueue<TFragment*> >& fGood_output_queue;

@@ -54,7 +54,7 @@ class TDescantHit : public TGRSIDetectorHit {
 
       Int_t GetCfd() const;
 		Int_t GetRemainder() const;
-      Double_t GetTime(Option_t* opt = "") const;  ///< Returns a time value to the nearest nanosecond!
+      Double_t GetTime(const UInt_t& correction_flag = ETimeFlag::kAll,Option_t* opt = "") const;  ///< Returns a time value to the nearest nanosecond!
 
       Int_t CalculateCfd(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps); //!<!
       Int_t CalculateCfdAndMonitor(double attenuation, unsigned int delay, int halfsmoothingwindow, unsigned int interpolation_steps, std::vector<Short_t> &monitor); //!<!
