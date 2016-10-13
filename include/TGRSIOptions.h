@@ -14,6 +14,7 @@ public:
   void Clear(Option_t* opt = "");
   void Load(int argc, char** argv);
   void Print(Option_t* opt = "") const;
+  void PrintSortingOptions() const;
 
   bool ShouldExit() { return fShouldExit; }
   const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles;}

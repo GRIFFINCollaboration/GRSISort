@@ -93,7 +93,7 @@ int ThreadsafeQueue<T>::Pop(T& output, int millisecond_wait) {
   items_in_queue--;
 
   can_push.notify_one();
-  return 1;
+  return queue.size();
   //return ObjectSize(output);
 }
 

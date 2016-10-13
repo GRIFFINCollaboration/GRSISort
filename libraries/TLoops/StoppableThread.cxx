@@ -126,7 +126,9 @@ void StoppableThread::Pause() {
 void StoppableThread::Stop() {
   std::unique_lock<std::mutex> lock(pause_mutex);
   running = false;
+	std::cout<<std::endl;
   paused = false;
+  std::cout<<EndStatus();
   paused_wait.notify_one();
 }
 
@@ -139,6 +141,7 @@ bool StoppableThread::IsPaused() {
 }
 
 void StoppableThread::Join() {
+  std::cout<<EndStatus();
   thread.join();
 }
 
@@ -153,6 +156,7 @@ void StoppableThread::Loop() {
     bool success = Iteration();
     if(!success){
       running = false;
+		std::cout<<std::endl;
       break;
     }
   }

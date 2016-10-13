@@ -2,27 +2,28 @@
 
 #include <chrono>
 #include <thread>
+#include <sstream>
 
 #include "TGRSIOptions.h"
 
 ClassImp(TUnpackingLoop)
 
-	TUnpackingLoop *TUnpackingLoop::Get(std::string name) {
-		if(name.length()==0) {
-			name = "unpacking_loop";
-		}
-
-		TUnpackingLoop *loop = (TUnpackingLoop*)StoppableThread::Get(name);
-		if(!loop) {
-			loop = new TUnpackingLoop(name);
-		}
-		return loop;
+TUnpackingLoop *TUnpackingLoop::Get(std::string name) {
+	if(name.length()==0) {
+		name = "unpacking_loop";
 	}
+
+	TUnpackingLoop *loop = (TUnpackingLoop*)StoppableThread::Get(name);
+	if(!loop) {
+		loop = new TUnpackingLoop(name);
+	}
+	return loop;
+}
 
 TUnpackingLoop::TUnpackingLoop(std::string name)
 	: StoppableThread(name),
 	input_queue(std::make_shared<ThreadsafeQueue<TMidasEvent> >()),
-	fFragsReadFromMidas(0) {
+	fFragsReadFromMidas(0),fGoodFragsRead(0) {
 	}
 
 TUnpackingLoop::~TUnpackingLoop() { }
@@ -130,6 +131,7 @@ bool TUnpackingLoop::ProcessTIGRESS(uint32_t* ptr, int& dSize, TMidasEvent* mEve
 	int frags = parser.TigressDataToFragment(ptr,dSize,mserial,mtime);
 	if(frags>0) {
 		fFragsReadFromMidas += frags;
+		fGoodFragsRead += frags;
 		return true;
 	} else  {
 		fFragsReadFromMidas += 1;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
@@ -141,7 +143,7 @@ bool TUnpackingLoop::ProcessTIGRESS(uint32_t* ptr, int& dSize, TMidasEvent* mEve
 }
 
 
-bool TUnpackingLoop::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBank bank, TMidasEvent* mEvent)   {
+bool TUnpackingLoop::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBank bank, TMidasEvent* mEvent) {
 	unsigned int mserial=0; if(mEvent) mserial = (unsigned int)(mEvent->GetSerialNumber());
 	unsigned int mtime=0;   if(mEvent) mtime   = (unsigned int)(mEvent->GetTimeStamp());
 	//loop over words in event to find fragment header
@@ -152,12 +154,13 @@ bool TUnpackingLoop::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBan
 			if(words>0) {
 				//we successfully read one event with <words> words, so we advance the index by words
 				++fFragsReadFromMidas;
+				++fGoodFragsRead;
 				index += words;
 			} else {
 				//we failed to read the fragment on word <-words>, so advance the index by -words and we create an error message
 				++fFragsReadFromMidas;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
 				index -= words;
-				
+
 				if(!TGRSIOptions::Get()->SuppressErrors()) {
 					if(!TGRSIOptions::Get()->LogErrors()) {
 						printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
@@ -193,3 +196,10 @@ bool TUnpackingLoop::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBan
 
 	return true;
 }
+
+std::string TUnpackingLoop::EndStatus() {
+	std::stringstream ss;
+	ss<<"\r"<<Name()<<":\t"<<fGoodFragsRead<<" good fragments out of "<<fFragsReadFromMidas<<" fragments => "<<(100.*fGoodFragsRead)/fFragsReadFromMidas<<"% passed"<<std::endl;
+	return ss.str();
+}
+
