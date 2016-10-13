@@ -31,6 +31,7 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 				}
 			}
 		}
+		frag->SetEntryNumber();
 		fGood_output_queue->Push(frag);
 		return true;
 	}
@@ -242,9 +243,11 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 	// add all fragments to queue
 	int i = 0;
 	for(auto it = range.first; it != range.second; ++it) {
+		frag->SetEntryNumber();
 		fGood_output_queue->Push(std::get<0>((*it).second));
 		if(fDebug) std::cout<<"Added "<<++i<<". fragment "<<std::get<0>((*it).second)<<std::endl;
 	}
+	frag->SetEntryNumber();
 	fGood_output_queue->Push(frag);
 	if(fDebug) std::cout<<"address "<<frag->GetAddress()<<": added last fragment "<<frag<<std::endl;
 	// remove these fragments from the map
