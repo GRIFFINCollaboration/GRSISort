@@ -30,6 +30,9 @@ public:
   size_t GetItemsCurrent() { return OutputQueue()->Size();        }
   size_t GetRate()         { return 0; }
 
+	std::string Status();
+	std::string EndStatus();
+
 protected:
   bool Iteration();
 
@@ -44,6 +47,8 @@ private:
   std::map<TClass*, TDetector*> default_dets;
 
   size_t items_handled;
+
+  int fInputQueueSize;
 
 #ifndef __CINT__
   std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> > input_queue;

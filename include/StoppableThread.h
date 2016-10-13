@@ -7,6 +7,8 @@
 #include <thread>
 #endif
 
+#include <sstream>
+#include <iomanip>
 #include <string>
 #include <map>
 
@@ -35,6 +37,7 @@ public:
 
   virtual void OnEnd() { }
   virtual std::string Status();
+  virtual std::string EndStatus() { return std::string(); } //std::stringstream ss; ss<<std::endl; return ss.str(); }
   std::string Name() const     { return fname; }
 
   virtual void ClearQueue() { }

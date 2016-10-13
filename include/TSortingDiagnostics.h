@@ -49,10 +49,7 @@ class TSortingDiagnostics : public TObject {
 	
 	public:
 		//"setter" functions
-		void OutOfOrder(long newFrag, long oldFrag, long entryDiff) { 
-			fFragmentsOutOfOrder[oldFrag] = std::make_pair(oldFrag - newFrag, entryDiff);
-			if(entryDiff > fMaxEntryDiff) fMaxEntryDiff = entryDiff;
-		}
+		void OutOfOrder(long newFragTS, long oldFragTS, long newEntry);
 		void AddTimeStamp(Long_t val) { fPreviousTimeStamps.push_back(val); }
 
 		//getter functions

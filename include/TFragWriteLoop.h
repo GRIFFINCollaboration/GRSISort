@@ -32,6 +32,9 @@ public:
   size_t GetItemsCurrent() { return output_queue->Size(); }
   size_t GetRate()         { return 0; }
 
+	std::string Status();
+	std::string EndStatus();
+
 protected:
   bool Iteration();
 
@@ -49,6 +52,7 @@ private:
   TTree* scaler_tree;
 
   size_t items_handled;
+  int fInputQueueSize;
 
 #ifndef __CINT__
   std::shared_ptr<ThreadsafeQueue<TFragment*> > input_queue;

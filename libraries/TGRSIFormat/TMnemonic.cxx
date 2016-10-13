@@ -1,5 +1,7 @@
 #include "TMnemonic.h"
 
+#include <algorithm>
+
 //Detector dependent includes
 #include "TGriffin.h"
 #include "TSceptar.h"
@@ -139,6 +141,14 @@ void TMnemonic::EnumerateSystem(){
 	}
 }
 
+int TMnemonic::EnumerateDigitizer(std::string& name) {
+	std::transform(name.begin(), name.end(), name.begin(), ::toupper);
+	if(name.compare("GRF16") == 0) return kGRF16;
+	if(name.compare("GRF4G") == 0) return kGRF4G;
+	if(name.compare("TIG10") == 0) return kTIG10;
+	if(name.compare("TIG64") == 0) return kTIG64;
+	return kDefault;
+}
 
 void TMnemonic::Parse(std::string *name){
 	if(!name || name->length()<9) {

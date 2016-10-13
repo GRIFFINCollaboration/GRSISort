@@ -29,14 +29,16 @@ class TMnemonic : public TObject {
 
       mutable TClass*   fClassType;          //!<! TGRSIDetector Type that this mnemonic represents
 	
+		void EnumerateSystem();
+		void EnumerateMnemonic(std::string mnemonic_word, int &mnemonic_enum);
+
 	public:
 	//standard C++ makes these enumerations global to the class. ie, the name of the enumeration
 	//EMnemonic or ESystem has no effect on the clashing of enumerated variable names.
 	//These separations exist only to easily see the difference when looking at the code here.
 		enum EMnemonic { kA, kB, kC, kD, kE, kF, kG, kI, kL, kM, kN, kP, kQ, kR, kS, kW, kX, kZ, kClear };
 		enum ESystem   { kTigress, kSharc, kTriFoil, kRF, kCSM, kSiLi, kS3, kBambino, kTip, kGriffin, kSceptar, kPaces, kLaBr, kTAC, kZeroDegree, kDescant};
-
-		void EnumerateMnemonic(std::string mnemonic_word, int &mnemonic_enum);
+		enum EDigitizer{ kDefault, kGRF16, kGRF4G, kTIG10, kTIG64 };
 
 		int System() const { return fSystem; }
 		int SubSystem() const { return fSubSystem; }
@@ -52,9 +54,10 @@ class TMnemonic : public TObject {
 		std::string CollectedChargeString() const { return fCollectedChargeString; }
 		std::string OutputSensorString() const { return fOutputSensorString; } 
 
-		void EnumerateSystem();
 		void Parse(std::string *name);
 		void Parse(const char *name);
+
+		static int  EnumerateDigitizer(std::string& mnemonic_word);
 
 		void SetRFMNEMONIC(std::string *name);
 

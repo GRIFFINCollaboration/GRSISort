@@ -41,7 +41,7 @@ class TFragment : public TGRSIDetectorHit	{
 	void SetModuleType(UShort_t value)         { fModuleType = value; }
 	void SetDeadTime(UShort_t value)           { fDeadTime = value; }
 	void SetDetectorType(UShort_t value)       { fDetectorType = value; }
-	void SetEntryNumber(Long64_t value)        { fEntryNumber = value; }
+	void SetEntryNumber()                      { fEntryNumber = fNumberOfFragments++; }
 	void SetMidasId(Int_t value)               { fMidasId = value; }
 	void SetFragmentId(Int_t value)            { fFragmentId = value; }
 	void SetMidasTimeStamp(time_t value)       { fMidasTimeStamp = value; }
@@ -127,6 +127,8 @@ class TFragment : public TGRSIDetectorHit	{
    Int_t    fCcShort;                 //!<! Short integration over waveform peak from 4G (saved in separate branch)
    Int_t    fCcLong;                  //!<! Long integration over waveform tail from 4G (saved in separate branch)
    UShort_t fNumberOfWords;           //!<! Number of non-waveform words in fragment ; since this is not saved to file, why have it as a member at all???
+
+	static Long64_t fNumberOfFragments;
 
    //int NumberOfHits;  //!<! transient member to count the number of pile-up hits in the original fragment
    //int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment

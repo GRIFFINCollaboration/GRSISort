@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 
+#include <iostream>
 #include <string>
 #include <cmath>
 #include <utility>
@@ -71,7 +72,8 @@ class TChannel : public TNamed	{
       unsigned int	   fAddress;                                 //The address of the digitizer
       int		         fIntegration;                             //The charge integration setting
       std::string       fTypeName;
-      std::string       fDigitizerType;
+      std::string       fDigitizerTypeString;
+      int               fDigitizerType;
       int 	            fNumber;
       int		         fStream;
       int               fUserInfoNumber;
@@ -120,7 +122,8 @@ class TChannel : public TNamed	{
       static void SetIntegration(std::string mnemonic,int tmpint);
       inline void SetStream(int tmpstream)	          { fStream = tmpstream; }
       inline void SetUserInfoNumber(int tempinfo)      { fUserInfoNumber = tempinfo; }
-      inline void SetDigitizerType(const char* tmpstr) { fDigitizerType.assign(tmpstr); }
+      inline void SetDigitizerType(const char* tmpstr) { fDigitizerTypeString.assign(tmpstr); fDigitizerType = TMnemonic::EnumerateDigitizer(fDigitizerTypeString); }
+      static void SetDigitizerType(std::string mnemonic, const char* tmpstr);
       inline void SetTypeName(std::string tmpstr)      { fTypeName = tmpstr; }
       inline void SetTimeOffset(double tmpto)          { fTimeOffset = tmpto; }
 
@@ -135,30 +138,31 @@ class TChannel : public TNamed	{
 	 	TClass* GetClassType() const { return fMnemonic.GetClassType(); }
 		void SetClassType(TClass* cl_type) { fMnemonic.SetClassType(cl_type); }
 
-      int	GetNumber()		          { return fNumber;  }
-      unsigned int	GetAddress()    { return fAddress; }
-      int GetIntegration()           { return fIntegration; }
-      int GetStream()                { return fStream; }
-      int GetUserInfoNumber()        { return fUserInfoNumber;}
-      const char* GetDigitizerType() { return fDigitizerType.c_str(); }
-      double GetTimeOffset()         { return fTimeOffset; }
+      int GetNumber() const                      { return fNumber;  }
+      unsigned int GetAddress() const            { return fAddress; }
+      int GetIntegration() const                 { return fIntegration; }
+      int GetStream() const                      { return fStream; }
+      int GetUserInfoNumber() const              { return fUserInfoNumber;}
+      const char* GetDigitizerTypeString() const { return fDigitizerTypeString.c_str(); }
+      int GetDigitizerType() const               { return fDigitizerType; }
+      double GetTimeOffset() const               { return fTimeOffset; }
       //write the rest of the gettters/setters...
 
-      double GetENGChi2()  { return fENGChi2; }
-      double GetCFDChi2()  { return fCFDChi2; }
-      double GetLEDChi2()  { return fLEDChi2; }
-      double GetTIMEChi2() { return fTIMEChi2; }
-      double GetEFFChi2()  { return fEFFChi2;} 
+      double GetENGChi2()  const { return fENGChi2; }
+      double GetCFDChi2()  const { return fCFDChi2; }
+      double GetLEDChi2()  const { return fLEDChi2; }
+      double GetTIMEChi2() const { return fTIMEChi2; }
+      double GetEFFChi2()  const { return fEFFChi2; } 
 
       void SetUseCalFileIntegration(bool flag=true) { fUseCalFileInt = flag;}
       static void SetUseCalFileIntegration(std::string mnemonic,bool flag);
       bool UseCalFileIntegration() { return fUseCalFileInt; }
 
-      std::vector<Float_t> GetENGCoeff() { return fENGCoefficients;}
-      std::vector<double> GetCFDCoeff()  { return fCFDCoefficients;}
-      std::vector<double> GetLEDCoeff()  { return fLEDCoefficients;}
-      std::vector<double> GetTIMECoeff() { return fTIMECoefficients;}
-      std::vector<double> GetEFFCoeff()  { return fEFFCoefficients;}
+      std::vector<Float_t> GetENGCoeff() const { return fENGCoefficients;}
+      std::vector<double> GetCFDCoeff()  const { return fCFDCoefficients;}
+      std::vector<double> GetLEDCoeff()  const { return fLEDCoefficients;}
+      std::vector<double> GetTIMECoeff() const { return fTIMECoefficients;}
+      std::vector<double> GetEFFCoeff()  const { return fEFFCoefficients;}
 
       inline void AddENGCoefficient(Float_t temp) { fENGCoefficients.push_back(temp); }
       inline void AddCFDCoefficient(double temp)  { fCFDCoefficients.push_back(temp); }

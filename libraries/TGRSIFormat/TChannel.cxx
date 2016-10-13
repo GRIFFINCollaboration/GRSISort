@@ -44,32 +44,32 @@ TChannel::TChannel(const char* tempName) {
 
 TChannel::TChannel(TChannel* chan) {
 	///Makes a copy of a the TChannel. 
-	this->SetAddress(chan->GetAddress());
-	this->SetIntegration(chan->GetIntegration());
-	this->SetNumber(chan->GetNumber());
-	this->SetStream(chan->GetStream());
-	this->SetUserInfoNumber(chan->GetUserInfoNumber());
-	this->SetName(chan->GetName()); //SetName also sets the mnemonic
-	this->SetDigitizerType(chan->GetDigitizerType());
+	SetAddress(chan->GetAddress());
+	SetIntegration(chan->GetIntegration());
+	SetNumber(chan->GetNumber());
+	SetStream(chan->GetStream());
+	SetUserInfoNumber(chan->GetUserInfoNumber());
+	SetName(chan->GetName()); //SetName also sets the mnemonic
+	SetDigitizerType(chan->GetDigitizerTypeString());
 
-	this->SetENGCoefficients(chan->GetENGCoeff());
-	this->SetCFDCoefficients(chan->GetCFDCoeff());
-	this->SetLEDCoefficients(chan->GetLEDCoeff());
-	this->SetTIMECoefficients(chan->GetTIMECoeff());
-	this->SetEFFCoefficients(chan->GetEFFCoeff());
+	SetENGCoefficients(chan->GetENGCoeff());
+	SetCFDCoefficients(chan->GetCFDCoeff());
+	SetLEDCoefficients(chan->GetLEDCoeff());
+	SetTIMECoefficients(chan->GetTIMECoeff());
+	SetEFFCoefficients(chan->GetEFFCoeff());
 
-	this->SetENGChi2(chan->GetENGChi2());
-	this->SetCFDChi2(chan->GetCFDChi2());
-	this->SetLEDChi2(chan->GetLEDChi2());
-	this->SetTIMEChi2(chan->GetTIMEChi2());
-	this->SetEFFChi2(chan->GetEFFChi2());
-	this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
+	SetENGChi2(chan->GetENGChi2());
+	SetCFDChi2(chan->GetCFDChi2());
+	SetLEDChi2(chan->GetLEDChi2());
+	SetTIMEChi2(chan->GetTIMEChi2());
+	SetEFFChi2(chan->GetEFFChi2());
+	SetUseCalFileIntegration(chan->UseCalFileIntegration());
 
-   this->SetDetectorNumber(chan->GetDetectorNumber());
-	this->SetSegmentNumber(chan->GetSegmentNumber());
-	this->SetCrystalNumber(chan->GetCrystalNumber());
-   this->SetTimeOffset(chan->GetTimeOffset());
-   this->SetClassType(chan->GetClassType());
+   SetDetectorNumber(chan->GetDetectorNumber());
+	SetSegmentNumber(chan->GetSegmentNumber());
+	SetCrystalNumber(chan->GetCrystalNumber());
+   SetTimeOffset(chan->GetTimeOffset());
+   SetClassType(chan->GetClassType());
 }
 
 void TChannel::SetName(const char* tmpName){
@@ -143,34 +143,33 @@ void TChannel::AddChannel(TChannel* chan,Option_t* opt) {
 
 void TChannel::OverWriteChannel(TChannel* chan){
 	///Overwrites the current TChannel with chan.
-	this->SetAddress(chan->GetAddress());
-	this->SetIntegration(chan->GetIntegration());
-	this->SetNumber(chan->GetNumber());
-	this->SetStream(chan->GetStream());
-	this->SetUserInfoNumber(chan->GetUserInfoNumber());
-	this->SetDigitizerType(chan->GetDigitizerType());
-   this->SetName(chan->GetName());
+	SetAddress(chan->GetAddress());
+	SetIntegration(chan->GetIntegration());
+	SetNumber(chan->GetNumber());
+	SetStream(chan->GetStream());
+	SetUserInfoNumber(chan->GetUserInfoNumber());
+	SetDigitizerType(chan->GetDigitizerTypeString());
+   SetName(chan->GetName());
 
-	this->SetENGCoefficients(chan->GetENGCoeff());
-	this->SetCFDCoefficients(chan->GetCFDCoeff());
-	this->SetLEDCoefficients(chan->GetLEDCoeff());
-	this->SetTIMECoefficients(chan->GetTIMECoeff());
-	this->SetEFFCoefficients(chan->GetEFFCoeff());
+	SetENGCoefficients(chan->GetENGCoeff());
+	SetCFDCoefficients(chan->GetCFDCoeff());
+	SetLEDCoefficients(chan->GetLEDCoeff());
+	SetTIMECoefficients(chan->GetTIMECoeff());
+	SetEFFCoefficients(chan->GetEFFCoeff());
 
-	this->SetENGChi2(chan->GetENGChi2());
-	this->SetCFDChi2(chan->GetCFDChi2());
-	this->SetLEDChi2(chan->GetLEDChi2());
-	this->SetTIMEChi2(chan->GetTIMEChi2());
-	this->SetEFFChi2(chan->GetEFFChi2());
+	SetENGChi2(chan->GetENGChi2());
+	SetCFDChi2(chan->GetCFDChi2());
+	SetLEDChi2(chan->GetLEDChi2());
+	SetTIMEChi2(chan->GetTIMEChi2());
+	SetEFFChi2(chan->GetEFFChi2());
 
-	this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
+	SetUseCalFileIntegration(chan->UseCalFileIntegration());
   
-   this->SetDetectorNumber(chan->GetDetectorNumber());
-	this->SetSegmentNumber(chan->GetSegmentNumber());
-	this->SetCrystalNumber(chan->GetCrystalNumber());
-   this->SetTimeOffset(chan->GetTimeOffset());
-   this->SetClassType(chan->GetClassType());
-	return;
+   SetDetectorNumber(chan->GetDetectorNumber());
+	SetSegmentNumber(chan->GetSegmentNumber());
+	SetCrystalNumber(chan->GetCrystalNumber());
+   SetTimeOffset(chan->GetTimeOffset());
+   SetClassType(chan->GetClassType());
 }
 
 void TChannel::AppendChannel(TChannel* chan){
@@ -186,8 +185,8 @@ void TChannel::AppendChannel(TChannel* chan){
 	if(strlen(chan->GetName())>0) {
 	  this->SetName(chan->GetName());
 	}
-	if(strlen(chan->GetDigitizerType())>0)
-		this->SetDigitizerType(chan->GetDigitizerType());
+	if(strlen(chan->GetDigitizerTypeString())>0)
+		this->SetDigitizerType(chan->GetDigitizerTypeString());
    if(chan->GetTimeOffset() != 0.0)
       this->SetTimeOffset(chan->GetTimeOffset());
 
@@ -514,8 +513,8 @@ double TChannel::CalibrateEFF(double energy) {
 }
 
 void TChannel::SetUseCalFileIntegration(std::string mnemonic,bool flag){
-	///Writes this CalFile to all channels in the current TChannel Map 
-	///That starts with the mnemonic. Use "" to write to ALL channels
+	///Writes this UseCalFileIntegration to all channels in the current TChannel Map 
+	///that starts with the mnemonic. Use "" to write to ALL channels
 	///WARNING: This is case sensitive!
 	std::map<unsigned int,TChannel*>::iterator mapit;
 	std::map<unsigned int,TChannel*>* chanmap = TChannel::GetChannelMap();
@@ -527,14 +526,27 @@ void TChannel::SetUseCalFileIntegration(std::string mnemonic,bool flag){
 }
 
 void TChannel::SetIntegration(std::string mnemonic,int tmpint){
-   //Writes this CalFile to all channels in the current TChannel Map 
-   //That starts with the mnemonic. Use "" to write to ALL channels
+   //Writes this integration to all channels in the current TChannel Map 
+   //that starts with the mnemonic. Use "" to write to ALL channels
    //WARNING: This is case sensitive!
    std::map<unsigned int,TChannel*>::iterator mapit;
    std::map<unsigned int,TChannel*> *chanmap = TChannel::GetChannelMap();
    for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++){
       if(!mnemonic.size() || !strncmp(mapit->second->GetName(),mnemonic.c_str(),mnemonic.size())){
          mapit->second->SetIntegration(tmpint);
+      }
+   }
+}
+
+void TChannel::SetDigitizerType(std::string mnemonic,const char* tmpstr) {
+   //Writes this digitizer type to all channels in the current TChannel Map 
+   //that starts with the mnemonic. Use "" to write to ALL channels
+   //WARNING: This is case sensitive!
+   std::map<unsigned int,TChannel*>::iterator mapit;
+   std::map<unsigned int,TChannel*> *chanmap = TChannel::GetChannelMap();
+   for(mapit = chanmap->begin(); mapit != chanmap->end(); mapit++){
+      if(!mnemonic.size() || !strncmp(mapit->second->GetName(),mnemonic.c_str(),mnemonic.size())){
+         mapit->second->SetDigitizerType(tmpstr);
       }
    }
 }
@@ -553,7 +565,7 @@ void TChannel::Print(Option_t* opt) const {
    std::cout << std::setfill('0');
    std::cout <<  "Address:   0x" << std::hex << std::setw(8) << fAddress << std::dec << "\n";
    std::cout << std::setfill(' ');
-   std::cout <<  "Digitizer: " << fDigitizerType << "\n"; 
+   std::cout <<  "Digitizer: " << fDigitizerTypeString << "\n"; 
    std::cout <<  "TimeOffset: " << fTimeOffset << "\n"; 
    std::cout <<  "EngCoeff:  "  ;
    for(size_t x=0;x<fENGCoefficients.size();x++)
@@ -592,7 +604,7 @@ std::string TChannel::PrintToString(Option_t* opt) {
    buffer.append("Name:      "); buffer.append(GetName()); buffer.append("\n");
    buffer.append(Form("Number:    %d\n",fNumber));
    buffer.append(Form("Address:   0x%08x\n",fAddress));
-   buffer.append(Form("Digitizer: %s\n",fDigitizerType.c_str())); 
+   buffer.append(Form("Digitizer: %s\n",fDigitizerTypeString.c_str())); 
    buffer.append("EngCoeff:  ");
    for(size_t x=0;x<fENGCoefficients.size();x++)
      buffer.append(Form("%f\t",fENGCoefficients.at(x)));
