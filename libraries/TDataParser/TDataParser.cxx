@@ -184,7 +184,7 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment* currentFrag) {
   TChannel* chan = TChannel::GetChannel(currentFrag->GetAddress());
   if(!chan)
     chan = gChannel;
-  std::string dig_type = (chan)->GetDigitizerType();
+  std::string dig_type = (chan)->GetDigitizerTypeString();
 
   // Zero-crossing now transient, why bother calculating it.
   // // remove vernier for now and calculate the time to the trigger
@@ -226,7 +226,7 @@ void TDataParser::SetTIGCharge(uint32_t value, TFragment* currentFragment) {
   TChannel* chan = currentFragment->GetChannel();
   if(!chan)
     chan = gChannel;
-  std::string dig_type = chan->GetDigitizerType();
+  std::string dig_type = chan->GetDigitizerTypeString();
 
   int charge = currentFragment->GetCharge();
   if((dig_type.compare(0,5,"Tig10") == 0) || (dig_type.compare(0,5,"TIG10") == 0))	{
@@ -1225,6 +1225,7 @@ int TDataParser::FifoToFragment(unsigned short* data,int size,bool zerobuffer,
 void TDataParser::Push(ThreadsafeQueue<TFragment*>& queue, TFragment* frag) {
 	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
 	fFragmentIdMap[frag->GetTriggerId()]++;
+	frag->SetEntryNumber();
 	queue.Push(frag);
 }
 
