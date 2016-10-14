@@ -12,6 +12,8 @@
 
 ClassImp(GPeak)
 
+GPeak* GPeak::fLastFit = NULL;
+
 GPeak::GPeak(Double_t cent,Double_t xlow,Double_t xhigh,Option_t *opt)
       : TF1("photopeakbg",GRootFunctions::PhotoPeakBG,xlow,xhigh,7),
         fBGFit("background",GRootFunctions::StepBG,xlow,xhigh,6)  {
@@ -371,6 +373,7 @@ Bool_t GPeak::Fit(TH1 *fithist,Option_t *opt) {
   Copy(*fithist->GetListOfFunctions()->FindObject(GetName()));
   //  fithist->GetListOfFunctions()->Add(&fBGFit); //use to be a clone.
   fithist->GetListOfFunctions()->Add(fBGFit.Clone()); //use to be a clone.
+  fLastFit = this;
 
   SetParent(0); //fithist);
 
