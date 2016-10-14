@@ -618,6 +618,7 @@ void TGRSIint::SetupPipeline() {
                                                output_fragment_tree_filename);
     fNewFragmentFile = output_fragment_tree_filename;
     loop->InputQueue() = fragment_queue;
+    loop->BadInputQueue() = bad_queue;
     fragment_queue = loop->OutputQueue();
     if(scaler_queue) {
       loop->ScalerInputQueue() = scaler_queue;
