@@ -184,7 +184,7 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment* currentFrag) {
   TChannel* chan = TChannel::GetChannel(currentFrag->GetAddress());
   if(!chan)
     chan = gChannel;
-  std::string dig_type = (chan)->GetDigitizerType();
+  std::string dig_type = (chan)->GetDigitizerTypeString();
 
   // Zero-crossing now transient, why bother calculating it.
   // // remove vernier for now and calculate the time to the trigger
@@ -226,7 +226,7 @@ void TDataParser::SetTIGCharge(uint32_t value, TFragment* currentFragment) {
   TChannel* chan = currentFragment->GetChannel();
   if(!chan)
     chan = gChannel;
-  std::string dig_type = chan->GetDigitizerType();
+  std::string dig_type = chan->GetDigitizerTypeString();
 
   int charge = currentFragment->GetCharge();
   if((dig_type.compare(0,5,"Tig10") == 0) || (dig_type.compare(0,5,"TIG10") == 0))	{
@@ -624,7 +624,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   if(x+2 < size && (data[x+1] & 0x80000000) == 0x0 && (data[x+2] & 0x80000000) == 0x0) {
                     ++x;
                     tmpIntLength.push_back((data[x] & 0x3fff) | (((data[x] & 0x2000) == 0x2000) ? 0xc000 : 0x0));
-                    EventFrag->SetNumberOfPileups((data[x] >> 16) & 0xff);
+                    //EventFrag->SetNumberOfPileups((data[x] >> 16) & 0xff);
                     ++x;
                     if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
                       tmpCharge.push_back(std::numeric_limits<int>::max());
@@ -1225,6 +1225,7 @@ int TDataParser::FifoToFragment(unsigned short* data,int size,bool zerobuffer,
 void TDataParser::Push(ThreadsafeQueue<TFragment*>& queue, TFragment* frag) {
 	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
 	fFragmentIdMap[frag->GetTriggerId()]++;
+	frag->SetEntryNumber();
 	queue.Push(frag);
 }
 

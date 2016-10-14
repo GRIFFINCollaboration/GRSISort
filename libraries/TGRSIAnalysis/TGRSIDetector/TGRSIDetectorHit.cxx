@@ -52,18 +52,29 @@ void TGRSIDetectorHit::Streamer(TBuffer& R__b) {
   }
 }
 
-Double_t TGRSIDetectorHit::GetTime(Option_t* opt) const {
+Double_t TGRSIDetectorHit::GetTime(const UInt_t& correction_flag,Option_t* opt) const {
   if(IsTimeSet())
     return fTime;
 
-  Double_t dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
   TChannel* chan = GetChannel();
   if(!chan) {
     Error("GetTime","No TChannel exists for address 0x%08x",GetAddress());
-    return 10.*dTime;
+    return 10.*(static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform()));
   }
 
-  return 10.*(dTime - chan->GetTZero(GetEnergy()));
+	switch(chan->GetDigitizerType()) {
+		Double_t dTime;
+		case TMnemonic::kGRF16:
+			dTime = (GetTimeStamp()&(~0x3ffff))*10. + (GetCfd() + gRandom->Uniform())/1.6;//CFD is in 10/16th of a nanosecond
+			return dTime - 10.*(chan->GetTZero(GetEnergy()));
+		case TMnemonic::kGRF4G:
+			dTime = GetTimeStamp()*10. + (fCfd>>22) + ((fCfd & 0x3fffff) + gRandom->Uniform())/256.;
+			return dTime - 10.*(chan->GetTZero(GetEnergy()));
+		default:
+		   dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
+		   return 10.*(dTime - chan->GetTZero(GetEnergy()));
+	}
+	return 0.;
 }
 
 
@@ -106,6 +117,7 @@ void TGRSIDetectorHit::Copy(TObject& rhs) const {
   static_cast<TGRSIDetectorHit&>(rhs).fKValue         = fKValue;
   static_cast<TGRSIDetectorHit&>(rhs).fEnergy         = fEnergy;
   static_cast<TGRSIDetectorHit&>(rhs).fTime           = fTime;
+  static_cast<TGRSIDetectorHit&>(rhs).fChannel        = fChannel;
 
   static_cast<TGRSIDetectorHit&>(rhs).fBitflags       = 0;
   static_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
@@ -130,7 +142,7 @@ void TGRSIDetectorHit::Print(Option_t* opt) const {
 }
 
 const char *TGRSIDetectorHit::GetName() const {
-  TChannel *channel = TChannel::GetChannel(fAddress);
+  TChannel *channel = GetChannel();
   if(!channel)
      return Class()->ClassName();
   else
@@ -153,6 +165,7 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
   fBitflags       = fBitflags&0xff00;
   fPPGStatus      = TPPG::kJunk;
   fCycleTimeStamp = 0;
+  fChannel        = NULL;
 }
 
 Int_t TGRSIDetectorHit::GetDetector() const {

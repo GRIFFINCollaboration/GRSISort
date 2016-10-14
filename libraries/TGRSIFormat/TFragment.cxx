@@ -9,6 +9,8 @@
 ClassImp(TFragment)
 /// \endcond
 
+Long64_t TFragment::fNumberOfFragments = 0;
+
 TFragment::TFragment() {
    // Default Constructor
 #if MAJOR_ROOT_VERSION < 6

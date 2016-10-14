@@ -1,5 +1,7 @@
 #include "TFragWriteLoop.h"
 
+#include <sstream>
+#include <iomanip>
 #include <chrono>
 #include <thread>
 
@@ -12,48 +14,46 @@
 #include "TThread.h"
 #include "TTreeFillMutex.h"
 
-TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string output_filename){
+TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string fOutputFilename){
   if(name.length()==0){
     name = "write_loop";
   }
 
   StoppableThread* thread = StoppableThread::Get(name);
   if(!thread){
-    if(output_filename.length()==0){
-      output_filename = "temp.root";
+    if(fOutputFilename.length()==0){
+      fOutputFilename = "temp.root";
     }
-    thread = new TFragWriteLoop(name,output_filename);
+    thread = new TFragWriteLoop(name,fOutputFilename);
   }
 
   return dynamic_cast<TFragWriteLoop*>(thread);
 }
 
-TFragWriteLoop::TFragWriteLoop(std::string name, std::string output_filename)
+TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
   : StoppableThread(name),
-    output_file(NULL), event_tree(NULL),
-    items_handled(0),
-    input_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
-    scaler_input_queue(std::make_shared<ThreadsafeQueue<TEpicsFrag*> >()),
-    output_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()) {
+    fOutputFile(NULL), fEventTree(NULL), fBadEventTree(NULL), fScalerTree(NULL),
+	 fEventAddress(NULL), fBadEventAddress(NULL), fScalerAddress(NULL),
+    fItemsHandled(0),fInputQueueSize(0),
+    fInputQueue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
+    fBadInputQueue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
+    fScalerInputQueue(std::make_shared<ThreadsafeQueue<TEpicsFrag*> >()),
+    fOutputQueue(std::make_shared<ThreadsafeQueue<TFragment*> >()) {
 
-
-  event_address = new TFragment*;
-  *event_address = NULL;
-
-  scaler_address = new TEpicsFrag*;
-  *scaler_address = NULL;
-
-  if(output_filename != "/dev/null"){
+  if(fOutputFilename != "/dev/null"){
     TThread::Lock();
 
     //TPreserveGDirectory preserve;
-    output_file = new TFile(output_filename.c_str(),"RECREATE");
+    fOutputFile = new TFile(fOutputFilename.c_str(),"RECREATE");
 
-    event_tree = new TTree("FragmentTree","FragmentTree");
-    event_tree->Branch("TFragment",event_address);
+    fEventTree = new TTree("FragmentTree","FragmentTree");
+    fEventTree->Branch("TFragment", &fEventAddress);
 
-    scaler_tree = new TTree("EpicsTree","EpicsTree");
-    scaler_tree->Branch("TEpicsFrag",scaler_address);
+    fBadEventTree = new TTree("BadFragmentTree","BadFragmentTree");
+    fBadEventTree->Branch("TFragment", &fBadEventAddress);
+
+    fScalerTree = new TTree("EpicsTree","EpicsTree");
+    fScalerTree->Branch("TEpicsFrag", &fScalerAddress);
 
     TThread::UnLock();
   }
@@ -61,101 +61,128 @@ TFragWriteLoop::TFragWriteLoop(std::string name, std::string output_filename)
 }
 
 TFragWriteLoop::~TFragWriteLoop() {
-  delete event_address;
-  delete scaler_address;
-
   Write();
 }
 
 void TFragWriteLoop::ClearQueue() {
-  while(input_queue->Size()){
+  while(fInputQueue->Size()){
     TFragment* event = NULL;
-    input_queue->Pop(event);
+    fInputQueue->Pop(event);
     if(event){
       delete event;
     }
   }
 
-  while(output_queue->Size()){
+  while(fOutputQueue->Size()){
     TFragment* event = NULL;
-    output_queue->Pop(event);
+    fOutputQueue->Pop(event);
     if(event){
       delete event;
     }
   }
+}
+
+std::string TFragWriteLoop::Status() {
+	std::stringstream ss;
+	ss<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputQueueSize>0 ? fInputQueueSize+GetItemsPushed():GetItemsPushed());
+	return ss.str();
+}
+
+std::string TFragWriteLoop::EndStatus() {
+	std::stringstream ss;
+	ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputQueueSize>0 ? fInputQueueSize+GetItemsPushed():GetItemsPushed())<<std::endl;;
+	return ss.str();
 }
 
 bool TFragWriteLoop::Iteration() {
-  TFragment* event = NULL;
-  input_queue->Pop(event,0);
+	TFragment* event = NULL;
+	fInputQueueSize = fInputQueue->Pop(event,0);
 
-  TEpicsFrag* scaler = NULL;
-  scaler_input_queue->Pop(scaler,0);
+	TFragment* badEvent = NULL;
+	fBadInputQueue->Pop(badEvent,0);
 
-  bool has_anything = event || scaler;
-  bool all_parents_dead = (input_queue->IsFinished() &&
-                           scaler_input_queue->IsFinished());
+	TEpicsFrag* scaler = NULL;
+	fScalerInputQueue->Pop(scaler,0);
 
-  if(event) {
-    WriteEvent(*event);
-    output_queue->Push(event);
-    items_handled++;
-  }
+	bool has_anything = event || badEvent || scaler;
+	bool all_parents_dead = (fInputQueue->IsFinished() && fBadInputQueue->IsFinished() &&
+			fScalerInputQueue->IsFinished());
 
-  if(scaler) {
-    WriteScaler(*scaler);
-    delete scaler;
-  }
+	if(event) {
+		WriteEvent(*event);
+		fOutputQueue->Push(event);
+		fItemsHandled++;
+	}
 
-  if(has_anything) {
-    return true;
-  } else if(all_parents_dead) {
-    output_queue->SetFinished();
-    return false;
-  } else {
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    return true;
-  }
+	if(badEvent) {
+		WriteBadEvent(*badEvent);
+		delete badEvent;
+	}
+
+	if(scaler) {
+		WriteScaler(*scaler);
+		delete scaler;
+	}
+
+	if(has_anything) {
+		return true;
+	} else if(all_parents_dead) {
+		fOutputQueue->SetFinished();
+		return false;
+	} else {
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		return true;
+	}
 }
 
 void TFragWriteLoop::Write() {
-  if(output_file){
-    output_file->cd();
-    event_tree->Write(event_tree->GetName(), TObject::kOverwrite);
-    scaler_tree->Write(scaler_tree->GetName(), TObject::kOverwrite);
-    if(GValue::Size()) {
-      GValue::Get()->Write();
-    }
+	if(fOutputFile){
+		fOutputFile->cd();
+		fEventTree->Write(fEventTree->GetName(), TObject::kOverwrite);
+		fBadEventTree->Write(fBadEventTree->GetName(), TObject::kOverwrite);
+		fScalerTree->Write(fScalerTree->GetName(), TObject::kOverwrite);
+		if(GValue::Size()) {
+			GValue::Get()->Write();
+		}
 
-    if(TChannel::GetNumberOfChannels()) {
-      //TChannel::GetDefaultChannel()->Write();
-      TChannel::WriteToRoot();
-    }
+		if(TChannel::GetNumberOfChannels()) {
+			//TChannel::GetDefaultChannel()->Write();
+			TChannel::WriteToRoot();
+		}
 
-    TGRSIRunInfo::Get()->WriteToRoot(output_file);
-    TPPG::Get()->Write();
+		TGRSIRunInfo::Get()->WriteToRoot(fOutputFile);
+		TPPG::Get()->Write();
 
-    output_file->Close();
-    output_file->Delete();
-  }
+		fOutputFile->Close();
+		fOutputFile->Delete();
+	}
 }
 
 void TFragWriteLoop::WriteEvent(TFragment& event) {
-  if(event_tree){
-    *event_address = &event;
-    std::lock_guard<std::mutex> lock(ttree_fill_mutex);
-    event_tree->Fill();
-    *event_address = NULL;
-  }
+	if(fEventTree){
+		fEventAddress = &event;
+		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
+		fEventTree->Fill();
+		fEventAddress = NULL;
+	}
+}
+
+void TFragWriteLoop::WriteBadEvent(TFragment& event) {
+	if(fBadEventTree){
+		fBadEventAddress = &event;
+		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
+		fBadEventTree->Fill();
+		fBadEventAddress = NULL;
+	}
 }
 
 void TFragWriteLoop::WriteScaler(TEpicsFrag& scaler) {
-  if(scaler_tree){
-    *scaler_address = &scaler;
-    std::lock_guard<std::mutex> lock(ttree_fill_mutex);
-    scaler_tree->Fill();
-    *scaler_address = NULL;
-  }
+	if(fScalerTree){
+		fScalerAddress = &scaler;
+		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
+		fScalerTree->Fill();
+		fScalerAddress = NULL;
+	}
 }
 
 

@@ -123,7 +123,7 @@ void TGRSIint::ApplyOptions() {
    }
 
 
-
+	//if(opt->MakeAnalysisTree()) opt->PrintSortingOptions();
 
    ////////////////////////////////////////////////////////
    ////////////////////////////////////////////////////////
@@ -142,26 +142,6 @@ void TGRSIint::ApplyOptions() {
    for(auto& midas_file : opt->InputMidasFiles()) {
      OpenMidasFile(midas_file.c_str());
    }
-
-   //if I am passed any calibrations, lets load those, this
-   //will overwrite any with the same address previously read in.
-   for(auto cal_filename : opt->CalInputFiles()) {
-     TChannel::ReadCalFile(cal_filename.c_str());
-   }
-   if(fMidasFiles.size()) {
-     TGRSIRunInfo::Get()->SetRunInfo(fMidasFiles[0]->GetRunNumber(),
-                                     fMidasFiles[0]->GetSubRunNumber());
-   } else {
-     TGRSIRunInfo::Get()->SetRunInfo(0,0);
-   }
-   TPPG::Get()->Setup();
-   for(auto val_filename : opt->ValInputFiles()) {
-     GValue::ReadValFile(val_filename.c_str());
-   }
-   for(auto info_filename : opt->ExternalRunInfo()) {
-     TGRSIRunInfo::Get()->ReadInfoFile(info_filename.c_str());
-   }
-
 
    SetupPipeline();
 
@@ -212,8 +192,8 @@ void TGRSIint::Terminate(Int_t status){
 
   StoppableThread::StopAll();
 
-  if(TSortingDiagnostics::Get()->NumberOfFragmentsOutOfOrder() > 0) {
-	  std::cerr<<DRED<<TSortingDiagnostics::Get()->NumberOfFragmentsOutOfOrder()<<" fragments were out of order!"<<RESET_COLOR<<std::endl;
+  if(TGRSIOptions::Get()->MakeAnalysisTree()) {
+	  TSortingDiagnostics::Get()->Print("error");
   }
 
   //if(GUIIsRunning()){
@@ -483,11 +463,6 @@ void TGRSIint::SetupPipeline() {
                                   (write_analysis_histograms || write_analysis_tree) &&
                                   !generate_analysis_data);
 
-  TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::kTriggerId;
-  if(TGRSIRunInfo::Get()->Griffin()) {
-    event_build_mode = TEventBuildingLoop::kTimestamp;
-  }
-
 
   // Extract the run number and sub run number from whatever we were given
   int run_number = 0;
@@ -592,6 +567,32 @@ void TGRSIint::SetupPipeline() {
     scaler_queue = unpack_loop->ScalerOutputQueue();
     bad_queue = unpack_loop->BadOutputQueue();
   }
+   //if I am passed any calibrations, lets load those, this
+   //will overwrite any with the same address previously read in.
+   for(auto cal_filename : opt->CalInputFiles()) {
+     TChannel::ReadCalFile(cal_filename.c_str());
+   }
+   if(fMidasFiles.size()) {
+     TGRSIRunInfo::Get()->SetRunInfo(fMidasFiles[0]->GetRunNumber(),
+                                     fMidasFiles[0]->GetSubRunNumber());
+   } else {
+     TGRSIRunInfo::Get()->SetRunInfo(0,0);
+   }
+   TPPG::Get()->Setup();
+   for(auto val_filename : opt->ValInputFiles()) {
+     GValue::ReadValFile(val_filename.c_str());
+   }
+   for(auto info_filename : opt->ExternalRunInfo()) {
+     TGRSIRunInfo::Get()->ReadInfoFile(info_filename.c_str());
+   }
+
+
+  //this happens here, because the TDataLoop constructor is where we read the midas file ODB
+  TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::kTriggerId;
+  if(TGRSIRunInfo::Get()->Griffin()) {
+    event_build_mode = TEventBuildingLoop::kTimestamp;
+  }
+
   // If needed, read from the fragment tree
   if (read_from_fragment_tree) {
     auto loop = TFragmentChainLoop::Get("1_chain_loop", gFragment);
@@ -613,6 +614,7 @@ void TGRSIint::SetupPipeline() {
                                                output_fragment_tree_filename);
     fNewFragmentFile = output_fragment_tree_filename;
     loop->InputQueue() = fragment_queue;
+    loop->BadInputQueue() = bad_queue;
     fragment_queue = loop->OutputQueue();
     if(scaler_queue) {
       loop->ScalerInputQueue() = scaler_queue;
@@ -622,6 +624,7 @@ void TGRSIint::SetupPipeline() {
 
   // If needed, generate the individual detectors from the TFragments
   if(generate_analysis_data) {
+	 TGRSIOptions::Get()->PrintSortingOptions();
     TEventBuildingLoop* eoop = TEventBuildingLoop::Get("5_event_build_loop",
                                                        event_build_mode);
     eoop->SetSortDepth(opt->SortDepth());

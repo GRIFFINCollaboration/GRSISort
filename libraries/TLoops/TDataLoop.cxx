@@ -215,9 +215,9 @@ void TDataLoop::SetTIGOdb()  {
       if(type.at(x) != 0) {
          tempChan->SetTypeName(typemap[type.at(x)].first);
          tempChan->SetDigitizerType(typemap[type.at(x)].second.c_str());
-         if(strcmp(tempChan->GetDigitizerType(),"Tig64")==0)
+         if(strcmp(tempChan->GetDigitizerTypeString(),"Tig64")==0) // TODO: maybe use enumerations via GetDigitizerType()
             temp_integration = 25;
-         else if(strcmp(tempChan->GetDigitizerType(),"Tig10")==0)
+         else if(strcmp(tempChan->GetDigitizerTypeString(),"Tig10")==0)
             temp_integration = 125;
       }
       tempChan->SetIntegration(temp_integration);

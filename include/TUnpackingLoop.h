@@ -20,6 +20,7 @@ public:
   void SetNoWaveForms(bool temp = true) { parser.SetNoWaveForms(temp); }
   void SetRecordDiag(bool temp = true) { parser.SetRecordDiag(temp); }
 
+	std::string EndStatus();
 
 #ifndef __CINT__
   std::shared_ptr<ThreadsafeQueue<TMidasEvent> >& InputQueue() { return input_queue; }
@@ -49,6 +50,7 @@ private:
   
   TDataParser parser;
   long fFragsReadFromMidas;
+  long fGoodFragsRead;
 
   TUnpackingLoop(std::string name);
   TUnpackingLoop(const TUnpackingLoop& other);

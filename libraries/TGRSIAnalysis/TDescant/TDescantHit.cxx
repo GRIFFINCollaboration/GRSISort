@@ -119,7 +119,7 @@ Int_t TDescantHit::GetRemainder() const {
 	return fCfd>>22;
 }
 
-Double_t TDescantHit::GetTime(Option_t* opt) const {
+Double_t TDescantHit::GetTime(const UInt_t& correction_flag,Option_t* opt) const {
 	Double_t dTime = GetTimeStamp()*10.+GetRemainder()+(GetCfd() + gRandom->Uniform())/256.;
 	TChannel* chan = GetChannel();
 	if(!chan) {

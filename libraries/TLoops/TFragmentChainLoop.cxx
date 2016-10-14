@@ -86,6 +86,7 @@ bool TFragmentChainLoop::Iteration() {
   TFragment* frag = new TFragment;
   *address = frag;
   input_chain->GetEntry(fEntriesRead++);
+  frag->SetEntryNumber();
   output_queue->Push(frag);
   return true;
 }
