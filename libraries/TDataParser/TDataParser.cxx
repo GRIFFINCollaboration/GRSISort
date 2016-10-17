@@ -581,7 +581,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 					 } else {
 						//these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
 						//so we look for the next trailer and stop there
-						while((data[x] & 0xf0000000) != 0xe0000000) ++x;
+						while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
 						TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
 						delete EventFrag;
 						return -x;
@@ -598,7 +598,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                 } else {
                   //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
                   //so we look for the next trailer and stop there
-                  while((data[x] & 0xf0000000) != 0xe0000000) ++x;
+                  while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
                   TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
                   delete EventFrag;
                   return -x;
@@ -656,7 +656,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                       }
                     } else if((data[x+1] & 0x80000000) == 0x0) { //5 words
                       //std::cout<<"5 words!"<<std::endl;
-                      //while((data[x] & 0xf0000000) != 0xe0000000) ++x;
+                      //while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
                       //TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
                       //delete EventFrag;
                       //return -x;
@@ -664,7 +664,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                     }
                   } else if((data[x+1] & 0x80000000) == 0x0) { //3 words
                     //std::cout<<"3 words (0x"<<std::hex<<data[x]<<")"<<std::endl;
-                    //while((data[x] & 0xf0000000) != 0xe0000000) ++x;
+                    //while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
                     //TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
                     //delete EventFrag;
                     //return -x;
@@ -674,7 +674,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
                   //so we look for the next trailer and stop there
                   //std::cout<<"1 word (0x"<<std::hex<<data[x]<<")"<<std::endl;
-                  while((data[x] & 0xf0000000) != 0xe0000000) ++x;
+                  while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
                   TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
                   delete EventFrag;
                   return -x;
@@ -700,7 +700,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             } else {
               //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
               //so we look for the next trailer and stop there
-              while((data[x] & 0xf0000000) != 0xe0000000) ++x;
+              while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
               TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
               delete EventFrag;
               return -x;
