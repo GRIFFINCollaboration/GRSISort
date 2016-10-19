@@ -790,7 +790,7 @@ Int_t TChannel::ReadCalFile(const char* filename) {
 	std::ifstream infile;
 	infile.open(infilename.c_str());
 	if (!infile) {
-		printf("could not open file.\n");
+		printf(DRED "could not open file." RESET_COLOR "\n");
 		return -2;
 	}
 	infile.seekg(0,std::ios::end);
