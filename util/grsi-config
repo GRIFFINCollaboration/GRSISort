@@ -45,7 +45,7 @@ utildir=$GRSISYS/etc
 
 grsilibs="-lTGRSIDetector -lTDetector -lTGRSIFormat -lTNucleus -lTKinematics -lTSRIM -lTBetaDecay -lTGRSIFit -lTCal -lGROOT -lTReaction -lTAngularCorrelation"
 detlibs="-lTTigress -lTGriffin -lTSharc -lTTriFoil -lTSceptar -lTPaces -lTDescant -lTTip -lTCSM -lTS3 -lTSiLi -lTRF -lTPulseAnalyzer -lTTAC -lTLaBr -lTZeroDegree"
-grsimore="-lTMidas -lTDataParser -lTGRSILoop -lTGRSIint -lTGRSIRootIO -lTLoops -lTHistogramming -lMakeAnalysisHistograms -lMakeGriffinFragmentHistograms -lMakeTigressHistograms"
+grsimore="-lTMidas -lTDataParser -lTGRSIint -lTLoops -lTHistogramming -lMakeAnalysisHistograms -lMakeGriffinFragmentHistograms -lMakeTigressHistograms"
 
 cflags="-std=c++0x -I$incdir"
 
