@@ -456,278 +456,279 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
     uint32_t packet = dword >> 28;
     uint32_t value  = dword & 0x0fffffff;
 
-    switch(packet) {
-      case 0x8: //The 8 packet type is for event headers
-        //if this happens, we have "accidentally" found another event.
-        //currently the GRIF-C only sets the master/slave port of the address for the first header (of the corrupt event)
-        //so we want to ignore this corrupt event and the next event which has a wrong address
-        //std::cout<<"double header"<<std::endl;
-        TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-        delete EventFrag;
-        return -(x+1);//+1 to ensure we don't read this header as start of a good event
-        break;
-      case 0xc: //The c packet type is for waveforms
-        if(!fNoWaveforms)
-          SetGRIFWaveForm(value,EventFrag);
-        break;
-      case 0xb: //The b packet type contains the dead-time word
-        SetGRIFDeadTime(value,EventFrag);
-        break;
-      case 0xd:
-        SetGRIFNetworkPacket(dword,EventFrag); // The network packet placement is not yet stable.
-        break;
-      case 0xe:
-        // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
-        // change should be backward-compatible
-        if((value & 0x3fff) == (EventFrag->GetChannelId() & 0x3fff)){
-          if(!TGRSIOptions::Get()->SuppressErrors() && (EventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
-            // check whether the nios finished and if so whether it finished with an error
-            if(((value>>14) & 0x1) == 0x1) {
-              if(((value>>16) & 0xff) != 0) {
-                printf( BLUE "0x%04x: NIOS code finished with error 0x%02x" RESET_COLOR "\n",EventFrag->GetAddress(), (value>>16) & 0xff);
-              }
-            }
-          }
-
-          if((EventFrag->GetModuleType() == 1) || (bank > kGRF2)) { //4Gs have this only for banks newer than GRF2
-            EventFrag->SetAcceptedChannelId((value>>14) & 0x3fff);
-          } else {
-            EventFrag->SetAcceptedChannelId(0);
-          }
-
-          //the way we insert the fragment(s) depends on the module type and bank:
-          //for module type 1 & bank GRF4, we can't insert the fragments yet, we need to put them in a separate queue
-          //for module type 2 (4G, all banks) and module type 1 & bank GRF3 we set the single charge, cfd, and IntLength, and insert the fragment
-          //for module type 1 & banks GRF1/GRF2 we loop over the charge, cfd, and IntLengths, and insert the (multiple) fragment(s)
-          //the last two cases can be treated the same since the second case will just have a single length charge, cfd, and IntLengths
-
-          //the first two cases can be treated the same way, so we only need to check for the third case
-          if(EventFrag->GetModuleType() == 1 && bank == kGRF4) {
-            if(tmpCfd.size() != 1) {
-              if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-              Push(*fBadOutputQueue,EventFrag);
-              return -x;
-            }
-            EventFrag->SetCfd(tmpCfd[0]);
-            fFragmentMap.Add(EventFrag, tmpCharge, tmpIntLength);
-            return x;
-          } else {
-            if(tmpCharge.size() != tmpIntLength.size() || tmpCharge.size() != tmpCfd.size()) {
-              if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-              Push(*fBadOutputQueue,EventFrag);
-              return -x;
-            }
-            for(size_t h = 0; h < tmpCharge.size(); ++h) {
-              EventFrag->SetCharge(tmpCharge[h]);
-              EventFrag->SetKValue(tmpIntLength[h]);
-              EventFrag->SetCfd(tmpCfd[h]);
-              if(fRecordDiag) TParsingDiagnostics::Get()->GoodFragment(EventFrag);
-              Push(*fGoodOutputQueue,new TFragment(*EventFrag));
-            }
-            delete EventFrag;
-            return x;
-          }
-        } else  {
-          if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-          Push(*fBadOutputQueue,EventFrag);
-          return -x;
-        }
-        break;
-      case 0xf:
-        switch(bank) {
-          case kGRF1: // format from before May 2015 experiments
-            TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-            delete EventFrag;
-            return -x;
-            break;
-          case kGRF2: // from May 2015 to the end of 2015 0xf denoted a psd-word from a 4G
-            if(x+1 < size) {
-              SetGRIFCc(value, EventFrag);
-              ++x;
-              dword = data[x];
-              SetGRIFPsd(dword, EventFrag);
-            } else {
-              TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-              delete EventFrag;
-              return -x;
-            }
-            break;
-          case kGRF3: // from 2016 on we're back to reserving 0xf for faults
-          case kGRF4:
-            TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-            delete EventFrag;
-            return -x;
-            break;
-          default:
-            printf("This bank not yet defined.\n");
-            break;
-        }
-        break;
-
-      default:
-        //these are charge/cfd words which are different depending on module type, and bank number/detector type
-        switch(EventFrag->GetModuleType()) {
-          case 1:
-            switch(bank) { //the GRIF-16 data format depends on the bank number
-              case kGRF1: //bank's 1&2 have n*2 words with (5 high bits IntLength, 26 Charge)(5 low bits IntLength, 26 Cfd)
-              case kGRF2:
-                //read this pair of charge/cfd words, check if the next word is also a charge/cfd word
-					 if(((data[x] & 0x80000000) == 0x00000000) && x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
-						Short_t tmp = (data[x] & 0x7c000000) >> 21; //21 = 26 minus space for 5 low bits
-						tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xfc000000 : 0x0)); //extend the sign bit of 26bit charge word
-						++x;
-						tmpIntLength.push_back(tmp | ((data[x] & 0x7c000000) >> 26));
-						tmpCfd.push_back(data[x] & 0x03ffffff);
-					 } else {
-						//these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
-						//so we look for the next trailer and stop there
-						while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
-						TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-						delete EventFrag;
-						return -x;
+	 switch(packet) {
+		 case 0x8: //The 8 packet type is for event headers
+			 //if this happens, we have "accidentally" found another event.
+			 //currently the GRIF-C only sets the master/slave port of the address for the first header (of the corrupt event)
+			 //so we want to ignore this corrupt event and the next event which has a wrong address
+			 //std::cout<<"double header"<<std::endl;
+			 TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+			 delete EventFrag;
+			 return -(x+1);//+1 to ensure we don't read this header as start of a good event
+			 break;
+		 case 0xc: //The c packet type is for waveforms
+			 if(!fNoWaveforms)
+				 SetGRIFWaveForm(value,EventFrag);
+			 break;
+		 case 0xb: //The b packet type contains the dead-time word
+			 SetGRIFDeadTime(value,EventFrag);
+			 break;
+		 case 0xd:
+			 SetGRIFNetworkPacket(dword,EventFrag); // The network packet placement is not yet stable.
+			 break;
+		 case 0xe:
+			 // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
+			 // change should be backward-compatible
+			 if((value & 0x3fff) == (EventFrag->GetChannelId() & 0x3fff)){
+				 if(!TGRSIOptions::Get()->SuppressErrors() && (EventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
+					 // check whether the nios finished and if so whether it finished with an error
+					 if(((value>>14) & 0x1) == 0x1) {
+						 if(((value>>16) & 0xff) != 0) {
+							 printf( BLUE "0x%04x: NIOS code finished with error 0x%02x" RESET_COLOR "\n",EventFrag->GetAddress(), (value>>16) & 0xff);
+						 }
 					 }
-                break;
-              case kGRF3: //bank 3 has 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
-                if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
-                  Short_t tmp = (data[x] & 0x7c000000) >> 17; //17 = 26 minus space for 9 low bits
-                  tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xfc000000 : 0x0)); //extend the sign bit of 26bit charge word
-                  ++x;
-                  tmpIntLength.push_back(tmp | ((data[x] & 0x7fc00000) >> 22));
-                  tmpCfd.push_back(data[x] & 0x003fffff);
-                    break;
-                } else {
-                  //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
-                  //so we look for the next trailer and stop there
-                  while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
-                  TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-                  delete EventFrag;
-                  return -x;
-                }
-                break;
-              case kGRF4: //bank 4 can have more than one integration (up to four), but these have to be combined with other fragments/hits!
-                //std::cout<<"kGRF4: "<<std::flush;
-                //we always have 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
-                if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
-                  Short_t tmp = ((data[x] & 0x7c000000) >> 17) | (((data[x] & 0x40000000) == 0x40000000) ? 0xc000 : 0x0); //17 = 26 minus space for 9 low bits; signed, so we extend the sign bit from 14 (31) to 16 bits
-                  if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
-                    tmpCharge.push_back(std::numeric_limits<int>::max());
-                  } else {
-                    tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
-                  }
-                  //std::cout<<"0x"<<std::hex<<data[x]<<": charge = 0x"<<tmpCharge.back()<<", k = "<<tmp<<std::endl;
-                  ++x;
-                  tmpIntLength.push_back(tmp | ((data[x] & 0x7fc00000) >> 22));
-                  tmpCfd.push_back(data[x] & 0x003fffff);
-                  //std::cout<<"0x"<<std::hex<<data[x]<<": cfd = 0x"<<tmpCfd.back()<<", k = "<<tmpIntLength.back()<<std::endl;
-                  //std::cout<<"found 2 words (0x"<<std::hex<<tmpCharge.back()<<"/0x"<<tmpIntLength.back()<<"/0x"<<tmpCfd.back()<<std::dec<<")"<<std::endl;
-                  //check if we have two more words (X & XI) with (8 num hits, 2 reserved, 14 IntLength2)(31 Charge2); x has already been incremented once!
-                  if(x+2 < size && (data[x+1] & 0x80000000) == 0x0 && (data[x+2] & 0x80000000) == 0x0) {
-                    ++x;
-                    tmpIntLength.push_back((data[x] & 0x3fff) | (((data[x] & 0x2000) == 0x2000) ? 0xc000 : 0x0));
-                    //EventFrag->SetNumberOfPileups((data[x] >> 16) & 0xff);
-                    ++x;
-                    if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
-                      tmpCharge.push_back(std::numeric_limits<int>::max());
-                    } else {
-                      tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
-                    }
-                    //std::cout<<"found 4 words (0x"<<std::hex<<tmpCharge.back()<<"/0x"<<tmpIntLength.back()<<"/0x"<<tmpCfd.back()<<std::dec<<")"<<std::endl;
-                    //check if we have two more words (XI & XIII) with (14 IntLength4, 2 reserved, 14 IntLength3)(31 Charge3); x has already been incremented thrice!
-                    if(x+2 < size && (data[x+1] & 0x80000000) == 0x0 && (data[x+2] & 0x80000000) == 0x0) {
-                      ++x;
-                      tmpIntLength.push_back((data[x] & 0x3fff) | (((data[x] & 0x2000) == 0x2000) ? 0xc000 : 0x0));
-                      tmpIntLength.push_back((data[x] >> 16) | (((data[x] & 0x20000000) == 0x20000000) ? 0xc000 : 0x0));
-                      ++x;
-                      if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
-                        tmpCharge.push_back(std::numeric_limits<int>::max());
-                      } else {
-                        tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
-                      }
-                      //check if we have one final word with (31 Charge4), otherwise remove the last integration length (IntLength4)
-                      if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
-                        ++x;
-                        if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
-                          tmpCharge.push_back(std::numeric_limits<int>::max());
-                        } else {
-                          tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
-                        }
-                      } else {
-                        tmpIntLength.pop_back();
-                      }
-                    } else if((data[x+1] & 0x80000000) == 0x0) { //5 words
-                      //std::cout<<"5 words!"<<std::endl;
-                      //while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
-                      //TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-                      //delete EventFrag;
-                      //return -x;
-                      ++x;
-                    }
-                  } else if((data[x+1] & 0x80000000) == 0x0) { //3 words
-                    //std::cout<<"3 words (0x"<<std::hex<<data[x]<<")"<<std::endl;
-                    //while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
-                    //TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-                    //delete EventFrag;
-                    //return -x;
-                    ++x;
-                  }
-                } else {
-                  //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
-                  //so we look for the next trailer and stop there
-                  //std::cout<<"1 word (0x"<<std::hex<<data[x]<<")"<<std::endl;
-                  while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
-                  TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-                  delete EventFrag;
-                  return -x;
-                }
-                break;
-              default:
-                if(!TGRSIOptions::Get()->SuppressErrors()) {
-                  printf(DRED "Error, back type %d not implemented yet" RESET_COLOR "\n", bank);
-                }
-                delete EventFrag;
-                return -x;
-                break;
-            }
-            break;
-          case 2:
-            //the 4G data format depends on the detector type, but the first two words are always the same
-            if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
-              Short_t tmp = (data[x] & 0x7c000000) >> 21; //21 = 26 minus space for 5 low bits
-              tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xfc000000 : 0x0)); //extend the sign bit of 26bit charge word
-              ++x;
-              tmpIntLength.push_back(tmp | ((data[x] & 0x7c000000) >> 26));
-              tmpCfd.push_back(data[x] & 0x03ffffff);
-            } else {
-              //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
-              //so we look for the next trailer and stop there
-              while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
-              TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-              delete EventFrag;
-              return -x;
-            }
-            //for descant types (6,10,11) there are two more words for banks > GRF2 (bank GRF2 used 0xf packet and bank GRF1 never had descant)
-            if(bank > kGRF2 && (EventFrag->GetDetectorType() == 6 || EventFrag->GetDetectorType() == 10 || EventFrag->GetDetectorType() == 11)) {
-					++x;
-					if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
-						SetGRIFCc(value, EventFrag);
-						++x;
-						dword = data[x];
-						SetGRIFPsd(dword, EventFrag);
-					} else {
-						TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-						delete EventFrag;
-						return -x;
-					}
-				}
-				break;
-			 default:
-				if(!TGRSIOptions::Get()->SuppressErrors()) {
-					printf(DRED "Error, module type %d not implemented yet" RESET_COLOR "\n", EventFrag->GetModuleType());
-				}
-				delete EventFrag;
-				return -x;
-		  }//switch(EventFrag->GetModuleType())
-		  break;
+				 }
+
+				 if((EventFrag->GetModuleType() == 1) || (bank > kGRF2)) { //4Gs have this only for banks newer than GRF2
+					 EventFrag->SetAcceptedChannelId((value>>14) & 0x3fff);
+				 } else {
+					 EventFrag->SetAcceptedChannelId(0);
+				 }
+
+				 //the way we insert the fragment(s) depends on the module type and bank:
+				 //for module type 1 & bank GRF4, we can't insert the fragments yet, we need to put them in a separate queue
+				 //for module type 2 (4G, all banks) and module type 1 & bank GRF3 we set the single charge, cfd, and IntLength, and insert the fragment
+				 //for module type 1 & banks GRF1/GRF2 we loop over the charge, cfd, and IntLengths, and insert the (multiple) fragment(s)
+				 //the last two cases can be treated the same since the second case will just have a single length charge, cfd, and IntLengths
+
+				 //the first two cases can be treated the same way, so we only need to check for the third case
+				 if(EventFrag->GetModuleType() == 1 && bank == kGRF4) {
+					 if(tmpCfd.size() != 1) {
+						 if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+						 Push(*fBadOutputQueue,EventFrag);
+						 return -x;
+					 }
+					 EventFrag->SetCfd(tmpCfd[0]);
+					 if(fRecordDiag) TParsingDiagnostics::Get()->GoodFragment(EventFrag);
+					 fFragmentMap.Add(EventFrag, tmpCharge, tmpIntLength);
+					 return x;
+				 } else {
+					 if(tmpCharge.size() != tmpIntLength.size() || tmpCharge.size() != tmpCfd.size()) {
+						 if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+						 Push(*fBadOutputQueue,EventFrag);
+						 return -x;
+					 }
+					 for(size_t h = 0; h < tmpCharge.size(); ++h) {
+						 EventFrag->SetCharge(tmpCharge[h]);
+						 EventFrag->SetKValue(tmpIntLength[h]);
+						 EventFrag->SetCfd(tmpCfd[h]);
+						 if(fRecordDiag) TParsingDiagnostics::Get()->GoodFragment(EventFrag);
+						 Push(*fGoodOutputQueue,new TFragment(*EventFrag));
+					 }
+					 delete EventFrag;
+					 return x;
+				 }
+			 } else  {
+				 if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+				 Push(*fBadOutputQueue,EventFrag);
+				 return -x;
+			 }
+			 break;
+		 case 0xf:
+			 switch(bank) {
+				 case kGRF1: // format from before May 2015 experiments
+					 TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+					 delete EventFrag;
+					 return -x;
+					 break;
+				 case kGRF2: // from May 2015 to the end of 2015 0xf denoted a psd-word from a 4G
+					 if(x+1 < size) {
+						 SetGRIFCc(value, EventFrag);
+						 ++x;
+						 dword = data[x];
+						 SetGRIFPsd(dword, EventFrag);
+					 } else {
+						 TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+						 delete EventFrag;
+						 return -x;
+					 }
+					 break;
+				 case kGRF3: // from 2016 on we're back to reserving 0xf for faults
+				 case kGRF4:
+					 TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+					 delete EventFrag;
+					 return -x;
+					 break;
+				 default:
+					 printf("This bank not yet defined.\n");
+					 break;
+			 }
+			 break;
+
+		 default:
+			 //these are charge/cfd words which are different depending on module type, and bank number/detector type
+			 switch(EventFrag->GetModuleType()) {
+				 case 1:
+					 switch(bank) { //the GRIF-16 data format depends on the bank number
+						 case kGRF1: //bank's 1&2 have n*2 words with (5 high bits IntLength, 26 Charge)(5 low bits IntLength, 26 Cfd)
+						 case kGRF2:
+							 //read this pair of charge/cfd words, check if the next word is also a charge/cfd word
+							 if(((data[x] & 0x80000000) == 0x00000000) && x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
+								 Short_t tmp = (data[x] & 0x7c000000) >> 21; //21 = 26 minus space for 5 low bits
+								 tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xfc000000 : 0x0)); //extend the sign bit of 26bit charge word
+								 ++x;
+								 tmpIntLength.push_back(tmp | ((data[x] & 0x7c000000) >> 26));
+								 tmpCfd.push_back(data[x] & 0x03ffffff);
+							 } else {
+								 //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
+								 //so we look for the next trailer and stop there
+								 while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
+								 TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+								 delete EventFrag;
+								 return -x;
+							 }
+							 break;
+						 case kGRF3: //bank 3 has 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
+							 if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
+								 Short_t tmp = (data[x] & 0x7c000000) >> 17; //17 = 26 minus space for 9 low bits
+								 tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xfc000000 : 0x0)); //extend the sign bit of 26bit charge word
+								 ++x;
+								 tmpIntLength.push_back(tmp | ((data[x] & 0x7fc00000) >> 22));
+								 tmpCfd.push_back(data[x] & 0x003fffff);
+								 break;
+							 } else {
+								 //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
+								 //so we look for the next trailer and stop there
+								 while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
+								 TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+								 delete EventFrag;
+								 return -x;
+							 }
+							 break;
+						 case kGRF4: //bank 4 can have more than one integration (up to four), but these have to be combined with other fragments/hits!
+							 //std::cout<<"kGRF4: "<<std::flush;
+							 //we always have 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
+							 if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
+								 Short_t tmp = ((data[x] & 0x7c000000) >> 17) | (((data[x] & 0x40000000) == 0x40000000) ? 0xc000 : 0x0); //17 = 26 minus space for 9 low bits; signed, so we extend the sign bit from 14 (31) to 16 bits
+								 if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
+									 tmpCharge.push_back(std::numeric_limits<int>::max());
+								 } else {
+									 tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
+								 }
+								 //std::cout<<"0x"<<std::hex<<data[x]<<": charge = 0x"<<tmpCharge.back()<<", k = "<<tmp<<std::endl;
+								 ++x;
+								 tmpIntLength.push_back(tmp | ((data[x] & 0x7fc00000) >> 22));
+								 tmpCfd.push_back(data[x] & 0x003fffff);
+								 //std::cout<<"0x"<<std::hex<<data[x]<<": cfd = 0x"<<tmpCfd.back()<<", k = "<<tmpIntLength.back()<<std::endl;
+								 //std::cout<<"found 2 words (0x"<<std::hex<<tmpCharge.back()<<"/0x"<<tmpIntLength.back()<<"/0x"<<tmpCfd.back()<<std::dec<<")"<<std::endl;
+								 //check if we have two more words (X & XI) with (8 num hits, 2 reserved, 14 IntLength2)(31 Charge2); x has already been incremented once!
+								 if(x+2 < size && (data[x+1] & 0x80000000) == 0x0 && (data[x+2] & 0x80000000) == 0x0) {
+									 ++x;
+									 tmpIntLength.push_back((data[x] & 0x3fff) | (((data[x] & 0x2000) == 0x2000) ? 0xc000 : 0x0));
+									 //EventFrag->SetNumberOfPileups((data[x] >> 16) & 0xff);
+									 ++x;
+									 if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
+										 tmpCharge.push_back(std::numeric_limits<int>::max());
+									 } else {
+										 tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
+									 }
+									 //std::cout<<"found 4 words (0x"<<std::hex<<tmpCharge.back()<<"/0x"<<tmpIntLength.back()<<"/0x"<<tmpCfd.back()<<std::dec<<")"<<std::endl;
+									 //check if we have two more words (XI & XIII) with (14 IntLength4, 2 reserved, 14 IntLength3)(31 Charge3); x has already been incremented thrice!
+									 if(x+2 < size && (data[x+1] & 0x80000000) == 0x0 && (data[x+2] & 0x80000000) == 0x0) {
+										 ++x;
+										 tmpIntLength.push_back((data[x] & 0x3fff) | (((data[x] & 0x2000) == 0x2000) ? 0xc000 : 0x0));
+										 tmpIntLength.push_back((data[x] >> 16) | (((data[x] & 0x20000000) == 0x20000000) ? 0xc000 : 0x0));
+										 ++x;
+										 if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
+											 tmpCharge.push_back(std::numeric_limits<int>::max());
+										 } else {
+											 tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
+										 }
+										 //check if we have one final word with (31 Charge4), otherwise remove the last integration length (IntLength4)
+										 if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
+											 ++x;
+											 if((data[x] & 0x02000000) == 0x02000000) { // overflow bit was set
+												 tmpCharge.push_back(std::numeric_limits<int>::max());
+											 } else {
+												 tmpCharge.push_back((data[x] & 0x01ffffff) | (((data[x] & 0x01000000) == 0x01000000) ? 0xfe000000 : 0x0)); //extend the sign bit of 25bit charge word
+											 }
+										 } else {
+											 tmpIntLength.pop_back();
+										 }
+									 } else if((data[x+1] & 0x80000000) == 0x0) { //5 words
+										 //std::cout<<"5 words!"<<std::endl;
+										 //while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
+										 //TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+										 //delete EventFrag;
+										 //return -x;
+										 ++x;
+									 }
+								 } else if((data[x+1] & 0x80000000) == 0x0) { //3 words
+									 //std::cout<<"3 words (0x"<<std::hex<<data[x]<<")"<<std::endl;
+									 //while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
+									 //TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+									 //delete EventFrag;
+									 //return -x;
+									 ++x;
+								 }
+							 } else {
+								 //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
+								 //so we look for the next trailer and stop there
+								 //std::cout<<"1 word (0x"<<std::hex<<data[x]<<")"<<std::endl;
+								 while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
+								 TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+								 delete EventFrag;
+								 return -x;
+							 }
+							 break;
+						 default:
+							 if(!TGRSIOptions::Get()->SuppressErrors()) {
+								 printf(DRED "Error, back type %d not implemented yet" RESET_COLOR "\n", bank);
+							 }
+							 delete EventFrag;
+							 return -x;
+							 break;
+					 }
+					 break;
+				 case 2:
+					 //the 4G data format depends on the detector type, but the first two words are always the same
+					 if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) { //check if the next word is also a charge/cfd word
+						 Short_t tmp = (data[x] & 0x7c000000) >> 21; //21 = 26 minus space for 5 low bits
+						 tmpCharge.push_back((data[x] & 0x03ffffff) | (((data[x] & 0x02000000) == 0x02000000) ? 0xfc000000 : 0x0)); //extend the sign bit of 26bit charge word
+						 ++x;
+						 tmpIntLength.push_back(tmp | ((data[x] & 0x7c000000) >> 26));
+						 tmpCfd.push_back(data[x] & 0x03ffffff);
+					 } else {
+						 //these types of corrupt events quite often end without a trailer which leads to the header of the next event missing the master/slave part of the address
+						 //so we look for the next trailer and stop there
+						 while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
+						 TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+						 delete EventFrag;
+						 return -x;
+					 }
+					 //for descant types (6,10,11) there are two more words for banks > GRF2 (bank GRF2 used 0xf packet and bank GRF1 never had descant)
+					 if(bank > kGRF2 && (EventFrag->GetDetectorType() == 6 || EventFrag->GetDetectorType() == 10 || EventFrag->GetDetectorType() == 11)) {
+						 ++x;
+						 if(x+1 < size && (data[x+1] & 0x80000000) == 0x0) {
+							 SetGRIFCc(value, EventFrag);
+							 ++x;
+							 dword = data[x];
+							 SetGRIFPsd(dword, EventFrag);
+						 } else {
+							 TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
+							 delete EventFrag;
+							 return -x;
+						 }
+					 }
+					 break;
+				 default:
+					 if(!TGRSIOptions::Get()->SuppressErrors()) {
+						 printf(DRED "Error, module type %d not implemented yet" RESET_COLOR "\n", EventFrag->GetModuleType());
+					 }
+					 delete EventFrag;
+					 return -x;
+			 }//switch(EventFrag->GetModuleType())
+			 break;
 	 }//switch(packet)
   }//for(;x<size;x++)
 
