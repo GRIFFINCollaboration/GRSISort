@@ -16,8 +16,8 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject() {
   ///Default constructor
   Clear();
   fAddress = Address;
-  if(!fPPG)
-    fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
+//  if(!fPPG)
+ //   fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
 
 #if MAJOR_ROOT_VERSION < 6
   Class()->IgnoreTObjectStreamer(kTRUE);
@@ -30,9 +30,9 @@ TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) :
   if(copywave) {
     rhs.CopyWave(*this);
   }
-
-  if(!fPPG)
-    fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
+  ClearTransients();
+ // if(!fPPG)
+ //   fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
 #if MAJOR_ROOT_VERSION < 6
   Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
