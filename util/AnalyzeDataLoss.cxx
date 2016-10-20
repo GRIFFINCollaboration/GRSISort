@@ -49,12 +49,12 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
    long entry;
 	long skip = 1000; // skip this many entries before beginning
 	const int channels = 150; // number of channels
-	long lasttime = 0;
+	//long lasttime = 0;
 
 	//--------------- parameters for dealing with the roll-over of the AcceptedChannelId ----------------------//
 	long int acceptedMax = TMath::Power(2,14); // this is the maximum number that the AcceptedChannelId can be
 	int rollovers[channels]; // this is how many roll-overs we have had
-	long int lastAccepted[channels];
+	//long int lastAccepted[channels];
 	bool rolling[channels]; // array that tells us if we're rolling over in that channel
 	int rollnum[channels]; // array that tells us how many times we've had accepted ID over the threshold
 	int rollingthreshold = 1000;
@@ -68,12 +68,12 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
 	long networkPacketTS[3] = {0, 0, 0};
 	TH1D* lostNetworkPackets = new TH1D("lostNetworkPackets","lost network packets;time [ms];lost network packets",10000,0,100e3); list->Add(lostNetworkPackets);
 	TH2D* lostChannelIds = new TH2D("lostChannelIds","Lost Channel Id vs. Channel Number;Channel Number;Lost Channel Id",channels,0,channels,10000,0,10e5); list->Add(lostChannelIds);
-	TH2D* lostAcceptedIds = new TH2D("lostAcceptedIds","Lost Accepted Channel Id vs. Channel Number;Channel Number;time [s]",channels,0,channels,10000,0,1000); list->Add(lostAcceptedIds);
-	TH2D* lostChannelIdsTime = new TH2D("lostChannelIdsTime","Lost Channel Id time vs. Channel Number;Channel Number;Lost Channel Id",channels,0,channels,10000,0,10e5); list->Add(lostChannelIdsTime);
+	TH2D* lostAcceptedIds = new TH2D("lostAcceptedIds","Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Channel Id",channels,0,channels,10000,0,10e5); list->Add(lostAcceptedIds);
+	TH2D* lostChannelIdsTime = new TH2D("lostChannelIdsTime","Lost Channel Id time vs. Channel Number;Channel Number;time [s]",channels,0,channels,10000,0,1000); list->Add(lostChannelIdsTime);
 	TH2D* lostAcceptedIdsTime = new TH2D("lostAcceptedIdsTime","Lost Accepted Channel Id time vs. Channel Number;Channel Number;time [s]",channels,0,channels,10000,0,1000); list->Add(lostAcceptedIdsTime);
 
 	// initialize acceptedID array
-	for (int i=0;i<channels;i++) lastAccepted[i] = 0;
+	//for (int i=0;i<channels;i++) lastAccepted[i] = 0;
 	// initialize rolling array
 	for (int i=0;i<channels;i++) rolling[i] = kFALSE;
 	// initialize rollnum array
@@ -123,9 +123,9 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
 		}
 		accepted += rollovers[chan]*acceptedMax;
 
-		lasttime = time;
+		//lasttime = time;
 		//if (accepted-lastAccepted[chan]>10 && chan!=0) printf("%i\t%li\t%li\n",chan,accepted,lastAccepted[chan]);
-		lastAccepted[chan] = accepted;
+		//lastAccepted[chan] = accepted;
 
 		//----------------- end of section: AcceptedChannelId is now corrected for roll-over -----------------//
 
@@ -142,7 +142,7 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
 				// things look fine, so prepare for next time
 			   networkPacketNumber[0] = networkPacketNumber[1];
 			   networkPacketNumber[1] = networkPacketNumber[2];
-			} else {
+			} else if(networkPacketNumber[0] < networkPacketNumber[2]) {
 				std::cout<<"found wrong network packet number 0x"<<std::hex<<networkPacketNumber[1]<<" (not between 0x"<<networkPacketNumber[0]<<" and 0x"<<networkPacketNumber[2]<<std::dec<<")"<<std::endl;
 			   networkPacketNumber[1] = networkPacketNumber[2];
 			}
@@ -201,6 +201,11 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
 			else {
 				acceptedChannelIds[chan][1] = acceptedChannelIds[chan][2];
 			}
+		}
+
+		// check if channel number and detector type agrees (this relies on a good ODB/cal-file)
+		if(chan < 64 && currentFrag->GetDetectorType() != 0) {
+			std::cout<<entry<<": Found channel 0 - 63 without detector type zero: address 0x"<<std::hex<<currentFrag->GetAddress()<<std::dec<<", detector type "<<currentFrag->GetDetectorType()<<", time stamp "<<currentFrag->GetTimeStamp()<<std::endl;
 		}
 
       if(entry%25000 == 0) {
