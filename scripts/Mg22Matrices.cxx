@@ -66,7 +66,7 @@ TList *Mg22Matrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    if(runInfo == NULL) {
       return NULL;
    }
-
+	ppg = 0;
    ///////////////////////////////////// SETUP ///////////////////////////////////////
    //Histogram paramaters
    Double_t low = 0;
@@ -101,9 +101,9 @@ TList *Mg22Matrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    Double_t offStart = 14.5e8;
    Double_t offEnd   = 15.5e8;
 
-   Int_t sparsebins[3]     = {2000,2000,600};
-   Double_t sparselow[3]   = {0.,0.,-300.};
-   Double_t sparsehigh[3]  = {2000.,2000.,300};
+   Int_t sparsebins[3]     = {8000,8000,600};
+   Double_t sparselow[3]   = {0.,0.,-3000.};
+   Double_t sparsehigh[3]  = {2000.,2000.,3000};
 
    if(w == NULL) {
       w = new TStopwatch;
@@ -113,7 +113,7 @@ TList *Mg22Matrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 
    //const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
-   THnSparseF* gglongmatrixE = new THnSparseF("gglongmatrixE","#gamma-#gamma matrix sorted in E",3,sparsebins,sparselow,sparsehigh); list->Add(gglongmatrixE);
+   //THnSparseF* gglongmatrixE = new THnSparseF("gglongmatrixE","#gamma-#gamma matrix sorted in E",3,sparsebins,sparselow,sparsehigh); list->Add(gglongmatrixE);
    THnSparseF* gglongmatrixT = new THnSparseF("gglongmatrixT","#gamma-#gamma matrix sorted in E",3,sparsebins,sparselow,sparsehigh); list->Add(gglongmatrixT);
    TH2D* bgTDiffgE = new TH2D("bgTDiffgE","#beta-#gamma Time Difference vs. #gamma E",2000,0.,2000., 400,-100.,300.); list->Add(bgTDiffgE);
 
@@ -123,7 +123,7 @@ TList *Mg22Matrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TH2D* bIdVsgId = new TH2D("bIdVsgId","Sceptar Id vs Griffin Id",20,1,21,64,1,65); list->Add(bIdVsgId);
 
    //gamma single spectra
-   TH1D* gammaSingles = new TH1D("gammaSingles","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaSingles);
+   TH1D* gammaSingles = new TH1D("gammaSingles","#gamma singles;energy[keV]",nofBins*4, low, high); list->Add(gammaSingles);
    TH1D* gammaSinglesB = new TH1D("gammaSinglesB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
    TH1D* gammaSinglesBm = new TH1D("gammaSinglesBm","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaSinglesBm);
    TH1D* gammaSinglesBt = new TH1D("gammaSinglesBt","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaSinglesBt);
@@ -262,6 +262,7 @@ TList *Mg22Matrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
       //loop over the gammas in the event packet
       //grif is the variable which points to the current TGriffin
       for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
+			if(grif->GetGriffinHit(one)->GetKValue() != 700) continue;
          //We want to put every gamma ray in this event into the singles
          gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergy()); 
          gtimestamp->Fill(grif->GetGriffinHit(one)->GetTime()/100000000.);
@@ -279,14 +280,15 @@ TList *Mg22Matrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
          }
          //We now want to loop over any other gammas in this packet
          for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
+				if(grif->GetGriffinHit(two)->GetKValue() != 700) continue;
             if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
                continue;
             }
-            Double_t fillval[3] = {grif->GetHit(one)->GetEnergy(), grif->GetHit(two)->GetEnergy(), (grif->GetHit(one)->GetTime() - grif->GetHit(two)->GetTime())/1e10};
+            Double_t fillval[3] = {grif->GetHit(one)->GetEnergy(), grif->GetHit(two)->GetEnergy(), 10.*(grif->GetHit(one)->GetTimeStamp() - grif->GetHit(two)->GetTimeStamp())};
             gglongmatrixT->Fill(fillval);
             if(grif->GetHit(one)->GetEnergy() == grif->GetHit(two)->GetEnergy()) std::cout << "Sparse: energies equal" << std::endl;
             if(grif->GetHit(one)->GetEnergy() > grif->GetHit(two)->GetEnergy()){ //These should not be equal, if they are output a warning?
-               gglongmatrixE->Fill(fillval);
+               //gglongmatrixE->Fill(fillval);
             }
             //Check to see if the two gammas are close enough in time
             ggTimeDiff->Fill(TMath::Abs(grif->GetGriffinHit(two)->GetTime()-grif->GetGriffinHit(one)->GetTime()));
@@ -320,6 +322,7 @@ TList *Mg22Matrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
             }
          }
          for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
+				if(grif->GetGriffinHit(one)->GetKValue() != 700) continue;
             bool found = false;
             for(int b = 0; b < scep->GetMultiplicity(); ++b) {
                if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
@@ -353,6 +356,7 @@ TList *Mg22Matrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                   //Now we want to loop over gamma rays if they are in coincidence.
                   if(grif->GetMultiplicity() > 1){
                      for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
+								if(grif->GetGriffinHit(two)->GetKValue() != 700) continue;
                         if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
                            continue;
                         }
@@ -576,7 +580,7 @@ int main(int argc, char **argv) {
       }
       int runnumber = runInfo->RunNumber();
       int subrunnumber = runInfo->SubRunNumber();
-      outfile = new TFile(Form("matrix%05d_%03d.root",runnumber,subrunnumber),"recreate");
+      outfile = new TFile(Form("mg22matrix%05d_%03d.root",runnumber,subrunnumber),"recreate");
    }
    else
    {
