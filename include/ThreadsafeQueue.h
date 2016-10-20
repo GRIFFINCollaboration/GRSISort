@@ -17,7 +17,7 @@ class TDetector;
 template<typename T>
 class ThreadsafeQueue {
 public:
-  ThreadsafeQueue();
+  ThreadsafeQueue(size_t maxQueueSize = 50000);
   ~ThreadsafeQueue();
   int Push(T obj);
   int Pop(T& output, int millisecond_wait = 1000);
@@ -52,8 +52,8 @@ private:
 
 #ifndef __CINT__
 template<typename T>
-ThreadsafeQueue<T>::ThreadsafeQueue()
-  : max_queue_size(50000),
+ThreadsafeQueue<T>::ThreadsafeQueue(size_t maxQueueSize)
+  : max_queue_size(maxQueueSize),
     items_in_queue(0), items_pushed(0), items_popped(0),
     is_finished(false) { }
 

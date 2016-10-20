@@ -20,6 +20,7 @@ public:
   void SetNoWaveForms(bool temp = true) { parser.SetNoWaveForms(temp); }
   void SetRecordDiag(bool temp = true) { parser.SetRecordDiag(temp); }
 
+	//std::string Status(); TODO: Might be able to do something here with Midas events
 	std::string EndStatus();
 
 #ifndef __CINT__
