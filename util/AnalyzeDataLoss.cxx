@@ -52,12 +52,12 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
 	//long lasttime = 0;
 
 	//--------------- parameters for dealing with the roll-over of the AcceptedChannelId ----------------------//
-	long int acceptedMax = TMath::Power(2,14); // this is the maximum number that the AcceptedChannelId can be
+	unsigned long int acceptedMax = TMath::Power(2,14); // this is the maximum number that the AcceptedChannelId can be
 	int rollovers[channels]; // this is how many roll-overs we have had
 	//long int lastAccepted[channels];
 	bool rolling[channels]; // array that tells us if we're rolling over in that channel
 	int rollnum[channels]; // array that tells us how many times we've had accepted ID over the threshold
-	int rollingthreshold = 1000;
+	unsigned int rollingthreshold = 1000;
 	int rollnum_threshold = 20; // if we have this many numbers above the threshold, turn rolling on or off
 	TH2D* accepted_hst = new TH2D("accepted_hst","Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id",channels,0,channels,10000,0,10e5); list->Add(accepted_hst);
 
