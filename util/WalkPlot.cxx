@@ -29,6 +29,9 @@ TH2F *timehist_walk = new TH2F("time_eng_walk","time_eng_walk",120,-20,100,4000,
 TH2F *timehist = new TH2F("time_eng","time_eng",400,-200,200,4000,0,4000); 
 TH2F *timehist_nogate = new TH2F("time_eng_nogate","time_eng_nogate",400,-200,200,4000,0,4000); 
 
+TH2F *timehistcfd = new TH2F("time_engcfd","time_eng including CFD correction",4000,-2000,2000,4000,0,4000); 
+TH2F *timehistcfdnopu = new TH2F("time_engcfdnopu","time_eng including CFD correction",4000,-2000,2000,4000,0,4000); 
+
 TH2F *timehist_walk_bg = new TH2F("time_eng_walk_bg","time_eng_walk_bg",120,-20,100,4000,0,4000); 
 TH2F *timehist_bg = new TH2F("time_eng_bg","time_eng_bg",120,-20,100,4000,0,4000); 
 
@@ -89,14 +92,18 @@ void ProcessEvent(std::vector<TFragment> *event) {
       if((event->at(x).GetDetectorType() == 0) && (event->at(y).GetDetectorType() == 0)){
             timehist_nogate->Fill(timediff,event->at(y).GetEnergy());
             kValueTDiff_nogate->Fill(timediff,event->at(y).GetKValue());
-         if(event->at(x).GetEnergy()>1330.0){
+         if(event->at(x).GetEnergy()){
             timehist->Fill(timediff,event->at(y).GetEnergy());
             timehist_walk->Fill(timediff_walk,event->at(y).GetEnergy());
             timehist_chan->Fill(timediff,event->at(y).GetEnergy(),event->at(x).GetCrystal()+(event->at(y).GetDetector()-1)*4);
             timehist_chan2->Fill(timediff,event->at(y).GetEnergy(),event->at(y).GetCrystal()+(event->at(x).GetDetector()-1)*4);
             timehist_det->Fill(timediff,event->at(y).GetEnergy(),event->at(y).GetDetector());
             timehist_det2->Fill(timediff,event->at(y).GetEnergy(),event->at(x).GetDetector());
-            kValueTDiff->Fill(timediff,event->at(y).GetKValue());
+            timehistcfd->Fill(timediff_walk*10.,event->at(y).GetEnergy());
+				if(event->at(y).GetKValue() == 700 && event->at(x).GetKValue() == 700) 
+					timehistcfdnopu->Fill(timediff_walk*10.,event->at(y).GetEnergy());
+            timehist_walk->Fill(timediff_walk,event->at(y).GetEnergy());
+				kValueTDiff->Fill(timediff,event->at(y).GetKValue());
             if(event->at(y).GetAddress() == event->at(x).GetAddress()){
                kValueTDiff_samechan->Fill(timediff,event->at(y).GetKValue());
             }
@@ -137,7 +144,10 @@ void WriteHist() {
    TFile file("junk.root","recreate");
 timehist_walk->Write();
 timehist->Write();
-   
+ 
+timehistcfd->Write();
+timehistcfdnopu->Write();
+
 timehist_nogate->Write();
 
 timehist_walk_bg->Write();

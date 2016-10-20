@@ -10,7 +10,8 @@
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
 #include "TTreeFillMutex.h"
-
+#include "TGRSIOptions.h"
+#include "TSortingDiagnostics.h"
 #include "TDescant.h"
 
 TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output_filename){
@@ -116,6 +117,10 @@ void TAnalysisWriteLoop::Write() {
 		}
 		TGRSIRunInfo::Get()->WriteToRoot(output_file);
 		TPPG::Get()->Write();
+
+		if(TGRSIOptions::Get()->WriteDiagnostics()) {
+			TSortingDiagnostics::Get()->Write();
+		}
 
 		output_file->Close();
 		output_file->Delete();

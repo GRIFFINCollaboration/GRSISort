@@ -543,6 +543,10 @@ void TGRSIint::SetupPipeline() {
      !write_fragment_tree &&
      !write_analysis_histograms &&
      !write_analysis_tree) {
+	  //We still might want to read a cal file
+   	for(auto cal_filename : opt->CalInputFiles()) {
+     		TChannel::ReadCalFile(cal_filename.c_str());
+   	}
     return;
   }
 

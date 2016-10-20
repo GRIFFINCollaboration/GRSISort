@@ -13,6 +13,8 @@
 #include "TGRSIRunInfo.h"
 #include "TThread.h"
 #include "TTreeFillMutex.h"
+#include "TGRSIOptions.h"
+#include "TParsingDiagnostics.h"
 
 TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string fOutputFilename){
   if(name.length()==0){
@@ -152,6 +154,11 @@ void TFragWriteLoop::Write() {
 
 		TGRSIRunInfo::Get()->WriteToRoot(fOutputFile);
 		TPPG::Get()->Write();
+
+		if(TGRSIOptions::Get()->WriteDiagnostics()) {
+			TParsingDiagnostics::Get()->ReadPPG(TPPG::Get());
+			TParsingDiagnostics::Get()->Write();
+		}
 
 		fOutputFile->Close();
 		fOutputFile->Delete();
