@@ -59,18 +59,21 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
 	int rollnum[channels]; // array that tells us how many times we've had accepted ID over the threshold
 	int rollingthreshold = 1000;
 	int rollnum_threshold = 20; // if we have this many numbers above the threshold, turn rolling on or off
-	TH2D* accepted_hst = new TH2D("accepted_hst","Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id",channels,0,channels,10000,0,10e5); list->Add(accepted_hst);
 
 	long int channelIds[channels][3];
 	long int acceptedChannelIds[channels][3];
 	long int timestamp[channels][3];
 	int networkPacketNumber[3] = {0, 0, 0};
-	long networkPacketTS[3] = {0, 0, 0};
-	TH1D* lostNetworkPackets = new TH1D("lostNetworkPackets","lost network packets;time [ms];lost network packets",10000,0,100e3); list->Add(lostNetworkPackets);
+	long int networkPacketTS[3] = {0, 0, 0};
+	int timebins = 10000;
+	double timemin = 0; // in seconds
+	double timemax = 1000; // in seconds
+	TH2D* accepted_hst = new TH2D("accepted_hst","Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id",channels,0,channels,10000,0,10e5); list->Add(accepted_hst);
+	TH1D* lostNetworkPackets = new TH1D("lostNetworkPackets","lost network packets;time [s];lost network packets",timebins,timemin,timemax); list->Add(lostNetworkPackets);
 	TH2D* lostChannelIds = new TH2D("lostChannelIds","Lost Channel Id vs. Channel Number;Channel Number;Lost Channel Id",channels,0,channels,10000,0,10e5); list->Add(lostChannelIds);
-	TH2D* lostAcceptedIds = new TH2D("lostAcceptedIds","Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Channel Id",channels,0,channels,10000,0,10e5); list->Add(lostAcceptedIds);
-	TH2D* lostChannelIdsTime = new TH2D("lostChannelIdsTime","Lost Channel Id time vs. Channel Number;Channel Number;time [s]",channels,0,channels,10000,0,1000); list->Add(lostChannelIdsTime);
-	TH2D* lostAcceptedIdsTime = new TH2D("lostAcceptedIdsTime","Lost Accepted Channel Id time vs. Channel Number;Channel Number;time [s]",channels,0,channels,10000,0,1000); list->Add(lostAcceptedIdsTime);
+	TH2D* lostAcceptedIds = new TH2D("lostAcceptedIds","Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Accepted Channel Id",channels,0,channels,10000,0,10e5); list->Add(lostAcceptedIds);
+	TH2D* lostChannelIdsTime = new TH2D("lostChannelIdsTime","Lost Channel Id time vs. Channel Number;Channel Number;time [s]",channels,0,channels,timebins,timemin,timemax); list->Add(lostChannelIdsTime);
+	TH2D* lostAcceptedIdsTime = new TH2D("lostAcceptedIdsTime","Lost Accepted Channel Id time vs. Channel Number;Channel Number;time [s]",channels,0,channels,timebins,timemin,timemax); list->Add(lostAcceptedIdsTime);
 
 	// initialize acceptedID array
 	//for (int i=0;i<channels;i++) lastAccepted[i] = 0;
@@ -132,25 +135,29 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
 		// if we have a new network packet number
 		if(netpacket != 0 && networkPacketNumber[0]!=0) {
 			networkPacketNumber[2] = netpacket;
-			networkPacketTS[0] = networkPacketTS[1];
-			networkPacketTS[1] = networkPacketTS[2];
 			networkPacketTS[2] = time;
 			if(networkPacketNumber[0] < networkPacketNumber[1] && networkPacketNumber[1] < networkPacketNumber[2]) {
 				for(int packet = networkPacketNumber[0]+1; packet < networkPacketNumber[1]; ++packet) {
-					lostNetworkPackets->Fill(networkPacketTS[1]);
+					lostNetworkPackets->Fill(networkPacketTS[1]/1e8);
 				}
 				// things look fine, so prepare for next time
 			   networkPacketNumber[0] = networkPacketNumber[1];
 			   networkPacketNumber[1] = networkPacketNumber[2];
+				networkPacketTS[0] = networkPacketTS[1];
+				networkPacketTS[1] = networkPacketTS[2];
 			} else if(networkPacketNumber[0] < networkPacketNumber[2]) {
 				std::cout<<"found wrong network packet number 0x"<<std::hex<<networkPacketNumber[1]<<" (not between 0x"<<networkPacketNumber[0]<<" and 0x"<<networkPacketNumber[2]<<std::dec<<")"<<std::endl;
 			   networkPacketNumber[1] = networkPacketNumber[2];
+				networkPacketTS[1] = networkPacketTS[2];
 			}
 		}
 		else if(netpacket != 0 && networkPacketNumber[0] == 0 ) {
 			networkPacketNumber[0] = networkPacketNumber[1];
 			networkPacketNumber[1] = networkPacketNumber[2];
 			networkPacketNumber[2] = netpacket;
+			networkPacketTS[0] = networkPacketTS[1];
+			networkPacketTS[1] = networkPacketTS[2];
+			networkPacketTS[2] = time;
 		}
 
 		// check if the "middle" channel ID is reasonable and fill all IDs we've missed between the first and middle ID
