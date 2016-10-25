@@ -13,7 +13,7 @@ TDetBuildingLoop *TDetBuildingLoop::Get(std::string name) {
   if(name.length() == 0) {
     name = "unpack_loop";
   }
-  TDetBuildingLoop *loop = (TDetBuildingLoop*)StoppableThread::Get(name);
+  TDetBuildingLoop *loop = static_cast<TDetBuildingLoop*>(StoppableThread::Get(name));
   if(!loop) {
     loop = new TDetBuildingLoop(name);
   }
@@ -21,50 +21,50 @@ TDetBuildingLoop *TDetBuildingLoop::Get(std::string name) {
 }
 
 TDetBuildingLoop::TDetBuildingLoop(std::string name)
-  : StoppableThread(name),
-    input_queue(std::make_shared<ThreadsafeQueue<std::vector<TFragment*> > >()),
-    output_queue(std::make_shared<ThreadsafeQueue<TUnpackedEvent*> >()) { }
+   : StoppableThread(name),
+   fInputQueue(std::make_shared<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > >()) { }
 
 TDetBuildingLoop::~TDetBuildingLoop() { }
 
-bool TDetBuildingLoop::Iteration(){
-  std::vector<TFragment*> frags;
+bool TDetBuildingLoop::Iteration() {
+   std::vector<std::shared_ptr<TFragment> > frags;
 
-  input_queue->Pop(frags);
-  if(frags.size() == 0){
-    if(input_queue->IsFinished()) {
-      output_queue->SetFinished();
-      return false;
-    } else {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-      return true;
-    }
-  }
+   fInputQueue->Pop(frags);
+   if(frags.size() == 0){
+      if(fInputQueue->IsFinished()) {
+         for(auto outQueue : fOutputQueues) {
+            outQueue->SetFinished();
+            return false;
+         }
+      } else {
+         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+         return true;
+      }
+   }
 
-  TUnpackedEvent* output_event = new TUnpackedEvent;
-  for(auto frag : frags) {
-    // passes ownership of all TFragments, no need to delete here
-    output_event->AddRawData(frag);
-  }
-  output_event->Build();
-  output_queue->Push(output_event);
-  return true;
+   std::shared_ptr<TUnpackedEvent> outputEvent = std::make_shared<TUnpackedEvent>();
+   for(auto frag : frags) {
+      // passes ownership of all TFragments, no need to delete here
+      outputEvent->AddRawData(frag);
+   }
+   outputEvent->Build();
+   for(auto outQueue : fOutputQueues) {
+      outQueue->Push(outputEvent);
+   }
+
+   return true;
 }
 
 void TDetBuildingLoop::ClearQueue() {
-  std::vector<TFragment*> raw_event;
-  while(input_queue->Size()) {
-    input_queue->Pop(raw_event);
-    for(auto frag : raw_event) {
-      delete frag;
-    }
-  }
+   std::vector<std::shared_ptr<TFragment> > rawEvent;
+   while(fInputQueue->Size()) {
+      fInputQueue->Pop(rawEvent);
+   }
 
-  while(output_queue->Size()){
-    TUnpackedEvent* event = NULL;
-    output_queue->Pop(event);
-    if(event){
-      delete event;
-    }
-  }
+   for(auto outQueue : fOutputQueues) {
+      while(outQueue->Size()){
+         std::shared_ptr<TUnpackedEvent> event;
+         outQueue->Pop(event);
+      }
+   }
 }

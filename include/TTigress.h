@@ -39,7 +39,9 @@ class TTigress : public TGRSIDetector {
       kSetBGOHits       = BIT(3)
     };
 
-    std::vector<std::vector<TFragment*> > SegmentFragments;
+#ifndef __CINT__
+    std::vector<std::vector<std::shared_ptr<TFragment> > > SegmentFragments;
+#endif
 
     TTigress();
     TTigress(const TTigress&);
@@ -68,7 +70,9 @@ class TTigress : public TGRSIDetector {
     void ResetAddback();         //!<!
     UShort_t GetNAddbackFrags(size_t idx) const;
 
-    void AddFragment(TFragment*, TChannel*); //!<!
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
+#endif
     void BuildHits();
 
     TTigress& operator=(const TTigress&); //!<!

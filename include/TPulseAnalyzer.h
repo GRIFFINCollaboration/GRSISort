@@ -140,7 +140,6 @@ class TPulseAnalyzer {
 	 bool   set;
 	 WaveFormPar* wpar;
 	 int N;
-	 //TFragment* frag;
    std::vector<Short_t> wavebuffer;
 	 SinPar*		spar;
 	 ShapePar*	shpar;

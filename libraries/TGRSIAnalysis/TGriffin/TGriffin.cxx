@@ -200,13 +200,14 @@ TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
    }
 }
 
-void TGriffin::AddFragment(TFragment* frag, TChannel* chan) {
+void TGriffin::AddFragment(std::shared_ptr<TFragment> frag, TChannel* chan) {
    //Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the hits for an event and sets observables. 
    //This is done for both GRIFFIN and it's suppressors.
    if(frag == NULL || chan == NULL) {
       return;
    }
-   if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kB) { return; }  //make this smarter.
+   //TODO: Fix kA to kB
+   if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kA) { return; }  //make this smarter.
 
    switch(chan->GetMnemonic()->SubSystem()){
       case TMnemonic::kG :

@@ -42,7 +42,6 @@ void TGRSIDetector::Copy(TObject &rhs) const {
   TObject::Copy(rhs);
 }
 
-
 void TGRSIDetector::Print(Option_t *opt) const {
 // Default print statement for TGRSIDetector. Currently does
 // nothing

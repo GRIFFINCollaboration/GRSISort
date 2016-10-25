@@ -53,30 +53,11 @@ void TTAC::Print(Option_t *opt) const	{
    printf("%lu fTACHits\n",fTACHits.size());
 }
 
-void TTAC::AddFragment(TFragment* frag, TChannel* chan) {
+void TTAC::AddFragment(std::shared_ptr<TFragment> frag, TChannel* chan) {
    TTACHit hit(*frag);
    fTACHits.push_back(std::move(hit));
 }
 
-/*
-void TTAC::AddFragment(TFragment* frag, TChannel* chan) {
-   //Builds the TAC Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
-   //This should be done for both TAC and it's suppressors.
-   if(frag == NULL || chan == NULL) {
-      return;
-   }
-   
-   //   for(size_t i = 0; i < frag->Charge().size(); ++i) {
-   TTACHit hit;
-   hit.SetAddress(frag->GetAddress());
-   hit.SetTimeStamp(frag->GetTimeStamp());
-   hit.SetCfd(frag->GetCfd());
-   hit.SetCharge(frag->Charge());
-      
-   AddHit(&hit);
-      //   }
-}
-*/
 TGRSIDetectorHit* TTAC::GetHit(const Int_t& idx){
    //Gets the TTACHit at index idx.
    return GetTACHit(idx);

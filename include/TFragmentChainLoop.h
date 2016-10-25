@@ -3,6 +3,7 @@
 
 #ifndef __CINT__
 #include <atomic>
+#include <memory>
 #endif
 
 #include <map>
@@ -21,12 +22,15 @@ public:
   virtual ~TFragmentChainLoop();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> >& OutputQueue() { return output_queue; }
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& AddOutputQueue() { 
+     fOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<TFragment> > >());
+     return fOutputQueues.back(); 
+  }
 #endif
 
-  size_t GetItemsPushed()  { return fEntriesRead;   }
+  size_t GetItemsPushed()  { return fEntriesRead; }
   size_t GetItemsPopped()  { return 0; }
-  size_t GetItemsCurrent() { return fEntriesTotal;      }
+  size_t GetItemsCurrent() { return fEntriesTotal; }
   size_t GetRate()         { return 0; }
 
   virtual std::string Status();
@@ -49,18 +53,18 @@ private:
 #endif
   long fEntriesTotal;
 
-  TChain *input_chain;
-  TFragment** address;
+  TChain *fInputChain;
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > output_queue;
+  std::shared_ptr<TFragment> fFragment;
+  std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > > fOutputQueues;
 #endif
 
   bool fSelfStopping;
 
   int SetupChain();
-  std::map<TClass*, TDetector**> det_map;
+  std::map<TClass*, TDetector**> fDetMap;
 
-  ClassDef(TFragmentChainLoop, 0);
+  //ClassDef(TFragmentChainLoop, 0);
 };
 
 

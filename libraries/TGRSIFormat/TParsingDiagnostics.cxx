@@ -79,7 +79,7 @@ void TParsingDiagnostics::Print(Option_t* opt) const {
 	}
 }
 
-void TParsingDiagnostics::GoodFragment(TFragment* frag) {
+void TParsingDiagnostics::GoodFragment(std::shared_ptr<TFragment> frag) {
 	///increment the counter of good fragments for this detector type and check if any trigger ids have been lost
 	fNumberOfGoodFragments[frag->GetDetectorType()]++;
 

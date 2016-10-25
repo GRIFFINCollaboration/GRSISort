@@ -30,7 +30,9 @@ class TTriFoil :  public TDetector {
     bool HasWave() const { return !fTfWave.empty(); }
     time_t GetTimeStamp() const { return fTimestamp; }
 
-    void AddFragment(TFragment*, TChannel*); //!<!
+#ifndef __CINT__
+    void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
+#endif
 
     void Clear(Option_t* opt = "");   //!<!
     void Print(Option_t* opt = "") const;   //!<!

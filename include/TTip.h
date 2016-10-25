@@ -38,7 +38,9 @@ class TTip : public TGRSIDetector {
 		TGRSIDetectorHit* GetHit(const int& i);
 		Short_t GetMultiplicity() const         {  return fTipHits.size();}  //!<!
 
-		void AddFragment(TFragment*, TChannel*); //!<!
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
+#endif
 		void Copy(TObject &rhs) const;
 
 		TTip& operator=(const TTip&);  //!<!

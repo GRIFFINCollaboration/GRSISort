@@ -18,14 +18,13 @@
 /// \endcond
 
 TDataParser::TDataParser()
-  : fGoodOutputQueue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
-    fBadOutputQueue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
-    fScalerOutputQueue(std::make_shared<ThreadsafeQueue<TEpicsFrag*> >()),
+  : fBadOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TFragment> > >("bad_frag_queue")),
+    fScalerOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >("scaler_queue")),
     fNoWaveforms(false), fRecordDiag(true),
     fMaxTriggerId(1024*1024*16),
     fLastMidasId(0), fLastTriggerId(0), fLastNetworkPacket(0),
     fFragmentHasWaveform(false),
-    fFragmentMap(fGoodOutputQueue, fBadOutputQueue) {
+    fFragmentMap(fGoodOutputQueues, fBadOutputQueue) {
   gChannel = new TChannel;
 }
 
@@ -33,122 +32,132 @@ TDataParser::~TDataParser() {
   delete gChannel;
 }
 
-int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int midasSerialNumber, time_t midasTime) {
-  ///Converts A MIDAS File from the Tigress DAQ into a TFragment.
-  int NumFragsFound = 0;
-  TFragment* EventFrag = new TFragment();
-  EventFrag->SetMidasTimeStamp(midasTime);
-  EventFrag->SetMidasId(midasSerialNumber);
-
-  int x = 0;
-  uint32_t dword = *(data+x);
-  uint32_t type = (dword & 0xf0000000)>>28;
-  uint32_t value = (dword & 0x0fffffff);
-
-  if(!SetTIGTriggerID(dword,EventFrag)) {
-    delete EventFrag;
-    EventFrag = 0;
-    printf(RED "Setting TriggerId (0x%08x) failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",dword,midasSerialNumber);
-    return -x;
-  }
-  x+=1;
-
-  //There can be a tigger bit pattern between the header and the time !   pcb.
-
-  if(!SetTIGTimeStamp((data+x),EventFrag)) {
-    delete EventFrag;
-    EventFrag = 0;
-    printf(RED "%i Setting TimeStamp failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",x,midasSerialNumber);
-    return -x;
-  }
-  //int temp_charge =  0;
-  int temp_led    =  0;
-  for(;x<size;x++) {
-    dword = *(data+x);
-    type = (dword & 0xf0000000)>>28;
-    value = (dword & 0x0fffffff);
-    switch(type) {
-      case 0x0: // raw wave forms.
-      {
-        TChannel* chan = TChannel::GetChannel(EventFrag->GetAddress());
-        if(!fNoWaveforms)
-          SetTIGWave(value,EventFrag);
-        if(chan && strncmp("Tr",chan->GetName(),2)==0) {
-          SetTIGWave(value,EventFrag);
-        } else if(chan && strncmp("RF",chan->GetName(),2)==0) {
-          SetTIGWave(value,EventFrag);
-        }
+void TDataParser::ClearQueue() {
+   std::shared_ptr<TFragment> frag;
+   for(auto outQueue : fGoodOutputQueues) {
+      while(outQueue->Size()){
+         outQueue->Pop(frag);
       }
-      break;
-      case 0x1: // trapizodal wave forms.
-        break;
-      case 0x4: // cfd values.  This also ends the the fragment!
+   }
+}
+
+void TDataParser::SetFinished() {
+   for(auto outQueue : fGoodOutputQueues) {
+      outQueue->SetFinished();
+   }
+}
+
+int TDataParser::TigressDataToFragment(uint32_t* data,int size,unsigned int midasSerialNumber, time_t midasTime) {
+   ///Converts A MIDAS File from the Tigress DAQ into a TFragment.
+   int NumFragsFound = 0;
+   std::shared_ptr<TFragment> EventFrag = std::make_shared<TFragment>();
+   EventFrag->SetMidasTimeStamp(midasTime);
+   EventFrag->SetMidasId(midasSerialNumber);
+
+   int x = 0;
+   uint32_t dword = *(data+x);
+   uint32_t type = (dword & 0xf0000000)>>28;
+   uint32_t value = (dword & 0x0fffffff);
+
+   if(!SetTIGTriggerID(dword,EventFrag)) {
+      printf(RED "Setting TriggerId (0x%08x) failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",dword,midasSerialNumber);
+      return -x;
+   }
+   x+=1;
+
+   //There can be a tigger bit pattern between the header and the time !   pcb.
+
+   if(!SetTIGTimeStamp((data+x),EventFrag)) {
+      printf(RED "%i Setting TimeStamp failed on midas event: " DYELLOW "%i" RESET_COLOR "\n",x,midasSerialNumber);
+      return -x;
+   }
+   //int temp_charge =  0;
+   int temp_led    =  0;
+   for(;x<size;x++) {
+      dword = *(data+x);
+      type = (dword & 0xf0000000)>>28;
+      value = (dword & 0x0fffffff);
+      switch(type) {
+         case 0x0: // raw wave forms.
+            {
+               TChannel* chan = TChannel::GetChannel(EventFrag->GetAddress());
+               if(!fNoWaveforms)
+                  SetTIGWave(value,EventFrag);
+               if(chan && strncmp("Tr",chan->GetName(),2)==0) {
+                  SetTIGWave(value,EventFrag);
+               } else if(chan && strncmp("RF",chan->GetName(),2)==0) {
+                  SetTIGWave(value,EventFrag);
+               }
+            }
+            break;
+         case 0x1: // trapizodal wave forms.
+            break;
+         case 0x4: // cfd values.  This also ends the the fragment!
         SetTIGCfd(value,EventFrag);
         //SetTIGCharge(temp_charge,EventFrag);
         SetTIGLed(temp_led,EventFrag);
         ///check whether the fragment is 'good'
 
-	if( ((*(data+x+1)) & 0xf0000000) != 0xe0000000) {
-          TFragment* transferfrag = EventFrag;
-          EventFrag = new TFragment;
-          EventFrag->SetMidasTimeStamp(transferfrag->GetMidasTimeStamp());
-	  EventFrag->SetMidasId(transferfrag->GetMidasId());
-	  EventFrag->SetTriggerId(transferfrag->GetTriggerId());
-          EventFrag->SetTimeStamp(transferfrag->GetTimeStamp());
+        if( ((*(data+x+1)) & 0xf0000000) != 0xe0000000) {
+           std::shared_ptr<TFragment> transferfrag = std::make_shared<TFragment>(*EventFrag);
+           EventFrag = std::make_shared<TFragment>();
+           EventFrag->SetMidasTimeStamp(transferfrag->GetMidasTimeStamp());
+           EventFrag->SetMidasId(transferfrag->GetMidasId());
+           EventFrag->SetTriggerId(transferfrag->GetTriggerId());
+           EventFrag->SetTimeStamp(transferfrag->GetTimeStamp());
 
-          Push(*fGoodOutputQueue, transferfrag);
-          NumFragsFound++;
+           Push(fGoodOutputQueues, transferfrag);
+           NumFragsFound++;
 
-          // printf("transferfrag = 0x%08x\n",transferfrag); fflush(stdout);
-          // printf("transferfrag->GetTimeStamp() = %lu\n",transferfrag->GetTimeStamp()); fflush(stdout);
-          // printf("EventFrag: = 0x%08x\n",EventFrag); fflush(stdout);
-          // printf("EventFrag->GetTimeStamp() = %lu\n",EventFrag->GetTimeStamp()); fflush(stdout);
-	}
+           // printf("transferfrag = 0x%08x\n",transferfrag); fflush(stdout);
+           // printf("transferfrag->GetTimeStamp() = %lu\n",transferfrag->GetTimeStamp()); fflush(stdout);
+           // printf("EventFrag: = 0x%08x\n",EventFrag); fflush(stdout);
+           // printf("EventFrag->GetTimeStamp() = %lu\n",EventFrag->GetTimeStamp()); fflush(stdout);
+        }
         else {
-          Push(*fGoodOutputQueue, EventFrag);
-          NumFragsFound++;
-	  EventFrag = 0;
-          return NumFragsFound;
+           std::shared_ptr<TFragment> transferfrag = std::make_shared<TFragment>(*EventFrag);
+           Push(fGoodOutputQueues, transferfrag);
+           NumFragsFound++;
+           EventFrag = 0;
+           return NumFragsFound;
         }
 
         break;
-      case 0x5: // raw charge evaluation.
+         case 0x5: // raw charge evaluation.
         SetTIGCharge(value,EventFrag);
         break;
-      case 0x6:
+         case 0x6:
         temp_led = value;
         break;
-      case 0xb:
+         case 0xb:
         //SetTIGBitPattern
         break;
-      case 0xc:
+         case 0xc:
         SetTIGAddress(value,EventFrag);
         break;
-      case 0xe: // this ends the bank!
+         case 0xe: // this ends the bank!
         if(EventFrag) {
-          //printf("this is never called\n"); fflush(stdout);
-          delete EventFrag;
-          EventFrag = 0;
-          return -x;
+           //printf("this is never called\n"); fflush(stdout);
+           return -x;
         }
         break;
-      case 0xf:
+         case 0xf:
         break;
-      default:
+         default:
         break;
-    }
-  }
-  return NumFragsFound;
+      }
+   }
+   return NumFragsFound;
 }
 
-void TDataParser::SetTIGAddress(uint32_t value,TFragment* currentFrag) {
-  ///Sets the digitizer address of the 'currentFrag' TFragment
-  currentFrag->SetAddress((int32_t)(0x00ffffff&value));   ///the front end number is not in the tig odb!
-  return;
+void TDataParser::SetTIGAddress(uint32_t value, std::shared_ptr<TFragment> currentFrag) {
+   ///Sets the digitizer address of the 'currentFrag' TFragment
+   currentFrag->SetAddress((int32_t)(0x00ffffff&value));   ///the front end number is not in the tig odb!
+   return;
 }
 
-void TDataParser::SetTIGWave(uint32_t value,TFragment* currentFrag) {
-  ///Sets the waveform for a Tigress event.
+void TDataParser::SetTIGWave(uint32_t value, std::shared_ptr<TFragment> currentFrag) {
+   ///Sets the waveform for a Tigress event.
 
   if(currentFrag->GetWaveform()->size() > (100000) ) {
     printf("number of wave samples found is to great\n");
@@ -175,7 +184,7 @@ void TDataParser::SetTIGWave(uint32_t value,TFragment* currentFrag) {
   return;
 }
 
-void TDataParser::SetTIGCfd(uint32_t value,TFragment* currentFrag) {
+void TDataParser::SetTIGCfd(uint32_t value, std::shared_ptr<TFragment> currentFrag) {
   ///Sets the CFD of a Tigress Event.
 
   //currentFragment->SlowRiseTime = value & 0x08000000;
@@ -214,14 +223,14 @@ void TDataParser::SetTIGCfd(uint32_t value,TFragment* currentFrag) {
   return;
 }
 
-void TDataParser::SetTIGLed(uint32_t value, TFragment* currentFrag) {
+void TDataParser::SetTIGLed(uint32_t value, std::shared_ptr<TFragment> currentFrag) {
   ///Sets the LED of a Tigress event.
   // No longer used anywhere
   //  currentFrag->SetLed( int32_t(value & 0x07ffffff) );
   return;
 }
 
-void TDataParser::SetTIGCharge(uint32_t value, TFragment* currentFragment) {
+void TDataParser::SetTIGCharge(uint32_t value, std::shared_ptr<TFragment> currentFragment) {
   ///Sets the integrated charge of a Tigress event.
   TChannel* chan = currentFragment->GetChannel();
   if(!chan)
@@ -248,7 +257,7 @@ void TDataParser::SetTIGCharge(uint32_t value, TFragment* currentFragment) {
   currentFragment->SetCharge(charge);
 }
 
-bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment* currentFrag) {
+bool TDataParser::SetTIGTriggerID(uint32_t value, std::shared_ptr<TFragment> currentFrag) {
   ///Sets the Trigger ID of a Tigress event.
   if( (value&0xf0000000) != 0x80000000) {
     return false;
@@ -286,7 +295,7 @@ bool TDataParser::SetTIGTriggerID(uint32_t value, TFragment* currentFrag) {
 }
 
 
-bool TDataParser::SetTIGTimeStamp(uint32_t* data,TFragment* currentFrag ) {
+bool TDataParser::SetTIGTimeStamp(uint32_t* data, std::shared_ptr<TFragment> currentFrag ) {
   ///Sets the Timestamp of a Tigress Event
   for(int x=0;x<10;x++) { //finds the timestamp.
     data = data + 1;
@@ -377,14 +386,13 @@ bool TDataParser::SetTIGTimeStamp(uint32_t* data,TFragment* currentFrag ) {
 
 int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, unsigned int midasSerialNumber, time_t midasTime) {
   ///Converts a Griffin flavoured MIDAS file into a TFragment and returns the number of words processed (or the negative index of the word it failed on)
-  TFragment* EventFrag = new TFragment;
+  std::shared_ptr<TFragment> EventFrag = std::make_shared<TFragment>();
   fFragmentHasWaveform = false;
 
   int x = 0;
   if(!SetGRIFHeader(data[x++],EventFrag,bank)) {
     printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n",data[0]);
     TParsingDiagnostics::Get()->BadFragment(-1); //we failed to get a good header, so we don't know which detector type this fragment would've belonged to
-    delete EventFrag;
     return -x;
   }
 
@@ -395,7 +403,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
   //Changed on 11 Aug 2015 by RD to include PPG events. If the event has ModuleType 4 and address 0xFFFF, it is a PPG event.
   //if(EventFrag->GetModuleType() == 4 && EventFrag->GetAddress() == 0xFFFF){
   if((EventFrag->GetModuleType() == 1 || EventFrag->GetModuleType() == 4) && EventFrag->GetAddress() == 0xFFFF){
-    delete EventFrag;
     return GriffinDataToPPGEvent(data,size,midasSerialNumber,midasTime);
   }
   //If the event has detector type 15 (0xf) it's a scaler event.
@@ -405,7 +412,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
       return -x;
     }
     x = GriffinDataToScalerEvent(data, EventFrag->GetAddress());
-    delete EventFrag;
     return x;
   }
 
@@ -431,7 +437,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
   //always written to the midas file
   if(!SetGRIFChannelTriggerId(data[x++],EventFrag)) {
     TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-    delete EventFrag;
     return -x;
   }
 
@@ -443,7 +448,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 
   if(!SetGRIFTimeStampLow(data[x++],EventFrag)) {
     TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-    delete EventFrag;
     return -x;
   }
 
@@ -463,7 +467,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
         //so we want to ignore this corrupt event and the next event which has a wrong address
         //std::cout<<"double header"<<std::endl;
         TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-        delete EventFrag;
         return -(x+1);//+1 to ensure we don't read this header as start of a good event
         break;
       case 0xc: //The c packet type is for waveforms
@@ -522,9 +525,8 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
               EventFrag->SetKValue(tmpIntLength[h]);
               EventFrag->SetCfd(tmpCfd[h]);
               if(fRecordDiag) TParsingDiagnostics::Get()->GoodFragment(EventFrag);
-              Push(*fGoodOutputQueue,new TFragment(*EventFrag));
+              Push(fGoodOutputQueues, std::make_shared<TFragment>(*EventFrag));
             }
-            delete EventFrag;
             return x;
           }
         } else  {
@@ -537,7 +539,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
         switch(bank) {
           case kGRF1: // format from before May 2015 experiments
             TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-            delete EventFrag;
             return -x;
             break;
           case kGRF2: // from May 2015 to the end of 2015 0xf denoted a psd-word from a 4G
@@ -548,14 +549,12 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
               SetGRIFPsd(dword, EventFrag);
             } else {
               TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-              delete EventFrag;
               return -x;
             }
             break;
           case kGRF3: // from 2016 on we're back to reserving 0xf for faults
           case kGRF4:
             TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-            delete EventFrag;
             return -x;
             break;
           default:
@@ -583,7 +582,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 						//so we look for the next trailer and stop there
 						while((data[x] & 0xf0000000) != 0xe0000000) ++x;
 						TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-						delete EventFrag;
 						return -x;
 					 }
                 break;
@@ -600,7 +598,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   //so we look for the next trailer and stop there
                   while((data[x] & 0xf0000000) != 0xe0000000) ++x;
                   TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-                  delete EventFrag;
                   return -x;
                 }
                 break;
@@ -658,7 +655,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                       //std::cout<<"5 words!"<<std::endl;
                       //while((data[x] & 0xf0000000) != 0xe0000000) ++x;
                       //TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-                      //delete EventFrag;
                       //return -x;
                       ++x;
                     }
@@ -666,7 +662,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                     //std::cout<<"3 words (0x"<<std::hex<<data[x]<<")"<<std::endl;
                     //while((data[x] & 0xf0000000) != 0xe0000000) ++x;
                     //TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-                    //delete EventFrag;
                     //return -x;
                     ++x;
                   }
@@ -676,7 +671,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   //std::cout<<"1 word (0x"<<std::hex<<data[x]<<")"<<std::endl;
                   while((data[x] & 0xf0000000) != 0xe0000000) ++x;
                   TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-                  delete EventFrag;
                   return -x;
                 }
                 break;
@@ -684,7 +678,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                 if(!TGRSIOptions::Get()->SuppressErrors()) {
                   printf(DRED "Error, back type %d not implemented yet" RESET_COLOR "\n", bank);
                 }
-                delete EventFrag;
                 return -x;
                 break;
             }
@@ -702,7 +695,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
               //so we look for the next trailer and stop there
               while((data[x] & 0xf0000000) != 0xe0000000) ++x;
               TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-              delete EventFrag;
               return -x;
             }
             //for descant types (6,10,11) there are two more words for banks > GRF2 (bank GRF2 used 0xf packet and bank GRF1 never had descant)
@@ -715,7 +707,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 						SetGRIFPsd(dword, EventFrag);
 					} else {
 						TParsingDiagnostics::Get()->BadFragment(EventFrag->GetDetectorType());
-						delete EventFrag;
 						return -x;
 					}
 				}
@@ -724,7 +715,6 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 				if(!TGRSIOptions::Get()->SuppressErrors()) {
 					printf(DRED "Error, module type %d not implemented yet" RESET_COLOR "\n", EventFrag->GetModuleType());
 				}
-				delete EventFrag;
 				return -x;
 		  }//switch(EventFrag->GetModuleType())
 		  break;
@@ -736,7 +726,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
   return -x;
 }
 
-bool TDataParser::SetGRIFHeader(uint32_t value, TFragment* frag, EBank bank) {
+bool TDataParser::SetGRIFHeader(uint32_t value, std::shared_ptr<TFragment> frag, EBank bank) {
 	switch(bank){
 		case kGRF1: // header format from before May 2015 experiments
 			//Sets:
@@ -793,7 +783,7 @@ bool TDataParser::SetGRIFHeader(uint32_t value, TFragment* frag, EBank bank) {
 	return true;
 }
 
-bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment* frag, EBank bank) {
+bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, std::shared_ptr<TFragment> frag, EBank bank) {
 	///Sets the Griffin Master Filter Pattern
 	if( (value &0xc0000000) != 0x00000000) {
 		return false;
@@ -816,7 +806,7 @@ bool TDataParser::SetGRIFMasterFilterPattern(uint32_t value, TFragment* frag, EB
 	return true;
 }
 
-bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment* frag) {
+bool TDataParser::SetGRIFMasterFilterId(uint32_t value,std::shared_ptr<TFragment> frag) {
 	///Sets the Griffin master filter ID and PPG
 	if( (value &0x80000000) != 0x00000000) {
 		return false;
@@ -826,7 +816,7 @@ bool TDataParser::SetGRIFMasterFilterId(uint32_t value,TFragment* frag) {
 	return true;
 }
 
-bool TDataParser::SetGRIFChannelTriggerId(uint32_t value, TFragment* frag) {
+bool TDataParser::SetGRIFChannelTriggerId(uint32_t value, std::shared_ptr<TFragment> frag) {
 	///Sets the Griffin Channel Trigger ID
 	if( (value &0xf0000000) != 0x90000000) {
 		return false;
@@ -835,7 +825,7 @@ bool TDataParser::SetGRIFChannelTriggerId(uint32_t value, TFragment* frag) {
 	return true;
 }
 
-bool TDataParser::SetGRIFNetworkPacket(uint32_t value, TFragment* frag) {
+bool TDataParser::SetGRIFNetworkPacket(uint32_t value, std::shared_ptr<TFragment> frag) {
 	///Ignores the network packet number (for now)
 	if( (value &0xf0000000) != 0xd0000000) {
 		return false;
@@ -852,7 +842,7 @@ bool TDataParser::SetGRIFNetworkPacket(uint32_t value, TFragment* frag) {
 	return true;
 }
 
-bool TDataParser::SetGRIFTimeStampLow(uint32_t value, TFragment* frag) {
+bool TDataParser::SetGRIFTimeStampLow(uint32_t value, std::shared_ptr<TFragment> frag) {
 	///Sets the lower 28 bits of the griffin time stamp
 	if( (value &0xf0000000) != 0xa0000000) {
 		return false;
@@ -862,7 +852,7 @@ bool TDataParser::SetGRIFTimeStampLow(uint32_t value, TFragment* frag) {
 	return true;
 }
 
-bool TDataParser::SetGRIFWaveForm(uint32_t value,TFragment* frag) {
+bool TDataParser::SetGRIFWaveForm(uint32_t value,std::shared_ptr<TFragment> frag) {
 	///Sets the Griffin waveform if record_waveform is set to true
 	if(frag->GetWaveform()->size() > (100000) ) {printf("number of wave samples found is to great\n"); return false;}
 
@@ -874,14 +864,14 @@ bool TDataParser::SetGRIFWaveForm(uint32_t value,TFragment* frag) {
 	return true;
 }
 
-bool TDataParser::SetGRIFDeadTime(uint32_t value, TFragment* frag) {
+bool TDataParser::SetGRIFDeadTime(uint32_t value, std::shared_ptr<TFragment> frag) {
 	///Sets the Griffin deadtime and the upper 14 bits of the timestamp
 	frag->SetDeadTime((value & 0x0fffc000) >> 14);
 	frag->AppendTimeStamp(static_cast<long>(value &  0x00003fff)<<28);
 	return true;
 }
 
-bool TDataParser::SetGRIFCc(uint32_t value, TFragment* frag) {
+bool TDataParser::SetGRIFCc(uint32_t value, std::shared_ptr<TFragment> frag) {
 	///set the short integration and the lower 9 bits of the long integration
 	if(frag->GetCcShort() != 0 || frag->GetCcLong() != 0) {
 		return false;
@@ -891,7 +881,7 @@ bool TDataParser::SetGRIFCc(uint32_t value, TFragment* frag) {
 	return true;
 }
 
-bool TDataParser::SetGRIFPsd(uint32_t value, TFragment* frag) {
+bool TDataParser::SetGRIFPsd(uint32_t value, std::shared_ptr<TFragment> frag) {
 	///set the zero crossing and the higher 10 bits of the long integration
 	if(frag->GetZc() != 0) { //low bits of ccLong have already been set
 		return false;
@@ -1119,8 +1109,6 @@ int TDataParser::EightPIDataToFragment(uint32_t stream,uint32_t* data,
 
 
 
-	//fGoodOutputQueue->Add(EventFrag);
-	//return NumFragsFound;
 	return 1;
 }
 
@@ -1222,7 +1210,16 @@ int TDataParser::FifoToFragment(unsigned short* data,int size,bool zerobuffer,
 	return 1;
 }
 
-void TDataParser::Push(ThreadsafeQueue<TFragment*>& queue, TFragment* frag) {
+void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > >& queues, std::shared_ptr<TFragment> frag) {
+	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
+	fFragmentIdMap[frag->GetTriggerId()]++;
+	frag->SetEntryNumber();
+   for(auto queue : queues) {
+      queue->Push(frag);
+   }
+}
+
+void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<TFragment> >& queue, std::shared_ptr<TFragment> frag) {
 	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
 	fFragmentIdMap[frag->GetTriggerId()]++;
 	frag->SetEntryNumber();
@@ -1239,7 +1236,7 @@ void TDataParser::Push(ThreadsafeQueue<TFragment*>& queue, TFragment* frag) {
 
 int TDataParser::EPIXToScalar(float* data,int size,unsigned int midasSerialNumber,time_t midasTime) {
 	int NumFragsFound = 1;
-	TEpicsFrag* EXfrag = new TEpicsFrag;
+   std::shared_ptr<TEpicsFrag> EXfrag = std::make_shared<TEpicsFrag>();
 
 	EXfrag->fMidasTimeStamp = midasTime;
 	EXfrag->fMidasId        = midasSerialNumber;

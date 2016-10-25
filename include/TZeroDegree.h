@@ -38,7 +38,9 @@ class TZeroDegree : public TGRSIDetector {
       
       static TVector3 GetPosition(double dist) { return TVector3(0,0,dist); }	//!<!
       
-      void AddFragment(TFragment*, TChannel*); //!<!
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
+#endif
       
       TZeroDegree& operator=(const TZeroDegree&);  //!<!
       

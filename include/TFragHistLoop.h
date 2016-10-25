@@ -16,8 +16,7 @@ public:
   ~TFragHistLoop();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> >& InputQueue() { return input_queue; }
-  std::shared_ptr<ThreadsafeQueue<TFragment*> >& OutputQueue() { return output_queue; }
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& InputQueue() { return fInputQueue; }
 #endif
 
   void SetOutputFilename(const std::string& name);
@@ -36,9 +35,9 @@ public:
   TList* GetObjects();
   TList* GetGates();
 
-  size_t GetItemsPopped()  { return output_queue->ItemsPopped(); }
-  size_t GetItemsPushed()  { return output_queue->ItemsPushed(); }
-  size_t GetItemsCurrent() { return output_queue->Size(); }
+  size_t GetItemsPopped()  { return 0; }
+  size_t GetItemsPushed()  { return 0; }
+  size_t GetItemsCurrent() { return 0; }
   size_t GetRate()         { return 0; }
 
 protected:
@@ -47,17 +46,16 @@ protected:
 private:
   TFragHistLoop(std::string name);
 
-  TCompiledHistograms compiled_histograms;
+  TCompiledHistograms fCompiledHistograms;
 
   void OpenFile();
   void CloseFile();
 
-  TFile* output_file;
-  std::string output_filename;
+  TFile* fOutputFile;
+  std::string fOutputFilename;
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > input_queue;
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > output_queue;
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > fInputQueue;
 #endif
 
   ClassDef(TFragHistLoop,0);

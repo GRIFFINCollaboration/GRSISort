@@ -17,17 +17,16 @@ public:
   virtual ~TAnalysisWriteLoop();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> >& InputQueue() { return input_queue; }
-  std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> >& OutputQueue() { return output_queue; }
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >& InputQueue() { return fInputQueue; }
 #endif
 
   virtual void ClearQueue();
 
   void Write();
 
-  size_t GetItemsPushed()  { return OutputQueue()->ItemsPushed(); }
-  size_t GetItemsPopped()  { return OutputQueue()->ItemsPopped(); }
-  size_t GetItemsCurrent() { return OutputQueue()->Size();        }
+  size_t GetItemsPushed()  { return 0; }
+  size_t GetItemsPopped()  { return 0; }
+  size_t GetItemsCurrent() { return 0; }
   size_t GetRate()         { return 0; }
 
 	std::string Status();
@@ -41,18 +40,17 @@ private:
   void AddBranch(TClass* cls);
 
   void WriteEvent(TUnpackedEvent& event);
-  TFile* output_file;
-  TTree* event_tree;
-  std::map<TClass*, TDetector**> det_map;
-  std::map<TClass*, TDetector*> default_dets;
+  TFile* fOutputFile;
+  TTree* fEventTree;
 
-  size_t items_handled;
+  size_t fItemsHandled;
 
   int fInputQueueSize;
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> > input_queue;
-  std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> > output_queue;
+  std::map<TClass*, TDetector**> fDetMap;
+  std::map<TClass*, TDetector*> fDefaultDets;
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > > fInputQueue;
 #endif
 
   ClassDef(TAnalysisWriteLoop, 0);

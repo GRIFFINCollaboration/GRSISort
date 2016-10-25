@@ -196,7 +196,7 @@ void TTigress::BuildHits(){
   }
 }
 
-void TTigress::AddFragment(TFragment* frag, TChannel* chan) {
+void TTigress::AddFragment(std::shared_ptr<TFragment> frag, TChannel* chan) {
   if(frag == NULL || chan == NULL) {
     return;
   }

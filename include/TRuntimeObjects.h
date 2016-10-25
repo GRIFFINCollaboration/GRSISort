@@ -3,6 +3,9 @@
 
 #include <string>
 #include <map>
+#ifndef __CINT__
+#include <memory>
+#endif
 
 #include "TCutG.h"
 #include "TDirectory.h"
@@ -24,31 +27,29 @@ class TProfile;
 class TRuntimeObjects : public TNamed {
 public:
   /// Constructor
-  TRuntimeObjects(TFragment* frag,
+#ifndef __CINT__
+  TRuntimeObjects(std::shared_ptr<TFragment> frag,
                   TList* objects,
                   TList* gates,
                   std::vector<TFile*>& cut_files,
                   TDirectory* directory=NULL,
                   const char *name="default");
-  // TRuntimeObjects(TUnpackedEvent* det,
-  //                 TList* objects,
-  //                 TList* gates,
-  //                 std::vector<TFile*>& cut_files,
-  //                 TDirectory* directory=NULL,
-  //                 const char *name="default");
+#endif
  TRuntimeObjects(TList* objects,
                   TList* gates,
                   std::vector<TFile*>& cut_files,
                   TDirectory* directory=NULL,
                   const char *name="default");
 
+#ifndef __CINT__
   /// Returns a pointer to the detector of type T
   template<typename T>
-  T* GetDetector(){
+  std::shared_ptr<T> GetDetector(){
     return fDetectors->GetDetector<T>();
   }
 
-  TFragment* GetFragment() { return fFrag; }
+  std::shared_ptr<TFragment> GetFragment() { return fFrag; }
+#endif
 
   TCutG* GetCut(const std::string& name);
 
@@ -156,23 +157,25 @@ public:
 
   static TRuntimeObjects *Get(std::string name="default") { if(fRuntimeMap.count(name)) return fRuntimeMap.at(name); return 0; }
 
-  void SetFragment(TFragment* frag) { this->fFrag = frag; }
-  void SetDetectors(TUnpackedEvent *det) { fDetectors = det; }
+#ifndef __CINT__
+  void SetFragment(std::shared_ptr<TFragment> frag) { fFrag = frag; }
+  void SetDetectors(std::shared_ptr<TUnpackedEvent> det) { fDetectors = det; }
+#endif
 
   void SetDirectory(TDirectory* dir) { fDirectory = dir; }
   TDirectory* GetDirectory() const { return fDirectory; }
 
 private:
   static std::map<std::string,TRuntimeObjects*> fRuntimeMap;
-  TUnpackedEvent *fDetectors;
-  TFragment* fFrag;
+#ifndef __CINT__
+  std::shared_ptr<TUnpackedEvent> fDetectors;
+  std::shared_ptr<TFragment> fFrag;
+#endif
   TList* fObjects;
   TList* fGates;
   std::vector<TFile*>& fCut_files;
 
   TDirectory* fDirectory;
-
-
 
   ClassDef(TRuntimeObjects, 0);
 };

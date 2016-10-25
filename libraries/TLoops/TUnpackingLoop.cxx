@@ -6,14 +6,14 @@
 
 #include "TGRSIOptions.h"
 
-ClassImp(TUnpackingLoop)
+//ClassImp(TUnpackingLoop)
 
 TUnpackingLoop *TUnpackingLoop::Get(std::string name) {
 	if(name.length()==0) {
 		name = "unpacking_loop";
 	}
 
-	TUnpackingLoop *loop = (TUnpackingLoop*)StoppableThread::Get(name);
+	TUnpackingLoop *loop = static_cast<TUnpackingLoop*>(StoppableThread::Get(name));
 	if(!loop) {
 		loop = new TUnpackingLoop(name);
 	}
@@ -22,33 +22,32 @@ TUnpackingLoop *TUnpackingLoop::Get(std::string name) {
 
 TUnpackingLoop::TUnpackingLoop(std::string name)
 	: StoppableThread(name),
-	input_queue(std::make_shared<ThreadsafeQueue<TMidasEvent> >()),
+	fInputQueue(std::make_shared<ThreadsafeQueue<TMidasEvent> >()),
 	fFragsReadFromMidas(0),fGoodFragsRead(0) {
 	}
 
 TUnpackingLoop::~TUnpackingLoop() { }
 
 void TUnpackingLoop::ClearQueue() {
-	TMidasEvent single_event;
-	while(input_queue->Size()) {
-		input_queue->Pop(single_event);
+	TMidasEvent singleEvent;
+	while(fInputQueue->Size()) {
+		fInputQueue->Pop(singleEvent);
 	}
 
-	TFragment* frag = NULL;
-	while(parser.GoodOutputQueue()->Size()){
-		parser.GoodOutputQueue()->Pop(frag);
-		delete frag;
-	}
+   fParser.ClearQueue();
+	//while(fParser.GoodOutputQueue()->Size()){
+	//	fParser.GoodOutputQueue()->Pop(frag);
+	//	delete frag;
+	//}
 }
 
 bool TUnpackingLoop::Iteration(){
 	TMidasEvent event;
-
-	int error = input_queue->Pop(event);
+	int error = fInputQueue->Pop(event);
 	if(error<0) {
-		if(input_queue->IsFinished()){
+		if(fInputQueue->IsFinished()){
 			// Source is dead, push the last event and stop.
-			GoodOutputQueue()->SetFinished();
+			fParser.SetFinished();
 			BadOutputQueue()->SetFinished();
 			ScalerOutputQueue()->SetFinished();
 			return false;
@@ -58,7 +57,6 @@ bool TUnpackingLoop::Iteration(){
 			return true;
 		}
 	}
-
 
 	ProcessMidasEvent(&event);
 	return true;
@@ -120,7 +118,7 @@ bool TUnpackingLoop::ProcessEPICS(float* ptr,int& dSize,TMidasEvent* mEvent) {
 	unsigned int mserial=0; if(mEvent) mserial = (unsigned int)(mEvent->GetSerialNumber());
 	unsigned int mtime=0;   if(mEvent) mtime   = (unsigned int)(mEvent->GetTimeStamp());
 	//int epics_banks =
-	parser.EPIXToScalar(ptr,dSize,mserial,mtime);
+	fParser.EPIXToScalar(ptr,dSize,mserial,mtime);
 
 	return true;
 }
@@ -128,7 +126,7 @@ bool TUnpackingLoop::ProcessEPICS(float* ptr,int& dSize,TMidasEvent* mEvent) {
 bool TUnpackingLoop::ProcessTIGRESS(uint32_t* ptr, int& dSize, TMidasEvent* mEvent)   {
 	unsigned int mserial=0; if(mEvent) mserial = (unsigned int)(mEvent->GetSerialNumber());
 	unsigned int mtime=0;   if(mEvent) mtime   = (unsigned int)(mEvent->GetTimeStamp());
-	int frags = parser.TigressDataToFragment(ptr,dSize,mserial,mtime);
+	int frags = fParser.TigressDataToFragment(ptr,dSize,mserial,mtime);
 	if(frags>0) {
 		fFragsReadFromMidas += frags;
 		fGoodFragsRead += frags;
@@ -150,7 +148,7 @@ bool TUnpackingLoop::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBan
 	for(int index = 0; index < dSize;) {
 		if(((ptr[index])&0xf0000000) == 0x80000000) {
 			//if we found a fragment header we pass the data to the data parser which returns the number of words read
-			int words = parser.GriffinDataToFragment(&ptr[index],dSize-index,bank,mserial,mtime);
+			int words = fParser.GriffinDataToFragment(&ptr[index],dSize-index,bank,mserial,mtime);
 			if(words>0) {
 				//we successfully read one event with <words> words, so we advance the index by words
 				++fFragsReadFromMidas;
@@ -199,7 +197,11 @@ bool TUnpackingLoop::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBan
 
 std::string TUnpackingLoop::EndStatus() {
 	std::stringstream ss;
-	ss<<"\r"<<Name()<<":\t"<<fGoodFragsRead<<" good fragments out of "<<fFragsReadFromMidas<<" fragments => "<<(100.*fGoodFragsRead)/fFragsReadFromMidas<<"% passed"<<std::endl;
+	if(fFragsReadFromMidas > 0) {
+		ss<<"\r"<<Name()<<":\t"<<fGoodFragsRead<<" good fragments out of "<<fFragsReadFromMidas<<" fragments => "<<(100.*fGoodFragsRead)/fFragsReadFromMidas<<"% passed"<<std::endl;
+	} else {
+		ss<<"\rno fragments read from midas => none parsed!"<<std::endl;
+	}
 	return ss.str();
 }
 

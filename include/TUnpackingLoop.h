@@ -3,10 +3,10 @@
 
 #ifndef __CINT__
 #include <memory>
+#include "ThreadsafeQueue.h"
 #endif
 
 #include "StoppableThread.h"
-#include "ThreadsafeQueue.h"
 #include "TMidasEvent.h"
 #include "TFragment.h"
 #include "TEpicsFrag.h"
@@ -17,38 +17,33 @@ public:
   static TUnpackingLoop *Get(std::string name="");
   virtual ~TUnpackingLoop();
 
-  void SetNoWaveForms(bool temp = true) { parser.SetNoWaveForms(temp); }
-  void SetRecordDiag(bool temp = true) { parser.SetRecordDiag(temp); }
+  void SetNoWaveForms(bool temp = true) { fParser.SetNoWaveForms(temp); }
+  void SetRecordDiag(bool temp = true)  { fParser.SetRecordDiag(temp); }
 
 	std::string EndStatus();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TMidasEvent> >& InputQueue() { return input_queue; }
-  std::shared_ptr<ThreadsafeQueue<TFragment*> >&
-  GoodOutputQueue() { return parser.GoodOutputQueue(); }
-
-  std::shared_ptr<ThreadsafeQueue<TFragment*> >&
-  BadOutputQueue() { return parser.BadOutputQueue(); }
-
-  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> >&
-  ScalerOutputQueue() { return parser.ScalerOutputQueue(); }
+  std::shared_ptr<ThreadsafeQueue<TMidasEvent> >&                  InputQueue()                               { return fInputQueue; }
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >&  AddGoodOutputQueue(size_t maxSize = 50000) { return fParser.AddGoodOutputQueue(maxSize); }
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >&  BadOutputQueue()                           { return fParser.BadOutputQueue(); }
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >& ScalerOutputQueue()                        { return fParser.ScalerOutputQueue(); }
 #endif
 
   bool Iteration();
 
   virtual void ClearQueue();
 
-  size_t GetItemsPushed()  { return parser.GoodOutputQueue()->ItemsPushed(); }
-  size_t GetItemsPopped()  { return parser.GoodOutputQueue()->ItemsPopped(); }
-  size_t GetItemsCurrent() { return parser.GoodOutputQueue()->Size();        }
+  size_t GetItemsPushed()  { return fParser.ItemsPushed(); }
+  size_t GetItemsPopped()  { return 0; }//fParser.GoodOutputQueue()->ItemsPopped(); }
+  size_t GetItemsCurrent() { return 0; }//fParser.GoodOutputQueue()->Size();        }
   size_t GetRate()         { return 0; }
 
 private:
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TMidasEvent> > input_queue;
+  std::shared_ptr<ThreadsafeQueue<TMidasEvent> > fInputQueue;
 #endif
   
-  TDataParser parser;
+  TDataParser fParser;
   long fFragsReadFromMidas;
   long fGoodFragsRead;
 
@@ -62,7 +57,7 @@ private:
   bool ProcessGRIFFIN(uint32_t* ptr,int& dSize,TDataParser::EBank bank, TMidasEvent* mEvent);
 
 
-  ClassDef(TUnpackingLoop, 0);
+  //ClassDef(TUnpackingLoop, 0);
 };
 
 #endif /* _TUNPACKINGLOOP_H_ */

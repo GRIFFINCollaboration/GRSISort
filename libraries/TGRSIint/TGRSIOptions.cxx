@@ -14,7 +14,7 @@
 
 TGRSIOptions* TGRSIOptions::Get(int argc, char** argv){
   static TGRSIOptions* item = NULL;
-  if(!item){
+  if(!item) {
     item = new TGRSIOptions(argc, argv);
   }
   return item;

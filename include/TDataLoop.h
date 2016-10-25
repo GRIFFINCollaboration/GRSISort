@@ -25,7 +25,7 @@ public:
   virtual ~TDataLoop();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TMidasEvent> >& OutputQueue() { return output_queue; }
+  std::shared_ptr<ThreadsafeQueue<TMidasEvent> >& OutputQueue() { std::cout<<__PRETTY_FUNCTION__<<": returning output queue "<<fOutputQueue<<std::endl; return fOutputQueue; }
 #endif
 
   const TMidasFile& GetSource() const { return *fSource; }
@@ -36,9 +36,9 @@ public:
   virtual bool Iteration();
   virtual void OnEnd();
 
-  size_t GetItemsPushed()  { return output_queue->ItemsPushed(); }
-  size_t GetItemsPopped()  { return output_queue->ItemsPopped(); }
-  size_t GetItemsCurrent() { return output_queue->Size();        }
+  size_t GetItemsPushed()  { return fOutputQueue->ItemsPushed(); }
+  size_t GetItemsPopped()  { return fOutputQueue->ItemsPopped(); }
+  size_t GetItemsCurrent() { return fOutputQueue->Size();        }
   size_t GetRate()         { return 0; }
 
   void ReplaceSource(TMidasFile* new_source);
@@ -57,8 +57,8 @@ private:
   bool fSelfStopping;
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TMidasEvent> > output_queue;
-  std::mutex source_mutex;
+  std::shared_ptr<ThreadsafeQueue<TMidasEvent> > fOutputQueue;
+  std::mutex fSourceMutex;
 #endif
 
   TXMLOdb* fOdb;

@@ -18,19 +18,21 @@ class TFragWriteLoop : public StoppableThread {
 		virtual ~TFragWriteLoop();
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<TFragment*> >& InputQueue() { return fInputQueue; }
-		std::shared_ptr<ThreadsafeQueue<TFragment*> >& BadInputQueue() { return fBadInputQueue; }
-		std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> >& ScalerInputQueue() { return fScalerInputQueue; }
-		std::shared_ptr<ThreadsafeQueue<TFragment*> >& OutputQueue() { return fOutputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& InputQueue() { return fInputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& BadInputQueue() { return fBadInputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >& ScalerInputQueue() { return fScalerInputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& OutputQueue() { return fOutputQueue; }
 #endif
 
 		virtual void ClearQueue();
 
 		void Write();
 
-		size_t GetItemsPushed()  { return fOutputQueue->ItemsPushed(); }
-		size_t GetItemsPopped()  { return fOutputQueue->ItemsPopped(); }
-		size_t GetItemsCurrent() { return fOutputQueue->Size(); }
+		// there is no output queue for this loop, so we assume that all items handled (= all good fragments written)
+		// are also the number of items popped and that we have no current items
+		size_t GetItemsPushed()  { return fItemsHandled; }
+		size_t GetItemsPopped()  { return fItemsHandled; }
+		size_t GetItemsCurrent() { return 0; }
 		size_t GetRate()         { return 0; }
 
 		std::string Status();
@@ -41,9 +43,11 @@ class TFragWriteLoop : public StoppableThread {
 
 	private:
 		TFragWriteLoop(std::string name, std::string outputFile);
-		void WriteEvent(TFragment& event);
-		void WriteBadEvent(TFragment& event);
-		void WriteScaler(TEpicsFrag& scaler);
+#ifndef __CINT__
+		void WriteEvent(std::shared_ptr<TFragment> event);
+		void WriteBadEvent(std::shared_ptr<TFragment> event);
+		void WriteScaler(std::shared_ptr<TEpicsFrag> scaler);
+#endif
 
 		TFile* fOutputFile;
 
@@ -51,18 +55,18 @@ class TFragWriteLoop : public StoppableThread {
 		TTree* fBadEventTree;
 		TTree* fScalerTree;
 
-		TFragment* fEventAddress;
-		TFragment* fBadEventAddress;
+		TFragment*  fEventAddress;
+		TFragment*  fBadEventAddress;
 		TEpicsFrag* fScalerAddress;
 
 		size_t fItemsHandled;
 		int fInputQueueSize;
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<TFragment*> > fInputQueue;
-		std::shared_ptr<ThreadsafeQueue<TFragment*> > fBadInputQueue;
-		std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> > fScalerInputQueue;
-		std::shared_ptr<ThreadsafeQueue<TFragment*> > fOutputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > fInputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > fBadInputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > > fScalerInputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > fOutputQueue;
 #endif
 
 		ClassDef(TFragWriteLoop, 0);

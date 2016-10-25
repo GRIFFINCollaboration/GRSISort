@@ -38,7 +38,7 @@ public:
   virtual void OnEnd() { }
   virtual std::string Status();
   virtual std::string EndStatus() { return std::string(); } //std::stringstream ss; ss<<std::endl; return ss.str(); }
-  std::string Name() const     { return fname; }
+  std::string Name() const     { return fName; }
 
   virtual void ClearQueue() { }
 
@@ -76,7 +76,7 @@ private:
   StoppableThread(const StoppableThread& other) { }
   StoppableThread& operator=(const StoppableThread& other) { return *this; }
 
-  std::string fname;
+  std::string fName;
 
   void Loop();
 

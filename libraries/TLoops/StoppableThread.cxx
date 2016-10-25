@@ -18,9 +18,9 @@ std::thread StoppableThread::status_thread;
 int StoppableThread::GetNThreads() { return fthreadmap.size(); }
 
 StoppableThread::StoppableThread(std::string name)
-  : fname(name), running(true), paused(true) {
+  : fName(name), running(true), paused(true) {
   //TODO: check if a thread already exists and delete?
-  fthreadmap.insert(std::make_pair(fname,this));
+  fthreadmap.insert(std::make_pair(fName,this));
   thread = std::thread(&StoppableThread::Loop, this);
   if(!status_thread_on) {
     start_status_thread();
@@ -100,8 +100,8 @@ StoppableThread *StoppableThread::Get(std::string name) {
 
 
 StoppableThread::~StoppableThread() {
-  if(fthreadmap.count(fname)) {
-     fthreadmap.erase(fname);
+  if(fthreadmap.count(fName)) {
+     fthreadmap.erase(fName);
   }
   if(fthreadmap.size()==0) {
     status_thread_on = false;
@@ -146,22 +146,20 @@ void StoppableThread::Join() {
 }
 
 void StoppableThread::Loop() {
-  while(running){
-    {
-      std::unique_lock<std::mutex> lock(pause_mutex);
-      while(paused && running){
-        paused_wait.wait_for(lock, std::chrono::milliseconds(100));
-      }
-    }
-    bool success = Iteration();
-    if(!success){
-      running = false;
-		std::cout<<std::endl;
-      break;
-    }
-  }
+	while(running){
+		std::unique_lock<std::mutex> lock(pause_mutex);
+		while(paused && running){
+			paused_wait.wait_for(lock, std::chrono::milliseconds(100));
+		}
+		bool success = Iteration();
+		if(!success){
+			running = false;
+			std::cout<<std::endl;
+			break;
+		}
+	}
 
-  OnEnd();
+	OnEnd();
 }
 
 void StoppableThread::Print() {

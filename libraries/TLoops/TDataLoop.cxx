@@ -12,7 +12,7 @@
 TDataLoop::TDataLoop(std::string name,TMidasFile* source)
   : StoppableThread(name),
     fSource(source), fSelfStopping(true),
-    output_queue(std::make_shared<ThreadsafeQueue<TMidasEvent> >()),
+    fOutputQueue(std::make_shared<ThreadsafeQueue<TMidasEvent> >("midas_queue")),
     fOdb(0) {
 
   SetFileOdb(source->GetFirstEvent().GetData(),
@@ -236,32 +236,32 @@ void TDataLoop::SetTIGOdb()  {
 
 void TDataLoop::ClearQueue() {
   TMidasEvent event;
-  while(output_queue->Size()){
-    output_queue->Pop(event);
+  while(fOutputQueue->Size()){
+    fOutputQueue->Pop(event);
   }
 }
 
 void TDataLoop::ReplaceSource(TMidasFile* new_source) {
-  std::lock_guard<std::mutex> lock(source_mutex);
+  std::lock_guard<std::mutex> lock(fSourceMutex);
   //delete source;
   fSource = new_source;
 }
 
 void TDataLoop::ResetSource() {
   std::cerr << "Reset not implemented for TMidasFile" << std::endl;
-  // std::lock_guard<std::mutex> lock(source_mutex);
+  // std::lock_guard<std::mutex> lock(fSourceMutex);
   // source->Reset();
 }
 
 void TDataLoop::OnEnd() {
-  output_queue->SetFinished();
+  fOutputQueue->SetFinished();
 }
 
 bool TDataLoop::Iteration() {
   TMidasEvent evt;
   int bytes_read;
   {
-    std::lock_guard<std::mutex> lock(source_mutex);
+    std::lock_guard<std::mutex> lock(fSourceMutex);
     bytes_read = fSource->Read(evt);
   }
 
@@ -271,14 +271,13 @@ bool TDataLoop::Iteration() {
     return false;
   } else if(bytes_read > 0){
     // A good event was returned
-    output_queue->Push(evt);
+    fOutputQueue->Push(evt);
     return true;
   } else {
     // Nothing returned this time, but I might get something next time.
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     return true;
   }
-  return true;
 }
 
 std::string TDataLoop::Status() {

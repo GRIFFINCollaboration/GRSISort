@@ -3,6 +3,7 @@
 
 #ifndef __CINT__
 #include <type_traits>
+#include <memory>
 #endif
 
 #include "TClass.h"
@@ -16,42 +17,44 @@ public:
   TUnpackedEvent();
   ~TUnpackedEvent();
 
-  template<typename T>
-  T* GetDetector(bool make_if_not_found = false);
+#ifndef __CINT__
+   template<typename T> std::shared_ptr<T> GetDetector(bool make_if_not_found = false);
+   std::shared_ptr<TDetector> GetDetector(TClass* cls, bool make_if_not_found = false);
 
-  TDetector* GetDetector(TClass* cls, bool make_if_not_found = false);
-
-  std::vector<TDetector*>& GetDetectors() { return detectors; }
-  void AddDetector(TDetector* det) { detectors.push_back(det); }
-  void AddRawData(TFragment* frag);
+  std::vector<std::shared_ptr<TDetector> >& GetDetectors() { return fDetectors; }
+  void AddDetector(std::shared_ptr<TDetector> det) { fDetectors.push_back(det); }
+  void AddRawData(std::shared_ptr<TFragment> frag);
+#endif
   void ClearRawData();
 
   void Build();
 
-  int Size() { return detectors.size(); }
+  int Size() { return fDetectors.size(); }
 
 private:
   void BuildHits();
 
-  std::vector<TFragment*> fragments;
-  std::vector<TDetector*> detectors;
+#ifndef __CINT__
+  std::vector<std::shared_ptr<TFragment> > fFragments;
+  std::vector<std::shared_ptr<TDetector> > fDetectors;
+#endif
 };
 
 #ifndef __CINT__
 template<typename T>
-T* TUnpackedEvent::GetDetector(bool make_if_not_found) {
+std::shared_ptr<T> TUnpackedEvent::GetDetector(bool make_if_not_found) {
   static_assert(std::is_base_of<TDetector, T>::value,
                 "T must be a subclass of TDetector");
-  for(auto det : detectors) {
-    T* output = dynamic_cast<T*>(det);
-    if(output){
+  for(auto det : fDetectors) {
+    std::shared_ptr<T> output = std::static_pointer_cast<T>(det);
+    if(output) {
       return output;
     }
   }
 
   if(make_if_not_found) {
-    T* output = new T;
-    detectors.push_back(output);
+    std::shared_ptr<T> output = std::make_shared<T>();
+    fDetectors.push_back(output);
     return output;
   } else {
     return NULL;

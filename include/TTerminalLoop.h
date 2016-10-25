@@ -23,18 +23,15 @@ public:
   ~TTerminalLoop() { }
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<T*> >& InputQueue() { return input_queue; }
-#endif
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<T> > >& InputQueue() { return input_queue; }
 
   virtual void ClearQueue() {
     while(input_queue->Size()){
-      T* event = NULL;
+      std::shared_ptr<T> event;
       input_queue->Pop(event);
-      if(event){
-        delete event;
-      }
     }
   }
+#endif
 
   virtual size_t GetItemsPopped() { return 0; }
   virtual size_t GetItemsPushed() { return 0; }
@@ -42,28 +39,29 @@ public:
   virtual size_t GetRate() { return 0; }
 
 protected:
+#ifndef __CINT__
   bool Iteration() {
-    T* event = NULL;
-    input_queue->Pop(event);
+     std::shared_ptr<T> event;
+     input_queue->Pop(event);
 
-    if(event) {
-      delete event;
-      return true;
-    } else if(input_queue->IsFinished()) {
-      return false;
-    } else {
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-      return true;
-    }
+     if(event) {
+        return true;
+     } else if(input_queue->IsFinished()) {
+        return false;
+     } else {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        return true;
+     }
   }
+#endif
 
 private:
   TTerminalLoop(std::string name)
     : StoppableThread(name),
-      input_queue(std::make_shared<ThreadsafeQueue<T*> >()) { }
+      input_queue(std::make_shared<ThreadsafeQueue<std::shared_ptr<T> > >()) { }
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<T*> > input_queue;
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<T> > > input_queue;
 #endif
 };
 

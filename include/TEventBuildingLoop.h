@@ -22,8 +22,8 @@ public:
   virtual ~TEventBuildingLoop();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> >& InputQueue() { return fInputQueue; }
-  std::shared_ptr<ThreadsafeQueue<std::vector<TFragment*> > >& OutputQueue() { return fOutputQueue; }
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& InputQueue() { return fInputQueue; }
+  std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > >& OutputQueue() { return fOutputQueue; }
 #endif
 
   bool Iteration();
@@ -47,13 +47,13 @@ private:
   TEventBuildingLoop(const TEventBuildingLoop& other);
   TEventBuildingLoop& operator=(const TEventBuildingLoop& other);
 
-  void CheckBuildCondition(TFragment*);
-  void CheckTimestampCondition(TFragment*);
-  void CheckTriggerIdCondition(TFragment*);
-
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > fInputQueue;
-  std::shared_ptr<ThreadsafeQueue<std::vector<TFragment*> > > fOutputQueue;
+  void CheckBuildCondition(std::shared_ptr<TFragment>);
+  void CheckTimestampCondition(std::shared_ptr<TFragment>);
+  void CheckTriggerIdCondition(std::shared_ptr<TFragment>);
+
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > fInputQueue;
+  std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > > fOutputQueue;
 #endif
 
   EBuildMode fBuildMode;
@@ -61,11 +61,11 @@ private:
   long fBuildWindow;
   bool fPreviousSortingDepthError;
 
-  std::vector<TFragment*> fNextEvent;
-
 #ifndef __CINT__
-  std::multiset<TFragment*,
-                std::function<bool(TFragment*,TFragment*)> > fOrdered;
+  std::vector<std::shared_ptr<TFragment> > fNextEvent;
+
+  std::multiset<std::shared_ptr<TFragment>,
+                std::function<bool(std::shared_ptr<TFragment>,std::shared_ptr<TFragment>)> > fOrdered;
 #endif
 
   ClassDef(TEventBuildingLoop, 0);
