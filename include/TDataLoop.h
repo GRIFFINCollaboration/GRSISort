@@ -25,7 +25,7 @@ public:
   virtual ~TDataLoop();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TMidasEvent> >& OutputQueue() { std::cout<<__PRETTY_FUNCTION__<<": returning output queue "<<fOutputQueue<<std::endl; return fOutputQueue; }
+  std::shared_ptr<ThreadsafeQueue<TMidasEvent> >& OutputQueue() { return fOutputQueue; }
 #endif
 
   const TMidasFile& GetSource() const { return *fSource; }
