@@ -10,63 +10,111 @@
 #include "TDataLoop.h"
 #include "TFragmentChainLoop.h"
 
-std::map<std::string,StoppableThread*> StoppableThread::fthreadmap;
+std::map<std::string, StoppableThread*> StoppableThread::fThreadMap;
 bool StoppableThread::status_thread_on = false;
 std::thread StoppableThread::status_thread;
 
+size_t StoppableThread::fColumnWidth = 20;
+size_t StoppableThread::fStatusWidth = 80;
 
-int StoppableThread::GetNThreads() { return fthreadmap.size(); }
+int StoppableThread::GetNThreads() { return fThreadMap.size(); }
 
 StoppableThread::StoppableThread(std::string name)
-  : fName(name), running(true), paused(true) {
-  //TODO: check if a thread already exists and delete?
-  fthreadmap.insert(std::make_pair(fName,this));
-  thread = std::thread(&StoppableThread::Loop, this);
-  if(!status_thread_on) {
-    start_status_thread();
-  }
+  : fItemsPopped(0), fInputSize(0), fName(name), running(true), paused(true) {
+   //TODO: check if a thread already exists and delete?
+   fThreadMap.insert(std::make_pair(fName,this));
+   thread = std::thread(&StoppableThread::Loop, this);
+   if(!status_thread_on) {
+      start_status_thread();
+   }
 }
 
 
 bool StoppableThread::AnyThreadRunning() {
-  for(auto& elem : fthreadmap){
-    if(elem.second->IsRunning()){
-      return true;
-    }
-  }
-  return false;
+	for(auto& elem : fThreadMap){
+		if(elem.second->IsRunning()){
+			return true;
+		}
+	}
+	return false;
 }
 
 std::string StoppableThread::AnyThreadStatus() {
-  for(auto& elem : fthreadmap){
-    if(elem.second->IsRunning()){
-      return elem.second->Status();
-    }
-  }
-  return "";
+	for(auto& elem : fThreadMap){
+		if(elem.second->IsRunning()){
+			std::stringstream ss;
+			ss<<elem.first<<":\t "<<elem.second->Status();
+			return ss.str();
+		}
+	}
+	return "";
+}
+
+std::string StoppableThread::AllThreadProgress() {
+	std::stringstream ss;
+	for(auto& elem : fThreadMap) {
+		if(elem.second->IsRunning()){
+			ss<<std::left<<std::setw(fColumnWidth-1)<<elem.second->Progress().substr(0, fColumnWidth-1)<<"|";
+		} else {
+			std::string prog = "not running";
+			ss<<std::left<<std::setw(fColumnWidth-1)<<prog.substr(0, fColumnWidth-1)<<"|";
+		}
+	}
+	return ss.str().substr(0, fStatusWidth);
+}
+
+std::string StoppableThread::AllThreadHeader() {
+	std::stringstream ss;
+	for(auto& elem : fThreadMap) {
+		// left align, fill with spaces
+		ss<<std::left<<std::setw(fColumnWidth-1)<<elem.first.substr(0, fColumnWidth-1)<<"|";
+	}
+	return ss.str().substr(0, fStatusWidth);
+}
+
+std::string StoppableThread::AllThreadStatus() {
+	std::stringstream ss;
+	for(auto& elem : fThreadMap) {
+		if(elem.second->IsRunning()){
+			ss<<std::left<<std::setw(fColumnWidth-1)<<elem.second->Status().substr(0, fColumnWidth-1)<<"|";
+		} else {
+			std::string prog = "not running";
+			ss<<std::left<<std::setw(fColumnWidth-1)<<prog.substr(0, fColumnWidth-1)<<"|";
+		}
+	}
+	return ss.str().substr(0, fStatusWidth);
 }
 
 void StoppableThread::PauseAll() {
-  for(auto& elem : fthreadmap){
+  for(auto& elem : fThreadMap){
     elem.second->Pause();
   }
 }
 
 void StoppableThread::ResumeAll() {
-  for(auto& elem : fthreadmap){
+  for(auto& elem : fThreadMap){
     elem.second->Resume();
   }
 }
 
 std::string StoppableThread::Status() {
   std::stringstream ss;
-  ss << Name()
-     << ":\t" << std::setw(8) << GetItemsPushed();
+  ss<<std::setw(fColumnWidth/2-1)<<fItemsPopped<<"/"<<std::setw(fColumnWidth/2-1)<<fItemsPopped+fInputSize;
   return ss.str();
 }
 
+std::string StoppableThread::Progress() {
+	std::stringstream ss;
+	float percentDone = (100.*fItemsPopped)/(fItemsPopped+fInputSize);
+	while(percentDone > 100./(fColumnWidth-1)) {
+		ss<<"*";
+		percentDone -= 100./(fColumnWidth-1);
+	}
+	return ss.str();
+}
+
 void StoppableThread::StopAll() {
-  for(auto& elem : fthreadmap){
+  for(auto& elem : fThreadMap){
     TDataLoop* data_loop = dynamic_cast<TDataLoop*>(elem.second);
     TFragmentChainLoop* chain_loop = dynamic_cast<TFragmentChainLoop*>(elem.second);
     if(data_loop || chain_loop){
@@ -75,15 +123,15 @@ void StoppableThread::StopAll() {
     }
   }
 
-  for(auto& elem : fthreadmap){
+  for(auto& elem : fThreadMap){
     std::cout << "Joining thread " << elem.first << std::endl;
     StoppableThread* thread = elem.second;
     thread->Join();
   }
 
-  while(fthreadmap.size()){
-    StoppableThread* thread = fthreadmap.begin()->second;
-    std::cout << "Deleting thread " << fthreadmap.begin()->first << std::endl;
+  while(fThreadMap.size()){
+    StoppableThread* thread = fThreadMap.begin()->second;
+    std::cout << "Deleting thread " << fThreadMap.begin()->first << std::endl;
     delete thread;
   }
 
@@ -92,18 +140,18 @@ void StoppableThread::StopAll() {
 
 StoppableThread *StoppableThread::Get(std::string name) {
   StoppableThread *mythread = 0;
-  if(fthreadmap.count(name)) {
-    mythread = fthreadmap.at(name);
+  if(fThreadMap.count(name)) {
+    mythread = fThreadMap.at(name);
   }
   return mythread;
 }
 
 
 StoppableThread::~StoppableThread() {
-  if(fthreadmap.count(fName)) {
-     fthreadmap.erase(fName);
+  if(fThreadMap.count(fName)) {
+     fThreadMap.erase(fName);
   }
-  if(fthreadmap.size()==0) {
+  if(fThreadMap.size()==0) {
     status_thread_on = false;
     status_thread.join();
   }
@@ -163,9 +211,10 @@ void StoppableThread::Loop() {
 }
 
 void StoppableThread::Print() {
+  std::cout<<"column width "<<fColumnWidth<<", status width "<<fStatusWidth<<std::endl;
   printf("%i Threads:\n",GetNThreads());
   int counter = 0;
-  for(auto it=fthreadmap.begin();it!=fthreadmap.end();it++) {
+  for(auto it=fThreadMap.begin();it!=fThreadMap.end();it++) {
     printf("  %i\t%s @ 0x%08lx\n",counter,it->first.c_str(),(unsigned long)it->second);
     counter++;
   }
@@ -204,7 +253,7 @@ void StoppableThread::status_out() {
 
   std::ofstream outfile(Form("%s/.grsi_thread",getenv("GRSISYS")));
   outfile << "---------------------------------------------------------------\n"; // 64 -.
-  for(auto it = fthreadmap.begin();it!=fthreadmap.end();it++) {
+  for(auto it = fThreadMap.begin();it!=fThreadMap.end();it++) {
     StoppableThread *thread = it->second;
     outfile << "- " << thread->Name() << (thread->IsRunning()?"[Live]":"[Stop]") << std::string(64-8-thread->Name().length(),' ')   << "-\n";
     outfile << "- " << std::string(40,' ') << "items_pushed:  " << thread->GetItemsPushed()  << "\n";
@@ -220,7 +269,7 @@ void StoppableThread::status_out() {
 
 std::vector<StoppableThread*> StoppableThread::GetAll() {
   std::vector<StoppableThread*> output;
-  for(auto& elem : fthreadmap){
+  for(auto& elem : fThreadMap){
     output.push_back(elem.second);
   }
   return output;

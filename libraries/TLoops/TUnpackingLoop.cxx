@@ -45,6 +45,7 @@ bool TUnpackingLoop::Iteration(){
 	TMidasEvent event;
 	int error = fInputQueue->Pop(event);
 	if(error<0) {
+		fInputSize = 0;
 		if(fInputQueue->IsFinished()){
 			// Source is dead, push the last event and stop.
 			fParser.SetFinished();
@@ -57,6 +58,8 @@ bool TUnpackingLoop::Iteration(){
 			return true;
 		}
 	}
+	fInputSize = error;
+	++fItemsPopped;
 
 	ProcessMidasEvent(&event);
 	return true;

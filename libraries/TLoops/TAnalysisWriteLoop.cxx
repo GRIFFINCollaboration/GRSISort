@@ -31,7 +31,7 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
 
 TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string output_filename)
   : StoppableThread(name),
-    fOutputFile(NULL), fEventTree(NULL), fInputQueueSize(0),
+    fOutputFile(NULL), fEventTree(NULL),
     fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >()) {
 
   if(output_filename != "/dev/null"){
@@ -56,21 +56,17 @@ void TAnalysisWriteLoop::ClearQueue() {
   }
 }
 
-std::string TAnalysisWriteLoop::Status() {
-	std::stringstream ss;
-	ss<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputQueueSize>0 ? fInputQueueSize+GetItemsPushed():GetItemsPushed());
-	return ss.str();
-}
-
 std::string TAnalysisWriteLoop::EndStatus() {
 	std::stringstream ss;
-	ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputQueueSize>0 ? fInputQueueSize+GetItemsPushed():GetItemsPushed())<<std::endl;;
+	ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize+fItemsPopped<<std::endl;;
 	return ss.str();
 }
 
 bool TAnalysisWriteLoop::Iteration() {
 	std::shared_ptr<TUnpackedEvent> event;
-	fInputQueueSize = fInputQueue->Pop(event);
+	fInputSize = fInputQueue->Pop(event);
+	if(fInputSize < 0) fInputSize = 0;
+	++fItemsPopped;
 
 	if(event) {
 		WriteEvent(*event);
