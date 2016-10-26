@@ -34,7 +34,6 @@ TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
   : StoppableThread(name),
     fOutputFile(NULL), fEventTree(NULL), fBadEventTree(NULL), fScalerTree(NULL),
 	 fEventAddress(NULL), fBadEventAddress(NULL), fScalerAddress(NULL),
-    fItemsHandled(0),fInputQueueSize(0),
     fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TFragment> > >()),
     fBadInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TFragment> > >()),
     fScalerInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >()) {
@@ -70,21 +69,16 @@ void TFragWriteLoop::ClearQueue() {
   }
 }
 
-std::string TFragWriteLoop::Status() {
-	std::stringstream ss;
-	ss<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputQueueSize>0 ? fInputQueueSize+GetItemsPushed():GetItemsPushed());
-	return ss.str();
-}
-
 std::string TFragWriteLoop::EndStatus() {
 	std::stringstream ss;
-	ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputQueueSize>0 ? fInputQueueSize+GetItemsPushed():GetItemsPushed())<<std::endl;;
+	ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputSize>0 ? fInputSize+GetItemsPushed():GetItemsPushed())<<std::endl;;
 	return ss.str();
 }
 
 bool TFragWriteLoop::Iteration() {
 	std::shared_ptr<TFragment> event;
-	fInputQueueSize = fInputQueue->Pop(event,0);
+	fInputSize = fInputQueue->Pop(event,0);
+	if(fInputSize < 0) fInputSize = 0;
 
 	std::shared_ptr<TFragment> badEvent;
 	fBadInputQueue->Pop(badEvent,0);
@@ -98,7 +92,7 @@ bool TFragWriteLoop::Iteration() {
 
 	if(event) {
 		WriteEvent(event);
-		fItemsHandled++;
+		++fItemsPopped;
 	}
 
 	if(badEvent) {

@@ -30,12 +30,11 @@ class TFragWriteLoop : public StoppableThread {
 
 		// there is no output queue for this loop, so we assume that all items handled (= all good fragments written)
 		// are also the number of items popped and that we have no current items
-		size_t GetItemsPushed()  { return fItemsHandled; }
-		size_t GetItemsPopped()  { return fItemsHandled; }
+		size_t GetItemsPushed()  { return fItemsPopped; }
+		size_t GetItemsPopped()  { return fItemsPopped; }
 		size_t GetItemsCurrent() { return 0; }
 		size_t GetRate()         { return 0; }
 
-		std::string Status();
 		std::string EndStatus();
 
 	protected:
@@ -58,9 +57,6 @@ class TFragWriteLoop : public StoppableThread {
 		TFragment*  fEventAddress;
 		TFragment*  fBadEventAddress;
 		TEpicsFrag* fScalerAddress;
-
-		size_t fItemsHandled;
-		int fInputQueueSize;
 
 #ifndef __CINT__
 		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > fInputQueue;

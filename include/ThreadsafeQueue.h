@@ -22,7 +22,7 @@ public:
   ~ThreadsafeQueue();
 #ifndef __CINT__
   int Push(T obj);
-  int Pop(T& output, int millisecond_wait = 1000);
+  long Pop(T& output, int millisecond_wait = 1000);
 
   size_t ItemsPushed() const;
   size_t ItemsPopped() const;
@@ -78,7 +78,7 @@ int ThreadsafeQueue<T>::Push(T obj) {
 }
 
 template<typename T>
-int ThreadsafeQueue<T>::Pop(T& output, int millisecond_wait) {
+long ThreadsafeQueue<T>::Pop(T& output, int millisecond_wait) {
 	std::unique_lock<std::mutex> lock(mutex);
 	if(!queue.size() && millisecond_wait){
 		can_pop.wait_for(lock, std::chrono::milliseconds(millisecond_wait));

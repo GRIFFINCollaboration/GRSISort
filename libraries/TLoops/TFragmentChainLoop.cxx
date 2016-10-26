@@ -30,7 +30,7 @@ TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain *chain) {
 
 TFragmentChainLoop::TFragmentChainLoop(std::string name, TChain *chain)
   : StoppableThread(name),
-    fEntriesRead(0), fEntriesTotal(chain->GetEntries()),
+    fEntriesTotal(chain->GetEntries()),
     fInputChain(chain),
     fSelfStopping(true) {
   SetupChain();
@@ -56,13 +56,8 @@ int TFragmentChainLoop::SetupChain() {
    return 0;
 }
 
-std::string TFragmentChainLoop::Status() {
-   return Form("Event: %ld / %ld", long(fEntriesRead), fEntriesTotal);
-}
-
-
 void TFragmentChainLoop::Restart() {
-   fEntriesRead = 0;
+   fItemsPopped = 0;
 }
 
 void TFragmentChainLoop::OnEnd() {
@@ -72,7 +67,7 @@ void TFragmentChainLoop::OnEnd() {
 }
 
 bool TFragmentChainLoop::Iteration() {
-   if(fEntriesRead >= fEntriesTotal){
+   if(static_cast<long>(fItemsPopped) >= fEntriesTotal){
       if(fSelfStopping) {
          return false;
       } else {
@@ -82,12 +77,13 @@ bool TFragmentChainLoop::Iteration() {
    }
 
    std::shared_ptr<TFragment> frag = std::make_shared<TFragment>();
-   fInputChain->GetEntry(fEntriesRead++);
+   fInputChain->GetEntry(fItemsPopped++);
    *frag = *fFragment;
    frag->SetEntryNumber();
    for(auto outQueue : fOutputQueues) {
       outQueue->Push(frag);
    }
+	fInputSize = fEntriesTotal - fItemsPopped; //this way fInputSize+fItemsPopped gives the total number of entries
 
    return true;
 }

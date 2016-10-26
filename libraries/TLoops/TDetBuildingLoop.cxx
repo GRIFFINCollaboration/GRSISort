@@ -29,18 +29,21 @@ TDetBuildingLoop::~TDetBuildingLoop() { }
 bool TDetBuildingLoop::Iteration() {
    std::vector<std::shared_ptr<TFragment> > frags;
 
-   fInputQueue->Pop(frags);
+	fInputSize = fInputQueue->Pop(frags);
+	if(fInputSize < 0) fInputSize = 0;
+
    if(frags.size() == 0){
       if(fInputQueue->IsFinished()) {
          for(auto outQueue : fOutputQueues) {
             outQueue->SetFinished();
-            return false;
          }
+			return false;
       } else {
          std::this_thread::sleep_for(std::chrono::milliseconds(1000));
          return true;
       }
    }
+	++fItemsPopped;
 
    std::shared_ptr<TUnpackedEvent> outputEvent = std::make_shared<TUnpackedEvent>();
    for(auto frag : frags) {

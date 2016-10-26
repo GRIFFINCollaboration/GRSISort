@@ -18,37 +18,38 @@ class TUnpackedEvent;
 class TDetector;
 
 class TDetBuildingLoop : public StoppableThread {
-public:
-  static TDetBuildingLoop *Get(std::string name="");
-  virtual ~TDetBuildingLoop();
+	public:
+		static TDetBuildingLoop *Get(std::string name="");
+		virtual ~TDetBuildingLoop();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > >& InputQueue() { return fInputQueue; }
-  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >& AddOutputQueue() {
-     fOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >());
-     return fOutputQueues.back();
-  }
+		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > >& InputQueue() { return fInputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >& AddOutputQueue(size_t maxSize = 50000) {
+			std::stringstream name; name<<"event_queue_"<<fOutputQueues.size();
+			fOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >(name.str(), maxSize));
+			return fOutputQueues.back(); 
+		}
 #endif
 
-  bool Iteration();
-  virtual void ClearQueue();
+		bool Iteration();
+		virtual void ClearQueue();
 
-  size_t GetItemsPushed()  { return fOutputQueues.back()->ItemsPushed(); } //this should work fine as all loops are always filled at the same time
-  size_t GetItemsPopped()  { return 0; }//fOutputQueue->ItemsPopped(); }
-  size_t GetItemsCurrent() { return 0; }//fOutputQueue->Size();        }
-  size_t GetRate()         { return 0; }
+		size_t GetItemsPushed()  { return fOutputQueues.back()->ItemsPushed(); } //this should work fine as all loops are always filled at the same time
+		size_t GetItemsPopped()  { return 0; }//fOutputQueue->ItemsPopped(); }
+		size_t GetItemsCurrent() { return 0; }//fOutputQueue->Size();        }
+		size_t GetRate()         { return 0; }
 
-private:
-  TDetBuildingLoop(std::string name);
-  TDetBuildingLoop(const TDetBuildingLoop& other);
-  TDetBuildingLoop& operator=(const TDetBuildingLoop& other);
+	private:
+		TDetBuildingLoop(std::string name);
+		TDetBuildingLoop(const TDetBuildingLoop& other);
+		TDetBuildingLoop& operator=(const TDetBuildingLoop& other);
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > > fInputQueue;
-  std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > > > fOutputQueues;
+		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > > fInputQueue;
+		std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > > > fOutputQueues;
 #endif
 
-  ClassDef(TDetBuildingLoop, 0);
-};
+		ClassDef(TDetBuildingLoop, 0);
+		};
 
-#endif /* _TUNPACKLOOP_H_ */
+#endif /* _TDETBUILDINGLOOP_H_ */

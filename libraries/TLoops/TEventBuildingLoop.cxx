@@ -59,8 +59,11 @@ void TEventBuildingLoop::ClearQueue() {
 bool TEventBuildingLoop::Iteration(){
 	// Pull something off of the input queue.
 	std::shared_ptr<TFragment> input_frag = NULL;
-	fInputQueue->Pop(input_frag, 0);
+	fInputSize = fInputQueue->Pop(input_frag, 0);
+	if(fInputSize < 0) fInputSize = 0;
+
 	if(input_frag) {
+		++fItemsPopped;
 		fOrdered.insert(input_frag);
 		if(fOrdered.size() < fSortingDepth) {
 			// Got a new event, but we want to have more to sort
@@ -68,7 +71,6 @@ bool TEventBuildingLoop::Iteration(){
 		} else {
 			// Got a new event, and we have enough to sort.
 		}
-
 	} else {
 		if(!fInputQueue->IsFinished()) {
 			// If the parent is live, wait for it
