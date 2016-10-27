@@ -74,7 +74,7 @@ void ProcessEvent(std::vector<TFragment> *event) {
       if(x==y) continue;
       long timediff      = (event->at(y).GetTimeStamp()-event->at(x).GetTimeStamp());
       Double_t timediff_walk = ((Double_t)(event->at(y).GetTime())-(Double_t)(event->at(x).GetTime()))/10.;
-      int cfddiff  = abs(event->at(x).GetCfd()-event->at(y).GetCfd());
+      //int cfddiff  = abs(event->at(x).GetCfd()-event->at(y).GetCfd());
 
       if((event->at(y).GetDetectorType() == 0) && (event->at(x).GetDetectorType() != 0)){
          timehist_bg->Fill(timediff,event->at(y).GetEnergy());

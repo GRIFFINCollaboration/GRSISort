@@ -16,7 +16,7 @@ class TFragHistLoop : public StoppableThread {
 		~TFragHistLoop();
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& InputQueue() { return fInputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& InputQueue() { return fInputQueue; }
 #endif
 
 		void SetOutputFilename(const std::string& name);
@@ -55,7 +55,7 @@ class TFragHistLoop : public StoppableThread {
 		std::string fOutputFilename;
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > fInputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > fInputQueue;
 #endif
 
 		ClassDef(TFragHistLoop,0);

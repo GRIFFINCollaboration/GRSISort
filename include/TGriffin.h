@@ -41,7 +41,7 @@ class TGriffin : public TGRSIDetector {
 
     static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);    //!<!
 #ifndef __CINT__
-    void AddFragment(std::shared_ptr<TFragment> frag, TChannel* chan); //!<!
+    void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan); //!<!
 #endif
 
     TGriffin& operator=(const TGriffin&);  //!<!

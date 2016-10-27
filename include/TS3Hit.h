@@ -15,7 +15,7 @@
 class TS3Hit : public TGRSIDetectorHit {
 	public:
 		TS3Hit();
-		TS3Hit(TFragment &);
+		TS3Hit(const TFragment &);
 		virtual ~TS3Hit();
 		TS3Hit(const TS3Hit&);
 
@@ -31,23 +31,23 @@ class TS3Hit : public TGRSIDetectorHit {
 		void Print(Option_t* opt="") const;
 		void Clear(Option_t* opt="");
 
-		inline Double_t GetFitTime()			           { return fTimeFit;	   } //!<!
-		inline Double_t GetSignalToNoise()		        { return fSig2Noise;	} //!<!
+		inline Double_t GetFitTime()			         { return fTimeFit;	   } //!<!
+		inline Double_t GetSignalToNoise()		      { return fSig2Noise;	} //!<!
 
-		void SetRingNumber(Short_t rn)     			{ fRing = rn;   }
-		void SetSectorNumber(Short_t sn)   			{ fSector = sn; }
-		void SetIsDownstream(Bool_t dwnstrm) 		{ fIsDownstream = dwnstrm; }
+		void SetRingNumber(Short_t rn)				   { fRing = rn;   }
+		void SetSectorNumber(Short_t sn)   			   { fSector = sn; }
+		void SetIsDownstream(Bool_t dwnstrm) 		   { fIsDownstream = dwnstrm; }
 
-		void SetRingNumber(TFragment &frag)     { fRing = GetMnemonicSegment(frag);   	}
-		void SetSectorNumber(TFragment &frag)   { fSector = GetMnemonicSegment(frag) ; 	}
+		void SetRingNumber(const TFragment &frag)    { fRing = GetMnemonicSegment(frag);   	}
+		void SetSectorNumber(const TFragment &frag)  { fSector = GetMnemonicSegment(frag) ; 	}
 		void SetSectorNumber(int n)   					{ fSector = n ; 												}
 		void SetRingNumber(int n)   						{ fRing 	= n ; 												}
 
-		void SetWavefit(TFragment&);
+		void SetWavefit(const TFragment&);
 		void SetTimeFit(Double_t time)					{ fTimeFit = time;											}
-		void SetSig2Noise(Double_t sig2noise)		{ fSig2Noise = sig2noise;								}
+		void SetSig2Noise(Double_t sig2noise)		   { fSig2Noise = sig2noise;								}
 
-    Short_t GetMnemonicSegment(TFragment &frag);	//could be added to TGRSIDetectorHit base class
+		Short_t GetMnemonicSegment(const TFragment &frag);	//could be added to TGRSIDetectorHit base class
 
 		Double_t GetPhi(double offset=0) {
 			return this->GetPosition(offset).Phi();
@@ -60,6 +60,7 @@ class TS3Hit : public TGRSIDetectorHit {
 			}
 			return this->GetPosition(offset).Angle(*vec);
 		}
+
 		TVector3 GetPosition(Double_t offset, Double_t dist) const; //!
 		TVector3 GetPosition(Double_t offset) const; //!
 		TVector3 GetPosition() const; //!

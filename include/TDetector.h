@@ -45,7 +45,7 @@ class TDetector : public TObject	{
 	public: 
 		virtual void BuildHits()                                        { AbstractMethod("BuildHits()"); } //!<!
 #ifndef __CINT__
-		virtual void AddFragment(std::shared_ptr<TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
+		virtual void AddFragment(std::shared_ptr<const TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
 #endif
 
 		virtual void Copy(TObject&) const;              //!<!

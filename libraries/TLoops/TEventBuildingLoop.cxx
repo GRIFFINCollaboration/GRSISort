@@ -22,20 +22,20 @@ TEventBuildingLoop *TEventBuildingLoop::Get(std::string name, EBuildMode mode) {
 
 TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
 	: StoppableThread(name),
-	fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TFragment> > >()),
-	fOutputQueue(std::make_shared<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > >()),
+	fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >()),
+	fOutputQueue(std::make_shared<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment> > > >()),
 	fBuildMode(mode), fSortingDepth(10000),
 	fBuildWindow(200), fPreviousSortingDepthError(false) {
 
 	switch(fBuildMode) {
 		case kTimestamp:
-			fOrdered = decltype(fOrdered)([](std::shared_ptr<TFragment> a, std::shared_ptr<TFragment> b) {
+			fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
 					return a->GetTimeStamp() < b->GetTimeStamp();
 					});
 			break;
 
 		case kTriggerId:
-			fOrdered = decltype(fOrdered)([](std::shared_ptr<TFragment> a, std::shared_ptr<TFragment> b) {
+			fOrdered = decltype(fOrdered)([](std::shared_ptr<const TFragment> a, std::shared_ptr<const TFragment> b) {
 					return a->GetTriggerId() < b->GetTriggerId();
 					});
 			break;
@@ -45,12 +45,12 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
 TEventBuildingLoop::~TEventBuildingLoop() { }
 
 void TEventBuildingLoop::ClearQueue() {
-	std::shared_ptr<TFragment> single_event;
+	std::shared_ptr<const TFragment> single_event;
 	while(fInputQueue->Size()) {
 		fInputQueue->Pop(single_event);
 	}
 
-	std::vector<std::shared_ptr<TFragment> > event;
+	std::vector<std::shared_ptr<const TFragment> > event;
 	while(fOutputQueue->Size()){
 		fOutputQueue->Pop(event);
 	}
@@ -58,7 +58,7 @@ void TEventBuildingLoop::ClearQueue() {
 
 bool TEventBuildingLoop::Iteration(){
 	// Pull something off of the input queue.
-	std::shared_ptr<TFragment> input_frag = NULL;
+	std::shared_ptr<const TFragment> input_frag = NULL;
 	fInputSize = fInputQueue->Pop(input_frag, 0);
 	if(fInputSize < 0) fInputSize = 0;
 
@@ -90,7 +90,7 @@ bool TEventBuildingLoop::Iteration(){
 	}
 
 	// We have data, and we want to add it to the next fragment;
-	std::shared_ptr<TFragment> next_fragment = *fOrdered.begin();
+	std::shared_ptr<const TFragment> next_fragment = *fOrdered.begin();
 	fOrdered.erase(fOrdered.begin());
 	CheckBuildCondition(next_fragment);
 	fNextEvent.push_back(next_fragment);
@@ -98,7 +98,7 @@ bool TEventBuildingLoop::Iteration(){
 	return true;
 }
 
-void TEventBuildingLoop::CheckBuildCondition(std::shared_ptr<TFragment> frag) {
+void TEventBuildingLoop::CheckBuildCondition(std::shared_ptr<const TFragment> frag) {
 	switch(fBuildMode) {
 		case kTimestamp:
 			CheckTimestampCondition(frag);
@@ -110,7 +110,7 @@ void TEventBuildingLoop::CheckBuildCondition(std::shared_ptr<TFragment> frag) {
 	}
 }
 
-void TEventBuildingLoop::CheckTimestampCondition(std::shared_ptr<TFragment> frag) {
+void TEventBuildingLoop::CheckTimestampCondition(std::shared_ptr<const TFragment> frag) {
 	long timestamp = frag->GetTimeStamp();
 	long event_start = (fNextEvent.size() ?
 			( TGRSIOptions::Get()->StaticWindow() ? fNextEvent[0]->GetTimeStamp() : fNextEvent.back()->GetTimeStamp() ) :
@@ -138,7 +138,7 @@ void TEventBuildingLoop::CheckTimestampCondition(std::shared_ptr<TFragment> frag
 	}
 }
 
-void TEventBuildingLoop::CheckTriggerIdCondition(std::shared_ptr<TFragment> frag) {
+void TEventBuildingLoop::CheckTriggerIdCondition(std::shared_ptr<const TFragment> frag) {
 	long trigger_id = frag->GetTriggerId();
 	long current_trigger_id = (fNextEvent.size() ?
 			fNextEvent[0]->GetTriggerId() :

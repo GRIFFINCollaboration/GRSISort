@@ -19,7 +19,7 @@
 
 std::map<std::string,TRuntimeObjects*> TRuntimeObjects::fRuntimeMap;
 
-TRuntimeObjects::TRuntimeObjects(std::shared_ptr<TFragment> frag, TList* objects, TList *gates,
+TRuntimeObjects::TRuntimeObjects(std::shared_ptr<const TFragment> frag, TList* objects, TList *gates,
                                  std::vector<TFile*>& cut_files,
                                  TDirectory* directory,const char *name)
   : fFrag(frag), //detectors(NULL),

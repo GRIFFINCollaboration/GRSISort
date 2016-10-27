@@ -130,7 +130,7 @@ void TCompiledHistograms::swap_lib(TCompiledHistograms& other) {
   std::swap(fCheck_every, other.fCheck_every);
 }
 
-void TCompiledHistograms::Fill(std::shared_ptr<TFragment> frag) {
+void TCompiledHistograms::Fill(std::shared_ptr<const TFragment> frag) {
   std::lock_guard<std::mutex> lock(fMutex);
   if(time(NULL) > fLast_checked + fCheck_every){
     Reload();

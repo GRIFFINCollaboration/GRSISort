@@ -26,8 +26,8 @@
 
 class TFragmentMap {
    public:
-      TFragmentMap(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > >& goodOutputQueue,
-            std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& badOutputQueue);
+      TFragmentMap(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& goodOutputQueue,
+            std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& badOutputQueue);
 
       ~TFragmentMap() {};
 #ifndef __CINT__
@@ -40,8 +40,8 @@ class TFragmentMap {
       void Solve(std::vector<std::shared_ptr<TFragment> >, std::vector<Float_t>, std::vector<Long_t>, int situation = -1);
 
       std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > > fMap;
-      std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > >& fGoodOutputQueue;
-      std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& fBadOutputQueue;
+      std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& fGoodOutputQueue;
+      std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& fBadOutputQueue;
 #endif
 };
 /*! @} */

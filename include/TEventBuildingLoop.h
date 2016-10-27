@@ -22,8 +22,8 @@ class TEventBuildingLoop : public StoppableThread {
 		virtual ~TEventBuildingLoop();
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& InputQueue() { return fInputQueue; }
-		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > >& OutputQueue() { return fOutputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& InputQueue() { return fInputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment> > > >& OutputQueue() { return fOutputQueue; }
 #endif
 
 		bool Iteration();
@@ -48,12 +48,12 @@ class TEventBuildingLoop : public StoppableThread {
 		TEventBuildingLoop& operator=(const TEventBuildingLoop& other);
 
 #ifndef __CINT__
-		void CheckBuildCondition(std::shared_ptr<TFragment>);
-		void CheckTimestampCondition(std::shared_ptr<TFragment>);
-		void CheckTriggerIdCondition(std::shared_ptr<TFragment>);
+		void CheckBuildCondition(std::shared_ptr<const TFragment>);
+		void CheckTimestampCondition(std::shared_ptr<const TFragment>);
+		void CheckTriggerIdCondition(std::shared_ptr<const TFragment>);
 
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > fInputQueue;
-		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > > fOutputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > fInputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment> > > > fOutputQueue;
 #endif
 
 		EBuildMode fBuildMode;
@@ -62,10 +62,10 @@ class TEventBuildingLoop : public StoppableThread {
 		bool fPreviousSortingDepthError;
 
 #ifndef __CINT__
-		std::vector<std::shared_ptr<TFragment> > fNextEvent;
+		std::vector<std::shared_ptr<const TFragment> > fNextEvent;
 
-		std::multiset<std::shared_ptr<TFragment>,
-			std::function<bool(std::shared_ptr<TFragment>,std::shared_ptr<TFragment>)> > fOrdered;
+		std::multiset<std::shared_ptr<const TFragment>,
+			std::function<bool(std::shared_ptr<const TFragment>, std::shared_ptr<const TFragment>)> > fOrdered;
 #endif
 
 		ClassDef(TEventBuildingLoop, 0);

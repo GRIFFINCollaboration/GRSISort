@@ -31,7 +31,7 @@ class TS3 : public TGRSIDetector {
 		virtual  ~TS3();
 
 #ifndef __CINT__
-      void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
 #endif
 
 		Short_t GetRingMultiplicity() 	const { return fS3RingHits.size()		; }
@@ -65,8 +65,8 @@ class TS3 : public TGRSIDetector {
 		std::vector<TS3Hit> fS3Hits; //!<!
 		std::vector<TS3Hit> fS3RingHits, fS3SectorHits;
 #ifndef __CINT__
-		std::vector<std::shared_ptr<TFragment> > fS3_RingFragment; //! 
-		std::vector<std::shared_ptr<TFragment> > fS3_SectorFragment; //! 
+		std::vector<std::shared_ptr<const TFragment> > fS3_RingFragment; //! 
+		std::vector<std::shared_ptr<const TFragment> > fS3_SectorFragment; //! 
 #endif
 
 		UChar_t fS3Bits;                  // flags for transient members

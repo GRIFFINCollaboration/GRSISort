@@ -20,7 +20,7 @@ TCSM::TCSM() {
 TCSM::~TCSM() {
 }
 
-void TCSM::AddFragment(std::shared_ptr<TFragment> frag, TChannel* chan) {
+void TCSM::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 	///This function just stores the fragments and mnemonics in vectors, separated by detector number and type (horizontal/vertical strip or pad).
 	///The hits themselves are built in the BuildHits function because the way we build them depends on the number of hits.
 

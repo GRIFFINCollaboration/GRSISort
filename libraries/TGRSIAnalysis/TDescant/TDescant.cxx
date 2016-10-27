@@ -165,7 +165,7 @@ TDescantHit* TDescant::GetDescantHit(const Int_t& i) {
    return NULL;
 }
 
-void TDescant::AddFragment(std::shared_ptr<TFragment> frag, TChannel* chan) {
+void TDescant::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
    ///Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
    ///This is done for both DESCANT and it's suppressors.
    if(frag == NULL || chan == NULL) {

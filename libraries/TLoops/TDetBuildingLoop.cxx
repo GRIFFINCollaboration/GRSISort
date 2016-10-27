@@ -22,12 +22,12 @@ TDetBuildingLoop *TDetBuildingLoop::Get(std::string name) {
 
 TDetBuildingLoop::TDetBuildingLoop(std::string name)
    : StoppableThread(name),
-   fInputQueue(std::make_shared<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > >()) { }
+   fInputQueue(std::make_shared<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment> > > >()) { }
 
 TDetBuildingLoop::~TDetBuildingLoop() { }
 
 bool TDetBuildingLoop::Iteration() {
-   std::vector<std::shared_ptr<TFragment> > frags;
+   std::vector<std::shared_ptr<const TFragment> > frags;
 
 	fInputSize = fInputQueue->Pop(frags);
 	if(fInputSize < 0) fInputSize = 0;
@@ -59,7 +59,7 @@ bool TDetBuildingLoop::Iteration() {
 }
 
 void TDetBuildingLoop::ClearQueue() {
-   std::vector<std::shared_ptr<TFragment> > rawEvent;
+   std::vector<std::shared_ptr<const TFragment> > rawEvent;
    while(fInputQueue->Size()) {
       fInputQueue->Pop(rawEvent);
    }

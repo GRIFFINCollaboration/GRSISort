@@ -39,8 +39,8 @@ class TDescant : public TGRSIDetector {
       static TVector3 GetPosition(int DetNbr, double dist=222);	//!<!
       
 #ifndef __CINT__
-      void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
-      TGRSIDetectorHit* CreateHit(std::shared_ptr<TFragment> frag, TChannel *chan) { return new TDescantHit(*frag); }
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+      TGRSIDetectorHit* CreateHit(std::shared_ptr<const TFragment> frag, TChannel *chan) { return new TDescantHit(*frag); }
 #endif
 
       TDescant& operator=(const TDescant&);  //

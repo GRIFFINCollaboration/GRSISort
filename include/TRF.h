@@ -27,7 +27,7 @@ class TRF : public TDetector {
 		time_t   MidasTime() const { return fMidasTime; }
 
 #ifndef __CINT__
-      void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
 #endif
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 

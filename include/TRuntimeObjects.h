@@ -28,7 +28,7 @@ class TRuntimeObjects : public TNamed {
 public:
   /// Constructor
 #ifndef __CINT__
-  TRuntimeObjects(std::shared_ptr<TFragment> frag,
+  TRuntimeObjects(std::shared_ptr<const TFragment> frag,
                   TList* objects,
                   TList* gates,
                   std::vector<TFile*>& cut_files,
@@ -48,7 +48,7 @@ public:
     return fDetectors->GetDetector<T>();
   }
 
-  std::shared_ptr<TFragment> GetFragment() { return fFrag; }
+  std::shared_ptr<const TFragment> GetFragment() { return fFrag; }
 #endif
 
   TCutG* GetCut(const std::string& name);
@@ -158,7 +158,7 @@ public:
   static TRuntimeObjects *Get(std::string name="default") { if(fRuntimeMap.count(name)) return fRuntimeMap.at(name); return 0; }
 
 #ifndef __CINT__
-  void SetFragment(std::shared_ptr<TFragment> frag) { fFrag = frag; }
+  void SetFragment(std::shared_ptr<const TFragment> frag) { fFrag = frag; }
   void SetDetectors(std::shared_ptr<TUnpackedEvent> det) { fDetectors = det; }
 #endif
 
@@ -169,7 +169,7 @@ private:
   static std::map<std::string,TRuntimeObjects*> fRuntimeMap;
 #ifndef __CINT__
   std::shared_ptr<TUnpackedEvent> fDetectors;
-  std::shared_ptr<TFragment> fFrag;
+  std::shared_ptr<const TFragment> fFrag;
 #endif
   TList* fObjects;
   TList* fGates;

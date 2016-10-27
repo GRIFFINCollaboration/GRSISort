@@ -76,7 +76,7 @@ class TParsingDiagnostics : public TObject {
 	public:
 		//"setter" functions
 #ifndef __CINT__
-		void GoodFragment(std::shared_ptr<TFragment>);
+		void GoodFragment(std::shared_ptr<const TFragment>);
 #endif
 		void GoodFragment(Short_t detType) { fNumberOfGoodFragments[detType]++; }
 		void BadFragment(Short_t detType)  { fNumberOfBadFragments[detType]++; }

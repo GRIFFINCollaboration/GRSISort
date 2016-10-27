@@ -196,89 +196,82 @@ void TTigress::BuildHits(){
   }
 }
 
-void TTigress::AddFragment(std::shared_ptr<TFragment> frag, TChannel* chan) {
-  if(frag == NULL || chan == NULL) {
-    return;
-  }
-/*  if(GetMidasTimestamp()==-1) {
-    SetMidasTimestamp(frag->GetMidasTimeStamp());
-  }
-*/
-  //printf("%s %s called.\n",__PRETTY_FUNCTION__,channel->GetChannelName());
-  //fflush(stdout);
-  ///frag->Print("all");
+void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
+	if(frag == NULL || chan == NULL) {
+		return;
+	}
+	/*  if(GetMidasTimestamp()==-1) {
+		 SetMidasTimestamp(frag->GetMidasTimeStamp());
+		 }
+		 */
+	//printf("%s %s called.\n",__PRETTY_FUNCTION__,channel->GetChannelName());
+	//fflush(stdout);
+	///frag->Print("all");
 
- // if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) &&
-  if((chan->GetMnemonic()->SubSystem() == TMnemonic::kG) &&
-     (chan->GetSegmentNumber()==0 || chan->GetSegmentNumber()==9) ) { // it is a core
-    //if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
-    //  return;
-    TTigressHit corehit; //(*frag);
-    //loop over existing hits to see if this core was already created by a previously found segment
-    //of course this means if we have a core in "coincidence" with itself we will overwrite the first hit
-    for(size_t i = 0; i < fTigressHits.size(); ++i)	{
-      TTigressHit& hit = GetTigressHit(i);
-      if((hit.GetDetector() == chan->GetDetectorNumber()) &&
-	 (hit.GetCrystal() == chan->GetCrystalNumber())) { //we have a match;
-        //if(hit.Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
-        //if(chan->GetMnemonic()->outputsensor.compare(0,1,"b")==0) {
-        if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kB) {
-          if(hit.GetName()[9] == 'a') {
-            return;
-          } else  {
-            hit.CopyFragment(*frag);
-            if(TestBit(kSetCoreWave))
-              hit.CopyWave(*frag);
-            return;
-          }
-        } else {
-          hit.CopyFragment(*frag);
-          if(TestBit(kSetCoreWave))
-            hit.CopyWave(*frag);
-          return;
-        }
-      }
-    }
-    corehit.CopyFragment(*frag);
-    if(TestBit(kSetCoreWave))
-      corehit.CopyWave(*frag);
-    fTigressHits.push_back(corehit);
-    return;
-  //} else if(chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) { // its ge but its not a core...
-  } else if(chan->GetMnemonic()->SubSystem() == TMnemonic::kG) { // its ge but its not a core...
-    TGRSIDetectorHit temp(*frag);
-    for(size_t i = 0; i < fTigressHits.size(); ++i)	{
-      TTigressHit& hit = GetTigressHit(i);
-      if((hit.GetDetector() == chan->GetDetectorNumber()) &&
-	 (hit.GetCrystal() == chan->GetCrystalNumber())) { //we have a match;
-        if(TestGlobalBit(kSetSegWave))         
-          temp.CopyWave(*frag);
-        hit.AddSegment(temp);
-        //printf(" I found a core !\t%i\n",hit.GetNSegments()); fflush(stdout);
-        return;
-      }
-    }
-    TTigressHit corehit;
-    corehit.SetAddress( (frag->GetAddress()) );  // fake it till you make it 
-    if(TestGlobalBit(kSetSegWave))         
-      temp.CopyWave(*frag);
-    corehit.AddSegment(temp);
-    fTigressHits.push_back(corehit);
-    //if(fTigressHits.size()>100) {
-    //   printf("size is large!\t%i\n",fTigressHits.size());
-    //   fflush(stdout);
-    //}
-    return;
- // } else if(chan->GetMnemonic()->subsystem.compare(0,1,"S")==0) {
-  } else if(chan->GetMnemonic()->SubSystem() == TMnemonic::kS) {
-    TBgoHit temp(*frag);
-    fBgos.push_back(temp);
-    return;
-  }
-  //if not suprress errors;
-  printf(ALERTTEXT "failed to build!" RESET_COLOR "\n");
-  frag->Print();
-  return;
+	// if((chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) &&
+	if((chan->GetMnemonic()->SubSystem() == TMnemonic::kG) &&
+			(chan->GetSegmentNumber()==0 || chan->GetSegmentNumber()==9) ) { // it is a core
+		//if(frag->Charge.size() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
+		//  return;
+		TTigressHit corehit; //(*frag);
+		//loop over existing hits to see if this core was already created by a previously found segment
+		//of course this means if we have a core in "coincidence" with itself we will overwrite the first hit
+		for(size_t i = 0; i < fTigressHits.size(); ++i)	{
+			TTigressHit& hit = GetTigressHit(i);
+			if((hit.GetDetector() == chan->GetDetectorNumber()) &&
+				(hit.GetCrystal()  == chan->GetCrystalNumber())) { //we have a match;
+				//if(hit.Charge() == 0 || (frag->Cfd.size() == 0 && frag->Led.size() == 0))   // sanity check, it has a good energy and time (cfd or led).
+				//if(chan->GetMnemonic()->outputsensor.compare(0,1,"b")==0) 
+				if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kB) {
+					if(hit.GetName()[9] == 'a') {
+						return;
+					} else  {
+						hit.CopyFragment(*frag);
+						if(TestBit(kSetCoreWave)) frag->CopyWave(hit);
+						return;
+					}
+				} else {
+					hit.CopyFragment(*frag);
+					if(TestBit(kSetCoreWave)) frag->CopyWave(hit);
+					return;
+				}
+			}
+		}
+		corehit.CopyFragment(*frag);
+		if(TestBit(kSetCoreWave)) frag->CopyWave(corehit);
+		fTigressHits.push_back(corehit);
+		return;
+	} else if(chan->GetMnemonic()->SubSystem() == TMnemonic::kG) { // its ge but its not a core...
+		TGRSIDetectorHit temp(*frag);
+		for(size_t i = 0; i < fTigressHits.size(); ++i)	{
+			TTigressHit& hit = GetTigressHit(i);
+			if((hit.GetDetector() == chan->GetDetectorNumber()) &&
+				(hit.GetCrystal()  == chan->GetCrystalNumber())) { //we have a match;
+				if(TestGlobalBit(kSetSegWave)) frag->CopyWave(temp);
+				hit.AddSegment(temp);
+				//printf(" I found a core !\t%i\n",hit.GetNSegments()); fflush(stdout);
+				return;
+			}
+		}
+		TTigressHit corehit;
+		corehit.SetAddress( (frag->GetAddress()) );  // fake it till you make it 
+		if(TestGlobalBit(kSetSegWave)) frag->CopyWave(temp);
+		corehit.AddSegment(temp);
+		fTigressHits.push_back(corehit);
+		//if(fTigressHits.size()>100) {
+		//   printf("size is large!\t%i\n",fTigressHits.size());
+		//   fflush(stdout);
+		//}
+		return;
+	} else if(chan->GetMnemonic()->SubSystem() == TMnemonic::kS) {
+		TBgoHit temp(*frag);
+		fBgos.push_back(temp);
+		return;
+	}
+	//if not suprress errors;
+	printf(ALERTTEXT "failed to build!" RESET_COLOR "\n");
+	frag->Print();
+	return;
 }
 
 void TTigress::ResetAddback() {

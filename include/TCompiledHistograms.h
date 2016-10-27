@@ -25,7 +25,7 @@ public:
 
   void Load(std::string libname, std::string func_name);
 #ifndef __CINT__
-  void Fill(std::shared_ptr<TFragment> fragment);
+  void Fill(std::shared_ptr<const TFragment> fragment);
   void Fill(std::shared_ptr<TUnpackedEvent> unpacked);
 #endif
   void Reload();

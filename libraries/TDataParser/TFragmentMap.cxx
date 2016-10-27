@@ -4,8 +4,8 @@
 
 bool TFragmentMap::fDebug = false;
 
-TFragmentMap::TFragmentMap(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > >& good_output_queue,
-      			            std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& bad_output_queue)
+TFragmentMap::TFragmentMap(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& good_output_queue,
+      			            std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& bad_output_queue)
   : fGoodOutputQueue(good_output_queue), fBadOutputQueue(bad_output_queue) { }
 
 bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charge, std::vector<Short_t> integrationLength) {

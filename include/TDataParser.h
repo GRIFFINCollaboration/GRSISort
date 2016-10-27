@@ -51,18 +51,16 @@ public:
   enum EBank { kWFDN=0,kGRF1=1,kGRF2=2,kGRF3=3,kGRF4=4,kFME0=5,kFME1=6,kFME2=7,kFME3=8 };
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >&
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >&
   AddGoodOutputQueue(size_t maxSize = 50000) { 
 	  std::stringstream name; name<<"good_frag_queue_"<<fGoodOutputQueues.size();
-     fGoodOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<TFragment> > >(name.str(), maxSize));
+     fGoodOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >(name.str(), maxSize));
      return fGoodOutputQueues.back(); 
   }
 
-  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >&
-  BadOutputQueue() { return fBadOutputQueue; }
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& BadOutputQueue() { return fBadOutputQueue; }
 
-  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >&
-  ScalerOutputQueue() { return fScalerOutputQueue; }
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >& ScalerOutputQueue() { return fScalerOutputQueue; }
 #endif
   void ClearQueue();
   size_t ItemsPushed() { if(fGoodOutputQueues.size() > 0) return fGoodOutputQueues.back()->ItemsPushed(); return std::numeric_limits<std::size_t>::max(); }
@@ -70,8 +68,8 @@ public:
 
 private:
 #ifndef __CINT__
-  std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > > fGoodOutputQueues;
-  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > fBadOutputQueue;
+  std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > > fGoodOutputQueues;
+  std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > fBadOutputQueue;
   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > > fScalerOutputQueue;
 #endif
 
@@ -91,8 +89,8 @@ private:
 
 public:
 #ifndef __CINT__
-  void Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > >& queue, std::shared_ptr<TFragment> frag);
-  void Push(ThreadsafeQueue<std::shared_ptr<TFragment> >& queue, std::shared_ptr<TFragment> frag);
+  void Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& queue, std::shared_ptr<TFragment> frag);
+  void Push(ThreadsafeQueue<std::shared_ptr<const TFragment> >& queue, std::shared_ptr<TFragment> frag);
 #endif
 
   int TigressDataToFragment(uint32_t *data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
@@ -110,8 +108,8 @@ public:
 private:
   //utility
 #ifndef __CINT__
-  void DeleteAll(std::vector<std::shared_ptr<TFragment> >*);
-  void GRIFNormalizeFrags(std::vector<std::shared_ptr<TFragment> > *Frags);
+  void DeleteAll(std::vector<std::shared_ptr<const TFragment> >*);
+  void GRIFNormalizeFrags(std::vector<std::shared_ptr<const TFragment> > *Frags);
 #endif
 
 private:
