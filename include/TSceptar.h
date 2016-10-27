@@ -36,7 +36,7 @@ class TSceptar : public TGRSIDetector {
       TSceptarHit* GetSceptarHit(const int& i);	//!<!
       Short_t GetMultiplicity() const	       {	return fSceptarHits.size(); }	      //!<!
 #ifndef __CINT__
-      void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
 #endif
 
       static TVector3 GetPosition(int DetNbr) { return gPaddlePosition[DetNbr]; }	//!<!

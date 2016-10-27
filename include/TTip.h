@@ -39,7 +39,7 @@ class TTip : public TGRSIDetector {
 		Short_t GetMultiplicity() const         {  return fTipHits.size();}  //!<!
 
 #ifndef __CINT__
-      void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
 #endif
 		void Copy(TObject &rhs) const;
 

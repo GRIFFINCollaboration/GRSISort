@@ -37,7 +37,7 @@ class TTAC : public TGRSIDetector {
       Short_t GetMultiplicity() const	       {	return fTACHits.size(); }	      //!<!
       
 #ifndef __CINT__
-      void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
 #endif
       
       TTAC& operator=(const TTAC&);  //!<!

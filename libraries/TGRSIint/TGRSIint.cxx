@@ -556,8 +556,8 @@ void TGRSIint::SetupPipeline() {
 	StoppableThread::StatusWidth(TGRSIOptions::Get()->StatusWidth());
 
    // Different queues that can show up
-   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > > fragmentQueues;
-   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > > badQueues;
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > > fragmentQueues;
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > > badQueues;
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > > > scalerQueues;
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > > > analysisQueues;
 
@@ -668,7 +668,7 @@ void TGRSIint::SetupPipeline() {
    // For each leftover queue, terminate if still exists.
    for(auto fragQueue : fragmentQueues) {
       if(fragQueue) {
-         auto loop = TTerminalLoop<TFragment>::Get("9_frag_term_loop");
+         auto loop = TTerminalLoop<const TFragment>::Get("9_frag_term_loop");
          loop->InputQueue() = fragQueue;
       }
    }
@@ -682,7 +682,7 @@ void TGRSIint::SetupPipeline() {
 
    for(auto badQueue : badQueues) {
       if(badQueue) {
-         auto loop = TTerminalLoop<TFragment>::Get("B_bad_frag_term_loop");
+         auto loop = TTerminalLoop<const TFragment>::Get("B_bad_frag_term_loop");
          loop->InputQueue() = badQueue;
       }
    }

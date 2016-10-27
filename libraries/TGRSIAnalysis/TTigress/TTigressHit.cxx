@@ -136,7 +136,7 @@ void TTigressHit::SumHit(TTigressHit *hit) {
 //  return chan->GetCrystalNumber();
 //}
 
-void TTigressHit::SetWavefit(TFragment &frag)   { 
+void TTigressHit::SetWavefit(const TFragment &frag)   { 
   TPulseAnalyzer pulse(frag);	    
   if(pulse.IsSet()){
     fTimeFit   = pulse.fit_newT0();

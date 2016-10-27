@@ -41,7 +41,7 @@ TFragmentChainLoop::~TFragmentChainLoop() { }
 void TFragmentChainLoop::ClearQueue() {
    for(auto outQueue : fOutputQueues) {
       while(outQueue->Size()){
-         std::shared_ptr<TFragment> event;
+         std::shared_ptr<const TFragment> event;
          outQueue->Pop(event);
       }
    }

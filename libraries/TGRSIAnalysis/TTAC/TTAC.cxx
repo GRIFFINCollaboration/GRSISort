@@ -53,7 +53,7 @@ void TTAC::Print(Option_t *opt) const	{
    printf("%lu fTACHits\n",fTACHits.size());
 }
 
-void TTAC::AddFragment(std::shared_ptr<TFragment> frag, TChannel* chan) {
+void TTAC::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
    TTACHit hit(*frag);
    fTACHits.push_back(std::move(hit));
 }

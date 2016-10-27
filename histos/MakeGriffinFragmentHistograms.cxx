@@ -7,7 +7,7 @@
 
 extern "C"
 void MakeFragmentHistograms(TRuntimeObjects& obj) {
-  std::shared_ptr<TFragment> frag = obj.GetFragment();
+  std::shared_ptr<const TFragment> frag = obj.GetFragment();
   TChannel* chan = frag->GetChannel();
 
 

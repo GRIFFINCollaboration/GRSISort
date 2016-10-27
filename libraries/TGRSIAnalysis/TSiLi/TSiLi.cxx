@@ -51,7 +51,7 @@ TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {
    return 0;
 }  
 
-void TSiLi::AddFragment(std::shared_ptr<TFragment> frag, TChannel* chan) {
+void TSiLi::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
   if(frag == NULL || chan == NULL) {
 	 return;
   }

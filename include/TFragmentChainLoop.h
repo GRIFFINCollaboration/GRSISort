@@ -22,8 +22,8 @@ class TFragmentChainLoop : public StoppableThread {
 		virtual ~TFragmentChainLoop();
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >& AddOutputQueue() { 
-			fOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<TFragment> > >());
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& AddOutputQueue() { 
+			fOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >());
 			return fOutputQueues.back(); 
 		}
 #endif
@@ -51,8 +51,8 @@ class TFragmentChainLoop : public StoppableThread {
 
 		TChain *fInputChain;
 #ifndef __CINT__
-		std::shared_ptr<TFragment> fFragment;
-		std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > > fOutputQueues;
+		std::shared_ptr<const TFragment> fFragment;
+		std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > > fOutputQueues;
 #endif
 
 		bool fSelfStopping;

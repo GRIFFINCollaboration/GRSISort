@@ -12,7 +12,7 @@ TCutG *tita = 0;
 
 extern "C"
 void MakeFragmentHistograms(TRuntimeObjects& obj) {
-  std::shared_ptr<TFragment> frag = obj.GetFragment();
+  std::shared_ptr<const TFragment> frag = obj.GetFragment();
   TChannel* chan = frag->GetChannel();
 
   if(!prot) {
@@ -25,7 +25,7 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
     current->cd();
     printf("LOADED CUTS!\n"); fflush(stdout);
   }
-  static long first_timestamp = 0;
+  //static long first_timestamp = 0;
   if(frag && chan) {
  /*   if(!first_timestamp) {
       first_timestamp = frag->GetMidasTimeStamp();
@@ -80,7 +80,7 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
   std::shared_ptr<TTigress> tigress = obj.GetDetector<TTigress>();
   std::shared_ptr<TTriFoil> tf = obj.GetDetector<TTriFoil>();
 
-  static long first_ana_timestamp = 0;
+  //static long first_ana_timestamp = 0;
 
   if(tf) {
     for(int x=0; x<tf->NTBeam();x++) {

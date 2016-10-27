@@ -8,7 +8,7 @@ ClassImp(TS3Hit)
 	TS3Hit::TS3Hit()	{
 		Clear();
 	}
-TS3Hit::TS3Hit(TFragment &frag)	: TGRSIDetectorHit(frag) {}
+TS3Hit::TS3Hit(const TFragment &frag)	: TGRSIDetectorHit(frag) {}
 
 TS3Hit::~TS3Hit()	{}
 
@@ -37,7 +37,7 @@ void TS3Hit::Clear(Option_t *opt)	{
 	fIsDownstream		 = false;
 }
 
-Short_t TS3Hit::GetMnemonicSegment(TFragment &frag){//could be added to TGRSIDetectorHit base class
+Short_t TS3Hit::GetMnemonicSegment(const TFragment &frag){//could be added to TGRSIDetectorHit base class
 	TChannel *channel = TChannel::GetChannel(frag.GetAddress());
 	if(!channel){
 		Error("SetDetector","No TChannel exists for address %u",GetAddress());
@@ -46,7 +46,7 @@ Short_t TS3Hit::GetMnemonicSegment(TFragment &frag){//could be added to TGRSIDet
 	return channel->GetMnemonic()->Segment();
 }
 
-void TS3Hit::SetWavefit(TFragment &frag)   {
+void TS3Hit::SetWavefit(const TFragment &frag)   {
 	TPulseAnalyzer pulse(frag);
 	if(pulse.IsSet()){
 		fTimeFit   = pulse.fit_newT0();

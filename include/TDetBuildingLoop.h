@@ -23,7 +23,7 @@ class TDetBuildingLoop : public StoppableThread {
 		virtual ~TDetBuildingLoop();
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > >& InputQueue() { return fInputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment> > > >& InputQueue() { return fInputQueue; }
 		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >& AddOutputQueue(size_t maxSize = 50000) {
 			std::stringstream name; name<<"event_queue_"<<fOutputQueues.size();
 			fOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >(name.str(), maxSize));
@@ -45,7 +45,7 @@ class TDetBuildingLoop : public StoppableThread {
 		TDetBuildingLoop& operator=(const TDetBuildingLoop& other);
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<TFragment> > > > fInputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment> > > > fInputQueue;
 		std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > > > fOutputQueues;
 #endif
 

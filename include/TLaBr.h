@@ -36,7 +36,7 @@ class TLaBr : public TGRSIDetector {
       TLaBrHit* GetLaBrHit(const int& i);	//!<!
       Short_t GetMultiplicity() const	       {	return fLaBrHits.size(); }	      //!<!
 #ifndef __CINT__
-      void AddFragment(std::shared_ptr<TFragment>, TChannel*); //!<!
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
 #endif
       
       static TVector3 GetPosition(int DetNbr) { return gPosition[DetNbr]; }	//!<!

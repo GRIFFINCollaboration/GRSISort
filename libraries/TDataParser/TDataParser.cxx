@@ -18,7 +18,7 @@
 /// \endcond
 
 TDataParser::TDataParser()
-  : fBadOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TFragment> > >("bad_frag_queue")),
+  : fBadOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >("bad_frag_queue")),
     fScalerOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >("scaler_queue")),
     fNoWaveforms(false), fRecordDiag(true),
     fMaxTriggerId(1024*1024*16),
@@ -33,7 +33,7 @@ TDataParser::~TDataParser() {
 }
 
 void TDataParser::ClearQueue() {
-   std::shared_ptr<TFragment> frag;
+   std::shared_ptr<const TFragment> frag;
    for(auto outQueue : fGoodOutputQueues) {
       while(outQueue->Size()){
          outQueue->Pop(frag);
@@ -168,18 +168,18 @@ void TDataParser::SetTIGWave(uint32_t value, std::shared_ptr<TFragment> currentF
     int temp =  value & 0x00003fff;
     temp = ~temp;
     temp = (temp & 0x00001fff) + 1;
-    currentFrag->GetWaveform()->push_back((int16_t)-temp);
+    currentFrag->AddWaveformSample(static_cast<Short_t>(-temp));
   } else {
-    currentFrag->GetWaveform()->push_back((int16_t)(value & 0x00001fff));
+    currentFrag->AddWaveformSample(static_cast<Short_t>(value & 0x00001fff));
 
   }
   if ((value >> 14) & 0x00002000) {
     int temp =  (value >> 14) & 0x00003fff;
     temp = ~temp;
     temp = (temp & 0x00001fff) + 1;
-    currentFrag->GetWaveform()->push_back((int16_t)-temp);
+    currentFrag->AddWaveformSample(static_cast<Short_t>(-temp));
   } else {
-    currentFrag->GetWaveform()->push_back((int16_t)((value >> 14) & 0x00001fff) );
+    currentFrag->AddWaveformSample(static_cast<Short_t>((value >> 14) & 0x00001fff) );
   }
   return;
 }
@@ -857,9 +857,9 @@ bool TDataParser::SetGRIFWaveForm(uint32_t value,std::shared_ptr<TFragment> frag
 	if(frag->GetWaveform()->size() > (100000) ) {printf("number of wave samples found is to great\n"); return false;}
 
 	//to go from a 14-bit signed number to a 16-bit signed number, we simply set the two highest bits if the sign bit is set
-	frag->GetWaveform()->push_back((value & 0x2000) ? static_cast<int16_t>((value & 0x3fff) | 0xc000) : static_cast<int16_t>(value & 0x3fff));
+	frag->AddWaveformSample((value & 0x2000) ? static_cast<Short_t>((value & 0x3fff) | 0xc000) : static_cast<Short_t>(value & 0x3fff));
 	value = value >> 14;
-	frag->GetWaveform()->push_back((value & 0x2000) ? static_cast<int16_t>((value & 0x3fff) | 0xc000) : static_cast<int16_t>(value & 0x3fff));
+	frag->AddWaveformSample((value & 0x2000) ? static_cast<Short_t>((value & 0x3fff) | 0xc000) : static_cast<Short_t>(value & 0x3fff));
 
 	return true;
 }
@@ -1210,7 +1210,7 @@ int TDataParser::FifoToFragment(unsigned short* data,int size,bool zerobuffer,
 	return 1;
 }
 
-void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > > >& queues, std::shared_ptr<TFragment> frag) {
+void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& queues, std::shared_ptr<TFragment> frag) {
 	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
 	fFragmentIdMap[frag->GetTriggerId()]++;
 	frag->SetEntryNumber();
@@ -1219,7 +1219,7 @@ void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_p
    }
 }
 
-void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<TFragment> >& queue, std::shared_ptr<TFragment> frag) {
+void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<const TFragment> >& queue, std::shared_ptr<TFragment> frag) {
 	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
 	fFragmentIdMap[frag->GetTriggerId()]++;
 	frag->SetEntryNumber();

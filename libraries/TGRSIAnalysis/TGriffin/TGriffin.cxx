@@ -200,7 +200,7 @@ TGriffinHit* TGriffin::GetAddbackHit(const int& i) {
    }
 }
 
-void TGriffin::AddFragment(std::shared_ptr<TFragment> frag, TChannel* chan) {
+void TGriffin::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
    //Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the hits for an event and sets observables. 
    //This is done for both GRIFFIN and it's suppressors.
    if(frag == NULL || chan == NULL) {

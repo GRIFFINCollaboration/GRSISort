@@ -28,7 +28,7 @@ class TPaces : public TGRSIDetector {
 		Short_t GetMultiplicity() const { return fPacesHits.size(); }
 
 #ifndef __CINT__
-      void AddFragment(std::shared_ptr<TFragment> frag, TChannel *chan);
+      void AddFragment(std::shared_ptr<const TFragment> frag, TChannel *chan);
 #endif
 		static TVector3 GetPosition(int DetNbr);		//!<!
 		TPaces& operator=(const TPaces&);  //!<!

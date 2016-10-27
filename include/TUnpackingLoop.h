@@ -22,10 +22,10 @@ class TUnpackingLoop : public StoppableThread {
 
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<TMidasEvent> >&                  InputQueue()                               { return fInputQueue; }
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >&  AddGoodOutputQueue(size_t maxSize = 50000) { return fParser.AddGoodOutputQueue(maxSize); }
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TFragment> > >&  BadOutputQueue()                           { return fParser.BadOutputQueue(); }
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >& ScalerOutputQueue()                        { return fParser.ScalerOutputQueue(); }
+		std::shared_ptr<ThreadsafeQueue<TMidasEvent> >&                        InputQueue()                               { return fInputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >&  AddGoodOutputQueue(size_t maxSize = 50000) { return fParser.AddGoodOutputQueue(maxSize); }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >&  BadOutputQueue()                           { return fParser.BadOutputQueue(); }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >&       ScalerOutputQueue()                        { return fParser.ScalerOutputQueue(); }
 #endif
 
 		bool Iteration();

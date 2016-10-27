@@ -23,7 +23,7 @@ public:
 
   std::vector<std::shared_ptr<TDetector> >& GetDetectors() { return fDetectors; }
   void AddDetector(std::shared_ptr<TDetector> det) { fDetectors.push_back(det); }
-  void AddRawData(std::shared_ptr<TFragment> frag);
+  void AddRawData(std::shared_ptr<const TFragment> frag);
 #endif
   void ClearRawData();
 
@@ -35,7 +35,7 @@ private:
   void BuildHits();
 
 #ifndef __CINT__
-  std::vector<std::shared_ptr<TFragment> > fFragments;
+  std::vector<std::shared_ptr<const TFragment> > fFragments;
   std::vector<std::shared_ptr<TDetector> > fDetectors;
 #endif
 };

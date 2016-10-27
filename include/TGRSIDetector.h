@@ -38,7 +38,7 @@ class TGRSIDetector : public TDetector	{
    public: 
       //virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
 #ifndef __CINT__
-      virtual void AddFragment(std::shared_ptr<TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
+      virtual void AddFragment(std::shared_ptr<const TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
 #endif
       virtual void BuildHits() {}
 
@@ -55,7 +55,7 @@ class TGRSIDetector : public TDetector	{
 
    protected:
 #ifndef __CINT__
-      void CopyFragment(std::shared_ptr<TFragment> frag);
+      //void CopyFragment(std::shared_ptr<const TFragment> frag); //not implemented anywhere???
 #endif
    private:
 

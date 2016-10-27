@@ -34,8 +34,8 @@ TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
   : StoppableThread(name),
     fOutputFile(NULL), fEventTree(NULL), fBadEventTree(NULL), fScalerTree(NULL),
 	 fEventAddress(NULL), fBadEventAddress(NULL), fScalerAddress(NULL),
-    fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TFragment> > >()),
-    fBadInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TFragment> > >()),
+    fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >()),
+    fBadInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >()),
     fScalerInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >()) {
 
   if(fOutputFilename != "/dev/null"){
@@ -64,7 +64,7 @@ TFragWriteLoop::~TFragWriteLoop() {
 
 void TFragWriteLoop::ClearQueue() {
   while(fInputQueue->Size()){
-    std::shared_ptr<TFragment> event;
+    std::shared_ptr<const TFragment> event;
     fInputQueue->Pop(event);
   }
 }
@@ -76,11 +76,11 @@ std::string TFragWriteLoop::EndStatus() {
 }
 
 bool TFragWriteLoop::Iteration() {
-	std::shared_ptr<TFragment> event;
+	std::shared_ptr<const TFragment> event;
 	fInputSize = fInputQueue->Pop(event,0);
 	if(fInputSize < 0) fInputSize = 0;
 
-	std::shared_ptr<TFragment> badEvent;
+	std::shared_ptr<const TFragment> badEvent;
 	fBadInputQueue->Pop(badEvent,0);
 
 	std::shared_ptr<TEpicsFrag> scaler;
@@ -136,7 +136,7 @@ void TFragWriteLoop::Write() {
 	}
 }
 
-void TFragWriteLoop::WriteEvent(std::shared_ptr<TFragment> event) {
+void TFragWriteLoop::WriteEvent(std::shared_ptr<const TFragment> event) {
 	if(fEventTree) {
 		fEventAddress = event.get();
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
@@ -147,7 +147,7 @@ void TFragWriteLoop::WriteEvent(std::shared_ptr<TFragment> event) {
 	}
 }
 
-void TFragWriteLoop::WriteBadEvent(std::shared_ptr<TFragment> event) {
+void TFragWriteLoop::WriteBadEvent(std::shared_ptr<const TFragment> event) {
 	if(fBadEventTree) {
 		fBadEventAddress = event.get();
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
