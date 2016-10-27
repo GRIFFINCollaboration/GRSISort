@@ -92,6 +92,7 @@ void TGRSIOptions::Clear(Option_t* opt) {
 
 	fColumnWidth = 20;
 	fStatusWidth = 80;
+	fStatusInterval = 10;
   fLongFileDescription = false;
 }
 
@@ -139,6 +140,7 @@ void TGRSIOptions::Print(Option_t* opt) const {
 			  <<std::endl
 			  <<"fColumnWidth: "<<fColumnWidth<<std::endl
 			  <<"fStatusWidth: "<<fStatusWidth<<std::endl
+			  <<"fStatusInterval: "<<fStatusInterval<<std::endl
 			  <<"fLongFileDescription: "<<fLongFileDescription<<std::endl;
 }
 
@@ -272,6 +274,9 @@ void TGRSIOptions::Load(int argc, char** argv) {
 	parser.option("status-width", &fStatusWidth)
 	      .description("number of characters to be used for status output")
 			.default_value(80);
+	parser.option("status-interval", &fStatusInterval)
+	      .description("seconds between each detailed status output (each a new line)")
+			.default_value(10);
 
 	// parser.option("long-file-description", &fLongFileDescription)
 	//   .description("Show full path to file in status messages")

@@ -94,6 +94,7 @@ class TGRSIOptions : public TObject {
 
 		size_t ColumnWidth() const { return fColumnWidth; }
 		size_t StatusWidth() const { return fStatusWidth; }
+		unsigned int StatusInterval() const { return fStatusInterval; }
 		bool LongFileDescription() const { return fLongFileDescription; }
 
 	private:
@@ -170,6 +171,7 @@ class TGRSIOptions : public TObject {
 
 		size_t fColumnWidth;
 		size_t fStatusWidth;
+		unsigned int fStatusInterval;
 		bool fLongFileDescription;
 
 		ClassDef(TGRSIOptions,1);
