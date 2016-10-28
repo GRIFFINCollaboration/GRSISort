@@ -54,70 +54,23 @@ void TS3::AddFragment(TFragment* frag, TChannel* chan) {
 		return;
 	}
 
-   TS3Hit dethit(*frag);
-
-	bool IsDownstream = false;	
-   //preferably channel would be pushed to the ctor as well and all of this would be done in the ctor
-   if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kN){
-		dethit.SetRingNumber(*frag);
+	TS3Hit dethit(*frag);//Moved upstream/downstream switch into hit ctor
+	
+	if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kN){
+		dethit.SetRingNumber(frag->GetSegment());
 		dethit.SetSectorNumber(0);
-		if(chan->GetMnemonic()->ArrayPosition() == 0 || chan->GetMnemonic()->ArrayPosition() == 2)
-			IsDownstream = true;
-		else if(chan->GetMnemonic()->ArrayPosition() == 1)
-			IsDownstream = false;
-		else
-			IsDownstream = true; // In case of incorrect value, we assume downstream
-		
-      dethit.SetIsDownstream(IsDownstream);
+
 		if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
 			dethit.SetWavefit(*frag);
 
 		fS3RingHits.push_back(std::move(dethit));
-   }
-   else {
+	}else {
 		dethit.SetRingNumber(0);
-		dethit.SetSectorNumber(*frag);
-		if(chan->GetMnemonic()->ArrayPosition() == 0 || chan->GetMnemonic()->ArrayPosition() == 2)
-			IsDownstream = true;
-		else if(chan->GetMnemonic()->ArrayPosition() == 1)
-			IsDownstream = false;
-		else
-			IsDownstream = true; // In case of incorrect value, we assume downstream
+		dethit.SetSectorNumber(frag->GetSegment());
 		
-      dethit.SetIsDownstream(IsDownstream);
-		if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
-			dethit.SetWavefit(*frag);
-		
-      fS3SectorHits.push_back(std::move(dethit));
+		fS3SectorHits.push_back(std::move(dethit));
 	}	
-/*
-	if(chan->GetMnemonic()->collectedcharge.compare(0,1,"N")==0) { // ring	
-			dethit.SetRingNumber(*frag);
-			dethit.SetSectorNumber(0);
-			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
-				IsDownstream = true;
-			else if(chan->GetMnemonic()->arrayposition == 1)
-				IsDownstream = false;
-			else
-				IsDownstream = true; // In case of incorrect value, we assume downstream
-			dethit.SetIsDownstream(IsDownstream);
-			if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
-				dethit.SetWavefit(*frag);
-			fS3RingHits.push_back(dethit);
-	} else {
-			dethit.SetRingNumber(0);
-			dethit.SetSectorNumber(*frag);
-			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
-				IsDownstream = true;
-			else if(chan->GetMnemonic()->arrayposition == 1)
-				IsDownstream = false;
-			else
-				IsDownstream = true; // In case of incorrect value, we assume downstream
-			dethit.SetIsDownstream(IsDownstream);
-			if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
-				dethit.SetWavefit(*frag);
-			fS3SectorHits.push_back(dethit);
-	}	*/
+
 }
 
 void TS3::SetBitNumber(enum ES3Bits bit,Bool_t set){
@@ -319,16 +272,14 @@ void TS3::BuildPixels(){
 
 }
 
-// This new definition has conflict with TS3Hit "fIsDownstream" and associated usage, but is a more general definition of an S3 detector		
-// This function itself if generic except for fOffsetPhiSet
-// Wanted to separate Z position from detector orientation.
-// Need to modify TS3Hit functions that call this 
-// Should find better way to adjust fTargetDistance, fOffsetPhiSet and sectorsdownstream
-// Could be from mnemonic, but ->GetIsDownstream() not right/compatible
-TVector3 TS3::GetPosition(int ring, int sector, bool sectorsdownstream, double offsetZ,bool smear)  {
-	double dist = 0;
-	if(offsetZ == 0)dist = fTargetDistance;
-	else dist = offsetZ;
+
+
+
+TVector3 TS3::GetPosition(int ring, int sector, bool smear){
+	return GetPosition(ring,sector,fOffsetPhiSet,fTargetDistance,true,smear);
+}
+
+TVector3 TS3::GetPosition(int ring, int sector, double offsetphi,double offsetZ, bool sectorsdownstream,bool smear)  {
 	
 	double ring_width=(fOuterDiameter-fInnerDiameter)*0.5/fRingNumber; // 24 rings   radial width!
 	double inner_radius=fInnerDiameter/2.0;
@@ -339,7 +290,7 @@ TVector3 TS3::GetPosition(int ring, int sector, bool sectorsdownstream, double o
 	double phi    =  phi_width*-sector;   //the phi angle....
 	phi+=fOffsetPhiCon;
 	if(!sectorsdownstream)phi=-phi;
-	phi+=fOffsetPhiSet;
+	phi+=offsetphi;
 
 	if(smear){
 		double sep=ring_width*0.025;
@@ -349,7 +300,7 @@ TVector3 TS3::GetPosition(int ring, int sector, bool sectorsdownstream, double o
 		phi=s3_rand.Uniform(phi-phi_width*0.5+sepphi,phi+phi_width*0.5-sepphi);	
 	}
 
-	return TVector3(cos(phi)*radius,sin(phi)*radius,dist);
+	return TVector3(cos(phi)*radius,sin(phi)*radius,offsetZ);
 }
 
 TGRSIDetectorHit* TS3::GetHit(const int& idx){
