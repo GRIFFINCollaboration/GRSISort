@@ -84,7 +84,7 @@ void TChannel::InitChannelInput() {
 	return;
 }
 
-bool TChannel::Compare(const TChannel &chana,const TChannel &chanb) {
+bool TChannel::CompareChannels(const TChannel &chana,const TChannel &chanb) {
 	///Compares the names of the two TChannels. Returns true if the names are the
 	///same, false if different.
 	std::string namea; namea.assign(static_cast<TChannel>(chana).GetName());
@@ -647,7 +647,7 @@ void TChannel::WriteCalFile(std::string outfilename) {
 			chanVec.push_back(*iter->second);
 	}
 
-	std::sort(chanVec.begin(),chanVec.end(),TChannel::Compare);
+	std::sort(chanVec.begin(),chanVec.end(),TChannel::CompareChannels);
 
 
 	/*
@@ -707,7 +707,7 @@ void TChannel::WriteCalBuffer(Option_t* opt) {
 			chanVec.push_back(*iter->second);
 	}
 
-	std::sort(chanVec.begin(),chanVec.end(),TChannel::Compare);
+	std::sort(chanVec.begin(),chanVec.end(),TChannel::CompareChannels);
 
 
 	/*
