@@ -135,6 +135,7 @@ Int_t TTigress::GetAddbackMultiplicity() {
     
   // use the first tigress hit as starting point for the addback hits
   fAddbackHits.push_back(fTigressHits[0]);
+  fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
   fAddbackFrags.push_back(1);
 
   // loop over remaining tigress hits
@@ -150,6 +151,7 @@ Int_t TTigress::GetAddbackMultiplicity() {
     }
     if(j == fAddbackHits.size()) {
       fAddbackHits.push_back(fTigressHits[i]);
+      fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
       fAddbackFrags.push_back(1);
     }
   }
