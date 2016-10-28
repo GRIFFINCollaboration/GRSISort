@@ -128,7 +128,8 @@ class TGRSIDetectorHit : public TObject 	{
       virtual Float_t Charge()    const      { return fCharge; }             //!<!
       virtual Short_t GetKValue() const      { return fKValue; }             //!<!
       TChannel* GetChannel()      const      { if(!IsChannelSet()) { fChannel = TChannel::GetChannel(fAddress); SetBit(kIsChannelSet, true); } return fChannel; }
-      std::vector<Short_t>* GetWaveform()    { return &fWaveform; }          //!<!
+      TODO: Fix Getters to have non-const types
+	std::vector<Short_t>* GetWaveform()    { return &fWaveform; }          //!<!
 
       //stored in the tchannel (things common to all hits of this address)
       virtual Int_t  GetDetector()  const; //!<!
