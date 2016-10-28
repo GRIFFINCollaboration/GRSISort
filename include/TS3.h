@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <TRandom2.h>
 
 #include "TGRSIDetector.h"
 #include "TS3Hit.h"
@@ -41,6 +42,9 @@ class TS3 : public TGRSIDetector {
 
 		TGRSIDetectorHit* GetHit(const int& idx =0);
 		TS3Hit* GetS3Hit(const int& i);  
+		TS3Hit* GetRingHit(const int& i);  
+		TS3Hit* GetSectorHit(const int& i);  
+		
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
 
 		bool MultiHit()										{ return TestBitNumber(kMultHit);	 } // Get allow shared hits
@@ -50,7 +54,8 @@ class TS3 : public TGRSIDetector {
 		void SetPixels(bool flag=true) 		{ SetBitNumber(kPixelsSet, flag); }
 		void BuildPixels();
 
-		static TVector3 GetPosition(int ring, int sector, bool downstream, double offset);
+		// This new definition has conflict with TS3Hit "fIsDownstream" and associated usage, but is a more general definition of an S3 detector
+		static TVector3 GetPosition(int ring, int sector, bool sectorsdownstream, double offsetZ,bool smear=false);
 
 		void SetTargetDistance(double dist)	{ fTargetDistance = dist; }
 
@@ -62,28 +67,30 @@ class TS3 : public TGRSIDetector {
 	private:
 		std::vector<TS3Hit> fS3Hits; //!<!
 		std::vector<TS3Hit> fS3RingHits, fS3SectorHits;
-		std::vector<TFragment*> fS3_RingFragment; //! 
-		std::vector<TFragment*> fS3_SectorFragment; //! 
 
 		UChar_t fS3Bits;                  // flags for transient members
 		void ClearStatus() { fS3Bits = 0; }
 		void SetBitNumber(enum ES3Bits bit,Bool_t set=true);
 		Bool_t TestBitNumber(enum ES3Bits bit) const {return (bit & fS3Bits);}
 	
-		///for geometery
+		///for geometery	
 		static int fRingNumber;          //!<!
 		static int fSectorNumber;        //!<!
 
-		static double fOffsetPhi;        //!<!
+		static double fOffsetPhiCon;        //!<!
+		static double fOffsetPhiSet;        //!<!
+
 		static double fOuterDiameter;    //!<!
 		static double fInnerDiameter;    //!<!
 		static double fTargetDistance;   //!<!
 
 		static Int_t fFrontBackTime;   //!
 		static double fFrontBackEnergy;   //!
+		
+		static TRandom2 s3_rand;// random number gen for TVectors
 
 /// \cond CLASSIMP
-		ClassDef(TS3,3)
+		ClassDef(TS3,4)
 /// \endcond
 };
 /*! @} */

@@ -1273,6 +1273,167 @@ double TPulseAnalyzer::GetCsIt0()
     return tc;
 }
 
+
+double TPulseAnalyzer::GetSiliShape(double tauDecay,double tauRise){if(IsSet()){
+	
+	double t0=fit_newT0();//fits the T0 in the SFU way with my added bit at the end for a nice baseline calc
+	
+	int exclusion=t0+3;
+	double baseline=wpar->baselinefin;
+	
+	if(t0<1){//if the fit_newT0() failed
+		exclusion=10;
+		if(abs(baseline-wavebuffer[0])>100)baseline=wavebuffer[0];
+	}
+		
+	wpar->amplitude=0;
+	wpar->tauDecay=tauDecay;
+	wpar->tauRise=tauRise;
+
+	/**************************************************************************
+	// Parametes for this function  
+	//fShpar->t0 t0         (time where signal starts, calculated)
+	//fShpar->tau[0]) decay     (provided)
+	//fShpar->tau[1]) rise      (provided)
+	//fShpar->tau[2]) slow      (not used)
+	//fShpar->tau[3]) diode     (not used)
+	//fShpar->am[0]) baseline (provided)
+	//fShpar->am[1]) fast     (amplitude, calculated )
+	//fShpar->am[2]) slow     (not used)
+	//fShpar->am[3]) diode    (not used)
+
+	linearized chi square fit is Mu = v where M is a data matrix 
+	u, v are vectors; u is the parameter vector (solution)
+	note that in this formulation, chisq_min = y_i^2-sum(u_iv_i)
+	**************************************************************************/
+
+	//cout << baseline << "  " << exclusion  <<  endl ;
+	if ( tauRise < 1 || tauDecay < 1) return 0 ; 
+	
+// ResetShapeAmplitudes();
+// fShpar->am[0] = baseline ; 
+	
+	lineq_dim=2;
+	memset(lineq_matrix,0,sizeof(lineq_matrix));
+	memset(lineq_vector,0,sizeof(lineq_vector));
+	memset(lineq_solution,0,sizeof(lineq_solution));
+
+	if(exclusion >= N ) return BADCHISQ_EXC;
+	if(lineq_dim >= N) return BADCHISQ_EXC;
+
+	//setting  M[0,0] V[0] V[1]
+	for(int j=exclusion;j<N;j++){ 
+		//vector
+		if ( (wavebuffer[j]-baseline) < 0) { exclusion++; continue;  }   // this is crucial for oscillations    
+			//if (j%10==0) cout << j << " "<<  wavebuffer[j] << " " << wavebuffer[j]-baseline << endl ;
+			double signal = log(wavebuffer[j]-baseline) + j/tauDecay ; // sum of Y_i where  Y_i = (y_i - baseline)*exp(-t_i/tauDecay)  
+			lineq_vector[0]+=exp(signal);
+			lineq_vector[1]-=exp(signal-j/tauRise);  // sum of Y_i*X_i
+			//Matrix 
+			lineq_matrix[0][0]+=1;
+	}
+
+	//create matrix for linearized fit
+	//setting elements M[0,1] M[1,0] M[1,1]
+	long double sum ;
+	sum=-((double)exclusion)/tauRise + log(1.-exp(-((double)(N-exclusion))/tauRise));
+	sum-=log(1.-exp(-1./tauRise));  // finishing the geometric sequence sum 
+	lineq_matrix[1][0]=-exp(sum);
+	lineq_matrix[0][1]=-exp(sum);
+	
+	double tauRise_2 = tauRise/2.;
+	sum=-((double)exclusion)/tauRise_2 + log(1.-exp(-((double)(N-exclusion))/ tauRise_2 ));
+	sum-=log(1.-exp( -1./ tauRise_2 ));
+	lineq_matrix[1][1]=exp(sum);    
+     
+     
+	//cout << lineq_matrix[0][0] << "  " << lineq_matrix[0][1] << " ---------- " << lineq_vector[0]  << endl ;
+	//cout << lineq_matrix[1][0] << "  " << lineq_matrix[1][1] << " ---------- " << lineq_vector[1]  << endl ;
+
+	//solve the matrix equation Mu = v -> u = M^(-1)v where M^(-1) is the inverse
+	//of M. note this has no solution if M is not invertable! 
+
+	//error if the matrix cannot be inverted
+	if(solve_lin_eq()==0) {
+		//printf("Matrix could not be inverted\n");
+// fShpar->chisq=BADCHISQ_MAT;
+// fShpar->ndf=1;
+		return BADCHISQ_MAT;
+	}else{//else calculate amplitudes
+		//calculate amplitudes
+		double beta = lineq_solution[0] ; 
+		double alpha = lineq_solution[1] ; 
+
+		//cout << beta << "  " << alpha  << " ==> " ;
+// fShpar->t0 = (log(alpha)-log(beta)) * tauRise ; 
+// fShpar->am[1] = beta / exp( fShpar->t0 / tauDecay ) ; 
+
+		double dom=exp( ((log(alpha)-log(beta)) * tauRise) / tauDecay ) ; 
+		if(dom>0||dom<0)wpar->amplitude=beta / dom;
+
+//cout << fShpar->t0 << " <t    A>" << fShpar->am[1] << endl ;
+// wpar->t0=fShpar->t0 ; 
+		double tt=(log(alpha)-log(beta)) * tauRise;
+		if(tt>0)wpar->t0=tt;
+			
+			 
+	// set exclusion zone, use all points 
+/*wpar->temin=0; 
+wpar->temax=exclusion;
+fCsISet = true ; */		
+     }
+
+// CalculateShapeChi2();     
+// fShpar->type = lineq_dim-2; // [Mhd] : obsolete for now  
+	
+	return 1;//fShpar->chisq;
+}return 0;}
+
+
+double TPulseAnalyzer::SiLiFitFunction(double *i,double *p){
+  double x,s,e;
+  /* 
+     p[0]-p[2] are t0, RC, Tau  
+     p[3]-p[4] are baseline, A0
+  */
+
+  x=i[0]-p[0];
+  e=exp(-x/p[1]);
+  if(x<=0) 
+    return p[3];
+  else
+    {   
+      s=p[3];
+      s+=p[4]*(1-exp(-x/p[2]))*e;
+      return s;
+    }
+}
+
+
+void  TPulseAnalyzer::Drawsilifit(){
+	
+	if(!set) return;
+
+	DrawWave();
+
+	if(wpar){
+		TF1 g("fit",SiLiFitFunction,0,N,5);
+		
+		g.SetParameter(0,wpar->t0);
+		g.SetParameter(1,wpar->tauDecay);
+		g.SetParameter(2,wpar->tauRise);
+		g.SetParameter(3,wpar->baselinefin);
+		g.SetParameter(4,wpar->amplitude);
+		g.SetLineColor(kRed);
+
+		g.DrawCopy("same");
+		
+		printf("t0:\t%2.2f, A:\t%2.2f\n",wpar->t0,wpar->amplitude);
+	}
+	return;
+}
+
+
 void  TPulseAnalyzer::DrawWave(){
 	if(N==0||!set) return;
 	TH1I h("Waveform",fName.c_str(),N,0,N); 

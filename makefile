@@ -133,8 +133,10 @@ bin/%: .build/myAnalysis/%.o | $(LIBRARY_OUTPUT) bin
 bin lib:
 	@mkdir -p $@
 
-include/GVersion.h: .git/HEAD .git/index util/gen_version.sh
+include/GVersion.h: 
 	$(call run_and_test,util/gen_version.sh,$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
+
+#include/GVersion.h: .git/HEAD .git/index util/gen_version.sh
 
 lib/lib%.so: .build/histos/%.o | lib
 	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )

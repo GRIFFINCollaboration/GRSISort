@@ -13,13 +13,16 @@ ClassImp(TS3)
 int    TS3::fRingNumber;
 int    TS3::fSectorNumber;
 
-double TS3::fOffsetPhi;
+double TS3::fOffsetPhiCon;
+double TS3::fOffsetPhiSet;
 double TS3::fOuterDiameter;
 double TS3::fInnerDiameter;
 double TS3::fTargetDistance;
 
 Int_t TS3::fFrontBackTime;   
-double TS3::fFrontBackEnergy;  
+double TS3::fFrontBackEnergy; 
+
+TRandom2 TS3::s3_rand;
 
 TS3::TS3() {
    Clear();	
@@ -40,7 +43,7 @@ TS3::TS3(const TS3& rhs) : TGRSIDetector() {
 
 void TS3::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
-  static_cast<TS3&>(rhs).fS3RingHits    	= fS3RingHits;
+  static_cast<TS3&>(rhs).fS3RingHits    = fS3RingHits;
   static_cast<TS3&>(rhs).fS3SectorHits    = fS3SectorHits;
   return;                                      
 }  
@@ -316,24 +319,37 @@ void TS3::BuildPixels(){
 
 }
 
-TVector3 TS3::GetPosition(int ring, int sector, bool downstream, double offset)  {
-  TVector3 position;
+// This new definition has conflict with TS3Hit "fIsDownstream" and associated usage, but is a more general definition of an S3 detector		
+// This function itself if generic except for fOffsetPhiSet
+// Wanted to separate Z position from detector orientation.
+// Need to modify TS3Hit functions that call this 
+// Should find better way to adjust fTargetDistance, fOffsetPhiSet and sectorsdownstream
+// Could be from mnemonic, but ->GetIsDownstream() not right/compatible
+TVector3 TS3::GetPosition(int ring, int sector, bool sectorsdownstream, double offsetZ,bool smear)  {
 	double dist = 0;
-	if(offset == 0)
-		dist = fTargetDistance;
-	else
-		dist = offset;
-  double ring_width=(fOuterDiameter-fInnerDiameter)*0.5/fRingNumber; // 24 rings   radial width!
-  double inner_radius=fInnerDiameter/2.0;
-  double correctedsector = 6+sector; //moe is currently checking.
-  double phi     =  2.*TMath::Pi()/fSectorNumber * (correctedsector + 0.5);   //the phi angle....
-  double radius =  inner_radius + ring_width * (ring + 0.5) ;
-	if(downstream)
- 		position.SetMagThetaPhi(sqrt(radius*radius + dist*dist),atan((radius/dist)),phi+fOffsetPhi);
-	else
- 		position.SetMagThetaPhi(sqrt(radius*radius + dist*dist),TMath::Pi() - atan((radius/dist)),phi+fOffsetPhi);
+	if(offsetZ == 0)dist = fTargetDistance;
+	else dist = offsetZ;
+	
+	double ring_width=(fOuterDiameter-fInnerDiameter)*0.5/fRingNumber; // 24 rings   radial width!
+	double inner_radius=fInnerDiameter/2.0;
+	double phi_width=2.*TMath::Pi()/fSectorNumber;
 
-  return position;
+	double radius =  inner_radius + ring_width * (ring + 0.5) ;
+
+	double phi    =  phi_width*-sector;   //the phi angle....
+	phi+=fOffsetPhiCon;
+	if(!sectorsdownstream)phi=-phi;
+	phi+=fOffsetPhiSet;
+
+	if(smear){
+		double sep=ring_width*0.025;
+		double r1=radius-ring_width*0.5+sep,r2=radius+ring_width*0.5-sep;
+		radius=sqrt(s3_rand.Uniform(r1*r1,r2*r2));
+		double sepphi=sep/radius;
+		phi=s3_rand.Uniform(phi-phi_width*0.5+sepphi,phi+phi_width*0.5-sepphi);	
+	}
+
+	return TVector3(cos(phi)*radius,sin(phi)*radius,dist);
 }
 
 TGRSIDetectorHit* TS3::GetHit(const int& idx){
@@ -350,6 +366,27 @@ TS3Hit *TS3::GetS3Hit(const int& i) {
   }
 }  
 
+TS3Hit *TS3::GetRingHit(const int& i) {  
+  if(i < GetRingMultiplicity()) {
+    return &fS3RingHits.at(i);
+  } else {
+    std::cerr << "S3 ring hits are out of range" << std::endl;
+    throw grsi::exit_exception(1);
+    return NULL;
+  }
+}  
+
+TS3Hit *TS3::GetSectorHit(const int& i) {  
+  if(i < GetSectorMultiplicity()) {
+    return &fS3SectorHits.at(i);
+  } else {
+    std::cerr << "S3 sector hits are out of range" << std::endl;
+    throw grsi::exit_exception(1);
+    return NULL;
+  }
+}  
+
+
 /*void TS3::PushBackHit(TGRSIDetectorHit *deshit) {
   fS3Hits.push_back(*((TS3Hit*)deshit));
   return;
@@ -361,23 +398,23 @@ void TS3::Print(Option_t *opt) const {
 }
 
 void TS3::Clear(Option_t *opt) {
-  TGRSIDetector::Clear(opt);
-  fS3Hits.clear();
+	TGRSIDetector::Clear(opt);
+	fS3Hits.clear();
 	fS3RingHits.clear();
 	fS3SectorHits.clear();
-  fS3_RingFragment.clear();
-  fS3_SectorFragment.clear();
-  fRingNumber=24;
-  fSectorNumber=32;
-  fOffsetPhi=15*TMath::Pi()/180.; // according to dave.
-  fOuterDiameter=70.;
-  fInnerDiameter=22.;
-  fTargetDistance=31.;
-  
-  fFrontBackTime=75;   
-  fFrontBackEnergy=0.9; 
+	fRingNumber=24;
+	fSectorNumber=32;
+	fOffsetPhiCon=-0.5*TMath::Pi(); // Offset between connector and sector 0 (viewed from sector side)
+	fOffsetPhiSet=-22.5*TMath::Pi()/180.; // Phi rotation of connector in setup // -90 for bambino -22.5 for SPICE
+	fOuterDiameter=70.;
+	fInnerDiameter=22.;
+	fTargetDistance=31.;
+
+	fFrontBackTime=75;   
+	fFrontBackEnergy=0.9; 
 	SetPixels(false);
 	SetMultiHit(false);
+	s3_rand.SetSeed();
 }
 
 
