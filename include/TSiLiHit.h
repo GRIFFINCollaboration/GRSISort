@@ -7,6 +7,7 @@
 
 #include <cstdio>
 #include <utility>
+#include <TGraph.h>
 
 #include "TFragment.h"
 #include "TChannel.h"
@@ -20,28 +21,76 @@ class TSiLiHit : public TGRSIDetectorHit {
 		virtual ~TSiLiHit();
 		TSiLiHit(const TSiLiHit&);
 		
-		void Copy(TObject&) const;        //!
+		void Copy(TObject&,int=0) const;        //!
 		void Clear(Option_t *opt="");
 		void Print(Option_t *opt="") const;
 
-		Double_t GetSig2Noise()const { return fSig2Noise;}    
-		Int_t GetRing()        const {  return 9-(GetSegment()/12); }
-		Int_t GetSector()      const {  return GetSegment()%12; }
-		Int_t GetPreamp()      const {  return  ((GetSector()/3)*2)+(((GetSector()%3)+GetRing())%2); }
+		Int_t GetRing()const;
+		Int_t GetSector()const;
+		Int_t GetPreamp()const;
 		Double_t GetTimeFit()   { return fTimeFit;  }
-
+		Double_t GetSig2Noise()const { return fSig2Noise;}    
+		
+		Int_t GetTimeStampLow()   { return GetTimeStamp() & 0x0fffffff;  }
+		Double_t GetTimeFitCfd()  const { 
+			if(fTimeFit!=0 && fTimeFit<1000 && fTimeFit>-1000){
+				long ts=GetTimeStamp()<<4 & 0x07ffffff;//bit shift by 4 (x16) then knock off the highest bit which is absent from cfd					
+				return ts+fTimeFit*16;
+			}
+			return 0;
+		}
+		
+		void SetTimeFit(double t0 ) { fTimeFit = t0 ; }
+		
 		void SetWavefit(TFragment&);
 		TVector3 GetPosition(Double_t dist) const; //!  
 		TVector3 GetPosition() const; //!  
+		
+		std::vector<short> fAddBackSegments;
+		std::vector<double> fAddBackEnergy; //probably not needed after development finished
+		
+		void SumHit(TSiLiHit*);
+		
+		void UseFitCharge(){
+			SetCharge(Float_t(fFitCharge));
+			SetBit(kIsEnergySet,false);
+		}
 
+		double GetWaveformEnergy() const;
+		double GetWaveformEnergy() {
+			UseFitCharge();
+			return GetEnergy();
+		}		
+		
+		double GetFitCharge() const {return fFitCharge;}
+		
+				// Not strictly "doppler" but consistent
+		inline double GetDoppler(double beta, TVector3 *vec=0) { 
+			if(vec==0) {
+				vec = GetBeamDirection();
+			}
+			TVector3 pos=this->GetPosition();
+			pos.SetTheta(120.*TMath::Pi()/180.);	
+			double costhe=TMath::Cos(pos.Angle(*vec));
+			double e=this->GetEnergy();
+			double gamma = 1/(sqrt(1-pow(beta,2)));
+			
+			return ((e+511-beta*costhe*sqrt(e*(e+1022)))*gamma)-511;;
+		}
+		
+		
+		
 	private:
-      Double_t GetDefaultDistance() const { return 0.0; }
+		Double_t GetDefaultDistance() const { return 0.0; }
       
 		Double_t    fTimeFit;
 		Double_t    fSig2Noise;
+		Double_t    fFitCharge;
+		Double_t    fFitBase;
+		
 
 /// \cond CLASSIMP
-		ClassDef(TSiLiHit,7);
+		ClassDef(TSiLiHit,8);
 /// \endcond
 };
 /*! @} */

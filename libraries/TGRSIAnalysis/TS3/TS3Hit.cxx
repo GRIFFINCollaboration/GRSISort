@@ -34,7 +34,7 @@ void TS3Hit::Clear(Option_t *opt)	{
 	TGRSIDetectorHit::Clear(opt);
 	fRing           = -1;
 	fSector         = -1;
-	fIsDownstream		 = false;
+	fIsDownstream	= false;
 }
 
 Short_t TS3Hit::GetMnemonicSegment(TFragment &frag){//could be added to TGRSIDetectorHit base class

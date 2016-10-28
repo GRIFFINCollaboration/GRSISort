@@ -96,7 +96,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual void Copy(TObject&,bool copywave) const;  //!<!
       virtual void CopyWave(TObject&)  const;  //!<!
       virtual void Clear(Option_t* opt = "");           //!<!
-		virtual void ClearTransients() const { fBitflags = 0; }
+      virtual void ClearTransients() const { fBitflags = 0; }
       virtual void Print(Option_t* opt = "") const;     //!<!
       virtual bool HasWave() const { return (fWaveform.size()>0) ?  true : false; } //!<!
 
@@ -127,7 +127,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual Int_t  GetCharge()  const      ;                               //!<!
       virtual Float_t Charge()    const      { return fCharge; }             //!<!
       virtual Short_t GetKValue() const      { return fKValue; }             //!<!
-      TChannel* GetChannel()      const      { if(!IsChannelSet()) { fChannel = TChannel::GetChannel(fAddress); SetBit(kIsChannelSet, true); } return fChannel; }  //!<!
+      TChannel* GetChannel()      const      { fChannel = TChannel::GetChannel(fAddress); return fChannel; }  //!<!
       std::vector<Short_t>* GetWaveform()    { return &fWaveform; }          //!<!
 
       //stored in the tchannel (things common to all hits of this address)
