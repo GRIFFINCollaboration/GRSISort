@@ -22,6 +22,8 @@ class TSiLi: public TGRSIDetector  {
       void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
 #endif
 
+		void ClearTransients() { for(auto hit : fSiLiHits) hit.ClearTransients(); }
+
 		TSiLi& operator=(const TSiLi&);  // 
 
 		void Copy(TObject&) const;

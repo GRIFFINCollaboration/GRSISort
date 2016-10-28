@@ -56,6 +56,8 @@ class TS3 : public TGRSIDetector {
 
 		void SetTargetDistance(double dist)	{ fTargetDistance = dist; }
 
+		void ClearTransients() { fS3Bits = 0; for(auto hit : fS3Hits) hit.ClearTransients(); for(auto hit : fS3RingHits) hit.ClearTransients(); for(auto hit : fS3SectorHits) hit.ClearTransients(); }
+
 		void Copy(TObject&) const;
 		TS3& operator=(const TS3&);  // 
       virtual void Clear(Option_t *opt = "all");		     //!<!

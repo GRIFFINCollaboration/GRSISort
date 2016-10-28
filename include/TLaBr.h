@@ -41,6 +41,8 @@ class TLaBr : public TGRSIDetector {
       
       static TVector3 GetPosition(int DetNbr) { return gPosition[DetNbr]; }	//!<!
       
+		void ClearTransients() { for(auto hit : fLaBrHits) hit.ClearTransients(); }
+
       TLaBr& operator=(const TLaBr&);  //!<!
       
    private:

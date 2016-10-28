@@ -43,6 +43,8 @@ class TDescant : public TGRSIDetector {
       TGRSIDetectorHit* CreateHit(std::shared_ptr<const TFragment> frag, TChannel *chan) { return new TDescantHit(*frag); }
 #endif
 
+		void ClearTransients() { for(auto hit : fDescantHits) hit.ClearTransients(); }
+
       TDescant& operator=(const TDescant&);  //
       
    private:

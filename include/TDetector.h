@@ -50,6 +50,7 @@ class TDetector : public TObject	{
 
 		virtual void Copy(TObject&) const;              //!<!
 		virtual void Clear(Option_t* opt = "");         //!<!
+      virtual void ClearTransients() {}               //!<!
 		virtual void Print(Option_t* opt = "") const;   //!<!
 
 /// \cond CLASSIMP

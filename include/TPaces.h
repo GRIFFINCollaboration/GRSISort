@@ -31,6 +31,9 @@ class TPaces : public TGRSIDetector {
       void AddFragment(std::shared_ptr<const TFragment> frag, TChannel *chan);
 #endif
 		static TVector3 GetPosition(int DetNbr);		//!<!
+
+		void ClearTransients() { for(auto hit : fPacesHits) hit.ClearTransients(); }
+
 		TPaces& operator=(const TPaces&);  //!<!
 
 	private: 

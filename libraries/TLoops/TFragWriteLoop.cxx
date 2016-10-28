@@ -33,7 +33,7 @@ TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string fOutputFilenam
 TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
   : StoppableThread(name),
     fOutputFile(NULL), fEventTree(NULL), fBadEventTree(NULL), fScalerTree(NULL),
-	 fEventAddress(NULL), fBadEventAddress(NULL), fScalerAddress(NULL),
+	 //fEventAddress(NULL), fBadEventAddress(NULL), fScalerAddress(NULL),
     fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >()),
     fBadInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >()),
     fScalerInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >()) {
@@ -45,12 +45,15 @@ TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
     fOutputFile = new TFile(fOutputFilename.c_str(),"RECREATE");
 
     fEventTree = new TTree("FragmentTree","FragmentTree");
+	 fEventAddress = new TFragment;
     fEventTree->Branch("TFragment", &fEventAddress);
 
     fBadEventTree = new TTree("BadFragmentTree","BadFragmentTree");
+	 fBadEventAddress = new TFragment;
     fBadEventTree->Branch("TFragment", &fBadEventAddress);
 
     fScalerTree = new TTree("EpicsTree","EpicsTree");
+	 fScalerAddress = NULL;
     fScalerTree->Branch("TEpicsFrag", &fScalerAddress);
 
     TThread::UnLock();
@@ -138,10 +141,11 @@ void TFragWriteLoop::Write() {
 
 void TFragWriteLoop::WriteEvent(std::shared_ptr<const TFragment> event) {
 	if(fEventTree) {
-		fEventAddress = event.get();
+		*fEventAddress = *(event.get());
+		fEventAddress->ClearTransients();
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fEventTree->Fill();
-		fEventAddress = NULL;
+		//fEventAddress = NULL;
 	} else {
 		std::cout<<__PRETTY_FUNCTION__<<": no fragment tree!"<<std::endl;
 	}
@@ -149,10 +153,10 @@ void TFragWriteLoop::WriteEvent(std::shared_ptr<const TFragment> event) {
 
 void TFragWriteLoop::WriteBadEvent(std::shared_ptr<const TFragment> event) {
 	if(fBadEventTree) {
-		fBadEventAddress = event.get();
+		*fBadEventAddress = *(event.get());
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fBadEventTree->Fill();
-		fBadEventAddress = NULL;
+		//fBadEventAddress = NULL;
 	}
 }
 

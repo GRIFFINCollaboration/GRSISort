@@ -43,6 +43,8 @@ class TTip : public TGRSIDetector {
 #endif
 		void Copy(TObject &rhs) const;
 
+		void ClearTransients() { for(auto hit : fTipHits) hit.ClearTransients(); }
+
 		TTip& operator=(const TTip&);  //!<!
 
 		void Clear(Option_t* opt = "");
