@@ -95,7 +95,7 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
     }*/
     for(UInt_t i=0; i<tigress->GetMultiplicity(); i++){
       obj.FillHistogram("gamma_energy",
-			4000, 1, 2001, tigress->GetTigressHit(i).GetEnergy());
+			4000, 1, 2001, tigress->GetTigressHit(i)->GetEnergy());
 
     }
 
@@ -282,26 +282,26 @@ void MakeAnalysisHistograms(TRuntimeObjects& obj) {
 
       if(tigress){
         for(UInt_t t=0; t<tigress->GetMultiplicity(); t++){
-          TTigressHit &thit = tigress->GetTigressHit(t);
+          TTigressHit *thit = tigress->GetTigressHit(t);
           obj.FillHistogram("tigress","gamma_sharc_energies",
 			    2000, 0, 10000, shit->GetEnergy(),
-			    4000, 0,  2000, thit.GetEnergy());
+			    4000, 0,  2000, thit->GetEnergy());
           obj.FillHistogram("tigress","gamma_theta",
 			    180, 0, 180, shit->GetThetaDeg(),
-			    8000, 0,  4000, thit.GetDoppler(0.105));
+			    8000, 0,  4000, thit->GetDoppler(0.105));
           if(shit->GetDetector()<9) {
-            obj.FillHistogram("tigress","gammas_downstream",4000,0,4000,thit.GetDoppler(0.105));
-            obj.FillHistogram("tigress","gammas_downstream_vs_shitenergy",5000,0,20000,shit->GetEnergy() ,1000,0,4000,thit.GetDoppler(0.105));
+            obj.FillHistogram("tigress","gammas_downstream",4000,0,4000,thit->GetDoppler(0.105));
+            obj.FillHistogram("tigress","gammas_downstream_vs_shitenergy",5000,0,20000,shit->GetEnergy() ,1000,0,4000,thit->GetDoppler(0.105));
           } else {
-            obj.FillHistogram("tigress","gammas_upstream",4000,0,4000,thit.GetDoppler(0.105));
-            obj.FillHistogram("tigress","gammas_upstream_vs_shitenergy",5000,0,20000,shit->GetEnergy() ,1000,0,4000,thit.GetDoppler(0.105));
+            obj.FillHistogram("tigress","gammas_upstream",4000,0,4000,thit->GetDoppler(0.105));
+            obj.FillHistogram("tigress","gammas_upstream_vs_shitenergy",5000,0,20000,shit->GetEnergy() ,1000,0,4000,thit->GetDoppler(0.105));
           }
-          obj.FillHistogram("tigress","all_doppler",4000,0,8000,thit.GetDoppler(0.105));
+          obj.FillHistogram("tigress","all_doppler",4000,0,8000,thit->GetDoppler(0.105));
           double beta = 0.0;
           for(int j=0;j<50;j++) {
             beta += 0.12/50.;
             obj.FillHistogram("tigress","gamma_sharc_energies",
-			      2000, 0, 10000, thit.GetDoppler(beta),
+			      2000, 0, 10000, thit->GetDoppler(beta),
 			      50,0,0.12,beta);
           }
         }
