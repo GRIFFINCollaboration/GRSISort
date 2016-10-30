@@ -41,6 +41,8 @@ class TSceptar : public TGRSIDetector {
 
       static TVector3 GetPosition(int DetNbr) { return gPaddlePosition[DetNbr]; }	//!<!
 
+		void ClearTransients() { for(auto hit : fSceptarHits) hit.ClearTransients(); }
+
       TSceptar& operator=(const TSceptar&);  //!<!
       
    private:

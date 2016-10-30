@@ -40,6 +40,8 @@ class TTAC : public TGRSIDetector {
       void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
 #endif
       
+		void ClearTransients() { for(auto hit : fTACHits) hit.ClearTransients(); }
+
       TTAC& operator=(const TTAC&);  //!<!
       
    private:

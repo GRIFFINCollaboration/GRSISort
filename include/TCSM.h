@@ -46,6 +46,8 @@ class TCSM : public TDetector {
 #endif
 		void BuildHits();
 
+		void ClearTransients() { for(auto hit : fCsmHits) hit.ClearTransients(); }
+
 	private: 
 		std::map<int16_t, std::vector<std::vector<std::vector<std::pair<TFragment, TMnemonic> > > > > fFragments; //!<!
 		std::vector<TCSMHit> fCsmHits;

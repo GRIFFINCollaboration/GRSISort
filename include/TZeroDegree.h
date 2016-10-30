@@ -42,6 +42,8 @@ class TZeroDegree : public TGRSIDetector {
       void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
 #endif
       
+		void ClearTransients() { for(auto hit : fZeroDegreeHits) hit.ClearTransients(); }
+
       TZeroDegree& operator=(const TZeroDegree&);  //!<!
       
    private:

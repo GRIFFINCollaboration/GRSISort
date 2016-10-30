@@ -149,18 +149,20 @@ void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event) {
 		//   which suggests that a new object would be constructed only when setting the address,
 		//   not when filling the TTree.
 		for(auto& elem : fDetMap){
-			*elem.second = fDefaultDets[elem.first];
+			//*elem.second = fDefaultDets[elem.first];
+			(*elem.second)->Clear();
 		}
 
 		// Load current events
 		for(auto det : event.GetDetectors()) {
 			TClass* cls = det->IsA();
 			try{
-				*fDetMap.at(cls) = det.get();
+				**fDetMap.at(cls) = *(det.get());
 			} catch (std::out_of_range& e) {
 				AddBranch(cls);
-				*fDetMap.at(cls) = det.get();
+				**fDetMap.at(cls) = *(det.get());
 			}
+			(*fDetMap.at(cls))->ClearTransients();
 			//if(cls == TDescant::Class()) {
 			//	for(int i = 0; i < static_cast<TDescant*>(det)->GetMultiplicity(); ++i) {
 			//		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == NULL ? " has no debug data": " has debug data")<<std::endl;

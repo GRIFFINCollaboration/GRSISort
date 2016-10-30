@@ -54,8 +54,8 @@ class TFragWriteLoop : public StoppableThread {
 		TTree* fBadEventTree;
 		TTree* fScalerTree;
 
-		const TFragment*  fEventAddress;
-		const TFragment*  fBadEventAddress;
+		TFragment*  fEventAddress;
+		TFragment*  fBadEventAddress;
 		TEpicsFrag* fScalerAddress;
 
 #ifndef __CINT__
