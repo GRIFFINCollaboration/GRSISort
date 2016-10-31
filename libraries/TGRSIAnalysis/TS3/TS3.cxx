@@ -236,9 +236,9 @@ void TS3::BuildPixels(){
 									dethitB.SetSectorNumber(fS3SectorHits[i].GetSector());
 									fS3Hits.push_back(dethitB);
 
-									UsedRing[i]=true;
-									UsedSector[j]=true;
-									UsedSector[k]=true;
+									UsedSector[i]=true;
+									UsedRing[j]=true;
+									UsedRing[k]=true;
 								}
 							}
 						}
