@@ -65,7 +65,7 @@ std::string StoppableThread::Status() {
   return ss.str();
 }
 
-void StoppableThread::StopAll() {
+void StoppableThread::SendStop() {
   for(auto& elem : fthreadmap){
     TDataLoop* data_loop = dynamic_cast<TDataLoop*>(elem.second);
     TFragmentChainLoop* chain_loop = dynamic_cast<TFragmentChainLoop*>(elem.second);
@@ -74,6 +74,10 @@ void StoppableThread::StopAll() {
       elem.second->Stop();
     }
   }
+}
+
+void StoppableThread::StopAll() {
+  SendStop();
 
   for(auto& elem : fthreadmap){
     std::cout << "Joining thread " << elem.first << std::endl;
