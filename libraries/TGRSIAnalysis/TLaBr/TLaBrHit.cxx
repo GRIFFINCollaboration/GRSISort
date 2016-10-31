@@ -36,7 +36,7 @@ void TLaBrHit::Copy(TObject &rhs) const {
    static_cast<TLaBrHit&>(rhs).fFilter = fFilter;
 }
 
-TVector3 TLaBrHit::GetPosition(double dist) const {
+TVector3 TLaBrHit::GetPosition(Double_t dist) const {
    //Gets the position of the current TLaBrHit
    return TLaBr::GetPosition(GetDetector());
 }

@@ -1,7 +1,7 @@
 #ifndef TANGULARCORRELATION_H
 #define TANGULARCORRELATION_H
 
-/** \addtogroup Fitting & Analysis
+/** \addtogroup Fitting Fitting & Analysis
  *  @{
  */
 

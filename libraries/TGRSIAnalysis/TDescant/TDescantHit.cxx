@@ -93,7 +93,7 @@ void TDescantHit::Copy(TObject &rhs) const {
    static_cast<TDescantHit&>(rhs).fPartialSum = fPartialSum;
 }
 
-TVector3 TDescantHit::GetPosition(double dist) const {
+TVector3 TDescantHit::GetPosition(Double_t dist) const {
    ///TGRSIDetectorHit::GetPosition
    return TDescant::GetPosition(GetDetector(),dist);
 }

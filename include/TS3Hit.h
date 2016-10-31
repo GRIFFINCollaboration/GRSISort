@@ -50,7 +50,7 @@ class TS3Hit : public TGRSIDetectorHit {
     Short_t GetMnemonicSegment(TFragment &frag);	//could be added to TGRSIDetectorHit base class
 
 		Double_t GetPhi(double offset=0) {
-			return this->GetPosition(offset).Phi();
+			return GetPosition(offset).Phi();
 		}
 
 		Double_t GetTheta(double offset=0, TVector3 *vec=0) {
@@ -58,7 +58,7 @@ class TS3Hit : public TGRSIDetectorHit {
 				vec = new TVector3();
 				vec->SetXYZ(0,0,1);
 			}
-			return this->GetPosition(offset).Angle(*vec);
+			return GetPosition(offset).Angle(*vec);
 		}
 		TVector3 GetPosition(Double_t offset, Double_t dist) const; //!
 		TVector3 GetPosition(Double_t offset) const; //!

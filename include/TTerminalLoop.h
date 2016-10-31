@@ -1,6 +1,18 @@
 #ifndef _TTERMINALLOOP_H_
 #define _TTERMINALLOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TTerminalLoop
+/// 
+/// Template for loops to terminate queues.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"
 
@@ -67,4 +79,5 @@ private:
 #endif
 };
 
+/*! @} */
 #endif /* _TTERMINALLOOP_H_ */

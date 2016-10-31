@@ -1,6 +1,18 @@
 #ifndef _TDATALOOP_H_
 #define _TDATALOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TDataLoop
+/// 
+/// This loop reads midas events from a midas file.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #ifndef __CINT__
 #include <atomic>
 #include <condition_variable>
@@ -70,4 +82,5 @@ private:
   ClassDef(TDataLoop, 0);
 };
 
+/*! @} */
 #endif /* _TDATALOOP_H_ */

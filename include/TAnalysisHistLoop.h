@@ -1,6 +1,19 @@
 #ifndef _TANALYSISHISTOGRAMLOOP_H_
 #define _TANALYSISHISTOGRAMLOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TAnalysisHistLoop
+/// 
+/// This loop takes built events and fills histograms using
+/// 'histos/MakeAnalysisHistograms.cxx'
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #include <string>
 
 #include "StoppableThread.h"
@@ -64,4 +77,5 @@ private:
   ClassDef(TAnalysisHistLoop,0);
 };
 
+/*! @} */
 #endif /* _THISTOGRAMLOOP_H_ */
