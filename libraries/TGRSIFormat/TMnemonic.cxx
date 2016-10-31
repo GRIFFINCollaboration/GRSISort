@@ -168,7 +168,6 @@ void TMnemonic::Parse(std::string *name){
 	EnumerateMnemonic(fCollectedChargeString,fCollectedCharge);
 	buf.clear(); buf.assign(*name,7,2);
 	fSegment = (uint16_t)atoi(buf.c_str());
-	strtol("FA", NULL, 16);
 	fOutputSensorString.assign(*name,9,1);
 	EnumerateMnemonic(fOutputSensorString,fOutputSensor);
 	//Enumerating the fSystemString must come last as the details of other parts of
