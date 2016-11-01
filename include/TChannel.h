@@ -64,7 +64,7 @@ class TChannel : public TNamed	{
       static std::map<unsigned int,TChannel*>* GetChannelMap() { return fChannelMap; }
       static void DeleteAllChannels();
 
-      static bool Compare(const TChannel&,const TChannel&);
+      static bool CompareChannels(const TChannel&,const TChannel&);
 
       static TChannel* GetDefaultChannel();
 
