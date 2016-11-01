@@ -8,7 +8,10 @@ ClassImp(TS3Hit)
 	TS3Hit::TS3Hit()	{
 		Clear();
 	}
-TS3Hit::TS3Hit(TFragment &frag)	: TGRSIDetectorHit(frag) {}
+TS3Hit::TS3Hit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+	if(frag.GetChannel()->GetMnemonic()->ArrayPosition() == 1) SetIsDownstream(false);
+	else SetIsDownstream(true); // In case of not set (0) set downstream (2) or incorrect value, we assume downstream
+}
 
 TS3Hit::~TS3Hit()	{}
 
@@ -37,15 +40,6 @@ void TS3Hit::Clear(Option_t *opt)	{
 	fIsDownstream	= false;
 }
 
-Short_t TS3Hit::GetMnemonicSegment(TFragment &frag){//could be added to TGRSIDetectorHit base class
-	TChannel *channel = TChannel::GetChannel(frag.GetAddress());
-	if(!channel){
-		Error("SetDetector","No TChannel exists for address %u",GetAddress());
-		return 0;
-	}
-	return channel->GetMnemonic()->Segment();
-}
-
 void TS3Hit::SetWavefit(TFragment &frag)   {
 	TPulseAnalyzer pulse(frag);
 	if(pulse.IsSet()){
@@ -54,20 +48,45 @@ void TS3Hit::SetWavefit(TFragment &frag)   {
 	}
 }
 
-TVector3 TS3Hit::GetPosition(Double_t offset, Double_t dist) const {
-	return TS3::GetPosition(GetRing(),GetSector(),this->GetIsDownstream(),offset);
+TVector3 TS3Hit::GetPosition(Double_t phioffset, Double_t dist, bool smear) const {
+	return TS3::GetPosition(GetRing(),GetSector(),phioffset,dist,GetIsDownstream(),smear);
 }
 
-TVector3 TS3Hit::GetPosition(Double_t offset) const {
-	return TS3::GetPosition(GetRing(),GetSector(),this->GetIsDownstream(),GetDefaultOffset());
+TVector3 TS3Hit::GetPosition(Double_t phioffset, bool smear) const {
+	return TS3::GetPosition(GetRing(),GetSector(),phioffset,GetDefaultDistance(),GetIsDownstream(),smear);
 }
 
-TVector3 TS3Hit::GetPosition() const {
-	return TS3::GetPosition(GetRing(),GetSector(),this->GetIsDownstream(),GetDefaultOffset());
+TVector3 TS3Hit::GetPosition(bool smear) const {
+	return TS3::GetPosition(GetRing(),GetSector(),GetDefaultPhiOffset(),GetDefaultDistance(),GetIsDownstream(),smear);
 }
 
 void TS3Hit::Print(Option_t *opt) const	{
 	printf("================\n");
 	printf("not yet written.\n");
 	printf("================\n");
+}
+
+Double_t TS3Hit::GetDefaultPhiOffset() const {
+	if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLi){
+		return -22.5*TMath::Pi()/180;
+	}else{
+		return -90*TMath::Pi()/180.;		
+	}
+}
+
+Double_t TS3Hit::GetDefaultDistance() const {//relative to target (SPICE target not at Z=0)
+	double z=0;
+	if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLi){
+		z=32.1;
+		//z=18;//without pedestal
+	}else{
+		std::string str=GetChannel()->GetMnemonic()->ArraySubPositionString();
+		if(str.find("D")<str.size()) z=20;
+		else if(str.find("E")<str.size()) z=31;
+		else z=40;
+
+		if(!GetIsDownstream())z=-z;
+	}
+	
+	return z;
 }

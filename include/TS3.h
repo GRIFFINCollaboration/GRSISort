@@ -33,8 +33,8 @@ class TS3 : public TGRSIDetector {
 
 		virtual void AddFragment(TFragment*, TChannel*);
 
-		Short_t GetRingMultiplicity() 	const { return fS3RingHits.size()		; }
-		Short_t GetSectorMultiplicity() const { return fS3SectorHits.size()	; }
+		Short_t GetRingMultiplicity() 	const { return fS3RingHits.size(); }
+		Short_t GetSectorMultiplicity() const { return fS3SectorHits.size(); }
 
 		Int_t GetPixelMultiplicity();
 		void	SetFrontBackEnergy(double de)	{ fFrontBackEnergy = de; SetPixels(false); } // Set fractional allowed energy difference
@@ -54,8 +54,8 @@ class TS3 : public TGRSIDetector {
 		void SetPixels(bool flag=true) 		{ SetBitNumber(kPixelsSet, flag); }
 		void BuildPixels();
 
-		// This new definition has conflict with TS3Hit "fIsDownstream" and associated usage, but is a more general definition of an S3 detector
-		static TVector3 GetPosition(int ring, int sector, bool sectorsdownstream, double offsetZ,bool smear=false);
+		static TVector3 GetPosition(int ring, int sector, bool smear=false);
+		static TVector3 GetPosition(int ring, int sector, double offsetphi, double offsetZ, bool sectorsdownstream,bool smear=false);
 
 		void SetTargetDistance(double dist)	{ fTargetDistance = dist; }
 

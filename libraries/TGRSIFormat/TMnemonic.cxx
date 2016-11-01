@@ -173,8 +173,13 @@ void TMnemonic::Parse(std::string *name){
 	//Enumerating the fSystemString must come last as the details of other parts of
 	//the mnemonic must be known
 	EnumerateSystem();
+	
+	if(fSystem == kSiLi){
+		buf.clear(); buf.assign(*name,7,2);
+		fSegment = (uint16_t)strtol(buf.c_str(), NULL, 16);
+	}
+	
 	return;
-
 }
 
 void TMnemonic::Parse(const char *name){

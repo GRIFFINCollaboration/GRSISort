@@ -117,7 +117,8 @@ void TTigressHit::SumHit(TTigressHit *hit) {
   //  fLastPos = std::make_tuple(GetDetector(),GetCrystal(),GetInitialHit());
   //  return;
   //}
-  this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+  if(this!=hit)
+    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
   for(int x =0;x<hit->GetNSegments();x++) {
     this->AddSegment((hit->fSegments[x]));
   }
