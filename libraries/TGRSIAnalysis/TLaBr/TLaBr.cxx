@@ -84,7 +84,7 @@ TLaBrHit* TLaBr::GetLaBrHit(const int& i) {
    return NULL;
 }
 
-void TLaBr::AddFragment(TFragment *frag, TChannel *chan) {
+void TLaBr::AddFragment(std::shared_ptr<const TFragment> frag, TChannel *chan) {
    TLaBrHit laHit(*frag); //Building is controlled in the constructor of the hit
    fLaBrHits.push_back(std::move(laHit)); //use std::move for efficienciy since laHit loses scope here anyway
 }

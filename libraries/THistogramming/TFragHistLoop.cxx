@@ -11,7 +11,7 @@
 TFragHistLoop * TFragHistLoop::Get(std::string name) {
   if(name.length()==0)
     name = "histo_loop";
-  TFragHistLoop *loop = dynamic_cast<TFragHistLoop*>(StoppableThread::Get(name));
+  TFragHistLoop *loop = static_cast<TFragHistLoop*>(StoppableThread::Get(name));
   if(!loop)
     loop = new TFragHistLoop(name);
   return loop;
@@ -19,9 +19,8 @@ TFragHistLoop * TFragHistLoop::Get(std::string name) {
 
 TFragHistLoop::TFragHistLoop(std::string name)
   : StoppableThread(name),
-    output_file(0), output_filename("last.root"),
-    input_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()),
-    output_queue(std::make_shared<ThreadsafeQueue<TFragment*> >()) {
+    fOutputFile(nullptr), fOutputFilename("last.root"),
+    fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >()) {
   LoadLibrary(TGRSIOptions::Get()->FragmentHistogramLib());
 }
 
@@ -30,38 +29,25 @@ TFragHistLoop::~TFragHistLoop() {
 }
 
 void TFragHistLoop::ClearQueue() {
-  while(input_queue->Size()){
-    TFragment* event = NULL;
-    input_queue->Pop(event);
-    if(event){
-      delete event;
-    }
-  }
-
-  while(output_queue->Size()){
-    TFragment* event = NULL;
-    output_queue->Pop(event);
-    if(event){
-      delete event;
-    }
+  while(fInputQueue->Size()){
+    std::shared_ptr<const TFragment> event;
+    fInputQueue->Pop(event);
   }
 }
 
 bool TFragHistLoop::Iteration() {
-  TFragment* event = NULL;
-  input_queue->Pop(event);
+  std::shared_ptr<const TFragment> event;
+  fInputQueue->Pop(event);
 
   if(event) {
-    if(!output_file){
+    if(!fOutputFile){
       OpenFile();
     }
 
-    compiled_histograms.Fill(*event);
-    output_queue->Push(event);
+    fCompiledHistograms.Fill(event);
     return true;
 
-  } else if(input_queue->IsFinished()) {
-    output_queue->SetFinished();
+  } else if(fInputQueue->IsFinished()) {
     return false;
 
   } else {
@@ -71,24 +57,24 @@ bool TFragHistLoop::Iteration() {
 }
 
 void TFragHistLoop::ClearHistograms() {
-  compiled_histograms.ClearHistograms();
+  fCompiledHistograms.ClearHistograms();
 }
 
 void TFragHistLoop::OpenFile() {
   TPreserveGDirectory preserve;
-  output_file = TGRSIint::instance()->OpenRootFile(output_filename,
+  fOutputFile = TGRSIint::instance()->OpenRootFile(fOutputFilename,
                                                    "RECREATEONLINE");
-  output_file->SetTitle("Fragment Histograms");
-  compiled_histograms.SetDefaultDirectory(output_file);
+  fOutputFile->SetTitle("Fragment Histograms");
+  fCompiledHistograms.SetDefaultDirectory(fOutputFile);
 }
 
 void TFragHistLoop::CloseFile() {
   Write();
 
-  if(output_file){
-    output_file->Close();
-    output_file = 0;
-    output_filename = "last.root";
+  if(fOutputFile){
+    fOutputFile->Close();
+    fOutputFile = 0;
+    fOutputFilename = "last.root";
   }
 }
 
@@ -98,9 +84,9 @@ void TFragHistLoop::Write() {
   }
 
   TPreserveGDirectory preserve;
-  if(output_file){
-    output_file->cd();
-    compiled_histograms.Write();
+  if(fOutputFile){
+    fOutputFile->cd();
+    fCompiledHistograms.Write();
     if(GValue::Size()) {
       GValue::Get()->Write();
       printf(BLUE "\t%i GValues written to file %s" RESET_COLOR "\n",GValue::Size(),gDirectory->GetName());
@@ -114,29 +100,29 @@ void TFragHistLoop::Write() {
 }
 
 void TFragHistLoop::LoadLibrary(std::string library) {
-  compiled_histograms.Load(library, "MakeFragmentHistograms");
+  fCompiledHistograms.Load(library, "MakeFragmentHistograms");
 }
 
 std::string TFragHistLoop::GetLibraryName() const {
-  return compiled_histograms.GetLibraryName();
+  return fCompiledHistograms.GetLibraryName();
 }
 
 TList* TFragHistLoop::GetObjects() {
-  return compiled_histograms.GetObjects();
+  return fCompiledHistograms.GetObjects();
 }
 
 TList* TFragHistLoop::GetGates() {
-  return compiled_histograms.GetGates();
+  return fCompiledHistograms.GetGates();
 }
 
 void TFragHistLoop::SetOutputFilename(const std::string& name){
-  output_filename = name;
+  fOutputFilename = name;
 }
 
 std::string TFragHistLoop::GetOutputFilename() const {
-  return output_filename;
+  return fOutputFilename;
 }
 
 void TFragHistLoop::AddCutFile(TFile* cut_file) {
-  compiled_histograms.AddCutFile(cut_file);
+  fCompiledHistograms.AddCutFile(cut_file);
 }

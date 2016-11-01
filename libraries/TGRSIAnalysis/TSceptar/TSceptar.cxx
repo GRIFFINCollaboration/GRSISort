@@ -79,7 +79,7 @@ TSceptar& TSceptar::operator=(const TSceptar& rhs) {
    return *this;
 }
 
-void TSceptar::AddFragment(TFragment * frag, TChannel * chan){
+void TSceptar::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan){
    TSceptarHit scHit(*frag);  //Construction of TSceptarHit is handled in the constructor
    fSceptarHits.push_back(std::move(scHit)); //Can't use scHit outside of vector after using std::move
 }

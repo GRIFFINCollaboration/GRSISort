@@ -48,7 +48,7 @@ void TS3::Copy(TObject &rhs) const {
   return;                                      
 }  
 
-void TS3::AddFragment(TFragment* frag, TChannel* chan) {
+void TS3::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 	///This function creates TS3Hits for each fragment and stores them in separate front and back vectors
 	if(frag == NULL || chan == NULL) {
 		return;

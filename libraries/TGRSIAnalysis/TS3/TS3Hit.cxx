@@ -3,12 +3,13 @@
 
 /// \cond CLASSIMP
 ClassImp(TS3Hit)
-	/// \endcond
+/// \endcond
 
-	TS3Hit::TS3Hit()	{
-		Clear();
-	}
-TS3Hit::TS3Hit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+TS3Hit::TS3Hit()	{
+	Clear();
+}
+
+TS3Hit::TS3Hit(const TFragment &frag) : TGRSIDetectorHit(frag) {
 	if(frag.GetChannel()->GetMnemonic()->ArrayPosition() == 1) SetIsDownstream(false);
 	else SetIsDownstream(true); // In case of not set (0) set downstream (2) or incorrect value, we assume downstream
 }
@@ -17,9 +18,8 @@ TS3Hit::~TS3Hit()	{}
 
 TS3Hit::TS3Hit(const TS3Hit &rhs) : TGRSIDetectorHit() {
 	Clear();
-	((TS3Hit&)rhs).Copy(*this);
+	rhs.Copy(*this);
 }
-
 
 void TS3Hit::Copy(TObject &rhs) const {
   TGRSIDetectorHit::Copy(rhs);
@@ -30,17 +30,16 @@ void TS3Hit::Copy(TObject &rhs) const {
   static_cast<TS3Hit&>(rhs).fIsDownstream = fIsDownstream;
   static_cast<TS3Hit&>(rhs).fTimeFit	  = fTimeFit;
   static_cast<TS3Hit&>(rhs).fSig2Noise	  = fSig2Noise;
-  return;
 }
 
 void TS3Hit::Clear(Option_t *opt)	{
 	TGRSIDetectorHit::Clear(opt);
 	fRing           = -1;
 	fSector         = -1;
-	fIsDownstream	= false;
+	fIsDownstream   = false;
 }
 
-void TS3Hit::SetWavefit(TFragment &frag)   {
+void TS3Hit::SetWavefit(const TFragment &frag)   {
 	TPulseAnalyzer pulse(frag);
 	if(pulse.IsSet()){
 		fTimeFit   = pulse.fit_newT0();

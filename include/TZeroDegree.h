@@ -38,8 +38,12 @@ class TZeroDegree : public TGRSIDetector {
       
       static TVector3 GetPosition(double dist) { return TVector3(0,0,dist); }	//!<!
       
-      void AddFragment(TFragment*, TChannel*); //!<!
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
       
+		void ClearTransients() { for(auto hit : fZeroDegreeHits) hit.ClearTransients(); }
+
       TZeroDegree& operator=(const TZeroDegree&);  //!<!
       
    private:

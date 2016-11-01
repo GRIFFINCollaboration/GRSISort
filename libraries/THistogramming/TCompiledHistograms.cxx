@@ -27,7 +27,7 @@ TCompiledHistograms::TCompiledHistograms()
 TCompiledHistograms::TCompiledHistograms(std::string input_lib, std::string func_name)
   : TCompiledHistograms() {
 
-  this->fFunc_name = func_name;
+  fFunc_name = func_name;
   fLibname = input_lib;
   fLibrary = std::make_shared<DynamicLibrary>(fLibname.c_str(), true);
   // Casting required to keep gcc from complaining.
@@ -130,7 +130,7 @@ void TCompiledHistograms::swap_lib(TCompiledHistograms& other) {
   std::swap(fCheck_every, other.fCheck_every);
 }
 
-void TCompiledHistograms::Fill(TFragment& frag) {
+void TCompiledHistograms::Fill(std::shared_ptr<const TFragment> frag) {
   std::lock_guard<std::mutex> lock(fMutex);
   if(time(NULL) > fLast_checked + fCheck_every){
     Reload();
@@ -144,12 +144,12 @@ void TCompiledHistograms::Fill(TFragment& frag) {
   fDefault_directory->cd();
   fObj.SetDirectory(fDefault_directory);
 
-  fObj.SetFragment(&frag);
+  fObj.SetFragment(frag);
   fFunc(fObj);
   fObj.SetFragment(NULL);
 }
 
-void TCompiledHistograms::Fill(TUnpackedEvent& detectors) {
+void TCompiledHistograms::Fill(std::shared_ptr<TUnpackedEvent> detectors) {
   std::lock_guard<std::mutex> lock(fMutex);
   if(time(NULL) > fLast_checked + fCheck_every){
     Reload();
@@ -163,7 +163,7 @@ void TCompiledHistograms::Fill(TUnpackedEvent& detectors) {
   fDefault_directory->cd();
   fObj.SetDirectory(fDefault_directory);
 
-  fObj.SetDetectors(&detectors);
+  fObj.SetDetectors(detectors);
   fFunc(fObj);
   fObj.SetDetectors(NULL);
 }

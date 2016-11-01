@@ -41,8 +41,12 @@ class TCSM : public TDetector {
 
 		static TVector3 GetPosition(int detector, char pos, int horizontalstrip, int verticalstrip, double X=0.00, double Y=0.00, double Z=0.00);
 
-		void AddFragment(TFragment*, TChannel*);
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
 		void BuildHits();
+
+		void ClearTransients() { for(auto hit : fCsmHits) hit.ClearTransients(); }
 
 	private: 
 		std::map<int16_t, std::vector<std::vector<std::vector<std::pair<TFragment, TMnemonic> > > > > fFragments; //!<!
