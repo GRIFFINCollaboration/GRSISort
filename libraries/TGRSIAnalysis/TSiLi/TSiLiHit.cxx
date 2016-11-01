@@ -67,7 +67,7 @@ void TSiLiHit::SetWavefit(TFragment &frag){
 	}
 }
 
-TVector3 TSiLiHit::GetPosition(double dist) const {
+TVector3 TSiLiHit::GetPosition(Double_t dist) const {
 	return TSiLi::GetPosition(GetRing(),GetSector());
 }
 

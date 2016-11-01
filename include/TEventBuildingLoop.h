@@ -1,6 +1,19 @@
 #ifndef _TEVENTBUILDINGLOOP_H_
 #define _TEVENTBUILDINGLOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TEventBuildingLoop
+/// 
+/// This loop builds events (vectors of fragments) based on timestamps and a
+/// build windows.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #ifndef __CINT__
 #include <memory>
 #include <functional>
@@ -71,4 +84,5 @@ private:
   ClassDef(TEventBuildingLoop, 0);
 };
 
+/*! @} */
 #endif /* _TBUILDINGLOOP_H_ */

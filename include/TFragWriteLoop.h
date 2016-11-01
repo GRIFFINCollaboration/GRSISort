@@ -1,6 +1,18 @@
 #ifndef _TWRITELOOP_H_
 #define _TWRITELOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TFragWriteLoop
+/// 
+/// This loop writes fragments to a root-file.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #include <map>
 
 #include "TClass.h"
@@ -68,5 +80,5 @@ class TFragWriteLoop : public StoppableThread {
 		ClassDef(TFragWriteLoop, 0);
 };
 
-
+/*! @} */
 #endif /* _TWRITELOOP_H_ */
