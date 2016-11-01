@@ -1,6 +1,19 @@
 #ifndef _TFRAGHISTOGRAMLOOP_H_
 #define _TFRAGHISTOGRAMLOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TFragHistLoop
+/// 
+/// This loop takes fragments and fills histograms based on
+/// 'histos/MakeFragmentHistograms.cxx'
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #include <string>
 
 #include "StoppableThread.h"
@@ -63,4 +76,5 @@ private:
   ClassDef(TFragHistLoop,0);
 };
 
+/*! @} */
 #endif /* _THISTOGRAMLOOP_H_ */

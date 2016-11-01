@@ -1,6 +1,18 @@
 #ifndef _TUNPACKINGLOOP_H_
 #define _TUNPACKINGLOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TUnpackingLoop
+/// 
+/// This loop parses Midas events into fragments.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #ifndef __CINT__
 #include <memory>
 #endif
@@ -66,4 +78,5 @@ private:
   ClassDef(TUnpackingLoop, 0);
 };
 
+/*! @} */
 #endif /* _TUNPACKINGLOOP_H_ */

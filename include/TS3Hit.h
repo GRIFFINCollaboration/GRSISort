@@ -48,7 +48,7 @@ class TS3Hit : public TGRSIDetectorHit {
 		void SetSig2Noise(Double_t sig2noise){ fSig2Noise = sig2noise;}
 
 		Double_t GetPhi(double offset=0) {
-			return this->GetPosition(offset).Phi();
+			return GetPosition(offset).Phi();
 		}
 
 		Double_t GetTheta(double offset=0, TVector3 *vec=0) {
@@ -56,7 +56,7 @@ class TS3Hit : public TGRSIDetectorHit {
 				vec = new TVector3();
 				vec->SetXYZ(0,0,1);
 			}
-			return this->GetPosition(offset).Angle(*vec);
+			return GetPosition(offset).Angle(*vec);
 		}
 		TVector3 GetPosition(Double_t phioffset, Double_t dist,bool smear=false) const; //!
 		TVector3 GetPosition(Double_t phioffset,bool smear=false) const; //!

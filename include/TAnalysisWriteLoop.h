@@ -1,6 +1,10 @@
 #ifndef _TANALYSISWRITELOOP_H_
 #define _TANALYSISWRITELOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
 #include <map>
 
 #include "TClass.h"
@@ -9,6 +13,14 @@
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"
 #include "TUnpackedEvent.h"
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TAnalysisWriteLoop
+/// 
+/// This loop writes built events to file
+///
+////////////////////////////////////////////////////////////////////////////////
 
 class TAnalysisWriteLoop : public StoppableThread {
 public:
@@ -58,5 +70,5 @@ private:
   ClassDef(TAnalysisWriteLoop, 0);
 };
 
-
+/*! @} */
 #endif /* _TWRITELOOP_H_ */

@@ -1,6 +1,18 @@
 #ifndef _STOPPABLETHREAD_H_
 #define _STOPPABLETHREAD_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class StoppableThread
+/// 
+/// Base-class for all loops/threads.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #ifndef __CINT__
 #include <atomic>
 #include <condition_variable>
@@ -16,6 +28,7 @@
 
 class StoppableThread {
 public:
+  static void SendStop();
   static void StopAll();
   static bool AnyThreadRunning();
   static std::string AnyThreadStatus();
@@ -95,5 +108,5 @@ private:
   ClassDef(StoppableThread, 0);
 };
 
-
+/*! @} */
 #endif /* _STOPPABLETHREAD_H_ */

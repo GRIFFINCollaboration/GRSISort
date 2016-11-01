@@ -100,12 +100,10 @@ bool TUnpackingLoop::ProcessMidasEvent(TMidasEvent* mEvent)   {
 				break;
 			case 4:
 			case 5:
-				// mEvent->SetBankList();
-				// if((banksize = mEvent->LocateBank(NULL,"MSRD",&ptr))>0) {
-				//   if(!ProcessEPICS((float*)ptr, banksize, mEvent)) { }
-				//   //(unsigned int)(mEvent->GetSerialNumber()),
-				//   //(unsigned int)(mEvent->GetTimeStamp()))) { }
-				// }
+				 mEvent->SetBankList();
+				 if((banksize = mEvent->LocateBank(NULL,"MSRD",&ptr))>0) {
+					 if(!ProcessEPICS((float*)ptr, banksize, mEvent)) { }
+				 }
 
 				break;
 		};
@@ -199,7 +197,11 @@ bool TUnpackingLoop::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBan
 
 std::string TUnpackingLoop::EndStatus() {
 	std::stringstream ss;
-	ss<<"\r"<<Name()<<":\t"<<fGoodFragsRead<<" good fragments out of "<<fFragsReadFromMidas<<" fragments => "<<(100.*fGoodFragsRead)/fFragsReadFromMidas<<"% passed"<<std::endl;
+	if(fFragsReadFromMidas > 0) {
+		ss<<"\r"<<Name()<<":\t"<<fGoodFragsRead<<" good fragments out of "<<fFragsReadFromMidas<<" fragments => "<<(100.*fGoodFragsRead)/fFragsReadFromMidas<<"% passed"<<std::endl;
+	} else {
+		ss<<"\rno fragments read from midas => none parsed!"<<std::endl;
+	}
 	return ss.str();
 }
 

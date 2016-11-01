@@ -81,7 +81,7 @@ void TSceptarHit::Copy(TObject &rhs) const {
    static_cast<TSceptarHit&>(rhs).fFilter = fFilter;
 }
 
-TVector3 TSceptarHit::GetPosition(double dist) const {
+TVector3 TSceptarHit::GetPosition(Double_t dist) const {
    //Gets the position of the current TSceptarHit
    return TSceptar::GetPosition(GetDetector());
 }

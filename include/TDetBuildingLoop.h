@@ -1,6 +1,18 @@
 #ifndef _TDETBUILDINGLOOP_H_
 #define _TDETBUILDINGLOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TDetBuildingLoop
+/// 
+/// This loop builds detectors from vectors of fragments.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #ifndef __CINT__
 #include <condition_variable>
 #include <mutex>
@@ -53,4 +65,5 @@ class TDetBuildingLoop : public StoppableThread {
 		ClassDef(TDetBuildingLoop, 0);
 };
 
+/*! @} */
 #endif /* _TUNPACKLOOP_H_ */

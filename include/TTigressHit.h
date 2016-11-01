@@ -72,7 +72,7 @@ class TTigressHit : public TGRSIDetectorHit {
       }
       double tmp = 0;
       double gamma = 1/(sqrt(1-pow(beta,2)));
-      tmp = this->GetEnergy()*gamma *(1 - beta*TMath::Cos(this->GetPosition().Angle(*vec)));
+      tmp = this->GetEnergy()*gamma *(1 - beta*TMath::Cos(GetPosition().Angle(*vec)));
       return tmp;
     }
 

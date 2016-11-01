@@ -1,6 +1,18 @@
 #ifndef _TFRAGMENTCHAINLOOP_H_
 #define _TFRAGMENTCHAINLOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TFragmentChainLoop
+/// 
+/// This loop reads fragments from a root-file with a FragmentTree.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #ifndef __CINT__
 #include <atomic>
 #endif
@@ -63,5 +75,5 @@ private:
   ClassDef(TFragmentChainLoop, 0);
 };
 
-
+/*! @} */
 #endif /* _TWRITELOOP_H_ */

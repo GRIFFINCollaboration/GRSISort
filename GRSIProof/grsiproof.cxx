@@ -11,7 +11,6 @@
 
 #include "TGRSIOptions.h"
 #include "TChannel.h"
-#include "TGRSISelector.h"
 
 #include <iostream>
 #include <vector>
@@ -43,7 +42,6 @@ void LoadLibsIntoProof(TProof* proof){
       while((file=dynamic_cast<TSystemFile*>(next()))) {
          fname = file->GetName();
          if(!file->IsDirectory() && fname.EndsWith(".so")) {
-      //      std::cout << fname.Data() << std::endl;
             files_copy.push_back(fname);
          }
       }
@@ -59,8 +57,10 @@ void LoadLibsIntoProof(TProof* proof){
    for(size_t i = 0; i<files_copy.size(); ++i){
       for(auto it = files_copy.begin(); it != files_copy.end(); ++it){
          nullOut = fopen(nulFileName, "w");
-         CROSS_DUP2(fileno(nullOut), STDOUT_FILENO);
+           CROSS_DUP2(fileno(nullOut), STDOUT_FILENO);
+    
          proof->Exec(Form("gSystem->Load(\"%s/lib/%s\")",pPath,it->Data()));
+         
          fflush(stdout);
          fclose(nullOut);
          // Restore stdout
@@ -106,8 +106,8 @@ int main(int argc, char **argv) {
       return 0;
    }
    proof->AddEnvVar("GRSISYS",pPath);
-   proof->AddDynamicPath(Form("%s/lib",pPath));
    proof->AddIncludePath(Form("%s/include",pPath));
+   proof->AddDynamicPath(Form("%s/lib",pPath));
    LoadLibsIntoProof(proof);
 
    std::vector<std::string> fragment_list;
@@ -118,6 +118,9 @@ int main(int argc, char **argv) {
       if(in_file && in_file->IsOpen()){
          if(in_file->FindObjectAny("FragmentTree")){
             fragment_list.push_back(*i);
+         }
+         if(in_file->FindObjectAny("AnalysisTree")){
+            analysis_list.push_back(*i);
          }
          in_file->Close();
       }
@@ -148,8 +151,33 @@ int main(int argc, char **argv) {
       }
       
       if(proof_chain){ delete proof_chain; proof_chain = nullptr; }
-
    }
+
+   for(auto i = analysis_list.begin(); i!= analysis_list.end(); ++i){
+      TChain *proof_chain = new TChain("AnalysisTree");
+      proof_chain->Add(i->c_str());
+      
+      //Go through chain to get calibration. This seems more complicated than it needs to be but will let us do real chains in the future.
+      TObjArray *file_elements = proof_chain->GetListOfFiles();
+      TIter next(file_elements);
+      TChainElement *chEl=0;
+      while((chEl = dynamic_cast<TChainElement*>(next()))) {
+         TFile f(chEl->GetTitle());
+         f.cd();
+         TChannel::ReadCalFromCurrentFile();
+      }
+      proof_chain->GetListOfFiles()->Print();
+      //Start getting ready to run proof
+      proof->ClearCache();
+      proof_chain->SetProof();
+      for(auto macro_it = opt->MacroInputFiles().begin(); macro_it != opt->MacroInputFiles().end(); ++macro_it){
+         std::cout <<"Currently Running: " << (Form("%s",macro_it->c_str()))<<std::endl;
+         proof_chain->Process(Form("%s+",macro_it->c_str()));
+      }
+      
+      if(proof_chain){ delete proof_chain; proof_chain = nullptr; }
+   }
+
 }
 
 
