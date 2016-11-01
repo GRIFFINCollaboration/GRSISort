@@ -43,7 +43,9 @@ class TSharc : public TGRSIDetector  {
 
     TSharc& operator=(const TSharc& rhs)  { if(this!=&rhs) rhs.Copy(*this); return *this; }//!<!
 
-    void AddFragment(TFragment*, TChannel*); //!<!
+#ifndef __CINT__
+    void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
     void BuildHits();
 
   private:

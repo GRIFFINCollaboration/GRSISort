@@ -8,12 +8,12 @@ TPulseAnalyzer::TPulseAnalyzer() : cWpar(NULL), spar(NULL), shpar(NULL) {
 	Clear();
 }
 
-TPulseAnalyzer::TPulseAnalyzer(TFragment &fragment,double noise_fac) : cWpar(NULL), spar(NULL), shpar(NULL) {
+TPulseAnalyzer::TPulseAnalyzer(const TFragment& fragment,double noise_fac) : cWpar(NULL), spar(NULL), shpar(NULL) {
 	Clear();
 	SetData(fragment,noise_fac);
 }
 
-TPulseAnalyzer::TPulseAnalyzer(std::vector<Short_t> &wave,double noise_fac,std::string name) : cWpar(NULL), spar(NULL), shpar(NULL), fName(name) {
+TPulseAnalyzer::TPulseAnalyzer(const std::vector<Short_t>& wave,double noise_fac,std::string name) : cWpar(NULL), spar(NULL), shpar(NULL), fName(name) {
 	Clear();
 	SetData(wave,noise_fac);
 }
@@ -40,7 +40,7 @@ void TPulseAnalyzer::Clear(Option_t *opt) {
 	memset(copy_matrix,0,sizeof(copy_matrix));
 }
 
-void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac) {
+void TPulseAnalyzer::SetData(const TFragment &fragment,double noise_fac) {
 	SetCsI(false);
 	if(fragment.HasWave()) {
 		if(noise_fac > 0) {
@@ -54,7 +54,7 @@ void TPulseAnalyzer::SetData(TFragment &fragment,double noise_fac) {
 	}
 }
 
-void TPulseAnalyzer::SetData(std::vector<Short_t> &wave,double noise_fac) {
+void TPulseAnalyzer::SetData(const std::vector<Short_t>& wave,double noise_fac) {
 	SetCsI(false);
 	if(wave.size()>0) {
 		if(noise_fac > 0) {

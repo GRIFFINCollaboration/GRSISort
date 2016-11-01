@@ -17,7 +17,7 @@
 class TSiLiHit : public TGRSIDetectorHit {
 	public:
 		TSiLiHit();
-		TSiLiHit(TFragment &);	
+		TSiLiHit(const TFragment &);	
 		virtual ~TSiLiHit();
 		TSiLiHit(const TSiLiHit&);
 		
@@ -42,7 +42,7 @@ class TSiLiHit : public TGRSIDetectorHit {
 		
 		void SetTimeFit(double t0 ) { fTimeFit = t0 ; }
 		
-		void SetWavefit(TFragment&);
+		void SetWavefit(const TFragment&);
 		TVector3 GetPosition(Double_t dist) const; //!  
 		TVector3 GetPosition() const; //!  
 		

@@ -3,8 +3,8 @@
 
 #ifndef __CINT__
 #include <mutex>
-#endif
 #include <memory>
+#endif
 #include <string>
 
 #include "TObject.h"
@@ -24,8 +24,10 @@ public:
   TCompiledHistograms(std::string libname, std::string func_name);
 
   void Load(std::string libname, std::string func_name);
-  void Fill(TFragment& fragment);
-  void Fill(TUnpackedEvent& unpacked);
+#ifndef __CINT__
+  void Fill(std::shared_ptr<const TFragment> fragment);
+  void Fill(std::shared_ptr<TUnpackedEvent> unpacked);
+#endif
   void Reload();
 
   std::string GetLibraryName() const { return fLibname; }
@@ -35,8 +37,8 @@ public:
 
   void ClearHistograms();
 
-  TList* GetObjects()   { return &fObjects;   }
-  TList* GetGates()     { return &fGates;     }
+  TList* GetObjects()   { return &fObjects; }
+  TList* GetGates()     { return &fGates;   }
 
   void AddCutFile(TFile* cut_file);
 

@@ -36,8 +36,12 @@ class TTAC : public TGRSIDetector {
       TTACHit* GetTACHit(const int& i);	//!<!
       Short_t GetMultiplicity() const	       {	return fTACHits.size(); }	      //!<!
       
-      void AddFragment(TFragment*, TChannel*); //!<!
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
       
+		void ClearTransients() { for(auto hit : fTACHits) hit.ClearTransients(); }
+
       TTAC& operator=(const TTAC&);  //!<!
       
    private:

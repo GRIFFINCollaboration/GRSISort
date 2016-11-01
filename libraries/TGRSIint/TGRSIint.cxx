@@ -153,6 +153,7 @@ void TGRSIint::ApplyOptions() {
      StartGUI();
    }
 
+   std::cout<<StoppableThread::AllThreadHeader()<<std::endl;
 	LoopUntilDone();
    if(opt->CloseAfterSort()){
      int exit_status = missing_raw_file ? 1 : 0;
@@ -161,19 +162,24 @@ void TGRSIint::ApplyOptions() {
 }
 
 void TGRSIint::LoopUntilDone() {
-  while(StoppableThread::AnyThreadRunning()){
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+	int iter = 0;
+	while(StoppableThread::AnyThreadRunning()) {
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    // We need to process events in case a different thread is asking for a file to be opened.
-    // However, if there is no stdin, ProcessEvents() will call Terminate().
-    // This prevents the terminate from taking effect while in this context.
-    fAllowedToTerminate = false;
-    gSystem->ProcessEvents();
-    fAllowedToTerminate = true;
+		// We need to process events in case a different thread is asking for a file to be opened.
+		// However, if there is no stdin, ProcessEvents() will call Terminate().
+		// This prevents the terminate from taking effect while in this context.
+		fAllowedToTerminate = false;
+		gSystem->ProcessEvents();
+		fAllowedToTerminate = true;
 
-    std::cout << "\r" << StoppableThread::AnyThreadStatus() << std::flush;
-  }
-  std::cout << std::endl;
+		++iter;
+		if(iter%TGRSIOptions::Get()->StatusInterval() == 0) {
+			std::cout<<"\r"<<StoppableThread::AllThreadStatus()<<std::endl;
+		}
+		std::cout<<"\r"<<StoppableThread::AllThreadProgress()<<std::flush;
+	}
+	std::cout << std::endl;
 }
 
 
@@ -405,301 +411,310 @@ TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename) {
 }
 
 void TGRSIint::SetupPipeline() {
-  TGRSIOptions* opt = TGRSIOptions::Get();
+   TGRSIOptions* opt = TGRSIOptions::Get();
 
-  // Determining which parts of the pipeline need to be set up.
+   // Determining which parts of the pipeline need to be set up.
 
-  bool missing_raw_file = false;
-  for(auto& filename : opt->InputMidasFiles()) {
-    if(!file_exists(filename.c_str())) {
-      missing_raw_file = true;
-      std::cerr << "File not found: " << filename << std::endl;
-    }
-  }
+   bool missing_raw_file = false;
+   for(auto& filename : opt->InputMidasFiles()) {
+      if(!file_exists(filename.c_str())) {
+         missing_raw_file = true;
+         std::cerr << "File not found: " << filename << std::endl;
+      }
+   }
 
-  // Which input files do we have
-  bool has_raw_file = opt->InputMidasFiles().size() && opt->SortRaw() && !missing_raw_file;
-  bool has_input_fragment_tree = gFragment;// && opt->SortRoot();
-  bool has_input_analysis_tree = gAnalysis;// && opt->SortRoot();
+   // Which input files do we have
+   bool has_raw_file = opt->InputMidasFiles().size() && opt->SortRaw() && !missing_raw_file;
+   bool has_input_fragment_tree = gFragment;// && opt->SortRoot();
+   bool has_input_analysis_tree = gAnalysis;// && opt->SortRoot();
 
-  // Which output files are could possibly be made
-  bool able_to_write_fragment_histograms = ((has_raw_file || has_input_fragment_tree) &&
-                                            opt->FragmentHistogramLib().length() > 0);
-  bool able_to_write_fragment_tree = (has_raw_file &&
-                                      !missing_raw_file);
-  bool able_to_write_analysis_histograms = ((has_raw_file ||
-                                             has_input_fragment_tree ||
-                                             has_input_analysis_tree) &&
-                                            opt->AnalysisHistogramLib().length() > 0);
-  bool able_to_write_analysis_tree = (able_to_write_fragment_tree ||
-                                      has_input_fragment_tree);
+   // Which output files are could possibly be made
+   bool able_to_write_fragment_histograms = ((has_raw_file || has_input_fragment_tree) &&
+         opt->FragmentHistogramLib().length() > 0);
+   bool able_to_write_fragment_tree = (has_raw_file &&
+         !missing_raw_file);
+   bool able_to_write_analysis_histograms = ((has_raw_file ||
+            has_input_fragment_tree ||
+            has_input_analysis_tree) &&
+         opt->AnalysisHistogramLib().length() > 0);
+   bool able_to_write_analysis_tree = (able_to_write_fragment_tree ||
+         has_input_fragment_tree);
 
-  // Which output files will we make
-  bool write_fragment_histograms = (able_to_write_fragment_histograms &&
-                                    opt->MakeHistos());
-  bool write_fragment_tree = able_to_write_fragment_tree;
-  bool write_analysis_histograms = (able_to_write_analysis_histograms &&
-                                    (opt->MakeAnalysisTree() || has_input_analysis_tree) &&
-                                    opt->MakeHistos());
-  bool write_analysis_tree = (able_to_write_analysis_tree &&
-                              opt->MakeAnalysisTree());
+   // Which output files will we make
+   bool write_fragment_histograms = (able_to_write_fragment_histograms &&
+         opt->MakeHistos());
+   bool write_fragment_tree = able_to_write_fragment_tree;
+   bool write_analysis_histograms = (able_to_write_analysis_histograms &&
+         (opt->MakeAnalysisTree() || has_input_analysis_tree) &&
+         opt->MakeHistos());
+   bool write_analysis_tree = (able_to_write_analysis_tree &&
+         opt->MakeAnalysisTree());
 
-  // Which steps need to be performed to get from the inputs to the outputs
-  bool self_stopping = opt->CloseAfterSort();
+   // Which steps need to be performed to get from the inputs to the outputs
+   bool self_stopping = opt->CloseAfterSort();
 
-  bool read_from_raw = (has_raw_file &&
-                        (write_fragment_histograms ||
-                         write_fragment_tree ||
-                         write_analysis_histograms ||
-                         write_analysis_tree));
+   bool read_from_raw = (has_raw_file &&
+         (write_fragment_histograms ||
+          write_fragment_tree ||
+          write_analysis_histograms ||
+          write_analysis_tree));
 
-  bool read_from_fragment_tree = (has_input_fragment_tree &&
-                                  (write_fragment_histograms ||
-                                   write_analysis_histograms ||
-                                   write_analysis_tree));
+   bool read_from_fragment_tree = (has_input_fragment_tree &&
+         (write_fragment_histograms ||
+          write_analysis_histograms ||
+          write_analysis_tree));
 
-  bool generate_analysis_data = ((read_from_raw || read_from_fragment_tree) &&
-                                 (write_analysis_histograms || write_analysis_tree));
+   bool generate_analysis_data = ((read_from_raw || read_from_fragment_tree) &&
+         (write_analysis_histograms || write_analysis_tree));
 
-  bool read_from_analysis_tree = (has_input_analysis_tree &&
-                                  (write_analysis_histograms || write_analysis_tree) &&
-                                  !generate_analysis_data);
-
-
-  // Extract the run number and sub run number from whatever we were given
-  int run_number = 0;
-  int sub_run_number = 0;
-  if(read_from_raw) {
-    run_number = fMidasFiles[0]->GetRunNumber();
-    sub_run_number = fMidasFiles[0]->GetSubRunNumber();
-  } else if(read_from_fragment_tree) {
-    auto run_title = gFragment->GetListOfFiles()->At(0)->GetTitle();
-    run_number = GetRunNumber(run_title);
-    sub_run_number = GetSubRunNumber(run_title);
-  } else if(read_from_analysis_tree) {
-    auto run_title = gAnalysis->GetListOfFiles()->At(0)->GetTitle();
-    run_number = GetRunNumber(run_title);
-    sub_run_number = GetSubRunNumber(run_title);
-  }
-
-  // Choose output file names for the 4 possible output files
-  std::string output_fragment_tree_filename = opt->OutputFragmentFile();
-  if(output_fragment_tree_filename.length() == 0) {
-    output_fragment_tree_filename = Form("fragment%05i_%03i.root",
-                                         run_number, sub_run_number);
-  }
-
-  std::string output_fragment_hist_filename = opt->OutputFragmentHistogramFile();
-  if(output_fragment_hist_filename.length() == 0) {
-    output_fragment_hist_filename = Form("hist_fragment%05i_%03i.root",
-                                         run_number, sub_run_number);
-  }
-
-  std::string output_analysis_tree_filename = opt->OutputAnalysisFile();
-  if(output_analysis_tree_filename.length() == 0) {
-    output_analysis_tree_filename = Form("analysis%05i_%03i.root",
-                                         run_number, sub_run_number);
-  }
-
-  std::string output_analysis_hist_filename = opt->OutputAnalysisHistogramFile();
-  if(output_analysis_hist_filename.length() == 0) {
-    output_analysis_hist_filename = Form("hist_analysis%05i_%03i.root",
-                                         run_number, sub_run_number);
-  }
+   bool read_from_analysis_tree = (has_input_analysis_tree &&
+         (write_analysis_histograms || write_analysis_tree) &&
+         !generate_analysis_data);
 
 
-  // std::cout << "missing_raw_file: " << missing_raw_file << std::endl;
-  // std::cout << "has_raw_file: " << has_raw_file << std::endl;
-  // std::cout << "has_input_fragment_tree: " << has_input_fragment_tree << std::endl;
-  // std::cout << "has_input_analysis_tree: " << has_input_analysis_tree << std::endl;
-  // std::cout << "able_to_write_fragment_histograms: " << able_to_write_fragment_histograms << std::endl;
-  // std::cout << "able_to_write_fragment_tree: " << able_to_write_fragment_tree << std::endl;
-  // std::cout << "able_to_write_analysis_histograms: " << able_to_write_analysis_histograms << std::endl;
-  // std::cout << "able_to_write_analysis_tree: " << able_to_write_analysis_tree << std::endl;
-  // std::cout << "write_fragment_histograms: " << write_fragment_histograms << std::endl;
-  // std::cout << "write_fragment_tree: " << write_fragment_tree << std::endl;
-  // std::cout << "write_analysis_histograms: " << write_analysis_histograms << std::endl;
-  // std::cout << "write_analysis_tree: " << write_analysis_tree << std::endl;
-  // std::cout << "self_stopping: " << self_stopping << std::endl;
-  // std::cout << "read_from_raw: " << read_from_raw << std::endl;
-  // std::cout << "read_from_fragment_tree: " << read_from_fragment_tree << std::endl;
-  // std::cout << "generate_analysis_data: " << generate_analysis_data << std::endl;
-  // std::cout << "read_from_analysis_tree: " << read_from_analysis_tree << std::endl;
-  // std::cout << "event_build_mode: " << event_build_mode << std::endl;
-  // std::cout << "run_number: " << run_number << std::endl;
-  // std::cout << "sub_run_number: " << sub_run_number << std::endl;
-  // std::cout << "output_fragment_tree_filename: " << output_fragment_tree_filename << std::endl;
-  // std::cout << "output_fragment_hist_filename: " << output_fragment_hist_filename << std::endl;
-  // std::cout << "output_analysis_tree_filename: " << output_analysis_tree_filename << std::endl;
-  // std::cout << "output_analysis_hist_filename: " << output_analysis_hist_filename << std::endl;
+   // Extract the run number and sub run number from whatever we were given
+   int run_number = 0;
+   int sub_run_number = 0;
+   if(read_from_raw) {
+      run_number = fMidasFiles[0]->GetRunNumber();
+      sub_run_number = fMidasFiles[0]->GetSubRunNumber();
+   } else if(read_from_fragment_tree) {
+      auto run_title = gFragment->GetListOfFiles()->At(0)->GetTitle();
+      run_number = GetRunNumber(run_title);
+      sub_run_number = GetSubRunNumber(run_title);
+   } else if(read_from_analysis_tree) {
+      auto run_title = gAnalysis->GetListOfFiles()->At(0)->GetTitle();
+      run_number = GetRunNumber(run_title);
+      sub_run_number = GetSubRunNumber(run_title);
+   }
 
-  if(read_from_analysis_tree) {
-    std::cerr << "Reading from analysis tree not currently supported" << std::endl;
-  }
+   // Choose output file names for the 4 possible output files
+   std::string output_fragment_tree_filename = opt->OutputFragmentFile();
+   if(output_fragment_tree_filename.length() == 0) {
+      output_fragment_tree_filename = Form("fragment%05i_%03i.root",
+            run_number, sub_run_number);
+   }
 
-  ////////////////////////////////////////////////////
-  ////////////  Setting up the loops  ////////////////
-  ////////////////////////////////////////////////////
+   std::string output_fragment_hist_filename = opt->OutputFragmentHistogramFile();
+   if(output_fragment_hist_filename.length() == 0) {
+      output_fragment_hist_filename = Form("hist_fragment%05i_%03i.root",
+            run_number, sub_run_number);
+   }
 
-  if(!write_fragment_histograms &&
-     !write_fragment_tree &&
-     !write_analysis_histograms &&
-     !write_analysis_tree) {
-	  //We still might want to read a cal file
-   	for(auto cal_filename : opt->CalInputFiles()) {
-     		TChannel::ReadCalFile(cal_filename.c_str());
-   	}
-    return;
-  }
+   std::string output_analysis_tree_filename = opt->OutputAnalysisFile();
+   if(output_analysis_tree_filename.length() == 0) {
+      output_analysis_tree_filename = Form("analysis%05i_%03i.root",
+            run_number, sub_run_number);
+   }
 
-  // Different queues that can show up
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > fragment_queue = nullptr;
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > bad_queue = nullptr;
-  std::shared_ptr<ThreadsafeQueue<TEpicsFrag*> > scaler_queue = nullptr;
-  std::shared_ptr<ThreadsafeQueue<TUnpackedEvent*> > analysis_queue = nullptr;
+   std::string output_analysis_hist_filename = opt->OutputAnalysisHistogramFile();
+   if(output_analysis_hist_filename.length() == 0) {
+      output_analysis_hist_filename = Form("hist_analysis%05i_%03i.root",
+            run_number, sub_run_number);
+   }
 
-  // If needed, read from the raw file
-  if(read_from_raw) {
-    if(fMidasFiles.size() > 1) {
-      std::cerr << "I'm going to ignore all but first .mid" << std::endl;
-    }
 
-    TDataLoop* data_loop = TDataLoop::Get("1_input_loop",fMidasFiles[0]);
-    data_loop->SetSelfStopping(self_stopping);
+   // std::cout << "missing_raw_file: " << missing_raw_file << std::endl;
+   // std::cout << "has_raw_file: " << has_raw_file << std::endl;
+   // std::cout << "has_input_fragment_tree: " << has_input_fragment_tree << std::endl;
+   // std::cout << "has_input_analysis_tree: " << has_input_analysis_tree << std::endl;
+   // std::cout << "able_to_write_fragment_histograms: " << able_to_write_fragment_histograms << std::endl;
+   // std::cout << "able_to_write_fragment_tree: " << able_to_write_fragment_tree << std::endl;
+   // std::cout << "able_to_write_analysis_histograms: " << able_to_write_analysis_histograms << std::endl;
+   // std::cout << "able_to_write_analysis_tree: " << able_to_write_analysis_tree << std::endl;
+   // std::cout << "write_fragment_histograms: " << write_fragment_histograms << std::endl;
+   // std::cout << "write_fragment_tree: " << write_fragment_tree << std::endl;
+   // std::cout << "write_analysis_histograms: " << write_analysis_histograms << std::endl;
+   // std::cout << "write_analysis_tree: " << write_analysis_tree << std::endl;
+   // std::cout << "self_stopping: " << self_stopping << std::endl;
+   // std::cout << "read_from_raw: " << read_from_raw << std::endl;
+   // std::cout << "read_from_fragment_tree: " << read_from_fragment_tree << std::endl;
+   // std::cout << "generate_analysis_data: " << generate_analysis_data << std::endl;
+   // std::cout << "read_from_analysis_tree: " << read_from_analysis_tree << std::endl;
+   // std::cout << "event_build_mode: " << event_build_mode << std::endl;
+   // std::cout << "run_number: " << run_number << std::endl;
+   // std::cout << "sub_run_number: " << sub_run_number << std::endl;
+   // std::cout << "output_fragment_tree_filename: " << output_fragment_tree_filename << std::endl;
+   // std::cout << "output_fragment_hist_filename: " << output_fragment_hist_filename << std::endl;
+   // std::cout << "output_analysis_tree_filename: " << output_analysis_tree_filename << std::endl;
+   // std::cout << "output_analysis_hist_filename: " << output_analysis_hist_filename << std::endl;
 
-    TUnpackingLoop* unpack_loop = TUnpackingLoop::Get("2_unpack_loop");
-    unpack_loop->InputQueue() = data_loop->OutputQueue();
-    fragment_queue = unpack_loop->GoodOutputQueue();
-    scaler_queue = unpack_loop->ScalerOutputQueue();
-    bad_queue = unpack_loop->BadOutputQueue();
-  }
+   if(read_from_analysis_tree) {
+      std::cerr << "Reading from analysis tree not currently supported" << std::endl;
+   }
+
+   ////////////////////////////////////////////////////
+	////////////  Setting up the loops  ////////////////
+	////////////////////////////////////////////////////
+
+	if(!write_fragment_histograms &&
+			!write_fragment_tree &&
+			!write_analysis_histograms &&
+			!write_analysis_tree) {
+		//We still might want to read a cal file
+		for(auto cal_filename : opt->CalInputFiles()) {
+			TChannel::ReadCalFile(cal_filename.c_str());
+		}
+		return;
+	}
+	// Set the width of the status and each column
+	StoppableThread::ColumnWidth(TGRSIOptions::Get()->ColumnWidth());
+	StoppableThread::StatusWidth(TGRSIOptions::Get()->StatusWidth());
+
+   // Different queues that can show up
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > > fragmentQueues;
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > > badQueues;
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > > > scalerQueues;
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > > > analysisQueues;
+
+   // The different loops that can run
+   TDataLoop* dataLoop = nullptr;
+   TUnpackingLoop* unpackLoop = nullptr;
+   TFragmentChainLoop* fragmentChainLoop = nullptr;
+   TDetBuildingLoop* detBuildingLoop = nullptr;
+
+   // If needed, read from the raw file
+   if(read_from_raw) {
+      if(fMidasFiles.size() > 1) {
+         std::cerr << "I'm going to ignore all but first .mid" << std::endl;
+      }
+
+      dataLoop = TDataLoop::Get("1_input_loop",fMidasFiles[0]);
+      dataLoop->SetSelfStopping(self_stopping);
+
+      unpackLoop = TUnpackingLoop::Get("2_unpack_loop");
+      unpackLoop->InputQueue() = dataLoop->OutputQueue();
+   }
+
+   // If needed, read from the fragment tree
+   if(read_from_fragment_tree) {
+      fragmentChainLoop = TFragmentChainLoop::Get("1_chain_loop", gFragment);
+      fragmentChainLoop->SetSelfStopping(self_stopping);
+   }
+
    //if I am passed any calibrations, lets load those, this
    //will overwrite any with the same address previously read in.
    for(auto cal_filename : opt->CalInputFiles()) {
-     TChannel::ReadCalFile(cal_filename.c_str());
+      TChannel::ReadCalFile(cal_filename.c_str());
    }
    if(fMidasFiles.size()) {
-     TGRSIRunInfo::Get()->SetRunInfo(fMidasFiles[0]->GetRunNumber(),
-                                     fMidasFiles[0]->GetSubRunNumber());
+      TGRSIRunInfo::Get()->SetRunInfo(fMidasFiles[0]->GetRunNumber(),
+            fMidasFiles[0]->GetSubRunNumber());
    } else {
-     TGRSIRunInfo::Get()->SetRunInfo(0,0);
+      TGRSIRunInfo::Get()->SetRunInfo(0,0);
    }
    TPPG::Get()->Setup();
    for(auto val_filename : opt->ValInputFiles()) {
-     GValue::ReadValFile(val_filename.c_str());
+      GValue::ReadValFile(val_filename.c_str());
    }
    for(auto info_filename : opt->ExternalRunInfo()) {
-     TGRSIRunInfo::Get()->ReadInfoFile(info_filename.c_str());
+      TGRSIRunInfo::Get()->ReadInfoFile(info_filename.c_str());
    }
 
 
-  //this happens here, because the TDataLoop constructor is where we read the midas file ODB
-  TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::kTriggerId;
-  if(TGRSIRunInfo::Get()->Griffin()) {
-    event_build_mode = TEventBuildingLoop::kTimestamp;
-  }
+   //this happens here, because the TDataLoop constructor is where we read the midas file ODB
+   TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::kTriggerId;
+   if(TGRSIRunInfo::Get()->Griffin()) {
+      event_build_mode = TEventBuildingLoop::kTimestamp;
+   }
 
-  // If needed, read from the fragment tree
-  if (read_from_fragment_tree) {
-    auto loop = TFragmentChainLoop::Get("1_chain_loop", gFragment);
-    loop->SetSelfStopping(self_stopping);
-    fragment_queue = loop->OutputQueue();
-  }
+   // If requested, write the fragment histograms
+   if(write_fragment_histograms) {
+      TFragHistLoop* loop = TFragHistLoop::Get("3_frag_hist_loop");
+      loop->SetOutputFilename(output_fragment_hist_filename);
+      if(unpackLoop) loop->InputQueue() = unpackLoop->AddGoodOutputQueue();
+      if(fragmentChainLoop) loop->InputQueue() = fragmentChainLoop->AddOutputQueue();
+      fragmentQueues.push_back(loop->InputQueue());
+   }
 
-  // If requested, write the fragment histograms
-  if(write_fragment_histograms) {
-    TFragHistLoop* loop = TFragHistLoop::Get("3_frag_hist_loop");
-    loop->SetOutputFilename(output_fragment_hist_filename);
-    loop->InputQueue() = fragment_queue;
-    fragment_queue = loop->OutputQueue();
-  }
+   // If requested, write the fragment tree
+   if(write_fragment_tree) {
+      TFragWriteLoop* loop = TFragWriteLoop::Get("4_frag_write_loop", output_fragment_tree_filename);
+      fNewFragmentFile = output_fragment_tree_filename;
+      if(unpackLoop) {
+         loop->InputQueue() = unpackLoop->AddGoodOutputQueue(TGRSIOptions::Get()->FragmentWriteQueueSize());
+         loop->BadInputQueue() = unpackLoop->BadOutputQueue();
+         loop->ScalerInputQueue() = unpackLoop->ScalerOutputQueue();
+         badQueues.push_back(loop->BadInputQueue());
+         scalerQueues.push_back(loop->ScalerInputQueue());
+      }
+      if(fragmentChainLoop) loop->InputQueue() = fragmentChainLoop->AddOutputQueue();
+      fragmentQueues.push_back(loop->InputQueue());
+   }
 
-  // If requested, write the fragment tree
-  if(write_fragment_tree) {
-    TFragWriteLoop* loop = TFragWriteLoop::Get("4_frag_write_loop",
-                                               output_fragment_tree_filename);
-    fNewFragmentFile = output_fragment_tree_filename;
-    loop->InputQueue() = fragment_queue;
-    loop->BadInputQueue() = bad_queue;
-    fragment_queue = loop->OutputQueue();
-    if(scaler_queue) {
-      loop->ScalerInputQueue() = scaler_queue;
-      scaler_queue = nullptr;
-    }
-  }
+   // If needed, generate the individual detectors from the TFragments
+   if(generate_analysis_data) {
+      TGRSIOptions::Get()->PrintSortingOptions();
+      TEventBuildingLoop* eoop = TEventBuildingLoop::Get("5_event_build_loop", event_build_mode);
+      eoop->SetSortDepth(opt->SortDepth());
+      eoop->SetBuildWindow(opt->BuildWindow());
+      if(unpackLoop) eoop->InputQueue() = unpackLoop->AddGoodOutputQueue();
+      if(fragmentChainLoop) eoop->InputQueue() = fragmentChainLoop->AddOutputQueue();
+      fragmentQueues.push_back(eoop->InputQueue());
 
-  // If needed, generate the individual detectors from the TFragments
-  if(generate_analysis_data) {
-	 TGRSIOptions::Get()->PrintSortingOptions();
-    TEventBuildingLoop* eoop = TEventBuildingLoop::Get("5_event_build_loop",
-                                                       event_build_mode);
-    eoop->SetSortDepth(opt->SortDepth());
-    eoop->SetBuildWindow(opt->BuildWindow());
-    eoop->InputQueue() = fragment_queue;
-    fragment_queue = nullptr;
+      detBuildingLoop = TDetBuildingLoop::Get("6_det_build_loop");
+      detBuildingLoop->InputQueue() = eoop->OutputQueue();
+   }
 
-    TDetBuildingLoop* doop = TDetBuildingLoop::Get("6_det_build_loop");
-    doop->InputQueue() = eoop->OutputQueue();
-    analysis_queue = doop->OutputQueue();
-  }
+   // If requested, write the analysis histograms
+   if(write_analysis_histograms) {
+      TAnalysisHistLoop* loop = TAnalysisHistLoop::Get("7_analysis_hist_loop");
+      loop->SetOutputFilename(output_analysis_hist_filename);
+      loop->InputQueue() = detBuildingLoop->AddOutputQueue();
+      analysisQueues.push_back(loop->InputQueue());
+   }
 
-  // If requested, write the analysis histograms
-  if(write_analysis_histograms) {
-    TAnalysisHistLoop* loop = TAnalysisHistLoop::Get("7_analysis_hist_loop");
-    loop->SetOutputFilename(output_analysis_hist_filename);
-    loop->InputQueue() = analysis_queue;
-    analysis_queue = loop->OutputQueue();
-  }
+   // If requested, write the analysis tree
+   if(write_analysis_tree) {
+      TAnalysisWriteLoop* loop = TAnalysisWriteLoop::Get("8_analysis_write_loop", output_analysis_tree_filename);
+      loop->InputQueue() = detBuildingLoop->AddOutputQueue(TGRSIOptions::Get()->AnalysisWriteQueueSize());
+      analysisQueues.push_back(loop->InputQueue());
+   }
 
-  // If requested, write the analysis tree
-  if(write_analysis_tree) {
-    TAnalysisWriteLoop* loop = TAnalysisWriteLoop::Get("8_analysis_write_loop",
-                                                       output_analysis_tree_filename);
-    loop->InputQueue() = analysis_queue;
-    analysis_queue = loop->OutputQueue();
-  }
+   // For each leftover queue, terminate if still exists.
+   for(auto fragQueue : fragmentQueues) {
+      if(fragQueue) {
+         auto loop = TTerminalLoop<const TFragment>::Get("9_frag_term_loop");
+         loop->InputQueue() = fragQueue;
+      }
+   }
 
+   for(auto scalQueue : scalerQueues) {
+      if(scalQueue) {
+         auto loop = TTerminalLoop<TEpicsFrag>::Get("A_scaler_term_loop");
+         loop->InputQueue() = scalQueue;
+      }
+   }
 
-  // For each leftover queue, terminate if still exists.
-  if(fragment_queue) {
-    auto loop = TTerminalLoop<TFragment>::Get("9_frag_term_loop");
-    loop->InputQueue() = fragment_queue;
-    fragment_queue = nullptr;
-  }
+   for(auto badQueue : badQueues) {
+      if(badQueue) {
+         auto loop = TTerminalLoop<const TFragment>::Get("B_bad_frag_term_loop");
+         loop->InputQueue() = badQueue;
+      }
+   }
 
-  if(scaler_queue) {
-    auto loop = TTerminalLoop<TEpicsFrag>::Get("A_scaler_term_loop");
-    loop->InputQueue() = scaler_queue;
-    scaler_queue = nullptr;
-  }
+   for(auto anaQueue : analysisQueues) {
+      if(anaQueue) {
+         auto loop = TTerminalLoop<TUnpackedEvent>::Get("C_analysis_term_loop");
+         loop->InputQueue() = anaQueue;
+      }
+   }
 
-  if(bad_queue) {
-    auto loop = TTerminalLoop<TFragment>::Get("B_bad_frag_term_loop");
-    loop->InputQueue() = bad_queue;
-    bad_queue = nullptr;
-  }
-
-  if(analysis_queue) {
-    auto loop = TTerminalLoop<TUnpackedEvent>::Get("C_analysis_term_loop");
-    loop->InputQueue() = analysis_queue;
-    analysis_queue = nullptr;
-  }
-
-  StoppableThread::ResumeAll();
+   StoppableThread::ResumeAll();
 }
 
 void TGRSIint::RunMacroFile(const std::string& filename){
-  if(file_exists(filename.c_str())){
-    const char* command = Form(".x %s", filename.c_str());
-    ProcessLine(command);
-  } else {
-    std::cerr << "File \"" << filename << "\" does not exist" << std::endl;
-  }
+   if(file_exists(filename.c_str())){
+      const char* command = Form(".x %s", filename.c_str());
+      ProcessLine(command);
+   } else {
+      std::cerr << "File \"" << filename << "\" does not exist" << std::endl;
+   }
 }
 
 void TGRSIint::DrawLogo() {
-  PopupLogo(false);
-  WaitLogo();
+   PopupLogo(false);
+   WaitLogo();
 }
 
 // void TGRSIint::GetOptions(int *argc, char **argv) {
@@ -879,76 +894,76 @@ void TGRSIint::DrawLogo() {
 
 
 void TGRSIint::LoadGROOTGraphics() {
-  if (gROOT->IsBatch()) return;
-  // force Canvas to load, this ensures global GUI Factory ptr exists.
-  gROOT->LoadClass("TCanvas", "Gpad");
-  gGuiFactory =  new GRootGuiFactory();
+   if (gROOT->IsBatch()) return;
+   // force Canvas to load, this ensures global GUI Factory ptr exists.
+   gROOT->LoadClass("TCanvas", "Gpad");
+   gGuiFactory =  new GRootGuiFactory();
 }
 
 
 void TGRSIint::PrintHelp(bool print) {
-  if(print) {
-    printf( DRED BG_WHITE "     Sending Help!!     " RESET_COLOR  "\n");
-    new TGHtmlBrowser(gSystem->ExpandPathName("${GRSISYS}/README.html"));
-  }
-  return;
+   if(print) {
+      printf( DRED BG_WHITE "     Sending Help!!     " RESET_COLOR  "\n");
+      new TGHtmlBrowser(gSystem->ExpandPathName("${GRSISYS}/README.html"));
+   }
+   return;
 }
 
 /*
-bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
-  //first search for extensions.
-  std::string ext = filename.substr(filename.find_last_of('.')+1);
-  //printf("\text = %s\n",ext.c_str());
-  if(ext.compare("root")==0 && filesize > 0) {
-    //printf("\tFound root file: %s\n",filename.c_str());
-    //fInputRootFile->push_back(filename);
-    TGRSIOptions::AddInputRootFile(filename);
-    return true;
-  } else if((ext.compare("mid")==0 || ext.compare("bz2")==0) && filesize > 0) {
-    //printf("\tFound midas file: %s\n",filename.c_str());
-    //fInputMidasFile->push_back(filename);
-    TGRSIOptions::AddInputMidasFile(filename);
-    fAutoSort = true;
-    return true;
-  } else if(ext.compare("cal")==0 && filesize > 0) {
-    //printf("\tFound custom calibration file: %s\n",filename.c_str());
-    //fInputCalFile->push_back(filename);
-    TGRSIOptions::AddInputCalFile(filename);
-    return true;
-  } else if(ext.compare("info")==0 && filesize > 0) {
-      TGRSIOptions::AddExternalRunInfo(filename);
-      return true;
-  } else if(ext.compare("xml")==0 && filesize > 0) {
-    //fInputOdbFile->push_back(filename);
-    TGRSIOptions::AddInputOdbFile(filename);
-    //printf("\tFound xml odb file: %s\n",filename.c_str());
-    return true;
-  } else if(ext.compare("odb")==0 && filesize > 0) {
-    //printf("\tFound c-like odb file: %s\n",filename.c_str());
-    printf("c-like odb structures can't be read yet.\n");
-    return false;
-  } else if((ext.compare("c")==0) || (ext.compare("C")==0) || (ext.compare("c+")==0) || (ext.compare("C+")==0)) {
-    //scripts are the only files that don't have to exist, they may also be found in the macro-paths
-    TGRSIOptions::AddMacroFile(filename);
-    return true;
-  } else {
-    printf("\tDiscarding unknown file: %s\n",filename.c_str());
-    return false;
-  }
-  return false;
+   bool TGRSIint::FileAutoDetect(std::string filename, long filesize) {
+//first search for extensions.
+std::string ext = filename.substr(filename.find_last_of('.')+1);
+//printf("\text = %s\n",ext.c_str());
+if(ext.compare("root")==0 && filesize > 0) {
+//printf("\tFound root file: %s\n",filename.c_str());
+//fInputRootFile->push_back(filename);
+TGRSIOptions::AddInputRootFile(filename);
+return true;
+} else if((ext.compare("mid")==0 || ext.compare("bz2")==0) && filesize > 0) {
+//printf("\tFound midas file: %s\n",filename.c_str());
+//fInputMidasFile->push_back(filename);
+TGRSIOptions::AddInputMidasFile(filename);
+fAutoSort = true;
+return true;
+} else if(ext.compare("cal")==0 && filesize > 0) {
+//printf("\tFound custom calibration file: %s\n",filename.c_str());
+//fInputCalFile->push_back(filename);
+TGRSIOptions::AddInputCalFile(filename);
+return true;
+} else if(ext.compare("info")==0 && filesize > 0) {
+TGRSIOptions::AddExternalRunInfo(filename);
+return true;
+} else if(ext.compare("xml")==0 && filesize > 0) {
+//fInputOdbFile->push_back(filename);
+TGRSIOptions::AddInputOdbFile(filename);
+//printf("\tFound xml odb file: %s\n",filename.c_str());
+return true;
+} else if(ext.compare("odb")==0 && filesize > 0) {
+//printf("\tFound c-like odb file: %s\n",filename.c_str());
+printf("c-like odb structures can't be read yet.\n");
+return false;
+} else if((ext.compare("c")==0) || (ext.compare("C")==0) || (ext.compare("c+")==0) || (ext.compare("C+")==0)) {
+//scripts are the only files that don't have to exist, they may also be found in the macro-paths
+TGRSIOptions::AddMacroFile(filename);
+return true;
+} else {
+printf("\tDiscarding unknown file: %s\n",filename.c_str());
+return false;
+}
+return false;
 }
 */
 
 bool TGRSIInterruptHandler::Notify() {
-  static int timespressed  = 0;
-  timespressed++;
-  if(timespressed>3) {
-    printf("\n" DRED BG_WHITE  "   No you shutup! " RESET_COLOR "\n"); fflush(stdout);
-    exit(1);
-  }
-  printf("\n" DRED BG_WHITE  "   Control-c was pressed.   " RESET_COLOR "\n"); fflush(stdout);
-  TGRSIint::instance()->Terminate();
-  return true;
+   static int timespressed  = 0;
+   timespressed++;
+   if(timespressed>3) {
+      printf("\n" DRED BG_WHITE  "   No you shutup! " RESET_COLOR "\n"); fflush(stdout);
+      exit(1);
+   }
+   printf("\n" DRED BG_WHITE  "   Control-c was pressed.   " RESET_COLOR "\n"); fflush(stdout);
+   TGRSIint::instance()->Terminate();
+   return true;
 }
 
 
@@ -959,54 +974,54 @@ bool TGRSIInterruptHandler::Notify() {
 // on the main thread.  DelayedProcessLine may ONLY be called
 // from inside ProcessLine().
 namespace {
-  std::mutex g__CommandListMutex;
-  std::mutex g__ResultListMutex;
-  std::mutex g__CommandWaitingMutex;
-  std::condition_variable g__NewResult;
+   std::mutex g__CommandListMutex;
+   std::mutex g__ResultListMutex;
+   std::mutex g__CommandWaitingMutex;
+   std::condition_variable g__NewResult;
 
-  std::string g__LineToProcess;
-  bool g__ProcessingNeeded;
+   std::string g__LineToProcess;
+   bool g__ProcessingNeeded;
 
-  Long_t g__CommandResult;
-  bool g__CommandFinished;
+   Long_t g__CommandResult;
+   bool g__CommandFinished;
 }
 
 Long_t TGRSIint::DelayedProcessLine(std::string command){
-  std::lock_guard<std::mutex> any_command_lock(g__CommandWaitingMutex);
+   std::lock_guard<std::mutex> any_command_lock(g__CommandWaitingMutex);
 
-  g__LineToProcess = command;
-  g__CommandFinished = false;
-  g__ProcessingNeeded = true;
-  TTimer::SingleShot(0,"TGRSIint",this,"DelayedProcessLine_Action()");
+   g__LineToProcess = command;
+   g__CommandFinished = false;
+   g__ProcessingNeeded = true;
+   TTimer::SingleShot(0,"TGRSIint",this,"DelayedProcessLine_Action()");
 
-  std::unique_lock<std::mutex> lock(g__ResultListMutex);
-  while(!g__CommandFinished){
-    g__NewResult.wait(lock);
-  }
+   std::unique_lock<std::mutex> lock(g__ResultListMutex);
+   while(!g__CommandFinished){
+      g__NewResult.wait(lock);
+   }
 
-  return g__CommandResult;
+   return g__CommandResult;
 }
 
 
 void TGRSIint::DelayedProcessLine_Action(){
-  std::string message;
-  {
-    std::lock_guard<std::mutex> lock(g__CommandListMutex);
-    if(!g__ProcessingNeeded){
-      return;
-    }
-    message = g__LineToProcess;
-  }
+   std::string message;
+   {
+      std::lock_guard<std::mutex> lock(g__CommandListMutex);
+      if(!g__ProcessingNeeded){
+         return;
+      }
+      message = g__LineToProcess;
+   }
 
-  Long_t result = this->ProcessLine(message.c_str());
-  Getlinem(EGetLineMode::kInit,((TRint*)gApplication)->GetPrompt());
+   Long_t result = this->ProcessLine(message.c_str());
+   Getlinem(EGetLineMode::kInit,((TRint*)gApplication)->GetPrompt());
 
-  {
-    std::lock_guard<std::mutex> lock(g__ResultListMutex);
-    g__CommandResult = result;
-    g__CommandFinished = true;
-    g__ProcessingNeeded = false;
-  }
+   {
+      std::lock_guard<std::mutex> lock(g__ResultListMutex);
+      g__CommandResult = result;
+      g__CommandFinished = true;
+      g__ProcessingNeeded = false;
+   }
 
-  g__NewResult.notify_one();
+   g__NewResult.notify_one();
 }

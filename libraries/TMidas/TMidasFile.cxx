@@ -41,8 +41,8 @@ TMidasFile::TMidasFile()
   fMaxBufferSize = 1E6;
 
   currentEventNumber = 0;
-  bytesRead = 0;
-  filesize = 0;
+  fBytesRead = 0;
+  fFileSize = 0;
 
   fDoByteSwap = *(char*)(&endian) != 0x78;
 }
@@ -69,7 +69,7 @@ TMidasFile::~TMidasFile()
 
 std::string TMidasFile::Status(bool long_file_description) {
   return Form(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB              " SHOW_CURSOR "\r",
-              currentEventNumber,(bytesRead/1000000.0),(filesize/1000000.0));
+              currentEventNumber,(fBytesRead/1000000.0),(fFileSize/1000000.0));
 }
 
 static int hasSuffix(const char*name,const char*suffix)
@@ -112,7 +112,7 @@ bool TMidasFile::Open(const char *filename)
 
   std::ifstream in(GetFilename(), std::ifstream::in | std::ifstream::binary);
   in.seekg(0, std::ifstream::end);
-  filesize = in.tellg();
+  fFileSize = in.tellg();
   in.close();
 
   // Do we need these?
@@ -365,8 +365,8 @@ int TMidasFile::Read(TMidasEvent *midasEvent)
   midasEvent->SwapBytes(false);
 
   size_t bytes_read = fReadBuffer.size();
-  this->bytesRead += bytes_read;
-  this->currentEventNumber++;
+  fBytesRead += bytes_read;
+  currentEventNumber++;
   fReadBuffer.clear();
 
   return bytes_read;

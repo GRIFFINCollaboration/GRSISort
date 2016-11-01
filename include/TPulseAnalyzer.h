@@ -114,12 +114,12 @@ class TPulseAnalyzer {
 	
   public:
     TPulseAnalyzer();
-    TPulseAnalyzer(TFragment &frag,double=0);
-    TPulseAnalyzer(std::vector<Short_t> &wave,double=0,std::string name="");
+    TPulseAnalyzer(const TFragment &frag,double=0);
+    TPulseAnalyzer(const std::vector<Short_t>& wave,double=0,std::string name="");
     virtual ~TPulseAnalyzer();
     
-    void SetData(TFragment &frag,double=0);
-    void SetData(std::vector<Short_t> &wave,double=0);
+    void SetData(const TFragment &frag,double=0);
+    void SetData(const std::vector<Short_t> &wave,double=0);
     void Clear(Option_t *opt = "");
     bool IsSet() { return set; }
     
