@@ -38,16 +38,14 @@ class TS3Hit : public TGRSIDetectorHit {
 		void SetSectorNumber(Short_t sn)   			{ fSector = sn; }
 		void SetIsDownstream(Bool_t dwnstrm) 		{ fIsDownstream = dwnstrm; }
 
-		void SetRingNumber(TFragment &frag)     { fRing = GetMnemonicSegment(frag);   	}
-		void SetSectorNumber(TFragment &frag)   { fSector = GetMnemonicSegment(frag) ; 	}
-		void SetSectorNumber(int n)   					{ fSector = n ; 												}
-		void SetRingNumber(int n)   						{ fRing 	= n ; 												}
+		void SetRingNumber(TFragment &frag)     { fRing = frag.GetSegment();   	}
+		void SetSectorNumber(TFragment &frag)   { fSector = frag.GetSegment(); 	}
+		void SetSectorNumber(int n)   {fSector = n ;}
+		void SetRingNumber(int n)  { fRing= n ; }
 
 		void SetWavefit(TFragment&);
-		void SetTimeFit(Double_t time)					{ fTimeFit = time;											}
-		void SetSig2Noise(Double_t sig2noise)		{ fSig2Noise = sig2noise;								}
-
-    Short_t GetMnemonicSegment(TFragment &frag);	//could be added to TGRSIDetectorHit base class
+		void SetTimeFit(Double_t time){ fTimeFit = time;}
+		void SetSig2Noise(Double_t sig2noise){ fSig2Noise = sig2noise;}
 
 		Double_t GetPhi(double offset=0) {
 			return this->GetPosition(offset).Phi();
@@ -60,14 +58,14 @@ class TS3Hit : public TGRSIDetectorHit {
 			}
 			return this->GetPosition(offset).Angle(*vec);
 		}
-		TVector3 GetPosition(Double_t offset, Double_t dist) const; //!
-		TVector3 GetPosition(Double_t offset) const; //!
-		TVector3 GetPosition() const; //!
+		TVector3 GetPosition(Double_t phioffset, Double_t dist,bool smear=false) const; //!
+		TVector3 GetPosition(Double_t phioffset,bool smear=false) const; //!
+		TVector3 GetPosition(bool smear=false) const; //!
 
 	private:
-      Double_t GetDefaultOffset() const { return 0.0; }
-      Double_t GetDefaultDistance() const { return 0.0; }
-
+	Double_t GetDefaultPhiOffset() const;//!
+	Double_t GetDefaultDistance() const;//!
+            
 		Bool_t 	 fIsDownstream; // Downstream check
 		Short_t  fRing;   //front
 		Short_t  fSector; //back
