@@ -734,6 +734,11 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
    hist2->GetXaxis()->SetRangeUser(peak2->GetXmin()-20.,peak2->GetXmax()+20.);
    std::cout << "RANGE: " << peak2->GetXmin()-20. << " " << peak2->GetXmax()+20. << std::endl;
    nFound = s2.Search(hist2,2,"",0.3); //Search the next histogram
+	if(nFound == 0){
+   	std::cout << "RANGE: " << peak2->GetXmin()-40. << " " << peak2->GetXmax()+40. << std::endl;
+   	nFound = s2.Search(hist2,2,"",0.3); //Search the next histogram
+	}
+
    for(int x=0;x<nFound;x++)
       std::cout << s2.GetPositionX()[x] << std::endl;
 

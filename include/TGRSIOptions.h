@@ -1,104 +1,180 @@
-#ifndef TGRSIOPTIONS_H
-#define TGRSIOPTIONS_H
+#ifndef _TGRSIOPTIONS_H_
+#define _TGRSIOPTIONS_H_
 
-/** \addtogroup Sorting
- *  @{
- */
-
-#include <cstdio>
-#include <string>
+#include <map>
 
 #include "TObject.h"
 
-namespace TGRSIOptions {
-    // namespace priv{
-    //   extern std::string fHostName;
-    //   extern std::string fExptName;
+#include "TGRSITypes.h"
 
-    //   extern std::vector<std::string> fInputRootFile;
-    //   extern std::vector<std::string> fInputMidasFile;
-    //   extern std::vector<std::string> fInputCalFile;
-    //   extern std::vector<std::string> fInputOdbFile;
-    // 	extern std::vector<std::string> fExternalRunInfo;
-    // 	extern std::vector<std::string> fMacroFile;
+class TGRSIOptions : public TObject {
+	public:
+		static TGRSIOptions* Get(int argc = 0, char** argv = NULL);
 
-    //   extern bool fCloseAfterSort;
-    //   extern bool fLogErrors;
-    //   extern bool fUseMidFileOdb;
-    //   extern bool fMakeAnalysisTree;
-    //   extern bool fProgressDialog;
-    //   extern bool fWorkHarder;
-    //   extern bool fReadingMaterial;
-    //   extern bool fIgnoreFileOdb;
-    //     	extern bool fIgnoreScaler;
-    //     	extern bool fIgnoreEpics;
-    //   extern bool fWriteBadFrags;
-    //     	extern bool fWriteDiagnostics;
-    //   }
-      // std::string GetHostName();
-      // std::string GetExptName();
+		void Clear(Option_t* opt = "");
+		void Load(int argc, char** argv);
+		void Print(Option_t* opt = "") const;
+		void PrintSortingOptions() const;
 
-      // std::vector<std::string> GetInputRoot();
-      // std::vector<std::string> GetInputMidas();
-      // std::vector<std::string> GetInputCal();
-      // std::vector<std::string> GetInputOdb();
-      // std::vector<std::string> GetMacroFile();
-      // std::vector<std::string> GetExternalRunInfo();
+		bool ShouldExit() { return fShouldExit; }
+		const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles;}
+		const std::vector<std::string>& RootInputFiles()  { return fInputRootFiles; }
+		const std::vector<std::string>& CalInputFiles()   { return fInputCalFiles;  }
+		const std::vector<std::string>& ValInputFiles()   { return fInputValFiles;  }
+		const std::vector<std::string>& InputOdbFiles()   { return fInputOdbFiles;  }
+		const std::vector<std::string>& ExternalRunInfo() { return fExternalRunInfo;}
+		const std::vector<std::string>& InputCutFiles()   { return fInputCutsFiles;}
+		const std::vector<std::string>& WinInputFiles()   { return fInputWinFiles;   }
+		const std::vector<std::string>& MacroInputFiles() { return fMacroFiles;      }
 
-      //   	const char *GetXMLODBFile(int runNumber=0,int subRunNumber=-1);
-      // const char *GetCalFile(int runNumber=0,int subRunNumber=-1);
+		const std::string& OutputFragmentFile() { return output_fragment_file; }
+		const std::string& OutputAnalysisFile() { return output_analysis_file; }
 
-      // void AddExternalRunInfo(std::string);
-      // void SetExternalRunInfo();
-      // bool ExternalRunInfo();
 
-      // void SetCloseAfterSort(bool flag=true);
-      // bool CloseAfterSort();
+		const std::string& OutputFilteredFile()        { return output_filtered_file; }
+		const std::string& OutputFragmentHistogramFile(){ return output_fragment_histogram_file; }
+		const std::string& OutputAnalysisHistogramFile(){ return output_analysis_histogram_file; }
+		std::string InputRing() { return input_ring; }
+		std::string FragmentHistogramLib() { return fragment_histogram_lib; }
+		std::string AnalysisHistogramLib() { return analysis_histogram_lib; }
+		std::string CompiledFilterFile() { return compiled_filter_file; }
 
-      // void SetIgnoreFileOdb(bool flag=true);
-      // bool IgnoreFileOdb();
+		const std::vector<std::string>& OptionFiles() { return options_file; }
 
-      // void SetIgnoreScaler(bool flag=true);
-      // bool IgnoreScaler();
+		int BuildWindow() const { return fBuildWindow; }
+		int AddbackWindow() const { return fAddbackWindow; }
+		bool StaticWindow() const { return fStaticWindow; }
+		bool RecordDialog() const { return fRecordDialog; }
+		bool StartGui() const { return fStartGui; }
 
-      // void SetIgnoreEpics(bool flag=true);
-      // bool IgnoreEpics();
+		bool SuppressErrors() const { return fSuppressErrors; }
 
-      // void SetIgnoreSCLR(bool flag=true);
-      // bool IgnoreSCLR();
+		bool CloseAfterSort()     const { return fCloseAfterSort; }
 
-      // void SetLogErrors(bool flag=true);
-      // bool LogErrors();
+		bool LogErrors()          const { return fLogErrors;        }
+		bool UseMidFileOdb()      const { return fUseMidFileOdb;    }
 
-      // void SetProgressDialog(bool flag=true);
-      // bool ProgressDialog();
+		bool MakeAnalysisTree()   const { return fMakeAnalysisTree; }
+		bool ProgressDialog()     const { return fProgressDialog;   }
+		bool WorkHarder()         const { return fWorkHarder;       }
+		bool ReadingMaterial()    const { return fReadingMaterial;  }
+		bool IgnoreFileOdb()      const { return fIgnoreFileOdb;    }
 
-      // void SetUseMidFileOdb(bool flag=true);
-      // bool UseMidFileOdb();
+		bool IgnoreScaler()       const { return fIgnoreScaler;     }
+		bool IgnoreEpics()        const { return fIgnoreEpics;      }
+		bool WriteBadFrags()      const { return fWriteBadFrags;    }
+		bool WriteDiagnostics()   const { return fWriteDiagnostics; }
 
-      // void SetMakeAnalysisTree(bool flag=true);
-      // bool MakeAnalysisTree();
 
-      // void SetWorkHarder(bool flag=true);
-      // bool WorkHarder();
+		bool ShowedHelp()         const { return fHelp; }
+		bool ShowedVersion()      const { return fShowedVersion; }
+		bool ShowLogo()           const { return fShowLogo; }
+		bool SortRaw()            const { return fSortRaw; }
+		bool SortRoot()           const { return fSortRoot; }
+		bool ExtractWaves()       const { return fExtractWaves;  }
+		bool MakeHistos()         const { return fMakeHistos; }
+		bool SortMultiple()       const { return fSortMultiple; }
 
-      // void SetReadingMaterial(bool flag=true);
-      // bool ReadingMaterial();
+		bool Debug()              const { return fDebug; }
 
-      // void SetWriteBadFrags(bool flag=true);
-      // bool WriteBadFrags();
+		bool IsOnline()           const { return fIsOnline; }
 
-      // void SetWriteDiagnostics(bool flag=true);
-      // bool WriteDiagnostics();
+		size_t FragmentWriteQueueSize() const { return fFragmentWriteQueueSize; }
+		size_t AnalysisWriteQueueSize() const { return fAnalysisWriteQueueSize; }
 
-      // void SetHostName(std::string &host);
-      // void SetExptName(std::string &expt);
+		bool TimeSortInput()      const { return fTimeSortInput; }
+		int SortDepth()           const { return fSortDepth; }
 
-      // void AddInputRootFile(std::string &input);
-      // void AddInputMidasFile(std::string &input);
-      // void AddInputCalFile(std::string &input);
-      // void AddInputOdbFile(std::string &input);
-      // void AddMacroFile(std::string &input);
-}
-/*! @} */
-#endif
+		bool ShouldExitImmediately() const { return fShouldExit; }
+
+		kFileType   DetermineFileType(const std::string& filename) const;
+
+		std::string GenerateOutputFilename(const std::string& filename);
+		std::string GenerateOutputFilename(const std::vector<std::string>& filename);
+
+		size_t ColumnWidth() const { return fColumnWidth; }
+		size_t StatusWidth() const { return fStatusWidth; }
+		unsigned int StatusInterval() const { return fStatusInterval; }
+		bool LongFileDescription() const { return fLongFileDescription; }
+
+	private:
+		TGRSIOptions(int argc, char** argv);
+
+		bool FileAutoDetect(const std::string& filename);
+
+		std::vector<std::string> fInputMidasFiles;
+		std::vector<std::string> fInputRootFiles;
+		std::vector<std::string> fInputCalFiles;
+		std::vector<std::string> fInputOdbFiles;
+		std::vector<std::string> fExternalRunInfo;
+		std::vector<std::string> fMacroFiles;
+
+		std::vector<std::string> fInputCutsFiles;
+		std::vector<std::string> fInputValFiles;
+		std::vector<std::string> fInputWinFiles;
+		std::string input_ring;
+
+		std::string output_fragment_file;
+		std::string output_analysis_file;
+		std::string output_filtered_file;
+		std::string output_fragment_histogram_file;
+		std::string output_analysis_histogram_file;
+
+		std::string fragment_histogram_lib;
+		std::string analysis_histogram_lib;
+		std::string compiled_filter_file;
+
+		std::vector<std::string> options_file;
+
+		std::string log_file;
+
+		bool fCloseAfterSort;
+		bool fLogErrors;
+		bool fUseMidFileOdb;
+		bool fSuppressErrors;
+
+		bool fMakeAnalysisTree;
+		bool fProgressDialog;
+		bool fWorkHarder;
+		bool fReadingMaterial;
+		bool fIgnoreFileOdb;
+		bool fRecordDialog;
+
+		bool fIgnoreScaler;
+		bool fIgnoreEpics;
+		bool fWriteBadFrags;
+		bool fWriteDiagnostics;
+
+		bool fShowedVersion;
+		bool fHelp;
+		bool fShowLogo;
+		bool fSortRaw;
+		bool fSortRoot;
+		bool fExtractWaves;
+		bool fIsOnline;
+		bool fStartGui;
+		bool fMakeHistos;
+		bool fSortMultiple;
+		bool fDebug;
+
+		size_t fFragmentWriteQueueSize;
+		size_t fAnalysisWriteQueueSize;
+
+		bool fTimeSortInput;
+		int fSortDepth;
+
+		int fBuildWindow;
+		int fAddbackWindow;
+		bool fStaticWindow;
+
+		bool fShouldExit;
+
+		size_t fColumnWidth;
+		size_t fStatusWidth;
+		unsigned int fStatusInterval;
+		bool fLongFileDescription;
+
+		ClassDef(TGRSIOptions,1);
+};
+
+#endif /* _TGRSIOPTIONS_H_ */

@@ -1,6 +1,19 @@
 #ifndef _TEVENTBUILDINGLOOP_H_
 #define _TEVENTBUILDINGLOOP_H_
 
+/** \addtogroup Loops
+ *  @{
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+///
+/// \class TEventBuildingLoop
+/// 
+/// This loop builds events (vectors of fragments) based on timestamps and a
+/// build windows.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #ifndef __CINT__
 #include <memory>
 #include <functional>
@@ -12,62 +25,64 @@
 #include "TFragment.h"
 
 class TEventBuildingLoop : public StoppableThread {
-public:
-  enum EBuildMode {
-    kTimestamp,
-    kTriggerId
-  };
+	public:
+		enum EBuildMode {
+			kTimestamp,
+			kTriggerId
+		};
 
-  static TEventBuildingLoop *Get(std::string name="", EBuildMode mode=kTimestamp);
-  virtual ~TEventBuildingLoop();
-
-#ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> >& InputQueue() { return input_queue; }
-  std::shared_ptr<ThreadsafeQueue<std::vector<TFragment*> > >& OutputQueue() { return output_queue; }
-#endif
-
-  bool Iteration();
-
-  virtual void ClearQueue();
-
-  size_t GetItemsPushed()  { return output_queue->ItemsPushed(); }
-  size_t GetItemsPopped()  { return output_queue->ItemsPopped(); }
-  size_t GetItemsCurrent() { return output_queue->Size();        }
-  size_t GetRate()         { return 0; }
-
-  void SetBuildWindow(long clock_ticks) { build_window = clock_ticks; }
-  unsigned long GetBuildWindow() const { return build_window; }
-
-  void SetSortDepth(int num_events) { sorting_depth = num_events; }
-  unsigned int GetSortDepth() const { return sorting_depth; }
-
-
-private:
-  TEventBuildingLoop(std::string name, EBuildMode mode);
-  TEventBuildingLoop(const TEventBuildingLoop& other);
-  TEventBuildingLoop& operator=(const TEventBuildingLoop& other);
-
-  void CheckBuildCondition(TFragment*);
-  void CheckTimestampCondition(TFragment*);
-  void CheckTriggerIdCondition(TFragment*);
+		static TEventBuildingLoop *Get(std::string name="", EBuildMode mode=kTimestamp);
+		virtual ~TEventBuildingLoop();
 
 #ifndef __CINT__
-  std::shared_ptr<ThreadsafeQueue<TFragment*> > input_queue;
-  std::shared_ptr<ThreadsafeQueue<std::vector<TFragment*> > > output_queue;
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& InputQueue() { return fInputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment> > > >& OutputQueue() { return fOutputQueue; }
 #endif
 
-  EBuildMode build_mode;
-  unsigned int sorting_depth;
-  long build_window;
+		bool Iteration();
 
-  std::vector<TFragment*> next_event;
+		virtual void ClearQueue();
+
+		size_t GetItemsPushed()  { return fOutputQueue->ItemsPushed(); }
+		size_t GetItemsPopped()  { return fOutputQueue->ItemsPopped(); }
+		size_t GetItemsCurrent() { return fOutputQueue->Size();        }
+		size_t GetRate()         { return 0; }
+
+		void SetBuildWindow(long clock_ticks) { fBuildWindow = clock_ticks; }
+		unsigned long GetBuildWindow() const { return fBuildWindow; }
+
+		void SetSortDepth(int num_events) { fSortingDepth = num_events; }
+		unsigned int GetSortDepth() const { return fSortingDepth; }
+
+
+	private:
+		TEventBuildingLoop(std::string name, EBuildMode mode);
+		TEventBuildingLoop(const TEventBuildingLoop& other);
+		TEventBuildingLoop& operator=(const TEventBuildingLoop& other);
 
 #ifndef __CINT__
-  std::multiset<TFragment*,
-                std::function<bool(TFragment*,TFragment*)> > ordered;
+		void CheckBuildCondition(std::shared_ptr<const TFragment>);
+		void CheckTimestampCondition(std::shared_ptr<const TFragment>);
+		void CheckTriggerIdCondition(std::shared_ptr<const TFragment>);
+
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > fInputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment> > > > fOutputQueue;
 #endif
 
-  ClassDef(TEventBuildingLoop, 0);
+		EBuildMode fBuildMode;
+		unsigned int fSortingDepth;
+		long fBuildWindow;
+		bool fPreviousSortingDepthError;
+
+#ifndef __CINT__
+		std::vector<std::shared_ptr<const TFragment> > fNextEvent;
+
+		std::multiset<std::shared_ptr<const TFragment>,
+			std::function<bool(std::shared_ptr<const TFragment>, std::shared_ptr<const TFragment>)> > fOrdered;
+#endif
+
+		ClassDef(TEventBuildingLoop, 0);
 };
 
+/*! @} */
 #endif /* _TBUILDINGLOOP_H_ */

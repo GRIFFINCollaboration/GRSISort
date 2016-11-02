@@ -55,6 +55,8 @@ class GPeak : public TF1 {
     static Bool_t CompareEnergy(const GPeak& lhs, const GPeak& rhs) {return lhs.GetCentroid()<rhs.GetCentroid();}
     static Bool_t CompareArea(const GPeak& lhs, const GPeak& rhs)   {return lhs.GetArea()<rhs.GetArea();}
 
+    static GPeak* GetLastFit() { return fLastFit; } 
+
 
 
   private:
@@ -68,6 +70,8 @@ class GPeak : public TF1 {
     Bool_t IsInitialized() const { return init_flag; }
     void SetInitialized(Bool_t flag = true) {init_flag = flag;}
     bool init_flag;
+
+    static GPeak* fLastFit;
 
     TF1 fBGFit;
     //    TF1 fBGHist;

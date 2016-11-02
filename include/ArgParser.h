@@ -133,9 +133,9 @@ public:
         if(has_singlechar_flag){
           ss << "[ ";
         }
-        ss << flag;
+        ss << flag << " ";
         if(has_singlechar_flag){
-          ss << " ]";
+          ss << "]";
         }
       }
     }

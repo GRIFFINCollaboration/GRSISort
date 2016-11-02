@@ -49,7 +49,7 @@ class TGRSIDetectorHit : public TObject 	{
    public:
       enum EBitFlag {
          kIsEnergySet   = BIT(0),  //same as BIT(0);
-         kBit1          = BIT(1),
+         kIsChannelSet  = BIT(1),
          kBit2          = BIT(2),
          kBit3          = BIT(3),
          kIsPPGSet      = BIT(4),
@@ -68,6 +68,14 @@ class TGRSIDetectorHit : public TObject 	{
          kBase          = BIT(9),
          kIsAllSet      = 0xFFFF
       };
+
+		enum ETimeFlag {
+			kNone          = BIT(0),
+			kCFD           = BIT(1),
+			kWalk          = BIT(2),
+			kOffset        = BIT(3),
+			kAll           = 0xFFFF
+		};
 
 
    public:
@@ -88,6 +96,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual void Copy(TObject&,bool copywave) const;  //!<!
       virtual void CopyWave(TObject&)  const;  //!<!
       virtual void Clear(Option_t* opt = "");           //!<!
+      virtual void ClearTransients() const { fBitflags = 0; }
       virtual void Print(Option_t* opt = "") const;     //!<!
       virtual bool HasWave() const { return (fWaveform.size()>0) ?  true : false; } //!<!
 
@@ -98,26 +107,36 @@ class TGRSIDetectorHit : public TObject 	{
       void SetAddress(const UInt_t& temp_address)       { fAddress = temp_address; } //!<!
       void SetKValue(const Short_t& temp_kval)          { fKValue = temp_kval;   }   //!<!
       void SetCharge(const Float_t& temp_charge)        { fCharge = temp_charge; }   //!<!
+      void SetCharge(const Int_t& temp_charge)          { fCharge = temp_charge + gRandom->Uniform(); }   //!<!
       virtual void SetCfd(const Int_t& x)               { fCfd    = x; }             //!<!
       void SetWaveform(const std::vector<Short_t>& x)   { fWaveform = x; }           //!<!
+      void AddWaveformSample(const Short_t& x)                 { fWaveform.push_back(x); }  //!<!
       virtual void SetTimeStamp(const Long_t& x)        { fTimeStamp   = x; }        //!<! 
       virtual void AppendTimeStamp(const Long_t& x)     { fTimeStamp   += x; }       //!<! 
 
-      void SetEnergy(const double& en) { fEnergy = en; SetBit(kIsEnergySet,true);}
+      Double_t SetEnergy(const double& en) const { fEnergy = en; SetBit(kIsEnergySet,true); return fEnergy;}
       void SetTime(const Double_t& time) {fTime = time; SetBit(kIsTimeSet,true); }
 
       virtual TVector3 GetPosition(Double_t dist)    const { return TVector3(0.,0.,0.); } //!<!
       virtual TVector3 GetPosition()    const { return TVector3(0.,0.,0.); } //!<!
       virtual double GetEnergy(Option_t* opt="")     const;
-      virtual Long_t GetTimeStamp(Option_t* opt="") const   { return fTimeStamp;   }
-      virtual Double_t GetTime(Option_t* opt = "")   const;  ///< Returns a time value to the nearest nanosecond!
-      virtual Int_t   GetCfd()    const      { return fCfd;}                 //!<!
-      virtual UInt_t GetAddress() const      { return fAddress; }            //!<!
-      virtual Int_t  GetCharge()  const      ;                               //!<!
-      virtual Float_t Charge()    const      { return fCharge; }             //!<!
-      virtual Short_t GetKValue() const      { return fKValue; }             //!<!
-      TChannel* GetChannel()      const      { return TChannel::GetChannel(fAddress); }  //!<!
-      std::vector<Short_t>* GetWaveform()    { return &fWaveform; }          //!<!
+      virtual Long_t GetTimeStamp(Option_t* opt="") const;
+      Long_t GetRawTimeStamp(Option_t* opt="") const { return fTimeStamp; }
+      virtual Double_t GetTime(const UInt_t& correct_flag = kAll, Option_t* opt = "")   const;  ///< Returns a time value to the nearest nanosecond!
+      //TODO: Fix Getters to have non-const types
+      virtual Int_t   GetCfd()    const               { return fCfd;}                 //!<!
+      virtual UInt_t GetAddress() const               { return fAddress; }            //!<!
+      virtual Int_t  GetCharge()  const;                                              //!<!
+      virtual Float_t Charge()    const               { return fCharge; }             //!<!
+      virtual Short_t GetKValue() const               { return fKValue; }             //!<!
+      const std::vector<Short_t>* GetWaveform() const { return &fWaveform; }          //!<!
+      TChannel* GetChannel()      const               { 
+			if(!IsChannelSet()) { 
+				fChannel = TChannel::GetChannel(fAddress); 
+				SetBit(kIsChannelSet, true); 
+			} 
+			return fChannel; 
+		}  //!<!
 
       //stored in the tchannel (things common to all hits of this address)
       virtual Int_t  GetDetector()  const; //!<!
@@ -132,7 +151,8 @@ class TGRSIDetectorHit : public TObject 	{
       uint16_t GetPPGStatus() const;
       uint16_t GetCycleTimeStamp() const;
 
-      void ClearEnergy() { SetEnergy(0.0); SetBit(kIsEnergySet,false); }
+      void ClearEnergy()  { fEnergy  = 0.0;  SetBit(kIsEnergySet,false); }
+      void ClearChannel() { fChannel = NULL; SetBit(kIsChannelSet,false); }
 
       static TVector3 *GetBeamDirection() { return &fBeamDirection; }
 
@@ -140,9 +160,10 @@ class TGRSIDetectorHit : public TObject 	{
  //     virtual TVector3 GetChannelPosition(Double_t dist) const { AbstractMethod("GetChannelPosition"); return TVector3(0., 0., 0.); }
 
    protected:
-      Bool_t IsEnergySet() const { return (fBitflags & kIsEnergySet); }
-      Bool_t IsTimeSet()   const { return (fBitflags & kIsTimeSet); }
-      Bool_t IsPPGSet()    const { return (fBitflags & kIsPPGSet); }
+      Bool_t IsEnergySet()  const { return (fBitflags & kIsEnergySet); }
+      Bool_t IsChannelSet() const { return (fBitflags & kIsChannelSet); }
+      Bool_t IsTimeSet()    const { return (fBitflags & kIsTimeSet); }
+      Bool_t IsPPGSet()     const { return (fBitflags & kIsPPGSet); }
 
       void SetBit(enum EBitFlag,Bool_t set=true) const; //const here is dirty
       bool TestBit(enum EBitFlag flag) const { return fBitflags & flag; }
@@ -163,6 +184,7 @@ class TGRSIDetectorHit : public TObject 	{
       mutable Double_t fEnergy;     //!<! Energy of the Hit.
       mutable uint16_t fPPGStatus;  //!<! 
       mutable ULong_t  fCycleTimeStamp; //!<!
+		mutable TChannel* fChannel; //!<!
 
    protected:
       static TPPG* fPPG;

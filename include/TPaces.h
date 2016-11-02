@@ -27,12 +27,14 @@ class TPaces : public TGRSIDetector {
 		TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
 		Short_t GetMultiplicity() const { return fPacesHits.size(); }
 
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment> frag, TChannel *chan);
+#endif
 		static TVector3 GetPosition(int DetNbr);		//!<!
-		void AddFragment(TFragment*, TChannel*); //!<!
-		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
-		TPaces& operator=(const TPaces&);  //!<! 
+		void ClearTransients() { for(auto hit : fPacesHits) hit.ClearTransients(); }
 
+		TPaces& operator=(const TPaces&);  //!<!
 
 	private: 
 		std::vector<TPacesHit> fPacesHits; //  The set of crystal hits
@@ -45,9 +47,6 @@ class TPaces : public TGRSIDetector {
 		virtual void Copy(TObject&) const;                //!<!
 		virtual void Clear(Option_t* opt = "all");		     //!<!
 		virtual void Print(Option_t* opt = "") const;		  //!<!
-
-	protected:
-		void PushBackHit(TGRSIDetectorHit* phit);
 
 /// \cond CLASSIMP
 		ClassDef(TPaces,4)  // Paces Physics structure

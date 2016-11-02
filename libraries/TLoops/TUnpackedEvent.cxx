@@ -6,14 +6,10 @@
 
 TUnpackedEvent::TUnpackedEvent() { }
 
-TUnpackedEvent::~TUnpackedEvent() {
-  for(auto det : detectors) {
-    delete det;
-  }
-}
+TUnpackedEvent::~TUnpackedEvent() { }
 
 void TUnpackedEvent::Build() {
-  for(auto frag : fragments) {
+  for(auto frag : fFragments) {
     TChannel* channel = TChannel::GetChannel(frag->GetAddress());
     if(!channel) {
       continue;
@@ -31,33 +27,31 @@ void TUnpackedEvent::Build() {
   ClearRawData();
 }
 
-void TUnpackedEvent::AddRawData(TFragment* frag) {
-  fragments.push_back(frag);
+void TUnpackedEvent::AddRawData(std::shared_ptr<const TFragment> frag) {
+  fFragments.push_back(frag);
 }
 
 void TUnpackedEvent::ClearRawData() {
-  for(auto frag : fragments) {
-    delete frag;
-  }
-  fragments.clear();
+  fFragments.clear();
 }
 
 void TUnpackedEvent::BuildHits() {
-  for(auto det : detectors) {
+  for(auto det : fDetectors) {
     det->BuildHits();
   }
 }
 
-TDetector* TUnpackedEvent::GetDetector(TClass* cls, bool make_if_not_found) {
-  for(auto det : detectors) {
+std::shared_ptr<TDetector>  TUnpackedEvent::GetDetector(TClass* cls, bool make_if_not_found) {
+  for(auto det : fDetectors) {
     if(det->IsA() == cls) {
       return det;
     }
   }
 
   if(make_if_not_found) {
-    TDetector* output = (TDetector*)cls->New();
-    detectors.push_back(output);
+    //std::shared_ptr<TDetector> output = std::make_shared<TDetector>(*static_cast<TDetector*>(cls->New()));
+    std::shared_ptr<TDetector> output(static_cast<TDetector*>(cls->New()));
+    fDetectors.push_back(output);
     return output;
   } else {
     return NULL;

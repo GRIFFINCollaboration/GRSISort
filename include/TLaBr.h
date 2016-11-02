@@ -35,12 +35,14 @@ class TLaBr : public TGRSIDetector {
       void Copy(TObject &rhs) const;
       TLaBrHit* GetLaBrHit(const int& i);	//!<!
       Short_t GetMultiplicity() const	       {	return fLaBrHits.size(); }	      //!<!
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
       
       static TVector3 GetPosition(int DetNbr) { return gPosition[DetNbr]; }	//!<!
       
-      void AddFragment(TFragment*, TChannel*); //!<!
-      void BuildHits() {} //no need to build any hits, everything already done in AddFragment
-      
+		void ClearTransients() { for(auto hit : fLaBrHits) hit.ClearTransients(); }
+
       TLaBr& operator=(const TLaBr&);  //!<!
       
    private:
@@ -52,9 +54,6 @@ class TLaBr : public TGRSIDetector {
    public:
       void Clear(Option_t *opt = "");		//!<!
       void Print(Option_t *opt = "") const;		//!<!
-      
-   protected:
-      void PushBackHit(TGRSIDetectorHit*);
       
       /// \cond CLASSIMP
       ClassDef(TLaBr,1)  // LaBr Physics structure

@@ -2,12 +2,15 @@
 #include "TChannel.h"
 #include "TROOT.h"
 #include <iostream>
+#include <sstream>
 
 #include <TClass.h>
 
 /// \cond CLASSIMP
 ClassImp(TFragment)
 /// \endcond
+
+Long64_t TFragment::fNumberOfFragments = 0;
 
 TFragment::TFragment() {
    // Default Constructor
@@ -75,6 +78,7 @@ void TFragment::Clear(Option_t *opt){
 TObject* TFragment::Clone(const char* name) const {
    TFragment* result = new TFragment;
    *result = *this;
+	result->ClearTransients();
    return result;
 }
 
@@ -178,7 +182,7 @@ bool TFragment::IsDetector(const char * prefix, Option_t *opt) const {
     return false;
 
   option.ToUpper();
-  //Could also do everything below with MNEMONIC Struct. This limits the amount of string processing that needs to be done
+  //Could also do everything below with TMnemonic. This limits the amount of string processing that needs to be done
   //Because it returns false after every potential failure while the mnemonic class sets all of the strings, and then checks
   //for conditions.
   if(!channame.compare(0,pre.length(),pre)) {     //channame.BeginsWith(pre)){

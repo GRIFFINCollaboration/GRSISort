@@ -29,7 +29,8 @@ class TTACHit : public TGRSIDetectorHit {
       TTACHit();
       virtual ~TTACHit();
       TTACHit(const TTACHit&);
-      
+      TTACHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
+
    private:
       Int_t    fFilter;
       

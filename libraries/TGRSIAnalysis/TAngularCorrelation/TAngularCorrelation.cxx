@@ -370,6 +370,7 @@ TH1D* TAngularCorrelation::IntegralSlices(TH2* hst, Double_t min, Double_t max)
 ///
 /// \param[in] hst Two-dimensional histogram of angular index vs. energy
 /// \param[in] peak TPeak template used to fit one dimensional histograms
+/// \param[in] visualization Boolean to select whether to draw on a canvas
 ///
 /// For each bin (angular index), fits one-dimensional projection with given TPeak
 /// and returns a TH1D with x-axis of angular index and a y-axis of TPeak area for
@@ -507,6 +508,8 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
 /// Creates graph of counts vs. cos(theta) from histogram of counts vs. angular index
 ///
 /// \param[in] hst One-dimensional histogram of angular index vs. counts
+/// \param[in] fold boolean to select whether angles are folded at 90 degree
+/// \param[in] group boolean to select whether angles are grouped
 ///
 
 TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst, Bool_t fold, Bool_t group)
@@ -952,7 +955,7 @@ std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arra
 /// Creates map of modified weights vs. modified index
 ///
 /// \param[in] modindices vector that converts angular index to modified index
-/// \param[in] weight vector of weights for angular index
+/// \param[in] weights vector of weights for angular index
 /// 
 ///This function is called by GenerateMaps() and GenerateGroupMaps()
 
@@ -1093,8 +1096,7 @@ Int_t TAngularCorrelation::GetNumModIndices()
 ////////////////////////////////////////
 /// Check angles for groups
 ///
-/// \param[in] groupangle vector (user input)
-/// \param[in] groupweights vector for consistancy check(from GenerateGroupWeights())
+/// \param[in] groupangles vector (user input)
 ///
 ///This function is called by GenerateGroupMaps()
 ///
@@ -1701,6 +1703,8 @@ void TAngularCorrelation::PrintModifiedConditions()
 /// Divides histogram by weights listed in weight array
 ///
 /// \param[in] hst histogram
+/// \param[in] fold boolean indicating whether or not to fold the indices
+/// \param[in] group boolean indicating whether or not to group the indices
 ///
 
 TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)

@@ -69,6 +69,9 @@ class TPulseAnalyzer {
 		int t10t90_flag;
 		int    thigh;
 		double sig2noise;
+		double amplitude;//amplitude from sili fits
+		double tauDecay;
+		double tauRise;
 	} WaveFormPar;
 
 	typedef struct LinePar{
@@ -111,39 +114,47 @@ class TPulseAnalyzer {
 	
   public:
     TPulseAnalyzer();
-    TPulseAnalyzer(TFragment &frag,double=0);
-    TPulseAnalyzer(std::vector<Short_t> &wave,double=0,std::string name="");
+    TPulseAnalyzer(const TFragment &frag,double=0);
+    TPulseAnalyzer(const std::vector<Short_t>& wave,double=0,std::string name="");
     virtual ~TPulseAnalyzer();
     
-    void SetData(TFragment &frag,double=0);
-    void SetData(std::vector<Short_t> &wave,double=0);
+    void SetData(const TFragment &frag,double=0);
+    void SetData(const std::vector<Short_t> &wave,double=0);
     void Clear(Option_t *opt = "");
     bool IsSet() { return set; }
     
-    double    fit_newT0();
-	 double    fit_rf(double=2*8.48409);
-    double    get_sig2noise();
-	 short     good_baseline();
-    void      print_WavePar();
-	 void      DrawWave();
-	 void      DrawT0fit();
-	 void      DrawRFFit();
+	inline double Get_wpar_T0(){return cWpar->t0;}
+	inline double Get_wpar_baselinefin(){return cWpar->baselinefin;}
+	inline double Get_wpar_amplitude(){return cWpar->amplitude;}
 
-	 // CsI functions:
-	 double    CsIPID();
-	 double	  CsIt0();
-	 void 	  DrawCsIExclusion();
-	 void	  DrawCsIFit();
-	 int 		GetCsIChiSq();	
+	double GetSiliShape(double tauDecay, double tauRise); // Added for Spice, parameters to be found : t0 and Amplitude
+	static double SiLiFitFunction(double *i,double *p);
+    
+	double    fit_newT0();
+	double    fit_rf(double=2*8.48409);
+	double    get_sig2noise();
+	short     good_baseline();
+	void      print_WavePar();
+	void      DrawWave();
+	void      DrawT0fit();
+	void      DrawRFFit();
+	void      Drawsilifit();
+
+	// CsI functions:
+	double    CsIPID();
+	double	  CsIt0();
+	void 	  DrawCsIExclusion();
+	void	  DrawCsIFit();
+	int 	GetCsIChiSq();	
 
   private:
 	 bool   set;
-	 WaveFormPar* wpar;
-	 int N;
+	 WaveFormPar* cWpar;
+	 int cN;
 	 //TFragment* frag;
-   std::vector<Short_t> wavebuffer;
-	 SinPar*		spar;
-	 ShapePar*	shpar;
+   std::vector<Short_t> cWavebuffer;
+	 SinPar* spar;
+	 ShapePar* shpar;
 
    std::string fName;
 
@@ -199,6 +210,7 @@ class TPulseAnalyzer {
 	 const static int BADCHISQ_PAR_T0    =  -1024-3; //parabolic_t0 gives bad result
 	 const static int BADCHISQ_LIN_T0     = -1024-4; //linear_t0 gives bad result
 	 const static int BADCHISQ_MAT         =-1024-5; //matrix for fit is not invertable
+	const static int BADCHISQ_EXC      = -1024-8; // -1032	bad exclusion zone 
 	 //new definitions for Kris' changes to the waveform analyzer
 	 const static int PIN_BASELINE_RANGE=16; //minimum ticks before max for a valid signal
 	 const static int BAD_BASELINE_RANGE =-1024-11;
@@ -213,7 +225,7 @@ class TPulseAnalyzer {
 	 const static int BADCHISQ_AMPL = -1024-6;
 
 /// \cond CLASSIMP
-    ClassDef(TPulseAnalyzer,2)
+    ClassDef(TPulseAnalyzer,3)
 /// \endcond
 };
 /*! @} */

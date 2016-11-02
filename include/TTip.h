@@ -38,17 +38,17 @@ class TTip : public TGRSIDetector {
 		TGRSIDetectorHit* GetHit(const int& i);
 		Short_t GetMultiplicity() const         {  return fTipHits.size();}  //!<!
 
-		void AddFragment(TFragment*, TChannel*); //!<!
-		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
 		void Copy(TObject &rhs) const;
+
+		void ClearTransients() { for(auto hit : fTipHits) hit.ClearTransients(); }
 
 		TTip& operator=(const TTip&);  //!<!
 
 		void Clear(Option_t* opt = "");
 		void Print(Option_t* opt = "") const;
-
-	protected:
-		void PushBackHit(TGRSIDetectorHit* tiphit);
 
 	private:
 		std::vector <TTipHit> fTipHits;                                  //   The set of detector hits

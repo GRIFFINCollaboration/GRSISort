@@ -1,4 +1,5 @@
 #include "TGRSIRunInfo.h"
+#include "TMnemonic.h"
 
 #include <fstream>
 #include <sstream>
@@ -324,56 +325,56 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
       //  detector system type.
       //  for more info, see: https://www.triumf.info/wiki/tigwiki/index.php/Detector_Nomenclature
       switch(iter->second->GetMnemonic()->System()){
-         case MNEMONIC::kTigress:
+         case TMnemonic::kTigress:
             if(!Tigress()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetTigress(); 
             break;
-         case MNEMONIC::kSharc:
+         case TMnemonic::kSharc:
             if(!Sharc()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetSharc();
             break;
-         case MNEMONIC::kTriFoil:
+         case TMnemonic::kTriFoil:
             if(!TriFoil()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetTriFoil();
             break;
-         case MNEMONIC::kRF:
+         case TMnemonic::kRF:
             if(!RF()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetRF();
             break;
-         case MNEMONIC::kCSM:
+         case TMnemonic::kCSM:
             if(!CSM()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetCSM();
             break;
-         case MNEMONIC::kTip:
+         case TMnemonic::kTip:
             if(!Tip()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetTip();
             break;
-         case MNEMONIC::kGriffin:
+         case TMnemonic::kGriffin:
             if(!Griffin()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetGriffin();
             break;
-         case MNEMONIC::kSceptar:
+         case TMnemonic::kSceptar:
             if(!Sceptar()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetSceptar();
             break;
-         case MNEMONIC::kPaces:
+         case TMnemonic::kPaces:
             if(!Paces()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetPaces();
             break;
-         case MNEMONIC::kLaBr:
+         case TMnemonic::kLaBr:
             if(!Dante()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetDante();
             break;
-         case MNEMONIC::kZeroDegree:
+         case TMnemonic::kZeroDegree:
             if(!ZeroDegree()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetZeroDegree();
             break;
-         case MNEMONIC::kDescant:
+         case TMnemonic::kDescant:
             if(!Descant()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetDescant();
             break;
          default:
-            std::string system = iter->second->GetMnemonic()->system;
+            std::string system = iter->second->GetMnemonic()->SystemString();
             if(!Spice() && !S3()){
                if(system.compare("SP")==0) {
                   if(!Spice()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 

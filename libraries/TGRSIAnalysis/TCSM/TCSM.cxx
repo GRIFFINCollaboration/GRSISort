@@ -20,22 +20,22 @@ TCSM::TCSM() {
 TCSM::~TCSM() {
 }
 
-void TCSM::AddFragment(TFragment* frag, TChannel* chan) {
+void TCSM::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 	///This function just stores the fragments and mnemonics in vectors, separated by detector number and type (horizontal/vertical strip or pad).
 	///The hits themselves are built in the BuildHits function because the way we build them depends on the number of hits.
 
 	//first index: detector number, second index: 0 = deltaE, 1 = E; third index: 0 = horizontal, 1 = vertical; fourth index: fragments
 	int type = -1;
-	if(chan->GetMnemonic()->arraysubposition.compare(0,1,"D") == 0) {
+	if(chan->GetMnemonic()->ArraySubPositionString().compare(0,1,"D") == 0) {
 		type = 0;
-	} else if(chan->GetMnemonic()->arraysubposition.compare(0,1,"E") == 0) {
+	} else if(chan->GetMnemonic()->ArraySubPositionString().compare(0,1,"E") == 0) {
 		type = 1;
 	}
 	int orientation = -1;
-	if(chan->GetMnemonic()->collectedcharge.compare(0,1,"N") == 0) {
+	if(chan->GetMnemonic()->CollectedChargeString().compare(0,1,"N") == 0) {
 		//N =  Horizontal Strips. aka "front"
 		orientation = 0;
-	} else if(chan->GetMnemonic()->collectedcharge.compare(0,1,"P") == 0) {
+	} else if(chan->GetMnemonic()->CollectedChargeString().compare(0,1,"P") == 0) {
 		//P = Vertical Strips. aka "back"
 		orientation = 1;
 	}
@@ -45,11 +45,11 @@ void TCSM::AddFragment(TFragment* frag, TChannel* chan) {
 	}
 
 	//if this is the first time we got this detector number we make a new vector (of a vector) of fragments
-	if(fFragments.find(chan->GetMnemonic()->arrayposition) == fFragments.end()) {
-		fFragments[chan->GetMnemonic()->arrayposition].resize(2,std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >(2));
+	if(fFragments.find(chan->GetMnemonic()->ArrayPosition()) == fFragments.end()) {
+		fFragments[chan->GetMnemonic()->ArrayPosition()].resize(2,std::vector<std::vector<std::pair<TFragment, TMnemonic> > >(2));
 	}
 
-	fFragments[chan->GetMnemonic()->arrayposition][type][orientation].push_back(std::make_pair(*frag,*(chan->GetMnemonic())));
+	fFragments[chan->GetMnemonic()->ArrayPosition()][type][orientation].push_back(std::make_pair(*frag,*(chan->GetMnemonic())));
 }
 
 void TCSM::BuildHits() {
@@ -129,7 +129,7 @@ TVector3 TCSM::GetPosition(int detector,char pos, int horizontalstrip, int verti
 	return Pos;
 }
 
-void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >& strips,std::vector<TCSMHit>& hitVector) {
+void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment, TMnemonic> > >& strips,std::vector<TCSMHit>& hitVector) {
 	///Build hits from horizontal (index = 0) and vertical (index = 1) strips into the hitVector
 	if(strips[0].size() == 0 && strips[1].size() == 0) {
 		return;
@@ -193,55 +193,55 @@ void TCSM::BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >& s
 	}
 }
 
-TCSMHit TCSM::MakeHit(std::pair<TFragment, MNEMONIC>& h, std::pair<TFragment, MNEMONIC>& v) {
+TCSMHit TCSM::MakeHit(std::pair<TFragment, TMnemonic>& h, std::pair<TFragment, TMnemonic>& v) {
 	TCSMHit csmHit;
 
-	if(h.second.arrayposition != v.second.arrayposition) {
+	if(h.second.ArrayPosition() != v.second.ArrayPosition()) {
 		std::cerr<<"\tSomething is wrong, Horizontal and Vertical detector numbers don't match."<<std::endl;
 	}
-	if(h.second.arraysubposition.c_str()[0] != v.second.arraysubposition.c_str()[0]) {
+	if(h.second.ArraySubPositionString().c_str()[0] != v.second.ArraySubPositionString().c_str()[0]) {
 		std::cerr<<"\tSomething is wrong, Horizontal and Vertical positions don't match."<<std::endl;
 	}
 
 
-	if(h.second.arraysubposition[0] == 'D') {
-		csmHit.SetDetectorNumber(h.second.arrayposition);
+	if(h.second.ArraySubPositionString()[0] == 'D') {
+		csmHit.SetDetectorNumber(h.second.ArrayPosition());
 		csmHit.SetDHorizontalCharge(h.first.GetCharge());
 		csmHit.SetDVerticalCharge(v.first.GetCharge());
-		csmHit.SetDHorizontalStrip(h.second.segment);
-		csmHit.SetDVerticalStrip(v.second.segment);
+		csmHit.SetDHorizontalStrip(h.second.Segment());
+		csmHit.SetDVerticalStrip(v.second.Segment());
 		csmHit.SetDHorizontalCFD(h.first.GetCfd());
 		csmHit.SetDVerticalCFD(v.first.GetCfd());
 		csmHit.SetDHorizontalTime(h.first.GetTimeStamp());
 		csmHit.SetDVerticalTime(v.first.GetTimeStamp());
 		csmHit.SetDHorizontalEnergy(h.first.GetEnergy());
 		csmHit.SetDVerticalEnergy(v.first.GetEnergy());
-		csmHit.SetDPosition(TCSM::GetPosition(h.second.arrayposition,
-					h.second.arraysubposition[0],
-					h.second.segment,
-					v.second.segment));
-	} else if(h.second.arraysubposition.c_str()[0] == 'E') {
-		csmHit.SetDetectorNumber(h.second.arrayposition);
+		csmHit.SetDPosition(TCSM::GetPosition(h.second.ArrayPosition(),
+					h.second.ArraySubPositionString()[0],
+					h.second.Segment(),
+					v.second.Segment()));
+	} else if(h.second.ArraySubPositionString().c_str()[0] == 'E') {
+		csmHit.SetDetectorNumber(h.second.ArrayPosition());
 		csmHit.SetEHorizontalCharge(h.first.GetCharge());
 		csmHit.SetEVerticalCharge(v.first.GetCharge());
-		csmHit.SetEHorizontalStrip(h.second.segment);
-		csmHit.SetEVerticalStrip(v.second.segment);
+		csmHit.SetEHorizontalStrip(h.second.Segment());
+		csmHit.SetEVerticalStrip(v.second.Segment());
 		csmHit.SetEHorizontalCFD(h.first.GetCfd());
 		csmHit.SetEVerticalCFD(v.first.GetCfd());
 		csmHit.SetEHorizontalTime(h.first.GetTimeStamp());
 		csmHit.SetEVerticalTime(v.first.GetTimeStamp());
 		csmHit.SetEHorizontalEnergy(h.first.GetEnergy());
 		csmHit.SetEVerticalEnergy(v.first.GetEnergy());
-		csmHit.SetEPosition(TCSM::GetPosition(h.second.arrayposition,
-					h.second.arraysubposition[0],
-					h.second.segment,
-					v.second.segment));
+		csmHit.SetEPosition(TCSM::GetPosition(h.second.ArrayPosition(),
+					h.second.ArraySubPositionString()[0],
+					h.second.Segment(),
+					v.second.Segment()));
 	}
 
 	return csmHit;
 }
 
-TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >& hhV,std::vector<std::pair<TFragment, MNEMONIC> >& vvV) {
+TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, TMnemonic> >& hhV,std::vector<std::pair<TFragment, TMnemonic> >& vvV) {
 	TCSMHit csmHit;
 
 	if(hhV.size() == 0 || vvV.size() == 0) {
@@ -249,8 +249,8 @@ TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >& hhV,std::vec
 	}
 
 	//-------------------- horizontal strips
-	int DetNumH = hhV[0].second.arrayposition;
-	char DetPosH = hhV[0].second.arraysubposition[0];
+	int DetNumH = hhV[0].second.ArrayPosition();
+	char DetPosH = hhV[0].second.ArraySubPositionString()[0];
 	int ChargeH = hhV[0].first.GetCharge();
 	double EnergyH = hhV[0].first.GetEnergy();
 	int biggestH = 0;
@@ -261,23 +261,23 @@ TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >& hhV,std::vec
 			biggestH = i;
 		}
 
-		if(hhV[i].second.arrayposition != DetNumH) {
+		if(hhV[i].second.ArrayPosition() != DetNumH) {
 			std::cerr<<"\tSomething is wrong, Horizontal detector numbers don't match in vector loop."<<std::endl;
 		}
-		if(hhV[i].second.arraysubposition[0] != DetPosH) {
+		if(hhV[i].second.ArraySubPositionString()[0] != DetPosH) {
 			std::cerr<<"\tSomething is wrong, Horizontal detector positions don't match in vector loop."<<std::endl;
 		}
 		ChargeH += hhV[i].first.GetCharge();
 		EnergyH += hhV[i].first.GetEnergy();
 	}
 
-	int StripH = hhV[biggestH].second.segment;
+	int StripH = hhV[biggestH].second.Segment();
 	int ConFraH = hhV[biggestH].first.GetCfd();
 	double TimeH = hhV[biggestH].first.GetTimeStamp();
 
 	//-------------------- vertical strips
-	int DetNumV = vvV[0].second.arrayposition;
-	char DetPosV = vvV[0].second.arraysubposition[0];
+	int DetNumV = vvV[0].second.ArrayPosition();
+	char DetPosV = vvV[0].second.ArraySubPositionString()[0];
 	int ChargeV = vvV[0].first.GetCharge();
 	double EnergyV = vvV[0].first.GetEnergy();
 	int biggestV = 0;
@@ -288,17 +288,17 @@ TCSMHit TCSM::MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >& hhV,std::vec
 			biggestV = i;
 		}
 
-		if(vvV[i].second.arrayposition != DetNumV) {
+		if(vvV[i].second.ArrayPosition() != DetNumV) {
 			std::cerr<<"\tSomething is wrong, Vertical detector numbers don't match in vector loop."<<std::endl;
 		}
-		if(vvV[i].second.arraysubposition[0] != DetPosV) {
+		if(vvV[i].second.ArraySubPositionString()[0] != DetPosV) {
 			std::cerr<<"\tSomething is wrong, Vertical detector positions don't match in vector loop."<<std::endl;
 		}
 		ChargeV += vvV[i].first.GetCharge();
 		EnergyV += vvV[i].first.GetEnergy();
 	}
 
-	int StripV = vvV[biggestV].second.segment;
+	int StripV = vvV[biggestV].second.Segment();
 	int ConFraV = vvV[biggestV].first.GetCfd();
 	double TimeV = vvV[biggestV].first.GetTimeStamp();
 
@@ -514,15 +514,15 @@ void TCSM::OldBuilddEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitV
 	}
 }
 
-void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std::vector<TCSMHit>& hits) {
+void TCSM::RecoverHit(char orientation, std::pair<TFragment, TMnemonic>& hit, std::vector<TCSMHit>& hits) {
 	if(!RECOVERHITS) {
 		return;
 	}
 
 	TCSMHit csmHit;
 
-	int detno = hit.second.arrayposition;
-	char pos = hit.second.arraysubposition[0];
+	int detno = hit.second.ArrayPosition();
+	char pos = hit.second.ArraySubPositionString()[0];
 
 	switch(detno) {
 		case 1:
@@ -533,7 +533,7 @@ void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std
 				csmHit.SetDHorizontalCharge(hit.first.GetCharge());
 				csmHit.SetDVerticalCharge(hit.first.GetCharge());
 				csmHit.SetDHorizontalStrip(9);
-				csmHit.SetDVerticalStrip(hit.second.segment);
+				csmHit.SetDVerticalStrip(hit.second.Segment());
 				csmHit.SetDHorizontalCFD(hit.first.GetCfd());
 				csmHit.SetDVerticalCFD(hit.first.GetCfd());
 				csmHit.SetDHorizontalTime(hit.first.GetTimeStamp());
@@ -543,7 +543,7 @@ void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std
 				csmHit.SetDPosition(TCSM::GetPosition(detno,
 							pos,
 							9,
-							hit.second.segment));
+							hit.second.Segment()));
 			}
 			break;
 		case 3:
@@ -555,7 +555,7 @@ void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std
 				csmHit.SetDetectorNumber(detno);
 				csmHit.SetDHorizontalCharge(hit.first.GetCharge());
 				csmHit.SetDVerticalCharge(hit.first.GetCharge());
-				csmHit.SetDHorizontalStrip(hit.second.segment);
+				csmHit.SetDHorizontalStrip(hit.second.Segment());
 				csmHit.SetDVerticalStrip(11);
 				csmHit.SetDHorizontalCFD(hit.first.GetCfd());
 				csmHit.SetDVerticalCFD(hit.first.GetCfd());
@@ -565,7 +565,7 @@ void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std
 				csmHit.SetDVerticalEnergy(hit.first.GetEnergy());
 				csmHit.SetDPosition(TCSM::GetPosition(detno,
 							pos,
-							hit.second.segment,
+							hit.second.Segment(),
 							11));
 			}
 			break;
@@ -577,7 +577,7 @@ void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std
 				csmHit.SetDetectorNumber(detno);
 				csmHit.SetDHorizontalCharge(hit.first.GetCharge());
 				csmHit.SetDVerticalCharge(hit.first.GetCharge());
-				csmHit.SetDHorizontalStrip(hit.second.segment);
+				csmHit.SetDHorizontalStrip(hit.second.Segment());
 				csmHit.SetDVerticalStrip(15);
 				csmHit.SetDHorizontalCFD(hit.first.GetCfd());
 				csmHit.SetDVerticalCFD(hit.first.GetCfd());
@@ -587,7 +587,7 @@ void TCSM::RecoverHit(char orientation, std::pair<TFragment, MNEMONIC>& hit, std
 				csmHit.SetDVerticalEnergy(hit.first.GetEnergy());
 				csmHit.SetDPosition(TCSM::GetPosition(detno,
 							pos,
-							hit.second.segment,
+							hit.second.Segment(),
 							15));
 			}
 			break;

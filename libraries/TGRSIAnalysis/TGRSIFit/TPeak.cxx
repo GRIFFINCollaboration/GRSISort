@@ -188,15 +188,17 @@ Bool_t TPeak::InitParams(TH1* fitHist) {
 	if(fitHist == NULL) {
 		return false;
 	}
-   Double_t xlow,xhigh;
+   Double_t xlow,xhigh,low,high;
    GetRange(xlow,xhigh);
-   Int_t bin = fitHist->GetBinCenter(GetParameter("centroid"));
+   Int_t bin = fitHist->FindBin(GetParameter("centroid"));
    Int_t binlow = fitHist->GetXaxis()->FindBin(xlow);
    Int_t binhigh = fitHist->GetXaxis()->FindBin(xhigh);
    //Double_t binWidth = fitHist->GetBinWidth(bin);
    SetParLimits(0,0,fitHist->GetMaximum());
-   SetParLimits(1,xlow,xhigh);
-   SetParLimits(2,0.1,(xhigh-xlow)); // sigma should be less than the window width - JKS
+	GetParLimits(1,low, high);
+   if(low == high && low == 0.) SetParLimits(1,xlow,xhigh);
+	GetParLimits(2,low, high);
+   if(low == high && low == 0.) SetParLimits(2,0.1,(xhigh-xlow)); // sigma should be less than the window width - JKS
    SetParLimits(3,0.000001,10);
    SetParLimits(4,0.000001,100); // this is a percentage. no reason for it to go to 500% - JKS
    //Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
@@ -220,7 +222,7 @@ Bool_t TPeak::InitParams(TH1* fitHist) {
    SetParameter("centroid",GetParameter("centroid"));
  //  SetParameter("sigma",(xhigh-xlow)*0.5); // slightly more robust starting value for sigma -JKS
  //  SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
-   SetParameter("sigma",TMath::Sqrt(9.0 + 4.*GetParameter("centroid")/1000.));
+   SetParameter("sigma",TMath::Sqrt(9.0 + 4.*GetParameter("centroid")/1000.)/2.35);
    SetParameter("beta",GetParameter("sigma")/2.0);
    SetParameter("R", 1.0);
    SetParameter("step",1.0);
@@ -232,6 +234,7 @@ Bool_t TPeak::InitParams(TH1* fitHist) {
    FixParameter(3,GetParameter("beta"));
    FixParameter(4,0.00);
    SetInitialized();
+	Print("+");
    return true;
 }
 
@@ -249,7 +252,7 @@ Bool_t TPeak::Fit(TH1* fitHist,Option_t* opt) {
       InitParams(fitHist);
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2","Combination");
    TVirtualFitter::SetMaxIterations(100000);
-   TVirtualFitter::SetPrecision(1e-5);
+   TVirtualFitter::SetPrecision(1e-3);
 
    SetHist(fitHist);
 
@@ -260,17 +263,37 @@ Bool_t TPeak::Fit(TH1* fitHist,Option_t* opt) {
    //Now that it is initialized, let's fit it.
    //Just in case the range changed, we should reset the centroid and bg energy limits
 	//check first if the parameter has been fixed!
-	double parmin, parmax;
-	GetParLimits(1,parmin,parmax);
-	if(parmin < parmax) {
-		SetParLimits(1,GetXmin(),GetXmax());
-	}
-	GetParLimits(9,parmin,parmax);
-	if(parmin < parmax) {
-		SetParLimits(9,GetXmin(),GetXmax());
+	/////////////////// TODO: this should be done in SetRange !!!!!!!!!!
+	//double parmin, parmax;
+	//GetParLimits(1,parmin,parmax);
+	//if(parmin < parmax) {
+	//	SetParLimits(1,GetXmin(),GetXmax());
+	//}
+	//GetParLimits(9,parmin,parmax);
+	//if(parmin < parmax) {
+	//	SetParLimits(9,GetXmin(),GetXmax());
+	//}
+	std::vector<double> lowerLimit(GetNpar());
+	std::vector<double> upperLimit(GetNpar());
+	for(int i = 0; i < GetNpar(); ++i) {
+		GetParLimits(i, lowerLimit[i], upperLimit[i]);
+		if(i < 2) { //height, and centroid
+			FixParameter(i,GetParameter(i));
+		}
 	}
 
    TFitResultPtr fitres;
+   //Log likelihood is the proper fitting technique UNLESS the data is a result of an addition or subtraction.
+   if(GetLogLikelihoodFlag()) {
+      fitres = fitHist->Fit(this,Form("%sRLSN",opt));//The RS needs to always be there
+   } else{
+      fitres = fitHist->Fit(this,Form("%sRSN",opt));//The RS needs to always be there
+   }
+
+	for(int i = 0; i < GetNpar(); ++i) {
+		SetParLimits(i, lowerLimit[i], upperLimit[i]);
+	}
+
    //Log likelihood is the proper fitting technique UNLESS the data is a result of an addition or subtraction.
    if(GetLogLikelihoodFlag()) {
       fitres = fitHist->Fit(this,Form("%sRLS",opt));//The RS needs to always be there

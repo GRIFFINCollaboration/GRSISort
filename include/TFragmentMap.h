@@ -7,14 +7,11 @@
 
 /////////////////////////////////////////////////////////////////
 ///
-/// \class TDataParser
+/// \class TFragmentMap
 ///
-/// The TDataParser is the DAQ dependent part of GRSISort.
-/// It takes a "DAQ-dependent"-flavoured MIDAS file and
-/// converts it into a generic TFragment that the rest of
-/// GRSISort can deal with. This is where event word masks
-/// are applied, and any changes to the event format must
-/// be implemented.
+/// The TFragmentMap calculates the charges of piled-up hits.
+/// In the newest GRIFFIN data (starting with tests in 2016), piled-up hits
+/// have 2*n-1 integrated charges reported, for the different integration areas.
 ///
 /////////////////////////////////////////////////////////////////
 
@@ -28,24 +25,23 @@
 #include "ThreadsafeQueue.h"
 
 class TFragmentMap {
-	public:
-  //	TFragmentMap() {};
+   public:
+      TFragmentMap(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& goodOutputQueue,
+            std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& badOutputQueue);
 
+      ~TFragmentMap() {};
 #ifndef __CINT__
-	TFragmentMap(std::shared_ptr<ThreadsafeQueue<TFragment*> >& good_output_queue,
-		     std::shared_ptr<ThreadsafeQueue<TFragment*> >& bad_output_queue);
+      bool Add(std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>);
 #endif
-	
-	
-	~TFragmentMap() {};
-	bool Add(TFragment*, std::vector<Int_t>, std::vector<Short_t>);
-	
-	private:
-	void Solve(std::vector<TFragment*>, std::vector<Float_t>, std::vector<Long_t>, int situation = -1);
+
+   private:
+      static bool fDebug;
 #ifndef __CINT__
-	std::multimap<UInt_t, std::tuple<TFragment*, std::vector<Int_t>, std::vector<Short_t> > > fMap;
-	std::shared_ptr<ThreadsafeQueue<TFragment*> >& fGood_output_queue;
-	std::shared_ptr<ThreadsafeQueue<TFragment*> >& fBad_output_queue;
+      void Solve(std::vector<std::shared_ptr<TFragment> >, std::vector<Float_t>, std::vector<Long_t>, int situation = -1);
+
+      std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > > fMap;
+      std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& fGoodOutputQueue;
+      std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& fBadOutputQueue;
 #endif
 };
 /*! @} */

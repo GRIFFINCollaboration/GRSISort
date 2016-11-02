@@ -1,7 +1,8 @@
 #include "TGRSIDetectorHit.h"
 
-#include "TClass.h"
 #include <iostream>
+
+#include "TClass.h"
 
 /// \cond CLASSIMP
 ClassImp(TGRSIDetectorHit)
@@ -15,23 +16,23 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject() {
   ///Default constructor
   Clear();
   fAddress = Address;
-  if(!fPPG)
-    fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
+//  if(!fPPG)
+ //   fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
 
 #if MAJOR_ROOT_VERSION < 6
   Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 }
 
-TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) : TObject() {
+TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) : TObject(rhs) {
   ///Default Copy constructor
   rhs.Copy(*this);
   if(copywave) {
     rhs.CopyWave(*this);
   }
-
-  if(!fPPG)
-    fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
+  ClearTransients();
+ // if(!fPPG)
+ //   fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
 #if MAJOR_ROOT_VERSION < 6
   Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -51,18 +52,29 @@ void TGRSIDetectorHit::Streamer(TBuffer& R__b) {
   }
 }
 
-Double_t TGRSIDetectorHit::GetTime(Option_t* opt) const {
+Double_t TGRSIDetectorHit::GetTime(const UInt_t& correction_flag,Option_t* opt) const {
   if(IsTimeSet())
     return fTime;
 
-  Double_t dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
   TChannel* chan = GetChannel();
   if(!chan) {
     Error("GetTime","No TChannel exists for address 0x%08x",GetAddress());
-    return 10.*dTime;
+    return 10.*(static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform()));
   }
 
-  return 10.*(dTime - chan->GetTZero(GetEnergy()));
+	switch(chan->GetDigitizerType()) {
+		Double_t dTime;
+		case TMnemonic::kGRF16:
+			dTime = (GetTimeStamp()&(~0x3ffff))*10. + (GetCfd() + gRandom->Uniform())/1.6;//CFD is in 10/16th of a nanosecond
+			return dTime - 10.*(chan->GetTZero(GetEnergy()));
+		case TMnemonic::kGRF4G:
+			dTime = GetTimeStamp()*10. + (fCfd>>22) + ((fCfd & 0x3fffff) + gRandom->Uniform())/256.;
+			return dTime - 10.*(chan->GetTZero(GetEnergy()));
+		default:
+		   dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
+		   return 10.*(dTime - chan->GetTZero(GetEnergy()));
+	}
+	return 0.;
 }
 
 
@@ -84,27 +96,28 @@ double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
   TChannel* chan = GetChannel();
   if(!chan) {
     //Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
-    return Charge();
+    return SetEnergy((Double_t)(Charge()));
   }
   if(fKValue >0) {
-    return chan->CalibrateENG(Charge(),(int)fKValue);
+    return SetEnergy(chan->CalibrateENG(Charge(),(int)fKValue));
   } else if(chan->UseCalFileIntegration()) {
-    return chan->CalibrateENG(Charge(),0);  // this will use the integration value
+    return SetEnergy(chan->CalibrateENG(Charge(),0));  // this will use the integration value
                                             // in the TChannel if it exists.
   }
-  return chan->CalibrateENG(Charge());
+  return SetEnergy(chan->CalibrateENG(Charge()));
 }
 
 void TGRSIDetectorHit::Copy(TObject& rhs) const {
   TObject::Copy(rhs);
   static_cast<TGRSIDetectorHit&>(rhs).fAddress        = fAddress;
-//  static_cast<TGRSIDetectorHit&>(rhs).fPosition       = fPosition;
+  //static_cast<TGRSIDetectorHit&>(rhs).fPosition       = fPosition;
   static_cast<TGRSIDetectorHit&>(rhs).fCfd            = fCfd;
   static_cast<TGRSIDetectorHit&>(rhs).fTimeStamp      = fTimeStamp;
   static_cast<TGRSIDetectorHit&>(rhs).fCharge         = fCharge;
   static_cast<TGRSIDetectorHit&>(rhs).fKValue         = fKValue;
   static_cast<TGRSIDetectorHit&>(rhs).fEnergy         = fEnergy;
   static_cast<TGRSIDetectorHit&>(rhs).fTime           = fTime;
+  static_cast<TGRSIDetectorHit&>(rhs).fChannel        = fChannel;
 
   static_cast<TGRSIDetectorHit&>(rhs).fBitflags       = 0;
   static_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
@@ -129,7 +142,7 @@ void TGRSIDetectorHit::Print(Option_t* opt) const {
 }
 
 const char *TGRSIDetectorHit::GetName() const {
-  TChannel *channel = TChannel::GetChannel(fAddress);
+  TChannel *channel = GetChannel();
   if(!channel)
      return Class()->ClassName();
   else
@@ -152,21 +165,16 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
   fBitflags       = fBitflags&0xff00;
   fPPGStatus      = TPPG::kJunk;
   fCycleTimeStamp = 0;
+  fChannel        = NULL;
 }
 
 Int_t TGRSIDetectorHit::GetDetector() const {
 
-  //if(IsDetSet())
-  //  return fDetector;
-
-  //MNEMONIC mnemonic;
   TChannel* channel = GetChannel();
   if(!channel) {
     Error("GetDetector","No TChannel exists for address 0x%08x",GetAddress());
     return -1;
   }
-  //ClearMNEMONIC(&mnemonic);
-  //ParseMNEMONIC(channel->GetChannelName(),&mnemonic);
   return channel->GetDetectorNumber(); //mnemonic.arrayposition;
 
 }
@@ -198,7 +206,7 @@ Int_t TGRSIDetectorHit::GetCrystal() const {
 UShort_t TGRSIDetectorHit::GetArrayNumber() const {
   TChannel *channel = GetChannel();
   if(channel) {
-    return GetDetector()*4 + GetCrystal();
+    return (GetDetector()-1)*4 + GetCrystal();
   }
   return -1;
 }
@@ -255,6 +263,14 @@ Short_t TGRSIDetectorHit::SetSegment(const Short_t &seg) {
 
 bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rhs) {
   return (lhs->GetEnergy() > rhs->GetEnergy());
+}
+
+Long_t TGRSIDetectorHit::GetTimeStamp(Option_t* opt) const  { 
+   TChannel* tmpChan = GetChannel();
+   if(!tmpChan){
+      return fTimeStamp;   
+   }
+   return fTimeStamp - tmpChan->GetTimeOffset();   
 }
 
 uint16_t TGRSIDetectorHit::GetPPGStatus() const {

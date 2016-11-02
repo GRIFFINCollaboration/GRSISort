@@ -67,28 +67,6 @@ void TLaBr::Print(Option_t *opt) const	{
    printf("%lu fLaBrHits\n",fLaBrHits.size());
 }
 
-void TLaBr::PushBackHit(TGRSIDetectorHit *laHit) {
-   //Adds a Hit to the list of TLaBr Hits
-   fLaBrHits.push_back(*(static_cast<TLaBrHit*>(laHit)));
-}
-
-void TLaBr::AddFragment(TFragment* frag, TChannel* chan) {
-   //Builds the LaBr Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
-   //This should be done for both LaBr and it's suppressors.
-   if(frag == NULL || chan == NULL) {
-      return;
-   }
-   
-   //   for(size_t i = 0; i < frag->Charge.size(); ++i) {
-   TLaBrHit hit;
-   hit.SetAddress(frag->GetAddress());
-   hit.SetTimeStamp(frag->GetTimeStamp());
-   hit.SetCfd(frag->GetCfd());
-   hit.SetCharge(frag->Charge());
-      
-   AddHit(&hit);
-      //   }
-}
 
 TGRSIDetectorHit* TLaBr::GetHit(const Int_t& idx){
    //Gets the TLaBrHit at index idx.
@@ -104,4 +82,9 @@ TLaBrHit* TLaBr::GetLaBrHit(const int& i) {
       throw grsi::exit_exception(1);
    }
    return NULL;
+}
+
+void TLaBr::AddFragment(std::shared_ptr<const TFragment> frag, TChannel *chan) {
+   TLaBrHit laHit(*frag); //Building is controlled in the constructor of the hit
+   fLaBrHits.push_back(std::move(laHit)); //use std::move for efficienciy since laHit loses scope here anyway
 }

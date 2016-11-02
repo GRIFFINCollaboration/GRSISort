@@ -39,20 +39,14 @@ TTip& TTip::operator=(const TTip& rhs) {
    return *this;
 }
 
-void TTip::AddFragment(TFragment* frag, TChannel* chan) {
+void TTip::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 	if(frag == NULL || chan == NULL) {
 		return;
 	}
 
   TTipHit dethit(*frag);
-  dethit.SetUpNumbering(chan);
-
-  if(TGRSIRunInfo::IsWaveformFitting() && !dethit.IsCsI())
-		dethit.SetWavefit(*frag);
-  else if(TGRSIRunInfo::IsWaveformFitting() && dethit.IsCsI()) 	   
-		dethit.SetPID(*frag);
-
-  fTipHits.push_back(dethit);
+  dethit.SetUpNumbering(chan); //Think about moving this to ctor
+  fTipHits.push_back(std::move(dethit)); //Once we are done with it we can move the memory
 }
 
 void TTip::Print(Option_t *opt) const {
@@ -74,7 +68,3 @@ TTipHit* TTip::GetTipHit(const int& i) {
    return 0;
 }
 
-void TTip::PushBackHit(TGRSIDetectorHit *tiphit) {
-  fTipHits.push_back(*(static_cast<TTipHit*>(tiphit)));
-  return;
-}

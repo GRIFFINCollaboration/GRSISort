@@ -7,7 +7,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
-/// \class TDiagnostics
+/// \class TParsingDiagnostics
 /// 
 /// This class gathers various diagnostics calculated during the sorting from
 /// a midas file to a fragment tree and analysis tree and provides convenient
@@ -21,17 +21,27 @@
 #include <vector>
 #include <map>
 
+#ifndef __CINT__
+#include <memory>
+#endif
+
 #include "TObject.h"
 #include "TH1F.h"
 
 #include "TPPG.h"
 #include "TFragment.h"
 
-class TDiagnostics : public TObject {
+class TParsingDiagnostics : public TObject {
 	public:
-		TDiagnostics();
-		TDiagnostics(const TDiagnostics&);
-		~TDiagnostics();
+		TParsingDiagnostics();
+		TParsingDiagnostics(const TParsingDiagnostics&);
+		~TParsingDiagnostics();
+		static TParsingDiagnostics* Get() {
+			if(fParsingDiagnostics == NULL) {
+				fParsingDiagnostics = new TParsingDiagnostics;
+			}
+			return fParsingDiagnostics;
+		}
 
 	private:
 		//fragment tree diagnostics (should these all be static?)
@@ -60,10 +70,14 @@ class TDiagnostics : public TObject {
 
 		//
 		TH1F* fIdHist;                                     ///< histogram of event survival
+
+		static TParsingDiagnostics* fParsingDiagnostics;
 	
 	public:
 		//"setter" functions
-		void GoodFragment(TFragment*);
+#ifndef __CINT__
+		void GoodFragment(std::shared_ptr<const TFragment>);
+#endif
 		void GoodFragment(Short_t detType) { fNumberOfGoodFragments[detType]++; }
 		void BadFragment(Short_t detType)  { fNumberOfBadFragments[detType]++; }
 
@@ -84,7 +98,7 @@ class TDiagnostics : public TObject {
 		void Draw(Option_t* opt = "");
 
 /// \cond CLASSIMP
-	ClassDef(TDiagnostics,1);
+	ClassDef(TParsingDiagnostics,1);
 /// \endcond
 };
 /*! @} */

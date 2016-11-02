@@ -36,20 +36,11 @@ TGRSIDetector::~TGRSIDetector() {
 //Default Destructor.
 }
 
-
-void TGRSIDetector::AddHit(TGRSIDetectorHit *hit,Option_t *opt) {
-   // hit->SetParent(this); 
-  PushBackHit(hit);
-  return;
-}
-
 void TGRSIDetector::Copy(TObject &rhs) const {
   //if(!rhs.InheritsFrom("TGRSIDetector"))
   //   return;
   TObject::Copy(rhs);
-  
 }
-
 
 void TGRSIDetector::Print(Option_t *opt) const {
 // Default print statement for TGRSIDetector. Currently does
@@ -57,9 +48,7 @@ void TGRSIDetector::Print(Option_t *opt) const {
 }
 
 void TGRSIDetector::Clear(Option_t *opt) {
-// Default clear statement for TGRSIDetector. Currently does
-// nothing
+// Default clear statement for TGRSIDetector. 
+  //fMidasTimestamp = -1;
 }
-
-
 

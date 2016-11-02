@@ -8,6 +8,9 @@
 #include <stdexcept>
 #include <cstdio>
 #include <vector>
+#ifndef __CINT__
+#include <memory>
+#endif
 
 #include "TVector3.h"
 #include "TObject.h"
@@ -40,11 +43,14 @@ class TDetector : public TObject	{
 		}
 
 	public: 
-		virtual void BuildHits()                                   { AbstractMethod("BuildHits()"); } //!<!
-		virtual void AddFragment(TFragment*, TChannel*)            { AbstractMethod("AddFragment()"); } //!<!
+		virtual void BuildHits()                                        { AbstractMethod("BuildHits()"); } //!<!
+#ifndef __CINT__
+		virtual void AddFragment(std::shared_ptr<const TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
+#endif
 
 		virtual void Copy(TObject&) const;              //!<!
 		virtual void Clear(Option_t* opt = "");         //!<!
+      virtual void ClearTransients() {}               //!<!
 		virtual void Print(Option_t* opt = "") const;   //!<!
 
 /// \cond CLASSIMP

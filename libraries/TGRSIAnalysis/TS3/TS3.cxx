@@ -1,4 +1,6 @@
 #include "TS3.h"
+#include "TMnemonic.h"
+
 #include <cmath>
 #include "TMath.h"
 
@@ -11,13 +13,16 @@ ClassImp(TS3)
 int    TS3::fRingNumber;
 int    TS3::fSectorNumber;
 
-double TS3::fOffsetPhi;
+double TS3::fOffsetPhiCon;
+double TS3::fOffsetPhiSet;
 double TS3::fOuterDiameter;
 double TS3::fInnerDiameter;
 double TS3::fTargetDistance;
 
 Int_t TS3::fFrontBackTime;   
-double TS3::fFrontBackEnergy;  
+double TS3::fFrontBackEnergy; 
+
+TRandom2 TS3::s3_rand;
 
 TS3::TS3() {
    Clear();	
@@ -38,47 +43,37 @@ TS3::TS3(const TS3& rhs) : TGRSIDetector() {
 
 void TS3::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
-  static_cast<TS3&>(rhs).fS3RingHits    	= fS3RingHits;
+  static_cast<TS3&>(rhs).fS3RingHits    = fS3RingHits;
   static_cast<TS3&>(rhs).fS3SectorHits    = fS3SectorHits;
   return;                                      
 }  
 
-void TS3::AddFragment(TFragment* frag, TChannel* chan) {
+void TS3::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 	///This function creates TS3Hits for each fragment and stores them in separate front and back vectors
 	if(frag == NULL || chan == NULL) {
 		return;
 	}
 
-	bool IsDownstream = false;		
-	if(chan->GetMnemonic()->collectedcharge.compare(0,1,"N")==0) { // ring	
-			TS3Hit dethit(*frag);
-			dethit.SetRingNumber(*frag);
-			dethit.SetSectorNumber(0);
-			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
-				IsDownstream = true;
-			else if(chan->GetMnemonic()->arrayposition == 1)
-				IsDownstream = false;
-			else
-				IsDownstream = true; // In case of incorrect value, we assume downstream
-			dethit.SetIsDownstream(IsDownstream);
-			if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
-				dethit.SetWavefit(*frag);
-			fS3RingHits.push_back(dethit);
-	} else {
-			TS3Hit dethit(*frag);
-			dethit.SetRingNumber(0);
-			dethit.SetSectorNumber(*frag);
-			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
-				IsDownstream = true;
-			else if(chan->GetMnemonic()->arrayposition == 1)
-				IsDownstream = false;
-			else
-				IsDownstream = true; // In case of incorrect value, we assume downstream
-			dethit.SetIsDownstream(IsDownstream);
-			if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
-				dethit.SetWavefit(*frag);
-			fS3SectorHits.push_back(dethit);
+	TS3Hit dethit(*frag);//Moved upstream/downstream switch into hit ctor
+	
+	if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kN){
+		dethit.SetRingNumber(frag->GetSegment());
+		dethit.SetSectorNumber(0);
+
+		if(TGRSIRunInfo::IsWaveformFitting())
+			dethit.SetWavefit(*frag);
+
+		fS3RingHits.push_back(std::move(dethit));
+	}else {
+		dethit.SetRingNumber(0);
+		dethit.SetSectorNumber(frag->GetSegment());
+		
+		if(TGRSIRunInfo::IsWaveformFitting())
+		dethit.SetWavefit(*frag);
+			
+		fS3SectorHits.push_back(std::move(dethit));
 	}	
+
 }
 
 void TS3::SetBitNumber(enum ES3Bits bit,Bool_t set){
@@ -87,9 +82,6 @@ void TS3::SetBitNumber(enum ES3Bits bit,Bool_t set){
     fS3Bits |= bit;
   else
     fS3Bits &= (~bit);
-}
-
-void TS3::BuildHits()  {
 }
 
 Int_t TS3::GetPixelMultiplicity(){
@@ -117,8 +109,8 @@ void TS3::BuildPixels(){
   if(fS3Hits.size() == 0) {
 		
 
-		// We are going to want energies sereral times and TFragment calibrates on every call
-		// So build a quick vector to save on repeat calulations
+		// We are going to want energies sereral times
+		// So build a quick vector 
 		std::vector<double> EneR,EneS;
 		std::vector<bool> UsedRing, UsedSector;
 		for(size_t i = 0; i < fS3RingHits.size(); ++i){
@@ -144,10 +136,10 @@ void TS3::BuildPixels(){
 						//Now we have accepted a good event, build it
 						TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position
 						dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
-						if(TGRSIRunInfo::IsWaveformFitting()){
-							dethit.SetTimeFit(fS3RingHits[i].GetFitTime());
-							dethit.SetSig2Noise(fS3RingHits[i].GetSignalToNoise());
-						}
+// 						if(TGRSIRunInfo::IsWaveformFitting()){
+// 							dethit.SetTimeFit(fS3RingHits[i].GetFitTime());
+// 							dethit.SetSig2Noise(fS3RingHits[i].GetSignalToNoise());
+// 						}
 						fS3Hits.push_back(dethit);
 
 						UsedRing[i]=true;
@@ -192,19 +184,19 @@ void TS3::BuildPixels(){
 									//Now we have accepted a good event, build it
 									TS3Hit dethit = fS3SectorHits[j]; // Sector now defines all data ring just gives position
 									dethit.SetRingNumber(fS3RingHits[i].GetRing());
-									if(TGRSIRunInfo::IsWaveformFitting()){
-										dethit.SetTimeFit(fS3SectorHits[j].GetFitTime());
-										dethit.SetSig2Noise(fS3SectorHits[j].GetSignalToNoise());
-									}
+// 									if(TGRSIRunInfo::IsWaveformFitting()){
+// 										dethit.SetTimeFit(fS3SectorHits[j].GetFitTime());
+// 										dethit.SetSig2Noise(fS3SectorHits[j].GetSignalToNoise());
+// 									}
 									fS3Hits.push_back(dethit);
 
 									//Now we have accepted a good event, build it
 									TS3Hit dethitB = fS3SectorHits[k]; // Sector now defines all data ring just gives position
 									dethitB.SetRingNumber(fS3RingHits[i].GetRing());
-									if(TGRSIRunInfo::IsWaveformFitting()){
-										dethitB.SetTimeFit(fS3SectorHits[k].GetFitTime());
-										dethitB.SetSig2Noise(fS3SectorHits[k].GetSignalToNoise());
-									}
+// 									if(TGRSIRunInfo::IsWaveformFitting()){
+// 										dethitB.SetTimeFit(fS3SectorHits[k].GetFitTime());
+// 										dethitB.SetSig2Noise(fS3SectorHits[k].GetSignalToNoise());
+// 									}
 									fS3Hits.push_back(dethitB);
 
 									UsedRing[i]=true;
@@ -249,24 +241,24 @@ void TS3::BuildPixels(){
 									//Now we have accepted a good event, build it
 									TS3Hit dethit = fS3RingHits[j]; // Ring defines all data sector just gives position
 									dethit.SetSectorNumber(fS3SectorHits[i].GetSector());
-									if(TGRSIRunInfo::IsWaveformFitting()){
-										dethit.SetTimeFit(fS3RingHits[j].GetFitTime());
-										dethit.SetSig2Noise(fS3RingHits[j].GetSignalToNoise());
-									}
+// 									if(TGRSIRunInfo::IsWaveformFitting()){
+// 										dethit.SetTimeFit(fS3RingHits[j].GetFitTime());
+// 										dethit.SetSig2Noise(fS3RingHits[j].GetSignalToNoise());
+// 									}
 									fS3Hits.push_back(dethit);
 
 									//Now we have accepted a good event, build it
 									TS3Hit dethitB = fS3RingHits[k]; // Ring defines all data sector just gives position
 									dethitB.SetSectorNumber(fS3SectorHits[i].GetSector());
-									if(TGRSIRunInfo::IsWaveformFitting()){
-										dethitB.SetTimeFit(fS3RingHits[k].GetFitTime());
-										dethitB.SetSig2Noise(fS3RingHits[k].GetSignalToNoise());
-									}
+// 									if(TGRSIRunInfo::IsWaveformFitting()){
+// 										dethitB.SetTimeFit(fS3RingHits[k].GetFitTime());
+// 										dethitB.SetSig2Noise(fS3RingHits[k].GetSignalToNoise());
+// 									}
 									fS3Hits.push_back(dethitB);
 
-									UsedRing[i]=true;
-									UsedSector[j]=true;
-									UsedSector[k]=true;
+									UsedSector[i]=true;
+									UsedRing[j]=true;
+									UsedRing[k]=true;
 
 								}
 							}
@@ -283,24 +275,35 @@ void TS3::BuildPixels(){
 
 }
 
-TVector3 TS3::GetPosition(int ring, int sector, bool downstream, double offset)  {
-  TVector3 position;
-	double dist = 0;
-	if(offset == 0)
-		dist = fTargetDistance;
-	else
-		dist = offset;
-  double ring_width=(fOuterDiameter-fInnerDiameter)*0.5/fRingNumber; // 24 rings   radial width!
-  double inner_radius=fInnerDiameter/2.0;
-  double correctedsector = 6+sector; //moe is currently checking.
-  double phi     =  2.*TMath::Pi()/fSectorNumber * (correctedsector + 0.5);   //the phi angle....
-  double radius =  inner_radius + ring_width * (ring + 0.5) ;
-	if(downstream)
- 		position.SetMagThetaPhi(sqrt(radius*radius + dist*dist),atan((radius/dist)),phi+fOffsetPhi);
-	else
- 		position.SetMagThetaPhi(sqrt(radius*radius + dist*dist),TMath::Pi() - atan((radius/dist)),phi+fOffsetPhi);
 
-  return position;
+
+
+TVector3 TS3::GetPosition(int ring, int sector, bool smear){
+	return GetPosition(ring,sector,fOffsetPhiSet,fTargetDistance,true,smear);
+}
+
+TVector3 TS3::GetPosition(int ring, int sector, double offsetphi,double offsetZ, bool sectorsdownstream,bool smear)  {
+	
+	double ring_width=(fOuterDiameter-fInnerDiameter)*0.5/fRingNumber; // 24 rings   radial width!
+	double inner_radius=fInnerDiameter/2.0;
+	double phi_width=2.*TMath::Pi()/fSectorNumber;
+
+	double radius =  inner_radius + ring_width * (ring + 0.5) ;
+
+	double phi    =  phi_width*-sector;   //the phi angle....
+	phi+=fOffsetPhiCon;
+	if(!sectorsdownstream)phi=-phi;
+	phi+=offsetphi;
+
+	if(smear){
+		double sep=ring_width*0.025;
+		double r1=radius-ring_width*0.5+sep,r2=radius+ring_width*0.5-sep;
+		radius=sqrt(s3_rand.Uniform(r1*r1,r2*r2));
+		double sepphi=sep/radius;
+		phi=s3_rand.Uniform(phi-phi_width*0.5+sepphi,phi+phi_width*0.5-sepphi);	
+	}
+
+	return TVector3(cos(phi)*radius,sin(phi)*radius,offsetZ);
 }
 
 TGRSIDetectorHit* TS3::GetHit(const int& idx){
@@ -317,34 +320,55 @@ TS3Hit *TS3::GetS3Hit(const int& i) {
   }
 }  
 
-void TS3::PushBackHit(TGRSIDetectorHit *deshit) {
+TS3Hit *TS3::GetRingHit(const int& i) {  
+  if(i < GetRingMultiplicity()) {
+    return &fS3RingHits.at(i);
+  } else {
+    std::cerr << "S3 ring hits are out of range" << std::endl;
+    throw grsi::exit_exception(1);
+    return NULL;
+  }
+}  
+
+TS3Hit *TS3::GetSectorHit(const int& i) {  
+  if(i < GetSectorMultiplicity()) {
+    return &fS3SectorHits.at(i);
+  } else {
+    std::cerr << "S3 sector hits are out of range" << std::endl;
+    throw grsi::exit_exception(1);
+    return NULL;
+  }
+}  
+
+
+/*void TS3::PushBackHit(TGRSIDetectorHit *deshit) {
   fS3Hits.push_back(*((TS3Hit*)deshit));
   return;
 }
-
+*/
 
 void TS3::Print(Option_t *opt) const {
    printf("%s\tnot yet written.\n",__PRETTY_FUNCTION__);
 }
 
 void TS3::Clear(Option_t *opt) {
-  TGRSIDetector::Clear(opt);
-  fS3Hits.clear();
+	TGRSIDetector::Clear(opt);
+	fS3Hits.clear();
 	fS3RingHits.clear();
 	fS3SectorHits.clear();
-  fS3_RingFragment.clear();
-  fS3_SectorFragment.clear();
-  fRingNumber=24;
-  fSectorNumber=32;
-  fOffsetPhi=15*TMath::Pi()/180.; // according to dave.
-  fOuterDiameter=70.;
-  fInnerDiameter=22.;
-  fTargetDistance=31.;
-  
-  fFrontBackTime=75;   
-  fFrontBackEnergy=0.9; 
+	fRingNumber=24;
+	fSectorNumber=32;
+	fOffsetPhiCon=-0.5*TMath::Pi(); // Offset between connector and sector 0 (viewed from sector side)
+	fOffsetPhiSet=-22.5*TMath::Pi()/180.; // Phi rotation of connector in setup // -90 for bambino -22.5 for SPICE
+	fOuterDiameter=70.;
+	fInnerDiameter=22.;
+	fTargetDistance=31.;
+
+	fFrontBackTime=75;   
+	fFrontBackEnergy=0.9; 
 	SetPixels(false);
 	SetMultiHit(false);
+	s3_rand.SetSeed();
 }
 
 

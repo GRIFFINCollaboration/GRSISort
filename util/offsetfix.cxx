@@ -18,7 +18,6 @@
 #include "TPolyMarker.h"
 #include "TStopwatch.h"
 #include "TSystem.h"
-#include "TGRSIRootIO.h"
 
 #include<TMidasFile.h>
 #include<TMidasEvent.h>
@@ -886,8 +885,6 @@ int main(int argc, char **argv) {
       nDigitizers = CorrectionFile(runnumber);
    }
 
-   TGRSIRootIO::Get()->SetUpDiagnostics();
-   
    if(!nDigitizers){
       TFile *outfile = new TFile(filename,"RECREATE");
       std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;

@@ -1,5 +1,6 @@
 #include "TTip.h"
 #include "TTipHit.h"
+#include "TGRSIRunInfo.h"
 
 ////////////////////////////////////////////////////////////
 //                    
@@ -19,8 +20,12 @@ TTipHit::TTipHit() {
    Clear();
 }
 
-TTipHit::TTipHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+TTipHit::TTipHit(const TFragment &frag) : TGRSIDetectorHit(frag) {
 	//SetVariables(frag);
+  if(TGRSIRunInfo::IsWaveformFitting() && !IsCsI())
+		SetWavefit(frag);
+  else if(TGRSIRunInfo::IsWaveformFitting() && IsCsI()) 	   
+		SetPID(frag);
 }
 
 TTipHit::~TTipHit() { }
@@ -60,7 +65,7 @@ void TTipHit::Print(Option_t *opt) const {
    printf("Tip hit time:   %.f\n",GetTime());
 }
 
-void TTipHit::SetWavefit(TFragment &frag)   { 
+void TTipHit::SetWavefit(const TFragment &frag)   { 
 	TPulseAnalyzer pulse(frag);	    
 	if(pulse.IsSet()){
 		fTimeFit   = pulse.fit_newT0();
@@ -68,7 +73,7 @@ void TTipHit::SetWavefit(TFragment &frag)   {
 	}
 }
 
-void TTipHit::SetPID(TFragment &frag)	{
+void TTipHit::SetPID(const TFragment &frag)	{
 	TPulseAnalyzer pulse(frag);
 	if(pulse.IsSet()){
 		fPID = pulse.CsIPID();

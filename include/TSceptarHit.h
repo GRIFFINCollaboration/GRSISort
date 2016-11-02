@@ -16,6 +16,7 @@
 
 #include <cstdio>
 #include <cmath>
+#include <vector>
 
 #include "TFragment.h"
 #include "TChannel.h"
@@ -29,6 +30,7 @@ class TSceptarHit : public TGRSIDetectorHit {
       TSceptarHit();
       virtual ~TSceptarHit();
       TSceptarHit(const TSceptarHit&);
+      TSceptarHit(const TFragment& frag);
       
    private:
       Int_t    fFilter;

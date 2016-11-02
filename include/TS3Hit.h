@@ -15,7 +15,7 @@
 class TS3Hit : public TGRSIDetectorHit {
 	public:
 		TS3Hit();
-		TS3Hit(TFragment &);
+		TS3Hit(const TFragment &);
 		virtual ~TS3Hit();
 		TS3Hit(const TS3Hit&);
 
@@ -31,26 +31,24 @@ class TS3Hit : public TGRSIDetectorHit {
 		void Print(Option_t* opt="") const;
 		void Clear(Option_t* opt="");
 
-		inline Double_t GetFitTime()			           { return fTimeFit;	   } //!<!
-		inline Double_t GetSignalToNoise()		        { return fSig2Noise;	} //!<!
+		inline Double_t GetFitTime()			         { return fTimeFit; } //!<!
+		inline Double_t GetSignalToNoise()		      { return fSig2Noise;	} //!<!
 
-		void SetRingNumber(Short_t rn)     			{ fRing = rn;   }
-		void SetSectorNumber(Short_t sn)   			{ fSector = sn; }
-		void SetIsDownstream(Bool_t dwnstrm) 		{ fIsDownstream = dwnstrm; }
+		void SetRingNumber(Short_t rn)				   { fRing = rn; }
+		void SetSectorNumber(Short_t sn)   			   { fSector = sn; }
+		void SetIsDownstream(Bool_t dwnstrm) 		   { fIsDownstream = dwnstrm; }
 
-		void SetRingNumber(TFragment &frag)     { fRing = GetMnemonicSegment(frag);   	}
-		void SetSectorNumber(TFragment &frag)   { fSector = GetMnemonicSegment(frag) ; 	}
-		void SetSectorNumber(int n)   					{ fSector = n ; 												}
-		void SetRingNumber(int n)   						{ fRing 	= n ; 												}
+		void SetRingNumber(TFragment &frag)          { fRing = frag.GetSegment(); }
+		void SetSectorNumber(TFragment &frag)        { fSector = frag.GetSegment(); }
+		void SetSectorNumber(int n)   					{ fSector = n ; }
+		void SetRingNumber(int n)   						{ fRing 	= n ; }
 
-		void SetWavefit(TFragment&);
-		void SetTimeFit(Double_t time)					{ fTimeFit = time;											}
-		void SetSig2Noise(Double_t sig2noise)		{ fSig2Noise = sig2noise;								}
-
-    Short_t GetMnemonicSegment(TFragment &frag);	//could be added to TGRSIDetectorHit base class
+		void SetWavefit(const TFragment&);
+		void SetTimeFit(Double_t time)					{ fTimeFit = time; }
+		void SetSig2Noise(Double_t sig2noise)		   { fSig2Noise = sig2noise; }
 
 		Double_t GetPhi(double offset=0) {
-			return this->GetPosition(offset).Phi();
+			return GetPosition(offset).Phi();
 		}
 
 		Double_t GetTheta(double offset=0, TVector3 *vec=0) {
@@ -58,16 +56,16 @@ class TS3Hit : public TGRSIDetectorHit {
 				vec = new TVector3();
 				vec->SetXYZ(0,0,1);
 			}
-			return this->GetPosition(offset).Angle(*vec);
+			return GetPosition(offset).Angle(*vec);
 		}
-		TVector3 GetPosition(Double_t offset, Double_t dist) const; //!
-		TVector3 GetPosition(Double_t offset) const; //!
-		TVector3 GetPosition() const; //!
+		TVector3 GetPosition(Double_t phioffset, Double_t dist,bool smear=false) const; //!
+		TVector3 GetPosition(Double_t phioffset,bool smear=false) const; //!
+		TVector3 GetPosition(bool smear=false) const; //!
 
 	private:
-      Double_t GetDefaultOffset() const { return 0.0; }
-      Double_t GetDefaultDistance() const { return 0.0; }
-
+	Double_t GetDefaultPhiOffset() const;//!
+	Double_t GetDefaultDistance() const;//!
+            
 		Bool_t 	 fIsDownstream; // Downstream check
 		Short_t  fRing;   //front
 		Short_t  fSector; //back

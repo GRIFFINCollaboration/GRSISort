@@ -1,7 +1,9 @@
 #include "TSharc.h"
+#include "TMnemonic.h"
 
 #include <cstdio>
 #include <iostream>
+#include <cmath>
 
 #include "TClass.h"
 #include "TMath.h"
@@ -82,24 +84,31 @@ TSharc::TSharc(const TSharc& rhs) : TGRSIDetector() {
   rhs.Copy(*this);
 }
 
-void TSharc::AddFragment(TFragment* frag, TChannel* chan) {
+void TSharc::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
   if(frag == NULL || chan == NULL) {
     return;
   }
-  if(chan->GetMnemonic()->arraysubposition.compare(0,1,"D") == 0) {
-    if(chan->GetMnemonic()->collectedcharge.compare(0,1,"P") == 0) {
-      
+/*  if(GetMidasTimestamp() == -1) {
+    SetMidasTimestamp(frag->GetMidasTimeStamp());
+  }
+*/
+  switch(chan->GetMnemonic()->ArraySubPosition()){
+      case TMnemonic::kD :
+         if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kP){
+            fFrontFragments.push_back(*frag);
+         }
+         else {
+            fBackFragments.push_back(*frag);
+         }
+         break;
+      case TMnemonic::kE :
+         fPadFragments.push_back(*frag);
+         break;
+  };
+
       // if(frag->GetDetector()==11 && frag->GetSegment()==16)
       //   return;
       //printf("FRONT:  %s\n",frag->GetName());
-      fFrontFragments.push_back(*frag);
-    } else {
-      //printf("BACK:  %s\n",frag->GetName());
-      fBackFragments.push_back(*frag);
-    }
-  } else if(chan->GetMnemonic()->arraysubposition.compare(0,1,"E") == 0) {
-    fPadFragments.push_back(*frag);
-  }
 }
 
 
@@ -116,19 +125,20 @@ void TSharc::BuildHits() {
     bool back_used  = false;
     for(back=fBackFragments.begin();back!=fBackFragments.end();back++) {
       if(front->GetDetector()==back->GetDetector()) {
-        if(TMath::Abs(front->GetCharge() - back->GetCharge()) <  6000) { 
+        //if((TMath::Abs(front->GetCharge() - back->GetCharge()) <  6000) ){ // || 
+	   //(front->GetDetector()==5 && (front->GetSegment()%2)!=0))  { 
            //time gate ?
            front_used = true;
            back_used  = true;
            break;
-        }
+        //}
       }
     }
     if(front_used && back_used) {
       TSharcHit hit;
       hit.SetFront(*front);
       hit.SetBack(*back);
-      fSharcHits.push_back(hit);
+      fSharcHits.push_back(hit);//TODO: consider using std::move here
       front = fFrontFragments.erase(front);
       back  = fBackFragments.erase(back);
     } else {
@@ -247,5 +257,43 @@ TSharcHit* TSharc::GetSharcHit(const int& i) {
    }
    return 0;
 }
+
+
+double TSharc::GetDetectorThickness(TSharcHit &hit,double dist)  { 
+  static double fDetectorThickness[16] = {998.,998.,998.,1001.,141.,142.,133.,143.,999.,1001.,1001.,1002.,390.,390.,383.,385.};
+  if(dist<0.0) 
+    dist = fDetectorThickness[hit.GetDetector()];
+
+  double phi_90 = fmod(std::fabs(hit.GetPosition().Phi()),TMath::Pi()/2);
+  double phi_45 = phi_90;
+  if(phi_90>(TMath::Pi()/4.))
+    phi_45 = TMath::Pi()/2 - phi_90;
+
+  if(hit.GetDetector()>=5 && hit.GetDetector() <=12) 
+    return dist/(TMath::Sin(hit.GetPosition().Theta()) * TMath::Cos(phi_45));
+  else
+    return std::fabs(dist/(TMath::Cos(hit.GetPosition().Theta())));
+}
+
+
+double TSharc::GetDeadLayerThickness(TSharcHit &hit) { 
+  static double fDeadLayerThickness[16] = {0.7,0.7,0.7,0.7, 0.1,0.1,0.1,0.1,  0.1,0.1,0.1,0.1,  0.7,0.7,0.7,0.7};
+  return GetDetectorThickness(hit,fDeadLayerThickness[hit.GetDetector()]);
+
+}
+
+
+double TSharc::GetPadThickness(TSharcHit &hit) {
+  static double fPadThickness[16] = {0.0,0.0,0.0,0.0, 1534,1535,1535,1539,  0.0,0.0,0.0,0.0,  0.0,0.0,0.0,0.0}; 
+  return GetDetectorThickness(hit,fPadThickness[hit.GetDetector()]);
+}
+
+double TSharc::GetPadDeadLayerThickness(TSharcHit &hit) {
+  static double fPadDeadLayerThickness[16] = {0.0,0.0,0.0,0.0, 1.0,1.0,1.0,1.0,  0.0,0.0,0.0,0.0,  0.0,0.0,0.0,0.0}; 
+  return GetDetectorThickness(hit,fPadDeadLayerThickness[hit.GetDetector()]);
+}
+
+
+
 
 

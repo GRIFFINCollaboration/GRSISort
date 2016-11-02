@@ -38,9 +38,13 @@ class TDescant : public TGRSIDetector {
       
       static TVector3 GetPosition(int DetNbr, double dist=222);	//!<!
       
-      void AddFragment(TFragment*, TChannel*);           //!<!
-      void BuildHits() {} //no need to build any hits, everything already done in AddFragment
-      
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+      TGRSIDetectorHit* CreateHit(std::shared_ptr<const TFragment> frag, TChannel *chan) { return new TDescantHit(*frag); }
+#endif
+
+		void ClearTransients() { for(auto hit : fDescantHits) hit.ClearTransients(); }
+
       TDescant& operator=(const TDescant&);  //
       
    private:
@@ -60,8 +64,6 @@ class TDescant : public TGRSIDetector {
       void Copy(TObject&) const;                                              //!<!
       void Clear(Option_t* opt = "");                                         //!<!
       void Print(Option_t* opt = "") const;                                   //!<!
-      
-      void PushBackHit(TGRSIDetectorHit* deshit);
       
       /// \cond CLASSIMP
       ClassDef(TDescant,1)  // Descant Physics structure

@@ -20,23 +20,29 @@ class TTriFoil :  public TDetector {
 
 		std::vector<Short_t> GetWave() { return fTfWave; }
 		bool Beam() const { return fBeam; }
-		int TBeam() const { return fTBeam; }
+		int NTBeam() const { return fTBeam.size(); }
+		//int TBeam() const { return TBeam(0); }
+		int TBeam(unsigned int n=0) const { 	if(n<fTBeam.size()) 
+			return fTBeam.at(n);
+			else
+				return -1; }
 
 		bool HasWave() const { return !fTfWave.empty(); }
 		time_t GetTimeStamp() const { return fTimestamp; }
 
-		void AddFragment(TFragment*, TChannel*); //!<!
-		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
+#ifndef __CINT__
+		void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
 
-		void Clear(Option_t* opt = ""); 	//!<!
-		void Print(Option_t* opt = "") const; 	//!<!
+		void Clear(Option_t* opt = "");   //!<!
+		void Print(Option_t* opt = "") const;   //!<!
 		void Copy(TObject &rhs) const;
 
 	private:
 		std::vector<Short_t> fTfWave;
-		time_t fTimestamp;
+		Long_t fTimestamp;
 		bool fBeam;
-		int fTBeam;
+		std::vector<int> fTBeam;
 
 /// \cond CLASSIMP
 		ClassDef(TTriFoil,2)

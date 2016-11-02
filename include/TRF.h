@@ -26,7 +26,21 @@ class TRF : public TDetector {
 		Long_t   TimeStamp() const { return fTimeStamp; }	
 		time_t   MidasTime() const { return fMidasTime; }
 
-		void AddFragment(TFragment*, TChannel*);	//!<!
+		Double_t GetTimeFitCfd()  const { 
+			if(fTime!=0 && fTime<1000 && fTime>-1000){
+				return GetTimestampCfd()+fTime*1.6;//ns->cfdunits
+			}
+			return 0;
+		}
+		
+		Double_t GetTimestampCfd()  const { //ticks ->cfdunits
+				long ts=TimeStamp()<<4 & 0x07ffffff;//bit shift by 4 (x16) then knock off the highest bit which is absent from cfd
+				return ts;
+		}		
+		
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
 		void Copy(TObject&) const;

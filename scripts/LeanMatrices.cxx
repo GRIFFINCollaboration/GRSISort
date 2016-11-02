@@ -74,9 +74,9 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 
    //Coincidence Parameters
    Double_t ggTlow = 0.;   //Times are in 10's of ns
-   Double_t ggThigh = 4000.;
+   Double_t ggThigh = 400.;
    Double_t gbTlow =  -400.;
-   Double_t gbThigh = 40.;
+   Double_t gbThigh = 400.;
 
    Double_t ggBGlow = 1000.;
    Double_t ggBGhigh = 1750.;
@@ -85,7 +85,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    Double_t ggBGScale = (ggThigh - ggTlow)/(ggBGhigh - ggBGlow);
    Double_t gbBGScale = (gbThigh - gbTlow)/(gbBGhigh - gbBGlow);
 
-   Double_t betaThres = 80.;
+   Double_t betaThres = 0.;
 
    //this is in ms
    Double_t cycleLength = 15000;
@@ -117,7 +117,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TH1D* gammaSinglesB = new TH1D("gammaSinglesB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
    TH1D* gammaSinglesBm = new TH1D("gammaSinglesBm","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaSinglesBm);
    TH1D* gammaSinglesBt = new TH1D("gammaSinglesBt","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaSinglesBt);
-   TH1D* ggTimeDiff = new TH1D("ggTimeDiff", "#gamma-#gamma time difference", 300,0,300); list->Add(ggTimeDiff);
+   TH1D* ggTimeDiff = new TH1D("ggTimeDiff", "#gamma-#gamma time difference", 3000,0,3000); list->Add(ggTimeDiff);
    TH1D* gbTimeDiff = new TH1D("gbTimeDiff", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(gbTimeDiff); 
    TH2D* bbTimeDiff = new TH2D("bbTimeDiff", "#beta energy vs. #beta-#beta time difference", 2000,-1000,1000, 1000, 0., 2e6); list->Add(bbTimeDiff); 
    TH2D* gTimeDiff = new TH2D("gTimeDiff", "channel vs. time difference", 2000,0,2000, 65, 1., 65.); list->Add(gTimeDiff); 
@@ -226,6 +226,9 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    for(entry = 1; entry < maxEntries; ++entry) { //Only loop over the set number of entries
       //I'm starting at entry 1 because of the weird high stamp of 4.
       tree->GetEntry(entry);
+      if(entry == 1) {
+         TChannel::ReadCalFromTree(tree);
+      }
 /*
 		if(runInfo->SubRunNumber() > 21) {
 		  //in run 04921 we got a wrap-around of the timestamp within subrun 22

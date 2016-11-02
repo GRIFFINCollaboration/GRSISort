@@ -25,6 +25,7 @@
 #include "TChannel.h"
 #include "TDetector.h"
 #include "TCSMHit.h"
+#include "TMnemonic.h"
 
 class TCSM : public TDetector {
 	public:
@@ -40,24 +41,28 @@ class TCSM : public TDetector {
 
 		static TVector3 GetPosition(int detector, char pos, int horizontalstrip, int verticalstrip, double X=0.00, double Y=0.00, double Z=0.00);
 
-		void AddFragment(TFragment*, TChannel*);
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
 		void BuildHits();
 
+		void ClearTransients() { for(auto hit : fCsmHits) hit.ClearTransients(); }
+
 	private: 
-		std::map<int16_t, std::vector<std::vector<std::vector<std::pair<TFragment, MNEMONIC> > > > > fFragments; //!<!
+		std::map<int16_t, std::vector<std::vector<std::vector<std::pair<TFragment, TMnemonic> > > > > fFragments; //!<!
 		std::vector<TCSMHit> fCsmHits;
 		double fAlmostEqualWindow;
 
 		static int fCfdBuildDiff; //!<! largest acceptable time difference between events (clock ticks)  (50 ns)
 
-		void BuildVH(std::vector<std::vector<std::pair<TFragment, MNEMONIC> > >&, std::vector<TCSMHit>&);
+		void BuildVH(std::vector<std::vector<std::pair<TFragment, TMnemonic> > >&, std::vector<TCSMHit>&);
 		void BuilddEE(std::vector<std::vector<TCSMHit> >&,std::vector<TCSMHit>&);
 		void OldBuilddEE(std::vector<TCSMHit> &,std::vector<TCSMHit> &,std::vector<TCSMHit> &);
 		void MakedEE(std::vector<TCSMHit> &DHitVec,std::vector<TCSMHit> &EHitVec,std::vector<TCSMHit> &BuiltHits);
-		TCSMHit MakeHit(std::pair<TFragment, MNEMONIC>&, std::pair<TFragment, MNEMONIC>&);
-		TCSMHit MakeHit(std::vector<std::pair<TFragment, MNEMONIC> >&,std::vector<std::pair<TFragment, MNEMONIC> >&);
+		TCSMHit MakeHit(std::pair<TFragment, TMnemonic>&, std::pair<TFragment, TMnemonic>&);
+		TCSMHit MakeHit(std::vector<std::pair<TFragment, TMnemonic> >&,std::vector<std::pair<TFragment, TMnemonic> >&);
 		TCSMHit CombineHits(TCSMHit, TCSMHit);
-		void RecoverHit(char, std::pair<TFragment, MNEMONIC>&, std::vector<TCSMHit>&);
+		void RecoverHit(char, std::pair<TFragment, TMnemonic>&, std::vector<TCSMHit>&);
 		bool AlmostEqual(int, int);
 		bool AlmostEqual(double,double);
 

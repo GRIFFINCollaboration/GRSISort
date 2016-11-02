@@ -52,7 +52,7 @@ void TTigressHit::Copy(TObject &rhs) const {
   //fLastHit.Copy(static_cast<TTigressHit&>(rhs).fLastHit);
 }
 
-TVector3 TTigressHit::GetPosition(double dist) const {
+TVector3 TTigressHit::GetPosition(Double_t dist) const {
   return TTigress::GetPosition(*this,dist);  
 }
 
@@ -60,7 +60,7 @@ TVector3 TTigressHit::GetPosition() const {
   return GetPosition(GetDefaultDistance());  
 }
 
-TVector3 TTigressHit::GetLastPosition(double dist) const {
+TVector3 TTigressHit::GetLastPosition(Double_t dist) const {
   const TGRSIDetectorHit &seg = GetSegmentHit(GetNSegments()-1);
   return TTigress::GetPosition(seg.GetDetector(),seg.GetCrystal(),seg.GetSegment(),dist);  
 }
@@ -117,7 +117,8 @@ void TTigressHit::SumHit(TTigressHit *hit) {
   //  fLastPos = std::make_tuple(GetDetector(),GetCrystal(),GetInitialHit());
   //  return;
   //}
-  this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+  if(this!=hit)
+    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
   for(int x =0;x<hit->GetNSegments();x++) {
     this->AddSegment((hit->fSegments[x]));
   }
@@ -136,7 +137,7 @@ void TTigressHit::SumHit(TTigressHit *hit) {
 //  return chan->GetCrystalNumber();
 //}
 
-void TTigressHit::SetWavefit(TFragment &frag)   { 
+void TTigressHit::SetWavefit(const TFragment &frag)   { 
   TPulseAnalyzer pulse(frag);	    
   if(pulse.IsSet()){
     fTimeFit   = pulse.fit_newT0();
