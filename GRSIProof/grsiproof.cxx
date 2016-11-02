@@ -10,6 +10,7 @@
 #include "TInterpreter.h"
 #include "TGRSIOptions.h"
 #include "TChannel.h"
+#include "TGRSIRunInfo.h"
 
 #include <iostream>
 #include <vector>
@@ -25,6 +26,13 @@ void Analyze(const char* tree_type, TProof* proof){
       if(in_file && in_file->IsOpen()){
          if(in_file->FindObjectAny(tree_type)){
             tree_list.push_back(*i);
+            
+            //TODO: A smarter way of finding run info for run number and sub run number naming
+            static bool info_set = false;
+            if(!info_set){
+               TGRSIRunInfo::Get()->ReadInfoFromFile(in_file);
+               info_set = true;
+            }
          }
          in_file->Close(); //Close the files when you are done with them
       }

@@ -37,7 +37,6 @@ void TGRSISelector::Begin(TTree * /*tree*/)
    // When running with PROOF Begin() is only called on the client.
    // The tree argument is deprecated (on PROOF 0 is passed).
    TString option = GetOption();
-
 }
 
 void TGRSISelector::SlaveBegin(TTree * /*tree*/)
@@ -74,6 +73,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
          current_file = fChain->GetCurrentFile();
          std::cout << "Starting to sort: " << current_file << std::endl;
          TChannel::ReadCalFromFile(current_file);
+         TGRSIRunInfo::Get()->ReadInfoFromFile(current_file);
       //   TChannel::WriteCalFile();
       }
 
@@ -98,6 +98,7 @@ void TGRSISelector::Terminate()
    // the results graphically or save the results to file.
    Int_t runnumber = TGRSIRunInfo::Get()->RunNumber();
    Int_t subrunnumber = TGRSIRunInfo::Get()->SubRunNumber();
+   std::cout << runnumber << " " << subrunnumber << std::endl;
    TFile output_file(Form("%s%05d_%03d.root",fOutputPrefix.c_str(),runnumber,subrunnumber),"RECREATE");
    fOutput->Write();
    output_file.Close();
