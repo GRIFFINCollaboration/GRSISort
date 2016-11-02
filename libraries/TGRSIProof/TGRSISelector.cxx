@@ -98,8 +98,7 @@ void TGRSISelector::Terminate()
    // the results graphically or save the results to file.
    Int_t runnumber = TGRSIRunInfo::Get()->RunNumber();
    Int_t subrunnumber = TGRSIRunInfo::Get()->SubRunNumber();
-   //File output_file(Form("%s%05d_%03d.root",fOutputPrefix,runnumber,subrunnumber),"RECREATE");
-   TFile output_file(Form("File%05d_%03d.root",runnumber,subrunnumber),"RECREATE");
+   TFile output_file(Form("%s%05d_%03d.root",fOutputPrefix.c_str(),runnumber,subrunnumber),"RECREATE");
    fOutput->Write();
    output_file.Close();
 
@@ -123,7 +122,6 @@ void TGRSISelector::Init(TTree *tree)
 
 Bool_t TGRSISelector::Notify()
 {
-
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
    // is started when using PROOF. It is normally not necessary to make changes

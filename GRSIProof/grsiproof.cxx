@@ -91,6 +91,7 @@ int main(int argc, char **argv) {
    proof->AddDynamicPath(Form("%s/lib",pPath));
 
    Analyze("FragmentTree",proof);
+   Analyze("AnalysisTree",proof);
 
 }
 

@@ -23,6 +23,7 @@
 #include "TString.h"
 #include "TList.h"
 #include "TROOT.h"
+#include "TError.h"
 
 #include <unistd.h>
 const char * const nulFileName = "/dev/null";
@@ -77,14 +78,16 @@ class TGRSIProof : public TProof	{
 
       //This block quietly loops through the libraries a total of nLibraries times to brute force load all dependencies
       //Now load all libraries brute force until it works.
-   	std::stringstream buffer;
-	   std::streambuf* std_out = std::cout.rdbuf(buffer.rdbuf());
+     // std::streambuf* old = std::cout.rdbuf(); //save old output stream
+      this->Exec("stringstream ss;");
+      this->Exec("cout.rdbuf();"); //Redirect output buffer
       for(size_t i = 0; i<files_copy.size(); ++i){
          for(auto it = files_copy.begin(); it != files_copy.end(); ++it){
             this->Exec(Form("gSystem->Load(\"%s/lib/%s\");",pPath,it->Data()));
          }
       }
-	   std::cout.rdbuf(std_out);
+	 //  this->Exec("std::cout.rdbuf(old);"); //restore original buffer
+      std::cout << DRED << "THESE ERROR MESSAGES ARE OK!!! " << RESET_COLOR<< std::endl;
    }
 
    /// \cond CLASSIMP

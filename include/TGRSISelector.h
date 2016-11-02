@@ -24,7 +24,7 @@ public :
    // Declaration of leaf types
 
    //Methods are purposely not virtual so that TGRSISelector has control
-   TGRSISelector(TTree * /*tree*/ =0) : fChain(0) { }
+   TGRSISelector(TTree * /*tree*/ =0) : fChain(0) { SetOutputPrefix(ClassName()); }
    virtual ~TGRSISelector() { }
    virtual Int_t   Version() const { return 2; }
    void    Begin(TTree *tree);
