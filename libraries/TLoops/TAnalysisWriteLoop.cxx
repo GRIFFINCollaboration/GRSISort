@@ -32,70 +32,47 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
 
 TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string output_filename)
   : StoppableThread(name),
-    output_file(NULL), event_tree(NULL), fInputQueueSize(0),
-    input_queue(std::make_shared<ThreadsafeQueue<TUnpackedEvent*> >()),
-    output_queue(std::make_shared<ThreadsafeQueue<TUnpackedEvent*> >()) {
+    fOutputFile(NULL), fEventTree(NULL),
+    fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >()) {
 
   if(output_filename != "/dev/null"){
     //TPreserveGDirectory preserve;
-    output_file = new TFile(output_filename.c_str(),"RECREATE");
-    event_tree = new TTree("AnalysisTree","AnalysisTree");
+    fOutputFile = new TFile(output_filename.c_str(),"RECREATE");
+    fEventTree = new TTree("AnalysisTree","AnalysisTree");
   }
 }
 
 TAnalysisWriteLoop::~TAnalysisWriteLoop() {
-  for(auto& elem : det_map) {
-    delete elem.second;
-  }
-
-  for(auto& elem : default_dets) {
+  for(auto& elem : fDetMap) {
     delete elem.second;
   }
 
   Write();
-
 }
 
 void TAnalysisWriteLoop::ClearQueue() {
-  while(input_queue->Size()){
-    TUnpackedEvent* event = NULL;
-    input_queue->Pop(event);
-    if(event){
-      delete event;
-    }
+  while(fInputQueue->Size()){
+    std::shared_ptr<TUnpackedEvent> event;
+    fInputQueue->Pop(event);
   }
-
-  while(output_queue->Size()){
-    TUnpackedEvent* event = NULL;
-    output_queue->Pop(event);
-    if(event){
-      delete event;
-    }
-  }
-}
-
-std::string TAnalysisWriteLoop::Status() {
-	std::stringstream ss;
-	ss<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputQueueSize>0 ? fInputQueueSize+GetItemsPushed():GetItemsPushed());
-	return ss.str();
 }
 
 std::string TAnalysisWriteLoop::EndStatus() {
 	std::stringstream ss;
-	ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputQueueSize>0 ? fInputQueueSize+GetItemsPushed():GetItemsPushed())<<std::endl;;
+	ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize+fItemsPopped<<std::endl;;
 	return ss.str();
 }
 
 bool TAnalysisWriteLoop::Iteration() {
-	TUnpackedEvent* event = NULL;
-	fInputQueueSize = input_queue->Pop(event);
+	std::shared_ptr<TUnpackedEvent> event;
+	fInputSize = fInputQueue->Pop(event);
+	if(fInputSize < 0) fInputSize = 0;
+	++fItemsPopped;
 
 	if(event) {
 		WriteEvent(*event);
-		output_queue->Push(event);
 		return true;
-	} else if(input_queue->IsFinished()) {
-		output_queue->SetFinished();
+	} else if(fInputQueue->IsFinished()) {
 		return false;
 	} else {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -105,44 +82,44 @@ bool TAnalysisWriteLoop::Iteration() {
 
 void TAnalysisWriteLoop::Write() {
 
-	if(output_file){
-		output_file->cd();
+	if(fOutputFile){
+		fOutputFile->cd();
 
-		event_tree->Write(event_tree->GetName(), TObject::kOverwrite);
+		fEventTree->Write(fEventTree->GetName(), TObject::kOverwrite);
 		if(GValue::Size()) {
 			GValue::Get()->Write();
 		}
 		if(TChannel::GetNumberOfChannels()) {
 			TChannel::WriteToRoot();
 		}
-		TGRSIRunInfo::Get()->WriteToRoot(output_file);
+		TGRSIRunInfo::Get()->WriteToRoot(fOutputFile);
 		TPPG::Get()->Write();
 
 		if(TGRSIOptions::Get()->WriteDiagnostics()) {
 			TSortingDiagnostics::Get()->Write();
 		}
 
-		output_file->Close();
-		output_file->Delete();
+		fOutputFile->Close();
+		fOutputFile->Delete();
 	}
 }
 
 void TAnalysisWriteLoop::AddBranch(TClass* cls){
-	if(!det_map.count(cls)){
+	if(!fDetMap.count(cls)){
 		// This uses the ROOT dictionaries, so we need to lock the threads.
 		TThread::Lock();
 
-		// Make a default detector of that type.
-		TDetector* det_p = (TDetector*)cls->New();
-		default_dets[cls] = det_p;
+      // Make a default detector of that type.
+      TDetector* det_p = (TDetector*)cls->New();
+      fDefaultDets[cls] = det_p;
 
-		// Make the TDetector**
-		TDetector** det_pp = new TDetector*;
-		*det_pp = det_p;
-		det_map[cls] = det_pp;
+      // Make the TDetector**
+      TDetector** det_pp = new TDetector*;
+      *det_pp = det_p;
+      fDetMap[cls] = det_pp;
 
-		// Make a new branch.
-		TBranch* new_branch = event_tree->Branch(cls->GetName(), cls->GetName(), det_pp);
+      // Make a new branch.
+      TBranch* new_branch = fEventTree->Branch(cls->GetName(), cls->GetName(), det_pp);
 
 		// Fill the new branch up to the point where the tree is filled.
 		// Explanation:
@@ -156,7 +133,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls){
 		//   Therefore, we need to fill the new branch as many times as
 		// TTree::Fill has been called before.
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
-		for(int i=0; i<event_tree->GetEntries(); i++){
+		for(int i=0; i<fEventTree->GetEntries(); i++){
 			new_branch->Fill();
 		}
 
@@ -169,26 +146,28 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls){
 }
 
 void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event) {
-	if(event_tree){
+	if(fEventTree){
 		// Clear pointers from previous writes.
 		// Note that we cannot just set this equal to NULL,
 		//   because ROOT would then construct a new object.
 		// This contradicts the ROOT documentation for TBranchElement::SetAddress,
 		//   which suggests that a new object would be constructed only when setting the address,
 		//   not when filling the TTree.
-		for(auto& elem : det_map){
-			*elem.second = default_dets[elem.first];
+		for(auto& elem : fDetMap){
+			//*elem.second = fDefaultDets[elem.first];
+			(*elem.second)->Clear();
 		}
 
 		// Load current events
 		for(auto det : event.GetDetectors()) {
 			TClass* cls = det->IsA();
 			try{
-				*det_map.at(cls) = det;
+				**fDetMap.at(cls) = *(det.get());
 			} catch (std::out_of_range& e) {
 				AddBranch(cls);
-				*det_map.at(cls) = det;
+				**fDetMap.at(cls) = *(det.get());
 			}
+			(*fDetMap.at(cls))->ClearTransients();
 			//if(cls == TDescant::Class()) {
 			//	for(int i = 0; i < static_cast<TDescant*>(det)->GetMultiplicity(); ++i) {
 			//		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == NULL ? " has no debug data": " has debug data")<<std::endl;
@@ -198,6 +177,6 @@ void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event) {
 
 		// Fill
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
-		event_tree->Fill();
+		fEventTree->Fill();
 	}
 }

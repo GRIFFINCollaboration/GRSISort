@@ -1,11 +1,19 @@
 #ifndef _THREADSAFEQUEUE_H_
 #define _THREADSAFEQUEUE_H_
 
+////////////////////////////////////////////////////////////////////////////////
+/// 
+/// \class ThreadsafeQueue
+/// Template for all queues used to send data from one thread/loop to the next.
+///
+////////////////////////////////////////////////////////////////////////////////
+
 #include <cassert>
 #include <iostream>
 
 #ifndef __CINT__
 #include <atomic>
+#include <memory>
 #include <chrono>
 #include <condition_variable>
 #include <mutex>
@@ -17,10 +25,11 @@ class TDetector;
 template<typename T>
 class ThreadsafeQueue {
 public:
-  ThreadsafeQueue(size_t maxQueueSize = 50000);
+  ThreadsafeQueue(std::string name = "default", size_t maxSize = 50000);
   ~ThreadsafeQueue();
+#ifndef __CINT__
   int Push(T obj);
-  int Pop(T& output, int millisecond_wait = 1000);
+  long Pop(T& output, int millisecond_wait = 1000);
 
   size_t ItemsPushed() const;
   size_t ItemsPopped() const;
@@ -32,7 +41,7 @@ public:
   void SetFinished(bool finished = true);
 
 private:
-#ifndef __CINT__
+	std::string fName;
   mutable std::mutex mutex;
   std::queue<T> queue;
   std::condition_variable can_push;
@@ -52,8 +61,8 @@ private:
 
 #ifndef __CINT__
 template<typename T>
-ThreadsafeQueue<T>::ThreadsafeQueue(size_t maxQueueSize)
-  : max_queue_size(maxQueueSize),
+ThreadsafeQueue<T>::ThreadsafeQueue(std::string name, size_t maxSize)
+  : fName(name), max_queue_size(maxSize),
     items_in_queue(0), items_pushed(0), items_popped(0),
     is_finished(false) { }
 
@@ -76,25 +85,25 @@ int ThreadsafeQueue<T>::Push(T obj) {
 }
 
 template<typename T>
-int ThreadsafeQueue<T>::Pop(T& output, int millisecond_wait) {
-  std::unique_lock<std::mutex> lock(mutex);
-  if(!queue.size() && millisecond_wait){
-    can_pop.wait_for(lock, std::chrono::milliseconds(millisecond_wait));
-  }
+long ThreadsafeQueue<T>::Pop(T& output, int millisecond_wait) {
+	std::unique_lock<std::mutex> lock(mutex);
+	if(!queue.size() && millisecond_wait){
+		can_pop.wait_for(lock, std::chrono::milliseconds(millisecond_wait));
+	}
 
-  if(!queue.size()){
-    return -1;
-  }
+	if(!queue.size()){
+		return -1;
+	}
 
-  output = queue.front();
-  queue.pop();
+	output = queue.front();
+	queue.pop();
 
-  items_popped++;
-  items_in_queue--;
+	items_popped++;
+	items_in_queue--;
 
-  can_push.notify_one();
-  return queue.size();
-  //return ObjectSize(output);
+	can_push.notify_one();
+	return queue.size();
+	//return ObjectSize(output);
 }
 
 template<typename T>

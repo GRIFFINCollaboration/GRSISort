@@ -7,7 +7,7 @@ ClassImp(TSiLiHit)
 
 TSiLiHit::TSiLiHit()  {    Clear(); }
 
-TSiLiHit::TSiLiHit(TFragment &frag)	: TGRSIDetectorHit(frag) {
+TSiLiHit::TSiLiHit(const TFragment &frag)	: TGRSIDetectorHit(frag) {
   
 fFitCharge=frag.GetCharge();
 //   if(TGRSIRunInfo::IsWaveformFitting()) // commented out as TGRSIRunInfo seems to be broken
@@ -50,7 +50,7 @@ void TSiLiHit::Clear(Option_t *opt)  {
 	fAddBackEnergy.clear();
 }
 
-void TSiLiHit::SetWavefit(TFragment &frag){ 
+void TSiLiHit::SetWavefit(const TFragment &frag)   { 
 	TPulseAnalyzer pulse(frag,TSiLi::sili_noise_fac);	    
 	if(pulse.IsSet()){
 		//THESE VALUES SHOULD BE GOT FROM THE TCHANNEL AND INCLUDED IN THE CAL FOR EACH CHAN
@@ -67,7 +67,7 @@ void TSiLiHit::SetWavefit(TFragment &frag){
 	}
 }
 
-TVector3 TSiLiHit::GetPosition(double dist) const {
+TVector3 TSiLiHit::GetPosition(Double_t dist) const {
 	return TSiLi::GetPosition(GetRing(),GetSector());
 }
 

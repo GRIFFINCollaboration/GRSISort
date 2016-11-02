@@ -27,7 +27,7 @@ TDescantHit::TDescantHit(const TDescantHit &rhs) : TGRSIDetectorHit() {
    rhs.Copy(*this);
 }
 
-TDescantHit::TDescantHit(TFragment& frag) : TGRSIDetectorHit(frag) {
+TDescantHit::TDescantHit(const TFragment& frag) : TGRSIDetectorHit(frag) {
 	SetZc(frag.GetZc());
 	SetCcShort(frag.GetCcShort());
 	SetCcLong(frag.GetCcLong());
@@ -93,7 +93,7 @@ void TDescantHit::Copy(TObject &rhs) const {
    static_cast<TDescantHit&>(rhs).fPartialSum = fPartialSum;
 }
 
-TVector3 TDescantHit::GetPosition(double dist) const {
+TVector3 TDescantHit::GetPosition(Double_t dist) const {
    ///TGRSIDetectorHit::GetPosition
    return TDescant::GetPosition(GetDetector(),dist);
 }
@@ -150,8 +150,7 @@ void TDescantHit::Print(Option_t *opt) const	{
 bool TDescantHit::AnalyzeWaveform() {
 	bool error = false;
 
-	std::vector<Short_t> *waveform = GetWaveform();
-	if(waveform->empty()) {
+	if(fWaveform.empty()) {
 		return false; //Error!
 	}
 	std::vector<Int_t> baselineCorrections(8, 0);
@@ -164,14 +163,14 @@ bool TDescantHit::AnalyzeWaveform() {
 	int halfSmoothingWindow = 0; //2*halfsmoothingwindow + 1 = number of samples in moving window.
 
 	// baseline algorithm: correct each adc with average of first two samples in that adc
-	for(size_t i = 0; i < 8 && i < waveform->size(); ++i) {
-		baselineCorrections[i] = (*waveform)[i];
+	for(size_t i = 0; i < 8 && i < fWaveform.size(); ++i) {
+		baselineCorrections[i] = fWaveform[i];
 	}
-	for(size_t i = 8; i < 16 && i < waveform->size(); ++i) {
-		baselineCorrections[i-8] = ((baselineCorrections[i-8] + (*waveform)[i]) + ((baselineCorrections[i-8] + (*waveform)[i]) > 0 ? 1 : -1)) >> 1; //Average
+	for(size_t i = 8; i < 16 && i < fWaveform.size(); ++i) {
+		baselineCorrections[i-8] = ((baselineCorrections[i-8] + fWaveform[i]) + ((baselineCorrections[i-8] + fWaveform[i]) > 0 ? 1 : -1)) >> 1; //Average
 	}
-	for(size_t i = 0; i < waveform->size(); ++i) {
-		(*waveform)[i] -= baselineCorrections[i%8];
+	for(size_t i = 0; i < fWaveform.size(); ++i) {
+		fWaveform[i] -= baselineCorrections[i%8];
 	}
 
 	SetCfd(CalculateCfd(attenuation, delay, halfSmoothingWindow, interpolationSteps));
@@ -206,17 +205,16 @@ Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay
 	bool armed = false;
 
 	Int_t cfd = 0;
-	std::vector<Short_t> *waveform = GetWaveform();
-	if(waveform->empty()) {
+	if(fWaveform.empty()) {
 		return INT_MAX; //Error!
 	}
 	std::vector<Short_t> smoothedWaveform;
 
-	if(waveform->size() > delay+1) {
+	if(fWaveform.size() > delay+1) {
 		if(halfSmoothingWindow > 0) {
 			smoothedWaveform = TDescantHit::CalculateSmoothedWaveform(halfSmoothingWindow);
 		} else {
-			smoothedWaveform = *waveform;
+			smoothedWaveform = fWaveform;
 		}
 
 		monitor.clear();
@@ -262,17 +260,15 @@ Int_t TDescantHit::CalculateCfdAndMonitor(double attenuation, unsigned int delay
 
 std::vector<Short_t> TDescantHit::CalculateSmoothedWaveform(unsigned int halfSmoothingWindow) {
 
-	std::vector<Short_t> *waveform = GetWaveform();
-
-	if(waveform->empty()) {
+	if(fWaveform.empty()) {
 		return std::vector<Short_t>(); //Error!
 	}
 
-	std::vector<Short_t> smoothedWaveform(std::max((static_cast<size_t>(0)), waveform->size()-2*halfSmoothingWindow), 0);
+	std::vector<Short_t> smoothedWaveform(std::max((static_cast<size_t>(0)), fWaveform.size()-2*halfSmoothingWindow), 0);
 
-	for(size_t i = halfSmoothingWindow; i < waveform->size() - halfSmoothingWindow; ++i) {
+	for(size_t i = halfSmoothingWindow; i < fWaveform.size() - halfSmoothingWindow; ++i) {
 		for(int j = -static_cast<int>(halfSmoothingWindow); j <= static_cast<int>(halfSmoothingWindow); ++j) {
-			smoothedWaveform[i-halfSmoothingWindow] += (*waveform)[i+j];
+			smoothedWaveform[i-halfSmoothingWindow] += fWaveform[i+j];
 		}
 	}
 
@@ -281,8 +277,7 @@ std::vector<Short_t> TDescantHit::CalculateSmoothedWaveform(unsigned int halfSmo
 
 std::vector<Short_t> TDescantHit::CalculateCfdMonitor(double attenuation, unsigned int delay, unsigned int halfSmoothingWindow) {
 
-	std::vector<Short_t> *waveform = GetWaveform();
-	if(waveform->empty()) {
+	if(fWaveform.empty()) {
 		return std::vector<Short_t>(); //Error!
 	}
 	std::vector<Short_t> smoothedWaveform;
@@ -290,12 +285,12 @@ std::vector<Short_t> TDescantHit::CalculateCfdMonitor(double attenuation, unsign
 	if(halfSmoothingWindow > 0) {
 		smoothedWaveform = TDescantHit::CalculateSmoothedWaveform(halfSmoothingWindow);
 	} else {
-		smoothedWaveform = *waveform;
+		smoothedWaveform = fWaveform;
 	}
 
 	std::vector<Short_t> monitor(std::max((static_cast<size_t>(0)), smoothedWaveform.size()-delay), 0);
 
-	for(size_t i = delay; i < waveform->size(); ++i) {
+	for(size_t i = delay; i < fWaveform.size(); ++i) {
 		monitor[i-delay] = attenuation*smoothedWaveform[i]-smoothedWaveform[i-delay];
 	}
 
@@ -304,17 +299,16 @@ std::vector<Short_t> TDescantHit::CalculateCfdMonitor(double attenuation, unsign
 
 std::vector<Int_t> TDescantHit::CalculatePartialSum() {
 
-	std::vector<Short_t> *waveform = GetWaveform();
-	if(waveform->empty()) {
+	if(fWaveform.empty()) {
 		return std::vector<Int_t>(); //Error!
 	}
 
-	std::vector<Int_t> partialSums(waveform->size(), 0);
+	std::vector<Int_t> partialSums(fWaveform.size(), 0);
 
-	if(waveform->size() > 0) {
-		partialSums[0] = waveform->at(0);
-		for(size_t i = 1; i < waveform->size(); ++i) {
-			partialSums[i] = partialSums[i-1] + (*waveform)[i];
+	if(fWaveform.size() > 0) {
+		partialSums[0] = fWaveform.at(0);
+		for(size_t i = 1; i < fWaveform.size(); ++i) {
+			partialSums[i] = partialSums[i-1] + fWaveform[i];
 		}
 	}
 
@@ -335,7 +329,6 @@ Int_t TDescantHit::CalculatePsdAndPartialSums(double fraction, unsigned int inte
 
 	Int_t psd = 0;
 
-	std::vector<Short_t> *waveform = GetWaveform();
 	partialSums = CalculatePartialSum();
 	if(partialSums.empty()) {
 		return -1;
@@ -346,7 +339,7 @@ Int_t TDescantHit::CalculatePsdAndPartialSums(double fraction, unsigned int inte
 	if(partialSums[0] < fraction*totalSum) {
 		for(size_t i = 1; i < partialSums.size(); ++i) {
 			if(partialSums[i] >= fraction*totalSum) {
-				psd = i*interpolationSteps - ((partialSums[i]-fraction*totalSum)*interpolationSteps)/(*waveform)[i];
+				psd = i*interpolationSteps - ((partialSums[i]-fraction*totalSum)*interpolationSteps)/fWaveform[i];
 				break;
 			}
 		}

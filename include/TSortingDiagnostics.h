@@ -42,7 +42,7 @@ class TSortingDiagnostics : public TObject {
 	private:
 		//analysis tree diagnostics (should these all be static?)
 		std::map<long, std::pair<long, long> > fFragmentsOutOfOrder;
-		std::vector<Long_t> fPreviousTimeStamps; ///< timestamps of previous fragments, saved every <BuildWindow> entries
+		std::vector<Long_t> fPreviousTimeStamps; ///< timestamps of previous fragments, saved every 'BuildWindow' entries
 		long fMaxEntryDiff;
 
 		static TSortingDiagnostics* fSortingDiagnostics;

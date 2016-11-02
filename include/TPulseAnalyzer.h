@@ -114,18 +114,18 @@ class TPulseAnalyzer {
 	
   public:
     TPulseAnalyzer();
-    TPulseAnalyzer(TFragment &frag,double=0);
-    TPulseAnalyzer(std::vector<Short_t> &wave,double=0,std::string name="");
+    TPulseAnalyzer(const TFragment &frag,double=0);
+    TPulseAnalyzer(const std::vector<Short_t>& wave,double=0,std::string name="");
     virtual ~TPulseAnalyzer();
     
-    void SetData(TFragment &frag,double=0);
-    void SetData(std::vector<Short_t> &wave,double=0);
+    void SetData(const TFragment &frag,double=0);
+    void SetData(const std::vector<Short_t> &wave,double=0);
     void Clear(Option_t *opt = "");
     bool IsSet() { return set; }
     
-	inline double Get_wpar_T0(){return wpar->t0;}
-	inline double Get_wpar_baselinefin(){return wpar->baselinefin;}
-	inline double Get_wpar_amplitude(){return wpar->amplitude;}
+	inline double Get_wpar_T0(){return cWpar->t0;}
+	inline double Get_wpar_baselinefin(){return cWpar->baselinefin;}
+	inline double Get_wpar_amplitude(){return cWpar->amplitude;}
 
 	double GetSiliShape(double tauDecay, double tauRise); // Added for Spice, parameters to be found : t0 and Amplitude
 	static double SiLiFitFunction(double *i,double *p);
@@ -149,10 +149,10 @@ class TPulseAnalyzer {
 
   private:
 	 bool   set;
-	 WaveFormPar* wpar;
-	 int N;
+	 WaveFormPar* cWpar;
+	 int cN;
 	 //TFragment* frag;
-   std::vector<Short_t> wavebuffer;
+   std::vector<Short_t> cWavebuffer;
 	 SinPar* spar;
 	 ShapePar* shpar;
 

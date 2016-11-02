@@ -66,6 +66,9 @@ public:
   int	GetRunNumber();
   int	GetSubRunNumber();
 
+  size_t GetBytesRead() { return fBytesRead; }
+  size_t GetFileSize()  { return fFileSize; }
+
   void SetMaxBufferSize(int maxsize);
 
 protected:
@@ -86,8 +89,8 @@ protected:
   std::string fLastError; ///< error string from last errno
 protected:
   int currentEventNumber;
-  size_t bytesRead;
-  size_t filesize;
+  size_t fBytesRead;
+  size_t fFileSize;
 
 
   bool fDoByteSwap; ///< "true" if file has to be byteswapped

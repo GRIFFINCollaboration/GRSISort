@@ -48,76 +48,32 @@ void TS3::Copy(TObject &rhs) const {
   return;                                      
 }  
 
-void TS3::AddFragment(TFragment* frag, TChannel* chan) {
+void TS3::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 	///This function creates TS3Hits for each fragment and stores them in separate front and back vectors
 	if(frag == NULL || chan == NULL) {
 		return;
 	}
 
-   TS3Hit dethit(*frag);
-
-	bool IsDownstream = false;	
-   //preferably channel would be pushed to the ctor as well and all of this would be done in the ctor
-   if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kN){
-		dethit.SetRingNumber(*frag);
+	TS3Hit dethit(*frag);//Moved upstream/downstream switch into hit ctor
+	
+	if(chan->GetMnemonic()->CollectedCharge() == TMnemonic::kN){
+		dethit.SetRingNumber(frag->GetSegment());
 		dethit.SetSectorNumber(0);
-		if(chan->GetMnemonic()->ArrayPosition() == 0 || chan->GetMnemonic()->ArrayPosition() == 2)
-			IsDownstream = true;
-		else if(chan->GetMnemonic()->ArrayPosition() == 1)
-			IsDownstream = false;
-		else
-			IsDownstream = true; // In case of incorrect value, we assume downstream
-		
-      dethit.SetIsDownstream(IsDownstream);
-		if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
+
+		if(TGRSIRunInfo::IsWaveformFitting())
 			dethit.SetWavefit(*frag);
 
 		fS3RingHits.push_back(std::move(dethit));
-   }
-   else {
+	}else {
 		dethit.SetRingNumber(0);
-		dethit.SetSectorNumber(*frag);
-		if(chan->GetMnemonic()->ArrayPosition() == 0 || chan->GetMnemonic()->ArrayPosition() == 2)
-			IsDownstream = true;
-		else if(chan->GetMnemonic()->ArrayPosition() == 1)
-			IsDownstream = false;
-		else
-			IsDownstream = true; // In case of incorrect value, we assume downstream
+		dethit.SetSectorNumber(frag->GetSegment());
 		
-      dethit.SetIsDownstream(IsDownstream);
-		if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
-			dethit.SetWavefit(*frag);
-		
-      fS3SectorHits.push_back(std::move(dethit));
+		if(TGRSIRunInfo::IsWaveformFitting())
+		dethit.SetWavefit(*frag);
+			
+		fS3SectorHits.push_back(std::move(dethit));
 	}	
-/*
-	if(chan->GetMnemonic()->collectedcharge.compare(0,1,"N")==0) { // ring	
-			dethit.SetRingNumber(*frag);
-			dethit.SetSectorNumber(0);
-			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
-				IsDownstream = true;
-			else if(chan->GetMnemonic()->arrayposition == 1)
-				IsDownstream = false;
-			else
-				IsDownstream = true; // In case of incorrect value, we assume downstream
-			dethit.SetIsDownstream(IsDownstream);
-			if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
-				dethit.SetWavefit(*frag);
-			fS3RingHits.push_back(dethit);
-	} else {
-			dethit.SetRingNumber(0);
-			dethit.SetSectorNumber(*frag);
-			if(chan->GetMnemonic()->arrayposition == 0 || chan->GetMnemonic()->arrayposition == 2)
-				IsDownstream = true;
-			else if(chan->GetMnemonic()->arrayposition == 1)
-				IsDownstream = false;
-			else
-				IsDownstream = true; // In case of incorrect value, we assume downstream
-			dethit.SetIsDownstream(IsDownstream);
-			if(TGRSIRunInfo::IsWaveformFitting())	// Only fit waveforms for rings
-				dethit.SetWavefit(*frag);
-			fS3SectorHits.push_back(dethit);
-	}	*/
+
 }
 
 void TS3::SetBitNumber(enum ES3Bits bit,Bool_t set){
@@ -153,8 +109,8 @@ void TS3::BuildPixels(){
   if(fS3Hits.size() == 0) {
 		
 
-		// We are going to want energies sereral times and TFragment calibrates on every call
-		// So build a quick vector to save on repeat calulations
+		// We are going to want energies sereral times
+		// So build a quick vector 
 		std::vector<double> EneR,EneS;
 		std::vector<bool> UsedRing, UsedSector;
 		for(size_t i = 0; i < fS3RingHits.size(); ++i){
@@ -180,10 +136,10 @@ void TS3::BuildPixels(){
 						//Now we have accepted a good event, build it
 						TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position
 						dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
-						if(TGRSIRunInfo::IsWaveformFitting()){
-							dethit.SetTimeFit(fS3RingHits[i].GetFitTime());
-							dethit.SetSig2Noise(fS3RingHits[i].GetSignalToNoise());
-						}
+// 						if(TGRSIRunInfo::IsWaveformFitting()){
+// 							dethit.SetTimeFit(fS3RingHits[i].GetFitTime());
+// 							dethit.SetSig2Noise(fS3RingHits[i].GetSignalToNoise());
+// 						}
 						fS3Hits.push_back(dethit);
 
 						UsedRing[i]=true;
@@ -228,19 +184,19 @@ void TS3::BuildPixels(){
 									//Now we have accepted a good event, build it
 									TS3Hit dethit = fS3SectorHits[j]; // Sector now defines all data ring just gives position
 									dethit.SetRingNumber(fS3RingHits[i].GetRing());
-									if(TGRSIRunInfo::IsWaveformFitting()){
-										dethit.SetTimeFit(fS3SectorHits[j].GetFitTime());
-										dethit.SetSig2Noise(fS3SectorHits[j].GetSignalToNoise());
-									}
+// 									if(TGRSIRunInfo::IsWaveformFitting()){
+// 										dethit.SetTimeFit(fS3SectorHits[j].GetFitTime());
+// 										dethit.SetSig2Noise(fS3SectorHits[j].GetSignalToNoise());
+// 									}
 									fS3Hits.push_back(dethit);
 
 									//Now we have accepted a good event, build it
 									TS3Hit dethitB = fS3SectorHits[k]; // Sector now defines all data ring just gives position
 									dethitB.SetRingNumber(fS3RingHits[i].GetRing());
-									if(TGRSIRunInfo::IsWaveformFitting()){
-										dethitB.SetTimeFit(fS3SectorHits[k].GetFitTime());
-										dethitB.SetSig2Noise(fS3SectorHits[k].GetSignalToNoise());
-									}
+// 									if(TGRSIRunInfo::IsWaveformFitting()){
+// 										dethitB.SetTimeFit(fS3SectorHits[k].GetFitTime());
+// 										dethitB.SetSig2Noise(fS3SectorHits[k].GetSignalToNoise());
+// 									}
 									fS3Hits.push_back(dethitB);
 
 									UsedRing[i]=true;
@@ -285,24 +241,24 @@ void TS3::BuildPixels(){
 									//Now we have accepted a good event, build it
 									TS3Hit dethit = fS3RingHits[j]; // Ring defines all data sector just gives position
 									dethit.SetSectorNumber(fS3SectorHits[i].GetSector());
-									if(TGRSIRunInfo::IsWaveformFitting()){
-										dethit.SetTimeFit(fS3RingHits[j].GetFitTime());
-										dethit.SetSig2Noise(fS3RingHits[j].GetSignalToNoise());
-									}
+// 									if(TGRSIRunInfo::IsWaveformFitting()){
+// 										dethit.SetTimeFit(fS3RingHits[j].GetFitTime());
+// 										dethit.SetSig2Noise(fS3RingHits[j].GetSignalToNoise());
+// 									}
 									fS3Hits.push_back(dethit);
 
 									//Now we have accepted a good event, build it
 									TS3Hit dethitB = fS3RingHits[k]; // Ring defines all data sector just gives position
 									dethitB.SetSectorNumber(fS3SectorHits[i].GetSector());
-									if(TGRSIRunInfo::IsWaveformFitting()){
-										dethitB.SetTimeFit(fS3RingHits[k].GetFitTime());
-										dethitB.SetSig2Noise(fS3RingHits[k].GetSignalToNoise());
-									}
+// 									if(TGRSIRunInfo::IsWaveformFitting()){
+// 										dethitB.SetTimeFit(fS3RingHits[k].GetFitTime());
+// 										dethitB.SetSig2Noise(fS3RingHits[k].GetSignalToNoise());
+// 									}
 									fS3Hits.push_back(dethitB);
 
-									UsedRing[i]=true;
-									UsedSector[j]=true;
-									UsedSector[k]=true;
+									UsedSector[i]=true;
+									UsedRing[j]=true;
+									UsedRing[k]=true;
 
 								}
 							}
@@ -319,16 +275,14 @@ void TS3::BuildPixels(){
 
 }
 
-// This new definition has conflict with TS3Hit "fIsDownstream" and associated usage, but is a more general definition of an S3 detector		
-// This function itself if generic except for fOffsetPhiSet
-// Wanted to separate Z position from detector orientation.
-// Need to modify TS3Hit functions that call this 
-// Should find better way to adjust fTargetDistance, fOffsetPhiSet and sectorsdownstream
-// Could be from mnemonic, but ->GetIsDownstream() not right/compatible
-TVector3 TS3::GetPosition(int ring, int sector, bool sectorsdownstream, double offsetZ,bool smear)  {
-	double dist = 0;
-	if(offsetZ == 0)dist = fTargetDistance;
-	else dist = offsetZ;
+
+
+
+TVector3 TS3::GetPosition(int ring, int sector, bool smear){
+	return GetPosition(ring,sector,fOffsetPhiSet,fTargetDistance,true,smear);
+}
+
+TVector3 TS3::GetPosition(int ring, int sector, double offsetphi,double offsetZ, bool sectorsdownstream,bool smear)  {
 	
 	double ring_width=(fOuterDiameter-fInnerDiameter)*0.5/fRingNumber; // 24 rings   radial width!
 	double inner_radius=fInnerDiameter/2.0;
@@ -339,7 +293,7 @@ TVector3 TS3::GetPosition(int ring, int sector, bool sectorsdownstream, double o
 	double phi    =  phi_width*-sector;   //the phi angle....
 	phi+=fOffsetPhiCon;
 	if(!sectorsdownstream)phi=-phi;
-	phi+=fOffsetPhiSet;
+	phi+=offsetphi;
 
 	if(smear){
 		double sep=ring_width*0.025;
@@ -349,7 +303,7 @@ TVector3 TS3::GetPosition(int ring, int sector, bool sectorsdownstream, double o
 		phi=s3_rand.Uniform(phi-phi_width*0.5+sepphi,phi+phi_width*0.5-sepphi);	
 	}
 
-	return TVector3(cos(phi)*radius,sin(phi)*radius,dist);
+	return TVector3(cos(phi)*radius,sin(phi)*radius,offsetZ);
 }
 
 TGRSIDetectorHit* TS3::GetHit(const int& idx){
