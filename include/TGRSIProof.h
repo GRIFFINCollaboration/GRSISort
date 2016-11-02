@@ -60,34 +60,8 @@ class TGRSIProof : public TProof	{
       //First set the include path on each slave
       this->Exec(Form("gInterpreter->AddIncludePath(\"%s/include\")",pPath));
       std::cout << "Loading Libraries" << std::endl;
-      //This block builds a list of all of the files that end in .so in the lib directory
-      TSystemDirectory dir(Form("%s/lib",pPath),Form("%s/lib",pPath));
-      TList *files = dir.GetListOfFiles();
-      std::vector<TString> files_copy;
-      if(files) {
-         TSystemFile *file;
-         TString fname;
-         TIter next(files);
-         while((file=dynamic_cast<TSystemFile*>(next()))) {
-            fname = file->GetName();
-            if(!file->IsDirectory() && fname.EndsWith(".so")) {
-               files_copy.push_back(fname);
-            }
-         }
-      }
+      this->Exec(Form("gSystem->Load(\"%s/lib/libGRSI.so\");",pPath));
 
-      //This block quietly loops through the libraries a total of nLibraries times to brute force load all dependencies
-      //Now load all libraries brute force until it works.
-     // std::streambuf* old = std::cout.rdbuf(); //save old output stream
-      this->Exec("stringstream ss;");
-      this->Exec("cout.rdbuf();"); //Redirect output buffer
-      for(size_t i = 0; i<files_copy.size(); ++i){
-         for(auto it = files_copy.begin(); it != files_copy.end(); ++it){
-            this->Exec(Form("gSystem->Load(\"%s/lib/%s\");",pPath,it->Data()));
-         }
-      }
-	 //  this->Exec("std::cout.rdbuf(old);"); //restore original buffer
-      std::cout << DRED << "THESE ERROR MESSAGES ARE OK!!! " << RESET_COLOR<< std::endl;
    }
 
    /// \cond CLASSIMP
