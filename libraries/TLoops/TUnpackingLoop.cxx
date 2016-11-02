@@ -203,6 +203,7 @@ std::string TUnpackingLoop::EndStatus() {
 	} else {
 		ss<<"\rno fragments read from midas => none parsed!"<<std::endl;
 	}
+	ss<<fParser.OutputQueueStatus();
 	return ss.str();
 }
 

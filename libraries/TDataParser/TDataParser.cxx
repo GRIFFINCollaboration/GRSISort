@@ -1227,6 +1227,16 @@ void TDataParser::Push(ThreadsafeQueue<std::shared_ptr<const TFragment> >& queue
 	queue.Push(frag);
 }
 
+std::string TDataParser::OutputQueueStatus() {
+	std::stringstream ss;
+	ss<<"********************************************************************************"<<std::endl;
+	for(auto queue: fGoodOutputQueues) {
+		ss<<queue->Name()<<": "<<queue->ItemsPushed()<<" pushed, "<<queue->ItemsPopped()<<" popped, "<<queue->Size()<<" left"<<std::endl;
+	}
+	ss<<"********************************************************************************"<<std::endl;
+	return ss.str();
+}
+
 /////////////***************************************************************/////////////
 /////////////***************************************************************/////////////
 /////////////***************************************************************/////////////
