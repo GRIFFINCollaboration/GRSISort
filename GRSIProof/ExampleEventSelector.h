@@ -5,43 +5,46 @@
 // found on file: fragment07844_000.root
 //////////////////////////////////////////////////////////
 
-#ifndef ExampleFragmentSelector_h
-#define ExampleFragmentSelector_h
+#ifndef ExampleEventSelector_h
+#define ExampleEventSelector_h
 
 #include "TChain.h"
 #include "TFile.h"
 
 // Header file for the classes stored in the TTree if any.
-#include "TFragment.h"
+#include "TGriffin.h"
+#include "TSceptar.h"
 #include "TGRSISelector.h"
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class ExampleFragmentSelector : public TGRSISelector {
+class ExampleEventSelector : public TGRSISelector {
 
  public :
-   TFragment * fFragment;
+   TGriffin * fGrif;
+   TSceptar * fScep;
 
-   ExampleFragmentSelector(TTree * /*tree*/ =0) : TGRSISelector(), fFragment(0) {
-      SetOutputPrefix("ExampleFragment");
+   ExampleEventSelector(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(0), fScep(0){
+      SetOutputPrefix("ExampleEvent");
    }
-   virtual ~ExampleFragmentSelector() { }
+   virtual ~ExampleEventSelector() { }
    virtual Int_t   Version() const { return 2; }
    void CreateHistograms();
    void FillHistograms();
    void InitializeBranches(TTree *tree);
 
 
-   ClassDef(ExampleFragmentSelector,2);
+   ClassDef(ExampleEventSelector,2);
 };
 
 #endif
 
-#ifdef ExampleFragmentSelector_cxx
-void ExampleFragmentSelector::InitializeBranches(TTree* tree)
+#ifdef ExampleEventSelector_cxx
+void ExampleEventSelector::InitializeBranches(TTree* tree)
 {
    if (!tree) return;
-   tree->SetBranchAddress("TFragment", &fFragment);
+   tree->SetBranchAddress("TGriffin", &fGrif);
+   tree->SetBranchAddress("TSceptar", &fScep);
 }
 
-#endif // #ifdef ExampleFragmentSelector_cxx
+#endif // #ifdef ExampleEventSelector_cxx
