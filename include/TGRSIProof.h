@@ -92,16 +92,4 @@ class TGRSIProof : public TProof	{
    /// \endcond
 };
 /*! @} */
-
-template<typename T>
-class TObjectWrapper : public TObject {
-   T* pT;
-
-public:
-   TObjectWrapper(T* ptr) : pT(ptr) {}
-   T* operator->() { return pT; }
-   ClassDef(TObjectWrapper,1);
-};
-
-
 #endif // TGRSIProof_H

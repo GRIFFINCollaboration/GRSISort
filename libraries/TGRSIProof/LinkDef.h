@@ -1,9 +1,6 @@
-// TGRSIProof.h TFragmentSelector.h
+// TGRSIProof.h TFragmentSelector.h TObjectWrapper.h
 
 //Include the headers listed above
-#include "TGRSIProof.h"
-#include "TFragmentSelector.h"
-#include "TFragment.h"
 
 #ifdef __CINT__
 
