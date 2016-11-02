@@ -81,7 +81,7 @@ class TGRSIProof : public TProof	{
 	   std::streambuf* std_out = std::cout.rdbuf(buffer.rdbuf());
       for(size_t i = 0; i<files_copy.size(); ++i){
          for(auto it = files_copy.begin(); it != files_copy.end(); ++it){
-            this->Exec(Form("gSystem->Load(\"%s/lib/%s\")",pPath,it->Data()));
+            this->Exec(Form("gSystem->Load(\"%s/lib/%s\");",pPath,it->Data()));
          }
       }
 	   std::cout.rdbuf(std_out);

@@ -1,5 +1,6 @@
 Unix.*.Root.MacroPath: .:$(GRSISYS)/util:$(ROOTSYS)/macros:$(GRSISYS)/scripts:$(GRSISYS)/examples:$(GRSISYS)/myAnalysis
 Unix.*.Root.DynamicPath:  .:~/rootlibs:$(ROOTSYS)/lib:$(GRSISYS)/lib:$(GRSISYS)/GRSIProof
+Unix.*.Root.IncludePath:  .:~/rootlibs:$(ROOTSYS)/include:$(GRSISYS)/include:$(GRSISYS)/GRSIProof
 
 #files to load at log in:
 Rint.Logon: $(GRSISYS)/grsi_logon.C
