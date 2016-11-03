@@ -54,6 +54,7 @@ class TEventBuildingLoop : public StoppableThread {
 		void SetSortDepth(int num_events) { fSortingDepth = num_events; }
 		unsigned int GetSortDepth() const { return fSortingDepth; }
 
+		std::string EndStatus();
 
 	private:
 		TEventBuildingLoop(std::string name, EBuildMode mode);

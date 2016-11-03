@@ -76,7 +76,8 @@ void TFragWriteLoop::ClearQueue() {
 
 std::string TFragWriteLoop::EndStatus() {
 	std::stringstream ss;
-	ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputSize>0 ? fInputSize+GetItemsPushed():GetItemsPushed())<<std::endl;;
+	//ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputSize>0 ? fInputSize+GetItemsPushed():GetItemsPushed())<<std::endl;;
+	ss<<std::endl<<Name()<<": "<<std::setw(8)<<fItemsPopped<<"/"<<fItemsPopped+fInputSize<<", "<<fEventTree->GetEntries()<<" good fragments, "<<fBadEventTree->GetEntries()<<" bad fragments"<<std::endl;
 	return ss.str();
 }
 

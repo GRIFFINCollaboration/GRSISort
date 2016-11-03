@@ -67,5 +67,6 @@ void TSortingDiagnostics::WriteToFile(const char* fileName) const {
 	std::ofstream statsOut(fileName);
 	statsOut<<std::endl
 		<<"Number of fragments out of order = "<<NumberOfFragmentsOutOfOrder()<<std::endl
+		<<"Maximum entry difference = "<<fMaxEntryDiff<<std::endl
 		<<std::endl;
 }

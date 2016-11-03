@@ -166,3 +166,10 @@ void TEventBuildingLoop::CheckTriggerIdCondition(std::shared_ptr<const TFragment
 		fNextEvent.clear();
 	}
 }
+
+std::string TEventBuildingLoop::EndStatus() {
+	std::stringstream ss;
+	ss<<fInputQueue->Name()<<": "<<fItemsPopped<<"/"<<fInputQueue->ItemsPopped()<<" items popped"<<std::endl;
+
+	return ss.str();
+}

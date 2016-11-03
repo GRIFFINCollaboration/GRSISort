@@ -65,6 +65,7 @@ public:
   void ClearQueue();
   size_t ItemsPushed() { if(fGoodOutputQueues.size() > 0) return fGoodOutputQueues.back()->ItemsPushed(); return std::numeric_limits<std::size_t>::max(); }
   void SetFinished();
+  std::string OutputQueueStatus();
 
 private:
 #ifndef __CINT__
