@@ -1,5 +1,5 @@
-#ifndef TDIAGNOSTICS_H
-#define TDIAGNOSTICS_H
+#ifndef TPARSINGDIAGNOSTICS_H
+#define TPARSINGDIAGNOSTICS_H
 
 /** \addtogroup Sorting
  *  @{
