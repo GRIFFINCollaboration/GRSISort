@@ -291,6 +291,12 @@ void TGRSIOptions::Load(int argc, char** argv) {
 	//   .description("Show version information");
 
 
+   //Proof only parser options
+	parser.option("max-workers", &fMaxWorkers)
+	      .description("Max number of nodes to use when running a grsiproof session")
+			.default_value(-1);
+
+
 	// look for any arguments ending with .info, pass to parser.
 	for(int i=0; i<argc; i++){
 		std::string filename = argv[i];

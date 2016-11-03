@@ -97,6 +97,9 @@ class TGRSIOptions : public TObject {
 		unsigned int StatusInterval() const { return fStatusInterval; }
 		bool LongFileDescription() const { return fLongFileDescription; }
 
+      //Proof only
+      int GetMaxWorkers() const { return fMaxWorkers; }
+
 	private:
 		TGRSIOptions(int argc, char** argv);
 
@@ -173,6 +176,9 @@ class TGRSIOptions : public TObject {
 		size_t fStatusWidth;
 		unsigned int fStatusInterval;
 		bool fLongFileDescription;
+
+      //Proof only
+      int fMaxWorkers;
 
 		ClassDef(TGRSIOptions,1);
 };
