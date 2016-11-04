@@ -237,20 +237,20 @@ void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan
 						return;
 					} else  {
 						hit->CopyFragment(*frag);
-						if(TestBit(kSetCoreWave))
+						if(TestGlobalBit(kSetCoreWave))
 							frag->CopyWave(*hit);
 						return;
 					}
 				} else {
 					hit->CopyFragment(*frag);
-					if(TestBit(kSetCoreWave))
+					if(TestGlobalBit(kSetCoreWave))
 						frag->CopyWave(*hit);
 					return;
 				}
 			}
 			}
 			corehit.CopyFragment(*frag);
-			if(TestBit(kSetCoreWave))
+			if(TestGlobalBit(kSetCoreWave))
 				frag->CopyWave(corehit);
 			fTigressHits.push_back(corehit);
 			return;
