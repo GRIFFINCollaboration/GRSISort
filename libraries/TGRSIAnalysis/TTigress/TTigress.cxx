@@ -27,10 +27,10 @@ unsigned short TTigress::fgTigressBits = TTigress::kSetCoreWave | TTigress::kSet
 
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
 	
-	if(one.GetSegmentMultiplicity()==0&&two.GetSegmentMultiplicity()==0){
+
+	if(one.GetSegmentMultiplicity()==0||two.GetSegmentMultiplicity()==0){//For no-sectors experiment and protection if data loss
 		return ((one.GetDetector() == two.GetDetector()) &&
-			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()*10.0));		
-		
+			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()*10.0));
 	}else{
 		double res = (one.GetLastPosition() - two.GetPosition()).Mag();
 		int one_seg  = one.GetSegmentVec().back().GetSegment();
@@ -237,20 +237,20 @@ void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan
 						return;
 					} else  {
 						hit->CopyFragment(*frag);
-						if(TestBit(kSetCoreWave))
+						if(TestGlobalBit(kSetCoreWave))
 							frag->CopyWave(*hit);
 						return;
 					}
 				} else {
 					hit->CopyFragment(*frag);
-					if(TestBit(kSetCoreWave))
+					if(TestGlobalBit(kSetCoreWave))
 						frag->CopyWave(*hit);
 					return;
 				}
 			}
 			}
 			corehit.CopyFragment(*frag);
-			if(TestBit(kSetCoreWave))
+			if(TestGlobalBit(kSetCoreWave))
 				frag->CopyWave(corehit);
 			fTigressHits.push_back(corehit);
 			return;

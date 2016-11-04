@@ -54,28 +54,20 @@ class TGRSIDetectorHit : public TObject 	{
          kBit3          = BIT(3),
          kIsPPGSet      = BIT(4),
          kIsTimeSet     = BIT(5),
-         kBit6          = BIT(6),
-         kBit7          = BIT(7),
-         kBit8          = BIT(8),
          //reserved for derived class.
-         kDetHitBit0    = BIT(9),
-         kDetHitBit1    = BIT(10),
-         kDetHitBit2    = BIT(11),
-         kDetHitBit3    = BIT(12),
-         kDetHitBit4    = BIT(13),
-         kDetHitBit5    = BIT(14),
-         kDetHitBit6    = BIT(15),
+         kDetHitBit0    = BIT(6),
+         kDetHitBit1    = BIT(7),
          kBase          = BIT(9),
          kIsAllSet      = 0xFFFF
       };
 
-		enum ETimeFlag {
-			kNone          = BIT(0),
-			kCFD           = BIT(1),
-			kWalk          = BIT(2),
-			kOffset        = BIT(3),
-			kAll           = 0xFFFF
-		};
+	enum ETimeFlag {
+		kNone          = BIT(0),
+		kCFD           = BIT(1),
+		kWalk          = BIT(2),
+		kOffset        = BIT(3),
+		kAll           = 0xFFFF
+	};
 
 
    public:
@@ -165,9 +157,12 @@ class TGRSIDetectorHit : public TObject 	{
       Bool_t IsTimeSet()    const { return (fBitflags & kIsTimeSet); }
       Bool_t IsPPGSet()     const { return (fBitflags & kIsPPGSet); }
 
-      void SetBit(enum EBitFlag,Bool_t set=true) const; //const here is dirty
-      bool TestBit(enum EBitFlag flag) const { return fBitflags & flag; }
 
+      
+      // Forcing use of enum EBitFlag made it unpleasant to use own names in inheriting detectors 
+      void SetBit(UInt_t,Bool_t set=true) const; //const here is dirty
+      bool TestBit(UInt_t flag) const { return fBitflags & flag; }
+      
    protected:
       UInt_t   fAddress;    ///< address of the the channel in the DAQ.
       Float_t  fCharge;     ///< charge collected from the hit
@@ -184,7 +179,7 @@ class TGRSIDetectorHit : public TObject 	{
       mutable Double_t fEnergy;     //!<! Energy of the Hit.
       mutable uint16_t fPPGStatus;  //!<! 
       mutable ULong_t  fCycleTimeStamp; //!<!
-		mutable TChannel* fChannel; //!<!
+      mutable TChannel* fChannel; //!<!
 
    protected:
       static TPPG* fPPG;

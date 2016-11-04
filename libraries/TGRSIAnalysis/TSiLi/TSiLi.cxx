@@ -129,8 +129,6 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i) {
 
 // How the make addback currently works
 //
-// Proper setting of a "bit" to say addback has been made hasnt been implemented yet.
-//
 // First we itterate through all pixel hits
 // If the hit has not yet been assigned to a "cluster" a new cluster is created containing it
 // The hit is compared all following hits against fAddbackCriterion
@@ -166,9 +164,9 @@ Int_t TSiLi::GetAddbackMultiplicity() {
   }
 
   //if the addback has been reset, clear the addback hits
-//   if((fTigressBits & kIsAddbackSet) == 0x0) {
-//     fAddbackHits.clear();
-//   }
+  if(TestBit(kAddbackSet) == 0x0) {
+    fAddbackHits.clear();
+  }
 
   if(fAddbackHits.size() == 0) {
 	  
@@ -221,7 +219,7 @@ Int_t TSiLi::GetAddbackMultiplicity() {
 	}
 	
 	
-//     SetBitNumber(kIsAddbackSet, true);
+     SetBit(kAddbackSet, true);
   }
 
   return fAddbackHits.size();

@@ -11,21 +11,19 @@
 #include "TGRSIDetector.h"
 #include "TS3Hit.h"
 #include "TChannel.h"
+#include "TGRSIBit.h"
 
-class TS3 : public TGRSIDetector {
+class TS3 : public TGRSIDetector, public TGRSIBit {
 	public:
-
-		enum ES3Bits {
-			kPixelsSet 		= BIT(0),
-			kMultHit      = BIT(1),
-			kBit2         = BIT(2),
-			kBit3         = BIT(3),
-			kBit4         = BIT(4),
-			kBit5  				= BIT(5),
-			kBit6   			= BIT(6),
-			kBit7   			= BIT(7)
+		enum ES3Bits { // Inherited TObject fBits, Enum via TDetector
+			kPixelsSet = kGRSIBit0,
+			kMultHit = kGRSIBit1,
+			kS3Bit2	= kGRSIBit2,
+			kS3Bit3	= kGRSIBit3,
+			kS3Bit4	= kGRSIBit4,
+			kS3Bit5	= kGRSIBit5,
+			kS3Bit6	= kGRSIBit6,
 		};
-
 
 		TS3();
 		TS3(const TS3&);
@@ -49,11 +47,11 @@ class TS3 : public TGRSIDetector {
 		
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
 
-		bool MultiHit()										{ return TestBitNumber(kMultHit);	 } // Get allow shared hits
-		void SetMultiHit(bool flag=true)	{ SetBitNumber(kMultHit, flag); SetPixels(false);	 } // Set allow shared hits
+		bool MultiHit(){ return TestGBit(kMultHit);	 } // Get allow shared hits
+		void SetMultiHit(bool flag=true)	{ SetGBit(kMultHit, flag); SetPixels(false);	 } // Set allow shared hits
 
-		bool PixelsSet()									{ return TestBitNumber(kPixelsSet); }
-		void SetPixels(bool flag=true) 		{ SetBitNumber(kPixelsSet, flag); }
+		bool PixelsSet(){ return TestGBit(kPixelsSet); }
+		void SetPixels(bool flag=true) { SetGBit(kPixelsSet, flag); }
 		void BuildPixels();
 
 		static TVector3 GetPosition(int ring, int sector, bool smear=false);
@@ -61,7 +59,7 @@ class TS3 : public TGRSIDetector {
 
 		void SetTargetDistance(double dist)	{ fTargetDistance = dist; }
 
-		void ClearTransients() { fS3Bits = 0; for(auto hit : fS3Hits) hit.ClearTransients(); for(auto hit : fS3RingHits) hit.ClearTransients(); for(auto hit : fS3SectorHits) hit.ClearTransients(); }
+		void ClearTransients() {  TGRSIBit::Clear(); for(auto hit : fS3Hits) hit.ClearTransients(); for(auto hit : fS3RingHits) hit.ClearTransients(); for(auto hit : fS3SectorHits) hit.ClearTransients(); }
 
 		void Copy(TObject&) const;
 		TS3& operator=(const TS3&);  // 
@@ -72,10 +70,7 @@ class TS3 : public TGRSIDetector {
 		std::vector<TS3Hit> fS3Hits; //!<!
 		std::vector<TS3Hit> fS3RingHits, fS3SectorHits;
 
-		UChar_t fS3Bits;                  // flags for transient members
-		void ClearStatus() { fS3Bits = 0; }
-		void SetBitNumber(enum ES3Bits bit,Bool_t set=true);
-		Bool_t TestBitNumber(enum ES3Bits bit) const {return (bit & fS3Bits);}
+		void ClearStatus() {  TGRSIBit::Clear(); }
 	
 		///for geometery	
 		static int fRingNumber;          //!<!

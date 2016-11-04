@@ -307,7 +307,7 @@ uint16_t TGRSIDetectorHit::GetCycleTimeStamp() const {
 //}
 
 // const here is rather dirty
-void TGRSIDetectorHit::SetBit(enum EBitFlag flag, Bool_t set) const {
+void TGRSIDetectorHit::SetBit(UInt_t flag, Bool_t set) const {
   if(set)
     fBitflags |= flag;
   else
