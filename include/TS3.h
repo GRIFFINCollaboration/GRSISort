@@ -14,18 +14,15 @@
 
 class TS3 : public TGRSIDetector {
 	public:
-
-		enum ES3Bits {
-			kPixelsSet 		= BIT(0),
-			kMultHit      = BIT(1),
-			kBit2         = BIT(2),
-			kBit3         = BIT(3),
-			kBit4         = BIT(4),
-			kBit5  				= BIT(5),
-			kBit6   			= BIT(6),
-			kBit7   			= BIT(7)
+		enum ES3Bits { // Inherited TObject fBits, Enum via TDetector
+			kPixelsSet = kDetBit0,
+			kMultHit = kDetBit1,
+			kS3Bit2	= kDetBit2,
+			kS3Bit3	= kDetBit3,
+			kS3Bit4	= kDetBit4,
+			kS3Bit5	= kDetBit5,
+			kS3Bit6	= kDetBit6,
 		};
-
 
 		TS3();
 		TS3(const TS3&);
@@ -47,11 +44,11 @@ class TS3 : public TGRSIDetector {
 		
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
 
-		bool MultiHit()										{ return TestBitNumber(kMultHit);	 } // Get allow shared hits
-		void SetMultiHit(bool flag=true)	{ SetBitNumber(kMultHit, flag); SetPixels(false);	 } // Set allow shared hits
+		bool MultiHit(){ return TestBit(kMultHit);	 } // Get allow shared hits
+		void SetMultiHit(bool flag=true)	{ SetBit(kMultHit, flag); SetPixels(false);	 } // Set allow shared hits
 
-		bool PixelsSet()									{ return TestBitNumber(kPixelsSet); }
-		void SetPixels(bool flag=true) 		{ SetBitNumber(kPixelsSet, flag); }
+		bool PixelsSet(){ return TestBit(kPixelsSet); }
+		void SetPixels(bool flag=true) { SetBit(kPixelsSet, flag); }
 		void BuildPixels();
 
 		static TVector3 GetPosition(int ring, int sector, bool smear=false);
@@ -68,10 +65,7 @@ class TS3 : public TGRSIDetector {
 		std::vector<TS3Hit> fS3Hits; //!<!
 		std::vector<TS3Hit> fS3RingHits, fS3SectorHits;
 
-		UChar_t fS3Bits;                  // flags for transient members
-		void ClearStatus() { fS3Bits = 0; }
-		void SetBitNumber(enum ES3Bits bit,Bool_t set=true);
-		Bool_t TestBitNumber(enum ES3Bits bit) const {return (bit & fS3Bits);}
+		void ClearStatus() { TDetector::ClearBits(); }
 	
 		///for geometery	
 		static int fRingNumber;          //!<!

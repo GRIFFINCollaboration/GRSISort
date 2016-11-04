@@ -15,7 +15,13 @@
 #include "TPulseAnalyzer.h"
 
 class TSiLiHit : public TGRSIDetectorHit {
-	public:
+	public:    
+		
+		enum ESiLiHitBits { // Inherited TObject fBits, Enum via TDetector
+			kUseFitCharge	= kDetHitBit0,
+			kSiLiHitBit1	= kDetHitBit1,
+		};
+    
 		TSiLiHit();
 		TSiLiHit(TFragment &);	
 		virtual ~TSiLiHit();
@@ -51,21 +57,18 @@ class TSiLiHit : public TGRSIDetectorHit {
 		
 		void SumHit(TSiLiHit*);
 		
-		void UseFitCharge(){
-			SetCharge(Float_t(fFitCharge));
+		void UseFitCharge(bool set=true){
 			SetBit(kIsEnergySet,false);
+			SetBit(kUseFitCharge,set);
 		}
-
-		double GetWaveformEnergy() const;
-		double GetWaveformEnergy() {
-			UseFitCharge();
-			return GetEnergy();
-		}		
 		
+		double GetWaveformEnergy() const {return GetFitEnergy();}
+		double GetFitEnergy() const;		
 		double GetFitCharge() const {return fFitCharge;}
+		double GetEnergy(Option_t* opt=0) const;
 		
 				// Not strictly "doppler" but consistent
-		inline double GetDoppler(double beta, TVector3 *vec=0) { 
+		inline double GetDoppler(double beta, TVector3 *vec=0)  { 
 			if(vec==0) {
 				vec = GetBeamDirection();
 			}

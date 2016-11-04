@@ -48,6 +48,7 @@ void TSiLiHit::Clear(Option_t *opt)  {
 	
 	fAddBackSegments.clear();
 	fAddBackEnergy.clear();
+	ClearTransients();
 }
 
 void TSiLiHit::SetWavefit(TFragment &frag){ 
@@ -106,17 +107,24 @@ Int_t TSiLiHit::GetSector() const { return TSiLi::GetSector(GetSegment()); }
 Int_t TSiLiHit::GetPreamp() const { return TSiLi::GetPreamp(GetSegment()); }
 
 
-double TSiLiHit::GetWaveformEnergy() const{
-	if(float(fFitCharge)==GetCharge()) {
-		return GetEnergy();
-	}	
+double TSiLiHit::GetFitEnergy() const{
+	if(TestBit(kUseFitCharge))return TGRSIDetectorHit::GetEnergy();
+	
 	TChannel* chan = GetChannel();
-	if(chan == NULL) {
-		Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
-		return 0.;
+	if(!chan) {
+		return fFitCharge;
 	}
-	return chan->CalibrateENG(fFitCharge);
+	return chan->CalibrateENG(fFitCharge,0); 
 }
 		
-		
-
+double TSiLiHit::GetEnergy(Option_t* opt) const {
+	if(TestBit(kIsEnergySet)||!TestBit(kUseFitCharge))return TGRSIDetectorHit::GetEnergy();
+	
+	TChannel* chan = GetChannel();
+	if(!chan) {
+		return SetEnergy(fFitCharge);
+	}
+	
+	return SetEnergy(chan->CalibrateENG(fFitCharge,0));  // this will use the integration value
+                                            // in the TChannel if it exists.
+}

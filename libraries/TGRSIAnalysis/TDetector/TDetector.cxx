@@ -37,9 +37,8 @@ void TDetector::Print(Option_t *opt) const {
 }
 
 void TDetector::Clear(Option_t *opt) {
-	/// Default clear statement for TDetector. Currently does
-	/// nothing
+	/// Default clear statement for TDetector.
+	ClearBits();
 }
-
 
 

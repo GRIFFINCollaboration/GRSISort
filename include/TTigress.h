@@ -23,14 +23,14 @@
 
 class TTigress : public TGRSIDetector {
   public:
-    enum ETigressBits {
-      kAddbackSet	= TGRSIDetectorHit::kDetHitBit0,
-      kSuppression	= TGRSIDetectorHit::kDetHitBit1,
-      kBit3		= TGRSIDetectorHit::kDetHitBit2,
-      kBit4		= TGRSIDetectorHit::kDetHitBit3,
-      kBit5		= TGRSIDetectorHit::kDetHitBit4,
-      kBit6		= TGRSIDetectorHit::kDetHitBit5,
-      kBit7		= TGRSIDetectorHit::kDetHitBit6
+    enum ETigressBits { // Inherited TObject fBits, Enum via TDetector
+      kAddbackSet	= kDetBit0,
+      kSuppression	= kDetBit1,
+      kTigBit2		= kDetBit2,
+      kTigBit3		= kDetBit3,
+      kTigBit4		= kDetBit4,
+      kTigBit5		= kDetBit5,
+      kTigBit6		= kDetBit6,
     };
 
     enum ETigressGlobalBits {

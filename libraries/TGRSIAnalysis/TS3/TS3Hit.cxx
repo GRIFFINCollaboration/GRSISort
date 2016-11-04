@@ -10,7 +10,8 @@ ClassImp(TS3Hit)
 	}
 TS3Hit::TS3Hit(TFragment &frag)	: TGRSIDetectorHit(frag) {
 	if(frag.GetChannel()->GetMnemonic()->ArrayPosition() == 1) SetIsDownstream(false);
-	else SetIsDownstream(true); // In case of not set (0) set downstream (2) or incorrect value, we assume downstream
+	else SetIsDownstream(true); // In case of not set (0), set downstream (2), or incorrect value, we assume downstream
+				    //For SPICE 0 and 2 are used for different downstream settings
 }
 
 TS3Hit::~TS3Hit()	{}
@@ -67,11 +68,12 @@ void TS3Hit::Print(Option_t *opt) const	{
 }
 
 Double_t TS3Hit::GetDefaultPhiOffset() const {
+	double deg=-90;
 	if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLi){
-		return -22.5*TMath::Pi()/180;
-	}else{
-		return -90*TMath::Pi()/180.;		
+		deg=-22.5;
+		if(GetChannel()->GetMnemonic()->ArrayPosition() == 2)deg+=90;
 	}
+	return deg*TMath::Pi()/180.;
 }
 
 Double_t TS3Hit::GetDefaultDistance() const {//relative to target (SPICE target not at Z=0)

@@ -30,6 +30,22 @@
 
 class TDetector : public TObject	{
 	public:
+			
+	enum EBitFlag {
+		//Reference for the TObject fBits that are reserved for derived classes.
+		kDetBit0 = BIT(14),
+		kDetBit1 = BIT(15),
+		kDetBit2 = BIT(16),
+		kDetBit3 = BIT(17),
+		kDetBit4 = BIT(18),
+		kDetBit5 = BIT(19),
+		kDetBit6 = BIT(20),
+		kDetBit7 = BIT(21),
+		kDetBit8 = BIT(22),
+		kDetBit9 = BIT(23),
+		kDetBit10= BIT(24),
+	};
+		
 		TDetector();
 		TDetector(const TDetector&);
 		virtual ~TDetector();
@@ -38,11 +54,15 @@ class TDetector : public TObject	{
 				other.Copy(*this);
 			return *this;
 		}
+		
+	
 
 	public: 
 		virtual void BuildHits()                                   { AbstractMethod("BuildHits()"); } //!<!
 		virtual void AddFragment(TFragment*, TChannel*)            { AbstractMethod("AddFragment()"); } //!<!
 
+		virtual void ClearBits(){ResetBit(0x000ffc00);} // Zero the inheritance reserved bits of TObject
+		
 		virtual void Copy(TObject&) const;              //!<!
 		virtual void Clear(Option_t* opt = "");         //!<!
 		virtual void Print(Option_t* opt = "") const;   //!<!
