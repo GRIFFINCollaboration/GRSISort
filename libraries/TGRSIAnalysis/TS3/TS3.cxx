@@ -37,7 +37,7 @@ TS3& TS3::operator=(const TS3& rhs) {
    return *this;
 }
 
-TS3::TS3(const TS3& rhs) : TGRSIDetector() {
+TS3::TS3(const TS3& rhs) : TGRSIDetector(), TGRSIBit() {
   rhs.Copy(*this);
 }
 
@@ -96,7 +96,7 @@ void TS3::BuildPixels(){
 	if(fS3RingHits.size()==0 || fS3SectorHits.size()==0)
 		return;
   //if the pixels have been reset, clear the pixel hits
-  if(TestBit(kPixelsSet) == 0x0)
+  if(TestGBit(kPixelsSet) == 0x0)
     fS3Hits.clear();
   if(fS3Hits.size() == 0) {
 		
@@ -141,7 +141,7 @@ void TS3::BuildPixels(){
 			}
 		}
 	
-		if(TestBit(kMultHit) == 0x1){
+		if(TestGBit(kMultHit) == 0x1){
 		
 			int ringcount = 0;
 			int sectorcount = 0;
@@ -262,7 +262,7 @@ void TS3::BuildPixels(){
 
 		}
 
-		SetBit(kPixelsSet, true);
+		SetGBit(kPixelsSet, true);
 	}
 
 }

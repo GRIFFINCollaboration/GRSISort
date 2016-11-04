@@ -11,17 +11,18 @@
 #include "TGRSIDetector.h"
 #include "TS3Hit.h"
 #include "TChannel.h"
+#include "TGRSIBit.h"
 
-class TS3 : public TGRSIDetector {
+class TS3 : public TGRSIDetector, public TGRSIBit {
 	public:
 		enum ES3Bits { // Inherited TObject fBits, Enum via TDetector
-			kPixelsSet = kDetBit0,
-			kMultHit = kDetBit1,
-			kS3Bit2	= kDetBit2,
-			kS3Bit3	= kDetBit3,
-			kS3Bit4	= kDetBit4,
-			kS3Bit5	= kDetBit5,
-			kS3Bit6	= kDetBit6,
+			kPixelsSet = kGRSIBit0,
+			kMultHit = kGRSIBit1,
+			kS3Bit2	= kGRSIBit2,
+			kS3Bit3	= kGRSIBit3,
+			kS3Bit4	= kGRSIBit4,
+			kS3Bit5	= kGRSIBit5,
+			kS3Bit6	= kGRSIBit6,
 		};
 
 		TS3();
@@ -46,11 +47,11 @@ class TS3 : public TGRSIDetector {
 		
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
 
-		bool MultiHit(){ return TestBit(kMultHit);	 } // Get allow shared hits
-		void SetMultiHit(bool flag=true)	{ SetBit(kMultHit, flag); SetPixels(false);	 } // Set allow shared hits
+		bool MultiHit(){ return TestGBit(kMultHit);	 } // Get allow shared hits
+		void SetMultiHit(bool flag=true)	{ SetGBit(kMultHit, flag); SetPixels(false);	 } // Set allow shared hits
 
-		bool PixelsSet(){ return TestBit(kPixelsSet); }
-		void SetPixels(bool flag=true) { SetBit(kPixelsSet, flag); }
+		bool PixelsSet(){ return TestGBit(kPixelsSet); }
+		void SetPixels(bool flag=true) { SetGBit(kPixelsSet, flag); }
 		void BuildPixels();
 
 		static TVector3 GetPosition(int ring, int sector, bool smear=false);
@@ -58,7 +59,7 @@ class TS3 : public TGRSIDetector {
 
 		void SetTargetDistance(double dist)	{ fTargetDistance = dist; }
 
-		void ClearTransients() { TDetector::ClearBits(); for(auto hit : fS3Hits) hit.ClearTransients(); for(auto hit : fS3RingHits) hit.ClearTransients(); for(auto hit : fS3SectorHits) hit.ClearTransients(); }
+		void ClearTransients() {  TGRSIBit::Clear(); for(auto hit : fS3Hits) hit.ClearTransients(); for(auto hit : fS3RingHits) hit.ClearTransients(); for(auto hit : fS3SectorHits) hit.ClearTransients(); }
 
 		void Copy(TObject&) const;
 		TS3& operator=(const TS3&);  // 
@@ -69,7 +70,7 @@ class TS3 : public TGRSIDetector {
 		std::vector<TS3Hit> fS3Hits; //!<!
 		std::vector<TS3Hit> fS3RingHits, fS3SectorHits;
 
-		void ClearStatus() { TDetector::ClearBits(); }
+		void ClearStatus() {  TGRSIBit::Clear(); }
 	
 		///for geometery	
 		static int fRingNumber;          //!<!
