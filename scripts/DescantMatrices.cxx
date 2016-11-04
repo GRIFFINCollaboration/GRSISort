@@ -343,7 +343,7 @@ TList *DescantMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEn
 				}
             if(dWaveForm_flag){
 					//Plot the normalized Waveform here.
-					std::vector<Short_t>* waveform = desc->GetDescantHit(one)->GetWaveform();
+					const std::vector<Short_t>* waveform = desc->GetDescantHit(one)->GetWaveform();
 					Short_t maximum = *std::max_element(waveform->begin(), waveform->end());
 					for(size_t i = 0; i < waveform->size(); ++i) {
 						desWaveForm->Fill(i - desc->GetDescantHit(one)->GetCfd()/256., waveform->at(i)/static_cast<double>(maximum));

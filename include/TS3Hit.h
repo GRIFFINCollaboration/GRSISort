@@ -15,7 +15,7 @@
 class TS3Hit : public TGRSIDetectorHit {
 	public:
 		TS3Hit();
-		TS3Hit(TFragment &);
+		TS3Hit(const TFragment &);
 		virtual ~TS3Hit();
 		TS3Hit(const TS3Hit&);
 
@@ -31,21 +31,21 @@ class TS3Hit : public TGRSIDetectorHit {
 		void Print(Option_t* opt="") const;
 		void Clear(Option_t* opt="");
 
-		inline Double_t GetFitTime()			           { return fTimeFit;	   } //!<!
-		inline Double_t GetSignalToNoise()		        { return fSig2Noise;	} //!<!
+		inline Double_t GetFitTime()			         { return fTimeFit; } //!<!
+		inline Double_t GetSignalToNoise()		      { return fSig2Noise;	} //!<!
 
-		void SetRingNumber(Short_t rn)     			{ fRing = rn;   }
-		void SetSectorNumber(Short_t sn)   			{ fSector = sn; }
-		void SetIsDownstream(Bool_t dwnstrm) 		{ fIsDownstream = dwnstrm; }
+		void SetRingNumber(Short_t rn)				   { fRing = rn; }
+		void SetSectorNumber(Short_t sn)   			   { fSector = sn; }
+		void SetIsDownstream(Bool_t dwnstrm) 		   { fIsDownstream = dwnstrm; }
 
-		void SetRingNumber(TFragment &frag)     { fRing = frag.GetSegment();   	}
-		void SetSectorNumber(TFragment &frag)   { fSector = frag.GetSegment(); 	}
-		void SetSectorNumber(int n)   {fSector = n ;}
-		void SetRingNumber(int n)  { fRing= n ; }
+		void SetRingNumber(TFragment &frag)          { fRing = frag.GetSegment(); }
+		void SetSectorNumber(TFragment &frag)        { fSector = frag.GetSegment(); }
+		void SetSectorNumber(int n)   					{ fSector = n ; }
+		void SetRingNumber(int n)   						{ fRing 	= n ; }
 
-		void SetWavefit(TFragment&);
-		void SetTimeFit(Double_t time){ fTimeFit = time;}
-		void SetSig2Noise(Double_t sig2noise){ fSig2Noise = sig2noise;}
+		void SetWavefit(const TFragment&);
+		void SetTimeFit(Double_t time)					{ fTimeFit = time; }
+		void SetSig2Noise(Double_t sig2noise)		   { fSig2Noise = sig2noise; }
 
 		Double_t GetPhi(double offset=0) {
 			return GetPosition(offset).Phi();

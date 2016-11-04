@@ -14,7 +14,7 @@
 
 TGRSIOptions* TGRSIOptions::Get(int argc, char** argv){
   static TGRSIOptions* item = NULL;
-  if(!item){
+  if(!item) {
     item = new TGRSIOptions(argc, argv);
   }
   return item;
@@ -79,6 +79,9 @@ void TGRSIOptions::Clear(Option_t* opt) {
   fSortMultiple = false;
   fDebug = false;
 
+  fFragmentWriteQueueSize = 10000000;
+  fAnalysisWriteQueueSize = 1000000;
+
   fTimeSortInput = false;
 
   fBuildWindow = 200;
@@ -87,6 +90,9 @@ void TGRSIOptions::Clear(Option_t* opt) {
 
   fShouldExit = false;
 
+	fColumnWidth = 20;
+	fStatusWidth = 80;
+	fStatusInterval = 10;
   fLongFileDescription = false;
 }
 
@@ -120,6 +126,9 @@ void TGRSIOptions::Print(Option_t* opt) const {
 			  <<"fSortMultiple: "<<fSortMultiple<<std::endl
 			  <<"fDebug;: "<<fDebug<<std::endl
 			  <<std::endl
+			  <<"fFragmentWriteQueueSize: "<<fFragmentWriteQueueSize<<std::endl
+			  <<"fAnalysisWriteQueueSize: "<<fAnalysisWriteQueueSize<<std::endl
+			  <<std::endl
 			  <<"fTimeSortInput: "<<fTimeSortInput<<std::endl
 			  <<"fSortDepth: "<<fSortDepth<<std::endl
 			  <<std::endl
@@ -129,6 +138,9 @@ void TGRSIOptions::Print(Option_t* opt) const {
 			  <<std::endl
 			  <<"fShouldExit: "<<fShouldExit<<std::endl
 			  <<std::endl
+			  <<"fColumnWidth: "<<fColumnWidth<<std::endl
+			  <<"fStatusWidth: "<<fStatusWidth<<std::endl
+			  <<"fStatusInterval: "<<fStatusInterval<<std::endl
 			  <<"fLongFileDescription: "<<fLongFileDescription<<std::endl;
 }
 
@@ -219,6 +231,13 @@ void TGRSIOptions::Load(int argc, char** argv) {
 	parser.option("ignore-scaler", &fIgnoreScaler);
 	parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors);
 
+	parser.option("fragment-size", &fFragmentWriteQueueSize)
+	      .description("size of fragment write queue")
+			.default_value(10000000);
+	parser.option("analysis-size", &fAnalysisWriteQueueSize)
+	      .description("size of analysis write queue")
+			.default_value(1000000);
+	
 	// parser.option("o output", &output_file)
 	//   .description("Root output file");
 	// parser.option("f filter-output",&output_filtered_file)
@@ -249,6 +268,15 @@ void TGRSIOptions::Load(int argc, char** argv) {
 	parser.option("static-window", &fStaticWindow)
 		.description("use static window for event building")
 		.default_value(false);
+	parser.option("column-width", &fColumnWidth)
+	      .description("width of one column of status")
+			.default_value(20);
+	parser.option("status-width", &fStatusWidth)
+	      .description("number of characters to be used for status output")
+			.default_value(80);
+	parser.option("status-interval", &fStatusInterval)
+	      .description("seconds between each detailed status output (each a new line)")
+			.default_value(10);
 
 	// parser.option("long-file-description", &fLongFileDescription)
 	//   .description("Show full path to file in status messages")

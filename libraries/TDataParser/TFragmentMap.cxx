@@ -2,15 +2,13 @@
 
 #include <iterator>
 
-#include "TFragmentQueue.h"
-
 bool TFragmentMap::fDebug = false;
 
-TFragmentMap::TFragmentMap(std::shared_ptr<ThreadsafeQueue<TFragment*> >& good_output_queue,
-			   std::shared_ptr<ThreadsafeQueue<TFragment*> >& bad_output_queue)
-  : fGood_output_queue(good_output_queue), fBad_output_queue(bad_output_queue) { }
+TFragmentMap::TFragmentMap(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& good_output_queue,
+      			            std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& bad_output_queue)
+  : fGoodOutputQueue(good_output_queue), fBadOutputQueue(bad_output_queue) { }
 
-bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<Short_t> integrationLength) {
+bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charge, std::vector<Short_t> integrationLength) {
 	if(fDebug) {
 		std::cout<<"Adding fragment "<<frag<<" (address "<<frag->GetAddress()<<" , # pileups "<<frag->GetNumberOfPileups()<<") with "<<charge.size()<<" charges and "<<integrationLength.size()<<" k-values:"<<std::endl;
 		for(size_t i = 0; i < charge.size() && i < integrationLength.size(); ++i) {
@@ -32,7 +30,9 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 			}
 		}
 		frag->SetEntryNumber();
-		fGood_output_queue->Push(frag);
+      for(auto outputQueue : fGoodOutputQueue) {
+		   outputQueue->Push(frag);
+      }
 		return true;
 	}
 	// check if this is the last fragment needed
@@ -50,9 +50,9 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 			std::cout<<"address "<<frag->GetAddress()<<": inserting fragment "<<frag<<" with "<<charge.size()<<" charges"<<std::endl;
 		}
 		if(range.first != range.second) {
-			fMap.insert(range.second, std::pair<UInt_t, std::tuple<TFragment*, std::vector<Int_t>, std::vector<Short_t> > > (frag->GetAddress(), std::make_tuple(frag, charge, integrationLength)));
+			fMap.insert(range.second, std::pair<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > > (frag->GetAddress(), std::make_tuple(frag, charge, integrationLength)));
 		} else {
-			fMap.insert(std::pair<UInt_t, std::tuple<TFragment*, std::vector<Int_t>, std::vector<Short_t> > > (frag->GetAddress(), std::make_tuple(frag, charge, integrationLength)));
+			fMap.insert(std::pair<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > > (frag->GetAddress(), std::make_tuple(frag, charge, integrationLength)));
 		}
 		if(fDebug) std::cout<<"done"<<std::endl;
 		return true;
@@ -60,7 +60,7 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 	if(fDebug) std::cout<<"address "<<frag->GetAddress()<<": last fragment found, calculating charges for "<<nofFrags<<" fragments"<<std::endl;
 	// last fragment:
 	// now we can loop over the stored fragments and the current fragment and calculate all charges
-	std::vector<TFragment*> frags; // all fragments
+	std::vector<std::shared_ptr<TFragment> > frags; // all fragments
 	std::vector<Long_t> k2; // all integration lengths squared
 	std::vector<Float_t> c; // all charges (not integrated charges, but integrated charge divided by integration length!)
 	int situation = -1; // flag to select different scenarios for the time sequence of multiple hits
@@ -244,11 +244,15 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 	int i = 0;
 	for(auto it = range.first; it != range.second; ++it) {
 		frag->SetEntryNumber();
-		fGood_output_queue->Push(std::get<0>((*it).second));
+      for(auto outputQueue : fGoodOutputQueue) {
+         outputQueue->Push(std::get<0>((*it).second));
+      }
 		if(fDebug) std::cout<<"Added "<<++i<<". fragment "<<std::get<0>((*it).second)<<std::endl;
 	}
 	frag->SetEntryNumber();
-	fGood_output_queue->Push(frag);
+   for(auto outputQueue : fGoodOutputQueue) {
+      outputQueue->Push(frag);
+   }
 	if(fDebug) std::cout<<"address "<<frag->GetAddress()<<": added last fragment "<<frag<<std::endl;
 	// remove these fragments from the map
 	fMap.erase(range.first, range.second);
@@ -256,7 +260,7 @@ bool TFragmentMap::Add(TFragment* frag, std::vector<Int_t> charge, std::vector<S
 	return true;
 }
 
-void TFragmentMap::Solve(std::vector<TFragment*> frag, std::vector<Float_t> c, std::vector<Long_t> k2, int situation) {
+void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment> > frag, std::vector<Float_t> c, std::vector<Long_t> k2, int situation) {
 	switch(frag.size()) {
 		case 2:
 			frag[0]->SetCharge((c[0]*(k2[0]*k2[1]+k2[0]*k2[2])+(c[1]-c[2])*k2[1]*k2[2])/(k2[0]*k2[1]+k2[0]*k2[2]+k2[1]*k2[2]));

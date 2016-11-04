@@ -29,7 +29,11 @@ class TSiLi: public TGRSIDetector  {
 		TSiLi(const TSiLi&);
 		virtual ~TSiLi();
 
-		void AddFragment(TFragment*, TChannel*);
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
+
+		void ClearTransients() { for(auto hit : fSiLiHits) hit.ClearTransients(); }
 
 		TSiLi& operator=(const TSiLi&);  // 
 

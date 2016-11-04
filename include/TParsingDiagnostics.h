@@ -1,5 +1,5 @@
-#ifndef TDIAGNOSTICS_H
-#define TDIAGNOSTICS_H
+#ifndef TPARSINGDIAGNOSTICS_H
+#define TPARSINGDIAGNOSTICS_H
 
 /** \addtogroup Sorting
  *  @{
@@ -20,6 +20,10 @@
 #include <string>
 #include <vector>
 #include <map>
+
+#ifndef __CINT__
+#include <memory>
+#endif
 
 #include "TObject.h"
 #include "TH1F.h"
@@ -71,7 +75,9 @@ class TParsingDiagnostics : public TObject {
 	
 	public:
 		//"setter" functions
-		void GoodFragment(TFragment*);
+#ifndef __CINT__
+		void GoodFragment(std::shared_ptr<const TFragment>);
+#endif
 		void GoodFragment(Short_t detType) { fNumberOfGoodFragments[detType]++; }
 		void BadFragment(Short_t detType)  { fNumberOfBadFragments[detType]++; }
 

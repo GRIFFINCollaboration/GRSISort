@@ -28,7 +28,9 @@ class TS3 : public TGRSIDetector {
 		TS3(const TS3&);
 		virtual  ~TS3();
 
-		virtual void AddFragment(TFragment*, TChannel*);
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
 
 		Short_t GetRingMultiplicity() 	const { return fS3RingHits.size(); }
 		Short_t GetSectorMultiplicity() const { return fS3SectorHits.size(); }
@@ -55,6 +57,8 @@ class TS3 : public TGRSIDetector {
 		static TVector3 GetPosition(int ring, int sector, double offsetphi, double offsetZ, bool sectorsdownstream,bool smear=false);
 
 		void SetTargetDistance(double dist)	{ fTargetDistance = dist; }
+
+		void ClearTransients() { TDetector::ClearBits(); for(auto hit : fS3Hits) hit.ClearTransients(); for(auto hit : fS3RingHits) hit.ClearTransients(); for(auto hit : fS3SectorHits) hit.ClearTransients(); }
 
 		void Copy(TObject&) const;
 		TS3& operator=(const TS3&);  // 

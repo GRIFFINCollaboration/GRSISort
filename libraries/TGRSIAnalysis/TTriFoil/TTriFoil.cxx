@@ -34,7 +34,7 @@ TTriFoil::TTriFoil(const TTriFoil& rhs) : TDetector() {
   rhs.Copy(*this);
 }
 
-void TTriFoil::AddFragment(TFragment* frag, TChannel* chan) {
+void TTriFoil::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
   if(frag == NULL || chan == NULL) {
     return;
   }

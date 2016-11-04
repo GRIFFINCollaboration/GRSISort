@@ -24,7 +24,7 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject() {
 #endif
 }
 
-TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) : TObject() {
+TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) : TObject(rhs) {
   ///Default Copy constructor
   rhs.Copy(*this);
   if(copywave) {

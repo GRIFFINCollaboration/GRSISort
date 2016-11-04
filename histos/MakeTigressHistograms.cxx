@@ -12,7 +12,7 @@ TCutG *tita = 0;
 
 extern "C"
 void MakeFragmentHistograms(TRuntimeObjects& obj) {
-  TFragment* frag = obj.GetFragment();
+  std::shared_ptr<const TFragment> frag = obj.GetFragment();
   TChannel* chan = frag->GetChannel();
 
   if(!prot) {
@@ -76,9 +76,9 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
 
 extern "C"
 void MakeAnalysisHistograms(TRuntimeObjects& obj) {
-  TSharc* sharc = obj.GetDetector<TSharc>();
-  TTigress* tigress = obj.GetDetector<TTigress>();
-  TTriFoil* tf = obj.GetDetector<TTriFoil>();
+  std::shared_ptr<TSharc> sharc = obj.GetDetector<TSharc>();
+  std::shared_ptr<TTigress> tigress = obj.GetDetector<TTigress>();
+  std::shared_ptr<TTriFoil> tf = obj.GetDetector<TTriFoil>();
 
   //static long first_ana_timestamp = 0;
 

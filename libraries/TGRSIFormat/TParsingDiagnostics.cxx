@@ -79,7 +79,7 @@ void TParsingDiagnostics::Print(Option_t* opt) const {
 	}
 }
 
-void TParsingDiagnostics::GoodFragment(TFragment* frag) {
+void TParsingDiagnostics::GoodFragment(std::shared_ptr<const TFragment> frag) {
 	///increment the counter of good fragments for this detector type and check if any trigger ids have been lost
 	fNumberOfGoodFragments[frag->GetDetectorType()]++;
 
@@ -176,12 +176,26 @@ void TParsingDiagnostics::WriteToFile(const char* fileName) const {
 	statsOut<<std::endl
 			  <<"Run time to the nearest second = "<<fMaxMidasTimeStamp-fMinMidasTimeStamp<<std::endl
 			  <<std::endl;
-	for(auto it = fDeadTime.begin(); it != fDeadTime.end(); ++it) {
-		TChannel* chan = TChannel::GetChannel(it->first);
-		if(!chan)
-			continue;
-		statsOut<<"0x"<<std::hex<<it->first<<std::dec<<":\t"<<chan->GetName()<<"\tdead time: "<<static_cast<float>(it->second)/1e8<<" seconds."<<std::endl;
+
+	statsOut<<"Good fragments:";
+	for(auto it : fNumberOfGoodFragments) {
+		statsOut<<" "<<it.second<<" of type "<<it.first;
 	}
 	statsOut<<std::endl;
+
+	statsOut<<"Bad fragments:";
+	for(auto it : fNumberOfBadFragments) {
+		statsOut<<" "<<it.second<<" of type "<<it.first;
+	}
+	statsOut<<std::endl;
+
+	for(auto it : fDeadTime) {
+		TChannel* chan = TChannel::GetChannel(it.first);
+		if(!chan)
+			continue;
+		statsOut<<"0x"<<std::hex<<it.first<<std::dec<<":\t"<<chan->GetName()<<"\tdead time: "<<static_cast<float>(it.second)/1e8<<" seconds."<<std::endl;
+	}
+	statsOut<<std::endl;
+
 	statsOut.close();
 }

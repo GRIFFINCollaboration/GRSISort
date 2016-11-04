@@ -38,7 +38,9 @@ class TRF : public TDetector {
 				return ts;
 		}		
 		
-		void AddFragment(TFragment*, TChannel*);	//!<!
+#ifndef __CINT__
+      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
 		void BuildHits() {} //no need to build any hits, everything already done in AddFragment
 
 		void Copy(TObject&) const;

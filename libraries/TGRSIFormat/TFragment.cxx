@@ -2,6 +2,7 @@
 #include "TChannel.h"
 #include "TROOT.h"
 #include <iostream>
+#include <sstream>
 
 #include <TClass.h>
 

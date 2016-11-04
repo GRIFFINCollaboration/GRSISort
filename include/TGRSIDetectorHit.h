@@ -102,6 +102,7 @@ class TGRSIDetectorHit : public TObject 	{
       void SetCharge(const Int_t& temp_charge)          { fCharge = temp_charge + gRandom->Uniform(); }   //!<!
       virtual void SetCfd(const Int_t& x)               { fCfd    = x; }             //!<!
       void SetWaveform(const std::vector<Short_t>& x)   { fWaveform = x; }           //!<!
+      void AddWaveformSample(const Short_t& x)                 { fWaveform.push_back(x); }  //!<!
       virtual void SetTimeStamp(const Long_t& x)        { fTimeStamp   = x; }        //!<! 
       virtual void AppendTimeStamp(const Long_t& x)     { fTimeStamp   += x; }       //!<! 
 
@@ -114,14 +115,20 @@ class TGRSIDetectorHit : public TObject 	{
       virtual Long_t GetTimeStamp(Option_t* opt="") const;
       Long_t GetRawTimeStamp(Option_t* opt="") const { return fTimeStamp; }
       virtual Double_t GetTime(const UInt_t& correct_flag = kAll, Option_t* opt = "")   const;  ///< Returns a time value to the nearest nanosecond!
-      virtual Int_t   GetCfd()    const      { return fCfd;}                 //!<!
-      virtual UInt_t GetAddress() const      { return fAddress; }            //!<!
-      virtual Int_t  GetCharge()  const      ;                               //!<!
-      virtual Float_t Charge()    const      { return fCharge; }             //!<!
-      virtual Short_t GetKValue() const      { return fKValue; }             //!<!
-      TChannel* GetChannel()      const      { if(!IsChannelSet()) { fChannel = TChannel::GetChannel(fAddress); SetBit(kIsChannelSet, true); } return fChannel; }
       //TODO: Fix Getters to have non-const types
-	std::vector<Short_t>* GetWaveform()    { return &fWaveform; }          //!<!
+      virtual Int_t   GetCfd()    const               { return fCfd;}                 //!<!
+      virtual UInt_t GetAddress() const               { return fAddress; }            //!<!
+      virtual Int_t  GetCharge()  const;                                              //!<!
+      virtual Float_t Charge()    const               { return fCharge; }             //!<!
+      virtual Short_t GetKValue() const               { return fKValue; }             //!<!
+      const std::vector<Short_t>* GetWaveform() const { return &fWaveform; }          //!<!
+      TChannel* GetChannel()      const               { 
+			if(!IsChannelSet()) { 
+				fChannel = TChannel::GetChannel(fAddress); 
+				SetBit(kIsChannelSet, true); 
+			} 
+			return fChannel; 
+		}  //!<!
 
       //stored in the tchannel (things common to all hits of this address)
       virtual Int_t  GetDetector()  const; //!<!
