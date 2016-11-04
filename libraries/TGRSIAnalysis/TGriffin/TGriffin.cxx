@@ -438,10 +438,11 @@ UShort_t TGriffin::GetNAddbackFrags(const size_t &idx, const Int_t &gain_type) {
 
 void TGriffin::SetBitNumber(enum EGriffinBits bit,Bool_t set) const{
 	//Used to set the flags that are stored in TGriffin.
-	if(set)
+	fGriffinBits.SetBit(bit,set);
+/*	if(set)
 		fGriffinBits |= bit;
 	else
-		fGriffinBits &= (~bit);
+		fGriffinBits &= (~bit);*/
 }
 
 Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, const TGriffinHit* const other_hit, Bool_t time_constraint){
