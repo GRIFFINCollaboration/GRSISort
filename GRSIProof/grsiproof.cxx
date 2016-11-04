@@ -65,6 +65,7 @@ int main(int argc, char **argv) {
 
    //Add the path were we store headers for GRSIProof macros to see
    const char* pPath = getenv("GRSISYS");
+   gROOT->SetMacroPath(Form("%s/GRSIProof",pPath));
    gInterpreter->AddIncludePath(Form("%s/include",pPath));
    //The first thing we want to do is see if we can compile the macros that are passed to us
    if(!opt->MacroInputFiles().size()){
@@ -89,6 +90,7 @@ int main(int argc, char **argv) {
 
    //The first thing we do is get the PROOF Lite instance to run
    TGRSIProof *proof = TGRSIProof::Open("");
+   proof->SetParallel(opt->GetMaxWorkers());
    if(!proof){
       std::cout << "Can't connect to proof" << std::endl;
       return 0;

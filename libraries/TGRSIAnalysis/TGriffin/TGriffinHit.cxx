@@ -141,6 +141,10 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
    else{
       this->SetPUHit(3);
    }
+   //KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup hit was added-back RD
+   if(this->GetKValue() > hit->GetKValue()){
+      this->SetKValue(hit->GetKValue());
+   }
 }
 
 void TGriffinHit::SetGriffinFlag(enum EGriffinHitBits flag,Bool_t set){

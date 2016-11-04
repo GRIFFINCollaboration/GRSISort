@@ -1,4 +1,4 @@
-Unix.*.Root.MacroPath: .:$(GRSISYS)/util:$(ROOTSYS)/macros:$(GRSISYS)/scripts:$(GRSISYS)/examples:$(GRSISYS)/myAnalysis
+Unix.*.Root.MacroPath: .:$(GRSISYS)/util:$(ROOTSYS)/macros:$(GRSISYS)/scripts:$(GRSISYS)/examples:$(GRSISYS)/myAnalysis:$(GRSISYS)/GRSIProof
 Unix.*.Root.DynamicPath:  .:~/rootlibs:$(ROOTSYS)/lib:$(GRSISYS)/lib:$(GRSISYS)/GRSIProof
 Unix.*.Root.IncludePath:  .:~/rootlibs:$(ROOTSYS)/include:$(GRSISYS)/include:$(GRSISYS)/GRSIProof
 
