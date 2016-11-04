@@ -46,7 +46,6 @@ class TDetector : public TObject	{
 		kDetBit7 = BIT(21),
 		kDetBit8 = BIT(22),
 		kDetBit9 = BIT(23),
-		kDetBit10= BIT(24),
 	};
 		
 		TDetector();
