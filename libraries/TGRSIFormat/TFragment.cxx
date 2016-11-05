@@ -12,7 +12,7 @@ ClassImp(TFragment)
 
 Long64_t TFragment::fNumberOfFragments = 0;
 
-TFragment::TFragment() {
+TFragment::TFragment() : TGRSIDetectorHit() {
    // Default Constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
