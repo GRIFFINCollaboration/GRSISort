@@ -77,11 +77,8 @@ void TS3::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 }
 
 void TS3::SetBitNumber(enum ES3Bits bit,Bool_t set){
-  //Used to set the flags that are stored in TTigress.
-  if(set)
-    fS3Bits |= bit;
-  else
-    fS3Bits &= (~bit);
+  //Used to set the flags that are stored in TS3.
+  fS3Bits.SetBit(bit,set);
 }
 
 Int_t TS3::GetPixelMultiplicity(){
@@ -104,7 +101,7 @@ void TS3::BuildPixels(){
 	if(fS3RingHits.size()==0 || fS3SectorHits.size()==0)
 		return;
   //if the pixels have been reset, clear the pixel hits
-  if((fS3Bits & kPixelsSet) == 0x0)
+  if(fS3Bits.TestBit(kPixelsSet) == false)
     fS3Hits.clear();
   if(fS3Hits.size() == 0) {
 		
@@ -149,7 +146,7 @@ void TS3::BuildPixels(){
 			}
 		}
 	
-		if((fS3Bits & kMultHit) == 0x1){
+		if(fS3Bits.TestBit(kMultHit) == true){
 		
 			int ringcount = 0;
 			int sectorcount = 0;

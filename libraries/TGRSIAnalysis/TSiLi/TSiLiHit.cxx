@@ -92,7 +92,7 @@ void TSiLiHit::SumHit(TSiLiHit *hit) {
 	fAddBackSegments.clear();
 	fAddBackEnergy.clear();
 	this->SetEnergy(0);
-	SetBit(kIsEnergySet,true);
+	SetHitBit(kIsEnergySet,true);
   }
   
   this->SetEnergy(this->GetEnergy() + hit->GetEnergy());

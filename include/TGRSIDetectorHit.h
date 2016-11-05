@@ -17,6 +17,7 @@
 #include "TPPG.h"
 #include "TFile.h"
 #include "TString.h"
+#include "TTransientBits.h"
 
 class TGRSIDetector;
 
@@ -90,7 +91,6 @@ class TGRSIDetectorHit : public TObject 	{
 
       bool operator<(const TGRSIDetectorHit &rhs) const { return GetEnergy() > rhs.GetEnergy();} //sorts large->small
 
-
    public:
       virtual void Copy(TObject&) const;                //!<!
       virtual void Copy(TObject&,bool copywave) const;  //!<!
@@ -114,8 +114,8 @@ class TGRSIDetectorHit : public TObject 	{
       virtual void SetTimeStamp(const Long_t& x)        { fTimeStamp   = x; }        //!<! 
       virtual void AppendTimeStamp(const Long_t& x)     { fTimeStamp   += x; }       //!<! 
 
-      Double_t SetEnergy(const double& en) const { fEnergy = en; SetBit(kIsEnergySet,true); return fEnergy;}
-      void SetTime(const Double_t& time) {fTime = time; SetBit(kIsTimeSet,true); }
+      Double_t SetEnergy(const double& en) const { fEnergy = en; SetHitBit(kIsEnergySet,true); return fEnergy;}
+      void SetTime(const Double_t& time) {fTime = time; SetHitBit(kIsTimeSet,true); }
 
       virtual TVector3 GetPosition(Double_t dist)    const { return TVector3(0.,0.,0.); } //!<!
       virtual TVector3 GetPosition()    const { return TVector3(0.,0.,0.); } //!<!
@@ -133,7 +133,7 @@ class TGRSIDetectorHit : public TObject 	{
       TChannel* GetChannel()      const               { 
 			if(!IsChannelSet()) { 
 				fChannel = TChannel::GetChannel(fAddress); 
-				SetBit(kIsChannelSet, true); 
+				SetHitBit(kIsChannelSet, true); 
 			} 
 			return fChannel; 
 		}  //!<!
@@ -151,8 +151,8 @@ class TGRSIDetectorHit : public TObject 	{
       uint16_t GetPPGStatus() const;
       uint16_t GetCycleTimeStamp() const;
 
-      void ClearEnergy()  { fEnergy  = 0.0;  SetBit(kIsEnergySet,false); }
-      void ClearChannel() { fChannel = NULL; SetBit(kIsChannelSet,false); }
+      void ClearEnergy()  { fEnergy  = 0.0;  SetHitBit(kIsEnergySet,false); }
+      void ClearChannel() { fChannel = NULL; SetHitBit(kIsChannelSet,false); }
 
       static TVector3 *GetBeamDirection() { return &fBeamDirection; }
 
@@ -160,13 +160,13 @@ class TGRSIDetectorHit : public TObject 	{
  //     virtual TVector3 GetChannelPosition(Double_t dist) const { AbstractMethod("GetChannelPosition"); return TVector3(0., 0., 0.); }
 
    protected:
-      Bool_t IsEnergySet()  const { return (fBitflags & kIsEnergySet); }
-      Bool_t IsChannelSet() const { return (fBitflags & kIsChannelSet); }
-      Bool_t IsTimeSet()    const { return (fBitflags & kIsTimeSet); }
-      Bool_t IsPPGSet()     const { return (fBitflags & kIsPPGSet); }
+      Bool_t IsEnergySet()  const { return (fBitflags.TestBit(kIsEnergySet)); }
+      Bool_t IsChannelSet() const { return (fBitflags.TestBit(kIsChannelSet)); }
+      Bool_t IsTimeSet()    const { return (fBitflags.TestBit(kIsTimeSet)); }
+      Bool_t IsPPGSet()     const { return (fBitflags.TestBit(kIsPPGSet)); }
 
-      void SetBit(enum EBitFlag,Bool_t set=true) const; //const here is dirty
-      bool TestBit(enum EBitFlag flag) const { return fBitflags & flag; }
+      void SetHitBit(enum EBitFlag,Bool_t set=true) const; //const here is dirty
+      bool TestHitBit(enum EBitFlag flag) const { return fBitflags.TestBit(flag); }
 
    protected:
       UInt_t   fAddress;    ///< address of the the channel in the DAQ.
@@ -191,7 +191,7 @@ class TGRSIDetectorHit : public TObject 	{
 
    private:
       //flags   
-      mutable UChar_t fBitflags;
+      mutable TTransientBits<UChar_t> fBitflags;
       static TVector3 fBeamDirection; //!
 
       /// \cond CLASSIMP

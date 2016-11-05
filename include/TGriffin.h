@@ -53,7 +53,6 @@ class TGriffin : public TGRSIDetector {
 #ifndef __CINT__
 		void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan); //!<!
 #endif
-      //TODO: Make a better ClearTransients function with all vectors included
 		void ClearTransients() { fGriffinBits = 0; for(auto hit : fGriffinLowGainHits) hit.ClearTransients(); for(auto hit: fGriffinHighGainHits) hit.ClearTransients(); }
 		void ResetFlags() const;
 

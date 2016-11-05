@@ -53,7 +53,7 @@ class TSiLiHit : public TGRSIDetectorHit {
 		
 		void UseFitCharge(){
 			SetCharge(Float_t(fFitCharge));
-			SetBit(kIsEnergySet,false);
+			SetHitBit(kIsEnergySet,false);
 		}
 
 		double GetWaveformEnergy() const;

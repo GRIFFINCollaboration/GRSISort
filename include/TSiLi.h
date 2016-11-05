@@ -57,6 +57,7 @@ class TSiLi: public TGRSIDetector  {
 		
 	private:
 		std::vector<TSiLiHit> fSiLiHits;
+		//TODO: Add James' method for rebuilding addback
 		std::vector<TSiLiHit> fAddbackHits;
 		
 		void SortCluster(std::vector<unsigned>&);

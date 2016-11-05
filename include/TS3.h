@@ -26,7 +26,6 @@ class TS3 : public TGRSIDetector {
 			kBit7   			= BIT(7)
 		};
 
-
 		TS3();
 		TS3(const TS3&);
 		virtual  ~TS3();
@@ -72,10 +71,10 @@ class TS3 : public TGRSIDetector {
 		std::vector<TS3Hit> fS3Hits; //!<!
 		std::vector<TS3Hit> fS3RingHits, fS3SectorHits;
 
-		UChar_t fS3Bits;                  // flags for transient members
+		TTransientBits<UChar_t> fS3Bits;                  // flags for transient members
 		void ClearStatus() { fS3Bits = 0; }
 		void SetBitNumber(enum ES3Bits bit,Bool_t set=true);
-		Bool_t TestBitNumber(enum ES3Bits bit) const {return (bit & fS3Bits);}
+		Bool_t TestBitNumber(enum ES3Bits bit) const {return (fS3Bits.TestBit(bit));}
 	
 		///for geometery	
 		static int fRingNumber;          //!<!

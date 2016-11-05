@@ -53,6 +53,7 @@ class TSharc : public TGRSIDetector  {
     int  CombineHits(TSharcHit*,TSharcHit*,int,int);        //!<!
     void RemoveHits(std::vector<TSharcHit>*,std::set<int>*);  //!<!
 
+	//TODO: I think this class could be sped up with a flag method on these transient vectors.
     std::vector<TFragment> fFrontFragments; //! 
     std::vector<TFragment> fBackFragments;  //! 
     std::vector<TFragment> fPadFragments;  //! 
