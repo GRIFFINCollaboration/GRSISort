@@ -99,6 +99,7 @@ class TGRSIOptions : public TObject {
 
       //Proof only
       int GetMaxWorkers() const { return fMaxWorkers; }
+		bool SelectorOnly() const { return fSelectorOnly; } 
 
 	private:
 		TGRSIOptions(int argc, char** argv);
@@ -179,6 +180,7 @@ class TGRSIOptions : public TObject {
 
       //Proof only
       int fMaxWorkers;
+		bool fSelectorOnly;
 
 		ClassDef(TGRSIOptions,1);
 };

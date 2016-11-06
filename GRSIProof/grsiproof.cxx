@@ -45,7 +45,8 @@ void Analyze(const char* tree_type, TProof* proof){
       
       //Start getting ready to run proof
       proof->ClearCache();
-      proof_chain->SetProof();
+		if(!(opt->SelectorOnly()))
+      	proof_chain->SetProof();
 
       for(auto macro_it = opt->MacroInputFiles().begin(); macro_it != opt->MacroInputFiles().end(); ++macro_it){
          std::cout <<"Currently Running: " << (Form("%s",macro_it->c_str()))<<std::endl;
