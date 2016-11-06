@@ -75,8 +75,9 @@ int main(int argc, char **argv) {
    }
    std::cout<< DCYAN << "************************* MACRO COMPILATION ****************************" << RESET_COLOR << std::endl;
    for(auto i = opt->MacroInputFiles().begin(); i != opt->MacroInputFiles().end(); ++i){
-      Int_t error_code = gROOT->LoadMacro(Form("%s+",i->c_str()));
-      if(error_code != 0){//TODO: Fix this check
+      //Int_t error_code = gROOT->LoadMacro(Form("%s+",i->c_str()));
+      Int_t error_code = gSystem->CompileMacro(i->c_str(),"kO");
+      if(!error_code){//TODO: Fix this check
          std::cout<< DRED << *i << " failed to compile properly.. ABORT!" << RESET_COLOR << std::endl;
          return 0;
       }
