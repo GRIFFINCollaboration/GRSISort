@@ -16,14 +16,14 @@ class TS3 : public TGRSIDetector {
 	public:
 
 		enum ES3Bits {
-			kPixelsSet 		= BIT(0),
-			kMultHit      = BIT(1),
-			kBit2         = BIT(2),
-			kBit3         = BIT(3),
-			kBit4         = BIT(4),
+			kPixelsSet 			= BIT(0),
+			kMultHit     	 	= BIT(1),
+			kBit2        		= BIT(2),
+			kBit3         		= BIT(3),
+			kBit4         		= BIT(4),
 			kBit5  				= BIT(5),
-			kBit6   			= BIT(6),
-			kBit7   			= BIT(7)
+			kBit6   				= BIT(6),
+			kBit7   				= BIT(7)
 		};
 
 		TS3();
@@ -48,11 +48,11 @@ class TS3 : public TGRSIDetector {
 		
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
 
-		bool MultiHit()										{ return TestBitNumber(kMultHit);	 } // Get allow shared hits
+		bool MultiHit() const { return TestBitNumber(kMultHit);	 } // Get allow shared hits
 		void SetMultiHit(bool flag=true)	{ SetBitNumber(kMultHit, flag); SetPixels(false);	 } // Set allow shared hits
 
-		bool PixelsSet()									{ return TestBitNumber(kPixelsSet); }
-		void SetPixels(bool flag=true) 		{ SetBitNumber(kPixelsSet, flag); }
+		bool PixelsSet()	const { return TestBitNumber(kPixelsSet); }
+		void SetPixels(bool flag=true) 	{ SetBitNumber(kPixelsSet, flag); }
 		void BuildPixels();
 
 		static TVector3 GetPosition(int ring, int sector, bool smear=false);

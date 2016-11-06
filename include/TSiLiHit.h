@@ -16,6 +16,11 @@
 
 class TSiLiHit : public TGRSIDetectorHit {
 	public:
+		enum ESiLiHitBits { 
+			kUseFitCharge	= BIT(0),
+	  		kSiLiHitBit1	= BIT(1),
+		};
+
 		TSiLiHit();
 		TSiLiHit(const TFragment &);	
 		virtual ~TSiLiHit();
@@ -46,25 +51,19 @@ class TSiLiHit : public TGRSIDetectorHit {
 		TVector3 GetPosition(Double_t dist) const; //!  
 		TVector3 GetPosition() const; //!  
 		
-		std::vector<short> fAddBackSegments;
-		std::vector<double> fAddBackEnergy; //probably not needed after development finished
-		
 		void SumHit(TSiLiHit*);
 		
-		void UseFitCharge(){
-			SetCharge(Float_t(fFitCharge));
-			SetHitBit(kIsEnergySet,false);
+		void UseFitCharge(bool set=true){
+	  		fSiLiHitBits.SetBit(kIsEnergySet,false);
+			fSiLiHitBits.SetBit(kUseFitCharge,set);
 		}
-
-		double GetWaveformEnergy() const;
-		double GetWaveformEnergy() {
-			UseFitCharge();
-			return GetEnergy();
-		}		
-		
+	
+		double GetWaveformEnergy() const {return GetFitEnergy();}
+		double GetFitEnergy() const;		
 		double GetFitCharge() const {return fFitCharge;}
+		double GetEnergy(Option_t* opt=0) const;
 		
-				// Not strictly "doppler" but consistent
+		// Not strictly "doppler" but consistent
 		inline double GetDoppler(double beta, TVector3 *vec=0) { 
 			if(vec==0) {
 				vec = GetBeamDirection();
@@ -82,7 +81,11 @@ class TSiLiHit : public TGRSIDetectorHit {
 		
 	private:
 		Double_t GetDefaultDistance() const { return 0.0; }
-      
+		
+		std::vector<short> fAddBackSegments;
+		std::vector<double> fAddBackEnergy; //probably not needed after development finished
+      TTransientBits<UChar_t> fSiLiHitBits;
+
 		Double_t    fTimeFit;
 		Double_t    fSig2Noise;
 		Double_t    fFitCharge;

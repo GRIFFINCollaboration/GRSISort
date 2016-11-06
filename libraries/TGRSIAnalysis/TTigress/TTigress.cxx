@@ -27,7 +27,8 @@ TTransientBits<UShort_t> TTigress::fgTigressBits(TTigress::kSetCoreWave | TTigre
 
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
 	
-	if(one.GetSegmentMultiplicity()==0&&two.GetSegmentMultiplicity()==0){
+	//if(one.GetSegmentMultiplicity()==0&&two.GetSegmentMultiplicity()==0){
+	if(one.GetSegmentMultiplicity()==0||two.GetSegmentMultiplicity()==0){//For no-sectors experiment and protection if data loss
 		return ((one.GetDetector() == two.GetDetector()) &&
 			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()*10.0));		
 		
