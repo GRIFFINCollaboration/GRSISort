@@ -119,7 +119,7 @@ UShort_t TGriffinHit::NPileUps() const {
 
 UShort_t TGriffinHit::PUHit() const { 
 	//The pluralized test bits returns the actual value of the fBits masked. Not just a bool.
-   return static_cast<UShort_t>(fGriffinHitBits.TestBits(kPUHit1) + fGriffinHitBits.TestBits(kPUHit2) >> kPUHitOffset); 
+   return static_cast<UShort_t>(fGriffinHitBits.TestBits(kPUHit1) + (fGriffinHitBits.TestBits(kPUHit2) >> kPUHitOffset)); 
 } 
 
 void TGriffinHit::SetNPileUps(UChar_t npileups) {
