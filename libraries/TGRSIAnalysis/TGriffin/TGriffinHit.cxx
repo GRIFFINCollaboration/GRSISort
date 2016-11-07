@@ -30,19 +30,24 @@ TGriffinHit::TGriffinHit(const TFragment &frag) : TGRSIDetectorHit(frag) {
 TGriffinHit::~TGriffinHit()  {	}
 
 void TGriffinHit::Copy(TObject &rhs) const {
-  TGRSIDetectorHit::Copy(rhs);
-  static_cast<TGriffinHit&>(rhs).fFilter                = fFilter;
-  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = 0; //We should copy over a 0 and let the hit recalculate, this is safest
-  static_cast<TGriffinHit&>(rhs).fCrystal               = fCrystal;
-  static_cast<TGriffinHit&>(rhs).fPPG                   = fPPG;
-  static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag; // Bremsstrahlung Suppression flag.
-  return;                                      
+	TGRSIDetectorHit::Copy(rhs);
+	static_cast<TGriffinHit&>(rhs).fFilter                = fFilter;
+	static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = 0; //We should copy over a 0 and let the hit recalculate, this is safest
+	static_cast<TGriffinHit&>(rhs).fCrystal               = fCrystal;
+	static_cast<TGriffinHit&>(rhs).fPPG                   = fPPG;
+	static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag; // Bremsstrahlung Suppression flag.
+	return;                                      
 }                                       
 
+void TGriffinHit::Copy(TObject& obj, bool waveform) const {
+	Copy(obj);
+	if(waveform) CopyWave(obj);
+}
+
 bool TGriffinHit::InFilter(Int_t wantedfilter) {
- // check if the desired filter is in wanted filter;
- // return the answer;
- return true;
+	// check if the desired filter is in wanted filter;
+	// return the answer;
+	return true;
 }
 
 void TGriffinHit::Clear(Option_t *opt)	{
@@ -78,15 +83,15 @@ bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	
 }
 
 void TGriffinHit::Add(const TGriffinHit *hit)	{
-   // add another griffin hit to this one (for addback), 
-   // using the time and position information of the one with the higher energy
-   if(!CompareEnergy(this,hit)) {
-      this->SetCfd(hit->GetCfd());
-      this->SetTime(hit->GetTime());
-      //this->SetPosition(hit->GetPosition());
-      this->SetAddress(hit->GetAddress());
-   }
-   this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+	// add another griffin hit to this one (for addback), 
+	// using the time and position information of the one with the higher energy
+	if(!CompareEnergy(this,hit)) {
+		this->SetCfd(hit->GetCfd());
+		this->SetTime(hit->GetTime());
+		//this->SetPosition(hit->GetPosition());
+		this->SetAddress(hit->GetAddress());
+	}
+	this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
    //this has to be done at the very end, otherwise this->GetEnergy() might not work
    this->SetCharge(0);
    //Add all of the pileups.This should be changed when the max number of pileups changes
