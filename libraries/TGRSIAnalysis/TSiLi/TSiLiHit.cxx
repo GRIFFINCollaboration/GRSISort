@@ -17,7 +17,7 @@ fFitCharge=frag.GetCharge();
 
 TSiLiHit::~TSiLiHit()  {  }
 
-TSiLiHit::TSiLiHit(const TSiLiHit &rhs) : TGRSIDetectorHit() {
+TSiLiHit::TSiLiHit(const TSiLiHit &rhs) : TGRSIDetectorHit(rhs) {
    Clear();
    ((TSiLiHit&)rhs).Copy(*this);
 }
@@ -25,10 +25,11 @@ TSiLiHit::TSiLiHit(const TSiLiHit &rhs) : TGRSIDetectorHit() {
 void TSiLiHit::Copy(TObject &rhs,int suppress) const {
    TGRSIDetectorHit::Copy(rhs);
 
-	static_cast<TSiLiHit&>(rhs).fTimeFit = fTimeFit;
-	static_cast<TSiLiHit&>(rhs).fSig2Noise = fSig2Noise;
-	static_cast<TSiLiHit&>(rhs).fFitCharge = fFitCharge;
-	static_cast<TSiLiHit&>(rhs).fFitBase = fFitBase;
+	static_cast<TSiLiHit&>(rhs).fTimeFit 		= fTimeFit;
+	static_cast<TSiLiHit&>(rhs).fSig2Noise 	= fSig2Noise;
+	static_cast<TSiLiHit&>(rhs).fFitCharge 	= fFitCharge;
+	static_cast<TSiLiHit&>(rhs).fFitBase 		= fFitBase;
+	static_cast<TSiLiHit&>(rhs).fSiLiHitBits 	= 0;
 	if(suppress==0){
 		static_cast<TSiLiHit&>(rhs).fAddBackSegments = fAddBackSegments;
 		static_cast<TSiLiHit&>(rhs).fAddBackEnergy = fAddBackEnergy;
@@ -41,13 +42,15 @@ void TSiLiHit::Copy(TObject &rhs,int suppress) const {
 void TSiLiHit::Clear(Option_t *opt)  {
    TGRSIDetectorHit::Clear(opt);
 	//fSegment   = -1;
-	fTimeFit   = -1;
-	fFitCharge = -1;
-	fFitBase   = -1;
-	fSig2Noise = -1;
+	fTimeFit   		= -1;
+	fFitCharge 		= -1;
+	fFitBase   		= -1;
+	fSig2Noise 		= -1;
 	
 	fAddBackSegments.clear();
 	fAddBackEnergy.clear();
+	fSiLiHitBits.Clear();
+	ClearTransients();
 }
 
 void TSiLiHit::SetWavefit(const TFragment &frag)   { 
@@ -92,7 +95,7 @@ void TSiLiHit::SumHit(TSiLiHit *hit) {
 	fAddBackSegments.clear();
 	fAddBackEnergy.clear();
 	this->SetEnergy(0);
-	SetBit(kIsEnergySet,true);
+	SetHitBit(kIsEnergySet,true);
   }
   
   this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
@@ -106,17 +109,18 @@ Int_t TSiLiHit::GetSector() const { return TSiLi::GetSector(GetSegment()); }
 Int_t TSiLiHit::GetPreamp() const { return TSiLi::GetPreamp(GetSegment()); }
 
 
-double TSiLiHit::GetWaveformEnergy() const{
-	if(float(fFitCharge)==GetCharge()) {
-		return GetEnergy();
-	}	
+double TSiLiHit::GetFitEnergy() const{
+	if(TestBit(kUseFitCharge)) return TGRSIDetectorHit::GetEnergy();
 	TChannel* chan = GetChannel();
-	if(chan == NULL) {
-		Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
-		return 0.;
-	}
-	return chan->CalibrateENG(fFitCharge);
+	if(!chan) return fFitCharge;
+	return chan->CalibrateENG(fFitCharge,0);
 }
 		
+double TSiLiHit::GetEnergy(Option_t* opt) const {
+	if(fSiLiHitBits.TestBit(kIsEnergySet)||!fSiLiHitBits.TestBit(kUseFitCharge)) return TGRSIDetectorHit::GetEnergy(); //If not fitting waveforms, be normal.
+	TChannel* chan = GetChannel();
+	if(!chan) return SetEnergy(fFitCharge);
 		
+	return SetEnergy(chan->CalibrateENG(fFitCharge,0));  // this will use the integration value
+}	                                              			// in the TChannel if it exists.
 

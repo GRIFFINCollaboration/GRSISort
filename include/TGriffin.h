@@ -17,6 +17,7 @@
 #include "TGriffinHit.h"
 #include "TGRSIDetector.h"
 #include "TGRSIRunInfo.h"
+#include "TTransientBits.h"
 
 class TGriffin : public TGRSIDetector {
 	public:
@@ -52,7 +53,6 @@ class TGriffin : public TGRSIDetector {
 #ifndef __CINT__
 		void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan); //!<!
 #endif
-      //TODO: Make a better ClearTransients function with all vectors included
 		void ClearTransients() { fGriffinBits = 0; for(auto hit : fGriffinLowGainHits) hit.ClearTransients(); for(auto hit: fGriffinHighGainHits) hit.ClearTransients(); }
 		void ResetFlags() const;
 
@@ -90,7 +90,7 @@ class TGriffin : public TGRSIDetector {
 		//static bool fSetBGOWave;                //!<!  Flag for BGO Waveforms ON/OFF
 
 		long fCycleStart;                //!<!  The start of the cycle
-		mutable UChar_t fGriffinBits;            // Transient member flags
+		mutable TTransientBits<UChar_t> fGriffinBits; // Transient member flags
 
 		mutable std::vector<TGriffinHit> fAddbackLowGainHits; //!<! Used to create addback hits on the fly
 		mutable std::vector<TGriffinHit> fAddbackHighGainHits; //!<! Used to create addback hits on the fly
@@ -110,7 +110,7 @@ class TGriffin : public TGRSIDetector {
 		static TVector3 gCloverPosition[17];               //!<! Position of each HPGe Clover
 		void ClearStatus() const { fGriffinBits = 0; } //!<!
 		void SetBitNumber(enum EGriffinBits bit,Bool_t set) const;
-		Bool_t TestBitNumber(enum EGriffinBits bit) const {return (bit & fGriffinBits);}
+		Bool_t TestBitNumber(enum EGriffinBits bit) const {return fGriffinBits.TestBit(bit);}
 
      // const std::tuple<std::vector<TGriffinHit> *, std::vector<TGriffinHit> *, std::vector<UShort_t>*> fLowGainTuple = std::make_tuple(&fGriffinLowGainHits,&fAddbackLowGainHits,&fAddbackLowGainFrags);
 

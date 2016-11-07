@@ -94,6 +94,10 @@ void TGRSIOptions::Clear(Option_t* opt) {
 	fStatusWidth = 80;
 	fStatusInterval = 10;
   fLongFileDescription = false;
+
+  //Proof only
+  fMaxWorkers = -1;
+  fSelectorOnly = false;
 }
 
 void TGRSIOptions::Print(Option_t* opt) const { 
@@ -141,7 +145,10 @@ void TGRSIOptions::Print(Option_t* opt) const {
 			  <<"fColumnWidth: "<<fColumnWidth<<std::endl
 			  <<"fStatusWidth: "<<fStatusWidth<<std::endl
 			  <<"fStatusInterval: "<<fStatusInterval<<std::endl
-			  <<"fLongFileDescription: "<<fLongFileDescription<<std::endl;
+			  <<"fLongFileDescription: "<<fLongFileDescription<<std::endl
+
+				<<"fMaxWorkers: "<< fMaxWorkers << std::endl
+				<<"fSelectorOnly "<<fSelectorOnly << std::endl;
 }
 
 void TGRSIOptions::PrintSortingOptions() const {
@@ -296,6 +303,8 @@ void TGRSIOptions::Load(int argc, char** argv) {
 	      .description("Max number of nodes to use when running a grsiproof session")
 			.default_value(-1);
 
+	parser.option("selector-only", &fSelectorOnly)
+	      .description("Turns off PROOF to run a selector on the main thread");
 
 	// look for any arguments ending with .info, pass to parser.
 	for(int i=0; i<argc; i++){

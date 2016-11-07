@@ -24,20 +24,21 @@
 class TTigress : public TGRSIDetector {
 	public:
 		enum ETigressBits {
-			kAddbackSet	= TGRSIDetectorHit::kDetHitBit0,
-			kSuppression	= TGRSIDetectorHit::kDetHitBit1,
-			kBit3		= TGRSIDetectorHit::kDetHitBit2,
-			kBit4		= TGRSIDetectorHit::kDetHitBit3,
-			kBit5		= TGRSIDetectorHit::kDetHitBit4,
-			kBit6		= TGRSIDetectorHit::kDetHitBit5,
-			kBit7		= TGRSIDetectorHit::kDetHitBit6
+			kAddbackSet		= BIT(0),
+			kSuppression	= BIT(1),
+			kBit2				= BIT(2),
+			kBit3				= BIT(3),
+			kBit4				= BIT(4),
+			kBit5				= BIT(5),
+			kBit6				= BIT(6),
+			kBit7				= BIT(7)
 		};
 
 		enum ETigressGlobalBits {
-			kSetBGOWave	= BIT(0),
+			kSetBGOWave		= BIT(0),
 			kSetCoreWave	= BIT(1),
-			kSetSegWave	= BIT(2),
-			kSetBGOHits       = BIT(3)
+			kSetSegWave		= BIT(2),
+			kSetBGOHits    = BIT(3)
 		};
 
 #ifndef __CINT__
@@ -77,7 +78,7 @@ class TTigress : public TGRSIDetector {
 #endif
 		void BuildHits();
 
-		void ClearTransients() { fgTigressBits = 0; for(auto hit : fTigressHits) hit.ClearTransients(); }
+		void ClearTransients() { fgTigressBits = 0; fTigressBits = 0; for(auto hit : fTigressHits) hit.ClearTransients(); }
 
 		TTigress& operator=(const TTigress&); //!<!
 
@@ -102,7 +103,8 @@ class TTigress : public TGRSIDetector {
 		static std::function<bool(TTigressHit&, TTigressHit&)> fAddbackCriterion;
 		static std::function<bool(TTigressHit&, TBgoHit&)> fSuppressionCriterion;
 #endif
-		static unsigned short fgTigressBits; //!
+		static TTransientBits<UShort_t> fgTigressBits; //!
+		TTransientBits<UShort_t> fTigressBits;
 		std::vector<TTigressHit> fTigressHits;
 
 		static bool fSetSegmentHits;    //!<!
@@ -127,7 +129,7 @@ class TTigress : public TGRSIDetector {
 		//		void ClearGlobalStatus() { fTigressBits = 0; }
 		static void SetGlobalBit(enum ETigressGlobalBits bit,Bool_t set=true);
 		static Bool_t TestGlobalBit(enum ETigressGlobalBits bit) {
-			return (bit & fgTigressBits);
+			return (fgTigressBits.TestBit(bit));
 		}
 
 		std::vector<TTigressHit> fAddbackHits; //!<! Used to create addback hits on the fly

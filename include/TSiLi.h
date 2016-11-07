@@ -15,6 +15,18 @@
 
 class TSiLi: public TGRSIDetector  {
 	public:
+	enum ESiLiBits { // Inherited TObject fBits, Enum via TDetector
+		kAddbackSet	 		= BIT(0),
+		kSiLiBit1 			= BIT(1),
+		kSiLiBit2 			= BIT(2),
+		kSiLiBit3 			= BIT(3),
+		kSiLiBit4 			= BIT(4),
+		kSiLiBit5 			= BIT(5),
+		kSiLiBit6 			= BIT(6),
+		kSiLiBit7 			= BIT(7)
+	};
+
+	public:
 		TSiLi();
 		TSiLi(const TSiLi&);
 		virtual ~TSiLi();
@@ -38,6 +50,12 @@ class TSiLi: public TGRSIDetector  {
 		
 		TSiLiHit* GetAddbackHit(const Int_t& idx = 0);
 		Int_t GetAddbackMultiplicity();
+
+		void ResetAddback() {
+			fSiLiBits.SetBit(kAddbackSet, false);
+			fAddbackHits.clear();
+		}
+
 		void UseFitCharge(){
 			for(unsigned int s=0;s<fSiLiHits.size();s++)fSiLiHits[s].UseFitCharge();
 		}
@@ -58,6 +76,8 @@ class TSiLi: public TGRSIDetector  {
 	private:
 		std::vector<TSiLiHit> fSiLiHits;
 		std::vector<TSiLiHit> fAddbackHits;
+
+		TTransientBits<UChar_t> fSiLiBits;
 		
 		void SortCluster(std::vector<unsigned>&);
 		

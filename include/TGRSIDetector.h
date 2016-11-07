@@ -46,20 +46,10 @@ class TGRSIDetector : public TDetector	{
       virtual void Clear(Option_t *opt = "");         //!<!
       virtual void Print(Option_t *opt = "") const;   //!<!
 
-      //      virtual void AddHit(TGRSIDetectorHit* hit, Option_t *opt ="") {}        //!<!
-
-      //  void Init();
-
-      //virtual void   SetMidasTimestamp(Long_t time) { fMidasTimestamp = time; }
-      //virtual Long_t GetMidasTimestamp() const { return fMidasTimestamp; }
-
    protected:
 #ifndef __CINT__
       //void CopyFragment(std::shared_ptr<const TFragment> frag); //not implemented anywhere???
 #endif
-   private:
-
-      //Long_t fMidasTimestamp;
 
       /// \cond CLASSIMP
       ClassDef(TGRSIDetector,1) //Abstract class for detector systems 

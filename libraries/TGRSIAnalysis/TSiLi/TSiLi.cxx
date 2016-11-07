@@ -26,8 +26,10 @@ TSiLi::~TSiLi()  {
 
 void TSiLi::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
-  static_cast<TSiLi&>(rhs).fSiLiHits     = fSiLiHits;
-  static_cast<TSiLi&>(rhs).fAddbackHits     = fAddbackHits;
+  static_cast<TSiLi&>(rhs).fSiLiHits     		= fSiLiHits;
+  static_cast<TSiLi&>(rhs).fAddbackHits     	= fAddbackHits;
+  static_cast<TSiLi&>(rhs).fSiLiBits  	   	= 0;
+
   return;                                      
 } 
 
@@ -38,15 +40,16 @@ TSiLi::TSiLi(const TSiLi& rhs) : TGRSIDetector() {
 void TSiLi::Clear(Option_t *opt)  {
   fSiLiHits.clear();
   fAddbackHits.clear();
-  fRingNumber=10;
-  fSectorNumber=12;
-  fOffsetPhi=-165.*TMath::Pi()/180.; // For SPICE, sectors upstream.
-  fOuterDiameter=94.;
-  fInnerDiameter=16.;
-  fTargetDistance=-117.8;
+  fSiLiBits.Clear();
+  fRingNumber			= 10;
+  fSectorNumber		= 12;
+  fOffsetPhi			= -165.*TMath::Pi()/180.; // For SPICE, sectors upstream.
+  fOuterDiameter		= 94.;
+  fInnerDiameter		= 16.;
+  fTargetDistance		= -117.8;
   
   sili_rand.SetSeed();
-  sili_noise_fac=4.;  
+  sili_noise_fac		= 4.;  
 }
 
 TSiLi& TSiLi::operator=(const TSiLi& rhs) {
@@ -158,19 +161,19 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i) {
 // Need to determine where the line is between throwing out bad reconstruction or saying it is just 2 very close singles 
 
 Int_t TSiLi::GetAddbackMultiplicity() {
-  // Automatically builds the addback hits using the addback_criterion (if the size of the addback_hits vector is zero) and return the number of addback hits.
-  short basehits=fSiLiHits.size();
+  	// Automatically builds the addback hits using the addback_criterion (if the size of the addback_hits vector is zero) and return the number of addback hits.
+  	short basehits=fSiLiHits.size();
 	
-  if(basehits == 0) {
-    return 0;
-  }
+  	if(basehits == 0) {
+    	return 0;
+  	}
 
-  //if the addback has been reset, clear the addback hits
-//   if((fTigressBits & kIsAddbackSet) == 0x0) {
-//     fAddbackHits.clear();
-//   }
+  	//if the addback has been reset, clear the addback hits
+ 	if(!(fSiLiBits.TestBit(kAddbackSet))) {
+		fAddbackHits.clear();
+	}
 
-  if(fAddbackHits.size() == 0) {
+  	if(fAddbackHits.size() == 0) {
 	  
 	// Create a matrix of "pairs"
 	std::vector < std::vector<bool> > pairs; 
@@ -220,8 +223,7 @@ Int_t TSiLi::GetAddbackMultiplicity() {
 		}
 	}
 	
-	
-//     SetBitNumber(kIsAddbackSet, true);
+		fSiLiBits.SetBit(kAddbackSet, true);
   }
 
   return fAddbackHits.size();
