@@ -58,7 +58,6 @@ void TGRSIOptions::Clear(Option_t* opt) {
 
   fMakeAnalysisTree = false;
   fProgressDialog = false;
-  fWorkHarder = false;
   fReadingMaterial = false;
   fIgnoreFileOdb = false;
 
@@ -108,7 +107,6 @@ void TGRSIOptions::Print(Option_t* opt) const {
 			  <<std::endl
 			  <<"fMakeAnalysisTree: "<<fMakeAnalysisTree<<std::endl
 			  <<"fProgressDialog: "<<fProgressDialog<<std::endl
-			  <<"fWorkHarder: "<<fWorkHarder<<std::endl
 			  <<"fReadingMaterial;: "<<fReadingMaterial<<std::endl
 			  <<"fIgnoreFileOdb: "<<fIgnoreFileOdb<<std::endl
 			  <<"fRecordDialog: "<<fRecordDialog<<std::endl
@@ -230,7 +228,6 @@ void TGRSIOptions::Load(int argc, char** argv) {
 		.description("Dump stuff to screen");
 	parser.option("write-diagnostics", &fWriteDiagnostics);
 	parser.option("log-errors",&fLogErrors);
-	parser.option("work-harder",&fWorkHarder);
 	parser.option("reading-material",&fReadingMaterial);
 	parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments",&fWriteBadFrags);
 	parser.option("ignore-odb", &fIgnoreFileOdb);
