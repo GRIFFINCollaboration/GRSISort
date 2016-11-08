@@ -1,5 +1,5 @@
 #include "TSourceList.h"
-#include "TCalibrationPoint.h"
+#include "TCalPoint.h"
 
 #include <iostream>
 
@@ -7,23 +7,23 @@
 ClassImp(TSourceList)
 /// \endcond
 
-TSourceList::TSourceList():TCalibrationList(){
+TSourceList::TSourceList():TCalList(){
 	Clear();
 }
 
 TSourceList::~TSourceList(){}
 
-TSourceList::TSourceList(const char *name, const char* title) : TCalibrationList(name,title) { 
+TSourceList::TSourceList(const char *name, const char* title) : TCalList(name,title) { 
 	Clear();
 	SetNucleus(TNucleus(name));
 }
 
-TSourceList::TSourceList(const TNucleus& nuc, const char *name, const char* title) : TCalibrationList(name,title) { 
+TSourceList::TSourceList(const TNucleus& nuc, const char *name, const char* title) : TCalList(name,title) { 
 	Clear();
 	SetNucleus(nuc);
 }
 
-TSourceList::TSourceList(const TSourceList& copy) : TCalibrationList(copy){
+TSourceList::TSourceList(const TSourceList& copy) : TCalList(copy){
    copy.Copy(*this);
 }
 
@@ -33,17 +33,17 @@ TSourceList::TSourceList(const TNucleus& nuc) {
 }
 
 void TSourceList::Copy(TObject& obj) const {
-	TCalibrationList::Copy(obj);
+	TCalList::Copy(obj);
 }
 
 void TSourceList::Print(Option_t *opt) const {
 	std::cout << "Nucleus: " << fNucleusName << std::endl;
-	TCalibrationList::Print();
+	TCalList::Print();
 }
 
 
 void TSourceList::Clear(Option_t *opt) {
-	TCalibrationList::Clear();
+	TCalList::Clear();
 	fNucleusName.clear();
 }
 
@@ -68,7 +68,7 @@ bool TSourceList::AddTransition(TTransition *tran){
 		return false;
 	}
 
-	AddPoint(TCalibrationPoint(tran->GetEnergy(), tran->GetIntensity(), tran->GetEnergyUncertainty(), tran->GetIntensityUncertainty()));
+	AddPoint(TCalPoint(tran->GetEnergy(), tran->GetIntensity(), tran->GetEnergyUncertainty(), tran->GetIntensityUncertainty()));
 
 	return true;
 }

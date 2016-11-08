@@ -1,18 +1,18 @@
 #ifndef TSOURCECALLIST_H__
-#define TCSOURCECALLIST_H__
+#define TSOURCECALLIST_H__
 
 /** \addtogroup Calibration
  *  @{
  */
 
 #include "TNamed.h"
-#include "TCalibrationList.h"
+#include "TCalList.h"
 #include "TGraphErrors.h"
 #include "TNucleus.h"
 
 #include <string>
 
-class TSourceList : public TCalibrationList {
+class TSourceList : public TCalList {
  public: 
    TSourceList();
    TSourceList(const TNucleus& nuc,const char*name, const char* title ="");
@@ -37,7 +37,7 @@ class TSourceList : public TCalibrationList {
 	std::string fNucleusName;
    
 /// \cond CLASSIMP
-   ClassDef(TCalibrationList,1);
+   ClassDef(TSourceList,1);
 /// \endcond
 
 };
