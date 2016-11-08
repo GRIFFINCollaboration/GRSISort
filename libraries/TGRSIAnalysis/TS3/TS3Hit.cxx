@@ -11,11 +11,14 @@ TS3Hit::TS3Hit()	{
 
 TS3Hit::TS3Hit(const TFragment &frag) : TGRSIDetectorHit(frag) {
 	if(frag.GetChannel()->GetMnemonic()->ArrayPosition() == 1) SetIsDownstream(false);
-	else SetIsDownstream(true); // In case of not set (0) set downstream (2) or incorrect value, we assume downstream
-										//For SPICE 0 and 2 are used for different downstream settings
+	else if(frag.GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLi &&
+		frag.GetChannel()->GetMnemonic()->ArrayPosition() == 2) SetIsDownstream(false);
+	else SetIsDownstream(true);
+	// Bambino 0=not set,1=Upstream,2=Downstream.
+	// SPICE  0=Downstream,1=Upstream,2=Upstream+phi rotation.
 }
 
-TS3Hit::~TS3Hit()	{}
+TS3Hit::~TS3Hit(){}
 
 TS3Hit::TS3Hit(const TS3Hit &rhs) : TGRSIDetectorHit(rhs) {
 	Clear();

@@ -1410,14 +1410,8 @@ double TPulseAnalyzer::SiLiFitFunction(double *i,double *p){
     }
 }
 
-
-void  TPulseAnalyzer::Drawsilifit(){
-	
-	if(!set) return;
-
-	DrawWave();
-
-	if(cWpar){
+TF1  TPulseAnalyzer::Getsilifit(){
+	if(set&&cWpar){
 		TF1 g("fit",SiLiFitFunction,0,cN,5);
 		
 		g.SetParameter(0,cWpar->t0);
@@ -1426,10 +1420,34 @@ void  TPulseAnalyzer::Drawsilifit(){
 		g.SetParameter(3,cWpar->baselinefin);
 		g.SetParameter(4,cWpar->amplitude);
 		g.SetLineColor(kRed);
-
-		g.DrawCopy("same");
 		
 		printf("t0:\t%2.2f, A:\t%2.2f\n",cWpar->t0,cWpar->amplitude);
+		return g;
+	}
+	
+	return TF1();
+}
+
+double TPulseAnalyzer::GetsiliSmirnov(){
+	double Smirnov=0;
+	if(set&&cWpar){
+		double gsum=0,wsum=0;
+		TF1 g=Getsilifit();
+		
+		for(Int_t i=0;i<cN;i++){
+			wsum+=abs(cWavebuffer[i]);
+			gsum+=abs(g.Eval(i+0.5));
+			Smirnov+=(wsum-gsum);
+		}
+	}
+	return abs(Smirnov);
+}
+
+void  TPulseAnalyzer::Drawsilifit(){
+	if(!set) return;
+	DrawWave();
+	if(cWpar){
+		Getsilifit().DrawCopy("same");
 	}
 	return;
 }

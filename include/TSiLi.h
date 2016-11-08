@@ -15,7 +15,7 @@
 
 class TSiLi: public TGRSIDetector  {
 	public:
-	enum ESiLiBits { // Inherited TObject fBits, Enum via TDetector
+	enum ESiLiBits {
 		kAddbackSet	 		= BIT(0),
 		kSiLiBit1 			= BIT(1),
 		kSiLiBit2 			= BIT(2),
@@ -65,6 +65,8 @@ class TSiLi: public TGRSIDetector  {
 		static std::vector< TGraph > UpstreamShapes();
 
 		static double sili_noise_fac;// Sets the level of integration to remove noise during waveform fitting
+		static double sili_default_decay;// Sets the waveform fit decay parameter
+		static double sili_default_rise;// Sets the waveform fit rise parameter
 		static Int_t GetRing(Int_t seg) {  return seg/12; }
 		static Int_t GetSector(Int_t seg) {  return seg%12; }
 		static Int_t GetPreamp(Int_t seg) {  return  ((GetSector(seg)/3)*2)+(((GetSector(seg)%3)+GetRing(seg))%2); }
@@ -92,7 +94,7 @@ class TSiLi: public TGRSIDetector  {
 		static TRandom2 sili_rand;// random number gen for TVectors
 
 /// \cond CLASSIMP
-		ClassDef(TSiLi,4);
+		ClassDef(TSiLi,5);
 /// \endcond
 };
 /*! @} */

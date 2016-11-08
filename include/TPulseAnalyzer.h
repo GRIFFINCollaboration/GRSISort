@@ -138,6 +138,8 @@ class TPulseAnalyzer {
 	void      DrawWave();
 	void      DrawT0fit();
 	void      DrawRFFit();
+	TF1       Getsilifit();
+	double	  GetsiliSmirnov();
 	void      Drawsilifit();
 
 	// CsI functions:
