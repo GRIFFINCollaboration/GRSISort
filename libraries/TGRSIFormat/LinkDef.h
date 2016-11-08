@@ -32,6 +32,7 @@
 #pragma link C++ class TMnemonic+;
 
 #pragma link C++ class TTransientBits<UChar_t>+;
+#pragma link C++ class TTransientBits<UShort_t>+;
 #pragma link C++ class TTransientBits<UInt_t>+;
 #pragma link C++ class TTransientBits<ULong_t>+;
 

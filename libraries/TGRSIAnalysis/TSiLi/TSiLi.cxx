@@ -16,6 +16,8 @@ double TSiLi::fTargetDistance;
 
 TRandom2 TSiLi::sili_rand;
 double TSiLi::sili_noise_fac;
+double TSiLi::sili_default_decay;
+double TSiLi::sili_default_rise;
 
 TSiLi::TSiLi() {
    Clear();	
@@ -49,7 +51,9 @@ void TSiLi::Clear(Option_t *opt)  {
   fTargetDistance		= -117.8;
   
   sili_rand.SetSeed();
-  sili_noise_fac		= 4.;  
+  sili_noise_fac= 4.; 
+  sili_default_decay=4616.18;
+  sili_default_rise=20.90;
 }
 
 TSiLi& TSiLi::operator=(const TSiLi& rhs) {
@@ -131,8 +135,6 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i) {
 
 
 // How the make addback currently works
-//
-// Proper setting of a "bit" to say addback has been made hasnt been implemented yet.
 //
 // First we itterate through all pixel hits
 // If the hit has not yet been assigned to a "cluster" a new cluster is created containing it
@@ -223,7 +225,7 @@ Int_t TSiLi::GetAddbackMultiplicity() {
 		}
 	}
 	
-		fSiLiBits.SetBit(kAddbackSet, true);
+	fSiLiBits.SetBit(kAddbackSet, true);
   }
 
   return fAddbackHits.size();
