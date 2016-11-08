@@ -73,6 +73,7 @@ class TDescantHit : public TGRSIDetectorHit {
 
    public:
       void Copy(TObject&) const;        //!<!
+      void Copy(TObject&, bool) const;        //!<!
       void Clear(Option_t *opt = "");		                    //!<!
       void Print(Option_t *opt = "") const;		                    //!<!
       

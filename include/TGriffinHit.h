@@ -84,6 +84,7 @@ class TGriffinHit : public TGRSIDetectorHit {
     virtual void Clear(Option_t *opt = "");		 //!<!
     virtual void Print(Option_t *opt = "") const; //!<!
     virtual void Copy(TObject&) const;        //!<!
+    virtual void Copy(TObject&, bool) const;        //!<!
 
     TVector3 GetPosition(double dist) const; //!<!
     TVector3 GetPosition() const;

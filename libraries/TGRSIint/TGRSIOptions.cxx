@@ -282,7 +282,7 @@ void TGRSIOptions::Load(int argc, char** argv) {
 	      .description("number of characters to be used for status output")
 			.default_value(80);
 	parser.option("status-interval", &fStatusInterval)
-	      .description("seconds between each detailed status output (each a new line)")
+	      .description("seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
 			.default_value(10);
 
 	// parser.option("long-file-description", &fLongFileDescription)

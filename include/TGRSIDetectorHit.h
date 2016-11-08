@@ -195,7 +195,7 @@ class TGRSIDetectorHit : public TObject 	{
       static TVector3 fBeamDirection; //!
 
       /// \cond CLASSIMP
-      ClassDef(TGRSIDetectorHit,9) //Stores the information for a detector hit
+      ClassDef(TGRSIDetectorHit,10) //Stores the information for a detector hit
       /// \endcond
 };
 /*! @} */

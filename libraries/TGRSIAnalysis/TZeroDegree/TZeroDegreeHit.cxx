@@ -56,6 +56,11 @@ void TZeroDegreeHit::Copy(TObject &rhs) const {
    static_cast<TZeroDegreeHit&>(rhs).fPartialSum = fPartialSum;
 }
 
+void TZeroDegreeHit::Copy(TObject &obj, bool waveform) const {
+	Copy(obj);
+	if(waveform) CopyWave(obj);
+}
+
 bool TZeroDegreeHit::InFilter(Int_t wantedfilter) {
 	/// check if the desired filter is in wanted filter;
    /// return the answer;

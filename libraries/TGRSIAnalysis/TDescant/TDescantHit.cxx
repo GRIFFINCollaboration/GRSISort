@@ -93,6 +93,11 @@ void TDescantHit::Copy(TObject &rhs) const {
    static_cast<TDescantHit&>(rhs).fPartialSum = fPartialSum;
 }
 
+void TDescantHit::Copy(TObject& obj, bool waveform) const {
+	Copy(obj);
+	if(waveform) CopyWave(obj);
+}
+
 TVector3 TDescantHit::GetPosition(Double_t dist) const {
    ///TGRSIDetectorHit::GetPosition
    return TDescant::GetPosition(GetDetector(),dist);
