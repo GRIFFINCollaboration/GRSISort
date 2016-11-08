@@ -1420,8 +1420,7 @@ TF1  TPulseAnalyzer::Getsilifit(){
 		g.SetParameter(3,cWpar->baselinefin);
 		g.SetParameter(4,cWpar->amplitude);
 		g.SetLineColor(kRed);
-		
-		printf("t0:\t%2.2f, A:\t%2.2f\n",cWpar->t0,cWpar->amplitude);
+
 		return g;
 	}
 	
@@ -1448,6 +1447,7 @@ void  TPulseAnalyzer::Drawsilifit(){
 	DrawWave();
 	if(cWpar){
 		Getsilifit().DrawCopy("same");
+		printf("t0:\t%2.2f, A:\t%2.2f\n",cWpar->t0,cWpar->amplitude);
 	}
 	return;
 }
