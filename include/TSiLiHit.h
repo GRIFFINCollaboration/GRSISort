@@ -55,10 +55,8 @@ class TSiLiHit : public TGRSIDetectorHit {
 		void SumHit(TSiLiHit*);
 		
 		void UseFitCharge(bool set=true){
-			std::cout<<std::endl<<"Setting Fit Bit "<<fSiLiHitBits.TestBit(kUseFitCharge)<<" "<<TestHitBit(kIsEnergySet);
 	  		SetHitBit(kIsEnergySet,false);
 			fSiLiHitBits.SetBit(kUseFitCharge,set);
-			std::cout<<fSiLiHitBits.TestBit(kUseFitCharge)<<" "<<TestHitBit(kIsEnergySet);
 		}
 	
 		double GetWaveformEnergy() const {return GetFitEnergy();}
