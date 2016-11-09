@@ -11,6 +11,10 @@
 #include "TChain.h"
 #include "TFile.h"
 
+#include "TH1.h"
+#include "TH2.h"
+#include "THnSparse.h"
+
 // Header file for the classes stored in the TTree if any.
 #include "TGriffin.h"
 #include "TSceptar.h"
@@ -24,7 +28,11 @@ class ExampleEventSelector : public TGRSISelector {
    TGriffin * fGrif;
    TSceptar * fScep;
 
-   ExampleEventSelector(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(0), fScep(0){
+   std::map<const char*, TH1*> fH1;
+	std::map<const char*, TH2*> fH2;
+	std::map<const char*, THnSparseF*> fHSparse;
+
+   ExampleEventSelector(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(0), fScep(0) {
       SetOutputPrefix("ExampleEvent");
    }
    virtual ~ExampleEventSelector() { }
@@ -40,8 +48,7 @@ class ExampleEventSelector : public TGRSISelector {
 #endif
 
 #ifdef ExampleEventSelector_cxx
-void ExampleEventSelector::InitializeBranches(TTree* tree)
-{
+void ExampleEventSelector::InitializeBranches(TTree* tree) {
    if (!tree) return;
    tree->SetBranchAddress("TGriffin", &fGrif);
    tree->SetBranchAddress("TSceptar", &fScep);
