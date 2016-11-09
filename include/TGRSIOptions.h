@@ -27,19 +27,19 @@ class TGRSIOptions : public TObject {
 		const std::vector<std::string>& WinInputFiles()   { return fInputWinFiles;   }
 		const std::vector<std::string>& MacroInputFiles() { return fMacroFiles;      }
 
-		const std::string& OutputFragmentFile() { return output_fragment_file; }
-		const std::string& OutputAnalysisFile() { return output_analysis_file; }
+		const std::string& OutputFragmentFile() { return fOutputFragmentFile; }
+		const std::string& OutputAnalysisFile() { return fOutputAnalysisFile; }
 
 
-		const std::string& OutputFilteredFile()        { return output_filtered_file; }
-		const std::string& OutputFragmentHistogramFile(){ return output_fragment_histogram_file; }
-		const std::string& OutputAnalysisHistogramFile(){ return output_analysis_histogram_file; }
-		std::string InputRing() { return input_ring; }
-		std::string FragmentHistogramLib() { return fragment_histogram_lib; }
-		std::string AnalysisHistogramLib() { return analysis_histogram_lib; }
-		std::string CompiledFilterFile() { return compiled_filter_file; }
+		const std::string& OutputFilteredFile()        { return fOutputFilteredFile; }
+		const std::string& OutputFragmentHistogramFile(){ return fOutputFragmentHistogramFile; }
+		const std::string& OutputAnalysisHistogramFile(){ return fOutputAnalysisHistogramFile; }
+		std::string InputRing() { return fInputRing; }
+		std::string FragmentHistogramLib() { return fFragmentHistogramLib; }
+		std::string AnalysisHistogramLib() { return fAnalysisHistogramLib; }
+		std::string CompiledFilterFile() { return fCompiledFilterFile; }
 
-		const std::vector<std::string>& OptionFiles() { return options_file; }
+		const std::vector<std::string>& OptionFiles() { return fOptionsFile; }
 
 		int BuildWindow() const { return fBuildWindow; }
 		int AddbackWindow() const { return fAddbackWindow; }
@@ -96,8 +96,8 @@ class TGRSIOptions : public TObject {
 		unsigned int StatusInterval() const { return fStatusInterval; }
 		bool LongFileDescription() const { return fLongFileDescription; }
 
-      //Proof only
-      int GetMaxWorkers() const { return fMaxWorkers; }
+		//Proof only
+		int GetMaxWorkers() const { return fMaxWorkers; }
 		bool SelectorOnly() const { return fSelectorOnly; } 
 
 	private:
@@ -115,21 +115,21 @@ class TGRSIOptions : public TObject {
 		std::vector<std::string> fInputCutsFiles;
 		std::vector<std::string> fInputValFiles;
 		std::vector<std::string> fInputWinFiles;
-		std::string input_ring;
+		std::string fInputRing;
 
-		std::string output_fragment_file;
-		std::string output_analysis_file;
-		std::string output_filtered_file;
-		std::string output_fragment_histogram_file;
-		std::string output_analysis_histogram_file;
+		std::string fOutputFragmentFile;
+		std::string fOutputAnalysisFile;
+		std::string fOutputFilteredFile;
+		std::string fOutputFragmentHistogramFile;
+		std::string fOutputAnalysisHistogramFile;
 
-		std::string fragment_histogram_lib;
-		std::string analysis_histogram_lib;
-		std::string compiled_filter_file;
+		std::string fFragmentHistogramLib;
+		std::string fAnalysisHistogramLib;
+		std::string fCompiledFilterFile;
 
-		std::vector<std::string> options_file;
+		std::vector<std::string> fOptionsFile;
 
-		std::string log_file;
+		std::string fLogFile;
 
 		bool fCloseAfterSort;
 		bool fLogErrors;
@@ -176,8 +176,8 @@ class TGRSIOptions : public TObject {
 		unsigned int fStatusInterval;
 		bool fLongFileDescription;
 
-      //Proof only
-      int fMaxWorkers;
+		//Proof only
+		int fMaxWorkers;
 		bool fSelectorOnly;
 
 		ClassDef(TGRSIOptions,1);
