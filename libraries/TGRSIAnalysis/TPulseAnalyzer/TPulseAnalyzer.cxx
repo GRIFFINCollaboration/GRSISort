@@ -41,7 +41,7 @@ void TPulseAnalyzer::Clear(Option_t *opt) {
 }
 
 void TPulseAnalyzer::SetData(const TFragment &fragment,double noise_fac) {
-	SetData(*fragment.GetWaveform(),noise_fac);
+	if(fragment.HasWave())SetData(*fragment.GetWaveform(),noise_fac);
 }
 
 void TPulseAnalyzer::SetData(const std::vector<Short_t>& wave,double noise_fac) {
@@ -50,13 +50,10 @@ void TPulseAnalyzer::SetData(const std::vector<Short_t>& wave,double noise_fac) 
 	if(cN>0){
 		cWavebuffer=wave;
 		set=true;
-		cWpar=new WaveFormPar;
-		
 		if(noise_fac > 0) {
 			FILTER=8*noise_fac;
 			T0RANGE=8*noise_fac;	
 		}
-		cWpar->baseline_range=T0RANGE; //default only 8 samples!
 	}
 }
 
@@ -1270,8 +1267,23 @@ double TPulseAnalyzer::GetCsIt0()
 
 
 void TPulseAnalyzer::GetQuickPara(){if(!IsSet())return;
+	if(cWpar) delete cWpar;
+	cWpar=new WaveFormPar;
+	cWpar->baseline_range=T0RANGE; //default only 8 samples!
+	cWpar->t90_flag=0;
+	cWpar->t50_flag=0;
+	cWpar->t10_flag=0;
+	cWpar->mflag=0;
+	cWpar->bflag=0;
+	cWpar->t0=0;
+	cWpar->baselinefin=0;
+	
 	get_baseline();//Takes a small sample baseline
 	get_tmax();//Does a filtered max search
+	
+	if(!(cWpar->mflag&&cWpar->bflag))return;
+	
+	if(cWpar->tmax>cN)cWpar->tmax=cN-1;
 	
 	double amp=cWpar->max-cWpar->baseline;
 	double y9=cWpar->baseline+amp*.9;
@@ -1311,6 +1323,7 @@ void TPulseAnalyzer::GetQuickPara(){if(!IsSet())return;
 		t0+=cWpar->t90-((cWpar->t90-cWpar->t10)*1.125);
 		t0*=0.5;
 	}
+	if(t0<0)t0=0;
 	
 // 	std::cout<<std::endl<<t0<<std::flush;
 	cWpar->t0=t0;
