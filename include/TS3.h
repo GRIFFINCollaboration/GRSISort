@@ -90,7 +90,6 @@ class TS3 : public TGRSIDetector {
 		static Int_t fFrontBackTime;   //!
 		static double fFrontBackEnergy;   //!
 		
-		static TRandom2 s3_rand;// random number gen for TVectors
 
 /// \cond CLASSIMP
 		ClassDef(TS3,4)

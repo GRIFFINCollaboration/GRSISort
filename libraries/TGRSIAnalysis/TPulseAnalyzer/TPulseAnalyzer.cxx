@@ -41,30 +41,22 @@ void TPulseAnalyzer::Clear(Option_t *opt) {
 }
 
 void TPulseAnalyzer::SetData(const TFragment &fragment,double noise_fac) {
-	SetCsI(false);
-	if(fragment.HasWave()) {
-		if(noise_fac > 0) {
-			FILTER=8*noise_fac;
-			T0RANGE=8*noise_fac;	
-		}
-		//frag=&fragment;
-		cWavebuffer=*(fragment.GetWaveform());
-		cN=cWavebuffer.size();
-		if(cN>0)	set=true;
-	}
+	SetData(*fragment.GetWaveform(),noise_fac);
 }
 
 void TPulseAnalyzer::SetData(const std::vector<Short_t>& wave,double noise_fac) {
 	SetCsI(false);
-	if(wave.size()>0) {
+	cN=wave.size();
+	if(cN>0){
+		cWavebuffer=wave;
+		set=true;
+		cWpar=new WaveFormPar;
+		
 		if(noise_fac > 0) {
 			FILTER=8*noise_fac;
 			T0RANGE=8*noise_fac;	
 		}
-		//frag=&fragment;
-		cWavebuffer=wave;
-		cN=cWavebuffer.size();
-		if(cN>0)	set=true;
+		cWpar->baseline_range=T0RANGE; //default only 8 samples!
 	}
 }
 
@@ -506,6 +498,7 @@ void TPulseAnalyzer::get_baseline_fin(){
 	cWpar->baselinefin=0.;
 	cWpar->baselineStDevfin=0.;
 	int tb=cWpar->t0;//t0 non integer, result always too small before.
+	if(tb>T0RANGE+5)tb-=5;
 
 	//error if waveform length cN is shorter than baseline range
 	if(cN>tb&&tb>0){
@@ -1275,18 +1268,73 @@ double TPulseAnalyzer::GetCsIt0()
 }
 
 
+
+void TPulseAnalyzer::GetQuickPara(){if(!IsSet())return;
+	get_baseline();//Takes a small sample baseline
+	get_tmax();//Does a filtered max search
+	
+	double amp=cWpar->max-cWpar->baseline;
+	double y9=cWpar->baseline+amp*.9;
+	double y5=cWpar->baseline+amp*.5;
+	double y1=cWpar->baseline+amp*.1;
+	
+	for(int t=cWpar->tmax;t>0;t--){
+		if(cWavebuffer[t]<y5){
+			cWpar->t50_flag=1;
+			cWpar->t50=t+0.5;
+			break;
+		}
+	}
+	
+	if(!cWpar->t50_flag)return;
+	
+	for(int t=cWpar->t50;t<cWpar->tmax;t++){
+		if(cWavebuffer[t]>y9){
+			cWpar->t90_flag=1;
+			cWpar->t90=t-0.5;
+			break;
+		}
+	}
+	
+	for(int t=cWpar->t50;t>0;t--){
+		if(cWavebuffer[t]<y1){
+			cWpar->t10_flag=1;
+			cWpar->t10=t+0.5;
+			break;
+		}
+	}
+	
+	if(!cWpar->t10_flag)return;
+	
+	double t0=cWpar->t50-((cWpar->t50-cWpar->t10)*1.2);
+	if(cWpar->t90_flag){
+		t0+=cWpar->t90-((cWpar->t90-cWpar->t10)*1.125);
+		t0*=0.5;
+	}
+	
+// 	std::cout<<std::endl<<t0<<std::flush;
+	cWpar->t0=t0;
+	get_baseline_fin();//baseline all the way up to t0
+}
+
+
+
 double TPulseAnalyzer::GetSiliShape(double tauDecay,double tauRise){if(IsSet()){
 	
-	double t0=fit_newT0();//fits the T0 in the SFU way with my added bit at the end for a nice baseline calc
+	//double t0=fit_newT0();//fits the T0 in the SFU way with my added bit at the end for a nice baseline calc
+	//double t0=cWpar->t0;	
+	//int exclusion=t0+3;
+// 	if(t0<1){//if the fit_newT0() failed
+// 		exclusion=10;
+// 		if(abs(baseline-cWavebuffer[0])>100)baseline=cWavebuffer[0];
+// 	}
 	
-	int exclusion=t0+3;
+	// New simplified guesses because fit_newT0 was taking 1000% longer
+	GetQuickPara();
+	if(!cWpar->t10_flag)return 0;
+	int exclusion=cWpar->t10;
 	double baseline=cWpar->baselinefin;
 	
-	if(t0<1){//if the fit_newT0() failed
-		exclusion=10;
-		if(abs(baseline-cWavebuffer[0])>100)baseline=cWavebuffer[0];
-	}
-		
 	cWpar->amplitude=0;
 	cWpar->tauDecay=tauDecay;
 	cWpar->tauRise=tauRise;
@@ -1308,11 +1356,7 @@ double TPulseAnalyzer::GetSiliShape(double tauDecay,double tauRise){if(IsSet()){
 	note that in this formulation, chisq_min = y_i^2-sum(u_iv_i)
 	**************************************************************************/
 
-	//cout << baseline << "  " << exclusion  <<  endl ;
-	if ( tauRise < 1 || tauDecay < 1) return 0 ; 
-	
-// ResetShapeAmplitudes();
-// fShpar->am[0] = baseline ; 
+	//cout << baseline << "  " << exclusion  <<  endl ;// ResetShapeAmplitudes();/ fShpar->am[0] = baseline ; 
 	
 	lineq_dim=2;
 	memset(lineq_matrix,0,sizeof(lineq_matrix));

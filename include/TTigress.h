@@ -114,7 +114,6 @@ class TTigress : public TGRSIDetector {
 		static bool fSetSegmentWave;    //!<!
 		static bool fSetBGOWave;        //!<!
 
-		static TRandom2 tigress_rand;
 
 		static double GeBluePosition[17][9][3];  //!<!  detector segment XYZ
 		static double GeGreenPosition[17][9][3]; //!<!
