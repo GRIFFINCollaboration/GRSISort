@@ -86,6 +86,7 @@ void TGRSIOptions::Clear(Option_t* opt) {
 	fBuildWindow = 200;
 	fAddbackWindow = 300;
 	fStaticWindow = false;
+	fSeparateOutOfOrder = false;
 
 	fShouldExit = false;
 
@@ -137,6 +138,7 @@ void TGRSIOptions::Print(Option_t* opt) const {
 		<<"fBuildWindow: "<<fBuildWindow<<std::endl
 		<<"fAddbackWindow: "<<fAddbackWindow<<std::endl
 		<<"fStaticWindow: "<<fStaticWindow<<std::endl
+		<<"fSeparateOutOfOrder: "<<fSeparateOutOfOrder<<std::endl
 		<<std::endl
 		<<"fShouldExit: "<<fShouldExit<<std::endl
 		<<std::endl
@@ -155,6 +157,7 @@ void TGRSIOptions::PrintSortingOptions() const {
 		<<DBLUE<<"fBuildWindow:   "<<DCYAN<<fBuildWindow<<std::endl
 		<<DBLUE<<"fAddbackWindow: "<<DCYAN<<fAddbackWindow<<std::endl
 		<<DBLUE<<"fStaticWindow:  "<<DCYAN<<fStaticWindow<<std::endl
+		<<DBLUE<<"fSeparateOutOfOrder:  "<<DCYAN<<fSeparateOutOfOrder<<std::endl
 		<<RESET_COLOR<<std::endl;
 }
 
@@ -230,6 +233,9 @@ void TGRSIOptions::Load(int argc, char** argv) {
 	parser.option("log-errors",&fLogErrors);
 	parser.option("reading-material",&fReadingMaterial);
 	parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments",&fWriteBadFrags);
+	parser.option("separate-out-of-order", &fSeparateOutOfOrder)
+		.description("Write out-of-order fragments to a separate tree at the sorting stage")
+		.default_value(false);
 	parser.option("ignore-odb", &fIgnoreFileOdb);
 	parser.option("ignore-epics", &fIgnoreEpics);
 	parser.option("ignore-scaler", &fIgnoreScaler);

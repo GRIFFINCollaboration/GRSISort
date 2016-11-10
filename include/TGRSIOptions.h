@@ -44,6 +44,7 @@ class TGRSIOptions : public TObject {
 		int BuildWindow() const { return fBuildWindow; }
 		int AddbackWindow() const { return fAddbackWindow; }
 		bool StaticWindow() const { return fStaticWindow; }
+		bool SeparateOutOfOrder() const { return fSeparateOutOfOrder; }
 		bool RecordDialog() const { return fRecordDialog; }
 		bool StartGui() const { return fStartGui; }
 
@@ -168,6 +169,7 @@ class TGRSIOptions : public TObject {
 		int fBuildWindow;
 		int fAddbackWindow;
 		bool fStaticWindow;
+		bool fSeparateOutOfOrder;
 
 		bool fShouldExit;
 

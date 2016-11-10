@@ -571,6 +571,7 @@ void TGRSIint::SetupPipeline() {
    TDataLoop* dataLoop = nullptr;
    TUnpackingLoop* unpackLoop = nullptr;
    TFragmentChainLoop* fragmentChainLoop = nullptr;
+	TEventBuildingLoop* eventBuildingLoop = nullptr;
    TDetBuildingLoop* detBuildingLoop = nullptr;
 
    // If needed, read from the raw file
@@ -645,15 +646,15 @@ void TGRSIint::SetupPipeline() {
    // If needed, generate the individual detectors from the TFragments
    if(generate_analysis_data) {
       TGRSIOptions::Get()->PrintSortingOptions();
-      TEventBuildingLoop* eoop = TEventBuildingLoop::Get("5_event_build_loop", event_build_mode);
-      eoop->SetSortDepth(opt->SortDepth());
-      eoop->SetBuildWindow(opt->BuildWindow());
-      if(unpackLoop) eoop->InputQueue() = unpackLoop->AddGoodOutputQueue();
-      if(fragmentChainLoop) eoop->InputQueue() = fragmentChainLoop->AddOutputQueue();
-      fragmentQueues.push_back(eoop->InputQueue());
+      eventBuildingLoop = TEventBuildingLoop::Get("5_event_build_loop", event_build_mode);
+      eventBuildingLoop->SetSortDepth(opt->SortDepth());
+      eventBuildingLoop->SetBuildWindow(opt->BuildWindow());
+      if(unpackLoop) eventBuildingLoop->InputQueue() = unpackLoop->AddGoodOutputQueue();
+      if(fragmentChainLoop) eventBuildingLoop->InputQueue() = fragmentChainLoop->AddOutputQueue();
+      fragmentQueues.push_back(eventBuildingLoop->InputQueue());
 
       detBuildingLoop = TDetBuildingLoop::Get("6_det_build_loop");
-      detBuildingLoop->InputQueue() = eoop->OutputQueue();
+      detBuildingLoop->InputQueue() = eventBuildingLoop->OutputQueue();
    }
 
    // If requested, write the analysis histograms
@@ -668,6 +669,9 @@ void TGRSIint::SetupPipeline() {
    if(write_analysis_tree) {
       TAnalysisWriteLoop* loop = TAnalysisWriteLoop::Get("8_analysis_write_loop", output_analysis_tree_filename);
       loop->InputQueue() = detBuildingLoop->AddOutputQueue(TGRSIOptions::Get()->AnalysisWriteQueueSize());
+		if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
+			loop->OutOfOrderQueue() = eventBuildingLoop->OutOfOrderQueue();
+		}
       analysisQueues.push_back(loop->InputQueue());
    }
 	
