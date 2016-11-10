@@ -56,7 +56,6 @@ class TGRSIOptions : public TObject {
 
 		bool MakeAnalysisTree()   const { return fMakeAnalysisTree; }
 		bool ProgressDialog()     const { return fProgressDialog;   }
-		bool WorkHarder()         const { return fWorkHarder;       }
 		bool ReadingMaterial()    const { return fReadingMaterial;  }
 		bool IgnoreFileOdb()      const { return fIgnoreFileOdb;    }
 
@@ -139,7 +138,6 @@ class TGRSIOptions : public TObject {
 
 		bool fMakeAnalysisTree;
 		bool fProgressDialog;
-		bool fWorkHarder;
 		bool fReadingMaterial;
 		bool fIgnoreFileOdb;
 		bool fRecordDialog;

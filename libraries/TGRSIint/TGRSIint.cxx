@@ -174,7 +174,7 @@ void TGRSIint::LoopUntilDone() {
 		fAllowedToTerminate = true;
 
 		++iter;
-		if(iter%TGRSIOptions::Get()->StatusInterval() == 0) {
+		if(TGRSIOptions::Get()->StatusInterval() > 0 && iter%TGRSIOptions::Get()->StatusInterval() == 0) {
 			std::cout<<"\r"<<StoppableThread::AllThreadStatus()<<std::endl;
 		}
 		std::cout<<"\r"<<StoppableThread::AllThreadProgress()<<std::flush;

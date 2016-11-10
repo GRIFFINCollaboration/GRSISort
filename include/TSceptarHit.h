@@ -57,6 +57,7 @@ class TSceptarHit : public TGRSIDetectorHit {
       void Clear(Option_t *opt = "");		                    //!<!
       void Print(Option_t *opt = "") const;		                    //!<!
       virtual void Copy(TObject&) const;        //!<!
+      virtual void Copy(TObject&, bool) const;        //!<!
       
    private:
       Double_t GetDefaultDistance() const { return 0.0; }
