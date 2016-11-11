@@ -81,8 +81,10 @@ Double_t TS3Hit::GetDefaultPhiOffset() const {
 Double_t TS3Hit::GetDefaultDistance() const {//relative to target (SPICE target not at Z=0)
 	double z=0;
 	if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLi){
-		z=32.1;
-		//z=18;//without pedestal
+		std::string str=GetChannel()->GetMnemonic()->ArraySubPositionString();
+		if(str.find("D")<str.size()) z=22.5;
+		else if(str.find("E")<str.size()) z=28.35;
+		else z=42.1;
 	}else{
 		std::string str=GetChannel()->GetMnemonic()->ArraySubPositionString();
 		if(str.find("D")<str.size()) z=20;

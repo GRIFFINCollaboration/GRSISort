@@ -24,10 +24,11 @@ bool TTigress::fSetBGOWave = false;
 // Default tigress unpacking settings
 TTransientBits<UShort_t> TTigress::fgTigressBits(TTigress::kSetCoreWave | TTigress::kSetBGOHits); 
 
+//Why arent these TTigress class functions?
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
 	
-	//if(one.GetSegmentMultiplicity()==0&&two.GetSegmentMultiplicity()==0){
-	if(one.GetSegmentMultiplicity()==0||two.GetSegmentMultiplicity()==0){//For no-sectors experiment and protection if data loss
+	// Extended options as for efficiency call we have been limited to cores only 
+	if(one.GetSegmentMultiplicity()==0||two.GetSegmentMultiplicity()==0||TTigress::GetForceCrystal()){//For no-sectors experiment and protection if data loss
 		return ((one.GetDetector() == two.GetDetector()) &&
 			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()*10.0));		
 		
@@ -239,20 +240,20 @@ void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan
 						return;
 					} else  {
 						hit->CopyFragment(*frag);
-						if(fTigressBits.TestBit(kSetCoreWave))
+						if(TestGlobalBit(kSetCoreWave))
 							frag->CopyWave(*hit);
 						return;
 					}
 				} else {
 					hit->CopyFragment(*frag);
-					if(fTigressBits.TestBit(kSetCoreWave))
+					if(TestGlobalBit(kSetCoreWave))
 						frag->CopyWave(*hit);
 					return;
 				}
 			}
 			}
 			corehit.CopyFragment(*frag);
-			if(fTigressBits.TestBit(kSetCoreWave))
+			if(TestGlobalBit(kSetCoreWave))
 				frag->CopyWave(corehit);
 			fTigressHits.push_back(corehit);
 			return;

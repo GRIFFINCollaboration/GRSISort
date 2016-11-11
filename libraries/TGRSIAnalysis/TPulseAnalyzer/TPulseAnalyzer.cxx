@@ -495,7 +495,7 @@ void TPulseAnalyzer::get_baseline_fin(){
 	cWpar->baselinefin=0.;
 	cWpar->baselineStDevfin=0.;
 	int tb=cWpar->t0;//t0 non integer, result always too small before.
-	if(tb>T0RANGE+5)tb-=5;
+	if(tb>T0RANGE+10)tb-=10;
 
 	//error if waveform length cN is shorter than baseline range
 	if(cN>tb&&tb>0){
