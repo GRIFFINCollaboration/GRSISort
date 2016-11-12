@@ -94,7 +94,7 @@ class TGriffinHit : public TGRSIDetectorHit {
     Double_t GetDefaultDistance() const { return 110.; }
 
     /// \cond CLASSIMP
-    ClassDef(TGriffinHit,6); //Information about a GRIFFIN Hit
+    ClassDef(TGriffinHit,7); //Information about a GRIFFIN Hit
     /// \endcond
 };
 /*! @} */
