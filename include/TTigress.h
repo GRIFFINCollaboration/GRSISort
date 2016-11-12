@@ -79,7 +79,7 @@ class TTigress : public TGRSIDetector {
 #endif
 		void BuildHits();
 
-		void ClearTransients() { fgTigressBits = 0; fTigressBits = 0; for(auto hit : fTigressHits) hit.ClearTransients(); }
+		void ClearTransients() { fTigressBits = 0; for(auto hit : fTigressHits) hit.ClearTransients(); }
 
 		TTigress& operator=(const TTigress&); //!<!
 
@@ -127,7 +127,9 @@ class TTigress : public TGRSIDetector {
 
 		//    void ClearStatus();                      // WARNING: this will change the building behavior!
 		//		void ClearGlobalStatus() { fTigressBits = 0; }
-		static void SetGlobalBit(enum ETigressGlobalBits bit,Bool_t set=true);
+		static void SetGlobalBit(enum ETigressGlobalBits bit,Bool_t set=true){
+			fgTigressBits.SetBit(bit,set);
+		}
 		static Bool_t TestGlobalBit(enum ETigressGlobalBits bit) {
 			return (fgTigressBits.TestBit(bit));
 		}
