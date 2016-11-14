@@ -20,15 +20,15 @@ bool TTigress::fSetCoreWave = false;
 bool TTigress::fSetSegmentWave = false;
 bool TTigress::fSetBGOWave = false;
 
-TRandom2 TTigress::tigress_rand;
 
 // Default tigress unpacking settings
 TTransientBits<UShort_t> TTigress::fgTigressBits(TTigress::kSetCoreWave | TTigress::kSetBGOHits); 
 
+//Why arent these TTigress class functions?
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
 	
-	//if(one.GetSegmentMultiplicity()==0&&two.GetSegmentMultiplicity()==0){
-	if(one.GetSegmentMultiplicity()==0||two.GetSegmentMultiplicity()==0){//For no-sectors experiment and protection if data loss
+	// Extended options as for efficiency call we have been limited to cores only 
+	if(one.GetSegmentMultiplicity()==0||two.GetSegmentMultiplicity()==0||TTigress::GetForceCrystal()){//For no-sectors experiment and protection if data loss
 		return ((one.GetDetector() == two.GetDetector()) &&
 			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()*10.0));		
 		
@@ -95,7 +95,6 @@ void TTigress::Clear(Option_t *opt)  {
   fBgos.clear();
  // fTigressBits.SetBit(TTigress::kAddbackSet,false);
   fTigressBits = 0;
-  tigress_rand.SetSeed();
 }
 
 void TTigress::Print(Option_t *opt)  const {
@@ -241,20 +240,20 @@ void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan
 						return;
 					} else  {
 						hit->CopyFragment(*frag);
-						if(fTigressBits.TestBit(kSetCoreWave))
+						if(TestGlobalBit(kSetCoreWave))
 							frag->CopyWave(*hit);
 						return;
 					}
 				} else {
 					hit->CopyFragment(*frag);
-					if(fTigressBits.TestBit(kSetCoreWave))
+					if(TestGlobalBit(kSetCoreWave))
 						frag->CopyWave(*hit);
 					return;
 				}
 			}
 			}
 			corehit.CopyFragment(*frag);
-			if(fTigressBits.TestBit(kSetCoreWave))
+			if(TestGlobalBit(kSetCoreWave))
 				frag->CopyWave(corehit);
 			fTigressHits.push_back(corehit);
 			return;
@@ -407,8 +406,8 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,boo
 		// Not perfect as it takes the perpendicular core vector, not the clover vector, but good enough for my purposes
 		TVector3 a(-yy,xx,0);
 		TVector3 b=det_pos.Cross(a);
-		double x,y,r = sqrt(tigress_rand.Uniform(0,400));
-		tigress_rand.Circle(x,y,r);
+		double x,y,r = sqrt(gRandom->Uniform(0,400));
+		gRandom->Circle(x,y,r);
 		det_pos+=a.Unit()*x+b.Unit()*y;
 	  }
   }

@@ -10,19 +10,17 @@
 ClassImp(TS3)
 /// \endcond
 
-int    TS3::fRingNumber;
-int    TS3::fSectorNumber;
+int    TS3::fRingNumber=24;
+int    TS3::fSectorNumber=32;
 
-double TS3::fOffsetPhiCon;
-double TS3::fOffsetPhiSet;
-double TS3::fOuterDiameter;
-double TS3::fInnerDiameter;
-double TS3::fTargetDistance;
+double TS3::fOffsetPhiCon=-0.5*TMath::Pi(); // Offset between connector and sector 0 (viewed from sector side)
+double TS3::fOffsetPhiSet=-22.5*TMath::Pi()/180.; // Phi rotation of connector in setup // -90 for bambino -22.5 for SPICE
+double TS3::fOuterDiameter=70.;
+double TS3::fInnerDiameter=22.;
+double TS3::fTargetDistance=31.;
 
 Int_t TS3::fFrontBackTime;   
 double TS3::fFrontBackEnergy; 
-
-TRandom2 TS3::s3_rand;
 
 TS3::TS3() {
    Clear();	
@@ -294,9 +292,9 @@ TVector3 TS3::GetPosition(int ring, int sector, double offsetphi,double offsetZ,
 	if(smear){
 		double sep=ring_width*0.025;
 		double r1=radius-ring_width*0.5+sep,r2=radius+ring_width*0.5-sep;
-		radius=sqrt(s3_rand.Uniform(r1*r1,r2*r2));
+		radius=sqrt(gRandom->Uniform(r1*r1,r2*r2));
 		double sepphi=sep/radius;
-		phi=s3_rand.Uniform(phi-phi_width*0.5+sepphi,phi+phi_width*0.5-sepphi);	
+		phi=gRandom->Uniform(phi-phi_width*0.5+sepphi,phi+phi_width*0.5-sepphi);	
 	}
 
 	return TVector3(cos(phi)*radius,sin(phi)*radius,offsetZ);
@@ -352,19 +350,11 @@ void TS3::Clear(Option_t *opt) {
 	fS3Hits.clear();
 	fS3RingHits.clear();
 	fS3SectorHits.clear();
-	fRingNumber=24;
-	fSectorNumber=32;
-	fOffsetPhiCon=-0.5*TMath::Pi(); // Offset between connector and sector 0 (viewed from sector side)
-	fOffsetPhiSet=-22.5*TMath::Pi()/180.; // Phi rotation of connector in setup // -90 for bambino -22.5 for SPICE
-	fOuterDiameter=70.;
-	fInnerDiameter=22.;
-	fTargetDistance=31.;
 
 	fFrontBackTime=75;   
 	fFrontBackEnergy=0.9; 
 	SetPixels(false);
 	SetMultiHit(false);
-	s3_rand.SetSeed();
 }
 
 
