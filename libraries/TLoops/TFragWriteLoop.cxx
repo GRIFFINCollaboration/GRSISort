@@ -149,7 +149,7 @@ void TFragWriteLoop::Write() {
 
 void TFragWriteLoop::WriteEvent(std::shared_ptr<const TFragment> event) {
 	if(fEventTree) {
-		*fEventAddress = *(event.get());
+		*fEventAddress = *event;
 		fEventAddress->ClearTransients();
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fEventTree->Fill();

@@ -13,155 +13,158 @@
 #include "GRootCommands.h"
 
 TGRSIOptions* TGRSIOptions::Get(int argc, char** argv){
-  static TGRSIOptions* item = NULL;
-  if(!item) {
-    item = new TGRSIOptions(argc, argv);
-  }
-  return item;
+	static TGRSIOptions* item = NULL;
+	if(!item) {
+		item = new TGRSIOptions(argc, argv);
+	}
+	return item;
 }
 
 TGRSIOptions::TGRSIOptions(int argc, char** argv)
-  : fShouldExit(false) {
-  Load(argc, argv);
-}
+	: fShouldExit(false) {
+		Load(argc, argv);
+	}
 
 void TGRSIOptions::Clear(Option_t* opt) {
-  fInputMidasFiles.clear();
-  fInputRootFiles.clear();
-  fInputCalFiles.clear();
-  fInputOdbFiles.clear();
-  fExternalRunInfo.clear();
-  fMacroFiles.clear();
+	fInputMidasFiles.clear();
+	fInputRootFiles.clear();
+	fInputCalFiles.clear();
+	fInputOdbFiles.clear();
+	fExternalRunInfo.clear();
+	fMacroFiles.clear();
 
-  fInputCutsFiles.clear();
-  fInputValFiles.clear();
-  fInputWinFiles.clear();
-  input_ring = "";
+	fInputCutsFiles.clear();
+	fInputValFiles.clear();
+	fInputWinFiles.clear();
+	fInputRing = "";
 
-  output_fragment_file = "";
-  output_analysis_file = "";
-  output_filtered_file = "";
-  output_fragment_histogram_file = "";
-  output_analysis_histogram_file = "";
+	fOutputFragmentFile = "";
+	fOutputAnalysisFile = "";
+	fOutputFilteredFile = "";
+	fOutputFragmentHistogramFile = "";
+	fOutputAnalysisHistogramFile = "";
 
-  fragment_histogram_lib = "";
-  analysis_histogram_lib = "";
-  compiled_filter_file = "";
+	fFragmentHistogramLib = "";
+	fAnalysisHistogramLib = "";
+	fCompiledFilterFile = "";
 
-  options_file.clear();
+	fOptionsFile.clear();
 
-  log_file = "";
+	fLogFile = "";
 
-  fCloseAfterSort = false;
-  fLogErrors = false;
-  fUseMidFileOdb = false;
+	fCloseAfterSort = false;
+	fLogErrors = false;
+	fUseMidFileOdb = false;
 
-  fMakeAnalysisTree = false;
-  fProgressDialog = false;
-  fReadingMaterial = false;
-  fIgnoreFileOdb = false;
+	fMakeAnalysisTree = false;
+	fProgressDialog = false;
+	fReadingMaterial = false;
+	fIgnoreFileOdb = false;
 
-  fIgnoreScaler = false;
-  fIgnoreEpics = false;
-  fWriteBadFrags = false;
-  fWriteDiagnostics = false;
+	fIgnoreScaler = false;
+	fIgnoreEpics = false;
+	fWriteBadFrags = false;
+	fWriteDiagnostics = false;
 
-  fShowedVersion = false;
-  fHelp = false;
-  fShowLogo = false;
-  fSortRaw = true;
-  fSortRoot = false;
-  fExtractWaves = false;
-  fIsOnline = false;
-  fStartGui = false;
-  fMakeHistos = false;
-  fSortMultiple = false;
-  fDebug = false;
+	fShowedVersion = false;
+	fHelp = false;
+	fShowLogo = false;
+	fSortRaw = true;
+	fSortRoot = false;
+	fExtractWaves = false;
+	fIsOnline = false;
+	fStartGui = false;
+	fMakeHistos = false;
+	fSortMultiple = false;
+	fDebug = false;
 
-  fFragmentWriteQueueSize = 10000000;
-  fAnalysisWriteQueueSize = 1000000;
+	fFragmentWriteQueueSize = 10000000;
+	fAnalysisWriteQueueSize = 1000000;
 
-  fTimeSortInput = false;
+	fTimeSortInput = false;
 
-  fBuildWindow = 200;
-  fAddbackWindow = 300;
-  fStaticWindow = false;
+	fBuildWindow = 200;
+	fAddbackWindow = 300;
+	fStaticWindow = false;
+	fSeparateOutOfOrder = false;
 
-  fShouldExit = false;
+	fShouldExit = false;
 
 	fColumnWidth = 20;
 	fStatusWidth = 80;
 	fStatusInterval = 10;
-  fLongFileDescription = false;
+	fLongFileDescription = false;
 
-  //Proof only
-  fMaxWorkers = -1;
-  fSelectorOnly = false;
+	//Proof only
+	fMaxWorkers = -1;
+	fSelectorOnly = false;
 }
 
 void TGRSIOptions::Print(Option_t* opt) const { 
-  std::cout<<"fCloseAfterSort: "<<fCloseAfterSort<<std::endl
-			  <<"fLogErrors: "<<fLogErrors<<std::endl
-			  <<"fUseMidFileOdb: "<<fUseMidFileOdb<<std::endl
-			  <<"fSuppressErrors: "<<fSuppressErrors<<std::endl
-			  <<std::endl
-			  <<"fMakeAnalysisTree: "<<fMakeAnalysisTree<<std::endl
-			  <<"fProgressDialog: "<<fProgressDialog<<std::endl
-			  <<"fReadingMaterial;: "<<fReadingMaterial<<std::endl
-			  <<"fIgnoreFileOdb: "<<fIgnoreFileOdb<<std::endl
-			  <<"fRecordDialog: "<<fRecordDialog<<std::endl
-			  <<std::endl
-			  <<"fIgnoreScaler: "<<fIgnoreScaler<<std::endl
-			  <<"fIgnoreEpics: "<<fIgnoreEpics<<std::endl
-			  <<"fWriteBadFrags: "<<fWriteBadFrags<<std::endl
-			  <<"fWriteDiagnostics: "<<fWriteDiagnostics<<std::endl
-			  <<std::endl
-			  <<"fShowedVersion: "<<fShowedVersion<<std::endl
-			  <<"fHelp: "<<fHelp<<std::endl
-			  <<"fShowLogo: "<<fShowLogo<<std::endl
-			  <<"fSortRaw: "<<fSortRaw<<std::endl
-			  <<"fSortRoot: "<<fSortRoot<<std::endl
-			  <<"fExtractWaves;: "<<fExtractWaves<<std::endl
-			  <<"fIsOnline: "<<fIsOnline<<std::endl
-			  <<"fStartGui: "<<fStartGui<<std::endl
-			  <<"fMakeHistos: "<<fMakeHistos<<std::endl
-			  <<"fSortMultiple: "<<fSortMultiple<<std::endl
-			  <<"fDebug;: "<<fDebug<<std::endl
-			  <<std::endl
-			  <<"fFragmentWriteQueueSize: "<<fFragmentWriteQueueSize<<std::endl
-			  <<"fAnalysisWriteQueueSize: "<<fAnalysisWriteQueueSize<<std::endl
-			  <<std::endl
-			  <<"fTimeSortInput: "<<fTimeSortInput<<std::endl
-			  <<"fSortDepth: "<<fSortDepth<<std::endl
-			  <<std::endl
-			  <<"fBuildWindow: "<<fBuildWindow<<std::endl
-			  <<"fAddbackWindow: "<<fAddbackWindow<<std::endl
-			  <<"fStaticWindow: "<<fStaticWindow<<std::endl
-			  <<std::endl
-			  <<"fShouldExit: "<<fShouldExit<<std::endl
-			  <<std::endl
-			  <<"fColumnWidth: "<<fColumnWidth<<std::endl
-			  <<"fStatusWidth: "<<fStatusWidth<<std::endl
-			  <<"fStatusInterval: "<<fStatusInterval<<std::endl
-			  <<"fLongFileDescription: "<<fLongFileDescription<<std::endl
+	std::cout<<"fCloseAfterSort: "<<fCloseAfterSort<<std::endl
+		<<"fLogErrors: "<<fLogErrors<<std::endl
+		<<"fUseMidFileOdb: "<<fUseMidFileOdb<<std::endl
+		<<"fSuppressErrors: "<<fSuppressErrors<<std::endl
+		<<std::endl
+		<<"fMakeAnalysisTree: "<<fMakeAnalysisTree<<std::endl
+		<<"fProgressDialog: "<<fProgressDialog<<std::endl
+		<<"fReadingMaterial;: "<<fReadingMaterial<<std::endl
+		<<"fIgnoreFileOdb: "<<fIgnoreFileOdb<<std::endl
+		<<"fRecordDialog: "<<fRecordDialog<<std::endl
+		<<std::endl
+		<<"fIgnoreScaler: "<<fIgnoreScaler<<std::endl
+		<<"fIgnoreEpics: "<<fIgnoreEpics<<std::endl
+		<<"fWriteBadFrags: "<<fWriteBadFrags<<std::endl
+		<<"fWriteDiagnostics: "<<fWriteDiagnostics<<std::endl
+		<<std::endl
+		<<"fShowedVersion: "<<fShowedVersion<<std::endl
+		<<"fHelp: "<<fHelp<<std::endl
+		<<"fShowLogo: "<<fShowLogo<<std::endl
+		<<"fSortRaw: "<<fSortRaw<<std::endl
+		<<"fSortRoot: "<<fSortRoot<<std::endl
+		<<"fExtractWaves;: "<<fExtractWaves<<std::endl
+		<<"fIsOnline: "<<fIsOnline<<std::endl
+		<<"fStartGui: "<<fStartGui<<std::endl
+		<<"fMakeHistos: "<<fMakeHistos<<std::endl
+		<<"fSortMultiple: "<<fSortMultiple<<std::endl
+		<<"fDebug;: "<<fDebug<<std::endl
+		<<std::endl
+		<<"fFragmentWriteQueueSize: "<<fFragmentWriteQueueSize<<std::endl
+		<<"fAnalysisWriteQueueSize: "<<fAnalysisWriteQueueSize<<std::endl
+		<<std::endl
+		<<"fTimeSortInput: "<<fTimeSortInput<<std::endl
+		<<"fSortDepth: "<<fSortDepth<<std::endl
+		<<std::endl
+		<<"fBuildWindow: "<<fBuildWindow<<std::endl
+		<<"fAddbackWindow: "<<fAddbackWindow<<std::endl
+		<<"fStaticWindow: "<<fStaticWindow<<std::endl
+		<<"fSeparateOutOfOrder: "<<fSeparateOutOfOrder<<std::endl
+		<<std::endl
+		<<"fShouldExit: "<<fShouldExit<<std::endl
+		<<std::endl
+		<<"fColumnWidth: "<<fColumnWidth<<std::endl
+		<<"fStatusWidth: "<<fStatusWidth<<std::endl
+		<<"fStatusInterval: "<<fStatusInterval<<std::endl
+		<<"fLongFileDescription: "<<fLongFileDescription<<std::endl
 
-				<<"fMaxWorkers: "<< fMaxWorkers << std::endl
-				<<"fSelectorOnly "<<fSelectorOnly << std::endl;
+		<<"fMaxWorkers: "<< fMaxWorkers << std::endl
+		<<"fSelectorOnly "<<fSelectorOnly << std::endl;
 }
 
 void TGRSIOptions::PrintSortingOptions() const {
 	std::cout<<DBLUE<<"fTimeSortInput: "<<DCYAN<<fTimeSortInput<<std::endl
-	         <<DBLUE<<"fSortDepth:     "<<DCYAN<<fSortDepth<<std::endl
-				<<DBLUE<<"fBuildWindow:   "<<DCYAN<<fBuildWindow<<std::endl
-		      <<DBLUE<<"fAddbackWindow: "<<DCYAN<<fAddbackWindow<<std::endl
-		      <<DBLUE<<"fStaticWindow:  "<<DCYAN<<fStaticWindow<<std::endl
-		      <<RESET_COLOR<<std::endl;
+		<<DBLUE<<"fSortDepth:     "<<DCYAN<<fSortDepth<<std::endl
+		<<DBLUE<<"fBuildWindow:   "<<DCYAN<<fBuildWindow<<std::endl
+		<<DBLUE<<"fAddbackWindow: "<<DCYAN<<fAddbackWindow<<std::endl
+		<<DBLUE<<"fStaticWindow:  "<<DCYAN<<fStaticWindow<<std::endl
+		<<DBLUE<<"fSeparateOutOfOrder:  "<<DCYAN<<fSeparateOutOfOrder<<std::endl
+		<<RESET_COLOR<<std::endl;
 }
 
 void TGRSIOptions::Load(int argc, char** argv) {
 	Clear();
-	fragment_histogram_lib = gEnv->GetValue("GRSI.FragmentHistLib","");
-	analysis_histogram_lib = gEnv->GetValue("GRSI.AnalysisHistLib","");
+	fFragmentHistogramLib = gEnv->GetValue("GRSI.FragmentHistLib","");
+	fAnalysisHistogramLib = gEnv->GetValue("GRSI.AnalysisHistLib","");
 
 	// Load default TChannels, if specified.
 	{
@@ -188,13 +191,13 @@ void TGRSIOptions::Load(int argc, char** argv) {
 
 	parser.default_option(&input_files)
 		.description("Input file(s)");
-	parser.option("output-fragment-tree", &output_fragment_file)
+	parser.option("output-fragment-tree", &fOutputFragmentFile)
 		.description("Filename of output fragment tree");
-	parser.option("output-analysis-tree", &output_analysis_file)
+	parser.option("output-analysis-tree", &fOutputAnalysisFile)
 		.description("Filename of output analysis tree");
-	parser.option("output-fragment-hists", &output_fragment_histogram_file)
+	parser.option("output-fragment-hists", &fOutputFragmentHistogramFile)
 		.description("Filename of output fragment hists");
-	parser.option("output-analysis-hists", &output_analysis_histogram_file)
+	parser.option("output-analysis-hists", &fOutputAnalysisHistogramFile)
 		.description("Filename of output analysis hists");
 
 
@@ -230,25 +233,28 @@ void TGRSIOptions::Load(int argc, char** argv) {
 	parser.option("log-errors",&fLogErrors);
 	parser.option("reading-material",&fReadingMaterial);
 	parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments",&fWriteBadFrags);
+	parser.option("separate-out-of-order", &fSeparateOutOfOrder)
+		.description("Write out-of-order fragments to a separate tree at the sorting stage")
+		.default_value(false);
 	parser.option("ignore-odb", &fIgnoreFileOdb);
 	parser.option("ignore-epics", &fIgnoreEpics);
 	parser.option("ignore-scaler", &fIgnoreScaler);
 	parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors);
 
 	parser.option("fragment-size", &fFragmentWriteQueueSize)
-	      .description("size of fragment write queue")
-			.default_value(10000000);
+		.description("size of fragment write queue")
+		.default_value(10000000);
 	parser.option("analysis-size", &fAnalysisWriteQueueSize)
-	      .description("size of analysis write queue")
-			.default_value(1000000);
-	
+		.description("size of analysis write queue")
+		.default_value(1000000);
+
 	// parser.option("o output", &output_file)
 	//   .description("Root output file");
-	// parser.option("f filter-output",&output_filtered_file)
+	// parser.option("f filter-output",&fOutputFilteredFile)
 	//   .description("Output file for raw filtered data");
-	// parser.option("hist-output",&output_histogram_file)
+	// parser.option("hist-output",&fOutputHistogramFile)
 	//   .description("Output file for histograms");
-	// parser.option("r ring",&input_ring)
+	// parser.option("r ring",&fInputRing)
 	//   .description("Input ring source (host/ringname).  Requires --format to be specified.");
 	//   .default_value(false);
 	// parser.option("n no-sort", &fSortRaw)
@@ -273,14 +279,14 @@ void TGRSIOptions::Load(int argc, char** argv) {
 		.description("use static window for event building")
 		.default_value(false);
 	parser.option("column-width", &fColumnWidth)
-	      .description("width of one column of status")
-			.default_value(20);
+		.description("width of one column of status")
+		.default_value(20);
 	parser.option("status-width", &fStatusWidth)
-	      .description("number of characters to be used for status output")
-			.default_value(80);
+		.description("number of characters to be used for status output")
+		.default_value(80);
 	parser.option("status-interval", &fStatusInterval)
-	      .description("seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
-			.default_value(10);
+		.description("seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
+		.default_value(10);
 
 	// parser.option("long-file-description", &fLongFileDescription)
 	//   .description("Show full path to file in status messages")
@@ -295,13 +301,13 @@ void TGRSIOptions::Load(int argc, char** argv) {
 	//   .description("Show version information");
 
 
-   //Proof only parser options
+	//Proof only parser options
 	parser.option("max-workers", &fMaxWorkers)
-	      .description("Max number of nodes to use when running a grsiproof session")
-			.default_value(-1);
+		.description("Max number of nodes to use when running a grsiproof session")
+		.default_value(-1);
 
 	parser.option("selector-only", &fSelectorOnly)
-	      .description("Turns off PROOF to run a selector on the main thread");
+		.description("Turns off PROOF to run a selector on the main thread");
 
 	// look for any arguments ending with .info, pass to parser.
 	for(int i=0; i<argc; i++){
@@ -339,12 +345,12 @@ void TGRSIOptions::Load(int argc, char** argv) {
 		fShouldExit = true;
 	}
 
-	if(output_fragment_histogram_file.length()>0 &&
-			output_fragment_histogram_file != "none") {
+	if(fOutputFragmentHistogramFile.length()>0 &&
+			fOutputFragmentHistogramFile != "none") {
 		fMakeHistos = true;
 	}
-	if(output_analysis_histogram_file.length()>0 &&
-			output_analysis_histogram_file != "none") {
+	if(fOutputAnalysisHistogramFile.length()>0 &&
+			fOutputAnalysisHistogramFile != "none") {
 		fMakeHistos = true;
 	}
 
@@ -424,11 +430,11 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename) {
 																  bool used = false;
 																  DynamicLibrary lib(filename);
 																  if(lib.GetSymbol("MakeFragmentHistograms")) {
-																	  fragment_histogram_lib = filename;
+																	  fFragmentHistogramLib = filename;
 																	  used = true;
 																  }
 																  if(lib.GetSymbol("MakeAnalysisHistograms")) {
-																	  analysis_histogram_lib = filename;
+																	  fAnalysisHistogramLib = filename;
 																	  used = true;
 																  }
 																  if(!used) {

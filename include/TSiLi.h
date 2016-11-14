@@ -91,8 +91,6 @@ class TSiLi: public TGRSIDetector  {
 		static double fInnerDiameter;    //!<!
 		static double fTargetDistance;   //!<!
 		
-		static TRandom2 sili_rand;// random number gen for TVectors
-
 /// \cond CLASSIMP
 		ClassDef(TSiLi,5);
 /// \endcond

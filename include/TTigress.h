@@ -24,21 +24,22 @@
 class TTigress : public TGRSIDetector {
 	public:
 		enum ETigressBits {
-			kAddbackSet		= BIT(0),
+			kAddbackSet	= BIT(0),
 			kSuppression	= BIT(1),
-			kBit2				= BIT(2),
-			kBit3				= BIT(3),
-			kBit4				= BIT(4),
-			kBit5				= BIT(5),
-			kBit6				= BIT(6),
-			kBit7				= BIT(7)
+			kBit2		= BIT(2),
+			kBit3		= BIT(3),
+			kBit4		= BIT(4),
+			kBit5		= BIT(5),
+			kBit6		= BIT(6),
+			kBit7		= BIT(7)
 		};
 
 		enum ETigressGlobalBits {
-			kSetBGOWave		= BIT(0),
+			kSetBGOWave	= BIT(0),
 			kSetCoreWave	= BIT(1),
-			kSetSegWave		= BIT(2),
-			kSetBGOHits    = BIT(3)
+			kSetSegWave	= BIT(2),
+			kSetBGOHits	= BIT(3),
+			kForceCrystal	= BIT(4)
 		};
 
 #ifndef __CINT__
@@ -78,7 +79,7 @@ class TTigress : public TGRSIDetector {
 #endif
 		void BuildHits();
 
-		void ClearTransients() { fgTigressBits = 0; fTigressBits = 0; for(auto hit : fTigressHits) hit.ClearTransients(); }
+		void ClearTransients() { fTigressBits = 0; for(auto hit : fTigressHits) hit.ClearTransients(); }
 
 		TTigress& operator=(const TTigress&); //!<!
 
@@ -114,7 +115,6 @@ class TTigress : public TGRSIDetector {
 		static bool fSetSegmentWave;    //!<!
 		static bool fSetBGOWave;        //!<!
 
-		static TRandom2 tigress_rand;
 
 		static double GeBluePosition[17][9][3];  //!<!  detector segment XYZ
 		static double GeGreenPosition[17][9][3]; //!<!
@@ -127,7 +127,9 @@ class TTigress : public TGRSIDetector {
 
 		//    void ClearStatus();                      // WARNING: this will change the building behavior!
 		//		void ClearGlobalStatus() { fTigressBits = 0; }
-		static void SetGlobalBit(enum ETigressGlobalBits bit,Bool_t set=true);
+		static void SetGlobalBit(enum ETigressGlobalBits bit,Bool_t set=true){
+			fgTigressBits.SetBit(bit,set);
+		}
 		static Bool_t TestGlobalBit(enum ETigressGlobalBits bit) {
 			return (fgTigressBits.TestBit(bit));
 		}
@@ -136,9 +138,18 @@ class TTigress : public TGRSIDetector {
 		std::vector<UShort_t> fAddbackFrags;   //!<! Number of crystals involved in creating in the addback hit
 
 	public:
-		static bool SetCoreWave()    { return TestGlobalBit(kSetCoreWave);     }  //!<!
-		static bool SetSegmentWave() { return TestGlobalBit(kSetSegWave);      }  //!<!
-		static bool SetBGOWave()     { return TestGlobalBit(kSetBGOWave);      }  //!<!
+		// Naming convention was off, couldnt find anything that used them in grsisort
+		// Left them as return bool to not break external code
+		static bool SetCoreWave(bool set=true){ SetGlobalBit(kSetCoreWave,set);return set;}  //!<!
+		static bool SetSegmentWave(bool set=true){ SetGlobalBit(kSetSegWave,set);return set;}  //!<!
+		static bool SetBGOWave(bool set=true){ SetGlobalBit(kSetBGOWave,set);return set;}  //!<!
+		static bool SetForceCrystal(bool set=true){ SetGlobalBit(kForceCrystal,set);return set;}  //!<!
+		
+		static bool GetCoreWave()    { return TestGlobalBit(kSetCoreWave);}  //!<!
+		static bool GetSegmentWave() { return TestGlobalBit(kSetSegWave);}  //!<!
+		static bool GetBGOWave()     { return TestGlobalBit(kSetBGOWave);}  //!<!
+		static bool GetForceCrystal(){ return TestGlobalBit(kForceCrystal);}  //!<!
+		
 		static bool BGOSuppression[4][4][5]; //!<!
 
 	public:         

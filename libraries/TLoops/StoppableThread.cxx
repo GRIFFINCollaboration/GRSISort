@@ -114,7 +114,7 @@ std::string StoppableThread::Progress() {
 }
 
 void StoppableThread::SendStop() {
-	for(auto& elem : fThreadMap){
+	for(auto& elem : fThreadMap) {
 		TDataLoop* data_loop = dynamic_cast<TDataLoop*>(elem.second);
 		TFragmentChainLoop* chain_loop = dynamic_cast<TFragmentChainLoop*>(elem.second);
 		if(data_loop || chain_loop) {
