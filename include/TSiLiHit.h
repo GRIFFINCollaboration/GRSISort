@@ -49,8 +49,8 @@ class TSiLiHit : public TGRSIDetectorHit {
 		void SetTimeFit(double t0 ) { fTimeFit = t0 ; }
 		
 		void SetWavefit(const TFragment&);
-		TVector3 GetPosition(Double_t dist) const; //!  
-		TVector3 GetPosition() const; //!  
+		TVector3 GetPosition(Double_t dist,bool=false) const; //!  
+		TVector3 GetPosition(bool=false) const; //!  
 		
 		void SumHit(TSiLiHit*);
 		
