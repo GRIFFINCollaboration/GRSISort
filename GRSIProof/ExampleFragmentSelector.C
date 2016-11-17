@@ -17,7 +17,9 @@ void ExampleFragmentSelector::CreateHistograms()
 
 void ExampleFragmentSelector::FillHistograms()
 {
-   hp_charge->Fill(fFragment->GetChannelNumber(),fFragment->GetCharge());
-   hp_energy->Fill(fFragment->GetChannelNumber(),fFragment->GetEnergy());
+	if(fFragment->GetKValue() == 700){
+   	hp_charge->Fill(fFragment->GetChannelNumber(),fFragment->Charge()/700.);
+   	hp_energy->Fill(fFragment->GetChannelNumber(),fFragment->GetEnergy());
+	}
 }
 
