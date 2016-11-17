@@ -602,7 +602,7 @@ void TGRSIint::SetupPipeline() {
       TGRSIRunInfo::Get()->SetRunInfo(fMidasFiles[0]->GetRunNumber(),
             fMidasFiles[0]->GetSubRunNumber());
    } else {
-      TGRSIRunInfo::Get()->SetRunInfo(0,0);
+      TGRSIRunInfo::Get()->SetRunInfo(0, -1);
    }
    TPPG::Get()->Setup();
    for(auto val_filename : opt->ValInputFiles()) {

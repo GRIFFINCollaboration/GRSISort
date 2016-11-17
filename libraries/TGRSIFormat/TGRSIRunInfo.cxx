@@ -173,13 +173,14 @@ void TGRSIRunInfo::SetRunInfo(TGRSIRunInfo *tmp) {
    fGRSIRunInfo = tmp;
 }
 
-Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
+Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf) {
 
    TDirectory *savdir = gDirectory;
-   if(tempf)
+   if(tempf) {
       tempf->cd();
+	}
 
-   if (!(gDirectory->GetFile())){
+   if (!(gDirectory->GetFile())) {
       printf("File does not exist\n");
       savdir->cd();
       return false;
@@ -191,8 +192,8 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile *tempf){
    TIter iter(list);
    printf("Reading Info from file:" CYAN " %s" RESET_COLOR "\n",tempf->GetName());
    while(TKey *key = static_cast<TKey*>(iter.Next())) {
-      if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo"))
-         continue;
+      if(!key || strcmp(key->GetClassName(),"TGRSIRunInfo")) continue;
+         
       TGRSIRunInfo::SetRunInfo(static_cast<TGRSIRunInfo*>(key->ReadObj()));
       savdir->cd();
       return true;
@@ -312,10 +313,18 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    //Sets the run info. This figures out what systems are available.
 
    printf("In runinfo, found %i channels.\n",TChannel::GetNumberOfChannels());
-   if(runnum != 0)
-      SetRunNumber(runnum);
-   if(subrunnum != -1)
-      SetSubRunNumber(subrunnum);
+   if(runnum != 0) {
+		if(RunNumber() != 0) {
+			std::cout<<"Warning, overwriting non-default run-number "<<RunNumber()<<" with "<<runnum<<std::endl;
+		}
+		SetRunNumber(runnum);
+	}
+   if(subrunnum != -1) {
+		if(SubRunNumber() != 0) {
+			std::cout<<"Warning, overwriting non-default sub-run-number "<<SubRunNumber()<<" with "<<subrunnum<<std::endl;
+		}
+		SetSubRunNumber(subrunnum);
+	}
 
    std::map<unsigned int,TChannel*>::iterator iter;
 
@@ -399,7 +408,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    if(Get()->fRunInfoFile.length())
       ParseInputData(Get()->fRunInfoFile.c_str());
 
-   //   TGRSIRunInfo::Get()->Print("a");
+   //TGRSIRunInfo::Get()->Print("a");
 }
 
 void TGRSIRunInfo::SetAnalysisTreeBranches(TTree*) {
@@ -620,7 +629,7 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr) {
     Get()->Write();
   }
 
-  printf("Writing Run Information to %s\n",gDirectory->GetFile()->GetName());
+  printf("Writing Run Information to %s\n", gDirectory->GetFile()->GetName());
   if(oldoption == "READ") {
     printf("  Returning %s to \"%s\" mode.\n",gDirectory->GetFile()->GetName(),oldoption.c_str());
     fileptr->ReOpen("READ");
