@@ -22,11 +22,14 @@
 // Root > T->Process("TGRSISelector.C+")
 //
 
-#include "TGRSISelector.h"
-#include <TSystem.h>
+#include "TGRSIOptions.h"
 #include "TGRSIRunInfo.h"
-#include <TH2.h>
-#include <TStyle.h>
+#include "TGRSISelector.h"
+#include "GValue.h"
+
+#include "TSystem.h"
+#include "TH2.h"
+#include "TStyle.h"
 /// \cond CLASSIMP
 ClassImp(TGRSISelector)
 /// \endcond
@@ -68,16 +71,16 @@ Bool_t TGRSISelector::Process(Long64_t entry)
    //
    // The return value is currently not used
    
-   static TFile* current_file = nullptr;
-      if(current_file != fChain->GetCurrentFile()){
-         current_file = fChain->GetCurrentFile();
-         std::cout << "Starting to sort: " << current_file << std::endl;
-         TChannel::ReadCalFromFile(current_file);
-         TGRSIRunInfo::Get()->ReadInfoFromFile(current_file);
-      //   TChannel::WriteCalFile();
-      }
+	static TFile* current_file = nullptr;
+	if(current_file != fChain->GetCurrentFile()){
+		current_file = fChain->GetCurrentFile();
+		std::cout << "Starting to sort: " << current_file << std::endl;
+		TChannel::ReadCalFromFile(current_file);
+		TGRSIRunInfo::Get()->ReadInfoFromFile(current_file);
+		//   TChannel::WriteCalFile();
+	}
 
-   fChain->GetEntry(entry);
+	fChain->GetEntry(entry);
    FillHistograms();
 
    return kTRUE;
@@ -101,6 +104,7 @@ void TGRSISelector::Terminate()
    std::cout << runnumber << " " << subrunnumber << std::endl;
    TFile output_file(Form("%s%05d_%03d.root",fOutputPrefix.c_str(),runnumber,subrunnumber),"RECREATE");
    fOutput->Write();
+	TGRSIRunInfo::Get()->Write();
    output_file.Close();
 
 }
