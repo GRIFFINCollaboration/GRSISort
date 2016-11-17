@@ -206,6 +206,8 @@ class TPulseAnalyzer {
 	 void     get_t90();       
 
 	 double	 get_sin_par(double);
+	 
+	 void GetQuickPara();
 
 	 //bad chi squares for debugging
 	 const static int BADCHISQ_SMOOTH_T0=   -1024-2; //smooth_t0 gives bad result
