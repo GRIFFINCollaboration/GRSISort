@@ -52,20 +52,20 @@ Double_t TGRSIDetectorHit::GetTime(const UInt_t& correction_flag,Option_t* opt) 
   TChannel* chan = GetChannel();
   if(!chan) {
     Error("GetTime","No TChannel exists for address 0x%08x",GetAddress());
-    return 10.*(static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform()));
+    return SetTime(10.*(static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform())));
   }
 
 	switch(chan->GetDigitizerType()) {
 		Double_t dTime;
 		case TMnemonic::kGRF16:
 			dTime = (GetTimeStamp()&(~0x3ffff))*10. + (GetCfd() + gRandom->Uniform())/1.6;//CFD is in 10/16th of a nanosecond
-			return dTime - 10.*(chan->GetTZero(GetEnergy()));
+			return SetTime(dTime - 10.*(chan->GetTZero(GetEnergy())));
 		case TMnemonic::kGRF4G:
 			dTime = GetTimeStamp()*10. + (fCfd>>22) + ((fCfd & 0x3fffff) + gRandom->Uniform())/256.;
-			return dTime - 10.*(chan->GetTZero(GetEnergy()));
+			return SetTime(dTime - 10.*(chan->GetTZero(GetEnergy())));
 		default:
 		   dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
-		   return 10.*(dTime - chan->GetTZero(GetEnergy()));
+		   return SetTime(10.*(dTime - chan->GetTZero(GetEnergy())));
 	}
 	return 0.;
 }

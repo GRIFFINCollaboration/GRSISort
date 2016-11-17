@@ -115,7 +115,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual void AppendTimeStamp(const Long_t& x)     { fTimeStamp   += x; }       //!<! 
 
       Double_t SetEnergy(const double& en) const { fEnergy = en; SetHitBit(kIsEnergySet,true); return fEnergy;}
-      void SetTime(const Double_t& time) {fTime = time; SetHitBit(kIsTimeSet,true); }
+      Double_t SetTime(const Double_t& time) const {fTime = time; SetHitBit(kIsTimeSet,true); return fTime; }
 
       virtual TVector3 GetPosition(Double_t dist)    const { return TVector3(0.,0.,0.); } //!<!
       virtual TVector3 GetPosition()    const { return TVector3(0.,0.,0.); } //!<!
