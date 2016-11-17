@@ -46,6 +46,7 @@ class TMultiPeak : public TGRSIFit {
    bool InitParams(TH1* hist);
    void SortPeaks(Bool_t (*SortFunction)(const TPeak* ,const TPeak* ) = TPeak::CompareEnergy);
    TPeak* GetPeak(UInt_t idx);
+   TPeak* GetPeakClosestTo(Double_t energy);
    void DrawPeaks() const;
    TF1* Background() const { return fBackground; }
 
