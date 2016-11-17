@@ -50,7 +50,7 @@ void TGRSIOptions::Clear(Option_t* opt) {
 
 	fOptionsFile.clear();
 
-	fLogFile = "";
+	fLogFile = "grsisort.log";
 
 	fCloseAfterSort = false;
 	fLogErrors = false;
@@ -127,7 +127,8 @@ void TGRSIOptions::Print(Option_t* opt) const {
 		<<"fStartGui: "<<fStartGui<<std::endl
 		<<"fMakeHistos: "<<fMakeHistos<<std::endl
 		<<"fSortMultiple: "<<fSortMultiple<<std::endl
-		<<"fDebug;: "<<fDebug<<std::endl
+		<<"fDebug: "<<fDebug<<std::endl
+		<<"fLogFile: "<<fLogFile<<std::endl
 		<<std::endl
 		<<"fFragmentWriteQueueSize: "<<fFragmentWriteQueueSize<<std::endl
 		<<"fAnalysisWriteQueueSize: "<<fAnalysisWriteQueueSize<<std::endl
@@ -231,6 +232,8 @@ void TGRSIOptions::Load(int argc, char** argv) {
 		.description("Dump stuff to screen");
 	parser.option("write-diagnostics", &fWriteDiagnostics);
 	parser.option("log-errors",&fLogErrors);
+	parser.option("log-file", &fLogFile)
+		.description("File logs from grsiproof are written to.");
 	parser.option("reading-material",&fReadingMaterial);
 	parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments",&fWriteBadFrags);
 	parser.option("separate-out-of-order", &fSeparateOutOfOrder)
