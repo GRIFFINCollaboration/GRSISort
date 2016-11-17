@@ -270,24 +270,25 @@ uint16_t TGRSIDetectorHit::GetPPGStatus() const {
   if(IsPPGSet())
     return fPPGStatus;
 
-  if(!fPPG)
+  if(!TPPG::Get())
     return TPPG::kJunk;
 
-  fPPGStatus = fPPG->GetStatus(this->GetTime());
-  fCycleTimeStamp = GetTime() - fPPG->GetLastStatusTime(GetTime());
+  fPPGStatus = TPPG::Get()->GetStatus(GetTimeStamp());
+  fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
   SetHitBit(kIsPPGSet,true);
   return fPPGStatus;
 }
 
-uint16_t TGRSIDetectorHit::GetCycleTimeStamp() const {
-  if(IsPPGSet())
-    return fCycleTimeStamp;
+Long_t TGRSIDetectorHit::GetCycleTimeStamp() const {
+  if(IsPPGSet()) {
+	  return fCycleTimeStamp;
+  }
 
-  if(!fPPG)
+  if(!TPPG::Get())
     return 0;
 
-  fPPGStatus = fPPG->GetStatus(this->GetTime());
-  fCycleTimeStamp = GetTime() - fPPG->GetLastStatusTime(GetTime());
+  fPPGStatus = TPPG::Get()->GetStatus(GetTimeStamp());
+  fCycleTimeStamp = GetTimeStamp() - TPPG::Get()->GetLastStatusTime(GetTimeStamp());
   SetHitBit(kIsPPGSet,true);
   return fCycleTimeStamp;
 }
