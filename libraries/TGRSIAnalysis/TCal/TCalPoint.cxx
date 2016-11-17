@@ -15,6 +15,10 @@ TCalPoint::TCalPoint(const Double_t& centroid, const Double_t &area, const Doubl
 	SetArea(area,darea);
 }
 
+TCalPoint::TCalPoint(const TPeak & peak){
+	SetPoint(&peak);
+}
+
 TCalPoint::~TCalPoint(){}
 
 TCalPoint::TCalPoint(const TCalPoint& copy) : TObject(copy){
@@ -32,6 +36,11 @@ void TCalPoint::Copy(TObject& obj) const {
 void TCalPoint::SetPoint(const Double_t& centroid, const Double_t &area, const Double_t &dcentroid, const Double_t &darea){
 	SetCentroid(centroid,dcentroid);
 	SetArea(area,darea);
+}
+
+void TCalPoint::SetPoint(const TPeak * peak){
+	SetCentroid(peak->GetCentroid(), peak->GetCentroidErr());
+	SetArea(peak->GetArea(), peak->GetAreaErr());
 }
 
 void TCalPoint::SetCentroid(const Double_t& centroid, const Double_t& dcentroid){
