@@ -16,6 +16,11 @@
 
 class TSiLiHit : public TGRSIDetectorHit {
 	public:
+		enum ESiLiHitBits { 
+			kUseFitCharge	= BIT(0),
+	  		kSiLiHitBit1	= BIT(1),
+		};
+
 		TSiLiHit();
 		TSiLiHit(const TFragment &);	
 		virtual ~TSiLiHit();
@@ -29,7 +34,8 @@ class TSiLiHit : public TGRSIDetectorHit {
 		Int_t GetSector()const;
 		Int_t GetPreamp()const;
 		Double_t GetTimeFit()   { return fTimeFit;  }
-		Double_t GetSig2Noise()const { return fSig2Noise;}    
+		Double_t GetSig2Noise()const { return fSig2Noise;} 
+		Double_t GetSmirnov()const { return fSmirnov;} 
 		
 		Int_t GetTimeStampLow()   { return GetTimeStamp() & 0x0fffffff;  }
 		Double_t GetTimeFitCfd()  const { 
@@ -46,25 +52,19 @@ class TSiLiHit : public TGRSIDetectorHit {
 		TVector3 GetPosition(Double_t dist) const; //!  
 		TVector3 GetPosition() const; //!  
 		
-		std::vector<short> fAddBackSegments;
-		std::vector<double> fAddBackEnergy; //probably not needed after development finished
-		
 		void SumHit(TSiLiHit*);
 		
-		void UseFitCharge(){
-			SetCharge(Float_t(fFitCharge));
-			SetBit(kIsEnergySet,false);
+		void UseFitCharge(bool set=true){
+	  		SetHitBit(kIsEnergySet,false);
+			fSiLiHitBits.SetBit(kUseFitCharge,set);
 		}
-
-		double GetWaveformEnergy() const;
-		double GetWaveformEnergy() {
-			UseFitCharge();
-			return GetEnergy();
-		}		
-		
+	
+		double GetWaveformEnergy() const {return GetFitEnergy();}
+		double GetFitEnergy() const;		
 		double GetFitCharge() const {return fFitCharge;}
+		double GetEnergy(Option_t* opt=0) const;
 		
-				// Not strictly "doppler" but consistent
+		// Not strictly "doppler" but consistent
 		inline double GetDoppler(double beta, TVector3 *vec=0) { 
 			if(vec==0) {
 				vec = GetBeamDirection();
@@ -78,19 +78,37 @@ class TSiLiHit : public TGRSIDetectorHit {
 			return ((e+511-beta*costhe*sqrt(e*(e+1022)))*gamma)-511;;
 		}
 		
+		unsigned int GetAddbackSize(){
+			if(fAddBackSegments.size()==fAddBackEnergy.size())return fAddBackEnergy.size();
+			return 0;
+		}
 		
+		double GetAddbackEnergy(unsigned int i){
+			if(i< GetAddbackSize())return fAddBackEnergy[i];
+			return 0;
+		}
+		short GetAddbackSegment(unsigned int i){
+			if(i< GetAddbackSize())return fAddBackSegments[i];
+			return 0;
+			
+		}
 		
 	private:
 		Double_t GetDefaultDistance() const { return 0.0; }
-      
+		
+		std::vector<short> fAddBackSegments;
+		std::vector<double> fAddBackEnergy; //probably not needed after development finished
+		TTransientBits<UChar_t> fSiLiHitBits;
+
 		Double_t    fTimeFit;
 		Double_t    fSig2Noise;
+		Double_t    fSmirnov;
 		Double_t    fFitCharge;
 		Double_t    fFitBase;
 		
 
 /// \cond CLASSIMP
-		ClassDef(TSiLiHit,8);
+		ClassDef(TSiLiHit,9);
 /// \endcond
 };
 /*! @} */

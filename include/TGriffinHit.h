@@ -20,7 +20,8 @@ class TGriffinHit : public TGRSIDetectorHit {
   public:
     enum EGriffinHitBits {
       kTotalPU1   = 1<<0,
-      kTotalPU2   = 1<<1,
+      kTotalPU2   = 1<<1, 
+		kPUHitOffset = kTotalPU2,
       kPUHit1     = 1<<2,
       kPUHit2     = 1<<3,
       kBit4       = 1<<4,
@@ -36,10 +37,10 @@ class TGriffinHit : public TGRSIDetectorHit {
     virtual ~TGriffinHit();
 
   private:
-    Int_t fFilter;              //  The Filter Word
-    UChar_t fGriffinHitBits;    //  Transient Member Flags
-    UInt_t fCrystal;            //!<! Crystal Number       
-    Bool_t fBremSuppressed_flag;//!<! Bremsstrahlung Suppression flag.
+    Int_t fFilter;              						//  The Filter Word
+    TTransientBits<UChar_t> fGriffinHitBits;    //  Transient Member Flags
+    UInt_t fCrystal;            						//!<! Crystal Number       
+    Bool_t fBremSuppressed_flag;						//!<! Bremsstrahlung Suppression flag.
 
   public:
     /////////////////////////  Setters	/////////////////////////////////////
@@ -83,6 +84,7 @@ class TGriffinHit : public TGRSIDetectorHit {
     virtual void Clear(Option_t *opt = "");		 //!<!
     virtual void Print(Option_t *opt = "") const; //!<!
     virtual void Copy(TObject&) const;        //!<!
+    virtual void Copy(TObject&, bool) const;        //!<!
 
     TVector3 GetPosition(double dist) const; //!<!
     TVector3 GetPosition() const;
@@ -92,7 +94,7 @@ class TGriffinHit : public TGRSIDetectorHit {
     Double_t GetDefaultDistance() const { return 110.; }
 
     /// \cond CLASSIMP
-    ClassDef(TGriffinHit,6); //Information about a GRIFFIN Hit
+    ClassDef(TGriffinHit,7); //Information about a GRIFFIN Hit
     /// \endcond
 };
 /*! @} */

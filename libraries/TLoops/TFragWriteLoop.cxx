@@ -76,7 +76,8 @@ void TFragWriteLoop::ClearQueue() {
 
 std::string TFragWriteLoop::EndStatus() {
 	std::stringstream ss;
-	ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputSize>0 ? fInputSize+GetItemsPushed():GetItemsPushed())<<std::endl;;
+	//ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputSize>0 ? fInputSize+GetItemsPushed():GetItemsPushed())<<std::endl;;
+	ss<<std::endl<<Name()<<": "<<std::setw(8)<<fItemsPopped<<"/"<<fItemsPopped+fInputSize<<", "<<fEventTree->GetEntries()<<" good fragments, "<<fBadEventTree->GetEntries()<<" bad fragments"<<std::endl;
 	return ss.str();
 }
 
@@ -148,7 +149,7 @@ void TFragWriteLoop::Write() {
 
 void TFragWriteLoop::WriteEvent(std::shared_ptr<const TFragment> event) {
 	if(fEventTree) {
-		*fEventAddress = *(event.get());
+		*fEventAddress = *event;
 		fEventAddress->ClearTransients();
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fEventTree->Fill();

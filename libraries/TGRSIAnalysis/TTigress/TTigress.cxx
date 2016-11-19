@@ -20,14 +20,15 @@ bool TTigress::fSetCoreWave = false;
 bool TTigress::fSetSegmentWave = false;
 bool TTigress::fSetBGOWave = false;
 
-TRandom2 TTigress::tigress_rand;
 
 // Default tigress unpacking settings
-unsigned short TTigress::fgTigressBits = TTigress::kSetCoreWave | TTigress::kSetBGOHits;
+TTransientBits<UShort_t> TTigress::fgTigressBits(TTigress::kSetCoreWave | TTigress::kSetBGOHits); 
 
+//Why arent these TTigress class functions?
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
 	
-	if(one.GetSegmentMultiplicity()==0&&two.GetSegmentMultiplicity()==0){
+	// Extended options as for efficiency call we have been limited to cores only 
+	if(one.GetSegmentMultiplicity()==0||two.GetSegmentMultiplicity()==0||TTigress::GetForceCrystal()){//For no-sectors experiment and protection if data loss
 		return ((one.GetDetector() == two.GetDetector()) &&
 			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()*10.0));		
 		
@@ -81,6 +82,8 @@ void TTigress::Copy(TObject& rhs) const {
   static_cast<TTigress&>(rhs).fTigressHits    = fTigressHits;
   static_cast<TTigress&>(rhs).fAddbackHits    = fAddbackHits;
   static_cast<TTigress&>(rhs).fAddbackFrags   = fAddbackFrags;
+  static_cast<TTigress&>(rhs).fTigressBits  	 = 0;
+
 }
 
 void TTigress::Clear(Option_t *opt)  {
@@ -90,8 +93,8 @@ void TTigress::Clear(Option_t *opt)  {
   fAddbackHits.clear();
   fAddbackFrags.clear();
   fBgos.clear();
-  SetBit(TTigress::kAddbackSet,false);
-  tigress_rand.SetSeed();
+ // fTigressBits.SetBit(TTigress::kAddbackSet,false);
+  fTigressBits = 0;
 }
 
 void TTigress::Print(Option_t *opt)  const {
@@ -127,7 +130,7 @@ Int_t TTigress::GetAddbackMultiplicity() {
     return 0;
   }
   //if the addback has been reset, clear the addback hits
-  if(!TestBit(kAddbackSet)) {
+  if(!fTigressBits.TestBit(kAddbackSet)) {
     fAddbackHits.clear();
   } else {
     return fAddbackHits.size(); 
@@ -155,7 +158,7 @@ Int_t TTigress::GetAddbackMultiplicity() {
       fAddbackFrags.push_back(1);
     }
   }
-  SetBit(kAddbackSet, true);
+  fTigressBits.SetBit(kAddbackSet, true);
 
   return fAddbackHits.size();
 }
@@ -237,20 +240,20 @@ void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan
 						return;
 					} else  {
 						hit->CopyFragment(*frag);
-						if(TestBit(kSetCoreWave))
+						if(TestGlobalBit(kSetCoreWave))
 							frag->CopyWave(*hit);
 						return;
 					}
 				} else {
 					hit->CopyFragment(*frag);
-					if(TestBit(kSetCoreWave))
+					if(TestGlobalBit(kSetCoreWave))
 						frag->CopyWave(*hit);
 					return;
 				}
 			}
 			}
 			corehit.CopyFragment(*frag);
-			if(TestBit(kSetCoreWave))
+			if(TestGlobalBit(kSetCoreWave))
 				frag->CopyWave(corehit);
 			fTigressHits.push_back(corehit);
 			return;
@@ -296,7 +299,7 @@ void TTigress::ResetAddback() {
   ///be called before building the new addback hits, otherwise, a copy of
   ///the old addback hits will be stored instead.
   ///This should have changed now, we're using the stored tigress bits to reset the addback
-  SetBit(kAddbackSet, false);
+  fTigressBits.SetBit(kAddbackSet, false);
   fAddbackHits.clear();
   fAddbackFrags.clear();
 }
@@ -403,8 +406,8 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,boo
 		// Not perfect as it takes the perpendicular core vector, not the clover vector, but good enough for my purposes
 		TVector3 a(-yy,xx,0);
 		TVector3 b=det_pos.Cross(a);
-		double x,y,r = sqrt(tigress_rand.Uniform(0,400));
-		tigress_rand.Circle(x,y,r);
+		double x,y,r = sqrt(gRandom->Uniform(0,400));
+		gRandom->Circle(x,y,r);
 		det_pos+=a.Unit()*x+b.Unit()*y;
 	  }
   }

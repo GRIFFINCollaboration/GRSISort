@@ -16,12 +16,8 @@ TGRSIDetectorHit::TGRSIDetectorHit(const int& Address) : TObject() {
   ///Default constructor
   Clear();
   fAddress = Address;
-//  if(!fPPG)
- //   fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
 
-#if MAJOR_ROOT_VERSION < 6
   Class()->IgnoreTObjectStreamer(kTRUE);
-#endif
 }
 
 TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) : TObject(rhs) {
@@ -31,11 +27,8 @@ TGRSIDetectorHit::TGRSIDetectorHit(const TGRSIDetectorHit& rhs, bool copywave) :
     rhs.CopyWave(*this);
   }
   ClearTransients();
- // if(!fPPG)
- //   fPPG = TPPG::Get();//static_cast<TPPG*>(gDirectory->Get("TPPG")); //There Might be a better way to do this
-#if MAJOR_ROOT_VERSION < 6
+
   Class()->IgnoreTObjectStreamer(kTRUE);
-#endif
 }
 
 TGRSIDetectorHit::~TGRSIDetectorHit() {
@@ -91,7 +84,7 @@ int TGRSIDetectorHit::GetCharge() const {
 }
 
 double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
-  if(TestBit(kIsEnergySet))
+  if(TestHitBit(kIsEnergySet))
     return fEnergy;
   TChannel* chan = GetChannel();
   if(!chan) {
@@ -162,7 +155,7 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
   //fDetector       = -1;
   // fSegment        = -1;
   fEnergy         = 0.;
-  fBitflags       = fBitflags&0xff00;
+  fBitflags       = 0;
   fPPGStatus      = TPPG::kJunk;
   fCycleTimeStamp = 0;
   fChannel        = NULL;
@@ -282,7 +275,7 @@ uint16_t TGRSIDetectorHit::GetPPGStatus() const {
 
   fPPGStatus = fPPG->GetStatus(this->GetTime());
   fCycleTimeStamp = GetTime() - fPPG->GetLastStatusTime(GetTime());
-  SetBit(kIsPPGSet,true);
+  SetHitBit(kIsPPGSet,true);
   return fPPGStatus;
 }
 
@@ -295,7 +288,7 @@ uint16_t TGRSIDetectorHit::GetCycleTimeStamp() const {
 
   fPPGStatus = fPPG->GetStatus(this->GetTime());
   fCycleTimeStamp = GetTime() - fPPG->GetLastStatusTime(GetTime());
-  SetBit(kIsPPGSet,true);
+  SetHitBit(kIsPPGSet,true);
   return fCycleTimeStamp;
 }
 
@@ -314,9 +307,6 @@ uint16_t TGRSIDetectorHit::GetCycleTimeStamp() const {
 //}
 
 // const here is rather dirty
-void TGRSIDetectorHit::SetBit(enum EBitFlag flag, Bool_t set) const {
-  if(set)
-    fBitflags |= flag;
-  else
-    fBitflags &= (~flag);
+void TGRSIDetectorHit::SetHitBit(enum EBitFlag flag, Bool_t set) const {
+	fBitflags.SetBit(flag,set);
 }

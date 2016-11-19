@@ -204,6 +204,7 @@ class TChannel : public TNamed	{
 
       static Int_t ReadCalFromCurrentFile(Option_t *opt="overwrite");
       static Int_t ReadCalFromTree(TTree*,Option_t* opt="overwrite");
+      static Int_t ReadCalFromFile(TFile* tempf,Option_t* opt="overwrite");
       static Int_t ReadCalFile(const char* filename = "");
       static Int_t ParseInputData(const char* inputdata = "",Option_t* opt = "");
       static void WriteCalFile(std::string outfilename = "");

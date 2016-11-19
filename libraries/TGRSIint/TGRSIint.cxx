@@ -174,7 +174,7 @@ void TGRSIint::LoopUntilDone() {
 		fAllowedToTerminate = true;
 
 		++iter;
-		if(iter%TGRSIOptions::Get()->StatusInterval() == 0) {
+		if(TGRSIOptions::Get()->StatusInterval() > 0 && iter%TGRSIOptions::Get()->StatusInterval() == 0) {
 			std::cout<<"\r"<<StoppableThread::AllThreadStatus()<<std::endl;
 		}
 		std::cout<<"\r"<<StoppableThread::AllThreadProgress()<<std::flush;
@@ -571,6 +571,7 @@ void TGRSIint::SetupPipeline() {
    TDataLoop* dataLoop = nullptr;
    TUnpackingLoop* unpackLoop = nullptr;
    TFragmentChainLoop* fragmentChainLoop = nullptr;
+	TEventBuildingLoop* eventBuildingLoop = nullptr;
    TDetBuildingLoop* detBuildingLoop = nullptr;
 
    // If needed, read from the raw file
@@ -601,7 +602,7 @@ void TGRSIint::SetupPipeline() {
       TGRSIRunInfo::Get()->SetRunInfo(fMidasFiles[0]->GetRunNumber(),
             fMidasFiles[0]->GetSubRunNumber());
    } else {
-      TGRSIRunInfo::Get()->SetRunInfo(0,0);
+      TGRSIRunInfo::Get()->SetRunInfo(0, -1);
    }
    TPPG::Get()->Setup();
    for(auto val_filename : opt->ValInputFiles()) {
@@ -645,15 +646,15 @@ void TGRSIint::SetupPipeline() {
    // If needed, generate the individual detectors from the TFragments
    if(generate_analysis_data) {
       TGRSIOptions::Get()->PrintSortingOptions();
-      TEventBuildingLoop* eoop = TEventBuildingLoop::Get("5_event_build_loop", event_build_mode);
-      eoop->SetSortDepth(opt->SortDepth());
-      eoop->SetBuildWindow(opt->BuildWindow());
-      if(unpackLoop) eoop->InputQueue() = unpackLoop->AddGoodOutputQueue();
-      if(fragmentChainLoop) eoop->InputQueue() = fragmentChainLoop->AddOutputQueue();
-      fragmentQueues.push_back(eoop->InputQueue());
+      eventBuildingLoop = TEventBuildingLoop::Get("5_event_build_loop", event_build_mode);
+      eventBuildingLoop->SetSortDepth(opt->SortDepth());
+      eventBuildingLoop->SetBuildWindow(opt->BuildWindow());
+      if(unpackLoop) eventBuildingLoop->InputQueue() = unpackLoop->AddGoodOutputQueue();
+      if(fragmentChainLoop) eventBuildingLoop->InputQueue() = fragmentChainLoop->AddOutputQueue();
+      fragmentQueues.push_back(eventBuildingLoop->InputQueue());
 
       detBuildingLoop = TDetBuildingLoop::Get("6_det_build_loop");
-      detBuildingLoop->InputQueue() = eoop->OutputQueue();
+      detBuildingLoop->InputQueue() = eventBuildingLoop->OutputQueue();
    }
 
    // If requested, write the analysis histograms
@@ -668,37 +669,40 @@ void TGRSIint::SetupPipeline() {
    if(write_analysis_tree) {
       TAnalysisWriteLoop* loop = TAnalysisWriteLoop::Get("8_analysis_write_loop", output_analysis_tree_filename);
       loop->InputQueue() = detBuildingLoop->AddOutputQueue(TGRSIOptions::Get()->AnalysisWriteQueueSize());
+		if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
+			loop->OutOfOrderQueue() = eventBuildingLoop->OutOfOrderQueue();
+		}
       analysisQueues.push_back(loop->InputQueue());
    }
+	
+   //// For each leftover queue, terminate if still exists.
+   //for(auto fragQueue : fragmentQueues) {
+   //   if(fragQueue) {
+   //      auto loop = TTerminalLoop<const TFragment>::Get("9_frag_term_loop");
+   //      loop->InputQueue() = fragQueue;
+   //   }
+   //}
 
-   // For each leftover queue, terminate if still exists.
-   for(auto fragQueue : fragmentQueues) {
-      if(fragQueue) {
-         auto loop = TTerminalLoop<const TFragment>::Get("9_frag_term_loop");
-         loop->InputQueue() = fragQueue;
-      }
-   }
+   //for(auto scalQueue : scalerQueues) {
+   //   if(scalQueue) {
+   //      auto loop = TTerminalLoop<TEpicsFrag>::Get("A_scaler_term_loop");
+   //      loop->InputQueue() = scalQueue;
+   //   }
+   //}
 
-   for(auto scalQueue : scalerQueues) {
-      if(scalQueue) {
-         auto loop = TTerminalLoop<TEpicsFrag>::Get("A_scaler_term_loop");
-         loop->InputQueue() = scalQueue;
-      }
-   }
+   //for(auto badQueue : badQueues) {
+   //   if(badQueue) {
+   //      auto loop = TTerminalLoop<const TFragment>::Get("B_bad_frag_term_loop");
+   //      loop->InputQueue() = badQueue;
+   //   }
+   //}
 
-   for(auto badQueue : badQueues) {
-      if(badQueue) {
-         auto loop = TTerminalLoop<const TFragment>::Get("B_bad_frag_term_loop");
-         loop->InputQueue() = badQueue;
-      }
-   }
-
-   for(auto anaQueue : analysisQueues) {
-      if(anaQueue) {
-         auto loop = TTerminalLoop<TUnpackedEvent>::Get("C_analysis_term_loop");
-         loop->InputQueue() = anaQueue;
-      }
-   }
+   //for(auto anaQueue : analysisQueues) {
+   //   if(anaQueue) {
+   //      auto loop = TTerminalLoop<TUnpackedEvent>::Get("C_analysis_term_loop");
+   //      loop->InputQueue() = anaQueue;
+   //   }
+   //}
 
    StoppableThread::ResumeAll();
 }

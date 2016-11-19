@@ -63,7 +63,7 @@ class TFragmentChainLoop : public StoppableThread {
 
 		TChain *fInputChain;
 #ifndef __CINT__
-		std::shared_ptr<const TFragment> fFragment;
+		TFragment* fFragment;
 		std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > > fOutputQueues;
 #endif
 

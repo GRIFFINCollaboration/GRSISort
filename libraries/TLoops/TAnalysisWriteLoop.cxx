@@ -32,13 +32,19 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
 
 TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string output_filename)
   : StoppableThread(name),
-    fOutputFile(NULL), fEventTree(NULL),
-    fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >()) {
+    fOutputFile(nullptr), fEventTree(nullptr), fOutOfOrderTree(nullptr), fOutOfOrderFrag(nullptr),
+    fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >()),
+	 fOutOfOrderQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >()) {
 
   if(output_filename != "/dev/null"){
     //TPreserveGDirectory preserve;
     fOutputFile = new TFile(output_filename.c_str(),"RECREATE");
     fEventTree = new TTree("AnalysisTree","AnalysisTree");
+	 if(TGRSIOptions::Get()->SeparateOutOfOrder()) {
+		 fOutOfOrderTree = new TTree("OutOfOrderTree","OutOfOrderTree");
+		 fOutOfOrderFrag = new TFragment;
+		 fOutOfOrderTree->Branch("Fragment", &fOutOfOrderFrag);
+	 }
   }
 }
 
@@ -59,7 +65,12 @@ void TAnalysisWriteLoop::ClearQueue() {
 
 std::string TAnalysisWriteLoop::EndStatus() {
 	std::stringstream ss;
-	ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize+fItemsPopped<<std::endl;;
+	ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize+fItemsPopped<<", "<<fEventTree->GetEntries()<<" good events";
+	if(fOutOfOrderTree != nullptr) {
+		ss<<", "<<fOutOfOrderTree->GetEntries()<<" separate fragments out-of-order"<<std::endl;
+	} else {
+		ss<<std::endl;
+	}
 	return ss.str();
 }
 
@@ -68,6 +79,17 @@ bool TAnalysisWriteLoop::Iteration() {
 	fInputSize = fInputQueue->Pop(event);
 	if(fInputSize < 0) fInputSize = 0;
 	++fItemsPopped;
+
+	if(fOutOfOrderTree != nullptr && fOutOfOrderQueue->Size()>0) {
+		std::shared_ptr<const TFragment> frag;
+		fOutOfOrderQueue->Pop(frag, 0);
+		if(frag != nullptr) {
+			*fOutOfOrderFrag = *frag;
+			fOutOfOrderFrag->ClearTransients();
+			std::lock_guard<std::mutex> lock(ttree_fill_mutex);
+			fOutOfOrderTree->Fill();
+		}
+	}
 
 	if(event) {
 		WriteEvent(*event);
@@ -86,6 +108,11 @@ void TAnalysisWriteLoop::Write() {
 		fOutputFile->cd();
 
 		fEventTree->Write(fEventTree->GetName(), TObject::kOverwrite);
+
+		if(fOutOfOrderTree != nullptr) {
+			fOutOfOrderTree->Write(fOutOfOrderTree->GetName(), TObject::kOverwrite);
+		}
+
 		if(GValue::Size()) {
 			GValue::Get()->Write();
 		}
@@ -146,14 +173,14 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls){
 }
 
 void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event) {
-	if(fEventTree){
+	if(fEventTree) {
 		// Clear pointers from previous writes.
 		// Note that we cannot just set this equal to NULL,
 		//   because ROOT would then construct a new object.
 		// This contradicts the ROOT documentation for TBranchElement::SetAddress,
 		//   which suggests that a new object would be constructed only when setting the address,
 		//   not when filling the TTree.
-		for(auto& elem : fDetMap){
+		for(auto& elem : fDetMap) {
 			//*elem.second = fDefaultDets[elem.first];
 			(*elem.second)->Clear();
 		}
@@ -161,7 +188,7 @@ void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event) {
 		// Load current events
 		for(auto det : event.GetDetectors()) {
 			TClass* cls = det->IsA();
-			try{
+			try {
 				**fDetMap.at(cls) = *(det.get());
 			} catch (std::out_of_range& e) {
 				AddBranch(cls);

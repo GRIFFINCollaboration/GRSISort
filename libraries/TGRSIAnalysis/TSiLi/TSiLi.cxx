@@ -6,16 +6,19 @@
 ClassImp(TSiLi)
 /// \endcond
 
-int    TSiLi::fRingNumber;
-int    TSiLi::fSectorNumber;
 
-double TSiLi::fOffsetPhi;
-double TSiLi::fOuterDiameter;
-double TSiLi::fInnerDiameter;
-double TSiLi::fTargetDistance;
+//Having these in Clear() caused issues as functions can be called abstract with out initialising a TSiLi
+int    TSiLi::fRingNumber= 10;
+int    TSiLi::fSectorNumber= 12;
+double TSiLi::fOffsetPhi= -165.*TMath::Pi()/180.; // For SPICE. Sectors upstream.
+double TSiLi::fOuterDiameter= 94.;
+double TSiLi::fInnerDiameter= 16.;
+double TSiLi::fTargetDistance= -117.8;
 
-TRandom2 TSiLi::sili_rand;
-double TSiLi::sili_noise_fac;
+double TSiLi::sili_noise_fac=4;
+double TSiLi::sili_default_decay=4616.18;
+double TSiLi::sili_default_rise=20.90;
+
 
 TSiLi::TSiLi() {
    Clear();	
@@ -26,8 +29,10 @@ TSiLi::~TSiLi()  {
 
 void TSiLi::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
-  static_cast<TSiLi&>(rhs).fSiLiHits     = fSiLiHits;
-  static_cast<TSiLi&>(rhs).fAddbackHits     = fAddbackHits;
+  static_cast<TSiLi&>(rhs).fSiLiHits     		= fSiLiHits;
+  static_cast<TSiLi&>(rhs).fAddbackHits     	= fAddbackHits;
+  static_cast<TSiLi&>(rhs).fSiLiBits  	   	= 0;
+
   return;                                      
 } 
 
@@ -38,15 +43,7 @@ TSiLi::TSiLi(const TSiLi& rhs) : TGRSIDetector() {
 void TSiLi::Clear(Option_t *opt)  {
   fSiLiHits.clear();
   fAddbackHits.clear();
-  fRingNumber=10;
-  fSectorNumber=12;
-  fOffsetPhi=-165.*TMath::Pi()/180.; // For SPICE, sectors upstream.
-  fOuterDiameter=94.;
-  fInnerDiameter=16.;
-  fTargetDistance=-117.8;
-  
-  sili_rand.SetSeed();
-  sili_noise_fac=4.;  
+  fSiLiBits.Clear();  
 }
 
 TSiLi& TSiLi::operator=(const TSiLi& rhs) {
@@ -97,9 +94,9 @@ TVector3 TSiLi::GetPosition(int ring, int sector, bool smear)  {
   if(smear){	
 	double sep=ring_width*0.025;
 	double r1=radius-ring_width*0.5+sep,r2=radius+ring_width*0.5-sep;
-	radius=sqrt(sili_rand.Uniform(r1*r1,r2*r2));
+	radius=sqrt(gRandom->Uniform(r1*r1,r2*r2));
 	double sepphi=sep/radius;
-	phi=sili_rand.Uniform(phi-phi_width*0.5+sepphi,phi+phi_width*0.5-sepphi);	
+	phi=gRandom->Uniform(phi-phi_width*0.5+sepphi,phi+phi_width*0.5-sepphi);	
   }
   
   return TVector3(cos(phi)*radius,sin(phi)*radius,dist);
@@ -129,8 +126,6 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i) {
 
 // How the make addback currently works
 //
-// Proper setting of a "bit" to say addback has been made hasnt been implemented yet.
-//
 // First we itterate through all pixel hits
 // If the hit has not yet been assigned to a "cluster" a new cluster is created containing it
 // The hit is compared all following hits against fAddbackCriterion
@@ -158,19 +153,19 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i) {
 // Need to determine where the line is between throwing out bad reconstruction or saying it is just 2 very close singles 
 
 Int_t TSiLi::GetAddbackMultiplicity() {
-  // Automatically builds the addback hits using the addback_criterion (if the size of the addback_hits vector is zero) and return the number of addback hits.
-  short basehits=fSiLiHits.size();
+  	// Automatically builds the addback hits using the addback_criterion (if the size of the addback_hits vector is zero) and return the number of addback hits.
+  	short basehits=fSiLiHits.size();
 	
-  if(basehits == 0) {
-    return 0;
-  }
+  	if(basehits == 0) {
+    	return 0;
+  	}
 
-  //if the addback has been reset, clear the addback hits
-//   if((fTigressBits & kIsAddbackSet) == 0x0) {
-//     fAddbackHits.clear();
-//   }
+  	//if the addback has been reset, clear the addback hits
+ 	if(!(fSiLiBits.TestBit(kAddbackSet))) {
+		fAddbackHits.clear();
+	}
 
-  if(fAddbackHits.size() == 0) {
+  	if(fAddbackHits.size() == 0) {
 	  
 	// Create a matrix of "pairs"
 	std::vector < std::vector<bool> > pairs; 
@@ -220,8 +215,7 @@ Int_t TSiLi::GetAddbackMultiplicity() {
 		}
 	}
 	
-	
-//     SetBitNumber(kIsAddbackSet, true);
+	fSiLiBits.SetBit(kAddbackSet, true);
   }
 
   return fAddbackHits.size();

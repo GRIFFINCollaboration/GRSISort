@@ -753,6 +753,24 @@ Int_t TChannel::ReadCalFromCurrentFile(Option_t* opt) {
      return 0;
 }
 
+Int_t TChannel::ReadCalFromFile(TFile* tempf,Option_t* opt) {
+	///Reads the TChannel information from a TFile if it has already been written to that File.
+   if(!tempf)
+   	return 0;
+
+   TList* list =  tempf->GetListOfKeys();
+   TIter iter(list);
+
+   //while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
+   while(TKey *key = (TKey*)(iter.Next())) {
+      if(!key || strcmp(key->GetClassName(),"TChannel"))
+         continue;
+		key->ReadObj();
+      return GetNumberOfChannels();
+   }
+     return 0;
+}
+
 Int_t TChannel::ReadCalFromTree(TTree* tree,Option_t* opt) {
 	///Reads the TChannel information from a Tree if it has already been written to that Tree.
    if(!tree)

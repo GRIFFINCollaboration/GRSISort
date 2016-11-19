@@ -11,12 +11,16 @@ TS3Hit::TS3Hit()	{
 
 TS3Hit::TS3Hit(const TFragment &frag) : TGRSIDetectorHit(frag) {
 	if(frag.GetChannel()->GetMnemonic()->ArrayPosition() == 1) SetIsDownstream(false);
-	else SetIsDownstream(true); // In case of not set (0) set downstream (2) or incorrect value, we assume downstream
+	else if(frag.GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLi &&
+		frag.GetChannel()->GetMnemonic()->ArrayPosition() == 2) SetIsDownstream(false);
+	else SetIsDownstream(true);
+	// Bambino 0=not set,1=Upstream,2=Downstream.
+	// SPICE  0=Downstream,1=Upstream,2=Upstream+phi rotation.
 }
 
-TS3Hit::~TS3Hit()	{}
+TS3Hit::~TS3Hit(){}
 
-TS3Hit::TS3Hit(const TS3Hit &rhs) : TGRSIDetectorHit() {
+TS3Hit::TS3Hit(const TS3Hit &rhs) : TGRSIDetectorHit(rhs) {
 	Clear();
 	rhs.Copy(*this);
 }
@@ -66,18 +70,21 @@ void TS3Hit::Print(Option_t *opt) const	{
 }
 
 Double_t TS3Hit::GetDefaultPhiOffset() const {
+	double deg=-90;
 	if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLi){
-		return -22.5*TMath::Pi()/180;
-	}else{
-		return -90*TMath::Pi()/180.;		
+		deg=-22.5;
+		if(GetChannel()->GetMnemonic()->ArrayPosition() == 2)deg+=90;
 	}
+	return deg*TMath::Pi()/180.;
 }
 
 Double_t TS3Hit::GetDefaultDistance() const {//relative to target (SPICE target not at Z=0)
 	double z=0;
 	if(GetChannel()->GetMnemonic()->System() == TMnemonic::kSiLi){
-		z=32.1;
-		//z=18;//without pedestal
+		std::string str=GetChannel()->GetMnemonic()->ArraySubPositionString();
+		if(str.find("D")<str.size()) z=22.5;
+		else if(str.find("E")<str.size()) z=28.35;
+		else z=42.1;
 	}else{
 		std::string str=GetChannel()->GetMnemonic()->ArraySubPositionString();
 		if(str.find("D")<str.size()) z=20;

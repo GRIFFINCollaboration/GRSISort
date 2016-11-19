@@ -30,21 +30,25 @@ TGriffinHit::TGriffinHit(const TFragment &frag) : TGRSIDetectorHit(frag) {
 TGriffinHit::~TGriffinHit()  {	}
 
 void TGriffinHit::Copy(TObject &rhs) const {
-  TGRSIDetectorHit::Copy(rhs);
-  static_cast<TGriffinHit&>(rhs).fFilter                = fFilter;
-  static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = fGriffinHitBits;
-  static_cast<TGriffinHit&>(rhs).fCrystal               = fCrystal;
-  static_cast<TGriffinHit&>(rhs).fPPG                   = fPPG;
-  static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag; // Bremsstrahlung Suppression flag.
-  return;                                      
+	TGRSIDetectorHit::Copy(rhs);
+	static_cast<TGriffinHit&>(rhs).fFilter                = fFilter;
+	static_cast<TGriffinHit&>(rhs).fGriffinHitBits        = 0; //We should copy over a 0 and let the hit recalculate, this is safest
+	static_cast<TGriffinHit&>(rhs).fCrystal               = fCrystal;
+	static_cast<TGriffinHit&>(rhs).fPPG                   = fPPG;
+	static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag   = fBremSuppressed_flag; // Bremsstrahlung Suppression flag.
+	return;                                      
 }                                       
 
-bool TGriffinHit::InFilter(Int_t wantedfilter) {
- // check if the desired filter is in wanted filter;
- // return the answer;
- return true;
+void TGriffinHit::Copy(TObject& obj, bool waveform) const {
+	Copy(obj);
+	if(waveform) CopyWave(obj);
 }
 
+bool TGriffinHit::InFilter(Int_t wantedfilter) {
+	// check if the desired filter is in wanted filter;
+	// return the answer;
+	return true;
+}
 
 void TGriffinHit::Clear(Option_t *opt)	{
    //Clears the information stored in the TGriffinHit.
@@ -56,7 +60,6 @@ void TGriffinHit::Clear(Option_t *opt)	{
    fBremSuppressed_flag = false;
 
 }
-
 
 void TGriffinHit::Print(Option_t *opt) const	{
    //Prints the Detector Number, Crystal Number, Energy, Time and Angle.
@@ -75,57 +78,20 @@ TVector3 TGriffinHit::GetPosition() const {
   return GetPosition(GetDefaultDistance());
 }
 
-// UInt_t TGriffinHit::GetCrystal() {
-//    //Returns the Crystal Number of the Current hit.
-//    if(IsCrystalSet())
-//       return fCrystal;
-
-//    TChannel *chan = GetChannel();
-//    if(!chan)
-//       return -1;
-
-//    char color = chan->GetMnemonic()->arraysubposition[0];
-//    return SetCrystal(color);
-// }
-
-// UInt_t TGriffinHit::SetCrystal(UInt_t crynum) {
-//    fCrystal = crynum;
-//    return fCrystal;
-// }
-
-// UInt_t TGriffinHit::SetCrystal(char color) { 
-//    switch(color) {
-//       case 'B':
-//          fCrystal = 0;
-//          break;
-//       case 'G':
-//          fCrystal = 1;
-//          break;
-//       case 'R':
-//          fCrystal = 2;
-//          break;
-//       case 'W':
-//          fCrystal = 3;  
-//          break;
-//    };
-//    SetBit(TGRSIDetectorHit::kIsSubDetSet,true);
-//    return fCrystal;
-// }
-
 bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	{
    return(lhs->GetEnergy() > rhs->GetEnergy());
 }
 
 void TGriffinHit::Add(const TGriffinHit *hit)	{
-   // add another griffin hit to this one (for addback), 
-   // using the time and position information of the one with the higher energy
-   if(!CompareEnergy(this,hit)) {
-      this->SetCfd(hit->GetCfd());
-      this->SetTime(hit->GetTime());
-      //this->SetPosition(hit->GetPosition());
-      this->SetAddress(hit->GetAddress());
-   }
-   this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+	// add another griffin hit to this one (for addback), 
+	// using the time and position information of the one with the higher energy
+	if(!CompareEnergy(this,hit)) {
+		this->SetCfd(hit->GetCfd());
+		this->SetTime(hit->GetTime());
+		//this->SetPosition(hit->GetPosition());
+		this->SetAddress(hit->GetAddress());
+	}
+	this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
    //this has to be done at the very end, otherwise this->GetEnergy() might not work
    this->SetCharge(0);
    //Add all of the pileups.This should be changed when the max number of pileups changes
@@ -141,21 +107,24 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
    else{
       this->SetPUHit(3);
    }
+   //KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup hit was added-back RD
+   if(this->GetKValue() > hit->GetKValue()){
+      this->SetKValue(hit->GetKValue());
+   }
 }
 
 void TGriffinHit::SetGriffinFlag(enum EGriffinHitBits flag,Bool_t set){
-   if(set)
-      fGriffinHitBits |= flag;
-   else
-      fGriffinHitBits &= (~flag);
+	fGriffinHitBits.SetBit(flag,set);
 }
 
 UShort_t TGriffinHit::NPileUps() const {
-   return static_cast<UShort_t>(((fGriffinHitBits & kTotalPU1) + (fGriffinHitBits & kTotalPU2)));
+	//The pluralized test bits returns the actual value of the fBits masked. Not just a bool.
+   return static_cast<UShort_t>(fGriffinHitBits.TestBits(kTotalPU1)+ fGriffinHitBits.TestBits(kTotalPU2));
 }
 
 UShort_t TGriffinHit::PUHit() const { 
-   return static_cast<UShort_t>(((fGriffinHitBits & kPUHit1) + (fGriffinHitBits & kPUHit2)) >> 2); 
+	//The pluralized test bits returns the actual value of the fBits masked. Not just a bool.
+   return static_cast<UShort_t>(fGriffinHitBits.TestBits(kPUHit1) + (fGriffinHitBits.TestBits(kPUHit2) >> kPUHitOffset)); 
 } 
 
 void TGriffinHit::SetNPileUps(UChar_t npileups) {
@@ -166,9 +135,10 @@ void TGriffinHit::SetNPileUps(UChar_t npileups) {
 void TGriffinHit::SetPUHit(UChar_t puhit) {
    if(puhit > 2)
       puhit = 3;
+	//The pluralized test bits returns the actual value of the fBits masked. Not just a bool.
 
-   SetGriffinFlag(kPUHit1,(puhit << 2) & kPUHit1);  
-   SetGriffinFlag(kPUHit2,(puhit << 2) & kPUHit2);  
+   SetGriffinFlag(kPUHit1,(puhit << kPUHitOffset) & kPUHit1);  
+   SetGriffinFlag(kPUHit2,(puhit << kPUHitOffset) & kPUHit2);  
 }
 
 Double_t TGriffinHit::GetNoCTEnergy(Option_t* opt) const{

@@ -37,6 +37,7 @@ class TEventBuildingLoop : public StoppableThread {
 #ifndef __CINT__
 		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& InputQueue() { return fInputQueue; }
 		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment> > > >& OutputQueue() { return fOutputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& OutOfOrderQueue() { return fOutOfOrderQueue; }
 #endif
 
 		bool Iteration();
@@ -54,6 +55,7 @@ class TEventBuildingLoop : public StoppableThread {
 		void SetSortDepth(int num_events) { fSortingDepth = num_events; }
 		unsigned int GetSortDepth() const { return fSortingDepth; }
 
+		std::string EndStatus();
 
 	private:
 		TEventBuildingLoop(std::string name, EBuildMode mode);
@@ -61,12 +63,13 @@ class TEventBuildingLoop : public StoppableThread {
 		TEventBuildingLoop& operator=(const TEventBuildingLoop& other);
 
 #ifndef __CINT__
-		void CheckBuildCondition(std::shared_ptr<const TFragment>);
-		void CheckTimestampCondition(std::shared_ptr<const TFragment>);
-		void CheckTriggerIdCondition(std::shared_ptr<const TFragment>);
+		bool CheckBuildCondition(std::shared_ptr<const TFragment>);
+		bool CheckTimestampCondition(std::shared_ptr<const TFragment>);
+		bool CheckTriggerIdCondition(std::shared_ptr<const TFragment>);
 
 		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > fInputQueue;
 		std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment> > > > fOutputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > fOutOfOrderQueue;
 #endif
 
 		EBuildMode fBuildMode;
