@@ -130,7 +130,7 @@ void TPPG::AddData(TPPGData* pat) {
 ULong64_t TPPG::GetLastStatusTime(ULong64_t time,ppg_pattern pat,bool exact_flag) const {
 	///Gets the last time that a status was given. If the ppg_pattern kJunk is passed, the 
 	///current status at the time "time" is looked for. If exact_flag is false, the bits of "pat" 
-	///are looked for and ignore the rest of the bits in the sotred statuses. If "exact_flag" 
+	///are looked for and the rest of the bits in the sorted statuses ignored. If "exact_flag" 
 	///is true, the entire ppg pattern "pat" must be met.
 	if(MapIsEmpty()) {
 		printf("Empty\n");

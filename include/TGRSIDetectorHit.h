@@ -149,7 +149,7 @@ class TGRSIDetectorHit : public TObject 	{
 
       //The PPG is only stored in events that come out of the GRIFFIN DAQ
       uint16_t GetPPGStatus() const;
-      uint16_t GetCycleTimeStamp() const;
+      Long_t GetCycleTimeStamp() const;
 
       void ClearEnergy()  { fEnergy  = 0.0;  SetHitBit(kIsEnergySet,false); }
       void ClearChannel() { fChannel = NULL; SetHitBit(kIsChannelSet,false); }

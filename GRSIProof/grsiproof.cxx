@@ -3,6 +3,7 @@
 #include "TChain.h"
 #include "TGRSIProof.h"
 #include "TProofLite.h"
+#include "TProofLog.h"
 #include "TSystemDirectory.h"
 #include "TList.h"
 #include "TChainElement.h"
@@ -11,6 +12,7 @@
 #include "TGRSIOptions.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
+#include "TObjectWrapper.h"
 
 #include <iostream>
 #include <vector>
@@ -105,6 +107,12 @@ int main(int argc, char **argv) {
    Analyze("FragmentTree",proof);
    Analyze("AnalysisTree",proof);
 
+	TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
+	if(pl != nullptr) {
+		pl->Save("*", opt->LogFile().c_str());
+	} else {
+		std::cout<<"Failed to get logs!"<<std::endl;
+	}
 }
 
 
