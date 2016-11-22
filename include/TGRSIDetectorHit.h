@@ -165,6 +165,7 @@ class TGRSIDetectorHit : public TObject 	{
       Bool_t IsTimeSet()    const { return (fBitflags.TestBit(kIsTimeSet)); }
       Bool_t IsPPGSet()     const { return (fBitflags.TestBit(kIsPPGSet)); }
 
+   public:
       void SetHitBit(enum EBitFlag,Bool_t set=true) const; //const here is dirty
       bool TestHitBit(enum EBitFlag flag) const { return fBitflags.TestBit(flag); }
 
@@ -184,7 +185,7 @@ class TGRSIDetectorHit : public TObject 	{
       mutable Double_t fEnergy;     //!<! Energy of the Hit.
       mutable uint16_t fPPGStatus;  //!<! 
       mutable ULong_t  fCycleTimeStamp; //!<!
-		mutable TChannel* fChannel; //!<!
+      mutable TChannel* fChannel; //!<!
 
    protected:
       static TPPG* fPPG;

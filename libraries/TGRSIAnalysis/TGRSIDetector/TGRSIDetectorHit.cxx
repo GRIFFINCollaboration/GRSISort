@@ -54,7 +54,6 @@ Double_t TGRSIDetectorHit::GetTime(const UInt_t& correction_flag,Option_t* opt) 
     Error("GetTime","No TChannel exists for address 0x%08x",GetAddress());
     return 10.*(static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform()));
   }
-
 	switch(chan->GetDigitizerType()) {
 		Double_t dTime;
 		case TMnemonic::kGRF16:
