@@ -13,12 +13,7 @@
 ClassImp(TTigress)
   /// \endcond
 
-bool TTigress::fSetSegmentHits = true;  // these are need to doppler shift properly.  
-bool TTigress::fSetBGOHits = true;
-
-bool TTigress::fSetCoreWave = false;
-bool TTigress::fSetSegmentWave = false;
-bool TTigress::fSetBGOWave = false;
+double TTigress::fTargetOffest = 0;
 
 
 // Default tigress unpacking settings
@@ -400,6 +395,9 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,boo
       break;
     };
     //printf("xx = %f\nyy = %f\n zz = %f\n",xx,yy,zz);
+    
+    if(fTargetOffest!=0)zz-=fTargetOffest;
+    
     det_pos.SetXYZ(xx,yy,zz);
   }
   
@@ -413,6 +411,7 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,boo
 		det_pos+=a.Unit()*x+b.Unit()*y;
 	  }
   }
+  
   
   return det_pos;
 }

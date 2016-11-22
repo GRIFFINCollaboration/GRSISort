@@ -70,7 +70,7 @@ class TSiLiHit : public TGRSIDetectorHit {
 				vec = GetBeamDirection();
 			}
 			TVector3 pos = GetPosition();
-			pos.SetTheta(120.*TMath::Pi()/180.);	
+			pos.SetTheta(130.*TMath::Pi()/180.);	
 			double costhe=TMath::Cos(pos.Angle(*vec));
 			double e=this->GetEnergy();
 			double gamma = 1/(sqrt(1-pow(beta,2)));

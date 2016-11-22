@@ -108,13 +108,7 @@ class TTigress : public TGRSIDetector {
 		TTransientBits<UShort_t> fTigressBits;
 		std::vector<TTigressHit> fTigressHits;
 
-		static bool fSetSegmentHits;    //!<!
-		static bool fSetBGOHits;        //!<!
-
-		static bool fSetCoreWave;       //!<!
-		static bool fSetSegmentWave;    //!<!
-		static bool fSetBGOWave;        //!<!
-
+		static double fTargetOffest;        //!<!
 
 		static double GeBluePosition[17][9][3];  //!<!  detector segment XYZ
 		static double GeGreenPosition[17][9][3]; //!<!
@@ -151,7 +145,9 @@ class TTigress : public TGRSIDetector {
 		static bool GetForceCrystal(){ return TestGlobalBit(kForceCrystal);}  //!<!
 		
 		static bool BGOSuppression[4][4][5]; //!<!
-
+		
+		static void SetTargetOffset(double offset){fTargetOffest=offset;}  //!<!
+		
 	public:         
 		virtual void Clear(Option_t *opt = "");     //!<!
 		virtual void Print(Option_t *opt = "") const; //!<!
