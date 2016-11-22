@@ -606,7 +606,7 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
 
 
 	for(int chan=first_chan; chan<=last_chan;chan++) {
- //  for(int chan=48;chan<=49;chan++) {
+   //for(int chan=0;chan<=5;chan++) {
       printf("\nNow fitting channel: %d\n",chan-1);
 		chargeh = static_cast<TH1D*>(charge_mat->ProjectionY(Form("Charge%d_mat",chan-1),chan,chan,"o"));
       engh    = static_cast<TH1D*>(eng_mat->ProjectionY(Form("Energy%d_mat",chan-1),chan,chan,"o"));
@@ -757,6 +757,10 @@ Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Do
 
    chargeHist->GetXaxis()->UnZoom();
    hist2->GetXaxis()->UnZoom();
+	peak1->InitParams(chargeHist);
+	peak2->InitParams(chargeHist);
+   peak1->SetParameter("sigma",TMath::Sqrt(9.0 + 4.*peak1->GetParameter("centroid")/1000.)/2.35);
+   peak2->SetParameter("sigma",TMath::Sqrt(9.0 + 4.*peak2->GetParameter("centroid")/1000.)/2.35);
    peak1->Fit(chargeHist,"MSL+");
    peak2->Fit(hist2,"MSL+");
    

@@ -27,6 +27,7 @@ namespace TGRSIFunctions {
    Double_t SkewedGaus(Double_t *dim, Double_t *par);
    Double_t MultiSkewedGausWithBG(Double_t *dim, Double_t *par);
    Double_t Bateman(Double_t *dim, Double_t *par, UInt_t nChain = 1, Double_t SecondsPerBin = 1.0);
+   Double_t PhotoEfficiency(Double_t *dim, Double_t *par);
 
 // STEFFEN ADDED THESE
    Double_t LanGausHighRes(Double_t *x,Double_t *pars);

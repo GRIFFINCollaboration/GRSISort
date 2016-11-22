@@ -448,6 +448,20 @@ TPeak* TMultiPeak::GetPeak(UInt_t idx){
    return 0;
 }
 
+TPeak* TMultiPeak::GetPeakClosestTo(Double_t energy){
+	size_t closest_idx = 0; 
+	Double_t closest_so_far = 1000000.;
+	for(size_t i = 0; i < fPeakVec.size(); ++i) {
+		if(std::abs(energy - fPeakVec.at(i)->GetCentroid()) < closest_so_far){
+			closest_so_far = std::abs(energy - fPeakVec.at(i)->GetCentroid());
+			closest_idx = i;
+		}
+	}
+
+	return GetPeak(closest_idx);
+
+}
+
 void TMultiPeak::DrawPeaks() const {
 //Draws the individual TPeaks that make up the TMultiPeak. ROOT makes this a complicated process. The result on the
 //histogram might have memory issues.

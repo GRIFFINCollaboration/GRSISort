@@ -41,6 +41,8 @@ class TGRSIOptions : public TObject {
 
 		const std::vector<std::string>& OptionFiles() { return fOptionsFile; }
 
+		std::string LogFile() { return fLogFile; }
+
 		int BuildWindow() const { return fBuildWindow; }
 		int AddbackWindow() const { return fAddbackWindow; }
 		bool StaticWindow() const { return fStaticWindow; }

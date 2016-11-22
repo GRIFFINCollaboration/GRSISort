@@ -3,6 +3,7 @@
 #include "TChain.h"
 #include "TGRSIProof.h"
 #include "TProofLite.h"
+#include "TProofLog.h"
 #include "TSystemDirectory.h"
 #include "TList.h"
 #include "TChainElement.h"
@@ -11,6 +12,7 @@
 #include "TGRSIOptions.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
+#include "TObjectWrapper.h"
 
 #include <iostream>
 #include <vector>
@@ -42,6 +44,22 @@ void Analyze(const char* tree_type, TProof* proof){
    //loop over the list of files that belong to this tree type and add them to the chain
    for(auto i = tree_list.begin(); i!= tree_list.end(); ++i){
       proof_chain->Add(i->c_str()); //First add the file to the chain.
+   }
+   //Start getting ready to run proof
+  	proof->ClearCache();
+	if(!(opt->SelectorOnly()))
+      proof_chain->SetProof();
+
+   for(auto macro_it = opt->MacroInputFiles().begin(); macro_it != opt->MacroInputFiles().end(); ++macro_it){
+   	std::cout <<"Currently Running: " << (Form("%s",macro_it->c_str()))<<std::endl;
+      proof_chain->Process(Form("%s+",macro_it->c_str()));
+   }
+	
+	/*
+   TChain *proof_chain = new TChain(tree_type);
+   //loop over the list of files that belong to this tree type and add them to the chain
+   for(auto i = tree_list.begin(); i!= tree_list.end(); ++i){
+      proof_chain->Add(i->c_str()); //First add the file to the chain.
       
       //Start getting ready to run proof
       proof->ClearCache();
@@ -52,7 +70,7 @@ void Analyze(const char* tree_type, TProof* proof){
          std::cout <<"Currently Running: " << (Form("%s",macro_it->c_str()))<<std::endl;
          proof_chain->Process(Form("%s+",macro_it->c_str()));
       }
-   }
+   }*/
    //Delete the proof chain now that we are done with it.
    if(proof_chain){ delete proof_chain; proof_chain = nullptr; }
 
@@ -105,6 +123,12 @@ int main(int argc, char **argv) {
    Analyze("FragmentTree",proof);
    Analyze("AnalysisTree",proof);
 
+	TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
+	if(pl != nullptr) {
+		pl->Save("*", opt->LogFile().c_str());
+	} else {
+		std::cout<<"Failed to get logs!"<<std::endl;
+	}
 }
 
 

@@ -113,20 +113,21 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs) {
 //}
 
 void TTigressHit::SumHit(TTigressHit *hit) {
-  //if(this == hit) {
-  //  fLastPos = std::make_tuple(GetDetector(),GetCrystal(),GetInitialHit());
-  //  return;
-  //}
-  if(this!=hit)
-    this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
-  for(int x =0;x<hit->GetNSegments();x++) {
-    this->AddSegment((hit->fSegments[x]));
-  }
-  if(hit->BGOFired()) {
-    SetBGOFired(true);
-  }
-  //this->fLastHit = hit->GetPosition();
-  //this->fLastPos = std::make_tuple(hit->GetDetector(),hit->GetCrystal(),hit->GetInitialHit());
+	//if(this == hit) {
+	//  fLastPos = std::make_tuple(GetDetector(),GetCrystal(),GetInitialHit());
+	//  return;
+	//}
+	if(this != hit) {
+		SetEnergy(GetEnergy() + hit->GetEnergy());
+		for(int x =0;x<hit->GetNSegments();x++) {
+			AddSegment((hit->fSegments[x]));
+		}
+		if(hit->BGOFired()) {
+			SetBGOFired(true);
+		}
+	}
+	//this->fLastHit = hit->GetPosition();
+	//this->fLastPos = std::make_tuple(hit->GetDetector(),hit->GetCrystal(),hit->GetInitialHit());
 }
 
 

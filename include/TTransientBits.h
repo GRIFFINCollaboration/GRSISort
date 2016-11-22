@@ -7,7 +7,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
-/// \class TransientBits
+/// \class TTransientBits
 /// 
 /// Class for storing bits for transient data members
 ///
@@ -18,9 +18,6 @@
 #include <iomanip>
 #include <string>
 #include <map>
-
-#include "TObject.h"
-
 
 template<typename T>
 class TTransientBits {

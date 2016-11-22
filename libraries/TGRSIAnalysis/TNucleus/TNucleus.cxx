@@ -42,9 +42,17 @@ TNucleus::TNucleus(const char *name){
   std::string Name = name;
   //fName=name;
   //SetMassFile();
-  int Number = 0;
-  std::string symbol;
-  std::string element;
+  	int Number = 0;
+  	std::string symbol;
+  	std::string element;
+  	int first_digit, first_letter;
+  	int z,n;
+  	std::string sym_name;
+  	double mass;
+  	bool found = false;
+  	std::string line;
+  	std::ifstream infile;
+  	std::string MassFile;
   Name.erase(std::remove_if(Name.begin(), Name.end(), (int(*)(int))std::isspace), Name.end());
 
   if(Name.length()<2) {
@@ -70,38 +78,39 @@ TNucleus::TNucleus(const char *name){
         return;
     };
   }
-  int first_digit  = Name.find_first_of("0123456789 \t\n\r");
-  int first_letter = Name.find_first_not_of("0123456789 \t\n\r");
-  if(first_digit>first_letter) {
-    Number = atoi(Name.substr(first_digit).c_str());
-    symbol.append(Name.substr(first_letter,first_digit-first_letter));
-  } else {
-    Number = atoi(Name.substr(first_digit,first_letter-first_digit).c_str());
-    symbol.append(Name.substr(first_letter));
-  }
-
-  element.append(std::to_string((long long)Number)); element.append(symbol);
-  std::string line;
-  std::ifstream infile;
-  std::string MassFile = massfile();//getenv("GRSISYS");
-  //MassFile.append(massfile);
-  infile.open(MassFile.c_str());
-  //printf("MassFile.c_str()
-  int z,n;
-  std::string sym_name;
-  double mass;
-  bool found = false;
-  while(getline(infile,line)) {
-    if(line.length() <1)
-      continue;
+  try{
+  		first_digit  = Name.find_first_of("0123456789 \t\n\r");
+  		first_letter = Name.find_first_not_of("0123456789 \t\n\r");
+  
+  		if(first_digit>first_letter) {
+    		Number = atoi(Name.substr(first_digit).c_str());
+    		symbol.append(Name.substr(first_letter,first_digit-first_letter));
+  		} else {
+    		Number = atoi(Name.substr(first_digit,first_letter-first_digit).c_str());
+    		symbol.append(Name.substr(first_letter));
+  	
+		}
+  		element.append(std::to_string((long long)Number)); element.append(symbol);
+  		MassFile = massfile();
+  		//MassFile.append(massfile);
+  		infile.open(MassFile.c_str());
+  		//printf("MassFile.c_str()
+  		while(getline(infile,line)) {
+    		if(line.length() <1)
+      		continue;
 //              printf("%s\n",line.c_str());
-    std::stringstream ss(line);
-    ss>>n; ss>>z; ss>>sym_name; ss>>mass;
-    if(strcasecmp(element.c_str(),sym_name.c_str()) == 0) {
-      found = true;
-      break;
-    }
-  }
+    		std::stringstream ss(line);
+   		ss>>n; ss>>z; ss>>sym_name; ss>>mass;
+    		if(strcasecmp(element.c_str(),sym_name.c_str()) == 0) {
+      		found = true;
+      		break;
+    		}
+  		}
+	}
+  	catch(std::out_of_range){
+		std::cout << "Could not parse element " << name<< std::endl << "Nucleus not Set!" << std::endl;
+		return;
+	}
   if(!found) {
     printf("Warning: Element %s not found in the mass table %s.\n Nucleus not Set!\n",element.c_str(),MassFile.c_str());
     return;
@@ -115,7 +124,7 @@ TNucleus::TNucleus(const char *name){
   SetName();
   //SetName(element.c_str());
   //SetSourceData();
-  //this->LoadTransitionFile();
+  this->LoadTransitionFile();
 }
 /*
  */
@@ -442,17 +451,16 @@ bool TNucleus::LoadTransitionFile(){
   if(TransitionList.GetSize())
     return false;
   std::string filename;
-  filename = std::string(getenv("GRUTSYS")) + "/libraries/SourceData/";
+  filename = std::string(getenv("GRSISYS")) + "/libraries/TGRSIAnalysis/SourceData/";
   std::string symbol = this->GetSymbol();
   std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::tolower);
   filename.append(symbol.c_str());
   filename.append(std::to_string(this->GetA()));
   filename.append(".sou");
-
   std::ifstream transfile;
   transfile.open(filename.c_str());
   if(!transfile.is_open()) {
-    //printf("failed: %s\n",filename.c_str());
+    printf("failed to open source file: %s\n",filename.c_str());
     return false;
   }
   //printf("found %s\n",filename.c_str());
