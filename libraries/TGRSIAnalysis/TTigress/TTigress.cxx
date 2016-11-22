@@ -13,12 +13,7 @@
 ClassImp(TTigress)
   /// \endcond
 
-bool TTigress::fSetSegmentHits = true;  // these are need to doppler shift properly.  
-bool TTigress::fSetBGOHits = true;
-
-bool TTigress::fSetCoreWave = false;
-bool TTigress::fSetSegmentWave = false;
-bool TTigress::fSetBGOWave = false;
+double TTigress::fTargetOffest = 0;
 
 
 // Default tigress unpacking settings
@@ -138,7 +133,9 @@ Int_t TTigress::GetAddbackMultiplicity() {
     
   // use the first tigress hit as starting point for the addback hits
   fAddbackHits.push_back(fTigressHits[0]);
-  fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
+  
+  //I can see nothing in the current TTigreeHit class or SumHit method that requires this line
+  //fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
   fAddbackFrags.push_back(1);
 
   // loop over remaining tigress hits
@@ -398,6 +395,9 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,boo
       break;
     };
     //printf("xx = %f\nyy = %f\n zz = %f\n",xx,yy,zz);
+    
+    if(fTargetOffest!=0)zz-=fTargetOffest;
+    
     det_pos.SetXYZ(xx,yy,zz);
   }
   
@@ -411,6 +411,7 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,boo
 		det_pos+=a.Unit()*x+b.Unit()*y;
 	  }
   }
+  
   
   return det_pos;
 }

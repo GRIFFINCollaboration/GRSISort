@@ -13,7 +13,7 @@ ClassImp(TS3)
 int    TS3::fRingNumber=24;
 int    TS3::fSectorNumber=32;
 
-double TS3::fOffsetPhiCon=-0.5*TMath::Pi(); // Offset between connector and sector 0 (viewed from sector side)
+double TS3::fOffsetPhiCon=0.5*TMath::Pi(); // Offset between connector and sector 0 (viewed from sector side)
 double TS3::fOffsetPhiSet=-22.5*TMath::Pi()/180.; // Phi rotation of connector in setup // -90 for bambino -22.5 for SPICE
 double TS3::fOuterDiameter=70.;
 double TS3::fInnerDiameter=22.;
@@ -281,12 +281,13 @@ TVector3 TS3::GetPosition(int ring, int sector, double offsetphi,double offsetZ,
 	double ring_width=(fOuterDiameter-fInnerDiameter)*0.5/fRingNumber; // 24 rings   radial width!
 	double inner_radius=fInnerDiameter/2.0;
 	double phi_width=2.*TMath::Pi()/fSectorNumber;
-
 	double radius =  inner_radius + ring_width * (ring + 0.5) ;
-
-	double phi    =  phi_width*-sector;   //the phi angle....
+	double phi    =  phi_width*sector;   //the phi angle....
 	phi+=fOffsetPhiCon;
-	if(!sectorsdownstream)phi=-phi;
+	//The above calculates the position on the S3
+	
+	//This orients the detector relative to the beam
+	if(sectorsdownstream)phi=-phi;
 	phi+=offsetphi;
 
 	if(smear){
