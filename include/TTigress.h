@@ -108,13 +108,7 @@ class TTigress : public TGRSIDetector {
 		TTransientBits<UShort_t> fTigressBits;
 		std::vector<TTigressHit> fTigressHits;
 
-		static bool fSetSegmentHits;    //!<!
-		static bool fSetBGOHits;        //!<!
-
-		static bool fSetCoreWave;       //!<!
-		static bool fSetSegmentWave;    //!<!
-		static bool fSetBGOWave;        //!<!
-
+		static double fTargetOffset;             //!<!
 
 		static double GeBluePosition[17][9][3];  //!<!  detector segment XYZ
 		static double GeGreenPosition[17][9][3]; //!<!
@@ -145,12 +139,14 @@ class TTigress : public TGRSIDetector {
 		static bool SetBGOWave(bool set=true){ SetGlobalBit(kSetBGOWave,set);return set;}  //!<!
 		static bool SetForceCrystal(bool set=true){ SetGlobalBit(kForceCrystal,set);return set;}  //!<!
 		
-		static bool GetCoreWave()    { return TestGlobalBit(kSetCoreWave);}  //!<!
-		static bool GetSegmentWave() { return TestGlobalBit(kSetSegWave);}  //!<!
-		static bool GetBGOWave()     { return TestGlobalBit(kSetBGOWave);}  //!<!
-		static bool GetForceCrystal(){ return TestGlobalBit(kForceCrystal);}  //!<!
+		static bool GetCoreWave()    { return TestGlobalBit(kSetCoreWave);}     //!<!
+		static bool GetSegmentWave() { return TestGlobalBit(kSetSegWave);}      //!<!
+		static bool GetBGOWave()     { return TestGlobalBit(kSetBGOWave);}      //!<!
+		static bool GetForceCrystal(){ return TestGlobalBit(kForceCrystal);}    //!<!
 		
 		static bool BGOSuppression[4][4][5]; //!<!
+
+		static void SetTargetOffset(double offset) { fTargetOffset = offset; }  //!<!
 
 	public:         
 		virtual void Clear(Option_t *opt = "");     //!<!
