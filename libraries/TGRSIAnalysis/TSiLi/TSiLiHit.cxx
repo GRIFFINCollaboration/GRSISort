@@ -72,12 +72,12 @@ void TSiLiHit::SetWavefit(const TFragment &frag)   {
 	}
 }
 
-TVector3 TSiLiHit::GetPosition(Double_t dist) const {
-	return TSiLi::GetPosition(GetRing(),GetSector());
+TVector3 TSiLiHit::GetPosition(Double_t dist, bool smear) const {
+	return TSiLi::GetPosition(GetRing(), GetSector(), smear);
 }
 
-TVector3 TSiLiHit::GetPosition() const {
-	return GetPosition(GetDefaultDistance());
+TVector3 TSiLiHit::GetPosition(bool smear) const {
+	return GetPosition(GetDefaultDistance(), smear);
 }
 
 void TSiLiHit::Print(Option_t *opt) const {
