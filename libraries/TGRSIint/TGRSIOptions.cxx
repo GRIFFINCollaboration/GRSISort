@@ -66,6 +66,8 @@ void TGRSIOptions::Clear(Option_t* opt) {
 	fWriteBadFrags = false;
 	fWriteDiagnostics = false;
 
+	fBatch = false;
+
 	fShowedVersion = false;
 	fHelp = false;
 	fShowLogo = false;
@@ -116,6 +118,8 @@ void TGRSIOptions::Print(Option_t* opt) const {
 		<<"fIgnoreEpics: "<<fIgnoreEpics<<std::endl
 		<<"fWriteBadFrags: "<<fWriteBadFrags<<std::endl
 		<<"fWriteDiagnostics: "<<fWriteDiagnostics<<std::endl
+		<<std::endl
+		<<"fBatch: "<<fBatch<<std::endl
 		<<std::endl
 		<<"fShowedVersion: "<<fShowedVersion<<std::endl
 		<<"fHelp: "<<fHelp<<std::endl
@@ -208,6 +212,8 @@ void TGRSIOptions::Load(int argc, char** argv) {
 		.description("attempt to run events through MakeHisto lib.");
 	parser.option("g start-gui", &fStartGui)
 		.description("Start the gui at program start");
+	parser.option("b batch", &fBatch)
+		.description("Run in batch mode");
 
 	parser.option("sort-depth",&fSortDepth)
 		.description("Number of events to hold when sorting by time/trigger_id")

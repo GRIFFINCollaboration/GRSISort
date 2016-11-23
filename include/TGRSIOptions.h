@@ -67,6 +67,7 @@ class TGRSIOptions : public TObject {
 		bool WriteBadFrags()      const { return fWriteBadFrags;    }
 		bool WriteDiagnostics()   const { return fWriteDiagnostics; }
 
+		bool Batch()              const { return fBatch; }
 
 		bool ShowedHelp()         const { return fHelp; }
 		bool ShowedVersion()      const { return fShowedVersion; }
@@ -149,6 +150,8 @@ class TGRSIOptions : public TObject {
 		bool fIgnoreEpics;
 		bool fWriteBadFrags;
 		bool fWriteDiagnostics;
+
+		bool fBatch;
 
 		bool fShowedVersion;
 		bool fHelp;
