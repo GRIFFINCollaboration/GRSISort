@@ -1,5 +1,5 @@
-#ifndef _PEAKFITTER_H
-#define _PEAKFITTER_H
+#ifndef _TBGSUBTRACTION_H
+#define _TBGSUBTRACTION_H
 #include <TGClient.h>
 #include <TCanvas.h>
 #include <TF1.h>
@@ -18,6 +18,7 @@
 #include "TH1.h"
 #include "TH2.h"
 #include "GCanvas.h"
+#include "TFile.h"
 
 class TBGSubtraction : public TGMainFrame {
    enum ESliders {
@@ -58,6 +59,7 @@ class TBGSubtraction : public TGMainFrame {
       TGLayoutHints        *fLayoutParam;
 
       TGTextButton         *fDrawCanvasButton;
+      TGTextButton         *fWrite2FileButton;
 
 
    //Frames
@@ -66,12 +68,15 @@ class TBGSubtraction : public TGMainFrame {
       TGHorizontalFrame    *fBGParamFrame;
       TGHorizontalFrame    *fGateEntryFrame;
       TGHorizontalFrame    *fBGEntryFrame;
+      TGHorizontalFrame    *fButtonFrame;
 
    //Markers
       GMarker              *fLowGateMarker;
       GMarker              *fHighGateMarker;
       GMarker              *fLowBGMarker;
       GMarker              *fHighBGMarker;
+
+      TFile                *fCurrentFile;
    
    public:
       TBGSubtraction(TH2* mat);
@@ -84,6 +89,7 @@ class TBGSubtraction : public TGMainFrame {
       void DoProjection();
       void DrawOnNewCanvas();
       void DrawMarkers();
+      void WriteHistograms();
 
    private:
       void BuildInterface();

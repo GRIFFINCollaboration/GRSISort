@@ -23,6 +23,8 @@ TBGSubtraction::TBGSubtraction(TH2* mat) :
    gInterpreter->SaveContext();
    BuildInterface();
    //SetTreeName(treeName);
+   fCurrentFile = TFile::CurrentFile();
+
 }
 
 
@@ -86,8 +88,6 @@ void TBGSubtraction::BuildInterface() {
    fGateCanvas = new TRootEmbeddedCanvas("GateCanvas",fGateFrame,200,200);
 
    fBGParamFrame = new TGHorizontalFrame(fGateFrame,200,200);
-   fDrawCanvasButton = new TGTextButton(fBGParamFrame,"&Draw Canvas");
-   fDrawCanvasButton->Connect("Clicked()", "TBGSubtraction", this, "DrawOnNewCanvas()");
    fBGParamLabel = new TGLabel(fBGParamFrame, "Background:" );
    fBGParamEntry = new TGNumberEntry(fBGParamFrame, 20, 4, kBGParamEntry,TGNumberFormat::kNESInteger,    //style
                                                       TGNumberFormat::kNEANonNegative,              //input value filter
@@ -95,6 +95,14 @@ void TBGSubtraction::BuildInterface() {
                                                       1,1.);                                       //limit values
    fBGParamEntry->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoDraw()");
    fBGParamEntry->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoProjection()");
+
+
+   fButtonFrame = new TGHorizontalFrame(fGateFrame,200,200);
+   fDrawCanvasButton = new TGTextButton(fButtonFrame,"&Draw Canvas");
+   fDrawCanvasButton->Connect("Clicked()", "TBGSubtraction", this, "DrawOnNewCanvas()");
+   fWrite2FileButton = new TGTextButton(fButtonFrame,"&Write Histograms");
+   fWrite2FileButton->Connect("Clicked()", "TBGSubtraction", this, "WriteHistograms()");
+
 
    fGateFrame->Resize(100,200);
 
@@ -105,7 +113,6 @@ void TBGSubtraction::BuildInterface() {
    fBly1 = new TGLayoutHints(kLHintsTop | kLHintsCenterX | kLHintsExpandX | kLHintsExpandY ,20,10,15,0);
 
 
-   fBGParamFrame->AddFrame(fDrawCanvasButton,fBly);
    fBGParamFrame->AddFrame(fBGParamLabel,fBly);
    fBGParamFrame->AddFrame(fBGParamEntry,fBly);
    
@@ -115,6 +122,9 @@ void TBGSubtraction::BuildInterface() {
    fBGEntryFrame->AddFrame(fBGEntryLow,fBly);
    fBGEntryFrame->AddFrame(fBGEntryHigh,fBly);
 
+   fButtonFrame->AddFrame(fDrawCanvasButton,fBly);
+   fButtonFrame->AddFrame(fWrite2FileButton,fBly);
+
    fProjectionFrame->AddFrame(fProjectionCanvas, fLayoutCanvases);
    fProjectionFrame->AddFrame(fGateSlider,fBly);
    fProjectionFrame->AddFrame(fBGSlider,fBly);
@@ -123,6 +133,7 @@ void TBGSubtraction::BuildInterface() {
    
    fGateFrame->AddFrame(fGateCanvas, fLayoutCanvases);
    fGateFrame->AddFrame(fBGParamFrame, fLayoutParam);
+   fGateFrame->AddFrame(fButtonFrame,fLayoutParam);
    
    AddFrame(fProjectionFrame, fBly1);
    AddFrame(fGateFrame,fBly1);
@@ -405,5 +416,13 @@ void TBGSubtraction::DrawOnNewCanvas(){
       g->Update();
    }
 
+}
+
+void TBGSubtraction::WriteHistograms() {
+   TFile f("test.root","Update");
+   std::cout << "Writing histograms to " << f.GetName() << std::endl;
+   if(fSubtractedHist) fSubtractedHist->Write();
+   if(fBGHist) fBGHist->Write();
+   if(fGateHist) fGateHist->Write();
 }
 
