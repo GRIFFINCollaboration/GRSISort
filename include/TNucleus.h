@@ -74,7 +74,7 @@ class TNucleus : public TNamed{
   void Print(Option_t *opt = "") const;
   void WriteSourceFile(std::string outfilename = "");
 
-  TList *GetTransitionList() { return &TransitionList; }
+  const TList * GetTransitionList() const { return &TransitionList; }
 
  private:
    

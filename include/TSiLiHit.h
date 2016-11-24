@@ -49,8 +49,8 @@ class TSiLiHit : public TGRSIDetectorHit {
 		void SetTimeFit(double t0 ) { fTimeFit = t0 ; }
 		
 		void SetWavefit(const TFragment&);
-		TVector3 GetPosition(Double_t dist) const; //!  
-		TVector3 GetPosition() const; //!  
+		TVector3 GetPosition(Double_t dist, bool = false) const; //!  
+		TVector3 GetPosition(bool = false) const; //!  
 		
 		void SumHit(TSiLiHit*);
 		
@@ -70,7 +70,7 @@ class TSiLiHit : public TGRSIDetectorHit {
 				vec = GetBeamDirection();
 			}
 			TVector3 pos = GetPosition();
-			pos.SetTheta(120.*TMath::Pi()/180.);	
+			pos.SetTheta(130.*TMath::Pi()/180.);	
 			double costhe=TMath::Cos(pos.Angle(*vec));
 			double e=this->GetEnergy();
 			double gamma = 1/(sqrt(1-pow(beta,2)));
