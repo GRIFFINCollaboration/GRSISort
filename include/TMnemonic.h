@@ -37,7 +37,7 @@ class TMnemonic : public TObject {
 	//EMnemonic or ESystem has no effect on the clashing of enumerated variable names.
 	//These separations exist only to easily see the difference when looking at the code here.
 		enum EMnemonic { kA, kB, kC, kD, kE, kF, kG, kI, kL, kM, kN, kP, kQ, kR, kS, kW, kX, kZ, kClear };
-		enum ESystem   { kTigress, kSharc, kTriFoil, kRF, kCSM, kSiLi, kS3, kBambino, kTip, kGriffin, kSceptar, kPaces, kLaBr, kTAC, kZeroDegree, kDescant};
+		enum ESystem   { kTigress, kSharc, kTriFoil, kRF, kCSM, kSiLi, kSiLiS3, kS3, kBambino, kTip, kGriffin, kSceptar, kPaces, kLaBr, kTAC, kZeroDegree, kDescant};
 		enum EDigitizer{ kDefault, kGRF16, kGRF4G, kTIG10, kTIG64 };
 
 		int System() const { return fSystem; }

@@ -328,3 +328,13 @@ Double_t TGRSIFunctions::LegendrePolynomial(Double_t *x, Double_t *p)
    val = p[0]*(1 + p[1]*::ROOT::Math::legendre(2,x[0]) + p[2]*::ROOT::Math::legendre(4,x[0]));
 	return val; 
 }
+
+Double_t TGRSIFunctions::PhotoEfficiency(Double_t *dim, Double_t *par) {
+	
+	double sum = 0.0;
+	for(int i = 0; i < 9; ++i){
+		sum += par[i]*TMath::Power(TMath::Log(dim[0]),i);
+	}
+
+	return TMath::Exp(sum);
+}
