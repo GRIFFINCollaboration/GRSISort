@@ -22,6 +22,12 @@ TTransientBits<UShort_t> TTigress::fgTigressBits(TTigress::kSetCoreWave | TTigre
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
 	
 	// Extended options as for efficiency call we have been limited to cores only 
+  //
+  // the below code (in the if statement)  should be changed. There is no 
+  // real reason the we should add diagonal xtals in a detector and not 
+  // adjcent xtal in the array. If one is worried about the suppressor status 
+  // of the array, the position could also be checked.  pcb.
+  //
 	if(one.GetSegmentMultiplicity()==0||two.GetSegmentMultiplicity()==0||TTigress::GetForceCrystal()){//For no-sectors experiment and protection if data loss
 		return ((one.GetDetector() == two.GetDetector()) &&
 			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()*10.0));		
@@ -132,15 +138,13 @@ Int_t TTigress::GetAddbackMultiplicity() {
     
   // use the first tigress hit as starting point for the addback hits
   fAddbackHits.push_back(fTigressHits[0]);
-  //I can see nothing in the current TTigressHit class or SumHit method that requires this line
-  //fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
   fAddbackFrags.push_back(1);
 
   // loop over remaining tigress hits
   size_t i, j;
-  for(i = 1; i < fTigressHits.size(); ++i) {
+  for(i = 1; i < fTigressHits.size(); i++) {
     // check for each existing addback hit if this tigress hit should be added
-    for(j = 0; j < fAddbackHits.size(); ++j) {
+    for(j = 0; j < fAddbackHits.size(); j++) {
       if(fAddbackCriterion(fAddbackHits[j], fTigressHits[i])) {
         fAddbackHits[j].SumHit(&(fTigressHits[i]));
         fAddbackFrags[j]++;
@@ -149,7 +153,7 @@ Int_t TTigress::GetAddbackMultiplicity() {
     }
     if(j == fAddbackHits.size()) {
       fAddbackHits.push_back(fTigressHits[i]);
-      fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
+      fAddbackHits.back().SumHit(&(fAddbackHits.back()));
       fAddbackFrags.push_back(1);
     }
   }
