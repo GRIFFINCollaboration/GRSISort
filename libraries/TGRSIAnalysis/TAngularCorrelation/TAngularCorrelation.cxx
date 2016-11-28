@@ -195,7 +195,6 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
       if (sparse) {
          THnSparse* thishst = (THnSparse*) hstarray->At(i);
          thishst->GetAxis(0)->SetRangeUser(min,max);
-         tempslice = (TH1D*) thishst->Projection(1,"oe"); // the "e" option pushes appropriate errors
          tempslice = (TH1D*) thishst->Projection(1,"oe"); // the "e" option pushes appropriate errors, the "o" makes the projection correct
       }
       // TH2 option
