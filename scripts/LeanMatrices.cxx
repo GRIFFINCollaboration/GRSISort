@@ -95,9 +95,9 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 
    Double_t bgStart  =  1.5e8;
    Double_t bgEnd    =  3.5e8;
-   Double_t onStart  =  4.0e8;
-   Double_t onEnd    = 11.0e8;
-   Double_t offStart = 11.1e8;
+   Double_t onStart  =  3.5e8;
+   Double_t onEnd    = 14.0e8;
+   Double_t offStart = 14.5e8;
    Double_t offEnd   = 15.5e8;
 
    if(w == NULL) {
@@ -140,16 +140,13 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TH2F* gammaSinglesBCyc = NULL;
    TH2F* gammaSinglesBmCyc = NULL;
    TH2F* betaSinglesCyc = NULL;
-   TH1F* bCycle = NULL;
-   TH1F* badPPGbCycle = NULL;
-   if(ppg){
+   if(ppg) {
+		std::cout<<"creating ppg spectra!"<<std::endl;
       gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
-      gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
+      gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBCyc);
       gammaSinglesBmCyc = new TH2F("gammaSinglesBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBmCyc);
       betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,1000,0,1000); list->Add(betaSinglesCyc);
-   bCycle = new TH1F("bCycle", "#beta Cycle", cycleLength/10.,0,cycleLength); list->Add(bCycle);  
-   badPPGbCycle = new TH1F("badPPGbCycle", "bad PPG #beta Cycle", cycleLength/10.,0,cycleLength); list->Add(badPPGbCycle);  
-    }
+   }
    //addback spectra
    TH1D* gammaAddback = new TH1D("gammaAddback","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
    TH1D* gammaAddbackB = new TH1D("gammaAddbackB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaAddbackB);
@@ -252,6 +249,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
 		}
 */
       grif->ResetAddback();
+		grif->SetDefaultGainType(TGriffin::kLowGain);
 
       //loop over the gammas in the event packet
       //grif is the variable which points to the current TGriffin
@@ -297,11 +295,8 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
             btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
-               badPPGbCycle->Fill(((ULong64_t)(((scep->GetHit(b)->GetTime())/1e6)-((scep->GetHit(b)->GetTime())/1e6)/15500)));
             if(ppg && !plotted_flag){//Fill on first hit only.
-              // badPPGbCycle->Fill(((ULong64_t)(((scep->GetHit(b)->GetTime())/1e5)-((scep->GetHit(b)->GetTime())/1e5)*ppg->GetCycleNumber(scep->GetHit(b)->GetTime())/1e5)));
-               bCycle->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTime()))/1e5));
-               betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTime()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTime()))); 
+               betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTimeStamp()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTimeStamp()))); 
                //  betaSinglesCyc->Fill((((ULong64_t)(scep->GetHit(b)->GetTime()))%(ppg->GetCycleLength()))/1e5,(scep->GetHit(b)->GetTime())/(ppg->GetCycleLength())); 
                plotted_flag = true;
             }
@@ -333,8 +328,11 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                   bIdVsgId->Fill(scep->GetSceptarHit(b)->GetDetector(), grif->GetGriffinHit(one)->GetArrayNumber());
                   if(!found) {
                      gammaSinglesB->Fill(grif->GetGriffinHit(one)->GetEnergy());
-                     if(ppg)
-                        gammaSinglesBCyc->Fill(ppg->GetTimeInCycle((ULong64_t)(grif->GetHit(one)->GetTimeStamp()))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
+                     if(ppg) {
+                        //gammaSinglesBCyc->Fill(ppg->GetTimeInCycle((ULong64_t)(grif->GetHit(one)->GetTimeStamp()))/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
+                        gammaSinglesBCyc->Fill(grif->GetHit(one)->GetCycleTimeStamp()/1e5, grif->GetGriffinHit(one)->GetEnergy()); 
+								//std::cout<<grif->GetHit(one)->GetCycleTimeStamp()<<" => "<<grif->GetHit(one)->GetCycleTimeStamp()/1e5<<" = bin "<<gammaSinglesBCyc->GetXaxis()->FindBin(grif->GetHit(one)->GetCycleTimeStamp()/1e5)<<std::endl;
+							}
                   }
                   gammaSinglesB_hp->Fill(grif->GetGriffinHit(one)->GetEnergy(),scep->GetSceptarHit(b)->GetDetector());
                   grifscep_hp->Fill(grif->GetGriffinHit(one)->GetArrayNumber(),scep->GetSceptarHit(b)->GetDetector());
@@ -535,11 +533,15 @@ int main(int argc, char **argv) {
 
    //Get PPG from File
    TPPG* myPPG = (TPPG*)file->Get("TPPG");
-   /*   if(myPPG == NULL) {
-        printf("Failed to find PPG information in file '%s'!\n",argv[1]);
-        return 1;
-        }
-        */
+	if(myPPG == NULL) {
+		printf("Failed to find PPG information in file '%s'!\n",argv[1]);
+	//} else {
+		//std::cout<<"got PPG "<<myPPG<<" : "<<myPPG->MapIsEmpty()<<std::endl;
+	} 
+	if(myPPG->MapIsEmpty()) {
+		std::cout<<"TPPG map is empty!"<<std::endl;
+		myPPG = NULL;
+	}
    //Get run info from File
    TGRSIRunInfo* runInfo = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
    if(runInfo == NULL) {
@@ -556,21 +558,6 @@ int main(int argc, char **argv) {
    //Get the TGRSIRunInfo from the analysis Tree.
 
    TList *list;//We return a list because we fill a bunch of TH1's and shove them into this list.
-   TFile * outfile;
-   if(argc<3)
-   {
-      if(!runInfo){
-         printf("Could not find run info, please provide output file name\n");
-         return 0;
-      }
-      int runnumber = runInfo->RunNumber();
-      int subrunnumber = runInfo->SubRunNumber();
-      outfile = new TFile(Form("matrix%05d_%03d.root",runnumber,subrunnumber),"recreate");
-   }
-   else
-   {
-      outfile = new TFile(argv[2],"recreate");
-   }
 
    std::cout << argv[0] << ": starting Analysis after " << w.RealTime() << " seconds" << std::endl;
    w.Continue();
@@ -584,6 +571,19 @@ int main(int argc, char **argv) {
    if(list == NULL) {
       std::cout<<"LeanMatrices returned TList* NULL!\n"<<std::endl;
       return 1;
+   }
+
+   TFile * outfile;
+   if(argc<3) {
+      if(!runInfo) {
+         printf("Could not find run info, please provide output file name\n");
+         return 0;
+      }
+      int runnumber = runInfo->RunNumber();
+      int subrunnumber = runInfo->SubRunNumber();
+      outfile = new TFile(Form("matrix%05d_%03d.root",runnumber,subrunnumber),"recreate");
+   } else {
+      outfile = new TFile(argv[2],"recreate");
    }
 
    printf("Writing to File: " DYELLOW "%s" RESET_COLOR"\n",outfile->GetName());

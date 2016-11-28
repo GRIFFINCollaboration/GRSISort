@@ -75,13 +75,13 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
 
    //Coincidence Parameters
    Double_t ggTlow = 0.;   //Times are in 10's of ns
-   Double_t ggThigh = 400.;
-   Double_t gbTlow =  -100.;//was -15.
-   Double_t gbThigh = 200.;//was 10.
+   Double_t ggThigh = 40.;
+   Double_t gbTlow =  -10.;//was -15.
+   Double_t gbThigh = 20.;//was 10.
 
-   Double_t ggBGlow = 1000.;
-   Double_t ggBGhigh = 1750.;
-   Double_t gbBGlow = -1600.;
+   Double_t ggBGlow = 100.;
+   Double_t ggBGhigh = 175.;
+   Double_t gbBGlow = -160.;
    Double_t gbBGhigh = 0.;
    Double_t ggBGScale = (ggThigh - ggTlow)/(ggBGhigh - ggBGlow);
    Double_t gbBGScale = (gbThigh - gbTlow)/(gbBGhigh - gbBGlow);
@@ -166,7 +166,7 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
       gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
       gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
       gammaSinglesBmCyc = new TH2F("gammaSinglesBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBmCyc);
-      betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,20000,0,20000); list->Add(betaSinglesCyc);
+      betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,1000,0,1000); list->Add(betaSinglesCyc);
    }
    //addback spectra
    TH1D* gammaAddback = new TH1D("gammaAddback","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
@@ -317,7 +317,7 @@ TList *CycleMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntr
             if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
             btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
             if(ppg && !plotted_flag){//Fill on first hit only.
-               betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTimeStamp()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTimeStamp()))); 
+               betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTime()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTime()))); 
                //  betaSinglesCyc->Fill((((ULong64_t)(scep->GetHit(b)->GetTime()))%(ppg->GetCycleLength()))/1e5,(scep->GetHit(b)->GetTime())/(ppg->GetCycleLength())); 
                plotted_flag = true;
             }

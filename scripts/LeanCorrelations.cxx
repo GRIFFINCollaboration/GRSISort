@@ -77,7 +77,7 @@ std::vector<std::pair<double,int> > AngleCombinations(double distance = 110., bo
                }
                if(addback){
                   if(((TGriffin::GetPosition(firstDet, firstCry, distance).Angle(TGriffin::GetPosition(secondDet, secondCry, distance))*180./TMath::Pi() > 18.786) && (TGriffin::GetPosition(firstDet, firstCry, distance).Angle(TGriffin::GetPosition(secondDet, secondCry, distance))*180./TMath::Pi() < 18.788)) || ((TGriffin::GetPosition(firstDet, firstCry, distance).Angle(TGriffin::GetPosition(secondDet, secondCry, distance))*180./TMath::Pi() > 26.6800) && (TGriffin::GetPosition(firstDet, firstCry, distance).Angle(TGriffin::GetPosition(secondDet, secondCry, distance))*180./TMath::Pi() < 26.6915))){
-                     angle.push_back(0.00);
+                     angle.push_back(18.7868);
                   } else {
                      angle.push_back(TGriffin::GetPosition(firstDet, firstCry, distance).Angle(TGriffin::GetPosition(secondDet, secondCry, distance))*180./TMath::Pi());
                   }
@@ -146,18 +146,18 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
 
    //Coincidence Parameters
    Double_t ggTlow = 0.;   //Times are in 10's of ns
-   Double_t ggThigh = 400.;
-   Double_t gbTlow =  -200.;
-   Double_t gbThigh = 200.;
+   Double_t ggThigh = 40.;
+   Double_t gbTlow =  -20.;
+   Double_t gbThigh = 20.;
 
    //Double_t ggBGlow = 100.;
    //Double_t ggBGhigh = 175.;
-   Double_t gbBGlow = 500.;
-   Double_t gbBGhigh = 1700.;
+   Double_t gbBGlow = 50.;
+   Double_t gbBGhigh = 170.;
    //Double_t ggBGScale = (ggThigh - ggTlow)/(ggBGhigh - ggBGlow);
    //Double_t gbBGScale = (gbThigh - gbTlow)/(gbBGhigh - gbBGlow);
 
-   Double_t betaThres = 0.;
+   Double_t betaThres = 800.;
 
    //this is in ms
    //Double_t cycleLength = 15000;
@@ -191,6 +191,7 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    for(auto ang = angleCombinationsab.begin(); ang != angleCombinationsab.end(); ang++) {
       std::cout<<(*ang).first<<" degree: "<<(*ang).second<<" combinations"<<std::endl;
    }
+
    double* xBins = new double[1501];
    double* yBins = new double[1501];
    for(int i = 0; i <= 1500; ++i) {
@@ -201,15 +202,15 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
    for(size_t i = 0; i<angleCombinations.size()+1; i++){
       zBins[i] = (double) i;
    }
+
    std::map<Double_t,Int_t> angleComboMapab;
    std::map<Double_t,Int_t> angleComboMap;
 
    Double_t min[2] = {low,low};
    Double_t max[2] = {high,high};
    Int_t bins[2]= {nofBins,nofBins};
+
    //   TH2F** angCorr_coinc_Binnedab = new TH2F*[angleCombinationsab.size()+1];
-   TH2D * hitPattern_Griffin = new TH2D("hitPattern_Grif", "Griffin Hit Pattern", 64.,0.,64.,64.,0.,64.);list->Add(hitPattern_Griffin);
-   TH2D * h25_degrees = new TH2D("h25_degrees", "Hits for cry21 and cry1", 10000.,0.,10000.,10000.,0.,10000.);list->Add(h25_degrees);
    THnSparseF** angCorr_coinc_Binnedab = new THnSparseF*[angleCombinationsab.size()+1];
    THnSparseF** angCorr_coinc_Binnedab_bg = new THnSparseF*[angleCombinationsab.size()+1];
    THnSparseF* ggbmatrix = new THnSparseF("ggbmatrix","#gamma-#gamma-#beta matrix",2,bins,min,max); list->Add(ggbmatrix);
@@ -219,21 +220,13 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
       //angCorr_coinc_Binnedab[i] = new TH2F(Form("angCorr_coinc_Binnedab_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window;energy [keV];energy [keV]",angleCombinationsab[i].first), nofBins, low, high, nofBins,low,high); list->Add(angCorr_coinc_Binnedab[i]);
       angCorr_coinc_Binnedab[i] = new THnSparseF(Form("angCorr_coinc_Binnedab_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window;energy [keV];energy [keV]",angleCombinationsab[i].first), 2,bins,min,max); list->Add(angCorr_coinc_Binnedab[i]);
       angCorr_coinc_Binnedab_bg[i] = new THnSparseF(Form("angCorr_coinc_Binnedab_bg_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window, time randoms;energy [keV];energy [keV]",angleCombinationsab[i].first), 2,bins,min,max); list->Add(angCorr_coinc_Binnedab_bg[i]);
+      angleComboMapab.insert(std::make_pair(angleCombinationsab.at(i).first,i));
    }
-
-   for(int i = 0; i < (int) angleCombinationsab.size(); ++i) {
-       angleComboMapab.insert(std::make_pair(angleCombinationsab.at(i).first,i));
-   }
-
-//TH2F** angCorr_coinc_Binned = new TH2F*[angleCombinations.size()+1];
+   //TH2F** angCorr_coinc_Binned = new TH2F*[angleCombinations.size()+1];
    THnSparseF** angCorr_coinc_Binned = new THnSparseF*[angleCombinations.size()+1];
-   THnSparseF** CrossTalk_SC = new THnSparseF*[angleCombinations.size()+1];   
-   THnSparseF** No_CrossTalk_SC = new THnSparseF*[angleCombinations.size()+1];
    THnSparseF** angCorr_coinc_Binned_bg = new THnSparseF*[angleCombinations.size()+1];
    THnSparseF** angCorr_coinc_Binned_uncorr = new THnSparseF*[angleCombinations.size()+1];
    for(int i = 0; i < (int) angleCombinations.size()+1; ++i) {
-       CrossTalk_SC[i] = new THnSparseF(Form("CrossTalk_%d",i), Form("Cross talk between neighbouring detectors at %1F",angleCombinations[i].first), 2,bins, min,max); list->Add(CrossTalk_SC[i]);
-       No_CrossTalk_SC[i] = new THnSparseF(Form("No_CrossTalk_%d",i), Form("Cross talk between non-neighbouring detectors at %1F",angleCombinations[i].first), 2,bins, min,max); list->Add(No_CrossTalk_SC[i]);
       //  angCorr_coinc_Binned[i] = new TH2F(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), 1500, xBins, 1500, yBins); list->Add(angCorr_coinc_Binned[i]);
       // angCorr_coinc_Binned[i] = new TH2F(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), nofBins, low, high,nofBins,low,high); list->Add(angCorr_coinc_Binned[i]);
       angCorr_coinc_Binned[i] = new THnSparseF(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), 2,bins, min,max); list->Add(angCorr_coinc_Binned[i]);
@@ -326,15 +319,9 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
                      //Plots a gamma energy spectrum in coincidence with a beta
                      //Now we want to loop over gamma rays if they are in coincidence.
                      //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
-                     double angle = TGriffin::GetPosition(grif->GetGriffinHit(one)->GetDetector(), grif->GetGriffinHit(one)->GetCrystal(), 110.).Angle(TGriffin::GetPosition(grif->GetGriffinHit(two)->GetDetector(), grif->GetGriffinHit(two)->GetCrystal(), 110.))*180./TMath::Pi();//grif->GetGriffinHit(one)->GetPosition().Angle(grif->GetGriffinHit(two)->GetPosition())*180./TMath::Pi();
-                     hitPattern_Griffin->Fill(grif->GetGriffinHit(one)->GetArrayNumber(), grif->GetGriffinHit(two)->GetArrayNumber());
-		//	std::cout << "Angle of : "<< angle << " With crystals " << grif->GetGriffinHit(one)->GetArrayNumber() <<" : " << grif->GetGriffinHit(two)->GetArrayNumber() << std::endl;// " Should be : " << TGriffin::GetPosition(grif->GetGriffinHit(one)->GetDetector(), grif->GetGriffinHit(one)->GetArrayNumber(), 110.).Angle(TGriffin::GetPosition(grif->GetGriffinHit(two)->GetDetector(), grif->GetGriffinHit(two)->GetArrayNumber(), 110.))*180./TMath::Pi()<< " With detectors " << floor(grif->GetGriffinHit(one)->GetArrayNumber()/4.) << " and " << grif->GetGriffinHit(one)->GetDetector()  << std::endl;     
-		     if(angle < 0.0001) continue;
-		    // std::cout <<angle<<std::endl;
+                     double angle = grif->GetGriffinHit(one)->GetPosition().Angle(grif->GetGriffinHit(two)->GetPosition())*180./TMath::Pi();
+                     if(angle < 0.0001) continue;
                      auto angIndex = angleComboMap.lower_bound(angle-0.0005);
-		//     if(angIndex->second == 2){
-		//	std::cout << "Singles index is : " << angIndex->second << std::endl;
-		  //   }
                      //angCorr_coinc_Binned[angIndex->second]->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy(), 1.);
                      Double_t fillval[2] = {grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy()};
                      angCorr_coinc_Binned[angIndex->second]->Fill(fillval);
@@ -392,14 +379,10 @@ TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries
                   }
                   if(((gbTlow <= grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) && 
                      ((gbTlow <= grif->GetAddbackHit(two)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(two)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh))) {
-                     double angab = TGriffin::GetPosition(grif->GetAddbackHit(one)->GetDetector(), grif->GetAddbackHit(one)->GetCrystal(), 110.).Angle(TGriffin::GetPosition(grif->GetAddbackHit(two)->GetDetector(), grif->GetAddbackHit(two)->GetCrystal(), 110.))*180./TMath::Pi();//grif->GetAddbackHit(one)->GetPosition().Angle(grif->GetAddbackHit(two)->GetPosition())*180./TMath::Pi();
+                     double angab = grif->GetAddbackHit(one)->GetPosition().Angle(grif->GetAddbackHit(two)->GetPosition())*180./TMath::Pi();
                      auto angIndex = angleComboMap.lower_bound(angab-0.005);
                      //                             angCorr_coinc_Binnedab[angIndex->second]->Fill(grif->GetAddbackHit(one)->GetEnergy(), grif->GetAddbackHit(two)->GetEnergy(), 1.);
-                    // if(angIndex->second == 2){
-		     //angab = 0.00;
-		    // std::cout << "Index is : " << angIndex->second << ", " << angab << std::endl;
-		    // }
-		     Double_t fillval[2] = {grif->GetAddbackHit(one)->GetEnergy(), grif->GetAddbackHit(two)->GetEnergy()};
+                     Double_t fillval[2] = {grif->GetAddbackHit(one)->GetEnergy(), grif->GetAddbackHit(two)->GetEnergy()};
                      angCorr_coinc_Binnedab[angIndex->second]->Fill(fillval);
                      //                             angCorr_coinc_Binnedab[angIndexab]->Fill(grif->GetAddbackHit(one)->GetEnergy(), grif->GetAddbackHit(two)->GetEnergy(), 1.);
                   } else if(((gbBGlow <= grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbBGhigh)) && 

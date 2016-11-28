@@ -70,26 +70,26 @@ const Int_t nScDet = 21;
 const Int_t nGrDet = 65;
 Bool_t supp_flag[nScDet][nGrDet] = {
    { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//0
-{ false, false, false, false, false /* true */, false, false, false, false, false /*true*/ , false, false, false, true , true , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//1
-{ false, true , true , false/*true*/ , false/*true*/ , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//2
-   { false, false, false, false, false, false/*true*/ , false/*true*/ , false/*true*/ ,false/* true*/ , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//3
-   { false, false, false, false, false, false, false, false, false,false/* true */,false/* true*/ , false/*true*/ , false/*true*/ , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//4
+{ false, false, false, false, true , false, false, false, false, true , false, false, false, true , true , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//1
+{ false, true , true , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//2
+   { false, false, false, false, false, true , true , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//3
+   { false, false, false, false, false, false, false, false, false, true , true , true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//4
    { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//5
-   { false, false, false, false, false, false, false, false, false, false, false, false, false, false,false/* true*/ , false, false, true , false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//6
-   { false, false, false/*true*/ , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false/*true*/ , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//7
-   { false, false, false, false, false, false, true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false/*true*/ , false, false, false, true , false, false, true , false, false, false, false/*true*/ , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//8
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, true , false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//6
+   { false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, true , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//7
+   { false, false, false, false, false, false, true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, true , false, false, true , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//8
   { false, false, false, false, false, false, false, false, false, false, true , true , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, true , false, false, true , true , false, false, true , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//9
   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//10
-   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false/*true*/ , false, false, false, false, false, false/*true*/ , false, false, false, false, false, false, false, false, false/*true*/ , false, false, false },//11
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, false, true , false, false, false, false, false, false, false, false, true , false, false, false },//11
    { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//12
 { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, true , true , false, false, true , true , false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, true , true , false, false, true , false, false, false, false },//13
 { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//14
-   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false/*true */, false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true  },//15
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , false, false, false, true , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true  },//15
 { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , true , true , false, false, false, false, false, false, false, false, false, true , false, false },//16
 { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false },//17
-   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false/*true*/ , true ,false/* true*/ ,false/* true*/ , false, false, false, false, false, false, false, false },//18
-   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false/*true*/ , true , true , false/*true*/ , false, false, false, false },//19
-   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false/*true*/ , false, false, false, false, true , false/*true*/  }//20
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , true , true , false, false, false, false, false, false, false, false },//18
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , true , true , true , false, false, false, false },//19
+   { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true , false, false, false, false, true , true  }//20
 };
 
    Bool_t hit_flags[65] = {0};
@@ -101,13 +101,13 @@ Bool_t supp_flag[nScDet][nGrDet] = {
 
    //Coincidence Parameters
    Double_t ggTlow = 0.;   //Times are in 10's of ns
-   Double_t ggThigh = 400.;
-   Double_t gbTlow =  -150.;
-   Double_t gbThigh = 100.;
+   Double_t ggThigh = 40.;
+   Double_t gbTlow =  -15.;
+   Double_t gbThigh = 10.;
 
-   Double_t ggBGlow = 1000.;
-   Double_t ggBGhigh = 1750.;
-   Double_t gbBGlow = -1600.;
+   Double_t ggBGlow = 100.;
+   Double_t ggBGhigh = 175.;
+   Double_t gbBGlow = -160.;
    Double_t gbBGhigh = 0.;
    Double_t ggBGScale = (ggThigh - ggTlow)/(ggBGhigh - ggBGlow);
    Double_t gbBGScale = (gbThigh - gbTlow)/(gbBGhigh - gbBGlow);
@@ -122,9 +122,9 @@ Bool_t supp_flag[nScDet][nGrDet] = {
 
    Double_t bgStart  =  1.5e8;
    Double_t bgEnd    =  3.5e8;
-   Double_t onStart  =  4.0e8;
-   Double_t onEnd    = 11.0e8;
-   Double_t offStart = 11.1e8;
+   Double_t onStart  =  3.5e8;
+   Double_t onEnd    = 14.0e8;
+   Double_t offStart = 14.5e8;
    Double_t offEnd   = 15.5e8;
 
    if(w == NULL) {
@@ -165,8 +165,6 @@ Bool_t supp_flag[nScDet][nGrDet] = {
 
    TH1D* veto_hp = new TH1D("veto_hp","number of vetoed gamma rays",65,0,65); list->Add(veto_hp);
 
-   TH1F* badPPGbCycle = new TH1F("badPPGbCycle", "bad PPG #beta Cycle", cycleLength/10.,0,cycleLength); list->Add(badPPGbCycle);
-
    TH2F* gammaSinglesCyc;
    TH2F* gammaSinglesBCyc;
    TH2F* gammaSinglesBmCyc;
@@ -175,12 +173,11 @@ Bool_t supp_flag[nScDet][nGrDet] = {
    gammaSinglesCyc = new TH2F("gammaSinglesCycbrem", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
    gammaSinglesBCyc = new TH2F("gammaSinglesBCycbrem", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
    gammaSinglesBmCyc = new TH2F("gammaSinglesBmCycbrem", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesBmCyc);
-   betaSinglesCyc = new TH2F("betaSinglesCycbrem", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,10000,0,10000); list->Add(betaSinglesCyc);
+   betaSinglesCyc = new TH2F("betaSinglesCycbrem", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,200,0,200); list->Add(betaSinglesCyc);
    
    //addback spectra
    TH1D* gammaAddback = new TH1D("gammaAddbackbrem","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
    TH1D* gammaAddbackB = new TH1D("gammaAddbackBbrem","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaAddbackB);
-   TH1D* gammaAddbackBOn = new TH1D("gammaAddbackBOnbrem","#beta #gamma (Beam On);energy[keV]",nofBins, low, high); list->Add(gammaAddbackBOn);
    TH1D* gammaAddbackBm = new TH1D("gammaAddbackBmbrem","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaAddbackBm);
    TH1D* gammaAddbackBt = new TH1D("gammaAddbackBtbrem","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaAddbackBt);
    TH1D* aaTimeDiff = new TH1D("aaTimeDiffbrem", "#gamma-#gamma time difference", 300,0,300); list->Add(aaTimeDiff);
@@ -341,9 +338,8 @@ Bool_t supp_flag[nScDet][nGrDet] = {
          //We do an outside loop on gammas so that we can break on the betas if we see a beta in coincidence (we don't want to bin twice just because we have two betas)
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
-            btimestamp->Fill(scep->GetHit(b)->GetTimeStamp()/1e8);
-            badPPGbCycle->Fill(((ULong64_t)(((scep->GetHit(b)->GetTimeStamp())/1e6)-((scep->GetHit(b)->GetTimeStamp())/1e6)/15500)));
-	    if(ppg && !plotted_flag){//Fill on first hit only.
+            btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
+            if(ppg && !plotted_flag){//Fill on first hit only.
                betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTime()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTime()))); 
                //  betaSinglesCyc->Fill((((ULong64_t)(scep->GetHit(b)->GetTime()))%(ppg->GetCycleLength()))/1e5,(scep->GetHit(b)->GetTime())/(ppg->GetCycleLength())); 
                plotted_flag = true;
@@ -485,9 +481,6 @@ Bool_t supp_flag[nScDet][nGrDet] = {
                   gammaAddbackBm->Fill(grif->GetAddbackHit(one)->GetEnergy());
                   if(!found) {
                      gammaAddbackB->Fill(grif->GetAddbackHit(one)->GetEnergy());
-                     if(ppg && ppg->GetTimeInCycle(grif->GetAddbackHit(one)->GetTimeStamp()) > onStart && ppg->GetTimeInCycle(grif->GetAddbackHit(one)->GetTimeStamp()) < onEnd) {
-                        gammaAddbackBOn->Fill(grif->GetAddbackHit(one)->GetEnergy());   
-			}
                      if(ppg)
                         gammaAddbackBCyc->Fill(ppg->GetTimeInCycle((ULong64_t)(grif->GetAddbackHit(one)->GetTime()))/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
                   }
