@@ -195,6 +195,7 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray *hstarray, Double_t min, Doub
       if (sparse) {
          THnSparse* thishst = (THnSparse*) hstarray->At(i);
          thishst->GetAxis(0)->SetRangeUser(min,max);
+         tempslice = (TH1D*) thishst->Projection(1,"oe"); // the "e" option pushes appropriate errors
          tempslice = (TH1D*) thishst->Projection(1,"oe"); // the "e" option pushes appropriate errors, the "o" makes the projection correct
       }
       // TH2 option
@@ -409,14 +410,58 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
    minenergy = minenergy-0.5*difference;
    maxenergy = maxenergy+0.5*difference;
    hst->GetXaxis()->SetRangeUser(minenergy,maxenergy);
-
+   Double_t AvgFWHM=0;
    ///////////////////////////////////////////////////////
    // Fitting and visualization
    ///////////////////////////////////////////////////////
 
    std::vector<TCanvas*> c;
 
-   // loop over the indices
+   TH1D *totalProjection = hst->ProjectionX(Form("total_%sproj",hst2dname), hst->GetYaxis()->GetFirst(), hst->GetYaxis()->GetLast());  
+      
+   // Set initial parameters for peak
+      TPeak::SetLogLikelihoodFlag(true);
+      peak->SetParameter("centroid", peak->GetCentroid());
+      peak->InitParams(totalProjection);
+      std::cout << "initial parameters:" << std::endl;
+      for(int i = 0; i < peak->GetNpar(); i++){
+           double min,max;
+           peak->GetParLimits(i,min,max);
+           std::cout << i << ": "<<peak->GetParameter(i) << "; " << min << " - " << max << std::endl;
+      }
+      std::cout << "===========================" << std::endl;
+      peak->SetParameter(0, totalProjection->GetMaximum()/2.);
+      peak->SetParLimits(0,0.,2.*totalProjection->GetMaximum());
+      peak->SetParameter(1, peak->GetCentroid());
+      peak->SetParLimits(1, peak->GetCentroid()-2., peak->GetCentroid()+2.);
+      peak->SetParameter(2, 0.02*peak->GetCentroid());
+      peak->SetParLimits(2, 0.001*peak->GetCentroid(), 0.1*peak->GetCentroid());
+      peak->SetParLimits(7, -0.1, 0.1);
+      peak->FixParameter(8, 0.);
+      peak->SetParameter(9, peak->GetCentroid());
+      peak->SetParLimits(9, peak->GetCentroid()-2, peak->GetCentroid()+2);
+      std::cout <<"Our parameters:" << std::endl;
+      for(int i = 0; i < peak->GetNpar(); i++){
+           double min, max;
+           peak->GetParLimits(i,min,max);
+           std::cout << i << ": " << peak->GetParameter(i) << "; " << min << " - " << max << std::endl;
+      }
+      std::cout << "==========================" << std::endl;
+      //bool fit = peak->Fit(totalProjection, "LL");
+      //if (!fit) continue;
+      std::cout << "Final parameters:" << std::endl;
+      for(int i = 0; i < peak->GetNpar(); i++){
+           double min, max;
+           peak->GetParLimits(i, min, max);
+           std::cout << i << ": " << peak->GetParameter(i) << "; " << min << " - " << max << std::endl;
+      }
+      std::cout << "==========================" << std::endl;
+      std::cout << "Peak area = " << peak->GetArea() << " +/- " << peak->GetAreaErr() << std::endl;
+      double peakCentroid = peak->GetParameter(1);
+      double sigma = peak->GetParameter(2);
+      std::cout << "Fixing the centroid to " << peakCentroid << ", and sigma to " << sigma << " (FWHM = " << 2.355*sigma << ")" << std::endl;   
+// loop over the indices
+   TFile *file = new TFile("Fit_singles.root", "recreate");
    for (Int_t i=1;i<=indexmax-indexmin;i++) {
       Int_t index = hst->GetYaxis()->GetBinLowEdge(i);
       if (visualization) {
@@ -446,14 +491,31 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
 
       // rename TPeak
       peak->SetName(Form("%s_proj%i_peak",hst2dname,index));
-
+     
+      //Fix FWHM and centroid and set other parameters for single projections rather than total
+      peak->InitParams(temphst);
+      peak->SetParameter(0,temphst->GetMaximum());      
+      peak->FixParameter(1, peakCentroid);
+      peak->FixParameter(2,sigma);
+      peak->SetParLimits(7, -0.1, 0.1);
+      peak->FixParameter(8, 0.);
+      peak->SetParameter(9,peakCentroid);
+      peak->SetParLimits(9,peakCentroid-2., peakCentroid+2.);
+      peak->SetNpx(1000); 
+      //fit peak
+      bool fitresult = peak->Fit(temphst,"LL");
+      temphst->Write();
+      
       // fit TPeak
-      Bool_t fitresult = kFALSE;
+     // Bool_t fitresult = peak->Fit(temphst,"Q");
+     // Bool_t fitresult = kFALSE;
       if (visualization) fitresult = peak->Fit(temphst,"Q");
       else fitresult = peak->Fit(temphst,"Q0");
       if (!fitresult) continue; // if fit failed, continue on to next index
       if (visualization) static_cast<TPeak*>(temphst->GetListOfFunctions()->Last())->Background()->Draw("same");
 
+      Double_t FullWidthHM = peak->GetParameter(2);
+      AvgFWHM = AvgFWHM + FullWidthHM;
       // assign TPeak to fPeaks array
       this->SetPeak(index,static_cast<TPeak*>(temphst->GetFunction(Form("%s_proj%i_peak",hst2dname,index))));
 
@@ -473,7 +535,9 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       newhst->SetBinContent(i,area);
       newhst->SetBinError(i,area_err);
    }
-
+   
+   Double_t TrueFWHM = AvgFWHM/(indexmax-indexmin);
+   std::cout << "True sigma = " << TrueFWHM << std::endl;
    ///////////////////////////////////////////////////////
    // Create diagnostic window
    ///////////////////////////////////////////////////////
@@ -496,12 +560,14 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
 
    this->UpdateDiagnostics();
    this->DisplayDiagnostics(c_diag);
+   
 
    ///////////////////////////////////////////////////////
    // Clean-up
    ///////////////////////////////////////////////////////
 
    return fIndexCorrelation;
+   delete file;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1775,7 +1841,49 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
 
    return (TH1D*) hst;
 }
+/*
+Double_t GetPeakInfo(THnSparse *Slice, Double_t centroid, Double_t min, Double_t max){
 
+   Double_t FWHM; 
+   Int_t indexaxis, energy1axis, energy2axis;
+   Double_t xmin[3];
+   Double_t xmax[3];
+   for (Int_t i=0;i<3;i++) {//goes through all three dimensions of THnSparse and finds the min and max values
+      xmin[i] = Slice->GetAxis(i)->GetXmin();
+      xmax[i] = Slice->GetAxis(i)->GetXmax();
+   }//then look for matching axis since energy axis should be the same
+   if (xmin[0] == xmin[1] && xmax[0] == xmax[1]) {//are 0 and 1 the same? then axis 2 is the index axis
+      indexaxis = 2;
+      energy1axis = 0;
+      energy2axis = 1;
+   } else if (xmin[1] == xmin[2] && xmax[1] == xmax[2]) {//are 1 and 2 the same? then axis 0 is the index axis
+      indexaxis = 0;
+      energy1axis = 1;
+      energy2axis = 2;
+   } else if (xmin[2] == xmin[0] && xmax[2] == xmax[0]) {//are 0 and 2 the same? then axis 1 is the index axis
+      indexaxis = 1;
+      energy1axis = 0;
+      energy2axis = 2;
+   } else {
+      printf("Can't identify energy axes. Assuming index axis is axis 0.\n");//no two axis are the same
+      indexaxis = 0;
+      energy1axis = 1;
+      energy2axis = 2;
+   }
+
+   Slice->GetAxis(energy1axis)->SetRangeUser(min,max);
+   TH1D* tempslice = (TH1D*) Slice->Projection(energy2axis,"e"); // the "e" option pushes appropriate errors
+   tempslice->SetName(Form("%s_proj_%i",Slice->GetName(),(Int_t)((max+min)/2)));
+   tempslice->SetTitle(Form("%s: %i keV",Slice->GetTitle(),(Int_t)((max+min)/2)));
+   
+   //Make a TPeak to find sigma for the peak
+   TPeak *p = new TPeak(centroid, centroid-40, centroid+40);
+   p->Fit(tempslice);
+   FWHM = p->GetParameter(2);
+   //Get Slice 
+   return FWHM;
+}
+*/
 void TAngularCorrelation::DisplayDiagnostics(TCanvas* c_diag)
 {
    if (c_diag == 0) {
@@ -1790,7 +1898,11 @@ void TAngularCorrelation::DisplayDiagnostics(TCanvas* c_diag)
    TH1D* chi2hst = this->GetChi2Hst();
    TH1D* centroidhst = this->GetCentroidHst();
    TH1D* fwhmhst = this->GetFWHMHst();
-
+   
+   for(int i = 0; i < 52; i++){
+	std::cout << chi2hst->GetBinContent(i) << std::endl;
+   }
+   
    // format the diagnostic plots
    indexhst->SetStats(0);
    chi2hst->SetStats(0);
