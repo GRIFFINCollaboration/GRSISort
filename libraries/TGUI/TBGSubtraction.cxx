@@ -2,6 +2,7 @@
 #include "TBGSubtraction.h"
 #include "TGTripleSlider.h"
 #include "TGNumberEntry.h"
+#include "TInterpreter.h"
 
 /// \cond CLASSIMP
 ClassImp(TBGSubtraction);
