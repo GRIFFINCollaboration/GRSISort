@@ -30,7 +30,7 @@
 class TEfficiencyGraph : public TCalGraph {
  public: 
    TEfficiencyGraph();
-   TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name,title) {};
+   TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name,title), fIsAbsolute(false) {};
    virtual ~TEfficiencyGraph(); 
 
    TEfficiencyGraph(const TEfficiencyGraph& copy);
@@ -40,9 +40,14 @@ class TEfficiencyGraph : public TCalGraph {
    virtual void Clear(Option_t* opt = "");
 
 	void Scale(const Double_t &scale);
+	void SetAbsolute(const bool & flag) { fIsAbsolute = flag; }
+	bool IsAbsolute() const { return fIsAbsolute; }
 
  protected:
 	void BuildGraph();
+
+ private:
+	bool fIsAbsolute;
 
 /// \cond CLASSIMP
    ClassDef(TEfficiencyGraph,1); //Graph Class for Calibrations

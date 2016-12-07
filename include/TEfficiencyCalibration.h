@@ -34,15 +34,26 @@ class TEfficiencyCalibration : public TNamed {
 	TFitResultPtr Fit(Option_t *opt="");
 
 	void Draw(Option_t* opt="");
+	void DrawRelative(Option_t* opt="");
+	void DrawAbsolute(Option_t* opt="");
+
+	Double_t GetEfficiency(const Double_t & eng);
+	Double_t GetEfficiencyErr(const Double_t & eng);
 
  private:
 	void BuildMultiGraph();
 	Double_t PhotoPeakEfficiency( Double_t *x, Double_t *par);
+	Double_t AbsoluteEfficiency( Double_t *x, Double_t *par);
+ public:
+	bool ScaleToAbsolute();
 
  private:
 	std::map<const char*,TEfficiencyGraph> fGraphMap;
-	TMultiGraph * fMultiGraph;
+	TMultiGraph * fRelativeEffGraph;
+	TMultiGraph * fAbsEffGraph;
 	mutable bool fFitting;
+	TF1* fRelativeFit;
+	TF1* fAbsoluteFunc;
 
 /// \cond CLASSIMP
    ClassDef(TEfficiencyCalibration,1);
