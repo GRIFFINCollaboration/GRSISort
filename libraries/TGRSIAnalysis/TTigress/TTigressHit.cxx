@@ -61,12 +61,18 @@ TVector3 TTigressHit::GetPosition() const {
 }
 
 TVector3 TTigressHit::GetLastPosition(Double_t dist) const {
-  const TGRSIDetectorHit &seg = GetSegmentHit(GetNSegments()-1);
-  return TTigress::GetPosition(seg.GetDetector(),seg.GetCrystal(),seg.GetSegment(),dist);  
+  
+  const TGRSIDetectorHit *seg;
+  if(GetNSegments()>0) 
+    seg = &GetSegmentHit(GetNSegments()-1); //returns the last segment in the segment vector.
+  else
+    seg = this;  // if no segments, use the core. pcb.
+
+  return TTigress::GetPosition(seg->GetDetector(),seg->GetCrystal(),seg->GetSegment(),dist);  
 }
 
 TVector3 TTigressHit::GetLastPosition() const {
-  return GetPosition(GetDefaultDistance());  
+  return GetLastPosition(GetDefaultDistance());  
 }
 
 void TTigressHit::Print(Option_t *opt) const	{
@@ -113,14 +119,20 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs) {
 //}
 
 void TTigressHit::SumHit(TTigressHit *hit) {
-	//if(this == hit) {
-	//  fLastPos = std::make_tuple(GetDetector(),GetCrystal(),GetInitialHit());
-	//  return;
-	//}
 	if(this != hit) {
+    if(this->GetEnergy()>hit->GetEnergy()) {
+      SetTime(this->GetTime());
+    } else {
+      SetTime(hit->GetTime());
+      SetAddress(hit->GetAddress());
+      SetCfd(hit->GetCfd());
+    }
+
 		SetEnergy(GetEnergy() + hit->GetEnergy());
 		for(int x =0;x<hit->GetNSegments();x++) {
-			AddSegment((hit->fSegments[x]));
+			AddSegment((hit->fSegments[x]));   // LastPosition is now defined as the last segment in the list,
+                                         // due to people's seemingly dislike of me calling SumHit on 
+                                         // the first addbackhit.   pcb.
 		}
 		if(hit->BGOFired()) {
 			SetBGOFired(true);
