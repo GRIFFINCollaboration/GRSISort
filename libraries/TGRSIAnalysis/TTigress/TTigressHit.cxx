@@ -120,26 +120,26 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs) {
 
 void TTigressHit::SumHit(TTigressHit *hit) {
 	if(this != hit) {
-    if(this->GetEnergy()>hit->GetEnergy()) {
-      SetTime(this->GetTime());
-    } else {
-      SetTime(hit->GetTime());
-      SetAddress(hit->GetAddress());
-      SetCfd(hit->GetCfd());
-    }
+		
+		//Should always be true when called by addback construction due to energy ordering during detector construction
+		if(this->GetEnergy()>hit->GetEnergy()) {
+			SetTime(this->GetTime());//Needs to be call before energy sum to ensure and kIsTimeSet using original energy for any adjustment
+			for(int x =0;x<hit->GetNSegments();x++){AddSegment((hit->fSegments[x]));}
+		} else {
+			SetTime(hit->GetTime());
+			SetAddress(hit->GetAddress());
+			SetCfd(hit->GetCfd());
+			
+			//Maybe overkill, but consistent
+			std::vector<TGRSIDetectorHit> fSegmentHold=hit->fSegments;
+			for(int x =0;x<GetNSegments();x++)fSegmentHold.push_back(this->fSegments[x]);
+			this->fSegments=fSegmentHold;
+		}
 
 		SetEnergy(GetEnergy() + hit->GetEnergy());
-		for(int x =0;x<hit->GetNSegments();x++) {
-			AddSegment((hit->fSegments[x]));   // LastPosition is now defined as the last segment in the list,
-                                         // due to people's seemingly dislike of me calling SumHit on 
-                                         // the first addbackhit.   pcb.
-		}
-		if(hit->BGOFired()) {
-			SetBGOFired(true);
-		}
+		
+		if(hit->BGOFired()) SetBGOFired(true);
 	}
-	//this->fLastHit = hit->GetPosition();
-	//this->fLastPos = std::make_tuple(hit->GetDetector(),hit->GetCrystal(),hit->GetInitialHit());
 }
 
 

@@ -21,30 +21,37 @@ TTransientBits<UShort_t> TTigress::fgTigressBits(TTigress::kSetCoreWave | TTigre
 //Why arent these TTigress class functions?
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
 	
-	// Extended options as for efficiency call we have been limited to cores only 
-  //
-  // the below code (in the if statement)  should be changed. There is no 
-  // real reason the we should add diagonal xtals in a detector and not 
-  // adjcent xtal in the array. If one is worried about the suppressor status 
-  // of the array, the position could also be checked.  pcb.
-  //
-	if(one.GetSegmentMultiplicity()==0||two.GetSegmentMultiplicity()==0||TTigress::GetForceCrystal()){//For no-sectors experiment and protection if data loss
-		return ((one.GetDetector() == two.GetDetector()) &&
-			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()*10.0));		
+	// fTigressHits vector is sorted by descending energy during detector construction
+	// Assumption for crystals and segments: higher energy = first interaction
+	// Checking for Scattering FROM "one" TO "two"
+	
+	// GetTime is in ns;  AddbackWindow is in 10's of ns.
+	if(std::abs(one.GetTime() - two.GetTime()) < (TGRSIRunInfo::AddBackWindow()*10.0)){
 		
-	}else{
+		// segments of crystals have been sorted by descending energy during detector construction
+		// LastPosition is the position of lowest energy segment and GetPosition the highest energy segment (assumed first)
+		// Both return core position if no segments
 		double res = (one.GetLastPosition() - two.GetPosition()).Mag();
-		int one_seg  = one.GetSegmentVec().back().GetSegment();
-		int two_seg  = two.GetSegmentVec().front().GetSegment();
-		// GetTime is in ns;  AddbackWindow is in 10's of ns.
-		return ((std::abs(one.GetTime() - two.GetTime()) < (TGRSIRunInfo::AddBackWindow()*10.0)) &&
-		((((one_seg < 5 && two_seg < 5) 
-			|| (one_seg > 4 && two_seg > 4)) 
-			&& res < 54) ||  //not front to back
-		(((one_seg < 5 && two_seg > 4) 
-			|| (one_seg > 4 && two_seg < 5)) 
-			&& res < 105))); //    front to back
+
+		//In clover core separation 54.2564, 76.7367
+		//Between clovers core separation 74.2400 91.9550 (high-eff mode)
+		double seperation_limit=93;
+		
+		//Important to avoid GetSegmentVec segfaults for no segment or when we have cores only efficiency calibration
+		if(one.GetSegmentMultiplicity()>0&&two.GetSegmentMultiplicity()>0&&!TTigress::GetForceCrystal()){
+			int one_seg  = one.GetSegmentVec().back().GetSegment();
+			int two_seg  = two.GetSegmentVec().front().GetSegment();
+			
+			//front segment to front segment OR back segment to back segment
+			if((one_seg < 5 && two_seg < 5) || (one_seg > 4 && two_seg > 4)) seperation_limit=54;
+			//front to back
+			else if((one_seg < 5 && two_seg > 4) || (one_seg > 4 && two_seg < 5))seperation_limit=105;
+		}
+
+		if(res<seperation_limit)return true;		
 	}
+	
+	return false;
 }
 
 std::function<bool(TTigressHit&, TTigressHit&)> TTigress::fAddbackCriterion = DefaultAddback;
@@ -136,7 +143,7 @@ Int_t TTigress::GetAddbackMultiplicity() {
     return fAddbackHits.size(); 
   }
     
-  // use the first tigress hit as starting point for the addback hits
+  // use the first (highest E) tigress hit as starting point for the addback hits
   fAddbackHits.push_back(fTigressHits[0]);
   fAddbackFrags.push_back(1);
 
@@ -146,14 +153,16 @@ Int_t TTigress::GetAddbackMultiplicity() {
     // check for each existing addback hit if this tigress hit should be added
     for(j = 0; j < fAddbackHits.size(); j++) {
       if(fAddbackCriterion(fAddbackHits[j], fTigressHits[i])) {
-        fAddbackHits[j].SumHit(&(fTigressHits[i]));
+	//SumHit preserves time and position from first (highest E) hit, but adds segments so this hit becomes LastPosition()
+        fAddbackHits[j].SumHit(&(fTigressHits[i]));//Adds 
         fAddbackFrags[j]++;
         break;
       }
     }
+    //if hit[i] was not added to a higher energy hit, create its own addback hit
     if(j == fAddbackHits.size()) {
       fAddbackHits.push_back(fTigressHits[i]);
-      fAddbackHits.back().SumHit(&(fAddbackHits.back()));
+      fAddbackHits.back().SumHit(&(fAddbackHits.back()));//Does nothing
       fAddbackFrags.push_back(1);
     }
   }
