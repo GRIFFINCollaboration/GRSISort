@@ -337,8 +337,8 @@ UShort_t TTigress::GetNAddbackFrags(size_t idx) const{
 
 
 
-TVector3 TTigress::GetPosition(const TTigressHit &hit, double dist)  {
-  return TTigress::GetPosition(hit.GetDetector(),hit.GetCrystal(),hit.GetFirstSeg(),dist);
+TVector3 TTigress::GetPosition(const TTigressHit &hit, double dist,bool smear)  {
+  return TTigress::GetPosition(hit.GetDetector(),hit.GetCrystal(),hit.GetFirstSeg(),dist,smear);
 }
 
 TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,bool smear)  {
@@ -349,9 +349,9 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,boo
 
   //printf("xx = %f\nyy = %f\n zz = %f\n",GeBluePosition[DetNbr][SegNbr][0],GeBluePosition[DetNbr][SegNbr][1],GeBluePosition[DetNbr][SegNbr][2]);
 
-  if(!(dist>0))dist=TGRSIRunInfo::HPGeArrayPosition();
+  //if(!(dist>0))dist=TGRSIRunInfo::HPGeArrayPosition();
 
-  if(dist > 140.){//145.0
+  if(dist > 140.||(GetArrayBackPos()&&dist<100.) ){//145.0
 
     switch(CryNbr)	{
     case -1:

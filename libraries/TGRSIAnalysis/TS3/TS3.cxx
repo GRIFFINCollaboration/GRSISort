@@ -103,7 +103,7 @@ void TS3::BuildPixels(){
   if(fS3Hits.size() == 0) {
 		
 
-		// We are going to want energies sereral times
+		// We are going to want energies several times
 		// So build a quick vector 
 		std::vector<double> EneR,EneS;
 		std::vector<bool> UsedRing, UsedSector;
@@ -128,14 +128,16 @@ void TS3::BuildPixels(){
 						EneS[j]*fFrontBackEnergy<EneR[i]){  //if time is good check energy
 
 						//Now we have accepted a good event, build it
-						TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position
-						dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
-// 						if(TGRSIRunInfo::IsWaveformFitting()){
-// 							dethit.SetTimeFit(fS3RingHits[i].GetFitTime());
-// 							dethit.SetSig2Noise(fS3RingHits[i].GetSignalToNoise());
-// 						}
-						fS3Hits.push_back(dethit);
-
+						if(SectorPreference()){
+							TS3Hit dethit = fS3SectorHits[j]; // Sector defines all data ring just gives position
+							dethit.SetRingNumber(fS3RingHits[i].GetRing());
+							fS3Hits.push_back(dethit);
+						}else{
+							TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position (default)
+							dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
+							fS3Hits.push_back(dethit);
+						}
+						
 						UsedRing[i]=true;
 						UsedSector[j]=true;
 					}

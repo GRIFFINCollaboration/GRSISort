@@ -56,12 +56,7 @@ TVector3 TTigressHit::GetPosition(Double_t dist) const {
   return TTigress::GetPosition(*this,dist);  
 }
 
-TVector3 TTigressHit::GetPosition() const {
-  return GetPosition(GetDefaultDistance());  
-}
-
 TVector3 TTigressHit::GetLastPosition(Double_t dist) const {
-  
   const TGRSIDetectorHit *seg;
   if(GetNSegments()>0) 
     seg = &GetSegmentHit(GetNSegments()-1); //returns the last segment in the segment vector.
@@ -69,10 +64,6 @@ TVector3 TTigressHit::GetLastPosition(Double_t dist) const {
     seg = this;  // if no segments, use the core. pcb.
 
   return TTigress::GetPosition(seg->GetDetector(),seg->GetCrystal(),seg->GetSegment(),dist);  
-}
-
-TVector3 TTigressHit::GetLastPosition() const {
-  return GetLastPosition(GetDefaultDistance());  
 }
 
 void TTigressHit::Print(Option_t *opt) const	{
