@@ -406,15 +406,15 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,boo
       break;
     };
     //printf("xx = %f\nyy = %f\n zz = %f\n",xx,yy,zz);
-	 zz -= fTargetOffset;
-    det_pos.SetXYZ(xx,yy,zz);
   }
+
+  det_pos.SetXYZ(xx,yy,zz-fTargetOffset);
   
   if(smear){
 	  if(SegNbr==0){
 		// Not perfect as it takes the perpendicular core vector, not the clover vector, but good enough for my purposes
 		TVector3 a(-yy,xx,0);
-		TVector3 b=det_pos.Cross(a);
+		TVector3 b=TVector3(xx,yy,zz).Cross(a);
 		double x,y,r = sqrt(gRandom->Uniform(0,400));
 		gRandom->Circle(x,y,r);
 		det_pos+=a.Unit()*x+b.Unit()*y;
