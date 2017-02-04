@@ -109,9 +109,13 @@ void TGRSIint::InitFlags() {
 }
 
 void TGRSIint::ApplyOptions() {
-  TGRSIOptions* opt = TGRSIOptions::Get();
+	TGRSIOptions* opt = TGRSIOptions::Get();
 
-  bool missing_raw_file = !all_files_exist(opt->InputMidasFiles());
+	if(opt->Batch()) {
+		MakeBatch();
+	}
+
+	bool missing_raw_file = !all_files_exist(opt->InputMidasFiles());
 
    if(!false) { // this will be change to something like, if(!ClassicRoot)
       LoadGROOTGraphics();

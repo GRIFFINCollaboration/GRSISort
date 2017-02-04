@@ -112,7 +112,7 @@ void TMnemonic::EnumerateSystem(){
 		if(SubSystem() == kI) {
 			fSystem = kSiLi;
 		} else {
-			fSystem = kS3;
+			fSystem = kSiLiS3;
 		}
 	} else if(fSystemString.compare("CS")==0) {	
 		fSystem = kCSM;
@@ -237,6 +237,9 @@ TClass* TMnemonic::GetClassType() const {
          fClassType = TSiLi::Class();
          break;
       case TMnemonic::kS3:
+         fClassType = TS3::Class();
+         break;
+      case TMnemonic::kSiLiS3:
          fClassType = TS3::Class();
          break;
       case TMnemonic::kCSM:
