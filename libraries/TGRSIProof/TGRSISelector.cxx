@@ -91,6 +91,8 @@ void TGRSISelector::SlaveTerminate()
    // The SlaveTerminate() function is called after all entries or objects
    // have been processed. When running with PROOF SlaveTerminate() is called
    // on each slave server.
+	
+	EndOfSort();
 
 }
 
@@ -101,6 +103,7 @@ void TGRSISelector::Terminate()
    // the results graphically or save the results to file.
    Int_t runnumber = TGRSIRunInfo::Get()->RunNumber();
    Int_t subrunnumber = TGRSIRunInfo::Get()->SubRunNumber();
+
    std::cout << runnumber << " " << subrunnumber << std::endl;
    TFile output_file(Form("%s%05d_%03d.root",fOutputPrefix.c_str(),runnumber,subrunnumber),"RECREATE");
    fOutput->Write();
