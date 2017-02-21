@@ -320,7 +320,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
 		SetRunNumber(runnum);
 	}
    if(subrunnum != -1) {
-		if(SubRunNumber() != 0) {
+		if(SubRunNumber() != -1) {
 			std::cout<<"Warning, overwriting non-default sub-run-number "<<SubRunNumber()<<" with "<<subrunnum<<std::endl;
 		}
 		SetSubRunNumber(subrunnum);

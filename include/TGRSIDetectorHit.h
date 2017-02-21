@@ -111,8 +111,8 @@ class TGRSIDetectorHit : public TObject 	{
       virtual void SetCfd(const Int_t& x)               { fCfd    = x; }             //!<!
       void SetWaveform(const std::vector<Short_t>& x)   { fWaveform = x; }           //!<!
       void AddWaveformSample(const Short_t& x)                 { fWaveform.push_back(x); }  //!<!
-      virtual void SetTimeStamp(const Long_t& x)        { fTimeStamp   = x; }        //!<! 
-      virtual void AppendTimeStamp(const Long_t& x)     { fTimeStamp   += x; }       //!<! 
+      virtual void SetTimeStamp(const Long64_t& x)        { fTimeStamp   = x; }        //!<! 
+      virtual void AppendTimeStamp(const Long64_t& x)     { fTimeStamp   += x; }       //!<! 
 
       Double_t SetEnergy(const double& en) const { fEnergy = en; SetHitBit(kIsEnergySet,true); return fEnergy;}
       Double_t SetTime(const Double_t& time) const {fTime = time; SetHitBit(kIsTimeSet,true); return fTime; }
@@ -120,8 +120,8 @@ class TGRSIDetectorHit : public TObject 	{
       virtual TVector3 GetPosition(Double_t dist)    const { return TVector3(0.,0.,0.); } //!<!
       virtual TVector3 GetPosition()    const { return TVector3(0.,0.,0.); } //!<!
       virtual double GetEnergy(Option_t* opt="")     const;
-      virtual Long_t GetTimeStamp(Option_t* opt="") const;
-      Long_t GetRawTimeStamp(Option_t* opt="") const { return fTimeStamp; }
+      virtual Long64_t GetTimeStamp(Option_t* opt="") const;
+      Long64_t GetRawTimeStamp(Option_t* opt="") const { return fTimeStamp; }
       virtual Double_t GetTime(const UInt_t& correct_flag = kAll, Option_t* opt = "")   const;  ///< Returns a time value to the nearest nanosecond!
       //TODO: Fix Getters to have non-const types
       virtual Int_t   GetCfd()    const               { return fCfd;}                 //!<!
@@ -149,7 +149,7 @@ class TGRSIDetectorHit : public TObject 	{
 
       //The PPG is only stored in events that come out of the GRIFFIN DAQ
       uint16_t GetPPGStatus() const;
-      Long_t GetCycleTimeStamp() const;
+      Long64_t GetCycleTimeStamp() const;
 
       void ClearEnergy()  { fEnergy  = 0.0;  SetHitBit(kIsEnergySet,false); }
       void ClearChannel() { fChannel = NULL; SetHitBit(kIsChannelSet,false); }
@@ -173,7 +173,7 @@ class TGRSIDetectorHit : public TObject 	{
       Float_t  fCharge;     ///< charge collected from the hit
       Short_t  fKValue;      ///< integration value.
       Int_t    fCfd;        ///< CFD time of the Hit
-      Long_t   fTimeStamp;  ///< Timestamp given to hit
+      Long64_t   fTimeStamp;  ///< Timestamp given to hit
       std::vector<Short_t> fWaveform;  ///<
 
    private:
@@ -183,7 +183,7 @@ class TGRSIDetectorHit : public TObject 	{
      // mutable TVector3 fPosition;   //!<! Position of hit detector.
       mutable Double_t fEnergy;     //!<! Energy of the Hit.
       mutable uint16_t fPPGStatus;  //!<! 
-      mutable ULong_t  fCycleTimeStamp; //!<!
+      mutable Long64_t  fCycleTimeStamp; //!<!
 		mutable TChannel* fChannel; //!<!
 
    protected:
