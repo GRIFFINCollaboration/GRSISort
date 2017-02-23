@@ -257,7 +257,7 @@ bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rh
   return (lhs->GetEnergy() > rhs->GetEnergy());
 }
 
-Long_t TGRSIDetectorHit::GetTimeStamp(Option_t* opt) const  { 
+Long64_t TGRSIDetectorHit::GetTimeStamp(Option_t* opt) const  { 
    TChannel* tmpChan = GetChannel();
    if(!tmpChan){
       return fTimeStamp;   
@@ -278,7 +278,7 @@ uint16_t TGRSIDetectorHit::GetPPGStatus() const {
   return fPPGStatus;
 }
 
-Long_t TGRSIDetectorHit::GetCycleTimeStamp() const {
+Long64_t TGRSIDetectorHit::GetCycleTimeStamp() const {
   if(IsPPGSet()) {
 	  return fCycleTimeStamp;
   }
