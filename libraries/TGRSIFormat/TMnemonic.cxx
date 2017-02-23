@@ -18,7 +18,7 @@
 #include "TDescant.h"
 #include "TZeroDegree.h"
 #include "TSiLi.h"
-
+#include "TFipps.h"
 
 ClassImp(TMnemonic)
 
@@ -136,6 +136,8 @@ void TMnemonic::EnumerateSystem(){
 		fSystem = kZeroDegree;
 	} else if(fSystemString.compare("TP")==0) {	
 		fSystem = kTip;
+	} else if(fSystemString.compare("FI")==0) {	
+		fSystem = kFipps;
 	} else {
 		fSystem = kClear;
 	}
@@ -147,6 +149,7 @@ int TMnemonic::EnumerateDigitizer(std::string& name) {
 	if(name.compare("GRF4G") == 0) return kGRF4G;
 	if(name.compare("TIG10") == 0) return kTIG10;
 	if(name.compare("TIG64") == 0) return kTIG64;
+	if(name.compare("CAEN8") == 0) return kCAEN8;
 	return kDefault;
 }
 
@@ -268,6 +271,9 @@ TClass* TMnemonic::GetClassType() const {
          break;
       case TMnemonic::kTip:
          fClassType = TTip::Class();
+         break;
+      case TMnemonic::kFipps:
+         fClassType = TFipps::Class();
          break;
       default:
          fClassType = nullptr;

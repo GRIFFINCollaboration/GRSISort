@@ -88,6 +88,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
          {Bool_t R__bool; b >> R__bool; fDante = R__bool;     }
          {Bool_t R__bool; b >> R__bool; fZeroDegree = R__bool;}
          {Bool_t R__bool; b >> R__bool; fDescant = R__bool;   }
+         {Bool_t R__bool; b >> R__bool; fFipps = R__bool;   }
          {TString R__str; R__str.Streamer(b); fMajorIndex.assign(R__str.Data()); }
          //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
          {TString R__str; R__str.Streamer(b); fMinorIndex.assign(R__str.Data()); }
@@ -139,6 +140,7 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
          {Bool_t R__bool = fDante;      b << R__bool;}
          {Bool_t R__bool = fZeroDegree; b << R__bool;}
          {Bool_t R__bool = fDescant;    b << R__bool;}
+         {Bool_t R__bool = fFipps;    b << R__bool;}
          //printf("fMajorIndex = %s\n",fMajorIndex.c_str());
          //printf("fMinorIndex = %s\n",fMinorIndex.c_str());
          {TString R__str(fMajorIndex.c_str());      R__str.Streamer(b);   }//printf("TString::data = %s\n",R__str.Data());  }//; R__str = fMajorIndex.c_str();      R__str.Streamer(b);}
@@ -260,6 +262,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
       printf("\t\tDESCANT:      %s\n", Descant() ? "true" : "false");
       printf("\t\tZDS:          %s\n", ZeroDegree() ? "true" : "false");
       printf("\t\tDANTE:        %s\n", Dante() ? "true" : "false");
+      printf("\t\tFIPPS:        %s\n", Fipps() ? "true" : "false");
       printf("\n");
       printf(DBLUE"\tBuild Window (10 ns) = " DRED "%lu"   RESET_COLOR "\n",TGRSIRunInfo::BuildWindow());
       printf(DBLUE"\tMoving Window = " DRED "%s"    RESET_COLOR "\n",TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
@@ -297,6 +300,7 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
    fDante = false;
    fZeroDegree = false;
    fDescant = false;
+   fFipps = false;
 
    fMajorIndex.assign("");
    fMinorIndex.assign("");
@@ -314,13 +318,13 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
 
    printf("In runinfo, found %i channels.\n",TChannel::GetNumberOfChannels());
    if(runnum != 0) {
-		if(RunNumber() != 0) {
+		if(RunNumber() != 0 && RunNumber() != runnum) {
 			std::cout<<"Warning, overwriting non-default run-number "<<RunNumber()<<" with "<<runnum<<std::endl;
 		}
 		SetRunNumber(runnum);
 	}
    if(subrunnum != -1) {
-		if(SubRunNumber() != -1) {
+		if(SubRunNumber() != -1 && SubRunNumber() != subrunnum) {
 			std::cout<<"Warning, overwriting non-default sub-run-number "<<SubRunNumber()<<" with "<<subrunnum<<std::endl;
 		}
 		SetSubRunNumber(subrunnum);
@@ -382,6 +386,10 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
             if(!Descant()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
             SetDescant();
             break;
+         case TMnemonic::kFipps:
+            if(!Fipps()) {TGRSIRunInfo::Get()->fNumberOfTrueSystems++;} 
+            SetFipps();
+            break;
          default:
             std::string system = iter->second->GetMnemonic()->SystemString();
             if(!Spice() && !S3()){
@@ -403,6 +411,8 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
    } else if(Griffin()) {
       Get()->fMajorIndex.assign("TimeStampHigh");
       Get()->fMinorIndex.assign("TimeStampLow");
+   } else if(Fipps()) {
+      Get()->fMajorIndex.assign("TimeStamp");
    }
 
    if(Get()->fRunInfoFile.length())

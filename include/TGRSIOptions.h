@@ -17,7 +17,8 @@ class TGRSIOptions : public TObject {
 		void PrintSortingOptions() const;
 
 		bool ShouldExit() { return fShouldExit; }
-		const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles;}
+		const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles; }
+		const std::vector<std::string>& InputLstFiles()   { return fInputLstFiles; }
 		const std::vector<std::string>& RootInputFiles()  { return fInputRootFiles; }
 		const std::vector<std::string>& CalInputFiles()   { return fInputCalFiles;  }
 		const std::vector<std::string>& ValInputFiles()   { return fInputValFiles;  }
@@ -110,6 +111,7 @@ class TGRSIOptions : public TObject {
 		bool FileAutoDetect(const std::string& filename);
 
 		std::vector<std::string> fInputMidasFiles;
+		std::vector<std::string> fInputLstFiles;
 		std::vector<std::string> fInputRootFiles;
 		std::vector<std::string> fInputCalFiles;
 		std::vector<std::string> fInputOdbFiles;

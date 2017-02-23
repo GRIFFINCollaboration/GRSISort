@@ -1,8 +1,8 @@
-
+#ifdef HASXML
 #include "TXMLOdb.h"
 
-#include <TList.h>
-#include <TXMLAttr.h>
+#include "TList.h"
+#include "TXMLAttr.h"
 
 char TXMLOdb::fTextBuffer[256];
 
@@ -260,4 +260,4 @@ std::vector<double> TXMLOdb::ReadDoubleArray(TXMLNode* node) {
    }
    return temp;
 }
-
+#endif

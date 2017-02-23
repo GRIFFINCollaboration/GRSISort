@@ -1211,6 +1211,28 @@ int TDataParser::FifoToFragment(unsigned short* data,int size,bool zerobuffer,
 	return 1;
 }
 
+int TDataParser::FippsToFragment(std::vector<char> data) {
+	int32_t* ptr = reinterpret_cast<int32_t*>(data.data());
+
+	int eventsRead = 0;
+	std::shared_ptr<TFragment> eventFrag = std::make_shared<TFragment>();
+	Long64_t tmpTimestamp;
+	for(size_t i = 0; i+3 < data.size()/4; i += 4) {
+		eventFrag->SetAddress(ptr[i]>>16);
+		tmpTimestamp = ptr[i]&0xffff;
+		tmpTimestamp = tmpTimestamp << 30;
+		tmpTimestamp |= ptr[i+1]&0x3fffffff;
+		eventFrag->SetTimeStamp(tmpTimestamp);
+		eventFrag->SetCharge(ptr[i+2] & 0x7fff);
+		if(fRecordDiag) TParsingDiagnostics::Get()->GoodFragment(eventFrag);
+		Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
+		++eventsRead;
+		//std::cout<<eventsRead<<": "<<eventFrag->Charge()<<", "<<eventFrag->GetTimeStamp()<<std::endl;
+	}
+
+	return eventsRead;
+}
+
 void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& queues, std::shared_ptr<TFragment> frag) {
 	frag->SetFragmentId(fFragmentIdMap[frag->GetTriggerId()]);
 	fFragmentIdMap[frag->GetTriggerId()]++;

@@ -11,13 +11,13 @@
 #include <assert.h>
 
 #include "TMidasEvent.h"
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TMidasEvent)
 /// \endcond
 
-TMidasEvent::TMidasEvent()
-{
+TMidasEvent::TMidasEvent() {
   //Default constructor
   fData = NULL;
   fAllocatedByUs = false;
@@ -32,7 +32,7 @@ TMidasEvent::TMidasEvent()
   fEventHeader.fDataSize     = 0;
 }
 
-void TMidasEvent::Copy(TObject& rhs) const{
+void TMidasEvent::Copy(TObject& rhs) const {
    //Copies the entire TMidasEvent. This includes the bank information.
   static_cast<TMidasEvent&>(rhs).fEventHeader = fEventHeader;
 
@@ -47,7 +47,7 @@ void TMidasEvent::Copy(TObject& rhs) const{
   //assert(static_cast<TMidasEvent&>(rhs).fBankList);
 }
 
-TMidasEvent::TMidasEvent(const TMidasEvent &rhs) : TObject() {
+TMidasEvent::TMidasEvent(const TMidasEvent &rhs) : TRawEvent() {
    //Copy ctor.
   rhs.Copy(*this);
 }
@@ -619,6 +619,111 @@ int TMidasEvent::SwapBytes(bool force) {
     }
   }
   return 1;
+}
+
+int TMidasEvent::Process(TDataParser& parser) {
+	int banksize;
+	void* ptr;
+	int frags = 0;
+	try {
+		switch(GetEventId())  {
+			case 1:
+				SetBankList();
+				if((banksize = LocateBank(NULL,"WFDN",&ptr))>0) {
+					frags = ProcessTIGRESS((uint32_t*)ptr, banksize, parser);
+				} else if((banksize = LocateBank(NULL,"GRF1",&ptr))>0) {
+					frags = ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF1, parser);
+				} else if((banksize = LocateBank(NULL,"GRF2",&ptr))>0) {
+					frags = ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF2, parser);
+				} else if((banksize = LocateBank(NULL,"GRF3",&ptr))>0) {
+					frags = ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF3, parser);
+				} else if((banksize = LocateBank(NULL,"GRF4",&ptr))>0) {
+					frags = ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF4, parser);
+				} else if(!TGRSIOptions::Get()->SuppressErrors()) {
+					printf(DRED "\nUnknown bank in midas event #%d" RESET_COLOR "\n", GetSerialNumber());
+				}
+				break;
+			case 2:
+				// if(!fIamGriffin) {
+				//   break;
+				// }
+				SetBankList();
+				break;
+			case 4:
+			case 5:
+				 SetBankList();
+				 if((banksize = LocateBank(NULL,"MSRD",&ptr))>0) {
+					 frags = ProcessEPICS((float*)ptr, banksize, parser);
+				 }
+
+				break;
+		};
+	}
+	catch(const std::bad_alloc&) {   }
+	//printf("I AM HERE!\n");fflush(stdout);
+	return frags;
+}
+
+int TMidasEvent::ProcessEPICS(float* ptr,int& dSize, TDataParser& parser) {
+	parser.EPIXToScalar(ptr, dSize, GetSerialNumber(), GetTimeStamp());
+
+	return 0;
+}
+
+int TMidasEvent::ProcessTIGRESS(uint32_t* ptr, int& dSize, TDataParser& parser) {
+	return parser.TigressDataToFragment(ptr, dSize, GetSerialNumber(), GetTimeStamp());
+}
+
+int TMidasEvent::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBank bank, TDataParser& parser) {
+	//loop over words in event to find fragment header
+	int frags = 0;
+	for(int index = 0; index < dSize;) {
+		if(((ptr[index])&0xf0000000) == 0x80000000) {
+			//if we found a fragment header we pass the data to the data parser which returns the number of words read
+			int words = parser.GriffinDataToFragment(&ptr[index], dSize-index, bank, GetSerialNumber(), GetTimeStamp());
+			if(words > 0) {
+				//we successfully read one event with <words> words, so we advance the index by words
+				++frags;
+				index += words;
+			} else {
+				//we failed to read the fragment on word <-words>, so advance the index by -words and we create an error message
+				++frags;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
+				index -= words;
+
+				if(!TGRSIOptions::Get()->SuppressErrors()) {
+					if(!TGRSIOptions::Get()->LogErrors()) {
+						printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+						printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", index);
+						Print(Form("a%i",index-1));
+						printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
+					} else {
+						std::string errfilename = "error.log";
+						// if(mFile) {
+						//   if(mFile->GetSubRunNumber() != -1) {
+						//     errfilename.append(Form("error%05i_%03i.log",mFile->GetRunNumber(),mFile->GetSubRunNumber()));
+						//   } else {
+						//     errfilename.append(Form("error%05i.log",mFile->GetRunNumber()));
+						//   }
+						// } else {
+						//   errfilename.append("error_log.log");
+						// }
+						FILE* originalstdout = stdout;
+						FILE* errfileptr = freopen(errfilename.c_str(),"a",stdout);
+						printf("\n//**********************************************//\n");
+						Print("a");
+						printf("\n//**********************************************//\n");
+						fclose(errfileptr);
+						stdout = originalstdout;
+					}
+				}
+			}
+		} else {
+			//this is not a fragment header, so we advance the index
+			++index;
+		}
+	}
+
+	return frags;
 }
 
 // end

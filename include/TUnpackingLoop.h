@@ -19,7 +19,7 @@
 #endif
 
 #include "StoppableThread.h"
-#include "TMidasEvent.h"
+#include "TRawEvent.h"
 #include "TFragment.h"
 #include "TEpicsFrag.h"
 #include "TDataParser.h"
@@ -33,7 +33,7 @@ class TUnpackingLoop : public StoppableThread {
 		void SetRecordDiag(bool temp = true)  { fParser.SetRecordDiag(temp); }
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<TMidasEvent> >&                        InputQueue()                               { return fInputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent> > >&                        InputQueue()                               { return fInputQueue; }
 		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >&  AddGoodOutputQueue(size_t maxSize = 50000) { return fParser.AddGoodOutputQueue(maxSize); }
 		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >&  BadOutputQueue()                           { return fParser.BadOutputQueue(); }
 		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >&       ScalerOutputQueue()                        { return fParser.ScalerOutputQueue(); }
@@ -52,22 +52,16 @@ class TUnpackingLoop : public StoppableThread {
 
 	private:
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<TMidasEvent> > fInputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent> > > fInputQueue;
 #endif
 
 		TDataParser fParser;
-		long fFragsReadFromMidas;
+		long fFragsReadFromRaw;
 		long fGoodFragsRead;
 
 		TUnpackingLoop(std::string name);
 		TUnpackingLoop(const TUnpackingLoop& other);
 		TUnpackingLoop& operator=(const TUnpackingLoop& other);
-
-		bool ProcessMidasEvent(TMidasEvent* event);
-		bool ProcessEPICS  (float* ptr,int& dSize,TMidasEvent* mEvent);
-		bool ProcessTIGRESS(uint32_t* ptr,int& dSize,TMidasEvent* mEvent);
-		bool ProcessGRIFFIN(uint32_t* ptr,int& dSize,TDataParser::EBank bank, TMidasEvent* mEvent);
-
 
 		//ClassDef(TUnpackingLoop, 0);
 };

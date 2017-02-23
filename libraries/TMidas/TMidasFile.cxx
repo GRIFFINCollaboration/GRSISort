@@ -230,7 +230,7 @@ bool TMidasFile::Open(const char *filename)
         }
     }
 
-  Read(&fFirstEvent);
+  Read(fFirstEvent);
   TGRSIRunInfo::SetRunInfo(GetRunNumber(),GetSubRunNumber());
   TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
 
@@ -328,8 +328,8 @@ static int readpipe(int fd, char* buf, int length)
 ///
 ///  EDITED FROM THE ORIGINAL TO RETURN TOTAL SUCESSFULLY BYTES READ INSTEAD OF TRUE/FALSE,  PCB
 ///
-int TMidasFile::Read(TMidasEvent *midasEvent)
-{
+int TMidasFile::Read(std::shared_ptr<TRawEvent> event) {
+	std::shared_ptr<TMidasEvent> midasEvent = std::static_pointer_cast<TMidasEvent>(event);
   if(fReadBuffer.size() < sizeof(TMidas_EVENT_HEADER)) {
     ReadMoreBytes(sizeof(TMidas_EVENT_HEADER) - fReadBuffer.size());
   }

@@ -26,22 +26,22 @@
 
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"
-#include "TMidasFile.h"
-#include "TMidasEvent.h"
+#include "TRawFile.h"
+#include "TRawEvent.h"
 #include "TXMLOdb.h"
 
 //class TMidasFile;
 
 class TDataLoop : public StoppableThread  {
 	public:
-		static TDataLoop *Get(std::string name="", TMidasFile* source=0);
+		static TDataLoop *Get(std::string name="", TRawFile* source=0);
 		virtual ~TDataLoop();
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<TMidasEvent> >& OutputQueue() { return fOutputQueue; }
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent> > >& OutputQueue() { return fOutputQueue; }
 #endif
 
-		const TMidasFile& GetSource() const { return *fSource; }
+		const TRawFile& GetSource() const { return *fSource; }
 
 		virtual void ClearQueue();
 
@@ -53,27 +53,29 @@ class TDataLoop : public StoppableThread  {
 		size_t GetItemsCurrent() { return fOutputQueue->Size();        }
 		size_t GetRate()         { return 0; }
 
-		void ReplaceSource(TMidasFile* new_source);
+		void ReplaceSource(TRawFile* new_source);
 		void ResetSource();
 
 		void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
 		bool GetSelfStopping() const { return fSelfStopping; }
 
 	private:
-		TDataLoop(std::string name,TMidasFile* source);
+		TDataLoop(std::string name,TRawFile* source);
 		TDataLoop();
 		TDataLoop(const TDataLoop& other);
 		TDataLoop& operator=(const TDataLoop& other);
 
-		TMidasFile* fSource;
+		TRawFile* fSource;
 		bool fSelfStopping;
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<TMidasEvent> > fOutputQueue;
+		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent> > > fOutputQueue;
 		std::mutex fSourceMutex;
 #endif
 
+#ifdef HASXML
 		TXMLOdb* fOdb;
+#endif
 
 		void SetFileOdb(char* data, int size);
 		void SetTIGOdb();

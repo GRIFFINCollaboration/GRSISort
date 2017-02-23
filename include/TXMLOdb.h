@@ -23,6 +23,7 @@
 
 #include "Globals.h"
 
+#ifdef HASXML
 #include "TXMLNode.h"
 #include "TXMLDocument.h"
 #include "TDOMParser.h"
@@ -52,5 +53,6 @@ class TXMLOdb {
    ClassDef(TXMLOdb,0)
 /// \endcond
 };
+#endif
 /*! @} */
 #endif

@@ -7,7 +7,7 @@
 ClassImp(TEfficiencyGraph)
 /// \endcond
 
-TEfficiencyGraph::TEfficiencyGraph() : TCalGraph() {
+TEfficiencyGraph::TEfficiencyGraph() : TCalGraph(), fIsAbsolute(false) {
 	Clear();
 }
 
@@ -15,6 +15,7 @@ TEfficiencyGraph::~TEfficiencyGraph(){}
 
 TEfficiencyGraph::TEfficiencyGraph(const TEfficiencyGraph& copy) : TCalGraph(copy){
  //  copy.Copy(*this);
+ 	fIsAbsolute = copy.fIsAbsolute;
 }
 
 void TEfficiencyGraph::Print(Option_t *opt) const {

@@ -122,6 +122,7 @@ int main(int argc, char **argv) {
 
    Analyze("FragmentTree",proof);
    Analyze("AnalysisTree",proof);
+   Analyze("Lst2RootTree",proof);
 
 	TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
 	if(pl != nullptr) {

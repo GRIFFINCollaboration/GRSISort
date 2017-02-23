@@ -322,12 +322,14 @@ Double_t TGRSIFunctions::DeadTimeAffect(Double_t function, Double_t deadtime, Do
 
 }
 
+#ifdef HAS_MATHMORE
 Double_t TGRSIFunctions::LegendrePolynomial(Double_t *x, Double_t *p)
 {
 	Double_t val;
    val = p[0]*(1 + p[1]*::ROOT::Math::legendre(2,x[0]) + p[2]*::ROOT::Math::legendre(4,x[0]));
 	return val; 
 }
+#endif
 
 Double_t TGRSIFunctions::PhotoEfficiency(Double_t *dim, Double_t *par) {
 	

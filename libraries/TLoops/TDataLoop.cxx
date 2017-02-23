@@ -6,27 +6,33 @@
 
 #include "TGRSIOptions.h"
 #include "TString.h"
+#include "TRawFile.h"
 #include "TMidasFile.h"
 #include "TChannel.h"
 
-TDataLoop::TDataLoop(std::string name,TMidasFile* source)
+TDataLoop::TDataLoop(std::string name,TRawFile* source)
 	: StoppableThread(name),
 	fSource(source), fSelfStopping(true),
-	fOutputQueue(std::make_shared<ThreadsafeQueue<TMidasEvent> >("midas_queue")),
-	fOdb(0) {
-
-		SetFileOdb(source->GetFirstEvent().GetData(),
-				source->GetFirstEvent().GetDataSize());
-		for(auto cal_filename : TGRSIOptions::Get()->CalInputFiles()) {
-			TChannel::ReadCalFile(cal_filename.c_str());
-		}
+	fOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent> > >("midas_queue"))
+#ifdef HASXML
+	, fOdb(0) 
+#endif
+{
+	TMidasFile* midasFile = dynamic_cast<TMidasFile*>(source);
+	if(midasFile != nullptr) {
+		SetFileOdb(midasFile->GetFirstEvent()->GetData(),
+				midasFile->GetFirstEvent()->GetDataSize());
 	}
+	for(auto cal_filename : TGRSIOptions::Get()->CalInputFiles()) {
+		TChannel::ReadCalFile(cal_filename.c_str());
+	}
+}
 
 TDataLoop::~TDataLoop(){
 	//delete source;
 }
 
-TDataLoop *TDataLoop::Get(std::string name,TMidasFile* source) {
+TDataLoop *TDataLoop::Get(std::string name,TRawFile* source) {
 	if(name.length()==0)
 		name = "input_loop";
 
@@ -38,6 +44,7 @@ TDataLoop *TDataLoop::Get(std::string name,TMidasFile* source) {
 }
 
 void TDataLoop::SetFileOdb(char* data, int size) {
+#ifdef HASXML
 	//check if we have already set the TChannels....
 	//
 	if(fOdb) {
@@ -76,9 +83,11 @@ void TDataLoop::SetFileOdb(char* data, int size) {
 		//		fIamGriffin = true;
 		SetGRIFFOdb();
 	}
+#endif
 }
 
 void TDataLoop::SetGRIFFOdb() {
+#ifdef HASXML
 	std::string path = "/DAQ/MSC";
 	printf("using GRIFFIN path to analyzer info: %s...\n",path.c_str());
 
@@ -129,10 +138,11 @@ void TDataLoop::SetGRIFFOdb() {
 	printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
 
 	return;
+#endif
 }
 
 void TDataLoop::SetTIGOdb()  {
-
+#ifdef HASXML
 	std::string typepath = "/Equipment/Trigger/settings/Detector Settings";
 	std::map<int,std::pair<std::string,std::string> >typemap;
 	TXMLNode* typenode = fOdb->FindPath(typepath.c_str());
@@ -232,23 +242,24 @@ void TDataLoop::SetTIGOdb()  {
 	}
 	printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
 	return;
+#endif
 }
 
 void TDataLoop::ClearQueue() {
-	TMidasEvent event;
+	std::shared_ptr<TRawEvent> event;
 	while(fOutputQueue->Size()){
 		fOutputQueue->Pop(event);
 	}
 }
 
-void TDataLoop::ReplaceSource(TMidasFile* new_source) {
+void TDataLoop::ReplaceSource(TRawFile* new_source) {
 	std::lock_guard<std::mutex> lock(fSourceMutex);
 	//delete source;
 	fSource = new_source;
 }
 
 void TDataLoop::ResetSource() {
-	std::cerr << "Reset not implemented for TMidasFile" << std::endl;
+	std::cerr << "Reset not implemented for TRawFile" << std::endl;
 	// std::lock_guard<std::mutex> lock(fSourceMutex);
 	// source->Reset();
 }
@@ -258,7 +269,7 @@ void TDataLoop::OnEnd() {
 }
 
 bool TDataLoop::Iteration() {
-	TMidasEvent evt;
+	std::shared_ptr<TRawEvent> evt = fSource->NewEvent();
 	int bytes_read;
 	{
 		std::lock_guard<std::mutex> lock(fSourceMutex);

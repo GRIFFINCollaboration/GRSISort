@@ -23,13 +23,13 @@
 	#include <stdint.h>
 #endif
 
-#include "TObject.h"
+#include "TRawFile.h"
 
 #include "TMidasEvent.h"
 
 /// Reader for MIDAS .mid files
 
-class TMidasFile : public TObject {
+class TMidasFile : public TRawFile {
 public:
   enum EOpenType {
     kRead,
@@ -48,8 +48,7 @@ public:
 
   using TObject::Read;
   using TObject::Write;
-  int  Read(TMidasEvent* event); ///< Read one event from the file
-  int  Read(TMidasEvent& event) { return Read(&event); } ///< Read one event from the file
+  int  Read(std::shared_ptr<TRawEvent> event); ///< Read one event from the file
   bool Write(TMidasEvent* event,Option_t* opt =""); ///< Write one event to the output file
   std::string Status(bool long_file_description = true);
 
@@ -61,37 +60,30 @@ public:
   int         GetLastErrno() const { return fLastErrno; }         ///< Get error value for the last file error
   const char* GetLastError() const { return fLastError.c_str(); } ///< Get error text for the last file error
 
-  TMidasEvent& GetFirstEvent() { return fFirstEvent; }
+  std::shared_ptr<TMidasEvent> GetFirstEvent() { return fFirstEvent; }
 
   int	GetRunNumber();
   int	GetSubRunNumber();
 
-  size_t GetBytesRead() { return fBytesRead; }
-  size_t GetFileSize()  { return fFileSize; }
-
   void SetMaxBufferSize(int maxsize);
+
+	std::shared_ptr<TRawEvent> NewEvent() { return std::make_shared<TMidasEvent>(); }
 
 protected:
   void ReadMoreBytes(size_t bytes);
 
-  TMidasEvent fFirstEvent;
+  std::shared_ptr<TMidasEvent> fFirstEvent;
 
-  std::string fFilename; ///< name of the currently open file
   std::string fOutFilename; ///< name of the currently open file
 
   std::vector<char> fWriteBuffer;
   uint32_t fCurrentBufferSize;
   uint32_t fMaxBufferSize;
 
-  std::vector<char> fReadBuffer;
-
   int         fLastErrno; ///< errno from the last operation
   std::string fLastError; ///< error string from last errno
 protected:
   int currentEventNumber;
-  size_t fBytesRead;
-  size_t fFileSize;
-
 
   bool fDoByteSwap; ///< "true" if file has to be byteswapped
 
