@@ -141,8 +141,10 @@ void TS3::BuildPixels(){
 							fS3Hits.push_back(dethit);
 						}
 						
+						//Although set to used for MultiHit, continue to check all combinations in this loop.
 						UsedRing[i]=true;
 						UsedSector[j]=true;
+						//This is desired behaviour for telescope, debugging, etc, when one would set fFrontBackEnergy=0 and build all combinations
 					}
 				}
 			}
@@ -263,8 +265,8 @@ void TS3::BuildPixels(){
 											TS3Hit dethit = fS3SectorHits[i]; // Sector defines all data ring just gives position
 											//Selection one of the sectors is currently the best class allows, some loss of position information
 											//Could also do based ring energy
-											if(round(gRandom->Uniform())) dethit.SetSectorNumber(fS3RingHits[j].GetRing());
-											else dethit.SetSectorNumber(fS3RingHits[k].GetRing()); 
+											if(round(gRandom->Uniform())) dethit.SetRingNumber(fS3RingHits[j].GetRing());
+											else dethit.SetRingNumber(fS3RingHits[k].GetRing()); 
 											fS3Hits.push_back(dethit);
 										}
 									}else{
