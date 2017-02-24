@@ -189,9 +189,8 @@ void TS3::BuildPixels(){
 										
 										if(KeepShared()){
 											TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position
-											//Selection one of the sectors is currently the best class allows, some loss of position information
-											//Could also do based sector energy
-											if(round(gRandom->Uniform())) dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
+											//Selecting one of the sectors is currently the best class allows, some loss of position information
+											if(fS3SectorHits[k].GetEnergy()<fS3SectorHits[j].GetEnergy()) dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
 											else dethit.SetSectorNumber(fS3SectorHits[k].GetSector()); 
 											fS3Hits.push_back(dethit);
 										}
@@ -263,9 +262,8 @@ void TS3::BuildPixels(){
 
 										if(KeepShared()){
 											TS3Hit dethit = fS3SectorHits[i]; // Sector defines all data ring just gives position
-											//Selection one of the sectors is currently the best class allows, some loss of position information
-											//Could also do based ring energy
-											if(round(gRandom->Uniform())) dethit.SetRingNumber(fS3RingHits[j].GetRing());
+											//Selecting one of the sectors is currently the best class allows, some loss of position information
+											if(fS3RingHits[k].GetEnergy()<fS3RingHits[j].GetEnergy()) dethit.SetRingNumber(fS3RingHits[j].GetRing());
 											else dethit.SetRingNumber(fS3RingHits[k].GetRing()); 
 											fS3Hits.push_back(dethit);
 										}
