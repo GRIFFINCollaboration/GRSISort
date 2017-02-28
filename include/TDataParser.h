@@ -67,6 +67,10 @@ public:
   void SetFinished();
   std::string OutputQueueStatus();
 
+	void SetStatusVariables(std::atomic_size_t* itemsPopped, std::atomic_long* inputSize) {
+		fItemsPopped = itemsPopped;
+		fInputSize = inputSize;
+	}
 private:
 #ifndef __CINT__
   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > > fGoodOutputQueues;
@@ -87,6 +91,9 @@ private:
   bool fFragmentHasWaveform;
 
   TFragmentMap fFragmentMap;
+
+  std::atomic_size_t* fItemsPopped;
+  std::atomic_long* fInputSize;
 
 public:
 #ifndef __CINT__

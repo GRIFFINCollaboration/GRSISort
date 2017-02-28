@@ -24,7 +24,7 @@ TDataParser::TDataParser()
     fMaxTriggerId(1024*1024*16),
     fLastMidasId(0), fLastTriggerId(0), fLastNetworkPacket(0),
     fFragmentHasWaveform(false),
-    fFragmentMap(fGoodOutputQueues, fBadOutputQueue) {
+    fFragmentMap(fGoodOutputQueues, fBadOutputQueue), fItemsPopped(NULL), fInputSize(NULL) {
   gChannel = new TChannel;
 }
 
@@ -1217,12 +1217,26 @@ int TDataParser::FippsToFragment(std::vector<char> data) {
 	int eventsRead = 0;
 	std::shared_ptr<TFragment> eventFrag = std::make_shared<TFragment>();
 	Long64_t tmpTimestamp;
+	if(fItemsPopped != NULL && fInputSize != NULL) {
+		*fItemsPopped = 0;
+		*fInputSize = data.size()/16;
+	}
+
 	for(size_t i = 0; i+3 < data.size()/4; i += 4) {
+		if(fItemsPopped != NULL && fInputSize != NULL) {
+			++(*fItemsPopped);
+			--(*fInputSize);
+		}
 		eventFrag->SetAddress(ptr[i]>>16);
 		tmpTimestamp = ptr[i]&0xffff;
 		tmpTimestamp = tmpTimestamp << 30;
 		tmpTimestamp |= ptr[i+1]&0x3fffffff;
 		eventFrag->SetTimeStamp(tmpTimestamp);
+		if((ptr[i+2] & 0x7fff) == 0) {
+			if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(99);
+         Push(*fBadOutputQueue,eventFrag);
+			continue;
+		}
 		eventFrag->SetCharge(ptr[i+2] & 0x7fff);
 		if(fRecordDiag) TParsingDiagnostics::Get()->GoodFragment(eventFrag);
 		Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));

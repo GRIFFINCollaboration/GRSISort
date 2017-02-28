@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "TGRSIOptions.h"
+#include "TLstEvent.h"
 
 //ClassImp(TUnpackingLoop)
 
@@ -23,7 +24,7 @@ TUnpackingLoop *TUnpackingLoop::Get(std::string name) {
 TUnpackingLoop::TUnpackingLoop(std::string name)
 	: StoppableThread(name),
 	fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent> > >()),
-	fFragsReadFromRaw(0),fGoodFragsRead(0) {
+	fFragsReadFromRaw(0),fGoodFragsRead(0), fEvaluateDataType(true) {
 }
 
 TUnpackingLoop::~TUnpackingLoop() { }
@@ -58,8 +59,16 @@ bool TUnpackingLoop::Iteration(){
 			return true;
 		}
 	}
-	fInputSize = error;
-	++fItemsPopped;
+	if(fEvaluateDataType) {
+		fDataType = (event->IsA() == TLstEvent::Class()) ? kLst:kMidas;
+		fEvaluateDataType = false;
+	}
+	if(fDataType == kLst) {
+		fParser.SetStatusVariables(&fItemsPopped, &fInputSize);
+	} else {
+		fInputSize = error;
+		++fItemsPopped;
+	}
 
 	int frags = event->Process(fParser);
 	if(frags>0) {
