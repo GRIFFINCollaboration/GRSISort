@@ -26,6 +26,11 @@
 
 class TUnpackingLoop : public StoppableThread {
 	public:
+		enum EDataType {
+			kMidas,
+			kLst
+		};
+
 		static TUnpackingLoop *Get(std::string name="");
 		virtual ~TUnpackingLoop();
 
@@ -58,6 +63,9 @@ class TUnpackingLoop : public StoppableThread {
 		TDataParser fParser;
 		long fFragsReadFromRaw;
 		long fGoodFragsRead;
+
+		bool fEvaluateDataType;
+		UInt_t fDataType;
 
 		TUnpackingLoop(std::string name);
 		TUnpackingLoop(const TUnpackingLoop& other);

@@ -109,8 +109,16 @@ int main(int argc, char **argv) {
       std::cout << DRED << "Can't Proof a Midas file..." << RESET_COLOR << std::endl;
 
    //The first thing we do is get the PROOF Lite instance to run
-   TGRSIProof *proof = TGRSIProof::Open("");
-   proof->SetParallel(opt->GetMaxWorkers());
+	TGRSIProof* proof = nullptr;
+	if(opt->GetMaxWorkers() >= 0) {
+		std::cout<<"Opening proof with '"<<Form("workers=%d",opt->GetMaxWorkers())<<"'"<<std::endl;
+		proof = TGRSIProof::Open(Form("workers=%d",opt->GetMaxWorkers()));
+	} else if(opt->SelectorOnly()) {
+		std::cout<<"Opening proof with one worker (selector-only)"<<std::endl;
+		proof = TGRSIProof::Open("workers=1");
+	} else {
+		proof = TGRSIProof::Open("");
+	}
    if(!proof){
       std::cout << "Can't connect to proof" << std::endl;
       return 0;
