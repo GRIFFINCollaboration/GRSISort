@@ -34,8 +34,8 @@
 //#include <TGRUTInt.h>
 #include <GNotifier.h>
 
-TChain* gFragment = NULL;
-TChain* gAnalysis = NULL;
+TChain* gFragment = nullptr;
+TChain* gAnalysis = nullptr;
 
 
 

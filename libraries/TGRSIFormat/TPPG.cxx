@@ -10,7 +10,7 @@ ClassImp(TPPGData)
 ClassImp(TPPG)
 /// \endcond
 
-TPPG* TPPG::fPPG = NULL;
+TPPG* TPPG::fPPG = nullptr;
 
 TPPGData::TPPGData() {
 	Clear();
@@ -83,9 +83,9 @@ TPPG* TPPG::Get() {
 	//The getter for the singleton TPPG. Unfortunately ROOT doesn't allow true 
 	//singletons, so one should take care to always use this method and not
 	//the constructor.
-	if(fPPG == NULL) {
+	if(fPPG == nullptr) {
 		fPPG = static_cast<TPPG*>(gDirectory->Get("TPPG"));
-		if(fPPG == NULL) {
+		if(fPPG == nullptr) {
 			fPPG = new TPPG();
 		}
 	}

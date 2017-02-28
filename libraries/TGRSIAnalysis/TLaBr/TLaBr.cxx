@@ -81,7 +81,7 @@ TLaBrHit* TLaBr::GetLaBrHit(const int& i) {
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }
-   return NULL;
+   return nullptr;
 }
 
 void TLaBr::AddFragment(std::shared_ptr<const TFragment> frag, TChannel *chan) {

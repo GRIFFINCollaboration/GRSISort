@@ -61,9 +61,9 @@ void LeanMatrices() {
 }
 #endif
 
-TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = NULL) {
-   if(runInfo == NULL) {
-      return NULL;
+TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = nullptr) {
+   if(runInfo == nullptr) {
+      return nullptr;
    }
 
    ///////////////////////////////////// SETUP ///////////////////////////////////////
@@ -100,7 +100,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    Double_t offStart = 14.5e8;
    Double_t offEnd   = 15.5e8;
 
-   if(w == NULL) {
+   if(w == nullptr) {
       w = new TStopwatch;
       w->Start();
    }
@@ -136,10 +136,10 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    TH2F* ggbmatrixBg = new TH2F("ggbmatrixBg","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixBg);
    TH2F* ggbmatrixOff = new TH2F("ggbmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOff);
 
-   TH2F* gammaSinglesCyc = NULL;
-   TH2F* gammaSinglesBCyc = NULL;
-   TH2F* gammaSinglesBmCyc = NULL;
-   TH2F* betaSinglesCyc = NULL;
+   TH2F* gammaSinglesCyc = nullptr;
+   TH2F* gammaSinglesBCyc = nullptr;
+   TH2F* gammaSinglesBmCyc = nullptr;
+   TH2F* betaSinglesCyc = nullptr;
    if(ppg){
       gammaSinglesCyc = new TH2F("gammaSinglesCyc", "Cycle time vs. #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaSinglesCyc);
       gammaSinglesBCyc = new TH2F("gammaSinglesBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,ppg->GetCycleLength()/1e5, nofBins,low,high); list->Add(gammaSinglesBCyc);
@@ -516,7 +516,7 @@ int main(int argc, char **argv) {
 
    TFile* file = new TFile(argv[1]);
 
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
@@ -528,21 +528,21 @@ int main(int argc, char **argv) {
 
    //Get PPG from File
    TPPG* myPPG = (TPPG*)file->Get("TPPG");
-   /*   if(myPPG == NULL) {
+   /*   if(myPPG == nullptr) {
         printf("Failed to find PPG information in file '%s'!\n",argv[1]);
         return 1;
         }
         */
    //Get run info from File
    TGRSIRunInfo* runInfo = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
-   if(runInfo == NULL) {
+   if(runInfo == nullptr) {
       printf("Failed to find run information in file '%s'!\n",argv[1]);
       return 1;
    }
 
    TTree* tree = (TTree*) file->Get("AnalysisTree");
    TChannel::ReadCalFromTree(tree);
-   if(tree == NULL) {
+   if(tree == nullptr) {
       printf("Failed to find analysis tree in file '%s'!\n",argv[1]);
       return 1;
    }
@@ -574,8 +574,8 @@ int main(int argc, char **argv) {
       std::cout<<"Limiting processing of analysis tree to "<<entries<<" entries!"<<std::endl;
       list = LeanMatrices(tree,myPPG,runInfo, entries, &w);
    }
-   if(list == NULL) {
-      std::cout<<"LeanMatrices returned TList* NULL!\n"<<std::endl;
+   if(list == nullptr) {
+      std::cout<<"LeanMatrices returned TList* nullptr!\n"<<std::endl;
       return 1;
    }
 

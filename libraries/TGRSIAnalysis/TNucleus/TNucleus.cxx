@@ -230,7 +230,7 @@ const char* TNucleus::SortName(const char* name){
         break;
       default:
         printf("error, type numbersymbol, or symbolnumber, i.e. 30Mg oder Mg30\n");
-        return NULL;
+        return nullptr;
     };
   }
   int first_digit  = Name.find_first_of("0123456789 \t\n\r");

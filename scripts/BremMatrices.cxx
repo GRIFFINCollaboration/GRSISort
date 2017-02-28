@@ -61,9 +61,9 @@ void BremMatrices() {
 }
 #endif
 
-TList *BremMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = NULL) {
-   if(runInfo == NULL) {
-      return NULL;
+TList *BremMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = nullptr) {
+   if(runInfo == nullptr) {
+      return nullptr;
    }
 
 const Int_t nScDet = 21;
@@ -127,7 +127,7 @@ Bool_t supp_flag[nScDet][nGrDet] = {
    Double_t offStart = 14.5e8;
    Double_t offEnd   = 15.5e8;
 
-   if(w == NULL) {
+   if(w == nullptr) {
       w = new TStopwatch;
       w->Start();
    }
@@ -571,7 +571,7 @@ int main(int argc, char **argv) {
 
    TFile* file = new TFile(argv[1]);
 
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
@@ -583,21 +583,21 @@ int main(int argc, char **argv) {
 
    //Get PPG from File
    TPPG* myPPG = (TPPG*)file->Get("TPPG");
-/*   if(myPPG == NULL) {
+/*   if(myPPG == nullptr) {
       printf("Failed to find PPG information in file '%s'!\n",argv[1]);
       return 1;
    }
 */
    //Get run info from File
    TGRSIRunInfo* runInfo = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
-   if(runInfo == NULL) {
+   if(runInfo == nullptr) {
       printf("Failed to find run information in file '%s'!\n",argv[1]);
       return 1;
    }
 
    TTree* tree = (TTree*) file->Get("AnalysisTree");
    TChannel::ReadCalFromTree(tree);
-   if(tree == NULL) {
+   if(tree == nullptr) {
       printf("Failed to find analysis tree in file '%s'!\n",argv[1]);
       return 1;
    }
@@ -629,8 +629,8 @@ int main(int argc, char **argv) {
       std::cout<<"Limiting processing of analysis tree to "<<entries<<" entries!"<<std::endl;
       list = BremMatrices(tree,myPPG,runInfo, entries, &w);
    }
-   if(list == NULL) {
-      std::cout<<"BremMatrices returned TList* NULL!\n"<<std::endl;
+   if(list == nullptr) {
+      std::cout<<"BremMatrices returned TList* nullptr!\n"<<std::endl;
       return 1;
    }
 

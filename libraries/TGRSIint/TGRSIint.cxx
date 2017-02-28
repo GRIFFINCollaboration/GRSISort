@@ -44,9 +44,9 @@ ClassImp(TGRSIint)
 extern void PopupLogo(bool);
 extern void WaitLogo();
 
-TGRSIint *TGRSIint::fTGRSIint = NULL;
+TGRSIint *TGRSIint::fTGRSIint = nullptr;
 
-TEnv *TGRSIint::fGRSIEnv = NULL;
+TEnv *TGRSIint::fGRSIEnv = nullptr;
 //std::vector<std::string> *TGRSIint::fInputRootFile  = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputMidasFile = new std::vector<std::string>;
 //std::vector<std::string> *TGRSIint::fInputCalFile   = new std::vector<std::string>;
@@ -64,7 +64,7 @@ TGRSIint *TGRSIint::instance(int argc,char** argv, void *options, int numOptions
 
 TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t noLogo,const char *appClassName)
   :TRint(appClassName, &argc, argv, options, numOptions,noLogo),
-   fKeepAliveTimer(NULL), main_thread_id(std::this_thread::get_id()), fIsTabComplete(false),
+   fKeepAliveTimer(nullptr), main_thread_id(std::this_thread::get_id()), fIsTabComplete(false),
    fAllowedToTerminate(true),fRootFilesOpened(0),fMidasFilesOpened(0) {
 
       fGRSIEnv = gEnv;
@@ -308,7 +308,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt){
   TString sopt(opt);
   sopt.ToLower();
 
-  TFile* file = NULL;
+  TFile* file = nullptr;
   if(sopt.Contains("recreate") ||
      sopt.Contains("new")) {
     // We are being asked to make a new file.
@@ -393,7 +393,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt){
 TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename) {
   if(!file_exists(filename.c_str())){
     std::cerr << "File \"" << filename << "\" does not exist" << std::endl;
-    return NULL;
+    return nullptr;
   }
 
   TMidasFile* file = new TMidasFile(filename.c_str());

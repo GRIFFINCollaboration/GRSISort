@@ -61,7 +61,7 @@ void TZeroDegree::Print(Option_t *opt) const	{
 
 void TZeroDegree::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
    ///Builds the ZDS Hits directly from the TFragment. Basically, loops through the data for an event and sets observables.
-   if(frag == NULL || chan == NULL) {
+   if(frag == nullptr || chan == nullptr) {
       return;
    }
    
@@ -82,5 +82,5 @@ TZeroDegreeHit* TZeroDegree::GetZeroDegreeHit(const int& i) {
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }
-   return NULL;
+   return nullptr;
 }

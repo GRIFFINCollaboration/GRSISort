@@ -62,7 +62,7 @@ DynamicLibrary::~DynamicLibrary() {
 }
 
 DynamicLibrary::DynamicLibrary(DynamicLibrary&& other)
-  : fLibrary(NULL){
+  : fLibrary(nullptr){
   swap(other);
 }
 

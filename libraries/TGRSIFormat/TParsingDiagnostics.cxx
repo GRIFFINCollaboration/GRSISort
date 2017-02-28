@@ -4,20 +4,20 @@
 
 #include "TChannel.h"
 
-TParsingDiagnostics* TParsingDiagnostics::fParsingDiagnostics = NULL;
+TParsingDiagnostics* TParsingDiagnostics::fParsingDiagnostics = nullptr;
 
 TParsingDiagnostics::TParsingDiagnostics() : TObject() {
-	fIdHist = NULL;
+	fIdHist = nullptr;
 	Clear();
 }
 
 TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics& rhs) : TObject() {
-	fIdHist = NULL;
+	fIdHist = nullptr;
 	Clear();
 }
 
 TParsingDiagnostics::~TParsingDiagnostics() {
-	if(fIdHist != NULL) delete fIdHist;
+	if(fIdHist != nullptr) delete fIdHist;
 }
 
 void TParsingDiagnostics::Copy(TObject& obj) const {
@@ -38,8 +38,8 @@ void TParsingDiagnostics::Copy(TObject& obj) const {
 }
 
 void TParsingDiagnostics::Clear(Option_t* opt) {
-	if(fIdHist != NULL) delete fIdHist;
-	fIdHist = NULL;
+	if(fIdHist != nullptr) delete fIdHist;
+	fIdHist = nullptr;
 	fPPGCycleLength = 0;
 	fNumberOfGoodFragments.clear();
 	fNumberOfBadFragments.clear();
@@ -141,7 +141,7 @@ void TParsingDiagnostics::GoodFragment(std::shared_ptr<const TFragment> frag) {
 
 void TParsingDiagnostics::ReadPPG(TPPG* ppg) {
 	///store different TPPG diagnostics like cycle length, length of each state, offset, how often each state was found
-	if(ppg == NULL) return;
+	if(ppg == nullptr) return;
 	fPPGCycleLength = ppg->GetCycleLength();
 	
 }
@@ -151,11 +151,11 @@ void TParsingDiagnostics::Draw(Option_t* opt) {
 	Short_t maxChannel = std::prev(fNumberOfHits.end())->first;
 
 	//check that the histogram (if it already exists) has the right number of bins
-	if(fIdHist != NULL && fIdHist->GetNbinsX() != maxChannel-minChannel+1) {
+	if(fIdHist != nullptr && fIdHist->GetNbinsX() != maxChannel-minChannel+1) {
 		delete fIdHist;
-		fIdHist = NULL;
+		fIdHist = nullptr;
 	}
-	if(fIdHist == NULL) {
+	if(fIdHist == nullptr) {
 		fIdHist = new TH1F("IdHist","Event survival;channel number;survival rate [%]", maxChannel-minChannel+1, minChannel, maxChannel+1);
 	} else {
 		//the histogram already had the right number of bins, but to be save we set the range

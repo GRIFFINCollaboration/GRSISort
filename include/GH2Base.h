@@ -84,7 +84,7 @@ public:
   class iterator {
   public:
   iterator(GH2Base* mat, bool at_end = false)
-    : fMat(mat), fFirst(mat->GetNext(NULL)), fCurr(at_end ? NULL : fFirst) { }
+    : fMat(mat), fFirst(mat->GetNext(nullptr)), fCurr(at_end ? nullptr : fFirst) { }
 
     GH1D& operator*() const {
       return *fCurr;

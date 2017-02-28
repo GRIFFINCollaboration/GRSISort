@@ -16,13 +16,13 @@
 #include "GH2D.h"
 
 GH1D::GH1D(const TH1& source)
-  : parent(NULL), projection_axis(-1) {
+  : parent(nullptr), projection_axis(-1) {
   source.Copy(*this);
 }
 
 
 GH1D::GH1D(const TF1& function,Int_t nbinsx,Double_t xlow,Double_t xup) :
-  TH1D(Form("%s_hist",function.GetName()),Form("%s_hist",function.GetName()),nbinsx, xlow, xup), parent(NULL), projection_axis(-1) {
+  TH1D(Form("%s_hist",function.GetName()),Form("%s_hist",function.GetName()),nbinsx, xlow, xup), parent(nullptr), projection_axis(-1) {
 
   //TF1 *f = (TF1*)function.Clone();
   //f->SetRange(xlow,xup);
@@ -54,7 +54,7 @@ bool GH1D::WriteDatFile(const char *outFile){
 
 /*
 GH1D::GH1D(const TH1 *source)
-  : parent(NULL), projection_axis(-1) {
+  : parent(nullptr), projection_axis(-1) {
   if(source->GetDiminsion()>1) {
     return;
   }
@@ -78,7 +78,7 @@ void GH1D::SetOption(Option_t* opt) {
 
 void GH1D::Clear(Option_t* opt) {
   TH1D::Clear(opt);
-  parent = NULL;
+  parent = nullptr;
 }
 
 void GH1D::Print(Option_t* opt) const {
@@ -141,7 +141,7 @@ GH1D* GH1D::GetPrevious(bool DrawEmpty) const {
     prev->GetXaxis()->SetRange(first,last);
     return prev; //gpar->GetPrevious(this,DrawEmpty);
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 
@@ -154,7 +154,7 @@ GH1D* GH1D::GetNext(bool DrawEmpty) const {
     next->GetXaxis()->SetRange(first,last);
     return next; //gpar->GetNext(this,DrawEmpty);
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 
@@ -176,7 +176,7 @@ GH1D* GH1D::Project(double value_low, double value_high) const {
       return gpar->ProjectionX("_px", bin_low, bin_high);
     }
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 
@@ -213,7 +213,7 @@ GH1D* GH1D::Project_Background(double value_low, double value_high,
                                           mode);
     }
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 

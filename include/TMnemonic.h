@@ -8,7 +8,7 @@
 
 class TMnemonic : public TObject {
    public:
-		TMnemonic() :fClassType(NULL) {}
+		TMnemonic() :fClassType(nullptr) {}
 		TMnemonic(const char* name) : TMnemonic() { Parse(name); }
 		~TMnemonic() {}
 

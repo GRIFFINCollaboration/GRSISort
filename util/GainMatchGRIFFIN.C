@@ -161,7 +161,7 @@ void make_calibration_histograms(const char* fragFileName, const char* histFileN
 {
 	// create histograms
 	TFile* f = new TFile(fragFileName);
-	if(f == NULL) {
+	if(f == nullptr) {
 	      	printf("Failed to open file '%s'!\n",fragFileName);
       		return;
    	}
@@ -275,7 +275,7 @@ void create_gainmatch_graphs(const char* histFileName, int minchannel, int maxch
 /*---------------------------------------------------------------*/
 
 	TFile* f = new TFile(histFileName,"update");
-	if(f == NULL) {
+	if(f == nullptr) {
 	      	printf("Failed to open file '%s'!\n",histFileName);
       		return;
    	}
@@ -397,7 +397,7 @@ TGraph* gainmatch_peaks(TH1* hst, vector<double> peakvalues, vector<double> peak
 void create_GRIFFIN_cal(const char* ROOTFileName, const char* outFileName, int minchannel, int maxchannel, vector<int> channelstoskip, const char* paramImgName = "GRIFFIN_fitting_params.png", const char* graphImgName="GRIFFIN_calgraph.png", int order = 1)
 {
 	TFile* f = new TFile(ROOTFileName);
-	if(f == NULL) {
+	if(f == nullptr) {
 	      	printf("Failed to open file '%s'!\n",ROOTFileName);
       		return;
    	}
@@ -571,7 +571,7 @@ void create_GRIFFIN_cal(const char* ROOTFileName, const char* outFileName, int m
 void recalibrate_spectra(const char* fragFile, const char* newFile, const char* calFile, int minchannel, int maxchannel, vector<int> channelstoskip, int xbins = 40e3, double xmin = 0, double xmax = 4000)
 {
 	TFile* fdata = new TFile(fragFile);
-	if(fdata == NULL) {
+	if(fdata == nullptr) {
 	      	printf("Failed to open file '%s'!\n",fragFile);
       		return;
    	}
@@ -668,7 +668,7 @@ TList* MakeGRIFFINEnergyHsts(TTree* tree, int minchannel, int maxchannel, int bi
 void check_calibration(const char* testFileName, int minchannel, int maxchannel, vector<int> channelstoskip, vector<double> peaks, const char* type = "TSpectrum", double width = 10, bool UseMyList = kFALSE, const char* fwhmImgName="GRIFFIN_FWHM_diagnostic.png", const char* fwratioImgName="GRIFFIN_FWratio_diagnostic.png")
 {
 	TFile* f = new TFile(testFileName,"update");
-	if(f == NULL) {
+	if(f == nullptr) {
 	      	printf("Failed to open file '%s'!\n",testFileName);
       		return;
    	}
@@ -997,7 +997,7 @@ int main(int argc, char **argv) {
       }
    
       TFile* file = new TFile(argv[i]);
-      if(file == NULL) {
+      if(file == nullptr) {
          printf("Failed to open file '%s'!\n",argv[1]);
          return 1;
       }
@@ -1073,7 +1073,7 @@ int main(int argc, char **argv) {
       }
    
       TFile* file = new TFile(argv[i]);
-      if(file == NULL) {
+      if(file == nullptr) {
          printf("Failed to open file '%s'!\n",argv[1]);
          return 1;
       }

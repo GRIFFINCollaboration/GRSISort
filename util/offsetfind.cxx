@@ -29,7 +29,7 @@ class TEventTime {
          event->SetBankList();
   
          void *ptr;
-         int banksize = event->LocateBank(NULL,"GRF1",&ptr);
+         int banksize = event->LocateBank(nullptr,"GRF1",&ptr);
 
          uint32_t type  = 0xffffffff;
          uint32_t value = 0xffffffff;

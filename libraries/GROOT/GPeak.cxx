@@ -12,7 +12,7 @@
 
 ClassImp(GPeak)
 
-GPeak* GPeak::fLastFit = NULL;
+GPeak* GPeak::fLastFit = nullptr;
 
 GPeak::GPeak(Double_t cent,Double_t xlow,Double_t xhigh,Option_t *opt)
       : TF1("photopeakbg",GRootFunctions::PhotoPeakBG,xlow,xhigh,7),

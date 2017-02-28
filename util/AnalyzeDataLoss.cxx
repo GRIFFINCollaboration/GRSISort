@@ -24,9 +24,9 @@
 
 #include "TFragment.h"
 
-TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
+TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = nullptr) {
   
-  if(w == NULL) {
+  if(w == nullptr) {
     w = new TStopwatch;
     w->Start();
   }
@@ -246,7 +246,7 @@ int main(int argc, char **argv) {
    }
 
    TFile* file = new TFile(argv[1]);
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
@@ -257,14 +257,14 @@ int main(int argc, char **argv) {
 
    TTree* tree = (TTree*) file->Get("FragmentTree");
 
-   if(tree == NULL) {
+   if(tree == nullptr) {
       printf("Failed to find fragment tree in file '%s'!\n",argv[1]);
       return 1;
    }
    
    TTree* badtree = (TTree*) file->Get("BadFragmentTree");
 
-   if(badtree == NULL) {
+   if(badtree == nullptr) {
       printf("Failed to find bad fragment tree in file '%s'!\n",argv[1]);
    } else {
 		std::cout<<badtree->GetEntries()<<" bad entries in total = "<<(100.*badtree->GetEntries())/tree->GetEntries()<<"% of the good entries"<<std::endl;
@@ -272,7 +272,7 @@ int main(int argc, char **argv) {
    
    TTree* epicstree = (TTree*) file->Get("EpicsTree");
 
-   if(epicstree == NULL) {
+   if(epicstree == nullptr) {
       printf("Failed to find epics tree in file '%s'!\n",argv[1]);
    } else {
 		std::cout<<epicstree->GetEntries()<<" epics entries"<<std::endl;
@@ -280,7 +280,7 @@ int main(int argc, char **argv) {
    
    TPPG* ppg = (TPPG*) file->Get("TPPG");
 
-   if(ppg == NULL) {
+   if(ppg == nullptr) {
       printf("Failed to find ppg in file '%s'!\n",argv[1]);
    } else {
 		std::cout<<ppg->PPGSize()<<" ppg events"<<std::endl;

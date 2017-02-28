@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
    abs_flag = atoi(argv[2]);
 
    TFile* file = new TFile(argv[1]);
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }

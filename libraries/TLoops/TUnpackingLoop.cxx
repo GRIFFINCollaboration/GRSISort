@@ -75,19 +75,19 @@ bool TUnpackingLoop::ProcessMidasEvent(TMidasEvent* mEvent)   {
 		switch(mEvent->GetEventId())  {
 			case 1:
 				mEvent->SetBankList();
-				if((banksize = mEvent->LocateBank(NULL,"WFDN",&ptr))>0) {
+				if((banksize = mEvent->LocateBank(nullptr,"WFDN",&ptr))>0) {
 					if(!ProcessTIGRESS((uint32_t*)ptr, banksize, mEvent)) { }
 					//(unsigned int)(mEvent->GetSerialNumber()),
 					//(unsigned int)(mEvent->GetTimeStamp()))) { }
-				} else if((banksize = mEvent->LocateBank(NULL,"GRF1",&ptr))>0) {
+				} else if((banksize = mEvent->LocateBank(nullptr,"GRF1",&ptr))>0) {
 					if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF1, mEvent)) { }
 					//(unsigned int)(mEvent->GetSerialNumber()),
 					//(unsigned int)(mEvent->GetTimeStamp()))) { }
-				} else if((banksize = mEvent->LocateBank(NULL,"GRF2",&ptr))>0) {
+				} else if((banksize = mEvent->LocateBank(nullptr,"GRF2",&ptr))>0) {
 					if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF2, mEvent)) { }
-				} else if((banksize = mEvent->LocateBank(NULL,"GRF3",&ptr))>0) {
+				} else if((banksize = mEvent->LocateBank(nullptr,"GRF3",&ptr))>0) {
 					if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF3, mEvent)) { }
-				} else if((banksize = mEvent->LocateBank(NULL,"GRF4",&ptr))>0) {
+				} else if((banksize = mEvent->LocateBank(nullptr,"GRF4",&ptr))>0) {
 					if(!ProcessGRIFFIN((uint32_t*)ptr,banksize,TDataParser::EBank::kGRF4, mEvent)) { }
 				} else if(!TGRSIOptions::Get()->SuppressErrors()) {
 					printf(DRED "\nUnknown bank in midas event #%d" RESET_COLOR "\n", mEvent->GetSerialNumber());
@@ -102,7 +102,7 @@ bool TUnpackingLoop::ProcessMidasEvent(TMidasEvent* mEvent)   {
 			case 4:
 			case 5:
 				 mEvent->SetBankList();
-				 if((banksize = mEvent->LocateBank(NULL,"MSRD",&ptr))>0) {
+				 if((banksize = mEvent->LocateBank(nullptr,"MSRD",&ptr))>0) {
 					 if(!ProcessEPICS((float*)ptr, banksize, mEvent)) { }
 				 }
 

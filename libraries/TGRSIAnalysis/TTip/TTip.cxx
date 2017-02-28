@@ -40,7 +40,7 @@ TTip& TTip::operator=(const TTip& rhs) {
 }
 
 void TTip::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
-	if(frag == NULL || chan == NULL) {
+	if(frag == nullptr || chan == nullptr) {
 		return;
 	}
 

@@ -67,32 +67,32 @@ int main(int argc, char** argv) {
 			//TTAC
 			
 			bool gotGriffin = (tree->FindBranch("TGriffin") != 0);
-			TGriffin* grif = NULL;
+			TGriffin* grif = nullptr;
 			if(gotGriffin)	tree->SetBranchAddress("TGriffin", &grif);
 			long numGriffin = 0;
 
 			bool gotDescant = (tree->FindBranch("TDescant") != 0);
-			TDescant* desc = NULL;
+			TDescant* desc = nullptr;
 			if(gotDescant) tree->SetBranchAddress("TDescant", &desc);
 			long numDescant = 0;
 
 			bool gotLaBr = (tree->FindBranch("TLaBr") != 0);
-			TLaBr* laBr = NULL;
+			TLaBr* laBr = nullptr;
 			if(gotLaBr)	tree->SetBranchAddress("TLaBr", &laBr);
 			long numLaBr = 0;
 
 			bool gotZeroDegree = (tree->FindBranch("TZeroDegree") != 0);
-			TZeroDegree* zd = NULL;
+			TZeroDegree* zd = nullptr;
 			if(gotZeroDegree)	tree->SetBranchAddress("TZeroDegree", &zd);
 			long numZeroDegree = 0;
 
 			bool gotSceptar = (tree->FindBranch("TSceptar") != 0);
-			TSceptar* scep = NULL;
+			TSceptar* scep = nullptr;
 			if(gotSceptar) tree->SetBranchAddress("TSceptar", &scep);
 			long numSceptar = 0;
 
 			bool gotPaces = (tree->FindBranch("TPaces") != 0);
-			TPaces* pace = NULL;
+			TPaces* pace = nullptr;
 			if(gotPaces) tree->SetBranchAddress("TPaces", &pace);
 			long numPaces = 0;
 
