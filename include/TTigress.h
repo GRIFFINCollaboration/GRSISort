@@ -39,7 +39,8 @@ class TTigress : public TGRSIDetector {
 			kSetCoreWave	= BIT(1),
 			kSetSegWave	= BIT(2),
 			kSetBGOHits	= BIT(3),
-			kForceCrystal	= BIT(4)
+			kForceCrystal	= BIT(4),
+			kArrayBackPos	= BIT(5)//110 or 145
 		};
 
 #ifndef __CINT__
@@ -57,7 +58,7 @@ class TTigress : public TGRSIDetector {
 		const TGRSIDetectorHit *GetHit(int i)   const { return GetTigressHit(i);    }  //!<!
 		size_t GetMultiplicity()                const { return fTigressHits.size(); }  //!<!
 		static TVector3 GetPosition(int DetNbr ,int CryNbr, int SegNbr, double distance = 0.,bool smear=false);    //!<!
-		static TVector3 GetPosition(const TTigressHit&,double distance = 0.);    //!<!
+		static TVector3 GetPosition(const TTigressHit&,double distance = 0.,bool smear=false);    //!<!
 
 		std::vector<TBgoHit> fBgos;
 		void AddBGO(TBgoHit& bgo) { fBgos.push_back(bgo);	}	   //!<!
@@ -106,6 +107,7 @@ class TTigress : public TGRSIDetector {
 #endif
 		static TTransientBits<UShort_t> fgTigressBits; //!
 		TTransientBits<UShort_t> fTigressBits;
+		
 		std::vector<TTigressHit> fTigressHits;
 
 		static double fTargetOffset;             //!<!
@@ -138,15 +140,22 @@ class TTigress : public TGRSIDetector {
 		static bool SetSegmentWave(bool set=true){ SetGlobalBit(kSetSegWave,set);return set;}  //!<!
 		static bool SetBGOWave(bool set=true){ SetGlobalBit(kSetBGOWave,set);return set;}  //!<!
 		static bool SetForceCrystal(bool set=true){ SetGlobalBit(kForceCrystal,set);return set;}  //!<!
+		static bool SetArrayBackPos(bool set=true){ SetGlobalBit(kArrayBackPos,set);return set;}  //!<!
 		
 		static bool GetCoreWave()    { return TestGlobalBit(kSetCoreWave);}     //!<!
 		static bool GetSegmentWave() { return TestGlobalBit(kSetSegWave);}      //!<!
 		static bool GetBGOWave()     { return TestGlobalBit(kSetBGOWave);}      //!<!
 		static bool GetForceCrystal(){ return TestGlobalBit(kForceCrystal);}    //!<!
+		static bool GetArrayBackPos(){ return TestGlobalBit(kArrayBackPos);}    //!<!
 		
 		static bool BGOSuppression[4][4][5]; //!<!
 
 		static void SetTargetOffset(double offset) { fTargetOffset = offset; }  //!<!
+		
+		static double GetFaceDistance(){
+			if(GetArrayBackPos())return 145;
+			return 110;
+		}
 
 	public:         
 		virtual void Clear(Option_t *opt = "");     //!<!
