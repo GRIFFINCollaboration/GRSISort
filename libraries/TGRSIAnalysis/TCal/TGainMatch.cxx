@@ -338,11 +338,11 @@ Bool_t TGainMatch::CoarseMatchAll(TCalManager* cm, TH2* mat, Double_t energy1, D
    std::vector<Int_t> badlist;
    TGainMatch* gm = new TGainMatch;
    if(!cm) {
-      gm->Error("CoarseMatchAll","CalManager Pointer is NULL");
+      gm->Error("CoarseMatchAll","CalManager Pointer is nullptr");
       return false;
    }
    if(!mat) {
-      gm->Error("CoarseMatchAll","TH2 Pointer is NULL");
+      gm->Error("CoarseMatchAll","TH2 Pointer is nullptr");
       return false;
    }
    //Find the range of channels provided
@@ -399,11 +399,11 @@ Bool_t TGainMatch::FineMatchFastAll(TCalManager* cm, TH2* mat1, TPeak* peak1, TH
    std::vector<Int_t> badlist;
    TGainMatch* gm = new TGainMatch;
    if(!cm) {
-      gm->Error("FineMatchFastAll","CalManager Pointer is NULL");
+      gm->Error("FineMatchFastAll","CalManager Pointer is nullptr");
       return false;
    }
    if(!mat1 || !mat2) {
-      gm->Error("FineMatchFastAll","TH2 Pointer is NULL");
+      gm->Error("FineMatchFastAll","TH2 Pointer is nullptr");
       return false;
    }
    if(!peak1 || !peak2) {
@@ -531,15 +531,15 @@ Bool_t TGainMatch::AlignAll(TCalManager* cm, TH1* hist, TH2* mat, Int_t low_rang
    std::vector<Int_t> badlist;
    TGainMatch* gm = new TGainMatch;
    if(!cm) {
-      gm->Error("AlignAll","CalManager Pointer is NULL");
+      gm->Error("AlignAll","CalManager Pointer is nullptr");
       return false;
    }
    if(!mat) {
-      gm->Error("AlignAll","TH2 Pointer is NULL");
+      gm->Error("AlignAll","TH2 Pointer is nullptr");
       return false;
    }
    if(!hist) {
-      gm->Error("AlignAll","TH1 Pointer is NULL");
+      gm->Error("AlignAll","TH1 Pointer is nullptr");
       return false;
    }
    //Find the range of channels provided
@@ -577,15 +577,15 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
 
    TGainMatch* gm = new TGainMatch;
    if(!cm) {
-      gm->Error("FineMatchAll","CalManager Pointer is NULL");
+      gm->Error("FineMatchAll","CalManager Pointer is nullptr");
       return false;
    }
    if(!charge_mat || !eng_mat) {
-      gm->Error("FineMatchAll","TH2 Pointer is NULL");
+      gm->Error("FineMatchAll","TH2 Pointer is nullptr");
       return false;
    }
   /* if(!testhist) {
-      gm->Error("FineMatchAll","TH1 Pointer is NULL");
+      gm->Error("FineMatchAll","TH1 Pointer is nullptr");
       return false;
    }*/
    Double_t binwidth;

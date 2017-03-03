@@ -50,7 +50,7 @@ class VirtualOdb {
   /// Read a boolean value, midas type TID_BOOL
   virtual bool     odbReadBool(  const char*name, int index = 0, bool     defaultValue = false) = 0;
   /// Read a string value, midas type TID_STRING
-  virtual const char* odbReadString(const char*name, int index = 0,const char* defaultValue = NULL) = 0;
+  virtual const char* odbReadString(const char*name, int index = 0,const char* defaultValue = nullptr) = 0;
   /// Destructor has to be virtual
   virtual ~VirtualOdb() { /* empty */ }; // dtor
 };

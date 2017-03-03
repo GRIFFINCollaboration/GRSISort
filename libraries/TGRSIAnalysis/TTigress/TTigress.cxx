@@ -113,7 +113,7 @@ TTigress& TTigress::operator=(const TTigress& rhs) {
     if(!gInterpreter)
       throw grsi::exit_exception(1);
   }
-  return NULL;
+  return nullptr;
   */
 //}
 
@@ -166,7 +166,7 @@ TTigressHit* TTigress::GetAddbackHit(const int& i) {
   } else {
     std::cerr << "Addback hits are out of range" << std::endl;
     throw grsi::exit_exception(1);
-    return NULL;
+    return nullptr;
   }
 }
 
@@ -205,7 +205,7 @@ void TTigress::BuildHits(){
 }
 
 void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
-	if(frag == NULL || chan == NULL) {
+	if(frag == nullptr || chan == nullptr) {
 		return;
 	}
 	/*  if(GetMidasTimestamp()==-1) {

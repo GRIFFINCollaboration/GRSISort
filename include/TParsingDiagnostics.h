@@ -37,7 +37,7 @@ class TParsingDiagnostics : public TObject {
 		TParsingDiagnostics(const TParsingDiagnostics&);
 		~TParsingDiagnostics();
 		static TParsingDiagnostics* Get() {
-			if(fParsingDiagnostics == NULL) {
+			if(fParsingDiagnostics == nullptr) {
 				fParsingDiagnostics = new TParsingDiagnostics;
 			}
 			return fParsingDiagnostics;

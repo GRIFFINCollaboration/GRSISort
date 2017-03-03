@@ -6,7 +6,7 @@
 #include "TChannel.h"
 #include "TGRSIOptions.h"
 
-TSortingDiagnostics* TSortingDiagnostics::fSortingDiagnostics = NULL;
+TSortingDiagnostics* TSortingDiagnostics::fSortingDiagnostics = nullptr;
 
 TSortingDiagnostics::TSortingDiagnostics() : TObject() {
 	Clear();

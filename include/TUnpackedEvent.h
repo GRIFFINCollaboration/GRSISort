@@ -57,7 +57,7 @@ std::shared_ptr<T> TUnpackedEvent::GetDetector(bool make_if_not_found) {
     fDetectors.push_back(output);
     return output;
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 #endif
