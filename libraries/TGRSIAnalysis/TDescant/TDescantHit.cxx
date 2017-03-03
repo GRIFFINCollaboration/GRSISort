@@ -8,6 +8,7 @@
 #include "TDescant.h"
 #include "TGRSIOptions.h"
 #include "TChannel.h"
+#include "GValue.h"
 
 /// \cond CLASSIMP
 ClassImp(TDescantHit)
@@ -133,6 +134,13 @@ Double_t TDescantHit::GetTime(const UInt_t& correction_flag,Option_t* opt) const
 	}
 
 	return dTime - 10.*(chan->GetTZero(GetEnergy()));
+}
+
+Double_t TDescantHit::GetCorrectedTime() const {
+	if(GValue::Get(Form("GRSISort.Descant.%d.TimeCorrection", GetDetector())) != nullptr) {
+		return GetTime() - GValue::Value(Form("GRSISort.Descant.%d.TimeCorrection", GetDetector()));
+	}
+	return GetTime();
 }
 
 void TDescantHit::Clear(Option_t *opt)	{
