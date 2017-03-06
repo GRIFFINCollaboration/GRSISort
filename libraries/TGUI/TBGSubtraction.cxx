@@ -5,7 +5,7 @@
 #include "TInterpreter.h"
 
 /// \cond CLASSIMP
-ClassImp(TBGSubtraction);
+ClassImp(TBGSubtraction)
 /// \endcond
 
 
