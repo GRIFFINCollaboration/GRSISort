@@ -1,13 +1,13 @@
 //g++ offsetfind.cxx `root-config --cflags --libs` -I${GRSISYS}/include -L${GRSISYS}/libraries -lMidasFormat -lXMLParser  -ooffsetfind
 
 
-#include"TMidasFile.h"
-#include"TMidasEvent.h"
-#include"GFile.h"
-#include"TFragment.h"
-#include"TTree.h"
-#include"TChannel.h"
-#include"TH2D.h"
+#include "TMidasFile.h"
+#include "TMidasEvent.h"
+#include "GFile.h"
+#include "TFragment.h"
+#include "TTree.h"
+#include "TChannel.h"
+#include "TH2D.h"
 #include "TTreeIndex.h"
 #include "TVirtualIndex.h"
 #include "Globals.h"
@@ -16,16 +16,13 @@
 #include "TString.h"
 #include "TPolyMarker.h"
 
-#include<TMidasFile.h>
-#include<TMidasEvent.h>
-#include<vector>
-
+#include <vector>
 #include <iostream>
 
 
 class TEventTime {
    public: 
-      TEventTime(TMidasEvent* event){
+      TEventTime(std::shared_ptr<TMidasEvent> event){
          event->SetBankList();
   
          void *ptr;
@@ -146,7 +143,7 @@ std::map<int,int> TEventTime::digmap;
 int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    int events_read = 0;
    const int total_events = 1E7;
-   TMidasEvent *event  = new TMidasEvent;
+	std::shared_ptr<TMidasEvent> event = std::make_shared<TMidasEvent>();
    eventQ->reserve(total_events);
 
    while(infile->Read(event)>0 && eventQ->size()<total_events) {
@@ -175,7 +172,6 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    }
    TEventTime::OrderDigitizerMap();
    printf("\n");
-   delete event;
    return 0;
 }
 

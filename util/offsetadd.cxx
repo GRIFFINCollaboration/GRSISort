@@ -6,9 +6,9 @@
 
 #include <iostream>
 
-//void WriteEventToFile(TMidasFile*,TMidasEvent*,Option_t);
+//void WriteEventToFile(TMidasFile*,std::shared_ptr<TMidasEvent>,Option_t);
 
-void ProcessEvent(TMidasEvent*,TMidasFile*);
+void ProcessEvent(std::shared_ptr<TMidasEvent>,TMidasFile*);
 
 int main(int argc, char **argv) {
 
@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 
    TMidasFile *infile  = new TMidasFile;
    TMidasFile *outfile = new TMidasFile;
-   TMidasEvent *event  = new TMidasEvent;
+	std::shared_ptr<TMidasEvent> event = std::make_shared<TMidasEvent>();
    
    if(argv[1] == argv[2]){
       printf("ERROR: Cannot overwrite midas file %s\n",argv[1]);
@@ -51,12 +51,12 @@ int main(int argc, char **argv) {
 }
 
 
-//void WriteEventToFile(TMidasFile *outfile,TMidasEvent *event) {
+//void WriteEventToFile(TMidasFile *outfile,std::shared_ptr<TMidasEvent> event) {
 //   outfile->Write(event);
 //}
 
 
-void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
+void ProcessEvent(std::shared_ptr<TMidasEvent> event,TMidasFile *outfile) {
    if(event->GetEventId() !=1 ) {
       outfile->Write(event,"q");
       return;
@@ -167,10 +167,10 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
 //   event->Print("a");
 //   printf(RESET_COLOR);
 
-   TMidasEvent copyevent = *event;
-   copyevent.SetBankList();
+	std::shared_ptr<TMidasEvent> copyevent = std::make_shared<TMidasEvent>(*event);
+   copyevent->SetBankList();
 
-   banksize = copyevent.LocateBank(NULL,"GRF1",&ptr);
+   banksize = copyevent->LocateBank(NULL,"GRF1",&ptr);
    for(int x=0;x<banksize;x++) {
       value = *((int*)ptr+x);
       type  = value & 0xf0000000; 
@@ -198,10 +198,10 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    }
    //printf("===================\n");
 
-   outfile->Write(&copyevent,"q");
+   outfile->Write(copyevent,"q");
 
 //   printf(DBLUE);
-//   copyevent.Print("a");
+//   copyevent->Print("a");
 //   printf(RESET_COLOR);
 
 }
