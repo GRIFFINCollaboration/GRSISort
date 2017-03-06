@@ -8,10 +8,13 @@
 #ifndef TGRSISelector_h
 #define TGRSISelector_h
 
-#include <TROOT.h>
-#include <TChain.h>
-#include <TFile.h>
-#include <TSelector.h>
+#include "TROOT.h"
+#include "TChain.h"
+#include "TFile.h"
+#include "TSelector.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "THnSparse.h"
 
 #include <string>
 
@@ -46,6 +49,10 @@ public :
    void SetOutputPrefix(const char* prefix) { fOutputPrefix = prefix; }
 
  private:
+	std::map<std::string, TH1*> fH1;
+	std::map<std::string, TH2*> fH2;
+	std::map<std::string, THnSparseF*> fHSparse;
+
    std::string fOutputPrefix;
 
    ClassDef(TGRSISelector,2);
