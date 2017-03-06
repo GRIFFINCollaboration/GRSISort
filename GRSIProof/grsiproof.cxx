@@ -84,7 +84,9 @@ int main(int argc, char **argv) {
 
    //Add the path were we store headers for GRSIProof macros to see
    const char* pPath = getenv("GRSISYS");
+	gROOT->SetMacroPath(Form("%s",pPath));
    gROOT->SetMacroPath(Form("%s/GRSIProof",pPath));
+	gROOT->SetMacroPath(Form("%s/myAnalysis",pPath));
    gInterpreter->AddIncludePath(Form("%s/include",pPath));
    //The first thing we want to do is see if we can compile the macros that are passed to us
    if(!opt->MacroInputFiles().size()){
@@ -127,6 +129,16 @@ int main(int argc, char **argv) {
    gInterpreter->AddIncludePath(Form("%s/include",pPath));
    proof->AddIncludePath(Form("%s/include",pPath));
    proof->AddDynamicPath(Form("%s/lib",pPath));
+
+   proof->AddInput(new TNamed("pwd", getenv("PWD")));
+   int i = 0;
+   for(auto valFile = TGRSIOptions::Get()->ValInputFiles().begin(); valFile != TGRSIOptions::Get()->ValInputFiles().end(); ++valFile) {
+      proof->AddInput(new TNamed(Form("valFile%d", i++), valFile->c_str()));
+   }
+   i = 0;
+   for(auto calFile = TGRSIOptions::Get()->CalInputFiles().begin(); calFile != TGRSIOptions::Get()->CalInputFiles().end(); ++calFile) {
+      proof->AddInput(new TNamed(Form("calFile%d", i++), calFile->c_str()));
+   }
 
    Analyze("FragmentTree",proof);
    Analyze("AnalysisTree",proof);
