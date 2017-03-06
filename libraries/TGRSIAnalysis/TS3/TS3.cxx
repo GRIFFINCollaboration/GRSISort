@@ -48,7 +48,7 @@ void TS3::Copy(TObject &rhs) const {
 
 void TS3::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 	///This function creates TS3Hits for each fragment and stores them in separate front and back vectors
-	if(frag == NULL || chan == NULL) {
+	if(frag == nullptr || chan == nullptr) {
 		return;
 	}
 
@@ -311,7 +311,7 @@ TS3Hit *TS3::GetS3Hit(const int& i) {
   } else {
     std::cerr << "S3 pixel hits are out of range" << std::endl;
     throw grsi::exit_exception(1);
-    return NULL;
+    return nullptr;
   }
 }  
 
@@ -321,7 +321,7 @@ TS3Hit *TS3::GetRingHit(const int& i) {
   } else {
     std::cerr << "S3 ring hits are out of range" << std::endl;
     throw grsi::exit_exception(1);
-    return NULL;
+    return nullptr;
   }
 }  
 
@@ -331,7 +331,7 @@ TS3Hit *TS3::GetSectorHit(const int& i) {
   } else {
     std::cerr << "S3 sector hits are out of range" << std::endl;
     throw grsi::exit_exception(1);
-    return NULL;
+    return nullptr;
   }
 }  
 

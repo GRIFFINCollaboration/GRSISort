@@ -47,7 +47,9 @@ public:
 
   using TObject::Read;
   using TObject::Write;
+#ifndef __CINT__
   virtual int  Read(std::shared_ptr<TRawEvent> event) = 0; ///< Read one event from the file
+#endif
   virtual std::string Status(bool long_file_description = true) = 0;
 
   virtual const char* GetFilename()  const { return fFilename.c_str();  } ///< Get the name of this file
@@ -58,7 +60,9 @@ public:
   virtual size_t GetBytesRead() { return fBytesRead; }
   virtual size_t GetFileSize()  { return fFileSize; }
 
+#ifndef __CINT__
   virtual std::shared_ptr<TRawEvent> NewEvent() = 0;
+#endif
 
 protected:
   std::string fFilename; ///< name of the currently open file

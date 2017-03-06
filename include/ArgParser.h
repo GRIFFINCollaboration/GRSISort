@@ -28,7 +28,7 @@ public:
   virtual bool matches(const std::string& flag) const = 0;
   virtual void parse_item(const std::vector<std::string>& arguments) = 0;
   virtual int num_arguments() const = 0;
-  virtual std::string printable(int description_column = -1, int* chars_before_desc=NULL) const = 0;
+  virtual std::string printable(int description_column = -1, int* chars_before_desc=nullptr) const = 0;
   virtual bool is_required() const = 0;
   bool is_present() const {return present_;}
   virtual std::string flag_name() const = 0;
@@ -116,7 +116,7 @@ public:
 
   virtual ArgParseConfig& default_value(T value) = 0;
 
-  virtual std::string printable(int description_column = -1, int* chars_before_desc=NULL) const {
+  virtual std::string printable(int description_column = -1, int* chars_before_desc=nullptr) const {
     std::stringstream ss;
 
     ss << "  ";

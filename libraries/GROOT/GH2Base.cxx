@@ -41,8 +41,8 @@ GH1D* GH2Base::Projection_Background(int axis,
   std::string title;
   std::string name;
   std::string sproj;
-  TH1D* proj = NULL;
-  TH1D* bg_proj = NULL;
+  TH1D* proj = nullptr;
+  TH1D* bg_proj = nullptr;
 
   double xlow,xhigh,bg_xlow,bg_xhigh;
 
@@ -65,7 +65,7 @@ GH1D* GH2Base::Projection_Background(int axis,
     proj    = GetTH2()->ProjectionY("temp1", firstbin, lastbin);
     bg_proj = GetTH2()->ProjectionY("temp2", first_bg_bin, last_bg_bin);
   } else {
-    return NULL;
+    return nullptr;
   }
   name  = Form("%s_%s_%d_%d_bg_%d_%d",GetTH2()->GetName(),sproj.c_str()
                                         ,firstbin,lastbin,
@@ -117,7 +117,7 @@ GH1D* GH2Base::GH2ProjectionX(const char* name,
       actual_name  = Form("%s_projx_%d_%d",GetTH2()->GetName(),firstbin,lastbin);
   }
 
-  GH1D* output = NULL;
+  GH1D* output = nullptr;
   {
     SuppressTH1GDirectory sup;
     TH1D* proj = GetTH2()->ProjectionX("temp", firstbin, lastbin, option);
@@ -177,7 +177,7 @@ GH1D* GH2Base::GH2ProjectionY(const char* name,
 
   }
 
-  GH1D* output = NULL;
+  GH1D* output = nullptr;
   {
     SuppressTH1GDirectory sup;
     TH1D* proj = GetTH2()->ProjectionY("temp", firstbin, lastbin, option);
@@ -416,7 +416,7 @@ GH1D* GH2Base::SummaryProject(int binnum,bool DrawEmpty) {
       return GH2ProjectionX(hist_name.c_str(), binnum, binnum);
   }
 
-  return NULL;
+  return nullptr;
 }
 */
 

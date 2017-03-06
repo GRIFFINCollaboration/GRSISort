@@ -72,7 +72,7 @@ TSiLiHit * TSiLi::GetSiLiHit(const int& i)   {
 }  
 
 void TSiLi::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
-  if(frag == NULL || chan == NULL) {
+  if(frag == nullptr || chan == nullptr) {
 	 return;
   }
 
@@ -119,7 +119,7 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i) {
   } else {
     std::cerr << "Addback hits are out of range" << std::endl;
     throw grsi::exit_exception(1);
-    return NULL;
+    return nullptr;
   }
 }
 

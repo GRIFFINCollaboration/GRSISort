@@ -175,7 +175,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls){
 void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event) {
 	if(fEventTree) {
 		// Clear pointers from previous writes.
-		// Note that we cannot just set this equal to NULL,
+		// Note that we cannot just set this equal to nullptr,
 		//   because ROOT would then construct a new object.
 		// This contradicts the ROOT documentation for TBranchElement::SetAddress,
 		//   which suggests that a new object would be constructed only when setting the address,
@@ -197,7 +197,7 @@ void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event) {
 			(*fDetMap.at(cls))->ClearTransients();
 			//if(cls == TDescant::Class()) {
 			//	for(int i = 0; i < static_cast<TDescant*>(det)->GetMultiplicity(); ++i) {
-			//		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == NULL ? " has no debug data": " has debug data")<<std::endl;
+			//		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == nullptr ? " has no debug data": " has debug data")<<std::endl;
 			//	}
 			//}
 		}

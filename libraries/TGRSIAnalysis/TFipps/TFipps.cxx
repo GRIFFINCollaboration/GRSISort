@@ -178,7 +178,7 @@ TFippsHit* TFipps::GetFippsHit(const int& i) {
 		if(!gInterpreter)
 			throw grsi::exit_exception(1);
 	}
-	return NULL;
+	return nullptr;
 }
 
 Int_t TFipps::GetAddbackMultiplicity()  {
@@ -232,14 +232,14 @@ TFippsHit* TFipps::GetAddbackHit(const int& i) {
 	} else {
 		std::cerr << "Addback hits are out of range" << std::endl;
 		throw grsi::exit_exception(1);
-		return NULL;
+		return nullptr;
 	}
 }
 
 void TFipps::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 	//Builds the FIPPS Hits directly from the TFragment. Basically, loops through the hits for an event and sets observables. 
 	//This is done for both FIPPS and it's suppressors.
-	if(frag == NULL || chan == NULL) {
+	if(frag == nullptr || chan == nullptr) {
 		return;
 	}
 

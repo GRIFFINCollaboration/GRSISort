@@ -23,7 +23,7 @@
 
 #include "Globals.h"
 
-#ifdef HASXML
+#ifdef HAS_XML
 #include "TXMLNode.h"
 #include "TXMLDocument.h"
 #include "TDOMParser.h"

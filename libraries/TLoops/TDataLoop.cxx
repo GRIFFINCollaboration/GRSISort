@@ -14,7 +14,7 @@ TDataLoop::TDataLoop(std::string name,TRawFile* source)
 	: StoppableThread(name),
 	fSource(source), fSelfStopping(true),
 	fOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent> > >("midas_queue"))
-#ifdef HASXML
+#ifdef HAS_XML
 	, fOdb(0) 
 #endif
 {
@@ -44,7 +44,7 @@ TDataLoop *TDataLoop::Get(std::string name,TRawFile* source) {
 }
 
 void TDataLoop::SetFileOdb(char* data, int size) {
-#ifdef HASXML
+#ifdef HAS_XML
 	//check if we have already set the TChannels....
 	//
 	if(fOdb) {
@@ -87,7 +87,7 @@ void TDataLoop::SetFileOdb(char* data, int size) {
 }
 
 void TDataLoop::SetGRIFFOdb() {
-#ifdef HASXML
+#ifdef HAS_XML
 	std::string path = "/DAQ/MSC";
 	printf("using GRIFFIN path to analyzer info: %s...\n",path.c_str());
 
@@ -142,7 +142,7 @@ void TDataLoop::SetGRIFFOdb() {
 }
 
 void TDataLoop::SetTIGOdb()  {
-#ifdef HASXML
+#ifdef HAS_XML
 	std::string typepath = "/Equipment/Trigger/settings/Detector Settings";
 	std::map<int,std::pair<std::string,std::string> >typemap;
 	TXMLNode* typenode = fOdb->FindPath(typepath.c_str());

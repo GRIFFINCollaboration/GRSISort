@@ -90,8 +90,7 @@ class TFipps : public TGRSIDetector {
 		static const Double_t gCrossTalkPar[2][4][4]; //!<! 
 		static Double_t CTCorrectedEnergy(const TFippsHit* const energy_to_correct, const TFippsHit* const other_energy, Bool_t time_constraint = true);
 		Bool_t IsCrossTalkSet() const;
-		void FixLowGainCrossTalk();
-		void FixHighGainCrossTalk();
+		void FixCrossTalk();
 
 	private:
 		//This is where the general untouchable functions live.
@@ -99,7 +98,6 @@ class TFipps : public TGRSIDetector {
 		std::vector<TFippsHit> 	*GetAddbackVector(); //!<!
 		std::vector<UShort_t> 		*GetAddbackFragVector(); //!<!
 		void SetAddback(bool flag = true) const;
-		void FixCrossTalk();
 		void SetCrossTalk(bool flag = true) const;
 
 	public:

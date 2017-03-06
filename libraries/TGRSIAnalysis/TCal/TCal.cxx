@@ -18,9 +18,9 @@ TCal::TCal(const char* name, const char* title) {
 
 TCal::~TCal() {
 	///Default dtor
-	fNuc = NULL;
-	//fgraph = NULL;
-	fHist = NULL;
+	fNuc = nullptr;
+	//fgraph = nullptr;
+	fHist = nullptr;
 }
 
 TCal::TCal(const TCal& copy) : TGraphErrors(copy) {
@@ -132,8 +132,8 @@ void TCal::SetHist(TH1* hist) {
 
 void TCal::Clear(Option_t *opt) {
 	///Clears the calibration. Does not delete nuclei or channels.
-	fNuc = NULL;
-	fChan = NULL;
+	fNuc = nullptr;
+	fChan = nullptr;
 	TGraphErrors::Clear();
 }
 
@@ -164,9 +164,9 @@ void TCal::Print(Option_t *opt) const{
 void TCal::InitTCal() {
 	///Initiallizes the TCal.
 	/* fgraph = new TGraphErrors;*/
-	fFitFunc = NULL;
-	fChan = NULL;
-	fNuc = NULL;
-	fHist = NULL;
+	fFitFunc = nullptr;
+	fChan = nullptr;
+	fNuc = nullptr;
+	fHist = nullptr;
 	Clear();
 }

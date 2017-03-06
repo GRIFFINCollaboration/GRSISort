@@ -25,7 +25,7 @@ void TGRSIFit::Copy(TObject& obj) const{
 }
 
 void TGRSIFit::Print(Option_t* opt) const {
-   if(strchr(opt,'+') != NULL) {
+   if(strchr(opt,'+') != nullptr) {
       printf("Params Init: %d\n", fInitFlag);
       printf("Good Fit:    %d\n", fGoodFitFlag);
       TNamed::Print(opt);
