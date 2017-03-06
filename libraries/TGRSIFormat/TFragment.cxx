@@ -157,7 +157,7 @@ void TFragment::Print(Option_t *opt) const {
   printf("\tCharge:          0x%08x\n ",   static_cast<Int_t>(GetCharge()));
   printf("\tCFD:             0x%08x\n ",   GetCfd());
   printf("\tZC:              0x%08x\n ",   fZc);   
-  printf("\tTimeStamp:       %lu\n", GetTimeStamp());
+  printf("\tTimeStamp:       %lld\n", GetTimeStamp());
   if(HasWave())
     printf("Has a wave form stored.\n");
   else
