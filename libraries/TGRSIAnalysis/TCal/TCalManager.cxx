@@ -7,12 +7,12 @@ ClassImp(TCalManager)
 /// \endcond
 
 TCalManager::TCalManager() {
-	fClass = NULL; //fClass will point to a TClass which is made persistant through a root session within gROOT.
+	fClass = nullptr; //fClass will point to a TClass which is made persistant through a root session within gROOT.
 	//So we don't need to worry about allocating it.
 }
 
 TCalManager::TCalManager(const char* classname) {
-	fClass = NULL;
+	fClass = nullptr;
 	this->SetClass(classname);
 }
 

@@ -10,15 +10,15 @@ class TF1;
 
 class GH1D : public TH1D {
 public:
-  GH1D() : TH1D(), parent(NULL), projection_axis(-1) { }
+  GH1D() : TH1D(), parent(nullptr), projection_axis(-1) { }
   GH1D(const TVectorD& v)
-    : TH1D(v), parent(NULL), projection_axis(-1) { }
+    : TH1D(v), parent(nullptr), projection_axis(-1) { }
   GH1D(const char* name, const char* title, Int_t nbinsx, const Float_t* xbins)
-    : TH1D(name, title, nbinsx, xbins), parent(NULL), projection_axis(-1) { }
+    : TH1D(name, title, nbinsx, xbins), parent(nullptr), projection_axis(-1) { }
   GH1D(const char* name, const char* title, Int_t nbinsx, const Double_t* xbins)
-    : TH1D(name, title, nbinsx, xbins), parent(NULL), projection_axis(-1) { }
+    : TH1D(name, title, nbinsx, xbins), parent(nullptr), projection_axis(-1) { }
   GH1D(const char* name, const char* title, Int_t nbinsx, Double_t xlow, Double_t xup)
-    : TH1D(name, title, nbinsx, xlow, xup), parent(NULL), projection_axis(-1) { }
+    : TH1D(name, title, nbinsx, xlow, xup), parent(nullptr), projection_axis(-1) { }
 
   GH1D(const TF1& function,Int_t nbinsx,Double_t xlow,Double_t xup);
 

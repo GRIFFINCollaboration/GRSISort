@@ -38,7 +38,6 @@ class TLstEvent : public TRawEvent {
 
 		char* GetData(); ///< return pointer to the data buffer
 
-		void AllocateData(); ///< allocate data buffer using the existing event header
 		void SetData(std::vector<char>& dataBuffer); ///< set an externally allocated data buffer
 
 		int  SwapBytes(bool); ///< convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC) 

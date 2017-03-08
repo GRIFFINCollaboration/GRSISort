@@ -72,13 +72,16 @@ CFLAGS    += -MMD -MP $(INCLUDES)
 LINKFLAGS += -Llib $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../lib
 LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lPyROOT -lMinuit -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof
 
+# RCFLAGS are being used for rootcint
 ifeq ($(MATHMORE_INSTALLED),yes)
   CFLAGS += -DHAS_MATHMORE
+  RCFLAGS += -DHAS_MATHMORE
   LINKFLAGS += -lMathMore
 endif
 
 ifeq ($(XML_INSTALLED),yes)
-  CFLAGS += -DHASXML
+  CFLAGS += -DHAS_XML
+  RCFLAGS += -DHAS_XML
   LINKFLAGS += -lXMLParser -lXMLIO
 endif
 
@@ -190,7 +193,7 @@ find_linkdef = $(shell $(FIND) $(1) -name "*LinkDef.h")
 define library_template
 .build/$(1)/$(notdir $(1))Dict.cxx: $(1)/LinkDef.h $$(call dict_header_files,$(1)/LinkDef.h) 
 	@mkdir -p $$(dir $$@)
-	$$(call run_and_test,rootcint -f $$@ -c $$(INCLUDES) -p $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
+	$$(call run_and_test,rootcint -f $$@ -c $$(INCLUDES) $$(RCFLAGS) -p $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
 
 .build/$(1)/LibDictionary.o: .build/$(1)/$(notdir $(1))Dict.cxx
 	$$(call run_and_test,$$(CPP) -fPIC -c $$< -o $$@ $$(CFLAGS),$$@,$$(COM_COLOR),$$(COM_STRING),$$(OBJ_COLOR) )

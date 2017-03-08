@@ -429,7 +429,7 @@ void TBGSubtraction::DrawOnNewCanvas(){
 void TBGSubtraction::WriteHistograms() {
    //Find if there is a file name
    const char *file_name = fWrite2FileName->GetText();
-   if(file_name == NULL){
+   if(file_name == nullptr){
       std::cout << "Please enter a file name" << std::endl;
       return;
    }
@@ -437,19 +437,19 @@ void TBGSubtraction::WriteHistograms() {
    TFile f(file_name,"Update");
    std::cout << "Writing " << fHistogramDescription->GetText() << " histograms to " << f.GetName() << std::endl;
    if(fSubtractedHist){
-      if(fHistogramDescription->GetText() != NULL)
+      if(fHistogramDescription->GetText() != nullptr)
          fSubtractedHist->SetTitle(fHistogramDescription->GetText());
       fSubtractedHist->Write();
    }
 
    if(fBGHist){
-      if(fHistogramDescription->GetText() != NULL)
+      if(fHistogramDescription->GetText() != nullptr)
          fBGHist->SetTitle(Form("%s Background",fHistogramDescription->GetText()));
 
       fBGHist->Write();
    }
    if(fGateHist){
-      if(fHistogramDescription->GetText() != NULL)
+      if(fHistogramDescription->GetText() != nullptr)
          fGateHist->SetTitle(Form("%s Gate only",fHistogramDescription->GetText()));
    
       fGateHist->Write();

@@ -59,7 +59,7 @@ void TEventBuildingLoop::ClearQueue() {
 
 bool TEventBuildingLoop::Iteration(){
 	// Pull something off of the input queue.
-	std::shared_ptr<const TFragment> input_frag = NULL;
+	std::shared_ptr<const TFragment> input_frag = nullptr;
 	fInputSize = fInputQueue->Pop(input_frag, 0);
 	if(fInputSize < 0) fInputSize = 0;
 

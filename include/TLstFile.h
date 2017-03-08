@@ -30,35 +30,39 @@
 /// Reader for MIDAS .mid files
 
 class TLstFile : public TRawFile {
-public:
-  enum EOpenType {
-    kRead,
-    kWrite
-  };
+	public:
+		enum EOpenType {
+			kRead,
+			kWrite
+		};
 
-  TLstFile(); ///< default constructor
-  TLstFile(const char* filename, EOpenType open_type = kRead);
-  virtual ~TLstFile(); ///< destructor
+		TLstFile(); ///< default constructor
+		TLstFile(const char* filename, EOpenType open_type = kRead);
+		virtual ~TLstFile(); ///< destructor
 
-  bool Open(const char* filename); ///< Open input file
+		bool Open(const char* filename); ///< Open input file
 
-  void Close(); ///< Close input file
+		void Close(); ///< Close input file
 
-  using TObject::Read;
-  using TObject::Write;
-  int  Read(std::shared_ptr<TRawEvent> event); ///< Read one event from the file
-  std::string Status(bool long_file_description = true);
+		using TObject::Read;
+		using TObject::Write;
+#ifndef __CINT__
+		int  Read(std::shared_ptr<TRawEvent> event); ///< Read one event from the file
+#endif
+		std::string Status(bool long_file_description = true);
 
-  int	GetRunNumber();
-  int	GetSubRunNumber();
+		int	GetRunNumber();
+		int	GetSubRunNumber();
 
-	std::shared_ptr<TRawEvent> NewEvent() { return std::make_shared<TLstEvent>(); }
+#ifndef __CINT__
+		std::shared_ptr<TRawEvent> NewEvent() { return std::make_shared<TLstEvent>(); }
+#endif
 
-protected:
+	protected:
 
-/// \cond CLASSIMP
-	ClassDef(TLstFile,0) //Used to open and write Midas Files
-/// \endcond
+		/// \cond CLASSIMP
+		ClassDef(TLstFile,0) //Used to open and write Midas Files
+		/// \endcond
 };
 /*! @} */
 #endif // TLstFile.h

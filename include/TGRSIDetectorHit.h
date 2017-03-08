@@ -152,7 +152,7 @@ class TGRSIDetectorHit : public TObject 	{
       Long64_t GetCycleTimeStamp() const;
 
       void ClearEnergy()  { fEnergy  = 0.0;  SetHitBit(kIsEnergySet,false); }
-      void ClearChannel() { fChannel = NULL; SetHitBit(kIsChannelSet,false); }
+      void ClearChannel() { fChannel = nullptr; SetHitBit(kIsChannelSet,false); }
 
       static TVector3 *GetBeamDirection() { return &fBeamDirection; }
 

@@ -24,7 +24,7 @@ TDataParser::TDataParser()
     fMaxTriggerId(1024*1024*16),
     fLastMidasId(0), fLastTriggerId(0), fLastNetworkPacket(0),
     fFragmentHasWaveform(false),
-    fFragmentMap(fGoodOutputQueues, fBadOutputQueue), fItemsPopped(NULL), fInputSize(NULL) {
+    fFragmentMap(fGoodOutputQueues, fBadOutputQueue), fItemsPopped(nullptr), fInputSize(nullptr) {
   gChannel = new TChannel;
 }
 
@@ -1217,13 +1217,13 @@ int TDataParser::FippsToFragment(std::vector<char> data) {
 	int eventsRead = 0;
 	std::shared_ptr<TFragment> eventFrag = std::make_shared<TFragment>();
 	Long64_t tmpTimestamp;
-	if(fItemsPopped != NULL && fInputSize != NULL) {
+	if(fItemsPopped != nullptr && fInputSize != nullptr) {
 		*fItemsPopped = 0;
 		*fInputSize = data.size()/16;
 	}
 
 	for(size_t i = 0; i+3 < data.size()/4; i += 4) {
-		if(fItemsPopped != NULL && fInputSize != NULL) {
+		if(fItemsPopped != nullptr && fInputSize != nullptr) {
 			++(*fItemsPopped);
 			--(*fInputSize);
 		}

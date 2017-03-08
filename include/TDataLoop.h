@@ -73,7 +73,7 @@ class TDataLoop : public StoppableThread  {
 		std::mutex fSourceMutex;
 #endif
 
-#ifdef HASXML
+#ifdef HAS_XML
 		TXMLOdb* fOdb;
 #endif
 

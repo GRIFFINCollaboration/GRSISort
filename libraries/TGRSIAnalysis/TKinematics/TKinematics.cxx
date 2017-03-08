@@ -55,8 +55,8 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, c
   InitKin();
   fParticle[0] = projectile;
   fParticle[1] = target;
-  fParticle[2] = NULL;
-  fParticle[3] = NULL;
+  fParticle[2] = nullptr;
+  fParticle[3] = nullptr;
   fM[0]=fParticle[0]->GetMass();
   fM[1]=fParticle[1]->GetMass();
   fEBeam = ebeam;
@@ -392,7 +392,7 @@ void TKinematics::FinalCm(){
 // Calculates the recoil and ejectile energies and momenta in the CM frame
 
 //angle of proton in cm system
-  if(fParticle[2]==NULL && fParticle[3]==NULL){
+  if(fParticle[2]==nullptr && fParticle[3]==nullptr){
     fM[2]=fParticle[1]->GetMass();
     fM[3]=fParticle[0]->GetMass();     
   }

@@ -85,7 +85,7 @@ TSharc::TSharc(const TSharc& rhs) : TGRSIDetector() {
 }
 
 void TSharc::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
-  if(frag == NULL || chan == NULL) {
+  if(frag == nullptr || chan == nullptr) {
     return;
   }
 /*  if(GetMidasTimestamp() == -1) {

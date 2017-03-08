@@ -32,13 +32,13 @@ public:
                   TList* objects,
                   TList* gates,
                   std::vector<TFile*>& cut_files,
-                  TDirectory* directory=NULL,
+                  TDirectory* directory=nullptr,
                   const char *name="default");
 #endif
  TRuntimeObjects(TList* objects,
                   TList* gates,
                   std::vector<TFile*>& cut_files,
-                  TDirectory* directory=NULL,
+                  TDirectory* directory=nullptr,
                   const char *name="default");
 
 #ifndef __CINT__
