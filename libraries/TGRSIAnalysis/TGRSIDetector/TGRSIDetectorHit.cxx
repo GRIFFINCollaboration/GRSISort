@@ -157,7 +157,7 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
   fBitflags       = 0;
   fPPGStatus      = TPPG::kJunk;
   fCycleTimeStamp = 0;
-  fChannel        = NULL;
+  fChannel        = nullptr;
 }
 
 Int_t TGRSIDetectorHit::GetDetector() const {

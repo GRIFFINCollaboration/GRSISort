@@ -280,7 +280,7 @@ TChannel* TChannel::GetChannel(unsigned int temp_address) {
 	///Returns the TChannel at the specified address. If the address doesn't exist, returns an empty gChannel.
 
 	TChannel* chan = nullptr;
-	//    if(temp_address == 0 || temp_address == 0xffffffff) {//default (NULL) address, return 0;
+	//    if(temp_address == 0 || temp_address == 0xffffffff) {//default (nullptr) address, return 0;
 	//	      return chan;
 	//    }
 	if(fChannelMap->count(temp_address)==1){// found channel
@@ -321,7 +321,7 @@ TChannel* TChannel::FindChannelByName(const char* ccName){
 		std::string channelName = chan->GetName();
 		if(channelName.compare(0,name.length(),name)==0)
 			break;
-		chan = NULL;
+		chan = nullptr;
 	}
 	// either comes out normally as null or breaks out with some TChannel [SC]
 

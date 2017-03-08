@@ -64,9 +64,9 @@ void DescantMatrices() {
 }
 #endif
 
-TList *DescantMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = NULL) {
-   if(runInfo == NULL) {
-      return NULL;
+TList *DescantMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = nullptr) {
+   if(runInfo == nullptr) {
+      return nullptr;
    }
 
    ///////////////////////////////////// SETUP ///////////////////////////////////////
@@ -115,7 +115,7 @@ TList *DescantMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEn
    Double_t offStart = 14.5e8;
    Double_t offEnd   = 15.5e8;
 
-   if(w == NULL) {
+   if(w == nullptr) {
       w = new TStopwatch;
       w->Start();
    }
@@ -159,16 +159,16 @@ TList *DescantMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEn
    Double_t pMax[4] = {cycleLength,65,1000,2.};
    Int_t pBins[4]= {(Int_t)(cycleLength/10),65,1000,2};
 
-   TH2F* gammaSinglesCyc = NULL;
-   TH2F* gammaSinglesBCyc = NULL;
-   TH2F* gammaSinglesBmCyc = NULL;
-   THnSparseF* pileup = NULL;
-   THnSparseF* gSinglesCyc_chan = NULL;
-   THnSparseF* gbmatrixCyc_chan = NULL;
-   TH1D* gPUTotalCyc = NULL;
-   TH1D* gNPTotalCyc = NULL;
-   TH1D* gPUCyc = NULL;
-   TH2F* betaSinglesCyc = NULL;
+   TH2F* gammaSinglesCyc = nullptr;
+   TH2F* gammaSinglesBCyc = nullptr;
+   TH2F* gammaSinglesBmCyc = nullptr;
+   THnSparseF* pileup = nullptr;
+   THnSparseF* gSinglesCyc_chan = nullptr;
+   THnSparseF* gbmatrixCyc_chan = nullptr;
+   TH1D* gPUTotalCyc = nullptr;
+   TH1D* gNPTotalCyc = nullptr;
+   TH1D* gPUCyc = nullptr;
+   TH2F* betaSinglesCyc = nullptr;
 
    if(ppg){
       gPUTotalCyc = new TH1D("gPUTotalCyc","Total Pileup hits as function of time in cycle", cycleLength/10,0,cycleLength); list->Add(gPUTotalCyc);
@@ -810,7 +810,7 @@ int main(int argc, char **argv) {
 
    TFile* file = new TFile(argv[1]);
 
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
@@ -822,21 +822,21 @@ int main(int argc, char **argv) {
 
    //Get PPG from File
    TPPG* myPPG = (TPPG*)file->Get("TPPG");
-   /*   if(myPPG == NULL) {
+   /*   if(myPPG == nullptr) {
         printf("Failed to find PPG information in file '%s'!\n",argv[1]);
         return 1;
         }
         */
    //Get run info from File
    TGRSIRunInfo* runInfo = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
-   if(runInfo == NULL) {
+   if(runInfo == nullptr) {
       printf("Failed to find run information in file '%s'!\n",argv[1]);
       return 1;
    }
 
    TTree* tree = (TTree*) file->Get("AnalysisTree");
    TChannel::ReadCalFromTree(tree);
-   if(tree == NULL) {
+   if(tree == nullptr) {
       printf("Failed to find analysis tree in file '%s'!\n",argv[1]);
       return 1;
    }
@@ -868,8 +868,8 @@ int main(int argc, char **argv) {
       std::cout<<"Limiting processing of analysis tree to "<<entries<<" entries!"<<std::endl;
       list = DescantMatrices(tree,myPPG,runInfo, entries, &w);
    }
-   if(list == NULL) {
-      std::cout<<"DescantMatrices returned TList* NULL!\n"<<std::endl;
+   if(list == nullptr) {
+      std::cout<<"DescantMatrices returned TList* nullptr!\n"<<std::endl;
       return 1;
    }
 

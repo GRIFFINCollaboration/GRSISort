@@ -31,7 +31,6 @@ class ExampleFragmentSelector : public TGRSISelector {
    void FillHistograms();
    void InitializeBranches(TTree *tree);
 
-
    ClassDef(ExampleFragmentSelector,2);
 };
 

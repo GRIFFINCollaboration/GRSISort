@@ -130,8 +130,8 @@ std::vector<std::pair<double,int> > AngleCombinations(double distance = 110., bo
    return result;
 }
    
-TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000., long maxEntries = 0, TStopwatch* w = NULL) {
-   if(w == NULL) {
+TList *MakeMatrices(TTree* tree, int coincLow = 0, int coincHigh = 10, int bg = 100, int nofBins = 4000, double low = 0., double high = 4000., long maxEntries = 0, TStopwatch* w = nullptr) {
+   if(w == nullptr) {
       w = new TStopwatch;
       w->Start();
    }
@@ -961,7 +961,7 @@ int main(int argc, char **argv) {
    }
 
    TFile* file = new TFile(argv[1]);
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
@@ -972,7 +972,7 @@ int main(int argc, char **argv) {
 
    TTree* tree = (TTree*) file->Get("AnalysisTree");
 
-   if(tree == NULL) {
+   if(tree == nullptr) {
       printf("Failed to find analysis tree in file '%s'!\n",argv[1]);
       return 1;
    }

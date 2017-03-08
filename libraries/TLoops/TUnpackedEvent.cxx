@@ -54,6 +54,6 @@ std::shared_ptr<TDetector>  TUnpackedEvent::GetDetector(TClass* cls, bool make_i
     fDetectors.push_back(output);
     return output;
   } else {
-    return NULL;
+    return nullptr;
   }
 }

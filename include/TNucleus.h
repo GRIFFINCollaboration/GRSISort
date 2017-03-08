@@ -32,7 +32,7 @@ class TNucleus : public TNamed{
 
   virtual ~TNucleus();
 
-  //static void SetMassFile(const char *tmp = NULL);// {massfile = tmp;} //Sets the mass file to be used
+  //static void SetMassFile(const char *tmp = nullptr);// {massfile = tmp;} //Sets the mass file to be used
 
   static const char* SortName(const char *name);
   //void SetName(const char *name) { fName = name; }

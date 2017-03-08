@@ -102,5 +102,5 @@ TSceptarHit* TSceptar::GetSceptarHit(const int& i) {
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }
-   return NULL;
+   return nullptr;
 }

@@ -61,7 +61,6 @@ class TGRSIProof : public TProof	{
       this->Exec(Form("gInterpreter->AddIncludePath(\"%s/include\")",pPath));
       std::cout << "Loading Libraries" << std::endl;
       this->Exec(Form("gSystem->Load(\"%s/lib/libGRSI.so\");",pPath));
-
    }
 
    /// \cond CLASSIMP

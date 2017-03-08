@@ -284,7 +284,7 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
   int ppgstat[2]={0,0};
   //generate random seed from system time for use in error analysis
   time_t timer;
-  timer = time(NULL);
+  timer = time(nullptr);
   srand (timer);	
 
   TFile f(fname);

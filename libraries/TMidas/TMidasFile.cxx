@@ -30,13 +30,13 @@ TMidasFile::TMidasFile()
   uint32_t endian = 0x12345678;
 
   fFile = -1;
-  fGzFile = NULL;
-  fPoFile = NULL;
+  fGzFile = nullptr;
+  fPoFile = nullptr;
   fLastErrno = 0;
   fCurrentBufferSize = 0;
 
   fOutFile = -1;
-  fOutGzFile = NULL;
+  fOutGzFile = nullptr;
 
   fMaxBufferSize = 1E6;
 
@@ -76,7 +76,7 @@ static int hasSuffix(const char*name,const char*suffix)
 {
    //Checks to see if midas file has suffix.
   const char* s = strstr(name,suffix);
-  if (s == NULL)
+  if (s == nullptr)
     return 0;
 
   return (s-name)+strlen(suffix) == strlen(name);
@@ -124,7 +124,7 @@ bool TMidasFile::Open(const char *filename)
       const char* name = filename + 6;
       const char* s = strstr(name, "/");
 
-      if (s == NULL)
+      if (s == nullptr)
         {
           fLastErrno = -1;
           fLastError.assign("TMidasFile::Open: Invalid ssh:// URI. Should be: ssh://user@host/file/path/...");
@@ -186,7 +186,7 @@ bool TMidasFile::Open(const char *filename)
       fprintf(stderr,"TMidasFile::Open: Reading from pipe: %s\n", pipe.c_str());
       fPoFile = popen(pipe.c_str(), "r");
 
-      if (fPoFile == NULL)
+      if (fPoFile == nullptr)
         {
           fLastErrno = errno;
           fLastError.assign(std::strerror(errno));
@@ -216,7 +216,7 @@ bool TMidasFile::Open(const char *filename)
 #ifdef HAVE_ZLIB
           fGzFile = new gzFile;
           (*(gzFile*)fGzFile) = gzdopen(fFile,"rb");
-          if ((*(gzFile*)fGzFile) == NULL)
+          if ((*(gzFile*)fGzFile) == nullptr)
             {
               fLastErrno = -1;
               fLastError.assign("zlib gzdopen() error");
@@ -272,7 +272,7 @@ bool TMidasFile::OutOpen(const char *filename)
 #ifdef HAVE_ZLIB
       fOutGzFile = new gzFile;
       *(gzFile*)fOutGzFile = gzdopen(fOutFile,"wb");
-      if ((*(gzFile*)fOutGzFile) == NULL)
+      if ((*(gzFile*)fOutGzFile) == nullptr)
 	{
 	  fLastErrno = -1;
 	  fLastError.assign("zlib gzdopen() error");
@@ -506,11 +506,11 @@ void TMidasFile::Close()
    //Midas File.
   if (fPoFile)
     pclose((FILE*)fPoFile);
-  fPoFile = NULL;
+  fPoFile = nullptr;
 #ifdef HAVE_ZLIB
   if (fGzFile)
     gzclose(*(gzFile*)fGzFile);
-  fGzFile = NULL;
+  fGzFile = nullptr;
 #endif
   if (fFile > 0)
     close(fFile);
@@ -531,7 +531,7 @@ void TMidasFile::OutClose()
     gzflush(*(gzFile*)fOutGzFile, Z_FULL_FLUSH);
     gzclose(*(gzFile*)fOutGzFile);
   }
-  fOutGzFile = NULL;
+  fOutGzFile = nullptr;
 #endif
   if (fOutFile > 0)
     close(fOutFile);

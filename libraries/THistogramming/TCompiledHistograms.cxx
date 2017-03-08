@@ -38,7 +38,7 @@ TCompiledHistograms::TCompiledHistograms(std::string input_lib, std::string func
               <<"\"" << input_lib << "\"" << std::endl;
   }
   fLast_modified = get_timestamp();
-  fLast_checked = time(NULL);
+  fLast_checked = time(nullptr);
 }
 
 void TCompiledHistograms::ClearHistograms() {
@@ -117,7 +117,7 @@ void TCompiledHistograms::Reload() {
     TCompiledHistograms other(fLibname,fFunc_name);
     swap_lib(other);
   }
-  fLast_checked = time(NULL);
+  fLast_checked = time(nullptr);
 }
 
 void TCompiledHistograms::swap_lib(TCompiledHistograms& other) {
@@ -132,7 +132,7 @@ void TCompiledHistograms::swap_lib(TCompiledHistograms& other) {
 
 void TCompiledHistograms::Fill(std::shared_ptr<const TFragment> frag) {
   std::lock_guard<std::mutex> lock(fMutex);
-  if(time(NULL) > fLast_checked + fCheck_every){
+  if(time(nullptr) > fLast_checked + fCheck_every){
     Reload();
   }
 
@@ -146,12 +146,12 @@ void TCompiledHistograms::Fill(std::shared_ptr<const TFragment> frag) {
 
   fObj.SetFragment(frag);
   fFunc(fObj);
-  fObj.SetFragment(NULL);
+  fObj.SetFragment(nullptr);
 }
 
 void TCompiledHistograms::Fill(std::shared_ptr<TUnpackedEvent> detectors) {
   std::lock_guard<std::mutex> lock(fMutex);
-  if(time(NULL) > fLast_checked + fCheck_every){
+  if(time(nullptr) > fLast_checked + fCheck_every){
     Reload();
   }
 
@@ -165,7 +165,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<TUnpackedEvent> detectors) {
 
   fObj.SetDetectors(detectors);
   fFunc(fObj);
-  fObj.SetDetectors(NULL);
+  fObj.SetDetectors(nullptr);
 }
 
 void TCompiledHistograms::AddCutFile(TFile* cut_file) {
@@ -177,7 +177,7 @@ void TCompiledHistograms::AddCutFile(TFile* cut_file) {
 void TCompiledHistograms::SetDefaultDirectory(TDirectory* dir) {
   fDefault_directory = dir;
 
-  TObject* obj = NULL;
+  TObject* obj = nullptr;
   TIter next(&fObjects);
   while((obj = next())) {
     TH1* hist = dynamic_cast<TH1*>(obj);

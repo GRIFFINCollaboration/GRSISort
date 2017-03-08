@@ -22,7 +22,7 @@ std::map<std::string,TRuntimeObjects*> TRuntimeObjects::fRuntimeMap;
 TRuntimeObjects::TRuntimeObjects(std::shared_ptr<const TFragment> frag, TList* objects, TList *gates,
                                  std::vector<TFile*>& cut_files,
                                  TDirectory* directory,const char *name)
-  : fFrag(frag), //detectors(NULL),
+  : fFrag(frag), //detectors(nullptr),
     fObjects(objects), fGates(gates),
     fCut_files(cut_files),
     fDirectory(directory) {
@@ -43,7 +43,7 @@ TRuntimeObjects::TRuntimeObjects(std::shared_ptr<const TFragment> frag, TList* o
 TRuntimeObjects::TRuntimeObjects(TList* objects, TList *gates,
                                  std::vector<TFile*>& cut_files,
                                  TDirectory* directory,const char *name)
-  : fFrag(NULL), //detectors(0),
+  : fFrag(nullptr), //detectors(0),
     fObjects(objects), fGates(gates),
     fCut_files(cut_files),
     fDirectory(directory) {
@@ -298,7 +298,7 @@ TCutG* TRuntimeObjects::GetCut(const std::string& name) {
       }
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 double TRuntimeObjects::GetVariable(const char* name) {

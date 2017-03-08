@@ -33,7 +33,7 @@ TFitResultPtr FitPeak(Double_t *par, TH1 *h, Float_t &area, Float_t &darea, Doub
 TList* AngularCorrelations(TH1D** slice, TNucleus* nuc, bool verbosity) {
    gSystem->Load("libMathMore");
    if(!nuc)
-      return NULL;
+      return nullptr;
    Double_t counter = 0;
    Double_t par[40];
 
@@ -342,7 +342,7 @@ int main(int argc, char **argv) {
    }
   
    TFile* file = new TFile(argv[1]);
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
@@ -353,12 +353,12 @@ int main(int argc, char **argv) {
 
    TH3F* hist = (TH3F*) file->Get("angCorr");
 
-   TList *list = NULL;
+   TList *list = nullptr;
    TH1D* slice[51];
-   if(hist == NULL) {
+   if(hist == nullptr) {
       for(int i = 0; i < 51;i++){
          slice[i] =(TH1D*) file->Get(Form("Slice_X_%i",i+1));
-         if(slice[i] == NULL) {
+         if(slice[i] == nullptr) {
             std::cout<<"Failed to find histogram 'angCorr' or slice 'Slice_X_"<<i<<"' in file "<<file->GetName()<<std::endl;
             return 1;
          }
@@ -370,7 +370,7 @@ int main(int argc, char **argv) {
    }
    list = AngularCorrelations(slice, "60Co");
 
-   if(list == NULL) {
+   if(list == nullptr) {
       std::cout<<"Failed to get TList"<<std::endl;
       return 1;
    }

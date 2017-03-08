@@ -9,7 +9,7 @@
 
 class TGRSIOptions : public TObject {
 	public:
-		static TGRSIOptions* Get(int argc = 0, char** argv = NULL);
+		static TGRSIOptions* Get(int argc = 0, char** argv = nullptr);
 
 		void Clear(Option_t* opt = "");
 		void Load(int argc, char** argv);
