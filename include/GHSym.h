@@ -18,6 +18,7 @@ class GHSym : public TH1 {
 
 		TH1D* Projection(const char* name = "_pr", Int_t firstBin = 0, Int_t lastBin = -1, Option_t* opt = "") const;
 		Int_t GetBin(Int_t binx, Int_t biny) const;
+		Double_t GetCellContent(Int_t binx, Int_t biny) const;
 
 		virtual void     Copy(TObject& hnew) const;
 

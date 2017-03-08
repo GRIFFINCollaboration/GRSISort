@@ -358,23 +358,20 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
       cont = 0;
       if(fXaxis.TestBit(TAxis::kAxisRange) && (xbin < firstXBin || xbin > lastXBin)) continue;
 
-      for(Int_t inbin = firstBin ; inbin <= lastBin ; ++inbin) {
-         Int_t binx = xbin;
-			Int_t biny=inbin;
-
+      for(Int_t ybin = firstBin ; ybin <= lastBin ; ++ybin) {
          if(ncuts) {
-            if(!fPainter->IsInside(binx,biny)) continue;
+            if(!fPainter->IsInside(xbin, ybin)) continue;
          }
          // sum bin content and error if needed
-         cont += GetCellContent(binx,biny);
+         cont += GetCellContent(xbin, ybin);
          if(computeErrors) {
-            Double_t exy = GetCellError(binx,biny);
+            Double_t exy = GetCellError(xbin, ybin);
             err2  += exy*exy;
          }
       }
       // find corresponding bin number in h1 for xbin
       Int_t binOut = h1->GetXaxis()->FindBin(fXaxis.GetBinCenter(xbin));
-      h1->SetBinContent(binOut ,cont);
+      h1->SetBinContent(binOut, cont);
       if(computeErrors) h1->SetBinError(binOut,TMath::Sqrt(err2));
       // sum  all content
       totcont += cont;
@@ -447,6 +444,10 @@ Int_t GHSym::GetBin(Int_t binx, Int_t biny) const {
 		return binx + biny*(2*fXaxis.GetNbins()-biny+3)/2;
 	}
 	return biny + binx*(2*fXaxis.GetNbins()-binx+3)/2;
+}
+
+Double_t GHSym::GetCellContent(Int_t binx, Int_t biny) const {
+	return GetBinContent(GetBin(binx, biny));
 }
 
 //------------------------------------------------------------
