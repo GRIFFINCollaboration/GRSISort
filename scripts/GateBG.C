@@ -47,6 +47,8 @@ TH1* ProjectionXBGP(TH2* matrix, Double_t gate_low, Double_t gate_high, Double_t
 	Int_t gate_high_bin = matrix->GetYaxis()->FindBin(gate_high);
 	Int_t bg_low_bin = matrix->GetYaxis()->FindBin(bg_low);
 	Int_t bg_high_bin = matrix->GetYaxis()->FindBin(bg_high);
+
+	std::cout << "Gating from bin: " << gate_low_bin << " to " << gate_high_bin << std::endl;
 	
    std::cout << "Gating from bin: " << gate_low_bin << " to " << gate_high_bin << std::endl;
 
@@ -92,6 +94,8 @@ TH1* ProjectionYBGP(TH2* matrix, Double_t gate_low, Double_t gate_high, Double_t
 	Int_t gate_high_bin = matrix->GetYaxis()->FindBin(gate_high);
 	Int_t bg_low_bin = matrix->GetYaxis()->FindBin(bg_low);
 	Int_t bg_high_bin = matrix->GetYaxis()->FindBin(bg_high);
+
+	std::cout << "Gating from bin: " << gate_low_bin << " to " << gate_high_bin << std::endl;
 
    //The Projection functions are inclusive on the bins, we need to take this into account when coming up with our scale factor.
    //Find the counts in the background of the GPeak.

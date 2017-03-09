@@ -18,6 +18,8 @@ SRC_SUFFIX = cxx
 MAJOR_ROOT_VERSION:=$(shell root-config --version | cut -d '.' -f1)
 ROOT_PYTHON_VERSION=$(shell root-config --python-version)
 
+MATHMORE_INSTALLED:=$(shell root-config --has-mathmore)
+
 CFLAGS += -DMAJOR_ROOT_VERSION=${MAJOR_ROOT_VERSION}
 ifeq ($(ROOT_PYTHON_VERSION),2.7)
   CFLAGS += -DHAS_CORRECT_PYTHON_VERSION
@@ -67,7 +69,13 @@ INCLUDES  := $(addprefix -I$(PWD)/,$(INCLUDES))
 CFLAGS    += $(shell root-config --cflags)
 CFLAGS    += -MMD -MP $(INCLUDES)
 LINKFLAGS += -Llib $(addprefix -l,$(LIBRARY_NAMES)) -Wl,-rpath,\$$ORIGIN/../lib
-LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lPyROOT -lMinuit -lXMLParser -lXMLIO -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof -lMathMore
+LINKFLAGS += $(shell root-config --glibs) -lSpectrum -lPyROOT -lMinuit -lXMLParser -lXMLIO -lGuiHtml -lTreePlayer -lX11 -lXpm -lProof
+
+ifeq ($(MATHMORE_INSTALLED),yes)
+  CFLAGS += -DHAS_MATHMORE
+  LINKFLAGS += -lMathMore
+endif
+
 LINKFLAGS := $(LINKFLAGS_PREFIX) $(LINKFLAGS) $(LINKFLAGS_SUFFIX) $(CFLAGS)
 
 ROOT_LIBFLAGS := $(shell root-config --cflags --glibs)

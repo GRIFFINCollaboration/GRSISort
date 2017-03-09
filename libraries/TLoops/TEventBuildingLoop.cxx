@@ -123,7 +123,6 @@ bool TEventBuildingLoop::CheckTimestampCondition(std::shared_ptr<const TFragment
 	if(frag->GetEntryNumber()%(TGRSIOptions::Get()->SortDepth()) == 0) {
 		TSortingDiagnostics::Get()->AddTimeStamp(event_start);
 	}
-
 	if(timestamp > event_start + fBuildWindow ||
 			timestamp < event_start - fBuildWindow) {
 		fOutputQueue->Push(fNextEvent);
