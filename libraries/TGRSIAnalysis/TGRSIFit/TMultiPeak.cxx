@@ -152,7 +152,8 @@ Bool_t TMultiPeak::InitParams(TH1 *fithist){
       Int_t bin = fithist->GetXaxis()->FindBin(centroid);
       this->SetParLimits(6*i+5,0,fithist->GetBinContent(bin)*5.);
       this->SetParLimits(6*i+6,centroid-4,centroid+4);
-      this->SetParLimits(6*i+7,0.1,xhigh-xlow);//This will be linked to other peaks eventually.
+      //this->SetParLimits(6*i+7,0.1,xhigh-xlow);//This will be linked to other peaks eventually.
+      this->SetParLimits(6*i+7,0.1,1.5);//This will be linked to other peaks eventually.
       this->SetParLimits(6*i+8,0.000001,10);
       this->SetParLimits(6*i+9,0.000001,100);
       this->SetParLimits(6*i+10,0.0,1.0E2);
