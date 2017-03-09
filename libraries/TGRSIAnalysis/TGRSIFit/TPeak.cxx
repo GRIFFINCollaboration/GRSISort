@@ -198,7 +198,7 @@ Bool_t TPeak::InitParams(TH1* fitHist) {
 	GetParLimits(1,low, high);
    if(low == high && low == 0.) SetParLimits(1,xlow,xhigh);
 	GetParLimits(2,low, high);
-   if(low == high && low == 0.) SetParLimits(2,0.1,(xhigh-xlow)); // sigma should be less than the window width - JKS
+   if(low == high && low == 0.) SetParLimits(2,0.5,(xhigh-xlow)); // sigma should be less than the window width - JKS
    SetParLimits(3,0.000001,10);
    SetParLimits(4,0.000001,100); // this is a percentage. no reason for it to go to 500% - JKS
    //Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
@@ -224,7 +224,7 @@ Bool_t TPeak::InitParams(TH1* fitHist) {
  //  SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
    SetParameter("sigma",TMath::Sqrt(9.0 + 4.*GetParameter("centroid")/1000.)/2.35);
    SetParameter("beta",GetParameter("sigma")/2.0);
-   SetParameter("R", 1.0);
+   SetParameter("R", 0.001);
    SetParameter("step",1.0);
    SetParameter("A",fitHist->GetBinContent(binhigh));
    SetParameter("B",(fitHist->GetBinContent(binlow) - fitHist->GetBinContent(binhigh))/(xlow-xhigh));
@@ -234,7 +234,6 @@ Bool_t TPeak::InitParams(TH1* fitHist) {
    FixParameter(3,GetParameter("beta"));
    FixParameter(4,0.00);
    SetInitialized();
-	Print("+");
    return true;
 }
 
@@ -370,6 +369,7 @@ Bool_t TPeak::Fit(TH1* fitHist,Option_t* opt) {
  //  if(optstr.Contains("+"))
   //    Copy(*fitHist->GetListOfFunctions()->Before(fitHist->GetListOfFunctions()->Last()));
    
+	Print("+");
    delete tmppeak;
    return true;
 }
