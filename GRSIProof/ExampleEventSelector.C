@@ -2,8 +2,6 @@
 // The class definition in ExampleEventSelector.h has been generated automatically
 #include "ExampleEventSelector.h"
 
-#include "TH1.h"
-
 void ExampleEventSelector::CreateHistograms() {
    fH1["gE"] = new TH1D("gE","#gamma Singles",12000,0,3000);
    fH1["gE_b"] = new TH1D("gE_b","#gamma Singles in rough #beta coincidence",12000,0,3000);

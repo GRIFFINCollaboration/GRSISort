@@ -68,7 +68,7 @@ void TFragment::Clear(Option_t *opt){
 
    fTriggerId.clear();
 
-   fPPG                 = NULL;
+   fPPG                 = nullptr;
    fZc                  = 0;
    fCcShort             = 0;
    fCcLong              = 0;
@@ -103,20 +103,20 @@ Int_t TFragment::Get4GCfd() const { // return a 4G cfd in terms of 1/256 ns sinc
 
 ULong64_t TFragment::GetTimeInCycle() {
 
-   if(fPPG == NULL) {
+   if(fPPG == nullptr) {
 		fPPG = TPPG::Get();//static_cast<TPPG*>(gROOT->FindObject("TPPG"));
    }
-   if(fPPG == NULL) {
+   if(fPPG == nullptr) {
       return 0;
    }
    return fPPG->GetTimeInCycle(GetTimeStamp());
 }
 
 ULong64_t TFragment::GetCycleNumber() {
-   if(fPPG == NULL) {
+   if(fPPG == nullptr) {
 		fPPG = TPPG::Get();//static_cast<TPPG*>(gROOT->FindObject("TPPG"));
    }
-   if(fPPG == NULL) {
+   if(fPPG == nullptr) {
       return 0;
    }
    return fPPG->GetCycleNumber(GetTimeStamp());
@@ -129,7 +129,7 @@ Short_t TFragment::GetChannelNumber() const {
 }
 
 TPPG* TFragment::GetPPG() {
-	if(fPPG == NULL) {
+	if(fPPG == nullptr) {
 		fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
 	}
 	return fPPG;
@@ -157,7 +157,7 @@ void TFragment::Print(Option_t *opt) const {
   printf("\tCharge:          0x%08x\n ",   static_cast<Int_t>(GetCharge()));
   printf("\tCFD:             0x%08x\n ",   GetCfd());
   printf("\tZC:              0x%08x\n ",   fZc);   
-  printf("\tTimeStamp:       %lu\n", GetTimeStamp());
+  printf("\tTimeStamp:       %lld\n", GetTimeStamp());
   if(HasWave())
     printf("Has a wave form stored.\n");
   else

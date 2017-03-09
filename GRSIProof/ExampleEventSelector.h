@@ -28,10 +28,6 @@ class ExampleEventSelector : public TGRSISelector {
    TGriffin * fGrif;
    TSceptar * fScep;
 
-   std::map<const char*, TH1*> fH1;
-	std::map<const char*, TH2*> fH2;
-	std::map<const char*, THnSparseF*> fHSparse;
-
    ExampleEventSelector(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(0), fScep(0) {
       SetOutputPrefix("ExampleEvent");
    }
@@ -40,7 +36,6 @@ class ExampleEventSelector : public TGRSISelector {
    void CreateHistograms();
    void FillHistograms();
    void InitializeBranches(TTree *tree);
-
 
    ClassDef(ExampleEventSelector,2);
 };

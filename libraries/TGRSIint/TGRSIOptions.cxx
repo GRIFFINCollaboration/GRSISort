@@ -13,7 +13,7 @@
 #include "GRootCommands.h"
 
 TGRSIOptions* TGRSIOptions::Get(int argc, char** argv){
-	static TGRSIOptions* item = NULL;
+	static TGRSIOptions* item = nullptr;
 	if(!item) {
 		item = new TGRSIOptions(argc, argv);
 	}

@@ -19,11 +19,11 @@ ClassImp(TMidasEvent)
 TMidasEvent::TMidasEvent()
 {
   //Default constructor
-  fData = NULL;
+  fData = nullptr;
   fAllocatedByUs = false;
 
   fBanksN = 0;
-  fBankList = NULL;
+  fBankList = nullptr;
 
   fEventHeader.fEventId      = 0;
   fEventHeader.fTriggerMask  = 0;
@@ -42,7 +42,7 @@ void TMidasEvent::Copy(TObject& rhs) const{
   static_cast<TMidasEvent&>(rhs).fAllocatedByUs = true;
 
   static_cast<TMidasEvent&>(rhs).fBanksN      = fBanksN;
-  static_cast<TMidasEvent&>(rhs).fBankList    = NULL;
+  static_cast<TMidasEvent&>(rhs).fBankList    = nullptr;
   //if(fBankList) static_cast<TMidasEvent&>(rhs).fBankList    = strdup(fBankList);
   //assert(static_cast<TMidasEvent&>(rhs).fBankList);
 }
@@ -68,11 +68,11 @@ void TMidasEvent::Clear(Option_t *opt) {
    //Clears the TMidasEvent.
   if (fBankList)
     free(fBankList);
-  fBankList = NULL;
+  fBankList = nullptr;
 
   if (fData && fAllocatedByUs)
     free(fData);
-  fData = NULL;
+  fData = nullptr;
 
   fAllocatedByUs = false;
   fBanksN = 0;
@@ -144,7 +144,7 @@ int TMidasEvent::LocateBank(const void *unused, const char *name, void **pdata) 
 
   if (!status)
     {
-      *pdata = NULL;
+      *pdata = nullptr;
       return 0;
     }
 
@@ -158,7 +158,7 @@ static const unsigned TID_MAX = (sizeof(TID_SIZE)/sizeof(TID_SIZE[0]));
 /// \param [in] name Name of the data bank to look for.
 /// \param [out] bklen Number of array elements in this bank.
 /// \param [out] bktype Bank data type (MIDAS TID_xxx).
-/// \param [out] pdata Pointer to bank data, Returns NULL if bank not found.
+/// \param [out] pdata Pointer to bank data, Returns nullptr if bank not found.
 /// \returns 1 if bank found, 0 otherwise.
 ///
 int TMidasEvent::FindBank(const char* name, int *bklen, int *bktype, void **pdata) const {
@@ -187,12 +187,12 @@ int TMidasEvent::FindBank(const char* name, int *bklen, int *bktype, void **pdat
     } while ((char*) pbk32 < (char*) pbkh + pbkh->fDataSize + sizeof(TMidas_BANK_HEADER));
 #endif
 
-    TMidas_BANK32 *pbk32 = NULL;
+    TMidas_BANK32 *pbk32 = nullptr;
 
     while (1) {
       IterateBank32(&pbk32, (char**)pdata);
       //printf("looking for [%s] got [%s]\n", name, pbk32->fName);
-      if (pbk32 == NULL)
+      if (pbk32 == nullptr)
 	break;
 
       if (name[0]==pbk32->fName[0] &&
@@ -231,7 +231,7 @@ int TMidasEvent::FindBank(const char* name, int *bklen, int *bktype, void **pdat
   //
   // bank not found
   //
-  *pdata = NULL;
+  *pdata = nullptr;
   return 0;
 }
 
@@ -365,9 +365,9 @@ int TMidasEvent::SetBankList() {
 
   fBanksN = 0;
 
-  TMidas_BANK32 *pmbk32 = NULL;
-  TMidas_BANK *pmbk = NULL;
-  char *pdata = NULL;
+  TMidas_BANK32 *pmbk32 = nullptr;
+  TMidas_BANK *pmbk = nullptr;
+  char *pdata = nullptr;
 
   while (1)
     {
@@ -380,7 +380,7 @@ int TMidasEvent::SetBankList() {
       if (IsBank32())
 	{
 	  IterateBank32(&pmbk32, &pdata);
-	  if (pmbk32 == NULL)
+	  if (pmbk32 == nullptr)
 	    break;
 	  memcpy(fBankList+fBanksN*4, pmbk32->fName, 4);
 	  fBanksN++;
@@ -388,7 +388,7 @@ int TMidasEvent::SetBankList() {
       else
 	{
 	  IterateBank(&pmbk, &pdata);
-	  if (pmbk == NULL)
+	  if (pmbk == nullptr)
 	    break;
 	  memcpy(fBankList+fBanksN*4, pmbk->fName, 4);
 	  fBanksN++;
@@ -403,14 +403,14 @@ int TMidasEvent::SetBankList() {
 int TMidasEvent::IterateBank(TMidas_BANK **pbk, char **pdata) const {
   /// Iterates through banks inside an event. The function can be used
   /// to enumerate all banks of an event.
-  /// \param [in] pbk Pointer to the bank header, must be NULL for the
-  /// first call to this function. Returns NULL if no more banks
-  /// \param [in] pdata Pointer to data area of bank. Returns NULL if no more banks
+  /// \param [in] pbk Pointer to the bank header, must be nullptr for the
+  /// first call to this function. Returns nullptr if no more banks
+  /// \param [in] pdata Pointer to data area of bank. Returns nullptr if no more banks
   /// \returns Size of bank in bytes or 0 if no more banks.
   ///
   const TMidas_BANK_HEADER* event = (const TMidas_BANK_HEADER*)fData;
 
-  if (*pbk == NULL)
+  if (*pbk == nullptr)
     *pbk = (TMidas_BANK *) (event + 1);
   else
     *pbk = (TMidas_BANK *) ((char*) (*pbk + 1) + ((((*pbk)->fDataSize)+7) & ~7));
@@ -419,8 +419,8 @@ int TMidasEvent::IterateBank(TMidas_BANK **pbk, char **pdata) const {
 
   if ((char*) *pbk >=  (char*) event + event->fDataSize + sizeof(TMidas_BANK_HEADER))
     {
-      *pbk = NULL;
-      *pdata = NULL;
+      *pbk = nullptr;
+      *pdata = nullptr;
       return 0;
     }
 
@@ -431,7 +431,7 @@ int TMidasEvent::IterateBank32(TMidas_BANK32 **pbk, char **pdata) const {
   /// See IterateBank()
 
   const TMidas_BANK_HEADER* event = (const TMidas_BANK_HEADER*)fData;
-  if (*pbk == NULL)
+  if (*pbk == nullptr)
     *pbk = (TMidas_BANK32 *) (event + 1);
   else {
     uint32_t length = (*pbk)->fDataSize;
@@ -455,8 +455,8 @@ int TMidasEvent::IterateBank32(TMidas_BANK32 **pbk, char **pdata) const {
       else
 	{
 	  // truncate invalid data
-	  *pbk = NULL;
-	  *pdata = NULL;
+	  *pbk = nullptr;
+	  *pdata = nullptr;
 	  return 0;
 	}
     }
@@ -465,8 +465,8 @@ int TMidasEvent::IterateBank32(TMidas_BANK32 **pbk, char **pdata) const {
 
   if ((char*) *pbk >= (char*)event  + event->fDataSize + sizeof(TMidas_BANK_HEADER))
     {
-      *pbk = NULL;
-      *pdata = NULL;
+      *pbk = nullptr;
+      *pdata = nullptr;
       return 0;
     }
 

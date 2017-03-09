@@ -56,17 +56,14 @@ TVector3 TTigressHit::GetPosition(Double_t dist) const {
   return TTigress::GetPosition(*this,dist);  
 }
 
-TVector3 TTigressHit::GetPosition() const {
-  return GetPosition(GetDefaultDistance());  
-}
-
 TVector3 TTigressHit::GetLastPosition(Double_t dist) const {
-  const TGRSIDetectorHit &seg = GetSegmentHit(GetNSegments()-1);
-  return TTigress::GetPosition(seg.GetDetector(),seg.GetCrystal(),seg.GetSegment(),dist);  
-}
+  const TGRSIDetectorHit *seg;
+  if(GetNSegments()>0) 
+    seg = &GetSegmentHit(GetNSegments()-1); //returns the last segment in the segment vector.
+  else
+    seg = this;  // if no segments, use the core. pcb.
 
-TVector3 TTigressHit::GetLastPosition() const {
-  return GetPosition(GetDefaultDistance());  
+  return TTigress::GetPosition(seg->GetDetector(),seg->GetCrystal(),seg->GetSegment(),dist);  
 }
 
 void TTigressHit::Print(Option_t *opt) const	{
@@ -113,21 +110,27 @@ bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs) {
 //}
 
 void TTigressHit::SumHit(TTigressHit *hit) {
-	//if(this == hit) {
-	//  fLastPos = std::make_tuple(GetDetector(),GetCrystal(),GetInitialHit());
-	//  return;
-	//}
 	if(this != hit) {
+		
+		//Should always be true when called by addback construction due to energy ordering during detector construction
+		if(this->GetEnergy()>hit->GetEnergy()) {
+			SetTime(this->GetTime());//Needs to be call before energy sum to ensure and kIsTimeSet using original energy for any adjustment
+			for(int x =0;x<hit->GetNSegments();x++){AddSegment((hit->fSegments[x]));}
+		} else {
+			SetTime(hit->GetTime());
+			SetAddress(hit->GetAddress());
+			SetCfd(hit->GetCfd());
+			
+			//Maybe overkill, but consistent
+			std::vector<TGRSIDetectorHit> fSegmentHold=hit->fSegments;
+			for(int x =0;x<GetNSegments();x++)fSegmentHold.push_back(this->fSegments[x]);
+			this->fSegments=fSegmentHold;
+		}
+
 		SetEnergy(GetEnergy() + hit->GetEnergy());
-		for(int x =0;x<hit->GetNSegments();x++) {
-			AddSegment((hit->fSegments[x]));
-		}
-		if(hit->BGOFired()) {
-			SetBGOFired(true);
-		}
+		
+		if(hit->BGOFired()) SetBGOFired(true);
 	}
-	//this->fLastHit = hit->GetPosition();
-	//this->fLastPos = std::make_tuple(hit->GetDetector(),hit->GetCrystal(),hit->GetInitialHit());
 }
 
 

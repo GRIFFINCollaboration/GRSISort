@@ -54,7 +54,6 @@ Double_t TGRSIDetectorHit::GetTime(const UInt_t& correction_flag,Option_t* opt) 
     Error("GetTime","No TChannel exists for address 0x%08x",GetAddress());
     return SetTime(10.*(static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform())));
   }
-
 	switch(chan->GetDigitizerType()) {
 		Double_t dTime;
 		case TMnemonic::kGRF16:
@@ -158,7 +157,7 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
   fBitflags       = 0;
   fPPGStatus      = TPPG::kJunk;
   fCycleTimeStamp = 0;
-  fChannel        = NULL;
+  fChannel        = nullptr;
 }
 
 Int_t TGRSIDetectorHit::GetDetector() const {
@@ -258,7 +257,7 @@ bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rh
   return (lhs->GetEnergy() > rhs->GetEnergy());
 }
 
-Long_t TGRSIDetectorHit::GetTimeStamp(Option_t* opt) const  { 
+Long64_t TGRSIDetectorHit::GetTimeStamp(Option_t* opt) const  { 
    TChannel* tmpChan = GetChannel();
    if(!tmpChan){
       return fTimeStamp;   
@@ -279,7 +278,7 @@ uint16_t TGRSIDetectorHit::GetPPGStatus() const {
   return fPPGStatus;
 }
 
-Long_t TGRSIDetectorHit::GetCycleTimeStamp() const {
+Long64_t TGRSIDetectorHit::GetCycleTimeStamp() const {
   if(IsPPGSet()) {
 	  return fCycleTimeStamp;
   }

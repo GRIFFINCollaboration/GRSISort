@@ -176,7 +176,7 @@ void TMnemonic::Parse(std::string *name){
 	
 	if(fSystem == kSiLi){
 		buf.clear(); buf.assign(*name,7,2);
-		fSegment = (uint16_t)strtol(buf.c_str(), NULL, 16);
+		fSegment = (uint16_t)strtol(buf.c_str(), nullptr, 16);
 	}
 	
 	return;

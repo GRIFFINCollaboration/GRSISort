@@ -23,9 +23,9 @@
 
 #include "TFragment.h"
 
-TList *AnalyzeFragmentTree(TTree *tree, long entries = 0, TStopwatch* w = NULL) {
+TList *AnalyzeFragmentTree(TTree *tree, long entries = 0, TStopwatch* w = nullptr) {
   
-  if(w == NULL) {
+  if(w == nullptr) {
     w = new TStopwatch;
     w->Start();
   }
@@ -191,7 +191,7 @@ int main(int argc, char **argv) {
    }
 
    TFile* file = new TFile(argv[1]);
-   if(file == NULL) {
+   if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
    }
@@ -202,7 +202,7 @@ int main(int argc, char **argv) {
 
    TTree* tree = (TTree*) file->Get("FragmentTree");
 
-   if(tree == NULL) {
+   if(tree == nullptr) {
       printf("Failed to find fragment tree in file '%s'!\n",argv[1]);
       return 1;
    }

@@ -238,7 +238,7 @@ TGRSIRunInfo::~TGRSIRunInfo() { }
 void TGRSIRunInfo::Print(Option_t *opt) const {
    //Prints the TGRSIRunInfo. Options:
    // a: Print out more details.
-   if(strchr(opt,'a') != NULL){
+   if(strchr(opt,'a') != nullptr){
       printf("\tTGRSIRunInfo Status:\n");
       printf("\t\tRunNumber:    %05i\n",TGRSIRunInfo::Get()->fRunNumber);
       printf("\t\tSubRunNumber: %03i\n",TGRSIRunInfo::Get()->fSubRunNumber);
@@ -320,7 +320,7 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum) {
 		SetRunNumber(runnum);
 	}
    if(subrunnum != -1) {
-		if(SubRunNumber() != 0) {
+		if(SubRunNumber() != -1) {
 			std::cout<<"Warning, overwriting non-default sub-run-number "<<SubRunNumber()<<" with "<<subrunnum<<std::endl;
 		}
 		SetSubRunNumber(subrunnum);
@@ -553,7 +553,7 @@ Long64_t TGRSIRunInfo::Merge(TCollection *list){
    //An individual file that was submitted to hadd.
    TGRSIRunInfo *runinfo = 0;
 
-   while ((runinfo = static_cast<TGRSIRunInfo*>(it.Next())) != NULL){
+   while ((runinfo = static_cast<TGRSIRunInfo*>(it.Next())) != nullptr){
       //Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.
       this->Add(runinfo);
    }

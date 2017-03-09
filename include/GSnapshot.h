@@ -11,10 +11,10 @@ class GSnapshot {
  public:
   static GSnapshot& Get();
 
-  GSnapshot(const char* snapshot_dir = NULL);
+  GSnapshot(const char* snapshot_dir = nullptr);
   ~GSnapshot() { }
 
-  void Snapshot(TCanvas *canvas=NULL);
+  void Snapshot(TCanvas* canvas = nullptr);
 
  private:
   std::string fSnapshotDir;

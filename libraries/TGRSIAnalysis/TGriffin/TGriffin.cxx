@@ -260,7 +260,7 @@ TGriffinHit* TGriffin::GetGriffinHit(const int& i, const Int_t &gain_type) {
 		if(!gInterpreter)
 			throw grsi::exit_exception(1);
 	}
-	return NULL;
+	return nullptr;
 }
 
 Int_t TGriffin::GetAddbackLowGainMultiplicity() {
@@ -298,7 +298,9 @@ Int_t TGriffin::GetAddbackMultiplicity(const Int_t &gain_type)  {
 			// check for each existing addback hit if this griffin hit should be added
 			for(j = 0; j < ab_vec->size(); ++j) {
 				if(fAddbackCriterion(ab_vec->at(j), hit_vec->at(i))) {
-					ab_vec->at(j).Add(&(hit_vec->at(i)));
+					ab_vec->at(j).Add(&(hit_vec->at(i)));    // copy constructor does not copy the bit field, so we set it.
+					ab_vec->at(j).SetHitBit(TGRSIDetectorHit::kIsEnergySet);  // this must be set for summed hits.
+					ab_vec->at(j).SetHitBit(TGRSIDetectorHit::kIsTimeSet);    // this must be set for summed hits. pcb.
 					frag_vec->at(j)++;
 					break;
 				}
@@ -330,14 +332,14 @@ TGriffinHit* TGriffin::GetAddbackHit(const int& i, const Int_t &gain_type) {
 	} else {
 		std::cerr << "Addback hits are out of range" << std::endl;
 		throw grsi::exit_exception(1);
-		return NULL;
+		return nullptr;
 	}
 }
 
 void TGriffin::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 	//Builds the GRIFFIN Hits directly from the TFragment. Basically, loops through the hits for an event and sets observables. 
 	//This is done for both GRIFFIN and it's suppressors.
-	if(frag == NULL || chan == NULL) {
+	if(frag == nullptr || chan == nullptr) {
 		return;
 	}
 	if(chan->GetMnemonic()->OutputSensor() == TMnemonic::kA) {  }  

@@ -21,24 +21,37 @@ TTransientBits<UShort_t> TTigress::fgTigressBits(TTigress::kSetCoreWave | TTigre
 //Why arent these TTigress class functions?
 bool DefaultAddback(TTigressHit& one, TTigressHit& two) {
 	
-	// Extended options as for efficiency call we have been limited to cores only 
-	if(one.GetSegmentMultiplicity()==0||two.GetSegmentMultiplicity()==0||TTigress::GetForceCrystal()){//For no-sectors experiment and protection if data loss
-		return ((one.GetDetector() == two.GetDetector()) &&
-			  (std::abs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()*10.0));		
+	// fTigressHits vector is sorted by descending energy during detector construction
+	// Assumption for crystals and segments: higher energy = first interaction
+	// Checking for Scattering FROM "one" TO "two"
+	
+	// GetTime is in ns;  AddbackWindow is in 10's of ns.
+	if(std::abs(one.GetTime() - two.GetTime()) < (TGRSIRunInfo::AddBackWindow()*10.0)){
 		
-	}else{
+		// segments of crystals have been sorted by descending energy during detector construction
+		// LastPosition is the position of lowest energy segment and GetPosition the highest energy segment (assumed first)
+		// Both return core position if no segments
 		double res = (one.GetLastPosition() - two.GetPosition()).Mag();
-		int one_seg  = one.GetSegmentVec().back().GetSegment();
-		int two_seg  = two.GetSegmentVec().front().GetSegment();
-		// GetTime is in ns;  AddbackWindow is in 10's of ns.
-		return ((std::abs(one.GetTime() - two.GetTime()) < (TGRSIRunInfo::AddBackWindow()*10.0)) &&
-		((((one_seg < 5 && two_seg < 5) 
-			|| (one_seg > 4 && two_seg > 4)) 
-			&& res < 54) ||  //not front to back
-		(((one_seg < 5 && two_seg > 4) 
-			|| (one_seg > 4 && two_seg < 5)) 
-			&& res < 105))); //    front to back
+
+		//In clover core separation 54.2564, 76.7367
+		//Between clovers core separation 74.2400 91.9550 (high-eff mode)
+		double seperation_limit=93;
+		
+		//Important to avoid GetSegmentVec segfaults for no segment or when we have cores only efficiency calibration
+		if(one.GetSegmentMultiplicity()>0&&two.GetSegmentMultiplicity()>0&&!TTigress::GetForceCrystal()){
+			int one_seg  = one.GetSegmentVec().back().GetSegment();
+			int two_seg  = two.GetSegmentVec().front().GetSegment();
+			
+			//front segment to front segment OR back segment to back segment
+			if((one_seg < 5 && two_seg < 5) || (one_seg > 4 && two_seg > 4)) seperation_limit=54;
+			//front to back
+			else if((one_seg < 5 && two_seg > 4) || (one_seg > 4 && two_seg < 5))seperation_limit=105;
+		}
+
+		if(res<seperation_limit)return true;		
 	}
+	
+	return false;
 }
 
 std::function<bool(TTigressHit&, TTigressHit&)> TTigress::fAddbackCriterion = DefaultAddback;
@@ -113,7 +126,7 @@ TTigress& TTigress::operator=(const TTigress& rhs) {
     if(!gInterpreter)
       throw grsi::exit_exception(1);
   }
-  return NULL;
+  return nullptr;
   */
 //}
 
@@ -130,26 +143,26 @@ Int_t TTigress::GetAddbackMultiplicity() {
     return fAddbackHits.size(); 
   }
     
-  // use the first tigress hit as starting point for the addback hits
+  // use the first (highest E) tigress hit as starting point for the addback hits
   fAddbackHits.push_back(fTigressHits[0]);
-  //I can see nothing in the current TTigressHit class or SumHit method that requires this line
-  //fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
   fAddbackFrags.push_back(1);
 
   // loop over remaining tigress hits
   size_t i, j;
-  for(i = 1; i < fTigressHits.size(); ++i) {
+  for(i = 1; i < fTigressHits.size(); i++) {
     // check for each existing addback hit if this tigress hit should be added
-    for(j = 0; j < fAddbackHits.size(); ++j) {
+    for(j = 0; j < fAddbackHits.size(); j++) {
       if(fAddbackCriterion(fAddbackHits[j], fTigressHits[i])) {
-        fAddbackHits[j].SumHit(&(fTigressHits[i]));
+	//SumHit preserves time and position from first (highest E) hit, but adds segments so this hit becomes LastPosition()
+        fAddbackHits[j].SumHit(&(fTigressHits[i]));//Adds 
         fAddbackFrags[j]++;
         break;
       }
     }
+    //if hit[i] was not added to a higher energy hit, create its own addback hit
     if(j == fAddbackHits.size()) {
       fAddbackHits.push_back(fTigressHits[i]);
-      fAddbackHits.back().SumHit(&(fAddbackHits.back()));//this sets the last position
+      fAddbackHits.back().SumHit(&(fAddbackHits.back()));//Does nothing
       fAddbackFrags.push_back(1);
     }
   }
@@ -166,7 +179,7 @@ TTigressHit* TTigress::GetAddbackHit(const int& i) {
   } else {
     std::cerr << "Addback hits are out of range" << std::endl;
     throw grsi::exit_exception(1);
-    return NULL;
+    return nullptr;
   }
 }
 
@@ -205,7 +218,7 @@ void TTigress::BuildHits(){
 }
 
 void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
-	if(frag == NULL || chan == NULL) {
+	if(frag == nullptr || chan == nullptr) {
 		return;
 	}
 	/*  if(GetMidasTimestamp()==-1) {
@@ -324,8 +337,8 @@ UShort_t TTigress::GetNAddbackFrags(size_t idx) const{
 
 
 
-TVector3 TTigress::GetPosition(const TTigressHit &hit, double dist)  {
-  return TTigress::GetPosition(hit.GetDetector(),hit.GetCrystal(),hit.GetFirstSeg(),dist);
+TVector3 TTigress::GetPosition(const TTigressHit &hit, double dist,bool smear)  {
+  return TTigress::GetPosition(hit.GetDetector(),hit.GetCrystal(),hit.GetFirstSeg(),dist,smear);
 }
 
 TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,bool smear)  {
@@ -336,9 +349,9 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,boo
 
   //printf("xx = %f\nyy = %f\n zz = %f\n",GeBluePosition[DetNbr][SegNbr][0],GeBluePosition[DetNbr][SegNbr][1],GeBluePosition[DetNbr][SegNbr][2]);
 
-  if(!(dist>0))dist=TGRSIRunInfo::HPGeArrayPosition();
+  //if(!(dist>0))dist=TGRSIRunInfo::HPGeArrayPosition();
 
-  if(dist > 140.){//145.0
+  if(dist > 140.||(GetArrayBackPos()&&dist<100.) ){//145.0
 
     switch(CryNbr)	{
     case -1:
@@ -393,15 +406,15 @@ TVector3 TTigress::GetPosition(int DetNbr,int CryNbr,int SegNbr, double dist,boo
       break;
     };
     //printf("xx = %f\nyy = %f\n zz = %f\n",xx,yy,zz);
-	 zz -= fTargetOffset;
-    det_pos.SetXYZ(xx,yy,zz);
   }
+
+  det_pos.SetXYZ(xx,yy,zz-fTargetOffset);
   
   if(smear){
 	  if(SegNbr==0){
 		// Not perfect as it takes the perpendicular core vector, not the clover vector, but good enough for my purposes
 		TVector3 a(-yy,xx,0);
-		TVector3 b=det_pos.Cross(a);
+		TVector3 b=TVector3(xx,yy,zz).Cross(a);
 		double x,y,r = sqrt(gRandom->Uniform(0,400));
 		gRandom->Circle(x,y,r);
 		det_pos+=a.Unit()*x+b.Unit()*y;

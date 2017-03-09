@@ -16,16 +16,23 @@ class TS3 : public TGRSIDetector {
 	public:
 
 		enum ES3Bits {
-			kPixelsSet 			= BIT(0),
-			kMultHit     	 	= BIT(1),
-			kBit2        		= BIT(2),
-			kBit3         		= BIT(3),
-			kBit4         		= BIT(4),
-			kBit5  				= BIT(5),
-			kBit6   				= BIT(6),
-			kBit7   				= BIT(7)
+			kPixelsSet	= BIT(0),
+			kBit1		= BIT(1),
+			kBit2		= BIT(2),
+			kBit3		= BIT(3),
+			kBit4		= BIT(4),
+			kBit5		= BIT(5),
+			kBit6		= BIT(6),
+			kBit7		= BIT(7)
 		};
-
+		
+		enum ES3GlobalBits {
+			kPreSector	= BIT(0),//Preference sector energy when building pixels
+			kMultHit	= BIT(1),//Attempt to reconstruct multi strip-hit events
+			kKeepShared	= BIT(2),//When kMultHit, reconstruct rather than discard charge sharing
+			kGBit3		= BIT(3)
+		};
+		
 		TS3();
 		TS3(const TS3&);
 		virtual  ~TS3();
@@ -48,8 +55,12 @@ class TS3 : public TGRSIDetector {
 		
 		Short_t GetMultiplicity() const { return fS3Hits.size(); }
 
-		bool MultiHit() const { return TestBitNumber(kMultHit);	 } // Get allow shared hits
-		void SetMultiHit(bool flag=true)	{ SetBitNumber(kMultHit, flag); SetPixels(false);	 } // Set allow shared hits
+		static bool PreferenceSector(bool set=true){ SetGlobalBit(kPreSector,set);return set;}  //!<!
+		static bool SectorPreference()    { return TestGlobalBit(kPreSector);}     //!<!
+		static bool SetMultiHit(bool set=true){ SetGlobalBit(kMultHit,set);return set;}  //!<!
+		static bool MultiHit()    { return TestGlobalBit(kMultHit);}     //!<!
+		static bool SetKeepShared(bool set=true){ SetGlobalBit(kKeepShared,set);return set;}  //!<!
+		static bool KeepShared()    { return TestGlobalBit(kKeepShared);}     //!<!
 
 		bool PixelsSet()	const { return TestBitNumber(kPixelsSet); }
 		void SetPixels(bool flag=true) 	{ SetBitNumber(kPixelsSet, flag); }
@@ -75,7 +86,11 @@ class TS3 : public TGRSIDetector {
 		void ClearStatus() { fS3Bits = 0; }
 		void SetBitNumber(enum ES3Bits bit,Bool_t set=true);
 		Bool_t TestBitNumber(enum ES3Bits bit) const {return (fS3Bits.TestBit(bit));}
-	
+
+		static TTransientBits<UShort_t> fgS3Bits; //Global Bit
+		static void SetGlobalBit(enum ES3GlobalBits bit,Bool_t set=true){fgS3Bits.SetBit(bit,set);}
+		static Bool_t TestGlobalBit(enum ES3GlobalBits bit) {return (fgS3Bits.TestBit(bit));}
+		
 		///for geometery	
 		static int fRingNumber;          //!<!
 		static int fSectorNumber;        //!<!
@@ -89,6 +104,8 @@ class TS3 : public TGRSIDetector {
 
 		static Int_t fFrontBackTime;   //!
 		static double fFrontBackEnergy;   //!
+
+	
 		
 
 /// \cond CLASSIMP

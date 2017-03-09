@@ -13,11 +13,11 @@ std::mutex TDeadtimeScalerQueue::Sorted;
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TDeadtimeScalerQueue *TDeadtimeScalerQueue::fDeadtimeScalerQueueClassPointer = NULL;
+TDeadtimeScalerQueue *TDeadtimeScalerQueue::fDeadtimeScalerQueueClassPointer = nullptr;
 
 TDeadtimeScalerQueue *TDeadtimeScalerQueue::Get() {
   ///Get a pointer to the global scaler Q. 
-  if(fDeadtimeScalerQueueClassPointer == NULL) {
+  if(fDeadtimeScalerQueueClassPointer == nullptr) {
 	 fDeadtimeScalerQueueClassPointer = new TDeadtimeScalerQueue;
   }
   return fDeadtimeScalerQueueClassPointer;
@@ -93,7 +93,7 @@ void TDeadtimeScalerQueue::StopStatusUpdate() {
 
 void TDeadtimeScalerQueue::Add(TScalerData* scalerData) {
 	///Add a Scaler to the scaler Queue.
-	if(scalerData == NULL) {
+	if(scalerData == nullptr) {
 		return;
 	}
 
@@ -211,11 +211,11 @@ std::mutex TRateScalerQueue::Sorted;
 //                                                            //
 ////////////////////////////////////////////////////////////////
 
-TRateScalerQueue *TRateScalerQueue::fRateScalerQueueClassPointer = NULL;
+TRateScalerQueue *TRateScalerQueue::fRateScalerQueueClassPointer = nullptr;
 
 TRateScalerQueue *TRateScalerQueue::Get() {
   ///Get a pointer to the global scaler Q. 
-  if(fRateScalerQueueClassPointer == NULL) {
+  if(fRateScalerQueueClassPointer == nullptr) {
 	 fRateScalerQueueClassPointer = new TRateScalerQueue;
   }
   return fRateScalerQueueClassPointer;
@@ -291,7 +291,7 @@ void TRateScalerQueue::StopStatusUpdate() {
 
 void TRateScalerQueue::Add(TScalerData* scalerData) {
 	///Add a Scaler to the scaler Queue.
-	if(scalerData == NULL) {
+	if(scalerData == nullptr) {
 		return;
 	}
 

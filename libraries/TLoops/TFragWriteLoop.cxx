@@ -34,8 +34,8 @@ TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string fOutputFilenam
 
 TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
   : StoppableThread(name),
-    fOutputFile(NULL), fEventTree(NULL), fBadEventTree(NULL), fScalerTree(NULL),
-	 //fEventAddress(NULL), fBadEventAddress(NULL), fScalerAddress(NULL),
+    fOutputFile(nullptr), fEventTree(nullptr), fBadEventTree(nullptr), fScalerTree(nullptr),
+	 //fEventAddress(nullptr), fBadEventAddress(nullptr), fScalerAddress(nullptr),
     fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >()),
     fBadInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >()),
     fScalerInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TEpicsFrag> > >()) {
@@ -55,7 +55,7 @@ TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
     fBadEventTree->Branch("TFragment", &fBadEventAddress);
 
     fScalerTree = new TTree("EpicsTree","EpicsTree");
-	 fScalerAddress = NULL;
+	 fScalerAddress = nullptr;
     fScalerTree->Branch("TEpicsFrag", &fScalerAddress);
 
     TThread::UnLock();
@@ -153,7 +153,7 @@ void TFragWriteLoop::WriteEvent(std::shared_ptr<const TFragment> event) {
 		fEventAddress->ClearTransients();
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fEventTree->Fill();
-		//fEventAddress = NULL;
+		//fEventAddress = nullptr;
 	} else {
 		std::cout<<__PRETTY_FUNCTION__<<": no fragment tree!"<<std::endl;
 	}
@@ -164,7 +164,7 @@ void TFragWriteLoop::WriteBadEvent(std::shared_ptr<const TFragment> event) {
 		*fBadEventAddress = *(event.get());
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fBadEventTree->Fill();
-		//fBadEventAddress = NULL;
+		//fBadEventAddress = nullptr;
 	}
 }
 
@@ -173,7 +173,7 @@ void TFragWriteLoop::WriteScaler(std::shared_ptr<TEpicsFrag> scaler) {
 		fScalerAddress = scaler.get();
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fScalerTree->Fill();
-		fScalerAddress = NULL;
+		fScalerAddress = nullptr;
 	}
 }
 

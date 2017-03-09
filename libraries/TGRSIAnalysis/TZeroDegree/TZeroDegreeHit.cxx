@@ -8,6 +8,7 @@
 #include "TZeroDegree.h"
 #include "TGRSIOptions.h"
 #include "TChannel.h"
+#include "GValue.h"
 
 /// \cond CLASSIMP
 ClassImp(TZeroDegreeHit)
@@ -87,6 +88,13 @@ Double_t TZeroDegreeHit::GetTime(const UInt_t& correction_flag, Option_t* opt) c
   }
 
   return dTime - 10.*(chan->GetTZero(GetEnergy()));
+}
+
+Double_t TZeroDegreeHit::GetCorrectedTime() const {
+	if(GValue::Get("GRSISort.ZeroDegree.TimeCorrection") != nullptr) {
+		return GetTime() + GValue::Value("GRSISort.ZeroDegree.TimeCorrection");
+	}
+	return GetTime();
 }
 
 void TZeroDegreeHit::Clear(Option_t *opt)	{

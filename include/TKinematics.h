@@ -23,7 +23,7 @@
 
 class TKinematics : public TNamed {
 public:
-  TKinematics(double beame, const char* projectile, const char* target,const char* ejectile = NULL, const char* recoil = NULL, const char* name = "");
+  TKinematics(double beame, const char* projectile, const char* target,const char* ejectile = nullptr, const char* recoil = nullptr, const char* name = "");
   TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double eBeam, double ex3=0.0, const char* name="");
   TKinematics(TNucleus* projectile, TNucleus* target, double eBeam, const char* name = "");
   TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double eBeam, const char* name = "");

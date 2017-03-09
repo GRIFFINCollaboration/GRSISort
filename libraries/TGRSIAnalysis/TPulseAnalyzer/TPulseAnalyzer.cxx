@@ -4,16 +4,16 @@
 ClassImp(TPulseAnalyzer)
 /// \endcond
 
-TPulseAnalyzer::TPulseAnalyzer() : cWpar(NULL), spar(NULL), shpar(NULL) {
+TPulseAnalyzer::TPulseAnalyzer() : cWpar(nullptr), spar(nullptr), shpar(nullptr) {
 	Clear();
 }
 
-TPulseAnalyzer::TPulseAnalyzer(const TFragment& fragment,double noise_fac) : cWpar(NULL), spar(NULL), shpar(NULL) {
+TPulseAnalyzer::TPulseAnalyzer(const TFragment& fragment,double noise_fac) : cWpar(nullptr), spar(nullptr), shpar(nullptr) {
 	Clear();
 	SetData(fragment,noise_fac);
 }
 
-TPulseAnalyzer::TPulseAnalyzer(const std::vector<Short_t>& wave,double noise_fac,std::string name) : cWpar(NULL), spar(NULL), shpar(NULL), fName(name) {
+TPulseAnalyzer::TPulseAnalyzer(const std::vector<Short_t>& wave,double noise_fac,std::string name) : cWpar(nullptr), spar(nullptr), shpar(nullptr), fName(name) {
 	Clear();
 	SetData(wave,noise_fac);
 }

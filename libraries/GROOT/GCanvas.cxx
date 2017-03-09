@@ -666,7 +666,7 @@ bool GCanvas::Process1DArrowKeyPress(Event_t *event,UInt_t *keysym) {
       break;
 
     case kMyArrowUp: {
-                       GH1D* ghist = NULL;
+                       GH1D* ghist = nullptr;
                        for(auto hist : hists){
                          if(hist->InheritsFrom(GH1D::Class())){
                            ghist = (GH1D*)hist;
@@ -689,7 +689,7 @@ bool GCanvas::Process1DArrowKeyPress(Event_t *event,UInt_t *keysym) {
                      break;
 
     case kMyArrowDown: {
-                         GH1D* ghist = NULL;
+                         GH1D* ghist = nullptr;
                          for(auto hist : hists){
                            if(hist->InheritsFrom(GH1D::Class())){
                              ghist = (GH1D*)hist;
@@ -922,7 +922,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t *event,UInt_t *keysym) {
         if(GetNMarkers() < 2){
           break;
         }
-        GH1D* ghist = NULL;
+        GH1D* ghist = nullptr;
         for(auto hist : hists){
           if(hist->InheritsFrom(GH1D::Class())){
             ghist = (GH1D*)hist;
@@ -935,7 +935,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t *event,UInt_t *keysym) {
         //  around this we need the bin value, not the bin!   pcb.
         //
         if(ghist){
-          GH1D* proj = NULL;
+          GH1D* proj = nullptr;
           int binlow = fMarkers.at(fMarkers.size()-1)->binx;
           int binhigh = fMarkers.at(fMarkers.size()-2)->binx;
           if(binlow > binhigh){
@@ -982,7 +982,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t *event,UInt_t *keysym) {
       break;
 
     case kKey_P: {
-                   GH1D* ghist = NULL;
+                   GH1D* ghist = nullptr;
                    for(auto hist : hists){
                      if(hist->InheritsFrom(GH1D::Class())){
                        ghist = (GH1D*)hist;
@@ -1255,7 +1255,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t *event,UInt_t *keysym) {
       break;
 
     case kKey_P: {
-                   GH2D* ghist = NULL;
+                   GH2D* ghist = nullptr;
                    for(auto hist : hists){
                      if(hist->InheritsFrom(GH2Base::Class())){
                        ghist = (GH2D*)hist;
@@ -1313,7 +1313,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t *event,UInt_t *keysym) {
                  break;
 
     case kKey_x: {
-                   GH2D* ghist = NULL;
+                   GH2D* ghist = nullptr;
                    for(auto hist : hists) {
                      if(hist->InheritsFrom(GH2Base::Class())){
                        ghist = (GH2D*)hist;
@@ -1334,7 +1334,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t *event,UInt_t *keysym) {
                  break;
 
     case kKey_X: {
-                   GH2D* ghist = NULL;
+                   GH2D* ghist = nullptr;
                    for(auto hist : hists) {
                      if(hist->InheritsFrom(GH2Base::Class())){
                        ghist = (GH2D*)hist;
@@ -1356,7 +1356,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t *event,UInt_t *keysym) {
                  break;
 
     case kKey_y: {
-                   GH2D* ghist = NULL;
+                   GH2D* ghist = nullptr;
                    for(auto hist : hists) {
                      if(hist->InheritsFrom(GH2Base::Class())){
                        ghist = (GH2D*)hist;
@@ -1380,7 +1380,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t *event,UInt_t *keysym) {
                  break;
 
     case kKey_Y: {
-                   GH2D* ghist = NULL;
+                   GH2D* ghist = nullptr;
                    for(auto hist : hists) {
                      if(hist->InheritsFrom(GH2Base::Class())){
                        ghist = (GH2D*)hist;

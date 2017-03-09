@@ -185,7 +185,7 @@ void TPeak::Copy(TObject &obj) const {
 
 Bool_t TPeak::InitParams(TH1* fitHist) {
 //Makes initial guesses at parameters for the fit. Uses the histogram to
-	if(fitHist == NULL) {
+	if(fitHist == nullptr) {
 		return false;
 	}
    Double_t xlow,xhigh,low,high;
@@ -394,7 +394,7 @@ void TPeak::Print(Option_t* opt) const {
    printf("Area: 	      %lf +/- %lf \n", fArea, fDArea);
    printf("FWHM:        %lf +/- %lf \n", GetParameter("sigma")*2.3548, GetParError(GetParNumber("sigma"))*2.3548);
    printf("Chi^2/NDF:   %lf\n",fChi2/fNdf);
-   if(strchr(opt,'+') != NULL) {
+   if(strchr(opt,'+') != nullptr) {
       TF1::Print();
       TGRSIFit::Print(opt); //Polymorphise this a bit better
    }
@@ -411,7 +411,7 @@ const char*  TPeak::PrintString(Option_t* opt) const {
                                 temp.append(" +/- ");
                                 temp.append(Form("%lf",fDArea));    temp.append("\n"); 
    temp.append("Chi^2/NDF:   ");temp.append(Form("%lf",fChi2/fNdf)); temp.append("\n");
-   //if(strchr(opt,'+') != NULL) {
+   //if(strchr(opt,'+') != nullptr) {
    //   TF1::Print();
    TGRSIFit::Print(opt); //Polymorphise this a bit better
    //}

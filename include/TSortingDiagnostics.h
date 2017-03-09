@@ -33,7 +33,7 @@ class TSortingDiagnostics : public TObject {
 		TSortingDiagnostics(const TSortingDiagnostics&);
 		~TSortingDiagnostics();
 		static TSortingDiagnostics* Get() {
-			if(fSortingDiagnostics == NULL) {
+			if(fSortingDiagnostics == nullptr) {
 				fSortingDiagnostics = new TSortingDiagnostics;
 			}
 			return fSortingDiagnostics;

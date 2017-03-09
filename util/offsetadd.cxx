@@ -66,7 +66,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    //int data[1024];
   
    void *ptr;
-   int banksize = event->LocateBank(NULL,"GRF1",&ptr);
+   int banksize = event->LocateBank(nullptr,"GRF1",&ptr);
 
    uint32_t type  = 0xffffffff;
    int value = 0xffffffff;
@@ -170,7 +170,7 @@ void ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    TMidasEvent copyevent = *event;
    copyevent.SetBankList();
 
-   banksize = copyevent.LocateBank(NULL,"GRF1",&ptr);
+   banksize = copyevent.LocateBank(nullptr,"GRF1",&ptr);
    for(int x=0;x<banksize;x++) {
       value = *((int*)ptr+x);
       type  = value & 0xf0000000; 

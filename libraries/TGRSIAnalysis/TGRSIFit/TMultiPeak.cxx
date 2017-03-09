@@ -372,7 +372,7 @@ const char * TMultiPeak::PrintString(Option_t *opt) const {
                                 temp.append(" +/- ");
                                 temp.append(Form("%lf",fd_area));    temp.append("\n"); 
    temp.append("Chi^2/NDF:   ");temp.append(Form("%lf",fchi2/fNdf)); temp.append("\n");
-   //if(strchr(opt,'+') != NULL){
+   //if(strchr(opt,'+') != nullptr){
    //   TF1::Print();
    //   TGRSIFit::Print(opt); //Polymorphise this a bit better
    //}

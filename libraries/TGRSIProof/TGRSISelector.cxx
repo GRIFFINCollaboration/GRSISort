@@ -48,6 +48,53 @@ void TGRSISelector::SlaveBegin(TTree * /*tree*/)
    // When running with PROOF SlaveBegin() is called on each slave server.
    // The tree argument is deprecated (on PROOF 0 is passed).
    TString option = GetOption();
+
+	std::cout<<"input list size = "<<fInput->GetEntries()<<std::endl;
+	for(int i = 0; i < fInput->GetEntries(); ++i) {
+		std::cout<<fInput->At(i)->GetName()<<": ";
+		fInput->At(i)->Print();
+	}
+	const char* workingDirectory = "";
+	if(fInput->FindObject("pwd") != nullptr) {
+		workingDirectory = fInput->FindObject("pwd")->GetTitle();
+	}
+	int i = 0;
+	while(fInput->FindObject(Form("calFile%d",i)) != nullptr) {
+		const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("calFile%d",i)))->GetTitle();
+		if(fileName[0] == 0) {
+			std::cout<<"Error, empty file name!"<<std::endl;
+			break;
+		}
+		// if we have a relative path and a working directory, combine them
+		if(workingDirectory[0] != 0 && fileName[0] != '/') {
+			TChannel::ReadCalFile(Form("%s/%s", workingDirectory, fileName));
+		} else {
+			TChannel::ReadCalFile(fileName);
+		}
+		++i;
+	}
+	i = 0;
+	while(fInput->FindObject(Form("valFile%d",i)) != nullptr) {
+		const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("valFile%d",i)))->GetTitle();
+		if(fileName[0] == 0) {
+			std::cout<<"Error, empty file name!"<<std::endl;
+			break;
+		}
+		// if we have a relative path and a working directory, combine them
+		if(workingDirectory[0] != 0 && fileName[0] != '/') {
+			GValue::ReadValFile(Form("%s/%s", workingDirectory, fileName));
+		} else {
+			GValue::ReadValFile(fileName);
+		}
+		++i;
+	}
+
+	if(GValue::Size() == 0) {
+		std::cout<<"No g-values!"<<std::flush;
+	} else {
+		std::cout<<GValue::Size()<<" g-values"<<std::endl;
+	}
+
    CreateHistograms();
 }
 

@@ -84,7 +84,9 @@ int main(int argc, char **argv) {
 
    //Add the path were we store headers for GRSIProof macros to see
    const char* pPath = getenv("GRSISYS");
+	gROOT->SetMacroPath(Form("%s",pPath));
    gROOT->SetMacroPath(Form("%s/GRSIProof",pPath));
+	gROOT->SetMacroPath(Form("%s/myAnalysis",pPath));
    gInterpreter->AddIncludePath(Form("%s/include",pPath));
    //The first thing we want to do is see if we can compile the macros that are passed to us
    if(!opt->MacroInputFiles().size()){
@@ -109,8 +111,16 @@ int main(int argc, char **argv) {
       std::cout << DRED << "Can't Proof a Midas file..." << RESET_COLOR << std::endl;
 
    //The first thing we do is get the PROOF Lite instance to run
-   TGRSIProof *proof = TGRSIProof::Open("");
-   proof->SetParallel(opt->GetMaxWorkers());
+	TGRSIProof* proof = nullptr;
+	if(opt->GetMaxWorkers() >= 0) {
+		std::cout<<"Opening proof with '"<<Form("workers=%d",opt->GetMaxWorkers())<<"'"<<std::endl;
+		proof = TGRSIProof::Open(Form("workers=%d",opt->GetMaxWorkers()));
+	} else if(opt->SelectorOnly()) {
+		std::cout<<"Opening proof with one worker (selector-only)"<<std::endl;
+		proof = TGRSIProof::Open("workers=1");
+	} else {
+		proof = TGRSIProof::Open("");
+	}
    if(!proof){
       std::cout << "Can't connect to proof" << std::endl;
       return 0;
@@ -120,8 +130,19 @@ int main(int argc, char **argv) {
    proof->AddIncludePath(Form("%s/include",pPath));
    proof->AddDynamicPath(Form("%s/lib",pPath));
 
+   proof->AddInput(new TNamed("pwd", getenv("PWD")));
+   int i = 0;
+   for(auto valFile = TGRSIOptions::Get()->ValInputFiles().begin(); valFile != TGRSIOptions::Get()->ValInputFiles().end(); ++valFile) {
+      proof->AddInput(new TNamed(Form("valFile%d", i++), valFile->c_str()));
+   }
+   i = 0;
+   for(auto calFile = TGRSIOptions::Get()->CalInputFiles().begin(); calFile != TGRSIOptions::Get()->CalInputFiles().end(); ++calFile) {
+      proof->AddInput(new TNamed(Form("calFile%d", i++), calFile->c_str()));
+   }
+
    Analyze("FragmentTree",proof);
    Analyze("AnalysisTree",proof);
+   Analyze("Lst2RootTree",proof);
 
 	TProofLog* pl = TProof::Mgr("proof://__lite__")->GetSessionLogs();
 	if(pl != nullptr) {

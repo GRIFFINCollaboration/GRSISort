@@ -79,7 +79,7 @@ TPacesHit* TPaces::GetPacesHit(const int& i) {
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }
-   return NULL;
+   return nullptr;
 }
 
 TVector3 TPaces::GetPosition(int DetNbr) {
