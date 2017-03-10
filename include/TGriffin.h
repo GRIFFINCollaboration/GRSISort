@@ -117,9 +117,9 @@ class TGriffin : public TGRSIDetector {
 
 		//Cross-Talk stuff
 	public:
-		static const Double_t gStrongCT[2];   //!<!
-		static const Double_t gWeakCT[2]; //!<!
-		static const Double_t gCrossTalkPar[2][4][4]; //!<! 
+//		static const Double_t gStrongCT[2];   //!<!
+//		static const Double_t gWeakCT[2]; //!<!
+//		static const Double_t gCrossTalkPar[2][4][4]; //!<! 
 		static Double_t CTCorrectedEnergy(const TGriffinHit* const energy_to_correct, const TGriffinHit* const other_energy, Bool_t time_constraint = true);
 		Bool_t IsCrossTalkSet(const Int_t &gain_type) const;
 		void FixLowGainCrossTalk();

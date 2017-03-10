@@ -286,6 +286,7 @@ Int_t TGriffin::GetAddbackMultiplicity(const Int_t &gain_type)  {
 	//if the addback has been reset, clear the addback hits
 	if(!IsAddbackSet(gain_type)) {
 		ab_vec->clear();
+		frag_vec->clear();
 	}
 	if(ab_vec->size() == 0) {
 		// use the first griffin hit as starting point for the addback hits
@@ -301,7 +302,7 @@ Int_t TGriffin::GetAddbackMultiplicity(const Int_t &gain_type)  {
 					ab_vec->at(j).Add(&(hit_vec->at(i)));    // copy constructor does not copy the bit field, so we set it.
 					ab_vec->at(j).SetHitBit(TGRSIDetectorHit::kIsEnergySet);  // this must be set for summed hits.
 					ab_vec->at(j).SetHitBit(TGRSIDetectorHit::kIsTimeSet);    // this must be set for summed hits. pcb.
-					frag_vec->at(j)++;
+					(frag_vec->at(j))++;
 					break;
 				}
 			}
@@ -465,7 +466,7 @@ Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, co
    static bool been_warned[256] = {false};
    double fixed_energy = hit_to_correct->GetEnergy();
    try {
-      fixed_energy += hit_to_correct->GetChannel()->GetCTCoeff().at(other_hit->GetCrystal())*other_hit->GetNoCTEnergy();
+      fixed_energy -= hit_to_correct->GetChannel()->GetCTCoeff().at(other_hit->GetCrystal())*other_hit->GetNoCTEnergy();
    }
    catch(const std::out_of_range& oor){
       if(!been_warned[16*hit_to_correct->GetDetector()+4*hit_to_correct->GetCrystal()+other_hit->GetCrystal()]){

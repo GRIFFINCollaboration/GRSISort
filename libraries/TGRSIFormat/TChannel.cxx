@@ -600,9 +600,12 @@ void TChannel::Print(Option_t* opt) const {
      std::cout << fEFFCoefficients.at(x) << "\t" ;
    std::cout << "\n";
    std::cout << "EFFChi2:   " << fEFFChi2 << "\n" ;
-   for(size_t x=0;x<fCTCoefficients.size();x++ )
-     std::cout << fCTCoefficients.at(x) << "\t" ;
-   std::cout << "\n";
+	if(fCTCoefficients.size()){
+   	std::cout <<  "CTCoeff:  "  ;
+   	for(size_t x=0;x<fCTCoefficients.size();x++ )
+     		std::cout << fCTCoefficients.at(x) << "\t" ;
+   	std::cout << "\n";
+	}
    if(fTIMECoefficients.size() > 0) {
      std::cout<< "TIMECoeff: " ;
      for(size_t x=0;x<fTIMECoefficients.size();x++)
