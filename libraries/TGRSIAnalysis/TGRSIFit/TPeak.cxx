@@ -8,6 +8,7 @@ ClassImp(TPeak)
 /// \endcond
 
 Bool_t TPeak::fLogLikelihoodFlag = true;
+TPeak* TPeak::fLastFit = nullptr;
 
 //We need c++ 11 for constructor delegation....
 TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background) : TGRSIFit("photopeakbg",TGRSIFunctions::PhotoPeakBG,xlow,xhigh,10) {
