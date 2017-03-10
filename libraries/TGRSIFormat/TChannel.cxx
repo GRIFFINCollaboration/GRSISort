@@ -564,6 +564,10 @@ void TChannel::SetDigitizerType(std::string mnemonic,const char* tmpstr) {
 void TChannel::PrintCTCoeffs(Option_t* opt) const {
 	///Prints out the current TChannel.
   std::cout <<  GetName() << "\t{\n";  //,channelname.c_str();
+   std::cout <<  "Name:      " << GetName() << "\n";
+   std::cout <<  "Number:    " << fNumber << "\n";
+   std::cout << std::setfill('0');
+   std::cout <<  "Address:   0x" << std::hex << std::setw(8) << fAddress << std::dec << "\n";
    for(size_t x=0;x<fCTCoefficients.size();x++ )
      std::cout << fCTCoefficients.at(x) << "\t" ;
    std::cout << "\n";
@@ -620,6 +624,9 @@ std::string TChannel::PrintCTToString(Option_t* opt) {
 	std::string buffer;
 	buffer.append("\n");
 	buffer.append(GetName()); buffer.append("\t{\n");  //,channelname.c_str();
+   buffer.append("Name:      "); buffer.append(GetName()); buffer.append("\n");
+   buffer.append(Form("Number:    %d\n",fNumber));
+   buffer.append(Form("Address:   0x%08x\n",fAddress));
    if(fCTCoefficients.size() > 0) {
      buffer.append("CTCoeff:  ");
      for(size_t x=0;x<fCTCoefficients.size();x++)
