@@ -68,11 +68,11 @@ TVector3 TGriffin::gCloverPosition[17] = {
 };
 
 //Cross Talk stuff
-const Double_t TGriffin::gStrongCT[2] = { -0.02674, -0.000977 }; //This is for the 0-1 and 2-3 combination
+/*const Double_t TGriffin::gStrongCT[2] = { -0.02674, -0.000977 }; //This is for the 0-1 and 2-3 combination
 const Double_t TGriffin::gWeakCT[2]   = { 0.005663, - 0.00028014};
 const Double_t TGriffin::gCrossTalkPar[2][4][4] = {
 	{ {0.0, gStrongCT[0], gWeakCT[0], gWeakCT[0]}, {gStrongCT[0], 0.0, gWeakCT[0], gWeakCT[0]}, {gWeakCT[0], gWeakCT[0], 0.0, gStrongCT[0]}, {gWeakCT[0], gWeakCT[0], gStrongCT[0], 0.0}},
-	{ {0.0, gStrongCT[1], gWeakCT[1], gWeakCT[1]}, {gStrongCT[1], 0.0, gWeakCT[1], gWeakCT[1]}, {gWeakCT[1], gWeakCT[1], 0.0, gStrongCT[1]}, {gWeakCT[1], gWeakCT[1], gStrongCT[1], 0.0}}};
+	{ {0.0, gStrongCT[1], gWeakCT[1], gWeakCT[1]}, {gStrongCT[1], 0.0, gWeakCT[1], gWeakCT[1]}, {gWeakCT[1], gWeakCT[1], 0.0, gStrongCT[1]}, {gWeakCT[1], gWeakCT[1], gStrongCT[1], 0.0}}};*/
 
 TGriffin::TGriffin() : TGRSIDetector() {
 	//Default ctor. Ignores TObjectStreamer in ROOT < 6
@@ -462,7 +462,22 @@ Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, co
 	if(hit_to_correct->GetDetector() != other_hit->GetDetector() ){
 		return hit_to_correct->GetEnergy();
 	}
-	return hit_to_correct->GetEnergy() - (gCrossTalkPar[0][hit_to_correct->GetCrystal()][other_hit->GetCrystal()] + gCrossTalkPar[1][hit_to_correct->GetCrystal()][other_hit->GetCrystal()]*other_hit->GetNoCTEnergy());
+   static bool been_warned[256] = {false};
+   double fixed_energy = hit_to_correct->GetEnergy();
+   try {
+      fixed_energy += hit_to_correct->GetChannel()->GetCTCoeff().at(other_hit->GetCrystal())*other_hit->GetNoCTEnergy();
+   }
+   catch(const std::out_of_range& oor){
+      if(!been_warned[16*hit_to_correct->GetDetector()+4*hit_to_correct->GetCrystal()+other_hit->GetCrystal()]){
+         been_warned[16*hit_to_correct->GetDetector()+4*hit_to_correct->GetCrystal()+other_hit->GetCrystal()] = true;
+         std::cout << DRED << "Missing CT correction for Det: " <<hit_to_correct->GetDetector() << " Crystals: " << hit_to_correct->GetCrystal() << " " << other_hit->GetCrystal() << std::endl;
+      }
+      return hit_to_correct->GetEnergy();
+   }
+
+   return fixed_energy;
+      
+	//return hit_to_correct->GetEnergy() - (gCrossTalkPar[0][hit_to_correct->GetCrystal()][other_hit->GetCrystal()] + gCrossTalkPar[1][hit_to_correct->GetCrystal()][other_hit->GetCrystal()]*other_hit->GetNoCTEnergy());
 
 }
 
@@ -494,4 +509,19 @@ void TGriffin::FixCrossTalk(const Int_t& gain_type) {
 		}
 	}
 	SetCrossTalk(gain_type,true);
+}
+
+const char* TGriffin::GetColorFromNumber(Int_t number){
+   switch(number){
+      case(0):
+         return "B";
+      case(1):
+         return "G";
+      case(2):
+         return "R";
+      case(3):
+         return "W";
+   };
+   return "X";
+
 }

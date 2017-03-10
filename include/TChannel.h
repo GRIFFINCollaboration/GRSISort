@@ -45,7 +45,6 @@
 #include "Globals.h"
 
 class TChannel : public TNamed	{
-
    public:
       static TChannel* GetChannel(unsigned int temp_address); 
       static TChannel* GetChannelByNumber(int temp_numebr);
@@ -98,6 +97,8 @@ class TChannel : public TNamed	{
       std::vector<double> fEFFCoefficients;  //Efficiency calibration coeffs (low to high order)
       double fEFFChi2;                       //Chi2 of Efficiency calibration
 
+      std::vector<double> fCTCoefficients;   //Cross talk coefficients
+
       static std::map<unsigned int,TChannel*>* fChannelMap; //A map to all of the channels based on address
       static std::map<int,TChannel*>* fChannelNumberMap;    //A map of TChannels based on channel number
       static void UpdateChannelNumberMap();
@@ -110,6 +111,7 @@ class TChannel : public TNamed	{
       void SetLEDCoefficients(std::vector<double> tmp)  { fLEDCoefficients = tmp;  }
       void SetTIMECoefficients(std::vector<double> tmp) { fTIMECoefficients = tmp; }
       void SetEFFCoefficients(std::vector<double> tmp)  { fEFFCoefficients = tmp;  }
+      void SetCTCoefficients(std::vector<double> tmp)  { fCTCoefficients = tmp;   } 
 
       static void trim(std::string* , const std::string & trimChars = " \f\n\r\t\v");
 
@@ -163,12 +165,14 @@ class TChannel : public TNamed	{
       std::vector<double> GetLEDCoeff()  const { return fLEDCoefficients;}
       std::vector<double> GetTIMECoeff() const { return fTIMECoefficients;}
       std::vector<double> GetEFFCoeff()  const { return fEFFCoefficients;}
+      std::vector<double> GetCTCoeff()   const { return fCTCoefficients;}
 
       inline void AddENGCoefficient(Float_t temp) { fENGCoefficients.push_back(temp); }
       inline void AddCFDCoefficient(double temp)  { fCFDCoefficients.push_back(temp); }
       inline void AddLEDCoefficient(double temp)  { fLEDCoefficients.push_back(temp); }
       inline void AddTIMECoefficient(double temp) { fTIMECoefficients.push_back(temp);}
       inline void AddEFFCoefficient(double temp)  { fEFFCoefficients.push_back(temp);}
+      inline void AddCTCoefficient(double temp)  { fCTCoefficients.push_back(temp);}
 
 
       inline void SetENGChi2(double temp)  { fENGChi2 = temp; }
@@ -201,6 +205,7 @@ class TChannel : public TNamed	{
       void DestroyLEDCal();
       void DestroyTIMECal();
       void DestroyEFFCal();
+      void DestroyCTCal();
 
       static Int_t ReadCalFromCurrentFile(Option_t *opt="overwrite");
       static Int_t ReadCalFromTree(TTree*,Option_t* opt="overwrite");
@@ -208,12 +213,15 @@ class TChannel : public TNamed	{
       static Int_t ReadCalFile(const char* filename = "");
       static Int_t ParseInputData(const char* inputdata = "",Option_t* opt = "");
       static void WriteCalFile(std::string outfilename = "");
+      static void WriteCTCorrections(std::string outfilename = "");
       static void WriteCalBuffer(Option_t* opt ="");
 
       virtual void Print(Option_t* opt = "") const;
       virtual void Clear(Option_t* opt = "");
       //static  void PrintAll(Option_t* opt = "");      
       std::string PrintToString(Option_t* opt="");
+      std::string PrintCTToString(Option_t* opt="");
+      void PrintCTCoeffs(Option_t* opt = "") const;
 
       static int WriteToRoot(TFile* fileptr = 0);
 
@@ -226,7 +234,7 @@ class TChannel : public TNamed	{
       static void SaveToSelf(const char*);
 
       /// \cond CLASSIMP
-      ClassDef(TChannel,4) //Contains the Digitizer Information
+      ClassDef(TChannel,5) //Contains the Digitizer Information
          /// \endcond
 };
 /*! @} */

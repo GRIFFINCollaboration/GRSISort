@@ -50,6 +50,7 @@ class TGriffin : public TGRSIDetector {
 		Int_t GetMultiplicity() const { return GetMultiplicity(GetDefaultGainType()); }
 
 		static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);    //!<!
+      static const char* GetColorFromNumber(Int_t number);
 #ifndef __CINT__
 		void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan); //!<!
 #endif
