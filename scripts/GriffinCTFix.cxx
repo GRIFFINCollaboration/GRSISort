@@ -14,6 +14,7 @@
 #include "TGriffin.h"
 
 double CrossTalkFit(double* x, double* par){
+   //This function is the linear fit function, but uses the CT coefficients as parameters instead of slope and intercept
    double k0 = par[0]/(1.-par[0]);
    double k1 = par[1]/(1.-par[1]);
    double energy = par[2];
@@ -22,7 +23,6 @@ double CrossTalkFit(double* x, double* par){
    double intercept = energy*(1.+k0/(1.+k1));
 
    return x[0]*slope + intercept;
-
 }
 
 double *CrossTalkFix(int det, double energy, TFile* in_file) {
@@ -47,6 +47,7 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
    std::vector<TH2*> mats;
    for(int i=0;i<4;i++) {
       for(int j=i+1;j<4;j++) {
+         //Load all of the addback matrices in and put them into a vector of TH2*
          std::string name = Form("%s_%d_%d",namebase.c_str(),i,j);
          TH2 *m = (TH2*)in_file->Get(name.c_str());
          if(!m) {
@@ -57,29 +58,30 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
       }
    }
   
-   double low_cut  = energy - 15;
+   double low_cut  = energy - 15;//This range seems to be working fairly well since no shift should be larger than say 6 or 7 keV
    double high_cut = energy + 15;
 
    double xpts[5] = {low_cut,   0,   0,high_cut,low_cut};
    double ypts[5] = {   0,low_cut,high_cut,   0,   0};
    TCutG cut("cut",5,xpts,ypts);
 
-   double *d = new double[16];//[4][4];
-   double *e_d = new double[16];//[4][4];
+   double *d = new double[16]; //matrix of coefficients
+   double *e_d = new double[16]; //matrix of errors
 
    for(size_t x=0;x<mats.size();x++) {
       TH2 *mat = mats.at(x);
       std::cout << mat->GetName() << std::endl;
-      //TH2 *cmat = (TH2*)(mat->DrawCopy("colz [cut]"));
       int xbins = mat->GetNbinsX();
       int ybins = mat->GetNbinsY();
    
       TH2 *cmat = (TH2*)mat->Clone(Form("%s_clone",mat->GetName()));
       cmat->Reset();
    
+      //I make a graph out of the "addback line" because I don't like the way TProfile handles the empty bins
       TGraphErrors *fitGraph = new TGraphErrors;
-       fitGraph->SetNameTitle(Form("%s_graph",mat->GetName()),"Graph");
+      fitGraph->SetNameTitle(Form("%s_graph",mat->GetName()),"Graph");
 
+       //This loop turns the addback plot and TCut into the TGraphErrors
       for(int i=1;i<=xbins;i++) {
          bool inside_yet = false;
          int low_bin_in_cut = 0;
@@ -99,7 +101,11 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
             }
          }
          cmat->GetXaxis()->SetRange(i,i);
-         if(cmat->Integral() > 4){
+         //This makes sure that there are at least 4 counts in the "y bin". I'd prefer this to be higher,
+         //but that requires more 60Co statistics. The reason I do this is because RMS and SD of the mean really only works 
+         //for us if we have enough counts that the mean is actually a good representation of the true value. This is something
+         //TProfile does not do for us, and seems to skew the result a bit.
+         if(cmat->Integral() > 4){       
             fitGraph->SetPoint(fitGraph->GetN(),cmat->GetYaxis()->GetBinCenter(i),cmat->GetMean(2));
             fitGraph->SetPointError(fitGraph->GetN()-1,cmat->GetXaxis()->GetBinWidth(i),cmat->GetMeanError(2));
          }
@@ -112,7 +118,7 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
       int xind = ((TObjString*)(strings->At(strings->GetEntries()-1)))->String().Atoi();
       int yind = ((TObjString*)(strings->At(strings->GetEntries()-2)))->String().Atoi();
     
-
+      //This fits the TGraph
       TF1 *fpx = new TF1(Form("pxfit_%i_%i",yind,xind),CrossTalkFit,6,1167,3);
       fpx->SetParameter(0,0.0001); fpx->SetParameter(1,0.0001); 
       fpx->SetParameter(2,energy); fpx->FixParameter(2,energy);
@@ -135,11 +141,14 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
       std::cout << "d" << xind << yind << " at zero   " << (fpx->Eval(energy))/energy  << std::endl;
       std::cout << "=====================" << std::endl;
     
+      //Fill the parameter matrix with the parameters from the fit.
       d[xind*4+yind] = fpx->GetParameter(0);
       d[yind*4+xind] = fpx->GetParameter(1);
       e_d[xind*4+yind] = fpx->GetParError(0);
       e_d[yind*4+xind] = fpx->GetParError(1);
 
+      //Keep track of the largest correction and output that to screen,
+      //This helps identify problem channels, or mistakes
       if(fpx->GetParameter(0) > largest_correction){
          largest_correction = fpx->GetParameter(0);
          largest_det = det;
@@ -159,22 +168,23 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
    std::cout << " -------------------- " << std::endl;
    std::cout << std::endl;
 
+   //Set the diafonal elements to 0 since you can't cross-talk yourself
    for(int i=0;i<4;i++) {
       for(int j=0;j<4;j++) {
          if(i==j){ 
             d[i*4+j] = 0.0000;
             e_d[i*4+j] = 0.0000;
          }
+         //output a matrix to screen
          std::cout << d[j*4+i] << "\t";// << "+/-" << e_d[i*4+j]<<"\t";
          
          //Time to find the proper channels and build the corrections xind/i is row number
-       //  std::cout << "Looking for: " <<Form("GRG%02d%sN00A",det,TGriffin::GetColorFromNumber(j)) << std::endl;
          TChannel* chan = TChannel::FindChannelByName(Form("GRG%02d%sN00A",det,TGriffin::GetColorFromNumber(j)));
          if(!chan){
             std::cout << DRED << "Couldn't find a channel for " << Form("GRG%02d%sN00A",det,TGriffin::GetColorFromNumber(j)) << RESET_COLOR << std::endl;
             continue;
          }
-         //chan->AddCTCoefficient(d[j*4+i]);
+         //Writes the coefficient to the found channel above
          chan->AddCTCoefficient(d[i*4+j]);
       }
       std::cout << std::endl;
@@ -189,6 +199,8 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
 }
 
 void FixAll(TFile* in_file, TFile* out_file) {
+   //This function only loops over 16 clvoers (always does) and uses the 1332 keV gamma ray in 60Co
+   //We might want to make this coding a little "softer"
    double energies[2] = {1173.228, 1332.492};
    for(int d=1;d<=16;d++) {
       CrossTalkFix(d,energies[1],in_file);
@@ -203,13 +215,13 @@ int main(int argc, char **argv) {
       return 0;
    }
 
+   //We need a cal file to find the channels to write the corrections to
    if(TChannel::ReadCalFile(argv[2]) < 0){
       std::cout << "Aborting" << std::endl;
       exit(1);
    }
 
    TFile* in_file = new TFile(argv[1]);
-
    if(in_file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
@@ -224,6 +236,7 @@ int main(int argc, char **argv) {
    
    FixAll(in_file,out_file);
 
+   //This function writes a corrections cal_file which can be loaded in with your normal cal file.
    TChannel::WriteCTCorrections("ct_correction.cal");
 
 }   

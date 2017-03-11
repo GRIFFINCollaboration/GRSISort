@@ -28,10 +28,6 @@ class CrossTalk : public TGRSISelector {
    TGriffin * fGrif;
    TSceptar * fScep;
 
-   std::map<std::string, TH1*> fH1;
-	std::map<std::string, TH2*> fH2;
-	std::map<std::string, THnSparseF*> fHSparse;
-
    CrossTalk(TTree * /*tree*/ =0) : TGRSISelector(), fGrif(0), fScep(0) {
       SetOutputPrefix("Crosstalk");
    }
@@ -40,7 +36,6 @@ class CrossTalk : public TGRSISelector {
    void CreateHistograms();
    void FillHistograms();
    void InitializeBranches(TTree *tree);
-
 
    ClassDef(CrossTalk,2);
 };
