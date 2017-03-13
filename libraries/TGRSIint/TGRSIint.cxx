@@ -517,26 +517,38 @@ void TGRSIint::SetupPipeline() {
    // Choose output file names for the 4 possible output files
    std::string output_fragment_tree_filename = opt->OutputFragmentFile();
    if(output_fragment_tree_filename.length() == 0) {
-      output_fragment_tree_filename = Form("fragment%05i_%03i.root",
-            run_number, sub_run_number);
+		if(sub_run_number == -1) {
+			output_fragment_tree_filename = Form("fragment%05i.root", run_number);
+		} else {
+			output_fragment_tree_filename = Form("fragment%05i_%03i.root", run_number, sub_run_number);
+		}
    }
 
    std::string output_fragment_hist_filename = opt->OutputFragmentHistogramFile();
    if(output_fragment_hist_filename.length() == 0) {
-      output_fragment_hist_filename = Form("hist_fragment%05i_%03i.root",
-            run_number, sub_run_number);
+		if(sub_run_number == -1) {
+			output_fragment_hist_filename = Form("hist_fragment%05i.root", run_number);
+		} else {
+			output_fragment_hist_filename = Form("hist_fragment%05i_%03i.root", run_number, sub_run_number);
+		}
    }
 
    std::string output_analysis_tree_filename = opt->OutputAnalysisFile();
    if(output_analysis_tree_filename.length() == 0) {
-      output_analysis_tree_filename = Form("analysis%05i_%03i.root",
-            run_number, sub_run_number);
+		if(sub_run_number == -1) {
+			output_analysis_tree_filename = Form("analysis%05i.root", run_number);
+		} else {
+			output_analysis_tree_filename = Form("analysis%05i_%03i.root", run_number, sub_run_number);
+		}
    }
 
    std::string output_analysis_hist_filename = opt->OutputAnalysisHistogramFile();
    if(output_analysis_hist_filename.length() == 0) {
-      output_analysis_hist_filename = Form("hist_analysis%05i_%03i.root",
-            run_number, sub_run_number);
+		if(sub_run_number == -1) {
+			output_analysis_hist_filename = Form("hist_analysis%05i.root", run_number);
+		} else {
+			output_analysis_hist_filename = Form("hist_analysis%05i_%03i.root", run_number, sub_run_number);
+		}
    }
 
 
