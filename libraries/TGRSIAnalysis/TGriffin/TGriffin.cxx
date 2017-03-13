@@ -298,7 +298,9 @@ Int_t TGriffin::GetAddbackMultiplicity(const Int_t &gain_type)  {
 			// check for each existing addback hit if this griffin hit should be added
 			for(j = 0; j < ab_vec->size(); ++j) {
 				if(fAddbackCriterion(ab_vec->at(j), hit_vec->at(i))) {
-					ab_vec->at(j).Add(&(hit_vec->at(i)));
+					ab_vec->at(j).Add(&(hit_vec->at(i)));    // copy constructor does not copy the bit field, so we set it.
+					ab_vec->at(j).SetHitBit(TGRSIDetectorHit::kIsEnergySet);  // this must be set for summed hits.
+					ab_vec->at(j).SetHitBit(TGRSIDetectorHit::kIsTimeSet);    // this must be set for summed hits. pcb.
 					frag_vec->at(j)++;
 					break;
 				}

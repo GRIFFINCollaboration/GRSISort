@@ -19,6 +19,9 @@ double TS3::fOuterDiameter=70.;
 double TS3::fInnerDiameter=22.;
 double TS3::fTargetDistance=31.;
 
+// Default tigress unpacking settings
+TTransientBits<UShort_t> TS3::fgS3Bits(TS3::kMultHit); 
+
 Int_t TS3::fFrontBackTime;   
 double TS3::fFrontBackEnergy; 
 
@@ -103,7 +106,7 @@ void TS3::BuildPixels(){
   if(fS3Hits.size() == 0) {
 		
 
-		// We are going to want energies sereral times
+		// We are going to want energies several times
 		// So build a quick vector 
 		std::vector<double> EneR,EneS;
 		std::vector<bool> UsedRing, UsedSector;
@@ -128,30 +131,34 @@ void TS3::BuildPixels(){
 						EneS[j]*fFrontBackEnergy<EneR[i]){  //if time is good check energy
 
 						//Now we have accepted a good event, build it
-						TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position
-						dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
-// 						if(TGRSIRunInfo::IsWaveformFitting()){
-// 							dethit.SetTimeFit(fS3RingHits[i].GetFitTime());
-// 							dethit.SetSig2Noise(fS3RingHits[i].GetSignalToNoise());
-// 						}
-						fS3Hits.push_back(dethit);
-
+						if(SectorPreference()){
+							TS3Hit dethit = fS3SectorHits[j]; // Sector defines all data ring just gives position
+							dethit.SetRingNumber(fS3RingHits[i].GetRing());
+							fS3Hits.push_back(dethit);
+						}else{
+							TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position (default)
+							dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
+							fS3Hits.push_back(dethit);
+						}
+						
+						//Although set to used for MultiHit, continue to check all combinations in this loop.
 						UsedRing[i]=true;
 						UsedSector[j]=true;
+						//This is desired behaviour for telescope, debugging, etc, when one would set fFrontBackEnergy=0 and build all combinations
 					}
 				}
 			}
 		}
 	
-		if(fS3Bits.TestBit(kMultHit) == true){
+		if(MultiHit()){
 		
 			int ringcount = 0;
 			int sectorcount = 0;
-			for(unsigned int i=0;i<UsedRing.size();i++)
+			for(unsigned int i=0;i<UsedRing.size();++i)
 				if(!UsedRing.at(i))
 					ringcount++;
 
-			for(unsigned int i=0;i<UsedSector.size();i++)
+			for(unsigned int i=0;i<UsedSector.size();++i)
 				if(!UsedSector.at(i))
 					sectorcount++;
 
@@ -175,23 +182,40 @@ void TS3::BuildPixels(){
 								if(EneR[i]*fFrontBackEnergy<(EneS[j]+EneS[k])&&
 									(EneS[j]+EneS[k])*fFrontBackEnergy<EneR[i]){  //if time is good check energy
 
-									//Now we have accepted a good event, build it
-									TS3Hit dethit = fS3SectorHits[j]; // Sector now defines all data ring just gives position
-									dethit.SetRingNumber(fS3RingHits[i].GetRing());
-// 									if(TGRSIRunInfo::IsWaveformFitting()){
-// 										dethit.SetTimeFit(fS3SectorHits[j].GetFitTime());
-// 										dethit.SetSig2Noise(fS3SectorHits[j].GetSignalToNoise());
-// 									}
-									fS3Hits.push_back(dethit);
+									int SectorSep=fS3SectorHits[j].GetSector()-fS3SectorHits[k].GetSector();
+									if(abs(SectorSep)==1||abs(SectorSep)==fSectorNumber){
+										//Same ring and neighbour sectors, almost certainly charge sharing
+										//Experiments with breakup might get real mult2 events like this but most will be charge sharing
+										
+										if(KeepShared()){
+											TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position
+											//Selecting one of the sectors is currently the best class allows, some loss of position information
+											if(fS3SectorHits[k].GetEnergy()<fS3SectorHits[j].GetEnergy()) dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
+											else dethit.SetSectorNumber(fS3SectorHits[k].GetSector()); 
+											fS3Hits.push_back(dethit);
+										}
+									}else{
+										//2 separate hits with shared ring
+									
+										//Now we have accepted a good event, build it
+										TS3Hit dethit = fS3SectorHits[j]; // Sector now defines all data ring just gives position
+										dethit.SetRingNumber(fS3RingHits[i].GetRing());
+	// 									if(TGRSIRunInfo::IsWaveformFitting()){
+	// 										dethit.SetTimeFit(fS3SectorHits[j].GetFitTime());
+	// 										dethit.SetSig2Noise(fS3SectorHits[j].GetSignalToNoise());
+	// 									}
+										fS3Hits.push_back(dethit);
 
-									//Now we have accepted a good event, build it
-									TS3Hit dethitB = fS3SectorHits[k]; // Sector now defines all data ring just gives position
-									dethitB.SetRingNumber(fS3RingHits[i].GetRing());
-// 									if(TGRSIRunInfo::IsWaveformFitting()){
-// 										dethitB.SetTimeFit(fS3SectorHits[k].GetFitTime());
-// 										dethitB.SetSig2Noise(fS3SectorHits[k].GetSignalToNoise());
-// 									}
-									fS3Hits.push_back(dethitB);
+										//Now we have accepted a good event, build it
+										TS3Hit dethitB = fS3SectorHits[k]; // Sector now defines all data ring just gives position
+										dethitB.SetRingNumber(fS3RingHits[i].GetRing());
+	// 									if(TGRSIRunInfo::IsWaveformFitting()){
+	// 										dethitB.SetTimeFit(fS3SectorHits[k].GetFitTime());
+	// 										dethitB.SetSig2Noise(fS3SectorHits[k].GetSignalToNoise());
+	// 									}
+										fS3Hits.push_back(dethitB);
+									
+									}
 
 									UsedRing[i]=true;
 									UsedSector[j]=true;
@@ -206,11 +230,11 @@ void TS3::BuildPixels(){
 
 			ringcount = 0;
 			sectorcount = 0;
-			for(unsigned int i=0;i<UsedRing.size();i++)
+			for(unsigned int i=0;i<UsedRing.size();++i)
 				if(!UsedRing.at(i))
 					ringcount++;
 
-			for(unsigned int i=0;i<UsedSector.size();i++)
+			for(unsigned int i=0;i<UsedSector.size();++i)
 				if(!UsedSector.at(i))
 					sectorcount++;
 
@@ -231,25 +255,40 @@ void TS3::BuildPixels(){
 								&& abs(fS3SectorHits[i].GetCfd()-fS3RingHits[k].GetCfd()) < fFrontBackTime){ //first check time
 								if(EneS[i]*fFrontBackEnergy<(EneR[j]+EneR[k])&&
 									(EneR[j]+EneR[k])*fFrontBackEnergy<EneS[i]){  //if time is good check energy
-							
-									//Now we have accepted a good event, build it
-									TS3Hit dethit = fS3RingHits[j]; // Ring defines all data sector just gives position
-									dethit.SetSectorNumber(fS3SectorHits[i].GetSector());
-// 									if(TGRSIRunInfo::IsWaveformFitting()){
-// 										dethit.SetTimeFit(fS3RingHits[j].GetFitTime());
-// 										dethit.SetSig2Noise(fS3RingHits[j].GetSignalToNoise());
-// 									}
-									fS3Hits.push_back(dethit);
+										
+									if(abs(fS3RingHits[j].GetRing()-fS3RingHits[k].GetRing())==1){
+									//Same sector and neighbour rings, almost certainly charge sharing
+									//Experiments with breakup might get real mult2 events like this but most will be charge sharing
 
-									//Now we have accepted a good event, build it
-									TS3Hit dethitB = fS3RingHits[k]; // Ring defines all data sector just gives position
-									dethitB.SetSectorNumber(fS3SectorHits[i].GetSector());
-// 									if(TGRSIRunInfo::IsWaveformFitting()){
-// 										dethitB.SetTimeFit(fS3RingHits[k].GetFitTime());
-// 										dethitB.SetSig2Noise(fS3RingHits[k].GetSignalToNoise());
-// 									}
-									fS3Hits.push_back(dethitB);
+										if(KeepShared()){
+											TS3Hit dethit = fS3SectorHits[i]; // Sector defines all data ring just gives position
+											//Selecting one of the sectors is currently the best class allows, some loss of position information
+											if(fS3RingHits[k].GetEnergy()<fS3RingHits[j].GetEnergy()) dethit.SetRingNumber(fS3RingHits[j].GetRing());
+											else dethit.SetRingNumber(fS3RingHits[k].GetRing()); 
+											fS3Hits.push_back(dethit);
+										}
+									}else{
+										//2 separate hits with shared sector
+								
+										//Now we have accepted a good event, build it
+										TS3Hit dethit = fS3RingHits[j]; // Ring defines all data sector just gives position
+										dethit.SetSectorNumber(fS3SectorHits[i].GetSector());
+	// 									if(TGRSIRunInfo::IsWaveformFitting()){
+	// 										dethit.SetTimeFit(fS3RingHits[j].GetFitTime());
+	// 										dethit.SetSig2Noise(fS3RingHits[j].GetSignalToNoise());
+	// 									}
+										fS3Hits.push_back(dethit);
 
+										//Now we have accepted a good event, build it
+										TS3Hit dethitB = fS3RingHits[k]; // Ring defines all data sector just gives position
+										dethitB.SetSectorNumber(fS3SectorHits[i].GetSector());
+	// 									if(TGRSIRunInfo::IsWaveformFitting()){
+	// 										dethitB.SetTimeFit(fS3RingHits[k].GetFitTime());
+	// 										dethitB.SetSig2Noise(fS3RingHits[k].GetSignalToNoise());
+	// 									}
+										fS3Hits.push_back(dethitB);
+									}
+									
 									UsedSector[i]=true;
 									UsedRing[j]=true;
 									UsedRing[k]=true;

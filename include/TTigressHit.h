@@ -38,11 +38,8 @@ class TTigressHit : public TGRSIDetectorHit {
     Float_t fTimeFit;
     Float_t fSig2Noise;
 
-/*     //need to do sudo tracking to build addback. */
-/*     TVector3 fLastHit;                //!<! */
-/* #if !defined (__CINT__) && !defined (__CLING__) */
-/*     std::tuple<int,int,int> fLastPos; //!<! */
-/* #endif */
+    //need to do sudo tracking to build addback. do not remove.  pcb. */
+    //TVector3 fLastHit;                //!   <! */
 
   public:
     void SetHit() {}
@@ -88,7 +85,7 @@ class TTigressHit : public TGRSIDetectorHit {
 
     const TGRSIDetectorHit& GetSegmentHit(int i) const { return fSegments.at(i);  }  //!<!
     /* const TGRSIDetectorHit& GetBGO(int i)     const { return fBgos.at(i);      }  //!<! */
-    const TGRSIDetectorHit& GetCore()         const { return *this;            }  //!<!
+    const TGRSIDetectorHit& GetCore()            const { return *this;            }  //!<!
     
     const std::vector<TGRSIDetectorHit>& GetSegmentVec() const { return fSegments; }
     /* const std::vector<TGRSIDetectorHit>& GetBGOVec()     const { return fBgos; } */
@@ -104,13 +101,8 @@ class TTigressHit : public TGRSIDetectorHit {
 
     void SumHit(TTigressHit*);                                    //!<!
 
-    TVector3 GetPosition(Double_t dist) const; 
-    TVector3 GetPosition() const; 
-    TVector3 GetLastPosition(Double_t dist) const;
-    TVector3 GetLastPosition() const;
-
-  private:
-    Double_t GetDefaultDistance() const { return 110.; }
+    TVector3 GetPosition(Double_t dist=0.) const; 
+    TVector3 GetLastPosition(Double_t dist=0.) const;
 
   public:
     virtual void Clear(Option_t *opt = "");                        //!<!

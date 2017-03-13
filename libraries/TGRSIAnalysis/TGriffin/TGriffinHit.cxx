@@ -83,34 +83,36 @@ bool TGriffinHit::CompareEnergy(const TGriffinHit *lhs, const TGriffinHit *rhs)	
 }
 
 void TGriffinHit::Add(const TGriffinHit *hit)	{
-	// add another griffin hit to this one (for addback), 
-	// using the time and position information of the one with the higher energy
-	if(!CompareEnergy(this,hit)) {
-		this->SetCfd(hit->GetCfd());
-		this->SetTime(hit->GetTime());
-		//this->SetPosition(hit->GetPosition());
-		this->SetAddress(hit->GetAddress());
-	}
-	this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
-   //this has to be done at the very end, otherwise this->GetEnergy() might not work
-   this->SetCharge(0);
-   //Add all of the pileups.This should be changed when the max number of pileups changes
-   if((this->NPileUps() + hit->NPileUps()) < 4){
-      this->SetNPileUps(this->NPileUps() + hit->NPileUps());
-   }  
-   else{
-      this->SetNPileUps(3);
-   }
-   if((this->PUHit() + hit->PUHit()) < 4){
-      this->SetPUHit(this->PUHit() + hit->PUHit());
-   }  
-   else{
-      this->SetPUHit(3);
-   }
-   //KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup hit was added-back RD
-   if(this->GetKValue() > hit->GetKValue()){
-      this->SetKValue(hit->GetKValue());
-   }
+  // add another griffin hit to this one (for addback), 
+  // using the time and position information of the one with the higher energy
+  if(!CompareEnergy(this,hit)) {
+    this->SetCfd(hit->GetCfd());
+    this->SetTime(hit->GetTime());
+    //this->SetPosition(hit->GetPosition());
+    this->SetAddress(hit->GetAddress());
+  } else {
+    this->SetTime(this->GetTime());
+  }
+  this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+  //this has to be done at the very end, otherwise this->GetEnergy() might not work
+  this->SetCharge(0);
+  //Add all of the pileups.This should be changed when the max number of pileups changes
+  if((this->NPileUps() + hit->NPileUps()) < 4){
+     this->SetNPileUps(this->NPileUps() + hit->NPileUps());
+  }  
+  else{
+     this->SetNPileUps(3);
+  }
+  if((this->PUHit() + hit->PUHit()) < 4){
+     this->SetPUHit(this->PUHit() + hit->PUHit());
+  }  
+  else{
+     this->SetPUHit(3);
+  }
+  //KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup hit was added-back RD
+  if(this->GetKValue() > hit->GetKValue()){
+     this->SetKValue(hit->GetKValue());
+  }
 }
 
 void TGriffinHit::SetGriffinFlag(enum EGriffinHitBits flag,Bool_t set){
