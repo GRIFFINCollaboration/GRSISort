@@ -62,6 +62,7 @@ struct SpeHeader {
 //the value of all bins in int sizes
 //an integer os bin size * 4           ------- number of char in the histogram.
 
+void AddToList(TList*, TH2*, bool, bool);
 void WriteHist(TH1*, std::fstream*);
 void WriteMat(TH2*, std::fstream*);
 void WriteM4b(TH2*, std::fstream*);
@@ -69,8 +70,17 @@ void WriteM4b(TH2*, std::fstream*);
 int main(int argc, char** argv) {	
 	TFile *infile = new TFile();	
 	if(argc < 2  || !(infile = TFile::Open(argv[1],"read")) )	{
-		printf ( "problem opening file.\nUsage: Root2Rad file.root\n");
+		std::cout<<"problem opening file."<<std::endl
+			      <<"Usage: "<<argv[0]<<" file.root (optional: -s to split large matrices, -c to compress large matrices)"<<std::endl;
 		return 1;
+	}
+
+	bool split = false;
+	bool compress = false;
+	for(int i = 2; i < argc; ++i) {
+		if(strcmp(argv[i], "-s") == 0) split = true;
+		else if(strcmp(argv[i], "-c") == 0) compress = true;
+		else std::cout<<"Unrecognized flag "<<argv[i]<<std::endl;
 	}
 
 	std::string path = infile->GetName();
@@ -86,7 +96,6 @@ int main(int argc, char** argv) {
 		mkdir(path.c_str(),0755);
 	}
 
-
 	//std::string outfilename = infile->GetName();
 	//outfilename.erase(outfilename.find_last_of('.'));
 	//outfilename.append(".spe");
@@ -96,9 +105,9 @@ int main(int argc, char** argv) {
 	TList* keys = infile->GetListOfKeys();
 	keys->Sort();
 	TIter next(keys);
-	TList* histstowrite = new TList();
-	TList* matstowrite = new TList();
-	TList* m4bstowrite = new TList();
+	TList* histsToWrite = new TList();
+	TList* matsToWrite = new TList();
+	TList* m4bsToWrite = new TList();
 	//int counter = 1;
 	while(TKey* currentkey = static_cast<TKey*>(next())) {
 		std::string keytype = currentkey->ReadObj()->IsA()->GetName();
@@ -106,27 +115,27 @@ int main(int argc, char** argv) {
 			//printf("%i currentkey->GetName() = %s\n",counter++, currentkey->GetName());
 			//if((counter-1)%4==0)
 			//	printf("*****************************\n");
-			histstowrite->Add(currentkey->ReadObj());
+			histsToWrite->Add(currentkey->ReadObj());
 		} else if(keytype.compare(0, 4, "TH2C") == 0 || keytype.compare(0, 4, "TH2S") == 0){
-			matstowrite->Add(currentkey->ReadObj());
+			AddToList(matsToWrite, static_cast<TH2*>(currentkey->ReadObj()), split, compress);
 		} else if(keytype.compare(0, 3, "TH2") == 0) {
-			m4bstowrite->Add(currentkey->ReadObj());
+			AddToList(m4bsToWrite, static_cast<TH2*>(currentkey->ReadObj()), split, compress);
 		} else if(keytype.compare(0, 3, "THn") == 0) {
 			THnSparse* hist = ((THnSparse*) (currentkey->ReadObj()));
 			if(hist->GetNdimensions() == 1) {
-				histstowrite->Add(hist->Projection(0));
+				histsToWrite->Add(hist->Projection(0));
 			} else if(hist->GetNdimensions() == 2) {
 				if(keytype.compare(17, 1, "C") == 0 || keytype.compare(17, 1, "S") == 0) {
-					matstowrite->Add(hist->Projection(0,1));
+					AddToList(matsToWrite, hist->Projection(0,1), split, compress);
 				} else {
-					m4bstowrite->Add(hist->Projection(0,1));
+					AddToList(m4bsToWrite, hist->Projection(0,1), split, compress);
 				}
 			}
 		} else if(keytype.compare(0, 5, "GHSym") == 0) {
 			if(keytype.compare(5, 1, "F") == 0) {
-				m4bstowrite->Add(static_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix());
+				AddToList(m4bsToWrite, static_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
 			} else if(keytype.compare(5, 1, "D") == 0) {
-				m4bstowrite->Add(static_cast<GHSymD*>(currentkey->ReadObj())->GetMatrix());
+				AddToList(m4bsToWrite, static_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
 			} else {
 				std::cout<<"unknown GHSym type "<<keytype<<std::endl;
 			}
@@ -135,9 +144,9 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	//printf("histstowrite->GetSize() = %i\n", histstowrite->GetSize());
+	//printf("histsToWrite->GetSize() = %i\n", histsToWrite->GetSize());
 
-	TIter nexthist(histstowrite);
+	TIter nexthist(histsToWrite);
 	while(TH1* currenthist = static_cast<TH1*>(nexthist())) {
 		std::string outfilename = path + "/";
 		outfilename.append(currenthist->GetName());
@@ -150,7 +159,7 @@ int main(int argc, char** argv) {
 	}
 
 
-	TIter nextmat(matstowrite);
+	TIter nextmat(matsToWrite);
 	while(TH2* currentmat = static_cast<TH2*>(nextmat())) {
 		std::string outfilename = path + "/";
 		outfilename.append(currentmat->GetName());
@@ -163,7 +172,7 @@ int main(int argc, char** argv) {
 	}
 
 
-	TIter nextm4b(m4bstowrite);
+	TIter nextm4b(m4bsToWrite);
 	while(TH2* currentm4b = static_cast<TH2*>(nextm4b())) {
 		std::string outfilename = path + "/";
 		outfilename.append(currentm4b->GetName());
@@ -179,6 +188,56 @@ int main(int argc, char** argv) {
 	//outfile.close();
 
 	return 0;
+}
+
+void AddToList(TList* list, TH2* hist, bool split, bool compress) {
+	if((!split && !compress) || hist->GetXaxis()->GetNbins() <= 4096) {
+		list->Add(hist);
+		return;
+	} else if(split && compress) {
+		TH2* splitHist = static_cast<TH2*>(hist->IsA()->New());
+		splitHist->SetBins(4096, 0., 4096., 4096, 0., 4096.);
+		splitHist->SetName(Form("%s_low", hist->GetName()));
+		for(int binx = 1; binx <= 4096; ++binx) {
+			for(int biny = 1; biny <= 4096; ++biny) {
+				// ignore overflow cells
+				if(binx <= hist->GetXaxis()->GetNbins() && biny <= hist->GetYaxis()->GetNbins()) {
+					splitHist->SetBinContent(binx, biny, hist->GetBinContent(binx, biny));
+				}
+			}
+		}
+		list->Add(splitHist);
+		int rebin = (hist->GetXaxis()->GetNbins() + 4095)/4096;
+		std::cout<<"rebinning "<<hist->GetName()<<" by "<<rebin<<std::endl;
+		list->Add(hist->Rebin2D(rebin, rebin));
+		return;
+	} else if(split) {
+		int nofSplits = (hist->GetXaxis()->GetNbins() + 4095)/4096;
+		TH2* splitHist = static_cast<TH2*>(hist->IsA()->New());
+		splitHist->SetBins(4096, 0., 4096., 4096, 0., 4096.);
+		for(int i = 0; i < nofSplits; ++i) {
+			for(int j = 0; j <= i; ++j) {
+				std::cout<<hist->GetName()<<": x = "<<i*4096<<" - "<<(i+1)*4096<<", y = "<<j*4096<<" - "<<(j+1)*4096<<std::endl;
+				splitHist->Reset();
+				splitHist->SetName(Form("%s_%d_%d", hist->GetName(), i, j));
+				for(int binx = 1; binx <= 4096; ++binx) {
+					for(int biny = 1; biny <= 4096; ++biny) {
+						// ignore overflow cells
+						if(i*4096 + binx <= hist->GetXaxis()->GetNbins() && j*4096 + biny <= hist->GetYaxis()->GetNbins()) {
+							splitHist->SetBinContent(binx, biny, hist->GetBinContent(i*4096 + binx, j*4096 + biny));
+						}
+					}
+				}
+				list->Add(splitHist->Clone(Form("%s_%d_%d", hist->GetName(), i, j)));
+			}
+		}
+		return;
+	} 
+	// only option left now is compress
+	int rebin = (hist->GetXaxis()->GetNbins() + 4095)/4096;
+	std::cout<<"rebinning "<<hist->GetName()<<" by "<<rebin<<std::endl;
+	hist->SetName(Form("%s_rebin%d", hist->GetName(), rebin));
+	list->Add(hist->Rebin2D(rebin, rebin));
 }
 
 void WriteMat(TH2 *mat, std::fstream *outfile) {
