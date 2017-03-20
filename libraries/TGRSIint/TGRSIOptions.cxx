@@ -27,6 +27,7 @@ TGRSIOptions::TGRSIOptions(int argc, char** argv)
 
 void TGRSIOptions::Clear(Option_t* opt) {
 	fInputMidasFiles.clear();
+	fInputLstFiles.clear();
 	fInputRootFiles.clear();
 	fInputCalFiles.clear();
 	fInputOdbFiles.clear();
@@ -380,6 +381,8 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const{
 
 	if(ext=="mid"){
 		return kFileType::MIDAS_FILE;
+	} else if(ext=="lst"){
+		return kFileType::LST_FILE;
 	} else if(ext=="evt"){
 		return kFileType::NSCL_EVT;
 	} else if (ext == "cal") {
@@ -420,6 +423,10 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename) {
 		case kFileType::GRETINA_MODE3:
 		case kFileType::MIDAS_FILE:
 			fInputMidasFiles.push_back(filename);
+			return true;
+
+		case kFileType::LST_FILE:
+			fInputLstFiles.push_back(filename);
 			return true;
 
 		case kFileType::ROOT_DATA:

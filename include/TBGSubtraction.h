@@ -31,7 +31,9 @@ class TBGSubtraction : public TGMainFrame {
       kGateLowEntry,
       kGateHighEntry,
       kBGLowEntry,
-      kBGHighEntry
+      kBGHighEntry,
+      kWrite2FileNameEntry,
+      kHistogramDescriptionEntry
    };
 
     //  RQ_OBJECT("TBGSubtraction")
@@ -58,7 +60,9 @@ class TBGSubtraction : public TGMainFrame {
       TGLayoutHints        *fLayoutCanvases;
       TGLayoutHints        *fLayoutParam;
 
-      TGTextButton         *fDrawCanvasButton;
+      TGTextEntry          *fWrite2FileName;
+      TGTextEntry          *fHistogramDescription;
+//      TGTextButton         *fDrawCanvasButton;
       TGTextButton         *fWrite2FileButton;
 
 
@@ -68,6 +72,7 @@ class TBGSubtraction : public TGMainFrame {
       TGHorizontalFrame    *fBGParamFrame;
       TGHorizontalFrame    *fGateEntryFrame;
       TGHorizontalFrame    *fBGEntryFrame;
+      TGHorizontalFrame    *fDescriptionFrame;
       TGHorizontalFrame    *fButtonFrame;
 
    //Markers
