@@ -97,10 +97,13 @@ void TBGSubtraction::BuildInterface() {
    fBGParamEntry->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoDraw()");
    fBGParamEntry->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoProjection()");
 
+   fDescriptionFrame       = new TGHorizontalFrame(fGateFrame,200,200);
+   fHistogramDescription   = new TGTextEntry(fDescriptionFrame,"gated #gamma-#gamma",kHistogramDescriptionEntry);
 
    fButtonFrame = new TGHorizontalFrame(fGateFrame,200,200);
-   fDrawCanvasButton = new TGTextButton(fButtonFrame,"&Draw Canvas");
-   fDrawCanvasButton->Connect("Clicked()", "TBGSubtraction", this, "DrawOnNewCanvas()");
+   fWrite2FileName   = new TGTextEntry(fButtonFrame,"default.root",kWrite2FileNameEntry);
+   //fDrawCanvasButton = new TGTextButton(fButtonFrame,"&Draw Canvas");
+   //fDrawCanvasButton->Connect("Clicked()", "TBGSubtraction", this, "DrawOnNewCanvas()");
    fWrite2FileButton = new TGTextButton(fButtonFrame,"&Write Histograms");
    fWrite2FileButton->Connect("Clicked()", "TBGSubtraction", this, "WriteHistograms()");
 
@@ -123,7 +126,10 @@ void TBGSubtraction::BuildInterface() {
    fBGEntryFrame->AddFrame(fBGEntryLow,fBly);
    fBGEntryFrame->AddFrame(fBGEntryHigh,fBly);
 
-   fButtonFrame->AddFrame(fDrawCanvasButton,fBly);
+   //fButtonFrame->AddFrame(fDrawCanvasButton,fBly);
+   fDescriptionFrame->AddFrame(fHistogramDescription,fBly);
+
+   fButtonFrame->AddFrame(fWrite2FileName,fBly);
    fButtonFrame->AddFrame(fWrite2FileButton,fBly);
 
    fProjectionFrame->AddFrame(fProjectionCanvas, fLayoutCanvases);
@@ -134,6 +140,7 @@ void TBGSubtraction::BuildInterface() {
    
    fGateFrame->AddFrame(fGateCanvas, fLayoutCanvases);
    fGateFrame->AddFrame(fBGParamFrame, fLayoutParam);
+   fGateFrame->AddFrame(fDescriptionFrame,fLayoutParam);
    fGateFrame->AddFrame(fButtonFrame,fLayoutParam);
    
    AddFrame(fProjectionFrame, fBly1);
@@ -420,10 +427,32 @@ void TBGSubtraction::DrawOnNewCanvas(){
 }
 
 void TBGSubtraction::WriteHistograms() {
-   TFile f("test.root","Update");
-   std::cout << "Writing histograms to " << f.GetName() << std::endl;
-   if(fSubtractedHist) fSubtractedHist->Write();
-   if(fBGHist) fBGHist->Write();
-   if(fGateHist) fGateHist->Write();
+   //Find if there is a file name
+   const char *file_name = fWrite2FileName->GetText();
+   if(file_name == nullptr){
+      std::cout << "Please enter a file name" << std::endl;
+      return;
+   }
+
+   TFile f(file_name,"Update");
+   std::cout << "Writing " << fHistogramDescription->GetText() << " histograms to " << f.GetName() << std::endl;
+   if(fSubtractedHist){
+      if(fHistogramDescription->GetText() != nullptr)
+         fSubtractedHist->SetTitle(fHistogramDescription->GetText());
+      fSubtractedHist->Write();
+   }
+
+   if(fBGHist){
+      if(fHistogramDescription->GetText() != nullptr)
+         fBGHist->SetTitle(Form("%s Background",fHistogramDescription->GetText()));
+
+      fBGHist->Write();
+   }
+   if(fGateHist){
+      if(fHistogramDescription->GetText() != nullptr)
+         fGateHist->SetTitle(Form("%s Gate only",fHistogramDescription->GetText()));
+   
+      fGateHist->Write();
+   }
 }
 

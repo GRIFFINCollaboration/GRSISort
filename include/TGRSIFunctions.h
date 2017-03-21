@@ -12,7 +12,10 @@
 
 #include "TMath.h"
 #include "TROOT.h"
+
+#ifdef HAS_MATHMORE
 #include "Math/SpecFuncMathMore.h"
+#endif
 
 namespace TGRSIFunctions {
 
@@ -44,8 +47,10 @@ namespace TGRSIFunctions {
    Double_t DeadTimeCorrect(Double_t *dim, Double_t deadtime, Double_t binWidth = 1.0);
    Double_t DeadTimeAffect(Double_t function, Double_t deadtime, Double_t binWidth = 1.0);
 
+#ifdef HAS_MATHMORE
 //Angular correlation fitting
    Double_t LegendrePolynomial(Double_t *x,Double_t *par);
+#endif
 }
 /*! @} */
 #endif

@@ -122,6 +122,7 @@ class TGRSIRunInfo : public TObject {
       static inline void SetDante(bool flag = true)       { fGRSIRunInfo->fDante = flag; }
       static inline void SetZeroDegree(bool flag = true)  { fGRSIRunInfo->fZeroDegree = flag; }
       static inline void SetDescant(bool flag = true)     { fGRSIRunInfo->fDescant = flag; }
+		static inline void SetFipps(bool flag = true)		 { fGRSIRunInfo->fFipps = flag; }
 
       static inline void SetCalFileName(const char *name) { fGRSIRunInfo->fCalFileName.assign(name); }
       static inline void SetCalFileData(const char *data) { fGRSIRunInfo->fCalFile.assign(data); }
@@ -159,6 +160,7 @@ class TGRSIRunInfo : public TObject {
       static inline bool Dante()     { return fGRSIRunInfo->fDante; }
       static inline bool ZeroDegree(){ return fGRSIRunInfo->fZeroDegree; }
       static inline bool Descant()   { return fGRSIRunInfo->fDescant; }
+		static inline bool Fipps()		 { return fGRSIRunInfo->fFipps; }
 
       inline void SetRunInfoFileName(const char *fname)  {  fRunInfoFileName.assign(fname); }
       inline void SetRunInfoFile(const char *ffile)      {  fRunInfoFile.assign(ffile); }
@@ -244,6 +246,7 @@ class TGRSIRunInfo : public TObject {
       bool fDante;      //flag for LaBr on/off
       bool fZeroDegree; //flag for Zero Degree Scintillator on/off
       bool fDescant;    //flag for Descant on/off
+		bool fFipps	;		//flag for Fipps on/off
 
       std::string fCalFileName;  //Name of calfile that generated cal
       std::string fCalFile;      //Cal File to load into Cal of tree

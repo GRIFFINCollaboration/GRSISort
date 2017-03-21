@@ -134,9 +134,9 @@ TDescant::TDescant(const TDescant& rhs) : TGRSIDetector() {
 
 void TDescant::Clear(Option_t *opt)	{
    ///Clears all of the hits
-   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+   //if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
       TGRSIDetector::Clear(opt);
-   }
+   //}
    fDescantHits.clear();
 }
 

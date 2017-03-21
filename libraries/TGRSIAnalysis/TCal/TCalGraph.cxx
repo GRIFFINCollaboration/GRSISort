@@ -59,7 +59,6 @@ Double_t TCalGraph::FindDistToClosestPointX(const Double_t& x_val){
 	return std::fabs(GetX()[idx] - x_val);
 }
 
-
 Int_t TCalGraph::AddLists(const TCalList& cal_list, const TSourceList& src_list){
 	//This is where we build the compared list
 	const auto &cal_map = cal_list.Map();

@@ -61,9 +61,9 @@ TSceptar::TSceptar(const TSceptar& rhs) : TGRSIDetector() {
 void TSceptar::Clear(Option_t *opt)	{
    //Clears all of the hits
    //The Option "all" clears the base class.
-   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+   //if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
       TGRSIDetector::Clear(opt);
-   }
+   //}
    fSceptarHits.clear();
 }
 
