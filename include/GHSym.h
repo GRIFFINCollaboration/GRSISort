@@ -13,9 +13,10 @@ class GHSym : public TH1 {
 		~GHSym();
 	
 		virtual Int_t     BufferEmpty(Int_t action = 0);
+		Int_t					BufferFill(Double_t, Double_t) { return -2; } //MayNotUse
 		virtual Int_t     BufferFill(Double_t x, Double_t y, Double_t w);
 		virtual void      Copy(TObject& hnew) const;
-		virtual Int_t     Fill(Double_t);
+		virtual Int_t     Fill(Double_t); //MayNotUse
 		virtual Int_t     Fill(Double_t x, Double_t y);
 		virtual Int_t     Fill(Double_t x, Double_t y, Double_t w);
 		virtual Int_t     Fill(const char* namex, const char* namey, Double_t w);
@@ -64,6 +65,10 @@ class GHSym : public TH1 {
 		Double_t fTsumwy2;	//Total Sum of weight*Y*Y
 		Double_t fTsumwxy;	//Total Sum of weight*X*Y
 
+	private:
+		GHSym(const GHSym&);
+		GHSym& operator=(const GHSym&);
+
 	ClassDef(GHSym, 1);
 };
 
@@ -73,6 +78,7 @@ class GHSymF : public GHSym, public TArrayF {
 		GHSymF(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up);
 		GHSymF(const char* name, const char* title, Int_t nbins, const Double_t* bins);
 		GHSymF(const char* name, const char* title, Int_t nbins, const Float_t* bins);
+		GHSymF(const GHSymF&);
 		~GHSymF();
 
 		TH2F* GetMatrix();
@@ -107,6 +113,7 @@ class GHSymD : public GHSym, public TArrayD {
 		GHSymD(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up);
 		GHSymD(const char* name, const char* title, Int_t nbins, const Double_t* bins);
 		GHSymD(const char* name, const char* title, Int_t nbins, const Float_t* bins);
+		GHSymD(const GHSymD&);
 		~GHSymD();
 
 		TH2D* GetMatrix();

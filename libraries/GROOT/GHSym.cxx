@@ -57,6 +57,10 @@ GHSym::GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bi
 	fNcells = (fNcells*(nbins+3))/2;
 }
 
+GHSym::GHSym(const GHSym& rhs) : TH1() {
+	rhs.Copy(*this);
+}
+
 GHSym::~GHSym() {
 }
 
@@ -80,7 +84,11 @@ Int_t GHSym::BufferEmpty(Int_t action) {
 		fBuffer = buffer;
 	}
 
+#if MAJOR_ROOT_VERSION < 6
 	if(TestBit(kCanRebin) || fXaxis.GetXmax() <= fXaxis.GetXmin() || fYaxis.GetXmax() <= fYaxis.GetXmin()) {
+#else
+	if(CanExtendAllAxes() || fXaxis.GetXmax() <= fXaxis.GetXmin() || fYaxis.GetXmax() <= fYaxis.GetXmin()) {
+#endif
 		// find min, max of entries in buffer
 		// for the symmetric matrix x- and y-range are the same
 		Double_t min = fBuffer[2];
@@ -1009,9 +1017,9 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const {
 	TH1* h1 = const_cast<TH1*>(static_cast<const TH1*>(this));
 	if(h2 == 0) return 0;
 	TAxis* xaxis1 = h1->GetXaxis();
-	TAxis* xaxis2 = h2->GetXaxis();
+	TAxis* xaxis2 = const_cast<TAxis*>(h2->GetXaxis());
 	TAxis* yaxis1 = h1->GetYaxis();
-	TAxis* yaxis2 = h2->GetYaxis();
+	TAxis* yaxis2 = const_cast<TAxis*>(h2->GetYaxis());
 	Int_t ncx1   = xaxis1->GetNbins();
 	Int_t ncx2   = xaxis2->GetNbins();
 	Int_t ncy1   = yaxis1->GetNbins();
@@ -1345,8 +1353,13 @@ Long64_t GHSym::Merge(TCollection* list) {
 	Int_t binx, biny, ix, iy, nx, ny, bin, ibin;
 	Double_t cu;
 	Int_t nbix = fXaxis.GetNbins();
+#if MAJOR_ROOT_VERSION < 6
 	Bool_t canRebin=TestBit(kCanRebin);
 	ResetBit(kCanRebin); // reset, otherwise setting the under/overflow will rebin
+#else
+	Bool_t canExtend = CanExtendAllAxes();
+	SetCanExtend(TH1::kNoAxis); // reset, otherwise setting the under/overflow will extend the axis
+#endif
 
 	while((h = static_cast<GHSym*>(next())) != nullptr) {
 		// skip empty histograms 
@@ -1393,7 +1406,11 @@ Long64_t GHSym::Merge(TCollection* list) {
 			}
 		}
 	}
+#if MAJOR_ROOT_VERSION < 6
 	if(canRebin) SetBit(kCanRebin);
+#else
+	SetCanExtend(canExtend);
+#endif
 
 	//copy merged stats
 	PutStats(totstats);
@@ -1884,9 +1901,11 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname) {
 		hnew->SetName(newname);
 	}
 
+#if MAJOR_ROOT_VERSION < 6
 	//reset kCanRebin bit to avoid a rebinning in SetBinContent
 	Int_t bitRebin = hnew->TestBit(kCanRebin);
 	hnew->SetBit(kCanRebin, 0);
+#endif
 
 	// save original statistics
 	Double_t stat[kNstat];
@@ -2090,7 +2109,9 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname) {
 	//restore statistics and entries  modified by SetBinContent
 	hnew->SetEntries(entries);
 	if(!resetStat) hnew->PutStats(stat);
+#if MAJOR_ROOT_VERSION < 6
 	hnew->SetBit(kCanRebin,bitRebin);
+#endif
 
 	delete[] oldBins;
 	if(oldErrors != nullptr) delete[] oldErrors;
@@ -2286,33 +2307,37 @@ void GHSym::Smooth(Int_t ntimes, Option_t* option) {
 
 ClassImp(GHSymF)
 
-	GHSymF::GHSymF() : GHSym(), TArrayF() {
-		SetBinsLength(9);
-		if(fgDefaultSumw2) Sumw2();
-	}
-
-GHSymF::~GHSymF() {
+GHSymF::GHSymF() : GHSym(), TArrayF() {
+	SetBinsLength(9);
+	if(fgDefaultSumw2) Sumw2();
 }
 
 GHSymF::GHSymF(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up)
 	: GHSym(name, title, nbins, low, up) {
-		TArrayF::Set(fNcells);
-		if(fgDefaultSumw2) Sumw2();
+	TArrayF::Set(fNcells);
+	if(fgDefaultSumw2) Sumw2();
 
-		if(low >= up) SetBuffer(fgBufferSize);
-	}
+	if(low >= up) SetBuffer(fgBufferSize);
+}
 
 GHSymF::GHSymF(const char* name, const char* title, Int_t nbins, const Double_t* bins)
 	: GHSym(name, title, nbins, bins) {
-		TArrayF::Set(fNcells);
-		if(fgDefaultSumw2) Sumw2();
-	}
+	TArrayF::Set(fNcells);
+	if(fgDefaultSumw2) Sumw2();
+}
 
 GHSymF::GHSymF(const char* name, const char* title, Int_t nbins, const Float_t* bins)
 	: GHSym(name, title, nbins, bins) {
-		TArrayF::Set(fNcells);
-		if(fgDefaultSumw2) Sumw2();
-	}
+	TArrayF::Set(fNcells);
+	if(fgDefaultSumw2) Sumw2();
+}
+
+GHSymF::GHSymF(const GHSymF& rhs) : GHSym(), TArrayF() {
+	rhs.Copy(*this);
+}
+
+GHSymF::~GHSymF() {
+}
 
 TH2F* GHSymF::GetMatrix() {
 	TH2F* mat = nullptr;
@@ -2455,33 +2480,37 @@ GHSymF operator/(GHSymF& h1, GHSymF& h2) {
 
 ClassImp(GHSymD)
 
-	GHSymD::GHSymD() : GHSym(), TArrayD() {
-		SetBinsLength(9);
-		if(fgDefaultSumw2) Sumw2();
-	}
-
-GHSymD::~GHSymD() {
+GHSymD::GHSymD() : GHSym(), TArrayD() {
+	SetBinsLength(9);
+	if(fgDefaultSumw2) Sumw2();
 }
 
 GHSymD::GHSymD(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up)
 	: GHSym(name, title, nbins, low, up) {
-		TArrayD::Set(fNcells);
-		if(fgDefaultSumw2) Sumw2();
+	TArrayD::Set(fNcells);
+	if(fgDefaultSumw2) Sumw2();
 
-		if(low >= up) SetBuffer(fgBufferSize);
-	}
+	if(low >= up) SetBuffer(fgBufferSize);
+}
 
 GHSymD::GHSymD(const char* name, const char* title, Int_t nbins, const Double_t* bins)
 	: GHSym(name, title, nbins, bins) {
-		TArrayD::Set(fNcells);
-		if(fgDefaultSumw2) Sumw2();
-	}
+	TArrayD::Set(fNcells);
+	if(fgDefaultSumw2) Sumw2();
+}
 
 GHSymD::GHSymD(const char* name, const char* title, Int_t nbins, const Float_t* bins)
 	: GHSym(name, title, nbins, bins) {
-		TArrayD::Set(fNcells);
-		if(fgDefaultSumw2) Sumw2();
-	}
+	TArrayD::Set(fNcells);
+	if(fgDefaultSumw2) Sumw2();
+}
+
+GHSymD::GHSymD(const GHSymD& rhs) : GHSym(), TArrayD() {
+	rhs.Copy(*this);
+}
+
+GHSymD::~GHSymD() {
+}
 
 TH2D* GHSymD::GetMatrix() {
 	TH2D* mat = nullptr;
