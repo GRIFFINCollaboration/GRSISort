@@ -114,6 +114,9 @@ Bool_t TGainMatch::CoarseMatch(TH1* hist, Int_t chanNum, Double_t energy1, Doubl
       TPeak tmpPeak(foundBin[x],foundBin[x] - fCoarseRange/binWidth, foundBin[x] + fCoarseRange/binWidth);
       tmpPeak.SetName(Form("GM_Cent_%lf",foundBin[x]));//Change the name of the TPeak to know it's origin
       tmpPeak.Fit(hist,"+");
+		tmpPeak.ReleaseParameter(3);
+		tmpPeak.ReleaseParameter(4);
+      tmpPeak.Fit(hist,"+");
       SetPoint(x,tmpPeak.GetParameter("centroid"),engVec[x]);
    }
 
@@ -520,7 +523,12 @@ Bool_t TGainMatch::Align(TH1* test, TH1* hist,Int_t low_range, Int_t high_range)
    fAlignCoeffs[0] = res->Parameter(1);
    fAlignCoeffs[1] = res->Parameter(2);
    std::cout << "Chi2: " << res->Chi2()/res->Ndf()<< std::endl;
-
+	if(std::abs(res->Parameter(0) - 1.00) > 20.){
+		return false;
+	}
+	if(std::abs(res->Parameter(2) - 1.00) > 5.){
+		return false;
+	}
    fAligned = true;
   // delete shift_guess;
    return true;
@@ -636,7 +644,9 @@ Bool_t TGainMatch::FineMatchAll(TCalManager* cm, TH2* charge_mat, TH2* eng_mat, 
 
 Bool_t TGainMatch::FineMatch(TH1* energyHist, TH1* testhist, TH1* chargeHist, Double_t energy1, Double_t energy2, Int_t low_range, Int_t high_range, Int_t channelNum) {
    //Should be run to correct drifting gains. Requires a previously gain matched spectrum, and ideally a roughly energy calibrated spectrum
-   Align(testhist,energyHist,low_range,high_range);
+   if(!Align(testhist,energyHist,low_range,high_range)){
+		return false;
+	}
    TH1* hist2 = chargeHist; //Cheating for easier modification later
    if(!chargeHist || !testhist || !energyHist) {
       Error("FineMatch","No histogram being pointed to");

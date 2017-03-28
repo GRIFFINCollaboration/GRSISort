@@ -32,7 +32,9 @@ class TTransientBits {
     Bool_t TestBit(Int_t f) const { return fBits & f; }
     T      TestBits(Int_t f) const { return static_cast<T>(fBits & f); }
 
-    TTransientBits & operator=(const T & rhs) { fBits = rhs; return *this; }
+    T Value() const { return fBits; }
+
+	 TTransientBits & operator=(const T & rhs) { fBits = rhs; return *this; }
 
     void Clear(){ fBits = 0; }
     void Print() const { std::cout << fBits << std::endl; }
