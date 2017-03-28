@@ -386,11 +386,13 @@ void TBGSubtraction::DoProjection() {
       delete fGateHist;
    const char* proj_name = Form("gate_%d_%d",(Int_t)(fGateEntryLow->GetNumber()),(Int_t)(fGateEntryHigh->GetNumber()));
    fGateHist = fMatrix->ProjectionX(proj_name,fMatrix->GetYaxis()->FindBin(fGateSlider->GetMinPosition()),fMatrix->GetYaxis()->FindBin(fGateSlider->GetMaxPosition()));
+   fGateHist->Sumw2();
 
    if(fBGHist)
       delete fBGHist;
    const char* bg_name = Form("bg_%d_%d",(Int_t)(fBGEntryLow->GetNumber()),(Int_t)(fBGEntryHigh->GetNumber()));
    fBGHist = fMatrix->ProjectionX(bg_name,fMatrix->GetYaxis()->FindBin(fBGSlider->GetMinPosition()),fMatrix->GetYaxis()->FindBin(fBGSlider->GetMaxPosition()));
+   fBGHist->Sumw2();
    TH1* bg_hist = fProjection->ShowBackground(fBGParamEntry->GetNumberEntry()->GetIntNumber());
    Double_t under_peak_bg = bg_hist->Integral(bg_hist->FindBin(fGateSlider->GetMinPosition()),bg_hist->FindBin(fGateSlider->GetMaxPosition()));
    Double_t bg_region = fProjection->Integral(fProjection->FindBin(fBGSlider->GetMinPosition()),fProjection->FindBin(fBGSlider->GetMaxPosition()));
@@ -429,6 +431,7 @@ void TBGSubtraction::DrawOnNewCanvas(){
 void TBGSubtraction::WriteHistograms() {
    //Find if there is a file name
    const char *file_name = fWrite2FileName->GetText();
+
    if(file_name == nullptr){
       std::cout << "Please enter a file name" << std::endl;
       return;

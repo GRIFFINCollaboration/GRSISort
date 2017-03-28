@@ -50,6 +50,7 @@ class TGriffin : public TGRSIDetector {
 		Int_t GetMultiplicity() const { return GetMultiplicity(GetDefaultGainType()); }
 
 		static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0);    //!<!
+      static const char* GetColorFromNumber(Int_t number);
 #ifndef __CINT__
 		void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan); //!<!
 #endif
@@ -116,9 +117,9 @@ class TGriffin : public TGRSIDetector {
 
 		//Cross-Talk stuff
 	public:
-		static const Double_t gStrongCT[2];   //!<!
-		static const Double_t gWeakCT[2]; //!<!
-		static const Double_t gCrossTalkPar[2][4][4]; //!<! 
+//		static const Double_t gStrongCT[2];   //!<!
+//		static const Double_t gWeakCT[2]; //!<!
+//		static const Double_t gCrossTalkPar[2][4][4]; //!<! 
 		static Double_t CTCorrectedEnergy(const TGriffinHit* const energy_to_correct, const TGriffinHit* const other_energy, Bool_t time_constraint = true);
 		Bool_t IsCrossTalkSet(const Int_t &gain_type) const;
 		void FixLowGainCrossTalk();

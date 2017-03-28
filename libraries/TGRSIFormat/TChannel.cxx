@@ -57,6 +57,7 @@ TChannel::TChannel(TChannel* chan) {
 	SetLEDCoefficients(chan->GetLEDCoeff());
 	SetTIMECoefficients(chan->GetTIMECoeff());
 	SetEFFCoefficients(chan->GetEFFCoeff());
+   SetCTCoefficients(chan->GetCTCoeff());
 
 	SetENGChi2(chan->GetENGChi2());
 	SetCFDChi2(chan->GetCFDChi2());
@@ -156,6 +157,7 @@ void TChannel::OverWriteChannel(TChannel* chan){
 	SetLEDCoefficients(chan->GetLEDCoeff());
 	SetTIMECoefficients(chan->GetTIMECoeff());
 	SetEFFCoefficients(chan->GetEFFCoeff());
+   SetCTCoefficients(chan->GetCTCoeff());
 
 	SetENGChi2(chan->GetENGChi2());
 	SetCFDChi2(chan->GetCFDChi2());
@@ -200,6 +202,8 @@ void TChannel::AppendChannel(TChannel* chan){
 		this->SetTIMECoefficients(chan->GetTIMECoeff());
 	if(chan->GetEFFCoeff().size()>0)
 		this->SetEFFCoefficients(chan->GetEFFCoeff());
+   if(chan->GetCTCoeff().size()>0)
+      this->SetCTCoefficients(chan->GetCTCoeff());
 
 	if(chan->GetENGChi2() != 0.0)
 		this->SetENGChi2(chan->GetENGChi2());
@@ -226,8 +230,6 @@ void TChannel::AppendChannel(TChannel* chan){
 
 	return;
 }
-
-
 
 int TChannel::UpdateChannel(TChannel* chan,Option_t* opt) {
 	///If there is information in the chan, the current TChannel with the same address is updated with that information.
@@ -273,6 +275,7 @@ void TChannel::Clear(Option_t* opt){
 	fLEDCoefficients.clear();
 	fTIMECoefficients.clear();
 	fEFFCoefficients.clear();
+   fCTCoefficients.clear();
 
 }
 
@@ -384,6 +387,12 @@ void TChannel::DestroyEFFCal()  {
 	///Erases the EffCal vector
 	fEFFCoefficients.clear();
 }
+
+void TChannel::DestroyCTCal() {
+   //Erases the CTCal vector
+   fCTCoefficients.clear();
+}
+
 void TChannel::DestroyCalibrations()   {
 	///Erases all Cal vectors
 	DestroyENGCal();
@@ -391,6 +400,7 @@ void TChannel::DestroyCalibrations()   {
 	DestroyLEDCal();
 	DestroyTIMECal();
 	DestroyEFFCal();
+   DestroyCTCal();
 }
 
 double TChannel::CalibrateENG(int charge,int temp_int) {
@@ -551,6 +561,22 @@ void TChannel::SetDigitizerType(std::string mnemonic,const char* tmpstr) {
    }
 }
 
+void TChannel::PrintCTCoeffs(Option_t* opt) const {
+	///Prints out the current TChannel.
+  std::cout <<  GetName() << "\t{\n";  //,channelname.c_str();
+   std::cout <<  "Name:      " << GetName() << "\n";
+   std::cout <<  "Number:    " << fNumber << "\n";
+   std::cout << std::setfill('0');
+   std::cout <<  "Address:   0x" << std::hex << std::setw(8) << fAddress << std::dec << "\n";
+   for(size_t x=0;x<fCTCoefficients.size();x++ )
+     std::cout << fCTCoefficients.at(x) << "\t" ;
+   std::cout << "\n";
+   std::cout << "}\n";
+   std::cout << "//====================================//\n";
+
+}
+
+
 void TChannel::Print(Option_t* opt) const {
 	///Prints out the current TChannel.
   std::cout <<  GetName() << "\t{\n";  //,channelname.c_str();
@@ -578,6 +604,12 @@ void TChannel::Print(Option_t* opt) const {
      std::cout << fEFFCoefficients.at(x) << "\t" ;
    std::cout << "\n";
    std::cout << "EFFChi2:   " << fEFFChi2 << "\n" ;
+	if(fCTCoefficients.size()){
+   	std::cout <<  "CTCoeff:  "  ;
+   	for(size_t x=0;x<fCTCoefficients.size();x++ )
+     		std::cout << fCTCoefficients.at(x) << "\t" ;
+   	std::cout << "\n";
+	}
    if(fTIMECoefficients.size() > 0) {
      std::cout<< "TIMECoeff: " ;
      for(size_t x=0;x<fTIMECoefficients.size();x++)
@@ -590,6 +622,27 @@ void TChannel::Print(Option_t* opt) const {
    std::cout << "//====================================//\n";
 
 }
+
+std::string TChannel::PrintCTToString(Option_t* opt) {
+	std::string buffer;
+	buffer.append("\n");
+	buffer.append(GetName()); buffer.append("\t{\n");  //,channelname.c_str();
+   buffer.append("Name:      "); buffer.append(GetName()); buffer.append("\n");
+   buffer.append(Form("Number:    %d\n",fNumber));
+   buffer.append(Form("Address:   0x%08x\n",fAddress));
+   if(fCTCoefficients.size() > 0) {
+     buffer.append("CTCoeff:  ");
+     for(size_t x=0;x<fCTCoefficients.size();x++)
+       buffer.append(Form("%f\t",fCTCoefficients.at(x)));
+     buffer.append("\n");
+   }
+   buffer.append("}\n");
+
+   buffer.append("//====================================//\n");
+
+   return buffer;
+}
+
 
 std::string TChannel::PrintToString(Option_t* opt) {
 	std::string buffer;
@@ -617,6 +670,12 @@ std::string TChannel::PrintToString(Option_t* opt) {
      buffer.append(Form("%f\t",fEFFCoefficients.at(x)));
    buffer.append("\n");
    buffer.append(Form("EFFChi2:   %f\n",fEFFChi2));
+   if(fCTCoefficients.size() > 0) {
+     buffer.append("CTCoeff:  ");
+     for(size_t x=0;x<fCTCoefficients.size();x++)
+       buffer.append(Form("%f\t",fCTCoefficients.at(x)));
+     buffer.append("\n");
+   }
    if(fTIMECoefficients.size() > 0) {
      buffer.append("TIMECoeff:  ");
      for(size_t x=0;x<fTIMECoefficients.size();x++)
@@ -692,6 +751,36 @@ void TChannel::WriteCalFile(std::string outfilename) {
 	return;
 }
 
+void TChannel::WriteCTCorrections(std::string outfilename) {
+
+	std::map <unsigned int, TChannel*  >::iterator iter;
+	std::vector<TChannel> chanVec;
+	std::vector<TChannel>::iterator iter_vec;
+	for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++)   {
+		if(iter->second)
+			chanVec.push_back(*iter->second);
+	}
+
+	std::sort(chanVec.begin(),chanVec.end(),TChannel::CompareChannels);
+
+	if(outfilename.length()>0) {
+		std::ofstream calout;
+		calout.open(outfilename.c_str());
+		for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+			std::string chanstr = iter_vec->PrintCTToString();
+			calout << chanstr.c_str();
+			calout << std::endl;
+		}
+		calout << std::endl;
+		calout.close();
+	} else {  
+		for(iter_vec = chanVec.begin(); iter_vec != chanVec.end(); iter_vec++)   {
+			iter_vec->PrintCTCoeffs();
+		}
+	}
+
+	return;
+}
 
 void TChannel::WriteCalBuffer(Option_t* opt) {
 	/// writes any TChannels in memory to the internal buffer 
@@ -987,6 +1076,10 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 					channel->DestroyTIMECal();
 					double value;
 					while (ss >> value) {   channel->AddTIMECoefficient(value); }
+				} else if(type.compare("CTCOEFF")==0) {
+					channel->DestroyCTCal();
+					double value;
+					while (ss >> value) {   channel->AddCTCoefficient(value); }
 				} else if(type.compare("WALK")==0) {
 					channel->DestroyTIMECal();
 					double value;

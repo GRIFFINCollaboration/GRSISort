@@ -87,6 +87,8 @@ class TPeak : public TGRSIFit {
    static Bool_t CompareArea(const TPeak& lhs, const TPeak& rhs)    { return lhs.GetArea() < rhs.GetArea(); }
    static Bool_t CompareEnergy(const TPeak* lhs, const TPeak* rhs)  { return lhs->GetCentroid() < rhs->GetCentroid(); }
    static Bool_t CompareArea(const TPeak* lhs, const TPeak* rhs)    { return lhs->GetArea() < rhs->GetArea(); }
+   
+   static TPeak* GetLastFit() { return fLastFit; }
 
  public:
    virtual void Print(Option_t* opt = "") const;
@@ -102,6 +104,7 @@ class TPeak : public TGRSIFit {
    Bool_t fOwnBgFlag;
 
    static bool fLogLikelihoodFlag; //!<!
+   static TPeak* fLastFit; //!<!
 
    TF1* fBackground;
    TGraph* fResiduals;
