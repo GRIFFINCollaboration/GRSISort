@@ -13,7 +13,7 @@
 
 UInt_t chanId_threshold = 100;
 
-Bool_t CheckEvent(TMidasEvent *evt){
+Bool_t CheckEvent(std::shared_ptr<TMidasEvent> evt){
    //This function does not work if a Midas event contains multiple fragments
    static std::map<Int_t, Bool_t> triggermap; //Map of Digitizer vs have we had a triggerId < threshold yet?
    //First parse the  Midas Event.
@@ -106,12 +106,12 @@ Bool_t CheckEvent(TMidasEvent *evt){
 }
 
 
-/*void AddToQueue(TMidasEvent* evt){
+/*void AddToQueue(std::shared_ptr<TMidasEvent> evt){
    evtQ.push(evt);
 }
 */
 
-void Write(TMidasEvent *evt,TMidasFile *outfile){
+void Write(std::shared_ptr<TMidasEvent> evt, TMidasFile *outfile){
    outfile->FillBuffer(evt);
 
   // if(outfile->GetBufferSize() > 100000){
@@ -157,7 +157,7 @@ int main(int argc, char **argv) {
 
    UInt_t num_bad_evt =0;
    UInt_t num_evt =0;
-   TMidasEvent *event = new TMidasEvent;//need to new for each event
+	std::shared_ptr<TMidasEvent> event = std::make_shared<TMidasEvent>();//need to new for each event
 
    while(true) {
       bytes = file->Read(event);
@@ -218,5 +218,5 @@ int main(int argc, char **argv) {
    //delete outfile;
 
 }
-//void WriteEventToFile(TMidasFile*,TMidasEvent*,Option_t);
+//void WriteEventToFile(TMidasFile*,std::shared_ptr<TMidasEvent> Option_t);
 

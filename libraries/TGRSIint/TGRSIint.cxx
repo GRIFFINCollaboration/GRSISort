@@ -147,6 +147,10 @@ void TGRSIint::ApplyOptions() {
      OpenMidasFile(midas_file.c_str());
    }
 
+   for(auto& lst_file : opt->InputLstFiles()) {
+     OpenLstFile(lst_file.c_str());
+   }
+
    SetupPipeline();
 
    for(auto& filename : opt->MacroInputFiles()){
@@ -397,7 +401,7 @@ TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename) {
   }
 
   TMidasFile* file = new TMidasFile(filename.c_str());
-  fMidasFiles.push_back(file);
+  fRawFiles.push_back(file);
 
   const char* command = Form("TMidasFile* _midas%i = (TMidasFile*)%luL",
                              fMidasFilesOpened,
@@ -414,6 +418,18 @@ TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename) {
   return file;
 }
 
+TLstFile* TGRSIint::OpenLstFile(const std::string& filename) {
+  if(!file_exists(filename.c_str())){
+    std::cerr << "File \"" << filename << "\" does not exist" << std::endl;
+    return nullptr;
+  }
+
+  TLstFile* file = new TLstFile(filename.c_str());
+  fRawFiles.push_back(file);
+
+	return file;
+}
+
 void TGRSIint::SetupPipeline() {
    TGRSIOptions* opt = TGRSIOptions::Get();
 
@@ -426,9 +442,15 @@ void TGRSIint::SetupPipeline() {
          std::cerr << "File not found: " << filename << std::endl;
       }
    }
+   for(auto& filename : opt->InputLstFiles()) {
+      if(!file_exists(filename.c_str())) {
+         missing_raw_file = true;
+         std::cerr << "File not found: " << filename << std::endl;
+      }
+   }
 
    // Which input files do we have
-   bool has_raw_file = opt->InputMidasFiles().size() && opt->SortRaw() && !missing_raw_file;
+   bool has_raw_file = (opt->InputMidasFiles().size() || opt->InputLstFiles().size()) && opt->SortRaw() && !missing_raw_file;
    bool has_input_fragment_tree = gFragment;// && opt->SortRoot();
    bool has_input_analysis_tree = gAnalysis;// && opt->SortRoot();
 
@@ -480,8 +502,8 @@ void TGRSIint::SetupPipeline() {
    int run_number = 0;
    int sub_run_number = 0;
    if(read_from_raw) {
-      run_number = fMidasFiles[0]->GetRunNumber();
-      sub_run_number = fMidasFiles[0]->GetSubRunNumber();
+      run_number = fRawFiles[0]->GetRunNumber();
+      sub_run_number = fRawFiles[0]->GetSubRunNumber();
    } else if(read_from_fragment_tree) {
       auto run_title = gFragment->GetListOfFiles()->At(0)->GetTitle();
       run_number = GetRunNumber(run_title);
@@ -495,26 +517,38 @@ void TGRSIint::SetupPipeline() {
    // Choose output file names for the 4 possible output files
    std::string output_fragment_tree_filename = opt->OutputFragmentFile();
    if(output_fragment_tree_filename.length() == 0) {
-      output_fragment_tree_filename = Form("fragment%05i_%03i.root",
-            run_number, sub_run_number);
+		if(sub_run_number == -1) {
+			output_fragment_tree_filename = Form("fragment%05i.root", run_number);
+		} else {
+			output_fragment_tree_filename = Form("fragment%05i_%03i.root", run_number, sub_run_number);
+		}
    }
 
    std::string output_fragment_hist_filename = opt->OutputFragmentHistogramFile();
    if(output_fragment_hist_filename.length() == 0) {
-      output_fragment_hist_filename = Form("hist_fragment%05i_%03i.root",
-            run_number, sub_run_number);
+		if(sub_run_number == -1) {
+			output_fragment_hist_filename = Form("hist_fragment%05i.root", run_number);
+		} else {
+			output_fragment_hist_filename = Form("hist_fragment%05i_%03i.root", run_number, sub_run_number);
+		}
    }
 
    std::string output_analysis_tree_filename = opt->OutputAnalysisFile();
    if(output_analysis_tree_filename.length() == 0) {
-      output_analysis_tree_filename = Form("analysis%05i_%03i.root",
-            run_number, sub_run_number);
+		if(sub_run_number == -1) {
+			output_analysis_tree_filename = Form("analysis%05i.root", run_number);
+		} else {
+			output_analysis_tree_filename = Form("analysis%05i_%03i.root", run_number, sub_run_number);
+		}
    }
 
    std::string output_analysis_hist_filename = opt->OutputAnalysisHistogramFile();
    if(output_analysis_hist_filename.length() == 0) {
-      output_analysis_hist_filename = Form("hist_analysis%05i_%03i.root",
-            run_number, sub_run_number);
+		if(sub_run_number == -1) {
+			output_analysis_hist_filename = Form("hist_analysis%05i.root", run_number);
+		} else {
+			output_analysis_hist_filename = Form("hist_analysis%05i_%03i.root", run_number, sub_run_number);
+		}
    }
 
 
@@ -580,11 +614,11 @@ void TGRSIint::SetupPipeline() {
 
    // If needed, read from the raw file
    if(read_from_raw) {
-      if(fMidasFiles.size() > 1) {
+      if(fRawFiles.size() > 1) {
          std::cerr << "I'm going to ignore all but first .mid" << std::endl;
       }
 
-      dataLoop = TDataLoop::Get("1_input_loop",fMidasFiles[0]);
+      dataLoop = TDataLoop::Get("1_input_loop",fRawFiles[0]);
       dataLoop->SetSelfStopping(self_stopping);
 
       unpackLoop = TUnpackingLoop::Get("2_unpack_loop");
@@ -602,9 +636,9 @@ void TGRSIint::SetupPipeline() {
    for(auto cal_filename : opt->CalInputFiles()) {
       TChannel::ReadCalFile(cal_filename.c_str());
    }
-   if(fMidasFiles.size()) {
-      TGRSIRunInfo::Get()->SetRunInfo(fMidasFiles[0]->GetRunNumber(),
-            fMidasFiles[0]->GetSubRunNumber());
+   if(fRawFiles.size()) {
+      TGRSIRunInfo::Get()->SetRunInfo(fRawFiles[0]->GetRunNumber(),
+            fRawFiles[0]->GetSubRunNumber());
    } else {
       TGRSIRunInfo::Get()->SetRunInfo(0, -1);
    }
@@ -619,7 +653,7 @@ void TGRSIint::SetupPipeline() {
 
    //this happens here, because the TDataLoop constructor is where we read the midas file ODB
    TEventBuildingLoop::EBuildMode event_build_mode = TEventBuildingLoop::kTriggerId;
-   if(TGRSIRunInfo::Get()->Griffin()) {
+   if(TGRSIRunInfo::Get()->Griffin() || TGRSIRunInfo::Get()->Fipps()) {
       event_build_mode = TEventBuildingLoop::kTimestamp;
    }
 

@@ -26,8 +26,10 @@
 
 class TFragmentMap {
    public:
+#ifndef __CINT__
       TFragmentMap(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& goodOutputQueue,
             std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& badOutputQueue);
+#endif
 
       ~TFragmentMap() {};
 #ifndef __CINT__
