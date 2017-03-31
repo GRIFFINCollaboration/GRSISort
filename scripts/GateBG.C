@@ -15,7 +15,6 @@ TH1* NewProjectionXBGP(TH2* matrix, Double_t gate_low, Double_t gate_high, Doubl
 
    //The peak should have came from the y-axis projection. We need to use this histogram to do things like get bin width, and the coord->bin mapping
    TH1* y_projection = matrix->ProjectionY();
-   Double_t bin_width = y_projection->GetBinWidth(1);
 
    //Integrate the background 
    Double_t bg_counts_under_peak = background_hist->Integral( gate_low_bin,gate_high_bin);
