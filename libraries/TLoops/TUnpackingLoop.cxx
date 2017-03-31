@@ -77,6 +77,7 @@ bool TUnpackingLoop::Iteration(){
 	} else  {
 		fFragsReadFromRaw += 1;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
 		if(!TGRSIOptions::Get()->SuppressErrors()) {
+			event->SetBankList();
 			event->Print(Form("a%i",(-1*frags)-1));
 		}
 	}
