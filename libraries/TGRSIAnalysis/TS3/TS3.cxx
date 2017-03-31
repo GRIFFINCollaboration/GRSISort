@@ -190,6 +190,7 @@ void TS3::BuildPixels(){
 										if(KeepShared()){
 											TS3Hit dethit = fS3RingHits[i]; // Ring defines all data sector just gives position
 											//Selecting one of the sectors is currently the best class allows, some loss of position information
+											//Saw little improvement from creating a between-pixel position - JTS
 											if(fS3SectorHits[k].GetEnergy()<fS3SectorHits[j].GetEnergy()) dethit.SetSectorNumber(fS3SectorHits[j].GetSector());
 											else dethit.SetSectorNumber(fS3SectorHits[k].GetSector()); 
 											fS3Hits.push_back(dethit);
@@ -263,6 +264,7 @@ void TS3::BuildPixels(){
 										if(KeepShared()){
 											TS3Hit dethit = fS3SectorHits[i]; // Sector defines all data ring just gives position
 											//Selecting one of the sectors is currently the best class allows, some loss of position information
+											//Saw little improvement from creating a between-pixel position - JTS
 											if(fS3RingHits[k].GetEnergy()<fS3RingHits[j].GetEnergy()) dethit.SetRingNumber(fS3RingHits[j].GetRing());
 											else dethit.SetRingNumber(fS3RingHits[k].GetRing()); 
 											fS3Hits.push_back(dethit);

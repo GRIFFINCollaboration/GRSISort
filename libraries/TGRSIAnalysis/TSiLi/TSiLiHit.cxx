@@ -56,20 +56,35 @@ void TSiLiHit::Clear(Option_t *opt)  {
 }
 
 void TSiLiHit::SetWavefit(const TFragment &frag)   { 
-	TPulseAnalyzer pulse(frag,TSiLi::sili_noise_fac);	    
-	if(pulse.IsSet()){
-		//THESE VALUES SHOULD BE GOT FROM THE TCHANNEL AND INCLUDED IN THE CAL FOR EACH CHAN
-		pulse.GetSiliShape(TSiLi::sili_default_decay,TSiLi::sili_default_rise);
-		
-		fTimeFit = pulse.Get_wpar_T0();
-		fFitBase = pulse.Get_wpar_baselinefin();
-		fFitCharge= pulse.Get_wpar_amplitude();
-
-		//printf("A0:\t%2.2f, B:\t%2.2f\n",pulse.Get_wpar_amplitude(),pulse.Get_wpar_baselinefin());
-
-		fSig2Noise = pulse.get_sig2noise();
-		fSmirnov = pulse.GetsiliSmirnov();
+	TPulseAnalyzer* pulse=FitFrag(frag,TSiLi::FitSiLiShape,GetSegment());	    
+	if(pulse){
+		fTimeFit = pulse->Get_wpar_T0();
+		fFitBase = pulse->Get_wpar_baselinefin();
+		fFitCharge= pulse->Get_wpar_amplitude();
+		fSig2Noise = pulse->get_sig2noise();
+		fSmirnov = pulse->GetsiliSmirnov();
+		delete pulse;
 	}
+}
+
+//Broken up for external analysis script use
+TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment &frag,bool ShapeFit,int segment){
+	TPulseAnalyzer* pulse=new TPulseAnalyzer(frag,TSiLi::sili_noise_fac);
+	if(FitPulseAnalyzer(pulse,ShapeFit,segment))return pulse;
+	delete pulse;
+	return 0;
+}
+
+bool TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse,bool ShapeFit,int segment){
+	if(!pulse)return 0;
+	if(pulse->IsSet()){
+		//THESE VALUES SHOULD BE GOT FROM THE TCHANNEL AND INCLUDED IN THE CAL FOR EACH CHAN
+		bool goodfit;
+		if(ShapeFit)goodfit=pulse->GetSiliShapeTF1(TSiLi::sili_default_decay,TSiLi::sili_default_rise,TSiLi::sili_default_baseline);
+		else goodfit=pulse->GetSiliShape(TSiLi::sili_default_decay,TSiLi::sili_default_rise);
+		if(goodfit)return 1;
+	}
+	return 0;
 }
 
 TVector3 TSiLiHit::GetPosition(Double_t dist, bool smear) const {

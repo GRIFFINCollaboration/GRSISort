@@ -18,7 +18,9 @@ double TSiLi::fTargetDistance= -117.8;
 double TSiLi::sili_noise_fac=4;
 double TSiLi::sili_default_decay=4616.18;
 double TSiLi::sili_default_rise=20.90;
+double TSiLi::sili_default_baseline=-4300;
 
+bool TSiLi::FitSiLiShape=false;
 
 TSiLi::TSiLi() {
    Clear();	
@@ -29,9 +31,9 @@ TSiLi::~TSiLi()  {
 
 void TSiLi::Copy(TObject &rhs) const {
   TGRSIDetector::Copy(rhs);
-  static_cast<TSiLi&>(rhs).fSiLiHits     		= fSiLiHits;
-  static_cast<TSiLi&>(rhs).fAddbackHits     	= fAddbackHits;
-  static_cast<TSiLi&>(rhs).fSiLiBits  	   	= 0;
+  static_cast<TSiLi&>(rhs).fSiLiHits     = fSiLiHits;
+  static_cast<TSiLi&>(rhs).fAddbackHits     = fAddbackHits;
+  static_cast<TSiLi&>(rhs).fSiLiBits  	   = 0;
 
   return;                                      
 } 
