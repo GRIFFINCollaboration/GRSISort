@@ -254,7 +254,7 @@ void TMidasEvent::Print(const char *option) const {
 	} else {
 		printf("Banks: %s\n", fBankList);
 
-		for (int i = 0; i < fBanksN * 4; i += 4) {
+		for(int i = 0; i < fBanksN * 4; i += 4) {
 			int bankLength = 0;
 			int bankType = 0;
 			void *pdata = 0;
@@ -623,7 +623,14 @@ int TMidasEvent::Process(TDataParser& parser) {
 		};
 	}
 	catch(const std::bad_alloc&) {   }
-	//printf("I AM HERE!\n");fflush(stdout);
+	
+	// if we failed to get any fragments and this is not a start-of-run or end-of-run event
+	// we print an error message (unless these are suppressed)
+	if(frags <= 0 && GetEventId() < 0x8000 && !TGRSIOptions::Get()->SuppressErrors()) {
+		SetBankList();
+		Print(Form("a%i",(-1*frags)-1));
+	}
+
 	return frags;
 }
 
