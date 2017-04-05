@@ -49,8 +49,11 @@ class TSiLiHit : public TGRSIDetectorHit {
 		void SetTimeFit(double t0 ) { fTimeFit = t0 ; }
 		
 		void SetWavefit(const TFragment&);
-		static TPulseAnalyzer* FitFrag(const TFragment &frag,bool ShapeFit=false,int segment=-1);
-		static bool FitPulseAnalyzer(TPulseAnalyzer* pulse,bool ShapeFit=false,int segment=-1);
+		static TChannel* GetSiLiHitChannel(int segment);
+		static TPulseAnalyzer* FitFrag(const TFragment &frag,int ShapeFit=0,int segment=-1);
+		static TPulseAnalyzer* FitFrag(const TFragment &frag,int ShapeFit=0,TChannel* =0);
+		static int FitPulseAnalyzer(TPulseAnalyzer* pulse,int ShapeFit=0,int segment=-1);
+		static int FitPulseAnalyzer(TPulseAnalyzer* pulse,int ShapeFit=0,TChannel* =0);
 		TVector3 GetPosition(Double_t dist, bool = false) const; //!  
 		TVector3 GetPosition(bool = false) const; //!  
 		

@@ -65,6 +65,7 @@ TChannel::TChannel(TChannel* chan) {
 	SetTIMEChi2(chan->GetTIMEChi2());
 	SetEFFChi2(chan->GetEFFChi2());
 	SetUseCalFileIntegration(chan->UseCalFileIntegration());
+	SetWaveParam(chan->GetWaveParam());
 
    SetDetectorNumber(chan->GetDetectorNumber());
 	SetSegmentNumber(chan->GetSegmentNumber());
@@ -166,6 +167,8 @@ void TChannel::OverWriteChannel(TChannel* chan){
 	SetEFFChi2(chan->GetEFFChi2());
 
 	SetUseCalFileIntegration(chan->UseCalFileIntegration());
+	
+	SetWaveParam(chan->GetWaveParam());
   
    SetDetectorNumber(chan->GetDetectorNumber());
 	SetSegmentNumber(chan->GetSegmentNumber());
@@ -198,8 +201,8 @@ void TChannel::AppendChannel(TChannel* chan){
 	if(chan->GetLEDChi2() != 0.0) SetLEDChi2(chan->GetLEDChi2());
 	if(chan->GetTIMEChi2() != 0.0) SetTIMEChi2(chan->GetTIMEChi2());
 	if(chan->GetEFFChi2() != 0.0) SetEFFChi2(chan->GetEFFChi2());
-
 	if(chan->UseCalFileIntegration()) SetUseCalFileIntegration(chan->UseCalFileIntegration());
+	if(chan->UseWaveParam()) SetWaveParam(chan->GetWaveParam());
   
    if(chan->GetDetectorNumber() > -1)   SetDetectorNumber(chan->GetDetectorNumber());
    if(chan->GetSegmentNumber() > -1) 	SetSegmentNumber(chan->GetSegmentNumber());
@@ -239,6 +242,8 @@ void TChannel::Clear(Option_t* opt){
 	fEFFChi2           =  0.0;
 	fUserInfoNumber    =  0xffffffff;
 	fUseCalFileInt     =  false;
+	WaveFormShape      = WaveFormShapePar();
+	
 	SetName("DefaultTChannel");
 
   fDetectorNumber    = -1;
@@ -594,6 +599,11 @@ void TChannel::Print(Option_t* opt) const {
    }
    if(fUseCalFileInt) 
      std::cout << "FileInt: " << fUseCalFileInt << "\n";
+   if(UseWaveParam()){
+     std::cout << "RiseTime: " << WaveFormShape.TauRise << "\n";
+     std::cout << "DecayTime: " << WaveFormShape.TauDecay << "\n";
+     std::cout << "BaseLine: " << WaveFormShape.BaseLine << "\n";
+   }   
    std::cout << "}\n";
    std::cout << "//====================================//\n";
 
@@ -661,6 +671,12 @@ std::string TChannel::PrintToString(Option_t* opt) {
    if(fUseCalFileInt){ 
      buffer.append(Form("FileInt: %d\n",(int)fUseCalFileInt));
    }
+   if(UseWaveParam()){
+     buffer.append(Form("RiseTime: %f\n",WaveFormShape.TauRise));
+     buffer.append(Form("DecayTime: %f\n",WaveFormShape.TauDecay));
+     buffer.append(Form("BaseLine: %f\n",WaveFormShape.BaseLine));
+   }   
+   
    buffer.append("}\n");
 
    buffer.append("//====================================//\n");
@@ -1069,7 +1085,16 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 						channel->SetUseCalFileIntegration(true);
 					else 
 						channel->SetUseCalFileIntegration(false);
-				} else  {
+				}else if(type.compare("RISETIME")==0) {
+					double tempdbl; ss>>tempdbl;
+					channel->SetWaveRise(tempdbl);
+				}else if(type.compare("DECAYTIME")==0) {
+					double tempdbl; ss>>tempdbl;
+					channel->SetWaveDecay(tempdbl);
+				} else if(type.compare("BASELINE")==0) {
+					double tempdbl; ss>>tempdbl;
+					channel->SetWaveBaseLine(tempdbl);
+				}  else  {
 
 				}
 			}

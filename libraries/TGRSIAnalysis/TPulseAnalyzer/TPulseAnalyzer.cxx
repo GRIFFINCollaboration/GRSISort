@@ -1350,7 +1350,7 @@ bool TPulseAnalyzer::SiliShapePrepare(double tauDecay,double tauRise){if(IsSet()
 	
 	//GetQuickPara() Returns values that are spurious if the baseline is missing or <<T0RANGE
 	if(cWpar->t0<cWpar->baseline_range){//Is there is no clear baseline baseline
-		if(!(cWpar->baselineStDevfin/(cWpar->max-cWpar->baselinefin)<0.04)){//Limit determined from data
+		if(!(cWpar->baselineStDevfin/(cWpar->max-cWpar->baselinefin)<0.035)){//Strict (previously 0.05) limit determined from data
 			return 0;
 		}
 	}
@@ -1442,9 +1442,9 @@ bool TPulseAnalyzer::GetSiliShape(double tauDecay,double tauRise){if(IsSet()){
 }return 0;}
 
 //Significantly slower and should only be used in non-sorting analysis of poor waveform
-//Still need initial estimates even if fitting those parameters
+//Needs initial estimates even if fitting those parameters
 bool TPulseAnalyzer::GetSiliShapeTF1(double tauDecay,double tauRise,double baseline){
-TH1I* h=GetWaveHist();if(h){
+TGraph* h=GetWaveGraph();if(h){//Graph better than hist for stats and simplicity 
 	
 	SiliShapePrepare(tauDecay,tauRise);
 	TF1 g=Getsilifit();
@@ -1455,20 +1455,22 @@ TH1I* h=GetWaveHist();if(h){
 // 	g.SetParameter(4,cWpar->amplitude);
 	
 	//Currently constrained for positive waveforms
-	double r=h->GetBinContent(h->GetMaximumBin())-h->GetBinContent(h->GetMinimumBin());
+	double r=cWpar->max-cWavebuffer[0];
 	g.SetParameter(4,r*1.05);
 
-	if(cWpar->bflag){//Have reasonable T0 & base fit the shape
+	if(cWpar->bflag){//Have reasonable T0 & base, fit the shape
 		g.SetParLimits(0,cWpar->t0*0.5,cWpar->t0*1.5);
-		g.SetParLimits(1,tauDecay-tauDecay*0.3,tauDecay+tauDecay*0.3);
+		g.SetParLimits(1,tauDecay-tauDecay*0.4,tauDecay+tauDecay*0.4);
 		g.SetParLimits(2,tauRise-tauRise*0.3,tauRise+tauRise*0.3);
 		g.FixParameter(3,cWpar->baselinefin);
 		g.SetParLimits(4,r*0.5,r*2.0);
-	}else{//Have no T0 or base FIX the shape
+	}else{//Have no T0 or base, FIX the shape
 		g.SetParLimits(0,-cN,cWpar->baseline_range);
 		g.FixParameter(1,tauDecay);
 		g.FixParameter(2,tauRise);
-		g.SetParLimits(3,baseline-300,baseline+300);
+		g.FixParameter(3,baseline);
+// 		g.SetParameter(3,baseline);
+// 		g.SetParLimits(3,baseline-300,baseline+300);
 		g.SetParLimits(4,r*0.1,r*10.0);
 	}
 
@@ -1502,7 +1504,8 @@ double TPulseAnalyzer::SiLiFitFunction(double *i,double *p){
 
 TF1  TPulseAnalyzer::Getsilifit(){
 	if(set&&cWpar){
-		TF1 g("fit",SiLiFitFunction,0,cN,5);
+		std::stringstream ss;ss<<"Fit"<<nameiter;++nameiter;
+		TF1 g(ss.str().c_str(),SiLiFitFunction,0,cN,5);
 		
 		g.SetParameter(0,cWpar->t0);
 		g.SetParameter(1,cWpar->tauDecay);
@@ -1551,12 +1554,22 @@ void  TPulseAnalyzer::DrawWave(){
 	}
 }
 
+int TPulseAnalyzer::nameiter=0;
 TH1I* TPulseAnalyzer::GetWaveHist(){
 	if(cN==0||!set) return 0;
-	TH1I* h=new TH1I("Waveform",fName.c_str(),cN,0,cN); 
+	std::stringstream ss;ss<<"WaveformHist"<<nameiter;++nameiter;//Avoid naming conflicts with TNamed
+	TH1I* h=new TH1I(ss.str().c_str(),ss.str().c_str(),cN,-0.5,cN-0.5);//midpoint should be the value, else time is off
 	for(Int_t i=0;i<cN;i++) h->SetBinContent(i+1,cWavebuffer[i]);
 	return h;
 }
+
+TGraph* TPulseAnalyzer::GetWaveGraph(){
+	if(cN==0||!set) return 0;
+	TGraph* g=new TGraph(); 
+	for(Int_t i=0;i<cN;i++) g->SetPoint(i,i,cWavebuffer[i]);
+	return g;
+}
+
 
 void TPulseAnalyzer::DrawRFFit(){
 

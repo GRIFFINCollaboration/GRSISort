@@ -76,7 +76,15 @@ class TSiLi: public TGRSIDetector  {
 		
 		bool fAddbackCriterion(TSiLiHit*, TSiLiHit*);
 		
-		static bool FitSiLiShape;
+		// This value defines what scheme is used when fitting sili waveforms
+		// 0 quick linear eq. method, requires good baseline
+		// 1 use slow TF1 fit if quick linear eq. method fails
+		// 2 use slow TF1 method exclusively
+		static int FitSiLiShape;
+		
+		static double SiLiBaseLine[120];
+		static double SiLiRiseTime[120];
+		static double SiLiDecayTime[120];
 		
 	private:
 		std::vector<TSiLiHit> fSiLiHits;

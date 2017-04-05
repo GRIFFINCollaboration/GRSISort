@@ -19,6 +19,7 @@
 #include "TH1.h"
 #include "TF1.h"
 #include "TMath.h"
+#include "TGraph.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 /// \class TPulseAnalyzer
@@ -147,6 +148,8 @@ class TPulseAnalyzer {
 	short     good_baseline();
 	void      print_WavePar();
 	TH1I*     GetWaveHist();
+	TGraph*   GetWaveGraph();
+	static int nameiter;
 	void      DrawWave();
 	void      DrawT0fit();
 	void      DrawRFFit();
