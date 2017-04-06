@@ -657,7 +657,7 @@ void GHSym::FitSlices(TF1* f1, Int_t firstbin, Int_t lastbin, Int_t cut, Option_
 	delete [] hlist;
 }
 
-Int_t GHSym::GetBin(Int_t binx, Int_t biny) const {
+Int_t GHSym::GetBin(Int_t binx, Int_t biny, Int_t) const {
 	Int_t n = fXaxis.GetNbins()+2;
 	if(binx < 0)  binx = 0;
 	if(binx >= n) binx = n-1;
@@ -1276,8 +1276,8 @@ Long64_t GHSym::Merge(TCollection* list) {
 				allSameLimits = sameLimitsY && sameLimitsX;
 			}
 		}
-	}  while ((h = dynamic_cast<GHSym*>(next())) != NULL );
-	if(h == nullptr && (*next) ) {
+	} while((h = dynamic_cast<GHSym*>(next())) != nullptr);
+	if(h == nullptr && (*next)) {
 		Error("Merge","Attempt to merge object of class: %s to a %s", (*next)->ClassName(),this->ClassName());
 		return -1;
 	}
@@ -1350,9 +1350,8 @@ Long64_t GHSym::Merge(TCollection* list) {
 	for(Int_t i = 0; i < kNstat; ++i) { totstats[i] = stats[i] = 0; }
 	GetStats(totstats);
 	Double_t nentries = GetEntries();
-	Int_t binx, biny, ix, iy, nx, ny, bin, ibin;
+	Int_t binx, biny, ix, iy, nx, ny, ibin;
 	Double_t cu;
-	Int_t nbix = fXaxis.GetNbins();
 #if MAJOR_ROOT_VERSION < 6
 	Bool_t canRebin=TestBit(kCanRebin);
 	ResetBit(kCanRebin); // reset, otherwise setting the under/overflow will rebin
@@ -1380,8 +1379,7 @@ Long64_t GHSym::Merge(TCollection* list) {
 				if(!allSameLimits) iy = fYaxis.FindBin(h->GetYaxis()->GetBinCenter(biny));
 				else   				 iy = biny;
 				for(binx = 0; binx <= nx + 1; ++binx) {
-					bin = binx +(nx+2)*biny;
-					cu = h->GetBinContent(bin);
+					cu = h->GetBinContent(binx, biny);
 					if(!allSameLimits) {
 						if(cu != 0 && ( (!sameLimitsX && (binx == 0 || binx == nx+1)) || (!sameLimitsY && (biny == 0 || biny == ny+1)) )) {
 							Error("Merge", "Cannot merge histograms - the histograms have"
@@ -1394,12 +1392,12 @@ Long64_t GHSym::Merge(TCollection* list) {
 						// case histograms with the same limits 
 						ix = binx;
 					}
-					ibin = ix +(nbix+2)*iy;
+					ibin = GetBin(ix, iy);
 
 					if(ibin < 0) continue;
-					AddBinContent(ibin,cu);
+					AddBinContent(ibin, cu);
 					if(fSumw2.fN) {
-						Double_t error1 = h->GetBinError(bin);
+						Double_t error1 = h->GetBinError(GetBin(binx, biny));
 						fSumw2.fArray[ibin] += error1*error1;
 					}
 				}
@@ -1582,7 +1580,7 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
 		for(Int_t inbin = firstbin ; inbin <= lastbin ; ++inbin) {
 			Int_t binx, biny;
 			binx = outbin; 
-			biny=inbin;
+			biny = inbin;
 
 			if(ncuts) {
 				if(!fPainter->IsInside(binx,biny)) continue;
@@ -1731,7 +1729,7 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
 		TIter iL(labels);
 		TObjString* lb;
 		Int_t i = 1;
-		while ((lb=(TObjString*)iL())) {
+		while((lb=(TObjString*)iL())) {
 			h1->GetXaxis()->SetBinLabel(i,lb->String().Data());
 			i++;
 		}
@@ -1776,15 +1774,14 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
 
 	// check if we can re-use the original statistics from  the previous histogram
 	bool reuseStats = false;
-	if((fgStatOverflows == false && firstBin == 1 && lastBin == fYaxis.GetLast()     ) ||
-			(fgStatOverflows == true  && firstBin == 0 && lastBin == fYaxis.GetLast() + 1 ) )
+	if((fgStatOverflows == false && firstBin == 1 && lastBin == fYaxis.GetLast()) ||
+		(fgStatOverflows == true  && firstBin == 0 && lastBin == fYaxis.GetLast() + 1 )) {
 		reuseStats = true;
-	else {
+	} else {
 		// also if total content match we can re-use
 		double eps = 1.E-12;
 		if(IsA() == GHSymF::Class()) eps = 1.E-6;
-		if(fTsumw != 0 && TMath::Abs(fTsumw - totcont) <  TMath::Abs(fTsumw) * eps)
-			reuseStats = true;
+		if(fTsumw != 0 && TMath::Abs(fTsumw - totcont) <  TMath::Abs(fTsumw) * eps) reuseStats = true;
 	}
 	if(ncuts) reuseStats = false;
 	// retrieve  the statistics and set in projected histogram if we can re-use it
