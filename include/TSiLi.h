@@ -67,7 +67,6 @@ class TSiLi: public TGRSIDetector  {
 		static double sili_noise_fac;// Sets the level of integration to remove noise during waveform fitting
 		static double sili_default_decay;// Sets the waveform fit decay parameter
 		static double sili_default_rise;// Sets the waveform fit rise parameter
-		static double sili_default_baseline;// Sets the waveform fit rise parameter
 		static Int_t GetRing(Int_t seg) {  return seg/12; }
 		static Int_t GetSector(Int_t seg) {  return seg%12; }
 		static Int_t GetPreamp(Int_t seg) {  return  ((GetSector(seg)/3)*2)+(((GetSector(seg)%3)+GetRing(seg))%2); }
@@ -75,16 +74,6 @@ class TSiLi: public TGRSIDetector  {
 		static double GetSegmentArea(Int_t seg);
 		
 		bool fAddbackCriterion(TSiLiHit*, TSiLiHit*);
-		
-		// This value defines what scheme is used when fitting sili waveforms
-		// 0 quick linear eq. method, requires good baseline
-		// 1 use slow TF1 fit if quick linear eq. method fails
-		// 2 use slow TF1 method exclusively
-		static int FitSiLiShape;
-		
-		static double SiLiBaseLine[120];
-		static double SiLiRiseTime[120];
-		static double SiLiDecayTime[120];
 		
 	private:
 		std::vector<TSiLiHit> fSiLiHits;
