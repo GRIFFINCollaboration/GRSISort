@@ -12,6 +12,11 @@ class GHSym : public TH1 {
 		GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bins);
 		~GHSym();
 	
+#if MAJOR_ROOT_VERSION < 6
+		//virtual Bool_t    Add(TF1* h1, Double_t c1 = 1., Option_t* option = "");
+		//virtual Bool_t    Add(const TH1* h1, Double_t c1 = 1.);
+		//virtual Bool_t    Add(const TH1* h1, const TH1* h2, Double_t c1 = 1., Double_t c1 = 1.);
+#endif
 		virtual Int_t     BufferEmpty(Int_t action = 0);
 		Int_t					BufferFill(Double_t, Double_t) { return -2; } //MayNotUse
 		virtual Int_t     BufferFill(Double_t x, Double_t y, Double_t w);
@@ -94,6 +99,9 @@ class GHSymF : public GHSym, public TArrayF {
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny) const { return GetBinContent(GetBin(binx,biny)); }
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny, Int_t) const { return GetBinContent(GetBin(binx,biny)); }
 		virtual void     Reset(Option_t* option = "");
+#if MAJOR_ROOT_VERSION >= 6
+		virtual Double_t  RetrieveBinContent(Int_t bin) const { return Double_t(fArray[bin]); }
+#endif
 		virtual void     SetBinContent(Int_t bin, Double_t content);
 		virtual void     SetBinContent(Int_t binx, Int_t biny, Double_t content) { SetBinContent(GetBin(binx,biny),content); }
 		virtual void     SetBinContent(Int_t binx, Int_t biny, Int_t, Double_t content) { SetBinContent(GetBin(binx,biny),content); }
@@ -129,6 +137,9 @@ class GHSymD : public GHSym, public TArrayD {
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny) const { return GetBinContent(GetBin(binx,biny)); }
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny, Int_t) const { return GetBinContent(GetBin(binx,biny)); }
 		virtual void     Reset(Option_t* option = "");
+#if MAJOR_ROOT_VERSION >= 6
+		virtual Double_t  RetrieveBinContent(Int_t bin) const { return Double_t(fArray[bin]); }
+#endif
 		virtual void     SetBinContent(Int_t bin, Double_t content);
 		virtual void     SetBinContent(Int_t binx, Int_t biny, Double_t content) { SetBinContent(GetBin(binx,biny),content); }
 		virtual void     SetBinContent(Int_t binx, Int_t biny, Int_t, Double_t content) { SetBinContent(GetBin(binx,biny),content); }
@@ -140,7 +151,6 @@ class GHSymD : public GHSym, public TArrayD {
 		friend  GHSymD     operator-(GHSymD& h1, GHSymD& h2);
 		friend  GHSymD     operator*(GHSymD& h1, GHSymD& h2);
 		friend  GHSymD     operator/(GHSymD& h1, GHSymD& h2);
-
 
 		ClassDef(GHSymD, 1);
 };
