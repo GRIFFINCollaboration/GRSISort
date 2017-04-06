@@ -56,65 +56,20 @@ void TSiLiHit::Clear(Option_t *opt)  {
 }
 
 void TSiLiHit::SetWavefit(const TFragment &frag)   { 
-	TPulseAnalyzer* pulse=FitFrag(frag,TSiLi::FitSiLiShape,GetChannel());	    
-	if(pulse){
-		fTimeFit = pulse->Get_wpar_T0();
-		fFitBase = pulse->Get_wpar_baselinefin();
-		fFitCharge= pulse->Get_wpar_amplitude();
-		fSig2Noise = pulse->get_sig2noise();
-		fSmirnov = pulse->GetsiliSmirnov();
-		delete pulse;
-	}
-}
-
-//Broken up for external analysis script use
-TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment &frag,int ShapeFit,int segment){
-	return FitFrag(frag,ShapeFit,GetSiLiHitChannel(segment));
-}
-
-TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment &frag,int ShapeFit,TChannel* channel){
-	TPulseAnalyzer* pulse=new TPulseAnalyzer(frag,TSiLi::sili_noise_fac);
-	if(FitPulseAnalyzer(pulse,ShapeFit,channel))return pulse;
-	delete pulse;
-	return 0;
-}
-
-TChannel* TSiLiHit::GetSiLiHitChannel(int segment){
-	std::stringstream ss;
-	ss<<"SPI00XN"<< std::uppercase << std::hex << segment;
-// 	std::cout<<std::endl<<ss.str().c_str();
-	return TChannel::FindChannelByName(ss.str().c_str());
-}
-	
-int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse,int ShapeFit,int segment){
-	return FitPulseAnalyzer(pulse,ShapeFit,GetSiLiHitChannel(segment));
-}
-
-int TSiLiHit::FitPulseAnalyzer(TPulseAnalyzer* pulse,int ShapeFit,TChannel* channel){
-	if(!pulse)return 0;
-	if(pulse->IsSet()){
-		double Decay=0,Rise=0,Base=0;
+	TPulseAnalyzer pulse(frag,TSiLi::sili_noise_fac);	    
+	if(pulse.IsSet()){
+		//THESE VALUES SHOULD BE GOT FROM THE TCHANNEL AND INCLUDED IN THE CAL FOR EACH CHAN
+		pulse.GetSiliShape(TSiLi::sili_default_decay,TSiLi::sili_default_rise);
 		
-		if(channel){
-			if(channel->UseWaveParam()){
-				Rise=channel->GetWaveRise();
-				Decay=channel->GetWaveDecay();
-				Base=channel->GetWaveBaseLine();
-			}
-		}
-// 		std::cout<<std::endl<<Decay<<" "<<Rise<<" "<<Base;
+		fTimeFit = pulse.Get_wpar_T0();
+		fFitBase = pulse.Get_wpar_baselinefin();
+		fFitCharge= pulse.Get_wpar_amplitude();
 
-		if(!Decay)Decay=TSiLi::sili_default_decay;
-		if(!Rise)Rise=TSiLi::sili_default_rise;
-		if(!Base)Base=TSiLi::sili_default_baseline;
-		
-		bool goodfit=false;
-		if(ShapeFit<2)goodfit=pulse->GetSiliShape(Decay,Rise);
-		if(ShapeFit==1&&!goodfit)ShapeFit++;
-		if(ShapeFit==2)goodfit=pulse->GetSiliShapeTF1(Decay,Rise,Base);
-		if(goodfit)return 1+ShapeFit;
+		//printf("A0:\t%2.2f, B:\t%2.2f\n",pulse.Get_wpar_amplitude(),pulse.Get_wpar_baselinefin());
+
+		fSig2Noise = pulse.get_sig2noise();
+		fSmirnov = pulse.GetsiliSmirnov();
 	}
-	return 0;
 }
 
 TVector3 TSiLiHit::GetPosition(Double_t dist, bool smear) const {
