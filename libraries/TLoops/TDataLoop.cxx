@@ -280,7 +280,6 @@ bool TDataLoop::Iteration() {
 
 	if(bytes_read <= 0 && fSelfStopping){
 		// Error, and no point in trying again.
-		std::cout<<std::endl<<"finished sorting all input."<<std::endl;
 		return false;
 	} else if(bytes_read > 0){
 		// A good event was returned
