@@ -195,7 +195,7 @@ class TPulseAnalyzer {
 	 double EPS;
 
 	 void SetCsI(bool option="true") { CsISet = option; }
-	 bool CsIIsSet()				  	   { return CsISet; }
+	 bool CsIIsSet() { return CsISet; }
 	
 	 //internal methods       
 	 int solve_lin_eq();
