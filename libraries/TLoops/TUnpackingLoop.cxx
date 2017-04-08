@@ -3,9 +3,11 @@
 #include <chrono>
 #include <thread>
 #include <sstream>
+#include <memory>
 
 #include "TGRSIOptions.h"
 #include "TLstEvent.h"
+#include "TMidasEvent.h"
 
 //ClassImp(TUnpackingLoop)
 
@@ -69,16 +71,13 @@ bool TUnpackingLoop::Iteration(){
 		fInputSize = error;
 		++fItemsPopped;
 	}
-
+	
 	int frags = event->Process(fParser);
-	if(frags>0) {
+	if(frags > 0) {
 		fFragsReadFromRaw += frags;
 		fGoodFragsRead += frags;
-	} else  {
+	} else {
 		fFragsReadFromRaw += 1;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
-		if(!TGRSIOptions::Get()->SuppressErrors()) {
-			event->Print(Form("a%i",(-1*frags)-1));
-		}
 	}
 
 	return true;

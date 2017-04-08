@@ -236,7 +236,6 @@ void TMidasEvent::Print(const char *option) const {
 	/// printed out too.
 	///
 
-	const_cast<TMidasEvent*>(this)->SetBankList();
 	time_t t = (time_t)fEventHeader.fTimeStamp;
 
 	printf("Event start:\n");
@@ -245,6 +244,7 @@ void TMidasEvent::Print(const char *option) const {
 	printf("  serial number:%8d\n", fEventHeader.fSerialNumber);
 	printf("  time stamp:     %d, %s", fEventHeader.fTimeStamp, ctime(&t));
 	printf("  data size:    %8d\n", fEventHeader.fDataSize);
+	//const_cast<TMidasEvent*>(this)->SetBankList(); // moved here to get event information in case SetBankList crashes
 	if((fEventHeader.fEventId & 0xffff) == 0x8000) {
 		printf("Begin of run %d\n", fEventHeader.fSerialNumber);
 	} else if((fEventHeader.fEventId & 0xffff) == 0x8001) {
@@ -254,7 +254,7 @@ void TMidasEvent::Print(const char *option) const {
 	} else {
 		printf("Banks: %s\n", fBankList);
 
-		for (int i = 0; i < fBanksN * 4; i += 4) {
+		for(int i = 0; i < fBanksN * 4; i += 4) {
 			int bankLength = 0;
 			int bankType = 0;
 			void *pdata = 0;
@@ -275,46 +275,36 @@ void TMidasEvent::Print(const char *option) const {
 				switch (bankType) {
 					case 4: // TID_WORD
 						for (int j = 0; j < bankLength; j++) {
-							if(j==highlight)
-								printf(ALERTTEXT "0x%04x" RESET_COLOR "%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
-							else
-								printf("0x%04x%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
+							if(j==highlight) printf(ALERTTEXT "0x%04x" RESET_COLOR "%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
+							else             printf("0x%04x%c", ((uint16_t*)pdata)[j], (j%10==9)?'\n':' ');
 						}
 						printf("\n");
 						break;
 					case 6: // TID_DWORD
 						for (int j = 0; j < bankLength; j++) {
-							if(j==highlight)
-								printf(ALERTTEXT "0x%08x" RESET_COLOR "%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
-							else
-								printf("0x%08x%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
+							if(j==highlight) printf(ALERTTEXT "0x%08x" RESET_COLOR "%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
+							else             printf("0x%08x%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
 						}
 						printf("\n");
 						break;
 					case 7: // TID_nd280 (like a DWORD?)
 						for (int j = 0; j < bankLength; j++) {
-							if(j==highlight)
-								printf(ALERTTEXT "0x%08x" RESET_COLOR "%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
-							else
-								printf("0x%08x%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
+							if(j==highlight) printf(ALERTTEXT "0x%08x" RESET_COLOR "%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
+							else             printf("0x%08x%c", ((uint32_t*)pdata)[j], (j%10==9)?'\n':' ');
 						}
 						printf("\n");
 						break;
 					case 9: // TID_FLOAT
 						for (int j = 0; j < bankLength; j++) {
-							if(j==highlight)
-								printf(ALERTTEXT "%.8g" RESET_COLOR "%c", ((float*)pdata)[j], (j%10==9)?'\n':' ');
-							else
-								printf("%.8g%c", ((float*)pdata)[j], (j%10==9)?'\n':' ');
+							if(j==highlight) printf(ALERTTEXT "%.8g" RESET_COLOR "%c", ((float*)pdata)[j], (j%10==9)?'\n':' ');
+							else             printf("%.8g%c", ((float*)pdata)[j], (j%10==9)?'\n':' ');
 						}
 						printf("\n");
 						break;
 					case 10: // TID_DOUBLE
 						for (int j = 0; j < bankLength; j++) {
-							if(j==highlight)
-								printf(ALERTTEXT "%.16g" RESET_COLOR "%c", ((double*)pdata)[j], (j%10==9)?'\n':' ');
-							else
-								printf("%.16g%c", ((double*)pdata)[j], (j%10==9)?'\n':' ');
+							if(j==highlight) printf(ALERTTEXT "%.16g" RESET_COLOR "%c", ((double*)pdata)[j], (j%10==9)?'\n':' ');
+							else             printf("%.16g%c", ((double*)pdata)[j], (j%10==9)?'\n':' ');
 						}
 						printf("\n");
 						break;
@@ -342,11 +332,9 @@ const char* TMidasEvent::GetBankList() const {
 int TMidasEvent::SetBankList() {
 	//Sets the bank list by Iterating of the banks.
 	//See IterateBank32 and IterateBank
-	if(fEventHeader.fEventId <= 0)
-		return 0;
+	if(fEventHeader.fEventId <= 0) return 0;
 
-	if(fBankList)
-		return fBanksN;
+	if(fBankList) return fBanksN;
 
 	int listSize = 0;
 
@@ -356,7 +344,7 @@ int TMidasEvent::SetBankList() {
 	TMidas_BANK *pmbk = nullptr;
 	char *pdata = nullptr;
 
-	while (1) {
+	while(true) {
 		if(fBanksN*4 >= listSize) {
 			listSize += 400;
 			fBankList = (char*)realloc(fBankList, listSize);
@@ -364,15 +352,12 @@ int TMidasEvent::SetBankList() {
 
 		if(IsBank32()) {
 			IterateBank32(&pmbk32, &pdata);
-			if(pmbk32 == nullptr)
-				break;
+			if(pmbk32 == nullptr) break;
 			memcpy(fBankList+fBanksN*4, pmbk32->fName, 4);
 			fBanksN++;
-		} else
-		{
+		} else {
 			IterateBank(&pmbk, &pdata);
-			if(pmbk == nullptr)
-				break;
+			if(pmbk == nullptr) break;
 			memcpy(fBankList+fBanksN*4, pmbk->fName, 4);
 			fBanksN++;
 		}
@@ -391,21 +376,19 @@ int TMidasEvent::IterateBank(TMidas_BANK **pbk, char **pdata) const {
 	/// \param [in] pdata Pointer to data area of bank. Returns nullptr if no more banks
 	/// \returns Size of bank in bytes or 0 if no more banks.
 	///
-	const TMidas_BANK_HEADER* event = (const TMidas_BANK_HEADER*)fData;
+	const TMidas_BANK_HEADER* event = reinterpret_cast<const TMidas_BANK_HEADER*>(fData);
+	
+	if(*pbk == nullptr) *pbk = const_cast<TMidas_BANK*>(reinterpret_cast<const TMidas_BANK*>(event + 1));
+	else                *pbk = reinterpret_cast<TMidas_BANK*>(reinterpret_cast<char*>(*pbk + 1) + ((((*pbk)->fDataSize)+7) & ~7));
 
-	if(*pbk == nullptr)
-		*pbk = (TMidas_BANK *) (event + 1);
-	else
-		*pbk = (TMidas_BANK *) ((char*) (*pbk + 1) + ((((*pbk)->fDataSize)+7) & ~7));
+	*pdata = reinterpret_cast<char*>((*pbk) + 1);
 
-	*pdata = (char*)((*pbk) + 1);
-
-	if((char*) *pbk >=  (char*) event + event->fDataSize + sizeof(TMidas_BANK_HEADER)) {
+	if(reinterpret_cast<char*>(*pbk) >=  const_cast<char*>(reinterpret_cast<const char*>(event)) + event->fDataSize + sizeof(TMidas_BANK_HEADER)) {
 		*pbk = nullptr;
 		*pdata = nullptr;
 		return 0;
 	}
-
+	
 	return (*pbk)->fDataSize;
 }
 
@@ -640,7 +623,14 @@ int TMidasEvent::Process(TDataParser& parser) {
 		};
 	}
 	catch(const std::bad_alloc&) {   }
-	//printf("I AM HERE!\n");fflush(stdout);
+	
+	// if we failed to get any fragments and this is not a start-of-run or end-of-run event
+	// we print an error message (unless these are suppressed)
+	if(frags <= 0 && GetEventId() < 0x8000 && !TGRSIOptions::Get()->SuppressErrors()) {
+		SetBankList();
+		Print(Form("a%i",(-1*frags)-1));
+	}
+
 	return frags;
 }
 
