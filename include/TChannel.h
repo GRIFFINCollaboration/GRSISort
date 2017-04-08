@@ -73,8 +73,8 @@ class TChannel : public TNamed	{
       std::string       fTypeName;
       std::string       fDigitizerTypeString;
       int               fDigitizerType;
-      int 	            fNumber;
-      int		         fStream;
+      int 	        fNumber;
+      int		fStream;
       int               fUserInfoNumber;
       bool              fUseCalFileInt;
 
@@ -97,6 +97,16 @@ class TChannel : public TNamed	{
       std::vector<double> fEFFCoefficients;  //Efficiency calibration coeffs (low to high order)
       double fEFFChi2;                       //Chi2 of Efficiency calibration
 
+      typedef struct WaveFormShapePar{
+		bool InUse;
+		double BaseLine;
+		double TauDecay;
+		double TauRise;
+	}WaveFormShapePar;
+	
+	WaveFormShapePar WaveFormShape;
+      
+      
       std::vector<double> fCTCoefficients;   //Cross talk coefficients
 
       static std::map<unsigned int,TChannel*>* fChannelMap; //A map to all of the channels based on address
@@ -180,6 +190,20 @@ class TChannel : public TNamed	{
       inline void SetLEDChi2(double temp)  { fLEDChi2 = temp; }
       inline void SetTIMEChi2(double temp) { fTIMEChi2 = temp; }
       inline void SetEFFChi2(double temp)  { fEFFChi2 = temp; } 
+      
+      inline void SetWaveRise(double temp)  { WaveFormShape.TauRise = temp; SetUseWaveParam();}
+      inline void SetWaveDecay(double temp)  { WaveFormShape.TauDecay = temp; SetUseWaveParam();}
+      inline void SetWaveBaseLine(double temp)  { WaveFormShape.BaseLine = temp; SetUseWaveParam();}
+      inline void SetUseWaveParam(bool temp=true)  { WaveFormShape.InUse=temp; }
+      inline void SetWaveParam(WaveFormShapePar temp)  { WaveFormShape=temp; }
+      
+       
+      double GetWaveRise()  const { return WaveFormShape.TauRise; }
+      double GetWaveDecay()  const { return WaveFormShape.TauDecay; }
+      double GetWaveBaseLine()  const { return WaveFormShape.BaseLine; }
+      bool UseWaveParam()  const { return WaveFormShape.InUse; }
+      WaveFormShapePar GetWaveParam() const { return WaveFormShape; }
+      
 
       double CalibrateENG(double);
       double CalibrateENG(double, int integration);
