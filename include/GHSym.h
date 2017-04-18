@@ -3,6 +3,7 @@
 #include "TArrayF.h"
 #include "TArrayD.h"
 #include "TProfile.h"
+#include "TF1.h"
 
 class GHSym : public TH1 {
 	public:
@@ -13,9 +14,9 @@ class GHSym : public TH1 {
 		~GHSym();
 	
 #if MAJOR_ROOT_VERSION < 6
-		//virtual Bool_t    Add(TF1* h1, Double_t c1 = 1., Option_t* option = "");
-		//virtual Bool_t    Add(const TH1* h1, Double_t c1 = 1.);
-		//virtual Bool_t    Add(const TH1* h1, const TH1* h2, Double_t c1 = 1., Double_t c1 = 1.);
+		virtual Bool_t    Add(TF1* h1, Double_t c1 = 1., Option_t* option = "");
+		virtual Bool_t    Add(const TH1* h1, Double_t c1 = 1.);
+		virtual Bool_t    Add(const TH1* h1, const TH1* h2, Double_t c1 = 1., Double_t c2 = 1.);
 #endif
 		virtual Int_t     BufferEmpty(Int_t action = 0);
 		Int_t					BufferFill(Double_t, Double_t) { return -2; } //MayNotUse
@@ -71,6 +72,7 @@ class GHSym : public TH1 {
 		Double_t fTsumwy;		//Total Sum of weight*Y
 		Double_t fTsumwy2;	//Total Sum of weight*Y*Y
 		Double_t fTsumwxy;	//Total Sum of weight*X*Y
+		TH2* fMatrix;        //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
 
 	private:
 		GHSym(const GHSym&);
@@ -88,13 +90,17 @@ class GHSymF : public GHSym, public TArrayF {
 		GHSymF(const GHSymF&);
 		~GHSymF();
 
-		TH2F* GetMatrix();
+		TH2F* GetMatrix(bool force = false);
 
 		virtual void     AddBinContent(Int_t bin) { ++fArray[bin]; }
 		virtual void     AddBinContent(Int_t bin, Double_t w)	{ fArray[bin] += Float_t(w); }
 		virtual void     Copy(TObject& hnew) const;
 		virtual void     Draw(Option_t* option="") { GetMatrix()->Draw(option); }
-		virtual TH1*     DrawCopy(Option_t *option = "") const;
+#if MAJOR_ROOT_VERSION < 6
+		virtual TH1*     DrawCopy(Option_t* option = "") const;
+#else
+		virtual TH1*     DrawCopy(Option_t* option = "", const char* name_postfix = "_copy") const;
+#endif
 		virtual Double_t GetBinContent(Int_t bin) const;
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny) const { return GetBinContent(GetBin(binx,biny)); }
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny, Int_t) const { return GetBinContent(GetBin(binx,biny)); }
@@ -126,12 +132,16 @@ class GHSymD : public GHSym, public TArrayD {
 		GHSymD(const GHSymD&);
 		~GHSymD();
 
-		TH2D* GetMatrix();
+		TH2D* GetMatrix(bool force = false);
 
 		virtual void     AddBinContent(Int_t bin) { ++fArray[bin]; }
 		virtual void     AddBinContent(Int_t bin, Double_t w)	{ fArray[bin] += w; }
 		virtual void     Copy(TObject& hnew) const;
-		virtual TH1*     DrawCopy(Option_t *option = "") const;
+#if MAJOR_ROOT_VERSION < 6
+		virtual TH1*     DrawCopy(Option_t* option = "") const;
+#else
+		virtual TH1*     DrawCopy(Option_t* option = "", const char* name_postfix = "_copy") const;
+#endif
 		virtual void     Draw(Option_t* option="") { GetMatrix()->Draw(option); }
 		virtual Double_t GetBinContent(Int_t bin) const;
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny) const { return GetBinContent(GetBin(binx,biny)); }
