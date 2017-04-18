@@ -97,7 +97,7 @@ class TGRSIDetectorHit : public TObject 	{
       virtual void CopyWave(TObject&)  const;  //!<!
       virtual void Clear(Option_t* opt = "");           //!<!
       virtual void ClearTransients() const { fBitflags = 0; }
-      virtual void Print(Option_t* opt = "") const;     //!<!
+      virtual void Print(Option_t* opt = "") const;     //!<! 
       virtual bool HasWave() const { return (fWaveform.size()>0) ?  true : false; } //!<!
 
       static bool CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rhs);
