@@ -180,14 +180,6 @@ Int_t TGRSIDetectorHit::GetSegment() const {
   return channel->GetSegmentNumber();
 }
 
-/*void TGRSIDetectorHit::GetSegment() const { 
-   static bool been_warned = 0; 
-   if(!been_warned) { 
-      Warning(DRED "GetSegment()" RESET_COLOR,DRED "Has been moved to GetSegmentNumber" RESET_COLOR); 
-      been_warned = true;
-   } 
-}*/
-
 Int_t TGRSIDetectorHit::GetCrystal() const {
   TChannel *channel = GetChannel();
   if(channel)
@@ -202,56 +194,6 @@ UShort_t TGRSIDetectorHit::GetArrayNumber() const {
   }
   return -1;
 }
-/*
-UInt_t TGRSIDetectorHit::SetDetector(const UInt_t& det) {
-  fDetector = det;
-  SetFlag(kIsDetSet,true);
-  return fDetector;
-}
-
-Short_t TGRSIDetectorHit::SetSegment(const Short_t &seg) {
-   fSegment = seg;
-   SetFlag(kIsSegSet,true);
-   return fSegment;
-}
-*/
-//TVector3 TGRSIDetectorHit::SetPosition(Double_t dist) {
-  ///This should not be overridden. It's job is to call the correct
-  ///position for the derived TGRSIDetector object.
-//  SetFlag(kIsPositionSet,true);
-//  fPosition = GetChannelPosition(dist); //Calls a general Hit GetPosition function
-//  return fPosition;
-//}
-
-//TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) const{
-  ///This should not be overridden and instead GetChannelPosition should
-  ///be used in the derived class.
-//  if(IsPosSet())
-//    return fPosition;
-
-//  return GetChannelPosition(dist); //Calls the derivative GetPosition function
-  //We must do a check in here to make sure it is returning something reasonable
-//}
-
-//TVector3 TGRSIDetectorHit::GetPosition(Double_t dist) {
-  ///This should not be overridden and instead GetChannelPosition should
-  ///be used in the derived class.
-  //if(IsPosSet())
-  //  return fPosition;
-
-  //if(GetDetector()>0)
-  //  return TGRSIDetectorHit::SetPosition(dist);
-
-  //GetDetector();
-  //if(IsDetSet())
-  //  return TGRSIDetectorHit::SetPosition(dist);
-
-//  printf("no position found for current hit\n");
-//  return *GetBeamDirection();  //TVector3(0,0,1);
-//}
-//    return channel->GetSegmentNumber(); //mnemonic.arrayposition;
-// }
-
 
 bool TGRSIDetectorHit::CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rhs) {
   return (lhs->GetEnergy() > rhs->GetEnergy());
@@ -291,20 +233,6 @@ Long64_t TGRSIDetectorHit::GetCycleTimeStamp() const {
   SetHitBit(kIsPPGSet,true);
   return fCycleTimeStamp;
 }
-
-//void TGRSIDetectorHit::CopyFragment(const TFragment& frag) {
-//  this->fAddress   = frag.ChannelAddress;
-//  this->fCharge    = frag.GetCharge();
-//  this->fCfd       = frag.GetCfd();
-//  this->fTimeStamp = frag.GetTimeStamp();
-//  this->fPosition  = TVector3(0,0,1);
-//  this->fEnergy    = frag.GetEnergy();
-//}
-
-//void TGRSIDetectorHit::CopyWaveform(const TFragment &frag) {
-//  if(frag.HasWave())
-//    SetWaveform(frag.wavebuffer);
-//}
 
 // const here is rather dirty
 void TGRSIDetectorHit::SetHitBit(enum EBitFlag flag, Bool_t set) const {
