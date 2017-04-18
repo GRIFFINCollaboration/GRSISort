@@ -50,7 +50,7 @@ public :
 	virtual void EndOfSort() { }; 
    void SetOutputPrefix(const char* prefix) { fOutputPrefix = prefix; }
 
- private:
+ protected:
 	std::map<std::string, TH1*> fH1;
 	std::map<std::string, TH2*> fH2;
 	std::map<std::string, GHSym*> fSym;
