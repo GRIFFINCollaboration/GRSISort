@@ -12,6 +12,7 @@ class GH1D;
 class GMarker;
 class TF1;
 class GPeak;
+class TPeak;
 class GGaus;
 class TFile;
 
@@ -25,6 +26,7 @@ bool ShowPeaks(TH1**,unsigned int, double sigma=2.0, double thresh=0.02);
 bool RemovePeaks(TH1**,unsigned int);
 
 GPeak *PhotoPeakFit(TH1*,double,double,Option_t *opt="");
+TPeak *AltPhotoPeakFit(TH1*,double,double,Option_t *opt="");
 GGaus *GausFit(TH1*,double,double,Option_t *opt="");
 TF1   *DoubleGausFit(TH1*,double,double,double,double,Option_t *opt="");
 
