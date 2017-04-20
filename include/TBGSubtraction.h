@@ -5,12 +5,13 @@
 #include <TF1.h>
 #include <TRandom.h>
 #include <TGButton.h>
-#include <TGSlider.h>
 #include "TGDoubleSlider.h"
 #include "TGSlider.h"
+#include "TGToolTip.h"
 #include "TClass.h"
 #include "TGNumberEntry.h"
 #include "TGLabel.h"
+#include "TGStatusBar.h"
 #include <TGFrame.h>
 #include <TRootEmbeddedCanvas.h>
 #include <RQ_OBJECT.h>
@@ -65,6 +66,8 @@ class TBGSubtraction : public TGMainFrame {
 //      TGTextButton         *fDrawCanvasButton;
       TGTextButton         *fWrite2FileButton;
 
+   //Status Bars
+      TGStatusBar *fProjectionStatus;
 
    //Frames
       TGVerticalFrame      *fGateFrame;
@@ -95,12 +98,15 @@ class TBGSubtraction : public TGMainFrame {
       void DrawOnNewCanvas();
       void DrawMarkers();
       void WriteHistograms();
+      void GateStatusInfo(Int_t event,Int_t px, Int_t py, TObject *selected);
+      void ProjectionStatusInfo(Int_t event,Int_t px, Int_t py, TObject *selected);
 
    private:
       void BuildInterface();
+      void StatusInfo(Int_t event,Int_t px, Int_t py, TObject *selected);
 
    /// \cond CLASSIMP
-   ClassDef(TBGSubtraction,6);  // Event Fragments
+   ClassDef(TBGSubtraction,6);  // Background subtractor GUI
    /// \endcond
 };
 /*! @} */

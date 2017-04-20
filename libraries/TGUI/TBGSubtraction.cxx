@@ -34,13 +34,13 @@ void TBGSubtraction::BuildInterface() {
    gClient->GetColorByName("blue",color);
    // Create a main frame
 
-   fProjectionFrame = new TGVerticalFrame(this,200,200); 
+   fProjectionFrame = new TGVerticalFrame(this,400,400); 
    // Create canvas widget
    fProjectionCanvas = new TRootEmbeddedCanvas("ProjectionCanvas",fProjectionFrame,200,200);
    fProjectionCanvas->GetCanvas()->Connect("RangeAxisChanged()", "TBGSubtraction",this,"DoGateCanvasModified()");
    // Create a horizontal frame widget with buttons
 
-   fGateEntryFrame = new TGHorizontalFrame(fProjectionFrame,200,200);
+   fGateEntryFrame = new TGHorizontalFrame(fProjectionFrame,400,400);
 
    //We are going to start the limits off at a specific ratio of the frame
    Double_t xmin,ymin,xmax,ymax;
@@ -82,11 +82,18 @@ void TBGSubtraction::BuildInterface() {
    fBGSlider->Connect("PositionChanged()", "TBGSubtraction", this, "DoSlider()");
    fBGSlider->SetRange(xmin, xmax);
    fBGSlider->SetPosition(xmin+0.7*x_width, xmax-0.2*x_width);
-   fProjectionFrame->Resize(100,200);
 
    fGateFrame = new TGVerticalFrame(this,200,200); 
    //fGateCanvas = new TRootEmbeddedCanvas("GateCanvas",this,200,200);
    fGateCanvas = new TRootEmbeddedCanvas("GateCanvas",fGateFrame,200,200);
+
+   //Status Bars
+   Int_t parts[] = {20,50};
+   fProjectionStatus = new TGStatusBar(fProjectionFrame,50,10,kHorizontalFrame);
+   fProjectionStatus->SetParts(parts,2);
+   fProjectionCanvas->GetCanvas()->Connect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)","TBGSubtraction",this,"ProjectionStatusInfo(Int_t,Int_t,Int_t,TObject*)");
+
+   fGateCanvas->GetCanvas()->Connect("ProcessedEvent(Int_t,Int_t,Int_t,TObject*)","TBGSubtraction",this,"GateStatusInfo(Int_t,Int_t,Int_t,TObject*)");
 
    fBGParamFrame = new TGHorizontalFrame(fGateFrame,200,200);
    fBGParamLabel = new TGLabel(fBGParamFrame, "Background:" );
@@ -107,15 +114,11 @@ void TBGSubtraction::BuildInterface() {
    fWrite2FileButton = new TGTextButton(fButtonFrame,"&Write Histograms");
    fWrite2FileButton->Connect("Clicked()", "TBGSubtraction", this, "WriteHistograms()");
 
-
-   fGateFrame->Resize(100,200);
-
    fBly = new TGLayoutHints(kLHintsTop | kLHintsCenterX| kLHintsExpandX,1,1,3,1);
    fLayoutCanvases = new TGLayoutHints(kLHintsTop | kLHintsCenterX | kLHintsExpandX | kLHintsExpandY, 1,1,3,4);
    fLayoutParam = new TGLayoutHints(kLHintsCenterX | kLHintsExpandX ,1,1,3,20);
 
    fBly1 = new TGLayoutHints(kLHintsTop | kLHintsCenterX | kLHintsExpandX | kLHintsExpandY ,20,10,15,0);
-
 
    fBGParamFrame->AddFrame(fBGParamLabel,fBly);
    fBGParamFrame->AddFrame(fBGParamEntry,fBly);
@@ -133,6 +136,7 @@ void TBGSubtraction::BuildInterface() {
    fButtonFrame->AddFrame(fWrite2FileButton,fBly);
 
    fProjectionFrame->AddFrame(fProjectionCanvas, fLayoutCanvases);
+   fProjectionFrame->AddFrame(fProjectionStatus, fBly);
    fProjectionFrame->AddFrame(fGateSlider,fBly);
    fProjectionFrame->AddFrame(fBGSlider,fBly);
    fProjectionFrame->AddFrame(fGateEntryFrame,fBly);
@@ -142,13 +146,12 @@ void TBGSubtraction::BuildInterface() {
    fGateFrame->AddFrame(fBGParamFrame, fLayoutParam);
    fGateFrame->AddFrame(fDescriptionFrame,fLayoutParam);
    fGateFrame->AddFrame(fButtonFrame,fLayoutParam);
-   
+
    AddFrame(fProjectionFrame, fBly1);
    AddFrame(fGateFrame,fBly1);
 
 // (fNumber->GetNumberEntry())->Connect("ReturnPressed()", "MyMainFrame", this,
   //                                             "DoSetlabel()");
-
 
    // Set a name to the main frame
    SetWindowName("Gater and Subtractor");
@@ -158,10 +161,11 @@ void TBGSubtraction::BuildInterface() {
 
    // Initialize the layout algorithm
    Resize(GetDefaultSize());
-
+   
    // Map main frame
    MapWindow();
    DoDraw();
+   
 }
 
 void TBGSubtraction::DoDraw() {
@@ -201,7 +205,6 @@ void TBGSubtraction::DoDraw() {
       DoProjection();
       first_draw = false;
    }
-
 }
 
 void TBGSubtraction::DoFit() {
@@ -459,3 +462,17 @@ void TBGSubtraction::WriteHistograms() {
    }
 }
 
+void TBGSubtraction::GateStatusInfo(Int_t event,Int_t px, Int_t py, TObject *selected){
+   fGateCanvas->GetCanvas()->cd();
+   StatusInfo(event,px,py,selected);
+}
+
+void TBGSubtraction::ProjectionStatusInfo(Int_t event,Int_t px, Int_t py, TObject *selected){
+   fProjectionCanvas->GetCanvas()->cd();
+   StatusInfo(event,px,py,selected);
+}
+
+void TBGSubtraction::StatusInfo(Int_t event,Int_t px, Int_t py, TObject *selected){
+   fProjectionStatus->SetText(selected->GetName(),0);
+   fProjectionStatus->SetText(selected->GetObjectInfo(px,py),1);
+}
