@@ -1,9 +1,22 @@
 #ifndef TGRSIINT_H
 #define TGRSIINT_H
 
-/** \addtogroup GROOT
+/** \addtogroup Sorting
  *  @{
  */
+
+//////////////////////////////////////////////////
+///
+/// \class TGRSIint
+///
+/// TGRSIint is a class that acts as an interpreter for GRSISort. The
+/// idea is that TGRSIint will read in cal, info, mid and root files
+/// and open them appropriately (order) and do the correct thing with 
+/// them. It also applies the command line options. Finally, TGRSIint
+/// allows us to take over the interpreter to do some GRSI things.
+///
+///
+///////////////////////////////////////////////////
 
 #ifndef __CINT__
 #include <thread>
@@ -29,10 +42,10 @@ private:
   TGRSIint(int argc, char **argv,void *options = 0,
            int numOptions = 0, bool noLogo = false, const char *appClassName = "grsisort") ;
 
-  static TEnv* fGRSIEnv;
+  static TEnv* fGRSIEnv;   ///< GRSI environment 
 
 public:
-  static TGRSIint* fTGRSIint;
+  static TGRSIint* fTGRSIint; ///< Static pointer (singleton)
   static TGRSIint* instance(int argc = 0, char** argv = 0, void* options = 0,
                             int numOptions = -1, bool noLogo = false, const char* appClassName = "grsisort");
 
@@ -69,9 +82,9 @@ private:
 
   Long_t DelayedProcessLine(std::string message);
 
-  TTimer* fKeepAliveTimer;
+  TTimer* fKeepAliveTimer;       ///< Time of process
 #ifndef __CINT__
-  std::thread::id main_thread_id;
+  std::thread::id main_thread_id;///< Main sorting thread id 
 #endif
 
 private:
@@ -81,18 +94,27 @@ private:
   // bool fAutoSort;
   // bool fFragmentSort;
   // bool fMakeAnalysisTree;
-  bool fIsTabComplete;
-  bool fAllowedToTerminate;
-  int fRootFilesOpened;
-  int fMidasFilesOpened;
-  std::string fNewFragmentFile;
+  bool fIsTabComplete;           ///< Flag for tab completion hook
+  bool fAllowedToTerminate;      ///< Flag for shutting down GRSISort
+  int fRootFilesOpened;          ///< Number of ROOT files opened
+  int fMidasFilesOpened;         ///< Number of Midas Files opened
+  std::string fNewFragmentFile;  ///< New fragment file name
 
-  std::vector<TRawFile*> fRawFiles;
+  std::vector<TRawFile*> fRawFiles; ///< List of Raw files opened
 
 /// \cond CLASSIMP
-  ClassDef(TGRSIint,0);
+  ClassDef(TGRSIint,0); //Interpreter for GRSISort
 /// \endcond
 };
+
+
+//////////////////////////////////////////////////
+///
+/// \class TGRSIInterruptHandler
+///
+/// Handles interruptions such as ctrl-c
+///
+///////////////////////////////////////////////////
 
 class TGRSIInterruptHandler : public TSignalHandler {
 public:

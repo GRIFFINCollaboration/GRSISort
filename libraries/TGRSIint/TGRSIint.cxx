@@ -55,17 +55,19 @@ TEnv *TGRSIint::fGRSIEnv = nullptr;
 void ReadTheNews(void);
 
 TGRSIint *TGRSIint::instance(int argc,char** argv, void *options, int numOptions, bool noLogo, const char *appClassName) {
-  if(!fTGRSIint) {
-    fTGRSIint = new TGRSIint(argc,argv,options,numOptions,true,appClassName);
-    fTGRSIint->ApplyOptions();
-  }
-  return fTGRSIint;
+   ///Singleton constructor instance
+   if(!fTGRSIint) {
+      fTGRSIint = new TGRSIint(argc,argv,options,numOptions,true,appClassName);
+      fTGRSIint->ApplyOptions();
+   }
+   return fTGRSIint;
 }
 
 TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t noLogo,const char *appClassName)
   :TRint(appClassName, &argc, argv, options, numOptions,noLogo),
    fKeepAliveTimer(nullptr), main_thread_id(std::this_thread::get_id()), fIsTabComplete(false),
    fAllowedToTerminate(true),fRootFilesOpened(0),fMidasFilesOpened(0) {
+      ///Singleton constructor
 
       fGRSIEnv = gEnv;
       //TRint::TRint(appClassName, &argc, argv, options, numOptions,noLogo)
@@ -87,6 +89,7 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
 }
 
 void TGRSIint::LoadExtraClasses() {
+   ///Loads some of the classes. May not be required anymore.
   // we should move to make this a loop over the entire libs directory... pcb.
   gROOT->LoadClass("TTigress");
   gROOT->LoadClass("TTigressHit");
@@ -100,15 +103,10 @@ void TGRSIint::LoadExtraClasses() {
   gROOT->LoadClass("TSRIM");
 }
 
-void TGRSIint::InitFlags() {
-   // fAutoSort = false;
-   // fFragmentSort = false;
-   // fMakeAnalysisTree = false;
-
-//   if(fGRSIEnv) fGRSIEnv->Delete();
-}
-
 void TGRSIint::ApplyOptions() {
+   ///Applies options from TGRSIOptions. This include things such as batch sorting, 
+   ///reading material, and logo. Also includes the setup of what to do with mid
+   ///and root files that are input.
 	TGRSIOptions* opt = TGRSIOptions::Get();
 
 	if(opt->Batch()) {
@@ -170,6 +168,7 @@ void TGRSIint::ApplyOptions() {
 }
 
 void TGRSIint::LoopUntilDone() {
+   ///Outputs the thread status until all of the threads are complete.
 	int iter = 0;
 	while(StoppableThread::AnyThreadRunning()) {
 		std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -192,14 +191,18 @@ void TGRSIint::LoopUntilDone() {
 
 
 TGRSIint::~TGRSIint()   {
+   ///Default dtor.
   // SafeDelete();
 }
 
 bool TGRSIint::HandleTermInput() {
+   ///Handles terminal input via TRint
   return TRint::HandleTermInput();
 }
 
 void TGRSIint::Terminate(Int_t status){
+   ///Kills all of the threads if the process is allowed to terminate. This 
+   ///sends an error to TSortingDiagnostics if an analysis tree is being created
   if(!fAllowedToTerminate){
     return;
   }
@@ -233,6 +236,7 @@ void TGRSIint::Terminate(Int_t status){
 }
 
 Int_t TGRSIint::TabCompletionHook(char* buf, int* pLoc, std::ostream& out){
+   ///Tries to do a tab completion. Returns false if unsuccsessful
   fIsTabComplete = true;
   auto result = TRint::TabCompletionHook(buf, pLoc, out);
   fIsTabComplete = false;
@@ -241,8 +245,8 @@ Int_t TGRSIint::TabCompletionHook(char* buf, int* pLoc, std::ostream& out){
 
 
 Long_t TGRSIint::ProcessLine(const char* line,Bool_t sync, Int_t *error) {
-  // If you print while fIsTabComplete is true, you will break tab complete.
-  // Any diagnostic print statements should be done after this if statement.
+  /// If you print while fIsTabComplete is true, you will break tab complete.
+  /// Any diagnostic print statements should be done after this if statement.
   if(fIsTabComplete){
     long res = TRint::ProcessLine(line, sync, error);
     return res;
@@ -266,15 +270,8 @@ Long_t TGRSIint::ProcessLine(const char* line,Bool_t sync, Int_t *error) {
   return TRint::ProcessLine(line,sync,error);
 }
 
-
-
-
-
-
 void ReadTheNews(void) {
-  //gROOT->ProcessLine(".! wget -q -l1 - http://en.wikipedia.org/wiki/Special:Random -Otemp.html");
-  //new TGHtmlBrowser("temp.html");
-  //std::ipstream wrandom("xdg-open http://en.wikipedia.org/wiki/Special:Random");
+   ///Opens a random wikipedia page for your enjoyment
 #ifdef __APPLE__
   gROOT->ProcessLine(".! open http://en.wikipedia.org/wiki/Special:Random > /dev/null 2>&1");
 #else
@@ -284,7 +281,7 @@ void ReadTheNews(void) {
 }
 
 void TGRSIint::PrintLogo(bool print) {
-
+   ///Prints the GRSISort log.
   if(print)   {
 #ifdef LINUX
     const std::string &ref = ProgramName();
@@ -309,6 +306,10 @@ void TGRSIint::PrintLogo(bool print) {
 }
 
 TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt){
+   ///Opens root files provided on the command line. Also tells you where these files
+   ///are stored (ie _file0). If these files are analysis or fragment trees, they are
+   ///automatically chained into chains called gFragment and gAnalysis. Once this is
+   ///complete, the TChannels, GValues and RunInfo are also read in.
   TString sopt(opt);
   sopt.ToLower();
 
@@ -395,6 +396,7 @@ TFile* TGRSIint::OpenRootFile(const std::string& filename, Option_t* opt){
 }
 
 TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename) {
+   ///Opens MidasFiles and stores them in _midas if successfuly opened.
   if(!file_exists(filename.c_str())){
     std::cerr << "File \"" << filename << "\" does not exist" << std::endl;
     return nullptr;
@@ -419,6 +421,7 @@ TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename) {
 }
 
 TLstFile* TGRSIint::OpenLstFile(const std::string& filename) {
+   ///Opens Lst Files.
   if(!file_exists(filename.c_str())){
     std::cerr << "File \"" << filename << "\" does not exist" << std::endl;
     return nullptr;
@@ -431,6 +434,10 @@ TLstFile* TGRSIint::OpenLstFile(const std::string& filename) {
 }
 
 void TGRSIint::SetupPipeline() {
+   ///Finds all of the files input as well as flags provided and makes all
+   ///of the decisions about what to sort and what order to open everything up
+   ///in. This also creates the output files. Starts the threads and gets the 
+   ///sorting going. This is really the brains of the command line sorting routine.
    TGRSIOptions* opt = TGRSIOptions::Get();
 
    // Determining which parts of the pipeline need to be set up.
@@ -746,6 +753,7 @@ void TGRSIint::SetupPipeline() {
 }
 
 void TGRSIint::RunMacroFile(const std::string& filename){
+   ///Runs a macro file. This happens when --work-harder is used with a .C file
    if(file_exists(filename.c_str())){
       const char* command = Form(".x %s", filename.c_str());
       ProcessLine(command);
@@ -755,6 +763,7 @@ void TGRSIint::RunMacroFile(const std::string& filename){
 }
 
 void TGRSIint::DrawLogo() {
+   ///Draws the logo. Can be suppressed with -l
    PopupLogo(false);
    WaitLogo();
 }
@@ -936,6 +945,7 @@ void TGRSIint::DrawLogo() {
 
 
 void TGRSIint::LoadGROOTGraphics() {
+   ///Loads root graphics in unless -b is used for batch mode.
    if (gROOT->IsBatch()) return;
    // force Canvas to load, this ensures global GUI Factory ptr exists.
    gROOT->LoadClass("TCanvas", "Gpad");
@@ -944,6 +954,7 @@ void TGRSIint::LoadGROOTGraphics() {
 
 
 void TGRSIint::PrintHelp(bool print) {
+   ///Prints the help. Not sure this is used anymore.
    if(print) {
       printf( DRED BG_WHITE "     Sending Help!!     " RESET_COLOR  "\n");
       new TGHtmlBrowser(gSystem->ExpandPathName("${GRSISYS}/README.html"));
@@ -997,6 +1008,8 @@ return false;
 */
 
 bool TGRSIInterruptHandler::Notify() {
+   ///When ctrl-c is pressed, this takes over. This can be used in the future
+   ///for safe cleanup.
    static int timespressed  = 0;
    timespressed++;
    if(timespressed>3) {
