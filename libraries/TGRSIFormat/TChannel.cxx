@@ -65,6 +65,7 @@ TChannel::TChannel(TChannel* chan) {
 	SetTIMEChi2(chan->GetTIMEChi2());
 	SetEFFChi2(chan->GetEFFChi2());
 	SetUseCalFileIntegration(chan->UseCalFileIntegration());
+	SetWaveParam(chan->GetWaveParam());
 
    SetDetectorNumber(chan->GetDetectorNumber());
 	SetSegmentNumber(chan->GetSegmentNumber());
@@ -166,6 +167,8 @@ void TChannel::OverWriteChannel(TChannel* chan){
 	SetEFFChi2(chan->GetEFFChi2());
 
 	SetUseCalFileIntegration(chan->UseCalFileIntegration());
+	
+	SetWaveParam(chan->GetWaveParam());
   
    SetDetectorNumber(chan->GetDetectorNumber());
 	SetSegmentNumber(chan->GetSegmentNumber());
@@ -175,70 +178,46 @@ void TChannel::OverWriteChannel(TChannel* chan){
 }
 
 void TChannel::AppendChannel(TChannel* chan){
-	///Sets the current TChannel to chan
-	if(chan->GetIntegration()!=0) 
-		this->SetIntegration(chan->GetIntegration()); 
-	if(chan->GetNumber()!=0)
-		this->SetNumber(chan->GetNumber());
-	if(chan->GetStream()!=0)
-		this->SetStream(chan->GetStream());
-	if(chan->GetUserInfoNumber()!=0 && chan->GetUserInfoNumber()!=-1)
-		this->SetUserInfoNumber(chan->GetUserInfoNumber());
-	if(strlen(chan->GetName())>0) {
-	  this->SetName(chan->GetName());
-	}
-	if(strlen(chan->GetDigitizerTypeString())>0)
-		this->SetDigitizerType(chan->GetDigitizerTypeString());
-   if(chan->GetTimeOffset() != 0.0)
-      this->SetTimeOffset(chan->GetTimeOffset());
+   ///Sets the current TChannel to chan
+   if(chan->GetIntegration()!= 0) SetIntegration(chan->GetIntegration()); 
+	if(chan->GetNumber()!= 0) SetNumber(chan->GetNumber());
+	if(chan->GetStream()!= 0) SetStream(chan->GetStream());
+	if(chan->GetUserInfoNumber() != 0 && chan->GetUserInfoNumber() != -1) SetUserInfoNumber(chan->GetUserInfoNumber());
+	if(strlen(chan->GetName()) > 0) {
+      SetName(chan->GetName());
+   }
+   if(strlen(chan->GetDigitizerTypeString())>0) SetDigitizerType(chan->GetDigitizerTypeString());
+   if(chan->GetTimeOffset() != 0.0) SetTimeOffset(chan->GetTimeOffset());
 
-	if(chan->GetENGCoeff().size()>0)
-		this->SetENGCoefficients(chan->GetENGCoeff());
-	if(chan->GetCFDCoeff().size()>0)
-		this->SetCFDCoefficients(chan->GetCFDCoeff());
-	if(chan->GetLEDCoeff().size()>0)
-		this->SetLEDCoefficients(chan->GetLEDCoeff());
-	if(chan->GetTIMECoeff().size()>0)
-		this->SetTIMECoefficients(chan->GetTIMECoeff());
-	if(chan->GetEFFCoeff().size()>0)
-		this->SetEFFCoefficients(chan->GetEFFCoeff());
-   if(chan->GetCTCoeff().size()>0)
-      this->SetCTCoefficients(chan->GetCTCoeff());
+   if(chan->GetENGCoeff().size() > 0) SetENGCoefficients(chan->GetENGCoeff());
+   if(chan->GetCFDCoeff().size() > 0) SetCFDCoefficients(chan->GetCFDCoeff());
+   if(chan->GetLEDCoeff().size() > 0) SetLEDCoefficients(chan->GetLEDCoeff());
+   if(chan->GetTIMECoeff().size() > 0) SetTIMECoefficients(chan->GetTIMECoeff());
+   if(chan->GetEFFCoeff().size() > 0) SetEFFCoefficients(chan->GetEFFCoeff());
+   if(chan->GetCTCoeff().size() > 0) SetCTCoefficients(chan->GetCTCoeff());
 
-	if(chan->GetENGChi2() != 0.0)
-		this->SetENGChi2(chan->GetENGChi2());
-	if(chan->GetCFDChi2() != 0.0)
-		this->SetCFDChi2(chan->GetCFDChi2());
-	if(chan->GetLEDChi2() != 0.0)
-		this->SetLEDChi2(chan->GetLEDChi2());
-	if(chan->GetTIMEChi2() != 0.0)
-		this->SetTIMEChi2(chan->GetTIMEChi2());
-	if(chan->GetEFFChi2() != 0.0)
-		this->SetEFFChi2(chan->GetEFFChi2());
-
-	if(chan->UseCalFileIntegration())
-		this->SetUseCalFileIntegration(chan->UseCalFileIntegration());
+	if(chan->GetENGChi2() != 0.0) SetENGChi2(chan->GetENGChi2());
+	if(chan->GetCFDChi2() != 0.0) SetCFDChi2(chan->GetCFDChi2());
+	if(chan->GetLEDChi2() != 0.0) SetLEDChi2(chan->GetLEDChi2());
+	if(chan->GetTIMEChi2() != 0.0) SetTIMEChi2(chan->GetTIMEChi2());
+	if(chan->GetEFFChi2() != 0.0) SetEFFChi2(chan->GetEFFChi2());
+	if(chan->UseCalFileIntegration()) SetUseCalFileIntegration(chan->UseCalFileIntegration());
+	if(chan->UseWaveParam()) SetWaveParam(chan->GetWaveParam());
   
-  if(chan->GetDetectorNumber()>-1)
-    this->SetDetectorNumber(chan->GetDetectorNumber());
-  if(chan->GetSegmentNumber()>-1)
-  	this->SetSegmentNumber(chan->GetSegmentNumber());
-  if(chan->GetCrystalNumber()>-1)
-  	this->SetCrystalNumber(chan->GetCrystalNumber());
+   if(chan->GetDetectorNumber() > -1)   SetDetectorNumber(chan->GetDetectorNumber());
+   if(chan->GetSegmentNumber() > -1) 	SetSegmentNumber(chan->GetSegmentNumber());
+   if(chan->GetCrystalNumber() > -1) 	SetCrystalNumber(chan->GetCrystalNumber());
 
-  this->SetClassType(chan->GetClassType());
+   SetClassType(chan->GetClassType());
 
 	return;
 }
 
 int TChannel::UpdateChannel(TChannel* chan,Option_t* opt) {
 	///If there is information in the chan, the current TChannel with the same address is updated with that information.
-	if(!chan)
-		return 0;
+	if(chan == nullptr) return 0;
 	TChannel* oldchan = GetChannel(chan->GetAddress()); // look for already existing channel at this address
-	if(oldchan==0)
-		return 0;
-
+	if(oldchan == nullptr) return 0;
 	oldchan->AppendChannel(chan);
 
 	return 0;
@@ -263,6 +242,8 @@ void TChannel::Clear(Option_t* opt){
 	fEFFChi2           =  0.0;
 	fUserInfoNumber    =  0xffffffff;
 	fUseCalFileInt     =  false;
+	WaveFormShape      = WaveFormShapePar();
+	
 	SetName("DefaultTChannel");
 
   fDetectorNumber    = -1;
@@ -618,6 +599,11 @@ void TChannel::Print(Option_t* opt) const {
    }
    if(fUseCalFileInt) 
      std::cout << "FileInt: " << fUseCalFileInt << "\n";
+   if(UseWaveParam()){
+     std::cout << "RiseTime: " << WaveFormShape.TauRise << "\n";
+     std::cout << "DecayTime: " << WaveFormShape.TauDecay << "\n";
+     std::cout << "BaseLine: " << WaveFormShape.BaseLine << "\n";
+   }   
    std::cout << "}\n";
    std::cout << "//====================================//\n";
 
@@ -685,6 +671,12 @@ std::string TChannel::PrintToString(Option_t* opt) {
    if(fUseCalFileInt){ 
      buffer.append(Form("FileInt: %d\n",(int)fUseCalFileInt));
    }
+   if(UseWaveParam()){
+     buffer.append(Form("RiseTime: %f\n",WaveFormShape.TauRise));
+     buffer.append(Form("DecayTime: %f\n",WaveFormShape.TauDecay));
+     buffer.append(Form("BaseLine: %f\n",WaveFormShape.BaseLine));
+   }   
+   
    buffer.append("}\n");
 
    buffer.append("//====================================//\n");
@@ -934,7 +926,6 @@ void TChannel::SaveToSelf(const char* fname) {
 
 
 Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
-
 	std::istringstream infile(inputdata);
 
 	TChannel* channel = nullptr;
@@ -976,7 +967,7 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 			brace_open = false;
 			if(channel) {// && (channel->GetAddress()!=0) ) 
 				TChannel* currentchan = GetChannel(channel->GetAddress());      
-				if(!currentchan){
+				if(currentchan == nullptr) {
 					AddChannel(channel);// consider using a default option here
 					newchannels++;
 				} else {
@@ -1094,7 +1085,16 @@ Int_t TChannel::ParseInputData(const char* inputdata,Option_t* opt) {
 						channel->SetUseCalFileIntegration(true);
 					else 
 						channel->SetUseCalFileIntegration(false);
-				} else  {
+				}else if(type.compare("RISETIME")==0) {
+					double tempdbl; ss>>tempdbl;
+					channel->SetWaveRise(tempdbl);
+				}else if(type.compare("DECAYTIME")==0) {
+					double tempdbl; ss>>tempdbl;
+					channel->SetWaveDecay(tempdbl);
+				} else if(type.compare("BASELINE")==0) {
+					double tempdbl; ss>>tempdbl;
+					channel->SetWaveBaseLine(tempdbl);
+				}  else  {
 
 				}
 			}
@@ -1207,7 +1207,6 @@ int TChannel::WriteToRoot(TFile* fileptr) {
 	ParseInputData(savedata.c_str(),"q");
 	SaveToSelf(savedata.c_str());
 
-
 	//printf("1 Number of Channels: %i\n",GetNumberOfChannels());
 	//gDirectory->ls();
 	//TChannel::DeleteAllChannels();
@@ -1230,19 +1229,23 @@ int TChannel::GetDetectorNumber() const {
 }
 
 int TChannel::GetSegmentNumber() const {
-	if(fSegmentNumber>-1)
-		return fSegmentNumber;
+	if(fSegmentNumber > -1) return fSegmentNumber;
 
 	std::string name = GetName();
-	TString str = name[9];
-	if(str.IsDigit()){
-		std::string buf;
-		buf.clear(); buf.assign(name,7,3);
-		fSegmentNumber = (int32_t)atoi(buf.c_str());
-	}
-	else{   
-		fSegmentNumber = (int32_t)fMnemonic.Segment();
-	}
+   if(name.length() < 10) {
+      fSegmentNumber = 0;
+   } else {
+      TString str = name[9];
+      if(str.IsDigit()) {
+         std::string buf;
+         buf.clear(); 
+         buf.assign(name,7,3);
+         fSegmentNumber = (int32_t)atoi(buf.c_str());
+      } else {   
+         fSegmentNumber = (int32_t)fMnemonic.Segment();
+      }
+   }
+
 	return fSegmentNumber;
 }
 

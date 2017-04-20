@@ -20,7 +20,9 @@
 #include "TFile.h"
 
 #include "Globals.h"
+#include "TRawFile.h"
 #include "TMidasFile.h"
+#include "TLstFile.h"
 
 class TGRSIint : public TRint {
 private:
@@ -44,6 +46,7 @@ public:
 
   TFile* OpenRootFile(const std::string& filename, Option_t* opt="read");
   TMidasFile* OpenMidasFile(const std::string& filename);
+  TLstFile* OpenLstFile(const std::string& filename);
   void RunMacroFile(const std::string& filename);
 
   void Terminate(Int_t exit_status = 0);
@@ -84,7 +87,7 @@ private:
   int fMidasFilesOpened;
   std::string fNewFragmentFile;
 
-  std::vector<TMidasFile*> fMidasFiles;
+  std::vector<TRawFile*> fRawFiles;
 
 /// \cond CLASSIMP
   ClassDef(TGRSIint,0);

@@ -1,12 +1,14 @@
-
+#ifdef HAS_XML
 #include "TXMLOdb.h"
 
-#include <TList.h>
-#include <TXMLAttr.h>
+#include "TList.h"
+#include "TXMLAttr.h"
+
+ClassImp(TXMLOdb)
 
 char TXMLOdb::fTextBuffer[256];
 
-TXMLOdb::TXMLOdb(char* buffer,int size)   {
+TXMLOdb::TXMLOdb(char* buffer,int size) {
    fOdb = 0;
    fDoc = 0;
    std::ifstream input;
@@ -29,9 +31,7 @@ TXMLOdb::TXMLOdb(char* buffer,int size)   {
       fprintf(stderr,"XmlOdb::XmlOdb: Malformed ODB dump: cannot find <odb> tag\n");
       return;
    }  
-   
 }
-
 
 TXMLOdb::~TXMLOdb()  {
    if(fParser)
@@ -260,4 +260,4 @@ std::vector<double> TXMLOdb::ReadDoubleArray(TXMLNode* node) {
    }
    return temp;
 }
-
+#endif

@@ -1,14 +1,15 @@
 //g++ offsetfind.cxx `root-config --cflags --libs` -I${GRSISYS}/include -L${GRSISYS}/libraries -lMidasFormat -lXMLParser -lSpectrum  -ooffsetfind
 
 
-#include"TMidasFile.h"
-#include"TMidasEvent.h"
-#include"TFile.h"
-#include"TFragment.h"
-#include"TTree.h"
-#include"TSpectrum.h"
-#include"TChannel.h"
-#include"TH2D.h"
+#include "TMidasFile.h"
+#include "TMidasEvent.h"
+#include "TFile.h"
+#include "TFragment.h"
+#include "TDataParser.h"
+#include "TTree.h"
+#include "TSpectrum.h"
+#include "TChannel.h"
+#include "TH2D.h"
 #include "TTreeIndex.h"
 #include "TVirtualIndex.h"
 #include "Globals.h"
@@ -19,11 +20,7 @@
 #include "TStopwatch.h"
 #include "TSystem.h"
 
-#include<TMidasFile.h>
-#include<TMidasEvent.h>
-#include<vector>
-#include<TDataParser.h>
-
+#include <vector>
 #include <iostream>
 #include <fstream>
 
@@ -32,7 +29,7 @@ Bool_t SplitMezz = false;
 
 class TEventTime {
    public: 
-      TEventTime(TMidasEvent* event){
+      TEventTime(std::shared_ptr<TMidasEvent> event){
          event->SetBankList();
   
          void *ptr;
@@ -217,7 +214,7 @@ std::map<uint32_t,int> TEventTime::digmap;
 std::map<uint32_t,bool> TEventTime::digset;
 std::map<uint32_t,int64_t> TEventTime::correctionmap;
 
-void PrintError(TMidasEvent *event, int frags,bool verb){
+void PrintError(std::shared_ptr<TMidasEvent> event, int frags,bool verb){
    if(verb){
       printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
       printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", (-1*frags));
@@ -231,7 +228,7 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    const int total_events = 1E6;
    //const int event_start = 1E5;
    const int event_start = 1E5;
-   TMidasEvent *event  = new TMidasEvent;
+	std::shared_ptr<TMidasEvent> event  = std::make_shared<TMidasEvent>();
    eventQ->reserve(total_events);
    void *ptr;
    int banksize;
@@ -289,7 +286,6 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
    }
    TEventTime::OrderDigitizerMap();
    printf("\n");
-   delete event;
    return 0;
 }
 
@@ -568,7 +564,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
 
 }
 
-bool ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
+bool ProcessEvent(std::shared_ptr<TMidasEvent> event,TMidasFile *outfile) {
    if(event->GetEventId() !=1 ) {
       outfile->FillBuffer(event);
       return false;
@@ -677,12 +673,11 @@ bool ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
 //   event->Print("a");
 //   printf(RESET_COLOR);
 
-   TMidasEvent copyevent = *event;
-   copyevent.SetBankList();
+	std::shared_ptr<TMidasEvent> copyevent = std::make_shared<TMidasEvent>(*event);
+   copyevent->SetBankList();
 
-   banksize = copyevent.LocateBank(nullptr,"GRF2",&ptr);
-   if(!banksize)
-      banksize = copyevent.LocateBank(nullptr,"GRF1",&ptr);
+   banksize = copyevent->LocateBank(nullptr,"GRF2",&ptr);
+   if(!banksize) banksize = copyevent->LocateBank(nullptr,"GRF1",&ptr);
 
    for(int x=0;x<banksize;x++) {
       value = *((int*)ptr+x);
@@ -711,7 +706,7 @@ bool ProcessEvent(TMidasEvent *event,TMidasFile *outfile) {
    }
    //printf("===================\n");
 
-   outfile->FillBuffer(&copyevent);
+   outfile->FillBuffer(copyevent);
 
 //   printf(DBLUE);
 //   copyevent.Print("a");
@@ -734,7 +729,7 @@ void WriteEvents(TMidasFile* file) {
    TStopwatch w;
    w.Start();
 
-   TMidasEvent* event = new TMidasEvent;
+	std::shared_ptr<TMidasEvent> event = std::make_shared<TMidasEvent>();
 
    while(true) {
       bytes = file->Read(event);
@@ -774,7 +769,6 @@ void WriteEvents(TMidasFile* file) {
    }
    printf("\n");
    
-   delete event;
    file->WriteBuffer();
 
 }

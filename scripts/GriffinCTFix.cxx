@@ -84,21 +84,15 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
        //This loop turns the addback plot and TCut into the TGraphErrors
       for(int i=1;i<=xbins;i++) {
          bool inside_yet = false;
-         int low_bin_in_cut = 0;
-         int high_bin_in_cut = 0;
          for(int j=1;j<=ybins;j++) {
             double xc = mat->GetXaxis()->GetBinCenter(i);
             double yc = mat->GetYaxis()->GetBinCenter(j);
             if(cut.IsInside(xc,yc)) {
-               if(!inside_yet){
-                  low_bin_in_cut = j;
+               if(!inside_yet) {
                   inside_yet = true;
                }
                cmat->Fill(xc,yc,mat->GetBinContent(i,j));
             } 
-            else if(inside_yet){
-               high_bin_in_cut = j;
-            }
          }
          cmat->GetXaxis()->SetRange(i,i);
          //This makes sure that there are at least 4 counts in the "y bin". I'd prefer this to be higher,
