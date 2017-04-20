@@ -99,7 +99,7 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
          //but that requires more 60Co statistics. The reason I do this is because RMS and SD of the mean really only works 
          //for us if we have enough counts that the mean is actually a good representation of the true value. This is something
          //TProfile does not do for us, and seems to skew the result a bit.
-         if(cmat->Integral() > 4){       
+         if(cmat->Integral() > 6){       
             fitGraph->SetPoint(fitGraph->GetN(),cmat->GetYaxis()->GetBinCenter(i),cmat->GetMean(2));
             fitGraph->SetPointError(fitGraph->GetN()-1,cmat->GetXaxis()->GetBinWidth(i),cmat->GetMeanError(2));
          }
