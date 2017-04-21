@@ -40,6 +40,32 @@
 #include "ThreadsafeQueue.h"
 #include "TEpicsFrag.h"
 
+enum class TDataParserState {
+	kGood,
+	kBadHeader,
+	kMissingWords,
+	kBadScalerLowTS,
+	kBadScalerValue,
+	kBadScalerHighTS,
+	kBadScalerType,
+	kBadTriggerId,
+	kBadLowTS,
+	kBadHighTS,
+	kSecondHeader,
+	kNotSingleCfd,
+	kSizeMismatch,
+	kBadFooter,
+	kFault,
+	kMissingPsd,
+	kMissingCfd,
+	kMissingCharge,
+	kBadBank,
+	kBadModuleType,
+	kEndOfData,
+	kUndefined
+};
+
+
 class TDataParser {
 	public:
 		TDataParser();
@@ -93,6 +119,8 @@ class TDataParser {
 		bool fFragmentHasWaveform;
 
 		TFragmentMap fFragmentMap;
+
+		TDataParserState fState;
 
 #ifndef __CINT__
 		std::atomic_size_t* fItemsPopped;

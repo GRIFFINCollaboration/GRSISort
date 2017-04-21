@@ -16,6 +16,8 @@
 #include "TGRSIOptions.h"
 #include "TParsingDiagnostics.h"
 
+#include "TBadFragment.h"
+
 TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string fOutputFilename){
   if(name.length()==0){
     name = "write_loop";
@@ -51,8 +53,8 @@ TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
     fEventTree->Branch("TFragment", &fEventAddress);
 
     fBadEventTree = new TTree("BadFragmentTree","BadFragmentTree");
-	 fBadEventAddress = new TFragment;
-    fBadEventTree->Branch("TFragment", &fBadEventAddress);
+	 fBadEventAddress = new TBadFragment;
+    fBadEventTree->Branch("TBadFragment", &fBadEventAddress);
 
     fScalerTree = new TTree("EpicsTree","EpicsTree");
 	 fScalerAddress = nullptr;
@@ -161,10 +163,9 @@ void TFragWriteLoop::WriteEvent(std::shared_ptr<const TFragment> event) {
 
 void TFragWriteLoop::WriteBadEvent(std::shared_ptr<const TFragment> event) {
 	if(fBadEventTree) {
-		*fBadEventAddress = *(event.get());
+		*fBadEventAddress = *static_cast<const TBadFragment*>(event.get());
 		std::lock_guard<std::mutex> lock(ttree_fill_mutex);
 		fBadEventTree->Fill();
-		//fBadEventAddress = nullptr;
 	}
 }
 

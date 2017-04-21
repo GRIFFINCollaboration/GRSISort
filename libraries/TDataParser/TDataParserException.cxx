@@ -1,0 +1,91 @@
+#include "TDataParserException.h"
+#include "TDataParser.h"
+
+TDataParserException::TDataParserException(TDataParserState state, int failedWord)
+	: fParserState(state), fFailedWord(failedWord) {
+	/// default constructor for TDataParserException, stores the data parser state and the word the parser failed on
+	/// and creates a message based on them that can be accessed via TDataParserException::what()
+	std::ostringstream stream;
+	stream<<"TDataParser failed on "<<fFailedWord<<". word: ";
+	switch(fParserState) {
+		case TDataParserState::kGood:
+			stream<<"state is good, no idea what went wrong!"<<std::endl;
+			break;
+		case TDataParserState::kBadHeader:
+			stream<<"bad header (either not high nibble 0x8 or an undefined bank)"<<std::endl;
+			break;
+		case TDataParserState::kMissingWords:
+			stream<<"missing scaler words"<<std::endl;
+			break;
+		case TDataParserState::kBadScalerLowTS:
+			stream<<"bad scaler word with low time stamp bits (high nibble not 0xa)"<<std::endl;
+			break;
+		case TDataParserState::kBadScalerValue:
+			stream<<"bad scaler value (should never happen?)"<<std::endl;
+			break;
+		case TDataParserState::kBadScalerHighTS:
+			stream<<"bad scaler word with high time stamp bits (either high nibble not 0xe or the 8 LSB don't match the 8 LSB of time stamp)"<<std::endl;
+			break;
+		case TDataParserState::kBadScalerType:
+			stream<<"undefined scaler type"<<std::endl;
+			break;
+		case TDataParserState::kBadTriggerId:
+			stream<<"bad word with channel trigger ID (high nibble not 0x9)"<<std::endl;
+			break;
+		case TDataParserState::kBadLowTS:
+			stream<<"bad word with low time stamp bits (high nibble not 0xa)"<<std::endl;
+			break;
+		case TDataParserState::kBadHighTS:
+			stream<<"bad word with deadtime/high bits of time stamp (should never happen?)"<<std::endl;
+			break;
+		case TDataParserState::kSecondHeader:
+			stream<<"found a second header (w/o finding a footer first)"<<std::endl;
+			break;
+		case TDataParserState::kNotSingleCfd:
+			stream<<"expected a single cfd word, got either none or multiple ones"<<std::endl;
+			break;
+		case TDataParserState::kSizeMismatch:
+			stream<<"number of charge, cfd, and integration length words doesn't match"<<std::endl;
+			break;
+		case TDataParserState::kBadFooter:
+			stream<<"bad footer (mismatch between lowest 14 bits of channel trigger ID)"<<std::endl;
+			break;
+		case TDataParserState::kFault:
+			stream<<"found a fault word (high nibble 0xf) from the DAQ"<<std::endl;
+			break;
+		case TDataParserState::kMissingPsd:
+			stream<<"missing psd words"<<std::endl;
+			break;
+		case TDataParserState::kMissingCfd:
+			stream<<"missing the cfd word (second word w/o MSB set)"<<std::endl;
+			break;
+		case TDataParserState::kMissingCharge:
+			stream<<"missing charge words (should be at least two words w/o MSB set"<<std::endl;
+			break;
+		case TDataParserState::kBadBank:
+			stream<<"undefined bank"<<std::endl;
+			break;
+		case TDataParserState::kBadModuleType:
+			stream<<"undefined module type"<<std::endl;
+			break;
+		case TDataParserState::kEndOfData:
+			stream<<"reached end of bank data but not end of fragment"<<std::endl;
+			break;
+		case TDataParserState::kUndefined:
+			stream<<"undefined state, should not be possible?"<<std::endl;
+			break;
+		default:
+			break;
+	};
+
+	fMessage = stream.str();
+}
+
+TDataParserException::~TDataParserException() {
+	/// default destructor
+}
+
+const char* TDataParserException::what() const noexcept {
+	/// return message string built in default constructor
+	return fMessage.c_str();
+}
