@@ -26,6 +26,7 @@
 
 #include <GCanvas.h>
 #include <GPeak.h>
+#include "TPeak.h"
 #include <GGaus.h>
 #include <GH2D.h>
 #include <GH1D.h>
@@ -358,6 +359,28 @@ GPeak *PhotoPeakFit(TH1 *hist,double xlow, double xhigh,Option_t *opt) {
 
   return mypeak;
 }
+
+TPeak *AltPhotoPeakFit(TH1 *hist,double xlow, double xhigh,Option_t *opt) {
+  //bool edit = 0;
+  if(!hist)
+    return 0;
+  if(xlow>xhigh)
+    std::swap(xlow,xhigh);
+
+  //std::cout << "here." << std::endl;
+
+  TPeak *mypeak= new TPeak((xlow+xhigh)/2.0,xlow,xhigh);
+  std::string options = opt;
+  options.append("Q+");
+  mypeak->Fit(hist,options.c_str());
+  //mypeak->Background()->Draw("SAME");
+  TF1 *bg = new TF1(*mypeak->Background());
+  hist->GetListOfFunctions()->Add(bg);
+  //edit = true;
+
+  return mypeak;
+}
+
 
 std::string MergeStrings(const std::vector<std::string>& strings, char split) {
   std::stringstream ss;

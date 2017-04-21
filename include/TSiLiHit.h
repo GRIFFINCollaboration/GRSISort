@@ -18,7 +18,7 @@ class TSiLiHit : public TGRSIDetectorHit {
 	public:
 		enum ESiLiHitBits { 
 			kUseFitCharge	= BIT(0),
-	  		kSiLiHitBit1	= BIT(1),
+	  		kSiLiHitBit1	= BIT(1)
 		};
 
 		TSiLiHit();
@@ -49,6 +49,11 @@ class TSiLiHit : public TGRSIDetectorHit {
 		void SetTimeFit(double t0 ) { fTimeFit = t0 ; }
 		
 		void SetWavefit(const TFragment&);
+		static TChannel* GetSiLiHitChannel(int segment);
+		static TPulseAnalyzer* FitFrag(const TFragment &frag,int ShapeFit,int segment);
+		static TPulseAnalyzer* FitFrag(const TFragment &frag,int ShapeFit=0,TChannel* =0);
+		static int FitPulseAnalyzer(TPulseAnalyzer* pulse,int ShapeFit,int segment);
+		static int FitPulseAnalyzer(TPulseAnalyzer* pulse,int ShapeFit=0,TChannel* =0);
 		TVector3 GetPosition(Double_t dist, bool = false) const; //!  
 		TVector3 GetPosition(bool = false) const; //!  
 		
@@ -58,6 +63,7 @@ class TSiLiHit : public TGRSIDetectorHit {
 	  		SetHitBit(kIsEnergySet,false);
 			fSiLiHitBits.SetBit(kUseFitCharge,set);
 		}
+
 	
 		double GetWaveformEnergy() const {return GetFitEnergy();}
 		double GetFitEnergy() const;		

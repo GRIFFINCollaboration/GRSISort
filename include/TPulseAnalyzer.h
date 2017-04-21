@@ -19,6 +19,7 @@
 #include "TH1.h"
 #include "TF1.h"
 #include "TMath.h"
+#include "TGraph.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 /// \class TPulseAnalyzer
@@ -126,8 +127,19 @@ class TPulseAnalyzer {
 	inline double Get_wpar_T0(){return cWpar->t0;}
 	inline double Get_wpar_baselinefin(){return cWpar->baselinefin;}
 	inline double Get_wpar_amplitude(){return cWpar->amplitude;}
-
-	double GetSiliShape(double tauDecay, double tauRise); // Added for Spice, parameters to be found : t0 and Amplitude
+	inline double Get_wpar_decay(){return cWpar->tauDecay;}
+	inline double Get_wpar_rise(){return cWpar->tauRise;}
+	
+	bool SiliShapePrepare(double tauDecay,double tauRise);
+	bool GetSiliShape(double tauDecay, double tauRise); // Added for Spice, parameters to be found : t0 and Amplitude
+	bool GetSiliShapeTF1(double tauDecay, double tauRise,double baseline); // Added for Spice, full slow fit to establish parameters, needs initial estimates
+	inline bool Get_bflag(){return cWpar->bflag;}
+	TF1       Getsilifit();
+	double	  GetsiliSmirnov();
+	void      Drawsilifit();	
+	
+	
+	
 	static double SiLiFitFunction(double *i,double *p);
     
 	double    fit_newT0();
@@ -135,12 +147,13 @@ class TPulseAnalyzer {
 	double    get_sig2noise();
 	short     good_baseline();
 	void      print_WavePar();
+	TH1I*     GetWaveHist();
+	TGraph*   GetWaveGraph();
+	static int nameiter;
 	void      DrawWave();
 	void      DrawT0fit();
 	void      DrawRFFit();
-	TF1       Getsilifit();
-	double	  GetsiliSmirnov();
-	void      Drawsilifit();
+
 
 	// CsI functions:
 	double    CsIPID();
@@ -182,7 +195,7 @@ class TPulseAnalyzer {
 	 double EPS;
 
 	 void SetCsI(bool option="true") { CsISet = option; }
-	 bool CsIIsSet()				  	   { return CsISet; }
+	 bool CsIIsSet() { return CsISet; }
 	
 	 //internal methods       
 	 int solve_lin_eq();
@@ -229,7 +242,7 @@ class TPulseAnalyzer {
 	 const static int BADCHISQ_AMPL = -1024-6;
 
 /// \cond CLASSIMP
-    ClassDef(TPulseAnalyzer,3)
+    ClassDef(TPulseAnalyzer,4)
 /// \endcond
 };
 /*! @} */

@@ -3,6 +3,7 @@
 #include "TArrayF.h"
 #include "TArrayD.h"
 #include "TProfile.h"
+#include "TF1.h"
 
 class GHSym : public TH1 {
 	public:
@@ -12,10 +13,17 @@ class GHSym : public TH1 {
 		GHSym(const char* name, const char* title, Int_t nbins, const Float_t* bins);
 		~GHSym();
 	
+#if MAJOR_ROOT_VERSION < 6
+		virtual Bool_t    Add(TF1* h1, Double_t c1 = 1., Option_t* option = "");
+		virtual Bool_t    Add(const TH1* h1, Double_t c1 = 1.);
+		virtual Bool_t    Add(const TH1* h1, const TH1* h2, Double_t c1 = 1., Double_t c2 = 1.);
+#endif
 		virtual Int_t     BufferEmpty(Int_t action = 0);
+		Int_t					BufferFill(Double_t, Double_t) { return -2; } //MayNotUse
 		virtual Int_t     BufferFill(Double_t x, Double_t y, Double_t w);
 		virtual void      Copy(TObject& hnew) const;
-		virtual Int_t     Fill(Double_t);
+		virtual Int_t     Fill(Double_t); //MayNotUse
+		virtual Int_t     Fill(const char*, Double_t) { return Fill(0); } //MayNotUse
 		virtual Int_t     Fill(Double_t x, Double_t y);
 		virtual Int_t     Fill(Double_t x, Double_t y, Double_t w);
 		virtual Int_t     Fill(const char* namex, const char* namey, Double_t w);
@@ -26,7 +34,7 @@ class GHSym : public TH1 {
 		virtual Int_t     FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1) const;
 		virtual Int_t     FindLastBinAbove (Double_t threshold = 0, Int_t axis = 1) const;
 		virtual void      FitSlices(TF1* f1 = nullptr, Int_t firstbin = 0, Int_t lastbin = -1, Int_t cut = 0, Option_t* option = "QNR", TObjArray* arr = nullptr);
-		virtual Int_t     GetBin(Int_t binx, Int_t biny) const;
+		virtual Int_t     GetBin(Int_t binx, Int_t biny = 0, Int_t binz = 0) const;
 		virtual Double_t  GetBinWithContent2(Double_t c, Int_t& binx, Int_t& biny, Int_t firstxbin = 1, Int_t lastxbin = -1, Int_t firstybin = 1, Int_t lastybin = -1, Double_t maxdiff = 0) const;
 		virtual Double_t  GetCellContent(Int_t binx, Int_t biny) const;
 		virtual Double_t  GetCellError(Int_t binx, Int_t biny) const;
@@ -59,10 +67,16 @@ class GHSym : public TH1 {
 		virtual void      Smooth(Int_t ntimes = 1, Option_t* option = ""); // *MENU*
 
 	protected:
+		using TH1::DoIntegral;
 		virtual Double_t DoIntegral(Int_t ix1, Int_t ix2, Int_t iy1, Int_t iy2, Double_t& err, Option_t* opt, Bool_t doerr = kFALSE) const;
 		Double_t fTsumwy;		//Total Sum of weight*Y
 		Double_t fTsumwy2;	//Total Sum of weight*Y*Y
 		Double_t fTsumwxy;	//Total Sum of weight*X*Y
+		TH2* fMatrix;        //!<! Transient pointer to the 2D-Matrix used in Draw() or GetMatrix()
+
+	private:
+		GHSym(const GHSym&);
+		GHSym& operator=(const GHSym&);
 
 	ClassDef(GHSym, 1);
 };
@@ -73,19 +87,27 @@ class GHSymF : public GHSym, public TArrayF {
 		GHSymF(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up);
 		GHSymF(const char* name, const char* title, Int_t nbins, const Double_t* bins);
 		GHSymF(const char* name, const char* title, Int_t nbins, const Float_t* bins);
+		GHSymF(const GHSymF&);
 		~GHSymF();
 
-		TH2F* GetMatrix();
+		TH2F* GetMatrix(bool force = false);
 
 		virtual void     AddBinContent(Int_t bin) { ++fArray[bin]; }
 		virtual void     AddBinContent(Int_t bin, Double_t w)	{ fArray[bin] += Float_t(w); }
 		virtual void     Copy(TObject& hnew) const;
 		virtual void     Draw(Option_t* option="") { GetMatrix()->Draw(option); }
-		virtual TH1*     DrawCopy(Option_t *option = "") const;
+#if MAJOR_ROOT_VERSION < 6
+		virtual TH1*     DrawCopy(Option_t* option = "") const;
+#else
+		virtual TH1*     DrawCopy(Option_t* option = "", const char* name_postfix = "_copy") const;
+#endif
 		virtual Double_t GetBinContent(Int_t bin) const;
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny) const { return GetBinContent(GetBin(binx,biny)); }
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny, Int_t) const { return GetBinContent(GetBin(binx,biny)); }
 		virtual void     Reset(Option_t* option = "");
+#if MAJOR_ROOT_VERSION >= 6
+		virtual Double_t  RetrieveBinContent(Int_t bin) const { return Double_t(fArray[bin]); }
+#endif
 		virtual void     SetBinContent(Int_t bin, Double_t content);
 		virtual void     SetBinContent(Int_t binx, Int_t biny, Double_t content) { SetBinContent(GetBin(binx,biny),content); }
 		virtual void     SetBinContent(Int_t binx, Int_t biny, Int_t, Double_t content) { SetBinContent(GetBin(binx,biny),content); }
@@ -107,19 +129,27 @@ class GHSymD : public GHSym, public TArrayD {
 		GHSymD(const char* name, const char* title, Int_t nbins, Double_t low, Double_t up);
 		GHSymD(const char* name, const char* title, Int_t nbins, const Double_t* bins);
 		GHSymD(const char* name, const char* title, Int_t nbins, const Float_t* bins);
+		GHSymD(const GHSymD&);
 		~GHSymD();
 
-		TH2D* GetMatrix();
+		TH2D* GetMatrix(bool force = false);
 
 		virtual void     AddBinContent(Int_t bin) { ++fArray[bin]; }
 		virtual void     AddBinContent(Int_t bin, Double_t w)	{ fArray[bin] += w; }
 		virtual void     Copy(TObject& hnew) const;
-		virtual TH1*     DrawCopy(Option_t *option = "") const;
+#if MAJOR_ROOT_VERSION < 6
+		virtual TH1*     DrawCopy(Option_t* option = "") const;
+#else
+		virtual TH1*     DrawCopy(Option_t* option = "", const char* name_postfix = "_copy") const;
+#endif
 		virtual void     Draw(Option_t* option="") { GetMatrix()->Draw(option); }
 		virtual Double_t GetBinContent(Int_t bin) const;
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny) const { return GetBinContent(GetBin(binx,biny)); }
 		virtual Double_t GetBinContent(Int_t binx, Int_t biny, Int_t) const { return GetBinContent(GetBin(binx,biny)); }
 		virtual void     Reset(Option_t* option = "");
+#if MAJOR_ROOT_VERSION >= 6
+		virtual Double_t  RetrieveBinContent(Int_t bin) const { return Double_t(fArray[bin]); }
+#endif
 		virtual void     SetBinContent(Int_t bin, Double_t content);
 		virtual void     SetBinContent(Int_t binx, Int_t biny, Double_t content) { SetBinContent(GetBin(binx,biny),content); }
 		virtual void     SetBinContent(Int_t binx, Int_t biny, Int_t, Double_t content) { SetBinContent(GetBin(binx,biny),content); }
@@ -131,7 +161,6 @@ class GHSymD : public GHSym, public TArrayD {
 		friend  GHSymD     operator-(GHSymD& h1, GHSymD& h2);
 		friend  GHSymD     operator*(GHSymD& h1, GHSymD& h2);
 		friend  GHSymD     operator/(GHSymD& h1, GHSymD& h2);
-
 
 		ClassDef(GHSymD, 1);
 };

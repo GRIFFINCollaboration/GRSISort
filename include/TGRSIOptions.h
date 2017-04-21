@@ -1,11 +1,28 @@
 #ifndef _TGRSIOPTIONS_H_
 #define _TGRSIOPTIONS_H_
 
+/** \addtogroup Sorting
+ *  @{
+ */
+
 #include <map>
 
 #include "TObject.h"
 
 #include "TGRSITypes.h"
+
+/////////////////////////////////////////////////////////////////
+///
+/// \class TGRSIOptions
+///
+/// This class stores the command line arguments that are passed to GRSISort.
+/// This includes file names (root, mid, cal, etc.) as well as command line
+/// arguments. This is a singleton class that can be accessed with 
+/// TGRSIOptions::Get() in order to determine any options that have been passed
+/// on the command line.
+///
+/////////////////////////////////////////////////////////////////
+
 
 class TGRSIOptions : public TObject {
 	public:
@@ -17,7 +34,8 @@ class TGRSIOptions : public TObject {
 		void PrintSortingOptions() const;
 
 		bool ShouldExit() { return fShouldExit; }
-		const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles;}
+		const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles; }
+		const std::vector<std::string>& InputLstFiles()   { return fInputLstFiles; }
 		const std::vector<std::string>& RootInputFiles()  { return fInputRootFiles; }
 		const std::vector<std::string>& CalInputFiles()   { return fInputCalFiles;  }
 		const std::vector<std::string>& ValInputFiles()   { return fInputValFiles;  }
@@ -109,85 +127,88 @@ class TGRSIOptions : public TObject {
 
 		bool FileAutoDetect(const std::string& filename);
 
-		std::vector<std::string> fInputMidasFiles;
-		std::vector<std::string> fInputRootFiles;
-		std::vector<std::string> fInputCalFiles;
-		std::vector<std::string> fInputOdbFiles;
-		std::vector<std::string> fExternalRunInfo;
-		std::vector<std::string> fMacroFiles;
+		std::vector<std::string> fInputMidasFiles;   ///< A list of the input Midas files
+		std::vector<std::string> fInputLstFiles;     ///< A list of the input Lst files
+		std::vector<std::string> fInputRootFiles;    ///< A list of the input root files
+		std::vector<std::string> fInputCalFiles;     ///< A list of the input cal files
+		std::vector<std::string> fInputOdbFiles;     ///< A list of the input odb files
+		std::vector<std::string> fExternalRunInfo;   ///< A list of the input run info files
+		std::vector<std::string> fMacroFiles;        ///< A list of the input macro (.C) files
 
-		std::vector<std::string> fInputCutsFiles;
-		std::vector<std::string> fInputValFiles;
-		std::vector<std::string> fInputWinFiles;
-		std::string fInputRing;
+		std::vector<std::string> fInputCutsFiles;    ///< A list of input cut files
+		std::vector<std::string> fInputValFiles;     ///< A list of the input GValue files
+		std::vector<std::string> fInputWinFiles;     ///< A list of the input window files
+		std::string fInputRing;                      ///< The name of hte input ring
 
-		std::string fOutputFragmentFile;
-		std::string fOutputAnalysisFile;
-		std::string fOutputFilteredFile;
-		std::string fOutputFragmentHistogramFile;
-		std::string fOutputAnalysisHistogramFile;
+		std::string fOutputFragmentFile;             ///< The name of the fragment file to write to
+		std::string fOutputAnalysisFile;             ///< The name of the analysis file to write to
+		std::string fOutputFilteredFile;       
+		std::string fOutputFragmentHistogramFile;    ///< The name of the fragment histogram file
+		std::string fOutputAnalysisHistogramFile;    ///< The name of the analysis histogram file
 
-		std::string fFragmentHistogramLib;
-		std::string fAnalysisHistogramLib;
-		std::string fCompiledFilterFile;
+		std::string fFragmentHistogramLib;           ///< The name of the script for histogramming fragments
+		std::string fAnalysisHistogramLib;           ///< The name of the script for histogramming events
+		std::string fCompiledFilterFile;       
 
-		std::vector<std::string> fOptionsFile;
+		std::vector<std::string> fOptionsFile;       ///< A list of the input .info files
 
-		std::string fLogFile;
+		std::string fLogFile;                        ///< The name of the output log file
 
-		bool fCloseAfterSort;
-		bool fLogErrors;
-		bool fUseMidFileOdb;
-		bool fSuppressErrors;
+		bool fCloseAfterSort;                        ///< Flag to close after sorting (-q)
+		bool fLogErrors;                             ///< Flag to log errors (--log-errors)
+		bool fUseMidFileOdb;                         ///< Flag to read odb from midas
+		bool fSuppressErrors;                        ///< Flag to suppress errors (--suppress-errors)
 
-		bool fMakeAnalysisTree;
-		bool fProgressDialog;
-		bool fReadingMaterial;
-		bool fIgnoreFileOdb;
-		bool fRecordDialog;
+		bool fMakeAnalysisTree;                      ///< Flag to make analysis tree (-a)
+		bool fProgressDialog;                        ///< Flag to show progress in proof (not used)
+		bool fReadingMaterial;                       ///< Flag to show reading material (--reading-material)
+		bool fIgnoreFileOdb;                         ///< Flag to ignore midas file odb
+		bool fRecordDialog;                          
 
-		bool fIgnoreScaler;
-		bool fIgnoreEpics;
-		bool fWriteBadFrags;
-		bool fWriteDiagnostics;
+		bool fIgnoreScaler;                          ///< Flag to ignore scalers in GRIFFIN
+		bool fIgnoreEpics;                           ///< Flag to ignore epics
+		bool fWriteBadFrags;                         ///< Flag to write bad fragments
+		bool fWriteDiagnostics;                      ///< Flag to write diagnostics
 
-		bool fBatch;
+		bool fBatch;                                 ///< Flag to use batch mode (-b)
 
-		bool fShowedVersion;
-		bool fHelp;
-		bool fShowLogo;
-		bool fSortRaw;
-		bool fSortRoot;
-		bool fExtractWaves;
-		bool fIsOnline;
-		bool fStartGui;
-		bool fMakeHistos;
-		bool fSortMultiple;
-		bool fDebug;
+		bool fShowedVersion;                         
+		bool fHelp;                                  ///< Flag to show help (--help)
+		bool fShowLogo;                              ///< Flag to show logo (suppress with -l)
+		bool fSortRaw;                               ///< Flag to sort Midas file
+		bool fSortRoot;                              ///< Flag to sort root files
+		bool fExtractWaves;                          ///< Flag to keep waveforms (suppress with --no-waveforms)
+		bool fIsOnline;                              ///< Flag to sort online data
+		bool fStartGui;                              ///< Flag to start GUI (-g)
+		bool fMakeHistos;                            ///< Flag to make histograms (-H)
+		bool fSortMultiple;                          ///< Flag to sort multiple files
+		bool fDebug;                                 ///< Flag for debug mode
 
-		size_t fFragmentWriteQueueSize;
-		size_t fAnalysisWriteQueueSize;
+		size_t fFragmentWriteQueueSize;              ///< Size of the Fragment write Q
+		size_t fAnalysisWriteQueueSize;              ///< Size of the analysis write Q
 
-		bool fTimeSortInput;
-		int fSortDepth;
+		bool fTimeSortInput;                         ///< Flag to sort on time or triggers
+		int fSortDepth;                              ///< Size of Q that stores fragments to be built into events
 
-		int fBuildWindow;
-		int fAddbackWindow;
-		bool fStaticWindow;
-		bool fSeparateOutOfOrder;
+		int fBuildWindow;                            ///< Size of the build window in us (2 us)
+		int fAddbackWindow;                          ///< Size of the addback window in us
+		bool fStaticWindow;                          ///< Flag to use static window (default moving)
+		bool fSeparateOutOfOrder;                    ///< Flag to build out of order into seperate event tree
 
-		bool fShouldExit;
+		bool fShouldExit;                            ///< Flag to exit sorting
 
-		size_t fColumnWidth;
-		size_t fStatusWidth;
-		unsigned int fStatusInterval;
-		bool fLongFileDescription;
+		size_t fColumnWidth;                         ///< Size of verbose columns
+		size_t fStatusWidth;                         ///< Size of total verbose status
+		unsigned int fStatusInterval;                ///< Time between status updates
+		bool fLongFileDescription;    
 
 		//Proof only
-		int fMaxWorkers;
-		bool fSelectorOnly;
+		int fMaxWorkers;                             ///< MAx workers used in grsiproof
+		bool fSelectorOnly;                          ///< Flag to turn PROOF off in grsiproof
 
-		ClassDef(TGRSIOptions,1);
+      /// \cond CLASSIMP
+		ClassDef(TGRSIOptions,1);                    ///< Class for storing options in GRSISort
+      /// \endcond
 };
-
+/*! @} */
 #endif /* _TGRSIOPTIONS_H_ */
