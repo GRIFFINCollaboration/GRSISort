@@ -38,7 +38,7 @@ public :
    Int_t   GetEntry(Long64_t entry, Int_t getall = 0) { return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0; }
    void    SetOption(const char *option) { fOption = option; }
    void    SetObject(TObject *obj) { fObject = obj; }
-   void    SetInputList(TList *input) { fInput = input; }
+   //void    SetInputList(TList *input) { fInput = input; }
    TList  *GetOutputList() const { return fOutput; }
    void    SlaveTerminate();
    void    Terminate();
@@ -49,11 +49,12 @@ public :
 	virtual void EndOfSort() { }; 
    void SetOutputPrefix(const char* prefix) { fOutputPrefix = prefix; }
 
- private:
+ protected:
 	std::map<std::string, TH1*> fH1;
 	std::map<std::string, TH2*> fH2;
 	std::map<std::string, THnSparseF*> fHSparse;
 
+ private:
    std::string fOutputPrefix;
 
    ClassDef(TGRSISelector,2);
