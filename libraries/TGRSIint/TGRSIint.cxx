@@ -77,7 +77,7 @@ TGRSIint::TGRSIint(int argc, char **argv,void *options, Int_t numOptions, Bool_t
       TGRSIInterruptHandler *ih = new TGRSIInterruptHandler();
       ih->Add();
 
-      InitFlags();
+      //InitFlags();
       TGRSIOptions::Get(argc,argv);
       PrintLogo(TGRSIOptions::Get()->ShowLogo());
       SetPrompt("GRSI [%d] ");

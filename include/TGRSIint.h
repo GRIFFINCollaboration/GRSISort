@@ -74,7 +74,7 @@ private:
   void SetupPipeline();
   void LoopUntilDone();
   //bool FileAutoDetect(std::string fileName, long fileSize);
-  void InitFlags();
+  //void InitFlags();
   void ApplyOptions();
   void DrawLogo();
   void LoadGROOTGraphics();
