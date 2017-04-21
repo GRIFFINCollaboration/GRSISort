@@ -245,8 +245,12 @@ Int_t TGRSIint::TabCompletionHook(char* buf, int* pLoc, std::ostream& out){
 
 
 Long_t TGRSIint::ProcessLine(const char* line,Bool_t sync, Int_t *error) {
-  /// If you print while fIsTabComplete is true, you will break tab complete.
-  /// Any diagnostic print statements should be done after this if statement.
+   ///This takes over the native root command line. There are two main reasons for this
+   /// 1. To keep the command line thread-safe. 
+   /// 2. To block TCanvas from opening, and to instead use our GCanvas.
+
+  // If you print while fIsTabComplete is true, you will break tab complete.
+  // Any diagnostic print statements should be done after this if statement.
   if(fIsTabComplete){
     long res = TRint::ProcessLine(line, sync, error);
     return res;
