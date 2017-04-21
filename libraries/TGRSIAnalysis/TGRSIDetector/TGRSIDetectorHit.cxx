@@ -72,8 +72,7 @@ Double_t TGRSIDetectorHit::GetTime(const UInt_t& correction_flag,Option_t* opt) 
 
 int TGRSIDetectorHit::GetCharge() const {
   TChannel *chan = GetChannel();
-  if(!chan )
-    return std::floor(Charge());
+  if(!chan) return std::floor(Charge());
   if(fKValue>0){
     return std::floor(Charge()/((Float_t)fKValue));// this will use the integration value
   } else if(chan->UseCalFileIntegration()) {
@@ -83,8 +82,7 @@ int TGRSIDetectorHit::GetCharge() const {
 }
 
 double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
-  if(TestHitBit(kIsEnergySet))
-    return fEnergy;
+  if(TestHitBit(kIsEnergySet)) return fEnergy;
   TChannel* chan = GetChannel();
   if(!chan) {
     //Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
