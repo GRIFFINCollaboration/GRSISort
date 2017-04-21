@@ -13,7 +13,7 @@ ClassImp(TFragment)
 Long64_t TFragment::fNumberOfFragments = 0;
 
 TFragment::TFragment() : TGRSIDetectorHit() {
-   // Default Constructor
+   /// Default constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
@@ -21,6 +21,7 @@ TFragment::TFragment() : TGRSIDetectorHit() {
 }
 
 TFragment::TFragment(const TFragment& rhs) : TGRSIDetectorHit(rhs) {
+	/// Copy constructor
    //first copy all "normal" data members
    fMidasTimeStamp = rhs.fMidasTimeStamp;
    fMidasId = rhs.fMidasId;
@@ -46,11 +47,11 @@ TFragment::TFragment(const TFragment& rhs) : TGRSIDetectorHit(rhs) {
 }
 
 TFragment::~TFragment(){
-   // Default destructor does nothing right now
+   /// Default destructor does nothing right now
 }
 
 void TFragment::Clear(Option_t *opt){  
-   // Clears all fields of the TFragment
+   /// Clears all fields of the TFragment
    TGRSIDetectorHit::Clear(opt);
 
    fMidasTimeStamp      = 0;
@@ -135,8 +136,8 @@ TPPG* TFragment::GetPPG() {
 	return fPPG;
 }
 
-void TFragment::Print(Option_t *opt) const {
-  //Prints out all fields of the TFragment
+void TFragment::Print(Option_t*) const {
+  ///Prints out all fields of the TFragment
 
   TChannel *chan = GetChannel();
   char buff[20];
