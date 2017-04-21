@@ -13,6 +13,7 @@
 #include "GRootCommands.h"
 
 TGRSIOptions* TGRSIOptions::Get(int argc, char** argv){
+   ///Gets the global instance of TGRSIOptions
 	static TGRSIOptions* item = nullptr;
 	if(!item) {
 		item = new TGRSIOptions(argc, argv);
@@ -20,12 +21,13 @@ TGRSIOptions* TGRSIOptions::Get(int argc, char** argv){
 	return item;
 }
 
-TGRSIOptions::TGRSIOptions(int argc, char** argv)
-	: fShouldExit(false) {
-		Load(argc, argv);
-	}
+TGRSIOptions::TGRSIOptions(int argc, char** argv) : fShouldExit(false) {
+   ///Ctor used when interpreter is initialized
+	Load(argc, argv);
+}
 
 void TGRSIOptions::Clear(Option_t* opt) {
+   ///Clears all of the variables in the TGRSIOptions
 	fInputMidasFiles.clear();
 	fInputLstFiles.clear();
 	fInputRootFiles.clear();
@@ -104,6 +106,7 @@ void TGRSIOptions::Clear(Option_t* opt) {
 }
 
 void TGRSIOptions::Print(Option_t* opt) const { 
+   ///Print the current status of TGRSIOptions, includes all names, lists and flags
 	std::cout<<"fCloseAfterSort: "<<fCloseAfterSort<<std::endl
 		<<"fLogErrors: "<<fLogErrors<<std::endl
 		<<"fUseMidFileOdb: "<<fUseMidFileOdb<<std::endl
@@ -158,6 +161,7 @@ void TGRSIOptions::Print(Option_t* opt) const {
 }
 
 void TGRSIOptions::PrintSortingOptions() const {
+   ///Print just the sorting options in TGRSIOptions. This includes sort depth, build window, etc.
 	std::cout<<DBLUE<<"fTimeSortInput: "<<DCYAN<<fTimeSortInput<<std::endl
 		<<DBLUE<<"fSortDepth:     "<<DCYAN<<fSortDepth<<std::endl
 		<<DBLUE<<"fBuildWindow:   "<<DCYAN<<fBuildWindow<<std::endl
@@ -168,6 +172,8 @@ void TGRSIOptions::PrintSortingOptions() const {
 }
 
 void TGRSIOptions::Load(int argc, char** argv) {
+   ///This checks all of the options provided to GRSISort. This also loads in some
+   ///libraries in order to do on the fly histogramming.
 	Clear();
 	fFragmentHistogramLib = gEnv->GetValue("GRSI.FragmentHistLib","");
 	fAnalysisHistogramLib = gEnv->GetValue("GRSI.AnalysisHistLib","");
@@ -417,6 +423,9 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const{
 }
 
 bool TGRSIOptions::FileAutoDetect(const std::string& filename) {
+   ///Detects the type of file provided on the command line. This uses the extension to determine
+   ///the type of the file. Once the type is determined, the file is sent to the appropriate list
+   ///in TGRSIOptions. This is also smart enough to dynamically link histogramming libraries.
 	switch(DetermineFileType(filename)){
 		case kFileType::NSCL_EVT:
 		case kFileType::GRETINA_MODE2:
@@ -487,9 +496,11 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename) {
 }
 
 std::string TGRSIOptions::GenerateOutputFilename(const std::string& filename){
+   ///Currently does nothing
 	return "temp.root";
 }
 
 std::string TGRSIOptions::GenerateOutputFilename(const std::vector<std::string>& filename){
+   ///Currently does nothing
 	return "temp_from_multi.root";
 }
