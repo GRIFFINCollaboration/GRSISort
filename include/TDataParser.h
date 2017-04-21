@@ -40,32 +40,6 @@
 #include "ThreadsafeQueue.h"
 #include "TEpicsFrag.h"
 
-enum class TDataParserState {
-	kGood,
-	kBadHeader,
-	kMissingWords,
-	kBadScalerLowTS,
-	kBadScalerValue,
-	kBadScalerHighTS,
-	kBadScalerType,
-	kBadTriggerId,
-	kBadLowTS,
-	kBadHighTS,
-	kSecondHeader,
-	kNotSingleCfd,
-	kSizeMismatch,
-	kBadFooter,
-	kFault,
-	kMissingPsd,
-	kMissingCfd,
-	kMissingCharge,
-	kBadBank,
-	kBadModuleType,
-	kEndOfData,
-	kUndefined
-};
-
-
 class TDataParser {
 	public:
 		TDataParser();
@@ -75,6 +49,33 @@ class TDataParser {
 
 		//ENUM(EBank, char, kWFDN,kGRF1,kGRF2,kGRF3,kFME0,kFME1,kFME2,kFME3);
 		enum EBank { kWFDN=0,kGRF1=1,kGRF2=2,kGRF3=3,kGRF4=4,kFME0=5,kFME1=6,kFME2=7,kFME3=8 };
+
+		enum EDataParserState {
+			kGood,
+			kBadHeader,
+			kMissingWords,
+			kBadScalerLowTS,
+			kBadScalerValue,
+			kBadScalerHighTS,
+			kBadScalerType,
+			kBadTriggerId,
+			kBadLowTS,
+			kBadHighTS,
+			kSecondHeader,
+			kNotSingleCfd,
+			kSizeMismatch,
+			kBadFooter,
+			kFault,
+			kMissingPsd,
+			kMissingCfd,
+			kMissingCharge,
+			kBadBank,
+			kBadModuleType,
+			kEndOfData,
+			kUndefined
+		};
+
+
 
 #ifndef __CINT__
 		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >&
@@ -120,7 +121,7 @@ class TDataParser {
 
 		TFragmentMap fFragmentMap;
 
-		TDataParserState fState;
+		EDataParserState fState;
 
 #ifndef __CINT__
 		std::atomic_size_t* fItemsPopped;
