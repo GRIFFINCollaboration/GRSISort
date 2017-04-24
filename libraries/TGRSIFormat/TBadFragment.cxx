@@ -8,7 +8,7 @@ TBadFragment::TBadFragment() : TFragment() {
 	Clear();
 }
 
-TBadFragment::TBadFragment(TFragment& fragment, uint32_t* data, int size, int failedWord)
+TBadFragment::TBadFragment(TFragment& fragment, uint32_t* data, int size, int failedWord, bool multipleErrors)
 	: TFragment(fragment) {
 	/// Construct a bad fragment from a fragment, the data it was created from, the size of that data, and the word the parser failed on.
 	/// The data is only copied up to and including the next header word (high nibble 0x8).
@@ -21,6 +21,7 @@ TBadFragment::TBadFragment(TFragment& fragment, uint32_t* data, int size, int fa
 	// only copy data up to the next header (including that header)
 	fData.insert(fData.begin(), data, data+numWords+1);
 	fFailedWord = failedWord;
+	fMultipleErrors = multipleErrors;
 }
 
 TBadFragment::TBadFragment(const TBadFragment& rhs) : TFragment(rhs) {
@@ -37,7 +38,7 @@ void TBadFragment::Print(Option_t*) const {
 	/// Print out all fields of the fragment using TFragment::Print() and then print the raw data with the failed words highlighted/
 	TFragment::Print();
 
-	std::cout<<"Raw data:"<<std::endl;
+	std::cout<<"Raw data with "<<(fMultipleErrors ? "multiple errors":"single error")<<":"<<std::endl;
 	size_t i;
 	for(i = 0; i < fData.size(); ++i) {
 		if(i == static_cast<size_t>(fFailedWord)) std::cout<<ALERTTEXT;

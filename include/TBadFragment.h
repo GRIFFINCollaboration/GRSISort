@@ -22,18 +22,20 @@
 class TBadFragment : public TFragment {
 	public:
 		TBadFragment();
-		TBadFragment(TFragment& fragment, uint32_t* data, int size, int failedWord);
+		TBadFragment(TFragment& fragment, uint32_t* data, int size, int failedWord, bool multipleErrors);
 		TBadFragment(const TBadFragment&);
 		~TBadFragment();
 
 		std::vector<uint32_t> GetData() const { return fData; }
 		int GetFailedWord() const             { return fFailedWord; }
+		bool GetMultipleErrors() const        { return fMultipleErrors; }
 
 		void Print(Option_t* opt = "") const;
 
 	private:
 		std::vector<uint32_t> fData;
 		int fFailedWord;
+		bool fMultipleErrors;
 
 	/// \cond CLASSIMP
 	ClassDef(TBadFragment, 1);
