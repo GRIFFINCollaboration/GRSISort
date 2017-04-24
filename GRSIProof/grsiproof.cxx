@@ -125,6 +125,7 @@ int main(int argc, char **argv) {
       std::cout << "Can't connect to proof" << std::endl;
       return 0;
    }
+	proof->SetBit(TProof::kUsingSessionGui);
    proof->AddEnvVar("GRSISYS",pPath);
    gInterpreter->AddIncludePath(Form("%s/include",pPath));
    proof->AddIncludePath(Form("%s/include",pPath));
@@ -151,6 +152,4 @@ int main(int argc, char **argv) {
 		std::cout<<"Failed to get logs!"<<std::endl;
 	}
 }
-
-
 

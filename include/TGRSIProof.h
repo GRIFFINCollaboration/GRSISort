@@ -58,9 +58,9 @@ class TGRSIProof : public TProof	{
       const char* pPath = getenv("GRSISYS");
 
       //First set the include path on each slave
-      this->Exec(Form("gInterpreter->AddIncludePath(\"%s/include\")",pPath));
+      Exec(Form("gInterpreter->AddIncludePath(\"%s/include\")",pPath));
       std::cout << "Loading Libraries" << std::endl;
-      this->Exec(Form("gSystem->Load(\"%s/lib/libGRSI.so\");",pPath));
+      Exec(Form("gSystem->Load(\"%s/lib/libGRSI.so\");",pPath));
    }
 
    /// \cond CLASSIMP
