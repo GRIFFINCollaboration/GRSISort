@@ -42,7 +42,7 @@ TDataParserException::TDataParserException(TDataParser::EDataParserState state, 
 			stream<<"bad word with low time stamp bits (high nibble not 0xa)"<<std::endl;
 			break;
 		case TDataParser::EDataParserState::kBadHighTS:
-			stream<<"bad word with deadtime/high bits of time stamp (should never happen?)"<<std::endl;
+			stream<<"bad word with deadtime/high time stamp bits (high nibble not 0xb)"<<std::endl;
 			break;
 		case TDataParser::EDataParserState::kSecondHeader:
 			stream<<"found a second header (w/o finding a footer first)"<<std::endl;

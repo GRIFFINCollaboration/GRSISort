@@ -507,6 +507,8 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 				if(fState == EDataParserState::kGood) {
 					fState = EDataParserState::kSecondHeader;
 					failedWord = x+1; //+1 to ensure we don't read this header as start of a good event
+				} else {
+					multipleErrors = true;
 				}
 				Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
 				throw TDataParserException(fState, failedWord, multipleErrors);
@@ -539,7 +541,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 					// check the number of words the header said we should have with the number of words we've read
 					// the number of words is only set for bank >= GRF3
 					// if the fragment has a waveform, we can't compare the number of words
-					if(eventFrag->GetNumberOfWords() > 0 && !eventFrag->HasWave() && eventFrag->GetNumberOfWords() != x) {
+					if(eventFrag->GetNumberOfWords() > 0 && !eventFrag->HasWave() && eventFrag->GetNumberOfWords() != x+1) {
 						if(fState == EDataParserState::kGood) {
 							fState = EDataParserState::kWrongNofWords;
 							failedWord = x;
@@ -597,6 +599,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 								Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
 							} else {
 								if(TGRSIOptions::Get()->ReconstructTimeStamp() && fState == EDataParserState::kBadHighTS && !multipleErrors) {
+									//std::cout<<"reconstructing timestamp from 0x"<<std::hex<<eventFrag->GetTimeStamp()<<" using 0x"<<fLastTimeStampMap[eventFrag->GetAddress()];
 									// reconstruct the high bits of the timestamp from the high bits of the last time stamp of the same address
 									if((eventFrag->GetTimeStamp() & 0x0fffffff) < (fLastTimeStampMap[eventFrag->GetAddress()] & 0x0fffffff)) {
 										// we had a wrap-around of the low time stamp, so we need to set the high bits to the old high bits plus one
@@ -604,8 +607,10 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 									} else {
 										eventFrag->AppendTimeStamp(fLastTimeStampMap[eventFrag->GetAddress()] & 0x3fff0000000);
 									}
+									//std::cout<<" => 0x"<<eventFrag->GetTimeStamp()<<std::dec<<std::endl;
 									Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
 								} else {
+									//std::cout<<"Can't reconstruct time stamp, "<<TGRSIOptions::Get()->ReconstructTimeStamp()<<", state "<<fState<<" = "<<EDataParserState::kBadHighTS<<", "<<multipleErrors<<std::endl;
 									Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
 								}
 							}
