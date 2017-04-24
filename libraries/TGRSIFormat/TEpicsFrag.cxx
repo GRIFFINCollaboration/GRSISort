@@ -130,7 +130,7 @@ TEpicsFrag* TEpicsFrag::GetScalerAtTime(Long64_t time){
 		BuildScalerMap();
 		if(!fScalerMap.size()){
 			std::cout << DRED << "Could not build the epics map" << RESET_COLOR << std::endl;
-			return 0;
+			return nullptr;
 		}
 	}
 	if(time < fSmallestTime){
@@ -144,7 +144,7 @@ void TEpicsFrag::PrintScalerMap(){
 		BuildScalerMap();
 		if(!fScalerMap.size()){
 			std::cout << DRED << "Could not build the epics map" << RESET_COLOR << std::endl;
-			return 0;
+			return;
 		}
 	}
 	for(auto i : fScalerMap){

@@ -67,6 +67,8 @@ TVector3 TGriffin::gCloverPosition[17] = {
 	TVector3(TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Cos(TMath::DegToRad()*(337.5)), TMath::Sin(TMath::DegToRad()*(135.0))*TMath::Sin(TMath::DegToRad()*(337.5)), TMath::Cos(TMath::DegToRad()*(135.0)))
 };
 
+std::map<int,TSpline*> TGriffin::fEnergyResiduals;
+
 //Cross Talk stuff
 /*const Double_t TGriffin::gStrongCT[2] = { -0.02674, -0.000977 }; //This is for the 0-1 and 2-3 combination
 const Double_t TGriffin::gWeakCT[2]   = { 0.005663, - 0.00028014};
@@ -104,10 +106,12 @@ void TGriffin::Copy(TObject &rhs) const {
 	static_cast<TGriffin&>(rhs).fCycleStart                = fCycleStart;
 	static_cast<TGriffin&>(rhs).fGriffinBits               = 0;
 
+
 }                                       
 
 TGriffin::~TGriffin()	{
 	//Default Destructor
+	
 }
 
 void TGriffin::Clear(Option_t *opt)	{
@@ -124,6 +128,22 @@ void TGriffin::Clear(Option_t *opt)	{
 	fAddbackHighGainFrags.clear();
 	fCycleStart = 0;
 	//fGriffinBits.Class()->IgnoreTObjectStreamer(kTRUE);
+}
+
+void TGriffin::LoadEnergyResidual(int chan, TSpline* residual){
+	std::cout << "Adding: " <<  chan << std::endl;
+ 	fEnergyResiduals[chan] = residual;
+}
+
+Double_t TGriffin::GetEnergyNonlinearity(int chan, double energy){
+	static int counter =0;
+	counter++;
+	if(fEnergyResiduals.find(chan) != fEnergyResiduals.end()){
+		return fEnergyResiduals[chan]->Eval(energy);
+	}
+	else{
+		return 0.0;
+	}
 }
 
 

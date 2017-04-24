@@ -147,7 +147,7 @@ class TGRSIDetectorHit : public TObject 	{
 
       //virtual void GetSegment() const; 
 
-		virtual Double_t GetEnergyOffset(double energy) const {return 0.0;}
+		virtual Double_t GetEnergyNonlinearity(double energy) const {return 0.0;}
 
       //The PPG is only stored in events that come out of the GRIFFIN DAQ
       uint16_t GetPPGStatus() const;
