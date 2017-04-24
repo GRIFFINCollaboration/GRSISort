@@ -19,7 +19,7 @@
 #include <string>
 
 void Analyze(const char* tree_type, TProof* proof){
-   TGRSIOptions *opt = TGRSIOptions::Get();
+   TGRSIOptions* opt = TGRSIOptions::Get();
    std::vector<std::string> tree_list;
 
    //Loop over all of the file names, find all the files with the tree type in them and are "openable"
@@ -80,7 +80,7 @@ void Analyze(const char* tree_type, TProof* proof){
 
 int main(int argc, char **argv) {
 
-   TGRSIOptions *opt = TGRSIOptions::Get(argc,argv);
+   TGRSIOptions* opt = TGRSIOptions::Get(argc,argv);
 
    //Add the path were we store headers for GRSIProof macros to see
    const char* pPath = getenv("GRSISYS");
@@ -133,11 +133,11 @@ int main(int argc, char **argv) {
 
    proof->AddInput(new TNamed("pwd", getenv("PWD")));
    int i = 0;
-   for(auto valFile = TGRSIOptions::Get()->ValInputFiles().begin(); valFile != TGRSIOptions::Get()->ValInputFiles().end(); ++valFile) {
+   for(auto valFile = opt->ValInputFiles().begin(); valFile != opt->ValInputFiles().end(); ++valFile) {
       proof->AddInput(new TNamed(Form("valFile%d", i++), valFile->c_str()));
    }
    i = 0;
-   for(auto calFile = TGRSIOptions::Get()->CalInputFiles().begin(); calFile != TGRSIOptions::Get()->CalInputFiles().end(); ++calFile) {
+   for(auto calFile = opt->CalInputFiles().begin(); calFile != opt->CalInputFiles().end(); ++calFile) {
       proof->AddInput(new TNamed(Form("calFile%d", i++), calFile->c_str()));
    }
 
