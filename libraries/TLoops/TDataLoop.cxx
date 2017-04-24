@@ -3,12 +3,14 @@
 #include <chrono>
 #include <thread>
 #include <utility>
+#include <cstdio>
 
 #include "TGRSIOptions.h"
 #include "TString.h"
 #include "TRawFile.h"
 #include "TMidasFile.h"
 #include "TChannel.h"
+#include "TGRSIRunInfo.h"
 
 TDataLoop::TDataLoop(std::string name,TRawFile* source)
 	: StoppableThread(name),
@@ -60,6 +62,7 @@ void TDataLoop::SetFileOdb(char* data, int size) {
 	fOdb = new TXMLOdb(data,size);
 	TChannel::DeleteAllChannels();
 
+	//Check to see if we are running a GRIFFIN or TIGRESS experiment
 	TXMLNode* node = fOdb->FindPath("/Experiment");
 	if(!node->HasChildren()){
 		return;
@@ -83,8 +86,45 @@ void TDataLoop::SetFileOdb(char* data, int size) {
 		//		fIamGriffin = true;
 		SetGRIFFOdb();
 	}
+
+	SetRunInfo();
+
+	//Check for EPICS variables
+	SetEPICSOdb();
+	
 #endif
 }
+
+void TDataLoop::SetRunInfo(){
+#ifdef HAS_XML
+	TGRSIRunInfo *run_info = TGRSIRunInfo::Get();
+	TXMLNode* node = fOdb->FindPath("/Runinfo/Start time binary");
+	if(node)
+		run_info->SetRunStart(atof(node->GetText()));
+
+	node = fOdb->FindPath("/Experiment/Run parameters/Run Title");
+	std::cout << node << std::endl;
+	if(node){
+		run_info->SetRunTitle(node->GetText());
+		std::cout << DBLUE << "Title: " << node->GetText() << RESET_COLOR << std::endl;
+	}
+
+	if(node){
+		node = fOdb->FindPath("/Experiment/Run parameters/Comment");
+		run_info->SetRunComment(node->GetText());
+		std::cout << DBLUE << "Comment: " << node->GetText() <<RESET_COLOR << std::endl;
+	}
+#endif
+}
+
+void TDataLoop::SetEPICSOdb(){
+#ifdef HAS_XML
+	TXMLNode* node = fOdb->FindPath("/Equipment/Epics/Settings/Names");
+	std::vector<std::string> names = fOdb->ReadStringArray(node);
+	TEpicsFrag::SetEpicsNameList(names);
+#endif
+}
+
 
 void TDataLoop::SetGRIFFOdb() {
 #ifdef HAS_XML

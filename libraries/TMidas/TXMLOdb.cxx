@@ -1,4 +1,7 @@
 #ifdef HAS_XML
+
+#include <stdexcept>
+
 #include "TXMLOdb.h"
 
 #include "TList.h"
@@ -206,9 +209,19 @@ std::vector<std::string> TXMLOdb::ReadStringArray(TXMLNode* node) {
          //printf("index = %i\n",atoi(((TXMLAttr*)(index->At(0)))->GetValue()));
          //printf("value = %s\t%i\n",child->GetText(),atoi(child->GetText()));
          int indexnum = atoi(((TXMLAttr*)(index->At(0)))->GetValue());
-         std::string value = child->GetText();
-//         printf("indexnum %i : value 0x%08x\n",indexnum,value);
-         temp.at(indexnum) = value;
+			const char* value;
+         value = child->GetText();
+         //printf("indexnum %i : value 0x%08x\n",indexnum,value.c_str());
+		
+			//Make sure we actually read a word
+			std::string value_str;
+			if(value == nullptr){
+				value_str = "";
+			}
+			else{
+				value_str = value;
+			}
+         temp.at(indexnum) = value_str;
       } else if(child->GetText()) {
 			int indexnum = counter++;
 			//printf("%i/%i\n",counter,size);
