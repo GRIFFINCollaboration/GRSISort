@@ -111,6 +111,7 @@ void TGRSIOptions::Print(Option_t* opt) const {
 		<<"fLogErrors: "<<fLogErrors<<std::endl
 		<<"fUseMidFileOdb: "<<fUseMidFileOdb<<std::endl
 		<<"fSuppressErrors: "<<fSuppressErrors<<std::endl
+		<<"fReconstructTimeStamp: "<<fReconstructTimeStamp<<std::endl
 		<<std::endl
 		<<"fMakeAnalysisTree: "<<fMakeAnalysisTree<<std::endl
 		<<"fProgressDialog: "<<fProgressDialog<<std::endl
@@ -256,6 +257,7 @@ void TGRSIOptions::Load(int argc, char** argv) {
 	parser.option("ignore-epics", &fIgnoreEpics);
 	parser.option("ignore-scaler", &fIgnoreScaler);
 	parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors);
+	parser.option("reconstruct-timestamp reconstruct-time-stamp", &fReconstructTimeStamp);
 
 	parser.option("fragment-size", &fFragmentWriteQueueSize)
 		.description("size of fragment write queue")

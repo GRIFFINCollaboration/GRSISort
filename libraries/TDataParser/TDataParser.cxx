@@ -423,9 +423,13 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 	if(eventFrag->GetDetectorType() == 0xf) {
 		//a scaler event (trigger or deadtime) has 8 words (including header and trailer), make sure we have at least that much left
 		if(size < 8) {
-			fState = EDataParserState::kMissingWords;
-			failedWord = x;
-			throw TDataParserException(fState, failedWord);
+			if(fState == EDataParserState::kGood) {
+				fState = EDataParserState::kMissingWords;
+				failedWord = x;
+			} else {
+				multipleErrors = true;
+			}
+			throw TDataParserException(fState, failedWord, multipleErrors);
 		}
 		return GriffinDataToScalerEvent(data, eventFrag->GetAddress());
 	}
@@ -451,8 +455,12 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 	//always written to the midas file
 	if(!SetGRIFChannelTriggerId(data[x++],eventFrag)) {
 		TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-		if(fState == EDataParserState::kGood) fState = EDataParserState::kBadTriggerId;
-		if(failedWord == -1) failedWord = x-1; // -1 compensates the incrementation in the if-statement
+		if(fState == EDataParserState::kGood) {
+			fState = EDataParserState::kBadTriggerId;
+			failedWord = x-1; // -1 compensates the incrementation in the if-statement
+		} else {
+			multipleErrors = true;
+		}
 	}
 
 	//The Network packet number is for debugging and is not always written to
@@ -463,14 +471,22 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 
 	if(!SetGRIFTimeStampLow(data[x++],eventFrag)) {
 		TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-		if(fState == EDataParserState::kGood) fState = EDataParserState::kBadLowTS;
-		if(failedWord == -1) failedWord = x-1; // -1 compensates the incrementation in the if-statement
+		if(fState == EDataParserState::kGood) {
+			fState = EDataParserState::kBadLowTS;
+			failedWord = x-1; // -1 compensates the incrementation in the if-statement
+		} else {
+			multipleErrors = true;
+		}
 	}
 
 	if(!SetGRIFDeadTime(data[x++],eventFrag)) {
 		TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-		if(fState == EDataParserState::kGood) fState = EDataParserState::kBadHighTS;
-		if(failedWord == -1) failedWord = x-1; // -1 compensates the incrementation in the if-statement
+		if(fState == EDataParserState::kGood) {
+			fState = EDataParserState::kBadHighTS;
+			failedWord = x-1; // -1 compensates the incrementation in the if-statement
+		} else {
+			multipleErrors = true;
+		}
 	}
 
 	std::vector<Int_t> tmpCharge;
@@ -491,12 +507,9 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 				if(fState == EDataParserState::kGood) {
 					fState = EDataParserState::kSecondHeader;
 					failedWord = x+1; //+1 to ensure we don't read this header as start of a good event
-					Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-					throw TDataParserException(fState, failedWord);
-				} else {
-					Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-					throw TDataParserException(fState, failedWord);
 				}
+				Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+				throw TDataParserException(fState, failedWord, multipleErrors);
 				break;
 			case 0xc: //The c packet type is for waveforms
 				if(!fNoWaveforms)	SetGRIFWaveForm(value, eventFrag);
@@ -523,6 +536,20 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 						eventFrag->SetAcceptedChannelId(0);
 					}
 
+					// check the number of words the header said we should have with the number of words we've read
+					// the number of words is only set for bank >= GRF3
+					// if the fragment has a waveform, we can't compare the number of words
+					if(eventFrag->GetNumberOfWords() > 0 && !eventFrag->HasWave() && eventFrag->GetNumberOfWords() != x) {
+						if(fState == EDataParserState::kGood) {
+							fState = EDataParserState::kWrongNofWords;
+							failedWord = x;
+						} else {
+							multipleErrors = true;
+						}
+						Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+						throw TDataParserException(fState, failedWord, multipleErrors);
+					}
+
 					//the way we insert the fragment(s) depends on the module type and bank:
 					//for module type 1 & bank GRF4, we can't insert the fragments yet, we need to put them in a separate queue
 					//for module type 2 (4G, all banks) and module type 1 & bank GRF3 we set the single charge, cfd, and IntLength, and insert the fragment
@@ -533,10 +560,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 					if(eventFrag->GetModuleType() == 1 && bank == kGRF4) {
 						if(tmpCfd.size() != 1) {
 							if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-							if(fState == EDataParserState::kGood) fState = EDataParserState::kNotSingleCfd;
-							if(failedWord == -1) failedWord = x;
+							if(fState == EDataParserState::kGood) {
+								fState = EDataParserState::kNotSingleCfd;
+								failedWord = x;
+							} else {
+								multipleErrors = true;
+							}
 							Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-							throw TDataParserException(fState, failedWord);
+							throw TDataParserException(fState, failedWord, multipleErrors);
 						}
 						eventFrag->SetCfd(tmpCfd[0]);
 						if(fRecordDiag) TParsingDiagnostics::Get()->GoodFragment(eventFrag);
@@ -545,37 +576,66 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 					} else {
 						if(tmpCharge.size() != tmpIntLength.size() || tmpCharge.size() != tmpCfd.size()) {
 							if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-							if(fState == EDataParserState::kGood) fState = EDataParserState::kSizeMismatch;
-							if(failedWord == -1) failedWord = x;
+							if(fState == EDataParserState::kGood) {
+								fState = EDataParserState::kSizeMismatch;
+								failedWord = x;
+							} else {
+								multipleErrors = true;
+							}
 							Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-							throw TDataParserException(fState, failedWord);
+							throw TDataParserException(fState, failedWord, multipleErrors);
 						}
 						for(size_t h = 0; h < tmpCharge.size(); ++h) {
 							eventFrag->SetCharge(tmpCharge[h]);
 							eventFrag->SetKValue(tmpIntLength[h]);
 							eventFrag->SetCfd(tmpCfd[h]);
 							if(fRecordDiag) TParsingDiagnostics::Get()->GoodFragment(eventFrag);
-							if(fState == EDataParserState::kGood)	Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
-							else Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+							if(fState == EDataParserState::kGood) {
+								if(TGRSIOptions::Get()->ReconstructTimeStamp()) {
+									fLastTimeStampMap[eventFrag->GetAddress()] = eventFrag->GetTimeStamp();
+								}
+								Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
+							} else {
+								if(TGRSIOptions::Get()->ReconstructTimeStamp() && fState == EDataParserState::kBadHighTS && !multipleErrors) {
+									// reconstruct the high bits of the timestamp from the high bits of the last time stamp of the same address
+									if((eventFrag->GetTimeStamp() & 0x0fffffff) < (fLastTimeStampMap[eventFrag->GetAddress()] & 0x0fffffff)) {
+										// we had a wrap-around of the low time stamp, so we need to set the high bits to the old high bits plus one
+										eventFrag->AppendTimeStamp(((fLastTimeStampMap[eventFrag->GetAddress()]>>28)+1)<<28);
+									} else {
+										eventFrag->AppendTimeStamp(fLastTimeStampMap[eventFrag->GetAddress()] & 0x3fff0000000);
+									}
+									Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
+								} else {
+									Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
+								}
+							}
 						}
 						return x;
 					}
 				} else  {
 					if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-					if(fState == EDataParserState::kGood) fState = EDataParserState::kBadFooter;
-					if(failedWord == -1) failedWord = x;
+					if(fState == EDataParserState::kGood) {
+						fState = EDataParserState::kBadFooter;
+						failedWord = x;
+					} else {
+						multipleErrors = true;
+					}
 					Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-					throw TDataParserException(fState, failedWord);
+					throw TDataParserException(fState, failedWord, multipleErrors);
 				}
 				break;
 			case 0xf:
 				switch(bank) {
 					case kGRF1: // format from before May 2015 experiments
 						TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-						if(fState == EDataParserState::kGood) fState = EDataParserState::kFault;
-						if(failedWord == -1) failedWord = x;
+						if(fState == EDataParserState::kGood) {
+							fState = EDataParserState::kFault;
+							failedWord = x;
+						} else {
+							multipleErrors = true;
+						}
 						Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-						throw TDataParserException(fState, failedWord);
+						throw TDataParserException(fState, failedWord, multipleErrors);
 						break;
 					case kGRF2: // from May 2015 to the end of 2015 0xf denoted a psd-word from a 4G
 						if(x+1 < size) {
@@ -585,19 +645,27 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 							SetGRIFPsd(dword, eventFrag);
 						} else {
 							TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-							if(fState == EDataParserState::kGood) fState = EDataParserState::kMissingPsd;
-							if(failedWord == -1) failedWord = x;
+							if(fState == EDataParserState::kGood) {
+								fState = EDataParserState::kMissingPsd;
+								failedWord = x;
+							} else {
+								multipleErrors = true;
+							}
 							Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-							throw TDataParserException(fState, failedWord);
+							throw TDataParserException(fState, failedWord, multipleErrors);
 						}
 						break;
 					case kGRF3: // from 2016 on we're back to reserving 0xf for faults
 					case kGRF4:
 						TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-						if(fState == EDataParserState::kGood) fState = EDataParserState::kFault;
-						if(failedWord == -1) failedWord = x;
+						if(fState == EDataParserState::kGood) {
+							fState = EDataParserState::kFault;
+							failedWord = x;
+						} else {
+							multipleErrors = true;
+						}
 						Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-						throw TDataParserException(fState, failedWord);
+						throw TDataParserException(fState, failedWord, multipleErrors);
 						break;
 					default:
 						printf("This bank not yet defined.\n");
@@ -621,10 +689,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 									tmpCfd.push_back(data[x] & 0x03ffffff);
 								} else {
 									TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-									if(fState == EDataParserState::kGood) fState = EDataParserState::kMissingCfd;
-									if(failedWord == -1) failedWord = x;
+									if(fState == EDataParserState::kGood) {
+										fState = EDataParserState::kMissingCfd;
+										failedWord = x;
+									} else {
+										multipleErrors = true;
+									}
 									Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-									throw TDataParserException(fState, failedWord);
+									throw TDataParserException(fState, failedWord, multipleErrors);
 								}
 								break;
 							case kGRF3: //bank 3 has 2 words with (5 high bits IntLength, 26 Charge)(9 low bits IntLength, 22 Cfd)
@@ -637,10 +709,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 									break;
 								} else {
 									TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-									if(fState == EDataParserState::kGood) fState = EDataParserState::kMissingCfd;
-									if(failedWord == -1) failedWord = x;
+									if(fState == EDataParserState::kGood) {
+										fState = EDataParserState::kMissingCfd;
+										failedWord = x;
+									} else {
+										multipleErrors = true;
+									}
 									Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-									throw TDataParserException(fState, failedWord);
+									throw TDataParserException(fState, failedWord, multipleErrors);
 								}
 								break;
 							case kGRF4: //bank 4 can have more than one integration (up to four), but these have to be combined with other fragments/hits!
@@ -699,10 +775,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 									//so we look for the next trailer and stop there
 									while(x < size && (data[x] & 0xf0000000) != 0xe0000000) ++x;
 									TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-									if(fState == EDataParserState::kGood) fState = EDataParserState::kMissingCharge;
-									if(failedWord == -1) failedWord = x;
+									if(fState == EDataParserState::kGood) {
+										fState = EDataParserState::kMissingCharge;
+										failedWord = x;
+									} else {
+										multipleErrors = true;
+									}
 									Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-									throw TDataParserException(fState, failedWord);
+									throw TDataParserException(fState, failedWord, multipleErrors);
 								}
 								break;
 							default:
@@ -710,10 +790,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 									printf(DRED "Error, back type %d not implemented yet" RESET_COLOR "\n", bank);
 								}
 								TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-								if(fState == EDataParserState::kGood) fState = EDataParserState::kBadBank;
-								if(failedWord == -1) failedWord = x;
+								if(fState == EDataParserState::kGood) {
+									fState = EDataParserState::kBadBank;
+									failedWord = x;
+								} else {
+									multipleErrors = true;
+								}
 								Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-								throw TDataParserException(fState, failedWord);
+								throw TDataParserException(fState, failedWord, multipleErrors);
 								break;
 						}
 						break;
@@ -727,10 +811,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 							tmpCfd.push_back(data[x] & 0x03ffffff);
 						} else {
 							TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-							if(fState == EDataParserState::kGood) fState = EDataParserState::kMissingCfd;
-							if(failedWord == -1) failedWord = x;
+							if(fState == EDataParserState::kGood) {
+								fState = EDataParserState::kMissingCfd;
+								failedWord = x;
+							} else {
+								multipleErrors = true;
+							}
 							Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-							throw TDataParserException(fState, failedWord);
+							throw TDataParserException(fState, failedWord, multipleErrors);
 						}
 						//for descant types (6,10,11) there are two more words for banks > GRF2 (bank GRF2 used 0xf packet and bank GRF1 never had descant)
 						if(bank > kGRF2 && (eventFrag->GetDetectorType() == 6 || eventFrag->GetDetectorType() == 10 || eventFrag->GetDetectorType() == 11)) {
@@ -742,10 +830,14 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 								SetGRIFPsd(dword, eventFrag);
 							} else {
 								TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-								if(fState == EDataParserState::kGood) fState = EDataParserState::kMissingPsd;
-								if(failedWord == -1) failedWord = x;
+								if(fState == EDataParserState::kGood) {
+									fState = EDataParserState::kMissingPsd;
+									failedWord = x;
+								} else {
+									multipleErrors = true;
+								}
 								Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-								throw TDataParserException(fState, failedWord);
+								throw TDataParserException(fState, failedWord, multipleErrors);
 							}
 						}
 						break;
@@ -754,20 +846,28 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 							printf(DRED "Error, module type %d not implemented yet" RESET_COLOR "\n", eventFrag->GetModuleType());
 						}
 						TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-						if(fState == EDataParserState::kGood) fState = EDataParserState::kBadModuleType;
-						if(failedWord == -1) failedWord = x;
+						if(fState == EDataParserState::kGood) {
+							fState = EDataParserState::kBadModuleType;
+							failedWord = x;
+						} else {
+							multipleErrors = true;
+						}
 						Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-						throw TDataParserException(fState, failedWord);
+						throw TDataParserException(fState, failedWord, multipleErrors);
 				}//switch(eventFrag->GetModuleType())
 				break;
 		}//switch(packet)
 	}//for(;x<size;x++)
 
 	TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
-	if(fState == EDataParserState::kGood) fState = EDataParserState::kEndOfData;
-	if(failedWord == -1) failedWord = x;
+	if(fState == EDataParserState::kGood) {
+		fState = EDataParserState::kEndOfData;
+		failedWord = x;
+	} else {
+		multipleErrors = true;
+	}
 	Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
-	throw TDataParserException(fState, failedWord);
+	throw TDataParserException(fState, failedWord, multipleErrors);
 	return -x;
 }
 
@@ -905,8 +1005,11 @@ bool TDataParser::SetGRIFWaveForm(uint32_t value,std::shared_ptr<TFragment> frag
 
 bool TDataParser::SetGRIFDeadTime(uint32_t value, std::shared_ptr<TFragment> frag) {
 	///Sets the Griffin deadtime and the upper 14 bits of the timestamp
+	if((value &0xf0000000) != 0xb0000000) {
+		return false;
+	}
 	frag->SetDeadTime((value & 0x0fffc000) >> 14);
-	frag->AppendTimeStamp(static_cast<long>(value &  0x00003fff)<<28);
+	frag->AppendTimeStamp(static_cast<Long64_t>(value &  0x00003fff)<<28);
 	return true;
 }
 
@@ -1034,7 +1137,7 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t* data, int address) {
 		TParsingDiagnostics::Get()->BadFragment(-3); //use detector type -3 for scaler data
 		fState = EDataParserState::kBadScalerLowTS;
 		failedWord = x;
-		throw TDataParserException(fState, failedWord);
+		throw TDataParserException(fState, failedWord, false);
 	}
 	//followed by four scaler words (32 bits each)
 	for(int i = 0; i < 4; ++i) {
@@ -1042,7 +1145,7 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t* data, int address) {
 			TParsingDiagnostics::Get()->BadFragment(-3); //use detector type -3 for scaler data
 			fState = EDataParserState::kBadScalerValue;
 			failedWord = x;
-			throw TDataParserException(fState, failedWord);
+			throw TDataParserException(fState, failedWord, false);
 		}
 	}
 	//and finally the trailer word with the highest 24 bits of the timestamp
@@ -1051,7 +1154,7 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t* data, int address) {
 		TParsingDiagnostics::Get()->BadFragment(-3); //use detector type -3 for scaler data
 		fState = EDataParserState::kBadScalerHighTS;
 		failedWord = x;
-		throw TDataParserException(fState, failedWord);
+		throw TDataParserException(fState, failedWord, false);
 	}
 
 	if(scalerType == 0) { //deadtime scaler
@@ -1064,7 +1167,7 @@ int TDataParser::GriffinDataToScalerEvent(uint32_t* data, int address) {
 		TParsingDiagnostics::Get()->BadFragment(-3); //use detector type -3 for scaler data
 		fState = EDataParserState::kBadScalerType;
 		failedWord = x;
-		throw TDataParserException(fState, failedWord);
+		throw TDataParserException(fState, failedWord, false);
 	}
 
 	TParsingDiagnostics::Get()->GoodFragment(-3); //use detector type -3 for scaler data

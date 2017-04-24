@@ -14,17 +14,19 @@
 
 class TDataParserException : public std::exception {
 	public:
-		TDataParserException(TDataParser::EDataParserState, int);
+		TDataParserException(TDataParser::EDataParserState state, int failedWord, bool multipleErrors);
 		~TDataParserException();
 
 		const char* what() const noexcept;
 
-		int GetFailedWord()               { return fFailedWord; }
+		int GetFailedWord()                            { return fFailedWord; }
 		TDataParser::EDataParserState GetParserState() { return fParserState; }
+		bool GetMultipleErrors()                       { return fMultipleErrors; }
 
 	private:
 		TDataParser::EDataParserState fParserState;
 		int fFailedWord;
+		bool fMultipleErrors;
 		std::string fMessage;
 };
 /*! @} */

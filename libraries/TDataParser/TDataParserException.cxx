@@ -1,12 +1,18 @@
 #include "TDataParserException.h"
 #include "TDataParser.h"
 
-TDataParserException::TDataParserException(TDataParser::EDataParserState state, int failedWord)
-	: fParserState(state), fFailedWord(failedWord) {
+TDataParserException::TDataParserException(TDataParser::EDataParserState state, int failedWord, bool multipleErrors)
+	: fParserState(state), fFailedWord(failedWord), fMultipleErrors(multipleErrors) {
 	/// default constructor for TDataParserException, stores the data parser state and the word the parser failed on
 	/// and creates a message based on them that can be accessed via TDataParserException::what()
 	std::ostringstream stream;
-	stream<<"TDataParser failed on "<<fFailedWord<<". word: ";
+	stream<<"TDataParser failed ";
+	if(fMultipleErrors) {
+		stream<<"on multiple words, first was ";
+	} else {
+		stream<<"only on ";
+	}
+	stream<<fFailedWord<<". word: ";
 	switch(fParserState) {
 		case TDataParser::EDataParserState::kGood:
 			stream<<"state is good, no idea what went wrong!"<<std::endl;
@@ -40,6 +46,9 @@ TDataParserException::TDataParserException(TDataParser::EDataParserState state, 
 			break;
 		case TDataParser::EDataParserState::kSecondHeader:
 			stream<<"found a second header (w/o finding a footer first)"<<std::endl;
+			break;
+		case TDataParser::EDataParserState::kWrongNofWords:
+			stream<<"wrong number of words"<<std::endl;
 			break;
 		case TDataParser::EDataParserState::kNotSingleCfd:
 			stream<<"expected a single cfd word, got either none or multiple ones"<<std::endl;

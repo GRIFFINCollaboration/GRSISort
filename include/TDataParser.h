@@ -62,6 +62,7 @@ class TDataParser {
 			kBadLowTS,
 			kBadHighTS,
 			kSecondHeader,
+			kWrongNofWords,
 			kNotSingleCfd,
 			kSizeMismatch,
 			kBadFooter,
@@ -122,6 +123,7 @@ class TDataParser {
 		TFragmentMap fFragmentMap;
 
 		EDataParserState fState;
+		std::map<UInt_t, Long64_t> fLastTimeStampMap;
 
 #ifndef __CINT__
 		std::atomic_size_t* fItemsPopped;
