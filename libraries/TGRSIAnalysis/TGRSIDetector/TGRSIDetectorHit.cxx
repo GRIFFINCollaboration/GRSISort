@@ -49,52 +49,52 @@ Double_t TGRSIDetectorHit::GetTime(const UInt_t& correction_flag,Option_t* opt) 
   if(IsTimeSet())
     return fTime;
 
-  TChannel* chan = GetChannel();
-  if(!chan) {
+  TChannel* channel = GetChannel();
+  if(channel == nullptr) {
     Error("GetTime","No TChannel exists for address 0x%08x",GetAddress());
     return SetTime(10.*(static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform())));
   }
-	switch(chan->GetDigitizerType()) {
+	switch(channel->GetDigitizerType()) {
 		Double_t dTime;
 		case TMnemonic::kGRF16:
 			dTime = (GetTimeStamp()&(~0x3ffff))*10. + (GetCfd() + gRandom->Uniform())/1.6;//CFD is in 10/16th of a nanosecond
-			return SetTime(dTime - 10.*(chan->GetTZero(GetEnergy())));
+			return SetTime(dTime - 10.*(channel->GetTZero(GetEnergy())));
 		case TMnemonic::kGRF4G:
 			dTime = GetTimeStamp()*10. + (fCfd>>22) + ((fCfd & 0x3fffff) + gRandom->Uniform())/256.;
-			return SetTime(dTime - 10.*(chan->GetTZero(GetEnergy())));
+			return SetTime(dTime - 10.*(channel->GetTZero(GetEnergy())));
 		default:
 		   dTime = static_cast<Double_t>((GetTimeStamp()) + gRandom->Uniform());
-		   return SetTime(10.*(dTime - chan->GetTZero(GetEnergy())));
+		   return SetTime(10.*(dTime - channel->GetTZero(GetEnergy())));
 	}
 	return 0.;
 }
 
 
-int TGRSIDetectorHit::GetCharge() const {
-  TChannel *chan = GetChannel();
-  if(!chan) return std::floor(Charge());
+Float_t TGRSIDetectorHit::GetCharge() const {
+  TChannel* channel = GetChannel();
+  if(channel == nullptr) return Charge();
   if(fKValue>0){
-    return std::floor(Charge()/((Float_t)fKValue));// this will use the integration value
-  } else if(chan->UseCalFileIntegration()) {
-    return std::floor(Charge())/((Float_t)chan->GetIntegration());// this will use the integration value
-  }                                                               // in the TChannel if it exists.
-  return std::floor(Charge());// this will use no integration value
+    return Charge()/((Float_t)fKValue);// this will use the integration value
+  } else if(channel->UseCalFileIntegration()) {
+    return Charge()/((Float_t)channel->GetIntegration();// this will use the integration value
+  }                                                  // in the TChannel if it exists.
+  return Charge();// this will use no integration value
 }
 
 double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
   if(TestHitBit(kIsEnergySet)) return fEnergy;
-  TChannel* chan = GetChannel();
-  if(!chan) {
+  TChannel* channel = GetChannel();
+  if(channel == nullptr) {
     //Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());
     return SetEnergy((Double_t)(Charge()));
   }
   if(fKValue >0) {
-    return SetEnergy(chan->CalibrateENG(Charge(),(int)fKValue));
-  } else if(chan->UseCalFileIntegration()) {
-    return SetEnergy(chan->CalibrateENG(Charge(),0));  // this will use the integration value
+    return SetEnergy(channel->CalibrateENG(Charge(),(int)fKValue));
+  } else if(channel->UseCalFileIntegration()) {
+    return SetEnergy(channel->CalibrateENG(Charge(),0));  // this will use the integration value
                                             // in the TChannel if it exists.
   }
-  return SetEnergy(chan->CalibrateENG(Charge()));
+  return SetEnergy(channel->CalibrateENG(Charge()));
 }
 
 void TGRSIDetectorHit::Copy(TObject& rhs) const {
@@ -131,9 +131,9 @@ void TGRSIDetectorHit::Print(Option_t* opt) const {
   //fPosition.Print();
 }
 
-const char *TGRSIDetectorHit::GetName() const {
-  TChannel *channel = GetChannel();
-  if(!channel)
+const char* TGRSIDetectorHit::GetName() const {
+  TChannel* channel = GetChannel();
+  if(channel == nullptr)
      return Class()->ClassName();
   else
      return channel->GetName();
@@ -161,7 +161,7 @@ void TGRSIDetectorHit::Clear(Option_t* opt) {
 Int_t TGRSIDetectorHit::GetDetector() const {
 
   TChannel* channel = GetChannel();
-  if(!channel) {
+  if(channel == nullptr) {
     Error("GetDetector","No TChannel exists for address 0x%08x",GetAddress());
     return -1;
   }
@@ -170,8 +170,8 @@ Int_t TGRSIDetectorHit::GetDetector() const {
 }
 
 Int_t TGRSIDetectorHit::GetSegment() const {
-   TChannel *channel = GetChannel();
-   if(!channel){
+   TChannel* channel = GetChannel();
+   if(channel == nullptr){
       Error("GetSegment","No TChannel exists for address %08x",GetAddress());
       return -1;
    }
@@ -179,14 +179,14 @@ Int_t TGRSIDetectorHit::GetSegment() const {
 }
 
 Int_t TGRSIDetectorHit::GetCrystal() const {
-  TChannel *channel = GetChannel();
+  TChannel* channel = GetChannel();
   if(channel)
     return channel->GetCrystalNumber();
   return -1;
 }
 
 UShort_t TGRSIDetectorHit::GetArrayNumber() const {
-  TChannel *channel = GetChannel();
+  TChannel* channel = GetChannel();
   if(channel) {
     return (GetDetector()-1)*4 + GetCrystal();
   }

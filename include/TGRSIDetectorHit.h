@@ -126,7 +126,7 @@ class TGRSIDetectorHit : public TObject 	{
       //TODO: Fix Getters to have non-const types
       virtual Int_t   GetCfd()    const               { return fCfd;}                 //!<!
       virtual UInt_t GetAddress() const               { return fAddress; }            //!<!
-      virtual Int_t  GetCharge()  const;                                              //!<!
+      virtual Float_t GetCharge() const;                                              //!<!
       virtual Float_t Charge()    const               { return fCharge; }             //!<!
       virtual Short_t GetKValue() const               { return fKValue; }             //!<!
       const std::vector<Short_t>* GetWaveform() const { return &fWaveform; }          //!<!
