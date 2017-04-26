@@ -126,7 +126,7 @@ class TFragment : public TGRSIDetectorHit	{
    Int_t    fZc;                      //!<! Zero-crossing value from 4G (saved in separate branch)
    Int_t    fCcShort;                 //!<! Short integration over waveform peak from 4G (saved in separate branch)
    Int_t    fCcLong;                  //!<! Long integration over waveform tail from 4G (saved in separate branch)
-   UShort_t fNumberOfWords;           //!<! Number of non-waveform words in fragment ; since this is not saved to file, why have it as a member at all???
+   UShort_t fNumberOfWords;           //!<! Number of non-waveform words in fragment, only used for check while parsing the fragment
 
 	static Long64_t fNumberOfFragments;
 

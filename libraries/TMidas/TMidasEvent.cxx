@@ -12,6 +12,7 @@
 
 #include "TMidasEvent.h"
 #include "TGRSIOptions.h"
+#include "TDataParserException.h"
 
 /// \cond CLASSIMP
 ClassImp(TMidasEvent)
@@ -650,7 +651,18 @@ int TMidasEvent::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBank ba
 	for(int index = 0; index < dSize;) {
 		if(((ptr[index])&0xf0000000) == 0x80000000) {
 			//if we found a fragment header we pass the data to the data parser which returns the number of words read
-			int words = parser.GriffinDataToFragment(&ptr[index], dSize-index, bank, GetSerialNumber(), GetTimeStamp());
+			int words;
+			try {
+				words = parser.GriffinDataToFragment(&ptr[index], dSize-index, bank, GetSerialNumber(), GetTimeStamp());
+			} catch(TDataParserException& e) {
+				words = -e.GetFailedWord();
+				if(!TGRSIOptions::Get()->SuppressErrors()) {
+					if(!TGRSIOptions::Get()->LogErrors()) {
+						std::cout<<std::endl
+							      <<e.what();
+					}
+				}
+			}
 			if(words > 0) {
 				//we successfully read one event with <words> words, so we advance the index by words
 				++frags;
@@ -664,7 +676,7 @@ int TMidasEvent::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBank ba
 					if(!TGRSIOptions::Get()->LogErrors()) {
 						printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
 						printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", index);
-						Print(Form("a%i",index-1));
+						Print(Form("a%i",index));
 						printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
 					} else {
 						std::string errfilename = "error.log";

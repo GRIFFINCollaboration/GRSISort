@@ -48,7 +48,6 @@ class TGRSIOptions : public TObject {
 		const std::string& OutputFragmentFile() { return fOutputFragmentFile; }
 		const std::string& OutputAnalysisFile() { return fOutputAnalysisFile; }
 
-
 		const std::string& OutputFilteredFile()        { return fOutputFilteredFile; }
 		const std::string& OutputFragmentHistogramFile(){ return fOutputFragmentHistogramFile; }
 		const std::string& OutputAnalysisHistogramFile(){ return fOutputAnalysisHistogramFile; }
@@ -69,6 +68,7 @@ class TGRSIOptions : public TObject {
 		bool StartGui() const { return fStartGui; }
 
 		bool SuppressErrors() const { return fSuppressErrors; }
+		bool ReconstructTimeStamp() const { return fReconstructTimeStamp; }
 
 		bool CloseAfterSort()     const { return fCloseAfterSort; }
 
@@ -158,6 +158,7 @@ class TGRSIOptions : public TObject {
 		bool fLogErrors;                             ///< Flag to log errors (--log-errors)
 		bool fUseMidFileOdb;                         ///< Flag to read odb from midas
 		bool fSuppressErrors;                        ///< Flag to suppress errors (--suppress-errors)
+		bool fReconstructTimeStamp;                  ///< Flag to reconstruct missing high bits of time stamps (--reconstruct-timestamp)
 
 		bool fMakeAnalysisTree;                      ///< Flag to make analysis tree (-a)
 		bool fProgressDialog;                        ///< Flag to show progress in proof (not used)

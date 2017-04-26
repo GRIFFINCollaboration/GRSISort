@@ -50,6 +50,34 @@ class TDataParser {
 		//ENUM(EBank, char, kWFDN,kGRF1,kGRF2,kGRF3,kFME0,kFME1,kFME2,kFME3);
 		enum EBank { kWFDN=0,kGRF1=1,kGRF2=2,kGRF3=3,kGRF4=4,kFME0=5,kFME1=6,kFME2=7,kFME3=8 };
 
+		enum EDataParserState {
+			kGood,
+			kBadHeader,
+			kMissingWords,
+			kBadScalerLowTS,
+			kBadScalerValue,
+			kBadScalerHighTS,
+			kBadScalerType,
+			kBadTriggerId,
+			kBadLowTS,
+			kBadHighTS,
+			kSecondHeader,
+			kWrongNofWords,
+			kNotSingleCfd,
+			kSizeMismatch,
+			kBadFooter,
+			kFault,
+			kMissingPsd,
+			kMissingCfd,
+			kMissingCharge,
+			kBadBank,
+			kBadModuleType,
+			kEndOfData,
+			kUndefined
+		};
+
+
+
 #ifndef __CINT__
 		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >&
 			AddGoodOutputQueue(size_t maxSize = 50000) { 
@@ -93,6 +121,9 @@ class TDataParser {
 		bool fFragmentHasWaveform;
 
 		TFragmentMap fFragmentMap;
+
+		EDataParserState fState;
+		std::map<UInt_t, Long64_t> fLastTimeStampMap;
 
 #ifndef __CINT__
 		std::atomic_size_t* fItemsPopped;

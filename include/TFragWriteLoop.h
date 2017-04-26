@@ -21,6 +21,7 @@
 #include "StoppableThread.h"
 #include "ThreadsafeQueue.h"
 #include "TFragment.h"
+#include "TBadFragment.h"
 #include "TEpicsFrag.h"
 
 class TFragWriteLoop : public StoppableThread {
@@ -67,7 +68,7 @@ class TFragWriteLoop : public StoppableThread {
 		TTree* fScalerTree;
 
 		TFragment*  fEventAddress;
-		TFragment*  fBadEventAddress;
+		TBadFragment*  fBadEventAddress;
 		TEpicsFrag* fScalerAddress;
 
 #ifndef __CINT__
