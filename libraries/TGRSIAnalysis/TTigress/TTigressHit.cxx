@@ -70,7 +70,7 @@ void TTigressHit::Print(Option_t *opt) const	{
   TString sopt(opt);
   printf("==== TigressHit @ 0x%p\n ====",(void*)this);
   printf("\t%s\n",GetName());
-  printf("\tCharge: %i\n",GetCharge());
+  printf("\tCharge: %f\n",GetCharge());
   printf("\tEnergy: %.2f\n",GetEnergy());
   printf("\tTime:   %.2f\n",GetTime());
   printf("\tBGO Fired: %s\n",BGOFired() ? "true" : "false");
@@ -80,7 +80,7 @@ void TTigressHit::Print(Option_t *opt) const	{
   if(sopt.Contains("all")) {
      printf("Name           Charge\n");
     for(int x=0;x<GetNSegments();x++) {
-      printf("\t\t%s  |   %i\n",GetSegmentHit(x).GetName(),GetSegmentHit(x).GetCharge());
+      printf("\t\t%s  |   %f\n",GetSegmentHit(x).GetName(),GetSegmentHit(x).GetCharge());
     }
     GetPosition().Print();
   }

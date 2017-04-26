@@ -39,7 +39,7 @@ public :
    Int_t   GetEntry(Long64_t entry, Int_t getall = 0) { return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0; }
    void    SetOption(const char *option) { fOption = option; }
    void    SetObject(TObject *obj) { fObject = obj; }
-   void    SetInputList(TList *input) { fInput = input; }
+   //void    SetInputList(TList *input) { fInput = input; }
    TList  *GetOutputList() const { return fOutput; }
    void    SlaveTerminate();
    void    Terminate();
@@ -56,6 +56,7 @@ public :
 	std::map<std::string, GHSym*> fSym;
 	std::map<std::string, THnSparseF*> fHSparse;
 
+ private:
    std::string fOutputPrefix;
 
    ClassDef(TGRSISelector,2);
