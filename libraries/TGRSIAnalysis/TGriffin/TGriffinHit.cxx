@@ -152,3 +152,7 @@ Double_t TGriffinHit::GetNoCTEnergy(Option_t* opt) const{
   return chan->CalibrateENG(Charge(),GetKValue());
 }
 
+Double_t TGriffinHit::GetEnergyNonlinearity(double energy) const {
+	//return 0.0;
+	return -(TGriffin::GetEnergyNonlinearity(GetArrayNumber(),energy));
+}

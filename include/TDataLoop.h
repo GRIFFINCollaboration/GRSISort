@@ -78,6 +78,8 @@ class TDataLoop : public StoppableThread  {
 #endif
 
 		void SetFileOdb(char* data, int size);
+		void SetRunInfo();
+		void SetEPICSOdb();
 		void SetTIGOdb();
 		void SetGRIFFOdb();
 

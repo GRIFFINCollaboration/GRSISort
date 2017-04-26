@@ -109,6 +109,10 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
                Int_t R__int; b >> R__int; AddBadCycle(R__int);
             }
          }
+         if(R__v > 10){
+            {TString R__str; b >> R__str; fRunTitle = R__str;   }
+            {TString R__str; b >> R__str; fRunComment = R__str;   }
+         }
          fGRSIRunInfo = this;
          b.CheckByteCount(R__s,R__c,TGRSIRunInfo::IsA());
       } else {
@@ -153,6 +157,8 @@ void TGRSIRunInfo::Streamer(TBuffer &b) {
          for(UInt_t i =0; i< fBadCycleList.size(); ++i){
             Int_t R__int = fBadCycleList.at(i); b<<R__int;
          }
+         {TString R__str(fRunTitle.c_str()); R__str.Streamer(b);   }
+         {TString R__str(fRunComment.c_str()); R__str.Streamer(b);   }
          b.SetByteCount(R__c,true);
 }
 }
@@ -240,6 +246,8 @@ TGRSIRunInfo::~TGRSIRunInfo() { }
 void TGRSIRunInfo::Print(Option_t *opt) const {
    //Prints the TGRSIRunInfo. Options:
    // a: Print out more details.
+		std::cout << "Title: " << fRunTitle << std::endl;
+		std::cout << "Comment: " << fRunComment << std::endl;
    if(strchr(opt,'a') != nullptr){
       printf("\tTGRSIRunInfo Status:\n");
       printf("\t\tRunNumber:    %05i\n",TGRSIRunInfo::Get()->fRunNumber);
@@ -309,6 +317,9 @@ void TGRSIRunInfo::Clear(Option_t *opt) {
    fIsCorrectingCrossTalk  = true;
    fBadCycleList.clear();
    fBadCycleListSize = 0;
+
+	//fRunTitle.assign("");
+	//fRunComment.assign("");
 
 }
 

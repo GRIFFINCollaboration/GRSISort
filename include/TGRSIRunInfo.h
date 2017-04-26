@@ -92,6 +92,9 @@ class TGRSIRunInfo : public TObject {
       static inline int  RunNumber() { return fGRSIRunInfo->fRunNumber; }
       static inline int  SubRunNumber() { return fGRSIRunInfo->fSubRunNumber; }
 
+		inline void SetRunTitle(const char* run_title) { fRunTitle.assign(run_title); }
+		inline void SetRunComment(const char* run_comment) { fRunComment.assign(run_comment); } 
+
       static inline void   SetRunStart(double tmp)  { fGRSIRunInfo->fRunStart = tmp; }
       static inline void   SetRunStop(double tmp)   { fGRSIRunInfo->fRunStop = tmp; }
       static inline void   SetRunLength(double tmp) { fGRSIRunInfo->fRunLength = tmp; }
@@ -201,6 +204,8 @@ class TGRSIRunInfo : public TObject {
    private:
       static TGRSIRunInfo *fGRSIRunInfo; //Static pointer to TGRSIRunInfo
 
+		std::string fRunTitle;					///< The title of the run
+		std::string fRunComment;				///< The comment on the run
       int fRunNumber;                     //The current run number
       int fSubRunNumber;                  //The current sub run number
 
@@ -290,7 +295,7 @@ class TGRSIRunInfo : public TObject {
       std::string PrintToString(Option_t *opt ="");
 
       /// \cond CLASSIMP
-      ClassDef(TGRSIRunInfo,10);  //Contains the run-dependent information.
+      ClassDef(TGRSIRunInfo,11);  //Contains the run-dependent information.
       /// \endcond
 };
 /*! @} */

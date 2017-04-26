@@ -1301,6 +1301,7 @@ int TDataParser::EPIXToScalar(float* data,int size,unsigned int midasSerialNumbe
 
 	for(int x=0;x<size;x++) {
 		EXfrag->fData.push_back(data[x]);
+		EXfrag->fName.push_back(TEpicsFrag::GetEpicsVariableName(x));
 	}
 
 	fScalerOutputQueue->Push(EXfrag);

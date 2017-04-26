@@ -91,12 +91,15 @@ double TGRSIDetectorHit::GetEnergy(Option_t* opt) const {
     return SetEnergy((Double_t)(Charge()));
   }
   if(fKValue >0) {
-    return SetEnergy(chan->CalibrateENG(Charge(),(int)fKValue));
+	 double energy = chan->CalibrateENG(Charge(),(int)fKValue);
+    return SetEnergy(energy +GetEnergyNonlinearity(energy));
   } else if(chan->UseCalFileIntegration()) {
-    return SetEnergy(chan->CalibrateENG(Charge(),0));  // this will use the integration value
+	 double energy = chan->CalibrateENG(Charge(),0);
+    return SetEnergy(chan->CalibrateENG(energy) + GetEnergyNonlinearity(energy));  // this will use the integration value
                                             // in the TChannel if it exists.
   }
-  return SetEnergy(chan->CalibrateENG(Charge()));
+  double energy = chan->CalibrateENG(Charge());
+  return SetEnergy(energy + GetEnergyNonlinearity(energy));
 }
 
 void TGRSIDetectorHit::Copy(TObject& rhs) const {
