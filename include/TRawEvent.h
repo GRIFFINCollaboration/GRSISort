@@ -40,8 +40,6 @@ class TRawEvent : public TObject {
 
 		virtual char* GetData() { return nullptr; } ///< return pointer to the data buffer
 
-		virtual void SetData(uint32_t dataSize, char* dataBuffer) {} ///< set an externally allocated data buffer
-
 		virtual int  SwapBytes(bool) { return 0; } ///< convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC) 
 		virtual int Process(TDataParser& parser) = 0;
 
