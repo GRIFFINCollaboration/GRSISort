@@ -8,8 +8,8 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include <Globals.h>
-#include <GRSIVersion.h>
+#include "Globals.h"
+#include "GVersion.h"
 
 #include "RConfigure.h"
 
@@ -30,7 +30,7 @@
 #include <time.h>
 #include <sys/time.h>
 
-#include <TSystem.h>
+#include "TSystem.h"
 
 static Display     *gDisplay       = 0;
 static Window       gLogoWindow    = 0;

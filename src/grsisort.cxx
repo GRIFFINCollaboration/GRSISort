@@ -11,7 +11,7 @@
 #include "TPluginManager.h"
 #include "TGRSIint.h"
 
-#include "GRSIVersion.h"
+#include "GVersion.h"
 #include "TThread.h"
 
 #ifdef __APPLE__

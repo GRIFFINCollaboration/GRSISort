@@ -1,7 +1,7 @@
 #include "TGRSIint.h"
 
 #include "GRootGuiFactory.h"
-#include "GRSIVersion.h"
+#include "GVersion.h"
 #include "Getline.h"
 #include "Globals.h"
 #include "TDataParser.h"
