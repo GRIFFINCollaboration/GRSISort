@@ -40,6 +40,8 @@ class TFragmentMap {
       static bool fDebug;
 #ifndef __CINT__
       void Solve(std::vector<std::shared_ptr<TFragment> >, std::vector<Float_t>, std::vector<Long_t>, int situation = -1);
+		void DropFragments(std::pair<std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > >::iterator, 
+		                             std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > >::iterator>& range);
 
       std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > > fMap;
       std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& fGoodOutputQueue;

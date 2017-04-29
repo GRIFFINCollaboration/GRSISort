@@ -22,7 +22,7 @@ TSiLiHit::TSiLiHit(const TSiLiHit &rhs) : TGRSIDetectorHit(rhs) {
    ((TSiLiHit&)rhs).Copy(*this);
 }
 
-void TSiLiHit::Copy(TObject &rhs,int suppress) const {
+void TSiLiHit::Copy(TObject &rhs, bool suppress) const {
    TGRSIDetectorHit::Copy(rhs);
 
 	static_cast<TSiLiHit&>(rhs).fTimeFit 		= fTimeFit;
@@ -31,7 +31,7 @@ void TSiLiHit::Copy(TObject &rhs,int suppress) const {
 	static_cast<TSiLiHit&>(rhs).fFitCharge 	= fFitCharge;
 	static_cast<TSiLiHit&>(rhs).fFitBase 		= fFitBase;
 	static_cast<TSiLiHit&>(rhs).fSiLiHitBits 	= 0;
-	if(suppress==0){
+	if(!suppress) {
 		static_cast<TSiLiHit&>(rhs).fAddBackSegments = fAddBackSegments;
 		static_cast<TSiLiHit&>(rhs).fAddBackEnergy = fAddBackEnergy;
 	}
@@ -138,14 +138,14 @@ void TSiLiHit::SumHit(TSiLiHit *hit) {
   }
   
   if(fAddBackSegments.size()==0){
-	hit->Copy(*this,1);//suppresses waveform copying
+	hit->Copy(*this, true);//suppresses copying of addback
 	fAddBackSegments.clear();
 	fAddBackEnergy.clear();
-	this->SetEnergy(0);
+	SetEnergy(0);
 	SetHitBit(kIsEnergySet,true);
   }
   
-  this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
+  SetEnergy(GetEnergy() + hit->GetEnergy());
   fAddBackSegments.push_back(hit->GetSegment());
   fAddBackEnergy.push_back(hit->GetEnergy());
 }

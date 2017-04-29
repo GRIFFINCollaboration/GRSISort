@@ -26,7 +26,7 @@ class TSiLiHit : public TGRSIDetectorHit {
 		virtual ~TSiLiHit();
 		TSiLiHit(const TSiLiHit&);
 		
-		void Copy(TObject&,int=0) const;        //!
+		void Copy(TObject&, bool = false) const;        //!
 		void Clear(Option_t *opt="");
 		void Print(Option_t *opt="") const;
 
@@ -54,8 +54,10 @@ class TSiLiHit : public TGRSIDetectorHit {
 		static TPulseAnalyzer* FitFrag(const TFragment &frag,int ShapeFit=0,TChannel* =0);
 		static int FitPulseAnalyzer(TPulseAnalyzer* pulse,int ShapeFit,int segment);
 		static int FitPulseAnalyzer(TPulseAnalyzer* pulse,int ShapeFit=0,TChannel* =0);
-		TVector3 GetPosition(Double_t dist, bool = false) const; //!  
-		TVector3 GetPosition(bool = false) const; //!  
+		TVector3 GetPosition(Double_t dist, bool) const; //!  
+		TVector3 GetPosition(Double_t dist) const { return GetPosition(dist, false); } //!  
+		TVector3 GetPosition(bool) const; //!  
+		TVector3 GetPosition() const { return GetPosition(false); } //!  
 		
 		void SumHit(TSiLiHit*);
 		

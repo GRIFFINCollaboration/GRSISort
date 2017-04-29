@@ -87,8 +87,6 @@ class TSharcHit : public TGRSIDetectorHit {
                                                       return TGRSIDetectorHit::GetEnergy() + GetPad().GetEnergy(); 
                                                     return TGRSIDetectorHit::GetEnergy(); 
                                                   }
-    inline Double_t GetTime(Option_t* opt = "") const   { return TGRSIDetectorHit::GetTime(); }
-   
     Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0) { return GetTheta(Xoff,Yoff,Zoff)*TMath::RadToDeg(); } ; //!<! 
     Double_t GetTheta(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0); //!<! 
     

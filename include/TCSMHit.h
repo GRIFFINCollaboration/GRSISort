@@ -109,7 +109,7 @@ class TCSMHit : public TGRSIDetectorHit 	{
 
 		TVector3 GetPosition(Double_t dist = 0) const	{	return fDPosition;	 }	//!<!
 		Double_t GetEnergy(Option_t *opt = "") const		{ return GetDEnergy() + GetEEnergy();} //!<!
-		Double_t GetTime(Option_t *opt = "") const		{ return fVerDTime;} //!<!
+      Double_t GetTime(const UInt_t& correct_flag = kAll, Option_t* opt = "") const { return fVerDTime; }  ///< Returns fVerDTime
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
