@@ -46,11 +46,6 @@ static int ReadUtmp();
 static STRUCT_UTMP *SearchEntry(int, const char*);
 static void SetDisplay();
 
-
-
-
-
-
 int main(int argc, char **argv) {
    try{
      TThread::Initialize();
