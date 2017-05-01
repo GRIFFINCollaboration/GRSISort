@@ -37,7 +37,7 @@ void TAnalysisHistLoop::ClearQueue() {
 
 bool TAnalysisHistLoop::Iteration() {
   std::shared_ptr<TUnpackedEvent> event;
-  fInputQueue->Pop(event);
+  fInputSize = fInputQueue->Pop(event);
 
   if(event) {
     if(!fOutputFile){
@@ -45,6 +45,7 @@ bool TAnalysisHistLoop::Iteration() {
     }
 
     fCompiledHistograms.Fill(event);
+	 ++fItemsPopped;
     return true;
   } else if(fInputQueue->IsFinished()) {
     return false;
