@@ -56,7 +56,6 @@ Bool_t TCal::SetChannel(const TChannel* chan) {
 	///Sets the channel being calibrated
 	if(!chan) {
 		Error("SetChannel","TChannel does not exist");
-		printf("%p\n", static_cast<const void*>(chan));
 		return false;
 	}
 	//Set our TRef to point at the TChannel

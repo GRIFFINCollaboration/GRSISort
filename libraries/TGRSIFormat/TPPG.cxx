@@ -173,6 +173,15 @@ uint16_t TPPG::GetStatus(ULong64_t time) const {
 }
 
 void TPPG::Print(Option_t *opt) const {
+	if(fOdbPPGCodes.size() != fOdbDurations.size()) {
+		std::cout<<"Mismatch between number of ppg codes ("<<fOdbPPGCodes.size()<<") and durations ("<<fOdbDurations.size()<<")"<<std::endl;
+	} else {
+		std::cout<<"ODB cycle:"<<std::endl
+		         <<"Code       Duration"<<std::endl;
+		for(size_t i = 0; i < fOdbPPGCodes.size(); ++i) {
+			std::cout<<"0x"<<std::hex<<std::setw(8)<<fOdbPPGCodes[i]<<std::dec<<" "<<fOdbDurations[i]<<std::endl;
+		}
+	}
 	if(MapIsEmpty()) {
 		printf("Empty\n");
 		return;
@@ -298,8 +307,8 @@ void TPPG::Clear(Option_t *opt) {
 }
 
 Int_t TPPG::Write(const char* name, Int_t option, Int_t bufsize) const {
-  if(PPGSize()) {
-    printf("Writing PPG\n");
+  if(PPGSize() > 0 || OdbPPGSize() > 0) {
+    printf("Writing PPG with %lu events and %lu ODB settings\n", PPGSize(), OdbPPGSize());
     return TObject::Write("TPPG", TObject::kSingleKey);
   }
 

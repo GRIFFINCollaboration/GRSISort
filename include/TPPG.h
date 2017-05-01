@@ -95,9 +95,9 @@ class TPPG : public TObject	{
 
     void Copy(TObject& rhs) const;
     void Setup();
-    Int_t Write(const char *name=0, Int_t option=0, Int_t bufsize=0) {
-      return ((const TPPG*)this)->Write(name, option, bufsize);
-    }
+    //Int_t Write(const char *name=0, Int_t option=0, Int_t bufsize=0) {
+    //  return ((const TPPG*)this)->Write(name, option, bufsize);
+    //}
     Int_t Write(const char *name=0, Int_t option=0, Int_t bufsize=0) const;
 
     
@@ -106,7 +106,8 @@ class TPPG : public TObject	{
     uint16_t GetStatus(ULong64_t time) const;
     ULong64_t GetLastStatusTime(ULong64_t time, ppg_pattern pat = kJunk, bool exact_flag = false ) const;
     Bool_t MapIsEmpty() const;
-    std::size_t PPGSize() const {return fPPGStatusMap->size()- 1;}
+    std::size_t PPGSize() const { return fPPGStatusMap->size()- 1; }
+	 std::size_t OdbPPGSize() const { return fOdbPPGCodes.size(); }
     Long64_t Merge(TCollection* list);
     void Add(const TPPG* ppg);
     void operator+=(const TPPG& rhs);                           
@@ -126,6 +127,8 @@ class TPPG : public TObject	{
     const TPPGData* First();
     const TPPGData* Last();
 
+	 void SetOdbCycle(std::vector<short> ppgCodes, std::vector<int> durations) { fOdbPPGCodes = ppgCodes; fOdbDurations = durations; }
+
     virtual void Print(Option_t* opt = "") const;
     virtual void Clear(Option_t* opt = "");
 
@@ -139,8 +142,11 @@ class TPPG : public TObject	{
     ULong64_t fCycleLength;
     std::map<ULong64_t, int> fNumberOfCycleLengths;
 
+	 std::vector<short> fOdbPPGCodes;   ///< ppg state codes read from odb
+	 std::vector<int>   fOdbDurations;  ///< duration of ppg state as read from odb
+
 /// \cond CLASSIMP
-    ClassDef(TPPG,2) //Contains PPG information
+    ClassDef(TPPG, 3) //Contains PPG information
 /// \endcond
 };
 /*! @} */
