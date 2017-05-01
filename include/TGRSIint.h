@@ -31,6 +31,7 @@
 #include "TList.h"
 #include "TEnv.h"
 #include "TFile.h"
+#include "TStopwatch.h"
 
 #include "Globals.h"
 #include "TRawFile.h"
@@ -73,12 +74,9 @@ public:
 private:
   void SetupPipeline();
   void LoopUntilDone();
-  //bool FileAutoDetect(std::string fileName, long fileSize);
-  //void InitFlags();
   void ApplyOptions();
   void DrawLogo();
   void LoadGROOTGraphics();
-  void LoadExtraClasses();
 
   Long_t DelayedProcessLine(std::string message);
 
@@ -101,6 +99,8 @@ private:
   std::string fNewFragmentFile;  ///< New fragment file name
 
   std::vector<TRawFile*> fRawFiles; ///< List of Raw files opened
+
+  TStopwatch* fStopwatch;
 
 /// \cond CLASSIMP
   ClassDef(TGRSIint,0); //Interpreter for GRSISort
