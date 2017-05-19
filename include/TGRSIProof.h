@@ -26,7 +26,7 @@
 #include "TError.h"
 
 #include <unistd.h>
-const char * const nulFileName = "/dev/null";
+const char* const nulFileName = "/dev/null";
 #define CROSS_DUP(fd) dup(fd)
 #define CROSS_DUP2(fd, newfd) dup2(fd, newfd)
 
@@ -35,36 +35,38 @@ const char * const nulFileName = "/dev/null";
 /// \class TGRSIProof
 ///
 /// This Class allows proof to work with GRSI
-/// 
+///
 ///
 /////////////////////////////////////////////////////////////////
 
-class TGRSIProof : public TProof	{
-  public:
-   TGRSIProof() : TProof() {} 
-  // TGRSIProof(const TObject& rhs) : TProof(rhs) {} 
-   virtual ~TGRSIProof(){}
-   
-   static TGRSIProof* Open(const char* worker = ""){
-      TGRSIProof *p = static_cast<TGRSIProof*>(TProof::Open(worker));
+class TGRSIProof : public TProof {
+public:
+   TGRSIProof() : TProof() {}
+   // TGRSIProof(const TObject& rhs) : TProof(rhs) {}
+   virtual ~TGRSIProof() {}
+
+   static TGRSIProof* Open(const char* worker = "")
+   {
+      TGRSIProof* p = static_cast<TGRSIProof*>(TProof::Open(worker));
       p->LoadLibsIntoProof();
       return p;
    }
-   void LoadLibsIntoProof(){
-      //This function Loops through all libraries in GRSISort, and brute-force loads them into proof
-      //This is done because order of loading matters. We suppress the cout output because proof->Exec
-      //barfs all of the output. To me there is no obvious way to load every library on each of the PROOF slaves
-   
+   void LoadLibsIntoProof()
+   {
+      // This function Loops through all libraries in GRSISort, and brute-force loads them into proof
+      // This is done because order of loading matters. We suppress the cout output because proof->Exec
+      // barfs all of the output. To me there is no obvious way to load every library on each of the PROOF slaves
+
       const char* pPath = getenv("GRSISYS");
 
-      //First set the include path on each slave
-      Exec(Form("gInterpreter->AddIncludePath(\"%s/include\")",pPath));
+      // First set the include path on each slave
+      Exec(Form("gInterpreter->AddIncludePath(\"%s/include\")", pPath));
       std::cout << "Loading Libraries" << std::endl;
-      Exec(Form("gSystem->Load(\"%s/lib/libGRSI.so\");",pPath));
+      Exec(Form("gSystem->Load(\"%s/lib/libGRSI.so\");", pPath));
    }
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIProof,1);  // Event Fragments
+   ClassDef(TGRSIProof, 1); // Event Fragments
    /// \endcond
 };
 /*! @} */

@@ -16,39 +16,39 @@
 #include "TGRSIDetectorHit.h"
 
 class TPacesHit : public TGRSIDetectorHit {
-	public:
-		TPacesHit();
-		TPacesHit(const TPacesHit&);
-      TPacesHit(const TFragment& frag) : TGRSIDetectorHit(frag) {} 
-		virtual ~TPacesHit();
+public:
+   TPacesHit();
+   TPacesHit(const TPacesHit&);
+   TPacesHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
+   virtual ~TPacesHit();
 
-	private:
-      Int_t fFilter;
+private:
+   Int_t fFilter;
 
-	public:
-		/////////////////////////  Setters	/////////////////////////////////////
-      inline void SetFilterPattern(const int &x)   { fFilter = x;   }                  //!<! 
-      //void SetHit();
+public:
+   /////////////////////////  Setters	/////////////////////////////////////
+   inline void SetFilterPattern(const int& x) { fFilter = x; } //!<!
+   // void SetHit();
 
-		/////////////////////////  Getters	/////////////////////////////////////
-      inline Int_t    GetFilterPattern() const         {   return fFilter;   }          //!<!
+   /////////////////////////  Getters	/////////////////////////////////////
+   inline Int_t GetFilterPattern() const { return fFilter; } //!<!
 
-		/////////////////////////  TChannel Helpers /////////////////////////////////////
-      bool   InFilter(Int_t);  //!<!
+   /////////////////////////  TChannel Helpers /////////////////////////////////////
+   bool InFilter(Int_t); //!<!
 
-	public:
-		virtual void Clear(Option_t *opt = "");		 //!<!
-		virtual void Print(Option_t *opt = "") const; //!<!
-      virtual void Copy(TObject&) const;        //!<!
-      TVector3 GetPosition(Double_t dist) const; //!<!
-      TVector3 GetPosition() const; //!<!
+public:
+   virtual void Clear(Option_t* opt = "");       //!<!
+   virtual void Print(Option_t* opt = "") const; //!<!
+   virtual void Copy(TObject&) const;            //!<!
+   TVector3 GetPosition(Double_t dist) const;    //!<!
+   TVector3 GetPosition() const;                 //!<!
 
-   private:
-      Double_t GetDefaultDistance() const { return 0.0; }
+private:
+   Double_t GetDefaultDistance() const { return 0.0; }
 
-/// \cond CLASSIMP
-	ClassDef(TPacesHit,3);
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDef(TPacesHit, 3);
+   /// \endcond
 };
 /*! @} */
 #endif

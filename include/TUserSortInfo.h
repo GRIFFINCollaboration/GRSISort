@@ -16,17 +16,17 @@
 #include "TGRSISortInfo.h"
 
 class TUserSortInfo : public TGRSISortInfo {
-   public:
-      TUserSortInfo(){};
-      TUserSortInfo(const TGRSIRunInfo* info) : TGRSISortInfo(info) {};
-      virtual ~TUserSortInfo() {};
+public:
+   TUserSortInfo(){};
+   TUserSortInfo(const TGRSIRunInfo* info) : TGRSISortInfo(info){};
+   virtual ~TUserSortInfo(){};
 
-      void Print(Option_t* opt = "") const;
-      void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "");
 
-/// \cond CLASSIMP
-   ClassDef(TUserSortInfo,1);
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDef(TUserSortInfo, 1);
+   /// \endcond
 };
 /*! @} */
 #endif

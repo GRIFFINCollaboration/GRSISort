@@ -30,32 +30,31 @@
 ///
 /////////////////////////////////////////////////////////////////
 
+class TDetector : public TObject {
+public:
+   TDetector();
+   TDetector(const TDetector&);
+   virtual ~TDetector();
+   TDetector& operator=(const TDetector& other)
+   {
+      if (this != &other) other.Copy(*this);
+      return *this;
+   }
 
-class TDetector : public TObject	{
-	public:
-		TDetector();
-		TDetector(const TDetector&);
-		virtual ~TDetector();
-		TDetector &operator= (const TDetector& other) {
-			if(this != &other) 
-				other.Copy(*this);
-			return *this;
-		}
-
-	public: 
-		virtual void BuildHits()                                        { AbstractMethod("BuildHits()"); } //!<!
+public:
+   virtual void BuildHits() { AbstractMethod("BuildHits()"); } //!<!
 #ifndef __CINT__
-		virtual void AddFragment(std::shared_ptr<const TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
+   virtual void AddFragment(std::shared_ptr<const TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
 #endif
 
-		virtual void Copy(TObject&) const;              //!<!
-		virtual void Clear(Option_t* opt = "");         //!<!
-      virtual void ClearTransients() {}               //!<!
-		virtual void Print(Option_t* opt = "") const;   //!<!
+   virtual void Copy(TObject&) const;            //!<!
+   virtual void Clear(Option_t* opt = "");       //!<!
+   virtual void ClearTransients() {}             //!<!
+   virtual void Print(Option_t* opt = "") const; //!<!
 
-/// \cond CLASSIMP
-		ClassDef(TDetector,1) //Abstract class for detector systems 
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDef(TDetector, 1) // Abstract class for detector systems
+   /// \endcond
 };
 /*! @} */
 #endif

@@ -17,54 +17,54 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///
 /// \class TAnalysisWriteLoop
-/// 
+///
 /// This loop writes built events to file
 ///
 ////////////////////////////////////////////////////////////////////////////////
 
 class TAnalysisWriteLoop : public StoppableThread {
-	public:
-		static TAnalysisWriteLoop* Get(std::string name="", std::string output_filename="");
+public:
+   static TAnalysisWriteLoop* Get(std::string name = "", std::string output_filename = "");
 
-		virtual ~TAnalysisWriteLoop();
+   virtual ~TAnalysisWriteLoop();
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > >& InputQueue() { return fInputQueue; }
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& OutOfOrderQueue() { return fOutOfOrderQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>&  InputQueue() { return fInputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& OutOfOrderQueue() { return fOutOfOrderQueue; }
 #endif
 
-		virtual void ClearQueue();
+   virtual void ClearQueue();
 
-		void Write();
+   void Write();
 
-		size_t GetItemsPushed()  { return fItemsPopped; }
-		size_t GetItemsPopped()  { return 0; }
-		size_t GetItemsCurrent() { return 0; }
-		size_t GetRate()         { return 0; }
+   size_t GetItemsPushed() { return fItemsPopped; }
+   size_t GetItemsPopped() { return 0; }
+   size_t GetItemsCurrent() { return 0; }
+   size_t GetRate() { return 0; }
 
-		std::string EndStatus();
+   std::string EndStatus();
 
-	protected:
-		bool Iteration();
+protected:
+   bool Iteration();
 
-	private:
-		TAnalysisWriteLoop(std::string name, std::string output_file);
-		void AddBranch(TClass* cls);
+private:
+   TAnalysisWriteLoop(std::string name, std::string output_file);
+   void AddBranch(TClass* cls);
 
-		void WriteEvent(TUnpackedEvent& event);
-		TFile* fOutputFile;
-		TTree* fEventTree;
+   void WriteEvent(TUnpackedEvent& event);
+   TFile* fOutputFile;
+   TTree* fEventTree;
 
-		TTree* fOutOfOrderTree;
-		TFragment* fOutOfOrderFrag;
+   TTree*     fOutOfOrderTree;
+   TFragment* fOutOfOrderFrag;
 #ifndef __CINT__
-		std::map<TClass*, TDetector**> fDetMap;
-		std::map<TClass*, TDetector*> fDefaultDets;
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent> > > fInputQueue;
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > fOutOfOrderQueue;
+   std::map<TClass*, TDetector**> fDetMap;
+   std::map<TClass*, TDetector*>  fDefaultDets;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>  fInputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutOfOrderQueue;
 #endif
 
-		ClassDef(TAnalysisWriteLoop, 0);
+   ClassDef(TAnalysisWriteLoop, 0);
 };
 
 /*! @} */

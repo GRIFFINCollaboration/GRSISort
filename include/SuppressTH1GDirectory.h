@@ -8,17 +8,12 @@
 // Not really thread-safe.  At all.  Hopefully better than the alternative.
 class SuppressTH1GDirectory {
 public:
-  SuppressTH1GDirectory()
-    : prev_status(TH1::AddDirectoryStatus()) {
-    TH1::AddDirectory(false);
-  }
+   SuppressTH1GDirectory() : prev_status(TH1::AddDirectoryStatus()) { TH1::AddDirectory(false); }
 
-  ~SuppressTH1GDirectory() {
-    TH1::AddDirectory(prev_status);
-  }
+   ~SuppressTH1GDirectory() { TH1::AddDirectory(prev_status); }
 
 private:
-  bool prev_status;
+   bool prev_status;
 };
 
 #endif

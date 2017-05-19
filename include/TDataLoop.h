@@ -8,7 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///
 /// \class TDataLoop
-/// 
+///
 /// This loop reads midas events from a midas file.
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -30,60 +30,60 @@
 #include "TRawEvent.h"
 #include "TXMLOdb.h"
 
-//class TMidasFile;
+// class TMidasFile;
 
-class TDataLoop : public StoppableThread  {
-	public:
-		static TDataLoop *Get(std::string name="", TRawFile* source=0);
-		virtual ~TDataLoop();
+class TDataLoop : public StoppableThread {
+public:
+   static TDataLoop* Get(std::string name = "", TRawFile* source = 0);
+   virtual ~TDataLoop();
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent> > >& OutputQueue() { return fOutputQueue; }
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>& OutputQueue() { return fOutputQueue; }
 #endif
 
-		const TRawFile& GetSource() const { return *fSource; }
+   const TRawFile& GetSource() const { return *fSource; }
 
-		virtual void ClearQueue();
+   virtual void ClearQueue();
 
-		virtual bool Iteration();
-		virtual void OnEnd();
+   virtual bool Iteration();
+   virtual void OnEnd();
 
-		size_t GetItemsPushed()  { return fOutputQueue->ItemsPushed(); }
-		size_t GetItemsPopped()  { return fOutputQueue->ItemsPopped(); }
-		size_t GetItemsCurrent() { return fOutputQueue->Size();        }
-		size_t GetRate()         { return 0; }
+   size_t GetItemsPushed() { return fOutputQueue->ItemsPushed(); }
+   size_t GetItemsPopped() { return fOutputQueue->ItemsPopped(); }
+   size_t GetItemsCurrent() { return fOutputQueue->Size(); }
+   size_t GetRate() { return 0; }
 
-		void ReplaceSource(TRawFile* new_source);
-		void ResetSource();
+   void ReplaceSource(TRawFile* new_source);
+   void ResetSource();
 
-		void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
-		bool GetSelfStopping() const { return fSelfStopping; }
+   void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
+   bool                      GetSelfStopping() const { return fSelfStopping; }
 
-	private:
-		TDataLoop(std::string name,TRawFile* source);
-		TDataLoop();
-		TDataLoop(const TDataLoop& other);
-		TDataLoop& operator=(const TDataLoop& other);
+private:
+   TDataLoop(std::string name, TRawFile* source);
+   TDataLoop();
+   TDataLoop(const TDataLoop& other);
+   TDataLoop& operator=(const TDataLoop& other);
 
-		TRawFile* fSource;
-		bool fSelfStopping;
+   TRawFile* fSource;
+   bool      fSelfStopping;
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent> > > fOutputQueue;
-		std::mutex fSourceMutex;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>> fOutputQueue;
+   std::mutex                                                   fSourceMutex;
 #endif
 
 #ifdef HAS_XML
-		TXMLOdb* fOdb;
+   TXMLOdb* fOdb;
 #endif
 
-		void SetFileOdb(char* data, int size);
-		void SetRunInfo();
-		void SetEPICSOdb();
-		void SetTIGOdb();
-		void SetGRIFFOdb();
+   void SetFileOdb(char* data, int size);
+   void SetRunInfo();
+   void SetEPICSOdb();
+   void SetTIGOdb();
+   void SetGRIFFOdb();
 
-		ClassDef(TDataLoop, 0);
+   ClassDef(TDataLoop, 0);
 };
 
 /*! @} */
