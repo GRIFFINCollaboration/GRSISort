@@ -541,7 +541,8 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
 					// check the number of words the header said we should have with the number of words we've read
 					// the number of words is only set for bank >= GRF3
 					// if the fragment has a waveform, we can't compare the number of words
-					if(eventFrag->GetNumberOfWords() > 0 && !eventFrag->HasWave() && eventFrag->GetNumberOfWords() != x+1) {
+					// the headers number of words doesn't include the header itself, so we can compare to x directly
+					if(eventFrag->GetNumberOfWords() > 0 && !eventFrag->HasWave() && eventFrag->GetNumberOfWords() != x) {
 						if(fState == EDataParserState::kGood) {
 							fState = EDataParserState::kWrongNofWords;
 							failedWord = x;
@@ -1367,7 +1368,7 @@ int TDataParser::FifoToFragment(unsigned short* data,int size,bool zerobuffer,
 int TDataParser::FippsToFragment(std::vector<char> data) {
 	uint32_t* ptr = reinterpret_cast<uint32_t*>(data.data());
 
-	int eventsRead = 0;
+	int totalEventsRead = 0;
 	std::shared_ptr<TFragment> eventFrag = std::make_shared<TFragment>();
 	Long64_t tmpTimestamp;
 	if(fItemsPopped != nullptr && fInputSize != nullptr) {
@@ -1385,6 +1386,7 @@ int TDataParser::FippsToFragment(std::vector<char> data) {
 		tmpTimestamp = tmpTimestamp << 30;
 		tmpTimestamp |= ptr[i+1]&0x3fffffff;
 		eventFrag->SetTimeStamp(tmpTimestamp);
+		++totalEventsRead;
 		if((ptr[i+2] & 0x7fff) == 0) {
 			if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(99);
 			Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, ptr, data.size()/4, i+2, false));
@@ -1393,11 +1395,10 @@ int TDataParser::FippsToFragment(std::vector<char> data) {
 		eventFrag->SetCharge(static_cast<int32_t>(ptr[i+2] & 0x7fff));
 		if(fRecordDiag) TParsingDiagnostics::Get()->GoodFragment(eventFrag);
 		Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
-		++eventsRead;
-		//std::cout<<eventsRead<<": "<<eventFrag->Charge()<<", "<<eventFrag->GetTimeStamp()<<std::endl;
+		//std::cout<<totalEventsRead<<": "<<eventFrag->Charge()<<", "<<eventFrag->GetTimeStamp()<<std::endl;
 	}
 
-	return eventsRead;
+	return totalEventsRead;
 }
 
 void TDataParser::Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > >& queues, std::shared_ptr<TFragment> frag) {

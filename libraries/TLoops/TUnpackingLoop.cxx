@@ -26,7 +26,7 @@ TUnpackingLoop *TUnpackingLoop::Get(std::string name) {
 TUnpackingLoop::TUnpackingLoop(std::string name)
 	: StoppableThread(name),
 	fInputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent> > >()),
-	fFragsReadFromRaw(0),fGoodFragsRead(0), fEvaluateDataType(true) {
+	fFragsReadFromRaw(0), fGoodFragsRead(0), fEvaluateDataType(true) {
 }
 
 TUnpackingLoop::~TUnpackingLoop() { }
@@ -72,13 +72,8 @@ bool TUnpackingLoop::Iteration(){
 		++fItemsPopped;
 	}
 	
-	int frags = event->Process(fParser);
-	if(frags > 0) {
-		fFragsReadFromRaw += frags;
-		fGoodFragsRead += frags;
-	} else {
-		fFragsReadFromRaw += 1;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
-	}
+	fFragsReadFromRaw += event->Process(fParser);
+	fGoodFragsRead += event->GoodFrags();
 
 	return true;
 }

@@ -204,7 +204,8 @@ void TGRSIint::Terminate(Int_t status){
    ///Kills all of the threads if the process is allowed to terminate. This 
    ///sends an error to TSortingDiagnostics if an analysis tree is being created
   if(!fAllowedToTerminate){
-    return;
+	  std::cout<<"Not allowed to terminate, sorry!"<<std::endl;
+	  return;
   }
 
   StoppableThread::SendStop();
@@ -1016,12 +1017,19 @@ bool TGRSIInterruptHandler::Notify() {
    ///for safe cleanup.
    static int timespressed  = 0;
    timespressed++;
-   if(timespressed>3) {
-      printf("\n" DRED BG_WHITE  "   No you shutup! " RESET_COLOR "\n"); fflush(stdout);
-      exit(1);
+	switch(timespressed) {
+		case 1:
+			printf("\n" DRED BG_WHITE  "   Control-c was pressed, terminating.   " RESET_COLOR "\n"); fflush(stdout);
+			TGRSIint::instance()->Terminate();
+			break;
+		case 2:
+			printf("\n" DRED BG_WHITE  "   Control-c was pressed again, stopping all queues.   " RESET_COLOR "\n"); fflush(stdout);
+			StoppableThread::ClearAllQueues();
+			break;
+		default:
+			printf("\n" DRED BG_WHITE  "   No you shutup!   " RESET_COLOR "\n"); fflush(stdout);
+			exit(1);
    }
-   printf("\n" DRED BG_WHITE  "   Control-c was pressed.   " RESET_COLOR "\n"); fflush(stdout);
-   TGRSIint::instance()->Terminate();
    return true;
 }
 

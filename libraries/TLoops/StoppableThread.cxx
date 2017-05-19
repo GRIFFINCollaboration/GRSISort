@@ -117,7 +117,7 @@ void StoppableThread::SendStop() {
 	for(auto& elem : fThreadMap) {
 		TDataLoop* data_loop = dynamic_cast<TDataLoop*>(elem.second);
 		TFragmentChainLoop* chain_loop = dynamic_cast<TFragmentChainLoop*>(elem.second);
-		if(data_loop || chain_loop) {
+		if(data_loop != nullptr || chain_loop != nullptr) {
 			std::cout << "Stopping thread " << elem.first << std::endl;
 			elem.second->Stop();
 		}
@@ -140,6 +140,12 @@ void StoppableThread::StopAll() {
 	}
 
 	status_out();
+}
+
+void StoppableThread::ClearAllQueues() {
+	for(auto& elem : fThreadMap) {
+		elem.second->ClearQueue();
+	}
 }
 
 StoppableThread *StoppableThread::Get(std::string name) {

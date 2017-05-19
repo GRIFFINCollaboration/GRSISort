@@ -31,6 +31,8 @@ TMidasEvent::TMidasEvent() {
 	fEventHeader.fSerialNumber = 0;
 	fEventHeader.fTimeStamp    = 0;
 	fEventHeader.fDataSize     = 0;
+
+	fGoodFrags = 0;
 }
 
 void TMidasEvent::Copy(TObject& rhs) const {
@@ -80,6 +82,8 @@ void TMidasEvent::Clear(Option_t *opt) {
 	fEventHeader.fSerialNumber = 0;
 	fEventHeader.fTimeStamp    = 0;
 	fEventHeader.fDataSize     = 0;
+
+	fGoodFrags = 0;
 }
 
 void TMidasEvent::SetData(uint32_t size, char* data) {
@@ -619,7 +623,6 @@ int TMidasEvent::Process(TDataParser& parser) {
 				if((banksize = LocateBank(nullptr,"MSRD",&ptr))>0) {
 					frags = ProcessEPICS((float*)ptr, banksize, parser);
 				}
-
 				break;
 		};
 	}
@@ -631,6 +634,8 @@ int TMidasEvent::Process(TDataParser& parser) {
 		SetBankList();
 		Print(Form("a%i",(-1*frags)-1));
 	}
+
+	if(frags < 0) frags = 0;
 
 	return frags;
 }
@@ -647,7 +652,7 @@ int TMidasEvent::ProcessTIGRESS(uint32_t* ptr, int& dSize, TDataParser& parser) 
 
 int TMidasEvent::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBank bank, TDataParser& parser) {
 	//loop over words in event to find fragment header
-	int frags = 0;
+	int totalFrags = 0;
 	for(int index = 0; index < dSize;) {
 		if(((ptr[index])&0xf0000000) == 0x80000000) {
 			//if we found a fragment header we pass the data to the data parser which returns the number of words read
@@ -665,11 +670,12 @@ int TMidasEvent::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBank ba
 			}
 			if(words > 0) {
 				//we successfully read one event with <words> words, so we advance the index by words
-				++frags;
+				++fGoodFrags;
+				++totalFrags;
 				index += words;
 			} else {
 				//we failed to read the fragment on word <-words>, so advance the index by -words and we create an error message
-				++frags;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
+				++totalFrags;   // if the midas bank fails, we assume it only had one frag in it... this is just used for a print statement.
 				index -= words;
 
 				if(!TGRSIOptions::Get()->SuppressErrors()) {
@@ -705,7 +711,7 @@ int TMidasEvent::ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBank ba
 		}
 	}
 
-	return frags;
+	return totalFrags;
 }
 
 // end

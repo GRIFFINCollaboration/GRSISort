@@ -122,7 +122,12 @@ int TLstEvent::SwapBytes(bool force) {
 }
 
 int TLstEvent::Process(TDataParser& parser) {
-	return parser.FippsToFragment(fData);
+	/// Process this TLstEvent using the provided data parser.
+	/// Returns the total number of fragments read (good and bad).
+	// right now the parser only returns the total number of fragments read
+	// so we assume (for now) that all fragments are good fragments
+	fGoodFrags = parser.FippsToFragment(fData);
+	return fGoodFrags;
 }
 
 // end
