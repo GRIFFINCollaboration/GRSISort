@@ -6,10 +6,11 @@
 #include "TGRSIRunInfo.h"
 
 /// \cond CLASSIMP
-ClassImp(TPPGData) ClassImp(TPPG)
-   /// \endcond
+ClassImp(TPPGData)
+ClassImp(TPPG)
+/// \endcond
 
-   TPPG* TPPG::fPPG = nullptr;
+TPPG* TPPG::fPPG = nullptr;
 
 TPPGData::TPPGData()
 {
