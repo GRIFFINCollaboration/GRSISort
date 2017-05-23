@@ -4,54 +4,63 @@
 
 /// \cond CLASSIMP
 ClassImp(TPacesHit)
-/// \endcond
+   /// \endcond
 
-TPacesHit::TPacesHit() : TGRSIDetectorHit()	{	
+   TPacesHit::TPacesHit()
+   : TGRSIDetectorHit()
+{
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-	Clear();
+   Clear();
 }
 
-TPacesHit::TPacesHit(const TPacesHit& rhs) : TGRSIDetectorHit() {	
+TPacesHit::TPacesHit(const TPacesHit& rhs) : TGRSIDetectorHit()
+{
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-	Clear();
+   Clear();
    rhs.Copy(*this);
 }
 
-TPacesHit::~TPacesHit()  {	}
+TPacesHit::~TPacesHit()
+{
+}
 
-void TPacesHit::Copy(TObject& rhs) const {
+void TPacesHit::Copy(TObject& rhs) const
+{
    TGRSIDetectorHit::Copy(rhs);
    static_cast<TPacesHit&>(rhs).fFilter = fFilter;
-   return;                                      
-}                                       
+   return;
+}
 
-bool TPacesHit::InFilter(Int_t) {
+bool TPacesHit::InFilter(Int_t)
+{
    // check if the desired filter is in wanted filter;
    // return the answer;
    return true;
 }
 
-
-void TPacesHit::Clear(Option_t* opt)	{
-   TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
+void TPacesHit::Clear(Option_t* opt)
+{
+   TGRSIDetectorHit::Clear(opt); // clears the base (address, position and waveform)
    fFilter = 0;
 }
 
-
-void TPacesHit::Print(Option_t*) const	{
-   printf("Paces Detector: %i\n",GetDetector());
-   printf("Paces Energy:   %lf\n",GetEnergy());
-	printf("Paces hit time:   %f\n",GetTime());
+void TPacesHit::Print(Option_t*) const
+{
+   printf("Paces Detector: %i\n", GetDetector());
+   printf("Paces Energy:   %lf\n", GetEnergy());
+   printf("Paces hit time:   %f\n", GetTime());
 }
 
-TVector3 TPacesHit::GetPosition(Double_t) const{
-	return TPaces::GetPosition(GetDetector());
+TVector3 TPacesHit::GetPosition(Double_t) const
+{
+   return TPaces::GetPosition(GetDetector());
 }
 
-TVector3 TPacesHit::GetPosition() const{
-	return GetPosition(GetDefaultDistance());
+TVector3 TPacesHit::GetPosition() const
+{
+   return GetPosition(GetDefaultDistance());
 }

@@ -4,7 +4,7 @@
 #include <TMath.h>
 
 ////////////////////////////////////////////////////////////
-//                    
+//
 // TPaces
 //
 // The TPaces class defines the observables and algorithms used
@@ -14,77 +14,86 @@
 
 /// \cond CLASSIMP
 ClassImp(TPaces)
-/// \endcond
+   /// \endcond
 
-bool TPaces::fSetCoreWave = false;
+   bool TPaces::fSetCoreWave = false;
 
-TPaces::TPaces() : TGRSIDetector() {
+TPaces::TPaces() : TGRSIDetector()
+{
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    Clear();
 }
 
-TPaces::TPaces(const TPaces& rhs) : TGRSIDetector() {
+TPaces::TPaces(const TPaces& rhs) : TGRSIDetector()
+{
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-	rhs.Copy(*this);
+   rhs.Copy(*this);
 }
 
-void TPaces::Copy(TObject &rhs) const {
-  TGRSIDetector::Copy(rhs);
+void TPaces::Copy(TObject& rhs) const
+{
+   TGRSIDetector::Copy(rhs);
 
-  static_cast<TPaces&>(rhs).fPacesHits          = fPacesHits;
-  static_cast<TPaces&>(rhs).fSetCoreWave        = fSetCoreWave;
-}                                       
-
-TPaces::~TPaces()	{
-   //Default Destructor
+   static_cast<TPaces&>(rhs).fPacesHits   = fPacesHits;
+   static_cast<TPaces&>(rhs).fSetCoreWave = fSetCoreWave;
 }
 
-void TPaces::Clear(Option_t *opt)	{
-   //Clears the mother, all of the hits
-   if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
-     TGRSIDetector::Clear(opt);
+TPaces::~TPaces()
+{
+   // Default Destructor
+}
+
+void TPaces::Clear(Option_t* opt)
+{
+   // Clears the mother, all of the hits
+   if(TString(opt).Contains("all", TString::ECaseCompare::kIgnoreCase)) {
+      TGRSIDetector::Clear(opt);
    }
-	fPacesHits.clear();
+   fPacesHits.clear();
 }
 
-
-void TPaces::Print(Option_t*) const {
-  //Prints out TPaces members, currently does nothing.
-  printf("%lu fPacesHits\n",fPacesHits.size());
-  return;
+void TPaces::Print(Option_t*) const
+{
+   // Prints out TPaces members, currently does nothing.
+   printf("%lu fPacesHits\n", fPacesHits.size());
+   return;
 }
 
-TPaces& TPaces::operator=(const TPaces& rhs) {
-	rhs.Copy(*this);
-	return *this;
+TPaces& TPaces::operator=(const TPaces& rhs)
+{
+   rhs.Copy(*this);
+   return *this;
 }
 
-void TPaces::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*){
+void TPaces::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*)
+{
    TPacesHit hit(*frag);
    fPacesHits.push_back(std::move(hit));
 }
 
-TGRSIDetectorHit* TPaces::GetHit(const Int_t& idx) {
+TGRSIDetectorHit* TPaces::GetHit(const Int_t& idx)
+{
    return GetPacesHit(idx);
 }
 
-TPacesHit* TPaces::GetPacesHit(const int& i) {
+TPacesHit* TPaces::GetPacesHit(const int& i)
+{
    try {
-      return &fPacesHits.at(i);   
-   } catch(const std::out_of_range& oor){
+      return &fPacesHits.at(i);
+   } catch(const std::out_of_range& oor) {
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;
 }
 
-TVector3 TPaces::GetPosition(int) {
-   //Gets the position vector for a crystal specified by DetNbr
-   //Does not currently contain any positons.
-   return TVector3(0,0,1);
+TVector3 TPaces::GetPosition(int)
+{
+   // Gets the position vector for a crystal specified by DetNbr
+   // Does not currently contain any positons.
+   return TVector3(0, 0, 1);
 }
-
