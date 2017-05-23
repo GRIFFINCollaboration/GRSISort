@@ -8,8 +8,8 @@
 //                                                                      //
 //////////////////////////////////////////////////////////////////////////
 
-#include <Globals.h>
-#include <GRSIVersion.h>
+#include "Globals.h"
+#include "GVersion.h"
 
 #include "RConfigure.h"
 
@@ -30,7 +30,7 @@
 #include <time.h>
 #include <sys/time.h>
 
-#include <TSystem.h>
+#include "TSystem.h"
 
 static Display     *gDisplay       = 0;
 static Window       gLogoWindow    = 0;
@@ -284,12 +284,10 @@ static int DrawCreditItem(const char *creditItem, const char **members,
    return y;
 }
 
-static int DrawCredits(bool draw, bool extended)
+static int DrawCredits(bool draw, bool)
 {
-   // Draw credits. If draw is true draw credits,
-   // otherwise just return size of all credit text.
-   // If extended is true draw or returns size for extended full
-   // credits list.
+   /// Draw credits. If draw is true draw credits,
+   /// otherwise just return size of all credit text.
 
    //printf("here 1 \n");
 
@@ -309,51 +307,10 @@ static int DrawCredits(bool draw, bool extended)
 
    y += 2*lineSpacing - 1;  // special layout tweak
 
-   //y = DrawCreditItem("Core Engineering: ", gRootDevelopers, y, draw);
-
-   //y += 2*lineSpacing - 1;  // to just not cut the bottom of the "p"
-
-   //y = DrawCreditItem("CINT C/C++ Intepreter: ", gCintDevelopers, y, draw);
-
-   //y += 2*lineSpacing;
-
-   //y = DrawCreditItem("Documentation: ", gRootDocumentation, y, draw);
-
-
    y = DrawCreditItem("Key Contributions: ", gKeyContributors, y, draw);
 
    y += 2*lineSpacing - 1;  // special layout tweak
 
-
-/*
-   if (extended && gContributors) {
-      y += 2*lineSpacing;
-      y = DrawCreditItem("Contributors: ", (const char **)gContributors, y, draw);
-
-      y += 2*lineSpacing;
-      y = DrawCreditItem("Our sincere thanks and apologies to anyone who deserves", 0, y, draw);
-      y += lineSpacing;
-      y = DrawCreditItem("credit but fails to appear in this list.", 0, y, draw);
-
-      struct passwd *pwd = getpwuid(getuid());
-      if (pwd) {
-         char *name = new char [strlen(pwd->pw_gecos)+1];
-         strcpy(name, pwd->pw_gecos);
-         char *s = strchr(name, ',');
-         if (s) *s = 0;
-         char line[1024];
-         if (strlen(name))
-            snprintf(line, sizeof(line), "Extra special thanks go to %s,", name);
-         else
-            snprintf(line, sizeof(line), "Extra special thanks go to %s,", pwd->pw_name);
-         delete [] name;
-         y += 2*lineSpacing;
-         y = DrawCreditItem(line, 0, y, draw);
-         y += lineSpacing;
-         y = DrawCreditItem("one of our favorite users.", 0, y, draw);
-      }
-   }
-*/
    y += 10;
    return y;
 }

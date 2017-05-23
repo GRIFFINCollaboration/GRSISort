@@ -62,7 +62,7 @@ void TZeroDegreeHit::Copy(TObject &obj, bool waveform) const {
 	if(waveform) CopyWave(obj);
 }
 
-bool TZeroDegreeHit::InFilter(Int_t wantedfilter) {
+bool TZeroDegreeHit::InFilter(Int_t) {
 	/// check if the desired filter is in wanted filter;
    /// return the answer;
    return true;
@@ -79,7 +79,7 @@ Int_t TZeroDegreeHit::GetRemainder() const {
 	return fCfd>>22;
 }
 
-Double_t TZeroDegreeHit::GetTime(const UInt_t& correction_flag, Option_t* opt) const {
+Double_t TZeroDegreeHit::GetTime(const UInt_t&, Option_t*) const {
   Double_t dTime = GetTimeStamp()*10.+GetRemainder()+(GetCfd() + gRandom->Uniform())/256.;
   TChannel* chan = GetChannel();
   if(!chan) {
@@ -97,7 +97,7 @@ Double_t TZeroDegreeHit::GetCorrectedTime() const {
 	return GetTime();
 }
 
-void TZeroDegreeHit::Clear(Option_t *opt)	{
+void TZeroDegreeHit::Clear(Option_t*)	{
    ///Clears the ZeroDegreeHit
    fFilter = 0;
    TGRSIDetectorHit::Clear();
@@ -105,7 +105,7 @@ void TZeroDegreeHit::Clear(Option_t *opt)	{
 	fPartialSum.clear();
 }
 
-void TZeroDegreeHit::Print(Option_t *opt) const	{
+void TZeroDegreeHit::Print(Option_t*) const	{
    ////Prints the ZeroDegreeHit. Returns:
    ////Detector
    ////Energy

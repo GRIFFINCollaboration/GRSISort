@@ -32,7 +32,7 @@ TGRSISortInfo* TGRSISortList::GetSortInfo(Int_t RunNumber, Int_t SubRunNumber){
    return (fSortInfoList.find(RunNumber)->second.find(SubRunNumber)->second);
 }
 
-void TGRSISortList::Print(Option_t* opt) const{
+void TGRSISortList::Print(Option_t*) const{
    info_map::const_iterator it;
    std::map<Int_t,TGRSISortInfo*>::const_iterator lil_it;
    for(it = fSortInfoList.begin(); it != fSortInfoList.end(); it++){
@@ -42,11 +42,11 @@ void TGRSISortList::Print(Option_t* opt) const{
    }
 }
      
-void TGRSISortList::Clear(Option_t* opt){
+void TGRSISortList::Clear(Option_t*){
    fSortInfoList.clear();
 }
 
-Bool_t TGRSISortList::AddSortList(TGRSISortList *rhslist, Option_t *opt){
+Bool_t TGRSISortList::AddSortList(TGRSISortList *rhslist, Option_t*){
    //Adds another TGRSISortList to the current Sort list.
    info_map::iterator it;
    std::map<Int_t,TGRSISortInfo*>::iterator lil_it;
@@ -93,7 +93,7 @@ void TGRSISortInfo::SetRunInfo(const TGRSIRunInfo *info){
    fSubRunNumber = info->SubRunNumber();
 }
 
-void TGRSISortInfo::Print(Option_t *opt) const{
+void TGRSISortInfo::Print(Option_t*) const{
    std::cout << "Run Number:\t " << RunNumber();
    std::cout << "\tSub Run:\t " << SubRunNumber();
    std::cout << "\tComment:\t " << Comment();
@@ -102,7 +102,7 @@ void TGRSISortInfo::Print(Option_t *opt) const{
    std::cout << std::endl;
 }
 
-void TGRSISortInfo::Clear(Option_t *opt){
+void TGRSISortInfo::Clear(Option_t*){
    fRunNumber     = 0;
    fSubRunNumber  = 0;
    fDuplicates = 0;

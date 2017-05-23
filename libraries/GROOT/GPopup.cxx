@@ -65,37 +65,15 @@ GPopup::~GPopup() {
 //}
 
 
-void GPopup::Print(Option_t *opt) const { 
+void GPopup::Print(Option_t*) const { 
   printf("%s was called.\n",__PRETTY_FUNCTION__);
 }
 
-
-void GPopup::CloseWindow()
-{
+void GPopup::CloseWindow() {
    DeleteWindow();
 }
 
-
-
-
-Bool_t GPopup::ProcessMessage(Long_t msg, Long_t parm1, Long_t parm2)
-{
+Bool_t GPopup::ProcessMessage(Long_t, Long_t, Long_t) {
    return true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

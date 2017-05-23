@@ -52,7 +52,7 @@ bool TCalList::SetPointIndex(const UInt_t& old_idx, const UInt_t& new_idx){
 	return false;
 }
 
-void TCalList::Print(Option_t *opt) const {
+void TCalList::Print(Option_t*) const {
 	int idx = 0;
 	std::cout << GetName() << "   " << GetTitle() << std::endl;
 	for(auto it : fCalList){
@@ -61,7 +61,7 @@ void TCalList::Print(Option_t *opt) const {
 	}
 }
 
-void TCalList::Clear(Option_t *opt) {
+void TCalList::Clear(Option_t*) {
 	fCalList.clear();
 }
 

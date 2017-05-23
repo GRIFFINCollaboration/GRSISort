@@ -73,7 +73,7 @@ TMidasFile::~TMidasFile() {
 	OutClose();
 }
 
-std::string TMidasFile::Status(bool long_file_description) {
+std::string TMidasFile::Status(bool) {
 	return Form(HIDE_CURSOR " Processing event %i have processed %.2fMB/%.2f MB              " SHOW_CURSOR "\r",
 			currentEventNumber,(fBytesRead/1000000.0),(fFileSize/1000000.0));
 }
@@ -374,7 +374,7 @@ void TMidasFile::ReadMoreBytes(size_t bytes) {
 	}
 }
 
-void TMidasFile::FillBuffer(std::shared_ptr<TMidasEvent> midasEvent, Option_t *opt){
+void TMidasFile::FillBuffer(std::shared_ptr<TMidasEvent> midasEvent, Option_t*) {
 	//Fills a buffer to be written to a midas file.
 
 

@@ -28,16 +28,13 @@ void TDetector::Copy(TObject &rhs) const {
 	TObject::Copy(rhs);
 }
 
-
-void TDetector::Print(Option_t *opt) const {
+void TDetector::Print(Option_t*) const {
 	/// Default print statement for TDetector. Currently does
 	/// nothing
 }
 
-void TDetector::Clear(Option_t *opt) {
+void TDetector::Clear(Option_t*) {
 	/// Default clear statement for TDetector. Currently does
 	/// nothing
 }
-
-
 

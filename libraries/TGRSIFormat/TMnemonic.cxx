@@ -22,7 +22,7 @@
 
 ClassImp(TMnemonic)
 
-void TMnemonic::Clear(Option_t *opt) {
+void TMnemonic::Clear(Option_t*) {
 	fArrayPosition = -1;
 	fSegment       = -1;
 	fSystemString.clear();
@@ -206,7 +206,7 @@ void TMnemonic::SetRFMNEMONIC(std::string *name){
 
 }
 
-void TMnemonic::Print(Option_t * opt) const{
+void TMnemonic::Print(Option_t*) const{
 	printf("======MNEMONIC ======\n");
 	printf("fArrayPosition           = %i\n", fArrayPosition);
 	printf("fSegment                 = %i\n", fSegment);

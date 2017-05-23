@@ -57,9 +57,12 @@ public:
       }
       return GetPosition(offset).Angle(*vec);
    }
-   TVector3 GetPosition(Double_t phioffset, Double_t dist, bool smear = false) const; //!
-   TVector3 GetPosition(Double_t phioffset, bool smear = false) const;                //!
-   TVector3 GetPosition(bool smear = false) const;                                    //!
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+	TVector3 GetPosition(Double_t phioffset, Double_t dist, bool smear = false) const; //!
+	TVector3 GetPosition(Double_t phioffset, bool smear = false) const; //!
+	TVector3 GetPosition(bool smear = false) const; //!
+#pragma clang diagnostic pop
 
 private:
    Double_t GetDefaultPhiOffset() const; //!

@@ -97,8 +97,8 @@ protected:
 #endif
 
 private:
-   StoppableThread(const StoppableThread& other) {}
-   StoppableThread& operator=(const StoppableThread& other) { return *this; }
+   StoppableThread(const StoppableThread&) {}
+   StoppableThread& operator=(const StoppableThread&) { return *this; }
 
    std::string   fName;
    static size_t fColumnWidth;

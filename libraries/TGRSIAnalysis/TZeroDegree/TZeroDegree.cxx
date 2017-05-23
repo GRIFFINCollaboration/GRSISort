@@ -54,7 +54,7 @@ TZeroDegree& TZeroDegree::operator=(const TZeroDegree& rhs) {
    return *this;
 }
 
-void TZeroDegree::Print(Option_t *opt) const	{
+void TZeroDegree::Print(Option_t*) const	{
    ///Prints out TZeroDegree multiplicity, currently does little.
    printf("%lu fZeroDegreeHits\n",fZeroDegreeHits.size());
 }

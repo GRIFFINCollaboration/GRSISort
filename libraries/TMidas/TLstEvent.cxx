@@ -42,7 +42,7 @@ TLstEvent& TLstEvent::operator=(const TLstEvent &rhs) {
 	return *this;
 }
 
-void TLstEvent::Clear(Option_t *opt) {
+void TLstEvent::Clear(Option_t*) {
 	//Clears the TLstEvent.
 	fData.clear();
 }
@@ -117,7 +117,7 @@ typedef uint8_t BYTE;
 	*((BYTE *)(x)) = *(((BYTE *)(x))+1);     \
 	*(((BYTE *)(x))+1) = _tmp; }
 
-int TLstEvent::SwapBytes(bool force) {
+int TLstEvent::SwapBytes(bool) {
 	return 1;
 }
 

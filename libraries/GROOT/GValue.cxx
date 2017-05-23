@@ -28,171 +28,171 @@ GValue::GValue(const GValue &val)
 }
 
 void GValue::Copy(TObject &obj) const {
-  TNamed::Copy(obj);
-  ((GValue&)obj).fValue = fValue;
-  ((GValue&)obj).fPriority = fPriority;
+	TNamed::Copy(obj);
+	((GValue&)obj).fValue = fValue;
+	((GValue&)obj).fPriority = fPriority;
 }
 
 double GValue::Value(std::string name) {
-  if(!fValueVector.count(name))
-    return sqrt(-1);
-  return fValueVector.at(name)->GetValue();
+	if(!fValueVector.count(name))
+		return sqrt(-1);
+	return fValueVector.at(name)->GetValue();
 }
 
 void GValue::SetReplaceValue(std::string name, double value,
-			     EPriority priority) {
-  GValue* gvalue = FindValue(name);
-  if(!gvalue) {
-    gvalue = new GValue(name.c_str(), value, priority);
-    AddValue(gvalue);
-  } else if (priority <= gvalue->fPriority) {
-    gvalue->SetValue(value);
-    gvalue->fPriority = priority;
-  }
+		EPriority priority) {
+	GValue* gvalue = FindValue(name);
+	if(!gvalue) {
+		gvalue = new GValue(name.c_str(), value, priority);
+		AddValue(gvalue);
+	} else if (priority <= gvalue->fPriority) {
+		gvalue->SetValue(value);
+		gvalue->fPriority = priority;
+	}
 }
 
 GValue* GValue::FindValue(std::string name){
-  GValue* value = 0;
-  if(!name.length())
-    return GetDefaultValue();
-  if(fValueVector.count(name))
-    value = fValueVector[name];
-  return value;
+	GValue* value = 0;
+	if(!name.length())
+		return GetDefaultValue();
+	if(fValueVector.count(name))
+		value = fValueVector[name];
+	return value;
 
 }
 
 bool GValue::AppendValue(GValue *oldvalue) {
-  if(fPriority <= oldvalue->fPriority){
-    if(strlen(this->GetName())) {
-      oldvalue->SetName(this->GetName());
-    }
-  
-    if(this->GetValue() != -1) {
-      oldvalue->SetValue(this->GetValue());
-      oldvalue->fPriority = fPriority;
-    }
-  
-    if(strlen(this->GetInfo())) {
-      oldvalue->SetInfo(this->GetInfo());
-    }
-    return true;
-  }
-  
-  return false;
+	if(fPriority <= oldvalue->fPriority){
+		if(strlen(this->GetName())) {
+			oldvalue->SetName(this->GetName());
+		}
+
+		if(this->GetValue() != -1) {
+			oldvalue->SetValue(this->GetValue());
+			oldvalue->fPriority = fPriority;
+		}
+
+		if(strlen(this->GetInfo())) {
+			oldvalue->SetInfo(this->GetInfo());
+		}
+		return true;
+	}
+
+	return false;
 }
 
 bool GValue::ReplaceValue(GValue *oldvalue){
-  if(fPriority <= oldvalue->fPriority){
-    this->Copy(*oldvalue);
-    return true;
-  } else {
-    return false;
-  }
+	if(fPriority <= oldvalue->fPriority){
+		this->Copy(*oldvalue);
+		return true;
+	} else {
+		return false;
+	}
 }
 
 bool GValue::AddValue(GValue* value, Option_t *opt) {
-  if(!value)
-     return false;
-  TString option(opt);
+	if(!value)
+		return false;
+	TString option(opt);
 
-  std::string temp_string = value->GetName();
+	std::string temp_string = value->GetName();
 
-  GValue* oldvalue = GValue::FindValue(value->GetName());
-  if(oldvalue) {
-    value->ReplaceValue(oldvalue);
-    delete value;
-    return true;
-  } else if(temp_string.compare("") == 0) {
-    //default value, get rid of it and ignore;
-    delete value;
-    value = 0;
-    return false;
-  } else {
-    fValueVector[temp_string] = value;   //.push_back(value);
-    return true;
-  }
+	GValue* oldvalue = GValue::FindValue(value->GetName());
+	if(oldvalue) {
+		value->ReplaceValue(oldvalue);
+		delete value;
+		return true;
+	} else if(temp_string.compare("") == 0) {
+		//default value, get rid of it and ignore;
+		delete value;
+		value = 0;
+		return false;
+	} else {
+		fValueVector[temp_string] = value;   //.push_back(value);
+		return true;
+	}
 }
 
 
 std::string GValue::PrintToString() const {
 
-  std::string buffer;
-  buffer.append(GetName());
-  buffer.append("\t{\n");
-  buffer.append("value:\t");
-  buffer.append(Form("%f\n",fValue));
-  buffer.append("}\n");
-  return buffer;
+	std::string buffer;
+	buffer.append(GetName());
+	buffer.append("\t{\n");
+	buffer.append("value:\t");
+	buffer.append(Form("%f\n",fValue));
+	buffer.append("}\n");
+	return buffer;
 }
 
-void GValue::Print(Option_t *opt) const {
-  std::cout << PrintToString() << std::endl;
+void GValue::Print(Option_t*) const {
+	std::cout << PrintToString() << std::endl;
 }
 
-int GValue::WriteValFile(std::string filename,Option_t *opt) {
-  std::map<std::string,GValue*>::iterator it;
-  //std::string filebuffer;
-  if(filename.length()) {
-    std::ofstream outfile;
-    outfile.open(filename.c_str());
-    if(!outfile.is_open())
-      return -1;
-    for(it = fValueVector.begin();it!=fValueVector.end();it++) {
-      outfile << it->second->PrintToString();
-      outfile << "\n\n";
-    }
-  } else {
-    for(it = fValueVector.begin();it!=fValueVector.end();it++) {
-      std::cout << it->second->PrintToString() << "\n\n";
-    }
-  }
-  return fValueVector.size();
+int GValue::WriteValFile(std::string filename, Option_t*) {
+	std::map<std::string,GValue*>::iterator it;
+	//std::string filebuffer;
+	if(filename.length()) {
+		std::ofstream outfile;
+		outfile.open(filename.c_str());
+		if(!outfile.is_open())
+			return -1;
+		for(it = fValueVector.begin();it!=fValueVector.end();it++) {
+			outfile << it->second->PrintToString();
+			outfile << "\n\n";
+		}
+	} else {
+		for(it = fValueVector.begin();it!=fValueVector.end();it++) {
+			std::cout << it->second->PrintToString() << "\n\n";
+		}
+	}
+	return fValueVector.size();
 }
 
-std::string GValue::WriteToBuffer(Option_t *opt) {
-  std::string buffer="";
-  if(!GValue::Size())
-    return buffer;
-  std::map<std::string,GValue*>::iterator it;
-  for(it = fValueVector.begin();it!=fValueVector.end();it++) {
-    buffer.append(it->second->PrintToString());
-    buffer.append("\n");
-  }
-  return buffer;
+std::string GValue::WriteToBuffer(Option_t*) {
+	std::string buffer="";
+	if(!GValue::Size())
+		return buffer;
+	std::map<std::string,GValue*>::iterator it;
+	for(it = fValueVector.begin();it!=fValueVector.end();it++) {
+		buffer.append(it->second->PrintToString());
+		buffer.append("\n");
+	}
+	return buffer;
 }
 
 
 
 int GValue::ReadValFile(const char* filename,Option_t *opt) {
-  std::string infilename = filename;
-  if(infilename.length()==0)
-     return -1;
+	std::string infilename = filename;
+	if(infilename.length()==0)
+		return -1;
 
-  std::ifstream infile;
-  infile.open(infilename.c_str());
-  if(!infile) {
-     fprintf(stderr,"%s:  could not open infile %s.",__PRETTY_FUNCTION__,infilename.c_str());
-     return -2;
-  }
-  infile.seekg(0,std::ios::end);
-  size_t length = infile.tellg();
-  if(length==0) {
-    fprintf(stderr,"%s:  infile %s appears to be empty.",__PRETTY_FUNCTION__,infilename.c_str());
-    return -2;
-  }
+	std::ifstream infile;
+	infile.open(infilename.c_str());
+	if(!infile) {
+		fprintf(stderr,"%s:  could not open infile %s.",__PRETTY_FUNCTION__,infilename.c_str());
+		return -2;
+	}
+	infile.seekg(0,std::ios::end);
+	size_t length = infile.tellg();
+	if(length==0) {
+		fprintf(stderr,"%s:  infile %s appears to be empty.",__PRETTY_FUNCTION__,infilename.c_str());
+		return -2;
+	}
 
-  std::string sbuffer;
-  std::vector<char> buffer(length);
-  infile.seekg(0,std::ios::beg);
-  infile.read(buffer.data(),(int)length);
-  sbuffer.assign(buffer.data());
+	std::string sbuffer;
+	std::vector<char> buffer(length);
+	infile.seekg(0,std::ios::beg);
+	infile.read(buffer.data(),(int)length);
+	sbuffer.assign(buffer.data());
 
-  int values_found = ParseInputData(sbuffer,kValFile,opt);
-//if(values_found) {
-//  //fFileNames.push_back(std::string(filename);;
-//  fValueData = sbuffer; //.push_back(std::string((const char*)buffer);
-//}
-  return values_found;
+	int values_found = ParseInputData(sbuffer,kValFile,opt);
+	//if(values_found) {
+	//  //fFileNames.push_back(std::string(filename);;
+	//  fValueData = sbuffer; //.push_back(std::string((const char*)buffer);
+	//}
+	return values_found;
 }
 
 //Parses input file. Should be in the form:

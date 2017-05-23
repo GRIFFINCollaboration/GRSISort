@@ -40,7 +40,7 @@ public:
 
 #ifndef __CINT__
    void              AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
-   TGRSIDetectorHit* CreateHit(std::shared_ptr<const TFragment> frag, TChannel* chan) { return new TDescantHit(*frag); }
+   TGRSIDetectorHit* CreateHit(std::shared_ptr<const TFragment> frag, TChannel*) { return new TDescantHit(*frag); }
 #endif
 
    void ClearTransients()

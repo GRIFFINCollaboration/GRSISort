@@ -13,7 +13,7 @@ ClassImp(TMultiPeak)
 Bool_t TMultiPeak::fLogLikelihoodFlag = false;
 
 
-TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t> &centroids, Option_t *opt) : TGRSIFit("multipeakbg",MultiPhotoPeakBG,xlow,xhigh,centroids.size()*6 +5){
+TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t> &centroids, Option_t*) : TGRSIFit("multipeakbg",MultiPhotoPeakBG,xlow,xhigh,centroids.size()*6 +5){
    this->Clear();
    //We make the background first so we can send it to the TPeaks.
    fBackground = new TF1(Form("MPbackground_%d_to_%d",(Int_t)(xlow),(Int_t)(xhigh)),MultiStepBG,xlow,xhigh,centroids.size()*6+5);
@@ -349,7 +349,7 @@ void TMultiPeak::Clear(Option_t* opt){
 }
 
 void TMultiPeak::Print(Option_t *opt) const {
-//Prints TMultiPeak properties. To see More properties use the option "+"
+///Prints TMultiPeak properties. To see More properties use the option "+"
    printf("Name:        %s \n", this->GetName()); 
    printf("Number of Peaks: %lu\n",fPeakVec.size());
    TF1::Print();
@@ -360,23 +360,8 @@ void TMultiPeak::Print(Option_t *opt) const {
    }
 }
 
-const char * TMultiPeak::PrintString(Option_t *opt) const {
-//Prints TMultiPeak properties to a string, returns the string.
-   /*
-   std::string temp;
-   temp.assign("Name:        ");temp.append(this->GetName()); temp.append("\n");
-   temp.append("Centroid:    ");temp.append(Form("%lf",this->GetParameter("centroid")));
-                                temp.append(" +/- ");
-                                temp.append(Form("%lf",this->GetParError(GetParNumber("centroid")))); temp.append("\n");
-   temp.append("Area: 	     ");temp.append(Form("%lf",farea)); 
-                                temp.append(" +/- ");
-                                temp.append(Form("%lf",fd_area));    temp.append("\n"); 
-   temp.append("Chi^2/NDF:   ");temp.append(Form("%lf",fchi2/fNdf)); temp.append("\n");
-   //if(strchr(opt,'+') != nullptr){
-   //   TF1::Print();
-   //   TGRSIFit::Print(opt); //Polymorphise this a bit better
-   //}
-   return temp.c_str();*/
+const char * TMultiPeak::PrintString(Option_t*) const {
+///Prints TMultiPeak properties to a string, returns the string. Not implemented!
    return "b";
 }
 

@@ -44,7 +44,7 @@ void TEfficiencyCalibration::Copy(TObject& copy) const {
 	}*/
 }
 
-void TEfficiencyCalibration::Print(Option_t *opt) const {
+void TEfficiencyCalibration::Print(Option_t*) const {
 	std::cout << "Graphs included: " << std::endl;
 	for(auto it : fGraphMap){
 		std::cout << "Name: " << it.first << " N of points: " << it.second.GetN();
@@ -62,7 +62,7 @@ void TEfficiencyCalibration::Print(Option_t *opt) const {
 	}
 }
 
-void TEfficiencyCalibration::Clear(Option_t *opt) {
+void TEfficiencyCalibration::Clear(Option_t*) {
 	fGraphMap.clear();
 	if(fRelativeFit) fRelativeFit->Clear();
 	fFitting = false;
@@ -140,7 +140,7 @@ void TEfficiencyCalibration::ScaleGuess(){
 
 }
 
-TFitResultPtr TEfficiencyCalibration::Fit(Option_t *opt){
+TFitResultPtr TEfficiencyCalibration::Fit(Option_t*){
 	//This fits the relative efficiency curve
 	UInt_t n_rel_graphs = fRelativeEffGraph->GetListOfGraphs()->GetSize();
 	if(fRelativeFit) delete fRelativeFit;

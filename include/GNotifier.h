@@ -14,8 +14,8 @@ public:
    static GNotifier* Get();
    virtual ~GNotifier();
 
-   virtual void Print(Option_t* opt = "") const {}
-   virtual void Clear(Option_t* opt = "") {}
+   virtual void Print(Option_t* = "") const {}
+   virtual void Clear(Option_t* = "") {}
    virtual bool                 Notify();
 
 #ifdef __CINT__

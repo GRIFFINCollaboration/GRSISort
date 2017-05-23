@@ -29,7 +29,7 @@ TCal::TCal(const TCal& copy) : TGraphErrors(copy) {
 	copy.Copy(*this);
 }
 
-void TCal::SetNucleus(TNucleus* nuc,Option_t * opt) {
+void TCal::SetNucleus(TNucleus* nuc, Option_t*) {
 	///Sets the nucleus to be calibrated against
 	if(!nuc) {
 		Error("SetNucleus","Nucleus does not exist");
@@ -56,7 +56,6 @@ Bool_t TCal::SetChannel(const TChannel* chan) {
 	///Sets the channel being calibrated
 	if(!chan) {
 		Error("SetChannel","TChannel does not exist");
-		printf("%p\n", static_cast<const void*>(chan));
 		return false;
 	}
 	//Set our TRef to point at the TChannel
@@ -130,14 +129,14 @@ void TCal::SetHist(TH1* hist) {
 	fHist = hist;
 }   
 
-void TCal::Clear(Option_t *opt) {
+void TCal::Clear(Option_t*) {
 	///Clears the calibration. Does not delete nuclei or channels.
 	fNuc = nullptr;
 	fChan = nullptr;
 	TGraphErrors::Clear();
 }
 
-void TCal::Print(Option_t *opt) const{
+void TCal::Print(Option_t*) const{
 	///Prints calibration information
 	if(GetChannel())
 		printf("Channel Number: %u\n",GetChannel()->GetNumber());

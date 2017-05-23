@@ -36,7 +36,7 @@ TEpicsFrag::TEpicsFrag()  {
 
 TEpicsFrag::~TEpicsFrag() { }
 
-void TEpicsFrag::Clear(Option_t *opt) {
+void TEpicsFrag::Clear(Option_t*) {
    //Clears the TEpicsFrag.
    fMidasTimeStamp =  0;   
    fMidasId        = -1;         
@@ -45,7 +45,7 @@ void TEpicsFrag::Clear(Option_t *opt) {
    fData.clear();  
 } 
 
-void TEpicsFrag::Print(Option_t *opt) const { 
+void TEpicsFrag::Print(Option_t*) const { 
    //Prints the TEpicsFrag. This includes Midas information as well the data
    //kep inside of the scaler.
    size_t largest = fData.size();

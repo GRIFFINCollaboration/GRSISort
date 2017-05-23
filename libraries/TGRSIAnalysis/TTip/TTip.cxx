@@ -29,7 +29,7 @@ void TTip::Copy(TObject &rhs) const {
   static_cast<TTip&>(rhs).fTipHits             = fTipHits;
 }                                       
 
-void TTip::Clear(Option_t *opt) {
+void TTip::Clear(Option_t*) {
   ///Clears all of the hits
    fTipHits.clear();
 }
@@ -49,7 +49,7 @@ void TTip::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
   fTipHits.push_back(std::move(dethit)); //Once we are done with it we can move the memory
 }
 
-void TTip::Print(Option_t *opt) const {
+void TTip::Print(Option_t*) const {
   ///Prints out TTip members, currently only prints the multiplicity.
   printf("%lu fTipHits\n",fTipHits.size());
 }

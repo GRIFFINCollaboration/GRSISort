@@ -27,9 +27,9 @@ public:
    TRawEvent(const TRawEvent& rhs) : TObject(rhs) {}                ///< copy constructor
    virtual ~TRawEvent() {}                                          ///< destructor
    virtual TRawEvent& operator=(const TRawEvent&) { return *this; } ///< assignement operator
-   virtual void Clear(Option_t* opt = "") {}                        ///< clear event for reuse
-   virtual void                 Copy(TObject&) const {}             ///< copy helper
-   virtual void Print(const char* option = "") const {}             ///< show all event information
+   virtual void Clear(Option_t* = "") {}                            ///< clear event for reuse
+   virtual void Copy(TObject&) const {}                             ///< copy helper
+   virtual void Print(const char* = "") const {}                    ///< show all event information
 
    // get event information
 
@@ -39,7 +39,7 @@ public:
 
    virtual char* GetData() { return nullptr; } ///< return pointer to the data buffer
 
-   virtual void SetData(uint32_t dataSize, char* dataBuffer) {} ///< set an externally allocated data buffer
+   virtual void SetData(uint32_t, char*) {} ///< set an externally allocated data buffer
 
    virtual int SwapBytes(bool) { return 0; } ///< convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC)
    virtual int Process(TDataParser& parser) = 0;

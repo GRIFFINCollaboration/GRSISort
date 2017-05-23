@@ -24,7 +24,7 @@ TPulseAnalyzer::~TPulseAnalyzer(){
 	if(shpar) delete shpar;
 }
 
-void TPulseAnalyzer::Clear(Option_t *opt) {
+void TPulseAnalyzer::Clear(Option_t*) {
 	SetCsI(false);
 	set = false;	
 	cN = 0;
@@ -1248,7 +1248,7 @@ double TPulseAnalyzer::GetCsIt0()
 	  	  ta=tc;
 	  	  fa=fc; 
 	  	}
-	      delta=fabs(fc);
+	      delta=std::abs(fc);
 	    }
 	}
       else
@@ -1336,7 +1336,7 @@ bool TPulseAnalyzer::SiliShapePrepare(double tauDecay,double tauRise){if(IsSet()
 	//int exclusion=t0+3;
 // 	if(t0<1){//if the fit_newT0() failed
 // 		exclusion=10;
-// 		if(abs(baseline-cWavebuffer[0])>100)baseline=cWavebuffer[0];
+// 		if(std::abs(baseline-cWavebuffer[0])>100)baseline=cWavebuffer[0];
 // 	}
 	
 	// New simplified guesses because fit_newT0 was taking 1000% longer
@@ -1527,12 +1527,12 @@ double TPulseAnalyzer::GetsiliSmirnov(){
 		TF1 g=Getsilifit();
 		
 		for(Int_t i=0;i<cN;i++){
-			wsum+=abs(cWavebuffer[i]);
-			gsum+=abs(g.Eval(i+0.5));
+			wsum+=std::abs(cWavebuffer[i]);
+			gsum+=std::abs(g.Eval(i+0.5));
 			Smirnov+=(wsum-gsum);
 		}
 	}
-	return abs(Smirnov);
+	return std::abs(Smirnov);
 }
 
 void  TPulseAnalyzer::Drawsilifit(){

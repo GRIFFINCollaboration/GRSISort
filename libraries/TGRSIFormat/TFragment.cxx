@@ -76,7 +76,7 @@ void TFragment::Clear(Option_t *opt){
    fNumberOfWords       = 0; 
 }
 
-TObject* TFragment::Clone(const char* name) const {
+TObject* TFragment::Clone(const char*) const {
    TFragment* result = new TFragment;
    *result = *this;
 	result->ClearTransients();

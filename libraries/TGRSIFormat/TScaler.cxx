@@ -26,7 +26,7 @@ void TScalerData::Copy(TObject &rhs) const {
 	static_cast<TScalerData&>(rhs).fHighTimeStamp   =  fHighTimeStamp;  
 }
 
-void TScalerData::Clear(Option_t* opt) {
+void TScalerData::Clear(Option_t*) {
 	///Clears the TScalerData.
 	fAddress          =  0;
    fLowTimeStamp     =  0;
@@ -35,7 +35,7 @@ void TScalerData::Clear(Option_t* opt) {
    fScaler.clear();
 }
 
-void TScalerData::Print(Option_t* opt) const {
+void TScalerData::Print(Option_t*) const {
   printf("time: %16lld, address: 0x%04x",GetTimeStamp(),fAddress);
   for(size_t i = 0; i < fScaler.size(); ++i) {
 	 printf("\t Scaler[%lu]: 0x%07x", i, fScaler[i]);
@@ -217,7 +217,7 @@ UInt_t TScaler::GetScalerDifference(UInt_t address, ULong64_t time, size_t index
 	return 0;
 }
 
-void TScaler::Clear(Option_t *opt){
+void TScaler::Clear(Option_t*){
 	fTree = nullptr;
 	fScalerData = nullptr;
 	fEntries = 0;

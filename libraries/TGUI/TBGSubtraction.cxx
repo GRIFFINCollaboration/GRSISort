@@ -317,7 +317,7 @@ void TBGSubtraction::DrawMarkers(){
 
 }
 
-void TBGSubtraction::DoEntry(Long_t val /*text*/){
+void TBGSubtraction::DoEntry(Long_t) {
 
 
    TGNumberEntry *te = (TGNumberEntry *) gTQSender;
@@ -472,7 +472,7 @@ void TBGSubtraction::ProjectionStatusInfo(Int_t event,Int_t px, Int_t py, TObjec
    StatusInfo(event,px,py,selected);
 }
 
-void TBGSubtraction::StatusInfo(Int_t event,Int_t px, Int_t py, TObject *selected){
+void TBGSubtraction::StatusInfo(Int_t, Int_t px, Int_t py, TObject *selected){
    fProjectionStatus->SetText(selected->GetName(),0);
    fProjectionStatus->SetText(selected->GetObjectInfo(px,py),1);
 }

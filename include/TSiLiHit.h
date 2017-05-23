@@ -16,14 +16,17 @@
 
 class TSiLiHit : public TGRSIDetectorHit {
 public:
-   enum ESiLiHitBits { kUseFitCharge = BIT(0), kSiLiHitBit1 = BIT(1) };
+	enum ESiLiHitBits { 
+		kUseFitCharge	= BIT(0),
+		kSiLiHitBit1	= BIT(1)
+	};
 
    TSiLiHit();
    TSiLiHit(const TFragment&);
    virtual ~TSiLiHit();
    TSiLiHit(const TSiLiHit&);
 
-   void Copy(TObject&, int = 0) const; //!
+   void Copy(TObject&, bool = false) const; //!
    void Clear(Option_t* opt = "");
    void Print(Option_t* opt = "") const;
 

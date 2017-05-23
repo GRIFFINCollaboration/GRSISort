@@ -213,7 +213,7 @@ void TChannel::AppendChannel(TChannel* chan){
 	return;
 }
 
-int TChannel::UpdateChannel(TChannel* chan,Option_t* opt) {
+int TChannel::UpdateChannel(TChannel* chan, Option_t*) {
 	///If there is information in the chan, the current TChannel with the same address is updated with that information.
 	if(chan == nullptr) return 0;
 	TChannel* oldchan = GetChannel(chan->GetAddress()); // look for already existing channel at this address
@@ -232,7 +232,7 @@ TChannel* TChannel::GetDefaultChannel() {
 
 
 
-void TChannel::Clear(Option_t* opt){
+void TChannel::Clear(Option_t*){
 	///Clears all fields of a TChannel. There are currently no options to be specified.
 	fAddress           =  0xffffffff;
 	fIntegration       =  0;
@@ -498,7 +498,7 @@ double TChannel::CalibrateTIME(double energy)  {
 	return timeCorrection;
 }
 
-double TChannel::CalibrateEFF(double energy) {
+double TChannel::CalibrateEFF(double) {
 	///This needs to be added
 	return 1.0;
 }
@@ -542,7 +542,7 @@ void TChannel::SetDigitizerType(std::string mnemonic,const char* tmpstr) {
    }
 }
 
-void TChannel::PrintCTCoeffs(Option_t* opt) const {
+void TChannel::PrintCTCoeffs(Option_t*) const {
 	///Prints out the current TChannel.
   std::cout <<  GetName() << "\t{\n";  //,channelname.c_str();
    std::cout <<  "Name:      " << GetName() << "\n";
@@ -558,7 +558,7 @@ void TChannel::PrintCTCoeffs(Option_t* opt) const {
 }
 
 
-void TChannel::Print(Option_t* opt) const {
+void TChannel::Print(Option_t*) const {
 	///Prints out the current TChannel.
   std::cout <<  GetName() << "\t{\n";  //,channelname.c_str();
    std::cout << "Type:      ";
@@ -609,7 +609,7 @@ void TChannel::Print(Option_t* opt) const {
 
 }
 
-std::string TChannel::PrintCTToString(Option_t* opt) {
+std::string TChannel::PrintCTToString(Option_t*) {
 	std::string buffer;
 	buffer.append("\n");
 	buffer.append(GetName()); buffer.append("\t{\n");  //,channelname.c_str();
@@ -630,7 +630,7 @@ std::string TChannel::PrintCTToString(Option_t* opt) {
 }
 
 
-std::string TChannel::PrintToString(Option_t* opt) {
+std::string TChannel::PrintToString(Option_t*) {
 	std::string buffer;
 	buffer.append("\n");
 	buffer.append(GetName()); buffer.append("\t{\n");  //,channelname.c_str();
@@ -774,7 +774,7 @@ void TChannel::WriteCTCorrections(std::string outfilename) {
 	return;
 }
 
-void TChannel::WriteCalBuffer(Option_t* opt) {
+void TChannel::WriteCalBuffer(Option_t*) {
 	/// writes any TChannels in memory to the internal buffer 
 	/// fFileData.  Can be used to over write info that is there
 	/// or create the buffer if the channels originated from the odb.
@@ -810,7 +810,7 @@ void TChannel::WriteCalBuffer(Option_t* opt) {
 }
 
 
-Int_t TChannel::ReadCalFromCurrentFile(Option_t* opt) {
+Int_t TChannel::ReadCalFromCurrentFile(Option_t*) {
 
    if(!gFile)
       return 0;
@@ -834,7 +834,7 @@ Int_t TChannel::ReadCalFromCurrentFile(Option_t* opt) {
      return 0;
 }
 
-Int_t TChannel::ReadCalFromFile(TFile* tempf,Option_t* opt) {
+Int_t TChannel::ReadCalFromFile(TFile* tempf,Option_t*) {
 	///Reads the TChannel information from a TFile if it has already been written to that File.
    if(!tempf)
    	return 0;
@@ -852,7 +852,7 @@ Int_t TChannel::ReadCalFromFile(TFile* tempf,Option_t* opt) {
      return 0;
 }
 
-Int_t TChannel::ReadCalFromTree(TTree* tree,Option_t* opt) {
+Int_t TChannel::ReadCalFromTree(TTree* tree,Option_t*) {
 	///Reads the TChannel information from a Tree if it has already been written to that Tree.
    if(!tree)
    	return 0;

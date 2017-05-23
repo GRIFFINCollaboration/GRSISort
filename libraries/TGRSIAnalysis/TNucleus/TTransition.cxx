@@ -10,14 +10,14 @@ TTransition::~TTransition(){
   // empty
 }
 
-void TTransition::Clear(Option_t *opt){
+void TTransition::Clear(Option_t*){
   fEnergy          = 0;
   fEngUncertainty  = 0;
   fIntensity       = 0;
   fIntUncertainty  = 0;
 }
 
-void TTransition::Print(Option_t *opt) const{
+void TTransition::Print(Option_t*) const{
 
   if(!std::isnan(fEngUncertainty))
     printf("Energy:    %.02f +/- %.02f",fEnergy,fEngUncertainty);

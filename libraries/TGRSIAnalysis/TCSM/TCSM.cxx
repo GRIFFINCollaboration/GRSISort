@@ -68,11 +68,11 @@ void TCSM::BuildHits() {
 }
 
 
-void TCSM::Clear(Option_t *option) {
+void TCSM::Clear(Option_t*) {
 	fCsmHits.clear();
 }
 
-void TCSM::Print(Option_t *option) const {
+void TCSM::Print(Option_t*) const {
 	printf("not yet written...\n");
 }
 

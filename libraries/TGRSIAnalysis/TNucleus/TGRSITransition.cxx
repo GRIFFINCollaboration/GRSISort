@@ -26,7 +26,7 @@ TGRSITransition::~TGRSITransition() {
 //Default Destructor
 }
 
-void TGRSITransition::Print(Option_t* opt) const {
+void TGRSITransition::Print(Option_t*) const {
 //Prints information about the TGRSITransition
    printf("**************************\n");
    printf("TGRSITransition:\n");
@@ -45,7 +45,7 @@ std::string TGRSITransition::PrintToString(){
   return buffer;
 }
 
-void TGRSITransition::Clear(Option_t* opt){
+void TGRSITransition::Clear(Option_t*){
    //Clears TGRSITransition
   fEnergy               = 0.; 
   fEnergyUncertainty    = 0.; 

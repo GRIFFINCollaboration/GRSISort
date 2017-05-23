@@ -53,12 +53,12 @@ void TCalPoint::SetArea(const Double_t& area, const Double_t& darea){
 	fAreaErr 	= darea;
 }
 
-void TCalPoint::Print(Option_t *opt) const {
+void TCalPoint::Print(Option_t*) const {
 	std::cout << "Centroid: " << fCentroid << " +/- " << fCentroidErr << std::endl;
 	std::cout << "    Area: " << fArea 		<< " +/- " << fAreaErr << std::endl;
 }
 
-void TCalPoint::Clear(Option_t *opt) {
+void TCalPoint::Clear(Option_t*) {
 	fCentroid 		= 0.0;
 	fArea				= 0.0;
 	fCentroidErr	= 0.0;

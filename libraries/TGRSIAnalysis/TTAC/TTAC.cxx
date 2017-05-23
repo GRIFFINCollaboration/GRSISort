@@ -48,12 +48,12 @@ TTAC& TTAC::operator=(const TTAC& rhs) {
    return *this;
 }
 
-void TTAC::Print(Option_t *opt) const	{
+void TTAC::Print(Option_t*) const	{
    //Prints out TTAC Multiplicity, currently does little.
    printf("%lu fTACHits\n",fTACHits.size());
 }
 
-void TTAC::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
+void TTAC::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*) {
    TTACHit hit(*frag);
    fTACHits.push_back(std::move(hit));
 }

@@ -88,12 +88,12 @@ public:
    Float_t GetBackCharge() const { return GetBack().GetCharge(); } //!<!  //Charge is now stored after integration.
    Float_t GetPadCharge() const { return GetPad().GetCharge(); }   //!<!  //Charge is now stored after integration.
 
-   inline Double_t GetEnergy(Option_t* opt = "") const
+   inline Double_t GetEnergy(Option_t* = "") const
    {
       if (GetPadAddress() != -1) return TGRSIDetectorHit::GetEnergy() + GetPad().GetEnergy();
       return TGRSIDetectorHit::GetEnergy();
    }
-   inline Double_t GetTime(Option_t* opt = "") const { return TGRSIDetectorHit::GetTime(); }
+   inline Double_t GetTime(Option_t* = "") const { return TGRSIDetectorHit::GetTime(); }
 
    Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0)
    {

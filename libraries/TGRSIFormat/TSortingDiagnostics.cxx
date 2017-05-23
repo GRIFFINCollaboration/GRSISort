@@ -12,7 +12,7 @@ TSortingDiagnostics::TSortingDiagnostics() : TObject() {
 	Clear();
 }
 
-TSortingDiagnostics::TSortingDiagnostics(const TSortingDiagnostics& rhs) : TObject() {
+TSortingDiagnostics::TSortingDiagnostics(const TSortingDiagnostics&) : TObject() {
 	Clear();
 }
 
@@ -23,7 +23,7 @@ void TSortingDiagnostics::Copy(TObject& obj) const {
 	static_cast<TSortingDiagnostics&>(obj).fFragmentsOutOfOrder = fFragmentsOutOfOrder;
 }
 
-void TSortingDiagnostics::Clear(Option_t* opt) {
+void TSortingDiagnostics::Clear(Option_t*) {
 	fFragmentsOutOfOrder.clear();
 }
 
@@ -60,7 +60,7 @@ void TSortingDiagnostics::Print(Option_t* opt) const {
 	         <<"Please consider increasing the sort depth with --sort-depth="<<fMaxEntryDiff<<RESET_COLOR<<std::endl;
 }
 
-void TSortingDiagnostics::Draw(Option_t* opt) {
+void TSortingDiagnostics::Draw(Option_t*) {
 }
 
 void TSortingDiagnostics::WriteToFile(const char* fileName) const {

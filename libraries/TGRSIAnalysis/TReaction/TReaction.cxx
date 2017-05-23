@@ -148,7 +148,7 @@ double TReaction::GetGLabFromThetaCm(double theta_cm, int part){
 }
 
 
-double TReaction::GetExcEnergy(double ekin, double theta_lab, int part){
+double TReaction::GetExcEnergy(double ekin, double theta_lab, int) {
 	if(ekin==0.00 && theta_lab==0.00)
 		return fExc; 
 
@@ -181,7 +181,7 @@ double TReaction::AnalysisBeta(double ekin, int part){
 // THIS IS ACTUALLY MOTT SCATTERING (RELATIVISTIC RUTHERFORD)
 // taken from http://www7b.biglobe.ne.jp/~kcy05t/rathef.html (eqn. 61)
 // alpha obtained from http://www.pas.rochester.edu/~cline/Gosia/Gosia_Manual_20120510.pdf
-double TReaction::GetRutherfordCm(double theta_cm, int part, bool Units_mb){
+double TReaction::GetRutherfordCm(double theta_cm, int, bool Units_mb){
   static const double alpha = 1.29596;//0.359994;
 	double scale = 1;
 	if(!Units_mb)
@@ -448,7 +448,7 @@ void TReaction::Print(Option_t *opt) const {
 	return;
 }
 
-void TReaction::Clear(Option_t *opt) {
+void TReaction::Clear(Option_t*) {
 	
 	fQVal = 0;
 	fS = 0;

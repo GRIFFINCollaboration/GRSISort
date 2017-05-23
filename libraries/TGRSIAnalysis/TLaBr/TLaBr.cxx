@@ -62,7 +62,7 @@ TLaBr& TLaBr::operator=(const TLaBr& rhs) {
    return *this;
 }
 
-void TLaBr::Print(Option_t *opt) const	{
+void TLaBr::Print(Option_t*) const	{
    //Prints out TLaBr Multiplicity, currently does little.
    printf("%lu fLaBrHits\n",fLaBrHits.size());
 }
@@ -84,7 +84,7 @@ TLaBrHit* TLaBr::GetLaBrHit(const int& i) {
    return nullptr;
 }
 
-void TLaBr::AddFragment(std::shared_ptr<const TFragment> frag, TChannel *chan) {
+void TLaBr::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*) {
    TLaBrHit laHit(*frag); //Building is controlled in the constructor of the hit
    fLaBrHits.push_back(std::move(laHit)); //use std::move for efficienciy since laHit loses scope here anyway
 }

@@ -381,7 +381,7 @@ TS3Hit *TS3::GetSectorHit(const int& i) {
 }
 */
 
-void TS3::Print(Option_t *opt) const {
+void TS3::Print(Option_t*) const {
    printf("%s\tnot yet written.\n",__PRETTY_FUNCTION__);
 }
 

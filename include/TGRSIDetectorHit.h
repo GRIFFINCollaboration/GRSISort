@@ -14,9 +14,10 @@
 #include "TObject.h"
 #include "TRef.h"
 #include "Rtypes.h"
-#include "TPPG.h"
 #include "TFile.h"
 #include "TString.h"
+
+#include "TPPG.h"
 #include "TTransientBits.h"
 
 class TGRSIDetector;
@@ -120,11 +121,11 @@ public:
       return fTime;
    }
 
-   virtual TVector3 GetPosition(Double_t dist) const { return TVector3(0., 0., 0.); }         //!<!
-   virtual TVector3                      GetPosition() const { return TVector3(0., 0., 0.); } //!<!
-   virtual double GetEnergy(Option_t* opt = "") const;
+   virtual TVector3 GetPosition(Double_t) const           { return TVector3(0., 0., 0.); }         //!<!
+   virtual TVector3 GetPosition() const                   { return TVector3(0., 0., 0.); } //!<!
+   virtual double   GetEnergy(Option_t* opt = "") const;
    virtual Long64_t GetTimeStamp(Option_t* opt = "") const;
-   Long64_t GetRawTimeStamp(Option_t* opt = "") const { return fTimeStamp; }
+   Long64_t         GetRawTimeStamp(Option_t* = "") const { return fTimeStamp; }
    virtual Double_t GetTime(const UInt_t& correct_flag = kAll,
                             Option_t*     opt          = "") const; ///< Returns a time value to the nearest nanosecond!
    // TODO: Fix Getters to have non-const types
@@ -152,7 +153,7 @@ public:
 
    // virtual void GetSegment() const;
 
-   virtual Double_t GetEnergyNonlinearity(double energy) const { return 0.0; }
+   virtual Double_t GetEnergyNonlinearity(double) const { return 0.0; }
 
    // The PPG is only stored in events that come out of the GRIFFIN DAQ
    uint16_t GetPPGStatus() const;

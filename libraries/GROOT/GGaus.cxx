@@ -1,10 +1,8 @@
-
-#include <GGaus.h>
-#include <TGraph.h>
-#include <TVirtualFitter.h>
-#include <TFitResult.h>
-#include <TFitResultPtr.h>
-
+#include "GGaus.h"
+#include "TGraph.h"
+#include "TVirtualFitter.h"
+#include "TFitResult.h"
+#include "TFitResultPtr.h"
 
 #include "Globals.h"
 #include "GRootFunctions.h"
@@ -12,7 +10,7 @@
 
 ClassImp(GGaus)
 
-GGaus::GGaus(Double_t xlow,Double_t xhigh,Option_t *opt)
+GGaus::GGaus(Double_t xlow,Double_t xhigh, Option_t*)
       : TF1("gausbg","gaus(0)+pol1(3)",xlow,xhigh),
         fBGFit("background","pol1",xlow,xhigh)  {
   Clear("");
@@ -29,10 +27,9 @@ GGaus::GGaus(Double_t xlow,Double_t xhigh,Option_t *opt)
   //SetName(Form("gaus_%d_to_%d",(Int_t)(xlow),(Int_t)(xhigh)));
   InitNames();
   //TF1::SetParameter("centroid",cent);
-
 }
 
-GGaus::GGaus(Double_t xlow,Double_t xhigh,TF1 *bg,Option_t *opt)
+GGaus::GGaus(Double_t xlow,Double_t xhigh,TF1 *bg, Option_t*)
       : TF1("gausbg","gaus(0)+pol1(3)",xlow,xhigh) {
   Clear("");
   if(xlow>xhigh)

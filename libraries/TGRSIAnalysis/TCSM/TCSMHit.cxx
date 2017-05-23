@@ -14,7 +14,7 @@ TCSMHit::TCSMHit()	{
 TCSMHit::~TCSMHit()	{	}
 
 
-void TCSMHit::Clear(Option_t *options)	{
+void TCSMHit::Clear(Option_t*)	{
 	fHorDStrip 	= -1;
 	fHorDCharge = 0.0;
 	fHorDCfd    = 0.0;
@@ -230,7 +230,7 @@ Double_t TCSMHit::GetEEnergy() const
 
 }
 
-void TCSMHit::Print(Option_t *options) const	{
+void TCSMHit::Print(Option_t*) const	{
 	std::cout<<"Printing TCSMHit:  Horizontal    Vertical"<<std::endl;
 	std::cout<<"Detector number: "<<GetDetectorNumber()<<std::endl;
 	//std::cout<<"Detector position: "<<GetDetectorPosition()<<std::endl;

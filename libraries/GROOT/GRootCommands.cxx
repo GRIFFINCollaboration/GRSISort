@@ -137,7 +137,7 @@ bool GetProjection(GH2D *hist,double low, double high, double bg_low,double bg_h
   return 1;
 }
 
-int LabelPeaks(TH1 *hist,double sigma,double thresh,Option_t *opt) {
+int LabelPeaks(TH1 *hist,double sigma,double thresh, Option_t*) {
   TSpectrum::StaticSearch(hist,sigma,"Qnodraw",thresh);
   TPolyMarker *pm = (TPolyMarker*)hist->GetListOfFunctions()->FindObject("TPolyMarker");
   if(!pm) {
@@ -236,7 +236,7 @@ GGaus *GausFit(TH1 *hist,double xlow, double xhigh,Option_t *opt) {
 }
 
 
-TF1 *DoubleGausFit(TH1 *hist,double cent1,double cent2,double xlow, double xhigh,Option_t *opt) {
+TF1 *DoubleGausFit(TH1 *hist,double, double, double xlow, double xhigh, Option_t*opt) {
   if(!hist)
     return 0;
   if(xlow>xhigh)
@@ -256,90 +256,7 @@ TF1 *DoubleGausFit(TH1 *hist,double cent1,double cent2,double xlow, double xhigh
   return mypeak;
 }
 
-
-
-
-
-
-
-
-
-/*
-
-
-
-=======
-
-
-
-  bool edit = false;
-  if(!hist)
-    return edit;
-  int binx[2];
-  double y[2];
-  if(xlow>xhigh)
-    std::swap(xlow,xhigh);
-  binx[0] = hist->GetXaxis()->FindBin(xlow);
-  binx[1] = hist->GetXaxis()->FindBin(xhigh);
-  y[0] = hist->GetBinContent(binx[0]);
-  y[1] = hist->GetBinContent(binx[1]);
-
-  TF1 *myGaus= new TF1(Form("gaus_%i_%i",int(xlow),int(xhigh)),"gaus(0)+pol1(3)",xlow,xhigh);
-  TF1 *bg = new TF1("bg","pol1",xlow,xhigh);
-
-  myGaus->SetParameter(0,hist->GetBinContent((binx[1]+binx[0])/2));
-  myGaus->SetParameter(2,(xhigh-xlow)/2.0);
-  myGaus->SetParameter(1,(xhigh-xlow)/2.0+xlow);
-  myGaus->SetParameter(4,(y[1]-y[0])/(xhigh-xlow));
-  myGaus->SetParameter(3,((y[1]-y[0])/(xhigh-xlow))*xlow);
-
-  myGaus->SetParName(0,"height");
-  myGaus->SetParName(1,"centroid");
-  myGaus->SetParName(2,"sigma");
-  myGaus->SetParName(4,"bg_slope");
-  myGaus->SetParName(3,"bg_offset");
-
-
-  hist->Fit(myGaus,"RQ+");
-
-  bg->SetParameters(myGaus->GetParameter(3),myGaus->GetParameter(4));
-  bg->SetLineColor(kBlue);
-  hist->GetListOfFunctions()->Add(bg);
-
-  double param[5];
-  double error[5];
-
-  myGaus->GetParameters(param);
-  error[0] = myGaus->GetParError(0);
-  error[1] = myGaus->GetParError(1);
-  error[2] = myGaus->GetParError(2);
-  error[3] = myGaus->GetParError(3);
-  error[4] = myGaus->GetParError(4);
-
-  printf(GREEN "Integral from % 4.01f to % 4.01f: %f" RESET_COLOR "\n",
-               xlow,xhigh,myGaus->Integral(xlow,xhigh)/hist->GetBinWidth(1)-
-                          bg->Integral(xlow,xhigh)/hist->GetBinWidth(1));
-  printf(GREEN "Centroid  : % 4.02f +/- %.02f" RESET_COLOR "\n",param[1],error[1]);
-  printf(GREEN "FWHM      : % 4.02f +/- %.02f" RESET_COLOR "\n",TMath::Abs(param[2]*2.35),TMath::Abs(error[2]*2.35));
-  printf(GREEN "Resolution: %.02f %%" RESET_COLOR "\n",TMath::Abs(param[2]*2.35)/param[1]*100.0);
-
-  edit = true;
-
-  TIter it(hist->GetListOfFunctions());
-  while(TObject *obj=it.Next()) {
-    if(!hist->InheritsFrom(TF1::Class()))
-      continue;
-    ((TF1*)obj)->Draw("same");
-  }
-
-
-  return edit;
-
-}
-*/
-
-
-GPeak *PhotoPeakFit(TH1 *hist,double xlow, double xhigh,Option_t *opt) {
+GPeak *PhotoPeakFit(TH1 *hist,double xlow, double xhigh, Option_t* opt) {
   //bool edit = 0;
   if(!hist)
     return 0;
@@ -360,7 +277,7 @@ GPeak *PhotoPeakFit(TH1 *hist,double xlow, double xhigh,Option_t *opt) {
   return mypeak;
 }
 
-TPeak *AltPhotoPeakFit(TH1 *hist,double xlow, double xhigh,Option_t *opt) {
+TPeak *AltPhotoPeakFit(TH1 *hist,double xlow, double xhigh, Option_t* opt) {
   //bool edit = 0;
   if(!hist)
     return 0;

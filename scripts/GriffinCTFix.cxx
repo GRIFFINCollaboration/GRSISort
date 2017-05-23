@@ -192,7 +192,7 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
    return d;
 }
 
-void FixAll(TFile* in_file, TFile* out_file) {
+void FixAll(TFile* in_file, TFile*) {
    //This function only loops over 16 clvoers (always does) and uses the 1332 keV gamma ray in 60Co
    //We might want to make this coding a little "softer"
    double energies[2] = {1173.228, 1332.492};

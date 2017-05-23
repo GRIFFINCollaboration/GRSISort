@@ -36,13 +36,13 @@ void TSourceList::Copy(TObject& obj) const {
 	TCalList::Copy(obj);
 }
 
-void TSourceList::Print(Option_t *opt) const {
+void TSourceList::Print(Option_t*) const {
 	std::cout << "Nucleus: " << fNucleusName << std::endl;
 	TCalList::Print();
 }
 
 
-void TSourceList::Clear(Option_t *opt) {
+void TSourceList::Clear(Option_t*) {
 	TCalList::Clear();
 	fNucleusName.clear();
 }

@@ -1,3 +1,6 @@
+#ifndef GHSYM_H
+#define GHSYM_H
+
 #include "TH1.h"
 #include "TH2.h"
 #include "TArrayF.h"
@@ -176,3 +179,4 @@ public:
 
    ClassDef(GHSymD, 1);
 };
+#endif

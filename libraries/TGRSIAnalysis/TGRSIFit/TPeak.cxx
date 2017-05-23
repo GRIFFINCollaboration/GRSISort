@@ -375,7 +375,7 @@ Bool_t TPeak::Fit(TH1* fitHist,Option_t* opt) {
    return true;
 }
 
-void TPeak::Clear(Option_t* opt) {
+void TPeak::Clear(Option_t*) {
 //Clear the TPeak including functions and histogram, does not
 //currently clear inherited members such as name.
 //want to make a clear that doesn't clear everything

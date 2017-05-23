@@ -29,7 +29,7 @@ void TPacesHit::Copy(TObject& rhs) const {
    return;                                      
 }                                       
 
-bool TPacesHit::InFilter(Int_t wantedfilter) {
+bool TPacesHit::InFilter(Int_t) {
    // check if the desired filter is in wanted filter;
    // return the answer;
    return true;
@@ -42,13 +42,13 @@ void TPacesHit::Clear(Option_t* opt)	{
 }
 
 
-void TPacesHit::Print(Option_t* opt) const	{
+void TPacesHit::Print(Option_t*) const	{
    printf("Paces Detector: %i\n",GetDetector());
    printf("Paces Energy:   %lf\n",GetEnergy());
 	printf("Paces hit time:   %f\n",GetTime());
 }
 
-TVector3 TPacesHit::GetPosition(Double_t dist) const{
+TVector3 TPacesHit::GetPosition(Double_t) const{
 	return TPaces::GetPosition(GetDetector());
 }
 

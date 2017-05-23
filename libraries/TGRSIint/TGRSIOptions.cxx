@@ -26,7 +26,7 @@ TGRSIOptions::TGRSIOptions(int argc, char** argv) : fShouldExit(false) {
 	Load(argc, argv);
 }
 
-void TGRSIOptions::Clear(Option_t* opt) {
+void TGRSIOptions::Clear(Option_t*) {
    ///Clears all of the variables in the TGRSIOptions
 	fInputMidasFiles.clear();
 	fInputLstFiles.clear();
@@ -105,7 +105,7 @@ void TGRSIOptions::Clear(Option_t* opt) {
 	fSelectorOnly = false;
 }
 
-void TGRSIOptions::Print(Option_t* opt) const { 
+void TGRSIOptions::Print(Option_t*) const { 
    ///Print the current status of TGRSIOptions, includes all names, lists and flags
 	std::cout<<"fCloseAfterSort: "<<fCloseAfterSort<<std::endl
 		<<"fLogErrors: "<<fLogErrors<<std::endl
@@ -497,12 +497,12 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename) {
 	}
 }
 
-std::string TGRSIOptions::GenerateOutputFilename(const std::string& filename){
+std::string TGRSIOptions::GenerateOutputFilename(const std::string&) {
    ///Currently does nothing
 	return "temp.root";
 }
 
-std::string TGRSIOptions::GenerateOutputFilename(const std::vector<std::string>& filename){
+std::string TGRSIOptions::GenerateOutputFilename(const std::vector<std::string>&) {
    ///Currently does nothing
 	return "temp_from_multi.root";
 }

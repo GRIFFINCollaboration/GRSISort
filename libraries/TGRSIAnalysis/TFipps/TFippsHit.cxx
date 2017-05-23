@@ -32,16 +32,16 @@ void TFippsHit::Copy(TObject &rhs) const {
 	TGRSIDetectorHit::Copy(rhs);
 }                                       
 
-void TFippsHit::Copy(TObject& obj, bool waveform) const {
+void TFippsHit::Copy(TObject& obj, bool) const {
 	Copy(obj);
 }
 
-void TFippsHit::Clear(Option_t *opt)	{
+void TFippsHit::Clear(Option_t* opt)	{
    //Clears the information stored in the TFippsHit.
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
 }
 
-void TFippsHit::Print(Option_t *opt) const	{
+void TFippsHit::Print(Option_t*) const	{
    //Prints the Detector Number, Crystal Number, Energy, Time and Angle.
    printf("Fipps Detector: %i\n",GetDetector());
 	printf("Fipps Crystal:  %i\n",GetCrystal());
@@ -80,7 +80,7 @@ void TFippsHit::Add(const TFippsHit *hit)	{
    }
 }
 
-Double_t TFippsHit::GetNoCTEnergy(Option_t* opt) const{
+Double_t TFippsHit::GetNoCTEnergy(Option_t*) const{
   TChannel* chan = GetChannel();
   if(!chan) {
     Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());

@@ -11,7 +11,7 @@ TParsingDiagnostics::TParsingDiagnostics() : TObject() {
 	Clear();
 }
 
-TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics& rhs) : TObject() {
+TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics&) : TObject() {
 	fIdHist = nullptr;
 	Clear();
 }
@@ -37,7 +37,7 @@ void TParsingDiagnostics::Copy(TObject& obj) const {
 	static_cast<TParsingDiagnostics&>(obj).fNumberOfHits = fNumberOfHits;
 }
 
-void TParsingDiagnostics::Clear(Option_t* opt) {
+void TParsingDiagnostics::Clear(Option_t*) {
 	if(fIdHist != nullptr) delete fIdHist;
 	fIdHist = nullptr;
 	fPPGCycleLength = 0;
@@ -56,7 +56,7 @@ void TParsingDiagnostics::Clear(Option_t* opt) {
 	fNumberOfHits.clear();
 }
 
-void TParsingDiagnostics::Print(Option_t* opt) const {
+void TParsingDiagnostics::Print(Option_t*) const {
 	std::cout<<"Total run time of this (sub-)run is "<<fMaxMidasTimeStamp-fMinMidasTimeStamp<<" s"<<std::endl
 				<<"PPG cycle is "<<fPPGCycleLength/1e5<<" ms long."<<std::endl
 				<<"Found "<<fNumberOfNetworkPackets<<" network packets in range "<<fMinNetworkPacketNumber<<" - "<<fMaxNetworkPacketNumber<<" => "<<100.*fNumberOfNetworkPackets/(fMaxNetworkPacketNumber-fMinNetworkPacketNumber+1.)<<" % packet survival."<<std::endl;

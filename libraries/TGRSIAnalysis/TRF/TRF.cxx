@@ -25,7 +25,7 @@ TRF::TRF(const TRF& rhs) : TDetector() {
 TRF::~TRF() {
 }
 
-void TRF::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
+void TRF::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*) {
 	TPulseAnalyzer pulse(*frag);	    
 	if(pulse.IsSet()){
 		fTime = pulse.fit_rf(fPeriod*0.2);//period taken in half ticks... for reasons
@@ -34,7 +34,7 @@ void TRF::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) {
 	}
 }
 
-void TRF::Clear(Option_t *opt) {
+void TRF::Clear(Option_t*) {
 	fMidasTime =  0.0;
 	fTimeStamp =  0.0;
 	fTime   =  0.0;
@@ -42,7 +42,7 @@ void TRF::Clear(Option_t *opt) {
 	fPeriod = 84.409;
 }
 
-void TRF::Print(Option_t *opt) const {
+void TRF::Print(Option_t*) const {
 	printf("time = %f\n",fTime);
 	printf("timestamp = %ld\n",fTimeStamp);
 	printf("midastime = %ld\n",fMidasTime);

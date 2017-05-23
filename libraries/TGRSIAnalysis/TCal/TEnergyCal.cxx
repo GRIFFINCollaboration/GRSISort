@@ -132,13 +132,13 @@ void TEnergyCal::WriteToChannel() const {
    GetChannel()->AddENGCoefficient(this->GetParameter(1));
 }
 
-void TEnergyCal::Print(Option_t* opt) const {
+void TEnergyCal::Print(Option_t*) const {
    //Print the TEnergyCal information
    TCal::Print();
    TGraphErrors::Print();
 }
 
-void TEnergyCal::Clear(Option_t* opt) {
+void TEnergyCal::Clear(Option_t*) {
    //Clear the TEnergyCal and reset the default titles.
    TCal::Clear();
    SetDefaultTitles();

@@ -14,7 +14,7 @@ ClassImp(GPeak)
 
 GPeak* GPeak::fLastFit = nullptr;
 
-GPeak::GPeak(Double_t cent,Double_t xlow,Double_t xhigh,Option_t *opt)
+GPeak::GPeak(Double_t cent,Double_t xlow,Double_t xhigh, Option_t*)
       : TF1("photopeakbg",GRootFunctions::PhotoPeakBG,xlow,xhigh,7),
         fBGFit("background",GRootFunctions::StepBG,xlow,xhigh,6)  {
   Clear("");
@@ -47,7 +47,7 @@ GPeak::GPeak(Double_t cent,Double_t xlow,Double_t xhigh,Option_t *opt)
 
 }
 
-GPeak::GPeak(Double_t cent,Double_t xlow,Double_t xhigh,TF1 *bg,Option_t *opt)
+GPeak::GPeak(Double_t cent,Double_t xlow,Double_t xhigh,TF1 *bg, Option_t*)
       : TF1("photopeakbg",GRootFunctions::PhotoPeakBG,xlow,xhigh,7) {
   Clear("");
   if(cent>xhigh || cent<xlow) {

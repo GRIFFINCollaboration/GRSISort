@@ -63,7 +63,7 @@ TVector3 TS3Hit::GetPosition(bool smear) const {
 	return TS3::GetPosition(GetRing(),GetSector(),GetDefaultPhiOffset(),GetDefaultDistance(),GetIsDownstream(),smear);
 }
 
-void TS3Hit::Print(Option_t *opt) const	{
+void TS3Hit::Print(Option_t*) const	{
 	printf("================\n");
 	printf("not yet written.\n");
 	printf("================\n");

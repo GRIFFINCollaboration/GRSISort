@@ -37,7 +37,7 @@ void TFragHistLoop::ClearQueue() {
 
 bool TFragHistLoop::Iteration() {
   std::shared_ptr<const TFragment> event;
-  fInputQueue->Pop(event);
+  fInputSize = fInputQueue->Pop(event);
 
   if(event) {
     if(!fOutputFile){
@@ -45,6 +45,7 @@ bool TFragHistLoop::Iteration() {
     }
 
     fCompiledHistograms.Fill(event);
+	 ++fItemsPopped;
     return true;
 
   } else if(fInputQueue->IsFinished()) {

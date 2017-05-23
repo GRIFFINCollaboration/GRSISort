@@ -212,7 +212,7 @@ GH1D* GH2Base::ProjectionY_Background(int firstbin,
 }
 
 
-GH1D* GH2Base::GetPrevious(const GH1D* curr,bool DrawEmpty) {
+GH1D* GH2Base::GetPrevious(const GH1D* curr, bool) {
   if(fIsSummary){
     return GetPrevSummary(curr, false);
   }
@@ -235,7 +235,7 @@ GH1D* GH2Base::GetPrevious(const GH1D* curr,bool DrawEmpty) {
   }
 }
 
-GH1D* GH2Base::GetNext(const GH1D* curr,bool DrawEmpty) {
+GH1D* GH2Base::GetNext(const GH1D* curr, bool) {
   if(fIsSummary){
     return GetNextSummary(curr,false);
   }

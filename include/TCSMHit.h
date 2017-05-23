@@ -103,13 +103,10 @@ public:
    Double_t GetDdE_dx() const { return GetDEnergy() / GetDthickness(); }
    Double_t GetDthickness() const;
 
-   TVector3 GetPosition(Double_t dist = 0) const { return fDPosition; }                 //!<!
-   Double_t GetEnergy(Option_t* opt = "") const { return GetDEnergy() + GetEEnergy(); } //!<!
-   Double_t GetTime(Option_t* opt = "") const { return fVerDTime; }                     //!<!
+   TVector3 GetPosition(Double_t = 0) const { return fDPosition; }                 //!<!
+   Double_t GetEnergy(Option_t* = "") const { return GetDEnergy() + GetEEnergy(); } //!<!
 
-   ///////////////////////////////////////////////////////////////////////////////////////////////
-   ///////////////////////////////////////////////////////////////////////////////////////////////
-   ///////////////////////////////////////////////////////////////////////////////////////////////
+	Double_t GetTime(const UInt_t& = kAll, Option_t* = "") const { return fVerDTime; }  ///< Returns fVerDTime
 
    inline void SetDetectorNumber(const Int_t& tempnum) { fDetectorNumber = tempnum; } //!<!
 

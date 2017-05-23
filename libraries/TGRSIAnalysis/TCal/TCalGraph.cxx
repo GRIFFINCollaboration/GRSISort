@@ -122,7 +122,7 @@ void TCalGraph::CorrectMissingPoints(TCalList &cal_list, TCalList &src_list){
 	}
 }
 
-void TCalGraph::ClearAllPoints(Option_t *opt){
+void TCalGraph::ClearAllPoints(Option_t*){
 	//Clear all of the data points
 	while(RemovePoint(0) != -1){ }
 }

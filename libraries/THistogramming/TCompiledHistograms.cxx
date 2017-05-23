@@ -78,7 +78,7 @@ bool TCompiledHistograms::file_exists() {
   return infile.is_open();
 }
 
-Int_t TCompiledHistograms::Write(const char* name, Int_t option, Int_t bufsize) {
+Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t) {
   fObjects.Sort();
 
   TIter next(&fObjects);

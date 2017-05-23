@@ -233,7 +233,7 @@ void TDataParser::SetTIGCfd(uint32_t value, std::shared_ptr<TFragment> currentFr
 	return;
 }
 
-void TDataParser::SetTIGLed(uint32_t value, std::shared_ptr<TFragment> currentFrag) {
+void TDataParser::SetTIGLed(uint32_t, std::shared_ptr<TFragment>) {
 	///Sets the LED of a Tigress event.
 	// No longer used anywhere
 	//  currentFrag->SetLed( int32_t(value & 0x07ffffff) );
@@ -1039,7 +1039,7 @@ bool TDataParser::SetGRIFPsd(uint32_t value, std::shared_ptr<TFragment> frag) {
 	return true;
 }
 
-int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, unsigned int midasSerialNumber, time_t midasTime) {
+int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, unsigned int, time_t) {
 	TPPGData* ppgEvent = new TPPGData;
 	int  x = 1; //We have already read the header so we can skip the 0th word.
 
@@ -1267,8 +1267,7 @@ int TDataParser::EightPIDataToFragment(uint32_t stream,uint32_t* data,
 	return 1;
 }
 
-int TDataParser::FifoToFragment(unsigned short* data,int size,bool zerobuffer,
-		unsigned int midasSerialNumber, time_t midasTime) {
+int TDataParser::FifoToFragment(unsigned short*, int, bool,	unsigned int, time_t) {
 	//
 	//	if(size<10) //this is too short to be anything useful
 	//		return 0;

@@ -131,8 +131,8 @@ void TLMFitter::Fit(TH1* hist, TF1* func){
 /*******************************************************************/
 /*  Integrator                                                     */
 /*******************************************************************/
-int TLMFitter::integrator(Vec_I_double &x, Vec_I_double &y, Vec_double &sig, Vec_I_double &W,
-			   Vec_IO_double &a, Vec_double &dyda, int chisqnumber, const double &bin_width, Vec_double &yfit, const int &bin)
+int TLMFitter::integrator(Vec_I_double& x, Vec_I_double& y, Vec_double& sig, Vec_I_double&,
+			   Vec_IO_double& a, Vec_double& dyda, int chisqnumber, const double&, Vec_double& yfit, const int& bin)
 {
    //Integrates the function within each bin
    int ma = a.size();

@@ -255,7 +255,7 @@ void SetupFragmentTree() {
 
 
 int main(int argc, char **argv) {
-
+	if(argc <= 1) return 1;
    TFile file(argv[1]);
    fCurrentFragTree = (TTree*)file.Get("FragmentTree");
  

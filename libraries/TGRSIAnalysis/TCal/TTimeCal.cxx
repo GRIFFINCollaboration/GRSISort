@@ -30,13 +30,7 @@ void TTimeCal::SetParameters(std::vector<Double_t> paramVec) {
    fParameters = paramVec;
 }
 
-void TTimeCal::SetParameter(Int_t idx, Double_t param) {
-/*   try {
-	   fParameters.at(idx) = param;
-   } 
-   catch(const std::out_of_range& oor) {
-      Error("SetParameter","Parameter %d does not exist yet",idx);
-   } */
+void TTimeCal::SetParameter(Int_t, Double_t) {
 }
 
 void TTimeCal::ReadFromChannel() {
@@ -47,11 +41,9 @@ void TTimeCal::ReadFromChannel() {
    fParameters = GetChannel()->GetTIMECoeff();
 }
 
-void TTimeCal::Print(Option_t *opt) const {
-   if(GetChannel())
-      printf("Channel Number: %u\n",GetChannel()->GetNumber());
-   else
-      printf("Channel Number: NOT SET\n");
+void TTimeCal::Print(Option_t*) const {
+   if(GetChannel()) printf("Channel Number: %u\n",GetChannel()->GetNumber());
+   else             printf("Channel Number: NOT SET\n");
 
    for(int i = 0; i < static_cast<int>(fParameters.size()); i++) {
       printf("p%i = %lf \t",i,fParameters[i]);

@@ -63,7 +63,7 @@ public:
    //                                   SetCharge(frag.GetCharge());
    //                                     SetTimeStamp(frag.GetTimeStamp()); }
 
-   void SetUpNumbering(TChannel* chan)
+   void SetUpNumbering(TChannel*)
    {
       TChannel* channel = GetChannel();
       if (!channel) {

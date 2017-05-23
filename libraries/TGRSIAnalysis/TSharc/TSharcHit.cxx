@@ -44,7 +44,7 @@ void TSharcHit::Clear(Option_t* options)	{
   //fBackStrip     = -1;    //
 }
 
-void TSharcHit::Print(Option_t* options) const {
+void TSharcHit::Print(Option_t*) const {
   printf(DGREEN "[D/F/B] = %02i\t/%02i\t/%02i " RESET_COLOR "\n",GetDetector(),GetFrontStrip(),GetBackStrip());
   //printf("Sharc hit charge: %02f\n",GetFrontCharge());
   //printf("Sharc hit energy: %f\n",GetDeltaE());
@@ -52,7 +52,7 @@ void TSharcHit::Print(Option_t* options) const {
   //printf( DGREEN "=	=	=	=	=	=	=	" RESET_COLOR "\n");
 }
 
-TVector3 TSharcHit::GetPosition(Double_t dist) const {
+TVector3 TSharcHit::GetPosition(Double_t) const {
  // return  fposition; // returned from this -> i.e front...
    //PC BENDER PLEASE LOOK AT THIS.
    //

@@ -288,7 +288,7 @@ void TGRSIRunInfo::Print(Option_t *opt) const {
    }
 }
 
-void TGRSIRunInfo::Clear(Option_t *opt) {
+void TGRSIRunInfo::Clear(Option_t*) {
    //Clears the TGRSIRunInfo. Currently, there are no available
    //options.
 
@@ -678,7 +678,7 @@ bool TGRSIRunInfo::WriteInfoFile(std::string filename) {
    return true;
 }
 
-std::string TGRSIRunInfo::PrintToString(Option_t* opt) {
+std::string TGRSIRunInfo::PrintToString(Option_t*) {
 	std::string buffer;
 	buffer.append("//The event building time, 10 ns units.\n");
    buffer.append(Form("BuildWindow: %ld\n", Get()->BuildWindow()));

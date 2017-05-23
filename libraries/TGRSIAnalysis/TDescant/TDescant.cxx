@@ -145,7 +145,7 @@ TDescant& TDescant::operator=(const TDescant& rhs) {
    return *this;
 }
 
-void TDescant::Print(Option_t *opt) const	{
+void TDescant::Print(Option_t*) const	{
    ///Prints out TDescant members, currently does little.
    printf("%lu fDescantHits\n",fDescantHits.size());
 }

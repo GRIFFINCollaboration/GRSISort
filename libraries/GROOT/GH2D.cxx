@@ -65,7 +65,7 @@ void GH2D::Clear(Option_t *opt) {
   GH2Clear();
 }
 
-void GH2D::Print(Option_t *opt) const { }
+void GH2D::Print(Option_t*) const { }
 
 void GH2D::Draw(Option_t *opt) {
   std::string option = opt;

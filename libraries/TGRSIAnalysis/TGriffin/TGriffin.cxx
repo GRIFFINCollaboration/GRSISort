@@ -147,7 +147,7 @@ Double_t TGriffin::GetEnergyNonlinearity(int chan, double energy){
 }
 
 
-void TGriffin::Print(Option_t *opt) const {
+void TGriffin::Print(Option_t*) const {
 	std::cout << "Griffin Contains: " << std::endl;
 	std::cout << std::setw(6) << GetLowGainMultiplicity() << " Low gain hits"  << std::endl;
 	std::cout << std::setw(6) << GetHighGainMultiplicity() << " High gain hits"  << std::endl;

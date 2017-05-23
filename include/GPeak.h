@@ -24,7 +24,7 @@ public:
    void DrawResiduals(TH1*) const;
    // void DrawResiduals(); // *MENU*
 
-   TF1* Background(Option_t* opt = "TF1") { return &fBGFit; }
+   TF1* Background(Option_t* = "TF1") { return &fBGFit; }
    // void DrawBackground(Option_t* opt = "SAME") const; // *MENU*
 
    Double_t GetCentroid() const { return GetParameter("centroid"); }

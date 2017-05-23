@@ -114,7 +114,7 @@ void TFipps::Clear(Option_t *opt)	{
 }
 
 
-void TFipps::Print(Option_t *opt) const {
+void TFipps::Print(Option_t*) const {
 	std::cout << "Fipps Contains: " << std::endl;
 	std::cout << std::setw(6) << GetMultiplicity() << " hits"  << std::endl;
 

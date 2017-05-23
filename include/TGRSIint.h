@@ -31,6 +31,7 @@
 #include "TList.h"
 #include "TEnv.h"
 #include "TFile.h"
+#include "TStopwatch.h"
 
 #include "Globals.h"
 #include "TRawFile.h"
@@ -101,6 +102,8 @@ private:
    std::string fNewFragmentFile;    ///< New fragment file name
 
    std::vector<TRawFile*> fRawFiles; ///< List of Raw files opened
+
+  TStopwatch* fStopwatch;
 
    /// \cond CLASSIMP
    ClassDef(TGRSIint, 0); // Interpreter for GRSISort

@@ -25,7 +25,7 @@ TCalManager::~TCalManager() {
 	}
 }
 
-void TCalManager::RemoveCal(UInt_t channum, Option_t* opt) {
+void TCalManager::RemoveCal(UInt_t channum, Option_t*) {
 	if(fCalMap.count(channum)==1) {// if this cal exists
 		TCal* cal = GetCal(channum);
 		delete cal;
@@ -149,7 +149,7 @@ void TCalManager::WriteToChannel() const {
 	}
 }
 
-void TCalManager::Clear(Option_t* opt) {
+void TCalManager::Clear(Option_t*) {
 	///This deletes all of the current TCal's. It also resets the class
 	///type to 0.
 	for(auto iter = fCalMap.begin(); iter != fCalMap.end(); iter++)   {
@@ -161,11 +161,8 @@ void TCalManager::Clear(Option_t* opt) {
 	fClass = 0;
 }
 
-void TCalManager::Print(Option_t* opt) const{
+void TCalManager::Print(Option_t*) const{
 	if(fClass)
 		printf("Type: %s\n", fClass->GetName());
 	std::cout << "Size: " << fCalMap.size() << std::endl; //Printing this way due to size_type return
 }
-
-
-

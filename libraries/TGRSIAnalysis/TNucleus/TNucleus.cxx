@@ -191,7 +191,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile){
 //  fA = aval;
 //}
 
-void TNucleus::SetName(const char* c) {
+void TNucleus::SetName(const char*) {
   std::string name = this->GetSymbol();
   name.append(std::to_string(this->GetA()));
   TNamed::SetName(name.c_str());
@@ -421,7 +421,7 @@ TTransition* TNucleus::GetTransition(Int_t idx){
   return tran;
 }
 
-void TNucleus::Print(Option_t *opt) const{
+void TNucleus::Print(Option_t*) const{
   //Prints out the Name of the nucleus, as well as the numerated transition list
   printf("Nucleus: %s\n",GetName());
   TIter next(&TransitionList);

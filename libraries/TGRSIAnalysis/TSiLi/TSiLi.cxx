@@ -42,7 +42,7 @@ TSiLi::TSiLi(const TSiLi& rhs) : TGRSIDetector() {
   rhs.Copy(*this);
 } 
 
-void TSiLi::Clear(Option_t *opt)  {
+void TSiLi::Clear(Option_t*)  {
   fSiLiHits.clear();
   fAddbackHits.clear();
   fSiLiBits.Clear();  
@@ -53,7 +53,7 @@ TSiLi& TSiLi::operator=(const TSiLi& rhs) {
    return *this;
 }
 
-void TSiLi::Print(Option_t *opt) const  {  
+void TSiLi::Print(Option_t*) const  {  
   printf("%lu sili_hits\n",fSiLiHits.size());
   printf("%lu sili_addback_hits\n",fAddbackHits.size());  
 }

@@ -34,7 +34,7 @@ public:
    enum EOpenType { kRead, kWrite };
 
    TRawFile() {} ///< default constructor
-   TRawFile(const char* filename, EOpenType open_type = kRead) {}
+   TRawFile(const char*, EOpenType = kRead) {}
    virtual ~TRawFile() {} ///< destructor
 
    virtual bool Open(const char* filename) = 0; ///< Open input file

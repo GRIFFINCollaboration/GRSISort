@@ -72,7 +72,7 @@ void TTriFoil::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan
 
 }
 
-void TTriFoil::Print(Option_t *opt) const { } 
+void TTriFoil::Print(Option_t*) const { } 
 
 
 

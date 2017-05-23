@@ -135,7 +135,7 @@ const char* TXMLOdb::GetNodeName(TXMLNode* node) {
    }
 }
 
-int TXMLOdb::ReadInt(const char* path,int index, int defaultValue) {
+int TXMLOdb::ReadInt(const char* path, int, int defaultValue) {
    TXMLNode* node = FindPath(path);
    if(!node)
       return defaultValue;

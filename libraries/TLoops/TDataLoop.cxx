@@ -91,7 +91,6 @@ void TDataLoop::SetFileOdb(char* data, int size) {
 
 	//Check for EPICS variables
 	SetEPICSOdb();
-	
 #endif
 }
 
@@ -103,7 +102,6 @@ void TDataLoop::SetRunInfo(){
 		run_info->SetRunStart(atof(node->GetText()));
 
 	node = fOdb->FindPath("/Experiment/Run parameters/Run Title");
-	std::cout << node << std::endl;
 	if(node){
 		run_info->SetRunTitle(node->GetText());
 		std::cout << DBLUE << "Title: " << node->GetText() << RESET_COLOR << std::endl;
@@ -128,6 +126,7 @@ void TDataLoop::SetEPICSOdb(){
 
 void TDataLoop::SetGRIFFOdb() {
 #ifdef HAS_XML
+	// get calibrations
 	std::string path = "/DAQ/MSC";
 	printf("using GRIFFIN path to analyzer info: %s...\n",path.c_str());
 
@@ -154,28 +153,70 @@ void TDataLoop::SetGRIFFOdb() {
 
 	if( (address.size() == names.size()) && (names.size() == gains.size()) && (gains.size() == offsets.size()) && offsets.size() == type.size() ) {
 		//all good.
+		for(size_t x=0;x<address.size();x++) {
+			TChannel* tempChan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
+			if(!tempChan) {
+				tempChan = new TChannel();
+			}
+			tempChan->SetName(names.at(x).c_str());
+			tempChan->SetAddress(address.at(x));
+			tempChan->SetNumber(x);
+			//printf("temp chan(%s) number set to: %i\n",tempChan->GetChannelName(),tempChan->GetNumber());
+
+			tempChan->SetUserInfoNumber(x);
+			tempChan->AddENGCoefficient(offsets.at(x));
+			tempChan->AddENGCoefficient(gains.at(x));
+			//TChannel::UpdateChannel(tempChan);
+			TChannel::AddChannel(tempChan,"overwrite");
+		}
+		printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
 	}  else {
 		printf(BG_WHITE DRED "problem parsing odb data, arrays are different sizes, channels not set." RESET_COLOR "\n");
+	}
+
+	// get cycle information
+	// "/Experiment/Edit on start/PPG Cycle" is a link to the PPG cycle used (always "/PPG/Current"???)
+	// "/PPG/Current" gives the current PPG cycle used, e.g. 146Cs_S1468
+	// "/PPG/Cycles/146Cs_S1468" then has four PPGcodes and four durations
+	node = fOdb->FindPath("/PPG/Current");
+	if(node == nullptr) {
+		std::cerr<<"Failed to find \"/PPG/Current\" in ODB!"<<std::endl;
 		return;
 	}
 
-	for(size_t x=0;x<address.size();x++) {
-		TChannel* tempChan = TChannel::GetChannel(address.at(x));   //names.at(x).c_str());
-		if(!tempChan) {
-			tempChan = new TChannel();
-		}
-		tempChan->SetName(names.at(x).c_str());
-		tempChan->SetAddress(address.at(x));
-		tempChan->SetNumber(x);
-		//printf("temp chan(%s) number set to: %i\n",tempChan->GetChannelName(),tempChan->GetNumber());
-
-		tempChan->SetUserInfoNumber(x);
-		tempChan->AddENGCoefficient(offsets.at(x));
-		tempChan->AddENGCoefficient(gains.at(x));
-		//TChannel::UpdateChannel(tempChan);
-		TChannel::AddChannel(tempChan,"overwrite");
+	if(!node->HasChildren()) {
+		std::cout<<"Node has no children, can't read ODB cycle"<<std::endl;
+		return;
 	}
-	printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
+	std::string currentCycle = "/PPG/Cycles/";
+	currentCycle.append(node->GetChildren()->GetContent());
+	temp = currentCycle;
+	temp.append("/PPGcodes");
+	node = fOdb->FindPath(temp.c_str());
+	if(node == nullptr) {
+		std::cerr<<"Failed to find \""<<temp<<"\" in ODB!"<<std::endl;
+		return;
+	}
+	std::vector<int> tmpCodes = fOdb->ReadIntArray(node);
+	// the codes are 32bit with the 16 high bits being the same as the 16 low bits
+	// we check this and only keep the low 16 bits
+	std::vector<short> ppgCodes;
+	for(auto code : tmpCodes) {
+		if(((code>>16)&0xffff) != (code&0xffff)) {
+			std::cout<<DRED<<"Found ppg code in the ODB with high bits (0x"<<std::hex<<(code>>16)<<") != low bits ("<<(code&0xffff)<<std::dec<<")"<<RESET_COLOR<<std::endl;
+		}
+		ppgCodes.push_back(code&0xffff);
+	}
+	temp = currentCycle;
+	temp.append("/durations");
+	node = fOdb->FindPath(temp.c_str());
+	if(node == nullptr) {
+		std::cerr<<"Failed to find \""<<temp<<"\" in ODB!"<<std::endl;
+		return;
+	}
+	std::vector<int> durations = fOdb->ReadIntArray(node);
+
+	TPPG::Get()->SetOdbCycle(ppgCodes, durations);
 
 	return;
 #endif
@@ -257,10 +298,8 @@ void TDataLoop::SetTIGOdb()  {
 		if(!tempChan)
 			tempChan = new TChannel();
 		if(x<names.size()) { tempChan->SetName(names.at(x).c_str()); }
-		//printf("address: 0x%08x\n",address.at(x));
 		tempChan->SetAddress(address.at(x));
 		tempChan->SetNumber(x);
-		//printf("temp chan(%s) 0x%08x  number set to: %i\n",tempChan->GetChannelName(),tempChan->GetAddress(),tempChan->GetNumber());
 		int temp_integration = 0;
 		if(type.at(x) != 0) {
 			tempChan->SetTypeName(typemap[type.at(x)].first);
@@ -276,9 +315,6 @@ void TDataLoop::SetTIGOdb()  {
 		tempChan->AddENGCoefficient(gains.at(x));
 
 		TChannel::AddChannel(tempChan,"overwrite");
-		//TChannel* temp2 = TChannel::GetChannel(address.at(x));
-		//temp2->Print();
-		//printf("NumberofChannels: %i\n",TChannel::GetNumberOfChannels());
 	}
 	printf("\t%i TChannels created.\n",TChannel::GetNumberOfChannels());
 	return;

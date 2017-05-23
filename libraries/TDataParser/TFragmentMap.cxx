@@ -68,8 +68,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
 		case 2: // only one option: (2, 1)
 			{
 				if(charge.size() != 1) {
-					// remove these fragments from the map
-					fMap.erase(range.first, range.second);
+					DropFragments(range);
 					if(fDebug) std::cout<<"2 w/o single charge"<<std::endl;
 					return false;
 				}
@@ -91,8 +90,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
 					} else {
 						//drop this charge, it's no good
 						if(dropped >= 0) { // we've already dropped one, so we don't have enough left
-							// remove these fragments from the map
-							fMap.erase(range.first, range.second);
+							DropFragments(range);
 							if(fDebug) std::cout<<"2 too much dropped"<<std::endl;
 							return false;
 						}
@@ -101,8 +99,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
 					}
 				}
 				if(dropped >= 0 && integrationLength[0] <= 0) { // we've already dropped one, so we don't have enough left
-					// remove these fragments from the map
-					fMap.erase(range.first, range.second);
+					DropFragments(range);
 					if(fDebug) std::cout<<"2 too much dropped (end)"<<std::endl;
 					return false;
 				}
@@ -149,8 +146,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
 		case 3: // two options: (3, 1, 1), (2, 2, 1)
 			{
 				if(charge.size() != 1) {
-					// remove these fragments from the map
-					fMap.erase(range.first, range.second);
+					DropFragments(range);
 					if(fDebug) std::cout<<"3 w/o single charge"<<std::endl;
 					return false;
 				}
@@ -199,13 +195,11 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
 						break;
 					case 1: // dropped one
 						//don't know how to handle these right now
-						fMap.erase(range.first, range.second);
-						if(fDebug) std::cout<<"3, single drop"<<std::endl;
+						DropFragments(range);
 						return false;
 						break;
 					case 2: // dropped two => as many left as there are fragments
-						//don't know how to handle these right now
-						fMap.erase(range.first, range.second);
+						DropFragments(range);
 						if(fDebug) std::cout<<"3, double drop"<<std::endl;
 						return false;
 						switch(dropped[0]) {
@@ -224,8 +218,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
 						}
 						break;
 					default: // dropped too many
-						// remove these fragments from the map
-						fMap.erase(range.first, range.second);
+						DropFragments(range);
 						if(fDebug) std::cout<<"3, dropped too many"<<std::endl;
 						return false;
 				}
@@ -235,8 +228,7 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
 			//break;
 		default:
 			//std::cerr<<"address "<<frag->GetAddress()<<": deconvolution of "<<nofCharges<<" charges for "<<nofFrags<<" fragments not implemented yet!"<<std::endl;
-			// remove these fragments from the map
-			fMap.erase(range.first, range.second);
+			DropFragments(range);
 			return false;
 			break;
 	} // switch(nofFrags)
@@ -293,5 +285,16 @@ void TFragmentMap::Solve(std::vector<std::shared_ptr<TFragment> > frag, std::vec
 			frag[2]->SetNumberOfPileups(-31);
 			if(fDebug) std::cout<<"3, situation "<<situation<<": charges "<<c[0]<<", "<<c[1]<<", "<<c[2]<<", "<<c[3]<<", "<<c[4]<<" and squared int. lengths "<<k2[0]<<", "<<k2[1]<<", "<<k2[2]<<", "<<k2[3]<<", "<<k2[4]<<" => "<<frag[0]->GetCharge()<<", "<<frag[1]->GetCharge()<<", "<<frag[2]->GetCharge()<<std::endl;
 			break;
+	}
+}
+
+void TFragmentMap::DropFragments(std::pair<std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > >::iterator, 
+		                                     std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > >::iterator>& range) {
+	// put the fragments into the bad output queue
+	for(auto it = range.first; it != range.second; ++it) {
+		for(auto outputQueue : fGoodOutputQueue) {
+			fBadOutputQueue->Push(std::get<0>((*it).second));
+		}
+		if(fDebug) std::cout<<"Added bad fragment "<<std::get<0>((*it).second)<<std::endl;
 	}
 }

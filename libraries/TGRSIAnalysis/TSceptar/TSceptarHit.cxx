@@ -86,7 +86,7 @@ void TSceptarHit::Copy(TObject& obj, bool waveform) const {
 	if(waveform) CopyWave(obj);
 }
 
-TVector3 TSceptarHit::GetPosition(Double_t dist) const {
+TVector3 TSceptarHit::GetPosition(Double_t) const {
    //Gets the position of the current TSceptarHit
    return TSceptar::GetPosition(GetDetector());
 }
@@ -96,19 +96,19 @@ TVector3 TSceptarHit::GetPosition() const {
    return GetPosition(GetDefaultDistance());
 }
 
-bool TSceptarHit::InFilter(Int_t wantedfilter) {
+bool TSceptarHit::InFilter(Int_t) {
    // check if the desired filter is in wanted filter;
    // return the answer;
    return true;
 }
 
-void TSceptarHit::Clear(Option_t *opt)	{
+void TSceptarHit::Clear(Option_t*)	{
    //Clears the SceptarHit
    fFilter = 0;
    TGRSIDetectorHit::Clear();
 }
 
-void TSceptarHit::Print(Option_t *opt) const	{
+void TSceptarHit::Print(Option_t*) const	{
    //Prints the SceptarHit. Returns:
    //Detector
    //Energy

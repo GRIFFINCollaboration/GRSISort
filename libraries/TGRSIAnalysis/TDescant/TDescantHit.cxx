@@ -108,7 +108,7 @@ TVector3 TDescantHit::GetPosition() const {
    return TDescant::GetPosition(GetDetector(),GetDefaultDistance());
 }
 
-bool TDescantHit::InFilter(Int_t wantedfilter) {
+bool TDescantHit::InFilter(Int_t) {
    /// check if the desired filter is in wanted filter;
    /// return the answer;
    return true;
@@ -125,7 +125,7 @@ Int_t TDescantHit::GetRemainder() const {
 	return fCfd>>22;
 }
 
-Double_t TDescantHit::GetTime(const UInt_t& correction_flag,Option_t* opt) const {
+Double_t TDescantHit::GetTime(const UInt_t&, Option_t*) const {
 	Double_t dTime = GetTimeStamp()*10.+GetRemainder()+(GetCfd() + gRandom->Uniform())/256.;
 	TChannel* chan = GetChannel();
 	if(!chan) {
@@ -143,7 +143,7 @@ Double_t TDescantHit::GetCorrectedTime() const {
 	return GetTime();
 }
 
-void TDescantHit::Clear(Option_t *opt)	{
+void TDescantHit::Clear(Option_t*)	{
 	fFilter  = 0;
 	fPsd     = -1;
 	fZc      = 0;
@@ -154,7 +154,7 @@ void TDescantHit::Clear(Option_t *opt)	{
 	TGRSIDetectorHit::Clear();
 }
 
-void TDescantHit::Print(Option_t *opt) const	{
+void TDescantHit::Print(Option_t*) const	{
 	printf("Descant Detector: %i\n",GetDetector());
 	printf("Descant hit energy: %.2f\n",GetEnergy());
 	printf("Descant hit time:   %.f\n",GetTime());

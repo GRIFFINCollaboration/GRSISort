@@ -52,7 +52,7 @@ void TPaces::Clear(Option_t *opt)	{
 }
 
 
-void TPaces::Print(Option_t *opt) const {
+void TPaces::Print(Option_t*) const {
   //Prints out TPaces members, currently does nothing.
   printf("%lu fPacesHits\n",fPacesHits.size());
   return;
@@ -63,7 +63,7 @@ TPaces& TPaces::operator=(const TPaces& rhs) {
 	return *this;
 }
 
-void TPaces::AddFragment(std::shared_ptr<const TFragment> frag, TChannel *chan){
+void TPaces::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*){
    TPacesHit hit(*frag);
    fPacesHits.push_back(std::move(hit));
 }
@@ -82,7 +82,7 @@ TPacesHit* TPaces::GetPacesHit(const int& i) {
    return nullptr;
 }
 
-TVector3 TPaces::GetPosition(int DetNbr) {
+TVector3 TPaces::GetPosition(int) {
    //Gets the position vector for a crystal specified by DetNbr
    //Does not currently contain any positons.
    return TVector3(0,0,1);

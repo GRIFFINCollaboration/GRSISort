@@ -46,10 +46,10 @@ public:
    void SetFragmentId(Int_t value) { fFragmentId = value; }
    void SetMidasTimeStamp(time_t value) { fMidasTimeStamp = value; }
    void SetNetworkPacketNumber(Int_t value) { fNetworkPacketNumber = value; }
-   void SetNumberOfFilters(UShort_t value)
+   void SetNumberOfFilters(UShort_t)
    {
-      std::cerr << "Error, " << __PRETTY_FUNCTION__ << " called, TFragment shouldn't have a number of filters."
-                << std::endl;
+      std::cerr<<"Error, "<<__PRETTY_FUNCTION__<<" called, TFragment shouldn't have a number of filters."
+               <<std::endl;
    }
    void SetNumberOfPileups(UShort_t value) { fNumberOfPileups = value; }
    void SetNumberOfWords(UShort_t value) { fNumberOfWords = value; }

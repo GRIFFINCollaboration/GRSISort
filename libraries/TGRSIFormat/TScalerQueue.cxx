@@ -39,12 +39,12 @@ TDeadtimeScalerQueue::TDeadtimeScalerQueue() {
 TDeadtimeScalerQueue::~TDeadtimeScalerQueue() {	}
 
 
-void TDeadtimeScalerQueue::Print(Option_t *opt) const { 
+void TDeadtimeScalerQueue::Print(Option_t*) const { 
    ///Print the status of the Scaler Queue
    CheckStatus();   
 }
 
-void TDeadtimeScalerQueue::Clear(Option_t *opt) {
+void TDeadtimeScalerQueue::Clear(Option_t*) {
    ///Clear the entire Queue, Queue counters, and timer.
 	bool locked = false;
 	if(!fDeadtimeScalerQueue.empty()) {
@@ -237,12 +237,12 @@ TRateScalerQueue::TRateScalerQueue() {
 TRateScalerQueue::~TRateScalerQueue() {	}
 
 
-void TRateScalerQueue::Print(Option_t *opt) const { 
+void TRateScalerQueue::Print(Option_t*) const { 
    ///Print the status of the Scaler Queue
    CheckStatus();   
 }
 
-void TRateScalerQueue::Clear(Option_t *opt) {
+void TRateScalerQueue::Clear(Option_t*) {
    ///Clear the entire Queue, Queue counters, and timer.
 	bool locked = false;
 	if(!fRateScalerQueue.empty()) {

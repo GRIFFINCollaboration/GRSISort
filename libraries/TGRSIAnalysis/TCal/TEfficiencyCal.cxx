@@ -61,11 +61,11 @@ void TEfficiencyCal::AddPoint(Double_t energy, Double_t area, Double_t dEnergy, 
 }
 
 
-void TEfficiencyCal::Print(Option_t *opt) const {
+void TEfficiencyCal::Print(Option_t*) const {
    TCal::Print();
 }
 
-void TEfficiencyCal::Clear(Option_t *opt) {
+void TEfficiencyCal::Clear(Option_t*) {
    fScaleFactor = 1.0;
    TCal::Clear();
 }

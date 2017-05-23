@@ -36,20 +36,20 @@ void TTACHit::Copy(TObject &rhs) const {
    static_cast<TTACHit&>(rhs).fFilter = fFilter;
 }
 
-bool TTACHit::InFilter(Int_t wantedfilter) {
+bool TTACHit::InFilter(Int_t) {
    // check if the desired filter is in wanted filter;
    // return the answer;
    //currently does nothing
    return true;
 }
 
-void TTACHit::Clear(Option_t *opt)	{
+void TTACHit::Clear(Option_t*)	{
    //Clears the TACHit
    fFilter = 0;
    TGRSIDetectorHit::Clear();
 }
 
-void TTACHit::Print(Option_t *opt) const	{
+void TTACHit::Print(Option_t*) const	{
    //Prints the TACHit. Returns:
    //Detector
    //Energy

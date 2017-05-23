@@ -38,9 +38,9 @@ TCalibrator::~TCalibrator() {
   if(efffit) delete efffit;
 }
 
-void TCalibrator::Copy(TObject &obj) const { }
+void TCalibrator::Copy(TObject&) const { }
 
-void TCalibrator::Print(Option_t *opt) const {
+void TCalibrator::Print(Option_t*) const {
   int counter=0;
   printf("\t%2senergy%10scent%10scalc%10sarea%7snuc%8sintensity\n","","","","","","");
   for(auto it:fPeaks) {
@@ -193,7 +193,7 @@ double TCalibrator::GetEffParameter(int i) const {
 }
 
 
-TGraph &TCalibrator::MakeCalibrationGraph(double min_fom) {
+TGraph &TCalibrator::MakeCalibrationGraph(double) {
   std::vector<double> xvalues;
   std::vector<double> yvalues;
   //std::vector<double> xerrors;
@@ -209,10 +209,10 @@ TGraph &TCalibrator::MakeCalibrationGraph(double min_fom) {
   return fit_graph; 
 }
 
-std::vector<double> TCalibrator::Calibrate(double min_fom) { std::vector<double> vec; return vec; }
+std::vector<double> TCalibrator::Calibrate(double) { std::vector<double> vec; return vec; }
 
 
-int TCalibrator::AddData(TH1 *data,std::string source, double sigma,double threshold,double error) { 
+int TCalibrator::AddData(TH1* data, std::string source, double sigma, double threshold, double error) { 
   if(!data || !source.length()) { 
     printf("data not added. data = %p \t source = %s\n",(void*)data,source.c_str());
     return 0;
@@ -221,7 +221,7 @@ int TCalibrator::AddData(TH1 *data,std::string source, double sigma,double thres
   return AddData(data,&n,sigma,threshold,error);
 }
 
-int TCalibrator::AddData(TH1 *data,TNucleus *source, double sigma,double threshold,double error) { 
+int TCalibrator::AddData(TH1* data, TNucleus* source, double sigma, double threshold, double) { 
   if(!data || !source) {
     printf("data not added. data = %p \t source = %p\n",(void*)data,(void*)source);
     return 0;
@@ -530,7 +530,7 @@ bool TCalibrator::CheckMap(std::map<double,double> inmap) {
 
 
 
-void TCalibrator::UpdateTChannel(TChannel *channel) { } 
+void TCalibrator::UpdateTChannel(TChannel*) { } 
 
 
 void TCalibrator::AddPeak(double cent,double eng,std::string nuc,double a,double inten) {

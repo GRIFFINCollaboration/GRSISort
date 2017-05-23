@@ -184,7 +184,7 @@ void Printaddress(int *channel) {
 	printf("\n");
 }
 
-void MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nsclr, int& ncycle, double *rate, int *channel, int& index, int* trun, double& thresh) {
+void MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nsclr, int& ncycle, double*, int *channel, int& index, int* trun, double&) {
   int nsc = nsclr;
 
   //define spectra
@@ -265,7 +265,7 @@ void CheckFile(const char*& fname) {
 return;
 }
 
-void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen, int& ncycle, int *trun, double& eor, const char*& hname, const char*& iname, const char*& jname, const char*& kname, const char*& lname, const char*& mname, const char*& nname, int& nscaler) {
+void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen, int&, int *trun, double& eor, const char*& hname, const char*& iname, const char*& jname, const char*& kname, const char*& lname, const char*& mname, const char*& nname, int& nscaler) {
   
   TFile *vs = new TFile(fname,"read");
   ofstream ofile;

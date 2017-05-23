@@ -66,7 +66,7 @@ TMidasEvent& TMidasEvent::operator=(const TMidasEvent &rhs) {
 	return *this;
 }
 
-void TMidasEvent::Clear(Option_t *opt) {
+void TMidasEvent::Clear(Option_t*) {
 	//Clears the TMidasEvent.
 	if(fBankList) free(fBankList);
 	fBankList = nullptr;
@@ -136,7 +136,7 @@ bool TMidasEvent::IsBank32() const {
 	return ((TMidas_BANK_HEADER *)fData)->fFlags & (1<<4);
 }
 
-int TMidasEvent::LocateBank(const void *unused, const char *name, void **pdata) const {
+int TMidasEvent::LocateBank(const void*, const char *name, void **pdata) const {
 	/// See FindBank()
 
 	int bktype, bklen;

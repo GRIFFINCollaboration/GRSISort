@@ -36,7 +36,7 @@ void TLaBrHit::Copy(TObject &rhs) const {
    static_cast<TLaBrHit&>(rhs).fFilter = fFilter;
 }
 
-TVector3 TLaBrHit::GetPosition(Double_t dist) const {
+TVector3 TLaBrHit::GetPosition(Double_t) const {
    //Gets the position of the current TLaBrHit
    return TLaBr::GetPosition(GetDetector());
 }
@@ -46,20 +46,20 @@ TVector3 TLaBrHit::GetPosition() const {
    return GetPosition(GetDefaultDistance());
 }
 
-bool TLaBrHit::InFilter(Int_t wantedfilter) {
+bool TLaBrHit::InFilter(Int_t) {
    // check if the desired filter is in wanted filter;
    // return the answer;
    //currently does nothing
    return true;
 }
 
-void TLaBrHit::Clear(Option_t *opt)	{
+void TLaBrHit::Clear(Option_t*)	{
    //Clears the LaBrHit
    fFilter = 0;
    TGRSIDetectorHit::Clear();
 }
 
-void TLaBrHit::Print(Option_t *opt) const	{
+void TLaBrHit::Print(Option_t*) const	{
    //Prints the LaBrHit. Returns:
    //Detector
    //Energy

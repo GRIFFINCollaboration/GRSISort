@@ -977,7 +977,7 @@ std::vector<Double_t> TAngularCorrelation::GenerateAngleMap(std::vector<Int_t> &
 ///
 ///This function is called by GenerateMaps()
 
-std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t> &arraynumbers, std::vector<Int_t> &distances, std::map<Int_t,std::map<Int_t,Int_t>> &indexmap)
+std::vector<Int_t> TAngularCorrelation::GenerateWeights(std::vector<Int_t>& arraynumbers, std::vector<Int_t>&, std::map<Int_t,std::map<Int_t,Int_t>>& indexmap)
 {
    std::vector<Int_t> weights; // vector to return
 

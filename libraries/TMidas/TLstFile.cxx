@@ -47,7 +47,7 @@ TLstFile::~TLstFile() {
   Close();
 }
 
-std::string TLstFile::Status(bool long_file_description) {
+std::string TLstFile::Status(bool) {
   return Form(HIDE_CURSOR " Processed event, have processed %.2fMB/%.2f MB              " SHOW_CURSOR "\r",
               (fBytesRead/1000000.0),(fFileSize/1000000.0));
 }

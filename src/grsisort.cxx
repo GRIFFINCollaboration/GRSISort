@@ -11,7 +11,7 @@
 #include "TPluginManager.h"
 #include "TGRSIint.h"
 
-#include "GRSIVersion.h"
+#include "GVersion.h"
 #include "TThread.h"
 
 #ifdef __APPLE__
@@ -45,11 +45,6 @@ void SetGRSIPluginHandlers();
 static int ReadUtmp();
 static STRUCT_UTMP *SearchEntry(int, const char*);
 static void SetDisplay();
-
-
-
-
-
 
 int main(int argc, char **argv) {
    try{

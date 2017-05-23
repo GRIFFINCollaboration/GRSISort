@@ -46,20 +46,20 @@ void TTipHit::Copy(TObject &rhs) const {
 	 static_cast<TTipHit&>(rhs).fChiSq				= fChiSq;
 }                                       
 
-bool TTipHit::InFilter(Int_t wantedfilter) {
+bool TTipHit::InFilter(Int_t) {
    // check if the desired filter is in wanted filter;
    // return the answer;
    return true;
 }
 
-void TTipHit::Clear(Option_t *opt) {
+void TTipHit::Clear(Option_t*) {
    fFilter 		= 0;
    fPID   		= 0;
    fTipChannel	= 0;
    fTimeFit		= 0;
 }
 
-void TTipHit::Print(Option_t *opt) const {
+void TTipHit::Print(Option_t*) const {
    printf("Tip Detector: %i\n",GetDetector());
    printf("Tip hit energy: %.2f\n",GetEnergy());
    printf("Tip hit time:   %.f\n",GetTime());

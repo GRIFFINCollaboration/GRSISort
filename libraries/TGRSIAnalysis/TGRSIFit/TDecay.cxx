@@ -108,7 +108,7 @@ void TDecayFit::DrawResiduals(){
 
 }
 
-void TVirtualDecay::DrawComponents(Option_t* opt ,Bool_t color_flag) {
+void TVirtualDecay::DrawComponents(Option_t* opt, Bool_t) {
    printf("Draw components has not been set in %s \n", ClassName());
    Draw(Form("same%s",opt));
 }
@@ -426,7 +426,7 @@ void TSingleDecay::SetRange(Double_t tlow, Double_t thigh){
    fTotalDecayFunc->SetRange(tlow,thigh);
 }
 
-void TSingleDecay::Print(Option_t *option) const{
+void TSingleDecay::Print(Option_t*) const{
  //  printf("      Name: %s\n",GetName());
    printf("  Decay Id: %d\n",GetDecayId());
    printf(" Intensity: %lf +/- %lf c/s\n", GetIntensity(), GetIntensityError());
@@ -537,7 +537,7 @@ TSingleDecay* TDecayChain::GetDecay(UInt_t generation){
    return 0;   
 }
 
-void TDecayChain::Print(Option_t *option) const {
+void TDecayChain::Print(Option_t*) const {
    printf("Number of Decays in Chain: %lu\n",fDecayChain.size());
    printf("Chain Id %d\n",fDecayChain.at(0)->GetChainId());
    for(size_t i=0; i<fDecayChain.size();++i){
@@ -740,7 +740,7 @@ Double_t TDecay::ComponentFunc(Double_t *dim, Double_t *par){
    return result;
 }
 
-void TDecay::DrawComponents(Option_t *opt, Bool_t color_flag) {
+void TDecay::DrawComponents(Option_t*, Bool_t) {
    ///Loop over all of the ids and draw them seperately on the pad
    Double_t low,high;
    fFitFunc->GetRange(low,high);
@@ -760,7 +760,7 @@ void TDecay::DrawComponents(Option_t *opt, Bool_t color_flag) {
 
 }
 
-void TDecay::DrawBackground(Option_t *opt){
+void TDecay::DrawBackground(Option_t*) {
    Double_t low,high;
    fFitFunc->GetRange(low,high);
    TF1 *bg = new TF1("bg","pol0",low,high);
@@ -809,7 +809,7 @@ void TDecay::SetDecayRateLimits(Int_t Id, Double_t low, Double_t high){
 
 }
 
-void TDecay::Print(Option_t *opt) const{
+void TDecay::Print(Option_t*) const{
    printf("Background: %lf +/- %lf\n\n", GetBackground(),GetBackgroundError());
    for(auto it = fDecayMap.begin(); it!=fDecayMap.end();++it){
       printf("ID: %u Name: %s\n",it->first,it->second.at(0)->GetName());

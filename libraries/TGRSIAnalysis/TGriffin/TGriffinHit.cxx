@@ -44,13 +44,13 @@ void TGriffinHit::Copy(TObject& obj, bool waveform) const {
 	if(waveform) CopyWave(obj);
 }
 
-bool TGriffinHit::InFilter(Int_t wantedfilter) {
+bool TGriffinHit::InFilter(Int_t) {
 	// check if the desired filter is in wanted filter;
 	// return the answer;
 	return true;
 }
 
-void TGriffinHit::Clear(Option_t *opt)	{
+void TGriffinHit::Clear(Option_t* opt)	{
    //Clears the information stored in the TGriffinHit.
    TGRSIDetectorHit::Clear(opt);    // clears the base (address, position and waveform)
    fFilter              =  0;
@@ -58,10 +58,9 @@ void TGriffinHit::Clear(Option_t *opt)	{
    fCrystal             =  0xFFFF;
    fPPG                 =  0;
    fBremSuppressed_flag = false;
-
 }
 
-void TGriffinHit::Print(Option_t *opt) const	{
+void TGriffinHit::Print(Option_t*) const	{
    //Prints the Detector Number, Crystal Number, Energy, Time and Angle.
    printf("Griffin Detector: %i\n",GetDetector());
 	printf("Griffin Crystal:  %i\n",GetCrystal());
@@ -86,32 +85,30 @@ void TGriffinHit::Add(const TGriffinHit *hit)	{
   // add another griffin hit to this one (for addback), 
   // using the time and position information of the one with the higher energy
   if(!CompareEnergy(this,hit)) {
-    this->SetCfd(hit->GetCfd());
-    this->SetTime(hit->GetTime());
-    //this->SetPosition(hit->GetPosition());
-    this->SetAddress(hit->GetAddress());
+    SetCfd(hit->GetCfd());
+    SetTime(hit->GetTime());
+    //SetPosition(hit->GetPosition());
+    SetAddress(hit->GetAddress());
   } else {
-    this->SetTime(this->GetTime());
+    SetTime(GetTime());
   }
-  this->SetEnergy(this->GetEnergy() + hit->GetEnergy());
-  //this has to be done at the very end, otherwise this->GetEnergy() might not work
-  this->SetCharge(0);
+  SetEnergy(GetEnergy() + hit->GetEnergy());
+  //this has to be done at the very end, otherwise GetEnergy() might not work
+  SetCharge(0);
   //Add all of the pileups.This should be changed when the max number of pileups changes
-  if((this->NPileUps() + hit->NPileUps()) < 4){
-     this->SetNPileUps(this->NPileUps() + hit->NPileUps());
-  }  
-  else{
-     this->SetNPileUps(3);
+  if((NPileUps() + hit->NPileUps()) < 4){
+     SetNPileUps(NPileUps() + hit->NPileUps());
+  } else {
+     SetNPileUps(3);
   }
-  if((this->PUHit() + hit->PUHit()) < 4){
-     this->SetPUHit(this->PUHit() + hit->PUHit());
-  }  
-  else{
-     this->SetPUHit(3);
+  if((PUHit() + hit->PUHit()) < 4){
+     SetPUHit(PUHit() + hit->PUHit());
+  } else {
+     SetPUHit(3);
   }
   //KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup hit was added-back RD
-  if(this->GetKValue() > hit->GetKValue()){
-     this->SetKValue(hit->GetKValue());
+  if(GetKValue() > hit->GetKValue()){
+     SetKValue(hit->GetKValue());
   }
 }
 
@@ -143,7 +140,7 @@ void TGriffinHit::SetPUHit(UChar_t puhit) {
    SetGriffinFlag(kPUHit2,(puhit << kPUHitOffset) & kPUHit2);  
 }
 
-Double_t TGriffinHit::GetNoCTEnergy(Option_t* opt) const{
+Double_t TGriffinHit::GetNoCTEnergy(Option_t*) const{
   TChannel* chan = GetChannel();
   if(!chan) {
     Error("GetEnergy","No TChannel exists for address 0x%08x",GetAddress());

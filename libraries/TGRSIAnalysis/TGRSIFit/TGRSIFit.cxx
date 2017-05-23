@@ -32,13 +32,13 @@ void TGRSIFit::Print(Option_t* opt) const {
    }
 }
 
-void TGRSIFit::Clear(Option_t* opt) {
+void TGRSIFit::Clear(Option_t*) {
    fInitFlag = false;
    fGoodFitFlag = false;
    fDefaultFitType.Clear();
 }
 
-void TGRSIFit::ClearParameters(Option_t* opt) {
+void TGRSIFit::ClearParameters(Option_t*) {
    for(int i = 0; i< GetNpar(); ++i) {
       SetParameter(i,0);
    }

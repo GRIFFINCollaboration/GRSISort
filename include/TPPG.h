@@ -113,6 +113,7 @@ public:
    ULong64_t GetLastStatusTime(ULong64_t time, ppg_pattern pat = kJunk, bool exact_flag = false) const;
    Bool_t      MapIsEmpty() const;
    std::size_t PPGSize() const { return fPPGStatusMap->size() - 1; }
+	std::size_t OdbPPGSize() const { return fOdbPPGCodes.size(); }
    Long64_t Merge(TCollection* list);
    void Add(const TPPG* ppg);
    void operator+=(const TPPG& rhs);
@@ -132,6 +133,8 @@ public:
    const TPPGData* First();
    const TPPGData* Last();
 
+	void SetOdbCycle(std::vector<short> ppgCodes, std::vector<int> durations) { fOdbPPGCodes = ppgCodes; fOdbDurations = durations; }
+
    virtual void Print(Option_t* opt = "") const;
    virtual void Clear(Option_t* opt = "");
 
@@ -145,9 +148,12 @@ private:
    ULong64_t fCycleLength;
    std::map<ULong64_t, int> fNumberOfCycleLengths;
 
-   /// \cond CLASSIMP
-   ClassDef(TPPG, 2) // Contains PPG information
-   /// \endcond
+	std::vector<short> fOdbPPGCodes;   ///< ppg state codes read from odb
+	std::vector<int>   fOdbDurations;  ///< duration of ppg state as read from odb
+
+	/// \cond CLASSIMP
+	ClassDef(TPPG, 3) //Contains PPG information
+	/// \endcond
 };
 /*! @} */
 #endif

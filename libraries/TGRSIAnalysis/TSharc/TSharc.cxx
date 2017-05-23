@@ -183,7 +183,7 @@ void TSharc::Clear(Option_t *option) {
   return;
 }
 
-void TSharc::Print(Option_t *option) const  {
+void TSharc::Print(Option_t*) const  {
   printf("not yet written...\n");
   return;
 }
