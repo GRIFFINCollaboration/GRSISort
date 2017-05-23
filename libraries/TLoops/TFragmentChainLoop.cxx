@@ -11,63 +11,70 @@
 #include "GRootCommands.h"
 #include "TFragment.h"
 
-TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain *chain) {
-  if(name.length() == 0){
-    name = "chain_loop";
-  }
+TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
+{
+   if(name.length() == 0) {
+      name = "chain_loop";
+   }
 
-  StoppableThread* thread = StoppableThread::Get(name);
-  if(!thread) {
-    if(!chain && !gFragment) {
-      return 0;
-    } else if(!chain) {
-      chain = gFragment;
-    }
-    thread = new TFragmentChainLoop(name, chain);
-  }
-  return dynamic_cast<TFragmentChainLoop*>(thread);
+   StoppableThread* thread = StoppableThread::Get(name);
+   if(!thread) {
+      if(!chain && !gFragment) {
+         return 0;
+      } else if(!chain) {
+         chain = gFragment;
+      }
+      thread = new TFragmentChainLoop(name, chain);
+   }
+   return dynamic_cast<TFragmentChainLoop*>(thread);
 }
 
-TFragmentChainLoop::TFragmentChainLoop(std::string name, TChain *chain)
-  : StoppableThread(name),
-    fEntriesTotal(chain->GetEntries()),
-    fInputChain(chain), fFragment(nullptr), 
-    fSelfStopping(true) {
-  SetupChain();
+TFragmentChainLoop::TFragmentChainLoop(std::string name, TChain* chain)
+   : StoppableThread(name), fEntriesTotal(chain->GetEntries()), fInputChain(chain), fFragment(nullptr),
+     fSelfStopping(true)
+{
+   SetupChain();
 }
 
-TFragmentChainLoop::~TFragmentChainLoop() { }
+TFragmentChainLoop::~TFragmentChainLoop()
+{
+}
 
-void TFragmentChainLoop::ClearQueue() {
+void TFragmentChainLoop::ClearQueue()
+{
    for(auto outQueue : fOutputQueues) {
-      while(outQueue->Size()){
+      while(outQueue->Size()) {
          std::shared_ptr<const TFragment> event;
          outQueue->Pop(event);
       }
    }
 }
 
-int TFragmentChainLoop::SetupChain() {
+int TFragmentChainLoop::SetupChain()
+{
    if(!fInputChain) {
       return 0;
    }
 
-   fInputChain->SetBranchAddress("TFragment",&fFragment);
+   fInputChain->SetBranchAddress("TFragment", &fFragment);
    return 0;
 }
 
-void TFragmentChainLoop::Restart() {
+void TFragmentChainLoop::Restart()
+{
    fItemsPopped = 0;
 }
 
-void TFragmentChainLoop::OnEnd() {
+void TFragmentChainLoop::OnEnd()
+{
    for(auto outQueue : fOutputQueues) {
       outQueue->SetFinished();
    }
 }
 
-bool TFragmentChainLoop::Iteration() {
-   if(static_cast<long>(fItemsPopped) >= fEntriesTotal){
+bool TFragmentChainLoop::Iteration()
+{
+   if(static_cast<long>(fItemsPopped) >= fEntriesTotal) {
       if(fSelfStopping) {
          return false;
       } else {
@@ -83,7 +90,7 @@ bool TFragmentChainLoop::Iteration() {
    for(auto outQueue : fOutputQueues) {
       outQueue->Push(frag);
    }
-	fInputSize = fEntriesTotal - fItemsPopped; //this way fInputSize+fItemsPopped gives the total number of entries
+   fInputSize = fEntriesTotal - fItemsPopped; // this way fInputSize+fItemsPopped gives the total number of entries
 
    return true;
 }

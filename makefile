@@ -7,7 +7,7 @@ PLATFORM:=$(shell uname)
 # EDIT THIS SECTION
 
 INCLUDES   = include users
-CFLAGS     = -g -std=c++11 -O3 -Wall -Wextra -pedantic -Wno-unused-parameter  -Wno-unused-function -Wshadow
+CFLAGS     = -g -std=c++11 -O3 -Wall -Wextra -pedantic -Wno-unknown-pragmas -Wno-unused-function -Wshadow
 #-Wall -Wextra -pedantic -Wno-unused-parameter
 LINKFLAGS_PREFIX  =
 LINKFLAGS_SUFFIX  = -L/opt/X11/lib -lX11 -lXpm -std=c++11
@@ -147,7 +147,7 @@ bin/%: .build/GRSIProof/%.o | $(LIBRARY_OUTPUT) bin
 bin/%: .build/myAnalysis/%.o | $(LIBRARY_OUTPUT) bin
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-bin lib:
+bin lib: include/GVersion.h
 	@mkdir -p $@
 
 include/GVersion.h: 

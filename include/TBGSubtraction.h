@@ -37,76 +37,76 @@ class TBGSubtraction : public TGMainFrame {
       kHistogramDescriptionEntry
    };
 
-    //  RQ_OBJECT("TBGSubtraction")
-   private:
-      TGMainFrame          *fMain;
-      TRootEmbeddedCanvas  *fProjectionCanvas;
-      TRootEmbeddedCanvas  *fGateCanvas;
-      TH2                  *fMatrix;      
-      TH1                  *fProjection;
-      TH1                  *fGateHist;
-      TH1                  *fBGHist;
-      TH1                  *fSubtractedHist;
-      TGDoubleHSlider      *fGateSlider;
-      TGDoubleHSlider      *fBGSlider;
-      TGNumberEntry        *fBGParamEntry;
-      TGNumberEntry        *fBGEntryLow;
-      TGNumberEntry        *fBGEntryHigh;
-      TGNumberEntry        *fGateEntryLow;
-      TGNumberEntry        *fGateEntryHigh;
-      TGLabel              *fBGParamLabel;
+   //  RQ_OBJECT("TBGSubtraction")
+private:
+   TGMainFrame*         fMain;
+   TRootEmbeddedCanvas* fProjectionCanvas;
+   TRootEmbeddedCanvas* fGateCanvas;
+   TH2*                 fMatrix;
+   TH1*                 fProjection;
+   TH1*                 fGateHist;
+   TH1*                 fBGHist;
+   TH1*                 fSubtractedHist;
+   TGDoubleHSlider*     fGateSlider;
+   TGDoubleHSlider*     fBGSlider;
+   TGNumberEntry*       fBGParamEntry;
+   TGNumberEntry*       fBGEntryLow;
+   TGNumberEntry*       fBGEntryHigh;
+   TGNumberEntry*       fGateEntryLow;
+   TGNumberEntry*       fGateEntryHigh;
+   TGLabel*             fBGParamLabel;
 
-      TGLayoutHints        *fBly;
-      TGLayoutHints        *fBly1;
-      TGLayoutHints        *fLayoutCanvases;
-      TGLayoutHints        *fLayoutParam;
+   TGLayoutHints* fBly;
+   TGLayoutHints* fBly1;
+   TGLayoutHints* fLayoutCanvases;
+   TGLayoutHints* fLayoutParam;
 
-      TGTextEntry          *fWrite2FileName;
-      TGTextEntry          *fHistogramDescription;
-//      TGTextButton         *fDrawCanvasButton;
-      TGTextButton         *fWrite2FileButton;
+   TGTextEntry* fWrite2FileName;
+   TGTextEntry* fHistogramDescription;
+   //      TGTextButton         *fDrawCanvasButton;
+   TGTextButton* fWrite2FileButton;
 
-   //Status Bars
-      TGStatusBar *fProjectionStatus;
+   // Status Bars
+   TGStatusBar* fProjectionStatus;
 
-   //Frames
-      TGVerticalFrame      *fGateFrame;
-      TGVerticalFrame      *fProjectionFrame;
-      TGHorizontalFrame    *fBGParamFrame;
-      TGHorizontalFrame    *fGateEntryFrame;
-      TGHorizontalFrame    *fBGEntryFrame;
-      TGHorizontalFrame    *fDescriptionFrame;
-      TGHorizontalFrame    *fButtonFrame;
+   // Frames
+   TGVerticalFrame*   fGateFrame;
+   TGVerticalFrame*   fProjectionFrame;
+   TGHorizontalFrame* fBGParamFrame;
+   TGHorizontalFrame* fGateEntryFrame;
+   TGHorizontalFrame* fBGEntryFrame;
+   TGHorizontalFrame* fDescriptionFrame;
+   TGHorizontalFrame* fButtonFrame;
 
-   //Markers
-      GMarker              *fLowGateMarker;
-      GMarker              *fHighGateMarker;
-      GMarker              *fLowBGMarker;
-      GMarker              *fHighBGMarker;
+   // Markers
+   GMarker* fLowGateMarker;
+   GMarker* fHighGateMarker;
+   GMarker* fLowBGMarker;
+   GMarker* fHighBGMarker;
 
-      TFile                *fCurrentFile;
-   
-   public:
-      TBGSubtraction(TH2* mat);
-      virtual ~TBGSubtraction();
-      void DoDraw();
-      void DoFit();
-      void DoSlider(Int_t pos = 0);
-      void DoEntry(Long_t);
-      void DoGateCanvasModified();
-      void DoProjection();
-      void DrawOnNewCanvas();
-      void DrawMarkers();
-      void WriteHistograms();
-      void GateStatusInfo(Int_t event,Int_t px, Int_t py, TObject *selected);
-      void ProjectionStatusInfo(Int_t event,Int_t px, Int_t py, TObject *selected);
+   TFile* fCurrentFile;
 
-   private:
-      void BuildInterface();
-      void StatusInfo(Int_t event,Int_t px, Int_t py, TObject *selected);
+public:
+   TBGSubtraction(TH2* mat);
+   virtual ~TBGSubtraction();
+   void DoDraw();
+   void DoFit();
+   void DoSlider(Int_t pos = 0);
+   void DoEntry(Long_t);
+   void DoGateCanvasModified();
+   void DoProjection();
+   void DrawOnNewCanvas();
+   void DrawMarkers();
+   void WriteHistograms();
+   void GateStatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
+   void ProjectionStatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
+
+private:
+   void BuildInterface();
+   void StatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
 
    /// \cond CLASSIMP
-   ClassDef(TBGSubtraction,6);  // Background subtractor GUI
+   ClassDef(TBGSubtraction, 6); // Background subtractor GUI
    /// \endcond
 };
 /*! @} */

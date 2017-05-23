@@ -8,7 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///
 /// \class TFragmentChainLoop
-/// 
+///
 /// This loop reads fragments from a root-file with a FragmentTree.
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,50 +29,51 @@
 #include "TFragment.h"
 
 class TFragmentChainLoop : public StoppableThread {
-	public:
-		static TFragmentChainLoop* Get(std::string name="",TChain *chain=0);
-		virtual ~TFragmentChainLoop();
+public:
+   static TFragmentChainLoop* Get(std::string name = "", TChain* chain = 0);
+   virtual ~TFragmentChainLoop();
 
 #ifndef __CINT__
-		std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > >& AddOutputQueue() { 
-			fOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment> > >());
-			return fOutputQueues.back(); 
-		}
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddOutputQueue()
+   {
+      fOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>());
+      return fOutputQueues.back();
+   }
 #endif
 
-		size_t GetItemsPushed()  { return fItemsPopped; }
-		size_t GetItemsPopped()  { return fItemsPopped; }
-		size_t GetItemsCurrent() { return fEntriesTotal; }
-		size_t GetRate()         { return 0; }
+   size_t GetItemsPushed() { return fItemsPopped; }
+   size_t GetItemsPopped() { return fItemsPopped; }
+   size_t GetItemsCurrent() { return fEntriesTotal; }
+   size_t GetRate() { return 0; }
 
-		virtual void ClearQueue();
+   virtual void ClearQueue();
 
-		virtual void OnEnd();
+   virtual void OnEnd();
 
-		void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
-		bool GetSelfStopping() const { return fSelfStopping; }
-		void Restart();
+   void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
+   bool                      GetSelfStopping() const { return fSelfStopping; }
+   void                      Restart();
 
-	protected:
-		bool Iteration();
+protected:
+   bool Iteration();
 
-	private:
-		TFragmentChainLoop(std::string name, TChain *chain);
+private:
+   TFragmentChainLoop(std::string name, TChain* chain);
 
-		long fEntriesTotal;
+   long fEntriesTotal;
 
-		TChain *fInputChain;
+   TChain* fInputChain;
 #ifndef __CINT__
-		TFragment* fFragment;
-		std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment> > > > fOutputQueues;
+   TFragment*                                                                      fFragment;
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>> fOutputQueues;
 #endif
 
-		bool fSelfStopping;
+   bool fSelfStopping;
 
-		int SetupChain();
-		std::map<TClass*, TDetector**> fDetMap;
+   int SetupChain();
+   std::map<TClass*, TDetector**> fDetMap;
 
-		//ClassDef(TFragmentChainLoop, 0);
+   // ClassDef(TFragmentChainLoop, 0);
 };
 
 /*! @} */

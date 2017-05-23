@@ -25,32 +25,32 @@
 #include "TGRSIDetectorHit.h"
 
 class TTACHit : public TGRSIDetectorHit {
-   public:
-      TTACHit();
-      virtual ~TTACHit();
-      TTACHit(const TTACHit&);
-      TTACHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
+public:
+   TTACHit();
+   virtual ~TTACHit();
+   TTACHit(const TTACHit&);
+   TTACHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
 
-   private:
-      Int_t    fFilter;
-      
-   public:
-      /////////////////////////		/////////////////////////////////////
-      inline void SetFilterPattern(const int &x)   { fFilter   = x; }   //!<!
-      
-      /////////////////////////		/////////////////////////////////////
-      inline Int_t    GetFilterPattern()    const     { return fFilter;   }  //!<!
-      
-      bool   InFilter(Int_t);                                          //!<!
-      
-   public:
-      void Clear(Option_t *opt = "");		                    //!<!
-      void Print(Option_t *opt = "") const;		                    //!<!
-      virtual void Copy(TObject&) const;        //!<!
-      
-      /// \cond CLASSIMP
-      ClassDef(TTACHit,1) //Stores the information for a TACrHit
-      /// \endcond
+private:
+   Int_t fFilter;
+
+public:
+   /////////////////////////		/////////////////////////////////////
+   inline void SetFilterPattern(const int& x) { fFilter = x; } //!<!
+
+   /////////////////////////		/////////////////////////////////////
+   inline Int_t GetFilterPattern() const { return fFilter; } //!<!
+
+   bool InFilter(Int_t); //!<!
+
+public:
+   void Clear(Option_t* opt = "");       //!<!
+   void Print(Option_t* opt = "") const; //!<!
+   virtual void Copy(TObject&) const;    //!<!
+
+   /// \cond CLASSIMP
+   ClassDef(TTACHit, 1) // Stores the information for a TACrHit
+   /// \endcond
 };
 /*! @} */
 #endif

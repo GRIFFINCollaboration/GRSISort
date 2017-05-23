@@ -3,13 +3,13 @@
 
 #include "TDirectory.h"
 
-class TPreserveGDirectory{
+class TPreserveGDirectory {
 public:
-  TPreserveGDirectory() : bak(gDirectory) { }
-  ~TPreserveGDirectory() { bak->cd(); }
+   TPreserveGDirectory() : bak(gDirectory) {}
+   ~TPreserveGDirectory() { bak->cd(); }
 
 private:
-  TDirectory* bak;
+   TDirectory* bak;
 };
 
 #endif /* _TPRESERVEGDIRECTORY_H_ */

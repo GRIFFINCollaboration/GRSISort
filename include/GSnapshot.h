@@ -8,17 +8,17 @@
 class TCanvas;
 
 class GSnapshot {
- public:
-  static GSnapshot& Get();
+public:
+   static GSnapshot& Get();
 
-  GSnapshot(const char* snapshot_dir = nullptr);
-  ~GSnapshot() { }
+   GSnapshot(const char* snapshot_dir = nullptr);
+   ~GSnapshot() {}
 
-  void Snapshot(TCanvas* canvas = nullptr);
+   void Snapshot(TCanvas* canvas = nullptr);
 
- private:
-  std::string fSnapshotDir;
-  bool fCanWriteHere;
+private:
+   std::string fSnapshotDir;
+   bool        fCanWriteHere;
 };
 
 extern GSnapshot gSnapshot;

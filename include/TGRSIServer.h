@@ -7,9 +7,9 @@
 
 /*
  * Author:  P.C. Bender, <pcbend@gmail.com>
- * 
+ *
  * Please indicate changes with your initials.
- * 
+ *
  *
 */
 
@@ -18,7 +18,7 @@
 /// \class TGRSIServer
 ///
 /// A class to allow 'things' to communicate
-/// with GRSISort in a somewhat nice convenient and 
+/// with GRSISort in a somewhat nice convenient and
 /// friendly way.
 ///
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,25 +29,28 @@
 #include "TMessage.h"
 
 class TGRSIServer : public TServerSocket {
-   public:
-      static TGRSIServer* instance(int port=9099);
-      virtual ~TGRSIServer();
-      
-      void StopServer() { if(fRunning) fRunning = false; }
+public:
+   static TGRSIServer* instance(int port = 9099);
+   virtual ~TGRSIServer();
 
-   private:
-      static TGRSIServer* fGRSIServer;
-      TGRSIServer(int port);
-      bool fRunning;
+   void StopServer()
+   {
+      if (fRunning) fRunning = false;
+   }
 
-      TMonitor* fMonitor;
+private:
+   static TGRSIServer* fGRSIServer;
+   TGRSIServer(int port);
+   bool fRunning;
 
-      void AcceptConnectionThread();      
-      void MonitorConnectionsThread();    
+   TMonitor* fMonitor;
 
-/// \cond CLASSIMP
-   ClassDef(TGRSIServer,0)
-/// \endcond
+   void AcceptConnectionThread();
+   void MonitorConnectionsThread();
+
+   /// \cond CLASSIMP
+   ClassDef(TGRSIServer, 0)
+   /// \endcond
 };
 /*! @} */
 #endif

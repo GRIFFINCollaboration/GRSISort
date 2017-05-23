@@ -137,7 +137,7 @@ std::vector<std::pair<double,int> > AngleCombinations(double distance = 110., bo
 
 
 
-TList *exAnalysis(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntries = 0, TStopwatch* w = nullptr) {
+TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopwatch* w = nullptr) {
    ///////////////////////////////////// SETUP ///////////////////////////////////////
    //Histogram paramaters
    Double_t low = 0;

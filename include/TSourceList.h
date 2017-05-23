@@ -13,33 +13,32 @@
 #include <string>
 
 class TSourceList : public TCalList {
- public: 
+public:
    TSourceList();
-   TSourceList(const TNucleus& nuc,const char*name, const char* title ="");
-   TSourceList(const char*name, const char* title ="");
+   TSourceList(const TNucleus& nuc, const char* name, const char* title = "");
+   TSourceList(const char* name, const char* title = "");
    TSourceList(const TNucleus& nuc);
-   virtual ~TSourceList(); 
+   virtual ~TSourceList();
 
-   TSourceList(const TSourceList &copy);
+   TSourceList(const TSourceList& copy);
 
- public:
-   void Copy(TObject &obj) const;
-   void Clear(Option_t *opt = "");
-   void Print(Option_t *opt = "") const;
+public:
+   void Copy(TObject& obj) const;
+   void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const;
 
-	Int_t SetNucleus(const TNucleus& nuc);
-	Int_t SetNucleus(const char* nuc) { return SetNucleus(TNucleus(nuc)); }
+   Int_t SetNucleus(const TNucleus& nuc);
+   Int_t SetNucleus(const char* nuc) { return SetNucleus(TNucleus(nuc)); }
 
- private:
-	bool AddTransition(TTransition *tran);
+private:
+   bool AddTransition(TTransition* tran);
 
- private:
-	std::string fNucleusName;
-   
-/// \cond CLASSIMP
-   ClassDef(TSourceList,1);
-/// \endcond
+private:
+   std::string fNucleusName;
 
+   /// \cond CLASSIMP
+   ClassDef(TSourceList, 1);
+   /// \endcond
 };
 /*! @} */
 #endif
