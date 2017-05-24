@@ -90,10 +90,9 @@ public:
 
    inline Double_t GetEnergy(Option_t* = "") const
    {
-      if (GetPadAddress() != -1) return TGRSIDetectorHit::GetEnergy() + GetPad().GetEnergy();
+      if(GetPadAddress() != -1) return TGRSIDetectorHit::GetEnergy() + GetPad().GetEnergy();
       return TGRSIDetectorHit::GetEnergy();
    }
-   inline Double_t GetTime(Option_t* = "") const { return TGRSIDetectorHit::GetTime(); }
 
    Double_t GetThetaDeg(double Xoff = 0.0, double Yoff = 0.0, double Zoff = 0.0)
    {
