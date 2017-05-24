@@ -129,25 +129,25 @@ docs: doxygen
 doxygen:
 	$(MAKE) -C $@
 
-bin/grsisort: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) bin
+bin/grsisort: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-bin/%: .build/util/%.o | $(LIBRARY_OUTPUT) bin
+bin/%: .build/util/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-bin/%: .build/Sandbox/%.o | $(LIBRARY_OUTPUT) bin
+bin/%: .build/Sandbox/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-bin/%: .build/scripts/%.o | $(LIBRARY_OUTPUT) bin
+bin/%: .build/scripts/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-bin/%: .build/GRSIProof/%.o | $(LIBRARY_OUTPUT) bin
+bin/%: .build/GRSIProof/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-bin/%: .build/myAnalysis/%.o | $(LIBRARY_OUTPUT) bin
+bin/%: .build/myAnalysis/%.o | $(LIBRARY_OUTPUT) bin include/GVersion.h
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-bin lib: include/GVersion.h
+bin lib:
 	@mkdir -p $@
 
 include/GVersion.h: 
@@ -155,10 +155,10 @@ include/GVersion.h:
 
 #include/GVersion.h: .git/HEAD .git/index util/gen_version.sh
 
-lib/lib%.so: .build/histos/%.o | lib
+lib/lib%.so: .build/histos/%.o | lib include/GVersion.h
 	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
-lib/lib%.so: .build/filters/%.o | lib
+lib/lib%.so: .build/filters/%.o | lib include/GVersion.h
 	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
 config:
@@ -174,13 +174,13 @@ lib_o_files     = $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(call lib_src_files,$(1
 lib_linkdef     = $(wildcard $(call libdir,$(1))/LinkDef.h)
 lib_dictionary  = $(patsubst %/LinkDef.h,.build/%/LibDictionary.o,$(call lib_linkdef,$(1)))
 
-lib/lib%.so: $$(call lib_o_files,%) $$(call lib_dictionary,%) | lib
+lib/lib%.so: $$(call lib_o_files,%) $$(call lib_dictionary,%) | lib include/GVersion.h
 	$(call run_and_test,$(CPP) -fPIC $^ $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
-lib/libGRSI.so: $(LIBRARY_OUTPUT)
+lib/libGRSI.so: $(LIBRARY_OUTPUT) | include/GVersion.h
 	$(call run_and_test,$(CPP) -fPIC $(shell $(FIND) .build/libraries -name "*.o") $(SHAREDSWITCH)lib$*.so $(ROOT_LIBFLAGS) -o $@,$@,$(BLD_COLOR),$(BLD_STRING),$(OBJ_COLOR) )
 
-.build/%.o: %.$(SRC_SUFFIX)
+.build/%.o: %.$(SRC_SUFFIX) | include/GVersion.h
 	@mkdir -p $(dir $@)
 	$(call run_and_test,$(CPP) -fPIC -c $< -o $@ $(CFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
@@ -214,7 +214,6 @@ clean:
 	@printf "\n$(WARN_COLOR)Cleaning up$(NO_COLOR)\n\n"
 	@-$(RM) -rf .build bin lib include/GVersion.h
 	@-$(RM) -rf libraries/*.so libraries/*.pcm #this is here for cleaning up libraries from pre GRSI 3.0
-
 
 cleaner: clean
 	@printf "\nEven more clean up\n\n"
