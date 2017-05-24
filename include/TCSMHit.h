@@ -106,7 +106,7 @@ public:
    TVector3 GetPosition(Double_t = 0) const { return fDPosition; }                 //!<!
    Double_t GetEnergy(Option_t* = "") const { return GetDEnergy() + GetEEnergy(); } //!<!
 
-	Double_t GetTime(const UInt_t& = kAll, Option_t* = "") const { return fVerDTime; }  ///< Returns fVerDTime
+	Double_t GetTime(const UInt_t& = ETimeFlag::kAll, Option_t* = "") const { return fVerDTime; }  ///< Returns fVerDTime
 
    inline void SetDetectorNumber(const Int_t& tempnum) { fDetectorNumber = tempnum; } //!<!
 
