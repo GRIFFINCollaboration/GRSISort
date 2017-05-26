@@ -76,10 +76,10 @@ void AngularCorrelationSelector::CreateHistograms() {
 	fH1["addbackEnergyBeta"] = new TH1D("addbackEnergyBeta","#gamma singles with addback in rough #beta coincidence", 12000, 0, 3000);
 
 	//and timing spectra for gamma-gamma and beta-gamma
-	fH1["gammaGammaTiming"] = new TH1D("gammaGammaTiming","#Deltat_{#gamma-#gamma}", 1000, -500, 500);
-	fH1["betaGammaTiming"] = new TH1D("betaGammaTiming","#Deltat_{#beta-#gamma}", 1000, -500, 500);
-	fH1["addbackAddbackTiming"] = new TH1D("addbackAddbackTiming","#Deltat_{#addback-#addback}", 1000, -500, 500);
-	fH1["betaAddbackTiming"] = new TH1D("betaAddbackTiming","#Deltat_{#beta-#gamma}", 1000, -500, 500);
+	fH1["gammaGammaTiming"] = new TH1D("gammaGammaTiming","#Deltat_{#gamma-#gamma}", 3000, 0., 3000.);
+	fH1["betaGammaTiming"] = new TH1D("betaGammaTiming","#Deltat_{#beta-#gamma}", 2000, -1000., 1000.);
+	fH1["addbackAddbackTiming"] = new TH1D("addbackAddbackTiming","#Deltat_{#addback-#addback}", 2000, 0., 3000.);
+	fH1["betaAddbackTiming"] = new TH1D("betaAddbackTiming","#Deltat_{#beta-#gamma}", 2000, -1000., 1000.);
 
 	for(auto it : fH1) {
 		GetOutputList()->Add(it.second);
