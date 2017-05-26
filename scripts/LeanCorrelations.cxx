@@ -380,7 +380,7 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
                   if(((gbTlow <= grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) && 
                      ((gbTlow <= grif->GetAddbackHit(two)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(two)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh))) {
                      double angab = grif->GetAddbackHit(one)->GetPosition().Angle(grif->GetAddbackHit(two)->GetPosition())*180./TMath::Pi();
-                     auto angIndex = angleComboMap.lower_bound(angab-0.005);
+                     auto angIndex = angleComboMapab.lower_bound(angab-0.005);
                      //                             angCorr_coinc_Binnedab[angIndex->second]->Fill(grif->GetAddbackHit(one)->GetEnergy(), grif->GetAddbackHit(two)->GetEnergy(), 1.);
                      Double_t fillval[2] = {grif->GetAddbackHit(one)->GetEnergy(), grif->GetAddbackHit(two)->GetEnergy()};
                      angCorr_coinc_Binnedab[angIndex->second]->Fill(fillval);
@@ -388,7 +388,7 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
                   } else if(((gbBGlow <= grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbBGhigh)) && 
                             ((gbTlow  <= grif->GetAddbackHit(two)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetAddbackHit(two)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh))) {
                      double angab = grif->GetAddbackHit(one)->GetPosition().Angle(grif->GetAddbackHit(two)->GetPosition())*180./TMath::Pi();
-                     auto angIndex = angleComboMap.lower_bound(angab-0.005);
+                     auto angIndex = angleComboMapab.lower_bound(angab-0.005);
                      //                             angCorr_coinc_Binnedab[angIndex->second]->Fill(grif->GetAddbackHit(one)->GetEnergy(), grif->GetAddbackHit(two)->GetEnergy(), 1.);
                      Double_t fillval[2] = {grif->GetAddbackHit(one)->GetEnergy(), grif->GetAddbackHit(two)->GetEnergy()};
                      angCorr_coinc_Binnedab_bg[angIndex->second]->Fill(fillval);
