@@ -42,25 +42,17 @@ void AngularCorrelationSelector::CreateHistograms() {
 
 	//same for event mixing
 	for(int i = 0; i < static_cast<int>(fAngleCombinations.size()); ++i) {
-		fH2[Form("gammaGammaMixed%d", i)] = new TH2D(Form("gammaGammaMixed%d", i), Form("%.1f^{o}: #gamma-#gamma, |#Deltat_{#gamma-#gamma}| < %.1f", fAngleCombinations[i].first, ggHigh), 2000, 0., 2000., 2000, 0., 2000.);
-		fH2[Form("gammaGammaBetaMixed%d", i)] = new TH2D(Form("gammaGammaBetaMixed%d", i), Form("%.1f^{o}: #gamma-#gamma, |#Deltat_{#gamma-#gamma}| < %.1f, #Deltat_{#gamma-#beta} = %.1f - %.1f", fAngleCombinations[i].first, ggHigh, gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
-		fH2[Form("gammaGammaBGMixed%d", i)] = new TH2D(Form("gammaGammaBGMixed%d", i), Form("%.1f^{o}: #gamma-#gamma, #Deltat_{#gamma-#gamma} = %.1f - %.1f", fAngleCombinations[i].first, bgLow, bgHigh), 2000, 0., 2000., 2000, 0., 2000.);
-		fH2[Form("gammaGammaBetaBGMixed%d", i)] = new TH2D(Form("gammaGammaBetaBGMixed%d", i), Form("%.1f^{o}: #gamma-#gamma, #Deltat_{#gamma-#gamma} = %.1f - %.1f, #Deltat_{#gamma-#beta} = %.1f - %.1f", fAngleCombinations[i].first, bgLow, bgHigh, gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
+		fH2[Form("gammaGammaMixed%d", i)] = new TH2D(Form("gammaGammaMixed%d", i), Form("%.1f^{o}: #gamma-#gamma", fAngleCombinations[i].first), 2000, 0., 2000., 2000, 0., 2000.);
+		fH2[Form("gammaGammaBetaMixed%d", i)] = new TH2D(Form("gammaGammaBetaMixed%d", i), Form("%.1f^{o}: #gamma-#gamma, #Deltat_{#gamma-#beta} = %.1f - %.1f", fAngleCombinations[i].first, gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
 	}	
 	for(int i = 0; i < static_cast<int>(fAngleCombinationsAddback.size()); ++i) {
-		fH2[Form("addbackAddbackMixed%d", i)] = new TH2D(Form("addbackAddbackMixed%d", i), Form("%.1f^{o}: #gamma-#gamma with addback, |#Deltat_{#gamma-#gamma}| < %.1f", fAngleCombinationsAddback[i].first, ggHigh), 2000, 0., 2000., 2000, 0., 2000.);
-		fH2[Form("addbackAddbackBetaMixed%d", i)] = new TH2D(Form("addbackAddbackBetaMixed%d", i), Form("%.1f^{o}: #gamma-#gamma with addback, |#Deltat_{#gamma-#gamma}| < %.1f, #Deltat_{#gamma-#beta} = %.1f - %.1f", fAngleCombinationsAddback[i].first, ggHigh, gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
-		fH2[Form("addbackAddbackBGMixed%d", i)] = new TH2D(Form("addbackAddbackBGMixed%d", i), Form("%.1f^{o}: #gamma-#gamma with addback, #Deltat_{#gamma-#gamma} = %.1f - %.1f", fAngleCombinationsAddback[i].first, bgLow, bgHigh), 2000, 0., 2000., 2000, 0., 2000.);
-		fH2[Form("addbackAddbackBetaBGMixed%d", i)] = new TH2D(Form("addbackAddbackBetaBGMixed%d", i), Form("%.1f^{o}: #gamma-#gamma with addback, #Deltat_{#gamma-#gamma} = %.1f - %.1f, #Deltat_{#gamma-#beta} = %.1f - %.1f", fAngleCombinationsAddback[i].first, bgLow, bgHigh, gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
+		fH2[Form("addbackAddbackMixed%d", i)] = new TH2D(Form("addbackAddbackMixed%d", i), Form("%.1f^{o}: #gamma-#gamma with addback", fAngleCombinationsAddback[i].first), 2000, 0., 2000., 2000, 0., 2000.);
+		fH2[Form("addbackAddbackBetaMixed%d", i)] = new TH2D(Form("addbackAddbackBetaMixed%d", i), Form("%.1f^{o}: #gamma-#gamma with addback, #Deltat_{#gamma-#beta} = %.1f - %.1f", fAngleCombinationsAddback[i].first, gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
 	}
-	fH2["gammaGammaMixed"] = new TH2D("gammaGammaMixed",Form("#gamma-#gamma, |#Deltat_{#gamma-#gamma}| < %.1f", ggHigh), 2000, 0., 2000., 2000, 0., 2000.);
-	fH2["gammaGammaBetaMixed"] = new TH2D("gammaGammaBetaMixed",Form("#gamma-#gamma, |#Deltat_{#gamma-#gamma}| < %.1f, #Deltat_{#gamma-#beta} = %.1f - %.1f", ggHigh, gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
-	fH2["gammaGammaBGMixed"] = new TH2D("gammaGammaBGMixed",Form("#gamma-#gamma, #Deltat_{#gamma-#gamma} = %.1f - %.1f", bgLow, bgHigh), 2000, 0., 2000., 2000, 0., 2000.);
-	fH2["gammaGammaBetaBGMixed"] = new TH2D("gammaGammaBetaBGMixed",Form("#gamma-#gamma, #Deltat_{#gamma-#gamma} = %.1f - %.1f, #Deltat_{#gamma-#beta} = %.1f - %.1f", bgLow, bgHigh, gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
-	fH2["addbackAddbackMixed"] = new TH2D("addbackAddbackMixed",Form("#gamma-#gamma with addback, |#Deltat_{#gamma-#gamma}| < %.1f", ggHigh), 2000, 0., 2000., 2000, 0., 2000.);
-	fH2["addbackAddbackBetaMixed"] = new TH2D("addbackAddbackBetaMixed",Form("#gamma-#gamma with addback, |#Deltat_{#gamma-#gamma}| < %.1f, #Deltat_{#gamma-#beta} = %.1f - %.1f",ggHigh, gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
-	fH2["addbackAddbackBGMixed"] = new TH2D("addbackAddbackBGMixed",Form("#gamma-#gamma with addback, #Deltat_{#gamma-#gamma} = %.1f - %.1f", bgLow, bgHigh), 2000, 0., 2000., 2000, 0., 2000.);
-	fH2["addbackAddbackBetaBGMixed"] = new TH2D("addbackAddbackBetaBGMixed",Form("#gamma-#gamma with addback, #Deltat_{#gamma-#gamma} = %.1f - %.1f, #Deltat_{#gamma-#beta} = %.1f - %.1f", bgLow, bgHigh, gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
+	fH2["gammaGammaMixed"] = new TH2D("gammaGammaMixed","#gamma-#gamma", 2000, 0., 2000., 2000, 0., 2000.);
+	fH2["gammaGammaBetaMixed"] = new TH2D("gammaGammaBetaMixed",Form("#gamma-#gamma, #Deltat_{#gamma-#beta} = %.1f - %.1f", gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
+	fH2["addbackAddbackMixed"] = new TH2D("addbackAddbackMixed","#gamma-#gamma with addback", 2000, 0., 2000., 2000, 0., 2000.);
+	fH2["addbackAddbackBetaMixed"] = new TH2D("addbackAddbackBetaMixed",Form("#gamma-#gamma with addback, #Deltat_{#gamma-#beta} = %.1f - %.1f", gbLow, gbHigh), 2000, 0., 2000., 2000, 0., 2000.);
 	//plus hitpatterns for gamma-gamma and beta-gamma for single crystals
 	fH2["gammaGammaHPMixed"] = new TH2D("gammaGammaHPMixed","#gamma-#gamma hit pattern", 65, 0., 65., 65, 0., 65.);
 	fH2["betaGammaHPMixed"] = new TH2D("betaGammaHPMixed","#beta-#gamma hit pattern", 21, 0., 21., 65, 0., 65.);
@@ -143,20 +135,11 @@ void AngularCorrelationSelector::FillHistograms() {
 			double ggTime = TMath::Abs(grif1->GetTime()-grif2->GetTime());
 			fH2["gammaGammaHPMixed"]->Fill(grif1->GetArrayNumber(), grif2->GetArrayNumber());
 
-			if(ggTime < ggHigh) {
-				fH2["gammaGammaMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				fH2[Form("gammaGammaMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				if(coincBeta) {
-					fH2["gammaGammaBetaMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-					fH2[Form("gammaGammaBetaMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				}
-			} else if(bgLow < ggTime && ggTime < bgHigh) {
-				fH2["gammaGammaBGMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				fH2[Form("gammaGammaBGMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				if(coincBeta) {
-					fH2["gammaGammaBetaBGMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-					fH2[Form("gammaGammaBetaBGMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				}
+			fH2["gammaGammaMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+			fH2[Form("gammaGammaMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+			if(coincBeta) {
+				fH2["gammaGammaBetaMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+				fH2[Form("gammaGammaBetaMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
 			}
 		}
 	}
@@ -209,20 +192,11 @@ void AngularCorrelationSelector::FillHistograms() {
 			double ggTime = TMath::Abs(grif1->GetTime()-grif2->GetTime());
 			fH2["addbackAddbackHPMixed"]->Fill(grif1->GetArrayNumber(), grif2->GetArrayNumber());
 
-			if(ggTime < ggHigh) {
-				fH2["addbackAddbackMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				fH2[Form("addbackAddbackMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				if(coincBeta) {
-					fH2["addbackAddbackBetaMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-					fH2[Form("addbackAddbackBetaMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				}
-			} else if(bgLow < ggTime && ggTime < bgHigh) {
-				fH2["addbackAddbackBGMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				fH2[Form("addbackAddbackBGMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				if(coincBeta) {
-					fH2["addbackAddbackBetaBGMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-					fH2[Form("addbackAddbackBetaBGMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
-				}
+			fH2["addbackAddbackMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+			fH2[Form("addbackAddbackMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+			if(coincBeta) {
+				fH2["addbackAddbackBetaMixed"]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
+				fH2[Form("addbackAddbackBetaMixed%d", angleIndex->second)]->Fill(grif1->GetEnergy(), grif2->GetEnergy());
 			}
 		}
 	}
