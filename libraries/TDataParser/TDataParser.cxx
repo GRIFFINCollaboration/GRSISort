@@ -838,7 +838,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                break;
             default:
                if(!TGRSIOptions::Get()->SuppressErrors()) {
-                  printf(DRED "Error, back type %d not implemented yet" RESET_COLOR "\n", bank);
+                  printf(DRED "Error, bank type %d not implemented yet" RESET_COLOR "\n", bank);
                }
                TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
                if(fState == EDataParserState::kGood) {
