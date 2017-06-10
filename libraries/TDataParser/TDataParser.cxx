@@ -70,8 +70,9 @@ int TDataParser::TigressDataToFragment(uint32_t* data, int size, unsigned int mi
 
    int      x     = 0;
    uint32_t dword = *(data + x);
-   uint32_t type  = (dword & 0xf0000000) >> 28;
-   uint32_t value = (dword & 0x0fffffff);
+
+   uint32_t type;
+   uint32_t value;
 
    if(!SetTIGTriggerID(dword, eventFrag)) {
       printf(RED "Setting TriggerId (0x%08x) failed on midas event: " DYELLOW "%i" RESET_COLOR "\n", dword,
@@ -245,7 +246,7 @@ void TDataParser::SetTIGCharge(uint32_t value, std::shared_ptr<TFragment> curren
    if(!chan) chan       = gChannel;
    std::string dig_type = chan->GetDigitizerTypeString();
 
-   int charge = currentFragment->GetCharge();
+   int charge;
    if((dig_type.compare(0, 5, "Tig10") == 0) || (dig_type.compare(0, 5, "TIG10") == 0)) {
       if(value & 0x02000000)
          charge = (-((~((int32_t)value & 0x01ffffff)) & 0x01ffffff) + 1);
