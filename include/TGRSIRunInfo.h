@@ -168,29 +168,6 @@ public:
    inline void SetRunInfoFileName(const char* fname) { fRunInfoFileName.assign(fname); }
    inline void SetRunInfoFile(const char* ffile) { fRunInfoFile.assign(ffile); }
 
-   inline void SetBuildWindow(const long int t_bw) { fBuildWindow = t_bw; }
-   inline void SetAddBackWindow(const double t_abw) { fAddBackWindow = t_abw; }
-   inline void SetBufferDuration(const long int t_bd) { fBufferDuration = t_bd; }
-   inline void SetBufferSize(const size_t t_bs) { fBufferSize = t_bs; }
-
-   inline void SetWaveformFitting(const bool flag) { fWaveformFitting = flag; }
-   static inline bool                        IsWaveformFitting() { return Get()->fWaveformFitting; }
-
-   inline void SetMovingWindow(const bool flag) { fIsMovingWindow = flag; }
-   static inline bool                     IsMovingWindow() { return Get()->fIsMovingWindow; }
-
-   void SetCorrectCrossTalk(const bool flag, Option_t* opt = "");
-   static inline bool IsCorrectingCrossTalk() { return Get()->fIsCorrectingCrossTalk; }
-
-   static inline long int BuildWindow() { return Get()->fBuildWindow / 10; }
-   static inline double   AddBackWindow()
-   {
-      if (Get()->fAddBackWindow < 1) return 15.0;
-      return Get()->fAddBackWindow;
-   }
-   static inline long int BufferDuration() { return Get()->fBufferDuration; }
-   static inline size_t   BufferSize() { return Get()->fBufferSize; }
-
    inline void SetHPGeArrayPosition(const double arr_pos) { fHPGeArrayPosition = arr_pos; }
    static inline double                          HPGeArrayPosition() { return Get()->fHPGeArrayPosition; }
 
@@ -278,16 +255,6 @@ private:
    std::string fRunInfoFile;     // The contents of the run info file
    static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
-   long int fBuildWindow;    // if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
-   double   fAddBackWindow;  // Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default =150 ns (15.0))
-   bool     fIsMovingWindow; // if set to true the event building window moves. Static otherwise.
-   bool     fIsCorrectingCrossTalk; // True if we are correcting for cross-talk in GRIFFIN at analysis-level
-
-   long int fBufferDuration; // GRIFFIN: the minimum length of the sorting buffer (default = 600s (60000000000))
-   size_t   fBufferSize;     // GRIFFIN: the minimum size of the sorting buffer (default = 1 000 000)
-
-   bool fWaveformFitting; // If true, waveform fitting with SFU algorithm will be performed
-
    double fHPGeArrayPosition; // Position of the HPGe Array (default = 110.0 mm );
    bool   fDescantAncillary;  // Descant is in the ancillary detector locations
 
@@ -303,7 +270,7 @@ public:
    std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIRunInfo, 11); // Contains the run-dependent information.
+   ClassDef(TGRSIRunInfo, 12); // Contains the run-dependent information.
    /// \endcond
 };
 /*! @} */

@@ -1,6 +1,6 @@
 
 #include "TSiLi.h"
-#include <TGRSIRunInfo.h>
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TSiLi)
@@ -144,14 +144,14 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i)
 // If they are acceptable neighbours the second hit is also added to the cluster
 //
 // fAddbackCriterion checks if hits are flat surface contact (no corners) neighbours
-// and compares time to the global TGRSIRunInfo::AddBackWindow()
+// and compares time to the global TGRSIOptions::AddBackWindow()
 // some limited energy constraints are also added
 //
 // Clusters are then ordered by energy and summed
 // All base information is taken from the highest energy hit
 
 // Things to implement:
-// -maybe dont use global TGRSIRunInfo::AddBackWindow() time
+// -maybe dont use global TGRSIOptions::AddBackWindow() time
 // -better energy restrictions could be placed on what is a pair to suppress crosstalk issues
 // -instead of blindly summing entire clusters a decision could be made based on geometry of the pixels
 // eg if an event claims to go through a row of 3 the middle one must have sufficient energy for an electron to have
@@ -253,7 +253,7 @@ bool TSiLi::fAddbackCriterion(TSiLiHit* one, TSiLiHit* two)
 
    double e = one->GetEnergy() / two->GetEnergy();
    if(e > 0.1 && e < 10) { // very basic energy gate to suppress crosstalk noise issues
-      if(std::abs(T) < (TGRSIRunInfo::AddBackWindow() * 10.0)) {
+      if(std::abs(T) < (TGRSIOptions::AnalysisOptions()->AddbackWindow() * 10.0)) {
          int dring   = std::abs(one->GetRing() - two->GetRing());
          int dsector = std::abs(one->GetSector() - two->GetSector());
          if(dring == 1 && dsector == 0) return true;
@@ -263,7 +263,7 @@ bool TSiLi::fAddbackCriterion(TSiLiHit* one, TSiLiHit* two)
 
    // 	  TVector3 res = one.GetPosition() - two.GetPosition();
    //                         // GetTime is in ns;  AddbackWindow is in 10's of ns.
-   //   return ((std::abs(one.GetTime() - two.GetTime()) < (TGRSIRunInfo::AddBackWindow()*10.0)) &&
+   //   return ((std::abs(one.GetTime() - two.GetTime()) < (TGRSIOptions::AddBackWindow()*10.0)) &&
    //       ((((one.GetInitialHit() < 5 && two.GetInitialHit() < 5) || (one.GetInitialHit() > 4 && two.GetInitialHit() >
    //       4)) && res.Mag() < 54) ||  //not front to back
    //        (((one.GetInitialHit() < 5 && two.GetInitialHit() > 4) || (one.GetInitialHit() > 4 && two.GetInitialHit() <

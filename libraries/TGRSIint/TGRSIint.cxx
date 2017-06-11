@@ -71,7 +71,6 @@ TGRSIint::TGRSIint(int argc, char** argv, void* options, Int_t numOptions, Bool_
 {
    /// Singleton constructor
    fGRSIEnv   = gEnv;
-   fStopwatch = new TStopwatch;
 
    GetSignalHandler()->Remove();
    TGRSIInterruptHandler* ih = new TGRSIInterruptHandler();
@@ -195,15 +194,6 @@ void TGRSIint::Terminate(Int_t status)
    if(TGRSIOptions::Get()->MakeAnalysisTree()) {
       TSortingDiagnostics::Get()->Print("error");
    }
-
-   // Be polite when you leave.
-   double realTime = fStopwatch->RealTime();
-   int    hour     = static_cast<int>(realTime / 3600);
-   realTime -= hour * 3600;
-   int min = static_cast<int>(realTime / 60);
-   realTime -= min * 60;
-   printf(DMAGENTA "\nbye,bye\t" DCYAN "%s" RESET_COLOR " after %d:%02d:%.3f h:m:s\n", getpwuid(getuid())->pw_name,
-          hour, min, realTime);
 
    if((clock() % 60) == 0) {
       printf("DING!");
@@ -627,10 +617,10 @@ void TGRSIint::SetupPipeline()
 
    // If needed, generate the individual detectors from the TFragments
    if(generate_analysis_data) {
-      TGRSIOptions::Get()->PrintSortingOptions();
+      TGRSIOptions::AnalysisOptions()->Print();
       eventBuildingLoop = TEventBuildingLoop::Get("5_event_build_loop", event_build_mode);
       eventBuildingLoop->SetSortDepth(opt->SortDepth());
-      eventBuildingLoop->SetBuildWindow(opt->BuildWindow());
+      eventBuildingLoop->SetBuildWindow(opt->AnalysisOptions()->BuildWindow());
       if(unpackLoop) eventBuildingLoop->InputQueue()        = unpackLoop->AddGoodOutputQueue();
       if(fragmentChainLoop) eventBuildingLoop->InputQueue() = fragmentChainLoop->AddOutputQueue();
       fragmentQueues.push_back(eventBuildingLoop->InputQueue());

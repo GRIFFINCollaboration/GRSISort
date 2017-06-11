@@ -7,7 +7,7 @@
 #include "TClass.h"
 #include "TInterpreter.h"
 
-#include "TGRSIRunInfo.h"
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TTigress)
@@ -27,7 +27,7 @@ bool DefaultAddback(TTigressHit& one, TTigressHit& two)
    // Checking for Scattering FROM "one" TO "two"
 
    // GetTime is in ns;  AddbackWindow is in 10's of ns.
-   if(std::abs(one.GetTime() - two.GetTime()) < (TGRSIRunInfo::AddBackWindow() * 10.0)) {
+   if(std::abs(one.GetTime() - two.GetTime()) < (TGRSIOptions::AnalysisOptions()->AddbackWindow() * 10.0)) {
 
       // segments of crystals have been sorted by descending energy during detector construction
       // LastPosition is the position of lowest energy segment and GetPosition the highest energy segment (assumed
@@ -205,7 +205,7 @@ void TTigress::BuildHits()
       // it->Print("all");
       if(it->GetNSegments() > 1) it->SortSegments();
 
-      if(it->HasWave() && TGRSIRunInfo::IsWaveformFitting()) it->SetWavefit();
+      if(it->HasWave() && TGRSIOptions::AnalysisOptions()->IsWaveformFitting()) it->SetWavefit();
       it++;
    }
    if(fTigressHits.size() > 1) std::sort(fTigressHits.begin(), fTigressHits.end());

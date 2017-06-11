@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "TEnv.h"
+#include "TKey.h"
 
 #include "Globals.h"
 #include "ArgParser.h"
@@ -12,14 +13,17 @@
 #include "TGRSIUtilities.h"
 #include "GRootCommands.h"
 
+TGRSIOptions* TGRSIOptions::fGRSIOptions = nullptr;
+TAnalysisOptions* TGRSIOptions::fAnalysisOptions = new TAnalysisOptions;
+
 TGRSIOptions* TGRSIOptions::Get(int argc, char** argv)
 {
-   /// Gets the global instance of TGRSIOptions
-   static TGRSIOptions* item = nullptr;
-   if(!item) {
-      item = new TGRSIOptions(argc, argv);
-   }
-   return item;
+   // The Getter for the singleton TGRSIOptions. This makes it
+   // so there is only ever one instance of the options during
+   // a session and it can be accessed from anywhere during that
+   // session.
+   if(fGRSIOptions == nullptr) fGRSIOptions = new TGRSIOptions(argc, argv);
+   return fGRSIOptions;
 }
 
 TGRSIOptions::TGRSIOptions(int argc, char** argv) : fShouldExit(false)
@@ -91,10 +95,8 @@ void TGRSIOptions::Clear(Option_t*)
 
    fTimeSortInput = false;
 
-   fBuildWindow        = 200;
-   fAddbackWindow      = 300;
-   fStaticWindow       = false;
-   fSeparateOutOfOrder = false;
+
+   fSeparateOutOfOrder    = false;
 
    fShouldExit = false;
 
@@ -102,6 +104,8 @@ void TGRSIOptions::Clear(Option_t*)
    fStatusWidth         = 80;
    fStatusInterval      = 10;
    fLongFileDescription = false;
+
+	fAnalysisOptions->Clear();
 
    // Proof only
    fMaxWorkers   = -1;
@@ -111,70 +115,57 @@ void TGRSIOptions::Clear(Option_t*)
 void TGRSIOptions::Print(Option_t*) const
 {
    /// Print the current status of TGRSIOptions, includes all names, lists and flags
-   std::cout << "fCloseAfterSort: " << fCloseAfterSort << std::endl
-             << "fLogErrors: " << fLogErrors << std::endl
-             << "fUseMidFileOdb: " << fUseMidFileOdb << std::endl
-             << "fSuppressErrors: " << fSuppressErrors << std::endl
-             << "fReconstructTimeStamp: " << fReconstructTimeStamp << std::endl
-             << std::endl
-             << "fMakeAnalysisTree: " << fMakeAnalysisTree << std::endl
-             << "fProgressDialog: " << fProgressDialog << std::endl
-             << "fReadingMaterial;: " << fReadingMaterial << std::endl
-             << "fIgnoreFileOdb: " << fIgnoreFileOdb << std::endl
-             << "fRecordDialog: " << fRecordDialog << std::endl
-             << std::endl
-             << "fIgnoreScaler: " << fIgnoreScaler << std::endl
-             << "fIgnoreEpics: " << fIgnoreEpics << std::endl
-             << "fWriteBadFrags: " << fWriteBadFrags << std::endl
-             << "fWriteDiagnostics: " << fWriteDiagnostics << std::endl
-             << std::endl
-             << "fBatch: " << fBatch << std::endl
-             << std::endl
-             << "fShowedVersion: " << fShowedVersion << std::endl
-             << "fHelp: " << fHelp << std::endl
-             << "fShowLogo: " << fShowLogo << std::endl
-             << "fSortRaw: " << fSortRaw << std::endl
-             << "fSortRoot: " << fSortRoot << std::endl
-             << "fExtractWaves;: " << fExtractWaves << std::endl
-             << "fIsOnline: " << fIsOnline << std::endl
-             << "fStartGui: " << fStartGui << std::endl
-             << "fMakeHistos: " << fMakeHistos << std::endl
-             << "fSortMultiple: " << fSortMultiple << std::endl
-             << "fDebug: " << fDebug << std::endl
-             << "fLogFile: " << fLogFile << std::endl
-             << std::endl
-             << "fFragmentWriteQueueSize: " << fFragmentWriteQueueSize << std::endl
-             << "fAnalysisWriteQueueSize: " << fAnalysisWriteQueueSize << std::endl
-             << std::endl
-             << "fTimeSortInput: " << fTimeSortInput << std::endl
-             << "fSortDepth: " << fSortDepth << std::endl
-             << std::endl
-             << "fBuildWindow: " << fBuildWindow << std::endl
-             << "fAddbackWindow: " << fAddbackWindow << std::endl
-             << "fStaticWindow: " << fStaticWindow << std::endl
-             << "fSeparateOutOfOrder: " << fSeparateOutOfOrder << std::endl
-             << std::endl
-             << "fShouldExit: " << fShouldExit << std::endl
-             << std::endl
-             << "fColumnWidth: " << fColumnWidth << std::endl
-             << "fStatusWidth: " << fStatusWidth << std::endl
-             << "fStatusInterval: " << fStatusInterval << std::endl
-             << "fLongFileDescription: " << fLongFileDescription << std::endl
+   std::cout<<"fCloseAfterSort: "<<fCloseAfterSort<<std::endl
+            <<"fLogErrors: "<<fLogErrors<<std::endl
+            <<"fUseMidFileOdb: "<<fUseMidFileOdb<<std::endl
+            <<"fSuppressErrors: "<<fSuppressErrors<<std::endl
+            <<"fReconstructTimeStamp: "<<fReconstructTimeStamp<<std::endl
+            <<std::endl
+            <<"fMakeAnalysisTree: "<<fMakeAnalysisTree<<std::endl
+            <<"fProgressDialog: "<<fProgressDialog<<std::endl
+            <<"fReadingMaterial;: "<<fReadingMaterial<<std::endl
+            <<"fIgnoreFileOdb: "<<fIgnoreFileOdb<<std::endl
+            <<"fRecordDialog: "<<fRecordDialog<<std::endl
+            <<std::endl
+            <<"fIgnoreScaler: "<<fIgnoreScaler<<std::endl
+            <<"fIgnoreEpics: "<<fIgnoreEpics<<std::endl
+            <<"fWriteBadFrags: "<<fWriteBadFrags<<std::endl
+            <<"fWriteDiagnostics: "<<fWriteDiagnostics<<std::endl
+            <<std::endl
+            <<"fBatch: "<<fBatch<<std::endl
+            <<std::endl
+            <<"fShowedVersion: "<<fShowedVersion<<std::endl
+            <<"fHelp: "<<fHelp<<std::endl
+            <<"fShowLogo: "<<fShowLogo<<std::endl
+            <<"fSortRaw: "<<fSortRaw<<std::endl
+            <<"fSortRoot: "<<fSortRoot<<std::endl
+            <<"fExtractWaves;: "<<fExtractWaves<<std::endl
+            <<"fIsOnline: "<<fIsOnline<<std::endl
+            <<"fStartGui: "<<fStartGui<<std::endl
+            <<"fMakeHistos: "<<fMakeHistos<<std::endl
+            <<"fSortMultiple: "<<fSortMultiple<<std::endl
+            <<"fDebug: "<<fDebug<<std::endl
+            <<"fLogFile: "<<fLogFile<<std::endl
+            <<std::endl
+            <<"fFragmentWriteQueueSize: "<<fFragmentWriteQueueSize<<std::endl
+            <<"fAnalysisWriteQueueSize: "<<fAnalysisWriteQueueSize<<std::endl
+            <<std::endl
+            <<"fTimeSortInput: "<<fTimeSortInput<<std::endl
+            <<"fSortDepth: "<<fSortDepth<<std::endl
+            <<std::endl
+            <<"fSeparateOutOfOrder: "<<fSeparateOutOfOrder<<std::endl
+            <<std::endl
+            <<"fShouldExit: "<<fShouldExit<<std::endl
+            <<std::endl
+            <<"fColumnWidth: "<<fColumnWidth<<std::endl
+            <<"fStatusWidth: "<<fStatusWidth<<std::endl
+            <<"fStatusInterval: "<<fStatusInterval<<std::endl
+            <<"fLongFileDescription: "<<fLongFileDescription<<std::endl
 
-             << "fMaxWorkers: " << fMaxWorkers << std::endl
-             << "fSelectorOnly " << fSelectorOnly << std::endl;
-}
+            <<"fMaxWorkers: "<<fMaxWorkers<<std::endl
+            <<"fSelectorOnly "<<fSelectorOnly<<std::endl;
 
-void TGRSIOptions::PrintSortingOptions() const
-{
-   /// Print just the sorting options in TGRSIOptions. This includes sort depth, build window, etc.
-   std::cout << DBLUE << "fTimeSortInput: " << DCYAN << fTimeSortInput << std::endl
-             << DBLUE << "fSortDepth:     " << DCYAN << fSortDepth << std::endl
-             << DBLUE << "fBuildWindow:   " << DCYAN << fBuildWindow << std::endl
-             << DBLUE << "fAddbackWindow: " << DCYAN << fAddbackWindow << std::endl
-             << DBLUE << "fStaticWindow:  " << DCYAN << fStaticWindow << std::endl
-             << DBLUE << "fSeparateOutOfOrder:  " << DCYAN << fSeparateOutOfOrder << std::endl
-             << RESET_COLOR << std::endl;
+				fAnalysisOptions->Print();
 }
 
 void TGRSIOptions::Load(int argc, char** argv)
@@ -257,32 +248,6 @@ void TGRSIOptions::Load(int argc, char** argv)
       .description("size of analysis write queue")
       .default_value(1000000);
 
-   // parser.option("o output", &output_file)
-   //   .description("Root output file");
-   // parser.option("f filter-output",&fOutputFilteredFile)
-   //   .description("Output file for raw filtered data");
-   // parser.option("hist-output",&fOutputHistogramFile)
-   //   .description("Output file for histograms");
-   // parser.option("r ring",&fInputRing)
-   //   .description("Input ring source (host/ringname).  Requires --format to be specified.");
-   //   .default_value(false);
-   // parser.option("n no-sort", &fSortRaw)
-   //   .description("Load raw data files without sorting")
-   //   .default_value(true);
-   // parser.option("m sort-multiple", &fSortMultiple)
-   //   .description("If passed multiple raw data files, treat them as one file.")
-   //   .default_value(false);
-   //   .default_value(false);
-   // parser.option("t time-sort", &fTimeSortInput)
-   //   .description("Reorder raw events by time");
-   // parser.option("time-sort-depth",&fTimeSortDepth)
-   //   .description("Number of events to hold when time sorting")
-   //   .default_value(100000);
-   parser.option("build-window", &fBuildWindow).description("Build window, timestamp units").default_value(200);
-   parser.option("addback-window", &fAddbackWindow).description("Addback window, time in ns").default_value(300);
-   parser.option("static-window", &fStaticWindow)
-      .description("use static window for event building")
-      .default_value(false);
    parser.option("column-width", &fColumnWidth).description("width of one column of status").default_value(20);
    parser.option("status-width", &fStatusWidth)
       .description("number of characters to be used for status output")
@@ -291,18 +256,6 @@ void TGRSIOptions::Load(int argc, char** argv)
       .description(
          "seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
       .default_value(10);
-
-   // parser.option("long-file-description", &fLongFileDescription)
-   //   .description("Show full path to file in status messages")
-   //   .default_value(false);
-   // parser.option("format",&default_file_format)
-   //   .description("File format of raw data.  Allowed options are \"EVT\" and \"GEB\"."
-   //                "If unspecified, will be guessed from the filename.");
-   // parser.option("g start-gui",&fStartGui)
-   //   .description("Start the GUI")
-   //   .default_value(false);
-   // parser.option("v version", &fShowedVersion)
-   //   .description("Show version information");
 
    // Proof only parser options
    parser.option("max-workers", &fMaxWorkers)
@@ -318,24 +271,25 @@ void TGRSIOptions::Load(int argc, char** argv)
          try {
             parser.parse_file(filename);
          } catch(ParseError& e) {
-            std::cerr << "ERROR: " << e.what() << "\n" << parser << std::endl;
+            std::cerr<<"ERROR: "<<e.what()<<"\n"<<parser<<std::endl;
             fShouldExit = true;
          }
       }
    }
 
    // Look at the command line.
+	std::vector<std::string> unknownFlags;
    try {
-      parser.parse(argc, argv);
+      unknownFlags = parser.parse(argc, argv);
    } catch(ParseError& e) {
-      std::cerr << "ERROR: " << e.what() << "\n" << parser << std::endl;
+      std::cerr<<"ERROR: "<<e.what()<<"\n"<<parser<<std::endl;
       fShouldExit = true;
    }
 
    // Print help if requested.
    if(fHelp) {
       Version();
-      std::cout << parser << std::endl;
+      std::cout<<parser<<std::endl;
       fShouldExit = true;
    }
 
@@ -355,6 +309,15 @@ void TGRSIOptions::Load(int argc, char** argv)
    for(auto& file : input_files) {
       FileAutoDetect(file);
    }
+
+	// read analysis options from input file(s)
+	for(std::string file : fInputRootFiles) {
+		std::cout<<"Reading options from \""<<file<<"\":"<<std::endl;
+		fAnalysisOptions->ReadFromFile(file);
+		fAnalysisOptions->Print();
+	}
+	// parse analysis options from command line options 
+	fAnalysisOptions->Load(unknownFlags, parser);
 }
 
 kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
@@ -434,7 +397,7 @@ bool TGRSIOptions::FileAutoDetect(const std::string& filename)
          used                  = true;
       }
       if(!used) {
-         std::cerr << filename << " did not contain MakeFragmentHistograms() or MakeAnalysisHistograms()" << std::endl;
+         std::cerr<<filename<<" did not contain MakeFragmentHistograms() or MakeAnalysisHistograms()"<<std::endl;
       }
       return true;
    }
@@ -465,3 +428,73 @@ std::string TGRSIOptions::GenerateOutputFilename(const std::vector<std::string>&
    /// Currently does nothing
    return "temp_from_multi.root";
 }
+
+bool TGRSIOptions::WriteToRoot(TFile* file)
+{
+   /// Writes options information to the tree
+   // Maintain old gDirectory info
+   bool        success = true;
+   TDirectory* oldDir  = gDirectory;
+
+   if(file == nullptr) {
+		file = gDirectory->GetFile();
+	}
+   file->cd();
+   std::string oldoption = std::string(file->GetOption());
+   if(oldoption == "READ") {
+      file->ReOpen("UPDATE");
+   }
+   if(!gDirectory) {
+      printf("No file opened to write to.\n");
+      success = false;
+   } else {
+      Get()->Write();
+   }
+
+   printf("Writing Run Information to %s\n", gDirectory->GetFile()->GetName());
+   if(oldoption == "READ") {
+      printf("  Returning %s to \"%s\" mode.\n", gDirectory->GetFile()->GetName(), oldoption.c_str());
+      file->ReOpen("READ");
+   }
+   oldDir->cd(); // Go back to original gDirectory
+
+   return success;
+}
+
+void TGRSIOptions::SetOptions(TGRSIOptions* tmp)
+{
+   // Sets the TGRSIOptions to the info passes as tmp.
+   if(fGRSIOptions && (tmp != fGRSIOptions)) delete fGRSIOptions;
+   fGRSIOptions = tmp;
+}
+
+Bool_t TGRSIOptions::ReadFromFile(TFile* file)
+{
+   TDirectory* oldDir = gDirectory;
+   if(file != nullptr) {
+      file->cd();
+   }
+
+   if(gDirectory->GetFile() == nullptr) {
+      printf("File does not exist\n");
+      oldDir->cd();
+      return false;
+   }
+
+   file = gDirectory->GetFile();
+
+   TList* list = file->GetListOfKeys();
+   TIter  iter(list);
+   printf("Reading Options from file:" CYAN " %s" RESET_COLOR "\n", file->GetName());
+   while(TKey* key = static_cast<TKey*>(iter.Next())) {
+      if(!key || strcmp(key->GetClassName(), "TGRSIOptions")) continue;
+
+      TGRSIOptions::SetOptions(static_cast<TGRSIOptions*>(key->ReadObj()));
+      oldDir->cd();
+      return true;
+   }
+   oldDir->cd();
+
+   return false;
+}
+

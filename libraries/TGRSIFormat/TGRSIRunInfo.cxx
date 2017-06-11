@@ -10,413 +10,11 @@
 
 /// \cond CLASSIMP
 ClassImp(TGRSIRunInfo)
-   /// \endcond
+/// \endcond
 
-   TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();
+TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();
 
 std::string TGRSIRunInfo::fGRSIVersion;
-
-// int  TGRSIRunInfo::fRunNumber    = 0;
-// int  TGRSIRunInfo::fSubRunNumber = -1;
-
-// bool TGRSIRunInfo:: fTigress     = false;
-// bool TGRSIRunInfo:: fSharc       = false;
-// bool TGRSIRunInfo:: fTriFoil     = false;
-// bool TGRSIRunInfo:: fRf          = false;
-// bool TGRSIRunInfo:: fCSM         = false;
-// bool TGRSIRunInfo:: fSpice       = false;
-// bool TGRSIRunInfo:: fTip         = false;
-// bool TGRSIRunInfo:: fS3          = false;
-
-// bool TGRSIRunInfo:: fGriffin     = false;
-// bool TGRSIRunInfo:: fSceptar     = false;
-// bool TGRSIRunInfo:: fPaces       = false;
-// bool TGRSIRunInfo:: fDante       = false;
-// bool TGRSIRunInfo:: fZeroDegree  = false;
-// bool TGRSIRunInfo:: fDescant     = false;
-
-// std::string TGRSIRunInfo::fMajorIndex;
-// std::string TGRSIRunInfo::fMinorIndex;
-
-// int TGRSIRunInfo::fNumberOfTrueSystems = 0;
-
-void TGRSIRunInfo::Streamer(TBuffer& b)
-{
-   // Streamer for TGRSIRunInfo. Allows us to write all of the run info
-   // to disk like a string. This way there isn't any compatibility issues
-   // between different TGRSIRunInfo classes written by different users.
-   UInt_t R__s, R__c;
-   if(b.IsReading()) {
-      Version_t R__v = b.ReadVersion(&R__s, &R__c);
-      if(R__v) {
-      }
-      TObject::Streamer(b);
-      {
-         Int_t R__int;
-         b >> R__int;
-         fRunNumber = R__int;
-      }
-      {
-         Int_t R__int;
-         b >> R__int;
-         fSubRunNumber = R__int;
-      }
-      if(R__v > 3) {
-         {
-            Double_t R__double;
-            b >> R__double;
-            fRunStart = R__double;
-         }
-         {
-            Double_t R__double;
-            b >> R__double;
-            fRunStop = R__double;
-         }
-      }
-      if(R__v > 4) {
-         {
-            Double_t R__double;
-            b >> R__double;
-            fRunLength = R__double;
-         }
-      }
-      if(R__v > 2) {
-         {
-            Double_t R__double;
-            b >> R__double;
-            fHPGeArrayPosition = R__double;
-         }
-         if(R__v > 5) {
-            {
-               Long_t R__int;
-               b >> R__int;
-               fBuildWindow = R__int;
-            }
-         } else {
-            {
-               Int_t R__int;
-               b >> R__int;
-               fBuildWindow = R__int;
-            }
-         }
-         {
-            Double_t R__double;
-            b >> R__double;
-            fAddBackWindow = R__double;
-         }
-      }
-      if(R__v > 4) {
-         {
-            Bool_t R__bool;
-            b >> R__bool;
-            fIsMovingWindow = R__bool;
-         }
-      }
-      if(R__v > 6) {
-         {
-            Bool_t R__bool;
-            b >> R__bool;
-            fWaveformFitting = R__bool;
-         }
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fTigress = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fSharc = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fTriFoil = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fRf = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fCSM = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fSpice = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fTip = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fS3 = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fBambino = R__bool;
-      }
-
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fGriffin = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fSceptar = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fPaces = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fDante = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fZeroDegree = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fDescant = R__bool;
-      }
-      {
-         Bool_t R__bool;
-         b >> R__bool;
-         fFipps = R__bool;
-      }
-      {
-         TString R__str;
-         R__str.Streamer(b);
-         fMajorIndex.assign(R__str.Data());
-      }
-      // printf("fMajorIndex = %s\n",fMajorIndex.c_str());
-      {
-         TString R__str;
-         R__str.Streamer(b);
-         fMinorIndex.assign(R__str.Data());
-      }
-      // printf("fMinorIndex = %s\n",fMinorIndex.c_str());
-      if(R__v > 2) {
-         {
-            TString R__str;
-            R__str.Streamer(b);
-            fRunInfoFileName.assign(R__str.Data());
-         }
-         // printf("fRunInfoFileNameMajor = %s\n",fRunInfoFileName.c_str());
-         {
-            TString R__str;
-            R__str.Streamer(b);
-            fRunInfoFile.assign(R__str.Data());
-         }
-         // printf("fMajorIndex = %s\n",fMajorIndex.c_str());
-      }
-      if(R__v > 8) {
-         {
-            Bool_t R__bool;
-            b >> R__bool;
-            fDescantAncillary = R__bool;
-         }
-      }
-      if(R__v > 9) {
-         {
-            Bool_t R__bool;
-            b >> R__bool;
-            fIsCorrectingCrossTalk = R__bool;
-         }
-         {
-            UInt_t R__uint;
-            b >> R__uint;
-            fBadCycleListSize = R__uint;
-         }
-         for(UInt_t i = 0; i < fBadCycleList.size(); ++i) {
-            Int_t R__int;
-            b >> R__int;
-            AddBadCycle(R__int);
-         }
-      }
-      if(R__v > 10) {
-         {
-            TString R__str;
-            b >> R__str;
-            fRunTitle = R__str;
-         }
-         {
-            TString R__str;
-            b >> R__str;
-            fRunComment = R__str;
-         }
-      }
-      fGRSIRunInfo = this;
-      b.CheckByteCount(R__s, R__c, TGRSIRunInfo::IsA());
-   } else {
-      R__c = b.WriteVersion(TGRSIRunInfo::IsA(), true);
-      TObject::Streamer(b);
-      {
-         Int_t R__int = fRunNumber;
-         b << R__int;
-      }
-      {
-         Int_t R__int = fSubRunNumber;
-         b << R__int;
-      }
-      {
-         Double_t R__double = fRunStart;
-         b << R__double;
-      }
-      {
-         Double_t R__double = fRunStop;
-         b << R__double;
-      }
-      {
-         Double_t R__double = fRunLength;
-         b << R__double;
-      }
-      {
-         Double_t R__double = fHPGeArrayPosition;
-         b << R__double;
-      }
-      {
-         Long_t R__long = fBuildWindow;
-         b << R__long;
-      }
-      {
-         Double_t R__double = fAddBackWindow;
-         b << R__double;
-      }
-      {
-         Bool_t R__bool = fIsMovingWindow;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fWaveformFitting;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fTigress;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fSharc;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fTriFoil;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fRf;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fCSM;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fSpice;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fTip;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fS3;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fBambino;
-         b << R__bool;
-      }
-
-      {
-         Bool_t R__bool = fGriffin;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fSceptar;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fPaces;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fDante;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fZeroDegree;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fDescant;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fFipps;
-         b << R__bool;
-      }
-      // printf("fMajorIndex = %s\n",fMajorIndex.c_str());
-      // printf("fMinorIndex = %s\n",fMinorIndex.c_str());
-      {
-         TString R__str(fMajorIndex.c_str());
-         R__str.Streamer(b);
-      } // printf("TString::data = %s\n",R__str.Data());  }//; R__str = fMajorIndex.c_str();      R__str.Streamer(b);}
-      {
-         TString R__str(fMinorIndex.c_str());
-         R__str.Streamer(b);
-      } // printf("TString::data = %s\n",R__str.Data()); }//; R__str = fMinorIndex.c_str();      R__str.Streamer(b);}
-      {
-         TString R__str(fRunInfoFileName.c_str());
-         R__str.Streamer(b);
-      } //; R__str = fRunInfoFileName.c_str(); R__str.Streamer(b);}
-      {
-         TString R__str(fRunInfoFile.c_str());
-         R__str.Streamer(b);
-      } //; R__str = fRunInfoFile.c_str();     R__str.Streamer(b);}
-      {
-         Bool_t R__bool = fDescantAncillary;
-         b << R__bool;
-      }
-      {
-         Bool_t R__bool = fIsCorrectingCrossTalk;
-         b << R__bool;
-      }
-      {
-         UInt_t R__uint = fBadCycleListSize;
-         b << R__uint;
-      }
-      for(UInt_t i = 0; i < fBadCycleList.size(); ++i) {
-         Int_t R__int = fBadCycleList.at(i);
-         b << R__int;
-      }
-      {
-         TString R__str(fRunTitle.c_str());
-         R__str.Streamer(b);
-      }
-      {
-         TString R__str(fRunComment.c_str());
-         R__str.Streamer(b);
-      }
-      b.SetByteCount(R__c, true);
-   }
-}
 
 TGRSIRunInfo* TGRSIRunInfo::Get()
 {
@@ -471,23 +69,10 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0), fSubRunNumber(-1)
    /// Default ctor for TGRSIRunInfo. The default values are:
    ///
    /// fHPGeArrayPosition = 110.0;
-   /// fBuildWindow       = 200;
-   /// fAddBackWindow     = 15.0;
-   /// fIsMovingWindow    = true;
-   /// fWaveformFitting	 = false;
-   /// fBufferSize        = 1000000;
-   /// fBufferDuration    = 60000000000;
 
    fHPGeArrayPosition = 110.0;
-   fBuildWindow       = 2000;
-   fAddBackWindow     = 150.0;
-   fIsMovingWindow    = true;
-   fWaveformFitting   = false;
-   fBufferSize        = 1000000;
-   fBufferDuration    = 60000000000;
 
    fDescantAncillary      = false;
-   fIsCorrectingCrossTalk = true;
    fBadCycleList.clear();
    fBadCycleListSize = 0;
 
@@ -530,16 +115,9 @@ void TGRSIRunInfo::Print(Option_t* opt) const
       printf("\t\tDANTE:        %s\n", Dante() ? "true" : "false");
       printf("\t\tFIPPS:        %s\n", Fipps() ? "true" : "false");
       printf("\n");
-      printf(DBLUE "\tBuild Window (10 ns) = " DRED "%lu" RESET_COLOR "\n", TGRSIRunInfo::BuildWindow());
-      printf(DBLUE "\tMoving Window = " DRED "%s" RESET_COLOR "\n", TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
-      printf(DBLUE "\tAddBack Window (ns) = " DRED "%.01f" RESET_COLOR "\n", TGRSIRunInfo::AddBackWindow());
       printf(DBLUE "\tArray Position (mm) = " DRED "%.01f" RESET_COLOR "\n", TGRSIRunInfo::HPGeArrayPosition());
-      printf(DBLUE "\tWaveform fitting = " DRED "%s" RESET_COLOR "\n",
-             TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
       printf(DBLUE "\tDESCANT in ancillary positions = " DRED "%s" RESET_COLOR "\n",
              TGRSIRunInfo::DescantAncillary() ? "TRUE" : "FALSE");
-      printf(DBLUE "\tGRIFFIN Corrected for Cross-talk = " DRED "%s" RESET_COLOR "\n",
-             TGRSIRunInfo::IsCorrectingCrossTalk() ? "TRUE" : "FALSE");
       printf("\n");
       printf("\t==============================\n");
    } else {
@@ -575,17 +153,13 @@ void TGRSIRunInfo::Clear(Option_t*)
    fMinorIndex.assign("");
 
    fNumberOfTrueSystems   = 0;
-   fIsCorrectingCrossTalk = true;
    fBadCycleList.clear();
    fBadCycleListSize = 0;
-
-   // fRunTitle.assign("");
-   // fRunComment.assign("");
 }
 
 void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
 {
-   // Sets the run info. This figures out what systems are available.
+   /// Sets the run info. This figures out what systems are available.
 
    printf("In runinfo, found %i channels.\n", TChannel::GetNumberOfChannels());
    if(runnum != 0) {
@@ -782,8 +356,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
       if(!line.length()) continue;
 
       size_t ntype = line.find(":");
-      if(ntype == std::string::npos) // no seperator, not useful.
-         continue;
+      if(ntype == std::string::npos) continue; // no seperator, not useful.
 
       std::string type = line.substr(0, ntype);
       line             = line.substr(ntype + 1, line.length());
@@ -794,27 +367,7 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
          c         = toupper(c);
          type[j++] = c;
       }
-      if(type.compare("BW") == 0 || type.compare("BUILDWINDOW") == 0) {
-         std::istringstream ss(line);
-         long int           temp_bw;
-         ss >> temp_bw;
-         Get()->SetBuildWindow(temp_bw);
-      } else if(type.compare("WF") == 0 || type.compare("WAVEFORMFIT") == 0) {
-         std::istringstream ss(line);
-         bool               temp_wff;
-         ss >> temp_wff;
-         Get()->SetWaveformFitting(temp_wff);
-      } else if(type.compare("MW") == 0 || type.compare("MOVINGWINDOW") == 0) {
-         std::istringstream ss(line);
-         bool               temp_mw;
-         ss >> temp_mw;
-         Get()->SetMovingWindow(temp_mw);
-      } else if(type.compare("ABW") == 0 || type.compare("ADDBACKWINDOW") == 0 || type.compare("ADDBACK") == 0) {
-         std::istringstream ss(line);
-         double             temp_abw;
-         ss >> temp_abw;
-         Get()->SetAddBackWindow(temp_abw);
-      } else if(type.compare("CAL") == 0 || type.compare("CALFILE") == 0) {
+      if(type.compare("CAL") == 0 || type.compare("CALFILE") == 0) {
          // TODO Make this work again, using priorities
          // TGRSIOptions::AddInputCalFile(line);
       } else if(type.compare("MID") == 0 || type.compare("MIDAS") == 0 || type.compare("MIDASFILE") == 0) {
@@ -830,11 +383,6 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
          int                temp_int;
          ss >> temp_int;
          Get()->SetDescantAncillary(temp_int);
-      } else if(type.compare("CROSSTALK") == 0) {
-         std::istringstream ss(line);
-         bool               temp_ct;
-         ss >> temp_ct;
-         Get()->SetCorrectCrossTalk(temp_ct, "q");
       } else if(type.compare("BADCYCLE") == 0) {
          std::istringstream ss(line);
          int                tmp_int;
@@ -846,21 +394,14 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
 
    if(strcmp(opt, "q")) {
       printf("parsed %i lines.\n", linenumber);
-      printf(DBLUE "\tBuild Window (10 ns) = " DRED "%lu" RESET_COLOR "\n", TGRSIRunInfo::BuildWindow());
-      printf(DBLUE "\tMoving Window = " DRED "%s" RESET_COLOR "\n", TGRSIRunInfo::IsMovingWindow() ? "TRUE" : "FALSE");
-      printf(DBLUE "\tAddBack Window (ns) = " DRED "%.01f" RESET_COLOR "\n", TGRSIRunInfo::AddBackWindow());
       printf(DBLUE "\tArray Position (mm) = " DRED "%lf" RESET_COLOR "\n", TGRSIRunInfo::HPGeArrayPosition());
-      printf(DBLUE "\tWaveform Fitting  = " DRED "%s" RESET_COLOR "\n",
-             TGRSIRunInfo::IsWaveformFitting() ? "TRUE" : "FALSE");
-      printf(DBLUE "\tCorrecting Cross-talk  = " DRED "%s" RESET_COLOR "\n",
-             TGRSIRunInfo::IsCorrectingCrossTalk() ? "TRUE" : "FALSE");
    }
    return true;
 }
 
 void TGRSIRunInfo::trim(std::string* line, const std::string& trimChars)
 {
-   // Removes the the string "trimCars" from  the string 'line'
+   /// Removes the string "trimCars" from  the string 'line'
    if(line->length() == 0) return;
    std::size_t found                    = line->find_first_not_of(trimChars);
    if(found != std::string::npos) *line = line->substr(found, line->length());
@@ -882,18 +423,6 @@ Long64_t TGRSIRunInfo::Merge(TCollection* list)
       this->Add(runinfo);
    }
    return 0;
-}
-
-void TGRSIRunInfo::SetCorrectCrossTalk(const bool flag, Option_t* opt)
-{
-   fIsCorrectingCrossTalk = flag;
-   TString opt1           = opt;
-   opt1.ToUpper();
-   if(opt1.Contains("Q")) {
-      return;
-   }
-
-   printf("Please call TGriffin::ResetFlags() on current event to avoid bugs\n");
 }
 
 void TGRSIRunInfo::PrintBadCycles() const
@@ -987,33 +516,14 @@ bool TGRSIRunInfo::WriteInfoFile(std::string filename)
 std::string TGRSIRunInfo::PrintToString(Option_t*)
 {
    std::string buffer;
-   buffer.append("//The event building time, 10 ns units.\n");
-   buffer.append(Form("BuildWindow: %ld\n", Get()->BuildWindow()));
-   buffer.append("\n\n");
-   buffer.append("//The Addback event window, ns units.\n");
-   buffer.append(Form("AddBackWindow: %lf\n", Get()->AddBackWindow()));
-   buffer.append("\n\n");
    buffer.append("//The Array Position in mm.\n");
    buffer.append(Form("HPGePos: %lf\n", Get()->HPGeArrayPosition()));
    buffer.append("\n\n");
-   if(Get()->IsWaveformFitting()) {
-      buffer.append("//Waveforms being Fit.\n");
-      buffer.append(Form("WaveFormFit: %d\n", 1));
-      buffer.append("\n\n");
-   }
-   if(!(Get()->IsMovingWindow())) {
-      buffer.append("//Using a moving BuildWindow.\n");
-      buffer.append(Form("MovingWindow: %d\n", 0));
-      buffer.append("\n\n");
-   }
    if(Get()->DescantAncillary()) {
       buffer.append("//Is DESCANT in Ancillary positions?.\n");
       buffer.append(Form("DescantAncillary: %d\n", 1));
       buffer.append("\n\n");
    }
-   buffer.append("//Correcting for Cross Talk? (Only available in GRIFFIN).\n");
-   buffer.append(Form("CrossTalk: %d\n", Get()->IsCorrectingCrossTalk()));
-   buffer.append("\n\n");
    if(fBadCycleList.size()) {
       buffer.append("//A List of bad cycles.\n");
       buffer.append("BadCycle:");

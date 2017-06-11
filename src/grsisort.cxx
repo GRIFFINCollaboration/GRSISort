@@ -1,11 +1,10 @@
-
-
 #include <cstdio>
 #include <string>
 #include <sys/stat.h>
 #include <netdb.h>
-#include <stdexcept>
 #include <iostream>
+#include <stdexcept>
+#include <pwd.h>
 
 #include "TEnv.h"
 #include "TPluginManager.h"
@@ -43,11 +42,12 @@ static STRUCT_UTMP *gUtmpContents;
 void SetGRSIEnv();
 void SetGRSIPluginHandlers();
 static int ReadUtmp();
-static STRUCT_UTMP *SearchEntry(int, const char*);
+static STRUCT_UTMP *SearchEntry(int /*n*/, const char* /*tty*/);
 static void SetDisplay();
 
 int main(int argc, char **argv) {
-   try{
+   auto stopwatch = new TStopwatch;
+   try {
      TThread::Initialize();
      TObject::SetObjectStat(false);
      
@@ -55,23 +55,28 @@ int main(int argc, char **argv) {
       SetDisplay();
       SetGRSIEnv();
       SetGRSIPluginHandlers();
-      TGRSIint *input = 0;
+      TGRSIint *input = nullptr;
    
       //Create an instance of the grsi interpreter so that we can run root-like interpretive mode
       input = TGRSIint::instance(argc,argv);
-      //input->GetOptions(&argc,argv);
       //Run the code!
-      input->Run("true");
-      //Be polite when you leave.
-      printf("\nbye,bye\n");
+      input->Run(true);
    } catch(grsi::exit_exception& e) {
       std::cerr << e.message << std::endl;
       //Close files and clean up properly here
    }
 
-      return 0;
-}
+   // Be polite when you leave.
+   double realTime = stopwatch->RealTime();
+   int    hour     = static_cast<int>(realTime / 3600);
+   realTime -= hour * 3600;
+   int min = static_cast<int>(realTime / 60);
+   realTime -= min * 60;
+   printf(DMAGENTA "\nbye,bye\t" DCYAN "%s" RESET_COLOR " after %d:%02d:%.3f h:m:s\n", getpwuid(getuid())->pw_name,
+          hour, min, realTime);
 
+	return 0;
+}
 
 void SetGRSIEnv() {
    std::string grsi_path = getenv("GRSISYS"); //Finds the GRSISYS path to be used by other parts of the grsisort code
@@ -94,101 +99,94 @@ void SetGRSIPluginHandlers() {
 
 static int ReadUtmp() {
    FILE  *utmp;
-   struct stat file_stats;
+   struct stat file_stats{};
    size_t n_read, size;
 
-   gUtmpContents = 0;
+   gUtmpContents = nullptr;
 
    utmp = fopen(UTMP_FILE, "r");
-   if (!utmp)
-      return 0;
+   if(utmp == nullptr) { return 0;
+}
 
    fstat(fileno(utmp), &file_stats);
    size = file_stats.st_size;
-   if (size <= 0) {
+   if(size <= 0) {
       fclose(utmp);
       return 0;
    }
 
-   gUtmpContents = (STRUCT_UTMP *) malloc(size);
-   if (!gUtmpContents) {
+   gUtmpContents = static_cast<STRUCT_UTMP *>( malloc(size));
+   if(gUtmpContents == nullptr) {
       fclose(utmp);
       return 0;
    }
 
    n_read = fread(gUtmpContents, 1, size, utmp);
-   if (!ferror(utmp)) {
-      if (fclose(utmp) != EOF && n_read == size)
+   if(ferror(utmp) == 0) {
+      if(fclose(utmp) != EOF && n_read == size) {
          return size / sizeof(STRUCT_UTMP);
-   } else
+		}
+   } else {
       fclose(utmp);
+	}
 
    free(gUtmpContents);
-   gUtmpContents = 0;
+   gUtmpContents = nullptr;
    return 0;
 }
 
 static STRUCT_UTMP *SearchEntry(int n, const char *tty)  {
    STRUCT_UTMP *ue = gUtmpContents;
-   while (n--) {
-      if (ue->ut_name[0] && !strncmp(tty, ue->ut_line, sizeof(ue->ut_line)))
-         return ue;
+   while((n--) != 0) {
+      if((ue->ut_name[0] != 0) && (strncmp(tty, ue->ut_line, sizeof(ue->ut_line)) == 0)) { return ue;
+}
       ue++;
    }
-   return 0;
+   return nullptr;
 }
 
 
 static void SetDisplay()  {
    // Set DISPLAY environment variable.
 
-   if (!getenv("DISPLAY")) {
-      char *tty = ttyname(0);  // device user is logged in on
-      if (tty) {
-         tty += 5;             // remove "/dev/"
-         STRUCT_UTMP *utmp_entry = SearchEntry(ReadUtmp(), tty);
-         if (utmp_entry) {
-            char *display = new char[sizeof(utmp_entry->ut_host) + 15];
-            char *host = new char[sizeof(utmp_entry->ut_host) + 1];
-            strncpy(host, utmp_entry->ut_host, sizeof(utmp_entry->ut_host));
-            host[sizeof(utmp_entry->ut_host)] = 0;
-            if (host[0]) {
-               if (strchr(host, ':')) {
-                  sprintf(display, "DISPLAY=%s", host);
-                  fprintf(stderr, "*** DISPLAY not set, setting it to %s\n",
-                          host);
-               } else {
-                  sprintf(display, "DISPLAY=%s:0.0", host);
-                  fprintf(stderr, "*** DISPLAY not set, setting it to %s:0.0\n",
-                          host);
-               }
-               putenv(display);
+	if(getenv("DISPLAY") == nullptr) {
+		char *tty = ttyname(0);  // device user is logged in on
+		if(tty != nullptr) {
+			tty += 5;             // remove "/dev/"
+			STRUCT_UTMP *utmp_entry = SearchEntry(ReadUtmp(), tty);
+			if(utmp_entry != nullptr) {
+				auto* display = new char[sizeof(utmp_entry->ut_host) + 15];
+				auto* host =    new char[sizeof(utmp_entry->ut_host) + 1];
+				strncpy(host, utmp_entry->ut_host, sizeof(utmp_entry->ut_host));
+				host[sizeof(utmp_entry->ut_host)] = 0;
+				if(host[0] != 0) {
+					if(strchr(host, ':') != nullptr) {
+						sprintf(display, "DISPLAY=%s", host);
+						fprintf(stderr, "*** DISPLAY not set, setting it to %s\n",
+								host);
+					} else {
+						sprintf(display, "DISPLAY=%s:0.0", host);
+						fprintf(stderr, "*** DISPLAY not set, setting it to %s:0.0\n",
+								host);
+					}
+					putenv(display);
 #ifndef UTMP_NO_ADDR
-            } else if (utmp_entry->ut_addr) {
-               struct hostent *he;
-               if ((he = gethostbyaddr((const char*)&utmp_entry->ut_addr,
-                                       sizeof(utmp_entry->ut_addr), AF_INET))) {
-                  sprintf(display, "DISPLAY=%s:0.0", he->h_name);
-                  fprintf(stderr, "*** DISPLAY not set, setting it to %s:0.0\n",
-                          he->h_name);
-                  putenv(display);
-               }
+				} else if(utmp_entry->ut_addr) {
+					struct hostent *he;
+					if((he = gethostbyaddr((const char*)&utmp_entry->ut_addr,
+									sizeof(utmp_entry->ut_addr), AF_INET))) {
+						sprintf(display, "DISPLAY=%s:0.0", he->h_name);
+						fprintf(stderr, "*** DISPLAY not set, setting it to %s:0.0\n",
+								he->h_name);
+						putenv(display);
+					}
 #endif
-            }
-            delete [] host;
-            // display cannot be deleted otherwise the env var is deleted too
-         }
-         free(gUtmpContents);
-      }
-   }
+				}
+				delete [] host;
+				// display cannot be deleted otherwise the env var is deleted too
+			}
+			free(gUtmpContents);
+		}
+	}
 }
-
-
-
-
-
-
-
-
-
 

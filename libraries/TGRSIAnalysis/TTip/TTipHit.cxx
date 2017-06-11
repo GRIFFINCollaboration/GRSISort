@@ -1,6 +1,6 @@
 #include "TTip.h"
 #include "TTipHit.h"
-#include "TGRSIRunInfo.h"
+#include "TGRSIOptions.h"
 
 ////////////////////////////////////////////////////////////
 //
@@ -24,9 +24,9 @@ ClassImp(TTipHit)
 TTipHit::TTipHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 {
    // SetVariables(frag);
-   if(TGRSIRunInfo::IsWaveformFitting() && !IsCsI())
+   if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting() && !IsCsI())
       SetWavefit(frag);
-   else if(TGRSIRunInfo::IsWaveformFitting() && IsCsI())
+   else if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting() && IsCsI())
       SetPID(frag);
 }
 

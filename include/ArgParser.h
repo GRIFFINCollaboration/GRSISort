@@ -1,6 +1,7 @@
 #ifndef _ARGPARSER_H_
 #define _ARGPARSER_H_
 
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
@@ -34,11 +35,11 @@ public:
 
    void parse(const std::string& name, const std::vector<std::string>& arguments, bool ignore_num_arguments = false)
    {
-      if (!ignore_num_arguments) {
-         if ((num_arguments() == -1 && arguments.size() == 0) ||
+      if(!ignore_num_arguments) {
+         if((num_arguments() == -1 && arguments.size() == 0) ||
              (num_arguments() != -1 && arguments.size() != size_t(num_arguments()))) {
             std::stringstream ss;
-            if (num_arguments() == -1) {
+            if(num_arguments() == -1) {
                ss << "Flag \"" << name << "\" expected at least one argument";
             } else {
                ss << "Flag \"" << name << "\" expected " << num_arguments() << " argument(s) and received "
@@ -66,9 +67,9 @@ public:
          std::string temp;
          ss >> temp;
          raw_flags.push_back(temp);
-         if (temp.length() == 1) {
+         if(temp.length() == 1) {
             flags.push_back("-" + temp);
-         } else if (temp.length() > 1) {
+         } else if(temp.length() > 1) {
             flags.push_back("--" + temp);
          }
       }
@@ -79,7 +80,7 @@ public:
    {
       std::string output;
       for (auto flag : flags) {
-         if (flag.length() > output.length()) {
+         if(flag.length() > output.length()) {
             output = flag;
          }
       }
@@ -89,12 +90,12 @@ public:
    virtual bool matches(const std::string& flag) const
    {
       // This is the default option, and something not a flag was passed.
-      if (flag.at(0) != '-' && flags.size() == 0) {
+      if(flag.at(0) != '-' && flags.size() == 0) {
          return true;
       }
 
       for (auto& f : flags) {
-         if (f == flag) {
+         if(f == flag) {
             return true;
          }
       }
@@ -125,33 +126,33 @@ public:
 
       bool has_singlechar_flag = false;
       for (auto flag : flags) {
-         if (flag.length() == 2) {
+         if(flag.length() == 2) {
             ss << flag << " ";
             has_singlechar_flag = true;
          }
       }
       for (auto flag : flags) {
-         if (flag.length() != 2) {
-            if (has_singlechar_flag) {
+         if(flag.length() != 2) {
+            if(has_singlechar_flag) {
                ss << "[ ";
             }
             ss << flag << " ";
-            if (has_singlechar_flag) {
+            if(has_singlechar_flag) {
                ss << "]";
             }
          }
       }
 
-      if (num_arguments() != 0) {
+      if(num_arguments() != 0) {
          ss << " arg ";
       }
 
       auto chars = ss.tellp();
-      if (chars_before_desc) {
+      if(chars_before_desc) {
          *chars_before_desc = chars;
       }
 
-      if (description_column != -1 && chars < description_column) {
+      if(description_column != -1 && chars < description_column) {
          for (unsigned int i = 0; i < description_column - chars; i++) {
             ss << " ";
          }
@@ -217,7 +218,7 @@ public:
 
    virtual void parse_item(const std::vector<std::string>& arguments)
    {
-      if (arguments.size() == 0) {
+      if(arguments.size() == 0) {
          *fOutput_location = !fStored_default_value;
       } else {
          std::stringstream ss(arguments[0]);
@@ -269,37 +270,79 @@ public:
 
    ~ArgParser()
    {
-      for (auto val : values) {
+      for(auto val : values) {
          delete val;
       }
    }
 
-   void parse(int argc, char** argv)
+   std::vector<std::string> parse(int argc, char** argv)
    {
+		/// this version takes the original argc and argv, parses what it can,
+		/// and returns the rest as a vector of strings (w/o throwing any errors)
       bool double_dash_encountered = false;
 
       int iarg = 1;
-      while (iarg < argc) {
+		std::vector<std::string> unknownFlags;
+      while(iarg < argc) {
 
          std::string arg = argv[iarg++];
 
-         if (arg.at(0) != '-' || double_dash_encountered) {
-            handle_default_option(argc, argv, iarg);
-         } else if (arg.substr(0, 2) == "--") {
-            handle_long_flag(argc, argv, iarg);
-         } else {
-            handle_short_flag(argc, argv, iarg);
-         }
+			try {
+				if(arg.at(0) != '-' || double_dash_encountered) {
+					handle_default_option(argc, argv, iarg);
+				} else if(arg.substr(0, 2) == "--") {
+					handle_long_flag(argc, argv, iarg);
+				} else {
+					handle_short_flag(argc, argv, iarg);
+				}
+			} catch(ParseError& err) {
+				std::cout<<"pushing back \""<<arg<<"\", "<<unknownFlags.size()<<std::endl;
+				unknownFlags.push_back(arg);
+				for(;iarg < argc && argv[iarg][0] != '-';++iarg) {
+					std::cout<<"pushing back \""<<argv[iarg]<<"\", "<<unknownFlags.size()<<std::endl;
+					unknownFlags.push_back(argv[iarg]);
+				}
+			}
       }
 
       for (auto& val : values) {
-         if (val->is_required() && !val->is_present()) {
+         if(val->is_required() && !val->is_present()) {
             std::stringstream ss;
             ss << "Required argument \"" << val->flag_name() << "\" is not present";
             throw ParseError(ss.str());
          }
       }
+		return unknownFlags;
    }
+
+	void parse(std::vector<std::string> args)
+	{
+		/// this version takes the unknown flags of the version above and parses them.
+		/// any unknown flags create an exception.
+      bool double_dash_encountered = false;
+		int argc = static_cast<int>(args.size());
+		char** argv = new char*[argc];
+		for(int i = 0; i < argc; ++i) {
+			argv[i] = const_cast<char*>(args[i].c_str());
+		}
+		for(int i = 0; i < argc;) {
+			if(args[i].at(0) != '-' || double_dash_encountered) {
+				handle_default_option(argc, argv, ++i);
+			} else if(args[i].substr(0, 2) == "--") {
+				handle_long_flag(argc, argv, ++i);
+			} else {
+				handle_short_flag(argc, argv, ++i);
+			}
+		}
+
+      for (auto& val : values) {
+         if(val->is_required() && !val->is_present()) {
+            std::stringstream ss;
+            ss << "Required argument \"" << val->flag_name() << "\" is not present";
+            throw ParseError(ss.str());
+         }
+      }
+	}
 
    void parse_file(std::string& filename)
    {
@@ -312,10 +355,10 @@ public:
 
          std::string flag;
          std::string remainder;
-         if (has_colon) {
+         if(has_colon) {
             flag = line.substr(0, colon);
             std::stringstream(flag) >> flag; // Strip out whitespace
-            if (flag.length() == 1) {
+            if(flag.length() == 1) {
                flag = "-" + flag;
             } else {
                flag = "--" + flag;
@@ -333,7 +376,7 @@ public:
             args.push_back(tmparg);
          }
 
-         if (has_colon) {
+         if(has_colon) {
             ArgParseItem& item = get_item(flag);
             item.parse(flag, args, true);
          } else {
@@ -373,7 +416,7 @@ public:
       for (auto it = values.begin(); it != values.end(); it++) {
          ArgParseItem* item = *it;
          out << item->printable(max_length);
-         if (it != values.end() - 1) {
+         if(it != values.end() - 1) {
             out << "\n";
          }
       }
@@ -386,7 +429,7 @@ private:
       std::vector<std::string> flag_args;
       std::string              flag;
       size_t                   equals_index = arg.find("=");
-      if (equals_index == std::string::npos) {
+      if(equals_index == std::string::npos) {
          // flag followed by list of flag_args
          flag = arg;
       } else {
@@ -396,7 +439,7 @@ private:
 
       ArgParseItem& item = get_item(flag);
 
-      if (equals_index == std::string::npos) {
+      if(equals_index == std::string::npos) {
          flag_args = argument_list(argc, argv, iarg, item.num_arguments());
       } else {
          flag_args.push_back(arg.substr(equals_index + 1));
@@ -410,7 +453,7 @@ private:
       std::string   arg  = argv[iarg - 1];
       std::string   flag = arg.substr(0, 2);
       ArgParseItem& item = get_item(flag);
-      if (item.num_arguments() == 0) {
+      if(item.num_arguments() == 0) {
          // Each character is a boolean flag
          for (unsigned int ichar = 1; ichar < arg.length(); ichar++) {
             std::string              tmpflag = "-" + arg.substr(ichar, 1);
@@ -418,7 +461,7 @@ private:
             get_item(tmpflag).parse(tmpflag, flag_args);
          }
       } else {
-         if (arg.length() == 2) {
+         if(arg.length() == 2) {
             // Next arguments passed to the program get passed to the flag.
             std::vector<std::string> flag_args = argument_list(argc, argv, iarg, item.num_arguments());
             item.parse(flag, flag_args);
@@ -446,14 +489,14 @@ private:
       bool                     read_extra = false;
       while (iarg < argc && (max_args == -1 || output.size() < size_t(max_args))) {
          std::string next_arg = argv[iarg++];
-         if (next_arg.length() && next_arg.at(0) == '-') {
+         if(next_arg.length() && next_arg.at(0) == '-') {
             read_extra = true;
             break;
          } else {
             output.push_back(next_arg);
          }
       }
-      if (read_extra) {
+      if(read_extra) {
          iarg--;
       }
       return output;
@@ -462,13 +505,13 @@ private:
    ArgParseItem& get_item(const std::string& flag)
    {
       for (auto val : values) {
-         if (val->matches(flag)) {
+         if(val->matches(flag)) {
             return *val;
          }
       }
 
       std::stringstream ss;
-      if (flag.at(0) == '-') {
+      if(flag.at(0) == '-') {
          ss << "Unknown option: \"" << flag << "\"";
       } else {
          ss << "Was passed \"" << flag << "\" as a non-option argument, when no non-option arguments are allowed";
@@ -479,10 +522,6 @@ private:
    std::vector<ArgParseItem*> values;
 };
 
-std::ostream& operator<<(std::ostream& out, const ArgParser& val)
-{
-   val.print(out);
-   return out;
-}
+std::ostream& operator<<(std::ostream& out, const ArgParser& val);
 
 #endif /* _ARGPARSER_H_ */

@@ -11,9 +11,10 @@
 #include "GValue.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
+#include "TGRSIOptions.h"
 #include "TThread.h"
 #include "TTreeFillMutex.h"
-#include "TGRSIOptions.h"
+#include "TAnalysisOptions.h"
 #include "TParsingDiagnostics.h"
 
 #include "TBadFragment.h"
@@ -145,6 +146,7 @@ void TFragWriteLoop::Write()
       }
 
       TGRSIRunInfo::Get()->WriteToRoot(fOutputFile);
+      TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(fOutputFile);
       TPPG::Get()->Write();
 
       if(TGRSIOptions::Get()->WriteDiagnostics()) {

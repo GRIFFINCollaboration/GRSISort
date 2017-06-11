@@ -150,11 +150,12 @@ void TGRSISelector::Terminate()
    Int_t runnumber    = TGRSIRunInfo::Get()->RunNumber();
    Int_t subrunnumber = TGRSIRunInfo::Get()->SubRunNumber();
 
-   std::cout << runnumber << " " << subrunnumber << std::endl;
-   TFile output_file(Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runnumber, subrunnumber), "RECREATE");
+   std::cout<<runnumber<<" "<<subrunnumber<<std::endl;
+   TFile outputFile(Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runnumber, subrunnumber), "RECREATE");
    fOutput->Write();
    TGRSIRunInfo::Get()->Write();
-   output_file.Close();
+	TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(&outputFile);
+   outputFile.Close();
 }
 
 void TGRSISelector::Init(TTree* tree)
