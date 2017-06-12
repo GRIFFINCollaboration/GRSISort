@@ -79,7 +79,6 @@ void Analyze(const char* tree_type, TProof* proof){
 
 
 int main(int argc, char **argv) {
-
    TGRSIOptions* opt = TGRSIOptions::Get(argc,argv);
 
    //Add the path were we store headers for GRSIProof macros to see
@@ -131,6 +130,7 @@ int main(int argc, char **argv) {
    proof->AddIncludePath(Form("%s/include",pPath));
    proof->AddDynamicPath(Form("%s/lib",pPath));
 
+	proof->AddInput(opt->AnalysisOptions());
    proof->AddInput(new TNamed("pwd", getenv("PWD")));
    int i = 0;
    for(auto valFile = opt->ValInputFiles().begin(); valFile != opt->ValInputFiles().end(); ++valFile) {
