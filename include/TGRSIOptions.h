@@ -126,6 +126,8 @@ public:
    int  GetMaxWorkers() const { return fMaxWorkers; }
    bool SelectorOnly() const { return fSelectorOnly; }
 
+	void SuppressErrors(bool suppress) { fSuppressErrors = suppress; }
+
 private:
    TGRSIOptions(int argc, char** argv);
 	static TGRSIOptions* fGRSIOptions;
