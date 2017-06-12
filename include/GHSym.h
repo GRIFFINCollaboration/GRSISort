@@ -124,6 +124,7 @@ public:
       SetBinContent(GetBin(binx, biny), content);
    }
    virtual void SetBinsLength(Int_t n = -1);
+	virtual void UpdateBinContent(Int_t bin, Double_t content) { fArray[bin] = static_cast<Float_t>(content); }
    GHSymF& operator=(const GHSymF& h1);
    friend GHSymF operator*(Float_t c1, GHSymF& h1);
    friend GHSymF operator*(GHSymF& h1, Float_t c1) { return operator*(c1, h1); }
@@ -169,6 +170,7 @@ public:
       SetBinContent(GetBin(binx, biny), content);
    }
    virtual void SetBinsLength(Int_t n = -1);
+	virtual void UpdateBinContent(Int_t bin, Double_t content) { fArray[bin] = content; }
    GHSymD& operator=(const GHSymD& h1);
    friend GHSymD operator*(Float_t c1, GHSymD& h1);
    friend GHSymD operator*(GHSymD& h1, Float_t c1) { return operator*(c1, h1); }
