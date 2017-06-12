@@ -91,7 +91,6 @@ public:
 
    bool Batch() const { return fBatch; }
 
-   bool ShowedHelp() const { return fHelp; }
    bool ShowedVersion() const { return fShowedVersion; }
    bool ShowLogo() const { return fShowLogo; }
    bool SortRaw() const { return fSortRaw; }
@@ -181,7 +180,6 @@ private:
    bool fBatch; ///< Flag to use batch mode (-b)
 
    bool fShowedVersion;
-   bool fHelp;         ///< Flag to show help (--help)
    bool fShowLogo;     ///< Flag to show logo (suppress with -l)
    bool fSortRaw;      ///< Flag to sort Midas file
    bool fSortRoot;     ///< Flag to sort root files
@@ -203,6 +201,8 @@ private:
    bool fSeparateOutOfOrder; ///< Flag to build out of order into seperate event tree
 
    bool fShouldExit; ///< Flag to exit sorting
+
+	bool fHelp; ///< help requested?
 
    size_t       fColumnWidth;    ///< Size of verbose columns
    size_t       fStatusWidth;    ///< Size of total verbose status

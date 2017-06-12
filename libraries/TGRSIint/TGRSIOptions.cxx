@@ -79,7 +79,6 @@ void TGRSIOptions::Clear(Option_t*)
    fBatch = false;
 
    fShowedVersion = false;
-   fHelp          = false;
    fShowLogo      = false;
    fSortRaw       = true;
    fSortRoot      = false;
@@ -110,6 +109,8 @@ void TGRSIOptions::Clear(Option_t*)
    // Proof only
    fMaxWorkers   = -1;
    fSelectorOnly = false;
+
+   fHelp          = false;
 }
 
 void TGRSIOptions::Print(Option_t*) const
@@ -135,7 +136,6 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fBatch: "<<fBatch<<std::endl
             <<std::endl
             <<"fShowedVersion: "<<fShowedVersion<<std::endl
-            <<"fHelp: "<<fHelp<<std::endl
             <<"fShowLogo: "<<fShowLogo<<std::endl
             <<"fSortRaw: "<<fSortRaw<<std::endl
             <<"fSortRoot: "<<fSortRoot<<std::endl
@@ -161,9 +161,11 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fStatusWidth: "<<fStatusWidth<<std::endl
             <<"fStatusInterval: "<<fStatusInterval<<std::endl
             <<"fLongFileDescription: "<<fLongFileDescription<<std::endl
-
+				<<std::endl
             <<"fMaxWorkers: "<<fMaxWorkers<<std::endl
-            <<"fSelectorOnly "<<fSelectorOnly<<std::endl;
+            <<"fSelectorOnly: "<<fSelectorOnly<<std::endl
+				<<std::endl
+				<<"fHelp: "<<fHelp<<std::endl;
 
 				fAnalysisOptions->Print();
 }
@@ -199,70 +201,82 @@ void TGRSIOptions::Load(int argc, char** argv)
 
    // parser.option() will initialize boolean values to false.
 
-   parser.default_option(&input_files).description("Input file(s)");
-   parser.option("output-fragment-tree", &fOutputFragmentFile).description("Filename of output fragment tree");
-   parser.option("output-analysis-tree", &fOutputAnalysisFile).description("Filename of output analysis tree");
-   parser.option("output-fragment-hists", &fOutputFragmentHistogramFile)
+	// these options are all to be set directly on the first parsing pass, so we set the firstPass flag to true
+   parser.default_option(&input_files, true).description("Input file(s)");
+   parser.option("output-fragment-tree", &fOutputFragmentFile, true).description("Filename of output fragment tree");
+   parser.option("output-analysis-tree", &fOutputAnalysisFile, true).description("Filename of output analysis tree");
+   parser.option("output-fragment-hists", &fOutputFragmentHistogramFile, true)
       .description("Filename of output fragment hists");
-   parser.option("output-analysis-hists", &fOutputAnalysisHistogramFile)
+   parser.option("output-analysis-hists", &fOutputAnalysisHistogramFile, true)
       .description("Filename of output analysis hists");
 
-   parser.option("a", &fMakeAnalysisTree).description("Make the analysis tree");
-   parser.option("H histos", &fMakeHistos).description("attempt to run events through MakeHisto lib.");
-   parser.option("g start-gui", &fStartGui).description("Start the gui at program start");
-   parser.option("b batch", &fBatch).description("Run in batch mode");
+   parser.option("a", &fMakeAnalysisTree, true).description("Make the analysis tree");
+   parser.option("H histos", &fMakeHistos, true).description("attempt to run events through MakeHisto lib.");
+   parser.option("g start-gui", &fStartGui, true).description("Start the gui at program start");
+   parser.option("b batch", &fBatch, true).description("Run in batch mode");
 
-   parser.option("sort-depth", &fSortDepth)
+   parser.option("sort-depth", &fSortDepth, true)
       .description("Number of events to hold when sorting by time/trigger_id")
       .default_value(200000);
-   parser.option("s sort", &fSortRoot).description("Attempt to loop through root files.");
+   parser.option("s sort", &fSortRoot, true).description("Attempt to loop through root files.");
 
-   parser.option("q quit", &fCloseAfterSort).description("Run in batch mode");
-   parser.option("l no-logo", &fShowLogo).description("Inhibit the startup logo").default_value(true);
-   parser.option("h help ?", &fHelp).description("Show this help message");
-   parser.option("w extract-waves", &fExtractWaves)
+   parser.option("q quit", &fCloseAfterSort, true).description("Run in batch mode");
+   parser.option("l no-logo", &fShowLogo, true).description("Inhibit the startup logo").default_value(true);
+   parser.option("w extract-waves", &fExtractWaves, true)
       .description("Extract wave forms to data class when available.")
       .default_value(false);
-   parser.option("d debug", &fDebug)
+   parser.option("d debug", &fDebug, true)
       .description("Write debug information to output/file, e.g. enables writing of TDescantDebug at analysis stage.")
       .default_value(false);
-   parser.option("no-record-dialog", &fRecordDialog).description("Dump stuff to screen");
-   parser.option("write-diagnostics", &fWriteDiagnostics);
-   parser.option("log-errors", &fLogErrors);
-   parser.option("log-file", &fLogFile).description("File logs from grsiproof are written to.");
-   parser.option("reading-material", &fReadingMaterial);
-   parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments", &fWriteBadFrags);
-   parser.option("separate-out-of-order", &fSeparateOutOfOrder)
+   parser.option("no-record-dialog", &fRecordDialog, true).description("Dump stuff to screen");
+   parser.option("write-diagnostics", &fWriteDiagnostics, true);
+   parser.option("log-errors", &fLogErrors, true);
+   parser.option("log-file", &fLogFile, true).description("File logs from grsiproof are written to.");
+   parser.option("reading-material", &fReadingMaterial, true);
+   parser.option("bad-frags write-bad-frags bad-fragments write-bad-fragments", &fWriteBadFrags, true);
+   parser.option("separate-out-of-order", &fSeparateOutOfOrder, true)
       .description("Write out-of-order fragments to a separate tree at the sorting stage")
       .default_value(false);
-   parser.option("ignore-odb", &fIgnoreFileOdb);
-   parser.option("ignore-epics", &fIgnoreEpics);
-   parser.option("ignore-scaler", &fIgnoreScaler);
-   parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors);
-   parser.option("reconstruct-timestamp reconstruct-time-stamp", &fReconstructTimeStamp);
+   parser.option("ignore-odb", &fIgnoreFileOdb, true);
+   parser.option("ignore-epics", &fIgnoreEpics, true);
+   parser.option("ignore-scaler", &fIgnoreScaler, true);
+   parser.option("suppress-error suppress-errors suppress_error suppress_errors", &fSuppressErrors, true);
+   parser.option("reconstruct-timestamp reconstruct-time-stamp", &fReconstructTimeStamp, true);
 
-   parser.option("fragment-size", &fFragmentWriteQueueSize)
+   parser.option("fragment-size", &fFragmentWriteQueueSize, true)
       .description("size of fragment write queue")
       .default_value(10000000);
-   parser.option("analysis-size", &fAnalysisWriteQueueSize)
+   parser.option("analysis-size", &fAnalysisWriteQueueSize, true)
       .description("size of analysis write queue")
       .default_value(1000000);
 
-   parser.option("column-width", &fColumnWidth).description("width of one column of status").default_value(20);
-   parser.option("status-width", &fStatusWidth)
+   parser.option("column-width", &fColumnWidth, true).description("width of one column of status").default_value(20);
+   parser.option("status-width", &fStatusWidth, true)
       .description("number of characters to be used for status output")
       .default_value(80);
-   parser.option("status-interval", &fStatusInterval)
+   parser.option("status-interval", &fStatusInterval, true)
       .description(
          "seconds between each detailed status output (each a new line), non-positive numbers mean no detailed status")
       .default_value(10);
 
    // Proof only parser options
-   parser.option("max-workers", &fMaxWorkers)
+   parser.option("max-workers", &fMaxWorkers, true)
       .description("Max number of nodes to use when running a grsiproof session")
       .default_value(-1);
 
-   parser.option("selector-only", &fSelectorOnly).description("Turns off PROOF to run a selector on the main thread");
+   parser.option("selector-only", &fSelectorOnly, true).description("Turns off PROOF to run a selector on the main thread");
+
+   parser.option("h help ?", &fHelp, true).description("Show this help message");
+
+	// analysis options, these options are to be parsed on the second pass, so firstPass is set to false
+   parser.option("build-window", &fAnalysisOptions->fBuildWindow, false).description("Build window, timestamp units");
+   parser.option("addback-window", &fAnalysisOptions->fAddbackWindow, false).description("Addback window, time in ns");
+   parser.option("static-window", &fAnalysisOptions->fStaticWindow, false)
+      .description("use static window for event building");
+   parser.option("waveform-fitting", &fAnalysisOptions->fWaveformFitting, false)
+      .description("fit waveforms using SFU algorithms");
+   parser.option("is-correcting-cross-talk", &fAnalysisOptions->fIsCorrectingCrossTalk, false)
+      .description("Correct cross-talk");
 
    // look for any arguments ending with .info, pass to parser.
    for(int i = 0; i < argc; i++) {
@@ -278,18 +292,10 @@ void TGRSIOptions::Load(int argc, char** argv)
    }
 
    // Look at the command line.
-	std::vector<std::string> unknownFlags;
    try {
-      unknownFlags = parser.parse(argc, argv);
+      parser.parse(argc, argv, true);
    } catch(ParseError& e) {
       std::cerr<<"ERROR: "<<e.what()<<"\n"<<parser<<std::endl;
-      fShouldExit = true;
-   }
-
-   // Print help if requested.
-   if(fHelp) {
-      Version();
-      std::cout<<parser<<std::endl;
       fShouldExit = true;
    }
 
@@ -298,6 +304,12 @@ void TGRSIOptions::Load(int argc, char** argv)
       Version();
       fShouldExit = true;
    }
+
+	// print help if required
+	if(fHelp) {
+		std::cout<<parser<<std::endl;
+		fShouldExit = true;
+	}
 
    if(fOutputFragmentHistogramFile.length() > 0 && fOutputFragmentHistogramFile != "none") {
       fMakeHistos = true;
@@ -317,7 +329,12 @@ void TGRSIOptions::Load(int argc, char** argv)
 		fAnalysisOptions->Print();
 	}
 	// parse analysis options from command line options 
-	fAnalysisOptions->Load(unknownFlags, parser);
+   try {
+      parser.parse(argc, argv, false);
+   } catch(ParseError& e) {
+      std::cerr<<"ERROR: "<<e.what()<<"\n"<<parser<<std::endl;
+      fShouldExit = true;
+   }
 }
 
 kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const

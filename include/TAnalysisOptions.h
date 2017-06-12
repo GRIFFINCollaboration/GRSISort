@@ -21,6 +21,7 @@
 /////////////////////////////////////////////////////////////////
 
 class TAnalysisOptions : public TObject {
+	friend class TGRSIOptions;
 public:
    TAnalysisOptions();
 
@@ -57,7 +58,6 @@ private:
    bool     fIsCorrectingCrossTalk; ///< True if we are correcting for cross-talk in GRIFFIN at analysis-level
    bool fWaveformFitting; ///< If true, waveform fitting with SFU algorithm will be performed
    bool fStaticWindow;       ///< Flag to use static window (default moving)
-	bool fHelp; ///< help requested?
 
    /// \cond CLASSIMP
    ClassDef(TAnalysisOptions, 1); ///< Class for storing options in GRSISort

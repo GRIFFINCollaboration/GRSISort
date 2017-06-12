@@ -25,34 +25,6 @@ void TAnalysisOptions::Clear(Option_t*)
    fStaticWindow          = false;
    fWaveformFitting       = false;
    fIsCorrectingCrossTalk = true;
-   fHelp          = false;
-}
-
-void TAnalysisOptions::Load(std::vector<std::string> args, ArgParser& prevParser)
-{
-   ArgParser parser;
-	// analysis options
-   parser.option("build-window", &fBuildWindow).description("Build window, timestamp units");
-   parser.option("addback-window", &fAddbackWindow).description("Addback window, time in ns");
-   parser.option("static-window", &fStaticWindow)
-      .description("use static window for event building");
-   parser.option("waveform-fitting", &fWaveformFitting)
-      .description("fit waveforms using SFU algorithms");
-   parser.option("is-correcting-cross-talk", &fIsCorrectingCrossTalk)
-      .description("correct cross-talk");
-
-   // Look at the command line.
-   try {
-      parser.parse(args);
-   } catch(ParseError& e) {
-      std::cerr<<"ERROR: "<<e.what()<<"\n"<<prevParser<<parser<<std::endl;
-   }
-
-   // Print help if requested.
-   if(fHelp) {
-      Version();
-      std::cout<<parser<<std::endl;
-   }
 }
 
 void TAnalysisOptions::Print(Option_t*) const
