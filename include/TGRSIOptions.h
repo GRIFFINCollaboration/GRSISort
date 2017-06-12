@@ -214,7 +214,7 @@ private:
    bool fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIOptions, 2); ///< Class for storing options in GRSISort
+   ClassDef(TGRSIOptions, 3); ///< Class for storing options in GRSISort
 	/// \endcond
 };
 /*! @} */
