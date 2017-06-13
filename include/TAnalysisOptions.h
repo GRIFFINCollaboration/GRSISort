@@ -60,7 +60,7 @@ private:
    bool fStaticWindow;       ///< Flag to use static window (default moving)
 
    /// \cond CLASSIMP
-   ClassDef(TAnalysisOptions, 1); ///< Class for storing options in GRSISort
+   ClassDef(TAnalysisOptions, 2); ///< Class for storing options in GRSISort
 	/// \endcond
 };
 /*! @} */
