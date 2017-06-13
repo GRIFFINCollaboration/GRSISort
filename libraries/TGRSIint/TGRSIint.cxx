@@ -280,6 +280,8 @@ void TGRSIint::PrintLogo(bool print)
 
       std::thread drawlogo(&TGRSIint::DrawLogo, this);
       drawlogo.detach();
+	} else {
+		std::cout<<"\tgrsisort version "<<GRSI_RELEASE<<std::endl;
    }
 }
 
