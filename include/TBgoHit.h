@@ -7,7 +7,7 @@
 
 #include <cstdio>
 #include <cmath>
-#if !defined (__CINT__) && !defined (__CLING__)
+#if !defined(__CINT__) && !defined(__CLING__)
 #include <tuple>
 #endif
 
@@ -22,27 +22,25 @@
 #include "TGRSIDetectorHit.h"
 
 class TBgoHit : public TGRSIDetectorHit {
-  public:
-    TBgoHit();
-    TBgoHit(const TBgoHit&);
-    TBgoHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
-    virtual ~TBgoHit();
+public:
+   TBgoHit();
+   TBgoHit(const TBgoHit&);
+   TBgoHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
+   virtual ~TBgoHit();
 
+public:
+   /////////////////////////		/////////////////////////////////////
+   int GetCrystal() const;
 
-  public:
+private:
+public:
+   virtual void Clear(Option_t* opt = "");       //!<!
+   virtual void Copy(TObject&) const;            //!<!
+   virtual void Print(Option_t* opt = "") const; //!<!
 
-	/////////////////////////		/////////////////////////////////////
-	int GetCrystal() const;	
-  private:
-
-  public:
-	virtual void Clear(Option_t *opt = "");		                      //!<!
-	virtual void Copy(TObject&) const;                             //!<!
-	virtual void Print(Option_t *opt = "") const;       		                //!<!
-
-/// \cond CLASSIMP
-	ClassDef(TBgoHit,1)
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDef(TBgoHit, 1)
+   /// \endcond
 };
 /*! @} */
 #endif

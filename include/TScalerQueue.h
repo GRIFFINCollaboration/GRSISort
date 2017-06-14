@@ -9,7 +9,7 @@
 #include <queue>
 #include <map>
 
-#if !defined (__CINT__) && !defined (__CLING__)
+#if !defined(__CINT__) && !defined(__CLING__)
 #define _GLIBCXX_USE_NANOSLEEP 1
 #include <thread>
 #include <mutex>
@@ -21,124 +21,123 @@
 #include "TScaler.h"
 
 class TDeadtimeScalerQueue : public TObject {
-	public:
-		static TDeadtimeScalerQueue* Get(); //Returns the Queue
-		virtual ~TDeadtimeScalerQueue();
+public:
+   static TDeadtimeScalerQueue* Get(); // Returns the Queue
+   virtual ~TDeadtimeScalerQueue();
 
-      int ScalersInQueue() { return fScalersInQueue;   }
+   int ScalersInQueue() { return fScalersInQueue; }
 
-	private:
-      TDeadtimeScalerQueue();
-		static TDeadtimeScalerQueue* fDeadtimeScalerQueueClassPointer; //Pointer to the scaler Q singleton
+private:
+   TDeadtimeScalerQueue();
+   static TDeadtimeScalerQueue* fDeadtimeScalerQueueClassPointer; // Pointer to the scaler Q singleton
 
-		std::queue<TScalerData*> fDeadtimeScalerQueue; //The scaler Queue itself
-		int fScalersInQueue;	//The current number of scalers in the Q
+   std::queue<TScalerData*> fDeadtimeScalerQueue; // The scaler Queue itself
+   int fScalersInQueue;                           // The current number of scalers in the Q
 
-		void StatusUpdate();
-		bool fStatusUpdateOn; //flag that determines whether the Q status should be read out
+   void StatusUpdate();
+   bool fStatusUpdateOn; // flag that determines whether the Q status should be read out
 
-		bool fStop;
-		
-		int fScalersIn; 		
-		int fScalersOut;
+   bool fStop;
 
-		TStopwatch* fStopwatch; //The stop watch used for timing in the status
-		void ResetRateCounter();
+   int fScalersIn;
+   int fScalersOut;
 
-		unsigned int fTotalScalersIn;
-		unsigned int fTotalScalersOut;	
+   TStopwatch* fStopwatch; // The stop watch used for timing in the status
+   void        ResetRateCounter();
 
-		static std::map<int,int> fScalerIdMap;	
+   unsigned int fTotalScalersIn;
+   unsigned int fTotalScalersOut;
 
-#if !defined (__CINT__) && !defined (__CLING__)
+   static std::map<int, int> fScalerIdMap;
+
+#if !defined(__CINT__) && !defined(__CLING__)
 #ifndef NO_MUTEX
-	public:
-		static std::mutex All;
-		static std::mutex Sorted;
+public:
+   static std::mutex All;
+   static std::mutex Sorted;
 #endif
 #endif
 
-	public:
-		void Add(TScalerData*);
-	
-		void Pop();
-		TScalerData* PopScaler();
+public:
+   void Add(TScalerData*);
 
-		int Size() const;
+   void         Pop();
+   TScalerData* PopScaler();
 
-		void StartStatusUpdate();
-		void StopStatusUpdate();
-		void CheckStatus() const;
+   int Size() const;
 
-		unsigned int GetTotalScalersIn()  { return fTotalScalersIn;}
-		unsigned int GetTotalScalersOut() {	return fTotalScalersOut;}
+   void StartStatusUpdate();
+   void StopStatusUpdate();
+   void CheckStatus() const;
 
-		bool Running() { return !fStop;}
-		void Stop() { fStop = true;}
+   unsigned int GetTotalScalersIn() { return fTotalScalersIn; }
+   unsigned int GetTotalScalersOut() { return fTotalScalersOut; }
 
-      void Print(Option_t *opt = "") const;
-		void Clear(Option_t *opt = "");
+   bool Running() { return !fStop; }
+   void Stop() { fStop = true; }
+
+   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "");
 };
 
 class TRateScalerQueue : public TObject {
-	public:
-		static TRateScalerQueue* Get(); //Returns the Queue
-		virtual ~TRateScalerQueue();
+public:
+   static TRateScalerQueue* Get(); // Returns the Queue
+   virtual ~TRateScalerQueue();
 
-      int ScalersInQueue() { return fScalersInQueue;   }
+   int ScalersInQueue() { return fScalersInQueue; }
 
-	private:
-      TRateScalerQueue();
-		static TRateScalerQueue* fRateScalerQueueClassPointer; //Pointer to the scaler Q singleton
+private:
+   TRateScalerQueue();
+   static TRateScalerQueue* fRateScalerQueueClassPointer; // Pointer to the scaler Q singleton
 
-		std::queue<TScalerData*> fRateScalerQueue; //The scaler Queue itself
-		int fScalersInQueue;	//The current number of scalers in the Q
+   std::queue<TScalerData*> fRateScalerQueue; // The scaler Queue itself
+   int fScalersInQueue;                       // The current number of scalers in the Q
 
-		void StatusUpdate();
-		bool fStatusUpdateOn; //flag that determines whether the Q status should be read out
+   void StatusUpdate();
+   bool fStatusUpdateOn; // flag that determines whether the Q status should be read out
 
-		bool fStop;
-		
-		int fScalersIn; 		
-		int fScalersOut;
+   bool fStop;
 
-		TStopwatch* fStopwatch; //The stop watch used for timing in the status
-		void ResetRateCounter();
+   int fScalersIn;
+   int fScalersOut;
 
-		unsigned int fTotalScalersIn;
-		unsigned int fTotalScalersOut;	
+   TStopwatch* fStopwatch; // The stop watch used for timing in the status
+   void        ResetRateCounter();
 
-		static std::map<int,int> fScalerIdMap;	
+   unsigned int fTotalScalersIn;
+   unsigned int fTotalScalersOut;
 
+   static std::map<int, int> fScalerIdMap;
 
-#if !defined (__CINT__) && !defined (__CLING__)
+#if !defined(__CINT__) && !defined(__CLING__)
 #ifndef NO_MUTEX
-	public:
-		static std::mutex All;
-		static std::mutex Sorted;
+public:
+   static std::mutex All;
+   static std::mutex Sorted;
 #endif
 #endif
 
-	public:
-		void Add(TScalerData*);
-	
-		void Pop();
-		TScalerData* PopScaler();
+public:
+   void Add(TScalerData*);
 
-		int Size() const;
+   void         Pop();
+   TScalerData* PopScaler();
 
-		void StartStatusUpdate();
-		void StopStatusUpdate();
-		void CheckStatus() const;
+   int Size() const;
 
-		unsigned int GetTotalScalersIn()  { return fTotalScalersIn;}
-		unsigned int GetTotalScalersOut() {	return fTotalScalersOut;}
+   void StartStatusUpdate();
+   void StopStatusUpdate();
+   void CheckStatus() const;
 
-		bool Running() { return !fStop;}
-		void Stop() { fStop = true;}
+   unsigned int GetTotalScalersIn() { return fTotalScalersIn; }
+   unsigned int GetTotalScalersOut() { return fTotalScalersOut; }
 
-      void Print(Option_t *opt = "") const;
-		void Clear(Option_t *opt = "");
+   bool Running() { return !fStop; }
+   void Stop() { fStop = true; }
+
+   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "");
 };
 /*! @} */
 #endif

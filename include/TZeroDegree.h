@@ -25,42 +25,45 @@
 #include "TZeroDegreeHit.h"
 
 class TZeroDegree : public TGRSIDetector {
-   public:
-      TZeroDegree();
-      virtual ~TZeroDegree();
-      TZeroDegree(const TZeroDegree& rhs);
-      
-   public:
-      TGRSIDetectorHit* GetHit(const Int_t& idx =0);
-      void Copy(TObject &rhs) const;
-      TZeroDegreeHit* GetZeroDegreeHit(const int& i);	//!<!
-      Short_t GetMultiplicity() const	       {	return fZeroDegreeHits.size(); }	      //!<!
-      
-      static TVector3 GetPosition(double dist) { return TVector3(0,0,dist); }	//!<!
-      
-#ifndef __CINT__
-      void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
-#endif
-      
-		void ClearTransients() { for(auto hit : fZeroDegreeHits) hit.ClearTransients(); }
+public:
+   TZeroDegree();
+   virtual ~TZeroDegree();
+   TZeroDegree(const TZeroDegree& rhs);
 
-      TZeroDegree& operator=(const TZeroDegree&);  //!<!
-      
-   private:
-      std::vector <TZeroDegreeHit> fZeroDegreeHits;                             ///<   The set of zeroDegree hits
-      
-      static bool fSetWave;		                                               ///<  Flag for Waveforms ON/OFF
-      
-   public:
-      static bool SetWave() { return fSetWave; }                                //!<!
-      
-   public:
-      void Clear(Option_t *opt = "");		//!<!
-      void Print(Option_t *opt = "") const;		//!<!
-      
-      /// \cond CLASSIMP
-      ClassDef(TZeroDegree,2)  // ZeroDegree Physics structure
-      /// \endcond
+public:
+   TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
+   void Copy(TObject& rhs) const;
+   TZeroDegreeHit* GetZeroDegreeHit(const int& i);                    //!<!
+   Short_t GetMultiplicity() const { return fZeroDegreeHits.size(); } //!<!
+
+   static TVector3 GetPosition(double dist) { return TVector3(0, 0, dist); } //!<!
+
+#ifndef __CINT__
+   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+#endif
+
+   void ClearTransients()
+   {
+      for (auto hit : fZeroDegreeHits) hit.ClearTransients();
+   }
+
+   TZeroDegree& operator=(const TZeroDegree&); //!<!
+
+private:
+   std::vector<TZeroDegreeHit> fZeroDegreeHits; ///<   The set of zeroDegree hits
+
+   static bool fSetWave; ///<  Flag for Waveforms ON/OFF
+
+public:
+   static bool SetWave() { return fSetWave; } //!<!
+
+public:
+   void Clear(Option_t* opt = "");       //!<!
+   void Print(Option_t* opt = "") const; //!<!
+
+   /// \cond CLASSIMP
+   ClassDef(TZeroDegree, 2) // ZeroDegree Physics structure
+                            /// \endcond
 };
 /*! @} */
 #endif

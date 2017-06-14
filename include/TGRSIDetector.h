@@ -28,32 +28,31 @@ class TGRSIDetectorHit;
 ///
 /////////////////////////////////////////////////////////////////
 
+class TGRSIDetector : public TDetector {
+public:
+   TGRSIDetector();
+   TGRSIDetector(const TGRSIDetector&);
+   virtual ~TGRSIDetector();
 
-class TGRSIDetector : public TDetector	{
-   public:
-      TGRSIDetector();
-      TGRSIDetector(const TGRSIDetector&);
-      virtual ~TGRSIDetector();
-
-   public: 
-      //virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
+public:
+// virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
 #ifndef __CINT__
-      virtual void AddFragment(std::shared_ptr<const TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
+   virtual void AddFragment(std::shared_ptr<const TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
 #endif
-      virtual void BuildHits() {}
+   virtual void BuildHits() {}
 
-      virtual void Copy(TObject&) const;              //!<!
-      virtual void Clear(Option_t *opt = "");         //!<!
-      virtual void Print(Option_t *opt = "") const;   //!<!
+   virtual void Copy(TObject&) const;            //!<!
+   virtual void Clear(Option_t* opt = "");       //!<!
+   virtual void Print(Option_t* opt = "") const; //!<!
 
-   protected:
+protected:
 #ifndef __CINT__
-      //void CopyFragment(std::shared_ptr<const TFragment> frag); //not implemented anywhere???
+// void CopyFragment(std::shared_ptr<const TFragment> frag); //not implemented anywhere???
 #endif
 
-      /// \cond CLASSIMP
-      ClassDef(TGRSIDetector,1) //Abstract class for detector systems 
-      /// \endcond
+   /// \cond CLASSIMP
+   ClassDef(TGRSIDetector, 1) // Abstract class for detector systems
+   /// \endcond
 };
 /*! @} */
 #endif

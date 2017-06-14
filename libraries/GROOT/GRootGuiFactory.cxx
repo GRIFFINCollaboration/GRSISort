@@ -35,27 +35,26 @@
 
 ClassImp(GRootGuiFactory)
 
-void GRootGuiFactory::Init(){
-  if(gROOT->IsBatch()) return;
-  gROOT->LoadClass("TCanvas","Gpad");
-  gGuiFactory = new GRootGuiFactory();
+   void GRootGuiFactory::Init()
+{
+   if(gROOT->IsBatch()) return;
+   gROOT->LoadClass("TCanvas", "Gpad");
+   gGuiFactory = new GRootGuiFactory();
 }
 
 //______________________________________________________________________________
-GRootGuiFactory::GRootGuiFactory(const char *name, const char *title)
-   : TGuiFactory(name, title)
+GRootGuiFactory::GRootGuiFactory(const char* name, const char* title) : TGuiFactory(name, title)
 {
    // GRootGuiFactory ctor.
 }
 
 //______________________________________________________________________________
-TApplicationImp *GRootGuiFactory::CreateApplicationImp(const char *classname,
-                      Int_t *argc, char **argv)
+TApplicationImp* GRootGuiFactory::CreateApplicationImp(const char* classname, Int_t* argc, char** argv)
 {
    // Create a ROOT native GUI version of TApplicationImp
 
-   TRootApplication *app = new TRootApplication(classname, argc, argv);
-   if (!app->Client()) {
+   TRootApplication* app = new TRootApplication(classname, argc, argv);
+   if(!app->Client()) {
       delete app;
       app = 0;
    }
@@ -63,65 +62,57 @@ TApplicationImp *GRootGuiFactory::CreateApplicationImp(const char *classname,
 }
 
 //______________________________________________________________________________
-TCanvasImp *GRootGuiFactory::CreateCanvasImp(TCanvas *c, const char *title,
-                                             UInt_t width, UInt_t height)
+TCanvasImp* GRootGuiFactory::CreateCanvasImp(TCanvas* c, const char* title, UInt_t width, UInt_t height)
 {
    // Create a ROOT native GUI version of TCanvasImp
-   //GRootObjectManager::Instance()->AddCanvas(c);
-   //return new GRootCanvas(c, title, width, height);i
-   GRootCanvas *grc = new GRootCanvas((GCanvas*)c, title, width, height);
-   //GRootObjectManager::AddCanvas(c);
-   //c->Connect("Closed()","GRootObjectManager",this,"RemoveCanvas()");
-   //GRootObjectManager::Update();
-   return grc;
-
-}
-
-//______________________________________________________________________________
-TCanvasImp *GRootGuiFactory::CreateCanvasImp(TCanvas *c, const char *title,
-                                  Int_t x, Int_t y, UInt_t width, UInt_t height)
-{
-   // Create a ROOT native GUI version of TCanvasImp
-   //GRootObjectManager::Instance()->AddCanvas(c);
-   //return new GRootCanvas(c, title, x, y, width, height);
-   GRootCanvas *grc = new GRootCanvas((GCanvas*)c, title, x, y, width, height);
-   //GRootObjectManager::AddCanvas(c);
-   //c->Connect("Closed()","GRootObjectManager",this,"RemoveCanvas()");
-   //GRootObjectManager::Update();
+   // GRootObjectManager::Instance()->AddCanvas(c);
+   // return new GRootCanvas(c, title, width, height);i
+   GRootCanvas* grc = new GRootCanvas((GCanvas*)c, title, width, height);
+   // GRootObjectManager::AddCanvas(c);
+   // c->Connect("Closed()","GRootObjectManager",this,"RemoveCanvas()");
+   // GRootObjectManager::Update();
    return grc;
 }
 
 //______________________________________________________________________________
-TBrowserImp *GRootGuiFactory::CreateBrowserImp(TBrowser *b, const char *title,
-                                               UInt_t width, UInt_t height,
-                                               Option_t *opt)
+TCanvasImp* GRootGuiFactory::CreateCanvasImp(TCanvas* c, const char* title, Int_t x, Int_t y, UInt_t width,
+                                             UInt_t height)
+{
+   // Create a ROOT native GUI version of TCanvasImp
+   // GRootObjectManager::Instance()->AddCanvas(c);
+   // return new GRootCanvas(c, title, x, y, width, height);
+   GRootCanvas* grc = new GRootCanvas((GCanvas*)c, title, x, y, width, height);
+   // GRootObjectManager::AddCanvas(c);
+   // c->Connect("Closed()","GRootObjectManager",this,"RemoveCanvas()");
+   // GRootObjectManager::Update();
+   return grc;
+}
+
+//______________________________________________________________________________
+TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, UInt_t width, UInt_t height,
+                                               Option_t* opt)
 {
    // Create a ROOT native GUI version of TBrowserImp
 
-   //TString browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
-   TString browserVersion(gEnv->GetValue("Browser.Name", "GRootBrowser"));
-   TPluginHandler *ph = gROOT->GetPluginManager()->FindHandler("TBrowserImp",
-                                                               browserVersion);
-   //gROOT->GetPluginManager()->Print();
-
+   // TString browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
+   TString         browserVersion(gEnv->GetValue("Browser.Name", "GRootBrowser"));
+   TPluginHandler* ph = gROOT->GetPluginManager()->FindHandler("TBrowserImp", browserVersion);
+   // gROOT->GetPluginManager()->Print();
 
    TString browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
-   //TString browserOptions(gEnv->GetValue("Browser.Options", "FEI"));
-   if (opt && strlen(opt))
-      browserOptions = opt;
+   // TString browserOptions(gEnv->GetValue("Browser.Options", "FEI"));
+   if(opt && strlen(opt)) browserOptions = opt;
 
-   //browserOptions = "FCI";
+   // browserOptions = "FCI";
 
    browserOptions.ToUpper();
-   if (browserOptions.Contains("LITE"))
-      return new TRootBrowserLite(b, title, width, height);
-   if (ph && ph->LoadPlugin() != -1) {
-      //printf("i am here now 1.\t %s \n",browserOptions.Data());
-      TBrowserImp *imp = (TBrowserImp *)ph->ExecPlugin(5, b, title, width,
-         height, browserOptions.Data());
-      if (imp) {
+   if(browserOptions.Contains("LITE")) return new TRootBrowserLite(b, title, width, height);
+   if(ph && ph->LoadPlugin() != -1) {
+      // printf("i am here now 1.\t %s \n",browserOptions.Data());
+      TBrowserImp* imp = (TBrowserImp*)ph->ExecPlugin(5, b, title, width, height, browserOptions.Data());
+      if(imp) {
 
-        return imp;
+         return imp;
       }
    }
    printf(" and never here.\n");
@@ -129,32 +120,26 @@ TBrowserImp *GRootGuiFactory::CreateBrowserImp(TBrowser *b, const char *title,
 }
 
 //______________________________________________________________________________
-TBrowserImp *GRootGuiFactory::CreateBrowserImp(TBrowser *b, const char *title,
-                                               Int_t x, Int_t y, UInt_t width,
-                                               UInt_t height, Option_t *opt)
+TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, Int_t x, Int_t y, UInt_t width,
+                                               UInt_t height, Option_t* opt)
 {
    // Create a ROOT native GUI version of TBrowserImp
 
-   TString browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
-   TPluginHandler *ph = gROOT->GetPluginManager()->FindHandler("TBrowserImp",
-                                                               browserVersion);
-   TString browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
-   if (opt && strlen(opt))
-      browserOptions = opt;
+   TString         browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
+   TPluginHandler* ph = gROOT->GetPluginManager()->FindHandler("TBrowserImp", browserVersion);
+   TString         browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
+   if(opt && strlen(opt)) browserOptions = opt;
    browserOptions.ToUpper();
-   if (browserOptions.Contains("LITE"))
-      return new TRootBrowserLite(b, title, width, height);
-   if (ph && ph->LoadPlugin() != -1) {
-      TBrowserImp *imp = (TBrowserImp *)ph->ExecPlugin(7, b, title, x, y, width,
-         height, browserOptions.Data());
-      if (imp) return imp;
+   if(browserOptions.Contains("LITE")) return new TRootBrowserLite(b, title, width, height);
+   if(ph && ph->LoadPlugin() != -1) {
+      TBrowserImp* imp = (TBrowserImp*)ph->ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data());
+      if(imp) return imp;
    }
    return new TRootBrowserLite(b, title, x, y, width, height);
 }
 
 //______________________________________________________________________________
-TContextMenuImp *GRootGuiFactory::CreateContextMenuImp(TContextMenu *c,
-                                             const char *name, const char *)
+TContextMenuImp* GRootGuiFactory::CreateContextMenuImp(TContextMenu* c, const char* name, const char*)
 {
    // Create a ROOT native GUI version of TContextMenuImp
 
@@ -162,7 +147,7 @@ TContextMenuImp *GRootGuiFactory::CreateContextMenuImp(TContextMenu *c,
 }
 
 //______________________________________________________________________________
-TControlBarImp *GRootGuiFactory::CreateControlBarImp(TControlBar *c, const char *title)
+TControlBarImp* GRootGuiFactory::CreateControlBarImp(TControlBar* c, const char* title)
 {
    // Create a ROOT native GUI version of TControlBarImp
 
@@ -170,8 +155,7 @@ TControlBarImp *GRootGuiFactory::CreateControlBarImp(TControlBar *c, const char 
 }
 
 //______________________________________________________________________________
-TControlBarImp *GRootGuiFactory::CreateControlBarImp(TControlBar *c, const char *title,
-                                                     Int_t x, Int_t y)
+TControlBarImp* GRootGuiFactory::CreateControlBarImp(TControlBar* c, const char* title, Int_t x, Int_t y)
 {
    // Create a ROOT native GUI version of TControlBarImp
 

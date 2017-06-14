@@ -86,8 +86,10 @@ int main(int argc, char** argv) {
 	std::string path = infile->GetName();
 	path.erase(path.find_last_of('.'));
 
-#ifdef OS_DARWIN
+#if defined(OS_DARWIN)
 	struct stat st = {0,0,0,0,0,0,0,{0,0},{0,0},{0,0},{0,0},0,0,0,0,0,0,{0}};
+#elif defined(__clang__)
+	struct stat st = {0,0,0,0,0,0,0,0,0,0,0,{0,0},{0,0},{0,0},{0,0}};
 #else
 	struct stat st = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 #endif

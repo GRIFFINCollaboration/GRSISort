@@ -10,17 +10,18 @@
 #include "TSpectrum.h"
 
 class TEnergyCal : public TCal {
- public: 
+public:
    TEnergyCal();
-   TEnergyCal(const char* name, const char* title) : TCal(name,title) {}
-   virtual ~TEnergyCal(); 
+   TEnergyCal(const char* name, const char* title) : TCal(name, title) {}
+   virtual ~TEnergyCal();
 
- public:
+public:
    std::vector<Double_t> GetParameters() const;
    Double_t GetParameter(size_t parameter) const;
    void WriteToChannel() const;
 
-   void AddPoint(Double_t measured, Double_t accepted,Double_t measuredUncertainty = 0.0, Double_t acceptedUncertainty = 0.0);
+   void AddPoint(Double_t measured, Double_t accepted, Double_t measuredUncertainty = 0.0,
+                 Double_t acceptedUncertainty = 0.0);
    using TGraphErrors::SetPoint;
    using TGraphErrors::SetPointError;
    Bool_t SetPoint(Int_t idx, Double_t measured);
@@ -33,13 +34,12 @@ class TEnergyCal : public TCal {
    void Print(Option_t* opt = "") const;
    void SetDefaultTitles();
 
-   Bool_t IsGroupable() const {return true;}
+   Bool_t IsGroupable() const { return true; }
 
- private:
-   
-/// \cond CLASSIMP
-   ClassDef(TEnergyCal,1); //Class used for Energy Calibrations
-/// \endcond
+private:
+   /// \cond CLASSIMP
+   ClassDef(TEnergyCal, 1); // Class used for Energy Calibrations
+   /// \endcond
 };
 /*! @} */
 #endif

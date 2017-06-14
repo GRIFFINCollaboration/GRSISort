@@ -11,7 +11,7 @@
 ///
 /// This is a class that contains the basic info
 /// about a calibration. Calibrations here are TGraphErrors
-/// that are fit, with the resulting fit function being the 
+/// that are fit, with the resulting fit function being the
 /// calibrating function.
 ///
 /////////////////////////////////////////////////////////////////
@@ -28,30 +28,30 @@
 #include "TMath.h"
 
 class TEfficiencyGraph : public TCalGraph {
- public: 
+public:
    TEfficiencyGraph();
-   TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name,title), fIsAbsolute(false) {};
-   virtual ~TEfficiencyGraph(); 
+   TEfficiencyGraph(const char* name, const char* title) : TCalGraph(name, title), fIsAbsolute(false){};
+   virtual ~TEfficiencyGraph();
 
    TEfficiencyGraph(const TEfficiencyGraph& copy);
 
- public:
+public:
    virtual void Print(Option_t* opt = "") const;
    virtual void Clear(Option_t* opt = "");
 
-	void Scale(const Double_t &scale);
-	void SetAbsolute(const bool & flag) { fIsAbsolute = flag; }
-	bool IsAbsolute() const { return fIsAbsolute; }
+   void Scale(const Double_t& scale);
+   void SetAbsolute(const bool& flag) { fIsAbsolute = flag; }
+   bool                         IsAbsolute() const { return fIsAbsolute; }
 
- protected:
-	void BuildGraph();
+protected:
+   void BuildGraph();
 
- private:
-	bool fIsAbsolute;
+private:
+   bool fIsAbsolute;
 
-/// \cond CLASSIMP
-   ClassDef(TEfficiencyGraph,1); //Graph Class for Calibrations
-/// \endcond
+   /// \cond CLASSIMP
+   ClassDef(TEfficiencyGraph, 1); // Graph Class for Calibrations
+   /// \endcond
 };
 /*! @} */
 #endif

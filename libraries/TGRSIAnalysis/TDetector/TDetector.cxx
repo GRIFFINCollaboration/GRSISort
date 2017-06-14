@@ -5,39 +5,42 @@
 
 /// \cond CLASSIMP
 ClassImp(TDetector)
-/// \endcond
+   /// \endcond
 
-TDetector::TDetector() : TObject(){
-	///Default constructor.
-	Class()->IgnoreTObjectStreamer(kTRUE);
+   TDetector::TDetector()
+   : TObject()
+{
+   /// Default constructor.
+   Class()->IgnoreTObjectStreamer(kTRUE);
 }
 
-TDetector::TDetector(const TDetector& rhs) : TObject() {
-	///Default Copy constructor.
-	Class()->IgnoreTObjectStreamer(kTRUE);
-	rhs.Copy(*this);
+TDetector::TDetector(const TDetector& rhs) : TObject()
+{
+   /// Default Copy constructor.
+   Class()->IgnoreTObjectStreamer(kTRUE);
+   rhs.Copy(*this);
 }
 
-TDetector::~TDetector()	{
-	///Default Destructor.
+TDetector::~TDetector()
+{
+   /// Default Destructor.
 }
 
-void TDetector::Copy(TObject &rhs) const {
-	//if(!rhs.InheritsFrom("TDetector"))
-	//   return;
-	TObject::Copy(rhs);
+void TDetector::Copy(TObject& rhs) const
+{
+   // if(!rhs.InheritsFrom("TDetector"))
+   //   return;
+   TObject::Copy(rhs);
 }
 
-
-void TDetector::Print(Option_t *opt) const {
-	/// Default print statement for TDetector. Currently does
-	/// nothing
+void TDetector::Print(Option_t*) const
+{
+   /// Default print statement for TDetector. Currently does
+   /// nothing
 }
 
-void TDetector::Clear(Option_t *opt) {
-	/// Default clear statement for TDetector. Currently does
-	/// nothing
+void TDetector::Clear(Option_t*)
+{
+   /// Default clear statement for TDetector. Currently does
+   /// nothing
 }
-
-
-

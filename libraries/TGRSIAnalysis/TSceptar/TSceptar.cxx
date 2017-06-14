@@ -5,14 +5,13 @@
 
 /// \cond CLASSIMP
 ClassImp(TSceptar)
-/// \endcond
+   /// \endcond
 
-
-bool TSceptar::fSetWave = false;
+   bool TSceptar::fSetWave = false;
 
 TVector3 TSceptar::gPaddlePosition[21] = {
-   //Sceptar positions from Evan; Thanks Evan.
-   TVector3(0,0,1),
+   // Sceptar positions from Evan; Thanks Evan.
+   TVector3(0, 0, 1),
    TVector3(14.3025, 4.6472, 22.8096),
    TVector3(0, 15.0386, 22.8096),
    TVector3(-14.3025, 4.6472, 22.8096),
@@ -32,73 +31,80 @@ TVector3 TSceptar::gPaddlePosition[21] = {
    TVector3(0, 15.0386, -22.8096),
    TVector3(-14.3025, 4.6472, -22.8096),
    TVector3(-8.8395, -12.1665, -22.8096),
-   TVector3(8.8395, -12.1665, -22.8096)
-};
+   TVector3(8.8395, -12.1665, -22.8096)};
 
-
-TSceptar::TSceptar() {
-   //Default Constructor
+TSceptar::TSceptar()
+{
+// Default Constructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-   //Class()->AddRule("TSceptar sceptar_hits attributes=NotOwner");
-   //Class()->AddRule("TSceptar sceptardata attributes=NotOwner");
+   // Class()->AddRule("TSceptar sceptar_hits attributes=NotOwner");
+   // Class()->AddRule("TSceptar sceptardata attributes=NotOwner");
    Clear();
 }
 
-TSceptar::~TSceptar()	{
-   //Default Destructor
+TSceptar::~TSceptar()
+{
+   // Default Destructor
 }
 
-TSceptar::TSceptar(const TSceptar& rhs) : TGRSIDetector() {
-   //Copy Contructor
+TSceptar::TSceptar(const TSceptar& rhs) : TGRSIDetector()
+{
+// Copy Contructor
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
    rhs.Copy(*this);
 }
 
-void TSceptar::Clear(Option_t *opt)	{
-   //Clears all of the hits
-   //The Option "all" clears the base class.
-   //if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
-      TGRSIDetector::Clear(opt);
+void TSceptar::Clear(Option_t* opt)
+{
+   // Clears all of the hits
+   // The Option "all" clears the base class.
+   // if(TString(opt).Contains("all",TString::ECaseCompare::kIgnoreCase)) {
+   TGRSIDetector::Clear(opt);
    //}
    fSceptarHits.clear();
 }
 
-void TSceptar::Copy(TObject &rhs) const {
-   //Copies a TSceptar
+void TSceptar::Copy(TObject& rhs) const
+{
+   // Copies a TSceptar
    TGRSIDetector::Copy(rhs);
-   
-   static_cast<TSceptar&>(rhs).fSceptarHits    = fSceptarHits;
+
+   static_cast<TSceptar&>(rhs).fSceptarHits = fSceptarHits;
 }
 
-TSceptar& TSceptar::operator=(const TSceptar& rhs) {
+TSceptar& TSceptar::operator=(const TSceptar& rhs)
+{
    rhs.Copy(*this);
    return *this;
 }
 
-void TSceptar::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan){
-   TSceptarHit scHit(*frag);  //Construction of TSceptarHit is handled in the constructor
-   fSceptarHits.push_back(std::move(scHit)); //Can't use scHit outside of vector after using std::move
+void TSceptar::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*)
+{
+   TSceptarHit scHit(*frag);                 // Construction of TSceptarHit is handled in the constructor
+   fSceptarHits.push_back(std::move(scHit)); // Can't use scHit outside of vector after using std::move
 }
 
-void TSceptar::Print(Option_t *opt) const	{
-   //Prints out TSceptar Multiplicity, currently does little.
-   printf("%lu fSceptarHits\n",fSceptarHits.size());
+void TSceptar::Print(Option_t*) const
+{
+   // Prints out TSceptar Multiplicity, currently does little.
+   printf("%lu fSceptarHits\n", fSceptarHits.size());
 }
 
-TGRSIDetectorHit* TSceptar::GetHit(const Int_t& idx){
-   //Gets the TSceptarHit at index idx.
+TGRSIDetectorHit* TSceptar::GetHit(const Int_t& idx)
+{
+   // Gets the TSceptarHit at index idx.
    return GetSceptarHit(idx);
 }
 
-TSceptarHit* TSceptar::GetSceptarHit(const int& i) {
-   try{
+TSceptarHit* TSceptar::GetSceptarHit(const int& i)
+{
+   try {
       return &fSceptarHits.at(i);
-   }
-   catch (const std::out_of_range& oor){
+   } catch(const std::out_of_range& oor) {
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }

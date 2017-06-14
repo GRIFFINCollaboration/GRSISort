@@ -1,21 +1,4 @@
-/////////////////////////////////////
-/////    Example *.info file   //////
-/////////////////////////////////////
-
-
-//The event building time, 1 ns units. 
-BuildWindow: 2000     // 2useconds
-
-//Set Moving Window (1) or Static Window (0)/
-MovingWindow: 1
-
-//The Addback event window, 1 ns units.
-AddBackWindow: 150.0  // 150.0 nseconds
-
-//The Array position in mm.
-HPGePos:       110.0 // 110.0 mm 
-
-//Bad Cycles
-//BadCycle: 100 120 140 142
-//BadCycle: 3 4 250
-
+build-window:   200
+addback-window: 150.0
+write-diagnostics: 
+separate-out-of-order: 
