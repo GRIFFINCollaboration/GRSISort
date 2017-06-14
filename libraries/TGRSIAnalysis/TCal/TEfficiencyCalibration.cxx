@@ -202,16 +202,16 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t *opt){
 	for(size_t i=n_rel_graphs; i<n_rel_graphs+7; ++i){
 		fRelativeFit->FixParameter(i,fRelativeFit->GetParameter(i));
 	}
-	for(size_t i=1; i<n_rel_graphs; ++i){
+/*	for(size_t i=1; i<n_rel_graphs; ++i){
 		fRelativeFit->ReleaseParameter(i);
-	}
+	}*/
 	fRelativeEffGraph->Fit(fRelativeFit,"R0");
 	
 	fRelativeFit->SetRange(0,8000);
 	//Fix Scale factors and redo fit of other parameters
-	for(size_t i=1; i<n_rel_graphs; ++i){
+/*	for(size_t i=1; i<n_rel_graphs; ++i){
 		fRelativeFit->FixParameter(i,fRelativeFit->GetParameter(i));
-	}
+	}*/
 	for(size_t i=n_rel_graphs; i< 7 + n_rel_graphs; ++i){
 		fRelativeFit->ReleaseParameter(i);
 	}
@@ -219,14 +219,24 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t *opt){
 	fRelativeEffGraph->Fit(fRelativeFit,"R0");
 	
 	//Fix Scale factors and redo fit of other parameters
-	for(size_t i=1; i<n_rel_graphs; ++i){
+/*	for(size_t i=1; i<n_rel_graphs; ++i){
 		fRelativeFit->ReleaseParameter(i);
 	}
 	for(size_t i=n_rel_graphs; i< 7 + n_rel_graphs; ++i){
 		fRelativeFit->ReleaseParameter(i);
 	}
-
-
+*/
+   /*ADDED TO MAKE WORK*/
+	//We fix the higher order parameters to get to the real minimum more easily
+	//fRelativeFit->FixParameter(n_rel_graphs+0,-4.16);
+	fRelativeFit->FixParameter(n_rel_graphs+0,-4.25);
+	fRelativeFit->FixParameter(n_rel_graphs+1,4.92);
+	fRelativeFit->FixParameter(n_rel_graphs+2,-6.56E-1);
+	fRelativeFit->FixParameter(n_rel_graphs+3,1.33E-2);
+	fRelativeFit->FixParameter(n_rel_graphs+4,-1.54E-3);
+	fRelativeFit->FixParameter(n_rel_graphs+5,2.01E-4);
+	fRelativeFit->FixParameter(n_rel_graphs+6,8.36E-5);
+	fRelativeFit->FixParameter(n_rel_graphs+7,-8.30E-6);
 	//Do the real fit with all of the parameters
 	TFitResultPtr res = fRelativeEffGraph->Fit(fRelativeFit,"SR");
 
