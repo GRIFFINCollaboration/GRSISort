@@ -9,8 +9,9 @@
 #include "GValue.h"
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
-#include "TTreeFillMutex.h"
 #include "TGRSIOptions.h"
+#include "TTreeFillMutex.h"
+#include "TAnalysisOptions.h"
 #include "TSortingDiagnostics.h"
 #include "TDescant.h"
 
@@ -127,6 +128,7 @@ void TAnalysisWriteLoop::Write()
          TChannel::WriteToRoot();
       }
       TGRSIRunInfo::Get()->WriteToRoot(fOutputFile);
+      TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(fOutputFile);
       TPPG::Get()->Write();
 
       if(TGRSIOptions::Get()->WriteDiagnostics()) {

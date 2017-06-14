@@ -9,7 +9,7 @@
 #include "TInterpreter.h"
 #include "TMnemonic.h"
 
-#include "TGRSIRunInfo.h"
+#include "TGRSIOptions.h"
 
 ////////////////////////////////////////////////////////////
 //
@@ -28,7 +28,7 @@ ClassImp(TGriffin)
    bool DefaultAddback(TGriffinHit& one, TGriffinHit& two)
 {
    return ((one.GetDetector() == two.GetDetector()) &&
-           (std::fabs(one.GetTime() - two.GetTime()) < TGRSIRunInfo::AddBackWindow()));
+           (std::fabs(one.GetTime() - two.GetTime()) < TGRSIOptions::AnalysisOptions()->AddbackWindow()));
 }
 
 std::function<bool(TGriffinHit&, TGriffinHit&)> TGriffin::fAddbackCriterion = DefaultAddback;
@@ -522,7 +522,7 @@ Double_t TGriffin::CTCorrectedEnergy(const TGriffinHit* const hit_to_correct, co
 
    if(time_constraint) {
       // Figure out if this passes the selected window
-      if(TMath::Abs(other_hit->GetTime() - hit_to_correct->GetTime()) > TGRSIRunInfo::AddBackWindow()) // placeholder
+      if(TMath::Abs(other_hit->GetTime() - hit_to_correct->GetTime()) > TGRSIOptions::AnalysisOptions()->AddbackWindow()) // placeholder
          return hit_to_correct->GetEnergy();
    }
 
@@ -570,7 +570,7 @@ void TGriffin::FixCrossTalk(const Int_t& gain_type)
    }
    for(size_t i = 0; i < hit_vec->size(); ++i) hit_vec->at(i).ClearEnergy();
 
-   if(TGRSIRunInfo::Get()->IsCorrectingCrossTalk()) {
+   if(TGRSIOptions::AnalysisOptions()->IsCorrectingCrossTalk()) {
       size_t i, j;
       for(i = 0; i < hit_vec->size(); ++i) {
          for(j = i + 1; j < hit_vec->size(); ++j) {

@@ -103,8 +103,6 @@ private:
 
    std::vector<TRawFile*> fRawFiles; ///< List of Raw files opened
 
-  TStopwatch* fStopwatch;
-
    /// \cond CLASSIMP
    ClassDef(TGRSIint, 0); // Interpreter for GRSISort
    /// \endcond

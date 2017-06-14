@@ -4,7 +4,7 @@
 #include <cmath>
 #include "TMath.h"
 
-#include "TGRSIRunInfo.h"
+#include "TGRSIOptions.h"
 
 /// \cond CLASSIMP
 ClassImp(TS3)
@@ -67,14 +67,14 @@ void TS3::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
       dethit.SetRingNumber(frag->GetSegment());
       dethit.SetSectorNumber(0);
 
-      if(TGRSIRunInfo::IsWaveformFitting()) dethit.SetWavefit(*frag);
+      if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting()) dethit.SetWavefit(*frag);
 
       fS3RingHits.push_back(std::move(dethit));
    } else {
       dethit.SetRingNumber(0);
       dethit.SetSectorNumber(frag->GetSegment());
 
-      if(TGRSIRunInfo::IsWaveformFitting()) dethit.SetWavefit(*frag);
+      if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting()) dethit.SetWavefit(*frag);
 
       fS3SectorHits.push_back(std::move(dethit));
    }
@@ -199,19 +199,11 @@ void TS3::BuildPixels()
                               // Now we have accepted a good event, build it
                               TS3Hit dethit = fS3SectorHits[j]; // Sector now defines all data ring just gives position
                               dethit.SetRingNumber(fS3RingHits[i].GetRing());
-                              // 									if(TGRSIRunInfo::IsWaveformFitting()){
-                              // 										dethit.SetTimeFit(fS3SectorHits[j].GetFitTime());
-                              // 										dethit.SetSig2Noise(fS3SectorHits[j].GetSignalToNoise());
-                              // 									}
                               fS3Hits.push_back(dethit);
 
                               // Now we have accepted a good event, build it
                               TS3Hit dethitB = fS3SectorHits[k]; // Sector now defines all data ring just gives position
                               dethitB.SetRingNumber(fS3RingHits[i].GetRing());
-                              // 									if(TGRSIRunInfo::IsWaveformFitting()){
-                              // 										dethitB.SetTimeFit(fS3SectorHits[k].GetFitTime());
-                              // 										dethitB.SetSig2Noise(fS3SectorHits[k].GetSignalToNoise());
-                              // 									}
                               fS3Hits.push_back(dethitB);
                            }
 
@@ -269,19 +261,11 @@ void TS3::BuildPixels()
                               // Now we have accepted a good event, build it
                               TS3Hit dethit = fS3RingHits[j]; // Ring defines all data sector just gives position
                               dethit.SetSectorNumber(fS3SectorHits[i].GetSector());
-                              // 									if(TGRSIRunInfo::IsWaveformFitting()){
-                              // 										dethit.SetTimeFit(fS3RingHits[j].GetFitTime());
-                              // 										dethit.SetSig2Noise(fS3RingHits[j].GetSignalToNoise());
-                              // 									}
                               fS3Hits.push_back(dethit);
 
                               // Now we have accepted a good event, build it
                               TS3Hit dethitB = fS3RingHits[k]; // Ring defines all data sector just gives position
                               dethitB.SetSectorNumber(fS3SectorHits[i].GetSector());
-                              // 									if(TGRSIRunInfo::IsWaveformFitting()){
-                              // 										dethitB.SetTimeFit(fS3RingHits[k].GetFitTime());
-                              // 										dethitB.SetSig2Noise(fS3RingHits[k].GetSignalToNoise());
-                              // 									}
                               fS3Hits.push_back(dethitB);
                            }
 

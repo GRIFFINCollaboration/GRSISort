@@ -16,6 +16,7 @@
 #include "TH2.h"
 #include "THnSparse.h"
 #include "GHSym.h"
+#include "TAnalysisOptions.h"
 
 #include <string>
 
@@ -58,6 +59,7 @@ protected:
 
 private:
    std::string fOutputPrefix;
+	TAnalysisOptions* fAnalysisOptions;
 
    ClassDef(TGRSISelector, 2);
 };

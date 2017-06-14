@@ -8,8 +8,10 @@
 #include <map>
 
 #include "TObject.h"
+#include "TFile.h"
 
 #include "TGRSITypes.h"
+#include "TAnalysisOptions.h"
 
 /////////////////////////////////////////////////////////////////
 ///
@@ -25,12 +27,16 @@
 
 class TGRSIOptions : public TObject {
 public:
+   TGRSIOptions() {}; /// Do not use!
    static TGRSIOptions* Get(int argc = 0, char** argv = nullptr);
 
    void Clear(Option_t* opt = "");
    void Load(int argc, char** argv);
    void Print(Option_t* opt = "") const;
-   void PrintSortingOptions() const;
+
+   static bool WriteToRoot(TFile* file = nullptr);
+   static void SetOptions(TGRSIOptions* temp);
+   static Bool_t ReadFromFile(TFile* tempf = nullptr);
 
    bool                            ShouldExit() { return fShouldExit; }
    const std::vector<std::string>& InputMidasFiles() { return fInputMidasFiles; }
@@ -59,9 +65,8 @@ public:
 
    std::string LogFile() { return fLogFile; }
 
-   int  BuildWindow() const { return fBuildWindow; }
-   int  AddbackWindow() const { return fAddbackWindow; }
-   bool StaticWindow() const { return fStaticWindow; }
+	static TAnalysisOptions* AnalysisOptions() { return fAnalysisOptions; }
+
    bool SeparateOutOfOrder() const { return fSeparateOutOfOrder; }
    bool RecordDialog() const { return fRecordDialog; }
    bool StartGui() const { return fStartGui; }
@@ -86,7 +91,6 @@ public:
 
    bool Batch() const { return fBatch; }
 
-   bool ShowedHelp() const { return fHelp; }
    bool ShowedVersion() const { return fShowedVersion; }
    bool ShowLogo() const { return fShowLogo; }
    bool SortRaw() const { return fSortRaw; }
@@ -121,8 +125,11 @@ public:
    int  GetMaxWorkers() const { return fMaxWorkers; }
    bool SelectorOnly() const { return fSelectorOnly; }
 
+	void SuppressErrors(bool suppress) { fSuppressErrors = suppress; }
+
 private:
    TGRSIOptions(int argc, char** argv);
+	static TGRSIOptions* fGRSIOptions;
 
    bool FileAutoDetect(const std::string& filename);
 
@@ -173,7 +180,6 @@ private:
    bool fBatch; ///< Flag to use batch mode (-b)
 
    bool fShowedVersion;
-   bool fHelp;         ///< Flag to show help (--help)
    bool fShowLogo;     ///< Flag to show logo (suppress with -l)
    bool fSortRaw;      ///< Flag to sort Midas file
    bool fSortRoot;     ///< Flag to sort root files
@@ -190,12 +196,13 @@ private:
    bool fTimeSortInput; ///< Flag to sort on time or triggers
    int  fSortDepth;     ///< Size of Q that stores fragments to be built into events
 
-   int  fBuildWindow;        ///< Size of the build window in us (2 us)
-   int  fAddbackWindow;      ///< Size of the addback window in us
-   bool fStaticWindow;       ///< Flag to use static window (default moving)
+	static TAnalysisOptions* fAnalysisOptions; ///< contains all options for analysis
+
    bool fSeparateOutOfOrder; ///< Flag to build out of order into seperate event tree
 
    bool fShouldExit; ///< Flag to exit sorting
+
+	bool fHelp; ///< help requested?
 
    size_t       fColumnWidth;    ///< Size of verbose columns
    size_t       fStatusWidth;    ///< Size of total verbose status
@@ -207,8 +214,8 @@ private:
    bool fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIOptions, 1); ///< Class for storing options in GRSISort
-                              /// \endcond
+   ClassDef(TGRSIOptions, 3); ///< Class for storing options in GRSISort
+	/// \endcond
 };
 /*! @} */
 #endif /* _TGRSIOPTIONS_H_ */

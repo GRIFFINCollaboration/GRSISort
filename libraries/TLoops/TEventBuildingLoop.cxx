@@ -117,8 +117,8 @@ bool TEventBuildingLoop::CheckBuildCondition(std::shared_ptr<const TFragment> fr
 bool TEventBuildingLoop::CheckTimestampCondition(std::shared_ptr<const TFragment> frag)
 {
    long timestamp   = frag->GetTimeStamp();
-   long event_start = (fNextEvent.size() ? (TGRSIOptions::Get()->StaticWindow() ? fNextEvent[0]->GetTimeStamp()
-                                                                                : fNextEvent.back()->GetTimeStamp())
+   long event_start = (fNextEvent.size() ? (TGRSIOptions::Get()->AnalysisOptions()->StaticWindow() ? fNextEvent[0]->GetTimeStamp()
+                                                                                                   : fNextEvent.back()->GetTimeStamp())
                                          : timestamp);
 
    // save timestamp every <BuildWindow> fragments
