@@ -160,7 +160,6 @@ void TEfficiencyCalibration::ScaleGuess()
    }
 }
 
-<<<<<<< HEAD
 TFitResultPtr TEfficiencyCalibration::Fit(Option_t *opt){
 	//This fits the relative efficiency curve
 	UInt_t n_rel_graphs = fRelativeEffGraph->GetListOfGraphs()->GetSize();
