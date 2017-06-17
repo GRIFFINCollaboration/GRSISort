@@ -26,7 +26,6 @@ public:
    TAnalysisOptions();
 
    void Clear(Option_t* opt = "");
-   void Load(std::vector<std::string> args, ArgParser& prevParser);
    void Print(Option_t* opt = "") const;
 
    bool WriteToFile(TFile* file = nullptr);
