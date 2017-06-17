@@ -61,8 +61,6 @@ public:
    Double_t          Interpolate(Double_t, Double_t, Double_t) override;
    Double_t          KolmogorovTest(const TH1* h2, Option_t* option = "") const override;
    Long64_t          Merge(TCollection* list) override;
-   virtual TProfile* Profile(const char* name = "_pf", Int_t firstbin = 1, Int_t lastbin = -1,
-                             Option_t* option = "") const;
    virtual TH1D*     Projection(const char* name = "_pr", Int_t firstBiny = 0, Int_t lastBiny = -1, Int_t firstBinz = 0,
                                 Int_t lastBinz = -1, Option_t* opt = "") const;
    void              PutStats(Double_t* stats) override;

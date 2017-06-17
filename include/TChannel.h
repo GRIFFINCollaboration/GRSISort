@@ -42,6 +42,13 @@
 #include "TClass.h"
 #include "Globals.h"
 
+typedef struct WaveFormShapePar {
+	bool   InUse;
+	double BaseLine;
+	double TauDecay;
+	double TauRise;
+} WaveFormShapePar;
+
 class TChannel : public TNamed {
 public:
    static TChannel* GetChannel(unsigned int temp_address);
@@ -93,13 +100,6 @@ private:
    double              fTIMEChi2;         // Chi2 of the Time calibration
    std::vector<double> fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
    double fEFFChi2;                       // Chi2 of Efficiency calibration
-
-   typedef struct WaveFormShapePar {
-      bool   InUse;
-      double BaseLine;
-      double TauDecay;
-      double TauRise;
-   } WaveFormShapePar;
 
    WaveFormShapePar WaveFormShape;
 

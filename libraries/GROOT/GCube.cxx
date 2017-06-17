@@ -1934,14 +1934,14 @@ Long64_t GCube::Merge(TCollection* list)
 	// newX(Y)Axis will now have the new found limits
 	// but one needs first to clone this histogram to perform the merge
 	// The clone is not needed when all histograms have the same limits
-	GCube* hclone = 0;
+	GCube* hclone = nullptr;
 	if(!allSameLimits) {
 		// We don't want to add the clone to gDirectory,
 		// so remove our kMustCleanup bit temporarily
 		Bool_t mustCleanup = TestBit(kMustCleanup);
 		if(mustCleanup) ResetBit(kMustCleanup);
 		hclone = static_cast<GCube*>(IsA()->New());
-		hclone->SetDirectory(0);
+		hclone->SetDirectory(nullptr);
 		Copy(*hclone);
 		if(mustCleanup) SetBit(kMustCleanup);
 		BufferEmpty(1); // To remove buffer.

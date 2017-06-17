@@ -85,9 +85,7 @@ GHSym::GHSym(const GHSym& rhs) : TH1()
    rhs.Copy(*this);
 }
 
-GHSym::~GHSym()
-{
-}
+GHSym::~GHSym() = default;
 
 #if MAJOR_ROOT_VERSION < 6
 Bool_t GHSym::Add(TF1* f1, Double_t c1, Option_t* option)
@@ -546,7 +544,7 @@ Int_t GHSym::BufferEmpty(Int_t action)
       }
    }
 
-   fBuffer = 0;
+   fBuffer = nullptr;
    for(Int_t i = 0; i < nbEntries; ++i) {
       Fill(buffer[3 * i + 2], buffer[3 * i + 3], buffer[3 * i + 1]);
    }
@@ -554,7 +552,7 @@ Int_t GHSym::BufferEmpty(Int_t action)
 
    if(action > 0) {
       delete[] fBuffer;
-      fBuffer     = 0;
+      fBuffer     = nullptr;
       fBufferSize = 0;
    } else {
       if(nbEntries == (Int_t)fEntries)
@@ -838,9 +836,9 @@ void GHSym::FillRandom(const char* fname, Int_t ntimes)
    Int_t nbinsy = GetNbinsY();
    Int_t nbins  = nbinsx * nbinsy;
 
-   Double_t* integral = new Double_t[nbins + 1];
-   ibin               = 0;
-   integral[ibin]     = 0;
+   auto* integral = new Double_t[nbins + 1];
+   ibin           = 0;
+   integral[ibin] = 0;
    for(biny = 1; biny <= nbinsy; ++biny) {
       for(binx = 1; binx <= nbinsx; ++binx) {
          ++ibin;
@@ -1053,7 +1051,7 @@ void GHSym::FitSlices(TF1* f1, Int_t firstbin, Int_t lastbin, Int_t cut, Option_
    }
    Int_t npar = f1->GetNpar();
    if(npar <= 0) return;
-   Double_t* parsave = new Double_t[npar];
+   auto* parsave = new Double_t[npar];
    f1->GetParameters(parsave);
 
    if(arr) {
@@ -1062,9 +1060,9 @@ void GHSym::FitSlices(TF1* f1, Int_t firstbin, Int_t lastbin, Int_t cut, Option_
    }
 
    // Create one histogram for each function parameter
-   TH1D**         hlist = new TH1D*[npar];
-   char*          name  = new char[2000];
-   char*          title = new char[2000];
+   auto**         hlist = new TH1D*[npar];
+   auto*          name  = new char[2000];
+   auto*          title = new char[2000];
    const TArrayD* bins  = fYaxis.GetXbins();
    for(Int_t ipar = 0; ipar < npar; ++ipar) {
       snprintf(name, 2000, "%s_%d", GetName(), ipar);
@@ -1080,7 +1078,7 @@ void GHSym::FitSlices(TF1* f1, Int_t firstbin, Int_t lastbin, Int_t cut, Option_
    }
    snprintf(name, 2000, "%s_chi2", GetName());
    delete gDirectory->FindObject(name);
-   TH1D* hchi2 = 0;
+   TH1D* hchi2 = nullptr;
    if(bins->fN == 0) {
       hchi2 = new TH1D(name, "chisquare", nbins, fYaxis.GetXmin(), fYaxis.GetXmax());
    } else {
@@ -1096,7 +1094,7 @@ void GHSym::FitSlices(TF1* f1, Int_t firstbin, Int_t lastbin, Int_t cut, Option_
    // now do not slices case with overflow (makes more sense)
    for(bin = firstbin; bin + ngroup - 1 <= lastbin; bin += nstep) {
       TH1D* hp = Projection("_temp", bin, bin + ngroup - 1, "e");
-      if(hp == 0) continue;
+      if(hp == nullptr) continue;
       nentries = Long64_t(hp->GetEntries());
       if(nentries == 0 || nentries < cut) {
          delete hp;
@@ -1506,7 +1504,7 @@ Double_t GHSym::KolmogorovTest(const TH1* h2, Option_t* option) const
 
    Double_t prb = 0;
    TH1*     h1  = const_cast<TH1*>(static_cast<const TH1*>(this));
-   if(h2 == 0) return 0;
+   if(h2 == nullptr) return 0;
    TAxis* xaxis1 = h1->GetXaxis();
    TAxis* xaxis2 = const_cast<TAxis*>(h2->GetXaxis());
    TAxis* yaxis1 = h1->GetYaxis();
@@ -1793,14 +1791,14 @@ Long64_t GHSym::Merge(TCollection* list)
    // newX(Y)Axis will now have the new found limits
    // but one needs first to clone this histogram to perform the merge
    // The clone is not needed when all histograms have the same limits
-   TH2* hclone = 0;
+   TH2* hclone = nullptr;
    if(!allSameLimits) {
       // We don't want to add the clone to gDirectory,
       // so remove our kMustCleanup bit temporarily
       Bool_t mustCleanup = TestBit(kMustCleanup);
       if(mustCleanup) ResetBit(kMustCleanup);
       hclone = static_cast<TH2*>(IsA()->New());
-      hclone->SetDirectory(0);
+      hclone->SetDirectory(nullptr);
       Copy(*hclone);
       if(mustCleanup) SetBit(kMustCleanup);
       BufferEmpty(1); // To remove buffer.
@@ -2026,7 +2024,7 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
    if(h1obj && h1obj->InheritsFrom(TH1::Class())) {
       if(h1obj->IsA() != TProfile::Class()) {
          Error("DoProfile", "Histogram with name %s must be a TProfile and is a %s", name, h1obj->ClassName());
-         return 0;
+         return nullptr;
       }
       h1 = static_cast<TProfile*>(h1obj);
       // reset the existing histogram and set always the new binning for the axis
@@ -2200,7 +2198,7 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
    if(h1obj && h1obj->InheritsFrom(TH1::Class())) {
       if(h1obj->IsA() != TH1D::Class()) {
          Error("DoProjection", "Histogram with name %s must be a TH1D and is a %s", name, h1obj->ClassName());
-         return 0;
+         return nullptr;
       }
       h1 = static_cast<TH1D*>(h1obj);
       // reset the existing histogram and set always the new binning for the axis
@@ -2392,14 +2390,14 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
    Double_t max   = fXaxis.GetXmax();
    if((ngroup <= 0) || (ngroup > nbins)) {
       Error("Rebin", "Illegal value of ngroup=%d", ngroup);
-      return 0;
+      return nullptr;
    }
 
    Int_t newbins = nbins / ngroup;
 
    // Save old bin contents into a new array
-   Double_t  entries = fEntries;
-   Double_t* oldBins = new Double_t[(nbins + 2) * (nbins + 3) / 2];
+   Double_t entries = fEntries;
+   auto*    oldBins = new Double_t[(nbins + 2) * (nbins + 3) / 2];
    for(xbin = 0; xbin < nbins + 2; xbin++) {
       for(ybin = 0; ybin <= xbin; ybin++) {
          Int_t bin    = GetBin(xbin, ybin);
@@ -2469,7 +2467,7 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
    if(ngroup != 1) {
       if(fXaxis.GetXbins()->GetSize() > 0 || fYaxis.GetXbins()->GetSize() > 0) {
          // variable bin sizes in x or y, don't treat both cases separately
-         Double_t* bins = new Double_t[newbins + 1];
+         auto* bins = new Double_t[newbins + 1];
          for(i = 0; i <= newbins; ++i) bins[i] = fXaxis.GetBinLowEdge(1 + i * ngroup);
          hnew->SetBins(newbins, bins, newbins, bins); // changes also errors array (if any)
          delete[] bins;
@@ -2706,7 +2704,7 @@ TH1* GHSym::ShowBackground(Int_t niter, Option_t* option)
    //   to be implemented (may be)
 
    return reinterpret_cast<TH1*>(gROOT->ProcessLineFast(
-      Form("TSpectrum2::StaticBackground((TH1*)0x%lx,%d,\"%s\")", (ULong_t)this, niter, option)));
+      Form(R"(TSpectrum2::StaticBackground((TH1*)0x%lx,%d,"%s"))", (ULong_t)this, niter, option)));
 }
 
 Int_t GHSym::ShowPeaks(Double_t sigma, Option_t* option, Double_t threshold)
@@ -2719,7 +2717,7 @@ Int_t GHSym::ShowPeaks(Double_t sigma, Option_t* option, Double_t threshold)
    // option="" by default (instead of "goff")
 
    return (Int_t)gROOT->ProcessLineFast(
-      Form("TSpectrum2::StaticSearch((TH1*)0x%lx,%g,\"%s\",%g)", (ULong_t)this, sigma, option, threshold));
+      Form(R"(TSpectrum2::StaticSearch((TH1*)0x%lx,%g,"%s",%g))", (ULong_t)this, sigma, option, threshold));
 }
 
 void GHSym::Smooth(Int_t ntimes, Option_t* option)
@@ -2774,8 +2772,8 @@ void GHSym::Smooth(Int_t ntimes, Option_t* option)
    Int_t     nx       = GetNbinsX();
    Int_t     ny       = GetNbinsY();
    Int_t     bufSize  = (nx + 2) * (ny + 2);
-   Double_t* buf      = new Double_t[bufSize];
-   Double_t* ebuf     = 0;
+   auto*     buf      = new Double_t[bufSize];
+   Double_t* ebuf     = nullptr;
    if(fSumw2.fN) ebuf = new Double_t[bufSize];
 
    // Copy all the data to the temporary buffers
@@ -2869,9 +2867,7 @@ GHSymF::GHSymF(const GHSymF& rhs) : GHSym(), TArrayF()
    rhs.Copy(*this);
 }
 
-GHSymF::~GHSymF()
-{
-}
+GHSymF::~GHSymF() = default;
 
 TH2F* GHSymF::GetMatrix(bool force)
 {
@@ -2979,7 +2975,7 @@ GHSymF operator*(Float_t c1, GHSymF& h1)
 
    GHSymF hnew = h1;
    hnew.Scale(c1);
-   hnew.SetDirectory(0);
+   hnew.SetDirectory(nullptr);
    return hnew;
 }
 
@@ -2989,7 +2985,7 @@ GHSymF operator+(GHSymF& h1, GHSymF& h2)
 
    GHSymF hnew = h1;
    hnew.Add(&h2, 1);
-   hnew.SetDirectory(0);
+   hnew.SetDirectory(nullptr);
    return hnew;
 }
 
@@ -2999,7 +2995,7 @@ GHSymF operator-(GHSymF& h1, GHSymF& h2)
 
    GHSymF hnew = h1;
    hnew.Add(&h2, -1);
-   hnew.SetDirectory(0);
+   hnew.SetDirectory(nullptr);
    return hnew;
 }
 
@@ -3009,7 +3005,7 @@ GHSymF operator*(GHSymF& h1, GHSymF& h2)
 
    GHSymF hnew = h1;
    hnew.Multiply(&h2);
-   hnew.SetDirectory(0);
+   hnew.SetDirectory(nullptr);
    return hnew;
 }
 
@@ -3019,7 +3015,7 @@ GHSymF operator/(GHSymF& h1, GHSymF& h2)
 
    GHSymF hnew = h1;
    hnew.Divide(&h2);
-   hnew.SetDirectory(0);
+   hnew.SetDirectory(nullptr);
    return hnew;
 }
 
@@ -3062,9 +3058,7 @@ GHSymD::GHSymD(const GHSymD& rhs) : GHSym(), TArrayD()
    rhs.Copy(*this);
 }
 
-GHSymD::~GHSymD()
-{
-}
+GHSymD::~GHSymD() = default;
 
 TH2D* GHSymD::GetMatrix(bool force)
 {
@@ -3172,7 +3166,7 @@ GHSymD operator*(Float_t c1, GHSymD& h1)
 
    GHSymD hnew = h1;
    hnew.Scale(c1);
-   hnew.SetDirectory(0);
+   hnew.SetDirectory(nullptr);
    return hnew;
 }
 
@@ -3182,7 +3176,7 @@ GHSymD operator+(GHSymD& h1, GHSymD& h2)
 
    GHSymD hnew = h1;
    hnew.Add(&h2, 1);
-   hnew.SetDirectory(0);
+   hnew.SetDirectory(nullptr);
    return hnew;
 }
 
@@ -3192,7 +3186,7 @@ GHSymD operator-(GHSymD& h1, GHSymD& h2)
 
    GHSymD hnew = h1;
    hnew.Add(&h2, -1);
-   hnew.SetDirectory(0);
+   hnew.SetDirectory(nullptr);
    return hnew;
 }
 
@@ -3202,7 +3196,7 @@ GHSymD operator*(GHSymD& h1, GHSymD& h2)
 
    GHSymD hnew = h1;
    hnew.Multiply(&h2);
-   hnew.SetDirectory(0);
+   hnew.SetDirectory(nullptr);
    return hnew;
 }
 
@@ -3212,7 +3206,7 @@ GHSymD operator/(GHSymD& h1, GHSymD& h2)
 
    GHSymD hnew = h1;
    hnew.Divide(&h2);
-   hnew.SetDirectory(0);
+   hnew.SetDirectory(nullptr);
    return hnew;
 }
 
