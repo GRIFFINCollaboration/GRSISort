@@ -13,6 +13,7 @@
 #include "TGLabel.h"
 #include "TGStatusBar.h"
 #include <TGFrame.h>
+#include "TGComboBox.h"
 #include <TRootEmbeddedCanvas.h>
 #include <RQ_OBJECT.h>
 
@@ -34,7 +35,9 @@ class TBGSubtraction : public TGMainFrame {
       kBGLowEntry,
       kBGHighEntry,
       kWrite2FileNameEntry,
-      kHistogramDescriptionEntry
+      kHistogramDescriptionEntry,
+		kComboAxisEntry,
+		kBGCheckButton
    };
 
    //  RQ_OBJECT("TBGSubtraction")
@@ -55,6 +58,7 @@ private:
    TGNumberEntry*       fGateEntryLow;
    TGNumberEntry*       fGateEntryHigh;
    TGLabel*             fBGParamLabel;
+	TGCheckButton*			fBGCheckButton;
 
    TGLayoutHints* fBly;
    TGLayoutHints* fBly1;
@@ -78,6 +82,9 @@ private:
    TGHorizontalFrame* fDescriptionFrame;
    TGHorizontalFrame* fButtonFrame;
 
+	//Combo box
+	TGComboBox * fAxisCombo;
+
    // Markers
    GMarker* fLowGateMarker;
    GMarker* fHighGateMarker;
@@ -86,10 +93,16 @@ private:
 
    TFile* fCurrentFile;
 
+	Int_t fGateAxis;
+
+	Bool_t fForceUpdate;
+
 public:
-   TBGSubtraction(TH2* mat);
+   TBGSubtraction(TH2* mat, const char * gate_axis = "x");
    virtual ~TBGSubtraction();
-   void DoDraw();
+   void AxisComboSelected();
+   void ClickedBGButton();
+	void DoDraw();
    void DoFit();
    void DoSlider(Int_t pos = 0);
    void DoEntry(Long_t);
