@@ -88,6 +88,7 @@ public:
    bool IgnoreEpics() const { return fIgnoreEpics; }
    bool WriteBadFrags() const { return fWriteBadFrags; }
    bool WriteDiagnostics() const { return fWriteDiagnostics; }
+	bool CheckWordCount() const { return fCheckWordCount; }
 
    bool Batch() const { return fBatch; }
 
@@ -176,6 +177,7 @@ private:
    bool fIgnoreEpics;      ///< Flag to ignore epics
    bool fWriteBadFrags;    ///< Flag to write bad fragments
    bool fWriteDiagnostics; ///< Flag to write diagnostics
+	bool fCheckWordCount;   ///< Flag to check word count in griffin data (default = true)
 
    bool fBatch; ///< Flag to use batch mode (-b)
 

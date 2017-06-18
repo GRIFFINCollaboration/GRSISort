@@ -75,6 +75,7 @@ void TGRSIOptions::Clear(Option_t*)
    fIgnoreEpics      = false;
    fWriteBadFrags    = false;
    fWriteDiagnostics = false;
+	fCheckWordCount   = true;
 
    fBatch = false;
 
@@ -132,6 +133,7 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fIgnoreEpics: "<<fIgnoreEpics<<std::endl
             <<"fWriteBadFrags: "<<fWriteBadFrags<<std::endl
             <<"fWriteDiagnostics: "<<fWriteDiagnostics<<std::endl
+            <<"fCheckWordCount: "<<fCheckWordCount<<std::endl
             <<std::endl
             <<"fBatch: "<<fBatch<<std::endl
             <<std::endl
@@ -230,6 +232,7 @@ void TGRSIOptions::Load(int argc, char** argv)
       .default_value(false);
    parser.option("no-record-dialog", &fRecordDialog, true).description("Dump stuff to screen");
    parser.option("write-diagnostics", &fWriteDiagnostics, true);
+   parser.option("check-word-count", &fCheckWordCount, true);
    parser.option("log-errors", &fLogErrors, true);
    parser.option("log-file", &fLogFile, true).description("File logs from grsiproof are written to.");
    parser.option("reading-material", &fReadingMaterial, true);
