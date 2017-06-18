@@ -52,7 +52,7 @@ TEnv* TGRSIint::fGRSIEnv = nullptr;
 // std::vector<std::string> *TGRSIint::fInputCalFile   = new std::vector<std::string>;
 // std::vector<std::string> *TGRSIint::fInputOdbFile   = new std::vector<std::string>;
 
-void ReadTheNews(void);
+void ReadTheNews();
 
 TGRSIint* TGRSIint::instance(int argc, char** argv, void* options, int numOptions, bool, const char* appClassName)
 {
@@ -73,7 +73,7 @@ TGRSIint::TGRSIint(int argc, char** argv, void* options, Int_t numOptions, Bool_
    fGRSIEnv   = gEnv;
 
    GetSignalHandler()->Remove();
-   TGRSIInterruptHandler* ih = new TGRSIInterruptHandler();
+   auto* ih = new TGRSIInterruptHandler();
    ih->Add();
 
    TGRSIOptions::Get(argc, argv);
@@ -246,7 +246,7 @@ Long_t TGRSIint::ProcessLine(const char* line, Bool_t sync, Int_t* error)
    return TRint::ProcessLine(line, sync, error);
 }
 
-void ReadTheNews(void)
+void ReadTheNews()
 {
 /// Opens a random wikipedia page for your enjoyment
 #ifdef __APPLE__
@@ -371,11 +371,11 @@ TMidasFile* TGRSIint::OpenMidasFile(const std::string& filename)
 {
    /// Opens MidasFiles and stores them in _midas if successfuly opened.
    if(!file_exists(filename.c_str())) {
-      std::cerr << "File \"" << filename << "\" does not exist" << std::endl;
+      std::cerr << R"(File ")" << filename << R"(" does not exist)" << std::endl;
       return nullptr;
    }
 
-   TMidasFile* file = new TMidasFile(filename.c_str());
+   auto* file = new TMidasFile(filename.c_str());
    fRawFiles.push_back(file);
 
    const char* command = Form("TMidasFile* _midas%i = (TMidasFile*)%luL", fMidasFilesOpened, (unsigned long)file);
@@ -393,11 +393,11 @@ TLstFile* TGRSIint::OpenLstFile(const std::string& filename)
 {
    /// Opens Lst Files.
    if(!file_exists(filename.c_str())) {
-      std::cerr << "File \"" << filename << "\" does not exist" << std::endl;
+      std::cerr << R"(File ")" << filename << R"(" does not exist)" << std::endl;
       return nullptr;
    }
 
-   TLstFile* file = new TLstFile(filename.c_str());
+   auto* file = new TLstFile(filename.c_str());
    fRawFiles.push_back(file);
 
    return file;
@@ -657,7 +657,7 @@ void TGRSIint::RunMacroFile(const std::string& filename)
       const char* command = Form(".x %s", filename.c_str());
       ProcessLine(command);
    } else {
-      std::cerr << "File \"" << filename << "\" does not exist" << std::endl;
+      std::cerr << R"(File ")" << filename << R"(" does not exist)" << std::endl;
    }
 }
 

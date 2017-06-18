@@ -16,6 +16,7 @@
 #include "TH2.h"
 #include "THnSparse.h"
 #include "GHSym.h"
+#include "GCube.h"
 #include "TAnalysisOptions.h"
 
 #include <string>
@@ -55,6 +56,7 @@ protected:
    std::map<std::string, TH1*>        fH1;
    std::map<std::string, TH2*>        fH2;
    std::map<std::string, GHSym*>      fSym;
+   std::map<std::string, GCube*>      fCube;
    std::map<std::string, THnSparseF*> fHSparse;
 
 private:

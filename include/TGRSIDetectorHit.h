@@ -79,19 +79,19 @@ public:
    // TGRSIDetectorHit(const TFragment& frag) { Class()->IgnoreTObjectStreamer(); this->CopyFragment(frag); }
    // void CopyFragment(const TFragment&);
    // void CopyWaveform(const TFragment&);
-   virtual ~TGRSIDetectorHit();
+   ~TGRSIDetectorHit() override;
 
    static void SetPPGPtr(TPPG* ptr) { fPPG = ptr; }
 
    bool operator<(const TGRSIDetectorHit& rhs) const { return GetEnergy() > rhs.GetEnergy(); } // sorts large->small
 
 public:
-   virtual void Copy(TObject&) const;                //!<!
+   void         Copy(TObject&) const override;       //!<!
    virtual void Copy(TObject&, bool copywave) const; //!<!
    virtual void CopyWave(TObject&) const;            //!<!
-   virtual void Clear(Option_t* opt = "");           //!<!
+   void Clear(Option_t* opt = "") override;          //!<!
    virtual void ClearTransients() const { fBitflags = 0; }
-   virtual void Print(Option_t* opt = "") const;                                  //!<!
+   void Print(Option_t* opt = "") const override;                                 //!<!
    virtual bool HasWave() const { return (fWaveform.size() > 0) ? true : false; } //!<!
 
    static bool CompareEnergy(TGRSIDetectorHit* lhs, TGRSIDetectorHit* rhs);
@@ -121,9 +121,9 @@ public:
       return fTime;
    }
 
-   virtual TVector3 GetPosition(Double_t) const           { return TVector3(0., 0., 0.); }         //!<!
-   virtual TVector3 GetPosition() const                   { return TVector3(0., 0., 0.); } //!<!
-   virtual double   GetEnergy(Option_t* opt = "") const;
+   virtual TVector3 GetPosition(Double_t) const { return TVector3(0., 0., 0.); } //!<!
+   virtual TVector3 GetPosition() const { return TVector3(0., 0., 0.); }         //!<!
+   virtual double GetEnergy(Option_t* opt = "") const;
    virtual Long64_t GetTimeStamp(Option_t* opt = "") const;
    Long64_t         GetRawTimeStamp(Option_t* = "") const { return fTimeStamp; }
    virtual Double_t GetTime(const UInt_t& correct_flag = kAll,
@@ -137,7 +137,7 @@ public:
    const std::vector<Short_t>* GetWaveform() const { return &fWaveform; } //!<!
    TChannel*                   GetChannel() const
    {
-      if (!IsChannelSet()) {
+      if(!IsChannelSet()) {
          fChannel = TChannel::GetChannel(fAddress);
          SetHitBit(kIsChannelSet, true);
       }
@@ -145,11 +145,11 @@ public:
    } //!<!
 
    // stored in the tchannel (things common to all hits of this address)
-   virtual Int_t       GetDetector() const;    //!<!
-   virtual Int_t       GetSegment() const;     //!<!
-   virtual Int_t       GetCrystal() const;     //!<!
-   virtual const char* GetName() const;        //!<!
-   virtual UShort_t    GetArrayNumber() const; //!<!
+   virtual Int_t    GetDetector() const;      //!<!
+   virtual Int_t    GetSegment() const;       //!<!
+   virtual Int_t    GetCrystal() const;       //!<!
+   const char*      GetName() const override; //!<!
+   virtual UShort_t GetArrayNumber() const;   //!<!
 
    // virtual void GetSegment() const;
 
@@ -214,7 +214,7 @@ private:
    static TVector3                 fBeamDirection; //!
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIDetectorHit, 10) // Stores the information for a detector hit
+   ClassDefOverride(TGRSIDetectorHit, 10) // Stores the information for a detector hit
    /// \endcond
 };
 /*! @} */

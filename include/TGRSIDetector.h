@@ -32,18 +32,18 @@ class TGRSIDetector : public TDetector {
 public:
    TGRSIDetector();
    TGRSIDetector(const TGRSIDetector&);
-   virtual ~TGRSIDetector();
+   ~TGRSIDetector() override;
 
 public:
 // virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
 #ifndef __CINT__
-   virtual void AddFragment(std::shared_ptr<const TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
+   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override { AbstractMethod("AddFragment()"); } //!<!
 #endif
-   virtual void BuildHits() {}
+   void BuildHits() override {}
 
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Clear(Option_t* opt = "");       //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
 protected:
 #ifndef __CINT__
@@ -51,7 +51,7 @@ protected:
 #endif
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIDetector, 1) // Abstract class for detector systems
+   ClassDefOverride(TGRSIDetector, 1) // Abstract class for detector systems
    /// \endcond
 };
 /*! @} */
