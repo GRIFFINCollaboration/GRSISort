@@ -1,0 +1,27 @@
+Unix.*.Root.MacroPath: .:$(GRSISYS)/util:$(ROOTSYS)/macros:$(GRSISYS)/scripts:$(GRSISYS)/examples:$(GRSISYS)/myAnalysis:$(GRSISYS)/GRSIProof
+Unix.*.Root.DynamicPath:  .:~/rootlibs:$(ROOTSYS)/lib:$(GRSISYS)/lib:$(GRSISYS)/GRSIProof
+Unix.*.Root.IncludePath:  .:~/rootlibs:$(ROOTSYS)/include:$(GRSISYS)/include:$(GRSISYS)/GRSIProof
+
+#files to load at log in:
+Rint.Logon: $(GRSISYS)/grsi_logon.C
+Rint.History $(GRSISYS)/.grsi_history
+Rint.HistSize: 1000000 
+
+Rint.PromptColor: #CCCC00
+Rint.BracketColor: bold green
+Rint.BadBracketColor: bold red underlined
+Rint.TabComColor: magenta
+
+
+#default root variables form the grsi enviorment
+Canvas.MoveOpaque: false
+Canvas.ResizeOpaque: false
+Canvas.ShowEventStatus: true
+#Canvas.ShowToolBar: true
+
+
+Browser.Name: GRootBrowser
+
+Gui.IconPath:      $(GRSISYS)/icons:$(ROOTSYS)/icons
+Gui.MimeTypeFile:  $(GRSISYS)/.grsi.mimes
+
