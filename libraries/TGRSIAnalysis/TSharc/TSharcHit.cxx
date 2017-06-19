@@ -18,8 +18,7 @@ ClassImp(TSharcHit)
 }
 
 TSharcHit::~TSharcHit()
-{
-}
+= default;
 
 TSharcHit::TSharcHit(const TSharcHit& rhs) : TGRSIDetectorHit()
 {

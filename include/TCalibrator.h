@@ -14,12 +14,12 @@ class TNucleus;
 class TCalibrator : public TNamed {
 public:
    TCalibrator();
-   ~TCalibrator();
+   ~TCalibrator() override;
 
-   virtual void Copy(TObject& obj) const;
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
-   virtual void Draw(Option_t* option = "");
+   void Copy(TObject& obj) const override;
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
+   void Draw(Option_t* option = "") override;
    UInt_t Size() const { return fPeaks.size(); }
 
    int  GetFitOrder() const { return fit_order; }
@@ -87,7 +87,7 @@ private:
    void PrintMap(std::map<double, double>& inmap);
    bool CheckMap(std::map<double, double> inmap);
 
-   ClassDef(TCalibrator, 1)
+   ClassDefOverride(TCalibrator, 1)
 };
 
 #endif

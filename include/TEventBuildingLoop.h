@@ -29,7 +29,7 @@ public:
    enum EBuildMode { kTimestamp, kTriggerId };
 
    static TEventBuildingLoop* Get(std::string name = "", EBuildMode mode = kTimestamp);
-   virtual ~TEventBuildingLoop();
+   ~TEventBuildingLoop() override;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&              InputQueue() { return fInputQueue; }
@@ -40,14 +40,14 @@ public:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& OutOfOrderQueue() { return fOutOfOrderQueue; }
 #endif
 
-   bool Iteration();
+   bool Iteration() override;
 
-   virtual void ClearQueue();
+   void ClearQueue() override;
 
-   size_t GetItemsPushed() { return fOutputQueue->ItemsPushed(); }
-   size_t GetItemsPopped() { return fOutputQueue->ItemsPopped(); }
-   size_t GetItemsCurrent() { return fOutputQueue->Size(); }
-   size_t GetRate() { return 0; }
+   size_t GetItemsPushed() override { return fOutputQueue->ItemsPushed(); }
+   size_t GetItemsPopped() override { return fOutputQueue->ItemsPopped(); }
+   size_t GetItemsCurrent() override { return fOutputQueue->Size(); }
+   size_t GetRate() override { return 0; }
 
    void SetBuildWindow(long clock_ticks) { fBuildWindow = clock_ticks; }
    unsigned long            GetBuildWindow() const { return fBuildWindow; }
@@ -55,7 +55,7 @@ public:
    void SetSortDepth(int num_events) { fSortingDepth = num_events; }
    unsigned int          GetSortDepth() const { return fSortingDepth; }
 
-   std::string EndStatus();
+   std::string EndStatus() override;
 
 private:
    TEventBuildingLoop(std::string name, EBuildMode mode);
@@ -85,7 +85,7 @@ private:
       fOrdered;
 #endif
 
-   ClassDef(TEventBuildingLoop, 0);
+   ClassDefOverride(TEventBuildingLoop, 0);
 };
 
 /*! @} */

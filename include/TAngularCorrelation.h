@@ -46,7 +46,7 @@ private:
    std::vector<Double_t> fModifiedAngles;  // array correlating modified index with angles
 
 public:
-   virtual ~TAngularCorrelation();
+   ~TAngularCorrelation() override;
    TAngularCorrelation();
 
    //----------------- getters -----------------
@@ -162,7 +162,7 @@ public:
    void ClearModifiedMaps();
 
    /// \cond CLASSIMP
-   ClassDef(TAngularCorrelation, 1)
+   ClassDefOverride(TAngularCorrelation, 1)
    /// \endcond
 };
 /*! @} */

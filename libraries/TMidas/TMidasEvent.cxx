@@ -4,11 +4,11 @@
 //  $Id: TMidasEvent.cxx 91 2012-04-12 18:36:17Z olchansk $
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <cstring>
+#include <cassert>
 
 #include "TMidasEvent.h"
 #include "TGRSIOptions.h"
@@ -207,7 +207,7 @@ int TMidasEvent::FindBank(const char* name, int* bklen, int* bktype, void** pdat
 
       TMidas_BANK32* pbk32 = nullptr;
 
-      while(1) {
+      while(true) {
          IterateBank32(&pbk32, (char**)pdata);
          // printf("looking for [%s] got [%s]\n", name, pbk32->fName);
          if(pbk32 == nullptr) break;
@@ -276,7 +276,7 @@ void TMidasEvent::Print(const char* option) const
       for(int i = 0; i < fBanksN * 4; i += 4) {
          int   bankLength = 0;
          int   bankType   = 0;
-         void* pdata      = 0;
+         void* pdata      = nullptr;
          int   found      = FindBank(&fBankList[i], &bankLength, &bankType, &pdata);
 
          printf("Bank %c%c%c%c, length %6d, type %2d\n", fBankList[i], fBankList[i + 1], fBankList[i + 2],
@@ -469,7 +469,7 @@ int TMidasEvent::IterateBank32(TMidas_BANK32** pbk, char** pdata) const
    return (*pbk)->fDataSize;
 }
 
-typedef uint8_t BYTE;
+using BYTE = uint8_t;
 
 /// Byte swapping routine.
 ///

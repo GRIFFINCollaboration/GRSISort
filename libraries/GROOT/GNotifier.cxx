@@ -6,7 +6,7 @@
 #include "TFile.h"
 #include "TGRSIOptions.h"
 
-GNotifier* GNotifier::fGNotifier = 0;
+GNotifier* GNotifier::fGNotifier = nullptr;
 
 GNotifier* GNotifier::Get()
 {
@@ -19,8 +19,7 @@ GNotifier::GNotifier()
 }
 
 GNotifier::~GNotifier()
-{
-}
+= default;
 
 bool GNotifier::Notify()
 {

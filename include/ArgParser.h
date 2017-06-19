@@ -24,7 +24,7 @@ struct ParseError : public std::runtime_error {
 class ArgParseItem {
 public:
    ArgParseItem(bool firstPass) : present_(false), fFirstPass(firstPass) {}
-   virtual ~ArgParseItem() {}
+   virtual ~ArgParseItem() = default;
    virtual bool matches(const std::string& flag) const                = 0;
    virtual void parse_item(const std::vector<std::string>& arguments) = 0;
    virtual int         num_arguments() const                          = 0;
@@ -41,9 +41,9 @@ public:
              (num_arguments() != -1 && arguments.size() != size_t(num_arguments()))) {
             std::stringstream ss;
             if(num_arguments() == -1) {
-               ss << "Flag \"" << name << "\" expected at least one argument";
+               ss << R"(Flag ")" << name << R"(" expected at least one argument)";
             } else {
-               ss << "Flag \"" << name << "\" expected " << num_arguments() << " argument(s) and received "
+               ss << R"(Flag ")" << name << R"(" expected )" << num_arguments() << " argument(s) and received "
                   << arguments.size();
             }
             throw ParseError(ss.str());
@@ -78,9 +78,9 @@ public:
          }
       }
    }
-   virtual ~ArgParseConfig() {}
+   ~ArgParseConfig() override = default;
 
-   virtual std::string flag_name() const
+   std::string flag_name() const override
    {
       std::string output;
       for (auto flag : flags) {
@@ -91,7 +91,7 @@ public:
       return output;
    }
 
-   virtual bool matches(const std::string& flag) const
+   bool matches(const std::string& flag) const override
    {
       // This is the default option, and something not a flag was passed.
       if(flag.at(0) != '-' && flags.size() == 0) {
@@ -118,11 +118,11 @@ public:
       return *this;
    }
 
-   virtual bool is_required() const { return required_; }
+   bool is_required() const override { return required_; }
 
    virtual ArgParseConfig& default_value(T value) = 0;
 
-   virtual std::string printable(int description_column = -1, int* chars_before_desc = nullptr) const
+   std::string printable(int description_column = -1, int* chars_before_desc = nullptr) const override
    {
       std::stringstream ss;
 
@@ -213,14 +213,14 @@ public:
       *fOutput_location = fStored_default_value;
    }
 
-   virtual ArgParseConfig<bool>& default_value(bool value)
+   ArgParseConfig<bool>& default_value(bool value) override
    {
       *fOutput_location     = value;
       fStored_default_value = value;
       return *this;
    }
 
-   virtual void parse_item(const std::vector<std::string>& arguments)
+   void parse_item(const std::vector<std::string>& arguments) override
    {
       if(arguments.size() == 0) {
          *fOutput_location = !fStored_default_value;
@@ -230,7 +230,7 @@ public:
       }
    }
 
-   virtual int num_arguments() const { return 0; }
+   int num_arguments() const override { return 0; }
 
 private:
    bool* fOutput_location;
@@ -305,7 +305,7 @@ public:
 		for (auto& val : values) {
 			if(val->is_required() && !val->is_present()) {
 				std::stringstream ss;
-				ss << "Required argument \"" << val->flag_name() << "\" is not present";
+				ss << R"(Required argument ")" << val->flag_name() << R"(" is not present)";
 				throw ParseError(ss.str());
 			}
 		}
@@ -360,7 +360,7 @@ public:
 	template <typename T>
 		ArgParseConfigT<T>& option(const std::string flag, T* output_location, bool firstPass)
 		{
-			ArgParseConfigT<T>* output = new ArgParseConfigT<T>(flag, output_location, firstPass);
+			auto* output = new ArgParseConfigT<T>(flag, output_location, firstPass);
 			values.push_back(output);
 			return *output;
 		}
@@ -480,9 +480,9 @@ private:
 
 		std::stringstream ss;
 		if(flag.at(0) == '-') {
-			ss << "Unknown option: \"" << flag << "\"";
+			ss << R"(Unknown option: ")" << flag << R"(")";
 		} else {
-			ss << "Was passed \"" << flag << "\" as a non-option argument, when no non-option arguments are allowed";
+			ss << R"(Was passed ")" << flag << R"(" as a non-option argument, when no non-option arguments are allowed)";
 		}
 		throw ParseError(ss.str());
 	}

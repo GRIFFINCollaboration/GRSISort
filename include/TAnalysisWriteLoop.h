@@ -33,19 +33,19 @@ public:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& OutOfOrderQueue() { return fOutOfOrderQueue; }
 #endif
 
-   virtual void ClearQueue();
+   void ClearQueue() override;
 
    void Write();
 
-   size_t GetItemsPushed() { return fItemsPopped; }
-   size_t GetItemsPopped() { return 0; }
-   size_t GetItemsCurrent() { return 0; }
-   size_t GetRate() { return 0; }
+   size_t GetItemsPushed() override { return fItemsPopped; }
+   size_t GetItemsPopped() override { return 0; }
+   size_t GetItemsCurrent() override { return 0; }
+   size_t GetRate() override { return 0; }
 
-   std::string EndStatus();
+   std::string EndStatus() override;
 
 protected:
-   bool Iteration();
+   bool Iteration() override;
 
 private:
    TAnalysisWriteLoop(std::string name, std::string output_file);
@@ -64,7 +64,7 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>> fOutOfOrderQueue;
 #endif
 
-   ClassDef(TAnalysisWriteLoop, 0);
+   ClassDefOverride(TAnalysisWriteLoop, 0);
 };
 
 /*! @} */

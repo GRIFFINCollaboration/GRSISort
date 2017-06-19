@@ -18,7 +18,7 @@ public:
    TBetaDecay(TNucleus* parent);
    TBetaDecay(char* name);
    TBetaDecay(Int_t Z, Int_t N);
-   virtual ~TBetaDecay();
+   ~TBetaDecay() override;
 
 public:
    TNucleus* GetParent() const { return fParent; }
@@ -28,7 +28,7 @@ private:
    TNucleus* fParent;          ///< The parent nucleus beta decaying
 
    /// \cond CLASSIMP
-   ClassDef(TBetaDecay, 1); // Information about beta decays
+   ClassDefOverride(TBetaDecay, 1); // Information about beta decays
    /// \endcond
 };
 /*! @} */

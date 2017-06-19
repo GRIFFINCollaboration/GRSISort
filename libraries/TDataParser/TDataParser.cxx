@@ -130,7 +130,7 @@ int TDataParser::TigressDataToFragment(uint32_t* data, int size, unsigned int mi
             std::shared_ptr<TFragment> transferfrag = std::make_shared<TFragment>(*eventFrag);
             Push(fGoodOutputQueues, transferfrag);
             NumFragsFound++;
-            eventFrag = 0;
+            eventFrag = nullptr;
             return NumFragsFound;
          }
 
@@ -1108,7 +1108,7 @@ bool TDataParser::SetGRIFPsd(uint32_t value, std::shared_ptr<TFragment> frag)
 
 int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, unsigned int, time_t)
 {
-   TPPGData* ppgEvent = new TPPGData;
+   auto* ppgEvent = new TPPGData;
    int       x        = 1; // We have already read the header so we can skip the 0th word.
 
    // The Network packet number is for debugging and is not always written to
@@ -1197,7 +1197,7 @@ bool TDataParser::SetPPGHighTimeStamp(uint32_t value, TPPGData* ppgevent)
 
 int TDataParser::GriffinDataToScalerEvent(uint32_t* data, int address)
 {
-   TScalerData* scalerEvent = new TScalerData;
+   auto* scalerEvent = new TScalerData;
    scalerEvent->SetAddress(address);
    int x          = 1; // We have already read the header so we can skip the 0th word.
    int failedWord = -1;

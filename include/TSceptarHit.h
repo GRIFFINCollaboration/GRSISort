@@ -28,7 +28,7 @@
 class TSceptarHit : public TGRSIDetectorHit {
 public:
    TSceptarHit();
-   virtual ~TSceptarHit();
+   ~TSceptarHit() override;
    TSceptarHit(const TSceptarHit&);
    TSceptarHit(const TFragment& frag);
 
@@ -52,20 +52,20 @@ public:
    bool InFilter(Int_t); //!<!
 
    bool     AnalyzeWaveform();                //!<!
-   TVector3 GetPosition(Double_t dist) const; //!<!
-   TVector3 GetPosition() const;              //!<!
+   TVector3 GetPosition(Double_t dist) const override; //!<!
+   TVector3 GetPosition() const override;              //!<!
 
 public:
-   void Clear(Option_t* opt = "");          //!<!
-   void Print(Option_t* opt = "") const;    //!<!
-   virtual void Copy(TObject&) const;       //!<!
-   virtual void Copy(TObject&, bool) const; //!<!
+   void Clear(Option_t* opt = "") override;          //!<!
+   void Print(Option_t* opt = "") const override;    //!<!
+   void Copy(TObject&) const override;       //!<!
+   void Copy(TObject&, bool) const override; //!<!
 
 private:
    Double_t GetDefaultDistance() const { return 0.0; }
 
    /// \cond CLASSIMP
-   ClassDef(TSceptarHit, 2) // Stores the information for a SceptarHit
+   ClassDefOverride(TSceptarHit, 2) // Stores the information for a SceptarHit
    /// \endcond
 };
 /*! @} */

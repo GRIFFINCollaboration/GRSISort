@@ -39,8 +39,7 @@ TChannel::TChannel()
 } // default constructor need to write to root file.
 
 TChannel::~TChannel()
-{
-}
+= default;
 
 TChannel::TChannel(const char* tempName)
 {
@@ -115,7 +114,7 @@ void TChannel::DeleteAllChannels()
    for(iter = fChannelMap->begin(); iter != fChannelMap->end(); iter++) {
       if(iter->second) delete iter->second;
       // These maps should point to the same pointers, so this should clear out both
-      iter->second = 0;
+      iter->second = nullptr;
    }
    fChannelMap->clear();
    fChannelNumberMap->clear();
@@ -244,7 +243,7 @@ TChannel* TChannel::GetDefaultChannel()
    if(fChannelMap->size() > 0) {
       return fChannelMap->begin()->second;
    }
-   return 0;
+   return nullptr;
 }
 
 void TChannel::Clear(Option_t*)
@@ -300,7 +299,7 @@ TChannel* TChannel::GetChannelByNumber(int temp_num)
    try {
       chan = fChannelNumberMap->at(temp_num);
    } catch(const std::out_of_range& oor) {
-      return 0;
+      return nullptr;
    }
    return chan;
 }
@@ -579,7 +578,7 @@ void TChannel::PrintCTCoeffs(Option_t*) const
    std::cout << "Number:    " << fNumber << "\n";
    std::cout << std::setfill('0');
    std::cout << "Address:   0x" << std::hex << std::setw(8) << fAddress << std::dec << "\n";
-   for(size_t x = 0; x < fCTCoefficients.size(); x++) std::cout << fCTCoefficients.at(x) << "\t";
+   for(double fCTCoefficient : fCTCoefficients) std::cout << fCTCoefficient << "\t";
    std::cout << "\n";
    std::cout << "}\n";
    std::cout << "//====================================//\n";
@@ -603,22 +602,22 @@ void TChannel::Print(Option_t*) const
    std::cout << "Digitizer: " << fDigitizerTypeString << "\n";
    std::cout << "TimeOffset: " << fTimeOffset << "\n";
    std::cout << "EngCoeff:  ";
-   for(size_t x = 0; x < fENGCoefficients.size(); x++) std::cout << fENGCoefficients.at(x) << "\t";
+   for(float fENGCoefficient : fENGCoefficients) std::cout << fENGCoefficient << "\t";
    std::cout << "\n";
    std::cout << "Integration: " << fIntegration << "\n";
    std::cout << "ENGChi2:   " << fENGChi2 << "\n";
    std::cout << "EffCoeff:  ";
-   for(size_t x = 0; x < fEFFCoefficients.size(); x++) std::cout << fEFFCoefficients.at(x) << "\t";
+   for(double fEFFCoefficient : fEFFCoefficients) std::cout << fEFFCoefficient << "\t";
    std::cout << "\n";
    std::cout << "EFFChi2:   " << fEFFChi2 << "\n";
    if(fCTCoefficients.size()) {
       std::cout << "CTCoeff:  ";
-      for(size_t x = 0; x < fCTCoefficients.size(); x++) std::cout << fCTCoefficients.at(x) << "\t";
+      for(double fCTCoefficient : fCTCoefficients) std::cout << fCTCoefficient << "\t";
       std::cout << "\n";
    }
    if(fTIMECoefficients.size() > 0) {
       std::cout << "TIMECoeff: ";
-      for(size_t x = 0; x < fTIMECoefficients.size(); x++) std::cout << fTIMECoefficients.at(x) << "\t";
+      for(double fTIMECoefficient : fTIMECoefficients) std::cout << fTIMECoefficient << "\t";
       std::cout << "\n";
    }
    if(fUseCalFileInt) std::cout << "FileInt: " << fUseCalFileInt << "\n";
@@ -644,7 +643,7 @@ std::string TChannel::PrintCTToString(Option_t*)
    buffer.append(Form("Address:   0x%08x\n", fAddress));
    if(fCTCoefficients.size() > 0) {
       buffer.append("CTCoeff:  ");
-      for(size_t x = 0; x < fCTCoefficients.size(); x++) buffer.append(Form("%f\t", fCTCoefficients.at(x)));
+      for(double fCTCoefficient : fCTCoefficients) buffer.append(Form("%f\t", fCTCoefficient));
       buffer.append("\n");
    }
    buffer.append("}\n");
@@ -673,23 +672,23 @@ std::string TChannel::PrintToString(Option_t*)
    buffer.append(Form("Address:   0x%08x\n", fAddress));
    buffer.append(Form("Digitizer: %s\n", fDigitizerTypeString.c_str()));
    buffer.append("EngCoeff:  ");
-   for(size_t x = 0; x < fENGCoefficients.size(); x++) buffer.append(Form("%f\t", fENGCoefficients.at(x)));
+   for(float fENGCoefficient : fENGCoefficients) buffer.append(Form("%f\t", fENGCoefficient));
    buffer.append("\n");
    buffer.append(Form("Integration: %d\n", fIntegration));
    buffer.append(Form("TimeOffset: %lf\n", fTimeOffset));
    buffer.append(Form("ENGChi2:     %f\n", fENGChi2));
    buffer.append("EffCoeff:  ");
-   for(size_t x = 0; x < fEFFCoefficients.size(); x++) buffer.append(Form("%f\t", fEFFCoefficients.at(x)));
+   for(double fEFFCoefficient : fEFFCoefficients) buffer.append(Form("%f\t", fEFFCoefficient));
    buffer.append("\n");
    buffer.append(Form("EFFChi2:   %f\n", fEFFChi2));
    if(fCTCoefficients.size() > 0) {
       buffer.append("CTCoeff:  ");
-      for(size_t x = 0; x < fCTCoefficients.size(); x++) buffer.append(Form("%f\t", fCTCoefficients.at(x)));
+      for(double fCTCoefficient : fCTCoefficients) buffer.append(Form("%f\t", fCTCoefficient));
       buffer.append("\n");
    }
    if(fTIMECoefficients.size() > 0) {
       buffer.append("TIMECoeff:  ");
-      for(size_t x = 0; x < fTIMECoefficients.size(); x++) buffer.append(Form("%f\t", fTIMECoefficients.at(x)));
+      for(double fTIMECoefficient : fTIMECoefficients) buffer.append(Form("%f\t", fTIMECoefficient));
       buffer.append("\n");
    }
    if(fUseCalFileInt) {
@@ -912,7 +911,7 @@ Int_t TChannel::ReadCalFile(const char* filename)
    int length = infile.tellg();
    if(length < 1) return -2;
 
-   char* buffer = new char[length];
+   auto* buffer = new char[length];
    infile.seekg(0, std::ios::beg);
    infile.read(buffer, length);
 

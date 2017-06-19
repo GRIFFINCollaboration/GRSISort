@@ -17,8 +17,7 @@ UInt_t TSingleDecay::fCounter  = 0;
 UInt_t TDecayChain::fChainCounter = 0;
 
 TDecayFit::~TDecayFit()
-{
-}
+= default;
 
 void TDecayFit::DrawComponents() const
 {
@@ -131,7 +130,7 @@ void TVirtualDecay::Streamer(TBuffer& R__b)
 }
 
 TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh)
-   : fDetectionEfficiency(1.0), fDecayFunc(0), fTotalDecayFunc(0), fParent(0), fDaughter(0), fFirstParent(0),
+   : fDetectionEfficiency(1.0), fDecayFunc(nullptr), fTotalDecayFunc(nullptr), fParent(nullptr), fDaughter(nullptr), fFirstParent(nullptr),
      fChainId(-1)
 {
    if(parent) {
@@ -172,7 +171,7 @@ TSingleDecay::TSingleDecay(TSingleDecay* parent, Double_t tlow, Double_t thigh)
 }
 
 TSingleDecay::TSingleDecay(UInt_t generation, TSingleDecay* parent, Double_t tlow, Double_t thigh)
-   : fDetectionEfficiency(1.0), fDecayFunc(0), fTotalDecayFunc(0), fParent(0), fDaughter(0), fFirstParent(0),
+   : fDetectionEfficiency(1.0), fDecayFunc(nullptr), fTotalDecayFunc(nullptr), fParent(nullptr), fDaughter(nullptr), fFirstParent(nullptr),
      fChainId(-1)
 {
    if(parent) {
@@ -221,8 +220,8 @@ TSingleDecay::~TSingleDecay()
    //  if(fDecayFunc) delete fDecayFunc;
    //  if(fTotalDecayFunc) delete fTotalDecayFunc;
 
-   fDecayFunc      = 0;
-   fTotalDecayFunc = 0;
+   fDecayFunc      = nullptr;
+   fTotalDecayFunc = nullptr;
 }
 
 void TSingleDecay::SetName(const char* name)
@@ -466,19 +465,19 @@ void TSingleDecay::Print(Option_t*) const
    printf("First Parent: %p\n", static_cast<void*>(fFirstParent));
 }
 
-TDecayChain::TDecayChain() : fChainFunc(0)
+TDecayChain::TDecayChain() : fChainFunc(nullptr)
 {
 }
 
-TDecayChain::TDecayChain(UInt_t generations) : fChainFunc(0)
+TDecayChain::TDecayChain(UInt_t generations) : fChainFunc(nullptr)
 {
    if(!generations) generations = 1;
    fDecayChain.clear();
-   TSingleDecay* parent = new TSingleDecay(0);
+   auto* parent = new TSingleDecay(nullptr);
    parent->SetChainId(fChainCounter);
    fDecayChain.push_back(parent);
    for(UInt_t i = 1; i < generations; i++) {
-      TSingleDecay* curDecay = new TSingleDecay(parent);
+      auto* curDecay = new TSingleDecay(parent);
       curDecay->SetChainId(fChainCounter);
       fDecayChain.push_back(curDecay);
       parent = curDecay;
@@ -502,8 +501,8 @@ TDecayChain::~TDecayChain()
 
 void TDecayChain::SetChainParameters()
 {
-   for(size_t i = 0; i < fDecayChain.size(); ++i) {
-      fDecayChain.at(i)->SetTotalDecayParameters();
+   for(auto & i : fDecayChain) {
+      i->SetTotalDecayParameters();
    }
    Double_t low_limit, high_limit;
    // We need to include the fact that we have parents and use that TF1 to perform the fit.
@@ -565,16 +564,16 @@ TSingleDecay* TDecayChain::GetDecay(UInt_t generation)
    }
    SetChainParameters();
 
-   return 0;
+   return nullptr;
 }
 
 void TDecayChain::Print(Option_t*) const
 {
    printf("Number of Decays in Chain: %lu\n", fDecayChain.size());
    printf("Chain Id %d\n", fDecayChain.at(0)->GetChainId());
-   for(size_t i = 0; i < fDecayChain.size(); ++i) {
-      printf("decay ptr: %p\n", static_cast<void*>(fDecayChain.at(i)));
-      fDecayChain.at(i)->Print();
+   for(auto i : fDecayChain) {
+      printf("decay ptr: %p\n", static_cast<void*>(i));
+      i->Print();
       printf("\n");
    }
 }
@@ -620,12 +619,12 @@ Double_t TDecayChain::EvalPar(const Double_t* x, const Double_t* par)
 void TDecayChain::SetRange(Double_t xlow, Double_t xhigh)
 {
    fChainFunc->SetRange(xlow, xhigh);
-   for(size_t i = 0; i < fDecayChain.size(); ++i) {
-      fDecayChain.at(i)->SetRange(xlow, xhigh);
+   for(auto & i : fDecayChain) {
+      i->SetRange(xlow, xhigh);
    }
 }
 
-TDecay::TDecay(std::vector<TDecayChain*> chainlist) : fFitFunc(0)
+TDecay::TDecay(std::vector<TDecayChain*> chainlist) : fFitFunc(nullptr)
 {
    fChainList = chainlist;
 
@@ -646,7 +645,7 @@ TDecayChain* TDecay::GetChain(UInt_t idx)
 
    SetParameters();
 
-   return 0;
+   return nullptr;
 }
 
 Double_t TDecay::DecayFit(Double_t* dim, Double_t* par)
@@ -657,15 +656,15 @@ Double_t TDecay::DecayFit(Double_t* dim, Double_t* par)
    result = par[0];
    // Parameters might be linked, so I have to sort this out here.
    // We Must build parameter arrays for each fit.
-   for(size_t i = 0; i < fChainList.size(); ++i) {
+   for(auto & i : fChainList) {
       Int_t     par_counter = 0;
-      Double_t* tmppar      = new Double_t[fChainList.at(i)->Size() + 1];
-      tmppar[par_counter++] = par[fFitFunc->GetParNumber(Form("Intensity_ChainId%d", fChainList.at(i)->GetChainId()))];
-      for(int j = 0; j < fChainList.at(i)->Size(); ++j) {
+      auto* tmppar      = new Double_t[i->Size() + 1];
+      tmppar[par_counter++] = par[fFitFunc->GetParNumber(Form("Intensity_ChainId%d", i->GetChainId()))];
+      for(int j = 0; j < i->Size(); ++j) {
          tmppar[par_counter++] =
-            par[fFitFunc->GetParNumber(Form("DecayRate_DecayId%d", fChainList.at(i)->GetDecay(j)->GetDecayId()))];
+            par[fFitFunc->GetParNumber(Form("DecayRate_DecayId%d", i->GetDecay(j)->GetDecayId()))];
       }
-      result += fChainList.at(i)->EvalPar(dim, tmppar);
+      result += i->EvalPar(dim, tmppar);
       delete[] tmppar;
    }
 
@@ -699,17 +698,17 @@ TFitResultPtr TDecay::Fit(TH1* fithist, Option_t* opt)
    }
 
    // Now Tell the decays about the results
-   for(size_t i = 0; i < fChainList.size(); ++i) {
-      Int_t par_num = fFitFunc->GetParNumber(Form("Intensity_ChainId%d", fChainList.at(i)->GetChainId()));
-      fChainList.at(i)->GetDecay(0)->SetIntensity(fFitFunc->GetParameter(par_num));
-      fChainList.at(i)->GetDecay(0)->SetIntensityError(fFitFunc->GetParError(par_num));
-      for(int j = 0; j < fChainList.at(i)->Size(); ++j) {
-         par_num = fFitFunc->GetParNumber(Form("DecayRate_DecayId%d", fChainList.at(i)->GetDecay(j)->GetDecayId()));
-         fChainList.at(i)->GetDecay(j)->SetDecayRate(fFitFunc->GetParameter(par_num));
-         fChainList.at(i)->GetDecay(j)->SetDecayRateError(fFitFunc->GetParError(par_num));
+   for(auto & i : fChainList) {
+      Int_t par_num = fFitFunc->GetParNumber(Form("Intensity_ChainId%d", i->GetChainId()));
+      i->GetDecay(0)->SetIntensity(fFitFunc->GetParameter(par_num));
+      i->GetDecay(0)->SetIntensityError(fFitFunc->GetParError(par_num));
+      for(int j = 0; j < i->Size(); ++j) {
+         par_num = fFitFunc->GetParNumber(Form("DecayRate_DecayId%d", i->GetDecay(j)->GetDecayId()));
+         i->GetDecay(j)->SetDecayRate(fFitFunc->GetParameter(par_num));
+         i->GetDecay(j)->SetDecayRateError(fFitFunc->GetParError(par_num));
       }
-      fChainList.at(i)->GetDecay(0)->UpdateDecays();
-      fChainList.at(i)->SetChainParameters();
+      i->GetDecay(0)->UpdateDecays();
+      i->SetChainParameters();
    }
 
    return fitres;
@@ -737,7 +736,7 @@ void TDecay::SetParameters()
    Double_t tmpbgerr = fFitFunc->GetParError(0);
    if(fFitFunc) {
       delete fFitFunc;
-      fFitFunc = 0;
+      fFitFunc = nullptr;
    }
    fFitFunc =
       new TDecayFit("tmpfit", this, &TDecay::DecayFit, xlow, xhigh, unq_chains + unq_decays + 1, "TDecay", "DecayFit");
@@ -749,18 +748,18 @@ void TDecay::SetParameters()
 
    Int_t    par_counter = 1;
    Double_t low, high;
-   for(size_t i = 0; i < fChainList.size(); ++i) {
-      fFitFunc->SetParName(par_counter, Form("Intensity_ChainId%d", fChainList.at(i)->GetDecay(0)->GetChainId()));
-      fChainList.at(i)->SetChainParameters();
-      fChainList.at(i)->GetDecay(0)->GetIntensityLimits(low, high);
+   for(auto & i : fChainList) {
+      fFitFunc->SetParName(par_counter, Form("Intensity_ChainId%d", i->GetDecay(0)->GetChainId()));
+      i->SetChainParameters();
+      i->GetDecay(0)->GetIntensityLimits(low, high);
       fFitFunc->SetParLimits(par_counter, low, high);
-      fFitFunc->SetParameter(par_counter++, fChainList.at(i)->GetDecay(0)->GetIntensity());
+      fFitFunc->SetParameter(par_counter++, i->GetDecay(0)->GetIntensity());
    }
-   for(auto it = fDecayMap.begin(); it != fDecayMap.end(); ++it) {
-      fFitFunc->SetParName(par_counter, Form("DecayRate_DecayId%d", it->first));
-      it->second.at(0)->GetDecayRateLimits(low, high);
+   for(auto & it : fDecayMap) {
+      fFitFunc->SetParName(par_counter, Form("DecayRate_DecayId%d", it.first));
+      it.second.at(0)->GetDecayRateLimits(low, high);
       fFitFunc->SetParLimits(par_counter, low, high);
-      fFitFunc->SetParameter(par_counter++, it->second.at(0)->GetDecayRate());
+      fFitFunc->SetParameter(par_counter++, it.second.at(0)->GetDecayRate());
    }
 
    //  fFitFunc->Print();
@@ -774,8 +773,8 @@ Double_t TDecay::ComponentFunc(Double_t* dim, Double_t* par)
    Int_t id = (Int_t)(par[0]);
    auto  it = fDecayMap.find(id);
 
-   for(size_t i = 0; i < it->second.size(); ++i) {
-      result += it->second.at(i)->Eval(dim[0]);
+   for(auto & i : it->second) {
+      result += i->Eval(dim[0]);
    }
    return result;
 }
@@ -787,13 +786,13 @@ void TDecay::DrawComponents(Option_t*, Bool_t)
    fFitFunc->GetRange(low, high);
 
    TF1* tmp_comp = new TF1("tmpname", this, &TDecay::ComponentFunc, low, high, 1, "TDecay", "ComponentFunc");
-   for(auto it = fDecayMap.begin(); it != fDecayMap.end(); ++it) {
-      tmp_comp->SetName(Form("Component_%d", it->first));
-      tmp_comp->SetParameter(0, it->first);
-      if(it->first == kWhite)
+   for(auto & it : fDecayMap) {
+      tmp_comp->SetName(Form("Component_%d", it.first));
+      tmp_comp->SetParameter(0, it.first);
+      if(it.first == kWhite)
          tmp_comp->SetLineColor(kOrange);
       else
-         tmp_comp->SetLineColor(it->first);
+         tmp_comp->SetLineColor(it.first);
       tmp_comp->DrawClone("same");
    }
    delete tmp_comp;
@@ -804,7 +803,7 @@ void TDecay::DrawBackground(Option_t*)
 {
    Double_t low, high;
    fFitFunc->GetRange(low, high);
-   TF1* bg = new TF1("bg", "pol0", low, high);
+   auto* bg = new TF1("bg", "pol0", low, high);
    bg->SetParameter(0, GetBackground());
    bg->SetLineColor(kMagenta);
    bg->DrawClone("same");
@@ -818,9 +817,9 @@ void TDecay::SetHalfLife(Int_t Id, Double_t halflife)
       printf("Could not find Id = : %d\n", Id);
       return;
    }
-   for(size_t i = 0; i < it->second.size(); ++i) {
-      it->second.at(i)->SetHalfLife(halflife);
-      it->second.at(i)->SetTotalDecayParameters();
+   for(auto & i : it->second) {
+      i->SetHalfLife(halflife);
+      i->SetTotalDecayParameters();
    }
 }
 
@@ -831,9 +830,9 @@ void TDecay::SetHalfLifeLimits(Int_t Id, Double_t low, Double_t high)
       printf("Could not find Id = : %d\n", Id);
       return;
    }
-   for(size_t i = 0; i < it->second.size(); ++i) {
-      it->second.at(i)->SetHalfLifeLimits(low, high);
-      it->second.at(i)->SetTotalDecayParameters();
+   for(auto & i : it->second) {
+      i->SetHalfLifeLimits(low, high);
+      i->SetTotalDecayParameters();
    }
 }
 
@@ -844,28 +843,28 @@ void TDecay::SetDecayRateLimits(Int_t Id, Double_t low, Double_t high)
       printf("Could not find Id = : %d\n", Id);
       return;
    }
-   for(size_t i = 0; i < it->second.size(); ++i) {
-      it->second.at(i)->SetDecayRateLimits(low, high);
-      it->second.at(i)->SetTotalDecayParameters();
+   for(auto & i : it->second) {
+      i->SetDecayRateLimits(low, high);
+      i->SetTotalDecayParameters();
    }
 }
 
 void TDecay::Print(Option_t*) const
 {
    printf("Background: %lf +/- %lf\n\n", GetBackground(), GetBackgroundError());
-   for(auto it = fDecayMap.begin(); it != fDecayMap.end(); ++it) {
-      printf("ID: %u Name: %s\n", it->first, it->second.at(0)->GetName());
-      it->second.at(0)->Print();
+   for(const auto & it : fDecayMap) {
+      printf("ID: %u Name: %s\n", it.first, it.second.at(0)->GetName());
+      it.second.at(0)->Print();
       printf("\n");
    }
 }
 
 void TDecay::PrintMap() const
 {
-   for(auto it = fDecayMap.begin(); it != fDecayMap.end(); ++it) {
-      printf("ID: %u\n", it->first);
-      for(size_t i = 0; i < it->second.size(); ++i) {
-         it->second.at(i)->Print();
+   for(const auto & it : fDecayMap) {
+      printf("ID: %u\n", it.first);
+      for(size_t i = 0; i < it.second.size(); ++i) {
+         it.second.at(i)->Print();
       }
       printf("\n");
    }
@@ -874,21 +873,21 @@ void TDecay::PrintMap() const
 void TDecay::SetRange(Double_t xlow, Double_t xhigh)
 {
    fFitFunc->SetRange(xlow, xhigh);
-   for(size_t i = 0; i < fChainList.size(); ++i) {
-      fChainList.at(i)->SetRange(xlow, xhigh);
+   for(auto & i : fChainList) {
+      i->SetRange(xlow, xhigh);
    }
 }
 
 void TDecay::RemakeMap()
 {
    fDecayMap.clear();
-   for(size_t i = 0; i < fChainList.size(); ++i) {
-      for(int j = 0; j < fChainList.at(i)->Size(); ++j) {
-         UInt_t id = fChainList.at(i)->GetDecay(j)->GetDecayId();
+   for(auto & i : fChainList) {
+      for(int j = 0; j < i->Size(); ++j) {
+         UInt_t id = i->GetDecay(j)->GetDecayId();
          if(!fDecayMap.count(id)) {
             fDecayMap.insert(std::make_pair(id, std::vector<TSingleDecay*>()));
          }
-         fDecayMap.find(id)->second.push_back(fChainList.at(i)->GetDecay(j));
+         fDecayMap.find(id)->second.push_back(i->GetDecay(j));
       }
    }
 }

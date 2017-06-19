@@ -10,7 +10,7 @@ ClassImp(TBGSubtraction)
    /// \endcond
 
    TBGSubtraction::TBGSubtraction(TH2* mat,const char * gate_axis)
-   : TGMainFrame(0, 10, 10, kHorizontalFrame), fProjectionCanvas(nullptr), fGateCanvas(nullptr), fMatrix(mat),
+   : TGMainFrame(nullptr, 10, 10, kHorizontalFrame), fProjectionCanvas(nullptr), fGateCanvas(nullptr), fMatrix(mat),
      fProjection(nullptr), fGateHist(nullptr), fBGHist(nullptr), fSubtractedHist(nullptr), fGateSlider(nullptr),
      fBGSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton(nullptr), fBly(nullptr), fBly1(nullptr), fGateFrame(nullptr),
      fProjectionFrame(nullptr), fAxisCombo(nullptr), fLowGateMarker(nullptr), fHighGateMarker(nullptr), fLowBGMarker(nullptr),
@@ -516,7 +516,7 @@ void TBGSubtraction::DoProjection()
 void TBGSubtraction::DrawOnNewCanvas()
 {
    if(fSubtractedHist) {
-      TCanvas* g = new TCanvas;
+      auto* g = new TCanvas;
       g->cd();
       fSubtractedHist->DrawCopy();
       g->Update();

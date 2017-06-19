@@ -30,11 +30,11 @@
 class TCSM : public TDetector {
 public:
    TCSM();
-   virtual ~TCSM();
+   ~TCSM() override;
 
 public:
-   virtual void Clear(Option_t* = "");
-   virtual void Print(Option_t* = "") const;
+   void Clear(Option_t* = "") override;
+   void Print(Option_t* = "") const override;
 
    TCSMHit* GetCSMHit(const int& i);                           //->
    Short_t GetMultiplicity() const { return fCsmHits.size(); } //->
@@ -43,11 +43,11 @@ public:
                                double Y = 0.00, double Z = 0.00);
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
 #endif
-   void BuildHits();
+   void BuildHits() override;
 
-   void ClearTransients()
+   void ClearTransients() override
    {
       for (auto hit : fCsmHits) hit.ClearTransients();
    }
@@ -74,7 +74,7 @@ private:
    // void RemoveHits(std::vector<TCSMHit>*,std::set<int>*);	//!<!
 
    /// \cond CLASSIMP
-   ClassDef(TCSM, 5) // CSM Analysis structure
+   ClassDefOverride(TCSM, 5) // CSM Analysis structure
    /// \endcond
 };
 /*! @} */

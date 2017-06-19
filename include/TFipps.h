@@ -34,7 +34,7 @@ public:
 
    TFipps();
    TFipps(const TFipps&);
-   virtual ~TFipps();
+   ~TFipps() override;
 
 public:
    TFippsHit* GetFippsHit(const Int_t& i);
@@ -43,9 +43,9 @@ public:
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan); //!<!
+   void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) override; //!<!
 #endif
-   void ClearTransients()
+   void ClearTransients() override
    {
       fFippsBits = 0;
       for (auto hit : fFippsHits) hit.ClearTransients();
@@ -106,12 +106,12 @@ private:
    void SetCrossTalk(bool flag = true) const;
 
 public:
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Clear(Option_t* opt = "all");    //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Clear(Option_t* opt = "all") override;    //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TFipps, 5) // Fipps Physics structure
+   ClassDefOverride(TFipps, 5) // Fipps Physics structure
    /// \endcond
 };
 /*! @} */

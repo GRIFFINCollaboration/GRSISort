@@ -568,7 +568,7 @@ void TGriffin::FixCrossTalk(const Int_t& gain_type)
       SetCrossTalk(gain_type, true);
       return;
    }
-   for(size_t i = 0; i < hit_vec->size(); ++i) hit_vec->at(i).ClearEnergy();
+   for(auto & i : *hit_vec) i.ClearEnergy();
 
    if(TGRSIOptions::AnalysisOptions()->IsCorrectingCrossTalk()) {
       size_t i, j;

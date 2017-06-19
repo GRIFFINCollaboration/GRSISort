@@ -32,7 +32,7 @@ class TPeak : public TGRSIFit {
 
 public:
    // ctors and dtors
-   virtual ~TPeak();
+   ~TPeak() override;
    TPeak(const TPeak& copy);
    TPeak(Double_t cent, Double_t xlow, Double_t xhigh);
    TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background);
@@ -42,7 +42,7 @@ protected:
    void InitNames();
 
 public:
-   virtual void Copy(TObject& obj) const;
+   void Copy(TObject& obj) const override;
    void SetCentroid(Double_t cent) { SetParameter("centroid", cent); }
 
    Bool_t Fit(TH1* fithist, Option_t* opt = ""); // Might switch this to TFitResultPtr
@@ -80,7 +80,7 @@ protected:
    void SetNdf(Double_t Ndf) { fNdf = Ndf; }
 
 public:
-   Bool_t InitParams(TH1* fithist = 0);
+   Bool_t InitParams(TH1* fithist = nullptr) override;
    TF1* Background() const { return fBackground; }
    void DrawBackground(Option_t* opt = "SAME") const; // *MENU*
    void DrawResiduals();                              // *MENU*
@@ -98,9 +98,9 @@ public:
    static TPeak* GetLastFit() { return fLastFit; }
 
 public:
-   virtual void Print(Option_t* opt = "") const;
+   void Print(Option_t* opt = "") const override;
    const char* PrintString(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
+   void Clear(Option_t* opt = "") override;
 
 private:
    // Centroid will eventually be read from parameters
@@ -117,7 +117,7 @@ private:
    TGraph* fResiduals;
 
    /// \cond CLASSIMP
-   ClassDef(TPeak, 2);
+   ClassDefOverride(TPeak, 2);
    /// \endcond
 };
 /*! @} */

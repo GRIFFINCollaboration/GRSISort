@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <limits>
 
-#include <time.h>
+#include <ctime>
 
 #include "TChannel.h"
 #include "TGRSIRunInfo.h"
@@ -36,8 +36,7 @@ TEpicsFrag::TEpicsFrag()
 }
 
 TEpicsFrag::~TEpicsFrag()
-{
-}
+= default;
 
 void TEpicsFrag::Clear(Option_t*)
 {
@@ -73,7 +72,7 @@ void TEpicsFrag::Print(Option_t*) const
 
 void TEpicsFrag::AddEpicsVariable(const char* name)
 {
-   fNameList.push_back(std::string(name));
+   fNameList.emplace_back(name);
 }
 
 std::string TEpicsFrag::GetEpicsVariableName(const int& i)

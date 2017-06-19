@@ -45,8 +45,7 @@ GH2D::GH2D(const TObject& obj)
 }
 
 GH2D::~GH2D()
-{
-}
+= default;
 
 void GH2D::Copy(TObject& obj) const
 {

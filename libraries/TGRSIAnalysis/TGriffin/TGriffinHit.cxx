@@ -32,8 +32,7 @@ TGriffinHit::TGriffinHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 }
 
 TGriffinHit::~TGriffinHit()
-{
-}
+= default;
 
 void TGriffinHit::Copy(TObject& rhs) const
 {
@@ -67,7 +66,7 @@ void TGriffinHit::Clear(Option_t* opt)
    fFilter              = 0;
    fGriffinHitBits      = 0;
    fCrystal             = 0xFFFF;
-   fPPG                 = 0;
+   fPPG                 = nullptr;
    fBremSuppressed_flag = false;
 }
 

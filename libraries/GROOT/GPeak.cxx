@@ -35,9 +35,9 @@ GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t*)
    InitNames();
    TF1::SetParameter("centroid", cent);
 
-   SetParent(0);
+   SetParent(nullptr);
    // TF1::SetDirectory(0);
-   fBGFit.SetParent(0);
+   fBGFit.SetParent(nullptr);
    fBGFit.SetBit(TObject::kCanDelete, false);
    // fBGFit.SetDirectory(0);
 }
@@ -68,9 +68,9 @@ GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* bg, Option_t*)
    fBGFit.SetLineStyle(2);
    fBGFit.SetLineColor(kBlack);
 
-   SetParent(0);
+   SetParent(nullptr);
    // SetDirectory(0);
-   fBGFit.SetParent(0);
+   fBGFit.SetParent(nullptr);
    // fBGFit.SetDirectory(0);
 }
 
@@ -85,18 +85,18 @@ GPeak::GPeak()
    fBGFit.SetLineStyle(2);
    fBGFit.SetLineColor(kBlack);
 
-   SetParent(0);
+   SetParent(nullptr);
    // SetDirectory(0);
-   fBGFit.SetParent(0);
+   fBGFit.SetParent(nullptr);
    // fBGFit.SetDirectory(0);
 }
 
 GPeak::GPeak(const GPeak& peak) : TF1(peak)
 {
 
-   SetParent(0);
+   SetParent(nullptr);
    // SetDirectory(0);
-   fBGFit.SetParent(0);
+   fBGFit.SetParent(nullptr);
    // fBGFit.SetDirectory(0);
    peak.Copy(*this);
 }
@@ -357,7 +357,7 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    fithist->GetListOfFunctions()->Add(fBGFit.Clone()); // use to be a clone.
    fLastFit = this;
 
-   SetParent(0); // fithist);
+   SetParent(nullptr); // fithist);
 
    // delete tmppeak;
    return true;
@@ -407,8 +407,8 @@ void GPeak::DrawResiduals(TH1* hist) const
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
    Int_t     nbins  = hist->GetXaxis()->GetNbins();
-   Double_t* res    = new Double_t[nbins];
-   Double_t* bin    = new Double_t[nbins];
+   auto* res    = new Double_t[nbins];
+   auto* bin    = new Double_t[nbins];
    Int_t     points = 0;
    for(int i = 1; i <= nbins; i++) {
       if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) continue;
@@ -417,7 +417,7 @@ void GPeak::DrawResiduals(TH1* hist) const
       points++;
    }
    new GCanvas();
-   TGraph* residuals = new TGraph(points, bin, res);
+   auto* residuals = new TGraph(points, bin, res);
    residuals->Draw("*AC");
    delete[] res;
    delete[] bin;

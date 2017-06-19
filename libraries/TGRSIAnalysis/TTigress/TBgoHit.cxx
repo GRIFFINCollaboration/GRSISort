@@ -14,8 +14,7 @@ ClassImp(TBgoHit)
 }
 
 TBgoHit::~TBgoHit()
-{
-}
+= default;
 
 TBgoHit::TBgoHit(const TBgoHit& rhs) : TGRSIDetectorHit()
 {

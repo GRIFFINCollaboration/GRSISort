@@ -42,13 +42,6 @@
 #include "TClass.h"
 #include "Globals.h"
 
-typedef struct WaveFormShapePar {
-	bool   InUse;
-	double BaseLine;
-	double TauDecay;
-	double TauRise;
-} WaveFormShapePar;
-
 class TChannel : public TNamed {
 public:
    static TChannel* GetChannel(unsigned int temp_address);
@@ -59,7 +52,7 @@ public:
    TChannel(const char*);
    TChannel(TChannel*);
 
-   virtual ~TChannel();
+   ~TChannel() override;
 
    static int  GetNumberOfChannels() { return fChannelMap->size(); }
    static void AddChannel(TChannel*, Option_t* opt = "");
@@ -101,6 +94,13 @@ private:
    std::vector<double> fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
    double fEFFChi2;                       // Chi2 of Efficiency calibration
 
+	struct WaveFormShapePar {
+		bool   InUse;
+		double BaseLine;
+		double TauDecay;
+		double TauRise;
+	};
+
    WaveFormShapePar WaveFormShape;
 
    std::vector<double> fCTCoefficients; // Cross talk coefficients
@@ -122,7 +122,7 @@ private:
    static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
 public:
-   void SetName(const char* tmpName);
+   void SetName(const char* tmpName) override;
    void SetAddress(unsigned int tmpadd);
    inline void SetNumber(int tmpnum)
    {
@@ -252,14 +252,14 @@ public:
    static void WriteCTCorrections(std::string outfilename = "");
    static void WriteCalBuffer(Option_t* opt = "");
 
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
    // static  void PrintAll(Option_t* opt = "");
    std::string PrintToString(Option_t* opt = "");
    std::string PrintCTToString(Option_t* opt = "");
    void PrintCTCoeffs(Option_t* opt = "") const;
 
-   static int WriteToRoot(TFile* fileptr = 0);
+   static int WriteToRoot(TFile* fileptr = nullptr);
 
 private:
    // the follow is to make the custom streamer
@@ -270,7 +270,7 @@ private:
    static void        SaveToSelf(const char*);
 
    /// \cond CLASSIMP
-   ClassDef(TChannel, 5) // Contains the Digitizer Information
+   ClassDefOverride(TChannel, 5) // Contains the Digitizer Information
    /// \endcond
 };
 /*! @} */

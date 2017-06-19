@@ -1,6 +1,7 @@
 #include "TRuntimeObjects.h"
 
 #include <iostream>
+#include <utility>
 
 #include "TClass.h"
 #include "TCutG.h"
@@ -20,7 +21,7 @@ std::map<std::string, TRuntimeObjects*> TRuntimeObjects::fRuntimeMap;
 
 TRuntimeObjects::TRuntimeObjects(std::shared_ptr<const TFragment> frag, TList* objects, TList* gates,
                                  std::vector<TFile*>& cut_files, TDirectory* directory, const char* name)
-   : fFrag(frag), // detectors(nullptr),
+   : fFrag(std::move(frag)), // detectors(nullptr),
      fObjects(objects), fGates(gates), fCut_files(cut_files), fDirectory(directory)
 {
    SetName(name);

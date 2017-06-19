@@ -23,12 +23,12 @@ public:
 
    TSiLiHit();
    TSiLiHit(const TFragment&);
-   virtual ~TSiLiHit();
+   ~TSiLiHit() override;
    TSiLiHit(const TSiLiHit&);
 
-   void Copy(TObject&, bool = false) const; //!
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Copy(TObject&, bool = false) const override; //!
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
    Int_t    GetRing() const;
    Int_t    GetSector() const;
@@ -53,9 +53,9 @@ public:
    void             SetWavefit(const TFragment&);
    static TChannel* GetSiLiHitChannel(int segment);
    static TPulseAnalyzer* FitFrag(const TFragment& frag, int ShapeFit, int segment);
-   static TPulseAnalyzer* FitFrag(const TFragment& frag, int ShapeFit = 0, TChannel* = 0);
+   static TPulseAnalyzer* FitFrag(const TFragment& frag, int ShapeFit = 0, TChannel* = nullptr);
    static int FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit, int segment);
-   static int FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit = 0, TChannel* = 0);
+   static int FitPulseAnalyzer(TPulseAnalyzer* pulse, int ShapeFit = 0, TChannel* = nullptr);
    TVector3 GetPosition(Double_t dist, bool = false) const; //!
    TVector3 GetPosition(bool = false) const;                //!
 
@@ -70,12 +70,12 @@ public:
    double GetWaveformEnergy() const { return GetFitEnergy(); }
    double GetFitEnergy() const;
    double GetFitCharge() const { return fFitCharge; }
-   double GetEnergy(Option_t* opt = 0) const;
+   double GetEnergy(Option_t* opt = nullptr) const override;
 
    // Not strictly "doppler" but consistent
-   inline double GetDoppler(double beta, TVector3* vec = 0)
+   inline double GetDoppler(double beta, TVector3* vec = nullptr)
    {
-      if (vec == 0) {
+      if (vec == nullptr) {
          vec = GetBeamDirection();
       }
       TVector3 pos = GetPosition();
@@ -119,7 +119,7 @@ private:
    Double_t fFitBase;
 
    /// \cond CLASSIMP
-   ClassDef(TSiLiHit, 9);
+   ClassDefOverride(TSiLiHit, 9);
    /// \endcond
 };
 /*! @} */

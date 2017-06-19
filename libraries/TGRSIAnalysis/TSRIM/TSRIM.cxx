@@ -20,12 +20,12 @@ ClassImp(TSRIM)
 
 TSRIM::TSRIM()
 {
-   fEnergyLoss = 0;
+   fEnergyLoss = nullptr;
 }
 
 TSRIM::TSRIM(const char* infilename, double emax, double emin, bool printfile)
 {
-   fEnergyLoss = 0;
+   fEnergyLoss = nullptr;
    ReadEnergyLossFile(infilename, emax, emin, printfile);
 }
 
@@ -96,8 +96,8 @@ void TSRIM::ReadEnergyLossFile(const char* filename, double emax, double emin, b
          density_scale = 1.;
       }
 
-      for(size_t i = 0; i < dEdX_temp.size(); i++) {
-         dEdX.push_back(dEdX_temp[i] * density_scale);
+      for(double i : dEdX_temp) {
+         dEdX.push_back(i * density_scale);
       }
 
       fEnergyLoss = new TGraph(IonEnergy.size(), &IonEnergy[0], &dEdX[0]);
@@ -208,7 +208,7 @@ double TSRIM::GetEnergy(double energy, double dist)
 // THIS FUNCTION DOES A MORE ACCURATE ENERGY LOSS CALCULATION BASED ON SMALL EXTRAPOLATIONS
 double TSRIM::GetAdjustedEnergy(double energy, double thickness, double stepsize)
 {
-   if(fEnergyLoss == 0) {
+   if(fEnergyLoss == nullptr) {
       printf("energy loss file has not yet been read in.\n");
       return 0.0;
    }

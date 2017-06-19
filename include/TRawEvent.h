@@ -25,11 +25,11 @@ public:
    // houskeeping functions
    TRawEvent() {}                                                   ///< default constructor
    TRawEvent(const TRawEvent& rhs) : TObject(rhs) {}                ///< copy constructor
-   virtual ~TRawEvent() {}                                          ///< destructor
+   ~TRawEvent() override = default;                                          ///< destructor
    virtual TRawEvent& operator=(const TRawEvent&) { return *this; } ///< assignement operator
-   virtual void Clear(Option_t* = "") {}                            ///< clear event for reuse
-   virtual void Copy(TObject&) const {}                             ///< copy helper
-   virtual void Print(const char* = "") const {}                    ///< show all event information
+   void Clear(Option_t* = "") override {}                            ///< clear event for reuse
+   void Copy(TObject&) const override {}                             ///< copy helper
+   void Print(const char* = "") const override {}                    ///< show all event information
 
    // get event information
 
@@ -47,7 +47,7 @@ public:
 protected:
 	int                 fGoodFrags;     ///< number of good fragments parsed
    /// \cond CLASSIMP
-   ClassDef(TRawEvent, 0) // All of the data contained in a Midas Event
+   ClassDefOverride(TRawEvent, 0) // All of the data contained in a Midas Event
    /// \endcond
 };
 /*! @} */

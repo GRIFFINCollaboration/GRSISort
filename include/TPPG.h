@@ -35,9 +35,9 @@ class TPPGData : public TObject {
 public:
    TPPGData();
    TPPGData(const TPPGData&);
-   ~TPPGData(){};
+   ~TPPGData()= default;
 
-   void Copy(TObject& rhs) const;
+   void Copy(TObject& rhs) const override;
 
    void SetLowTimeStamp(UInt_t lowTime)
    {
@@ -63,8 +63,8 @@ public:
 
    Long64_t GetTimeStamp() const { return fTimeStamp; }
 
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
 private:
    ULong64_t fTimeStamp;
@@ -75,7 +75,7 @@ private:
    UInt_t    fHighTimeStamp;
 
    /// \cond CLASSIMP
-   ClassDef(TPPGData, 2) // Contains PPG data information
+   ClassDefOverride(TPPGData, 2) // Contains PPG data information
    /// \endcond
 };
 
@@ -97,15 +97,15 @@ public:
 
    TPPG();
    TPPG(const TPPG&);
-   virtual ~TPPG();
+   ~TPPG() override;
 
-   void Copy(TObject& rhs) const;
+   void Copy(TObject& rhs) const override;
    void  Setup();
-   Int_t Write(const char* name = 0, Int_t option = 0, Int_t bufsize = 0)
+   Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override
    {
       return ((const TPPG*)this)->Write(name, option, bufsize);
    }
-   Int_t Write(const char* name = 0, Int_t option = 0, Int_t bufsize = 0) const;
+   Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) const override;
 
 public:
    void AddData(TPPGData* pat);
@@ -135,8 +135,8 @@ public:
 
 	void SetOdbCycle(std::vector<short> ppgCodes, std::vector<int> durations) { fOdbPPGCodes = ppgCodes; fOdbDurations = durations; }
 
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
 private:
    static TPPG*       fPPG; //< static pointer to TPPG
@@ -152,7 +152,7 @@ private:
 	std::vector<int>   fOdbDurations;  ///< duration of ppg state as read from odb
 
 	/// \cond CLASSIMP
-	ClassDef(TPPG, 3) //Contains PPG information
+	ClassDefOverride(TPPG, 3) //Contains PPG information
 	/// \endcond
 };
 /*! @} */

@@ -34,7 +34,7 @@ public:
    TGriffinHit();
    TGriffinHit(const TGriffinHit&);
    TGriffinHit(const TFragment&);
-   virtual ~TGriffinHit();
+   ~TGriffinHit() override;
 
 private:
    Int_t                   fFilter;              //  The Filter Word
@@ -49,7 +49,7 @@ public:
    /////////////////////////  Getters	/////////////////////////////////////
    inline Int_t GetFilterPattern() const { return fFilter; } //!<!
    Double_t GetNoCTEnergy(Option_t* opt = "") const;
-   Double_t GetEnergyNonlinearity(double energy) const;
+   Double_t GetEnergyNonlinearity(double energy) const override;
 
    /////////////////////////  Recommended Functions/////////////////////////
 
@@ -67,7 +67,7 @@ public:
 
    /////////////////////////		/////////////////////////////////////
 
-   inline UShort_t GetArrayNumber() const { return (4 * (GetDetector() - 1) + (GetCrystal() + 1)); } //!<!
+   inline UShort_t GetArrayNumber() const override { return (4 * (GetDetector() - 1) + (GetCrystal() + 1)); } //!<!
    // returns a number 1-64 ( 1 = Detector 1 blue;  64 =  Detector 16 white; )
    Bool_t GetIsBremSuppressed() const { return fBremSuppressed_flag; }
    void SetIsBremSuppressed(const Bool_t& supp_flag) { fBremSuppressed_flag = supp_flag; }
@@ -80,20 +80,20 @@ public:
                                                                       // Bool_t BremSuppressed(TSceptarHit*);
 
 public:
-   virtual void Clear(Option_t* opt = "");       //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Copy(TObject&, bool) const;      //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Copy(TObject&, bool) const override;      //!<!
 
-   TVector3 GetPosition(double dist) const; //!<!
-   TVector3 GetPosition() const;
+   TVector3 GetPosition(double dist) const override; //!<!
+   TVector3 GetPosition() const override;
 
 private:
    void SetGriffinFlag(enum EGriffinHitBits, Bool_t set);
    Double_t GetDefaultDistance() const { return 110.; }
 
    /// \cond CLASSIMP
-   ClassDef(TGriffinHit, 7); // Information about a GRIFFIN Hit
+   ClassDefOverride(TGriffinHit, 7); // Information about a GRIFFIN Hit
    /// \endcond
 };
 /*! @} */

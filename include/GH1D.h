@@ -37,18 +37,18 @@ public:
    int  GetProjectionAxis() const { return projection_axis; }
    void SetProjectionAxis(int axis) { projection_axis = axis; }
 
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
-   void Copy(TObject& obj) const;
-   void Draw(Option_t* opt = "");
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
+   void Copy(TObject& obj) const override;
+   void Draw(Option_t* opt = "") override;
 
 #if ROOT_VERSION_CODE < ROOT_VERSION(6, 0, 0)
    TH1* DrawCopy(Option_t* opt = "") const;
 #else
-   TH1* DrawCopy(Option_t* opt = "", const char* name_postfix = "copy") const;
+   TH1* DrawCopy(Option_t* opt = "", const char* name_postfix = "copy") const override;
 #endif
 
-   TH1* DrawNormalized(Option_t* opt = "", Double_t norm = 1) const;
+   TH1* DrawNormalized(Option_t* opt = "", Double_t norm = 1) const override;
 
    bool WriteDatFile(const char* outFile);
 
@@ -65,7 +65,7 @@ private:
    TRef parent;
    int  projection_axis;
 
-   ClassDef(GH1D, 1)
+   ClassDefOverride(GH1D, 1)
 };
 
 #endif /* GH1D_H */

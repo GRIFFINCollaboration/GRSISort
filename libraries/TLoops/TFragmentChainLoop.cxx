@@ -20,7 +20,7 @@ TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
    StoppableThread* thread = StoppableThread::Get(name);
    if(!thread) {
       if(!chain && !gFragment) {
-         return 0;
+         return nullptr;
       } else if(!chain) {
          chain = gFragment;
       }
@@ -37,8 +37,7 @@ TFragmentChainLoop::TFragmentChainLoop(std::string name, TChain* chain)
 }
 
 TFragmentChainLoop::~TFragmentChainLoop()
-{
-}
+= default;
 
 void TFragmentChainLoop::ClearQueue()
 {

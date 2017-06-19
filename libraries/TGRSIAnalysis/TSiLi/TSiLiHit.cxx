@@ -19,8 +19,7 @@ TSiLiHit::TSiLiHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 }
 
 TSiLiHit::~TSiLiHit()
-{
-}
+= default;
 
 TSiLiHit::TSiLiHit(const TSiLiHit& rhs) : TGRSIDetectorHit(rhs)
 {
@@ -83,10 +82,10 @@ TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment& frag, int ShapeFit, int segme
 
 TPulseAnalyzer* TSiLiHit::FitFrag(const TFragment& frag, int ShapeFit, TChannel* channel)
 {
-   TPulseAnalyzer* pulse = new TPulseAnalyzer(frag, TSiLi::sili_noise_fac);
+   auto* pulse = new TPulseAnalyzer(frag, TSiLi::sili_noise_fac);
    if(FitPulseAnalyzer(pulse, ShapeFit, channel)) return pulse;
    delete pulse;
-   return 0;
+   return nullptr;
 }
 
 TChannel* TSiLiHit::GetSiLiHitChannel(int segment)

@@ -34,10 +34,10 @@ public:
 
    TS3();
    TS3(const TS3&);
-   virtual ~TS3();
+   ~TS3() override;
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
 #endif
 
    Short_t GetRingMultiplicity() const { return fS3RingHits.size(); }
@@ -91,7 +91,7 @@ public:
 
    void SetTargetDistance(double dist) { fTargetDistance = dist; }
 
-   void ClearTransients()
+   void ClearTransients() override
    {
       fS3Bits = 0;
       for (auto hit : fS3Hits) hit.ClearTransients();
@@ -99,10 +99,10 @@ public:
       for (auto hit : fS3SectorHits) hit.ClearTransients();
    }
 
-   void         Copy(TObject&) const;
+   void         Copy(TObject&) const override;
    TS3&         operator=(const TS3&);           //
-   virtual void Clear(Option_t* opt = "all");    //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
+   void Clear(Option_t* opt = "all") override;    //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
 private:
    std::vector<TS3Hit> fS3Hits; //!<!
@@ -132,7 +132,7 @@ private:
    static double fFrontBackEnergy; //!
 
    /// \cond CLASSIMP
-   ClassDef(TS3, 4)
+   ClassDefOverride(TS3, 4)
    /// \endcond
 };
 /*! @} */

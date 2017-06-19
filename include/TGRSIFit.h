@@ -25,7 +25,7 @@
 
 class TGRSIFit : public TF1 {
 public:
-   virtual ~TGRSIFit();
+   ~TGRSIFit() override;
 
 protected:
    TGRSIFit();
@@ -44,7 +44,7 @@ protected:
    TGRSIFit(const TGRSIFit& copy);
 
 public:
-   virtual void Copy(TObject& copy) const;
+   void Copy(TObject& copy) const override;
    // Every fit object should have to initialize parameters and have a fit method defined.
    virtual Bool_t InitParams(TH1*) = 0;
    Bool_t         IsGoodFit() const { return fGoodFitFlag; }
@@ -58,7 +58,7 @@ public:
 
    // These are only to be called in the Dtor of classes to protect from ROOT's insane garbage collection system
    // They can be called anywhere though as long as new classes are carefully destructed.
-   Bool_t AddToGlobalList(Bool_t on = kTRUE);
+   Bool_t AddToGlobalList(Bool_t on = kTRUE) override;
    static Bool_t AddToGlobalList(TF1* func, Bool_t on = kTRUE);
 
 protected:
@@ -73,13 +73,13 @@ private:
    static TString fDefaultFitType;
 
 public:
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
    virtual void ClearParameters(Option_t* opt = "");
    virtual void CopyParameters(TF1* copy) const;
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIFit, 0);
+   ClassDefOverride(TGRSIFit, 0);
    /// \endcond
 };
 /*! @} */

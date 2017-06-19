@@ -40,11 +40,11 @@ public:
    // houskeeping functions
    TMidasEvent();                              ///< default constructor
    TMidasEvent(const TMidasEvent&);            ///< copy constructor
-   virtual ~TMidasEvent();                     ///< destructor
+   ~TMidasEvent() override;                     ///< destructor
    TMidasEvent& operator=(const TMidasEvent&); ///< assignement operator
-   void Clear(Option_t* opt = "");             ///< clear event for reuse
-   void Copy(TObject&) const;                  ///< copy helper
-   void Print(const char* option = "") const;  ///< show all event information
+   void Clear(Option_t* opt = "") override;             ///< clear event for reuse
+   void Copy(TObject&) const override;                  ///< copy helper
+   void Print(const char* option = "") const override;  ///< show all event information
 
    // get event information
 
@@ -52,7 +52,7 @@ public:
    uint16_t GetTriggerMask() const;  ///< return the triger mask
    uint32_t GetSerialNumber() const; ///< return the serial number
    uint32_t GetTimeStamp() const;    ///< return the time stamp (unix time in seconds)
-   uint32_t GetDataSize() const;     ///< return the event size
+   uint32_t GetDataSize() const override;     ///< return the event size
 
    // get data banks
 
@@ -67,7 +67,7 @@ public:
    // helpers for event creation
 
    TMidas_EVENT_HEADER* GetEventHeader(); ///< return pointer to the event header
-   char*                GetData();        ///< return pointer to the data buffer
+   char*                GetData() override;        ///< return pointer to the data buffer
 
    void AllocateData();                               ///< allocate data buffer using the existing event header
    void SetData(uint32_t dataSize, char* dataBuffer); ///< set an externally allocated data buffer
@@ -76,9 +76,9 @@ public:
    bool IsGoodSize() const; ///< validate the event length
 
    void SwapBytesEventHeader(); ///< convert event header between little-endian (Linux-x86) and big endian (MacOS-PPC)
-   int  SwapBytes(bool);        ///< convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC)
+   int  SwapBytes(bool) override;        ///< convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC)
 
-   int Process(TDataParser& parser);
+   int Process(TDataParser& parser) override;
 
 protected:
    int ProcessEPICS(float* ptr, int& dSize, TDataParser& parser);
@@ -92,7 +92,7 @@ protected:
    bool                fAllocatedByUs; ///< "true" if we own the data buffer
 
    /// \cond CLASSIMP
-   ClassDef(TMidasEvent, 0) // All of the data contained in a Midas Event
+   ClassDefOverride(TMidasEvent, 0) // All of the data contained in a Midas Event
    /// \endcond
 };
 /*! @} */

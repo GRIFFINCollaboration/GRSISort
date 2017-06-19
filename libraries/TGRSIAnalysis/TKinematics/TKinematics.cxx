@@ -48,7 +48,7 @@ ClassImp(TKinematics)
    Initial();
    FinalCm();
    SetName(name);
-   Cm2LabSpline = 0;
+   Cm2LabSpline = nullptr;
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, const char* name)
@@ -66,7 +66,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, double ebeam, c
    Initial();
    FinalCm();
    SetName(name);
-   Cm2LabSpline = 0;
+   Cm2LabSpline = nullptr;
 }
 
 TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoil, TNucleus* ejectile, double ebeam,
@@ -85,7 +85,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
    Initial();
    FinalCm();
    SetName(name);
-   Cm2LabSpline = 0;
+   Cm2LabSpline = nullptr;
    //  printf("\e[1;31m" "M[0] = %.01f \tM[1] = %.01f \tM[2] = %.01f \tM[3] = %.01f \t\n\n\n "
    //  "\e[m",fM[0],fM[1],fM[2],fM[3]);
 }
@@ -106,7 +106,7 @@ TKinematics::TKinematics(TNucleus* projectile, TNucleus* target, TNucleus* recoi
    Initial();
    FinalCm();
    SetName(name);
-   Cm2LabSpline = 0;
+   Cm2LabSpline = nullptr;
 }
 
 TKinematics::TKinematics(const char* beam, const char* targ, const char* ejec, const char* reco, double ebeam,
@@ -140,7 +140,7 @@ TKinematics::TKinematics(const char* beam, const char* targ, const char* ejec, c
    Initial();
    FinalCm();
    SetName(name);
-   Cm2LabSpline = 0;
+   Cm2LabSpline = nullptr;
 }
 
 void TKinematics::InitKin()
@@ -158,7 +158,7 @@ void TKinematics::InitKin()
    fGamma_cm = 0;
 
    for(int i = 0; i < 4; i++) {
-      fParticle[i] = 0;
+      fParticle[i] = nullptr;
       fM[i]        = 0;
       fT[i]        = 0;
       fE[i]        = 0;
@@ -183,7 +183,7 @@ TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
    if(part < 2 || part > 3) {
       printf(ALERTTEXT
              "WARNING: the function Evslab should use nuclei after the reaction (part 2 or part 3)" RESET_COLOR "\n");
-      return 0;
+      return nullptr;
    }
 
    std::vector<double> energy;
@@ -208,7 +208,7 @@ TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
                           "\n");
          printf(ALERTTEXT "         try Evslab_graph to see what this looks like.                         " RESET_COLOR
                           "\n");
-         return 0;
+         return nullptr;
       }
       lastangle = tmpangle;
       if(tmpangle < 1 || tmpangle > (GetMaxAngle(fVcm[part]) * rad2deg) - 1) continue;
@@ -219,7 +219,7 @@ TSpline3* TKinematics::Evslab(double thmin, double thmax, double size, int part)
    }
 
    TGraph    graph(angle.size(), angle.data(), energy.data());
-   TSpline3* spline = new TSpline3("ETh_lab", &graph);
+   auto* spline = new TSpline3("ETh_lab", &graph);
    return spline;
 }
 
@@ -232,7 +232,7 @@ TGraph* TKinematics::Evslab_graph(double thmin, double thmax, double size, int p
       printf(ALERTTEXT
              "WARNING: the function Evslab_graph should use nuclei after the reaction (part 2 or part 3)" RESET_COLOR
              "\n");
-      return 0;
+      return nullptr;
    }
 
    std::vector<double> energy;
@@ -257,15 +257,15 @@ TGraph* TKinematics::Evslab_graph(double thmin, double thmax, double size, int p
       energy.push_back(GetTlab(part) * 1000);
    }
 
-   TGraph* graph = new TGraph(angle.size(), angle.data(), energy.data());
+   auto* graph = new TGraph(angle.size(), angle.data(), energy.data());
    // TSpline3* spline = new TSpline3("ETh_lab",&graph);
    return graph;
 }
 
 TSpline3* TKinematics::Evscm(double thmin, double thmax, double size, int part)
 {
-   double* energy  = new double[(int)((thmax - thmin) / size) + 1];
-   double* angle   = new double[(int)((thmax - thmin) / size) + 1];
+   auto* energy  = new double[(int)((thmax - thmin) / size) + 1];
+   auto* angle   = new double[(int)((thmax - thmin) / size) + 1];
    int     number  = 0;
    double  deg2rad = PI / 180.;
    for(int i = 0; i < ((thmax - thmin) / size); i++) {
@@ -274,8 +274,8 @@ TSpline3* TKinematics::Evscm(double thmin, double thmax, double size, int part)
       energy[i] = GetTlab(part);
       number++;
    }
-   TGraph*   graph  = new TGraph(number, angle, energy);
-   TSpline3* spline = new TSpline3("ETh_cm", graph);
+   auto*   graph  = new TGraph(number, angle, energy);
+   auto* spline = new TSpline3("ETh_cm", graph);
    delete graph;
    delete[] angle;
    delete[] energy;
@@ -625,16 +625,16 @@ double TKinematics::Angle_cm2lab(double vcm, double angle_cm)
 // cout << "ich\t" << atan2(sin(angle_cm),fGamma_cm*(cos(angle_cm)+x))*180./PI << endl;
 TSpline3* TKinematics::labvscm(double thmin, double thmax, double size, int part)
 {
-   double* cm  = new double[(int)((thmax - thmin) / size) + 1];
-   double* lab = new double[(int)((thmax - thmin) / size) + 1];
+   auto* cm  = new double[(int)((thmax - thmin) / size) + 1];
+   auto* lab = new double[(int)((thmax - thmin) / size) + 1];
    int     nr  = 0;
    for(int i = 0; i < ((thmax - thmin) / size); i++) {
       cm[nr]  = i;
       lab[nr] = Angle_cm2lab(fVcm[part], cm[nr] * PI / 180.) * 180. / PI;
       if(lab[nr] > 0.01 && lab[nr] < 179.99) nr++;
    }
-   TGraph*   graph  = new TGraph(nr, cm, lab);
-   TSpline3* spline = new TSpline3("Th_cmvslab", graph);
+   auto*   graph  = new TGraph(nr, cm, lab);
+   auto* spline = new TSpline3("Th_cmvslab", graph);
    delete graph;
    delete[] lab;
    delete[] cm;
@@ -643,16 +643,16 @@ TSpline3* TKinematics::labvscm(double thmin, double thmax, double size, int part
 
 TSpline3* TKinematics::cmvslab(double thmin, double thmax, double size, int part)
 {
-   double* cm  = new double[(int)((thmax - thmin) / size) + 1];
-   double* lab = new double[(int)((thmax - thmin) / size) + 1];
+   auto* cm  = new double[(int)((thmax - thmin) / size) + 1];
+   auto* lab = new double[(int)((thmax - thmin) / size) + 1];
    int     nr  = 0;
    for(int i = 0; i < ((thmax - thmin) / size); i++) {
       cm[nr]  = i;
       lab[nr] = Angle_cm2lab(fVcm[part], cm[nr] * PI / 180.) * 180. / PI;
       if(lab[nr] > 0.01 && lab[nr] < 179.99) nr++;
    }
-   TGraph*   graph  = new TGraph(nr, lab, cm);
-   TSpline3* spline = new TSpline3("Th_cmvslab", graph);
+   auto*   graph  = new TGraph(nr, lab, cm);
+   auto* spline = new TSpline3("Th_cmvslab", graph);
    delete graph;
    delete[] lab;
    delete[] cm;
@@ -661,16 +661,16 @@ TSpline3* TKinematics::cmvslab(double thmin, double thmax, double size, int part
 
 TSpline3* TKinematics::Steffen_labvscminverse(double thmin, double thmax, double size, int part)
 {
-   double* cm  = new double[(int)((thmax - thmin) / size) + 1];
-   double* lab = new double[(int)((thmax - thmin) / size) + 1];
+   auto* cm  = new double[(int)((thmax - thmin) / size) + 1];
+   auto* lab = new double[(int)((thmax - thmin) / size) + 1];
    int     nr  = 0;
    for(int i = ((thmax - thmin) / size); i > 0; i--) {
       cm[nr]  = i;
       lab[nr] = Steffen_cm2labinverse(cm[nr] * PI / 180., part) * 180. / PI;
       if(lab[nr] > 0.01 && lab[nr] < 179.99) nr++;
    }
-   TGraph*   graph  = new TGraph(nr, lab, cm);
-   TSpline3* spline = new TSpline3("Th_cmvslabinverse", graph);
+   auto*   graph  = new TGraph(nr, lab, cm);
+   auto* spline = new TSpline3("Th_cmvslabinverse", graph);
    delete graph;
    delete[] lab;
    delete[] cm;
@@ -756,8 +756,8 @@ double TKinematics::Rutherford(double angle_cm)
 
 TSpline3* TKinematics::Ruthvscm(double thmin, double thmax, double size)
 {
-   double* cross  = new double[(int)((thmax - thmin) / size) + 1];
-   double* angle  = new double[(int)((thmax - thmin) / size) + 1];
+   auto* cross  = new double[(int)((thmax - thmin) / size) + 1];
+   auto* angle  = new double[(int)((thmax - thmin) / size) + 1];
    int     number = 0;
    for(int i = 0; i < ((thmax - thmin) / size); i++) {
       angle[i] = thmin + i * size;
@@ -771,8 +771,8 @@ TSpline3* TKinematics::Ruthvscm(double thmin, double thmax, double size)
       // setprecision(4) << Rutherford(GetThetacm(3)) << "\t" << setprecision(4) << Rutherford(GetThetacm(2)) << endl;
       // cout << (thmin+i*size)*PI/180. << "  max angle: " << GetMaxAngle(fVcm[2]) << endl;
    }
-   TGraph*   graph  = new TGraph(number, angle, cross);
-   TSpline3* spline = new TSpline3("sigmaTh_cm", graph);
+   auto*   graph  = new TGraph(number, angle, cross);
+   auto* spline = new TSpline3("sigmaTh_cm", graph);
    delete graph;
    delete[] angle;
    delete[] cross;
@@ -781,8 +781,8 @@ TSpline3* TKinematics::Ruthvscm(double thmin, double thmax, double size)
 
 TSpline3* TKinematics::Ruthvslab(double thmin, double thmax, double size, int part)
 {
-   double* cross  = new double[(int)((thmax - thmin) / size) + 1];
-   double* angle  = new double[(int)((thmax - thmin) / size) + 1];
+   auto* cross  = new double[(int)((thmax - thmin) / size) + 1];
+   auto* angle  = new double[(int)((thmax - thmin) / size) + 1];
    int     number = 0;
    for(int i = 0; i < ((thmax - thmin) / size); i++) {
       if(part == 3 || part == 2)
@@ -831,8 +831,8 @@ TSpline3* TKinematics::Ruthvslab(double thmin, double thmax, double size, int pa
           continue;
     */
    }
-   TGraph*   graph  = new TGraph(number, angle, cross);
-   TSpline3* spline = new TSpline3("sigmaTh_lab", graph);
+   auto*   graph  = new TGraph(number, angle, cross);
+   auto* spline = new TSpline3("sigmaTh_lab", graph);
    delete graph;
    delete[] angle;
    delete[] cross;

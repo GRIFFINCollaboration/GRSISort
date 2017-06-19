@@ -44,8 +44,7 @@ TEventBuildingLoop::TEventBuildingLoop(std::string name, EBuildMode mode)
 }
 
 TEventBuildingLoop::~TEventBuildingLoop()
-{
-}
+= default;
 
 void TEventBuildingLoop::ClearQueue()
 {

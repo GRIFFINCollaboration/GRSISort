@@ -45,7 +45,7 @@ class TCal : public TGraphErrors {
 public:
    TCal();
    TCal(const char* name, const char* title);
-   virtual ~TCal();
+   ~TCal() override;
 
    TCal(const TCal& copy);
 
@@ -53,7 +53,7 @@ public:
    virtual Bool_t IsGroupable() const = 0;
 
 public:
-   virtual void Copy(TObject& obj) const;
+   void Copy(TObject& obj) const override;
    virtual void WriteToChannel() const { Error("WriteToChannel", "Not defined for %s", ClassName()); }
    virtual TF1* GetFitFunction() const { return fFitFunc; }
    virtual void SetFitFunction(const TF1* func) { fFitFunc = const_cast<TF1*>(func); };
@@ -63,8 +63,8 @@ public:
    TChannel* GetChannel() const;
    Bool_t SetChannel(const TChannel* chan);
    Bool_t SetChannel(UInt_t channum);
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
    // virtual void Draw(Option_t* chopt = "");
 
    virtual void WriteToAllChannels(std::string mnemonic = "");
@@ -85,7 +85,7 @@ private:
    TNucleus* fNuc;     // Nucleus that we are calibrating against
 
    /// \cond CLASSIMP
-   ClassDef(TCal, 2); // Abstract Class for Calibrations
+   ClassDefOverride(TCal, 2); // Abstract Class for Calibrations
    /// \endcond
 };
 /*! @} */

@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "TPulseAnalyzer.h"
 
 /// \cond CLASSIMP
@@ -18,7 +20,7 @@ TPulseAnalyzer::TPulseAnalyzer(const TFragment& fragment, double noise_fac)
 }
 
 TPulseAnalyzer::TPulseAnalyzer(const std::vector<Short_t>& wave, double noise_fac, std::string name)
-   : cWpar(nullptr), spar(nullptr), shpar(nullptr), fName(name)
+   : cWpar(nullptr), spar(nullptr), shpar(nullptr), fName(std::move(name))
 {
    Clear();
    SetData(wave, noise_fac);
@@ -1327,26 +1329,26 @@ bool TPulseAnalyzer::SiliShapePrepare(double tauDecay, double tauRise)
       cWpar->tauRise   = tauRise;
       cWpar->bflag     = 0; // baseline
 
-      if(!(cWpar->t10_flag)) return 0;
+      if(!(cWpar->t10_flag)) return false;
 
       // GetQuickPara() Returns values that are spurious if the baseline is missing or <<T0RANGE
       if(cWpar->t0 < cWpar->baseline_range) { // Is there is no clear baseline baseline
          if(!(cWpar->baselineStDevfin / (cWpar->max - cWpar->baselinefin) <
               0.035)) { // Strict (previously 0.05) limit determined from data
-            return 0;
+            return false;
          }
       }
       cWpar->bflag = 1;
-      return 1;
+      return true;
    }
-   return 0;
+   return false;
 }
 
 bool TPulseAnalyzer::GetSiliShape(double tauDecay, double tauRise)
 {
    if(IsSet()) {
 
-      if(!SiliShapePrepare(tauDecay, tauRise)) return 0;
+      if(!SiliShapePrepare(tauDecay, tauRise)) return false;
 
       int    exclusion = cWpar->t10;
       double baseline  = cWpar->baselinefin;
@@ -1375,8 +1377,8 @@ bool TPulseAnalyzer::GetSiliShape(double tauDecay, double tauRise)
       memset(lineq_vector, 0, sizeof(lineq_vector));
       memset(lineq_solution, 0, sizeof(lineq_solution));
 
-      if(exclusion >= cN) return 0;
-      if(lineq_dim >= cN) return 0;
+      if(exclusion >= cN) return false;
+      if(lineq_dim >= cN) return false;
 
       // setting  M[0,0] V[0] V[1]
       for(int j = exclusion; j < cN; j++) {
@@ -1415,7 +1417,7 @@ bool TPulseAnalyzer::GetSiliShape(double tauDecay, double tauRise)
 
       // error if the matrix cannot be inverted
       if(solve_lin_eq() == 0) {
-         return 0;
+         return false;
       } else { // else calculate amplitudes
          // calculate amplitudes
          double beta  = lineq_solution[0];
@@ -1427,9 +1429,9 @@ bool TPulseAnalyzer::GetSiliShape(double tauDecay, double tauRise)
          double tt            = (log(alpha) - log(beta)) * tauRise;
          if(tt > 0) cWpar->t0 = tt;
       }
-      return 1;
+      return true;
    }
-   return 0;
+   return false;
 }
 
 // Significantly slower and should only be used in non-sorting analysis of poor waveform
@@ -1476,10 +1478,10 @@ bool TPulseAnalyzer::GetSiliShapeTF1(double tauDecay, double tauRise, double bas
          cWpar->tauRise     = g.GetParameter(2);
          cWpar->baselinefin = g.GetParameter(3);
          cWpar->amplitude   = g.GetParameter(4);
-         return 1;
+         return true;
       }
    }
-   return 0;
+   return false;
 }
 
 double TPulseAnalyzer::SiLiFitFunction(double* i, double* p)
@@ -1557,7 +1559,7 @@ void TPulseAnalyzer::DrawWave()
 int   TPulseAnalyzer::nameiter = 0;
 TH1I* TPulseAnalyzer::GetWaveHist()
 {
-   if(cN == 0 || !set) return 0;
+   if(cN == 0 || !set) return nullptr;
    std::stringstream ss;
    ss << "WaveformHist" << nameiter;
    ++nameiter; // Avoid naming conflicts with TNamed
@@ -1569,8 +1571,8 @@ TH1I* TPulseAnalyzer::GetWaveHist()
 
 TGraph* TPulseAnalyzer::GetWaveGraph()
 {
-   if(cN == 0 || !set) return 0;
-   TGraph* g = new TGraph();
+   if(cN == 0 || !set) return nullptr;
+   auto* g = new TGraph();
    for(Int_t i = 0; i < cN; i++) g->SetPoint(i, i, cWavebuffer[i]);
    return g;
 }

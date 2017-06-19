@@ -80,11 +80,11 @@ TPPG::~TPPG()
          if(ppgit->second) {
             delete(ppgit->second);
          }
-         ppgit->second = 0;
+         ppgit->second = nullptr;
       }
       delete fPPGStatusMap;
    }
-   fPPGStatusMap = 0;
+   fPPGStatusMap = nullptr;
    // std::cout<<"destructor called on "<<this<<std::endl;
 }
 
@@ -151,7 +151,7 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time, ppg_pattern pat, bool exact_fl
       return 0;
    }
 
-   PPGMap_t::iterator curppg_it = --(fPPGStatusMap->upper_bound(time));
+   auto curppg_it = --(fPPGStatusMap->upper_bound(time));
    PPGMap_t::iterator ppg_it;
    if(pat == kJunk) {
       for(ppg_it = curppg_it; ppg_it != fPPGStatusMap->begin(); --ppg_it) {
@@ -251,10 +251,10 @@ void TPPG::Print(Option_t* opt) const
    }
    int       counter     = 0;
    ULong64_t cycleLength = 0;
-   for(auto it = numberOfCycleLengths.begin(); it != numberOfCycleLengths.end(); ++it) {
-      if(it->second > counter) {
-         counter     = it->second;
-         cycleLength = it->first;
+   for(auto & numberOfCycleLength : numberOfCycleLengths) {
+      if(numberOfCycleLength.second > counter) {
+         counter     = numberOfCycleLength.second;
+         cycleLength = numberOfCycleLength.first;
       }
    }
    ULong64_t stateLength[4] = {0, 0, 0, 0};
@@ -269,10 +269,10 @@ void TPPG::Print(Option_t* opt) const
    }
    counter    = 0;
    int offset = 0;
-   for(auto it = numberOfOffsets.begin(); it != numberOfOffsets.end(); ++it) {
-      if(it->second > counter) {
-         counter = it->second;
-         offset  = it->first;
+   for(auto & numberOfOffset : numberOfOffsets) {
+      if(numberOfOffset.second > counter) {
+         counter = numberOfOffset.second;
+         offset  = numberOfOffset.first;
       }
    }
 
@@ -282,8 +282,8 @@ void TPPG::Print(Option_t* opt) const
           stateLength[1] / 1e8, stateLength[2] / 1e8, stateLength[3] / 1e8);
    printf("Offset is %d\n", offset);
    printf("Got %ld PPG words:\n", fPPGStatusMap->size() - 1);
-   for(auto it = status.begin(); it != status.end(); ++it) {
-      printf("\tfound status 0x%04x %d times\n", it->first, it->second);
+   for(auto & statu : status) {
+      printf("\tfound status 0x%04x %d times\n", statu.first, statu.second);
    }
 
    // go through all expected ppg words
@@ -321,7 +321,7 @@ void TPPG::Clear(Option_t*)
          if(ppgit->second) {
             delete(ppgit->second);
          }
-         ppgit->second = 0;
+         ppgit->second = nullptr;
       }
    }
    fPPGStatusMap->clear();
@@ -349,7 +349,7 @@ void TPPG::Setup()
    }
 
    if(TGRSIRunInfo::SubRunNumber() > 0) {
-      TFile* prevSubRun =
+      auto* prevSubRun =
          new TFile(Form("fragment%05d_%03d.root", TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber() - 1));
       if(prevSubRun->IsOpen()) {
          TPPG* prev_ppg = (TPPG*)prevSubRun->Get("TPPG");
@@ -381,12 +381,12 @@ bool TPPG::Correct(bool verbose)
 
    if(verbose) {
       // we can now use fNumberOfCycleLengths to see how many cycle lengths we have that are wrong
-      for(auto it = fNumberOfCycleLengths.begin(); it != fNumberOfCycleLengths.end(); ++it) {
-         if((*it).first < fCycleLength) {
+      for(auto & fNumberOfCycleLength : fNumberOfCycleLengths) {
+         if(fNumberOfCycleLength.first < fCycleLength) {
             continue;
          }
-         if((*it).first != fCycleLength) {
-            printf("Found %d wrong cycle length(s) of %lld (correct is %lld).\n", (*it).second, (*it).first,
+         if(fNumberOfCycleLength.first != fCycleLength) {
+            printf("Found %d wrong cycle length(s) of %lld (correct is %lld).\n", fNumberOfCycleLength.second, fNumberOfCycleLength.first,
                    fCycleLength);
          }
       }
@@ -431,7 +431,7 @@ bool TPPG::Correct(bool verbose)
             continue;
          }
          // copy the current ppg data and correct it's time before inserting it into the map
-         TPPGData* new_data = new TPPGData(*((*it).second));
+         auto* new_data = new TPPGData(*((*it).second));
          ULong64_t new_ts   = (*it).first - fCycleLength;
          new_data->SetHighTimeStamp(new_ts >> 28);
          new_data->SetLowTimeStamp(new_ts & 0x0fffffff);
@@ -450,12 +450,12 @@ bool TPPG::Correct(bool verbose)
 
    if(verbose) {
       // we can now use fNumberOfCycleLengths to see how many cycle lengths we have that are wrong
-      for(auto it = fNumberOfCycleLengths.begin(); it != fNumberOfCycleLengths.end(); ++it) {
-         if((*it).first < fCycleLength) {
+      for(auto & fNumberOfCycleLength : fNumberOfCycleLengths) {
+         if(fNumberOfCycleLength.first < fCycleLength) {
             continue;
          }
-         if((*it).first != fCycleLength) {
-            printf("Found %d wrong cycle length(s) of %lld (correct is %lld).\n", (*it).second, (*it).first,
+         if(fNumberOfCycleLength.first != fCycleLength) {
+            printf("Found %d wrong cycle length(s) of %lld (correct is %lld).\n", fNumberOfCycleLength.second, fNumberOfCycleLength.first,
                    fCycleLength);
          }
       }
@@ -470,7 +470,7 @@ const TPPGData* TPPG::Next()
       return fCurrIterator->second;
    } else {
       printf("Already at last PPG\n");
-      return 0;
+      return nullptr;
    }
 }
 
@@ -480,7 +480,7 @@ const TPPGData* TPPG::Previous()
       return (--fCurrIterator)->second;
    } else {
       printf("Already at first PPG\n");
-      return 0;
+      return nullptr;
    }
 }
 
@@ -528,10 +528,10 @@ ULong64_t TPPG::GetCycleLength()
          fNumberOfCycleLengths[diff]++;
       }
       int counter = 0;
-      for(auto it = fNumberOfCycleLengths.begin(); it != fNumberOfCycleLengths.end(); ++it) {
-         if(it->second > counter) {
-            counter      = it->second;
-            fCycleLength = it->first;
+      for(auto & fNumberOfCycleLength : fNumberOfCycleLengths) {
+         if(fNumberOfCycleLength.second > counter) {
+            counter      = fNumberOfCycleLength.second;
+            fCycleLength = fNumberOfCycleLength.first;
          }
       }
    }
@@ -547,7 +547,7 @@ ULong64_t TPPG::GetNumberOfCycles()
 Long64_t TPPG::Merge(TCollection* list)
 {
    TIter it(list);
-   TPPG* ppg = 0;
+   TPPG* ppg = nullptr;
 
    while((ppg = static_cast<TPPG*>(it.Next()))) {
       *this += *ppg;

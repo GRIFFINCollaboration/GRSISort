@@ -82,7 +82,7 @@ void TFragment::Clear(Option_t* opt)
 
 TObject* TFragment::Clone(const char*) const
 {
-   TFragment* result = new TFragment;
+   auto* result = new TFragment;
    *result           = *this;
    result->ClearTransients();
    return result;
@@ -159,8 +159,8 @@ void TFragment::Print(Option_t*) const
    printf("MidasTimeStamp: %s\n", buff);
    printf("MidasId      %i\n", fMidasId);
    printf("\tTriggerId[%lu]	  ", fTriggerId.size());
-   for(size_t x = 0; x < fTriggerId.size(); x++) {
-      printf("     0x%08lx", fTriggerId[x]);
+   for(long x : fTriggerId) {
+      printf("     0x%08lx", x);
    }
    printf("\n");
    printf("FragmentId:   %i\n", fFragmentId);

@@ -42,7 +42,7 @@ public:
 
    void AddCutFile(TFile* cut_file);
 
-   Int_t Write(const char* name = 0, Int_t option = 0, Int_t bufsize = 0);
+   Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override;
 
 private:
    void swap_lib(TCompiledHistograms& other);
@@ -69,7 +69,7 @@ private:
 
    TRuntimeObjects fObj;
 
-   ClassDef(TCompiledHistograms, 0);
+   ClassDefOverride(TCompiledHistograms, 0);
 };
 
 #endif /* _TCOMPILEDHISTOGRAMS_H_ */

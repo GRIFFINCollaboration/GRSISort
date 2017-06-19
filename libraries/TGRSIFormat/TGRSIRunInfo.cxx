@@ -82,8 +82,7 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0), fSubRunNumber(-1)
 }
 
 TGRSIRunInfo::~TGRSIRunInfo()
-{
-}
+= default;
 
 void TGRSIRunInfo::Print(Option_t* opt) const
 {
@@ -327,7 +326,7 @@ Bool_t TGRSIRunInfo::ReadInfoFile(const char* filename)
       printf("file is empty.\n");
       return false;
    }
-   char* buffer = new char[length];
+   auto* buffer = new char[length];
    infile.seekg(0, std::ios::beg);
    infile.read(buffer, length);
 
@@ -416,7 +415,7 @@ Long64_t TGRSIRunInfo::Merge(TCollection* list)
    TIter it(list);
    // The TCollection will be filled by something like hadd. Each element in the list will be a TGRSISortList from
    // An individual file that was submitted to hadd.
-   TGRSIRunInfo* runinfo = 0;
+   TGRSIRunInfo* runinfo = nullptr;
 
    while((runinfo = static_cast<TGRSIRunInfo*>(it.Next())) != nullptr) {
       // Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.
@@ -431,8 +430,8 @@ void TGRSIRunInfo::PrintBadCycles() const
    if(!fBadCycleList.size()) {
       std::cout << "NONE" << std::endl;
    } else {
-      for(auto it = fBadCycleList.begin(); it != fBadCycleList.end(); ++it) {
-         std::cout << " " << *it;
+      for(int it : fBadCycleList) {
+         std::cout << " " << it;
       }
       std::cout << std::endl;
    }
@@ -527,8 +526,8 @@ std::string TGRSIRunInfo::PrintToString(Option_t*)
    if(fBadCycleList.size()) {
       buffer.append("//A List of bad cycles.\n");
       buffer.append("BadCycle:");
-      for(auto it = fBadCycleList.begin(); it != fBadCycleList.end(); ++it) {
-         buffer.append(Form(" %d", *it));
+      for(int & it : fBadCycleList) {
+         buffer.append(Form(" %d", it));
       }
       buffer.append("\n\n");
    }

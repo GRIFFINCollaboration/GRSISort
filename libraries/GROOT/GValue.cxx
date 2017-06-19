@@ -58,7 +58,7 @@ void GValue::SetReplaceValue(std::string name, double value, EPriority priority)
 
 GValue* GValue::FindValue(std::string name)
 {
-   GValue* value = 0;
+   GValue* value = nullptr;
    if(!name.length()) return GetDefaultValue();
    if(fValueVector.count(name)) value = fValueVector[name];
    return value;
@@ -110,7 +110,7 @@ bool GValue::AddValue(GValue* value, Option_t* opt)
    } else if(temp_string.compare("") == 0) {
       // default value, get rid of it and ignore;
       delete value;
-      value = 0;
+      value = nullptr;
       return false;
    } else {
       fValueVector[temp_string] = value; //.push_back(value);
@@ -208,7 +208,7 @@ int GValue::ReadValFile(const char* filename, Option_t* opt)
 int GValue::ParseInputData(std::string input, EPriority priority, Option_t* opt)
 {
    std::istringstream infile(input);
-   GValue*            value = 0;
+   GValue*            value = nullptr;
    std::string        line;
    int                linenumber = 0;
    int                newvalues  = 0;
@@ -281,7 +281,7 @@ int GValue::ParseInputData(std::string input, EPriority priority, Option_t* opt)
                newvalues++;
             }
          }
-         value = 0;
+         value = nullptr;
          name.clear();
       }
    }

@@ -27,21 +27,21 @@
 class TLaBr : public TGRSIDetector {
 public:
    TLaBr();
-   virtual ~TLaBr();
+   ~TLaBr() override;
    TLaBr(const TLaBr& rhs);
 
 public:
    TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
-   void Copy(TObject& rhs) const;
+   void Copy(TObject& rhs) const override;
    TLaBrHit* GetLaBrHit(const int& i);                          //!<!
    Short_t GetMultiplicity() const { return fLaBrHits.size(); } //!<!
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
 #endif
 
    static TVector3 GetPosition(int DetNbr) { return gPosition[DetNbr]; } //!<!
 
-   void ClearTransients()
+   void ClearTransients() override
    {
       for (auto hit : fLaBrHits) hit.ClearTransients();
    }
@@ -55,11 +55,11 @@ private:
    static TVector3 gPosition[9]; //!<!  Position of each Paddle
 
 public:
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TLaBr, 1) // LaBr Physics structure
+   ClassDefOverride(TLaBr, 1) // LaBr Physics structure
                       /// \endcond
 };
 /*! @} */

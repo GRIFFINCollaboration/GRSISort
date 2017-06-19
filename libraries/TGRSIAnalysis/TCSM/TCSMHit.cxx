@@ -13,8 +13,7 @@ ClassImp(TCSMHit)
 }
 
 TCSMHit::~TCSMHit()
-{
-}
+= default;
 
 void TCSMHit::Clear(Option_t*)
 {
@@ -93,15 +92,15 @@ Double_t TCSMHit::GetDthickness() const
 
 Double_t TCSMHit::GetDEnergy() const
 {
-   bool debug           = 0;
-   bool trustVertical   = 1;
-   bool trustHoriztonal = 1;
+   bool debug           = false;
+   bool trustVertical   = true;
+   bool trustHoriztonal = true;
 
    switch(GetDetectorNumber()) {
    case 1:
       switch(GetDHorizontalStrip()) {
       case 6:
-      case 9: trustHoriztonal = 0; break;
+      case 9: trustHoriztonal = false; break;
       }
       break;
 
@@ -109,17 +108,17 @@ Double_t TCSMHit::GetDEnergy() const
       switch(GetDHorizontalStrip()) {
       // case 8:
       case 9:
-      case 10: trustHoriztonal = 0; break;
+      case 10: trustHoriztonal = false; break;
       }
       switch(GetDVerticalStrip()) {
-      case 5: trustVertical = 0; break;
+      case 5: trustVertical = false; break;
       }
       break;
 
    case 3:
       switch(GetDHorizontalStrip()) {
       case 12:
-      case 15: trustHoriztonal = 0; break;
+      case 15: trustHoriztonal = false; break;
       }
       break;
 
@@ -155,8 +154,8 @@ Double_t TCSMHit::GetDEnergy() const
 
 Double_t TCSMHit::GetEEnergy() const
 {
-   bool trustVertical   = 1;
-   bool trustHoriztonal = 1;
+   bool trustVertical   = true;
+   bool trustHoriztonal = true;
 
    switch(GetDetectorNumber()) {
    case 1: break;
@@ -170,11 +169,11 @@ Double_t TCSMHit::GetEEnergy() const
       // case 8:
       case 12:
          // case 15:
-         trustHoriztonal = 0;
+         trustHoriztonal = false;
          break;
       }
       switch(GetEVerticalStrip()) {
-      case 0: trustVertical = 0; break;
+      case 0: trustVertical = false; break;
       }
       break;
 

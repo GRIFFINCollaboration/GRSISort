@@ -246,17 +246,17 @@ void TScaler::Clear(Option_t*)
    fTotalTimePeriod = 0;
    fTotalNumberOfTimePeriods.clear();
    fPPG = nullptr;
-   for(auto addrIt = fHist.begin(); addrIt != fHist.end(); ++addrIt) {
-      if(addrIt->second != nullptr) {
-         delete(addrIt->second);
-         addrIt->second = nullptr;
+   for(auto & addrIt : fHist) {
+      if(addrIt.second != nullptr) {
+         delete(addrIt.second);
+         addrIt.second = nullptr;
       }
    }
    fHist.clear();
-   for(auto addrIt = fHistRange.begin(); addrIt != fHistRange.end(); ++addrIt) {
-      if(addrIt->second != nullptr) {
-         delete(addrIt->second);
-         addrIt->second = nullptr;
+   for(auto & addrIt : fHistRange) {
+      if(addrIt.second != nullptr) {
+         delete(addrIt.second);
+         addrIt.second = nullptr;
       }
    }
    fHistRange.clear();
@@ -477,7 +477,7 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
    int nofBins = std::abs((int)(1e8 * (hightime - lowtime) / GetTimePeriod(address)));
    std::cout << nofBins << "nofbins" << std::endl;
    // This scHist could be leaky as the outside user has ownership of it.
-   TH1D* scHist = new TH1D(Form("TScalerHistRaw_%04x", address),
+   auto* scHist = new TH1D(Form("TScalerHistRaw_%04x", address),
                            Form("scaler %d vs time for address 0x%04x; time in [ms]; counts/ ms", (int)index, address),
                            nofBins, lowtime, hightime);
    // we have to skip the first data point in case this is a sub-run
@@ -539,13 +539,13 @@ ULong64_t TScaler::GetTimePeriod(UInt_t address)
 void TScaler::ListHistograms()
 {
    printf("single address histograms:\n");
-   for(auto it = fHist.begin(); it != fHist.end(); ++it) {
-      printf("\t0x%04x: %s, %s\n", it->first, it->second->GetName(), it->second->GetTitle());
+   for(auto & it : fHist) {
+      printf("\t0x%04x: %s, %s\n", it.first, it.second->GetName(), it.second->GetTitle());
    }
 
    printf("range histograms:\n");
-   for(auto it = fHistRange.begin(); it != fHistRange.end(); ++it) {
-      printf("\t0x%04x, %d: %s, %s\n", it->first.first, it->first.second, it->second->GetName(),
-             it->second->GetTitle());
+   for(auto & it : fHistRange) {
+      printf("\t0x%04x, %d: %s, %s\n", it.first.first, it.first.second, it.second->GetName(),
+             it.second->GetTitle());
    }
 }

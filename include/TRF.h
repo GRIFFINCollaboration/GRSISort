@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <iostream>
-#include <stdio.h>
+#include <cstdio>
 
 #include "TMath.h"
 
@@ -19,7 +19,7 @@ class TRF : public TDetector {
 public:
    TRF();
    TRF(const TRF&);
-   ~TRF();
+   ~TRF() override;
 
    Double_t Phase() const { return (fTime / fPeriod) * TMath::TwoPi(); }
    Double_t Time() const { return fTime; }
@@ -42,13 +42,13 @@ public:
    }
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
 #endif
-   void BuildHits() {} // no need to build any hits, everything already done in AddFragment
+   void BuildHits() override {} // no need to build any hits, everything already done in AddFragment
 
-   void Copy(TObject&) const;
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
+   void Copy(TObject&) const override;
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
 
 private:
    time_t fMidasTime;
@@ -58,7 +58,7 @@ private:
    static Double_t fPeriod;
 
    /// \cond CLASSIMP
-   ClassDef(TRF, 4)
+   ClassDefOverride(TRF, 4)
    /// \endcond
 };
 /*! @} */

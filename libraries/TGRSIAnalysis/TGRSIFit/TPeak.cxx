@@ -14,8 +14,8 @@ TPeak* TPeak::fLastFit              = nullptr;
 TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
    : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, xlow, xhigh, 10)
 {
-   fResiduals  = 0;
-   fBackground = 0;
+   fResiduals  = nullptr;
+   fBackground = nullptr;
    Clear();
    fOwnBgFlag            = false;
    Bool_t outOfRangeFlag = false;
@@ -73,8 +73,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* background)
 TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
    : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, xlow, xhigh, 10)
 {
-   fResiduals  = 0;
-   fBackground = 0;
+   fResiduals  = nullptr;
+   fBackground = nullptr;
    Clear();
    fOwnBgFlag            = true;
    Bool_t outOfRangeFlag = false;
@@ -122,8 +122,8 @@ TPeak::TPeak(Double_t cent, Double_t xlow, Double_t xhigh)
 
 TPeak::TPeak() : TGRSIFit("photopeakbg", TGRSIFunctions::PhotoPeakBG, 0, 1000, 10)
 {
-   fResiduals  = 0;
-   fBackground = 0;
+   fResiduals  = nullptr;
+   fBackground = nullptr;
    InitNames();
    fOwnBgFlag  = true;
    fBackground = new TF1("background", TGRSIFunctions::StepBG, 0, 1000, 10);
@@ -143,10 +143,10 @@ TPeak::~TPeak()
    if(fResiduals) delete fResiduals;
 }
 
-TPeak::TPeak(const TPeak& copy) : TGRSIFit(), fBackground(0), fResiduals(0)
+TPeak::TPeak(const TPeak& copy) : TGRSIFit(), fBackground(nullptr), fResiduals(nullptr)
 {
-   fBackground = 0;
-   fResiduals  = 0;
+   fBackground = nullptr;
+   fResiduals  = nullptr;
    copy.Copy(*this);
 }
 
@@ -345,7 +345,7 @@ Bool_t TPeak::Fit(TH1* fitHist, Option_t* opt)
    // Make a function that does not include the background
    // Intgrate the background.
    // TPeak* tmppeak = new TPeak(*this);
-   TPeak* tmppeak = new TPeak;
+   auto* tmppeak = new TPeak;
    Copy(*tmppeak);
    tmppeak->SetParameter("step", 0.0);
    tmppeak->SetParameter("A", 0.0);
@@ -453,8 +453,8 @@ void TPeak::DrawResiduals()
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
    Int_t     nbins  = GetHist()->GetXaxis()->GetNbins();
-   Double_t* res    = new Double_t[nbins];
-   Double_t* bin    = new Double_t[nbins];
+   auto* res    = new Double_t[nbins];
+   auto* bin    = new Double_t[nbins];
    Int_t     points = 0;
    fResiduals->Clear();
 

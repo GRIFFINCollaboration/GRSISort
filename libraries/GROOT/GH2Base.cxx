@@ -73,7 +73,7 @@ GH1D* GH2Base::Projection_Background(int axis, int firstbin, int lastbin, int fi
    }
 
    proj->Add(bg_proj, -bg_scaling);
-   GH1D* output = new GH1D(*proj);
+   auto* output = new GH1D(*proj);
    proj->Delete();
    bg_proj->Delete();
 
@@ -81,7 +81,7 @@ GH1D* GH2Base::Projection_Background(int axis, int firstbin, int lastbin, int fi
    output->SetTitle(title.c_str());
    output->SetParent(GetTH2());
    output->SetProjectionAxis(axis);
-   output->SetDirectory(0);
+   output->SetDirectory(nullptr);
    fProjections->Add(output);
    return output;
 }
@@ -119,7 +119,7 @@ GH1D* GH2Base::GH2ProjectionX(const char* name, int firstbin, int lastbin, Optio
    output->SetTitle(title.c_str());
    output->SetParent(GetTH2());
    output->SetProjectionAxis(0);
-   output->SetDirectory(0);
+   output->SetDirectory(nullptr);
 
    if(fIsSummary) {
       if(KeepEmpty || output->Integral() > 0) fSummaryProjections->Add(output);
@@ -168,7 +168,7 @@ GH1D* GH2Base::GH2ProjectionY(const char* name, int firstbin, int lastbin, Optio
    output->SetTitle(title.c_str());
    output->SetParent(GetTH2());
    output->SetProjectionAxis(1);
-   output->SetDirectory(0);
+   output->SetDirectory(nullptr);
 
    if(fIsSummary) {
       if(KeepEmpty || output->Integral() > 0) fSummaryProjections->Add(output);
@@ -198,7 +198,7 @@ GH1D* GH2Base::GetPrevious(const GH1D* curr, bool)
       link = link->Next();
    }
    if(!link) {
-      return 0;
+      return nullptr;
    }
 
    if(link->Prev()) {
@@ -222,7 +222,7 @@ GH1D* GH2Base::GetNext(const GH1D* curr, bool)
       link = link->Next();
    }
    if(!link) {
-      return 0;
+      return nullptr;
    }
 
    if(link->Next()) {
@@ -253,7 +253,7 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
    if(binnum > max_binnum) {
       binnum = 1;
    }
-   GH1D* g         = 0;
+   GH1D* g         = nullptr;
    int   start_bin = binnum;
    switch(fSummaryDirection) {
    case kXDirection:
@@ -357,7 +357,7 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
       }
       break;
    }
-   return 0;
+   return nullptr;
    // return SummaryProject(binnum);
 }
 

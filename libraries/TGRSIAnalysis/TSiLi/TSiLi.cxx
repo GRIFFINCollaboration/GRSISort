@@ -27,8 +27,7 @@ TSiLi::TSiLi()
 }
 
 TSiLi::~TSiLi()
-{
-}
+= default;
 
 void TSiLi::Copy(TObject& rhs) const
 {
@@ -77,7 +76,7 @@ TSiLiHit* TSiLi::GetSiLiHit(const int& i)
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }
-   return 0;
+   return nullptr;
 }
 
 void TSiLi::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
@@ -186,7 +185,7 @@ Int_t TSiLi::GetAddbackMultiplicity()
 
       // Create a matrix of "pairs"
       std::vector<std::vector<bool>> pairs;
-      for(int i = 0; i < basehits; i++) pairs.push_back(std::vector<bool>(basehits, false));
+      for(int i = 0; i < basehits; i++) pairs.emplace_back(basehits, false);
 
       std::vector<unsigned>              clusters_id(basehits, 0);
       std::vector<std::vector<unsigned>> Clusters;
@@ -218,19 +217,19 @@ Int_t TSiLi::GetAddbackMultiplicity()
       // Clusters are lists of hits that have been identified as coincident neighbours
       // Will be length 1 if no neighbours
 
-      for(unsigned i = 0; i < Clusters.size(); i++) {
+      for(auto & Cluster : Clusters) {
 
          TSiLi::SortCluster(
-            Clusters[i]); // Energy sort the clusters also deletes any invalid hit numbers//Not an efficient function
-         if(Clusters[i].size() > 0) {
+            Cluster); // Energy sort the clusters also deletes any invalid hit numbers//Not an efficient function
+         if(Cluster.size() > 0) {
             uint s = fAddbackHits.size();
             // We have to add it and THEN do the SumHit because the push_back copies the charge but not the energy,
             // which is the bit we sum
             // This is desired behaviour of TGRSIDetectorHit for speed of sorts, but messy for the addback, which should
             // only be done "on the fly" not stored to TSiLi on disk
-            fAddbackHits.push_back(TSiLiHit());
-            for(unsigned j = 0; j < Clusters[i].size(); j++) {
-               fAddbackHits[s].SumHit(GetSiLiHit(Clusters[i][j]));
+            fAddbackHits.emplace_back();
+            for(unsigned j = 0; j < Cluster.size(); j++) {
+               fAddbackHits[s].SumHit(GetSiLiHit(Cluster[j]));
             }
          }
       }

@@ -19,7 +19,7 @@ ClassImp(TAngularCorrelation)
    ///
    TAngularCorrelation::TAngularCorrelation()
 {
-   fIndexCorrelation = 0;      // used the 1D histograms for a specific energy ranged used for FitSlices
+   fIndexCorrelation = nullptr;      // used the 1D histograms for a specific energy ranged used for FitSlices
    fIndexMapSize     = 0;      // number of indexes, never called in making the histograms
    fFolded           = kFALSE; // not set yet
    fGrouped          = kFALSE; // not set yet
@@ -123,7 +123,7 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray* hstarray, Double_t min, Doub
             printf("found both THnSparse and TH2 in array.\n");
             printf("currently, Create2DSlice only deals with one.\n");
             printf("Bailing out.\n");
-            return 0;
+            return nullptr;
          }
       } else if(obj->InheritsFrom("THnSparse")) {
          // if there have been no sparse histograms found
@@ -133,7 +133,7 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray* hstarray, Double_t min, Doub
             printf("found both THnSparse and TH2 in array.\n");
             printf("currently, Create2DSlice only deals with one.\n");
             printf("Bailing out.\n");
-            return 0;
+            return nullptr;
          }
       } else {
          printf("Element is neither THnSparse or TH2.\n");
@@ -145,7 +145,7 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray* hstarray, Double_t min, Doub
    if(!sparse && !hst2d) {
       printf("Can't identify the type of object in the array.\n");
       printf("Returning without slicing.\n");
-      return 0;
+      return nullptr;
    }
 
    // get axis properties
@@ -153,8 +153,8 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray* hstarray, Double_t min, Doub
    Int_t         bins     = 0;
    Int_t         xmin     = 0;
    Int_t         xmax     = 0;
-   const Char_t* name     = 0;
-   const Char_t* title    = 0;
+   const Char_t* name     = nullptr;
+   const Char_t* title    = nullptr;
    if(sparse) {
       THnSparse* firsthst = (THnSparse*)hstarray->At(0);
       bins                = firsthst->GetAxis(0)->GetNbins();
@@ -174,12 +174,12 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray* hstarray, Double_t min, Doub
 
    Int_t iteration = 0;
    TH2D* newslice;
-   if(gFile->Get(Form("%s_%i_%i", name, Int_t(min), Int_t(max))) == 0x0) {
+   if(gFile->Get(Form("%s_%i_%i", name, Int_t(min), Int_t(max))) == nullptr) {
       newslice = new TH2D(Form("%s_%i_%i", name, Int_t(min), Int_t(max)),
                           Form("%s, E_{#gamma 1}=[%.1f,%.1f)", title, min, max), bins, xmin, xmax, ybins, 0, ybins);
    } else {
       while(iteration < 10) {
-         if(gFile->Get(Form("%s_%i_%i_%i", name, Int_t(min), Int_t(max), iteration)) == 0x0)
+         if(gFile->Get(Form("%s_%i_%i_%i", name, Int_t(min), Int_t(max), iteration)) == nullptr)
             break;
          else
             ++iteration;
@@ -191,7 +191,7 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray* hstarray, Double_t min, Doub
    // iterate over the array of 2D gamma-gamma matrices
    for(Int_t i = 0; i < elements; i++) { // takes slice and itterates through all indexes
       // slice this particular matrix
-      TH1D* tempslice = 0;
+      TH1D* tempslice = nullptr;
       // sparse option
       if(sparse) {
          THnSparse* thishst = (THnSparse*)hstarray->At(i);
@@ -257,26 +257,26 @@ TH2D* TAngularCorrelation::Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group)
          printf("Angle Map has not been defined yet.\n");
          printf("Need Angle Map to assign groups. \n");
          printf("Bailing out. \n");
-         return 0;
+         return nullptr;
       }
       // check for group assignments
       if(group_numbers == 0) {
          printf("Groups have not been assigned yet.\n");
          printf("Cannot group Angular Indexes. \n");
          printf("Bailing out. \n");
-         return 0;
+         return nullptr;
       }
       // consistency check
       if(group_numbers != angle_numbers) {
          if(group_numbers < angle_numbers) {
             printf("Not all angular indexes have been assigned a group. \n");
             printf("Bailing out.\n");
-            return 0;
+            return nullptr;
          }
          if(group_numbers > angle_numbers) {
             printf("Too many groups have been assigned, not enough angular indexes. \n");
             printf("Bailing out. \n");
-            return 0;
+            return nullptr;
          }
       }
    }
@@ -312,7 +312,7 @@ TH2D* TAngularCorrelation::Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group)
 
    // loop through the original 2D histograms y-axis...
    for(Int_t i = 0; i < ybins; i++) { // y-axis bin loop
-      TH1D* tempslice = 0;
+      TH1D* tempslice = nullptr;
       tempslice       = hst->ProjectionX("", i + 1, i + 1);
 
       Double_t x, y, oldcontent, newcontent, olderror, newerror;
@@ -396,7 +396,7 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
    const Char_t* hst1dtitle = Form("%s-%ikeV", hst2dtitle, (Int_t)peak->GetCentroid());
 
    // initialize histogram to return
-   TH1D* newhst = new TH1D(hst1dname, Form("%s;Angular index;Counts", hst1dtitle), indexbins, indexmin, indexmax);
+   auto* newhst = new TH1D(hst1dname, Form("%s;Angular index;Counts", hst1dtitle), indexbins, indexmin, indexmax);
 
    // calculate errors on hst (if not already calculated)
    hst->Sumw2();
@@ -463,7 +463,7 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
    std::cout << "Fixing the centroid to " << peakCentroid << ", and sigma to " << sigma << " (FWHM = " << 2.355 * sigma
              << ")" << std::endl;
    // loop over the indices
-   TFile* file = new TFile("Fit_singles.root", "recreate");
+   auto* file = new TFile("Fit_singles.root", "recreate");
    for(Int_t i = 1; i <= indexmax - indexmin; i++) {
       Int_t index = hst->GetYaxis()->GetBinLowEdge(i);
       if(visualization) {
@@ -471,7 +471,7 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
          Int_t canvas = (i - 1) / 16;
          Int_t pad    = (i - 1) % 16;
          if(pad == 0) {
-            TCanvas* temp = new TCanvas(Form("c%i", canvas), Form("c%i", canvas), 800, 800);
+            auto* temp = new TCanvas(Form("c%i", canvas), Form("c%i", canvas), 800, 800);
             temp->Divide(4, 4);
             c.push_back(temp);
          }
@@ -481,7 +481,7 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
 
       // pull individual slice
       TH1D* temphst = hst->ProjectionX(Form("%s_proj%i", hst2dname, index), i, i);
-      temphst->SetStats(0);
+      temphst->SetStats(false);
       temphst->SetTitle(Form("%s: angular index %i", hst->GetTitle(), index));
       this->Set1DSlice(index, temphst);
 
@@ -547,19 +547,19 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
    ///////////////////////////////////////////////////////
 
    // initialize canvas
-   TCanvas* c_diag = new TCanvas(Form("c_diag_%i", (Int_t)peak->GetCentroid()),
+   auto* c_diag = new TCanvas(Form("c_diag_%i", (Int_t)peak->GetCentroid()),
                                  Form("Diagnostics for fitting %i keV peak", (Int_t)peak->GetCentroid()), 800, 800);
 
    // create plots for chi^2, centroid, and fwhm
    hst2dname = hst->GetName();
    hst1dname = Form("%s_%ikeV", hst2dname, (Int_t)peak->GetCentroid());
-   TH1D* chi2hst =
+   auto* chi2hst =
       new TH1D(Form("%s_chi2", hst1dname), Form("%s: #chi^{2};Angular index;#chi^{2}/NDF value", newhst->GetTitle()),
                indexbins, indexmin, indexmax);
-   TH1D* centroidhst = new TH1D(Form("%s_centroid", hst1dname),
+   auto* centroidhst = new TH1D(Form("%s_centroid", hst1dname),
                                 Form("%s: Peak centroid;Angular index;Peak centroid (keV)", newhst->GetTitle()),
                                 indexbins, indexmin, indexmax);
-   TH1D* fwhmhst = new TH1D(Form("%s_fwhm", hst1dname), Form("%s: FWHM;Angular index;FWHM (keV)", newhst->GetTitle()),
+   auto* fwhmhst = new TH1D(Form("%s_fwhm", hst1dname), Form("%s: FWHM;Angular index;FWHM (keV)", newhst->GetTitle()),
                             indexbins, indexmin, indexmax);
 
    // assign histogram to fIndexCorrelation
@@ -594,7 +594,7 @@ TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst, Bool_t fold
       if(check == 0) {
          printf("Angles have not been assigned. \n");
          printf("Therefore cannot create graph. \n");
-         return 0;
+         return nullptr;
       }
    } else {
       // compare fold and group
@@ -608,17 +608,17 @@ TGraphAsymmErrors* TAngularCorrelation::CreateGraphFromHst(TH1* hst, Bool_t fold
       if(check == 0) {
          printf("Modified angles have not been assigned. \n");
          printf("Therefore cannot create graph. \n");
-         return 0;
+         return nullptr;
       }
 
       if(CheckModifiedHistogram(hst)) {
          // do nothing
       } else {
-         return 0;
+         return nullptr;
       }
    }
 
-   TGraphAsymmErrors* graph = new TGraphAsymmErrors();
+   auto* graph = new TGraphAsymmErrors();
    Int_t              n     = hst->GetNbinsX();
 
    for(Int_t i = 1; i <= n; i++) { // bin number loop
@@ -957,8 +957,8 @@ std::vector<Double_t> TAngularCorrelation::GenerateAngleMap(std::vector<Int_t>& 
             TGriffin::GetPosition(detector2, crystal2, distances[j]); // distance is in mm, usually 110, 145, or 160
          Double_t angle          = positionone.Angle(positiontwo);    // in radians
          Bool_t   alreadyclaimed = kFALSE;
-         for(Int_t m = 0; m < (Int_t)map.size(); m++) {
-            if(TMath::Abs(angle - map[m]) < 0.00005) {
+         for(double m : map) {
+            if(TMath::Abs(angle - m) < 0.00005) {
                alreadyclaimed = kTRUE;
                break;
             }
@@ -1152,8 +1152,8 @@ Bool_t TAngularCorrelation::CheckGroups(std::vector<Int_t>& group)
 Int_t TAngularCorrelation::GetNumGroups()
 {
    Int_t max = 0;
-   for(Int_t i = 0; i < static_cast<Int_t>(fGroups.size()); i++) {
-      if(fGroups[i] > max) max = fGroups[i];
+   for(int fGroup : fGroups) {
+      if(fGroup > max) max = fGroup;
    }
    return max + 1;
 }
@@ -1165,8 +1165,8 @@ Int_t TAngularCorrelation::GetNumGroups()
 Int_t TAngularCorrelation::GetNumModIndices()
 {
    Int_t max = 0;
-   for(Int_t i = 0; i < static_cast<Int_t>(fModifiedIndices.size()); i++) {
-      if(fModifiedIndices[i] > max) max = fModifiedIndices[i];
+   for(int fModifiedIndice : fModifiedIndices) {
+      if(fModifiedIndice > max) max = fModifiedIndice;
    }
    return max + 1;
 }
@@ -1235,8 +1235,8 @@ std::vector<Double_t> TAngularCorrelation::GenerateFoldedAngles(std::vector<Doub
       Double_t fold_angle     = foldArray[i];
       Bool_t   alreadyclaimed = kFALSE;
 
-      for(Int_t m = 0; m < static_cast<Int_t>(folds.size()); m++) {
-         if(TMath::Abs(TMath::Sin(fold_angle) - TMath::Sin(folds[m])) <
+      for(double fold : folds) {
+         if(TMath::Abs(TMath::Sin(fold_angle) - TMath::Sin(fold)) <
             0.000005) { // look for duplicated angles in the fold array
             alreadyclaimed = kTRUE;
             break;
@@ -1599,8 +1599,8 @@ std::vector<Double_t> TAngularCorrelation::GenerateModifiedAngles(Bool_t fold, B
 void TAngularCorrelation::UpdateIndexCorrelation()
 {
    // loop over quantities in map
-   for(std::map<Int_t, TPeak*>::iterator it = fPeaks.begin(); it != fPeaks.end(); ++it) {
-      Int_t index = it->first;
+   for(auto & fPeak : fPeaks) {
+      Int_t index = fPeak.first;
       Int_t bin   = ((TH1D*)this->GetIndexCorrelation())->FindBin(index);
 
       // extract area
@@ -1654,8 +1654,8 @@ void TAngularCorrelation::ScaleSingleIndex(TH1* hst, Int_t index, Double_t facto
 void TAngularCorrelation::UpdateDiagnostics()
 {
    // loop over quantities in map
-   for(std::map<Int_t, TPeak*>::iterator it = fPeaks.begin(); it != fPeaks.end(); ++it) {
-      Int_t index = it->first;
+   for(auto & fPeak : fPeaks) {
+      Int_t index = fPeak.first;
       Int_t bin   = ((TH1D*)this->GetIndexCorrelation())->FindBin(index);
 
       // extract pertinent values from TPeaks
@@ -1727,7 +1727,7 @@ TPeak* TAngularCorrelation::GetPeak(Int_t index)
 {
    if(!fPeaks[index]) {
       printf("No peak exists for index %i. Returning 0x0.\n", index);
-      return 0x0;
+      return nullptr;
    } else {
       return fPeaks[index];
    }
@@ -1790,7 +1790,7 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
       // consistency/stability checks
       if(size == 0) {
          printf("You haven't created the weights yet. Please use the GenerateMaps function to do so.\n");
-         return 0x0;
+         return nullptr;
       }
       if(size != hst->GetNbinsX()) {
          printf("Warning: size of weights array is different than number of bins in %s\n", hst->GetName());
@@ -1800,7 +1800,7 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
          Int_t index = hst->GetBinLowEdge(i);
          if(index >= size) {
             printf("Indices in histogram %s go beyond size of weights array. Aborting.\n", hst->GetName());
-            return 0x0;
+            return nullptr;
          }
       }
    } else {
@@ -1814,7 +1814,7 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
       if(CheckModifiedHistogram(hst)) {
          // do nothing
       } else {
-         return 0x0;
+         return nullptr;
       }
 
       // check that the weights array is the same size
@@ -1823,7 +1823,7 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
       } else {
          printf("Weights array size is not the same as the number of bins.\n");
          printf("Returning from DivideByWeights without dividing.");
-         return 0x0;
+         return nullptr;
       }
    }
 
@@ -1892,7 +1892,7 @@ Double_t GetPeakInfo(THnSparse *Slice, Double_t centroid, Double_t min, Double_t
 */
 void TAngularCorrelation::DisplayDiagnostics(TCanvas* c_diag)
 {
-   if(c_diag == 0) {
+   if(c_diag == nullptr) {
       c_diag = new TCanvas(Form("c_diag_%s", this->GetName()), Form("Diagnostics from %s", this->GetName()), 800, 800);
    }
 
@@ -1910,10 +1910,10 @@ void TAngularCorrelation::DisplayDiagnostics(TCanvas* c_diag)
    }
 
    // format the diagnostic plots
-   indexhst->SetStats(0);
-   chi2hst->SetStats(0);
-   centroidhst->SetStats(0);
-   fwhmhst->SetStats(0);
+   indexhst->SetStats(false);
+   chi2hst->SetStats(false);
+   centroidhst->SetStats(false);
+   fwhmhst->SetStats(false);
    chi2hst->SetMarkerStyle(4);
 
    // plot chi^2, centroid, and FWHM

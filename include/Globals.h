@@ -65,13 +65,13 @@ typedef char int8_t;
 #include <cstdio>
 #include <cstdlib>
 //#include <stdint.h>
-const std::string& ProgramName(void);
+const std::string& ProgramName();
 
 namespace grsi {
 struct exit_exception : public std::exception {
 public:
    exit_exception(int c, const char* msg = "") : code(c), message(msg) {}
-   virtual ~exit_exception() throw() {}
+   ~exit_exception() throw() override = default;
    /*     virtual const char* what() const throw {
            //  LOG(what); // write to log file
            return what.c_str();

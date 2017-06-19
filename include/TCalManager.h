@@ -13,7 +13,7 @@ class TCalManager : public TNamed {
 public:
    TCalManager();
    TCalManager(const char* classname);
-   virtual ~TCalManager();
+   ~TCalManager() override;
 
 public:
    TCal* GetCal(UInt_t channum);
@@ -25,8 +25,8 @@ public:
    const char* GetClass() { return fClass ? fClass->GetName() : 0; }
    void        WriteToChannel() const;
 
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
    TCal* operator[](UInt_t channum) { return GetCal(channum); }
 
@@ -36,7 +36,7 @@ private:
    TClass* fClass;
 
    /// \cond CLASSIMP
-   ClassDef(TCalManager, 1);
+   ClassDefOverride(TCalManager, 1);
    /// \endcond
 };
 /*! @} */

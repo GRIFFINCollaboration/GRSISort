@@ -69,24 +69,24 @@ void TParsingDiagnostics::Print(Option_t*) const
              << fMaxNetworkPacketNumber << " => "
              << 100. * fNumberOfNetworkPackets / (fMaxNetworkPacketNumber - fMinNetworkPacketNumber + 1.)
              << " % packet survival." << std::endl;
-   for(auto it = fNumberOfGoodFragments.begin(); it != fNumberOfGoodFragments.end(); ++it) {
-      std::cout << "detector type " << std::setw(2) << it->first << ": " << std::setw(12) << it->second << " good, ";
-      if(fNumberOfBadFragments.find(it->first) == fNumberOfBadFragments.end()) {
+   for(const auto & fNumberOfGoodFragment : fNumberOfGoodFragments) {
+      std::cout << "detector type " << std::setw(2) << fNumberOfGoodFragment.first << ": " << std::setw(12) << fNumberOfGoodFragment.second << " good, ";
+      if(fNumberOfBadFragments.find(fNumberOfGoodFragment.first) == fNumberOfBadFragments.end()) {
          std::cout << "          no";
       } else {
-         std::cout << std::setw(12) << fNumberOfBadFragments.at(it->first) << " ("
-                   << (100. * fNumberOfBadFragments.at(it->first)) / it->second << " %)";
+         std::cout << std::setw(12) << fNumberOfBadFragments.at(fNumberOfGoodFragment.first) << " ("
+                   << (100. * fNumberOfBadFragments.at(fNumberOfGoodFragment.first)) / fNumberOfGoodFragment.second << " %)";
       }
       std::cout << " bad fragments." << std::endl;
    }
-   for(auto it = fDeadTime.begin(); it != fDeadTime.end(); ++it) {
-      std::cout << "channel 0x" << std::hex << std::setw(4) << std::setfill('0') << it->first << std::dec
-                << std::setfill(' ') << ": " << it->second / 1e5 << " ms deadtime out of ";
-      if(fMinTimeStamp.find(it->first) == fMinTimeStamp.end() || fMaxTimeStamp.find(it->first) == fMaxTimeStamp.end()) {
+   for(const auto & it : fDeadTime) {
+      std::cout << "channel 0x" << std::hex << std::setw(4) << std::setfill('0') << it.first << std::dec
+                << std::setfill(' ') << ": " << it.second / 1e5 << " ms deadtime out of ";
+      if(fMinTimeStamp.find(it.first) == fMinTimeStamp.end() || fMaxTimeStamp.find(it.first) == fMaxTimeStamp.end()) {
          std::cout << "nonexisting channel???" << std::endl;
       } else {
-         std::cout << std::setw(12) << (fMaxTimeStamp.at(it->first) - fMinTimeStamp.at(it->first)) / 1e5
-                   << " ms = " << (100. * it->second) / (fMaxTimeStamp.at(it->first) - fMinTimeStamp.at(it->first))
+         std::cout << std::setw(12) << (fMaxTimeStamp.at(it.first) - fMinTimeStamp.at(it.first)) / 1e5
+                   << " ms = " << (100. * it.second) / (fMaxTimeStamp.at(it.first) - fMinTimeStamp.at(it.first))
                    << " %" << std::endl;
       }
    }

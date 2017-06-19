@@ -13,7 +13,7 @@
 
 #include <iostream>
 #include <vector>
-#include <time.h>
+#include <ctime>
 
 #include "Rtypes.h"
 
@@ -30,7 +30,7 @@ class TFragment : public TGRSIDetectorHit {
 public:
    TFragment();
    TFragment(const TFragment&);
-   virtual ~TFragment();
+   ~TFragment() override;
 
    //////////////////// basic setter functions ////////////////////
 
@@ -97,10 +97,10 @@ public:
    //////////////////// misc. functions ////////////////////
    bool IsDetector(const char* prefix, Option_t* opt = "CA") const;
 
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
-   TObject* Clone(const char* name = "") const;
+   TObject* Clone(const char* name = "") const override;
 
    bool operator<(const TFragment& rhs) const { return (GetTimeStamp() < rhs.GetTimeStamp()); }
    bool operator>(const TFragment& rhs) const { return (GetTimeStamp() > rhs.GetTimeStamp()); }
@@ -142,7 +142,7 @@ private:
    // int HitIndex;    //!<! transient member indicating which pile-up hit this is in the original fragment
 
    /// \cond CLASSIMP
-   ClassDef(TFragment, 6); // Event Fragments
+   ClassDefOverride(TFragment, 6); // Event Fragments
    /// \endcond
 };
 /*! @} */

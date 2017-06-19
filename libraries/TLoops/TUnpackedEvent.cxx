@@ -9,8 +9,7 @@ TUnpackedEvent::TUnpackedEvent()
 }
 
 TUnpackedEvent::~TUnpackedEvent()
-{
-}
+= default;
 
 void TUnpackedEvent::Build()
 {

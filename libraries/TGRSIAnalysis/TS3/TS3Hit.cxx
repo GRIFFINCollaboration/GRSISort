@@ -24,8 +24,7 @@ TS3Hit::TS3Hit(const TFragment& frag) : TGRSIDetectorHit(frag)
 }
 
 TS3Hit::~TS3Hit()
-{
-}
+= default;
 
 TS3Hit::TS3Hit(const TS3Hit& rhs) : TGRSIDetectorHit(rhs)
 {

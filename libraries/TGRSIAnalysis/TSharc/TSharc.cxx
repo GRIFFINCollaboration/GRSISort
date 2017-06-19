@@ -84,8 +84,7 @@ TSharc::TSharc()
 }
 
 TSharc::~TSharc()
-{
-}
+= default;
 
 TSharc::TSharc(const TSharc& rhs) : TGRSIDetector()
 {
@@ -153,10 +152,10 @@ void TSharc::BuildHits()
       }
    }
 
-   for(size_t i = 0; i < fSharcHits.size(); i++) {
+   for(auto & fSharcHit : fSharcHits) {
       for(pad = fPadFragments.begin(); pad != fPadFragments.end(); pad++) {
-         if(fSharcHits.at(i).GetDetector() == pad->GetDetector()) {
-            fSharcHits.at(i).SetPad(*pad);
+         if(fSharcHit.GetDetector() == pad->GetDetector()) {
+            fSharcHit.SetPad(*pad);
             pad = fPadFragments.erase(pad);
             break;
          }
@@ -264,7 +263,7 @@ TSharcHit* TSharc::GetSharcHit(const int& i)
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
       throw grsi::exit_exception(1);
    }
-   return 0;
+   return nullptr;
 }
 
 double TSharc::GetDetectorThickness(TSharcHit& hit, double dist)

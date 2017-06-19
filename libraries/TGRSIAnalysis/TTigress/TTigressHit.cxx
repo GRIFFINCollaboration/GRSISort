@@ -14,8 +14,7 @@ ClassImp(TTigressHit)
 }
 
 TTigressHit::~TTigressHit()
-{
-}
+= default;
 
 TTigressHit::TTigressHit(const TTigressHit& rhs) : TGRSIDetectorHit()
 {

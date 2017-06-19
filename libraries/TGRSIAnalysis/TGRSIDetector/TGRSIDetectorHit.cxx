@@ -8,7 +8,7 @@
 ClassImp(TGRSIDetectorHit)
    /// \endcond
 
-   TPPG* TGRSIDetectorHit::fPPG = 0;
+   TPPG* TGRSIDetectorHit::fPPG = nullptr;
 
 TVector3 TGRSIDetectorHit::fBeamDirection(0, 0, 1);
 

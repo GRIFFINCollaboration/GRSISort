@@ -152,8 +152,8 @@ public:
    TGraph* RutherfordVsTheta(double thmin = 1.0, double thmax = 179.0, int part = 2, bool Frame_Lab = true,
                              bool Units_mbSr = true);
 
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
    void SetExcEnergy(double exc) { SetCmFrame(exc); }
 
@@ -195,7 +195,7 @@ private:
    double fThetaMax[4]; // only nonzero for ejectile and recoil
 
    /// \cond CLASSIMP
-   ClassDef(TReaction, 1) // Calculates reaction parameters for scattering experiments
+   ClassDefOverride(TReaction, 1) // Calculates reaction parameters for scattering experiments
    /// \endcond
 };
 /*! @} */

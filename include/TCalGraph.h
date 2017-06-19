@@ -29,7 +29,7 @@ class TCalGraph : public TGraphErrors {
 public:
    TCalGraph();
    TCalGraph(const char* name, const char* title) : TGraphErrors(name, title){};
-   virtual ~TCalGraph();
+   ~TCalGraph() override;
 
    TCalGraph(const TCalGraph& copy);
 
@@ -38,7 +38,7 @@ public:
    Double_t FindDistToClosestPointX(const Double_t& x_val);
 
    Int_t AddLists(const TCalList& cal_list, const TSourceList& src_list);
-   virtual void Draw(Option_t* opt = "")
+   void Draw(Option_t* opt = "") override
    {
       BuildGraph();
       TGraphErrors::Draw(opt);
@@ -46,8 +46,8 @@ public:
    void ClearAllPoints(Option_t* opt = "");
 
 public:
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
 protected:
    std::map<UInt_t, std::pair<TCalPoint, TCalPoint>> fCompareMap;
@@ -58,7 +58,7 @@ private:
    virtual void BuildGraph() = 0;
 
    /// \cond CLASSIMP
-   ClassDef(TCalGraph, 1); // Graph Class for Calibrations
+   ClassDefOverride(TCalGraph, 1); // Graph Class for Calibrations
    /// \endcond
 };
 /*! @} */

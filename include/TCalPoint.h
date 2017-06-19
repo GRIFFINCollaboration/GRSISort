@@ -14,20 +14,20 @@ public:
    TCalPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid = 0.0,
              const Double_t& dArea = 0.0);
    TCalPoint(const TPeak& peak);
-   virtual ~TCalPoint();
+   ~TCalPoint() override;
 
    TCalPoint(const TCalPoint& copy);
 
 public:
-   void Copy(TObject& obj) const;
+   void Copy(TObject& obj) const override;
    void SetPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid = 0.0,
                  const Double_t& dArea = 0.0);
    void SetPoint(const TPeak* peak);
    void SetCentroid(const Double_t& centroid, const Double_t& dcentroid = 0.0);
    void SetArea(const Double_t& area, const Double_t& darea = 0.0);
 
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
    Double_t Centroid() const { return fCentroid; }
    Double_t Area() const { return fArea; }
@@ -41,7 +41,7 @@ private:
    Double_t fAreaErr;
 
    /// \cond CLASSIMP
-   ClassDef(TCalPoint, 1);
+   ClassDefOverride(TCalPoint, 1);
    /// \endcond
 };
 /*! @} */

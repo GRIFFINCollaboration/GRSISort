@@ -36,7 +36,7 @@ class TSharcHit : public TGRSIDetectorHit {
 public:
    TSharcHit();
    TSharcHit(const TSharcHit&);
-   ~TSharcHit();
+   ~TSharcHit() override;
 
 private:
    // UShort_t   fDetectorNumber;  //
@@ -47,9 +47,9 @@ private:
    TGRSIDetectorHit fPadHit;  //
 
 public:
-   virtual void Copy(TObject&) const;        //!<!
-   virtual void Clear(Option_t* = "");       //!<!
-   virtual void Print(Option_t* = "") const; //!<!
+   void Copy(TObject&) const override;        //!<!
+   void Clear(Option_t* = "") override;       //!<!
+   void Print(Option_t* = "") const override; //!<!
 
    // inline UShort_t GetDetector()       const  { return TGRSIDetectorHit::GetDetector();  } //!<!
    UShort_t GetFrontStrip() const { return TGRSIDetectorHit::GetSegment(); } //!<!
@@ -88,7 +88,7 @@ public:
    Float_t GetBackCharge() const { return GetBack().GetCharge(); } //!<!  //Charge is now stored after integration.
    Float_t GetPadCharge() const { return GetPad().GetCharge(); }   //!<!  //Charge is now stored after integration.
 
-   inline Double_t GetEnergy(Option_t* = "") const
+   inline Double_t GetEnergy(Option_t* = "") const override
    {
       if(GetPadAddress() != -1) return TGRSIDetectorHit::GetEnergy() + GetPad().GetEnergy();
       return TGRSIDetectorHit::GetEnergy();
@@ -111,14 +111,14 @@ public:
    void SetBack(const TFragment& frag);  //!<!
    void SetPad(const TFragment& frag);   //!<!
 
-   TVector3 GetPosition(Double_t dist) const; //!<!
-   TVector3 GetPosition() const;              //!<!
+   TVector3 GetPosition(Double_t dist) const override; //!<!
+   TVector3 GetPosition() const override;              //!<!
 
 private:
    Double_t GetDefaultDistance() const { return 0.; };
 
    /// \cond CLASSIMP
-   ClassDef(TSharcHit, 6)
+   ClassDefOverride(TSharcHit, 6)
    /// \endcond
 };
 /*! @} */

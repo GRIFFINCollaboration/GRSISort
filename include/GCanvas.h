@@ -13,14 +13,14 @@
 
 class GMarker : public TObject {
 public:
-   GMarker() : x(-1), y(-1), localx(0.0), localy(0.0), linex(0), liney(0) {}
+   GMarker() : x(-1), y(-1), localx(0.0), localy(0.0), linex(nullptr), liney(nullptr) {}
    GMarker(const GMarker& m) : TObject(m) { ((GMarker&)m).Copy(*this); }
-   virtual ~GMarker()
+   ~GMarker() override
    {
       if (linex) linex->Delete();
       if (liney) liney->Delete();
    }
-   void Draw(Option_t* opt = "")
+   void Draw(Option_t* opt = "") override
    {
       if (linex) linex->Draw(opt);
       if (liney) liney->Draw(opt);
@@ -44,9 +44,9 @@ public:
    int    binx, biny;
    TLine* linex;
    TLine* liney;
-   void Copy(TObject& object) const;
+   void Copy(TObject& object) const override;
    bool operator<(const GMarker& rhs) const { return x < rhs.x; }
-   ClassDef(GMarker, 0)
+   ClassDefOverride(GMarker, 0)
 };
 
 /*
@@ -58,7 +58,7 @@ class GPopup : public TGTransientFrame  {
     //bool ProcessMessage(Long_t,Long_t,Long_t);
   private:
     TGTextButton *fButton1,*fButton2;
-  ClassDef(GPopup,0)
+  ClassDefOverride(GPopup,0)
 };
 */
 
@@ -69,7 +69,7 @@ public:
    GCanvas(const char* name, const char* title, Int_t ww, Int_t wh);
    GCanvas(const char* name, Int_t ww, Int_t wh, Int_t winid);
    GCanvas(const char* name, const char* title, Int_t wtopx, Int_t wtopy, Int_t ww, Int_t wh, bool gui = false);
-   virtual ~GCanvas();
+   ~GCanvas() override;
 
 	//void ProcessEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
 	//void CatchEvent(Int_t event,Int_t x,Int_t y,TObject *obj);
@@ -77,7 +77,7 @@ public:
 #pragma clang diagnostic ignored "-Woverloaded-virtual"
 	void HandleInput(int event,Int_t x,Int_t y);
 #pragma clang diagnostic pop
-	void Draw(Option_t *opt="");
+	void Draw(Option_t *opt="") override;
 
 	static GCanvas* MakeDefCanvas();
 
@@ -162,7 +162,7 @@ private:
 		return control_key;
 	}
 
-	ClassDef(GCanvas, 2);
+	ClassDefOverride(GCanvas, 2);
 };
 
 #endif

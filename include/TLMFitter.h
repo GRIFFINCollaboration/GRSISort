@@ -346,84 +346,84 @@ NRMat3d<T>::~NRMat3d()
    }
 }
 
-typedef const NRVec<bool> Vec_I_BOOL;
+using Vec_I_BOOL = const NRVec<bool>;
 typedef NRVec<bool>       Vec_BOOL, Vec_O_BOOL, Vec_IO_BOOL;
 
-typedef const NRVec<char> Vec_I_CHR;
+using Vec_I_CHR = const NRVec<char>;
 typedef NRVec<char>       Vec_CHR, Vec_O_CHR, Vec_IO_CHR;
 
-typedef const NRVec<unsigned char> Vec_I_UCHR;
+using Vec_I_UCHR = const NRVec<unsigned char>;
 typedef NRVec<unsigned char>       Vec_UCHR, Vec_O_UCHR, Vec_IO_UCHR;
 
-typedef const NRVec<int> Vec_I_INT;
+using Vec_I_INT = const NRVec<int>;
 typedef NRVec<int>       Vec_INT, Vec_O_INT, Vec_IO_INT;
 
-typedef const NRVec<unsigned int> Vec_I_UINT;
+using Vec_I_UINT = const NRVec<unsigned int>;
 typedef NRVec<unsigned int>       Vec_UINT, Vec_O_UINT, Vec_IO_UINT;
 
-typedef const NRVec<long> Vec_I_LNG;
+using Vec_I_LNG = const NRVec<long>;
 typedef NRVec<long>       Vec_LNG, Vec_O_LNG, Vec_IO_LNG;
 
-typedef const NRVec<unsigned long> Vec_I_ULNG;
+using Vec_I_ULNG = const NRVec<unsigned long>;
 typedef NRVec<unsigned long>       Vec_ULNG, Vec_O_ULNG, Vec_IO_ULNG;
 
-typedef const NRVec<float> Vec_I_SP;
+using Vec_I_SP = const NRVec<float>;
 typedef NRVec<float>       Vec_SP, Vec_O_SP, Vec_IO_SP;
 
-typedef const NRVec<double> Vec_I_double;
+using Vec_I_double = const NRVec<double>;
 typedef NRVec<double>       Vec_double, Vec_O_double, Vec_IO_double;
 
-typedef const NRVec<std::complex<float>> Vec_I_CPLX_SP;
+using Vec_I_CPLX_SP = const NRVec<std::complex<float> >;
 typedef NRVec<std::complex<float>>       Vec_CPLX_SP, Vec_O_CPLX_SP, Vec_IO_CPLX_SP;
 
-typedef const NRVec<std::complex<double>> Vec_I_CPLX_double;
+using Vec_I_CPLX_double = const NRVec<std::complex<double> >;
 typedef NRVec<std::complex<double>>       Vec_CPLX_double, Vec_O_CPLX_double, Vec_IO_CPLX_double;
 
 // Matrix Types
 
-typedef const NRMat<bool> Mat_I_BOOL;
+using Mat_I_BOOL = const NRMat<bool>;
 typedef NRMat<bool>       Mat_BOOL, Mat_O_BOOL, Mat_IO_BOOL;
 
-typedef const NRMat<char> Mat_I_CHR;
+using Mat_I_CHR = const NRMat<char>;
 typedef NRMat<char>       Mat_CHR, Mat_O_CHR, Mat_IO_CHR;
 
-typedef const NRMat<unsigned char> Mat_I_UCHR;
+using Mat_I_UCHR = const NRMat<unsigned char>;
 typedef NRMat<unsigned char>       Mat_UCHR, Mat_O_UCHR, Mat_IO_UCHR;
 
-typedef const NRMat<int> Mat_I_INT;
+using Mat_I_INT = const NRMat<int>;
 typedef NRMat<int>       Mat_INT, Mat_O_INT, Mat_IO_INT;
 
-typedef const NRMat<unsigned int> Mat_I_UINT;
+using Mat_I_UINT = const NRMat<unsigned int>;
 typedef NRMat<unsigned int>       Mat_UINT, Mat_O_UINT, Mat_IO_UINT;
 
-typedef const NRMat<long> Mat_I_LNG;
+using Mat_I_LNG = const NRMat<long>;
 typedef NRMat<long>       Mat_LNG, Mat_O_LNG, Mat_IO_LNG;
 
-typedef const NRMat<unsigned long> Mat_I_ULNG;
+using Mat_I_ULNG = const NRMat<unsigned long>;
 typedef NRMat<unsigned long>       Mat_ULNG, Mat_O_ULNG, Mat_IO_ULNG;
 
-typedef const NRMat<float> Mat_I_SP;
+using Mat_I_SP = const NRMat<float>;
 typedef NRMat<float>       Mat_SP, Mat_O_SP, Mat_IO_SP;
 
-typedef const NRMat<double> Mat_I_double;
+using Mat_I_double = const NRMat<double>;
 typedef NRMat<double>       Mat_double, Mat_O_double, Mat_IO_double;
 
-typedef const NRMat<std::complex<float>> Mat_I_CPLX_SP;
+using Mat_I_CPLX_SP = const NRMat<std::complex<float> >;
 typedef NRMat<std::complex<float>>       Mat_CPLX_SP, Mat_O_CPLX_SP, Mat_IO_CPLX_SP;
 
-typedef const NRMat<std::complex<double>> Mat_I_CPLX_double;
+using Mat_I_CPLX_double = const NRMat<std::complex<double> >;
 typedef NRMat<std::complex<double>>       Mat_CPLX_double, Mat_O_CPLX_double, Mat_IO_CPLX_double;
 
 // 3D Matrix Types
 
-typedef const NRMat3d<double> Mat3D_I_double;
+using Mat3D_I_double = const NRMat3d<double>;
 typedef NRMat3d<double>       Mat3D_double, Mat3D_O_double, Mat3D_IO_double;
 
 // Miscellaneous Types
 
-typedef NRVec<unsigned long*> Vec_ULNG_p;
-typedef NRVec<NRMat<double>*> Vec_Mat_double_p;
-typedef NRVec<std::fstream*>  Vec_FSTREAM_p;
+using Vec_ULNG_p = NRVec<unsigned long *>;
+using Vec_Mat_double_p = NRVec<NRMat<double> *>;
+using Vec_FSTREAM_p = NRVec<std::fstream *>;
 
 template <class T>
 inline const T SQR(const T a)
@@ -514,7 +514,7 @@ inline const std::complex<float> operator/(const std::complex<float>& a, const d
 class TLMFitter : public TObject {
 public:
    TLMFitter() : fIntegrationSteps(100), fInitChi2Number(3){};
-   ~TLMFitter(){};
+   ~TLMFitter()= default;
 
 private:
    int  fIntegrationSteps;
@@ -563,7 +563,7 @@ protected:
                   Vec_double& dyda, int chisqnumber, const double& bin_width, Vec_double& yfit, const int& bin);
 
 public:
-   ClassDef(TLMFitter, 1);
+   ClassDefOverride(TLMFitter, 1);
 };
 /*! @} */
 #endif // TLMFitter_H

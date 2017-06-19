@@ -31,7 +31,7 @@ public:
                 std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&              badOutputQueue);
 #endif
 
-   ~TFragmentMap(){};
+   ~TFragmentMap()= default;;
 #ifndef __CINT__
    bool Add(std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>);
 #endif

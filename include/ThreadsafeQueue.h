@@ -70,8 +70,7 @@ ThreadsafeQueue<T>::ThreadsafeQueue(std::string name, size_t maxSize)
 
 template <typename T>
 ThreadsafeQueue<T>::~ThreadsafeQueue()
-{
-}
+= default;
 
 template <typename T>
 int ThreadsafeQueue<T>::Push(T obj)

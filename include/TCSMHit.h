@@ -5,7 +5,7 @@
  *  @{
  */
 
-#include <stdio.h>
+#include <cstdio>
 #include <utility>
 #include <iostream>
 
@@ -19,7 +19,7 @@
 class TCSMHit : public TGRSIDetectorHit {
 public:
    TCSMHit();
-   virtual ~TCSMHit();
+   ~TCSMHit() override;
 
 private:
    Short_t fHorDStrip;  //
@@ -56,8 +56,8 @@ private:
 public:
    bool IsEmpty();
 
-   virtual void Clear(Option_t* = "");       //!<!
-   virtual void Print(Option_t* = "") const; //!<!
+   void Clear(Option_t* = "") override;       //!<!
+   void Print(Option_t* = "") const override; //!<!
 
    // static bool Compare(TCSMHit *lhs,TCSMHit *rhs); //!<!
 
@@ -103,10 +103,10 @@ public:
    Double_t GetDdE_dx() const { return GetDEnergy() / GetDthickness(); }
    Double_t GetDthickness() const;
 
-   TVector3 GetPosition(Double_t = 0) const { return fDPosition; }                 //!<!
-   Double_t GetEnergy(Option_t* = "") const { return GetDEnergy() + GetEEnergy(); } //!<!
+   TVector3 GetPosition(Double_t = 0) const override { return fDPosition; }                 //!<!
+   Double_t GetEnergy(Option_t* = "") const override { return GetDEnergy() + GetEEnergy(); } //!<!
 
-	Double_t GetTime(const UInt_t& = ETimeFlag::kAll, Option_t* = "") const { return fVerDTime; }  ///< Returns fVerDTime
+	Double_t GetTime(const UInt_t& = ETimeFlag::kAll, Option_t* = "") const override { return fVerDTime; }  ///< Returns fVerDTime
 
    inline void SetDetectorNumber(const Int_t& tempnum) { fDetectorNumber = tempnum; } //!<!
 
@@ -144,7 +144,7 @@ public:
    inline void SetEVerticalEnergy(const Double_t tempd) { fVerEEnergy = tempd; }
 
    /// \cond CLASSIMP
-   ClassDef(TCSMHit, 4)
+   ClassDefOverride(TCSMHit, 4)
    /// \endcond
 };
 /*! @} */

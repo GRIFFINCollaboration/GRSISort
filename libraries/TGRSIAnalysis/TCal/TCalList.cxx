@@ -14,8 +14,7 @@ ClassImp(TCalList)
 }
 
 TCalList::~TCalList()
-{
-}
+= default;
 
 TCalList::TCalList(const char* name, const char* title) : TNamed(name, title)
 {

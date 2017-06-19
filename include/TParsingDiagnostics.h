@@ -35,7 +35,7 @@ class TParsingDiagnostics : public TObject {
 public:
    TParsingDiagnostics();
    TParsingDiagnostics(const TParsingDiagnostics&);
-   ~TParsingDiagnostics();
+   ~TParsingDiagnostics() override;
    static TParsingDiagnostics* Get()
    {
       if (fParsingDiagnostics == nullptr) {
@@ -101,13 +101,13 @@ public:
    // other functions
    void WriteToFile(const char*) const;
 
-   void Copy(TObject&) const;
-   void Clear(Option_t* opt = "all");
-   void Print(Option_t* opt = "") const;
-   void Draw(Option_t* opt = "");
+   void Copy(TObject&) const override;
+   void Clear(Option_t* opt = "all") override;
+   void Print(Option_t* opt = "") const override;
+   void Draw(Option_t* opt = "") override;
 
    /// \cond CLASSIMP
-   ClassDef(TParsingDiagnostics, 1);
+   ClassDefOverride(TParsingDiagnostics, 1);
    /// \endcond
 };
 /*! @} */

@@ -20,7 +20,7 @@ class TTipHit : public TGRSIDetectorHit {
 public:
    TTipHit();
    TTipHit(const TFragment&);
-   virtual ~TTipHit();
+   ~TTipHit() override;
    TTipHit(const TTipHit&);
 
 private:
@@ -80,12 +80,12 @@ public:
    void SetPID(const TFragment&);
 
 public:
-   void Clear(Option_t* opt = "");       //!<!
-   void Print(Option_t* opt = "") const; //!<!
-   virtual void Copy(TObject&) const;    //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+   void Copy(TObject&) const override;    //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TTipHit, 1);
+   ClassDefOverride(TTipHit, 1);
    /// \endcond
 };
 /*! @} */

@@ -327,7 +327,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 
 	// read analysis options from input file(s)
 	for(std::string file : fInputRootFiles) {
-		std::cout<<"Reading options from \""<<file<<"\":"<<std::endl;
+		std::cout<<R"(Reading options from ")"<<file<<R"(":)"<<std::endl;
 		fAnalysisOptions->ReadFromFile(file);
 		fAnalysisOptions->Print();
 	}

@@ -12,11 +12,11 @@
 class GNotifier : public TNamed {
 public:
    static GNotifier* Get();
-   virtual ~GNotifier();
+   ~GNotifier() override;
 
-   virtual void Print(Option_t* = "") const {}
-   virtual void Clear(Option_t* = "") {}
-   virtual bool                 Notify();
+   void Print(Option_t* = "") const override {}
+   void Clear(Option_t* = "") override {}
+   bool                 Notify() override;
 
 #ifdef __CINT__
    static void AddCallback(void (*func)());
@@ -39,7 +39,7 @@ private:
 
    static GNotifier* fGNotifier;
 
-   ClassDef(GNotifier, 0)
+   ClassDefOverride(GNotifier, 0)
 };
 
 #endif

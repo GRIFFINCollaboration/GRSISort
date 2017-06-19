@@ -329,8 +329,8 @@ void GGaus::DrawResiduals(TH1* hist) const
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
    Int_t     nbins  = hist->GetXaxis()->GetNbins();
-   Double_t* res    = new Double_t[nbins];
-   Double_t* bin    = new Double_t[nbins];
+   auto* res    = new Double_t[nbins];
+   auto* bin    = new Double_t[nbins];
    Int_t     points = 0;
    for(int i = 1; i <= nbins; i++) {
       if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) continue;
@@ -339,7 +339,7 @@ void GGaus::DrawResiduals(TH1* hist) const
       points++;
    }
    new GCanvas();
-   TGraph* residuals = new TGraph(points, bin, res);
+   auto* residuals = new TGraph(points, bin, res);
    residuals->Draw("*AC");
    delete[] res;
    delete[] bin;
