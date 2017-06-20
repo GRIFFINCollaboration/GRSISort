@@ -1468,7 +1468,7 @@ int TDataParser::FippsToFragment(std::vector<char> data)
       ++totalEventsRead;
       if((ptr[i + 2] & 0x7fff) == 0) {
          if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(99);
-         Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, ptr, data.size() / 4, i + 2, false));
+         //Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, ptr, data.size() / 4, i + 2, false));
          continue;
       }
       eventFrag->SetCharge(static_cast<int32_t>(ptr[i + 2] & 0x7fff));
