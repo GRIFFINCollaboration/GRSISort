@@ -43,7 +43,7 @@ public:
 
    const TRawFile& GetSource() const { return *fSource; }
 
-   virtual void ClearQueue() override;
+   void ClearQueue() override;
 
    bool Iteration() override;
    void OnEnd() override;

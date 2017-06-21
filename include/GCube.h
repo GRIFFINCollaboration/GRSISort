@@ -18,9 +18,9 @@ public:
    ~GCube() override;
 
 #if MAJOR_ROOT_VERSION < 6
-   virtual Bool_t    Add(TF1* h1, Double_t c1 = 1., Option_t* option = "") override;
-   virtual Bool_t    Add(const TH1* h1, Double_t c1 = 1.) override;
-   virtual Bool_t    Add(const TH1* h1, const TH1* h2, Double_t c1 = 1., Double_t c2 = 1.) override;
+   Bool_t				Add(TF1* h1, Double_t c1 = 1., Option_t* option = "") override;
+   Bool_t				Add(const TH1* h1, Double_t c1 = 1.) override;
+   Bool_t				Add(const TH1* h1, const TH1* h2, Double_t c1 = 1., Double_t c2 = 1.) override;
 #endif
    Int_t             BufferEmpty(Int_t action = 0) override;
    Int_t             BufferFill(Double_t, Double_t) override { return -2; } // MayNotUse

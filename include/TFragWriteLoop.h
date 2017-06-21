@@ -37,7 +37,7 @@ public:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& OutputQueue() { return fOutputQueue; }
 #endif
 
-   virtual void ClearQueue() override;
+   void ClearQueue() override;
 
    void Write();
 

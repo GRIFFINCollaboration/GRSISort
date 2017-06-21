@@ -37,7 +37,7 @@
 # endif
 
 
-static STRUCT_UTMP *gUtmpContents;
+static STRUCT_UTMP* gUtmpContents;
 
 void SetGRSIEnv();
 void SetGRSIPluginHandlers();
@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
       SetDisplay();
       SetGRSIEnv();
       SetGRSIPluginHandlers();
-      TGRSIint *input = nullptr;
+      TGRSIint* input = nullptr;
    
       //Create an instance of the grsi interpreter so that we can run root-like interpretive mode
       input = TGRSIint::instance(argc,argv);
@@ -97,41 +97,42 @@ void SetGRSIPluginHandlers() {
 }
 
 static int ReadUtmp() {
-   FILE  *utmp;
-   struct stat file_stats{};
-   size_t n_read, size;
+	FILE  *utmp;
+	struct stat file_stats{};
+	size_t n_read, size;
 
-   gUtmpContents = nullptr;
+	gUtmpContents = nullptr;
 
-   utmp = fopen(UTMP_FILE, "r");
-   if(utmp == nullptr) { return 0;
-}
-
-   fstat(fileno(utmp), &file_stats);
-   size = file_stats.st_size;
-   if(size <= 0) {
-      fclose(utmp);
-      return 0;
-   }
-
-   gUtmpContents = static_cast<STRUCT_UTMP *>( malloc(size));
-   if(gUtmpContents == nullptr) {
-      fclose(utmp);
-      return 0;
-   }
-
-   n_read = fread(gUtmpContents, 1, size, utmp);
-   if(ferror(utmp) == 0) {
-      if(fclose(utmp) != EOF && n_read == size) {
-         return size / sizeof(STRUCT_UTMP);
-		}
-   } else {
-      fclose(utmp);
+	utmp = fopen(UTMP_FILE, "r");
+	if(utmp == nullptr) { 
+		return 0;
 	}
 
-   free(gUtmpContents);
-   gUtmpContents = nullptr;
-   return 0;
+	fstat(fileno(utmp), &file_stats);
+	size = file_stats.st_size;
+	if(size <= 0) {
+		fclose(utmp);
+		return 0;
+	}
+
+	gUtmpContents = static_cast<STRUCT_UTMP *>( malloc(size));
+	if(gUtmpContents == nullptr) {
+		fclose(utmp);
+		return 0;
+	}
+
+	n_read = fread(gUtmpContents, 1, size, utmp);
+	if(ferror(utmp) == 0) {
+		if(fclose(utmp) != EOF && n_read == size) {
+			return size / sizeof(STRUCT_UTMP);
+		}
+	} else {
+		fclose(utmp);
+	}
+
+	free(gUtmpContents);
+	gUtmpContents = nullptr;
+	return 0;
 }
 
 static STRUCT_UTMP* SearchEntry(int n, const char *tty)  {
@@ -142,12 +143,12 @@ static STRUCT_UTMP* SearchEntry(int n, const char *tty)  {
 		}
 		ue++;
 	}
-   return nullptr;
+	return nullptr;
 }
 
 
 static void SetDisplay()  {
-   // Set DISPLAY environment variable.
+	// Set DISPLAY environment variable.
 
 	if(getenv("DISPLAY") == nullptr) {
 		char *tty = ttyname(0);  // device user is logged in on

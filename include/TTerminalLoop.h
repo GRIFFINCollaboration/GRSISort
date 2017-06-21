@@ -38,7 +38,7 @@ public:
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<T>>>& InputQueue() { return fInputQueue; }
 
-   virtual void ClearQueue() override
+   void ClearQueue() override
    {
       while (fInputQueue->Size()) {
          std::shared_ptr<T> event;
@@ -47,10 +47,10 @@ public:
    }
 #endif
 
-   virtual size_t GetItemsPopped() override { return 0; }
-   virtual size_t GetItemsPushed() override { return 0; }
-   virtual size_t GetItemsCurrent() override { return 0; }
-   virtual size_t GetRate() override { return 0; }
+   size_t GetItemsPopped() override { return 0; }
+   size_t GetItemsPushed() override { return 0; }
+   size_t GetItemsCurrent() override { return 0; }
+   size_t GetRate() override { return 0; }
 
 protected:
 #ifndef __CINT__

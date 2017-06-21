@@ -46,7 +46,7 @@ public:
    size_t GetItemsCurrent() override { return fEntriesTotal; }
    size_t GetRate() override { return 0; }
 
-   virtual void ClearQueue() override;
+   void ClearQueue() override;
 
    void OnEnd() override;
 

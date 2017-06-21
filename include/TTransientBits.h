@@ -17,6 +17,9 @@
 #include <iomanip>
 #include <string>
 #include <map>
+#include <algorithm>
+
+#include "Rtypes.h"
 
 template <typename T>
 class TTransientBits {

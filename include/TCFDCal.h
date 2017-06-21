@@ -18,8 +18,8 @@ public:
 
 public:
    void                  WriteToChannel() const override;
-   virtual void                  ReadFromChannel();
-   virtual std::vector<Double_t> GetParameters() const override;
+   virtual void          ReadFromChannel();
+   std::vector<Double_t> GetParameters() const override;
    Double_t GetParameter(size_t parameter) const override;
 
    void AddParameter(Double_t param);
