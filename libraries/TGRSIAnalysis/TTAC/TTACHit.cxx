@@ -41,6 +41,42 @@ void TTACHit::Copy(TObject& rhs) const
    static_cast<TTACHit&>(rhs).fFilter = fFilter;
 }
 
+Double_t TTACHit::GetTempCorrectedCharge(TGraph* correction_graph) const {
+   //Applies the kValue ot the charge
+   if(!correction_graph){
+      std::cout << "Graph for temperture corrections is null" << std::endl;
+   }
+
+   return GetCharge()*correction_graph->Eval(GetTime()/1e9);//The graph should be defined in seconds
+}
+
+Double_t TTACHit::TempCorrectedCharge(TGraph* correction_graph) const {
+   //Returns the raw charge with no kValue applied
+   if(!correction_graph){
+      std::cout << "Graph for temperture corrections is null" << std::endl;
+   }
+
+   return Charge()*correction_graph->Eval(GetTime()/1e9);//The graph should be defined in seconds
+}
+
+Double_t TTACHit::GetTempCorrectedEnergy(TGraph* correction_graph) const {
+   //This will not overwrite the normal energy, nor will it get stored as the energy.
+   if(!correction_graph){
+      std::cout << "Graph for temperture corrections is null" << std::endl;
+   }
+
+   TChannel* channel = GetChannel();
+   if(channel == nullptr) {
+      return 0.0;
+   }
+   if(fKValue > 0) {
+      return channel->CalibrateENG(TempCorrectedCharge(correction_graph), (int)fKValue);
+   } else if(channel->UseCalFileIntegration()) {
+      return channel->CalibrateENG(TempCorrectedCharge(correction_graph), 0);
+   }
+   return channel->CalibrateENG(TempCorrectedCharge(correction_graph));
+}
+
 bool TTACHit::InFilter(Int_t)
 {
    // check if the desired filter is in wanted filter;

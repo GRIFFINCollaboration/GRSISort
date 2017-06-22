@@ -19,6 +19,7 @@
 
 #include "TFragment.h"
 #include "TChannel.h"
+#include "TGraph.h"
 
 #include "TVector3.h"
 
@@ -42,6 +43,10 @@ public:
    inline Int_t GetFilterPattern() const { return fFilter; } //!<!
 
    bool InFilter(Int_t); //!<!
+
+   Double_t GetTempCorrectedCharge(TGraph* correction_graph) const;
+   Double_t TempCorrectedCharge(TGraph* correction_graph) const;
+   Double_t GetTempCorrectedEnergy(TGraph* correction_graph) const;
 
 public:
    void Clear(Option_t* opt = "");       //!<!
