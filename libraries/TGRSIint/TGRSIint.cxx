@@ -762,7 +762,7 @@ void TGRSIint::DelayedProcessLine_Action()
    }
 
    Long_t result = this->ProcessLine(message.c_str());
-   Getlinem(EGetLineMode::kInit, ((TRint*)gApplication)->GetPrompt());
+   Getlinem(EGetLineMode::kInit, (dynamic_cast<TRint*>(gApplication))->GetPrompt());
 
    {
       std::lock_guard<std::mutex> lock(g__ResultListMutex);

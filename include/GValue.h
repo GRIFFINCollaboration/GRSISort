@@ -56,7 +56,7 @@ public:
    static std::string WriteToBuffer(Option_t* opt = "");
 
 private:
-   double         fValue;
+   double         fValue{};
    EPriority      fPriority;
    std::string    info;
    static GValue* fDefaultValue;

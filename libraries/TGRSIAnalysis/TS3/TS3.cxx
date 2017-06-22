@@ -48,8 +48,8 @@ TS3::TS3(const TS3& rhs) : TGRSIDetector()
 void TS3::Copy(TObject& rhs) const
 {
    TGRSIDetector::Copy(rhs);
-   static_cast<TS3&>(rhs).fS3RingHits   = fS3RingHits;
-   static_cast<TS3&>(rhs).fS3SectorHits = fS3SectorHits;
+   dynamic_cast<TS3&>(rhs).fS3RingHits   = fS3RingHits;
+   dynamic_cast<TS3&>(rhs).fS3SectorHits = fS3SectorHits;
    return;
 }
 

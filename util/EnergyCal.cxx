@@ -94,7 +94,7 @@ void GetCal(TH1* hist, TGraphErrors* ge, TGraphErrors *fwhm){
       Double_t peak_pos = s.GetPositionX()[0];
       hist->GetXaxis()->UnZoom();
       std::cout << "PEAK POS " << peak_pos <<  std::endl;
-      TPeak *peak = new TPeak(peak_pos,peak_pos-rangelow,peak_pos+rangehigh);
+      auto *peak = new TPeak(peak_pos,peak_pos-rangelow,peak_pos+rangehigh);
  //     peak->Clear();
    //   peak->InitParams(hist);
       peak->Fit(hist,"+");
@@ -118,7 +118,7 @@ int main(int argc, char **argv) {
       return 0;
    }
 
-   TFile* file = new TFile(argv[1]);
+   auto* file = new TFile(argv[1]);
    if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
@@ -128,16 +128,16 @@ int main(int argc, char **argv) {
       return 1;
    }
 
-   TH2D* eng_mat = new TH2D;
-   TH1D* eng_sum = new TH1D;
+   auto* eng_mat = new TH2D;
+   auto* eng_sum = new TH1D;
    file->GetObject("hp_energy",eng_mat);
    file->GetObject("EnergySum",eng_sum);
 
-   TFile *outfile = new TFile("calibration.root","RECREATE");
+   auto *outfile = new TFile("calibration.root","RECREATE");
 
-   TH1D* current_hist = new TH1D;
-   TGraphErrors* ge = new TGraphErrors;
-   TGraphErrors* fwhm = new TGraphErrors;
+   auto* current_hist = new TH1D;
+   auto* ge = new TGraphErrors;
+   auto* fwhm = new TGraphErrors;
    for(int i =1;i<=64; i++){
       printf("NOW FITTING CHANNEL: %d \n",i);
       fwhm->Clear();

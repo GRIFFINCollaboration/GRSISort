@@ -61,7 +61,7 @@ protected:
 
 private:
    std::string fOutputPrefix;
-	TAnalysisOptions* fAnalysisOptions;
+	TAnalysisOptions* fAnalysisOptions{};
 
    ClassDefOverride(TGRSISelector, 2);
 };

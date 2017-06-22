@@ -34,9 +34,9 @@ private:
 
    std::vector<TGRSIDetectorHit> fSegments;
 
-   bool    fBgoFired;
-   Float_t fTimeFit;
-   Float_t fSig2Noise;
+   bool    fBgoFired{};
+   Float_t fTimeFit{};
+   Float_t fSig2Noise{};
 
    // need to do sudo tracking to build addback. do not remove.  pcb. */
    // TVector3 fLastHit;                //!   <! */

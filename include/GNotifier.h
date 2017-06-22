@@ -27,7 +27,7 @@ public:
       Get()->callbacks.push_back(callback);
    }
 
-   static void AddCallback(void (*func)()) { Get()->callbacks.push_back(func); }
+   static void AddCallback(void (*func)()) { Get()->callbacks.emplace_back(func); }
 #endif
 
 private:

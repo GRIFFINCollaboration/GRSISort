@@ -175,7 +175,7 @@ void TFragWriteLoop::WriteEvent(std::shared_ptr<const TFragment> event)
 void TFragWriteLoop::WriteBadEvent(std::shared_ptr<const TFragment> event)
 {
    if(fBadEventTree) {
-      *fBadEventAddress = *static_cast<const TBadFragment*>(event.get());
+      *fBadEventAddress = *dynamic_cast<const TBadFragment*>(event.get());
       std::lock_guard<std::mutex> lock(ttree_fill_mutex);
       fBadEventTree->Fill();
    }

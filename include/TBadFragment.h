@@ -34,8 +34,8 @@ public:
 
 private:
    std::vector<uint32_t> fData;
-   int                   fFailedWord;
-   bool                  fMultipleErrors;
+   int                   fFailedWord{};
+   bool                  fMultipleErrors{};
 
    /// \cond CLASSIMP
    ClassDefOverride(TBadFragment, 1);

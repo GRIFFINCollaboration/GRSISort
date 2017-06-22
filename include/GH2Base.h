@@ -101,10 +101,10 @@ public:
 
 private:
    void   Init();
-   TList* fProjections;
+   TList* fProjections{};
 
-   TList*     fSummaryProjections; //!
-   bool       fIsSummary;
+   TList*     fSummaryProjections{}; //!
+   bool       fIsSummary{};
    kDirection fSummaryDirection;
 
    ClassDef(GH2Base, 1);

@@ -80,9 +80,9 @@ protected:
 private:
    // TGraphErrors* fGraph; //->
    TRef      fChan;    // This points at the TChannel
-   TF1*      fFitFunc; //-> Fit function representing calibration
-   TH1*      fHist;    // Histogram that was fit by the TPeak.
-   TNucleus* fNuc;     // Nucleus that we are calibrating against
+   TF1*      fFitFunc{}; //-> Fit function representing calibration
+   TH1*      fHist{};    // Histogram that was fit by the TPeak.
+   TNucleus* fNuc{};     // Nucleus that we are calibrating against
 
    /// \cond CLASSIMP
    ClassDefOverride(TCal, 2); // Abstract Class for Calibrations

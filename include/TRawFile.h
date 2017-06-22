@@ -19,7 +19,7 @@
 #ifdef __APPLE__
 #include <_types/_uint32_t.h>
 #else
-#include <stdint.h>
+#include <cstdint>
 #endif
 
 #include "TObject.h"
@@ -65,8 +65,8 @@ protected:
 
    std::vector<char> fReadBuffer;
 
-   size_t fBytesRead;
-   size_t fFileSize;
+   size_t fBytesRead{};
+   size_t fFileSize{};
 
    /// \cond CLASSIMP
    ClassDefOverride(TRawFile, 0) // Used to open and write Midas Files

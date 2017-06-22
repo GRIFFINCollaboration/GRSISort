@@ -24,12 +24,12 @@ TPPGData::TPPGData(const TPPGData& rhs) : TObject()
 
 void TPPGData::Copy(TObject& rhs) const
 {
-   static_cast<TPPGData&>(rhs).fTimeStamp       = fTimeStamp;
-   static_cast<TPPGData&>(rhs).fOldPpg          = fOldPpg;
-   static_cast<TPPGData&>(rhs).fNewPpg          = fNewPpg;
-   static_cast<TPPGData&>(rhs).fNetworkPacketId = fNetworkPacketId;
-   static_cast<TPPGData&>(rhs).fLowTimeStamp    = fLowTimeStamp;
-   static_cast<TPPGData&>(rhs).fHighTimeStamp   = fHighTimeStamp;
+   dynamic_cast<TPPGData&>(rhs).fTimeStamp       = fTimeStamp;
+   dynamic_cast<TPPGData&>(rhs).fOldPpg          = fOldPpg;
+   dynamic_cast<TPPGData&>(rhs).fNewPpg          = fNewPpg;
+   dynamic_cast<TPPGData&>(rhs).fNetworkPacketId = fNetworkPacketId;
+   dynamic_cast<TPPGData&>(rhs).fLowTimeStamp    = fLowTimeStamp;
+   dynamic_cast<TPPGData&>(rhs).fHighTimeStamp   = fHighTimeStamp;
 }
 
 void TPPGData::SetTimeStamp()
@@ -94,7 +94,7 @@ TPPG* TPPG::Get()
    // singletons, so one should take care to always use this method and not
    // the constructor.
    if(fPPG == nullptr) {
-      fPPG = static_cast<TPPG*>(gDirectory->Get("TPPG"));
+      fPPG = dynamic_cast<TPPG*>(gDirectory->Get("TPPG"));
       if(fPPG == nullptr) {
          fPPG = new TPPG();
       }
@@ -104,20 +104,20 @@ TPPG* TPPG::Get()
 
 void TPPG::Copy(TObject& obj) const
 {
-   static_cast<TPPG&>(obj).Clear();
-   static_cast<TPPG&>(obj).fCycleLength          = fCycleLength;
-   static_cast<TPPG&>(obj).fNumberOfCycleLengths = fNumberOfCycleLengths;
+   dynamic_cast<TPPG&>(obj).Clear();
+   dynamic_cast<TPPG&>(obj).fCycleLength          = fCycleLength;
+   dynamic_cast<TPPG&>(obj).fNumberOfCycleLengths = fNumberOfCycleLengths;
 
    // We want to provide a copy of each of the data in the PPG rather than a copy of th pointer
-   if(static_cast<TPPG&>(obj).fPPGStatusMap && fPPGStatusMap) {
+   if(dynamic_cast<TPPG&>(obj).fPPGStatusMap && fPPGStatusMap) {
       PPGMap_t::iterator ppgit;
       for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
          if(ppgit->second) {
-            static_cast<TPPG&>(obj).AddData(ppgit->second);
+            dynamic_cast<TPPG&>(obj).AddData(ppgit->second);
          }
       }
    }
-   static_cast<TPPG&>(obj).fCurrIterator = static_cast<TPPG&>(obj).fPPGStatusMap->begin();
+   dynamic_cast<TPPG&>(obj).fCurrIterator = dynamic_cast<TPPG&>(obj).fPPGStatusMap->begin();
 }
 
 Bool_t TPPG::MapIsEmpty() const
@@ -352,7 +352,7 @@ void TPPG::Setup()
       auto* prevSubRun =
          new TFile(Form("fragment%05d_%03d.root", TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber() - 1));
       if(prevSubRun->IsOpen()) {
-         TPPG* prev_ppg = (TPPG*)prevSubRun->Get("TPPG");
+         TPPG* prev_ppg = dynamic_cast<TPPG*>(prevSubRun->Get("TPPG"));
          if(prev_ppg) {
             prev_ppg->Copy(*this);
             printf("Found previous PPG data from run %s\n", prevSubRun->GetName());
@@ -549,7 +549,7 @@ Long64_t TPPG::Merge(TCollection* list)
    TIter it(list);
    TPPG* ppg = nullptr;
 
-   while((ppg = static_cast<TPPG*>(it.Next()))) {
+   while((ppg = dynamic_cast<TPPG*>(it.Next()))) {
       *this += *ppg;
    }
 

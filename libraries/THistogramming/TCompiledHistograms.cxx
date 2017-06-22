@@ -50,15 +50,15 @@ void TCompiledHistograms::ClearHistograms()
    TObject* obj;
    while((obj = next())) {
       if(obj->InheritsFrom(TH1::Class())) {
-         TH1* hist = (TH1*)obj;
+         TH1* hist = dynamic_cast<TH1*>(obj);
          hist->Reset();
       } else if(obj->InheritsFrom(TDirectory::Class())) {
-         TDirectory* dir = (TDirectory*)obj;
+         TDirectory* dir = dynamic_cast<TDirectory*>(obj);
          TIter       dirnext(dir->GetList());
          TObject*    dirobj;
          while((dirobj = dirnext())) {
             if(dirobj->InheritsFrom(TH1::Class())) {
-               TH1* hist = (TH1*)dirobj;
+               TH1* hist = dynamic_cast<TH1*>(dirobj);
                hist->Reset();
             }
          }
@@ -69,7 +69,7 @@ void TCompiledHistograms::ClearHistograms()
 
 time_t TCompiledHistograms::get_timestamp()
 {
-   struct stat buf;
+   struct stat buf{};
    stat(fLibname.c_str(), &buf);
    return buf.st_mtime;
 }
@@ -89,7 +89,7 @@ Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t)
    while((obj = next())) {
       if(obj->InheritsFrom(TDirectory::Class())) {
          TPreserveGDirectory preserve;
-         TDirectory*         dir = (TDirectory*)obj;
+         TDirectory*         dir = dynamic_cast<TDirectory*>(obj);
          gDirectory->mkdir(dir->GetName())->cd();
          TIter    dir_next(dir->GetList());
          TObject* dir_obj;

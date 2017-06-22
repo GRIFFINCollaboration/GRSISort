@@ -161,38 +161,38 @@ private:
    void SetCmFrame(double exc); // enables the reaction to be modified using excitation energy
 
    // USER INPUTS
-   TNucleus* fNuc[4];
+   TNucleus* fNuc[4]{};
    double    fTBeam;
    bool      fInverse;
    double    fExc;
-   double    fM[4];
+   double    fM[4]{};
 
    // CM FRAME MOTION
    double fQVal; // effective Q value (includes excitation)
-   double fS;    // 'S' = M^2
-   double fInvariantMass;
-   double fCmTi;
-   double fCmTf;
-   double fCmE;
-   double fCmV;
-   double fCmP;
-   double fCmG;
+   double fS{};    // 'S' = M^2
+   double fInvariantMass{};
+   double fCmTi{};
+   double fCmTf{};
+   double fCmE{};
+   double fCmV{};
+   double fCmP{};
+   double fCmG{};
 
    // PARTICLES IN CM FRAME
-   double fTCm[4];
-   double fECm[4];
-   double fPCm[4];
-   double fVCm[4];
-   double fGCm[4];
+   double fTCm[4]{};
+   double fECm[4]{};
+   double fPCm[4]{};
+   double fVCm[4]{};
+   double fGCm[4]{};
 
    // PARTICLE IN LAB FRAME
    // Note that in the lab frame only the initial state (beam/targ) is fixed in the reaction
-   double fTLab[2];
-   double fELab[2];
-   double fPLab[2];
-   double fVLab[2];
-   double fGLab[2];
-   double fThetaMax[4]; // only nonzero for ejectile and recoil
+   double fTLab[2]{};
+   double fELab[2]{};
+   double fPLab[2]{};
+   double fVLab[2]{};
+   double fGLab[2]{};
+   double fThetaMax[4]{}; // only nonzero for ejectile and recoil
 
    /// \cond CLASSIMP
    ClassDefOverride(TReaction, 1) // Calculates reaction parameters for scattering experiments

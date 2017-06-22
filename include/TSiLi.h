@@ -61,7 +61,7 @@ public:
 
    void UseFitCharge()
    {
-      for (unsigned int s = 0; s < fSiLiHits.size(); s++) fSiLiHits[s].UseFitCharge();
+      for (auto & fSiLiHit : fSiLiHits) fSiLiHit.UseFitCharge();
    }
 
    static TVector3 GetPosition(int ring, int sector, bool smear = false);

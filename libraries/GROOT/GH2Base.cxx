@@ -202,9 +202,9 @@ GH1D* GH2Base::GetPrevious(const GH1D* curr, bool)
    }
 
    if(link->Prev()) {
-      return (GH1D*)link->Prev()->GetObject();
+      return dynamic_cast<GH1D*>(link->Prev()->GetObject());
    } else {
-      return (GH1D*)fProjections->Last();
+      return dynamic_cast<GH1D*>(fProjections->Last());
    }
 }
 
@@ -226,9 +226,9 @@ GH1D* GH2Base::GetNext(const GH1D* curr, bool)
    }
 
    if(link->Next()) {
-      return (GH1D*)link->Next()->GetObject();
+      return dynamic_cast<GH1D*>(link->Next()->GetObject());
    } else {
-      return (GH1D*)fProjections->First();
+      return dynamic_cast<GH1D*>(fProjections->First());
    }
 }
 
@@ -259,7 +259,7 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
    case kXDirection:
       while(true) {
          std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
-         g                     = (GH1D*)fSummaryProjections->FindObject(hist_name.c_str());
+         g                     = dynamic_cast<GH1D*>(fSummaryProjections->FindObject(hist_name.c_str()));
          if(g && g->Integral() > 0) {
             return g;
          }
@@ -278,7 +278,7 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
       while(true) {
          std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
 
-         g = (GH1D*)fSummaryProjections->FindObject(hist_name.c_str());
+         g = dynamic_cast<GH1D*>(fSummaryProjections->FindObject(hist_name.c_str()));
          if(g && g->Integral() > 0) {
             return g;
          }
@@ -323,7 +323,7 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
    std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
    TObject*    obj       = fSummaryProjections->FindObject(hist_name.c_str());
    if(obj) {
-      return (GH1D*)obj;
+      return dynamic_cast<GH1D*>(obj);
    }
 
    int start_bin = binnum;

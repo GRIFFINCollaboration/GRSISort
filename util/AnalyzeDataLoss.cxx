@@ -31,9 +31,9 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = nullptr) {
     w->Start();
   }
 
-   TList *list = new TList;
+   auto *list = new TList;
    
-   TFragment *currentFrag = 0;
+   TFragment *currentFrag = nullptr;
 
    TChannel::ReadCalFromTree(tree);
 
@@ -68,24 +68,24 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = nullptr) {
 	int timebins = 10000;
 	double timemin = 0; // in seconds
 	double timemax = 1000; // in seconds
-	TH2D* accepted_hst = new TH2D("accepted_hst","Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id",channels,0,channels,10000,0,10e5); list->Add(accepted_hst);
-	TH1D* lostNetworkPackets = new TH1D("lostNetworkPackets","lost network packets;time [s];lost network packets",timebins,timemin,timemax); list->Add(lostNetworkPackets);
-	TH2D* lostChannelIds = new TH2D("lostChannelIds","Lost Channel Id vs. Channel Number;Channel Number;Lost Channel Id",channels,0,channels,10000,0,10e5); list->Add(lostChannelIds);
-	TH2D* lostAcceptedIds = new TH2D("lostAcceptedIds","Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Accepted Channel Id",channels,0,channels,10000,0,10e5); list->Add(lostAcceptedIds);
-	TH2D* lostChannelIdsTime = new TH2D("lostChannelIdsTime","Lost Channel Id time vs. Channel Number;Channel Number;time [s]",channels,0,channels,timebins,timemin,timemax); list->Add(lostChannelIdsTime);
-	TH2D* lostAcceptedIdsTime = new TH2D("lostAcceptedIdsTime","Lost Accepted Channel Id time vs. Channel Number;Channel Number;time [s]",channels,0,channels,timebins,timemin,timemax); list->Add(lostAcceptedIdsTime);
+	auto* accepted_hst = new TH2D("accepted_hst","Accepted Channel Id vs. Channel Number;Channel Number;Accepted Channel Id",channels,0,channels,10000,0,10e5); list->Add(accepted_hst);
+	auto* lostNetworkPackets = new TH1D("lostNetworkPackets","lost network packets;time [s];lost network packets",timebins,timemin,timemax); list->Add(lostNetworkPackets);
+	auto* lostChannelIds = new TH2D("lostChannelIds","Lost Channel Id vs. Channel Number;Channel Number;Lost Channel Id",channels,0,channels,10000,0,10e5); list->Add(lostChannelIds);
+	auto* lostAcceptedIds = new TH2D("lostAcceptedIds","Lost Accepted Channel Id vs. Channel Number;Channel Number;Lost Accepted Channel Id",channels,0,channels,10000,0,10e5); list->Add(lostAcceptedIds);
+	auto* lostChannelIdsTime = new TH2D("lostChannelIdsTime","Lost Channel Id time vs. Channel Number;Channel Number;time [s]",channels,0,channels,timebins,timemin,timemax); list->Add(lostChannelIdsTime);
+	auto* lostAcceptedIdsTime = new TH2D("lostAcceptedIdsTime","Lost Accepted Channel Id time vs. Channel Number;Channel Number;time [s]",channels,0,channels,timebins,timemin,timemax); list->Add(lostAcceptedIdsTime);
 
 	// initialize acceptedID array
 	//for (int i=0;i<channels;i++) lastAccepted[i] = 0;
 	// initialize rolling array
-	for (int i=0;i<channels;i++) rolling[i] = kFALSE;
+	for (bool & i : rolling) i = kFALSE;
 	// initialize rollnum array
-	for (int i=0;i<channels;i++) rollnum[i] = 0;
+	for (int & i : rollnum) i = 0;
 	// initialize rollovers array
-	for (int i=0;i<channels;i++) rollovers[i] = 0;
+	for (int & rollover : rollovers) rollover = 0;
 	// initialize timestamp array
-	for (int i=0;i<channels;i++) {
-		for (int j=0;j<3;j++) timestamp[i][j] = 0;
+	for (auto & i : timestamp) {
+		for (long & j : i) j = 0;
 	}
 
    for(entry = skip; entry < fEntries; entry++) {
@@ -252,7 +252,7 @@ int main(int argc, char **argv) {
       fileName = argv[2];
    }
 
-   TFile* file = new TFile(argv[1]);
+   auto* file = new TFile(argv[1]);
    if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
@@ -262,14 +262,14 @@ int main(int argc, char **argv) {
       return 1;
    }
 
-   TTree* tree = (TTree*) file->Get("FragmentTree");
+   TTree* tree = dynamic_cast<TTree*>( file->Get("FragmentTree"));
 
    if(tree == nullptr) {
       printf("Failed to find fragment tree in file '%s'!\n",argv[1]);
       return 1;
    }
    
-   TTree* badtree = (TTree*) file->Get("BadFragmentTree");
+   TTree* badtree = dynamic_cast<TTree*>( file->Get("BadFragmentTree"));
 
    if(badtree == nullptr) {
       printf("Failed to find bad fragment tree in file '%s'!\n",argv[1]);
@@ -277,7 +277,7 @@ int main(int argc, char **argv) {
 		std::cout<<badtree->GetEntries()<<" bad entries in total = "<<(100.*badtree->GetEntries())/tree->GetEntries()<<"% of the good entries"<<std::endl;
 	}
    
-   TTree* epicstree = (TTree*) file->Get("EpicsTree");
+   TTree* epicstree = dynamic_cast<TTree*>( file->Get("EpicsTree"));
 
    if(epicstree == nullptr) {
       printf("Failed to find epics tree in file '%s'!\n",argv[1]);
@@ -285,7 +285,7 @@ int main(int argc, char **argv) {
 		std::cout<<epicstree->GetEntries()<<" epics entries"<<std::endl;
 	}
    
-   TPPG* ppg = (TPPG*) file->Get("TPPG");
+   TPPG* ppg = dynamic_cast<TPPG*>( file->Get("TPPG"));
 
    if(ppg == nullptr) {
       printf("Failed to find ppg in file '%s'!\n",argv[1]);
@@ -304,7 +304,7 @@ int main(int argc, char **argv) {
    }
    list = AnalyzeDataLoss(tree, entries, &w);
 
-   TFile *outfile = new TFile(fileName.c_str(),"recreate");
+   auto *outfile = new TFile(fileName.c_str(),"recreate");
    list->Write();
    outfile->Close();
 

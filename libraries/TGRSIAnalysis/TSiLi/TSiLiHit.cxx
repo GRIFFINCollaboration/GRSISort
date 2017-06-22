@@ -31,15 +31,15 @@ void TSiLiHit::Copy(TObject& rhs, bool suppress) const
 {
    TGRSIDetectorHit::Copy(rhs);
 
-   static_cast<TSiLiHit&>(rhs).fTimeFit     = fTimeFit;
-   static_cast<TSiLiHit&>(rhs).fSig2Noise   = fSig2Noise;
-   static_cast<TSiLiHit&>(rhs).fSmirnov     = fSmirnov;
-   static_cast<TSiLiHit&>(rhs).fFitCharge   = fFitCharge;
-   static_cast<TSiLiHit&>(rhs).fFitBase     = fFitBase;
-   static_cast<TSiLiHit&>(rhs).fSiLiHitBits = 0;
+   dynamic_cast<TSiLiHit&>(rhs).fTimeFit     = fTimeFit;
+   dynamic_cast<TSiLiHit&>(rhs).fSig2Noise   = fSig2Noise;
+   dynamic_cast<TSiLiHit&>(rhs).fSmirnov     = fSmirnov;
+   dynamic_cast<TSiLiHit&>(rhs).fFitCharge   = fFitCharge;
+   dynamic_cast<TSiLiHit&>(rhs).fFitBase     = fFitBase;
+   dynamic_cast<TSiLiHit&>(rhs).fSiLiHitBits = 0;
    if(!suppress) {
-      static_cast<TSiLiHit&>(rhs).fAddBackSegments = fAddBackSegments;
-      static_cast<TSiLiHit&>(rhs).fAddBackEnergy   = fAddBackEnergy;
+      dynamic_cast<TSiLiHit&>(rhs).fAddBackSegments = fAddBackSegments;
+      dynamic_cast<TSiLiHit&>(rhs).fAddBackEnergy   = fAddBackEnergy;
    }
 
    return;

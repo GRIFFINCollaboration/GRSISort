@@ -26,7 +26,7 @@ class TAnalysisWriteLoop : public StoppableThread {
 public:
    static TAnalysisWriteLoop* Get(std::string name = "", std::string output_filename = "");
 
-   virtual ~TAnalysisWriteLoop();
+   ~TAnalysisWriteLoop() override;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>&  InputQueue() { return fInputQueue; }

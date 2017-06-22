@@ -17,7 +17,7 @@ TDataLoop::TDataLoop(std::string name, TRawFile* source)
      fOutputQueue(std::make_shared<ThreadsafeQueue<std::shared_ptr<TRawEvent>>>("midas_queue"))
 #ifdef HAS_XML
      ,
-     fOdb(0)
+     fOdb(nullptr)
 #endif
 {
    TMidasFile* midasFile = dynamic_cast<TMidasFile*>(source);
@@ -52,7 +52,7 @@ void TDataLoop::SetFileOdb(char* data, int size)
    //
    if(fOdb) {
       delete fOdb;
-      fOdb = 0;
+      fOdb = nullptr;
    }
 
    if(TGRSIOptions::Get()->IgnoreFileOdb()) {
@@ -186,7 +186,7 @@ void TDataLoop::SetGRIFFOdb()
    // "/PPG/Cycles/146Cs_S1468" then has four PPGcodes and four durations
    node = fOdb->FindPath("/PPG/Current");
    if(node == nullptr) {
-      std::cerr << "Failed to find \"/PPG/Current\" in ODB!" << std::endl;
+      std::cerr << R"(Failed to find "/PPG/Current" in ODB!)" << std::endl;
       return;
    }
 
@@ -200,7 +200,7 @@ void TDataLoop::SetGRIFFOdb()
    temp.append("/PPGcodes");
    node = fOdb->FindPath(temp.c_str());
    if(node == nullptr) {
-      std::cerr << "Failed to find \"" << temp << "\" in ODB!" << std::endl;
+      std::cerr << R"(Failed to find ")" << temp << R"(" in ODB!)" << std::endl;
       return;
    }
    std::vector<int> tmpCodes = fOdb->ReadIntArray(node);
@@ -218,7 +218,7 @@ void TDataLoop::SetGRIFFOdb()
    temp.append("/durations");
    node = fOdb->FindPath(temp.c_str());
    if(node == nullptr) {
-      std::cerr << "Failed to find \"" << temp << "\" in ODB!" << std::endl;
+      std::cerr << R"(Failed to find ")" << temp << R"(" in ODB!)" << std::endl;
       return;
    }
    std::vector<int> durations = fOdb->ReadIntArray(node);
@@ -238,12 +238,12 @@ void TDataLoop::SetTIGOdb()
    int       typecounter = 0;
    if(typenode->HasChildren()) {
       TXMLNode* typechild = typenode->GetChildren();
-      while(1) {
+      while(true) {
          std::string tname = fOdb->GetNodeName(typechild);
          if(tname.length() > 0 && typechild->HasChildren()) {
             typecounter++;
             TXMLNode* grandchild = typechild->GetChildren();
-            while(1) {
+            while(true) {
                std::string grandchildname = fOdb->GetNodeName(grandchild);
                if(grandchildname.compare(0, 7, "Digitis") == 0) {
                   std::string dname    = grandchild->GetText();

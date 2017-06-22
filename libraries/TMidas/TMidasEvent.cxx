@@ -39,15 +39,15 @@ ClassImp(TMidasEvent)
 void TMidasEvent::Copy(TObject& rhs) const
 {
    // Copies the entire TMidasEvent. This includes the bank information.
-   static_cast<TMidasEvent&>(rhs).fEventHeader = fEventHeader;
+   dynamic_cast<TMidasEvent&>(rhs).fEventHeader = fEventHeader;
 
-   static_cast<TMidasEvent&>(rhs).fData = (char*)malloc(static_cast<TMidasEvent&>(rhs).fEventHeader.fDataSize);
-   assert(static_cast<TMidasEvent&>(rhs).fData);
-   memcpy(static_cast<TMidasEvent&>(rhs).fData, fData, static_cast<TMidasEvent&>(rhs).fEventHeader.fDataSize);
-   static_cast<TMidasEvent&>(rhs).fAllocatedByUs = true;
+   dynamic_cast<TMidasEvent&>(rhs).fData = (char*)malloc(dynamic_cast<TMidasEvent&>(rhs).fEventHeader.fDataSize);
+   assert(dynamic_cast<TMidasEvent&>(rhs).fData);
+   memcpy(dynamic_cast<TMidasEvent&>(rhs).fData, fData, dynamic_cast<TMidasEvent&>(rhs).fEventHeader.fDataSize);
+   dynamic_cast<TMidasEvent&>(rhs).fAllocatedByUs = true;
 
-   static_cast<TMidasEvent&>(rhs).fBanksN   = fBanksN;
-   static_cast<TMidasEvent&>(rhs).fBankList = nullptr;
+   dynamic_cast<TMidasEvent&>(rhs).fBanksN   = fBanksN;
+   dynamic_cast<TMidasEvent&>(rhs).fBankList = nullptr;
    // if(fBankList) static_cast<TMidasEvent&>(rhs).fBankList    = strdup(fBankList);
    // assert(static_cast<TMidasEvent&>(rhs).fBankList);
 }

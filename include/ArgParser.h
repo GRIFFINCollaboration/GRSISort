@@ -186,19 +186,19 @@ class ArgParseConfigT : public ArgParseConfig<T> {
 public:
    ArgParseConfigT(std::string flag, T* output_location, bool firstPass) : ArgParseConfig<T>(flag, firstPass), fOutput_location(output_location) {}
 
-   virtual ArgParseConfig<T>& default_value(T value)
+   ArgParseConfig<T>& default_value(T value) override
    {
       *fOutput_location = value;
       return *this;
    }
 
-   virtual void parse_item(const std::vector<std::string>& arguments)
+   void parse_item(const std::vector<std::string>& arguments) override
    {
       std::stringstream ss(arguments[0]);
       ss >> *fOutput_location;
    }
 
-   virtual int num_arguments() const { return 1; }
+   int num_arguments() const override { return 1; }
 
 private:
    T* fOutput_location;
@@ -245,7 +245,7 @@ public:
    {
    }
 
-   virtual void parse_item(const std::vector<std::string>& arguments)
+   void parse_item(const std::vector<std::string>& arguments) override
    {
       for (auto arg : arguments) {
          std::stringstream ss(arg);
@@ -255,9 +255,9 @@ public:
       }
    }
 
-   virtual int num_arguments() const { return fNum_arguments_expected; }
+   int num_arguments() const override { return fNum_arguments_expected; }
 
-   virtual ArgParseConfig<std::vector<T>>& default_value(std::vector<T> value)
+   ArgParseConfig<std::vector<T>>& default_value(std::vector<T> value) override
    {
       *fOutput_location = value;
       return *this;

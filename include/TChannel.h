@@ -66,33 +66,33 @@ public:
    static TChannel* GetDefaultChannel();
 
 private:
-   unsigned int fAddress;     // The address of the digitizer
-   int          fIntegration; // The charge integration setting
+   unsigned int fAddress{};     // The address of the digitizer
+   int          fIntegration{}; // The charge integration setting
    std::string  fTypeName;
    std::string  fDigitizerTypeString;
-   int          fDigitizerType;
-   int          fNumber;
-   int          fStream;
-   int          fUserInfoNumber;
-   bool         fUseCalFileInt;
+   int          fDigitizerType{};
+   int          fNumber{};
+   int          fStream{};
+   int          fUserInfoNumber{};
+   bool         fUseCalFileInt{};
 
-   mutable int fDetectorNumber;
-   mutable int fSegmentNumber;
+   mutable int fDetectorNumber{};
+   mutable int fSegmentNumber{};
 
-   mutable int fCrystalNumber;
-   double      fTimeOffset;
+   mutable int fCrystalNumber{};
+   double      fTimeOffset{};
    TMnemonic   fMnemonic;
 
    std::vector<Float_t> fENGCoefficients; // Energy calibration coeffs (low to high order)
-   double              fENGChi2;          // Chi2 of the energy calibration
+   double              fENGChi2{};          // Chi2 of the energy calibration
    std::vector<double> fCFDCoefficients;  // CFD calibration coeffs (low to high order)
-   double              fCFDChi2;          // Chi2 of the CFD calibration
+   double              fCFDChi2{};          // Chi2 of the CFD calibration
    std::vector<double> fLEDCoefficients;  // LED calibration coeffs (low to high order)
-   double              fLEDChi2;          // Chi2 of LED calibration
+   double              fLEDChi2{};          // Chi2 of LED calibration
    std::vector<double> fTIMECoefficients; // Time calibration coeffs (low to high order)
-   double              fTIMEChi2;         // Chi2 of the Time calibration
+   double              fTIMEChi2{};         // Chi2 of the Time calibration
    std::vector<double> fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
-   double fEFFChi2;                       // Chi2 of Efficiency calibration
+   double fEFFChi2{};                       // Chi2 of Efficiency calibration
 
 	struct WaveFormShapePar {
 		bool   InUse;
@@ -101,7 +101,7 @@ private:
 		double TauRise;
 	};
 
-   WaveFormShapePar WaveFormShape;
+   WaveFormShapePar WaveFormShape{};
 
    std::vector<double> fCTCoefficients; // Cross talk coefficients
 

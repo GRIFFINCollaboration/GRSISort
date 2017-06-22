@@ -79,11 +79,11 @@ public:
 private:
    void SetName(const char* c = "") override;
 
-   int         fA;          // Number of nucleons (Z + N)
-   int         fN;          // Number of neutrons (N)
-   int         fZ;          // Number of protons (Z)
-   double      fMass;       // Mass (in MeV)
-   double      fMassExcess; // Mass excess (in MeV)
+   int         fA{};          // Number of nucleons (Z + N)
+   int         fN{};          // Number of neutrons (N)
+   int         fZ{};          // Number of protons (Z)
+   double      fMass{};       // Mass (in MeV)
+   double      fMassExcess{}; // Mass excess (in MeV)
    std::string fSymbol;     // Atomic symbol (ex. Ba, C, O, N)
    // std::string fName;                                    // Name, whatever user inputs (ex. 9C, 9c);
 

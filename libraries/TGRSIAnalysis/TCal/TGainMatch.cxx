@@ -24,8 +24,8 @@ TGainMatch::TGainMatch(const TGainMatch& copy) : TCal(copy), fCoarseRange(gDefau
 
 void TGainMatch::Copy(TObject& obj) const
 {
-   static_cast<TGainMatch&>(obj).fCoarseMatch = fCoarseMatch;
-   static_cast<TGainMatch&>(obj).fCoarseRange = fCoarseRange;
+   dynamic_cast<TGainMatch&>(obj).fCoarseMatch = fCoarseMatch;
+   dynamic_cast<TGainMatch&>(obj).fCoarseRange = fCoarseRange;
    TCal::Copy(obj);
 }
 

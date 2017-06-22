@@ -52,11 +52,11 @@ public:
 
 private:
 	//sorting options
-   long int fBuildWindow;    ///< if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
-   int      fAddbackWindow;  ///< Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default = 150 ns (150))
-   bool     fIsCorrectingCrossTalk; ///< True if we are correcting for cross-talk in GRIFFIN at analysis-level
-   bool fWaveformFitting; ///< If true, waveform fitting with SFU algorithm will be performed
-   bool fStaticWindow;       ///< Flag to use static window (default moving)
+   long int fBuildWindow{};    ///< if building with a window(GRIFFIN) this is the size of the window. (default = 2us (200))
+   int      fAddbackWindow{};  ///< Time used to build Addback-Ge-Events for TIGRESS/GRIFFIN.   (default = 150 ns (150))
+   bool     fIsCorrectingCrossTalk{}; ///< True if we are correcting for cross-talk in GRIFFIN at analysis-level
+   bool fWaveformFitting{}; ///< If true, waveform fitting with SFU algorithm will be performed
+   bool fStaticWindow{};       ///< Flag to use static window (default moving)
 
    /// \cond CLASSIMP
    ClassDefOverride(TAnalysisOptions, 2); ///< Class for storing options in GRSISort

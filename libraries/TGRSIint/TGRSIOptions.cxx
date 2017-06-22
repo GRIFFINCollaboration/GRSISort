@@ -506,10 +506,10 @@ Bool_t TGRSIOptions::ReadFromFile(TFile* file)
    TList* list = file->GetListOfKeys();
    TIter  iter(list);
    printf("Reading Options from file:" CYAN " %s" RESET_COLOR "\n", file->GetName());
-   while(TKey* key = static_cast<TKey*>(iter.Next())) {
+   while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(), "TGRSIOptions")) continue;
 
-      TGRSIOptions::SetOptions(static_cast<TGRSIOptions*>(key->ReadObj()));
+      TGRSIOptions::SetOptions(dynamic_cast<TGRSIOptions*>(key->ReadObj()));
       oldDir->cd();
       return true;
    }

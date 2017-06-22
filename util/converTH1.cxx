@@ -3,8 +3,8 @@
 // C++ libraries
 #include <iostream>
 // C libraries
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include <TApplication.h>
 #include <TBox.h>

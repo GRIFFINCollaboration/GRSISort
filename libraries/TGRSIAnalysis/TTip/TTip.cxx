@@ -30,7 +30,7 @@ TTip::TTip(const TTip& rhs) : TGRSIDetector()
 void TTip::Copy(TObject& rhs) const
 {
    TGRSIDetector::Copy(rhs);
-   static_cast<TTip&>(rhs).fTipHits = fTipHits;
+   dynamic_cast<TTip&>(rhs).fTipHits = fTipHits;
 }
 
 void TTip::Clear(Option_t*)

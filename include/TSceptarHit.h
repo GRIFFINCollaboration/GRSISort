@@ -33,7 +33,7 @@ public:
    TSceptarHit(const TFragment& frag);
 
 private:
-   Int_t fFilter;
+   Int_t fFilter{};
 
 public:
    /////////////////////////		/////////////////////////////////////

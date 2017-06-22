@@ -138,15 +138,15 @@ void TGriffin::Copy(TObject& rhs) const
    // Copy function.
    TGRSIDetector::Copy(rhs);
 
-   static_cast<TGriffin&>(rhs).fGriffinLowGainHits   = fGriffinLowGainHits;
-   static_cast<TGriffin&>(rhs).fGriffinHighGainHits  = fGriffinHighGainHits;
-   static_cast<TGriffin&>(rhs).fAddbackLowGainHits   = fAddbackLowGainHits;
-   static_cast<TGriffin&>(rhs).fAddbackHighGainHits  = fAddbackHighGainHits;
-   static_cast<TGriffin&>(rhs).fAddbackLowGainFrags  = fAddbackLowGainFrags;
-   static_cast<TGriffin&>(rhs).fAddbackHighGainFrags = fAddbackHighGainFrags;
-   static_cast<TGriffin&>(rhs).fSetCoreWave          = fSetCoreWave;
-   static_cast<TGriffin&>(rhs).fCycleStart           = fCycleStart;
-   static_cast<TGriffin&>(rhs).fGriffinBits          = 0;
+   dynamic_cast<TGriffin&>(rhs).fGriffinLowGainHits   = fGriffinLowGainHits;
+   dynamic_cast<TGriffin&>(rhs).fGriffinHighGainHits  = fGriffinHighGainHits;
+   dynamic_cast<TGriffin&>(rhs).fAddbackLowGainHits   = fAddbackLowGainHits;
+   dynamic_cast<TGriffin&>(rhs).fAddbackHighGainHits  = fAddbackHighGainHits;
+   dynamic_cast<TGriffin&>(rhs).fAddbackLowGainFrags  = fAddbackLowGainFrags;
+   dynamic_cast<TGriffin&>(rhs).fAddbackHighGainFrags = fAddbackHighGainFrags;
+   dynamic_cast<TGriffin&>(rhs).fSetCoreWave          = fSetCoreWave;
+   dynamic_cast<TGriffin&>(rhs).fCycleStart           = fCycleStart;
+   dynamic_cast<TGriffin&>(rhs).fGriffinBits          = 0;
 }
 
 TGriffin::~TGriffin()

@@ -838,7 +838,7 @@ Int_t TChannel::ReadCalFromCurrentFile(Option_t*)
    TIter  iter(list);
 
    // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
-   while(TKey* key = (TKey*)(iter.Next())) {
+   while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(), "TChannel")) continue;
       // TObject *  obj = key->ReadObj();
       // if(obj && !obj->InheritsFrom("TChannel"))
@@ -860,7 +860,7 @@ Int_t TChannel::ReadCalFromFile(TFile* tempf, Option_t*)
    TIter  iter(list);
 
    // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
-   while(TKey* key = (TKey*)(iter.Next())) {
+   while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(), "TChannel")) continue;
       key->ReadObj();
       return GetNumberOfChannels();
@@ -878,7 +878,7 @@ Int_t TChannel::ReadCalFromTree(TTree* tree, Option_t*)
    TIter  iter(list);
 
    // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
-   while(TKey* key = (TKey*)(iter.Next())) {
+   while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(), "TChannel")) continue;
       // TObject *  obj = key->ReadObj();
       // if(obj && !obj->InheritsFrom("TChannel"))
@@ -990,7 +990,7 @@ Int_t TChannel::ParseInputData(const char* inputdata, Option_t* opt)
          } else {
             delete channel;
          }
-         channel = 0;
+         channel = nullptr;
          name.clear();
          // detector = 0;
       }
@@ -1223,11 +1223,11 @@ int TChannel::WriteToRoot(TFile* fileptr)
    int   fd             = open("/dev/null", O_WRONLY); // turn off stdout.
    stdout               = fdopen(fd, "w");
 
-   while(TKey* key = static_cast<TKey*>(iter.Next())) {
+   while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(), "TChannel")) continue;
       if(!found) {
          found        = true;
-         TChannel* ch = static_cast<TChannel*>(key->ReadObj());
+         TChannel* ch = dynamic_cast<TChannel*>(key->ReadObj());
          mastername.assign(ch->GetName());
          mastertitle.assign(ch->GetTitle());
       }

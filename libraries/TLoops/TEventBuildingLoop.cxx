@@ -14,7 +14,7 @@ ClassImp(TEventBuildingLoop)
       name = "build_loop";
    }
 
-   TEventBuildingLoop* loop = (TEventBuildingLoop*)StoppableThread::Get(name);
+   TEventBuildingLoop* loop = dynamic_cast<TEventBuildingLoop*>(StoppableThread::Get(name));
    if(!loop) {
       loop = new TEventBuildingLoop(name, mode);
    }

@@ -30,8 +30,8 @@ TSharcHit::TSharcHit(const TSharcHit& rhs) : TGRSIDetectorHit()
 void TSharcHit::Copy(TObject& rhs) const
 {
    TGRSIDetectorHit::Copy(rhs);
-   static_cast<const TGRSIDetectorHit&>(fBackHit).Copy(static_cast<TObject&>(static_cast<TSharcHit&>(rhs).fBackHit));
-   static_cast<const TGRSIDetectorHit&>(fPadHit).Copy(static_cast<TObject&>(static_cast<TSharcHit&>(rhs).fPadHit));
+   static_cast<const TGRSIDetectorHit&>(fBackHit).Copy(static_cast<TObject&>(dynamic_cast<TSharcHit&>(rhs).fBackHit));
+   static_cast<const TGRSIDetectorHit&>(fPadHit).Copy(static_cast<TObject&>(dynamic_cast<TSharcHit&>(rhs).fPadHit));
 
    // static_cast<TSharcHit&>(rhs).fDetectorNumber = fDetectorNumber;
    // static_cast<TSharcHit&>(rhs).fFrontStrip     = fFrontStrip;

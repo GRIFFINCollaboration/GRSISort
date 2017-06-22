@@ -71,7 +71,7 @@ private:
    long        fGoodFragsRead;
 
    bool   fEvaluateDataType;
-   UInt_t fDataType;
+   UInt_t fDataType{};
 
    TUnpackingLoop(std::string name);
    TUnpackingLoop(const TUnpackingLoop& other);

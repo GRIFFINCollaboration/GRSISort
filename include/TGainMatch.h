@@ -77,11 +77,11 @@ public:
    static Double_t GetDefaultCoarseRange() { return gDefaultCoarseRange; }
 
 private:
-   Bool_t   fCoarseMatch;
-   Bool_t   fAligned;
-   TH1*     fHist;
-   Double_t fAlignCoeffs[2];
-   Double_t fGainCoeffs[2];
+   Bool_t   fCoarseMatch{};
+   Bool_t   fAligned{};
+   TH1*     fHist{};
+   Double_t fAlignCoeffs[2]{};
+   Double_t fGainCoeffs[2]{};
    Double_t fCoarseRange;
    Double_t HistCompare(Double_t* x, Double_t* par);
 

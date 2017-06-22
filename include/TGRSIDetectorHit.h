@@ -187,23 +187,23 @@ public:
    bool TestHitBit(enum EBitFlag flag) const { return fBitflags.TestBit(flag); }
 
 protected:
-   UInt_t               fAddress;   ///< address of the the channel in the DAQ.
-   Float_t              fCharge;    ///< charge collected from the hit
-   Short_t              fKValue;    ///< integration value.
-   Int_t                fCfd;       ///< CFD time of the Hit
-   Long64_t             fTimeStamp; ///< Timestamp given to hit
+   UInt_t               fAddress{};   ///< address of the the channel in the DAQ.
+   Float_t              fCharge{};    ///< charge collected from the hit
+   Short_t              fKValue{};    ///< integration value.
+   Int_t                fCfd{};       ///< CFD time of the Hit
+   Long64_t             fTimeStamp{}; ///< Timestamp given to hit
    std::vector<Short_t> fWaveform;  ///<
 
 private:
-   mutable Double_t fTime; //!<! Calibrated Time of the hit
+   mutable Double_t fTime{}; //!<! Calibrated Time of the hit
    // UInt_t   fDetector;   //!<! Detector Number
    // Short_t  fSegment;	  //!<! Segment number
    // mutable TVector3 fPosition;   //!<! Position of hit detector.
-   mutable Double_t fEnergy;    //!<! Energy of the Hit.
-   mutable uint16_t fPPGStatus; //!<!
+   mutable Double_t fEnergy{};    //!<! Energy of the Hit.
+   mutable uint16_t fPPGStatus{}; //!<!
 
-   mutable Long64_t  fCycleTimeStamp; //!<!
-   mutable TChannel* fChannel;        //!<!
+   mutable Long64_t  fCycleTimeStamp{}; //!<!
+   mutable TChannel* fChannel{};        //!<!
 
 protected:
    static TPPG* fPPG;

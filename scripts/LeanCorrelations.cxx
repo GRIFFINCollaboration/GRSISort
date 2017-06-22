@@ -92,15 +92,15 @@ std::vector<std::pair<double,int> > AngleCombinations(double distance = 110., bo
 
    std::sort(angle.begin(),angle.end());
    size_t r;
-   for(size_t a = 0; a < angle.size(); ++a) {
+   for(double & a : angle) {
       for(r = 0; r < result.size(); ++r) {
-         if(angle[a] >= result[r].first-0.001 && angle[a] <= result[r].first+0.001) {
+         if(a >= result[r].first-0.001 && a <= result[r].first+0.001) {
             (result[r].second)++;
             break;
          }
       }
       if(result.size() == 0 || r == result.size()) {
-         result.push_back(std::make_pair(angle[a],1));
+         result.push_back(std::make_pair(a,1));
       }
    }
 
@@ -173,7 +173,7 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
       w = new TStopwatch;
       w->Start();
    }
-   TList* list = new TList;
+   auto* list = new TList;
 
    //const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
@@ -181,24 +181,24 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
 
    std::vector<std::pair<double,int> > angleCombinations = AngleCombinations(110., false, false);
    std::cout<<"got "<<angleCombinations.size()<<" angles"<<std::endl;
-   for(auto ang = angleCombinations.begin(); ang != angleCombinations.end(); ang++) {
-      std::cout<<(*ang).first<<" degree: "<<(*ang).second<<" combinations"<<std::endl;
+   for(auto & angleCombination : angleCombinations) {
+      std::cout<<angleCombination.first<<" degree: "<<angleCombination.second<<" combinations"<<std::endl;
    }
 
 
    std::vector<std::pair<double,int> > angleCombinationsab = AngleCombinations(110., false, true);
    std::cout<<"got "<<angleCombinationsab.size()<<" angles"<<std::endl;
-   for(auto ang = angleCombinationsab.begin(); ang != angleCombinationsab.end(); ang++) {
-      std::cout<<(*ang).first<<" degree: "<<(*ang).second<<" combinations"<<std::endl;
+   for(auto & ang : angleCombinationsab) {
+      std::cout<<ang.first<<" degree: "<<ang.second<<" combinations"<<std::endl;
    }
 
-   double* xBins = new double[1501];
-   double* yBins = new double[1501];
+   auto* xBins = new double[1501];
+   auto* yBins = new double[1501];
    for(int i = 0; i <= 1500; ++i) {
       xBins[i] = (double) i;
       yBins[i] = (double) i;
    }
-   double* zBins = new double[angleCombinations.size()+1];
+   auto* zBins = new double[angleCombinations.size()+1];
    for(size_t i = 0; i<angleCombinations.size()+1; i++){
       zBins[i] = (double) i;
    }
@@ -211,10 +211,10 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
    Int_t bins[2]= {nofBins,nofBins};
 
    //   TH2F** angCorr_coinc_Binnedab = new TH2F*[angleCombinationsab.size()+1];
-   THnSparseF** angCorr_coinc_Binnedab = new THnSparseF*[angleCombinationsab.size()+1];
-   THnSparseF** angCorr_coinc_Binnedab_bg = new THnSparseF*[angleCombinationsab.size()+1];
-   THnSparseF* ggbmatrix = new THnSparseF("ggbmatrix","#gamma-#gamma-#beta matrix",2,bins,min,max); list->Add(ggbmatrix);
-   THnSparseF* ggbmatrix_bg = new THnSparseF("ggbmatrix_bg", "#gamma-#gamma-#beta background matrix", 2, bins, min, max); list->Add(ggbmatrix_bg);
+   auto** angCorr_coinc_Binnedab = new THnSparseF*[angleCombinationsab.size()+1];
+   auto** angCorr_coinc_Binnedab_bg = new THnSparseF*[angleCombinationsab.size()+1];
+   auto* ggbmatrix = new THnSparseF("ggbmatrix","#gamma-#gamma-#beta matrix",2,bins,min,max); list->Add(ggbmatrix);
+   auto* ggbmatrix_bg = new THnSparseF("ggbmatrix_bg", "#gamma-#gamma-#beta background matrix", 2, bins, min, max); list->Add(ggbmatrix_bg);
    for(int i = 0; i < (int) angleCombinationsab.size(); ++i) {
       //  angCorr_coinc_Binnedab[i] = new TH2F(Form("angCorr_coinc_Binnedab_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window;energy [keV];energy [keV]",angleCombinationsab[i].first), 1500, xBins, 1500, yBins); list->Add(angCorr_coinc_Binnedab[i]);
       //angCorr_coinc_Binnedab[i] = new TH2F(Form("angCorr_coinc_Binnedab_%d",i),Form("angular correlation at %.1f ^{o} addback on beam window;energy [keV];energy [keV]",angleCombinationsab[i].first), nofBins, low, high, nofBins,low,high); list->Add(angCorr_coinc_Binnedab[i]);
@@ -223,9 +223,9 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
       angleComboMapab.insert(std::make_pair(angleCombinationsab.at(i).first,i));
    }
    //TH2F** angCorr_coinc_Binned = new TH2F*[angleCombinations.size()+1];
-   THnSparseF** angCorr_coinc_Binned = new THnSparseF*[angleCombinations.size()+1];
-   THnSparseF** angCorr_coinc_Binned_bg = new THnSparseF*[angleCombinations.size()+1];
-   THnSparseF** angCorr_coinc_Binned_uncorr = new THnSparseF*[angleCombinations.size()+1];
+   auto** angCorr_coinc_Binned = new THnSparseF*[angleCombinations.size()+1];
+   auto** angCorr_coinc_Binned_bg = new THnSparseF*[angleCombinations.size()+1];
+   auto** angCorr_coinc_Binned_uncorr = new THnSparseF*[angleCombinations.size()+1];
    for(int i = 0; i < (int) angleCombinations.size(); ++i) {
       //  angCorr_coinc_Binned[i] = new TH2F(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), 1500, xBins, 1500, yBins); list->Add(angCorr_coinc_Binned[i]);
       // angCorr_coinc_Binned[i] = new TH2F(Form("angCorr_coinc_Binned_%d",i),Form("angular correlation at %.1f ^{o} on beam window;energy [keV];energy [keV]",angleCombinations[i].first), nofBins, low, high,nofBins,low,high); list->Add(angCorr_coinc_Binned[i]);
@@ -237,20 +237,20 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
 
    //Double_t tlow[2] = {0,0};
    //Double_t thigh[2] = {200,200};
-   TH2D* bggTimeDiff = new TH2D("bggTimeDiff", "Time Difference;t_{#gamma2}-t_{#beta};t_{#gamma1}-t_{#beta};",400,-200.,200.,400,-200.,200.); list->Add(bggTimeDiff);
-   TH2D* bggTimeDiffLargeE = new TH2D("bggTimeDiffLargeE", "Time Difference, E_{#gamma} > 1 MeV;t_{#gamma2}-t_{#beta};t_{#gamma1}-t_{#beta};",400,-200.,200.,400,-200.,200.); list->Add(bggTimeDiffLargeE);
+   auto* bggTimeDiff = new TH2D("bggTimeDiff", "Time Difference;t_{#gamma2}-t_{#beta};t_{#gamma1}-t_{#beta};",400,-200.,200.,400,-200.,200.); list->Add(bggTimeDiff);
+   auto* bggTimeDiffLargeE = new TH2D("bggTimeDiffLargeE", "Time Difference, E_{#gamma} > 1 MeV;t_{#gamma2}-t_{#beta};t_{#gamma1}-t_{#beta};",400,-200.,200.,400,-200.,200.); list->Add(bggTimeDiffLargeE);
 
    ///////////////////////////////////// PROCESSING /////////////////////////////////////
 
    //set up branches
    //Each branch can hold multiple hits
    //ie TGriffin grif holds 3 gamma rays on a triples event 
-   TGriffin* grif = 0;
-   TSceptar* scep = 0;
+   TGriffin* grif = nullptr;
+   TSceptar* scep = nullptr;
    tree->SetBranchAddress("TGriffin", &grif); //We assume we always have a Griffin
 
    bool gotSceptar;
-   if(tree->FindBranch("TSceptar") == 0) {   //We check to see if we have a Scepter branch in the analysis tree
+   if(tree->FindBranch("TSceptar") == nullptr) {   //We check to see if we have a Scepter branch in the analysis tree
       gotSceptar = false;
    } else {
       tree->SetBranchAddress("TSceptar", &scep);
@@ -287,8 +287,8 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
       //TGriffin* grif2 = (TGriffin*)(grif->Clone()); 
       tree->GetEntry(entry);
       grif->ResetAddback();
-      TGriffin* oldgrif = 0;
-      TSceptar* oldscep = 0;
+      TGriffin* oldgrif = nullptr;
+      TSceptar* oldscep = nullptr;
       if(bggCount > 2) {
          oldgrif = &oldgrifArray[(bggCount-2)%3];
          oldscep = &oldscepArray[(bggCount-2)%3];
@@ -450,7 +450,7 @@ int main(int argc, char **argv) {
    TStopwatch w;
    w.Start();
 
-   TFile* file = new TFile(argv[1]);
+   auto* file = new TFile(argv[1]);
 
    if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
@@ -463,12 +463,12 @@ int main(int argc, char **argv) {
    printf("Sorting file:" DBLUE " %s" RESET_COLOR"\n",file->GetName());
 
    //Get the TGRSIRunInfo from the analysis Tree.
-   TGRSIRunInfo* runinfo  = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
+   TGRSIRunInfo* runinfo  = dynamic_cast<TGRSIRunInfo*>(file->Get("TGRSIRunInfo"));
 
    //Get PPG from File
-   TPPG* myPPG = (TPPG*)file->Get("TPPG");
+   TPPG* myPPG = dynamic_cast<TPPG*>(file->Get("TPPG"));
 
-   TTree* tree = (TTree*) file->Get("AnalysisTree");
+   TTree* tree = dynamic_cast<TTree*>( file->Get("AnalysisTree"));
    TChannel::ReadCalFromTree(tree);
    if(tree == nullptr) {
       printf("Failed to find analysis tree in file '%s'!\n",argv[1]);
@@ -504,9 +504,9 @@ int main(int argc, char **argv) {
    printf("Writing to File: " DYELLOW "%s" RESET_COLOR"\n",outfile->GetName());
    list->Write();
    //Write the run info into the tree as well if there is run info in the Analysis Tree
-   TGRSISortList *sortinfolist = new TGRSISortList;
+   auto *sortinfolist = new TGRSISortList;
    if(runinfo){
-      TGRSISortInfo *info = new TGRSISortInfo(runinfo);
+      auto *info = new TGRSISortInfo(runinfo);
       sortinfolist->AddSortInfo(info);
       sortinfolist->Write("TGRSISortList",TObject::kSingleKey);
    }

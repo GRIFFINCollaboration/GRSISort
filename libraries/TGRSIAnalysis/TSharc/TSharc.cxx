@@ -201,10 +201,10 @@ void TSharc::Copy(TObject& rhs) const
    //  return;
    TGRSIDetector::Copy(rhs);
 
-   static_cast<TSharc&>(rhs).fSharcHits = fSharcHits;
-   static_cast<TSharc&>(rhs).fXoffset   = fXoffset;
-   static_cast<TSharc&>(rhs).fYoffset   = fYoffset;
-   static_cast<TSharc&>(rhs).fZoffset   = fZoffset;
+   dynamic_cast<TSharc&>(rhs).fSharcHits = fSharcHits;
+   dynamic_cast<TSharc&>(rhs).fXoffset   = fXoffset;
+   dynamic_cast<TSharc&>(rhs).fYoffset   = fYoffset;
+   dynamic_cast<TSharc&>(rhs).fZoffset   = fZoffset;
 }
 
 TVector3 TSharc::GetPosition(int detector, int frontstrip, int backstrip, double X, double Y, double Z)

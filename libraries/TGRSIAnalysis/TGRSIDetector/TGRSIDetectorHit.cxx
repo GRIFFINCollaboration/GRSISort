@@ -110,24 +110,24 @@ double TGRSIDetectorHit::GetEnergy(Option_t*) const
 void TGRSIDetectorHit::Copy(TObject& rhs) const
 {
    TObject::Copy(rhs);
-   static_cast<TGRSIDetectorHit&>(rhs).fAddress = fAddress;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fAddress = fAddress;
    // static_cast<TGRSIDetectorHit&>(rhs).fPosition       = fPosition;
-   static_cast<TGRSIDetectorHit&>(rhs).fCfd       = fCfd;
-   static_cast<TGRSIDetectorHit&>(rhs).fTimeStamp = fTimeStamp;
-   static_cast<TGRSIDetectorHit&>(rhs).fCharge    = fCharge;
-   static_cast<TGRSIDetectorHit&>(rhs).fKValue    = fKValue;
-   static_cast<TGRSIDetectorHit&>(rhs).fEnergy    = fEnergy;
-   static_cast<TGRSIDetectorHit&>(rhs).fTime      = fTime;
-   static_cast<TGRSIDetectorHit&>(rhs).fChannel   = fChannel;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fCfd       = fCfd;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fTimeStamp = fTimeStamp;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fCharge    = fCharge;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fKValue    = fKValue;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fEnergy    = fEnergy;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fTime      = fTime;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fChannel   = fChannel;
 
-   static_cast<TGRSIDetectorHit&>(rhs).fBitflags       = 0;
-   static_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
-   static_cast<TGRSIDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fBitflags       = 0;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fPPGStatus      = fPPGStatus;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fCycleTimeStamp = fCycleTimeStamp;
 }
 
 void TGRSIDetectorHit::CopyWave(TObject& rhs) const
 {
-   static_cast<TGRSIDetectorHit&>(rhs).fWaveform = fWaveform;
+   dynamic_cast<TGRSIDetectorHit&>(rhs).fWaveform = fWaveform;
 }
 
 void TGRSIDetectorHit::Copy(TObject& rhs, bool copywave) const

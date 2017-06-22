@@ -18,6 +18,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <queue>
+#include <utility>
 #endif
 
 class TDetector;
@@ -44,12 +45,12 @@ public:
 
 private:
    std::string             fName;
-   mutable std::mutex      mutex;
+   mutable std::mutex      mutex{};
    std::queue<T>           queue;
    std::condition_variable can_push;
    std::condition_variable can_pop;
 
-   std::atomic_int num_writers;
+   std::atomic_int num_writers{};
 
    size_t max_queue_size;
 
@@ -64,7 +65,7 @@ private:
 #ifndef __CINT__
 template <typename T>
 ThreadsafeQueue<T>::ThreadsafeQueue(std::string name, size_t maxSize)
-   : fName(name), max_queue_size(maxSize), items_in_queue(0), items_pushed(0), items_popped(0), is_finished(false)
+   : fName(std::move(name)), max_queue_size(maxSize), items_in_queue(0), items_pushed(0), items_popped(0), is_finished(false)
 {
 }
 

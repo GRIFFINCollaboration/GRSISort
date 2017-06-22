@@ -70,7 +70,7 @@
 #include "Riostream.h"
 #include "TClass.h"
 #include "TSystem.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "TFileMerger.h"
 #include "TROOT.h"
@@ -84,7 +84,7 @@ int main( int argc, char **argv )
       std::cout << "Usage: " << argv[0] << " [-f[0-9]] [-k] [-T] [-O] [-n maxopenedfiles] [-v verbosity] targetfile source1 [source2 source3 ...]" << std::endl;
       std::cout << "This program will add histograms from a list of root files and write them" << std::endl;
       std::cout << "to a target root file. The target file is newly created and must not " << std::endl;
-      std::cout << "exist, or if -f (\"force\") is given, must not be one of the source files." << std::endl;
+      std::cout << R"(exist, or if -f ("force") is given, must not be one of the source files.)" << std::endl;
       std::cout << "Supply at least two source files for this to make sense... ;-)" << std::endl;
       std::cout << "If the option -k is used, gadd will not exit on corrupt or non-existant input files but skip the offending files instead." << std::endl;
       std::cout << "If the option -T is used, Trees are not merged" <<std::endl;
@@ -93,8 +93,8 @@ int main( int argc, char **argv )
       std::cout << "If the option -n is used, gadd will open at most 'maxopenedfiles' at once, use 0 to request to use the system maximum." << std::endl;
       std::cout << "When -the -f option is specified, one can also specify the compression" <<std::endl;
       std::cout << "level of the target file. By default the compression level is 1, but" <<std::endl;
-      std::cout << "if \"-f0\" is specified, the target file will not be compressed." <<std::endl;
-      std::cout << "if \"-f6\" is specified, the compression level 6 will be used." <<std::endl;
+      std::cout << R"(if "-f0" is specified, the target file will not be compressed.)" <<std::endl;
+      std::cout << R"(if "-f6" is specified, the compression level 6 will be used.)" <<std::endl;
       std::cout << "if Target and source files have different compression levels"<<std::endl;
       std::cout << " a slower method is used"<<std::endl;
       return 1;
@@ -127,7 +127,7 @@ int main( int argc, char **argv )
          if (a+1 >= argc) {
             std::cerr << "Error: no maximum number of opened was provided after -n.\n";
          } else {
-            Long_t request = strtol(argv[a+1], 0, 10);
+            Long_t request = strtol(argv[a+1], nullptr, 10);
             if (request < kMaxLong && request >= 0) {
                maxopenedfiles = (Int_t)request;
                ++a;
@@ -141,7 +141,7 @@ int main( int argc, char **argv )
          if (a+1 >= argc) {
             std::cerr << "Error: no verbosity level was provided after -v.\n";
          } else {
-            Long_t request = strtol(argv[a+1], 0, 10);
+            Long_t request = strtol(argv[a+1], nullptr, 10);
             if (request < kMaxLong && request >= 0) {
                verbosity = (Int_t)request;
                ++a;
@@ -178,7 +178,7 @@ int main( int argc, char **argv )
    if (gInterpreter->IsLoaded("libCintex")) {
       gROOT->ProcessLine("ROOT::Cintex::Cintex::Enable();");
    }
-   const char *targetname = 0;
+   const char *targetname = nullptr;
    if (outputPlace) {
       targetname = argv[outputPlace];
    } else {
@@ -197,7 +197,7 @@ int main( int argc, char **argv )
    }
    if (!merger.OutputFile(targetname,force,newcomp) ) {
       std::cerr << "gadd error opening target file (does " << argv[ffirst-1] << " exist?)." << std::endl;
-      std::cerr << "Pass \"-f\" argument to force re-creation of output file." << std::endl;
+      std::cerr << R"(Pass "-f" argument to force re-creation of output file.)" << std::endl;
       exit(1);
    }
 

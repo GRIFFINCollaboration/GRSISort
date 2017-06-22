@@ -14,7 +14,7 @@ ClassImp(TDetBuildingLoop)
    if(name.length() == 0) {
       name = "unpack_loop";
    }
-   TDetBuildingLoop* loop = static_cast<TDetBuildingLoop*>(StoppableThread::Get(name));
+   TDetBuildingLoop* loop = dynamic_cast<TDetBuildingLoop*>(StoppableThread::Get(name));
    if(!loop) {
       loop = new TDetBuildingLoop(name);
    }

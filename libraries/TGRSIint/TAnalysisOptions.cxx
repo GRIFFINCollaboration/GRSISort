@@ -78,10 +78,10 @@ void TAnalysisOptions::ReadFromFile(std::string file)
 		TList* list = f->GetListOfKeys();
 		TIter  iter(list);
 		std::cout<<"Reading Options from file:"<<CYAN<<f<<RESET_COLOR<<std::endl;
-		while(TKey* key = static_cast<TKey*>(iter.Next())) {
+		while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
 			if(!key || strcmp(key->GetClassName(), "TAnalysisOptions")) continue;
 
-			*this = *static_cast<TAnalysisOptions*>(key->ReadObj());
+			*this = *dynamic_cast<TAnalysisOptions*>(key->ReadObj());
 			f->Close();
 			oldDir->cd();
 			return;

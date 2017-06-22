@@ -102,7 +102,7 @@ TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit(), fBackground(nullptr
 void TMultiPeak::Copy(TObject& obj) const
 {
    TGRSIFit::Copy(obj);
-   TMultiPeak* mpobj = static_cast<TMultiPeak*>(&obj);
+   TMultiPeak* mpobj = dynamic_cast<TMultiPeak*>(&obj);
    if(!(mpobj->fBackground))
       mpobj->fBackground = new TF1(*(fBackground));
    else

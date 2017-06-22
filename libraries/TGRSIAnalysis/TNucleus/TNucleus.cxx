@@ -435,7 +435,7 @@ void TNucleus::AddTransition(TTransition* tran)
 
 TTransition* TNucleus::GetTransition(Int_t idx)
 {
-   TTransition* tran = (TTransition*)TransitionList.At(idx);
+   TTransition* tran = dynamic_cast<TTransition*>(TransitionList.At(idx));
    if(!tran) printf("Out of Range\n");
 
    return tran;
@@ -447,7 +447,7 @@ void TNucleus::Print(Option_t*) const
    printf("Nucleus: %s\n", GetName());
    TIter next(&TransitionList);
    int   counter = 0;
-   while(TTransition* tran = (TTransition*)next()) {
+   while(TTransition* tran = dynamic_cast<TTransition*>(next())) {
       printf("\t%i\t", counter++);
       tran->Print();
    }
@@ -459,7 +459,7 @@ void TNucleus::WriteSourceFile(std::string outfilename)
       std::ofstream sourceout;
       sourceout.open(outfilename.c_str());
       for(int i = 0; i < TransitionList.GetSize(); i++) {
-         std::string transtr = ((TTransition*)(TransitionList.At(i)))->PrintToString();
+         std::string transtr = (dynamic_cast<TTransition*>(TransitionList.At(i)))->PrintToString();
          sourceout << transtr.c_str();
          sourceout << std::endl;
       }

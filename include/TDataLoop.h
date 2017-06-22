@@ -70,7 +70,7 @@ private:
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TRawEvent>>> fOutputQueue;
-   std::mutex                                                   fSourceMutex;
+   std::mutex                                                   fSourceMutex{};
 #endif
 
 #ifdef HAS_XML

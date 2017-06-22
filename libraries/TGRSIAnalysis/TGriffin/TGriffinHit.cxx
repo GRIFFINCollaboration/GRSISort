@@ -37,12 +37,12 @@ TGriffinHit::~TGriffinHit()
 void TGriffinHit::Copy(TObject& rhs) const
 {
    TGRSIDetectorHit::Copy(rhs);
-   static_cast<TGriffinHit&>(rhs).fFilter = fFilter;
-   static_cast<TGriffinHit&>(rhs).fGriffinHitBits =
+   dynamic_cast<TGriffinHit&>(rhs).fFilter = fFilter;
+   dynamic_cast<TGriffinHit&>(rhs).fGriffinHitBits =
       0; // We should copy over a 0 and let the hit recalculate, this is safest
-   static_cast<TGriffinHit&>(rhs).fCrystal             = fCrystal;
-   static_cast<TGriffinHit&>(rhs).fPPG                 = fPPG;
-   static_cast<TGriffinHit&>(rhs).fBremSuppressed_flag = fBremSuppressed_flag; // Bremsstrahlung Suppression flag.
+   dynamic_cast<TGriffinHit&>(rhs).fCrystal             = fCrystal;
+   dynamic_cast<TGriffinHit&>(rhs).fPPG                 = fPPG;
+   dynamic_cast<TGriffinHit&>(rhs).fBremSuppressed_flag = fBremSuppressed_flag; // Bremsstrahlung Suppression flag.
    return;
 }
 

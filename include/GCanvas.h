@@ -37,13 +37,13 @@ public:
    }
 
    // Pixel space
-   int x, y;
+   int x{}, y{};
    // Coordinate space (SetRangeUser() units)
-   double localx, localy;
+   double localx{}, localy{};
    // Bin space
-   int    binx, biny;
-   TLine* linex;
-   TLine* liney;
+   int    binx{}, biny{};
+   TLine* linex{};
+   TLine* liney{};
    void Copy(TObject& object) const override;
    bool operator<(const GMarker& rhs) const { return x < rhs.x; }
    ClassDefOverride(GMarker, 0)
@@ -97,10 +97,10 @@ private:
 	static int lastx;
 	static int lasty;
 
-	bool fGuiEnabled;
+	bool fGuiEnabled{};
 
 	// bool fStatsDisplayed;
-	bool                   fMarkerMode;
+	bool                   fMarkerMode{};
 	std::vector<GMarker*>  fMarkers;
 	std::vector<GMarker*>  fBackgroundMarkers;
 	kBackgroundSubtraction fBackgroundMode;
@@ -151,10 +151,10 @@ private:
 
 	// static int fBGSubtraction_type;
 private:
-	Window_t     fCanvasWindowID;
-	TRootCanvas* fRootCanvas;
+	Window_t     fCanvasWindowID{};
+	TRootCanvas* fRootCanvas{};
 
-	bool control_key;
+	bool control_key{};
 
 	bool toggle_control()
 	{

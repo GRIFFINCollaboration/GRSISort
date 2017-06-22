@@ -108,28 +108,28 @@ public:
    // void Clear(Option_t* opt="") { }
 
 private:
-   double fTCm_i;
-   double fTCm_f;
+   double fTCm_i{};
+   double fTCm_f{};
 
-   TNucleus* fParticle[4];
-   double    fM[4];
+   TNucleus* fParticle[4]{};
+   double    fM[4]{};
    double    fQValue;
    double    fEBeam;
-   double    fT[4];
-   double    fE[4];
-   double    fP[4];
-   double    fV[4];
-   double    fTheta[4];
+   double    fT[4]{};
+   double    fE[4]{};
+   double    fP[4]{};
+   double    fV[4]{};
+   double    fTheta[4]{};
 
-   double fTcm[4];
-   double fEcm[4];
-   double fPcm[4];
-   double fVcm[4];
-   double fBetacm[4];
-   double fThetacm[4];
+   double fTcm[4]{};
+   double fEcm[4]{};
+   double fPcm[4]{};
+   double fVcm[4]{};
+   double fBetacm[4]{};
+   double fThetacm[4]{};
 
-   double fBeta_cm;
-   double fGamma_cm;
+   double fBeta_cm{};
+   double fGamma_cm{};
 
    double Pcm_em(double, double);
    double P_tm(double, double);

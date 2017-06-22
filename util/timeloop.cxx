@@ -14,10 +14,10 @@
 #include <vector>
 
 
-TFile        *fCurrentFragFile = 0;
-TTree        *fCurrentFragTree = 0;
-TFragment    *fCurrentFragPtr  = 0;
-TGRSIRunInfo *fCurrentRunInfo = 0;
+TFile        *fCurrentFragFile = nullptr;
+TTree        *fCurrentFragTree = nullptr;
+TFragment    *fCurrentFragPtr  = nullptr;
+TGRSIRunInfo *fCurrentRunInfo = nullptr;
 
 
 const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
@@ -98,7 +98,7 @@ void InitChannels() {
 void SetupFragmentTree() {
    //Set up the fragment Tree to be sorted on time stamps or trigger Id's. This also reads the the run info out of the fragment tree.
    fCurrentFragFile = fCurrentFragTree->GetCurrentFile();
-   fCurrentRunInfo  = (TGRSIRunInfo*)fCurrentFragFile->Get("TGRSIRunInfo");
+   fCurrentRunInfo  = dynamic_cast<TGRSIRunInfo*>(fCurrentFragFile->Get("TGRSIRunInfo"));
    //if(fCurrentRunInfo) {
    //   TGRSIRunInfo::ReadInfoFromFile(fCurrentRunInfo);
       fCurrentRunInfo->Print();
@@ -146,18 +146,18 @@ void SetupFragmentTree() {
 int main(int argc, char **argv) {
 	if(argc <= 1) return 1;
    TFile file(argv[1]);
-   fCurrentFragTree = (TTree*)file.Get("FragmentTree");
+   fCurrentFragTree = dynamic_cast<TTree*>(file.Get("FragmentTree"));
  
 
    SetupFragmentTree();
 
 
-   TFragment *currentFrag = 0;
+   TFragment *currentFrag = nullptr;
 
    //Find the TFragment cranch of the tree
    fCurrentFragTree->SetBranchAddress("TFragment",&currentFrag);
    //Get the tree index of the fragment tree
-   TTreeIndex *index = (TTreeIndex*)fCurrentFragTree->GetTreeIndex();
+   TTreeIndex *index = dynamic_cast<TTreeIndex*>(fCurrentFragTree->GetTreeIndex());
 
    Int_t fFragmentsIn = 0;
    Int_t fEntries = index->GetN();
@@ -173,7 +173,7 @@ int main(int argc, char **argv) {
    //We set the buildevent flag to false by default. When the time gate closes we change this to true
    //to tell the code to build the event and send it to be written to the analysis tree.
    //bool buildevent = false;
-   std::vector<TFragment> *event = new std::vector<TFragment>;//(1,*currentFrag);
+   auto *event = new std::vector<TFragment>;//(1,*currentFrag);
    event->push_back(*currentFrag);
 
    fFragmentsIn++; //Increment the number of fragments that have been read

@@ -30,7 +30,7 @@ TPacesHit::~TPacesHit()
 void TPacesHit::Copy(TObject& rhs) const
 {
    TGRSIDetectorHit::Copy(rhs);
-   static_cast<TPacesHit&>(rhs).fFilter = fFilter;
+   dynamic_cast<TPacesHit&>(rhs).fFilter = fFilter;
    return;
 }
 

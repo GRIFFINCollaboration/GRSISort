@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
 
    for(it = chanmap->begin(); it != chanmap->end(); ++it){
       TChannel* chan = it->second;
-      TChannel *newchan = new TChannel(chan);
+      auto *newchan = new TChannel(chan);
       chanlist.push_back(newchan);
       
       if(mnemonic != ""){
@@ -49,15 +49,15 @@ int main(int argc, char **argv) {
       
       std::vector<float> ENGCoeffs = newchan->GetENGCoeff();
       newchan->DestroyENGCal();
-      for(auto vec_it = ENGCoeffs.begin(); vec_it != ENGCoeffs.end(); ++vec_it){
-         newchan->AddENGCoefficient(*(vec_it)*num_to_scale);
+      for(float & ENGCoeff : ENGCoeffs){
+         newchan->AddENGCoefficient(ENGCoeff*num_to_scale);
       }
    }
 
    TChannel::DeleteAllChannels();
 
-   for(size_t i =0; i<chanlist.size();++i){
-      TChannel::AddChannel(chanlist.at(i));
+   for(auto & i : chanlist){
+      TChannel::AddChannel(i);
    }
 
    TChannel::WriteCalFile(outFileName.c_str());

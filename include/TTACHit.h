@@ -32,7 +32,7 @@ public:
    TTACHit(const TFragment& frag) : TGRSIDetectorHit(frag) {}
 
 private:
-   Int_t fFilter;
+   Int_t fFilter{};
 
 public:
    /////////////////////////		/////////////////////////////////////

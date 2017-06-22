@@ -31,14 +31,14 @@ private:
    std::vector<double> IonEnergy;
    std::vector<double> dEdX;
    TGraph*             fEnergyLoss;
-   TGraph*             fEgetX;
-   TGraph*             fXgetE;
-   TSpline3*           sEnergyLoss;
-   TSpline3*           sEgetX;
-   TSpline3*           sXgetE;
+   TGraph*             fEgetX{};
+   TGraph*             fXgetE{};
+   TSpline3*           sEnergyLoss{};
+   TSpline3*           sEgetX{};
+   TSpline3*           sXgetE{};
    std::vector<double> E; // units of keV
    std::vector<double> X; // units of um
-   double              Emin, Emax, Xmin, Xmax;
+   double              Emin{}, Emax{}, Xmin{}, Xmax{};
    static const double dx; // um [sets accuracy of energy loss E vs X functions]
 
    std::map<std::pair<double, double>, double> AdjustedEnergyMap;

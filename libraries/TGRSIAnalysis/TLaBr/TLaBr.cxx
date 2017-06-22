@@ -58,7 +58,7 @@ void TLaBr::Copy(TObject& rhs) const
    // Copies a TLaBr
    TGRSIDetector::Copy(rhs);
 
-   static_cast<TLaBr&>(rhs).fLaBrHits = fLaBrHits;
+   dynamic_cast<TLaBr&>(rhs).fLaBrHits = fLaBrHits;
 }
 
 TLaBr& TLaBr::operator=(const TLaBr& rhs)

@@ -34,8 +34,8 @@ GValue::GValue(const GValue& val) : TNamed(val)
 void GValue::Copy(TObject& obj) const
 {
    TNamed::Copy(obj);
-   ((GValue&)obj).fValue    = fValue;
-   ((GValue&)obj).fPriority = fPriority;
+   (dynamic_cast<GValue&>(obj)).fValue    = fValue;
+   (dynamic_cast<GValue&>(obj)).fPriority = fPriority;
 }
 
 double GValue::Value(std::string name)

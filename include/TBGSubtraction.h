@@ -42,7 +42,7 @@ class TBGSubtraction : public TGMainFrame {
 
    //  RQ_OBJECT("TBGSubtraction")
 private:
-   TGMainFrame*         fMain;
+   TGMainFrame*         fMain{};
    TRootEmbeddedCanvas* fProjectionCanvas;
    TRootEmbeddedCanvas* fGateCanvas;
    TH2*                 fMatrix;
@@ -53,34 +53,34 @@ private:
    TGDoubleHSlider*     fGateSlider;
    TGDoubleHSlider*     fBGSlider;
    TGNumberEntry*       fBGParamEntry;
-   TGNumberEntry*       fBGEntryLow;
-   TGNumberEntry*       fBGEntryHigh;
-   TGNumberEntry*       fGateEntryLow;
-   TGNumberEntry*       fGateEntryHigh;
-   TGLabel*             fBGParamLabel;
+   TGNumberEntry*       fBGEntryLow{};
+   TGNumberEntry*       fBGEntryHigh{};
+   TGNumberEntry*       fGateEntryLow{};
+   TGNumberEntry*       fGateEntryHigh{};
+   TGLabel*             fBGParamLabel{};
 	TGCheckButton*			fBGCheckButton;
 
    TGLayoutHints* fBly;
    TGLayoutHints* fBly1;
-   TGLayoutHints* fLayoutCanvases;
-   TGLayoutHints* fLayoutParam;
+   TGLayoutHints* fLayoutCanvases{};
+   TGLayoutHints* fLayoutParam{};
 
-   TGTextEntry* fWrite2FileName;
-   TGTextEntry* fHistogramDescription;
+   TGTextEntry* fWrite2FileName{};
+   TGTextEntry* fHistogramDescription{};
    //      TGTextButton         *fDrawCanvasButton;
-   TGTextButton* fWrite2FileButton;
+   TGTextButton* fWrite2FileButton{};
 
    // Status Bars
-   TGStatusBar* fProjectionStatus;
+   TGStatusBar* fProjectionStatus{};
 
    // Frames
    TGVerticalFrame*   fGateFrame;
    TGVerticalFrame*   fProjectionFrame;
-   TGHorizontalFrame* fBGParamFrame;
-   TGHorizontalFrame* fGateEntryFrame;
-   TGHorizontalFrame* fBGEntryFrame;
-   TGHorizontalFrame* fDescriptionFrame;
-   TGHorizontalFrame* fButtonFrame;
+   TGHorizontalFrame* fBGParamFrame{};
+   TGHorizontalFrame* fGateEntryFrame{};
+   TGHorizontalFrame* fBGEntryFrame{};
+   TGHorizontalFrame* fDescriptionFrame{};
+   TGHorizontalFrame* fButtonFrame{};
 
 	//Combo box
 	TGComboBox * fAxisCombo;

@@ -595,10 +595,10 @@ void GHSym::Copy(TObject& obj) const
    // Copy.
 
    TH1::Copy(obj);
-   static_cast<GHSym&>(obj).fTsumwy  = fTsumwy;
-   static_cast<GHSym&>(obj).fTsumwy2 = fTsumwy2;
-   static_cast<GHSym&>(obj).fTsumwxy = fTsumwxy;
-   static_cast<GHSym&>(obj).fMatrix  = nullptr;
+   dynamic_cast<GHSym&>(obj).fTsumwy  = fTsumwy;
+   dynamic_cast<GHSym&>(obj).fTsumwy2 = fTsumwy2;
+   dynamic_cast<GHSym&>(obj).fTsumwxy = fTsumwxy;
+   dynamic_cast<GHSym&>(obj).fMatrix  = nullptr;
 }
 
 Double_t GHSym::DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Double_t& error, Option_t* option,
@@ -898,7 +898,7 @@ void GHSym::FillRandom(TH1* h, Int_t ntimes)
    if(h->ComputeIntegral() == 0) return;
 
    Double_t x, y;
-   TH2*     h2 = static_cast<TH2*>(h);
+   TH2*     h2 = dynamic_cast<TH2*>(h);
    for(int loop = 0; loop < ntimes; ++loop) {
       h2->GetRandom2(x, y);
       Fill(x, y);
@@ -1043,7 +1043,7 @@ void GHSym::FitSlices(TF1* f1, Int_t firstbin, Int_t lastbin, Int_t cut, Option_
 
    // default is to fit with a gaussian
    if(f1 == nullptr) {
-      f1 = (TF1*)gROOT->GetFunction("gaus");
+      f1 = dynamic_cast<TF1*>(gROOT->GetFunction("gaus"));
       if(f1 == nullptr)
          f1 = new TF1("gaus", "gaus", fXaxis.GetXmin(), fXaxis.GetXmax());
       else
@@ -1870,7 +1870,7 @@ Long64_t GHSym::Merge(TCollection* list)
    SetCanExtend(TH1::kNoAxis); // reset, otherwise setting the under/overflow will extend the axis
 #endif
 
-   while((h = static_cast<GHSym*>(next())) != nullptr) {
+   while((h = dynamic_cast<GHSym*>(next())) != nullptr) {
       // skip empty histograms
       Double_t histEntries = h->GetEntries();
       if(h->fTsumw == 0 && histEntries == 0) continue;
@@ -2026,7 +2026,7 @@ TProfile* GHSym::Profile(const char* name, Int_t firstbin, Int_t lastbin, Option
          Error("DoProfile", "Histogram with name %s must be a TProfile and is a %s", name, h1obj->ClassName());
          return nullptr;
       }
-      h1 = static_cast<TProfile*>(h1obj);
+      h1 = dynamic_cast<TProfile*>(h1obj);
       // reset the existing histogram and set always the new binning for the axis
       // This avoid problems when the histogram already exists and the histograms is rebinned or its range has changed
       // (see https://savannah.cern.ch/bugs/?94101 or https://savannah.cern.ch/bugs/?95808 )
@@ -2200,7 +2200,7 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
          Error("DoProjection", "Histogram with name %s must be a TH1D and is a %s", name, h1obj->ClassName());
          return nullptr;
       }
-      h1 = static_cast<TH1D*>(h1obj);
+      h1 = dynamic_cast<TH1D*>(h1obj);
       // reset the existing histogram and set always the new binning for the axis
       // This avoid problems when the histogram already exists and the histograms is rebinned or its range has changed
       // (see https://savannah.cern.ch/bugs/?94101 or https://savannah.cern.ch/bugs/?95808 )
@@ -2251,7 +2251,7 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
       TIter       iL(labels);
       TObjString* lb;
       Int_t       i = 1;
-      while((lb = (TObjString*)iL())) {
+      while((lb = dynamic_cast<TObjString*>(iL()))) {
          h1->GetXaxis()->SetBinLabel(i, lb->String().Data());
          i++;
       }
@@ -2418,7 +2418,7 @@ GHSym* GHSym::Rebin2D(Int_t ngroup, const char* newname)
    // create a clone of the old histogram if newname is specified
    GHSym* hnew = this;
    if(newname && strlen(newname)) {
-      hnew = static_cast<GHSym*>(Clone());
+      hnew = dynamic_cast<GHSym*>(Clone());
       hnew->SetName(newname);
    }
 
@@ -2871,7 +2871,7 @@ GHSymF::~GHSymF() = default;
 
 TH2F* GHSymF::GetMatrix(bool force)
 {
-   if(fMatrix != nullptr && !force) return static_cast<TH2F*>(fMatrix);
+   if(fMatrix != nullptr && !force) return dynamic_cast<TH2F*>(fMatrix);
    if(force && fMatrix != nullptr) delete fMatrix;
 
    fMatrix = new TH2F(Form("%s_mat", GetName()), GetTitle(), fXaxis.GetNbins(), fXaxis.GetXmin(), fXaxis.GetXmax(),
@@ -2882,12 +2882,12 @@ TH2F* GHSymF::GetMatrix(bool force)
          fMatrix->SetBinContent(i, j, GetBinContent(i, j));
       }
    }
-   return static_cast<TH2F*>(fMatrix);
+   return dynamic_cast<TH2F*>(fMatrix);
 }
 
 void GHSymF::Copy(TObject& rh) const
 {
-   GHSym::Copy(static_cast<GHSymF&>(rh));
+   GHSym::Copy(dynamic_cast<GHSymF&>(rh));
 }
 
 #if MAJOR_ROOT_VERSION < 6
@@ -2913,7 +2913,7 @@ TH1* GHSymF::DrawCopy(Option_t* option, const char* name_postfix) const
    opt.ToLower();
    if(gPad != nullptr && !opt.Contains("same")) gPad->Clear();
    TString newName = (name_postfix) ? TString::Format("%s%s", GetName(), name_postfix) : "";
-   TH1*    newth1  = static_cast<TH1*>(Clone(newName));
+   TH1*    newth1  = dynamic_cast<TH1*>(Clone(newName));
    newth1->SetDirectory(nullptr);
    newth1->SetBit(kCanDelete);
    newth1->AppendPad(option);
@@ -3062,7 +3062,7 @@ GHSymD::~GHSymD() = default;
 
 TH2D* GHSymD::GetMatrix(bool force)
 {
-   if(fMatrix != nullptr && !force) return static_cast<TH2D*>(fMatrix);
+   if(fMatrix != nullptr && !force) return dynamic_cast<TH2D*>(fMatrix);
    if(force && fMatrix != nullptr) delete fMatrix;
 
    fMatrix = new TH2D(Form("%s_mat", GetName()), Form("%s;%s;%s", GetTitle(), fXaxis.GetTitle(), fYaxis.GetTitle()),
@@ -3074,12 +3074,12 @@ TH2D* GHSymD::GetMatrix(bool force)
          fMatrix->SetBinContent(i, j, GetBinContent(i, j));
       }
    }
-   return static_cast<TH2D*>(fMatrix);
+   return dynamic_cast<TH2D*>(fMatrix);
 }
 
 void GHSymD::Copy(TObject& rh) const
 {
-   GHSym::Copy(static_cast<GHSymD&>(rh));
+   GHSym::Copy(dynamic_cast<GHSymD&>(rh));
 }
 
 #if MAJOR_ROOT_VERSION < 6
@@ -3105,7 +3105,7 @@ TH1* GHSymD::DrawCopy(Option_t* option, const char* name_postfix) const
    opt.ToLower();
    if(gPad != nullptr && !opt.Contains("same")) gPad->Clear();
    TString newName = (name_postfix) ? TString::Format("%s%s", GetName(), name_postfix) : "";
-   TH1*    newth1  = static_cast<TH1*>(Clone(newName));
+   TH1*    newth1  = dynamic_cast<TH1*>(Clone(newName));
    newth1->SetDirectory(nullptr);
    newth1->SetBit(kCanDelete);
    newth1->AppendPad(option);

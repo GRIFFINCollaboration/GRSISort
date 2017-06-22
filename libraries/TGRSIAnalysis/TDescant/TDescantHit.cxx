@@ -91,13 +91,13 @@ void TDescantHit::Copy(TObject& rhs) const
 #if MAJOR_ROOT_VERSION < 6
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
-   static_cast<TDescantHit&>(rhs).fFilter     = fFilter;
-   static_cast<TDescantHit&>(rhs).fZc         = fZc;
-   static_cast<TDescantHit&>(rhs).fCcShort    = fCcShort;
-   static_cast<TDescantHit&>(rhs).fCcLong     = fCcLong;
-   static_cast<TDescantHit&>(rhs).fPsd        = fPsd;
-   static_cast<TDescantHit&>(rhs).fCfdMonitor = fCfdMonitor;
-   static_cast<TDescantHit&>(rhs).fPartialSum = fPartialSum;
+   dynamic_cast<TDescantHit&>(rhs).fFilter     = fFilter;
+   dynamic_cast<TDescantHit&>(rhs).fZc         = fZc;
+   dynamic_cast<TDescantHit&>(rhs).fCcShort    = fCcShort;
+   dynamic_cast<TDescantHit&>(rhs).fCcLong     = fCcLong;
+   dynamic_cast<TDescantHit&>(rhs).fPsd        = fPsd;
+   dynamic_cast<TDescantHit&>(rhs).fCfdMonitor = fCfdMonitor;
+   dynamic_cast<TDescantHit&>(rhs).fPartialSum = fPartialSum;
 }
 
 void TDescantHit::Copy(TObject& obj, bool waveform) const

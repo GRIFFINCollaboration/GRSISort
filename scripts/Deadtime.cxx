@@ -4,8 +4,8 @@
 //g++ myanalysis.cxx -o myanalysis -std=c++0x -I$GRSISYS/GRSISort/include/ `grsi-config --cflags --all-libs --root`
 
 #include <fstream>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <algorithm>
 #include <iostream>
 #include <functional>
@@ -13,9 +13,9 @@
 #include <vector>
 #include <string>
 #include <cmath>
-#include <stdio.h>
-#include <math.h>       /* round, floor, ceil, trunc */
-#include <time.h>
+#include <cstdio>
+#include <cmath>       /* round, floor, ceil, trunc */
+#include <ctime>
 using namespace std;
 
 #include "TF1.h"
@@ -79,8 +79,8 @@ int main(int argc, char* argv[]) {
 	int nds=0; 
 	int nscaler=0;
 	int len = 70;							
-  	char* line = new char[len];
-	char* odb = new char[len];	
+  	auto* line = new char[len];
+	auto* odb = new char[len];	
 	//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
 	if (not (filelist.is_open())) {	
     		std::cerr << "Failed to open filelist. Check path. " << std::endl;
@@ -188,13 +188,13 @@ void MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nscl
   int nsc = nsclr;
 
   //define spectra
-  TH1D** grif = new TH1D*[nsc];
+  auto** grif = new TH1D*[nsc];
   //define file pointer
   TFile *vs;
 
   //make spectra
-  TFile *rf = new TFile(filename,"read");
-  TTree *maple = (TTree*)rf->Get("ScalerTree");							//Scaler data
+  auto *rf = new TFile(filename,"read");
+  TTree *maple = dynamic_cast<TTree*>(rf->Get("ScalerTree"));							//Scaler data
 
   int nofBins = *trun/ncycle;
   double xaxis = 0; double yaxis = 0; double prev = 0; double xpast=0;
@@ -206,7 +206,7 @@ void MakeSpectra(const char*& filename, int& prog, const char*& fname, int& nscl
 	 channel++; //used to have a de-reference, see comments above; VB
   }
 
-  TScalerData* scaler = 0;
+  TScalerData* scaler = nullptr;
   TScaler(maple).Clear();
   maple->SetBranchAddress("TScalerData", &scaler); 	
   Long64_t nentries = maple->GetEntries();
@@ -267,7 +267,7 @@ return;
 
 void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& patlen, int&, int *trun, double& eor, const char*& hname, const char*& iname, const char*& jname, const char*& kname, const char*& lname, const char*& mname, const char*& nname, int& nscaler) {
   
-  TFile *vs = new TFile(fname,"read");
+  auto *vs = new TFile(fname,"read");
   ofstream ofile;
   ofile.open("diagnostic.txt");
   FILE *random = fopen(hname,"w");
@@ -290,7 +290,7 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
   TFile f(fname);
   TIter next(f.GetListOfKeys());
   TKey *key;
-  TH1D** spec = new TH1D*[nfile*(nsc*nscaler)];
+  auto** spec = new TH1D*[nfile*(nsc*nscaler)];
  
   //*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~USER EDITABLE
   //limits for deadtime matrices [us]
@@ -315,10 +315,10 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
   fprintf(randdt, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s","#rc","rr","rc-rr","rtau","lim1","lim2","flag","err(rc-rr)");
   fprintf(randdt,"\n");
 
-	while ((key=(TKey*)next())) {
+	while ((key=dynamic_cast<TKey*>(next()))) {
 	int numpat = floor(*trun/patlen);	//minimum number of expected transitions based on run time
 	const char* sname = key->GetName();
-	spec[cnt] = (TH1D*)vs->Get(sname);
+	spec[cnt] = dynamic_cast<TH1D*>(vs->Get(sname));
 	
 	//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~**~*~*~*~*~*~*~*~*variables
 	double wcomb = 0; double ncomb = 0; double rcomb = 0; double sdcomb = 0;
@@ -330,14 +330,14 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
 	int sref = 0;
 	int pref = 0;
 	int chop=2;	//'chop'= ignore first/last two bins of each pattern
-	int** ppg = new int*[numpat]; for(int i = 0; i < numpat; ++i) { ppg[i] = new int[2]; };
+	auto** ppg = new int*[numpat]; for(int i = 0; i < numpat; ++i) { ppg[i] = new int[2]; };
 	//*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*find PPG transition boundaries
 	//run through and find boundaries (pulser on/off etc.)
 	//'ord' defines increase (1) or decrease (0) in rate	
 	int xbins = *trun;
-	double** trans = new double*[xbins]; for(int i = 0; i < xbins; ++i) { trans[i] = new double[3]; };
-	double** freq = new double*[fbin]; for(int i = 0; i < fbin; ++i) { freq[i] = new double[2]; };
-	int** bnd = new int*[numpat]; for(int i = 0; i < numpat; ++i) { bnd[i] = new int[2]; };
+	auto** trans = new double*[xbins]; for(int i = 0; i < xbins; ++i) { trans[i] = new double[3]; };
+	auto** freq = new double*[fbin]; for(int i = 0; i < fbin; ++i) { freq[i] = new double[2]; };
+	auto** bnd = new int*[numpat]; for(int i = 0; i < numpat; ++i) { bnd[i] = new int[2]; };
 	//initialise the bnd matrix (prevents the program from hanging up later!)
 		for(int i=0; i<numpat; i++){
 			bnd[i][0]=0; 
@@ -488,7 +488,7 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
 	//diagnostic spectrum (dspec) parameters
 	int lim1 = rrand-(0.5*dlim*rrand); int lim2 = rrand+(0.5*dlim*rrand);
 	int dsbin = (lim2-lim1)/20;
-	int** dspec = new int*[dsbin]; for(int i = 0; i < dsbin; ++i) { dspec[i] = new int[2]; };
+	auto** dspec = new int*[dsbin]; for(int i = 0; i < dsbin; ++i) { dspec[i] = new int[2]; };
 	for (int i=0; i<dsbin; i++){
 		dspec[i][0]=lim1+(i*((lim2-lim1)/dsbin));
 		dspec[i][1]=0;
@@ -619,7 +619,7 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
 	int nrow=int((uhi-ulo)/du);
 	double w2 = pow((pow(sdrand,2)),2)/((2.*pow(sdrand,2)));	//const.
 	minl=-1e6; 
-	double** array = new double*[nrow]; for(int i = 0; i < nrow; ++i) { array[i] = new double[2]; } 
+	auto** array = new double*[nrow]; for(int i = 0; i < nrow; ++i) { array[i] = new double[2]; } 
 	double sigm; double sigp; double lnl;
 
 		while(itr<nrow){			
@@ -678,9 +678,9 @@ void DoAnalysis(const char*& fname, int& nfile, double *rate, int& nsclr, int& p
 
 	int iter=1e4, bin=10; double tempa, tempb; double var1, var2, var3; double l1, l2;
 	int wbin = 40; int wrow=0, wsize=int(pow(wbin,2)); 
-	double** randcheck = new double*[bin]; for(int i = 0; i < bin; ++i) { randcheck[i] = new double[2]; } 
-	double** randtau = new double*[iter]; for(int i = 0; i < iter; ++i) { randtau[i] = new double[2]; } 
-	double** wspec = new double*[wsize]; for(int i = 0; i < wsize; ++i) { wspec[i] = new double[3]; } 
+	auto** randcheck = new double*[bin]; for(int i = 0; i < bin; ++i) { randcheck[i] = new double[2]; } 
+	auto** randtau = new double*[iter]; for(int i = 0; i < iter; ++i) { randtau[i] = new double[2]; } 
+	auto** wspec = new double*[wsize]; for(int i = 0; i < wsize; ++i) { wspec[i] = new double[3]; } 
 	int flagc=0; int binsize=3;
 
 	//Check the "randomness" of the random number generator **RCHECK**

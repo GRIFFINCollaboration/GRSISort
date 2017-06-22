@@ -863,8 +863,8 @@ void TDecay::PrintMap() const
 {
    for(const auto & it : fDecayMap) {
       printf("ID: %u\n", it.first);
-      for(size_t i = 0; i < it.second.size(); ++i) {
-         it.second.at(i)->Print();
+      for(auto i : it.second) {
+         i->Print();
       }
       printf("\n");
    }

@@ -67,7 +67,7 @@ TCanvasImp* GRootGuiFactory::CreateCanvasImp(TCanvas* c, const char* title, UInt
    // Create a ROOT native GUI version of TCanvasImp
    // GRootObjectManager::Instance()->AddCanvas(c);
    // return new GRootCanvas(c, title, width, height);i
-   auto* grc = new GRootCanvas((GCanvas*)c, title, width, height);
+   auto* grc = new GRootCanvas(dynamic_cast<GCanvas*>(c), title, width, height);
    // GRootObjectManager::AddCanvas(c);
    // c->Connect("Closed()","GRootObjectManager",this,"RemoveCanvas()");
    // GRootObjectManager::Update();
@@ -81,7 +81,7 @@ TCanvasImp* GRootGuiFactory::CreateCanvasImp(TCanvas* c, const char* title, Int_
    // Create a ROOT native GUI version of TCanvasImp
    // GRootObjectManager::Instance()->AddCanvas(c);
    // return new GRootCanvas(c, title, x, y, width, height);
-   auto* grc = new GRootCanvas((GCanvas*)c, title, x, y, width, height);
+   auto* grc = new GRootCanvas(dynamic_cast<GCanvas*>(c), title, x, y, width, height);
    // GRootObjectManager::AddCanvas(c);
    // c->Connect("Closed()","GRootObjectManager",this,"RemoveCanvas()");
    // GRootObjectManager::Update();

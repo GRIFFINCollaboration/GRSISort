@@ -23,7 +23,7 @@ public:
    ~TPacesHit() override;
 
 private:
-   Int_t fFilter;
+   Int_t fFilter{};
 
 public:
    /////////////////////////  Setters	/////////////////////////////////////

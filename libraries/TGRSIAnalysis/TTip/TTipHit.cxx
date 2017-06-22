@@ -43,12 +43,12 @@ TTipHit::TTipHit(const TTipHit& rhs) : TGRSIDetectorHit()
 void TTipHit::Copy(TObject& rhs) const
 {
    TGRSIDetectorHit::Copy(rhs);
-   static_cast<TTipHit&>(rhs).fFilter     = fFilter;
-   static_cast<TTipHit&>(rhs).fPID        = fPID;
-   static_cast<TTipHit&>(rhs).fTipChannel = fTipChannel;
-   static_cast<TTipHit&>(rhs).fTimeFit    = fTimeFit;
-   static_cast<TTipHit&>(rhs).fSig2Noise  = fSig2Noise;
-   static_cast<TTipHit&>(rhs).fChiSq      = fChiSq;
+   dynamic_cast<TTipHit&>(rhs).fFilter     = fFilter;
+   dynamic_cast<TTipHit&>(rhs).fPID        = fPID;
+   dynamic_cast<TTipHit&>(rhs).fTipChannel = fTipChannel;
+   dynamic_cast<TTipHit&>(rhs).fTimeFit    = fTimeFit;
+   dynamic_cast<TTipHit&>(rhs).fSig2Noise  = fSig2Noise;
+   dynamic_cast<TTipHit&>(rhs).fChiSq      = fChiSq;
 }
 
 bool TTipHit::InFilter(Int_t)

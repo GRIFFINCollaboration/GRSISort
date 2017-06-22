@@ -52,7 +52,7 @@ public:
    {
       fHist = hist;
    } // fHistogram is a member of TF1. I'm not sure this does anything proper right now
-   virtual TH1*       GetHist() const { return static_cast<TH1*>(fHist.GetObject()); }
+   virtual TH1*       GetHist() const { return dynamic_cast<TH1*>(fHist.GetObject()); }
    static const char* GetDefaultFitType() { return fDefaultFitType.Data(); }
    static void SetDefaultFitType(const char* fitType) { fDefaultFitType = fitType; }
 
@@ -67,8 +67,8 @@ protected:
    void GoodFit(Bool_t flag = true) { fGoodFitFlag = flag; }
 
 private:
-   Bool_t         fInitFlag;
-   Bool_t         fGoodFitFlag; // This doesn't do anything yet
+   Bool_t         fInitFlag{};
+   Bool_t         fGoodFitFlag{}; // This doesn't do anything yet
    TRef           fHist;
    static TString fDefaultFitType;
 

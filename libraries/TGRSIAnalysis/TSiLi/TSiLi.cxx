@@ -32,9 +32,9 @@ TSiLi::~TSiLi()
 void TSiLi::Copy(TObject& rhs) const
 {
    TGRSIDetector::Copy(rhs);
-   static_cast<TSiLi&>(rhs).fSiLiHits    = fSiLiHits;
-   static_cast<TSiLi&>(rhs).fAddbackHits = fAddbackHits;
-   static_cast<TSiLi&>(rhs).fSiLiBits    = 0;
+   dynamic_cast<TSiLi&>(rhs).fSiLiHits    = fSiLiHits;
+   dynamic_cast<TSiLi&>(rhs).fAddbackHits = fAddbackHits;
+   dynamic_cast<TSiLi&>(rhs).fSiLiBits    = 0;
 
    return;
 }
@@ -228,8 +228,8 @@ Int_t TSiLi::GetAddbackMultiplicity()
             // This is desired behaviour of TGRSIDetectorHit for speed of sorts, but messy for the addback, which should
             // only be done "on the fly" not stored to TSiLi on disk
             fAddbackHits.emplace_back();
-            for(unsigned j = 0; j < Cluster.size(); j++) {
-               fAddbackHits[s].SumHit(GetSiLiHit(Cluster[j]));
+            for(unsigned int j : Cluster) {
+               fAddbackHits[s].SumHit(GetSiLiHit(j));
             }
          }
       }

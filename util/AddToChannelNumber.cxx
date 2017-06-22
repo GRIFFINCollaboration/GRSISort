@@ -25,15 +25,15 @@ int main(int argc, char **argv) {
 
    for(it = chanmap->begin(); it != chanmap->end(); ++it){
       TChannel* chan = it->second;
-      TChannel *newchan = new TChannel(chan);
+      auto *newchan = new TChannel(chan);
       chanlist.push_back(newchan);
       newchan->SetNumber(newchan->GetNumber() + num_to_add);
    }
 
    TChannel::DeleteAllChannels();
 
-   for(size_t i =0; i<chanlist.size();++i){
-      TChannel::AddChannel(chanlist.at(i));
+   for(auto & i : chanlist){
+      TChannel::AddChannel(i);
    }
 
    TChannel::WriteCalFile(argv[2]);

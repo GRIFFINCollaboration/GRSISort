@@ -23,8 +23,8 @@ TGRSIFit::~TGRSIFit()
 
 void TGRSIFit::Copy(TObject& obj) const
 {
-   static_cast<TGRSIFit&>(obj).fInitFlag    = fInitFlag;
-   static_cast<TGRSIFit&>(obj).fGoodFitFlag = fGoodFitFlag;
+   dynamic_cast<TGRSIFit&>(obj).fInitFlag    = fInitFlag;
+   dynamic_cast<TGRSIFit&>(obj).fGoodFitFlag = fGoodFitFlag;
    TF1::Copy(obj);
 }
 

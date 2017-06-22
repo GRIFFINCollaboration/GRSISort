@@ -85,11 +85,11 @@ protected:
    int ProcessTIGRESS(uint32_t* ptr, int& dSize, TDataParser& parser);
    int ProcessGRIFFIN(uint32_t* ptr, int& dSize, TDataParser::EBank bank, TDataParser& parser);
 
-   TMidas_EVENT_HEADER fEventHeader;   ///< event header
-   char*               fData;          ///< event data buffer
-   int                 fBanksN;        ///< number of banks in this event
-   char*               fBankList;      ///< list of bank names in this event
-   bool                fAllocatedByUs; ///< "true" if we own the data buffer
+   TMidas_EVENT_HEADER fEventHeader{};   ///< event header
+   char*               fData{};          ///< event data buffer
+   int                 fBanksN{};        ///< number of banks in this event
+   char*               fBankList{};      ///< list of bank names in this event
+   bool                fAllocatedByUs{}; ///< "true" if we own the data buffer
 
    /// \cond CLASSIMP
    ClassDefOverride(TMidasEvent, 0) // All of the data contained in a Midas Event

@@ -35,18 +35,18 @@ private:
    int fScalersInQueue;                           // The current number of scalers in the Q
 
    void StatusUpdate();
-   bool fStatusUpdateOn; // flag that determines whether the Q status should be read out
+   bool fStatusUpdateOn{}; // flag that determines whether the Q status should be read out
 
    bool fStop;
 
-   int fScalersIn;
-   int fScalersOut;
+   int fScalersIn{};
+   int fScalersOut{};
 
    TStopwatch* fStopwatch; // The stop watch used for timing in the status
    void        ResetRateCounter();
 
-   unsigned int fTotalScalersIn;
-   unsigned int fTotalScalersOut;
+   unsigned int fTotalScalersIn{};
+   unsigned int fTotalScalersOut{};
 
    static std::map<int, int> fScalerIdMap;
 
@@ -95,18 +95,18 @@ private:
    int fScalersInQueue;                       // The current number of scalers in the Q
 
    void StatusUpdate();
-   bool fStatusUpdateOn; // flag that determines whether the Q status should be read out
+   bool fStatusUpdateOn{}; // flag that determines whether the Q status should be read out
 
    bool fStop;
 
-   int fScalersIn;
-   int fScalersOut;
+   int fScalersIn{};
+   int fScalersOut{};
 
    TStopwatch* fStopwatch; // The stop watch used for timing in the status
    void        ResetRateCounter();
 
-   unsigned int fTotalScalersIn;
-   unsigned int fTotalScalersOut;
+   unsigned int fTotalScalersIn{};
+   unsigned int fTotalScalersOut{};
 
    static std::map<int, int> fScalerIdMap;
 

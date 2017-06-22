@@ -17,8 +17,8 @@ int main(int argc, char **argv) {
       return 1;
    }
 
-   TMidasFile *infile  = new TMidasFile;
-   TMidasFile *outfile = new TMidasFile;
+   auto *infile  = new TMidasFile;
+   auto *outfile = new TMidasFile;
 	std::shared_ptr<TMidasEvent> event = std::make_shared<TMidasEvent>();
    
    if(argv[1] == argv[2]){

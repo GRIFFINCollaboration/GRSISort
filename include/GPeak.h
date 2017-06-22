@@ -62,16 +62,16 @@ public:
    static GPeak* GetLastFit() { return fLastFit; }
 
 private:
-   double fArea;
-   double fDArea;
-   double fSum;
-   double fDSum;
-   double fChi2;
-   double fNdf;
+   double fArea{};
+   double fDArea{};
+   double fSum{};
+   double fDSum{};
+   double fChi2{};
+   double fNdf{};
 
    Bool_t IsInitialized() const { return init_flag; }
    void SetInitialized(Bool_t flag = true) { init_flag = flag; }
-   bool                       init_flag;
+   bool                       init_flag{};
 
    static GPeak* fLastFit;
 

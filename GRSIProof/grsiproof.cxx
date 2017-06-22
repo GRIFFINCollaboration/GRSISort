@@ -23,11 +23,11 @@ void Analyze(const char* tree_type, TProof* proof){
    std::vector<std::string> tree_list;
 
    //Loop over all of the file names, find all the files with the tree type in them and are "openable"
-   for(auto i = opt->RootInputFiles().begin(); i!= opt->RootInputFiles().end(); ++i){
-      TFile *in_file = TFile::Open(i->c_str());
+   for(const auto & i : opt->RootInputFiles()){
+      TFile *in_file = TFile::Open(i.c_str());
       if(in_file && in_file->IsOpen()){
          if(in_file->FindObjectAny(tree_type)){
-            tree_list.push_back(*i);
+            tree_list.push_back(i);
             
             //TODO: A smarter way of finding run info for run number and sub run number naming
             static bool info_set = false;
@@ -40,19 +40,19 @@ void Analyze(const char* tree_type, TProof* proof){
       }
    }
 
-   TChain *proof_chain = new TChain(tree_type);
+   auto *proof_chain = new TChain(tree_type);
    //loop over the list of files that belong to this tree type and add them to the chain
-   for(auto i = tree_list.begin(); i!= tree_list.end(); ++i){
-      proof_chain->Add(i->c_str()); //First add the file to the chain.
+   for(auto & i : tree_list){
+      proof_chain->Add(i.c_str()); //First add the file to the chain.
    }
    //Start getting ready to run proof
   	proof->ClearCache();
 	if(!(opt->SelectorOnly()))
       proof_chain->SetProof();
 
-   for(auto macro_it = opt->MacroInputFiles().begin(); macro_it != opt->MacroInputFiles().end(); ++macro_it){
-   	std::cout <<"Currently Running: " << (Form("%s",macro_it->c_str()))<<std::endl;
-      proof_chain->Process(Form("%s+",macro_it->c_str()));
+   for(const auto & macro_it : opt->MacroInputFiles()){
+   	std::cout <<"Currently Running: " << (Form("%s",macro_it.c_str()))<<std::endl;
+      proof_chain->Process(Form("%s+",macro_it.c_str()));
    }
 	
 	/*
@@ -93,11 +93,11 @@ int main(int argc, char **argv) {
       return 0;
    }
    std::cout<< DCYAN << "************************* MACRO COMPILATION ****************************" << RESET_COLOR << std::endl;
-   for(auto i = opt->MacroInputFiles().begin(); i != opt->MacroInputFiles().end(); ++i){
+   for(const auto & i : opt->MacroInputFiles()){
       //Int_t error_code = gROOT->LoadMacro(Form("%s+",i->c_str()));
-      Int_t error_code = gSystem->CompileMacro(i->c_str(),"kO");
+      Int_t error_code = gSystem->CompileMacro(i.c_str(),"kO");
       if(!error_code){//TODO: Fix this check
-         std::cout<< DRED << *i << " failed to compile properly.. ABORT!" << RESET_COLOR << std::endl;
+         std::cout<< DRED << i << " failed to compile properly.. ABORT!" << RESET_COLOR << std::endl;
          return 0;
       }
    }
@@ -133,12 +133,12 @@ int main(int argc, char **argv) {
 	proof->AddInput(opt->AnalysisOptions());
    proof->AddInput(new TNamed("pwd", getenv("PWD")));
    int i = 0;
-   for(auto valFile = opt->ValInputFiles().begin(); valFile != opt->ValInputFiles().end(); ++valFile) {
-      proof->AddInput(new TNamed(Form("valFile%d", i++), valFile->c_str()));
+   for(const auto & valFile : opt->ValInputFiles()) {
+      proof->AddInput(new TNamed(Form("valFile%d", i++), valFile.c_str()));
    }
    i = 0;
-   for(auto calFile = opt->CalInputFiles().begin(); calFile != opt->CalInputFiles().end(); ++calFile) {
-      proof->AddInput(new TNamed(Form("calFile%d", i++), calFile->c_str()));
+   for(const auto & calFile : opt->CalInputFiles()) {
+      proof->AddInput(new TNamed(Form("calFile%d", i++), calFile.c_str()));
    }
 
    Analyze("FragmentTree",proof);

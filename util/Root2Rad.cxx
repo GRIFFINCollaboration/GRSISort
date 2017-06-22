@@ -25,11 +25,11 @@
 
 
 
-#include <stdint.h>
+#include <cstdint>
 #include <fstream>
 #include <iostream>
 
-#include <string.h>
+#include <cstring>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -68,7 +68,7 @@ void WriteMat(TH2*, std::fstream*);
 void WriteM4b(TH2*, std::fstream*);
 
 int main(int argc, char** argv) {	
-	TFile *infile = new TFile();	
+	auto *infile = new TFile();	
 	if(argc < 2  || !(infile = TFile::Open(argv[1],"read")) )	{
 		std::cout<<"problem opening file."<<std::endl
 			      <<"Usage: "<<argv[0]<<" file.root (optional: -s to split large matrices, -c to compress large matrices)"<<std::endl;
@@ -107,11 +107,11 @@ int main(int argc, char** argv) {
 	TList* keys = infile->GetListOfKeys();
 	keys->Sort();
 	TIter next(keys);
-	TList* histsToWrite = new TList();
-	TList* matsToWrite = new TList();
-	TList* m4bsToWrite = new TList();
+	auto* histsToWrite = new TList();
+	auto* matsToWrite = new TList();
+	auto* m4bsToWrite = new TList();
 	//int counter = 1;
-	while(TKey* currentkey = static_cast<TKey*>(next())) {
+	while(TKey* currentkey = dynamic_cast<TKey*>(next())) {
 		std::string keytype = currentkey->ReadObj()->IsA()->GetName();
 		if(keytype.compare(0, 3, "TH1") == 0) {
 			//printf("%i currentkey->GetName() = %s\n",counter++, currentkey->GetName());
@@ -119,11 +119,11 @@ int main(int argc, char** argv) {
 			//	printf("*****************************\n");
 			histsToWrite->Add(currentkey->ReadObj());
 		} else if(keytype.compare(0, 4, "TH2C") == 0 || keytype.compare(0, 4, "TH2S") == 0){
-			AddToList(matsToWrite, static_cast<TH2*>(currentkey->ReadObj()), split, compress);
+			AddToList(matsToWrite, dynamic_cast<TH2*>(currentkey->ReadObj()), split, compress);
 		} else if(keytype.compare(0, 3, "TH2") == 0) {
-			AddToList(m4bsToWrite, static_cast<TH2*>(currentkey->ReadObj()), split, compress);
+			AddToList(m4bsToWrite, dynamic_cast<TH2*>(currentkey->ReadObj()), split, compress);
 		} else if(keytype.compare(0, 3, "THn") == 0) {
-			THnSparse* hist = ((THnSparse*) (currentkey->ReadObj()));
+			THnSparse* hist = (dynamic_cast<THnSparse*> (currentkey->ReadObj()));
 			if(hist->GetNdimensions() == 1) {
 				histsToWrite->Add(hist->Projection(0));
 			} else if(hist->GetNdimensions() == 2) {
@@ -135,9 +135,9 @@ int main(int argc, char** argv) {
 			}
 		} else if(keytype.compare(0, 5, "GHSym") == 0) {
 			if(keytype.compare(5, 1, "F") == 0) {
-				AddToList(m4bsToWrite, static_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
+				AddToList(m4bsToWrite, dynamic_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
 			} else if(keytype.compare(5, 1, "D") == 0) {
-				AddToList(m4bsToWrite, static_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
+				AddToList(m4bsToWrite, dynamic_cast<GHSymF*>(currentkey->ReadObj())->GetMatrix(), split, compress);
 			} else {
 				std::cout<<"unknown GHSym type "<<keytype<<std::endl;
 			}
@@ -149,7 +149,7 @@ int main(int argc, char** argv) {
 	//printf("histsToWrite->GetSize() = %i\n", histsToWrite->GetSize());
 
 	TIter nexthist(histsToWrite);
-	while(TH1* currenthist = static_cast<TH1*>(nexthist())) {
+	while(TH1* currenthist = dynamic_cast<TH1*>(nexthist())) {
 		std::string outfilename = path + "/";
 		outfilename.append(currenthist->GetName());
 		outfilename.append(".spe");
@@ -162,7 +162,7 @@ int main(int argc, char** argv) {
 
 
 	TIter nextmat(matsToWrite);
-	while(TH2* currentmat = static_cast<TH2*>(nextmat())) {
+	while(TH2* currentmat = dynamic_cast<TH2*>(nextmat())) {
 		std::string outfilename = path + "/";
 		outfilename.append(currentmat->GetName());
 		outfilename.append(".mat");
@@ -175,7 +175,7 @@ int main(int argc, char** argv) {
 
 
 	TIter nextm4b(m4bsToWrite);
-	while(TH2* currentm4b = static_cast<TH2*>(nextm4b())) {
+	while(TH2* currentm4b = dynamic_cast<TH2*>(nextm4b())) {
 		std::string outfilename = path + "/";
 		outfilename.append(currentm4b->GetName());
 		outfilename.append(".m4b");
@@ -246,7 +246,7 @@ void WriteMat(TH2 *mat, std::fstream *outfile) {
 	int xbins = mat->GetXaxis()->GetNbins();
 	int ybins = mat->GetYaxis()->GetNbins();
 
-	TH1D* empty = new TH1D("empty", "empty", 4096, 0., 4096.);
+	auto* empty = new TH1D("empty", "empty", 4096, 0., 4096.);
 
 	for(int y = 1; y <= 4096; ++y) {
 		uint16_t buffer[4096] = {0};
@@ -266,7 +266,7 @@ void WriteM4b(TH2 *mat, std::fstream *outfile) {
 	int xbins = mat->GetXaxis()->GetNbins();
 	int ybins = mat->GetYaxis()->GetNbins();
 
-	TH1D* empty = new TH1D("empty", "empty", 4096, 0., 4096.);
+	auto* empty = new TH1D("empty", "empty", 4096, 0., 4096.);
 
 	for(int y = 1; y <= 4096; ++y) {
 		uint32_t buffer[4096] = {0};
@@ -283,7 +283,7 @@ void WriteM4b(TH2 *mat, std::fstream *outfile) {
 }
 
 void WriteHist(TH1 *hist, std::fstream *outfile)	{
-	SpeHeader spehead;
+	SpeHeader spehead{};
 	spehead.buffsize = 24;
 	strncpy(spehead.label,hist->GetName(),8); 
 

@@ -49,7 +49,7 @@ TRuntimeObjects::TRuntimeObjects(TList* objects, TList* gates, std::vector<TFile
 
 TH1* TRuntimeObjects::FillHistogram(const char* name, int bins, double low, double high, double value, double weight)
 {
-   TH1* hist = (TH1*)GetObjects().FindObject(name);
+   TH1* hist = dynamic_cast<TH1*>(GetObjects().FindObject(name));
    if(!hist) {
       hist = new GH1D(name, name, bins, low, high);
       if(fDirectory) {
@@ -66,7 +66,7 @@ TH1* TRuntimeObjects::FillHistogram(const char* name, int bins, double low, doub
 TH2* TRuntimeObjects::FillHistogram(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue, int Ybins,
                                     double Ylow, double Yhigh, double Yvalue, double weight)
 {
-   TH2* hist = (TH2*)GetObjects().FindObject(name);
+   TH2* hist = dynamic_cast<TH2*>(GetObjects().FindObject(name));
    if(!hist) {
       hist = new GH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       if(fDirectory) hist->SetDirectory(fDirectory);
@@ -81,7 +81,7 @@ TH2* TRuntimeObjects::FillHistogram(const char* name, int Xbins, double Xlow, do
 TProfile* TRuntimeObjects::FillProfileHist(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue,
                                            double Yvalue)
 {
-   TProfile* prof = (TProfile*)GetObjects().FindObject(name);
+   TProfile* prof = dynamic_cast<TProfile*>(GetObjects().FindObject(name));
    if(!prof) {
       prof = new TProfile(name, name, Xbins, Xlow, Xhigh);
       if(fDirectory) prof->SetDirectory(fDirectory);
@@ -95,7 +95,7 @@ TProfile* TRuntimeObjects::FillProfileHist(const char* name, int Xbins, double X
 TH2* TRuntimeObjects::FillHistogramSym(const char* name, int Xbins, double Xlow, double Xhigh, double Xvalue, int Ybins,
                                        double Ylow, double Yhigh, double Yvalue)
 {
-   TH2* hist = (TH2*)GetObjects().FindObject(name);
+   TH2* hist = dynamic_cast<TH2*>(GetObjects().FindObject(name));
    if(!hist) {
       hist = new GH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       if(fDirectory) hist->SetDirectory(fDirectory);
@@ -116,13 +116,13 @@ TDirectory* TRuntimeObjects::FillHistogram(const char* dirname, const char* name
                                            double value, double weight)
 {
 
-   TDirectory* dir = (TDirectory*)GetObjects().FindObject(dirname);
+   TDirectory* dir = dynamic_cast<TDirectory*>(GetObjects().FindObject(dirname));
    if(!dir) {
       dir = new TDirectory(dirname, dirname);
       GetObjects().Add(dir);
    }
    dir->cd();
-   TH1* hist = (TH1*)dir->FindObject(name);
+   TH1* hist = dynamic_cast<TH1*>(dir->FindObject(name));
    if(!hist) {
       hist = new GH1D(name, name, bins, low, high);
       hist->SetDirectory(dir);
@@ -169,13 +169,13 @@ TDirectory* TRuntimeObjects::FillHistogram(const char* dirname, const char* name
                                            double Xvalue, int Ybins, double Ylow, double Yhigh, double Yvalue,
                                            double weight)
 {
-   TDirectory* dir = (TDirectory*)GetObjects().FindObject(dirname);
+   TDirectory* dir = dynamic_cast<TDirectory*>(GetObjects().FindObject(dirname));
    if(!dir) {
       dir = new TDirectory(dirname, dirname);
       GetObjects().Add(dir);
    }
    dir->cd();
-   TH2* hist = (TH2*)dir->FindObject(name);
+   TH2* hist = dynamic_cast<TH2*>(dir->FindObject(name));
    if(!hist) {
       hist = new GH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       hist->SetDirectory(dir);
@@ -203,13 +203,13 @@ TDirectory* TRuntimeObjects::FillProfileHist(const char* dirname, const char* na
                                              double Xhigh, double Xvalue, double Yvalue)
 {
 
-   TDirectory* dir = (TDirectory*)GetObjects().FindObject(dirname);
+   TDirectory* dir = dynamic_cast<TDirectory*>(GetObjects().FindObject(dirname));
    if(!dir) {
       dir = new TDirectory(dirname, dirname);
       GetObjects().Add(dir);
    }
    dir->cd();
-   TProfile* prof = (TProfile*)dir->FindObject(name);
+   TProfile* prof = dynamic_cast<TProfile*>(dir->FindObject(name));
    if(!prof) {
       prof = new TProfile(name, name, Xbins, Xlow, Xhigh);
       prof->SetDirectory(dir);
@@ -226,13 +226,13 @@ TDirectory* TRuntimeObjects::FillHistogramSym(const char* dirname, const char* n
                                               double Xhigh, double Xvalue, int Ybins, double Ylow, double Yhigh,
                                               double Yvalue)
 {
-   TDirectory* dir = (TDirectory*)GetObjects().FindObject(dirname);
+   TDirectory* dir = dynamic_cast<TDirectory*>(GetObjects().FindObject(dirname));
    if(!dir) {
       dir = new TDirectory(dirname, dirname);
       GetObjects().Add(dir);
    }
    dir->cd();
-   TH2* hist = (TH2*)dir->FindObject(name);
+   TH2* hist = dynamic_cast<TH2*>(dir->FindObject(name));
    if(!hist) {
       hist = new GH2D(name, name, Xbins, Xlow, Xhigh, Ybins, Ylow, Yhigh);
       hist->SetDirectory(dir);

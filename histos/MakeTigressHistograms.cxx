@@ -6,9 +6,9 @@
 #include "TSharc.h"
 #include "TTriFoil.h"
 
-TCutG *prot = 0;
-TCutG *trit = 0;
-TCutG *tita = 0;
+TCutG *prot = nullptr;
+TCutG *trit = nullptr;
+TCutG *tita = nullptr;
 
 extern "C"
 void MakeFragmentHistograms(TRuntimeObjects& obj) {
@@ -18,9 +18,9 @@ void MakeFragmentHistograms(TRuntimeObjects& obj) {
   if(!prot) {
     TDirectory *current = gDirectory;
     TFile f("cuts.root");
-    prot = (TCutG*)f.Get("p");
-    trit = (TCutG*)f.Get("t");
-    tita = (TCutG*)f.Get("ti");
+    prot = dynamic_cast<TCutG*>(f.Get("p"));
+    trit = dynamic_cast<TCutG*>(f.Get("t"));
+    tita = dynamic_cast<TCutG*>(f.Get("ti"));
     f.Close();
     current->cd();
     printf("LOADED CUTS!\n"); fflush(stdout);

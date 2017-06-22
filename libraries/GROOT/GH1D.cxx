@@ -93,7 +93,7 @@ void GH1D::Copy(TObject& obj) const
 {
    TH1D::Copy(obj);
 
-   ((GH1D&)obj).parent = parent;
+   (dynamic_cast<GH1D&>(obj)).parent = parent;
 }
 
 void GH1D::Draw(Option_t* opt)
@@ -139,7 +139,7 @@ TH1* GH1D::DrawNormalized(Option_t* opt, Double_t norm) const
 GH1D* GH1D::GetPrevious(bool DrawEmpty) const
 {
    if(parent.GetObject() && parent.GetObject()->InheritsFrom(GH2Base::Class())) {
-      GH2D* gpar  = (GH2D*)parent.GetObject();
+      GH2D* gpar  = dynamic_cast<GH2D*>(parent.GetObject());
       int   first = GetXaxis()->GetFirst();
       int   last  = GetXaxis()->GetLast();
       GH1D* prev  = gpar->GetPrevious(this, DrawEmpty);
@@ -153,7 +153,7 @@ GH1D* GH1D::GetPrevious(bool DrawEmpty) const
 GH1D* GH1D::GetNext(bool DrawEmpty) const
 {
    if(parent.GetObject() && parent.GetObject()->InheritsFrom(GH2Base::Class())) {
-      GH2D* gpar  = (GH2D*)parent.GetObject();
+      GH2D* gpar  = dynamic_cast<GH2D*>(parent.GetObject());
       int   first = GetXaxis()->GetFirst();
       int   last  = GetXaxis()->GetLast();
       GH1D* next  = gpar->GetNext(this, DrawEmpty);
@@ -171,7 +171,7 @@ GH1D* GH1D::Project(double value_low, double value_high) const
       if(value_low > value_high) {
          std::swap(value_low, value_high);
       }
-      GH2D* gpar = (GH2D*)parent.GetObject();
+      GH2D* gpar = dynamic_cast<GH2D*>(parent.GetObject());
       if(projection_axis == 0) {
          int bin_low  = gpar->GetXaxis()->FindBin(value_low);
          int bin_high = gpar->GetXaxis()->FindBin(value_high);
@@ -197,7 +197,7 @@ GH1D* GH1D::Project_Background(double value_low, double value_high, double bg_va
          std::swap(bg_value_low, bg_value_high);
       }
 
-      GH2D* gpar = (GH2D*)parent.GetObject();
+      GH2D* gpar = dynamic_cast<GH2D*>(parent.GetObject());
       if(projection_axis == 0) {
          int bin_low     = gpar->GetXaxis()->FindBin(value_low);
          int bin_high    = gpar->GetXaxis()->FindBin(value_high);

@@ -24,20 +24,20 @@ public:
    TTipHit(const TTipHit&);
 
 private:
-   Int_t    fFilter; //
-   Double_t fPID;    //
-   Int_t    fChiSq;
+   Int_t    fFilter{}; //
+   Double_t fPID{};    //
+   Int_t    fChiSq{};
 
    // Double_t fFastAmplitude;
    // Double_t fSlowAmplitude;
    // Double_t fGammaAmplitude;
 
-   bool csi_flag;
+   bool csi_flag{};
 
-   Int_t fTipChannel;
+   Int_t fTipChannel{};
 
-   Double_t fTimeFit;
-   Double_t fSig2Noise;
+   Double_t fTimeFit{};
+   Double_t fSig2Noise{};
 
 public:
    /////////////////////////    /////////////////////////////////////

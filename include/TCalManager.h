@@ -22,7 +22,7 @@ public:
    void RemoveCal(UInt_t channum, Option_t* opt = "");
    void SetClass(const char* classname);
    void SetClass(const TClass* cl);
-   const char* GetClass() { return fClass ? fClass->GetName() : 0; }
+   const char* GetClass() { return fClass ? fClass->GetName() : nullptr; }
    void        WriteToChannel() const;
 
    void Print(Option_t* opt = "") const override;

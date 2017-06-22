@@ -109,32 +109,32 @@ public:
 
 private:
    //////////////////// data members, sorted by size (as far as possible) to reduce padding ////////////////////
-   time_t fMidasTimeStamp;      ///< Timestamp of the MIDAS event
-   Int_t  fMidasId;             ///< MIDAS ID
-   Int_t  fFragmentId;          ///< Channel Trigger ID ??? not needed anymore ???
-   Int_t  fTriggerBitPattern;   ///< MasterFilterPattern in Griffin DAQ
-   Int_t  fNetworkPacketNumber; ///< Network packet number
-   UInt_t fChannelId;           ///< Threshold crossing counter for a channel
-   UInt_t fAcceptedChannelId;   ///< Accepted threshold crossing counter for a channel
+   time_t fMidasTimeStamp{};      ///< Timestamp of the MIDAS event
+   Int_t  fMidasId{};             ///< MIDAS ID
+   Int_t  fFragmentId{};          ///< Channel Trigger ID ??? not needed anymore ???
+   Int_t  fTriggerBitPattern{};   ///< MasterFilterPattern in Griffin DAQ
+   Int_t  fNetworkPacketNumber{}; ///< Network packet number
+   UInt_t fChannelId{};           ///< Threshold crossing counter for a channel
+   UInt_t fAcceptedChannelId{};   ///< Accepted threshold crossing counter for a channel
 
    /// Added to combine Grif Fragment  ////
 
-   UShort_t fDeadTime;        ///< Deadtime from trigger
-   UShort_t fModuleType;      ///< Data Type (GRIF-16, 4G, etc.)
-   UShort_t fDetectorType;    ///< Detector Type (PACES,HPGe, etc.)
-   UShort_t fNumberOfPileups; ///< Number of piled up hits 1-3
+   UShort_t fDeadTime{};        ///< Deadtime from trigger
+   UShort_t fModuleType{};      ///< Data Type (GRIF-16, 4G, etc.)
+   UShort_t fDetectorType{};    ///< Detector Type (PACES,HPGe, etc.)
+   UShort_t fNumberOfPileups{}; ///< Number of piled up hits 1-3
 
    std::vector<Long_t> fTriggerId; ///<  MasterFilterID in Griffin DAQ
 
    //////////////////// transient members ////////////////////
-   TPPG* fPPG; //!<! Programmable pattern generator value
+   TPPG* fPPG{}; //!<! Programmable pattern generator value
 
-   Long64_t fEntryNumber; //!<! Entry number in fragment tree
-   Int_t    fZc;          //!<! Zero-crossing value from 4G (saved in separate branch)
-   Int_t    fCcShort;     //!<! Short integration over waveform peak from 4G (saved in separate branch)
-   Int_t    fCcLong;      //!<! Long integration over waveform tail from 4G (saved in separate branch)
+   Long64_t fEntryNumber{}; //!<! Entry number in fragment tree
+   Int_t    fZc{};          //!<! Zero-crossing value from 4G (saved in separate branch)
+   Int_t    fCcShort{};     //!<! Short integration over waveform peak from 4G (saved in separate branch)
+   Int_t    fCcLong{};      //!<! Long integration over waveform tail from 4G (saved in separate branch)
    UShort_t
-      fNumberOfWords; //!<! Number of non-waveform words in fragment, only used for check while parsing the fragment
+      fNumberOfWords{}; //!<! Number of non-waveform words in fragment, only used for check while parsing the fragment
 
    static Long64_t fNumberOfFragments;
 

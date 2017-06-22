@@ -161,59 +161,59 @@ private:
 
    std::string fLogFile; ///< The name of the output log file
 
-   bool fCloseAfterSort;       ///< Flag to close after sorting (-q)
-   bool fLogErrors;            ///< Flag to log errors (--log-errors)
-   bool fUseMidFileOdb;        ///< Flag to read odb from midas
-   bool fSuppressErrors;       ///< Flag to suppress errors (--suppress-errors)
-   bool fReconstructTimeStamp; ///< Flag to reconstruct missing high bits of time stamps (--reconstruct-timestamp)
+   bool fCloseAfterSort{};       ///< Flag to close after sorting (-q)
+   bool fLogErrors{};            ///< Flag to log errors (--log-errors)
+   bool fUseMidFileOdb{};        ///< Flag to read odb from midas
+   bool fSuppressErrors{};       ///< Flag to suppress errors (--suppress-errors)
+   bool fReconstructTimeStamp{}; ///< Flag to reconstruct missing high bits of time stamps (--reconstruct-timestamp)
 
-   bool fMakeAnalysisTree; ///< Flag to make analysis tree (-a)
-   bool fProgressDialog;   ///< Flag to show progress in proof (not used)
-   bool fReadingMaterial;  ///< Flag to show reading material (--reading-material)
-   bool fIgnoreFileOdb;    ///< Flag to ignore midas file odb
-   bool fRecordDialog;
+   bool fMakeAnalysisTree{}; ///< Flag to make analysis tree (-a)
+   bool fProgressDialog{};   ///< Flag to show progress in proof (not used)
+   bool fReadingMaterial{};  ///< Flag to show reading material (--reading-material)
+   bool fIgnoreFileOdb{};    ///< Flag to ignore midas file odb
+   bool fRecordDialog{};
 
-   bool fIgnoreScaler;     ///< Flag to ignore scalers in GRIFFIN
-   bool fIgnoreEpics;      ///< Flag to ignore epics
-   bool fWriteBadFrags;    ///< Flag to write bad fragments
-   bool fWriteDiagnostics; ///< Flag to write diagnostics
-	bool fCheckWordCount;   ///< Flag to check word count in griffin data (default = true)
+   bool fIgnoreScaler{};     ///< Flag to ignore scalers in GRIFFIN
+   bool fIgnoreEpics{};      ///< Flag to ignore epics
+   bool fWriteBadFrags{};    ///< Flag to write bad fragments
+   bool fWriteDiagnostics{}; ///< Flag to write diagnostics
+	bool fCheckWordCount{};   ///< Flag to check word count in griffin data (default = true)
 
-   bool fBatch; ///< Flag to use batch mode (-b)
+   bool fBatch{}; ///< Flag to use batch mode (-b)
 
-   bool fShowedVersion;
-   bool fShowLogo;     ///< Flag to show logo (suppress with -l)
-   bool fSortRaw;      ///< Flag to sort Midas file
-   bool fSortRoot;     ///< Flag to sort root files
-   bool fExtractWaves; ///< Flag to keep waveforms (suppress with --no-waveforms)
-   bool fIsOnline;     ///< Flag to sort online data
-   bool fStartGui;     ///< Flag to start GUI (-g)
-   bool fMakeHistos;   ///< Flag to make histograms (-H)
-   bool fSortMultiple; ///< Flag to sort multiple files
-   bool fDebug;        ///< Flag for debug mode
+   bool fShowedVersion{};
+   bool fShowLogo{};     ///< Flag to show logo (suppress with -l)
+   bool fSortRaw{};      ///< Flag to sort Midas file
+   bool fSortRoot{};     ///< Flag to sort root files
+   bool fExtractWaves{}; ///< Flag to keep waveforms (suppress with --no-waveforms)
+   bool fIsOnline{};     ///< Flag to sort online data
+   bool fStartGui{};     ///< Flag to start GUI (-g)
+   bool fMakeHistos{};   ///< Flag to make histograms (-H)
+   bool fSortMultiple{}; ///< Flag to sort multiple files
+   bool fDebug{};        ///< Flag for debug mode
 
-   size_t fFragmentWriteQueueSize; ///< Size of the Fragment write Q
-   size_t fAnalysisWriteQueueSize; ///< Size of the analysis write Q
+   size_t fFragmentWriteQueueSize{}; ///< Size of the Fragment write Q
+   size_t fAnalysisWriteQueueSize{}; ///< Size of the analysis write Q
 
-   bool fTimeSortInput; ///< Flag to sort on time or triggers
-   int  fSortDepth;     ///< Size of Q that stores fragments to be built into events
+   bool fTimeSortInput{}; ///< Flag to sort on time or triggers
+   int  fSortDepth{};     ///< Size of Q that stores fragments to be built into events
 
 	static TAnalysisOptions* fAnalysisOptions; ///< contains all options for analysis
 
-   bool fSeparateOutOfOrder; ///< Flag to build out of order into seperate event tree
+   bool fSeparateOutOfOrder{}; ///< Flag to build out of order into seperate event tree
 
-   bool fShouldExit; ///< Flag to exit sorting
+   bool fShouldExit{}; ///< Flag to exit sorting
 
-	bool fHelp; ///< help requested?
+	bool fHelp{}; ///< help requested?
 
-   size_t       fColumnWidth;    ///< Size of verbose columns
-   size_t       fStatusWidth;    ///< Size of total verbose status
-   unsigned int fStatusInterval; ///< Time between status updates
-   bool         fLongFileDescription;
+   size_t       fColumnWidth{};    ///< Size of verbose columns
+   size_t       fStatusWidth{};    ///< Size of total verbose status
+   unsigned int fStatusInterval{}; ///< Time between status updates
+   bool         fLongFileDescription{};
 
    // Proof only
-   int  fMaxWorkers;   ///< MAx workers used in grsiproof
-   bool fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
+   int  fMaxWorkers{};   ///< MAx workers used in grsiproof
+   bool fSelectorOnly{}; ///< Flag to turn PROOF off in grsiproof
 
    /// \cond CLASSIMP
    ClassDefOverride(TGRSIOptions, 3); ///< Class for storing options in GRSISort

@@ -32,7 +32,7 @@ public:
    TZeroDegreeHit(const TFragment& frag);
 
 private:
-   Int_t              fFilter;
+   Int_t              fFilter{};
    std::vector<short> fCfdMonitor;
    std::vector<int>   fPartialSum;
 

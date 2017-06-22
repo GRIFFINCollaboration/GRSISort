@@ -57,14 +57,14 @@ ClassImp(GMarker)
    void GMarker::Copy(TObject& object) const
 {
    TObject::Copy(object);
-   ((GMarker&)object).x      = x;
-   ((GMarker&)object).y      = y;
-   ((GMarker&)object).localx = localx;
-   ((GMarker&)object).localy = localy;
-   ((GMarker&)object).linex  = nullptr;
-   ((GMarker&)object).liney  = nullptr;
-   ((GMarker&)object).binx   = binx;
-   ((GMarker&)object).biny   = biny;
+   (dynamic_cast<GMarker&>(object)).x      = x;
+   (dynamic_cast<GMarker&>(object)).y      = y;
+   (dynamic_cast<GMarker&>(object)).localx = localx;
+   (dynamic_cast<GMarker&>(object)).localy = localy;
+   (dynamic_cast<GMarker&>(object)).linex  = nullptr;
+   (dynamic_cast<GMarker&>(object)).liney  = nullptr;
+   (dynamic_cast<GMarker&>(object)).binx   = binx;
+   (dynamic_cast<GMarker&>(object)).biny   = biny;
 }
 /*
    ClassImp(GPopup)
@@ -344,7 +344,7 @@ GCanvas* GCanvas::MakeDefCanvas()
 
    const char* defcanvas = gROOT->GetDefCanvasName();
    char*       cdef;
-   TList*      lc = (TList*)gROOT->GetListOfCanvases();
+   TList*      lc = dynamic_cast<TList*>(gROOT->GetListOfCanvases());
    if(lc->FindObject(defcanvas)) {
       Int_t n = lc->GetSize() + 1;
       cdef    = new char[strlen(defcanvas) + 15];
@@ -406,7 +406,7 @@ std::vector<TH1*> GCanvas::FindHists(int dim)
    TIter             iter(gPad->GetListOfPrimitives());
    while(TObject* obj = iter.Next()) {
       if(obj->InheritsFrom(TH1::Class())) {
-         TH1* hist = (TH1*)obj;
+         TH1* hist = dynamic_cast<TH1*>(obj);
          if(hist->GetDimension() == dim) {
             tempvec.push_back(hist);
          }
@@ -420,7 +420,7 @@ std::vector<TH1*> GCanvas::FindAllHists()
    std::vector<TH1*> tempvec;
    TIter             iter(gPad->GetListOfPrimitives());
    while(TObject* obj = iter.Next()) {
-      if(obj->InheritsFrom("TH1")) tempvec.push_back((TH1*)obj);
+      if(obj->InheritsFrom("TH1")) tempvec.push_back(dynamic_cast<TH1*>(obj));
    }
    return tempvec;
 }
@@ -472,7 +472,7 @@ bool GCanvas::HandleMousePress(Int_t event, Int_t x, Int_t y)
 
    TH1* hist = nullptr;
    if(GetSelected()->InheritsFrom(TH1::Class())) {
-      hist = (TH1*)GetSelected();
+      hist = dynamic_cast<TH1*>(GetSelected());
    } else if(GetSelected()->IsA() == TFrame::Class()) {
       std::vector<TH1*> hists = FindAllHists();
       if(hists.size()) {
@@ -509,7 +509,7 @@ bool GCanvas::HandleMouseShiftPress(Int_t, Int_t, Int_t)
    TH1*  hist = nullptr;
    TIter iter(gPad->GetListOfPrimitives());
    while(TObject* obj = iter.Next()) {
-      if(obj->InheritsFrom(TH1::Class())) hist = (TH1*)obj;
+      if(obj->InheritsFrom(TH1::Class())) hist = dynamic_cast<TH1*>(obj);
    }
    if(!hist) return false;
 
@@ -518,7 +518,7 @@ bool GCanvas::HandleMouseShiftPress(Int_t, Int_t, Int_t)
    case 1: {
       if(hist->InheritsFrom(GH1D::Class())) {
          new GCanvas();
-         ((GH1D*)hist)->GetParent()->Draw("colz");
+         (dynamic_cast<GH1D*>(hist))->GetParent()->Draw("colz");
          return true;
       }
       std::vector<TH1*> hists = FindHists();
@@ -530,7 +530,7 @@ bool GCanvas::HandleMouseShiftPress(Int_t, Int_t, Int_t)
       return true;
    case 2:
       options.Append("colz");
-      auto* ghist = new GH2D(*((TH2*)hist));
+      auto* ghist = new GH2D(*(dynamic_cast<TH2*>(hist)));
       new GCanvas();
       ghist->Draw();
       return true;
@@ -557,12 +557,12 @@ TF1* GCanvas::GetLastFit()
    TIter iter(gPad->GetListOfPrimitives());
    while(TObject* obj = iter.Next()) {
       if(obj->InheritsFrom("TH1") && !obj->InheritsFrom("TH2") && !obj->InheritsFrom("TH3")) {
-         hist = (TH1*)obj;
+         hist = dynamic_cast<TH1*>(obj);
       }
    }
    if(!hist) return nullptr;
    if(hist->GetListOfFunctions()->GetSize() > 0) {
-      TF1* tmpfit = (TF1*)(hist->GetListOfFunctions()->Last());
+      TF1* tmpfit = dynamic_cast<TF1*>(hist->GetListOfFunctions()->Last());
       // std::string tmpname = tmpfit->GetName();
       // while(tmpname.find("background") != std::string::npos ){
       //    tmpfit = (TF1*)(hist->GetListOfFunctions()->Before(tmpfit));
@@ -639,7 +639,7 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
       GH1D* ghist = nullptr;
       for(auto hist : hists) {
          if(hist->InheritsFrom(GH1D::Class())) {
-            ghist = (GH1D*)hist;
+            ghist = dynamic_cast<GH1D*>(hist);
             break;
          }
       }
@@ -661,7 +661,7 @@ bool GCanvas::Process1DArrowKeyPress(Event_t*, UInt_t* keysym)
       GH1D* ghist = nullptr;
       for(auto hist : hists) {
          if(hist->InheritsFrom(GH1D::Class())) {
-            ghist = (GH1D*)hist;
+            ghist = dynamic_cast<GH1D*>(hist);
             break;
          }
       }
@@ -750,11 +750,11 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          TIter  iter(this->GetListOfPrimitives());
          while(TObject* obj = iter.Next()) {
             if(obj->InheritsFrom(TPad::Class())) {
-               TPad* pad = (TPad*)obj;
+               TPad* pad = dynamic_cast<TPad*>(obj);
                TIter iter2(pad->GetListOfPrimitives());
                while(TObject* obj2 = iter2.Next()) {
                   if(obj2->InheritsFrom(TH1::Class())) {
-                     TH1* hist = (TH1*)obj2;
+                     TH1* hist = dynamic_cast<TH1*>(obj2);
                      hist->GetXaxis()->SetRangeUser(x1, x2);
                      pad->Modified();
                      pad->Update();
@@ -885,7 +885,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       GH1D* ghist = nullptr;
       for(auto hist : hists) {
          if(hist->InheritsFrom(GH1D::Class())) {
-            ghist = (GH1D*)hist;
+            ghist = dynamic_cast<GH1D*>(hist);
             break;
          }
       }
@@ -941,7 +941,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       GH1D* ghist = nullptr;
       for(auto hist : hists) {
          if(hist->InheritsFrom(GH1D::Class())) {
-            ghist = (GH1D*)hist;
+            ghist = dynamic_cast<GH1D*>(hist);
             break;
          }
       }
@@ -963,7 +963,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          TIter iter(ghist->GetListOfFunctions());
          while(TObject* o = iter.Next()) {
             if(o->InheritsFrom(TF1::Class())) {
-               ((TF1*)o)->Draw("same");
+               (dynamic_cast<TF1*>(o))->Draw("same");
             }
          }
       }
@@ -996,11 +996,11 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          TIter  iter(this->GetListOfPrimitives());
          while(TObject* obj = iter.Next()) {
             if(obj->InheritsFrom(TPad::Class())) {
-               TPad* pad = (TPad*)obj;
+               TPad* pad = dynamic_cast<TPad*>(obj);
                TIter iter2(pad->GetListOfPrimitives());
                while(TObject* obj2 = iter2.Next()) {
                   if(obj2->InheritsFrom(TH1::Class())) {
-                     TH1* hist = (TH1*)obj2;
+                     TH1* hist = dynamic_cast<TH1*>(obj2);
                      hist->GetYaxis()->SetRangeUser(y1, y2);
                      pad->Modified();
                      pad->Update();
@@ -1117,11 +1117,11 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
          TIter  iter(this->GetListOfPrimitives());
          while(TObject* obj = iter.Next()) {
             if(obj->InheritsFrom(TPad::Class())) {
-               TPad* pad = (TPad*)obj;
+               TPad* pad = dynamic_cast<TPad*>(obj);
                TIter iter2(pad->GetListOfPrimitives());
                while(TObject* obj2 = iter2.Next()) {
                   if(obj2->InheritsFrom(TH1::Class())) {
-                     TH1* hist = (TH1*)obj2;
+                     TH1* hist = dynamic_cast<TH1*>(obj2);
                      hist->GetXaxis()->SetRangeUser(x1, x2);
                      pad->Modified();
                      pad->Update();
@@ -1181,7 +1181,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       break;
    case kKey_o:
       for(auto & hist : hists) {
-         TH2* h = (TH2*)hist;
+         TH2* h = dynamic_cast<TH2*>(hist);
          h->GetXaxis()->UnZoom();
          h->GetYaxis()->UnZoom();
       }
@@ -1198,7 +1198,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       GH2D* ghist = nullptr;
       for(auto hist : hists) {
          if(hist->InheritsFrom(GH2Base::Class())) {
-            ghist = (GH2D*)hist;
+            ghist = dynamic_cast<GH2D*>(hist);
             break;
          }
       }
@@ -1233,11 +1233,11 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
          TIter  iter(this->GetListOfPrimitives());
          while(TObject* obj = iter.Next()) {
             if(obj->InheritsFrom(TPad::Class())) {
-               TPad* pad = (TPad*)obj;
+               TPad* pad = dynamic_cast<TPad*>(obj);
                TIter iter2(pad->GetListOfPrimitives());
                while(TObject* obj2 = iter2.Next()) {
                   if(obj2->InheritsFrom(TH1::Class())) {
-                     TH1* hist = (TH1*)obj2;
+                     TH1* hist = dynamic_cast<TH1*>(obj2);
                      hist->GetYaxis()->SetRangeUser(y1, y2);
                      pad->Modified();
                      pad->Update();
@@ -1256,7 +1256,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       GH2D* ghist = nullptr;
       for(auto hist : hists) {
          if(hist->InheritsFrom(GH2Base::Class())) {
-            ghist = (GH2D*)hist;
+            ghist = dynamic_cast<GH2D*>(hist);
             break;
          }
       }
@@ -1276,7 +1276,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       GH2D* ghist = nullptr;
       for(auto hist : hists) {
          if(hist->InheritsFrom(GH2Base::Class())) {
-            ghist = (GH2D*)hist;
+            ghist = dynamic_cast<GH2D*>(hist);
             break;
          }
       }
@@ -1297,7 +1297,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       GH2D* ghist = nullptr;
       for(auto hist : hists) {
          if(hist->InheritsFrom(GH2Base::Class())) {
-            ghist = (GH2D*)hist;
+            ghist = dynamic_cast<GH2D*>(hist);
             break;
          }
       }
@@ -1320,7 +1320,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       GH2D* ghist = nullptr;
       for(auto hist : hists) {
          if(hist->InheritsFrom(GH2Base::Class())) {
-            ghist = (GH2D*)hist;
+            ghist = dynamic_cast<GH2D*>(hist);
             break;
          }
       }

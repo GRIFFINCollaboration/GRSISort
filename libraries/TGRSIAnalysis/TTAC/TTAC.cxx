@@ -45,7 +45,7 @@ void TTAC::Copy(TObject& rhs) const
    // Copies a TTAC
    TGRSIDetector::Copy(rhs);
 
-   static_cast<TTAC&>(rhs).fTACHits = fTACHits;
+   dynamic_cast<TTAC&>(rhs).fTACHits = fTACHits;
 }
 
 TTAC& TTAC::operator=(const TTAC& rhs)

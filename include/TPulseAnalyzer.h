@@ -161,9 +161,9 @@ public:
    int    GetCsIChiSq();
 
 private:
-   bool         set;
+   bool         set{};
    WaveFormPar* cWpar;
-   int          cN;
+   int          cN{};
    // TFragment* frag;
    std::vector<Short_t> cWavebuffer;
    SinPar*              spar;
@@ -172,16 +172,16 @@ private:
    std::string fName;
 
    // pulse fitting parameters
-   int FILTER;     // integration region for noise reduction (in samples)
-   int    T0RANGE; // tick range over which baseline is calulated
-   double LARGECHISQ;
+   int FILTER{};     // integration region for noise reduction (in samples)
+   int    T0RANGE{}; // tick range over which baseline is calulated
+   double LARGECHISQ{};
 
    // linear equation dataholders
-   int         lineq_dim;
-   long double lineq_matrix[20][20];
-   long double lineq_vector[20];
-   long double lineq_solution[20];
-   long double copy_matrix[20][20];
+   int         lineq_dim{};
+   long double lineq_matrix[20][20]{};
+   long double lineq_vector[20]{};
+   long double lineq_solution[20]{};
+   long double copy_matrix[20][20]{};
 
    // CsI functions
    void   GetCsIExclusionZone();
@@ -189,8 +189,8 @@ private:
    double GetCsIt0();
    int    GetCsIShape();
 
-   bool   CsISet;
-   double EPS;
+   bool   CsISet{};
+   double EPS{};
 
    void SetCsI(bool option = "true") { CsISet = option; }
    bool             CsIIsSet() { return CsISet; }

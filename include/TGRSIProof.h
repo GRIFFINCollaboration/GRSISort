@@ -47,7 +47,7 @@ public:
 
    static TGRSIProof* Open(const char* worker = "")
    {
-      TGRSIProof* p = static_cast<TGRSIProof*>(TProof::Open(worker));
+      TGRSIProof* p = dynamic_cast<TGRSIProof*>(TProof::Open(worker));
       p->LoadLibsIntoProof();
       return p;
    }
@@ -60,9 +60,9 @@ public:
       const char* pPath = getenv("GRSISYS");
 
       // First set the include path on each slave
-      Exec(Form("gInterpreter->AddIncludePath(\"%s/include\")", pPath));
+      Exec(Form(R"(gInterpreter->AddIncludePath("%s/include"))", pPath));
       std::cout << "Loading Libraries" << std::endl;
-      Exec(Form("gSystem->Load(\"%s/lib/libGRSI.so\");", pPath));
+      Exec(Form(R"(gSystem->Load("%s/lib/libGRSI.so");)", pPath));
    }
 
    /// \cond CLASSIMP

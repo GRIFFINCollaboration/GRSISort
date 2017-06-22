@@ -146,15 +146,15 @@ void GPeak::Copy(TObject& obj) const
    // fflush(stdout);
 
    TF1::Copy(obj);
-   ((GPeak&)obj).init_flag = init_flag;
-   ((GPeak&)obj).fArea     = fArea;
-   ((GPeak&)obj).fDArea    = fDArea;
-   ((GPeak&)obj).fSum      = fSum;
-   ((GPeak&)obj).fDSum     = fDSum;
-   ((GPeak&)obj).fChi2     = fChi2;
-   ((GPeak&)obj).fNdf      = fNdf;
+   (dynamic_cast<GPeak&>(obj)).init_flag = init_flag;
+   (dynamic_cast<GPeak&>(obj)).fArea     = fArea;
+   (dynamic_cast<GPeak&>(obj)).fDArea    = fDArea;
+   (dynamic_cast<GPeak&>(obj)).fSum      = fSum;
+   (dynamic_cast<GPeak&>(obj)).fDSum     = fDSum;
+   (dynamic_cast<GPeak&>(obj)).fChi2     = fChi2;
+   (dynamic_cast<GPeak&>(obj)).fNdf      = fNdf;
 
-   fBGFit.Copy((((GPeak&)obj).fBGFit));
+   fBGFit.Copy(((dynamic_cast<GPeak&>(obj)).fBGFit));
 }
 
 bool GPeak::InitParams(TH1* fithist)

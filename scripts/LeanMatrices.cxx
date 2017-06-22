@@ -104,37 +104,37 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
       w = new TStopwatch;
       w->Start();
    }
-   TList* list = new TList;
+   auto* list = new TList;
 
    //const size_t MEM_SIZE = (size_t)1024*(size_t)1024*(size_t)1024*(size_t)8; // 8 GB
 
    //We create some spectra and then add it to the list
    //hit patterns
-   TH2D* bIdVsgId = new TH2D("bIdVsgId","Sceptar Id vs Griffin Id",20,1,21,64,1,65); list->Add(bIdVsgId);
+   auto* bIdVsgId = new TH2D("bIdVsgId","Sceptar Id vs Griffin Id",20,1,21,64,1,65); list->Add(bIdVsgId);
 
    //gamma single spectra
-   TH1D* gammaSingles = new TH1D("gammaSingles","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaSingles);
-   TH1D* gammaSinglesB = new TH1D("gammaSinglesB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
-   TH1D* gammaSinglesBm = new TH1D("gammaSinglesBm","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaSinglesBm);
-   TH1D* gammaSinglesBt = new TH1D("gammaSinglesBt","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaSinglesBt);
-   TH1D* ggTimeDiff = new TH1D("ggTimeDiff", "#gamma-#gamma time difference", 3000,0,3000); list->Add(ggTimeDiff);
-   TH1D* gbTimeDiff = new TH1D("gbTimeDiff", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(gbTimeDiff); 
-   TH2D* bbTimeDiff = new TH2D("bbTimeDiff", "#beta energy vs. #beta-#beta time difference", 2000,-1000,1000, 1000, 0., 2e6); list->Add(bbTimeDiff); 
-   TH2D* gTimeDiff = new TH2D("gTimeDiff", "channel vs. time difference", 2000,0,2000, 65, 1., 65.); list->Add(gTimeDiff); 
-   TH1F* gtimestamp = new TH1F("gtimestamp", "#gamma time stamp", 10000,0,1000); list->Add(gtimestamp);
-   TH1F* btimestamp = new TH1F("btimestamp", "#beta time stamp", 10000,0,1000); list->Add(btimestamp);
-   TH2F* gbEnergyvsgTime = new TH2F("gbEnergyvsgTime", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsgTime);
-   TH2F* gbEnergyvsbTime = new TH2F("gbEnergyvsbTime", "#gamma #beta coincident: #beta timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsbTime);
-   TH2D* ggmatrix = new TH2D("ggmatrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(ggmatrix);
-   TH2D* ggmatrixt = new TH2D("ggmatrixt","#gamma-#gamma matrix t-corr",nofBins,low,high,nofBins,low,high); list->Add(ggmatrixt);
-   TH2F* gammaSinglesB_hp = new TH2F("gammaSinglesB_hp", "#gamma-#beta vs. SC channel", nofBins,low,high,20,1,21); list->Add(gammaSinglesB_hp);
-   TH2F* ggbmatrix = new TH2F("ggbmatrix","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrix);
-   TH2F* ggbmatrixt = new TH2F("ggbmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixt);
-   TH2F* grifscep_hp = new TH2F("grifscep_hp","Sceptar vs Griffin hit pattern",64,0,64,20,0,20); list->Add(grifscep_hp);
-   TH2F* gbTimevsg = new TH2F("gbTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(gbTimevsg); 
-   TH2D* ggbmatrixOn = new TH2D("ggbmatrixOn","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOn);
-   TH2F* ggbmatrixBg = new TH2F("ggbmatrixBg","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixBg);
-   TH2F* ggbmatrixOff = new TH2F("ggbmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOff);
+   auto* gammaSingles = new TH1D("gammaSingles","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaSingles);
+   auto* gammaSinglesB = new TH1D("gammaSinglesB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaSinglesB);
+   auto* gammaSinglesBm = new TH1D("gammaSinglesBm","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaSinglesBm);
+   auto* gammaSinglesBt = new TH1D("gammaSinglesBt","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaSinglesBt);
+   auto* ggTimeDiff = new TH1D("ggTimeDiff", "#gamma-#gamma time difference", 3000,0,3000); list->Add(ggTimeDiff);
+   auto* gbTimeDiff = new TH1D("gbTimeDiff", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(gbTimeDiff); 
+   auto* bbTimeDiff = new TH2D("bbTimeDiff", "#beta energy vs. #beta-#beta time difference", 2000,-1000,1000, 1000, 0., 2e6); list->Add(bbTimeDiff); 
+   auto* gTimeDiff = new TH2D("gTimeDiff", "channel vs. time difference", 2000,0,2000, 65, 1., 65.); list->Add(gTimeDiff); 
+   auto* gtimestamp = new TH1F("gtimestamp", "#gamma time stamp", 10000,0,1000); list->Add(gtimestamp);
+   auto* btimestamp = new TH1F("btimestamp", "#beta time stamp", 10000,0,1000); list->Add(btimestamp);
+   auto* gbEnergyvsgTime = new TH2F("gbEnergyvsgTime", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsgTime);
+   auto* gbEnergyvsbTime = new TH2F("gbEnergyvsbTime", "#gamma #beta coincident: #beta timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(gbEnergyvsbTime);
+   auto* ggmatrix = new TH2D("ggmatrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(ggmatrix);
+   auto* ggmatrixt = new TH2D("ggmatrixt","#gamma-#gamma matrix t-corr",nofBins,low,high,nofBins,low,high); list->Add(ggmatrixt);
+   auto* gammaSinglesB_hp = new TH2F("gammaSinglesB_hp", "#gamma-#beta vs. SC channel", nofBins,low,high,20,1,21); list->Add(gammaSinglesB_hp);
+   auto* ggbmatrix = new TH2F("ggbmatrix","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrix);
+   auto* ggbmatrixt = new TH2F("ggbmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixt);
+   auto* grifscep_hp = new TH2F("grifscep_hp","Sceptar vs Griffin hit pattern",64,0,64,20,0,20); list->Add(grifscep_hp);
+   auto* gbTimevsg = new TH2F("gbTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(gbTimevsg); 
+   auto* ggbmatrixOn = new TH2D("ggbmatrixOn","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOn);
+   auto* ggbmatrixBg = new TH2F("ggbmatrixBg","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixBg);
+   auto* ggbmatrixOff = new TH2F("ggbmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(ggbmatrixOff);
 
    TH2F* gammaSinglesCyc = nullptr;
    TH2F* gammaSinglesBCyc = nullptr;
@@ -147,25 +147,25 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
       betaSinglesCyc = new TH2F("betaSinglesCyc", "Cycle number vs. cycle time for #beta's", cycleLength/10.,0.,cycleLength,1000,0,1000); list->Add(betaSinglesCyc);
    }
    //addback spectra
-   TH1D* gammaAddback = new TH1D("gammaAddback","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
-   TH1D* gammaAddbackB = new TH1D("gammaAddbackB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaAddbackB);
-   TH1D* gammaAddbackBm = new TH1D("gammaAddbackBm","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaAddbackBm);
-   TH1D* gammaAddbackBt = new TH1D("gammaAddbackBt","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaAddbackBt);
-   TH1D* aaTimeDiff = new TH1D("aaTimeDiff", "#gamma-#gamma time difference", 300,0,300); list->Add(aaTimeDiff);
-   TH1D* abTimeDiff = new TH1D("abTimeDiff", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(abTimeDiff); 
-   TH2F* abEnergyvsgTime = new TH2F("abEnergyvsgTime", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(abEnergyvsgTime);
-   TH2F* abEnergyvsbTime = new TH2F("abEnergyvsbTime", "#gamma #beta coincident: #beta timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(abEnergyvsbTime);
-   TH2D* aamatrix = new TH2D("aamatrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(aamatrix);
-   TH2D* aamatrixt = new TH2D("aamatrixt","#gamma-#gamma matrix t-corr",nofBins,low,high,nofBins,low,high); list->Add(aamatrixt);
-   TH2F* gammaAddbackB_hp = new TH2F("gammaAddbackB_hp", "#gamma-#beta vs. SC channel", nofBins,low,high,20,1,21); list->Add(gammaAddbackB_hp);
-   TH2F* aabmatrix = new TH2F("aabmatrix","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(aabmatrix);
-   TH2F* aabmatrixt = new TH2F("aabmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixt);
-   TH2F* abTimevsg = new TH2F("abTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(abTimevsg); 
-   TH2F* abTimevsgf = new TH2F("abTimevsgf","#gamma energy vs. #gamma-#beta timing (first #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgf); 
-   TH2F* abTimevsgl = new TH2F("abTimevsgl","#gamma energy vs. #gamma-#beta timing (last #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgl); 
-   TH2D* aabmatrixOn = new TH2D("aabmatrixOn","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOn);
-   TH2F* aabmatrixBg = new TH2F("aabmatrixBg","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixBg);
-   TH2F* aabmatrixOff = new TH2F("aabmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOff);
+   auto* gammaAddback = new TH1D("gammaAddback","#gamma singles;energy[keV]",nofBins, low, high); list->Add(gammaAddback);
+   auto* gammaAddbackB = new TH1D("gammaAddbackB","#beta #gamma;energy[keV]",nofBins, low, high); list->Add(gammaAddbackB);
+   auto* gammaAddbackBm = new TH1D("gammaAddbackBm","#beta #gamma (multiple counting of #beta's);energy[keV]",nofBins, low, high); list->Add(gammaAddbackBm);
+   auto* gammaAddbackBt = new TH1D("gammaAddbackBt","#beta #gamma t-rand-corr; energy[keV]",nofBins, low, high); list->Add(gammaAddbackBt);
+   auto* aaTimeDiff = new TH1D("aaTimeDiff", "#gamma-#gamma time difference", 300,0,300); list->Add(aaTimeDiff);
+   auto* abTimeDiff = new TH1D("abTimeDiff", "#gamma-#beta time difference", 2000,-1000,1000); list->Add(abTimeDiff); 
+   auto* abEnergyvsgTime = new TH2F("abEnergyvsgTime", "#gamma #beta coincident: #gamma timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(abEnergyvsgTime);
+   auto* abEnergyvsbTime = new TH2F("abEnergyvsbTime", "#gamma #beta coincident: #beta timestamp vs. #gamma energy; Time [s]; Energy [keV]", 1000,0,1000, nofBins, low, high); list->Add(abEnergyvsbTime);
+   auto* aamatrix = new TH2D("aamatrix","#gamma-#gamma matrix",nofBins, low, high,nofBins, low, high); list->Add(aamatrix);
+   auto* aamatrixt = new TH2D("aamatrixt","#gamma-#gamma matrix t-corr",nofBins,low,high,nofBins,low,high); list->Add(aamatrixt);
+   auto* gammaAddbackB_hp = new TH2F("gammaAddbackB_hp", "#gamma-#beta vs. SC channel", nofBins,low,high,20,1,21); list->Add(gammaAddbackB_hp);
+   auto* aabmatrix = new TH2F("aabmatrix","#gamma-#gamma-#beta matrix", nofBins, low, high, nofBins, low, high); list->Add(aabmatrix);
+   auto* aabmatrixt = new TH2F("aabmatrixt","#gamma-#gamma-#beta matrix t-corr", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixt);
+   auto* abTimevsg = new TH2F("abTimevsg","#gamma energy vs. #gamma-#beta timing",300,-150,150,nofBins,low,high); list->Add(abTimevsg); 
+   auto* abTimevsgf = new TH2F("abTimevsgf","#gamma energy vs. #gamma-#beta timing (first #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgf); 
+   auto* abTimevsgl = new TH2F("abTimevsgl","#gamma energy vs. #gamma-#beta timing (last #beta only)",300,-150,150,nofBins,low,high); list->Add(abTimevsgl); 
+   auto* aabmatrixOn = new TH2D("aabmatrixOn","#gamma-#gamma-#beta matrix, beam on window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOn);
+   auto* aabmatrixBg = new TH2F("aabmatrixBg","#gamma-#gamma-#beta matrix, background window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixBg);
+   auto* aabmatrixOff = new TH2F("aabmatrixOff","#gamma-#gamma-#beta matrix, beam off window", nofBins, low, high, nofBins, low, high); list->Add(aabmatrixOff);
 
    TH2F* gammaAddbackCyc;
    TH2F* gammaAddbackBCyc;
@@ -187,12 +187,12 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    //set up branches
    //Each branch can hold multiple hits
    //ie TGriffin grif holds 3 gamma rays on a triples event 
-   TGriffin* grif = 0;
-   TSceptar* scep = 0;
+   TGriffin* grif = nullptr;
+   TSceptar* scep = nullptr;
    tree->SetBranchAddress("TGriffin", &grif); //We assume we always have a Griffin
 
    bool gotSceptar;
-   if(tree->FindBranch("TSceptar") == 0) {   //We check to see if we have a Scepter branch in the analysis tree
+   if(tree->FindBranch("TSceptar") == nullptr) {   //We check to see if we have a Scepter branch in the analysis tree
       gotSceptar = false;
    } else {
       tree->SetBranchAddress("TSceptar", &scep);
@@ -207,7 +207,7 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    int one;
    int two;
 
-   TVectorD* t = new TVectorD(2);
+   auto* t = new TVectorD(2);
    (*t)[0] = runInfo->RunStart();
    (*t)[1] = runInfo->RunStop();
 
@@ -518,7 +518,7 @@ int main(int argc, char **argv) {
    TStopwatch w;
    w.Start();
 
-   TFile* file = new TFile(argv[1]);
+   auto* file = new TFile(argv[1]);
 
    if(file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
@@ -531,7 +531,7 @@ int main(int argc, char **argv) {
    printf("Sorting file:" DBLUE " %s" RESET_COLOR"\n",file->GetName());
 
    //Get PPG from File
-   TPPG* myPPG = (TPPG*)file->Get("TPPG");
+   TPPG* myPPG = dynamic_cast<TPPG*>(file->Get("TPPG"));
 	if(myPPG == nullptr) {
 		printf("Failed to find PPG information in file '%s'!\n",argv[1]);
 	//} else {
@@ -539,16 +539,16 @@ int main(int argc, char **argv) {
 	} 
 	if(myPPG->MapIsEmpty()) {
 		std::cout<<"TPPG map is empty!"<<std::endl;
-		myPPG = NULL;
+		myPPG = nullptr;
 	}
    //Get run info from File
-   TGRSIRunInfo* runInfo = (TGRSIRunInfo*)file->Get("TGRSIRunInfo");
+   TGRSIRunInfo* runInfo = dynamic_cast<TGRSIRunInfo*>(file->Get("TGRSIRunInfo"));
    if(runInfo == nullptr) {
       printf("Failed to find run information in file '%s'!\n",argv[1]);
       return 1;
    }
 
-   TTree* tree = (TTree*) file->Get("AnalysisTree");
+   TTree* tree = dynamic_cast<TTree*>( file->Get("AnalysisTree"));
    TChannel::ReadCalFromTree(tree);
    if(tree == nullptr) {
       printf("Failed to find analysis tree in file '%s'!\n",argv[1]);
@@ -588,9 +588,9 @@ int main(int argc, char **argv) {
    printf("Writing to File: " DYELLOW "%s" RESET_COLOR"\n",outfile->GetName());
    list->Write();
    //Write the run info into the tree as well if there is run info in the Analysis Tree
-   TGRSISortList *sortinfolist = new TGRSISortList;
+   auto *sortinfolist = new TGRSISortList;
    if(runInfo){
-      TGRSISortInfo *info = new TGRSISortInfo(runInfo);
+      auto *info = new TGRSISortInfo(runInfo);
       sortinfolist->AddSortInfo(info);
       sortinfolist->Write("TGRSISortList",TObject::kSingleKey);
    }

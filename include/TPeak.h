@@ -104,11 +104,11 @@ public:
 
 private:
    // Centroid will eventually be read from parameters
-   Double_t fArea;
-   Double_t fDArea;
-   Double_t fChi2;
-   Double_t fNdf;
-   Bool_t   fOwnBgFlag;
+   Double_t fArea{};
+   Double_t fDArea{};
+   Double_t fChi2{};
+   Double_t fNdf{};
+   Bool_t   fOwnBgFlag{};
 
    static bool   fLogLikelihoodFlag; //!<!
    static TPeak* fLastFit;           //!<!

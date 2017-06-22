@@ -23,7 +23,7 @@ TSortingDiagnostics::~TSortingDiagnostics()
 
 void TSortingDiagnostics::Copy(TObject& obj) const
 {
-   static_cast<TSortingDiagnostics&>(obj).fFragmentsOutOfOrder = fFragmentsOutOfOrder;
+   dynamic_cast<TSortingDiagnostics&>(obj).fFragmentsOutOfOrder = fFragmentsOutOfOrder;
 }
 
 void TSortingDiagnostics::Clear(Option_t*)

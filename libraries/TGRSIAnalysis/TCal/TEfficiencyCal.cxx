@@ -18,7 +18,7 @@ TEfficiencyCal::TEfficiencyCal(const TEfficiencyCal& copy) : TCal(copy)
 
 void TEfficiencyCal::Copy(TObject& obj) const
 {
-   static_cast<TEfficiencyCal&>(obj).fScaleFactor = fScaleFactor;
+   dynamic_cast<TEfficiencyCal&>(obj).fScaleFactor = fScaleFactor;
    TCal::Copy(obj);
 }
 

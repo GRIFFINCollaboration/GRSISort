@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 		std::cout<<"Usage: "<<argv[0]<<" <input file name> <optional output file name>"<<std::endl;
 		return 1;
 	}
-	TFile* file = new TFile(argv[1]);
+	auto* file = new TFile(argv[1]);
 	if(!file->IsOpen()) {
 		return 1;
 	}
@@ -29,31 +29,31 @@ int main(int argc, char** argv) {
 
 	TList list;
 
-	TF1* eff = new TF1("eff","TMath::Exp([0]+[1]*TMath::Log(x)+[2]*TMath::Power(TMath::Log(x),2)+[3]*TMath::Power(TMath::Log(x),3)+[4]*TMath::Power(TMath::Log(x),4)+[5]*TMath::Power(TMath::Log(x),5)+[6]*TMath::Power(TMath::Log(x),6)+[7]*TMath::Power(TMath::Log(x),7)+[8]*TMath::Power(TMath::Log(x),8))", 1., 2000.);
+	auto* eff = new TF1("eff","TMath::Exp([0]+[1]*TMath::Log(x)+[2]*TMath::Power(TMath::Log(x),2)+[3]*TMath::Power(TMath::Log(x),3)+[4]*TMath::Power(TMath::Log(x),4)+[5]*TMath::Power(TMath::Log(x),5)+[6]*TMath::Power(TMath::Log(x),6)+[7]*TMath::Power(TMath::Log(x),7)+[8]*TMath::Power(TMath::Log(x),8))", 1., 2000.);
 	eff->SetParameters(-5.20813, 0.594665, 0.303463, -0.0134724, -0.00879938, -0.000716062, 0.000119174, 0.000030346, -0.00000300406);
 	list.Add(eff);
 
 	// fit singles peaks at 74, 583, 1280, 1354, and 1937
-	TH1F* gSingles = (TH1F*) file->Get("gammaSingles"); list.Add(gSingles);
+	TH1F* gSingles = dynamic_cast<TH1F*>( file->Get("gammaSingles")); list.Add(gSingles);
 
-	TPeak* p74   = new TPeak(  74.,   60.,   90.); list.Add(p74);
+	auto* p74   = new TPeak(  74.,   60.,   90.); list.Add(p74);
 	p74->SetName("p74");
 	p74->Fit(gSingles,"+");
-	TPeak* p583  = new TPeak( 583.,  560.,  600.); list.Add(p583);
+	auto* p583  = new TPeak( 583.,  560.,  600.); list.Add(p583);
 	p583->SetName("p583");
 	p583->Fit(gSingles,"+");
-	TPeak* p1280 = new TPeak(1280., 1260., 1290.); list.Add(p1280);
+	auto* p1280 = new TPeak(1280., 1260., 1290.); list.Add(p1280);
 	p1280->SetName("p1280");
 	p1280->Fit(gSingles,"+");
-	TPeak* p1354 = new TPeak(1354., 1330., 1365.); list.Add(p1354);
+	auto* p1354 = new TPeak(1354., 1330., 1365.); list.Add(p1354);
 	p1354->SetName("p1354");
 	p1354->Fit(gSingles,"+");
-	TPeak* p1937 = new TPeak(1937., 1900., 1990.); list.Add(p1937);
+	auto* p1937 = new TPeak(1937., 1900., 1990.); list.Add(p1937);
 	p1937->SetName("p1937");
 	p1937->Fit(gSingles,"+");
 
 	// fit gated peaks for different time windows
-	THnSparseF* gglongmatrixT = (THnSparseF*) file->Get("gglongmatrixT");
+	THnSparseF* gglongmatrixT = dynamic_cast<THnSparseF*>( file->Get("gglongmatrixT"));
 
 	//create time spectra for different photo-peak combinations
 	gglongmatrixT->GetAxis(0)->SetRange(gglongmatrixT->GetAxis(0)->FindBin(p74->GetCentroid()-p74->GetFWHM()), 
@@ -304,54 +304,54 @@ int main(int argc, char** argv) {
 		std::cout << "The BR is = " << branch[i+N] << " +/- " << branch_err[i+N] << " With Hardy = " << branch_hardy[i+N] << " +/- " << branch_hardy_err[i+N] << std::endl;
 	}
 
-	TGraphErrors* p74_time = new TGraphErrors(N, time, p74_gated_area, time_err, p74_gated_area_err); list.Add(p74_time);
+	auto* p74_time = new TGraphErrors(N, time, p74_gated_area, time_err, p74_gated_area_err); list.Add(p74_time);
 	p74_time->SetName("p74_time"); p74_time->SetTitle("74 keV");
 	p74_time->SetMarkerColor(2);
 	p74_time->SetLineColor(2);
-	TGraphErrors* p583_time = new TGraphErrors(N, time, p583_gated_area, time_err, p583_gated_area_err); list.Add(p583_time);
+	auto* p583_time = new TGraphErrors(N, time, p583_gated_area, time_err, p583_gated_area_err); list.Add(p583_time);
 	p583_time->SetName("p583_time"); p583_time->SetTitle("583 keV");
 	p583_time->SetMarkerColor(4);
 	p583_time->SetLineColor(4);
-	TGraphErrors* rel_effic_graph = new TGraphErrors(N, time, rel_effic, time_err, rel_effic_err); list.Add(rel_effic_graph);
+	auto* rel_effic_graph = new TGraphErrors(N, time, rel_effic, time_err, rel_effic_err); list.Add(rel_effic_graph);
 	rel_effic_graph->SetName("rel_effic_graph"); rel_effic_graph->SetTitle("relative efficiency");
 
-	TGraphErrors* p74_sigma = new TGraphErrors(N, time, p74_gated_sigma, time_err, p74_gated_sigma_err); list.Add(p74_sigma);
+	auto* p74_sigma = new TGraphErrors(N, time, p74_gated_sigma, time_err, p74_gated_sigma_err); list.Add(p74_sigma);
 	p74_sigma->SetName("p74_sigma"); p74_sigma->SetTitle("74 keV - #sigma");
-	TGraphErrors* p74_centr = new TGraphErrors(N, time, p74_gated_centr, time_err, p74_gated_centr_err); list.Add(p74_centr);
+	auto* p74_centr = new TGraphErrors(N, time, p74_gated_centr, time_err, p74_gated_centr_err); list.Add(p74_centr);
 	p74_centr->SetName("p74_centr"); p74_centr->SetTitle("74 keV - centroid");
-	TGraphErrors* p74_r = new TGraphErrors(N, time, p74_gated_r, time_err, p74_gated_r_err); list.Add(p74_r);
+	auto* p74_r = new TGraphErrors(N, time, p74_gated_r, time_err, p74_gated_r_err); list.Add(p74_r);
 	p74_r->SetName("p74_r"); p74_r->SetTitle("74 keV - R");
-	TGraphErrors* p583_sigma = new TGraphErrors(N, time, p583_gated_sigma, time_err, p583_gated_sigma_err); list.Add(p583_sigma);
+	auto* p583_sigma = new TGraphErrors(N, time, p583_gated_sigma, time_err, p583_gated_sigma_err); list.Add(p583_sigma);
 	p583_sigma->SetName("p583_sigma"); p583_sigma->SetTitle("583 keV - #sigma");
-	TGraphErrors* p583_centr = new TGraphErrors(N, time, p583_gated_centr, time_err, p583_gated_centr_err); list.Add(p583_centr);
+	auto* p583_centr = new TGraphErrors(N, time, p583_gated_centr, time_err, p583_gated_centr_err); list.Add(p583_centr);
 	p583_centr->SetName("p583_centr"); p583_centr->SetTitle("583 keV - centroid");
-	TGraphErrors* p583_r = new TGraphErrors(N, time, p583_gated_r, time_err, p583_gated_r_err); list.Add(p583_r);
+	auto* p583_r = new TGraphErrors(N, time, p583_gated_r, time_err, p583_gated_r_err); list.Add(p583_r);
 	p583_r->SetName("p583_r"); p583_r->SetTitle("583 keV - R");
 
-	TGraphErrors* branch_time = new TGraphErrors(N, time, branch, time_err, branch_err); list.Add(branch_time);
+	auto* branch_time = new TGraphErrors(N, time, branch, time_err, branch_err); list.Add(branch_time);
 	branch_time->SetName("branch_time"); branch_time->SetTitle("branching ratio");
-	TGraphErrors* branch_hardy_time = new TGraphErrors(N, time, branch_hardy, time_err, branch_hardy_err); list.Add(branch_hardy_time);
+	auto* branch_hardy_time = new TGraphErrors(N, time, branch_hardy, time_err, branch_hardy_err); list.Add(branch_hardy_time);
 	branch_hardy_time->SetName("branch_hardy_time"); branch_hardy_time->SetTitle("branching ratio using Hardy");
-	TGraphErrors* branch_releff_time = new TGraphErrors(N, time, branch_releff, time_err, branch_releff_err); list.Add(branch_releff_time);
+	auto* branch_releff_time = new TGraphErrors(N, time, branch_releff, time_err, branch_releff_err); list.Add(branch_releff_time);
 	branch_releff_time->SetName("branch_releff_time"); branch_releff_time->SetTitle("branching ratio using rel. eff.");
 
 
-	TGraphErrors* p74_neg_time = new TGraphErrors(N, time, &p74_gated_area[N], time_err, &p74_gated_area_err[N]); list.Add(p74_neg_time);
+	auto* p74_neg_time = new TGraphErrors(N, time, &p74_gated_area[N], time_err, &p74_gated_area_err[N]); list.Add(p74_neg_time);
 	p74_neg_time->SetName("p74_neg_time"); p74_neg_time->SetTitle("74 keV");
 	p74_neg_time->SetMarkerColor(2);
 	p74_neg_time->SetLineColor(2);
-	TGraphErrors* p583_neg_time = new TGraphErrors(N, time, &p583_gated_area[N], time_err, &p583_gated_area_err[N]); list.Add(p583_neg_time);
+	auto* p583_neg_time = new TGraphErrors(N, time, &p583_gated_area[N], time_err, &p583_gated_area_err[N]); list.Add(p583_neg_time);
 	p583_neg_time->SetName("p583_neg_time"); p583_neg_time->SetTitle("583 keV");
 	p583_neg_time->SetMarkerColor(4);
 	p583_neg_time->SetLineColor(4);
-	TGraphErrors* rel_effic_graph_neg = new TGraphErrors(N, time, &rel_effic[N], time_err, &rel_effic_err[N]); list.Add(rel_effic_graph_neg);
+	auto* rel_effic_graph_neg = new TGraphErrors(N, time, &rel_effic[N], time_err, &rel_effic_err[N]); list.Add(rel_effic_graph_neg);
 	rel_effic_graph_neg->SetName("rel_effic_graph_neg"); rel_effic_graph_neg->SetTitle("relative efficiency");
 
-	TGraphErrors* branch_neg_time = new TGraphErrors(N, time, &branch[N], time_err, &branch_err[N]); list.Add(branch_neg_time);
+	auto* branch_neg_time = new TGraphErrors(N, time, &branch[N], time_err, &branch_err[N]); list.Add(branch_neg_time);
 	branch_neg_time->SetName("branch_neg_time"); branch_neg_time->SetTitle("branching ratio");
-	TGraphErrors* branch_hardy_neg_time = new TGraphErrors(N, time, &branch_hardy[N], time_err, &branch_hardy_err[N]); list.Add(branch_hardy_neg_time);
+	auto* branch_hardy_neg_time = new TGraphErrors(N, time, &branch_hardy[N], time_err, &branch_hardy_err[N]); list.Add(branch_hardy_neg_time);
 	branch_hardy_neg_time->SetName("branch_hardy_neg_time"); branch_hardy_neg_time->SetTitle("branching ratio using Hardy");
-	TGraphErrors* branch_releff_neg_time = new TGraphErrors(N, time, &branch_releff[N], time_err, &branch_releff_err[N]); list.Add(branch_releff_neg_time);
+	auto* branch_releff_neg_time = new TGraphErrors(N, time, &branch_releff[N], time_err, &branch_releff_err[N]); list.Add(branch_releff_neg_time);
 	branch_releff_neg_time->SetName("branch_releff_neg_time"); branch_releff_neg_time->SetTitle("branching ratio using rel. eff.");
 
 	std::cout<<"done, writing everything to "<<outputFileName<<std::endl;

@@ -22,36 +22,36 @@ public:
    ~TCSMHit() override;
 
 private:
-   Short_t fHorDStrip;  //
-   Float_t fHorDCharge; //
-   Int_t   fHorDCfd;    //
+   Short_t fHorDStrip{};  //
+   Float_t fHorDCharge{}; //
+   Int_t   fHorDCfd{};    //
 
-   Short_t fVerDStrip;  //
-   Float_t fVerDCharge; //
-   Int_t   fVerDCfd;    //
+   Short_t fVerDStrip{};  //
+   Float_t fVerDCharge{}; //
+   Int_t   fVerDCfd{};    //
 
-   Short_t fHorEStrip;  //
-   Float_t fHorECharge; //
-   Int_t   fHorECfd;    //
+   Short_t fHorEStrip{};  //
+   Float_t fHorECharge{}; //
+   Int_t   fHorECfd{};    //
 
-   Short_t fVerEStrip;  //
-   Float_t fVerECharge; //
-   Int_t   fVerECfd;    //
+   Short_t fVerEStrip{};  //
+   Float_t fVerECharge{}; //
+   Int_t   fVerECfd{};    //
 
-   Double_t fHorDEnergy; //
-   Double_t fVerDEnergy; //
-   Double_t fHorDTime;   //
-   Double_t fVerDTime;   //
+   Double_t fHorDEnergy{}; //
+   Double_t fVerDEnergy{}; //
+   Double_t fHorDTime{};   //
+   Double_t fVerDTime{};   //
    TVector3 fDPosition;  //
 
-   Double_t fHorEEnergy; //
-   Double_t fVerEEnergy; //
-   Double_t fHorETime;   //
-   Double_t fVerETime;   //
+   Double_t fHorEEnergy{}; //
+   Double_t fVerEEnergy{}; //
+   Double_t fHorETime{};   //
+   Double_t fVerETime{};   //
 
    TVector3 fEPosition; //
 
-   UShort_t fDetectorNumber; //
+   UShort_t fDetectorNumber{}; //
 
 public:
    bool IsEmpty();

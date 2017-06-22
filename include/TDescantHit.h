@@ -24,11 +24,11 @@ public:
    TDescantHit(const TFragment& frag);
 
 private:
-   Int_t              fFilter;
-   Int_t              fPsd;
-   Int_t              fZc;
-   Int_t              fCcShort;
-   Int_t              fCcLong;
+   Int_t              fFilter{};
+   Int_t              fPsd{};
+   Int_t              fZc{};
+   Int_t              fCcShort{};
+   Int_t              fCcLong{};
    std::vector<short> fCfdMonitor;
    std::vector<int>   fPartialSum;
 

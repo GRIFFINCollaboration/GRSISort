@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
       return 1;
    }
 
-   TMidasFile *file  = new TMidasFile;
+   auto *file  = new TMidasFile;
    //TMidasFile *outfile = new TMidasFile;
    file->Open(argv[1]);
    int runnumber = file->GetRunNumber();

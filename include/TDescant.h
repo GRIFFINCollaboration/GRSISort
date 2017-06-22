@@ -53,7 +53,7 @@ public:
 private:
    std::vector<TDescantHit> fDescantHits; ///<  The set of crystal hits
    static bool              fSetWave;     ///<  Flag for Waveforms ON/OFF
-   bool                     fHitFlag;     ///<   Is there a Descant hit?
+   bool                     fHitFlag{};     ///<   Is there a Descant hit?
 
 public:
    static bool SetWave() { return fSetWave; }         //!<!

@@ -38,7 +38,7 @@ class TScalerData : public TObject {
 public:
    TScalerData();
    TScalerData(const TScalerData&);
-   ~TScalerData()= default;
+   ~TScalerData() override = default;
 
    void Copy(TObject& rhs) const override;
 
@@ -82,11 +82,11 @@ public:
    void Clear(Option_t* opt = "") override;
 
 private:
-   UInt_t              fNetworkPacketId;
-   UInt_t              fAddress;
+   UInt_t              fNetworkPacketId{};
+   UInt_t              fAddress{};
    std::vector<UInt_t> fScaler;
-   UInt_t              fLowTimeStamp;
-   UInt_t              fHighTimeStamp;
+   UInt_t              fLowTimeStamp{};
+   UInt_t              fHighTimeStamp{};
 
    /// \cond CLASSIMP
    ClassDefOverride(TScalerData, 2) // Contains scaler data information
@@ -122,17 +122,17 @@ public:
    void ListHistograms();
 
 private:
-   TTree*       fTree;
-   TScalerData* fScalerData;
-   Long64_t     fEntries;
+   TTree*       fTree{};
+   TScalerData* fScalerData{};
+   Long64_t     fEntries{};
    std::map<UInt_t, std::map<ULong64_t, std::vector<UInt_t>>>
       fScalerMap; //!<! an address-map of timestamp mapped scaler values
    std::map<UInt_t, ULong64_t>
       fTimePeriod; //!<! a map between addresses and time differences (used to calculate the time period)
    std::map<UInt_t, std::map<ULong64_t, int>> fNumberOfTimePeriods; //!<!
-   ULong64_t fTotalTimePeriod;                                      //!<!
+   ULong64_t fTotalTimePeriod{};                                      //!<!
    std::map<ULong64_t, int> fTotalNumberOfTimePeriods;              //!<!
-   TPPG* fPPG;                                                      //!<!
+   TPPG* fPPG{};                                                      //!<!
    std::map<UInt_t, TH1D*> fHist;                         //!<! map to store histograms that have already been drawn
    std::map<std::pair<UInt_t, UInt_t>, TH1D*> fHistRange; //!<! map to store histograms for address-ranges
 

@@ -29,9 +29,9 @@ TCalList::TCalList(const TCalList& copy) : TNamed(copy)
 void TCalList::Copy(TObject& obj) const
 {
    TNamed::Copy(obj);
-   static_cast<TCalList&>(obj).Clear();
+   dynamic_cast<TCalList&>(obj).Clear();
    for(auto it : fCalList) {
-      static_cast<TCalList&>(obj).AddPoint(it.second);
+      dynamic_cast<TCalList&>(obj).AddPoint(it.second);
    }
 }
 

@@ -40,10 +40,10 @@ public:
    double GetEffParameter(int i = 0) const;
 
    struct Peak {
-      double      centroid;
-      double      energy;
-      double      area;
-      double      intensity;
+      double      centroid{};
+      double      energy{};
+      double      area{};
+      double      intensity{};
       std::string nucleus;
    };
 
@@ -78,10 +78,10 @@ private:
    TF1*         linfit;
    TF1*         efffit;
 
-   int fit_order;
-   int total_points;
+   int fit_order{};
+   int total_points{};
 
-   double eff_par[4];
+   double eff_par[4]{};
 
    void ResetMap(std::map<double, double>& inmap);
    void PrintMap(std::map<double, double>& inmap);

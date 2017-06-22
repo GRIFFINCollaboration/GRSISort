@@ -112,11 +112,11 @@ private:
    std::vector<double> fAddBackEnergy; // probably not needed after development finished
    TTransientBits<UChar_t> fSiLiHitBits;
 
-   Double_t fTimeFit;
-   Double_t fSig2Noise;
-   Double_t fSmirnov;
-   Double_t fFitCharge;
-   Double_t fFitBase;
+   Double_t fTimeFit{};
+   Double_t fSig2Noise{};
+   Double_t fSmirnov{};
+   Double_t fFitCharge{};
+   Double_t fFitBase{};
 
    /// \cond CLASSIMP
    ClassDefOverride(TSiLiHit, 9);

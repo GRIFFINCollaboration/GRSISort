@@ -13,8 +13,8 @@ ClassImp(TXMLOdb)
 
 TXMLOdb::TXMLOdb(char* buffer, int size)
 {
-   fOdb = 0;
-   fDoc = 0;
+   fOdb = nullptr;
+   fDoc = nullptr;
    std::ifstream input;
    input.open(buffer);
    fParser = new TDOMParser;
@@ -46,12 +46,12 @@ TXMLNode* TXMLOdb::FindNode(const char* name, TXMLNode* node)
 {
    if(!node) {
       if(!fOdb) {
-         return 0;
+         return nullptr;
       } else {
          node = fOdb; //->GetChildren();
       }
    }
-   if(!node->HasChildren()) return 0;
+   if(!node->HasChildren()) return nullptr;
    node = node->GetChildren();
    while(node) {
       std::string nodename = GetNodeName(node);
@@ -61,14 +61,14 @@ TXMLNode* TXMLOdb::FindNode(const char* name, TXMLNode* node)
       node = node->GetNextNode();
    }
 
-   return 0;
+   return nullptr;
 }
 
 TXMLNode* TXMLOdb::FindPath(const char* path, TXMLNode* node)
 {
    if(!node) {
       if(!fOdb) {
-         return 0;
+         return nullptr;
       } else {
          node = fOdb; //->GetChildren();
       }
@@ -92,12 +92,12 @@ TXMLNode* TXMLOdb::FindPath(const char* path, TXMLNode* node)
       if(slash == std::string::npos) break;
    }
 
-   for(size_t x = 0; x < elems.size(); x++) {
-      node = FindNode(elems.at(x).c_str(), node);
+   for(auto & elem : elems) {
+      node = FindNode(elem.c_str(), node);
       if(node) {
          //         printf("elem[%i]\t= %s\tnode = %s\n",x,elems.at(x).c_str(),GetNodeName(node));
       } else {
-         node = 0;
+         node = nullptr;
          break;
       }
    }
@@ -126,7 +126,7 @@ const char* TXMLOdb::GetNodeName(TXMLNode* node)
    // std::string TXMLOdb::GetNodeName(TXMLNode* node) {
    TList* list = node->GetAttributes();
    if(list) {
-      std::string buffer = ((TXMLAttr*)(list->At(0)))->GetValue();
+      std::string buffer = (dynamic_cast<TXMLAttr*>(list->At(0)))->GetValue();
       // list->Delete();
       strcpy(fTextBuffer, buffer.c_str());
       return ((const char*)fTextBuffer); // buffer.c_str();;
@@ -151,7 +151,7 @@ std::vector<int> TXMLOdb::ReadIntArray(TXMLNode* node)
    if(!list) return temp;
    TIter iter(list);
    int   size = 0;
-   while(TXMLAttr* attr = (TXMLAttr*)(iter.Next())) {
+   while(TXMLAttr* attr = dynamic_cast<TXMLAttr*>(iter.Next())) {
       if(strcmp(attr->GetName(), "num_values") == 0) size = atoi(attr->GetValue());
    }
    //   printf("size = %i\n",size);
@@ -162,7 +162,7 @@ std::vector<int> TXMLOdb::ReadIntArray(TXMLNode* node)
       if(TList* index = child->GetAttributes()) {
          // printf("index = %i\n",atoi(((TXMLAttr*)(index->At(0)))->GetValue()));
          // printf("value = %s\t%i\n",child->GetText(),atoi(child->GetText()));
-         int indexnum = atoi(((TXMLAttr*)(index->At(0)))->GetValue());
+         int indexnum = atoi((dynamic_cast<TXMLAttr*>(index->At(0)))->GetValue());
          int value    = atoi(child->GetText());
          //         printf("indexnum %i : value 0x%08x\n",indexnum,value);
          temp.at(indexnum) = value;
@@ -187,7 +187,7 @@ std::vector<std::string> TXMLOdb::ReadStringArray(TXMLNode* node)
    if(!list) return temp;
    TIter iter(list);
    int   size = 0;
-   while(TXMLAttr* attr = (TXMLAttr*)(iter.Next())) {
+   while(TXMLAttr* attr = dynamic_cast<TXMLAttr*>(iter.Next())) {
       if(strcmp(attr->GetName(), "num_values") == 0) size = atoi(attr->GetValue());
    }
    //   printf("size = %i\n",size);
@@ -199,7 +199,7 @@ std::vector<std::string> TXMLOdb::ReadStringArray(TXMLNode* node)
       if(TList* index = child->GetAttributes()) {
          // printf("index = %i\n",atoi(((TXMLAttr*)(index->At(0)))->GetValue()));
          // printf("value = %s\t%i\n",child->GetText(),atoi(child->GetText()));
-         int         indexnum = atoi(((TXMLAttr*)(index->At(0)))->GetValue());
+         int         indexnum = atoi((dynamic_cast<TXMLAttr*>(index->At(0)))->GetValue());
          const char* value;
          value = child->GetText();
          // printf("indexnum %i : value 0x%08x\n",indexnum,value.c_str());
@@ -232,7 +232,7 @@ std::vector<double> TXMLOdb::ReadDoubleArray(TXMLNode* node)
    if(!list) return temp;
    TIter iter(list);
    int   size = 0;
-   while(TXMLAttr* attr = (TXMLAttr*)(iter.Next())) {
+   while(TXMLAttr* attr = dynamic_cast<TXMLAttr*>(iter.Next())) {
       if(strcmp(attr->GetName(), "num_values") == 0) size = atoi(attr->GetValue());
    }
    //   printf("size = %i\n",size);
@@ -244,7 +244,7 @@ std::vector<double> TXMLOdb::ReadDoubleArray(TXMLNode* node)
       if(TList* index = child->GetAttributes()) {
          // printf("index = %i\n",atoi(((TXMLAttr*)(index->At(0)))->GetValue()));
          // printf("value = %s\t%i\n",child->GetText(),atoi(child->GetText()));
-         int    indexnum = atoi(((TXMLAttr*)(index->At(0)))->GetValue());
+         int    indexnum = atoi((dynamic_cast<TXMLAttr*>(index->At(0)))->GetValue());
          double value    = atof(child->GetText());
          //         printf("indexnum %i : value 0x%08x\n",indexnum,value);
          temp.at(indexnum) = value;

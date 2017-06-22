@@ -100,15 +100,15 @@ void GGaus::Copy(TObject& obj) const
    // fflush(stdout);
 
    TF1::Copy(obj);
-   ((GGaus&)obj).init_flag = init_flag;
-   ((GGaus&)obj).fArea     = fArea;
-   ((GGaus&)obj).fDArea    = fDArea;
-   ((GGaus&)obj).fSum      = fSum;
-   ((GGaus&)obj).fDSum     = fDSum;
-   ((GGaus&)obj).fChi2     = fChi2;
-   ((GGaus&)obj).fNdf      = fNdf;
+   (dynamic_cast<GGaus&>(obj)).init_flag = init_flag;
+   (dynamic_cast<GGaus&>(obj)).fArea     = fArea;
+   (dynamic_cast<GGaus&>(obj)).fDArea    = fDArea;
+   (dynamic_cast<GGaus&>(obj)).fSum      = fSum;
+   (dynamic_cast<GGaus&>(obj)).fDSum     = fDSum;
+   (dynamic_cast<GGaus&>(obj)).fChi2     = fChi2;
+   (dynamic_cast<GGaus&>(obj)).fNdf      = fNdf;
 
-   fBGFit.Copy((((GGaus&)obj).fBGFit));
+   fBGFit.Copy(((dynamic_cast<GGaus&>(obj)).fBGFit));
 }
 
 bool GGaus::InitParams(TH1* fithist)

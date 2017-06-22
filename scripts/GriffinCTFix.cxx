@@ -49,12 +49,12 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
       for(int j=i+1;j<4;j++) {
          //Load all of the addback matrices in and put them into a vector of TH2*
          std::string name = Form("%s_%d_%d",namebase.c_str(),i,j);
-         TH2 *m = (TH2*)in_file->Get(name.c_str());
+         TH2 *m = dynamic_cast<TH2*>(in_file->Get(name.c_str()));
          if(!m) {
             std::cout << "can not find:  " << name << std::endl;
-            return 0;
+            return nullptr;
          }
-         mats.push_back((TH2*)in_file->Get(name.c_str()));     
+         mats.push_back(dynamic_cast<TH2*>(in_file->Get(name.c_str())));     
       }
    }
   
@@ -65,20 +65,19 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
    double ypts[5] = {   0,low_cut,high_cut,   0,   0};
    TCutG cut("cut",5,xpts,ypts);
 
-   double *d = new double[16]; //matrix of coefficients
-   double *e_d = new double[16]; //matrix of errors
+   auto *d = new double[16]; //matrix of coefficients
+   auto *e_d = new double[16]; //matrix of errors
 
-   for(size_t x=0;x<mats.size();x++) {
-      TH2 *mat = mats.at(x);
+   for(auto mat : mats) {
       std::cout << mat->GetName() << std::endl;
       int xbins = mat->GetNbinsX();
       int ybins = mat->GetNbinsY();
    
-      TH2 *cmat = (TH2*)mat->Clone(Form("%s_clone",mat->GetName()));
+      TH2 *cmat = dynamic_cast<TH2*>(mat->Clone(Form("%s_clone",mat->GetName())));
       cmat->Reset();
    
       //I make a graph out of the "addback line" because I don't like the way TProfile handles the empty bins
-      TGraphErrors *fitGraph = new TGraphErrors;
+      auto *fitGraph = new TGraphErrors;
       fitGraph->SetNameTitle(Form("%s_graph",mat->GetName()),"Graph");
 
        //This loop turns the addback plot and TCut into the TGraphErrors
@@ -109,11 +108,11 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
     
       TString name = mat->GetName();
       TObjArray *strings = name.Tokenize("_"); 
-      int xind = ((TObjString*)(strings->At(strings->GetEntries()-1)))->String().Atoi();
-      int yind = ((TObjString*)(strings->At(strings->GetEntries()-2)))->String().Atoi();
+      int xind = (dynamic_cast<TObjString*>(strings->At(strings->GetEntries()-1)))->String().Atoi();
+      int yind = (dynamic_cast<TObjString*>(strings->At(strings->GetEntries()-2)))->String().Atoi();
     
       //This fits the TGraph
-      TF1 *fpx = new TF1(Form("pxfit_%i_%i",yind,xind),CrossTalkFit,6,1167,3);
+      auto *fpx = new TF1(Form("pxfit_%i_%i",yind,xind),CrossTalkFit,6,1167,3);
       fpx->SetParameter(0,0.0001); fpx->SetParameter(1,0.0001); 
       fpx->SetParameter(2,energy); fpx->FixParameter(2,energy);
       fitGraph->Fit(fpx);
@@ -215,7 +214,7 @@ int main(int argc, char **argv) {
       exit(1);
    }
 
-   TFile* in_file = new TFile(argv[1]);
+   auto* in_file = new TFile(argv[1]);
    if(in_file == nullptr) {
       printf("Failed to open file '%s'!\n",argv[1]);
       return 1;
@@ -226,7 +225,7 @@ int main(int argc, char **argv) {
    }
    
    //Create and output file.
-   TFile * out_file = new TFile(Form("ct_%s",in_file->GetName()),"RECREATE");
+   auto * out_file = new TFile(Form("ct_%s",in_file->GetName()),"RECREATE");
    
    FixAll(in_file,out_file);
 

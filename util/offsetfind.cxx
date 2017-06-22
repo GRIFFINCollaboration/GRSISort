@@ -64,7 +64,7 @@ class TEventTime {
          }
       }
 
-      ~TEventTime(){}
+      ~TEventTime()= default;
 
       int64_t GetTimeStamp(){
          long time = timehigh;
@@ -130,7 +130,7 @@ class TEventTime {
       unsigned long timemidas;
       int dettype;
       int chanadd;
-      int digitizernum;
+      int digitizernum{};
 
 };
 
@@ -178,12 +178,12 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ){
 void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
 //This function should return an array of corrections
 
-   TList *midvshigh = new TList;
+   auto *midvshigh = new TList;
    printf(DBLUE "Correcting High time stamps...\n" RESET_COLOR);
    //These first four are for looking to see if high time-stamp reset
    std::map<int,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-      TH2D *midvshighhist = new TH2D(Form("midvshigh_0x%04x",mapit->first),Form("midvshigh_0x%04x",mapit->first), 5000,0,5000,5000,0,5000); midvshigh->Add(midvshighhist);
+      auto *midvshighhist = new TH2D(Form("midvshigh_0x%04x",mapit->first),Form("midvshigh_0x%04x",mapit->first), 5000,0,5000,5000,0,5000); midvshigh->Add(midvshighhist);
    }
   
    unsigned int lowmidtime = TEventTime::GetLowestMidasTime();
@@ -211,7 +211,7 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
       if(midtime>20) break;//20 seconds seems like plenty enough time
     
       if((*it)->DetectorType() == 1){
-         ((TH2D*)(midvshigh->At((*it)->DigIndex())))->Fill(midtime, hightime);
+         (dynamic_cast<TH2D*>(midvshigh->At((*it)->DigIndex())))->Fill(midtime, hightime);
          if(hightime < lowest_hightime[(*it)->DigIndex()])
             lowest_hightime[TEventTime::digmap.at((*it)->DigIndex())] = hightime;
       }
@@ -245,13 +245,13 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    //We want the MIDAS time stamps to still be the way we index these events, but we want to index on low time stamps next
    printf(DBLUE "Looking for rough time differences...\n" RESET_COLOR);
 
-   TList *roughlist = new TList;
+   auto *roughlist = new TList;
    //These first four are for looking to see if high time-stamp reset
 
    std::map<int,bool> keep_filling;
    std::map<int,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-      TH1C *roughhist = new TH1C(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 50E6,-25E6,25E6); roughlist->Add(roughhist);
+      auto *roughhist = new TH1C(Form("rough_0x%04x",mapit->first),Form("rough_0x%04x",mapit->first), 50E6,-25E6,25E6); roughlist->Add(roughhist);
       keep_filling[mapit->first] = true;
    }
    
@@ -288,7 +288,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
          if(hit1 == hit2) continue;
          int digitizer = (*hit2)->Digitizer();
          if(keep_filling[digitizer]){
-            fillhist = (TH1C*)(roughlist->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
+            fillhist = dynamic_cast<TH1C*>(roughlist->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
             int64_t time2 = (*hit2)->GetTimeStamp() - correction[(*hit2)->DigIndex()];
             Int_t bin = (Int_t)(time2 - time1);
                
@@ -305,7 +305,7 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    }
 
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      fillhist = (TH1C*)(roughlist->At(mapit->second));
+      fillhist = dynamic_cast<TH1C*>(roughlist->At(mapit->second));
       correction[mapit->second] +=  (int64_t)fillhist->GetBinCenter(fillhist->GetMaximumBin());
    }
 
@@ -329,12 +329,12 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    //We want the MIDAS time stamps to still be the way we index these events, but we want to index on low time stamps next
    printf(DBLUE "Looking for final time differences...\n" RESET_COLOR);
 
-   TList *list = new TList;
+   auto *list = new TList;
    //These first four are for looking to see if high time-stamp reset
 
    std::map<int,int>::iterator mapit;
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-      TH1D *hist = new TH1D(Form("timediff_0x%04x",mapit->first),Form("timediff_0x%04x",mapit->first), 1000,-500,500); list->Add(hist);
+      auto *hist = new TH1D(Form("timediff_0x%04x",mapit->first),Form("timediff_0x%04x",mapit->first), 1000,-500,500); list->Add(hist);
    }
    
    //The "best digitizer" is set when we fill the event Q
@@ -375,7 +375,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
  
          if(hit1 != hit2 ){
             //int digitizer = (*hit2)->Digitizer();
-            fillhist = (TH1D*)(list->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
+            fillhist = dynamic_cast<TH1D*>(list->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
             int64_t time2 = (*hit2)->GetTimeStamp() - correction[(*hit2)->DigIndex()];
             if(time2-time1 < 2147483647 && time2-time1 > -2147483647){//Make sure we are casting this to 32 bit properly
                Int_t bin = (Int_t)(time2 - time1);
@@ -387,9 +387,9 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       }
    }
    for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-      fillhist = (TH1D*)(list->At(mapit->second));
+      fillhist = dynamic_cast<TH1D*>(list->At(mapit->second));
       correction[mapit->second] +=  (int64_t)fillhist->GetBinCenter(fillhist->GetMaximumBin());
-      TPolyMarker *pm = new TPolyMarker;
+      auto *pm = new TPolyMarker;
       pm->SetNextPoint(fillhist->GetBinCenter(fillhist->GetMaximumBin()),fillhist->GetBinContent(fillhist->GetMaximumBin())+10);
       pm->SetMarkerStyle(23);
       pm->SetMarkerColor(kRed);
@@ -423,13 +423,13 @@ int main(int argc, char **argv) {
       return 1;
    }
 
-   TMidasFile *infile  = new TMidasFile;
+   auto *infile  = new TMidasFile;
    infile->Open(argv[1]);
 
-   TFile *outfile = new TFile("outfile.root","RECREATE");
+   auto *outfile = new TFile("outfile.root","RECREATE");
 
    std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
-   std::vector<TEventTime*> *eventQ = new std::vector<TEventTime*>;
+   auto *eventQ = new std::vector<TEventTime*>;
    QueueEvents(infile,eventQ);
    std::cout << "SIZE: " << TEventTime::digmap.size() << std::endl;
 

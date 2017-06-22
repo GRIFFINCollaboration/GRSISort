@@ -56,7 +56,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    }
 
 	// read the analysis options that were passed along and copy them to the local TGRSIOptions
-	fAnalysisOptions = static_cast<TAnalysisOptions*>(fInput->FindObject("TAnalysisOptions"));
+	fAnalysisOptions = dynamic_cast<TAnalysisOptions*>(fInput->FindObject("TAnalysisOptions"));
 	*(TGRSIOptions::AnalysisOptions()) = *fAnalysisOptions;
 
    const char* workingDirectory = "";
@@ -65,7 +65,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    }
    int i = 0;
    while(fInput->FindObject(Form("calFile%d", i)) != nullptr) {
-      const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("calFile%d", i)))->GetTitle();
+      const char* fileName = dynamic_cast<TNamed*>(fInput->FindObject(Form("calFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
          std::cout << "Error, empty file name!" << std::endl;
          break;
@@ -80,7 +80,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    }
    i = 0;
    while(fInput->FindObject(Form("valFile%d", i)) != nullptr) {
-      const char* fileName = static_cast<TNamed*>(fInput->FindObject(Form("valFile%d", i)))->GetTitle();
+      const char* fileName = dynamic_cast<TNamed*>(fInput->FindObject(Form("valFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
          std::cout << "Error, empty file name!" << std::endl;
          break;

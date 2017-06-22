@@ -73,7 +73,7 @@ void TSceptar::Copy(TObject& rhs) const
    // Copies a TSceptar
    TGRSIDetector::Copy(rhs);
 
-   static_cast<TSceptar&>(rhs).fSceptarHits = fSceptarHits;
+   dynamic_cast<TSceptar&>(rhs).fSceptarHits = fSceptarHits;
 }
 
 TSceptar& TSceptar::operator=(const TSceptar& rhs)

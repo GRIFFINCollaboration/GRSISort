@@ -58,16 +58,16 @@ private:
    std::map<Short_t, long> fMinTimeStamp; ///< map of minimum timestamp per channel number
    std::map<Short_t, long> fMaxTimeStamp; ///< map of maximum timestamp per channel number
 
-   time_t fMinMidasTimeStamp; ///< minimum midas timestamp
-   time_t fMaxMidasTimeStamp; ///< maximum midas timestamp
+   time_t fMinMidasTimeStamp{}; ///< minimum midas timestamp
+   time_t fMaxMidasTimeStamp{}; ///< maximum midas timestamp
 
-   Int_t fMinNetworkPacketNumber; ///< minimum network packet id
-   Int_t fMaxNetworkPacketNumber; ///< maximum network packet id
+   Int_t fMinNetworkPacketNumber{}; ///< minimum network packet id
+   Int_t fMaxNetworkPacketNumber{}; ///< maximum network packet id
 
-   Long_t fNumberOfNetworkPackets;
+   Long_t fNumberOfNetworkPackets{};
 
    // ppg diagnostics
-   ULong64_t fPPGCycleLength;
+   ULong64_t fPPGCycleLength{};
 
    //
    TH1F* fIdHist; ///< histogram of event survival

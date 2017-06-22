@@ -11,7 +11,7 @@
 TFragHistLoop* TFragHistLoop::Get(std::string name)
 {
    if(name.length() == 0) name = "histo_loop";
-   TFragHistLoop* loop         = static_cast<TFragHistLoop*>(StoppableThread::Get(name));
+   TFragHistLoop* loop         = dynamic_cast<TFragHistLoop*>(StoppableThread::Get(name));
    if(!loop) loop              = new TFragHistLoop(name);
    return loop;
 }

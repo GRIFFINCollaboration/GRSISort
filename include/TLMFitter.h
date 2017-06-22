@@ -129,7 +129,7 @@ inline int NRVec<T>::size() const
 template <class T>
 NRVec<T>::~NRVec()
 {
-   if (v != 0) delete[](v);
+   if (v != nullptr) delete[](v);
 }
 
 template <class T>
@@ -262,7 +262,7 @@ inline int NRMat<T>::ncols() const
 template <class T>
 NRMat<T>::~NRMat()
 {
-   if (v != 0) {
+   if (v != nullptr) {
       delete[](v[0]);
       delete[](v);
    }
@@ -514,15 +514,15 @@ inline const std::complex<float> operator/(const std::complex<float>& a, const d
 class TLMFitter : public TObject {
 public:
    TLMFitter() : fIntegrationSteps(100), fInitChi2Number(3){};
-   ~TLMFitter()= default;
+   ~TLMFitter() override = default;
 
 private:
    int  fIntegrationSteps;
-   TH1* fHist;
-   TF1* fFunction;
+   TH1* fHist{};
+   TF1* fFunction{};
    int  fInitChi2Number;
-   int  fRangeMin;
-   int  fRangeMax;
+   int  fRangeMin{};
+   int  fRangeMax{};
 
 public:
    template <class T>

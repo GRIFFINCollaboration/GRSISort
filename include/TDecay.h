@@ -246,14 +246,14 @@ private:
    }
 
 private:
-   UInt_t fGeneration;            // Generation from the primary
+   UInt_t fGeneration{};            // Generation from the primary
    Double_t fDetectionEfficiency; // The probability that this decay can be detected
    TDecayFit*    fDecayFunc;      // Function describing decay
    TDecayFit*    fTotalDecayFunc; // Function used to access other fits
    TSingleDecay* fParent;         // Parent Decay
    TSingleDecay* fDaughter;       // Daughter Decay
    TSingleDecay* fFirstParent;    // FirstParent in the decay
-   Int_t         fUnId;           // The Unique ID of the Decay
+   Int_t         fUnId{};           // The Unique ID of the Decay
    static UInt_t fCounter;        // Helps set unique Id's
    Int_t         fChainId;        // The chain that the single decay belongs to
 
@@ -301,7 +301,7 @@ private:
 private:
    std::vector<TSingleDecay*> fDecayChain; // The Decays in the Decay Chain
    TDecayFit*                 fChainFunc;  // Function describing the total chain activity
-   Int_t                      fChainId;
+   Int_t                      fChainId{};
 
    /// \cond CLASSIMP
    ClassDefOverride(TDecayChain, 1) // Class representing a decay chain

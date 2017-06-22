@@ -61,9 +61,9 @@ public:
    Int_t AddDuplicate() { return ++fDuplicates; }
 
 private:
-   Int_t   fRunNumber;
-   Int_t   fSubRunNumber;
-   UInt_t  fDuplicates;
+   Int_t   fRunNumber{};
+   Int_t   fSubRunNumber{};
+   UInt_t  fDuplicates{};
    TString fComment;
 
    /// \cond CLASSIMP

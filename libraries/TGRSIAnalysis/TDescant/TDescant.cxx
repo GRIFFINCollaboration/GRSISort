@@ -95,8 +95,8 @@ void TDescant::Copy(TObject& rhs) const
    Class()->IgnoreTObjectStreamer(kTRUE);
 #endif
 
-   static_cast<TDescant&>(rhs).fDescantHits = fDescantHits;
-   static_cast<TDescant&>(rhs).fSetWave     = fSetWave;
+   dynamic_cast<TDescant&>(rhs).fDescantHits = fDescantHits;
+   dynamic_cast<TDescant&>(rhs).fSetWave     = fSetWave;
 }
 
 TDescant::TDescant(const TDescant& rhs) : TGRSIDetector()

@@ -14,9 +14,9 @@ TRF::TRF()
 void TRF::Copy(TObject& rhs) const
 {
    TDetector::Copy(rhs);
-   static_cast<TRF&>(rhs).fMidasTime = fMidasTime;
-   static_cast<TRF&>(rhs).fTimeStamp = fTimeStamp;
-   static_cast<TRF&>(rhs).fTime      = fTime;
+   dynamic_cast<TRF&>(rhs).fMidasTime = fMidasTime;
+   dynamic_cast<TRF&>(rhs).fTimeStamp = fTimeStamp;
+   dynamic_cast<TRF&>(rhs).fTime      = fTime;
    return;
 }
 

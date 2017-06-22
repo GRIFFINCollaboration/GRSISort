@@ -248,7 +248,7 @@ int TCalibrator::AddData(TH1* data, TNucleus* source, double sigma, double thres
    TIter               iter(source->GetTransitionList());
    std::vector<double> source_energy;
    std::map<double, double> src_eng_int;
-   while(TTransition* transition = (TTransition*)iter.Next()) {
+   while(TTransition* transition = dynamic_cast<TTransition*>(iter.Next())) {
       source_energy.push_back(transition->GetEnergy());
       src_eng_int[transition->GetEnergy()] = transition->GetIntensity();
    }

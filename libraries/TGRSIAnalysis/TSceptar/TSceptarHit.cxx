@@ -83,7 +83,7 @@ void TSceptarHit::Copy(TObject& rhs) const
 {
    // Copies a TSceptarHit
    TGRSIDetectorHit::Copy(rhs);
-   static_cast<TSceptarHit&>(rhs).fFilter = fFilter;
+   dynamic_cast<TSceptarHit&>(rhs).fFilter = fFilter;
 }
 
 void TSceptarHit::Copy(TObject& obj, bool waveform) const

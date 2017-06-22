@@ -59,7 +59,7 @@ Bool_t TGRSISortList::AddSortList(TGRSISortList* rhslist, Option_t*)
    for(it = rhsmap->begin(); it != rhsmap->end(); it++) {
       for(lil_it = it->second.begin(); lil_it != it->second.end(); lil_it++) {
          // We need to clone the TGRSISortInfo so that we have ownership in the new list
-         AddSortInfo((TGRSISortInfo*)(lil_it->second->Clone()));
+         AddSortInfo(dynamic_cast<TGRSISortInfo*>(lil_it->second->Clone()));
          // We might not need the clone, but that will take some checking.
       }
    }
@@ -74,7 +74,7 @@ Long64_t TGRSISortList::Merge(TCollection* list)
    // An individual file that was submitted to hadd.
    TGRSISortList* sortlist = nullptr;
 
-   while((sortlist = (TGRSISortList*)it.Next())) {
+   while((sortlist = dynamic_cast<TGRSISortList*>(it.Next()))) {
       // Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.
       this->AddSortList(sortlist);
    }

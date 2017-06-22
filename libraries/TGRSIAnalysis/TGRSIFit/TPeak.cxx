@@ -168,23 +168,23 @@ void TPeak::Copy(TObject& obj) const
 {
    TGRSIFit::Copy(obj);
 
-   if(!static_cast<TPeak&>(obj).fBackground) {
-      static_cast<TPeak&>(obj).fBackground = new TF1(*fBackground);
+   if(!dynamic_cast<TPeak&>(obj).fBackground) {
+      dynamic_cast<TPeak&>(obj).fBackground = new TF1(*fBackground);
    }
-   if(!static_cast<TPeak&>(obj).fResiduals) static_cast<TPeak&>(obj).fResiduals = new TGraph(*fResiduals);
+   if(!dynamic_cast<TPeak&>(obj).fResiduals) dynamic_cast<TPeak&>(obj).fResiduals = new TGraph(*fResiduals);
 
-   static_cast<TPeak&>(obj).fArea  = fArea;
-   static_cast<TPeak&>(obj).fDArea = fDArea;
+   dynamic_cast<TPeak&>(obj).fArea  = fArea;
+   dynamic_cast<TPeak&>(obj).fDArea = fDArea;
 
-   static_cast<TPeak&>(obj).fChi2 = fChi2;
-   static_cast<TPeak&>(obj).fNdf  = fNdf;
+   dynamic_cast<TPeak&>(obj).fChi2 = fChi2;
+   dynamic_cast<TPeak&>(obj).fNdf  = fNdf;
 
-   *(static_cast<TPeak&>(obj).fBackground) = *fBackground;
+   *(dynamic_cast<TPeak&>(obj).fBackground) = *fBackground;
    // We are making a direct copy of the background so the ownership is that of the copy
-   static_cast<TPeak&>(obj).fOwnBgFlag    = true;
-   *(static_cast<TPeak&>(obj).fResiduals) = *fResiduals;
+   dynamic_cast<TPeak&>(obj).fOwnBgFlag    = true;
+   *(dynamic_cast<TPeak&>(obj).fResiduals) = *fResiduals;
 
-   static_cast<TPeak&>(obj).SetHist(GetHist());
+   dynamic_cast<TPeak&>(obj).SetHist(GetHist());
 }
 
 Bool_t TPeak::InitParams(TH1* fitHist)
