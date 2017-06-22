@@ -41,7 +41,7 @@ public:
 #endif
 
    Short_t GetRingMultiplicity() const { return fS3RingHits.size(); }
-   Short_t GetSectorMultiplicity() const { return fS3SectorHits.size(); }
+   Int_t GetSectorMultiplicity() const { return fS3SectorHits.size(); }
 
    Int_t GetPixelMultiplicity();
    void SetFrontBackEnergy(double de)

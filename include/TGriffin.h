@@ -45,7 +45,7 @@ public:
    TGRSIDetectorHit* GetHit(const Int_t& idx = 0);
    Short_t GetLowGainMultiplicity() const { return fGriffinLowGainHits.size(); }
    Short_t GetHighGainMultiplicity() const { return fGriffinHighGainHits.size(); }
-   Int_t   GetMultiplicity() const { return GetMultiplicity(GetDefaultGainType()); }
+   Short_t   GetMultiplicity() const { return GetMultiplicity(GetDefaultGainType()); }
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
    static const char* GetColorFromNumber(Int_t number);
