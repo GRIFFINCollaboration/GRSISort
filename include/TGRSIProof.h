@@ -12,7 +12,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <time.h>
+#include <ctime>
 #include <fstream>
 #include <streambuf>
 
@@ -43,7 +43,7 @@ class TGRSIProof : public TProof {
 public:
    TGRSIProof() : TProof() {}
    // TGRSIProof(const TObject& rhs) : TProof(rhs) {}
-   virtual ~TGRSIProof() {}
+   ~TGRSIProof() override = default;
 
    static TGRSIProof* Open(const char* worker = "")
    {
@@ -66,7 +66,7 @@ public:
    }
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIProof, 1); // Event Fragments
+   ClassDefOverride(TGRSIProof, 1); // Event Fragments
    /// \endcond
 };
 /*! @} */

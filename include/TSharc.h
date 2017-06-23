@@ -20,7 +20,7 @@
 class TSharc : public TGRSIDetector {
 public:
    TSharc();
-   virtual ~TSharc();
+   ~TSharc() override;
    TSharc(const TSharc& rhs);
 
 public:
@@ -42,9 +42,9 @@ public:
    int     GetSize() const { return fSharcHits.size(); } //!<!
    Short_t GetMultiplicity() const { return fSharcHits.size(); }
 
-   virtual void Copy(TObject&) const;        //!<!
-   virtual void Clear(Option_t* = "");       //!<!
-   virtual void Print(Option_t* = "") const; //!<!
+   void Copy(TObject&) const override;        //!<!
+   void Clear(Option_t* = "") override;       //!<!
+   void Print(Option_t* = "") const override; //!<!
 
    TSharc& operator=(const TSharc& rhs)
    {
@@ -53,9 +53,9 @@ public:
    } //!<!
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
 #endif
-   void BuildHits();
+   void BuildHits() override;
 
 private:
    std::vector<TSharcHit> fSharcHits;
@@ -122,7 +122,7 @@ private:
    static double fSegmentPitch; //! angular pitch, degrees
 
    /// \cond CLASSIMP
-   ClassDef(TSharc, 7)
+   ClassDefOverride(TSharc, 7)
    /// \endcond
 };
 /*! @} */

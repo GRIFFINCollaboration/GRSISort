@@ -10,8 +10,7 @@ ClassImp(TTriFoil)
 }
 
 TTriFoil::~TTriFoil()
-{
-}
+= default;
 
 void TTriFoil::Clear(Option_t* opt)
 {

@@ -35,7 +35,7 @@ public:
 
    TRawFile() {} ///< default constructor
    TRawFile(const char*, EOpenType = kRead) {}
-   virtual ~TRawFile() {} ///< destructor
+   ~TRawFile() override = default; ///< destructor
 
    virtual bool Open(const char* filename) = 0; ///< Open input file
 
@@ -69,7 +69,7 @@ protected:
    size_t fFileSize;
 
    /// \cond CLASSIMP
-   ClassDef(TRawFile, 0) // Used to open and write Midas Files
+   ClassDefOverride(TRawFile, 0) // Used to open and write Midas Files
    /// \endcond
 };
 /*! @} */

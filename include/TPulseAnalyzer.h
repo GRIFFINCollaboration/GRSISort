@@ -9,10 +9,10 @@
 #include "TGRSIFunctions.h"
 
 #include <vector>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
 
 #include "TNamed.h"
 #include "Rtypes.h"
@@ -32,7 +32,7 @@
 
 class TPulseAnalyzer {
 private:
-   typedef struct WaveFormPar {
+   struct WaveFormPar {
       // parameters for baseline
       int    baseline_range;
       double baseline;         // baseline
@@ -73,30 +73,30 @@ private:
       double      amplitude; // amplitude from sili fits
       double      tauDecay;
       double      tauRise;
-   } WaveFormPar;
+   };
 
-   typedef struct LinePar {
+   struct LinePar {
       double slope;
       double intercept;
       double chisq;
       double ndf;
-   } LinePar;
+   };
 
-   typedef struct ParPar {
+   struct ParPar {
       double constant;
       double linear;
       double quadratic;
       double chisq;
       double ndf;
-   } ParPar;
+   };
 
-   typedef struct SinPar {
+   struct SinPar {
       double A;
       double t0;
       double C;
-   } SinPar;
+   };
 
-   typedef struct {
+   struct ShapePar {
       double      chisq;
       int         ndf;
       int         type;
@@ -110,7 +110,7 @@ private:
       int         ndf_ex;
       int         ndf_f;
 
-   } ShapePar;
+   };
 
 public:
    TPulseAnalyzer();

@@ -17,11 +17,11 @@
 #include "GRootCommands.h"
 #include "TPreserveGDirectory.h"
 
-typedef void* __attribute__((__may_alias__)) void_alias;
+using void_alias = void *;
 
 TCompiledHistograms::TCompiledHistograms()
    : fLibname(""), fFunc_name(""), fLibrary(nullptr), fFunc(nullptr), fLast_modified(0), fLast_checked(0),
-     fCheck_every(5), fDefault_directory(0), fObj(&fObjects, &fGates, fCut_files)
+     fCheck_every(5), fDefault_directory(nullptr), fObj(&fObjects, &fGates, fCut_files)
 {
 }
 
@@ -36,7 +36,7 @@ TCompiledHistograms::TCompiledHistograms(std::string input_lib, std::string func
 
    if(!fFunc) {
       std::cout << "Could not find " << fFunc_name << "() inside "
-                << "\"" << input_lib << "\"" << std::endl;
+                << R"(")" << input_lib << R"(")" << std::endl;
    }
    fLast_modified = get_timestamp();
    fLast_checked  = time(nullptr);

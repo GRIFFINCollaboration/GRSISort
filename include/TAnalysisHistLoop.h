@@ -27,7 +27,7 @@ class TAnalysisHistLoop : public StoppableThread {
 public:
    static TAnalysisHistLoop* Get(std::string name = "");
 
-   ~TAnalysisHistLoop();
+   ~TAnalysisHistLoop() override;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& InputQueue() { return fInputQueue; }
@@ -44,18 +44,18 @@ public:
 
    void Write();
 
-   virtual void ClearQueue();
+   void ClearQueue() override;
 
    TList* GetObjects();
    TList* GetGates();
 
-   size_t GetItemsPopped() { return 0; }
-   size_t GetItemsPushed() { return 0; }
-   size_t GetItemsCurrent() { return 0; }
-   size_t GetRate() { return 0; }
+   size_t GetItemsPopped() override { return 0; }
+   size_t GetItemsPushed() override { return 0; }
+   size_t GetItemsCurrent() override { return 0; }
+   size_t GetRate() override { return 0; }
 
 protected:
-   bool Iteration();
+   bool Iteration() override;
 
 private:
    TAnalysisHistLoop(std::string name);
@@ -72,7 +72,7 @@ private:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>> fInputQueue;
 #endif
 
-   ClassDef(TAnalysisHistLoop, 0);
+   ClassDefOverride(TAnalysisHistLoop, 0);
 };
 
 /*! @} */

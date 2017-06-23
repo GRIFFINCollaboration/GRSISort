@@ -22,8 +22,7 @@ ClassImp(TSceptarHit)
 }
 
 TSceptarHit::~TSceptarHit()
-{
-}
+= default;
 
 TSceptarHit::TSceptarHit(const TSceptarHit& rhs) : TGRSIDetectorHit()
 {
@@ -41,7 +40,7 @@ TSceptarHit::TSceptarHit(const TFragment& frag) : TGRSIDetectorHit(frag)
       if(frag.GetWaveform()->size() == 0) {
          printf("Warning, TSceptar::SetWave() set, but data waveform size is zero!\n");
       }
-      if(0) {
+      if(false) {
          std::vector<Short_t> x;
          // Need to reorder waveform data for S1507 data from December 2014
          // All pairs of samples are swapped.

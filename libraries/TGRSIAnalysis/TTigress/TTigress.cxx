@@ -85,8 +85,7 @@ TTigress::TTigress(const TTigress& rhs) : TGRSIDetector()
 }
 
 TTigress::~TTigress()
-{
-}
+= default;
 
 void TTigress::Copy(TObject& rhs) const
 {
@@ -211,15 +210,15 @@ void TTigress::BuildHits()
    if(fTigressHits.size() > 1) std::sort(fTigressHits.begin(), fTigressHits.end());
 
    // Label all hits as being suppressed or not
-   for(size_t i = 0; i < fTigressHits.size(); i++) {
+   for(auto & fTigressHit : fTigressHits) {
       bool suppressed = false;
-      for(size_t j = 0; j < fBgos.size(); j++) {
-         if(fSuppressionCriterion(fTigressHits[i], fBgos[j])) {
+      for(auto & fBgo : fBgos) {
+         if(fSuppressionCriterion(fTigressHit, fBgo)) {
             suppressed = true;
             break;
          }
       }
-      fTigressHits[i].SetBGOFired(suppressed);
+      fTigressHit.SetBGOFired(suppressed);
    }
 }
 

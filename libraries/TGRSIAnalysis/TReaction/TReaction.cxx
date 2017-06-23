@@ -296,7 +296,7 @@ void TReaction::ConvertCmToLab(double theta_cm, double omega_cm, double& theta_l
 // Kinetic energy (lab frame) versus theta (either frame)
 TGraph* TReaction::KinVsTheta(double thmin, double thmax, int part, bool Frame_Lab, bool Units_keV)
 {
-   TGraph*     g     = new TGraph();
+   auto*     g     = new TGraph();
    const char* frame = Form("%s", Frame_Lab ? "Lab" : "Cm");
 
    g->SetName(Form("KinVsTheta%s_%s", frame, GetName()));
@@ -327,7 +327,7 @@ TGraph* TReaction::KinVsTheta(double thmin, double thmax, int part, bool Frame_L
 // Frame_Lab -> ThetaCm[ThetaLab] 	and 	Frame_Cm -> ThetaLab[ThetaCm]
 TGraph* TReaction::ThetaVsTheta(double thmin, double thmax, int part, bool Frame_Lab)
 {
-   TGraph*     g     = new TGraph();
+   auto*     g     = new TGraph();
    const char* frame = Form("%s", Frame_Lab ? "Lab" : "Cm");
    const char* other = Form("%s", !Frame_Lab ? "Lab" : "Cm");
 
@@ -358,7 +358,7 @@ TGraph* TReaction::ThetaVsTheta(double thmin, double thmax, int part, bool Frame
 // Frame_Lab -> dOmegaCm/dOmegaLab[ThetaLab] 	and 	Frame_Cm -> dOmegaLab/dOmegaCm[ThetaCm]
 TGraph* TReaction::OmegaVsTheta(double thmin, double thmax, int part, bool Frame_Lab)
 {
-   TGraph*     g     = new TGraph();
+   auto*     g     = new TGraph();
    const char* frame = Form("%s", Frame_Lab ? "Lab" : "Cm");
    const char* other = Form("%s", !Frame_Lab ? "Lab" : "Cm");
 
@@ -389,7 +389,7 @@ TGraph* TReaction::OmegaVsTheta(double thmin, double thmax, int part, bool Frame
 // Frame_Lab -> dSigma/dOmegaLab[ThetaLab] 	and 	Frame_Cm -> dSigma/dOmegaCm[ThetaCm]
 TGraph* TReaction::RutherfordVsTheta(double thmin, double thmax, int part, bool Frame_Lab, bool Units_mb)
 {
-   TGraph*     g     = new TGraph();
+   auto*     g     = new TGraph();
    const char* frame = Form("%s", Frame_Lab ? "Lab" : "Cm");
 
    g->SetName(Form("%s_RutherfordVsTheta%s", GetName(), frame));
@@ -481,7 +481,7 @@ void TReaction::Clear(Option_t*)
 
    for(int i = 0; i < 4; i++) {
 
-      fNuc[i] = 0;
+      fNuc[i] = nullptr;
       fM[i]   = 0;
 
       fTCm[i] = 0;

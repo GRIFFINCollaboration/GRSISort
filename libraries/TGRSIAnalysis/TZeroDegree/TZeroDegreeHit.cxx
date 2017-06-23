@@ -24,8 +24,7 @@ ClassImp(TZeroDegreeHit)
 }
 
 TZeroDegreeHit::~TZeroDegreeHit()
-{
-}
+= default;
 
 TZeroDegreeHit::TZeroDegreeHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 {

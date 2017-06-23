@@ -28,8 +28,7 @@ TDetBuildingLoop::TDetBuildingLoop(std::string name)
 }
 
 TDetBuildingLoop::~TDetBuildingLoop()
-{
-}
+= default;
 
 bool TDetBuildingLoop::Iteration()
 {

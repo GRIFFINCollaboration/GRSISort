@@ -38,8 +38,7 @@ TDeadtimeScalerQueue::TDeadtimeScalerQueue()
 }
 
 TDeadtimeScalerQueue::~TDeadtimeScalerQueue()
-{
-}
+= default;
 
 void TDeadtimeScalerQueue::Print(Option_t*) const
 {
@@ -145,7 +144,7 @@ TScalerData* TDeadtimeScalerQueue::PopScaler()
       return scaler;
    } else {
       TDeadtimeScalerQueue::Sorted.unlock();
-      return 0;
+      return nullptr;
    }
 }
 
@@ -243,8 +242,7 @@ TRateScalerQueue::TRateScalerQueue()
 }
 
 TRateScalerQueue::~TRateScalerQueue()
-{
-}
+= default;
 
 void TRateScalerQueue::Print(Option_t*) const
 {
@@ -350,7 +348,7 @@ TScalerData* TRateScalerQueue::PopScaler()
       return scaler;
    } else {
       TRateScalerQueue::Sorted.unlock();
-      return 0;
+      return nullptr;
    }
 }
 

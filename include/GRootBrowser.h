@@ -44,14 +44,14 @@ public:
       : TNamed(name, cmd), fTab(tab), fSubTab(sub), fCommand(cmd)
    {
    }
-   virtual ~GBrowserPlugin() {}
+   ~GBrowserPlugin() override = default;
 
    void SetTab(Int_t tab) { fTab = tab; }
    void SetSubTab(Int_t sub) { fSubTab = sub; }
    void SetCommand(const char* cmd) { fCommand = cmd; }
 
    /// \cond CLASSIMP
-   ClassDef(GBrowserPlugin, 0) // basic plugin description class
+   ClassDefOverride(GBrowserPlugin, 0) // basic plugin description class
    /// \endcond
 };
 
@@ -123,19 +123,19 @@ public:
 
    enum EInsertPosition { kLeft, kRight, kBottom };
 
-   GRootBrowser(TBrowser* b = 0, const char* name = "ROOT Browser", UInt_t width = 800, UInt_t height = 500,
+   GRootBrowser(TBrowser* b = nullptr, const char* name = "ROOT Browser", UInt_t width = 800, UInt_t height = 500,
                 Option_t* opt = "", Bool_t initshow = kTRUE);
    GRootBrowser(TBrowser* b, const char* name, Int_t x, Int_t y, UInt_t width, UInt_t height, Option_t* opt = "",
                 Bool_t initshow = kTRUE);
-   virtual ~GRootBrowser();
+   ~GRootBrowser() override;
 
    void InitPlugins(Option_t* opt = "");
 
    void CreateBrowser(const char* name);
    void         CloneBrowser();
-   virtual void CloseWindow();
+   void CloseWindow() override;
    virtual void CloseTab(Int_t id);
-   virtual void CloseTabs();
+   void CloseTabs() override;
    void DoTab(Int_t id);
    void EventInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
    TGFrame*     GetActFrame() const { return static_cast<TGFrame*>(fEditFrame); }
@@ -152,41 +152,41 @@ public:
    void RemoveTab(Int_t pos, Int_t subpos);
    void SetActBrowser(TBrowserImp* b) { fActBrowser = b; }
    void ShowMenu(TGCompositeFrame* menu);
-   virtual void StartEmbedding(Int_t pos = kRight, Int_t subpos = -1);
-   virtual void StopEmbedding(const char* name = 0) { StopEmbedding(name, 0); }
+   void StartEmbedding(Int_t pos = kRight, Int_t subpos = -1) override;
+   void StopEmbedding(const char* name = nullptr) override { StopEmbedding(name, nullptr); }
    void StopEmbedding(const char* name, TGLayoutHints* layout);
    void SwitchMenus(TGCompositeFrame* from);
 
-   virtual void BrowseObj(TObject* obj);             //*SIGNAL*
-   virtual void ExecuteDefaultAction(TObject* obj);  //*SIGNAL*
+   void BrowseObj(TObject* obj) override;             //*SIGNAL*
+   void ExecuteDefaultAction(TObject* obj) override;  //*SIGNAL*
    virtual void DoubleClicked(TObject* obj);         //*SIGNAL*
    virtual void Checked(TObject* obj, Bool_t check); //*SIGNAL*
 
-   virtual void Add(TObject* obj, const char* name = 0, Int_t check = -1);
-   virtual void RecursiveRemove(TObject* obj);
-   virtual void Refresh(Bool_t force = kFALSE);
-   virtual void Show() { MapRaised(); }
-   Option_t*    GetDrawOption() const;
-   TGMainFrame* GetMainFrame() const { return (TGMainFrame*)this; }
+   void Add(TObject* obj, const char* name = nullptr, Int_t check = -1) override;
+   void RecursiveRemove(TObject* obj) override;
+   void Refresh(Bool_t force = kFALSE) override;
+   void Show() override { MapRaised(); }
+   Option_t*    GetDrawOption() const override;
+   TGMainFrame* GetMainFrame() const override { return (TGMainFrame*)this; }
 
-   virtual Long_t ExecPlugin(const char* name = 0, const char* fname = 0, const char* cmd = 0, Int_t pos = kRight,
-                             Int_t subpos = -1);
-   virtual void SetStatusText(const char* txt, Int_t col);
-   virtual Bool_t HandleKey(Event_t* event);
+   Long_t ExecPlugin(const char* name = nullptr, const char* fname = nullptr, const char* cmd = nullptr, Int_t pos = kRight,
+                             Int_t subpos = -1) override;
+   void SetStatusText(const char* txt, Int_t col) override;
+   Bool_t HandleKey(Event_t* event) override;
 
    virtual void ShowCloseTab(Bool_t show) { fShowCloseTab = show; }
    virtual Bool_t                   IsCloseTabShown() const { return fShowCloseTab; }
 
    // overridden from TGMainFrame
-   virtual void ReallyDelete();
+   void ReallyDelete() override;
 
-   static TBrowserImp* NewBrowser(TBrowser* b = 0, const char* title = "ROOT Browser", UInt_t width = 800,
+   static TBrowserImp* NewBrowser(TBrowser* b = nullptr, const char* title = "ROOT Browser", UInt_t width = 800,
                                   UInt_t height = 500, Option_t* opt = "");
    static TBrowserImp* NewBrowser(TBrowser* b, const char* title, Int_t x, Int_t y, UInt_t width, UInt_t height,
                                   Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDef(GRootBrowser, 0) // New ROOT Browser
+   ClassDefOverride(GRootBrowser, 0) // New ROOT Browser
    /// \endcond
 };
 /*! @} */

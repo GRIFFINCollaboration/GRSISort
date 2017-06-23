@@ -13,14 +13,14 @@ public:
    GGaus(Double_t xlow, Double_t xhigh, TF1* background, Option_t* opt = "gsc");
    GGaus(const GGaus&);
    GGaus();
-   virtual ~GGaus();
+   ~GGaus() override;
 
-   void Copy(TObject&) const;
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Copy(TObject&) const override;
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
    void InitNames();
-   bool InitParams(TH1* fithist = 0);
+   bool InitParams(TH1* fithist = nullptr);
    bool Fit(TH1*, Option_t* opt = "");
    void DrawResiduals(TH1*) const;
    // void DrawResiduals(); // *MENU*
@@ -76,7 +76,7 @@ private:
    TF1 fBGFit;
    TF1 fBGHist;
 
-   ClassDef(GGaus, 2)
+   ClassDefOverride(GGaus, 2)
 };
 
 #endif

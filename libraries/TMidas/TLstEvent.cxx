@@ -4,11 +4,11 @@
 //  $Id: TLstEvent.cxx 91 2012-04-12 18:36:17Z olchansk $
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <cstring>
+#include <cassert>
 
 #include "TLstEvent.h"
 
@@ -92,7 +92,7 @@ void TLstEvent::Print(const char* option) const
    }
 }
 
-typedef uint8_t BYTE;
+using BYTE = uint8_t;
 
 /// Byte swapping routine.
 ///

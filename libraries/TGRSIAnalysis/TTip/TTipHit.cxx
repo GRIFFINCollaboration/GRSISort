@@ -31,8 +31,7 @@ TTipHit::TTipHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 }
 
 TTipHit::~TTipHit()
-{
-}
+= default;
 
 TTipHit::TTipHit(const TTipHit& rhs) : TGRSIDetectorHit()
 {

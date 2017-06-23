@@ -23,8 +23,7 @@ TCalPoint::TCalPoint(const TPeak& peak)
 }
 
 TCalPoint::~TCalPoint()
-{
-}
+= default;
 
 TCalPoint::TCalPoint(const TCalPoint& copy) : TObject(copy)
 {

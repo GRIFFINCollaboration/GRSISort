@@ -2,8 +2,8 @@
 
 //#ifdef __linux__
 
-#include <stdlib.h>
-#include <limits.h>
+#include <cstdlib>
+#include <climits>
 
 std::string full_path(const std::string& path)
 {

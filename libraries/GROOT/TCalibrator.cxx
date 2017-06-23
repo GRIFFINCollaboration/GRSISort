@@ -29,8 +29,8 @@ ClassImp(TCalibrator)
 
    TCalibrator::TCalibrator()
 {
-   linfit = 0;
-   efffit = 0;
+   linfit = nullptr;
+   efffit = nullptr;
    Clear();
 }
 
@@ -141,7 +141,7 @@ void TCalibrator::Clear(Option_t* opt)
    eff_graph.Clear(opt);
    // all_fits.clear();
 
-   for(int i = 0; i < 4; i++) eff_par[i] = 0.;
+   for(double & i : eff_par) i = 0.;
 
    total_points = 0;
 }

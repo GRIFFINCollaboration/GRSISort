@@ -16,7 +16,7 @@ class TS3Hit : public TGRSIDetectorHit {
 public:
    TS3Hit();
    TS3Hit(const TFragment&);
-   virtual ~TS3Hit();
+   ~TS3Hit() override;
    TS3Hit(const TS3Hit&);
 
    Short_t GetRing() const { return fRing; }
@@ -27,9 +27,9 @@ public:
    Double_t fSig2Noise;
 
 public:
-   void Copy(TObject&) const; //!
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Copy(TObject&) const override; //!
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
    inline Double_t GetFitTime() { return fTimeFit; }         //!<!
    inline Double_t GetSignalToNoise() { return fSig2Noise; } //!<!
@@ -49,9 +49,9 @@ public:
 
    Double_t GetPhi(double offset = 0) { return GetPosition(offset).Phi(); }
 
-   Double_t GetTheta(double offset = 0, TVector3* vec = 0)
+   Double_t GetTheta(double offset = 0, TVector3* vec = nullptr)
    {
-      if (vec == 0) {
+      if (vec == nullptr) {
          vec = new TVector3();
          vec->SetXYZ(0, 0, 1);
       }
@@ -73,7 +73,7 @@ private:
    Short_t fSector;       // back
 
    /// \cond CLASSIMP
-   ClassDef(TS3Hit, 4);
+   ClassDefOverride(TS3Hit, 4);
    /// \endcond
 };
 /*! @} */

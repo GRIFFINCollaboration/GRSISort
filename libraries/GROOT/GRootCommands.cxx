@@ -60,9 +60,9 @@ void Version()
 
 bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg_high)
 {
-   if(!hist) return 0;
-   GCanvas* C_projections = 0;
-   GCanvas* C_gammagamma  = 0;
+   if(!hist) return false;
+   GCanvas* C_projections = nullptr;
+   GCanvas* C_gammagamma  = nullptr;
    if(gROOT->GetListOfCanvases()->FindObject("C_projections"))
       C_projections = (GCanvas*)gROOT->GetListOfCanvases()->FindObject("C_projections");
    else {
@@ -82,7 +82,7 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
    GH1D* Proj_x = hist->ProjectionX("Gamma_Gamma_xProjection");
 
    GH1D* Proj_x_Clone = (GH1D*)Proj_x->Clone();
-   GH1D* Proj_gated   = 0;
+   GH1D* Proj_gated   = nullptr;
 
    if(bg_high > 0 && bg_low > 0) {
       Proj_x->SetTitle(
@@ -104,10 +104,10 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
    double Projx_Max = Proj_x->GetMaximum();
    double Projx_Min = Proj_x->GetMinimum();
 
-   TLine* CutLow  = new TLine(low, Projx_Min, low, Projx_Max);
-   TLine* CutHigh = new TLine(high, Projx_Min, high, Projx_Max);
-   TLine* BGLow   = new TLine(bg_low, Projx_Min, bg_low, Projx_Max);
-   TLine* BGHigh  = new TLine(bg_high, Projx_Min, bg_high, Projx_Max);
+   auto* CutLow  = new TLine(low, Projx_Min, low, Projx_Max);
+   auto* CutHigh = new TLine(high, Projx_Min, high, Projx_Max);
+   auto* BGLow   = new TLine(bg_low, Projx_Min, bg_low, Projx_Max);
+   auto* BGHigh  = new TLine(bg_high, Projx_Min, bg_high, Projx_Max);
    CutLow->SetLineColor(kRed);
    CutHigh->SetLineColor(kRed);
    CutLow->SetLineWidth(2);
@@ -138,7 +138,7 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
 
    C_projections->cd(2);
    Proj_gated->Draw();
-   return 1;
+   return true;
 }
 
 int LabelPeaks(TH1* hist, double sigma, double thresh, Option_t*)
@@ -220,17 +220,17 @@ bool RemovePeaks(TH1** hists, unsigned int nhists)
 GGaus* GausFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
    // bool edit = false;
-   if(!hist) return 0;
+   if(!hist) return nullptr;
    if(xlow > xhigh) std::swap(xlow, xhigh);
 
    // std::cout << "here." << std::endl;
 
-   GGaus*      mypeak  = new GGaus(xlow, xhigh);
+   auto*      mypeak  = new GGaus(xlow, xhigh);
    std::string options = opt;
    options.append("Q+");
    mypeak->Fit(hist, options.c_str());
    // mypeak->Background()->Draw("SAME");
-   TF1* bg = new TF1(*mypeak->Background());
+   auto* bg = new TF1(*mypeak->Background());
    hist->GetListOfFunctions()->Add(bg);
    // edit = true;
 
@@ -239,17 +239,17 @@ GGaus* GausFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 
 TF1* DoubleGausFit(TH1* hist, double, double, double xlow, double xhigh, Option_t* opt)
 {
-   if(!hist) return 0;
+   if(!hist) return nullptr;
    if(xlow > xhigh) std::swap(xlow, xhigh);
 
    // std::cout << "here." << std::endl;
 
-   GGaus*      mypeak  = new GGaus(xlow, xhigh);
+   auto*      mypeak  = new GGaus(xlow, xhigh);
    std::string options = opt;
    options.append("Q+");
    mypeak->Fit(hist, options.c_str());
    // mypeak->Background()->Draw("SAME");
-   TF1* bg = new TF1(*mypeak->Background());
+   auto* bg = new TF1(*mypeak->Background());
    hist->GetListOfFunctions()->Add(bg);
    // edit = true;
 
@@ -259,17 +259,17 @@ TF1* DoubleGausFit(TH1* hist, double, double, double xlow, double xhigh, Option_
 GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
    // bool edit = 0;
-   if(!hist) return 0;
+   if(!hist) return nullptr;
    if(xlow > xhigh) std::swap(xlow, xhigh);
 
    // std::cout << "here." << std::endl;
 
-   GPeak*      mypeak  = new GPeak((xlow + xhigh) / 2.0, xlow, xhigh);
+   auto*      mypeak  = new GPeak((xlow + xhigh) / 2.0, xlow, xhigh);
    std::string options = opt;
    options.append("Q+");
    mypeak->Fit(hist, options.c_str());
    // mypeak->Background()->Draw("SAME");
-   TF1* bg = new TF1(*mypeak->Background());
+   auto* bg = new TF1(*mypeak->Background());
    hist->GetListOfFunctions()->Add(bg);
    // edit = true;
 
@@ -279,17 +279,17 @@ GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
    // bool edit = 0;
-   if(!hist) return 0;
+   if(!hist) return nullptr;
    if(xlow > xhigh) std::swap(xlow, xhigh);
 
    // std::cout << "here." << std::endl;
 
-   TPeak*      mypeak  = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
+   auto*      mypeak  = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
    std::string options = opt;
    options.append("Q+");
    mypeak->Fit(hist, options.c_str());
    // mypeak->Background()->Draw("SAME");
-   TF1* bg = new TF1(*mypeak->Background());
+   auto* bg = new TF1(*mypeak->Background());
    hist->GetListOfFunctions()->Add(bg);
    // edit = true;
 
@@ -314,7 +314,7 @@ std::string MergeStrings(const std::vector<std::string>& strings, char split)
 TH1* GrabHist(int i)
 {
    // return the histogram from the current canvas, pad i.
-   TH1* hist = 0;
+   TH1* hist = nullptr;
    if(!gPad) return hist;
    TIter iter(gPad->GetListOfPrimitives());
    int   j = 0;
@@ -333,8 +333,8 @@ TH1* GrabHist(int i)
 TF1* GrabFit(int i)
 {
    // return the histogram from the current canvas, pad i.
-   TH1* hist = 0;
-   TF1* fit  = 0;
+   TH1* hist = nullptr;
+   TF1* fit  = nullptr;
    if(!gPad) return fit;
    TIter iter(gPad->GetListOfPrimitives());
    int   j = 0;
@@ -368,13 +368,13 @@ void StartGUI()
    std::string   script_text((std::istreambuf_iterator<char>(script)), std::istreambuf_iterator<char>());
    TPython::Exec(script_text.c_str());
 
-   TTimer* gui_timer = new TTimer("TPython::Exec(\"update()\");", 10, true);
+   auto* gui_timer = new TTimer(R"lit(TPython::Exec("update()");)lit", 10, true);
    gui_timer->TurnOn();
 
    gui_is_running = true;
    for(int i = 0; i < gROOT->GetListOfFiles()->GetSize(); i++) {
       TPython::Bind((TFile*)gROOT->GetListOfFiles()->At(i), "tdir");
-      gROOT->ProcessLine("TPython::Exec(\"window.AddDirectory(tdir)\");");
+      gROOT->ProcessLine(R"lit(TPython::Exec("window.AddDirectory(tdir)");)lit");
    }
 }
 #else
@@ -395,14 +395,14 @@ void AddFileToGUI(TFile* file)
    // Pass the TFile to the python GUI.
    if(file && GUIIsRunning()) {
       TPython::Bind(file, "tdir");
-      gROOT->ProcessLine("TPython::Exec(\"window.AddDirectory(tdir)\");");
+      gROOT->ProcessLine(R"lit(TPython::Exec("window.AddDirectory(tdir)");)lit");
    }
 #endif
 }
 
 TH2* AddOffset(TH2* mat, double offset, EAxis axis)
 {
-   TH2* toreturn = 0;
+   TH2* toreturn = nullptr;
    if(!mat) return toreturn;
    // int dim = mat->GetDimension();
    int xmax = mat->GetXaxis()->GetNbins() + 1;

@@ -14,8 +14,7 @@ ClassImp(TCalGraph)
 }
 
 TCalGraph::~TCalGraph()
-{
-}
+= default;
 
 TCalGraph::TCalGraph(const TCalGraph& copy) : TGraphErrors(copy)
 {

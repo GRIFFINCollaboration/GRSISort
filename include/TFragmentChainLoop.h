@@ -30,8 +30,8 @@
 
 class TFragmentChainLoop : public StoppableThread {
 public:
-   static TFragmentChainLoop* Get(std::string name = "", TChain* chain = 0);
-   virtual ~TFragmentChainLoop();
+   static TFragmentChainLoop* Get(std::string name = "", TChain* chain = nullptr);
+   ~TFragmentChainLoop() override;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddOutputQueue()
@@ -41,21 +41,21 @@ public:
    }
 #endif
 
-   size_t GetItemsPushed() { return fItemsPopped; }
-   size_t GetItemsPopped() { return fItemsPopped; }
-   size_t GetItemsCurrent() { return fEntriesTotal; }
-   size_t GetRate() { return 0; }
+   size_t GetItemsPushed() override { return fItemsPopped; }
+   size_t GetItemsPopped() override { return fItemsPopped; }
+   size_t GetItemsCurrent() override { return fEntriesTotal; }
+   size_t GetRate() override { return 0; }
 
-   virtual void ClearQueue();
+   virtual void ClearQueue() override;
 
-   virtual void OnEnd();
+   void OnEnd() override;
 
    void SetSelfStopping(bool self_stopping) { fSelfStopping = self_stopping; }
    bool                      GetSelfStopping() const { return fSelfStopping; }
    void                      Restart();
 
 protected:
-   bool Iteration();
+   bool Iteration() override;
 
 private:
    TFragmentChainLoop(std::string name, TChain* chain);
@@ -73,7 +73,7 @@ private:
    int SetupChain();
    std::map<TClass*, TDetector**> fDetMap;
 
-   // ClassDef(TFragmentChainLoop, 0);
+   // ClassDefOverride(TFragmentChainLoop, 0);
 };
 
 /*! @} */

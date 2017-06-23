@@ -78,7 +78,7 @@ void TFragHistLoop::CloseFile()
 
    if(fOutputFile) {
       fOutputFile->Close();
-      fOutputFile     = 0;
+      fOutputFile     = nullptr;
       fOutputFilename = "last.root";
    }
 }

@@ -31,8 +31,7 @@ TFippsHit::TFippsHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 }
 
 TFippsHit::~TFippsHit()
-{
-}
+= default;
 
 void TFippsHit::Copy(TObject& rhs) const
 {

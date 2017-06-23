@@ -19,8 +19,7 @@ TSortingDiagnostics::TSortingDiagnostics(const TSortingDiagnostics&) : TObject()
 }
 
 TSortingDiagnostics::~TSortingDiagnostics()
-{
-}
+= default;
 
 void TSortingDiagnostics::Copy(TObject& obj) const
 {

@@ -2,10 +2,10 @@
 #define TNUCLEUS_H
 
 #include <iostream>
-#include <math.h>
-#include <string.h>
+#include <cmath>
+#include <cstring>
 #include <iomanip>
-#include <stdlib.h>
+#include <cstdlib>
 #include <fstream>
 #include <string>
 
@@ -28,9 +28,9 @@ public:
    TNucleus(const char* symbol); // Creates a nucleus based on symbol and sets all parameters from mass.dat
    TNucleus(int Z, int N, double mass, const char* symbol); // Creates a nucleus with Z, N, mass, and symbol
    TNucleus(int Z, int N,
-            const char* MassFile = 0); // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
+            const char* MassFile = nullptr); // Creates a nucleus with Z, N using mass table (default MassFile = "mass.dat")
 
-   virtual ~TNucleus();
+   ~TNucleus() override;
 
    // static void SetMassFile(const char *tmp = nullptr);// {massfile = tmp;} //Sets the mass file to be used
 
@@ -71,13 +71,13 @@ public:
 
    // bool SetSourceData();
 
-   void Print(Option_t* opt = "") const;
+   void Print(Option_t* opt = "") const override;
    void WriteSourceFile(std::string outfilename = "");
 
    const TList* GetTransitionList() const { return &TransitionList; }
 
 private:
-   void SetName(const char* c = "");
+   void SetName(const char* c = "") override;
 
    int         fA;          // Number of nucleons (Z + N)
    int         fN;          // Number of neutrons (N)
@@ -90,7 +90,7 @@ private:
    TList TransitionList;
    bool  LoadTransitionFile();
 
-   ClassDef(TNucleus, 1); // Creates a nucleus with corresponding nuclear information
+   ClassDefOverride(TNucleus, 1); // Creates a nucleus with corresponding nuclear information
 };
 
 #endif

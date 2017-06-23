@@ -116,7 +116,7 @@ public:
    static TRuntimeObjects* Get(std::string name = "default")
    {
       if (fRuntimeMap.count(name)) return fRuntimeMap.at(name);
-      return 0;
+      return nullptr;
    }
 
 #ifndef __CINT__
@@ -139,7 +139,7 @@ private:
 
    TDirectory* fDirectory;
 
-   ClassDef(TRuntimeObjects, 0);
+   ClassDefOverride(TRuntimeObjects, 0);
 };
 
 #endif /* _RUNTIMEOBJECTS_H_ */

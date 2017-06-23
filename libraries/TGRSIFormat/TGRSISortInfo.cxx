@@ -72,7 +72,7 @@ Long64_t TGRSISortList::Merge(TCollection* list)
    TIter it(list);
    // The TCollection will be filled by something like hadd. Each element in the list will be a TGRSISortList from
    // An individual file that was submitted to hadd.
-   TGRSISortList* sortlist = 0;
+   TGRSISortList* sortlist = nullptr;
 
    while((sortlist = (TGRSISortList*)it.Next())) {
       // Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.
@@ -95,8 +95,7 @@ TGRSISortInfo::TGRSISortInfo()
 }
 
 TGRSISortInfo::~TGRSISortInfo()
-{
-}
+= default;
 
 void TGRSISortInfo::SetRunInfo(const TGRSIRunInfo* info)
 {

@@ -23,7 +23,7 @@ TCalManager::~TCalManager()
    CalMap::iterator iter;
    for(iter = fCalMap.begin(); iter != fCalMap.end(); iter++) {
       if(iter->second) delete iter->second;
-      iter->second = 0;
+      iter->second = nullptr;
    }
 }
 
@@ -69,7 +69,7 @@ void TCalManager::SetClass(const TClass* cl)
    }
    printf("Changing TCalManager to type: %s\n", className);
    Int_t nch  = strlen(className) + 2;
-   char* name = new char[nch];
+   auto* name = new char[nch];
    snprintf(name, nch, "%ss", className);
    SetName(name);
    delete[] name;
@@ -78,12 +78,12 @@ void TCalManager::SetClass(const TClass* cl)
 TCal* TCalManager::GetCal(UInt_t chanNum)
 {
    /// Gets the TCal for the channel number chanNum
-   TCal* cal = 0;
+   TCal* cal = nullptr;
    try {
       cal = fCalMap.at(chanNum);
    } catch(const std::out_of_range& oor) {
       Error("GetCal", "Channel %u is empty", chanNum);
-      return 0;
+      return nullptr;
    }
    return cal;
 }
@@ -93,7 +93,7 @@ Bool_t TCalManager::AddToManager(TCal* cal, Option_t* opt)
    /// Makes a Deep copy of cal and adds it to the CalManager Map.
 
    // Check to see if the channel number has been set. If not, the user must supply one in the function call.
-   if(cal->GetChannel() != 0) {
+   if(cal->GetChannel() != nullptr) {
       return AddToManager(cal, cal->GetChannel()->GetNumber(), opt);
    } else {
       Error("AddToManager", "Channel has not been set");
@@ -150,8 +150,8 @@ void TCalManager::WriteToChannel() const
 {
    /// Writes all of the TCals to TChannel based on the method WriteToChannel
    /// defined in the TCal held by TCalManager.
-   for(auto iter = fCalMap.begin(); iter != fCalMap.end(); iter++) {
-      if(iter->second) iter->second->WriteToChannel();
+   for(const auto & iter : fCalMap) {
+      if(iter.second) iter.second->WriteToChannel();
    }
 }
 
@@ -159,12 +159,12 @@ void TCalManager::Clear(Option_t*)
 {
    /// This deletes all of the current TCal's. It also resets the class
    /// type to 0.
-   for(auto iter = fCalMap.begin(); iter != fCalMap.end(); iter++) {
-      if(iter->second) delete iter->second;
-      iter->second = 0;
+   for(auto & iter : fCalMap) {
+      if(iter.second) delete iter.second;
+      iter.second = nullptr;
    }
    fCalMap.clear();
-   fClass = 0;
+   fClass = nullptr;
 }
 
 void TCalManager::Print(Option_t*) const

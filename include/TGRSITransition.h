@@ -25,10 +25,10 @@ class TGRSITransition : public TObject {
 
 public:
    TGRSITransition();
-   virtual ~TGRSITransition();
+   ~TGRSITransition() override;
 
-   bool IsSortable() const { return true; }
-   int Compare(const TObject* obj) const;
+   bool IsSortable() const override { return true; }
+   int Compare(const TObject* obj) const override;
 
    void SetEnergy(double& tmpenergy) { fEnergy = tmpenergy; }
    void SetEnergyUncertainty(double& tmperror) { fEnergyUncertainty = tmperror; }
@@ -40,8 +40,8 @@ public:
    double GetIntensity() const { return fIntensity; }
    double GetIntensityUncertainty() const { return fIntensityUncertainty; }
 
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
    std::string PrintToString();
 
@@ -52,7 +52,7 @@ protected:
    double fIntensityUncertainty; // Uncertainty in the intensity
 
    /// \cond CLASSIMP
-   ClassDef(TGRSITransition, 1) // Information about a TNucleus transition
+   ClassDefOverride(TGRSITransition, 1) // Information about a TNucleus transition
    /// \endcond
 };
 /*! @} */

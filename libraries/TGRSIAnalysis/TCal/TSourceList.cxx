@@ -14,8 +14,7 @@ ClassImp(TSourceList)
 }
 
 TSourceList::~TSourceList()
-{
-}
+= default;
 
 TSourceList::TSourceList(const char* name, const char* title) : TCalList(name, title)
 {
@@ -64,7 +63,7 @@ Int_t TSourceList::SetNucleus(const TNucleus& nuc)
    Int_t        good_counter    = 0;
    const TList* transition_list = nuc.GetTransitionList();
    TIter        next(transition_list);
-   TObject*     transition = 0;
+   TObject*     transition = nullptr;
    std::cout << "Adding Transitions..." << std::endl;
    while((transition = next())) {
       transition->Print();

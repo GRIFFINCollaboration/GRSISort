@@ -23,7 +23,7 @@ class TTransientBits {
 public:
    TTransientBits() : fBits(0) {}
    TTransientBits(const T& tmp) : fBits(tmp) {}
-   ~TTransientBits() {}
+   ~TTransientBits() = default;
 
    void SetBit(Int_t f, Bool_t flag) { flag ? SetBit(f) : ClearBit(f); }
    void SetBit(Int_t f) { fBits |= f; }
@@ -39,7 +39,7 @@ public:
    T Value() const { return fBits; }
 
    void Clear() { fBits = 0; }
-   void Print() const { std::cout << fBits << std::endl; }
+   void Print() const { std::count << fBits << std::endl; }
 
    T fBits;
 

@@ -21,7 +21,7 @@ public:
    TFippsHit();
    TFippsHit(const TFippsHit&);
    TFippsHit(const TFragment&);
-   virtual ~TFippsHit();
+   ~TFippsHit() override;
 
 public:
    /////////////////////////  Getters	/////////////////////////////////////
@@ -31,26 +31,26 @@ public:
 
    /////////////////////////		/////////////////////////////////////
 
-   inline UShort_t GetArrayNumber() const { return (4 * (GetDetector() - 1) + (GetCrystal() + 1)); } //!<!
+   inline UShort_t GetArrayNumber() const override { return (4 * (GetDetector() - 1) + (GetCrystal() + 1)); } //!<!
    // returns a number 1-64 ( 1 = Detector 1 blue;  64 =  Detector 16 white; )
 
    static bool CompareEnergy(const TFippsHit*, const TFippsHit*); //!<!
    void        Add(const TFippsHit*);                             //!<!
 
 public:
-   virtual void Clear(Option_t* opt = "");       //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
-   virtual void Copy(TObject&) const;            //!<!
-   virtual void Copy(TObject&, bool) const;      //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Copy(TObject&, bool) const override;      //!<!
 
-   TVector3 GetPosition(double dist) const; //!<!
-   TVector3 GetPosition() const;
+   TVector3 GetPosition(double dist) const override; //!<!
+   TVector3 GetPosition() const override;
 
 private:
    Double_t GetDefaultDistance() const { return 110.; }
 
    /// \cond CLASSIMP
-   ClassDef(TFippsHit, 1); // Information about a FIPPS Hit
+   ClassDefOverride(TFippsHit, 1); // Information about a FIPPS Hit
    /// \endcond
 };
 /*! @} */

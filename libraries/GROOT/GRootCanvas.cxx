@@ -156,7 +156,7 @@ enum ERootCanvasCommands {
 #define kButton1Ctrl 9
 #define kButton1CtrlMotion 10
 
-static const char* gOpenTypes[] = {"ROOT files", "*.root", "All files", "*", 0, 0};
+static const char* gOpenTypes[] = {"ROOT files", "*.root", "All files", "*", nullptr, nullptr};
 
 static const char* gSaveAsTypes[] = {"PDF",    "*.pdf", "PostScript",  "*.ps",      "Encapsulated PostScript",
                                      "*.eps",  "SVG",   "*.svg",       "TeX",       "*.tex",
@@ -164,40 +164,40 @@ static const char* gSaveAsTypes[] = {"PDF",    "*.pdf", "PostScript",  "*.ps",  
                                      "*.root", "XML",   "*.xml",       "PNG",       "*.png",
                                      "XPM",    "*.xpm", "JPEG",        "*.jpg",     "TIFF",
                                      "*.tiff", "XCF",   "*.xcf",       "All files", "*",
-                                     0,        0};
+                                     nullptr,        nullptr};
 
 static ToolBarData_t gToolBarData[] = {
    // { filename,      tooltip,            staydown,  id,              button}
-   {"newcanvas.xpm", "New", kFALSE, kFileNewCanvas, 0},
-   {"open.xpm", "Open", kFALSE, kFileOpen, 0},
-   {"save.xpm", "Save As", kFALSE, kFileSaveAs, 0},
-   {"printer.xpm", "Print", kFALSE, kFilePrint, 0},
-   {"", "", kFALSE, -1, 0},
-   {"interrupt.xpm", "Interrupt", kFALSE, kOptionInterrupt, 0},
-   {"refresh2.xpm", "Refresh", kFALSE, kOptionRefresh, 0},
-   {"", "", kFALSE, -1, 0},
-   {"inspect.xpm", "Inspect", kFALSE, kInspectRoot, 0},
-   {"browser.xpm", "Browser", kFALSE, kToolsBrowser, 0},
-   {0, 0, kFALSE, 0, 0}};
+   {"newcanvas.xpm", "New", kFALSE, kFileNewCanvas, nullptr},
+   {"open.xpm", "Open", kFALSE, kFileOpen, nullptr},
+   {"save.xpm", "Save As", kFALSE, kFileSaveAs, nullptr},
+   {"printer.xpm", "Print", kFALSE, kFilePrint, nullptr},
+   {"", "", kFALSE, -1, nullptr},
+   {"interrupt.xpm", "Interrupt", kFALSE, kOptionInterrupt, nullptr},
+   {"refresh2.xpm", "Refresh", kFALSE, kOptionRefresh, nullptr},
+   {"", "", kFALSE, -1, nullptr},
+   {"inspect.xpm", "Inspect", kFALSE, kInspectRoot, nullptr},
+   {"browser.xpm", "Browser", kFALSE, kToolsBrowser, nullptr},
+   {nullptr, nullptr, kFALSE, 0, nullptr}};
 
-static ToolBarData_t gToolBarData1[] = {{"pointer.xpm", "Modify", kFALSE, kToolModify, 0},
-                                        {"arc.xpm", "Arc", kFALSE, kToolArc, 0},
-                                        {"line.xpm", "Line", kFALSE, kToolLine, 0},
-                                        {"arrow.xpm", "Arrow", kFALSE, kToolArrow, 0},
-                                        {"diamond.xpm", "Diamond", kFALSE, kToolDiamond, 0},
-                                        {"ellipse.xpm", "Ellipse", kFALSE, kToolEllipse, 0},
-                                        {"pad.xpm", "Pad", kFALSE, kToolPad, 0},
-                                        {"pave.xpm", "Pave", kFALSE, kToolPave, 0},
-                                        {"pavelabel.xpm", "Pave Label", kFALSE, kToolPLabel, 0},
-                                        {"pavetext.xpm", "Pave Text", kFALSE, kToolPText, 0},
-                                        {"pavestext.xpm", "Paves Text", kFALSE, kToolPsText, 0},
-                                        {"graph.xpm", "Graph", kFALSE, kToolGraph, 0},
-                                        {"curlyline.xpm", "Curly Line", kFALSE, kToolCurlyLine, 0},
-                                        {"curlyarc.xpm", "Curly Arc", kFALSE, kToolCurlyArc, 0},
-                                        {"latex.xpm", "Text/Latex", kFALSE, kToolLatex, 0},
-                                        {"marker.xpm", "Marker", kFALSE, kToolMarker, 0},
-                                        {"cut.xpm", "Graphical Cut", kFALSE, kToolCutG, 0},
-                                        {0, 0, kFALSE, 0, 0}};
+static ToolBarData_t gToolBarData1[] = {{"pointer.xpm", "Modify", kFALSE, kToolModify, nullptr},
+                                        {"arc.xpm", "Arc", kFALSE, kToolArc, nullptr},
+                                        {"line.xpm", "Line", kFALSE, kToolLine, nullptr},
+                                        {"arrow.xpm", "Arrow", kFALSE, kToolArrow, nullptr},
+                                        {"diamond.xpm", "Diamond", kFALSE, kToolDiamond, nullptr},
+                                        {"ellipse.xpm", "Ellipse", kFALSE, kToolEllipse, nullptr},
+                                        {"pad.xpm", "Pad", kFALSE, kToolPad, nullptr},
+                                        {"pave.xpm", "Pave", kFALSE, kToolPave, nullptr},
+                                        {"pavelabel.xpm", "Pave Label", kFALSE, kToolPLabel, nullptr},
+                                        {"pavetext.xpm", "Pave Text", kFALSE, kToolPText, nullptr},
+                                        {"pavestext.xpm", "Paves Text", kFALSE, kToolPsText, nullptr},
+                                        {"graph.xpm", "Graph", kFALSE, kToolGraph, nullptr},
+                                        {"curlyline.xpm", "Curly Line", kFALSE, kToolCurlyLine, nullptr},
+                                        {"curlyarc.xpm", "Curly Arc", kFALSE, kToolCurlyArc, nullptr},
+                                        {"latex.xpm", "Text/Latex", kFALSE, kToolLatex, nullptr},
+                                        {"marker.xpm", "Marker", kFALSE, kToolMarker, nullptr},
+                                        {"cut.xpm", "Graphical Cut", kFALSE, kToolCutG, nullptr},
+                                        {nullptr, nullptr, kFALSE, 0, nullptr}};
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -216,19 +216,19 @@ private:
 public:
    GRootContainer(GRootCanvas* c, Window_t id, const TGWindow* parent);
 
-   Bool_t HandleButton(Event_t* ev);
-   Bool_t HandleDoubleClick(Event_t* ev) { return fCanvas->HandleContainerDoubleClick(ev); }
-   Bool_t HandleConfigureNotify(Event_t* ev)
+   Bool_t HandleButton(Event_t* ev) override;
+   Bool_t HandleDoubleClick(Event_t* ev) override { return fCanvas->HandleContainerDoubleClick(ev); }
+   Bool_t HandleConfigureNotify(Event_t* ev) override
    {
       TGFrame::HandleConfigureNotify(ev);
       return fCanvas->HandleContainerConfigure(ev);
    }
-   Bool_t HandleKey(Event_t* ev) { return fCanvas->HandleContainerKey(ev); }
-   Bool_t HandleMotion(Event_t* ev) { return fCanvas->HandleContainerMotion(ev); }
-   Bool_t HandleExpose(Event_t* ev) { return fCanvas->HandleContainerExpose(ev); }
-   Bool_t HandleCrossing(Event_t* ev) { return fCanvas->HandleContainerCrossing(ev); }
-   void SavePrimitive(std::ostream& out, Option_t* = "");
-   void SetEditable(Bool_t) {}
+   Bool_t HandleKey(Event_t* ev) override { return fCanvas->HandleContainerKey(ev); }
+   Bool_t HandleMotion(Event_t* ev) override { return fCanvas->HandleContainerMotion(ev); }
+   Bool_t HandleExpose(Event_t* ev) override { return fCanvas->HandleContainerExpose(ev); }
+   Bool_t HandleCrossing(Event_t* ev) override { return fCanvas->HandleContainerCrossing(ev); }
+   void SavePrimitive(std::ostream& out, Option_t* = "") override;
+   void SetEditable(Bool_t) override {}
 };
 
 //______________________________________________________________________________
@@ -310,7 +310,7 @@ void GRootCanvas::CreateCanvas(const char* name)
 
    fButton   = 0;
    fAutoFit  = kTRUE; // check also menu entry
-   fEditor   = 0;
+   fEditor   = nullptr;
    fEmbedded = kFALSE;
 
    // Create menus
@@ -471,11 +471,11 @@ void GRootCanvas::CreateCanvas(const char* name)
    AddFrame(fToolDock, fDockLayout = new TGLayoutHints(kLHintsExpandX));
 
    // will alocate it later
-   fToolBar         = 0;
-   fVertical1       = 0;
-   fVertical2       = 0;
-   fVertical1Layout = 0;
-   fVertical2Layout = 0;
+   fToolBar         = nullptr;
+   fVertical1       = nullptr;
+   fVertical2       = nullptr;
+   fVertical1Layout = nullptr;
+   fVertical2Layout = nullptr;
 
    fToolBarSep    = new TGHorizontal3DLine(this);
    fToolBarLayout = new TGLayoutHints(kLHintsTop | kLHintsExpandX);
@@ -647,8 +647,8 @@ void GRootCanvas::Close()
    TVirtualPadEditor* gged = TVirtualPadEditor::GetPadEditor(kFALSE);
    if(gged && gged->GetCanvas() == fCanvas) {
       if(fEmbedded) {
-         ((TGedEditor*)gged)->SetModel(0, 0, kButton1Down);
-         ((TGedEditor*)gged)->SetCanvas(0);
+         ((TGedEditor*)gged)->SetModel(nullptr, nullptr, kButton1Down);
+         ((TGedEditor*)gged)->SetCanvas(nullptr);
       } else
          gged->Hide();
    }
@@ -664,8 +664,8 @@ void GRootCanvas::ReallyDelete()
    TVirtualPadEditor* gged = TVirtualPadEditor::GetPadEditor(kFALSE);
    if(gged && gged->GetCanvas() == fCanvas) {
       if(fEmbedded) {
-         ((TGedEditor*)gged)->SetModel(0, 0, kButton1Down);
-         ((TGedEditor*)gged)->SetCanvas(0);
+         ((TGedEditor*)gged)->SetModel(nullptr, nullptr, kButton1Down);
+         ((TGedEditor*)gged)->SetCanvas(nullptr);
       } else
          gged->Hide();
    }
@@ -675,7 +675,7 @@ void GRootCanvas::ReallyDelete()
               "EventInfo(Int_t, Int_t, Int_t, TObject*)");
 
    TVirtualPad* savepad = gPad;
-   gPad                 = 0; // hide gPad from CINT
+   gPad                 = nullptr; // hide gPad from CINT
    gInterpreter->DeleteGlobal(fCanvas);
    gPad = savepad; // restore gPad for ROOT
    delete fCanvas; // will in turn delete this object
@@ -849,10 +849,10 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
          case kFileCloseCanvas: SendCloseMessage(); break;
          case kFileQuit:
             if(!gApplication->ReturnFromRun()) {
-               if((TVirtualPadEditor::GetPadEditor(kFALSE) != 0)) TVirtualPadEditor::Terminate();
+               if((TVirtualPadEditor::GetPadEditor(kFALSE) != nullptr)) TVirtualPadEditor::Terminate();
                SendCloseMessage();
             }
-            if(TVirtualPadEditor::GetPadEditor(kFALSE) != 0) TVirtualPadEditor::Terminate();
+            if(TVirtualPadEditor::GetPadEditor(kFALSE) != nullptr) TVirtualPadEditor::Terminate();
             if(TClass::GetClass("TStyleManager")) gROOT->ProcessLine("TStyleManager::Terminate()");
             gApplication->Terminate(0);
             break;
@@ -899,7 +899,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             //   TCanvas *m = new TCanvas("colors","Color Table");
             //   TPad::DrawColorTable();
             //   m->Update();
-            TColorWheel* wheel = new TColorWheel();
+            auto* wheel = new TColorWheel();
             wheel->Draw();
 
             // tp: with Cocoa, window is visible (and repainted)
@@ -914,7 +914,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             break;
          case kViewMarkers: {
             TVirtualPad* padsav = gPad->GetCanvas();
-            GCanvas*     m      = new GCanvas("markers", "Marker Types", 600, 200);
+            auto*     m      = new GCanvas("markers", "Marker Types", 600, 200);
             TMarker::DisplayMarkerTypes();
             m->Update();
             if(padsav) padsav->cd();
@@ -1273,7 +1273,7 @@ void GRootCanvas::EventInfo(Int_t event, Int_t px, Int_t py, TObject* selected)
    // Display a tooltip with infos about the primitive below the cursor.
 
    fToolTip->Hide();
-   if(!fCanvas->GetShowToolTips() || selected == 0 || event != kMouseMotion || fButton != 0) return;
+   if(!fCanvas->GetShowToolTips() || selected == nullptr || event != kMouseMotion || fButton != 0) return;
    TString tipInfo;
    TString objInfo = selected->GetObjectInfo(px, py);
    if(objInfo.BeginsWith("-")) {
@@ -1337,7 +1337,7 @@ void GRootCanvas::ShowEditor(Bool_t show)
 {
    // Show or hide side frame.
 
-   TVirtualPad* savedPad = 0;
+   TVirtualPad* savedPad = nullptr;
    savedPad              = (TVirtualPad*)gPad;
    gPad                  = Canvas();
 
@@ -1890,7 +1890,7 @@ Atom_t GRootCanvas::HandleDNDPosition(Int_t x, Int_t y, Atom_t action, Int_t /*x
 {
    // Handle dragging position events.
 
-   TPad* pad = fCanvas->Pick(x, y, 0);
+   TPad* pad = fCanvas->Pick(x, y, nullptr);
    if(pad) {
       pad->cd();
       gROOT->SetSelectedPad(pad);

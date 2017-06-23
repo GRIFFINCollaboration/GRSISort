@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <utility>
 
 #include <TString.h>
 
@@ -23,7 +24,7 @@ int StoppableThread::GetNThreads()
 }
 
 StoppableThread::StoppableThread(std::string name)
-   : fItemsPopped(0), fInputSize(0), fName(name), running(true), paused(true)
+   : fItemsPopped(0), fInputSize(0), fName(std::move(name)), running(true), paused(true)
 {
    // TODO: check if a thread already exists and delete?
    fThreadMap.insert(std::make_pair(fName, this));
@@ -166,7 +167,7 @@ void StoppableThread::ClearAllQueues()
 
 StoppableThread* StoppableThread::Get(std::string name)
 {
-   StoppableThread* mythread = 0;
+   StoppableThread* mythread = nullptr;
    if(fThreadMap.count(name)) {
       mythread = fThreadMap.at(name);
    }
@@ -249,8 +250,8 @@ void StoppableThread::Print()
    std::cout << "column width " << fColumnWidth << ", status width " << fStatusWidth << std::endl;
    printf("%i Threads:\n", GetNThreads());
    int counter = 0;
-   for(auto it = fThreadMap.begin(); it != fThreadMap.end(); it++) {
-      printf("  %i\t%s @ 0x%08lx\n", counter, it->first.c_str(), (unsigned long)it->second);
+   for(auto & it : fThreadMap) {
+      printf("  %i\t%s @ 0x%08lx\n", counter, it.first.c_str(), (unsigned long)it.second);
       counter++;
    }
 }
@@ -292,8 +293,8 @@ void StoppableThread::status_out()
 
    std::ofstream outfile(Form("%s/.grsi_thread", getenv("GRSISYS")));
    outfile << "---------------------------------------------------------------\n"; // 64 -.
-   for(auto it = fThreadMap.begin(); it != fThreadMap.end(); it++) {
-      StoppableThread* thread = it->second;
+   for(auto & it : fThreadMap) {
+      StoppableThread* thread = it.second;
       outfile << "- " << thread->Name() << (thread->IsRunning() ? "[Live]" : "[Stop]")
               << std::string(64 - 8 - thread->Name().length(), ' ') << "-\n";
       outfile << "- " << std::string(40, ' ') << "items_pushed:  " << thread->GetItemsPushed() << "\n";

@@ -8,6 +8,7 @@
 #include <mutex>
 #include <sstream>
 #include <string>
+#include <utility>
 
 #include <dlfcn.h>
 #include <unistd.h>
@@ -25,7 +26,7 @@ int incremental_id()
 }
 }
 
-DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fLibName(libname_param)
+DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fLibName(std::move(libname_param))
 {
    if(unique_name) {
       std::stringstream ss;

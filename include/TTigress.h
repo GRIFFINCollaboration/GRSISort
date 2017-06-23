@@ -8,7 +8,7 @@
 #include <vector>
 #include <iostream>
 #include <set>
-#include <stdio.h>
+#include <cstdio>
 #include <functional>
 
 #include "TMath.h"
@@ -49,7 +49,7 @@ public:
 
    TTigress();
    TTigress(const TTigress&);
-   virtual ~TTigress();
+   ~TTigress() override;
 
    // Dont know why these were changes to return by reference rather than pointer
    // The tigress group prefer them the old way
@@ -76,11 +76,11 @@ public:
    UShort_t GetNAddbackFrags(size_t idx) const;
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*); //!<!
+   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
 #endif
-   void BuildHits();
+   void BuildHits() override;
 
-   void ClearTransients()
+   void ClearTransients() override
    {
       fTigressBits = 0;
       for (auto hit : fTigressHits) hit.ClearTransients();
@@ -177,12 +177,12 @@ public:
    }
 
 public:
-   virtual void Clear(Option_t* opt = "");       //!<!
-   virtual void Print(Option_t* opt = "") const; //!<!
-   virtual void Copy(TObject&) const;            //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+   void Copy(TObject&) const override;            //!<!
 
    /// \cond CLASSIMP
-   ClassDef(TTigress, 7) // Tigress Physics structure
+   ClassDefOverride(TTigress, 7) // Tigress Physics structure
    /// \endcond
 };
 /*! @} */

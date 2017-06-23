@@ -13,10 +13,10 @@
 
 #include "RConfigure.h"
 
-#include <stdio.h>
+#include <cstdio>
 #include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <pwd.h>
 #include <sys/types.h>
 #include <X11/Xlib.h>
@@ -27,17 +27,17 @@
 #if defined(R__AIX) || defined(R__SOLARIS)
 #include <sys/select.h>
 #endif
-#include <time.h>
+#include <ctime>
 #include <sys/time.h>
 
 #include "TSystem.h"
 
-static Display*     gDisplay       = 0;
+static Display*     gDisplay       = nullptr;
 static Window       gLogoWindow    = 0;
 static Pixmap       gLogoPixmap    = 0;
 static Pixmap       gCreditsPixmap = 0;
-static GC           gGC            = 0;
-static XFontStruct* gFont          = 0;
+static GC           gGC            = nullptr;
+static XFontStruct* gFont          = nullptr;
 static bool         gDone          = false;
 static bool         gMayPopdown    = false;
 static bool         gAbout         = false;
@@ -50,9 +50,9 @@ static unsigned int gCreditsHeight = 0;
 
 static struct timeval gPopupTime;
 
-static const char* gConception[] = {"P. C. Bender", 0};
+static const char* gConception[] = {"P. C. Bender", nullptr};
 
-static const char* gLeadDevelopers[] = {"P. C. Bender", "R. Dunlop", 0};
+static const char* gLeadDevelopers[] = {"P. C. Bender", "R. Dunlop", nullptr};
 
 // static const char *gRootDevelopers[] = {
 //   0
@@ -66,9 +66,9 @@ static const char* gLeadDevelopers[] = {"P. C. Bender", "R. Dunlop", 0};
 //   0
 //};
 
-static const char* gKeyContributors[] = {"V. Bildstein", "D. Miller", 0};
+static const char* gKeyContributors[] = {"V. Bildstein", "D. Miller", nullptr};
 
-static char** gContributors = 0;
+static char** gContributors = nullptr;
 
 static bool StayUp(int milliSec)
 {
@@ -80,7 +80,7 @@ static bool StayUp(int milliSec)
    tv.tv_sec  = milliSec / 1000;
    tv.tv_usec = (milliSec % 1000) * 1000;
 
-   gettimeofday(&ctv, 0);
+   gettimeofday(&ctv, nullptr);
    if((dtv.tv_usec = ctv.tv_usec - ptv.tv_usec) < 0) {
       dtv.tv_usec += 1000000;
       ptv.tv_sec++;
@@ -108,7 +108,7 @@ static void Sleep(int milliSec)
    tv.tv_sec  = milliSec / 1000;
    tv.tv_usec = (milliSec % 1000) * 1000;
 
-   select(0, 0, 0, 0, &tv);
+   select(0, nullptr, nullptr, nullptr, &tv);
 }
 
 static Pixmap GetRootLogo()
@@ -158,7 +158,7 @@ static Pixmap GetRootLogo()
 // snprintf(file, sizeof(file), "%s/icons/Splash.xpm", getenv("ROOTSYS"));
 #endif
    // printf("test 3\n");
-   int ret = XpmReadFileToPixmap(gDisplay, gLogoWindow, (char*)file.c_str(), &logo, 0, &attr);
+   int ret = XpmReadFileToPixmap(gDisplay, gLogoWindow, (char*)file.c_str(), &logo, nullptr, &attr);
    // printf("test 4\n");
    XpmFreeAttributes(&attr);
    // printf("test 5\n");
@@ -187,7 +187,7 @@ static void ReadContributors()
    snprintf(buf, sizeof(buf), "%s/README/CREDITS", getenv("ROOTSYS"));
 #endif
 
-   gContributors = 0;
+   gContributors = nullptr;
 
    FILE* f = fopen(buf, "r");
    if(!f) return;
@@ -212,7 +212,7 @@ static void ReadContributors()
          cnt++;
       }
    }
-   gContributors[cnt] = 0;
+   gContributors[cnt] = nullptr;
 
    fclose(f);
 }
@@ -326,7 +326,7 @@ void PopupLogo(bool about)
 
    if(!gLogoPixmap) {
       XCloseDisplay(gDisplay);
-      gDisplay = 0;
+      gDisplay = nullptr;
       return;
    }
    // printf("here 10\n");
@@ -340,7 +340,7 @@ void PopupLogo(bool about)
 
    if(!xscreen) {
       XCloseDisplay(gDisplay);
-      gDisplay = 0;
+      gDisplay = nullptr;
       return;
    }
    x = (WidthOfScreen(xscreen) - gWidth) / 2;
@@ -356,7 +356,7 @@ void PopupLogo(bool about)
    xswa.override_redirect = True;
    XChangeWindowAttributes(gDisplay, gLogoWindow, valmask, &xswa);
 
-   gGC   = XCreateGC(gDisplay, gLogoWindow, 0, 0);
+   gGC   = XCreateGC(gDisplay, gLogoWindow, 0, nullptr);
    gFont = XLoadQueryFont(gDisplay, "-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1");
    if(!gFont) {
       printf("Couldn't find font \"-adobe-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1\",\n"
@@ -383,7 +383,7 @@ void PopupLogo(bool about)
 
    XMapRaised(gDisplay, gLogoWindow);
 
-   gettimeofday(&gPopupTime, 0);
+   gettimeofday(&gPopupTime, nullptr);
 }
 
 void WaitLogo()
@@ -452,16 +452,16 @@ void WaitLogo()
    }
    if(gFont) {
       XFreeFont(gDisplay, gFont);
-      gFont = 0;
+      gFont = nullptr;
    }
    if(gGC) {
       XFreeGC(gDisplay, gGC);
-      gGC = 0;
+      gGC = nullptr;
    }
    if(gDisplay) {
       XSync(gDisplay, False);
       XCloseDisplay(gDisplay);
-      gDisplay = 0;
+      gDisplay = nullptr;
    }
 }
 

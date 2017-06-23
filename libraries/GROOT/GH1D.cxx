@@ -37,12 +37,12 @@ GH1D::GH1D(const TF1& function, Int_t nbinsx, Double_t xlow, Double_t xup)
 
 bool GH1D::WriteDatFile(const char* outFile)
 {
-   if(strlen(outFile) < 1) return 0;
+   if(strlen(outFile) < 1) return false;
 
    std::ofstream out;
    out.open(outFile);
 
-   if(!(out.is_open())) return 0;
+   if(!(out.is_open())) return false;
 
    for(int i = 0; i < GetNbinsX(); i++) {
       out << GetXaxis()->GetBinCenter(i) << "\t" << GetBinContent(i) << std::endl;
@@ -50,7 +50,7 @@ bool GH1D::WriteDatFile(const char* outFile)
    out << std::endl;
    out.close();
 
-   return 1;
+   return true;
 }
 
 /*
@@ -220,7 +220,7 @@ GH1D* GH1D::Project_Background(double value_low, double value_high, double bg_va
 
 GH1D* GH1D::Project(int bins)
 {
-   GH1D*  proj = 0;
+   GH1D*  proj = nullptr;
    double ymax = GetMinimum();
    double ymin = GetMaximum();
    if(bins == -1) {

@@ -34,29 +34,29 @@ public:
 
    TLstFile(); ///< default constructor
    TLstFile(const char* filename, EOpenType open_type = kRead);
-   virtual ~TLstFile(); ///< destructor
+   ~TLstFile() override; ///< destructor
 
-   bool Open(const char* filename); ///< Open input file
+   bool Open(const char* filename) override; ///< Open input file
 
-   void Close(); ///< Close input file
+   void Close() override; ///< Close input file
 
    using TObject::Read;
    using TObject::Write;
 #ifndef __CINT__
-   int Read(std::shared_ptr<TRawEvent> event); ///< Read one event from the file
+   int Read(std::shared_ptr<TRawEvent> event) override; ///< Read one event from the file
 #endif
-   std::string Status(bool long_file_description = true);
+   std::string Status(bool long_file_description = true) override;
 
-   int GetRunNumber();
-   int GetSubRunNumber();
+   int GetRunNumber() override;
+   int GetSubRunNumber() override;
 
 #ifndef __CINT__
-   std::shared_ptr<TRawEvent> NewEvent() { return std::make_shared<TLstEvent>(); }
+   std::shared_ptr<TRawEvent> NewEvent() override { return std::make_shared<TLstEvent>(); }
 #endif
 
 protected:
    /// \cond CLASSIMP
-   ClassDef(TLstFile, 0) // Used to open and write Midas Files
+   ClassDefOverride(TLstFile, 0) // Used to open and write Midas Files
    /// \endcond
 };
 /*! @} */

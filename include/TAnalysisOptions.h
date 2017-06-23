@@ -25,8 +25,8 @@ class TAnalysisOptions : public TObject {
 public:
    TAnalysisOptions();
 
-   void Clear(Option_t* opt = "");
-   void Print(Option_t* opt = "") const;
+   void Clear(Option_t* opt = "") override;
+   void Print(Option_t* opt = "") const override;
 
    bool WriteToFile(TFile* file = nullptr);
    void ReadFromFile(std::string file);
@@ -59,7 +59,7 @@ private:
    bool fStaticWindow;       ///< Flag to use static window (default moving)
 
    /// \cond CLASSIMP
-   ClassDef(TAnalysisOptions, 2); ///< Class for storing options in GRSISort
+   ClassDefOverride(TAnalysisOptions, 2); ///< Class for storing options in GRSISort
 	/// \endcond
 };
 /*! @} */

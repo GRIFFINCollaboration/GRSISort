@@ -144,7 +144,7 @@ private:
    void      InitKin();
 
    /// \cond CLASSIMP
-   ClassDef(TKinematics, 1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments
+   ClassDefOverride(TKinematics, 1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments
    /// \endcond
 };
 /*! @} */

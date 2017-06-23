@@ -63,7 +63,7 @@
 class TGRSIRunInfo : public TObject {
 public:
    static TGRSIRunInfo* Get();
-   virtual ~TGRSIRunInfo();
+   ~TGRSIRunInfo() override;
    TGRSIRunInfo(); // This should not be used.
    // root forces me have this here instead
    // of a private class member in
@@ -71,7 +71,7 @@ public:
    // pcb.
 
    static void SetRunInfo(TGRSIRunInfo* temp);
-   static Bool_t ReadInfoFromFile(TFile* tempf = 0);
+   static Bool_t ReadInfoFromFile(TFile* tempf = nullptr);
 
    static const char* GetGRSIVersion() { return fGRSIVersion.c_str(); }
    static void        ClearGRSIVersion() { fGRSIVersion.clear(); }
@@ -262,15 +262,15 @@ private:
    std::vector<int> fBadCycleList; //!<!List of bad cycles to be used for cycle rejection
 
 public:
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
-   static bool WriteToRoot(TFile* fileptr = 0);
+   static bool WriteToRoot(TFile* fileptr = nullptr);
    static bool WriteInfoFile(std::string filename);
    std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIRunInfo, 12); // Contains the run-dependent information.
+   ClassDefOverride(TGRSIRunInfo, 12); // Contains the run-dependent information.
    /// \endcond
 };
 /*! @} */

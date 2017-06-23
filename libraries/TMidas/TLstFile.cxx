@@ -1,12 +1,12 @@
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
+#include <cstdio>
 #include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <errno.h>
-#include <assert.h>
+#include <cerrno>
+#include <cassert>
 #include <cstdlib>
 
 #ifdef HAVE_ZLIB
@@ -82,7 +82,7 @@ bool TLstFile::Open(const char* filename)
       std::ifstream in(GetFilename(), std::ifstream::in | std::ifstream::binary);
       in.seekg(0, std::ifstream::end);
       if(in.tellg() < 0) {
-         std::cout << "Failed to open \"" << GetFilename() << "/" << fFilename << "\"!" << std::endl;
+         std::cout << R"(Failed to open ")" << GetFilename() << "/" << fFilename << R"("!)" << std::endl;
          return false;
       } else {
          fFileSize = in.tellg();

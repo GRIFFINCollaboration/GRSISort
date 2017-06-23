@@ -32,8 +32,7 @@ TS3::TS3()
 }
 
 TS3::~TS3()
-{
-}
+= default;
 
 TS3& TS3::operator=(const TS3& rhs)
 {
@@ -112,12 +111,12 @@ void TS3::BuildPixels()
       // So build a quick vector
       std::vector<double> EneR, EneS;
       std::vector<bool>   UsedRing, UsedSector;
-      for(size_t i = 0; i < fS3RingHits.size(); ++i) {
-         EneR.push_back(fS3RingHits[i].GetEnergy());
+      for(auto & fS3RingHit : fS3RingHits) {
+         EneR.push_back(fS3RingHit.GetEnergy());
          UsedRing.push_back(false);
       }
-      for(size_t j = 0; j < fS3SectorHits.size(); ++j) {
-         EneS.push_back(fS3SectorHits[j].GetEnergy());
+      for(auto & fS3SectorHit : fS3SectorHits) {
+         EneS.push_back(fS3SectorHit.GetEnergy());
          UsedSector.push_back(false);
       }
 
@@ -155,11 +154,11 @@ void TS3::BuildPixels()
 
          int ringcount   = 0;
          int sectorcount = 0;
-         for(unsigned int i = 0; i < UsedRing.size(); ++i)
-            if(!UsedRing.at(i)) ringcount++;
+         for(auto && i : UsedRing)
+            if(!i) ringcount++;
 
-         for(unsigned int i = 0; i < UsedSector.size(); ++i)
-            if(!UsedSector.at(i)) sectorcount++;
+         for(auto && i : UsedSector)
+            if(!i) sectorcount++;
 
          /// If we have parts of hit left here they are possibly a shared strip hit not easy singles
          if(ringcount > 1 || sectorcount > 1) {
@@ -219,11 +218,11 @@ void TS3::BuildPixels()
 
          ringcount   = 0;
          sectorcount = 0;
-         for(unsigned int i = 0; i < UsedRing.size(); ++i)
-            if(!UsedRing.at(i)) ringcount++;
+         for(auto && i : UsedRing)
+            if(!i) ringcount++;
 
-         for(unsigned int i = 0; i < UsedSector.size(); ++i)
-            if(!UsedSector.at(i)) sectorcount++;
+         for(auto && i : UsedSector)
+            if(!i) sectorcount++;
 
          if(ringcount > 1 || sectorcount > 1) {
 

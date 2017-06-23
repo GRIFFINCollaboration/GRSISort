@@ -32,7 +32,7 @@ public:
    static double                  Value(std::string);
    static TList*                  AllValues()
    {
-      TList* output = new TList;
+      auto* output = new TList;
       output->SetOwner(false);
       for (auto& item : fValueVector) {
          output->Add(item.second);
@@ -47,8 +47,8 @@ public:
    bool ReplaceValue(GValue*);
 
    // virtual void Clear(Option_t *opt="");
-   virtual void Print(Option_t* opt = "") const;
-   virtual void Copy(TObject& obj) const;
+   void Print(Option_t* opt = "") const override;
+   void Copy(TObject& obj) const override;
    // virtual bool Notify();
 
    static int         Size() { return fValueVector.size(); }
@@ -64,7 +64,7 @@ private:
    static int ParseInputData(const std::string input, EPriority priority, Option_t* opt = "");
    static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
-   ClassDef(GValue, 1);
+   ClassDefOverride(GValue, 1);
 };
 
 #endif

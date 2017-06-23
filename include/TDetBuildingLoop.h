@@ -32,7 +32,7 @@ class TDetector;
 class TDetBuildingLoop : public StoppableThread {
 public:
    static TDetBuildingLoop* Get(std::string name = "");
-   virtual ~TDetBuildingLoop();
+   ~TDetBuildingLoop() override;
 
 #ifndef __CINT__
    std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>>& InputQueue() { return fInputQueue; }
@@ -45,17 +45,17 @@ public:
    }
 #endif
 
-   bool         Iteration();
-   virtual void ClearQueue();
+   bool         Iteration() override;
+   void ClearQueue() override;
 
-   size_t GetItemsPushed()
+   size_t GetItemsPushed() override
    {
       if (fOutputQueues.size() > 0) return fOutputQueues.back()->ItemsPushed();
       return std::numeric_limits<size_t>::max();
    }                                      // this should work fine as all loops are always filled at the same time
-   size_t GetItemsPopped() { return 0; }  // fOutputQueue->ItemsPopped(); }
-   size_t GetItemsCurrent() { return 0; } // fOutputQueue->Size();        }
-   size_t GetRate() { return 0; }
+   size_t GetItemsPopped() override { return 0; }  // fOutputQueue->ItemsPopped(); }
+   size_t GetItemsCurrent() override { return 0; } // fOutputQueue->Size();        }
+   size_t GetRate() override { return 0; }
 
 private:
    TDetBuildingLoop(std::string name);
@@ -67,7 +67,7 @@ private:
    std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>>  fOutputQueues;
 #endif
 
-   ClassDef(TDetBuildingLoop, 0);
+   ClassDefOverride(TDetBuildingLoop, 0);
 };
 
 /*! @} */

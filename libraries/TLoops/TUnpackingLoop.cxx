@@ -31,8 +31,7 @@ TUnpackingLoop::TUnpackingLoop(std::string name)
 }
 
 TUnpackingLoop::~TUnpackingLoop()
-{
-}
+= default;
 
 void TUnpackingLoop::ClearQueue()
 {

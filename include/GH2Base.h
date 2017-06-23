@@ -74,7 +74,7 @@ public:
       {
          fCurr = fMat->GetNext(fCurr);
          if (fCurr == fFirst) {
-            fCurr = 0;
+            fCurr = nullptr;
          }
          return *this;
       }

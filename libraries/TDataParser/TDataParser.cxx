@@ -130,7 +130,7 @@ int TDataParser::TigressDataToFragment(uint32_t* data, int size, unsigned int mi
             std::shared_ptr<TFragment> transferfrag = std::make_shared<TFragment>(*eventFrag);
             Push(fGoodOutputQueues, transferfrag);
             NumFragsFound++;
-            eventFrag = 0;
+            eventFrag = nullptr;
             return NumFragsFound;
          }
 
@@ -400,6 +400,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                         // to fState, but makes things easier to track.
    bool multipleErrors = false; // Variable to store if multiple errors occured parsing one fragment
 
+	TGRSIOptions* opt = TGRSIOptions::Get();
    int x = 0;
    if(!SetGRIFHeader(data[x++], eventFrag, bank)) {
       printf(DYELLOW "data[0] = 0x%08x" RESET_COLOR "\n", data[0]);
@@ -524,7 +525,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
          // changed on 21 Apr 2015 by JKS, when signal processing code from Chris changed the trailer.
          // change should be backward-compatible
          if((value & 0x3fff) == (eventFrag->GetChannelId() & 0x3fff)) {
-            if(!TGRSIOptions::Get()->SuppressErrors() && (eventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
+            if(!opt->SuppressErrors() && (eventFrag->GetModuleType() == 2) && (bank < kGRF3)) {
                // check whether the nios finished and if so whether it finished with an error
                if(((value >> 14) & 0x1) == 0x1) {
                   if(((value >> 16) & 0xff) != 0) {
@@ -543,8 +544,8 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             // check the number of words the header said we should have with the number of words we've read
             // the number of words is only set for bank >= GRF3
             // if the fragment has a waveform, we can't compare the number of words
-            // the headers number of words doesn't include the header itself, so we can compare to x directly
-            if(eventFrag->GetNumberOfWords() > 0 && !eventFrag->HasWave() && eventFrag->GetNumberOfWords() != x) {
+            // the headers number of words includes the header (word 0) itself, so we need to compare to x plus one
+            if(opt->CheckWordCount() && eventFrag->GetNumberOfWords() > 0 && !eventFrag->HasWave() && eventFrag->GetNumberOfWords() != x+1) {
                if(fState == EDataParserState::kGood) {
                   fState     = EDataParserState::kWrongNofWords;
                   failedWord = x;
@@ -602,12 +603,12 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                   eventFrag->SetCfd(tmpCfd[h]);
                   if(fRecordDiag) TParsingDiagnostics::Get()->GoodFragment(eventFrag);
                   if(fState == EDataParserState::kGood) {
-                     if(TGRSIOptions::Get()->ReconstructTimeStamp()) {
+                     if(opt->ReconstructTimeStamp()) {
                         fLastTimeStampMap[eventFrag->GetAddress()] = eventFrag->GetTimeStamp();
                      }
                      Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
                   } else {
-                     if(TGRSIOptions::Get()->ReconstructTimeStamp() && fState == EDataParserState::kBadHighTS &&
+                     if(opt->ReconstructTimeStamp() && fState == EDataParserState::kBadHighTS &&
                         !multipleErrors) {
                         // std::cout<<"reconstructing timestamp from 0x"<<std::hex<<eventFrag->GetTimeStamp()<<" using
                         // 0x"<<fLastTimeStampMap[eventFrag->GetAddress()];
@@ -624,7 +625,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                         // std::cout<<" => 0x"<<eventFrag->GetTimeStamp()<<std::dec<<std::endl;
                         Push(fGoodOutputQueues, std::make_shared<TFragment>(*eventFrag));
                      } else {
-                        // std::cout<<"Can't reconstruct time stamp, "<<TGRSIOptions::Get()->ReconstructTimeStamp()<<",
+                        // std::cout<<"Can't reconstruct time stamp, "<<opt->ReconstructTimeStamp()<<",
                         // state "<<fState<<" = "<<EDataParserState::kBadHighTS<<", "<<multipleErrors<<std::endl;
                         Push(*fBadOutputQueue,
                              std::make_shared<TBadFragment>(*eventFrag, data, size, failedWord, multipleErrors));
@@ -838,7 +839,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
                }
                break;
             default:
-               if(!TGRSIOptions::Get()->SuppressErrors()) {
+               if(!opt->SuppressErrors()) {
                   printf(DRED "Error, bank type %d not implemented yet" RESET_COLOR "\n", bank);
                }
                TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
@@ -901,7 +902,7 @@ int TDataParser::GriffinDataToFragment(uint32_t* data, int size, EBank bank, uns
             }
             break;
          default:
-            if(!TGRSIOptions::Get()->SuppressErrors()) {
+            if(!opt->SuppressErrors()) {
                printf(DRED "Error, module type %d not implemented yet" RESET_COLOR "\n", eventFrag->GetModuleType());
             }
             TParsingDiagnostics::Get()->BadFragment(eventFrag->GetDetectorType());
@@ -1107,7 +1108,7 @@ bool TDataParser::SetGRIFPsd(uint32_t value, std::shared_ptr<TFragment> frag)
 
 int TDataParser::GriffinDataToPPGEvent(uint32_t* data, int size, unsigned int, time_t)
 {
-   TPPGData* ppgEvent = new TPPGData;
+   auto* ppgEvent = new TPPGData;
    int       x        = 1; // We have already read the header so we can skip the 0th word.
 
    // The Network packet number is for debugging and is not always written to
@@ -1196,7 +1197,7 @@ bool TDataParser::SetPPGHighTimeStamp(uint32_t value, TPPGData* ppgevent)
 
 int TDataParser::GriffinDataToScalerEvent(uint32_t* data, int address)
 {
-   TScalerData* scalerEvent = new TScalerData;
+   auto* scalerEvent = new TScalerData;
    scalerEvent->SetAddress(address);
    int x          = 1; // We have already read the header so we can skip the 0th word.
    int failedWord = -1;
@@ -1467,7 +1468,7 @@ int TDataParser::FippsToFragment(std::vector<char> data)
       ++totalEventsRead;
       if((ptr[i + 2] & 0x7fff) == 0) {
          if(fRecordDiag) TParsingDiagnostics::Get()->BadFragment(99);
-         Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, ptr, data.size() / 4, i + 2, false));
+         //Push(*fBadOutputQueue, std::make_shared<TBadFragment>(*eventFrag, ptr, data.size() / 4, i + 2, false));
          continue;
       }
       eventFrag->SetCharge(static_cast<int32_t>(ptr[i + 2] & 0x7fff));

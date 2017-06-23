@@ -22,9 +22,8 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
    fBackground->SetLineColor(kBlack);
    TGRSIFit::AddToGlobalList(fBackground, kFALSE);
 
-   for(size_t i = 0; i < centroids.size(); i++) {
+   for(double cent : centroids) {
       Bool_t   out_of_range_flag = false;
-      Double_t cent              = centroids.at(i);
       if(cent > xhigh) {
          printf("centroid %lf is higher than range\n", cent);
          out_of_range_flag = true;
@@ -35,7 +34,7 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
       if(out_of_range_flag) {
          printf("ignoring peak at %lf, make a new multi peak with the corrected energy\n", cent);
       } else {
-         TPeak* peak = new TPeak(cent, xlow, xhigh, fBackground);
+         auto* peak = new TPeak(cent, xlow, xhigh, fBackground);
          peak->AddToGlobalList(kFALSE);
          fPeakVec.push_back(peak);
       }
@@ -64,9 +63,9 @@ TMultiPeak::~TMultiPeak()
       delete fBackground;
    }
 
-   for(size_t i = 0; i < fPeakVec.size(); ++i) {
-      if(fPeakVec.at(i)) {
-         delete fPeakVec.at(i);
+   for(auto & i : fPeakVec) {
+      if(i) {
+         delete i;
       }
    }
 }
@@ -95,7 +94,7 @@ void TMultiPeak::InitNames()
    this->FixParameter(0, fPeakVec.size());
 }
 
-TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit(), fBackground(0)
+TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit(), fBackground(nullptr)
 {
    copy.Copy(*this);
 }
@@ -112,8 +111,8 @@ void TMultiPeak::Copy(TObject& obj) const
    TGRSIFit::AddToGlobalList(fBackground, kFALSE);
 
    // Copy all of the TPeaks.
-   for(size_t i = 0; i < fPeakVec.size(); ++i) {
-      TPeak* peak = new TPeak(*(fPeakVec.at(i)));
+   for(auto i : fPeakVec) {
+      auto* peak = new TPeak(*i);
       peak->AddToGlobalList(kFALSE);
       mpobj->fPeakVec.push_back(peak);
    }
@@ -266,7 +265,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
    if(print_flag) printf("Chi^2/NDF = %lf\n", fitres->Chi2() / fitres->Ndf());
    // We will now set the parameters of each of the peaks based on the fits.
    for(int i = 0; i < (int)fPeakVec.size(); ++i) {
-      TMultiPeak* tmpMp = new TMultiPeak(*this);
+      auto* tmpMp = new TMultiPeak(*this);
       tmpMp->ClearParameters(); // We need to clear all of the parameters so that we can add the ones we want back in
       Double_t    binWidth  = fithist->GetBinWidth(GetParameter(Form("Centroid_%i", i)));
       TPeak*      peak      = fPeakVec.at(i);
@@ -338,10 +337,10 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
 void TMultiPeak::Clear(Option_t* opt)
 {
    TGRSIFit::Clear(opt);
-   for(size_t i = 0; i < fPeakVec.size(); ++i) {
-      if(fPeakVec.at(i)) {
-         delete fPeakVec.at(i);
-         fPeakVec.at(i) = 0;
+   for(auto & i : fPeakVec) {
+      if(i) {
+         delete i;
+         i = nullptr;
       }
    }
    fPeakVec.clear();
@@ -435,7 +434,7 @@ TPeak* TMultiPeak::GetPeak(UInt_t idx)
    else
       printf("No matching peak at index %u\n", idx);
 
-   return 0;
+   return nullptr;
 }
 
 TPeak* TMultiPeak::GetPeakClosestTo(Double_t energy)
@@ -465,7 +464,7 @@ void TMultiPeak::DrawPeaks() const
       Double_t centroid = peak->GetCentroid();
       Double_t range    = 2. * peak->GetFWHM();
 
-      TF1* sum = new TF1(Form("tmp%s", peak->GetName()), SinglePeakBG, centroid - range, centroid + range,
+      auto* sum = new TF1(Form("tmp%s", peak->GetName()), SinglePeakBG, centroid - range, centroid + range,
                          fPeakVec.size() * 6 + 11);
 
       for(int j = 0; j < GetNpar(); ++j) {

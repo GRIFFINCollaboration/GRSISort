@@ -10,7 +10,7 @@ class TMnemonic : public TObject {
 public:
    TMnemonic() : fClassType(nullptr) {}
    TMnemonic(const char* name) : TMnemonic() { Parse(name); }
-   ~TMnemonic() {}
+   ~TMnemonic() override = default;
 
 private:
    int16_t     fArrayPosition;
@@ -83,10 +83,10 @@ public:
    void SetClassType(TClass* classType) { fClassType = classType; }
    TClass*                   GetClassType() const;
 
-   void Print(Option_t* opt = "") const;
-   void Clear(Option_t* opt = "");
+   void Print(Option_t* opt = "") const override;
+   void Clear(Option_t* opt = "") override;
 
-   ClassDef(TMnemonic, 1);
+   ClassDefOverride(TMnemonic, 1);
 };
 
 #endif

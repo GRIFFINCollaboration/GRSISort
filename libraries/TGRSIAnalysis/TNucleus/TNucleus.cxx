@@ -300,7 +300,7 @@ int TNucleus::GetZfromSymbol(char* symbol)
                            "PA", "U",  "NP", "PU", "AM", "CM", "BK", "CF", "ES", "FM", "MD", "NO", "LR", "RF", "HA"};
    int length = strlen(symbol);
    // cout << symbol << "   " << length << endl;
-   char* search = new char[length + 1];
+   auto* search = new char[length + 1];
    for(int i = 0; i < length; i++) {
       search[i] = toupper(symbol[i]); // make sure symbol is in uppercase
    }
@@ -403,7 +403,7 @@ return true;
 void TNucleus::AddTransition(Double_t energy, Double_t intensity, Double_t energy_uncertainty,
                              Double_t intensity_uncertainty)
 {
-   TTransition* tran = new TTransition();
+   auto* tran = new TTransition();
    tran->SetEnergy(energy);
    tran->SetEnergyUncertainty(energy_uncertainty);
    tran->SetIntensity(intensity);
@@ -493,7 +493,7 @@ bool TNucleus::LoadTransitionFile()
       if(!line.compare(0, 2, "//")) continue;
       if(!line.compare(0, 1, "#")) continue;
       double            temp;
-      TTransition*      tran = new TTransition;
+      auto*      tran = new TTransition;
       std::stringstream ss(line);
       int               counter = 0;
       while(ss >> temp) {

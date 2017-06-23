@@ -19,8 +19,7 @@ ClassImp(TEnergyCal)
 }
 
 TEnergyCal::~TEnergyCal()
-{
-}
+= default;
 
 void TEnergyCal::SetDefaultTitles()
 {

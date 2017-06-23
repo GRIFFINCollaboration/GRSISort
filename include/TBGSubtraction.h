@@ -99,7 +99,7 @@ private:
 
 public:
    TBGSubtraction(TH2* mat, const char * gate_axis = "x");
-   virtual ~TBGSubtraction();
+   ~TBGSubtraction() override;
    void AxisComboSelected();
    void ClickedBGButton();
 	void DoDraw();
@@ -119,7 +119,7 @@ private:
    void StatusInfo(Int_t event, Int_t px, Int_t py, TObject* selected);
 
    /// \cond CLASSIMP
-   ClassDef(TBGSubtraction, 6); // Background subtractor GUI
+   ClassDefOverride(TBGSubtraction, 6); // Background subtractor GUI
    /// \endcond
 };
 /*! @} */

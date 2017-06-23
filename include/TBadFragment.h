@@ -24,13 +24,13 @@ public:
    TBadFragment();
    TBadFragment(TFragment& fragment, uint32_t* data, int size, int failedWord, bool multipleErrors);
    TBadFragment(const TBadFragment&);
-   ~TBadFragment();
+   ~TBadFragment() override;
 
    std::vector<uint32_t> GetData() const { return fData; }
    int                   GetFailedWord() const { return fFailedWord; }
    bool                  GetMultipleErrors() const { return fMultipleErrors; }
 
-   void Print(Option_t* opt = "") const;
+   void Print(Option_t* opt = "") const override;
 
 private:
    std::vector<uint32_t> fData;
@@ -38,7 +38,7 @@ private:
    bool                  fMultipleErrors;
 
    /// \cond CLASSIMP
-   ClassDef(TBadFragment, 1);
+   ClassDefOverride(TBadFragment, 1);
    /// \endcond
 };
 /*! @} */

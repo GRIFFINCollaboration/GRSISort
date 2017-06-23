@@ -15,10 +15,10 @@ ClassImp(GPopup)
 {
    SetCleanup(kDeepCleanup);
 
-   TGVerticalFrame* vframe = new TGVerticalFrame(this, 500, 200);
+   auto* vframe = new TGVerticalFrame(this, 500, 200);
 
-   TGListView*    listv = new TGListView(vframe, 500, 200);
-   TGLVContainer* listc = new TGLVContainer(listv->GetViewPort(), 500, 200, kHorizontalFrame, fgWhitePixel);
+   auto*    listv = new TGListView(vframe, 500, 200);
+   auto* listc = new TGLVContainer(listv->GetViewPort(), 500, 200, kHorizontalFrame, fgWhitePixel);
    // listc->Associate(this);
    listv->SetContainer(listc);
    listv->GetViewPort()->SetBackgroundColor(fgWhitePixel);
@@ -27,9 +27,9 @@ ClassImp(GPopup)
 
    vframe->AddFrame(listv, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
 
-   TGHorizontalFrame* hframe = new TGHorizontalFrame(vframe, 500, 20);
-   TGTextButton*      b1     = new TGTextButton(hframe, "&button1");
-   TGTextButton*      b2     = new TGTextButton(hframe, "&button2");
+   auto* hframe = new TGHorizontalFrame(vframe, 500, 20);
+   auto*      b1     = new TGTextButton(hframe, "&button1");
+   auto*      b2     = new TGTextButton(hframe, "&button2");
    b1->Connect("Clicked()", "GPopup", this, "Print()");
    b2->Connect("Clicked()", "GPopup", this, "Print()");
 
@@ -50,8 +50,7 @@ ClassImp(GPopup)
 }
 
 GPopup::~GPopup()
-{
-}
+= default;
 
 // void GPopup::AddEntry(const char *name) {
 //  std::string sname = name;

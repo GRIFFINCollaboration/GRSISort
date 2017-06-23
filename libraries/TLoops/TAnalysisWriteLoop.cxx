@@ -151,7 +151,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
       fDefaultDets[cls] = det_p;
 
       // Make the TDetector**
-      TDetector** det_pp = new TDetector*;
+      auto** det_pp = new TDetector*;
       *det_pp            = det_p;
       fDetMap[cls]       = det_pp;
 
@@ -174,7 +174,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
          new_branch->Fill();
       }
 
-      std::cout << "\r" << std::string(30, ' ') << "\rAdded \"" << cls->GetName() << "\" branch" << std::endl;
+      std::cout << "\r" << std::string(30, ' ') << "\rAdded \"" << cls->GetName() << R"(" branch)" << std::endl;
 
       // Unlock after we are done.
       TThread::UnLock();

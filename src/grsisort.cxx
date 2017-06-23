@@ -72,8 +72,7 @@ int main(int argc, char **argv) {
    realTime -= hour * 3600;
    int min = static_cast<int>(realTime / 60);
    realTime -= min * 60;
-   printf(DMAGENTA "\nbye,bye\t" DCYAN "%s" RESET_COLOR " after %d:%02d:%.3f h:m:s\n", getpwuid(getuid())->pw_name,
-          hour, min, realTime);
+	std::cout<<DMAGENTA<<std::endl<<"bye,bye\t"<<DCYAN<<getpwuid(getuid())->pw_name<<RESET_COLOR<<" after "<<hour<<":"<<std::setfill('0')<<std::setw(2)<<min<<":"<<std::setprecision(3)<<std::fixed<<realTime<<" h:m:s"<<std::endl;
 
 	return 0;
 }
@@ -135,13 +134,14 @@ static int ReadUtmp() {
    return 0;
 }
 
-static STRUCT_UTMP *SearchEntry(int n, const char *tty)  {
-   STRUCT_UTMP *ue = gUtmpContents;
-   while((n--) != 0) {
-      if((ue->ut_name[0] != 0) && (strncmp(tty, ue->ut_line, sizeof(ue->ut_line)) == 0)) { return ue;
-}
-      ue++;
-   }
+static STRUCT_UTMP* SearchEntry(int n, const char *tty)  {
+	STRUCT_UTMP* ue = gUtmpContents;
+	while((n--) != 0) {
+		if((ue->ut_name[0] != 0) && (strncmp(tty, ue->ut_line, sizeof(ue->ut_line)) == 0)) { 
+			return ue;
+		}
+		ue++;
+	}
    return nullptr;
 }
 
@@ -153,7 +153,7 @@ static void SetDisplay()  {
 		char *tty = ttyname(0);  // device user is logged in on
 		if(tty != nullptr) {
 			tty += 5;             // remove "/dev/"
-			STRUCT_UTMP *utmp_entry = SearchEntry(ReadUtmp(), tty);
+			STRUCT_UTMP* utmp_entry = SearchEntry(ReadUtmp(), tty);
 			if(utmp_entry != nullptr) {
 				auto* display = new char[sizeof(utmp_entry->ut_host) + 15];
 				auto* host =    new char[sizeof(utmp_entry->ut_host) + 1];

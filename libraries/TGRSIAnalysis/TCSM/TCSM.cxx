@@ -19,8 +19,7 @@ TCSM::TCSM()
 }
 
 TCSM::~TCSM()
-{
-}
+= default;
 
 void TCSM::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
 {
@@ -68,10 +67,10 @@ void TCSM::BuildHits()
 
    // first index: detector number, second index: 0 = deltaE, 1 = E; third index: 0 = horizontal, 1 = vertical
    // loop over all found detectors
-   for(auto detIt = fFragments.begin(); detIt != fFragments.end(); ++detIt) {
+   for(auto & fFragment : fFragments) {
       // loop over all types (only detectors 1/2 should have both D and E, detectors 3/4 should only have D)
-      for(size_t i = 0; i < detIt->second.size(); ++i) {
-         BuildVH(detIt->second.at(i), hits[i]);
+      for(size_t i = 0; i < fFragment.second.size(); ++i) {
+         BuildVH(fFragment.second.at(i), hits[i]);
       }
    }
    BuilddEE(hits, fCsmHits);
@@ -357,24 +356,24 @@ void TCSM::BuilddEE(std::vector<std::vector<TCSMHit>>& hitVec, std::vector<TCSMH
    std::vector<TCSMHit> e1;
    std::vector<TCSMHit> e2;
 
-   for(size_t i = 0; i < hitVec[0].size(); i++) {
-      if(hitVec[0][i].GetDetectorNumber() == 3 || hitVec[0][i].GetDetectorNumber() == 4) { // I am in side detectors
+   for(auto & i : hitVec[0]) {
+      if(i.GetDetectorNumber() == 3 || i.GetDetectorNumber() == 4) { // I am in side detectors
          // I will never have a pair in the side detector, so go ahead and send it through.
-         builtHits.push_back(hitVec[0][i]);
-      } else if(hitVec[0][i].GetDetectorNumber() == 1) {
-         d1.push_back(hitVec[0][i]);
-      } else if(hitVec[0][i].GetDetectorNumber() == 2) {
-         d2.push_back(hitVec[0][i]);
+         builtHits.push_back(i);
+      } else if(i.GetDetectorNumber() == 1) {
+         d1.push_back(i);
+      } else if(i.GetDetectorNumber() == 2) {
+         d2.push_back(i);
       } else {
          std::cerr << "  Caution, in BuilddEE detector number in D vector is out of bounds." << std::endl;
       }
    }
 
-   for(size_t i = 0; i < hitVec[1].size(); ++i) {
-      if(hitVec[1][i].GetDetectorNumber() == 1) {
-         e1.push_back(hitVec[1][i]);
-      } else if(hitVec[1][i].GetDetectorNumber() == 2) {
-         e2.push_back(hitVec[1][i]);
+   for(auto & i : hitVec[1]) {
+      if(i.GetDetectorNumber() == 1) {
+         e1.push_back(i);
+      } else if(i.GetDetectorNumber() == 2) {
+         e2.push_back(i);
       } else {
          std::cerr << "  Caution, in BuilddEE detector number in E vector is out of bounds." << std::endl;
       }
@@ -456,7 +455,7 @@ void TCSM::MakedEE(std::vector<TCSMHit>& DHitVec, std::vector<TCSMHit>& EHitVec,
 
 void TCSM::OldBuilddEE(std::vector<TCSMHit>& DHitVec, std::vector<TCSMHit>& EHitVec, std::vector<TCSMHit>& BuiltHits)
 {
-   bool printbit = 0;
+   bool printbit = false;
    if(DHitVec.size() == 0 && EHitVec.size() == 0) // Why am I even here?!
       return;
 
@@ -513,9 +512,9 @@ void TCSM::OldBuilddEE(std::vector<TCSMHit>& DHitVec, std::vector<TCSMHit>& EHit
    }
 
    if(printbit) {
-      for(size_t k = 0; k < BuiltHits.size(); k++) {
+      for(auto & BuiltHit : BuiltHits) {
          std::cout << DGREEN;
-         BuiltHits.at(k).Print();
+         BuiltHit.Print();
          std::cout << RESET_COLOR << std::endl;
       }
    }
@@ -646,5 +645,5 @@ TCSMHit* TCSM::GetCSMHit(const int& i)
    } catch(const std::out_of_range& oor) {
       std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
    }
-   return 0;
+   return nullptr;
 }

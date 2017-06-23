@@ -33,9 +33,9 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
                    << frag->GetNumberOfPileups() << std::endl;
          if(frag->GetNumberOfPileups() > 1) {
             std::cout << "have fragments:" << std::endl;
-            for(auto it = fMap.begin(); it != fMap.end(); ++it) {
-               std::cout << "\t0x" << std::hex << std::get<0>((*it).second)->GetAddress() << std::dec << ": "
-                         << std::get<0>((*it).second)->GetNumberOfPileups() << std::endl;
+            for(auto & it : fMap) {
+               std::cout << "\t0x" << std::hex << std::get<0>(it.second)->GetAddress() << std::dec << ": "
+                         << std::get<0>(it.second)->GetNumberOfPileups() << std::endl;
             }
          }
       }
@@ -164,8 +164,8 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
                       << (charge[0] + gRandom->Uniform()) << "/" << integrationLength[0] << " = " << c.back()
                       << std::endl;
          // all k's are needed squared so we square all elements of k
-         for(auto it = k2.begin(); it != k2.end(); ++it) {
-            (*it) = (*it) * (*it);
+         for(long & it : k2) {
+            it = it * it;
          }
          Solve(frags, c, k2);
          break;
@@ -231,8 +231,8 @@ bool TFragmentMap::Add(std::shared_ptr<TFragment> frag, std::vector<Int_t> charg
                       << (charge[0] + gRandom->Uniform()) << "/" << integrationLength[0] << " = " << c.back()
                       << std::endl;
          // all k's are needed squared so we square all elements of k
-         for(auto it = k2.begin(); it != k2.end(); ++it) {
-            (*it) = (*it) * (*it);
+         for(long & it : k2) {
+            it = it * it;
          }
          Solve(frags, c, k2, situation);
          break;

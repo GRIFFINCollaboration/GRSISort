@@ -21,8 +21,7 @@ ClassImp(TLaBrHit)
 }
 
 TLaBrHit::~TLaBrHit()
-{
-}
+= default;
 
 TLaBrHit::TLaBrHit(const TLaBrHit& rhs) : TGRSIDetectorHit()
 {

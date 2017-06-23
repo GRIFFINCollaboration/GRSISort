@@ -1,12 +1,12 @@
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
+#include <cstdio>
 #include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <errno.h>
-#include <assert.h>
+#include <cerrno>
+#include <cassert>
 #include <cstdlib>
 
 #ifdef HAVE_ZLIB
@@ -265,7 +265,7 @@ bool TMidasFile::OutOpen(const char* filename)
          return false;
       }
       printf("Opened gz file successfully\n");
-      if(1) {
+      if(true) {
          if(gzsetparams(*(gzFile*)fOutGzFile, 1, Z_DEFAULT_STRATEGY) != Z_OK) {
             printf("Cannot set gzparams\n");
             fLastErrno = -1;

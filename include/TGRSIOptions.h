@@ -30,9 +30,9 @@ public:
    TGRSIOptions() {}; /// Do not use!
    static TGRSIOptions* Get(int argc = 0, char** argv = nullptr);
 
-   void Clear(Option_t* opt = "");
+   void Clear(Option_t* opt = "") override;
    void Load(int argc, char** argv);
-   void Print(Option_t* opt = "") const;
+   void Print(Option_t* opt = "") const override;
 
    static bool WriteToRoot(TFile* file = nullptr);
    static void SetOptions(TGRSIOptions* temp);
@@ -88,6 +88,7 @@ public:
    bool IgnoreEpics() const { return fIgnoreEpics; }
    bool WriteBadFrags() const { return fWriteBadFrags; }
    bool WriteDiagnostics() const { return fWriteDiagnostics; }
+	bool CheckWordCount() const { return fCheckWordCount; }
 
    bool Batch() const { return fBatch; }
 
@@ -176,6 +177,7 @@ private:
    bool fIgnoreEpics;      ///< Flag to ignore epics
    bool fWriteBadFrags;    ///< Flag to write bad fragments
    bool fWriteDiagnostics; ///< Flag to write diagnostics
+	bool fCheckWordCount;   ///< Flag to check word count in griffin data (default = true)
 
    bool fBatch; ///< Flag to use batch mode (-b)
 
@@ -214,7 +216,7 @@ private:
    bool fSelectorOnly; ///< Flag to turn PROOF off in grsiproof
 
    /// \cond CLASSIMP
-   ClassDef(TGRSIOptions, 3); ///< Class for storing options in GRSISort
+   ClassDefOverride(TGRSIOptions, 3); ///< Class for storing options in GRSISort
 	/// \endcond
 };
 /*! @} */

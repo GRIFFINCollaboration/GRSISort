@@ -87,7 +87,7 @@ void TAnalysisOptions::ReadFromFile(std::string file)
 			return;
 		}
 	} else {
-		std::cout<<"Failed to open file \""<<file<<"\""<<std::endl;
+		std::cout<<R"(Failed to open file ")"<<file<<R"(")"<<std::endl;
 	}
    oldDir->cd();
 }

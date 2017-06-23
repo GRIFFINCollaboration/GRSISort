@@ -45,8 +45,7 @@ GH2I::GH2I(const TObject& obj)
 }
 
 GH2I::~GH2I()
-{
-}
+= default;
 
 void GH2I::Copy(TObject& obj) const
 {
