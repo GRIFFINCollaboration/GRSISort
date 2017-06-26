@@ -39,13 +39,15 @@ public:
    Short_t GetMultiplicity() const { return fTipHits.size(); } //!<!
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
    void Copy(TObject& rhs) const override;
 
    void ClearTransients() override
    {
-      for (auto hit : fTipHits) hit.ClearTransients();
+      for(const auto& hit : fTipHits) {
+         hit.ClearTransients();
+      }
    }
 
    TTip& operator=(const TTip&); //!<!

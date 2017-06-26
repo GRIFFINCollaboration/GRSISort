@@ -22,8 +22,7 @@ ClassImp(TDescantHit)
    Clear();
 }
 
-TDescantHit::~TDescantHit()
-= default;
+TDescantHit::~TDescantHit() = default;
 
 TDescantHit::TDescantHit(const TDescantHit& rhs) : TGRSIDetectorHit()
 {
@@ -103,7 +102,9 @@ void TDescantHit::Copy(TObject& rhs) const
 void TDescantHit::Copy(TObject& obj, bool waveform) const
 {
    Copy(obj);
-   if(waveform) CopyWave(obj);
+   if(waveform) {
+      CopyWave(obj);
+   }
 }
 
 TVector3 TDescantHit::GetPosition(Double_t dist) const

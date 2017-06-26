@@ -169,7 +169,7 @@ private:
 
    // CM FRAME MOTION
    double fQVal; // effective Q value (includes excitation)
-   double fS{};    // 'S' = M^2
+   double fS{};  // 'S' = M^2
    double fInvariantMass{};
    double fCmTi{};
    double fCmTf{};

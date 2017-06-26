@@ -42,10 +42,11 @@ public:
    int          GetSize() { return fData.size(); }
    inline float GetData(const unsigned int& i)
    {
-      if (i >= fData.size())
+      if(i >= fData.size()) {
          return fData.back();
-      else
+      } else {
          return fData[i];
+      }
    }
 
    void Clear(Option_t* opt = "") override;       //!<!

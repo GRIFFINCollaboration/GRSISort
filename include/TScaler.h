@@ -48,11 +48,12 @@ public:
    void SetHighTimeStamp(UInt_t highTime) { fHighTimeStamp = highTime; }
    void SetScaler(size_t index, UInt_t scaler)
    {
-      if (index < fScaler.size())
+      if(index < fScaler.size()) {
          fScaler[index] = scaler;
-      else
-         std::cout << "Failed to set scaler " << scaler << ", index " << index << " is out of range 0 - "
-                   << fScaler.size() << std::endl;
+      } else {
+         std::cout<<"Failed to set scaler "<<scaler<<", index "<<index<<" is out of range 0 - "
+                  <<fScaler.size()<<std::endl;
+      }
    }
 
    UInt_t              GetAddress() const { return fAddress; }
@@ -62,16 +63,17 @@ public:
    std::vector<UInt_t> GetScaler() const { return fScaler; }
    UInt_t GetScaler(size_t index) const
    {
-      if (index < fScaler.size())
+      if(index < fScaler.size()) {
          return fScaler[index];
-      else
+      } else {
          return 0;
+      }
    }
 
    ULong64_t GetTimeStamp() const
    {
       ULong64_t time = GetHighTimeStamp();
-      time           = time << 28;
+      time           = time<<28;
       time |= GetLowTimeStamp() & 0x0fffffff;
       return time;
    }
@@ -130,9 +132,9 @@ private:
    std::map<UInt_t, ULong64_t>
       fTimePeriod; //!<! a map between addresses and time differences (used to calculate the time period)
    std::map<UInt_t, std::map<ULong64_t, int>> fNumberOfTimePeriods; //!<!
-   ULong64_t fTotalTimePeriod{};                                      //!<!
+   ULong64_t fTotalTimePeriod{};                                    //!<!
    std::map<ULong64_t, int> fTotalNumberOfTimePeriods;              //!<!
-   TPPG* fPPG{};                                                      //!<!
+   TPPG* fPPG{};                                                    //!<!
    std::map<UInt_t, TH1D*> fHist;                         //!<! map to store histograms that have already been drawn
    std::map<std::pair<UInt_t, UInt_t>, TH1D*> fHistRange; //!<! map to store histograms for address-ranges
 

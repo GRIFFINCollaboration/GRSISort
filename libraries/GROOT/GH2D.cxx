@@ -44,8 +44,7 @@ GH2D::GH2D(const TObject& obj)
    }
 }
 
-GH2D::~GH2D()
-= default;
+GH2D::~GH2D() = default;
 
 void GH2D::Copy(TObject& obj) const
 {
@@ -56,8 +55,10 @@ void GH2D::Copy(TObject& obj) const
 
 TObject* GH2D::Clone(const char* newname) const
 {
-   std::string name        = newname;
-   if(!name.length()) name = Form("%s_clone", GetName());
+   std::string name = newname;
+   if(!name.length()) {
+      name = Form("%s_clone", GetName());
+   }
    return TH2::Clone(name.c_str());
 }
 
@@ -89,7 +90,9 @@ void GH2D::Draw(Option_t* opt)
 
 void GH2D::Draw(TCutG* cut)
 {
-   if(!cut) return;
+   if(!cut) {
+      return;
+   }
    std::string option = Form("colz [%s]", cut->GetName());
    TH2D::Draw(option.c_str());
 }

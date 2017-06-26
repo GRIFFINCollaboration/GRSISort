@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <utility>
 
 #include <sys/stat.h>
 
@@ -17,7 +18,7 @@
 #include "GRootCommands.h"
 #include "TPreserveGDirectory.h"
 
-using void_alias = void *;
+using void_alias = void*;
 
 TCompiledHistograms::TCompiledHistograms()
    : fLibname(""), fFunc_name(""), fLibrary(nullptr), fFunc(nullptr), fLast_modified(0), fLast_checked(0),
@@ -35,8 +36,8 @@ TCompiledHistograms::TCompiledHistograms(std::string input_lib, std::string func
    *(void_alias*)(&fFunc) = fLibrary->GetSymbol(fFunc_name.c_str());
 
    if(!fFunc) {
-      std::cout << "Could not find " << fFunc_name << "() inside "
-                << R"(")" << input_lib << R"(")" << std::endl;
+      std::cout<<"Could not find "<<fFunc_name<<"() inside "
+               <<R"(")"<<input_lib<<R"(")"<<std::endl;
    }
    fLast_modified = get_timestamp();
    fLast_checked  = time(nullptr);
@@ -64,12 +65,13 @@ void TCompiledHistograms::ClearHistograms()
          }
       }
    }
-   std::cout << "ended " << std::endl;
+   std::cout<<"ended "<<std::endl;
 }
 
 time_t TCompiledHistograms::get_timestamp()
 {
-   struct stat buf{};
+   struct stat buf {
+   };
    stat(fLibname.c_str(), &buf);
    return buf.st_mtime;
 }
@@ -96,8 +98,9 @@ Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t)
          while((dir_obj = dir_next())) {
             dir_obj->Write();
          }
-      } else
+      } else {
          obj->Write();
+      }
    }
 
    //  objects.Write();
@@ -109,7 +112,7 @@ Int_t TCompiledHistograms::Write(const char*, Int_t, Int_t)
 
 void TCompiledHistograms::Load(std::string libname, std::string func_name)
 {
-   TCompiledHistograms other(libname, func_name);
+   TCompiledHistograms other(std::move(libname), std::move(func_name));
    swap_lib(other);
 }
 
@@ -148,7 +151,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<const TFragment> frag)
    fDefault_directory->cd();
    fObj.SetDirectory(fDefault_directory);
 
-   fObj.SetFragment(frag);
+   fObj.SetFragment(std::move(frag));
    fFunc(fObj);
    fObj.SetFragment(nullptr);
 }
@@ -168,7 +171,7 @@ void TCompiledHistograms::Fill(std::shared_ptr<TUnpackedEvent> detectors)
    fDefault_directory->cd();
    fObj.SetDirectory(fDefault_directory);
 
-   fObj.SetDetectors(detectors);
+   fObj.SetDetectors(std::move(detectors));
    fFunc(fObj);
    fObj.SetDetectors(nullptr);
 }

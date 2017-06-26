@@ -30,7 +30,7 @@ DynamicLibrary::DynamicLibrary(std::string libname_param, bool unique_name) : fL
 {
    if(unique_name) {
       std::stringstream ss;
-      ss << "/tmp/temp_dynlib_" << getpid() << "_" << incremental_id() << ".so";
+      ss<<"/tmp/temp_dynlib_"<<getpid()<<"_"<<incremental_id()<<".so";
       fTempName = ss.str();
 
       // Need to symlink to full path, not a relative path.

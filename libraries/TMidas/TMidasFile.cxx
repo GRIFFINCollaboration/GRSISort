@@ -81,7 +81,9 @@ static int hasSuffix(const char* name, const char* suffix)
 {
    // Checks to see if midas file has suffix.
    const char* s = strstr(name, suffix);
-   if(s == nullptr) return 0;
+   if(s == nullptr) {
+      return 0;
+   }
 
    return (s - name) + strlen(suffix) == strlen(name);
 }
@@ -109,7 +111,9 @@ static int hasSuffix(const char* name, const char* suffix)
 /// \returns "true" for succes, "false" for error, use GetLastError() to see why
 bool TMidasFile::Open(const char* filename)
 {
-   if(fFile > 0) Close();
+   if(fFile > 0) {
+      Close();
+   }
 
    fFilename = filename;
 
@@ -159,10 +163,11 @@ bool TMidasFile::Open(const char* filename)
       pipe += name;
       pipe += " /dev/fd/1";
 
-      if(hasSuffix(filename, ".gz"))
+      if(hasSuffix(filename, ".gz")) {
          pipe += " | gzip -dc";
-      else if(hasSuffix(filename, ".bz2"))
+      } else if(hasSuffix(filename, ".bz2")) {
          pipe += " | bzip2 -dc";
+      }
    } else if(strncmp(filename, "pipein://", 9) == 0) {
       pipe = filename + 9;
 #if 0 // read compressed files using the zlib library
@@ -236,7 +241,9 @@ bool TMidasFile::OutOpen(const char* filename)
    /// \param [in] filename The file to open.
    /// \returns "true" for succes, "false" for error, use GetLastError() to see why
 
-   if(fOutFile > 0) OutClose();
+   if(fOutFile > 0) {
+      OutClose();
+   }
 
    fOutFilename = filename;
 
@@ -380,7 +387,7 @@ void TMidasFile::ReadMoreBytes(size_t bytes)
    }
 }
 
-void TMidasFile::FillBuffer(std::shared_ptr<TMidasEvent> midasEvent, Option_t*)
+void TMidasFile::FillBuffer(const std::shared_ptr<TMidasEvent>& midasEvent, Option_t*)
 {
    // Fills a buffer to be written to a midas file.
 
@@ -415,7 +422,9 @@ void TMidasFile::FillBuffer(std::shared_ptr<TMidasEvent> midasEvent, Option_t*)
 
    fCurrentBufferSize += midasEvent->GetDataSize() + sizeof(TMidas_EVENT_HEADER);
 
-   if(fWriteBuffer.size() > fMaxBufferSize) WriteBuffer();
+   if(fWriteBuffer.size() > fMaxBufferSize) {
+      WriteBuffer();
+   }
 }
 
 bool TMidasFile::WriteBuffer()
@@ -438,7 +447,7 @@ bool TMidasFile::WriteBuffer()
    return wr;
 }
 
-bool TMidasFile::Write(std::shared_ptr<TMidasEvent> midasEvent, Option_t* opt)
+bool TMidasFile::Write(const std::shared_ptr<TMidasEvent>& midasEvent, Option_t* opt)
 {
    // Writes an individual TMidasEvent to the output TMidasFile. This will
    // write to a zipped file if the output file is defined as a zipped file.
@@ -492,13 +501,17 @@ void TMidasFile::Close()
 {
    // Closes the input midas file. Use OutClose() to close the output
    // Midas File.
-   if(fPoFile) pclose((FILE*)fPoFile);
+   if(fPoFile) {
+      pclose((FILE*)fPoFile);
+   }
    fPoFile = nullptr;
 #ifdef HAVE_ZLIB
    if(fGzFile) gzclose(*(gzFile*)fGzFile);
    fGzFile = nullptr;
 #endif
-   if(fFile > 0) close(fFile);
+   if(fFile > 0) {
+      close(fFile);
+   }
 
    fFile     = -1;
    fFilename = "";
@@ -518,7 +531,9 @@ void TMidasFile::OutClose()
    }
    fOutGzFile = nullptr;
 #endif
-   if(fOutFile > 0) close(fOutFile);
+   if(fOutFile > 0) {
+      close(fOutFile);
+   }
    fOutFile     = -1;
    fOutFilename = "";
 }
@@ -557,9 +572,11 @@ int TMidasFile::GetSubRunNumber()
 {
    // Parse the sub run number from the current TMidasFile. This assumes a format of
    // run#####_###.mid or run#####.mid.
-   if(fFilename.length() == 0) return -1;
+   if(fFilename.length() == 0) {
+      return -1;
+   }
    std::size_t foundslash = fFilename.rfind('/');
-   std::size_t found      = fFilename.rfind("-");
+   std::size_t found      = fFilename.rfind('-');
    if((found < foundslash && foundslash != std::string::npos) || found == std::string::npos) {
       found = fFilename.rfind('_');
    }

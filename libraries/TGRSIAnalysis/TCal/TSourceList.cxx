@@ -13,8 +13,7 @@ ClassImp(TSourceList)
    Clear();
 }
 
-TSourceList::~TSourceList()
-= default;
+TSourceList::~TSourceList() = default;
 
 TSourceList::TSourceList(const char* name, const char* title) : TCalList(name, title)
 {
@@ -46,7 +45,7 @@ void TSourceList::Copy(TObject& obj) const
 
 void TSourceList::Print(Option_t*) const
 {
-   std::cout << "Nucleus: " << fNucleusName << std::endl;
+   std::cout<<"Nucleus: "<<fNucleusName<<std::endl;
    TCalList::Print();
 }
 
@@ -64,10 +63,12 @@ Int_t TSourceList::SetNucleus(const TNucleus& nuc)
    const TList* transition_list = nuc.GetTransitionList();
    TIter        next(transition_list);
    TObject*     transition = nullptr;
-   std::cout << "Adding Transitions..." << std::endl;
+   std::cout<<"Adding Transitions..."<<std::endl;
    while((transition = next())) {
       transition->Print();
-      if(AddTransition(dynamic_cast<TTransition*>(transition))) good_counter++;
+      if(AddTransition(dynamic_cast<TTransition*>(transition))) {
+         good_counter++;
+      }
    }
    return good_counter;
 }
@@ -75,7 +76,7 @@ Int_t TSourceList::SetNucleus(const TNucleus& nuc)
 bool TSourceList::AddTransition(TTransition* tran)
 {
    if(!tran) {
-      std::cout << "Trying to add a bad transition" << std::endl;
+      std::cout<<"Trying to add a bad transition"<<std::endl;
       return false;
    }
 

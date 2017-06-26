@@ -37,17 +37,21 @@ GH1D::GH1D(const TF1& function, Int_t nbinsx, Double_t xlow, Double_t xup)
 
 bool GH1D::WriteDatFile(const char* outFile)
 {
-   if(strlen(outFile) < 1) return false;
+   if(strlen(outFile) < 1) {
+      return false;
+   }
 
    std::ofstream out;
    out.open(outFile);
 
-   if(!(out.is_open())) return false;
+   if(!(out.is_open())) {
+      return false;
+   }
 
    for(int i = 0; i < GetNbinsX(); i++) {
-      out << GetXaxis()->GetBinCenter(i) << "\t" << GetBinContent(i) << std::endl;
+      out<<GetXaxis()->GetBinCenter(i)<<"\t"<<GetBinContent(i)<<std::endl;
    }
-   out << std::endl;
+   out<<std::endl;
    out.close();
 
    return true;
@@ -86,7 +90,7 @@ void GH1D::Clear(Option_t* opt)
 void GH1D::Print(Option_t* opt) const
 {
    TH1D::Print(opt);
-   std::cout << "\tParent: " << parent.GetObject() << std::endl;
+   std::cout<<"\tParent: "<<parent.GetObject()<<std::endl;
 }
 
 void GH1D::Copy(TObject& obj) const
@@ -224,12 +228,16 @@ GH1D* GH1D::Project(int bins)
    double ymax = GetMinimum();
    double ymin = GetMaximum();
    if(bins == -1) {
-      bins              = (int)(std::abs(ymax - ymin));
-      if(bins < 1) bins = 100;
+      bins = (int)(std::abs(ymax - ymin));
+      if(bins < 1) {
+         bins = 100;
+      }
    }
    proj = new GH1D(Form("%s_y_axis_projection", GetName()), Form("%s_y_axis_projection", GetName()), bins, ymin, ymax);
    for(int x = 0; x < GetNbinsX(); x++) {
-      if(GetBinContent(x) != 0) proj->Fill(GetBinContent(x));
+      if(GetBinContent(x) != 0) {
+         proj->Fill(GetBinContent(x));
+      }
    }
 
    return proj;

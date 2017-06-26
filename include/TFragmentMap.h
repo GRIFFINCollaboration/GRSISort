@@ -31,7 +31,8 @@ public:
                 std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&              badOutputQueue);
 #endif
 
-   ~TFragmentMap()= default;;
+   ~TFragmentMap() = default;
+   ;
 #ifndef __CINT__
    bool Add(std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>);
 #endif
@@ -39,13 +40,15 @@ public:
 private:
    static bool fDebug;
 #ifndef __CINT__
-	void Solve(std::vector<std::shared_ptr<TFragment> >, std::vector<Float_t>, std::vector<Long_t>, int situation = -1);
-	void DropFragments(std::pair<std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > >::iterator, 
-			std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t> > >::iterator>& range);
+   void Solve(std::vector<std::shared_ptr<TFragment>>, std::vector<Float_t>, std::vector<Long_t>, int situation = -1);
+   void DropFragments(std::pair<std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>,
+                                                                 std::vector<Short_t>>>::iterator,
+                                std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>,
+                                                                 std::vector<Short_t>>>::iterator>& range);
 
-	std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>> fMap;
-	std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& fGoodOutputQueue;
-	std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&              fBadOutputQueue;
+   std::multimap<UInt_t, std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>> fMap;
+   std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& fGoodOutputQueue;
+   std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>&              fBadOutputQueue;
 #endif
 };
 /*! @} */

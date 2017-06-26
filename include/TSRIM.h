@@ -20,7 +20,8 @@
 
 class TSRIM {
 public:
-   virtual ~TSRIM()= default;;
+   virtual ~TSRIM() = default;
+   ;
 
    TSRIM();
    TSRIM(const char* infilename, double emax = -1.0, double emin = 0.0,

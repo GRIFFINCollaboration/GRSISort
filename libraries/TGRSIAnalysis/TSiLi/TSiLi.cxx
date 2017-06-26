@@ -26,8 +26,7 @@ TSiLi::TSiLi()
    Clear();
 }
 
-TSiLi::~TSiLi()
-= default;
+TSiLi::~TSiLi() = default;
 
 void TSiLi::Copy(TObject& rhs) const
 {
@@ -73,13 +72,13 @@ TSiLiHit* TSiLi::GetSiLiHit(const int& i)
    try {
       return &fSiLiHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;
 }
 
-void TSiLi::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TSiLi::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    if(frag == nullptr || chan == nullptr) {
       return;
@@ -129,7 +128,7 @@ TSiLiHit* TSiLi::GetAddbackHit(const int& i)
    if(i < GetAddbackMultiplicity()) {
       return &fAddbackHits.at(i);
    } else {
-      std::cerr << "Addback hits are out of range" << std::endl;
+      std::cerr<<"Addback hits are out of range"<<std::endl;
       throw grsi::exit_exception(1);
       return nullptr;
    }
@@ -185,7 +184,9 @@ Int_t TSiLi::GetAddbackMultiplicity()
 
       // Create a matrix of "pairs"
       std::vector<std::vector<bool>> pairs;
-      for(int i = 0; i < basehits; i++) pairs.emplace_back(basehits, false);
+      for(int i = 0; i < basehits; i++) {
+         pairs.emplace_back(basehits, false);
+      }
 
       std::vector<unsigned>              clusters_id(basehits, 0);
       std::vector<std::vector<unsigned>> Clusters;
@@ -217,7 +218,7 @@ Int_t TSiLi::GetAddbackMultiplicity()
       // Clusters are lists of hits that have been identified as coincident neighbours
       // Will be length 1 if no neighbours
 
-      for(auto & Cluster : Clusters) {
+      for(auto& Cluster : Clusters) {
 
          TSiLi::SortCluster(
             Cluster); // Energy sort the clusters also deletes any invalid hit numbers//Not an efficient function
@@ -255,8 +256,12 @@ bool TSiLi::fAddbackCriterion(TSiLiHit* one, TSiLiHit* two)
       if(std::abs(T) < (TGRSIOptions::AnalysisOptions()->AddbackWindow() * 10.0)) {
          int dring   = std::abs(one->GetRing() - two->GetRing());
          int dsector = std::abs(one->GetSector() - two->GetSector());
-         if(dring == 1 && dsector == 0) return true;
-         if(dring == 0 && (dsector == 1 || dsector == 11)) return true;
+         if(dring == 1 && dsector == 0) {
+            return true;
+         }
+         if(dring == 0 && (dsector == 1 || dsector == 11)) {
+            return true;
+         }
       }
    }
 
@@ -301,8 +306,10 @@ void TSiLi::SortCluster(std::vector<unsigned>& cluster)
 
       while(Imax >= 0) {
          ordered.push_back(Imax); // At start of loop because we want to do the previously determind max here
-         if(cs == ordered.size()) break;
-         Imax = -1; // Will stay -1 unless there is a next highest
+         if(cs == ordered.size()) {
+            break;
+         }
+         Imax            = -1; // Will stay -1 unless there is a next highest
          double Emaxloop = 0;
          for(unsigned i = 0; i < cs; i++) {
             if(energy[i] > Emaxloop && energy[i] < Emax) {
@@ -315,7 +322,9 @@ void TSiLi::SortCluster(std::vector<unsigned>& cluster)
 
       cluster = ordered;
    }
-   if(!(cluster[0] < fSiLiHits.size())) cluster.clear();
+   if(!(cluster[0] < fSiLiHits.size())) {
+      cluster.clear();
+   }
 }
 
 // Just a useful function for some dynamic tools

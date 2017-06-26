@@ -9,8 +9,7 @@ ClassImp(TTriFoil)
    Clear();
 }
 
-TTriFoil::~TTriFoil()
-= default;
+TTriFoil::~TTriFoil() = default;
 
 void TTriFoil::Clear(Option_t* opt)
 {
@@ -38,7 +37,7 @@ TTriFoil::TTriFoil(const TTriFoil& rhs) : TDetector()
    rhs.Copy(*this);
 }
 
-void TTriFoil::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TTriFoil::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    if(frag == nullptr || chan == nullptr) {
       return;

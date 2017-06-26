@@ -73,7 +73,9 @@ extern "C" void MakeAnalysisHistograms(TRuntimeObjects& obj)
 
    if(tf) {
       for(int x = 0; x < tf->NTBeam(); x++) {
-         if(tf->TBeam(x) > 5) obj.FillHistogram("TBeam", 500, 0, 500, tf->TBeam(x));
+         if(tf->TBeam(x) > 5) {
+            obj.FillHistogram("TBeam", 500, 0, 500, tf->TBeam(x));
+         }
       }
    }
 

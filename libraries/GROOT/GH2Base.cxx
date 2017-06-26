@@ -101,10 +101,11 @@ GH1D* GH2Base::GH2ProjectionX(const char* name, int firstbin, int lastbin, Optio
 
    std::string actual_name = name;
    if(actual_name == "_px") {
-      if(total)
+      if(total) {
          actual_name = title;
-      else
+      } else {
          actual_name = Form("%s_projx_%d_%d", GetTH2()->GetName(), firstbin, lastbin);
+      }
    }
 
    GH1D* output = nullptr;
@@ -122,9 +123,13 @@ GH1D* GH2Base::GH2ProjectionX(const char* name, int firstbin, int lastbin, Optio
    output->SetDirectory(nullptr);
 
    if(fIsSummary) {
-      if(KeepEmpty || output->Integral() > 0) fSummaryProjections->Add(output);
+      if(KeepEmpty || output->Integral() > 0) {
+         fSummaryProjections->Add(output);
+      }
    } else {
-      if(KeepEmpty || output->Integral() > 0) fProjections->Add(output);
+      if(KeepEmpty || output->Integral() > 0) {
+         fProjections->Add(output);
+      }
    }
    return output;
 }
@@ -150,10 +155,11 @@ GH1D* GH2Base::GH2ProjectionY(const char* name, int firstbin, int lastbin, Optio
 
    std::string actual_name = name;
    if(actual_name == "_py") {
-      if(total)
+      if(total) {
          actual_name = title;
-      else
+      } else {
          actual_name = Form("%s_projy_%d_%d", GetTH2()->GetName(), firstbin, lastbin);
+      }
    }
 
    GH1D* output = nullptr;
@@ -171,9 +177,13 @@ GH1D* GH2Base::GH2ProjectionY(const char* name, int firstbin, int lastbin, Optio
    output->SetDirectory(nullptr);
 
    if(fIsSummary) {
-      if(KeepEmpty || output->Integral() > 0) fSummaryProjections->Add(output);
+      if(KeepEmpty || output->Integral() > 0) {
+         fSummaryProjections->Add(output);
+      }
    } else {
-      if(KeepEmpty || output->Integral() > 0) fProjections->Add(output);
+      if(KeepEmpty || output->Integral() > 0) {
+         fProjections->Add(output);
+      }
    }
    return output;
 }
@@ -265,7 +275,9 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
          }
 
          g = GH2ProjectionY(hist_name.c_str(), binnum, binnum, "", DrawEmpty);
-         if(g && g->Integral() > 0) return g;
+         if(g && g->Integral() > 0) {
+            return g;
+         }
          binnum++;
          if(binnum == start_bin) {
             break;
@@ -284,7 +296,9 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
          }
 
          g = GH2ProjectionX(hist_name.c_str(), binnum, binnum, "", DrawEmpty);
-         if(g && g->Integral() > 0) return g;
+         if(g && g->Integral() > 0) {
+            return g;
+         }
          binnum++;
          if(binnum == start_bin) {
             break;
@@ -333,7 +347,9 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
          // std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
          std::string hist_name2 = Form("%s_%d", GetTH2()->GetName(), binnum);
          GH1D*       g          = GH2ProjectionY(hist_name2.c_str(), binnum, binnum, "", DrawEmpty);
-         if(g && g->Integral() > 0) return g;
+         if(g && g->Integral() > 0) {
+            return g;
+         }
          binnum--;
          if(binnum == start_bin) {
             break;
@@ -347,7 +363,9 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
          // std::string hist_name = Form("%s_%d",GetTH2()->GetName(),binnum);
          std::string hist_name2 = Form("%s_%d", GetTH2()->GetName(), binnum);
          GH1D*       g          = GH2ProjectionX(hist_name2.c_str(), binnum, binnum, "", DrawEmpty);
-         if(g && g->Integral() > 0) return g;
+         if(g && g->Integral() > 0) {
+            return g;
+         }
          binnum--;
          if(binnum == start_bin) {
             break;
@@ -427,11 +445,11 @@ void GH2I::Streamer(TBuffer &b) {
 /*
 GH2Base::iterator& GH2Base::iterator::operator++() {
   curr = mat->GetNext(curr);
-  std::cout << "Incrementing: curr=" << curr << ", first=" << first << std::endl;
-  std::cout << "First's name = " << first->GetName() << std::endl;
+  std::cout<<"Incrementing: curr="<<curr<<", first="<<first<<std::endl;
+  std::cout<<"First's name = "<<first->GetName()<<std::endl;
   if(curr==first) {
     curr = 0;
-    std::cout << "Found the beginning" << std::endl;
+    std::cout<<"Found the beginning"<<std::endl;
   }
   return *this;
 }

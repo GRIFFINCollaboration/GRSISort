@@ -68,32 +68,38 @@ int main(int argc, char** argv) {
 			
 			bool gotGriffin = (tree->FindBranch("TGriffin") != nullptr);
 			TGriffin* grif = nullptr;
-			if(gotGriffin)	tree->SetBranchAddress("TGriffin", &grif);
+			if(gotGriffin) {	tree->SetBranchAddress("TGriffin", &grif);
+}
 			long numGriffin = 0;
 
 			bool gotDescant = (tree->FindBranch("TDescant") != nullptr);
 			TDescant* desc = nullptr;
-			if(gotDescant) tree->SetBranchAddress("TDescant", &desc);
+			if(gotDescant) { tree->SetBranchAddress("TDescant", &desc);
+}
 			long numDescant = 0;
 
 			bool gotLaBr = (tree->FindBranch("TLaBr") != nullptr);
 			TLaBr* laBr = nullptr;
-			if(gotLaBr)	tree->SetBranchAddress("TLaBr", &laBr);
+			if(gotLaBr) {	tree->SetBranchAddress("TLaBr", &laBr);
+}
 			long numLaBr = 0;
 
 			bool gotZeroDegree = (tree->FindBranch("TZeroDegree") != nullptr);
 			TZeroDegree* zd = nullptr;
-			if(gotZeroDegree)	tree->SetBranchAddress("TZeroDegree", &zd);
+			if(gotZeroDegree) {	tree->SetBranchAddress("TZeroDegree", &zd);
+}
 			long numZeroDegree = 0;
 
 			bool gotSceptar = (tree->FindBranch("TSceptar") != nullptr);
 			TSceptar* scep = nullptr;
-			if(gotSceptar) tree->SetBranchAddress("TSceptar", &scep);
+			if(gotSceptar) { tree->SetBranchAddress("TSceptar", &scep);
+}
 			long numSceptar = 0;
 
 			bool gotPaces = (tree->FindBranch("TPaces") != nullptr);
 			TPaces* pace = nullptr;
-			if(gotPaces) tree->SetBranchAddress("TPaces", &pace);
+			if(gotPaces) { tree->SetBranchAddress("TPaces", &pace);
+}
 			long numPaces = 0;
 
 			//Tigress
@@ -101,21 +107,33 @@ int main(int argc, char** argv) {
 			for(long e = 0; e < tree->GetEntries(); ++e) {
 				tree->GetEntry(e);
 
-				if(gotGriffin)    numGriffin    += grif->GetMultiplicity();
-				if(gotDescant)    numDescant    += desc->GetMultiplicity();
-				if(gotLaBr)       numLaBr       += laBr->GetMultiplicity();
-				if(gotZeroDegree) numZeroDegree += zd->GetMultiplicity();
-				if(gotSceptar)    numSceptar    += scep->GetMultiplicity();
-				if(gotPaces)      numPaces      += pace->GetMultiplicity();
+				if(gotGriffin) {    numGriffin    += grif->GetMultiplicity();
+}
+				if(gotDescant) {    numDescant    += desc->GetMultiplicity();
+}
+				if(gotLaBr) {       numLaBr       += laBr->GetMultiplicity();
+}
+				if(gotZeroDegree) { numZeroDegree += zd->GetMultiplicity();
+}
+				if(gotSceptar) {    numSceptar    += scep->GetMultiplicity();
+}
+				if(gotPaces) {      numPaces      += pace->GetMultiplicity();
+}
 			}
 
-			if(gotGriffin)    std::cout<<numGriffin<<" GRIFFIN, ";
-			if(gotDescant)    std::cout<<numDescant<<" DESCANT, ";
-			if(gotLaBr)       std::cout<<numLaBr<<" LABR, ";
-			if(gotZeroDegree) std::cout<<numZeroDegree<<" ZERO-DEGREE, ";
-			if(gotSceptar)    std::cout<<numSceptar<<" SCEPTAR, ";
-			if(gotPaces)      std::cout<<numPaces<<" PACES, ";
-			std::cout<<" "<<numGriffin+numDescant+numLaBr+numZeroDegree+numSceptar+numPaces<<" total hits"<<std::endl;
+			if(gotGriffin) {    std::cout<<numGriffin<<" GRIFFIN, ";
+			
+}if(gotDescant) {    std::cout<<numDescant<<" DESCANT, ";
+			
+}if(gotLaBr) {       std::cout<<numLaBr<<" LABR, ";
+			
+}if(gotZeroDegree) { std::cout<<numZeroDegree<<" ZERO-DEGREE, ";
+			
+}if(gotSceptar) {    std::cout<<numSceptar<<" SCEPTAR, ";
+			
+}if(gotPaces) {      std::cout<<numPaces<<" PACES, ";
+			
+}std::cout<<" "<<numGriffin+numDescant+numLaBr+numZeroDegree+numSceptar+numPaces<<" total hits"<<std::endl;
 
 			continue;
 		}

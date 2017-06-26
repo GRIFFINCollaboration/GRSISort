@@ -60,7 +60,7 @@ void TTAC::Print(Option_t*) const
    printf("%lu fTACHits\n", fTACHits.size());
 }
 
-void TTAC::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*)
+void TTAC::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel*)
 {
    TTACHit hit(*frag);
    fTACHits.push_back(std::move(hit));
@@ -77,7 +77,7 @@ TTACHit* TTAC::GetTACHit(const int& i)
    try {
       return &fTACHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;

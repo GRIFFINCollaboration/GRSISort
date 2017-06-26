@@ -34,7 +34,7 @@ public:
    ~TSortingDiagnostics() override;
    static TSortingDiagnostics* Get()
    {
-      if (fSortingDiagnostics == nullptr) {
+      if(fSortingDiagnostics == nullptr) {
          fSortingDiagnostics = new TSortingDiagnostics;
       }
       return fSortingDiagnostics;

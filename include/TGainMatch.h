@@ -53,7 +53,7 @@ public:
    Bool_t IsGroupable() const override { return false; }
    void   WriteToChannel() const override;
 
-   void SetNucleus(TNucleus*, Option_t* = "") override { Warning("SetNucleus", "Is not used in TGainMatching"); }
+   void      SetNucleus(TNucleus*, Option_t* = "") override { Warning("SetNucleus", "Is not used in TGainMatching"); }
    TNucleus* GetNucleus() const override
    {
       Warning("GetNucleus", "Is not used in TGainMatching");
@@ -61,7 +61,7 @@ public:
    }
 
    void SetHist(TH1*) override { Warning("SetHist", "Is not used in TGainMatching"); }
-   TH1*              GetHist() const
+   TH1* GetHist() const
    {
       Warning("GetHist", "Is not used in TGainMatching");
       return nullptr;

@@ -13,8 +13,7 @@ ClassImp(TEfficiencyGraph)
    Clear();
 }
 
-TEfficiencyGraph::~TEfficiencyGraph()
-= default;
+TEfficiencyGraph::~TEfficiencyGraph() = default;
 
 TEfficiencyGraph::TEfficiencyGraph(const TEfficiencyGraph& copy) : TCalGraph(copy)
 {

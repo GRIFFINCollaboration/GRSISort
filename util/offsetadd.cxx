@@ -8,7 +8,7 @@
 
 //void WriteEventToFile(TMidasFile*,std::shared_ptr<TMidasEvent>,Option_t);
 
-void ProcessEvent(std::shared_ptr<TMidasEvent>,TMidasFile*);
+void ProcessEvent(const std::shared_ptr<TMidasEvent>&,TMidasFile*);
 
 int main(int argc, char **argv) {
 
@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
 //}
 
 
-void ProcessEvent(std::shared_ptr<TMidasEvent> event,TMidasFile *outfile) {
+void ProcessEvent(const std::shared_ptr<TMidasEvent>& event,TMidasFile *outfile) {
    if(event->GetEventId() !=1 ) {
       outfile->Write(event,"q");
       return;
@@ -152,10 +152,11 @@ void ProcessEvent(std::shared_ptr<TMidasEvent> event,TMidasFile *outfile) {
          time -= 87; // run 2394 correction
          break;
    };
-   if(time<0)
+   if(time<0) {
       time += 0x3ffffffffff;
-   else if(time>0x3ffffffffff)
+   } else if(time>0x3ffffffffff) {
       time -= 0x3ffffffffff;
+}
 
    // moving these inside the next switch, to account for doubly printed words.
    // (hey, it happens.)

@@ -45,13 +45,17 @@ bool DefaultAddback(TTigressHit& one, TTigressHit& two)
          int two_seg = two.GetSegmentVec().front().GetSegment();
 
          // front segment to front segment OR back segment to back segment
-         if((one_seg < 5 && two_seg < 5) || (one_seg > 4 && two_seg > 4)) seperation_limit = 54;
-         // front to back
-         else if((one_seg < 5 && two_seg > 4) || (one_seg > 4 && two_seg < 5))
+         if((one_seg < 5 && two_seg < 5) || (one_seg > 4 && two_seg > 4)) {
+            seperation_limit = 54;
+            // front to back
+         } else if((one_seg < 5 && two_seg > 4) || (one_seg > 4 && two_seg < 5)) {
             seperation_limit = 105;
+         }
       }
 
-      if(res < seperation_limit) return true;
+      if(res < seperation_limit) {
+         return true;
+      }
    }
 
    return false;
@@ -84,8 +88,7 @@ TTigress::TTigress(const TTigress& rhs) : TGRSIDetector()
    rhs.Copy(*this);
 }
 
-TTigress::~TTigress()
-= default;
+TTigress::~TTigress() = default;
 
 void TTigress::Copy(TObject& rhs) const
 {
@@ -111,7 +114,9 @@ void TTigress::Clear(Option_t* opt)
 void TTigress::Print(Option_t* opt) const
 {
    printf("%lu tigress hits\n", fTigressHits.size());
-   for(unsigned int i = 0; i < GetMultiplicity(); i++) fTigressHits.at(i).Print(opt);
+   for(unsigned int i = 0; i < GetMultiplicity(); i++) {
+      fTigressHits.at(i).Print(opt);
+   }
 
    return;
 }
@@ -185,7 +190,7 @@ TTigressHit* TTigress::GetAddbackHit(const int& i)
    if(i < GetAddbackMultiplicity()) {
       return &fAddbackHits.at(i);
    } else {
-      std::cerr << "Addback hits are out of range" << std::endl;
+      std::cerr<<"Addback hits are out of range"<<std::endl;
       throw grsi::exit_exception(1);
       return nullptr;
    }
@@ -202,17 +207,23 @@ void TTigress::BuildHits()
    std::vector<TTigressHit>::iterator it;
    for(it = fTigressHits.begin(); it != fTigressHits.end();) {
       // it->Print("all");
-      if(it->GetNSegments() > 1) it->SortSegments();
+      if(it->GetNSegments() > 1) {
+         it->SortSegments();
+      }
 
-      if(it->HasWave() && TGRSIOptions::AnalysisOptions()->IsWaveformFitting()) it->SetWavefit();
+      if(it->HasWave() && TGRSIOptions::AnalysisOptions()->IsWaveformFitting()) {
+         it->SetWavefit();
+      }
       it++;
    }
-   if(fTigressHits.size() > 1) std::sort(fTigressHits.begin(), fTigressHits.end());
+   if(fTigressHits.size() > 1) {
+      std::sort(fTigressHits.begin(), fTigressHits.end());
+   }
 
    // Label all hits as being suppressed or not
-   for(auto & fTigressHit : fTigressHits) {
+   for(auto& fTigressHit : fTigressHits) {
       bool suppressed = false;
-      for(auto & fBgo : fBgos) {
+      for(auto& fBgo : fBgos) {
          if(fSuppressionCriterion(fTigressHit, fBgo)) {
             suppressed = true;
             break;
@@ -222,7 +233,7 @@ void TTigress::BuildHits()
    }
 }
 
-void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TTigress::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    if(frag == nullptr || chan == nullptr) {
       return;
@@ -256,18 +267,24 @@ void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan
                   return;
                } else {
                   hit->CopyFragment(*frag);
-                  if(TestGlobalBit(kSetCoreWave)) frag->CopyWave(*hit);
+                  if(TestGlobalBit(kSetCoreWave)) {
+                     frag->CopyWave(*hit);
+                  }
                   return;
                }
             } else {
                hit->CopyFragment(*frag);
-               if(TestGlobalBit(kSetCoreWave)) frag->CopyWave(*hit);
+               if(TestGlobalBit(kSetCoreWave)) {
+                  frag->CopyWave(*hit);
+               }
                return;
             }
          }
       }
       corehit.CopyFragment(*frag);
-      if(TestGlobalBit(kSetCoreWave)) frag->CopyWave(corehit);
+      if(TestGlobalBit(kSetCoreWave)) {
+         frag->CopyWave(corehit);
+      }
       fTigressHits.push_back(corehit);
       return;
       //} else if(chan->GetMnemonic()->subsystem.compare(0,1,"G")==0) { // its ge but its not a core...
@@ -277,7 +294,9 @@ void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan
          TTigressHit* hit = GetTigressHit(i);
          if((hit->GetDetector() == chan->GetDetectorNumber()) &&
             (hit->GetCrystal() == chan->GetCrystalNumber())) { // we have a match;
-            if(TestGlobalBit(kSetSegWave)) frag->CopyWave(temp);
+            if(TestGlobalBit(kSetSegWave)) {
+               frag->CopyWave(temp);
+            }
             hit->AddSegment(temp);
             // printf(" I found a core !\t%i\n",hit->GetNSegments()); fflush(stdout);
             return;
@@ -285,7 +304,9 @@ void TTigress::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan
       }
       TTigressHit corehit;
       corehit.SetAddress((frag->GetAddress())); // fake it till you make it
-      if(TestGlobalBit(kSetSegWave)) frag->CopyWave(temp);
+      if(TestGlobalBit(kSetSegWave)) {
+         frag->CopyWave(temp);
+      }
       corehit.AddSegment(temp);
       fTigressHits.push_back(corehit);
       // if(fTigressHits.size()>100) {
@@ -320,10 +341,11 @@ UShort_t TTigress::GetNAddbackFrags(size_t idx) const
 {
    // Get the number of addback "fragments" contributing to the total addback hit
    // with index idx.
-   if(idx < fAddbackFrags.size())
+   if(idx < fAddbackFrags.size()) {
       return fAddbackFrags.at(idx);
-   else
+   } else {
       return 0;
+   }
 }
 
 // void TTigress::DopplerCorrect(TTigressHit *hit)  {

@@ -35,7 +35,7 @@ public:
 
    void StopServer()
    {
-      if (fRunning) fRunning = false;
+      if(fRunning) fRunning = false;
    }
 
 private:

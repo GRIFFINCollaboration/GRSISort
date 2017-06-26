@@ -39,20 +39,22 @@ public:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>& AddOutputQueue(size_t maxSize = 50000)
    {
       std::stringstream name;
-      name << "event_queue_" << fOutputQueues.size();
+      name<<"event_queue_"<<fOutputQueues.size();
       fOutputQueues.push_back(std::make_shared<ThreadsafeQueue<std::shared_ptr<TUnpackedEvent>>>(name.str(), maxSize));
       return fOutputQueues.back();
    }
 #endif
 
-   bool         Iteration() override;
+   bool Iteration() override;
    void ClearQueue() override;
 
    size_t GetItemsPushed() override
    {
-      if (fOutputQueues.size() > 0) return fOutputQueues.back()->ItemsPushed();
+      if(fOutputQueues.size() > 0) {
+         return fOutputQueues.back()->ItemsPushed();
+      }
       return std::numeric_limits<size_t>::max();
-   }                                      // this should work fine as all loops are always filled at the same time
+   } // this should work fine as all loops are always filled at the same time
    size_t GetItemsPopped() override { return 0; }  // fOutputQueue->ItemsPopped(); }
    size_t GetItemsCurrent() override { return 0; } // fOutputQueue->Size();        }
    size_t GetRate() override { return 0; }

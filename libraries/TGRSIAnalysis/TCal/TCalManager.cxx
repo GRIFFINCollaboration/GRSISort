@@ -4,9 +4,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TCalManager)
-   /// \endcond
+/// \endcond
 
-   TCalManager::TCalManager()
+TCalManager::TCalManager()
 {
    fClass = nullptr; // fClass will point to a TClass which is made persistant through a root session within gROOT.
    // So we don't need to worry about allocating it.
@@ -22,7 +22,9 @@ TCalManager::~TCalManager()
 {
    CalMap::iterator iter;
    for(iter = fCalMap.begin(); iter != fCalMap.end(); iter++) {
-      if(iter->second) delete iter->second;
+      if(iter->second) {
+         delete iter->second;
+      }
       iter->second = nullptr;
    }
 }
@@ -106,7 +108,9 @@ Bool_t TCalManager::AddToManager(TCal* cal, UInt_t chanNum, Option_t* opt)
 {
    /// Makes a Deep copy of cal and adds it to the CalManager Map for channel number
    /// chanNum.
-   if(!cal) return false;
+   if(!cal) {
+      return false;
+   }
 
    if(!fClass) {
       SetClass(cal->ClassName());
@@ -115,60 +119,70 @@ Bool_t TCalManager::AddToManager(TCal* cal, UInt_t chanNum, Option_t* opt)
       return false;
    }
 
-   if(!(cal->GetChannel()))
-      if(!(cal->SetChannel(chanNum))) return false; // TCal does the Error for us.
-
-   if(fCalMap.count(cal->GetChannel()->GetNumber()) == 1) { // if this cal already exists
-      if(strcmp(opt, "overwrite") == 0) {
-         TCal* oldCal = GetCal(chanNum);
-         // delete the old calibration for this channel number
-         delete oldCal;
-         oldCal              = dynamic_cast<TCal*>(cal->Clone(cal->GetName()));
-         fCalMap.at(chanNum) = oldCal;
-         return true;
-      } else {
-         Error("AddToManager", "Trying to add a channel that already exists!");
-         return false;
+   if(!(cal->GetChannel())) {
+      if(!(cal->SetChannel(chanNum))) {
+         return false; // TCal does the Error for us.
       }
-   } else {
-      TCal* newCal = dynamic_cast<TCal*>(cal->Clone(cal->GetName()));
-      // In order to construct a new derived class you need to know the type at compile time.
-      // Clone lets us get around this. There are other ways to do this using "virtual constructor idioms"
-      // but the basically do what clone does anyway.
-      // Clone uses ROOT streamers. We have made the TChannel part of the TCal a TRef.
-      // This has the effect of making it persistent as far as the ROOT streamer
-      // facility is concerned. All of the other "pointer members" of the TCal
-      // Get Deep copied into the TCal Manager.
-      printf("newCal: %p, cal: %p\n", static_cast<void*>(newCal->GetChannel()), static_cast<void*>(cal->GetChannel()));
-      fCalMap.insert(std::make_pair(chanNum, newCal));
-   }
+	}
 
-   return true;
+	if(fCalMap.count(cal->GetChannel()->GetNumber()) == 1) { // if this cal already exists
+		if(strcmp(opt, "overwrite") == 0) {
+			TCal* oldCal = GetCal(chanNum);
+			// delete the old calibration for this channel number
+			delete oldCal;
+			oldCal              = dynamic_cast<TCal*>(cal->Clone(cal->GetName()));
+			fCalMap.at(chanNum) = oldCal;
+			return true;
+		} else {
+			Error("AddToManager", "Trying to add a channel that already exists!");
+			return false;
+		}
+	} else {
+		TCal* newCal = dynamic_cast<TCal*>(cal->Clone(cal->GetName()));
+		// In order to construct a new derived class you need to know the type at compile time.
+		// Clone lets us get around this. There are other ways to do this using "virtual constructor idioms"
+		// but the basically do what clone does anyway.
+		// Clone uses ROOT streamers. We have made the TChannel part of the TCal a TRef.
+		// This has the effect of making it persistent as far as the ROOT streamer
+		// facility is concerned. All of the other "pointer members" of the TCal
+		// Get Deep copied into the TCal Manager.
+		printf("newCal: %p, cal: %p\n", static_cast<void*>(newCal->GetChannel()),
+				static_cast<void*>(cal->GetChannel()));
+		fCalMap.insert(std::make_pair(chanNum, newCal));
+	}
+
+	return true;
 }
 
 void TCalManager::WriteToChannel() const
 {
-   /// Writes all of the TCals to TChannel based on the method WriteToChannel
-   /// defined in the TCal held by TCalManager.
-   for(const auto & iter : fCalMap) {
-      if(iter.second) iter.second->WriteToChannel();
-   }
+	/// Writes all of the TCals to TChannel based on the method WriteToChannel
+	/// defined in the TCal held by TCalManager.
+	for(const auto& iter : fCalMap) {
+		if(iter.second) {
+			iter.second->WriteToChannel();
+		}
+	}
 }
 
 void TCalManager::Clear(Option_t*)
 {
-   /// This deletes all of the current TCal's. It also resets the class
-   /// type to 0.
-   for(auto & iter : fCalMap) {
-      if(iter.second) delete iter.second;
-      iter.second = nullptr;
-   }
-   fCalMap.clear();
-   fClass = nullptr;
+	/// This deletes all of the current TCal's. It also resets the class
+	/// type to 0.
+	for(auto& iter : fCalMap) {
+		if(iter.second) {
+			delete iter.second;
+		}
+		iter.second = nullptr;
+	}
+	fCalMap.clear();
+	fClass = nullptr;
 }
 
 void TCalManager::Print(Option_t*) const
 {
-   if(fClass) printf("Type: %s\n", fClass->GetName());
-   std::cout << "Size: " << fCalMap.size() << std::endl; // Printing this way due to size_type return
+	if(fClass) {
+		printf("Type: %s\n", fClass->GetName());
+	}
+	std::cout<<"Size: "<<fCalMap.size()<<std::endl; // Printing this way due to size_type return
 }

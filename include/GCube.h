@@ -18,58 +18,58 @@ public:
    ~GCube() override;
 
 #if MAJOR_ROOT_VERSION < 6
-   Bool_t				Add(TF1* h1, Double_t c1 = 1., Option_t* option = "") override;
-   Bool_t				Add(const TH1* h1, Double_t c1 = 1.) override;
-   Bool_t				Add(const TH1* h1, const TH1* h2, Double_t c1 = 1., Double_t c2 = 1.) override;
+   Bool_t Add(TF1* h1, Double_t c1 = 1., Option_t* option = "") override;
+   Bool_t Add(const TH1* h1, Double_t c1 = 1.) override;
+   Bool_t Add(const TH1* h1, const TH1* h2, Double_t c1 = 1., Double_t c2 = 1.) override;
 #endif
-   Int_t             BufferEmpty(Int_t action = 0) override;
-   Int_t             BufferFill(Double_t, Double_t) override { return -2; } // MayNotUse
-   virtual Int_t     BufferFill(Double_t x, Double_t y, Double_t z, Double_t w);
-   void              Copy(TObject& hnew) const override;
-   Int_t             Fill(Double_t) override;                                     // MayNotUse
-   Int_t             Fill(Double_t, Double_t) override { return Fill(0.); }       // MayNotUse
-   Int_t             Fill(const char*, Double_t) override { return Fill(0); }     // MayNotUse
-   virtual Int_t     Fill(Double_t, const char*, Double_t) { return Fill(0); }    // MayNotUse
-   virtual Int_t     Fill(const char*, Double_t, Double_t) { return Fill(0); }    // MayNotUse
-   virtual Int_t     Fill(const char*, const char*, Double_t) { return Fill(0); } // MayNotUse
-   virtual Int_t     Fill(Double_t x, Double_t y, Double_t z);
-   virtual Int_t     Fill(Double_t x, Double_t y, Double_t z, Double_t w);
-   virtual Int_t     Fill(const char* namex, const char* namey, const char* namez, Double_t w);
-   void              FillRandom(const char* fname, Int_t ntimes = 5000) override;
-   void              FillRandom(TH1* h, Int_t ntimes = 5000) override;
-   Int_t             FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1) const override;
-   Int_t             FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1) const override;
-   virtual void      FitSlicesZ(TF1* f1 = nullptr, Int_t binminx = 0, Int_t binmaxx = -1, Int_t binmiy = 0,
-                                Int_t binmaxy = -1, Int_t cut = 0, Option_t* option = "QNR");
-   Int_t             GetBin(Int_t binx, Int_t biny = 0, Int_t binz = 0) const override;
-   virtual Double_t  GetBinWithContent2(Double_t c, Int_t& binx, Int_t& biny, Int_t& binz, Int_t firstxbin = 1,
-                                        Int_t lastxbin = -1, Int_t firstybin = 1, Int_t lastybin = -1,
-                                        Int_t firstzbin = 1, Int_t lastzbin = -1, Double_t maxdiff = 0) const;
-   virtual Double_t  GetCorrelationFactor(Int_t axis1 = 1, Int_t axis2 = 2) const;
-   virtual Double_t  GetCovariance(Int_t axis1 = 1, Int_t axis2 = 2) const;
-   virtual void      GetRandom3(Double_t& x, Double_t& y, Double_t& z);
-   void              GetStats(Double_t* stats) const override;
-   Double_t          Integral(Option_t* option = "") const override;
+   Int_t BufferEmpty(Int_t action = 0) override;
+   Int_t         BufferFill(Double_t, Double_t) override { return -2; } // MayNotUse
+   virtual Int_t BufferFill(Double_t x, Double_t y, Double_t z, Double_t w);
+   void Copy(TObject& hnew) const override;
+   Int_t         Fill(Double_t) override;                                     // MayNotUse
+   Int_t         Fill(Double_t, Double_t) override { return Fill(0.); }       // MayNotUse
+   Int_t         Fill(const char*, Double_t) override { return Fill(0); }     // MayNotUse
+   virtual Int_t Fill(Double_t, const char*, Double_t) { return Fill(0); }    // MayNotUse
+   virtual Int_t Fill(const char*, Double_t, Double_t) { return Fill(0); }    // MayNotUse
+   virtual Int_t Fill(const char*, const char*, Double_t) { return Fill(0); } // MayNotUse
+   virtual Int_t Fill(Double_t x, Double_t y, Double_t z);
+   virtual Int_t Fill(Double_t x, Double_t y, Double_t z, Double_t w);
+   virtual Int_t Fill(const char* namex, const char* namey, const char* namez, Double_t w);
+   void FillRandom(const char* fname, Int_t ntimes = 5000) override;
+   void FillRandom(TH1* h, Int_t ntimes = 5000) override;
+   Int_t FindFirstBinAbove(Double_t threshold = 0, Int_t axis = 1) const override;
+   Int_t FindLastBinAbove(Double_t threshold = 0, Int_t axis = 1) const override;
+   virtual void FitSlicesZ(TF1* f1 = nullptr, Int_t binminx = 0, Int_t binmaxx = -1, Int_t binmiy = 0,
+                           Int_t binmaxy = -1, Int_t cut = 0, Option_t* option = "QNR");
+   Int_t GetBin(Int_t binx, Int_t biny = 0, Int_t binz = 0) const override;
+   virtual Double_t GetBinWithContent2(Double_t c, Int_t& binx, Int_t& biny, Int_t& binz, Int_t firstxbin = 1,
+                                       Int_t lastxbin = -1, Int_t firstybin = 1, Int_t lastybin = -1,
+                                       Int_t firstzbin = 1, Int_t lastzbin = -1, Double_t maxdiff = 0) const;
+   virtual Double_t GetCorrelationFactor(Int_t axis1 = 1, Int_t axis2 = 2) const;
+   virtual Double_t GetCovariance(Int_t axis1 = 1, Int_t axis2 = 2) const;
+   virtual void GetRandom3(Double_t& x, Double_t& y, Double_t& z);
+   void GetStats(Double_t* stats) const override;
+   Double_t Integral(Option_t* option = "") const override;
    using TH1::Integral;
-   virtual Double_t  Integral(Int_t firstxbin, Int_t lastxbin, Int_t firstybin, Int_t lastybin, Int_t firstzbin,
-                              Int_t lastzbin, Option_t* option = "") const;
+   virtual Double_t Integral(Int_t firstxbin, Int_t lastxbin, Int_t firstybin, Int_t lastybin, Int_t firstzbin,
+                             Int_t lastzbin, Option_t* option = "") const;
    using TH1::IntegralAndError;
-   virtual Double_t  IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybin, Int_t lastybin, Int_t firstzbin,
-                                      Int_t lastzbin, Double_t& error, Option_t* option = "") const;
-   Double_t          Interpolate(Double_t) override;
-   Double_t          Interpolate(Double_t, Double_t) override;
-   Double_t          Interpolate(Double_t, Double_t, Double_t) override;
-   Double_t          KolmogorovTest(const TH1* h2, Option_t* option = "") const override;
-   Long64_t          Merge(TCollection* list) override;
-   virtual TH1D*     Projection(const char* name = "_pr", Int_t firstBiny = 0, Int_t lastBiny = -1, Int_t firstBinz = 0,
-                                Int_t lastBinz = -1, Option_t* opt = "") const;
-   void              PutStats(Double_t* stats) override;
-   virtual GCube*    Rebin3D(Int_t ngroup = 2, const char* newname = "");
-   void              Reset(Option_t* option = "") override;
-   virtual void      SetShowProjection(const char* option = "xy", Int_t nbins = 1); // *MENU*
-   TH1*              ShowBackground(Int_t niter = 20, Option_t* option = "same") override;
-   Int_t             ShowPeaks(Double_t sigma = 2, Option_t* option = "", Double_t threshold = 0.05) override; // *MENU*
-   void              Smooth(Int_t ntimes = 1, Option_t* option = "") override;                                  // *MENU*
+   virtual Double_t IntegralAndError(Int_t firstxbin, Int_t lastxbin, Int_t firstybin, Int_t lastybin, Int_t firstzbin,
+                                     Int_t lastzbin, Double_t& error, Option_t* option = "") const;
+   Double_t Interpolate(Double_t) override;
+   Double_t Interpolate(Double_t, Double_t) override;
+   Double_t Interpolate(Double_t, Double_t, Double_t) override;
+   Double_t KolmogorovTest(const TH1* h2, Option_t* option = "") const override;
+   Long64_t Merge(TCollection* list) override;
+   virtual TH1D* Projection(const char* name = "_pr", Int_t firstBiny = 0, Int_t lastBiny = -1, Int_t firstBinz = 0,
+                            Int_t lastBinz = -1, Option_t* opt = "") const;
+   void PutStats(Double_t* stats) override;
+   virtual GCube* Rebin3D(Int_t ngroup = 2, const char* newname = "");
+   void Reset(Option_t* option = "") override;
+   virtual void SetShowProjection(const char* option = "xy", Int_t nbins = 1); // *MENU*
+   TH1* ShowBackground(Int_t niter = 20, Option_t* option = "same") override;
+   Int_t ShowPeaks(Double_t sigma = 2, Option_t* option = "", Double_t threshold = 0.05) override; // *MENU*
+   void Smooth(Int_t ntimes = 1, Option_t* option = "") override;                                  // *MENU*
 
 protected:
    using TH1::DoIntegral;

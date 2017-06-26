@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "TAnalysisHistLoop.h"
 
 #include "TFile.h"
@@ -10,9 +12,13 @@
 
 TAnalysisHistLoop* TAnalysisHistLoop::Get(std::string name)
 {
-   if(name.length() == 0) name = "histo_loop";
-   TAnalysisHistLoop* loop     = dynamic_cast<TAnalysisHistLoop*>(StoppableThread::Get(name));
-   if(!loop) loop              = new TAnalysisHistLoop(name);
+   if(name.length() == 0) {
+      name = "histo_loop";
+   }
+   TAnalysisHistLoop* loop = dynamic_cast<TAnalysisHistLoop*>(StoppableThread::Get(name));
+   if(!loop) {
+      loop = new TAnalysisHistLoop(name);
+   }
    return loop;
 }
 
@@ -105,7 +111,7 @@ void TAnalysisHistLoop::Write()
 
 void TAnalysisHistLoop::LoadLibrary(std::string library)
 {
-   fCompiledHistograms.Load(library, "MakeAnalysisHistograms");
+   fCompiledHistograms.Load(std::move(library), "MakeAnalysisHistograms");
 }
 
 std::string TAnalysisHistLoop::GetLibraryName() const

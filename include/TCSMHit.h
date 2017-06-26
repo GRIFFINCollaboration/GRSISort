@@ -42,7 +42,7 @@ private:
    Double_t fVerDEnergy{}; //
    Double_t fHorDTime{};   //
    Double_t fVerDTime{};   //
-   TVector3 fDPosition;  //
+   TVector3 fDPosition;    //
 
    Double_t fHorEEnergy{}; //
    Double_t fVerEEnergy{}; //
@@ -103,10 +103,13 @@ public:
    Double_t GetDdE_dx() const { return GetDEnergy() / GetDthickness(); }
    Double_t GetDthickness() const;
 
-   TVector3 GetPosition(Double_t = 0) const override { return fDPosition; }                 //!<!
+   TVector3 GetPosition(Double_t = 0) const override { return fDPosition; }                  //!<!
    Double_t GetEnergy(Option_t* = "") const override { return GetDEnergy() + GetEEnergy(); } //!<!
 
-	Double_t GetTime(const UInt_t& = ETimeFlag::kAll, Option_t* = "") const override { return fVerDTime; }  ///< Returns fVerDTime
+   Double_t GetTime(const UInt_t& = ETimeFlag::kAll, Option_t* = "") const override
+   {
+      return fVerDTime;
+   } ///< Returns fVerDTime
 
    inline void SetDetectorNumber(const Int_t& tempnum) { fDetectorNumber = tempnum; } //!<!
 
@@ -134,8 +137,8 @@ public:
    inline void SetDHorizontalTime(const Int_t tempd) { fHorDTime = tempd; } //!<!
    inline void SetDVerticalTime(const Int_t tempd) { fVerDTime = tempd; }   //!<!
 
-   inline void SetEPosition(TVector3 tempp) { fEPosition = tempp; } //!<!
-   inline void SetDPosition(TVector3 tempp) { fDPosition = tempp; } //!<!
+   inline void SetEPosition(const TVector3& tempp) { fEPosition = tempp; } //!<!
+   inline void SetDPosition(const TVector3& tempp) { fDPosition = tempp; } //!<!
 
    inline void SetDHorizontalEnergy(const Double_t tempd) { fHorDEnergy = tempd; }
    inline void SetDVerticalEnergy(const Double_t tempd) { fVerDEnergy = tempd; }

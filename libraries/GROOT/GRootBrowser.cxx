@@ -278,7 +278,9 @@ void GRootBrowser::CreateBrowser(const char* name)
    fIconPic = SetIconPixmap("rootdb_s.xpm");
    SetClassHints("ROOT", "Browser");
 
-   if(!strcmp(gROOT->GetDefCanvasName(), "c1")) gROOT->SetDefCanvasName("Canvas_1");
+   if(!strcmp(gROOT->GetDefCanvasName(), "c1")) {
+      gROOT->SetDefCanvasName("Canvas_1");
+   }
 
    SetWMSizeHints(600, 350, 10000, 10000, 2, 2);
    MapSubwindows();
@@ -295,7 +297,9 @@ GRootBrowser::~GRootBrowser()
    printf("I AM HERE!\n");
    fflush(stdout);
 
-   if(fIconPic) gClient->FreePicture(fIconPic);
+   if(fIconPic) {
+      gClient->FreePicture(fIconPic);
+   }
    delete fLH0;
    delete fLH1;
    delete fLH2;
@@ -334,13 +338,17 @@ void GRootBrowser::Add(TObject* obj, const char* name, Int_t check)
    /// called by a browser. If check < 0 (default) no check box is drawn,
    /// if 0 then unchecked checkbox is added, if 1 checked checkbox is added.
 
-   if(obj->InheritsFrom("TObjectSpy")) return;
+   if(obj->InheritsFrom("TObjectSpy")) {
+      return;
+   }
    if(obj->InheritsFrom("TKey")) {
       if(strcmp((dynamic_cast<TKey*>(obj))->GetClassName(), "TChannel") == 0) {
          (dynamic_cast<TKey*>(obj))->ReadObj();
       }
    }
-   if(fActBrowser) fActBrowser->Add(obj, name, check);
+   if(fActBrowser) {
+      fActBrowser->Add(obj, name, check);
+   }
 }
 
 //______________________________________________________________________________
@@ -350,7 +358,9 @@ void GRootBrowser::BrowseObj(TObject* obj)
    /// GRootBrowser::Add() which will fill the IconBox and the tree.
    /// Emits signal "BrowseObj(TObject*)".
 
-   if(fActBrowser) fActBrowser->BrowseObj(obj);
+   if(fActBrowser) {
+      fActBrowser->BrowseObj(obj);
+   }
    Emit("BrowseObj(TObject*)", (Long_t)obj);
 }
 
@@ -362,11 +372,12 @@ void GRootBrowser::CloneBrowser()
 
    Int_t           loop   = 1;
    GBrowserPlugin* plugin = nullptr;
-   auto*       b      = new TBrowser();
+   auto*           b      = new TBrowser();
    TIter           next(&fPlugins);
    while((plugin = dynamic_cast<GBrowserPlugin*>(next()))) {
-      if(loop > fNbInitPlugins)
+      if(loop > fNbInitPlugins) {
          b->ExecPlugin(plugin->GetName(), "", plugin->fCommand.Data(), plugin->fTab, plugin->fSubTab);
+      }
       ++loop;
    }
 }
@@ -389,11 +400,15 @@ void GRootBrowser::CloseTabs()
    Int_t             i;
    Disconnect(fMenuFile, "Activated(Int_t)", this, "HandleMenu(Int_t)");
    Disconnect(fTabRight, "Selected(Int_t)", this, "DoTab(Int_t)");
-   if(fPlugins.IsEmpty()) return;
+   if(fPlugins.IsEmpty()) {
+      return;
+   }
    fActBrowser = nullptr;
    for(i = 0; i < fTabLeft->GetNumberOfTabs(); i++) {
       container = fTabLeft->GetTabContainer(i);
-      if(!container) continue;
+      if(!container) {
+         continue;
+      }
       el = dynamic_cast<TGFrameElement*>(container->GetList()->First());
       if(el && el->fFrame) {
          el->fFrame->SetFrameElement(nullptr);
@@ -402,8 +417,9 @@ void GRootBrowser::CloseTabs()
          } else if(el->fFrame->InheritsFrom("TGMainFrame")) {
             (dynamic_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
             gSystem->ProcessEvents();
-         } else
+         } else {
             delete el->fFrame;
+         }
          el->fFrame = nullptr;
          if(el->fLayout && (el->fLayout != fgDefaultHints) && (el->fLayout->References() > 0)) {
             el->fLayout->RemoveReference();
@@ -417,17 +433,22 @@ void GRootBrowser::CloseTabs()
    }
    for(i = 0; i < fTabRight->GetNumberOfTabs(); i++) {
       container = fTabRight->GetTabContainer(i);
-      if(!container) continue;
+      if(!container) {
+         continue;
+      }
       el = dynamic_cast<TGFrameElement*>(container->GetList()->First());
       if(el && el->fFrame) {
          el->fFrame->SetFrameElement(nullptr);
          if(el->fFrame->InheritsFrom("TGMainFrame")) {
             Bool_t sleep = (el->fFrame->InheritsFrom("GRootCanvas")) ? kTRUE : kFALSE;
             (dynamic_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
-            if(sleep) gSystem->Sleep(150);
+            if(sleep) {
+               gSystem->Sleep(150);
+            }
             gSystem->ProcessEvents();
-         } else
+         } else {
             delete el->fFrame;
+         }
          el->fFrame = nullptr;
          if(el->fLayout && (el->fLayout != fgDefaultHints) && (el->fLayout->References() > 0)) {
             el->fLayout->RemoveReference();
@@ -441,15 +462,18 @@ void GRootBrowser::CloseTabs()
    }
    for(i = 0; i < fTabBottom->GetNumberOfTabs(); i++) {
       container = fTabBottom->GetTabContainer(i);
-      if(!container) continue;
+      if(!container) {
+         continue;
+      }
       el = dynamic_cast<TGFrameElement*>(container->GetList()->First());
       if(el && el->fFrame) {
          el->fFrame->SetFrameElement(nullptr);
          if(el->fFrame->InheritsFrom("TGMainFrame")) {
             (dynamic_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
             gSystem->ProcessEvents();
-         } else
+         } else {
             delete el->fFrame;
+         }
          el->fFrame = nullptr;
          if(el->fLayout && (el->fLayout != fgDefaultHints) && (el->fLayout->References() > 0)) {
             el->fLayout->RemoveReference();
@@ -503,10 +527,11 @@ void GRootBrowser::EventInfo(Int_t event, Int_t px, Int_t py, TObject* selected)
    }
    SetStatusText(selected->GetTitle(), 0);
    SetStatusText(selected->GetName(), 1);
-   if(event == kKeyPress)
+   if(event == kKeyPress) {
       snprintf(atext, kTMAX, "%c", (char)px);
-   else
+   } else {
       snprintf(atext, kTMAX, "%d,%d", px, py);
+   }
    SetStatusText(atext, 2);
    SetStatusText(selected->GetObjectInfo(px, py), 3);
 }
@@ -523,19 +548,23 @@ Long_t GRootBrowser::ExecPlugin(const char* name, const char* fname, const char*
    StartEmbedding(pos, subpos);
    if(cmd && strlen(cmd)) {
       command = cmd;
-      if(name)
+      if(name) {
          pname = name;
-      else
+      } else {
          pname = TString::Format("Plugin %d", fPlugins.GetSize());
-      p        = new GBrowserPlugin(pname.Data(), command.Data(), pos, subpos);
+      }
+      p = new GBrowserPlugin(pname.Data(), command.Data(), pos, subpos);
    } else if(fname && strlen(fname)) {
       pname    = name ? name : gSystem->BaseName(fname);
       Ssiz_t t = pname.Last('.');
-      if(t > 0) pname.Remove(t);
+      if(t > 0) {
+         pname.Remove(t);
+      }
       command.Form(R"(gROOT->Macro("%s");)", gSystem->UnixPathName(fname));
       p = new GBrowserPlugin(pname.Data(), command.Data(), pos, subpos);
-   } else
+   } else {
       return 0;
+   }
    fPlugins.Add(p);
    retval = gROOT->ProcessLine(command.Data());
    if(command.Contains("new TCanvas")) {
@@ -552,7 +581,9 @@ Option_t* GRootBrowser::GetDrawOption() const
 {
    /// Returns drawing option.
 
-   if(fActBrowser) return fActBrowser->GetDrawOption();
+   if(fActBrowser) {
+      return fActBrowser->GetDrawOption();
+   }
    return nullptr;
 }
 
@@ -621,7 +652,9 @@ void GRootBrowser::HandleMenu(Int_t id)
    TString          cmd;
    static Int_t     eNr    = 1;
    TGPopupMenu*     sender = (TGPopupMenu*)gTQSender;
-   if(sender != fMenuFile) return;
+   if(sender != fMenuFile) {
+      return;
+   }
    switch(id) {
    case kBrowse: new TBrowser(); break;
    case kOpenFile: {
@@ -645,7 +678,9 @@ void GRootBrowser::HandleMenu(Int_t id)
       }
       if(fActBrowser && newfile) {
          TGFileBrowser* fb = dynamic_cast<TGFileBrowser*>(fActBrowser);
-         if(fb) fb->Selected(nullptr);
+         if(fb) {
+            fb->Selected(nullptr);
+         }
       }
    } break;
    // Handle Help menu items...
@@ -656,9 +691,10 @@ void GRootBrowser::HandleMenu(Int_t id)
       rootx = ROOTBINDIR;
 #else
       rootx = gSystem->Getenv("ROOTSYS");
-      if(!rootx.IsNull()) rootx += "/bin";
-#endif
-      rootx += "/root -a &";
+      if(!rootx.IsNull()) {
+         rootx += "/bin";
+      }
+      #endif rootx += "/root -a &";
       gSystem->Exec(rootx);
 #else
 #ifdef WIN32
@@ -764,7 +800,9 @@ void GRootBrowser::InitPlugins(Option_t* opt)
 
    TString cmd;
 
-   if((opt == nullptr) || (strlen(opt) == 0)) return;
+   if((opt == nullptr) || (strlen(opt) == 0)) {
+      return;
+   }
    // --- Left vertical area
 
    // File Browser plugin
@@ -847,7 +885,9 @@ void GRootBrowser::RecursiveRemove(TObject* obj)
 {
    /// Recursively remove object from browser.
 
-   if(fActBrowser) fActBrowser->RecursiveRemove(obj);
+   if(fActBrowser) {
+      fActBrowser->RecursiveRemove(obj);
+   }
 }
 
 //______________________________________________________________________________
@@ -870,7 +910,9 @@ void GRootBrowser::Refresh(Bool_t force)
 {
    /// Refresh the actual browser contents.
 
-   if(fActBrowser) fActBrowser->Refresh(force);
+   if(fActBrowser) {
+      fActBrowser->Refresh(force);
+   }
 }
 
 //______________________________________________________________________________
@@ -893,24 +935,31 @@ void GRootBrowser::RemoveTab(Int_t pos, Int_t subpos)
       edit = fTabBottom;
       break;
    }
-   if(!edit || !edit->GetTabTab(subpos)) return;
+   if(!edit || !edit->GetTabTab(subpos)) {
+      return;
+   }
    const char* tabName = edit->GetTabTab(subpos)->GetString();
    TObject*    obj     = nullptr;
    if((obj = fPlugins.FindObject(tabName))) {
       fPlugins.Remove(obj);
    }
-   TGFrameElement* el                   = nullptr;
-   if(edit->GetTabContainer(subpos)) el = dynamic_cast<TGFrameElement*>(edit->GetTabContainer(subpos)->GetList()->First());
+   TGFrameElement* el = nullptr;
+   if(edit->GetTabContainer(subpos)) {
+      el = dynamic_cast<TGFrameElement*>(edit->GetTabContainer(subpos)->GetList()->First());
+   }
    if(el && el->fFrame) {
       el->fFrame->Disconnect("ProcessedConfigure(Event_t*)");
       el->fFrame->SetFrameElement(nullptr);
       if(el->fFrame->InheritsFrom("TGMainFrame")) {
          Bool_t sleep = (el->fFrame->InheritsFrom("GRootCanvas")) ? kTRUE : kFALSE;
          (dynamic_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
-         if(sleep) gSystem->Sleep(150);
+         if(sleep) {
+            gSystem->Sleep(150);
+         }
          gSystem->ProcessEvents();
-      } else
+      } else {
          delete el->fFrame;
+      }
       el->fFrame = nullptr;
       if(el->fLayout && (el->fLayout != fgDefaultHints) && (el->fLayout->References() > 0)) {
          el->fLayout->RemoveReference();
@@ -931,11 +980,15 @@ void GRootBrowser::SetTab(Int_t pos, Int_t subpos)
 {
    /// Switch to Tab "subpos" in TGTab "pos".
 
-   TGTab* tab              = GetTab(pos);
-   if(subpos == -1) subpos = fCrTab[pos];
+   TGTab* tab = GetTab(pos);
+   if(subpos == -1) {
+      subpos = fCrTab[pos];
+   }
 
    if(tab && tab->SetTab(subpos, kFALSE)) { // Block signal emit
-      if(pos == kRight) SwitchMenus(tab->GetTabContainer(subpos));
+      if(pos == kRight) {
+         SwitchMenus(tab->GetTabContainer(subpos));
+      }
       tab->Layout();
    }
 }
@@ -947,14 +1000,20 @@ void GRootBrowser::SetTabTitle(const char* title, Int_t pos, Int_t subpos)
 
    GBrowserPlugin* p    = nullptr;
    TGTab*          edit = GetTab(pos);
-   if(!edit) return;
-   if(subpos == -1) subpos = fCrTab[pos];
+   if(!edit) {
+      return;
+   }
+   if(subpos == -1) {
+      subpos = fCrTab[pos];
+   }
 
    TGTabElement* el = edit->GetTabTab(subpos);
    if(el) {
       el->SetText(new TGString(title));
       edit->Layout();
-      if((p = dynamic_cast<GBrowserPlugin*>(fPlugins.FindObject(title)))) p->SetName(title);
+      if((p = dynamic_cast<GBrowserPlugin*>(fPlugins.FindObject(title)))) {
+         p->SetName(title);
+      }
    }
 }
 
@@ -1001,7 +1060,9 @@ void GRootBrowser::StartEmbedding(Int_t pos, Int_t subpos)
    /// Start embedding external frame in the tab "pos" and tab element "subpos".
 
    fEditTab = GetTab(pos);
-   if(!fEditTab) return;
+   if(!fEditTab) {
+      return;
+   }
    fEditPos    = pos;
    fEditSubPos = subpos;
 
@@ -1014,7 +1075,9 @@ void GRootBrowser::StartEmbedding(Int_t pos, Int_t subpos)
          TGTabElement* tabel = fEditTab->GetTabTab(fEditSubPos);
          if(tabel) {
             tabel->MapWindow();
-            if(fShowCloseTab && (pos == 1)) tabel->ShowClose();
+            if(fShowCloseTab && (pos == 1)) {
+               tabel->ShowClose();
+            }
          }
          fEditTab->SetTab(fEditTab->GetNumberOfTabs() - 1);
          fEditTab->Layout();
@@ -1023,7 +1086,9 @@ void GRootBrowser::StartEmbedding(Int_t pos, Int_t subpos)
          fEditFrame  = fEditTab->GetTabContainer(subpos);
          fEditTab->SetTab(subpos);
       }
-      if(fEditFrame) fEditFrame->SetEditable();
+      if(fEditFrame) {
+         fEditFrame->SetEditable();
+      }
    }
 }
 
@@ -1043,10 +1108,14 @@ void GRootBrowser::StopEmbedding(const char* name, TGLayoutHints* layout)
       if(layout) {
          el = dynamic_cast<TGFrameElement*>(fEditFrame->GetList()->Last());
          // !!!! MT what to do with the old layout? Leak it for now ...
-         if(el) el->fLayout = layout;
+         if(el) {
+            el->fLayout = layout;
+         }
       }
       fEditFrame->Layout();
-      if(fEditTab == fTabRight) SwitchMenus(fEditFrame);
+      if(fEditTab == fTabRight) {
+         SwitchMenus(fEditFrame);
+      }
    }
    if(name && strlen(name)) {
       SetTabTitle(name, fEditPos, fEditSubPos);
@@ -1062,10 +1131,14 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
    /// Move the menu from original frame to our TGMenuFrame, or display the
    /// menu associated to the current tab.
 
-   if(from == nullptr) return;
+   if(from == nullptr) {
+      return;
+   }
    TGFrameElement* fe = dynamic_cast<TGFrameElement*>(from->GetList()->First());
    if(!fe) {
-      if(fActMenuBar != fMenuBar) ShowMenu(fMenuBar);
+      if(fActMenuBar != fMenuBar) {
+         ShowMenu(fMenuBar);
+      }
       return;
    }
    TGCompositeFrame* embed = dynamic_cast<TGCompositeFrame*>(fe->fFrame);
@@ -1075,7 +1148,9 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
       while((el = dynamic_cast<TGFrameElement*>(next()))) {
          if(el->fFrame->InheritsFrom("TGMenuBar")) {
             TGMenuBar* menu = dynamic_cast<TGMenuBar*>(el->fFrame);
-            if(fActMenuBar == menu) return;
+            if(fActMenuBar == menu) {
+               return;
+            }
             TGFrameElement* nw;
             TIter           nel(fMenuFrame->GetList());
             while((nw = dynamic_cast<TGFrameElement*>(nel()))) {
@@ -1085,7 +1160,8 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
                }
             }
             const_cast<TGCompositeFrame*>(dynamic_cast<const TGCompositeFrame*>(menu->GetParent()))->HideFrame(menu);
-            const_cast<TGCompositeFrame*>(dynamic_cast<const TGCompositeFrame*>(menu->GetParent()))->SetCleanup(kNoCleanup);
+            const_cast<TGCompositeFrame*>(dynamic_cast<const TGCompositeFrame*>(menu->GetParent()))
+               ->SetCleanup(kNoCleanup);
             menu->ReparentWindow(fMenuFrame);
             fMenuFrame->AddFrame(menu, fLH2);
             TGFrameElement* mel;
@@ -1118,7 +1194,9 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
          }
       }
    }
-   if(fActMenuBar != fMenuBar) ShowMenu(fMenuBar);
+   if(fActMenuBar != fMenuBar) {
+      ShowMenu(fMenuBar);
+   }
 }
 
 //______________________________________________________________________________

@@ -36,12 +36,11 @@ TFragmentChainLoop::TFragmentChainLoop(std::string name, TChain* chain)
    SetupChain();
 }
 
-TFragmentChainLoop::~TFragmentChainLoop()
-= default;
+TFragmentChainLoop::~TFragmentChainLoop() = default;
 
 void TFragmentChainLoop::ClearQueue()
 {
-   for(auto outQueue : fOutputQueues) {
+   for(const auto& outQueue : fOutputQueues) {
       while(outQueue->Size()) {
          std::shared_ptr<const TFragment> event;
          outQueue->Pop(event);
@@ -66,7 +65,7 @@ void TFragmentChainLoop::Restart()
 
 void TFragmentChainLoop::OnEnd()
 {
-   for(auto outQueue : fOutputQueues) {
+   for(const auto& outQueue : fOutputQueues) {
       outQueue->SetFinished();
    }
 }
@@ -86,7 +85,7 @@ bool TFragmentChainLoop::Iteration()
    fInputChain->GetEntry(fItemsPopped++);
    *frag = *fFragment;
    frag->SetEntryNumber();
-   for(auto outQueue : fOutputQueues) {
+   for(const auto& outQueue : fOutputQueues) {
       outQueue->Push(frag);
    }
    fInputSize = fEntriesTotal - fItemsPopped; // this way fInputSize+fItemsPopped gives the total number of entries

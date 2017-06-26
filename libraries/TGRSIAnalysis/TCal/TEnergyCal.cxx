@@ -18,8 +18,7 @@ ClassImp(TEnergyCal)
    SetDefaultTitles();
 }
 
-TEnergyCal::~TEnergyCal()
-= default;
+TEnergyCal::~TEnergyCal() = default;
 
 void TEnergyCal::SetDefaultTitles()
 {
@@ -37,7 +36,9 @@ std::vector<Double_t> TEnergyCal::GetParameters() const
    std::vector<Double_t> paramList;
    Int_t                 nParams = this->GetFunction("energy")->GetNpar();
 
-   for(int i = 0; i < nParams; i++) paramList.push_back(GetParameter(i));
+   for(int i = 0; i < nParams; i++) {
+      paramList.push_back(GetParameter(i));
+   }
 
    return paramList;
 }
@@ -61,8 +62,9 @@ void TEnergyCal::SetNucleus(TNucleus* nuc, Option_t* opt)
          TGraphErrors::SetPoint(i, 0.0, GetNucleus()->GetTransition(i)->GetEnergy());
          TGraphErrors::SetPointError(i, 0.0, GetNucleus()->GetTransition(i)->GetEnergyUncertainty());
       }
-   } else if(GetNucleus())
+   } else if(GetNucleus()) {
       printf("Nucleus already exists. Use \"F\" option to overwrite\n");
+   }
 
    SetDefaultTitles();
    //  this->Sort();

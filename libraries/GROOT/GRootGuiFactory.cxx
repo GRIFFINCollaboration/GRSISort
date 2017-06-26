@@ -37,7 +37,9 @@ ClassImp(GRootGuiFactory)
 
    void GRootGuiFactory::Init()
 {
-   if(gROOT->IsBatch()) return;
+   if(gROOT->IsBatch()) {
+      return;
+   }
    gROOT->LoadClass("TCanvas", "Gpad");
    gGuiFactory = new GRootGuiFactory();
 }
@@ -101,12 +103,16 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, U
 
    TString browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
    // TString browserOptions(gEnv->GetValue("Browser.Options", "FEI"));
-   if(opt && strlen(opt)) browserOptions = opt;
+   if(opt && strlen(opt)) {
+      browserOptions = opt;
+   }
 
    // browserOptions = "FCI";
 
    browserOptions.ToUpper();
-   if(browserOptions.Contains("LITE")) return new TRootBrowserLite(b, title, width, height);
+   if(browserOptions.Contains("LITE")) {
+      return new TRootBrowserLite(b, title, width, height);
+   }
    if(ph && ph->LoadPlugin() != -1) {
       // printf("i am here now 1.\t %s \n",browserOptions.Data());
       TBrowserImp* imp = (TBrowserImp*)ph->ExecPlugin(5, b, title, width, height, browserOptions.Data());
@@ -128,12 +134,18 @@ TBrowserImp* GRootGuiFactory::CreateBrowserImp(TBrowser* b, const char* title, I
    TString         browserVersion(gEnv->GetValue("Browser.Name", "TRootBrowserLite"));
    TPluginHandler* ph = gROOT->GetPluginManager()->FindHandler("TBrowserImp", browserVersion);
    TString         browserOptions(gEnv->GetValue("Browser.Options", "FECI"));
-   if(opt && strlen(opt)) browserOptions = opt;
+   if(opt && strlen(opt)) {
+      browserOptions = opt;
+   }
    browserOptions.ToUpper();
-   if(browserOptions.Contains("LITE")) return new TRootBrowserLite(b, title, width, height);
+   if(browserOptions.Contains("LITE")) {
+      return new TRootBrowserLite(b, title, width, height);
+   }
    if(ph && ph->LoadPlugin() != -1) {
       TBrowserImp* imp = (TBrowserImp*)ph->ExecPlugin(7, b, title, x, y, width, height, browserOptions.Data());
-      if(imp) return imp;
+      if(imp) {
+         return imp;
+      }
    }
    return new TRootBrowserLite(b, title, x, y, width, height);
 }

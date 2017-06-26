@@ -10,9 +10,9 @@
 
 /// \cond CLASSIMP
 ClassImp(TGRSIRunInfo)
-/// \endcond
+   /// \endcond
 
-TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();
+   TGRSIRunInfo* TGRSIRunInfo::fGRSIRunInfo = new TGRSIRunInfo();
 
 std::string TGRSIRunInfo::fGRSIVersion;
 
@@ -22,14 +22,18 @@ TGRSIRunInfo* TGRSIRunInfo::Get()
    // so there is only even one instance of the run info during
    // a session and it can be accessed from anywhere during that
    // session.
-   if(!fGRSIRunInfo) fGRSIRunInfo = new TGRSIRunInfo();
+   if(!fGRSIRunInfo) {
+      fGRSIRunInfo = new TGRSIRunInfo();
+   }
    return fGRSIRunInfo;
 }
 
 void TGRSIRunInfo::SetRunInfo(TGRSIRunInfo* tmp)
 {
    // Sets the TGRSIRunInfo to the info passes as tmp.
-   if(fGRSIRunInfo && (tmp != fGRSIRunInfo)) delete fGRSIRunInfo;
+   if(fGRSIRunInfo && (tmp != fGRSIRunInfo)) {
+      delete fGRSIRunInfo;
+   }
    fGRSIRunInfo = tmp;
 }
 
@@ -53,7 +57,9 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
    TIter  iter(list);
    printf("Reading Info from file:" CYAN " %s" RESET_COLOR "\n", tempf->GetName());
    while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
-      if(!key || strcmp(key->GetClassName(), "TGRSIRunInfo")) continue;
+      if(!key || strcmp(key->GetClassName(), "TGRSIRunInfo")) {
+         continue;
+      }
 
       TGRSIRunInfo::SetRunInfo(dynamic_cast<TGRSIRunInfo*>(key->ReadObj()));
       savdir->cd();
@@ -72,7 +78,7 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0), fSubRunNumber(-1)
 
    fHPGeArrayPosition = 110.0;
 
-   fDescantAncillary      = false;
+   fDescantAncillary = false;
    fBadCycleList.clear();
    fBadCycleListSize = 0;
 
@@ -81,15 +87,14 @@ TGRSIRunInfo::TGRSIRunInfo() : fRunNumber(0), fSubRunNumber(-1)
    Clear();
 }
 
-TGRSIRunInfo::~TGRSIRunInfo()
-= default;
+TGRSIRunInfo::~TGRSIRunInfo() = default;
 
 void TGRSIRunInfo::Print(Option_t* opt) const
 {
    // Prints the TGRSIRunInfo. Options:
    // a: Print out more details.
-   std::cout << "Title: " << fRunTitle << std::endl;
-   std::cout << "Comment: " << fRunComment << std::endl;
+   std::cout<<"Title: "<<fRunTitle<<std::endl;
+   std::cout<<"Comment: "<<fRunComment<<std::endl;
    if(strchr(opt, 'a') != nullptr) {
       printf("\tTGRSIRunInfo Status:\n");
       printf("\t\tRunNumber:    %05i\n", TGRSIRunInfo::Get()->fRunNumber);
@@ -151,7 +156,7 @@ void TGRSIRunInfo::Clear(Option_t*)
    fMajorIndex.assign("");
    fMinorIndex.assign("");
 
-   fNumberOfTrueSystems   = 0;
+   fNumberOfTrueSystems = 0;
    fBadCycleList.clear();
    fBadCycleListSize = 0;
 }
@@ -163,14 +168,14 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
    printf("In runinfo, found %i channels.\n", TChannel::GetNumberOfChannels());
    if(runnum != 0) {
       if(RunNumber() != 0 && RunNumber() != runnum) {
-         std::cout << "Warning, overwriting non-default run-number " << RunNumber() << " with " << runnum << std::endl;
+         std::cout<<"Warning, overwriting non-default run-number "<<RunNumber()<<" with "<<runnum<<std::endl;
       }
       SetRunNumber(runnum);
    }
    if(subrunnum != -1) {
       if(SubRunNumber() != -1 && SubRunNumber() != subrunnum) {
-         std::cout << "Warning, overwriting non-default sub-run-number " << SubRunNumber() << " with " << subrunnum
-                   << std::endl;
+         std::cout<<"Warning, overwriting non-default sub-run-number "<<SubRunNumber()<<" with "<<subrunnum
+                  <<std::endl;
       }
       SetSubRunNumber(subrunnum);
    }
@@ -292,7 +297,9 @@ void TGRSIRunInfo::SetRunInfo(int runnum, int subrunnum)
       Get()->fMajorIndex.assign("TimeStamp");
    }
 
-   if(Get()->fRunInfoFile.length()) ParseInputData(Get()->fRunInfoFile.c_str());
+   if(Get()->fRunInfoFile.length()) {
+      ParseInputData(Get()->fRunInfoFile.c_str());
+   }
 
    // TGRSIRunInfo::Get()->Print("a");
 }
@@ -352,10 +359,14 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
       if(comment != std::string::npos) {
          line = line.substr(0, comment);
       }
-      if(!line.length()) continue;
+      if(!line.length()) {
+         continue;
+      }
 
-      size_t ntype = line.find(":");
-      if(ntype == std::string::npos) continue; // no seperator, not useful.
+      size_t ntype = line.find(':');
+      if(ntype == std::string::npos) {
+         continue; // no seperator, not useful.
+      }
 
       std::string type = line.substr(0, ntype);
       line             = line.substr(ntype + 1, line.length());
@@ -401,11 +412,17 @@ Bool_t TGRSIRunInfo::ParseInputData(const char* inputdata, Option_t* opt)
 void TGRSIRunInfo::trim(std::string* line, const std::string& trimChars)
 {
    /// Removes the string "trimCars" from  the string 'line'
-   if(line->length() == 0) return;
-   std::size_t found                    = line->find_first_not_of(trimChars);
-   if(found != std::string::npos) *line = line->substr(found, line->length());
-   found                                = line->find_last_not_of(trimChars);
-   if(found != std::string::npos) *line = line->substr(0, found + 1);
+   if(line->length() == 0) {
+      return;
+   }
+   std::size_t found = line->find_first_not_of(trimChars);
+   if(found != std::string::npos) {
+      *line = line->substr(found, line->length());
+   }
+   found = line->find_last_not_of(trimChars);
+   if(found != std::string::npos) {
+      *line = line->substr(0, found + 1);
+   }
    return;
 }
 
@@ -426,14 +443,14 @@ Long64_t TGRSIRunInfo::Merge(TCollection* list)
 
 void TGRSIRunInfo::PrintBadCycles() const
 {
-   std::cout << "Bad Cycles:\t";
+   std::cout<<"Bad Cycles:\t";
    if(!fBadCycleList.size()) {
-      std::cout << "NONE" << std::endl;
+      std::cout<<"NONE"<<std::endl;
    } else {
       for(int it : fBadCycleList) {
-         std::cout << " " << it;
+         std::cout<<" "<<it;
       }
-      std::cout << std::endl;
+      std::cout<<std::endl;
    }
 }
 
@@ -470,7 +487,9 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr)
    bool        bool2return = true;
    TDirectory* savdir      = gDirectory;
 
-   if(!fileptr) fileptr = gDirectory->GetFile();
+   if(!fileptr) {
+      fileptr = gDirectory->GetFile();
+   }
    fileptr->cd();
    std::string oldoption = std::string(fileptr->GetOption());
    if(oldoption == "READ") {
@@ -493,16 +512,16 @@ bool TGRSIRunInfo::WriteToRoot(TFile* fileptr)
    return bool2return;
 }
 
-bool TGRSIRunInfo::WriteInfoFile(std::string filename)
+bool TGRSIRunInfo::WriteInfoFile(const std::string& filename)
 {
 
    if(filename.length() > 0) {
       std::ofstream infoout;
       infoout.open(filename.c_str());
       std::string infostr = Get()->PrintToString();
-      infoout << infostr.c_str();
-      infoout << std::endl;
-      infoout << std::endl;
+      infoout<<infostr.c_str();
+      infoout<<std::endl;
+      infoout<<std::endl;
       infoout.close();
    } else {
       printf("Please enter a file name\n");
@@ -526,7 +545,7 @@ std::string TGRSIRunInfo::PrintToString(Option_t*)
    if(fBadCycleList.size()) {
       buffer.append("//A List of bad cycles.\n");
       buffer.append("BadCycle:");
-      for(int & it : fBadCycleList) {
+      for(int& it : fBadCycleList) {
          buffer.append(Form(" %d", it));
       }
       buffer.append("\n\n");

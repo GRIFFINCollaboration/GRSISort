@@ -95,7 +95,9 @@ TNucleus::TNucleus(const char* name)
       infile.open(MassFile.c_str());
       // printf("MassFile.c_str()
       while(getline(infile, line)) {
-         if(line.length() < 1) continue;
+         if(line.length() < 1) {
+            continue;
+         }
          //              printf("%s\n",line.c_str());
          std::stringstream ss(line);
          ss >> n;
@@ -108,7 +110,7 @@ TNucleus::TNucleus(const char* name)
          }
       }
    } catch(std::out_of_range) {
-      std::cout << "Could not parse element " << name << std::endl << "Nucleus not Set!" << std::endl;
+      std::cout<<"Could not parse element "<<name<<std::endl<<"Nucleus not Set!"<<std::endl;
       return;
    }
    if(!found) {
@@ -166,7 +168,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
          fMassExcess = emass / 1000.;
          fSymbol     = tmp;
 #ifdef debug
-         cout << "Symbol " << fSymbol << " tmp " << tmp << endl;
+         cout<<"Symbol "<<fSymbol<<" tmp "<<tmp<<endl;
 #endif
          SetMass();
          SetSymbol(fSymbol.c_str());
@@ -299,7 +301,7 @@ int TNucleus::GetZfromSymbol(char* symbol)
                            "OS", "IR", "PT", "AU", "HG", "TI", "PB", "BI", "PO", "AT", "RN", "FR", "RA", "AC", "TH",
                            "PA", "U",  "NP", "PU", "AM", "CM", "BK", "CF", "ES", "FM", "MD", "NO", "LR", "RF", "HA"};
    int length = strlen(symbol);
-   // cout << symbol << "   " << length << endl;
+   // cout<<symbol<<"   "<<length<<endl;
    auto* search = new char[length + 1];
    for(int i = 0; i < length; i++) {
       search[i] = toupper(symbol[i]); // make sure symbol is in uppercase
@@ -436,7 +438,9 @@ void TNucleus::AddTransition(TTransition* tran)
 TTransition* TNucleus::GetTransition(Int_t idx)
 {
    TTransition* tran = dynamic_cast<TTransition*>(TransitionList.At(idx));
-   if(!tran) printf("Out of Range\n");
+   if(!tran) {
+      printf("Out of Range\n");
+   }
 
    return tran;
 }
@@ -453,24 +457,26 @@ void TNucleus::Print(Option_t*) const
    }
 }
 
-void TNucleus::WriteSourceFile(std::string outfilename)
+void TNucleus::WriteSourceFile(const std::string& outfilename)
 {
    if(outfilename.length() > 0) {
       std::ofstream sourceout;
       sourceout.open(outfilename.c_str());
       for(int i = 0; i < TransitionList.GetSize(); i++) {
          std::string transtr = (dynamic_cast<TTransition*>(TransitionList.At(i)))->PrintToString();
-         sourceout << transtr.c_str();
-         sourceout << std::endl;
+         sourceout<<transtr.c_str();
+         sourceout<<std::endl;
       }
-      sourceout << std::endl;
+      sourceout<<std::endl;
       sourceout.close();
    }
 }
 
 bool TNucleus::LoadTransitionFile()
 {
-   if(TransitionList.GetSize()) return false;
+   if(TransitionList.GetSize()) {
+      return false;
+   }
    std::string filename;
    filename           = std::string(getenv("GRSISYS")) + "/libraries/TGRSIAnalysis/SourceData/";
    std::string symbol = this->GetSymbol();
@@ -490,10 +496,14 @@ bool TNucleus::LoadTransitionFile()
 
    while(getline(transfile, line)) {
       // printf("%i\t%s\n",counter++,line.c_str());
-      if(!line.compare(0, 2, "//")) continue;
-      if(!line.compare(0, 1, "#")) continue;
+      if(!line.compare(0, 2, "//")) {
+         continue;
+      }
+      if(!line.compare(0, 1, "#")) {
+         continue;
+      }
       double            temp;
-      auto*      tran = new TTransition;
+      auto*             tran = new TTransition;
       std::stringstream ss(line);
       int               counter = 0;
       while(ss >> temp) {

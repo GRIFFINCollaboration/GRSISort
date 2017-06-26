@@ -16,10 +16,7 @@
 
 class TSiLiHit : public TGRSIDetectorHit {
 public:
-	enum ESiLiHitBits { 
-		kUseFitCharge	= BIT(0),
-		kSiLiHitBit1	= BIT(1)
-	};
+   enum ESiLiHitBits { kUseFitCharge = BIT(0), kSiLiHitBit1 = BIT(1) };
 
    TSiLiHit();
    TSiLiHit(const TFragment&);
@@ -40,8 +37,8 @@ public:
    Int_t    GetTimeStampLow() { return GetTimeStamp() & 0x0fffffff; }
    Double_t GetTimeFitCfd() const
    {
-      if (fTimeFit != 0 && fTimeFit < 1000 && fTimeFit > -1000) {
-         long ts = GetTimeStamp() << 4 &
+      if(fTimeFit != 0 && fTimeFit < 1000 && fTimeFit > -1000) {
+         long ts = GetTimeStamp()<<4 &
                    0x07ffffff; // bit shift by 4 (x16) then knock off the highest bit which is absent from cfd
          return ts + fTimeFit * 16;
       }
@@ -75,7 +72,7 @@ public:
    // Not strictly "doppler" but consistent
    inline double GetDoppler(double beta, TVector3* vec = nullptr)
    {
-      if (vec == nullptr) {
+      if(vec == nullptr) {
          vec = GetBeamDirection();
       }
       TVector3 pos = GetPosition();
@@ -90,26 +87,32 @@ public:
 
    unsigned int GetAddbackSize()
    {
-      if (fAddBackSegments.size() == fAddBackEnergy.size()) return fAddBackEnergy.size();
+      if(fAddBackSegments.size() == fAddBackEnergy.size()) {
+         return fAddBackEnergy.size();
+      }
       return 0;
    }
 
    double GetAddbackEnergy(unsigned int i)
    {
-      if (i < GetAddbackSize()) return fAddBackEnergy[i];
+      if(i < GetAddbackSize()) {
+         return fAddBackEnergy[i];
+      }
       return 0;
    }
    short GetAddbackSegment(unsigned int i)
    {
-      if (i < GetAddbackSize()) return fAddBackSegments[i];
+      if(i < GetAddbackSize()) {
+         return fAddBackSegments[i];
+      }
       return 0;
    }
 
 private:
    Double_t GetDefaultDistance() const { return 0.0; }
 
-   std::vector<short> fAddBackSegments;
-   std::vector<double> fAddBackEnergy; // probably not needed after development finished
+   std::vector<short>      fAddBackSegments;
+   std::vector<double>     fAddBackEnergy; // probably not needed after development finished
    TTransientBits<UChar_t> fSiLiHitBits;
 
    Double_t fTimeFit{};

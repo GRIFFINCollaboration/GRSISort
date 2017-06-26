@@ -45,7 +45,7 @@ TTip& TTip::operator=(const TTip& rhs)
    return *this;
 }
 
-void TTip::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TTip::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    if(frag == nullptr || chan == nullptr) {
       return;
@@ -72,7 +72,7 @@ TTipHit* TTip::GetTipHit(const int& i)
    try {
       return &fTipHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;

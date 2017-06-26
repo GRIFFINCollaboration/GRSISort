@@ -19,7 +19,8 @@ class TUserSortInfo : public TGRSISortInfo {
 public:
    TUserSortInfo(){};
    TUserSortInfo(const TGRSIRunInfo* info) : TGRSISortInfo(info){};
-   ~TUserSortInfo() override= default;;
+   ~TUserSortInfo() override = default;
+   ;
 
    void Print(Option_t* opt = "") const override;
    void Clear(Option_t* opt = "") override;

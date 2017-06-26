@@ -70,12 +70,12 @@ void TAnalysisWriteLoop::ClearQueue()
 std::string TAnalysisWriteLoop::EndStatus()
 {
    std::stringstream ss;
-   ss << Name() << ":\t" << std::setw(8) << fItemsPopped << "/" << fInputSize + fItemsPopped << ", "
-      << fEventTree->GetEntries() << " good events";
+   ss<<Name()<<":\t"<<std::setw(8)<<fItemsPopped<<"/"<<fInputSize + fItemsPopped<<", "
+     <<fEventTree->GetEntries()<<" good events";
    if(fOutOfOrderTree != nullptr) {
-      ss << ", " << fOutOfOrderTree->GetEntries() << " separate fragments out-of-order" << std::endl;
+      ss<<", "<<fOutOfOrderTree->GetEntries()<<" separate fragments out-of-order"<<std::endl;
    } else {
-      ss << std::endl;
+      ss<<std::endl;
    }
    return ss.str();
 }
@@ -83,8 +83,10 @@ std::string TAnalysisWriteLoop::EndStatus()
 bool TAnalysisWriteLoop::Iteration()
 {
    std::shared_ptr<TUnpackedEvent> event;
-   fInputSize                    = fInputQueue->Pop(event);
-   if(fInputSize < 0) fInputSize = 0;
+   fInputSize = fInputQueue->Pop(event);
+   if(fInputSize < 0) {
+      fInputSize = 0;
+   }
    ++fItemsPopped;
 
    if(fOutOfOrderTree != nullptr && fOutOfOrderQueue->Size() > 0) {
@@ -152,8 +154,8 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
 
       // Make the TDetector**
       auto** det_pp = new TDetector*;
-      *det_pp            = det_p;
-      fDetMap[cls]       = det_pp;
+      *det_pp       = det_p;
+      fDetMap[cls]  = det_pp;
 
       // Make a new branch.
       TBranch* new_branch = fEventTree->Branch(cls->GetName(), cls->GetName(), det_pp);
@@ -174,7 +176,7 @@ void TAnalysisWriteLoop::AddBranch(TClass* cls)
          new_branch->Fill();
       }
 
-      std::cout << "\r" << std::string(30, ' ') << "\rAdded \"" << cls->GetName() << R"(" branch)" << std::endl;
+      std::cout<<"\r"<<std::string(30, ' ')<<"\rAdded \""<<cls->GetName()<<R"(" branch)"<<std::endl;
 
       // Unlock after we are done.
       TThread::UnLock();
@@ -196,7 +198,7 @@ void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event)
       }
 
       // Load current events
-      for(auto det : event.GetDetectors()) {
+      for(const auto& det : event.GetDetectors()) {
          TClass* cls = det->IsA();
          try {
             **fDetMap.at(cls) = *(det.get());
@@ -207,8 +209,9 @@ void TAnalysisWriteLoop::WriteEvent(TUnpackedEvent& event)
          (*fDetMap.at(cls))->ClearTransients();
          // if(cls == TDescant::Class()) {
          //	for(int i = 0; i < static_cast<TDescant*>(det)->GetMultiplicity(); ++i) {
-         //		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == nullptr ? "
-         //has no debug data": " has debug data")<<std::endl;
+         //		std::cout<<"Descant hit "<<i<<(static_cast<TDescant*>(det)->GetDescantHit(i)->GetDebugData() == nullptr ?
+         //"
+         // has no debug data": " has debug data")<<std::endl;
          //	}
          //}
       }

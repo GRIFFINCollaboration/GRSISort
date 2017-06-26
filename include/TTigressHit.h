@@ -66,7 +66,7 @@ public:
 
    inline double GetDoppler(double beta, TVector3* vec = nullptr)
    {
-      if (vec == nullptr) {
+      if(vec == nullptr) {
          vec = GetBeamDirection();
       }
       double tmp   = 0;
@@ -97,17 +97,21 @@ public:
    /* int GetLastSeg()  const { if(fSegments.size()>0) return fSegments.back().GetSegment(); return -1; } */
    int GetFirstSeg() const
    {
-      if (fSegments.size() > 0) return fSegments.front().GetSegment();
+      if(fSegments.size() > 0) {
+         return fSegments.front().GetSegment();
+      }
       return 0;
    }
    int GetLastSeg() const
    {
-      if (fSegments.size() > 0) return fSegments.back().GetSegment();
+      if(fSegments.size() > 0) {
+         return fSegments.back().GetSegment();
+      }
       return 0;
    }
 
-   static bool Compare(TTigressHit lhs, TTigressHit rhs);       //!<!
-   static bool CompareEnergy(TTigressHit lhs, TTigressHit rhs); //!<!
+   static bool Compare(const TTigressHit& lhs, const TTigressHit& rhs);       //!<!
+   static bool CompareEnergy(const TTigressHit& lhs, const TTigressHit& rhs); //!<!
 
    void SumHit(TTigressHit*); //!<!
 

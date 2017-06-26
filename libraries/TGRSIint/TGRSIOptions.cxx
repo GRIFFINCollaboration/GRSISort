@@ -13,7 +13,7 @@
 #include "TGRSIUtilities.h"
 #include "GRootCommands.h"
 
-TGRSIOptions* TGRSIOptions::fGRSIOptions = nullptr;
+TGRSIOptions*     TGRSIOptions::fGRSIOptions     = nullptr;
 TAnalysisOptions* TGRSIOptions::fAnalysisOptions = new TAnalysisOptions;
 
 TGRSIOptions* TGRSIOptions::Get(int argc, char** argv)
@@ -22,7 +22,9 @@ TGRSIOptions* TGRSIOptions::Get(int argc, char** argv)
    // so there is only ever one instance of the options during
    // a session and it can be accessed from anywhere during that
    // session.
-   if(fGRSIOptions == nullptr) fGRSIOptions = new TGRSIOptions(argc, argv);
+   if(fGRSIOptions == nullptr) {
+      fGRSIOptions = new TGRSIOptions(argc, argv);
+   }
    return fGRSIOptions;
 }
 
@@ -75,7 +77,7 @@ void TGRSIOptions::Clear(Option_t*)
    fIgnoreEpics      = false;
    fWriteBadFrags    = false;
    fWriteDiagnostics = false;
-	fCheckWordCount   = true;
+   fCheckWordCount   = true;
 
    fBatch = false;
 
@@ -95,8 +97,7 @@ void TGRSIOptions::Clear(Option_t*)
 
    fTimeSortInput = false;
 
-
-   fSeparateOutOfOrder    = false;
+   fSeparateOutOfOrder = false;
 
    fShouldExit = false;
 
@@ -105,13 +106,13 @@ void TGRSIOptions::Clear(Option_t*)
    fStatusInterval      = 10;
    fLongFileDescription = false;
 
-	fAnalysisOptions->Clear();
+   fAnalysisOptions->Clear();
 
    // Proof only
    fMaxWorkers   = -1;
    fSelectorOnly = false;
 
-   fHelp          = false;
+   fHelp = false;
 }
 
 void TGRSIOptions::Print(Option_t*) const
@@ -163,13 +164,13 @@ void TGRSIOptions::Print(Option_t*) const
             <<"fStatusWidth: "<<fStatusWidth<<std::endl
             <<"fStatusInterval: "<<fStatusInterval<<std::endl
             <<"fLongFileDescription: "<<fLongFileDescription<<std::endl
-				<<std::endl
+            <<std::endl
             <<"fMaxWorkers: "<<fMaxWorkers<<std::endl
             <<"fSelectorOnly: "<<fSelectorOnly<<std::endl
-				<<std::endl
-				<<"fHelp: "<<fHelp<<std::endl;
+            <<std::endl
+            <<"fHelp: "<<fHelp<<std::endl;
 
-				fAnalysisOptions->Print();
+   fAnalysisOptions->Print();
 }
 
 void TGRSIOptions::Load(int argc, char** argv)
@@ -203,7 +204,7 @@ void TGRSIOptions::Load(int argc, char** argv)
 
    // parser.option() will initialize boolean values to false.
 
-	// these options are all to be set directly on the first parsing pass, so we set the firstPass flag to true
+   // these options are all to be set directly on the first parsing pass, so we set the firstPass flag to true
    parser.default_option(&input_files, true).description("Input file(s)");
    parser.option("output-fragment-tree", &fOutputFragmentFile, true).description("Filename of output fragment tree");
    parser.option("output-analysis-tree", &fOutputAnalysisFile, true).description("Filename of output analysis tree");
@@ -267,11 +268,12 @@ void TGRSIOptions::Load(int argc, char** argv)
       .description("Max number of nodes to use when running a grsiproof session")
       .default_value(-1);
 
-   parser.option("selector-only", &fSelectorOnly, true).description("Turns off PROOF to run a selector on the main thread");
+   parser.option("selector-only", &fSelectorOnly, true)
+      .description("Turns off PROOF to run a selector on the main thread");
 
    parser.option("h help ?", &fHelp, true).description("Show this help message");
 
-	// analysis options, these options are to be parsed on the second pass, so firstPass is set to false
+   // analysis options, these options are to be parsed on the second pass, so firstPass is set to false
    parser.option("build-window", &fAnalysisOptions->fBuildWindow, false).description("Build window, timestamp units");
    parser.option("addback-window", &fAnalysisOptions->fAddbackWindow, false).description("Addback window, time in ns");
    parser.option("static-window", &fAnalysisOptions->fStaticWindow, false)
@@ -308,11 +310,11 @@ void TGRSIOptions::Load(int argc, char** argv)
       fShouldExit = true;
    }
 
-	// print help if required
-	if(fHelp) {
-		std::cout<<parser<<std::endl;
-		fShouldExit = true;
-	}
+   // print help if required
+   if(fHelp) {
+      std::cout<<parser<<std::endl;
+      fShouldExit = true;
+   }
 
    if(fOutputFragmentHistogramFile.length() > 0 && fOutputFragmentHistogramFile != "none") {
       fMakeHistos = true;
@@ -325,13 +327,13 @@ void TGRSIOptions::Load(int argc, char** argv)
       FileAutoDetect(file);
    }
 
-	// read analysis options from input file(s)
-	for(std::string file : fInputRootFiles) {
-		std::cout<<R"(Reading options from ")"<<file<<R"(":)"<<std::endl;
-		fAnalysisOptions->ReadFromFile(file);
-		fAnalysisOptions->Print();
-	}
-	// parse analysis options from command line options 
+   // read analysis options from input file(s)
+   for(const std::string& file : fInputRootFiles) {
+      std::cout<<R"(Reading options from ")"<<file<<R"(":)"<<std::endl;
+      fAnalysisOptions->ReadFromFile(file);
+      fAnalysisOptions->Print();
+   }
+   // parse analysis options from command line options
    try {
       parser.parse(argc, argv, false);
    } catch(ParseError& e) {
@@ -364,7 +366,9 @@ kFileType TGRSIOptions::DetermineFileType(const std::string& filename) const
    } else if((ext == "c") || (ext == "C") || (ext == "c+") || (ext == "C+") || (ext == "c++") || (ext == "C++")) {
       return kFileType::ROOT_MACRO;
    } else if(ext == "dat" || ext == "cvt") {
-      if(filename.find("GlobalRaw") != std::string::npos) return kFileType::GRETINA_MODE3;
+      if(filename.find("GlobalRaw") != std::string::npos) {
+         return kFileType::GRETINA_MODE3;
+      }
       return kFileType::GRETINA_MODE2;
    } else if(ext == "hist") {
       return kFileType::GUI_HIST_FILE;
@@ -457,8 +461,8 @@ bool TGRSIOptions::WriteToRoot(TFile* file)
    TDirectory* oldDir  = gDirectory;
 
    if(file == nullptr) {
-		file = gDirectory->GetFile();
-	}
+      file = gDirectory->GetFile();
+   }
    file->cd();
    std::string oldoption = std::string(file->GetOption());
    if(oldoption == "READ") {
@@ -484,7 +488,9 @@ bool TGRSIOptions::WriteToRoot(TFile* file)
 void TGRSIOptions::SetOptions(TGRSIOptions* tmp)
 {
    // Sets the TGRSIOptions to the info passes as tmp.
-   if(fGRSIOptions && (tmp != fGRSIOptions)) delete fGRSIOptions;
+   if(fGRSIOptions && (tmp != fGRSIOptions)) {
+      delete fGRSIOptions;
+   }
    fGRSIOptions = tmp;
 }
 
@@ -507,7 +513,9 @@ Bool_t TGRSIOptions::ReadFromFile(TFile* file)
    TIter  iter(list);
    printf("Reading Options from file:" CYAN " %s" RESET_COLOR "\n", file->GetName());
    while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
-      if(!key || strcmp(key->GetClassName(), "TGRSIOptions")) continue;
+      if(!key || strcmp(key->GetClassName(), "TGRSIOptions")) {
+         continue;
+      }
 
       TGRSIOptions::SetOptions(dynamic_cast<TGRSIOptions*>(key->ReadObj()));
       oldDir->cd();
@@ -517,4 +525,3 @@ Bool_t TGRSIOptions::ReadFromFile(TFile* file)
 
    return false;
 }
-

@@ -298,11 +298,14 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
          //We do an outside loop on gammas so that we can break on the betas if we see a beta in coincidence (we don't want to bin twice just because we have two betas)
          bool foundBeta = false;
          for(int b = 0; b < scep->GetMultiplicity() && !foundBeta; ++b) {
-            if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
+            if(scep->GetHit(b)->GetEnergy() < betaThres) { continue;
+}
             for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
-               if(grif->GetGriffinHit(one)->NPileUps() > 1) continue;
+               if(grif->GetGriffinHit(one)->NPileUps() > 1) { continue;
+}
                for(two = 0; two < (int) grif->GetMultiplicity(); ++two) {
-                  if(grif->GetGriffinHit(two)->NPileUps() > 1) continue;
+                  if(grif->GetGriffinHit(two)->NPileUps() > 1) { continue;
+}
                   if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
                      continue;
                   }
@@ -320,7 +323,8 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
                      //Now we want to loop over gamma rays if they are in coincidence.
                      //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
                      double angle = grif->GetGriffinHit(one)->GetPosition().Angle(grif->GetGriffinHit(two)->GetPosition())*180./TMath::Pi();
-                     if(angle < 0.0001) continue;
+                     if(angle < 0.0001) { continue;
+}
                      auto angIndex = angleComboMap.lower_bound(angle-0.0005);
                      //angCorr_coinc_Binned[angIndex->second]->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy(), 1.);
                      Double_t fillval[2] = {grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy()};
@@ -333,7 +337,8 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
                      //Now we want to loop over gamma rays if they are in coincidence.
                      //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
                      double angle = grif->GetGriffinHit(one)->GetPosition().Angle(grif->GetGriffinHit(two)->GetPosition())*180./TMath::Pi();
-                     if(angle < 0.0001) continue;
+                     if(angle < 0.0001) { continue;
+}
                      auto angIndex = angleComboMap.lower_bound(angle-0.0005);
                      //angCorr_coinc_Binned[angIndex->second]->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy(), 1.);
                      Double_t fillval[2] = {grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy()};
@@ -345,15 +350,18 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
                   for(int oldb=0; (oldb < (int) oldscep->GetMultiplicity()) && !oldfound; ++oldb){
                      //Be careful about time ordering!!!! betas and gammas are not symmetric out of the DAQ
                      for(int oldtwo =0; oldtwo < (int) oldgrif->GetMultiplicity(); ++oldtwo){   
-                        if(oldgrif->GetGriffinHit(oldtwo)->NPileUps() > 1) continue;
-                        if(oldtwo == one) continue;
+                        if(oldgrif->GetGriffinHit(oldtwo)->NPileUps() > 1) { continue;
+}
+                        if(oldtwo == one) { continue;
+}
                         if(((gbTlow <= grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime()) && (grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime() <= gbThigh)) && 
                            ((gbTlow <= oldgrif->GetHit(oldtwo)->GetTime()-oldscep->GetHit(oldb)->GetTime()) && (oldgrif->GetHit(oldtwo)->GetTime()-oldscep->GetHit(oldb)->GetTime() <= gbThigh))) {
                            //Plots a gamma energy spectrum in coincidence with a beta
                            //Now we want to loop over gamma rays if they are in coincidence.
                            //If they are close enough in time, fill the gamma-gamma-beta matrix. This will be symmetric because we are doing a double loop over gammas
                            double angle = grif->GetGriffinHit(one)->GetPosition().Angle(oldgrif->GetGriffinHit(oldtwo)->GetPosition())*180./TMath::Pi();
-                           if(angle < 0.0001) continue;
+                           if(angle < 0.0001) { continue;
+}
                            auto angIndex = angleComboMap.lower_bound(angle-0.0005);
                            //angCorr_coinc_Binned[angIndex->second]->Fill(grif->GetGriffinHit(one)->GetEnergy(), grif->GetGriffinHit(two)->GetEnergy(), 1.);
                            Double_t fillval[2] = {grif->GetGriffinHit(one)->GetEnergy(), oldgrif->GetGriffinHit(oldtwo)->GetEnergy()};
@@ -372,7 +380,8 @@ TList *exAnalysis(TTree* tree, TPPG*, TGRSIRunInfo*, long maxEntries = 0, TStopw
          }
          for(one = 0; one < (int) grif->GetAddbackMultiplicity(); ++one) {
             for(int b = 0; b < scep->GetMultiplicity(); ++b) {
-               if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
+               if(scep->GetHit(b)->GetEnergy() < betaThres) { continue;
+}
                for(two = 0; two < (int) grif->GetAddbackMultiplicity(); ++two) {
                   if(two == one){ //If we are looking at the same gamma we don't want to call it a coincidence
                      continue;

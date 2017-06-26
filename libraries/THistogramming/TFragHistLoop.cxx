@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "TFragHistLoop.h"
 
 #include "TFile.h"
@@ -10,9 +12,13 @@
 
 TFragHistLoop* TFragHistLoop::Get(std::string name)
 {
-   if(name.length() == 0) name = "histo_loop";
-   TFragHistLoop* loop         = dynamic_cast<TFragHistLoop*>(StoppableThread::Get(name));
-   if(!loop) loop              = new TFragHistLoop(name);
+   if(name.length() == 0) {
+      name = "histo_loop";
+   }
+   TFragHistLoop* loop = dynamic_cast<TFragHistLoop*>(StoppableThread::Get(name));
+   if(!loop) {
+      loop = new TFragHistLoop(name);
+   }
    return loop;
 }
 
@@ -107,7 +113,7 @@ void TFragHistLoop::Write()
 
 void TFragHistLoop::LoadLibrary(std::string library)
 {
-   fCompiledHistograms.Load(library, "MakeFragmentHistograms");
+   fCompiledHistograms.Load(std::move(library), "MakeFragmentHistograms");
 }
 
 std::string TFragHistLoop::GetLibraryName() const

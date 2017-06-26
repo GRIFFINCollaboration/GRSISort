@@ -21,8 +21,7 @@ ClassImp(TSceptarHit)
    Clear();
 }
 
-TSceptarHit::~TSceptarHit()
-= default;
+TSceptarHit::~TSceptarHit() = default;
 
 TSceptarHit::TSceptarHit(const TSceptarHit& rhs) : TGRSIDetectorHit()
 {
@@ -89,7 +88,9 @@ void TSceptarHit::Copy(TObject& rhs) const
 void TSceptarHit::Copy(TObject& obj, bool waveform) const
 {
    Copy(obj);
-   if(waveform) CopyWave(obj);
+   if(waveform) {
+      CopyWave(obj);
+   }
 }
 
 TVector3 TSceptarHit::GetPosition(Double_t) const

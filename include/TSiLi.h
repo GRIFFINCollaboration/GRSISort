@@ -32,12 +32,14 @@ public:
    ~TSiLi() override;
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
    void ClearTransients() override
    {
-      for (auto hit : fSiLiHits) hit.ClearTransients();
+      for(const auto& hit : fSiLiHits) {
+         hit.ClearTransients();
+      }
    }
 
    TSiLi& operator=(const TSiLi&); //
@@ -61,7 +63,9 @@ public:
 
    void UseFitCharge()
    {
-      for (auto & fSiLiHit : fSiLiHits) fSiLiHit.UseFitCharge();
+      for(auto& fSiLiHit : fSiLiHits) {
+         fSiLiHit.UseFitCharge();
+      }
    }
 
    static TVector3 GetPosition(int ring, int sector, bool smear = false);

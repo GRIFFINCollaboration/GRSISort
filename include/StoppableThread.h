@@ -40,7 +40,7 @@ public:
    static void ResumeAll();
 
    StoppableThread(std::string name);
-   static StoppableThread* Get(std::string name);
+   static StoppableThread* Get(const std::string& name);
    static std::vector<StoppableThread*> GetAll();
    virtual ~StoppableThread();
 
@@ -58,7 +58,7 @@ public:
    std::string         Name() const { return fName; }
 
    virtual void ClearQueue() {}
-	static void ClearAllQueues();
+   static void  ClearAllQueues();
 
    // protected:
    virtual bool Iteration() = 0;
@@ -93,7 +93,7 @@ protected:
 #ifndef __CINT__
    std::atomic_size_t fItemsPopped{}; ///< number of items popped from input queue
    std::atomic_long   fInputSize{};   ///< number of items in the input (queue), only updated within Iteration(), so not
-                                    ///< always fully up-to-date (signed to hold error from queue::pop)
+                                      ///< always fully up-to-date (signed to hold error from queue::pop)
 #endif
 
 private:

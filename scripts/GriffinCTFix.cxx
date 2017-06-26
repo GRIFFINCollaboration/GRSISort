@@ -123,8 +123,9 @@ double *CrossTalkFix(int det, double energy, TFile* in_file) {
       //Make a residuals plot
       TH1 *residual_plot = new TH1D(Form("%s_resid",fpx->GetName()),"residuals",2000,0,2000);
       for(int i=0; i<residual_plot->GetNbinsX(); ++i){
-         if(px->GetBinContent(i) != 0)
+         if(px->GetBinContent(i) != 0) {
          residual_plot->SetBinContent(i,px->GetBinContent(i) - fpx->Eval(residual_plot->GetBinCenter(i)));
+}
          residual_plot->SetBinError(i,px->GetBinError(i));
       }
       residual_plot->Write();

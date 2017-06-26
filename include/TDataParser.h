@@ -79,7 +79,7 @@ public:
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>& AddGoodOutputQueue(size_t maxSize = 50000)
    {
       std::stringstream name;
-      name << "good_frag_queue_" << fGoodOutputQueues.size();
+      name<<"good_frag_queue_"<<fGoodOutputQueues.size();
       fGoodOutputQueues.push_back(
          std::make_shared<ThreadsafeQueue<std::shared_ptr<const TFragment>>>(name.str(), maxSize));
       return fGoodOutputQueues.back();
@@ -92,7 +92,9 @@ public:
    void   ClearQueue();
    size_t ItemsPushed()
    {
-      if (fGoodOutputQueues.size() > 0) return fGoodOutputQueues.back()->ItemsPushed();
+      if(fGoodOutputQueues.size() > 0) {
+         return fGoodOutputQueues.back()->ItemsPushed();
+      }
       return std::numeric_limits<std::size_t>::max();
    }
    void        SetFinished();
@@ -137,8 +139,8 @@ private:
 public:
 #ifndef __CINT__
    void Push(std::vector<std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>>& queue,
-             std::shared_ptr<TFragment>                                                       frag);
-   void Push(ThreadsafeQueue<std::shared_ptr<const TFragment>>& queue, std::shared_ptr<TFragment> frag);
+             const std::shared_ptr<TFragment>&                                                frag);
+   void Push(ThreadsafeQueue<std::shared_ptr<const TFragment>>& queue, const std::shared_ptr<TFragment>& frag);
 #endif
 
    int TigressDataToFragment(uint32_t* data, int size, unsigned int midasSerialNumber = 0, time_t midasTime = 0);
@@ -164,27 +166,27 @@ private:
 
 private:
 #ifndef __CINT__
-   void SetTIGWave(uint32_t, std::shared_ptr<TFragment>);
-   void SetTIGAddress(uint32_t, std::shared_ptr<TFragment>);
-   void SetTIGCfd(uint32_t, std::shared_ptr<TFragment>);
-   void SetTIGCharge(uint32_t, std::shared_ptr<TFragment>);
-   void SetTIGLed(uint32_t, std::shared_ptr<TFragment>);
+   void SetTIGWave(uint32_t, const std::shared_ptr<TFragment>&);
+   void SetTIGAddress(uint32_t, const std::shared_ptr<TFragment>&);
+   void SetTIGCfd(uint32_t, const std::shared_ptr<TFragment>&);
+   void SetTIGCharge(uint32_t, const std::shared_ptr<TFragment>&);
+   void SetTIGLed(uint32_t, const std::shared_ptr<TFragment>&);
 
-   bool SetTIGTriggerID(uint32_t, std::shared_ptr<TFragment>);
-   bool SetTIGTimeStamp(uint32_t*, std::shared_ptr<TFragment>);
+   bool SetTIGTriggerID(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetTIGTimeStamp(uint32_t*, const std::shared_ptr<TFragment>&);
 
-   bool SetGRIFHeader(uint32_t, std::shared_ptr<TFragment>, EBank);
-   bool SetGRIFMasterFilterPattern(uint32_t, std::shared_ptr<TFragment>, EBank);
-   bool SetGRIFMasterFilterId(uint32_t, std::shared_ptr<TFragment>);
-   bool SetGRIFChannelTriggerId(uint32_t, std::shared_ptr<TFragment>);
-   bool SetGRIFTimeStampLow(uint32_t, std::shared_ptr<TFragment>);
-   bool SetGRIFNetworkPacket(uint32_t, std::shared_ptr<TFragment>);
+   bool SetGRIFHeader(uint32_t, const std::shared_ptr<TFragment>&, EBank);
+   bool SetGRIFMasterFilterPattern(uint32_t, const std::shared_ptr<TFragment>&, EBank);
+   bool SetGRIFMasterFilterId(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetGRIFChannelTriggerId(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetGRIFTimeStampLow(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetGRIFNetworkPacket(uint32_t, const std::shared_ptr<TFragment>&);
 
-   bool SetGRIFPsd(uint32_t, std::shared_ptr<TFragment>);
-   bool SetGRIFCc(uint32_t, std::shared_ptr<TFragment>);
+   bool SetGRIFPsd(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetGRIFCc(uint32_t, const std::shared_ptr<TFragment>&);
 
-   bool SetGRIFWaveForm(uint32_t, std::shared_ptr<TFragment>);
-   bool SetGRIFDeadTime(uint32_t, std::shared_ptr<TFragment>);
+   bool SetGRIFWaveForm(uint32_t, const std::shared_ptr<TFragment>&);
+   bool SetGRIFDeadTime(uint32_t, const std::shared_ptr<TFragment>&);
 #endif
 
    bool SetNewPPGPattern(uint32_t, TPPGData*);

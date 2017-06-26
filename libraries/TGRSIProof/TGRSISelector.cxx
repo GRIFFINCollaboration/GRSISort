@@ -32,9 +32,9 @@
 #include "TStyle.h"
 /// \cond CLASSIMP
 ClassImp(TGRSISelector)
-/// \endcond
+   /// \endcond
 
-void TGRSISelector::Begin(TTree* /*tree*/)
+   void TGRSISelector::Begin(TTree* /*tree*/)
 {
    /// The Begin() function is called at the start of the query.
    /// When running with PROOF Begin() is only called on the client.
@@ -49,15 +49,15 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    /// The tree argument is deprecated (on PROOF 0 is passed).
    TString option = GetOption();
 
-   std::cout << "input list size = " << fInput->GetEntries() << std::endl;
+   std::cout<<"input list size = "<<fInput->GetEntries()<<std::endl;
    for(int i = 0; i < fInput->GetEntries(); ++i) {
-      std::cout << fInput->At(i)->GetName() << ": ";
+      std::cout<<fInput->At(i)->GetName()<<": ";
       fInput->At(i)->Print();
    }
 
-	// read the analysis options that were passed along and copy them to the local TGRSIOptions
-	fAnalysisOptions = dynamic_cast<TAnalysisOptions*>(fInput->FindObject("TAnalysisOptions"));
-	*(TGRSIOptions::AnalysisOptions()) = *fAnalysisOptions;
+   // read the analysis options that were passed along and copy them to the local TGRSIOptions
+   fAnalysisOptions                   = dynamic_cast<TAnalysisOptions*>(fInput->FindObject("TAnalysisOptions"));
+   *(TGRSIOptions::AnalysisOptions()) = *fAnalysisOptions;
 
    const char* workingDirectory = "";
    if(fInput->FindObject("pwd") != nullptr) {
@@ -67,7 +67,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    while(fInput->FindObject(Form("calFile%d", i)) != nullptr) {
       const char* fileName = dynamic_cast<TNamed*>(fInput->FindObject(Form("calFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
-         std::cout << "Error, empty file name!" << std::endl;
+         std::cout<<"Error, empty file name!"<<std::endl;
          break;
       }
       // if we have a relative path and a working directory, combine them
@@ -82,7 +82,7 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    while(fInput->FindObject(Form("valFile%d", i)) != nullptr) {
       const char* fileName = dynamic_cast<TNamed*>(fInput->FindObject(Form("valFile%d", i)))->GetTitle();
       if(fileName[0] == 0) {
-         std::cout << "Error, empty file name!" << std::endl;
+         std::cout<<"Error, empty file name!"<<std::endl;
          break;
       }
       // if we have a relative path and a working directory, combine them
@@ -95,9 +95,9 @@ void TGRSISelector::SlaveBegin(TTree* /*tree*/)
    }
 
    if(GValue::Size() == 0) {
-      std::cout << "No g-values!" << std::flush;
+      std::cout<<"No g-values!"<<std::flush;
    } else {
-      std::cout << GValue::Size() << " g-values" << std::endl;
+      std::cout<<GValue::Size()<<" g-values"<<std::endl;
    }
 
    CreateHistograms();
@@ -126,7 +126,7 @@ Bool_t TGRSISelector::Process(Long64_t entry)
    static TFile* current_file = nullptr;
    if(current_file != fChain->GetCurrentFile()) {
       current_file = fChain->GetCurrentFile();
-      std::cout << "Starting to sort: " << current_file << std::endl;
+      std::cout<<"Starting to sort: "<<current_file<<std::endl;
       TChannel::ReadCalFromFile(current_file);
       TGRSIRunInfo::Get()->ReadInfoFromFile(current_file);
       //   TChannel::WriteCalFile();
@@ -159,7 +159,7 @@ void TGRSISelector::Terminate()
    TFile outputFile(Form("%s%05d_%03d.root", fOutputPrefix.c_str(), runnumber, subrunnumber), "RECREATE");
    fOutput->Write();
    TGRSIRunInfo::Get()->Write();
-	TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(&outputFile);
+   TGRSIOptions::Get()->AnalysisOptions()->WriteToFile(&outputFile);
    outputFile.Close();
 }
 
@@ -173,7 +173,9 @@ void TGRSISelector::Init(TTree* tree)
    /// Init() will be called many times when running on PROOF
    /// (once per file to be processed).
    /// Set branch addresses and branch pointers
-   if(!tree) return;
+   if(!tree) {
+      return;
+   }
    fChain = tree;
    InitializeBranches(tree);
 }

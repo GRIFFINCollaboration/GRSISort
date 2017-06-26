@@ -115,18 +115,30 @@ void TMnemonic::EnumerateSystem()
 int TMnemonic::EnumerateDigitizer(std::string& name)
 {
    std::transform(name.begin(), name.end(), name.begin(), ::toupper);
-   if(name.compare("GRF16") == 0) return kGRF16;
-   if(name.compare("GRF4G") == 0) return kGRF4G;
-   if(name.compare("TIG10") == 0) return kTIG10;
-   if(name.compare("TIG64") == 0) return kTIG64;
-   if(name.compare("CAEN8") == 0) return kCAEN8;
+   if(name.compare("GRF16") == 0) {
+      return kGRF16;
+   }
+   if(name.compare("GRF4G") == 0) {
+      return kGRF4G;
+   }
+   if(name.compare("TIG10") == 0) {
+      return kTIG10;
+   }
+   if(name.compare("TIG64") == 0) {
+      return kTIG64;
+   }
+   if(name.compare("CAEN8") == 0) {
+      return kCAEN8;
+   }
    return kDefault;
 }
 
 void TMnemonic::Parse(std::string* name)
 {
    if(!name || name->length() < 9) {
-      if((name->length() < 1) && (name->compare(0, 2, "RF") == 0)) SetRFMNEMONIC(name);
+      if((name->length() < 1) && (name->compare(0, 2, "RF") == 0)) {
+         SetRFMNEMONIC(name);
+      }
       return;
    }
    std::string buf;
@@ -196,7 +208,9 @@ void TMnemonic::Print(Option_t*) const
 
 TClass* TMnemonic::GetClassType() const
 {
-   if(fClassType != nullptr) return fClassType;
+   if(fClassType != nullptr) {
+      return fClassType;
+   }
 
    switch(System()) {
    case TMnemonic::kTigress: fClassType    = TTigress::Class(); break;

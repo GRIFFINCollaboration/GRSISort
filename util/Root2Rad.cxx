@@ -68,8 +68,8 @@ void WriteMat(TH2*, std::fstream*);
 void WriteM4b(TH2*, std::fstream*);
 
 int main(int argc, char** argv) {	
-	auto *infile = new TFile();	
-	if(argc < 2  || !(infile = TFile::Open(argv[1],"read")) )	{
+	TFile *infile = nullptr;
+	if(argc < 2  || (infile = TFile::Open(argv[1],"read")) == nullptr )	{
 		std::cout<<"problem opening file."<<std::endl
 			      <<"Usage: "<<argv[0]<<" file.root (optional: -s to split large matrices, -c to compress large matrices)"<<std::endl;
 		return 1;
@@ -78,9 +78,10 @@ int main(int argc, char** argv) {
 	bool split = false;
 	bool compress = false;
 	for(int i = 2; i < argc; ++i) {
-		if(strcmp(argv[i], "-s") == 0) split = true;
-		else if(strcmp(argv[i], "-c") == 0) compress = true;
-		else std::cout<<"Unrecognized flag "<<argv[i]<<std::endl;
+		if(strcmp(argv[i], "-s") == 0) { split = true;
+		} else if(strcmp(argv[i], "-c") == 0) { compress = true;
+		} else { std::cout<<"Unrecognized flag "<<argv[i]<<std::endl;
+}
 	}
 
 	std::string path = infile->GetName();
@@ -251,11 +252,13 @@ void WriteMat(TH2 *mat, std::fstream *outfile) {
 	for(int y = 1; y <= 4096; ++y) {
 		uint16_t buffer[4096] = {0};
 		TH1D* proj;
-		if(y <= ybins) proj = mat->ProjectionX("proj", y, y);
-		else  		   proj = empty;
+		if(y <= ybins) { proj = mat->ProjectionX("proj", y, y);
+		} else {  		   proj = empty;
+}
 		for(int x = 1; x <= 4096; ++x) {
-			if(x <= xbins) buffer[x-1] = (uint16_t)(proj->GetBinContent(x));//    mat->GetBinContent(x,y));
-			else				buffer[x-1] = 0;
+			if(x <= xbins) { buffer[x-1] = (uint16_t)(proj->GetBinContent(x));//    mat->GetBinContent(x,y));
+			} else {				buffer[x-1] = 0;
+}
 		}
 		outfile->write((char*)(&buffer), sizeof(buffer));	
 	}
@@ -271,11 +274,13 @@ void WriteM4b(TH2 *mat, std::fstream *outfile) {
 	for(int y = 1; y <= 4096; ++y) {
 		uint32_t buffer[4096] = {0};
 		TH1D* proj;
-		if(y <= ybins) proj = mat->ProjectionX("proj", y, y);
-		else           proj = empty;
+		if(y <= ybins) { proj = mat->ProjectionX("proj", y, y);
+		} else {           proj = empty;
+}
 		for(int x = 1; x <= 4096; ++x) {
-			if(x <= xbins) buffer[x-1] = (uint32_t)(proj->GetBinContent(x));//    mat->GetBinContent(x,y));
-			else           buffer[x-1] = 0;
+			if(x <= xbins) { buffer[x-1] = (uint32_t)(proj->GetBinContent(x));//    mat->GetBinContent(x,y));
+			} else {           buffer[x-1] = 0;
+}
 		}
 		outfile->write((char*)(&buffer), sizeof(buffer));	
 	}

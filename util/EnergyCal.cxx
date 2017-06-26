@@ -135,7 +135,7 @@ int main(int argc, char **argv) {
 
    auto *outfile = new TFile("calibration.root","RECREATE");
 
-   auto* current_hist = new TH1D;
+   TH1D* current_hist = nullptr;
    auto* ge = new TGraphErrors;
    auto* fwhm = new TGraphErrors;
    for(int i =1;i<=64; i++){
@@ -143,7 +143,8 @@ int main(int argc, char **argv) {
       fwhm->Clear();
       ge->Clear();
       current_hist = eng_mat->ProjectionY(Form("chan%d_py",i),i+1,i+1);
-      if(current_hist->Integral() < 1000) continue;
+      if(current_hist->Integral() < 1000) { continue;
+}
       GetCal(current_hist, ge, fwhm);
       ge->SetName(Form("chan%d_g",i));
       ge->GetXaxis()->SetTitle("Actual Energy (keV)");

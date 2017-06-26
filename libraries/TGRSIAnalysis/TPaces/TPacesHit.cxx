@@ -24,8 +24,7 @@ TPacesHit::TPacesHit(const TPacesHit& rhs) : TGRSIDetectorHit()
    rhs.Copy(*this);
 }
 
-TPacesHit::~TPacesHit()
-= default;
+TPacesHit::~TPacesHit() = default;
 
 void TPacesHit::Copy(TObject& rhs) const
 {

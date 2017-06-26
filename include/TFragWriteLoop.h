@@ -56,9 +56,9 @@ protected:
 private:
    TFragWriteLoop(std::string name, std::string outputFile);
 #ifndef __CINT__
-   void WriteEvent(std::shared_ptr<const TFragment> event);
-   void WriteBadEvent(std::shared_ptr<const TFragment> event);
-   void WriteScaler(std::shared_ptr<TEpicsFrag> scaler);
+   void WriteEvent(const std::shared_ptr<const TFragment>& event);
+   void WriteBadEvent(const std::shared_ptr<const TFragment>& event);
+   void WriteScaler(const std::shared_ptr<TEpicsFrag>& scaler);
 #endif
 
    TFile* fOutputFile;

@@ -69,7 +69,7 @@ TPaces& TPaces::operator=(const TPaces& rhs)
    return *this;
 }
 
-void TPaces::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*)
+void TPaces::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel*)
 {
    TPacesHit hit(*frag);
    fPacesHits.push_back(std::move(hit));
@@ -85,7 +85,7 @@ TPacesHit* TPaces::GetPacesHit(const int& i)
    try {
       return &fPacesHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;

@@ -82,7 +82,7 @@ bool TLstFile::Open(const char* filename)
       std::ifstream in(GetFilename(), std::ifstream::in | std::ifstream::binary);
       in.seekg(0, std::ifstream::end);
       if(in.tellg() < 0) {
-         std::cout << R"(Failed to open ")" << GetFilename() << "/" << fFilename << R"("!)" << std::endl;
+         std::cout<<R"(Failed to open ")"<<GetFilename()<<"/"<<fFilename<<R"("!)"<<std::endl;
          return false;
       } else {
          fFileSize = in.tellg();
@@ -92,7 +92,7 @@ bool TLstFile::Open(const char* filename)
          in.close();
       }
    } catch(std::exception& e) {
-      std::cout << "Caught " << e.what() << std::endl;
+      std::cout<<"Caught "<<e.what()<<std::endl;
    }
 // Do we need these?
 // signal(SIGPIPE,SIG_IGN); // crash if reading from closed pipe
@@ -105,7 +105,7 @@ bool TLstFile::Open(const char* filename)
    TGRSIRunInfo::SetRunInfo(GetRunNumber(), GetSubRunNumber());
    TGRSIRunInfo::SetGRSIVersion(GRSI_RELEASE);
 
-   std::cout << "Successfully read " << fFileSize - headerSize << " bytes into buffer!" << std::endl;
+   std::cout<<"Successfully read "<<fFileSize - headerSize<<" bytes into buffer!"<<std::endl;
 
    return true;
 }
@@ -125,7 +125,7 @@ int TLstFile::Read(std::shared_ptr<TRawEvent> lstEvent)
       try {
          std::static_pointer_cast<TLstEvent>(lstEvent)->SetData(fReadBuffer);
       } catch(std::exception& e) {
-         std::cout << e.what() << std::endl;
+         std::cout<<e.what()<<std::endl;
       }
       fBytesRead = fFileSize;
       return fFileSize;
@@ -146,10 +146,13 @@ int TLstFile::GetRunNumber()
       return 0;
    }
    std::size_t found2 = fFilename.rfind('-');
-   if((found2 < foundslash && foundslash != std::string::npos) || found2 == std::string::npos)
+   if((found2 < foundslash && foundslash != std::string::npos) || found2 == std::string::npos) {
       found2 = fFilename.rfind('_');
+   }
    //   printf("found 2 = %i\n",found2);
-   if(found2 < foundslash && foundslash != std::string::npos) found2 = std::string::npos;
+   if(found2 < foundslash && foundslash != std::string::npos) {
+      found2 = std::string::npos;
+   }
    std::string temp;
    if(found2 == std::string::npos || fFilename.compare(found2 + 4, 4, ".lst") != 0) {
       temp = fFilename.substr(found - 5, 5);
@@ -164,12 +167,17 @@ int TLstFile::GetSubRunNumber()
 {
    // Parse the sub run number from the current TMidasFile. This assumes a format of
    // run#####_###.lst or run#####.lst.
-   if(fFilename.length() == 0) return -1;
+   if(fFilename.length() == 0) {
+      return -1;
+   }
    std::size_t foundslash = fFilename.rfind('/');
-   std::size_t found      = fFilename.rfind("-");
-   if((found < foundslash && foundslash != std::string::npos) || found == std::string::npos)
-      found                                                        = fFilename.rfind('_');
-   if(found < foundslash && foundslash != std::string::npos) found = std::string::npos;
+   std::size_t found      = fFilename.rfind('-');
+   if((found < foundslash && foundslash != std::string::npos) || found == std::string::npos) {
+      found = fFilename.rfind('_');
+   }
+   if(found < foundslash && foundslash != std::string::npos) {
+      found = std::string::npos;
+   }
    if(found != std::string::npos) {
       std::string temp = fFilename.substr(found + 1, 3);
       // printf("%i \n",atoi(temp.c_str()));

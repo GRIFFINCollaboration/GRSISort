@@ -83,41 +83,41 @@ private:
    double      fTimeOffset{};
    TMnemonic   fMnemonic;
 
-   std::vector<Float_t> fENGCoefficients; // Energy calibration coeffs (low to high order)
-   double              fENGChi2{};          // Chi2 of the energy calibration
-   std::vector<double> fCFDCoefficients;  // CFD calibration coeffs (low to high order)
-   double              fCFDChi2{};          // Chi2 of the CFD calibration
-   std::vector<double> fLEDCoefficients;  // LED calibration coeffs (low to high order)
-   double              fLEDChi2{};          // Chi2 of LED calibration
-   std::vector<double> fTIMECoefficients; // Time calibration coeffs (low to high order)
-   double              fTIMEChi2{};         // Chi2 of the Time calibration
-   std::vector<double> fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
-   double fEFFChi2{};                       // Chi2 of Efficiency calibration
+   std::vector<Float_t> fENGCoefficients;  // Energy calibration coeffs (low to high order)
+   double               fENGChi2{};        // Chi2 of the energy calibration
+   std::vector<double>  fCFDCoefficients;  // CFD calibration coeffs (low to high order)
+   double               fCFDChi2{};        // Chi2 of the CFD calibration
+   std::vector<double>  fLEDCoefficients;  // LED calibration coeffs (low to high order)
+   double               fLEDChi2{};        // Chi2 of LED calibration
+   std::vector<double>  fTIMECoefficients; // Time calibration coeffs (low to high order)
+   double               fTIMEChi2{};       // Chi2 of the Time calibration
+   std::vector<double>  fEFFCoefficients;  // Efficiency calibration coeffs (low to high order)
+   double               fEFFChi2{};        // Chi2 of Efficiency calibration
 
-	struct WaveFormShapePar {
-		bool   InUse;
-		double BaseLine;
-		double TauDecay;
-		double TauRise;
-	};
+   struct WaveFormShapePar {
+      bool   InUse;
+      double BaseLine;
+      double TauDecay;
+      double TauRise;
+   };
 
    WaveFormShapePar WaveFormShape{};
 
    std::vector<double> fCTCoefficients; // Cross talk coefficients
 
-   static std::map<unsigned int, TChannel*>* fChannelMap; // A map to all of the channels based on address
-   static std::map<int, TChannel*>* fChannelNumberMap;    // A map of TChannels based on channel number
+   static std::map<unsigned int, TChannel*>* fChannelMap;       // A map to all of the channels based on address
+   static std::map<int, TChannel*>*          fChannelNumberMap; // A map of TChannels based on channel number
    static void UpdateChannelNumberMap();
    static void UpdateChannelMap();
    void        OverWriteChannel(TChannel*);
    void        AppendChannel(TChannel*);
 
-   void SetENGCoefficients(std::vector<Float_t> tmp) { fENGCoefficients = tmp; }
-   void SetCFDCoefficients(std::vector<double> tmp) { fCFDCoefficients = tmp; }
-   void SetLEDCoefficients(std::vector<double> tmp) { fLEDCoefficients = tmp; }
-   void SetTIMECoefficients(std::vector<double> tmp) { fTIMECoefficients = tmp; }
-   void SetEFFCoefficients(std::vector<double> tmp) { fEFFCoefficients = tmp; }
-   void SetCTCoefficients(std::vector<double> tmp) { fCTCoefficients = tmp; }
+   void SetENGCoefficients(std::vector<Float_t> tmp) { fENGCoefficients = std::move(tmp); }
+   void SetCFDCoefficients(std::vector<double> tmp) { fCFDCoefficients = std::move(tmp); }
+   void SetLEDCoefficients(std::vector<double> tmp) { fLEDCoefficients = std::move(tmp); }
+   void SetTIMECoefficients(std::vector<double> tmp) { fTIMECoefficients = std::move(tmp); }
+   void SetEFFCoefficients(std::vector<double> tmp) { fEFFCoefficients = std::move(tmp); }
+   void SetCTCoefficients(std::vector<double> tmp) { fCTCoefficients = std::move(tmp); }
 
    static void trim(std::string*, const std::string& trimChars = " \f\n\r\t\v");
 
@@ -130,7 +130,7 @@ public:
       UpdateChannelNumberMap();
    }
    inline void SetIntegration(int tmpint) { fIntegration = tmpint; }
-   static void SetIntegration(std::string mnemonic, int tmpint);
+   static void SetIntegration(const std::string& mnemonic, int tmpint);
    inline void SetStream(int tmpstream) { fStream = tmpstream; }
    inline void SetUserInfoNumber(int tempinfo) { fUserInfoNumber = tempinfo; }
    inline void SetDigitizerType(const char* tmpstr)
@@ -138,8 +138,8 @@ public:
       fDigitizerTypeString.assign(tmpstr);
       fDigitizerType = TMnemonic::EnumerateDigitizer(fDigitizerTypeString);
    }
-   static void SetDigitizerType(std::string mnemonic, const char* tmpstr);
-   inline void SetTypeName(std::string tmpstr) { fTypeName = tmpstr; }
+   static void SetDigitizerType(const std::string& mnemonic, const char* tmpstr);
+   inline void SetTypeName(std::string tmpstr) { fTypeName = std::move(tmpstr); }
    inline void SetTimeOffset(double tmpto) { fTimeOffset = tmpto; }
 
    void SetDetectorNumber(int tempint) { fDetectorNumber = tempint; }
@@ -170,7 +170,7 @@ public:
    double GetEFFChi2() const { return fEFFChi2; }
 
    void SetUseCalFileIntegration(bool flag = true) { fUseCalFileInt = flag; }
-   static void SetUseCalFileIntegration(std::string mnemonic, bool flag);
+   static void SetUseCalFileIntegration(const std::string& mnemonic, bool flag);
    bool UseCalFileIntegration() { return fUseCalFileInt; }
 
    std::vector<Float_t> GetENGCoeff() const { return fENGCoefficients; }
@@ -248,8 +248,8 @@ public:
    static Int_t ReadCalFromFile(TFile* tempf, Option_t* opt = "overwrite");
    static Int_t ReadCalFile(const char* filename = "");
    static Int_t ParseInputData(const char* inputdata = "", Option_t* opt = "");
-   static void WriteCalFile(std::string outfilename = "");
-   static void WriteCTCorrections(std::string outfilename = "");
+   static void WriteCalFile(const std::string& outfilename = "");
+   static void WriteCTCorrections(const std::string& outfilename = "");
    static void WriteCalBuffer(Option_t* opt = "");
 
    void Print(Option_t* opt = "") const override;

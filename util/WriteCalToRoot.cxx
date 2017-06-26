@@ -46,14 +46,16 @@ int main(int argc, char **argv) {
    }
 
    printf("Files that could not be opened:");
-   for(auto & it : bad_file)
+   for(auto & it : bad_file) {
       printf(BLUE " %s " RESET_COLOR, it);
+}
 
    printf("\n");
    
    printf("Files with bad trees:");
-   for(auto & it : bad_tree)
+   for(auto & it : bad_tree) {
       printf(BLUE " %s " RESET_COLOR, it);
+}
    
    printf("\n");
 

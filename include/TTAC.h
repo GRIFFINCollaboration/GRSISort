@@ -37,12 +37,14 @@ public:
    Short_t GetMultiplicity() const { return fTACHits.size(); } //!<!
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
    void ClearTransients() override
    {
-      for (auto hit : fTACHits) hit.ClearTransients();
+      for(const auto& hit : fTACHits) {
+         hit.ClearTransients();
+      }
    }
 
    TTAC& operator=(const TTAC&); //!<!
@@ -56,7 +58,7 @@ public:
 
    /// \cond CLASSIMP
    ClassDefOverride(TTAC, 1) // TAC Physics structure
-                     /// \endcond
+                             /// \endcond
 };
 /*! @} */
 #endif

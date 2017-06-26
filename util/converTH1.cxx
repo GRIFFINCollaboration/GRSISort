@@ -44,7 +44,8 @@ void help() {
 }
 
 int main (int argc, char *argv[]) {
-  if (argc < 3) help();
+  if (argc < 3) { help();
+}
 
 
   char *file_name = argv[1];

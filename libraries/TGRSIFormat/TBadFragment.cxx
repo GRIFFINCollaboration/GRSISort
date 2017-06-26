@@ -19,7 +19,9 @@ TBadFragment::TBadFragment(TFragment& fragment, uint32_t* data, int size, int fa
    // skipping the first word, we search for the next header
    int numWords;
    for(numWords = 1; numWords < size; ++numWords) {
-      if((data[numWords] & 0xf0000000) == 0x80000000) break;
+      if((data[numWords] & 0xf0000000) == 0x80000000) {
+         break;
+      }
    }
    // only copy data up to the next header (including that header)
    fData.insert(fData.begin(), data, data + numWords + 1);
@@ -45,16 +47,23 @@ void TBadFragment::Print(Option_t*) const
    /// highlighted/
    TFragment::Print();
 
-   std::cout << "Raw data with " << (fMultipleErrors ? "multiple errors" : "single error") << ":" << std::endl;
+   std::cout<<"Raw data with "<<(fMultipleErrors ? "multiple errors" : "single error")<<":"<<std::endl;
    size_t i;
    for(i = 0; i < fData.size(); ++i) {
-      if(i == static_cast<size_t>(fFailedWord)) std::cout << ALERTTEXT;
-      std::cout << "0x" << std::setw(8) << std::setfill('0') << std::hex << fData[i] << std::dec;
-      if(i == static_cast<size_t>(fFailedWord)) std::cout << RESET_COLOR;
-      if(i % 10 == 9)
-         std::cout << std::endl;
-      else
-         std::cout << " ";
+      if(i == static_cast<size_t>(fFailedWord)) {
+         std::cout<<ALERTTEXT;
+      }
+      std::cout<<"0x"<<std::setw(8)<<std::setfill('0')<<std::hex<<fData[i]<<std::dec;
+      if(i == static_cast<size_t>(fFailedWord)) {
+         std::cout<<RESET_COLOR;
+      }
+      if(i % 10 == 9) {
+         std::cout<<std::endl;
+      } else {
+         std::cout<<" ";
+      }
    }
-   if(i % 10 != 0) std::cout << std::endl; // add newline if the last data word didn't have one
+   if(i % 10 != 0) {
+      std::cout<<std::endl; // add newline if the last data word didn't have one
+   }
 }

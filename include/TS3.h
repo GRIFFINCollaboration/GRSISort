@@ -26,8 +26,8 @@ public:
    };
 
    enum ES3GlobalBits {
-      kPreSector = BIT(0),  // Preference sector energy when building pixels
-      kMultHit = BIT(1),    // Attempt to reconstruct multi strip-hit events
+      kPreSector  = BIT(0), // Preference sector energy when building pixels
+      kMultHit    = BIT(1), // Attempt to reconstruct multi strip-hit events
       kKeepShared = BIT(2), // When kMultHit, reconstruct rather than discard charge sharing
       kGBit3      = BIT(3)
    };
@@ -37,7 +37,7 @@ public:
    ~TS3() override;
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
    Short_t GetRingMultiplicity() const { return fS3RingHits.size(); }
@@ -94,13 +94,19 @@ public:
    void ClearTransients() override
    {
       fS3Bits = 0;
-      for (auto hit : fS3Hits) hit.ClearTransients();
-      for (auto hit : fS3RingHits) hit.ClearTransients();
-      for (auto hit : fS3SectorHits) hit.ClearTransients();
+      for(const auto& hit : fS3Hits) {
+         hit.ClearTransients();
+      }
+      for(const auto& hit : fS3RingHits) {
+         hit.ClearTransients();
+      }
+      for(const auto& hit : fS3SectorHits) {
+         hit.ClearTransients();
+      }
    }
 
-   void         Copy(TObject&) const override;
-   TS3&         operator=(const TS3&);           //
+   void Copy(TObject&) const override;
+   TS3& operator=(const TS3&);                    //
    void Clear(Option_t* opt = "all") override;    //!<!
    void Print(Option_t* opt = "") const override; //!<!
 

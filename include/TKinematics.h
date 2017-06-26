@@ -69,17 +69,19 @@ public:
 
    double GetThetalab(int i)
    {
-      if (fTheta[i] < 1e-5)
+      if(fTheta[i] < 1e-5) {
          return 0;
-      else
+      } else {
          return fTheta[i];
+      }
    }
    double GetThetacm(int i)
    {
-      if (fThetacm[i] < 1e-5)
+      if(fThetacm[i] < 1e-5) {
          return 0;
-      else
+      } else {
          return fThetacm[i];
+      }
    }
 
    double GetBetacm() { return fBeta_cm; }
@@ -144,7 +146,8 @@ private:
    void      InitKin();
 
    /// \cond CLASSIMP
-   ClassDefOverride(TKinematics, 1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments
+   ClassDefOverride(TKinematics,
+                    1); // Calculates kinematics parameters (both normal and inverse) for scattering experiments
    /// \endcond
 };
 /*! @} */

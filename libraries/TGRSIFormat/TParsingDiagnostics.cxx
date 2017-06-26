@@ -20,7 +20,9 @@ TParsingDiagnostics::TParsingDiagnostics(const TParsingDiagnostics&) : TObject()
 
 TParsingDiagnostics::~TParsingDiagnostics()
 {
-   if(fIdHist != nullptr) delete fIdHist;
+   if(fIdHist != nullptr) {
+      delete fIdHist;
+   }
 }
 
 void TParsingDiagnostics::Copy(TObject& obj) const
@@ -43,7 +45,9 @@ void TParsingDiagnostics::Copy(TObject& obj) const
 
 void TParsingDiagnostics::Clear(Option_t*)
 {
-   if(fIdHist != nullptr) delete fIdHist;
+   if(fIdHist != nullptr) {
+      delete fIdHist;
+   }
    fIdHist         = nullptr;
    fPPGCycleLength = 0;
    fNumberOfGoodFragments.clear();
@@ -63,36 +67,38 @@ void TParsingDiagnostics::Clear(Option_t*)
 
 void TParsingDiagnostics::Print(Option_t*) const
 {
-   std::cout << "Total run time of this (sub-)run is " << fMaxMidasTimeStamp - fMinMidasTimeStamp << " s" << std::endl
-             << "PPG cycle is " << fPPGCycleLength / 1e5 << " ms long." << std::endl
-             << "Found " << fNumberOfNetworkPackets << " network packets in range " << fMinNetworkPacketNumber << " - "
-             << fMaxNetworkPacketNumber << " => "
-             << 100. * fNumberOfNetworkPackets / (fMaxNetworkPacketNumber - fMinNetworkPacketNumber + 1.)
-             << " % packet survival." << std::endl;
-   for(const auto & fNumberOfGoodFragment : fNumberOfGoodFragments) {
-      std::cout << "detector type " << std::setw(2) << fNumberOfGoodFragment.first << ": " << std::setw(12) << fNumberOfGoodFragment.second << " good, ";
+   std::cout<<"Total run time of this (sub-)run is "<<fMaxMidasTimeStamp - fMinMidasTimeStamp<<" s"<<std::endl
+            <<"PPG cycle is "<<fPPGCycleLength / 1e5<<" ms long."<<std::endl
+            <<"Found "<<fNumberOfNetworkPackets<<" network packets in range "<<fMinNetworkPacketNumber<<" - "
+            <<fMaxNetworkPacketNumber<<" => "
+            <<100. * fNumberOfNetworkPackets / (fMaxNetworkPacketNumber - fMinNetworkPacketNumber + 1.)
+            <<" % packet survival."<<std::endl;
+   for(const auto& fNumberOfGoodFragment : fNumberOfGoodFragments) {
+      std::cout<<"detector type "<<std::setw(2)<<fNumberOfGoodFragment.first<<": "<<std::setw(12)
+               <<fNumberOfGoodFragment.second<<" good, ";
       if(fNumberOfBadFragments.find(fNumberOfGoodFragment.first) == fNumberOfBadFragments.end()) {
-         std::cout << "          no";
+         std::cout<<"          no";
       } else {
-         std::cout << std::setw(12) << fNumberOfBadFragments.at(fNumberOfGoodFragment.first) << " ("
-                   << (100. * fNumberOfBadFragments.at(fNumberOfGoodFragment.first)) / fNumberOfGoodFragment.second << " %)";
+         std::cout<<std::setw(12)<<fNumberOfBadFragments.at(fNumberOfGoodFragment.first)<<" ("
+                  <<(100. * fNumberOfBadFragments.at(fNumberOfGoodFragment.first)) / fNumberOfGoodFragment.second
+                  <<" %)";
       }
-      std::cout << " bad fragments." << std::endl;
+      std::cout<<" bad fragments."<<std::endl;
    }
-   for(const auto & it : fDeadTime) {
-      std::cout << "channel 0x" << std::hex << std::setw(4) << std::setfill('0') << it.first << std::dec
-                << std::setfill(' ') << ": " << it.second / 1e5 << " ms deadtime out of ";
+   for(const auto& it : fDeadTime) {
+      std::cout<<"channel 0x"<<std::hex<<std::setw(4)<<std::setfill('0')<<it.first<<std::dec
+               <<std::setfill(' ')<<": "<<it.second / 1e5<<" ms deadtime out of ";
       if(fMinTimeStamp.find(it.first) == fMinTimeStamp.end() || fMaxTimeStamp.find(it.first) == fMaxTimeStamp.end()) {
-         std::cout << "nonexisting channel???" << std::endl;
+         std::cout<<"nonexisting channel???"<<std::endl;
       } else {
-         std::cout << std::setw(12) << (fMaxTimeStamp.at(it.first) - fMinTimeStamp.at(it.first)) / 1e5
-                   << " ms = " << (100. * it.second) / (fMaxTimeStamp.at(it.first) - fMinTimeStamp.at(it.first))
-                   << " %" << std::endl;
+         std::cout<<std::setw(12)<<(fMaxTimeStamp.at(it.first) - fMinTimeStamp.at(it.first)) / 1e5
+                  <<" ms = "<<(100. * it.second) / (fMaxTimeStamp.at(it.first) - fMinTimeStamp.at(it.first))<<" %"
+                  <<std::endl;
       }
    }
 }
 
-void TParsingDiagnostics::GoodFragment(std::shared_ptr<const TFragment> frag)
+void TParsingDiagnostics::GoodFragment(const std::shared_ptr<const TFragment>& frag)
 {
    /// increment the counter of good fragments for this detector type and check if any trigger ids have been lost
    fNumberOfGoodFragments[frag->GetDetectorType()]++;
@@ -156,7 +162,9 @@ void TParsingDiagnostics::GoodFragment(std::shared_ptr<const TFragment> frag)
 void TParsingDiagnostics::ReadPPG(TPPG* ppg)
 {
    /// store different TPPG diagnostics like cycle length, length of each state, offset, how often each state was found
-   if(ppg == nullptr) return;
+   if(ppg == nullptr) {
+      return;
+   }
    fPPGCycleLength = ppg->GetCycleLength();
 }
 
@@ -192,29 +200,31 @@ void TParsingDiagnostics::Draw(Option_t* opt)
 void TParsingDiagnostics::WriteToFile(const char* fileName) const
 {
    std::ofstream statsOut(fileName);
-   statsOut << std::endl
-            << "Run time to the nearest second = " << fMaxMidasTimeStamp - fMinMidasTimeStamp << std::endl
-            << std::endl;
+   statsOut<<std::endl
+           <<"Run time to the nearest second = "<<fMaxMidasTimeStamp - fMinMidasTimeStamp<<std::endl
+           <<std::endl;
 
-   statsOut << "Good fragments:";
+   statsOut<<"Good fragments:";
    for(auto it : fNumberOfGoodFragments) {
-      statsOut << " " << it.second << " of type " << it.first;
+      statsOut<<" "<<it.second<<" of type "<<it.first;
    }
-   statsOut << std::endl;
+   statsOut<<std::endl;
 
-   statsOut << "Bad fragments:";
+   statsOut<<"Bad fragments:";
    for(auto it : fNumberOfBadFragments) {
-      statsOut << " " << it.second << " of type " << it.first;
+      statsOut<<" "<<it.second<<" of type "<<it.first;
    }
-   statsOut << std::endl;
+   statsOut<<std::endl;
 
    for(auto it : fDeadTime) {
       TChannel* chan = TChannel::GetChannel(it.first);
-      if(!chan) continue;
-      statsOut << "0x" << std::hex << it.first << std::dec << ":\t" << chan->GetName()
-               << "\tdead time: " << static_cast<float>(it.second) / 1e8 << " seconds." << std::endl;
+      if(!chan) {
+         continue;
+      }
+      statsOut<<"0x"<<std::hex<<it.first<<std::dec<<":\t"<<chan->GetName()
+              <<"\tdead time: "<<static_cast<float>(it.second) / 1e8<<" seconds."<<std::endl;
    }
-   statsOut << std::endl;
+   statsOut<<std::endl;
 
    statsOut.close();
 }

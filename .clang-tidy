@@ -1,16 +1,10 @@
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,-clang-analyzer-alpha*,*,-clang-analyzer-alpha*,-clang-analyzer-osx*'
+Checks:          'clang-diagnostic-*,clang-analyzer-*,-clang-analyzer-alpha*,-*,modernize*,cppcoreguidelines*,-cppcoreguidelines-pro-type-vararg,-cppcoreguidelines-pro-bounds-pointer-arithmetic,google*,-google-readability-todo,-google-runtime-references,llvm-header-guard,misc-bool-pointer-implicit-conversion,misc-definitions-in-headers,misc-inefficient-algorithm,misc-string-*,performance*,readability*,-readability-named-parameter'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
 User:            vbildste
 CheckOptions:    
-  - key:             cert-dcl59-cpp.HeaderFileExtensions
-    value:           h,hh,hpp,hxx
-  - key:             cert-err61-cpp.CheckThrowTemporaries
-    value:           '1'
-  - key:             cert-oop11-cpp.IncludeStyle
-    value:           llvm
   - key:             cert-oop11-cpp.UseCERTSemantics
     value:           '1'
   - key:             cppcoreguidelines-pro-bounds-constant-array-index.GslHeader
@@ -41,49 +35,13 @@ CheckOptions:
     value:           ''
   - key:             google-runtime-int.UnsignedTypePrefix
     value:           uint
-  - key:             llvm-namespace-comment.ShortNamespaceLines
-    value:           '1'
-  - key:             llvm-namespace-comment.SpacesBeforeComments
-    value:           '1'
-  - key:             misc-assert-side-effect.AssertMacros
-    value:           assert
-  - key:             misc-assert-side-effect.CheckFunctionCalls
-    value:           '0'
-  - key:             misc-dangling-handle.HandleClasses
-    value:           'std::basic_string_view;std::experimental::basic_string_view'
   - key:             misc-definitions-in-headers.HeaderFileExtensions
     value:           ',h,hh,hpp,hxx'
   - key:             misc-definitions-in-headers.UseHeaderFileExtension
     value:           '1'
-  - key:             misc-misplaced-widening-cast.CheckImplicitCasts
-    value:           '1'
-  - key:             misc-move-constructor-init.IncludeStyle
-    value:           llvm
-  - key:             misc-move-constructor-init.UseCERTSemantics
-    value:           '0'
-  - key:             misc-sizeof-expression.WarnOnSizeOfCompareToConstant
-    value:           '1'
-  - key:             misc-sizeof-expression.WarnOnSizeOfConstant
-    value:           '1'
-  - key:             misc-sizeof-expression.WarnOnSizeOfThis
-    value:           '1'
   - key:             misc-string-constructor.LargeLengthThreshold
     value:           '8388608'
   - key:             misc-string-constructor.WarnOnLargeLength
-    value:           '1'
-  - key:             misc-suspicious-missing-comma.MaxConcatenatedTokens
-    value:           '5'
-  - key:             misc-suspicious-missing-comma.RatioThreshold
-    value:           '0.200000'
-  - key:             misc-suspicious-missing-comma.SizeThreshold
-    value:           '5'
-  - key:             misc-suspicious-string-compare.StringCompareLikeFunctions
-    value:           ''
-  - key:             misc-suspicious-string-compare.WarnOnImplicitComparison
-    value:           '1'
-  - key:             misc-suspicious-string-compare.WarnOnLogicalNotComparison
-    value:           '0'
-  - key:             misc-throw-by-value-catch-by-reference.CheckThrowTemporaries
     value:           '1'
   - key:             modernize-loop-convert.MaxCopySize
     value:           '16'

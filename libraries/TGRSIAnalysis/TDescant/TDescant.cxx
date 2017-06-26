@@ -135,13 +135,13 @@ TDescantHit* TDescant::GetDescantHit(const Int_t& i)
    try {
       return &fDescantHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;
 }
 
-void TDescant::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TDescant::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    /// Builds the DESCANT Hits directly from the TFragment. Basically, loops through the data for an event and sets
    /// observables.

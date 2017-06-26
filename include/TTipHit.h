@@ -66,13 +66,15 @@ public:
    void SetUpNumbering(TChannel*)
    {
       TChannel* channel = GetChannel();
-      if (!channel) {
+      if(!channel) {
          Error("SetDetector", "No TChannel exists for address %u", GetAddress());
          return;
       }
       Int_t tmp = atoi(channel->GetMnemonic()->ArraySubPositionString().c_str());
       SetTipChannel(10 * channel->GetMnemonic()->ArrayPosition() + tmp);
-      if (channel->GetMnemonic()->SubSystemString().compare(0, 1, "W") == 0) SetCsI();
+      if(channel->GetMnemonic()->SubSystemString().compare(0, 1, "W") == 0) {
+         SetCsI();
+      }
    }
 
    void SetWavefit(const TFragment&);
@@ -82,7 +84,7 @@ public:
 public:
    void Clear(Option_t* opt = "") override;       //!<!
    void Print(Option_t* opt = "") const override; //!<!
-   void Copy(TObject&) const override;    //!<!
+   void Copy(TObject&) const override;            //!<!
 
    /// \cond CLASSIMP
    ClassDefOverride(TTipHit, 1);

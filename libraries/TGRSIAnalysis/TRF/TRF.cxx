@@ -25,14 +25,13 @@ TRF::TRF(const TRF& rhs) : TDetector()
    rhs.Copy(*this);
 }
 
-TRF::~TRF()
-= default;
+TRF::~TRF() = default;
 
-void TRF::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*)
+void TRF::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel*)
 {
    TPulseAnalyzer pulse(*frag);
    if(pulse.IsSet()) {
-      fTime = pulse.fit_rf(fPeriod * 0.2); // period taken in half ticks... for reasons
+      fTime      = pulse.fit_rf(fPeriod * 0.2); // period taken in half ticks... for reasons
       fMidasTime = frag->GetMidasTimeStamp();
       fTimeStamp = frag->GetTimeStamp();
    }

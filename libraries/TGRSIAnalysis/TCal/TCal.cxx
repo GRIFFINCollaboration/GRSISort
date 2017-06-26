@@ -40,7 +40,9 @@ void TCal::SetNucleus(TNucleus* nuc, Option_t*)
       Error("SetNucleus", "Nucleus does not exist");
       return;
    }
-   if(fNuc) Warning("SetNucleus", "Overwriting nucleus: %s", fNuc->GetName());
+   if(fNuc) {
+      Warning("SetNucleus", "Overwriting nucleus: %s", fNuc->GetName());
+   }
    fNuc = nuc;
 }
 
@@ -49,7 +51,9 @@ void TCal::Copy(TObject& obj) const
    /// Copies the TCal.
    dynamic_cast<TCal&>(obj).fChan = fChan;
    // Things to make deep copies of
-   if(fFitFunc) *(dynamic_cast<TCal&>(obj).fFitFunc) = *fFitFunc;
+   if(fFitFunc) {
+      *(dynamic_cast<TCal&>(obj).fFitFunc) = *fFitFunc;
+   }
 
    // Members to make shallow copies of
    dynamic_cast<TCal&>(obj).fNuc = fNuc;
@@ -68,7 +72,7 @@ Bool_t TCal::SetChannel(const TChannel* chan)
    return true;
 }
 
-void TCal::WriteToAllChannels(std::string mnemonic)
+void TCal::WriteToAllChannels(const std::string& mnemonic)
 {
    /// Writes this calibration to all channels in the current TChannel Map
    std::map<unsigned int, TChannel*>::iterator mapIt;
@@ -81,7 +85,9 @@ void TCal::WriteToAllChannels(std::string mnemonic)
       }
    }
    printf("\n");
-   if(origChan) SetChannel(origChan);
+   if(origChan) {
+      SetChannel(origChan);
+   }
 }
 
 std::vector<Double_t> TCal::GetParameters() const
@@ -95,7 +101,9 @@ std::vector<Double_t> TCal::GetParameters() const
 
    Int_t nParams = GetFitFunction()->GetNpar();
 
-   for(int i = 0; i < nParams; i++) paramList.push_back(GetParameter(i));
+   for(int i = 0; i < nParams; i++) {
+      paramList.push_back(GetParameter(i));
+   }
 
    return paramList;
 }
@@ -128,7 +136,7 @@ TChannel* TCal::GetChannel() const
    /// Gets the channel being pointed to by the TCal. Returns 0 if no channel
    /// is set.
    return dynamic_cast<TChannel*>(fChan.GetObject()); // Gets the object pointed at by the TRef and casts it to a
-                                                     // TChannel
+                                                      // TChannel
 }
 
 void TCal::SetHist(TH1* hist)
@@ -150,10 +158,11 @@ void TCal::Clear(Option_t*)
 void TCal::Print(Option_t*) const
 {
    /// Prints calibration information
-   if(GetChannel())
+   if(GetChannel()) {
       printf("Channel Number: %u\n", GetChannel()->GetNumber());
-   else
+   } else {
       printf("Channel Number: NOT SET\n");
+   }
 
    if(fFitFunc) {
       printf("\n*******************************\n");
@@ -165,10 +174,11 @@ void TCal::Print(Option_t*) const
    }
 
    printf("Nucleus: ");
-   if(GetNucleus())
+   if(GetNucleus()) {
       printf("%s\n", GetNucleus()->GetName());
-   else
+   } else {
       printf("NOT SET\n");
+   }
 }
 
 void TCal::InitTCal()

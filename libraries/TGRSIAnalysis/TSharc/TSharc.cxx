@@ -83,8 +83,7 @@ TSharc::TSharc()
    Clear();
 }
 
-TSharc::~TSharc()
-= default;
+TSharc::~TSharc() = default;
 
 TSharc::TSharc(const TSharc& rhs) : TGRSIDetector()
 {
@@ -93,7 +92,7 @@ TSharc::TSharc(const TSharc& rhs) : TGRSIDetector()
    rhs.Copy(*this);
 }
 
-void TSharc::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TSharc::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    if(frag == nullptr || chan == nullptr) {
       return;
@@ -152,7 +151,7 @@ void TSharc::BuildHits()
       }
    }
 
-   for(auto & fSharcHit : fSharcHits) {
+   for(auto& fSharcHit : fSharcHits) {
       for(pad = fPadFragments.begin(); pad != fPadFragments.end(); pad++) {
          if(fSharcHit.GetDetector() == pad->GetDetector()) {
             fSharcHit.SetPad(*pad);
@@ -167,7 +166,9 @@ void TSharc::BuildHits()
 void TSharc::RemoveHits(std::vector<TSharcHit>* hits, std::set<int>* to_remove)
 {
    for(auto iter = to_remove->rbegin(); iter != to_remove->rend(); ++iter) {
-      if(*iter == -1) continue;
+      if(*iter == -1) {
+         continue;
+      }
       hits->erase(hits->begin() + *iter);
    }
 }
@@ -260,7 +261,7 @@ TSharcHit* TSharc::GetSharcHit(const int& i)
    try {
       return &fSharcHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;
@@ -270,16 +271,21 @@ double TSharc::GetDetectorThickness(TSharcHit& hit, double dist)
 {
    static double fDetectorThickness[16] = {998., 998.,  998.,  1001., 141., 142., 133., 143.,
                                            999., 1001., 1001., 1002., 390., 390., 383., 385.};
-   if(dist < 0.0) dist = fDetectorThickness[hit.GetDetector()];
+   if(dist < 0.0) {
+      dist = fDetectorThickness[hit.GetDetector()];
+   }
 
-   double phi_90                          = fmod(std::fabs(hit.GetPosition().Phi()), TMath::Pi() / 2);
-   double phi_45                          = phi_90;
-   if(phi_90 > (TMath::Pi() / 4.)) phi_45 = TMath::Pi() / 2 - phi_90;
+   double phi_90 = fmod(std::fabs(hit.GetPosition().Phi()), TMath::Pi() / 2);
+   double phi_45 = phi_90;
+   if(phi_90 > (TMath::Pi() / 4.)) {
+      phi_45 = TMath::Pi() / 2 - phi_90;
+   }
 
-   if(hit.GetDetector() >= 5 && hit.GetDetector() <= 12)
+   if(hit.GetDetector() >= 5 && hit.GetDetector() <= 12) {
       return dist / (TMath::Sin(hit.GetPosition().Theta()) * TMath::Cos(phi_45));
-   else
+   } else {
       return std::fabs(dist / (TMath::Cos(hit.GetPosition().Theta())));
+   }
 }
 
 double TSharc::GetDeadLayerThickness(TSharcHit& hit)

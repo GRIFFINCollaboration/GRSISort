@@ -46,7 +46,7 @@ public:
    void SetFragmentId(Int_t value) { fFragmentId = value; }
    void SetMidasTimeStamp(time_t value) { fMidasTimeStamp = value; }
    void SetNetworkPacketNumber(Int_t value) { fNetworkPacketNumber = value; }
-   void SetNumberOfFilters(UShort_t)
+   void                              SetNumberOfFilters(UShort_t)
    {
       std::cerr<<"Error, "<<__PRETTY_FUNCTION__<<" called, TFragment shouldn't have a number of filters."
                <<std::endl;
@@ -78,7 +78,9 @@ public:
    Int_t    GetTriggerBitPattern() const { return fTriggerBitPattern; }
    Long_t GetTriggerId(size_t iter = 0) const
    {
-      if (iter < fTriggerId.size()) return fTriggerId[iter];
+      if(iter < fTriggerId.size()) {
+         return fTriggerId[iter];
+      }
       return 0;
    }
    Int_t GetZc() const { return fZc; }

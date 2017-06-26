@@ -20,16 +20,16 @@ private:
    TH1D* fIndexCorrelation; /// 1D plot of counts vs. angular index
 
    // for diagnostics and re-fitting
-   TH1D* fChi2{};                       /// 1D plot of chi^2 vs. angular index
-   TH1D* fCentroid{};                   /// 1D plot of centroid vs. angular index
-   TH1D* fFWHM{};                       /// 1D plot of FWHM vs. angular index
+   TH1D* fChi2{};                     /// 1D plot of chi^2 vs. angular index
+   TH1D* fCentroid{};                 /// 1D plot of centroid vs. angular index
+   TH1D* fFWHM{};                     /// 1D plot of FWHM vs. angular index
    std::map<Int_t, TPeak*> fPeaks;    /// array of TPeaks used to create fIndexCorrelations
    std::map<Int_t, TH1D*>  f1DSlices; /// array of 1D histograms used to create fIndexCorrelations
 
    // mapping information
    std::map<Int_t, std::map<Int_t, Int_t>>
                          fIndexMap;     /// 2D square array correlating array number pairs with angular index
-   Int_t                 fNumIndices{};   /// number of angular indices
+   Int_t                 fNumIndices{}; /// number of angular indices
    Int_t                 fIndexMapSize; /// size of fIndexMap
    std::vector<Double_t> fAngleMap;     /// array correlating angular index with opening angle
    std::vector<Int_t> fWeights; /// array correlating angular index with weight (number of detector pairs at that index)

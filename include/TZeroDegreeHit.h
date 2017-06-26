@@ -48,7 +48,7 @@ public:
    Int_t    GetCfd() const override;
    Int_t    GetRemainder() const;
    Double_t GetTime(const UInt_t& correction_flag = ETimeFlag::kAll,
-                    Option_t*     opt             = "") const override; ///< Returns a time value to the nearest nanosecond!
+                    Option_t*     opt = "") const override; ///< Returns a time value to the nearest nanosecond!
    Double_t GetCorrectedTime()
       const; ///< Returns a time value using the CFD with 1/256 ns intrinsic binning, corrected using GValue
 
@@ -65,10 +65,10 @@ public:
    bool AnalyzeWaveform(); //!<!
 
 public:
-   void Clear(Option_t* opt = "") override;          //!<!
-   void Print(Option_t* opt = "") const override;    //!<!
-   void Copy(TObject&) const override;       //!<!
-   void Copy(TObject&, bool) const override; //!<!
+   void Clear(Option_t* opt = "") override;       //!<!
+   void Print(Option_t* opt = "") const override; //!<!
+   void Copy(TObject&) const override;            //!<!
+   void Copy(TObject&, bool) const override;      //!<!
 
    // Position Not written for ZeroDegree Yet
 

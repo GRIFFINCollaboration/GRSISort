@@ -8,8 +8,7 @@ ClassImp(TEfficiencyCal)
 {
 }
 
-TEfficiencyCal::~TEfficiencyCal()
-= default;
+TEfficiencyCal::~TEfficiencyCal() = default;
 
 TEfficiencyCal::TEfficiencyCal(const TEfficiencyCal& copy) : TCal(copy)
 {

@@ -13,8 +13,7 @@ ClassImp(TTigressHit)
    Clear();
 }
 
-TTigressHit::~TTigressHit()
-= default;
+TTigressHit::~TTigressHit() = default;
 
 TTigressHit::TTigressHit(const TTigressHit& rhs) : TGRSIDetectorHit()
 {
@@ -65,10 +64,11 @@ TVector3 TTigressHit::GetPosition(Double_t dist) const
 TVector3 TTigressHit::GetLastPosition(Double_t dist) const
 {
    const TGRSIDetectorHit* seg;
-   if(GetNSegments() > 0)
+   if(GetNSegments() > 0) {
       seg = &GetSegmentHit(GetNSegments() - 1); // returns the last segment in the segment vector.
-   else
+   } else {
       seg = this; // if no segments, use the core. pcb.
+   }
 
    return TTigress::GetPosition(seg->GetDetector(), seg->GetCrystal(), seg->GetSegment(), dist);
 }
@@ -82,7 +82,7 @@ void TTigressHit::Print(Option_t* opt) const
    printf("\tEnergy: %.2f\n", GetEnergy());
    printf("\tTime:   %.2f\n", GetTime());
    printf("\tBGO Fired: %s\n", BGOFired() ? "true" : "false");
-   std::cout << "\tTime:   " << GetTimeStamp() << "\n";
+   std::cout<<"\tTime:   "<<GetTimeStamp()<<"\n";
    printf("\thit contains %i segments.\n", GetNSegments());
    // printf("\tintial segment: %i\n",GetInitialHit());
    if(sopt.Contains("all")) {
@@ -95,7 +95,7 @@ void TTigressHit::Print(Option_t* opt) const
    printf("============================\n");
 }
 
-bool TTigressHit::Compare(TTigressHit lhs, TTigressHit rhs)
+bool TTigressHit::Compare(const TTigressHit& lhs, const TTigressHit& rhs)
 {
    if(lhs.GetDetector() == rhs.GetDetector()) {
       return (lhs.GetCrystal() < rhs.GetCrystal());
@@ -104,7 +104,7 @@ bool TTigressHit::Compare(TTigressHit lhs, TTigressHit rhs)
    }
 }
 
-bool TTigressHit::CompareEnergy(TTigressHit lhs, TTigressHit rhs)
+bool TTigressHit::CompareEnergy(const TTigressHit& lhs, const TTigressHit& rhs)
 {
    return (lhs.GetEnergy()) > rhs.GetEnergy();
 }
@@ -134,13 +134,17 @@ void TTigressHit::SumHit(TTigressHit* hit)
 
          // Maybe overkill, but consistent
          std::vector<TGRSIDetectorHit> fSegmentHold = hit->fSegments;
-         for(int x       = 0; x < GetNSegments(); x++) fSegmentHold.push_back(this->fSegments[x]);
+         for(int x = 0; x < GetNSegments(); x++) {
+            fSegmentHold.push_back(this->fSegments[x]);
+         }
          this->fSegments = fSegmentHold;
       }
 
       SetEnergy(GetEnergy() + hit->GetEnergy());
 
-      if(hit->BGOFired()) SetBGOFired(true);
+      if(hit->BGOFired()) {
+         SetBGOFired(true);
+      }
    }
 }
 

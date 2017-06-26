@@ -67,7 +67,7 @@ public:
    void Clear(Option_t* opt = "") override;
    // virtual void Draw(Option_t* chopt = "");
 
-   virtual void WriteToAllChannels(std::string mnemonic = "");
+   virtual void WriteToAllChannels(const std::string& mnemonic = "");
 
    virtual void SetHist(TH1* hist);
    TH1*         GetHist() const { return fHist; }
@@ -79,7 +79,7 @@ protected:
 
 private:
    // TGraphErrors* fGraph; //->
-   TRef      fChan;    // This points at the TChannel
+   TRef      fChan;      // This points at the TChannel
    TF1*      fFitFunc{}; //-> Fit function representing calibration
    TH1*      fHist{};    // Histogram that was fit by the TPeak.
    TNucleus* fNuc{};     // Nucleus that we are calibrating against

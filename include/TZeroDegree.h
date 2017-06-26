@@ -39,12 +39,14 @@ public:
    static TVector3 GetPosition(double dist) { return TVector3(0, 0, dist); } //!<!
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
    void ClearTransients() override
    {
-      for (auto hit : fZeroDegreeHits) hit.ClearTransients();
+      for(const auto& hit : fZeroDegreeHits) {
+         hit.ClearTransients();
+      }
    }
 
    TZeroDegree& operator=(const TZeroDegree&); //!<!
@@ -63,7 +65,7 @@ public:
 
    /// \cond CLASSIMP
    ClassDefOverride(TZeroDegree, 2) // ZeroDegree Physics structure
-                            /// \endcond
+                                    /// \endcond
 };
 /*! @} */
 #endif

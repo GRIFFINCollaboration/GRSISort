@@ -84,13 +84,13 @@ TLaBrHit* TLaBr::GetLaBrHit(const int& i)
    try {
       return &fLaBrHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;
 }
 
-void TLaBr::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*)
+void TLaBr::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel*)
 {
    TLaBrHit laHit(*frag);                 // Building is controlled in the constructor of the hit
    fLaBrHits.push_back(std::move(laHit)); // use std::move for efficienciy since laHit loses scope here anyway

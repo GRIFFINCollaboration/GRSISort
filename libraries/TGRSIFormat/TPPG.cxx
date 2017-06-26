@@ -35,7 +35,7 @@ void TPPGData::Copy(TObject& rhs) const
 void TPPGData::SetTimeStamp()
 {
    Long64_t time = GetHighTimeStamp();
-   time          = time << 28;
+   time          = time<<28;
    time |= GetLowTimeStamp() & 0x0fffffff;
    fTimeStamp = time;
 }
@@ -60,7 +60,7 @@ void TPPGData::Print(Option_t*) const
 TPPG::TPPG()
 {
    fPPGStatusMap = new PPGMap_t;
-   this->Clear();
+   Clear();
    // std::cout<<"default constructor called on "<<this<<std::endl;
 }
 
@@ -75,7 +75,7 @@ TPPG::~TPPG()
 {
    Clear();
    PPGMap_t::iterator ppgit;
-   if(fPPGStatusMap) {
+   if(fPPGStatusMap != nullptr) {
       for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
          if(ppgit->second) {
             delete(ppgit->second);
@@ -84,7 +84,6 @@ TPPG::~TPPG()
       }
       delete fPPGStatusMap;
    }
-   fPPGStatusMap = nullptr;
    // std::cout<<"destructor called on "<<this<<std::endl;
 }
 
@@ -104,20 +103,19 @@ TPPG* TPPG::Get()
 
 void TPPG::Copy(TObject& obj) const
 {
-   dynamic_cast<TPPG&>(obj).Clear();
-   dynamic_cast<TPPG&>(obj).fCycleLength          = fCycleLength;
-   dynamic_cast<TPPG&>(obj).fNumberOfCycleLengths = fNumberOfCycleLengths;
+   static_cast<TPPG&>(obj).Clear();
+   static_cast<TPPG&>(obj).fCycleLength          = fCycleLength;
+   static_cast<TPPG&>(obj).fNumberOfCycleLengths = fNumberOfCycleLengths;
 
-   // We want to provide a copy of each of the data in the PPG rather than a copy of th pointer
-   if(dynamic_cast<TPPG&>(obj).fPPGStatusMap && fPPGStatusMap) {
-      PPGMap_t::iterator ppgit;
-      for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
-         if(ppgit->second) {
-            dynamic_cast<TPPG&>(obj).AddData(ppgit->second);
+   // We want to provide a copy of each of the data in the PPG rather than a copy of the pointer
+   if(static_cast<TPPG&>(obj).fPPGStatusMap != nullptr && fPPGStatusMap != nullptr) {
+      for(auto ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
+         if(ppgit->second != nullptr) {
+            static_cast<TPPG&>(obj).AddData(ppgit->second);
          }
       }
+      static_cast<TPPG&>(obj).fCurrIterator = static_cast<TPPG&>(obj).fPPGStatusMap->begin();
    }
-   dynamic_cast<TPPG&>(obj).fCurrIterator = dynamic_cast<TPPG&>(obj).fPPGStatusMap->begin();
 }
 
 Bool_t TPPG::MapIsEmpty() const
@@ -125,10 +123,11 @@ Bool_t TPPG::MapIsEmpty() const
    /// Checks to see if the ppg map is empty. We need this because we need to put a default
    /// PPG in at time T=0 to prevent bad things from happening. This function says the map
    /// is empty when only the default is there, which it essentially is.
-   if(fPPGStatusMap->size() == 1) // We check for size 1 because we always start with a Junk event at time 0.
+   if(fPPGStatusMap->size() == 1) { // We check for size 1 because we always start with a Junk event at time 0.
       return true;
-   else
+   } else {
       return false;
+   }
 }
 
 void TPPG::AddData(TPPGData* pat)
@@ -151,7 +150,7 @@ ULong64_t TPPG::GetLastStatusTime(ULong64_t time, ppg_pattern pat, bool exact_fl
       return 0;
    }
 
-   auto curppg_it = --(fPPGStatusMap->upper_bound(time));
+   auto               curppg_it = --(fPPGStatusMap->upper_bound(time));
    PPGMap_t::iterator ppg_it;
    if(pat == kJunk) {
       for(ppg_it = curppg_it; ppg_it != fPPGStatusMap->begin(); --ppg_it) {
@@ -192,13 +191,13 @@ uint16_t TPPG::GetStatus(ULong64_t time) const
 void TPPG::Print(Option_t* opt) const
 {
    if(fOdbPPGCodes.size() != fOdbDurations.size()) {
-      std::cout << "Mismatch between number of ppg codes (" << fOdbPPGCodes.size() << ") and durations ("
-                << fOdbDurations.size() << ")" << std::endl;
+      std::cout<<"Mismatch between number of ppg codes ("<<fOdbPPGCodes.size()<<") and durations ("
+               <<fOdbDurations.size()<<")"<<std::endl;
    } else {
-      std::cout << "ODB cycle:" << std::endl << "Code       Duration" << std::endl;
+      std::cout<<"ODB cycle:"<<std::endl<<"Code       Duration"<<std::endl;
       for(size_t i = 0; i < fOdbPPGCodes.size(); ++i) {
-         std::cout << "0x" << std::hex << std::setw(8) << fOdbPPGCodes[i] << std::dec << " " << fOdbDurations[i]
-                   << std::endl;
+         std::cout<<"0x"<<std::hex<<std::setw(8)<<fOdbPPGCodes[i]<<std::dec<<" "<<fOdbDurations[i]
+                  <<std::endl;
       }
    }
    if(MapIsEmpty()) {
@@ -219,7 +218,7 @@ void TPPG::Print(Option_t* opt) const
    // print only an overview of the ppg
    // can't call non-const GetCycleLength here, so we do the calculation with local variables here
    PPGMap_t::iterator ppgIt;
-   std::map<uint16_t, int> status;                // to calculate how often each different status occured
+   std::map<uint16_t, int>  status;               // to calculate how often each different status occured
    std::map<ULong64_t, int> numberOfCycleLengths; // to calculate the length of the whole cycle
    std::map<ULong64_t, int>
       numberOfStateLengths[4]; // to calculate the length of each state (tape move, background, beam on, and decay)
@@ -251,7 +250,7 @@ void TPPG::Print(Option_t* opt) const
    }
    int       counter     = 0;
    ULong64_t cycleLength = 0;
-   for(auto & numberOfCycleLength : numberOfCycleLengths) {
+   for(auto& numberOfCycleLength : numberOfCycleLengths) {
       if(numberOfCycleLength.second > counter) {
          counter     = numberOfCycleLength.second;
          cycleLength = numberOfCycleLength.first;
@@ -269,7 +268,7 @@ void TPPG::Print(Option_t* opt) const
    }
    counter    = 0;
    int offset = 0;
-   for(auto & numberOfOffset : numberOfOffsets) {
+   for(auto& numberOfOffset : numberOfOffsets) {
       if(numberOfOffset.second > counter) {
          counter = numberOfOffset.second;
          offset  = numberOfOffset.first;
@@ -282,7 +281,7 @@ void TPPG::Print(Option_t* opt) const
           stateLength[1] / 1e8, stateLength[2] / 1e8, stateLength[3] / 1e8);
    printf("Offset is %d\n", offset);
    printf("Got %ld PPG words:\n", fPPGStatusMap->size() - 1);
-   for(auto & statu : status) {
+   for(auto& statu : status) {
       printf("\tfound status 0x%04x %d times\n", statu.first, statu.second);
    }
 
@@ -315,7 +314,7 @@ void TPPG::Print(Option_t* opt) const
 
 void TPPG::Clear(Option_t*)
 {
-   if(fPPGStatusMap) {
+   if(fPPGStatusMap != nullptr) {
       PPGMap_t::iterator ppgit;
       for(ppgit = fPPGStatusMap->begin(); ppgit != fPPGStatusMap->end(); ppgit++) {
          if(ppgit->second) {
@@ -323,8 +322,8 @@ void TPPG::Clear(Option_t*)
          }
          ppgit->second = nullptr;
       }
+      fPPGStatusMap->clear();
    }
-   fPPGStatusMap->clear();
    // We always add a junk event to keep the code from crashing if we ask for a PPG below the lowest PPG time.
    AddData(new TPPGData);
    fCurrIterator = fPPGStatusMap->begin();
@@ -381,13 +380,13 @@ bool TPPG::Correct(bool verbose)
 
    if(verbose) {
       // we can now use fNumberOfCycleLengths to see how many cycle lengths we have that are wrong
-      for(auto & fNumberOfCycleLength : fNumberOfCycleLengths) {
+      for(auto& fNumberOfCycleLength : fNumberOfCycleLengths) {
          if(fNumberOfCycleLength.first < fCycleLength) {
             continue;
          }
          if(fNumberOfCycleLength.first != fCycleLength) {
-            printf("Found %d wrong cycle length(s) of %lld (correct is %lld).\n", fNumberOfCycleLength.second, fNumberOfCycleLength.first,
-                   fCycleLength);
+            printf("Found %d wrong cycle length(s) of %lld (correct is %lld).\n", fNumberOfCycleLength.second,
+                   fNumberOfCycleLength.first, fCycleLength);
          }
       }
    }
@@ -431,7 +430,7 @@ bool TPPG::Correct(bool verbose)
             continue;
          }
          // copy the current ppg data and correct it's time before inserting it into the map
-         auto* new_data = new TPPGData(*((*it).second));
+         auto*     new_data = new TPPGData(*((*it).second));
          ULong64_t new_ts   = (*it).first - fCycleLength;
          new_data->SetHighTimeStamp(new_ts >> 28);
          new_data->SetLowTimeStamp(new_ts & 0x0fffffff);
@@ -450,13 +449,13 @@ bool TPPG::Correct(bool verbose)
 
    if(verbose) {
       // we can now use fNumberOfCycleLengths to see how many cycle lengths we have that are wrong
-      for(auto & fNumberOfCycleLength : fNumberOfCycleLengths) {
+      for(auto& fNumberOfCycleLength : fNumberOfCycleLengths) {
          if(fNumberOfCycleLength.first < fCycleLength) {
             continue;
          }
          if(fNumberOfCycleLength.first != fCycleLength) {
-            printf("Found %d wrong cycle length(s) of %lld (correct is %lld).\n", fNumberOfCycleLength.second, fNumberOfCycleLength.first,
-                   fCycleLength);
+            printf("Found %d wrong cycle length(s) of %lld (correct is %lld).\n", fNumberOfCycleLength.second,
+                   fNumberOfCycleLength.first, fCycleLength);
          }
       }
    }
@@ -528,7 +527,7 @@ ULong64_t TPPG::GetCycleLength()
          fNumberOfCycleLengths[diff]++;
       }
       int counter = 0;
-      for(auto & fNumberOfCycleLength : fNumberOfCycleLengths) {
+      for(auto& fNumberOfCycleLength : fNumberOfCycleLengths) {
          if(fNumberOfCycleLength.second > counter) {
             counter      = fNumberOfCycleLength.second;
             fCycleLength = fNumberOfCycleLength.first;

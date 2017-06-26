@@ -19,15 +19,15 @@
 class TGriffinHit : public TGRSIDetectorHit {
 public:
    enum EGriffinHitBits {
-      kTotalPU1    = 1 << 0,
-      kTotalPU2    = 1 << 1,
+      kTotalPU1    = 1<<0,
+      kTotalPU2    = 1<<1,
       kPUHitOffset = kTotalPU2,
-      kPUHit1      = 1 << 2,
-      kPUHit2      = 1 << 3,
-      kBit4        = 1 << 4,
-      kBit5        = 1 << 5,
-      kBit6        = 1 << 6,
-      kBit7        = 1 << 7
+      kPUHit1      = 1<<2,
+      kPUHit2      = 1<<3,
+      kBit4        = 1<<4,
+      kBit5        = 1<<5,
+      kBit6        = 1<<6,
+      kBit7        = 1<<7
    };
 
 public:
@@ -38,7 +38,7 @@ public:
 
 private:
    Int_t                   fFilter{};              //  The Filter Word
-   TTransientBits<UChar_t> fGriffinHitBits;      //  Transient Member Flags
+   TTransientBits<UChar_t> fGriffinHitBits;        //  Transient Member Flags
    UInt_t                  fCrystal{};             //!<! Crystal Number
    Bool_t                  fBremSuppressed_flag{}; //!<! Bremsstrahlung Suppression flag.
 

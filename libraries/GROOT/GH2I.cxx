@@ -44,8 +44,7 @@ GH2I::GH2I(const TObject& obj)
    }
 }
 
-GH2I::~GH2I()
-= default;
+GH2I::~GH2I() = default;
 
 void GH2I::Copy(TObject& obj) const
 {
@@ -56,8 +55,10 @@ void GH2I::Copy(TObject& obj) const
 
 TObject* GH2I::Clone(const char* newname) const
 {
-   std::string name        = newname;
-   if(!name.length()) name = Form("%s_clone", GetName());
+   std::string name = newname;
+   if(!name.length()) {
+      name = Form("%s_clone", GetName());
+   }
    return TH2::Clone(name.c_str());
 }
 

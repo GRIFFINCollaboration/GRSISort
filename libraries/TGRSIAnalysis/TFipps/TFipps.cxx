@@ -102,7 +102,7 @@ TVector3 TFipps::gCloverPosition[17] = {
             TMath::Cos(TMath::DegToRad() * (135.0)))};
 
 // Cross Talk stuff
-const Double_t TFipps::gStrongCT[2] = {-0.02674, -0.000977}; // This is for the 0-1 and 2-3 combination
+const Double_t TFipps::gStrongCT[2]           = {-0.02674, -0.000977}; // This is for the 0-1 and 2-3 combination
 const Double_t TFipps::gWeakCT[2]             = {0.005663, -0.00028014};
 const Double_t TFipps::gCrossTalkPar[2][4][4] = {{{0.0, gStrongCT[0], gWeakCT[0], gWeakCT[0]},
                                                   {gStrongCT[0], 0.0, gWeakCT[0], gWeakCT[0]},
@@ -162,17 +162,18 @@ void TFipps::Clear(Option_t* opt)
 
 void TFipps::Print(Option_t*) const
 {
-   std::cout << "Fipps Contains: " << std::endl;
-   std::cout << std::setw(6) << GetMultiplicity() << " hits" << std::endl;
+   std::cout<<"Fipps Contains: "<<std::endl;
+   std::cout<<std::setw(6)<<GetMultiplicity()<<" hits"<<std::endl;
 
-   if(IsAddbackSet())
-      std::cout << std::setw(6) << fAddbackHits.size() << " addback hits" << std::endl;
-   else
-      std::cout << std::setw(6) << " "
-                << " Addback not set" << std::endl;
+   if(IsAddbackSet()) {
+      std::cout<<std::setw(6)<<fAddbackHits.size()<<" addback hits"<<std::endl;
+   } else {
+      std::cout<<std::setw(6)<<" "
+               <<" Addback not set"<<std::endl;
+   }
 
-   std::cout << std::setw(6) << " "
-             << " Cross-talk Set?  " << IsCrossTalkSet() << std::endl;
+   std::cout<<std::setw(6)<<" "
+            <<" Cross-talk Set?  "<<IsCrossTalkSet()<<std::endl;
 }
 
 TFipps& TFipps::operator=(const TFipps& rhs)
@@ -234,8 +235,10 @@ TFippsHit* TFipps::GetFippsHit(const int& i)
       }
       return &(GetHitVector()->at(i));
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " Hits are out of range: " << oor.what() << std::endl;
-      if(!gInterpreter) throw grsi::exit_exception(1);
+      std::cerr<<ClassName()<<" Hits are out of range: "<<oor.what()<<std::endl;
+      if(!gInterpreter) {
+         throw grsi::exit_exception(1);
+      }
    }
    return nullptr;
 }
@@ -290,13 +293,13 @@ TFippsHit* TFipps::GetAddbackHit(const int& i)
    if(i < GetAddbackMultiplicity()) {
       return &GetAddbackVector()->at(i);
    } else {
-      std::cerr << "Addback hits are out of range" << std::endl;
+      std::cerr<<"Addback hits are out of range"<<std::endl;
       throw grsi::exit_exception(1);
       return nullptr;
    }
 }
 
-void TFipps::AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan)
+void TFipps::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel* chan)
 {
    // Builds the FIPPS Hits directly from the TFragment. Basically, loops through the hits for an event and sets
    // observables.
@@ -314,7 +317,9 @@ TVector3 TFipps::GetPosition(int DetNbr, int CryNbr, double dist)
 {
    // Gets the position vector for a crystal specified by CryNbr within Clover DetNbr at a distance of dist mm away.
    // This is calculated to the most likely interaction point within the crystal.
-   if(DetNbr > 16) return TVector3(0, 0, 1);
+   if(DetNbr > 16) {
+      return TVector3(0, 0, 1);
+   }
 
    TVector3 temp_pos(gCloverPosition[DetNbr]);
 
@@ -357,10 +362,11 @@ UShort_t TFipps::GetNAddbackFrags(const size_t& idx)
 {
    // Get the number of addback "fragments" contributing to the total addback hit
    // with index idx.
-   if(idx < GetAddbackFragVector()->size())
+   if(idx < GetAddbackFragVector()->size()) {
       return GetAddbackFragVector()->at(idx);
-   else
+   } else {
       return 0;
+   }
 }
 
 void TFipps::SetBitNumber(enum EFippsBits bit, Bool_t set) const
@@ -383,8 +389,10 @@ Double_t TFipps::CTCorrectedEnergy(const TFippsHit* const hit_to_correct, const 
 
    if(time_constraint) {
       // Figure out if this passes the selected window
-      if(TMath::Abs(other_hit->GetTime() - hit_to_correct->GetTime()) > TGRSIOptions::AnalysisOptions()->AddbackWindow()) // placeholder
+      if(TMath::Abs(other_hit->GetTime() - hit_to_correct->GetTime()) >
+         TGRSIOptions::AnalysisOptions()->AddbackWindow()) { // placeholder
          return hit_to_correct->GetEnergy();
+      }
    }
 
    if(hit_to_correct->GetDetector() != other_hit->GetDetector()) {
@@ -402,7 +410,9 @@ void TFipps::FixCrossTalk()
       SetCrossTalk(true);
       return;
    }
-   for(auto & i : *hit_vec) i.ClearEnergy();
+   for(auto& i : *hit_vec) {
+      i.ClearEnergy();
+   }
 
    if(TGRSIOptions::AnalysisOptions()->IsCorrectingCrossTalk()) {
       size_t i, j;

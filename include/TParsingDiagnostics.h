@@ -38,7 +38,7 @@ public:
    ~TParsingDiagnostics() override;
    static TParsingDiagnostics* Get()
    {
-      if (fParsingDiagnostics == nullptr) {
+      if(fParsingDiagnostics == nullptr) {
          fParsingDiagnostics = new TParsingDiagnostics;
       }
       return fParsingDiagnostics;
@@ -77,7 +77,7 @@ private:
 public:
 //"setter" functions
 #ifndef __CINT__
-   void GoodFragment(std::shared_ptr<const TFragment>);
+   void GoodFragment(const std::shared_ptr<const TFragment>&);
 #endif
    void GoodFragment(Short_t detType) { fNumberOfGoodFragments[detType]++; }
    void BadFragment(Short_t detType) { fNumberOfBadFragments[detType]++; }
@@ -87,12 +87,16 @@ public:
    // getter functions
    Long_t NumberOfGoodFragments(Short_t detType)
    {
-      if (fNumberOfGoodFragments.find(detType) != fNumberOfGoodFragments.end()) return fNumberOfGoodFragments[detType];
+      if(fNumberOfGoodFragments.find(detType) != fNumberOfGoodFragments.end()) {
+         return fNumberOfGoodFragments[detType];
+      }
       return 0;
    }
    Long_t NumberOfBadFragments(Short_t detType)
    {
-      if (fNumberOfBadFragments.find(detType) != fNumberOfBadFragments.end()) return fNumberOfBadFragments[detType];
+      if(fNumberOfBadFragments.find(detType) != fNumberOfBadFragments.end()) {
+         return fNumberOfBadFragments[detType];
+      }
       return 0;
    }
 

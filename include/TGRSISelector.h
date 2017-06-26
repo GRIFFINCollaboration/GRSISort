@@ -31,14 +31,17 @@ public:
 
    // Methods are purposely not virtual so that TGRSISelector has control
    TGRSISelector(TTree* /*tree*/ = nullptr) : fChain(nullptr) { SetOutputPrefix(ClassName()); }
-   ~TGRSISelector() override = default;
+   ~TGRSISelector() override     = default;
    Int_t Version() const override { return 2; }
    void Begin(TTree* tree) override;
    void SlaveBegin(TTree* tree) override;
    void Init(TTree* tree) override;
    Bool_t Notify() override;
    Bool_t Process(Long64_t entry) override;
-   Int_t GetEntry(Long64_t entry, Int_t getall = 0) override { return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0; }
+   Int_t GetEntry(Long64_t entry, Int_t getall = 0) override
+   {
+      return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
+   }
    void SetOption(const char* option) override { fOption = option; }
    void SetObject(TObject* obj) override { fObject = obj; }
    // void    SetInputList(TList *input) { fInput = input; }
@@ -60,8 +63,8 @@ protected:
    std::map<std::string, THnSparseF*> fHSparse;
 
 private:
-   std::string fOutputPrefix;
-	TAnalysisOptions* fAnalysisOptions{};
+   std::string       fOutputPrefix;
+   TAnalysisOptions* fAnalysisOptions{};
 
    ClassDefOverride(TGRSISelector, 2);
 };

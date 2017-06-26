@@ -90,7 +90,9 @@ public:
 
    inline Double_t GetEnergy(Option_t* = "") const override
    {
-      if(GetPadAddress() != -1) return TGRSIDetectorHit::GetEnergy() + GetPad().GetEnergy();
+      if(GetPadAddress() != -1) {
+         return TGRSIDetectorHit::GetEnergy() + GetPad().GetEnergy();
+      }
       return TGRSIDetectorHit::GetEnergy();
    }
 

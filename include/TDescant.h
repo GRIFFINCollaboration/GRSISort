@@ -39,13 +39,18 @@ public:
    static TVector3 GetPosition(int DetNbr, double dist = 222); //!<!
 
 #ifndef __CINT__
-   void              AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
-   TGRSIDetectorHit* CreateHit(std::shared_ptr<const TFragment> frag, TChannel*) { return new TDescantHit(*frag); }
+   void              AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
+   TGRSIDetectorHit* CreateHit(const std::shared_ptr<const TFragment>& frag, TChannel*)
+   {
+      return new TDescantHit(*frag);
+   }
 #endif
 
    void ClearTransients() override
    {
-      for (auto hit : fDescantHits) hit.ClearTransients();
+      for(const auto& hit : fDescantHits) {
+         hit.ClearTransients();
+      }
    }
 
    TDescant& operator=(const TDescant&); //
@@ -53,7 +58,7 @@ public:
 private:
    std::vector<TDescantHit> fDescantHits; ///<  The set of crystal hits
    static bool              fSetWave;     ///<  Flag for Waveforms ON/OFF
-   bool                     fHitFlag{};     ///<   Is there a Descant hit?
+   bool                     fHitFlag{};   ///<   Is there a Descant hit?
 
 public:
    static bool SetWave() { return fSetWave; }         //!<!
@@ -70,7 +75,7 @@ public:
 
    /// \cond CLASSIMP
    ClassDefOverride(TDescant, 1) // Descant Physics structure
-                         /// \endcond
+                                 /// \endcond
 };
 /*! @} */
 #endif

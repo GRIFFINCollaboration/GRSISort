@@ -27,7 +27,7 @@
 
 class TGRSIOptions : public TObject {
 public:
-   TGRSIOptions() {}; /// Do not use!
+   TGRSIOptions(){}; /// Do not use!
    static TGRSIOptions* Get(int argc = 0, char** argv = nullptr);
 
    void Clear(Option_t* opt = "") override;
@@ -65,7 +65,7 @@ public:
 
    std::string LogFile() { return fLogFile; }
 
-	static TAnalysisOptions* AnalysisOptions() { return fAnalysisOptions; }
+   static TAnalysisOptions* AnalysisOptions() { return fAnalysisOptions; }
 
    bool SeparateOutOfOrder() const { return fSeparateOutOfOrder; }
    bool RecordDialog() const { return fRecordDialog; }
@@ -88,7 +88,7 @@ public:
    bool IgnoreEpics() const { return fIgnoreEpics; }
    bool WriteBadFrags() const { return fWriteBadFrags; }
    bool WriteDiagnostics() const { return fWriteDiagnostics; }
-	bool CheckWordCount() const { return fCheckWordCount; }
+   bool CheckWordCount() const { return fCheckWordCount; }
 
    bool Batch() const { return fBatch; }
 
@@ -126,11 +126,11 @@ public:
    int  GetMaxWorkers() const { return fMaxWorkers; }
    bool SelectorOnly() const { return fSelectorOnly; }
 
-	void SuppressErrors(bool suppress) { fSuppressErrors = suppress; }
+   void SuppressErrors(bool suppress) { fSuppressErrors = suppress; }
 
 private:
    TGRSIOptions(int argc, char** argv);
-	static TGRSIOptions* fGRSIOptions;
+   static TGRSIOptions* fGRSIOptions;
 
    bool FileAutoDetect(const std::string& filename);
 
@@ -177,7 +177,7 @@ private:
    bool fIgnoreEpics{};      ///< Flag to ignore epics
    bool fWriteBadFrags{};    ///< Flag to write bad fragments
    bool fWriteDiagnostics{}; ///< Flag to write diagnostics
-	bool fCheckWordCount{};   ///< Flag to check word count in griffin data (default = true)
+   bool fCheckWordCount{};   ///< Flag to check word count in griffin data (default = true)
 
    bool fBatch{}; ///< Flag to use batch mode (-b)
 
@@ -198,13 +198,13 @@ private:
    bool fTimeSortInput{}; ///< Flag to sort on time or triggers
    int  fSortDepth{};     ///< Size of Q that stores fragments to be built into events
 
-	static TAnalysisOptions* fAnalysisOptions; ///< contains all options for analysis
+   static TAnalysisOptions* fAnalysisOptions; ///< contains all options for analysis
 
    bool fSeparateOutOfOrder{}; ///< Flag to build out of order into seperate event tree
 
    bool fShouldExit{}; ///< Flag to exit sorting
 
-	bool fHelp{}; ///< help requested?
+   bool fHelp{}; ///< help requested?
 
    size_t       fColumnWidth{};    ///< Size of verbose columns
    size_t       fStatusWidth{};    ///< Size of total verbose status
@@ -217,7 +217,7 @@ private:
 
    /// \cond CLASSIMP
    ClassDefOverride(TGRSIOptions, 3); ///< Class for storing options in GRSISort
-	/// \endcond
+                                      /// \endcond
 };
 /*! @} */
 #endif /* _TGRSIOPTIONS_H_ */

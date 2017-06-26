@@ -24,14 +24,14 @@ ClassImp(TTipHit)
 TTipHit::TTipHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 {
    // SetVariables(frag);
-   if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting() && !IsCsI())
+   if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting() && !IsCsI()) {
       SetWavefit(frag);
-   else if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting() && IsCsI())
+   } else if(TGRSIOptions::AnalysisOptions()->IsWaveformFitting() && IsCsI()) {
       SetPID(frag);
+   }
 }
 
-TTipHit::~TTipHit()
-= default;
+TTipHit::~TTipHit() = default;
 
 TTipHit::TTipHit(const TTipHit& rhs) : TGRSIDetectorHit()
 {

@@ -51,7 +51,7 @@ public:
 
    Double_t GetTheta(double offset = 0, TVector3* vec = nullptr)
    {
-      if (vec == nullptr) {
+      if(vec == nullptr) {
          vec = new TVector3();
          vec->SetXYZ(0, 0, 1);
       }
@@ -59,9 +59,9 @@ public:
    }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Woverloaded-virtual"
-	TVector3 GetPosition(Double_t phioffset, Double_t dist, bool smear = false) const; //!
-	TVector3 GetPosition(Double_t phioffset, bool smear = false) const; //!
-	TVector3 GetPosition(bool smear = false) const; //!
+   TVector3 GetPosition(Double_t phioffset, Double_t dist, bool smear = false) const; //!
+   TVector3 GetPosition(Double_t phioffset, bool smear = false) const;                //!
+   TVector3 GetPosition(bool smear = false) const;                                    //!
 #pragma clang diagnostic pop
 
 private:

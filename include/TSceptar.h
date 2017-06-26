@@ -36,14 +36,16 @@ public:
    TSceptarHit* GetSceptarHit(const int& i);                       //!<!
    Short_t GetMultiplicity() const { return fSceptarHits.size(); } //!<!
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
    static TVector3 GetPosition(int DetNbr) { return gPaddlePosition[DetNbr]; } //!<!
 
    void ClearTransients() override
    {
-      for (auto hit : fSceptarHits) hit.ClearTransients();
+      for(const auto& hit : fSceptarHits) {
+         hit.ClearTransients();
+      }
    }
 
    TSceptar& operator=(const TSceptar&); //!<!
@@ -65,7 +67,7 @@ public:
 
    /// \cond CLASSIMP
    ClassDefOverride(TSceptar, 2) // Sceptar Physics structure
-                         /// \endcond
+                                 /// \endcond
 };
 /*! @} */
 #endif

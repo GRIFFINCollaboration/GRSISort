@@ -36,14 +36,16 @@ public:
    TLaBrHit* GetLaBrHit(const int& i);                          //!<!
    Short_t GetMultiplicity() const { return fLaBrHits.size(); } //!<!
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
    static TVector3 GetPosition(int DetNbr) { return gPosition[DetNbr]; } //!<!
 
    void ClearTransients() override
    {
-      for (auto hit : fLaBrHits) hit.ClearTransients();
+      for(const auto& hit : fLaBrHits) {
+         hit.ClearTransients();
+      }
    }
 
    TLaBr& operator=(const TLaBr&); //!<!
@@ -60,7 +62,7 @@ public:
 
    /// \cond CLASSIMP
    ClassDefOverride(TLaBr, 1) // LaBr Physics structure
-                      /// \endcond
+                              /// \endcond
 };
 /*! @} */
 #endif

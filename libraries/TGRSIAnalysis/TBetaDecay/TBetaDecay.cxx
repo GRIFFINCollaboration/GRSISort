@@ -36,5 +36,7 @@ TBetaDecay::TBetaDecay(Int_t Z, Int_t N)
 
 TBetaDecay::~TBetaDecay()
 {
-   if(fParentAllocated && fParent) delete fParent;
+   if(fParentAllocated && fParent) {
+      delete fParent;
+   }
 }

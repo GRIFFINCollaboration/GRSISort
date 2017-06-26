@@ -20,8 +20,7 @@ ClassImp(TTACHit)
    Clear();
 }
 
-TTACHit::~TTACHit()
-= default;
+TTACHit::~TTACHit() = default;
 
 TTACHit::TTACHit(const TTACHit& rhs) : TGRSIDetectorHit()
 {

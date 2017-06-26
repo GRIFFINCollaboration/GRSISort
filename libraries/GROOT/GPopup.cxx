@@ -17,7 +17,7 @@ ClassImp(GPopup)
 
    auto* vframe = new TGVerticalFrame(this, 500, 200);
 
-   auto*    listv = new TGListView(vframe, 500, 200);
+   auto* listv = new TGListView(vframe, 500, 200);
    auto* listc = new TGLVContainer(listv->GetViewPort(), 500, 200, kHorizontalFrame, fgWhitePixel);
    // listc->Associate(this);
    listv->SetContainer(listc);
@@ -28,8 +28,8 @@ ClassImp(GPopup)
    vframe->AddFrame(listv, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
 
    auto* hframe = new TGHorizontalFrame(vframe, 500, 20);
-   auto*      b1     = new TGTextButton(hframe, "&button1");
-   auto*      b2     = new TGTextButton(hframe, "&button2");
+   auto* b1     = new TGTextButton(hframe, "&button1");
+   auto* b2     = new TGTextButton(hframe, "&button2");
    b1->Connect("Clicked()", "GPopup", this, "Print()");
    b2->Connect("Clicked()", "GPopup", this, "Print()");
 
@@ -49,8 +49,7 @@ ClassImp(GPopup)
    // fClient->WaitFor(this);    // otherwise canvas contextmenu does not work
 }
 
-GPopup::~GPopup()
-= default;
+GPopup::~GPopup() = default;
 
 // void GPopup::AddEntry(const char *name) {
 //  std::string sname = name;

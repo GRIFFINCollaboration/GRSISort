@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <cstdio>
+#include <utility>
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -36,8 +37,12 @@ ClassImp(TCalibrator)
 
 TCalibrator::~TCalibrator()
 {
-   if(linfit) delete linfit;
-   if(efffit) delete efffit;
+   if(linfit) {
+      delete linfit;
+   }
+   if(efffit) {
+      delete efffit;
+   }
 }
 
 void TCalibrator::Copy(TObject&) const
@@ -84,7 +89,7 @@ std::string TCalibrator::PrintEfficency(const char* filename)
    if(file.length()) {
       std::ofstream ofile;
       ofile.open(file.c_str());
-      ofile << toprint;
+      ofile<<toprint;
       ofile.close();
    }
    printf("%s\n", toprint.c_str());
@@ -116,7 +121,9 @@ TGraphErrors& TCalibrator::MakeEffGraph(double seconds, double bq, Option_t* opt
    eff_graph.Clear();
    eff_graph = TGraphErrors(fPeaks.size(), energy.data(), observed.data(), error_e.data(), error_o.data());
 
-   if(efffit) efffit->Delete();
+   if(efffit) {
+      efffit->Delete();
+   }
    static int counter = 0;
    efffit             = new TF1(Form("eff_fit_%i", counter++), GRootFunctions::GammaEff, 0, 1500, 4);
    eff_graph.Fit(efffit, fitopt.Data());
@@ -125,7 +132,9 @@ TGraphErrors& TCalibrator::MakeEffGraph(double seconds, double bq, Option_t* opt
       TVirtualPad* current = gPad;
       new GCanvas;
       eff_graph.Draw("AP");
-      if(current) current->cd();
+      if(current) {
+         current->cd();
+      }
    }
    for(unsigned int i = 0; i < energy.size(); i++) {
       printf("[%.1f] Observed  = %.04f  | Calculated = %.04f  |  per diff = %.2f\n", energy.at(i), observed.at(i),
@@ -141,7 +150,9 @@ void TCalibrator::Clear(Option_t* opt)
    eff_graph.Clear(opt);
    // all_fits.clear();
 
-   for(double & i : eff_par) i = 0.;
+   for(double& i : eff_par) {
+      i = 0.;
+   }
 
    total_points = 0;
 }
@@ -153,7 +164,9 @@ void TCalibrator::Draw(Option_t* opt)
    // MakeCalibrationGraph();
    // Fit();
    TString option(opt);
-   if(option.Contains("new", TString::kIgnoreCase)) new GCanvas;
+   if(option.Contains("new", TString::kIgnoreCase)) {
+      new GCanvas;
+   }
    fit_graph.Draw("AP");
 }
 
@@ -163,7 +176,9 @@ void TCalibrator::Fit(int order)
    // if((graph_of_everything.GetN()<1) &&
    //    (all_fits.size()>0))
    MakeCalibrationGraph();
-   if(fit_graph.GetN() < 1) return;
+   if(fit_graph.GetN() < 1) {
+      return;
+   }
    if(order == 1) {
       linfit = new TF1("linfit", GRootFunctions::LinFit, 0, 1, 2);
       linfit->SetParameter(0, 0.0);
@@ -185,13 +200,17 @@ void TCalibrator::Fit(int order)
 
 double TCalibrator::GetParameter(int i) const
 {
-   if(linfit) return linfit->GetParameter(i);
+   if(linfit) {
+      return linfit->GetParameter(i);
+   }
    return sqrt(-1);
 }
 
 double TCalibrator::GetEffParameter(int i) const
 {
-   if(efffit) return efffit->GetParameter(i);
+   if(efffit) {
+      return efffit->GetParameter(i);
+   }
    return sqrt(-1);
 }
 
@@ -218,7 +237,7 @@ std::vector<double> TCalibrator::Calibrate(double)
    return vec;
 }
 
-int TCalibrator::AddData(TH1* data, std::string source, double sigma, double threshold, double error)
+int TCalibrator::AddData(TH1* data, const std::string& source, double sigma, double threshold, double error)
 {
    if(!data || !source.length()) {
       printf("data not added. data = %p \t source = %s\n", (void*)data, source.c_str());
@@ -240,10 +259,11 @@ int TCalibrator::AddData(TH1* data, TNucleus* source, double sigma, double thres
    int displayed_x_min = std::floor(data->GetXaxis()->GetBinLowEdge(data->GetXaxis()->GetFirst()));
 
    std::string name;
-   if((actual_x_max == displayed_x_max) && (actual_x_min == displayed_x_min))
+   if((actual_x_max == displayed_x_max) && (actual_x_min == displayed_x_min)) {
       name = source->GetName();
-   else
+   } else {
       name = Form("%s_%i_%i", source->GetName(), displayed_x_min, displayed_x_max);
+   }
 
    TIter               iter(source->GetTransitionList());
    std::vector<double> source_energy;
@@ -285,7 +305,9 @@ int TCalibrator::AddData(TH1* data, TNucleus* source, double sigma, double thres
    // Print();
    int counter = 0;
    for(auto it : datatosource) {
-      if(!std::isnan(it.second)) counter++;
+      if(!std::isnan(it.second)) {
+         counter++;
+      }
    }
    return counter; // CheckMap(datatosource);
 }
@@ -318,8 +340,8 @@ std::map<double, double> TCalibrator::Match(std::vector<double> peaks, std::vect
    std::vector<bool> filled(source.size());
    std::fill(filled.begin(), filled.begin() + peaks.size(), true);
 
-   // std::cout << "Num peaks: " << peaks.size() << std::endl;
-   // std::cout << "Num source: " << source.size() << std::endl;
+   // std::cout<<"Num peaks: "<<peaks.size()<<std::endl;
+   // std::cout<<"Num source: "<<source.size()<<std::endl;
 
    TLinearFitter fitter(1, "1 ++ x");
 
@@ -335,9 +357,9 @@ std::map<double, double> TCalibrator::Match(std::vector<double> peaks, std::vect
                double max_err = 0.02;
                double pratio  = peak_values.front() / peak_values.at(peak_values.size() - 2);
                double sratio  = source_values.front() / source_values.at(source_values.size() - 2);
-               // std::cout << "ratio: " << pratio << " - " << sratio << " = " << std::abs(pratio-sratio) << std::endl;
+               // std::cout<<"ratio: "<<pratio<<" - "<<sratio<<" = "<<std::abs(pratio-sratio)<<std::endl;
                if(std::abs(pratio - sratio) > max_err) {
-                  // std::cout << "skipping" << std::endl;
+                  // std::cout<<"skipping"<<std::endl;
                   continue;
                }
             }
@@ -485,14 +507,14 @@ std::map<double, double> TCalibrator::Match(std::vector<double> peaks, std::vect
 
    // //for(auto p : points) {
    // //  p.print();
-   // //  std::cout << count_nearby(p) << std::endl;
+   // //  std::cout<<count_nearby(p)<<std::endl;
    // //}
 
-   // //std::cout << "-----------------" << std::endl;
+   // //std::cout<<"-----------------"<<std::endl;
    // //best_slope.print();
    // //double bs = best_slope.slope();
-   // //std::cout << count_nearby(best_slope) << std::endl;
-   // //std::cout << "-----------------" << std::endl;
+   // //std::cout<<count_nearby(best_slope)<<std::endl;
+   // //std::cout<<"-----------------"<<std::endl;
 
    // for(auto it = points.begin(); it!=points.end();) {
    //   if(is_nearby(*it, best_slope)) {
@@ -518,7 +540,9 @@ std::map<double, double> TCalibrator::Match(std::vector<double> peaks, std::vect
 bool TCalibrator::CheckMap(std::map<double, double> inmap)
 {
    for(auto it : inmap) {
-      if(std::isnan(it.second)) return false;
+      if(std::isnan(it.second)) {
+         return false;
+      }
    }
    return true;
 }
@@ -532,7 +556,7 @@ void TCalibrator::AddPeak(double cent, double eng, std::string nuc, double a, do
    Peak p;
    p.centroid  = cent;
    p.energy    = eng;
-   p.nucleus   = nuc;
+   p.nucleus   = std::move(nuc);
    p.area      = a;
    p.intensity = inten;
    fPeaks.push_back(p);

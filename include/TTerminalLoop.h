@@ -21,12 +21,12 @@ class TTerminalLoop : public StoppableThread {
 public:
    static TTerminalLoop* Get(std::string name = "")
    {
-      if (name.length() == 0) {
+      if(name.length() == 0) {
          name = "terminal_loop";
       }
 
       StoppableThread* thread = StoppableThread::Get(name);
-      if (!thread) {
+      if(!thread) {
          thread = new TTerminalLoop(name);
       }
 
@@ -40,7 +40,7 @@ public:
 
    void ClearQueue() override
    {
-      while (fInputQueue->Size()) {
+      while(fInputQueue->Size()) {
          std::shared_ptr<T> event;
          fInputQueue->Pop(event);
       }
@@ -59,9 +59,9 @@ protected:
       std::shared_ptr<T> event;
       fInputQueue->Pop(event);
 
-      if (event) {
+      if(event) {
          return true;
-      } else if (fInputQueue->IsFinished()) {
+      } else if(fInputQueue->IsFinished()) {
          return false;
       } else {
          std::this_thread::sleep_for(std::chrono::milliseconds(1000));

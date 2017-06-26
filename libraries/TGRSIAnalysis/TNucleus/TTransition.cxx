@@ -23,15 +23,17 @@ void TTransition::Clear(Option_t*)
 void TTransition::Print(Option_t*) const
 {
 
-   if(!std::isnan(fEngUncertainty))
+   if(!std::isnan(fEngUncertainty)) {
       printf("Energy:    %.02f +/- %.02f", fEnergy, fEngUncertainty);
-   else
+   } else {
       printf("Energy:    %.02f ", fEnergy);
+   }
    if(!std::isnan(fIntensity)) {
-      if(!std::isnan(fIntUncertainty))
+      if(!std::isnan(fIntUncertainty)) {
          printf("\tIntensity: %.02f +/- %.02f\n", fIntensity, fIntUncertainty);
-      else
+      } else {
          printf("\tIntensity: %.02f \n", fEnergy);
+      }
    } else {
       printf("\n");
    }
@@ -52,12 +54,13 @@ std::string TTransition::PrintToString()
 
 int TTransition::CompareIntensity(const TObject* obj) const
 {
-   if(this->fIntensity > dynamic_cast<const TTransition*>(obj)->fIntensity)
+   if(this->fIntensity > dynamic_cast<const TTransition*>(obj)->fIntensity) {
       return -1;
-   else if(this->fIntensity == dynamic_cast<const TTransition*>(obj)->fIntensity)
+   } else if(this->fIntensity == dynamic_cast<const TTransition*>(obj)->fIntensity) {
       return 0;
-   else
+   } else {
       return 1;
+   }
    return -9;
 }
 
@@ -67,11 +70,12 @@ int TTransition::Compare(const TObject* obj) const
    return CompareIntensity(obj);
 
    // Compares the intensities of the TTransitions and returns
-   if(this->fEnergy > dynamic_cast<const TTransition*>(obj)->fEnergy)
+   if(this->fEnergy > dynamic_cast<const TTransition*>(obj)->fEnergy) {
       return -1;
-   else if(this->fEnergy == dynamic_cast<const TTransition*>(obj)->fEnergy)
+   } else if(this->fEnergy == dynamic_cast<const TTransition*>(obj)->fEnergy) {
       return 0;
-   else
+   } else {
       return 1;
+   }
    return -9;
 }

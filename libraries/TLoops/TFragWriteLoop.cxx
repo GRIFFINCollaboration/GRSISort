@@ -84,18 +84,20 @@ std::string TFragWriteLoop::EndStatus()
    std::stringstream ss;
    // ss<<"\r"<<Name()<<":\t"<<std::setw(8)<<GetItemsPushed()<<"/"<<(fInputSize>0 ?
    // fInputSize+GetItemsPushed():GetItemsPushed())<<std::endl;;
-   ss << std::endl
-      << Name() << ": " << std::setw(8) << fItemsPopped << "/" << fItemsPopped + fInputSize << ", "
-      << fEventTree->GetEntries() << " good fragments, " << fBadEventTree->GetEntries() << " bad fragments"
-      << std::endl;
+   ss<<std::endl
+     <<Name()<<": "<<std::setw(8)<<fItemsPopped<<"/"<<fItemsPopped + fInputSize<<", "
+     <<fEventTree->GetEntries()<<" good fragments, "<<fBadEventTree->GetEntries()<<" bad fragments"
+     <<std::endl;
    return ss.str();
 }
 
 bool TFragWriteLoop::Iteration()
 {
    std::shared_ptr<const TFragment> event;
-   fInputSize                    = fInputQueue->Pop(event, 0);
-   if(fInputSize < 0) fInputSize = 0;
+   fInputSize = fInputQueue->Pop(event, 0);
+   if(fInputSize < 0) {
+      fInputSize = 0;
+   }
 
    std::shared_ptr<const TFragment> badEvent;
    fBadInputQueue->Pop(badEvent, 0);
@@ -159,7 +161,7 @@ void TFragWriteLoop::Write()
    }
 }
 
-void TFragWriteLoop::WriteEvent(std::shared_ptr<const TFragment> event)
+void TFragWriteLoop::WriteEvent(const std::shared_ptr<const TFragment>& event)
 {
    if(fEventTree) {
       *fEventAddress = *event;
@@ -168,11 +170,11 @@ void TFragWriteLoop::WriteEvent(std::shared_ptr<const TFragment> event)
       fEventTree->Fill();
       // fEventAddress = nullptr;
    } else {
-      std::cout << __PRETTY_FUNCTION__ << ": no fragment tree!" << std::endl;
+      std::cout<<__PRETTY_FUNCTION__<<": no fragment tree!"<<std::endl;
    }
 }
 
-void TFragWriteLoop::WriteBadEvent(std::shared_ptr<const TFragment> event)
+void TFragWriteLoop::WriteBadEvent(const std::shared_ptr<const TFragment>& event)
 {
    if(fBadEventTree) {
       *fBadEventAddress = *dynamic_cast<const TBadFragment*>(event.get());
@@ -181,7 +183,7 @@ void TFragWriteLoop::WriteBadEvent(std::shared_ptr<const TFragment> event)
    }
 }
 
-void TFragWriteLoop::WriteScaler(std::shared_ptr<TEpicsFrag> scaler)
+void TFragWriteLoop::WriteScaler(const std::shared_ptr<TEpicsFrag>& scaler)
 {
    if(fScalerTree) {
       fScalerAddress = scaler.get();

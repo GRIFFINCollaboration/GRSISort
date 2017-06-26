@@ -60,20 +60,23 @@ void Version()
 
 bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg_high)
 {
-   if(!hist) return false;
+   if(!hist) {
+      return false;
+   }
    GCanvas* C_projections = nullptr;
    GCanvas* C_gammagamma  = nullptr;
-   if(gROOT->GetListOfCanvases()->FindObject("C_projections"))
+   if(gROOT->GetListOfCanvases()->FindObject("C_projections")) {
       C_projections = dynamic_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("C_projections"));
-   else {
+   } else {
       C_projections = new GCanvas("C_projections", "Projection Canvas", 0, 0, 1450, 600);
       C_projections->Divide(2, 1);
    }
 
-   if(gROOT->GetListOfCanvases()->FindObject("C_gammagamma"))
+   if(gROOT->GetListOfCanvases()->FindObject("C_gammagamma")) {
       C_gammagamma = dynamic_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("C_gammagamma"));
-   else
+   } else {
       C_gammagamma = new GCanvas("C_gammagamma", "Gamma-Gamma Canvas", 1700, 0, 650, 650);
+   }
 
    C_gammagamma->cd();
    hist->Draw();
@@ -93,11 +96,15 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
    Proj_x->GetXaxis()->SetTitle("Energy [keV]");
    Proj_x->GetYaxis()->SetTitle("Counts ");
 
-   double Grace                               = 300;
-   double ZoomHigh                            = high + Grace;
-   double ZoomLow                             = low - Grace;
-   if(bg_high > 0 && bg_high > high) ZoomHigh = bg_high + Grace;
-   if(bg_low > 0 && bg_low < low) ZoomLow     = bg_low - Grace;
+   double Grace    = 300;
+   double ZoomHigh = high + Grace;
+   double ZoomLow  = low - Grace;
+   if(bg_high > 0 && bg_high > high) {
+      ZoomHigh = bg_high + Grace;
+   }
+   if(bg_low > 0 && bg_low < low) {
+      ZoomLow = bg_low - Grace;
+   }
 
    Proj_x->GetXaxis()->SetRangeUser(ZoomLow, ZoomHigh);
    Proj_x->Draw();
@@ -157,7 +164,9 @@ int LabelPeaks(TH1* hist, double sigma, double thresh, Option_t*)
    array = new TObjArray();
    array->SetName("PeakLabels");
    int n = pm->GetN();
-   if(n == 0) return n;
+   if(n == 0) {
+      return n;
+   }
    TText*  text;
    double* x = pm->GetX();
    //  double *y = pm->GetY();
@@ -194,7 +203,9 @@ bool ShowPeaks(TH1** hists, unsigned int nhists, double sigma, double thresh)
       }
       num_found += LabelPeaks(hists[i], sigma, thresh, "");
    }
-   if(num_found) return true;
+   if(num_found) {
+      return true;
+   }
    return false;
 }
 
@@ -220,12 +231,16 @@ bool RemovePeaks(TH1** hists, unsigned int nhists)
 GGaus* GausFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
    // bool edit = false;
-   if(!hist) return nullptr;
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(!hist) {
+      return nullptr;
+   }
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
 
-   // std::cout << "here." << std::endl;
+   // std::cout<<"here."<<std::endl;
 
-   auto*      mypeak  = new GGaus(xlow, xhigh);
+   auto*       mypeak  = new GGaus(xlow, xhigh);
    std::string options = opt;
    options.append("Q+");
    mypeak->Fit(hist, options.c_str());
@@ -239,12 +254,16 @@ GGaus* GausFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 
 TF1* DoubleGausFit(TH1* hist, double, double, double xlow, double xhigh, Option_t* opt)
 {
-   if(!hist) return nullptr;
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(!hist) {
+      return nullptr;
+   }
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
 
-   // std::cout << "here." << std::endl;
+   // std::cout<<"here."<<std::endl;
 
-   auto*      mypeak  = new GGaus(xlow, xhigh);
+   auto*       mypeak  = new GGaus(xlow, xhigh);
    std::string options = opt;
    options.append("Q+");
    mypeak->Fit(hist, options.c_str());
@@ -259,12 +278,16 @@ TF1* DoubleGausFit(TH1* hist, double, double, double xlow, double xhigh, Option_
 GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
    // bool edit = 0;
-   if(!hist) return nullptr;
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(!hist) {
+      return nullptr;
+   }
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
 
-   // std::cout << "here." << std::endl;
+   // std::cout<<"here."<<std::endl;
 
-   auto*      mypeak  = new GPeak((xlow + xhigh) / 2.0, xlow, xhigh);
+   auto*       mypeak  = new GPeak((xlow + xhigh) / 2.0, xlow, xhigh);
    std::string options = opt;
    options.append("Q+");
    mypeak->Fit(hist, options.c_str());
@@ -279,12 +302,16 @@ GPeak* PhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 TPeak* AltPhotoPeakFit(TH1* hist, double xlow, double xhigh, Option_t* opt)
 {
    // bool edit = 0;
-   if(!hist) return nullptr;
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(!hist) {
+      return nullptr;
+   }
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
 
-   // std::cout << "here." << std::endl;
+   // std::cout<<"here."<<std::endl;
 
-   auto*      mypeak  = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
+   auto*       mypeak  = new TPeak((xlow + xhigh) / 2.0, xlow, xhigh);
    std::string options = opt;
    options.append("Q+");
    mypeak->Fit(hist, options.c_str());
@@ -300,12 +327,12 @@ std::string MergeStrings(const std::vector<std::string>& strings, char split)
 {
    std::stringstream ss;
    for(auto it = strings.begin(); it != strings.end(); it++) {
-      ss << *it;
+      ss<<*it;
 
       auto next = it;
       next++;
       if(next != strings.end()) {
-         ss << split;
+         ss<<split;
       }
    }
    return ss.str();
@@ -315,7 +342,9 @@ TH1* GrabHist(int i)
 {
    // return the histogram from the current canvas, pad i.
    TH1* hist = nullptr;
-   if(!gPad) return hist;
+   if(!gPad) {
+      return hist;
+   }
    TIter iter(gPad->GetListOfPrimitives());
    int   j = 0;
    while(TObject* obj = iter.Next()) {
@@ -335,7 +364,9 @@ TF1* GrabFit(int i)
    // return the histogram from the current canvas, pad i.
    TH1* hist = nullptr;
    TF1* fit  = nullptr;
-   if(!gPad) return fit;
+   if(!gPad) {
+      return fit;
+   }
    TIter iter(gPad->GetListOfPrimitives());
    int   j = 0;
    while(TObject* obj = iter.Next()) {
@@ -380,7 +411,7 @@ void StartGUI()
 #else
 void StartGUI()
 {
-   std::cout << "Cannot start gui, requires ROOT compiled against python 2.7" << std::endl;
+   std::cout<<"Cannot start gui, requires ROOT compiled against python 2.7"<<std::endl;
 }
 #endif
 
@@ -403,7 +434,9 @@ void AddFileToGUI(TFile* file)
 TH2* AddOffset(TH2* mat, double offset, EAxis axis)
 {
    TH2* toreturn = nullptr;
-   if(!mat) return toreturn;
+   if(!mat) {
+      return toreturn;
+   }
    // int dim = mat->GetDimension();
    int xmax = mat->GetXaxis()->GetNbins() + 1;
    int ymax = mat->GetYaxis()->GetNbins() + 1;
@@ -442,8 +475,12 @@ TH2* AddOffset(TH2* mat, double offset, EAxis axis)
          double newy = mat->GetYaxis()->GetBinCenter(y);
          ;
          double bcont = mat->GetBinContent(x, y);
-         if(axis & kXAxis) newx += offset;
-         if(axis & kYAxis) newy += offset;
+         if(axis & kXAxis) {
+            newx += offset;
+         }
+         if(axis & kYAxis) {
+            newy += offset;
+         }
          toreturn->Fill(newx, newy, bcont);
       }
    }

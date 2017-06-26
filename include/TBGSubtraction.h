@@ -36,8 +36,8 @@ class TBGSubtraction : public TGMainFrame {
       kBGHighEntry,
       kWrite2FileNameEntry,
       kHistogramDescriptionEntry,
-		kComboAxisEntry,
-		kBGCheckButton
+      kComboAxisEntry,
+      kBGCheckButton
    };
 
    //  RQ_OBJECT("TBGSubtraction")
@@ -58,7 +58,7 @@ private:
    TGNumberEntry*       fGateEntryLow{};
    TGNumberEntry*       fGateEntryHigh{};
    TGLabel*             fBGParamLabel{};
-	TGCheckButton*			fBGCheckButton;
+   TGCheckButton*       fBGCheckButton;
 
    TGLayoutHints* fBly;
    TGLayoutHints* fBly1;
@@ -82,8 +82,8 @@ private:
    TGHorizontalFrame* fDescriptionFrame{};
    TGHorizontalFrame* fButtonFrame{};
 
-	//Combo box
-	TGComboBox * fAxisCombo;
+   // Combo box
+   TGComboBox* fAxisCombo;
 
    // Markers
    GMarker* fLowGateMarker;
@@ -93,16 +93,16 @@ private:
 
    TFile* fCurrentFile;
 
-	Int_t fGateAxis;
+   Int_t fGateAxis;
 
-	Bool_t fForceUpdate;
+   Bool_t fForceUpdate;
 
 public:
-   TBGSubtraction(TH2* mat, const char * gate_axis = "x");
+   TBGSubtraction(TH2* mat, const char* gate_axis = "x");
    ~TBGSubtraction() override;
    void AxisComboSelected();
    void ClickedBGButton();
-	void DoDraw();
+   void DoDraw();
    void DoFit();
    void DoSlider(Int_t pos = 0);
    void DoEntry(Long_t);

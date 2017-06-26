@@ -41,7 +41,9 @@ TLstEvent::~TLstEvent()
 
 TLstEvent& TLstEvent::operator=(const TLstEvent& rhs)
 {
-   if(&rhs != this) Clear();
+   if(&rhs != this) {
+      Clear();
+   }
 
    rhs.Copy(*this);
    return *this;

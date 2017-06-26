@@ -35,8 +35,7 @@ TEpicsFrag::TEpicsFrag()
    fMidasId        = -1;
 }
 
-TEpicsFrag::~TEpicsFrag()
-= default;
+TEpicsFrag::~TEpicsFrag() = default;
 
 void TEpicsFrag::Clear(Option_t*)
 {
@@ -63,10 +62,10 @@ void TEpicsFrag::Print(Option_t*) const
    printf("  MidasTimeStamp: %s\n", buff);
    printf("  MidasId:    	  %i\n", fMidasId);
    for(size_t i = 0; i < largest; i++) {
-      std::cout << std::setw(3) << i << ":  ";
-      std::cout << std::setw(30) << fName.at(i) << " --- ";
-      std::cout << fData.at(i);
-      std::cout << std::endl;
+      std::cout<<std::setw(3)<<i<<":  ";
+      std::cout<<std::setw(30)<<fName.at(i)<<" --- ";
+      std::cout<<fData.at(i);
+      std::cout<<std::endl;
    }
 }
 
@@ -80,7 +79,7 @@ std::string TEpicsFrag::GetEpicsVariableName(const int& i)
    try {
       return fNameList.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cout << DRED << "Could not find variable at position " << i << ", returning nothing" << std::endl;
+      std::cout<<DRED<<"Could not find variable at position "<<i<<", returning nothing"<<std::endl;
       return "";
    }
 }
@@ -88,15 +87,15 @@ std::string TEpicsFrag::GetEpicsVariableName(const int& i)
 void TEpicsFrag::PrintVariableNames()
 {
    int idx = 0;
-   for(auto i : fNameList) {
-      std::cout << idx++ << ":  " << i << std::endl;
+   for(const auto& i : fNameList) {
+      std::cout<<idx++<<":  "<<i<<std::endl;
    }
 }
 
 void TEpicsFrag::SetEpicsNameList(const std::vector<std::string>& name_vec)
 {
    fNameList.clear();
-   for(auto i : name_vec) {
+   for(const auto& i : name_vec) {
       fNameList.push_back(i);
    }
 }
@@ -104,7 +103,7 @@ void TEpicsFrag::SetEpicsNameList(const std::vector<std::string>& name_vec)
 void TEpicsFrag::BuildScalerMap(TTree* tree)
 {
    if(!tree) {
-      std::cout << DRED << "Could not build map from tree" << RESET_COLOR << std::endl;
+      std::cout<<DRED<<"Could not build map from tree"<<RESET_COLOR<<std::endl;
    }
    // Loop through the tree and insert the scalers into the map
    fScalerMap.clear();
@@ -121,14 +120,16 @@ void TEpicsFrag::BuildScalerMap(TTree* tree)
                     static_cast<Long64_t>(TGRSIRunInfo::Get()->RunStart())] = *my_frag;
       }
    } else {
-      std::cout << DRED << "Could not build map from tree" << RESET_COLOR << std::endl;
+      std::cout<<DRED<<"Could not build map from tree"<<RESET_COLOR<<std::endl;
    }
 }
 
 void TEpicsFrag::BuildScalerMap()
 {
    TTree* scaler_tree = dynamic_cast<TTree*>(gDirectory->Get("EpicsTree"));
-   if(!scaler_tree) return;
+   if(!scaler_tree) {
+      return;
+   }
 
    BuildScalerMap(scaler_tree);
 }
@@ -138,7 +139,7 @@ TEpicsFrag* TEpicsFrag::GetScalerAtTime(Long64_t time)
    if(!fScalerMap.size()) {
       BuildScalerMap();
       if(!fScalerMap.size()) {
-         std::cout << DRED << "Could not build the epics map" << RESET_COLOR << std::endl;
+         std::cout<<DRED<<"Could not build the epics map"<<RESET_COLOR<<std::endl;
          return nullptr;
       }
    }
@@ -153,11 +154,11 @@ void TEpicsFrag::PrintScalerMap()
    if(!fScalerMap.size()) {
       BuildScalerMap();
       if(!fScalerMap.size()) {
-         std::cout << DRED << "Could not build the epics map" << RESET_COLOR << std::endl;
+         std::cout<<DRED<<"Could not build the epics map"<<RESET_COLOR<<std::endl;
          return;
       }
    }
    for(auto i : fScalerMap) {
-      std::cout << i.first << "    " << i.second.fMidasTimeStamp << std::endl;
+      std::cout<<i.first<<"    "<<i.second.fMidasTimeStamp<<std::endl;
    }
 }

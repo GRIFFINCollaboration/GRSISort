@@ -24,17 +24,18 @@ public:
    // int TBeam() const { return TBeam(0); }
    int TBeam(unsigned int n = 0) const
    {
-      if (n < fTBeam.size())
+      if(n < fTBeam.size()) {
          return fTBeam.at(n);
-      else
+      } else {
          return -1;
+      }
    }
 
    bool   HasWave() const { return !fTfWave.empty(); }
    time_t GetTimeStamp() const { return fTimestamp; }
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
 
    void Clear(Option_t* opt = "") override;       //!<!

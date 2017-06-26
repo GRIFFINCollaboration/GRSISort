@@ -31,8 +31,7 @@ TGriffinHit::TGriffinHit(const TFragment& frag) : TGRSIDetectorHit(frag)
    SetNPileUps(frag.GetNumberOfPileups());
 }
 
-TGriffinHit::~TGriffinHit()
-= default;
+TGriffinHit::~TGriffinHit() = default;
 
 void TGriffinHit::Copy(TObject& rhs) const
 {
@@ -49,7 +48,9 @@ void TGriffinHit::Copy(TObject& rhs) const
 void TGriffinHit::Copy(TObject& obj, bool waveform) const
 {
    Copy(obj);
-   if(waveform) CopyWave(obj);
+   if(waveform) {
+      CopyWave(obj);
+   }
 }
 
 bool TGriffinHit::InFilter(Int_t)
@@ -154,11 +155,13 @@ void TGriffinHit::SetNPileUps(UChar_t npileups)
 
 void TGriffinHit::SetPUHit(UChar_t puhit)
 {
-   if(puhit > 2) puhit = 3;
+   if(puhit > 2) {
+      puhit = 3;
+   }
    // The pluralized test bits returns the actual value of the fBits masked. Not just a bool.
 
-   SetGriffinFlag(kPUHit1, (puhit << kPUHitOffset) & kPUHit1);
-   SetGriffinFlag(kPUHit2, (puhit << kPUHitOffset) & kPUHit2);
+   SetGriffinFlag(kPUHit1, (puhit<<kPUHitOffset) & kPUHit1);
+   SetGriffinFlag(kPUHit2, (puhit<<kPUHitOffset) & kPUHit2);
 }
 
 Double_t TGriffinHit::GetNoCTEnergy(Option_t*) const

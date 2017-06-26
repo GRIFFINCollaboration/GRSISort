@@ -14,7 +14,9 @@ ClassImp(GGaus)
    : TF1("gausbg", "gaus(0)+pol1(3)", xlow, xhigh), fBGFit("background", "pol1", xlow, xhigh)
 {
    Clear("");
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
 
    TF1::SetRange(xlow, xhigh);
 
@@ -31,7 +33,9 @@ ClassImp(GGaus)
 GGaus::GGaus(Double_t xlow, Double_t xhigh, TF1* bg, Option_t*) : TF1("gausbg", "gaus(0)+pol1(3)", xlow, xhigh)
 {
    Clear("");
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
    TF1::SetRange(xlow, xhigh);
    // Changing the name here causes an infinite loop when starting the FitEditor
    // SetName(Form("gaus_%d_to_%d",(Int_t)(xlow),(Int_t)(xhigh)));
@@ -134,7 +138,9 @@ bool GGaus::InitParams(TH1* fithist)
    highy = highy / 5.0;
    lowy  = lowy / 5.0;
 
-   if(lowy > highy) std::swap(lowy, highy);
+   if(lowy > highy) {
+      std::swap(lowy, highy);
+   }
 
    double largestx = 0.0;
    double largesty = 0.0;
@@ -180,9 +186,13 @@ bool GGaus::InitParams(TH1* fithist)
 
 Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
 {
-   if(!fithist) return false;
+   if(!fithist) {
+      return false;
+   }
    TString options = opt;
-   if(!IsInitialized()) InitParams(fithist);
+   if(!IsInitialized()) {
+      InitParams(fithist);
+   }
    TVirtualFitter::SetMaxIterations(100000);
 
    bool verbose = !options.Contains("Q");
@@ -191,22 +201,30 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
       options.ReplaceAll("no-print", "");
    }
 
-   if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) fithist->Sumw2();
+   if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) {
+      fithist->Sumw2();
+   }
 
    TFitResultPtr fitres = fithist->Fit(this, Form("%sRSME", options.Data()));
 
    // fitres.Get()->Print();
    if(!fitres.Get()->IsValid()) {
-      if(!verbose) printf(RED "fit has failed, trying refit... " RESET_COLOR);
+      if(!verbose) {
+         printf(RED "fit has failed, trying refit... " RESET_COLOR);
+      }
       // SetParameter(3,0.1);
       // SetParameter(4,0.01);
       // SetParameter(5,0.0);
       fithist->GetListOfFunctions()->Last()->Delete();
       fitres = fithist->Fit(this, Form("%sRSME", options.Data())); //,Form("%sRSM",options.Data()))
       if(fitres.Get()->IsValid()) {
-         if(!verbose && !noprint) printf(DGREEN " refit passed!" RESET_COLOR "\n");
+         if(!verbose && !noprint) {
+            printf(DGREEN " refit passed!" RESET_COLOR "\n");
+         }
       } else {
-         if(!verbose && !noprint) printf(DRED " refit also failed :( " RESET_COLOR "\n");
+         if(!verbose && !noprint) {
+            printf(DRED " refit also failed :( " RESET_COLOR "\n");
+         }
       }
    }
 
@@ -261,7 +279,9 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
    ;
    fArea -= bgArea;
 
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
    fSum = fithist->Integral(fithist->GetXaxis()->FindBin(xlow),
                             fithist->GetXaxis()->FindBin(xhigh)); //* fithist->GetBinWidth(1);
    printf("sum between markers: %02f\n", fSum);
@@ -289,7 +309,9 @@ void GGaus::Clear(Option_t* opt)
 {
    TString options = opt;
    // Clear the GGaus including functions and histogram
-   if(options.Contains("all")) TF1::Clear();
+   if(options.Contains("all")) {
+      TF1::Clear();
+   }
    init_flag = false;
    fArea     = 0.0;
    fDArea    = 0.0;
@@ -319,7 +341,7 @@ void GGaus::Print(Option_t* opt) const
 
 void GGaus::DrawResiduals(TH1* hist) const
 {
-   if(hist) {
+   if(hist == nullptr) {
       return;
    }
    if(fChi2 < 0.000000001) {
@@ -328,12 +350,14 @@ void GGaus::DrawResiduals(TH1* hist) const
    }
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
-   Int_t     nbins  = hist->GetXaxis()->GetNbins();
+   Int_t nbins  = hist->GetXaxis()->GetNbins();
    auto* res    = new Double_t[nbins];
    auto* bin    = new Double_t[nbins];
-   Int_t     points = 0;
+   Int_t points = 0;
    for(int i = 1; i <= nbins; i++) {
-      if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) continue;
+      if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) {
+         continue;
+      }
       res[points] = (hist->GetBinContent(i) - this->Eval(hist->GetBinCenter(i))) + this->GetParameter("Height") / 2;
       bin[points] = hist->GetBinCenter(i);
       points++;

@@ -116,8 +116,9 @@ class TEventTime {
                   Digitizer() == 0x1300){
                   lowest_time = GetTimeStamp();
                   best_dig = Digitizer();
-                  if(timemidas < low_timemidas)
+                  if(timemidas < low_timemidas) {
                      low_timemidas = timemidas;
+}
                }
             }
          }
@@ -215,11 +216,12 @@ std::map<uint32_t,int> TEventTime::digmap;
 std::map<uint32_t,bool> TEventTime::digset;
 std::map<uint32_t,int64_t> TEventTime::correctionmap;
 
-void PrintError(std::shared_ptr<TMidasEvent> event, int frags,bool verb){
+void PrintError(const std::shared_ptr<TMidasEvent>& event, int frags,bool verb){
    if(verb){
       printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
       printf(DRED "\nBad things are happening. Failed on datum %i" RESET_COLOR "\n", (-1*frags));
-	   if(event)  event->Print(Form("a%i",(-1*frags)-1));
+	   if(event) {  event->Print(Form("a%i",(-1*frags)-1));
+}
       printf(DRED "\n//**********************************************//" RESET_COLOR "\n");
    }
 }
@@ -242,8 +244,10 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ) {
    }
 
    //Do checks on the event
-	unsigned int mserial=0; if(event) mserial = (unsigned int)(event->GetSerialNumber());
-	unsigned int mtime=0;   if(event) mtime   = event->GetTimeStamp();
+	unsigned int mserial=0; if(event) { mserial = (unsigned int)(event->GetSerialNumber());
+}
+	unsigned int mtime=0;   if(event) { mtime   = event->GetTimeStamp();
+}
    TDataParser parser;
    while(infile->Read(event)>0 && eventQ->size()<total_events) {
       switch(event->GetEventId()) {
@@ -265,8 +269,9 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ) {
             
 
                banksize = event->LocateBank(nullptr,"GRF2",&ptr);
-            if(!banksize)
+            if(!banksize) {
                banksize = event->LocateBank(nullptr,"GRF1",&ptr);
+}
 
             if(banksize>0) {
                int frags;
@@ -277,8 +282,9 @@ int QueueEvents(TMidasFile *infile, std::vector<TEventTime*> *eventQ) {
 					}
 					if(frags > -1) {
 						events_read++;
-						if((subrun > 0) || (events_read > event_start))
+						if((subrun > 0) || (events_read > event_start)) {
 							eventQ->push_back(new TEventTime(event));//I'll keep 4G data in here for now in case we need to use it for time stamping 
+}
 					}
 					else{
 						PrintError(event,frags,false);
@@ -324,15 +330,18 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ){
 		//This makes the plot, might not be required
 		int hightime = (*it)->TimeStampHigh();
 		unsigned long midtime = (*it)->MidasTime() - lowmidtime;
-		if(midtime>20) break;//20 seconds seems like plenty enough time
-		if( ((*it)->Digitizer() == 0) && ((*it)->DetectorType()>1)) continue; 
+		if(midtime>20) { break;//20 seconds seems like plenty enough time
+}
+		if( ((*it)->Digitizer() == 0) && ((*it)->DetectorType()>1)) { continue; 
+}
 		//The next few lines are probably unnecessary
 		(dynamic_cast<TH2D*>(midvshigh->FindObject(Form("midvshigh_0x%04x",(*it)->Digitizer()))))->Fill(midtime, hightime);
 		if(lowest_hightime.find((*it)->Digitizer()) == lowest_hightime.end()){
 			lowest_hightime[(*it)->Digitizer()] = hightime; //initialize this as the first time that is seen.
 		}
-		else if(hightime < lowest_hightime.find((*it)->Digitizer())->second)
+		else if(hightime < lowest_hightime.find((*it)->Digitizer())->second) {
 			lowest_hightime.find((*it)->Digitizer())->second = hightime;
+}
 	}
 
 	//find lowest digitizer 
@@ -396,13 +405,16 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
 	//  for(hit1 = (eventQ->begin()+8000); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
 	for(hit1 = (eventQ->begin()); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
 		//We want to have the first hit be in the "good digitizer"
-		if(event1count%75000 == 0)
-			printf("Processing Event %d /%lu      \r",event1count,eventQ->size()); fflush(stdout);
+		if(event1count%75000 == 0) {
+			printf("Processing Event %d /%lu      \r",event1count,eventQ->size()); 
+}fflush(stdout);
 		event1count++;
 
-		if(((*hit1)->Digitizer() == 0) && ((*hit1)->DetectorType()>1)) continue; 
+		if(((*hit1)->Digitizer() == 0) && ((*hit1)->DetectorType()>1)) { continue; 
+}
 
-		if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer())  continue;
+		if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) {  continue;
+}
 
 		int64_t time1 = static_cast<int64_t>((*hit1)->GetTimeStamp());
 
@@ -445,8 +457,9 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
 	}
 
 	for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-		if(mapit->first == TEventTime::GetBestDigitizer())
+		if(mapit->first == TEventTime::GetBestDigitizer()) {
 			continue;
+}
 		fillhist = dynamic_cast<TH1D*>(roughlist->At(mapit->second));
 		std::cout << static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin())) << std::endl;
 		TEventTime::correctionmap.find(mapit->first)->second +=  static_cast<int64_t>(fillhist->GetBinCenter(fillhist->GetMaximumBin()));
@@ -455,13 +468,14 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ){
 	printf("*****  Rough time shifts *******\n");
 	std::map<uint32_t,int64_t>::iterator cit;
 	for(cit = TEventTime::correctionmap.begin(); cit != TEventTime::correctionmap.end(); cit++){
-		if(cit->first == TEventTime::GetBestDigitizer())
+		if(cit->first == TEventTime::GetBestDigitizer()) {
 			printf("0x%04x:\t BEST\n",cit->first);
-		else
+		} else {
 #ifdef OS_DARWIN
 			printf("0x%04x:\t %lld\n",cit->first,cit->second);
 #else
 		printf("0x%04x:\t %ld\n",cit->first,cit->second);
+}
 #endif
 	}
 	printf("********************\n");
@@ -497,14 +511,17 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
 	const int range = 2000;
 	for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
 		//We want to have the first hit be in the "good digitizer"
-		if(event1count%75000 == 0)
-			printf("Processing Event %d / %lu       \r",event1count,eventQ->size()); fflush(stdout);
+		if(event1count%75000 == 0) {
+			printf("Processing Event %d / %lu       \r",event1count,eventQ->size()); 
+}fflush(stdout);
 
 		event1count++;
 		//We need to make sure that that if we have a digitizer of 0, we have a detector type of 1
-		if( (*hit1)->Digitizer() == 0 && (*hit1)->DetectorType()>1) continue; 
+		if( (*hit1)->Digitizer() == 0 && (*hit1)->DetectorType()>1) { continue; 
+}
 
-		if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) continue;
+		if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) { continue;
+}
 
 		int64_t time1 = static_cast<int64_t>((*hit1)->GetTimeStamp());
 
@@ -537,8 +554,9 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
 		}
 	}
 	for(mapit = TEventTime::digmap.begin(); mapit!=TEventTime::digmap.end();mapit++){
-		if(mapit->first == TEventTime::GetBestDigitizer())
+		if(mapit->first == TEventTime::GetBestDigitizer()) {
 			continue;
+}
 		fillhist = dynamic_cast<TH1D*>(list->At(mapit->second));
 		auto* spec = new TSpectrum();
 		spec->Search(fillhist);
@@ -552,13 +570,14 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
 	printf("*****  Rough time shifts *******\n");
 	std::map<uint32_t,int64_t>::iterator cit;
 	for(cit = TEventTime::correctionmap.begin(); cit != TEventTime::correctionmap.end(); cit++){
-		if(cit->first == TEventTime::GetBestDigitizer())
+		if(cit->first == TEventTime::GetBestDigitizer()) {
 			printf("0x%04x:\t BEST\n",cit->first);
-		else
+		} else {
 #ifdef OS_DARWIN
 			printf("0x%04x:\t %lld\n",cit->first,cit->second);
 #else
 		printf("0x%04x:\t %ld\n",cit->first,cit->second);
+}
 #endif
 		// printf("0x%04x:\t %lld\n",mapit->first,correction[mapit->second]);
 	}
@@ -570,7 +589,7 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ){
 
 }
 
-bool ProcessEvent(std::shared_ptr<TMidasEvent> event,TMidasFile *outfile) {
+bool ProcessEvent(const std::shared_ptr<TMidasEvent>& event,TMidasFile *outfile) {
 	if(event->GetEventId() !=1 ) {
 		outfile->FillBuffer(event);
 		return false;
@@ -666,8 +685,9 @@ bool ProcessEvent(std::shared_ptr<TMidasEvent> event,TMidasFile *outfile) {
 
 	//  }
 
-	if(time>0x3ffffffffff)
+	if(time>0x3ffffffffff) {
 		time -= 0x3ffffffffff;
+}
 
 	// moving these inside the next switch, to account for doubly printed words.
 	// (hey, it happens.)
@@ -683,7 +703,8 @@ bool ProcessEvent(std::shared_ptr<TMidasEvent> event,TMidasFile *outfile) {
 	copyevent->SetBankList();
 
 	banksize = copyevent->LocateBank(nullptr,"GRF2",&ptr);
-	if(!banksize) banksize = copyevent->LocateBank(nullptr,"GRF1",&ptr);
+	if(!banksize) { banksize = copyevent->LocateBank(nullptr,"GRF1",&ptr);
+}
 
 	for(int x=0;x<banksize;x++) {
 		value = *((int*)ptr+x);
@@ -741,8 +762,9 @@ void WriteEvents(TMidasFile* file) {
 		bytes = file->Read(event);
 		if(bytes == 0){
 			printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",file->GetFilename(),file->GetLastError());
-			if(file->GetLastErrno()==-1)  //try to read some more...
+			if(file->GetLastErrno()==-1) {  //try to read some more...
 				continue;
+}
 			break;
 		}
 		bytesread += bytes;
@@ -829,7 +851,8 @@ int CorrectionFile(int runnumber){
 	printf("Digitizer \t Correction\n");
 	while(true){
 		Long64_t tentry = t->LoadTree(i++);
-		if(tentry<0) break;
+		if(tentry<0) { break;
+}
 		baddress->GetEntry(tentry);
 		bcorrection->GetEntry(tentry);
 		printf("0x%04x: \t\t %lld\n",address,correction);
@@ -866,10 +889,11 @@ int main(int argc, char **argv) {
 		midfile->OutOpen(argv[2]);
 	}
 	char filename[64];
-	if(subrunnumber>-1)
+	if(subrunnumber>-1) {
 		sprintf(filename,"time_diffs%05i_%03i.root",runnumber,subrunnumber); 
-	else
+	} else {
 		sprintf(filename,"time_diffs%05i.root",runnumber);
+}
 	printf("Creating root outfile: %s\n",filename);
 
 	int nDigitizers = 0;

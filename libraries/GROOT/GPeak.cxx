@@ -20,9 +20,15 @@ GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, Option_t*)
    Clear("");
    if(cent > xhigh || cent < xlow) {
       // out of range...
-      if(xlow > cent) std::swap(xlow, cent);
-      if(xlow > xhigh) std::swap(xlow, xhigh);
-      if(cent > xhigh) std::swap(cent, xhigh);
+      if(xlow > cent) {
+         std::swap(xlow, cent);
+      }
+      if(xlow > xhigh) {
+         std::swap(xlow, xhigh);
+      }
+      if(cent > xhigh) {
+         std::swap(cent, xhigh);
+      }
    }
 
    TF1::SetRange(xlow, xhigh);
@@ -48,9 +54,15 @@ GPeak::GPeak(Double_t cent, Double_t xlow, Double_t xhigh, TF1* bg, Option_t*)
    Clear("");
    if(cent > xhigh || cent < xlow) {
       // out of range...
-      if(xlow > cent) std::swap(xlow, cent);
-      if(xlow > xhigh) std::swap(xlow, xhigh);
-      if(cent > xhigh) std::swap(cent, xhigh);
+      if(xlow > cent) {
+         std::swap(xlow, cent);
+      }
+      if(xlow > xhigh) {
+         std::swap(xlow, xhigh);
+      }
+      if(cent > xhigh) {
+         std::swap(cent, xhigh);
+      }
    }
    TF1::SetRange(xlow, xhigh);
    SetName(Form("Chan%d_%d_to_%d", (Int_t)(cent), (Int_t)(xlow), (Int_t)(xhigh)));
@@ -183,7 +195,9 @@ bool GPeak::InitParams(TH1* fithist)
 
    //  Double_t yhigh  = fithist->GetBinContent(binhigh);
    //  Double_t ylow   = fithist->GetBinContent(binlow);
-   if(lowy > highy) std::swap(lowy, highy);
+   if(lowy > highy) {
+      std::swap(lowy, highy);
+   }
 
    double largestx = 0.0;
    double largesty = 0.0;
@@ -247,9 +261,13 @@ bool GPeak::InitParams(TH1* fithist)
 
 Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
 {
-   if(!fithist) return false;
+   if(!fithist) {
+      return false;
+   }
    TString options = opt;
-   if(!IsInitialized()) InitParams(fithist);
+   if(!IsInitialized()) {
+      InitParams(fithist);
+   }
    TVirtualFitter::SetMaxIterations(100000);
 
    bool verbose = !options.Contains("Q");
@@ -258,7 +276,9 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
       options.ReplaceAll("no-print", "");
    }
 
-   if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) fithist->Sumw2();
+   if(fithist->GetSumw2()->fN != fithist->GetNbinsX() + 2) {
+      fithist->Sumw2();
+   }
 
    TFitResultPtr fitres = fithist->Fit(this, Form("%sLRSME", options.Data()));
 
@@ -332,7 +352,9 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    double bgArea = fBGFit.Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    fArea -= bgArea;
 
-   if(xlow > xhigh) std::swap(xlow, xhigh);
+   if(xlow > xhigh) {
+      std::swap(xlow, xhigh);
+   }
    fSum = fithist->Integral(fithist->GetXaxis()->FindBin(xlow),
                             fithist->GetXaxis()->FindBin(xhigh)); //* fithist->GetBinWidth(1);
    printf("sum between markers: %02f\n", fSum);
@@ -367,7 +389,9 @@ void GPeak::Clear(Option_t* opt)
 {
    TString options = opt;
    // Clear the GPeak including functions and histogram
-   if(options.Contains("all")) TF1::Clear();
+   if(options.Contains("all")) {
+      TF1::Clear();
+   }
    init_flag = false;
    fArea     = 0.0;
    fDArea    = 0.0;
@@ -397,7 +421,7 @@ void GPeak::Print(Option_t* opt) const
 
 void GPeak::DrawResiduals(TH1* hist) const
 {
-   if(hist) {
+   if(hist == nullptr) {
       return;
    }
    if(fChi2 < 0.000000001) {
@@ -406,12 +430,14 @@ void GPeak::DrawResiduals(TH1* hist) const
    }
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
-   Int_t     nbins  = hist->GetXaxis()->GetNbins();
+   Int_t nbins  = hist->GetXaxis()->GetNbins();
    auto* res    = new Double_t[nbins];
    auto* bin    = new Double_t[nbins];
-   Int_t     points = 0;
+   Int_t points = 0;
    for(int i = 1; i <= nbins; i++) {
-      if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) continue;
+      if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) {
+         continue;
+      }
       res[points] = (hist->GetBinContent(i) - this->Eval(hist->GetBinCenter(i))) + this->GetParameter("Height") / 2;
       bin[points] = hist->GetBinCenter(i);
       points++;

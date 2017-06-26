@@ -5,6 +5,7 @@
  *  @{
  */
 
+#include <utility>
 #include <vector>
 #include <cstdio>
 #include <functional>
@@ -22,14 +23,14 @@
 class TFipps : public TGRSIDetector {
 public:
    enum EFippsBits {
-      kIsAddbackSet   = 1 << 0,
-      kIsCrossTalkSet = 1 << 1,
-      kBit2           = 1 << 2,
-      kBit3           = 1 << 3,
-      kBit4           = 1 << 4,
-      kBit5           = 1 << 5,
-      kBit6           = 1 << 6,
-      kBit7           = 1 << 7
+      kIsAddbackSet   = 1<<0,
+      kIsCrossTalkSet = 1<<1,
+      kBit2           = 1<<2,
+      kBit3           = 1<<3,
+      kBit4           = 1<<4,
+      kBit5           = 1<<5,
+      kBit6           = 1<<6,
+      kBit7           = 1<<7
    };
 
    TFipps();
@@ -43,19 +44,24 @@ public:
 
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
    void ClearTransients() override
    {
       fFippsBits = 0;
-      for (auto hit : fFippsHits) hit.ClearTransients();
+      for(const auto& hit : fFippsHits) {
+         hit.ClearTransients();
+      }
    }
    void ResetFlags() const;
 
    TFipps& operator=(const TFipps&); //!<!
 
 #if !defined(__CINT__) && !defined(__CLING__)
-   void SetAddbackCriterion(std::function<bool(TFippsHit&, TFippsHit&)> criterion) { fAddbackCriterion = criterion; }
+   void SetAddbackCriterion(std::function<bool(TFippsHit&, TFippsHit&)> criterion)
+   {
+      fAddbackCriterion = std::move(criterion);
+   }
    std::function<bool(TFippsHit&, TFippsHit&)> GetAddbackCriterion() const { return fAddbackCriterion; }
 #endif
 

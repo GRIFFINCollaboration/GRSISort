@@ -66,15 +66,17 @@ TH2F *kValueTDiff_samechan   = new TH2F("kValueTDiff_samechan","kValueTDiff_same
 TH2F *kValueTDiff_nogate   = new TH2F("kValueTDiff_nogate","kValueTDiff_nogate",400,-200,200,800,0,800);
 
 void ProcessEvent(std::vector<TFragment> *event) {
-  if(event->size()<2)
+  if(event->size()<2) {
      return;
+}
   
   for(size_t x=0;x<event->size();x++) {
      if(event->at(x).GetDetectorType() == 0){
          kValueChan->Fill(event->at(x).GetKValue(),event->at(x).GetCrystal()+(event->at(x).GetDetector()-1)*4);
      }
     for(size_t y=0;y<event->size();y++) {
-      if(x==y) continue;
+      if(x==y) { continue;
+}
       long timediff      = (event->at(y).GetTimeStamp()-event->at(x).GetTimeStamp());
       Double_t timediff_walk = ((Double_t)(event->at(y).GetTime())-(Double_t)(event->at(x).GetTime()))/10.;
       //int cfddiff  = abs(event->at(x).GetCfd()-event->at(y).GetCfd());
@@ -100,8 +102,9 @@ void ProcessEvent(std::vector<TFragment> *event) {
             timehist_det->Fill(timediff,event->at(y).GetEnergy(),event->at(y).GetDetector());
             timehist_det2->Fill(timediff,event->at(y).GetEnergy(),event->at(x).GetDetector());
             timehistcfd->Fill(timediff_walk*10.,event->at(y).GetEnergy());
-				if(event->at(y).GetKValue() == 700 && event->at(x).GetKValue() == 700) 
+				if(event->at(y).GetKValue() == 700 && event->at(x).GetKValue() == 700) { 
 					timehistcfdnopu->Fill(timediff_walk*10.,event->at(y).GetEnergy());
+}
             timehist_walk->Fill(timediff_walk,event->at(y).GetEnergy());
 				kValueTDiff->Fill(timediff,event->at(y).GetKValue());
             if(event->at(y).GetAddress() == event->at(x).GetAddress()){
@@ -191,8 +194,9 @@ void InitChannels() {
    //grsisort attempts to read the calibration from the fragment tree
    //if it exists.
    
-   if(!fCurrentFragTree)
+   if(!fCurrentFragTree) {
       return;
+}
 
    //Delete channels from memory incase there is something in there still
    ////TChannel::DeleteAllChannels(); 
@@ -255,7 +259,8 @@ void SetupFragmentTree() {
 
 
 int main(int argc, char **argv) {
-	if(argc <= 1) return 1;
+	if(argc <= 1) { return 1;
+}
    TFile file(argv[1]);
    fCurrentFragTree = dynamic_cast<TTree*>(file.Get("FragmentTree"));
  

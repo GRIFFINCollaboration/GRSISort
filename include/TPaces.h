@@ -28,13 +28,15 @@ public:
    Short_t GetMultiplicity() const { return fPacesHits.size(); }
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) override;
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override;
 #endif
    static TVector3 GetPosition(int DetNbr); //!<!
 
    void ClearTransients() override
    {
-      for (auto hit : fPacesHits) hit.ClearTransients();
+      for(const auto& hit : fPacesHits) {
+         hit.ClearTransients();
+      }
    }
 
    TPaces& operator=(const TPaces&); //!<!

@@ -23,7 +23,7 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
    TGRSIFit::AddToGlobalList(fBackground, kFALSE);
 
    for(double cent : centroids) {
-      Bool_t   out_of_range_flag = false;
+      Bool_t out_of_range_flag = false;
       if(cent > xhigh) {
          printf("centroid %lf is higher than range\n", cent);
          out_of_range_flag = true;
@@ -63,7 +63,7 @@ TMultiPeak::~TMultiPeak()
       delete fBackground;
    }
 
-   for(auto & i : fPeakVec) {
+   for(auto& i : fPeakVec) {
       if(i) {
          delete i;
       }
@@ -103,10 +103,11 @@ void TMultiPeak::Copy(TObject& obj) const
 {
    TGRSIFit::Copy(obj);
    TMultiPeak* mpobj = dynamic_cast<TMultiPeak*>(&obj);
-   if(!(mpobj->fBackground))
+   if(!(mpobj->fBackground)) {
       mpobj->fBackground = new TF1(*(fBackground));
-   else
+   } else {
       *(mpobj->fBackground) = *fBackground;
+   }
 
    TGRSIFit::AddToGlobalList(fBackground, kFALSE);
 
@@ -121,7 +122,9 @@ void TMultiPeak::Copy(TObject& obj) const
 Bool_t TMultiPeak::InitParams(TH1* fithist)
 {
    // Makes initial guesses at parameters for the fit. Uses the histogram to make the initial guesses
-   if(!fithist && GetHist()) fithist = GetHist();
+   if(!fithist && GetHist()) {
+      fithist = GetHist();
+   }
 
    if(!fithist) {
       printf("No histogram is associated yet, no initial guesses made\n");
@@ -187,15 +190,19 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       printf("No histogram associated with Peak\n");
       return false;
    }
-   if(!IsInitialized()) InitParams(fithist);
+   if(!IsInitialized()) {
+      InitParams(fithist);
+   }
 
    TVirtualFitter::SetMaxIterations(100000);
    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Combination");
    SetHist(fithist);
 
    TString options(opt);
-   bool    print_flag                   = true;
-   if(options.Contains("Q")) print_flag = false;
+   bool    print_flag = true;
+   if(options.Contains("Q")) {
+      print_flag = false;
+   }
 
    // Now that it is initialized, let's fit it.
 
@@ -243,7 +250,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
             InitParams(fithist);
             FixParameter(4,0);
             FixParameter(3,1);
-            std::cout << "Beta may have broken the fit, retrying with R=0" << std::endl;
+            std::cout<<"Beta may have broken the fit, retrying with R=0"<<std::endl;
           // Leaving the log-likelihood argument out so users are not constrained to just using that. - JKS
             fithist->GetListOfFunctions()->Last()->Delete();
             if(GetLogLikelihoodFlag()){
@@ -256,13 +263,15 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       }*/
    /*   if(fitres->Parameter(5) < 0.0){
          FixParameter(5,0);
-         std::cout << "Step < 0. Retrying fit with stp = 0" << std::endl;
+         std::cout<<"Step < 0. Retrying fit with stp = 0"<<std::endl;
          fitres = fithist->Fit(this,Form("%sRSML",opt));
       }
    */
    /*
 */
-   if(print_flag) printf("Chi^2/NDF = %lf\n", fitres->Chi2() / fitres->Ndf());
+   if(print_flag) {
+      printf("Chi^2/NDF = %lf\n", fitres->Chi2() / fitres->Ndf());
+   }
    // We will now set the parameters of each of the peaks based on the fits.
    for(int i = 0; i < (int)fPeakVec.size(); ++i) {
       auto* tmpMp = new TMultiPeak(*this);
@@ -319,7 +328,9 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       peak->SetParError(peak->GetParNumber("centroid"), GetParError(GetParNumber(Form("Centroid_%i", i))));
       peak->SetParameter("sigma", GetParameter(GetParNumber(Form("Sigma_%i", i))));
       peak->SetParError(peak->GetParNumber("sigma"), GetParError(GetParNumber(Form("Sigma_%i", i))));
-      if(print_flag) printf("Integral: %lf +/- %lf\n", peak->GetArea(), peak->GetAreaErr());
+      if(print_flag) {
+         printf("Integral: %lf +/- %lf\n", peak->GetArea(), peak->GetAreaErr());
+      }
    }
 
    // Set the background for drawing later
@@ -337,7 +348,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
 void TMultiPeak::Clear(Option_t* opt)
 {
    TGRSIFit::Clear(opt);
-   for(auto & i : fPeakVec) {
+   for(auto& i : fPeakVec) {
       if(i) {
          delete i;
          i = nullptr;
@@ -429,10 +440,11 @@ Double_t TMultiPeak::SinglePeakBG(Double_t* dim, Double_t* par)
 
 TPeak* TMultiPeak::GetPeak(UInt_t idx)
 {
-   if(idx < fPeakVec.size())
+   if(idx < fPeakVec.size()) {
       return fPeakVec.at(idx);
-   else
+   } else {
       printf("No matching peak at index %u\n", idx);
+   }
 
    return nullptr;
 }
@@ -465,7 +477,7 @@ void TMultiPeak::DrawPeaks() const
       Double_t range    = 2. * peak->GetFWHM();
 
       auto* sum = new TF1(Form("tmp%s", peak->GetName()), SinglePeakBG, centroid - range, centroid + range,
-                         fPeakVec.size() * 6 + 11);
+                          fPeakVec.size() * 6 + 11);
 
       for(int j = 0; j < GetNpar(); ++j) {
          sum->SetParameter(j, GetParameter(j));

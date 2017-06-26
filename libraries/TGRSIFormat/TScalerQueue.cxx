@@ -37,8 +37,7 @@ TDeadtimeScalerQueue::TDeadtimeScalerQueue()
    Clear();
 }
 
-TDeadtimeScalerQueue::~TDeadtimeScalerQueue()
-= default;
+TDeadtimeScalerQueue::~TDeadtimeScalerQueue() = default;
 
 void TDeadtimeScalerQueue::Print(Option_t*) const
 {
@@ -73,7 +72,9 @@ void TDeadtimeScalerQueue::Clear(Option_t*)
 
    fStopwatch->Reset();
 
-   if(locked) TDeadtimeScalerQueue::All.unlock();
+   if(locked) {
+      TDeadtimeScalerQueue::All.unlock();
+   }
    return;
 }
 
@@ -241,8 +242,7 @@ TRateScalerQueue::TRateScalerQueue()
    Clear();
 }
 
-TRateScalerQueue::~TRateScalerQueue()
-= default;
+TRateScalerQueue::~TRateScalerQueue() = default;
 
 void TRateScalerQueue::Print(Option_t*) const
 {
@@ -277,7 +277,9 @@ void TRateScalerQueue::Clear(Option_t*)
 
    fStopwatch->Reset();
 
-   if(locked) TRateScalerQueue::All.unlock();
+   if(locked) {
+      TRateScalerQueue::All.unlock();
+   }
    return;
 }
 

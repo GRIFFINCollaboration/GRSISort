@@ -41,9 +41,9 @@ Double_t TGRSIFunctions::PolyBg(Double_t* x, Double_t* par, Int_t order)
 
    /*   if((Double_t)(sizeof(par))/(Double_t)(sizeof(par[0])) < (order + 2)){ //This doesn't work with the current
       method
-        std::cout << "not enough parameters passed to function" << std::endl;
-        std::cout << "sizeof par = " << sizeof(par) << std::endl;
-        std::cout << "size of par[0] = " << sizeof(par[0]) << std::endl;
+        std::cout<<"not enough parameters passed to function"<<std::endl;
+        std::cout<<"sizeof par = "<<sizeof(par)<<std::endl;
+        std::cout<<"size of par[0] = "<<sizeof(par[0])<<std::endl;
         return 0;
         }   */
 
@@ -223,9 +223,10 @@ Double_t TGRSIFunctions::LanGaus(Double_t* x, Double_t* pars)
       spec = pars[1] +
              pars[2] * y; // define background SHOULD THIS BE CONVOLUTED ????? *************************************
       for(int n = 0; n < (int)(pars[0] + 0.5);
-          n++) // the implementation of landau function should be done using the landau function
+          n++) { // the implementation of landau function should be done using the landau function
          spec += pars[3 * n + 4] * TMath::Landau(-y, -pars[3 * n + 5], pars[3 * n + 6]) /
                  TMath::Landau(0, 0, 100); // add peaks, dividing by max height of landau
+      }
 
       gaus = TMath::Gaus(-x[0], -y, pars[3]) /
              sqrt(2 * TMath::Pi() * pars[3] * pars[3]); // gaus must be normalisd so there is no sigma weighting
@@ -245,8 +246,9 @@ Double_t TGRSIFunctions::LanGausHighRes(Double_t* x, Double_t* pars)
       y  = x[0] - 4 * pars[3] + dy * i;
 
       spec = pars[1] + pars[2] * y;
-      for(int n = 0; n < (int)(pars[0] + 0.5); n++)
+      for(int n = 0; n < (int)(pars[0] + 0.5); n++) {
          spec += pars[3 * n + 4] * TMath::Landau(-y, -pars[3 * n + 5], pars[3 * n + 6]) / TMath::Landau(0, 0, 100);
+      }
 
       gaus = TMath::Gaus(-x[0], -y, pars[3]) / sqrt(2 * TMath::Pi() * pars[3] * pars[3]);
       conv += gaus * spec * dy;
@@ -276,7 +278,7 @@ Double_t TGRSIFunctions::MultiGausWithBG(Double_t* dim, Double_t* par)
 Double_t TGRSIFunctions::Bateman(Double_t* dim, Double_t* par, UInt_t nChain, Double_t)
 {
    //****NOT TESTED****The Bateman equation is the general closed form for a decay chain of nuclei. This functions
-   //returns
+   // returns
    // the total activity from a given chain of nuclei.
    // Requires the following parameters:
    //   - dim[0]:  channels being fit
@@ -286,7 +288,7 @@ Double_t TGRSIFunctions::Bateman(Double_t* dim, Double_t* par, UInt_t nChain, Do
    // NOTE: The lowest paramters correspond to the most 'senior' nuclei
 
    if(sizeof(par) / sizeof(par[0]) < (nChain * 3)) {
-      std::cout << "not enough parameters passed to function" << std::endl;
+      std::cout<<"not enough parameters passed to function"<<std::endl;
       return 0;
    }
 

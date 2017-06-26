@@ -22,10 +22,10 @@
 class TLstEvent : public TRawEvent {
 public:
    // houskeeping functions
-   TLstEvent();                               ///< default constructor
-   TLstEvent(const TLstEvent&);               ///< copy constructor
-   ~TLstEvent() override;                      ///< destructor
-   TLstEvent& operator=(const TLstEvent&);    ///< assignement operator
+   TLstEvent();                                        ///< default constructor
+   TLstEvent(const TLstEvent&);                        ///< copy constructor
+   ~TLstEvent() override;                              ///< destructor
+   TLstEvent& operator=(const TLstEvent&);             ///< assignement operator
    void Clear(Option_t* opt = "") override;            ///< clear event for reuse
    void Copy(TObject&) const override;                 ///< copy helper
    void Print(const char* option = "") const override; ///< show all event information

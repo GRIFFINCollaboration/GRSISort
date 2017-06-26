@@ -16,15 +16,15 @@ ClassImp(TGRSISortInfo)
 
    if(fSortInfoList.count(info->RunNumber()) && fSortInfoList[info->RunNumber()].count(info->SubRunNumber())) {
       if(opt1 == "SAFE") {
-         std::cout << "Can't add Run: " << info->RunNumber() << "\tSubRun " << info->SubRunNumber() << std::endl;
-         std::cout << "Already in Sort Info List" << std::endl;
+         std::cout<<"Can't add Run: "<<info->RunNumber()<<"\tSubRun "<<info->SubRunNumber()<<std::endl;
+         std::cout<<"Already in Sort Info List"<<std::endl;
          return false;
       }
       info->AddDuplicate();
-      std::cout << "Adding Duplicate  Run: " << info->RunNumber() << "\tSubRun " << info->SubRunNumber() << std::endl;
+      std::cout<<"Adding Duplicate  Run: "<<info->RunNumber()<<"\tSubRun "<<info->SubRunNumber()<<std::endl;
       return true;
    }
-   std::cout << "Adding Run: " << info->RunNumber() << "\tSubRun " << info->SubRunNumber() << std::endl;
+   std::cout<<"Adding Run: "<<info->RunNumber()<<"\tSubRun "<<info->SubRunNumber()<<std::endl;
    fSortInfoList[info->RunNumber()].insert(std::make_pair(info->SubRunNumber(), info));
    return true;
 }
@@ -94,8 +94,7 @@ TGRSISortInfo::TGRSISortInfo()
    Clear();
 }
 
-TGRSISortInfo::~TGRSISortInfo()
-= default;
+TGRSISortInfo::~TGRSISortInfo() = default;
 
 void TGRSISortInfo::SetRunInfo(const TGRSIRunInfo* info)
 {
@@ -105,11 +104,13 @@ void TGRSISortInfo::SetRunInfo(const TGRSIRunInfo* info)
 
 void TGRSISortInfo::Print(Option_t*) const
 {
-   std::cout << "Run Number:\t " << RunNumber();
-   std::cout << "\tSub Run:\t " << SubRunNumber();
-   std::cout << "\tComment:\t " << Comment();
-   if(fDuplicates) std::cout << "\tDuplicates:\t" << fDuplicates;
-   std::cout << std::endl;
+   std::cout<<"Run Number:\t "<<RunNumber();
+   std::cout<<"\tSub Run:\t "<<SubRunNumber();
+   std::cout<<"\tComment:\t "<<Comment();
+   if(fDuplicates) {
+      std::cout<<"\tDuplicates:\t"<<fDuplicates;
+   }
+   std::cout<<std::endl;
 }
 
 void TGRSISortInfo::Clear(Option_t*)

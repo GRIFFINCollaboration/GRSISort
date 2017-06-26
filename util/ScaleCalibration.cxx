@@ -9,8 +9,9 @@ int main(int argc, char **argv) {
 
 
    std::string mnemonic = "";
-   if(argc  == 4)
+   if(argc  == 4) {
       mnemonic.assign(argv[3]);
+}
 
    std::string calFileName(argv[2],40);
    std::string outFileName = "out" + calFileName;

@@ -16,7 +16,7 @@ public:
 
    void Print(Option_t* = "") const override {}
    void Clear(Option_t* = "") override {}
-   bool                 Notify() override;
+   bool Notify() override;
 
 #ifdef __CINT__
    static void AddCallback(void (*func)());

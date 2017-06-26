@@ -9,34 +9,34 @@
 ClassImp(TBGSubtraction)
    /// \endcond
 
-   TBGSubtraction::TBGSubtraction(TH2* mat,const char * gate_axis)
+   TBGSubtraction::TBGSubtraction(TH2* mat, const char* gate_axis)
    : TGMainFrame(nullptr, 10, 10, kHorizontalFrame), fProjectionCanvas(nullptr), fGateCanvas(nullptr), fMatrix(mat),
      fProjection(nullptr), fGateHist(nullptr), fBGHist(nullptr), fSubtractedHist(nullptr), fGateSlider(nullptr),
-     fBGSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton(nullptr), fBly(nullptr), fBly1(nullptr), fGateFrame(nullptr),
-     fProjectionFrame(nullptr), fAxisCombo(nullptr), fLowGateMarker(nullptr), fHighGateMarker(nullptr), fLowBGMarker(nullptr),
-     fHighBGMarker(nullptr), fGateAxis(0), fForceUpdate(true)
+     fBGSlider(nullptr), fBGParamEntry(nullptr), fBGCheckButton(nullptr), fBly(nullptr), fBly1(nullptr),
+     fGateFrame(nullptr), fProjectionFrame(nullptr), fAxisCombo(nullptr), fLowGateMarker(nullptr),
+     fHighGateMarker(nullptr), fLowBGMarker(nullptr), fHighBGMarker(nullptr), fGateAxis(0), fForceUpdate(true)
 {
 
    // fProjection = (TH1*)(fMatrix->ProjectionX()->Clone());
- 
-	TString tmp_gate_word(gate_axis);
-	tmp_gate_word.ToUpper();
-	if(tmp_gate_word.EqualTo("X")){
-		fGateAxis = 0;
-	}
-	else{
-		fGateAxis = 1;
-	}
 
-	if(fGateAxis == 0){
-		fProjection = fMatrix->ProjectionY();
-	}
-	else{
-		fProjection = fMatrix->ProjectionX();
-	}
+   TString tmp_gate_word(gate_axis);
+   tmp_gate_word.ToUpper();
+   if(tmp_gate_word.EqualTo("X")) {
+      fGateAxis = 0;
+   } else {
+      fGateAxis = 1;
+   }
+
+   if(fGateAxis == 0) {
+      fProjection = fMatrix->ProjectionY();
+   } else {
+      fProjection = fMatrix->ProjectionX();
+   }
 
    // fTree = 0;
-   if(!gClient) return;
+   if(!gClient) {
+      return;
+   }
    gInterpreter->SaveContext();
    BuildInterface();
    // SetTreeName(treeName);
@@ -113,19 +113,19 @@ void TBGSubtraction::BuildInterface()
    fBGParamEntry->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoDraw()");
    fBGParamEntry->Connect("ValueSet(Long_t)", "TBGSubtraction", this, "DoProjection()");
 
-	fAxisCombo = new TGComboBox(fBGParamFrame,kComboAxisEntry);
-	fAxisCombo->Resize(150,20);
-	fAxisCombo->AddEntry("x",0);
-	fAxisCombo->AddEntry("y",1);
-	fAxisCombo->SetEnabled();
-	fAxisCombo->Connect("Selected(Int_t,Int_t)","TBGSubtraction",this,"AxisComboSelected()");
-	fAxisCombo->Select(fGateAxis);
+   fAxisCombo = new TGComboBox(fBGParamFrame, kComboAxisEntry);
+   fAxisCombo->Resize(150, 20);
+   fAxisCombo->AddEntry("x", 0);
+   fAxisCombo->AddEntry("y", 1);
+   fAxisCombo->SetEnabled();
+   fAxisCombo->Connect("Selected(Int_t,Int_t)", "TBGSubtraction", this, "AxisComboSelected()");
+   fAxisCombo->Select(fGateAxis);
 
-	fBGCheckButton = new TGCheckButton(fBGParamFrame, "BG On",kBGCheckButton);
-	fBGCheckButton->SetState(kButtonDown);
-	fBGCheckButton->Connect("Clicked()","TBGSubtraction",this,"DoDraw()");
-	fBGCheckButton->Connect("Clicked()","TBGSubtraction",this,"DoProjection()");
-	fBGCheckButton->Connect("Clicked()","TBGSubtraction",this,"ClickedBGButton()");
+   fBGCheckButton = new TGCheckButton(fBGParamFrame, "BG On", kBGCheckButton);
+   fBGCheckButton->SetState(kButtonDown);
+   fBGCheckButton->Connect("Clicked()", "TBGSubtraction", this, "DoDraw()");
+   fBGCheckButton->Connect("Clicked()", "TBGSubtraction", this, "DoProjection()");
+   fBGCheckButton->Connect("Clicked()", "TBGSubtraction", this, "ClickedBGButton()");
 
    fDescriptionFrame     = new TGHorizontalFrame(fGateFrame, 200, 200);
    fHistogramDescription = new TGTextEntry(fDescriptionFrame, "gated #gamma-#gamma", kHistogramDescriptionEntry);
@@ -143,9 +143,8 @@ void TBGSubtraction::BuildInterface()
 
    fBly1 = new TGLayoutHints(kLHintsTop | kLHintsCenterX | kLHintsExpandX | kLHintsExpandY, 20, 10, 15, 0);
 
-
-	fBGParamFrame->AddFrame(fAxisCombo,fBly);
-	fBGParamFrame->AddFrame(fBGCheckButton,fBly);
+   fBGParamFrame->AddFrame(fAxisCombo, fBly);
+   fBGParamFrame->AddFrame(fBGCheckButton, fBly);
    fBGParamFrame->AddFrame(fBGParamLabel, fBly);
    fBGParamFrame->AddFrame(fBGParamEntry, fBly);
 
@@ -198,20 +197,19 @@ void TBGSubtraction::DoDraw()
    // Draws function graphics in randomly chosen interval
    TCanvas* fCanvas = fProjectionCanvas->GetCanvas();
    fCanvas->cd();
- 	if(fForceUpdate){
-		if(fGateAxis == 0){
-			fProjection = fMatrix->ProjectionY();
-		}
-		else{
-			fProjection = fMatrix->ProjectionX();
-		}
-	}
-	fForceUpdate = false;
+   if(fForceUpdate) {
+      if(fGateAxis == 0) {
+         fProjection = fMatrix->ProjectionY();
+      } else {
+         fProjection = fMatrix->ProjectionX();
+      }
+   }
+   fForceUpdate = false;
 
- 	fProjection->Draw();
-	if(fBGCheckButton && fBGCheckButton->IsDown()){
-   	fProjection->ShowBackground(fBGParamEntry->GetNumberEntry()->GetIntNumber())->Draw("same");
-	}
+   fProjection->Draw();
+   if(fBGCheckButton && fBGCheckButton->IsDown()) {
+      fProjection->ShowBackground(fBGParamEntry->GetNumberEntry()->GetIntNumber())->Draw("same");
+   }
    fCanvas->Update();
    fGateCanvas->GetCanvas()->cd();
 
@@ -254,19 +252,27 @@ TBGSubtraction::~TBGSubtraction()
 {
    // Clean up used widgets: frames, buttons, layout hints
    Cleanup();
-   if(fLowBGMarker) delete fLowBGMarker;
-   if(fHighBGMarker) delete fHighBGMarker;
-   if(fLowGateMarker) delete fLowGateMarker;
-   if(fHighGateMarker) delete fHighGateMarker;
+   if(fLowBGMarker) {
+      delete fLowBGMarker;
+   }
+   if(fHighBGMarker) {
+      delete fHighBGMarker;
+   }
+   if(fLowGateMarker) {
+      delete fLowGateMarker;
+   }
+   if(fHighGateMarker) {
+      delete fHighGateMarker;
+   }
 }
 
-void TBGSubtraction::ClickedBGButton(){
-	if(fBGCheckButton && fBGCheckButton->IsDown()){
-		fBGParamEntry->SetState(true);
-	}
-	else{
-		fBGParamEntry->SetState(false);
-	}
+void TBGSubtraction::ClickedBGButton()
+{
+   if(fBGCheckButton && fBGCheckButton->IsDown()) {
+      fBGParamEntry->SetState(true);
+   } else {
+      fBGParamEntry->SetState(false);
+   }
 }
 
 void TBGSubtraction::DoSlider(Int_t pos)
@@ -300,25 +306,35 @@ void TBGSubtraction::DoSlider(Int_t pos)
    DrawMarkers();
 }
 
-void TBGSubtraction::AxisComboSelected(){
-	static int old_selection = -1;
-	fGateAxis = fAxisCombo->GetSelected();
-	
-	if(old_selection != fGateAxis)
-		fForceUpdate = true;
+void TBGSubtraction::AxisComboSelected()
+{
+   static int old_selection = -1;
+   fGateAxis                = fAxisCombo->GetSelected();
 
-	DoDraw();
+   if(old_selection != fGateAxis) {
+      fForceUpdate = true;
+   }
 
-	old_selection = fGateAxis;
+   DoDraw();
+
+   old_selection = fGateAxis;
 }
 
 void TBGSubtraction::DrawMarkers()
 {
 
-   if(!fLowGateMarker) fLowGateMarker   = new GMarker();
-   if(!fHighGateMarker) fHighGateMarker = new GMarker();
-   if(!fLowBGMarker) fLowBGMarker       = new GMarker();
-   if(!fHighBGMarker) fHighBGMarker     = new GMarker();
+   if(!fLowGateMarker) {
+      fLowGateMarker = new GMarker();
+   }
+   if(!fHighGateMarker) {
+      fHighGateMarker = new GMarker();
+   }
+   if(!fLowBGMarker) {
+      fLowBGMarker = new GMarker();
+   }
+   if(!fHighBGMarker) {
+      fHighBGMarker = new GMarker();
+   }
 
    fLowGateMarker->localx  = fGateSlider->GetMinPosition();
    fHighGateMarker->localx = fGateSlider->GetMaxPosition();
@@ -333,21 +349,25 @@ void TBGSubtraction::DrawMarkers()
    double high_gate_bin_edge = fProjection->GetXaxis()->GetBinLowEdge(fHighGateMarker->binx);
    double low_bg_bin_edge    = fProjection->GetXaxis()->GetBinLowEdge(fLowBGMarker->binx);
    double high_bg_bin_edge   = fProjection->GetXaxis()->GetBinLowEdge(fHighBGMarker->binx);
-   if(!(fLowGateMarker->linex))
+   if(!(fLowGateMarker->linex)) {
       fLowGateMarker->linex =
          new TLine(low_gate_bin_edge, fProjection->GetMinimum(), low_gate_bin_edge, fProjection->GetMaximum());
+   }
 
-   if(!(fHighGateMarker->linex))
+   if(!(fHighGateMarker->linex)) {
       fHighGateMarker->linex =
          new TLine(high_gate_bin_edge, fProjection->GetMinimum(), high_gate_bin_edge, fProjection->GetMaximum());
+   }
 
-   if(!(fLowBGMarker->linex))
+   if(!(fLowBGMarker->linex)) {
       fLowBGMarker->linex =
          new TLine(low_bg_bin_edge, fProjection->GetMinimum(), low_bg_bin_edge, fProjection->GetMaximum());
+   }
 
-   if(!(fHighBGMarker->linex))
+   if(!(fHighBGMarker->linex)) {
       fHighBGMarker->linex =
          new TLine(high_bg_bin_edge, fProjection->GetMinimum(), high_bg_bin_edge, fProjection->GetMaximum());
+   }
 
    fLowGateMarker->linex->SetX1(low_gate_bin_edge);
    fLowGateMarker->linex->SetX2(low_gate_bin_edge);
@@ -449,49 +469,52 @@ void TBGSubtraction::DoProjection()
 {
    Double_t xmin, ymin, xmax, ymax;
    fProjectionCanvas->GetCanvas()->GetRange(xmin, ymin, xmax, ymax);
-   if(fGateHist) delete fGateHist;
+   if(fGateHist) {
+      delete fGateHist;
+   }
    const char* proj_name =
       Form("gate_%d_%d", (Int_t)(fGateEntryLow->GetNumber()), (Int_t)(fGateEntryHigh->GetNumber()));
-	
-	fGateAxis = fAxisCombo->GetSelected();
 
-	if(fGateAxis == 0){
-   	fGateHist = fMatrix->ProjectionX(proj_name, fMatrix->GetYaxis()->FindBin(fGateSlider->GetMinPosition()),
-                                    fMatrix->GetYaxis()->FindBin(fGateSlider->GetMaxPosition()));
-	}
-	else{
-   	fGateHist = fMatrix->ProjectionY(proj_name, fMatrix->GetXaxis()->FindBin(fGateSlider->GetMinPosition()),
-                                    fMatrix->GetXaxis()->FindBin(fGateSlider->GetMaxPosition()));
-	}
-	fGateHist->Sumw2();
+   fGateAxis = fAxisCombo->GetSelected();
 
-   if(fBGHist) delete fBGHist;
+   if(fGateAxis == 0) {
+      fGateHist = fMatrix->ProjectionX(proj_name, fMatrix->GetYaxis()->FindBin(fGateSlider->GetMinPosition()),
+                                       fMatrix->GetYaxis()->FindBin(fGateSlider->GetMaxPosition()));
+   } else {
+      fGateHist = fMatrix->ProjectionY(proj_name, fMatrix->GetXaxis()->FindBin(fGateSlider->GetMinPosition()),
+                                       fMatrix->GetXaxis()->FindBin(fGateSlider->GetMaxPosition()));
+   }
+   fGateHist->Sumw2();
+
+   if(fBGHist) {
+      delete fBGHist;
+   }
    const char* bg_name = Form("bg_%d_%d", (Int_t)(fBGEntryLow->GetNumber()), (Int_t)(fBGEntryHigh->GetNumber()));
 
-	if(fGateAxis == 0){
-		fBGHist             = fMatrix->ProjectionX(bg_name, fMatrix->GetYaxis()->FindBin(fBGSlider->GetMinPosition()),
-   									fMatrix->GetYaxis()->FindBin(fBGSlider->GetMaxPosition()));
-	}
-	else{
-		fBGHist             = fMatrix->ProjectionY(bg_name, fMatrix->GetXaxis()->FindBin(fBGSlider->GetMinPosition()),
-                                  fMatrix->GetXaxis()->FindBin(fBGSlider->GetMaxPosition()));
-	}
+   if(fGateAxis == 0) {
+      fBGHist = fMatrix->ProjectionX(bg_name, fMatrix->GetYaxis()->FindBin(fBGSlider->GetMinPosition()),
+                                     fMatrix->GetYaxis()->FindBin(fBGSlider->GetMaxPosition()));
+   } else {
+      fBGHist = fMatrix->ProjectionY(bg_name, fMatrix->GetXaxis()->FindBin(fBGSlider->GetMinPosition()),
+                                     fMatrix->GetXaxis()->FindBin(fBGSlider->GetMaxPosition()));
+   }
 
    fBGHist->Sumw2();
-   TH1*     bg_hist = nullptr;
-	Double_t under_peak_bg = 0.0;
-	if(fBGCheckButton && fBGCheckButton->IsDown()){
-		bg_hist = fProjection->ShowBackground(fBGParamEntry->GetNumberEntry()->GetIntNumber());
-		under_peak_bg = bg_hist->Integral(bg_hist->FindBin(fGateSlider->GetMinPosition()),
-                                              bg_hist->FindBin(fGateSlider->GetMaxPosition()));
+   TH1*     bg_hist       = nullptr;
+   Double_t under_peak_bg = 0.0;
+   if(fBGCheckButton && fBGCheckButton->IsDown()) {
+      bg_hist       = fProjection->ShowBackground(fBGParamEntry->GetNumberEntry()->GetIntNumber());
+      under_peak_bg = bg_hist->Integral(bg_hist->FindBin(fGateSlider->GetMinPosition()),
+                                        bg_hist->FindBin(fGateSlider->GetMaxPosition()));
    }
 
    Double_t bg_region = fProjection->Integral(fProjection->FindBin(fBGSlider->GetMinPosition()),
                                               fProjection->FindBin(fBGSlider->GetMaxPosition()));
    Double_t ratio = 0;
 
-	if(bg_region != 0)
-		ratio = under_peak_bg / bg_region;
+   if(bg_region != 0) {
+      ratio = under_peak_bg / bg_region;
+   }
 
    Int_t first_bin = -1, last_bin = -1;
    if(fSubtractedHist) {
@@ -502,9 +525,9 @@ void TBGSubtraction::DoProjection()
    }
    const char* sub_name = Form("%s_%s", fGateHist->GetName(), fBGHist->GetName());
    fSubtractedHist      = dynamic_cast<TH1*>(fGateHist->Clone(sub_name));
-	if(fBGCheckButton && fBGCheckButton->IsDown()){
-   	fSubtractedHist->Add(fBGHist, -ratio);
-	}
+   if(fBGCheckButton && fBGCheckButton->IsDown()) {
+      fSubtractedHist->Add(fBGHist, -ratio);
+   }
    fGateCanvas->GetCanvas()->cd();
    if(fSubtractedHist) {
       fSubtractedHist->GetXaxis()->SetRange(first_bin, last_bin);
@@ -529,26 +552,30 @@ void TBGSubtraction::WriteHistograms()
    const char* file_name = fWrite2FileName->GetText();
 
    if(file_name == nullptr) {
-      std::cout << "Please enter a file name" << std::endl;
+      std::cout<<"Please enter a file name"<<std::endl;
       return;
    }
 
    TFile f(file_name, "Update");
-   std::cout << "Writing " << fHistogramDescription->GetText() << " histograms to " << f.GetName() << std::endl;
+   std::cout<<"Writing "<<fHistogramDescription->GetText()<<" histograms to "<<f.GetName()<<std::endl;
    if(fSubtractedHist) {
-      if(fHistogramDescription->GetText() != nullptr) fSubtractedHist->SetTitle(fHistogramDescription->GetText());
+      if(fHistogramDescription->GetText() != nullptr) {
+         fSubtractedHist->SetTitle(fHistogramDescription->GetText());
+      }
       fSubtractedHist->Write();
    }
 
    if(fBGHist) {
-      if(fHistogramDescription->GetText() != nullptr)
+      if(fHistogramDescription->GetText() != nullptr) {
          fBGHist->SetTitle(Form("%s Background", fHistogramDescription->GetText()));
+      }
 
       fBGHist->Write();
    }
    if(fGateHist) {
-      if(fHistogramDescription->GetText() != nullptr)
+      if(fHistogramDescription->GetText() != nullptr) {
          fGateHist->SetTitle(Form("%s Gate only", fHistogramDescription->GetText()));
+      }
 
       fGateHist->Write();
    }

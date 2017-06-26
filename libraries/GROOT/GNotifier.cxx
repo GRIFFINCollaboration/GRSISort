@@ -10,7 +10,9 @@ GNotifier* GNotifier::fGNotifier = nullptr;
 
 GNotifier* GNotifier::Get()
 {
-   if(!fGNotifier) fGNotifier = new GNotifier;
+   if(!fGNotifier) {
+      fGNotifier = new GNotifier;
+   }
    return fGNotifier;
 }
 
@@ -18,8 +20,7 @@ GNotifier::GNotifier()
 {
 }
 
-GNotifier::~GNotifier()
-= default;
+GNotifier::~GNotifier() = default;
 
 bool GNotifier::Notify()
 {

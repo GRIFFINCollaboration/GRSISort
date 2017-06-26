@@ -73,7 +73,7 @@ public:
       iterator& operator++()
       {
          fCurr = fMat->GetNext(fCurr);
-         if (fCurr == fFirst) {
+         if(fCurr == fFirst) {
             fCurr = nullptr;
          }
          return *this;

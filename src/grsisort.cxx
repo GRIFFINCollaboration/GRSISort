@@ -180,8 +180,12 @@ static void SetDisplay()  {
 						fprintf(stderr, "*** DISPLAY not set, setting it to %s:0.0\n",
 								he->h_name);
 						putenv(display);
+					} else {
+						delete [] display; // if display is not used, we can delete it
 					}
 #endif
+				} else {
+					delete [] display; // if display is not used, we can delete it
 				}
 				delete [] host;
 				// display cannot be deleted otherwise the env var is deleted too

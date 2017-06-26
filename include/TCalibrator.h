@@ -29,7 +29,8 @@ public:
    TGraphErrors& MakeEffGraph(double secondsi = 3600., double bq = 100000., Option_t* opt = "draw");
    std::vector<double> Calibrate(double min_figure_of_merit = 0.001);
 
-   int AddData(TH1* source_data, std::string source, double sigma = 2.0, double threshold = 0.05, double error = 0.001);
+   int AddData(TH1* source_data, const std::string& source, double sigma = 2.0, double threshold = 0.05,
+               double error = 0.001);
 
    int AddData(TH1* source_data, TNucleus* source, double sigma = 2.0, double threshold = 0.05, double error = 0.001);
 

@@ -192,7 +192,7 @@ protected:
    Short_t              fKValue{};    ///< integration value.
    Int_t                fCfd{};       ///< CFD time of the Hit
    Long64_t             fTimeStamp{}; ///< Timestamp given to hit
-   std::vector<Short_t> fWaveform;  ///<
+   std::vector<Short_t> fWaveform;    ///<
 
 private:
    mutable Double_t fTime{}; //!<! Calibrated Time of the hit

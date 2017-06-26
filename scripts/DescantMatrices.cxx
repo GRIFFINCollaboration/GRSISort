@@ -359,10 +359,12 @@ TList *DescantMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEn
          //We want to put every gamma ray in this event into the singles
          gammaSingles->Fill(grif->GetGriffinHit(one)->GetEnergy());
          if(ppg){
-				if(grif->GetGriffinHit(one)->PUHit() == 1) 
+				if(grif->GetGriffinHit(one)->PUHit() == 1) { 
 					gPUCyc->Fill(ppg->GetTimeInCycle((grif->GetHit(one)->GetTime())/1e5));
-				if(grif->GetGriffinHit(one)->NPileUps() < 2)
+}
+				if(grif->GetGriffinHit(one)->NPileUps() < 2) {
 					gNPTotalCyc->Fill(ppg->GetTimeInCycle((grif->GetHit(one)->GetTime())/1e5));
+}
 				
 				gPUTotalCyc->Fill(ppg->GetTimeInCycle((grif->GetHit(one)->GetTime())/1e5));
 			}
@@ -417,7 +419,8 @@ TList *DescantMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEn
          //We do an outside loop on gammas so that we can break on the betas if we see a beta in coincidence (we don't want to bin twice just because we have two betas)
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
             bSingles_hp->Fill(scep->GetHit(b)->GetEnergy(), scep->GetHit(b)->GetDetector());
-            if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
+            if(scep->GetHit(b)->GetEnergy() < betaThres) { continue;
+}
             btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
             if(ppg && !plotted_flag){//Fill on first hit only.
                betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTime()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTime()))); 
@@ -425,14 +428,16 @@ TList *DescantMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEn
                plotted_flag = true;
             }
             for(int b2 = 0; b2 < scep->GetMultiplicity(); ++b2) {
-               if(b == b2) continue;
+               if(b == b2) { continue;
+}
                bbTimeDiff->Fill(scep->GetHit(b)->GetTime()-scep->GetHit(b2)->GetTime(), scep->GetHit(b)->GetEnergy());
             }
          }
          for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
             bool bfound = false;
             for(int b = 0; b < scep->GetMultiplicity(); ++b) {
-               if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
+               if(scep->GetHit(b)->GetEnergy() < betaThres) { continue;
+}
                //Be careful about time ordering!!!! betas and gammas are not symmetric out of the DAQ
                //Fill the time diffrence spectra
                gbTimeDiff->Fill(grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime());
@@ -564,7 +569,8 @@ TList *DescantMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEn
 				for(one = 0; one < (int) grif->GetAddbackMultiplicity(); ++one) {
 					bool found = false;
 					for(int b = 0; b < scep->GetMultiplicity(); ++b) {
-						if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
+						if(scep->GetHit(b)->GetEnergy() < betaThres) { continue;
+}
 						//Be careful about time ordering!!!! betas and gammas are not symmetric out of the DAQ
 						//Fill the time diffrence spectra
 						abTimeDiff->Fill(grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime());
@@ -589,8 +595,9 @@ TList *DescantMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEn
 							gammaAddbackBm->Fill(grif->GetAddbackHit(one)->GetEnergy());
 							if(!found) {
 								gammaAddbackB->Fill(grif->GetAddbackHit(one)->GetEnergy());
-								if(ppg)
+								if(ppg) {
 									gammaAddbackBCyc->Fill(ppg->GetTimeInCycle((ULong64_t)(grif->GetAddbackHit(one)->GetTime()))/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
+}
 							}
 							gammaAddbackB_hp->Fill(grif->GetAddbackHit(one)->GetEnergy(),scep->GetSceptarHit(b)->GetDetector());
 							//Now we want to loop over gamma rays if they are in coincidence.

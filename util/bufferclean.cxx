@@ -10,10 +10,11 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <utility>
 
 UInt_t chanId_threshold = 100;
 
-Bool_t CheckEvent(std::shared_ptr<TMidasEvent> evt){
+Bool_t CheckEvent(const std::shared_ptr<TMidasEvent>& evt){
    //This function does not work if a Midas event contains multiple fragments
    static std::map<Int_t, Bool_t> triggermap; //Map of Digitizer vs have we had a triggerId < threshold yet?
    //First parse the  Midas Event.
@@ -101,8 +102,9 @@ Bool_t CheckEvent(std::shared_ptr<TMidasEvent> evt){
       triggermap.find(chanadd)->second = true;
       return true;
    }
-   else 
+   else { 
       return false;
+}
 }
 
 
@@ -112,7 +114,7 @@ Bool_t CheckEvent(std::shared_ptr<TMidasEvent> evt){
 */
 
 void Write(std::shared_ptr<TMidasEvent> evt, TMidasFile *outfile){
-   outfile->FillBuffer(evt);
+   outfile->FillBuffer(std::move(evt));
 
   // if(outfile->GetBufferSize() > 100000){
   //    outfile->WriteBuffer();
@@ -163,8 +165,9 @@ int main(int argc, char **argv) {
       bytes = file->Read(event);
       if(bytes == 0){
          printf(DMAGENTA "\tfile: %s ended on %s" RESET_COLOR "\n",file->GetFilename(),file->GetLastError());
-      if(file->GetLastErrno()==-1)  //try to read some more...
+      if(file->GetLastErrno()==-1) {  //try to read some more...
          continue;
+}
       break;
       }
       bytesread += bytes;

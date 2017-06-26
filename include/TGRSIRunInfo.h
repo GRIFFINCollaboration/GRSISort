@@ -77,10 +77,11 @@ public:
    static void        ClearGRSIVersion() { fGRSIVersion.clear(); }
    static void SetGRSIVersion(const char* ver)
    {
-      if (fGRSIVersion.length() != 0)
+      if(fGRSIVersion.length() != 0) {
          printf(ALERTTEXT "WARNING; VERSION ALREADY SET TO %s!!" RESET_COLOR "\n", fGRSIVersion.c_str());
-      else
+      } else {
          fGRSIVersion.assign(ver);
+      }
    }
 
    static void SetRunInfo(int runnum = 0, int subrunnum = -1);
@@ -266,7 +267,7 @@ public:
    void Clear(Option_t* opt = "") override;
 
    static bool WriteToRoot(TFile* fileptr = nullptr);
-   static bool WriteInfoFile(std::string filename);
+   static bool WriteInfoFile(const std::string& filename);
    std::string PrintToString(Option_t* opt = "");
 
    /// \cond CLASSIMP

@@ -109,7 +109,6 @@ private:
       long double chisq_f;
       int         ndf_ex;
       int         ndf_f;
-
    };
 
 public:
@@ -172,7 +171,7 @@ private:
    std::string fName;
 
    // pulse fitting parameters
-   int FILTER{};     // integration region for noise reduction (in samples)
+   int    FILTER{};  // integration region for noise reduction (in samples)
    int    T0RANGE{}; // tick range over which baseline is calulated
    double LARGECHISQ{};
 

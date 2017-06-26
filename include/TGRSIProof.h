@@ -61,7 +61,7 @@ public:
 
       // First set the include path on each slave
       Exec(Form(R"(gInterpreter->AddIncludePath("%s/include"))", pPath));
-      std::cout << "Loading Libraries" << std::endl;
+      std::cout<<"Loading Libraries"<<std::endl;
       Exec(Form(R"(gSystem->Load("%s/lib/libGRSI.so");)", pPath));
    }
 

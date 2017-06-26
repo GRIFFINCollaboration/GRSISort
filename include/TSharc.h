@@ -48,12 +48,14 @@ public:
 
    TSharc& operator=(const TSharc& rhs)
    {
-      if (this != &rhs) rhs.Copy(*this);
+      if(this != &rhs) {
+         rhs.Copy(*this);
+      }
       return *this;
    } //!<!
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
    void BuildHits() override;
 

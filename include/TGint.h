@@ -14,8 +14,8 @@ private:
 
 public:
    static TGint* fTGint;
-   static TGint* instance(int argc = 0, char** argv = nullptr, void* options = nullptr, int numOptions = 0, bool noLogo = false,
-                          const char* appClassName = "grsisort");
+   static TGint* instance(int argc = 0, char** argv = nullptr, void* options = nullptr, int numOptions = 0,
+                          bool noLogo = false, const char* appClassName = "grsisort");
 
    ~TGint() override;
 

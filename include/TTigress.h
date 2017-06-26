@@ -5,6 +5,7 @@
  *  @{
  */
 
+#include <utility>
 #include <vector>
 #include <iostream>
 #include <set>
@@ -76,14 +77,16 @@ public:
    UShort_t GetNAddbackFrags(size_t idx) const;
 
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
    void BuildHits() override;
 
    void ClearTransients() override
    {
       fTigressBits = 0;
-      for (auto hit : fTigressHits) hit.ClearTransients();
+      for(const auto& hit : fTigressHits) {
+         hit.ClearTransients();
+      }
    }
 
    TTigress& operator=(const TTigress&); //!<!
@@ -91,13 +94,13 @@ public:
 #if !defined(__CINT__) && !defined(__CLING__)
    void SetAddbackCriterion(std::function<bool(TTigressHit&, TTigressHit&)> criterion)
    {
-      fAddbackCriterion = criterion;
+      fAddbackCriterion = std::move(criterion);
    }
 
    std::function<bool(TTigressHit&, TTigressHit&)> GetAddbackCriterion() const { return fAddbackCriterion; }
    void SetSuppressionCriterion(std::function<bool(TTigressHit&, TBgoHit&)> criterion)
    {
-      fSuppressionCriterion = criterion;
+      fSuppressionCriterion = std::move(criterion);
    }
    std::function<bool(TTigressHit&, TBgoHit&)> GetSuppressionCriterion() const { return fSuppressionCriterion; }
 #endif
@@ -172,7 +175,9 @@ public:
 
    static double GetFaceDistance()
    {
-      if (GetArrayBackPos()) return 145;
+      if(GetArrayBackPos()) {
+         return 145;
+      }
       return 110;
    }
 

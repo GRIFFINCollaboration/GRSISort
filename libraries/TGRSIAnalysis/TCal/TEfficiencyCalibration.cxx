@@ -13,8 +13,12 @@ ClassImp(TEfficiencyCalibration)
    : TNamed(), fRelativeEffGraph(nullptr), fAbsEffGraph(nullptr), fFitting(false), fRelativeFit(nullptr),
      fAbsoluteFunc(nullptr)
 {
-   if(!fRelativeEffGraph) fRelativeEffGraph = new TMultiGraph;
-   if(!fAbsEffGraph) fAbsEffGraph           = new TMultiGraph;
+   if(!fRelativeEffGraph) {
+      fRelativeEffGraph = new TMultiGraph;
+   }
+   if(!fAbsEffGraph) {
+      fAbsEffGraph = new TMultiGraph;
+   }
    Clear();
 }
 
@@ -22,16 +26,28 @@ TEfficiencyCalibration::TEfficiencyCalibration(const char* name, const char* tit
    : TNamed(name, title), fRelativeEffGraph(nullptr), fAbsEffGraph(nullptr), fFitting(false), fRelativeFit(nullptr),
      fAbsoluteFunc(nullptr)
 {
-   if(!fRelativeEffGraph) fRelativeEffGraph = new TMultiGraph;
-   if(!fAbsEffGraph) fAbsEffGraph           = new TMultiGraph;
+   if(!fRelativeEffGraph) {
+      fRelativeEffGraph = new TMultiGraph;
+   }
+   if(!fAbsEffGraph) {
+      fAbsEffGraph = new TMultiGraph;
+   }
 }
 
 TEfficiencyCalibration::~TEfficiencyCalibration()
 {
-   if(fRelativeEffGraph) delete fRelativeEffGraph;
-   if(fAbsEffGraph) delete fAbsEffGraph;
-   if(fRelativeFit) delete fRelativeFit;
-   if(fAbsoluteFunc) delete fAbsoluteFunc;
+   if(fRelativeEffGraph) {
+      delete fRelativeEffGraph;
+   }
+   if(fAbsEffGraph) {
+      delete fAbsEffGraph;
+   }
+   if(fRelativeFit) {
+      delete fRelativeFit;
+   }
+   if(fAbsoluteFunc) {
+      delete fAbsoluteFunc;
+   }
 
    fRelativeEffGraph = nullptr;
    fAbsEffGraph      = nullptr;
@@ -57,18 +73,20 @@ void TEfficiencyCalibration::Copy(TObject& copy) const
 
 void TEfficiencyCalibration::Print(Option_t*) const
 {
-   std::cout << "Graphs included: " << std::endl;
+   std::cout<<"Graphs included: "<<std::endl;
    for(auto it : fGraphMap) {
-      std::cout << "Name: " << it.first << " N of points: " << it.second.GetN();
-      if(it.second.IsAbsolute()) std::cout << "  Absolute calibration ";
-      std::cout << std::endl;
+      std::cout<<"Name: "<<it.first<<" N of points: "<<it.second.GetN();
+      if(it.second.IsAbsolute()) {
+         std::cout<<"  Absolute calibration ";
+      }
+      std::cout<<std::endl;
    }
    if(fRelativeFit) {
-      std::cout << "Relative Fit: " << std::endl;
+      std::cout<<"Relative Fit: "<<std::endl;
       fRelativeFit->Print();
    }
    if(fAbsoluteFunc) {
-      std::cout << "Absolute Fit: " << std::endl;
+      std::cout<<"Absolute Fit: "<<std::endl;
       fAbsoluteFunc->Print();
    }
 }
@@ -76,7 +94,9 @@ void TEfficiencyCalibration::Print(Option_t*) const
 void TEfficiencyCalibration::Clear(Option_t*)
 {
    fGraphMap.clear();
-   if(fRelativeFit) fRelativeFit->Clear();
+   if(fRelativeFit) {
+      fRelativeFit->Clear();
+   }
    fFitting = false;
 }
 
@@ -84,8 +104,8 @@ void TEfficiencyCalibration::AddEfficiencyGraph(const TEfficiencyGraph& graph, c
 {
    auto it = fGraphMap.insert(std::make_pair(name, graph));
    if(!it.second) {
-      std::cout << "There is already a graph with the name " << name << " in this calibration, overwriting."
-                << std::endl;
+      std::cout<<"There is already a graph with the name "<<name<<" in this calibration, overwriting."
+               <<std::endl;
       it.first->second = graph;
    }
    if(graph.IsAbsolute()) {
@@ -119,13 +139,17 @@ void TEfficiencyCalibration::Draw(Option_t* opt)
 void TEfficiencyCalibration::DrawRelative(Option_t* opt)
 {
    fRelativeEffGraph->Draw(opt);
-   if(fRelativeFit) fRelativeFit->Draw("same");
+   if(fRelativeFit) {
+      fRelativeFit->Draw("same");
+   }
 }
 
 void TEfficiencyCalibration::DrawAbsolute(Option_t* opt)
 {
    fAbsEffGraph->Draw(opt);
-   if(fAbsoluteFunc) fAbsoluteFunc->Draw("same");
+   if(fAbsoluteFunc) {
+      fAbsoluteFunc->Draw("same");
+   }
 }
 
 void TEfficiencyCalibration::ScaleGuess()
@@ -154,8 +178,8 @@ void TEfficiencyCalibration::ScaleGuess()
          }
       }
       // We have now found the two closest points, scale them
-      std::cout << "Scaling " << graph_idx << " graph by "
-                << fixed_graph->GetY()[closest_fixed_idx] / loop_graph->GetY()[closest_loop_idx] << std::endl;
+      std::cout<<"Scaling "<<graph_idx<<" graph by "
+               <<fixed_graph->GetY()[closest_fixed_idx] / loop_graph->GetY()[closest_loop_idx]<<std::endl;
       loop_graph->Scale((fixed_graph->GetY()[closest_fixed_idx]) / (loop_graph->GetY()[closest_loop_idx]));
    }
 }
@@ -164,13 +188,15 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
 {
    // This fits the relative efficiency curve
    UInt_t n_rel_graphs = fRelativeEffGraph->GetListOfGraphs()->GetSize();
-   if(fRelativeFit) delete fRelativeFit;
+   if(fRelativeFit) {
+      delete fRelativeFit;
+   }
    fRelativeFit = new TF1("fRelativeFit", this, &TEfficiencyCalibration::PhotoPeakEfficiency, 0, 8000, 8 + n_rel_graphs,
                           "TEfficiencyCalibration", "PhotoPeakEfficiency");
 
    // Start by naming the parameters of the fit
    int mapIdx = 0;
-   for(auto it : fGraphMap) {
+   for(const auto& it : fGraphMap) {
       fRelativeFit->SetParName(mapIdx, Form("Scale_%d", mapIdx));
       if(mapIdx == 0) {
          fRelativeFit->FixParameter(mapIdx++, 1.0);
@@ -303,9 +329,10 @@ Double_t TEfficiencyCalibration::AbsoluteEfficiency(Double_t* x, Double_t* par)
 bool TEfficiencyCalibration::ScaleToAbsolute()
 {
    if(fAbsEffGraph->GetListOfGraphs()->GetSize() && fRelativeFit) {
-      if(!fAbsoluteFunc)
+      if(!fAbsoluteFunc) {
          fAbsoluteFunc = new TF1("fAbsoluteFunc", this, &TEfficiencyCalibration::AbsoluteEfficiency, 0, 8000, 9,
                                  "TEfficiencyCalibration", "AbsoluteEfficiency");
+      }
       fAbsoluteFunc->SetParName(0, "Scale");
       for(int i = 0; i < 8; ++i) {
          fAbsoluteFunc->SetParName(i + 1, Form("a%d", i));
@@ -352,7 +379,9 @@ bool TEfficiencyCalibration::ScaleToAbsolute()
 
 Double_t TEfficiencyCalibration::GetEfficiency(const Double_t& eng)
 {
-   if(fAbsoluteFunc) return fAbsoluteFunc->Eval(eng);
+   if(fAbsoluteFunc) {
+      return fAbsoluteFunc->Eval(eng);
+   }
 
    return -1000.0;
 }

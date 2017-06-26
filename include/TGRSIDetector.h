@@ -37,7 +37,10 @@ public:
 public:
 // virtual TGRSIDetectorHit* GetHit(const Int_t idx = 0) { AbstractMethod("GetHit()"); return 0;}
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment>, TChannel*) override { AbstractMethod("AddFragment()"); } //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override
+   {
+      AbstractMethod("AddFragment()");
+   } //!<!
 #endif
    void BuildHits() override {}
 

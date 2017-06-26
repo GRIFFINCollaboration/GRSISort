@@ -5,6 +5,7 @@
  *  @{
  */
 
+#include <utility>
 #include <vector>
 #include <cstdio>
 #include <functional>
@@ -23,14 +24,14 @@
 class TGriffin : public TGRSIDetector {
 public:
    enum EGriffinBits {
-      kIsLowGainAddbackSet    = 1 << 0,
-      kIsHighGainAddbackSet   = 1 << 1,
-      kIsLowGainCrossTalkSet  = 1 << 2,
-      kIsHighGainCrossTalkSet = 1 << 3,
-      kBit4                   = 1 << 4,
-      kBit5                   = 1 << 5,
-      kBit6                   = 1 << 6,
-      kBit7                   = 1 << 7
+      kIsLowGainAddbackSet    = 1<<0,
+      kIsHighGainAddbackSet   = 1<<1,
+      kIsLowGainCrossTalkSet  = 1<<2,
+      kIsHighGainCrossTalkSet = 1<<3,
+      kBit4                   = 1<<4,
+      kBit5                   = 1<<5,
+      kBit6                   = 1<<6,
+      kBit7                   = 1<<7
    };
    enum EGainBits { kLowGain, kHighGain };
 
@@ -50,13 +51,17 @@ public:
    static TVector3 GetPosition(int DetNbr, int CryNbr = 5, double distance = 110.0); //!<!
    static const char* GetColorFromNumber(Int_t number);
 #ifndef __CINT__
-   void AddFragment(std::shared_ptr<const TFragment> frag, TChannel* chan) override; //!<!
+   void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*) override; //!<!
 #endif
    void ClearTransients() override
    {
       fGriffinBits = 0;
-      for (auto hit : fGriffinLowGainHits) hit.ClearTransients();
-      for (auto hit : fGriffinHighGainHits) hit.ClearTransients();
+      for(const auto& hit : fGriffinLowGainHits) {
+         hit.ClearTransients();
+      }
+      for(const auto& hit : fGriffinHighGainHits) {
+         hit.ClearTransients();
+      }
    }
    void ResetFlags() const;
 
@@ -65,7 +70,7 @@ public:
 #if !defined(__CINT__) && !defined(__CLING__)
    void SetAddbackCriterion(std::function<bool(TGriffinHit&, TGriffinHit&)> criterion)
    {
-      fAddbackCriterion = criterion;
+      fAddbackCriterion = std::move(criterion);
    }
    std::function<bool(TGriffinHit&, TGriffinHit&)> GetAddbackCriterion() const { return fAddbackCriterion; }
 #endif
@@ -96,8 +101,8 @@ private:
    static bool fSetCoreWave; //!<!  Flag for Waveforms ON/OFF
    // static bool fSetBGOWave;                //!<!  Flag for BGO Waveforms ON/OFF
 
-   long                            fCycleStart{};  //!<!  The start of the cycle
-   mutable TTransientBits<UChar_t> fGriffinBits; // Transient member flags
+   long                            fCycleStart{}; //!<!  The start of the cycle
+   mutable TTransientBits<UChar_t> fGriffinBits;  // Transient member flags
 
    mutable std::vector<TGriffinHit> fAddbackLowGainHits;  //!<! Used to create addback hits on the fly
    mutable std::vector<TGriffinHit> fAddbackHighGainHits; //!<! Used to create addback hits on the fly

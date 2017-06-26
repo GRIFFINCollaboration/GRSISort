@@ -53,8 +53,9 @@ class TEventTime {
             };
          }
          timemidas = (unsigned int)(event->GetTimeStamp());
-         if(timemidas < low_timemidas)
+         if(timemidas < low_timemidas) {
             low_timemidas = timemidas;
+}
          
          SetDigitizer();
   
@@ -208,20 +209,23 @@ void CheckHighTimeStamp(std::vector<TEventTime*> *eventQ, int64_t *correction){
       //This makes the plot, might not be required
       int hightime = (*it)->TimeStampHigh();
       unsigned long midtime = (*it)->MidasTime() - lowmidtime;
-      if(midtime>20) break;//20 seconds seems like plenty enough time
+      if(midtime>20) { break;//20 seconds seems like plenty enough time
+}
     
       if((*it)->DetectorType() == 1){
          (dynamic_cast<TH2D*>(midvshigh->At((*it)->DigIndex())))->Fill(midtime, hightime);
-         if(hightime < lowest_hightime[(*it)->DigIndex()])
+         if(hightime < lowest_hightime[(*it)->DigIndex()]) {
             lowest_hightime[TEventTime::digmap.at((*it)->DigIndex())] = hightime;
+}
       }
      }
 
    //find lowest digitizer
    int lowest_dig = 0;
    for(mapit = TEventTime::digmap.begin(); mapit != TEventTime::digmap.end(); mapit++){
-      if(lowest_hightime[mapit->second] < lowest_hightime[lowest_dig])
+      if(lowest_hightime[mapit->second] < lowest_hightime[lowest_dig]) {
          lowest_dig = mapit->second;
+}
    }
 
    midvshigh->Print();  
@@ -266,12 +270,14 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    const int range = 1000;
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
-      if(event1count%250000 == 0)
-         printf("Processing Event %d /%lu      \r",event1count,eventQ->size()); fflush(stdout);
+      if(event1count%250000 == 0) {
+         printf("Processing Event %d /%lu      \r",event1count,eventQ->size()); 
+}fflush(stdout);
          event1count++;
 
-      if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) 
+      if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) { 
          continue;
+}
 
       int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];
   
@@ -285,7 +291,8 @@ void GetRoughTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       int event2count = 0;
       while(hit2 != eventQ->end() && event2count < range*2){
          event2count++;
-         if(hit1 == hit2) continue;
+         if(hit1 == hit2) { continue;
+}
          int digitizer = (*hit2)->Digitizer();
          if(keep_filling[digitizer]){
             fillhist = dynamic_cast<TH1C*>(roughlist->At((*hit2)->DigIndex())); //This is where that pointer comes in handy
@@ -348,15 +355,18 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
    const int range = 1250;
    for(hit1 = eventQ->begin(); hit1 != eventQ->end(); hit1++) { //This steps hit1 through the eventQ
       //We want to have the first hit be in the "good digitizer"
-      if(event1count%75000 == 0)
-         printf("Processing Event %d / %lu       \r",event1count,eventQ->size()); fflush(stdout);
+      if(event1count%75000 == 0) {
+         printf("Processing Event %d / %lu       \r",event1count,eventQ->size()); 
+}fflush(stdout);
       
       event1count++;
       //We need to make sure that that if we have a digitizer of 0, we have a detector type of 1
-      if( (*hit1)->Digitizer() == 0 && (*hit1)->DetectorType()!=1) continue; 
+      if( (*hit1)->Digitizer() == 0 && (*hit1)->DetectorType()!=1) { continue; 
+}
          
-      if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) 
+      if((*hit1)->Digitizer() != TEventTime::GetBestDigitizer()) { 
          continue;
+}
 
       int64_t time1 = (*hit1)->GetTimeStamp() - correction[(*hit1)->DigIndex()];;
   
@@ -371,7 +381,8 @@ void GetTimeDiff(std::vector<TEventTime*> *eventQ, int64_t *correction){
       while(hit2 != eventQ->end() && event2count < range*2){
          event2count++;
          //We need to make sure that that if we have a digitizer of 0, we have a detector type of 1
-         if( (*hit2)->Digitizer() == 0 && (*hit2)->DetectorType()!=1) continue; 
+         if( (*hit2)->Digitizer() == 0 && (*hit2)->DetectorType()!=1) { continue; 
+}
  
          if(hit1 != hit2 ){
             //int digitizer = (*hit2)->Digitizer();

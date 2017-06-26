@@ -32,8 +32,9 @@ TH2F *timehist2      = new TH2F("eng_teng","eng_time",4000,0,4000,120,-20,100);
 
 
 void ProcessEvent(std::vector<TFragment> *event) {
-  if(event->size()<2)
+  if(event->size()<2) {
      return;
+}
   
   for(size_t x=0;x<event->size();x++) {
     for(size_t y=x+1;y<event->size();y++) {
@@ -80,8 +81,9 @@ void InitChannels() {
    //grsisort attempts to read the calibration from the fragment tree
    //if it exists.
    
-   if(!fCurrentFragTree)
+   if(!fCurrentFragTree) {
       return;
+}
 
    //Delete channels from memory incase there is something in there still
    TChannel::DeleteAllChannels(); 
@@ -144,7 +146,8 @@ void SetupFragmentTree() {
 
 
 int main(int argc, char **argv) {
-	if(argc <= 1) return 1;
+	if(argc <= 1) { return 1;
+}
    TFile file(argv[1]);
    fCurrentFragTree = dynamic_cast<TTree*>(file.Get("FragmentTree"));
  

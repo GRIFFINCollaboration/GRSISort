@@ -37,19 +37,24 @@ public:
    ~TDetector() override;
    TDetector& operator=(const TDetector& other)
    {
-      if (this != &other) other.Copy(*this);
+      if(this != &other) {
+         other.Copy(*this);
+      }
       return *this;
    }
 
 public:
    virtual void BuildHits() { AbstractMethod("BuildHits()"); } //!<!
 #ifndef __CINT__
-   virtual void AddFragment(std::shared_ptr<const TFragment>, TChannel*) { AbstractMethod("AddFragment()"); } //!<!
+   virtual void AddFragment(const std::shared_ptr<const TFragment>&, TChannel*)
+   {
+      AbstractMethod("AddFragment()");
+   } //!<!
 #endif
 
    void Copy(TObject&) const override;            //!<!
    void Clear(Option_t* opt = "") override;       //!<!
-   virtual void ClearTransients() {}             //!<!
+   virtual void ClearTransients() {}              //!<!
    void Print(Option_t* opt = "") const override; //!<!
 
    /// \cond CLASSIMP

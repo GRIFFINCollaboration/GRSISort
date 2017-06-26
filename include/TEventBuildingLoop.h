@@ -63,9 +63,9 @@ private:
    TEventBuildingLoop& operator=(const TEventBuildingLoop& other);
 
 #ifndef __CINT__
-   bool CheckBuildCondition(std::shared_ptr<const TFragment>);
-   bool CheckTimestampCondition(std::shared_ptr<const TFragment>);
-   bool CheckTriggerIdCondition(std::shared_ptr<const TFragment>);
+   bool CheckBuildCondition(const std::shared_ptr<const TFragment>&);
+   bool CheckTimestampCondition(const std::shared_ptr<const TFragment>&);
+   bool CheckTriggerIdCondition(const std::shared_ptr<const TFragment>&);
 
    std::shared_ptr<ThreadsafeQueue<std::shared_ptr<const TFragment>>>              fInputQueue;
    std::shared_ptr<ThreadsafeQueue<std::vector<std::shared_ptr<const TFragment>>>> fOutputQueue;

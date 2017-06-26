@@ -25,11 +25,11 @@ public:
    // houskeeping functions
    TRawEvent() {}                                                   ///< default constructor
    TRawEvent(const TRawEvent& rhs) : TObject(rhs) {}                ///< copy constructor
-   ~TRawEvent() override = default;                                          ///< destructor
+   ~TRawEvent() override      = default;                            ///< destructor
    virtual TRawEvent& operator=(const TRawEvent&) { return *this; } ///< assignement operator
-   void Clear(Option_t* = "") override {}                            ///< clear event for reuse
-   void Copy(TObject&) const override {}                             ///< copy helper
-   void Print(const char* = "") const override {}                    ///< show all event information
+   void               Clear(Option_t* = "") override {}             ///< clear event for reuse
+   void               Copy(TObject&) const override {}              ///< copy helper
+   void               Print(const char* = "") const override {}     ///< show all event information
 
    // get event information
 
@@ -39,13 +39,16 @@ public:
 
    virtual char* GetData() { return nullptr; } ///< return pointer to the data buffer
 
-   virtual int SwapBytes(bool) { return 0; } ///< convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC)
+   virtual int SwapBytes(bool)
+   {
+      return 0;
+   } ///< convert event data between little-endian (Linux-x86) and big endian (MacOS-PPC)
    virtual int Process(TDataParser& parser) = 0;
 
-	virtual int GoodFrags() { return fGoodFrags; } ///< returns number of good fragments parsed
-	
+   virtual int GoodFrags() { return fGoodFrags; } ///< returns number of good fragments parsed
+
 protected:
-	int                 fGoodFrags{};     ///< number of good fragments parsed
+   int fGoodFrags{}; ///< number of good fragments parsed
    /// \cond CLASSIMP
    ClassDefOverride(TRawEvent, 0) // All of the data contained in a Midas Event
    /// \endcond

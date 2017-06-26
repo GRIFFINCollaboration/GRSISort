@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "TCFDCal.h"
 
 /// \cond CLASSIMP
@@ -31,7 +33,7 @@ void TCFDCal::AddParameter(Double_t param)
 
 void TCFDCal::SetParameters(std::vector<Double_t> paramvec)
 {
-   fParameters = paramvec;
+   fParameters = std::move(paramvec);
 }
 
 void TCFDCal::SetParameter(Int_t, Double_t)
@@ -49,10 +51,11 @@ void TCFDCal::ReadFromChannel()
 
 void TCFDCal::Print(Option_t*) const
 {
-   if(GetChannel())
+   if(GetChannel()) {
       printf("Channel Number: %u\n", GetChannel()->GetNumber());
-   else
+   } else {
       printf("Channel Number: NOT SET\n");
+   }
 
    for(int i = 0; i < static_cast<int>(fParameters.size()); i++) {
       printf("p%i = %lf \t", i, fParameters[i]);
@@ -61,7 +64,9 @@ void TCFDCal::Print(Option_t*) const
 
 std::vector<Double_t> TCFDCal::GetParameters() const
 {
-   if(fParameters.size() == 0) Error("GetParameters", "No Parameters Set");
+   if(fParameters.size() == 0) {
+      Error("GetParameters", "No Parameters Set");
+   }
 
    return fParameters;
 }

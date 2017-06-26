@@ -78,14 +78,18 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = nullptr) {
 	// initialize acceptedID array
 	//for (int i=0;i<channels;i++) lastAccepted[i] = 0;
 	// initialize rolling array
-	for (bool & i : rolling) i = kFALSE;
+	for (bool & i : rolling) { i = kFALSE;
+}
 	// initialize rollnum array
-	for (int & i : rollnum) i = 0;
+	for (int & i : rollnum) { i = 0;
+}
 	// initialize rollovers array
-	for (int & rollover : rollovers) rollover = 0;
+	for (int & rollover : rollovers) { rollover = 0;
+}
 	// initialize timestamp array
 	for (auto & i : timestamp) {
-		for (long & j : i) j = 0;
+		for (long & j : i) { j = 0;
+}
 	}
 
    for(entry = skip; entry < fEntries; entry++) {
@@ -108,8 +112,10 @@ TList *AnalyzeDataLoss(TTree *tree, long entries = 0, TStopwatch* w = nullptr) {
 		unsigned long netpacket = currentFrag->GetNetworkPacketNumber();
 
 		//---------------- this section deals with the rolling over of the AcceptedChannelId. -------------------//
-		if (!rolling[chan] && accepted > (acceptedMax-rollingthreshold)) ++rollnum[chan];
-		if (rolling[chan] && accepted > rollingthreshold && accepted<(acceptedMax/2)) ++rollnum[chan];
+		if (!rolling[chan] && accepted > (acceptedMax-rollingthreshold)) { ++rollnum[chan];
+}
+		if (rolling[chan] && accepted > rollingthreshold && accepted<(acceptedMax/2)) { ++rollnum[chan];
+}
 		if (!rolling[chan] && rollnum[chan]>rollnum_threshold) {
 			rolling[chan] = kTRUE;
 			rollnum[chan] = 0;
@@ -243,8 +249,8 @@ int main(int argc, char **argv) {
    std::string fileName;
    if(argc == 2) {
       fileName = argv[1];
-      if(fileName.find_last_of("/") != std::string::npos) {
-         fileName.insert(fileName.find_last_of("/")+1,"dataloss_");
+      if(fileName.find_last_of('/') != std::string::npos) {
+         fileName.insert(fileName.find_last_of('/')+1,"dataloss_");
       } else {
          fileName.insert(0,"dataloss_");
       }

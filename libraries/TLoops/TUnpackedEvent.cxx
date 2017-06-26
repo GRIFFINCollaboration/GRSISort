@@ -8,12 +8,11 @@ TUnpackedEvent::TUnpackedEvent()
 {
 }
 
-TUnpackedEvent::~TUnpackedEvent()
-= default;
+TUnpackedEvent::~TUnpackedEvent() = default;
 
 void TUnpackedEvent::Build()
 {
-   for(auto frag : fFragments) {
+   for(const auto& frag : fFragments) {
       TChannel* channel = TChannel::GetChannel(frag->GetAddress());
       if(!channel) {
          continue;
@@ -31,7 +30,7 @@ void TUnpackedEvent::Build()
    ClearRawData();
 }
 
-void TUnpackedEvent::AddRawData(std::shared_ptr<const TFragment> frag)
+void TUnpackedEvent::AddRawData(const std::shared_ptr<const TFragment>& frag)
 {
    fFragments.push_back(frag);
 }
@@ -43,7 +42,7 @@ void TUnpackedEvent::ClearRawData()
 
 void TUnpackedEvent::BuildHits()
 {
-   for(auto det : fDetectors) {
+   for(const auto& det : fDetectors) {
       det->BuildHits();
    }
 }

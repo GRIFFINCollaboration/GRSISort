@@ -25,7 +25,8 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 	std::string outputFileName = "FitMg22.root";
-	if(argc == 3) outputFileName = argv[2];
+	if(argc == 3) { outputFileName = argv[2];
+}
 
 	TList list;
 

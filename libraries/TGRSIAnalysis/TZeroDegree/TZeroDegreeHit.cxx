@@ -23,8 +23,7 @@ ClassImp(TZeroDegreeHit)
    Clear();
 }
 
-TZeroDegreeHit::~TZeroDegreeHit()
-= default;
+TZeroDegreeHit::~TZeroDegreeHit() = default;
 
 TZeroDegreeHit::TZeroDegreeHit(const TFragment& frag) : TGRSIDetectorHit(frag)
 {
@@ -65,7 +64,9 @@ void TZeroDegreeHit::Copy(TObject& rhs) const
 void TZeroDegreeHit::Copy(TObject& obj, bool waveform) const
 {
    Copy(obj);
-   if(waveform) CopyWave(obj);
+   if(waveform) {
+      CopyWave(obj);
+   }
 }
 
 bool TZeroDegreeHit::InFilter(Int_t)

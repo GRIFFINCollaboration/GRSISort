@@ -7,7 +7,7 @@
 /// \cond CLASSIMP
 ClassImp(TScalerData)
 ClassImp(TScaler)
-   /// \endcond
+/// \endcond
 
 TScalerData::TScalerData()
 {
@@ -246,14 +246,14 @@ void TScaler::Clear(Option_t*)
    fTotalTimePeriod = 0;
    fTotalNumberOfTimePeriods.clear();
    fPPG = nullptr;
-   for(auto & addrIt : fHist) {
+   for(auto& addrIt : fHist) {
       if(addrIt.second != nullptr) {
          delete(addrIt.second);
          addrIt.second = nullptr;
       }
    }
    fHist.clear();
-   for(auto & addrIt : fHistRange) {
+   for(auto& addrIt : fHistRange) {
       if(addrIt.second != nullptr) {
          delete(addrIt.second);
          addrIt.second = nullptr;
@@ -317,10 +317,10 @@ TH1D* TScaler::Draw(UInt_t address, size_t index, Option_t* option)
             previousValue = fScalerData->GetScaler(index);
          }
          if(entry % 1000 == 0) {
-            std::cout << std::setw(3) << (100 * entry) / fEntries << " % done\r" << std::flush;
+            std::cout<<std::setw(3)<<(100 * entry) / fEntries<<" % done\r"<<std::flush;
          }
       }
-      std::cout << "100 % done\r" << std::flush;
+      std::cout<<"100 % done\r"<<std::flush;
    }
    // if redraw was part of the original options, remove it from the options passed on
    if(opt_index >= 0) {
@@ -392,10 +392,10 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
                previousValue[fScalerData->GetAddress()] = fScalerData->GetScaler(index);
             }
             if(entry % 1000 == 0) {
-               std::cout << std::setw(3) << (100 * entry) / fEntries << " % done\r" << std::flush;
+               std::cout<<std::setw(3)<<(100 * entry) / fEntries<<" % done\r"<<std::flush;
             }
          }
-         std::cout << "100 % done\r" << std::flush;
+         std::cout<<"100 % done\r"<<std::flush;
       }
       // if "redraw" was part of the original options, remove it from the options passed on
       if(draw_index >= 0) {
@@ -444,10 +444,10 @@ TH1D* TScaler::Draw(UInt_t lowAddress, UInt_t highAddress, size_t index, Option_
             previousValue[fScalerData->GetAddress()] = fScalerData->GetScaler(index);
          }
          if(entry % 1000 == 0) {
-            std::cout << std::setw(3) << (100 * entry) / fEntries << " % done\r" << std::flush;
+            std::cout<<std::setw(3)<<(100 * entry) / fEntries<<" % done\r"<<std::flush;
          }
       }
-      std::cout << "100 % done\r" << std::flush;
+      std::cout<<"100 % done\r"<<std::flush;
       Double_t max = fHist[lowAddress]->GetMaximum();
       for(UInt_t address = lowAddress + 1; address <= highAddress; ++address) {
          if(max < fHist[address]->GetMaximum()) {
@@ -475,7 +475,7 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
    TString opt = option;
    opt.ToLower();
    int nofBins = std::abs((int)(1e8 * (hightime - lowtime) / GetTimePeriod(address)));
-   std::cout << nofBins << "nofbins" << std::endl;
+   std::cout<<nofBins<<"nofbins"<<std::endl;
    // This scHist could be leaky as the outside user has ownership of it.
    auto* scHist = new TH1D(Form("TScalerHistRaw_%04x", address),
                            Form("scaler %d vs time for address 0x%04x; time in [ms]; counts/ ms", (int)index, address),
@@ -494,10 +494,10 @@ TH1D* TScaler::DrawRawTimes(UInt_t address, Double_t lowtime, Double_t hightime,
          previousValue = fScalerData->GetScaler(index);
       }
       if(entry % 1000 == 0) {
-         std::cout << std::setw(3) << (100 * entry) / fEntries << " % done\r" << std::flush;
+         std::cout<<std::setw(3)<<(100 * entry) / fEntries<<" % done\r"<<std::flush;
       }
    }
-   std::cout << "100 % done\r" << std::flush;
+   std::cout<<"100 % done\r"<<std::flush;
 
    scHist->Draw(opt);
 
@@ -539,13 +539,12 @@ ULong64_t TScaler::GetTimePeriod(UInt_t address)
 void TScaler::ListHistograms()
 {
    printf("single address histograms:\n");
-   for(auto & it : fHist) {
+   for(auto& it : fHist) {
       printf("\t0x%04x: %s, %s\n", it.first, it.second->GetName(), it.second->GetTitle());
    }
 
    printf("range histograms:\n");
-   for(auto & it : fHistRange) {
-      printf("\t0x%04x, %d: %s, %s\n", it.first.first, it.first.second, it.second->GetName(),
-             it.second->GetTitle());
+   for(auto& it : fHistRange) {
+      printf("\t0x%04x, %d: %s, %s\n", it.first.first, it.first.second, it.second->GetName(), it.second->GetTitle());
    }
 }

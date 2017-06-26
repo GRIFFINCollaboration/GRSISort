@@ -174,13 +174,15 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
    gammaAddbackBCyc = new TH2F("gammaAddbackBCyc", "Cycle time vs. #beta coinc #gamma energy", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaAddbackBCyc);
    gammaAddbackBmCyc = new TH2F("gammaAddbackBmCyc", "Cycle time vs. #beta coinc #gamma energy (multiple counting of #beta's)", cycleLength/10.,0.,cycleLength, nofBins,low,high); list->Add(gammaAddbackBmCyc);
    list->Sort(); //Sorts the list alphabetically
-   if(ppg)
+   if(ppg) {
       list->Add(ppg);
+}
 
    list->Add(runInfo);
 
-   if(ppg)
+   if(ppg) {
       TGRSIDetectorHit::SetPPGPtr(ppg);
+}
 
    ///////////////////////////////////// PROCESSING /////////////////////////////////////
 
@@ -292,7 +294,8 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
          bool plotted_flag = false;
          //We do an outside loop on gammas so that we can break on the betas if we see a beta in coincidence (we don't want to bin twice just because we have two betas)
          for(int b = 0; b < scep->GetMultiplicity(); ++b) {
-            if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
+            if(scep->GetHit(b)->GetEnergy() < betaThres) { continue;
+}
             btimestamp->Fill(scep->GetHit(b)->GetTime()/1e8);
             if(ppg && !plotted_flag){//Fill on first hit only.
                betaSinglesCyc->Fill(((ULong64_t)(ppg->GetTimeInCycle(scep->GetHit(b)->GetTimeStamp()))/1e5),ppg->GetCycleNumber((ULong64_t)(scep->GetHit(b)->GetTimeStamp()))); 
@@ -300,14 +303,16 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                plotted_flag = true;
             }
             for(int b2 = 0; b2 < scep->GetMultiplicity(); ++b2) {
-               if(b == b2) continue;
+               if(b == b2) { continue;
+}
                bbTimeDiff->Fill(scep->GetHit(b)->GetTime()-scep->GetHit(b2)->GetTime(), scep->GetHit(b)->GetEnergy());
             }
          }
          for(one = 0; one < (int) grif->GetMultiplicity(); ++one) {
             bool found = false;
             for(int b = 0; b < scep->GetMultiplicity(); ++b) {
-               if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
+               if(scep->GetHit(b)->GetEnergy() < betaThres) { continue;
+}
                //Be careful about time ordering!!!! betas and gammas are not symmetric out of the DAQ
                //Fill the time diffrence spectra
                gbTimeDiff->Fill(grif->GetHit(one)->GetTime()-scep->GetHit(b)->GetTime());
@@ -406,7 +411,8 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
          for(one = 0; one < (int) grif->GetAddbackMultiplicity(); ++one) {
             bool found = false;
             for(int b = 0; b < scep->GetMultiplicity(); ++b) {
-               if(scep->GetHit(b)->GetEnergy() < betaThres) continue;
+               if(scep->GetHit(b)->GetEnergy() < betaThres) { continue;
+}
                //Be careful about time ordering!!!! betas and gammas are not symmetric out of the DAQ
                //Fill the time diffrence spectra
                abTimeDiff->Fill(grif->GetAddbackHit(one)->GetTime()-scep->GetHit(b)->GetTime());
@@ -431,8 +437,9 @@ TList *LeanMatrices(TTree* tree, TPPG* ppg, TGRSIRunInfo* runInfo, long maxEntri
                   gammaAddbackBm->Fill(grif->GetAddbackHit(one)->GetEnergy());
                   if(!found) {
                      gammaAddbackB->Fill(grif->GetAddbackHit(one)->GetEnergy());
-                     if(ppg)
+                     if(ppg) {
                         gammaAddbackBCyc->Fill(ppg->GetTimeInCycle((ULong64_t)(grif->GetAddbackHit(one)->GetTimeStamp()))/1e5, grif->GetAddbackHit(one)->GetEnergy()); 
+}
                   }
                   gammaAddbackB_hp->Fill(grif->GetAddbackHit(one)->GetEnergy(),scep->GetSceptarHit(b)->GetDetector());
                   //Now we want to loop over gamma rays if they are in coincidence.
@@ -536,8 +543,7 @@ int main(int argc, char **argv) {
 		printf("Failed to find PPG information in file '%s'!\n",argv[1]);
 	//} else {
 		//std::cout<<"got PPG "<<myPPG<<" : "<<myPPG->MapIsEmpty()<<std::endl;
-	} 
-	if(myPPG->MapIsEmpty()) {
+	} else if(myPPG->MapIsEmpty()) {
 		std::cout<<"TPPG map is empty!"<<std::endl;
 		myPPG = nullptr;
 	}

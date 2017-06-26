@@ -82,7 +82,7 @@ TSceptar& TSceptar::operator=(const TSceptar& rhs)
    return *this;
 }
 
-void TSceptar::AddFragment(std::shared_ptr<const TFragment> frag, TChannel*)
+void TSceptar::AddFragment(const std::shared_ptr<const TFragment>& frag, TChannel*)
 {
    TSceptarHit scHit(*frag);                 // Construction of TSceptarHit is handled in the constructor
    fSceptarHits.push_back(std::move(scHit)); // Can't use scHit outside of vector after using std::move
@@ -105,7 +105,7 @@ TSceptarHit* TSceptar::GetSceptarHit(const int& i)
    try {
       return &fSceptarHits.at(i);
    } catch(const std::out_of_range& oor) {
-      std::cerr << ClassName() << " is out of range: " << oor.what() << std::endl;
+      std::cerr<<ClassName()<<" is out of range: "<<oor.what()<<std::endl;
       throw grsi::exit_exception(1);
    }
    return nullptr;
