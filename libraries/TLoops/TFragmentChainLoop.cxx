@@ -17,16 +17,16 @@ TFragmentChainLoop* TFragmentChainLoop::Get(std::string name, TChain* chain)
       name = "chain_loop";
    }
 
-   StoppableThread* thread = StoppableThread::Get(name);
-   if(!thread) {
+   TFragmentChainLoop* loop = static_cast<TFragmentChainLoop*>(StoppableThread::Get(name));
+   if(!loop) {
       if(!chain && !gFragment) {
          return nullptr;
       } else if(!chain) {
          chain = gFragment;
       }
-      thread = new TFragmentChainLoop(name, chain);
+      loop = new TFragmentChainLoop(name, chain);
    }
-   return dynamic_cast<TFragmentChainLoop*>(thread);
+   return loop;
 }
 
 TFragmentChainLoop::TFragmentChainLoop(std::string name, TChain* chain)

@@ -50,7 +50,7 @@ void TZeroDegree::Copy(TObject& rhs) const
    // Copies a TZeroDegree
    TGRSIDetector::Copy(rhs);
 
-   dynamic_cast<TZeroDegree&>(rhs).fZeroDegreeHits = fZeroDegreeHits;
+   static_cast<TZeroDegree&>(rhs).fZeroDegreeHits = fZeroDegreeHits;
 }
 
 TZeroDegree& TZeroDegree::operator=(const TZeroDegree& rhs)

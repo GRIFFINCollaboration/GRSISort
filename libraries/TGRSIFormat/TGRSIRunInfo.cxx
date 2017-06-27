@@ -61,7 +61,7 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
          continue;
       }
 
-      TGRSIRunInfo::SetRunInfo(dynamic_cast<TGRSIRunInfo*>(key->ReadObj()));
+      TGRSIRunInfo::SetRunInfo(static_cast<TGRSIRunInfo*>(key->ReadObj()));
       savdir->cd();
       return true;
    }

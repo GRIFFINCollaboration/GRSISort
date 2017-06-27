@@ -15,7 +15,7 @@ TAnalysisHistLoop* TAnalysisHistLoop::Get(std::string name)
    if(name.length() == 0) {
       name = "histo_loop";
    }
-   TAnalysisHistLoop* loop = dynamic_cast<TAnalysisHistLoop*>(StoppableThread::Get(name));
+   TAnalysisHistLoop* loop = static_cast<TAnalysisHistLoop*>(StoppableThread::Get(name));
    if(!loop) {
       loop = new TAnalysisHistLoop(name);
    }

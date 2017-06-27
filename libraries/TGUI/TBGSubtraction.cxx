@@ -282,10 +282,10 @@ void TBGSubtraction::DoSlider(Int_t pos)
    Int_t    id;
    TGFrame* frm = (TGFrame*)gTQSender;
    if(frm->IsA()->InheritsFrom(TGSlider::Class())) {
-      TGSlider* sl = dynamic_cast<TGSlider*>(frm);
+      TGSlider* sl = static_cast<TGSlider*>(frm);
       id           = sl->WidgetId();
    } else {
-      TGDoubleSlider* sd = dynamic_cast<TGDoubleSlider*>(frm);
+      TGDoubleSlider* sd = static_cast<TGDoubleSlider*>(frm);
       id                 = sd->WidgetId();
    }
    char buf[32];
@@ -524,7 +524,7 @@ void TBGSubtraction::DoProjection()
       delete fSubtractedHist;
    }
    const char* sub_name = Form("%s_%s", fGateHist->GetName(), fBGHist->GetName());
-   fSubtractedHist      = dynamic_cast<TH1*>(fGateHist->Clone(sub_name));
+   fSubtractedHist      = static_cast<TH1*>(fGateHist->Clone(sub_name));
    if(fBGCheckButton && fBGCheckButton->IsDown()) {
       fSubtractedHist->Add(fBGHist, -ratio);
    }

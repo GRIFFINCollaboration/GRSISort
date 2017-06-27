@@ -24,12 +24,12 @@ TPPGData::TPPGData(const TPPGData& rhs) : TObject()
 
 void TPPGData::Copy(TObject& rhs) const
 {
-   dynamic_cast<TPPGData&>(rhs).fTimeStamp       = fTimeStamp;
-   dynamic_cast<TPPGData&>(rhs).fOldPpg          = fOldPpg;
-   dynamic_cast<TPPGData&>(rhs).fNewPpg          = fNewPpg;
-   dynamic_cast<TPPGData&>(rhs).fNetworkPacketId = fNetworkPacketId;
-   dynamic_cast<TPPGData&>(rhs).fLowTimeStamp    = fLowTimeStamp;
-   dynamic_cast<TPPGData&>(rhs).fHighTimeStamp   = fHighTimeStamp;
+   static_cast<TPPGData&>(rhs).fTimeStamp       = fTimeStamp;
+   static_cast<TPPGData&>(rhs).fOldPpg          = fOldPpg;
+   static_cast<TPPGData&>(rhs).fNewPpg          = fNewPpg;
+   static_cast<TPPGData&>(rhs).fNetworkPacketId = fNetworkPacketId;
+   static_cast<TPPGData&>(rhs).fLowTimeStamp    = fLowTimeStamp;
+   static_cast<TPPGData&>(rhs).fHighTimeStamp   = fHighTimeStamp;
 }
 
 void TPPGData::SetTimeStamp()

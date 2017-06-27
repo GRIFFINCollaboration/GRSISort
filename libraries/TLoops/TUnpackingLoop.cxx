@@ -17,7 +17,7 @@ TUnpackingLoop* TUnpackingLoop::Get(std::string name)
       name = "unpacking_loop";
    }
 
-   TUnpackingLoop* loop = dynamic_cast<TUnpackingLoop*>(StoppableThread::Get(name));
+   TUnpackingLoop* loop = static_cast<TUnpackingLoop*>(StoppableThread::Get(name));
    if(!loop) {
       loop = new TUnpackingLoop(name);
    }

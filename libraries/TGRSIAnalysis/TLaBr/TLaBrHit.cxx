@@ -36,7 +36,7 @@ void TLaBrHit::Copy(TObject& rhs) const
 {
    // Copies a TLaBrHit
    TGRSIDetectorHit::Copy(rhs);
-   dynamic_cast<TLaBrHit&>(rhs).fFilter = fFilter;
+   static_cast<TLaBrHit&>(rhs).fFilter = fFilter;
 }
 
 TVector3 TLaBrHit::GetPosition(Double_t) const

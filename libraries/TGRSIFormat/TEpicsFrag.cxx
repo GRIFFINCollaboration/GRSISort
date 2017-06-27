@@ -126,7 +126,7 @@ void TEpicsFrag::BuildScalerMap(TTree* tree)
 
 void TEpicsFrag::BuildScalerMap()
 {
-   TTree* scaler_tree = dynamic_cast<TTree*>(gDirectory->Get("EpicsTree"));
+   TTree* scaler_tree = static_cast<TTree*>(gDirectory->Get("EpicsTree"));
    if(!scaler_tree) {
       return;
    }

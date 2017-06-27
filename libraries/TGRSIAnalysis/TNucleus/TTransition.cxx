@@ -54,9 +54,9 @@ std::string TTransition::PrintToString()
 
 int TTransition::CompareIntensity(const TObject* obj) const
 {
-   if(this->fIntensity > dynamic_cast<const TTransition*>(obj)->fIntensity) {
+   if(fIntensity > static_cast<const TTransition*>(obj)->fIntensity) {
       return -1;
-   } else if(this->fIntensity == dynamic_cast<const TTransition*>(obj)->fIntensity) {
+   } else if(fIntensity == static_cast<const TTransition*>(obj)->fIntensity) {
       return 0;
    } else {
       return 1;
@@ -70,9 +70,9 @@ int TTransition::Compare(const TObject* obj) const
    return CompareIntensity(obj);
 
    // Compares the intensities of the TTransitions and returns
-   if(this->fEnergy > dynamic_cast<const TTransition*>(obj)->fEnergy) {
+   if(fEnergy > static_cast<const TTransition*>(obj)->fEnergy) {
       return -1;
-   } else if(this->fEnergy == dynamic_cast<const TTransition*>(obj)->fEnergy) {
+   } else if(fEnergy == static_cast<const TTransition*>(obj)->fEnergy) {
       return 0;
    } else {
       return 1;

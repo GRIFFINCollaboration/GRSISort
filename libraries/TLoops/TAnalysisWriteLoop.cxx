@@ -21,15 +21,15 @@ TAnalysisWriteLoop* TAnalysisWriteLoop::Get(std::string name, std::string output
       name = "write_loop";
    }
 
-   StoppableThread* thread = StoppableThread::Get(name);
-   if(!thread) {
+   TAnalysisWriteLoop* loop = static_cast<TAnalysisWriteLoop*>(StoppableThread::Get(name));
+   if(!loop) {
       if(output_filename.length() == 0) {
          output_filename = "temp.root";
       }
-      thread = new TAnalysisWriteLoop(name, output_filename);
+      loop = new TAnalysisWriteLoop(name, output_filename);
    }
 
-   return dynamic_cast<TAnalysisWriteLoop*>(thread);
+   return loop;
 }
 
 TAnalysisWriteLoop::TAnalysisWriteLoop(std::string name, std::string output_filename)

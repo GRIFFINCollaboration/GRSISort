@@ -36,7 +36,7 @@ void TTACHit::Copy(TObject& rhs) const
 {
    // Copies a TTACHit
    TGRSIDetectorHit::Copy(rhs);
-   dynamic_cast<TTACHit&>(rhs).fFilter = fFilter;
+   static_cast<TTACHit&>(rhs).fFilter = fFilter;
 }
 
 bool TTACHit::InFilter(Int_t)

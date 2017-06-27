@@ -31,9 +31,9 @@ TSiLi::~TSiLi() = default;
 void TSiLi::Copy(TObject& rhs) const
 {
    TGRSIDetector::Copy(rhs);
-   dynamic_cast<TSiLi&>(rhs).fSiLiHits    = fSiLiHits;
-   dynamic_cast<TSiLi&>(rhs).fAddbackHits = fAddbackHits;
-   dynamic_cast<TSiLi&>(rhs).fSiLiBits    = 0;
+   static_cast<TSiLi&>(rhs).fSiLiHits    = fSiLiHits;
+   static_cast<TSiLi&>(rhs).fAddbackHits = fAddbackHits;
+   static_cast<TSiLi&>(rhs).fSiLiBits    = 0;
 
    return;
 }

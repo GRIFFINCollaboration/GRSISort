@@ -32,7 +32,6 @@ public:
 #endif
 
    ~TFragmentMap() = default;
-   ;
 #ifndef __CINT__
    bool Add(std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>);
 #endif

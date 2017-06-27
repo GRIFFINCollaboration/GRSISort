@@ -439,11 +439,11 @@ void TFragmentMap::DropFragments(
       std::multimap<UInt_t,
                     std::tuple<std::shared_ptr<TFragment>, std::vector<Int_t>, std::vector<Short_t>>>::iterator>& range)
 {
-   // put the fragments into the bad output queue
+   /// put the fragments within the range of the two iterators into the bad output queue
    for(auto it = range.first; it != range.second; ++it) {
-      for(const auto& outputQueue : fGoodOutputQueue) {
-         fBadOutputQueue->Push(std::get<0>((*it).second));
-      }
+      //for(const auto& outputQueue : fGoodOutputQueue) {
+		fBadOutputQueue->Push(std::get<0>((*it).second));
+      //}
       if(fDebug) {
          std::cout<<"Added bad fragment "<<std::get<0>((*it).second)<<std::endl;
       }

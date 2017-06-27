@@ -38,8 +38,8 @@ void TPaces::Copy(TObject& rhs) const
 {
    TGRSIDetector::Copy(rhs);
 
-   dynamic_cast<TPaces&>(rhs).fPacesHits   = fPacesHits;
-   dynamic_cast<TPaces&>(rhs).fSetCoreWave = fSetCoreWave;
+   static_cast<TPaces&>(rhs).fPacesHits   = fPacesHits;
+   static_cast<TPaces&>(rhs).fSetCoreWave = fSetCoreWave;
 }
 
 TPaces::~TPaces()

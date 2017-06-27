@@ -83,7 +83,7 @@ TH2D* TAngularCorrelation::Create2DSlice(THnSparse* hst, Double_t min, Double_t 
    tempslice->SetName(Form("%s_proj_%i", hst->GetName(), (Int_t)((max + min) / 2)));
    tempslice->SetTitle(Form("%s: %i keV", hst->GetTitle(), (Int_t)((max + min) / 2)));
 
-   TH2D* slice2d = this->Modify2DSlice(tempslice, fold, group);
+   TH2D* slice2d = Modify2DSlice(tempslice, fold, group);
 
    return slice2d;
 }
@@ -156,14 +156,14 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray* hstarray, Double_t min, Doub
    const Char_t* name     = nullptr;
    const Char_t* title    = nullptr;
    if(sparse) {
-      THnSparse* firsthst = dynamic_cast<THnSparse*>(hstarray->At(0));
+      THnSparse* firsthst = static_cast<THnSparse*>(hstarray->At(0));
       bins                = firsthst->GetAxis(0)->GetNbins();
       xmin                = firsthst->GetAxis(0)->GetBinLowEdge(1);
       xmax                = firsthst->GetAxis(0)->GetBinUpEdge(bins);
       name                = firsthst->GetName();
       title               = firsthst->GetTitle();
    } else if(hst2d) {
-      TH2* firsthst = dynamic_cast<TH2*>(hstarray->At(0));
+      TH2* firsthst = static_cast<TH2*>(hstarray->At(0));
       bins          = firsthst->GetXaxis()->GetNbins();
       xmin          = firsthst->GetXaxis()->GetBinLowEdge(1);
       xmax          = firsthst->GetXaxis()->GetBinUpEdge(bins);
@@ -195,14 +195,14 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray* hstarray, Double_t min, Doub
       TH1D* tempslice = nullptr;
       // sparse option
       if(sparse) {
-         THnSparse* thishst = dynamic_cast<THnSparse*>(hstarray->At(i));
+         THnSparse* thishst = static_cast<THnSparse*>(hstarray->At(i));
          thishst->GetAxis(0)->SetRangeUser(min, max);
          tempslice = (TH1D*)thishst->Projection(
             1, "oe"); // the "e" option pushes appropriate errors, the "o" makes the projection correct
       }
       // TH2 option
       else if(hst2d) {
-         TH2* thishst = dynamic_cast<TH2*>(hstarray->At(i)); // itterating through all the indexes
+         TH2* thishst = static_cast<TH2*>(hstarray->At(i)); // itterating through all the indexes
          thishst->GetXaxis()->SetRangeUser(min, max);
          tempslice = thishst->ProjectionY(); // projecting result of gate into temporary slice
       }
@@ -226,7 +226,7 @@ TH2D* TAngularCorrelation::Create2DSlice(TObjArray* hstarray, Double_t min, Doub
       delete tempslice;
    }
 
-   TH2D* finalslice = this->Modify2DSlice(newslice, fold, group);
+   TH2D* finalslice = Modify2DSlice(newslice, fold, group);
    if(fold || group) {
       delete newslice;
    }
@@ -239,7 +239,7 @@ TH2D* TAngularCorrelation::Modify2DSlice(TH2* hst, Bool_t fold, Bool_t group)
    if(!fold && !group) {
       printf("No folding or grouping selected.\n");
       printf("Returning unmodified 2D slice.\n");
-      return dynamic_cast<TH2D*>(hst);
+      return static_cast<TH2D*>(hst);
    }
 
    // if desired settings are the same as current settings, then continue on
@@ -486,11 +486,11 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
       TH1D* temphst = hst->ProjectionX(Form("%s_proj%i", hst2dname, index), i, i);
       temphst->SetStats(false);
       temphst->SetTitle(Form("%s: angular index %i", hst->GetTitle(), index));
-      this->Set1DSlice(index, temphst);
+      Set1DSlice(index, temphst);
 
       // draw the slice to canvas
       if(visualization) {
-         this->Get1DSlice(index)->Draw("pe1");
+         Get1DSlice(index)->Draw("pe1");
       }
 
       // if there are too few counts, continue on (you can fit it manually later)
@@ -528,17 +528,17 @@ TH1D* TAngularCorrelation::FitSlices(TH2* hst, TPeak* peak, Bool_t visualization
          continue; // if fit failed, continue on to next index
       }
       if(visualization) {
-         dynamic_cast<TPeak*>(temphst->GetListOfFunctions()->Last())->Background()->Draw("same");
+         static_cast<TPeak*>(temphst->GetListOfFunctions()->Last())->Background()->Draw("same");
       }
 
       Double_t FullWidthHM = peak->GetParameter(2);
       AvgFWHM              = AvgFWHM + FullWidthHM;
       // assign TPeak to fPeaks array
-      this->SetPeak(index, dynamic_cast<TPeak*>(temphst->GetFunction(Form("%s_proj%i_peak", hst2dname, index))));
+      SetPeak(index, static_cast<TPeak*>(temphst->GetFunction(Form("%s_proj%i_peak", hst2dname, index))));
 
       // extract area
-      Double_t area     = static_cast<TPeak*>(this->GetPeak(index))->GetArea();
-      Double_t area_err = static_cast<TPeak*>(this->GetPeak(index))->GetAreaErr();
+      Double_t area     = static_cast<TPeak*>(GetPeak(index))->GetArea();
+      Double_t area_err = static_cast<TPeak*>(GetPeak(index))->GetAreaErr();
       Double_t chi2     = peak->GetChisquare();
       Double_t ndf      = peak->GetNDF();
       Double_t scale    = TMath::Max(1.0, TMath::Sqrt(chi2 / ndf));
@@ -1644,10 +1644,10 @@ void TAngularCorrelation::UpdateIndexCorrelation()
    // loop over quantities in map
    for(auto& fPeak : fPeaks) {
       Int_t index = fPeak.first;
-      Int_t bin   = ((TH1D*)this->GetIndexCorrelation())->FindBin(index);
+      Int_t bin   = ((TH1D*)GetIndexCorrelation())->FindBin(index);
 
       // extract area
-      TPeak* peak = static_cast<TPeak*>(this->GetPeak(index));
+      TPeak* peak = static_cast<TPeak*>(GetPeak(index));
       if(!peak) {
          return;
       }
@@ -1663,8 +1663,8 @@ void TAngularCorrelation::UpdateIndexCorrelation()
       }
 
       // fill histogram with area
-      static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinContent(bin, area);
-      static_cast<TH1D*>(this->GetIndexCorrelation())->SetBinError(bin, area_err);
+      static_cast<TH1D*>(GetIndexCorrelation())->SetBinContent(bin, area);
+      static_cast<TH1D*>(GetIndexCorrelation())->SetBinError(bin, area_err);
    }
 
    return;
@@ -1701,10 +1701,10 @@ void TAngularCorrelation::UpdateDiagnostics()
    // loop over quantities in map
    for(auto& fPeak : fPeaks) {
       Int_t index = fPeak.first;
-      Int_t bin   = ((TH1D*)this->GetIndexCorrelation())->FindBin(index);
+      Int_t bin   = ((TH1D*)GetIndexCorrelation())->FindBin(index);
 
       // extract pertinent values from TPeaks
-      TPeak* peak = static_cast<TPeak*>(this->GetPeak(index));
+      TPeak* peak = static_cast<TPeak*>(GetPeak(index));
       if(!peak) {
          return;
       }
@@ -1716,11 +1716,11 @@ void TAngularCorrelation::UpdateDiagnostics()
       Double_t fwhm_err     = peak->GetFWHMErr();
 
       // fill histogram with values
-      static_cast<TH1D*>(this->GetChi2Hst())->SetBinContent(bin, chi2 / NDF);
-      static_cast<TH1D*>(this->GetCentroidHst())->SetBinContent(bin, centroid);
-      static_cast<TH1D*>(this->GetCentroidHst())->SetBinError(bin, centroid_err);
-      static_cast<TH1D*>(this->GetFWHMHst())->SetBinContent(bin, fwhm);
-      static_cast<TH1D*>(this->GetFWHMHst())->SetBinError(bin, fwhm_err);
+      static_cast<TH1D*>(GetChi2Hst())->SetBinContent(bin, chi2 / NDF);
+      static_cast<TH1D*>(GetCentroidHst())->SetBinContent(bin, centroid);
+      static_cast<TH1D*>(GetCentroidHst())->SetBinError(bin, centroid_err);
+      static_cast<TH1D*>(GetFWHMHst())->SetBinContent(bin, fwhm);
+      static_cast<TH1D*>(GetFWHMHst())->SetBinError(bin, fwhm_err);
    }
 
    return;
@@ -1741,7 +1741,7 @@ void TAngularCorrelation::UpdatePeak(Int_t index, TPeak* peak) // sometimes this
    new TCanvas(Form("peak%iupdate", index), Form("Peak %i update", index), 400, 400);
 
    // get histogram
-   TH1D* temphst = this->Get1DSlice(index);
+   TH1D* temphst = Get1DSlice(index);
 
    // adjust range
    Double_t minenergy, maxenergy;
@@ -1753,11 +1753,11 @@ void TAngularCorrelation::UpdatePeak(Int_t index, TPeak* peak) // sometimes this
 
    // fit peak
    // peak->SetName(name);
-   peak->Fit(this->Get1DSlice(index), "");
-   TPeak* hstpeak = dynamic_cast<TPeak*>(temphst->GetListOfFunctions()->Last());
+   peak->Fit(Get1DSlice(index), "");
+   TPeak* hstpeak = static_cast<TPeak*>(temphst->GetListOfFunctions()->Last());
 
    // push new peak
-   this->SetPeak(index, hstpeak);
+   SetPeak(index, hstpeak);
    UpdateIndexCorrelation();
    UpdateDiagnostics();
 
@@ -1832,7 +1832,7 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
 {
 
    if(!fold && !group) {
-      Int_t size = this->GetWeightsSize();
+      Int_t size = GetWeightsSize();
 
       // consistency/stability checks
       if(size == 0) {
@@ -1893,7 +1893,7 @@ TH1D* TAngularCorrelation::DivideByWeights(TH1* hst, Bool_t fold, Bool_t group)
       hst->SetBinError(i, newerror);
    }
 
-   return dynamic_cast<TH1D*>(hst);
+   return static_cast<TH1D*>(hst);
 }
 /*
    Double_t GetPeakInfo(THnSparse *Slice, Double_t centroid, Double_t min, Double_t max){
@@ -1941,17 +1941,17 @@ return FWHM;
 void TAngularCorrelation::DisplayDiagnostics(TCanvas* c_diag)
 {
    if(c_diag == nullptr) {
-      c_diag = new TCanvas(Form("c_diag_%s", this->GetName()), Form("Diagnostics from %s", this->GetName()), 800, 800);
+      c_diag = new TCanvas(Form("c_diag_%s", GetName()), Form("Diagnostics from %s", GetName()), 800, 800);
    }
 
    // divide canvas
    c_diag->Divide(2, 2);
 
    // pull plots for index correlation, chi^2, centroid, and fwhm
-   TH1D* indexhst    = this->GetIndexCorrelation();
-   TH1D* chi2hst     = this->GetChi2Hst();
-   TH1D* centroidhst = this->GetCentroidHst();
-   TH1D* fwhmhst     = this->GetFWHMHst();
+   TH1D* indexhst    = GetIndexCorrelation();
+   TH1D* chi2hst     = GetChi2Hst();
+   TH1D* centroidhst = GetCentroidHst();
+   TH1D* fwhmhst     = GetFWHMHst();
 
    for(int i = 0; i < 52; i++) {
       std::cout<<chi2hst->GetBinContent(i)<<std::endl;

@@ -25,15 +25,14 @@ TFragWriteLoop* TFragWriteLoop::Get(std::string name, std::string fOutputFilenam
       name = "write_loop";
    }
 
-   StoppableThread* thread = StoppableThread::Get(name);
-   if(!thread) {
+   TFragWriteLoop* loop = static_cast<TFragWriteLoop*>(StoppableThread::Get(name));
+   if(!loop) {
       if(fOutputFilename.length() == 0) {
          fOutputFilename = "temp.root";
       }
-      thread = new TFragWriteLoop(name, fOutputFilename);
+      loop = new TFragWriteLoop(name, fOutputFilename);
    }
-
-   return dynamic_cast<TFragWriteLoop*>(thread);
+   return loop;
 }
 
 TFragWriteLoop::TFragWriteLoop(std::string name, std::string fOutputFilename)
@@ -177,9 +176,9 @@ void TFragWriteLoop::WriteEvent(const std::shared_ptr<const TFragment>& event)
 void TFragWriteLoop::WriteBadEvent(const std::shared_ptr<const TFragment>& event)
 {
    if(fBadEventTree) {
-      *fBadEventAddress = *dynamic_cast<const TBadFragment*>(event.get());
-      std::lock_guard<std::mutex> lock(ttree_fill_mutex);
-      fBadEventTree->Fill();
+      //*fBadEventAddress = *static_cast<const TBadFragment*>(event.get());
+      //std::lock_guard<std::mutex> lock(ttree_fill_mutex);
+      //fBadEventTree->Fill();
    }
 }
 

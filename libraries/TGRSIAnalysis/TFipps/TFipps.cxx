@@ -136,10 +136,10 @@ void TFipps::Copy(TObject& rhs) const
    // Copy function.
    TGRSIDetector::Copy(rhs);
 
-   dynamic_cast<TFipps&>(rhs).fFippsHits    = fFippsHits;
-   dynamic_cast<TFipps&>(rhs).fAddbackHits  = fAddbackHits;
-   dynamic_cast<TFipps&>(rhs).fAddbackFrags = fAddbackFrags;
-   dynamic_cast<TFipps&>(rhs).fFippsBits    = 0;
+   static_cast<TFipps&>(rhs).fFippsHits    = fFippsHits;
+   static_cast<TFipps&>(rhs).fAddbackHits  = fAddbackHits;
+   static_cast<TFipps&>(rhs).fAddbackFrags = fAddbackFrags;
+   static_cast<TFipps&>(rhs).fFippsBits    = 0;
 }
 
 TFipps::~TFipps()

@@ -1369,7 +1369,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
       }
       if(!found) {
          found        = true;
-         TChannel* ch = dynamic_cast<TChannel*>(key->ReadObj());
+         TChannel* ch = static_cast<TChannel*>(key->ReadObj());
          mastername.assign(ch->GetName());
          mastertitle.assign(ch->GetTitle());
       }

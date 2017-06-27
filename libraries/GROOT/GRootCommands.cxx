@@ -50,7 +50,7 @@ void Commands()
 
 void Prompt()
 {
-   Getlinem(EGetLineMode::kInit, (dynamic_cast<TRint*>(gApplication))->GetPrompt());
+   Getlinem(EGetLineMode::kInit, (static_cast<TRint*>(gApplication))->GetPrompt());
 }
 
 void Version()
@@ -66,14 +66,14 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
    GCanvas* C_projections = nullptr;
    GCanvas* C_gammagamma  = nullptr;
    if(gROOT->GetListOfCanvases()->FindObject("C_projections")) {
-      C_projections = dynamic_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("C_projections"));
+      C_projections = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("C_projections"));
    } else {
       C_projections = new GCanvas("C_projections", "Projection Canvas", 0, 0, 1450, 600);
       C_projections->Divide(2, 1);
    }
 
    if(gROOT->GetListOfCanvases()->FindObject("C_gammagamma")) {
-      C_gammagamma = dynamic_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("C_gammagamma"));
+      C_gammagamma = static_cast<GCanvas*>(gROOT->GetListOfCanvases()->FindObject("C_gammagamma"));
    } else {
       C_gammagamma = new GCanvas("C_gammagamma", "Gamma-Gamma Canvas", 1700, 0, 650, 650);
    }
@@ -84,7 +84,7 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
    C_projections->cd(1);
    GH1D* Proj_x = hist->ProjectionX("Gamma_Gamma_xProjection");
 
-   GH1D* Proj_x_Clone = dynamic_cast<GH1D*>(Proj_x->Clone());
+   GH1D* Proj_x_Clone = static_cast<GH1D*>(Proj_x->Clone());
    GH1D* Proj_gated   = nullptr;
 
    if(bg_high > 0 && bg_low > 0) {
@@ -151,12 +151,12 @@ bool GetProjection(GH2D* hist, double low, double high, double bg_low, double bg
 int LabelPeaks(TH1* hist, double sigma, double thresh, Option_t*)
 {
    TSpectrum::StaticSearch(hist, sigma, "Qnodraw", thresh);
-   TPolyMarker* pm = dynamic_cast<TPolyMarker*>(hist->GetListOfFunctions()->FindObject("TPolyMarker"));
+   TPolyMarker* pm = static_cast<TPolyMarker*>(hist->GetListOfFunctions()->FindObject("TPolyMarker"));
    if(!pm) {
       // something has gone wrong....
       return 0;
    }
-   TObjArray* array = dynamic_cast<TObjArray*>(hist->GetListOfFunctions()->FindObject("PeakLabels"));
+   TObjArray* array = static_cast<TObjArray*>(hist->GetListOfFunctions()->FindObject("PeakLabels"));
    if(array) {
       hist->GetListOfFunctions()->Remove((TObject*)array);
       array->Delete();
@@ -199,7 +199,7 @@ bool ShowPeaks(TH1** hists, unsigned int nhists, double sigma, double thresh)
    for(unsigned int i = 0; i < nhists; i++) {
       if(TObject* obj = hists[i]->GetListOfFunctions()->FindObject("PeakLabels")) {
          hists[i]->GetListOfFunctions()->Remove(obj);
-         (dynamic_cast<TObjArray*>(obj))->Delete();
+         (static_cast<TObjArray*>(obj))->Delete();
       }
       num_found += LabelPeaks(hists[i], sigma, thresh, "");
    }
@@ -215,7 +215,7 @@ bool RemovePeaks(TH1** hists, unsigned int nhists)
    for(unsigned int i = 0; i < nhists; i++) {
       if(TObject* obj = hists[i]->GetListOfFunctions()->FindObject("PeakLabels")) {
          hists[i]->GetListOfFunctions()->Remove(obj);
-         (dynamic_cast<TObjArray*>(obj))->Delete();
+         (static_cast<TObjArray*>(obj))->Delete();
          flag = true;
       }
    }
@@ -350,7 +350,7 @@ TH1* GrabHist(int i)
    while(TObject* obj = iter.Next()) {
       if(obj->InheritsFrom(TH1::Class())) {
          if(j == i) {
-            hist = dynamic_cast<TH1*>(obj);
+            hist = static_cast<TH1*>(obj);
             break;
          }
          j++;
@@ -371,12 +371,12 @@ TF1* GrabFit(int i)
    int   j = 0;
    while(TObject* obj = iter.Next()) {
       if(obj->InheritsFrom(TH1::Class())) {
-         hist = dynamic_cast<TH1*>(obj);
+         hist = static_cast<TH1*>(obj);
          TIter iter2(hist->GetListOfFunctions());
          while(TObject* obj2 = iter2.Next()) {
             if(obj2->InheritsFrom(TF1::Class())) {
                if(j == i) {
-                  fit = dynamic_cast<TF1*>(obj2);
+                  fit = static_cast<TF1*>(obj2);
                   return fit;
                }
                j++;
@@ -404,7 +404,7 @@ void StartGUI()
 
    gui_is_running = true;
    for(int i = 0; i < gROOT->GetListOfFiles()->GetSize(); i++) {
-      TPython::Bind(dynamic_cast<TFile*>(gROOT->GetListOfFiles()->At(i)), "tdir");
+      TPython::Bind(static_cast<TFile*>(gROOT->GetListOfFiles()->At(i)), "tdir");
       gROOT->ProcessLine(R"lit(TPython::Exec("window.AddDirectory(tdir)");)lit");
    }
 }
@@ -466,7 +466,7 @@ TH2* AddOffset(TH2* mat, double offset, EAxis axis)
        break;
    };
    */
-   toreturn = dynamic_cast<TH2*>(mat->Clone(Form("%s_offset", mat->GetName())));
+   toreturn = static_cast<TH2*>(mat->Clone(Form("%s_offset", mat->GetName())));
    toreturn->Reset();
 
    for(int x = 0; x < xmax; x++) {

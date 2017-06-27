@@ -12,7 +12,6 @@ public:
    TCFDCal(){};
    TCFDCal(const char* name, const char* title) : TCal(name, title){};
    ~TCFDCal() override = default;
-   ;
 
    // pure virtual functions
    Bool_t IsGroupable() const override { return false; }

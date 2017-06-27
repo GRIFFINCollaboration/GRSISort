@@ -21,7 +21,6 @@ class TGRSISortList : public TObject {
 public:
    TGRSISortList(){};
    ~TGRSISortList() override = default;
-   ;
 
    Bool_t AddSortInfo(TGRSISortInfo* info, Option_t* opt = "");
    Bool_t AddSortList(TGRSISortList* rhsList, Option_t* opt = "");

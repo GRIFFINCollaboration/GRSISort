@@ -25,7 +25,7 @@ ClassImp(TLstEvent)
 void TLstEvent::Copy(TObject& rhs) const
 {
    // Copies the entire TLstEvent.
-   dynamic_cast<TLstEvent&>(rhs).fData = fData;
+   static_cast<TLstEvent&>(rhs).fData = fData;
 }
 
 TLstEvent::TLstEvent(const TLstEvent& rhs) : TRawEvent()

@@ -64,7 +64,7 @@ TEfficiencyCalibration::TEfficiencyCalibration(const TEfficiencyCalibration& cop
 
 void TEfficiencyCalibration::Copy(TObject& copy) const
 {
-   dynamic_cast<TEfficiencyCalibration&>(copy).fGraphMap = fGraphMap;
+   static_cast<TEfficiencyCalibration&>(copy).fGraphMap = fGraphMap;
    /*	if(static_cast<TEfficiencyCalibration&>(copy).fRelativeEffGraph){
          delete static_cast<TEfficiencyCalibration&>(copy).fRelativeEffGraph;
          static_cast<TEfficiencyCalibration&>(copy).fRelativeEffGraph = nullptr;	//This will be constructed later
@@ -167,8 +167,8 @@ void TEfficiencyCalibration::ScaleGuess()
       Double_t          closest_dist      = 99999.;
       Int_t             closest_loop_idx  = 0;
       Int_t             closest_fixed_idx = 0;
-      TEfficiencyGraph* fixed_graph       = dynamic_cast<TEfficiencyGraph*>(graph_list->At(0));
-      TEfficiencyGraph* loop_graph        = dynamic_cast<TEfficiencyGraph*>(graph_list->At(graph_idx));
+      TEfficiencyGraph* fixed_graph       = static_cast<TEfficiencyGraph*>(graph_list->At(0));
+      TEfficiencyGraph* loop_graph        = static_cast<TEfficiencyGraph*>(graph_list->At(graph_idx));
       Double_t*         fixed_x           = fixed_graph->GetX();
       for(int i = 0; i < fixed_graph->GetN(); ++i) {
          if(loop_graph->FindDistToClosestPointX(fixed_x[i]) < closest_dist) {
@@ -195,14 +195,13 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
                           "TEfficiencyCalibration", "PhotoPeakEfficiency");
 
    // Start by naming the parameters of the fit
-   int mapIdx = 0;
-   for(const auto& it : fGraphMap) {
+   for(int mapIdx = 0; mapIdx < static_cast<int>(fGraphMap.size()); ++mapIdx) {
       fRelativeFit->SetParName(mapIdx, Form("Scale_%d", mapIdx));
       if(mapIdx == 0) {
-         fRelativeFit->FixParameter(mapIdx++, 1.0);
+         fRelativeFit->FixParameter(mapIdx, 1.0);
       } else {
          fRelativeFit->SetParameter(mapIdx, 1.0);
-         fRelativeFit->SetParLimits(mapIdx++, 0.1, 10.);
+         fRelativeFit->SetParLimits(mapIdx, 0.1, 10.);
       }
    }
 
@@ -283,7 +282,7 @@ TFitResultPtr TEfficiencyCalibration::Fit(Option_t*)
 
    // Update the graphs
    for(int i = 0; i < fRelativeEffGraph->GetListOfGraphs()->GetSize(); ++i) {
-      (dynamic_cast<TEfficiencyGraph*>(fRelativeEffGraph->GetListOfGraphs()->At(i)))
+      (static_cast<TEfficiencyGraph*>(fRelativeEffGraph->GetListOfGraphs()->At(i)))
          ->Scale(fRelativeFit->GetParameter(i));
    }
 
@@ -298,8 +297,8 @@ Double_t TEfficiencyCalibration::PhotoPeakEfficiency(Double_t* x, Double_t* par)
    if(fFitting) {
       TList* gList = fRelativeEffGraph->GetListOfGraphs();
       for(Int_t i = 0; i < gList->GetSize(); ++i) {
-         if((dynamic_cast<TEfficiencyGraph*>(gList->At(i)))->FindDistToClosestPointX(x[0]) < dist_to_closest) {
-            dist_to_closest = (dynamic_cast<TEfficiencyGraph*>(gList->At(i)))->FindDistToClosestPointX(x[0]);
+         if((static_cast<TEfficiencyGraph*>(gList->At(i)))->FindDistToClosestPointX(x[0]) < dist_to_closest) {
+            dist_to_closest = (static_cast<TEfficiencyGraph*>(gList->At(i)))->FindDistToClosestPointX(x[0]);
             closest_graph   = i;
          }
       }
@@ -368,7 +367,7 @@ bool TEfficiencyCalibration::ScaleToAbsolute()
 
       // Scale all of the data points now in the relative graph
       for(int i = 0; i < fRelativeEffGraph->GetListOfGraphs()->GetSize(); ++i) {
-         (dynamic_cast<TEfficiencyGraph*>(fRelativeEffGraph->GetListOfGraphs()->At(i)))->Scale(w_avg);
+         (static_cast<TEfficiencyGraph*>(fRelativeEffGraph->GetListOfGraphs()->At(i)))->Scale(w_avg);
       }
 
       return true;

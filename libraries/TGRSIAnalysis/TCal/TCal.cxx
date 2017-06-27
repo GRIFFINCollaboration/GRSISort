@@ -49,15 +49,15 @@ void TCal::SetNucleus(TNucleus* nuc, Option_t*)
 void TCal::Copy(TObject& obj) const
 {
    /// Copies the TCal.
-   dynamic_cast<TCal&>(obj).fChan = fChan;
+   static_cast<TCal&>(obj).fChan = fChan;
    // Things to make deep copies of
    if(fFitFunc) {
-      *(dynamic_cast<TCal&>(obj).fFitFunc) = *fFitFunc;
+      *(static_cast<TCal&>(obj).fFitFunc) = *fFitFunc;
    }
 
    // Members to make shallow copies of
-   dynamic_cast<TCal&>(obj).fNuc = fNuc;
-   TNamed::Copy(dynamic_cast<TGraphErrors&>(obj));
+   static_cast<TCal&>(obj).fNuc = fNuc;
+   TNamed::Copy(static_cast<TGraphErrors&>(obj));
 }
 
 Bool_t TCal::SetChannel(const TChannel* chan)
@@ -135,7 +135,7 @@ TChannel* TCal::GetChannel() const
 {
    /// Gets the channel being pointed to by the TCal. Returns 0 if no channel
    /// is set.
-   return dynamic_cast<TChannel*>(fChan.GetObject()); // Gets the object pointed at by the TRef and casts it to a
+   return static_cast<TChannel*>(fChan.GetObject()); // Gets the object pointed at by the TRef and casts it to a
                                                       // TChannel
 }
 

@@ -47,7 +47,7 @@ public:
 
    static TGRSIProof* Open(const char* worker = "")
    {
-      TGRSIProof* p = dynamic_cast<TGRSIProof*>(TProof::Open(worker));
+      TGRSIProof* p = static_cast<TGRSIProof*>(TProof::Open(worker));
       p->LoadLibsIntoProof();
       return p;
    }

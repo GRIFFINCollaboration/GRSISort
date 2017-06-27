@@ -32,10 +32,10 @@ TCalPoint::TCalPoint(const TCalPoint& copy) : TObject(copy)
 void TCalPoint::Copy(TObject& obj) const
 {
    TObject::Copy(obj);
-   dynamic_cast<TCalPoint&>(obj).fCentroid    = fCentroid;
-   dynamic_cast<TCalPoint&>(obj).fCentroidErr = fCentroidErr;
-   dynamic_cast<TCalPoint&>(obj).fArea        = fArea;
-   dynamic_cast<TCalPoint&>(obj).fAreaErr     = fAreaErr;
+   static_cast<TCalPoint&>(obj).fCentroid    = fCentroid;
+   static_cast<TCalPoint&>(obj).fCentroidErr = fCentroidErr;
+   static_cast<TCalPoint&>(obj).fArea        = fArea;
+   static_cast<TCalPoint&>(obj).fAreaErr     = fAreaErr;
 }
 
 void TCalPoint::SetPoint(const Double_t& centroid, const Double_t& area, const Double_t& dcentroid,

@@ -252,7 +252,7 @@ Bool_t GRootContainer::HandleButton(Event_t* event)
    // Directly handle scroll mouse buttons (4 and 5), only pass buttons
    // 1, 2 and 3 on to the TCanvas.
 
-   const TGViewPort* vp   = dynamic_cast<const TGViewPort*>(fParent);
+   const TGViewPort* vp   = static_cast<const TGViewPort*>(fParent);
    UInt_t            page = vp->GetHeight() / 4;
    Int_t             newpos;
 
@@ -1076,7 +1076,7 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
          // Handle Tools menu items...
          case kClassesTree: {
             TString cdef;
-            lc = dynamic_cast<TList*>(gROOT->GetListOfCanvases());
+            lc = static_cast<TList*>(gROOT->GetListOfCanvases());
             if(lc->FindObject("ClassTree")) {
                cdef = TString::Format("ClassTree_%d", lc->GetSize() + 1);
             } else {
@@ -1109,9 +1109,10 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             if(!rootx.IsNull()) {
                rootx += "/bin";
             }
-            #endif rootx += "/root -a &";
+#endif //ROOTBINDIR
+				rootx += "/root -a &";
             gSystem->Exec(rootx);
-#else
+#else //R__UNIX
 #ifdef WIN32
             new TWin32SplashThread(kTRUE);
 #else
@@ -1121,8 +1122,8 @@ Bool_t GRootCanvas::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
             hd = new GRootHelpDialog(this, str, 600, 400);
             hd->SetText(gHelpAbout);
             hd->Popup();
-#endif
-#endif
+#endif //WIN32
+#endif //R__UNIX
          } break;
          case kHelpOnCanvas:
             hd = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
@@ -1410,11 +1411,11 @@ void GRootCanvas::ShowEditor(Bool_t show)
    UInt_t s = fHorizontal1->GetHeight();
 
    if(fParent && fParent != fClient->GetDefaultRoot()) {
-      const TGMainFrame* main = dynamic_cast<const TGMainFrame*>(fParent->GetMainFrame());
+      const TGMainFrame* main = static_cast<const TGMainFrame*>(fParent->GetMainFrame());
       fMainFrame->HideFrame(fEditorFrame);
       if(main && main->InheritsFrom("TRootBrowser")) {
          printf("I am here GRootCanvas 1469.\n");
-         TRootBrowser* browser = const_cast<TRootBrowser*>(dynamic_cast<const TRootBrowser*>(main));
+         TRootBrowser* browser = const_cast<TRootBrowser*>(static_cast<const TRootBrowser*>(main));
          if(!fEmbedded) {
             browser->GetTabRight()->Connect("Selected(Int_t)", "GRootCanvas", this, "Activated(Int_t)");
          }
@@ -1682,36 +1683,36 @@ Bool_t GRootCanvas::HandleContainerButton(Event_t* event)
       // printf("Event_t::State = 0x%08x\n",event->fState);
       if(button == kButton1) {
          if(event->fState & kKeyShiftMask) {
-            (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Shift, x, y);
+            (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Shift, x, y);
          } else if(event->fState & kKeyControlMask) {
-            (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Ctrl, x, y);
+            (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Ctrl, x, y);
          } else {
-            (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Down, x, y);
+            (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Down, x, y);
          }
       }
       if(button == kButton2) {
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton2Down, x, y);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton2Down, x, y);
       }
       if(button == kButton3) {
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton3Down, x, y);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton3Down, x, y);
          fButton = 0; // button up is consumed by TContextMenu
       }
 
    } else if(event->fType == kButtonRelease) {
       if(button == kButton4) {
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kWheelUp, x, y);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kWheelUp, x, y);
       }
       if(button == kButton5) {
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kWheelDown, x, y);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kWheelDown, x, y);
       }
       if(button == kButton1) {
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Up, x, y);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Up, x, y);
       }
       if(button == kButton2) {
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton2Up, x, y);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton2Up, x, y);
       }
       if(button == kButton3) {
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton3Up, x, y);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton3Up, x, y);
       }
 
       fButton = 0;
@@ -1730,13 +1731,13 @@ Bool_t GRootCanvas::HandleContainerDoubleClick(Event_t* event)
    Int_t y      = event->fY;
 
    if(button == kButton1) {
-      (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Double, x, y);
+      (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Double, x, y);
    }
    if(button == kButton2) {
-      (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton2Double, x, y);
+      (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton2Double, x, y);
    }
    if(button == kButton3) {
-      (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton3Double, x, y);
+      (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton3Double, x, y);
    }
 
    return kTRUE;
@@ -1787,8 +1788,8 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
 
       if(str[0] == kESC) { // ESC sets the escape flag
          gROOT->SetEscape();
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Up, 0, 0);
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kMouseMotion, 0, 0);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Up, 0, 0);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kMouseMotion, 0, 0);
          gPad->Modified();
          return kTRUE;
       }
@@ -1809,7 +1810,7 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
                                          dum1);
 
          //((GCanvas*)fCanvas)->HandleInput(kArrowKeyPress, tx, ty);
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput((EEventType)kArrowKeyPress, tx, keysym);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput((EEventType)kArrowKeyPress, tx, keysym);
          // handle case where we got consecutive same keypressed events coming
          // from auto-repeat on Windows (as it fires only successive keydown events)
          if((previous_keysym == keysym) && (previous_event == kGKeyPress)) {
@@ -1832,11 +1833,11 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
                break;
             default: break;
             }
-            (dynamic_cast<GCanvas*>(fCanvas))->HandleInput((EEventType)kArrowKeyRelease, tx, ty);
+            (static_cast<GCanvas*>(fCanvas))->HandleInput((EEventType)kArrowKeyRelease, tx, ty);
          }
          previous_keysym = keysym;
       } else {
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kKeyPress, str[0], keysym);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kKeyPress, str[0], keysym);
       }
    } else if(event->fType == kKeyRelease) {
       UInt_t keysym;
@@ -1851,7 +1852,7 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
          gVirtualX->QueryPointer(wid, dum1, dum2, mx, my, mx, my, mask);
 
          // printf("GetCanvas() = 0x%08x\t%s\n",gPad->GetCanvas(),gPad->GetCanvas()->IsA()->GetName());
-         GCanvas* gCanvas = dynamic_cast<GCanvas*>(gPad->GetCanvas());
+         GCanvas* gCanvas = static_cast<GCanvas*>(gPad->GetCanvas());
          gCanvas->HandleArrowKeyPress(event, &keysym);
          /*
                   switch (keysym) {
@@ -1877,10 +1878,10 @@ Bool_t GRootCanvas::HandleContainerKey(Event_t* event)
          */
          gVirtualX->TranslateCoordinates(gClient->GetDefaultRoot()->GetId(), fCanvasContainer->GetId(), mx, my, tx, ty,
                                          dum1);
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput((EEventType)kArrowKeyRelease, tx, ty);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput((EEventType)kArrowKeyRelease, tx, ty);
          previous_keysym = keysym;
       } else {
-         GCanvas* gCanvas = dynamic_cast<GCanvas*>(gPad->GetCanvas());
+         GCanvas* gCanvas = static_cast<GCanvas*>(gPad->GetCanvas());
          gCanvas->HandleKeyboardPress(event, &keysym);
       }
 
@@ -1899,17 +1900,17 @@ Bool_t GRootCanvas::HandleContainerMotion(Event_t* event)
    Int_t y = event->fY;
 
    if(fButton == 0) {
-      (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kMouseMotion, x, y);
+      (static_cast<GCanvas*>(fCanvas))->HandleInput(kMouseMotion, x, y);
    }
    if(fButton == kButton1) {
       if(event->fState & kKeyShiftMask) {
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(EEventType(8), x, y);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(EEventType(8), x, y);
       } else {
-         (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Motion, x, y);
+         (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton1Motion, x, y);
       }
    }
    if(fButton == kButton2) {
-      (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kButton2Motion, x, y);
+      (static_cast<GCanvas*>(fCanvas))->HandleInput(kButton2Motion, x, y);
    }
 
    return kTRUE;
@@ -1938,7 +1939,7 @@ Bool_t GRootCanvas::HandleContainerCrossing(Event_t* event)
    // pointer grabs create also an enter and leave event but with fCode
    // either kNotifyGrab or kNotifyUngrab, don't propagate these events
    if(event->fType == kLeaveNotify && event->fCode == kNotifyNormal) {
-      (dynamic_cast<GCanvas*>(fCanvas))->HandleInput(kMouseLeave, x, y);
+      (static_cast<GCanvas*>(fCanvas))->HandleInput(kMouseLeave, x, y);
    }
 
    return kTRUE;

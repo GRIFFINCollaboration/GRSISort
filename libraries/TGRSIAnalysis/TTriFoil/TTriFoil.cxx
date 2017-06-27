@@ -24,10 +24,10 @@ void TTriFoil::Clear(Option_t* opt)
 void TTriFoil::Copy(TObject& rhs) const
 {
    TDetector::Copy(rhs);
-   dynamic_cast<TTriFoil&>(rhs).fTfWave    = fTfWave;
-   dynamic_cast<TTriFoil&>(rhs).fTimestamp = fTimestamp;
-   dynamic_cast<TTriFoil&>(rhs).fBeam      = fBeam;
-   dynamic_cast<TTriFoil&>(rhs).fTBeam     = fTBeam;
+   static_cast<TTriFoil&>(rhs).fTfWave    = fTfWave;
+   static_cast<TTriFoil&>(rhs).fTimestamp = fTimestamp;
+   static_cast<TTriFoil&>(rhs).fBeam      = fBeam;
+   static_cast<TTriFoil&>(rhs).fTBeam     = fTBeam;
    return;
 }
 

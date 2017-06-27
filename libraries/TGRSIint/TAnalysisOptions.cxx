@@ -83,7 +83,7 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
             continue;
          }
 
-         *this = *dynamic_cast<TAnalysisOptions*>(key->ReadObj());
+         *this = *static_cast<TAnalysisOptions*>(key->ReadObj());
          f->Close();
          oldDir->cd();
          return;

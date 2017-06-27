@@ -46,9 +46,9 @@ void TTigressHit::Clear(Option_t* opt)
 void TTigressHit::Copy(TObject& rhs) const
 {
    TGRSIDetectorHit::Copy(rhs);
-   dynamic_cast<TTigressHit&>(rhs).fTimeFit  = fTimeFit;
-   dynamic_cast<TTigressHit&>(rhs).fSegments = fSegments;
-   dynamic_cast<TTigressHit&>(rhs).fBgoFired = fBgoFired;
+   static_cast<TTigressHit&>(rhs).fTimeFit  = fTimeFit;
+   static_cast<TTigressHit&>(rhs).fSegments = fSegments;
+   static_cast<TTigressHit&>(rhs).fBgoFired = fBgoFired;
 
    // static_cast<TTigressHit&>(rhs).fCrystal              = fCrystal;
    // static_cast<TTigressHit&>(rhs).fFirstSegment         = fFirstSegment;
@@ -121,8 +121,8 @@ void TTigressHit::SumHit(TTigressHit* hit)
    if(this != hit) {
 
       // Should always be true when called by addback construction due to energy ordering during detector construction
-      if(this->GetEnergy() > hit->GetEnergy()) {
-         SetTime(this->GetTime()); // Needs to be call before energy sum to ensure and kIsTimeSet using original energy
+      if(GetEnergy() > hit->GetEnergy()) {
+         SetTime(GetTime()); // Needs to be call before energy sum to ensure and kIsTimeSet using original energy
                                    // for any adjustment
          for(int x = 0; x < hit->GetNSegments(); x++) {
             AddSegment((hit->fSegments[x]));
@@ -135,9 +135,9 @@ void TTigressHit::SumHit(TTigressHit* hit)
          // Maybe overkill, but consistent
          std::vector<TGRSIDetectorHit> fSegmentHold = hit->fSegments;
          for(int x = 0; x < GetNSegments(); x++) {
-            fSegmentHold.push_back(this->fSegments[x]);
+            fSegmentHold.push_back(fSegments[x]);
          }
-         this->fSegments = fSegmentHold;
+         fSegments = fSegmentHold;
       }
 
       SetEnergy(GetEnergy() + hit->GetEnergy());

@@ -93,10 +93,10 @@ TTigress::~TTigress() = default;
 void TTigress::Copy(TObject& rhs) const
 {
    TGRSIDetector::Copy(rhs);
-   dynamic_cast<TTigress&>(rhs).fTigressHits  = fTigressHits;
-   dynamic_cast<TTigress&>(rhs).fAddbackHits  = fAddbackHits;
-   dynamic_cast<TTigress&>(rhs).fAddbackFrags = fAddbackFrags;
-   dynamic_cast<TTigress&>(rhs).fTigressBits  = 0;
+   static_cast<TTigress&>(rhs).fTigressHits  = fTigressHits;
+   static_cast<TTigress&>(rhs).fAddbackHits  = fAddbackHits;
+   static_cast<TTigress&>(rhs).fAddbackFrags = fAddbackFrags;
+   static_cast<TTigress&>(rhs).fTigressBits  = 0;
 }
 
 void TTigress::Clear(Option_t* opt)

@@ -130,7 +130,7 @@ Bool_t TCalManager::AddToManager(TCal* cal, UInt_t chanNum, Option_t* opt)
 			TCal* oldCal = GetCal(chanNum);
 			// delete the old calibration for this channel number
 			delete oldCal;
-			oldCal              = dynamic_cast<TCal*>(cal->Clone(cal->GetName()));
+			oldCal              = static_cast<TCal*>(cal->Clone(cal->GetName()));
 			fCalMap.at(chanNum) = oldCal;
 			return true;
 		} else {
@@ -138,7 +138,7 @@ Bool_t TCalManager::AddToManager(TCal* cal, UInt_t chanNum, Option_t* opt)
 			return false;
 		}
 	} else {
-		TCal* newCal = dynamic_cast<TCal*>(cal->Clone(cal->GetName()));
+		TCal* newCal = static_cast<TCal*>(cal->Clone(cal->GetName()));
 		// In order to construct a new derived class you need to know the type at compile time.
 		// Clone lets us get around this. There are other ways to do this using "virtual constructor idioms"
 		// but the basically do what clone does anyway.

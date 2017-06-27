@@ -517,7 +517,7 @@ Bool_t TGRSIOptions::ReadFromFile(TFile* file)
          continue;
       }
 
-      TGRSIOptions::SetOptions(dynamic_cast<TGRSIOptions*>(key->ReadObj()));
+      TGRSIOptions::SetOptions(static_cast<TGRSIOptions*>(key->ReadObj()));
       oldDir->cd();
       return true;
    }

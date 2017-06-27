@@ -22,11 +22,11 @@ TScalerData::TScalerData(const TScalerData& rhs) : TObject()
 
 void TScalerData::Copy(TObject& rhs) const
 {
-   dynamic_cast<TScalerData&>(rhs).fAddress         = fAddress;
-   dynamic_cast<TScalerData&>(rhs).fScaler          = fScaler;
-   dynamic_cast<TScalerData&>(rhs).fNetworkPacketId = fNetworkPacketId;
-   dynamic_cast<TScalerData&>(rhs).fLowTimeStamp    = fLowTimeStamp;
-   dynamic_cast<TScalerData&>(rhs).fHighTimeStamp   = fHighTimeStamp;
+   static_cast<TScalerData&>(rhs).fAddress         = fAddress;
+   static_cast<TScalerData&>(rhs).fScaler          = fScaler;
+   static_cast<TScalerData&>(rhs).fNetworkPacketId = fNetworkPacketId;
+   static_cast<TScalerData&>(rhs).fLowTimeStamp    = fLowTimeStamp;
+   static_cast<TScalerData&>(rhs).fHighTimeStamp   = fHighTimeStamp;
 }
 
 void TScalerData::Clear(Option_t*)
@@ -105,15 +105,15 @@ TScaler::~TScaler()
 
 void TScaler::Copy(TObject& obj) const
 {
-   dynamic_cast<TScaler&>(obj).Clear();
-   dynamic_cast<TScaler&>(obj).fTree                     = fTree;
-   dynamic_cast<TScaler&>(obj).fScalerData               = fScalerData;
-   dynamic_cast<TScaler&>(obj).fEntries                  = fEntries;
-   dynamic_cast<TScaler&>(obj).fTimePeriod               = fTimePeriod;
-   dynamic_cast<TScaler&>(obj).fNumberOfTimePeriods      = fNumberOfTimePeriods;
-   dynamic_cast<TScaler&>(obj).fTotalTimePeriod          = fTotalTimePeriod;
-   dynamic_cast<TScaler&>(obj).fTotalNumberOfTimePeriods = fTotalNumberOfTimePeriods;
-   dynamic_cast<TScaler&>(obj).fScalerMap                = fScalerMap;
+   static_cast<TScaler&>(obj).Clear();
+   static_cast<TScaler&>(obj).fTree                     = fTree;
+   static_cast<TScaler&>(obj).fScalerData               = fScalerData;
+   static_cast<TScaler&>(obj).fEntries                  = fEntries;
+   static_cast<TScaler&>(obj).fTimePeriod               = fTimePeriod;
+   static_cast<TScaler&>(obj).fNumberOfTimePeriods      = fNumberOfTimePeriods;
+   static_cast<TScaler&>(obj).fTotalTimePeriod          = fTotalTimePeriod;
+   static_cast<TScaler&>(obj).fTotalNumberOfTimePeriods = fTotalNumberOfTimePeriods;
+   static_cast<TScaler&>(obj).fScalerMap                = fScalerMap;
 }
 
 std::vector<UInt_t> TScaler::GetScaler(UInt_t address, ULong64_t time) const

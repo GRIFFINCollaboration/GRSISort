@@ -13,7 +13,7 @@ ClassImp(TMultiPeak)
 TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t>& centroids, Option_t*)
    : TGRSIFit("multipeakbg", MultiPhotoPeakBG, xlow, xhigh, centroids.size() * 6 + 5)
 {
-   this->Clear();
+   Clear();
    // We make the background first so we can send it to the TPeaks.
    fBackground = new TF1(Form("MPbackground_%d_to_%d", (Int_t)(xlow), (Int_t)(xhigh)), MultiStepBG, xlow, xhigh,
                          centroids.size() * 6 + 5);
@@ -39,17 +39,17 @@ TMultiPeak::TMultiPeak(Double_t xlow, Double_t xhigh, const std::vector<Double_t
          fPeakVec.push_back(peak);
       }
    }
-   this->SetRange(xlow, xhigh);
+   SetRange(xlow, xhigh);
 
-   this->SetName(Form("MultiPeak_%d_to_%d", (Int_t)(xlow), (Int_t)(xhigh))); // Gives a default name to the peak
-   this->SortPeaks(); // Defaults to sorting by TPeak::CompareEnergy
-   this->InitNames();
+   SetName(Form("MultiPeak_%d_to_%d", (Int_t)(xlow), (Int_t)(xhigh))); // Gives a default name to the peak
+   SortPeaks(); // Defaults to sorting by TPeak::CompareEnergy
+   InitNames();
 }
 
 TMultiPeak::TMultiPeak() : TGRSIFit("multipeakbg", MultiPhotoPeakBG, 0, 1000, 10)
 {
    // I don't think this constructor should be used, RD.
-   this->InitNames();
+   InitNames();
    fBackground = new TF1("background", MultiStepBG, 1000, 10); // This is a weird nonsense line.
    fBackground->SetNpx(1000);
    fBackground->SetLineStyle(2);
@@ -77,21 +77,21 @@ void TMultiPeak::SortPeaks(Bool_t (*SortFunction)(const TPeak*, const TPeak*))
 
 void TMultiPeak::InitNames()
 {
-   this->SetParName(0, "N_Peaks");
-   this->SetParName(1, "A");
-   this->SetParName(2, "B");
-   this->SetParName(3, "C");
-   this->SetParName(4, "bg_offset");
+   SetParName(0, "N_Peaks");
+   SetParName(1, "A");
+   SetParName(2, "B");
+   SetParName(3, "C");
+   SetParName(4, "bg_offset");
 
    for(int i = 0; i < (int)fPeakVec.size(); ++i) {
-      this->SetParName(6 * i + 5, Form("Height_%i", i));
-      this->SetParName(6 * i + 6, Form("Centroid_%i", i));
-      this->SetParName(6 * i + 7, Form("Sigma_%i", i));
-      this->SetParName(6 * i + 8, Form("Beta_%i", i));
-      this->SetParName(6 * i + 9, Form("R_%i", i));
-      this->SetParName(6 * i + 10, Form("Step_%i", i));
+      SetParName(6 * i + 5, Form("Height_%i", i));
+      SetParName(6 * i + 6, Form("Centroid_%i", i));
+      SetParName(6 * i + 7, Form("Sigma_%i", i));
+      SetParName(6 * i + 8, Form("Beta_%i", i));
+      SetParName(6 * i + 9, Form("R_%i", i));
+      SetParName(6 * i + 10, Form("Step_%i", i));
    }
-   this->FixParameter(0, fPeakVec.size());
+   FixParameter(0, fPeakVec.size());
 }
 
 TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit(), fBackground(nullptr)
@@ -102,7 +102,7 @@ TMultiPeak::TMultiPeak(const TMultiPeak& copy) : TGRSIFit(), fBackground(nullptr
 void TMultiPeak::Copy(TObject& obj) const
 {
    TGRSIFit::Copy(obj);
-   TMultiPeak* mpobj = dynamic_cast<TMultiPeak*>(&obj);
+   TMultiPeak* mpobj = static_cast<TMultiPeak*>(&obj);
    if(!(mpobj->fBackground)) {
       mpobj->fBackground = new TF1(*(fBackground));
    } else {
@@ -131,7 +131,7 @@ Bool_t TMultiPeak::InitParams(TH1* fithist)
       return false;
    }
 
-   this->FixParameter(0, fPeakVec.size());
+   FixParameter(0, fPeakVec.size());
    // This is the range for the fit.
    Double_t xlow, xhigh;
    GetRange(xlow, xhigh);
@@ -139,40 +139,40 @@ Bool_t TMultiPeak::InitParams(TH1* fithist)
    Int_t binhigh = fithist->GetXaxis()->FindBin(xhigh);
 
    // Initialize background
-   this->SetParLimits(1, 0.0, fithist->GetBinContent(binlow) * 100.0);
-   this->SetParameter("A", fithist->GetBinContent(binlow));
-   this->SetParameter("B", (fithist->GetBinContent(binlow) - fithist->GetBinContent(binhigh)) / (xlow - xhigh));
-   this->SetParameter("C", 0.0000);
-   this->SetParameter("bg_offset", (xhigh + xlow) / 2.0);
+   SetParLimits(1, 0.0, fithist->GetBinContent(binlow) * 100.0);
+   SetParameter("A", fithist->GetBinContent(binlow));
+   SetParameter("B", (fithist->GetBinContent(binlow) - fithist->GetBinContent(binhigh)) / (xlow - xhigh));
+   SetParameter("C", 0.0000);
+   SetParameter("bg_offset", (xhigh + xlow) / 2.0);
 
-   this->FixParameter(3, 0);
+   FixParameter(3, 0);
 
    // We need to initialize parameters for every peak in the fit
    for(int i = 0; i < (int)fPeakVec.size(); ++i) {
       Double_t centroid = fPeakVec.at(i)->GetCentroid();
       Int_t    bin      = fithist->GetXaxis()->FindBin(centroid);
-      this->SetParLimits(6 * i + 5, 0, fithist->GetBinContent(bin) * 5.);
-      this->SetParLimits(6 * i + 6, centroid - 4, centroid + 4);
-      // this->SetParLimits(6*i+7,0.1,xhigh-xlow);//This will be linked to other peaks eventually.
-      this->SetParLimits(6 * i + 7, 0.1, 1.5); // This will be linked to other peaks eventually.
-      this->SetParLimits(6 * i + 8, 0.000001, 10);
-      this->SetParLimits(6 * i + 9, 0.000001, 100);
-      this->SetParLimits(6 * i + 10, 0.0, 1.0E2);
+      SetParLimits(6 * i + 5, 0, fithist->GetBinContent(bin) * 5.);
+      SetParLimits(6 * i + 6, centroid - 4, centroid + 4);
+      // SetParLimits(6*i+7,0.1,xhigh-xlow);//This will be linked to other peaks eventually.
+      SetParLimits(6 * i + 7, 0.1, 1.5); // This will be linked to other peaks eventually.
+      SetParLimits(6 * i + 8, 0.000001, 10);
+      SetParLimits(6 * i + 9, 0.000001, 100);
+      SetParLimits(6 * i + 10, 0.0, 1.0E2);
       // Step size is allow to vary to anything. If it goes below 0, the code will fix it to 0
 
       // Now set the actual paramter to start the fit from these points
-      this->SetParameter(Form("Height_%i", i), fithist->GetBinContent(bin));
-      this->SetParameter(Form("Centroid_%i", i), centroid);
-      //  this->SetParameter("sigma",(xhigh-xlow)*0.5); // slightly more robust starting value for sigma -JKS
-      //  this->SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
-      this->SetParameter(Form("Sigma_%i", i), TMath::Sqrt(9.0 + 4. * GetParameter(Form("Centroid_%i", i)) / 1000.));
-      this->SetParameter(Form("Beta_%i", i), GetParameter(Form("Sigma_%i", i)) / 2.0);
-      this->SetParameter(Form("R_%i", i), 1.0);
-      this->SetParameter(Form("Step_%i", i), 1.0);
+      SetParameter(Form("Height_%i", i), fithist->GetBinContent(bin));
+      SetParameter(Form("Centroid_%i", i), centroid);
+      //  SetParameter("sigma",(xhigh-xlow)*0.5); // slightly more robust starting value for sigma -JKS
+      //  SetParameter("sigma",1.0/binWidth); // slightly more robust starting value for sigma -JKS
+      SetParameter(Form("Sigma_%i", i), TMath::Sqrt(9.0 + 4. * GetParameter(Form("Centroid_%i", i)) / 1000.));
+      SetParameter(Form("Beta_%i", i), GetParameter(Form("Sigma_%i", i)) / 2.0);
+      SetParameter(Form("R_%i", i), 1.0);
+      SetParameter(Form("Step_%i", i), 1.0);
 
       // Fix beta and R. These will be released if they are needed (or can be asked to be released).
-      this->FixParameter(6 * i + 8, GetParameter(Form("Beta_%i", i)));
-      this->FixParameter(6 * i + 9, 0.00);
+      FixParameter(6 * i + 8, GetParameter(Form("Beta_%i", i)));
+      FixParameter(6 * i + 9, 0.00);
    }
 
    SetInitialized();
@@ -229,7 +229,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
    //   printf("covmat ");CovMat.Print();
 
    // This copies the parameters background but the background function doesn't have peaks
-   this->CopyParameters(fBackground);
+   CopyParameters(fBackground);
    // We now make a copy of the covariance matrix that has completel 0 diagonals so that we can remove the other peaks
    // form the integral error.
    // This is done by adding back the peak of interest on the diagonal when it is integrated.
@@ -308,10 +308,10 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
       tmpMp->SetParameter(Form("Beta_%i", i), GetParameter(Form("Beta_%i", i)));
       tmpMp->SetParameter(Form("R_%i", i), GetParameter(Form("R_%i", i)));
 
-      Double_t width = this->GetParameter(Form("Sigma_%i", i));
+      Double_t width = GetParameter(Form("Sigma_%i", i));
       Double_t xlow, xhigh;
       Double_t int_low, int_high;
-      this->GetRange(xlow, xhigh);
+      GetRange(xlow, xhigh);
       int_low  = xlow - 10. * width; // making the integration bounds a bit smaller, but still large enough. -JKS
       int_high = xhigh + 10. * width;
 
@@ -334,7 +334,7 @@ Bool_t TMultiPeak::Fit(TH1* fithist, Option_t* opt)
    }
 
    // Set the background for drawing later
-   //  background->SetParameters(this->GetParameters());
+   //  background->SetParameters(GetParameters());
    // To DO: put a flag in signalling that the errors are not to be trusted if we have a bad cov matrix
    // Copy(*fithist->GetListOfFunctions()->Last());
    // if(optstr.Contains("+"))
@@ -360,7 +360,7 @@ void TMultiPeak::Clear(Option_t* opt)
 void TMultiPeak::Print(Option_t* opt) const
 {
    /// Prints TMultiPeak properties. To see More properties use the option "+"
-   printf("Name:        %s \n", this->GetName());
+   printf("Name:        %s \n", GetName());
    printf("Number of Peaks: %lu\n", fPeakVec.size());
    TF1::Print();
    for(int i = 0; i < (int)fPeakVec.size(); ++i) {

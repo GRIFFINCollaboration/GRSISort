@@ -39,7 +39,7 @@ TDataLoop* TDataLoop::Get(std::string name, TRawFile* source)
    if(name.length() == 0) {
       name = "input_loop";
    }
-   TDataLoop* loop = dynamic_cast<TDataLoop*>(StoppableThread::Get(name));
+   TDataLoop* loop = static_cast<TDataLoop*>(StoppableThread::Get(name));
    if(!loop && source) {
       loop = new TDataLoop(name, source);
    }

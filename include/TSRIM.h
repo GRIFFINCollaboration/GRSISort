@@ -21,12 +21,11 @@
 class TSRIM {
 public:
    virtual ~TSRIM() = default;
-   ;
 
    TSRIM();
+	// looks like the emax-min inputs don't work right now for 94Sr and maybe other high mass nuclei
    TSRIM(const char* infilename, double emax = -1.0, double emin = 0.0,
-         bool printfile =
-            true); // looks like the emax-min inputs don't work right now for 94Sr and maybe other high mass nuclei
+         bool printfile = true);
 
 private:
    std::vector<double> IonEnergy;

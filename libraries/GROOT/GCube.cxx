@@ -654,10 +654,10 @@ void GCube::Copy(TObject& obj) const
    // Copy.
 
    TH1::Copy(obj);
-   dynamic_cast<GCube&>(obj).fTsumwy  = fTsumwy;
-   dynamic_cast<GCube&>(obj).fTsumwy2 = fTsumwy2;
-   dynamic_cast<GCube&>(obj).fTsumwxy = fTsumwxy;
-   dynamic_cast<GCube&>(obj).fMatrix  = nullptr;
+   static_cast<GCube&>(obj).fTsumwy  = fTsumwy;
+   static_cast<GCube&>(obj).fTsumwy2 = fTsumwy2;
+   static_cast<GCube&>(obj).fTsumwxy = fTsumwxy;
+   static_cast<GCube&>(obj).fMatrix  = nullptr;
 }
 
 Double_t GCube::DoIntegral(Int_t binx1, Int_t binx2, Int_t biny1, Int_t biny2, Int_t binz1, Int_t binz2,
@@ -1099,7 +1099,7 @@ void GCube::FillRandom(TH1* h, Int_t ntimes)
    }
 
    Double_t x, y, z;
-   TH3*     h3 = dynamic_cast<TH3*>(h);
+   TH3*     h3 = static_cast<TH3*>(h);
    for(int loop = 0; loop < ntimes; ++loop) {
       h3->GetRandom3(x, y, z);
       Fill(x, y, z);
@@ -2334,7 +2334,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
          Error("DoProjection", "Histogram with name %s must be a TH1D and is a %s", name, h1obj->ClassName());
          return nullptr;
       }
-      h1 = dynamic_cast<TH1D*>(h1obj);
+      h1 = static_cast<TH1D*>(h1obj);
       // reset the existing histogram and set always the new binning for the axis
       // This avoid problems when the histogram already exists and the histograms is rebinned or its range has changed
       // (see https://savannah.cern.ch/bugs/?94101 or https://savannah.cern.ch/bugs/?95808 )
@@ -2580,7 +2580,7 @@ GCube* GCube::Rebin3D(Int_t ngroup, const char* newname)
    // create a clone of the old histogram if newname is specified
    GCube* hnew = this;
    if(newname != nullptr && strlen(newname)) {
-      hnew = dynamic_cast<GCube*>(Clone());
+      hnew = static_cast<GCube*>(Clone());
       hnew->SetName(newname);
    }
 
@@ -3113,7 +3113,7 @@ GCubeF::~GCubeF() = default;
 TH2F* GCubeF::GetMatrix(bool force)
 {
    if(fMatrix != nullptr && !force) {
-      return dynamic_cast<TH2F*>(fMatrix);
+      return static_cast<TH2F*>(fMatrix);
    }
    if(force && fMatrix != nullptr) {
       delete fMatrix;
@@ -3129,12 +3129,12 @@ TH2F* GCubeF::GetMatrix(bool force)
          }
       }
    }
-   return dynamic_cast<TH2F*>(fMatrix);
+   return static_cast<TH2F*>(fMatrix);
 }
 
 void GCubeF::Copy(TObject& rh) const
 {
-   GCube::Copy(dynamic_cast<GCubeF&>(rh));
+   GCube::Copy(static_cast<GCubeF&>(rh));
 }
 
 #if MAJOR_ROOT_VERSION < 6
@@ -3162,7 +3162,7 @@ TH1* GCubeF::DrawCopy(Option_t* option, const char* name_postfix) const
       gPad->Clear();
    }
    TString newName = (name_postfix) ? TString::Format("%s%s", GetName(), name_postfix) : "";
-   TH1*    newth1  = dynamic_cast<TH1*>(Clone(newName));
+   TH1*    newth1  = static_cast<TH1*>(Clone(newName));
    newth1->SetDirectory(nullptr);
    newth1->SetBit(kCanDelete);
    newth1->AppendPad(option);
@@ -3338,7 +3338,7 @@ GCubeD::~GCubeD() = default;
 TH2D* GCubeD::GetMatrix(bool force)
 {
    if(fMatrix != nullptr && !force) {
-      return dynamic_cast<TH2D*>(fMatrix);
+      return static_cast<TH2D*>(fMatrix);
    }
    if(force && fMatrix != nullptr) {
       delete fMatrix;
@@ -3355,12 +3355,12 @@ TH2D* GCubeD::GetMatrix(bool force)
          }
       }
    }
-   return dynamic_cast<TH2D*>(fMatrix);
+   return static_cast<TH2D*>(fMatrix);
 }
 
 void GCubeD::Copy(TObject& rh) const
 {
-   GCube::Copy(dynamic_cast<GCubeD&>(rh));
+   GCube::Copy(static_cast<GCubeD&>(rh));
 }
 
 #if MAJOR_ROOT_VERSION < 6
@@ -3388,7 +3388,7 @@ TH1* GCubeD::DrawCopy(Option_t* option, const char* name_postfix) const
       gPad->Clear();
    }
    TString newName = (name_postfix) ? TString::Format("%s%s", GetName(), name_postfix) : "";
-   TH1*    newth1  = dynamic_cast<TH1*>(Clone(newName));
+   TH1*    newth1  = static_cast<TH1*>(Clone(newName));
    newth1->SetDirectory(nullptr);
    newth1->SetBit(kCanDelete);
    newth1->AppendPad(option);

@@ -59,7 +59,7 @@ Bool_t TGRSISortList::AddSortList(TGRSISortList* rhslist, Option_t*)
    for(it = rhsmap->begin(); it != rhsmap->end(); it++) {
       for(lil_it = it->second.begin(); lil_it != it->second.end(); lil_it++) {
          // We need to clone the TGRSISortInfo so that we have ownership in the new list
-         AddSortInfo(dynamic_cast<TGRSISortInfo*>(lil_it->second->Clone()));
+         AddSortInfo(static_cast<TGRSISortInfo*>(lil_it->second->Clone()));
          // We might not need the clone, but that will take some checking.
       }
    }

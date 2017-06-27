@@ -56,9 +56,9 @@ void TZeroDegreeHit::Copy(TObject& rhs) const
    if(TGRSIOptions::Get()->ExtractWaves()) {
       TGRSIDetectorHit::CopyWave(rhs);
    }
-   dynamic_cast<TZeroDegreeHit&>(rhs).fFilter     = fFilter;
-   dynamic_cast<TZeroDegreeHit&>(rhs).fCfdMonitor = fCfdMonitor;
-   dynamic_cast<TZeroDegreeHit&>(rhs).fPartialSum = fPartialSum;
+   static_cast<TZeroDegreeHit&>(rhs).fFilter     = fFilter;
+   static_cast<TZeroDegreeHit&>(rhs).fCfdMonitor = fCfdMonitor;
+   static_cast<TZeroDegreeHit&>(rhs).fPartialSum = fPartialSum;
 }
 
 void TZeroDegreeHit::Copy(TObject& obj, bool waveform) const

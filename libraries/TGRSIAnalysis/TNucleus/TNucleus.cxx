@@ -463,7 +463,7 @@ void TNucleus::WriteSourceFile(const std::string& outfilename)
       std::ofstream sourceout;
       sourceout.open(outfilename.c_str());
       for(int i = 0; i < TransitionList.GetSize(); i++) {
-         std::string transtr = (dynamic_cast<TTransition*>(TransitionList.At(i)))->PrintToString();
+         std::string transtr = (static_cast<TTransition*>(TransitionList.At(i)))->PrintToString();
          sourceout<<transtr.c_str();
          sourceout<<std::endl;
       }

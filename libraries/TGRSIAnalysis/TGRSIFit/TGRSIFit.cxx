@@ -18,13 +18,13 @@ TGRSIFit::TGRSIFit(const TGRSIFit& copy) : TF1(copy)
 
 TGRSIFit::~TGRSIFit()
 {
-   this->AddToGlobalList(kFALSE);
+   AddToGlobalList(kFALSE);
 }
 
 void TGRSIFit::Copy(TObject& obj) const
 {
-   dynamic_cast<TGRSIFit&>(obj).fInitFlag    = fInitFlag;
-   dynamic_cast<TGRSIFit&>(obj).fGoodFitFlag = fGoodFitFlag;
+   static_cast<TGRSIFit&>(obj).fInitFlag    = fInitFlag;
+   static_cast<TGRSIFit&>(obj).fGoodFitFlag = fGoodFitFlag;
    TF1::Copy(obj);
 }
 

@@ -27,20 +27,20 @@ TParsingDiagnostics::~TParsingDiagnostics()
 
 void TParsingDiagnostics::Copy(TObject& obj) const
 {
-   dynamic_cast<TParsingDiagnostics&>(obj).fPPGCycleLength         = fPPGCycleLength;
-   dynamic_cast<TParsingDiagnostics&>(obj).fNumberOfGoodFragments  = fNumberOfGoodFragments;
-   dynamic_cast<TParsingDiagnostics&>(obj).fNumberOfBadFragments   = fNumberOfBadFragments;
-   dynamic_cast<TParsingDiagnostics&>(obj).fMinChannelId           = fMinChannelId;
-   dynamic_cast<TParsingDiagnostics&>(obj).fMaxChannelId           = fMaxChannelId;
-   dynamic_cast<TParsingDiagnostics&>(obj).fDeadTime               = fDeadTime;
-   dynamic_cast<TParsingDiagnostics&>(obj).fMinTimeStamp           = fMinTimeStamp;
-   dynamic_cast<TParsingDiagnostics&>(obj).fMaxTimeStamp           = fMaxTimeStamp;
-   dynamic_cast<TParsingDiagnostics&>(obj).fMinMidasTimeStamp      = fMinMidasTimeStamp;
-   dynamic_cast<TParsingDiagnostics&>(obj).fMaxMidasTimeStamp      = fMaxMidasTimeStamp;
-   dynamic_cast<TParsingDiagnostics&>(obj).fMinNetworkPacketNumber = fMinNetworkPacketNumber;
-   dynamic_cast<TParsingDiagnostics&>(obj).fMaxNetworkPacketNumber = fMaxNetworkPacketNumber;
-   dynamic_cast<TParsingDiagnostics&>(obj).fNumberOfNetworkPackets = fNumberOfNetworkPackets;
-   dynamic_cast<TParsingDiagnostics&>(obj).fNumberOfHits           = fNumberOfHits;
+   static_cast<TParsingDiagnostics&>(obj).fPPGCycleLength         = fPPGCycleLength;
+   static_cast<TParsingDiagnostics&>(obj).fNumberOfGoodFragments  = fNumberOfGoodFragments;
+   static_cast<TParsingDiagnostics&>(obj).fNumberOfBadFragments   = fNumberOfBadFragments;
+   static_cast<TParsingDiagnostics&>(obj).fMinChannelId           = fMinChannelId;
+   static_cast<TParsingDiagnostics&>(obj).fMaxChannelId           = fMaxChannelId;
+   static_cast<TParsingDiagnostics&>(obj).fDeadTime               = fDeadTime;
+   static_cast<TParsingDiagnostics&>(obj).fMinTimeStamp           = fMinTimeStamp;
+   static_cast<TParsingDiagnostics&>(obj).fMaxTimeStamp           = fMaxTimeStamp;
+   static_cast<TParsingDiagnostics&>(obj).fMinMidasTimeStamp      = fMinMidasTimeStamp;
+   static_cast<TParsingDiagnostics&>(obj).fMaxMidasTimeStamp      = fMaxMidasTimeStamp;
+   static_cast<TParsingDiagnostics&>(obj).fMinNetworkPacketNumber = fMinNetworkPacketNumber;
+   static_cast<TParsingDiagnostics&>(obj).fMaxNetworkPacketNumber = fMaxNetworkPacketNumber;
+   static_cast<TParsingDiagnostics&>(obj).fNumberOfNetworkPackets = fNumberOfNetworkPackets;
+   static_cast<TParsingDiagnostics&>(obj).fNumberOfHits           = fNumberOfHits;
 }
 
 void TParsingDiagnostics::Clear(Option_t*)

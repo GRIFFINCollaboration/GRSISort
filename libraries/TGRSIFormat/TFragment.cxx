@@ -146,7 +146,7 @@ Short_t TFragment::GetChannelNumber() const
 TPPG* TFragment::GetPPG()
 {
    if(fPPG == nullptr) {
-      fPPG = dynamic_cast<TPPG*>(gROOT->FindObject("TPPG"));
+      fPPG = static_cast<TPPG*>(gROOT->FindObject("TPPG"));
    }
    return fPPG;
 }

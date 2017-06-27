@@ -66,7 +66,7 @@ Int_t TSourceList::SetNucleus(const TNucleus& nuc)
    std::cout<<"Adding Transitions..."<<std::endl;
    while((transition = next())) {
       transition->Print();
-      if(AddTransition(dynamic_cast<TTransition*>(transition))) {
+      if(AddTransition(static_cast<TTransition*>(transition))) {
          good_counter++;
       }
    }

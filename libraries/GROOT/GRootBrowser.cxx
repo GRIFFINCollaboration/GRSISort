@@ -342,8 +342,8 @@ void GRootBrowser::Add(TObject* obj, const char* name, Int_t check)
       return;
    }
    if(obj->InheritsFrom("TKey")) {
-      if(strcmp((dynamic_cast<TKey*>(obj))->GetClassName(), "TChannel") == 0) {
-         (dynamic_cast<TKey*>(obj))->ReadObj();
+      if(strcmp((static_cast<TKey*>(obj))->GetClassName(), "TChannel") == 0) {
+         (static_cast<TKey*>(obj))->ReadObj();
       }
    }
    if(fActBrowser) {
@@ -415,7 +415,7 @@ void GRootBrowser::CloseTabs()
          if(el->fFrame->InheritsFrom("TVirtualPadEditor")) {
             TVirtualPadEditor::Terminate();
          } else if(el->fFrame->InheritsFrom("TGMainFrame")) {
-            (dynamic_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
+            (static_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
             gSystem->ProcessEvents();
          } else {
             delete el->fFrame;
@@ -441,7 +441,7 @@ void GRootBrowser::CloseTabs()
          el->fFrame->SetFrameElement(nullptr);
          if(el->fFrame->InheritsFrom("TGMainFrame")) {
             Bool_t sleep = (el->fFrame->InheritsFrom("GRootCanvas")) ? kTRUE : kFALSE;
-            (dynamic_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
+            (static_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
             if(sleep) {
                gSystem->Sleep(150);
             }
@@ -469,7 +469,7 @@ void GRootBrowser::CloseTabs()
       if(el && el->fFrame) {
          el->fFrame->SetFrameElement(nullptr);
          if(el->fFrame->InheritsFrom("TGMainFrame")) {
-            (dynamic_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
+            (static_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
             gSystem->ProcessEvents();
          } else {
             delete el->fFrame;
@@ -694,9 +694,10 @@ void GRootBrowser::HandleMenu(Int_t id)
       if(!rootx.IsNull()) {
          rootx += "/bin";
       }
-      #endif rootx += "/root -a &";
+#endif //ROOTBINDIR
+		rootx += "/root -a &";
       gSystem->Exec(rootx);
-#else
+#else //R__UNIX
 #ifdef WIN32
       new TWin32SplashThread(kTRUE);
 #else
@@ -705,8 +706,8 @@ void GRootBrowser::HandleMenu(Int_t id)
       hd = new TRootHelpDialog(this, str, 600, 400);
       hd->SetText(gHelpAbout);
       hd->Popup();
-#endif
-#endif
+#endif //WIN32
+#endif //R__UNIX
    } break;
    case kHelpOnCanvas:
       hd = new TRootHelpDialog(this, "Help on Canvas...", 600, 400);
@@ -952,7 +953,7 @@ void GRootBrowser::RemoveTab(Int_t pos, Int_t subpos)
       el->fFrame->SetFrameElement(nullptr);
       if(el->fFrame->InheritsFrom("TGMainFrame")) {
          Bool_t sleep = (el->fFrame->InheritsFrom("GRootCanvas")) ? kTRUE : kFALSE;
-         (dynamic_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
+         (static_cast<TGMainFrame*>(el->fFrame))->CloseWindow();
          if(sleep) {
             gSystem->Sleep(150);
          }
@@ -1036,7 +1037,7 @@ void GRootBrowser::ShowMenu(TGCompositeFrame* menu)
    fBindList->Delete();
    TIter nextm(fMenuBar->GetList());
    while((el = dynamic_cast<TGFrameElement*>(nextm()))) {
-      TGMenuTitle* t    = dynamic_cast<TGMenuTitle*>(el->fFrame);
+      TGMenuTitle* t    = static_cast<TGMenuTitle*>(el->fFrame);
       Int_t        code = t->GetHotKeyCode();
       BindKey(fMenuBar, code, kKeyMod1Mask);
       BindKey(fMenuBar, code, kKeyMod1Mask | kKeyShiftMask);
@@ -1147,7 +1148,7 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
       TIter next(embed->GetList());
       while((el = dynamic_cast<TGFrameElement*>(next()))) {
          if(el->fFrame->InheritsFrom("TGMenuBar")) {
-            TGMenuBar* menu = dynamic_cast<TGMenuBar*>(el->fFrame);
+            TGMenuBar* menu = static_cast<TGMenuBar*>(el->fFrame);
             if(fActMenuBar == menu) {
                return;
             }
@@ -1159,15 +1160,15 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
                   return;
                }
             }
-            const_cast<TGCompositeFrame*>(dynamic_cast<const TGCompositeFrame*>(menu->GetParent()))->HideFrame(menu);
-            const_cast<TGCompositeFrame*>(dynamic_cast<const TGCompositeFrame*>(menu->GetParent()))
+            const_cast<TGCompositeFrame*>(static_cast<const TGCompositeFrame*>(menu->GetParent()))->HideFrame(menu);
+            const_cast<TGCompositeFrame*>(static_cast<const TGCompositeFrame*>(menu->GetParent()))
                ->SetCleanup(kNoCleanup);
             menu->ReparentWindow(fMenuFrame);
             fMenuFrame->AddFrame(menu, fLH2);
             TGFrameElement* mel;
             TIter           mnext(menu->GetList());
             while((mel = dynamic_cast<TGFrameElement*>(mnext()))) {
-               TGMenuTitle* t     = dynamic_cast<TGMenuTitle*>(mel->fFrame);
+               TGMenuTitle* t     = static_cast<TGMenuTitle*>(mel->fFrame);
                TGPopupMenu* popup = menu->GetPopup(t->GetName());
                if(popup) {
                   RecursiveReparent(popup);
