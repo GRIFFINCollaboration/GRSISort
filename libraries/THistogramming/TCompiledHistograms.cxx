@@ -190,7 +190,7 @@ void TCompiledHistograms::SetDefaultDirectory(TDirectory* dir)
    TObject* obj = nullptr;
    TIter    next(&fObjects);
    while((obj = next())) {
-      TH1* hist = dynamic_cast<TH1*>(obj);
+      TH1* hist = static_cast<TH1*>(obj);
       if(hist) {
          hist->SetDirectory(dir);
       }

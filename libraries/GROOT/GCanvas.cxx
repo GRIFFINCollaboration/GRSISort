@@ -159,7 +159,7 @@ void GCanvas::GCanvasInit()
    // if(gVirtualX->InheritsFrom("TGX11")) {
    //    printf("\tusing x11-like graphical interface.\n");
    //}
-   // this->SetCrosshair(true);
+   // SetCrosshair(true);
    SetBit(kNotDeleted, false); // root voodoo.
 }
 
@@ -404,8 +404,8 @@ void GCanvas::Draw(Option_t* opt)
 {
    printf("GCanvas Draw was called.\n");
    TCanvas::Draw(opt);
-   if(this->FindObject("TFrame")) {
-      this->FindObject("TFrame")->SetBit(TBox::kCannotMove);
+   if(FindObject("TFrame")) {
+      FindObject("TFrame")->SetBit(TBox::kCannotMove);
    }
 }
 
@@ -717,7 +717,7 @@ bool GCanvas::ProcessNonHistKeyboardPress(Event_t*, UInt_t* keysym)
       GetCanvasImp()->ShowEditor(!GetCanvasImp()->HasEditor());
       edited = true;
       break;
-   case kKey_F9: this->SetCrosshair(!this->HasCrosshair()); edited = true;
+   case kKey_F9: SetCrosshair(!HasCrosshair()); edited = true;
    }
 
    return edited;
@@ -773,13 +773,13 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       RemoveMarker("all");
       break;
    case kKey_E:
-      // this->GetListOfPrimitives()->Print();
+      // GetListOfPrimitives()->Print();
       GetContextMenu()->Action(hists.back()->GetXaxis(),
                                hists.back()->GetXaxis()->Class()->GetMethodAny("SetRangeUser"));
       {
          double x1 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetXaxis()->GetFirst());
          double x2 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetXaxis()->GetLast());
-         TIter  iter(this->GetListOfPrimitives());
+         TIter  iter(GetListOfPrimitives());
          while(TObject* obj = iter.Next()) {
             if(obj->InheritsFrom(TPad::Class())) {
                TPad* pad = static_cast<TPad*>(obj);
@@ -900,7 +900,7 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
          hist->GetListOfFunctions()->Clear();
       }
       RemovePeaks(hists.data(), hists.size());
-      this->Clear();
+      Clear();
       hists.at(0)->Draw("hist");
       for(unsigned int i = 1; i < hists.size(); i++) {
          hists.at(i)->Draw("histsame");
@@ -1030,13 +1030,13 @@ bool GCanvas::Process1DKeyboardPress(Event_t*, UInt_t* keysym)
       RemoveMarker("all");
       break;
    case kKey_R:
-      // this->GetListOfPrimitives()->Print();
+      // GetListOfPrimitives()->Print();
       GetContextMenu()->Action(hists.back()->GetYaxis(),
                                hists.back()->GetYaxis()->Class()->GetMethodAny("SetRangeUser"));
       {
          double y1 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetYaxis()->GetFirst());
          double y2 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetYaxis()->GetLast());
-         TIter  iter(this->GetListOfPrimitives());
+         TIter  iter(GetListOfPrimitives());
          while(TObject* obj = iter.Next()) {
             if(obj->InheritsFrom(TPad::Class())) {
                TPad* pad = static_cast<TPad*>(obj);
@@ -1173,13 +1173,13 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
       break;
 
    case kKey_E:
-      // this->GetListOfPrimitives()->Print();
+      // GetListOfPrimitives()->Print();
       GetContextMenu()->Action(hists.back()->GetXaxis(),
                                hists.back()->GetXaxis()->Class()->GetMethodAny("SetRangeUser"));
       {
          double x1 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetXaxis()->GetFirst());
          double x2 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetXaxis()->GetLast());
-         TIter  iter(this->GetListOfPrimitives());
+         TIter  iter(GetListOfPrimitives());
          while(TObject* obj = iter.Next()) {
             if(obj->InheritsFrom(TPad::Class())) {
                TPad* pad = static_cast<TPad*>(obj);
@@ -1304,13 +1304,13 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 		RemoveMarker("all");
 		break;
 	case kKey_R:
-		// this->GetListOfPrimitives()->Print();
+		// GetListOfPrimitives()->Print();
 		GetContextMenu()->Action(hists.back()->GetYaxis(),
 				hists.back()->GetYaxis()->Class()->GetMethodAny("SetRangeUser"));
 		{
 			double y1 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetYaxis()->GetFirst());
 			double y2 = hists.back()->GetXaxis()->GetBinCenter(hists.back()->GetYaxis()->GetLast());
-			TIter  iter(this->GetListOfPrimitives());
+			TIter  iter(GetListOfPrimitives());
 			while(TObject* obj = iter.Next()) {
 				if(obj->InheritsFrom(TPad::Class())) {
 					TPad* pad = static_cast<TPad*>(obj);
@@ -1426,7 +1426,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 							 hist->GetYaxis()->UnZoom();
 						 }
 						 TVirtualPad* cpad = gPad;
-						 this->cd();
+						 cd();
 						 gPad->SetLogz(0);
 						 cpad->cd();
 					 } else {
@@ -1437,7 +1437,7 @@ bool GCanvas::Process2DKeyboardPress(Event_t*, UInt_t* keysym)
 							 }
 						 }
 						 TVirtualPad* cpad = gPad;
-						 this->cd();
+						 cd();
 						 gPad->SetLogz(1);
 						 cpad->cd();
 					 }

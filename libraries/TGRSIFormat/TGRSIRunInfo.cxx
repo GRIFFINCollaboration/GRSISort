@@ -56,7 +56,7 @@ Bool_t TGRSIRunInfo::ReadInfoFromFile(TFile* tempf)
    TList* list = tempf->GetListOfKeys();
    TIter  iter(list);
    printf("Reading Info from file:" CYAN " %s" RESET_COLOR "\n", tempf->GetName());
-   while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
+   while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(), "TGRSIRunInfo")) {
          continue;
       }
@@ -434,9 +434,9 @@ Long64_t TGRSIRunInfo::Merge(TCollection* list)
    // An individual file that was submitted to hadd.
    TGRSIRunInfo* runinfo = nullptr;
 
-   while((runinfo = dynamic_cast<TGRSIRunInfo*>(it.Next())) != nullptr) {
+   while((runinfo = static_cast<TGRSIRunInfo*>(it.Next())) != nullptr) {
       // Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.
-      this->Add(runinfo);
+      Add(runinfo);
    }
    return 0;
 }

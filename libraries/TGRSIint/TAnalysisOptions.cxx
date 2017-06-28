@@ -78,7 +78,7 @@ void TAnalysisOptions::ReadFromFile(const std::string& file)
       TList* list = f->GetListOfKeys();
       TIter  iter(list);
       std::cout<<"Reading Options from file:"<<CYAN<<f<<RESET_COLOR<<std::endl;
-      while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
+      while(TKey* key = static_cast<TKey*>(iter.Next())) {
          if(!key || strcmp(key->GetClassName(), "TAnalysisOptions")) {
             continue;
          }

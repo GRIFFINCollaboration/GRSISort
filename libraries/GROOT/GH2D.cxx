@@ -139,7 +139,7 @@ void GH2D::Streamer(TBuffer &b) {
     Version_t v = b.ReadVersion();
     TH2D::Streamer(b);
     TDirectory *current = gDirectory;
-    if(TDirectory::Cd(Form("%s_projections",this->GetName()))) {
+    if(TDirectory::Cd(Form("%s_projections",GetName()))) {
       TList *list = gDirectory->GetList();
       TIter iter(list);
       while(TObject *obj = iter.Next()) {
@@ -156,7 +156,7 @@ void GH2D::Streamer(TBuffer &b) {
     TH2D::Streamer(b);
     if(fProjections.GetEntries()) {
       TDirectory *current = gDirectory;
-      TDirectory *newdir  =  current->mkdir(Form("%s_projections",this->GetName());
+      TDirectory *newdir  =  current->mkdir(Form("%s_projections",GetName());
       newdir->cd();
       fProjections->Write();
       current->cd();

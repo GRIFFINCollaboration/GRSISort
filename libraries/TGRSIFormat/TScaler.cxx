@@ -52,8 +52,8 @@ TScaler::TScaler(bool loadIntoMap)
 {
    /// This constructor tries to find the "ScalerTree" and uses it (if requested) to load the scaler data into the map.
    ///\param[in] loadIntoMap Flag telling TScaler to load all scaler data into fScalerMap.
-   this->Clear();
-   fTree = dynamic_cast<TTree*>(gROOT->FindObject("ScalerTree"));
+   Clear();
+   fTree = static_cast<TTree*>(gROOT->FindObject("ScalerTree"));
    if(fTree != nullptr) {
       fEntries = fTree->GetEntries();
       fTree->SetBranchAddress("TScalerData", &fScalerData);
@@ -68,7 +68,7 @@ TScaler::TScaler(bool loadIntoMap)
 
 TScaler::TScaler(TTree* tree, bool loadIntoMap)
 {
-   this->Clear();
+   Clear();
    fTree = tree;
    if(fTree != nullptr) {
       fEntries = fTree->GetEntries();

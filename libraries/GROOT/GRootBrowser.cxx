@@ -374,7 +374,7 @@ void GRootBrowser::CloneBrowser()
    GBrowserPlugin* plugin = nullptr;
    auto*           b      = new TBrowser();
    TIter           next(&fPlugins);
-   while((plugin = dynamic_cast<GBrowserPlugin*>(next()))) {
+   while((plugin = static_cast<GBrowserPlugin*>(next()))) {
       if(loop > fNbInitPlugins) {
          b->ExecPlugin(plugin->GetName(), "", plugin->fCommand.Data(), plugin->fTab, plugin->fSubTab);
       }
@@ -409,7 +409,7 @@ void GRootBrowser::CloseTabs()
       if(!container) {
          continue;
       }
-      el = dynamic_cast<TGFrameElement*>(container->GetList()->First());
+      el = static_cast<TGFrameElement*>(container->GetList()->First());
       if(el && el->fFrame) {
          el->fFrame->SetFrameElement(nullptr);
          if(el->fFrame->InheritsFrom("TVirtualPadEditor")) {
@@ -436,7 +436,7 @@ void GRootBrowser::CloseTabs()
       if(!container) {
          continue;
       }
-      el = dynamic_cast<TGFrameElement*>(container->GetList()->First());
+      el = static_cast<TGFrameElement*>(container->GetList()->First());
       if(el && el->fFrame) {
          el->fFrame->SetFrameElement(nullptr);
          if(el->fFrame->InheritsFrom("TGMainFrame")) {
@@ -465,7 +465,7 @@ void GRootBrowser::CloseTabs()
       if(!container) {
          continue;
       }
-      el = dynamic_cast<TGFrameElement*>(container->GetList()->First());
+      el = static_cast<TGFrameElement*>(container->GetList()->First());
       if(el && el->fFrame) {
          el->fFrame->SetFrameElement(nullptr);
          if(el->fFrame->InheritsFrom("TGMainFrame")) {
@@ -668,7 +668,7 @@ void GRootBrowser::HandleMenu(Int_t id)
       if(fi.fMultipleSelection && fi.fFileNamesList) {
          TObjString* el;
          TIter       next(fi.fFileNamesList);
-         while((el = dynamic_cast<TObjString*>(next()))) {
+         while((el = static_cast<TObjString*>(next()))) {
             gROOT->ProcessLine(Form(R"(new TFile("%s");)", gSystem->UnixPathName(el->GetString())));
          }
          newfile = kTRUE;
@@ -677,7 +677,7 @@ void GRootBrowser::HandleMenu(Int_t id)
          newfile = kTRUE;
       }
       if(fActBrowser && newfile) {
-         TGFileBrowser* fb = dynamic_cast<TGFileBrowser*>(fActBrowser);
+         TGFileBrowser* fb = static_cast<TGFileBrowser*>(fActBrowser);
          if(fb) {
             fb->Selected(nullptr);
          }
@@ -898,7 +898,7 @@ void GRootBrowser::RecursiveReparent(TGPopupMenu* popup)
 
    TGMenuEntry* entry = nullptr;
    TIter        next(popup->GetListOfEntries());
-   while((entry = dynamic_cast<TGMenuEntry*>(next()))) {
+   while((entry = static_cast<TGMenuEntry*>(next()))) {
       if(entry->GetPopup()) {
          RecursiveReparent(entry->GetPopup());
       }
@@ -946,7 +946,7 @@ void GRootBrowser::RemoveTab(Int_t pos, Int_t subpos)
    }
    TGFrameElement* el = nullptr;
    if(edit->GetTabContainer(subpos)) {
-      el = dynamic_cast<TGFrameElement*>(edit->GetTabContainer(subpos)->GetList()->First());
+      el = static_cast<TGFrameElement*>(edit->GetTabContainer(subpos)->GetList()->First());
    }
    if(el && el->fFrame) {
       el->fFrame->Disconnect("ProcessedConfigure(Event_t*)");
@@ -1012,7 +1012,7 @@ void GRootBrowser::SetTabTitle(const char* title, Int_t pos, Int_t subpos)
    if(el) {
       el->SetText(new TGString(title));
       edit->Layout();
-      if((p = dynamic_cast<GBrowserPlugin*>(fPlugins.FindObject(title)))) {
+      if((p = static_cast<GBrowserPlugin*>(fPlugins.FindObject(title)))) {
          p->SetName(title);
       }
    }
@@ -1036,7 +1036,7 @@ void GRootBrowser::ShowMenu(TGCompositeFrame* menu)
    // these bloody menus...
    fBindList->Delete();
    TIter nextm(fMenuBar->GetList());
-   while((el = dynamic_cast<TGFrameElement*>(nextm()))) {
+   while((el = static_cast<TGFrameElement*>(nextm()))) {
       TGMenuTitle* t    = static_cast<TGMenuTitle*>(el->fFrame);
       Int_t        code = t->GetHotKeyCode();
       BindKey(fMenuBar, code, kKeyMod1Mask);
@@ -1100,14 +1100,14 @@ void GRootBrowser::StopEmbedding(const char* name, TGLayoutHints* layout)
 
    if(fEditFrame != nullptr) {
       fEditFrame->SetEditable(kFALSE);
-      TGFrameElement* el = dynamic_cast<TGFrameElement*>(fEditFrame->GetList()->First());
+      TGFrameElement* el = static_cast<TGFrameElement*>(fEditFrame->GetList()->First());
       if(el && el->fFrame) {
          // let be notified when the inside frame gets resized, and tell its
          // container to recompute its layout
          el->fFrame->Connect("ProcessedConfigure(Event_t*)", "TGCompositeFrame", fEditFrame, "Layout()");
       }
       if(layout) {
-         el = dynamic_cast<TGFrameElement*>(fEditFrame->GetList()->Last());
+         el = static_cast<TGFrameElement*>(fEditFrame->GetList()->Last());
          // !!!! MT what to do with the old layout? Leak it for now ...
          if(el) {
             el->fLayout = layout;
@@ -1135,18 +1135,18 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
    if(from == nullptr) {
       return;
    }
-   TGFrameElement* fe = dynamic_cast<TGFrameElement*>(from->GetList()->First());
+   TGFrameElement* fe = static_cast<TGFrameElement*>(from->GetList()->First());
    if(!fe) {
       if(fActMenuBar != fMenuBar) {
          ShowMenu(fMenuBar);
       }
       return;
    }
-   TGCompositeFrame* embed = dynamic_cast<TGCompositeFrame*>(fe->fFrame);
+   TGCompositeFrame* embed = static_cast<TGCompositeFrame*>(fe->fFrame);
    TGFrameElement*   el    = nullptr;
    if(embed && embed->GetList()) {
       TIter next(embed->GetList());
-      while((el = dynamic_cast<TGFrameElement*>(next()))) {
+      while((el = static_cast<TGFrameElement*>(next()))) {
          if(el->fFrame->InheritsFrom("TGMenuBar")) {
             TGMenuBar* menu = static_cast<TGMenuBar*>(el->fFrame);
             if(fActMenuBar == menu) {
@@ -1154,7 +1154,7 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
             }
             TGFrameElement* nw;
             TIter           nel(fMenuFrame->GetList());
-            while((nw = dynamic_cast<TGFrameElement*>(nel()))) {
+            while((nw = static_cast<TGFrameElement*>(nel()))) {
                if(nw->fFrame == menu) {
                   ShowMenu(menu);
                   return;
@@ -1167,7 +1167,7 @@ void GRootBrowser::SwitchMenus(TGCompositeFrame* from)
             fMenuFrame->AddFrame(menu, fLH2);
             TGFrameElement* mel;
             TIter           mnext(menu->GetList());
-            while((mel = dynamic_cast<TGFrameElement*>(mnext()))) {
+            while((mel = static_cast<TGFrameElement*>(mnext()))) {
                TGMenuTitle* t     = static_cast<TGMenuTitle*>(mel->fFrame);
                TGPopupMenu* popup = menu->GetPopup(t->GetName());
                if(popup) {

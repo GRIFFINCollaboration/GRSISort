@@ -347,7 +347,7 @@ bool TEfficiencyCalibration::ScaleToAbsolute()
       Double_t w_avg_numer   = 0.0;
       Double_t w_avg_denom   = 0.0;
       Double_t semi_w_uncert = 0.0;
-      while(TEfficiencyGraph* abs_graph = dynamic_cast<TEfficiencyGraph*>(next())) {
+      while(TEfficiencyGraph* abs_graph = static_cast<TEfficiencyGraph*>(next())) {
          Double_t* y_val  = abs_graph->GetY();
          Double_t* ey_val = abs_graph->GetEY();
          Double_t* x_val  = abs_graph->GetX();

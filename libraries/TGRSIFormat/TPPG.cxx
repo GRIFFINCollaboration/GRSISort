@@ -93,7 +93,7 @@ TPPG* TPPG::Get()
    // singletons, so one should take care to always use this method and not
    // the constructor.
    if(fPPG == nullptr) {
-      fPPG = dynamic_cast<TPPG*>(gDirectory->Get("TPPG"));
+      fPPG = static_cast<TPPG*>(gDirectory->Get("TPPG"));
       if(fPPG == nullptr) {
          fPPG = new TPPG();
       }
@@ -351,7 +351,7 @@ void TPPG::Setup()
       auto* prevSubRun =
          new TFile(Form("fragment%05d_%03d.root", TGRSIRunInfo::RunNumber(), TGRSIRunInfo::SubRunNumber() - 1));
       if(prevSubRun->IsOpen()) {
-         TPPG* prev_ppg = dynamic_cast<TPPG*>(prevSubRun->Get("TPPG"));
+         TPPG* prev_ppg = static_cast<TPPG*>(prevSubRun->Get("TPPG"));
          if(prev_ppg) {
             prev_ppg->Copy(*this);
             printf("Found previous PPG data from run %s\n", prevSubRun->GetName());
@@ -548,7 +548,7 @@ Long64_t TPPG::Merge(TCollection* list)
    TIter it(list);
    TPPG* ppg = nullptr;
 
-   while((ppg = dynamic_cast<TPPG*>(it.Next()))) {
+   while((ppg = static_cast<TPPG*>(it.Next()))) {
       *this += *ppg;
    }
 
@@ -563,7 +563,7 @@ ULong64_t TPPG::GetStatusStart(ppg_pattern pat)
 
 void TPPG::operator+=(const TPPG& rhs)
 {
-   this->Add(&rhs);
+   Add(&rhs);
 }
 
 void TPPG::Add(const TPPG* ppg)

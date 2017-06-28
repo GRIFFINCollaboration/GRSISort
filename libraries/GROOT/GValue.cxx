@@ -73,17 +73,17 @@ GValue* GValue::FindValue(const std::string& name)
 bool GValue::AppendValue(GValue* oldvalue)
 {
    if(fPriority <= oldvalue->fPriority) {
-      if(strlen(this->GetName())) {
-         oldvalue->SetName(this->GetName());
+      if(strlen(GetName())) {
+         oldvalue->SetName(GetName());
       }
 
-      if(this->GetValue() != -1) {
-         oldvalue->SetValue(this->GetValue());
+      if(GetValue() != -1) {
+         oldvalue->SetValue(GetValue());
          oldvalue->fPriority = fPriority;
       }
 
-      if(strlen(this->GetInfo())) {
-         oldvalue->SetInfo(this->GetInfo());
+      if(strlen(GetInfo())) {
+         oldvalue->SetInfo(GetInfo());
       }
       return true;
    }
@@ -94,7 +94,7 @@ bool GValue::AppendValue(GValue* oldvalue)
 bool GValue::ReplaceValue(GValue* oldvalue)
 {
    if(fPriority <= oldvalue->fPriority) {
-      this->Copy(*oldvalue);
+      Copy(*oldvalue);
       return true;
    } else {
       return false;
@@ -328,7 +328,7 @@ void GValue::trim(std::string* line, const std::string& trimChars)
 
 void GValue::Streamer(TBuffer& R__b)
 {
-   this->SetBit(kCanDelete);
+   SetBit(kCanDelete);
    UInt_t R__s, R__c;
    if(R__b.IsReading()) {
       Version_t R__v = R__b.ReadVersion(&R__s, &R__c);

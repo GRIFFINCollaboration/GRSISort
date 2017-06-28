@@ -200,7 +200,7 @@ bool TFragment::IsDetector(const char* prefix, Option_t* opt) const
    // One should eventually add N,P,T options as well.
    std::string pre      = prefix;
    TString     option   = opt;
-   std::string channame = this->GetName();
+   std::string channame = GetName();
    if(channame.length() < 9) {
       return false;
    }

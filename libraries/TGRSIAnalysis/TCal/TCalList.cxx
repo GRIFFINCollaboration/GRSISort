@@ -79,7 +79,7 @@ void TCalList::FillGraph(TGraph* graph) const
 {
    graph->Clear();
    Int_t         i  = 0;
-   TGraphErrors* ge = dynamic_cast<TGraphErrors*>(graph);
+   TGraphErrors* ge = static_cast<TGraphErrors*>(graph);
 
    for(auto it : fCalList) {
       graph->SetPoint(i, it.second.Centroid(), it.second.Area());

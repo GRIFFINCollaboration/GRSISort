@@ -251,7 +251,7 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
    // Make a function that does not include the background
    // Intgrate the background.
    // GGaus *tmppeak = new GGaus;
-   // this->Copy(*tmppeak);
+   // Copy(*tmppeak);
 
    // tmppeak->SetParameter("bg_offset",0.0);
    // tmppeak->SetRange(int_low,int_high);//This will help get the true area of the gaussian 200 ~ infinity in a gaus
@@ -274,7 +274,7 @@ Bool_t GGaus::Fit(TH1* fithist, Option_t* opt)
    fBGFit.SetParameters(bgpars);
    // fithist->GetListOfFunctions()->Print();
 
-   fArea         = this->Integral(xlow, xhigh) / fithist->GetBinWidth(1);
+   fArea         = Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    double bgArea = fBGFit.Integral(xlow, xhigh) / fithist->GetBinWidth(1);
    ;
    fArea -= bgArea;
@@ -325,12 +325,12 @@ void GGaus::Print(Option_t* opt) const
 {
    TString options = opt;
    printf(GREEN);
-   printf("Name: %s \n", this->GetName());
-   printf("Centroid:  %1f +/- %1f \n", this->GetParameter("centroid"), this->GetParError(GetParNumber("centroid")));
+   printf("Name: %s \n", GetName());
+   printf("Centroid:  %1f +/- %1f \n", GetParameter("centroid"), GetParError(GetParNumber("centroid")));
    printf("Area:      %1f +/- %1f \n", fArea, fDArea);
    printf("Sum:       %1f +/- %1f \n", fSum, fDSum);
-   printf("FWHM:      %1f +/- %1f \n", this->GetFWHM(), this->GetFWHMErr());
-   printf("Reso:      %1f%%  \n", this->GetFWHM() / this->GetParameter("centroid") * 100.);
+   printf("FWHM:      %1f +/- %1f \n", GetFWHM(), GetFWHMErr());
+   printf("Reso:      %1f%%  \n", GetFWHM() / GetParameter("centroid") * 100.);
    printf("Chi^2/NDF: %1f\n", fChi2 / fNdf);
    if(options.Contains("all")) {
       TF1::Print(opt);
@@ -358,7 +358,7 @@ void GGaus::DrawResiduals(TH1* hist) const
       if(hist->GetBinCenter(i) <= xlow || hist->GetBinCenter(i) >= xhigh) {
          continue;
       }
-      res[points] = (hist->GetBinContent(i) - this->Eval(hist->GetBinCenter(i))) + this->GetParameter("Height") / 2;
+      res[points] = (hist->GetBinContent(i) - Eval(hist->GetBinCenter(i))) + GetParameter("Height") / 2;
       bin[points] = hist->GetBinCenter(i);
       points++;
    }

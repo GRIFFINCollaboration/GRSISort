@@ -212,9 +212,9 @@ GH1D* GH2Base::GetPrevious(const GH1D* curr, bool)
    }
 
    if(link->Prev()) {
-      return dynamic_cast<GH1D*>(link->Prev()->GetObject());
+      return static_cast<GH1D*>(link->Prev()->GetObject());
    } else {
-      return dynamic_cast<GH1D*>(fProjections->Last());
+      return static_cast<GH1D*>(fProjections->Last());
    }
 }
 
@@ -236,9 +236,9 @@ GH1D* GH2Base::GetNext(const GH1D* curr, bool)
    }
 
    if(link->Next()) {
-      return dynamic_cast<GH1D*>(link->Next()->GetObject());
+      return static_cast<GH1D*>(link->Next()->GetObject());
    } else {
-      return dynamic_cast<GH1D*>(fProjections->First());
+      return static_cast<GH1D*>(fProjections->First());
    }
 }
 
@@ -269,7 +269,7 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
    case kXDirection:
       while(true) {
          std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
-         g                     = dynamic_cast<GH1D*>(fSummaryProjections->FindObject(hist_name.c_str()));
+         g                     = static_cast<GH1D*>(fSummaryProjections->FindObject(hist_name.c_str()));
          if(g && g->Integral() > 0) {
             return g;
          }
@@ -290,7 +290,7 @@ GH1D* GH2Base::GetNextSummary(const GH1D* curr, bool DrawEmpty)
       while(true) {
          std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
 
-         g = dynamic_cast<GH1D*>(fSummaryProjections->FindObject(hist_name.c_str()));
+         g = static_cast<GH1D*>(fSummaryProjections->FindObject(hist_name.c_str()));
          if(g && g->Integral() > 0) {
             return g;
          }
@@ -337,7 +337,7 @@ GH1D* GH2Base::GetPrevSummary(const GH1D* curr, bool DrawEmpty)
    std::string hist_name = Form("%s_%d", GetTH2()->GetName(), binnum);
    TObject*    obj       = fSummaryProjections->FindObject(hist_name.c_str());
    if(obj) {
-      return dynamic_cast<GH1D*>(obj);
+      return static_cast<GH1D*>(obj);
    }
 
    int start_bin = binnum;
@@ -415,7 +415,7 @@ void GH2I::Streamer(TBuffer &b) {
     Version_t v = b.ReadVersion();
     TH2I::Streamer(b);
     TDirectory *current = gDirectory;
-    if(TDirectory::Cd(Form("%s_projections",this->GetName()))) {
+    if(TDirectory::Cd(Form("%s_projections",GetName()))) {
       TList *list = gDirectory->GetList();
       TIter iter(list);
       while(TObject *obj = iter.Next()) {
@@ -432,7 +432,7 @@ void GH2I::Streamer(TBuffer &b) {
     TH2I::Streamer(b);
     if(fProjections.GetEntries()) {
       TDirectory *current = gDirectory;
-      TDirectory *newdir  =  current->mkdir(Form("%s_projections",this->GetName());
+      TDirectory *newdir  =  current->mkdir(Form("%s_projections",GetName());
       newdir->cd();
       fProjections->Write();
       current->cd();

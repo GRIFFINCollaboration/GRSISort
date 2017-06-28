@@ -15,7 +15,7 @@ TCalManager::TCalManager()
 TCalManager::TCalManager(const char* classname)
 {
    fClass = nullptr;
-   this->SetClass(classname);
+   SetClass(classname);
 }
 
 TCalManager::~TCalManager()

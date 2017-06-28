@@ -245,11 +245,11 @@ Bool_t GHSym::Add(const TH1* h1, Double_t c1)
       for(binx = 0; binx <= nbinsx + 1; ++binx) {
          bin = GetBin(binx, biny);
          // special case where histograms have the kIsAverage bit set
-         if(this->TestBit(kIsAverage) && h1->TestBit(kIsAverage)) {
+         if(TestBit(kIsAverage) && h1->TestBit(kIsAverage)) {
             Double_t y1 = h1->GetBinContent(bin);
-            Double_t y2 = this->GetBinContent(bin);
+            Double_t y2 = GetBinContent(bin);
             Double_t e1 = h1->GetBinError(bin);
-            Double_t e2 = this->GetBinError(bin);
+            Double_t e2 = GetBinError(bin);
             Double_t w1 = 1., w2 = 1.;
             // consider all special cases  when bin errors are zero
             // see http://root.cern.ch/phpBB3//viewtopic.php?f=3&t=13299
@@ -901,7 +901,7 @@ void GHSym::FillRandom(const char* fname, Int_t ntimes)
       Error("FillRandom", "Unknown function: %s", fname);
       return;
    }
-   TF2* f1 = dynamic_cast<TF2*>(fobj);
+   TF2* f1 = static_cast<TF2*>(fobj);
    if(f1 == nullptr) {
       Error("FillRandom", "Function: %s is not a TF2", fname);
       return;
@@ -1137,7 +1137,7 @@ void GHSym::FitSlices(TF1* f1, Int_t firstbin, Int_t lastbin, Int_t cut, Option_
 
    // default is to fit with a gaussian
    if(f1 == nullptr) {
-      f1 = dynamic_cast<TF1*>(gROOT->GetFunction("gaus"));
+      f1 = static_cast<TF1*>(gROOT->GetFunction("gaus"));
       if(f1 == nullptr) {
          f1 = new TF1("gaus", "gaus", fXaxis.GetXmin(), fXaxis.GetXmax());
       } else {
@@ -1959,9 +1959,9 @@ Long64_t GHSym::Merge(TCollection* list)
             allSameLimits = sameLimitsY && sameLimitsX;
          }
       }
-   } while((h = dynamic_cast<GHSym*>(next())) != nullptr);
+   } while((h = static_cast<GHSym*>(next())) != nullptr);
    if(h == nullptr && (*next)) {
-      Error("Merge", "Attempt to merge object of class: %s to a %s", (*next)->ClassName(), this->ClassName());
+      Error("Merge", "Attempt to merge object of class: %s to a %s", (*next)->ClassName(), ClassName());
       return -1;
    }
    next.Reset();
@@ -2017,7 +2017,7 @@ Long64_t GHSym::Merge(TCollection* list)
 
    if(!allHaveLimits) {
       // fill this histogram with all the data from buffers of histograms without limits
-      while((h = dynamic_cast<GHSym*>(next())) != nullptr) {
+      while((h = static_cast<GHSym*>(next())) != nullptr) {
          if(h->GetXaxis()->GetXmin() >= h->GetXaxis()->GetXmax() && h->fBuffer) {
             // no limits
             Int_t nbentries = (Int_t)h->fBuffer[0];
@@ -2056,7 +2056,7 @@ Long64_t GHSym::Merge(TCollection* list)
    SetCanExtend(TH1::kNoAxis); // reset, otherwise setting the under/overflow will extend the axis
 #endif
 
-   while((h = dynamic_cast<GHSym*>(next())) != nullptr) {
+   while((h = static_cast<GHSym*>(next())) != nullptr) {
       // skip empty histograms
       Double_t histEntries = h->GetEntries();
       if(h->fTsumw == 0 && histEntries == 0) {
@@ -2490,7 +2490,7 @@ TH1D* GHSym::Projection(const char* name, Int_t firstBin, Int_t lastBin, Option_
       TIter       iL(labels);
       TObjString* lb;
       Int_t       i = 1;
-      while((lb = dynamic_cast<TObjString*>(iL()))) {
+      while((lb = static_cast<TObjString*>(iL()))) {
          h1->GetXaxis()->SetBinLabel(i, lb->String().Data());
          i++;
       }

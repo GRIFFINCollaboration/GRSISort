@@ -34,7 +34,7 @@ std::vector<Double_t> TEnergyCal::GetParameters() const
 {
    // WILL NEED TO CHANGE THIS APPROPRIATELY
    std::vector<Double_t> paramList;
-   Int_t                 nParams = this->GetFunction("energy")->GetNpar();
+   Int_t                 nParams = GetFunction("energy")->GetNpar();
 
    for(int i = 0; i < nParams; i++) {
       paramList.push_back(GetParameter(i));
@@ -67,17 +67,17 @@ void TEnergyCal::SetNucleus(TNucleus* nuc, Option_t* opt)
    }
 
    SetDefaultTitles();
-   //  this->Sort();
+   //  Sort();
 }
 
 void TEnergyCal::AddPoint(Double_t measured, Double_t accepted, Double_t measuredUncertainty,
                           Double_t acceptedUncertainty)
 {
    // Add a point to the TEnergyCal. The points are sorted by increasing measured centroid.
-   Int_t point = this->GetN();
+   Int_t point = GetN();
    TGraphErrors::SetPoint(point, measured, accepted);
    TGraphErrors::SetPointError(point, measuredUncertainty, acceptedUncertainty);
-   //  this->Sort();
+   //  Sort();
 }
 
 Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured)
@@ -95,7 +95,7 @@ Bool_t TEnergyCal::SetPoint(Int_t idx, Double_t measured)
    dy = GetErrorY(idx);
    TGraphErrors::SetPoint(idx, measured, y);
    TGraphErrors::SetPointError(idx, dx, dy);
-   //  this->Sort();
+   //  Sort();
 
    return true;
 }
@@ -137,10 +137,10 @@ void TEnergyCal::WriteToChannel() const
    }
    GetChannel()->DestroyENGCal();
    printf("Writing to channel %d\n", GetChannel()->GetNumber());
-   printf("p0 = %lf \t p1 = %lf\n", this->GetParameter(0), this->GetParameter(1));
+   printf("p0 = %lf \t p1 = %lf\n", GetParameter(0), GetParameter(1));
    // Set the energy parameters based on the fitted calibration.
-   GetChannel()->AddENGCoefficient(this->GetParameter(0));
-   GetChannel()->AddENGCoefficient(this->GetParameter(1));
+   GetChannel()->AddENGCoefficient(GetParameter(0));
+   GetChannel()->AddENGCoefficient(GetParameter(1));
 }
 
 void TEnergyCal::Print(Option_t*) const

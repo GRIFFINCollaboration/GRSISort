@@ -253,11 +253,11 @@ Bool_t GCube::Add(const TH1* h1, Double_t c1)
          for(binx = 0; binx <= nbinsx + 1; ++binx) {
             bin = GetBin(binx, biny, binz);
             // special case where histograms have the kIsAverage bit set
-            if(this->TestBit(kIsAverage) && h1->TestBit(kIsAverage)) {
+            if(TestBit(kIsAverage) && h1->TestBit(kIsAverage)) {
                Double_t y1 = h1->GetBinContent(bin);
-               Double_t y2 = this->GetBinContent(bin);
+               Double_t y2 = GetBinContent(bin);
                Double_t e1 = h1->GetBinError(bin);
-               Double_t e2 = this->GetBinError(bin);
+               Double_t e2 = GetBinError(bin);
                Double_t w1 = 1., w2 = 1.;
                // consider all special cases  when bin errors are zero
                // see http://root.cern.ch/phpBB3//viewtopic.php?f=3&t=13299
@@ -1015,7 +1015,7 @@ void GCube::FillRandom(const char* fname, Int_t ntimes)
       Error("FillRandom", "Unknown function: %s", fname);
       return;
    }
-   TF3* f1 = dynamic_cast<TF3*>(fobj);
+   TF3* f1 = static_cast<TF3*>(fobj);
    if(f1 == nullptr) {
       Error("FillRandom", "Function: %s is not a TF3", fname);
       return;
@@ -1258,7 +1258,7 @@ void GCube::FitSlicesZ(TF1* f1, Int_t binminx, Int_t binmaxx, Int_t binminy, Int
 
    // default is to fit with a gaussian
    if(f1 == nullptr) {
-      f1 = dynamic_cast<TF1*>(gROOT->GetFunction("gaus"));
+      f1 = static_cast<TF1*>(gROOT->GetFunction("gaus"));
       if(f1 == nullptr) {
          f1 = new TF1("gaus", "gaus", fZaxis.GetXmin(), fZaxis.GetXmax());
       } else {
@@ -2096,9 +2096,9 @@ Long64_t GCube::Merge(TCollection* list)
             }
          }
       }
-   } while((h = dynamic_cast<GCube*>(next())) != nullptr);
+   } while((h = static_cast<GCube*>(next())) != nullptr);
    if(h == nullptr && (*next)) {
-      Error("Merge", "Attempt to merge object of class: %s to a %s", (*next)->ClassName(), this->ClassName());
+      Error("Merge", "Attempt to merge object of class: %s to a %s", (*next)->ClassName(), ClassName());
       return -1;
    }
    next.Reset();
@@ -2134,7 +2134,7 @@ Long64_t GCube::Merge(TCollection* list)
 
    if(!allHaveLimits) {
       // fill this histogram with all the data from buffers of histograms without limits
-      while((h = dynamic_cast<GCube*>(next())) != nullptr) {
+      while((h = static_cast<GCube*>(next())) != nullptr) {
          if(h->GetXaxis()->GetXmin() >= h->GetXaxis()->GetXmax() && h->fBuffer) {
             // no limits
             Int_t nbentries = (Int_t)h->fBuffer[0];
@@ -2173,7 +2173,7 @@ Long64_t GCube::Merge(TCollection* list)
    SetCanExtend(TH1::kNoAxis); // reset, otherwise setting the under/overflow will extend the axis
 #endif
 
-   while((h = dynamic_cast<GCube*>(next())) != nullptr) {
+   while((h = static_cast<GCube*>(next())) != nullptr) {
       // process only if the histogram has limits; otherwise it was processed before
       if(h->GetXaxis()->GetXmin() < h->GetXaxis()->GetXmax()) {
          // import statistics
@@ -2388,7 +2388,7 @@ TH1D* GCube::Projection(const char* name, Int_t firstBiny, Int_t lastBiny, Int_t
       TIter       iL(labels);
       TObjString* lb;
       Int_t       i = 1;
-      while((lb = dynamic_cast<TObjString*>(iL()))) {
+      while((lb = static_cast<TObjString*>(iL()))) {
          h1->GetXaxis()->SetBinLabel(i, lb->String().Data());
          i++;
       }

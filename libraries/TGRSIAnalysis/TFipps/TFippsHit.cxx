@@ -81,11 +81,11 @@ void TFippsHit::Add(const TFippsHit* hit)
    if(!CompareEnergy(this, hit)) {
       SetCfd(hit->GetCfd());
       SetTime(hit->GetTime());
-      // this->SetPosition(hit->GetPosition());
+      // SetPosition(hit->GetPosition());
       SetAddress(hit->GetAddress());
    }
    SetEnergy(GetEnergy() + hit->GetEnergy());
-   // this has to be done at the very end, otherwise this->GetEnergy() might not work
+   // this has to be done at the very end, otherwise GetEnergy() might not work
    SetCharge(0);
    // KValue is somewhate meaningless in addback, so I am using it as an indicator that a piledup hit was added-back RD
    if(GetKValue() > hit->GetKValue()) {

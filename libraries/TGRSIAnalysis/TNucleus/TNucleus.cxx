@@ -127,7 +127,7 @@ TNucleus::TNucleus(const char* name)
    SetName();
    // SetName(element.c_str());
    // SetSourceData();
-   this->LoadTransitionFile();
+   LoadTransitionFile();
 }
 /*
  */
@@ -141,7 +141,7 @@ TNucleus::TNucleus(int charge, int neutrons, double mass, const char* symbol)
    fMass   = mass;
    // SetName(symbol);
    SetName();
-   this->LoadTransitionFile();
+   LoadTransitionFile();
    // SetSourceData();
 }
 
@@ -188,7 +188,7 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
    // SetName(name.c_str());
 
    SetName();
-   this->LoadTransitionFile();
+   LoadTransitionFile();
    // SetSourceData();
 }
 
@@ -198,8 +198,8 @@ TNucleus::TNucleus(int charge, int neutrons, const char* MassFile)
 
 void TNucleus::SetName(const char*)
 {
-   std::string name = this->GetSymbol();
-   name.append(std::to_string(this->GetA()));
+   std::string name = GetSymbol();
+   name.append(std::to_string(GetA()));
    TNamed::SetName(name.c_str());
 }
 
@@ -324,7 +324,7 @@ double TNucleus::GetRadius() const
 {
    // Gets the radius of the nucleus (in fm).
    // The radius is calculated using 1.12*A^1/3 - 0.94*A^-1/3
-   return 1.12 * pow(this->GetA(), 1. / 3.) - 0.94 * pow(this->GetA(), -1. / 3.);
+   return 1.12 * pow(GetA(), 1. / 3.) - 0.94 * pow(GetA(), -1. / 3.);
 }
 
 /*
@@ -437,7 +437,7 @@ void TNucleus::AddTransition(TTransition* tran)
 
 TTransition* TNucleus::GetTransition(Int_t idx)
 {
-   TTransition* tran = dynamic_cast<TTransition*>(TransitionList.At(idx));
+   TTransition* tran = static_cast<TTransition*>(TransitionList.At(idx));
    if(!tran) {
       printf("Out of Range\n");
    }
@@ -451,7 +451,7 @@ void TNucleus::Print(Option_t*) const
    printf("Nucleus: %s\n", GetName());
    TIter next(&TransitionList);
    int   counter = 0;
-   while(TTransition* tran = dynamic_cast<TTransition*>(next())) {
+   while(TTransition* tran = static_cast<TTransition*>(next())) {
       printf("\t%i\t", counter++);
       tran->Print();
    }
@@ -479,10 +479,10 @@ bool TNucleus::LoadTransitionFile()
    }
    std::string filename;
    filename           = std::string(getenv("GRSISYS")) + "/libraries/TGRSIAnalysis/SourceData/";
-   std::string symbol = this->GetSymbol();
+   std::string symbol = GetSymbol();
    std::transform(symbol.begin(), symbol.end(), symbol.begin(), ::tolower);
    filename.append(symbol.c_str());
-   filename.append(std::to_string(this->GetA()));
+   filename.append(std::to_string(GetA()));
    filename.append(".sou");
    std::ifstream transfile;
    transfile.open(filename.c_str());

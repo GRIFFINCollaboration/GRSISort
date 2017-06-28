@@ -781,7 +781,7 @@ void TGRSIint::DelayedProcessLine_Action()
       message = g__LineToProcess;
    }
 
-   Long_t result = this->ProcessLine(message.c_str());
+   Long_t result = ProcessLine(message.c_str());
    Getlinem(EGetLineMode::kInit, (static_cast<TRint*>(gApplication))->GetPrompt());
 
    {

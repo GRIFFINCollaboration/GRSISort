@@ -91,7 +91,7 @@ void TSharcHit::SetFront(const TFragment& frag)
    // printf("frag->GetCfd() = %i\n",frag.GetCfd());
    // frag.Print("a");
    frag.Copy(*this);
-   // printf("shit->GetCfd() = %i\n",this->GetCfd());
+   // printf("shit->GetCfd() = %i\n",GetCfd());
    // printf("============================================\n");
    // printf("============================================\n");
    // printf("============================================\n");

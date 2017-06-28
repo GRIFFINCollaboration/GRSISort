@@ -548,7 +548,7 @@ Double_t TPeak::GetIntegralArea(Double_t int_low, Double_t int_high)
    Double_t xhigh         = hist->GetXaxis()->GetBinUpEdge(binhigh);
 
    // ... and then integrate the background
-   Double_t bg_area = (this->Background()->Integral(xlow, xhigh)) / binWidth;
+   Double_t bg_area = (Background()->Integral(xlow, xhigh)) / binWidth;
 
    // calculate the peak area and error
    Double_t peakarea = hist_integral - bg_area;
@@ -579,7 +579,7 @@ Double_t TPeak::GetIntegralAreaErr(Double_t int_low, Double_t int_high)
    Double_t xhigh         = hist->GetXaxis()->GetBinUpEdge(binhigh);
 
    // ... and then integrate the background
-   Double_t bg_area = (this->Background()->Integral(xlow, xhigh)) / binWidth;
+   Double_t bg_area = (Background()->Integral(xlow, xhigh)) / binWidth;
 
    // calculate the peak error
    Double_t peakerr = sqrt(hist_integral + bg_area);

@@ -77,12 +77,12 @@ Bool_t TGRSIFit::AddToGlobalList(Bool_t on)
       }
       gROOT->GetListOfFunctions()->Add(this);
       // do I need to delete previous one with the same name ???
-      // TF1*  old = dynamic_cast<TF1*>( gROOT->GetListOfFunctions()->FindObject(GetName()) );
+      // TF1*  old = static_cast<TF1*>( gROOT->GetListOfFunctions()->FindObject(GetName()) );
       // if (old) gROOT->GetListOfFunctions()->Remove(old);
       return false;
    } else {
       // if previous status was on and now is off
-      TF1* old = dynamic_cast<TF1*>(gROOT->GetListOfFunctions()->FindObject(this));
+      TF1* old = static_cast<TF1*>(gROOT->GetListOfFunctions()->FindObject(this));
       if(!old) {
          // Warning("AddToGlobalList","Function is supposed to be in the global list but it is not present");
          return false;
@@ -108,12 +108,12 @@ Bool_t TGRSIFit::AddToGlobalList(TF1* func, Bool_t on)
       }
       gROOT->GetListOfFunctions()->Add(func);
       // do I need to delete previous one with the same name ???
-      // TF1*  old = dynamic_cast<TF1*>( gROOT->GetListOfFunctions()->FindObject(GetName()) );
+      // TF1*  old = static_cast<TF1*>( gROOT->GetListOfFunctions()->FindObject(GetName()) );
       // if(old) gROOT->GetListOfFunctions()->Remove(old);
       return false;
    } else {
       // if previous status was on and now is off
-      TF1* old = dynamic_cast<TF1*>(gROOT->GetListOfFunctions()->FindObject(func));
+      TF1* old = static_cast<TF1*>(gROOT->GetListOfFunctions()->FindObject(func));
       if(!old) {
          // func->Warning("AddToGlobalList","Function is supposed to be in the global list but it is not present");
          return false;

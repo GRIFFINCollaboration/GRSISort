@@ -417,7 +417,7 @@ void TChannel::SetAddress(unsigned int tmpadd)
          break;
       }
    }
-   this->fAddress = tmpadd;
+   fAddress = tmpadd;
 }
 
 void TChannel::DestroyENGCal()
@@ -945,7 +945,7 @@ Int_t TChannel::ReadCalFromCurrentFile(Option_t*)
    TIter  iter(list);
 
    // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
-   while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
+   while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(), "TChannel")) {
          continue;
       }
@@ -971,7 +971,7 @@ Int_t TChannel::ReadCalFromFile(TFile* tempf, Option_t*)
    TIter  iter(list);
 
    // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
-   while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
+   while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(), "TChannel")) {
          continue;
       }
@@ -993,7 +993,7 @@ Int_t TChannel::ReadCalFromTree(TTree* tree, Option_t*)
    TIter  iter(list);
 
    // while(TObject *obj = ((TKey*)(iter.Next()))->ReadObj()) {
-   while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
+   while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(), "TChannel")) {
          continue;
       }
@@ -1290,7 +1290,7 @@ void TChannel::trim(std::string* line, const std::string& trimChars)
 
 void TChannel::Streamer(TBuffer& R__b)
 {
-   this->SetBit(kCanDelete);
+   SetBit(kCanDelete);
    UInt_t R__s, R__c;
    if(R__b.IsReading()) { // reading from file
       Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
@@ -1363,7 +1363,7 @@ int TChannel::WriteToRoot(TFile* fileptr)
    int   fd             = open("/dev/null", O_WRONLY); // turn off stdout.
    stdout               = fdopen(fd, "w");
 
-   while(TKey* key = dynamic_cast<TKey*>(iter.Next())) {
+   while(TKey* key = static_cast<TKey*>(iter.Next())) {
       if(!key || strcmp(key->GetClassName(), "TChannel")) {
          continue;
       }

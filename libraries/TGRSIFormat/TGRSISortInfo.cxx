@@ -74,9 +74,9 @@ Long64_t TGRSISortList::Merge(TCollection* list)
    // An individual file that was submitted to hadd.
    TGRSISortList* sortlist = nullptr;
 
-   while((sortlist = dynamic_cast<TGRSISortList*>(it.Next()))) {
+   while((sortlist = static_cast<TGRSISortList*>(it.Next()))) {
       // Now we want to loop through each TGRSISortList and find the TGRSISortInfo's stored in there.
-      this->AddSortList(sortlist);
+      AddSortList(sortlist);
    }
    return 0;
 

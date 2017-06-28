@@ -38,7 +38,7 @@ ClassImp(GPopup)
 
    vframe->AddFrame(hframe, new TGLayoutHints(kLHintsExpandX));
 
-   this->AddFrame(vframe, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
+   AddFrame(vframe, new TGLayoutHints(kLHintsExpandX | kLHintsExpandY));
 
    MapSubwindows();
    Resize(); // resize to default size

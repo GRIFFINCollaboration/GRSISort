@@ -43,7 +43,7 @@ void TGainMatch::CalculateGain(Double_t cent1, Double_t cent2, Double_t eng1, Do
 
    auto* gainFit = new TF1("gain", "pol1");
 
-   TFitResultPtr res = this->Fit(gainFit, "SC0");
+   TFitResultPtr res = Fit(gainFit, "SC0");
    SetFitFunction(GetFunction("gain")); // Have to do this because I want to delete gainfit
    fGainCoeffs[0] = res->Parameter(0);
    fGainCoeffs[1] = res->Parameter(1);

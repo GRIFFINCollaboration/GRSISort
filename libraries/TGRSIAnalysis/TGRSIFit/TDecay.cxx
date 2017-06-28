@@ -52,8 +52,8 @@ TFitResultPtr TDecayFit::Fit(TH1* hist, Option_t* opt)
    // Might be able to copy the style over to the new clone for the residuals.
    // Will take a look at this later
    // fDecay->Update();
-   // this->DrawClone("same");
-   this->Draw("same");
+   // DrawClone("same");
+   Draw("same");
    return tmpres;
 }
 
@@ -96,8 +96,8 @@ void TDecayFit::UpdateResiduals(TH1* hist)
          continue;
       }
       // This might not be correct for Poisson statistics.
-      res = (hist->GetBinContent(i) - this->Eval(hist->GetBinCenter(i))) /
-            hist->GetBinError(i); /// GetHist()->GetBinError(i));// + this->GetParameter("Height") + 10.;
+      res = (hist->GetBinContent(i) - Eval(hist->GetBinCenter(i))) /
+            hist->GetBinError(i); /// GetHist()->GetBinError(i));// + GetParameter("Height") + 10.;
       bin = hist->GetBinCenter(i);
       fResiduals.SetPoint(i, bin, res);
    }
