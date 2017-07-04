@@ -361,9 +361,6 @@ Bool_t GPeak::Fit(TH1* fithist, Option_t* opt)
    TMatrixDSym CovMat = fitres->GetCovarianceMatrix();
    CovMat(5, 5) = 0.0;
    CovMat(6, 6) = 0.0;
-   CovMat(7, 7) = 0.0;
-   CovMat(8, 8) = 0.0;
-   CovMat(9, 9) = 0.0;
    fDArea = (tmppeak->IntegralError(xlow, xhigh, tmppeak->GetParameters(), CovMat.GetMatrixArray())) / fithist->GetBinWidth(1);
 
    delete tmppeak;
